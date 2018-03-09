@@ -1,8 +1,9 @@
 package tfe
 
 import (
-	"errors"
+	"fmt"
 	"io"
+	"io/ioutil"
 	"net/http"
 	"net/url"
 
@@ -47,10 +48,10 @@ func NewClient(c *Config) (*Client, error) {
 	// Basic config validation. These values must be provided by the user
 	// and no safe default can be assumed.
 	if c == nil {
-		return nil, errors.New("Missing client config")
+		return nil, fmt.Errorf("Missing client config")
 	}
 	if c.Token == "" {
-		return nil, errors.New("Missing client token")
+		return nil, fmt.Errorf("Missing client token")
 	}
 
 	// Create the config - lay the provied options over the defaults.
@@ -105,6 +106,33 @@ func (c *Client) do(r *request) (*http.Response, error) {
 	}
 	req.Header.Set("Authorization", "Bearer "+c.config.Token)
 
-	// Execute the query and return the result.
-	return c.http.Do(req)
+	// Execute the request and check the response.
+	resp, err := c.http.Do(req)
+	if err != nil {
+		return nil, err
+	}
+
+	// Basic response checking.
+	if err := checkResponseCode(resp); err != nil {
+		return nil, err
+	}
+
+	return resp, nil
+}
+
+// checkResponseCode can be used to check the status code of an HTTP request.
+func checkResponseCode(r *http.Response) error {
+	if r.StatusCode == 404 {
+		return fmt.Errorf("Resource not found")
+	}
+	if r.StatusCode < 200 || r.StatusCode > 299 {
+		body, _ := ioutil.ReadAll(r.Body)
+		r.Body.Close()
+		return fmt.Errorf(
+			"Unexpected status code: %d\n\nBody:\n%s",
+			r.StatusCode,
+			body,
+		)
+	}
+	return nil
 }
