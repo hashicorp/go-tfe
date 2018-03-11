@@ -11,11 +11,38 @@ var organizationType = reflect.TypeOf(&Organization{})
 
 // Organization encapsulates all data fields of a TFE Organization.
 type Organization struct {
-	Name                   string `jsonapi:"primary,organizations"`
-	CreatedAt              string `jsonapi:"attr,created-at"`
-	Email                  string `jsonapi:"attr,email"`
+	// The organization name. Globally unique within a TFE instance.
+	Name string `jsonapi:"primary,organizations"`
+
+	// Email address associated with the organization. It is possible for
+	// this value to be empty.
+	Email string `jsonapi:"attr,email"`
+
+	// Authentication policy for collaborators of the organization. Identifies
+	// 2FA requirements or other required authentication for collaborators
+	// of the organization.
 	CollaboratorAuthPolicy string `jsonapi:"attr,collaborator-auth-policy"`
-	EnterprisePlan         string `jsonapi:"attr,enterprise-plan"`
+
+	// The TFE plan. May be "trial", "pro", or "premium". For private (PTFE)
+	// installations this will always be "premium".
+	EnterprisePlan string `jsonapi:"attr,enterprise-plan"`
+
+	// Creation time of the organization.
+	CreatedAt string `jsonapi:"attr,created-at"`
+
+	// Expiration timestamp of the organization's trial period. Only applicable
+	// if the EnterprisePlan is "trial".
+	TrialExpiresAt string `jsonapi:"attr,trial-expires-at"`
+
+	// Flag determining if SAML is enabled. This is an installation-wide setting
+	// but is exposed through the organization API.
+	SAMLEnabled bool `jsonapi:"attr,saml-enabled"`
+
+	// The role ID in SAML which should be mapped to the "owners" team. If
+	// empty, then owner access is not enabled via SAML. Any other value
+	// grants SAML users with the given role ID owner-level access to the
+	// organization.
+	SAMLOwnersRoleID string `jsonapi:attr:"owners-team-saml-role-id"`
 }
 
 // Organizations returns all of the organizations visible to the current user.
