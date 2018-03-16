@@ -100,11 +100,18 @@ func (c *Client) do(r *request) (*http.Response, error) {
 		return nil, err
 	}
 
-	// Add the headers.
+	// Add the supplied headers.
 	if r.header != nil {
 		req.Header = r.header
 	}
+
+	// Add the auth token.
 	req.Header.Set("Authorization", "Bearer "+c.config.Token)
+
+	// Use JSONAPI content-type by default.
+	if req.Header.Get("Content-Type") == "" {
+		req.Header.Set("Content-Type", "application/vnd.api+json")
+	}
 
 	// Execute the request and check the response.
 	resp, err := c.http.Do(req)
