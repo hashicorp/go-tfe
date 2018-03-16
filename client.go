@@ -7,6 +7,7 @@ import (
 	"io/ioutil"
 	"net/http"
 	"net/url"
+	"reflect"
 
 	"github.com/google/jsonapi"
 	"github.com/hashicorp/go-cleanhttp"
@@ -88,7 +89,7 @@ type request struct {
 	// body parameter is ignored, and this is used instead.
 	input interface{}
 
-	// Pointer to an output struct to deserialize JSONAPI responses to. If
+	// Pointer to an output structure to deserialize JSONAPI responses to. If
 	// this is provided, on successful requests, the response body is
 	// automatically decoded onto this field, the body is automatically closed,
 	// and no HTTP response object is returned.
@@ -96,7 +97,8 @@ type request struct {
 }
 
 // request is a helper to make HTTP requests to the Terraform Enterprise API.
-// It is the reponsiblity of the caller to close any return response body.
+// It is the reponsiblity of the caller to close any return response body, if
+// any is present.
 func (c *Client) do(r *request) (*http.Response, error) {
 	// Form the full URL.
 	u, err := url.Parse(c.config.Address)
@@ -148,9 +150,36 @@ func (c *Client) do(r *request) (*http.Response, error) {
 
 	// Decode the response, if an output was given.
 	if r.output != nil {
-		err := jsonapi.UnmarshalPayload(resp.Body, r.output)
-		resp.Body.Close()
-		return nil, err
+		// Check the type of the output structure.
+		dst := reflect.Indirect(reflect.ValueOf(r.output))
+
+		// Switch to array mode if we have a slice.
+		if dst.Type().Kind() == reflect.Slice {
+			// Get the type of elements the slice holds.
+			elemType := dst.Type().Elem()
+
+			// Unmarshal as a list response.
+			out, err := jsonapi.UnmarshalManyPayload(resp.Body, elemType)
+			if err != nil {
+				return nil, err
+			}
+
+			// Make a new slice to hold the results.
+			sliceType := reflect.SliceOf(elemType)
+			res := reflect.MakeSlice(sliceType, 0, len(out))
+
+			// Add all of the results to the new slice.
+			for _, v := range out {
+				res = reflect.Append(res, reflect.ValueOf(v))
+			}
+
+			// Pointer-swap the result.
+			dst.Set(res)
+		} else {
+			err := jsonapi.UnmarshalPayload(resp.Body, r.output)
+			resp.Body.Close()
+			return nil, err
+		}
 	}
 
 	return resp, nil

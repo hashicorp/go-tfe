@@ -47,28 +47,17 @@ type Organization struct {
 
 // Organizations returns all of the organizations visible to the current user.
 func (c *Client) Organizations() ([]*Organization, error) {
-	resp, err := c.do(&request{
+	var output []*Organization
+
+	if _, err := c.do(&request{
 		method: "GET",
 		path:   "/api/v2/organizations",
-	})
-	if err != nil {
-		return nil, err
-	}
-	defer resp.Body.Close()
-
-	apiOrgs, err := jsonapi.UnmarshalManyPayload(
-		resp.Body,
-		organizationType,
-	)
-	if err != nil {
+		output: &output,
+	}); err != nil {
 		return nil, err
 	}
 
-	orgs := make([]*Organization, len(apiOrgs))
-	for i, org := range apiOrgs {
-		orgs[i] = org.(*Organization)
-	}
-	return orgs, nil
+	return output, nil
 }
 
 // Organization is used to look up a single organization by its name.
