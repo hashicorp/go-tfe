@@ -1,14 +1,5 @@
 package tfe
 
-import (
-	"reflect"
-
-	"github.com/google/jsonapi"
-)
-
-// The reflect type of an organization. Used during deserialization.
-var organizationType = reflect.TypeOf(&Organization{})
-
 // Organization encapsulates all data fields of a TFE Organization.
 type Organization struct {
 	// The organization name. Globally unique within a TFE instance.
@@ -62,17 +53,13 @@ func (c *Client) Organizations() ([]*Organization, error) {
 
 // Organization is used to look up a single organization by its name.
 func (c *Client) Organization(name string) (*Organization, error) {
-	resp, err := c.do(&request{
+	var org Organization
+
+	if _, err := c.do(&request{
 		method: "GET",
 		path:   "/api/v2/organizations/" + name,
-	})
-	if err != nil {
-		return nil, err
-	}
-	defer resp.Body.Close()
-
-	var org Organization
-	if err := jsonapi.UnmarshalPayload(resp.Body, &org); err != nil {
+		output: &org,
+	}); err != nil {
 		return nil, err
 	}
 
