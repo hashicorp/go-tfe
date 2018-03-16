@@ -17,7 +17,7 @@ func (c *Client) Workspaces(organization string) ([]*Workspace, error) {
 	if _, err := c.do(&request{
 		method: "GET",
 		path:   "/api/v2/organizations/" + organization + "/workspaces",
-		output: output,
+		output: &output,
 	}); err != nil {
 		return nil, err
 	}
