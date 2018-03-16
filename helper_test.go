@@ -1,26 +1,14 @@
 package tfe
 
 import (
+	"fmt"
 	"os"
 	"testing"
 
 	"github.com/hashicorp/go-uuid"
 )
 
-// testClient wraps a client with some useful base functionality.
-type testClient struct {
-	// The initialized API client.
-	client *Client
-
-	// A randomly generated organization name.
-	orgName string
-}
-
-func (c *testClient) cleanup() {
-	//c.client.DeleteOrg(c.orgName)
-}
-
-func newTestClient(t *testing.T, fn ...func(*Config)) *testClient {
+func testClient(t *testing.T, fn ...func(*Config)) *Client {
 	if v := os.Getenv("TFE_TOKEN"); v == "" {
 		t.Fatal("TFE_TOKEN must be set")
 	}
@@ -33,13 +21,28 @@ func newTestClient(t *testing.T, fn ...func(*Config)) *testClient {
 		t.Fatal(err)
 	}
 
-	orgName, err := uuid.GenerateUUID()
+	return client
+}
+
+func createOrganization(t *testing.T, client *Client) (*Organization, func()) {
+	resp, err := client.CreateOrganization(&CreateOrganizationInput{
+		Name:  randomString(t),
+		Email: fmt.Sprintf("%s@tfe.local", randomString(t)),
+	})
 	if err != nil {
 		t.Fatal(err)
 	}
-
-	return &testClient{
-		client:  client,
-		orgName: orgName,
+	return resp.Organization, func() {
+		client.DeleteOrganization(&DeleteOrganizationInput{
+			Name: resp.Organization.Name,
+		})
 	}
+}
+
+func randomString(t *testing.T) string {
+	v, err := uuid.GenerateUUID()
+	if err != nil {
+		t.Fatal(err)
+	}
+	return v
 }
