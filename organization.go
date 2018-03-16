@@ -1,7 +1,6 @@
 package tfe
 
 import (
-	"bytes"
 	"reflect"
 
 	"github.com/google/jsonapi"
@@ -106,17 +105,23 @@ type CreateOrganizationInput struct {
 	OwnersTeamSAMLRoleID string
 }
 
+// CreateOrganizationOutput holds the return values from an organization
+// creation request.
+type CreateOrganizationOutput struct {
+	// A reference to the newly-created organization.
+	Organization *Organization
+}
+
 type createOrganizationJSONAPI struct {
-	ID                   string `jsonapi:"primary,organizations"`
+	ResourceType         int    `jsonapi:"primary,organizations"`
 	Name                 string `jsonapi:"attr,name"`
 	Email                string `jsonapi:"attr,email"`
 	OwnersTeamSAMLRoleID string `jsonapi:"attr,owners-team-saml-role-id"`
 }
 
 // CreateOrganization creates a new organization with the given parameters.
-// Returns the new organization and any error.
 func (c *Client) CreateOrganization(input *CreateOrganizationInput) (
-	*Organization, error) {
+	*CreateOrganizationOutput, error) {
 
 	// Create the special JSONAPI params object.
 	jsonapiParams := &createOrganizationJSONAPI{
@@ -125,34 +130,26 @@ func (c *Client) CreateOrganization(input *CreateOrganizationInput) (
 		OwnersTeamSAMLRoleID: input.OwnersTeamSAMLRoleID,
 	}
 
-	// Encode the JSONAPI payload.
-	payload := bytes.NewBuffer(nil)
-	if err := jsonapi.MarshalPayload(payload, jsonapiParams); err != nil {
-		return nil, err
-	}
+	var org Organization
 
 	// Send the request.
-	if resp, err := c.do(&request{
+	if _, err := c.do(&request{
 		method: "POST",
 		path:   "/api/v2/organizations",
-		body:   payload,
+		input:  jsonapiParams,
+		output: &org,
 	}); err != nil {
 		return nil, err
-	} else {
-		defer resp.Body.Close()
-
-		// Decode the response and return the new org.
-		var org Organization
-		if err := jsonapi.UnmarshalPayload(resp.Body, &org); err != nil {
-			return nil, err
-		}
-		return &org, nil
 	}
+
+	return &CreateOrganizationOutput{
+		Organization: &org,
+	}, nil
 }
 
 // DeleteOrganizationInput holds parameters used during organization deletion.
 type DeleteOrganizationInput struct {
-	// The name of the organization to delete.
+	// The name of the organization to delete. Required.
 	Name string
 }
 
@@ -174,4 +171,63 @@ func (c *Client) DeleteOrganization(input *DeleteOrganizationInput) (
 	}
 
 	return &DeleteOrganizationOutput{}, nil
+}
+
+// ModifyOrganizationInput contains the parameters used for modifying an
+// existing organization. Any optional values left empty will be left intact
+// on the organization.
+type ModifyOrganizationInput struct {
+	// The organization to modify. Required.
+	Name string
+
+	// Renames the organization to the given string.
+	Rename string
+
+	// The email address associated with the organization.
+	Email string
+
+	// The SAML role ID which maps users to the owners team.
+	OwnersTeamSAMLRoleID string
+}
+
+// ModifyOrganizationOutput contains response values from an organization
+// modify request.
+type ModifyOrganizationOutput struct {
+	// The updated view of the organization.
+	Organization *Organization
+}
+
+type modifyOrganizationJSONAPI struct {
+	ResourceType         int    `jsonapi:"primary,organizations"`
+	Name                 string `jsonapi:"attr,name,omitempty"`
+	Email                string `jsonapi:"attr,email,omitempty"`
+	OwnersTeamSAMLRoleID string `jsonapi:"attr,owners-team-saml-role-id,omitempty"`
+}
+
+// ModifyOrganization is used to adjust attributes on an existing organization.
+func (c *Client) ModifyOrganization(input *ModifyOrganizationInput) (
+	*ModifyOrganizationOutput, error) {
+
+	// Create the special JSON API payload.
+	jsonapiParams := &modifyOrganizationJSONAPI{
+		Name:                 input.Rename,
+		Email:                input.Email,
+		OwnersTeamSAMLRoleID: input.OwnersTeamSAMLRoleID,
+	}
+
+	var org Organization
+
+	// Send the request
+	if _, err := c.do(&request{
+		method: "PATCH",
+		path:   "/api/v2/organizations/" + input.Name,
+		input:  jsonapiParams,
+		output: &org,
+	}); err != nil {
+		return nil, err
+	}
+
+	return &ModifyOrganizationOutput{
+		Organization: &org,
+	}, nil
 }
