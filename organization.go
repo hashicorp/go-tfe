@@ -33,7 +33,7 @@ type Organization struct {
 	// empty, then owner access is not enabled via SAML. Any other value
 	// grants SAML users with the given role ID owner-level access to the
 	// organization.
-	SAMLOwnersRoleID string `jsonapi:attr:"owners-team-saml-role-id"`
+	SAMLOwnersRole string `jsonapi:"attr,owners-team-saml-role-id"`
 }
 
 // Organizations returns all of the organizations visible to the current user.
@@ -78,7 +78,7 @@ type CreateOrganizationInput struct {
 	// The optional SAML role ID which maps to the owners team. If this is
 	// not set, then the owners team cannot be accessed when logging in with
 	// SAML.
-	OwnersTeamSAMLRoleID string
+	SAMLOwnersRole string
 }
 
 // CreateOrganizationOutput holds the return values from an organization
@@ -89,10 +89,10 @@ type CreateOrganizationOutput struct {
 }
 
 type createOrganizationJSONAPI struct {
-	ResourceType         int    `jsonapi:"primary,organizations"`
-	Name                 string `jsonapi:"attr,name"`
-	Email                string `jsonapi:"attr,email"`
-	OwnersTeamSAMLRoleID string `jsonapi:"attr,owners-team-saml-role-id"`
+	ResourceType   int    `jsonapi:"primary,organizations"`
+	Name           string `jsonapi:"attr,name"`
+	Email          string `jsonapi:"attr,email"`
+	SAMLOwnersRole string `jsonapi:"attr,owners-team-saml-role-id"`
 }
 
 // CreateOrganization creates a new organization with the given parameters.
@@ -101,9 +101,9 @@ func (c *Client) CreateOrganization(input *CreateOrganizationInput) (
 
 	// Create the special JSONAPI params object.
 	jsonapiParams := &createOrganizationJSONAPI{
-		Name:                 input.Name,
-		Email:                input.Email,
-		OwnersTeamSAMLRoleID: input.OwnersTeamSAMLRoleID,
+		Name:           input.Name,
+		Email:          input.Email,
+		SAMLOwnersRole: input.SAMLOwnersRole,
 	}
 
 	var org Organization
@@ -163,7 +163,7 @@ type ModifyOrganizationInput struct {
 	Email string
 
 	// The SAML role ID which maps users to the owners team.
-	OwnersTeamSAMLRoleID string
+	SAMLOwnersRole string
 }
 
 // ModifyOrganizationOutput contains response values from an organization
@@ -174,10 +174,10 @@ type ModifyOrganizationOutput struct {
 }
 
 type modifyOrganizationJSONAPI struct {
-	ResourceType         int    `jsonapi:"primary,organizations"`
-	Name                 string `jsonapi:"attr,name,omitempty"`
-	Email                string `jsonapi:"attr,email,omitempty"`
-	OwnersTeamSAMLRoleID string `jsonapi:"attr,owners-team-saml-role-id,omitempty"`
+	ResourceType   int    `jsonapi:"primary,organizations"`
+	Name           string `jsonapi:"attr,name,omitempty"`
+	Email          string `jsonapi:"attr,email,omitempty"`
+	SAMLOwnersRole string `jsonapi:"attr,owners-team-saml-role-id,omitempty"`
 }
 
 // ModifyOrganization is used to adjust attributes on an existing organization.
@@ -186,9 +186,9 @@ func (c *Client) ModifyOrganization(input *ModifyOrganizationInput) (
 
 	// Create the special JSON API payload.
 	jsonapiParams := &modifyOrganizationJSONAPI{
-		Name:                 input.Rename,
-		Email:                input.Email,
-		OwnersTeamSAMLRoleID: input.OwnersTeamSAMLRoleID,
+		Name:           input.Rename,
+		Email:          input.Email,
+		SAMLOwnersRole: input.SAMLOwnersRole,
 	}
 
 	var org Organization
@@ -207,3 +207,10 @@ func (c *Client) ModifyOrganization(input *ModifyOrganizationInput) (
 		Organization: &org,
 	}, nil
 }
+
+// OrganizationNameSort provides sorting by the organization name.
+type OrganizationNameSort []*Organization
+
+func (o OrganizationNameSort) Len() int           { return len(o) }
+func (o OrganizationNameSort) Less(a, b int) bool { return o[a].Name < o[b].Name }
+func (o OrganizationNameSort) Swap(a, b int)      { o[a], o[b] = o[b], o[a] }
