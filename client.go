@@ -1,12 +1,14 @@
 package tfe
 
 import (
+	"bytes"
 	"fmt"
 	"io"
 	"io/ioutil"
 	"net/http"
 	"net/url"
 
+	"github.com/google/jsonapi"
 	"github.com/hashicorp/go-cleanhttp"
 )
 
@@ -81,6 +83,16 @@ type request struct {
 	query  url.Values
 	header http.Header
 	body   io.Reader
+
+	// Pointer to an input struct to serialize as JSONAPI. When provided, the
+	// body parameter is ignored, and this is used instead.
+	input interface{}
+
+	// Pointer to an output struct to deserialize JSONAPI responses to. If
+	// this is provided, on successful requests, the response body is
+	// automatically decoded onto this field, the body is automatically closed,
+	// and no HTTP response object is returned.
+	output interface{}
 }
 
 // request is a helper to make HTTP requests to the Terraform Enterprise API.
@@ -95,7 +107,17 @@ func (c *Client) do(r *request) (*http.Response, error) {
 	u.Path = r.path
 	fullURL := u.String()
 
-	req, err := http.NewRequest(r.method, fullURL, r.body)
+	// Get the request body to send, preferring an input struct over a raw body.
+	body := r.body
+	if r.input != nil {
+		payload := bytes.NewBuffer(nil)
+		if err := jsonapi.MarshalPayload(payload, r.input); err != nil {
+			return nil, err
+		}
+		body = payload
+	}
+
+	req, err := http.NewRequest(r.method, fullURL, body)
 	if err != nil {
 		return nil, err
 	}
@@ -121,6 +143,13 @@ func (c *Client) do(r *request) (*http.Response, error) {
 
 	// Basic response checking.
 	if err := checkResponseCode(resp); err != nil {
+		return nil, err
+	}
+
+	// Decode the response, if an output was given.
+	if r.output != nil {
+		err := jsonapi.UnmarshalPayload(resp.Body, r.output)
+		resp.Body.Close()
 		return nil, err
 	}
 
