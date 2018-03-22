@@ -2,28 +2,29 @@ package tfe
 
 // Workspace encapsulates all data fields of a workspace in TFE.
 type Workspace struct {
-	// The globally unique identifier for the workspace.
-	ExternalID string `jsonapi:"primary,workspaces"`
+	// Unique ID of this workspace. This ID is guaranteed unique within the
+	// context of the TFE instance.
+	ID string `json:"id,omitempty"`
 
 	// Name of the workspace. This value is only guaranteed unique within
 	// an organization.
-	Name string `jsonapi:"attr,name"`
+	Name string `json:"name,omitempty"`
 
 	// Creation time of the workspace.
-	CreatedAt string `jsonapi:"attr,created-at"`
+	CreatedAt string `json:"created-at,omitempty"`
 
 	// Indicates if plans will be automatically applied (without confirmation).
-	AutoApply bool `jsonapi:"attr,auto-apply"`
+	AutoApply bool `json:"auto-apply,omitempty"`
 
 	// The working directory used by Terraform during runs.
-	WorkingDirectory string `jsonapi:"attr,working-directory"`
+	WorkingDirectory string `json:"working-directory,omitempty"`
 
 	// The version of Terraform which will be used to execute plan and
 	// apply operations for this workspace.
-	TerraformVersion string `jsonapi:"attr,terraform-version"`
+	TerraformVersion string `json:"terraform-version,omitempty"`
 
 	// VCSRepo holds the VCS settings for this workspace.
-	VCSRepo WorkspaceVCSRepo `jsonapi:"attr,vcs-repo"`
+	VCSRepo *WorkspaceVCSRepo `json:"vcs-repo,omitempty"`
 }
 
 // WorkspaceVCSRepo contains the configuration of a VCS integration as it
@@ -48,14 +49,20 @@ type WorkspaceVCSRepo struct {
 
 // Workspaces returns all of the workspaces within an organization.
 func (c *Client) Workspaces(organization string) ([]*Workspace, error) {
-	var output []*Workspace
+	//var result jsonapiWorkspaces
+	var result []jsonapiWorkspace
 
 	if _, err := c.do(&request{
 		method: "GET",
 		path:   "/api/v2/organizations/" + organization + "/workspaces",
-		output: &output,
+		output: &result,
 	}); err != nil {
 		return nil, err
+	}
+
+	output := make([]*Workspace, len(result))
+	for i, ws := range result {
+		output[i] = ws.Workspace
 	}
 
 	return output, nil
@@ -63,17 +70,17 @@ func (c *Client) Workspaces(organization string) ([]*Workspace, error) {
 
 // Workspace returns the workspace identified by the given org and name.
 func (c *Client) Workspace(organization, workspace string) (*Workspace, error) {
-	var ws Workspace
+	var output jsonapiWorkspace
 
 	if _, err := c.do(&request{
 		method: "GET",
 		path:   "/api/v2/organizations/" + organization + "/workspaces/" + workspace,
-		output: &ws,
+		output: &output,
 	}); err != nil {
 		return nil, err
 	}
 
-	return &ws, nil
+	return output.Workspace, nil
 }
 
 // CreateWorkspaceInput contains the parameters used for creating new
@@ -141,3 +148,23 @@ type WorkspaceNameSort []*Organization
 func (w WorkspaceNameSort) Len() int           { return len(w) }
 func (w WorkspaceNameSort) Less(a, b int) bool { return w[a].Name < w[b].Name }
 func (w WorkspaceNameSort) Swap(a, b int)      { w[a], w[b] = w[b], w[a] }
+
+// Internal type to satisfy the jsonapi interface for a single workspace.
+type jsonapiWorkspace struct{ *Workspace }
+
+func (jsonapiWorkspace) GetName() string    { return "workspaces" }
+func (jsonapiWorkspace) GetID() string      { return "" }
+func (jsonapiWorkspace) SetID(string) error { return nil }
+func (jsonapiWorkspace) SetToOneReferenceID(a, b string) error {
+	return nil
+}
+
+// Internal type to satisfy the jsonapi interface for workspace indexes.
+type jsonapiWorkspaces []jsonapiWorkspace
+
+func (jsonapiWorkspaces) GetName() string    { return "workspaces" }
+func (jsonapiWorkspaces) GetID() string      { return "" }
+func (jsonapiWorkspaces) SetID(string) error { return nil }
+func (jsonapiWorkspaces) SetToOneReferenceID(a, b string) error {
+	return nil
+}

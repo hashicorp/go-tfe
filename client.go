@@ -7,10 +7,9 @@ import (
 	"io/ioutil"
 	"net/http"
 	"net/url"
-	"reflect"
 
-	"github.com/google/jsonapi"
 	"github.com/hashicorp/go-cleanhttp"
+	"github.com/manyminds/api2go/jsonapi"
 )
 
 const (
@@ -112,11 +111,11 @@ func (c *Client) do(r *request) (*http.Response, error) {
 	// Get the request body to send, preferring an input struct over a raw body.
 	body := r.body
 	if r.input != nil {
-		payload := bytes.NewBuffer(nil)
-		if err := jsonapi.MarshalPayload(payload, r.input); err != nil {
+		payloadBytes, err := jsonapi.Marshal(r.input)
+		if err != nil {
 			return nil, err
 		}
-		body = payload
+		body = bytes.NewBuffer(payloadBytes)
 	}
 
 	req, err := http.NewRequest(r.method, fullURL, body)
@@ -142,6 +141,7 @@ func (c *Client) do(r *request) (*http.Response, error) {
 	if err != nil {
 		return nil, err
 	}
+	defer resp.Body.Close()
 
 	// Basic response checking.
 	if err := checkResponseCode(resp); err != nil {
@@ -150,36 +150,16 @@ func (c *Client) do(r *request) (*http.Response, error) {
 
 	// Decode the response, if an output was given.
 	if r.output != nil {
-		// Check the type of the output structure.
-		dst := reflect.Indirect(reflect.ValueOf(r.output))
-
-		// Switch to array mode if we have a slice.
-		if dst.Type().Kind() == reflect.Slice {
-			// Get the type of elements the slice holds.
-			elemType := dst.Type().Elem()
-
-			// Unmarshal as a list response.
-			out, err := jsonapi.UnmarshalManyPayload(resp.Body, elemType)
-			if err != nil {
-				return nil, err
-			}
-
-			// Make a new slice to hold the results.
-			sliceType := reflect.SliceOf(elemType)
-			res := reflect.MakeSlice(sliceType, 0, len(out))
-
-			// Add all of the results to the new slice.
-			for _, v := range out {
-				res = reflect.Append(res, reflect.ValueOf(v))
-			}
-
-			// Pointer-swap the result.
-			dst.Set(res)
-		} else {
-			err := jsonapi.UnmarshalPayload(resp.Body, r.output)
-			resp.Body.Close()
+		body, err := ioutil.ReadAll(resp.Body)
+		if err != nil {
 			return nil, err
 		}
+
+		if err := jsonapi.Unmarshal(body, r.output); err != nil {
+			return nil, err
+		}
+
+		return nil, nil
 	}
 
 	return resp, nil

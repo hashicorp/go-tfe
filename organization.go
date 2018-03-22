@@ -3,49 +3,54 @@ package tfe
 // Organization encapsulates all data fields of a TFE Organization.
 type Organization struct {
 	// The organization name. Globally unique within a TFE instance.
-	Name string `jsonapi:"primary,organizations"`
+	Name string `json:"name,omitempty"`
 
 	// Email address associated with the organization. It is possible for
 	// this value to be empty.
-	Email string `jsonapi:"attr,email"`
+	Email string `json:"email,omitempty"`
 
 	// Authentication policy for collaborators of the organization. Identifies
 	// 2FA requirements or other required authentication for collaborators
 	// of the organization.
-	CollaboratorAuthPolicy string `jsonapi:"attr,collaborator-auth-policy"`
+	CollaboratorAuthPolicy string `json:"collaborator-auth-policy,omitempty"`
 
 	// The TFE plan. May be "trial", "pro", or "premium". For private (PTFE)
 	// installations this will always be "premium".
-	EnterprisePlan string `jsonapi:"attr,enterprise-plan"`
+	EnterprisePlan string `json:"enterprise-plan,omitempty"`
 
 	// Creation time of the organization.
-	CreatedAt string `jsonapi:"attr,created-at"`
+	CreatedAt string `json:"created-at,omitempty"`
 
 	// Expiration timestamp of the organization's trial period. Only applicable
 	// if the EnterprisePlan is "trial".
-	TrialExpiresAt string `jsonapi:"attr,trial-expires-at"`
+	TrialExpiresAt string `json:"trial-expires-at,omitempty"`
 
 	// Flag determining if SAML is enabled. This is an installation-wide setting
 	// but is exposed through the organization API.
-	SAMLEnabled bool `jsonapi:"attr,saml-enabled"`
+	SAMLEnabled bool `json:"saml-enabled,omitempty"`
 
 	// The role ID in SAML which should be mapped to the "owners" team. If
 	// empty, then owner access is not enabled via SAML. Any other value
 	// grants SAML users with the given role ID owner-level access to the
 	// organization.
-	SAMLOwnersRole string `jsonapi:"attr,owners-team-saml-role-id"`
+	SAMLOwnersRole string `json:"owners-team-saml-role-id,omitempty"`
 }
 
 // Organizations returns all of the organizations visible to the current user.
 func (c *Client) Organizations() ([]*Organization, error) {
-	var output []*Organization
+	var result jsonapiOrganizations
 
 	if _, err := c.do(&request{
 		method: "GET",
 		path:   "/api/v2/organizations",
-		output: &output,
+		output: &result,
 	}); err != nil {
 		return nil, err
+	}
+
+	output := make([]*Organization, len(result))
+	for i, org := range result {
+		output[i] = org.Organization
 	}
 
 	return output, nil
@@ -53,17 +58,17 @@ func (c *Client) Organizations() ([]*Organization, error) {
 
 // Organization is used to look up a single organization by its name.
 func (c *Client) Organization(name string) (*Organization, error) {
-	var org Organization
+	var output jsonapiOrganization
 
 	if _, err := c.do(&request{
 		method: "GET",
 		path:   "/api/v2/organizations/" + name,
-		output: &org,
+		output: &output,
 	}); err != nil {
 		return nil, err
 	}
 
-	return &org, nil
+	return output.Organization, nil
 }
 
 // CreateOrganizationParams holds all of the settable parameters to pass
@@ -88,38 +93,33 @@ type CreateOrganizationOutput struct {
 	Organization *Organization
 }
 
-type createOrganizationJSONAPI struct {
-	ResourceType   int    `jsonapi:"primary,organizations"`
-	Name           string `jsonapi:"attr,name"`
-	Email          string `jsonapi:"attr,email"`
-	SAMLOwnersRole string `jsonapi:"attr,owners-team-saml-role-id"`
-}
-
 // CreateOrganization creates a new organization with the given parameters.
 func (c *Client) CreateOrganization(input *CreateOrganizationInput) (
 	*CreateOrganizationOutput, error) {
 
 	// Create the special JSONAPI params object.
-	jsonapiParams := &createOrganizationJSONAPI{
-		Name:           input.Name,
-		Email:          input.Email,
-		SAMLOwnersRole: input.SAMLOwnersRole,
+	jsonapiParams := jsonapiOrganization{
+		Organization: &Organization{
+			Name:           input.Name,
+			Email:          input.Email,
+			SAMLOwnersRole: input.SAMLOwnersRole,
+		},
 	}
 
-	var org Organization
+	var output jsonapiOrganization
 
 	// Send the request.
 	if _, err := c.do(&request{
 		method: "POST",
 		path:   "/api/v2/organizations",
 		input:  jsonapiParams,
-		output: &org,
+		output: &output,
 	}); err != nil {
 		return nil, err
 	}
 
 	return &CreateOrganizationOutput{
-		Organization: &org,
+		Organization: output.Organization,
 	}, nil
 }
 
@@ -173,38 +173,33 @@ type ModifyOrganizationOutput struct {
 	Organization *Organization
 }
 
-type modifyOrganizationJSONAPI struct {
-	ResourceType   int    `jsonapi:"primary,organizations"`
-	Name           string `jsonapi:"attr,name,omitempty"`
-	Email          string `jsonapi:"attr,email,omitempty"`
-	SAMLOwnersRole string `jsonapi:"attr,owners-team-saml-role-id,omitempty"`
-}
-
 // ModifyOrganization is used to adjust attributes on an existing organization.
 func (c *Client) ModifyOrganization(input *ModifyOrganizationInput) (
 	*ModifyOrganizationOutput, error) {
 
 	// Create the special JSON API payload.
-	jsonapiParams := &modifyOrganizationJSONAPI{
-		Name:           input.Rename,
-		Email:          input.Email,
-		SAMLOwnersRole: input.SAMLOwnersRole,
+	jsonapiParams := jsonapiOrganization{
+		Organization: &Organization{
+			Name:           input.Rename,
+			Email:          input.Email,
+			SAMLOwnersRole: input.SAMLOwnersRole,
+		},
 	}
 
-	var org Organization
+	var output jsonapiOrganization
 
 	// Send the request
 	if _, err := c.do(&request{
 		method: "PATCH",
 		path:   "/api/v2/organizations/" + input.Name,
 		input:  jsonapiParams,
-		output: &org,
+		output: &output,
 	}); err != nil {
 		return nil, err
 	}
 
 	return &ModifyOrganizationOutput{
-		Organization: &org,
+		Organization: output.Organization,
 	}, nil
 }
 
@@ -214,3 +209,23 @@ type OrganizationNameSort []*Organization
 func (o OrganizationNameSort) Len() int           { return len(o) }
 func (o OrganizationNameSort) Less(a, b int) bool { return o[a].Name < o[b].Name }
 func (o OrganizationNameSort) Swap(a, b int)      { o[a], o[b] = o[b], o[a] }
+
+// Internal type to satisfy the jsonapi interface for a single organization.
+type jsonapiOrganization struct{ *Organization }
+
+func (jsonapiOrganization) GetName() string    { return "organizations" }
+func (jsonapiOrganization) GetID() string      { return "" }
+func (jsonapiOrganization) SetID(string) error { return nil }
+func (jsonapiOrganization) SetToOneReferenceID(string, string) error {
+	return nil
+}
+
+// Internal type to satisfy the jsonapi interface for org indexes.
+type jsonapiOrganizations []jsonapiOrganization
+
+func (jsonapiOrganizations) GetName() string    { return "organizations" }
+func (jsonapiOrganizations) GetID() string      { return "" }
+func (jsonapiOrganizations) SetID(string) error { return nil }
+func (jsonapiOrganizations) SetToOneReferenceID(string, string) error {
+	return nil
+}
