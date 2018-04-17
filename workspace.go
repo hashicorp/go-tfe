@@ -31,14 +31,6 @@ type Workspace struct {
 	VCSRepo *VCSRepo `json:"vcs-repo,omitempty"`
 }
 
-func String(in string) *string {
-	return &in
-}
-
-func Bool(in bool) *bool {
-	return &in
-}
-
 // Workspaces returns all of the workspaces within an organization.
 func (c *Client) Workspaces(organization string) ([]*Workspace, error) {
 	//var result jsonapiWorkspaces
