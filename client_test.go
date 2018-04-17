@@ -3,68 +3,52 @@ package tfe
 import (
 	"net/http"
 	"testing"
+
+	"github.com/stretchr/testify/assert"
 )
 
 func TestNewClient(t *testing.T) {
 	t.Run("fails if config is nil", func(t *testing.T) {
 		_, err := NewClient(nil)
-		if err == nil || err.Error() != "Missing client config" {
-			t.Fatalf("expect missing client error, got %v", err)
-		}
+		assert.EqualError(t, err, "Missing client config")
 	})
 
 	t.Run("fails if token is empty", func(t *testing.T) {
 		_, err := NewClient(&Config{})
-		if err == nil || err.Error() != "Missing client token" {
-			t.Fatalf("expect missing token error, got %v", err)
-		}
+		assert.EqualError(t, err, "Missing client token")
 	})
 
 	t.Run("makes a new client with good settings", func(t *testing.T) {
 		httpClient := &http.Client{}
 
-		client, err := NewClient(&Config{
+		config := &Config{
 			Address:    "http://tfe.foo",
 			Token:      "abcd1234",
 			HTTPClient: httpClient,
-		})
-		if err != nil {
-			t.Fatal(err)
 		}
 
-		if v := client.config.Address; v != "http://tfe.foo" {
-			t.Fatalf("unexpected address: %q", v)
-		}
-		if v := client.config.Token; v != "abcd1234" {
-			t.Fatalf("unexpected token: %q", v)
-		}
-		if v := client.http; v != httpClient {
-			t.Fatalf("unexpected http client: %v", v)
-		}
+		client, err := NewClient(config)
+		assert.Nil(t, err)
+
+		assert.Equal(t, config.Address, client.config.Address)
+		assert.Equal(t, config.Token, client.config.Token)
+		assert.Equal(t, httpClient, client.http)
 	})
 
 	t.Run("creates a default http client", func(t *testing.T) {
 		client, err := NewClient(&Config{
 			Token: "abcd1234",
 		})
-		if err != nil {
-			t.Fatal(err)
-		}
-		if v := client.http; v == nil {
-			t.Fatal("expected a default http client, got nil")
-		}
+		assert.Nil(t, err)
+
+		assert.NotNil(t, client.http)
 	})
 }
 
 func TestDefaultConfig(t *testing.T) {
 	config := DefaultConfig()
-	if v := config.Address; v != DefaultAddress {
-		t.Fatalf("unexpected default address: %q", v)
-	}
-	if v := config.Token; v != "" {
-		t.Fatalf("expect token to be empty, got %q", v)
-	}
-	if v := config.HTTPClient; v != nil {
-		t.Fatalf("expect http client to be nil, got %v", v)
-	}
+
+	assert.Equal(t, DefaultAddress, config.Address)
+	assert.Equal(t, "", config.Token)
+	assert.Nil(t, config.HTTPClient)
 }

@@ -26,8 +26,8 @@ func testClient(t *testing.T, fn ...func(*Config)) *Client {
 
 func createOrganization(t *testing.T, client *Client) (*Organization, func()) {
 	resp, err := client.CreateOrganization(&CreateOrganizationInput{
-		Name:  randomString(t),
-		Email: fmt.Sprintf("%s@tfe.local", randomString(t)),
+		Name:  String(randomString(t)),
+		Email: String(fmt.Sprintf("%s@tfe.local", randomString(t))),
 	})
 	if err != nil {
 		t.Fatal(err)
