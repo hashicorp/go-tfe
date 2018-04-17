@@ -24,27 +24,7 @@ type Workspace struct {
 	TerraformVersion string `json:"terraform-version,omitempty"`
 
 	// VCSRepo holds the VCS settings for this workspace.
-	VCSRepo *WorkspaceVCSRepo `json:"vcs-repo,omitempty"`
-}
-
-// WorkspaceVCSRepo contains the configuration of a VCS integration as it
-// pertains to a specific workspace.
-type WorkspaceVCSRepo struct {
-	// The ID of the VCS integration to use for cloning this workspace's
-	// configuration.
-	OauthTokenID string `json:"oauth-token-id,omitempty"`
-
-	// The identifier of the VCS repository. The format of this field is
-	// typically "<user or org>/<repo name>", depending on the VCS backend.
-	Identifier string `json:"identifier,omitempty"`
-
-	// Non-default branch to clone. Defaults to the default branch configured
-	// at the VCS provider.
-	Branch string `json:"branch,omitempty"`
-
-	// Determines if submodules should be initialized and cloned on the
-	// Terraform configuration repository when TFE clones the VCS repo.
-	IncludeSubmodules bool `json:"ingress-submodules"`
+	VCSRepo *VCSRepo `json:"vcs-repo,omitempty"`
 }
 
 // Workspaces returns all of the workspaces within an organization.
@@ -107,21 +87,7 @@ type CreateWorkspaceInput struct {
 	// Terraform CLI commands against the configuration.
 	WorkingDirectory string
 
-	// The ID of the VCS integration to use for cloning this workspace's
-	// configuration.
-	VCSOauthTokenID string
-
-	// The identifier of the VCS repository. The format of this field is
-	// typically "<user or org>/<repo name>", depending on the VCS backend.
-	VCSRepo string
-
-	// Non-default branch to clone. Defaults to the default branch configured
-	// at the VCS provider.
-	VCSBranch string
-
-	// Determines if submodules should be initialized and cloned on the
-	// Terraform configuration repository when TFE clones the VCS repo.
-	VCSIncludeSubmodules bool
+	VCSRepo *VCSRepo
 }
 
 // CreateWorkspaceOutput holds the return values from a workspace creation
@@ -142,6 +108,7 @@ func (c *Client) CreateWorkspace(input *CreateWorkspaceInput) (
 			AutoApply:        input.AutoApply,
 			TerraformVersion: input.TerraformVersion,
 			WorkingDirectory: input.WorkingDirectory,
+			VCSRepo:          input.VCSRepo,
 		},
 	}
 
@@ -160,6 +127,33 @@ func (c *Client) CreateWorkspace(input *CreateWorkspaceInput) (
 	return &CreateWorkspaceOutput{
 		Workspace: output.Workspace,
 	}, nil
+}
+
+// DeleteWorkspaceInput carries the parameters used for deleting workspaces.
+type DeleteWorkspaceInput struct {
+	// Organization is the name of the organization in which the workspace
+	// exists.
+	Organization string
+
+	// Name is the name of the workspace to delete.
+	Name string
+}
+
+// DeleteWorkspaceOutput holds the return values from deleting a workspace.
+type DeleteWorkspaceOutput struct{}
+
+// DeleteWorkspace is used to delete a single workspace.
+func (c *Client) DeleteWorkspace(input *DeleteWorkspaceInput) (
+	*DeleteWorkspaceOutput, error) {
+
+	if _, err := c.do(&request{
+		method: "DELETE",
+		path:   "/api/v2/organizations/" + input.Organization + "/workspaces/" + input.Name,
+	}); err != nil {
+		return nil, err
+	}
+
+	return &DeleteWorkspaceOutput{}, nil
 }
 
 // WorkspaceOrganizationSort provides sorting by the workspace name.
