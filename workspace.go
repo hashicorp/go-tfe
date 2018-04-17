@@ -97,10 +97,6 @@ type CreateWorkspaceInput struct {
 	// if this is set to true.
 	AutoApply bool
 
-	// Allows creating a workspace in a locked state, such that no Terraform
-	// runs can be executed until it is manually unlocked.
-	Locked bool
-
 	// The Terraform version number to run this workspace's configuration.
 	// Setting this to "latest" will track the latest available version of
 	// Terraform known to the TFE instance.
@@ -139,7 +135,31 @@ type CreateWorkspaceOutput struct {
 func (c *Client) CreateWorkspace(input *CreateWorkspaceInput) (
 	*CreateWorkspaceOutput, error) {
 
-	return &CreateWorkspaceOutput{}, nil
+	// Create the special JSONAPI payload.
+	jsonapiParams := jsonapiWorkspace{
+		Workspace: &Workspace{
+			Name:             input.Name,
+			AutoApply:        input.AutoApply,
+			TerraformVersion: input.TerraformVersion,
+			WorkingDirectory: input.WorkingDirectory,
+		},
+	}
+
+	var output jsonapiWorkspace
+
+	// Send the request.
+	if _, err := c.do(&request{
+		method: "POST",
+		path:   "/api/v2/organizations/" + input.Organization + "/workspaces",
+		input:  jsonapiParams,
+		output: &output,
+	}); err != nil {
+		return nil, err
+	}
+
+	return &CreateWorkspaceOutput{
+		Workspace: output.Workspace,
+	}, nil
 }
 
 // WorkspaceOrganizationSort provides sorting by the workspace name.
