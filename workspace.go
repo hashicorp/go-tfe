@@ -1,30 +1,42 @@
 package tfe
 
+import (
+	"errors"
+)
+
 // Workspace encapsulates all data fields of a workspace in TFE.
 type Workspace struct {
 	// Unique ID of this workspace. This ID is guaranteed unique within the
 	// context of the TFE instance.
-	ID string `json:"id,omitempty"`
+	ID *string `json:"id,omitempty"`
 
 	// Name of the workspace. This value is only guaranteed unique within
 	// an organization.
-	Name string `json:"name,omitempty"`
+	Name *string `json:"name,omitempty"`
 
 	// Creation time of the workspace.
-	CreatedAt string `json:"created-at,omitempty"`
+	CreatedAt *string `json:"created-at,omitempty"`
 
 	// Indicates if plans will be automatically applied (without confirmation).
-	AutoApply bool `json:"auto-apply,omitempty"`
+	AutoApply *bool `json:"auto-apply,omitempty"`
 
 	// The working directory used by Terraform during runs.
-	WorkingDirectory string `json:"working-directory,omitempty"`
+	WorkingDirectory *string `json:"working-directory,omitempty"`
 
 	// The version of Terraform which will be used to execute plan and
 	// apply operations for this workspace.
-	TerraformVersion string `json:"terraform-version,omitempty"`
+	TerraformVersion *string `json:"terraform-version,omitempty"`
 
 	// VCSRepo holds the VCS settings for this workspace.
 	VCSRepo *VCSRepo `json:"vcs-repo,omitempty"`
+}
+
+func String(in string) *string {
+	return &in
+}
+
+func Bool(in bool) *bool {
+	return &in
 }
 
 // Workspaces returns all of the workspaces within an organization.
@@ -67,25 +79,25 @@ func (c *Client) Workspace(organization, workspace string) (*Workspace, error) {
 // new workspaces within an existing organization.
 type CreateWorkspaceInput struct {
 	// The organization name to create the workspace in.
-	Organization string
+	Organization *string
 
 	// The name of the workspace
-	Name string
+	Name *string
 
 	// Determines if plans should automatically apply. Use this option with
 	// caution - unexpected changes could be deployed to your infrastructure
 	// if this is set to true.
-	AutoApply bool
+	AutoApply *bool
 
 	// The Terraform version number to run this workspace's configuration.
 	// Setting this to "latest" will track the latest available version of
 	// Terraform known to the TFE instance.
-	TerraformVersion string
+	TerraformVersion *string
 
 	// An optional subdirectory to use as the "root" of the Terraform
 	// configuration. TFE will change to this directory before running any
 	// Terraform CLI commands against the configuration.
-	WorkingDirectory string
+	WorkingDirectory *string
 
 	VCSRepo *VCSRepo
 }
@@ -100,6 +112,10 @@ type CreateWorkspaceOutput struct {
 // CreateWorkspace is used to create a new workspace with the given parameters.
 func (c *Client) CreateWorkspace(input *CreateWorkspaceInput) (
 	*CreateWorkspaceOutput, error) {
+
+	if input.Organization == nil || input.Name == nil {
+		return nil, errors.New("Organization and Name are required")
+	}
 
 	// Create the special JSONAPI payload.
 	jsonapiParams := jsonapiWorkspace{
@@ -117,7 +133,7 @@ func (c *Client) CreateWorkspace(input *CreateWorkspaceInput) (
 	// Send the request.
 	if _, err := c.do(&request{
 		method: "POST",
-		path:   "/api/v2/organizations/" + input.Organization + "/workspaces",
+		path:   "/api/v2/organizations/" + *input.Organization + "/workspaces",
 		input:  jsonapiParams,
 		output: &output,
 	}); err != nil {
@@ -133,10 +149,10 @@ func (c *Client) CreateWorkspace(input *CreateWorkspaceInput) (
 type DeleteWorkspaceInput struct {
 	// Organization is the name of the organization in which the workspace
 	// exists.
-	Organization string
+	Organization *string
 
 	// Name is the name of the workspace to delete.
-	Name string
+	Name *string
 }
 
 // DeleteWorkspaceOutput holds the return values from deleting a workspace.
@@ -146,9 +162,13 @@ type DeleteWorkspaceOutput struct{}
 func (c *Client) DeleteWorkspace(input *DeleteWorkspaceInput) (
 	*DeleteWorkspaceOutput, error) {
 
+	if input.Organization == nil || input.Name == nil {
+		return nil, errors.New("Organization and Name are required")
+	}
+
 	if _, err := c.do(&request{
 		method: "DELETE",
-		path:   "/api/v2/organizations/" + input.Organization + "/workspaces/" + input.Name,
+		path:   "/api/v2/organizations/" + *input.Organization + "/workspaces/" + *input.Name,
 	}); err != nil {
 		return nil, err
 	}
@@ -160,7 +180,7 @@ func (c *Client) DeleteWorkspace(input *DeleteWorkspaceInput) (
 type WorkspaceNameSort []*Organization
 
 func (w WorkspaceNameSort) Len() int           { return len(w) }
-func (w WorkspaceNameSort) Less(a, b int) bool { return w[a].Name < w[b].Name }
+func (w WorkspaceNameSort) Less(a, b int) bool { return *w[a].Name < *w[b].Name }
 func (w WorkspaceNameSort) Swap(a, b int)      { w[a], w[b] = w[b], w[a] }
 
 // Internal type to satisfy the jsonapi interface for a single workspace.

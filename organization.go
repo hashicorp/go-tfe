@@ -1,39 +1,43 @@
 package tfe
 
+import (
+	"errors"
+)
+
 // Organization encapsulates all data fields of a TFE Organization.
 type Organization struct {
 	// The organization name. Globally unique within a TFE instance.
-	Name string `json:"name,omitempty"`
+	Name *string `json:"name,omitempty"`
 
 	// Email address associated with the organization. It is possible for
 	// this value to be empty.
-	Email string `json:"email,omitempty"`
+	Email *string `json:"email,omitempty"`
 
 	// Authentication policy for collaborators of the organization. Identifies
 	// 2FA requirements or other required authentication for collaborators
 	// of the organization.
-	CollaboratorAuthPolicy string `json:"collaborator-auth-policy,omitempty"`
+	CollaboratorAuthPolicy *string `json:"collaborator-auth-policy,omitempty"`
 
 	// The TFE plan. May be "trial", "pro", or "premium". For private (PTFE)
 	// installations this will always be "premium".
-	EnterprisePlan string `json:"enterprise-plan,omitempty"`
+	EnterprisePlan *string `json:"enterprise-plan,omitempty"`
 
 	// Creation time of the organization.
-	CreatedAt string `json:"created-at,omitempty"`
+	CreatedAt *string `json:"created-at,omitempty"`
 
 	// Expiration timestamp of the organization's trial period. Only applicable
 	// if the EnterprisePlan is "trial".
-	TrialExpiresAt string `json:"trial-expires-at,omitempty"`
+	TrialExpiresAt *string `json:"trial-expires-at,omitempty"`
 
 	// Flag determining if SAML is enabled. This is an installation-wide setting
 	// but is exposed through the organization API.
-	SAMLEnabled bool `json:"saml-enabled,omitempty"`
+	SAMLEnabled *bool `json:"saml-enabled,omitempty"`
 
 	// The role ID in SAML which should be mapped to the "owners" team. If
 	// empty, then owner access is not enabled via SAML. Any other value
 	// grants SAML users with the given role ID owner-level access to the
 	// organization.
-	SAMLOwnersRole string `json:"owners-team-saml-role-id,omitempty"`
+	SAMLOwnersRole *string `json:"owners-team-saml-role-id,omitempty"`
 }
 
 // Organizations returns all of the organizations visible to the current user.
@@ -75,15 +79,15 @@ func (c *Client) Organization(name string) (*Organization, error) {
 // during organization creation.
 type CreateOrganizationInput struct {
 	// The organization name.
-	Name string
+	Name *string
 
 	// Email address associated with the organization.
-	Email string
+	Email *string
 
 	// The optional SAML role ID which maps to the owners team. If this is
 	// not set, then the owners team cannot be accessed when logging in with
 	// SAML.
-	SAMLOwnersRole string
+	SAMLOwnersRole *string
 }
 
 // CreateOrganizationOutput holds the return values from an organization
@@ -126,7 +130,7 @@ func (c *Client) CreateOrganization(input *CreateOrganizationInput) (
 // DeleteOrganizationInput holds parameters used during organization deletion.
 type DeleteOrganizationInput struct {
 	// The name of the organization to delete. Required.
-	Name string
+	Name *string
 }
 
 // DeleteOrganizationOutput stores results from an org deletion request.
@@ -136,10 +140,14 @@ type DeleteOrganizationOutput struct{}
 func (c *Client) DeleteOrganization(input *DeleteOrganizationInput) (
 	*DeleteOrganizationOutput, error) {
 
+	if input.Name == nil {
+		return nil, errors.New("Name is required")
+	}
+
 	// Send the request.
 	if resp, err := c.do(&request{
 		method: "DELETE",
-		path:   "/api/v2/organizations/" + input.Name,
+		path:   "/api/v2/organizations/" + *input.Name,
 	}); err != nil {
 		return nil, err
 	} else {
@@ -154,16 +162,16 @@ func (c *Client) DeleteOrganization(input *DeleteOrganizationInput) (
 // on the organization.
 type ModifyOrganizationInput struct {
 	// The organization to modify. Required.
-	Name string
+	Name *string
 
 	// Renames the organization to the given string.
-	Rename string
+	Rename *string
 
 	// The email address associated with the organization.
-	Email string
+	Email *string
 
 	// The SAML role ID which maps users to the owners team.
-	SAMLOwnersRole string
+	SAMLOwnersRole *string
 }
 
 // ModifyOrganizationOutput contains response values from an organization
@@ -176,6 +184,10 @@ type ModifyOrganizationOutput struct {
 // ModifyOrganization is used to adjust attributes on an existing organization.
 func (c *Client) ModifyOrganization(input *ModifyOrganizationInput) (
 	*ModifyOrganizationOutput, error) {
+
+	if input.Name == nil {
+		return nil, errors.New("Name is required")
+	}
 
 	// Create the special JSON API payload.
 	jsonapiParams := jsonapiOrganization{
@@ -191,7 +203,7 @@ func (c *Client) ModifyOrganization(input *ModifyOrganizationInput) (
 	// Send the request
 	if _, err := c.do(&request{
 		method: "PATCH",
-		path:   "/api/v2/organizations/" + input.Name,
+		path:   "/api/v2/organizations/" + *input.Name,
 		input:  jsonapiParams,
 		output: &output,
 	}); err != nil {
@@ -207,7 +219,7 @@ func (c *Client) ModifyOrganization(input *ModifyOrganizationInput) (
 type OrganizationNameSort []*Organization
 
 func (o OrganizationNameSort) Len() int           { return len(o) }
-func (o OrganizationNameSort) Less(a, b int) bool { return o[a].Name < o[b].Name }
+func (o OrganizationNameSort) Less(a, b int) bool { return *o[a].Name < *o[b].Name }
 func (o OrganizationNameSort) Swap(a, b int)      { o[a], o[b] = o[b], o[a] }
 
 // Internal type to satisfy the jsonapi interface for a single organization.
