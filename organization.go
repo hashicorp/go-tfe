@@ -28,16 +28,6 @@ type Organization struct {
 	// Expiration timestamp of the organization's trial period. Only applicable
 	// if the EnterprisePlan is "trial".
 	TrialExpiresAt *string `json:"trial-expires-at,omitempty"`
-
-	// Flag determining if SAML is enabled. This is an installation-wide setting
-	// but is exposed through the organization API.
-	SAMLEnabled *bool `json:"saml-enabled,omitempty"`
-
-	// The role ID in SAML which should be mapped to the "owners" team. If
-	// empty, then owner access is not enabled via SAML. Any other value
-	// grants SAML users with the given role ID owner-level access to the
-	// organization.
-	SAMLOwnersRole *string `json:"owners-team-saml-role-id,omitempty"`
 }
 
 // Organizations returns all of the organizations visible to the current user.
@@ -83,11 +73,6 @@ type CreateOrganizationInput struct {
 
 	// Email address associated with the organization.
 	Email *string
-
-	// The optional SAML role ID which maps to the owners team. If this is
-	// not set, then the owners team cannot be accessed when logging in with
-	// SAML.
-	SAMLOwnersRole *string
 }
 
 // CreateOrganizationOutput holds the return values from an organization
@@ -104,9 +89,8 @@ func (c *Client) CreateOrganization(input *CreateOrganizationInput) (
 	// Create the special JSONAPI params object.
 	jsonapiParams := jsonapiOrganization{
 		Organization: &Organization{
-			Name:           input.Name,
-			Email:          input.Email,
-			SAMLOwnersRole: input.SAMLOwnersRole,
+			Name:  input.Name,
+			Email: input.Email,
 		},
 	}
 
@@ -169,9 +153,6 @@ type ModifyOrganizationInput struct {
 
 	// The email address associated with the organization.
 	Email *string
-
-	// The SAML role ID which maps users to the owners team.
-	SAMLOwnersRole *string
 }
 
 // ModifyOrganizationOutput contains response values from an organization
@@ -192,9 +173,8 @@ func (c *Client) ModifyOrganization(input *ModifyOrganizationInput) (
 	// Create the special JSON API payload.
 	jsonapiParams := jsonapiOrganization{
 		Organization: &Organization{
-			Name:           input.Rename,
-			Email:          input.Email,
-			SAMLOwnersRole: input.SAMLOwnersRole,
+			Name:  input.Rename,
+			Email: input.Email,
 		},
 	}
 

@@ -1,9 +1,10 @@
 package tfe
 
 import (
-	"reflect"
 	"sort"
 	"testing"
+
+	"github.com/stretchr/testify/assert"
 )
 
 func TestOrganizations(t *testing.T) {
@@ -26,9 +27,7 @@ func TestOrganizations(t *testing.T) {
 	sort.Stable(OrganizationNameSort(expect))
 	sort.Stable(OrganizationNameSort(orgs))
 
-	if !reflect.DeepEqual(orgs, expect) {
-		t.Fatalf("\nExpect:\n%#v\n\nActual:\n%#v", expect, orgs)
-	}
+	assert.Equal(t, expect, orgs)
 }
 
 func TestOrganization(t *testing.T) {
@@ -38,20 +37,33 @@ func TestOrganization(t *testing.T) {
 	defer cleanup()
 
 	t.Run("when the org exists", func(t *testing.T) {
-		result, err := client.Organization(org.Name)
-		if err != nil {
-			t.Fatal(err)
-		}
-		if !reflect.DeepEqual(result, org) {
-			t.Fatalf("\nExpect:\n%+v\n\nActual:\n%+v", org, result)
-		}
+		result, err := client.Organization(*org.Name)
+		assert.Nil(t, err)
+		assert.Equal(t, org, result)
 	})
 
 	t.Run("when the org does not exist", func(t *testing.T) {
-		if _, err := client.Organization(randomString(t)); err == nil {
-			t.Fatal("Expect error, got nil")
-		}
+		_, err := client.Organization(randomString(t))
+		assert.NotNil(t, err)
 	})
+}
+
+func TestCreateOrganization(t *testing.T) {
+	client := testClient(t)
+
+	input := &CreateOrganizationInput{
+		Name:  String(randomString(t)),
+		Email: String(randomString(t) + "@tfe.local"),
+	}
+
+	result, err := client.CreateOrganization(input)
+	assert.Nil(t, err)
+	defer client.DeleteOrganization(&DeleteOrganizationInput{
+		Name: input.Name,
+	})
+
+	assert.Equal(t, input.Name, result.Organization.Name)
+	assert.Equal(t, input.Email, result.Organization.Email)
 }
 
 func TestModifyOrganization(t *testing.T) {
@@ -62,16 +74,13 @@ func TestModifyOrganization(t *testing.T) {
 		defer cleanup()
 
 		input := &ModifyOrganizationInput{
-			Name:           org.Name,
-			Rename:         randomString(t),
-			Email:          randomString(t) + "@tfe.local",
-			SAMLOwnersRole: "ownerz",
+			Name:   org.Name,
+			Rename: String(randomString(t)),
+			Email:  String(randomString(t) + "@tfe.local"),
 		}
 
 		output, err := client.ModifyOrganization(input)
-		if err != nil {
-			t.Fatal(err)
-		}
+		assert.Nil(t, err)
 
 		// Make sure we clean up the renamed org.
 		defer client.DeleteOrganization(&DeleteOrganizationInput{
@@ -80,24 +89,15 @@ func TestModifyOrganization(t *testing.T) {
 
 		// Also get a fresh result from the API to ensure we get the
 		// expected values back.
-		refreshedOrg, err := client.Organization(input.Rename)
-		if err != nil {
-			t.Fatal(err)
-		}
+		refreshedOrg, err := client.Organization(*input.Rename)
+		assert.Nil(t, err)
 
 		for _, resultOrg := range []*Organization{
 			output.Organization,
 			refreshedOrg,
 		} {
-			if v := resultOrg.Name; v != input.Rename {
-				t.Fatalf("Expect %q, got %q", input.Rename, v)
-			}
-			if v := resultOrg.Email; v != input.Email {
-				t.Fatalf("Expect %q, got %q", input.Email, v)
-			}
-			if v := resultOrg.SAMLOwnersRole; v != input.SAMLOwnersRole {
-				t.Fatalf("Expect %q, got %q", input.SAMLOwnersRole, v)
-			}
+			assert.Equal(t, input.Rename, resultOrg.Name)
+			assert.Equal(t, input.Email, resultOrg.Email)
 		}
 	})
 
@@ -107,12 +107,11 @@ func TestModifyOrganization(t *testing.T) {
 
 		input := &ModifyOrganizationInput{
 			Name:  org.Name,
-			Email: "nope",
+			Email: String("nope"),
 		}
 
-		if _, err := client.ModifyOrganization(input); err == nil {
-			t.Fatal("Expect error, got nil")
-		}
+		_, err := client.ModifyOrganization(input)
+		assert.NotNil(t, err)
 	})
 
 	t.Run("when only updating a subset of fields", func(t *testing.T) {
@@ -120,24 +119,14 @@ func TestModifyOrganization(t *testing.T) {
 		defer cleanup()
 
 		input := &ModifyOrganizationInput{
-			Name:  org.Name,
-			Email: randomString(t) + "@tfe.local",
+			Name: org.Name,
 		}
 
 		output, err := client.ModifyOrganization(input)
-		if err != nil {
-			t.Fatal(err)
-		}
+		assert.Nil(t, err)
 
 		result := output.Organization
-		if v := result.Name; v != org.Name {
-			t.Fatalf("Expect %q, got %q", org.Name, v)
-		}
-		if v := result.Email; v != input.Email {
-			t.Fatalf("Expect %q, got %q", input.Email, v)
-		}
-		if v := result.SAMLOwnersRole; v != org.SAMLOwnersRole {
-			t.Fatalf("Expect %q, got %q", org.SAMLOwnersRole, v)
-		}
+		assert.Equal(t, input.Name, result.Name)
+		assert.Equal(t, org.Email, result.Email)
 	})
 }
