@@ -177,10 +177,10 @@ func (w WorkspaceNameSort) Swap(a, b int)      { w[a], w[b] = w[b], w[a] }
 // Internal type to satisfy the jsonapi interface for a single workspace.
 type jsonapiWorkspace struct{ *Workspace }
 
-func (jsonapiWorkspace) GetName() string    { return "workspaces" }
-func (jsonapiWorkspace) GetID() string      { return "" }
-func (jsonapiWorkspace) SetID(string) error { return nil }
-func (jsonapiWorkspace) SetToOneReferenceID(a, b string) error {
+func (w jsonapiWorkspace) GetName() string       { return "workspaces" }
+func (w jsonapiWorkspace) GetID() string         { return "" }
+func (w jsonapiWorkspace) SetID(id string) error { w.ID = String(id); return nil }
+func (w jsonapiWorkspace) SetToOneReferenceID(a, b string) error {
 	return nil
 }
 

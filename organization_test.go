@@ -5,6 +5,7 @@ import (
 	"testing"
 
 	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 )
 
 func TestOrganizations(t *testing.T) {
@@ -17,7 +18,7 @@ func TestOrganizations(t *testing.T) {
 
 	// Get an initial list of the organizations for comparison.
 	orgs, err := client.Organizations()
-	assert.Nil(t, err)
+	require.Nil(t, err)
 
 	expect := []*Organization{org1, org2}
 
@@ -36,7 +37,7 @@ func TestOrganization(t *testing.T) {
 
 	t.Run("when the org exists", func(t *testing.T) {
 		result, err := client.Organization(*org.Name)
-		assert.Nil(t, err)
+		require.Nil(t, err)
 		assert.Equal(t, org, result)
 	})
 
@@ -55,7 +56,7 @@ func TestCreateOrganization(t *testing.T) {
 	}
 
 	result, err := client.CreateOrganization(input)
-	assert.Nil(t, err)
+	require.Nil(t, err)
 	defer client.DeleteOrganization(&DeleteOrganizationInput{
 		Name: input.Name,
 	})
@@ -78,7 +79,7 @@ func TestModifyOrganization(t *testing.T) {
 		}
 
 		output, err := client.ModifyOrganization(input)
-		assert.Nil(t, err)
+		require.Nil(t, err)
 
 		// Make sure we clean up the renamed org.
 		defer client.DeleteOrganization(&DeleteOrganizationInput{
@@ -88,7 +89,7 @@ func TestModifyOrganization(t *testing.T) {
 		// Also get a fresh result from the API to ensure we get the
 		// expected values back.
 		refreshedOrg, err := client.Organization(*input.Rename)
-		assert.Nil(t, err)
+		require.Nil(t, err)
 
 		for _, resultOrg := range []*Organization{
 			output.Organization,
@@ -121,7 +122,7 @@ func TestModifyOrganization(t *testing.T) {
 		}
 
 		output, err := client.ModifyOrganization(input)
-		assert.Nil(t, err)
+		require.Nil(t, err)
 
 		result := output.Organization
 		assert.Equal(t, input.Name, result.Name)
