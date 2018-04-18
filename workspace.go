@@ -33,8 +33,7 @@ type Workspace struct {
 
 // Workspaces returns all of the workspaces within an organization.
 func (c *Client) Workspaces(organization string) ([]*Workspace, error) {
-	//var result jsonapiWorkspaces
-	var result []jsonapiWorkspace
+	var result jsonapiWorkspaces
 
 	if _, err := c.do(&request{
 		method: "GET",
@@ -169,7 +168,7 @@ func (c *Client) DeleteWorkspace(input *DeleteWorkspaceInput) (
 }
 
 // WorkspaceOrganizationSort provides sorting by the workspace name.
-type WorkspaceNameSort []*Organization
+type WorkspaceNameSort []*Workspace
 
 func (w WorkspaceNameSort) Len() int           { return len(w) }
 func (w WorkspaceNameSort) Less(a, b int) bool { return *w[a].Name < *w[b].Name }

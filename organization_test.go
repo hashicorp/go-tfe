@@ -17,9 +17,7 @@ func TestOrganizations(t *testing.T) {
 
 	// Get an initial list of the organizations for comparison.
 	orgs, err := client.Organizations()
-	if err != nil {
-		t.Fatal(err)
-	}
+	assert.Nil(t, err)
 
 	expect := []*Organization{org1, org2}
 
