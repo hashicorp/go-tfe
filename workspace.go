@@ -136,6 +136,78 @@ func (c *Client) CreateWorkspace(input *CreateWorkspaceInput) (
 	}, nil
 }
 
+// ModifyWorkspaceInput carries the adjustable values which can be modified
+// on a workspace after its creation.
+type ModifyWorkspaceInput struct {
+	// The organization name the workspace currently belongs to. Required.
+	Organization *string
+
+	// The current name of the workspace. Required.
+	Name *string
+
+	// A new name for the workspace. This changes the workspace name, which
+	// may affect further API requests or Terraform configurations which refer
+	// to the current workspace name in remote state references etc. Be
+	// mindful when renaming workspaces!
+	Rename *string
+
+	// A new value for the auto-apply setting.
+	AutoApply *bool
+
+	// The Terraform version to use for runs in this workspace.
+	TerraformVersion *string
+
+	// The working directory to use when running Terraform commands. This is
+	// relative to the root of the Terraform configuration.
+	WorkingDirectory *string
+
+	// VCS integration settings.
+	VCSRepo *VCSRepo
+}
+
+// ModifyWorkspaceOutput is used to encapsulate the return values from a
+// workspace modification command.
+type ModifyWorkspaceOutput struct {
+	// A reference to the modified workspace. All updated values are refelected
+	// in this object.
+	Workspace *Workspace
+}
+
+// ModifyWorkspace is used to adjust settings on an existing workspace.
+func (c *Client) ModifyWorkspace(input *ModifyWorkspaceInput) (
+	*ModifyWorkspaceOutput, error) {
+
+	if input.Organization == nil || input.Name == nil {
+		return nil, errors.New("Organization and Name are required")
+	}
+
+	// Create the special JSONAPI payload.
+	jsonapiParams := jsonapiWorkspace{
+		Workspace: &Workspace{
+			Name:             input.Rename,
+			AutoApply:        input.AutoApply,
+			TerraformVersion: input.TerraformVersion,
+			WorkingDirectory: input.WorkingDirectory,
+		},
+	}
+
+	var output jsonapiWorkspace
+
+	// Send the request.
+	if _, err := c.do(&request{
+		method: "PATCH",
+		path:   "/api/v2/organizations/" + *input.Organization + "/workspaces/" + *input.Name,
+		input:  jsonapiParams,
+		output: &output,
+	}); err != nil {
+		return nil, err
+	}
+
+	return &ModifyWorkspaceOutput{
+		Workspace: output.Workspace,
+	}, nil
+}
+
 // DeleteWorkspaceInput carries the parameters used for deleting workspaces.
 type DeleteWorkspaceInput struct {
 	// Organization is the name of the organization in which the workspace
