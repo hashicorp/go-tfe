@@ -58,6 +58,12 @@ func TestWorkspace(t *testing.T) {
 		assert.NotNil(t, err)
 		assert.Nil(t, result)
 	})
+
+	t.Run("permissions are properly decoded", func(t *testing.T) {
+		if !ws.Permissions.Can("destroy") {
+			t.Fatal("should be able to destroy")
+		}
+	})
 }
 
 func TestCreateWorkspace(t *testing.T) {

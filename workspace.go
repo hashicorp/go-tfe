@@ -29,6 +29,9 @@ type Workspace struct {
 
 	// VCSRepo holds the VCS settings for this workspace.
 	VCSRepo *VCSRepo `json:"vcs-repo,omitempty"`
+
+	// Permissions the current API user has on the workspace.
+	Permissions *Permissions `json:"permissions"`
 }
 
 // Workspaces returns all of the workspaces within an organization.
