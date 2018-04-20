@@ -6,20 +6,25 @@ import (
 	"net/http"
 	"net/http/httptest"
 	"net/url"
+	"reflect"
 	"testing"
 
-	"github.com/stretchr/testify/assert"
+	"github.com/manyminds/api2go/jsonapi"
 )
 
 func TestNewClient(t *testing.T) {
 	t.Run("fails if config is nil", func(t *testing.T) {
 		_, err := NewClient(nil)
-		assert.EqualError(t, err, "Missing client config")
+		if err == nil || err.Error() != "Missing client config" {
+			t.Fatalf("unexpected error: %v", err)
+		}
 	})
 
 	t.Run("fails if token is empty", func(t *testing.T) {
 		_, err := NewClient(&Config{})
-		assert.EqualError(t, err, "Missing client token")
+		if err == nil || err.Error() != "Missing client token" {
+			t.Fatalf("unexpected error: %v", err)
+		}
 	})
 
 	t.Run("makes a new client with good settings", func(t *testing.T) {
@@ -32,32 +37,53 @@ func TestNewClient(t *testing.T) {
 		}
 
 		client, err := NewClient(config)
-		assert.Nil(t, err)
+		if err != nil {
+			t.Fatal(err)
+		}
 
-		assert.Equal(t, config.Address, client.config.Address)
-		assert.Equal(t, config.Token, client.config.Token)
-		assert.Equal(t, httpClient, client.http)
+		if config.Address != client.config.Address {
+			t.Fatalf("unexpected client address %q", client.config.Address)
+		}
+		if config.Token != client.config.Token {
+			t.Fatalf("unexpected client token %q", client.config.Token)
+		}
+		if httpClient != client.http {
+			t.Fatal("unexpected HTTP client value")
+		}
 	})
 
 	t.Run("creates a default http client", func(t *testing.T) {
 		client, err := NewClient(&Config{
 			Token: "abcd1234",
 		})
-		assert.Nil(t, err)
+		if err != nil {
+			t.Fatal(err)
+		}
 
-		assert.NotNil(t, client.http)
+		if client.http == nil {
+			t.Fatal("expected default http client, got nil")
+		}
 	})
 }
 
 func TestDefaultConfig(t *testing.T) {
 	config := DefaultConfig()
 
-	assert.Equal(t, DefaultAddress, config.Address)
-	assert.Equal(t, "", config.Token)
-	assert.Nil(t, config.HTTPClient)
+	if config.Address != DefaultAddress {
+		t.Fatalf("expected %q, got %q", DefaultAddress, config.Address)
+	}
+	if config.Token != "" {
+		t.Fatalf("expected empty token, got %q", config.Token)
+	}
+	if config.HTTPClient != nil {
+		t.Fatal("expected http client to be nil")
+	}
 }
 
-func TestRequest(t *testing.T) {
+func TestClientRequest(t *testing.T) {
+	var expectRequestBody string
+	var responseBody string
+
 	ts := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		if r.Method != "PUT" {
 			http.Error(w, "Bad HTTP method", 500)
@@ -96,13 +122,13 @@ func TestRequest(t *testing.T) {
 			http.Error(w, err.Error(), 500)
 			return
 		}
-		if string(body) != "hello from the client" {
+		if string(body) != expectRequestBody {
 			http.Error(w, "Unexpected request body", 500)
 			return
 		}
 
 		w.WriteHeader(200)
-		w.Write([]byte("hello from the server"))
+		w.Write([]byte(responseBody))
 	}))
 	defer ts.Close()
 
@@ -111,27 +137,73 @@ func TestRequest(t *testing.T) {
 		c.Token = "FOOBARBAZ"
 	})
 
-	resp, err := client.do(&request{
-		method: "PUT",
-		path:   "/hello",
-		query:  url.Values{"extra_query": {"yes"}},
-		header: http.Header{"ExtraHeader": {"yes"}},
-		body:   bytes.NewBufferString("hello from the client"),
-		lopt: &ListOptions{
-			PageNumber: 3,
-			PageSize:   50,
-		},
-	})
-	if err != nil {
-		t.Fatal(err)
-	}
-	defer resp.Body.Close()
+	t.Run("raw input and output", func(t *testing.T) {
+		expectRequestBody = "hello from client"
+		responseBody = "hello from server"
 
-	body, err := ioutil.ReadAll(resp.Body)
-	if err != nil {
-		t.Fatal(err)
-	}
-	if v := string(body); v != "hello from the server" {
-		t.Fatalf("Unexpected response body: %q", v)
-	}
+		resp, err := client.do(&request{
+			method: "PUT",
+			path:   "/hello",
+			query:  url.Values{"extra_query": {"yes"}},
+			header: http.Header{"ExtraHeader": {"yes"}},
+			body:   bytes.NewBufferString(expectRequestBody),
+			lopt: &ListOptions{
+				PageNumber: 3,
+				PageSize:   50,
+			},
+		})
+		if err != nil {
+			t.Fatal(err)
+		}
+		defer resp.Body.Close()
+
+		body, err := ioutil.ReadAll(resp.Body)
+		if err != nil {
+			t.Fatal(err)
+		}
+		if v := string(body); v != responseBody {
+			t.Fatalf("Unexpected response body: %q", v)
+		}
+	})
+
+	t.Run("input and output references", func(t *testing.T) {
+		input := apiTestModel{Name: "yo"}
+
+		serialized, err := jsonapi.Marshal(input)
+		if err != nil {
+			t.Fatal(err)
+		}
+
+		expectRequestBody = string(serialized)
+		responseBody = string(serialized)
+
+		var output apiTestModel
+
+		if _, err := client.do(&request{
+			method: "PUT",
+			path:   "/hello",
+			query:  url.Values{"extra_query": {"yes"}},
+			header: http.Header{"ExtraHeader": {"yes"}},
+			input:  input,
+			output: &output,
+			lopt: &ListOptions{
+				PageNumber: 3,
+				PageSize:   50,
+			},
+		}); err != nil {
+			t.Fatal(err)
+		}
+
+		if !reflect.DeepEqual(input, output) {
+			t.Fatalf("\nExpect:\n%+v\n\nActual:\n%+v", input, output)
+		}
+	})
 }
+
+type apiTestModel struct {
+	Name string `json:"name"`
+}
+
+func (apiTestModel) GetName() string    { return "api-test-model" }
+func (apiTestModel) GetID() string      { return "" }
+func (apiTestModel) SetID(string) error { return nil }

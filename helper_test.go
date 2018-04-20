@@ -9,15 +9,21 @@ import (
 )
 
 func testClient(t *testing.T, fn ...func(*Config)) *Client {
-	if v := os.Getenv("TFE_TOKEN"); v == "" {
-		t.Fatal("TFE_TOKEN must be set")
-	}
-
 	config := DefaultConfig()
-	config.Token = os.Getenv("TFE_TOKEN")
 
 	for _, f := range fn {
 		f(config)
+	}
+
+	if config.Token == "" {
+		config.Token = os.Getenv("TFE_TOKEN")
+		if config.Token == "" {
+			t.Fatal("TFE_TOKEN must be set")
+		}
+	}
+
+	if v := os.Getenv("TFE_ADDRESS"); v != "" {
+		config.Address = v
 	}
 
 	client, err := NewClient(config)
