@@ -16,6 +16,10 @@ func testClient(t *testing.T, fn ...func(*Config)) *Client {
 	config := DefaultConfig()
 	config.Token = os.Getenv("TFE_TOKEN")
 
+	for _, f := range fn {
+		f(config)
+	}
+
 	client, err := NewClient(config)
 	if err != nil {
 		t.Fatal(err)

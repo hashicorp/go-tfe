@@ -7,6 +7,7 @@ import (
 	"io/ioutil"
 	"net/http"
 	"net/url"
+	"strconv"
 
 	"github.com/hashicorp/go-cleanhttp"
 	"github.com/manyminds/api2go/jsonapi"
@@ -76,6 +77,16 @@ func NewClient(c *Config) (*Client, error) {
 	return client, nil
 }
 
+// ListOptions is used to specify pagination options when making API requests.
+// Pagination allows breaking up large result sets into chunks, or "pages".
+type ListOptions struct {
+	// The page number to request. The results vary based on the PageSize.
+	PageNumber int
+
+	// The number of elements returned in a single page.
+	PageSize int
+}
+
 // request is a convenient way of describing an HTTP request.
 type request struct {
 	method string
@@ -83,6 +94,7 @@ type request struct {
 	query  url.Values
 	header http.Header
 	body   io.Reader
+	lopt   *ListOptions
 
 	// Pointer to an input struct to serialize as JSONAPI. When provided, the
 	// body parameter is ignored, and this is used instead.
@@ -99,6 +111,12 @@ type request struct {
 // It is the reponsiblity of the caller to close any return response body, if
 // any is present.
 func (c *Client) do(r *request) (*http.Response, error) {
+	// Add the pagination options, if given.
+	if r.lopt != nil {
+		r.query.Set("page[number]", strconv.Itoa(r.lopt.PageNumber))
+		r.query.Set("page[size]", strconv.Itoa(r.lopt.PageSize))
+	}
+
 	// Form the full URL.
 	u, err := url.Parse(c.config.Address)
 	if err != nil {
@@ -141,16 +159,17 @@ func (c *Client) do(r *request) (*http.Response, error) {
 	if err != nil {
 		return nil, err
 	}
-	defer resp.Body.Close()
 
 	// Basic response checking.
 	if err := checkResponseCode(resp); err != nil {
+		resp.Body.Close()
 		return nil, err
 	}
 
 	// Decode the response, if an output was given.
 	if r.output != nil {
 		body, err := ioutil.ReadAll(resp.Body)
+		resp.Body.Close()
 		if err != nil {
 			return nil, err
 		}
