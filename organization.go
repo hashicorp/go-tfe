@@ -28,6 +28,9 @@ type Organization struct {
 	// Expiration timestamp of the organization's trial period. Only applicable
 	// if the EnterprisePlan is "trial".
 	TrialExpiresAt *string `json:"trial-expires-at,omitempty"`
+
+	// Permissions the current user can perform against the organization.
+	Permissions Permissions `json:"permissions"`
 }
 
 // Organizations returns all of the organizations visible to the current user.

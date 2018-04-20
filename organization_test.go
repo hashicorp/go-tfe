@@ -45,6 +45,12 @@ func TestOrganization(t *testing.T) {
 		_, err := client.Organization(randomString(t))
 		assert.NotNil(t, err)
 	})
+
+	t.Run("permissions are properly decoded", func(t *testing.T) {
+		if !org.Permissions.Can("destroy") {
+			t.Fatal("should be able to destroy")
+		}
+	})
 }
 
 func TestCreateOrganization(t *testing.T) {
