@@ -107,8 +107,11 @@ type CreateWorkspaceOutput struct {
 func (c *Client) CreateWorkspace(input *CreateWorkspaceInput) (
 	*CreateWorkspaceOutput, error) {
 
-	if input.Organization == nil || input.Name == nil {
-		return nil, errors.New("Organization and Name are required")
+	if input.Organization == nil || *input.Organization == "" {
+		return nil, errors.New("Organization is required")
+	}
+	if input.Name == nil || *input.Name == "" {
+		return nil, errors.New("Name is required")
 	}
 
 	// Create the special JSONAPI payload.
@@ -180,8 +183,11 @@ type ModifyWorkspaceOutput struct {
 func (c *Client) ModifyWorkspace(input *ModifyWorkspaceInput) (
 	*ModifyWorkspaceOutput, error) {
 
-	if input.Organization == nil || input.Name == nil {
-		return nil, errors.New("Organization and Name are required")
+	if input.Organization == nil || *input.Organization == "" {
+		return nil, errors.New("Organization is required")
+	}
+	if input.Name == nil || *input.Name == "" {
+		return nil, errors.New("Name is required")
 	}
 
 	// Create the special JSONAPI payload.
@@ -228,8 +234,11 @@ type DeleteWorkspaceOutput struct{}
 func (c *Client) DeleteWorkspace(input *DeleteWorkspaceInput) (
 	*DeleteWorkspaceOutput, error) {
 
-	if input.Organization == nil || input.Name == nil {
-		return nil, errors.New("Organization and Name are required")
+	if input.Organization == nil || *input.Organization == "" {
+		return nil, errors.New("Organization is required")
+	}
+	if input.Name == nil || *input.Name == "" {
+		return nil, errors.New("Name is required")
 	}
 
 	if _, err := c.do(&request{

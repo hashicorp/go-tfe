@@ -127,7 +127,7 @@ type DeleteOrganizationOutput struct{}
 func (c *Client) DeleteOrganization(input *DeleteOrganizationInput) (
 	*DeleteOrganizationOutput, error) {
 
-	if input.Name == nil {
+	if input.Name == nil || *input.Name == "" {
 		return nil, errors.New("Name is required")
 	}
 
@@ -169,7 +169,7 @@ type ModifyOrganizationOutput struct {
 func (c *Client) ModifyOrganization(input *ModifyOrganizationInput) (
 	*ModifyOrganizationOutput, error) {
 
-	if input.Name == nil {
+	if input.Name == nil || *input.Name == "" {
 		return nil, errors.New("Name is required")
 	}
 

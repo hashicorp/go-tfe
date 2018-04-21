@@ -104,7 +104,7 @@ func TestCreateWorkspace(t *testing.T) {
 		result, err := client.CreateWorkspace(&CreateWorkspaceInput{
 			Name: String("foo"),
 		})
-		assert.EqualError(t, err, "Organization and Name are required")
+		assert.EqualError(t, err, "Organization is required")
 		assert.Nil(t, result)
 	})
 
@@ -112,7 +112,7 @@ func TestCreateWorkspace(t *testing.T) {
 		result, err := client.CreateWorkspace(&CreateWorkspaceInput{
 			Organization: org.Name,
 		})
-		assert.EqualError(t, err, "Organization and Name are required")
+		assert.EqualError(t, err, "Name is required")
 		assert.Nil(t, result)
 	})
 
@@ -187,7 +187,7 @@ func TestModifyWorkspace(t *testing.T) {
 		result, err := client.ModifyWorkspace(&ModifyWorkspaceInput{
 			Name: String("foo"),
 		})
-		assert.EqualError(t, err, "Organization and Name are required")
+		assert.EqualError(t, err, "Organization is required")
 		assert.Nil(t, result)
 	})
 
@@ -195,7 +195,7 @@ func TestModifyWorkspace(t *testing.T) {
 		result, err := client.ModifyWorkspace(&ModifyWorkspaceInput{
 			Organization: org.Name,
 		})
-		assert.EqualError(t, err, "Organization and Name are required")
+		assert.EqualError(t, err, "Name is required")
 		assert.Nil(t, result)
 	})
 
@@ -208,4 +208,24 @@ func TestModifyWorkspace(t *testing.T) {
 		assert.NotNil(t, err)
 		assert.Nil(t, result)
 	})
+}
+
+func TestDeleteWorkspace(t *testing.T) {
+	client := testClient(t)
+
+	org, cleanup := createOrganization(t, client)
+	defer cleanup()
+
+	ws, _ := createWorkspace(t, client, org)
+
+	output, err := client.DeleteWorkspace(&DeleteWorkspaceInput{
+		Organization: org.Name,
+		Name:         ws.Name,
+	})
+	require.Nil(t, err)
+	require.Equal(t, &DeleteWorkspaceOutput{}, output)
+
+	// Try loading the workspace - it should fail.
+	_, err = client.Workspace(*org.Name, *ws.Name)
+	assert.EqualError(t, err, "Resource not found")
 }

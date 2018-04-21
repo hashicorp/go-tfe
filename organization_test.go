@@ -135,3 +135,21 @@ func TestModifyOrganization(t *testing.T) {
 		assert.Equal(t, org.Email, result.Email)
 	})
 }
+
+func TestDeleteOrganization(t *testing.T) {
+	client := testClient(t)
+
+	org, cleanup := createOrganization(t, client)
+	defer cleanup()
+
+	output, err := client.DeleteOrganization(&DeleteOrganizationInput{
+		Name: org.Name,
+	})
+	require.Nil(t, err)
+
+	require.Equal(t, &DeleteOrganizationOutput{}, output)
+
+	// Try fetching the org again - it should error.
+	_, err = client.Organization(*org.Name)
+	assert.EqualError(t, err, "Resource not found")
+}
