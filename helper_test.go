@@ -52,6 +52,12 @@ func createOrganization(t *testing.T, client *Client) (*Organization, func()) {
 func createWorkspace(t *testing.T, client *Client, org *Organization) (
 	*Workspace, func()) {
 
+	var orgCleanup func()
+
+	if org == nil {
+		org, orgCleanup = createOrganization(t, client)
+	}
+
 	resp, err := client.CreateWorkspace(&CreateWorkspaceInput{
 		Organization: org.Name,
 		Name:         String(randomString(t)),
@@ -64,6 +70,10 @@ func createWorkspace(t *testing.T, client *Client, org *Organization) (
 			Organization: org.Name,
 			Name:         resp.Workspace.Name,
 		})
+
+		if orgCleanup != nil {
+			orgCleanup()
+		}
 	}
 }
 
