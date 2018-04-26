@@ -147,7 +147,7 @@ func TestClientRequest(t *testing.T) {
 			query:  url.Values{"extra_query": {"yes"}},
 			header: http.Header{"ExtraHeader": {"yes"}},
 			body:   bytes.NewBufferString(expectRequestBody),
-			lopt: &ListOptions{
+			lopt: ListOptions{
 				PageNumber: 3,
 				PageSize:   50,
 			},
@@ -186,7 +186,7 @@ func TestClientRequest(t *testing.T) {
 			header: http.Header{"ExtraHeader": {"yes"}},
 			input:  input,
 			output: &output,
-			lopt: &ListOptions{
+			lopt: ListOptions{
 				PageNumber: 3,
 				PageSize:   50,
 			},

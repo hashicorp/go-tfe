@@ -94,7 +94,7 @@ type request struct {
 	query  url.Values
 	header http.Header
 	body   io.Reader
-	lopt   *ListOptions
+	lopt   ListOptions
 
 	// Pointer to an input struct to serialize as JSONAPI. When provided, the
 	// body parameter is ignored, and this is used instead.
@@ -111,9 +111,16 @@ type request struct {
 // It is the reponsiblity of the caller to close any return response body, if
 // any is present.
 func (c *Client) do(r *request) (*http.Response, error) {
+	// Initialize members.
+	if r.query == nil {
+		r.query = url.Values{}
+	}
+
 	// Add the pagination options, if given.
-	if r.lopt != nil {
+	if r.lopt.PageNumber != 0 {
 		r.query.Set("page[number]", strconv.Itoa(r.lopt.PageNumber))
+	}
+	if r.lopt.PageSize != 0 {
 		r.query.Set("page[size]", strconv.Itoa(r.lopt.PageSize))
 	}
 

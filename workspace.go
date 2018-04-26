@@ -37,14 +37,37 @@ type Workspace struct {
 	Permissions *Permissions `json:"permissions,omitempty"`
 }
 
-// Workspaces returns all of the workspaces within an organization.
-func (c *Client) Workspaces(organization string) ([]*Workspace, error) {
+// ListWorkspacesInput holds the options to pass when listing workspaces.
+type ListWorkspacesInput struct {
+	// Options used for paging through results.
+	ListOptions
+
+	// The name of the organization to list workspaces for.
+	OrganizationName *string
+}
+
+// Valid determines if the input is sufficiently filled.
+func (i *ListWorkspacesInput) Valid() error {
+	if !validStringID(i.OrganizationName) {
+		return errors.New("Invalid value for OrganizationName")
+	}
+	return nil
+}
+
+// ListWorkspaces returns all of the workspaces within an organization.
+func (c *Client) ListWorkspaces(input *ListWorkspacesInput) ([]*Workspace, error) {
+	if err := input.Valid(); err != nil {
+		return nil, err
+	}
+	orgName := *input.OrganizationName
+
 	var result jsonapiWorkspaces
 
 	if _, err := c.do(&request{
 		method: "GET",
-		path:   "/api/v2/organizations/" + organization + "/workspaces",
+		path:   "/api/v2/organizations/" + orgName + "/workspaces",
 		output: &result,
+		lopt:   input.ListOptions,
 	}); err != nil {
 		return nil, err
 	}

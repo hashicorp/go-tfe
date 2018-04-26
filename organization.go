@@ -33,14 +33,23 @@ type Organization struct {
 	Permissions Permissions `json:"permissions"`
 }
 
+// ListOrganizationsInput holds the inputs to use when listing organizations.
+type ListOrganizationsInput struct {
+	// Options used for paging through results
+	ListOptions
+}
+
 // Organizations returns all of the organizations visible to the current user.
-func (c *Client) Organizations() ([]*Organization, error) {
+func (c *Client) ListOrganizations(input *ListOrganizationsInput) (
+	[]*Organization, error) {
+
 	var result jsonapiOrganizations
 
 	if _, err := c.do(&request{
 		method: "GET",
 		path:   "/api/v2/organizations",
 		output: &result,
+		lopt:   input.ListOptions,
 	}); err != nil {
 		return nil, err
 	}

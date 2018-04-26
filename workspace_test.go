@@ -8,7 +8,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func TestWorkspaces(t *testing.T) {
+func TestListWorkspaces(t *testing.T) {
 	client := testClient(t)
 
 	org, orgCleanup := createOrganization(t, client)
@@ -19,17 +19,36 @@ func TestWorkspaces(t *testing.T) {
 	ws2, ws2Cleanup := createWorkspace(t, client, org)
 	defer ws2Cleanup()
 
-	// List the workspaces within the organization.
-	workspaces, err := client.Workspaces(*org.Name)
-	require.Nil(t, err)
+	t.Run("without list options", func(t *testing.T) {
+		workspaces, err := client.ListWorkspaces(&ListWorkspacesInput{
+			OrganizationName: org.Name,
+		})
+		require.Nil(t, err)
 
-	expect := []*Workspace{ws1, ws2}
+		expect := []*Workspace{ws1, ws2}
 
-	// Sort to ensure we get a non-flaky comparison.
-	sort.Stable(WorkspaceNameSort(expect))
-	sort.Stable(WorkspaceNameSort(workspaces))
+		// Sort to ensure we get a non-flaky comparison.
+		sort.Stable(WorkspaceNameSort(expect))
+		sort.Stable(WorkspaceNameSort(workspaces))
 
-	assert.Equal(t, expect, workspaces)
+		assert.Equal(t, expect, workspaces)
+	})
+
+	t.Run("with list options", func(t *testing.T) {
+		// Request a page number which is out of range. The result should
+		// be successful, but return no results if the paging options are
+		// properly passed along.
+		workspaces, err := client.ListWorkspaces(&ListWorkspacesInput{
+			OrganizationName: org.Name,
+			ListOptions: ListOptions{
+				PageNumber: 999,
+				PageSize:   100,
+			},
+		})
+		require.Nil(t, err)
+
+		assert.Equal(t, 0, len(workspaces))
+	})
 }
 
 func TestWorkspace(t *testing.T) {

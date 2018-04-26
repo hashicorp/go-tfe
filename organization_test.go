@@ -8,7 +8,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func TestOrganizations(t *testing.T) {
+func TestListOrganizations(t *testing.T) {
 	client := testClient(t)
 
 	org1, cleanupOrg1 := createOrganization(t, client)
@@ -16,17 +16,35 @@ func TestOrganizations(t *testing.T) {
 	org2, cleanupOrg2 := createOrganization(t, client)
 	defer cleanupOrg2()
 
-	// Get an initial list of the organizations for comparison.
-	orgs, err := client.Organizations()
-	require.Nil(t, err)
+	t.Run("with no list options", func(t *testing.T) {
+		orgs, err := client.ListOrganizations(&ListOrganizationsInput{})
+		require.Nil(t, err)
 
-	expect := []*Organization{org1, org2}
+		expect := []*Organization{org1, org2}
 
-	// Sort to ensure we are comparing in the right order
-	sort.Stable(OrganizationNameSort(expect))
-	sort.Stable(OrganizationNameSort(orgs))
+		// Sort to ensure we are comparing in the right order
+		sort.Stable(OrganizationNameSort(expect))
+		sort.Stable(OrganizationNameSort(orgs))
 
-	assert.Equal(t, expect, orgs)
+		assert.Equal(t, expect, orgs)
+	})
+
+	t.Run("with list options", func(t *testing.T) {
+		t.Skip("paging not supported yet in API")
+
+		// Request a page number which is out of range. The result should
+		// be successful, but return no results if the paging options are
+		// properly passed along.
+		orgs, err := client.ListOrganizations(&ListOrganizationsInput{
+			ListOptions: ListOptions{
+				PageNumber: 999,
+				PageSize:   100,
+			},
+		})
+		require.Nil(t, err)
+
+		assert.Equal(t, 0, len(orgs))
+	})
 }
 
 func TestOrganization(t *testing.T) {
