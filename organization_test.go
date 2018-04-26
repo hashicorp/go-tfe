@@ -56,25 +56,44 @@ func TestOrganization(t *testing.T) {
 func TestCreateOrganization(t *testing.T) {
 	client := testClient(t)
 
-	input := &CreateOrganizationInput{
-		Name:  String(randomString(t)),
-		Email: String(randomString(t) + "@tfe.local"),
-	}
+	t.Run("with valid input", func(t *testing.T) {
+		input := &CreateOrganizationInput{
+			Name:  String(randomString(t)),
+			Email: String(randomString(t) + "@tfe.local"),
+		}
 
-	result, err := client.CreateOrganization(input)
-	require.Nil(t, err)
-	defer client.DeleteOrganization(&DeleteOrganizationInput{
-		Name: input.Name,
+		result, err := client.CreateOrganization(input)
+		require.Nil(t, err)
+		defer client.DeleteOrganization(&DeleteOrganizationInput{
+			Name: input.Name,
+		})
+
+		assert.Equal(t, input.Name, result.Organization.Name)
+		assert.Equal(t, input.Email, result.Organization.Email)
 	})
 
-	assert.Equal(t, input.Name, result.Organization.Name)
-	assert.Equal(t, input.Email, result.Organization.Email)
+	t.Run("with invalid name", func(t *testing.T) {
+		result, err := client.CreateOrganization(&CreateOrganizationInput{
+			Name:  String("! / nope"),
+			Email: String("foo@bar.com"),
+		})
+		assert.Nil(t, result)
+		assert.EqualError(t, err, "Invalid value for Name")
+	})
+
+	t.Run("when no email is provided", func(t *testing.T) {
+		result, err := client.CreateOrganization(&CreateOrganizationInput{
+			Name: String("foo"),
+		})
+		assert.Nil(t, result)
+		assert.EqualError(t, err, "Email is required")
+	})
 }
 
 func TestModifyOrganization(t *testing.T) {
 	client := testClient(t)
 
-	t.Run("with valid parameters", func(t *testing.T) {
+	t.Run("with valid input", func(t *testing.T) {
 		org, cleanup := createOrganization(t, client)
 		defer cleanup()
 
@@ -106,17 +125,12 @@ func TestModifyOrganization(t *testing.T) {
 		}
 	})
 
-	t.Run("with invalid parameters", func(t *testing.T) {
-		org, cleanup := createOrganization(t, client)
-		defer cleanup()
-
-		input := &ModifyOrganizationInput{
-			Name:  org.Name,
-			Email: String("nope"),
-		}
-
-		_, err := client.ModifyOrganization(input)
-		assert.NotNil(t, err)
+	t.Run("with invalid name", func(t *testing.T) {
+		result, err := client.ModifyOrganization(&ModifyOrganizationInput{
+			Name: String("! / nope"),
+		})
+		assert.Nil(t, result)
+		assert.EqualError(t, err, "Invalid value for Name")
 	})
 
 	t.Run("when only updating a subset of fields", func(t *testing.T) {
@@ -139,17 +153,27 @@ func TestModifyOrganization(t *testing.T) {
 func TestDeleteOrganization(t *testing.T) {
 	client := testClient(t)
 
-	org, cleanup := createOrganization(t, client)
-	defer cleanup()
+	t.Run("with valid input", func(t *testing.T) {
+		org, cleanup := createOrganization(t, client)
+		defer cleanup()
 
-	output, err := client.DeleteOrganization(&DeleteOrganizationInput{
-		Name: org.Name,
+		output, err := client.DeleteOrganization(&DeleteOrganizationInput{
+			Name: org.Name,
+		})
+		require.Nil(t, err)
+
+		require.Equal(t, &DeleteOrganizationOutput{}, output)
+
+		// Try fetching the org again - it should error.
+		_, err = client.Organization(*org.Name)
+		assert.EqualError(t, err, "Resource not found")
 	})
-	require.Nil(t, err)
 
-	require.Equal(t, &DeleteOrganizationOutput{}, output)
-
-	// Try fetching the org again - it should error.
-	_, err = client.Organization(*org.Name)
-	assert.EqualError(t, err, "Resource not found")
+	t.Run("with invalid name", func(t *testing.T) {
+		result, err := client.DeleteOrganization(&DeleteOrganizationInput{
+			Name: String("! / nope"),
+		})
+		assert.Nil(t, result)
+		assert.EqualError(t, err, "Invalid value for Name")
+	})
 }

@@ -101,10 +101,10 @@ type CreateWorkspaceInput struct {
 
 // Valid determines if the input is sufficiently filled.
 func (i *CreateWorkspaceInput) Valid() error {
-	if !isStringID(i.OrganizationName) {
+	if !validStringID(i.OrganizationName) {
 		return errors.New("Invalid value for OrganizationName")
 	}
-	if !isStringID(i.Name) {
+	if !validStringID(i.Name) {
 		return errors.New("Invalid value for Name")
 	}
 	return nil
@@ -185,10 +185,10 @@ type ModifyWorkspaceInput struct {
 
 // Valid determines if the input is sufficiently filled.
 func (i *ModifyWorkspaceInput) Valid() error {
-	if !isStringID(i.OrganizationName) {
+	if !validStringID(i.OrganizationName) {
 		return errors.New("Invalid value for OrganizationName")
 	}
-	if !isStringID(i.Name) {
+	if !validStringID(i.Name) {
 		return errors.New("Invalid value for Name")
 	}
 	return nil
@@ -250,10 +250,10 @@ type DeleteWorkspaceInput struct {
 
 // Valid determines if the input is filled sufficiently.
 func (i *DeleteWorkspaceInput) Valid() error {
-	if !isStringID(i.OrganizationName) {
+	if !validStringID(i.OrganizationName) {
 		return errors.New("Invalid value for OrganizationName")
 	}
-	if !isStringID(i.Name) {
+	if !validStringID(i.Name) {
 		return errors.New("Invalid value for Name")
 	}
 	return nil

@@ -78,6 +78,17 @@ type CreateOrganizationInput struct {
 	Email *string
 }
 
+// Valid checks if the input is filled sufficiently.
+func (i *CreateOrganizationInput) Valid() error {
+	if !validStringID(i.Name) {
+		return errors.New("Invalid value for Name")
+	}
+	if !validString(i.Email) {
+		return errors.New("Email is required")
+	}
+	return nil
+}
+
 // CreateOrganizationOutput holds the return values from an organization
 // creation request.
 type CreateOrganizationOutput struct {
@@ -88,6 +99,10 @@ type CreateOrganizationOutput struct {
 // CreateOrganization creates a new organization with the given parameters.
 func (c *Client) CreateOrganization(input *CreateOrganizationInput) (
 	*CreateOrganizationOutput, error) {
+
+	if err := input.Valid(); err != nil {
+		return nil, err
+	}
 
 	// Create the special JSONAPI params object.
 	jsonapiParams := jsonapiOrganization{
@@ -120,6 +135,14 @@ type DeleteOrganizationInput struct {
 	Name *string
 }
 
+// Valid checks if the input is sufficiently filled.
+func (i *DeleteOrganizationInput) Valid() error {
+	if !validStringID(i.Name) {
+		return errors.New("Invalid value for Name")
+	}
+	return nil
+}
+
 // DeleteOrganizationOutput stores results from an org deletion request.
 type DeleteOrganizationOutput struct{}
 
@@ -127,8 +150,8 @@ type DeleteOrganizationOutput struct{}
 func (c *Client) DeleteOrganization(input *DeleteOrganizationInput) (
 	*DeleteOrganizationOutput, error) {
 
-	if input.Name == nil || *input.Name == "" {
-		return nil, errors.New("Name is required")
+	if err := input.Valid(); err != nil {
+		return nil, err
 	}
 
 	// Send the request.
@@ -158,6 +181,14 @@ type ModifyOrganizationInput struct {
 	Email *string
 }
 
+// Valid checks that the input is sufficiently filled.
+func (i *ModifyOrganizationInput) Valid() error {
+	if !validStringID(i.Name) {
+		return errors.New("Invalid value for Name")
+	}
+	return nil
+}
+
 // ModifyOrganizationOutput contains response values from an organization
 // modify request.
 type ModifyOrganizationOutput struct {
@@ -169,8 +200,8 @@ type ModifyOrganizationOutput struct {
 func (c *Client) ModifyOrganization(input *ModifyOrganizationInput) (
 	*ModifyOrganizationOutput, error) {
 
-	if input.Name == nil || *input.Name == "" {
-		return nil, errors.New("Name is required")
+	if err := input.Valid(); err != nil {
+		return nil, err
 	}
 
 	// Create the special JSON API payload.
