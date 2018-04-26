@@ -108,15 +108,33 @@ func TestCreateWorkspace(t *testing.T) {
 		result, err := client.CreateWorkspace(&CreateWorkspaceInput{
 			Name: String("foo"),
 		})
-		assert.EqualError(t, err, "OrganizationName is required")
+		assert.EqualError(t, err, "Invalid value for OrganizationName")
 		assert.Nil(t, result)
 	})
 
 	t.Run("when input is missing name", func(t *testing.T) {
 		result, err := client.CreateWorkspace(&CreateWorkspaceInput{
-			OrganizationName: org.Name,
+			OrganizationName: String("foo"),
 		})
-		assert.EqualError(t, err, "Name is required")
+		assert.EqualError(t, err, "Invalid value for Name")
+		assert.Nil(t, result)
+	})
+
+	t.Run("when input has invalid name", func(t *testing.T) {
+		result, err := client.CreateWorkspace(&CreateWorkspaceInput{
+			OrganizationName: String("foo"),
+			Name:             String("! / nope"),
+		})
+		assert.EqualError(t, err, "Invalid value for Name")
+		assert.Nil(t, result)
+	})
+
+	t.Run("when input has invalid organization", func(t *testing.T) {
+		result, err := client.CreateWorkspace(&CreateWorkspaceInput{
+			OrganizationName: String("! / nope"),
+			Name:             String("foo"),
+		})
+		assert.EqualError(t, err, "Invalid value for OrganizationName")
 		assert.Nil(t, result)
 	})
 
@@ -134,17 +152,15 @@ func TestCreateWorkspace(t *testing.T) {
 func TestModifyWorkspace(t *testing.T) {
 	client := testClient(t)
 
-	org, orgCleanup := createOrganization(t, client)
-	defer orgCleanup()
-
-	ws, _ := createWorkspace(t, client, org)
+	ws, wsCleanup := createWorkspace(t, client, nil)
+	defer wsCleanup()
 
 	t.Run("when updating a subset of values", func(t *testing.T) {
-		before, err := client.Workspace(*org.Name, *ws.Name)
+		before, err := client.Workspace(*ws.OrganizationName, *ws.Name)
 		require.Nil(t, err)
 
 		input := &ModifyWorkspaceInput{
-			OrganizationName: org.Name,
+			OrganizationName: ws.OrganizationName,
 			Name:             ws.Name,
 			TerraformVersion: String("0.10.0"),
 		}
@@ -161,7 +177,7 @@ func TestModifyWorkspace(t *testing.T) {
 
 	t.Run("with valid input", func(t *testing.T) {
 		input := &ModifyWorkspaceInput{
-			OrganizationName: org.Name,
+			OrganizationName: ws.OrganizationName,
 			Name:             ws.Name,
 			Rename:           String(randomString(t)),
 			AutoApply:        Bool(false),
@@ -173,7 +189,7 @@ func TestModifyWorkspace(t *testing.T) {
 		require.Nil(t, err)
 
 		// Get a refreshed view of the workspace from the API
-		refreshed, err := client.Workspace(*org.Name, *input.Rename)
+		refreshed, err := client.Workspace(*ws.OrganizationName, *input.Rename)
 		require.Nil(t, err)
 
 		for _, result := range []*Workspace{
@@ -191,25 +207,43 @@ func TestModifyWorkspace(t *testing.T) {
 		result, err := client.ModifyWorkspace(&ModifyWorkspaceInput{
 			Name: String("foo"),
 		})
-		assert.EqualError(t, err, "OrganizationName is required")
+		assert.EqualError(t, err, "Invalid value for OrganizationName")
 		assert.Nil(t, result)
 	})
 
 	t.Run("when input is missing name", func(t *testing.T) {
 		result, err := client.ModifyWorkspace(&ModifyWorkspaceInput{
-			OrganizationName: org.Name,
+			OrganizationName: ws.OrganizationName,
 		})
-		assert.EqualError(t, err, "Name is required")
+		assert.EqualError(t, err, "Invalid value for Name")
 		assert.Nil(t, result)
 	})
 
 	t.Run("when an error is returned from the api", func(t *testing.T) {
 		result, err := client.ModifyWorkspace(&ModifyWorkspaceInput{
-			OrganizationName: org.Name,
+			OrganizationName: ws.OrganizationName,
 			Name:             ws.Name,
 			TerraformVersion: String("nope"),
 		})
 		assert.NotNil(t, err)
+		assert.Nil(t, result)
+	})
+
+	t.Run("when input has invalid name", func(t *testing.T) {
+		result, err := client.ModifyWorkspace(&ModifyWorkspaceInput{
+			OrganizationName: ws.OrganizationName,
+			Name:             String("! / nope"),
+		})
+		assert.EqualError(t, err, "Invalid value for Name")
+		assert.Nil(t, result)
+	})
+
+	t.Run("when input has invalid organization", func(t *testing.T) {
+		result, err := client.ModifyWorkspace(&ModifyWorkspaceInput{
+			OrganizationName: String("! / nope"),
+			Name:             ws.Name,
+		})
+		assert.EqualError(t, err, "Invalid value for OrganizationName")
 		assert.Nil(t, result)
 	})
 }
@@ -217,19 +251,37 @@ func TestModifyWorkspace(t *testing.T) {
 func TestDeleteWorkspace(t *testing.T) {
 	client := testClient(t)
 
-	org, cleanup := createOrganization(t, client)
-	defer cleanup()
+	ws, wsCleanup := createWorkspace(t, client, nil)
+	defer wsCleanup()
 
-	ws, _ := createWorkspace(t, client, org)
+	t.Run("with valid input", func(t *testing.T) {
+		output, err := client.DeleteWorkspace(&DeleteWorkspaceInput{
+			OrganizationName: ws.OrganizationName,
+			Name:             ws.Name,
+		})
+		require.Nil(t, err)
+		require.Equal(t, &DeleteWorkspaceOutput{}, output)
 
-	output, err := client.DeleteWorkspace(&DeleteWorkspaceInput{
-		OrganizationName: org.Name,
-		Name:             ws.Name,
+		// Try loading the workspace - it should fail.
+		_, err = client.Workspace(*ws.OrganizationName, *ws.Name)
+		assert.EqualError(t, err, "Resource not found")
 	})
-	require.Nil(t, err)
-	require.Equal(t, &DeleteWorkspaceOutput{}, output)
 
-	// Try loading the workspace - it should fail.
-	_, err = client.Workspace(*org.Name, *ws.Name)
-	assert.EqualError(t, err, "Resource not found")
+	t.Run("when input has invalid name", func(t *testing.T) {
+		result, err := client.DeleteWorkspace(&DeleteWorkspaceInput{
+			OrganizationName: ws.OrganizationName,
+			Name:             String("! / nope"),
+		})
+		assert.EqualError(t, err, "Invalid value for Name")
+		assert.Nil(t, result)
+	})
+
+	t.Run("when input has invalid organization", func(t *testing.T) {
+		result, err := client.DeleteWorkspace(&DeleteWorkspaceInput{
+			OrganizationName: String("! / nope"),
+			Name:             ws.Name,
+		})
+		assert.EqualError(t, err, "Invalid value for OrganizationName")
+		assert.Nil(t, result)
+	})
 }

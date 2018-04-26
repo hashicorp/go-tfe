@@ -7,6 +7,7 @@ import (
 	"io/ioutil"
 	"net/http"
 	"net/url"
+	"regexp"
 	"strconv"
 
 	"github.com/hashicorp/go-cleanhttp"
@@ -17,6 +18,11 @@ const (
 	// The default address of Terraform Enterprise. This value points to
 	// the public SaaS service.
 	DefaultAddress = "https://app.terraform.io"
+)
+
+var (
+	// A regular expression used to validate common string ID patterns.
+	reStringID = regexp.MustCompile(`^[a-zA-Z0-9\-\._]+$`)
 )
 
 // Config provides configuration details to the API client.
@@ -199,4 +205,10 @@ func checkResponseCode(r *http.Response) error {
 		)
 	}
 	return nil
+}
+
+// isStringID checks if the given string pointer is non-nil and contains a
+// typical string identifier.
+func isStringID(in *string) bool {
+	return in != nil && reStringID.MatchString(*in)
 }

@@ -99,6 +99,17 @@ type CreateWorkspaceInput struct {
 	VCSRepo *VCSRepo
 }
 
+// Valid determines if the input is sufficiently filled.
+func (i *CreateWorkspaceInput) Valid() error {
+	if !isStringID(i.OrganizationName) {
+		return errors.New("Invalid value for OrganizationName")
+	}
+	if !isStringID(i.Name) {
+		return errors.New("Invalid value for Name")
+	}
+	return nil
+}
+
 // CreateWorkspaceOutput holds the return values from a workspace creation
 // request.
 type CreateWorkspaceOutput struct {
@@ -110,13 +121,10 @@ type CreateWorkspaceOutput struct {
 func (c *Client) CreateWorkspace(input *CreateWorkspaceInput) (
 	*CreateWorkspaceOutput, error) {
 
-	// Sanity test the input.
-	if input.OrganizationName == nil || *input.OrganizationName == "" {
-		return nil, errors.New("OrganizationName is required")
+	if err := input.Valid(); err != nil {
+		return nil, err
 	}
-	if input.Name == nil || *input.Name == "" {
-		return nil, errors.New("Name is required")
-	}
+	orgName := *input.OrganizationName
 
 	// Create the special JSONAPI payload.
 	jsonapiParams := jsonapiWorkspace{
@@ -134,7 +142,7 @@ func (c *Client) CreateWorkspace(input *CreateWorkspaceInput) (
 	// Send the request.
 	if _, err := c.do(&request{
 		method: "POST",
-		path:   "/api/v2/organizations/" + *input.OrganizationName + "/workspaces",
+		path:   "/api/v2/organizations/" + orgName + "/workspaces",
 		input:  jsonapiParams,
 		output: &output,
 	}); err != nil {
@@ -175,6 +183,17 @@ type ModifyWorkspaceInput struct {
 	VCSRepo *VCSRepo
 }
 
+// Valid determines if the input is sufficiently filled.
+func (i *ModifyWorkspaceInput) Valid() error {
+	if !isStringID(i.OrganizationName) {
+		return errors.New("Invalid value for OrganizationName")
+	}
+	if !isStringID(i.Name) {
+		return errors.New("Invalid value for Name")
+	}
+	return nil
+}
+
 // ModifyWorkspaceOutput is used to encapsulate the return values from a
 // workspace modification command.
 type ModifyWorkspaceOutput struct {
@@ -187,12 +206,8 @@ type ModifyWorkspaceOutput struct {
 func (c *Client) ModifyWorkspace(input *ModifyWorkspaceInput) (
 	*ModifyWorkspaceOutput, error) {
 
-	// Sanity test the input.
-	if input.OrganizationName == nil || *input.OrganizationName == "" {
-		return nil, errors.New("OrganizationName is required")
-	}
-	if input.Name == nil || *input.Name == "" {
-		return nil, errors.New("Name is required")
+	if err := input.Valid(); err != nil {
+		return nil, err
 	}
 	orgName, wsName := *input.OrganizationName, *input.Name
 
@@ -233,6 +248,17 @@ type DeleteWorkspaceInput struct {
 	Name *string
 }
 
+// Valid determines if the input is filled sufficiently.
+func (i *DeleteWorkspaceInput) Valid() error {
+	if !isStringID(i.OrganizationName) {
+		return errors.New("Invalid value for OrganizationName")
+	}
+	if !isStringID(i.Name) {
+		return errors.New("Invalid value for Name")
+	}
+	return nil
+}
+
 // DeleteWorkspaceOutput holds the return values from deleting a workspace.
 type DeleteWorkspaceOutput struct{}
 
@@ -240,12 +266,8 @@ type DeleteWorkspaceOutput struct{}
 func (c *Client) DeleteWorkspace(input *DeleteWorkspaceInput) (
 	*DeleteWorkspaceOutput, error) {
 
-	// Sanity test the input.
-	if input.OrganizationName == nil || *input.OrganizationName == "" {
-		return nil, errors.New("OrganizationName is required")
-	}
-	if input.Name == nil || *input.Name == "" {
-		return nil, errors.New("Name is required")
+	if err := input.Valid(); err != nil {
+		return nil, err
 	}
 	orgName, wsName := *input.OrganizationName, *input.Name
 
