@@ -46,8 +46,8 @@ type ListWorkspacesInput struct {
 	OrganizationName *string
 }
 
-// Valid determines if the input is sufficiently filled.
-func (i *ListWorkspacesInput) Valid() error {
+// valid determines if the input is sufficiently filled.
+func (i *ListWorkspacesInput) valid() error {
 	if !validStringID(i.OrganizationName) {
 		return errors.New("Invalid value for OrganizationName")
 	}
@@ -56,7 +56,7 @@ func (i *ListWorkspacesInput) Valid() error {
 
 // ListWorkspaces returns all of the workspaces within an organization.
 func (c *Client) ListWorkspaces(input *ListWorkspacesInput) ([]*Workspace, error) {
-	if err := input.Valid(); err != nil {
+	if err := input.valid(); err != nil {
 		return nil, err
 	}
 	orgName := *input.OrganizationName
@@ -122,8 +122,7 @@ type CreateWorkspaceInput struct {
 	VCSRepo *VCSRepo
 }
 
-// Valid determines if the input is sufficiently filled.
-func (i *CreateWorkspaceInput) Valid() error {
+func (i *CreateWorkspaceInput) valid() error {
 	if !validStringID(i.OrganizationName) {
 		return errors.New("Invalid value for OrganizationName")
 	}
@@ -144,7 +143,7 @@ type CreateWorkspaceOutput struct {
 func (c *Client) CreateWorkspace(input *CreateWorkspaceInput) (
 	*CreateWorkspaceOutput, error) {
 
-	if err := input.Valid(); err != nil {
+	if err := input.valid(); err != nil {
 		return nil, err
 	}
 	orgName := *input.OrganizationName
@@ -206,8 +205,8 @@ type ModifyWorkspaceInput struct {
 	VCSRepo *VCSRepo
 }
 
-// Valid determines if the input is sufficiently filled.
-func (i *ModifyWorkspaceInput) Valid() error {
+// valid determines if the input is sufficiently filled.
+func (i *ModifyWorkspaceInput) valid() error {
 	if !validStringID(i.OrganizationName) {
 		return errors.New("Invalid value for OrganizationName")
 	}
@@ -229,7 +228,7 @@ type ModifyWorkspaceOutput struct {
 func (c *Client) ModifyWorkspace(input *ModifyWorkspaceInput) (
 	*ModifyWorkspaceOutput, error) {
 
-	if err := input.Valid(); err != nil {
+	if err := input.valid(); err != nil {
 		return nil, err
 	}
 	orgName, wsName := *input.OrganizationName, *input.Name
@@ -271,8 +270,7 @@ type DeleteWorkspaceInput struct {
 	Name *string
 }
 
-// Valid determines if the input is filled sufficiently.
-func (i *DeleteWorkspaceInput) Valid() error {
+func (i *DeleteWorkspaceInput) valid() error {
 	if !validStringID(i.OrganizationName) {
 		return errors.New("Invalid value for OrganizationName")
 	}
@@ -289,7 +287,7 @@ type DeleteWorkspaceOutput struct{}
 func (c *Client) DeleteWorkspace(input *DeleteWorkspaceInput) (
 	*DeleteWorkspaceOutput, error) {
 
-	if err := input.Valid(); err != nil {
+	if err := input.valid(); err != nil {
 		return nil, err
 	}
 	orgName, wsName := *input.OrganizationName, *input.Name

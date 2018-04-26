@@ -87,8 +87,7 @@ type CreateOrganizationInput struct {
 	Email *string
 }
 
-// Valid checks if the input is filled sufficiently.
-func (i *CreateOrganizationInput) Valid() error {
+func (i *CreateOrganizationInput) valid() error {
 	if !validStringID(i.Name) {
 		return errors.New("Invalid value for Name")
 	}
@@ -109,7 +108,7 @@ type CreateOrganizationOutput struct {
 func (c *Client) CreateOrganization(input *CreateOrganizationInput) (
 	*CreateOrganizationOutput, error) {
 
-	if err := input.Valid(); err != nil {
+	if err := input.valid(); err != nil {
 		return nil, err
 	}
 
@@ -144,8 +143,8 @@ type DeleteOrganizationInput struct {
 	Name *string
 }
 
-// Valid checks if the input is sufficiently filled.
-func (i *DeleteOrganizationInput) Valid() error {
+// valid checks if the input is sufficiently filled.
+func (i *DeleteOrganizationInput) valid() error {
 	if !validStringID(i.Name) {
 		return errors.New("Invalid value for Name")
 	}
@@ -159,7 +158,7 @@ type DeleteOrganizationOutput struct{}
 func (c *Client) DeleteOrganization(input *DeleteOrganizationInput) (
 	*DeleteOrganizationOutput, error) {
 
-	if err := input.Valid(); err != nil {
+	if err := input.valid(); err != nil {
 		return nil, err
 	}
 
@@ -190,8 +189,8 @@ type ModifyOrganizationInput struct {
 	Email *string
 }
 
-// Valid checks that the input is sufficiently filled.
-func (i *ModifyOrganizationInput) Valid() error {
+// valid checks that the input is sufficiently filled.
+func (i *ModifyOrganizationInput) valid() error {
 	if !validStringID(i.Name) {
 		return errors.New("Invalid value for Name")
 	}
@@ -209,7 +208,7 @@ type ModifyOrganizationOutput struct {
 func (c *Client) ModifyOrganization(input *ModifyOrganizationInput) (
 	*ModifyOrganizationOutput, error) {
 
-	if err := input.Valid(); err != nil {
+	if err := input.valid(); err != nil {
 		return nil, err
 	}
 
