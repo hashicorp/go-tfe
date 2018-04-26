@@ -59,16 +59,16 @@ func createWorkspace(t *testing.T, client *Client, org *Organization) (
 	}
 
 	resp, err := client.CreateWorkspace(&CreateWorkspaceInput{
-		Organization: org.Name,
-		Name:         String(randomString(t)),
+		OrganizationName: org.Name,
+		Name:             String(randomString(t)),
 	})
 	if err != nil {
 		t.Fatal(err)
 	}
 	return resp.Workspace, func() {
 		client.DeleteWorkspace(&DeleteWorkspaceInput{
-			Organization: org.Name,
-			Name:         resp.Workspace.Name,
+			OrganizationName: org.Name,
+			Name:             resp.Workspace.Name,
 		})
 
 		if orgCleanup != nil {

@@ -78,7 +78,7 @@ func TestCreateWorkspace(t *testing.T) {
 
 	t.Run("with valid input", func(t *testing.T) {
 		input := &CreateWorkspaceInput{
-			Organization:     org.Name,
+			OrganizationName: org.Name,
 			Name:             String("foo"),
 			AutoApply:        Bool(true),
 			TerraformVersion: String("0.11.0"),
@@ -108,13 +108,13 @@ func TestCreateWorkspace(t *testing.T) {
 		result, err := client.CreateWorkspace(&CreateWorkspaceInput{
 			Name: String("foo"),
 		})
-		assert.EqualError(t, err, "Organization is required")
+		assert.EqualError(t, err, "OrganizationName is required")
 		assert.Nil(t, result)
 	})
 
 	t.Run("when input is missing name", func(t *testing.T) {
 		result, err := client.CreateWorkspace(&CreateWorkspaceInput{
-			Organization: org.Name,
+			OrganizationName: org.Name,
 		})
 		assert.EqualError(t, err, "Name is required")
 		assert.Nil(t, result)
@@ -122,7 +122,7 @@ func TestCreateWorkspace(t *testing.T) {
 
 	t.Run("when an error is returned from the api", func(t *testing.T) {
 		result, err := client.CreateWorkspace(&CreateWorkspaceInput{
-			Organization:     org.Name,
+			OrganizationName: org.Name,
 			Name:             String("bar"),
 			TerraformVersion: String("nope"),
 		})
@@ -144,7 +144,7 @@ func TestModifyWorkspace(t *testing.T) {
 		require.Nil(t, err)
 
 		input := &ModifyWorkspaceInput{
-			Organization:     org.Name,
+			OrganizationName: org.Name,
 			Name:             ws.Name,
 			TerraformVersion: String("0.10.0"),
 		}
@@ -161,7 +161,7 @@ func TestModifyWorkspace(t *testing.T) {
 
 	t.Run("with valid input", func(t *testing.T) {
 		input := &ModifyWorkspaceInput{
-			Organization:     org.Name,
+			OrganizationName: org.Name,
 			Name:             ws.Name,
 			Rename:           String(randomString(t)),
 			AutoApply:        Bool(false),
@@ -191,13 +191,13 @@ func TestModifyWorkspace(t *testing.T) {
 		result, err := client.ModifyWorkspace(&ModifyWorkspaceInput{
 			Name: String("foo"),
 		})
-		assert.EqualError(t, err, "Organization is required")
+		assert.EqualError(t, err, "OrganizationName is required")
 		assert.Nil(t, result)
 	})
 
 	t.Run("when input is missing name", func(t *testing.T) {
 		result, err := client.ModifyWorkspace(&ModifyWorkspaceInput{
-			Organization: org.Name,
+			OrganizationName: org.Name,
 		})
 		assert.EqualError(t, err, "Name is required")
 		assert.Nil(t, result)
@@ -205,7 +205,7 @@ func TestModifyWorkspace(t *testing.T) {
 
 	t.Run("when an error is returned from the api", func(t *testing.T) {
 		result, err := client.ModifyWorkspace(&ModifyWorkspaceInput{
-			Organization:     org.Name,
+			OrganizationName: org.Name,
 			Name:             ws.Name,
 			TerraformVersion: String("nope"),
 		})
@@ -223,8 +223,8 @@ func TestDeleteWorkspace(t *testing.T) {
 	ws, _ := createWorkspace(t, client, org)
 
 	output, err := client.DeleteWorkspace(&DeleteWorkspaceInput{
-		Organization: org.Name,
-		Name:         ws.Name,
+		OrganizationName: org.Name,
+		Name:             ws.Name,
 	})
 	require.Nil(t, err)
 	require.Equal(t, &DeleteWorkspaceOutput{}, output)

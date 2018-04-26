@@ -76,7 +76,7 @@ func (c *Client) Workspace(organization, workspace string) (*Workspace, error) {
 // new workspaces within an existing organization.
 type CreateWorkspaceInput struct {
 	// The organization name to create the workspace in.
-	Organization *string
+	OrganizationName *string
 
 	// The name of the workspace
 	Name *string
@@ -110,8 +110,9 @@ type CreateWorkspaceOutput struct {
 func (c *Client) CreateWorkspace(input *CreateWorkspaceInput) (
 	*CreateWorkspaceOutput, error) {
 
-	if input.Organization == nil || *input.Organization == "" {
-		return nil, errors.New("Organization is required")
+	// Sanity test the input.
+	if input.OrganizationName == nil || *input.OrganizationName == "" {
+		return nil, errors.New("OrganizationName is required")
 	}
 	if input.Name == nil || *input.Name == "" {
 		return nil, errors.New("Name is required")
@@ -133,7 +134,7 @@ func (c *Client) CreateWorkspace(input *CreateWorkspaceInput) (
 	// Send the request.
 	if _, err := c.do(&request{
 		method: "POST",
-		path:   "/api/v2/organizations/" + *input.Organization + "/workspaces",
+		path:   "/api/v2/organizations/" + *input.OrganizationName + "/workspaces",
 		input:  jsonapiParams,
 		output: &output,
 	}); err != nil {
@@ -148,8 +149,8 @@ func (c *Client) CreateWorkspace(input *CreateWorkspaceInput) (
 // ModifyWorkspaceInput carries the adjustable values which can be modified
 // on a workspace after its creation.
 type ModifyWorkspaceInput struct {
-	// The organization name the workspace currently belongs to. Required.
-	Organization *string
+	// The organization name the workspace belongs to. Required.
+	OrganizationName *string
 
 	// The current name of the workspace. Required.
 	Name *string
@@ -186,12 +187,14 @@ type ModifyWorkspaceOutput struct {
 func (c *Client) ModifyWorkspace(input *ModifyWorkspaceInput) (
 	*ModifyWorkspaceOutput, error) {
 
-	if input.Organization == nil || *input.Organization == "" {
-		return nil, errors.New("Organization is required")
+	// Sanity test the input.
+	if input.OrganizationName == nil || *input.OrganizationName == "" {
+		return nil, errors.New("OrganizationName is required")
 	}
 	if input.Name == nil || *input.Name == "" {
 		return nil, errors.New("Name is required")
 	}
+	orgName, wsName := *input.OrganizationName, *input.Name
 
 	// Create the special JSONAPI payload.
 	jsonapiParams := jsonapiWorkspace{
@@ -208,7 +211,7 @@ func (c *Client) ModifyWorkspace(input *ModifyWorkspaceInput) (
 	// Send the request.
 	if _, err := c.do(&request{
 		method: "PATCH",
-		path:   "/api/v2/organizations/" + *input.Organization + "/workspaces/" + *input.Name,
+		path:   "/api/v2/organizations/" + orgName + "/workspaces/" + wsName,
 		input:  jsonapiParams,
 		output: &output,
 	}); err != nil {
@@ -224,7 +227,7 @@ func (c *Client) ModifyWorkspace(input *ModifyWorkspaceInput) (
 type DeleteWorkspaceInput struct {
 	// Organization is the name of the organization in which the workspace
 	// exists.
-	Organization *string
+	OrganizationName *string
 
 	// Name is the name of the workspace to delete.
 	Name *string
@@ -237,16 +240,18 @@ type DeleteWorkspaceOutput struct{}
 func (c *Client) DeleteWorkspace(input *DeleteWorkspaceInput) (
 	*DeleteWorkspaceOutput, error) {
 
-	if input.Organization == nil || *input.Organization == "" {
-		return nil, errors.New("Organization is required")
+	// Sanity test the input.
+	if input.OrganizationName == nil || *input.OrganizationName == "" {
+		return nil, errors.New("OrganizationName is required")
 	}
 	if input.Name == nil || *input.Name == "" {
 		return nil, errors.New("Name is required")
 	}
+	orgName, wsName := *input.OrganizationName, *input.Name
 
 	if _, err := c.do(&request{
 		method: "DELETE",
-		path:   "/api/v2/organizations/" + *input.Organization + "/workspaces/" + *input.Name,
+		path:   "/api/v2/organizations/" + orgName + "/workspaces/" + wsName,
 	}); err != nil {
 		return nil, err
 	}
