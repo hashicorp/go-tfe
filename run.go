@@ -10,8 +10,6 @@ type Run struct {
 	ID *string `json:"id,omitempty"`
 
 	// The ID of the workspace associated with the run.
-	// TODO: Fix this. The var name in the JSONAPI payload shouldn't be
-	// _external_id, it should just be _id like everything else.
 	WorkspaceID *string `json:"-"`
 
 	// The ID of the configuration version the run was created with.
@@ -122,7 +120,10 @@ func (r jsonapiRun) GetName() string {
 }
 
 func (r jsonapiRun) GetID() string {
-	return ""
+	if r.ID == nil {
+		return ""
+	}
+	return *r.ID
 }
 
 func (r jsonapiRun) SetID(id string) (err error) {
@@ -163,9 +164,9 @@ func (r jsonapiRun) GetReferencedIDs() []jsonapi.ReferenceID {
 func (r jsonapiRun) SetToOneReferenceID(name, id string) error {
 	switch name {
 	case "workspace":
-		r.Run.WorkspaceID = String(id)
+		r.WorkspaceID = String(id)
 	case "configuration-version":
-		r.Run.ConfigurationVersionID = String(id)
+		r.ConfigurationVersionID = String(id)
 	}
 	return nil
 }
