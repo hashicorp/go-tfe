@@ -64,6 +64,10 @@ func TestWorkspace(t *testing.T) {
 			t.Fatal("should be able to destroy")
 		}
 	})
+
+	t.Run("relationships are properly decoded", func(t *testing.T) {
+		assert.Equal(t, ws.OrganizationName, org.Name)
+	})
 }
 
 func TestCreateWorkspace(t *testing.T) {

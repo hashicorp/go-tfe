@@ -10,6 +10,9 @@ type Workspace struct {
 	// context of the TFE instance.
 	ID *string `json:"id,omitempty"`
 
+	// ID of the organization which owns this workspace.
+	OrganizationName *string `json:"-"`
+
 	// Name of the workspace. This value is only guaranteed unique within
 	// an organization.
 	Name *string `json:"name,omitempty"`
@@ -251,7 +254,7 @@ func (c *Client) DeleteWorkspace(input *DeleteWorkspaceInput) (
 	return &DeleteWorkspaceOutput{}, nil
 }
 
-// WorkspaceOrganizationSort provides sorting by the workspace name.
+// WorkspaceNameSort provides sorting by the workspace name.
 type WorkspaceNameSort []*Workspace
 
 func (w WorkspaceNameSort) Len() int           { return len(w) }
@@ -261,10 +264,27 @@ func (w WorkspaceNameSort) Swap(a, b int)      { w[a], w[b] = w[b], w[a] }
 // Internal type to satisfy the jsonapi interface for a single workspace.
 type jsonapiWorkspace struct{ *Workspace }
 
-func (w jsonapiWorkspace) GetName() string       { return "workspaces" }
-func (w jsonapiWorkspace) GetID() string         { return "" }
-func (w jsonapiWorkspace) SetID(id string) error { w.ID = String(id); return nil }
-func (w jsonapiWorkspace) SetToOneReferenceID(a, b string) error {
+func (w jsonapiWorkspace) GetName() string {
+	return "workspaces"
+}
+
+func (w jsonapiWorkspace) GetID() string {
+	if w.ID == nil {
+		return ""
+	}
+	return *w.ID
+}
+
+func (w jsonapiWorkspace) SetID(id string) error {
+	w.ID = String(id)
+	return nil
+}
+
+func (w jsonapiWorkspace) SetToOneReferenceID(name, id string) error {
+	switch name {
+	case "organization":
+		w.OrganizationName = String(id)
+	}
 	return nil
 }
 
