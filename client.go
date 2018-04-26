@@ -7,6 +7,7 @@ import (
 	"io/ioutil"
 	"net/http"
 	"net/url"
+	"os"
 	"strconv"
 
 	"github.com/hashicorp/go-cleanhttp"
@@ -34,8 +35,16 @@ type Config struct {
 
 // DefaultConfig returns a default config structure.
 func DefaultConfig() *Config {
+	address := os.Getenv("TFE_ADDRESS")
+	if address == "" {
+		address = DefaultAddress
+	}
+
+	token := os.Getenv("TFE_TOKEN")
+
 	return &Config{
-		Address: DefaultAddress,
+		Address: address,
+		Token:   token,
 	}
 }
 
@@ -48,29 +57,32 @@ type Client struct {
 
 // NewClient creates a new Terraform Enterprise API client.
 func NewClient(c *Config) (*Client, error) {
-	// Basic config validation. These values must be provided by the user
-	// and no safe default can be assumed.
-	if c == nil {
-		return nil, fmt.Errorf("Missing client config")
-	}
-	if c.Token == "" {
-		return nil, fmt.Errorf("Missing client token")
+	config := DefaultConfig()
+
+	// Layer in the provided config for any non-blank values.
+	if c != nil {
+		if c.Address != "" {
+			config.Address = c.Address
+		}
+		if c.Token != "" {
+			config.Token = c.Token
+		}
+		if c.HTTPClient != nil {
+			config.HTTPClient = c.HTTPClient
+		}
 	}
 
-	// Create the config - lay the provied options over the defaults.
-	config := DefaultConfig()
-	config.Token = c.Token
-	if c.Address != "" {
-		config.Address = c.Address
+	// Basic config validation. These values must be provided by the user
+	// and no safe default can be assumed.
+	if config.Token == "" {
+		return nil, fmt.Errorf("Missing client token")
 	}
 
 	// Create the client.
 	client := &Client{config: config}
 
-	// Allow a custom HTTP client, or create a default one if it is empty.
-	if c.HTTPClient != nil {
-		client.http = c.HTTPClient
-	} else {
+	// Populate the default HTTP client if none given.
+	if config.HTTPClient == nil {
 		client.http = cleanhttp.DefaultClient()
 	}
 

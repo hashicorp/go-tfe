@@ -6,6 +6,7 @@ import (
 	"net/http"
 	"net/http/httptest"
 	"net/url"
+	"os"
 	"reflect"
 	"testing"
 
@@ -13,10 +14,25 @@ import (
 )
 
 func TestNewClient(t *testing.T) {
-	t.Run("fails if config is nil", func(t *testing.T) {
-		_, err := NewClient(nil)
-		if err == nil || err.Error() != "Missing client config" {
-			t.Fatalf("unexpected error: %v", err)
+	t.Run("uses env vars if values are missing", func(t *testing.T) {
+		// Restore env vars when done.
+		defer func(token, address string) {
+			os.Setenv("TFE_TOKEN", token)
+			os.Setenv("TFE_ADDRESS", address)
+		}(os.Getenv("TFE_TOKEN"), os.Getenv("TFE_ADDRESS"))
+
+		os.Setenv("TFE_TOKEN", "abcd1234")
+		os.Setenv("TFE_ADDRESS", "https://mytfe.local")
+
+		client, err := NewClient(nil)
+		if err != nil {
+			t.Fatal(err)
+		}
+		if client.config.Token != "abcd1234" {
+			t.Fatalf("unexpected token: %q", client.config.Token)
+		}
+		if client.config.Address != "https://mytfe.local" {
+			t.Fatalf("unexpected address: %q", client.config.Address)
 		}
 	})
 
