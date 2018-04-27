@@ -1,6 +1,8 @@
 package tfe
 
 import (
+	"errors"
+
 	"github.com/manyminds/api2go/jsonapi"
 )
 
@@ -37,13 +39,34 @@ type Run struct {
 	Status *string `json:"status,omitempty"`
 }
 
-// Runs returns a list of runs present in the given workspace.
-func (c *Client) Runs(workspaceID string) ([]*Run, error) {
+// ListRunsInput holds the input values for listing runs.
+type ListRunsInput struct {
+	// Options used for paging through results.
+	ListOptions
+
+	// The workspace ID to list runs for.
+	WorkspaceID *string
+}
+
+func (i *ListRunsInput) valid() error {
+	if !validStringID(i.WorkspaceID) {
+		return errors.New("Invalid value for WorkspaceID")
+	}
+	return nil
+}
+
+// ListRuns returns a list of runs present in the given workspace.
+func (c *Client) ListRuns(input *ListRunsInput) ([]*Run, error) {
+	if err := input.valid(); err != nil {
+		return nil, err
+	}
+	wsID := *input.WorkspaceID
+
 	var output jsonapiRuns
 
 	if _, err := c.do(&request{
 		method: "GET",
-		path:   "/api/v2/workspaces/" + workspaceID + "/runs",
+		path:   "/api/v2/workspaces/" + wsID + "/runs",
 		output: &output,
 	}); err != nil {
 		return nil, err
