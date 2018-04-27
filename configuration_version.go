@@ -2,6 +2,7 @@ package tfe
 
 import (
 	"errors"
+	"io"
 )
 
 // ConfigurationVersion is a representation of an uploaded or ingressed
@@ -40,7 +41,7 @@ type ConfigurationVersion struct {
 	// be present until the configuration version has been uploaded once.
 	// After that, if updating the configuration is needed, create a new
 	// ConfigurationVersion and upload the updated data.
-	UploadURL *string `json:"upload_url,omitempty"`
+	UploadURL *string `json:"upload-url,omitempty"`
 }
 
 // ListConfigurationVersions holds the parameters used to query a list of
@@ -141,6 +142,50 @@ func (c *Client) CreateConfigurationVersion(
 	return &CreateConfigurationVersionOutput{
 		ConfigurationVersion: output.ConfigurationVersion,
 	}, nil
+}
+
+// UploadConfigurationVersionInput holds the parameters used to upload the
+// data of a configuration version.
+type UploadConfigurationVersionInput struct {
+	// The configuration version to upload data for.
+	ConfigurationVersion *ConfigurationVersion
+
+	// A reader on the data to upload.
+	Data io.Reader
+}
+
+func (i *UploadConfigurationVersionInput) valid() error {
+	if i.ConfigurationVersion == nil {
+		return errors.New("Invalid value for ConfigurationVersion")
+	}
+	if !validString(i.ConfigurationVersion.UploadURL) {
+		return errors.New("ConfigurationVersion has no UploadURL")
+	}
+	return nil
+}
+
+// UploadConfigurationVersionOutput holds the outputs from uploading a
+// configuration version.
+type UploadConfigurationVersionOutput struct{}
+
+// UploadConfigurationVersion uploads the given data to the given configuration
+// version.
+func (c *Client) UploadConfigurationVersion(
+	input *UploadConfigurationVersionInput) (
+	*UploadConfigurationVersionOutput, error) {
+
+	if err := input.valid(); err != nil {
+		return nil, err
+	}
+
+	if err := c.upload(
+		*input.ConfigurationVersion.UploadURL,
+		input.Data,
+	); err != nil {
+		return nil, err
+	}
+
+	return &UploadConfigurationVersionOutput{}, nil
 }
 
 // Internal types to handle JSONAPI.
