@@ -77,6 +77,31 @@ func createWorkspace(t *testing.T, client *Client, org *Organization) (
 	}
 }
 
+func createConfigurationVersion(t *testing.T, client *Client,
+	ws *Workspace) (*ConfigurationVersion, func()) {
+
+	var wsCleanup func()
+
+	if ws == nil {
+		ws, wsCleanup = createWorkspace(t, client, nil)
+	}
+
+	resp, err := client.CreateConfigurationVersion(
+		&CreateConfigurationVersionInput{
+			WorkspaceID: ws.ID,
+		},
+	)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	return resp.ConfigurationVersion, func() {
+		if wsCleanup != nil {
+			wsCleanup()
+		}
+	}
+}
+
 func randomString(t *testing.T) string {
 	v, err := uuid.GenerateUUID()
 	if err != nil {

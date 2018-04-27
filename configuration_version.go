@@ -90,6 +90,27 @@ func (c *Client) ListConfigurationVersions(
 	return output, nil
 }
 
+// ConfigurationVersion is used to look up a single configuration version.
+func (c *Client) ConfigurationVersion(id string) (
+	*ConfigurationVersion, error) {
+
+	if !validStringID(&id) {
+		return nil, errors.New("Invalid ID given")
+	}
+
+	var output jsonapiConfigurationVersion
+
+	if _, err := c.do(&request{
+		method: "GET",
+		path:   "/api/v2/configuration-versions/" + id,
+		output: &output,
+	}); err != nil {
+		return nil, err
+	}
+
+	return output.ConfigurationVersion, nil
+}
+
 // CreateConfigurationVersionInput holds the inputs to use when calling the
 // configuration version creation API.
 type CreateConfigurationVersionInput struct {
