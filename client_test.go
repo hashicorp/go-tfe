@@ -216,6 +216,48 @@ func TestClientRequest(t *testing.T) {
 	})
 }
 
+func TestClient_upload(t *testing.T) {
+	client := testClient(t)
+
+	ts := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		switch r.URL.Path {
+		case "/":
+			// Redirect to ensure we can handle Archivist redirects during PUT.
+			http.Redirect(w, r, "/redirected", 307)
+			return
+		case "/redirected":
+			body, err := ioutil.ReadAll(r.Body)
+			if err != nil {
+				http.Error(w, "failed reading body", 500)
+				return
+			}
+
+			if string(body) != "hello" {
+				http.Error(w, "unexpected body", 400)
+				return
+			}
+		case "/error":
+			http.Error(w, "oops", 400)
+			return
+		}
+	}))
+	defer ts.Close()
+
+	t.Run("with a valid request", func(t *testing.T) {
+		err := client.upload(ts.URL, bytes.NewBufferString("hello"))
+		if err != nil {
+			t.Fatal(err)
+		}
+	})
+
+	t.Run("when the url returns a bad status code", func(t *testing.T) {
+		err := client.upload(ts.URL+"/error", &bytes.Buffer{})
+		if err == nil {
+			t.Fatalf("Expect status code error, got nil")
+		}
+	})
+}
+
 type apiTestModel struct {
 	Name string `json:"name"`
 }

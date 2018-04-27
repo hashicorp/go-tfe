@@ -206,26 +206,6 @@ func (c *Client) do(r *request) (*http.Response, error) {
 // upload is a generic uploader helper which can be used to upload artifacts
 // typically destined for an Archivist URL.
 func (c *Client) upload(url string, data io.Reader) error {
-	// Count redirects to avoid an infinite redirect loop.
-	redirects := 0
-
-REQUEST:
-	// First check if the upload would redirect. Archivist may do this under
-	// certain scenarios, and if the backend supports redirects.
-	{
-		resp, err := http.Head(url)
-		if err != nil {
-			return err
-		}
-		resp.Body.Close()
-
-		if resp.StatusCode == 307 && redirects < 8 {
-			redirects++
-			url = resp.Header.Get("Location")
-			goto REQUEST
-		}
-	}
-
 	req, err := http.NewRequest("PUT", url, data)
 	if err != nil {
 		return err
