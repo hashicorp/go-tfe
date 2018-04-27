@@ -89,6 +89,60 @@ func (c *Client) ListConfigurationVersions(
 	return output, nil
 }
 
+// CreateConfigurationVersionInput holds the inputs to use when calling the
+// configuration version creation API.
+type CreateConfigurationVersionInput struct {
+	// ID of the workspace the configuration version should belong to.
+	WorkspaceID *string
+}
+
+func (i *CreateConfigurationVersionInput) valid() error {
+	if !validStringID(i.WorkspaceID) {
+		return errors.New("Invalid value for WorkspaceID")
+	}
+	return nil
+}
+
+// CreateConfigurationVersionOutput holds the return values from creating a
+// configuration version.
+type CreateConfigurationVersionOutput struct {
+	// A reference to the newly-created configuration version.
+	ConfigurationVersion *ConfigurationVersion
+}
+
+// CreateConfigurationVersion is used to create a new configuration version.
+// The created configuration version will be usable once data is uploaded to
+// it, which is done as a separate step. The created configuration version is
+// applicable only to the given workspace ID.
+func (c *Client) CreateConfigurationVersion(
+	input *CreateConfigurationVersionInput) (
+	*CreateConfigurationVersionOutput, error) {
+
+	if err := input.valid(); err != nil {
+		return nil, err
+	}
+	wsID := *input.WorkspaceID
+
+	jsonapiParams := jsonapiConfigurationVersion{
+		ConfigurationVersion: &ConfigurationVersion{},
+	}
+
+	var output jsonapiConfigurationVersion
+
+	if _, err := c.do(&request{
+		method: "POST",
+		path:   "/api/v2/workspaces/" + wsID + "/configuration-versions",
+		input:  jsonapiParams,
+		output: &output,
+	}); err != nil {
+		return nil, err
+	}
+
+	return &CreateConfigurationVersionOutput{
+		ConfigurationVersion: output.ConfigurationVersion,
+	}, nil
+}
+
 // Internal types to handle JSONAPI.
 type jsonapiConfigurationVersion struct{ *ConfigurationVersion }
 
@@ -108,7 +162,9 @@ func (j jsonapiConfigurationVersion) SetID(id string) error {
 	return nil
 }
 
-func (j jsonapiConfigurationVersion) SetToOneReference(name, id string) error {
+func (j jsonapiConfigurationVersion) SetToOneReferenceID(
+	name, id string) error {
+
 	switch name {
 	case "organization":
 		j.OrganizationID = String(id)
