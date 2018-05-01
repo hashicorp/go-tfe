@@ -72,3 +72,28 @@ func TestListRuns(t *testing.T) {
 	assert.Contains(t, found, *run1.ID)
 	assert.Contains(t, found, *run2.ID)
 }
+
+func TestRun(t *testing.T) {
+	client := testClient(t)
+
+	run, runCleanup := createRun(t, client, nil)
+	defer runCleanup()
+
+	t.Run("when the run exists", func(t *testing.T) {
+		result, err := client.Run(*run.ID)
+		assert.Nil(t, err)
+		assert.Equal(t, run, result)
+	})
+
+	t.Run("when the run does not exist", func(t *testing.T) {
+		result, err := client.Run("nope")
+		assert.Nil(t, result)
+		assert.EqualError(t, err, "Resource not found")
+	})
+
+	t.Run("with invalid run ID", func(t *testing.T) {
+		result, err := client.Run("! / nope")
+		assert.Nil(t, result)
+		assert.EqualError(t, err, "Invalid ID given")
+	})
+}

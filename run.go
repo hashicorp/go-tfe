@@ -156,6 +156,25 @@ func (c *Client) CreateRun(input *CreateRunInput) (*CreateRunOutput, error) {
 	}, nil
 }
 
+// Run is used to look up a single run by ID.
+func (c *Client) Run(id string) (*Run, error) {
+	if !validStringID(&id) {
+		return nil, errors.New("Invalid ID given")
+	}
+
+	var output jsonapiRun
+
+	if _, err := c.do(&request{
+		method: "GET",
+		path:   "/api/v2/runs/" + id,
+		output: &output,
+	}); err != nil {
+		return nil, err
+	}
+
+	return output.Run, nil
+}
+
 type jsonapiRun struct {
 	*Run
 

@@ -126,6 +126,12 @@ func createUploadedConfigurationVersion(t *testing.T, client *Client,
 }
 
 func createRun(t *testing.T, client *Client, ws *Workspace) (*Run, func()) {
+	var wsCleanup func()
+
+	if ws == nil {
+		ws, wsCleanup = createWorkspace(t, client, nil)
+	}
+
 	cv, cvCleanup := createUploadedConfigurationVersion(t, client, ws)
 
 	resp, err := client.CreateRun(&CreateRunInput{
@@ -136,7 +142,13 @@ func createRun(t *testing.T, client *Client, ws *Workspace) (*Run, func()) {
 		t.Fatal(err)
 	}
 
-	return resp.Run, cvCleanup
+	return resp.Run, func() {
+		if wsCleanup != nil {
+			wsCleanup()
+		} else {
+			cvCleanup()
+		}
+	}
 }
 
 func randomString(t *testing.T) string {
