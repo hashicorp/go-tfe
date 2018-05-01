@@ -2,6 +2,7 @@ package tfe
 
 import (
 	"errors"
+	"time"
 )
 
 // Workspace encapsulates all data fields of a workspace in TFE.
@@ -18,7 +19,7 @@ type Workspace struct {
 	Name *string `json:"name,omitempty"`
 
 	// Creation time of the workspace.
-	CreatedAt *string `json:"created-at,omitempty"`
+	CreatedAt time.Time `json:"created-at,omitempty"`
 
 	// Indicates if plans will be automatically applied (without confirmation).
 	AutoApply *bool `json:"auto-apply,omitempty"`

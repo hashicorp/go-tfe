@@ -57,17 +57,22 @@ func TestOrganization(t *testing.T) {
 		result, err := client.Organization(*org.Name)
 		require.Nil(t, err)
 		assert.Equal(t, org, result)
+
+		t.Run("permissions are properly decoded", func(t *testing.T) {
+			if !result.Permissions.Can("destroy") {
+				t.Fatal("should be able to destroy")
+			}
+		})
+
+		t.Run("timestamps are populated", func(t *testing.T) {
+			assert.False(t, result.CreatedAt.IsZero())
+			assert.False(t, result.TrialExpiresAt.IsZero())
+		})
 	})
 
 	t.Run("when the org does not exist", func(t *testing.T) {
 		_, err := client.Organization(randomString(t))
 		assert.NotNil(t, err)
-	})
-
-	t.Run("permissions are properly decoded", func(t *testing.T) {
-		if !org.Permissions.Can("destroy") {
-			t.Fatal("should be able to destroy")
-		}
 	})
 }
 

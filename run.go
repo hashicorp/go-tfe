@@ -2,6 +2,7 @@ package tfe
 
 import (
 	"errors"
+	"time"
 
 	"github.com/manyminds/api2go/jsonapi"
 )
@@ -10,6 +11,9 @@ import (
 type Run struct {
 	// The unique ID of this specific run.
 	ID *string `json:"id,omitempty"`
+
+	// Timestamp of when the run was created.
+	CreatedAt time.Time `json:"created-at,omitempty"`
 
 	// The ID of the workspace associated with the run.
 	WorkspaceID *string `json:"-"`

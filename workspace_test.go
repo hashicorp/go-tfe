@@ -64,6 +64,20 @@ func TestWorkspace(t *testing.T) {
 		result, err := client.Workspace(*org.Name, *ws.Name)
 		require.Nil(t, err)
 		assert.Equal(t, ws, result)
+
+		t.Run("permissions are properly decoded", func(t *testing.T) {
+			if !result.Permissions.Can("destroy") {
+				t.Fatal("should be able to destroy")
+			}
+		})
+
+		t.Run("relationships are properly decoded", func(t *testing.T) {
+			assert.Equal(t, result.OrganizationName, org.Name)
+		})
+
+		t.Run("timestamps are properly decoded", func(t *testing.T) {
+			assert.False(t, result.CreatedAt.IsZero())
+		})
 	})
 
 	t.Run("when the workspace does not exist", func(t *testing.T) {
@@ -76,16 +90,6 @@ func TestWorkspace(t *testing.T) {
 		result, err := client.Workspace("nope", "nope")
 		assert.NotNil(t, err)
 		assert.Nil(t, result)
-	})
-
-	t.Run("permissions are properly decoded", func(t *testing.T) {
-		if !ws.Permissions.Can("destroy") {
-			t.Fatal("should be able to destroy")
-		}
-	})
-
-	t.Run("relationships are properly decoded", func(t *testing.T) {
-		assert.Equal(t, ws.OrganizationName, org.Name)
 	})
 }
 

@@ -2,6 +2,7 @@ package tfe
 
 import (
 	"errors"
+	"time"
 )
 
 // Organization encapsulates all data fields of a TFE Organization.
@@ -23,11 +24,11 @@ type Organization struct {
 	EnterprisePlan *string `json:"enterprise-plan,omitempty"`
 
 	// Creation time of the organization.
-	CreatedAt *string `json:"created-at,omitempty"`
+	CreatedAt time.Time `json:"created-at,omitempty"`
 
 	// Expiration timestamp of the organization's trial period. Only applicable
 	// if the EnterprisePlan is "trial".
-	TrialExpiresAt *string `json:"trial-expires-at,omitempty"`
+	TrialExpiresAt time.Time `json:"trial-expires-at,omitempty"`
 
 	// Permissions the current user can perform against the organization.
 	Permissions Permissions `json:"permissions"`
