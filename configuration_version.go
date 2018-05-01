@@ -2,7 +2,10 @@ package tfe
 
 import (
 	"errors"
-	"io"
+	"io/ioutil"
+	"os"
+
+	"github.com/hashicorp/go-tfe/slug"
 )
 
 // ConfigurationVersion is a representation of an uploaded or ingressed
@@ -116,8 +119,10 @@ type UploadConfigurationVersionInput struct {
 	// The configuration version to upload data for.
 	ConfigurationVersion *ConfigurationVersion
 
-	// A reader on the data to upload.
-	Data io.Reader
+	// A path on the local filesystem which will be packaged and uploaded.
+	// The full contents of this directory will be packed into a single file
+	// and uploaded to Terraform Enterprise.
+	Path *string
 }
 
 func (i *UploadConfigurationVersionInput) valid() error {
@@ -127,6 +132,9 @@ func (i *UploadConfigurationVersionInput) valid() error {
 	if !validString(i.ConfigurationVersion.UploadURL) {
 		return errors.New("ConfigurationVersion has no UploadURL")
 	}
+	if !validString(i.Path) {
+		return errors.New("Invalid value for Path")
+	}
 	return nil
 }
 
@@ -134,8 +142,7 @@ func (i *UploadConfigurationVersionInput) valid() error {
 // configuration version.
 type UploadConfigurationVersionOutput struct{}
 
-// UploadConfigurationVersion uploads the given data to the given configuration
-// version.
+// UploadConfigurationVersion packages and uploads Terraform configuration.
 func (c *Client) UploadConfigurationVersion(
 	input *UploadConfigurationVersionInput) (
 	*UploadConfigurationVersionOutput, error) {
@@ -144,10 +151,24 @@ func (c *Client) UploadConfigurationVersion(
 		return nil, err
 	}
 
-	if err := c.upload(
-		*input.ConfigurationVersion.UploadURL,
-		input.Data,
-	); err != nil {
+	fh, err := ioutil.TempFile("", "go-tfe")
+	if err != nil {
+		return nil, err
+	}
+	fh.Close()
+	defer os.Remove(fh.Name())
+
+	if _, err := slug.Pack(*input.Path, fh.Name()); err != nil {
+		return nil, err
+	}
+
+	fh, err = os.Open(fh.Name())
+	if err != nil {
+		return nil, err
+	}
+	// Already have a defer os.Remove() on this.
+
+	if err := c.upload(*input.ConfigurationVersion.UploadURL, fh); err != nil {
 		return nil, err
 	}
 
