@@ -238,13 +238,6 @@ func (c *Client) ModifyOrganization(input *ModifyOrganizationInput) (
 	}, nil
 }
 
-// OrganizationNameSort provides sorting by the organization name.
-type OrganizationNameSort []*Organization
-
-func (o OrganizationNameSort) Len() int           { return len(o) }
-func (o OrganizationNameSort) Less(a, b int) bool { return *o[a].Name < *o[b].Name }
-func (o OrganizationNameSort) Swap(a, b int)      { o[a], o[b] = o[b], o[a] }
-
 // Internal type to satisfy the jsonapi interface for a single organization.
 type jsonapiOrganization struct{ *Organization }
 

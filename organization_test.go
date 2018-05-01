@@ -1,7 +1,6 @@
 package tfe
 
 import (
-	"sort"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -20,13 +19,8 @@ func TestListOrganizations(t *testing.T) {
 		orgs, err := client.ListOrganizations(&ListOrganizationsInput{})
 		require.Nil(t, err)
 
-		expect := []*Organization{org1, org2}
-
-		// Sort to ensure we are comparing in the right order
-		sort.Stable(OrganizationNameSort(expect))
-		sort.Stable(OrganizationNameSort(orgs))
-
-		assert.Equal(t, expect, orgs)
+		assert.Contains(t, orgs, org1)
+		assert.Contains(t, orgs, org2)
 	})
 
 	t.Run("with list options", func(t *testing.T) {

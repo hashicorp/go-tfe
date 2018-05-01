@@ -79,10 +79,13 @@ func NewClient(c *Config) (*Client, error) {
 	}
 
 	// Create the client.
-	client := &Client{config: config}
+	client := &Client{
+		config: config,
+		http:   config.HTTPClient,
+	}
 
 	// Populate the default HTTP client if none given.
-	if config.HTTPClient == nil {
+	if client.http == nil {
 		client.http = cleanhttp.DefaultClient()
 	}
 

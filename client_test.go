@@ -15,14 +15,7 @@ import (
 
 func TestNewClient(t *testing.T) {
 	t.Run("uses env vars if values are missing", func(t *testing.T) {
-		// Restore env vars when done.
-		defer func(token, address string) {
-			os.Setenv("TFE_TOKEN", token)
-			os.Setenv("TFE_ADDRESS", address)
-		}(os.Getenv("TFE_TOKEN"), os.Getenv("TFE_ADDRESS"))
-
-		os.Setenv("TFE_TOKEN", "abcd1234")
-		os.Setenv("TFE_ADDRESS", "https://mytfe.local")
+		defer setupEnvVars("abcd1234", "https://mytfe.local")()
 
 		client, err := NewClient(nil)
 		if err != nil {
@@ -37,6 +30,8 @@ func TestNewClient(t *testing.T) {
 	})
 
 	t.Run("fails if token is empty", func(t *testing.T) {
+		defer setupEnvVars("", "")()
+
 		_, err := NewClient(&Config{})
 		if err == nil || err.Error() != "Missing client token" {
 			t.Fatalf("unexpected error: %v", err)
@@ -69,6 +64,8 @@ func TestNewClient(t *testing.T) {
 	})
 
 	t.Run("creates a default http client", func(t *testing.T) {
+		defer setupEnvVars("", "")()
+
 		client, err := NewClient(&Config{
 			Token: "abcd1234",
 		})
@@ -83,17 +80,25 @@ func TestNewClient(t *testing.T) {
 }
 
 func TestDefaultConfig(t *testing.T) {
-	config := DefaultConfig()
+	t.Run("with no environment variables", func(t *testing.T) {
+		defer setupEnvVars("", "")()
 
-	if config.Address != DefaultAddress {
-		t.Fatalf("expected %q, got %q", DefaultAddress, config.Address)
-	}
-	if config.Token != "" {
-		t.Fatalf("expected empty token, got %q", config.Token)
-	}
-	if config.HTTPClient != nil {
-		t.Fatal("expected http client to be nil")
-	}
+		config := DefaultConfig()
+
+		if config.Address != DefaultAddress {
+			t.Fatalf("expected %q, got %q", DefaultAddress, config.Address)
+		}
+		if config.Token != "" {
+			t.Fatalf("expected empty token, got %q", config.Token)
+		}
+		if config.HTTPClient != nil {
+			t.Fatal("expected http client to be nil")
+		}
+	})
+
+	t.Run("with environment variables", func(t *testing.T) {
+		defer setupEnvVars("abcd1234", "https://mytfe.local")()
+	})
 }
 
 func TestClientRequest(t *testing.T) {
@@ -265,3 +270,16 @@ type apiTestModel struct {
 func (apiTestModel) GetName() string    { return "api-test-model" }
 func (apiTestModel) GetID() string      { return "" }
 func (apiTestModel) SetID(string) error { return nil }
+
+func setupEnvVars(token, address string) func() {
+	origToken := os.Getenv("TFE_TOKEN")
+	origAddress := os.Getenv("TFE_ADDRESS")
+
+	os.Setenv("TFE_TOKEN", token)
+	os.Setenv("TFE_ADDRESS", address)
+
+	return func() {
+		os.Setenv("TFE_TOKEN", origToken)
+		os.Setenv("TFE_ADDRESS", origAddress)
+	}
+}

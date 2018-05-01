@@ -303,13 +303,6 @@ func (c *Client) DeleteWorkspace(input *DeleteWorkspaceInput) (
 	return &DeleteWorkspaceOutput{}, nil
 }
 
-// WorkspaceNameSort provides sorting by the workspace name.
-type WorkspaceNameSort []*Workspace
-
-func (w WorkspaceNameSort) Len() int           { return len(w) }
-func (w WorkspaceNameSort) Less(a, b int) bool { return *w[a].Name < *w[b].Name }
-func (w WorkspaceNameSort) Swap(a, b int)      { w[a], w[b] = w[b], w[a] }
-
 // Internal type to satisfy the jsonapi interface for a single workspace.
 type jsonapiWorkspace struct{ *Workspace }
 

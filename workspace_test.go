@@ -1,7 +1,6 @@
 package tfe
 
 import (
-	"sort"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -25,13 +24,8 @@ func TestListWorkspaces(t *testing.T) {
 		})
 		require.Nil(t, err)
 
-		expect := []*Workspace{ws1, ws2}
-
-		// Sort to ensure we get a non-flaky comparison.
-		sort.Stable(WorkspaceNameSort(expect))
-		sort.Stable(WorkspaceNameSort(workspaces))
-
-		assert.Equal(t, expect, workspaces)
+		assert.Contains(t, workspaces, ws1)
+		assert.Contains(t, workspaces, ws2)
 	})
 
 	t.Run("with list options", func(t *testing.T) {
