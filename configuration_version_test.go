@@ -7,31 +7,6 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func TestListConfigurationVersions(t *testing.T) {
-	client := testClient(t)
-
-	ws, wsCleanup := createWorkspace(t, client, nil)
-	defer wsCleanup()
-
-	cv1, _ := createConfigurationVersion(t, client, ws)
-	cv2, _ := createConfigurationVersion(t, client, ws)
-
-	resp, err := client.ListConfigurationVersions(
-		&ListConfigurationVersionsInput{
-			WorkspaceID: ws.ID,
-		},
-	)
-	require.Nil(t, err)
-
-	found := []string{}
-	for _, cv := range resp {
-		found = append(found, *cv.ID)
-	}
-
-	assert.Contains(t, found, *cv1.ID)
-	assert.Contains(t, found, *cv2.ID)
-}
-
 func TestCreateConfigurationVersion(t *testing.T) {
 	client := testClient(t)
 
@@ -72,5 +47,30 @@ func TestCreateConfigurationVersion(t *testing.T) {
 		)
 		assert.Nil(t, result)
 		assert.EqualError(t, err, "Invalid value for WorkspaceID")
+	})
+}
+
+func TestConfigurationVersion(t *testing.T) {
+	client := testClient(t)
+
+	cv, cvCleanup := createConfigurationVersion(t, client, nil)
+	defer cvCleanup()
+
+	t.Run("when the configuration version exists", func(t *testing.T) {
+		result, err := client.ConfigurationVersion(*cv.ID)
+		require.Nil(t, err)
+
+		// Don't compare the UploadURL because it will be generated twice in
+		// this test - once at creation of the configuration version, and
+		// again during the GET.
+		cv.UploadURL, result.UploadURL = nil, nil
+
+		assert.Equal(t, cv, result)
+	})
+
+	t.Run("when the configuration version does not exist", func(t *testing.T) {
+		result, err := client.ConfigurationVersion("nope")
+		assert.Nil(t, result)
+		assert.EqualError(t, err, "Resource not found")
 	})
 }
