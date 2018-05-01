@@ -13,16 +13,18 @@ type Run struct {
 	ID *string `json:"id,omitempty"`
 
 	// Timestamp of when the run was created.
-	CreatedAt time.Time `json:"created-at,omitempty"`
+	CreatedAt *time.Time `json:"created-at,omitempty"`
 
 	// The ID of the workspace associated with the run.
 	WorkspaceID *string `json:"-"`
 
 	// The ID of the configuration version the run was created with.
-	ConfigurationVersionID *string `json:"-"`
+	// TODO: Make this actually use a JSONAPI relationship. Currently this
+	//       is a plain old attribute.
+	ConfigurationVersionID *string `json:"configuration_version_id,omitempty"`
 
 	// Message is the description of the run, given at creation time.
-	Message *string `json:"message"`
+	Message *string `json:"message,omitempty"`
 
 	// Flag indicating if the run should destroy infrastructure (rather than
 	// creating or changing it).
@@ -104,9 +106,29 @@ type CreateRunInput struct {
 	Destroy *bool
 }
 
+func (i *CreateRunInput) valid() error {
+	if !validStringID(i.WorkspaceID) {
+		return errors.New("Invalid value for WorkspaceID")
+	}
+	if v := i.ConfigurationVersionID; v != nil && !validStringID(v) {
+		return errors.New("Invalid valud for ConfigurationVersionID")
+	}
+	return nil
+}
+
+// CreateRunOutput holds the return values from creating a run.
+type CreateRunOutput struct {
+	// A reference to the newly created Run.
+	Run *Run
+}
+
 // CreateRun creates a new run in TFE. The run automatically enters the queue
 // and begins executing the plan phase.
-func (c *Client) CreateRun(input *CreateRunInput) (*Run, error) {
+func (c *Client) CreateRun(input *CreateRunInput) (*CreateRunOutput, error) {
+	if err := input.valid(); err != nil {
+		return nil, err
+	}
+
 	// Create the special JSONAPI params.
 	jsonapiParams := jsonapiRun{
 		Run: &Run{
@@ -129,7 +151,9 @@ func (c *Client) CreateRun(input *CreateRunInput) (*Run, error) {
 		return nil, err
 	}
 
-	return output.Run, nil
+	return &CreateRunOutput{
+		Run: output.Run,
+	}, nil
 }
 
 type jsonapiRun struct {
@@ -171,21 +195,24 @@ func (r jsonapiRun) GetReferences() []jsonapi.Reference {
 	}
 }
 
-func (r jsonapiRun) GetReferencedIDs() []jsonapi.ReferenceID {
-	return []jsonapi.ReferenceID{
-		jsonapi.ReferenceID{
-			ID:           *r.Run.WorkspaceID,
+func (r jsonapiRun) GetReferencedIDs() (result []jsonapi.ReferenceID) {
+	if r.WorkspaceID != nil {
+		result = append(result, jsonapi.ReferenceID{
+			ID:           *r.WorkspaceID,
 			Type:         "workspaces",
 			Name:         "workspace",
 			Relationship: jsonapi.ToOneRelationship,
-		},
-		jsonapi.ReferenceID{
-			ID:           *r.Run.ConfigurationVersionID,
+		})
+	}
+	if r.ConfigurationVersionID != nil {
+		result = append(result, jsonapi.ReferenceID{
+			ID:           *r.ConfigurationVersionID,
 			Type:         "configuration-versions",
 			Name:         "configuration-version",
 			Relationship: jsonapi.ToOneRelationship,
-		},
+		})
 	}
+	return
 }
 
 func (r jsonapiRun) SetToOneReferenceID(name, id string) error {

@@ -102,6 +102,43 @@ func createConfigurationVersion(t *testing.T, client *Client,
 	}
 }
 
+func createUploadedConfigurationVersion(t *testing.T, client *Client,
+	ws *Workspace) (*ConfigurationVersion, func()) {
+
+	cv, cleanup := createConfigurationVersion(t, client, ws)
+
+	fh, err := os.Open("test-fixtures/configuration-version.tar.gz")
+	if err != nil {
+		t.Fatal(err)
+	}
+	defer fh.Close()
+
+	if _, err := client.UploadConfigurationVersion(
+		&UploadConfigurationVersionInput{
+			ConfigurationVersion: cv,
+			Data:                 fh,
+		},
+	); err != nil {
+		t.Fatal(err)
+	}
+
+	return cv, cleanup
+}
+
+func createRun(t *testing.T, client *Client, ws *Workspace) (*Run, func()) {
+	cv, cvCleanup := createUploadedConfigurationVersion(t, client, ws)
+
+	resp, err := client.CreateRun(&CreateRunInput{
+		WorkspaceID:            ws.ID,
+		ConfigurationVersionID: cv.ID,
+	})
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	return resp.Run, cvCleanup
+}
+
 func randomString(t *testing.T) string {
 	v, err := uuid.GenerateUUID()
 	if err != nil {
