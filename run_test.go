@@ -7,93 +7,90 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func TestCreateRun(t *testing.T) {
+func TestRunsList(t *testing.T) {
 	client := testClient(t)
 
-	ws, wsCleanup := createWorkspace(t, client, nil)
-	defer wsCleanup()
+	wTest, wTestCleanup := createWorkspace(t, client, nil)
+	defer wTestCleanup()
 
-	cv1, _ := createUploadedConfigurationVersion(t, client, ws)
-	cv2, _ := createUploadedConfigurationVersion(t, client, ws)
+	rTest1, _ := createRun(t, client, wTest)
+	rTest2, _ := createRun(t, client, wTest)
 
-	t.Run("without a configuration version", func(t *testing.T) {
-		input := &CreateRunInput{
-			WorkspaceID: ws.ID,
-		}
-
-		result, err := client.CreateRun(input)
-		require.Nil(t, err)
-
-		assert.Equal(t, cv2.ID, result.Run.ConfigurationVersionID)
-	})
-
-	t.Run("with a configuration version", func(t *testing.T) {
-		result, err := client.CreateRun(&CreateRunInput{
-			WorkspaceID:            ws.ID,
-			ConfigurationVersionID: cv1.ID,
-		})
-		require.Nil(t, err)
-
-		assert.Equal(t, cv1.ID, result.Run.ConfigurationVersionID)
-	})
-
-	t.Run("with additional attributes", func(t *testing.T) {
-		input := &CreateRunInput{
-			WorkspaceID: ws.ID,
-			Message:     String("yo"),
-		}
-
-		result, err := client.CreateRun(input)
-		require.Nil(t, err)
-
-		assert.Equal(t, input.Message, result.Run.Message)
-	})
-}
-
-func TestListRuns(t *testing.T) {
-	client := testClient(t)
-
-	ws, wsCleanup := createWorkspace(t, client, nil)
-	defer wsCleanup()
-
-	run1, _ := createRun(t, client, ws)
-	run2, _ := createRun(t, client, ws)
-
-	result, err := client.ListRuns(&ListRunsInput{
-		WorkspaceID: ws.ID,
-	})
+	rs, err := client.Runs.List(wTest.ID, nil)
 	require.Nil(t, err)
 
 	found := []string{}
-	for _, run := range result {
-		found = append(found, *run.ID)
+	for _, r := range rs {
+		found = append(found, r.ID)
 	}
 
-	assert.Contains(t, found, *run1.ID)
-	assert.Contains(t, found, *run2.ID)
+	assert.Contains(t, found, rTest1.ID)
+	assert.Contains(t, found, rTest2.ID)
 }
 
-func TestRun(t *testing.T) {
+func TestRunsCreate(t *testing.T) {
 	client := testClient(t)
 
-	run, runCleanup := createRun(t, client, nil)
-	defer runCleanup()
+	wTest, wTestCleanup := createWorkspace(t, client, nil)
+	defer wTestCleanup()
+
+	cvTest, _ := createUploadedConfigurationVersion(t, client, wTest)
+
+	t.Run("without a configuration version", func(t *testing.T) {
+		options := &CreateRunOptions{
+			Workspace: wTest,
+		}
+
+		_, err := client.Runs.Create(options)
+		require.Nil(t, err)
+	})
+
+	t.Run("with a configuration version", func(t *testing.T) {
+		options := &CreateRunOptions{
+			ConfigurationVersion: cvTest,
+			Workspace:            wTest,
+		}
+
+		r, err := client.Runs.Create(options)
+		require.Nil(t, err)
+
+		assert.Equal(t, cvTest.ID, r.ConfigurationVersion.ID)
+	})
+
+	t.Run("with additional attributes", func(t *testing.T) {
+		options := &CreateRunOptions{
+			Message:   String("yo"),
+			Workspace: wTest,
+		}
+
+		r, err := client.Runs.Create(options)
+		require.Nil(t, err)
+
+		assert.Equal(t, *options.Message, r.Message)
+	})
+}
+
+func TestRunsRetrieve(t *testing.T) {
+	client := testClient(t)
+
+	rTest, rTestCleanup := createRun(t, client, nil)
+	defer rTestCleanup()
 
 	t.Run("when the run exists", func(t *testing.T) {
-		result, err := client.Run(*run.ID)
+		r, err := client.Runs.Retrieve(rTest.ID)
 		assert.Nil(t, err)
-		assert.Equal(t, run, result)
+		assert.Equal(t, rTest, r)
 	})
 
 	t.Run("when the run does not exist", func(t *testing.T) {
-		result, err := client.Run("nope")
-		assert.Nil(t, result)
+		r, err := client.Runs.Retrieve("nonexisting")
+		assert.Nil(t, r)
 		assert.EqualError(t, err, "Resource not found")
 	})
 
 	t.Run("with invalid run ID", func(t *testing.T) {
-		result, err := client.Run("! / nope")
-		assert.Nil(t, result)
-		assert.EqualError(t, err, "Invalid ID given")
+		r, err := client.Runs.Retrieve(badIdentifier)
+		assert.Nil(t, r)
+		assert.EqualError(t, err, "Invalid value for run ID")
 	})
 }

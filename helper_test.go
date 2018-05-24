@@ -4,9 +4,12 @@ import (
 	"fmt"
 	"os"
 	"testing"
+	"time"
 
 	"github.com/hashicorp/go-uuid"
 )
+
+const badIdentifier = "! / nope"
 
 func testClient(t *testing.T, fn ...func(*Config)) *Client {
 	config := DefaultConfig()
@@ -35,41 +38,43 @@ func testClient(t *testing.T, fn ...func(*Config)) *Client {
 }
 
 func createOrganization(t *testing.T, client *Client) (*Organization, func()) {
-	resp, err := client.CreateOrganization(&CreateOrganizationInput{
+	org, err := client.Organizations.Create(&CreateOrganizationOptions{
 		Name:  String(randomString(t)),
 		Email: String(fmt.Sprintf("%s@tfe.local", randomString(t))),
 	})
 	if err != nil {
 		t.Fatal(err)
 	}
-	return resp.Organization, func() {
-		client.DeleteOrganization(&DeleteOrganizationInput{
-			Name: resp.Organization.Name,
-		})
+
+	return org, func() {
+		if err := client.Organizations.Delete(org.Name); err != nil {
+			t.Errorf("Error destroying organization! WARNING: Dangling resources\n"+
+				"may exist! The full error is shown below.\n\n"+
+				"Organization: %s\nError: %s", org.Name, err)
+		}
 	}
 }
 
-func createWorkspace(t *testing.T, client *Client, org *Organization) (
-	*Workspace, func()) {
-
+func createWorkspace(t *testing.T, client *Client, org *Organization) (*Workspace, func()) {
 	var orgCleanup func()
 
 	if org == nil {
 		org, orgCleanup = createOrganization(t, client)
 	}
 
-	resp, err := client.CreateWorkspace(&CreateWorkspaceInput{
-		OrganizationName: org.Name,
-		Name:             String(randomString(t)),
+	w, err := client.Workspaces.Create(org.Name, &CreateWorkspaceOptions{
+		Name: String(randomString(t)),
 	})
 	if err != nil {
 		t.Fatal(err)
 	}
-	return resp.Workspace, func() {
-		client.DeleteWorkspace(&DeleteWorkspaceInput{
-			OrganizationName: org.Name,
-			Name:             resp.Workspace.Name,
-		})
+
+	return w, func() {
+		if err := client.Workspaces.Delete(org.Name, w.Name); err != nil {
+			t.Errorf("Error destroying workspace! WARNING: Dangling resources\n"+
+				"may exist! The full error is shown below.\n\n"+
+				"Workspace: %s\nError: %s", w.Name, err)
+		}
 
 		if orgCleanup != nil {
 			orgCleanup()
@@ -77,35 +82,27 @@ func createWorkspace(t *testing.T, client *Client, org *Organization) (
 	}
 }
 
-func createConfigurationVersion(t *testing.T, client *Client,
-	ws *Workspace) (*ConfigurationVersion, func()) {
+func createConfigurationVersion(t *testing.T, client *Client, w *Workspace) (*ConfigurationVersion, func()) {
+	var wCleanup func()
 
-	var wsCleanup func()
-
-	if ws == nil {
-		ws, wsCleanup = createWorkspace(t, client, nil)
+	if w == nil {
+		w, wCleanup = createWorkspace(t, client, nil)
 	}
 
-	resp, err := client.CreateConfigurationVersion(
-		&CreateConfigurationVersionInput{
-			WorkspaceID: ws.ID,
-		},
-	)
+	cv, err := client.ConfigurationVersions.Create(w.ID, nil)
 	if err != nil {
 		t.Fatal(err)
 	}
 
-	return resp.ConfigurationVersion, func() {
-		if wsCleanup != nil {
-			wsCleanup()
+	return cv, func() {
+		if wCleanup != nil {
+			wCleanup()
 		}
 	}
 }
 
-func createUploadedConfigurationVersion(t *testing.T, client *Client,
-	ws *Workspace) (*ConfigurationVersion, func()) {
-
-	cv, cleanup := createConfigurationVersion(t, client, ws)
+func createUploadedConfigurationVersion(t *testing.T, client *Client, w *Workspace) (*ConfigurationVersion, func()) {
+	cv, cvCleanup := createConfigurationVersion(t, client, w)
 
 	fh, err := os.Open("test-fixtures/configuration-version.tar.gz")
 	if err != nil {
@@ -113,38 +110,37 @@ func createUploadedConfigurationVersion(t *testing.T, client *Client,
 	}
 	defer fh.Close()
 
-	if _, err := client.UploadConfigurationVersion(
-		&UploadConfigurationVersionInput{
-			ConfigurationVersion: cv,
-			Data:                 fh,
-		},
-	); err != nil {
+	if err := client.upload(cv.UploadURL, fh); err != nil {
 		t.Fatal(err)
 	}
 
-	return cv, cleanup
+	// This is a bit nasty, but if you try to use the configuration version before
+	// its fully processed server side, you will get an error when trying to use it.
+	time.Sleep(3 * time.Second)
+
+	return cv, cvCleanup
 }
 
-func createRun(t *testing.T, client *Client, ws *Workspace) (*Run, func()) {
-	var wsCleanup func()
+func createRun(t *testing.T, client *Client, w *Workspace) (*Run, func()) {
+	var wCleanup func()
 
-	if ws == nil {
-		ws, wsCleanup = createWorkspace(t, client, nil)
+	if w == nil {
+		w, wCleanup = createWorkspace(t, client, nil)
 	}
 
-	cv, cvCleanup := createUploadedConfigurationVersion(t, client, ws)
+	cv, cvCleanup := createUploadedConfigurationVersion(t, client, w)
 
-	resp, err := client.CreateRun(&CreateRunInput{
-		WorkspaceID:            ws.ID,
-		ConfigurationVersionID: cv.ID,
+	r, err := client.Runs.Create(&CreateRunOptions{
+		ConfigurationVersion: cv,
+		Workspace:            w,
 	})
 	if err != nil {
 		t.Fatal(err)
 	}
 
-	return resp.Run, func() {
-		if wsCleanup != nil {
-			wsCleanup()
+	return r, func() {
+		if wCleanup != nil {
+			wCleanup()
 		} else {
 			cvCleanup()
 		}

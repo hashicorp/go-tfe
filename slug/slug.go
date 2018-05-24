@@ -11,6 +11,12 @@ import (
 	"path/filepath"
 )
 
+// TODO SvH: Should this code be in here? I assume this code is more or less
+// a copy of the code used by the slug microservices? If that is the case, I
+// think it would be better to make a package for this that can be used by both
+// the slug microservices and this SDK. This will make sure that any future
+// changes are in sync in both places.
+
 // SlugMeta provides detailed information about a slug.
 type SlugMeta struct {
 	// The list of files contained in the slug.

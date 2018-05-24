@@ -2,255 +2,249 @@ package tfe
 
 import (
 	"errors"
+	"fmt"
 	"time"
-
-	"github.com/manyminds/api2go/jsonapi"
 )
 
-// Run is an abstraction which wraps the flow of a Terraform plan and apply.
+// Runs handles communication with the run related methods of the Terraform
+// Enterprise API.
+//
+// TFE API docs: https://www.terraform.io/docs/enterprise/api/run.html
+type Runs struct {
+	client *Client
+}
+
+// RunStatus represents a run state.
+type RunStatus string
+
+//List all available configuration version statuses.
+const (
+	RunApplied        RunStatus = "applied"
+	RunApplying       RunStatus = "applying"
+	RunCanceled       RunStatus = "canceled"
+	RunConfirmed      RunStatus = "confirmed"
+	RunDiscarded      RunStatus = "discarded"
+	RunErrored        RunStatus = "errored"
+	RunPending        RunStatus = "pending"
+	RunPlanned        RunStatus = "planned"
+	RunPlanning       RunStatus = "planning"
+	RunPolicyChecked  RunStatus = "policy_checked"
+	RunPolicyChecking RunStatus = "policy_checking"
+	RunPolicyOverride RunStatus = "policy_override"
+)
+
+// RunSource represents a source type of a run.
+type RunSource string
+
+// List all available run sources.
+const (
+	RunSourceAPI                  RunSource = "tfe-api"
+	RunSourceConfigurationVersion RunSource = "tfe-configuration-version"
+	RunSourceUI                   RunSource = "tfe-ui"
+)
+
+// Run represents a Terraform Enterprise run.
 type Run struct {
-	// The unique ID of this specific run.
-	ID *string `json:"id,omitempty"`
+	ID               string               `jsonapi:"primary,runs"`
+	Actions          *RunActions          `jsonapi:"attr,actions"`
+	CreatedAt        time.Time            `jsonapi:"attr,created-at,iso8601"`
+	HasChanges       bool                 `jsonapi:"attr,has-changes"`
+	IsDestroy        bool                 `jsonapi:"attr,is-destroy"`
+	Message          string               `jsonapi:"attr,message"`
+	Permissions      *RunPermissions      `jsonapi:"attr,permissions"`
+	Source           RunSource            `jsonapi:"attr,source"`
+	Status           RunStatus            `jsonapi:"attr,status"`
+	StatusTimestamps *RunStatusTimestamps `jsonapi:"attr,status-timestamps"`
 
-	// Timestamp of when the run was created.
-	CreatedAt *time.Time `json:"created-at,omitempty"`
-
-	// The ID of the workspace associated with the run.
-	WorkspaceID *string `json:"-"`
-
-	// The ID of the configuration version the run was created with.
-	// TODO: Make this actually use a JSONAPI relationship. Currently this
-	//       is a plain old attribute.
-	ConfigurationVersionID *string `json:"configuration_version_id,omitempty"`
-
-	// Message is the description of the run, given at creation time.
-	Message *string `json:"message,omitempty"`
-
-	// Flag indicating if the run should destroy infrastructure (rather than
-	// creating or changing it).
-	Destroy *bool `json:"is-destroy,omitempty"`
-
-	// True if the plan has completed successfully and has changes which can
-	// be applied.
-	HasChanges *bool `json:"has-changes,omitempty"`
-
-	// Permissions the current API user has on the run.
-	Permissions *Permissions `json:"permissions,omitempty"`
-
-	// The source of the run. This reflects how the run was created (via the
-	// UI, API, triggered from VCS, etc.).
-	Source *string `json:"source,omitempty"`
-
-	// Current status of the run (planning, applying, etc.).
-	Status *string `json:"status,omitempty"`
+	// Relations
+	ConfigurationVersion *ConfigurationVersion `jsonapi:"relation,configuration-version"`
+	Workspace            *Workspace            `jsonapi:"relation,workspace"`
 }
 
-// ListRunsInput holds the input values for listing runs.
-type ListRunsInput struct {
-	// Options used for paging through results.
+// RunActions represents the workspace actions.
+type RunActions struct {
+	IsCancelable  bool `json:"is-cancelable"`
+	IsComfirmable bool `json:"is-comfirmable"`
+	IsDiscardable bool `json:"is-discardable"`
+}
+
+// RunPermissions represents the run permissions.
+type RunPermissions struct {
+	CanApply        bool `json:"can-apply"`
+	CanCancel       bool `json:"can-cancel"`
+	CanDiscard      bool `json:"can-discard"`
+	CanForceExecute bool `json:"can-force-execute"`
+}
+
+// RunStatusTimestamps holds the timestamps for individual run statuses.
+// statuses.
+type RunStatusTimestamps struct {
+	FinishedAt time.Time `json:"finished-at"`
+	QueuedAt   time.Time `json:"queued-at"`
+	StartedAt  time.Time `json:"started-at"`
+}
+
+// ListRunOptions represents the options for listing runs.
+type ListRunOptions struct {
 	ListOptions
-
-	// The workspace ID to list runs for.
-	WorkspaceID *string
 }
 
-func (i *ListRunsInput) valid() error {
-	if !validStringID(i.WorkspaceID) {
-		return errors.New("Invalid value for WorkspaceID")
+// List runs of the given workspace.
+func (s *Runs) List(workspaceID string, options *ListRunOptions) ([]*Run, error) {
+	if !validStringID(&workspaceID) {
+		return nil, errors.New("Invalid value for workspace ID")
+	}
+
+	u := fmt.Sprintf("workspaces/%s/runs", workspaceID)
+	req, err := s.client.newRequest("GET", u, options)
+	if err != nil {
+		return nil, err
+	}
+
+	result, err := s.client.do(req, []*Run{})
+	if err != nil {
+		return nil, err
+	}
+
+	var rs []*Run
+	for _, r := range result.([]interface{}) {
+		rs = append(rs, r.(*Run))
+	}
+
+	return rs, nil
+}
+
+// CreateRunOptions represents the options for creating a new run.
+type CreateRunOptions struct {
+	// For internal use only!
+	ID string `jsonapi:"primary,runs"`
+
+	// Specifies if this plan is a destroy plan, which will destroy all
+	// provisioned resources.
+	IsDestroy *bool `jsonapi:"attr,is-destroy,omitempty"`
+
+	// Specifies the message to be associated with this run.
+	Message *string `jsonapi:"attr,message,omitempty"`
+
+	// Specifies the configuration version to use for this run. If the
+	// configuration version object is omitted, the run will be created using the
+	// workspace's latest configuration version.
+	ConfigurationVersion *ConfigurationVersion `jsonapi:"relation,configuration-version"`
+
+	// Specifies the workspace ID where the run will be executed.
+	Workspace *Workspace `jsonapi:"relation,workspace"`
+}
+
+func (o *CreateRunOptions) valid() error {
+	if o == nil || o.Workspace == nil {
+		return errors.New("Invalid value for Workspace")
 	}
 	return nil
 }
 
-// ListRuns returns a list of runs present in the given workspace.
-func (c *Client) ListRuns(input *ListRunsInput) ([]*Run, error) {
-	if err := input.valid(); err != nil {
-		return nil, err
-	}
-	wsID := *input.WorkspaceID
-
-	var output jsonapiRuns
-
-	if _, err := c.do(&request{
-		method: "GET",
-		path:   "/api/v2/workspaces/" + wsID + "/runs",
-		output: &output,
-	}); err != nil {
+// Create is used to create a new run.
+func (s *Runs) Create(options *CreateRunOptions) (*Run, error) {
+	if err := options.valid(); err != nil {
 		return nil, err
 	}
 
-	runs := make([]*Run, len(output))
-	for i, run := range output {
-		runs[i] = run.Run
-	}
-
-	return runs, nil
-}
-
-// CreateRunInput holds all of the request fields for creating a new run.
-type CreateRunInput struct {
-	// The workspace ID to create the run for.
-	WorkspaceID *string
-
-	// The ID of the configuration version to use when creating the run.
-	ConfigurationVersionID *string
-
-	// Optional message to display with the run in TFE.
-	Message *string
-
-	// If provided, creates a run comment with the given text as part of the
-	// run creation.
-	Comment *string
-
-	// When true, Terraform will attempt to destroy infrastructure (as
-	// opposed to creating it otherwise).
-	Destroy *bool
-}
-
-func (i *CreateRunInput) valid() error {
-	if !validStringID(i.WorkspaceID) {
-		return errors.New("Invalid value for WorkspaceID")
-	}
-	if v := i.ConfigurationVersionID; v != nil && !validStringID(v) {
-		return errors.New("Invalid valud for ConfigurationVersionID")
-	}
-	return nil
-}
-
-// CreateRunOutput holds the return values from creating a run.
-type CreateRunOutput struct {
-	// A reference to the newly created Run.
-	Run *Run
-}
-
-// CreateRun creates a new run in TFE. The run automatically enters the queue
-// and begins executing the plan phase.
-func (c *Client) CreateRun(input *CreateRunInput) (*CreateRunOutput, error) {
-	if err := input.valid(); err != nil {
+	req, err := s.client.newRequest("POST", "runs", options)
+	if err != nil {
 		return nil, err
 	}
 
-	// Create the special JSONAPI params.
-	jsonapiParams := jsonapiRun{
-		Run: &Run{
-			WorkspaceID:            input.WorkspaceID,
-			ConfigurationVersionID: input.ConfigurationVersionID,
-			Message:                input.Message,
-			Destroy:                input.Destroy,
-		},
-		Comment: input.Comment,
-	}
-
-	var output jsonapiRun
-
-	if _, err := c.do(&request{
-		method: "POST",
-		path:   "/api/v2/runs",
-		input:  jsonapiParams,
-		output: &output,
-	}); err != nil {
+	r, err := s.client.do(req, &Run{})
+	if err != nil {
 		return nil, err
 	}
 
-	return &CreateRunOutput{
-		Run: output.Run,
-	}, nil
+	return r.(*Run), nil
 }
 
-// Run is used to look up a single run by ID.
-func (c *Client) Run(id string) (*Run, error) {
-	if !validStringID(&id) {
-		return nil, errors.New("Invalid ID given")
+// Retrieve a single run by its ID.
+func (s *Runs) Retrieve(runID string) (*Run, error) {
+	if !validStringID(&runID) {
+		return nil, errors.New("Invalid value for run ID")
 	}
 
-	var output jsonapiRun
-
-	if _, err := c.do(&request{
-		method: "GET",
-		path:   "/api/v2/runs/" + id,
-		output: &output,
-	}); err != nil {
+	req, err := s.client.newRequest("GET", "runs/"+runID, nil)
+	if err != nil {
 		return nil, err
 	}
 
-	return output.Run, nil
+	r, err := s.client.do(req, &Run{})
+	if err != nil {
+		return nil, err
+	}
+
+	return r.(*Run), nil
 }
 
-type jsonapiRun struct {
-	*Run
-
-	// An optional comment passed at run creation time which will be used to
-	// create a new Run comment. Only used during run creation (there will
-	// never be a comment returned when listing or fetching runs), hence why
-	// it exists here instead of in the Run struct.
+// ApplyRunOptions represents the options for applying a run.
+type ApplyRunOptions struct {
+	// An optional comment about the run.
 	Comment *string `json:"comment,omitempty"`
 }
 
-func (r jsonapiRun) GetName() string {
-	return "runs"
-}
-
-func (r jsonapiRun) GetID() string {
-	if r.ID == nil {
-		return ""
+// Apply a specific run by its ID.
+func (s *Runs) Apply(runID string, options *ApplyRunOptions) error {
+	if !validStringID(&runID) {
+		return errors.New("Invalid value for run ID")
 	}
-	return *r.ID
-}
 
-func (r jsonapiRun) SetID(id string) (err error) {
-	r.ID = String(id)
-	return nil
-}
-
-func (r jsonapiRun) GetReferences() []jsonapi.Reference {
-	return []jsonapi.Reference{
-		jsonapi.Reference{
-			Type: "workspaces",
-			Name: "workspace",
-		},
-		jsonapi.Reference{
-			Type: "configuration-versions",
-			Name: "configuration-version",
-		},
+	u := fmt.Sprintf("runs/%s/actions/apply", runID)
+	req, err := s.client.newRequest("POST", u, options)
+	if err != nil {
+		return err
 	}
+
+	_, err = s.client.do(req, nil)
+
+	return err
 }
 
-func (r jsonapiRun) GetReferencedIDs() (result []jsonapi.ReferenceID) {
-	if r.WorkspaceID != nil {
-		result = append(result, jsonapi.ReferenceID{
-			ID:           *r.WorkspaceID,
-			Type:         "workspaces",
-			Name:         "workspace",
-			Relationship: jsonapi.ToOneRelationship,
-		})
+// CancelRunOptions represents the options for canceling a run.
+type CancelRunOptions struct {
+	// An optional explanation for why the run was canceled.
+	Comment *string `json:"comment,omitempty"`
+}
+
+// Cancel a specific run by its ID.
+func (s *Runs) Cancel(runID string, options *CancelRunOptions) error {
+	if !validStringID(&runID) {
+		return errors.New("Invalid value for run ID")
 	}
-	if r.ConfigurationVersionID != nil {
-		result = append(result, jsonapi.ReferenceID{
-			ID:           *r.ConfigurationVersionID,
-			Type:         "configuration-versions",
-			Name:         "configuration-version",
-			Relationship: jsonapi.ToOneRelationship,
-		})
+
+	u := fmt.Sprintf("runs/%s/actions/cancel", runID)
+	req, err := s.client.newRequest("POST", u, options)
+	if err != nil {
+		return err
 	}
-	return
+
+	_, err = s.client.do(req, nil)
+
+	return err
 }
 
-func (r jsonapiRun) SetToOneReferenceID(name, id string) error {
-	switch name {
-	case "workspace":
-		r.WorkspaceID = String(id)
-	case "configuration-version":
-		r.ConfigurationVersionID = String(id)
+// DiscardRunOptions represents the options for discarding a run.
+type DiscardRunOptions struct {
+	// An optional explanation for why the run was discarded.
+	Comment *string `json:"comment,omitempty"`
+}
+
+// Discard a specific run by its ID.
+func (s *Runs) Discard(runID string, options *DiscardRunOptions) error {
+	if !validStringID(&runID) {
+		return errors.New("Invalid value for run ID")
 	}
-	return nil
+
+	u := fmt.Sprintf("runs/%s/actions/discard", runID)
+	req, err := s.client.newRequest("POST", u, options)
+	if err != nil {
+		return err
+	}
+
+	_, err = s.client.do(req, nil)
+
+	return err
 }
-
-func (r jsonapiRun) SetToManyReferenceIDs(string, []string) error {
-	return nil
-}
-
-type jsonapiRuns []jsonapiRun
-
-func (jsonapiRuns) GetName() string                       { return "runs" }
-func (jsonapiRuns) GetID() string                         { return "" }
-func (jsonapiRuns) SetID(string) error                    { return nil }
-func (jsonapiRuns) SetToOneReferenceID(a, b string) error { return nil }

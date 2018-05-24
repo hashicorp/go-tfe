@@ -7,70 +7,69 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func TestCreateConfigurationVersion(t *testing.T) {
+func TestConfigurationVersionsCreate(t *testing.T) {
 	client := testClient(t)
 
-	ws, wsCleanup := createWorkspace(t, client, nil)
-	defer wsCleanup()
+	wTest, wTestCleanup := createWorkspace(t, client, nil)
+	defer wTestCleanup()
 
-	t.Run("with valid input", func(t *testing.T) {
-		input := &CreateConfigurationVersionInput{
-			WorkspaceID: ws.ID,
-		}
-		resp, err := client.CreateConfigurationVersion(input)
+	t.Run("with valid options", func(t *testing.T) {
+		cv, err := client.ConfigurationVersions.Create(wTest.ID, nil)
 		require.Nil(t, err)
 
 		// Get a refreshed view of the configuration version.
-		refreshed, err := client.ConfigurationVersion(*resp.ConfigurationVersion.ID)
+		refreshed, err := client.ConfigurationVersions.Retrieve(cv.ID)
 		require.Nil(t, err)
 
-		for _, cv := range []*ConfigurationVersion{
-			resp.ConfigurationVersion,
+		for _, item := range []*ConfigurationVersion{
+			cv,
 			refreshed,
 		} {
-			assert.NotNil(t, cv.ID)
+			assert.NotNil(t, item.ID)
 			// TODO: Fix this. API does not return workspace associations.
-			//assert.Equal(t, input.WorkspaceID, cv.WorkspaceID)
-			assert.NotNil(t, cv.UploadURL)
-			assert.NotEqual(t, 0, len(*cv.UploadURL))
-			assert.Equal(t, *cv.Status, "pending")
-			assert.Equal(t, *cv.Source, "tfe-api")
-			assert.Nil(t, cv.Error)
+			// assert.Equal(t, wTest.ID, item.Workspace.ID)
+			assert.NotNil(t, item.UploadURL)
+			assert.NotEqual(t, 0, len(item.UploadURL))
+			assert.Equal(t, item.Status, ConfigurationPending)
+			assert.Equal(t, item.Source, ConfigurationSourceAPI)
+			assert.Equal(t, item.Error, "")
 		}
 	})
 
 	t.Run("with invalid workspace id", func(t *testing.T) {
-		result, err := client.CreateConfigurationVersion(
-			&CreateConfigurationVersionInput{
-				WorkspaceID: String("! / nope"),
-			},
-		)
-		assert.Nil(t, result)
-		assert.EqualError(t, err, "Invalid value for WorkspaceID")
+		cv, err := client.ConfigurationVersions.Create(badIdentifier, nil)
+		assert.Nil(t, cv)
+		assert.EqualError(t, err, "Invalid value for workspace ID")
 	})
 }
 
-func TestConfigurationVersion(t *testing.T) {
+func TestConfigurationVersionsRetrieve(t *testing.T) {
 	client := testClient(t)
 
-	cv, cvCleanup := createConfigurationVersion(t, client, nil)
-	defer cvCleanup()
+	cvTest, cvTestCleanup := createConfigurationVersion(t, client, nil)
+	defer cvTestCleanup()
 
 	t.Run("when the configuration version exists", func(t *testing.T) {
-		result, err := client.ConfigurationVersion(*cv.ID)
+		cv, err := client.ConfigurationVersions.Retrieve(cvTest.ID)
 		require.Nil(t, err)
 
 		// Don't compare the UploadURL because it will be generated twice in
 		// this test - once at creation of the configuration version, and
 		// again during the GET.
-		cv.UploadURL, result.UploadURL = nil, nil
+		cvTest.UploadURL, cv.UploadURL = "", ""
 
-		assert.Equal(t, cv, result)
+		assert.Equal(t, cvTest, cv)
 	})
 
 	t.Run("when the configuration version does not exist", func(t *testing.T) {
-		result, err := client.ConfigurationVersion("nope")
-		assert.Nil(t, result)
+		cv, err := client.ConfigurationVersions.Retrieve("nonexisting")
+		assert.Nil(t, cv)
 		assert.EqualError(t, err, "Resource not found")
+	})
+
+	t.Run("with invalid configuration version id", func(t *testing.T) {
+		cv, err := client.ConfigurationVersions.Retrieve(badIdentifier)
+		assert.Nil(t, cv)
+		assert.EqualError(t, err, "Invalid value for configuration version ID")
 	})
 }

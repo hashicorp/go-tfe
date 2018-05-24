@@ -5,255 +5,201 @@ import (
 	"time"
 )
 
-// Organization encapsulates all data fields of a TFE Organization.
-type Organization struct {
-	// The organization name. Globally unique within a TFE instance.
-	Name *string `json:"name,omitempty"`
-
-	// Email address associated with the organization. It is possible for
-	// this value to be empty.
-	Email *string `json:"email,omitempty"`
-
-	// Authentication policy for collaborators of the organization. Identifies
-	// 2FA requirements or other required authentication for collaborators
-	// of the organization.
-	CollaboratorAuthPolicy *string `json:"collaborator-auth-policy,omitempty"`
-
-	// The TFE plan. May be "trial", "pro", or "premium". For private (PTFE)
-	// installations this will always be "premium".
-	EnterprisePlan *string `json:"enterprise-plan,omitempty"`
-
-	// Creation time of the organization.
-	CreatedAt time.Time `json:"created-at,omitempty"`
-
-	// Expiration timestamp of the organization's trial period. Only applicable
-	// if the EnterprisePlan is "trial".
-	TrialExpiresAt time.Time `json:"trial-expires-at,omitempty"`
-
-	// Permissions the current user can perform against the organization.
-	Permissions Permissions `json:"permissions"`
+// Organizations handles communication with the organization related methods
+// of the Terraform Enterprise API.
+//
+// TFE API docs:
+// https://www.terraform.io/docs/enterprise/api/organizations.html
+type Organizations struct {
+	client *Client
 }
 
-// ListOrganizationsInput holds the inputs to use when listing organizations.
-type ListOrganizationsInput struct {
-	// Options used for paging through results
+// AuthPolicyType represents an authentication policy type.
+type AuthPolicyType string
+
+// List of available authentication policies.
+const (
+	AuthPolicyPassword  AuthPolicyType = "password"
+	AuthPolicyTwoFactor AuthPolicyType = "two_factor_mandatory"
+)
+
+// EnterprisePlanType represents an enterprise plan type.
+type EnterprisePlanType string
+
+// List of available enterprise plan types.
+const (
+	EnterprisePlanDisabled EnterprisePlanType = "disabled"
+	EnterprisePlanPremium  EnterprisePlanType = "premium"
+	EnterprisePlanPro      EnterprisePlanType = "pro"
+	EnterprisePlanTrial    EnterprisePlanType = "trial"
+)
+
+// Organization represents a Terraform Enterprise Organization.
+type Organization struct {
+	Name                   string                   `jsonapi:"primary,organizations"`
+	CollaboratorAuthPolicy AuthPolicyType           `jsonapi:"attr,collaborator-auth-policy"`
+	CreatedAt              time.Time                `jsonapi:"attr,created-at,iso8601"`
+	Email                  string                   `jsonapi:"attr,email"`
+	EnterprisePlan         EnterprisePlanType       `jsonapi:"attr,enterprise-plan"`
+	OwnersTeamSamlRoleID   string                   `jsonapi:"attr,owners-team-saml-role-id"`
+	Permissions            *OrganizationPermissions `jsonapi:"attr,permissions"`
+	SAMLEnabled            bool                     `jsonapi:"attr,saml-enabled"`
+	SessionRemember        int                      `jsonapi:"attr,session-remember"`
+	SessionTimeout         int                      `jsonapi:"attr,session-timeout"`
+	TrialExpiresAt         time.Time                `jsonapi:"attr,trial-expires-at,iso8601"`
+	TwoFactorConformant    bool                     `jsonapi:"attr,two-factor-conformant"`
+}
+
+// OrganizationPermissions represents the organization permissions.
+type OrganizationPermissions struct {
+	CanCreateTeam               bool `json:"can-create-team"`
+	CanCreateWorkspace          bool `json:"can-create-workspace"`
+	CanCreateWorkspaceMigration bool `json:"can-create-workspace-migration"`
+	CanDestroy                  bool `json:"can-destroy"`
+	CanTraverse                 bool `json:"can-traverse"`
+	CanUpdate                   bool `json:"can-update"`
+	CanUpdateAPIToken           bool `json:"can-update-api-token"`
+	CanUpdateOAuth              bool `json:"can-update-oauth"`
+	CanUpdateSentinel           bool `json:"can-update-sentinel"`
+}
+
+// ListOrganizationsOptions represents the options for listing organizations.
+type ListOrganizationsOptions struct {
 	ListOptions
 }
 
-// Organizations returns all of the organizations visible to the current user.
-func (c *Client) ListOrganizations(input *ListOrganizationsInput) (
-	[]*Organization, error) {
-
-	var result jsonapiOrganizations
-
-	if _, err := c.do(&request{
-		method: "GET",
-		path:   "/api/v2/organizations",
-		output: &result,
-		lopt:   input.ListOptions,
-	}); err != nil {
+// List returns all the organizations visible to the current user.
+func (s *Organizations) List(options *ListOrganizationsOptions) ([]*Organization, error) {
+	req, err := s.client.newRequest("GET", "organizations", options)
+	if err != nil {
 		return nil, err
 	}
 
-	output := make([]*Organization, len(result))
-	for i, org := range result {
-		output[i] = org.Organization
-	}
-
-	return output, nil
-}
-
-// Organization is used to look up a single organization by its name.
-func (c *Client) Organization(name string) (*Organization, error) {
-	var output jsonapiOrganization
-
-	if _, err := c.do(&request{
-		method: "GET",
-		path:   "/api/v2/organizations/" + name,
-		output: &output,
-	}); err != nil {
+	result, err := s.client.do(req, []*Organization{})
+	if err != nil {
 		return nil, err
 	}
 
-	return output.Organization, nil
+	var orgs []*Organization
+	for _, org := range result.([]interface{}) {
+		orgs = append(orgs, org.(*Organization))
+	}
+
+	return orgs, nil
 }
 
-// CreateOrganizationParams holds all of the settable parameters to pass
-// during organization creation.
-type CreateOrganizationInput struct {
-	// The organization name.
-	Name *string
+// CreateOrganizationOptions represents the options for creating an organization.
+type CreateOrganizationOptions struct {
+	// For internal use only!
+	ID string `jsonapi:"primary,organizations"`
 
-	// Email address associated with the organization.
-	Email *string
+	// Name of the organization.
+	Name *string `jsonapi:"attr,name"`
+
+	// Admin email address.
+	Email *string `jsonapi:"attr,email"`
 }
 
-func (i *CreateOrganizationInput) valid() error {
-	if !validStringID(i.Name) {
+func (o *CreateOrganizationOptions) valid() error {
+	if o == nil || !validStringID(o.Name) {
 		return errors.New("Invalid value for Name")
 	}
-	if !validString(i.Email) {
+	if o == nil || !validString(o.Email) {
 		return errors.New("Email is required")
 	}
 	return nil
 }
 
-// CreateOrganizationOutput holds the return values from an organization
-// creation request.
-type CreateOrganizationOutput struct {
-	// A reference to the newly-created organization.
-	Organization *Organization
-}
-
-// CreateOrganization creates a new organization with the given parameters.
-func (c *Client) CreateOrganization(input *CreateOrganizationInput) (
-	*CreateOrganizationOutput, error) {
-
-	if err := input.valid(); err != nil {
+// Create a new organization with the given name and email.
+func (s *Organizations) Create(options *CreateOrganizationOptions) (*Organization, error) {
+	if err := options.valid(); err != nil {
 		return nil, err
 	}
 
-	// Create the special JSONAPI params object.
-	jsonapiParams := jsonapiOrganization{
-		Organization: &Organization{
-			Name:  input.Name,
-			Email: input.Email,
-		},
-	}
-
-	var output jsonapiOrganization
-
-	// Send the request.
-	if _, err := c.do(&request{
-		method: "POST",
-		path:   "/api/v2/organizations",
-		input:  jsonapiParams,
-		output: &output,
-	}); err != nil {
+	req, err := s.client.newRequest("POST", "organizations", options)
+	if err != nil {
 		return nil, err
 	}
 
-	return &CreateOrganizationOutput{
-		Organization: output.Organization,
-	}, nil
-}
-
-// DeleteOrganizationInput holds parameters used during organization deletion.
-type DeleteOrganizationInput struct {
-	// The name of the organization to delete. Required.
-	Name *string
-}
-
-// valid checks if the input is sufficiently filled.
-func (i *DeleteOrganizationInput) valid() error {
-	if !validStringID(i.Name) {
-		return errors.New("Invalid value for Name")
-	}
-	return nil
-}
-
-// DeleteOrganizationOutput stores results from an org deletion request.
-type DeleteOrganizationOutput struct{}
-
-// DeleteOrganization deletes the organization matching the given parameters.
-func (c *Client) DeleteOrganization(input *DeleteOrganizationInput) (
-	*DeleteOrganizationOutput, error) {
-
-	if err := input.valid(); err != nil {
+	org, err := s.client.do(req, &Organization{})
+	if err != nil {
 		return nil, err
 	}
 
-	// Send the request.
-	if resp, err := c.do(&request{
-		method: "DELETE",
-		path:   "/api/v2/organizations/" + *input.Name,
-	}); err != nil {
-		return nil, err
-	} else {
-		resp.Body.Close()
+	return org.(*Organization), nil
+}
+
+// Retrieve single organization by its name.
+func (s *Organizations) Retrieve(name string) (*Organization, error) {
+	if !validStringID(&name) {
+		return nil, errors.New("Invalid value for name")
 	}
 
-	return &DeleteOrganizationOutput{}, nil
-}
-
-// ModifyOrganizationInput contains the parameters used for modifying an
-// existing organization. Any optional values left empty will be left intact
-// on the organization.
-type ModifyOrganizationInput struct {
-	// The organization to modify. Required.
-	Name *string
-
-	// Renames the organization to the given string.
-	Rename *string
-
-	// The email address associated with the organization.
-	Email *string
-}
-
-// valid checks that the input is sufficiently filled.
-func (i *ModifyOrganizationInput) valid() error {
-	if !validStringID(i.Name) {
-		return errors.New("Invalid value for Name")
-	}
-	return nil
-}
-
-// ModifyOrganizationOutput contains response values from an organization
-// modify request.
-type ModifyOrganizationOutput struct {
-	// The updated view of the organization.
-	Organization *Organization
-}
-
-// ModifyOrganization is used to adjust attributes on an existing organization.
-func (c *Client) ModifyOrganization(input *ModifyOrganizationInput) (
-	*ModifyOrganizationOutput, error) {
-
-	if err := input.valid(); err != nil {
+	req, err := s.client.newRequest("GET", "organizations/"+name, nil)
+	if err != nil {
 		return nil, err
 	}
 
-	// Create the special JSON API payload.
-	jsonapiParams := jsonapiOrganization{
-		Organization: &Organization{
-			Name:  input.Rename,
-			Email: input.Email,
-		},
-	}
-
-	var output jsonapiOrganization
-
-	// Send the request
-	if _, err := c.do(&request{
-		method: "PATCH",
-		path:   "/api/v2/organizations/" + *input.Name,
-		input:  jsonapiParams,
-		output: &output,
-	}); err != nil {
+	org, err := s.client.do(req, &Organization{})
+	if err != nil {
 		return nil, err
 	}
 
-	return &ModifyOrganizationOutput{
-		Organization: output.Organization,
-	}, nil
+	return org.(*Organization), nil
 }
 
-// Internal type to satisfy the jsonapi interface for a single organization.
-type jsonapiOrganization struct{ *Organization }
+// UpdateOrganizationOptions represents the options for updating an organization.
+type UpdateOrganizationOptions struct {
+	// For internal use only!
+	ID string `jsonapi:"primary,organizations"`
 
-func (jsonapiOrganization) GetName() string    { return "organizations" }
-func (jsonapiOrganization) GetID() string      { return "" }
-func (jsonapiOrganization) SetID(string) error { return nil }
-func (jsonapiOrganization) SetToOneReferenceID(string, string) error {
-	return nil
+	// New name for the organization.
+	Name *string `jsonapi:"attr,name,omitempty"`
+
+	// New admin email address.
+	Email *string `jsonapi:"attr,email,omitempty"`
+
+	// Session expiration (minutes).
+	SessionRemember *int `jsonapi:"attr,session-remember,omitempty"`
+
+	// Session timeout after inactivity (minutes).
+	SessionTimeout *int `jsonapi:"attr,session-timeout,omitempty"`
+
+	// Authentication policy.
+	CollaboratorAuthPolicy *AuthPolicyType `jsonapi:"attr,collaborator-auth-policy,omitempty"`
 }
 
-// Internal type to satisfy the jsonapi interface for org indexes.
-type jsonapiOrganizations []jsonapiOrganization
+// Update attributes of an existing organization.
+func (s *Organizations) Update(name string, options *UpdateOrganizationOptions) (*Organization, error) {
+	if !validStringID(&name) {
+		return nil, errors.New("Invalid value for name")
+	}
 
-func (jsonapiOrganizations) GetName() string    { return "organizations" }
-func (jsonapiOrganizations) GetID() string      { return "" }
-func (jsonapiOrganizations) SetID(string) error { return nil }
-func (jsonapiOrganizations) SetToOneReferenceID(string, string) error {
-	return nil
+	req, err := s.client.newRequest("PATCH", "organizations/"+name, options)
+	if err != nil {
+		return nil, err
+	}
+
+	org, err := s.client.do(req, &Organization{})
+	if err != nil {
+		return nil, err
+	}
+
+	return org.(*Organization), nil
+}
+
+// Delete an organization by its name.
+func (s *Organizations) Delete(name string) error {
+	if !validStringID(&name) {
+		return errors.New("Invalid value for name")
+	}
+
+	req, err := s.client.newRequest("DELETE", "organizations/"+name, nil)
+	if err != nil {
+		return err
+	}
+
+	_, err = s.client.do(req, nil)
+
+	return err
 }
