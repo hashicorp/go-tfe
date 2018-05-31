@@ -156,7 +156,7 @@ func (c *Client) newRequest(method, path string, v interface{}) (*http.Request, 
 				return nil, err
 			}
 			u.RawQuery = q.Encode()
-		case "PATCH", "POST", "PUT":
+		case "PATCH", "POST":
 			var body bytes.Buffer
 			if err := jsonapi.MarshalPayloadWithoutIncluded(&body, v); err != nil {
 				return nil, err
@@ -167,10 +167,9 @@ func (c *Client) newRequest(method, path string, v interface{}) (*http.Request, 
 		}
 	}
 
-	// Set the auth token.
+	// Set the required headers.
+	req.Header.Set("Accept", "application/vnd.api+json")
 	req.Header.Set("Authorization", "Bearer "+c.token)
-
-	// Set a custom User-Agent.
 	req.Header.Set("User-Agent", c.userAgent)
 
 	return req, nil

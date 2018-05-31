@@ -19,7 +19,7 @@ func TestWorkspacesList(t *testing.T) {
 	defer wTest2Cleanup()
 
 	t.Run("without list options", func(t *testing.T) {
-		ws, err := client.Workspaces.List(orgTest.Name, nil)
+		ws, err := client.Workspaces.List(orgTest.Name, ListWorkspacesOptions{})
 		require.Nil(t, err)
 
 		assert.Contains(t, ws, wTest1)
@@ -30,7 +30,7 @@ func TestWorkspacesList(t *testing.T) {
 		// Request a page number which is out of range. The result should
 		// be successful, but return no results if the paging options are
 		// properly passed along.
-		ws, err := client.Workspaces.List(orgTest.Name, &ListWorkspacesOptions{
+		ws, err := client.Workspaces.List(orgTest.Name, ListWorkspacesOptions{
 			ListOptions: ListOptions{
 				PageNumber: 999,
 				PageSize:   100,
@@ -49,7 +49,7 @@ func TestWorkspacesCreate(t *testing.T) {
 	defer orgTestCleanup()
 
 	t.Run("with valid options", func(t *testing.T) {
-		options := &CreateWorkspaceOptions{
+		options := CreateWorkspaceOptions{
 			Name:             String("foo"),
 			AutoApply:        Bool(true),
 			TerraformVersion: String("0.11.0"),
@@ -76,21 +76,21 @@ func TestWorkspacesCreate(t *testing.T) {
 	})
 
 	t.Run("when options is missing name", func(t *testing.T) {
-		w, err := client.Workspaces.Create("foo", &CreateWorkspaceOptions{})
-		assert.EqualError(t, err, "Invalid value for Name")
+		w, err := client.Workspaces.Create("foo", CreateWorkspaceOptions{})
+		assert.EqualError(t, err, "Invalid value for name")
 		assert.Nil(t, w)
 	})
 
 	t.Run("when options has an invalid name", func(t *testing.T) {
-		w, err := client.Workspaces.Create("foo", &CreateWorkspaceOptions{
+		w, err := client.Workspaces.Create("foo", CreateWorkspaceOptions{
 			Name: String(badIdentifier),
 		})
-		assert.EqualError(t, err, "Invalid value for Name")
+		assert.EqualError(t, err, "Invalid value for name")
 		assert.Nil(t, w)
 	})
 
 	t.Run("when options has an invalid organization", func(t *testing.T) {
-		w, err := client.Workspaces.Create(badIdentifier, &CreateWorkspaceOptions{
+		w, err := client.Workspaces.Create(badIdentifier, CreateWorkspaceOptions{
 			Name: String("foo"),
 		})
 		assert.EqualError(t, err, "Invalid value for organization")
@@ -98,7 +98,7 @@ func TestWorkspacesCreate(t *testing.T) {
 	})
 
 	t.Run("when an error is returned from the api", func(t *testing.T) {
-		w, err := client.Workspaces.Create("bar", &CreateWorkspaceOptions{
+		w, err := client.Workspaces.Create("bar", CreateWorkspaceOptions{
 			Name:             String("bar"),
 			TerraformVersion: String("nonexisting"),
 		})
@@ -159,7 +159,7 @@ func TestWorkspacesUpdate(t *testing.T) {
 		wBefore, err := client.Workspaces.Retrieve(orgTest.Name, wTest.Name)
 		require.Nil(t, err)
 
-		options := &UpdateWorkspaceOptions{
+		options := UpdateWorkspaceOptions{
 			Name:             String(wTest.Name),
 			TerraformVersion: String("0.10.0"),
 		}
@@ -177,7 +177,7 @@ func TestWorkspacesUpdate(t *testing.T) {
 	})
 
 	t.Run("with valid options", func(t *testing.T) {
-		options := &UpdateWorkspaceOptions{
+		options := UpdateWorkspaceOptions{
 			Name:             String(randomString(t)),
 			AutoApply:        Bool(false),
 			TerraformVersion: String("0.11.1"),
@@ -206,7 +206,7 @@ func TestWorkspacesUpdate(t *testing.T) {
 	})
 
 	t.Run("when an error is returned from the api", func(t *testing.T) {
-		w, err := client.Workspaces.Update(orgTest.Name, wTest.Name, &UpdateWorkspaceOptions{
+		w, err := client.Workspaces.Update(orgTest.Name, wTest.Name, UpdateWorkspaceOptions{
 			TerraformVersion: String("nonexisting"),
 		})
 		assert.NotNil(t, err)
@@ -214,13 +214,13 @@ func TestWorkspacesUpdate(t *testing.T) {
 	})
 
 	t.Run("when options has an invalid name", func(t *testing.T) {
-		w, err := client.Workspaces.Update(orgTest.Name, badIdentifier, nil)
+		w, err := client.Workspaces.Update(orgTest.Name, badIdentifier, UpdateWorkspaceOptions{})
 		assert.EqualError(t, err, "Invalid value for workspace")
 		assert.Nil(t, w)
 	})
 
 	t.Run("when options has an invalid organization", func(t *testing.T) {
-		w, err := client.Workspaces.Update(badIdentifier, wTest.Name, nil)
+		w, err := client.Workspaces.Update(badIdentifier, wTest.Name, UpdateWorkspaceOptions{})
 		assert.EqualError(t, err, "Invalid value for organization")
 		assert.Nil(t, w)
 	})

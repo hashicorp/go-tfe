@@ -70,13 +70,13 @@ type ListConfigurationVersionsOptions struct {
 }
 
 // List returns all configuration versions of a workspace.
-func (s *ConfigurationVersions) List(workspaceID string, options *ListConfigurationVersionsOptions) ([]*ConfigurationVersion, error) {
+func (s *ConfigurationVersions) List(workspaceID string, options ListConfigurationVersionsOptions) ([]*ConfigurationVersion, error) {
 	if !validStringID(&workspaceID) {
 		return nil, errors.New("Invalid value for workspace ID")
 	}
 
 	u := fmt.Sprintf("workspaces/%s/configuration-versions", workspaceID)
-	req, err := s.client.newRequest("GET", u, options)
+	req, err := s.client.newRequest("GET", u, &options)
 	if err != nil {
 		return nil, err
 	}
@@ -98,7 +98,7 @@ func (s *ConfigurationVersions) List(workspaceID string, options *ListConfigurat
 // configuration version.
 type CreateConfigurationVersionOptions struct {
 	// For internal use only!
-	ID string `jsonapi:"primary,organizations"`
+	ID string `jsonapi:"primary,configuration-versions"`
 
 	// When true, runs are queued automatically when the configuration version
 	// is uploaded.
@@ -107,18 +107,16 @@ type CreateConfigurationVersionOptions struct {
 
 // Create is used to create a new configuration version. The created
 // configuration version will be usable once data is uploaded to it.
-func (s *ConfigurationVersions) Create(workspaceID string, options *CreateConfigurationVersionOptions) (*ConfigurationVersion, error) {
+func (s *ConfigurationVersions) Create(workspaceID string, options CreateConfigurationVersionOptions) (*ConfigurationVersion, error) {
 	if !validStringID(&workspaceID) {
 		return nil, errors.New("Invalid value for workspace ID")
 	}
 
-	// TODO SvH: This shouldn't be needed right?
-	if options == nil {
-		options = &CreateConfigurationVersionOptions{}
-	}
+	// Make sure we don't send a user provided ID.
+	options.ID = ""
 
 	u := fmt.Sprintf("workspaces/%s/configuration-versions", workspaceID)
-	req, err := s.client.newRequest("POST", u, options)
+	req, err := s.client.newRequest("POST", u, &options)
 	if err != nil {
 		return nil, err
 	}

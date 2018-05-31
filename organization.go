@@ -69,8 +69,8 @@ type ListOrganizationsOptions struct {
 }
 
 // List returns all the organizations visible to the current user.
-func (s *Organizations) List(options *ListOrganizationsOptions) ([]*Organization, error) {
-	req, err := s.client.newRequest("GET", "organizations", options)
+func (s *Organizations) List(options ListOrganizationsOptions) ([]*Organization, error) {
+	req, err := s.client.newRequest("GET", "organizations", &options)
 	if err != nil {
 		return nil, err
 	}
@@ -100,23 +100,26 @@ type CreateOrganizationOptions struct {
 	Email *string `jsonapi:"attr,email"`
 }
 
-func (o *CreateOrganizationOptions) valid() error {
-	if o == nil || !validStringID(o.Name) {
-		return errors.New("Invalid value for Name")
+func (o CreateOrganizationOptions) valid() error {
+	if !validStringID(o.Name) {
+		return errors.New("Invalid value for name")
 	}
-	if o == nil || !validString(o.Email) {
+	if !validString(o.Email) {
 		return errors.New("Email is required")
 	}
 	return nil
 }
 
 // Create a new organization with the given name and email.
-func (s *Organizations) Create(options *CreateOrganizationOptions) (*Organization, error) {
+func (s *Organizations) Create(options CreateOrganizationOptions) (*Organization, error) {
 	if err := options.valid(); err != nil {
 		return nil, err
 	}
 
-	req, err := s.client.newRequest("POST", "organizations", options)
+	// Make sure we don't send a user provided ID.
+	options.ID = ""
+
+	req, err := s.client.newRequest("POST", "organizations", &options)
 	if err != nil {
 		return nil, err
 	}
@@ -170,12 +173,15 @@ type UpdateOrganizationOptions struct {
 }
 
 // Update attributes of an existing organization.
-func (s *Organizations) Update(name string, options *UpdateOrganizationOptions) (*Organization, error) {
+func (s *Organizations) Update(name string, options UpdateOrganizationOptions) (*Organization, error) {
 	if !validStringID(&name) {
 		return nil, errors.New("Invalid value for name")
 	}
 
-	req, err := s.client.newRequest("PATCH", "organizations/"+name, options)
+	// Make sure we don't send a user provided ID.
+	options.ID = ""
+
+	req, err := s.client.newRequest("PATCH", "organizations/"+name, &options)
 	if err != nil {
 		return nil, err
 	}

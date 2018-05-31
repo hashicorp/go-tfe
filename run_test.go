@@ -16,7 +16,7 @@ func TestRunsList(t *testing.T) {
 	rTest1, _ := createRun(t, client, wTest)
 	rTest2, _ := createRun(t, client, wTest)
 
-	rs, err := client.Runs.List(wTest.ID, nil)
+	rs, err := client.Runs.List(wTest.ID, ListRunOptions{})
 	require.Nil(t, err)
 
 	found := []string{}
@@ -37,7 +37,7 @@ func TestRunsCreate(t *testing.T) {
 	cvTest, _ := createUploadedConfigurationVersion(t, client, wTest)
 
 	t.Run("without a configuration version", func(t *testing.T) {
-		options := &CreateRunOptions{
+		options := CreateRunOptions{
 			Workspace: wTest,
 		}
 
@@ -46,7 +46,7 @@ func TestRunsCreate(t *testing.T) {
 	})
 
 	t.Run("with a configuration version", func(t *testing.T) {
-		options := &CreateRunOptions{
+		options := CreateRunOptions{
 			ConfigurationVersion: cvTest,
 			Workspace:            wTest,
 		}
@@ -58,7 +58,7 @@ func TestRunsCreate(t *testing.T) {
 	})
 
 	t.Run("with additional attributes", func(t *testing.T) {
-		options := &CreateRunOptions{
+		options := CreateRunOptions{
 			Message:   String("yo"),
 			Workspace: wTest,
 		}

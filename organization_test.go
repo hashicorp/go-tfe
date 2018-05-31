@@ -16,7 +16,7 @@ func TestOrganizationsList(t *testing.T) {
 	defer orgTest2Cleanup()
 
 	t.Run("with no list options", func(t *testing.T) {
-		orgs, err := client.Organizations.List(nil)
+		orgs, err := client.Organizations.List(ListOrganizationsOptions{})
 		require.Nil(t, err)
 
 		assert.Contains(t, orgs, orgTest1)
@@ -29,7 +29,7 @@ func TestOrganizationsList(t *testing.T) {
 		// Request a page number which is out of range. The result should
 		// be successful, but return no results if the paging options are
 		// properly passed along.
-		orgs, err := client.Organizations.List(&ListOrganizationsOptions{
+		orgs, err := client.Organizations.List(ListOrganizationsOptions{
 			ListOptions: ListOptions{
 				PageNumber: 999,
 				PageSize:   100,
@@ -45,7 +45,7 @@ func TestOrganizationsCreate(t *testing.T) {
 	client := testClient(t)
 
 	t.Run("with valid options", func(t *testing.T) {
-		options := &CreateOrganizationOptions{
+		options := CreateOrganizationOptions{
 			Name:  String(randomString(t)),
 			Email: String(randomString(t) + "@tfe.local"),
 		}
@@ -59,21 +59,21 @@ func TestOrganizationsCreate(t *testing.T) {
 	})
 
 	t.Run("without valid options", func(t *testing.T) {
-		_, err := client.Organizations.Create(nil)
+		_, err := client.Organizations.Create(CreateOrganizationOptions{})
 		require.NotNil(t, err)
 	})
 
 	t.Run("with invalid name", func(t *testing.T) {
-		org, err := client.Organizations.Create(&CreateOrganizationOptions{
+		org, err := client.Organizations.Create(CreateOrganizationOptions{
 			Name:  String(badIdentifier),
 			Email: String("foo@bar.com"),
 		})
 		assert.Nil(t, org)
-		assert.EqualError(t, err, "Invalid value for Name")
+		assert.EqualError(t, err, "Invalid value for name")
 	})
 
 	t.Run("when no email is provided", func(t *testing.T) {
-		org, err := client.Organizations.Create(&CreateOrganizationOptions{
+		org, err := client.Organizations.Create(CreateOrganizationOptions{
 			Name: String("foo"),
 		})
 		assert.Nil(t, org)
@@ -114,7 +114,7 @@ func TestOrganizationsUpdate(t *testing.T) {
 	t.Run("with valid options", func(t *testing.T) {
 		orgTest, orgTestCleanup := createOrganization(t, client)
 
-		options := &UpdateOrganizationOptions{
+		options := UpdateOrganizationOptions{
 			Name:  String(randomString(t)),
 			Email: String(randomString(t) + "@tfe.local"),
 		}
@@ -143,7 +143,7 @@ func TestOrganizationsUpdate(t *testing.T) {
 	})
 
 	t.Run("with invalid name", func(t *testing.T) {
-		org, err := client.Organizations.Update(badIdentifier, &UpdateOrganizationOptions{})
+		org, err := client.Organizations.Update(badIdentifier, UpdateOrganizationOptions{})
 		assert.Nil(t, org)
 		assert.EqualError(t, err, "Invalid value for name")
 	})
@@ -152,7 +152,7 @@ func TestOrganizationsUpdate(t *testing.T) {
 		orgTest, orgTestCleanup := createOrganization(t, client)
 		defer orgTestCleanup()
 
-		org, err := client.Organizations.Update(orgTest.Name, &UpdateOrganizationOptions{})
+		org, err := client.Organizations.Update(orgTest.Name, UpdateOrganizationOptions{})
 		require.Nil(t, err)
 
 		assert.Equal(t, orgTest.Name, org.Name)

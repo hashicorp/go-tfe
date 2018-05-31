@@ -65,13 +65,13 @@ type ListWorkspacesOptions struct {
 }
 
 // List returns all of the workspaces within an organization.
-func (s *Workspaces) List(organization string, options *ListWorkspacesOptions) ([]*Workspace, error) {
+func (s *Workspaces) List(organization string, options ListWorkspacesOptions) ([]*Workspace, error) {
 	if !validStringID(&organization) {
 		return nil, errors.New("Invalid value for organization")
 	}
 
 	u := fmt.Sprintf("organizations/%s/workspaces", organization)
-	req, err := s.client.newRequest("GET", u, options)
+	req, err := s.client.newRequest("GET", u, &options)
 	if err != nil {
 		return nil, err
 	}
@@ -92,7 +92,7 @@ func (s *Workspaces) List(organization string, options *ListWorkspacesOptions) (
 // CreateWorkspaceOptions represents the options for creating a new workspace.
 type CreateWorkspaceOptions struct {
 	// For internal use only!
-	ID string `jsonapi:"primary,organizations"`
+	ID string `jsonapi:"primary,workspaces"`
 
 	// Whether to automatically apply changes when a Terraform plan is successful.
 	AutoApply *bool `jsonapi:"attr,auto-apply,omitempty"`
@@ -130,15 +130,15 @@ type VCSRepoOptions struct {
 	OAuthTokenID      *string `json:"oauth-token-id,omitempty"`
 }
 
-func (o *CreateWorkspaceOptions) valid() error {
-	if o == nil || !validStringID(o.Name) {
-		return errors.New("Invalid value for Name")
+func (o CreateWorkspaceOptions) valid() error {
+	if !validStringID(o.Name) {
+		return errors.New("Invalid value for name")
 	}
 	return nil
 }
 
 // Create is used to create a new workspace.
-func (s *Workspaces) Create(organization string, options *CreateWorkspaceOptions) (*Workspace, error) {
+func (s *Workspaces) Create(organization string, options CreateWorkspaceOptions) (*Workspace, error) {
 	if !validStringID(&organization) {
 		return nil, errors.New("Invalid value for organization")
 	}
@@ -146,8 +146,11 @@ func (s *Workspaces) Create(organization string, options *CreateWorkspaceOptions
 		return nil, err
 	}
 
+	// Make sure we don't send a user provided ID.
+	options.ID = ""
+
 	u := fmt.Sprintf("organizations/%s/workspaces", organization)
-	req, err := s.client.newRequest("POST", u, options)
+	req, err := s.client.newRequest("POST", u, &options)
 	if err != nil {
 		return nil, err
 	}
@@ -186,7 +189,7 @@ func (s *Workspaces) Retrieve(organization, workspace string) (*Workspace, error
 // UpdateWorkspaceOptions represents the options for updating a workspace.
 type UpdateWorkspaceOptions struct {
 	// For internal use only!
-	ID string `jsonapi:"primary,organizations"`
+	ID string `jsonapi:"primary,workspaces"`
 
 	// Whether to automatically apply changes when a Terraform plan is successful.
 	AutoApply *bool `jsonapi:"attr,auto-apply,omitempty"`
@@ -215,15 +218,15 @@ type UpdateWorkspaceOptions struct {
 }
 
 // valid determines if the input is sufficiently filled.
-func (o *UpdateWorkspaceOptions) valid() error {
-	if o.Name != nil && !validStringID(o.Name) {
-		return errors.New("Invalid value for Name")
+func (o UpdateWorkspaceOptions) valid() error {
+	if !validStringID(o.Name) {
+		return errors.New("Invalid value for name")
 	}
 	return nil
 }
 
 // Update settings of an existing workspace.
-func (s *Workspaces) Update(organization, workspace string, options *UpdateWorkspaceOptions) (*Workspace, error) {
+func (s *Workspaces) Update(organization, workspace string, options UpdateWorkspaceOptions) (*Workspace, error) {
 	if !validStringID(&organization) {
 		return nil, errors.New("Invalid value for organization")
 	}
@@ -234,8 +237,11 @@ func (s *Workspaces) Update(organization, workspace string, options *UpdateWorks
 		return nil, err
 	}
 
+	// Make sure we don't send a user provided ID.
+	options.ID = ""
+
 	u := fmt.Sprintf("organizations/%s/workspaces/%s", organization, workspace)
-	req, err := s.client.newRequest("PATCH", u, options)
+	req, err := s.client.newRequest("PATCH", u, &options)
 	if err != nil {
 		return nil, err
 	}
@@ -275,13 +281,13 @@ type LockWorkspaceOptions struct {
 }
 
 // Lock a workspace.
-func (s *Workspaces) Lock(workspaceID string, options *LockWorkspaceOptions) (*Workspace, error) {
+func (s *Workspaces) Lock(workspaceID string, options LockWorkspaceOptions) (*Workspace, error) {
 	if !validStringID(&workspaceID) {
 		return nil, errors.New("Invalid value for workspace ID")
 	}
 
 	u := fmt.Sprintf("workspaces/%s/actions/lock", workspaceID)
-	req, err := s.client.newRequest("POST", u, options)
+	req, err := s.client.newRequest("POST", u, &options)
 	if err != nil {
 		return nil, err
 	}
@@ -318,7 +324,7 @@ func (s *Workspaces) Unlock(workspaceID string) (*Workspace, error) {
 // workspace.
 type AssignSSHKeyoptions struct {
 	// For internal use only!
-	ID string `jsonapi:"primary,organizations"`
+	ID string `jsonapi:"primary,workspaces"`
 
 	// Specifies the SSH key ID to assign. This ID can be obtained from the
 	// ssh-keys endpoint.
@@ -327,13 +333,16 @@ type AssignSSHKeyoptions struct {
 }
 
 // AssignSSHKey to a workspace.
-func (s *Workspaces) AssignSSHKey(workspaceID string, options *AssignSSHKeyoptions) (*Workspace, error) {
+func (s *Workspaces) AssignSSHKey(workspaceID string, options AssignSSHKeyoptions) (*Workspace, error) {
 	if !validStringID(&workspaceID) {
 		return nil, errors.New("Invalid value for workspace ID")
 	}
 
+	// Make sure we don't send a user provided ID.
+	options.ID = ""
+
 	u := fmt.Sprintf("workspaces/%s/relationships/ssh-key", workspaceID)
-	req, err := s.client.newRequest("PATCH", u, options)
+	req, err := s.client.newRequest("PATCH", u, &options)
 	if err != nil {
 		return nil, err
 	}
@@ -350,7 +359,7 @@ func (s *Workspaces) AssignSSHKey(workspaceID string, options *AssignSSHKeyoptio
 // workspace.
 type unassignSSHKeyoptions struct {
 	// For internal use only!
-	ID string `jsonapi:"primary,organizations"`
+	ID string `jsonapi:"primary,workspaces"`
 
 	// Must be null to unset the currently assigned SSH key.
 	// TODO SvH: This should be a relation!

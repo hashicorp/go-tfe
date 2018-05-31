@@ -90,13 +90,13 @@ type ListRunOptions struct {
 }
 
 // List runs of the given workspace.
-func (s *Runs) List(workspaceID string, options *ListRunOptions) ([]*Run, error) {
+func (s *Runs) List(workspaceID string, options ListRunOptions) ([]*Run, error) {
 	if !validStringID(&workspaceID) {
 		return nil, errors.New("Invalid value for workspace ID")
 	}
 
 	u := fmt.Sprintf("workspaces/%s/runs", workspaceID)
-	req, err := s.client.newRequest("GET", u, options)
+	req, err := s.client.newRequest("GET", u, &options)
 	if err != nil {
 		return nil, err
 	}
@@ -135,20 +135,23 @@ type CreateRunOptions struct {
 	Workspace *Workspace `jsonapi:"relation,workspace"`
 }
 
-func (o *CreateRunOptions) valid() error {
-	if o == nil || o.Workspace == nil {
-		return errors.New("Invalid value for Workspace")
+func (o CreateRunOptions) valid() error {
+	if o.Workspace == nil {
+		return errors.New("Invalid value for workspace")
 	}
 	return nil
 }
 
 // Create is used to create a new run.
-func (s *Runs) Create(options *CreateRunOptions) (*Run, error) {
+func (s *Runs) Create(options CreateRunOptions) (*Run, error) {
 	if err := options.valid(); err != nil {
 		return nil, err
 	}
 
-	req, err := s.client.newRequest("POST", "runs", options)
+	// Make sure we don't send a user provided ID.
+	options.ID = ""
+
+	req, err := s.client.newRequest("POST", "runs", &options)
 	if err != nil {
 		return nil, err
 	}
@@ -187,13 +190,13 @@ type ApplyRunOptions struct {
 }
 
 // Apply a specific run by its ID.
-func (s *Runs) Apply(runID string, options *ApplyRunOptions) error {
+func (s *Runs) Apply(runID string, options ApplyRunOptions) error {
 	if !validStringID(&runID) {
 		return errors.New("Invalid value for run ID")
 	}
 
 	u := fmt.Sprintf("runs/%s/actions/apply", runID)
-	req, err := s.client.newRequest("POST", u, options)
+	req, err := s.client.newRequest("POST", u, &options)
 	if err != nil {
 		return err
 	}
@@ -210,13 +213,13 @@ type CancelRunOptions struct {
 }
 
 // Cancel a specific run by its ID.
-func (s *Runs) Cancel(runID string, options *CancelRunOptions) error {
+func (s *Runs) Cancel(runID string, options CancelRunOptions) error {
 	if !validStringID(&runID) {
 		return errors.New("Invalid value for run ID")
 	}
 
 	u := fmt.Sprintf("runs/%s/actions/cancel", runID)
-	req, err := s.client.newRequest("POST", u, options)
+	req, err := s.client.newRequest("POST", u, &options)
 	if err != nil {
 		return err
 	}
@@ -233,13 +236,13 @@ type DiscardRunOptions struct {
 }
 
 // Discard a specific run by its ID.
-func (s *Runs) Discard(runID string, options *DiscardRunOptions) error {
+func (s *Runs) Discard(runID string, options DiscardRunOptions) error {
 	if !validStringID(&runID) {
 		return errors.New("Invalid value for run ID")
 	}
 
 	u := fmt.Sprintf("runs/%s/actions/discard", runID)
-	req, err := s.client.newRequest("POST", u, options)
+	req, err := s.client.newRequest("POST", u, &options)
 	if err != nil {
 		return err
 	}

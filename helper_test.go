@@ -38,7 +38,7 @@ func testClient(t *testing.T, fn ...func(*Config)) *Client {
 }
 
 func createOrganization(t *testing.T, client *Client) (*Organization, func()) {
-	org, err := client.Organizations.Create(&CreateOrganizationOptions{
+	org, err := client.Organizations.Create(CreateOrganizationOptions{
 		Name:  String(randomString(t)),
 		Email: String(fmt.Sprintf("%s@tfe.local", randomString(t))),
 	})
@@ -62,7 +62,7 @@ func createWorkspace(t *testing.T, client *Client, org *Organization) (*Workspac
 		org, orgCleanup = createOrganization(t, client)
 	}
 
-	w, err := client.Workspaces.Create(org.Name, &CreateWorkspaceOptions{
+	w, err := client.Workspaces.Create(org.Name, CreateWorkspaceOptions{
 		Name: String(randomString(t)),
 	})
 	if err != nil {
@@ -89,7 +89,10 @@ func createConfigurationVersion(t *testing.T, client *Client, w *Workspace) (*Co
 		w, wCleanup = createWorkspace(t, client, nil)
 	}
 
-	cv, err := client.ConfigurationVersions.Create(w.ID, nil)
+	cv, err := client.ConfigurationVersions.Create(
+		w.ID,
+		CreateConfigurationVersionOptions{},
+	)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -130,7 +133,7 @@ func createRun(t *testing.T, client *Client, w *Workspace) (*Run, func()) {
 
 	cv, cvCleanup := createUploadedConfigurationVersion(t, client, w)
 
-	r, err := client.Runs.Create(&CreateRunOptions{
+	r, err := client.Runs.Create(CreateRunOptions{
 		ConfigurationVersion: cv,
 		Workspace:            w,
 	})
