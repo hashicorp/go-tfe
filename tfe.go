@@ -164,6 +164,15 @@ func (c *Client) newRequest(method, path string, v interface{}) (*http.Request, 
 			req.Body = ioutil.NopCloser(&body)
 			req.ContentLength = int64(body.Len())
 			req.Header.Set("Content-Type", "application/vnd.api+json")
+		case "PUT":
+			switch v := v.(type) {
+			case []byte:
+				req.Body = ioutil.NopCloser(bytes.NewReader(v))
+				req.ContentLength = int64(len(v))
+				req.Header.Set("Content-Type", "application/json")
+			default:
+				return nil, fmt.Errorf("Unexpected type: %T", v)
+			}
 		}
 	}
 

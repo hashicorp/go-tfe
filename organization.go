@@ -34,7 +34,7 @@ const (
 	EnterprisePlanTrial    EnterprisePlanType = "trial"
 )
 
-// Organization represents a Terraform Enterprise Organization.
+// Organization represents a Terraform Enterprise organization.
 type Organization struct {
 	Name                   string                   `jsonapi:"primary,organizations"`
 	CollaboratorAuthPolicy AuthPolicyType           `jsonapi:"attr,collaborator-auth-policy"`

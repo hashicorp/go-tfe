@@ -102,6 +102,12 @@ func TestOrganizationsRetrieve(t *testing.T) {
 		})
 	})
 
+	t.Run("with invalid name", func(t *testing.T) {
+		org, err := client.Organizations.Retrieve(badIdentifier)
+		assert.Nil(t, org)
+		assert.EqualError(t, err, "Invalid value for name")
+	})
+
 	t.Run("when the org does not exist", func(t *testing.T) {
 		_, err := client.Organizations.Retrieve(randomString(t))
 		assert.NotNil(t, err)

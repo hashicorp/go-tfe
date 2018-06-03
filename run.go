@@ -17,7 +17,7 @@ type Runs struct {
 // RunStatus represents a run state.
 type RunStatus string
 
-//List all available configuration version statuses.
+//List all available run statuses.
 const (
 	RunApplied        RunStatus = "applied"
 	RunApplying       RunStatus = "applying"
@@ -61,7 +61,7 @@ type Run struct {
 	Workspace            *Workspace            `jsonapi:"relation,workspace"`
 }
 
-// RunActions represents the workspace actions.
+// RunActions represents the run actions.
 type RunActions struct {
 	IsCancelable  bool `json:"is-cancelable"`
 	IsComfirmable bool `json:"is-comfirmable"`
@@ -77,8 +77,8 @@ type RunPermissions struct {
 }
 
 // RunStatusTimestamps holds the timestamps for individual run statuses.
-// statuses.
 type RunStatusTimestamps struct {
+	ErroredAt  time.Time `json:"errored-at"`
 	FinishedAt time.Time `json:"finished-at"`
 	QueuedAt   time.Time `json:"queued-at"`
 	StartedAt  time.Time `json:"started-at"`
@@ -131,7 +131,7 @@ type CreateRunOptions struct {
 	// workspace's latest configuration version.
 	ConfigurationVersion *ConfigurationVersion `jsonapi:"relation,configuration-version"`
 
-	// Specifies the workspace ID where the run will be executed.
+	// Specifies the workspace where the run will be executed.
 	Workspace *Workspace `jsonapi:"relation,workspace"`
 }
 

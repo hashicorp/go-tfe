@@ -326,10 +326,8 @@ type AssignSSHKeyoptions struct {
 	// For internal use only!
 	ID string `jsonapi:"primary,workspaces"`
 
-	// Specifies the SSH key ID to assign. This ID can be obtained from the
-	// ssh-keys endpoint.
-	// TODO SvH: This should be a relation!
-	SSHKeyID *string `jsonapi:"attr,id,omitempty"`
+	// The SSH key to assign.
+	SSHKey *SSHKey `jsonapi:"relation,ssh-key,omitempty"`
 }
 
 // AssignSSHKey to a workspace.
@@ -361,9 +359,8 @@ type unassignSSHKeyoptions struct {
 	// For internal use only!
 	ID string `jsonapi:"primary,workspaces"`
 
-	// Must be null to unset the currently assigned SSH key.
-	// TODO SvH: This should be a relation!
-	SSHKeyID *string `jsonapi:"attr,id,omitempty"`
+	// Must be nil to unset the currently assigned SSH key.
+	SSHKey *SSHKey `jsonapi:"relation,ssh-key,omitempty"`
 }
 
 // UnassignSSHKey from a workspace.
