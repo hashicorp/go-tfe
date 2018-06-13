@@ -70,6 +70,9 @@ type TeamCreateOptions struct {
 }
 
 func (o TeamCreateOptions) valid() error {
+	if !validString(o.Name) {
+		return errors.New("Name is required")
+	}
 	if !validStringID(o.Name) {
 		return errors.New("Invalid value for name")
 	}

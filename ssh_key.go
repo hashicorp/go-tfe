@@ -124,10 +124,10 @@ type SSHKeyUpdateOptions struct {
 	ID string `jsonapi:"primary,ssh-keys"`
 
 	// A new name to identify the SSH key.
-	Name *string `jsonapi:"attr,name"`
+	Name *string `jsonapi:"attr,name,omitempty"`
 
 	// Updated content of the SSH private key.
-	Value *string `jsonapi:"attr,value"`
+	Value *string `jsonapi:"attr,value,omitempty"`
 }
 
 // Update an SSH key.
@@ -139,7 +139,7 @@ func (s *SSHKeys) Update(sshKeyID string, options SSHKeyUpdateOptions) (*SSHKey,
 	// Make sure we don't send a user provided ID.
 	options.ID = ""
 
-	req, err := s.client.newRequest("POST", "ssh-keys/"+sshKeyID, &options)
+	req, err := s.client.newRequest("PATCH", "ssh-keys/"+sshKeyID, &options)
 	if err != nil {
 		return nil, err
 	}

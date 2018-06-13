@@ -24,7 +24,7 @@ type TeamToken struct {
 	Token       string    `jsonapi:"attr,token"`
 }
 
-// Generate a new organization token, replacing any existing token.
+// Generate a new team token, replacing any existing token.
 func (s *TeamTokens) Generate(teamID string) (*TeamToken, error) {
 	if !validStringID(&teamID) {
 		return nil, errors.New("Invalid value for team ID")

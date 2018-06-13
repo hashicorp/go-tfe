@@ -26,10 +26,10 @@ const (
 
 // Policy represents a Terraform Enterprise policy.
 type Policy struct {
-	ID        string       `jsonapi:"primary,policies"`
-	Name      string       `jsonapi:"attr,name"`
-	Enforce   *Enforcement `jsonapi:"attr,enforce"`
-	UpdatedAt time.Time    `jsonapi:"attr,updated-at,iso8601"`
+	ID        string         `jsonapi:"primary,policies"`
+	Name      string         `jsonapi:"attr,name"`
+	Enforce   []*Enforcement `jsonapi:"attr,enforce"`
+	UpdatedAt time.Time      `jsonapi:"attr,updated-at,iso8601"`
 }
 
 // Enforcement describes a enforcement.
@@ -55,7 +55,7 @@ func (s *Policies) List(organization string, options PolicyListOptions) ([]*Poli
 		return nil, err
 	}
 
-	result, err := s.client.do(req, []*Workspace{})
+	result, err := s.client.do(req, []*Policy{})
 	if err != nil {
 		return nil, err
 	}
@@ -74,24 +74,35 @@ type PolicyCreateOptions struct {
 	ID string `jsonapi:"primary,policies"`
 
 	// The name of the policy.
-	Name *string `jsonapi:"attr,name,omitempty"`
+	Name *string `jsonapi:"attr,name"`
 
-	// The enforcement level of the policy.
-	Enforce *EnforcementOptions `jsonapi:"attr,enforce,omitempty"`
+	// The enforcements of the policy.
+	Enforce []*EnforcementOptions `jsonapi:"attr,enforce"`
 }
 
 // EnforcementOptions represents the enforcement options of a policy.
 type EnforcementOptions struct {
-	Path *string           `json:"name,omitempty"`
-	Mode *EnforcementLevel `json:"mode,omitempty"`
+	Path *string           `json:"path,omitempty"`
+	Mode *EnforcementLevel `json:"mode"`
 }
 
 func (o PolicyCreateOptions) valid() error {
+	if !validString(o.Name) {
+		return errors.New("Name is required")
+	}
 	if !validStringID(o.Name) {
 		return errors.New("Invalid value for name")
 	}
-	if o.Enforce == nil || o.Enforce.Mode == nil {
-		return errors.New("Invalid value for enforce mode")
+	if o.Enforce == nil {
+		return errors.New("Enforce is required")
+	}
+	for _, e := range o.Enforce {
+		if !validString(e.Path) {
+			return errors.New("Enforcement path is required")
+		}
+		if e.Mode == nil {
+			return errors.New("Enforcement mode is required")
+		}
 	}
 	return nil
 }
@@ -110,6 +121,25 @@ func (s *Policies) Create(organization string, options PolicyCreateOptions) (*Po
 
 	u := fmt.Sprintf("organizations/%s/policies", organization)
 	req, err := s.client.newRequest("POST", u, &options)
+	if err != nil {
+		return nil, err
+	}
+
+	p, err := s.client.do(req, &Policy{})
+	if err != nil {
+		return nil, err
+	}
+
+	return p.(*Policy), err
+}
+
+// Retrieve a policy.
+func (s *Policies) Retrieve(policyID string) (*Policy, error) {
+	if !validStringID(&policyID) {
+		return nil, errors.New("Invalid value for policy ID")
+	}
+
+	req, err := s.client.newRequest("GET", "policies/"+policyID, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -144,19 +174,13 @@ type PolicyUpdateOptions struct {
 	// For internal use only!
 	ID string `jsonapi:"primary,policies"`
 
-	// The name of the policy.
-	Name *string `jsonapi:"attr,name,omitempty"`
-
-	// The enforcement level of the policy.
-	Enforce *EnforcementOptions `jsonapi:"attr,enforce,omitempty"`
+	// The enforcements of the policy.
+	Enforce []*EnforcementOptions `jsonapi:"attr,enforce"`
 }
 
 func (o PolicyUpdateOptions) valid() error {
-	if !validStringID(o.Name) {
-		return errors.New("Invalid value for name")
-	}
-	if o.Enforce == nil || o.Enforce.Mode == nil {
-		return errors.New("Invalid value for enforce mode")
+	if o.Enforce == nil {
+		return errors.New("Enforce is required")
 	}
 	return nil
 }

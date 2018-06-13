@@ -32,7 +32,7 @@ type Workspace struct {
 
 	// Relations
 	Organization *Organization `jsonapi:"relation,organization"`
-	// SSHKey *SSHKey `jsonapi:"relation,ssh-key"
+	SSHKey       *SSHKey       `jsonapi:"relation,ssh-key"`
 }
 
 // VCSRepo contains the configuration of a VCS integration.
@@ -105,7 +105,7 @@ type WorkspaceCreateOptions struct {
 	// The name of the workspace, which can only include letters, numbers, -,
 	// and _. This will be used as an identifier and must be unique in the
 	// organization.
-	Name *string `jsonapi:"attr,name,omitempty"`
+	Name *string `jsonapi:"attr,name"`
 
 	// The version of Terraform to use for this workspace. Upon creating a
 	// workspace, the latest version is selected unless otherwise specified.
@@ -131,6 +131,9 @@ type VCSRepoOptions struct {
 }
 
 func (o WorkspaceCreateOptions) valid() error {
+	if !validString(o.Name) {
+		return errors.New("Name is required")
+	}
 	if !validStringID(o.Name) {
 		return errors.New("Invalid value for name")
 	}
@@ -217,14 +220,6 @@ type WorkspaceUpdateOptions struct {
 	WorkingDirectory *string `jsonapi:"attr,working-directory,omitempty"`
 }
 
-// valid determines if the input is sufficiently filled.
-func (o WorkspaceUpdateOptions) valid() error {
-	if !validStringID(o.Name) {
-		return errors.New("Invalid value for name")
-	}
-	return nil
-}
-
 // Update settings of an existing workspace.
 func (s *Workspaces) Update(organization, workspace string, options WorkspaceUpdateOptions) (*Workspace, error) {
 	if !validStringID(&organization) {
@@ -232,9 +227,6 @@ func (s *Workspaces) Update(organization, workspace string, options WorkspaceUpd
 	}
 	if !validStringID(&workspace) {
 		return nil, errors.New("Invalid value for workspace")
-	}
-	if err := options.valid(); err != nil {
-		return nil, err
 	}
 
 	// Make sure we don't send a user provided ID.
@@ -326,14 +318,27 @@ type WorkspaceAssignSSHKeyOptions struct {
 	// For internal use only!
 	ID string `jsonapi:"primary,workspaces"`
 
-	// The SSH key to assign.
-	SSHKey *SSHKey `jsonapi:"relation,ssh-key,omitempty"`
+	// The SSH key ID to assign.
+	SSHKeyID *string `jsonapi:"attr,id"`
+}
+
+func (o WorkspaceAssignSSHKeyOptions) valid() error {
+	if !validString(o.SSHKeyID) {
+		return errors.New("SSH key ID is required")
+	}
+	if !validStringID(o.SSHKeyID) {
+		return errors.New("Invalid value for SSH key ID")
+	}
+	return nil
 }
 
 // AssignSSHKey to a workspace.
 func (s *Workspaces) AssignSSHKey(workspaceID string, options WorkspaceAssignSSHKeyOptions) (*Workspace, error) {
 	if !validStringID(&workspaceID) {
 		return nil, errors.New("Invalid value for workspace ID")
+	}
+	if err := options.valid(); err != nil {
+		return nil, err
 	}
 
 	// Make sure we don't send a user provided ID.
@@ -360,7 +365,7 @@ type workspaceUnassignSSHKeyOptions struct {
 	ID string `jsonapi:"primary,workspaces"`
 
 	// Must be nil to unset the currently assigned SSH key.
-	SSHKey *SSHKey `jsonapi:"relation,ssh-key,omitempty"`
+	SSHKeyID *string `jsonapi:"attr,id"`
 }
 
 // UnassignSSHKey from a workspace.

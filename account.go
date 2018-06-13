@@ -16,8 +16,10 @@ type Accounts struct {
 type Account struct {
 	ID               string     `jsonapi:"primary,users"`
 	AvatarURL        string     `jsonapi:"attr,avatar-url"`
+	Email            string     `jsonapi:"attr,email"`
 	IsServiceAccount bool       `jsonapi:"attr,is-service-account"`
 	TwoFactor        *TwoFactor `jsonapi:"attr,two-factor"`
+	UnconfirmedEmail string     `jsonapi:"attr,unconfirmed-email"`
 	Username         string     `jsonapi:"attr,username"`
 	V2Only           bool       `jsonapi:"attr,v2-only"`
 
@@ -45,10 +47,25 @@ type TwoFactor struct {
 	Verified          bool         `json:"verified"`
 }
 
+// Retrieve the details of the currently authenticated user.
+func (s *Accounts) Retrieve() (*Account, error) {
+	req, err := s.client.newRequest("GET", "account/details", nil)
+	if err != nil {
+		return nil, err
+	}
+
+	a, err := s.client.do(req, &Account{})
+	if err != nil {
+		return nil, err
+	}
+
+	return a.(*Account), nil
+}
+
 // AccountUpdateOptions represents the options for updating an account.
 type AccountUpdateOptions struct {
 	// For internal use only!
-	ID string `jsonapi:"primary,organizations"`
+	ID string `jsonapi:"primary,users"`
 
 	// New username.
 	Username *string `jsonapi:"attr,username,omitempty"`
@@ -79,18 +96,18 @@ func (s *Accounts) Update(options AccountUpdateOptions) (*Account, error) {
 // authentication.
 type TwoFactorEnableOptions struct {
 	// For internal use only!
-	ID string `jsonapi:"primary,organizations"`
+	ID string `jsonapi:"primary,users"`
 
 	// The preferred delivery method for 2FA.
-	Delivery *string `jsonapi:"attr,delivery,omitempty"`
+	Delivery *DeliveryType `jsonapi:"attr,delivery"`
 
 	// An SMS number for the SMS delivery method.
 	SMSNumber *string `jsonapi:"attr,sms-number,omitempty"`
 }
 
 func (o TwoFactorEnableOptions) valid() error {
-	if !validString(o.Delivery) {
-		return errors.New("Invalid value for delivery")
+	if o.Delivery == nil {
+		return errors.New("Delivery is required")
 	}
 	return nil
 }
@@ -139,12 +156,12 @@ type TwoFactorVerifyOptions struct {
 	ID string `jsonapi:"primary,organizations"`
 
 	// The verication code received by SMS or through an application.
-	Code *string `jsonapi:"attr,code,omitempty"`
+	Code *string `jsonapi:"attr,code"`
 }
 
 func (o TwoFactorVerifyOptions) valid() error {
 	if !validString(o.Code) {
-		return errors.New("Invalid value for code")
+		return errors.New("Code is required")
 	}
 	return nil
 }

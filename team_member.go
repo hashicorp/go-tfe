@@ -23,10 +23,23 @@ type TeamMemberAddOptions struct {
 	Usernames []string
 }
 
+func (o *TeamMemberAddOptions) valid() error {
+	if o.Usernames == nil {
+		return errors.New("Usernames is required")
+	}
+	if len(o.Usernames) == 0 {
+		return errors.New("Invalid value for usernames")
+	}
+	return nil
+}
+
 // Add multiple users to a team.
 func (s *TeamMembers) Add(teamID string, options TeamMemberAddOptions) error {
 	if !validStringID(&teamID) {
 		return errors.New("Invalid value for team ID")
+	}
+	if err := options.valid(); err != nil {
+		return err
 	}
 
 	var tms []*teamMember
@@ -35,7 +48,7 @@ func (s *TeamMembers) Add(teamID string, options TeamMemberAddOptions) error {
 	}
 
 	u := fmt.Sprintf("teams/%s/relationships/users", teamID)
-	req, err := s.client.newRequest("POST", u, &options)
+	req, err := s.client.newRequest("POST", u, tms)
 	if err != nil {
 		return err
 	}
@@ -50,10 +63,23 @@ type TeamMemberRemoveOptions struct {
 	Usernames []string
 }
 
+func (o *TeamMemberRemoveOptions) valid() error {
+	if o.Usernames == nil {
+		return errors.New("Usernames is required")
+	}
+	if len(o.Usernames) == 0 {
+		return errors.New("Invalid value for usernames")
+	}
+	return nil
+}
+
 // Remove multiple users from a team.
 func (s *TeamMembers) Remove(teamID string, options TeamMemberRemoveOptions) error {
 	if !validStringID(&teamID) {
 		return errors.New("Invalid value for team ID")
+	}
+	if err := options.valid(); err != nil {
+		return err
 	}
 
 	var tms []*teamMember
@@ -62,7 +88,7 @@ func (s *TeamMembers) Remove(teamID string, options TeamMemberRemoveOptions) err
 	}
 
 	u := fmt.Sprintf("teams/%s/relationships/users", teamID)
-	req, err := s.client.newRequest("DELETE", u, &options)
+	req, err := s.client.newRequest("DELETE", u, tms)
 	if err != nil {
 		return err
 	}

@@ -17,15 +17,13 @@ func TestOrganizationsList(t *testing.T) {
 
 	t.Run("with no list options", func(t *testing.T) {
 		orgs, err := client.Organizations.List(OrganizationListOptions{})
-		require.Nil(t, err)
-
+		require.NoError(t, err)
 		assert.Contains(t, orgs, orgTest1)
 		assert.Contains(t, orgs, orgTest2)
 	})
 
 	t.Run("with list options", func(t *testing.T) {
 		t.Skip("paging not supported yet in API")
-
 		// Request a page number which is out of range. The result should
 		// be successful, but return no results if the paging options are
 		// properly passed along.
@@ -35,9 +33,8 @@ func TestOrganizationsList(t *testing.T) {
 				PageSize:   100,
 			},
 		})
-		require.Nil(t, err)
-
-		assert.Equal(t, 0, len(orgs))
+		require.NoError(t, err)
+		assert.Empty(t, orgs)
 	})
 }
 
@@ -51,16 +48,28 @@ func TestOrganizationsCreate(t *testing.T) {
 		}
 
 		org, err := client.Organizations.Create(options)
-		require.Nil(t, err)
+		require.NoError(t, err)
+
+		// Make sure we clean up the created org.
 		defer client.Organizations.Delete(org.Name)
 
 		assert.Equal(t, *options.Name, org.Name)
 		assert.Equal(t, *options.Email, org.Email)
 	})
 
-	t.Run("without valid options", func(t *testing.T) {
-		_, err := client.Organizations.Create(OrganizationCreateOptions{})
-		require.NotNil(t, err)
+	t.Run("when no email is provided", func(t *testing.T) {
+		org, err := client.Organizations.Create(OrganizationCreateOptions{
+			Name: String("foo"),
+		})
+		assert.Nil(t, org)
+		assert.EqualError(t, err, "Email is required")
+	})
+
+	t.Run("when no name is provided", func(t *testing.T) {
+		_, err := client.Organizations.Create(OrganizationCreateOptions{
+			Email: String("foo@bar.com"),
+		})
+		assert.EqualError(t, err, "Name is required")
 	})
 
 	t.Run("with invalid name", func(t *testing.T) {
@@ -70,14 +79,6 @@ func TestOrganizationsCreate(t *testing.T) {
 		})
 		assert.Nil(t, org)
 		assert.EqualError(t, err, "Invalid value for name")
-	})
-
-	t.Run("when no email is provided", func(t *testing.T) {
-		org, err := client.Organizations.Create(OrganizationCreateOptions{
-			Name: String("foo"),
-		})
-		assert.Nil(t, org)
-		assert.EqualError(t, err, "Email is required")
 	})
 }
 
@@ -89,7 +90,7 @@ func TestOrganizationsRetrieve(t *testing.T) {
 
 	t.Run("when the org exists", func(t *testing.T) {
 		org, err := client.Organizations.Retrieve(orgTest.Name)
-		require.Nil(t, err)
+		require.NoError(t, err)
 		assert.Equal(t, orgTest, org)
 
 		t.Run("permissions are properly decoded", func(t *testing.T) {
@@ -97,8 +98,8 @@ func TestOrganizationsRetrieve(t *testing.T) {
 		})
 
 		t.Run("timestamps are populated", func(t *testing.T) {
-			assert.False(t, org.CreatedAt.IsZero())
-			assert.False(t, org.TrialExpiresAt.IsZero())
+			assert.NotEmpty(t, org.CreatedAt)
+			assert.NotEmpty(t, org.TrialExpiresAt)
 		})
 	})
 
@@ -110,7 +111,7 @@ func TestOrganizationsRetrieve(t *testing.T) {
 
 	t.Run("when the org does not exist", func(t *testing.T) {
 		_, err := client.Organizations.Retrieve(randomString(t))
-		assert.NotNil(t, err)
+		assert.Error(t, err)
 	})
 }
 
@@ -129,7 +130,7 @@ func TestOrganizationsUpdate(t *testing.T) {
 		if err != nil {
 			orgTestCleanup()
 		}
-		require.Nil(t, err)
+		require.NoError(t, err)
 
 		// Make sure we clean up the renamed org.
 		defer client.Organizations.Delete(org.Name)
@@ -137,7 +138,7 @@ func TestOrganizationsUpdate(t *testing.T) {
 		// Also get a fresh result from the API to ensure we get the
 		// expected values back.
 		refreshed, err := client.Organizations.Retrieve(*options.Name)
-		require.Nil(t, err)
+		require.NoError(t, err)
 
 		for _, item := range []*Organization{
 			org,
@@ -159,8 +160,7 @@ func TestOrganizationsUpdate(t *testing.T) {
 		defer orgTestCleanup()
 
 		org, err := client.Organizations.Update(orgTest.Name, OrganizationUpdateOptions{})
-		require.Nil(t, err)
-
+		require.NoError(t, err)
 		assert.Equal(t, orgTest.Name, org.Name)
 		assert.Equal(t, orgTest.Email, org.Email)
 	})
@@ -173,7 +173,7 @@ func TestOrganizationsDelete(t *testing.T) {
 		orgTest, _ := createOrganization(t, client)
 
 		err := client.Organizations.Delete(orgTest.Name)
-		require.Nil(t, err)
+		require.NoError(t, err)
 
 		// Try fetching the org again - it should error.
 		_, err = client.Organizations.Retrieve(orgTest.Name)

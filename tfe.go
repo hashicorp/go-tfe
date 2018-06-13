@@ -63,9 +63,21 @@ type Client struct {
 	http      *http.Client
 	userAgent string
 
+	Accounts              *Accounts
 	ConfigurationVersions *ConfigurationVersions
+	OAuthClients          *OAuthClients
+	OAuthTokens           *OAuthTokens
 	Organizations         *Organizations
+	OrganizationTokens    *OrganizationTokens
+	Policies              *Policies
+	PolicyChecks          *PolicyChecks
 	Runs                  *Runs
+	SSHKeys               *SSHKeys
+	Teams                 *Teams
+	TeamAccesses          *TeamAccesses
+	TeamMembers           *TeamMembers
+	TeamTokens            *TeamTokens
+	Variables             *Variables
 	Workspaces            *Workspaces
 }
 
@@ -107,9 +119,21 @@ func NewClient(cfg *Config) (*Client, error) {
 	}
 
 	// Create the services.
+	client.Accounts = &Accounts{client: client}
 	client.ConfigurationVersions = &ConfigurationVersions{client: client}
+	client.OAuthClients = &OAuthClients{client: client}
+	client.OAuthTokens = &OAuthTokens{client: client}
 	client.Organizations = &Organizations{client: client}
+	client.OrganizationTokens = &OrganizationTokens{client: client}
+	client.Policies = &Policies{client: client}
+	client.PolicyChecks = &PolicyChecks{client: client}
 	client.Runs = &Runs{client: client}
+	client.SSHKeys = &SSHKeys{client: client}
+	client.Teams = &Teams{client: client}
+	client.TeamAccesses = &TeamAccesses{client: client}
+	client.TeamMembers = &TeamMembers{client: client}
+	client.TeamTokens = &TeamTokens{client: client}
+	client.Variables = &Variables{client: client}
 	client.Workspaces = &Workspaces{client: client}
 
 	return client, nil
@@ -148,36 +172,45 @@ func (c *Client) newRequest(method, path string, v interface{}) (*http.Request, 
 		Host:       u.Host,
 	}
 
-	if v != nil {
-		switch method {
-		case "GET":
+	switch method {
+	case "GET":
+		req.Header.Set("Accept", "application/vnd.api+json")
+
+		if v != nil {
 			q, err := query.Values(v)
 			if err != nil {
 				return nil, err
 			}
 			u.RawQuery = q.Encode()
-		case "PATCH", "POST":
+		}
+	case "PATCH", "POST":
+		req.Header.Set("Accept", "application/vnd.api+json")
+		req.Header.Set("Content-Type", "application/vnd.api+json")
+
+		if v != nil {
 			var body bytes.Buffer
 			if err := jsonapi.MarshalPayloadWithoutIncluded(&body, v); err != nil {
 				return nil, err
 			}
 			req.Body = ioutil.NopCloser(&body)
 			req.ContentLength = int64(body.Len())
-			req.Header.Set("Content-Type", "application/vnd.api+json")
-		case "PUT":
+		}
+	case "PUT":
+		req.Header.Set("Accept", "application/json")
+		req.Header.Set("Content-Type", "application/octet-stream")
+
+		if v != nil {
 			switch v := v.(type) {
 			case []byte:
 				req.Body = ioutil.NopCloser(bytes.NewReader(v))
 				req.ContentLength = int64(len(v))
-				req.Header.Set("Content-Type", "application/json")
 			default:
 				return nil, fmt.Errorf("Unexpected type: %T", v)
 			}
 		}
 	}
 
-	// Set the required headers.
-	req.Header.Set("Accept", "application/vnd.api+json")
+	// Set required headers.
 	req.Header.Set("Authorization", "Bearer "+c.token)
 	req.Header.Set("User-Agent", c.userAgent)
 

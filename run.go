@@ -137,7 +137,7 @@ type RunCreateOptions struct {
 
 func (o RunCreateOptions) valid() error {
 	if o.Workspace == nil {
-		return errors.New("Invalid value for workspace")
+		return errors.New("Workspace is required")
 	}
 	return nil
 }

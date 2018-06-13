@@ -6,7 +6,7 @@ import (
 	"time"
 )
 
-// OAuthClients handles communication with the oAuth client related methods
+// OAuthClients handles communication with the OAuth client related methods
 // of the Terraform Enterprise API.
 //
 // TFE API docs:
@@ -32,38 +32,41 @@ const (
 // OAuthClient represents a connection between an organization and a VCS
 // provider.
 type OAuthClient struct {
-	ID                  string               `jsonapi:"primary,oauth-clients"`
-	APIURL              string               `jsonapi:"attr,api-url"`
-	CallbackURL         string               `jsonapi:"attr,callback-url"`
-	ConnectPath         string               `jsonapi:"attr,connect-path"`
-	CreatedAt           time.Time            `jsonapi:"attr,created-at,iso8601"`
-	HTTPURL             string               `jsonapi:"attr,http-url"`
-	Key                 string               `jsonapi:"attr,key"`
-	RSAPublicKey        string               `jsonapi:"attr,rsa-public-key"`
-	ServiceProvider     *ServiceProviderType `jsonapi:"attr,service-provider"`
-	ServiceProviderName string               `jsonapi:"attr,service-provider-display-name"`
+	ID                  string              `jsonapi:"primary,oauth-clients"`
+	APIURL              string              `jsonapi:"attr,api-url"`
+	CallbackURL         string              `jsonapi:"attr,callback-url"`
+	ConnectPath         string              `jsonapi:"attr,connect-path"`
+	CreatedAt           time.Time           `jsonapi:"attr,created-at,iso8601"`
+	HTTPURL             string              `jsonapi:"attr,http-url"`
+	Key                 string              `jsonapi:"attr,key"`
+	RSAPublicKey        string              `jsonapi:"attr,rsa-public-key"`
+	ServiceProvider     ServiceProviderType `jsonapi:"attr,service-provider"`
+	ServiceProviderName string              `jsonapi:"attr,service-provider-display-name"`
 
 	// Relations
 	Organization *Organization `jsonapi:"relation,organization"`
-	OAuthToken   *OAuthToken   `jsonapi:"relation,oauth-token"`
+	OAuthToken   []*OAuthToken `jsonapi:"relation,oauth-token"`
 }
 
-// OAuthClientCreateOptions represents the options for creating an oauth account.
+// OAuthClientCreateOptions represents the options for creating an OAuth client.
 type OAuthClientCreateOptions struct {
 	// For internal use only!
-	ID string `jsonapi:"primary,organizations"`
+	ID string `jsonapi:"primary,oauth-clients"`
 
 	// The base URL of your VCS provider's API.
-	APIURL *string `jsonapi:"attr,api-url,omitempty"`
+	APIURL *string `jsonapi:"attr,api-url"`
 
 	// The homepage of your VCS provider.
-	HTTPURL *string `jsonapi:"attr,http-url,omitempty"`
+	HTTPURL *string `jsonapi:"attr,http-url"`
 
-	// The token string you were given by your VCS provider.
-	OAuthToken *string `jsonapi:"attr,oauth-token-string,omitempty"`
+	// The key you were given by your VCS provider.
+	Key *string `jsonapi:"attr,key"`
+
+	// The secret you were given by your VCS provider.
+	Secret *string `jsonapi:"attr,secret"`
 
 	// The VCS provider being connected with.
-	ServiceProvider *ServiceProviderType `jsonapi:"attr,service-provider,omitempty"`
+	ServiceProvider *ServiceProviderType `jsonapi:"attr,service-provider"`
 }
 
 func (o OAuthClientCreateOptions) valid() error {
@@ -73,8 +76,11 @@ func (o OAuthClientCreateOptions) valid() error {
 	if !validString(o.HTTPURL) {
 		return errors.New("HTTPURL is required")
 	}
-	if !validString(o.OAuthToken) {
-		return errors.New("OAuthToken is required")
+	if !validString(o.Key) {
+		return errors.New("Key is required")
+	}
+	if !validString(o.Secret) {
+		return errors.New("Secret is required")
 	}
 	if o.ServiceProvider == nil {
 		return errors.New("ServiceProvider is required")

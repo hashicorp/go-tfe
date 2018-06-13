@@ -40,6 +40,9 @@ type TeamAccessListOptions struct {
 }
 
 func (o TeamAccessListOptions) valid() error {
+	if !validString(o.WorkspaceID) {
+		return errors.New("Workspace ID is required")
+	}
 	if !validStringID(o.WorkspaceID) {
 		return errors.New("Invalid value for workspace ID")
 	}
@@ -47,7 +50,7 @@ func (o TeamAccessListOptions) valid() error {
 }
 
 // List returns the team accesses for a given workspace.
-func (s *TeamAccesses) List(string, options TeamAccessListOptions) ([]*TeamAccess, error) {
+func (s *TeamAccesses) List(options TeamAccessListOptions) ([]*TeamAccess, error) {
 	if err := options.valid(); err != nil {
 		return nil, err
 	}
@@ -57,7 +60,7 @@ func (s *TeamAccesses) List(string, options TeamAccessListOptions) ([]*TeamAcces
 		return nil, err
 	}
 
-	result, err := s.client.do(req, []*Team{})
+	result, err := s.client.do(req, []*TeamAccess{})
 	if err != nil {
 		return nil, err
 	}
@@ -73,10 +76,10 @@ func (s *TeamAccesses) List(string, options TeamAccessListOptions) ([]*TeamAcces
 // TeamAccessAddOptions represents the options for adding team access.
 type TeamAccessAddOptions struct {
 	// For internal use only!
-	ID string `jsonapi:"primary,runs"`
+	ID string `jsonapi:"primary,team-workspaces"`
 
 	// The type of access to grant.
-	Access *TeamAccessType `jsonapi:""`
+	Access *TeamAccessType `jsonapi:"attr,access"`
 
 	// The team to add to the workspace
 	Team *Team `jsonapi:"relation,team"`
@@ -87,13 +90,13 @@ type TeamAccessAddOptions struct {
 
 func (o TeamAccessAddOptions) valid() error {
 	if o.Access == nil {
-		return errors.New("Invalid value for access")
+		return errors.New("Access is required")
 	}
 	if o.Team == nil {
-		return errors.New("Invalid value for team")
+		return errors.New("Team is required")
 	}
 	if o.Workspace == nil {
-		return errors.New("Invalid value for workspace")
+		return errors.New("Workspace is required")
 	}
 	return nil
 }

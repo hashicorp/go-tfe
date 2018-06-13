@@ -17,7 +17,7 @@ type OrganizationTokens struct {
 
 // OrganizationToken represents a Terraform Enterprise organization token.
 type OrganizationToken struct {
-	ID          string    `jsonapi:"primary,organization-tokens"`
+	ID          string    `jsonapi:"primary,authentication-tokens"`
 	CreatedAt   time.Time `jsonapi:"attr,created-at,iso8601"`
 	Description string    `jsonapi:"attr,description"`
 	LastUsedAt  time.Time `jsonapi:"attr,last-used-at,iso8601"`

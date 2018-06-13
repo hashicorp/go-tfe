@@ -101,6 +101,9 @@ type OrganizationCreateOptions struct {
 }
 
 func (o OrganizationCreateOptions) valid() error {
+	if !validString(o.Name) {
+		return errors.New("Name is required")
+	}
 	if !validStringID(o.Name) {
 		return errors.New("Invalid value for name")
 	}

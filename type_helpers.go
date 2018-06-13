@@ -1,5 +1,10 @@
 package tfe
 
+// Access returns a pointer to the given team access type.
+func Access(v TeamAccessType) *TeamAccessType {
+	return &v
+}
+
 // AuthPolicy returns a pointer to the given authentication poliy.
 func AuthPolicy(v AuthPolicyType) *AuthPolicyType {
 	return &v
@@ -10,8 +15,18 @@ func Bool(v bool) *bool {
 	return &v
 }
 
+// Category returns a pointer to the given category type.
+func Category(v CategoryType) *CategoryType {
+	return &v
+}
+
 // Delivery returns a pointer to the given delivery type.
 func Delivery(v DeliveryType) *DeliveryType {
+	return &v
+}
+
+// EnforcementMode returns a pointer to the given enforcement level.
+func EnforcementMode(v EnforcementLevel) *EnforcementLevel {
 	return &v
 }
 

@@ -6,7 +6,7 @@ import (
 	"time"
 )
 
-// OAuthTokens handles communication with the oAuth token related methods
+// OAuthTokens handles communication with the OAuth token related methods
 // of the Terraform Enterprise API.
 //
 // TFE API docs:

@@ -32,7 +32,7 @@ const (
 	PolicyErrored    PolicyStatus = "errored"
 	PolicyHardFailed PolicyStatus = "hard_failed"
 	PolicyOverridden PolicyStatus = "overridden"
-	PolicyPasses     PolicyStatus = "passes"
+	PolicyPasses     PolicyStatus = "passed"
 	PolicyPending    PolicyStatus = "pending"
 	PolicyQueued     PolicyStatus = "queued"
 	PolicySoftFailed PolicyStatus = "soft_failed"
@@ -81,13 +81,13 @@ type PolicyStatusTimestamps struct {
 	SoftFailedAt time.Time `json:"soft-failed-at"`
 }
 
-// ListPolicyCheckOptions represents the options for listing policy checks.
-type ListPolicyCheckOptions struct {
+// PolicyCheckListOptions represents the options for listing policy checks.
+type PolicyCheckListOptions struct {
 	ListOptions
 }
 
 // List all policy checks of the given run.
-func (s *PolicyChecks) List(runID string, options ListPolicyCheckOptions) ([]*PolicyCheck, error) {
+func (s *PolicyChecks) List(runID string, options PolicyCheckListOptions) ([]*PolicyCheck, error) {
 	if !validStringID(&runID) {
 		return nil, errors.New("Invalid value for run ID")
 	}
@@ -112,12 +112,12 @@ func (s *PolicyChecks) List(runID string, options ListPolicyCheckOptions) ([]*Po
 }
 
 // Override a soft-mandatory or warning policy.
-func (s *PolicyChecks) Override(policyID string) (*PolicyCheck, error) {
-	if !validStringID(&policyID) {
-		return nil, errors.New("Invalid value for policy ID")
+func (s *PolicyChecks) Override(policyCheckID string) (*PolicyCheck, error) {
+	if !validStringID(&policyCheckID) {
+		return nil, errors.New("Invalid value for policy check ID")
 	}
 
-	u := fmt.Sprintf("policy-checks/%s/actions/override", policyID)
+	u := fmt.Sprintf("policy-checks/%s/actions/override", policyCheckID)
 	req, err := s.client.newRequest("POST", u, nil)
 	if err != nil {
 		return nil, err
