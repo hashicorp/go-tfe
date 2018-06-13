@@ -38,13 +38,13 @@ type Enforcement struct {
 	Mode EnforcementLevel `json:"mode"`
 }
 
-// ListPoliciesOptions represents the options for listing policies.
-type ListPoliciesOptions struct {
+// PolicyListOptions represents the options for listing policies.
+type PolicyListOptions struct {
 	ListOptions
 }
 
 // List all the policies for a given organization
-func (s *Policies) List(organization string, options ListPoliciesOptions) ([]*Policy, error) {
+func (s *Policies) List(organization string, options PolicyListOptions) ([]*Policy, error) {
 	if !validStringID(&organization) {
 		return nil, errors.New("Invalid value for organization")
 	}
@@ -68,8 +68,8 @@ func (s *Policies) List(organization string, options ListPoliciesOptions) ([]*Po
 	return ps, nil
 }
 
-// CreatePolicyOptions represents the options for creating a new policy.
-type CreatePolicyOptions struct {
+// PolicyCreateOptions represents the options for creating a new policy.
+type PolicyCreateOptions struct {
 	// For internal use only!
 	ID string `jsonapi:"primary,policies"`
 
@@ -86,7 +86,7 @@ type EnforcementOptions struct {
 	Mode *EnforcementLevel `json:"mode,omitempty"`
 }
 
-func (o CreatePolicyOptions) valid() error {
+func (o PolicyCreateOptions) valid() error {
 	if !validStringID(o.Name) {
 		return errors.New("Invalid value for name")
 	}
@@ -97,7 +97,7 @@ func (o CreatePolicyOptions) valid() error {
 }
 
 // Create a policy and associate it with an organization.
-func (s *Policies) Create(organization string, options CreatePolicyOptions) (*Policy, error) {
+func (s *Policies) Create(organization string, options PolicyCreateOptions) (*Policy, error) {
 	if !validStringID(&organization) {
 		return nil, errors.New("Invalid value for organization")
 	}
@@ -139,8 +139,8 @@ func (s *Policies) Upload(policyID string, content []byte) error {
 	return err
 }
 
-// UpdatePolicyOptions represents the options for updating a policy.
-type UpdatePolicyOptions struct {
+// PolicyUpdateOptions represents the options for updating a policy.
+type PolicyUpdateOptions struct {
 	// For internal use only!
 	ID string `jsonapi:"primary,policies"`
 
@@ -151,7 +151,7 @@ type UpdatePolicyOptions struct {
 	Enforce *EnforcementOptions `jsonapi:"attr,enforce,omitempty"`
 }
 
-func (o UpdatePolicyOptions) valid() error {
+func (o PolicyUpdateOptions) valid() error {
 	if !validStringID(o.Name) {
 		return errors.New("Invalid value for name")
 	}
@@ -162,7 +162,7 @@ func (o UpdatePolicyOptions) valid() error {
 }
 
 // Update an existing policy.
-func (s *Policies) Update(policyID string, options UpdatePolicyOptions) (*Policy, error) {
+func (s *Policies) Update(policyID string, options PolicyUpdateOptions) (*Policy, error) {
 	if !validStringID(&policyID) {
 		return nil, errors.New("Invalid value for policy ID")
 	}

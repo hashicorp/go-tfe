@@ -16,7 +16,7 @@ func TestConfigurationVersionsCreate(t *testing.T) {
 	t.Run("with valid options", func(t *testing.T) {
 		cv, err := client.ConfigurationVersions.Create(
 			wTest.ID,
-			CreateConfigurationVersionOptions{},
+			ConfigurationVersionCreateOptions{},
 		)
 		require.Nil(t, err)
 
@@ -42,7 +42,7 @@ func TestConfigurationVersionsCreate(t *testing.T) {
 	t.Run("with invalid workspace id", func(t *testing.T) {
 		cv, err := client.ConfigurationVersions.Create(
 			badIdentifier,
-			CreateConfigurationVersionOptions{},
+			ConfigurationVersionCreateOptions{},
 		)
 		assert.Nil(t, cv)
 		assert.EqualError(t, err, "Invalid value for workspace ID")

@@ -48,8 +48,8 @@ type OAuthClient struct {
 	OAuthToken   *OAuthToken   `jsonapi:"relation,oauth-token"`
 }
 
-// CreateOAuthClientOptions represents the options for creating an oauth account.
-type CreateOAuthClientOptions struct {
+// OAuthClientCreateOptions represents the options for creating an oauth account.
+type OAuthClientCreateOptions struct {
 	// For internal use only!
 	ID string `jsonapi:"primary,organizations"`
 
@@ -66,7 +66,7 @@ type CreateOAuthClientOptions struct {
 	ServiceProvider *ServiceProviderType `jsonapi:"attr,service-provider,omitempty"`
 }
 
-func (o CreateOAuthClientOptions) valid() error {
+func (o OAuthClientCreateOptions) valid() error {
 	if !validString(o.APIURL) {
 		return errors.New("APIURL is required")
 	}
@@ -83,7 +83,7 @@ func (o CreateOAuthClientOptions) valid() error {
 }
 
 // Create a VCS connection between an organization and a VCS provider.
-func (s *OAuthClients) Create(organization string, options CreateOAuthClientOptions) (*OAuthClient, error) {
+func (s *OAuthClients) Create(organization string, options OAuthClientCreateOptions) (*OAuthClient, error) {
 	if !validStringID(&organization) {
 		return nil, errors.New("Invalid value for organization")
 	}

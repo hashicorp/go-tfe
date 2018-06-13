@@ -84,13 +84,13 @@ type RunStatusTimestamps struct {
 	StartedAt  time.Time `json:"started-at"`
 }
 
-// ListRunOptions represents the options for listing runs.
-type ListRunOptions struct {
+// RunListOptions represents the options for listing runs.
+type RunListOptions struct {
 	ListOptions
 }
 
 // List runs of the given workspace.
-func (s *Runs) List(workspaceID string, options ListRunOptions) ([]*Run, error) {
+func (s *Runs) List(workspaceID string, options RunListOptions) ([]*Run, error) {
 	if !validStringID(&workspaceID) {
 		return nil, errors.New("Invalid value for workspace ID")
 	}
@@ -114,8 +114,8 @@ func (s *Runs) List(workspaceID string, options ListRunOptions) ([]*Run, error) 
 	return rs, nil
 }
 
-// CreateRunOptions represents the options for creating a new run.
-type CreateRunOptions struct {
+// RunCreateOptions represents the options for creating a new run.
+type RunCreateOptions struct {
 	// For internal use only!
 	ID string `jsonapi:"primary,runs"`
 
@@ -135,7 +135,7 @@ type CreateRunOptions struct {
 	Workspace *Workspace `jsonapi:"relation,workspace"`
 }
 
-func (o CreateRunOptions) valid() error {
+func (o RunCreateOptions) valid() error {
 	if o.Workspace == nil {
 		return errors.New("Invalid value for workspace")
 	}
@@ -143,7 +143,7 @@ func (o CreateRunOptions) valid() error {
 }
 
 // Create is used to create a new run.
-func (s *Runs) Create(options CreateRunOptions) (*Run, error) {
+func (s *Runs) Create(options RunCreateOptions) (*Run, error) {
 	if err := options.valid(); err != nil {
 		return nil, err
 	}
@@ -183,14 +183,14 @@ func (s *Runs) Retrieve(runID string) (*Run, error) {
 	return r.(*Run), nil
 }
 
-// ApplyRunOptions represents the options for applying a run.
-type ApplyRunOptions struct {
+// RunApplyOptions represents the options for applying a run.
+type RunApplyOptions struct {
 	// An optional comment about the run.
 	Comment *string `json:"comment,omitempty"`
 }
 
 // Apply a specific run by its ID.
-func (s *Runs) Apply(runID string, options ApplyRunOptions) error {
+func (s *Runs) Apply(runID string, options RunApplyOptions) error {
 	if !validStringID(&runID) {
 		return errors.New("Invalid value for run ID")
 	}
@@ -206,14 +206,14 @@ func (s *Runs) Apply(runID string, options ApplyRunOptions) error {
 	return err
 }
 
-// CancelRunOptions represents the options for canceling a run.
-type CancelRunOptions struct {
+// RunCancelOptions represents the options for canceling a run.
+type RunCancelOptions struct {
 	// An optional explanation for why the run was canceled.
 	Comment *string `json:"comment,omitempty"`
 }
 
 // Cancel a specific run by its ID.
-func (s *Runs) Cancel(runID string, options CancelRunOptions) error {
+func (s *Runs) Cancel(runID string, options RunCancelOptions) error {
 	if !validStringID(&runID) {
 		return errors.New("Invalid value for run ID")
 	}
@@ -229,14 +229,14 @@ func (s *Runs) Cancel(runID string, options CancelRunOptions) error {
 	return err
 }
 
-// DiscardRunOptions represents the options for discarding a run.
-type DiscardRunOptions struct {
+// RunDiscardOptions represents the options for discarding a run.
+type RunDiscardOptions struct {
 	// An optional explanation for why the run was discarded.
 	Comment *string `json:"comment,omitempty"`
 }
 
 // Discard a specific run by its ID.
-func (s *Runs) Discard(runID string, options DiscardRunOptions) error {
+func (s *Runs) Discard(runID string, options RunDiscardOptions) error {
 	if !validStringID(&runID) {
 		return errors.New("Invalid value for run ID")
 	}

@@ -33,13 +33,13 @@ type TeamAccess struct {
 	Workspace *Workspace `jsonapi:"relation,workspace"`
 }
 
-// ListTeamAccessOptions represents the options for listing team accesses.
-type ListTeamAccessOptions struct {
+// TeamAccessListOptions represents the options for listing team accesses.
+type TeamAccessListOptions struct {
 	ListOptions
 	WorkspaceID *string `url:"filter[workspace][id],omitempty"`
 }
 
-func (o ListTeamAccessOptions) valid() error {
+func (o TeamAccessListOptions) valid() error {
 	if !validStringID(o.WorkspaceID) {
 		return errors.New("Invalid value for workspace ID")
 	}
@@ -47,7 +47,7 @@ func (o ListTeamAccessOptions) valid() error {
 }
 
 // List returns the team accesses for a given workspace.
-func (s *TeamAccesses) List(string, options ListTeamAccessOptions) ([]*TeamAccess, error) {
+func (s *TeamAccesses) List(string, options TeamAccessListOptions) ([]*TeamAccess, error) {
 	if err := options.valid(); err != nil {
 		return nil, err
 	}
@@ -70,8 +70,8 @@ func (s *TeamAccesses) List(string, options ListTeamAccessOptions) ([]*TeamAcces
 	return tas, nil
 }
 
-// AddTeamAccessOptions represents the options for adding team access.
-type AddTeamAccessOptions struct {
+// TeamAccessAddOptions represents the options for adding team access.
+type TeamAccessAddOptions struct {
 	// For internal use only!
 	ID string `jsonapi:"primary,runs"`
 
@@ -85,7 +85,7 @@ type AddTeamAccessOptions struct {
 	Workspace *Workspace `jsonapi:"relation,workspace"`
 }
 
-func (o AddTeamAccessOptions) valid() error {
+func (o TeamAccessAddOptions) valid() error {
 	if o.Access == nil {
 		return errors.New("Invalid value for access")
 	}
@@ -99,7 +99,7 @@ func (o AddTeamAccessOptions) valid() error {
 }
 
 // Add team access for a workspace.
-func (s *TeamAccesses) Add(options AddTeamAccessOptions) (*TeamAccess, error) {
+func (s *TeamAccesses) Add(options TeamAccessAddOptions) (*TeamAccess, error) {
 	if err := options.valid(); err != nil {
 		return nil, err
 	}

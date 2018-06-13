@@ -59,13 +59,13 @@ type WorkspacePermissions struct {
 	CanUpdateVariable bool `json:"can-update-variable"`
 }
 
-// ListWorkspacesOptions represents the options for listing workspaces.
-type ListWorkspacesOptions struct {
+// WorkspaceListOptions represents the options for listing workspaces.
+type WorkspaceListOptions struct {
 	ListOptions
 }
 
 // List returns all of the workspaces within an organization.
-func (s *Workspaces) List(organization string, options ListWorkspacesOptions) ([]*Workspace, error) {
+func (s *Workspaces) List(organization string, options WorkspaceListOptions) ([]*Workspace, error) {
 	if !validStringID(&organization) {
 		return nil, errors.New("Invalid value for organization")
 	}
@@ -89,8 +89,8 @@ func (s *Workspaces) List(organization string, options ListWorkspacesOptions) ([
 	return ws, nil
 }
 
-// CreateWorkspaceOptions represents the options for creating a new workspace.
-type CreateWorkspaceOptions struct {
+// WorkspaceCreateOptions represents the options for creating a new workspace.
+type WorkspaceCreateOptions struct {
 	// For internal use only!
 	ID string `jsonapi:"primary,workspaces"`
 
@@ -130,7 +130,7 @@ type VCSRepoOptions struct {
 	OAuthTokenID      *string `json:"oauth-token-id,omitempty"`
 }
 
-func (o CreateWorkspaceOptions) valid() error {
+func (o WorkspaceCreateOptions) valid() error {
 	if !validStringID(o.Name) {
 		return errors.New("Invalid value for name")
 	}
@@ -138,7 +138,7 @@ func (o CreateWorkspaceOptions) valid() error {
 }
 
 // Create is used to create a new workspace.
-func (s *Workspaces) Create(organization string, options CreateWorkspaceOptions) (*Workspace, error) {
+func (s *Workspaces) Create(organization string, options WorkspaceCreateOptions) (*Workspace, error) {
 	if !validStringID(&organization) {
 		return nil, errors.New("Invalid value for organization")
 	}
@@ -186,8 +186,8 @@ func (s *Workspaces) Retrieve(organization, workspace string) (*Workspace, error
 	return w.(*Workspace), nil
 }
 
-// UpdateWorkspaceOptions represents the options for updating a workspace.
-type UpdateWorkspaceOptions struct {
+// WorkspaceUpdateOptions represents the options for updating a workspace.
+type WorkspaceUpdateOptions struct {
 	// For internal use only!
 	ID string `jsonapi:"primary,workspaces"`
 
@@ -218,7 +218,7 @@ type UpdateWorkspaceOptions struct {
 }
 
 // valid determines if the input is sufficiently filled.
-func (o UpdateWorkspaceOptions) valid() error {
+func (o WorkspaceUpdateOptions) valid() error {
 	if !validStringID(o.Name) {
 		return errors.New("Invalid value for name")
 	}
@@ -226,7 +226,7 @@ func (o UpdateWorkspaceOptions) valid() error {
 }
 
 // Update settings of an existing workspace.
-func (s *Workspaces) Update(organization, workspace string, options UpdateWorkspaceOptions) (*Workspace, error) {
+func (s *Workspaces) Update(organization, workspace string, options WorkspaceUpdateOptions) (*Workspace, error) {
 	if !validStringID(&organization) {
 		return nil, errors.New("Invalid value for organization")
 	}
@@ -274,14 +274,14 @@ func (s *Workspaces) Delete(organization, workspace string) error {
 	return err
 }
 
-// LockWorkspaceOptions represents the options for locking a workspace.
-type LockWorkspaceOptions struct {
+// WorkspaceLockOptions represents the options for locking a workspace.
+type WorkspaceLockOptions struct {
 	// Specifies the reason for locking the workspace.
 	Reason *string `json:"reason,omitempty"`
 }
 
 // Lock a workspace.
-func (s *Workspaces) Lock(workspaceID string, options LockWorkspaceOptions) (*Workspace, error) {
+func (s *Workspaces) Lock(workspaceID string, options WorkspaceLockOptions) (*Workspace, error) {
 	if !validStringID(&workspaceID) {
 		return nil, errors.New("Invalid value for workspace ID")
 	}
@@ -320,9 +320,9 @@ func (s *Workspaces) Unlock(workspaceID string) (*Workspace, error) {
 	return w.(*Workspace), nil
 }
 
-// AssignSSHKeyoptions represents the options to assign an SSH key to a
-// workspace.
-type AssignSSHKeyoptions struct {
+// WorkspaceAssignSSHKeyOptions represents the options to assign an SSH key to
+// a workspace.
+type WorkspaceAssignSSHKeyOptions struct {
 	// For internal use only!
 	ID string `jsonapi:"primary,workspaces"`
 
@@ -331,7 +331,7 @@ type AssignSSHKeyoptions struct {
 }
 
 // AssignSSHKey to a workspace.
-func (s *Workspaces) AssignSSHKey(workspaceID string, options AssignSSHKeyoptions) (*Workspace, error) {
+func (s *Workspaces) AssignSSHKey(workspaceID string, options WorkspaceAssignSSHKeyOptions) (*Workspace, error) {
 	if !validStringID(&workspaceID) {
 		return nil, errors.New("Invalid value for workspace ID")
 	}
@@ -353,9 +353,9 @@ func (s *Workspaces) AssignSSHKey(workspaceID string, options AssignSSHKeyoption
 	return w.(*Workspace), nil
 }
 
-// unassignSSHKeyoptions represents the options to unassign an SSH key to a
-// workspace.
-type unassignSSHKeyoptions struct {
+// workspaceUnassignSSHKeyOptions represents the options to unassign an SSH key
+// to a workspace.
+type workspaceUnassignSSHKeyOptions struct {
 	// For internal use only!
 	ID string `jsonapi:"primary,workspaces"`
 
@@ -370,7 +370,7 @@ func (s *Workspaces) UnassignSSHKey(workspaceID string) (*Workspace, error) {
 	}
 
 	u := fmt.Sprintf("workspaces/%s/relationships/ssh-key", workspaceID)
-	req, err := s.client.newRequest("PATCH", u, &unassignSSHKeyoptions{})
+	req, err := s.client.newRequest("PATCH", u, &workspaceUnassignSSHKeyOptions{})
 	if err != nil {
 		return nil, err
 	}

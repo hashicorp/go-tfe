@@ -20,13 +20,13 @@ type SSHKey struct {
 	Name string `jsonapi:"attr,name"`
 }
 
-// ListSSHKeysOptions represents the options for listing SSH keys.
-type ListSSHKeysOptions struct {
+// SSHKeyListOptions represents the options for listing SSH keys.
+type SSHKeyListOptions struct {
 	ListOptions
 }
 
 // List returns all the organizations visible to the current user.
-func (s *SSHKeys) List(organization string, options ListSSHKeysOptions) ([]*SSHKey, error) {
+func (s *SSHKeys) List(organization string, options SSHKeyListOptions) ([]*SSHKey, error) {
 	if !validStringID(&organization) {
 		return nil, errors.New("Invalid value for organization")
 	}
@@ -50,8 +50,8 @@ func (s *SSHKeys) List(organization string, options ListSSHKeysOptions) ([]*SSHK
 	return ks, nil
 }
 
-// CreateSSHKeyOptions represents the options for creating an SSH key.
-type CreateSSHKeyOptions struct {
+// SSHKeyCreateOptions represents the options for creating an SSH key.
+type SSHKeyCreateOptions struct {
 	// For internal use only!
 	ID string `jsonapi:"primary,ssh-keys"`
 
@@ -62,7 +62,7 @@ type CreateSSHKeyOptions struct {
 	Value *string `jsonapi:"attr,value"`
 }
 
-func (o CreateSSHKeyOptions) valid() error {
+func (o SSHKeyCreateOptions) valid() error {
 	if !validString(o.Name) {
 		return errors.New("Name is required")
 	}
@@ -73,7 +73,7 @@ func (o CreateSSHKeyOptions) valid() error {
 }
 
 // Create an SSH key and associate it with an organization.
-func (s *SSHKeys) Create(organization string, options CreateSSHKeyOptions) (*SSHKey, error) {
+func (s *SSHKeys) Create(organization string, options SSHKeyCreateOptions) (*SSHKey, error) {
 	if !validStringID(&organization) {
 		return nil, errors.New("Invalid value for organization")
 	}
@@ -118,8 +118,8 @@ func (s *SSHKeys) Retrieve(sshKeyID string) (*SSHKey, error) {
 	return k.(*SSHKey), nil
 }
 
-// UpdateSSHKeyOptions represents the options for updating an SSH key.
-type UpdateSSHKeyOptions struct {
+// SSHKeyUpdateOptions represents the options for updating an SSH key.
+type SSHKeyUpdateOptions struct {
 	// For internal use only!
 	ID string `jsonapi:"primary,ssh-keys"`
 
@@ -131,7 +131,7 @@ type UpdateSSHKeyOptions struct {
 }
 
 // Update an SSH key.
-func (s *SSHKeys) Update(sshKeyID string, options UpdateSSHKeyOptions) (*SSHKey, error) {
+func (s *SSHKeys) Update(sshKeyID string, options SSHKeyUpdateOptions) (*SSHKey, error) {
 	if !validStringID(&sshKeyID) {
 		return nil, errors.New("Invalid value for SSH key ID")
 	}

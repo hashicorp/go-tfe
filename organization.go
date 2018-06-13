@@ -63,13 +63,13 @@ type OrganizationPermissions struct {
 	CanUpdateSentinel           bool `json:"can-update-sentinel"`
 }
 
-// ListOrganizationsOptions represents the options for listing organizations.
-type ListOrganizationsOptions struct {
+// OrganizationListOptions represents the options for listing organizations.
+type OrganizationListOptions struct {
 	ListOptions
 }
 
 // List returns all the organizations visible to the current user.
-func (s *Organizations) List(options ListOrganizationsOptions) ([]*Organization, error) {
+func (s *Organizations) List(options OrganizationListOptions) ([]*Organization, error) {
 	req, err := s.client.newRequest("GET", "organizations", &options)
 	if err != nil {
 		return nil, err
@@ -88,8 +88,8 @@ func (s *Organizations) List(options ListOrganizationsOptions) ([]*Organization,
 	return orgs, nil
 }
 
-// CreateOrganizationOptions represents the options for creating an organization.
-type CreateOrganizationOptions struct {
+// OrganizationCreateOptions represents the options for creating an organization.
+type OrganizationCreateOptions struct {
 	// For internal use only!
 	ID string `jsonapi:"primary,organizations"`
 
@@ -100,7 +100,7 @@ type CreateOrganizationOptions struct {
 	Email *string `jsonapi:"attr,email"`
 }
 
-func (o CreateOrganizationOptions) valid() error {
+func (o OrganizationCreateOptions) valid() error {
 	if !validStringID(o.Name) {
 		return errors.New("Invalid value for name")
 	}
@@ -111,7 +111,7 @@ func (o CreateOrganizationOptions) valid() error {
 }
 
 // Create a new organization with the given name and email.
-func (s *Organizations) Create(options CreateOrganizationOptions) (*Organization, error) {
+func (s *Organizations) Create(options OrganizationCreateOptions) (*Organization, error) {
 	if err := options.valid(); err != nil {
 		return nil, err
 	}
@@ -151,8 +151,8 @@ func (s *Organizations) Retrieve(name string) (*Organization, error) {
 	return org.(*Organization), nil
 }
 
-// UpdateOrganizationOptions represents the options for updating an organization.
-type UpdateOrganizationOptions struct {
+// OrganizationUpdateOptions represents the options for updating an organization.
+type OrganizationUpdateOptions struct {
 	// For internal use only!
 	ID string `jsonapi:"primary,organizations"`
 
@@ -173,7 +173,7 @@ type UpdateOrganizationOptions struct {
 }
 
 // Update attributes of an existing organization.
-func (s *Organizations) Update(name string, options UpdateOrganizationOptions) (*Organization, error) {
+func (s *Organizations) Update(name string, options OrganizationUpdateOptions) (*Organization, error) {
 	if !validStringID(&name) {
 		return nil, errors.New("Invalid value for name")
 	}

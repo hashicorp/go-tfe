@@ -45,8 +45,8 @@ type TwoFactor struct {
 	Verified          bool         `json:"verified"`
 }
 
-// UpdateAccountOptions represents the options for updating an account.
-type UpdateAccountOptions struct {
+// AccountUpdateOptions represents the options for updating an account.
+type AccountUpdateOptions struct {
 	// For internal use only!
 	ID string `jsonapi:"primary,organizations"`
 
@@ -58,7 +58,7 @@ type UpdateAccountOptions struct {
 }
 
 // Update attributes of the currently authenticated user.
-func (s *Accounts) Update(options UpdateAccountOptions) (*Account, error) {
+func (s *Accounts) Update(options AccountUpdateOptions) (*Account, error) {
 	// Make sure we don't send a user provided ID.
 	options.ID = ""
 
@@ -75,9 +75,9 @@ func (s *Accounts) Update(options UpdateAccountOptions) (*Account, error) {
 	return a.(*Account), nil
 }
 
-// EnableTwoFactorOptions represents the options for enabling two factor
+// TwoFactorEnableOptions represents the options for enabling two factor
 // authentication.
-type EnableTwoFactorOptions struct {
+type TwoFactorEnableOptions struct {
 	// For internal use only!
 	ID string `jsonapi:"primary,organizations"`
 
@@ -88,7 +88,7 @@ type EnableTwoFactorOptions struct {
 	SMSNumber *string `jsonapi:"attr,sms-number,omitempty"`
 }
 
-func (o EnableTwoFactorOptions) valid() error {
+func (o TwoFactorEnableOptions) valid() error {
 	if !validString(o.Delivery) {
 		return errors.New("Invalid value for delivery")
 	}
@@ -96,7 +96,7 @@ func (o EnableTwoFactorOptions) valid() error {
 }
 
 // EnableTwoFactor enables two factor authentication.
-func (s *Accounts) EnableTwoFactor(options EnableTwoFactorOptions) (*Account, error) {
+func (s *Accounts) EnableTwoFactor(options TwoFactorEnableOptions) (*Account, error) {
 	if err := options.valid(); err != nil {
 		return nil, err
 	}
@@ -132,9 +132,9 @@ func (s *Accounts) DisableTwoFactor() (*Account, error) {
 	return a.(*Account), nil
 }
 
-// VerifyTwoFactorOptions represents the options for verifying two factor
+// TwoFactorVerifyOptions represents the options for verifying two factor
 // authentication.
-type VerifyTwoFactorOptions struct {
+type TwoFactorVerifyOptions struct {
 	// For internal use only!
 	ID string `jsonapi:"primary,organizations"`
 
@@ -142,7 +142,7 @@ type VerifyTwoFactorOptions struct {
 	Code *string `jsonapi:"attr,code,omitempty"`
 }
 
-func (o VerifyTwoFactorOptions) valid() error {
+func (o TwoFactorVerifyOptions) valid() error {
 	if !validString(o.Code) {
 		return errors.New("Invalid value for code")
 	}
@@ -150,7 +150,7 @@ func (o VerifyTwoFactorOptions) valid() error {
 }
 
 // VerifyTwoFactor verifies two factor authentication.
-func (s *Accounts) VerifyTwoFactor(options VerifyTwoFactorOptions) (*Account, error) {
+func (s *Accounts) VerifyTwoFactor(options TwoFactorVerifyOptions) (*Account, error) {
 	if err := options.valid(); err != nil {
 		return nil, err
 	}

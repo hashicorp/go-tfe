@@ -63,14 +63,14 @@ type CVStatusTimestamps struct {
 	StartedAt  time.Time `json:"started-at"`
 }
 
-// ListConfigurationVersionsOptions represents the options for listing
+// ConfigurationVersionListOptions represents the options for listing
 // configuration versions.
-type ListConfigurationVersionsOptions struct {
+type ConfigurationVersionListOptions struct {
 	ListOptions
 }
 
 // List returns all configuration versions of a workspace.
-func (s *ConfigurationVersions) List(workspaceID string, options ListConfigurationVersionsOptions) ([]*ConfigurationVersion, error) {
+func (s *ConfigurationVersions) List(workspaceID string, options ConfigurationVersionListOptions) ([]*ConfigurationVersion, error) {
 	if !validStringID(&workspaceID) {
 		return nil, errors.New("Invalid value for workspace ID")
 	}
@@ -94,9 +94,9 @@ func (s *ConfigurationVersions) List(workspaceID string, options ListConfigurati
 	return cvs, nil
 }
 
-// CreateConfigurationVersionOptions represents the options for creating a
+// ConfigurationVersionCreateOptions represents the options for creating a
 // configuration version.
-type CreateConfigurationVersionOptions struct {
+type ConfigurationVersionCreateOptions struct {
 	// For internal use only!
 	ID string `jsonapi:"primary,configuration-versions"`
 
@@ -107,7 +107,7 @@ type CreateConfigurationVersionOptions struct {
 
 // Create is used to create a new configuration version. The created
 // configuration version will be usable once data is uploaded to it.
-func (s *ConfigurationVersions) Create(workspaceID string, options CreateConfigurationVersionOptions) (*ConfigurationVersion, error) {
+func (s *ConfigurationVersions) Create(workspaceID string, options ConfigurationVersionCreateOptions) (*ConfigurationVersion, error) {
 	if !validStringID(&workspaceID) {
 		return nil, errors.New("Invalid value for workspace ID")
 	}

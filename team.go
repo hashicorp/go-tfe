@@ -30,13 +30,13 @@ type TeamPermissions struct {
 	CanUpdateMembership bool `json:"can-update-membership"`
 }
 
-// ListTeamsOptions represents the options for listing teams.
-type ListTeamsOptions struct {
+// TeamListOptions represents the options for listing teams.
+type TeamListOptions struct {
 	ListOptions
 }
 
 // List returns all the organizations visible to the current user.
-func (s *Teams) List(organization string, options ListTeamsOptions) ([]*Team, error) {
+func (s *Teams) List(organization string, options TeamListOptions) ([]*Team, error) {
 	if !validStringID(&organization) {
 		return nil, errors.New("Invalid value for organization")
 	}
@@ -60,8 +60,8 @@ func (s *Teams) List(organization string, options ListTeamsOptions) ([]*Team, er
 	return ts, nil
 }
 
-// CreateTeamOptions represents the options for creating a team.
-type CreateTeamOptions struct {
+// TeamCreateOptions represents the options for creating a team.
+type TeamCreateOptions struct {
 	// For internal use only!
 	ID string `jsonapi:"primary,teams"`
 
@@ -69,7 +69,7 @@ type CreateTeamOptions struct {
 	Name *string `jsonapi:"attr,name"`
 }
 
-func (o CreateTeamOptions) valid() error {
+func (o TeamCreateOptions) valid() error {
 	if !validStringID(o.Name) {
 		return errors.New("Invalid value for name")
 	}
@@ -77,7 +77,7 @@ func (o CreateTeamOptions) valid() error {
 }
 
 // Create a new team with the given name.
-func (s *Teams) Create(organization string, options CreateTeamOptions) (*Team, error) {
+func (s *Teams) Create(organization string, options TeamCreateOptions) (*Team, error) {
 	if !validStringID(&organization) {
 		return nil, errors.New("Invalid value for organization")
 	}
