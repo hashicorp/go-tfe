@@ -6,14 +6,13 @@ import (
 	"io"
 	"io/ioutil"
 	"net/http"
-	"net/http/httputil"
 	"net/url"
 	"os"
 	"reflect"
 
 	"github.com/google/go-querystring/query"
-	"github.com/google/jsonapi"
 	"github.com/hashicorp/go-cleanhttp"
+	"github.com/svanharmelen/jsonapi"
 )
 
 // DefaultAddress of Terraform Enterprise.
@@ -183,24 +182,12 @@ func (c *Client) newRequest(method, path string, v interface{}) (*http.Request, 
 // If v implements the io.Writer interface, the raw response body will be
 // written to v, without attempting to first decode it.
 func (c *Client) do(req *http.Request, v interface{}) (interface{}, error) {
-	requestDump, err := httputil.DumpRequest(req, true)
-	if err != nil {
-		fmt.Println(err)
-	}
-	fmt.Println(string(requestDump))
-
 	// Execute the request and check the response.
 	resp, err := c.http.Do(req)
 	if err != nil {
 		return nil, err
 	}
 	defer resp.Body.Close()
-
-	responseDump, err := httputil.DumpResponse(resp, true)
-	if err != nil {
-		fmt.Println(err)
-	}
-	fmt.Println(string(responseDump))
 
 	// Basic response checking.
 	if err := checkResponseCode(resp); err != nil {
