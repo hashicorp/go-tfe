@@ -184,7 +184,7 @@ func TestPoliciesRetrieve(t *testing.T) {
 	t.Run("when the policy does not exist", func(t *testing.T) {
 		p, err := client.Policies.Retrieve("nonexisting")
 		assert.Nil(t, p)
-		assert.EqualError(t, err, "Resource not found")
+		assert.EqualError(t, err, "Error: not found")
 	})
 
 	t.Run("without a valid policy ID", func(t *testing.T) {
@@ -302,12 +302,12 @@ func TestPoliciesDelete(t *testing.T) {
 
 		// Try loading the policy - it should fail.
 		_, err = client.Policies.Retrieve(pTest.ID)
-		assert.EqualError(t, err, "Resource not found")
+		assert.EqualError(t, err, "Error: not found")
 	})
 
 	t.Run("when the policy does not exist", func(t *testing.T) {
 		err := client.Policies.Delete(pTest.ID)
-		assert.EqualError(t, err, "Resource not found")
+		assert.EqualError(t, err, "Error: not found")
 	})
 
 	t.Run("when the policy ID is invalid", func(t *testing.T) {

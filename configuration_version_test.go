@@ -1,6 +1,10 @@
 package tfe
 
 import (
+	"archive/tar"
+	"bytes"
+	"compress/gzip"
+	"io"
 	"testing"
 	"time"
 
@@ -78,8 +82,6 @@ func TestConfigurationVersionsCreate(t *testing.T) {
 			cv,
 			refreshed,
 		} {
-			// TODO: Fix this. API does not return workspace associations.
-			// assert.Equal(t, wTest.ID, item.Workspace.ID)
 			assert.NotEmpty(t, item.ID)
 			assert.Empty(t, item.Error)
 			assert.Equal(t, item.Source, ConfigurationSourceAPI)
@@ -119,7 +121,7 @@ func TestConfigurationVersionsRetrieve(t *testing.T) {
 	t.Run("when the configuration version does not exist", func(t *testing.T) {
 		cv, err := client.ConfigurationVersions.Retrieve("nonexisting")
 		assert.Nil(t, cv)
-		assert.EqualError(t, err, "Resource not found")
+		assert.EqualError(t, err, "Error: not found")
 	})
 
 	t.Run("with invalid configuration version id", func(t *testing.T) {
@@ -138,7 +140,7 @@ func TestConfigurationVersionsUpload(t *testing.T) {
 	t.Run("with valid options", func(t *testing.T) {
 		err := client.ConfigurationVersions.Upload(
 			cv.UploadURL,
-			"test-fixtures/configuration-version.tar.gz",
+			"test-fixtures/config-version",
 		)
 		require.NoError(t, err)
 
@@ -163,7 +165,7 @@ func TestConfigurationVersionsUpload(t *testing.T) {
 	t.Run("without a valid upload URL", func(t *testing.T) {
 		err := client.ConfigurationVersions.Upload(
 			cv.UploadURL[:len(cv.UploadURL)-10]+"nonexisting",
-			"test-fixtures/configuration-version.tar.gz",
+			"test-fixtures/config-version",
 		)
 		assert.Error(t, err)
 	})
@@ -173,6 +175,61 @@ func TestConfigurationVersionsUpload(t *testing.T) {
 			cv.UploadURL,
 			"nonexisting",
 		)
+		assert.Error(t, err)
+	})
+}
+
+func TestConfigurationVersionsPack(t *testing.T) {
+	client := testClient(t)
+
+	t.Run("with a valid path", func(t *testing.T) {
+		raw, err := client.ConfigurationVersions.pack("test-fixtures/archive-dir")
+		require.NoError(t, err)
+
+		gzipR, err := gzip.NewReader(bytes.NewReader(raw))
+		require.NoError(t, err)
+
+		tarR := tar.NewReader(gzipR)
+		var (
+			symFound bool
+			fileList []string
+			slugSize int64
+		)
+		for {
+			hdr, err := tarR.Next()
+			if err == io.EOF {
+				break
+			}
+			require.NoError(t, err)
+
+			fileList = append(fileList, hdr.Name)
+			if hdr.Typeflag == tar.TypeReg || hdr.Typeflag == tar.TypeRegA {
+				slugSize += hdr.Size
+			}
+
+			if hdr.Name == "sub/foo.txt" {
+				require.EqualValues(t, tar.TypeSymlink, hdr.Typeflag, "expect symlink for 'sub/foo.txt'")
+				assert.Equal(t, "../foo.txt", hdr.Linkname, "expect target of '../foo.txt'")
+				symFound = true
+			}
+		}
+
+		t.Run("confirm we saw and handled a symlink", func(t *testing.T) {
+			assert.True(t, symFound)
+		})
+
+		t.Run("check that the archive was created correctly", func(t *testing.T) {
+			expectedFiles := []string{"bar.txt", "exe", "foo.txt", "sub/", "sub/foo.txt", "sub/zip.txt"}
+			expectedSize := int64(12)
+
+			assert.Equal(t, expectedFiles, fileList)
+			assert.Equal(t, expectedSize, slugSize)
+		})
+	})
+
+	t.Run("without a valid path", func(t *testing.T) {
+		raw, err := client.ConfigurationVersions.pack("nonexisting")
+		assert.Nil(t, raw)
 		assert.Error(t, err)
 	})
 }

@@ -119,7 +119,7 @@ func TestTeamsRetrieve(t *testing.T) {
 	t.Run("when the team does not exist", func(t *testing.T) {
 		tm, err := client.Teams.Retrieve("nonexisting")
 		assert.Nil(t, tm)
-		assert.EqualError(t, err, "Resource not found")
+		assert.EqualError(t, err, "Error: not found")
 	})
 
 	t.Run("without a team ID", func(t *testing.T) {
@@ -143,7 +143,7 @@ func TestTeamsDelete(t *testing.T) {
 
 		// Try loading the workspace - it should fail.
 		_, err = client.Teams.Retrieve(tmTest.ID)
-		assert.EqualError(t, err, "Resource not found")
+		assert.EqualError(t, err, "Error: not found")
 	})
 
 	t.Run("without valid team ID", func(t *testing.T) {

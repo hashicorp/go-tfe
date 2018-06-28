@@ -26,7 +26,7 @@ func TestTeamAccessesList(t *testing.T) {
 	defer taTest2Cleanup()
 
 	t.Run("with valid options", func(t *testing.T) {
-		tas, err := client.TeamAccesses.List(TeamAccessListOptions{
+		tas, err := client.TeamAccess.List(TeamAccessListOptions{
 			WorkspaceID: String(wTest.ID),
 		})
 		require.NoError(t, err)
@@ -39,7 +39,7 @@ func TestTeamAccessesList(t *testing.T) {
 		// Request a page number which is out of range. The result should
 		// be successful, but return no results if the paging options are
 		// properly passed along.
-		tas, err := client.TeamAccesses.List(TeamAccessListOptions{
+		tas, err := client.TeamAccess.List(TeamAccessListOptions{
 			ListOptions: ListOptions{
 				PageNumber: 999,
 				PageSize:   100,
@@ -50,13 +50,13 @@ func TestTeamAccessesList(t *testing.T) {
 	})
 
 	t.Run("without list options", func(t *testing.T) {
-		tas, err := client.TeamAccesses.List(TeamAccessListOptions{})
+		tas, err := client.TeamAccess.List(TeamAccessListOptions{})
 		assert.Nil(t, tas)
 		assert.EqualError(t, err, "Workspace ID is required")
 	})
 
 	t.Run("without a valid workspace ID", func(t *testing.T) {
-		tas, err := client.TeamAccesses.List(TeamAccessListOptions{
+		tas, err := client.TeamAccess.List(TeamAccessListOptions{
 			WorkspaceID: String(badIdentifier),
 		})
 		assert.Nil(t, tas)
@@ -82,11 +82,11 @@ func TestTeamAccessesAdd(t *testing.T) {
 			Workspace: wTest,
 		}
 
-		ta, err := client.TeamAccesses.Add(options)
+		ta, err := client.TeamAccess.Add(options)
 		require.NoError(t, err)
 
 		// Get a refreshed view from the API.
-		refreshed, err := client.TeamAccesses.Retrieve(ta.ID)
+		refreshed, err := client.TeamAccess.Retrieve(ta.ID)
 		require.NoError(t, err)
 
 		for _, item := range []*TeamAccess{
@@ -105,12 +105,12 @@ func TestTeamAccessesAdd(t *testing.T) {
 			Workspace: wTest,
 		}
 
-		_, err := client.TeamAccesses.Add(options)
+		_, err := client.TeamAccess.Add(options)
 		assert.Error(t, err)
 	})
 
 	t.Run("when options is missing access", func(t *testing.T) {
-		ta, err := client.TeamAccesses.Add(TeamAccessAddOptions{
+		ta, err := client.TeamAccess.Add(TeamAccessAddOptions{
 			Team:      tmTest,
 			Workspace: wTest,
 		})
@@ -119,7 +119,7 @@ func TestTeamAccessesAdd(t *testing.T) {
 	})
 
 	t.Run("when options is missing team", func(t *testing.T) {
-		ta, err := client.TeamAccesses.Add(TeamAccessAddOptions{
+		ta, err := client.TeamAccess.Add(TeamAccessAddOptions{
 			Access:    Access(TeamAccessAdmin),
 			Workspace: wTest,
 		})
@@ -128,7 +128,7 @@ func TestTeamAccessesAdd(t *testing.T) {
 	})
 
 	t.Run("when options is missing workspace", func(t *testing.T) {
-		ta, err := client.TeamAccesses.Add(TeamAccessAddOptions{
+		ta, err := client.TeamAccess.Add(TeamAccessAddOptions{
 			Access: Access(TeamAccessAdmin),
 			Team:   tmTest,
 		})
@@ -144,7 +144,7 @@ func TestTeamAccessesRetrieve(t *testing.T) {
 	defer taTestCleanup()
 
 	t.Run("when the team access exists", func(t *testing.T) {
-		ta, err := client.TeamAccesses.Retrieve(taTest.ID)
+		ta, err := client.TeamAccess.Retrieve(taTest.ID)
 		require.NoError(t, err)
 
 		assert.Equal(t, TeamAccessAdmin, ta.Access)
@@ -159,13 +159,13 @@ func TestTeamAccessesRetrieve(t *testing.T) {
 	})
 
 	t.Run("when the team access does not exist", func(t *testing.T) {
-		ta, err := client.TeamAccesses.Retrieve("nonexisting")
+		ta, err := client.TeamAccess.Retrieve("nonexisting")
 		assert.Nil(t, ta)
-		assert.EqualError(t, err, "Resource not found")
+		assert.EqualError(t, err, "Error: not found")
 	})
 
 	t.Run("without a valid team access ID", func(t *testing.T) {
-		ta, err := client.TeamAccesses.Retrieve(badIdentifier)
+		ta, err := client.TeamAccess.Retrieve(badIdentifier)
 		assert.Nil(t, ta)
 		assert.EqualError(t, err, "Invalid value for team access ID")
 	})
@@ -183,21 +183,21 @@ func TestTeamAccessesRemove(t *testing.T) {
 	taTest, _ := createTeamAccess(t, client, tmTest, nil, orgTest)
 
 	t.Run("with valid options", func(t *testing.T) {
-		err := client.TeamAccesses.Remove(taTest.ID)
+		err := client.TeamAccess.Remove(taTest.ID)
 		require.NoError(t, err)
 
 		// Try loading the workspace - it should fail.
-		_, err = client.TeamAccesses.Retrieve(taTest.ID)
-		assert.EqualError(t, err, "Resource not found")
+		_, err = client.TeamAccess.Retrieve(taTest.ID)
+		assert.EqualError(t, err, "Error: not found")
 	})
 
 	t.Run("when the team access does not exist", func(t *testing.T) {
-		err := client.TeamAccesses.Remove(taTest.ID)
-		assert.EqualError(t, err, "Resource not found")
+		err := client.TeamAccess.Remove(taTest.ID)
+		assert.EqualError(t, err, "Error: not found")
 	})
 
 	t.Run("when the team access ID is invalid", func(t *testing.T) {
-		err := client.TeamAccesses.Remove(badIdentifier)
+		err := client.TeamAccess.Remove(badIdentifier)
 		assert.EqualError(t, err, "Invalid value for team access ID")
 	})
 }

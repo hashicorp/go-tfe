@@ -50,7 +50,7 @@ func TestOrganizationTokensDelete(t *testing.T) {
 
 	t.Run("when a token does not exist", func(t *testing.T) {
 		err := client.OrganizationTokens.Delete(orgTest.Name)
-		assert.EqualError(t, err, "Resource not found")
+		assert.EqualError(t, err, "Error: not found")
 	})
 
 	t.Run("without valid organization", func(t *testing.T) {

@@ -177,7 +177,7 @@ func TestOrganizationsDelete(t *testing.T) {
 
 		// Try fetching the org again - it should error.
 		_, err = client.Organizations.Retrieve(orgTest.Name)
-		assert.EqualError(t, err, "Resource not found")
+		assert.EqualError(t, err, "Error: not found")
 	})
 
 	t.Run("with invalid name", func(t *testing.T) {

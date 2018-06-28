@@ -2,6 +2,7 @@ package tfe
 
 import (
 	"bytes"
+	"encoding/json"
 	"fmt"
 	"io"
 	"io/ioutil"
@@ -9,6 +10,7 @@ import (
 	"net/url"
 	"os"
 	"reflect"
+	"strings"
 
 	"github.com/google/go-querystring/query"
 	"github.com/hashicorp/go-cleanhttp"
@@ -74,7 +76,7 @@ type Client struct {
 	Runs                  *Runs
 	SSHKeys               *SSHKeys
 	Teams                 *Teams
-	TeamAccesses          *TeamAccesses
+	TeamAccess            *TeamAccesses
 	TeamMembers           *TeamMembers
 	TeamTokens            *TeamTokens
 	Variables             *Variables
@@ -130,7 +132,7 @@ func NewClient(cfg *Config) (*Client, error) {
 	client.Runs = &Runs{client: client}
 	client.SSHKeys = &SSHKeys{client: client}
 	client.Teams = &Teams{client: client}
-	client.TeamAccesses = &TeamAccesses{client: client}
+	client.TeamAccess = &TeamAccesses{client: client}
 	client.TeamMembers = &TeamMembers{client: client}
 	client.TeamTokens = &TeamTokens{client: client}
 	client.Variables = &Variables{client: client}
@@ -251,37 +253,28 @@ func (c *Client) do(req *http.Request, v interface{}) (interface{}, error) {
 	return v, err
 }
 
-// TODO SvH: This logic to do this should be added to the newRequest method.
-// upload is a generic uploader helper which can be used to upload artifacts
-// typically destined for an Archivist URL.
-func (c *Client) upload(url string, data io.Reader) error {
-	req, err := http.NewRequest("PUT", url, data)
-	if err != nil {
-		return err
-	}
-
-	resp, err := c.http.Do(req)
-	if err != nil {
-		return err
-	}
-	defer resp.Body.Close()
-
-	return checkResponseCode(resp)
-}
-
-// TODO SvH: I suggest to use jsonapi.MarshalErrors instead.
 // checkResponseCode can be used to check the status code of an HTTP request.
 func checkResponseCode(r *http.Response) error {
-	if r.StatusCode == 404 {
-		return fmt.Errorf("Resource not found")
+	if r.StatusCode >= 200 && r.StatusCode <= 299 {
+		return nil
 	}
-	if r.StatusCode < 200 || r.StatusCode > 299 {
-		body, _ := ioutil.ReadAll(r.Body)
-		return fmt.Errorf(
-			"Unexpected status code: %d\n\nBody:\n%s",
-			r.StatusCode,
-			body,
-		)
+
+	// Decode the error payload.
+	errPayload := &jsonapi.ErrorsPayload{}
+	err := json.NewDecoder(r.Body).Decode(errPayload)
+	if err != nil || len(errPayload.Errors) == 0 {
+		return fmt.Errorf("Unexpected response: %s", r.Status)
 	}
-	return nil
+
+	// Parse and format the errors.
+	var errs []string
+	for _, e := range errPayload.Errors {
+		if e.Detail == "" {
+			errs = append(errs, fmt.Sprintf("Error: %s", e.Title))
+		} else {
+			errs = append(errs, fmt.Sprintf("Error: %s %s", e.Title, e.Detail))
+		}
+	}
+
+	return fmt.Errorf(strings.Join(errs, "\n"))
 }

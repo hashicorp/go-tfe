@@ -115,7 +115,7 @@ func TestSSHKeysRetrieve(t *testing.T) {
 	t.Run("when the SSH key does not exist", func(t *testing.T) {
 		k, err := client.SSHKeys.Retrieve("nonexisting")
 		assert.Nil(t, k)
-		assert.EqualError(t, err, "Resource not found")
+		assert.EqualError(t, err, "Error: not found")
 	})
 
 	t.Run("without a valid SSH key ID", func(t *testing.T) {
@@ -192,12 +192,12 @@ func TestSSHKeysDelete(t *testing.T) {
 
 		// Try loading the workspace - it should fail.
 		_, err = client.SSHKeys.Retrieve(kTest.ID)
-		assert.EqualError(t, err, "Resource not found")
+		assert.EqualError(t, err, "Error: not found")
 	})
 
 	t.Run("when the SSH key does not exist", func(t *testing.T) {
 		err := client.SSHKeys.Delete(kTest.ID)
-		assert.EqualError(t, err, "Resource not found")
+		assert.EqualError(t, err, "Error: not found")
 	})
 
 	t.Run("when the SSH key ID is invalid", func(t *testing.T) {

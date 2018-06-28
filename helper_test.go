@@ -2,7 +2,6 @@ package tfe
 
 import (
 	"fmt"
-	"os"
 	"testing"
 	"time"
 
@@ -11,25 +10,8 @@ import (
 
 const badIdentifier = "! / nope"
 
-func testClient(t *testing.T, fn ...func(*Config)) *Client {
-	config := DefaultConfig()
-
-	for _, f := range fn {
-		f(config)
-	}
-
-	if v := os.Getenv("TFE_ADDRESS"); v != "" {
-		config.Address = v
-	}
-
-	if config.Token == "" {
-		config.Token = os.Getenv("TFE_TOKEN")
-		if config.Token == "" {
-			t.Fatal("TFE_TOKEN must be set")
-		}
-	}
-
-	client, err := NewClient(config)
+func testClient(t *testing.T) *Client {
+	client, err := NewClient(nil)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -62,14 +44,8 @@ func createConfigurationVersion(t *testing.T, client *Client, w *Workspace) (*Co
 func createUploadedConfigurationVersion(t *testing.T, client *Client, w *Workspace) (*ConfigurationVersion, func()) {
 	cv, cvCleanup := createConfigurationVersion(t, client, w)
 
-	fh, err := os.Open("test-fixtures/configuration-version.tar.gz")
+	err := client.ConfigurationVersions.Upload(cv.UploadURL, "test-fixtures/config-version")
 	if err != nil {
-		cvCleanup()
-		t.Fatal(err)
-	}
-	defer fh.Close()
-
-	if err := client.upload(cv.UploadURL, fh); err != nil {
 		cvCleanup()
 		t.Fatal(err)
 	}
@@ -358,7 +334,7 @@ func createTeamAccess(t *testing.T, client *Client, tm *Team, w *Workspace, org 
 		w, _ = createWorkspace(t, client, org)
 	}
 
-	ta, err := client.TeamAccesses.Add(TeamAccessAddOptions{
+	ta, err := client.TeamAccess.Add(TeamAccessAddOptions{
 		Access:    Access(TeamAccessAdmin),
 		Team:      tm,
 		Workspace: w,
@@ -368,7 +344,7 @@ func createTeamAccess(t *testing.T, client *Client, tm *Team, w *Workspace, org 
 	}
 
 	return ta, func() {
-		if err := client.TeamAccesses.Remove(ta.ID); err != nil {
+		if err := client.TeamAccess.Remove(ta.ID); err != nil {
 			t.Errorf("Error removing team access! WARNING: Dangling resources\n"+
 				"may exist! The full error is shown below.\n\n"+
 				"TeamAccess: %s\nError: %s", ta.ID, err)
