@@ -1,6 +1,7 @@
 package tfe
 
 import (
+	"context"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -8,6 +9,7 @@ import (
 
 func TestTeamMembersAdd(t *testing.T) {
 	client := testClient(t)
+	ctx := context.Background()
 
 	tmTest, tmTestCleanup := createTeam(t, client, nil)
 	defer tmTestCleanup()
@@ -18,24 +20,24 @@ func TestTeamMembersAdd(t *testing.T) {
 			Usernames: []string{"user1", "user2"},
 		}
 
-		err := client.TeamMembers.Add(tmTest.ID, options)
+		err := client.TeamMembers.Add(ctx, tmTest.ID, options)
 		assert.NoError(t, err)
 	})
 
 	t.Run("when options is missing usernames", func(t *testing.T) {
-		err := client.TeamMembers.Add(tmTest.ID, TeamMemberAddOptions{})
+		err := client.TeamMembers.Add(ctx, tmTest.ID, TeamMemberAddOptions{})
 		assert.EqualError(t, err, "Usernames is required")
 	})
 
 	t.Run("when usernames is empty", func(t *testing.T) {
-		err := client.TeamMembers.Add(tmTest.ID, TeamMemberAddOptions{
+		err := client.TeamMembers.Add(ctx, tmTest.ID, TeamMemberAddOptions{
 			Usernames: []string{},
 		})
 		assert.EqualError(t, err, "Invalid value for usernames")
 	})
 
 	t.Run("when the team ID is invalid", func(t *testing.T) {
-		err := client.TeamMembers.Add(badIdentifier, TeamMemberAddOptions{
+		err := client.TeamMembers.Add(ctx, badIdentifier, TeamMemberAddOptions{
 			Usernames: []string{"user1"},
 		})
 		assert.EqualError(t, err, "Invalid value for team ID")
@@ -44,6 +46,7 @@ func TestTeamMembersAdd(t *testing.T) {
 
 func TestTeamMembersRemove(t *testing.T) {
 	client := testClient(t)
+	ctx := context.Background()
 
 	tmTest, tmTestCleanup := createTeam(t, client, nil)
 	defer tmTestCleanup()
@@ -54,24 +57,24 @@ func TestTeamMembersRemove(t *testing.T) {
 			Usernames: []string{"user1", "user2"},
 		}
 
-		err := client.TeamMembers.Remove(tmTest.ID, options)
+		err := client.TeamMembers.Remove(ctx, tmTest.ID, options)
 		assert.NoError(t, err)
 	})
 
 	t.Run("when options is missing usernames", func(t *testing.T) {
-		err := client.TeamMembers.Remove(tmTest.ID, TeamMemberRemoveOptions{})
+		err := client.TeamMembers.Remove(ctx, tmTest.ID, TeamMemberRemoveOptions{})
 		assert.EqualError(t, err, "Usernames is required")
 	})
 
 	t.Run("when usernames is empty", func(t *testing.T) {
-		err := client.TeamMembers.Remove(tmTest.ID, TeamMemberRemoveOptions{
+		err := client.TeamMembers.Remove(ctx, tmTest.ID, TeamMemberRemoveOptions{
 			Usernames: []string{},
 		})
 		assert.EqualError(t, err, "Invalid value for usernames")
 	})
 
 	t.Run("when the team ID is invalid", func(t *testing.T) {
-		err := client.TeamMembers.Remove(badIdentifier, TeamMemberRemoveOptions{
+		err := client.TeamMembers.Remove(ctx, badIdentifier, TeamMemberRemoveOptions{
 			Usernames: []string{"user1"},
 		})
 		assert.EqualError(t, err, "Invalid value for team ID")

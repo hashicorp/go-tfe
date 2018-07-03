@@ -1,8 +1,10 @@
 package tfe
 
 import (
+	"context"
 	"errors"
 	"fmt"
+	"net/url"
 	"time"
 )
 
@@ -90,18 +92,18 @@ type RunListOptions struct {
 }
 
 // List runs of the given workspace.
-func (s *Runs) List(workspaceID string, options RunListOptions) ([]*Run, error) {
+func (s *Runs) List(ctx context.Context, workspaceID string, options RunListOptions) ([]*Run, error) {
 	if !validStringID(&workspaceID) {
 		return nil, errors.New("Invalid value for workspace ID")
 	}
 
-	u := fmt.Sprintf("workspaces/%s/runs", workspaceID)
+	u := fmt.Sprintf("workspaces/%s/runs", url.QueryEscape(workspaceID))
 	req, err := s.client.newRequest("GET", u, &options)
 	if err != nil {
 		return nil, err
 	}
 
-	result, err := s.client.do(req, []*Run{})
+	result, err := s.client.do(ctx, req, []*Run{})
 	if err != nil {
 		return nil, err
 	}
@@ -143,7 +145,7 @@ func (o RunCreateOptions) valid() error {
 }
 
 // Create is used to create a new run.
-func (s *Runs) Create(options RunCreateOptions) (*Run, error) {
+func (s *Runs) Create(ctx context.Context, options RunCreateOptions) (*Run, error) {
 	if err := options.valid(); err != nil {
 		return nil, err
 	}
@@ -156,7 +158,7 @@ func (s *Runs) Create(options RunCreateOptions) (*Run, error) {
 		return nil, err
 	}
 
-	r, err := s.client.do(req, &Run{})
+	r, err := s.client.do(ctx, req, &Run{})
 	if err != nil {
 		return nil, err
 	}
@@ -164,18 +166,19 @@ func (s *Runs) Create(options RunCreateOptions) (*Run, error) {
 	return r.(*Run), nil
 }
 
-// Retrieve a single run by its ID.
-func (s *Runs) Retrieve(runID string) (*Run, error) {
+// Read a single run by its ID.
+func (s *Runs) Read(ctx context.Context, runID string) (*Run, error) {
 	if !validStringID(&runID) {
 		return nil, errors.New("Invalid value for run ID")
 	}
 
-	req, err := s.client.newRequest("GET", "runs/"+runID, nil)
+	u := fmt.Sprintf("runs/%s", url.QueryEscape(runID))
+	req, err := s.client.newRequest("GET", u, nil)
 	if err != nil {
 		return nil, err
 	}
 
-	r, err := s.client.do(req, &Run{})
+	r, err := s.client.do(ctx, req, &Run{})
 	if err != nil {
 		return nil, err
 	}
@@ -190,18 +193,18 @@ type RunApplyOptions struct {
 }
 
 // Apply a specific run by its ID.
-func (s *Runs) Apply(runID string, options RunApplyOptions) error {
+func (s *Runs) Apply(ctx context.Context, runID string, options RunApplyOptions) error {
 	if !validStringID(&runID) {
 		return errors.New("Invalid value for run ID")
 	}
 
-	u := fmt.Sprintf("runs/%s/actions/apply", runID)
+	u := fmt.Sprintf("runs/%s/actions/apply", url.QueryEscape(runID))
 	req, err := s.client.newRequest("POST", u, &options)
 	if err != nil {
 		return err
 	}
 
-	_, err = s.client.do(req, nil)
+	_, err = s.client.do(ctx, req, nil)
 
 	return err
 }
@@ -213,18 +216,18 @@ type RunCancelOptions struct {
 }
 
 // Cancel a specific run by its ID.
-func (s *Runs) Cancel(runID string, options RunCancelOptions) error {
+func (s *Runs) Cancel(ctx context.Context, runID string, options RunCancelOptions) error {
 	if !validStringID(&runID) {
 		return errors.New("Invalid value for run ID")
 	}
 
-	u := fmt.Sprintf("runs/%s/actions/cancel", runID)
+	u := fmt.Sprintf("runs/%s/actions/cancel", url.QueryEscape(runID))
 	req, err := s.client.newRequest("POST", u, &options)
 	if err != nil {
 		return err
 	}
 
-	_, err = s.client.do(req, nil)
+	_, err = s.client.do(ctx, req, nil)
 
 	return err
 }
@@ -236,18 +239,18 @@ type RunDiscardOptions struct {
 }
 
 // Discard a specific run by its ID.
-func (s *Runs) Discard(runID string, options RunDiscardOptions) error {
+func (s *Runs) Discard(ctx context.Context, runID string, options RunDiscardOptions) error {
 	if !validStringID(&runID) {
 		return errors.New("Invalid value for run ID")
 	}
 
-	u := fmt.Sprintf("runs/%s/actions/discard", runID)
+	u := fmt.Sprintf("runs/%s/actions/discard", url.QueryEscape(runID))
 	req, err := s.client.newRequest("POST", u, &options)
 	if err != nil {
 		return err
 	}
 
-	_, err = s.client.do(req, nil)
+	_, err = s.client.do(ctx, req, nil)
 
 	return err
 }

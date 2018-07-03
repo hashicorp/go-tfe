@@ -1,8 +1,10 @@
 package tfe
 
 import (
+	"context"
 	"errors"
 	"fmt"
+	"net/url"
 	"time"
 )
 
@@ -29,18 +31,18 @@ type OAuthToken struct {
 }
 
 // List all the OAuth Tokens for a given organization.
-func (s *OAuthTokens) List(organization string) ([]*OAuthToken, error) {
+func (s *OAuthTokens) List(ctx context.Context, organization string) ([]*OAuthToken, error) {
 	if !validStringID(&organization) {
 		return nil, errors.New("Invalid value for organization")
 	}
 
-	u := fmt.Sprintf("organizations/%s/oauth-tokens", organization)
+	u := fmt.Sprintf("organizations/%s/oauth-tokens", url.QueryEscape(organization))
 	req, err := s.client.newRequest("GET", u, nil)
 	if err != nil {
 		return nil, err
 	}
 
-	result, err := s.client.do(req, []*OAuthToken{})
+	result, err := s.client.do(ctx, req, []*OAuthToken{})
 	if err != nil {
 		return nil, err
 	}

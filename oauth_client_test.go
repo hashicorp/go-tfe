@@ -1,13 +1,15 @@
 package tfe
 
 import (
+	"context"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
 )
 
-func TestOAuthClientsCreate(t *testing.T) {
+func TestOAuthClientCreate(t *testing.T) {
 	client := testClient(t)
+	ctx := context.Background()
 
 	orgTest, orgwTestCleanup := createOrganization(t, client)
 	defer orgwTestCleanup()
@@ -21,7 +23,7 @@ func TestOAuthClientsCreate(t *testing.T) {
 			ServiceProvider: ServiceProvider(ServiceProviderGithub),
 		}
 
-		oc, err := client.OAuthClients.Create(orgTest.Name, options)
+		oc, err := client.OAuthClients.Create(ctx, orgTest.Name, options)
 		assert.NoError(t, err)
 		assert.NotEmpty(t, oc.ID)
 		assert.Equal(t, "https://api.github.com", oc.APIURL)
@@ -43,7 +45,7 @@ func TestOAuthClientsCreate(t *testing.T) {
 			ServiceProvider: ServiceProvider(ServiceProviderGithub),
 		}
 
-		_, err := client.OAuthClients.Create(badIdentifier, options)
+		_, err := client.OAuthClients.Create(ctx, badIdentifier, options)
 		assert.EqualError(t, err, "Invalid value for organization")
 	})
 
@@ -55,7 +57,7 @@ func TestOAuthClientsCreate(t *testing.T) {
 			ServiceProvider: ServiceProvider(ServiceProviderGithub),
 		}
 
-		_, err := client.OAuthClients.Create(orgTest.Name, options)
+		_, err := client.OAuthClients.Create(ctx, orgTest.Name, options)
 		assert.EqualError(t, err, "APIURL is required")
 	})
 
@@ -67,7 +69,7 @@ func TestOAuthClientsCreate(t *testing.T) {
 			ServiceProvider: ServiceProvider(ServiceProviderGithub),
 		}
 
-		_, err := client.OAuthClients.Create(orgTest.Name, options)
+		_, err := client.OAuthClients.Create(ctx, orgTest.Name, options)
 		assert.EqualError(t, err, "HTTPURL is required")
 	})
 
@@ -79,7 +81,7 @@ func TestOAuthClientsCreate(t *testing.T) {
 			ServiceProvider: ServiceProvider(ServiceProviderGithub),
 		}
 
-		_, err := client.OAuthClients.Create(orgTest.Name, options)
+		_, err := client.OAuthClients.Create(ctx, orgTest.Name, options)
 		assert.EqualError(t, err, "Key is required")
 	})
 
@@ -91,7 +93,7 @@ func TestOAuthClientsCreate(t *testing.T) {
 			ServiceProvider: ServiceProvider(ServiceProviderGithub),
 		}
 
-		_, err := client.OAuthClients.Create(orgTest.Name, options)
+		_, err := client.OAuthClients.Create(ctx, orgTest.Name, options)
 		assert.EqualError(t, err, "Secret is required")
 	})
 
@@ -103,7 +105,7 @@ func TestOAuthClientsCreate(t *testing.T) {
 			Secret:  String("a5f32ed18aa9fe251052c8fa98d04570a1515466"),
 		}
 
-		_, err := client.OAuthClients.Create(orgTest.Name, options)
+		_, err := client.OAuthClients.Create(ctx, orgTest.Name, options)
 		assert.EqualError(t, err, "ServiceProvider is required")
 	})
 }

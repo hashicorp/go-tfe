@@ -1,8 +1,10 @@
 package tfe
 
 import (
+	"context"
 	"errors"
 	"fmt"
+	"net/url"
 	"time"
 )
 
@@ -89,7 +91,7 @@ func (o OAuthClientCreateOptions) valid() error {
 }
 
 // Create a VCS connection between an organization and a VCS provider.
-func (s *OAuthClients) Create(organization string, options OAuthClientCreateOptions) (*OAuthClient, error) {
+func (s *OAuthClients) Create(ctx context.Context, organization string, options OAuthClientCreateOptions) (*OAuthClient, error) {
 	if !validStringID(&organization) {
 		return nil, errors.New("Invalid value for organization")
 	}
@@ -100,13 +102,13 @@ func (s *OAuthClients) Create(organization string, options OAuthClientCreateOpti
 	// Make sure we don't send a user provided ID.
 	options.ID = ""
 
-	u := fmt.Sprintf("organizations/%s/oauth-clients", organization)
+	u := fmt.Sprintf("organizations/%s/oauth-clients", url.QueryEscape(organization))
 	req, err := s.client.newRequest("POST", u, &options)
 	if err != nil {
 		return nil, err
 	}
 
-	o, err := s.client.do(req, &OAuthClient{})
+	o, err := s.client.do(ctx, req, &OAuthClient{})
 	if err != nil {
 		return nil, err
 	}

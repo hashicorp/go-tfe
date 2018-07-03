@@ -1,8 +1,10 @@
 package tfe
 
 import (
+	"context"
 	"errors"
 	"fmt"
+	"net/url"
 	"time"
 )
 
@@ -25,18 +27,18 @@ type TeamToken struct {
 }
 
 // Generate a new team token, replacing any existing token.
-func (s *TeamTokens) Generate(teamID string) (*TeamToken, error) {
+func (s *TeamTokens) Generate(ctx context.Context, teamID string) (*TeamToken, error) {
 	if !validStringID(&teamID) {
 		return nil, errors.New("Invalid value for team ID")
 	}
 
-	u := fmt.Sprintf("teams/%s/authentication-token", teamID)
+	u := fmt.Sprintf("teams/%s/authentication-token", url.QueryEscape(teamID))
 	req, err := s.client.newRequest("POST", u, nil)
 	if err != nil {
 		return nil, err
 	}
 
-	t, err := s.client.do(req, &TeamToken{})
+	t, err := s.client.do(ctx, req, &TeamToken{})
 	if err != nil {
 		return nil, err
 	}
@@ -45,18 +47,18 @@ func (s *TeamTokens) Generate(teamID string) (*TeamToken, error) {
 }
 
 // Delete a team token.
-func (s *TeamTokens) Delete(teamID string) error {
+func (s *TeamTokens) Delete(ctx context.Context, teamID string) error {
 	if !validStringID(&teamID) {
 		return errors.New("Invalid value for team ID")
 	}
 
-	u := fmt.Sprintf("teams/%s/authentication-token", teamID)
+	u := fmt.Sprintf("teams/%s/authentication-token", url.QueryEscape(teamID))
 	req, err := s.client.newRequest("DELETE", u, nil)
 	if err != nil {
 		return err
 	}
 
-	_, err = s.client.do(req, nil)
+	_, err = s.client.do(ctx, req, nil)
 
 	return err
 }

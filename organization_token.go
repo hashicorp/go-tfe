@@ -1,8 +1,10 @@
 package tfe
 
 import (
+	"context"
 	"errors"
 	"fmt"
+	"net/url"
 	"time"
 )
 
@@ -25,18 +27,18 @@ type OrganizationToken struct {
 }
 
 // Generate a new organization token, replacing any existing token.
-func (s *OrganizationTokens) Generate(organization string) (*OrganizationToken, error) {
+func (s *OrganizationTokens) Generate(ctx context.Context, organization string) (*OrganizationToken, error) {
 	if !validStringID(&organization) {
 		return nil, errors.New("Invalid value for organization")
 	}
 
-	u := fmt.Sprintf("organizations/%s/authentication-token", organization)
+	u := fmt.Sprintf("organizations/%s/authentication-token", url.QueryEscape(organization))
 	req, err := s.client.newRequest("POST", u, nil)
 	if err != nil {
 		return nil, err
 	}
 
-	t, err := s.client.do(req, &OrganizationToken{})
+	t, err := s.client.do(ctx, req, &OrganizationToken{})
 	if err != nil {
 		return nil, err
 	}
@@ -45,18 +47,18 @@ func (s *OrganizationTokens) Generate(organization string) (*OrganizationToken, 
 }
 
 // Delete an organization token.
-func (s *OrganizationTokens) Delete(organization string) error {
+func (s *OrganizationTokens) Delete(ctx context.Context, organization string) error {
 	if !validStringID(&organization) {
 		return errors.New("Invalid value for organization")
 	}
 
-	u := fmt.Sprintf("organizations/%s/authentication-token", organization)
+	u := fmt.Sprintf("organizations/%s/authentication-token", url.QueryEscape(organization))
 	req, err := s.client.newRequest("DELETE", u, nil)
 	if err != nil {
 		return err
 	}
 
-	_, err = s.client.do(req, nil)
+	_, err = s.client.do(ctx, req, nil)
 
 	return err
 }

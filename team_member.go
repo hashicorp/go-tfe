@@ -1,8 +1,10 @@
 package tfe
 
 import (
+	"context"
 	"errors"
 	"fmt"
+	"net/url"
 )
 
 // TeamMembers handles communication with the team member related methods of
@@ -34,7 +36,7 @@ func (o *TeamMemberAddOptions) valid() error {
 }
 
 // Add multiple users to a team.
-func (s *TeamMembers) Add(teamID string, options TeamMemberAddOptions) error {
+func (s *TeamMembers) Add(ctx context.Context, teamID string, options TeamMemberAddOptions) error {
 	if !validStringID(&teamID) {
 		return errors.New("Invalid value for team ID")
 	}
@@ -47,13 +49,13 @@ func (s *TeamMembers) Add(teamID string, options TeamMemberAddOptions) error {
 		tms = append(tms, &teamMember{Username: name})
 	}
 
-	u := fmt.Sprintf("teams/%s/relationships/users", teamID)
+	u := fmt.Sprintf("teams/%s/relationships/users", url.QueryEscape(teamID))
 	req, err := s.client.newRequest("POST", u, tms)
 	if err != nil {
 		return err
 	}
 
-	_, err = s.client.do(req, nil)
+	_, err = s.client.do(ctx, req, nil)
 
 	return err
 }
@@ -74,7 +76,7 @@ func (o *TeamMemberRemoveOptions) valid() error {
 }
 
 // Remove multiple users from a team.
-func (s *TeamMembers) Remove(teamID string, options TeamMemberRemoveOptions) error {
+func (s *TeamMembers) Remove(ctx context.Context, teamID string, options TeamMemberRemoveOptions) error {
 	if !validStringID(&teamID) {
 		return errors.New("Invalid value for team ID")
 	}
@@ -87,13 +89,13 @@ func (s *TeamMembers) Remove(teamID string, options TeamMemberRemoveOptions) err
 		tms = append(tms, &teamMember{Username: name})
 	}
 
-	u := fmt.Sprintf("teams/%s/relationships/users", teamID)
+	u := fmt.Sprintf("teams/%s/relationships/users", url.QueryEscape(teamID))
 	req, err := s.client.newRequest("DELETE", u, tms)
 	if err != nil {
 		return err
 	}
 
-	_, err = s.client.do(req, nil)
+	_, err = s.client.do(ctx, req, nil)
 
 	return err
 }

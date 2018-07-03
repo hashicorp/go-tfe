@@ -1,7 +1,10 @@
 package tfe
 
 import (
+	"context"
 	"errors"
+	"fmt"
+	"net/url"
 )
 
 // TeamAccesses handles communication with the team access related methods of
@@ -50,7 +53,7 @@ func (o TeamAccessListOptions) valid() error {
 }
 
 // List returns the team accesses for a given workspace.
-func (s *TeamAccesses) List(options TeamAccessListOptions) ([]*TeamAccess, error) {
+func (s *TeamAccesses) List(ctx context.Context, options TeamAccessListOptions) ([]*TeamAccess, error) {
 	if err := options.valid(); err != nil {
 		return nil, err
 	}
@@ -60,7 +63,7 @@ func (s *TeamAccesses) List(options TeamAccessListOptions) ([]*TeamAccess, error
 		return nil, err
 	}
 
-	result, err := s.client.do(req, []*TeamAccess{})
+	result, err := s.client.do(ctx, req, []*TeamAccess{})
 	if err != nil {
 		return nil, err
 	}
@@ -102,7 +105,7 @@ func (o TeamAccessAddOptions) valid() error {
 }
 
 // Add team access for a workspace.
-func (s *TeamAccesses) Add(options TeamAccessAddOptions) (*TeamAccess, error) {
+func (s *TeamAccesses) Add(ctx context.Context, options TeamAccessAddOptions) (*TeamAccess, error) {
 	if err := options.valid(); err != nil {
 		return nil, err
 	}
@@ -115,7 +118,7 @@ func (s *TeamAccesses) Add(options TeamAccessAddOptions) (*TeamAccess, error) {
 		return nil, err
 	}
 
-	ta, err := s.client.do(req, &TeamAccess{})
+	ta, err := s.client.do(ctx, req, &TeamAccess{})
 	if err != nil {
 		return nil, err
 	}
@@ -123,18 +126,19 @@ func (s *TeamAccesses) Add(options TeamAccessAddOptions) (*TeamAccess, error) {
 	return ta.(*TeamAccess), nil
 }
 
-// Retrieve a sible team access by its ID.
-func (s *TeamAccesses) Retrieve(teamAccessID string) (*TeamAccess, error) {
+// Read a sible team access by its ID.
+func (s *TeamAccesses) Read(ctx context.Context, teamAccessID string) (*TeamAccess, error) {
 	if !validStringID(&teamAccessID) {
 		return nil, errors.New("Invalid value for team access ID")
 	}
 
-	req, err := s.client.newRequest("GET", "team-workspaces/"+teamAccessID, nil)
+	u := fmt.Sprintf("team-workspaces/%s", url.QueryEscape(teamAccessID))
+	req, err := s.client.newRequest("GET", u, nil)
 	if err != nil {
 		return nil, err
 	}
 
-	ta, err := s.client.do(req, &TeamAccess{})
+	ta, err := s.client.do(ctx, req, &TeamAccess{})
 	if err != nil {
 		return nil, err
 	}
@@ -143,17 +147,18 @@ func (s *TeamAccesses) Retrieve(teamAccessID string) (*TeamAccess, error) {
 }
 
 // Remove team access from a workspace.
-func (s *TeamAccesses) Remove(teamAccessID string) error {
+func (s *TeamAccesses) Remove(ctx context.Context, teamAccessID string) error {
 	if !validStringID(&teamAccessID) {
 		return errors.New("Invalid value for team access ID")
 	}
 
-	req, err := s.client.newRequest("DELETE", "team-workspaces/"+teamAccessID, nil)
+	u := fmt.Sprintf("team-workspaces/%s", url.QueryEscape(teamAccessID))
+	req, err := s.client.newRequest("DELETE", u, nil)
 	if err != nil {
 		return err
 	}
 
-	_, err = s.client.do(req, nil)
+	_, err = s.client.do(ctx, req, nil)
 
 	return err
 }

@@ -1,6 +1,7 @@
 package tfe
 
 import (
+	"context"
 	"fmt"
 	"testing"
 	"time"
@@ -26,7 +27,9 @@ func createConfigurationVersion(t *testing.T, client *Client, w *Workspace) (*Co
 		w, wCleanup = createWorkspace(t, client, nil)
 	}
 
+	ctx := context.Background()
 	cv, err := client.ConfigurationVersions.Create(
+		ctx,
 		w.ID,
 		ConfigurationVersionCreateOptions{AutoQueueRuns: Bool(false)},
 	)
@@ -44,14 +47,15 @@ func createConfigurationVersion(t *testing.T, client *Client, w *Workspace) (*Co
 func createUploadedConfigurationVersion(t *testing.T, client *Client, w *Workspace) (*ConfigurationVersion, func()) {
 	cv, cvCleanup := createConfigurationVersion(t, client, w)
 
-	err := client.ConfigurationVersions.Upload(cv.UploadURL, "test-fixtures/config-version")
+	ctx := context.Background()
+	err := client.ConfigurationVersions.Upload(ctx, cv.UploadURL, "test-fixtures/config-version")
 	if err != nil {
 		cvCleanup()
 		t.Fatal(err)
 	}
 
 	for i := 0; ; i++ {
-		cv, err = client.ConfigurationVersions.Retrieve(cv.ID)
+		cv, err = client.ConfigurationVersions.Read(ctx, cv.ID)
 		if err != nil {
 			cvCleanup()
 			t.Fatal(err)
@@ -90,13 +94,14 @@ func createPolicy(t *testing.T, client *Client, org *Organization) (*Policy, fun
 		},
 	}
 
-	p, err := client.Policies.Create(org.Name, options)
+	ctx := context.Background()
+	p, err := client.Policies.Create(ctx, org.Name, options)
 	if err != nil {
 		t.Fatal(err)
 	}
 
 	return p, func() {
-		if err := client.Policies.Delete(p.ID); err != nil {
+		if err := client.Policies.Delete(ctx, p.ID); err != nil {
 			t.Errorf("Error destroying policy! WARNING: Dangling resources\n"+
 				"may exist! The full error is shown below.\n\n"+
 				"Policy: %s\nError: %s", p.ID, err)
@@ -117,12 +122,13 @@ func createUploadedPolicy(t *testing.T, client *Client, pass bool, org *Organiza
 
 	p, pCleanup := createPolicy(t, client, org)
 
-	err := client.Policies.Upload(p.ID, []byte(fmt.Sprintf("main = rule { %t }", pass)))
+	ctx := context.Background()
+	err := client.Policies.Upload(ctx, p.ID, []byte(fmt.Sprintf("main = rule { %t }", pass)))
 	if err != nil {
 		t.Fatal(err)
 	}
 
-	p, err = client.Policies.Retrieve(p.ID)
+	p, err = client.Policies.Read(ctx, p.ID)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -151,7 +157,8 @@ func createOAuthToken(t *testing.T, client *Client, org *Organization) (*OAuthTo
 		ServiceProvider: ServiceProvider(ServiceProviderGithub),
 	}
 
-	oc, err := client.OAuthClients.Create(org.Name, options)
+	ctx := context.Background()
+	oc, err := client.OAuthClients.Create(ctx, org.Name, options)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -159,7 +166,7 @@ func createOAuthToken(t *testing.T, client *Client, org *Organization) (*OAuthTo
 	return oc.OAuthToken[0], func() {
 		// There currently isn't a way to delete an OAuth client.
 		//
-		// if err := client.OAuthClients.Delete(oc.ID); err != nil {
+		// if err := client.OAuthClients.Delete(ctx, oc.ID); err != nil {
 		// 	t.Errorf("Error destroying OAuth client! WARNING: Dangling resources\n"+
 		// 		"may exist! The full error is shown below.\n\n"+
 		// 		"OAuthClient: %s\nError: %s", oc.ID, err)
@@ -171,7 +178,8 @@ func createOAuthToken(t *testing.T, client *Client, org *Organization) (*OAuthTo
 	}
 }
 func createOrganization(t *testing.T, client *Client) (*Organization, func()) {
-	org, err := client.Organizations.Create(OrganizationCreateOptions{
+	ctx := context.Background()
+	org, err := client.Organizations.Create(ctx, OrganizationCreateOptions{
 		Name:  String(randomString(t)),
 		Email: String(fmt.Sprintf("%s@tfe.local", randomString(t))),
 	})
@@ -180,7 +188,7 @@ func createOrganization(t *testing.T, client *Client) (*Organization, func()) {
 	}
 
 	return org, func() {
-		if err := client.Organizations.Delete(org.Name); err != nil {
+		if err := client.Organizations.Delete(ctx, org.Name); err != nil {
 			t.Errorf("Error destroying organization! WARNING: Dangling resources\n"+
 				"may exist! The full error is shown below.\n\n"+
 				"Organization: %s\nError: %s", org.Name, err)
@@ -195,13 +203,14 @@ func createOrganizationToken(t *testing.T, client *Client, org *Organization) (*
 		org, orgCleanup = createOrganization(t, client)
 	}
 
-	tk, err := client.OrganizationTokens.Generate(org.Name)
+	ctx := context.Background()
+	tk, err := client.OrganizationTokens.Generate(ctx, org.Name)
 	if err != nil {
 		t.Fatal(err)
 	}
 
 	return tk, func() {
-		if err := client.OrganizationTokens.Delete(org.Name); err != nil {
+		if err := client.OrganizationTokens.Delete(ctx, org.Name); err != nil {
 			t.Errorf("Error destroying organization token! WARNING: Dangling resources\n"+
 				"may exist! The full error is shown below.\n\n"+
 				"OrganizationToken: %s\nError: %s", tk.ID, err)
@@ -222,7 +231,8 @@ func createRun(t *testing.T, client *Client, w *Workspace) (*Run, func()) {
 
 	cv, cvCleanup := createUploadedConfigurationVersion(t, client, w)
 
-	r, err := client.Runs.Create(RunCreateOptions{
+	ctx := context.Background()
+	r, err := client.Runs.Create(ctx, RunCreateOptions{
 		ConfigurationVersion: cv,
 		Workspace:            w,
 	})
@@ -243,8 +253,9 @@ func createPlannedRun(t *testing.T, client *Client, w *Workspace) (*Run, func())
 	r, rCleanup := createRun(t, client, w)
 
 	var err error
+	ctx := context.Background()
 	for i := 0; ; i++ {
-		r, err = client.Runs.Retrieve(r.ID)
+		r, err = client.Runs.Read(ctx, r.ID)
 		if err != nil {
 			t.Fatal(err)
 		}
@@ -271,7 +282,8 @@ func createSSHKey(t *testing.T, client *Client, org *Organization) (*SSHKey, fun
 		org, orgCleanup = createOrganization(t, client)
 	}
 
-	key, err := client.SSHKeys.Create(org.Name, SSHKeyCreateOptions{
+	ctx := context.Background()
+	key, err := client.SSHKeys.Create(ctx, org.Name, SSHKeyCreateOptions{
 		Name:  String(randomString(t)),
 		Value: String(randomString(t)),
 	})
@@ -280,7 +292,7 @@ func createSSHKey(t *testing.T, client *Client, org *Organization) (*SSHKey, fun
 	}
 
 	return key, func() {
-		if err := client.SSHKeys.Delete(key.ID); err != nil {
+		if err := client.SSHKeys.Delete(ctx, key.ID); err != nil {
 			t.Errorf("Error destroying SSH key! WARNING: Dangling resources\n"+
 				"may exist! The full error is shown below.\n\n"+
 				"SSHKey: %s\nError: %s", key.Name, err)
@@ -299,7 +311,8 @@ func createTeam(t *testing.T, client *Client, org *Organization) (*Team, func())
 		org, orgCleanup = createOrganization(t, client)
 	}
 
-	tm, err := client.Teams.Create(org.Name, TeamCreateOptions{
+	ctx := context.Background()
+	tm, err := client.Teams.Create(ctx, org.Name, TeamCreateOptions{
 		Name: String(randomString(t)),
 	})
 	if err != nil {
@@ -307,7 +320,7 @@ func createTeam(t *testing.T, client *Client, org *Organization) (*Team, func())
 	}
 
 	return tm, func() {
-		if err := client.Teams.Delete(tm.ID); err != nil {
+		if err := client.Teams.Delete(ctx, tm.ID); err != nil {
 			t.Errorf("Error destroying team! WARNING: Dangling resources\n"+
 				"may exist! The full error is shown below.\n\n"+
 				"Team: %s\nError: %s", tm.Name, err)
@@ -334,7 +347,8 @@ func createTeamAccess(t *testing.T, client *Client, tm *Team, w *Workspace, org 
 		w, _ = createWorkspace(t, client, org)
 	}
 
-	ta, err := client.TeamAccess.Add(TeamAccessAddOptions{
+	ctx := context.Background()
+	ta, err := client.TeamAccess.Add(ctx, TeamAccessAddOptions{
 		Access:    Access(TeamAccessAdmin),
 		Team:      tm,
 		Workspace: w,
@@ -344,7 +358,7 @@ func createTeamAccess(t *testing.T, client *Client, tm *Team, w *Workspace, org 
 	}
 
 	return ta, func() {
-		if err := client.TeamAccess.Remove(ta.ID); err != nil {
+		if err := client.TeamAccess.Remove(ctx, ta.ID); err != nil {
 			t.Errorf("Error removing team access! WARNING: Dangling resources\n"+
 				"may exist! The full error is shown below.\n\n"+
 				"TeamAccess: %s\nError: %s", ta.ID, err)
@@ -367,13 +381,14 @@ func createTeamToken(t *testing.T, client *Client, tm *Team) (*TeamToken, func()
 		tm, tmCleanup = createTeam(t, client, nil)
 	}
 
-	tk, err := client.TeamTokens.Generate(tm.ID)
+	ctx := context.Background()
+	tk, err := client.TeamTokens.Generate(ctx, tm.ID)
 	if err != nil {
 		t.Fatal(err)
 	}
 
 	return tk, func() {
-		if err := client.TeamTokens.Delete(tm.ID); err != nil {
+		if err := client.TeamTokens.Delete(ctx, tm.ID); err != nil {
 			t.Errorf("Error destroying team token! WARNING: Dangling resources\n"+
 				"may exist! The full error is shown below.\n\n"+
 				"TeamToken: %s\nError: %s", tm.ID, err)
@@ -392,7 +407,8 @@ func createVariable(t *testing.T, client *Client, w *Workspace) (*Variable, func
 		w, wCleanup = createWorkspace(t, client, nil)
 	}
 
-	v, err := client.Variables.Create(VariableCreateOptions{
+	ctx := context.Background()
+	v, err := client.Variables.Create(ctx, VariableCreateOptions{
 		Key:       String(randomString(t)),
 		Value:     String(randomString(t)),
 		Category:  Category(CategoryTerraform),
@@ -403,7 +419,7 @@ func createVariable(t *testing.T, client *Client, w *Workspace) (*Variable, func
 	}
 
 	return v, func() {
-		if err := client.Variables.Delete(v.ID); err != nil {
+		if err := client.Variables.Delete(ctx, v.ID); err != nil {
 			t.Errorf("Error destroying variable! WARNING: Dangling resources\n"+
 				"may exist! The full error is shown below.\n\n"+
 				"Variable: %s\nError: %s", v.Key, err)
@@ -422,7 +438,8 @@ func createWorkspace(t *testing.T, client *Client, org *Organization) (*Workspac
 		org, orgCleanup = createOrganization(t, client)
 	}
 
-	w, err := client.Workspaces.Create(org.Name, WorkspaceCreateOptions{
+	ctx := context.Background()
+	w, err := client.Workspaces.Create(ctx, org.Name, WorkspaceCreateOptions{
 		Name: String(randomString(t)),
 	})
 	if err != nil {
@@ -430,7 +447,7 @@ func createWorkspace(t *testing.T, client *Client, org *Organization) (*Workspac
 	}
 
 	return w, func() {
-		if err := client.Workspaces.Delete(org.Name, w.Name); err != nil {
+		if err := client.Workspaces.Delete(ctx, org.Name, w.Name); err != nil {
 			t.Errorf("Error destroying workspace! WARNING: Dangling resources\n"+
 				"may exist! The full error is shown below.\n\n"+
 				"Workspace: %s\nError: %s", w.Name, err)

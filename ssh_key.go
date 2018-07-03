@@ -1,8 +1,10 @@
 package tfe
 
 import (
+	"context"
 	"errors"
 	"fmt"
+	"net/url"
 )
 
 // SSHKeys handles communication with the SSH key related methods of the
@@ -26,18 +28,18 @@ type SSHKeyListOptions struct {
 }
 
 // List returns all the organizations visible to the current user.
-func (s *SSHKeys) List(organization string, options SSHKeyListOptions) ([]*SSHKey, error) {
+func (s *SSHKeys) List(ctx context.Context, organization string, options SSHKeyListOptions) ([]*SSHKey, error) {
 	if !validStringID(&organization) {
 		return nil, errors.New("Invalid value for organization")
 	}
 
-	u := fmt.Sprintf("organizations/%s/ssh-keys", organization)
+	u := fmt.Sprintf("organizations/%s/ssh-keys", url.QueryEscape(organization))
 	req, err := s.client.newRequest("GET", u, &options)
 	if err != nil {
 		return nil, err
 	}
 
-	result, err := s.client.do(req, []*SSHKey{})
+	result, err := s.client.do(ctx, req, []*SSHKey{})
 	if err != nil {
 		return nil, err
 	}
@@ -73,7 +75,7 @@ func (o SSHKeyCreateOptions) valid() error {
 }
 
 // Create an SSH key and associate it with an organization.
-func (s *SSHKeys) Create(organization string, options SSHKeyCreateOptions) (*SSHKey, error) {
+func (s *SSHKeys) Create(ctx context.Context, organization string, options SSHKeyCreateOptions) (*SSHKey, error) {
 	if !validStringID(&organization) {
 		return nil, errors.New("Invalid value for organization")
 	}
@@ -85,13 +87,13 @@ func (s *SSHKeys) Create(organization string, options SSHKeyCreateOptions) (*SSH
 	// Make sure we don't send a user provided ID.
 	options.ID = ""
 
-	u := fmt.Sprintf("organizations/%s/ssh-keys", organization)
+	u := fmt.Sprintf("organizations/%s/ssh-keys", url.QueryEscape(organization))
 	req, err := s.client.newRequest("POST", u, &options)
 	if err != nil {
 		return nil, err
 	}
 
-	k, err := s.client.do(req, &SSHKey{})
+	k, err := s.client.do(ctx, req, &SSHKey{})
 	if err != nil {
 		return nil, err
 	}
@@ -99,18 +101,19 @@ func (s *SSHKeys) Create(organization string, options SSHKeyCreateOptions) (*SSH
 	return k.(*SSHKey), nil
 }
 
-// Retrieve an SSH key.
-func (s *SSHKeys) Retrieve(sshKeyID string) (*SSHKey, error) {
+// Read an SSH key.
+func (s *SSHKeys) Read(ctx context.Context, sshKeyID string) (*SSHKey, error) {
 	if !validStringID(&sshKeyID) {
 		return nil, errors.New("Invalid value for SSH key ID")
 	}
 
-	req, err := s.client.newRequest("GET", "ssh-keys/"+sshKeyID, nil)
+	u := fmt.Sprintf("ssh-keys/%s", url.QueryEscape(sshKeyID))
+	req, err := s.client.newRequest("GET", u, nil)
 	if err != nil {
 		return nil, err
 	}
 
-	k, err := s.client.do(req, &SSHKey{})
+	k, err := s.client.do(ctx, req, &SSHKey{})
 	if err != nil {
 		return nil, err
 	}
@@ -131,7 +134,7 @@ type SSHKeyUpdateOptions struct {
 }
 
 // Update an SSH key.
-func (s *SSHKeys) Update(sshKeyID string, options SSHKeyUpdateOptions) (*SSHKey, error) {
+func (s *SSHKeys) Update(ctx context.Context, sshKeyID string, options SSHKeyUpdateOptions) (*SSHKey, error) {
 	if !validStringID(&sshKeyID) {
 		return nil, errors.New("Invalid value for SSH key ID")
 	}
@@ -139,12 +142,13 @@ func (s *SSHKeys) Update(sshKeyID string, options SSHKeyUpdateOptions) (*SSHKey,
 	// Make sure we don't send a user provided ID.
 	options.ID = ""
 
-	req, err := s.client.newRequest("PATCH", "ssh-keys/"+sshKeyID, &options)
+	u := fmt.Sprintf("ssh-keys/%s", url.QueryEscape(sshKeyID))
+	req, err := s.client.newRequest("PATCH", u, &options)
 	if err != nil {
 		return nil, err
 	}
 
-	k, err := s.client.do(req, &SSHKey{})
+	k, err := s.client.do(ctx, req, &SSHKey{})
 	if err != nil {
 		return nil, err
 	}
@@ -153,17 +157,18 @@ func (s *SSHKeys) Update(sshKeyID string, options SSHKeyUpdateOptions) (*SSHKey,
 }
 
 // Delete an SSH key.
-func (s *SSHKeys) Delete(sshKeyID string) error {
+func (s *SSHKeys) Delete(ctx context.Context, sshKeyID string) error {
 	if !validStringID(&sshKeyID) {
 		return errors.New("Invalid value for SSH key ID")
 	}
 
-	req, err := s.client.newRequest("DELETE", "ssh-keys/"+sshKeyID, nil)
+	u := fmt.Sprintf("ssh-keys/%s", url.QueryEscape(sshKeyID))
+	req, err := s.client.newRequest("DELETE", u, nil)
 	if err != nil {
 		return err
 	}
 
-	_, err = s.client.do(req, nil)
+	_, err = s.client.do(ctx, req, nil)
 
 	return err
 }

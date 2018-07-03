@@ -1,6 +1,7 @@
 package tfe
 
 import (
+	"context"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -9,6 +10,7 @@ import (
 
 func TestRunsList(t *testing.T) {
 	client := testClient(t)
+	ctx := context.Background()
 
 	wTest, wTestCleanup := createWorkspace(t, client, nil)
 	defer wTestCleanup()
@@ -17,7 +19,7 @@ func TestRunsList(t *testing.T) {
 	rTest2, _ := createRun(t, client, wTest)
 
 	t.Run("without list options", func(t *testing.T) {
-		rs, err := client.Runs.List(wTest.ID, RunListOptions{})
+		rs, err := client.Runs.List(ctx, wTest.ID, RunListOptions{})
 		require.NoError(t, err)
 
 		found := []string{}
@@ -35,7 +37,7 @@ func TestRunsList(t *testing.T) {
 		// Request a page number which is out of range. The result should
 		// be successful, but return no results if the paging options are
 		// properly passed along.
-		rs, err := client.Runs.List(wTest.ID, RunListOptions{
+		rs, err := client.Runs.List(ctx, wTest.ID, RunListOptions{
 			ListOptions: ListOptions{
 				PageNumber: 999,
 				PageSize:   100,
@@ -46,7 +48,7 @@ func TestRunsList(t *testing.T) {
 	})
 
 	t.Run("without a valid workspace ID", func(t *testing.T) {
-		rs, err := client.Runs.List(badIdentifier, RunListOptions{})
+		rs, err := client.Runs.List(ctx, badIdentifier, RunListOptions{})
 		assert.Nil(t, rs)
 		assert.EqualError(t, err, "Invalid value for workspace ID")
 	})
@@ -54,6 +56,7 @@ func TestRunsList(t *testing.T) {
 
 func TestRunsCreate(t *testing.T) {
 	client := testClient(t)
+	ctx := context.Background()
 
 	wTest, wTestCleanup := createWorkspace(t, client, nil)
 	defer wTestCleanup()
@@ -65,7 +68,7 @@ func TestRunsCreate(t *testing.T) {
 			Workspace: wTest,
 		}
 
-		_, err := client.Runs.Create(options)
+		_, err := client.Runs.Create(ctx, options)
 		assert.NoError(t, err)
 	})
 
@@ -75,13 +78,13 @@ func TestRunsCreate(t *testing.T) {
 			Workspace:            wTest,
 		}
 
-		r, err := client.Runs.Create(options)
+		r, err := client.Runs.Create(ctx, options)
 		require.NoError(t, err)
 		assert.Equal(t, cvTest.ID, r.ConfigurationVersion.ID)
 	})
 
 	t.Run("without a workspace", func(t *testing.T) {
-		r, err := client.Runs.Create(RunCreateOptions{})
+		r, err := client.Runs.Create(ctx, RunCreateOptions{})
 		assert.Nil(t, r)
 		assert.EqualError(t, err, "Workspace is required")
 	})
@@ -92,32 +95,33 @@ func TestRunsCreate(t *testing.T) {
 			Workspace: wTest,
 		}
 
-		r, err := client.Runs.Create(options)
+		r, err := client.Runs.Create(ctx, options)
 		require.NoError(t, err)
 		assert.Equal(t, *options.Message, r.Message)
 	})
 }
 
-func TestRunsRetrieve(t *testing.T) {
+func TestRunsRead(t *testing.T) {
 	client := testClient(t)
+	ctx := context.Background()
 
 	rTest, rTestCleanup := createPlannedRun(t, client, nil)
 	defer rTestCleanup()
 
 	t.Run("when the run exists", func(t *testing.T) {
-		r, err := client.Runs.Retrieve(rTest.ID)
+		r, err := client.Runs.Read(ctx, rTest.ID)
 		assert.NoError(t, err)
 		assert.Equal(t, rTest, r)
 	})
 
 	t.Run("when the run does not exist", func(t *testing.T) {
-		r, err := client.Runs.Retrieve("nonexisting")
+		r, err := client.Runs.Read(ctx, "nonexisting")
 		assert.Nil(t, r)
 		assert.EqualError(t, err, "Error: not found")
 	})
 
 	t.Run("with invalid run ID", func(t *testing.T) {
-		r, err := client.Runs.Retrieve(badIdentifier)
+		r, err := client.Runs.Read(ctx, badIdentifier)
 		assert.Nil(t, r)
 		assert.EqualError(t, err, "Invalid value for run ID")
 	})
@@ -125,28 +129,30 @@ func TestRunsRetrieve(t *testing.T) {
 
 func TestRunsApply(t *testing.T) {
 	client := testClient(t)
+	ctx := context.Background()
 
 	rTest, rTestCleanup := createPlannedRun(t, client, nil)
 	defer rTestCleanup()
 
 	t.Run("when the run exists", func(t *testing.T) {
-		err := client.Runs.Apply(rTest.ID, RunApplyOptions{})
+		err := client.Runs.Apply(ctx, rTest.ID, RunApplyOptions{})
 		assert.NoError(t, err)
 	})
 
 	t.Run("when the run does not exist", func(t *testing.T) {
-		err := client.Runs.Apply("nonexisting", RunApplyOptions{})
+		err := client.Runs.Apply(ctx, "nonexisting", RunApplyOptions{})
 		assert.EqualError(t, err, "Error: not found")
 	})
 
 	t.Run("with invalid run ID", func(t *testing.T) {
-		err := client.Runs.Apply(badIdentifier, RunApplyOptions{})
+		err := client.Runs.Apply(ctx, badIdentifier, RunApplyOptions{})
 		assert.EqualError(t, err, "Invalid value for run ID")
 	})
 }
 
 func TestRunsCancel(t *testing.T) {
 	client := testClient(t)
+	ctx := context.Background()
 
 	wTest, wTestCleanup := createWorkspace(t, client, nil)
 	defer wTestCleanup()
@@ -159,39 +165,40 @@ func TestRunsCancel(t *testing.T) {
 	rTest2, _ := createRun(t, client, wTest)
 
 	t.Run("when the run exists", func(t *testing.T) {
-		err := client.Runs.Cancel(rTest2.ID, RunCancelOptions{})
+		err := client.Runs.Cancel(ctx, rTest2.ID, RunCancelOptions{})
 		assert.NoError(t, err)
 	})
 
 	t.Run("when the run does not exist", func(t *testing.T) {
-		err := client.Runs.Cancel("nonexisting", RunCancelOptions{})
+		err := client.Runs.Cancel(ctx, "nonexisting", RunCancelOptions{})
 		assert.EqualError(t, err, "Error: not found")
 	})
 
 	t.Run("with invalid run ID", func(t *testing.T) {
-		err := client.Runs.Cancel(badIdentifier, RunCancelOptions{})
+		err := client.Runs.Cancel(ctx, badIdentifier, RunCancelOptions{})
 		assert.EqualError(t, err, "Invalid value for run ID")
 	})
 }
 
 func TestRunsDiscard(t *testing.T) {
 	client := testClient(t)
+	ctx := context.Background()
 
 	rTest, rTestCleanup := createPlannedRun(t, client, nil)
 	defer rTestCleanup()
 
 	t.Run("when the run exists", func(t *testing.T) {
-		err := client.Runs.Discard(rTest.ID, RunDiscardOptions{})
+		err := client.Runs.Discard(ctx, rTest.ID, RunDiscardOptions{})
 		assert.NoError(t, err)
 	})
 
 	t.Run("when the run does not exist", func(t *testing.T) {
-		err := client.Runs.Discard("nonexisting", RunDiscardOptions{})
+		err := client.Runs.Discard(ctx, "nonexisting", RunDiscardOptions{})
 		assert.EqualError(t, err, "Error: not found")
 	})
 
 	t.Run("with invalid run ID", func(t *testing.T) {
-		err := client.Runs.Discard(badIdentifier, RunDiscardOptions{})
+		err := client.Runs.Discard(ctx, badIdentifier, RunDiscardOptions{})
 		assert.EqualError(t, err, "Invalid value for run ID")
 	})
 }

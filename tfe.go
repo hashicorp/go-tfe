@@ -2,6 +2,7 @@ package tfe
 
 import (
 	"bytes"
+	"context"
 	"encoding/json"
 	"fmt"
 	"io"
@@ -224,11 +225,23 @@ func (c *Client) newRequest(method, path string, v interface{}) (*http.Request, 
 // error if an API error has occurred.
 // If v implements the io.Writer interface, the raw response body will be
 // written to v, without attempting to first decode it.
-func (c *Client) do(req *http.Request, v interface{}) (interface{}, error) {
+// The provided ctx must be non-nil. If it is canceled or times out, ctx.Err()
+// will be returned.
+func (c *Client) do(ctx context.Context, req *http.Request, v interface{}) (interface{}, error) {
+	// Add the context to the request.
+	req.WithContext(ctx)
+
 	// Execute the request and check the response.
 	resp, err := c.http.Do(req)
 	if err != nil {
-		return nil, err
+		// If we got an error, and the context has been canceled,
+		// the context's error is probably more useful.
+		select {
+		case <-ctx.Done():
+			return nil, ctx.Err()
+		default:
+			return nil, err
+		}
 	}
 	defer resp.Body.Close()
 

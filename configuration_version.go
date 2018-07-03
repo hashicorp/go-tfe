@@ -4,9 +4,11 @@ import (
 	"archive/tar"
 	"bytes"
 	"compress/gzip"
+	"context"
 	"errors"
 	"fmt"
 	"io"
+	"net/url"
 	"os"
 	"path/filepath"
 	"time"
@@ -72,18 +74,18 @@ type ConfigurationVersionListOptions struct {
 }
 
 // List returns all configuration versions of a workspace.
-func (s *ConfigurationVersions) List(workspaceID string, options ConfigurationVersionListOptions) ([]*ConfigurationVersion, error) {
+func (s *ConfigurationVersions) List(ctx context.Context, workspaceID string, options ConfigurationVersionListOptions) ([]*ConfigurationVersion, error) {
 	if !validStringID(&workspaceID) {
 		return nil, errors.New("Invalid value for workspace ID")
 	}
 
-	u := fmt.Sprintf("workspaces/%s/configuration-versions", workspaceID)
+	u := fmt.Sprintf("workspaces/%s/configuration-versions", url.QueryEscape(workspaceID))
 	req, err := s.client.newRequest("GET", u, &options)
 	if err != nil {
 		return nil, err
 	}
 
-	result, err := s.client.do(req, []*ConfigurationVersion{})
+	result, err := s.client.do(ctx, req, []*ConfigurationVersion{})
 	if err != nil {
 		return nil, err
 	}
@@ -109,7 +111,7 @@ type ConfigurationVersionCreateOptions struct {
 
 // Create is used to create a new configuration version. The created
 // configuration version will be usable once data is uploaded to it.
-func (s *ConfigurationVersions) Create(workspaceID string, options ConfigurationVersionCreateOptions) (*ConfigurationVersion, error) {
+func (s *ConfigurationVersions) Create(ctx context.Context, workspaceID string, options ConfigurationVersionCreateOptions) (*ConfigurationVersion, error) {
 	if !validStringID(&workspaceID) {
 		return nil, errors.New("Invalid value for workspace ID")
 	}
@@ -117,13 +119,13 @@ func (s *ConfigurationVersions) Create(workspaceID string, options Configuration
 	// Make sure we don't send a user provided ID.
 	options.ID = ""
 
-	u := fmt.Sprintf("workspaces/%s/configuration-versions", workspaceID)
+	u := fmt.Sprintf("workspaces/%s/configuration-versions", url.QueryEscape(workspaceID))
 	req, err := s.client.newRequest("POST", u, &options)
 	if err != nil {
 		return nil, err
 	}
 
-	cv, err := s.client.do(req, &ConfigurationVersion{})
+	cv, err := s.client.do(ctx, req, &ConfigurationVersion{})
 	if err != nil {
 		return nil, err
 	}
@@ -131,18 +133,19 @@ func (s *ConfigurationVersions) Create(workspaceID string, options Configuration
 	return cv.(*ConfigurationVersion), nil
 }
 
-// Retrieve single configuration version by its ID.
-func (s *ConfigurationVersions) Retrieve(cvID string) (*ConfigurationVersion, error) {
+// Read single configuration version by its ID.
+func (s *ConfigurationVersions) Read(ctx context.Context, cvID string) (*ConfigurationVersion, error) {
 	if !validStringID(&cvID) {
 		return nil, errors.New("Invalid value for configuration version ID")
 	}
 
-	req, err := s.client.newRequest("GET", "configuration-versions/"+cvID, nil)
+	u := fmt.Sprintf("configuration-versions/%s", url.QueryEscape(cvID))
+	req, err := s.client.newRequest("GET", u, nil)
 	if err != nil {
 		return nil, err
 	}
 
-	cv, err := s.client.do(req, &ConfigurationVersion{})
+	cv, err := s.client.do(ctx, req, &ConfigurationVersion{})
 	if err != nil {
 		return nil, err
 	}
@@ -153,7 +156,7 @@ func (s *ConfigurationVersions) Retrieve(cvID string) (*ConfigurationVersion, er
 // Upload packages and uploads Terraform configuration files. It requires the
 // upload URL from a configuration version and the path to the configuration
 // files on disk.
-func (s *ConfigurationVersions) Upload(url, path string) error {
+func (s *ConfigurationVersions) Upload(ctx context.Context, url, path string) error {
 	body, err := s.pack(path)
 	if err != nil {
 		return err
@@ -164,7 +167,7 @@ func (s *ConfigurationVersions) Upload(url, path string) error {
 		return err
 	}
 
-	_, err = s.client.do(req, nil)
+	_, err = s.client.do(ctx, req, nil)
 
 	return err
 }

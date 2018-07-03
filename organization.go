@@ -1,7 +1,10 @@
 package tfe
 
 import (
+	"context"
 	"errors"
+	"fmt"
+	"net/url"
 	"time"
 )
 
@@ -69,13 +72,13 @@ type OrganizationListOptions struct {
 }
 
 // List returns all the organizations visible to the current user.
-func (s *Organizations) List(options OrganizationListOptions) ([]*Organization, error) {
+func (s *Organizations) List(ctx context.Context, options OrganizationListOptions) ([]*Organization, error) {
 	req, err := s.client.newRequest("GET", "organizations", &options)
 	if err != nil {
 		return nil, err
 	}
 
-	result, err := s.client.do(req, []*Organization{})
+	result, err := s.client.do(ctx, req, []*Organization{})
 	if err != nil {
 		return nil, err
 	}
@@ -114,7 +117,7 @@ func (o OrganizationCreateOptions) valid() error {
 }
 
 // Create a new organization with the given name and email.
-func (s *Organizations) Create(options OrganizationCreateOptions) (*Organization, error) {
+func (s *Organizations) Create(ctx context.Context, options OrganizationCreateOptions) (*Organization, error) {
 	if err := options.valid(); err != nil {
 		return nil, err
 	}
@@ -127,7 +130,7 @@ func (s *Organizations) Create(options OrganizationCreateOptions) (*Organization
 		return nil, err
 	}
 
-	org, err := s.client.do(req, &Organization{})
+	org, err := s.client.do(ctx, req, &Organization{})
 	if err != nil {
 		return nil, err
 	}
@@ -135,18 +138,19 @@ func (s *Organizations) Create(options OrganizationCreateOptions) (*Organization
 	return org.(*Organization), nil
 }
 
-// Retrieve single organization by its name.
-func (s *Organizations) Retrieve(name string) (*Organization, error) {
+// Read single organization by its name.
+func (s *Organizations) Read(ctx context.Context, name string) (*Organization, error) {
 	if !validStringID(&name) {
 		return nil, errors.New("Invalid value for name")
 	}
 
-	req, err := s.client.newRequest("GET", "organizations/"+name, nil)
+	u := fmt.Sprintf("organizations/%s", url.QueryEscape(name))
+	req, err := s.client.newRequest("GET", u, nil)
 	if err != nil {
 		return nil, err
 	}
 
-	org, err := s.client.do(req, &Organization{})
+	org, err := s.client.do(ctx, req, &Organization{})
 	if err != nil {
 		return nil, err
 	}
@@ -176,7 +180,7 @@ type OrganizationUpdateOptions struct {
 }
 
 // Update attributes of an existing organization.
-func (s *Organizations) Update(name string, options OrganizationUpdateOptions) (*Organization, error) {
+func (s *Organizations) Update(ctx context.Context, name string, options OrganizationUpdateOptions) (*Organization, error) {
 	if !validStringID(&name) {
 		return nil, errors.New("Invalid value for name")
 	}
@@ -184,12 +188,13 @@ func (s *Organizations) Update(name string, options OrganizationUpdateOptions) (
 	// Make sure we don't send a user provided ID.
 	options.ID = ""
 
-	req, err := s.client.newRequest("PATCH", "organizations/"+name, &options)
+	u := fmt.Sprintf("organizations/%s", url.QueryEscape(name))
+	req, err := s.client.newRequest("PATCH", u, &options)
 	if err != nil {
 		return nil, err
 	}
 
-	org, err := s.client.do(req, &Organization{})
+	org, err := s.client.do(ctx, req, &Organization{})
 	if err != nil {
 		return nil, err
 	}
@@ -198,17 +203,18 @@ func (s *Organizations) Update(name string, options OrganizationUpdateOptions) (
 }
 
 // Delete an organization by its name.
-func (s *Organizations) Delete(name string) error {
+func (s *Organizations) Delete(ctx context.Context, name string) error {
 	if !validStringID(&name) {
 		return errors.New("Invalid value for name")
 	}
 
-	req, err := s.client.newRequest("DELETE", "organizations/"+name, nil)
+	u := fmt.Sprintf("organizations/%s", url.QueryEscape(name))
+	req, err := s.client.newRequest("DELETE", u, nil)
 	if err != nil {
 		return err
 	}
 
-	_, err = s.client.do(req, nil)
+	_, err = s.client.do(ctx, req, nil)
 
 	return err
 }

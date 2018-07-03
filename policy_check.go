@@ -1,8 +1,10 @@
 package tfe
 
 import (
+	"context"
 	"errors"
 	"fmt"
+	"net/url"
 	"time"
 )
 
@@ -87,18 +89,18 @@ type PolicyCheckListOptions struct {
 }
 
 // List all policy checks of the given run.
-func (s *PolicyChecks) List(runID string, options PolicyCheckListOptions) ([]*PolicyCheck, error) {
+func (s *PolicyChecks) List(ctx context.Context, runID string, options PolicyCheckListOptions) ([]*PolicyCheck, error) {
 	if !validStringID(&runID) {
 		return nil, errors.New("Invalid value for run ID")
 	}
 
-	u := fmt.Sprintf("runs/%s/policy-checks", runID)
+	u := fmt.Sprintf("runs/%s/policy-checks", url.QueryEscape(runID))
 	req, err := s.client.newRequest("GET", u, &options)
 	if err != nil {
 		return nil, err
 	}
 
-	result, err := s.client.do(req, []*PolicyCheck{})
+	result, err := s.client.do(ctx, req, []*PolicyCheck{})
 	if err != nil {
 		return nil, err
 	}
@@ -112,18 +114,18 @@ func (s *PolicyChecks) List(runID string, options PolicyCheckListOptions) ([]*Po
 }
 
 // Override a soft-mandatory or warning policy.
-func (s *PolicyChecks) Override(policyCheckID string) (*PolicyCheck, error) {
+func (s *PolicyChecks) Override(ctx context.Context, policyCheckID string) (*PolicyCheck, error) {
 	if !validStringID(&policyCheckID) {
 		return nil, errors.New("Invalid value for policy check ID")
 	}
 
-	u := fmt.Sprintf("policy-checks/%s/actions/override", policyCheckID)
+	u := fmt.Sprintf("policy-checks/%s/actions/override", url.QueryEscape(policyCheckID))
 	req, err := s.client.newRequest("POST", u, nil)
 	if err != nil {
 		return nil, err
 	}
 
-	p, err := s.client.do(req, &PolicyCheck{})
+	p, err := s.client.do(ctx, req, &PolicyCheck{})
 	if err != nil {
 		return nil, err
 	}

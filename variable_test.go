@@ -1,6 +1,7 @@
 package tfe
 
 import (
+	"context"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -9,6 +10,7 @@ import (
 
 func TestVariablesList(t *testing.T) {
 	client := testClient(t)
+	ctx := context.Background()
 
 	orgTest, orgTestCleanup := createOrganization(t, client)
 	defer orgTestCleanup()
@@ -19,7 +21,7 @@ func TestVariablesList(t *testing.T) {
 	vTest2, _ := createVariable(t, client, wTest)
 
 	t.Run("with valid options", func(t *testing.T) {
-		vs, err := client.Variables.List(VariableListOptions{
+		vs, err := client.Variables.List(ctx, VariableListOptions{
 			Organization: String(orgTest.Name),
 			Workspace:    String(wTest.Name),
 		})
@@ -33,7 +35,7 @@ func TestVariablesList(t *testing.T) {
 		// Request a page number which is out of range. The result should
 		// be successful, but return no results if the paging options are
 		// properly passed along.
-		vs, err := client.Variables.List(VariableListOptions{
+		vs, err := client.Variables.List(ctx, VariableListOptions{
 			ListOptions: ListOptions{
 				PageNumber: 999,
 				PageSize:   100,
@@ -46,7 +48,7 @@ func TestVariablesList(t *testing.T) {
 	})
 
 	t.Run("when options is missing an organization", func(t *testing.T) {
-		vs, err := client.Variables.List(VariableListOptions{
+		vs, err := client.Variables.List(ctx, VariableListOptions{
 			Workspace: String(wTest.Name),
 		})
 		assert.Nil(t, vs)
@@ -54,7 +56,7 @@ func TestVariablesList(t *testing.T) {
 	})
 
 	t.Run("when options is missing an workspace", func(t *testing.T) {
-		vs, err := client.Variables.List(VariableListOptions{
+		vs, err := client.Variables.List(ctx, VariableListOptions{
 			Organization: String(orgTest.Name),
 		})
 		assert.Nil(t, vs)
@@ -64,6 +66,7 @@ func TestVariablesList(t *testing.T) {
 
 func TestVariablesCreate(t *testing.T) {
 	client := testClient(t)
+	ctx := context.Background()
 
 	wTest, wTestCleanup := createWorkspace(t, client, nil)
 	defer wTestCleanup()
@@ -76,7 +79,7 @@ func TestVariablesCreate(t *testing.T) {
 			Workspace: wTest,
 		}
 
-		v, err := client.Variables.Create(options)
+		v, err := client.Variables.Create(ctx, options)
 		require.NoError(t, err)
 
 		assert.NotEmpty(t, v.ID)
@@ -94,7 +97,7 @@ func TestVariablesCreate(t *testing.T) {
 			Workspace: wTest,
 		}
 
-		_, err := client.Variables.Create(options)
+		_, err := client.Variables.Create(ctx, options)
 		assert.EqualError(t, err, "Key is required")
 	})
 
@@ -105,7 +108,7 @@ func TestVariablesCreate(t *testing.T) {
 			Workspace: wTest,
 		}
 
-		_, err := client.Variables.Create(options)
+		_, err := client.Variables.Create(ctx, options)
 		assert.EqualError(t, err, "Value is required")
 	})
 
@@ -116,7 +119,7 @@ func TestVariablesCreate(t *testing.T) {
 			Workspace: wTest,
 		}
 
-		_, err := client.Variables.Create(options)
+		_, err := client.Variables.Create(ctx, options)
 		assert.EqualError(t, err, "Category is required")
 	})
 
@@ -127,13 +130,14 @@ func TestVariablesCreate(t *testing.T) {
 			Category: Category(CategoryTerraform),
 		}
 
-		_, err := client.Variables.Create(options)
+		_, err := client.Variables.Create(ctx, options)
 		assert.EqualError(t, err, "Workspace is required")
 	})
 }
 
 func TestVariablesUpdate(t *testing.T) {
 	client := testClient(t)
+	ctx := context.Background()
 
 	vTest, vTestCleanup := createVariable(t, client, nil)
 	defer vTestCleanup()
@@ -146,7 +150,7 @@ func TestVariablesUpdate(t *testing.T) {
 			Sensitive: Bool(true),
 		}
 
-		v, err := client.Variables.Update(vTest.ID, options)
+		v, err := client.Variables.Update(ctx, vTest.ID, options)
 		require.NoError(t, err)
 
 		assert.Equal(t, *options.Key, v.Key)
@@ -162,7 +166,7 @@ func TestVariablesUpdate(t *testing.T) {
 			HCL:      Bool(false),
 		}
 
-		v, err := client.Variables.Update(vTest.ID, options)
+		v, err := client.Variables.Update(ctx, vTest.ID, options)
 		require.NoError(t, err)
 
 		assert.Equal(t, *options.Key, v.Key)
@@ -174,20 +178,21 @@ func TestVariablesUpdate(t *testing.T) {
 		vTest, vTestCleanup := createVariable(t, client, nil)
 		defer vTestCleanup()
 
-		v, err := client.Variables.Update(vTest.ID, VariableUpdateOptions{})
+		v, err := client.Variables.Update(ctx, vTest.ID, VariableUpdateOptions{})
 		require.NoError(t, err)
 
 		assert.Equal(t, vTest, v)
 	})
 
 	t.Run("with invalid variable ID", func(t *testing.T) {
-		_, err := client.Variables.Update(badIdentifier, VariableUpdateOptions{})
+		_, err := client.Variables.Update(ctx, badIdentifier, VariableUpdateOptions{})
 		assert.EqualError(t, err, "Invalid value for variable ID")
 	})
 }
 
 func TestVariablesDelete(t *testing.T) {
 	client := testClient(t)
+	ctx := context.Background()
 
 	wTest, wTestCleanup := createWorkspace(t, client, nil)
 	defer wTestCleanup()
@@ -195,17 +200,17 @@ func TestVariablesDelete(t *testing.T) {
 	vTest, _ := createVariable(t, client, wTest)
 
 	t.Run("with valid options", func(t *testing.T) {
-		err := client.Variables.Delete(vTest.ID)
+		err := client.Variables.Delete(ctx, vTest.ID)
 		assert.NoError(t, err)
 	})
 
 	t.Run("with non existing variable ID", func(t *testing.T) {
-		err := client.Variables.Delete("nonexisting")
+		err := client.Variables.Delete(ctx, "nonexisting")
 		assert.EqualError(t, err, "Error: not found")
 	})
 
 	t.Run("with invalid variable ID", func(t *testing.T) {
-		err := client.Variables.Delete(badIdentifier)
+		err := client.Variables.Delete(ctx, badIdentifier)
 		assert.EqualError(t, err, "Invalid value for variable ID")
 	})
 }

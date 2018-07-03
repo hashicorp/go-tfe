@@ -2,6 +2,7 @@ package tfe
 
 // func TestOAuthTokensList(t *testing.T) {
 // 	client := testClient(t)
+//	ctx := context.Background()
 
 // 	orgTest, orgwTestCleanup := createOrganization(t, client)
 // 	defer orgwTestCleanup()
@@ -10,7 +11,7 @@ package tfe
 // 	otTest2, _ := createOAuthToken(t, client, orgTest)
 
 // 	t.Run("with valid options", func(t *testing.T) {
-// 		ots, err := client.OAuthTokens.List(orgTest.Name)
+// 		ots, err := client.OAuthTokens.List(ctx, orgTest.Name)
 // 		require.NoError(t, err)
 
 // 		assert.Contains(t, ots, otTest1)
@@ -24,7 +25,7 @@ package tfe
 // 	})
 
 // 	t.Run("without a valid organization", func(t *testing.T) {
-// 		ots, err := client.OAuthTokens.List(badIdentifier)
+// 		ots, err := client.OAuthTokens.List(ctx, badIdentifier)
 // 		assert.Nil(t, ots)
 // 		assert.EqualError(t, err, "Invalid value for organization")
 // 	})

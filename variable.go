@@ -1,7 +1,10 @@
 package tfe
 
 import (
+	"context"
 	"errors"
+	"fmt"
+	"net/url"
 )
 
 // Variables handles communication with the variable related methods of the
@@ -52,7 +55,7 @@ func (o VariableListOptions) valid() error {
 }
 
 // List returns all variables associated with a given workspace.
-func (s *Variables) List(options VariableListOptions) ([]*Variable, error) {
+func (s *Variables) List(ctx context.Context, options VariableListOptions) ([]*Variable, error) {
 	if err := options.valid(); err != nil {
 		return nil, err
 	}
@@ -62,7 +65,7 @@ func (s *Variables) List(options VariableListOptions) ([]*Variable, error) {
 		return nil, err
 	}
 
-	result, err := s.client.do(req, []*Variable{})
+	result, err := s.client.do(ctx, req, []*Variable{})
 	if err != nil {
 		return nil, err
 	}
@@ -116,7 +119,7 @@ func (o VariableCreateOptions) valid() error {
 }
 
 // Create is used to create a new variable.
-func (s *Variables) Create(options VariableCreateOptions) (*Variable, error) {
+func (s *Variables) Create(ctx context.Context, options VariableCreateOptions) (*Variable, error) {
 	if err := options.valid(); err != nil {
 		return nil, err
 	}
@@ -129,7 +132,7 @@ func (s *Variables) Create(options VariableCreateOptions) (*Variable, error) {
 		return nil, err
 	}
 
-	v, err := s.client.do(req, &Variable{})
+	v, err := s.client.do(ctx, req, &Variable{})
 	if err != nil {
 		return nil, err
 	}
@@ -159,7 +162,7 @@ type VariableUpdateOptions struct {
 }
 
 // Update values of an existing variable.
-func (s *Variables) Update(variableID string, options VariableUpdateOptions) (*Variable, error) {
+func (s *Variables) Update(ctx context.Context, variableID string, options VariableUpdateOptions) (*Variable, error) {
 	if !validStringID(&variableID) {
 		return nil, errors.New("Invalid value for variable ID")
 	}
@@ -167,12 +170,13 @@ func (s *Variables) Update(variableID string, options VariableUpdateOptions) (*V
 	// Make sure we don't send a user provided ID.
 	options.ID = variableID
 
-	req, err := s.client.newRequest("PATCH", "vars/"+variableID, &options)
+	u := fmt.Sprintf("vars/%s", url.QueryEscape(variableID))
+	req, err := s.client.newRequest("PATCH", u, &options)
 	if err != nil {
 		return nil, err
 	}
 
-	v, err := s.client.do(req, &Variable{})
+	v, err := s.client.do(ctx, req, &Variable{})
 	if err != nil {
 		return nil, err
 	}
@@ -181,17 +185,18 @@ func (s *Variables) Update(variableID string, options VariableUpdateOptions) (*V
 }
 
 // Delete a variable.
-func (s *Variables) Delete(variableID string) error {
+func (s *Variables) Delete(ctx context.Context, variableID string) error {
 	if !validStringID(&variableID) {
 		return errors.New("Invalid value for variable ID")
 	}
 
-	req, err := s.client.newRequest("DELETE", "vars/"+variableID, nil)
+	u := fmt.Sprintf("vars/%s", url.QueryEscape(variableID))
+	req, err := s.client.newRequest("DELETE", u, nil)
 	if err != nil {
 		return err
 	}
 
-	_, err = s.client.do(req, nil)
+	_, err = s.client.do(ctx, req, nil)
 
 	return err
 }

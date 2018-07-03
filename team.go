@@ -1,8 +1,10 @@
 package tfe
 
 import (
+	"context"
 	"errors"
 	"fmt"
+	"net/url"
 )
 
 // Teams handles communication with the team related methods of the Terraform
@@ -36,18 +38,18 @@ type TeamListOptions struct {
 }
 
 // List returns all the organizations visible to the current user.
-func (s *Teams) List(organization string, options TeamListOptions) ([]*Team, error) {
+func (s *Teams) List(ctx context.Context, organization string, options TeamListOptions) ([]*Team, error) {
 	if !validStringID(&organization) {
 		return nil, errors.New("Invalid value for organization")
 	}
 
-	u := fmt.Sprintf("organizations/%s/teams", organization)
+	u := fmt.Sprintf("organizations/%s/teams", url.QueryEscape(organization))
 	req, err := s.client.newRequest("GET", u, &options)
 	if err != nil {
 		return nil, err
 	}
 
-	result, err := s.client.do(req, []*Team{})
+	result, err := s.client.do(ctx, req, []*Team{})
 	if err != nil {
 		return nil, err
 	}
@@ -80,7 +82,7 @@ func (o TeamCreateOptions) valid() error {
 }
 
 // Create a new team with the given name.
-func (s *Teams) Create(organization string, options TeamCreateOptions) (*Team, error) {
+func (s *Teams) Create(ctx context.Context, organization string, options TeamCreateOptions) (*Team, error) {
 	if !validStringID(&organization) {
 		return nil, errors.New("Invalid value for organization")
 	}
@@ -91,13 +93,13 @@ func (s *Teams) Create(organization string, options TeamCreateOptions) (*Team, e
 	// Make sure we don't send a user provided ID.
 	options.ID = ""
 
-	u := fmt.Sprintf("organizations/%s/teams", organization)
+	u := fmt.Sprintf("organizations/%s/teams", url.QueryEscape(organization))
 	req, err := s.client.newRequest("POST", u, &options)
 	if err != nil {
 		return nil, err
 	}
 
-	t, err := s.client.do(req, &Team{})
+	t, err := s.client.do(ctx, req, &Team{})
 	if err != nil {
 		return nil, err
 	}
@@ -105,18 +107,19 @@ func (s *Teams) Create(organization string, options TeamCreateOptions) (*Team, e
 	return t.(*Team), nil
 }
 
-// Retrieve a single team by its ID.
-func (s *Teams) Retrieve(teamID string) (*Team, error) {
+// Read a single team by its ID.
+func (s *Teams) Read(ctx context.Context, teamID string) (*Team, error) {
 	if !validStringID(&teamID) {
 		return nil, errors.New("Invalid value for team ID")
 	}
 
-	req, err := s.client.newRequest("GET", "teams/"+teamID, nil)
+	u := fmt.Sprintf("teams/%s", url.QueryEscape(teamID))
+	req, err := s.client.newRequest("GET", u, nil)
 	if err != nil {
 		return nil, err
 	}
 
-	t, err := s.client.do(req, &Team{})
+	t, err := s.client.do(ctx, req, &Team{})
 	if err != nil {
 		return nil, err
 	}
@@ -125,17 +128,18 @@ func (s *Teams) Retrieve(teamID string) (*Team, error) {
 }
 
 // Delete a team by its ID.
-func (s *Teams) Delete(teamID string) error {
+func (s *Teams) Delete(ctx context.Context, teamID string) error {
 	if !validStringID(&teamID) {
 		return errors.New("Invalid value for team ID")
 	}
 
-	req, err := s.client.newRequest("DELETE", "teams/"+teamID, nil)
+	u := fmt.Sprintf("teams/%s", url.QueryEscape(teamID))
+	req, err := s.client.newRequest("DELETE", u, nil)
 	if err != nil {
 		return err
 	}
 
-	_, err = s.client.do(req, nil)
+	_, err = s.client.do(ctx, req, nil)
 
 	return err
 }

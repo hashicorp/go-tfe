@@ -1,6 +1,7 @@
 package tfe
 
 import (
+	"context"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -9,6 +10,7 @@ import (
 
 func TestPoliciesList(t *testing.T) {
 	client := testClient(t)
+	ctx := context.Background()
 
 	orgTest, orgTestCleanup := createOrganization(t, client)
 	defer orgTestCleanup()
@@ -17,7 +19,7 @@ func TestPoliciesList(t *testing.T) {
 	pTest2, _ := createPolicy(t, client, orgTest)
 
 	t.Run("without list options", func(t *testing.T) {
-		ks, err := client.Policies.List(orgTest.Name, PolicyListOptions{})
+		ks, err := client.Policies.List(ctx, orgTest.Name, PolicyListOptions{})
 		require.NoError(t, err)
 		assert.Contains(t, ks, pTest1)
 		assert.Contains(t, ks, pTest2)
@@ -28,7 +30,7 @@ func TestPoliciesList(t *testing.T) {
 		// Request a page number which is out of range. The result should
 		// be successful, but return no results if the paging options are
 		// properly passed along.
-		ps, err := client.Policies.List(orgTest.Name, PolicyListOptions{
+		ps, err := client.Policies.List(ctx, orgTest.Name, PolicyListOptions{
 			ListOptions: ListOptions{
 				PageNumber: 999,
 				PageSize:   100,
@@ -39,7 +41,7 @@ func TestPoliciesList(t *testing.T) {
 	})
 
 	t.Run("without a valid organization", func(t *testing.T) {
-		ps, err := client.Policies.List(badIdentifier, PolicyListOptions{})
+		ps, err := client.Policies.List(ctx, badIdentifier, PolicyListOptions{})
 		assert.Nil(t, ps)
 		assert.EqualError(t, err, "Invalid value for organization")
 	})
@@ -47,6 +49,7 @@ func TestPoliciesList(t *testing.T) {
 
 func TestPoliciesCreate(t *testing.T) {
 	client := testClient(t)
+	ctx := context.Background()
 
 	orgTest, orgTestCleanup := createOrganization(t, client)
 	defer orgTestCleanup()
@@ -63,11 +66,11 @@ func TestPoliciesCreate(t *testing.T) {
 			},
 		}
 
-		p, err := client.Policies.Create(orgTest.Name, options)
+		p, err := client.Policies.Create(ctx, orgTest.Name, options)
 		require.NoError(t, err)
 
 		// Get a refreshed view from the API.
-		refreshed, err := client.Policies.Retrieve(p.ID)
+		refreshed, err := client.Policies.Read(ctx, p.ID)
 		require.NoError(t, err)
 
 		for _, item := range []*Policy{
@@ -80,7 +83,7 @@ func TestPoliciesCreate(t *testing.T) {
 	})
 
 	t.Run("when options has an invalid name", func(t *testing.T) {
-		p, err := client.Policies.Create(orgTest.Name, PolicyCreateOptions{
+		p, err := client.Policies.Create(ctx, orgTest.Name, PolicyCreateOptions{
 			Name: String(badIdentifier),
 			Enforce: []*EnforcementOptions{
 				&EnforcementOptions{
@@ -94,7 +97,7 @@ func TestPoliciesCreate(t *testing.T) {
 	})
 
 	t.Run("when options is missing name", func(t *testing.T) {
-		p, err := client.Policies.Create(orgTest.Name, PolicyCreateOptions{
+		p, err := client.Policies.Create(ctx, orgTest.Name, PolicyCreateOptions{
 			Enforce: []*EnforcementOptions{
 				&EnforcementOptions{
 					Path: String(randomString(t) + ".sentinel"),
@@ -111,7 +114,7 @@ func TestPoliciesCreate(t *testing.T) {
 			Name: String(randomString(t)),
 		}
 
-		p, err := client.Policies.Create(orgTest.Name, options)
+		p, err := client.Policies.Create(ctx, orgTest.Name, options)
 		assert.Nil(t, p)
 		assert.EqualError(t, err, "Enforce is required")
 	})
@@ -126,7 +129,7 @@ func TestPoliciesCreate(t *testing.T) {
 			},
 		}
 
-		p, err := client.Policies.Create(orgTest.Name, options)
+		p, err := client.Policies.Create(ctx, orgTest.Name, options)
 		assert.Nil(t, p)
 		assert.EqualError(t, err, "Enforcement path is required")
 	})
@@ -142,13 +145,13 @@ func TestPoliciesCreate(t *testing.T) {
 			},
 		}
 
-		p, err := client.Policies.Create(orgTest.Name, options)
+		p, err := client.Policies.Create(ctx, orgTest.Name, options)
 		assert.Nil(t, p)
 		assert.EqualError(t, err, "Enforcement mode is required")
 	})
 
 	t.Run("when options has an invalid organization", func(t *testing.T) {
-		p, err := client.Policies.Create(badIdentifier, PolicyCreateOptions{
+		p, err := client.Policies.Create(ctx, badIdentifier, PolicyCreateOptions{
 			Name: String("foo"),
 		})
 		assert.Nil(t, p)
@@ -156,25 +159,26 @@ func TestPoliciesCreate(t *testing.T) {
 	})
 }
 
-func TestPoliciesRetrieve(t *testing.T) {
+func TestPoliciesRead(t *testing.T) {
 	client := testClient(t)
+	ctx := context.Background()
 
 	pTest, pTestCleanup := createPolicy(t, client, nil)
 	defer pTestCleanup()
 
 	t.Run("when the policy exists without content", func(t *testing.T) {
-		p, err := client.Policies.Retrieve(pTest.ID)
+		p, err := client.Policies.Read(ctx, pTest.ID)
 		require.NoError(t, err)
 		assert.Equal(t, pTest.ID, p.ID)
 		assert.Equal(t, pTest.Name, p.Name)
 		assert.Empty(t, p.Enforce)
 	})
 
-	err := client.Policies.Upload(pTest.ID, []byte(`main = rule { true }`))
+	err := client.Policies.Upload(ctx, pTest.ID, []byte(`main = rule { true }`))
 	require.NoError(t, err)
 
 	t.Run("when the policy exists with content", func(t *testing.T) {
-		p, err := client.Policies.Retrieve(pTest.ID)
+		p, err := client.Policies.Read(ctx, pTest.ID)
 		require.NoError(t, err)
 		assert.Equal(t, pTest.ID, p.ID)
 		assert.Equal(t, pTest.Name, p.Name)
@@ -182,13 +186,13 @@ func TestPoliciesRetrieve(t *testing.T) {
 	})
 
 	t.Run("when the policy does not exist", func(t *testing.T) {
-		p, err := client.Policies.Retrieve("nonexisting")
+		p, err := client.Policies.Read(ctx, "nonexisting")
 		assert.Nil(t, p)
 		assert.EqualError(t, err, "Error: not found")
 	})
 
 	t.Run("without a valid policy ID", func(t *testing.T) {
-		p, err := client.Policies.Retrieve(badIdentifier)
+		p, err := client.Policies.Read(ctx, badIdentifier)
 		assert.Nil(t, p)
 		assert.EqualError(t, err, "Invalid value for policy ID")
 	})
@@ -196,33 +200,35 @@ func TestPoliciesRetrieve(t *testing.T) {
 
 func TestPoliciesUpload(t *testing.T) {
 	client := testClient(t)
+	ctx := context.Background()
 
 	pTest, pTestCleanup := createPolicy(t, client, nil)
 	defer pTestCleanup()
 
 	t.Run("with valid options", func(t *testing.T) {
-		err := client.Policies.Upload(pTest.ID, []byte(`main = rule { true }`))
+		err := client.Policies.Upload(ctx, pTest.ID, []byte(`main = rule { true }`))
 		assert.NoError(t, err)
 	})
 
 	t.Run("with empty content", func(t *testing.T) {
-		err := client.Policies.Upload(pTest.ID, []byte{})
+		err := client.Policies.Upload(ctx, pTest.ID, []byte{})
 		assert.NoError(t, err)
 	})
 
 	t.Run("without any content", func(t *testing.T) {
-		err := client.Policies.Upload(pTest.ID, nil)
+		err := client.Policies.Upload(ctx, pTest.ID, nil)
 		assert.NoError(t, err)
 	})
 
 	t.Run("without a valid policy ID", func(t *testing.T) {
-		err := client.Policies.Upload(badIdentifier, []byte(`main = rule { true }`))
+		err := client.Policies.Upload(ctx, badIdentifier, []byte(`main = rule { true }`))
 		assert.EqualError(t, err, "Invalid value for policy ID")
 	})
 }
 
 func TestPoliciesUpdate(t *testing.T) {
 	client := testClient(t)
+	ctx := context.Background()
 
 	orgTest, orgTestCleanup := createOrganization(t, client)
 	defer orgTestCleanup()
@@ -233,7 +239,7 @@ func TestPoliciesUpdate(t *testing.T) {
 
 		require.Equal(t, 1, len(pBefore.Enforce))
 
-		pAfter, err := client.Policies.Update(pBefore.ID, PolicyUpdateOptions{
+		pAfter, err := client.Policies.Update(ctx, pBefore.ID, PolicyUpdateOptions{
 			Enforce: []*EnforcementOptions{
 				&EnforcementOptions{
 					Path: String(pBefore.Enforce[0].Path),
@@ -256,7 +262,7 @@ func TestPoliciesUpdate(t *testing.T) {
 
 		require.Equal(t, 1, len(pBefore.Enforce))
 
-		pAfter, err := client.Policies.Update(pBefore.ID, PolicyUpdateOptions{
+		pAfter, err := client.Policies.Update(ctx, pBefore.ID, PolicyUpdateOptions{
 			Enforce: []*EnforcementOptions{
 				&EnforcementOptions{
 					Path: String("nonexisting"),
@@ -276,13 +282,13 @@ func TestPoliciesUpdate(t *testing.T) {
 		pBefore, pBeforeCleanup := createPolicy(t, client, orgTest)
 		defer pBeforeCleanup()
 
-		pAfter, err := client.Policies.Update(pBefore.ID, PolicyUpdateOptions{})
+		pAfter, err := client.Policies.Update(ctx, pBefore.ID, PolicyUpdateOptions{})
 		assert.Nil(t, pAfter)
 		assert.EqualError(t, err, "Enforce is required")
 	})
 
 	t.Run("without a valid policy ID", func(t *testing.T) {
-		p, err := client.Policies.Update(badIdentifier, PolicyUpdateOptions{})
+		p, err := client.Policies.Update(ctx, badIdentifier, PolicyUpdateOptions{})
 		assert.Nil(t, p)
 		assert.EqualError(t, err, "Invalid value for policy ID")
 	})
@@ -290,6 +296,7 @@ func TestPoliciesUpdate(t *testing.T) {
 
 func TestPoliciesDelete(t *testing.T) {
 	client := testClient(t)
+	ctx := context.Background()
 
 	orgTest, orgTestCleanup := createOrganization(t, client)
 	defer orgTestCleanup()
@@ -297,21 +304,21 @@ func TestPoliciesDelete(t *testing.T) {
 	pTest, _ := createPolicy(t, client, orgTest)
 
 	t.Run("with valid options", func(t *testing.T) {
-		err := client.Policies.Delete(pTest.ID)
+		err := client.Policies.Delete(ctx, pTest.ID)
 		require.NoError(t, err)
 
 		// Try loading the policy - it should fail.
-		_, err = client.Policies.Retrieve(pTest.ID)
+		_, err = client.Policies.Read(ctx, pTest.ID)
 		assert.EqualError(t, err, "Error: not found")
 	})
 
 	t.Run("when the policy does not exist", func(t *testing.T) {
-		err := client.Policies.Delete(pTest.ID)
+		err := client.Policies.Delete(ctx, pTest.ID)
 		assert.EqualError(t, err, "Error: not found")
 	})
 
 	t.Run("when the policy ID is invalid", func(t *testing.T) {
-		err := client.Policies.Delete(badIdentifier)
+		err := client.Policies.Delete(ctx, badIdentifier)
 		assert.EqualError(t, err, "Invalid value for policy ID")
 	})
 }

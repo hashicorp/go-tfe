@@ -1,8 +1,10 @@
 package tfe
 
 import (
+	"context"
 	"errors"
 	"fmt"
+	"net/url"
 	"time"
 )
 
@@ -65,18 +67,18 @@ type WorkspaceListOptions struct {
 }
 
 // List returns all of the workspaces within an organization.
-func (s *Workspaces) List(organization string, options WorkspaceListOptions) ([]*Workspace, error) {
+func (s *Workspaces) List(ctx context.Context, organization string, options WorkspaceListOptions) ([]*Workspace, error) {
 	if !validStringID(&organization) {
 		return nil, errors.New("Invalid value for organization")
 	}
 
-	u := fmt.Sprintf("organizations/%s/workspaces", organization)
+	u := fmt.Sprintf("organizations/%s/workspaces", url.QueryEscape(organization))
 	req, err := s.client.newRequest("GET", u, &options)
 	if err != nil {
 		return nil, err
 	}
 
-	result, err := s.client.do(req, []*Workspace{})
+	result, err := s.client.do(ctx, req, []*Workspace{})
 	if err != nil {
 		return nil, err
 	}
@@ -141,7 +143,7 @@ func (o WorkspaceCreateOptions) valid() error {
 }
 
 // Create is used to create a new workspace.
-func (s *Workspaces) Create(organization string, options WorkspaceCreateOptions) (*Workspace, error) {
+func (s *Workspaces) Create(ctx context.Context, organization string, options WorkspaceCreateOptions) (*Workspace, error) {
 	if !validStringID(&organization) {
 		return nil, errors.New("Invalid value for organization")
 	}
@@ -152,13 +154,13 @@ func (s *Workspaces) Create(organization string, options WorkspaceCreateOptions)
 	// Make sure we don't send a user provided ID.
 	options.ID = ""
 
-	u := fmt.Sprintf("organizations/%s/workspaces", organization)
+	u := fmt.Sprintf("organizations/%s/workspaces", url.QueryEscape(organization))
 	req, err := s.client.newRequest("POST", u, &options)
 	if err != nil {
 		return nil, err
 	}
 
-	w, err := s.client.do(req, &Workspace{})
+	w, err := s.client.do(ctx, req, &Workspace{})
 	if err != nil {
 		return nil, err
 	}
@@ -166,8 +168,8 @@ func (s *Workspaces) Create(organization string, options WorkspaceCreateOptions)
 	return w.(*Workspace), nil
 }
 
-// Retrieve a single workspace by its name.
-func (s *Workspaces) Retrieve(organization, workspace string) (*Workspace, error) {
+// Read a single workspace by its name.
+func (s *Workspaces) Read(ctx context.Context, organization, workspace string) (*Workspace, error) {
 	if !validStringID(&organization) {
 		return nil, errors.New("Invalid value for organization")
 	}
@@ -175,13 +177,17 @@ func (s *Workspaces) Retrieve(organization, workspace string) (*Workspace, error
 		return nil, errors.New("Invalid value for workspace")
 	}
 
-	u := fmt.Sprintf("organizations/%s/workspaces/%s", organization, workspace)
+	u := fmt.Sprintf(
+		"organizations/%s/workspaces/%s",
+		url.QueryEscape(organization),
+		url.QueryEscape(workspace),
+	)
 	req, err := s.client.newRequest("GET", u, nil)
 	if err != nil {
 		return nil, err
 	}
 
-	w, err := s.client.do(req, &Workspace{})
+	w, err := s.client.do(ctx, req, &Workspace{})
 	if err != nil {
 		return nil, err
 	}
@@ -221,7 +227,7 @@ type WorkspaceUpdateOptions struct {
 }
 
 // Update settings of an existing workspace.
-func (s *Workspaces) Update(organization, workspace string, options WorkspaceUpdateOptions) (*Workspace, error) {
+func (s *Workspaces) Update(ctx context.Context, organization, workspace string, options WorkspaceUpdateOptions) (*Workspace, error) {
 	if !validStringID(&organization) {
 		return nil, errors.New("Invalid value for organization")
 	}
@@ -232,13 +238,17 @@ func (s *Workspaces) Update(organization, workspace string, options WorkspaceUpd
 	// Make sure we don't send a user provided ID.
 	options.ID = ""
 
-	u := fmt.Sprintf("organizations/%s/workspaces/%s", organization, workspace)
+	u := fmt.Sprintf(
+		"organizations/%s/workspaces/%s",
+		url.QueryEscape(organization),
+		url.QueryEscape(workspace),
+	)
 	req, err := s.client.newRequest("PATCH", u, &options)
 	if err != nil {
 		return nil, err
 	}
 
-	w, err := s.client.do(req, &Workspace{})
+	w, err := s.client.do(ctx, req, &Workspace{})
 	if err != nil {
 		return nil, err
 	}
@@ -247,7 +257,7 @@ func (s *Workspaces) Update(organization, workspace string, options WorkspaceUpd
 }
 
 // Delete a workspace by its name.
-func (s *Workspaces) Delete(organization, workspace string) error {
+func (s *Workspaces) Delete(ctx context.Context, organization, workspace string) error {
 	if !validStringID(&organization) {
 		return errors.New("Invalid value for organization")
 	}
@@ -255,13 +265,17 @@ func (s *Workspaces) Delete(organization, workspace string) error {
 		return errors.New("Invalid value for workspace")
 	}
 
-	u := fmt.Sprintf("organizations/%s/workspaces/%s", organization, workspace)
+	u := fmt.Sprintf(
+		"organizations/%s/workspaces/%s",
+		url.QueryEscape(organization),
+		url.QueryEscape(workspace),
+	)
 	req, err := s.client.newRequest("DELETE", u, nil)
 	if err != nil {
 		return err
 	}
 
-	_, err = s.client.do(req, nil)
+	_, err = s.client.do(ctx, req, nil)
 
 	return err
 }
@@ -273,18 +287,18 @@ type WorkspaceLockOptions struct {
 }
 
 // Lock a workspace.
-func (s *Workspaces) Lock(workspaceID string, options WorkspaceLockOptions) (*Workspace, error) {
+func (s *Workspaces) Lock(ctx context.Context, workspaceID string, options WorkspaceLockOptions) (*Workspace, error) {
 	if !validStringID(&workspaceID) {
 		return nil, errors.New("Invalid value for workspace ID")
 	}
 
-	u := fmt.Sprintf("workspaces/%s/actions/lock", workspaceID)
+	u := fmt.Sprintf("workspaces/%s/actions/lock", url.QueryEscape(workspaceID))
 	req, err := s.client.newRequest("POST", u, &options)
 	if err != nil {
 		return nil, err
 	}
 
-	w, err := s.client.do(req, &Workspace{})
+	w, err := s.client.do(ctx, req, &Workspace{})
 	if err != nil {
 		return nil, err
 	}
@@ -293,18 +307,18 @@ func (s *Workspaces) Lock(workspaceID string, options WorkspaceLockOptions) (*Wo
 }
 
 // Unlock a workspace.
-func (s *Workspaces) Unlock(workspaceID string) (*Workspace, error) {
+func (s *Workspaces) Unlock(ctx context.Context, workspaceID string) (*Workspace, error) {
 	if !validStringID(&workspaceID) {
 		return nil, errors.New("Invalid value for workspace ID")
 	}
 
-	u := fmt.Sprintf("workspaces/%s/actions/unlock", workspaceID)
+	u := fmt.Sprintf("workspaces/%s/actions/unlock", url.QueryEscape(workspaceID))
 	req, err := s.client.newRequest("POST", u, nil)
 	if err != nil {
 		return nil, err
 	}
 
-	w, err := s.client.do(req, &Workspace{})
+	w, err := s.client.do(ctx, req, &Workspace{})
 	if err != nil {
 		return nil, err
 	}
@@ -333,7 +347,7 @@ func (o WorkspaceAssignSSHKeyOptions) valid() error {
 }
 
 // AssignSSHKey to a workspace.
-func (s *Workspaces) AssignSSHKey(workspaceID string, options WorkspaceAssignSSHKeyOptions) (*Workspace, error) {
+func (s *Workspaces) AssignSSHKey(ctx context.Context, workspaceID string, options WorkspaceAssignSSHKeyOptions) (*Workspace, error) {
 	if !validStringID(&workspaceID) {
 		return nil, errors.New("Invalid value for workspace ID")
 	}
@@ -344,13 +358,13 @@ func (s *Workspaces) AssignSSHKey(workspaceID string, options WorkspaceAssignSSH
 	// Make sure we don't send a user provided ID.
 	options.ID = ""
 
-	u := fmt.Sprintf("workspaces/%s/relationships/ssh-key", workspaceID)
+	u := fmt.Sprintf("workspaces/%s/relationships/ssh-key", url.QueryEscape(workspaceID))
 	req, err := s.client.newRequest("PATCH", u, &options)
 	if err != nil {
 		return nil, err
 	}
 
-	w, err := s.client.do(req, &Workspace{})
+	w, err := s.client.do(ctx, req, &Workspace{})
 	if err != nil {
 		return nil, err
 	}
@@ -369,18 +383,18 @@ type workspaceUnassignSSHKeyOptions struct {
 }
 
 // UnassignSSHKey from a workspace.
-func (s *Workspaces) UnassignSSHKey(workspaceID string) (*Workspace, error) {
+func (s *Workspaces) UnassignSSHKey(ctx context.Context, workspaceID string) (*Workspace, error) {
 	if !validStringID(&workspaceID) {
 		return nil, errors.New("Invalid value for workspace ID")
 	}
 
-	u := fmt.Sprintf("workspaces/%s/relationships/ssh-key", workspaceID)
+	u := fmt.Sprintf("workspaces/%s/relationships/ssh-key", url.QueryEscape(workspaceID))
 	req, err := s.client.newRequest("PATCH", u, &workspaceUnassignSSHKeyOptions{})
 	if err != nil {
 		return nil, err
 	}
 
-	w, err := s.client.do(req, &Workspace{})
+	w, err := s.client.do(ctx, req, &Workspace{})
 	if err != nil {
 		return nil, err
 	}

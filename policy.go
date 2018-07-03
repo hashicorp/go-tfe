@@ -1,8 +1,10 @@
 package tfe
 
 import (
+	"context"
 	"errors"
 	"fmt"
+	"net/url"
 	"time"
 )
 
@@ -44,18 +46,18 @@ type PolicyListOptions struct {
 }
 
 // List all the policies for a given organization
-func (s *Policies) List(organization string, options PolicyListOptions) ([]*Policy, error) {
+func (s *Policies) List(ctx context.Context, organization string, options PolicyListOptions) ([]*Policy, error) {
 	if !validStringID(&organization) {
 		return nil, errors.New("Invalid value for organization")
 	}
 
-	u := fmt.Sprintf("organizations/%s/policies", organization)
+	u := fmt.Sprintf("organizations/%s/policies", url.QueryEscape(organization))
 	req, err := s.client.newRequest("GET", u, &options)
 	if err != nil {
 		return nil, err
 	}
 
-	result, err := s.client.do(req, []*Policy{})
+	result, err := s.client.do(ctx, req, []*Policy{})
 	if err != nil {
 		return nil, err
 	}
@@ -108,7 +110,7 @@ func (o PolicyCreateOptions) valid() error {
 }
 
 // Create a policy and associate it with an organization.
-func (s *Policies) Create(organization string, options PolicyCreateOptions) (*Policy, error) {
+func (s *Policies) Create(ctx context.Context, organization string, options PolicyCreateOptions) (*Policy, error) {
 	if !validStringID(&organization) {
 		return nil, errors.New("Invalid value for organization")
 	}
@@ -119,13 +121,13 @@ func (s *Policies) Create(organization string, options PolicyCreateOptions) (*Po
 	// Make sure we don't send a user provided ID.
 	options.ID = ""
 
-	u := fmt.Sprintf("organizations/%s/policies", organization)
+	u := fmt.Sprintf("organizations/%s/policies", url.QueryEscape(organization))
 	req, err := s.client.newRequest("POST", u, &options)
 	if err != nil {
 		return nil, err
 	}
 
-	p, err := s.client.do(req, &Policy{})
+	p, err := s.client.do(ctx, req, &Policy{})
 	if err != nil {
 		return nil, err
 	}
@@ -133,18 +135,19 @@ func (s *Policies) Create(organization string, options PolicyCreateOptions) (*Po
 	return p.(*Policy), err
 }
 
-// Retrieve a policy.
-func (s *Policies) Retrieve(policyID string) (*Policy, error) {
+// Read a policy.
+func (s *Policies) Read(ctx context.Context, policyID string) (*Policy, error) {
 	if !validStringID(&policyID) {
 		return nil, errors.New("Invalid value for policy ID")
 	}
 
-	req, err := s.client.newRequest("GET", "policies/"+policyID, nil)
+	u := fmt.Sprintf("policies/%s", url.QueryEscape(policyID))
+	req, err := s.client.newRequest("GET", u, nil)
 	if err != nil {
 		return nil, err
 	}
 
-	p, err := s.client.do(req, &Policy{})
+	p, err := s.client.do(ctx, req, &Policy{})
 	if err != nil {
 		return nil, err
 	}
@@ -153,18 +156,18 @@ func (s *Policies) Retrieve(policyID string) (*Policy, error) {
 }
 
 // Upload the policy content of the policy.
-func (s *Policies) Upload(policyID string, content []byte) error {
+func (s *Policies) Upload(ctx context.Context, policyID string, content []byte) error {
 	if !validStringID(&policyID) {
 		return errors.New("Invalid value for policy ID")
 	}
 
-	u := fmt.Sprintf("policies/%s/upload", policyID)
+	u := fmt.Sprintf("policies/%s/upload", url.QueryEscape(policyID))
 	req, err := s.client.newRequest("PUT", u, content)
 	if err != nil {
 		return err
 	}
 
-	_, err = s.client.do(req, nil)
+	_, err = s.client.do(ctx, req, nil)
 
 	return err
 }
@@ -186,7 +189,7 @@ func (o PolicyUpdateOptions) valid() error {
 }
 
 // Update an existing policy.
-func (s *Policies) Update(policyID string, options PolicyUpdateOptions) (*Policy, error) {
+func (s *Policies) Update(ctx context.Context, policyID string, options PolicyUpdateOptions) (*Policy, error) {
 	if !validStringID(&policyID) {
 		return nil, errors.New("Invalid value for policy ID")
 	}
@@ -197,12 +200,13 @@ func (s *Policies) Update(policyID string, options PolicyUpdateOptions) (*Policy
 	// Make sure we don't send a user provided ID.
 	options.ID = ""
 
-	req, err := s.client.newRequest("PATCH", "policies/"+policyID, &options)
+	u := fmt.Sprintf("policies/%s", url.QueryEscape(policyID))
+	req, err := s.client.newRequest("PATCH", u, &options)
 	if err != nil {
 		return nil, err
 	}
 
-	p, err := s.client.do(req, &Policy{})
+	p, err := s.client.do(ctx, req, &Policy{})
 	if err != nil {
 		return nil, err
 	}
@@ -211,17 +215,18 @@ func (s *Policies) Update(policyID string, options PolicyUpdateOptions) (*Policy
 }
 
 // Delete an organization policy.
-func (s *Policies) Delete(policyID string) error {
+func (s *Policies) Delete(ctx context.Context, policyID string) error {
 	if !validStringID(&policyID) {
 		return errors.New("Invalid value for policy ID")
 	}
 
-	req, err := s.client.newRequest("DELETE", "policies/"+policyID, nil)
+	u := fmt.Sprintf("policies/%s", url.QueryEscape(policyID))
+	req, err := s.client.newRequest("DELETE", u, nil)
 	if err != nil {
 		return err
 	}
 
-	_, err = s.client.do(req, nil)
+	_, err = s.client.do(ctx, req, nil)
 
 	return err
 }

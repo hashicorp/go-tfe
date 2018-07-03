@@ -1,6 +1,7 @@
 package tfe
 
 import (
+	"context"
 	"errors"
 )
 
@@ -47,14 +48,14 @@ type TwoFactor struct {
 	Verified          bool         `json:"verified"`
 }
 
-// Retrieve the details of the currently authenticated user.
-func (s *Accounts) Retrieve() (*Account, error) {
+// Read the details of the currently authenticated user.
+func (s *Accounts) Read(ctx context.Context) (*Account, error) {
 	req, err := s.client.newRequest("GET", "account/details", nil)
 	if err != nil {
 		return nil, err
 	}
 
-	a, err := s.client.do(req, &Account{})
+	a, err := s.client.do(ctx, req, &Account{})
 	if err != nil {
 		return nil, err
 	}
@@ -75,7 +76,7 @@ type AccountUpdateOptions struct {
 }
 
 // Update attributes of the currently authenticated user.
-func (s *Accounts) Update(options AccountUpdateOptions) (*Account, error) {
+func (s *Accounts) Update(ctx context.Context, options AccountUpdateOptions) (*Account, error) {
 	// Make sure we don't send a user provided ID.
 	options.ID = ""
 
@@ -84,7 +85,7 @@ func (s *Accounts) Update(options AccountUpdateOptions) (*Account, error) {
 		return nil, err
 	}
 
-	a, err := s.client.do(req, &Account{})
+	a, err := s.client.do(ctx, req, &Account{})
 	if err != nil {
 		return nil, err
 	}
@@ -113,7 +114,7 @@ func (o TwoFactorEnableOptions) valid() error {
 }
 
 // EnableTwoFactor enables two factor authentication.
-func (s *Accounts) EnableTwoFactor(options TwoFactorEnableOptions) (*Account, error) {
+func (s *Accounts) EnableTwoFactor(ctx context.Context, options TwoFactorEnableOptions) (*Account, error) {
 	if err := options.valid(); err != nil {
 		return nil, err
 	}
@@ -126,7 +127,7 @@ func (s *Accounts) EnableTwoFactor(options TwoFactorEnableOptions) (*Account, er
 		return nil, err
 	}
 
-	a, err := s.client.do(req, &Account{})
+	a, err := s.client.do(ctx, req, &Account{})
 	if err != nil {
 		return nil, err
 	}
@@ -135,13 +136,13 @@ func (s *Accounts) EnableTwoFactor(options TwoFactorEnableOptions) (*Account, er
 }
 
 // DisableTwoFactor disables two factor authentication.
-func (s *Accounts) DisableTwoFactor() (*Account, error) {
+func (s *Accounts) DisableTwoFactor(ctx context.Context) (*Account, error) {
 	req, err := s.client.newRequest("POST", "account/actions/two-factor-disable", nil)
 	if err != nil {
 		return nil, err
 	}
 
-	a, err := s.client.do(req, &Account{})
+	a, err := s.client.do(ctx, req, &Account{})
 	if err != nil {
 		return nil, err
 	}
@@ -167,7 +168,7 @@ func (o TwoFactorVerifyOptions) valid() error {
 }
 
 // VerifyTwoFactor verifies two factor authentication.
-func (s *Accounts) VerifyTwoFactor(options TwoFactorVerifyOptions) (*Account, error) {
+func (s *Accounts) VerifyTwoFactor(ctx context.Context, options TwoFactorVerifyOptions) (*Account, error) {
 	if err := options.valid(); err != nil {
 		return nil, err
 	}
@@ -180,7 +181,7 @@ func (s *Accounts) VerifyTwoFactor(options TwoFactorVerifyOptions) (*Account, er
 		return nil, err
 	}
 
-	a, err := s.client.do(req, &Account{})
+	a, err := s.client.do(ctx, req, &Account{})
 	if err != nil {
 		return nil, err
 	}
@@ -189,7 +190,7 @@ func (s *Accounts) VerifyTwoFactor(options TwoFactorVerifyOptions) (*Account, er
 }
 
 // ResendVerificationCode resends the two factor verification code.
-func (s *Accounts) ResendVerificationCode() error {
+func (s *Accounts) ResendVerificationCode(ctx context.Context) error {
 	req, err := s.client.newRequest(
 		"POST",
 		"account/actions/two-factor-resend-verification-code",
@@ -199,7 +200,7 @@ func (s *Accounts) ResendVerificationCode() error {
 		return err
 	}
 
-	_, err = s.client.do(req, nil)
+	_, err = s.client.do(ctx, req, nil)
 
 	return err
 }

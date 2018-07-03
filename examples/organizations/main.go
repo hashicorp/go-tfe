@@ -1,6 +1,7 @@
 package main
 
 import (
+	"context"
 	"log"
 
 	tfe "github.com/hashicorp/go-tfe"
@@ -8,7 +9,7 @@ import (
 
 func main() {
 	config := &tfe.Config{
-		Token: "UXsybZKSz07IEw.tfev2.FajRykbzcnG9ESrhBjBMLNUSsPp69qLyzclIskE",
+		Token: "insert-your-token-here",
 	}
 
 	client, err := tfe.NewClient(config)
@@ -16,19 +17,22 @@ func main() {
 		log.Fatal(err)
 	}
 
+	// Create a context
+	ctx := context.Background()
+
 	// Create a new organization
 	options := tfe.OrganizationCreateOptions{
 		Name:  tfe.String("example"),
 		Email: tfe.String("info@example.com"),
 	}
 
-	org, err := client.Organizations.Create(options)
+	org, err := client.Organizations.Create(ctx, options)
 	if err != nil {
 		log.Fatal(err)
 	}
 
 	// Delete an organization
-	err = client.Organizations.Delete(org.Name)
+	err = client.Organizations.Delete(ctx, org.Name)
 	if err != nil {
 		log.Fatal(err)
 	}
