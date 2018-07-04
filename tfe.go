@@ -21,15 +21,20 @@ import (
 // DefaultAddress of Terraform Enterprise.
 const DefaultAddress = "https://app.terraform.io"
 
+// DefaultBasePath on which the API is served.
+const DefaultBasePath = "/api/v2/"
+
 const (
-	apiVersionPath = "/api/v2/"
-	userAgent      = "go-tfe"
+	userAgent = "go-tfe"
 )
 
 // Config provides configuration details to the API client.
 type Config struct {
 	// The address of the Terraform Enterprise API.
 	Address string
+
+	// The base path on which the API is served.
+	BasePath string
 
 	// API token used to access the Terraform Enterprise API.
 	Token string
@@ -41,18 +46,15 @@ type Config struct {
 // DefaultConfig returns a default config structure.
 func DefaultConfig() *Config {
 	config := &Config{
-		Address: os.Getenv("TFE_ADDRESS"),
-		Token:   os.Getenv("TFE_TOKEN"),
+		Address:    os.Getenv("TFE_ADDRESS"),
+		BasePath:   DefaultBasePath,
+		Token:      os.Getenv("TFE_TOKEN"),
+		HTTPClient: cleanhttp.DefaultClient(),
 	}
 
 	// Set the default address if none is given.
 	if config.Address == "" {
 		config.Address = DefaultAddress
-	}
-
-	// Set a default HTTP client if none given.
-	if config.HTTPClient == nil {
-		config.HTTPClient = cleanhttp.DefaultClient()
 	}
 
 	return config
@@ -66,7 +68,6 @@ type Client struct {
 	http      *http.Client
 	userAgent string
 
-	Accounts              *Accounts
 	ConfigurationVersions *ConfigurationVersions
 	OAuthClients          *OAuthClients
 	OAuthTokens           *OAuthTokens
@@ -80,6 +81,7 @@ type Client struct {
 	TeamAccess            *TeamAccesses
 	TeamMembers           *TeamMembers
 	TeamTokens            *TeamTokens
+	Users                 *Users
 	Variables             *Variables
 	Workspaces            *Workspaces
 }
@@ -92,6 +94,9 @@ func NewClient(cfg *Config) (*Client, error) {
 	if cfg != nil {
 		if cfg.Address != "" {
 			config.Address = cfg.Address
+		}
+		if cfg.BasePath != "" {
+			config.BasePath = cfg.BasePath
 		}
 		if cfg.Token != "" {
 			config.Token = cfg.Token
@@ -106,7 +111,11 @@ func NewClient(cfg *Config) (*Client, error) {
 	if err != nil {
 		return nil, fmt.Errorf("Invalid address: %v", err)
 	}
-	baseURL.Path = apiVersionPath
+
+	baseURL.Path = config.BasePath
+	if !strings.HasSuffix(baseURL.Path, "/") {
+		baseURL.Path += "/"
+	}
 
 	// This value must be provided by the user.
 	if config.Token == "" {
@@ -122,7 +131,6 @@ func NewClient(cfg *Config) (*Client, error) {
 	}
 
 	// Create the services.
-	client.Accounts = &Accounts{client: client}
 	client.ConfigurationVersions = &ConfigurationVersions{client: client}
 	client.OAuthClients = &OAuthClients{client: client}
 	client.OAuthTokens = &OAuthTokens{client: client}
@@ -136,6 +144,7 @@ func NewClient(cfg *Config) (*Client, error) {
 	client.TeamAccess = &TeamAccesses{client: client}
 	client.TeamMembers = &TeamMembers{client: client}
 	client.TeamTokens = &TeamTokens{client: client}
+	client.Users = &Users{client: client}
 	client.Variables = &Variables{client: client}
 	client.Workspaces = &Workspaces{client: client}
 

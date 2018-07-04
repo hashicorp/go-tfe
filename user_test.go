@@ -8,231 +8,231 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func TestAccountsRead(t *testing.T) {
+func TestUsersReadCurrent(t *testing.T) {
 	client := testClient(t)
 	ctx := context.Background()
 
-	a, err := client.Accounts.Read(ctx)
+	u, err := client.Users.ReadCurrent(ctx)
 	assert.NoError(t, err)
-	assert.NotEmpty(t, a.ID)
-	assert.NotEmpty(t, a.AvatarURL)
-	assert.NotEmpty(t, a.Username)
+	assert.NotEmpty(t, u.ID)
+	assert.NotEmpty(t, u.AvatarURL)
+	assert.NotEmpty(t, u.Username)
 
 	t.Run("two factor options are decoded", func(t *testing.T) {
-		assert.NotNil(t, a.TwoFactor)
+		assert.NotNil(t, u.TwoFactor)
 	})
 }
 
-func TestAccountsUpdate(t *testing.T) {
+func TestUsersUpdate(t *testing.T) {
 	client := testClient(t)
 	ctx := context.Background()
 
-	aTest, err := client.Accounts.Read(ctx)
+	uTest, err := client.Users.ReadCurrent(ctx)
 	require.NoError(t, err)
 
-	// Make sure we reset the current account when were done.
+	// Make sure we reset the current user when were done.
 	defer func() {
-		client.Accounts.Update(ctx, AccountUpdateOptions{
-			Email:    String(aTest.Email),
-			Username: String(aTest.Username),
+		client.Users.Update(ctx, UserUpdateOptions{
+			Email:    String(uTest.Email),
+			Username: String(uTest.Username),
 		})
 	}()
 
 	t.Run("without any options", func(t *testing.T) {
-		_, err := client.Accounts.Update(ctx, AccountUpdateOptions{})
+		_, err := client.Users.Update(ctx, UserUpdateOptions{})
 		require.NoError(t, err)
 
-		a, err := client.Accounts.Read(ctx)
+		u, err := client.Users.ReadCurrent(ctx)
 		assert.NoError(t, err)
-		assert.Equal(t, a, aTest)
+		assert.Equal(t, u, uTest)
 	})
 
 	t.Run("with a new username", func(t *testing.T) {
-		_, err := client.Accounts.Update(ctx, AccountUpdateOptions{
+		_, err := client.Users.Update(ctx, UserUpdateOptions{
 			Username: String("NewTestUsername"),
 		})
 		require.NoError(t, err)
 
-		a, err := client.Accounts.Read(ctx)
+		u, err := client.Users.ReadCurrent(ctx)
 		assert.NoError(t, err)
-		assert.Equal(t, "NewTestUsername", a.Username)
+		assert.Equal(t, "NewTestUsername", u.Username)
 	})
 
 	t.Run("with a new email address", func(t *testing.T) {
-		_, err := client.Accounts.Update(ctx, AccountUpdateOptions{
+		_, err := client.Users.Update(ctx, UserUpdateOptions{
 			Email: String("newtestemail@hashicorp.com"),
 		})
 		require.NoError(t, err)
 
-		a, err := client.Accounts.Read(ctx)
+		u, err := client.Users.ReadCurrent(ctx)
 		assert.NoError(t, err)
-		assert.Equal(t, "newtestemail@hashicorp.com", a.UnconfirmedEmail)
+		assert.Equal(t, "newtestemail@hashicorp.com", u.UnconfirmedEmail)
 	})
 
 	t.Run("with invalid email address", func(t *testing.T) {
-		a, err := client.Accounts.Update(ctx, AccountUpdateOptions{
+		u, err := client.Users.Update(ctx, UserUpdateOptions{
 			Email: String("notamailaddress"),
 		})
-		assert.Nil(t, a)
+		assert.Nil(t, u)
 		assert.Error(t, err)
 	})
 }
 
-func TestAccountsEnableTwoFactor(t *testing.T) {
+func TestUsersEnableTwoFactor(t *testing.T) {
 	client := testClient(t)
 	ctx := context.Background()
 
-	defer client.Accounts.DisableTwoFactor(ctx)
+	defer client.Users.DisableTwoFactor(ctx)
 
 	t.Run("using sms as the second factor", func(t *testing.T) {
-		a, err := client.Accounts.EnableTwoFactor(ctx, TwoFactorEnableOptions{
+		u, err := client.Users.EnableTwoFactor(ctx, TwoFactorEnableOptions{
 			Delivery:  Delivery(DeliverySMS),
 			SMSNumber: String("+49123456789"),
 		})
 		require.NoError(t, err)
-		require.NotNil(t, a.TwoFactor)
-		assert.Equal(t, DeliverySMS, a.TwoFactor.Delivery)
-		assert.True(t, a.TwoFactor.Enabled)
-		assert.Equal(t, "+49123456789", a.TwoFactor.SMSNumber)
+		require.NotNil(t, u.TwoFactor)
+		assert.Equal(t, DeliverySMS, u.TwoFactor.Delivery)
+		assert.True(t, u.TwoFactor.Enabled)
+		assert.Equal(t, "+49123456789", u.TwoFactor.SMSNumber)
 
 		// Reset the two factor settings again.
-		_, err = client.Accounts.DisableTwoFactor(ctx)
+		_, err = client.Users.DisableTwoFactor(ctx)
 		require.NoError(t, err)
 	})
 
 	t.Run("using an app as the second factor", func(t *testing.T) {
-		a, err := client.Accounts.EnableTwoFactor(ctx, TwoFactorEnableOptions{
+		u, err := client.Users.EnableTwoFactor(ctx, TwoFactorEnableOptions{
 			Delivery: Delivery(DeliveryAPP),
 		})
 		require.NoError(t, err)
-		require.NotNil(t, a.TwoFactor)
-		assert.Equal(t, DeliveryAPP, a.TwoFactor.Delivery)
-		assert.True(t, a.TwoFactor.Enabled)
-		assert.Empty(t, a.TwoFactor.SMSNumber)
+		require.NotNil(t, u.TwoFactor)
+		assert.Equal(t, DeliveryAPP, u.TwoFactor.Delivery)
+		assert.True(t, u.TwoFactor.Enabled)
+		assert.Empty(t, u.TwoFactor.SMSNumber)
 
 		// Reset the two factor settings again.
-		_, err = client.Accounts.DisableTwoFactor(ctx)
+		_, err = client.Users.DisableTwoFactor(ctx)
 		require.NoError(t, err)
 	})
 
 	t.Run("using an app as second factor with sms as backup", func(t *testing.T) {
-		a, err := client.Accounts.EnableTwoFactor(ctx, TwoFactorEnableOptions{
+		u, err := client.Users.EnableTwoFactor(ctx, TwoFactorEnableOptions{
 			Delivery:  Delivery(DeliveryAPP),
 			SMSNumber: String("+49123456789"),
 		})
 		require.NoError(t, err)
-		require.NotNil(t, a.TwoFactor)
-		assert.Equal(t, DeliveryAPP, a.TwoFactor.Delivery)
-		assert.True(t, a.TwoFactor.Enabled)
-		assert.Equal(t, "+49123456789", a.TwoFactor.SMSNumber)
+		require.NotNil(t, u.TwoFactor)
+		assert.Equal(t, DeliveryAPP, u.TwoFactor.Delivery)
+		assert.True(t, u.TwoFactor.Enabled)
+		assert.Equal(t, "+49123456789", u.TwoFactor.SMSNumber)
 
 		// Reset the two factor settings again.
-		_, err = client.Accounts.DisableTwoFactor(ctx)
+		_, err = client.Users.DisableTwoFactor(ctx)
 		require.NoError(t, err)
 	})
 
 	t.Run("without a delivery type", func(t *testing.T) {
-		_, err := client.Accounts.EnableTwoFactor(ctx, TwoFactorEnableOptions{
+		_, err := client.Users.EnableTwoFactor(ctx, TwoFactorEnableOptions{
 			SMSNumber: String("+49123456789"),
 		})
 		assert.EqualError(t, err, "Delivery is required")
 	})
 }
 
-func TestAccountsDisableTwoFactor(t *testing.T) {
+func TestUsersDisableTwoFactor(t *testing.T) {
 	client := testClient(t)
 	ctx := context.Background()
 
-	defer client.Accounts.DisableTwoFactor(ctx)
+	defer client.Users.DisableTwoFactor(ctx)
 
-	aTest, err := client.Accounts.EnableTwoFactor(ctx, TwoFactorEnableOptions{
+	uTest, err := client.Users.EnableTwoFactor(ctx, TwoFactorEnableOptions{
 		Delivery:  Delivery(DeliveryAPP),
 		SMSNumber: String("+49123456789"),
 	})
 	require.NoError(t, err)
-	require.NotEmpty(t, aTest.TwoFactor)
+	require.NotEmpty(t, uTest.TwoFactor)
 
 	t.Run("when two factor authentication is enabled", func(t *testing.T) {
-		a, err := client.Accounts.DisableTwoFactor(ctx)
+		u, err := client.Users.DisableTwoFactor(ctx)
 		require.NoError(t, err)
-		assert.Empty(t, a.TwoFactor)
+		assert.Empty(t, u.TwoFactor)
 	})
 
 	t.Run("when two factor authentication is disabled", func(t *testing.T) {
-		_, err := client.Accounts.DisableTwoFactor(ctx)
+		_, err := client.Users.DisableTwoFactor(ctx)
 		assert.Error(t, err)
 	})
 }
 
-func TestAccountsVerifyTwoFactor(t *testing.T) {
+func TestUsersVerifyTwoFactor(t *testing.T) {
 	client := testClient(t)
 	ctx := context.Background()
 
-	defer client.Accounts.DisableTwoFactor(ctx)
+	defer client.Users.DisableTwoFactor(ctx)
 
 	t.Run("when using an invalid code", func(t *testing.T) {
-		aTest, err := client.Accounts.EnableTwoFactor(ctx, TwoFactorEnableOptions{
+		uTest, err := client.Users.EnableTwoFactor(ctx, TwoFactorEnableOptions{
 			Delivery: Delivery(DeliveryAPP),
 		})
 		require.NoError(t, err)
-		require.True(t, aTest.TwoFactor.Enabled)
+		require.True(t, uTest.TwoFactor.Enabled)
 
-		_, err = client.Accounts.VerifyTwoFactor(ctx, TwoFactorVerifyOptions{
+		_, err = client.Users.VerifyTwoFactor(ctx, TwoFactorVerifyOptions{
 			Code: String("123456"),
 		})
 		assert.Contains(t, err.Error(), "Two factor code is incorrect")
 	})
 
 	t.Run("when two factor authentication is disabled", func(t *testing.T) {
-		aTest, err := client.Accounts.DisableTwoFactor(ctx)
+		uTest, err := client.Users.DisableTwoFactor(ctx)
 		require.NoError(t, err)
-		require.False(t, aTest.TwoFactor.Enabled)
+		require.False(t, uTest.TwoFactor.Enabled)
 
-		_, err = client.Accounts.VerifyTwoFactor(ctx, TwoFactorVerifyOptions{
+		_, err = client.Users.VerifyTwoFactor(ctx, TwoFactorVerifyOptions{
 			Code: String("123456"),
 		})
 		assert.Contains(t, err.Error(), "Two-factor authentication is not enabled")
 	})
 
 	t.Run("without a verification code", func(t *testing.T) {
-		_, err := client.Accounts.VerifyTwoFactor(ctx, TwoFactorVerifyOptions{})
+		_, err := client.Users.VerifyTwoFactor(ctx, TwoFactorVerifyOptions{})
 		assert.EqualError(t, err, "Code is required")
 	})
 }
 
-func TestAccountsResendVerificationCode(t *testing.T) {
+func TestUsersResendVerificationCode(t *testing.T) {
 	client := testClient(t)
 	ctx := context.Background()
 
 	t.Run("when two factor authentication is app enabled", func(t *testing.T) {
-		aTest, err := client.Accounts.EnableTwoFactor(ctx, TwoFactorEnableOptions{
+		uTest, err := client.Users.EnableTwoFactor(ctx, TwoFactorEnableOptions{
 			Delivery: Delivery(DeliveryAPP),
 		})
 		require.NoError(t, err)
-		require.True(t, aTest.TwoFactor.Enabled)
+		require.True(t, uTest.TwoFactor.Enabled)
 
-		err = client.Accounts.ResendVerificationCode(ctx)
+		err = client.Users.ResendVerificationCode(ctx)
 		assert.Error(t, err)
 	})
 
 	t.Run("when two factor authentication is sms enabled", func(t *testing.T) {
-		aTest, err := client.Accounts.EnableTwoFactor(ctx, TwoFactorEnableOptions{
+		uTest, err := client.Users.EnableTwoFactor(ctx, TwoFactorEnableOptions{
 			Delivery:  Delivery(DeliverySMS),
 			SMSNumber: String("+49123456789"),
 		})
 		require.NoError(t, err)
-		require.True(t, aTest.TwoFactor.Enabled)
+		require.True(t, uTest.TwoFactor.Enabled)
 
-		err = client.Accounts.ResendVerificationCode(ctx)
+		err = client.Users.ResendVerificationCode(ctx)
 		assert.NoError(t, err)
 	})
 
 	t.Run("when two factor authentication is disabled", func(t *testing.T) {
-		aTest, err := client.Accounts.DisableTwoFactor(ctx)
+		uTest, err := client.Users.DisableTwoFactor(ctx)
 		require.NoError(t, err)
-		require.False(t, aTest.TwoFactor.Enabled)
+		require.False(t, uTest.TwoFactor.Enabled)
 
-		_, err = client.Accounts.DisableTwoFactor(ctx)
+		_, err = client.Users.DisableTwoFactor(ctx)
 		assert.Contains(t, err.Error(), "Two-factor authentication is not enabled")
 	})
 }

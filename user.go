@@ -5,16 +5,16 @@ import (
 	"errors"
 )
 
-// Accounts handles communication with the account related methods of the
+// Users handles communication with the user related methods of the
 // the Terraform Enterprise API.
 //
-// TFE API docs: https://www.terraform.io/docs/enterprise/api/account.html
-type Accounts struct {
+// TFE API docs: https://www.terraform.io/docs/enterprise/api/user.html
+type Users struct {
 	client *Client
 }
 
-// Account represents a Terraform Enterprise account.
-type Account struct {
+// User represents a Terraform Enterprise user.
+type User struct {
 	ID               string     `jsonapi:"primary,users"`
 	AvatarURL        string     `jsonapi:"attr,avatar-url"`
 	Email            string     `jsonapi:"attr,email"`
@@ -39,32 +39,30 @@ const (
 
 // TwoFactor represents the organization permissions.
 type TwoFactor struct {
-	Delivery          DeliveryType `json:"Delivery"`
-	Enabled           bool         `json:"enabled"`
-	ProvisioningURL   string       `json:"provisioning-url"`
-	RecoveryCodes     []string     `json:"recovery-codes"`
-	SMSNumber         string       `json:"sms-number"`
-	UsedRecoveryCodes []string     `json:"used-recovery-codes"`
-	Verified          bool         `json:"verified"`
+	Delivery        DeliveryType `json:"delivery"`
+	Enabled         bool         `json:"enabled"`
+	ProvisioningURL string       `json:"provisioning-url"`
+	SMSNumber       string       `json:"sms-number"`
+	Verified        bool         `json:"verified"`
 }
 
-// Read the details of the currently authenticated user.
-func (s *Accounts) Read(ctx context.Context) (*Account, error) {
+// ReadCurrent reads the details of the currently authenticated user.
+func (s *Users) ReadCurrent(ctx context.Context) (*User, error) {
 	req, err := s.client.newRequest("GET", "account/details", nil)
 	if err != nil {
 		return nil, err
 	}
 
-	a, err := s.client.do(ctx, req, &Account{})
+	a, err := s.client.do(ctx, req, &User{})
 	if err != nil {
 		return nil, err
 	}
 
-	return a.(*Account), nil
+	return a.(*User), nil
 }
 
-// AccountUpdateOptions represents the options for updating an account.
-type AccountUpdateOptions struct {
+// UserUpdateOptions represents the options for updating a user.
+type UserUpdateOptions struct {
 	// For internal use only!
 	ID string `jsonapi:"primary,users"`
 
@@ -76,7 +74,7 @@ type AccountUpdateOptions struct {
 }
 
 // Update attributes of the currently authenticated user.
-func (s *Accounts) Update(ctx context.Context, options AccountUpdateOptions) (*Account, error) {
+func (s *Users) Update(ctx context.Context, options UserUpdateOptions) (*User, error) {
 	// Make sure we don't send a user provided ID.
 	options.ID = ""
 
@@ -85,12 +83,12 @@ func (s *Accounts) Update(ctx context.Context, options AccountUpdateOptions) (*A
 		return nil, err
 	}
 
-	a, err := s.client.do(ctx, req, &Account{})
+	a, err := s.client.do(ctx, req, &User{})
 	if err != nil {
 		return nil, err
 	}
 
-	return a.(*Account), nil
+	return a.(*User), nil
 }
 
 // TwoFactorEnableOptions represents the options for enabling two factor
@@ -114,7 +112,7 @@ func (o TwoFactorEnableOptions) valid() error {
 }
 
 // EnableTwoFactor enables two factor authentication.
-func (s *Accounts) EnableTwoFactor(ctx context.Context, options TwoFactorEnableOptions) (*Account, error) {
+func (s *Users) EnableTwoFactor(ctx context.Context, options TwoFactorEnableOptions) (*User, error) {
 	if err := options.valid(); err != nil {
 		return nil, err
 	}
@@ -127,27 +125,27 @@ func (s *Accounts) EnableTwoFactor(ctx context.Context, options TwoFactorEnableO
 		return nil, err
 	}
 
-	a, err := s.client.do(ctx, req, &Account{})
+	a, err := s.client.do(ctx, req, &User{})
 	if err != nil {
 		return nil, err
 	}
 
-	return a.(*Account), nil
+	return a.(*User), nil
 }
 
 // DisableTwoFactor disables two factor authentication.
-func (s *Accounts) DisableTwoFactor(ctx context.Context) (*Account, error) {
+func (s *Users) DisableTwoFactor(ctx context.Context) (*User, error) {
 	req, err := s.client.newRequest("POST", "account/actions/two-factor-disable", nil)
 	if err != nil {
 		return nil, err
 	}
 
-	a, err := s.client.do(ctx, req, &Account{})
+	a, err := s.client.do(ctx, req, &User{})
 	if err != nil {
 		return nil, err
 	}
 
-	return a.(*Account), nil
+	return a.(*User), nil
 }
 
 // TwoFactorVerifyOptions represents the options for verifying two factor
@@ -168,7 +166,7 @@ func (o TwoFactorVerifyOptions) valid() error {
 }
 
 // VerifyTwoFactor verifies two factor authentication.
-func (s *Accounts) VerifyTwoFactor(ctx context.Context, options TwoFactorVerifyOptions) (*Account, error) {
+func (s *Users) VerifyTwoFactor(ctx context.Context, options TwoFactorVerifyOptions) (*User, error) {
 	if err := options.valid(); err != nil {
 		return nil, err
 	}
@@ -181,16 +179,16 @@ func (s *Accounts) VerifyTwoFactor(ctx context.Context, options TwoFactorVerifyO
 		return nil, err
 	}
 
-	a, err := s.client.do(ctx, req, &Account{})
+	a, err := s.client.do(ctx, req, &User{})
 	if err != nil {
 		return nil, err
 	}
 
-	return a.(*Account), nil
+	return a.(*User), nil
 }
 
 // ResendVerificationCode resends the two factor verification code.
-func (s *Accounts) ResendVerificationCode(ctx context.Context) error {
+func (s *Users) ResendVerificationCode(ctx context.Context) error {
 	req, err := s.client.newRequest(
 		"POST",
 		"account/actions/two-factor-resend-verification-code",

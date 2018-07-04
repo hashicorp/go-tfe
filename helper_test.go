@@ -163,6 +163,9 @@ func createOAuthToken(t *testing.T, client *Client, org *Organization) (*OAuthTo
 		t.Fatal(err)
 	}
 
+	// This currently panics as the token will not be there when the client is
+	// created. To get a token, the client needs to be connected through the UI
+	// first. So the test using this (TestOAuthTokensList) is currently disabled.
 	return oc.OAuthToken[0], func() {
 		// There currently isn't a way to delete an OAuth client.
 		//
