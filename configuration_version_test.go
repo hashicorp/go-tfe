@@ -1,11 +1,7 @@
 package tfe
 
 import (
-	"archive/tar"
-	"bytes"
-	"compress/gzip"
 	"context"
-	"io"
 	"testing"
 	"time"
 
@@ -190,61 +186,6 @@ func TestConfigurationVersionsUpload(t *testing.T) {
 			cv.UploadURL,
 			"nonexisting",
 		)
-		assert.Error(t, err)
-	})
-}
-
-func TestConfigurationVersionsPack(t *testing.T) {
-	client := testClient(t)
-
-	t.Run("with a valid path", func(t *testing.T) {
-		raw, err := client.ConfigurationVersions.pack("test-fixtures/archive-dir")
-		require.NoError(t, err)
-
-		gzipR, err := gzip.NewReader(bytes.NewReader(raw))
-		require.NoError(t, err)
-
-		tarR := tar.NewReader(gzipR)
-		var (
-			symFound bool
-			fileList []string
-			slugSize int64
-		)
-		for {
-			hdr, err := tarR.Next()
-			if err == io.EOF {
-				break
-			}
-			require.NoError(t, err)
-
-			fileList = append(fileList, hdr.Name)
-			if hdr.Typeflag == tar.TypeReg || hdr.Typeflag == tar.TypeRegA {
-				slugSize += hdr.Size
-			}
-
-			if hdr.Name == "sub/foo.txt" {
-				require.EqualValues(t, tar.TypeSymlink, hdr.Typeflag, "expect symlink for 'sub/foo.txt'")
-				assert.Equal(t, "../foo.txt", hdr.Linkname, "expect target of '../foo.txt'")
-				symFound = true
-			}
-		}
-
-		t.Run("confirm we saw and handled a symlink", func(t *testing.T) {
-			assert.True(t, symFound)
-		})
-
-		t.Run("check that the archive was created correctly", func(t *testing.T) {
-			expectedFiles := []string{"bar.txt", "exe", "foo.txt", "sub/", "sub/foo.txt", "sub/zip.txt"}
-			expectedSize := int64(12)
-
-			assert.Equal(t, expectedFiles, fileList)
-			assert.Equal(t, expectedSize, slugSize)
-		})
-	})
-
-	t.Run("without a valid path", func(t *testing.T) {
-		raw, err := client.ConfigurationVersions.pack("nonexisting")
-		assert.Nil(t, raw)
 		assert.Error(t, err)
 	})
 }
