@@ -17,7 +17,7 @@ func TestNewClient(t *testing.T) {
 		if client.token != "abcd1234" {
 			t.Fatalf("unexpected token: %q", client.token)
 		}
-		if client.baseURL.String() != "https://mytfe.local"+apiVersionPath {
+		if client.baseURL.String() != "https://mytfe.local"+DefaultBasePath {
 			t.Fatalf("unexpected address: %q", client.baseURL.String())
 		}
 	})
@@ -45,7 +45,7 @@ func TestNewClient(t *testing.T) {
 			t.Fatal(err)
 		}
 
-		if config.Address+apiVersionPath != client.baseURL.String() {
+		if config.Address+DefaultBasePath != client.baseURL.String() {
 			t.Fatalf("unexpected client address %q", client.baseURL.String())
 		}
 		if config.Token != client.token {

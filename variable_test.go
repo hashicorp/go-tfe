@@ -206,7 +206,7 @@ func TestVariablesDelete(t *testing.T) {
 
 	t.Run("with non existing variable ID", func(t *testing.T) {
 		err := client.Variables.Delete(ctx, "nonexisting")
-		assert.EqualError(t, err, "Error: not found")
+		assert.Equal(t, err, ErrResourceNotFound)
 	})
 
 	t.Run("with invalid variable ID", func(t *testing.T) {

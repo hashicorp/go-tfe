@@ -259,7 +259,7 @@ func TestWorkspacesDelete(t *testing.T) {
 
 		// Try loading the workspace - it should fail.
 		_, err = client.Workspaces.Read(ctx, orgTest.Name, wTest.Name)
-		assert.EqualError(t, err, "Error: not found")
+		assert.Equal(t, err, ErrResourceNotFound)
 	})
 
 	t.Run("when organization is invalid", func(t *testing.T) {

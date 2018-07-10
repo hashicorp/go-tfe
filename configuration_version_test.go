@@ -128,7 +128,7 @@ func TestConfigurationVersionsRead(t *testing.T) {
 	t.Run("when the configuration version does not exist", func(t *testing.T) {
 		cv, err := client.ConfigurationVersions.Read(ctx, "nonexisting")
 		assert.Nil(t, cv)
-		assert.EqualError(t, err, "Error: not found")
+		assert.Equal(t, err, ErrResourceNotFound)
 	})
 
 	t.Run("with invalid configuration version id", func(t *testing.T) {

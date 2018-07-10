@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"context"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"io"
 	"io/ioutil"
@@ -18,14 +19,22 @@ import (
 	"github.com/svanharmelen/jsonapi"
 )
 
-// DefaultAddress of Terraform Enterprise.
-const DefaultAddress = "https://app.terraform.io"
-
-// DefaultBasePath on which the API is served.
-const DefaultBasePath = "/api/v2/"
+const (
+	// DefaultAddress of Terraform Enterprise.
+	DefaultAddress = "https://app.terraform.io"
+	// DefaultBasePath on which the API is served.
+	DefaultBasePath = "/api/v2/"
+)
 
 const (
 	userAgent = "go-tfe"
+)
+
+var (
+	// ErrUnauthorized is returned when a receiving a 401.
+	ErrUnauthorized = errors.New("Unauthorized")
+	// ErrResourceNotFound is returned when a receiving a 404.
+	ErrResourceNotFound = errors.New("Resource not found")
 )
 
 // Config provides configuration details to the API client.
@@ -281,6 +290,13 @@ func checkResponseCode(r *http.Response) error {
 		return nil
 	}
 
+	switch r.StatusCode {
+	case 401:
+		return ErrUnauthorized
+	case 404:
+		return ErrResourceNotFound
+	}
+
 	// Decode the error payload.
 	errPayload := &jsonapi.ErrorsPayload{}
 	err := json.NewDecoder(r.Body).Decode(errPayload)
@@ -292,9 +308,9 @@ func checkResponseCode(r *http.Response) error {
 	var errs []string
 	for _, e := range errPayload.Errors {
 		if e.Detail == "" {
-			errs = append(errs, fmt.Sprintf("Error: %s", e.Title))
+			errs = append(errs, e.Title)
 		} else {
-			errs = append(errs, fmt.Sprintf("Error: %s %s", e.Title, e.Detail))
+			errs = append(errs, fmt.Sprintf("%s %s", e.Title, e.Detail))
 		}
 	}
 

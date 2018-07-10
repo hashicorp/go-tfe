@@ -53,7 +53,7 @@ func TestTeamTokensDelete(t *testing.T) {
 
 	t.Run("when a token does not exist", func(t *testing.T) {
 		err := client.TeamTokens.Delete(ctx, tmTest.ID)
-		assert.EqualError(t, err, "Error: not found")
+		assert.Equal(t, err, ErrResourceNotFound)
 	})
 
 	t.Run("without valid team ID", func(t *testing.T) {

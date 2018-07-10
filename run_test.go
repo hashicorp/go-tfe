@@ -117,7 +117,7 @@ func TestRunsRead(t *testing.T) {
 	t.Run("when the run does not exist", func(t *testing.T) {
 		r, err := client.Runs.Read(ctx, "nonexisting")
 		assert.Nil(t, r)
-		assert.EqualError(t, err, "Error: not found")
+		assert.Equal(t, err, ErrResourceNotFound)
 	})
 
 	t.Run("with invalid run ID", func(t *testing.T) {
@@ -141,7 +141,7 @@ func TestRunsApply(t *testing.T) {
 
 	t.Run("when the run does not exist", func(t *testing.T) {
 		err := client.Runs.Apply(ctx, "nonexisting", RunApplyOptions{})
-		assert.EqualError(t, err, "Error: not found")
+		assert.Equal(t, err, ErrResourceNotFound)
 	})
 
 	t.Run("with invalid run ID", func(t *testing.T) {
@@ -171,7 +171,7 @@ func TestRunsCancel(t *testing.T) {
 
 	t.Run("when the run does not exist", func(t *testing.T) {
 		err := client.Runs.Cancel(ctx, "nonexisting", RunCancelOptions{})
-		assert.EqualError(t, err, "Error: not found")
+		assert.Equal(t, err, ErrResourceNotFound)
 	})
 
 	t.Run("with invalid run ID", func(t *testing.T) {
@@ -194,7 +194,7 @@ func TestRunsDiscard(t *testing.T) {
 
 	t.Run("when the run does not exist", func(t *testing.T) {
 		err := client.Runs.Discard(ctx, "nonexisting", RunDiscardOptions{})
-		assert.EqualError(t, err, "Error: not found")
+		assert.Equal(t, err, ErrResourceNotFound)
 	})
 
 	t.Run("with invalid run ID", func(t *testing.T) {
