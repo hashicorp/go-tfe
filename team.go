@@ -49,14 +49,10 @@ func (s *Teams) List(ctx context.Context, organization string, options TeamListO
 		return nil, err
 	}
 
-	result, err := s.client.do(ctx, req, []*Team{})
+	var ts []*Team
+	err = s.client.do(ctx, req, &ts)
 	if err != nil {
 		return nil, err
-	}
-
-	var ts []*Team
-	for _, t := range result.([]interface{}) {
-		ts = append(ts, t.(*Team))
 	}
 
 	return ts, nil
@@ -99,12 +95,13 @@ func (s *Teams) Create(ctx context.Context, organization string, options TeamCre
 		return nil, err
 	}
 
-	t, err := s.client.do(ctx, req, &Team{})
+	t := &Team{}
+	err = s.client.do(ctx, req, t)
 	if err != nil {
 		return nil, err
 	}
 
-	return t.(*Team), nil
+	return t, nil
 }
 
 // Read a single team by its ID.
@@ -119,12 +116,13 @@ func (s *Teams) Read(ctx context.Context, teamID string) (*Team, error) {
 		return nil, err
 	}
 
-	t, err := s.client.do(ctx, req, &Team{})
+	t := &Team{}
+	err = s.client.do(ctx, req, t)
 	if err != nil {
 		return nil, err
 	}
 
-	return t.(*Team), nil
+	return t, nil
 }
 
 // Delete a team by its ID.
@@ -139,7 +137,5 @@ func (s *Teams) Delete(ctx context.Context, teamID string) error {
 		return err
 	}
 
-	_, err = s.client.do(ctx, req, nil)
-
-	return err
+	return s.client.do(ctx, req, nil)
 }

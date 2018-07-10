@@ -38,12 +38,13 @@ func (s *TeamTokens) Generate(ctx context.Context, teamID string) (*TeamToken, e
 		return nil, err
 	}
 
-	t, err := s.client.do(ctx, req, &TeamToken{})
+	tt := &TeamToken{}
+	err = s.client.do(ctx, req, tt)
 	if err != nil {
 		return nil, err
 	}
 
-	return t.(*TeamToken), err
+	return tt, err
 }
 
 // Delete a team token.
@@ -58,7 +59,5 @@ func (s *TeamTokens) Delete(ctx context.Context, teamID string) error {
 		return err
 	}
 
-	_, err = s.client.do(ctx, req, nil)
-
-	return err
+	return s.client.do(ctx, req, nil)
 }

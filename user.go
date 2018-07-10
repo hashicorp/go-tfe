@@ -53,12 +53,13 @@ func (s *Users) ReadCurrent(ctx context.Context) (*User, error) {
 		return nil, err
 	}
 
-	a, err := s.client.do(ctx, req, &User{})
+	u := &User{}
+	err = s.client.do(ctx, req, u)
 	if err != nil {
 		return nil, err
 	}
 
-	return a.(*User), nil
+	return u, nil
 }
 
 // UserUpdateOptions represents the options for updating a user.
@@ -83,12 +84,13 @@ func (s *Users) Update(ctx context.Context, options UserUpdateOptions) (*User, e
 		return nil, err
 	}
 
-	a, err := s.client.do(ctx, req, &User{})
+	u := &User{}
+	err = s.client.do(ctx, req, u)
 	if err != nil {
 		return nil, err
 	}
 
-	return a.(*User), nil
+	return u, nil
 }
 
 // TwoFactorEnableOptions represents the options for enabling two factor
@@ -125,12 +127,13 @@ func (s *Users) EnableTwoFactor(ctx context.Context, options TwoFactorEnableOpti
 		return nil, err
 	}
 
-	a, err := s.client.do(ctx, req, &User{})
+	u := &User{}
+	err = s.client.do(ctx, req, u)
 	if err != nil {
 		return nil, err
 	}
 
-	return a.(*User), nil
+	return u, nil
 }
 
 // DisableTwoFactor disables two factor authentication.
@@ -140,12 +143,13 @@ func (s *Users) DisableTwoFactor(ctx context.Context) (*User, error) {
 		return nil, err
 	}
 
-	a, err := s.client.do(ctx, req, &User{})
+	u := &User{}
+	err = s.client.do(ctx, req, u)
 	if err != nil {
 		return nil, err
 	}
 
-	return a.(*User), nil
+	return u, nil
 }
 
 // TwoFactorVerifyOptions represents the options for verifying two factor
@@ -179,12 +183,13 @@ func (s *Users) VerifyTwoFactor(ctx context.Context, options TwoFactorVerifyOpti
 		return nil, err
 	}
 
-	a, err := s.client.do(ctx, req, &User{})
+	u := &User{}
+	err = s.client.do(ctx, req, u)
 	if err != nil {
 		return nil, err
 	}
 
-	return a.(*User), nil
+	return u, nil
 }
 
 // ResendVerificationCode resends the two factor verification code.
@@ -198,7 +203,5 @@ func (s *Users) ResendVerificationCode(ctx context.Context) error {
 		return err
 	}
 
-	_, err = s.client.do(ctx, req, nil)
-
-	return err
+	return s.client.do(ctx, req, nil)
 }

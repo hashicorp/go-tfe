@@ -100,17 +100,13 @@ func (s *PolicyChecks) List(ctx context.Context, runID string, options PolicyChe
 		return nil, err
 	}
 
-	result, err := s.client.do(ctx, req, []*PolicyCheck{})
+	var pcs []*PolicyCheck
+	err = s.client.do(ctx, req, &pcs)
 	if err != nil {
 		return nil, err
 	}
 
-	var ps []*PolicyCheck
-	for _, p := range result.([]interface{}) {
-		ps = append(ps, p.(*PolicyCheck))
-	}
-
-	return ps, nil
+	return pcs, nil
 }
 
 // Override a soft-mandatory or warning policy.
@@ -125,10 +121,11 @@ func (s *PolicyChecks) Override(ctx context.Context, policyCheckID string) (*Pol
 		return nil, err
 	}
 
-	p, err := s.client.do(ctx, req, &PolicyCheck{})
+	pc := &PolicyCheck{}
+	err = s.client.do(ctx, req, pc)
 	if err != nil {
 		return nil, err
 	}
 
-	return p.(*PolicyCheck), nil
+	return pc, nil
 }

@@ -63,14 +63,10 @@ func (s *TeamAccesses) List(ctx context.Context, options TeamAccessListOptions) 
 		return nil, err
 	}
 
-	result, err := s.client.do(ctx, req, []*TeamAccess{})
+	var tas []*TeamAccess
+	err = s.client.do(ctx, req, &tas)
 	if err != nil {
 		return nil, err
-	}
-
-	var tas []*TeamAccess
-	for _, ta := range result.([]interface{}) {
-		tas = append(tas, ta.(*TeamAccess))
 	}
 
 	return tas, nil
@@ -118,12 +114,13 @@ func (s *TeamAccesses) Add(ctx context.Context, options TeamAccessAddOptions) (*
 		return nil, err
 	}
 
-	ta, err := s.client.do(ctx, req, &TeamAccess{})
+	ta := &TeamAccess{}
+	err = s.client.do(ctx, req, ta)
 	if err != nil {
 		return nil, err
 	}
 
-	return ta.(*TeamAccess), nil
+	return ta, nil
 }
 
 // Read a sible team access by its ID.
@@ -138,12 +135,13 @@ func (s *TeamAccesses) Read(ctx context.Context, teamAccessID string) (*TeamAcce
 		return nil, err
 	}
 
-	ta, err := s.client.do(ctx, req, &TeamAccess{})
+	ta := &TeamAccess{}
+	err = s.client.do(ctx, req, ta)
 	if err != nil {
 		return nil, err
 	}
 
-	return ta.(*TeamAccess), nil
+	return ta, nil
 }
 
 // Remove team access from a workspace.
@@ -158,7 +156,5 @@ func (s *TeamAccesses) Remove(ctx context.Context, teamAccessID string) error {
 		return err
 	}
 
-	_, err = s.client.do(ctx, req, nil)
-
-	return err
+	return s.client.do(ctx, req, nil)
 }

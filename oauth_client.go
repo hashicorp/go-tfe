@@ -108,10 +108,11 @@ func (s *OAuthClients) Create(ctx context.Context, organization string, options 
 		return nil, err
 	}
 
-	o, err := s.client.do(ctx, req, &OAuthClient{})
+	oc := &OAuthClient{}
+	err = s.client.do(ctx, req, oc)
 	if err != nil {
 		return nil, err
 	}
 
-	return o.(*OAuthClient), nil
+	return oc, nil
 }

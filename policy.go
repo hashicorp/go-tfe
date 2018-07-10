@@ -57,14 +57,10 @@ func (s *Policies) List(ctx context.Context, organization string, options Policy
 		return nil, err
 	}
 
-	result, err := s.client.do(ctx, req, []*Policy{})
+	var ps []*Policy
+	err = s.client.do(ctx, req, &ps)
 	if err != nil {
 		return nil, err
-	}
-
-	var ps []*Policy
-	for _, p := range result.([]interface{}) {
-		ps = append(ps, p.(*Policy))
 	}
 
 	return ps, nil
@@ -127,12 +123,13 @@ func (s *Policies) Create(ctx context.Context, organization string, options Poli
 		return nil, err
 	}
 
-	p, err := s.client.do(ctx, req, &Policy{})
+	p := &Policy{}
+	err = s.client.do(ctx, req, p)
 	if err != nil {
 		return nil, err
 	}
 
-	return p.(*Policy), err
+	return p, err
 }
 
 // Read a policy.
@@ -147,12 +144,13 @@ func (s *Policies) Read(ctx context.Context, policyID string) (*Policy, error) {
 		return nil, err
 	}
 
-	p, err := s.client.do(ctx, req, &Policy{})
+	p := &Policy{}
+	err = s.client.do(ctx, req, p)
 	if err != nil {
 		return nil, err
 	}
 
-	return p.(*Policy), err
+	return p, err
 }
 
 // Upload the policy content of the policy.
@@ -167,9 +165,7 @@ func (s *Policies) Upload(ctx context.Context, policyID string, content []byte) 
 		return err
 	}
 
-	_, err = s.client.do(ctx, req, nil)
-
-	return err
+	return s.client.do(ctx, req, nil)
 }
 
 // PolicyUpdateOptions represents the options for updating a policy.
@@ -206,12 +202,13 @@ func (s *Policies) Update(ctx context.Context, policyID string, options PolicyUp
 		return nil, err
 	}
 
-	p, err := s.client.do(ctx, req, &Policy{})
+	p := &Policy{}
+	err = s.client.do(ctx, req, p)
 	if err != nil {
 		return nil, err
 	}
 
-	return p.(*Policy), err
+	return p, err
 }
 
 // Delete an organization policy.
@@ -226,7 +223,5 @@ func (s *Policies) Delete(ctx context.Context, policyID string) error {
 		return err
 	}
 
-	_, err = s.client.do(ctx, req, nil)
-
-	return err
+	return s.client.do(ctx, req, nil)
 }

@@ -65,14 +65,10 @@ func (s *Variables) List(ctx context.Context, options VariableListOptions) ([]*V
 		return nil, err
 	}
 
-	result, err := s.client.do(ctx, req, []*Variable{})
+	var vs []*Variable
+	err = s.client.do(ctx, req, &vs)
 	if err != nil {
 		return nil, err
-	}
-
-	var vs []*Variable
-	for _, v := range result.([]interface{}) {
-		vs = append(vs, v.(*Variable))
 	}
 
 	return vs, nil
@@ -132,12 +128,13 @@ func (s *Variables) Create(ctx context.Context, options VariableCreateOptions) (
 		return nil, err
 	}
 
-	v, err := s.client.do(ctx, req, &Variable{})
+	v := &Variable{}
+	err = s.client.do(ctx, req, v)
 	if err != nil {
 		return nil, err
 	}
 
-	return v.(*Variable), nil
+	return v, nil
 }
 
 // VariableUpdateOptions represents the options for updating a variable.
@@ -176,12 +173,13 @@ func (s *Variables) Update(ctx context.Context, variableID string, options Varia
 		return nil, err
 	}
 
-	v, err := s.client.do(ctx, req, &Variable{})
+	v := &Variable{}
+	err = s.client.do(ctx, req, v)
 	if err != nil {
 		return nil, err
 	}
 
-	return v.(*Variable), nil
+	return v, nil
 }
 
 // Delete a variable.
@@ -196,7 +194,5 @@ func (s *Variables) Delete(ctx context.Context, variableID string) error {
 		return err
 	}
 
-	_, err = s.client.do(ctx, req, nil)
-
-	return err
+	return s.client.do(ctx, req, nil)
 }

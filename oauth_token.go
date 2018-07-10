@@ -42,15 +42,11 @@ func (s *OAuthTokens) List(ctx context.Context, organization string) ([]*OAuthTo
 		return nil, err
 	}
 
-	result, err := s.client.do(ctx, req, []*OAuthToken{})
+	var ots []*OAuthToken
+	err = s.client.do(ctx, req, &ots)
 	if err != nil {
 		return nil, err
 	}
 
-	var os []*OAuthToken
-	for _, o := range result.([]interface{}) {
-		os = append(os, o.(*OAuthToken))
-	}
-
-	return os, nil
+	return ots, nil
 }

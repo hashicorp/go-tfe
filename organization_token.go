@@ -38,12 +38,13 @@ func (s *OrganizationTokens) Generate(ctx context.Context, organization string) 
 		return nil, err
 	}
 
-	t, err := s.client.do(ctx, req, &OrganizationToken{})
+	ot := &OrganizationToken{}
+	err = s.client.do(ctx, req, ot)
 	if err != nil {
 		return nil, err
 	}
 
-	return t.(*OrganizationToken), err
+	return ot, err
 }
 
 // Delete an organization token.
@@ -58,7 +59,5 @@ func (s *OrganizationTokens) Delete(ctx context.Context, organization string) er
 		return err
 	}
 
-	_, err = s.client.do(ctx, req, nil)
-
-	return err
+	return s.client.do(ctx, req, nil)
 }

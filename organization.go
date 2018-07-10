@@ -78,14 +78,10 @@ func (s *Organizations) List(ctx context.Context, options OrganizationListOption
 		return nil, err
 	}
 
-	result, err := s.client.do(ctx, req, []*Organization{})
+	var orgs []*Organization
+	err = s.client.do(ctx, req, &orgs)
 	if err != nil {
 		return nil, err
-	}
-
-	var orgs []*Organization
-	for _, org := range result.([]interface{}) {
-		orgs = append(orgs, org.(*Organization))
 	}
 
 	return orgs, nil
@@ -130,12 +126,13 @@ func (s *Organizations) Create(ctx context.Context, options OrganizationCreateOp
 		return nil, err
 	}
 
-	org, err := s.client.do(ctx, req, &Organization{})
+	org := &Organization{}
+	err = s.client.do(ctx, req, org)
 	if err != nil {
 		return nil, err
 	}
 
-	return org.(*Organization), nil
+	return org, nil
 }
 
 // Read single organization by its name.
@@ -150,12 +147,13 @@ func (s *Organizations) Read(ctx context.Context, name string) (*Organization, e
 		return nil, err
 	}
 
-	org, err := s.client.do(ctx, req, &Organization{})
+	org := &Organization{}
+	err = s.client.do(ctx, req, org)
 	if err != nil {
 		return nil, err
 	}
 
-	return org.(*Organization), nil
+	return org, nil
 }
 
 // OrganizationUpdateOptions represents the options for updating an organization.
@@ -194,12 +192,13 @@ func (s *Organizations) Update(ctx context.Context, name string, options Organiz
 		return nil, err
 	}
 
-	org, err := s.client.do(ctx, req, &Organization{})
+	org := &Organization{}
+	err = s.client.do(ctx, req, org)
 	if err != nil {
 		return nil, err
 	}
 
-	return org.(*Organization), nil
+	return org, nil
 }
 
 // Delete an organization by its name.
@@ -214,7 +213,5 @@ func (s *Organizations) Delete(ctx context.Context, name string) error {
 		return err
 	}
 
-	_, err = s.client.do(ctx, req, nil)
-
-	return err
+	return s.client.do(ctx, req, nil)
 }

@@ -39,14 +39,10 @@ func (s *SSHKeys) List(ctx context.Context, organization string, options SSHKeyL
 		return nil, err
 	}
 
-	result, err := s.client.do(ctx, req, []*SSHKey{})
+	var ks []*SSHKey
+	err = s.client.do(ctx, req, &ks)
 	if err != nil {
 		return nil, err
-	}
-
-	var ks []*SSHKey
-	for _, k := range result.([]interface{}) {
-		ks = append(ks, k.(*SSHKey))
 	}
 
 	return ks, nil
@@ -93,12 +89,13 @@ func (s *SSHKeys) Create(ctx context.Context, organization string, options SSHKe
 		return nil, err
 	}
 
-	k, err := s.client.do(ctx, req, &SSHKey{})
+	k := &SSHKey{}
+	err = s.client.do(ctx, req, k)
 	if err != nil {
 		return nil, err
 	}
 
-	return k.(*SSHKey), nil
+	return k, nil
 }
 
 // Read an SSH key.
@@ -113,12 +110,13 @@ func (s *SSHKeys) Read(ctx context.Context, sshKeyID string) (*SSHKey, error) {
 		return nil, err
 	}
 
-	k, err := s.client.do(ctx, req, &SSHKey{})
+	k := &SSHKey{}
+	err = s.client.do(ctx, req, k)
 	if err != nil {
 		return nil, err
 	}
 
-	return k.(*SSHKey), nil
+	return k, nil
 }
 
 // SSHKeyUpdateOptions represents the options for updating an SSH key.
@@ -148,12 +146,13 @@ func (s *SSHKeys) Update(ctx context.Context, sshKeyID string, options SSHKeyUpd
 		return nil, err
 	}
 
-	k, err := s.client.do(ctx, req, &SSHKey{})
+	k := &SSHKey{}
+	err = s.client.do(ctx, req, k)
 	if err != nil {
 		return nil, err
 	}
 
-	return k.(*SSHKey), nil
+	return k, nil
 }
 
 // Delete an SSH key.
@@ -168,7 +167,5 @@ func (s *SSHKeys) Delete(ctx context.Context, sshKeyID string) error {
 		return err
 	}
 
-	_, err = s.client.do(ctx, req, nil)
-
-	return err
+	return s.client.do(ctx, req, nil)
 }

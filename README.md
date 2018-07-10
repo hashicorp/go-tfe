@@ -42,6 +42,8 @@ Currently the following endpoints are supported:
 
 ## Installation
 
+Installation can be done with a normal `go get`:
+
 ```
 go get -u github.com/hashicorp/go-tfe
 ```

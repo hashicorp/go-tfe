@@ -78,14 +78,10 @@ func (s *Workspaces) List(ctx context.Context, organization string, options Work
 		return nil, err
 	}
 
-	result, err := s.client.do(ctx, req, []*Workspace{})
+	var ws []*Workspace
+	err = s.client.do(ctx, req, &ws)
 	if err != nil {
 		return nil, err
-	}
-
-	var ws []*Workspace
-	for _, w := range result.([]interface{}) {
-		ws = append(ws, w.(*Workspace))
 	}
 
 	return ws, nil
@@ -160,12 +156,13 @@ func (s *Workspaces) Create(ctx context.Context, organization string, options Wo
 		return nil, err
 	}
 
-	w, err := s.client.do(ctx, req, &Workspace{})
+	w := &Workspace{}
+	err = s.client.do(ctx, req, w)
 	if err != nil {
 		return nil, err
 	}
 
-	return w.(*Workspace), nil
+	return w, nil
 }
 
 // Read a single workspace by its name.
@@ -187,12 +184,13 @@ func (s *Workspaces) Read(ctx context.Context, organization, workspace string) (
 		return nil, err
 	}
 
-	w, err := s.client.do(ctx, req, &Workspace{})
+	w := &Workspace{}
+	err = s.client.do(ctx, req, w)
 	if err != nil {
 		return nil, err
 	}
 
-	return w.(*Workspace), nil
+	return w, nil
 }
 
 // WorkspaceUpdateOptions represents the options for updating a workspace.
@@ -248,12 +246,13 @@ func (s *Workspaces) Update(ctx context.Context, organization, workspace string,
 		return nil, err
 	}
 
-	w, err := s.client.do(ctx, req, &Workspace{})
+	w := &Workspace{}
+	err = s.client.do(ctx, req, w)
 	if err != nil {
 		return nil, err
 	}
 
-	return w.(*Workspace), nil
+	return w, nil
 }
 
 // Delete a workspace by its name.
@@ -275,9 +274,7 @@ func (s *Workspaces) Delete(ctx context.Context, organization, workspace string)
 		return err
 	}
 
-	_, err = s.client.do(ctx, req, nil)
-
-	return err
+	return s.client.do(ctx, req, nil)
 }
 
 // WorkspaceLockOptions represents the options for locking a workspace.
@@ -298,12 +295,13 @@ func (s *Workspaces) Lock(ctx context.Context, workspaceID string, options Works
 		return nil, err
 	}
 
-	w, err := s.client.do(ctx, req, &Workspace{})
+	w := &Workspace{}
+	err = s.client.do(ctx, req, w)
 	if err != nil {
 		return nil, err
 	}
 
-	return w.(*Workspace), nil
+	return w, nil
 }
 
 // Unlock a workspace.
@@ -318,12 +316,13 @@ func (s *Workspaces) Unlock(ctx context.Context, workspaceID string) (*Workspace
 		return nil, err
 	}
 
-	w, err := s.client.do(ctx, req, &Workspace{})
+	w := &Workspace{}
+	err = s.client.do(ctx, req, w)
 	if err != nil {
 		return nil, err
 	}
 
-	return w.(*Workspace), nil
+	return w, nil
 }
 
 // WorkspaceAssignSSHKeyOptions represents the options to assign an SSH key to
@@ -364,12 +363,13 @@ func (s *Workspaces) AssignSSHKey(ctx context.Context, workspaceID string, optio
 		return nil, err
 	}
 
-	w, err := s.client.do(ctx, req, &Workspace{})
+	w := &Workspace{}
+	err = s.client.do(ctx, req, w)
 	if err != nil {
 		return nil, err
 	}
 
-	return w.(*Workspace), nil
+	return w, nil
 }
 
 // workspaceUnassignSSHKeyOptions represents the options to unassign an SSH key
@@ -394,10 +394,11 @@ func (s *Workspaces) UnassignSSHKey(ctx context.Context, workspaceID string) (*W
 		return nil, err
 	}
 
-	w, err := s.client.do(ctx, req, &Workspace{})
+	w := &Workspace{}
+	err = s.client.do(ctx, req, w)
 	if err != nil {
 		return nil, err
 	}
 
-	return w.(*Workspace), nil
+	return w, nil
 }

@@ -6,7 +6,6 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"io"
 	"io/ioutil"
 	"net/http"
 	"net/url"
@@ -245,7 +244,7 @@ func (c *Client) newRequest(method, path string, v interface{}) (*http.Request, 
 // written to v, without attempting to first decode it.
 // The provided ctx must be non-nil. If it is canceled or times out, ctx.Err()
 // will be returned.
-func (c *Client) do(ctx context.Context, req *http.Request, v interface{}) (interface{}, error) {
+func (c *Client) do(ctx context.Context, req *http.Request, v interface{}) error {
 	// Add the context to the request.
 	req.WithContext(ctx)
 
@@ -256,32 +255,48 @@ func (c *Client) do(ctx context.Context, req *http.Request, v interface{}) (inte
 		// the context's error is probably more useful.
 		select {
 		case <-ctx.Done():
-			return nil, ctx.Err()
+			return ctx.Err()
 		default:
-			return nil, err
+			return err
 		}
 	}
 	defer resp.Body.Close()
 
 	// Basic response checking.
 	if err := checkResponseCode(resp); err != nil {
-		return nil, err
+		return err
 	}
 
 	// Decode the response, if v was given.
 	if v != nil {
-		if reflect.TypeOf(v).Kind() == reflect.Slice {
-			return jsonapi.UnmarshalManyPayload(resp.Body, reflect.TypeOf(v).Elem())
+		// Get the value of v so we can test if it's a slice.
+		dst := reflect.Indirect(reflect.ValueOf(v))
+
+		if dst.Type().Kind() != reflect.Slice {
+			// Unmarshal a single value.
+			return jsonapi.UnmarshalPayload(resp.Body, v)
 		}
 
-		if w, ok := v.(io.Writer); ok {
-			_, err = io.Copy(w, resp.Body)
-		} else {
-			err = jsonapi.UnmarshalPayload(resp.Body, v)
+		// Unmarshal as a list of values.
+		raw, err := jsonapi.UnmarshalManyPayload(resp.Body, dst.Type().Elem())
+		if err != nil {
+			return err
 		}
+
+		// Make a new slice to hold the results.
+		sliceType := reflect.SliceOf(dst.Type().Elem())
+		result := reflect.MakeSlice(sliceType, 0, len(raw))
+
+		// Add all of the results to the new slice.
+		for _, v := range raw {
+			result = reflect.Append(result, reflect.ValueOf(v))
+		}
+
+		// Pointer-swap the result.
+		dst.Set(result)
 	}
 
-	return v, err
+	return nil
 }
 
 // checkResponseCode can be used to check the status code of an HTTP request.

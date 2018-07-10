@@ -103,14 +103,10 @@ func (s *Runs) List(ctx context.Context, workspaceID string, options RunListOpti
 		return nil, err
 	}
 
-	result, err := s.client.do(ctx, req, []*Run{})
+	var rs []*Run
+	err = s.client.do(ctx, req, &rs)
 	if err != nil {
 		return nil, err
-	}
-
-	var rs []*Run
-	for _, r := range result.([]interface{}) {
-		rs = append(rs, r.(*Run))
 	}
 
 	return rs, nil
@@ -158,12 +154,13 @@ func (s *Runs) Create(ctx context.Context, options RunCreateOptions) (*Run, erro
 		return nil, err
 	}
 
-	r, err := s.client.do(ctx, req, &Run{})
+	r := &Run{}
+	err = s.client.do(ctx, req, r)
 	if err != nil {
 		return nil, err
 	}
 
-	return r.(*Run), nil
+	return r, nil
 }
 
 // Read a single run by its ID.
@@ -178,12 +175,13 @@ func (s *Runs) Read(ctx context.Context, runID string) (*Run, error) {
 		return nil, err
 	}
 
-	r, err := s.client.do(ctx, req, &Run{})
+	r := &Run{}
+	err = s.client.do(ctx, req, r)
 	if err != nil {
 		return nil, err
 	}
 
-	return r.(*Run), nil
+	return r, nil
 }
 
 // RunApplyOptions represents the options for applying a run.
@@ -204,9 +202,7 @@ func (s *Runs) Apply(ctx context.Context, runID string, options RunApplyOptions)
 		return err
 	}
 
-	_, err = s.client.do(ctx, req, nil)
-
-	return err
+	return s.client.do(ctx, req, nil)
 }
 
 // RunCancelOptions represents the options for canceling a run.
@@ -227,9 +223,7 @@ func (s *Runs) Cancel(ctx context.Context, runID string, options RunCancelOption
 		return err
 	}
 
-	_, err = s.client.do(ctx, req, nil)
-
-	return err
+	return s.client.do(ctx, req, nil)
 }
 
 // RunDiscardOptions represents the options for discarding a run.
@@ -250,7 +244,5 @@ func (s *Runs) Discard(ctx context.Context, runID string, options RunDiscardOpti
 		return err
 	}
 
-	_, err = s.client.do(ctx, req, nil)
-
-	return err
+	return s.client.do(ctx, req, nil)
 }

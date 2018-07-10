@@ -55,9 +55,7 @@ func (s *TeamMembers) Add(ctx context.Context, teamID string, options TeamMember
 		return err
 	}
 
-	_, err = s.client.do(ctx, req, nil)
-
-	return err
+	return s.client.do(ctx, req, nil)
 }
 
 // TeamMemberRemoveOptions represents the options for deleting team members.
@@ -95,7 +93,5 @@ func (s *TeamMembers) Remove(ctx context.Context, teamID string, options TeamMem
 		return err
 	}
 
-	_, err = s.client.do(ctx, req, nil)
-
-	return err
+	return s.client.do(ctx, req, nil)
 }

@@ -82,14 +82,10 @@ func (s *ConfigurationVersions) List(ctx context.Context, workspaceID string, op
 		return nil, err
 	}
 
-	result, err := s.client.do(ctx, req, []*ConfigurationVersion{})
+	var cvs []*ConfigurationVersion
+	err = s.client.do(ctx, req, &cvs)
 	if err != nil {
 		return nil, err
-	}
-
-	var cvs []*ConfigurationVersion
-	for _, cv := range result.([]interface{}) {
-		cvs = append(cvs, cv.(*ConfigurationVersion))
 	}
 
 	return cvs, nil
@@ -122,12 +118,13 @@ func (s *ConfigurationVersions) Create(ctx context.Context, workspaceID string, 
 		return nil, err
 	}
 
-	cv, err := s.client.do(ctx, req, &ConfigurationVersion{})
+	cv := &ConfigurationVersion{}
+	err = s.client.do(ctx, req, cv)
 	if err != nil {
 		return nil, err
 	}
 
-	return cv.(*ConfigurationVersion), nil
+	return cv, nil
 }
 
 // Read single configuration version by its ID.
@@ -142,12 +139,13 @@ func (s *ConfigurationVersions) Read(ctx context.Context, cvID string) (*Configu
 		return nil, err
 	}
 
-	cv, err := s.client.do(ctx, req, &ConfigurationVersion{})
+	cv := &ConfigurationVersion{}
+	err = s.client.do(ctx, req, cv)
 	if err != nil {
 		return nil, err
 	}
 
-	return cv.(*ConfigurationVersion), nil
+	return cv, nil
 }
 
 // Upload packages and uploads Terraform configuration files. It requires the
@@ -166,7 +164,5 @@ func (s *ConfigurationVersions) Upload(ctx context.Context, url, path string) er
 		return err
 	}
 
-	_, err = s.client.do(ctx, req, nil)
-
-	return err
+	return s.client.do(ctx, req, nil)
 }
