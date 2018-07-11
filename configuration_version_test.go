@@ -51,16 +51,16 @@ func TestConfigurationVersionsList(t *testing.T) {
 			},
 		}
 
-		csv, err := client.ConfigurationVersions.List(ctx, wTest.ID, options)
+		cvs, err := client.ConfigurationVersions.List(ctx, wTest.ID, options)
 		require.NoError(t, err)
-		assert.Empty(t, csv)
+		assert.Empty(t, cvs)
 	})
 
 	t.Run("without a valid organization", func(t *testing.T) {
 		options := ConfigurationVersionListOptions{}
 
-		csv, err := client.ConfigurationVersions.List(ctx, badIdentifier, options)
-		assert.Nil(t, csv)
+		cvs, err := client.ConfigurationVersions.List(ctx, badIdentifier, options)
+		assert.Nil(t, cvs)
 		assert.EqualError(t, err, "Invalid value for workspace ID")
 	})
 }

@@ -1,13 +1,13 @@
 Terraform Enterprise Go Client
 ==============================
 
-This is an API client for [Terraform Enterprise](https://www.hashicorp.com/products/terraform).
-
 [![Build Status](https://travis-ci.org/hashicorp/go-tfe.svg?branch=master)](https://travis-ci.org/hashicorp/go-tfe)
 [![GitHub license](https://img.shields.io/github/license/hashicorp/go-tfe.svg)](https://github.com/hashicorp/go-tfe/blob/master/LICENSE)
 [![GoDoc](https://godoc.org/github.com/hashicorp/go-tfe?status.svg)](https://godoc.org/github.com/hashicorp/go-tfe)
 [![Go Report Card](https://goreportcard.com/badge/github.com/hashicorp/go-tfe)](https://goreportcard.com/report/github.com/hashicorp/go-tfe)
 [![GitHub issues](https://img.shields.io/github/issues/hashicorp/go-tfe.svg)](https://github.com/hashicorp/go-tfe/issues)
+
+This is an API client for [Terraform Enterprise](https://www.hashicorp.com/products/terraform).
 
 ## NOTE
 
@@ -32,6 +32,7 @@ Currently the following endpoints are supported:
 - [ ] [Registry Modules](https://www.terraform.io/docs/enterprise/api/modules.html)
 - [x] [Runs](https://www.terraform.io/docs/enterprise/api/run.html)
 - [x] [SSH Keys](https://www.terraform.io/docs/enterprise/api/ssh-keys.html)
+- [x] [State Versions](https://www.terraform.io/docs/enterprise/api/state-versions.html)
 - [x] [Team Access](https://www.terraform.io/docs/enterprise/api/team-access.html)
 - [x] [Team Memberships](https://www.terraform.io/docs/enterprise/api/team-members.html)
 - [x] [Team Tokens](https://www.terraform.io/docs/enterprise/api/team-tokens.html)
@@ -47,6 +48,10 @@ Installation can be done with a normal `go get`:
 ```
 go get -u github.com/hashicorp/go-tfe
 ```
+
+## Documentation
+
+For complete usage of the API client, see the full [package docs](https://godoc.org/github.com/hashicorp/go-tfe).
 
 ## Usage
 
@@ -74,7 +79,7 @@ if err != nil {
 }
 ```
 
-### Examples
+## Examples
 
 The [examples](https://github.com/hashicorp/go-tfe/tree/master/examples) directory
 contains a couple of examples. One of which is listed here as well:
@@ -120,4 +125,7 @@ func main() {
 }
 ```
 
-For complete usage of the API client, see the full [package docs](https://godoc.org/github.com/hashicorp/go-tfe).
+## Issues and Contributing
+
+If you find an issue with this package, please report an issue. If you'd like,
+we welcome any contributions. Fork this repository and submit a pull request.
