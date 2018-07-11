@@ -1,99 +1,204 @@
 package tfe
 
 import (
+	"context"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
 
-func TestCreateRun(t *testing.T) {
+func TestRunsList(t *testing.T) {
 	client := testClient(t)
+	ctx := context.Background()
 
-	ws, wsCleanup := createWorkspace(t, client, nil)
-	defer wsCleanup()
+	wTest, wTestCleanup := createWorkspace(t, client, nil)
+	defer wTestCleanup()
 
-	cv1, _ := createUploadedConfigurationVersion(t, client, ws)
-	cv2, _ := createUploadedConfigurationVersion(t, client, ws)
+	rTest1, _ := createRun(t, client, wTest)
+	rTest2, _ := createRun(t, client, wTest)
 
-	t.Run("without a configuration version", func(t *testing.T) {
-		input := &CreateRunInput{
-			WorkspaceID: ws.ID,
+	t.Run("without list options", func(t *testing.T) {
+		rs, err := client.Runs.List(ctx, wTest.ID, RunListOptions{})
+		require.NoError(t, err)
+
+		found := []string{}
+		for _, r := range rs {
+			found = append(found, r.ID)
 		}
 
-		result, err := client.CreateRun(input)
-		require.Nil(t, err)
+		assert.Contains(t, found, rTest1.ID)
+		assert.Contains(t, found, rTest2.ID)
+	})
 
-		assert.Equal(t, cv2.ID, result.Run.ConfigurationVersionID)
+	t.Run("with list options", func(t *testing.T) {
+		t.Skip("paging not supported yet in API")
+
+		// Request a page number which is out of range. The result should
+		// be successful, but return no results if the paging options are
+		// properly passed along.
+		rs, err := client.Runs.List(ctx, wTest.ID, RunListOptions{
+			ListOptions: ListOptions{
+				PageNumber: 999,
+				PageSize:   100,
+			},
+		})
+		require.NoError(t, err)
+		assert.Empty(t, rs)
+	})
+
+	t.Run("without a valid workspace ID", func(t *testing.T) {
+		rs, err := client.Runs.List(ctx, badIdentifier, RunListOptions{})
+		assert.Nil(t, rs)
+		assert.EqualError(t, err, "Invalid value for workspace ID")
+	})
+}
+
+func TestRunsCreate(t *testing.T) {
+	client := testClient(t)
+	ctx := context.Background()
+
+	wTest, wTestCleanup := createWorkspace(t, client, nil)
+	defer wTestCleanup()
+
+	cvTest, _ := createUploadedConfigurationVersion(t, client, wTest)
+
+	t.Run("without a configuration version", func(t *testing.T) {
+		options := RunCreateOptions{
+			Workspace: wTest,
+		}
+
+		_, err := client.Runs.Create(ctx, options)
+		assert.NoError(t, err)
 	})
 
 	t.Run("with a configuration version", func(t *testing.T) {
-		result, err := client.CreateRun(&CreateRunInput{
-			WorkspaceID:            ws.ID,
-			ConfigurationVersionID: cv1.ID,
-		})
-		require.Nil(t, err)
+		options := RunCreateOptions{
+			ConfigurationVersion: cvTest,
+			Workspace:            wTest,
+		}
 
-		assert.Equal(t, cv1.ID, result.Run.ConfigurationVersionID)
+		r, err := client.Runs.Create(ctx, options)
+		require.NoError(t, err)
+		assert.Equal(t, cvTest.ID, r.ConfigurationVersion.ID)
+	})
+
+	t.Run("without a workspace", func(t *testing.T) {
+		r, err := client.Runs.Create(ctx, RunCreateOptions{})
+		assert.Nil(t, r)
+		assert.EqualError(t, err, "Workspace is required")
 	})
 
 	t.Run("with additional attributes", func(t *testing.T) {
-		input := &CreateRunInput{
-			WorkspaceID: ws.ID,
-			Message:     String("yo"),
+		options := RunCreateOptions{
+			Message:   String("yo"),
+			Workspace: wTest,
 		}
 
-		result, err := client.CreateRun(input)
-		require.Nil(t, err)
-
-		assert.Equal(t, input.Message, result.Run.Message)
+		r, err := client.Runs.Create(ctx, options)
+		require.NoError(t, err)
+		assert.Equal(t, *options.Message, r.Message)
 	})
 }
 
-func TestListRuns(t *testing.T) {
+func TestRunsRead(t *testing.T) {
 	client := testClient(t)
+	ctx := context.Background()
 
-	ws, wsCleanup := createWorkspace(t, client, nil)
-	defer wsCleanup()
-
-	run1, _ := createRun(t, client, ws)
-	run2, _ := createRun(t, client, ws)
-
-	result, err := client.ListRuns(&ListRunsInput{
-		WorkspaceID: ws.ID,
-	})
-	require.Nil(t, err)
-
-	found := []string{}
-	for _, run := range result {
-		found = append(found, *run.ID)
-	}
-
-	assert.Contains(t, found, *run1.ID)
-	assert.Contains(t, found, *run2.ID)
-}
-
-func TestRun(t *testing.T) {
-	client := testClient(t)
-
-	run, runCleanup := createRun(t, client, nil)
-	defer runCleanup()
+	rTest, rTestCleanup := createPlannedRun(t, client, nil)
+	defer rTestCleanup()
 
 	t.Run("when the run exists", func(t *testing.T) {
-		result, err := client.Run(*run.ID)
-		assert.Nil(t, err)
-		assert.Equal(t, run, result)
+		r, err := client.Runs.Read(ctx, rTest.ID)
+		assert.NoError(t, err)
+		assert.Equal(t, rTest, r)
 	})
 
 	t.Run("when the run does not exist", func(t *testing.T) {
-		result, err := client.Run("nope")
-		assert.Nil(t, result)
-		assert.EqualError(t, err, "Resource not found")
+		r, err := client.Runs.Read(ctx, "nonexisting")
+		assert.Nil(t, r)
+		assert.Equal(t, err, ErrResourceNotFound)
 	})
 
 	t.Run("with invalid run ID", func(t *testing.T) {
-		result, err := client.Run("! / nope")
-		assert.Nil(t, result)
-		assert.EqualError(t, err, "Invalid ID given")
+		r, err := client.Runs.Read(ctx, badIdentifier)
+		assert.Nil(t, r)
+		assert.EqualError(t, err, "Invalid value for run ID")
+	})
+}
+
+func TestRunsApply(t *testing.T) {
+	client := testClient(t)
+	ctx := context.Background()
+
+	rTest, rTestCleanup := createPlannedRun(t, client, nil)
+	defer rTestCleanup()
+
+	t.Run("when the run exists", func(t *testing.T) {
+		err := client.Runs.Apply(ctx, rTest.ID, RunApplyOptions{})
+		assert.NoError(t, err)
+	})
+
+	t.Run("when the run does not exist", func(t *testing.T) {
+		err := client.Runs.Apply(ctx, "nonexisting", RunApplyOptions{})
+		assert.Equal(t, err, ErrResourceNotFound)
+	})
+
+	t.Run("with invalid run ID", func(t *testing.T) {
+		err := client.Runs.Apply(ctx, badIdentifier, RunApplyOptions{})
+		assert.EqualError(t, err, "Invalid value for run ID")
+	})
+}
+
+func TestRunsCancel(t *testing.T) {
+	client := testClient(t)
+	ctx := context.Background()
+
+	wTest, wTestCleanup := createWorkspace(t, client, nil)
+	defer wTestCleanup()
+
+	// We need to create 2 runs here. The first run will automatically
+	// be planned so that one cannot be cancelled. The second one will
+	// be pending until the first one is confirmed or discarded, so we
+	// can cancel that one.
+	_, _ = createRun(t, client, wTest)
+	rTest2, _ := createRun(t, client, wTest)
+
+	t.Run("when the run exists", func(t *testing.T) {
+		err := client.Runs.Cancel(ctx, rTest2.ID, RunCancelOptions{})
+		assert.NoError(t, err)
+	})
+
+	t.Run("when the run does not exist", func(t *testing.T) {
+		err := client.Runs.Cancel(ctx, "nonexisting", RunCancelOptions{})
+		assert.Equal(t, err, ErrResourceNotFound)
+	})
+
+	t.Run("with invalid run ID", func(t *testing.T) {
+		err := client.Runs.Cancel(ctx, badIdentifier, RunCancelOptions{})
+		assert.EqualError(t, err, "Invalid value for run ID")
+	})
+}
+
+func TestRunsDiscard(t *testing.T) {
+	client := testClient(t)
+	ctx := context.Background()
+
+	rTest, rTestCleanup := createPlannedRun(t, client, nil)
+	defer rTestCleanup()
+
+	t.Run("when the run exists", func(t *testing.T) {
+		err := client.Runs.Discard(ctx, rTest.ID, RunDiscardOptions{})
+		assert.NoError(t, err)
+	})
+
+	t.Run("when the run does not exist", func(t *testing.T) {
+		err := client.Runs.Discard(ctx, "nonexisting", RunDiscardOptions{})
+		assert.Equal(t, err, ErrResourceNotFound)
+	})
+
+	t.Run("with invalid run ID", func(t *testing.T) {
+		err := client.Runs.Discard(ctx, badIdentifier, RunDiscardOptions{})
+		assert.EqualError(t, err, "Invalid value for run ID")
 	})
 }

@@ -1,304 +1,418 @@
 package tfe
 
 import (
+	"context"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
 
-func TestListWorkspaces(t *testing.T) {
+func TestWorkspacesList(t *testing.T) {
 	client := testClient(t)
+	ctx := context.Background()
 
-	org, orgCleanup := createOrganization(t, client)
-	defer orgCleanup()
+	orgTest, orgTestCleanup := createOrganization(t, client)
+	defer orgTestCleanup()
 
-	ws1, ws1Cleanup := createWorkspace(t, client, org)
-	defer ws1Cleanup()
-	ws2, ws2Cleanup := createWorkspace(t, client, org)
-	defer ws2Cleanup()
+	wTest1, wTest1Cleanup := createWorkspace(t, client, orgTest)
+	defer wTest1Cleanup()
+	wTest2, wTest2Cleanup := createWorkspace(t, client, orgTest)
+	defer wTest2Cleanup()
 
 	t.Run("without list options", func(t *testing.T) {
-		workspaces, err := client.ListWorkspaces(&ListWorkspacesInput{
-			OrganizationName: org.Name,
-		})
-		require.Nil(t, err)
-
-		assert.Contains(t, workspaces, ws1)
-		assert.Contains(t, workspaces, ws2)
+		ws, err := client.Workspaces.List(ctx, orgTest.Name, WorkspaceListOptions{})
+		require.NoError(t, err)
+		assert.Contains(t, ws, wTest1)
+		assert.Contains(t, ws, wTest2)
 	})
 
 	t.Run("with list options", func(t *testing.T) {
 		// Request a page number which is out of range. The result should
 		// be successful, but return no results if the paging options are
 		// properly passed along.
-		workspaces, err := client.ListWorkspaces(&ListWorkspacesInput{
-			OrganizationName: org.Name,
+		ws, err := client.Workspaces.List(ctx, orgTest.Name, WorkspaceListOptions{
 			ListOptions: ListOptions{
 				PageNumber: 999,
 				PageSize:   100,
 			},
 		})
-		require.Nil(t, err)
+		require.NoError(t, err)
+		assert.Empty(t, ws)
+	})
 
-		assert.Equal(t, 0, len(workspaces))
+	t.Run("without a valid organization", func(t *testing.T) {
+		ws, err := client.Workspaces.List(ctx, badIdentifier, WorkspaceListOptions{})
+		assert.Nil(t, ws)
+		assert.EqualError(t, err, "Invalid value for organization")
 	})
 }
 
-func TestWorkspace(t *testing.T) {
+func TestWorkspacesCreate(t *testing.T) {
 	client := testClient(t)
+	ctx := context.Background()
 
-	org, orgCleanup := createOrganization(t, client)
-	defer orgCleanup()
+	orgTest, orgTestCleanup := createOrganization(t, client)
+	defer orgTestCleanup()
 
-	ws, wsCleanup := createWorkspace(t, client, org)
-	defer wsCleanup()
-
-	t.Run("when the workspace exists", func(t *testing.T) {
-		result, err := client.Workspace(*org.Name, *ws.Name)
-		require.Nil(t, err)
-		assert.Equal(t, ws, result)
-
-		t.Run("permissions are properly decoded", func(t *testing.T) {
-			if !result.Permissions.Can("destroy") {
-				t.Fatal("should be able to destroy")
-			}
-		})
-
-		t.Run("relationships are properly decoded", func(t *testing.T) {
-			assert.Equal(t, result.OrganizationName, org.Name)
-		})
-
-		t.Run("timestamps are properly decoded", func(t *testing.T) {
-			assert.False(t, result.CreatedAt.IsZero())
-		})
-	})
-
-	t.Run("when the workspace does not exist", func(t *testing.T) {
-		result, err := client.Workspace(*org.Name, "nope")
-		assert.NotNil(t, err)
-		assert.Nil(t, result)
-	})
-
-	t.Run("when the organization does not exist", func(t *testing.T) {
-		result, err := client.Workspace("nope", "nope")
-		assert.NotNil(t, err)
-		assert.Nil(t, result)
-	})
-}
-
-func TestCreateWorkspace(t *testing.T) {
-	client := testClient(t)
-
-	org, orgCleanup := createOrganization(t, client)
-	defer orgCleanup()
-
-	t.Run("with valid input", func(t *testing.T) {
-		input := &CreateWorkspaceInput{
-			OrganizationName: org.Name,
+	t.Run("with valid options", func(t *testing.T) {
+		options := WorkspaceCreateOptions{
 			Name:             String("foo"),
 			AutoApply:        Bool(true),
 			TerraformVersion: String("0.11.0"),
 			WorkingDirectory: String("bar/"),
 		}
 
-		output, err := client.CreateWorkspace(input)
-		require.Nil(t, err)
+		w, err := client.Workspaces.Create(ctx, orgTest.Name, options)
+		require.NoError(t, err)
 
 		// Get a refreshed view from the API.
-		refreshedWorkspace, err := client.Workspace(*org.Name, *input.Name)
-		require.Nil(t, err)
+		refreshed, err := client.Workspaces.Read(ctx, orgTest.Name, *options.Name)
+		require.NoError(t, err)
 
-		for _, result := range []*Workspace{
-			output.Workspace,
-			refreshedWorkspace,
+		for _, item := range []*Workspace{
+			w,
+			refreshed,
 		} {
-			assert.NotNil(t, result.ID)
-			assert.Equal(t, input.Name, result.Name)
-			assert.Equal(t, input.AutoApply, result.AutoApply)
-			assert.Equal(t, input.WorkingDirectory, result.WorkingDirectory)
-			assert.Equal(t, input.TerraformVersion, result.TerraformVersion)
+			assert.NotEmpty(t, item.ID)
+			assert.Equal(t, *options.Name, item.Name)
+			assert.Equal(t, *options.AutoApply, item.AutoApply)
+			assert.Equal(t, *options.WorkingDirectory, item.WorkingDirectory)
+			assert.Equal(t, *options.TerraformVersion, item.TerraformVersion)
 		}
 	})
 
-	t.Run("when input is missing organization", func(t *testing.T) {
-		result, err := client.CreateWorkspace(&CreateWorkspaceInput{
+	t.Run("when options is missing name", func(t *testing.T) {
+		w, err := client.Workspaces.Create(ctx, "foo", WorkspaceCreateOptions{})
+		assert.Nil(t, w)
+		assert.EqualError(t, err, "Name is required")
+	})
+
+	t.Run("when options has an invalid name", func(t *testing.T) {
+		w, err := client.Workspaces.Create(ctx, "foo", WorkspaceCreateOptions{
+			Name: String(badIdentifier),
+		})
+		assert.Nil(t, w)
+		assert.EqualError(t, err, "Invalid value for name")
+	})
+
+	t.Run("when options has an invalid organization", func(t *testing.T) {
+		w, err := client.Workspaces.Create(ctx, badIdentifier, WorkspaceCreateOptions{
 			Name: String("foo"),
 		})
-		assert.EqualError(t, err, "Invalid value for OrganizationName")
-		assert.Nil(t, result)
-	})
-
-	t.Run("when input is missing name", func(t *testing.T) {
-		result, err := client.CreateWorkspace(&CreateWorkspaceInput{
-			OrganizationName: String("foo"),
-		})
-		assert.EqualError(t, err, "Invalid value for Name")
-		assert.Nil(t, result)
-	})
-
-	t.Run("when input has invalid name", func(t *testing.T) {
-		result, err := client.CreateWorkspace(&CreateWorkspaceInput{
-			OrganizationName: String("foo"),
-			Name:             String("! / nope"),
-		})
-		assert.EqualError(t, err, "Invalid value for Name")
-		assert.Nil(t, result)
-	})
-
-	t.Run("when input has invalid organization", func(t *testing.T) {
-		result, err := client.CreateWorkspace(&CreateWorkspaceInput{
-			OrganizationName: String("! / nope"),
-			Name:             String("foo"),
-		})
-		assert.EqualError(t, err, "Invalid value for OrganizationName")
-		assert.Nil(t, result)
+		assert.Nil(t, w)
+		assert.EqualError(t, err, "Invalid value for organization")
 	})
 
 	t.Run("when an error is returned from the api", func(t *testing.T) {
-		result, err := client.CreateWorkspace(&CreateWorkspaceInput{
-			OrganizationName: org.Name,
+		w, err := client.Workspaces.Create(ctx, "bar", WorkspaceCreateOptions{
 			Name:             String("bar"),
-			TerraformVersion: String("nope"),
+			TerraformVersion: String("nonexisting"),
 		})
-		assert.NotNil(t, err)
-		assert.Nil(t, result)
+		assert.Nil(t, w)
+		assert.Error(t, err)
 	})
 }
 
-func TestModifyWorkspace(t *testing.T) {
+func TestWorkspacesRead(t *testing.T) {
 	client := testClient(t)
+	ctx := context.Background()
 
-	ws, wsCleanup := createWorkspace(t, client, nil)
-	defer wsCleanup()
+	orgTest, orgTestCleanup := createOrganization(t, client)
+	defer orgTestCleanup()
+
+	wTest, wTestCleanup := createWorkspace(t, client, orgTest)
+	defer wTestCleanup()
+
+	t.Run("when the workspace exists", func(t *testing.T) {
+		w, err := client.Workspaces.Read(ctx, orgTest.Name, wTest.Name)
+		require.NoError(t, err)
+		assert.Equal(t, wTest, w)
+
+		t.Run("permissions are properly decoded", func(t *testing.T) {
+			assert.True(t, w.Permissions.CanDestroy)
+		})
+
+		t.Run("relationships are properly decoded", func(t *testing.T) {
+			assert.Equal(t, orgTest.Name, w.Organization.Name)
+		})
+
+		t.Run("timestamps are properly decoded", func(t *testing.T) {
+			assert.NotEmpty(t, w.CreatedAt)
+		})
+	})
+
+	t.Run("when the workspace does not exist", func(t *testing.T) {
+		w, err := client.Workspaces.Read(ctx, orgTest.Name, "nonexisting")
+		assert.Nil(t, w)
+		assert.Error(t, err)
+	})
+
+	t.Run("when the organization does not exist", func(t *testing.T) {
+		w, err := client.Workspaces.Read(ctx, "nonexisting", "nonexisting")
+		assert.Nil(t, w)
+		assert.Error(t, err)
+	})
+
+	t.Run("without a valid organization", func(t *testing.T) {
+		w, err := client.Workspaces.Read(ctx, badIdentifier, wTest.Name)
+		assert.Nil(t, w)
+		assert.EqualError(t, err, "Invalid value for organization")
+	})
+
+	t.Run("without a valid workspace", func(t *testing.T) {
+		w, err := client.Workspaces.Read(ctx, orgTest.Name, badIdentifier)
+		assert.Nil(t, w)
+		assert.EqualError(t, err, "Invalid value for workspace")
+	})
+}
+
+func TestWorkspacesUpdate(t *testing.T) {
+	client := testClient(t)
+	ctx := context.Background()
+
+	orgTest, orgTestCleanup := createOrganization(t, client)
+	defer orgTestCleanup()
+
+	wTest, wTestCleanup := createWorkspace(t, client, orgTest)
 
 	t.Run("when updating a subset of values", func(t *testing.T) {
-		before, err := client.Workspace(*ws.OrganizationName, *ws.Name)
-		require.Nil(t, err)
-
-		input := &ModifyWorkspaceInput{
-			OrganizationName: ws.OrganizationName,
-			Name:             ws.Name,
+		options := WorkspaceUpdateOptions{
+			Name:             String(wTest.Name),
 			TerraformVersion: String("0.10.0"),
 		}
 
-		output, err := client.ModifyWorkspace(input)
-		require.Nil(t, err)
+		wAfter, err := client.Workspaces.Update(ctx, orgTest.Name, wTest.Name, options)
+		if err != nil {
+			wTestCleanup()
+		}
+		require.NoError(t, err)
 
-		after := output.Workspace
-		assert.Equal(t, before.Name, after.Name)
-		assert.Equal(t, before.AutoApply, after.AutoApply)
-		assert.Equal(t, before.WorkingDirectory, after.WorkingDirectory)
-		assert.NotEqual(t, before.TerraformVersion, after.TerraformVersion)
+		assert.Equal(t, wTest.Name, wAfter.Name)
+		assert.Equal(t, wTest.AutoApply, wAfter.AutoApply)
+		assert.Equal(t, wTest.WorkingDirectory, wAfter.WorkingDirectory)
+		assert.NotEqual(t, wTest.TerraformVersion, wAfter.TerraformVersion)
 	})
 
-	t.Run("with valid input", func(t *testing.T) {
-		input := &ModifyWorkspaceInput{
-			OrganizationName: ws.OrganizationName,
-			Name:             ws.Name,
-			Rename:           String(randomString(t)),
+	t.Run("with valid options", func(t *testing.T) {
+		options := WorkspaceUpdateOptions{
+			Name:             String(randomString(t)),
 			AutoApply:        Bool(false),
 			TerraformVersion: String("0.11.1"),
 			WorkingDirectory: String("baz/"),
 		}
 
-		output, err := client.ModifyWorkspace(input)
-		require.Nil(t, err)
+		w, err := client.Workspaces.Update(ctx, orgTest.Name, wTest.Name, options)
+		if err != nil {
+			wTestCleanup()
+		}
+		require.NoError(t, err)
 
 		// Get a refreshed view of the workspace from the API
-		refreshed, err := client.Workspace(*ws.OrganizationName, *input.Rename)
-		require.Nil(t, err)
+		refreshed, err := client.Workspaces.Read(ctx, orgTest.Name, *options.Name)
+		require.NoError(t, err)
 
-		for _, result := range []*Workspace{
-			output.Workspace,
+		for _, item := range []*Workspace{
+			w,
 			refreshed,
 		} {
-			assert.Equal(t, result.Name, input.Rename)
-			assert.Equal(t, result.AutoApply, input.AutoApply)
-			assert.Equal(t, result.TerraformVersion, input.TerraformVersion)
-			assert.Equal(t, result.WorkingDirectory, input.WorkingDirectory)
+			assert.Equal(t, *options.Name, item.Name)
+			assert.Equal(t, *options.AutoApply, item.AutoApply)
+			assert.Equal(t, *options.TerraformVersion, item.TerraformVersion)
+			assert.Equal(t, *options.WorkingDirectory, item.WorkingDirectory)
 		}
 	})
 
-	t.Run("when input is missing organization", func(t *testing.T) {
-		result, err := client.ModifyWorkspace(&ModifyWorkspaceInput{
-			Name: String("foo"),
-		})
-		assert.EqualError(t, err, "Invalid value for OrganizationName")
-		assert.Nil(t, result)
-	})
-
-	t.Run("when input is missing name", func(t *testing.T) {
-		result, err := client.ModifyWorkspace(&ModifyWorkspaceInput{
-			OrganizationName: ws.OrganizationName,
-		})
-		assert.EqualError(t, err, "Invalid value for Name")
-		assert.Nil(t, result)
-	})
-
 	t.Run("when an error is returned from the api", func(t *testing.T) {
-		result, err := client.ModifyWorkspace(&ModifyWorkspaceInput{
-			OrganizationName: ws.OrganizationName,
-			Name:             ws.Name,
-			TerraformVersion: String("nope"),
+		w, err := client.Workspaces.Update(ctx, orgTest.Name, wTest.Name, WorkspaceUpdateOptions{
+			TerraformVersion: String("nonexisting"),
 		})
-		assert.NotNil(t, err)
-		assert.Nil(t, result)
+		assert.Nil(t, w)
+		assert.Error(t, err)
 	})
 
-	t.Run("when input has invalid name", func(t *testing.T) {
-		result, err := client.ModifyWorkspace(&ModifyWorkspaceInput{
-			OrganizationName: ws.OrganizationName,
-			Name:             String("! / nope"),
-		})
-		assert.EqualError(t, err, "Invalid value for Name")
-		assert.Nil(t, result)
+	t.Run("when options has an invalid name", func(t *testing.T) {
+		w, err := client.Workspaces.Update(ctx, orgTest.Name, badIdentifier, WorkspaceUpdateOptions{})
+		assert.Nil(t, w)
+		assert.EqualError(t, err, "Invalid value for workspace")
 	})
 
-	t.Run("when input has invalid organization", func(t *testing.T) {
-		result, err := client.ModifyWorkspace(&ModifyWorkspaceInput{
-			OrganizationName: String("! / nope"),
-			Name:             ws.Name,
-		})
-		assert.EqualError(t, err, "Invalid value for OrganizationName")
-		assert.Nil(t, result)
+	t.Run("when options has an invalid organization", func(t *testing.T) {
+		w, err := client.Workspaces.Update(ctx, badIdentifier, wTest.Name, WorkspaceUpdateOptions{})
+		assert.Nil(t, w)
+		assert.EqualError(t, err, "Invalid value for organization")
 	})
 }
 
-func TestDeleteWorkspace(t *testing.T) {
+func TestWorkspacesDelete(t *testing.T) {
 	client := testClient(t)
+	ctx := context.Background()
 
-	ws, wsCleanup := createWorkspace(t, client, nil)
-	defer wsCleanup()
+	orgTest, orgTestCleanup := createOrganization(t, client)
+	defer orgTestCleanup()
 
-	t.Run("with valid input", func(t *testing.T) {
-		output, err := client.DeleteWorkspace(&DeleteWorkspaceInput{
-			OrganizationName: ws.OrganizationName,
-			Name:             ws.Name,
-		})
-		require.Nil(t, err)
-		require.Equal(t, &DeleteWorkspaceOutput{}, output)
+	wTest, _ := createWorkspace(t, client, orgTest)
+
+	t.Run("with valid options", func(t *testing.T) {
+		err := client.Workspaces.Delete(ctx, orgTest.Name, wTest.Name)
+		require.NoError(t, err)
 
 		// Try loading the workspace - it should fail.
-		_, err = client.Workspace(*ws.OrganizationName, *ws.Name)
-		assert.EqualError(t, err, "Resource not found")
+		_, err = client.Workspaces.Read(ctx, orgTest.Name, wTest.Name)
+		assert.Equal(t, err, ErrResourceNotFound)
 	})
 
-	t.Run("when input has invalid name", func(t *testing.T) {
-		result, err := client.DeleteWorkspace(&DeleteWorkspaceInput{
-			OrganizationName: ws.OrganizationName,
-			Name:             String("! / nope"),
-		})
-		assert.EqualError(t, err, "Invalid value for Name")
-		assert.Nil(t, result)
+	t.Run("when organization is invalid", func(t *testing.T) {
+		err := client.Workspaces.Delete(ctx, badIdentifier, wTest.Name)
+		assert.EqualError(t, err, "Invalid value for organization")
 	})
 
-	t.Run("when input has invalid organization", func(t *testing.T) {
-		result, err := client.DeleteWorkspace(&DeleteWorkspaceInput{
-			OrganizationName: String("! / nope"),
-			Name:             ws.Name,
+	t.Run("when workspace is invalid", func(t *testing.T) {
+		err := client.Workspaces.Delete(ctx, orgTest.Name, badIdentifier)
+		assert.EqualError(t, err, "Invalid value for workspace")
+	})
+}
+
+func TestWorkspacesLock(t *testing.T) {
+	client := testClient(t)
+	ctx := context.Background()
+
+	orgTest, orgTestCleanup := createOrganization(t, client)
+	defer orgTestCleanup()
+
+	wTest, _ := createWorkspace(t, client, orgTest)
+
+	t.Run("with valid options", func(t *testing.T) {
+		w, err := client.Workspaces.Lock(ctx, wTest.ID, WorkspaceLockOptions{})
+		require.NoError(t, err)
+		assert.True(t, w.Locked)
+	})
+
+	t.Run("when workspace is already locked", func(t *testing.T) {
+		w, err := client.Workspaces.Lock(ctx, wTest.ID, WorkspaceLockOptions{})
+		require.NoError(t, err)
+		assert.True(t, w.Locked)
+	})
+
+	t.Run("without a valid workspace ID", func(t *testing.T) {
+		w, err := client.Workspaces.Lock(ctx, badIdentifier, WorkspaceLockOptions{})
+		assert.Nil(t, w)
+		assert.EqualError(t, err, "Invalid value for workspace ID")
+	})
+}
+
+func TestWorkspacesUnlock(t *testing.T) {
+	client := testClient(t)
+	ctx := context.Background()
+
+	orgTest, orgTestCleanup := createOrganization(t, client)
+	defer orgTestCleanup()
+
+	wTest, _ := createWorkspace(t, client, orgTest)
+
+	w, err := client.Workspaces.Lock(ctx, wTest.ID, WorkspaceLockOptions{})
+	if err != nil {
+		orgTestCleanup()
+	}
+	require.NoError(t, err)
+	require.True(t, w.Locked)
+
+	t.Run("with valid options", func(t *testing.T) {
+		w, err := client.Workspaces.Unlock(ctx, wTest.ID)
+		require.NoError(t, err)
+		assert.False(t, w.Locked)
+	})
+
+	t.Run("when workspace is already locked", func(t *testing.T) {
+		w, err := client.Workspaces.Unlock(ctx, wTest.ID)
+		require.NoError(t, err)
+		assert.False(t, w.Locked)
+	})
+
+	t.Run("without a valid workspace ID", func(t *testing.T) {
+		w, err := client.Workspaces.Unlock(ctx, badIdentifier)
+		assert.Nil(t, w)
+		assert.EqualError(t, err, "Invalid value for workspace ID")
+	})
+}
+
+func TestWorkspacesAssignSSHKey(t *testing.T) {
+	client := testClient(t)
+	ctx := context.Background()
+
+	orgTest, orgTestCleanup := createOrganization(t, client)
+	defer orgTestCleanup()
+
+	wTest, wTestCleanup := createWorkspace(t, client, orgTest)
+	defer wTestCleanup()
+
+	sshKeyTest, sshKeyTestCleanup := createSSHKey(t, client, orgTest)
+	defer sshKeyTestCleanup()
+
+	t.Run("with valid options", func(t *testing.T) {
+		w, err := client.Workspaces.AssignSSHKey(ctx, wTest.ID, WorkspaceAssignSSHKeyOptions{
+			SSHKeyID: String(sshKeyTest.ID),
 		})
-		assert.EqualError(t, err, "Invalid value for OrganizationName")
-		assert.Nil(t, result)
+		require.NoError(t, err)
+		require.NotNil(t, w.SSHKey)
+		assert.Equal(t, w.SSHKey.ID, sshKeyTest.ID)
+	})
+
+	t.Run("without an SSH key ID", func(t *testing.T) {
+		w, err := client.Workspaces.AssignSSHKey(ctx, wTest.ID, WorkspaceAssignSSHKeyOptions{})
+		assert.Nil(t, w)
+		assert.EqualError(t, err, "SSH key ID is required")
+	})
+
+	t.Run("without a valid SSH key ID", func(t *testing.T) {
+		w, err := client.Workspaces.AssignSSHKey(ctx, wTest.ID, WorkspaceAssignSSHKeyOptions{
+			SSHKeyID: String(badIdentifier),
+		})
+		assert.Nil(t, w)
+		assert.EqualError(t, err, "Invalid value for SSH key ID")
+	})
+
+	t.Run("without a valid workspace ID", func(t *testing.T) {
+		w, err := client.Workspaces.AssignSSHKey(ctx, badIdentifier, WorkspaceAssignSSHKeyOptions{
+			SSHKeyID: String(sshKeyTest.ID),
+		})
+		assert.Nil(t, w)
+		assert.EqualError(t, err, "Invalid value for workspace ID")
+	})
+}
+
+func TestWorkspacesUnassignSSHKey(t *testing.T) {
+	client := testClient(t)
+	ctx := context.Background()
+
+	orgTest, orgTestCleanup := createOrganization(t, client)
+	defer orgTestCleanup()
+
+	wTest, wTestCleanup := createWorkspace(t, client, orgTest)
+	defer wTestCleanup()
+
+	sshKeyTest, sshKeyTestCleanup := createSSHKey(t, client, orgTest)
+	defer sshKeyTestCleanup()
+
+	w, err := client.Workspaces.AssignSSHKey(ctx, wTest.ID, WorkspaceAssignSSHKeyOptions{
+		SSHKeyID: String(sshKeyTest.ID),
+	})
+	if err != nil {
+		orgTestCleanup()
+	}
+	require.NoError(t, err)
+	require.NotNil(t, w.SSHKey)
+	require.Equal(t, w.SSHKey.ID, sshKeyTest.ID)
+
+	t.Run("with valid options", func(t *testing.T) {
+		w, err := client.Workspaces.UnassignSSHKey(ctx, wTest.ID)
+		assert.Nil(t, err)
+		assert.Nil(t, w.SSHKey)
+	})
+
+	t.Run("without a valid workspace ID", func(t *testing.T) {
+		w, err := client.Workspaces.UnassignSSHKey(ctx, badIdentifier)
+		assert.Nil(t, w)
+		assert.EqualError(t, err, "Invalid value for workspace ID")
 	})
 }

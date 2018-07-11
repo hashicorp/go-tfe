@@ -1,196 +1,193 @@
 package tfe
 
 import (
+	"context"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
 
-func TestListOrganizations(t *testing.T) {
+func TestOrganizationsList(t *testing.T) {
 	client := testClient(t)
+	ctx := context.Background()
 
-	org1, cleanupOrg1 := createOrganization(t, client)
-	defer cleanupOrg1()
-	org2, cleanupOrg2 := createOrganization(t, client)
-	defer cleanupOrg2()
+	orgTest1, orgTest1Cleanup := createOrganization(t, client)
+	defer orgTest1Cleanup()
+	orgTest2, orgTest2Cleanup := createOrganization(t, client)
+	defer orgTest2Cleanup()
 
 	t.Run("with no list options", func(t *testing.T) {
-		orgs, err := client.ListOrganizations(&ListOrganizationsInput{})
-		require.Nil(t, err)
-
-		assert.Contains(t, orgs, org1)
-		assert.Contains(t, orgs, org2)
+		orgs, err := client.Organizations.List(ctx, OrganizationListOptions{})
+		require.NoError(t, err)
+		assert.Contains(t, orgs, orgTest1)
+		assert.Contains(t, orgs, orgTest2)
 	})
 
 	t.Run("with list options", func(t *testing.T) {
 		t.Skip("paging not supported yet in API")
-
 		// Request a page number which is out of range. The result should
 		// be successful, but return no results if the paging options are
 		// properly passed along.
-		orgs, err := client.ListOrganizations(&ListOrganizationsInput{
+		orgs, err := client.Organizations.List(ctx, OrganizationListOptions{
 			ListOptions: ListOptions{
 				PageNumber: 999,
 				PageSize:   100,
 			},
 		})
-		require.Nil(t, err)
-
-		assert.Equal(t, 0, len(orgs))
+		require.NoError(t, err)
+		assert.Empty(t, orgs)
 	})
 }
 
-func TestOrganization(t *testing.T) {
+func TestOrganizationsCreate(t *testing.T) {
 	client := testClient(t)
+	ctx := context.Background()
 
-	org, cleanup := createOrganization(t, client)
-	defer cleanup()
-
-	t.Run("when the org exists", func(t *testing.T) {
-		result, err := client.Organization(*org.Name)
-		require.Nil(t, err)
-		assert.Equal(t, org, result)
-
-		t.Run("permissions are properly decoded", func(t *testing.T) {
-			if !result.Permissions.Can("destroy") {
-				t.Fatal("should be able to destroy")
-			}
-		})
-
-		t.Run("timestamps are populated", func(t *testing.T) {
-			assert.False(t, result.CreatedAt.IsZero())
-			assert.False(t, result.TrialExpiresAt.IsZero())
-		})
-	})
-
-	t.Run("when the org does not exist", func(t *testing.T) {
-		_, err := client.Organization(randomString(t))
-		assert.NotNil(t, err)
-	})
-}
-
-func TestCreateOrganization(t *testing.T) {
-	client := testClient(t)
-
-	t.Run("with valid input", func(t *testing.T) {
-		input := &CreateOrganizationInput{
+	t.Run("with valid options", func(t *testing.T) {
+		options := OrganizationCreateOptions{
 			Name:  String(randomString(t)),
 			Email: String(randomString(t) + "@tfe.local"),
 		}
 
-		result, err := client.CreateOrganization(input)
-		require.Nil(t, err)
-		defer client.DeleteOrganization(&DeleteOrganizationInput{
-			Name: input.Name,
-		})
+		org, err := client.Organizations.Create(ctx, options)
+		require.NoError(t, err)
 
-		assert.Equal(t, input.Name, result.Organization.Name)
-		assert.Equal(t, input.Email, result.Organization.Email)
-	})
+		// Make sure we clean up the created org.
+		defer client.Organizations.Delete(ctx, org.Name)
 
-	t.Run("with invalid name", func(t *testing.T) {
-		result, err := client.CreateOrganization(&CreateOrganizationInput{
-			Name:  String("! / nope"),
-			Email: String("foo@bar.com"),
-		})
-		assert.Nil(t, result)
-		assert.EqualError(t, err, "Invalid value for Name")
+		assert.Equal(t, *options.Name, org.Name)
+		assert.Equal(t, *options.Email, org.Email)
 	})
 
 	t.Run("when no email is provided", func(t *testing.T) {
-		result, err := client.CreateOrganization(&CreateOrganizationInput{
+		org, err := client.Organizations.Create(ctx, OrganizationCreateOptions{
 			Name: String("foo"),
 		})
-		assert.Nil(t, result)
+		assert.Nil(t, org)
 		assert.EqualError(t, err, "Email is required")
+	})
+
+	t.Run("when no name is provided", func(t *testing.T) {
+		_, err := client.Organizations.Create(ctx, OrganizationCreateOptions{
+			Email: String("foo@bar.com"),
+		})
+		assert.EqualError(t, err, "Name is required")
+	})
+
+	t.Run("with invalid name", func(t *testing.T) {
+		org, err := client.Organizations.Create(ctx, OrganizationCreateOptions{
+			Name:  String(badIdentifier),
+			Email: String("foo@bar.com"),
+		})
+		assert.Nil(t, org)
+		assert.EqualError(t, err, "Invalid value for name")
 	})
 }
 
-func TestModifyOrganization(t *testing.T) {
+func TestOrganizationsRead(t *testing.T) {
 	client := testClient(t)
+	ctx := context.Background()
 
-	t.Run("with valid input", func(t *testing.T) {
-		org, cleanup := createOrganization(t, client)
-		defer cleanup()
+	orgTest, orgTestCleanup := createOrganization(t, client)
+	defer orgTestCleanup()
 
-		input := &ModifyOrganizationInput{
-			Name:   org.Name,
-			Rename: String(randomString(t)),
-			Email:  String(randomString(t) + "@tfe.local"),
+	t.Run("when the org exists", func(t *testing.T) {
+		org, err := client.Organizations.Read(ctx, orgTest.Name)
+		require.NoError(t, err)
+		assert.Equal(t, orgTest, org)
+
+		t.Run("permissions are properly decoded", func(t *testing.T) {
+			assert.True(t, org.Permissions.CanDestroy)
+		})
+
+		t.Run("timestamps are populated", func(t *testing.T) {
+			assert.NotEmpty(t, org.CreatedAt)
+			assert.NotEmpty(t, org.TrialExpiresAt)
+		})
+	})
+
+	t.Run("with invalid name", func(t *testing.T) {
+		org, err := client.Organizations.Read(ctx, badIdentifier)
+		assert.Nil(t, org)
+		assert.EqualError(t, err, "Invalid value for name")
+	})
+
+	t.Run("when the org does not exist", func(t *testing.T) {
+		_, err := client.Organizations.Read(ctx, randomString(t))
+		assert.Error(t, err)
+	})
+}
+
+func TestOrganizationsUpdate(t *testing.T) {
+	client := testClient(t)
+	ctx := context.Background()
+
+	t.Run("with valid options", func(t *testing.T) {
+		orgTest, orgTestCleanup := createOrganization(t, client)
+
+		options := OrganizationUpdateOptions{
+			Name:  String(randomString(t)),
+			Email: String(randomString(t) + "@tfe.local"),
 		}
 
-		output, err := client.ModifyOrganization(input)
-		require.Nil(t, err)
+		org, err := client.Organizations.Update(ctx, orgTest.Name, options)
+		if err != nil {
+			orgTestCleanup()
+		}
+		require.NoError(t, err)
 
 		// Make sure we clean up the renamed org.
-		defer client.DeleteOrganization(&DeleteOrganizationInput{
-			Name: output.Organization.Name,
-		})
+		defer client.Organizations.Delete(ctx, org.Name)
 
 		// Also get a fresh result from the API to ensure we get the
 		// expected values back.
-		refreshedOrg, err := client.Organization(*input.Rename)
-		require.Nil(t, err)
+		refreshed, err := client.Organizations.Read(ctx, *options.Name)
+		require.NoError(t, err)
 
-		for _, resultOrg := range []*Organization{
-			output.Organization,
-			refreshedOrg,
+		for _, item := range []*Organization{
+			org,
+			refreshed,
 		} {
-			assert.Equal(t, input.Rename, resultOrg.Name)
-			assert.Equal(t, input.Email, resultOrg.Email)
+			assert.Equal(t, *options.Name, item.Name)
+			assert.Equal(t, *options.Email, item.Email)
 		}
 	})
 
 	t.Run("with invalid name", func(t *testing.T) {
-		result, err := client.ModifyOrganization(&ModifyOrganizationInput{
-			Name: String("! / nope"),
-		})
-		assert.Nil(t, result)
-		assert.EqualError(t, err, "Invalid value for Name")
+		org, err := client.Organizations.Update(ctx, badIdentifier, OrganizationUpdateOptions{})
+		assert.Nil(t, org)
+		assert.EqualError(t, err, "Invalid value for name")
 	})
 
 	t.Run("when only updating a subset of fields", func(t *testing.T) {
-		org, cleanup := createOrganization(t, client)
-		defer cleanup()
+		orgTest, orgTestCleanup := createOrganization(t, client)
+		defer orgTestCleanup()
 
-		input := &ModifyOrganizationInput{
-			Name: org.Name,
-		}
-
-		output, err := client.ModifyOrganization(input)
-		require.Nil(t, err)
-
-		result := output.Organization
-		assert.Equal(t, input.Name, result.Name)
-		assert.Equal(t, org.Email, result.Email)
+		org, err := client.Organizations.Update(ctx, orgTest.Name, OrganizationUpdateOptions{})
+		require.NoError(t, err)
+		assert.Equal(t, orgTest.Name, org.Name)
+		assert.Equal(t, orgTest.Email, org.Email)
 	})
 }
 
-func TestDeleteOrganization(t *testing.T) {
+func TestOrganizationsDelete(t *testing.T) {
 	client := testClient(t)
+	ctx := context.Background()
 
-	t.Run("with valid input", func(t *testing.T) {
-		org, cleanup := createOrganization(t, client)
-		defer cleanup()
+	t.Run("with valid options", func(t *testing.T) {
+		orgTest, _ := createOrganization(t, client)
 
-		output, err := client.DeleteOrganization(&DeleteOrganizationInput{
-			Name: org.Name,
-		})
-		require.Nil(t, err)
-
-		require.Equal(t, &DeleteOrganizationOutput{}, output)
+		err := client.Organizations.Delete(ctx, orgTest.Name)
+		require.NoError(t, err)
 
 		// Try fetching the org again - it should error.
-		_, err = client.Organization(*org.Name)
-		assert.EqualError(t, err, "Resource not found")
+		_, err = client.Organizations.Read(ctx, orgTest.Name)
+		assert.Equal(t, err, ErrResourceNotFound)
 	})
 
 	t.Run("with invalid name", func(t *testing.T) {
-		result, err := client.DeleteOrganization(&DeleteOrganizationInput{
-			Name: String("! / nope"),
-		})
-		assert.Nil(t, result)
-		assert.EqualError(t, err, "Invalid value for Name")
+		err := client.Organizations.Delete(ctx, badIdentifier)
+		assert.EqualError(t, err, "Invalid value for name")
 	})
 }

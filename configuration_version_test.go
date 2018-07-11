@@ -1,76 +1,191 @@
 package tfe
 
 import (
+	"context"
 	"testing"
+	"time"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
 
-func TestCreateConfigurationVersion(t *testing.T) {
+func TestConfigurationVersionsList(t *testing.T) {
 	client := testClient(t)
+	ctx := context.Background()
 
-	ws, wsCleanup := createWorkspace(t, client, nil)
-	defer wsCleanup()
+	wTest, wTestCleanup := createWorkspace(t, client, nil)
+	defer wTestCleanup()
 
-	t.Run("with valid input", func(t *testing.T) {
-		input := &CreateConfigurationVersionInput{
-			WorkspaceID: ws.ID,
+	cvTest1, cvTest1Cleanup := createConfigurationVersion(t, client, wTest)
+	defer cvTest1Cleanup()
+	cvTest2, cvTest2Cleanup := createConfigurationVersion(t, client, wTest)
+	defer cvTest2Cleanup()
+
+	t.Run("without list options", func(t *testing.T) {
+		options := ConfigurationVersionListOptions{}
+
+		cvs, err := client.ConfigurationVersions.List(ctx, wTest.ID, options)
+		require.NoError(t, err)
+
+		// We need to strip the upload URL as that is a dynamic link.
+		cvTest1.UploadURL = ""
+		cvTest2.UploadURL = ""
+
+		// And for the retrieved configuration versions as well.
+		for _, cv := range cvs {
+			cv.UploadURL = ""
 		}
-		resp, err := client.CreateConfigurationVersion(input)
-		require.Nil(t, err)
+
+		assert.Contains(t, cvs, cvTest1)
+		assert.Contains(t, cvs, cvTest2)
+	})
+
+	t.Run("with list options", func(t *testing.T) {
+		// Request a page number which is out of range. The result should
+		// be successful, but return no results if the paging options are
+		// properly passed along.
+		options := ConfigurationVersionListOptions{
+			ListOptions: ListOptions{
+				PageNumber: 999,
+				PageSize:   100,
+			},
+		}
+
+		csv, err := client.ConfigurationVersions.List(ctx, wTest.ID, options)
+		require.NoError(t, err)
+		assert.Empty(t, csv)
+	})
+
+	t.Run("without a valid organization", func(t *testing.T) {
+		options := ConfigurationVersionListOptions{}
+
+		csv, err := client.ConfigurationVersions.List(ctx, badIdentifier, options)
+		assert.Nil(t, csv)
+		assert.EqualError(t, err, "Invalid value for workspace ID")
+	})
+}
+
+func TestConfigurationVersionsCreate(t *testing.T) {
+	client := testClient(t)
+	ctx := context.Background()
+
+	wTest, wTestCleanup := createWorkspace(t, client, nil)
+	defer wTestCleanup()
+
+	t.Run("with valid options", func(t *testing.T) {
+		cv, err := client.ConfigurationVersions.Create(ctx,
+			wTest.ID,
+			ConfigurationVersionCreateOptions{},
+		)
+		require.NoError(t, err)
 
 		// Get a refreshed view of the configuration version.
-		refreshed, err := client.ConfigurationVersion(*resp.ConfigurationVersion.ID)
-		require.Nil(t, err)
+		refreshed, err := client.ConfigurationVersions.Read(ctx, cv.ID)
+		require.NoError(t, err)
 
-		for _, cv := range []*ConfigurationVersion{
-			resp.ConfigurationVersion,
+		for _, item := range []*ConfigurationVersion{
+			cv,
 			refreshed,
 		} {
-			assert.NotNil(t, cv.ID)
-			// TODO: Fix this. API does not return workspace associations.
-			//assert.Equal(t, input.WorkspaceID, cv.WorkspaceID)
-			assert.NotNil(t, cv.UploadURL)
-			assert.NotEqual(t, 0, len(*cv.UploadURL))
-			assert.Equal(t, *cv.Status, "pending")
-			assert.Equal(t, *cv.Source, "tfe-api")
-			assert.Nil(t, cv.Error)
+			assert.NotEmpty(t, item.ID)
+			assert.Empty(t, item.Error)
+			assert.Equal(t, item.Source, ConfigurationSourceAPI)
+			assert.Equal(t, item.Status, ConfigurationPending)
+			assert.NotEmpty(t, item.UploadURL)
 		}
 	})
 
 	t.Run("with invalid workspace id", func(t *testing.T) {
-		result, err := client.CreateConfigurationVersion(
-			&CreateConfigurationVersionInput{
-				WorkspaceID: String("! / nope"),
-			},
+		cv, err := client.ConfigurationVersions.Create(
+			ctx,
+			badIdentifier,
+			ConfigurationVersionCreateOptions{},
 		)
-		assert.Nil(t, result)
-		assert.EqualError(t, err, "Invalid value for WorkspaceID")
+		assert.Nil(t, cv)
+		assert.EqualError(t, err, "Invalid value for workspace ID")
 	})
 }
 
-func TestConfigurationVersion(t *testing.T) {
+func TestConfigurationVersionsRead(t *testing.T) {
 	client := testClient(t)
+	ctx := context.Background()
 
-	cv, cvCleanup := createConfigurationVersion(t, client, nil)
-	defer cvCleanup()
+	cvTest, cvTestCleanup := createConfigurationVersion(t, client, nil)
+	defer cvTestCleanup()
 
 	t.Run("when the configuration version exists", func(t *testing.T) {
-		result, err := client.ConfigurationVersion(*cv.ID)
-		require.Nil(t, err)
+		cv, err := client.ConfigurationVersions.Read(ctx, cvTest.ID)
+		require.NoError(t, err)
 
 		// Don't compare the UploadURL because it will be generated twice in
 		// this test - once at creation of the configuration version, and
 		// again during the GET.
-		cv.UploadURL, result.UploadURL = nil, nil
+		cvTest.UploadURL, cv.UploadURL = "", ""
 
-		assert.Equal(t, cv, result)
+		assert.Equal(t, cvTest, cv)
 	})
 
 	t.Run("when the configuration version does not exist", func(t *testing.T) {
-		result, err := client.ConfigurationVersion("nope")
-		assert.Nil(t, result)
-		assert.EqualError(t, err, "Resource not found")
+		cv, err := client.ConfigurationVersions.Read(ctx, "nonexisting")
+		assert.Nil(t, cv)
+		assert.Equal(t, err, ErrResourceNotFound)
+	})
+
+	t.Run("with invalid configuration version id", func(t *testing.T) {
+		cv, err := client.ConfigurationVersions.Read(ctx, badIdentifier)
+		assert.Nil(t, cv)
+		assert.EqualError(t, err, "Invalid value for configuration version ID")
+	})
+}
+
+func TestConfigurationVersionsUpload(t *testing.T) {
+	client := testClient(t)
+	ctx := context.Background()
+
+	cv, cvCleanup := createConfigurationVersion(t, client, nil)
+	defer cvCleanup()
+
+	t.Run("with valid options", func(t *testing.T) {
+		err := client.ConfigurationVersions.Upload(
+			ctx,
+			cv.UploadURL,
+			"test-fixtures/config-version",
+		)
+		require.NoError(t, err)
+
+		// We do this is a small loop, because it can take a second
+		// before the upload is finished.
+		for i := 0; ; i++ {
+			refreshed, err := client.ConfigurationVersions.Read(ctx, cv.ID)
+			require.NoError(t, err)
+
+			if refreshed.Status == ConfigurationUploaded {
+				break
+			}
+
+			if i > 10 {
+				t.Fatal("Timeout waiting for the configuration version to be uploaded")
+			}
+
+			time.Sleep(1 * time.Second)
+		}
+	})
+
+	t.Run("without a valid upload URL", func(t *testing.T) {
+		err := client.ConfigurationVersions.Upload(
+			ctx,
+			cv.UploadURL[:len(cv.UploadURL)-10]+"nonexisting",
+			"test-fixtures/config-version",
+		)
+		assert.Error(t, err)
+	})
+
+	t.Run("without a valid path", func(t *testing.T) {
+		err := client.ConfigurationVersions.Upload(
+			ctx,
+			cv.UploadURL,
+			"nonexisting",
+		)
+		assert.Error(t, err)
 	})
 }

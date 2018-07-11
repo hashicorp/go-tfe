@@ -1,341 +1,404 @@
 package tfe
 
 import (
+	"context"
 	"errors"
+	"fmt"
+	"net/url"
 	"time"
 )
 
-// Workspace encapsulates all data fields of a workspace in TFE.
+// Workspaces handles communication with the workspace related methods of the
+// Terraform Enterprise API.
+//
+// TFE API docs: https://www.terraform.io/docs/enterprise/api/workspaces.html
+type Workspaces struct {
+	client *Client
+}
+
+// Workspace represents a Terraform Enterprise workspace.
 type Workspace struct {
-	// Unique ID of this workspace. This ID is guaranteed unique within the
-	// context of the TFE instance.
-	ID *string `json:"id,omitempty"`
+	ID                   string                `jsonapi:"primary,workspaces"`
+	Actions              *WorkspaceActions     `jsonapi:"attr,actions"`
+	AutoApply            bool                  `jsonapi:"attr,auto-apply"`
+	CanQueueDestroyPlan  bool                  `jsonapi:"attr,can-queue-destroy-plan"`
+	CreatedAt            time.Time             `jsonapi:"attr,created-at,iso8601"`
+	Environment          string                `jsonapi:"attr,environment"`
+	Locked               bool                  `jsonapi:"attr,locked"`
+	MigrationEnvironment string                `jsonapi:"attr,migration-environment"`
+	Name                 string                `jsonapi:"attr,name"`
+	Permissions          *WorkspacePermissions `jsonapi:"attr,permissions"`
+	TerraformVersion     string                `jsonapi:"attr,terraform-version"`
+	VCSRepo              *VCSRepo              `jsonapi:"attr,vcs-repo"`
+	WorkingDirectory     string                `jsonapi:"attr,working-directory"`
 
-	// ID of the organization which owns this workspace.
-	OrganizationName *string `json:"-"`
-
-	// Name of the workspace. This value is only guaranteed unique within
-	// an organization.
-	Name *string `json:"name,omitempty"`
-
-	// Creation time of the workspace.
-	CreatedAt time.Time `json:"created-at,omitempty"`
-
-	// Indicates if plans will be automatically applied (without confirmation).
-	AutoApply *bool `json:"auto-apply,omitempty"`
-
-	// The working directory used by Terraform during runs.
-	WorkingDirectory *string `json:"working-directory,omitempty"`
-
-	// The version of Terraform which will be used to execute plan and
-	// apply operations for this workspace.
-	TerraformVersion *string `json:"terraform-version,omitempty"`
-
-	// VCSRepo holds the VCS settings for this workspace.
-	VCSRepo *VCSRepo `json:"vcs-repo,omitempty"`
-
-	// Permissions the current API user has on the workspace.
-	Permissions *Permissions `json:"permissions,omitempty"`
+	// Relations
+	Organization *Organization `jsonapi:"relation,organization"`
+	SSHKey       *SSHKey       `jsonapi:"relation,ssh-key"`
 }
 
-// ListWorkspacesInput holds the options to pass when listing workspaces.
-type ListWorkspacesInput struct {
-	// Options used for paging through results.
+// VCSRepo contains the configuration of a VCS integration.
+type VCSRepo struct {
+	Branch            string `json:"branch"`
+	Identifier        string `json:"identifier"`
+	IncludeSubmodules bool   `json:"ingress-submodules"`
+	OAuthTokenID      string `json:"oauth-token-id"`
+}
+
+// WorkspaceActions represents the workspace actions.
+type WorkspaceActions struct {
+	IsDestroyable bool `json:"is-destroyable"`
+}
+
+// WorkspacePermissions represents the workspace permissions.
+type WorkspacePermissions struct {
+	CanDestroy        bool `json:"can-destroy"`
+	CanLock           bool `json:"can-lock"`
+	CanQueueDestroy   bool `json:"can-queue-destroy"`
+	CanQueueRun       bool `json:"can-queue-run"`
+	CanReadSettings   bool `json:"can-read-settings"`
+	CanUpdate         bool `json:"can-update"`
+	CanUpdateVariable bool `json:"can-update-variable"`
+}
+
+// WorkspaceListOptions represents the options for listing workspaces.
+type WorkspaceListOptions struct {
 	ListOptions
-
-	// The name of the organization to list workspaces for.
-	OrganizationName *string
 }
 
-// valid determines if the input is sufficiently filled.
-func (i *ListWorkspacesInput) valid() error {
-	if !validStringID(i.OrganizationName) {
-		return errors.New("Invalid value for OrganizationName")
+// List returns all of the workspaces within an organization.
+func (s *Workspaces) List(ctx context.Context, organization string, options WorkspaceListOptions) ([]*Workspace, error) {
+	if !validStringID(&organization) {
+		return nil, errors.New("Invalid value for organization")
+	}
+
+	u := fmt.Sprintf("organizations/%s/workspaces", url.QueryEscape(organization))
+	req, err := s.client.newRequest("GET", u, &options)
+	if err != nil {
+		return nil, err
+	}
+
+	var ws []*Workspace
+	err = s.client.do(ctx, req, &ws)
+	if err != nil {
+		return nil, err
+	}
+
+	return ws, nil
+}
+
+// WorkspaceCreateOptions represents the options for creating a new workspace.
+type WorkspaceCreateOptions struct {
+	// For internal use only!
+	ID string `jsonapi:"primary,workspaces"`
+
+	// Whether to automatically apply changes when a Terraform plan is successful.
+	AutoApply *bool `jsonapi:"attr,auto-apply,omitempty"`
+
+	// The legacy TFE environment to use as the source of the migration, in the
+	// form organization/environment. Omit this unless you are migrating a legacy
+	// environment.
+	MigrationEnvironment *string `jsonapi:"attr,migration-environment,omitempty"`
+
+	// The name of the workspace, which can only include letters, numbers, -,
+	// and _. This will be used as an identifier and must be unique in the
+	// organization.
+	Name *string `jsonapi:"attr,name"`
+
+	// The version of Terraform to use for this workspace. Upon creating a
+	// workspace, the latest version is selected unless otherwise specified.
+	TerraformVersion *string `jsonapi:"attr,terraform-version,omitempty"`
+
+	// Settings for the workspace's VCS repository. If omitted, the workspace is
+	// created without a VCS repo. If included, you must specify at least the
+	// oauth-token-id and identifier keys below.
+	VCSRepo *VCSRepoOptions `jsonapi:"attr,vcs-repo,omitempty"`
+
+	// A relative path that Terraform will execute within. This defaults to the
+	// root of your repository and is typically set to a subdirectory matching the
+	// environment when multiple environments exist within the same repository.
+	WorkingDirectory *string `jsonapi:"attr,working-directory,omitempty"`
+}
+
+// VCSRepoOptions represents the configuration options of a VCS integration.
+type VCSRepoOptions struct {
+	Branch            *string `json:"branch,omitempty"`
+	Identifier        *string `json:"identifier,omitempty"`
+	IncludeSubmodules *bool   `json:"ingress-submodules,omitempty"`
+	OAuthTokenID      *string `json:"oauth-token-id,omitempty"`
+}
+
+func (o WorkspaceCreateOptions) valid() error {
+	if !validString(o.Name) {
+		return errors.New("Name is required")
+	}
+	if !validStringID(o.Name) {
+		return errors.New("Invalid value for name")
 	}
 	return nil
 }
 
-// ListWorkspaces returns all of the workspaces within an organization.
-func (c *Client) ListWorkspaces(input *ListWorkspacesInput) ([]*Workspace, error) {
-	if err := input.valid(); err != nil {
-		return nil, err
+// Create is used to create a new workspace.
+func (s *Workspaces) Create(ctx context.Context, organization string, options WorkspaceCreateOptions) (*Workspace, error) {
+	if !validStringID(&organization) {
+		return nil, errors.New("Invalid value for organization")
 	}
-	orgName := *input.OrganizationName
-
-	var result jsonapiWorkspaces
-
-	if _, err := c.do(&request{
-		method: "GET",
-		path:   "/api/v2/organizations/" + orgName + "/workspaces",
-		output: &result,
-		lopt:   input.ListOptions,
-	}); err != nil {
+	if err := options.valid(); err != nil {
 		return nil, err
 	}
 
-	output := make([]*Workspace, len(result))
-	for i, ws := range result {
-		output[i] = ws.Workspace
-	}
+	// Make sure we don't send a user provided ID.
+	options.ID = ""
 
-	return output, nil
-}
-
-// Workspace returns the workspace identified by the given org and name.
-func (c *Client) Workspace(organization, workspace string) (*Workspace, error) {
-	var output jsonapiWorkspace
-
-	if _, err := c.do(&request{
-		method: "GET",
-		path:   "/api/v2/organizations/" + organization + "/workspaces/" + workspace,
-		output: &output,
-	}); err != nil {
+	u := fmt.Sprintf("organizations/%s/workspaces", url.QueryEscape(organization))
+	req, err := s.client.newRequest("POST", u, &options)
+	if err != nil {
 		return nil, err
 	}
 
-	return output.Workspace, nil
-}
-
-// CreateWorkspaceInput contains the parameters used for creating new
-// new workspaces within an existing organization.
-type CreateWorkspaceInput struct {
-	// The organization name to create the workspace in.
-	OrganizationName *string
-
-	// The name of the workspace
-	Name *string
-
-	// Determines if plans should automatically apply. Use this option with
-	// caution - unexpected changes could be deployed to your infrastructure
-	// if this is set to true.
-	AutoApply *bool
-
-	// The Terraform version number to run this workspace's configuration.
-	// Setting this to "latest" will track the latest available version of
-	// Terraform known to the TFE instance.
-	TerraformVersion *string
-
-	// An optional subdirectory to use as the "root" of the Terraform
-	// configuration. TFE will change to this directory before running any
-	// Terraform CLI commands against the configuration.
-	WorkingDirectory *string
-
-	VCSRepo *VCSRepo
-}
-
-func (i *CreateWorkspaceInput) valid() error {
-	if !validStringID(i.OrganizationName) {
-		return errors.New("Invalid value for OrganizationName")
+	w := &Workspace{}
+	err = s.client.do(ctx, req, w)
+	if err != nil {
+		return nil, err
 	}
-	if !validStringID(i.Name) {
-		return errors.New("Invalid value for Name")
+
+	return w, nil
+}
+
+// Read a single workspace by its name.
+func (s *Workspaces) Read(ctx context.Context, organization, workspace string) (*Workspace, error) {
+	if !validStringID(&organization) {
+		return nil, errors.New("Invalid value for organization")
+	}
+	if !validStringID(&workspace) {
+		return nil, errors.New("Invalid value for workspace")
+	}
+
+	u := fmt.Sprintf(
+		"organizations/%s/workspaces/%s",
+		url.QueryEscape(organization),
+		url.QueryEscape(workspace),
+	)
+	req, err := s.client.newRequest("GET", u, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	w := &Workspace{}
+	err = s.client.do(ctx, req, w)
+	if err != nil {
+		return nil, err
+	}
+
+	return w, nil
+}
+
+// WorkspaceUpdateOptions represents the options for updating a workspace.
+type WorkspaceUpdateOptions struct {
+	// For internal use only!
+	ID string `jsonapi:"primary,workspaces"`
+
+	// Whether to automatically apply changes when a Terraform plan is successful.
+	AutoApply *bool `jsonapi:"attr,auto-apply,omitempty"`
+
+	// A new name for the workspace, which can only include letters, numbers, -,
+	// and _. This will be used as an identifier and must be unique in the
+	// organization. Warning: Changing a workspace's name changes its URL in the
+	// API and UI.
+	Name *string `jsonapi:"attr,name,omitempty"`
+
+	// The version of Terraform to use for this workspace.
+	TerraformVersion *string `jsonapi:"attr,terraform-version,omitempty"`
+
+	// To delete a workspace's existing VCS repo, specify null instead of an
+	// object. To modify a workspace's existing VCS repo, include whichever of
+	// the keys below you wish to modify. To add a new VCS repo to a workspace
+	// that didn't previously have one, include at least the oauth-token-id and
+	// identifier keys.  VCSRepo *VCSRepo `jsonapi:"relation,vcs-repo,om-tempty"`
+	VCSRepo *VCSRepoOptions `jsonapi:"attr,vcs-repo,omitempty"`
+
+	// A relative path that Terraform will execute within. This defaults to the
+	// root of your repository and is typically set to a subdirectory matching
+	// the environment when multiple environments exist within the same
+	// repository.
+	WorkingDirectory *string `jsonapi:"attr,working-directory,omitempty"`
+}
+
+// Update settings of an existing workspace.
+func (s *Workspaces) Update(ctx context.Context, organization, workspace string, options WorkspaceUpdateOptions) (*Workspace, error) {
+	if !validStringID(&organization) {
+		return nil, errors.New("Invalid value for organization")
+	}
+	if !validStringID(&workspace) {
+		return nil, errors.New("Invalid value for workspace")
+	}
+
+	// Make sure we don't send a user provided ID.
+	options.ID = ""
+
+	u := fmt.Sprintf(
+		"organizations/%s/workspaces/%s",
+		url.QueryEscape(organization),
+		url.QueryEscape(workspace),
+	)
+	req, err := s.client.newRequest("PATCH", u, &options)
+	if err != nil {
+		return nil, err
+	}
+
+	w := &Workspace{}
+	err = s.client.do(ctx, req, w)
+	if err != nil {
+		return nil, err
+	}
+
+	return w, nil
+}
+
+// Delete a workspace by its name.
+func (s *Workspaces) Delete(ctx context.Context, organization, workspace string) error {
+	if !validStringID(&organization) {
+		return errors.New("Invalid value for organization")
+	}
+	if !validStringID(&workspace) {
+		return errors.New("Invalid value for workspace")
+	}
+
+	u := fmt.Sprintf(
+		"organizations/%s/workspaces/%s",
+		url.QueryEscape(organization),
+		url.QueryEscape(workspace),
+	)
+	req, err := s.client.newRequest("DELETE", u, nil)
+	if err != nil {
+		return err
+	}
+
+	return s.client.do(ctx, req, nil)
+}
+
+// WorkspaceLockOptions represents the options for locking a workspace.
+type WorkspaceLockOptions struct {
+	// Specifies the reason for locking the workspace.
+	Reason *string `json:"reason,omitempty"`
+}
+
+// Lock a workspace.
+func (s *Workspaces) Lock(ctx context.Context, workspaceID string, options WorkspaceLockOptions) (*Workspace, error) {
+	if !validStringID(&workspaceID) {
+		return nil, errors.New("Invalid value for workspace ID")
+	}
+
+	u := fmt.Sprintf("workspaces/%s/actions/lock", url.QueryEscape(workspaceID))
+	req, err := s.client.newRequest("POST", u, &options)
+	if err != nil {
+		return nil, err
+	}
+
+	w := &Workspace{}
+	err = s.client.do(ctx, req, w)
+	if err != nil {
+		return nil, err
+	}
+
+	return w, nil
+}
+
+// Unlock a workspace.
+func (s *Workspaces) Unlock(ctx context.Context, workspaceID string) (*Workspace, error) {
+	if !validStringID(&workspaceID) {
+		return nil, errors.New("Invalid value for workspace ID")
+	}
+
+	u := fmt.Sprintf("workspaces/%s/actions/unlock", url.QueryEscape(workspaceID))
+	req, err := s.client.newRequest("POST", u, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	w := &Workspace{}
+	err = s.client.do(ctx, req, w)
+	if err != nil {
+		return nil, err
+	}
+
+	return w, nil
+}
+
+// WorkspaceAssignSSHKeyOptions represents the options to assign an SSH key to
+// a workspace.
+type WorkspaceAssignSSHKeyOptions struct {
+	// For internal use only!
+	ID string `jsonapi:"primary,workspaces"`
+
+	// The SSH key ID to assign.
+	SSHKeyID *string `jsonapi:"attr,id"`
+}
+
+func (o WorkspaceAssignSSHKeyOptions) valid() error {
+	if !validString(o.SSHKeyID) {
+		return errors.New("SSH key ID is required")
+	}
+	if !validStringID(o.SSHKeyID) {
+		return errors.New("Invalid value for SSH key ID")
 	}
 	return nil
 }
 
-// CreateWorkspaceOutput holds the return values from a workspace creation
-// request.
-type CreateWorkspaceOutput struct {
-	// A reference to the newly created workspace.
-	Workspace *Workspace
-}
-
-// CreateWorkspace is used to create a new workspace with the given parameters.
-func (c *Client) CreateWorkspace(input *CreateWorkspaceInput) (
-	*CreateWorkspaceOutput, error) {
-
-	if err := input.valid(); err != nil {
-		return nil, err
+// AssignSSHKey to a workspace.
+func (s *Workspaces) AssignSSHKey(ctx context.Context, workspaceID string, options WorkspaceAssignSSHKeyOptions) (*Workspace, error) {
+	if !validStringID(&workspaceID) {
+		return nil, errors.New("Invalid value for workspace ID")
 	}
-	orgName := *input.OrganizationName
-
-	// Create the special JSONAPI payload.
-	jsonapiParams := jsonapiWorkspace{
-		Workspace: &Workspace{
-			Name:             input.Name,
-			AutoApply:        input.AutoApply,
-			TerraformVersion: input.TerraformVersion,
-			WorkingDirectory: input.WorkingDirectory,
-			VCSRepo:          input.VCSRepo,
-		},
-	}
-
-	var output jsonapiWorkspace
-
-	// Send the request.
-	if _, err := c.do(&request{
-		method: "POST",
-		path:   "/api/v2/organizations/" + orgName + "/workspaces",
-		input:  jsonapiParams,
-		output: &output,
-	}); err != nil {
+	if err := options.valid(); err != nil {
 		return nil, err
 	}
 
-	return &CreateWorkspaceOutput{
-		Workspace: output.Workspace,
-	}, nil
-}
+	// Make sure we don't send a user provided ID.
+	options.ID = ""
 
-// ModifyWorkspaceInput carries the adjustable values which can be modified
-// on a workspace after its creation.
-type ModifyWorkspaceInput struct {
-	// The organization name the workspace belongs to. Required.
-	OrganizationName *string
-
-	// The current name of the workspace. Required.
-	Name *string
-
-	// A new name for the workspace. This changes the workspace name, which
-	// may affect further API requests or Terraform configurations which refer
-	// to the current workspace name in remote state references etc. Be
-	// mindful when renaming workspaces!
-	Rename *string
-
-	// A new value for the auto-apply setting.
-	AutoApply *bool
-
-	// The Terraform version to use for runs in this workspace.
-	TerraformVersion *string
-
-	// The working directory to use when running Terraform commands. This is
-	// relative to the root of the Terraform configuration.
-	WorkingDirectory *string
-
-	// VCS integration settings.
-	VCSRepo *VCSRepo
-}
-
-// valid determines if the input is sufficiently filled.
-func (i *ModifyWorkspaceInput) valid() error {
-	if !validStringID(i.OrganizationName) {
-		return errors.New("Invalid value for OrganizationName")
-	}
-	if !validStringID(i.Name) {
-		return errors.New("Invalid value for Name")
-	}
-	return nil
-}
-
-// ModifyWorkspaceOutput is used to encapsulate the return values from a
-// workspace modification command.
-type ModifyWorkspaceOutput struct {
-	// A reference to the modified workspace. All updated values are refelected
-	// in this object.
-	Workspace *Workspace
-}
-
-// ModifyWorkspace is used to adjust settings on an existing workspace.
-func (c *Client) ModifyWorkspace(input *ModifyWorkspaceInput) (
-	*ModifyWorkspaceOutput, error) {
-
-	if err := input.valid(); err != nil {
-		return nil, err
-	}
-	orgName, wsName := *input.OrganizationName, *input.Name
-
-	// Create the special JSONAPI payload.
-	jsonapiParams := jsonapiWorkspace{
-		Workspace: &Workspace{
-			Name:             input.Rename,
-			AutoApply:        input.AutoApply,
-			TerraformVersion: input.TerraformVersion,
-			WorkingDirectory: input.WorkingDirectory,
-		},
-	}
-
-	var output jsonapiWorkspace
-
-	// Send the request.
-	if _, err := c.do(&request{
-		method: "PATCH",
-		path:   "/api/v2/organizations/" + orgName + "/workspaces/" + wsName,
-		input:  jsonapiParams,
-		output: &output,
-	}); err != nil {
+	u := fmt.Sprintf("workspaces/%s/relationships/ssh-key", url.QueryEscape(workspaceID))
+	req, err := s.client.newRequest("PATCH", u, &options)
+	if err != nil {
 		return nil, err
 	}
 
-	return &ModifyWorkspaceOutput{
-		Workspace: output.Workspace,
-	}, nil
-}
-
-// DeleteWorkspaceInput carries the parameters used for deleting workspaces.
-type DeleteWorkspaceInput struct {
-	// Organization is the name of the organization in which the workspace
-	// exists.
-	OrganizationName *string
-
-	// Name is the name of the workspace to delete.
-	Name *string
-}
-
-func (i *DeleteWorkspaceInput) valid() error {
-	if !validStringID(i.OrganizationName) {
-		return errors.New("Invalid value for OrganizationName")
-	}
-	if !validStringID(i.Name) {
-		return errors.New("Invalid value for Name")
-	}
-	return nil
-}
-
-// DeleteWorkspaceOutput holds the return values from deleting a workspace.
-type DeleteWorkspaceOutput struct{}
-
-// DeleteWorkspace is used to delete a single workspace.
-func (c *Client) DeleteWorkspace(input *DeleteWorkspaceInput) (
-	*DeleteWorkspaceOutput, error) {
-
-	if err := input.valid(); err != nil {
-		return nil, err
-	}
-	orgName, wsName := *input.OrganizationName, *input.Name
-
-	if _, err := c.do(&request{
-		method: "DELETE",
-		path:   "/api/v2/organizations/" + orgName + "/workspaces/" + wsName,
-	}); err != nil {
+	w := &Workspace{}
+	err = s.client.do(ctx, req, w)
+	if err != nil {
 		return nil, err
 	}
 
-	return &DeleteWorkspaceOutput{}, nil
+	return w, nil
 }
 
-// Internal type to satisfy the jsonapi interface for a single workspace.
-type jsonapiWorkspace struct{ *Workspace }
+// workspaceUnassignSSHKeyOptions represents the options to unassign an SSH key
+// to a workspace.
+type workspaceUnassignSSHKeyOptions struct {
+	// For internal use only!
+	ID string `jsonapi:"primary,workspaces"`
 
-func (w jsonapiWorkspace) GetName() string {
-	return "workspaces"
+	// Must be nil to unset the currently assigned SSH key.
+	SSHKeyID *string `jsonapi:"attr,id"`
 }
 
-func (w jsonapiWorkspace) GetID() string {
-	if w.ID == nil {
-		return ""
+// UnassignSSHKey from a workspace.
+func (s *Workspaces) UnassignSSHKey(ctx context.Context, workspaceID string) (*Workspace, error) {
+	if !validStringID(&workspaceID) {
+		return nil, errors.New("Invalid value for workspace ID")
 	}
-	return *w.ID
-}
 
-func (w jsonapiWorkspace) SetID(id string) error {
-	w.ID = String(id)
-	return nil
-}
-
-func (w jsonapiWorkspace) SetToOneReferenceID(name, id string) error {
-	switch name {
-	case "organization":
-		w.OrganizationName = String(id)
+	u := fmt.Sprintf("workspaces/%s/relationships/ssh-key", url.QueryEscape(workspaceID))
+	req, err := s.client.newRequest("PATCH", u, &workspaceUnassignSSHKeyOptions{})
+	if err != nil {
+		return nil, err
 	}
-	return nil
-}
 
-// Internal type to satisfy the jsonapi interface for workspace indexes.
-type jsonapiWorkspaces []jsonapiWorkspace
+	w := &Workspace{}
+	err = s.client.do(ctx, req, w)
+	if err != nil {
+		return nil, err
+	}
 
-func (jsonapiWorkspaces) GetName() string    { return "workspaces" }
-func (jsonapiWorkspaces) GetID() string      { return "" }
-func (jsonapiWorkspaces) SetID(string) error { return nil }
-func (jsonapiWorkspaces) SetToOneReferenceID(a, b string) error {
-	return nil
+	return w, nil
 }
