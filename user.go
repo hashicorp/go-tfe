@@ -2,7 +2,6 @@ package tfe
 
 import (
 	"context"
-	"errors"
 )
 
 // Users handles communication with the user related methods of the
@@ -28,22 +27,10 @@ type User struct {
 	// AuthenticationTokens *AuthenticationTokens `jsonapi:"relation,authentication-tokens"`
 }
 
-// DeliveryType represents a two factor delivery type
-type DeliveryType string
-
-// List of available delivery types.
-const (
-	DeliveryAPP DeliveryType = "app"
-	DeliverySMS DeliveryType = "sms"
-)
-
 // TwoFactor represents the organization permissions.
 type TwoFactor struct {
-	Delivery        DeliveryType `json:"delivery"`
-	Enabled         bool         `json:"enabled"`
-	ProvisioningURL string       `json:"provisioning-url"`
-	SMSNumber       string       `json:"sms-number"`
-	Verified        bool         `json:"verified"`
+	Enabled  bool `json:"enabled"`
+	Verified bool `json:"verified"`
 }
 
 // ReadCurrent reads the details of the currently authenticated user.
@@ -91,117 +78,4 @@ func (s *Users) Update(ctx context.Context, options UserUpdateOptions) (*User, e
 	}
 
 	return u, nil
-}
-
-// TwoFactorEnableOptions represents the options for enabling two factor
-// authentication.
-type TwoFactorEnableOptions struct {
-	// For internal use only!
-	ID string `jsonapi:"primary,users"`
-
-	// The preferred delivery method for 2FA.
-	Delivery *DeliveryType `jsonapi:"attr,delivery"`
-
-	// An SMS number for the SMS delivery method.
-	SMSNumber *string `jsonapi:"attr,sms-number,omitempty"`
-}
-
-func (o TwoFactorEnableOptions) valid() error {
-	if o.Delivery == nil {
-		return errors.New("Delivery is required")
-	}
-	return nil
-}
-
-// EnableTwoFactor enables two factor authentication.
-func (s *Users) EnableTwoFactor(ctx context.Context, options TwoFactorEnableOptions) (*User, error) {
-	if err := options.valid(); err != nil {
-		return nil, err
-	}
-
-	// Make sure we don't send a user provided ID.
-	options.ID = ""
-
-	req, err := s.client.newRequest("POST", "account/actions/two-factor-enable", &options)
-	if err != nil {
-		return nil, err
-	}
-
-	u := &User{}
-	err = s.client.do(ctx, req, u)
-	if err != nil {
-		return nil, err
-	}
-
-	return u, nil
-}
-
-// DisableTwoFactor disables two factor authentication.
-func (s *Users) DisableTwoFactor(ctx context.Context) (*User, error) {
-	req, err := s.client.newRequest("POST", "account/actions/two-factor-disable", nil)
-	if err != nil {
-		return nil, err
-	}
-
-	u := &User{}
-	err = s.client.do(ctx, req, u)
-	if err != nil {
-		return nil, err
-	}
-
-	return u, nil
-}
-
-// TwoFactorVerifyOptions represents the options for verifying two factor
-// authentication.
-type TwoFactorVerifyOptions struct {
-	// For internal use only!
-	ID string `jsonapi:"primary,organizations"`
-
-	// The verication code received by SMS or through an application.
-	Code *string `jsonapi:"attr,code"`
-}
-
-func (o TwoFactorVerifyOptions) valid() error {
-	if !validString(o.Code) {
-		return errors.New("Code is required")
-	}
-	return nil
-}
-
-// VerifyTwoFactor verifies two factor authentication.
-func (s *Users) VerifyTwoFactor(ctx context.Context, options TwoFactorVerifyOptions) (*User, error) {
-	if err := options.valid(); err != nil {
-		return nil, err
-	}
-
-	// Make sure we don't send a user provided ID.
-	options.ID = ""
-
-	req, err := s.client.newRequest("POST", "account/actions/two-factor-verify", &options)
-	if err != nil {
-		return nil, err
-	}
-
-	u := &User{}
-	err = s.client.do(ctx, req, u)
-	if err != nil {
-		return nil, err
-	}
-
-	return u, nil
-}
-
-// ResendVerificationCode resends the two factor verification code.
-func (s *Users) ResendVerificationCode(ctx context.Context) error {
-	req, err := s.client.newRequest(
-		"POST",
-		"account/actions/two-factor-resend-verification-code",
-		nil,
-	)
-	if err != nil {
-		return err
-	}
-
-	return s.client.do(ctx, req, nil)
 }
