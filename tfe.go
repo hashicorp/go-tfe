@@ -6,6 +6,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"io"
 	"io/ioutil"
 	"net/http"
 	"net/url"
@@ -31,9 +32,9 @@ const (
 
 var (
 	// ErrUnauthorized is returned when a receiving a 401.
-	ErrUnauthorized = errors.New("Unauthorized")
+	ErrUnauthorized = errors.New("unauthorized")
 	// ErrResourceNotFound is returned when a receiving a 404.
-	ErrResourceNotFound = errors.New("Resource not found")
+	ErrResourceNotFound = errors.New("resource not found")
 )
 
 // Config provides configuration details to the API client.
@@ -84,6 +85,7 @@ type Client struct {
 	Policies              *Policies
 	PolicyChecks          *PolicyChecks
 	Runs                  *Runs
+	StateVersions         *StateVersions
 	SSHKeys               *SSHKeys
 	Teams                 *Teams
 	TeamAccess            *TeamAccesses
@@ -147,6 +149,7 @@ func NewClient(cfg *Config) (*Client, error) {
 	client.Policies = &Policies{client: client}
 	client.PolicyChecks = &PolicyChecks{client: client}
 	client.Runs = &Runs{client: client}
+	client.StateVersions = &StateVersions{client: client}
 	client.SSHKeys = &SSHKeys{client: client}
 	client.Teams = &Teams{client: client}
 	client.TeamAccess = &TeamAccesses{client: client}
@@ -221,6 +224,9 @@ func (c *Client) newRequest(method, path string, v interface{}) (*http.Request, 
 
 		if v != nil {
 			switch v := v.(type) {
+			case *bytes.Buffer:
+				req.Body = ioutil.NopCloser(v)
+				req.ContentLength = int64(v.Len())
 			case []byte:
 				req.Body = ioutil.NopCloser(bytes.NewReader(v))
 				req.ContentLength = int64(len(v))
@@ -267,34 +273,42 @@ func (c *Client) do(ctx context.Context, req *http.Request, v interface{}) error
 		return err
 	}
 
-	// Decode the response, if v was given.
-	if v != nil {
-		// Get the value of v so we can test if it's a slice.
-		dst := reflect.Indirect(reflect.ValueOf(v))
-
-		if dst.Type().Kind() != reflect.Slice {
-			// Unmarshal a single value.
-			return jsonapi.UnmarshalPayload(resp.Body, v)
-		}
-
-		// Unmarshal as a list of values.
-		raw, err := jsonapi.UnmarshalManyPayload(resp.Body, dst.Type().Elem())
-		if err != nil {
-			return err
-		}
-
-		// Make a new slice to hold the results.
-		sliceType := reflect.SliceOf(dst.Type().Elem())
-		result := reflect.MakeSlice(sliceType, 0, len(raw))
-
-		// Add all of the results to the new slice.
-		for _, v := range raw {
-			result = reflect.Append(result, reflect.ValueOf(v))
-		}
-
-		// Pointer-swap the result.
-		dst.Set(result)
+	// Return here if decoding the response isn't needed.
+	if v == nil {
+		return nil
 	}
+
+	// If v implements io.Writer, write the raw response body.
+	if w, ok := v.(io.Writer); ok {
+		_, err = io.Copy(w, resp.Body)
+		return err
+	}
+
+	// Get the value of v so we can test if it's a slice.
+	dst := reflect.Indirect(reflect.ValueOf(v))
+
+	// Unmarshal a single value if v isn't a slice.
+	if dst.Type().Kind() != reflect.Slice {
+		return jsonapi.UnmarshalPayload(resp.Body, v)
+	}
+
+	// Unmarshal as a list of values if v is a slice.
+	raw, err := jsonapi.UnmarshalManyPayload(resp.Body, dst.Type().Elem())
+	if err != nil {
+		return err
+	}
+
+	// Make a new slice to hold the results.
+	sliceType := reflect.SliceOf(dst.Type().Elem())
+	result := reflect.MakeSlice(sliceType, 0, len(raw))
+
+	// Add all of the results to the new slice.
+	for _, v := range raw {
+		result = reflect.Append(result, reflect.ValueOf(v))
+	}
+
+	// Pointer-swap the result.
+	dst.Set(result)
 
 	return nil
 }

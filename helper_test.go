@@ -2,7 +2,10 @@ package tfe
 
 import (
 	"context"
+	"crypto/md5"
+	"encoding/base64"
 	"fmt"
+	"io/ioutil"
 	"testing"
 	"time"
 
@@ -303,6 +306,37 @@ func createSSHKey(t *testing.T, client *Client, org *Organization) (*SSHKey, fun
 
 		if orgCleanup != nil {
 			orgCleanup()
+		}
+	}
+}
+
+func createStateVersion(t *testing.T, client *Client, serial int64, w *Workspace) (*StateVersion, func()) {
+	var wCleanup func()
+
+	if w == nil {
+		w, wCleanup = createWorkspace(t, client, nil)
+	}
+
+	state, err := ioutil.ReadFile("test-fixtures/state-version/terraform.tfstate")
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	ctx := context.Background()
+	sv, err := client.StateVersions.Create(ctx, w.ID, StateVersionCreateOptions{
+		MD5:    String(fmt.Sprintf("%x", md5.Sum(state))),
+		Serial: Int64(serial),
+		State:  String(base64.StdEncoding.EncodeToString(state)),
+	})
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	return sv, func() {
+		// There currently isn't a way to delete a state, so we
+		// can only cleanup by deleting the workspace.
+		if wCleanup != nil {
+			wCleanup()
 		}
 	}
 }

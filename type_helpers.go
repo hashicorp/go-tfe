@@ -30,8 +30,8 @@ func EnforcementMode(v EnforcementLevel) *EnforcementLevel {
 	return &v
 }
 
-// Int returns a pointer to the given bool
-func Int(v int) *int {
+// Int64 returns a pointer to the given int64.
+func Int64(v int64) *int64 {
 	return &v
 }
 
