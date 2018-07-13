@@ -20,11 +20,6 @@ func Category(v CategoryType) *CategoryType {
 	return &v
 }
 
-// Delivery returns a pointer to the given delivery type.
-func Delivery(v DeliveryType) *DeliveryType {
-	return &v
-}
-
 // EnforcementMode returns a pointer to the given enforcement level.
 func EnforcementMode(v EnforcementLevel) *EnforcementLevel {
 	return &v
