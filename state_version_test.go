@@ -188,6 +188,44 @@ func TestStateVersionsRead(t *testing.T) {
 	})
 }
 
+func TestStateVersionsCurrent(t *testing.T) {
+	client := testClient(t)
+	ctx := context.Background()
+
+	wTest1, wTest1Cleanup := createWorkspace(t, client, nil)
+	defer wTest1Cleanup()
+
+	wTest2, wTest2Cleanup := createWorkspace(t, client, nil)
+	defer wTest2Cleanup()
+
+	svTest, svTestCleanup := createStateVersion(t, client, 0, wTest1)
+	defer svTestCleanup()
+
+	t.Run("when a state version exists", func(t *testing.T) {
+		sv, err := client.StateVersions.Current(ctx, wTest1.ID)
+		require.NoError(t, err)
+
+		// Don't compare the DownloadURL because it will be generated twice
+		// in this test - once at creation of the configuration version, and
+		// again during the GET.
+		svTest.DownloadURL, sv.DownloadURL = "", ""
+
+		assert.Equal(t, svTest, sv)
+	})
+
+	t.Run("when a state version does not exist", func(t *testing.T) {
+		sv, err := client.StateVersions.Current(ctx, wTest2.ID)
+		assert.Nil(t, sv)
+		assert.Equal(t, err, ErrResourceNotFound)
+	})
+
+	t.Run("with invalid workspace id", func(t *testing.T) {
+		sv, err := client.StateVersions.Current(ctx, badIdentifier)
+		assert.Nil(t, sv)
+		assert.EqualError(t, err, "Invalid value for workspace ID")
+	})
+}
+
 func TestStateVersionsDownload(t *testing.T) {
 	client := testClient(t)
 	ctx := context.Background()

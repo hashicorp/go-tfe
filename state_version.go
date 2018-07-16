@@ -99,7 +99,7 @@ func (o StateVersionCreateOptions) valid() error {
 	return nil
 }
 
-// Create a new state version with the given name.
+// Create a new state version for the given workspace.
 func (s *StateVersions) Create(ctx context.Context, workspaceID string, options StateVersionCreateOptions) (*StateVersion, error) {
 	if !validStringID(&workspaceID) {
 		return nil, errors.New("Invalid value for workspace ID")
@@ -133,6 +133,27 @@ func (s *StateVersions) Read(ctx context.Context, svID string) (*StateVersion, e
 	}
 
 	u := fmt.Sprintf("state-versions/%s", url.QueryEscape(svID))
+	req, err := s.client.newRequest("GET", u, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	sv := &StateVersion{}
+	err = s.client.do(ctx, req, sv)
+	if err != nil {
+		return nil, err
+	}
+
+	return sv, nil
+}
+
+// Current reads the latest available state from the given workspace.
+func (s *StateVersions) Current(ctx context.Context, workspaceID string) (*StateVersion, error) {
+	if !validStringID(&workspaceID) {
+		return nil, errors.New("Invalid value for workspace ID")
+	}
+
+	u := fmt.Sprintf("workspaces/%s/current-state-version", url.QueryEscape(workspaceID))
 	req, err := s.client.newRequest("GET", u, nil)
 	if err != nil {
 		return nil, err
