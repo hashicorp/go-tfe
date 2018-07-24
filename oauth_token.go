@@ -17,7 +17,7 @@ type OAuthTokens struct {
 	client *Client
 }
 
-// OAuthToken represents a VCS configuration including the assocaited
+// OAuthToken represents a VCS configuration including the associated
 // OAuth token
 type OAuthToken struct {
 	ID                  string    `jsonapi:"primary,oauth-tokens"`

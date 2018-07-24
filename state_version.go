@@ -174,6 +174,7 @@ func (s *StateVersions) Download(ctx context.Context, url string) ([]byte, error
 	if err != nil {
 		return nil, err
 	}
+	req.Header.Set("Accept", "application/json")
 
 	var buf bytes.Buffer
 	err = s.client.do(ctx, req, &buf)

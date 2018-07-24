@@ -82,6 +82,7 @@ type Client struct {
 	OAuthTokens           *OAuthTokens
 	Organizations         *Organizations
 	OrganizationTokens    *OrganizationTokens
+	Plans                 *Plans
 	Policies              *Policies
 	PolicyChecks          *PolicyChecks
 	Runs                  *Runs
@@ -146,6 +147,7 @@ func NewClient(cfg *Config) (*Client, error) {
 	client.OAuthTokens = &OAuthTokens{client: client}
 	client.Organizations = &Organizations{client: client}
 	client.OrganizationTokens = &OrganizationTokens{client: client}
+	client.Plans = &Plans{client: client}
 	client.Policies = &Policies{client: client}
 	client.PolicyChecks = &PolicyChecks{client: client}
 	client.Runs = &Runs{client: client}
@@ -252,7 +254,7 @@ func (c *Client) newRequest(method, path string, v interface{}) (*http.Request, 
 // will be returned.
 func (c *Client) do(ctx context.Context, req *http.Request, v interface{}) error {
 	// Add the context to the request.
-	req.WithContext(ctx)
+	req = req.WithContext(ctx)
 
 	// Execute the request and check the response.
 	resp, err := c.http.Do(req)

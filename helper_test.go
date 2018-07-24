@@ -90,7 +90,7 @@ func createPolicy(t *testing.T, client *Client, org *Organization) (*Policy, fun
 	options := PolicyCreateOptions{
 		Name: String(name),
 		Enforce: []*EnforcementOptions{
-			&EnforcementOptions{
+			{
 				Path: String(name + ".sentinel"),
 				Mode: EnforcementMode(EnforcementSoft),
 			},

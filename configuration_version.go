@@ -51,6 +51,7 @@ type ConfigurationVersion struct {
 	Error            string              `jsonapi:"attr,error"`
 	ErrorMessage     string              `jsonapi:"attr,error-message"`
 	Source           ConfigurationSource `jsonapi:"attr,source"`
+	Speculative      bool                `jsonapi:"attr,speculative "`
 	Status           ConfigurationStatus `jsonapi:"attr,status"`
 	StatusTimestamps *CVStatusTimestamps `jsonapi:"attr,status-timestamps"`
 	UploadURL        string              `jsonapi:"attr,upload-url"`
@@ -100,6 +101,9 @@ type ConfigurationVersionCreateOptions struct {
 	// When true, runs are queued automatically when the configuration version
 	// is uploaded.
 	AutoQueueRuns *bool `jsonapi:"attr,auto-queue-runs,omitempty"`
+
+	// When true, this configuration version can only be used for planning.
+	Speculative *bool `jsonapi:"attr,speculative,omitempty"`
 }
 
 // Create is used to create a new configuration version. The created

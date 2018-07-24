@@ -60,6 +60,7 @@ type Run struct {
 
 	// Relations
 	ConfigurationVersion *ConfigurationVersion `jsonapi:"relation,configuration-version"`
+	Plan                 *Plan                 `jsonapi:"relation,plan"`
 	Workspace            *Workspace            `jsonapi:"relation,workspace"`
 }
 
