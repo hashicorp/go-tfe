@@ -4,11 +4,23 @@ import (
 	"context"
 )
 
-// Users handles communication with the user related methods of the
-// the Terraform Enterprise API.
+// Compile-time proof of interface implementation.
+var _ Users = (*users)(nil)
+
+// Users describes all the user related methods that the Terraform
+// Enterprise API supports.
 //
 // TFE API docs: https://www.terraform.io/docs/enterprise/api/user.html
-type Users struct {
+type Users interface {
+	// ReadCurrent reads the details of the currently authenticated user.
+	ReadCurrent(ctx context.Context) (*User, error)
+
+	// Update attributes of the currently authenticated user.
+	Update(ctx context.Context, options UserUpdateOptions) (*User, error)
+}
+
+// users implements Users.
+type users struct {
 	client *Client
 }
 
@@ -34,7 +46,7 @@ type TwoFactor struct {
 }
 
 // ReadCurrent reads the details of the currently authenticated user.
-func (s *Users) ReadCurrent(ctx context.Context) (*User, error) {
+func (s *users) ReadCurrent(ctx context.Context) (*User, error) {
 	req, err := s.client.newRequest("GET", "account/details", nil)
 	if err != nil {
 		return nil, err
@@ -62,7 +74,7 @@ type UserUpdateOptions struct {
 }
 
 // Update attributes of the currently authenticated user.
-func (s *Users) Update(ctx context.Context, options UserUpdateOptions) (*User, error) {
+func (s *users) Update(ctx context.Context, options UserUpdateOptions) (*User, error) {
 	// Make sure we don't send a user provided ID.
 	options.ID = ""
 

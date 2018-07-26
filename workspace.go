@@ -8,11 +8,44 @@ import (
 	"time"
 )
 
-// Workspaces handles communication with the workspace related methods of the
-// Terraform Enterprise API.
+// Compile-time proof of interface implementation.
+var _ Workspaces = (*workspaces)(nil)
+
+// Workspaces describes all the workspace related methods that the Terraform
+// Enterprise API supports.
 //
 // TFE API docs: https://www.terraform.io/docs/enterprise/api/workspaces.html
-type Workspaces struct {
+type Workspaces interface {
+	// List all the workspaces within an organization.
+	List(ctx context.Context, organization string, options WorkspaceListOptions) ([]*Workspace, error)
+
+	// Create is used to create a new workspace.
+	Create(ctx context.Context, organization string, options WorkspaceCreateOptions) (*Workspace, error)
+
+	// Read a workspace by its name.
+	Read(ctx context.Context, organization string, workspace string) (*Workspace, error)
+
+	// Update settings of an existing workspace.
+	Update(ctx context.Context, organization string, workspace string, options WorkspaceUpdateOptions) (*Workspace, error)
+
+	// Delete a workspace by its name.
+	Delete(ctx context.Context, organization string, workspace string) error
+
+	// Lock a workspace by its ID.
+	Lock(ctx context.Context, workspaceID string, options WorkspaceLockOptions) (*Workspace, error)
+
+	// Unlock a workspace by its ID.
+	Unlock(ctx context.Context, workspaceID string) (*Workspace, error)
+
+	// AssignSSHKey to a workspace.
+	AssignSSHKey(ctx context.Context, workspaceID string, options WorkspaceAssignSSHKeyOptions) (*Workspace, error)
+
+	// UnassignSSHKey from a workspace.
+	UnassignSSHKey(ctx context.Context, workspaceID string) (*Workspace, error)
+}
+
+// workspaces implements Workspaces.
+type workspaces struct {
 	client *Client
 }
 
@@ -66,8 +99,8 @@ type WorkspaceListOptions struct {
 	ListOptions
 }
 
-// List returns all of the workspaces within an organization.
-func (s *Workspaces) List(ctx context.Context, organization string, options WorkspaceListOptions) ([]*Workspace, error) {
+// List all the workspaces within an organization.
+func (s *workspaces) List(ctx context.Context, organization string, options WorkspaceListOptions) ([]*Workspace, error) {
 	if !validStringID(&organization) {
 		return nil, errors.New("Invalid value for organization")
 	}
@@ -139,7 +172,7 @@ func (o WorkspaceCreateOptions) valid() error {
 }
 
 // Create is used to create a new workspace.
-func (s *Workspaces) Create(ctx context.Context, organization string, options WorkspaceCreateOptions) (*Workspace, error) {
+func (s *workspaces) Create(ctx context.Context, organization string, options WorkspaceCreateOptions) (*Workspace, error) {
 	if !validStringID(&organization) {
 		return nil, errors.New("Invalid value for organization")
 	}
@@ -165,8 +198,8 @@ func (s *Workspaces) Create(ctx context.Context, organization string, options Wo
 	return w, nil
 }
 
-// Read a single workspace by its name.
-func (s *Workspaces) Read(ctx context.Context, organization, workspace string) (*Workspace, error) {
+// Read a workspace by its name.
+func (s *workspaces) Read(ctx context.Context, organization, workspace string) (*Workspace, error) {
 	if !validStringID(&organization) {
 		return nil, errors.New("Invalid value for organization")
 	}
@@ -225,7 +258,7 @@ type WorkspaceUpdateOptions struct {
 }
 
 // Update settings of an existing workspace.
-func (s *Workspaces) Update(ctx context.Context, organization, workspace string, options WorkspaceUpdateOptions) (*Workspace, error) {
+func (s *workspaces) Update(ctx context.Context, organization, workspace string, options WorkspaceUpdateOptions) (*Workspace, error) {
 	if !validStringID(&organization) {
 		return nil, errors.New("Invalid value for organization")
 	}
@@ -256,7 +289,7 @@ func (s *Workspaces) Update(ctx context.Context, organization, workspace string,
 }
 
 // Delete a workspace by its name.
-func (s *Workspaces) Delete(ctx context.Context, organization, workspace string) error {
+func (s *workspaces) Delete(ctx context.Context, organization, workspace string) error {
 	if !validStringID(&organization) {
 		return errors.New("Invalid value for organization")
 	}
@@ -283,8 +316,8 @@ type WorkspaceLockOptions struct {
 	Reason *string `json:"reason,omitempty"`
 }
 
-// Lock a workspace.
-func (s *Workspaces) Lock(ctx context.Context, workspaceID string, options WorkspaceLockOptions) (*Workspace, error) {
+// Lock a workspace by its ID.
+func (s *workspaces) Lock(ctx context.Context, workspaceID string, options WorkspaceLockOptions) (*Workspace, error) {
 	if !validStringID(&workspaceID) {
 		return nil, errors.New("Invalid value for workspace ID")
 	}
@@ -304,8 +337,8 @@ func (s *Workspaces) Lock(ctx context.Context, workspaceID string, options Works
 	return w, nil
 }
 
-// Unlock a workspace.
-func (s *Workspaces) Unlock(ctx context.Context, workspaceID string) (*Workspace, error) {
+// Unlock a workspace by its ID.
+func (s *workspaces) Unlock(ctx context.Context, workspaceID string) (*Workspace, error) {
 	if !validStringID(&workspaceID) {
 		return nil, errors.New("Invalid value for workspace ID")
 	}
@@ -346,7 +379,7 @@ func (o WorkspaceAssignSSHKeyOptions) valid() error {
 }
 
 // AssignSSHKey to a workspace.
-func (s *Workspaces) AssignSSHKey(ctx context.Context, workspaceID string, options WorkspaceAssignSSHKeyOptions) (*Workspace, error) {
+func (s *workspaces) AssignSSHKey(ctx context.Context, workspaceID string, options WorkspaceAssignSSHKeyOptions) (*Workspace, error) {
 	if !validStringID(&workspaceID) {
 		return nil, errors.New("Invalid value for workspace ID")
 	}
@@ -383,7 +416,7 @@ type workspaceUnassignSSHKeyOptions struct {
 }
 
 // UnassignSSHKey from a workspace.
-func (s *Workspaces) UnassignSSHKey(ctx context.Context, workspaceID string) (*Workspace, error) {
+func (s *workspaces) UnassignSSHKey(ctx context.Context, workspaceID string) (*Workspace, error) {
 	if !validStringID(&workspaceID) {
 		return nil, errors.New("Invalid value for workspace ID")
 	}

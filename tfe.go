@@ -77,24 +77,24 @@ type Client struct {
 	http      *http.Client
 	userAgent string
 
-	ConfigurationVersions *ConfigurationVersions
-	OAuthClients          *OAuthClients
-	OAuthTokens           *OAuthTokens
-	Organizations         *Organizations
-	OrganizationTokens    *OrganizationTokens
-	Plans                 *Plans
-	Policies              *Policies
-	PolicyChecks          *PolicyChecks
-	Runs                  *Runs
-	StateVersions         *StateVersions
-	SSHKeys               *SSHKeys
-	Teams                 *Teams
-	TeamAccess            *TeamAccesses
-	TeamMembers           *TeamMembers
-	TeamTokens            *TeamTokens
-	Users                 *Users
-	Variables             *Variables
-	Workspaces            *Workspaces
+	ConfigurationVersions ConfigurationVersions
+	OAuthClients          OAuthClients
+	OAuthTokens           OAuthTokens
+	Organizations         Organizations
+	OrganizationTokens    OrganizationTokens
+	Plans                 Plans
+	Policies              Policies
+	PolicyChecks          PolicyChecks
+	Runs                  Runs
+	SSHKeys               SSHKeys
+	StateVersions         StateVersions
+	Teams                 Teams
+	TeamAccess            TeamAccesses
+	TeamMembers           TeamMembers
+	TeamTokens            TeamTokens
+	Users                 Users
+	Variables             Variables
+	Workspaces            Workspaces
 }
 
 // NewClient creates a new Terraform Enterprise API client.
@@ -142,24 +142,24 @@ func NewClient(cfg *Config) (*Client, error) {
 	}
 
 	// Create the services.
-	client.ConfigurationVersions = &ConfigurationVersions{client: client}
-	client.OAuthClients = &OAuthClients{client: client}
-	client.OAuthTokens = &OAuthTokens{client: client}
-	client.Organizations = &Organizations{client: client}
-	client.OrganizationTokens = &OrganizationTokens{client: client}
-	client.Plans = &Plans{client: client}
-	client.Policies = &Policies{client: client}
-	client.PolicyChecks = &PolicyChecks{client: client}
-	client.Runs = &Runs{client: client}
-	client.StateVersions = &StateVersions{client: client}
-	client.SSHKeys = &SSHKeys{client: client}
-	client.Teams = &Teams{client: client}
-	client.TeamAccess = &TeamAccesses{client: client}
-	client.TeamMembers = &TeamMembers{client: client}
-	client.TeamTokens = &TeamTokens{client: client}
-	client.Users = &Users{client: client}
-	client.Variables = &Variables{client: client}
-	client.Workspaces = &Workspaces{client: client}
+	client.ConfigurationVersions = &configurationVersions{client: client}
+	client.OAuthClients = &oAuthClients{client: client}
+	client.OAuthTokens = &oAuthTokens{client: client}
+	client.Organizations = &organizations{client: client}
+	client.OrganizationTokens = &organizationTokens{client: client}
+	client.Plans = &plans{client: client}
+	client.Policies = &policies{client: client}
+	client.PolicyChecks = &policyChecks{client: client}
+	client.Runs = &runs{client: client}
+	client.SSHKeys = &sshKeys{client: client}
+	client.StateVersions = &stateVersions{client: client}
+	client.Teams = &teams{client: client}
+	client.TeamAccess = &teamAccesses{client: client}
+	client.TeamMembers = &teamMembers{client: client}
+	client.TeamTokens = &teamTokens{client: client}
+	client.Users = &users{client: client}
+	client.Variables = &variables{client: client}
+	client.Workspaces = &workspaces{client: client}
 
 	return client, nil
 }
@@ -332,7 +332,7 @@ func checkResponseCode(r *http.Response) error {
 	errPayload := &jsonapi.ErrorsPayload{}
 	err := json.NewDecoder(r.Body).Decode(errPayload)
 	if err != nil || len(errPayload.Errors) == 0 {
-		return fmt.Errorf("Unexpected response: %s", r.Status)
+		return fmt.Errorf(r.Status)
 	}
 
 	// Parse and format the errors.

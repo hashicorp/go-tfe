@@ -8,11 +8,35 @@ import (
 	"time"
 )
 
-// Policies handles communication with the policy related methods of the
-// Terraform Enterprise API.
+// Compile-time proof of interface implementation.
+var _ Policies = (*policies)(nil)
+
+// Policies describes all the policy related methods that the Terraform
+// Enterprise API supports.
 //
 // TFE API docs: https://www.terraform.io/docs/enterprise/api/policies.html
-type Policies struct {
+type Policies interface {
+	// List all the policies for a given organization
+	List(ctx context.Context, organization string, options PolicyListOptions) ([]*Policy, error)
+
+	// Create a policy and associate it with an organization.
+	Create(ctx context.Context, organization string, options PolicyCreateOptions) (*Policy, error)
+
+	// Read a policy by its ID.
+	Read(ctx context.Context, policyID string) (*Policy, error)
+
+	// Upload the policy content of the policy.
+	Upload(ctx context.Context, policyID string, content []byte) error
+
+	// Update an existing policy.
+	Update(ctx context.Context, policyID string, options PolicyUpdateOptions) (*Policy, error)
+
+	// Delete a policy by its ID.
+	Delete(ctx context.Context, policyID string) error
+}
+
+// policies implements Policies.
+type policies struct {
 	client *Client
 }
 
@@ -46,7 +70,7 @@ type PolicyListOptions struct {
 }
 
 // List all the policies for a given organization
-func (s *Policies) List(ctx context.Context, organization string, options PolicyListOptions) ([]*Policy, error) {
+func (s *policies) List(ctx context.Context, organization string, options PolicyListOptions) ([]*Policy, error) {
 	if !validStringID(&organization) {
 		return nil, errors.New("Invalid value for organization")
 	}
@@ -106,7 +130,7 @@ func (o PolicyCreateOptions) valid() error {
 }
 
 // Create a policy and associate it with an organization.
-func (s *Policies) Create(ctx context.Context, organization string, options PolicyCreateOptions) (*Policy, error) {
+func (s *policies) Create(ctx context.Context, organization string, options PolicyCreateOptions) (*Policy, error) {
 	if !validStringID(&organization) {
 		return nil, errors.New("Invalid value for organization")
 	}
@@ -132,8 +156,8 @@ func (s *Policies) Create(ctx context.Context, organization string, options Poli
 	return p, err
 }
 
-// Read a policy.
-func (s *Policies) Read(ctx context.Context, policyID string) (*Policy, error) {
+// Read a policy by its ID.
+func (s *policies) Read(ctx context.Context, policyID string) (*Policy, error) {
 	if !validStringID(&policyID) {
 		return nil, errors.New("Invalid value for policy ID")
 	}
@@ -154,7 +178,7 @@ func (s *Policies) Read(ctx context.Context, policyID string) (*Policy, error) {
 }
 
 // Upload the policy content of the policy.
-func (s *Policies) Upload(ctx context.Context, policyID string, content []byte) error {
+func (s *policies) Upload(ctx context.Context, policyID string, content []byte) error {
 	if !validStringID(&policyID) {
 		return errors.New("Invalid value for policy ID")
 	}
@@ -185,7 +209,7 @@ func (o PolicyUpdateOptions) valid() error {
 }
 
 // Update an existing policy.
-func (s *Policies) Update(ctx context.Context, policyID string, options PolicyUpdateOptions) (*Policy, error) {
+func (s *policies) Update(ctx context.Context, policyID string, options PolicyUpdateOptions) (*Policy, error) {
 	if !validStringID(&policyID) {
 		return nil, errors.New("Invalid value for policy ID")
 	}
@@ -211,8 +235,8 @@ func (s *Policies) Update(ctx context.Context, policyID string, options PolicyUp
 	return p, err
 }
 
-// Delete an organization policy.
-func (s *Policies) Delete(ctx context.Context, policyID string) error {
+// Delete a policy by its ID.
+func (s *policies) Delete(ctx context.Context, policyID string) error {
 	if !validStringID(&policyID) {
 		return errors.New("Invalid value for policy ID")
 	}

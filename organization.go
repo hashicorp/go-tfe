@@ -8,12 +8,33 @@ import (
 	"time"
 )
 
-// Organizations handles communication with the organization related methods
-// of the Terraform Enterprise API.
+// Compile-time proof of interface implementation.
+var _ Organizations = (*organizations)(nil)
+
+// Organizations describes all the organization related methods that the
+// Terraform Enterprise API supports.
 //
 // TFE API docs:
 // https://www.terraform.io/docs/enterprise/api/organizations.html
-type Organizations struct {
+type Organizations interface {
+	// List all the organizations visible to the current user.
+	List(ctx context.Context, options OrganizationListOptions) ([]*Organization, error)
+
+	// Create a new organization with the given options.
+	Create(ctx context.Context, options OrganizationCreateOptions) (*Organization, error)
+
+	// Read an organization by its name.
+	Read(ctx context.Context, organization string) (*Organization, error)
+
+	// Update attributes of an existing organization.
+	Update(ctx context.Context, organization string, options OrganizationUpdateOptions) (*Organization, error)
+
+	// Delete an organization by its name.
+	Delete(ctx context.Context, organization string) error
+}
+
+// organizations implements Organizations.
+type organizations struct {
 	client *Client
 }
 
@@ -71,8 +92,8 @@ type OrganizationListOptions struct {
 	ListOptions
 }
 
-// List returns all the organizations visible to the current user.
-func (s *Organizations) List(ctx context.Context, options OrganizationListOptions) ([]*Organization, error) {
+// List all the organizations visible to the current user.
+func (s *organizations) List(ctx context.Context, options OrganizationListOptions) ([]*Organization, error) {
 	req, err := s.client.newRequest("GET", "organizations", &options)
 	if err != nil {
 		return nil, err
@@ -112,8 +133,8 @@ func (o OrganizationCreateOptions) valid() error {
 	return nil
 }
 
-// Create a new organization with the given name and email.
-func (s *Organizations) Create(ctx context.Context, options OrganizationCreateOptions) (*Organization, error) {
+// Create a new organization with the given options.
+func (s *organizations) Create(ctx context.Context, options OrganizationCreateOptions) (*Organization, error) {
 	if err := options.valid(); err != nil {
 		return nil, err
 	}
@@ -135,13 +156,13 @@ func (s *Organizations) Create(ctx context.Context, options OrganizationCreateOp
 	return org, nil
 }
 
-// Read single organization by its name.
-func (s *Organizations) Read(ctx context.Context, name string) (*Organization, error) {
-	if !validStringID(&name) {
-		return nil, errors.New("Invalid value for name")
+// Read an organization by its name.
+func (s *organizations) Read(ctx context.Context, organization string) (*Organization, error) {
+	if !validStringID(&organization) {
+		return nil, errors.New("Invalid value for organization")
 	}
 
-	u := fmt.Sprintf("organizations/%s", url.QueryEscape(name))
+	u := fmt.Sprintf("organizations/%s", url.QueryEscape(organization))
 	req, err := s.client.newRequest("GET", u, nil)
 	if err != nil {
 		return nil, err
@@ -178,15 +199,15 @@ type OrganizationUpdateOptions struct {
 }
 
 // Update attributes of an existing organization.
-func (s *Organizations) Update(ctx context.Context, name string, options OrganizationUpdateOptions) (*Organization, error) {
-	if !validStringID(&name) {
-		return nil, errors.New("Invalid value for name")
+func (s *organizations) Update(ctx context.Context, organization string, options OrganizationUpdateOptions) (*Organization, error) {
+	if !validStringID(&organization) {
+		return nil, errors.New("Invalid value for organization")
 	}
 
 	// Make sure we don't send a user provided ID.
 	options.ID = ""
 
-	u := fmt.Sprintf("organizations/%s", url.QueryEscape(name))
+	u := fmt.Sprintf("organizations/%s", url.QueryEscape(organization))
 	req, err := s.client.newRequest("PATCH", u, &options)
 	if err != nil {
 		return nil, err
@@ -202,12 +223,12 @@ func (s *Organizations) Update(ctx context.Context, name string, options Organiz
 }
 
 // Delete an organization by its name.
-func (s *Organizations) Delete(ctx context.Context, name string) error {
-	if !validStringID(&name) {
-		return errors.New("Invalid value for name")
+func (s *organizations) Delete(ctx context.Context, organization string) error {
+	if !validStringID(&organization) {
+		return errors.New("Invalid value for organization")
 	}
 
-	u := fmt.Sprintf("organizations/%s", url.QueryEscape(name))
+	u := fmt.Sprintf("organizations/%s", url.QueryEscape(organization))
 	req, err := s.client.newRequest("DELETE", u, nil)
 	if err != nil {
 		return err

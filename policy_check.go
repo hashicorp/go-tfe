@@ -8,12 +8,24 @@ import (
 	"time"
 )
 
-// PolicyChecks handles communication with the policy checks related methods
-// of the Terraform Enterprise API.
+// Compile-time proof of interface implementation.
+var _ PolicyChecks = (*policyChecks)(nil)
+
+// PolicyChecks describes all the policy check related methods that the
+// Terraform Enterprise API supports.
 //
 // TFE API docs:
 // https://www.terraform.io/docs/enterprise/api/policy-checks.html
-type PolicyChecks struct {
+type PolicyChecks interface {
+	// List all policy checks of the given run.
+	List(ctx context.Context, runID string, options PolicyCheckListOptions) ([]*PolicyCheck, error)
+
+	// Override a soft-mandatory or warning policy.
+	Override(ctx context.Context, policyCheckID string) (*PolicyCheck, error)
+}
+
+// policyChecks implements PolicyChecks.
+type policyChecks struct {
 	client *Client
 }
 
@@ -89,7 +101,7 @@ type PolicyCheckListOptions struct {
 }
 
 // List all policy checks of the given run.
-func (s *PolicyChecks) List(ctx context.Context, runID string, options PolicyCheckListOptions) ([]*PolicyCheck, error) {
+func (s *policyChecks) List(ctx context.Context, runID string, options PolicyCheckListOptions) ([]*PolicyCheck, error) {
 	if !validStringID(&runID) {
 		return nil, errors.New("Invalid value for run ID")
 	}
@@ -110,7 +122,7 @@ func (s *PolicyChecks) List(ctx context.Context, runID string, options PolicyChe
 }
 
 // Override a soft-mandatory or warning policy.
-func (s *PolicyChecks) Override(ctx context.Context, policyCheckID string) (*PolicyCheck, error) {
+func (s *policyChecks) Override(ctx context.Context, policyCheckID string) (*PolicyCheck, error) {
 	if !validStringID(&policyCheckID) {
 		return nil, errors.New("Invalid value for policy check ID")
 	}

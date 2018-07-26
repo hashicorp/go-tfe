@@ -7,11 +7,29 @@ import (
 	"net/url"
 )
 
-// Variables handles communication with the variable related methods of the
-// Terraform Enterprise API.
+// Compile-time proof of interface implementation.
+var _ Variables = (*variables)(nil)
+
+// Variables describes all the variable related methods that the Terraform
+// Enterprise API supports.
 //
 // TFE API docs: https://www.terraform.io/docs/enterprise/api/variables.html
-type Variables struct {
+type Variables interface {
+	// List all the variables associated with the given workspace.
+	List(ctx context.Context, options VariableListOptions) ([]*Variable, error)
+
+	// Create is used to create a new variable.
+	Create(ctx context.Context, options VariableCreateOptions) (*Variable, error)
+
+	// Update values of an existing variable.
+	Update(ctx context.Context, variableID string, options VariableUpdateOptions) (*Variable, error)
+
+	// Delete a variable by its ID.
+	Delete(ctx context.Context, variableID string) error
+}
+
+// variables implements Variables.
+type variables struct {
 	client *Client
 }
 
@@ -54,8 +72,8 @@ func (o VariableListOptions) valid() error {
 	return nil
 }
 
-// List returns all variables associated with a given workspace.
-func (s *Variables) List(ctx context.Context, options VariableListOptions) ([]*Variable, error) {
+// List all the variables associated with the given workspace.
+func (s *variables) List(ctx context.Context, options VariableListOptions) ([]*Variable, error) {
 	if err := options.valid(); err != nil {
 		return nil, err
 	}
@@ -115,7 +133,7 @@ func (o VariableCreateOptions) valid() error {
 }
 
 // Create is used to create a new variable.
-func (s *Variables) Create(ctx context.Context, options VariableCreateOptions) (*Variable, error) {
+func (s *variables) Create(ctx context.Context, options VariableCreateOptions) (*Variable, error) {
 	if err := options.valid(); err != nil {
 		return nil, err
 	}
@@ -159,7 +177,7 @@ type VariableUpdateOptions struct {
 }
 
 // Update values of an existing variable.
-func (s *Variables) Update(ctx context.Context, variableID string, options VariableUpdateOptions) (*Variable, error) {
+func (s *variables) Update(ctx context.Context, variableID string, options VariableUpdateOptions) (*Variable, error) {
 	if !validStringID(&variableID) {
 		return nil, errors.New("Invalid value for variable ID")
 	}
@@ -182,8 +200,8 @@ func (s *Variables) Update(ctx context.Context, variableID string, options Varia
 	return v, nil
 }
 
-// Delete a variable.
-func (s *Variables) Delete(ctx context.Context, variableID string) error {
+// Delete a variable by its ID.
+func (s *variables) Delete(ctx context.Context, variableID string) error {
 	if !validStringID(&variableID) {
 		return errors.New("Invalid value for variable ID")
 	}

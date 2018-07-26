@@ -7,11 +7,29 @@ import (
 	"net/url"
 )
 
-// Teams handles communication with the team related methods of the Terraform
-// Enterprise API.
+// Compile-time proof of interface implementation.
+var _ Teams = (*teams)(nil)
+
+// Teams describes all the team related methods that the Terraform
+// Enterprise API supports.
 //
 // TFE API docs: https://www.terraform.io/docs/enterprise/api/teams.html
-type Teams struct {
+type Teams interface {
+	// List all the teams of the given organization.
+	List(ctx context.Context, organization string, options TeamListOptions) ([]*Team, error)
+
+	// Create a new team with the given options.
+	Create(ctx context.Context, organization string, options TeamCreateOptions) (*Team, error)
+
+	// Read a team by its ID.
+	Read(ctx context.Context, teamID string) (*Team, error)
+
+	// Delete a team by its ID.
+	Delete(ctx context.Context, teamID string) error
+}
+
+// teams implements Teams.
+type teams struct {
 	client *Client
 }
 
@@ -37,8 +55,8 @@ type TeamListOptions struct {
 	ListOptions
 }
 
-// List returns all the organizations visible to the current user.
-func (s *Teams) List(ctx context.Context, organization string, options TeamListOptions) ([]*Team, error) {
+// List all the teams of the given organization.
+func (s *teams) List(ctx context.Context, organization string, options TeamListOptions) ([]*Team, error) {
 	if !validStringID(&organization) {
 		return nil, errors.New("Invalid value for organization")
 	}
@@ -77,8 +95,8 @@ func (o TeamCreateOptions) valid() error {
 	return nil
 }
 
-// Create a new team with the given name.
-func (s *Teams) Create(ctx context.Context, organization string, options TeamCreateOptions) (*Team, error) {
+// Create a new team with the given options.
+func (s *teams) Create(ctx context.Context, organization string, options TeamCreateOptions) (*Team, error) {
 	if !validStringID(&organization) {
 		return nil, errors.New("Invalid value for organization")
 	}
@@ -105,7 +123,7 @@ func (s *Teams) Create(ctx context.Context, organization string, options TeamCre
 }
 
 // Read a single team by its ID.
-func (s *Teams) Read(ctx context.Context, teamID string) (*Team, error) {
+func (s *teams) Read(ctx context.Context, teamID string) (*Team, error) {
 	if !validStringID(&teamID) {
 		return nil, errors.New("Invalid value for team ID")
 	}
@@ -126,7 +144,7 @@ func (s *Teams) Read(ctx context.Context, teamID string) (*Team, error) {
 }
 
 // Delete a team by its ID.
-func (s *Teams) Delete(ctx context.Context, teamID string) error {
+func (s *teams) Delete(ctx context.Context, teamID string) error {
 	if !validStringID(&teamID) {
 		return errors.New("Invalid value for team ID")
 	}
