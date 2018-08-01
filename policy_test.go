@@ -59,7 +59,7 @@ func TestPoliciesCreate(t *testing.T) {
 		options := PolicyCreateOptions{
 			Name: String(name),
 			Enforce: []*EnforcementOptions{
-				&EnforcementOptions{
+				{
 					Path: String(name + ".sentinel"),
 					Mode: EnforcementMode(EnforcementSoft),
 				},
@@ -86,7 +86,7 @@ func TestPoliciesCreate(t *testing.T) {
 		p, err := client.Policies.Create(ctx, orgTest.Name, PolicyCreateOptions{
 			Name: String(badIdentifier),
 			Enforce: []*EnforcementOptions{
-				&EnforcementOptions{
+				{
 					Path: String(badIdentifier + ".sentinel"),
 					Mode: EnforcementMode(EnforcementSoft),
 				},
@@ -99,7 +99,7 @@ func TestPoliciesCreate(t *testing.T) {
 	t.Run("when options is missing name", func(t *testing.T) {
 		p, err := client.Policies.Create(ctx, orgTest.Name, PolicyCreateOptions{
 			Enforce: []*EnforcementOptions{
-				&EnforcementOptions{
+				{
 					Path: String(randomString(t) + ".sentinel"),
 					Mode: EnforcementMode(EnforcementSoft),
 				},
@@ -123,7 +123,7 @@ func TestPoliciesCreate(t *testing.T) {
 		options := PolicyCreateOptions{
 			Name: String(randomString(t)),
 			Enforce: []*EnforcementOptions{
-				&EnforcementOptions{
+				{
 					Mode: EnforcementMode(EnforcementSoft),
 				},
 			},
@@ -139,7 +139,7 @@ func TestPoliciesCreate(t *testing.T) {
 		options := PolicyCreateOptions{
 			Name: String(name),
 			Enforce: []*EnforcementOptions{
-				&EnforcementOptions{
+				{
 					Path: String(name + ".sentinel"),
 				},
 			},
@@ -241,7 +241,7 @@ func TestPoliciesUpdate(t *testing.T) {
 
 		pAfter, err := client.Policies.Update(ctx, pBefore.ID, PolicyUpdateOptions{
 			Enforce: []*EnforcementOptions{
-				&EnforcementOptions{
+				{
 					Path: String(pBefore.Enforce[0].Path),
 					Mode: EnforcementMode(EnforcementAdvisory),
 				},
@@ -264,7 +264,7 @@ func TestPoliciesUpdate(t *testing.T) {
 
 		pAfter, err := client.Policies.Update(ctx, pBefore.ID, PolicyUpdateOptions{
 			Enforce: []*EnforcementOptions{
-				&EnforcementOptions{
+				{
 					Path: String("nonexisting"),
 					Mode: EnforcementMode(EnforcementAdvisory),
 				},
