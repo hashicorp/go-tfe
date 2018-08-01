@@ -11,12 +11,33 @@ import (
 	slug "github.com/hashicorp/go-slug"
 )
 
-// ConfigurationVersions handles communication with the configuration version
-// related methods of the Terraform Enterprise API.
+// Compile-time proof of interface implementation.
+var _ ConfigurationVersions = (*configurationVersions)(nil)
+
+// ConfigurationVersions describes all the configuration version related
+// methods that the Terraform Enterprise API supports.
 //
 // TFE API docs:
 // https://www.terraform.io/docs/enterprise/api/configuration-versions.html
-type ConfigurationVersions struct {
+type ConfigurationVersions interface {
+	// List returns all configuration versions of a workspace.
+	List(ctx context.Context, workspaceID string, options ConfigurationVersionListOptions) ([]*ConfigurationVersion, error)
+
+	// Create is used to create a new configuration version. The created
+	// configuration version will be usable once data is uploaded to it.
+	Create(ctx context.Context, workspaceID string, options ConfigurationVersionCreateOptions) (*ConfigurationVersion, error)
+
+	// Read a configuration version by its ID.
+	Read(ctx context.Context, cvID string) (*ConfigurationVersion, error)
+
+	// Upload packages and uploads Terraform configuration files. It requires
+	// the upload URL from a configuration version and the full path to the
+	// configuration files on disk.
+	Upload(ctx context.Context, url string, path string) error
+}
+
+// configurationVersions implements ConfigurationVersions.
+type configurationVersions struct {
 	client *Client
 }
 
@@ -72,7 +93,7 @@ type ConfigurationVersionListOptions struct {
 }
 
 // List returns all configuration versions of a workspace.
-func (s *ConfigurationVersions) List(ctx context.Context, workspaceID string, options ConfigurationVersionListOptions) ([]*ConfigurationVersion, error) {
+func (s *configurationVersions) List(ctx context.Context, workspaceID string, options ConfigurationVersionListOptions) ([]*ConfigurationVersion, error) {
 	if !validStringID(&workspaceID) {
 		return nil, errors.New("Invalid value for workspace ID")
 	}
@@ -108,7 +129,7 @@ type ConfigurationVersionCreateOptions struct {
 
 // Create is used to create a new configuration version. The created
 // configuration version will be usable once data is uploaded to it.
-func (s *ConfigurationVersions) Create(ctx context.Context, workspaceID string, options ConfigurationVersionCreateOptions) (*ConfigurationVersion, error) {
+func (s *configurationVersions) Create(ctx context.Context, workspaceID string, options ConfigurationVersionCreateOptions) (*ConfigurationVersion, error) {
 	if !validStringID(&workspaceID) {
 		return nil, errors.New("Invalid value for workspace ID")
 	}
@@ -131,8 +152,8 @@ func (s *ConfigurationVersions) Create(ctx context.Context, workspaceID string, 
 	return cv, nil
 }
 
-// Read single configuration version by its ID.
-func (s *ConfigurationVersions) Read(ctx context.Context, cvID string) (*ConfigurationVersion, error) {
+// Read a configuration version by its ID.
+func (s *configurationVersions) Read(ctx context.Context, cvID string) (*ConfigurationVersion, error) {
 	if !validStringID(&cvID) {
 		return nil, errors.New("Invalid value for configuration version ID")
 	}
@@ -155,7 +176,7 @@ func (s *ConfigurationVersions) Read(ctx context.Context, cvID string) (*Configu
 // Upload packages and uploads Terraform configuration files. It requires the
 // upload URL from a configuration version and the path to the configuration
 // files on disk.
-func (s *ConfigurationVersions) Upload(ctx context.Context, url, path string) error {
+func (s *configurationVersions) Upload(ctx context.Context, url, path string) error {
 	body := bytes.NewBuffer(nil)
 
 	_, err := slug.Pack(path, body)

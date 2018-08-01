@@ -9,12 +9,33 @@ import (
 	"time"
 )
 
-// StateVersions handles communication with the state version related
-// methods of the Terraform Enterprise API.
+// Compile-time proof of interface implementation.
+var _ StateVersions = (*stateVersions)(nil)
+
+// StateVersions describes all the state version related methods that
+// the Terraform Enterprise API supports.
 //
 // TFE API docs:
 // https://www.terraform.io/docs/enterprise/api/state-versions.html
-type StateVersions struct {
+type StateVersions interface {
+	// List all the state versions for a given workspace.
+	List(ctx context.Context, options StateVersionListOptions) ([]*StateVersion, error)
+
+	// Create a new state version for the given workspace.
+	Create(ctx context.Context, workspaceID string, options StateVersionCreateOptions) (*StateVersion, error)
+
+	// Read a state version by its ID.
+	Read(ctx context.Context, svID string) (*StateVersion, error)
+
+	// Current reads the latest available state from the given workspace.
+	Current(ctx context.Context, workspaceID string) (*StateVersion, error)
+
+	// Download retrieves the actual stored state of a state version
+	Download(ctx context.Context, url string) ([]byte, error)
+}
+
+// stateVersions implements StateVersions.
+type stateVersions struct {
 	client *Client
 }
 
@@ -23,7 +44,7 @@ type StateVersion struct {
 	ID           string    `jsonapi:"primary,state-versions"`
 	CreatedAt    time.Time `jsonapi:"attr,created-at,iso8601"`
 	DownloadURL  string    `jsonapi:"attr,hosted-state-download-url"`
-	Serial       int       `jsonapi:"attr,serial"`
+	Serial       int64     `jsonapi:"attr,serial"`
 	VCSCommitSHA string    `jsonapi:"attr,vcs-commit-sha"`
 	VCSCommitURL string    `jsonapi:"attr,vcs-commit-url"`
 
@@ -48,8 +69,8 @@ func (o StateVersionListOptions) valid() error {
 	return nil
 }
 
-// List returns all the organizations visible to the current user.
-func (s *StateVersions) List(ctx context.Context, options StateVersionListOptions) ([]*StateVersion, error) {
+// List all the state versions for a given workspace.
+func (s *stateVersions) List(ctx context.Context, options StateVersionListOptions) ([]*StateVersion, error) {
 	if err := options.valid(); err != nil {
 		return nil, err
 	}
@@ -100,7 +121,7 @@ func (o StateVersionCreateOptions) valid() error {
 }
 
 // Create a new state version for the given workspace.
-func (s *StateVersions) Create(ctx context.Context, workspaceID string, options StateVersionCreateOptions) (*StateVersion, error) {
+func (s *stateVersions) Create(ctx context.Context, workspaceID string, options StateVersionCreateOptions) (*StateVersion, error) {
 	if !validStringID(&workspaceID) {
 		return nil, errors.New("Invalid value for workspace ID")
 	}
@@ -126,8 +147,8 @@ func (s *StateVersions) Create(ctx context.Context, workspaceID string, options 
 	return sv, nil
 }
 
-// Read a single state version by its ID.
-func (s *StateVersions) Read(ctx context.Context, svID string) (*StateVersion, error) {
+// Read a state version by its ID.
+func (s *stateVersions) Read(ctx context.Context, svID string) (*StateVersion, error) {
 	if !validStringID(&svID) {
 		return nil, errors.New("Invalid value for state version ID")
 	}
@@ -148,7 +169,7 @@ func (s *StateVersions) Read(ctx context.Context, svID string) (*StateVersion, e
 }
 
 // Current reads the latest available state from the given workspace.
-func (s *StateVersions) Current(ctx context.Context, workspaceID string) (*StateVersion, error) {
+func (s *stateVersions) Current(ctx context.Context, workspaceID string) (*StateVersion, error) {
 	if !validStringID(&workspaceID) {
 		return nil, errors.New("Invalid value for workspace ID")
 	}
@@ -169,7 +190,7 @@ func (s *StateVersions) Current(ctx context.Context, workspaceID string) (*State
 }
 
 // Download retrieves the actual stored state of a state version
-func (s *StateVersions) Download(ctx context.Context, url string) ([]byte, error) {
+func (s *stateVersions) Download(ctx context.Context, url string) ([]byte, error) {
 	req, err := s.client.newRequest("GET", url, nil)
 	if err != nil {
 		return nil, err

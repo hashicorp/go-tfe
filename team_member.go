@@ -7,12 +7,24 @@ import (
 	"net/url"
 )
 
-// TeamMembers handles communication with the team member related methods of
-// the Terraform Enterprise API.
+// Compile-time proof of interface implementation.
+var _ TeamMembers = (*teamMembers)(nil)
+
+// TeamMembers describes all the team member related methods that the
+// Terraform Enterprise API supports.
 //
 // TFE API docs:
 // https://www.terraform.io/docs/enterprise/api/team-members.html
-type TeamMembers struct {
+type TeamMembers interface {
+	// Add multiple users to a team.
+	Add(ctx context.Context, teamID string, options TeamMemberAddOptions) error
+
+	// Remove multiple users from a team.
+	Remove(ctx context.Context, teamID string, options TeamMemberRemoveOptions) error
+}
+
+// teamMembers implements TeamMembers.
+type teamMembers struct {
 	client *Client
 }
 
@@ -36,7 +48,7 @@ func (o *TeamMemberAddOptions) valid() error {
 }
 
 // Add multiple users to a team.
-func (s *TeamMembers) Add(ctx context.Context, teamID string, options TeamMemberAddOptions) error {
+func (s *teamMembers) Add(ctx context.Context, teamID string, options TeamMemberAddOptions) error {
 	if !validStringID(&teamID) {
 		return errors.New("Invalid value for team ID")
 	}
@@ -74,7 +86,7 @@ func (o *TeamMemberRemoveOptions) valid() error {
 }
 
 // Remove multiple users from a team.
-func (s *TeamMembers) Remove(ctx context.Context, teamID string, options TeamMemberRemoveOptions) error {
+func (s *teamMembers) Remove(ctx context.Context, teamID string, options TeamMemberRemoveOptions) error {
 	if !validStringID(&teamID) {
 		return errors.New("Invalid value for team ID")
 	}

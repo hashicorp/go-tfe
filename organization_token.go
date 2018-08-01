@@ -8,12 +8,24 @@ import (
 	"time"
 )
 
-// OrganizationTokens handles communication with the organization token related
-// methods of the Terraform Enterprise API.
+// Compile-time proof of interface implementation.
+var _ OrganizationTokens = (*organizationTokens)(nil)
+
+// OrganizationTokens describes all the organization token related methods
+// that the Terraform Enterprise API supports.
 //
 // TFE API docs:
 // https://www.terraform.io/docs/enterprise/api/organization-tokens.html
-type OrganizationTokens struct {
+type OrganizationTokens interface {
+	// Generate a new organization token, replacing any existing token.
+	Generate(ctx context.Context, organization string) (*OrganizationToken, error)
+
+	// Delete an organization token.
+	Delete(ctx context.Context, organization string) error
+}
+
+// organizationTokens implements OrganizationTokens.
+type organizationTokens struct {
 	client *Client
 }
 
@@ -27,7 +39,7 @@ type OrganizationToken struct {
 }
 
 // Generate a new organization token, replacing any existing token.
-func (s *OrganizationTokens) Generate(ctx context.Context, organization string) (*OrganizationToken, error) {
+func (s *organizationTokens) Generate(ctx context.Context, organization string) (*OrganizationToken, error) {
 	if !validStringID(&organization) {
 		return nil, errors.New("Invalid value for organization")
 	}
@@ -48,7 +60,7 @@ func (s *OrganizationTokens) Generate(ctx context.Context, organization string) 
 }
 
 // Delete an organization token.
-func (s *OrganizationTokens) Delete(ctx context.Context, organization string) error {
+func (s *organizationTokens) Delete(ctx context.Context, organization string) error {
 	if !validStringID(&organization) {
 		return errors.New("Invalid value for organization")
 	}

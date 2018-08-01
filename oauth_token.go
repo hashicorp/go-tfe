@@ -8,12 +8,21 @@ import (
 	"time"
 )
 
-// OAuthTokens handles communication with the OAuth token related methods
-// of the Terraform Enterprise API.
+// Compile-time proof of interface implementation.
+var _ OAuthTokens = (*oAuthTokens)(nil)
+
+// OAuthTokens describes all the OAuth token related methods that the
+// Terraform Enterprise API supports.
 //
 // TFE API docs:
 // https://www.terraform.io/docs/enterprise/api/oauth-tokens.html
-type OAuthTokens struct {
+type OAuthTokens interface {
+	// List all the OAuth Tokens for a given organization.
+	List(ctx context.Context, organization string) ([]*OAuthToken, error)
+}
+
+// oAuthTokens implements OAuthTokens.
+type oAuthTokens struct {
 	client *Client
 }
 
@@ -31,7 +40,7 @@ type OAuthToken struct {
 }
 
 // List all the OAuth Tokens for a given organization.
-func (s *OAuthTokens) List(ctx context.Context, organization string) ([]*OAuthToken, error) {
+func (s *oAuthTokens) List(ctx context.Context, organization string) ([]*OAuthToken, error) {
 	if !validStringID(&organization) {
 		return nil, errors.New("Invalid value for organization")
 	}

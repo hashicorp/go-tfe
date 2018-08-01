@@ -8,12 +8,21 @@ import (
 	"time"
 )
 
-// OAuthClients handles communication with the OAuth client related methods
-// of the Terraform Enterprise API.
+// Compile-time proof of interface implementation.
+var _ OAuthClients = (*oAuthClients)(nil)
+
+// OAuthClients describes all the OAuth client related methods that the
+// Terraform Enterprise API supports.
 //
 // TFE API docs:
 // https://www.terraform.io/docs/enterprise/api/oauth-clients.html
-type OAuthClients struct {
+type OAuthClients interface {
+	// Create a VCS connection between an organization and a VCS provider.
+	Create(ctx context.Context, organization string, options OAuthClientCreateOptions) (*OAuthClient, error)
+}
+
+// oAuthClients implements OAuthClients.
+type oAuthClients struct {
 	client *Client
 }
 
@@ -91,7 +100,7 @@ func (o OAuthClientCreateOptions) valid() error {
 }
 
 // Create a VCS connection between an organization and a VCS provider.
-func (s *OAuthClients) Create(ctx context.Context, organization string, options OAuthClientCreateOptions) (*OAuthClient, error) {
+func (s *oAuthClients) Create(ctx context.Context, organization string, options OAuthClientCreateOptions) (*OAuthClient, error) {
 	if !validStringID(&organization) {
 		return nil, errors.New("Invalid value for organization")
 	}

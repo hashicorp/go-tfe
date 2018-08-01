@@ -8,11 +8,35 @@ import (
 	"time"
 )
 
-// Runs handles communication with the run related methods of the Terraform
-// Enterprise API.
+// Compile-time proof of interface implementation.
+var _ Runs = (*runs)(nil)
+
+// Runs describes all the run related methods that the Terraform Enterprise
+// API supports.
 //
 // TFE API docs: https://www.terraform.io/docs/enterprise/api/run.html
-type Runs struct {
+type Runs interface {
+	// List all the runs of the given workspace.
+	List(ctx context.Context, workspaceID string, options RunListOptions) ([]*Run, error)
+
+	// Create a new run with the given options.
+	Create(ctx context.Context, options RunCreateOptions) (*Run, error)
+
+	// Read a run by its ID.
+	Read(ctx context.Context, runID string) (*Run, error)
+
+	// Apply a run by its ID.
+	Apply(ctx context.Context, runID string, options RunApplyOptions) error
+
+	// Cancel a run by its ID.
+	Cancel(ctx context.Context, runID string, options RunCancelOptions) error
+
+	// Discard a run by its ID.
+	Discard(ctx context.Context, runID string, options RunDiscardOptions) error
+}
+
+// runs implements Runs.
+type runs struct {
 	client *Client
 }
 
@@ -92,8 +116,8 @@ type RunListOptions struct {
 	ListOptions
 }
 
-// List runs of the given workspace.
-func (s *Runs) List(ctx context.Context, workspaceID string, options RunListOptions) ([]*Run, error) {
+// List all the runs of the given workspace.
+func (s *runs) List(ctx context.Context, workspaceID string, options RunListOptions) ([]*Run, error) {
 	if !validStringID(&workspaceID) {
 		return nil, errors.New("Invalid value for workspace ID")
 	}
@@ -141,8 +165,8 @@ func (o RunCreateOptions) valid() error {
 	return nil
 }
 
-// Create is used to create a new run.
-func (s *Runs) Create(ctx context.Context, options RunCreateOptions) (*Run, error) {
+// Create a new run with the given options.
+func (s *runs) Create(ctx context.Context, options RunCreateOptions) (*Run, error) {
 	if err := options.valid(); err != nil {
 		return nil, err
 	}
@@ -164,8 +188,8 @@ func (s *Runs) Create(ctx context.Context, options RunCreateOptions) (*Run, erro
 	return r, nil
 }
 
-// Read a single run by its ID.
-func (s *Runs) Read(ctx context.Context, runID string) (*Run, error) {
+// Read a run by its ID.
+func (s *runs) Read(ctx context.Context, runID string) (*Run, error) {
 	if !validStringID(&runID) {
 		return nil, errors.New("Invalid value for run ID")
 	}
@@ -191,8 +215,8 @@ type RunApplyOptions struct {
 	Comment *string `json:"comment,omitempty"`
 }
 
-// Apply a specific run by its ID.
-func (s *Runs) Apply(ctx context.Context, runID string, options RunApplyOptions) error {
+// Apply a run by its ID.
+func (s *runs) Apply(ctx context.Context, runID string, options RunApplyOptions) error {
 	if !validStringID(&runID) {
 		return errors.New("Invalid value for run ID")
 	}
@@ -212,8 +236,8 @@ type RunCancelOptions struct {
 	Comment *string `json:"comment,omitempty"`
 }
 
-// Cancel a specific run by its ID.
-func (s *Runs) Cancel(ctx context.Context, runID string, options RunCancelOptions) error {
+// Cancel a run by its ID.
+func (s *runs) Cancel(ctx context.Context, runID string, options RunCancelOptions) error {
 	if !validStringID(&runID) {
 		return errors.New("Invalid value for run ID")
 	}
@@ -233,8 +257,8 @@ type RunDiscardOptions struct {
 	Comment *string `json:"comment,omitempty"`
 }
 
-// Discard a specific run by its ID.
-func (s *Runs) Discard(ctx context.Context, runID string, options RunDiscardOptions) error {
+// Discard a run by its ID.
+func (s *runs) Discard(ctx context.Context, runID string, options RunDiscardOptions) error {
 	if !validStringID(&runID) {
 		return errors.New("Invalid value for run ID")
 	}

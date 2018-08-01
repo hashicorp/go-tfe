@@ -7,12 +7,30 @@ import (
 	"net/url"
 )
 
-// TeamAccesses handles communication with the team access related methods of
-// the Terraform Enterprise API.
+// Compile-time proof of interface implementation.
+var _ TeamAccesses = (*teamAccesses)(nil)
+
+// TeamAccesses describes all the team access related methods that the
+// Terraform Enterprise API supports.
 //
 // TFE API docs:
 // https://www.terraform.io/docs/enterprise/api/team-access.html
-type TeamAccesses struct {
+type TeamAccesses interface {
+	// List all the team accesses for a given workspace.
+	List(ctx context.Context, options TeamAccessListOptions) ([]*TeamAccess, error)
+
+	// Add team access for a workspace.
+	Add(ctx context.Context, options TeamAccessAddOptions) (*TeamAccess, error)
+
+	// Read a team access by its ID.
+	Read(ctx context.Context, teamAccessID string) (*TeamAccess, error)
+
+	// Remove team access from a workspace.
+	Remove(ctx context.Context, teamAccessID string) error
+}
+
+// teamAccesses implements TeamAccesses.
+type teamAccesses struct {
 	client *Client
 }
 
@@ -52,8 +70,8 @@ func (o TeamAccessListOptions) valid() error {
 	return nil
 }
 
-// List returns the team accesses for a given workspace.
-func (s *TeamAccesses) List(ctx context.Context, options TeamAccessListOptions) ([]*TeamAccess, error) {
+// List all the team accesses for a given workspace.
+func (s *teamAccesses) List(ctx context.Context, options TeamAccessListOptions) ([]*TeamAccess, error) {
 	if err := options.valid(); err != nil {
 		return nil, err
 	}
@@ -101,7 +119,7 @@ func (o TeamAccessAddOptions) valid() error {
 }
 
 // Add team access for a workspace.
-func (s *TeamAccesses) Add(ctx context.Context, options TeamAccessAddOptions) (*TeamAccess, error) {
+func (s *teamAccesses) Add(ctx context.Context, options TeamAccessAddOptions) (*TeamAccess, error) {
 	if err := options.valid(); err != nil {
 		return nil, err
 	}
@@ -123,8 +141,8 @@ func (s *TeamAccesses) Add(ctx context.Context, options TeamAccessAddOptions) (*
 	return ta, nil
 }
 
-// Read a sible team access by its ID.
-func (s *TeamAccesses) Read(ctx context.Context, teamAccessID string) (*TeamAccess, error) {
+// Read a team access by its ID.
+func (s *teamAccesses) Read(ctx context.Context, teamAccessID string) (*TeamAccess, error) {
 	if !validStringID(&teamAccessID) {
 		return nil, errors.New("Invalid value for team access ID")
 	}
@@ -145,7 +163,7 @@ func (s *TeamAccesses) Read(ctx context.Context, teamAccessID string) (*TeamAcce
 }
 
 // Remove team access from a workspace.
-func (s *TeamAccesses) Remove(ctx context.Context, teamAccessID string) error {
+func (s *teamAccesses) Remove(ctx context.Context, teamAccessID string) error {
 	if !validStringID(&teamAccessID) {
 		return errors.New("Invalid value for team access ID")
 	}

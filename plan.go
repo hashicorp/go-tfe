@@ -10,6 +10,26 @@ import (
 	"time"
 )
 
+// Compile-time proof of interface implementation.
+var _ Plans = (*plans)(nil)
+
+// Plans describes all the plan related methods that the Terraform Enterprise
+// API supports.
+//
+// TFE API docs: https://www.terraform.io/docs/enterprise/api/plan.html
+type Plans interface {
+	// Read a plan by its ID.
+	Read(ctx context.Context, planID string) (*Plan, error)
+
+	// Logs retrieves the logs of a plan.
+	Logs(ctx context.Context, planID string) (io.Reader, error)
+}
+
+// plans implements Plans.
+type plans struct {
+	client *Client
+}
+
 // PlanStatus represents a plan state.
 type PlanStatus string
 
@@ -24,14 +44,6 @@ const (
 	PlanQueued     PlanStatus = "queued"
 	PlanRunning    PlanStatus = "running"
 )
-
-// Plans handles communication with the plan related methods of the Terraform
-// Enterprise API.
-//
-// TFE API docs: https://www.terraform.io/docs/enterprise/api/plan.html
-type Plans struct {
-	client *Client
-}
 
 // Plan represents a Terraform Enterprise plan.
 type Plan struct {
@@ -54,8 +66,8 @@ type PlanStatusTimestamps struct {
 	RunningAt    time.Time `json:"running-at"`
 }
 
-// Read a single run by its ID.
-func (s *Plans) Read(ctx context.Context, planID string) (*Plan, error) {
+// Read a plan by its ID.
+func (s *plans) Read(ctx context.Context, planID string) (*Plan, error) {
 	if !validStringID(&planID) {
 		return nil, errors.New("Invalid value for plan ID")
 	}
@@ -76,7 +88,7 @@ func (s *Plans) Read(ctx context.Context, planID string) (*Plan, error) {
 }
 
 // Logs retrieves the logs of a plan.
-func (s *Plans) Logs(ctx context.Context, planID string) (io.Reader, error) {
+func (s *plans) Logs(ctx context.Context, planID string) (io.Reader, error) {
 	if !validStringID(&planID) {
 		return nil, errors.New("Invalid value for plan ID")
 	}

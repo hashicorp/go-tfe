@@ -116,7 +116,7 @@ func TestStateVersionsCreate(t *testing.T) {
 			refreshed,
 		} {
 			assert.NotEmpty(t, item.ID)
-			assert.Equal(t, item.Serial, 0)
+			assert.Equal(t, item.Serial, int64(0))
 			assert.NotEmpty(t, item.CreatedAt)
 			assert.NotEmpty(t, item.DownloadURL)
 		}

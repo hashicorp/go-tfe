@@ -7,12 +7,33 @@ import (
 	"net/url"
 )
 
-// SSHKeys handles communication with the SSH key related methods of the
-// Terraform Enterprise API.
+// Compile-time proof of interface implementation.
+var _ SSHKeys = (*sshKeys)(nil)
+
+// SSHKeys describes all the SSH key related methods that the Terraform
+// Enterprise API supports.
 //
 // TFE API docs:
 // https://www.terraform.io/docs/enterprise/api/ssh-keys.html
-type SSHKeys struct {
+type SSHKeys interface {
+	// List all the SSH keys for a given organization
+	List(ctx context.Context, organization string, options SSHKeyListOptions) ([]*SSHKey, error)
+
+	// Create an SSH key and associate it with an organization.
+	Create(ctx context.Context, organization string, options SSHKeyCreateOptions) (*SSHKey, error)
+
+	// Read an SSH key by its ID.
+	Read(ctx context.Context, sshKeyID string) (*SSHKey, error)
+
+	// Update an SSH key by its ID.
+	Update(ctx context.Context, sshKeyID string, options SSHKeyUpdateOptions) (*SSHKey, error)
+
+	// Delete an SSH key by its ID.
+	Delete(ctx context.Context, sshKeyID string) error
+}
+
+// sshKeys implements SSHKeys.
+type sshKeys struct {
 	client *Client
 }
 
@@ -27,8 +48,8 @@ type SSHKeyListOptions struct {
 	ListOptions
 }
 
-// List returns all the organizations visible to the current user.
-func (s *SSHKeys) List(ctx context.Context, organization string, options SSHKeyListOptions) ([]*SSHKey, error) {
+// List all the SSH keys for a given organization
+func (s *sshKeys) List(ctx context.Context, organization string, options SSHKeyListOptions) ([]*SSHKey, error) {
 	if !validStringID(&organization) {
 		return nil, errors.New("Invalid value for organization")
 	}
@@ -71,7 +92,7 @@ func (o SSHKeyCreateOptions) valid() error {
 }
 
 // Create an SSH key and associate it with an organization.
-func (s *SSHKeys) Create(ctx context.Context, organization string, options SSHKeyCreateOptions) (*SSHKey, error) {
+func (s *sshKeys) Create(ctx context.Context, organization string, options SSHKeyCreateOptions) (*SSHKey, error) {
 	if !validStringID(&organization) {
 		return nil, errors.New("Invalid value for organization")
 	}
@@ -98,8 +119,8 @@ func (s *SSHKeys) Create(ctx context.Context, organization string, options SSHKe
 	return k, nil
 }
 
-// Read an SSH key.
-func (s *SSHKeys) Read(ctx context.Context, sshKeyID string) (*SSHKey, error) {
+// Read an SSH key by its ID.
+func (s *sshKeys) Read(ctx context.Context, sshKeyID string) (*SSHKey, error) {
 	if !validStringID(&sshKeyID) {
 		return nil, errors.New("Invalid value for SSH key ID")
 	}
@@ -131,8 +152,8 @@ type SSHKeyUpdateOptions struct {
 	Value *string `jsonapi:"attr,value,omitempty"`
 }
 
-// Update an SSH key.
-func (s *SSHKeys) Update(ctx context.Context, sshKeyID string, options SSHKeyUpdateOptions) (*SSHKey, error) {
+// Update an SSH key by its ID.
+func (s *sshKeys) Update(ctx context.Context, sshKeyID string, options SSHKeyUpdateOptions) (*SSHKey, error) {
 	if !validStringID(&sshKeyID) {
 		return nil, errors.New("Invalid value for SSH key ID")
 	}
@@ -155,8 +176,8 @@ func (s *SSHKeys) Update(ctx context.Context, sshKeyID string, options SSHKeyUpd
 	return k, nil
 }
 
-// Delete an SSH key.
-func (s *SSHKeys) Delete(ctx context.Context, sshKeyID string) error {
+// Delete an SSH key by its ID.
+func (s *sshKeys) Delete(ctx context.Context, sshKeyID string) error {
 	if !validStringID(&sshKeyID) {
 		return errors.New("Invalid value for SSH key ID")
 	}
