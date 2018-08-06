@@ -386,7 +386,7 @@ func createTeamAccess(t *testing.T, client *Client, tm *Team, w *Workspace, org 
 
 	ctx := context.Background()
 	ta, err := client.TeamAccess.Add(ctx, TeamAccessAddOptions{
-		Access:    Access(TeamAccessAdmin),
+		Access:    Access(AccessAdmin),
 		Team:      tm,
 		Workspace: w,
 	})
@@ -419,12 +419,12 @@ func createTeamToken(t *testing.T, client *Client, tm *Team) (*TeamToken, func()
 	}
 
 	ctx := context.Background()
-	tk, err := client.TeamTokens.Generate(ctx, tm.ID)
+	tt, err := client.TeamTokens.Generate(ctx, tm.ID)
 	if err != nil {
 		t.Fatal(err)
 	}
 
-	return tk, func() {
+	return tt, func() {
 		if err := client.TeamTokens.Delete(ctx, tm.ID); err != nil {
 			t.Errorf("Error destroying team token! WARNING: Dangling resources\n"+
 				"may exist! The full error is shown below.\n\n"+

@@ -80,7 +80,7 @@ func TestTeamAccessesAdd(t *testing.T) {
 
 	t.Run("with valid options", func(t *testing.T) {
 		options := TeamAccessAddOptions{
-			Access:    Access(TeamAccessAdmin),
+			Access:    Access(AccessAdmin),
 			Team:      tmTest,
 			Workspace: wTest,
 		}
@@ -103,7 +103,7 @@ func TestTeamAccessesAdd(t *testing.T) {
 
 	t.Run("when the team already has access", func(t *testing.T) {
 		options := TeamAccessAddOptions{
-			Access:    Access(TeamAccessAdmin),
+			Access:    Access(AccessAdmin),
 			Team:      tmTest,
 			Workspace: wTest,
 		}
@@ -123,7 +123,7 @@ func TestTeamAccessesAdd(t *testing.T) {
 
 	t.Run("when options is missing team", func(t *testing.T) {
 		ta, err := client.TeamAccess.Add(ctx, TeamAccessAddOptions{
-			Access:    Access(TeamAccessAdmin),
+			Access:    Access(AccessAdmin),
 			Workspace: wTest,
 		})
 		assert.Nil(t, ta)
@@ -132,7 +132,7 @@ func TestTeamAccessesAdd(t *testing.T) {
 
 	t.Run("when options is missing workspace", func(t *testing.T) {
 		ta, err := client.TeamAccess.Add(ctx, TeamAccessAddOptions{
-			Access: Access(TeamAccessAdmin),
+			Access: Access(AccessAdmin),
 			Team:   tmTest,
 		})
 		assert.Nil(t, ta)
@@ -151,7 +151,7 @@ func TestTeamAccessesRead(t *testing.T) {
 		ta, err := client.TeamAccess.Read(ctx, taTest.ID)
 		require.NoError(t, err)
 
-		assert.Equal(t, TeamAccessAdmin, ta.Access)
+		assert.Equal(t, AccessAdmin, ta.Access)
 
 		t.Run("team relationship is decoded", func(t *testing.T) {
 			assert.NotEmpty(t, ta.Team)

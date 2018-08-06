@@ -15,25 +15,54 @@ func TestTeamTokensGenerate(t *testing.T) {
 	tmTest, tmTestCleanup := createTeam(t, client, nil)
 	defer tmTestCleanup()
 
-	var tkToken string
+	var tmToken string
 	t.Run("with valid options", func(t *testing.T) {
-		tk, err := client.TeamTokens.Generate(ctx, tmTest.ID)
+		tt, err := client.TeamTokens.Generate(ctx, tmTest.ID)
 		require.NoError(t, err)
-		require.NotEmpty(t, tk.Token)
-		tkToken = tk.Token
+		require.NotEmpty(t, tt.Token)
+		tmToken = tt.Token
 	})
 
 	t.Run("when a token already exists", func(t *testing.T) {
-		tk, err := client.TeamTokens.Generate(ctx, tmTest.ID)
+		tt, err := client.TeamTokens.Generate(ctx, tmTest.ID)
 		require.NoError(t, err)
-		require.NotEmpty(t, tk.Token)
-		assert.NotEqual(t, tkToken, tk.Token)
+		require.NotEmpty(t, tt.Token)
+		assert.NotEqual(t, tmToken, tt.Token)
 	})
 
 	t.Run("without valid team ID", func(t *testing.T) {
-		tk, err := client.TeamTokens.Generate(ctx, badIdentifier)
-		assert.Nil(t, tk)
+		tt, err := client.TeamTokens.Generate(ctx, badIdentifier)
+		assert.Nil(t, tt)
 		assert.EqualError(t, err, "Invalid value for team ID")
+	})
+}
+func TestTeamTokensRead(t *testing.T) {
+	client := testClient(t)
+	ctx := context.Background()
+
+	tmTest, tmTestCleanup := createTeam(t, client, nil)
+	defer tmTestCleanup()
+
+	t.Run("with valid options", func(t *testing.T) {
+		_, ttTestCleanup := createTeamToken(t, client, tmTest)
+
+		tt, err := client.TeamTokens.Read(ctx, tmTest.ID)
+		assert.NoError(t, err)
+		assert.NotEmpty(t, tt)
+
+		ttTestCleanup()
+	})
+
+	t.Run("when a token doesn't exists", func(t *testing.T) {
+		tt, err := client.TeamTokens.Read(ctx, tmTest.ID)
+		assert.Equal(t, ErrResourceNotFound, err)
+		assert.Nil(t, tt)
+	})
+
+	t.Run("without valid organization", func(t *testing.T) {
+		tt, err := client.OrganizationTokens.Read(ctx, badIdentifier)
+		assert.Nil(t, tt)
+		assert.EqualError(t, err, "Invalid value for organization")
 	})
 }
 

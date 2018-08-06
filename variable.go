@@ -166,9 +166,6 @@ type VariableUpdateOptions struct {
 	// The value of the variable.
 	Value *string `jsonapi:"attr,value,omitempty"`
 
-	// Whether this is a Terraform or environment variable.
-	Category *CategoryType `jsonapi:"attr,category,omitempty"`
-
 	// Whether to evaluate the value of the variable as a string of HCL code.
 	HCL *bool `jsonapi:"attr,hcl,omitempty"`
 

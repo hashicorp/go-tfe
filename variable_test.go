@@ -161,16 +161,14 @@ func TestVariablesUpdate(t *testing.T) {
 
 	t.Run("when updating a subset of values", func(t *testing.T) {
 		options := VariableUpdateOptions{
-			Key:      String("someothername"),
-			Category: Category(CategoryTerraform),
-			HCL:      Bool(false),
+			Key: String("someothername"),
+			HCL: Bool(false),
 		}
 
 		v, err := client.Variables.Update(ctx, vTest.ID, options)
 		require.NoError(t, err)
 
 		assert.Equal(t, *options.Key, v.Key)
-		assert.Equal(t, *options.Category, v.Category)
 		assert.Equal(t, *options.HCL, v.HCL)
 	})
 

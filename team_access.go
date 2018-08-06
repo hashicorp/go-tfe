@@ -34,20 +34,20 @@ type teamAccesses struct {
 	client *Client
 }
 
-// TeamAccessType represents a team access type.
-type TeamAccessType string
+// AccessType represents a team access type.
+type AccessType string
 
 // List all available team access types.
 const (
-	TeamAccessAdmin TeamAccessType = "admin"
-	TeamAccessRead  TeamAccessType = "read"
-	TeamAccessWrite TeamAccessType = "write"
+	AccessAdmin AccessType = "admin"
+	AccessRead  AccessType = "read"
+	AccessWrite AccessType = "write"
 )
 
 // TeamAccess represents the workspace access for a team.
 type TeamAccess struct {
-	ID     string         `jsonapi:"primary,team-workspaces"`
-	Access TeamAccessType `jsonapi:"attr,access"`
+	ID     string     `jsonapi:"primary,team-workspaces"`
+	Access AccessType `jsonapi:"attr,access"`
 
 	// Relations
 	Team      *Team      `jsonapi:"relation,team"`
@@ -96,7 +96,7 @@ type TeamAccessAddOptions struct {
 	ID string `jsonapi:"primary,team-workspaces"`
 
 	// The type of access to grant.
-	Access *TeamAccessType `jsonapi:"attr,access"`
+	Access *AccessType `jsonapi:"attr,access"`
 
 	// The team to add to the workspace
 	Team *Team `jsonapi:"relation,team"`
