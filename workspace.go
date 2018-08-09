@@ -74,7 +74,7 @@ type Workspace struct {
 type VCSRepo struct {
 	Branch            string `json:"branch"`
 	Identifier        string `json:"identifier"`
-	IncludeSubmodules bool   `json:"ingress-submodules"`
+	IngressSubmodules bool   `json:"ingress-submodules"`
 	OAuthTokenID      string `json:"oauth-token-id"`
 }
 
@@ -157,7 +157,7 @@ type WorkspaceCreateOptions struct {
 type VCSRepoOptions struct {
 	Branch            *string `json:"branch,omitempty"`
 	Identifier        *string `json:"identifier,omitempty"`
-	IncludeSubmodules *bool   `json:"ingress-submodules,omitempty"`
+	IngressSubmodules *bool   `json:"ingress-submodules,omitempty"`
 	OAuthTokenID      *string `json:"oauth-token-id,omitempty"`
 }
 

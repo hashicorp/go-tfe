@@ -208,7 +208,7 @@ func (c *Client) newRequest(method, path string, v interface{}) (*http.Request, 
 			}
 			u.RawQuery = q.Encode()
 		}
-	case "PATCH", "POST":
+	case "DELETE", "PATCH", "POST":
 		req.Header.Set("Accept", "application/vnd.api+json")
 		req.Header.Set("Content-Type", "application/vnd.api+json")
 

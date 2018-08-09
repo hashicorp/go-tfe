@@ -188,40 +188,12 @@ func TestPoliciesRead(t *testing.T) {
 	t.Run("when the policy does not exist", func(t *testing.T) {
 		p, err := client.Policies.Read(ctx, "nonexisting")
 		assert.Nil(t, p)
-		assert.Equal(t, err, ErrResourceNotFound)
+		assert.Equal(t, ErrResourceNotFound, err)
 	})
 
 	t.Run("without a valid policy ID", func(t *testing.T) {
 		p, err := client.Policies.Read(ctx, badIdentifier)
 		assert.Nil(t, p)
-		assert.EqualError(t, err, "Invalid value for policy ID")
-	})
-}
-
-func TestPoliciesUpload(t *testing.T) {
-	client := testClient(t)
-	ctx := context.Background()
-
-	pTest, pTestCleanup := createPolicy(t, client, nil)
-	defer pTestCleanup()
-
-	t.Run("with valid options", func(t *testing.T) {
-		err := client.Policies.Upload(ctx, pTest.ID, []byte(`main = rule { true }`))
-		assert.NoError(t, err)
-	})
-
-	t.Run("with empty content", func(t *testing.T) {
-		err := client.Policies.Upload(ctx, pTest.ID, []byte{})
-		assert.NoError(t, err)
-	})
-
-	t.Run("without any content", func(t *testing.T) {
-		err := client.Policies.Upload(ctx, pTest.ID, nil)
-		assert.NoError(t, err)
-	})
-
-	t.Run("without a valid policy ID", func(t *testing.T) {
-		err := client.Policies.Upload(ctx, badIdentifier, []byte(`main = rule { true }`))
 		assert.EqualError(t, err, "Invalid value for policy ID")
 	})
 }
@@ -320,5 +292,64 @@ func TestPoliciesDelete(t *testing.T) {
 	t.Run("when the policy ID is invalid", func(t *testing.T) {
 		err := client.Policies.Delete(ctx, badIdentifier)
 		assert.EqualError(t, err, "Invalid value for policy ID")
+	})
+}
+
+func TestPoliciesUpload(t *testing.T) {
+	client := testClient(t)
+	ctx := context.Background()
+
+	pTest, pTestCleanup := createPolicy(t, client, nil)
+	defer pTestCleanup()
+
+	t.Run("with valid options", func(t *testing.T) {
+		err := client.Policies.Upload(ctx, pTest.ID, []byte(`main = rule { true }`))
+		assert.NoError(t, err)
+	})
+
+	t.Run("with empty content", func(t *testing.T) {
+		err := client.Policies.Upload(ctx, pTest.ID, []byte{})
+		assert.NoError(t, err)
+	})
+
+	t.Run("without any content", func(t *testing.T) {
+		err := client.Policies.Upload(ctx, pTest.ID, nil)
+		assert.NoError(t, err)
+	})
+
+	t.Run("without a valid policy ID", func(t *testing.T) {
+		err := client.Policies.Upload(ctx, badIdentifier, []byte(`main = rule { true }`))
+		assert.EqualError(t, err, "Invalid value for policy ID")
+	})
+}
+
+func TestPoliciesDownload(t *testing.T) {
+	client := testClient(t)
+	ctx := context.Background()
+
+	pTest, pTestCleanup := createPolicy(t, client, nil)
+	defer pTestCleanup()
+
+	testContent := []byte(`main = rule { true }`)
+
+	t.Run("without existing content", func(t *testing.T) {
+		content, err := client.Policies.Download(ctx, pTest.ID)
+		assert.Equal(t, ErrResourceNotFound, err)
+		assert.Nil(t, content)
+	})
+
+	t.Run("with valid options", func(t *testing.T) {
+		err := client.Policies.Upload(ctx, pTest.ID, testContent)
+		require.NoError(t, err)
+
+		content, err := client.Policies.Download(ctx, pTest.ID)
+		assert.NoError(t, err)
+		assert.Equal(t, testContent, content)
+	})
+
+	t.Run("without a valid policy ID", func(t *testing.T) {
+		content, err := client.Policies.Download(ctx, badIdentifier)
+		assert.EqualError(t, err, "Invalid value for policy ID")
+		assert.Nil(t, content)
 	})
 }

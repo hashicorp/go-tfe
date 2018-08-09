@@ -127,8 +127,10 @@ func TestOrganizationsUpdate(t *testing.T) {
 		orgTest, orgTestCleanup := createOrganization(t, client)
 
 		options := OrganizationUpdateOptions{
-			Name:  String(randomString(t)),
-			Email: String(randomString(t) + "@tfe.local"),
+			Name:            String(randomString(t)),
+			Email:           String(randomString(t) + "@tfe.local"),
+			SessionTimeout:  Int(3600),
+			SessionRemember: Int(3600),
 		}
 
 		org, err := client.Organizations.Update(ctx, orgTest.Name, options)
@@ -151,6 +153,8 @@ func TestOrganizationsUpdate(t *testing.T) {
 		} {
 			assert.Equal(t, *options.Name, item.Name)
 			assert.Equal(t, *options.Email, item.Email)
+			assert.Equal(t, *options.SessionTimeout, item.SessionTimeout)
+			assert.Equal(t, *options.SessionRemember, item.SessionRemember)
 		}
 	})
 
