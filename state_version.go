@@ -105,6 +105,9 @@ type StateVersionCreateOptions struct {
 
 	// The base64 encoded state.
 	State *string `jsonapi:"attr,state"`
+
+	// Specifies the run to associate the state with.
+	Run *Run `jsonapi:"relation,run,omitempty"`
 }
 
 func (o StateVersionCreateOptions) valid() error {

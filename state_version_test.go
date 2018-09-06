@@ -93,6 +93,8 @@ func TestStateVersionsCreate(t *testing.T) {
 	wTest, wTestCleanup := createWorkspace(t, client, nil)
 	defer wTestCleanup()
 
+	rTest, _ := createRun(t, client, wTest)
+
 	state, err := ioutil.ReadFile("test-fixtures/state-version/terraform.tfstate")
 	if err != nil {
 		t.Fatal(err)
@@ -116,9 +118,37 @@ func TestStateVersionsCreate(t *testing.T) {
 			refreshed,
 		} {
 			assert.NotEmpty(t, item.ID)
-			assert.Equal(t, item.Serial, int64(0))
+			assert.Equal(t, int64(0), item.Serial)
 			assert.NotEmpty(t, item.CreatedAt)
 			assert.NotEmpty(t, item.DownloadURL)
+		}
+	})
+
+	t.Run("with a run to associate with", func(t *testing.T) {
+		ctx := context.Background()
+		sv, err := client.StateVersions.Create(ctx, wTest.ID, StateVersionCreateOptions{
+			MD5:    String(fmt.Sprintf("%x", md5.Sum(state))),
+			Serial: Int64(0),
+			State:  String(base64.StdEncoding.EncodeToString(state)),
+			Run:    rTest,
+		})
+		require.NoError(t, err)
+		require.NotEmpty(t, sv.Run)
+
+		// Get a refreshed view of the configuration version.
+		refreshed, err := client.StateVersions.Read(ctx, sv.ID)
+		require.NoError(t, err)
+		require.NotEmpty(t, refreshed.Run)
+
+		for _, item := range []*StateVersion{
+			sv,
+			refreshed,
+		} {
+			assert.NotEmpty(t, item.ID)
+			assert.Equal(t, int64(0), item.Serial)
+			assert.NotEmpty(t, item.CreatedAt)
+			assert.NotEmpty(t, item.DownloadURL)
+			assert.Equal(t, rTest.ID, item.Run.ID)
 		}
 	})
 
@@ -178,7 +208,7 @@ func TestStateVersionsRead(t *testing.T) {
 	t.Run("when the state version does not exist", func(t *testing.T) {
 		sv, err := client.StateVersions.Read(ctx, "nonexisting")
 		assert.Nil(t, sv)
-		assert.Equal(t, err, ErrResourceNotFound)
+		assert.Equal(t, ErrResourceNotFound, err)
 	})
 
 	t.Run("with invalid state version id", func(t *testing.T) {
@@ -216,7 +246,7 @@ func TestStateVersionsCurrent(t *testing.T) {
 	t.Run("when a state version does not exist", func(t *testing.T) {
 		sv, err := client.StateVersions.Current(ctx, wTest2.ID)
 		assert.Nil(t, sv)
-		assert.Equal(t, err, ErrResourceNotFound)
+		assert.Equal(t, ErrResourceNotFound, err)
 	})
 
 	t.Run("with invalid workspace id", func(t *testing.T) {
@@ -254,6 +284,6 @@ func TestStateVersionsDownload(t *testing.T) {
 	t.Run("with an invalid url", func(t *testing.T) {
 		state, err := client.StateVersions.Download(ctx, badIdentifier)
 		assert.Nil(t, state)
-		assert.Equal(t, err, ErrResourceNotFound)
+		assert.Equal(t, ErrResourceNotFound, err)
 	})
 }
