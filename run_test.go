@@ -19,16 +19,18 @@ func TestRunsList(t *testing.T) {
 	rTest2, _ := createRun(t, client, wTest)
 
 	t.Run("without list options", func(t *testing.T) {
-		rs, err := client.Runs.List(ctx, wTest.ID, RunListOptions{})
+		rl, err := client.Runs.List(ctx, wTest.ID, RunListOptions{})
 		require.NoError(t, err)
 
 		found := []string{}
-		for _, r := range rs {
+		for _, r := range rl.Items {
 			found = append(found, r.ID)
 		}
 
 		assert.Contains(t, found, rTest1.ID)
 		assert.Contains(t, found, rTest2.ID)
+		assert.Equal(t, 1, rl.CurrentPage)
+		assert.Equal(t, 2, rl.TotalCount)
 	})
 
 	t.Run("with list options", func(t *testing.T) {
@@ -37,19 +39,21 @@ func TestRunsList(t *testing.T) {
 		// Request a page number which is out of range. The result should
 		// be successful, but return no results if the paging options are
 		// properly passed along.
-		rs, err := client.Runs.List(ctx, wTest.ID, RunListOptions{
+		rl, err := client.Runs.List(ctx, wTest.ID, RunListOptions{
 			ListOptions: ListOptions{
 				PageNumber: 999,
 				PageSize:   100,
 			},
 		})
 		require.NoError(t, err)
-		assert.Empty(t, rs)
+		assert.Empty(t, rl.Items)
+		assert.Equal(t, 999, rl.CurrentPage)
+		assert.Equal(t, 2, rl.TotalCount)
 	})
 
 	t.Run("without a valid workspace ID", func(t *testing.T) {
-		rs, err := client.Runs.List(ctx, badIdentifier, RunListOptions{})
-		assert.Nil(t, rs)
+		rl, err := client.Runs.List(ctx, badIdentifier, RunListOptions{})
+		assert.Nil(t, rl)
 		assert.EqualError(t, err, "Invalid value for workspace ID")
 	})
 }

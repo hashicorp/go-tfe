@@ -20,22 +20,26 @@ func TestVariablesList(t *testing.T) {
 	vTest1, _ := createVariable(t, client, wTest)
 	vTest2, _ := createVariable(t, client, wTest)
 
-	t.Run("with valid options", func(t *testing.T) {
-		vs, err := client.Variables.List(ctx, VariableListOptions{
+	t.Run("without list options", func(t *testing.T) {
+		vl, err := client.Variables.List(ctx, VariableListOptions{
 			Organization: String(orgTest.Name),
 			Workspace:    String(wTest.Name),
 		})
 		require.NoError(t, err)
-		assert.Contains(t, vs, vTest1)
-		assert.Contains(t, vs, vTest2)
+		assert.Contains(t, vl.Items, vTest1)
+		assert.Contains(t, vl.Items, vTest2)
+
+		t.Skip("paging not supported yet in API")
+		assert.Equal(t, 1, vl.CurrentPage)
+		assert.Equal(t, 2, vl.TotalCount)
 	})
 
 	t.Run("with list options", func(t *testing.T) {
-		t.Skip(" w")
+		t.Skip("paging not supported yet in API")
 		// Request a page number which is out of range. The result should
 		// be successful, but return no results if the paging options are
 		// properly passed along.
-		vs, err := client.Variables.List(ctx, VariableListOptions{
+		vl, err := client.Variables.List(ctx, VariableListOptions{
 			ListOptions: ListOptions{
 				PageNumber: 999,
 				PageSize:   100,
@@ -44,22 +48,24 @@ func TestVariablesList(t *testing.T) {
 			Workspace:    String(wTest.Name),
 		})
 		require.NoError(t, err)
-		assert.Empty(t, vs)
+		assert.Empty(t, vl.Items)
+		assert.Equal(t, 999, vl.CurrentPage)
+		assert.Equal(t, 2, vl.TotalCount)
 	})
 
 	t.Run("when options is missing an organization", func(t *testing.T) {
-		vs, err := client.Variables.List(ctx, VariableListOptions{
+		vl, err := client.Variables.List(ctx, VariableListOptions{
 			Workspace: String(wTest.Name),
 		})
-		assert.Nil(t, vs)
+		assert.Nil(t, vl)
 		assert.EqualError(t, err, "Organization is required")
 	})
 
 	t.Run("when options is missing an workspace", func(t *testing.T) {
-		vs, err := client.Variables.List(ctx, VariableListOptions{
+		vl, err := client.Variables.List(ctx, VariableListOptions{
 			Organization: String(orgTest.Name),
 		})
-		assert.Nil(t, vs)
+		assert.Nil(t, vl)
 		assert.EqualError(t, err, "Workspace is required")
 	})
 }

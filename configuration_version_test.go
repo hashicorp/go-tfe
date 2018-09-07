@@ -24,7 +24,7 @@ func TestConfigurationVersionsList(t *testing.T) {
 	t.Run("without list options", func(t *testing.T) {
 		options := ConfigurationVersionListOptions{}
 
-		cvs, err := client.ConfigurationVersions.List(ctx, wTest.ID, options)
+		cvl, err := client.ConfigurationVersions.List(ctx, wTest.ID, options)
 		require.NoError(t, err)
 
 		// We need to strip the upload URL as that is a dynamic link.
@@ -32,12 +32,14 @@ func TestConfigurationVersionsList(t *testing.T) {
 		cvTest2.UploadURL = ""
 
 		// And for the retrieved configuration versions as well.
-		for _, cv := range cvs {
+		for _, cv := range cvl.Items {
 			cv.UploadURL = ""
 		}
 
-		assert.Contains(t, cvs, cvTest1)
-		assert.Contains(t, cvs, cvTest2)
+		assert.Contains(t, cvl.Items, cvTest1)
+		assert.Contains(t, cvl.Items, cvTest2)
+		assert.Equal(t, 1, cvl.CurrentPage)
+		assert.Equal(t, 2, cvl.TotalCount)
 	})
 
 	t.Run("with list options", func(t *testing.T) {
@@ -51,16 +53,18 @@ func TestConfigurationVersionsList(t *testing.T) {
 			},
 		}
 
-		cvs, err := client.ConfigurationVersions.List(ctx, wTest.ID, options)
+		cvl, err := client.ConfigurationVersions.List(ctx, wTest.ID, options)
 		require.NoError(t, err)
-		assert.Empty(t, cvs)
+		assert.Empty(t, cvl.Items)
+		assert.Equal(t, 999, cvl.CurrentPage)
+		assert.Equal(t, 2, cvl.TotalCount)
 	})
 
 	t.Run("without a valid organization", func(t *testing.T) {
 		options := ConfigurationVersionListOptions{}
 
-		cvs, err := client.ConfigurationVersions.List(ctx, badIdentifier, options)
-		assert.Nil(t, cvs)
+		cvl, err := client.ConfigurationVersions.List(ctx, badIdentifier, options)
+		assert.Nil(t, cvl)
 		assert.EqualError(t, err, "Invalid value for workspace ID")
 	})
 }

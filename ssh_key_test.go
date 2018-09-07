@@ -19,10 +19,14 @@ func TestSSHKeysList(t *testing.T) {
 	kTest2, _ := createSSHKey(t, client, orgTest)
 
 	t.Run("without list options", func(t *testing.T) {
-		ks, err := client.SSHKeys.List(ctx, orgTest.Name, SSHKeyListOptions{})
+		kl, err := client.SSHKeys.List(ctx, orgTest.Name, SSHKeyListOptions{})
 		require.NoError(t, err)
-		assert.Contains(t, ks, kTest1)
-		assert.Contains(t, ks, kTest2)
+		assert.Contains(t, kl.Items, kTest1)
+		assert.Contains(t, kl.Items, kTest2)
+
+		t.Skip("paging not supported yet in API")
+		assert.Equal(t, 1, kl.CurrentPage)
+		assert.Equal(t, 2, kl.TotalCount)
 	})
 
 	t.Run("with list options", func(t *testing.T) {
@@ -30,19 +34,21 @@ func TestSSHKeysList(t *testing.T) {
 		// Request a page number which is out of range. The result should
 		// be successful, but return no results if the paging options are
 		// properly passed along.
-		ks, err := client.SSHKeys.List(ctx, orgTest.Name, SSHKeyListOptions{
+		kl, err := client.SSHKeys.List(ctx, orgTest.Name, SSHKeyListOptions{
 			ListOptions: ListOptions{
 				PageNumber: 999,
 				PageSize:   100,
 			},
 		})
 		require.NoError(t, err)
-		assert.Empty(t, ks)
+		assert.Empty(t, kl.Items)
+		assert.Equal(t, 999, kl.CurrentPage)
+		assert.Equal(t, 2, kl.TotalCount)
 	})
 
 	t.Run("without a valid organization", func(t *testing.T) {
-		ks, err := client.SSHKeys.List(ctx, badIdentifier, SSHKeyListOptions{})
-		assert.Nil(t, ks)
+		kl, err := client.SSHKeys.List(ctx, badIdentifier, SSHKeyListOptions{})
+		assert.Nil(t, kl)
 		assert.EqualError(t, err, "Invalid value for organization")
 	})
 }

@@ -19,10 +19,14 @@ func TestPoliciesList(t *testing.T) {
 	pTest2, _ := createPolicy(t, client, orgTest)
 
 	t.Run("without list options", func(t *testing.T) {
-		ks, err := client.Policies.List(ctx, orgTest.Name, PolicyListOptions{})
+		pl, err := client.Policies.List(ctx, orgTest.Name, PolicyListOptions{})
 		require.NoError(t, err)
-		assert.Contains(t, ks, pTest1)
-		assert.Contains(t, ks, pTest2)
+		assert.Contains(t, pl.Items, pTest1)
+		assert.Contains(t, pl.Items, pTest2)
+
+		t.Skip("paging not supported yet in API")
+		assert.Equal(t, 1, pl.CurrentPage)
+		assert.Equal(t, 2, pl.TotalCount)
 	})
 
 	t.Run("with list options", func(t *testing.T) {
@@ -30,14 +34,16 @@ func TestPoliciesList(t *testing.T) {
 		// Request a page number which is out of range. The result should
 		// be successful, but return no results if the paging options are
 		// properly passed along.
-		ps, err := client.Policies.List(ctx, orgTest.Name, PolicyListOptions{
+		pl, err := client.Policies.List(ctx, orgTest.Name, PolicyListOptions{
 			ListOptions: ListOptions{
 				PageNumber: 999,
 				PageSize:   100,
 			},
 		})
 		require.NoError(t, err)
-		assert.Empty(t, ps)
+		assert.Empty(t, pl.Items)
+		assert.Equal(t, 999, pl.CurrentPage)
+		assert.Equal(t, 2, pl.TotalCount)
 	})
 
 	t.Run("without a valid organization", func(t *testing.T) {

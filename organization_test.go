@@ -18,10 +18,14 @@ func TestOrganizationsList(t *testing.T) {
 	defer orgTest2Cleanup()
 
 	t.Run("with no list options", func(t *testing.T) {
-		orgs, err := client.Organizations.List(ctx, OrganizationListOptions{})
+		orgl, err := client.Organizations.List(ctx, OrganizationListOptions{})
 		require.NoError(t, err)
-		assert.Contains(t, orgs, orgTest1)
-		assert.Contains(t, orgs, orgTest2)
+		assert.Contains(t, orgl.Items, orgTest1)
+		assert.Contains(t, orgl.Items, orgTest2)
+
+		t.Skip("paging not supported yet in API")
+		assert.Equal(t, 1, orgl.CurrentPage)
+		assert.Equal(t, 2, orgl.TotalCount)
 	})
 
 	t.Run("with list options", func(t *testing.T) {
@@ -29,14 +33,16 @@ func TestOrganizationsList(t *testing.T) {
 		// Request a page number which is out of range. The result should
 		// be successful, but return no results if the paging options are
 		// properly passed along.
-		orgs, err := client.Organizations.List(ctx, OrganizationListOptions{
+		orgl, err := client.Organizations.List(ctx, OrganizationListOptions{
 			ListOptions: ListOptions{
 				PageNumber: 999,
 				PageSize:   100,
 			},
 		})
 		require.NoError(t, err)
-		assert.Empty(t, orgs)
+		assert.Empty(t, orgl)
+		assert.Equal(t, 999, orgl.CurrentPage)
+		assert.Equal(t, 2, orgl.TotalCount)
 	})
 }
 

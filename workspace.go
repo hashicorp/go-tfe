@@ -17,7 +17,7 @@ var _ Workspaces = (*workspaces)(nil)
 // TFE API docs: https://www.terraform.io/docs/enterprise/api/workspaces.html
 type Workspaces interface {
 	// List all the workspaces within an organization.
-	List(ctx context.Context, organization string, options WorkspaceListOptions) ([]*Workspace, error)
+	List(ctx context.Context, organization string, options WorkspaceListOptions) (*WorkspaceList, error)
 
 	// Create is used to create a new workspace.
 	Create(ctx context.Context, organization string, options WorkspaceCreateOptions) (*Workspace, error)
@@ -47,6 +47,12 @@ type Workspaces interface {
 // workspaces implements Workspaces.
 type workspaces struct {
 	client *Client
+}
+
+// WorkspaceList represents a list of workspaces.
+type WorkspaceList struct {
+	*Pagination
+	Items []*Workspace
 }
 
 // Workspace represents a Terraform Enterprise workspace.
@@ -100,7 +106,7 @@ type WorkspaceListOptions struct {
 }
 
 // List all the workspaces within an organization.
-func (s *workspaces) List(ctx context.Context, organization string, options WorkspaceListOptions) ([]*Workspace, error) {
+func (s *workspaces) List(ctx context.Context, organization string, options WorkspaceListOptions) (*WorkspaceList, error) {
 	if !validStringID(&organization) {
 		return nil, errors.New("Invalid value for organization")
 	}
@@ -111,13 +117,13 @@ func (s *workspaces) List(ctx context.Context, organization string, options Work
 		return nil, err
 	}
 
-	var ws []*Workspace
-	err = s.client.do(ctx, req, &ws)
+	wl := &WorkspaceList{}
+	err = s.client.do(ctx, req, wl)
 	if err != nil {
 		return nil, err
 	}
 
-	return ws, nil
+	return wl, nil
 }
 
 // WorkspaceCreateOptions represents the options for creating a new workspace.
