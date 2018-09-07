@@ -21,10 +21,14 @@ func TestTeamsList(t *testing.T) {
 	defer tmTest2Cleanup()
 
 	t.Run("without list options", func(t *testing.T) {
-		tms, err := client.Teams.List(ctx, orgTest.Name, TeamListOptions{})
+		tl, err := client.Teams.List(ctx, orgTest.Name, TeamListOptions{})
 		require.NoError(t, err)
-		assert.Contains(t, tms, tmTest1)
-		assert.Contains(t, tms, tmTest2)
+		assert.Contains(t, tl.Items, tmTest1)
+		assert.Contains(t, tl.Items, tmTest2)
+
+		t.Skip("paging not supported yet in API")
+		assert.Equal(t, 1, tl.CurrentPage)
+		assert.Equal(t, 2, tl.TotalCount)
 	})
 
 	t.Run("with list options", func(t *testing.T) {
@@ -32,19 +36,21 @@ func TestTeamsList(t *testing.T) {
 		// Request a page number which is out of range. The result should
 		// be successful, but return no results if the paging options are
 		// properly passed along.
-		tms, err := client.Teams.List(ctx, orgTest.Name, TeamListOptions{
+		tl, err := client.Teams.List(ctx, orgTest.Name, TeamListOptions{
 			ListOptions: ListOptions{
 				PageNumber: 999,
 				PageSize:   100,
 			},
 		})
 		require.NoError(t, err)
-		assert.Empty(t, tms)
+		assert.Empty(t, tl.Items)
+		assert.Equal(t, 999, tl.CurrentPage)
+		assert.Equal(t, 2, tl.TotalCount)
 	})
 
 	t.Run("without a valid organization", func(t *testing.T) {
-		tms, err := client.Teams.List(ctx, badIdentifier, TeamListOptions{})
-		assert.Nil(t, tms)
+		tl, err := client.Teams.List(ctx, badIdentifier, TeamListOptions{})
+		assert.Nil(t, tl)
 		assert.EqualError(t, err, "Invalid value for organization")
 	})
 }

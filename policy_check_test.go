@@ -22,21 +22,27 @@ func TestPolicyChecksList(t *testing.T) {
 	rTest, _ := createPlannedRun(t, client, wTest)
 
 	t.Run("without list options", func(t *testing.T) {
-		pcs, err := client.PolicyChecks.List(ctx, rTest.ID, PolicyCheckListOptions{})
+		pcl, err := client.PolicyChecks.List(ctx, rTest.ID, PolicyCheckListOptions{})
 		require.NoError(t, err)
-		require.Equal(t, 1, len(pcs))
+		require.Equal(t, 1, len(pcl.Items))
+
+		t.Run("pagination is properly decoded", func(t *testing.T) {
+			t.Skip("paging not supported yet in API")
+			assert.Equal(t, 1, pcl.CurrentPage)
+			assert.Equal(t, 1, pcl.TotalCount)
+		})
 
 		t.Run("permissions are properly decoded", func(t *testing.T) {
-			assert.NotEmpty(t, pcs[0].Permissions)
+			assert.NotEmpty(t, pcl.Items[0].Permissions)
 		})
 
 		t.Run("result is properly decoded", func(t *testing.T) {
-			require.NotEmpty(t, pcs[0].Result)
-			assert.Equal(t, 2, pcs[0].Result.Passed)
+			require.NotEmpty(t, pcl.Items[0].Result)
+			assert.Equal(t, 2, pcl.Items[0].Result.Passed)
 		})
 
 		t.Run("timestamps are properly decoded", func(t *testing.T) {
-			assert.NotEmpty(t, pcs[0].StatusTimestamps)
+			assert.NotEmpty(t, pcl.Items[0].StatusTimestamps)
 		})
 	})
 
@@ -45,19 +51,21 @@ func TestPolicyChecksList(t *testing.T) {
 		// Request a page number which is out of range. The result should
 		// be successful, but return no results if the paging options are
 		// properly passed along.
-		pcs, err := client.PolicyChecks.List(ctx, rTest.ID, PolicyCheckListOptions{
+		pcl, err := client.PolicyChecks.List(ctx, rTest.ID, PolicyCheckListOptions{
 			ListOptions: ListOptions{
 				PageNumber: 999,
 				PageSize:   100,
 			},
 		})
 		require.NoError(t, err)
-		assert.Empty(t, pcs)
+		assert.Empty(t, pcl.Items)
+		assert.Equal(t, 999, pcl.CurrentPage)
+		assert.Equal(t, 1, pcl.TotalCount)
 	})
 
 	t.Run("without a valid run ID", func(t *testing.T) {
-		ps, err := client.PolicyChecks.List(ctx, badIdentifier, PolicyCheckListOptions{})
-		assert.Nil(t, ps)
+		pcl, err := client.PolicyChecks.List(ctx, badIdentifier, PolicyCheckListOptions{})
+		assert.Nil(t, pcl)
 		assert.EqualError(t, err, "Invalid value for run ID")
 	})
 }
@@ -76,12 +84,12 @@ func TestPolicyChecksOverride(t *testing.T) {
 		wTest, _ := createWorkspace(t, client, orgTest)
 		rTest, _ := createPlannedRun(t, client, wTest)
 
-		pcs, err := client.PolicyChecks.List(ctx, rTest.ID, PolicyCheckListOptions{})
+		pcl, err := client.PolicyChecks.List(ctx, rTest.ID, PolicyCheckListOptions{})
 		require.NoError(t, err)
-		require.Equal(t, 1, len(pcs))
-		require.Equal(t, PolicySoftFailed, pcs[0].Status)
+		require.Equal(t, 1, len(pcl.Items))
+		require.Equal(t, PolicySoftFailed, pcl.Items[0].Status)
 
-		pc, err := client.PolicyChecks.Override(ctx, pcs[0].ID)
+		pc, err := client.PolicyChecks.Override(ctx, pcl.Items[0].ID)
 		require.NoError(t, err)
 
 		assert.NotEmpty(t, pc.Result)
@@ -95,12 +103,12 @@ func TestPolicyChecksOverride(t *testing.T) {
 		wTest, _ := createWorkspace(t, client, orgTest)
 		rTest, _ := createPlannedRun(t, client, wTest)
 
-		pcs, err := client.PolicyChecks.List(ctx, rTest.ID, PolicyCheckListOptions{})
+		pcl, err := client.PolicyChecks.List(ctx, rTest.ID, PolicyCheckListOptions{})
 		require.NoError(t, err)
-		require.Equal(t, 1, len(pcs))
-		require.Equal(t, PolicyPasses, pcs[0].Status)
+		require.Equal(t, 1, len(pcl.Items))
+		require.Equal(t, PolicyPasses, pcl.Items[0].Status)
 
-		_, err = client.PolicyChecks.Override(ctx, pcs[0].ID)
+		_, err = client.PolicyChecks.Override(ctx, pcl.Items[0].ID)
 		assert.Error(t, err)
 	})
 

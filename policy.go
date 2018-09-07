@@ -18,7 +18,7 @@ var _ Policies = (*policies)(nil)
 // TFE API docs: https://www.terraform.io/docs/enterprise/api/policies.html
 type Policies interface {
 	// List all the policies for a given organization
-	List(ctx context.Context, organization string, options PolicyListOptions) ([]*Policy, error)
+	List(ctx context.Context, organization string, options PolicyListOptions) (*PolicyList, error)
 
 	// Create a policy and associate it with an organization.
 	Create(ctx context.Context, organization string, options PolicyCreateOptions) (*Policy, error)
@@ -54,6 +54,12 @@ const (
 	EnforcementSoft     EnforcementLevel = "soft-mandatory"
 )
 
+// PolicyList represents a list of policies..
+type PolicyList struct {
+	*Pagination
+	Items []*Policy
+}
+
 // Policy represents a Terraform Enterprise policy.
 type Policy struct {
 	ID        string         `jsonapi:"primary,policies"`
@@ -74,7 +80,7 @@ type PolicyListOptions struct {
 }
 
 // List all the policies for a given organization
-func (s *policies) List(ctx context.Context, organization string, options PolicyListOptions) ([]*Policy, error) {
+func (s *policies) List(ctx context.Context, organization string, options PolicyListOptions) (*PolicyList, error) {
 	if !validStringID(&organization) {
 		return nil, errors.New("Invalid value for organization")
 	}
@@ -85,13 +91,13 @@ func (s *policies) List(ctx context.Context, organization string, options Policy
 		return nil, err
 	}
 
-	var ps []*Policy
-	err = s.client.do(ctx, req, &ps)
+	pl := &PolicyList{}
+	err = s.client.do(ctx, req, pl)
 	if err != nil {
 		return nil, err
 	}
 
-	return ps, nil
+	return pl, nil
 }
 
 // PolicyCreateOptions represents the options for creating a new policy.

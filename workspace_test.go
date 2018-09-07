@@ -21,29 +21,33 @@ func TestWorkspacesList(t *testing.T) {
 	defer wTest2Cleanup()
 
 	t.Run("without list options", func(t *testing.T) {
-		ws, err := client.Workspaces.List(ctx, orgTest.Name, WorkspaceListOptions{})
+		wl, err := client.Workspaces.List(ctx, orgTest.Name, WorkspaceListOptions{})
 		require.NoError(t, err)
-		assert.Contains(t, ws, wTest1)
-		assert.Contains(t, ws, wTest2)
+		assert.Contains(t, wl.Items, wTest1)
+		assert.Contains(t, wl.Items, wTest2)
+		assert.Equal(t, 1, wl.CurrentPage)
+		assert.Equal(t, 2, wl.TotalCount)
 	})
 
 	t.Run("with list options", func(t *testing.T) {
 		// Request a page number which is out of range. The result should
 		// be successful, but return no results if the paging options are
 		// properly passed along.
-		ws, err := client.Workspaces.List(ctx, orgTest.Name, WorkspaceListOptions{
+		wl, err := client.Workspaces.List(ctx, orgTest.Name, WorkspaceListOptions{
 			ListOptions: ListOptions{
 				PageNumber: 999,
 				PageSize:   100,
 			},
 		})
 		require.NoError(t, err)
-		assert.Empty(t, ws)
+		assert.Empty(t, wl.Items)
+		assert.Equal(t, 999, wl.CurrentPage)
+		assert.Equal(t, 2, wl.TotalCount)
 	})
 
 	t.Run("without a valid organization", func(t *testing.T) {
-		ws, err := client.Workspaces.List(ctx, badIdentifier, WorkspaceListOptions{})
-		assert.Nil(t, ws)
+		wl, err := client.Workspaces.List(ctx, badIdentifier, WorkspaceListOptions{})
+		assert.Nil(t, wl)
 		assert.EqualError(t, err, "Invalid value for organization")
 	})
 }

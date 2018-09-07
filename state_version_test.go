@@ -31,7 +31,7 @@ func TestStateVersionsList(t *testing.T) {
 			Workspace:    String(wTest.Name),
 		}
 
-		svs, err := client.StateVersions.List(ctx, options)
+		svl, err := client.StateVersions.List(ctx, options)
 		require.NoError(t, err)
 
 		// We need to strip the upload URL as that is a dynamic link.
@@ -39,12 +39,14 @@ func TestStateVersionsList(t *testing.T) {
 		svTest2.DownloadURL = ""
 
 		// And for the retrieved configuration versions as well.
-		for _, sv := range svs {
+		for _, sv := range svl.Items {
 			sv.DownloadURL = ""
 		}
 
-		assert.Contains(t, svs, svTest1)
-		assert.Contains(t, svs, svTest2)
+		assert.Contains(t, svl.Items, svTest1)
+		assert.Contains(t, svl.Items, svTest2)
+		assert.Equal(t, 1, svl.CurrentPage)
+		assert.Equal(t, 2, svl.TotalCount)
 	})
 
 	t.Run("with list options", func(t *testing.T) {
@@ -60,9 +62,11 @@ func TestStateVersionsList(t *testing.T) {
 			Workspace:    String(wTest.Name),
 		}
 
-		svs, err := client.StateVersions.List(ctx, options)
+		svl, err := client.StateVersions.List(ctx, options)
 		require.NoError(t, err)
-		assert.Empty(t, svs)
+		assert.Empty(t, svl.Items)
+		assert.Equal(t, 999, svl.CurrentPage)
+		assert.Equal(t, 2, svl.TotalCount)
 	})
 
 	t.Run("without an organization", func(t *testing.T) {
@@ -70,8 +74,8 @@ func TestStateVersionsList(t *testing.T) {
 			Workspace: String(wTest.Name),
 		}
 
-		svs, err := client.StateVersions.List(ctx, options)
-		assert.Nil(t, svs)
+		svl, err := client.StateVersions.List(ctx, options)
+		assert.Nil(t, svl)
 		assert.EqualError(t, err, "Organization is required")
 	})
 
@@ -80,8 +84,8 @@ func TestStateVersionsList(t *testing.T) {
 			Organization: String(orgTest.Name),
 		}
 
-		svs, err := client.StateVersions.List(ctx, options)
-		assert.Nil(t, svs)
+		svl, err := client.StateVersions.List(ctx, options)
+		assert.Nil(t, svl)
 		assert.EqualError(t, err, "Workspace is required")
 	})
 }
