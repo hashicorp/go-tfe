@@ -45,6 +45,31 @@ func TestWorkspacesList(t *testing.T) {
 		assert.Equal(t, 2, wl.TotalCount)
 	})
 
+	t.Run("when searching a known workspace", func(t *testing.T) {
+		// Use a known workspace prefix as search attribute. The result
+		// should be successful and only contain the matching workspace.
+		wl, err := client.Workspaces.List(ctx, orgTest.Name, WorkspaceListOptions{
+			Search: String(wTest1.Name[:len(wTest1.Name)-5]),
+		})
+		require.NoError(t, err)
+		assert.Contains(t, wl.Items, wTest1)
+		assert.NotContains(t, wl.Items, wTest2)
+		assert.Equal(t, 1, wl.CurrentPage)
+		assert.Equal(t, 1, wl.TotalCount)
+	})
+
+	t.Run("when searching an unknown workspace", func(t *testing.T) {
+		// Use a nonexisting workspace name as search attribute. The result
+		// should be successful, but return no results.
+		wl, err := client.Workspaces.List(ctx, orgTest.Name, WorkspaceListOptions{
+			Search: String("nonexisting"),
+		})
+		require.NoError(t, err)
+		assert.Empty(t, wl.Items)
+		assert.Equal(t, 1, wl.CurrentPage)
+		assert.Equal(t, 0, wl.TotalCount)
+	})
+
 	t.Run("without a valid organization", func(t *testing.T) {
 		wl, err := client.Workspaces.List(ctx, badIdentifier, WorkspaceListOptions{})
 		assert.Nil(t, wl)
