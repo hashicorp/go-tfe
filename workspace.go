@@ -103,6 +103,9 @@ type WorkspacePermissions struct {
 // WorkspaceListOptions represents the options for listing workspaces.
 type WorkspaceListOptions struct {
 	ListOptions
+
+	// A search string (partial workspace name) used to filter the results.
+	Search *string `url:"search[name],omitempty"`
 }
 
 // List all the workspaces within an organization.
