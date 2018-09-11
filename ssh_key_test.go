@@ -202,7 +202,7 @@ func TestSSHKeysDelete(t *testing.T) {
 		err := client.SSHKeys.Delete(ctx, kTest.ID)
 		require.NoError(t, err)
 
-		// Try loading the workspace - it should fail.
+		// Try loading the SSH key - it should fail.
 		_, err = client.SSHKeys.Read(ctx, kTest.ID)
 		assert.Equal(t, err, ErrResourceNotFound)
 	})
