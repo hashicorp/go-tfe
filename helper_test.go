@@ -10,6 +10,7 @@ import (
 	"time"
 
 	"github.com/hashicorp/go-uuid"
+	tfe "github.com/scottwinkler/go-tfe"
 )
 
 const badIdentifier = "! / nope"
@@ -279,6 +280,30 @@ func createPlannedRun(t *testing.T, client *Client, w *Workspace) (*Run, func())
 	}
 
 	return r, rCleanup
+}
+
+func createRegistryModule(t *testing.T, client *Client, organization string) (*RegistryModule, func()) {
+	client := testClient(t)
+	ctx := context.Background()
+
+	otTest, otTestCleanup := createOAuthToken(t, client, organization)
+	ocTest, ocTestCleanup := createOAuthClient(t, client, nil)
+	name := "lambda"
+	provider := "iam"
+	identifier := fmt.Sprintf("scottwinkler/terraform-%s-%s", name, provider)
+	rm, err := client.RegistryModules.Publish(ctx, RegistryModulePublishOptions{
+		VCSRepo: &tfe.VCSRepo{Identifier: identifier, OAuthTokenID: ot.ID},
+	})
+
+	return rm, func() {
+		if err := client.RegistryModules.Delete(ctx, organization, name); err != nil {
+			t.Errorf("Error destroying registry module! WARNING: Dangling resources\n"+
+				"may exist! The full error is shown below.\n\n"+
+				"Registry Module: %s\nError: %s", rm.Name, err)
+		}
+		otTestCleanup()
+		ocTestCleanup()
+	}
 }
 
 func createSSHKey(t *testing.T, client *Client, org *Organization) (*SSHKey, func()) {

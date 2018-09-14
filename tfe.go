@@ -85,6 +85,7 @@ type Client struct {
 	Plans                 Plans
 	Policies              Policies
 	PolicyChecks          PolicyChecks
+	RegistryModules       RegistryModules
 	Runs                  Runs
 	SSHKeys               SSHKeys
 	StateVersions         StateVersions
@@ -150,6 +151,7 @@ func NewClient(cfg *Config) (*Client, error) {
 	client.Plans = &plans{client: client}
 	client.Policies = &policies{client: client}
 	client.PolicyChecks = &policyChecks{client: client}
+	client.RegistryModules = &registryModules{client: client}
 	client.Runs = &runs{client: client}
 	client.SSHKeys = &sshKeys{client: client}
 	client.StateVersions = &stateVersions{client: client}
@@ -280,7 +282,6 @@ func (c *Client) do(ctx context.Context, req *http.Request, v interface{}) error
 		}
 	}
 	defer resp.Body.Close()
-
 	// Basic response checking.
 	if err := checkResponseCode(resp); err != nil {
 		return err
