@@ -170,13 +170,11 @@ func createOAuthToken(t *testing.T, client *Client, org *Organization) (*OAuthTo
 	// created. To get a token, the client needs to be connected through the UI
 	// first. So the test using this (TestOAuthTokensList) is currently disabled.
 	return oc.OAuthToken[0], func() {
-		// There currently isn't a way to delete an OAuth client.
-		//
-		// if err := client.OAuthClients.Delete(ctx, oc.ID); err != nil {
-		// 	t.Errorf("Error destroying OAuth client! WARNING: Dangling resources\n"+
-		// 		"may exist! The full error is shown below.\n\n"+
-		// 		"OAuthClient: %s\nError: %s", oc.ID, err)
-		// }
+		if err := client.OAuthClients.Delete(ctx, oc.ID); err != nil {
+			t.Errorf("Error destroying OAuth client! WARNING: Dangling resources\n"+
+				"may exist! The full error is shown below.\n\n"+
+				"OAuthClient: %s\nError: %s", oc.ID, err)
+		}
 
 		if orgCleanup != nil {
 			orgCleanup()
