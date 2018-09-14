@@ -6,6 +6,7 @@ import (
 	"encoding/base64"
 	"fmt"
 	"io/ioutil"
+	"os"
 	"testing"
 	"time"
 
@@ -145,18 +146,22 @@ func createUploadedPolicy(t *testing.T, client *Client, pass bool, org *Organiza
 	}
 }
 
-func createOAuthToken(t *testing.T, client *Client, org *Organization) (*OAuthToken, func()) {
+func createOAuthClient(t *testing.T, client *Client, org *Organization) (*OAuthClient, func()) {
 	var orgCleanup func()
 
 	if org == nil {
 		org, orgCleanup = createOrganization(t, client)
 	}
 
+	githubToken := os.Getenv("GITHUB_TOKEN")
+	if githubToken == "" {
+		t.Fatal("Export a valid GITHUB_TOKEN before running this test!")
+	}
+
 	options := OAuthClientCreateOptions{
 		APIURL:          String("https://api.github.com"),
 		HTTPURL:         String("https://github.com"),
-		Key:             String(randomString(t)),
-		Secret:          String(randomString(t)),
+		OAuthToken:      String(githubToken),
 		ServiceProvider: ServiceProvider(ServiceProviderGithub),
 	}
 
@@ -169,20 +174,24 @@ func createOAuthToken(t *testing.T, client *Client, org *Organization) (*OAuthTo
 	// This currently panics as the token will not be there when the client is
 	// created. To get a token, the client needs to be connected through the UI
 	// first. So the test using this (TestOAuthTokensList) is currently disabled.
-	return oc.OAuthToken[0], func() {
-		// There currently isn't a way to delete an OAuth client.
-		//
-		// if err := client.OAuthClients.Delete(ctx, oc.ID); err != nil {
-		// 	t.Errorf("Error destroying OAuth client! WARNING: Dangling resources\n"+
-		// 		"may exist! The full error is shown below.\n\n"+
-		// 		"OAuthClient: %s\nError: %s", oc.ID, err)
-		// }
+	return oc, func() {
+		if err := client.OAuthClients.Delete(ctx, oc.ID); err != nil {
+			t.Errorf("Error destroying OAuth client! WARNING: Dangling resources\n"+
+				"may exist! The full error is shown below.\n\n"+
+				"OAuthClient: %s\nError: %s", oc.ID, err)
+		}
 
 		if orgCleanup != nil {
 			orgCleanup()
 		}
 	}
 }
+
+func createOAuthToken(t *testing.T, client *Client, org *Organization) (*OAuthToken, func()) {
+	ocTest, ocTestCleanup := createOAuthClient(t, client, org)
+	return ocTest.OAuthTokens[0], ocTestCleanup
+}
+
 func createOrganization(t *testing.T, client *Client) (*Organization, func()) {
 	ctx := context.Background()
 	org, err := client.Organizations.Create(ctx, OrganizationCreateOptions{
