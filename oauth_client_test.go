@@ -109,3 +109,16 @@ func TestOAuthClientCreate(t *testing.T) {
 		assert.EqualError(t, err, "ServiceProvider is required")
 	})
 }
+
+func TestOAuthClientDelete(t *testing.T) {
+	client := testClient(t)
+	ctx := context.Background()
+
+	oaTest, oaTestCleanup := createOAuthToken(t, client)
+	defer oaTestCleanup()
+
+	t.Run("with valid id", func(t *testing.T) {
+		err := client.OAuthClients.Delete(ctx, oaTest.ID)
+		assert.NoError(t, err)
+	})
+}

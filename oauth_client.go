@@ -19,6 +19,8 @@ var _ OAuthClients = (*oAuthClients)(nil)
 type OAuthClients interface {
 	// Create a VCS connection between an organization and a VCS provider.
 	Create(ctx context.Context, organization string, options OAuthClientCreateOptions) (*OAuthClient, error)
+	//Delete a VCS connection by id
+	Delete(ctx context.Context, id string) error
 }
 
 // oAuthClients implements OAuthClients.
@@ -124,4 +126,18 @@ func (s *oAuthClients) Create(ctx context.Context, organization string, options 
 	}
 
 	return oc, nil
+}
+
+//Delete a VCS connection between an organization and a VCS provider.
+func (s *oAuthClients) Delete(ctx context.Context, id string) error {
+	u := fmt.Sprintf("oauth-clients/%s", url.QueryEscape(id))
+	req, err := s.client.newRequest("DELETE", u, nil)
+	if err != nil {
+		return err
+	}
+	err = s.client.do(ctx, req, nil)
+	if err != nil {
+		return err
+	}
+	return nil
 }
