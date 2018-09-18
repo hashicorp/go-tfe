@@ -184,6 +184,36 @@ func TestRunsCancel(t *testing.T) {
 	})
 }
 
+func TestRunsForceCancel(t *testing.T) {
+	client := testClient(t)
+	ctx := context.Background()
+
+	wTest, wTestCleanup := createWorkspace(t, client, nil)
+	defer wTestCleanup()
+
+	// We need to create 2 runs here. The first run will automatically
+	// be planned so that one cannot be cancelled. The second one will
+	// be pending until the first one is confirmed or discarded, so we
+	// can cancel that one.
+	_, _ = createRun(t, client, wTest)
+	rTest2, _ := createRun(t, client, wTest)
+
+	t.Run("when the run exists", func(t *testing.T) {
+		err := client.Runs.Cancel(ctx, rTest2.ID, RunCancelOptions{})
+		assert.NoError(t, err)
+	})
+
+	t.Run("when the run does not exist", func(t *testing.T) {
+		err := client.Runs.Cancel(ctx, "nonexisting", RunCancelOptions{})
+		assert.Equal(t, err, ErrResourceNotFound)
+	})
+
+	t.Run("with invalid run ID", func(t *testing.T) {
+		err := client.Runs.Cancel(ctx, badIdentifier, RunCancelOptions{})
+		assert.EqualError(t, err, "Invalid value for run ID")
+	})
+}
+
 func TestRunsDiscard(t *testing.T) {
 	client := testClient(t)
 	ctx := context.Background()
