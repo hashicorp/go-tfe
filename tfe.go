@@ -58,7 +58,7 @@ func DefaultConfig() *Config {
 		Address:    os.Getenv("TFE_ADDRESS"),
 		BasePath:   DefaultBasePath,
 		Token:      os.Getenv("TFE_TOKEN"),
-		HTTPClient: cleanhttp.DefaultClient(),
+		HTTPClient: cleanhttp.DefaultPooledClient(),
 	}
 
 	// Set the default address if none is given.
