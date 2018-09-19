@@ -89,8 +89,10 @@ type Run struct {
 	StatusTimestamps *RunStatusTimestamps `jsonapi:"attr,status-timestamps"`
 
 	// Relations
+	Apply                *Apply                `jsonapi:"relation,apply"`
 	ConfigurationVersion *ConfigurationVersion `jsonapi:"relation,configuration-version"`
 	Plan                 *Plan                 `jsonapi:"relation,plan"`
+	PolicyChecks         []*PolicyCheck        `jsonapi:"relation,policy-checks"`
 	Workspace            *Workspace            `jsonapi:"relation,workspace"`
 }
 

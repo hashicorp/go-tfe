@@ -47,23 +47,24 @@ const (
 
 // Plan represents a Terraform Enterprise plan.
 type Plan struct {
-	ID               string                `jsonapi:"primary,plans"`
-	HasChanges       bool                  `jsonapi:"attr,has-changes"`
-	LogReadURL       string                `jsonapi:"attr,log-read-url"`
-	Status           PlanStatus            `jsonapi:"attr,status"`
-	StatusTimestamps *PlanStatusTimestamps `jsonapi:"attr,status-timestamps"`
+	ID                   string                `jsonapi:"primary,plans"`
+	HasChanges           bool                  `jsonapi:"attr,has-changes"`
+	LogReadURL           string                `jsonapi:"attr,log-read-url"`
+	ResourceAdditions    int                   `jsonapi:"attr,resource-additions"`
+	ResourceChanges      int                   `jsonapi:"attr,resource-changes"`
+	ResourceDestructions int                   `jsonapi:"attr,resource-destructions"`
+	Status               PlanStatus            `jsonapi:"attr,status"`
+	StatusTimestamps     *PlanStatusTimestamps `jsonapi:"attr,status-timestamps"`
 }
 
 // PlanStatusTimestamps holds the timestamps for individual plan statuses.
 type PlanStatusTimestamps struct {
-	CanceledAt   time.Time `json:"canceled-at"`
-	CreatedAt    time.Time `json:"created-at"`
-	ErroredAt    time.Time `json:"errored-at"`
-	FinishedAt   time.Time `json:"finished-at"`
-	MFAWaitingAt time.Time `json:"mfa_waiting-at"`
-	PendingAt    time.Time `json:"pending-at"`
-	QueuedAt     time.Time `json:"queued-at"`
-	RunningAt    time.Time `json:"running-at"`
+	CanceledAt      time.Time `json:"canceled-at"`
+	ErroredAt       time.Time `json:"errored-at"`
+	FinishedAt      time.Time `json:"finished-at"`
+	ForceCanceledAt time.Time `json:"force-canceled-at"`
+	QueuedAt        time.Time `json:"queued-at"`
+	StartedAt       time.Time `json:"started-at"`
 }
 
 // Read a plan by its ID.
@@ -109,7 +110,7 @@ func (s *plans) Logs(ctx context.Context, planID string) (io.Reader, error) {
 		return nil, fmt.Errorf("Invalid log URL: %v", err)
 	}
 
-	return &LogReader{
+	return &PlanLogReader{
 		client: s.client,
 		ctx:    ctx,
 		logURL: u,
@@ -117,8 +118,8 @@ func (s *plans) Logs(ctx context.Context, planID string) (io.Reader, error) {
 	}, nil
 }
 
-// LogReader implements io.Reader for streaming plan logs.
-type LogReader struct {
+// PlanLogReader implements io.Reader for streaming plan logs.
+type PlanLogReader struct {
 	client *Client
 	ctx    context.Context
 	logURL *url.URL
@@ -127,7 +128,7 @@ type LogReader struct {
 	reads  uint64
 }
 
-func (r *LogReader) Read(l []byte) (int, error) {
+func (r *PlanLogReader) Read(l []byte) (int, error) {
 	if written, err := r.read(l); err != io.ErrNoProgress {
 		return written, err
 	}
@@ -147,7 +148,7 @@ func (r *LogReader) Read(l []byte) (int, error) {
 	}
 }
 
-func (r *LogReader) read(l []byte) (int, error) {
+func (r *PlanLogReader) read(l []byte) (int, error) {
 	// Update the query string.
 	r.logURL.RawQuery = fmt.Sprintf("limit=%d&offset=%d", len(l), r.offset)
 

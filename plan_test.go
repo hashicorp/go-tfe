@@ -59,13 +59,7 @@ func TestPlansLogs(t *testing.T) {
 	})
 
 	t.Run("when the log does not exist", func(t *testing.T) {
-		p, err := client.Plans.Read(ctx, rTest.Plan.ID)
-		require.NoError(t, err)
-
-		logs, err := client.Plans.Logs(
-			ctx,
-			p.LogReadURL[:len(p.LogReadURL)-10]+"nonexisting",
-		)
+		logs, err := client.Plans.Logs(ctx, "nonexisting")
 		assert.Nil(t, logs)
 		assert.Error(t, err)
 	})
