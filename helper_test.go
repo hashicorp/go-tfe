@@ -290,6 +290,35 @@ func createPlannedRun(t *testing.T, client *Client, w *Workspace) (*Run, func())
 	return r, rCleanup
 }
 
+func createAppliedRun(t *testing.T, client *Client, w *Workspace) (*Run, func()) {
+	r, rCleanup := createPlannedRun(t, client, w)
+	ctx := context.Background()
+
+	err := client.Runs.Apply(ctx, r.ID, RunApplyOptions{})
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	for i := 0; ; i++ {
+		r, err = client.Runs.Read(ctx, r.ID)
+		if err != nil {
+			t.Fatal(err)
+		}
+
+		if r.Status == RunApplied {
+			break
+		}
+
+		if i > 30 {
+			rCleanup()
+			t.Fatal("Timeout waiting for run to be applied")
+		}
+
+		time.Sleep(1 * time.Second)
+	}
+
+	return r, rCleanup
+}
 func createSSHKey(t *testing.T, client *Client, org *Organization) (*SSHKey, func()) {
 	var orgCleanup func()
 
