@@ -99,7 +99,7 @@ type Run struct {
 // RunActions represents the run actions.
 type RunActions struct {
 	IsCancelable  bool `json:"is-cancelable"`
-	IsComfirmable bool `json:"is-comfirmable"`
+	IsConfirmable bool `json:"is-confirmable"`
 	IsDiscardable bool `json:"is-discardable"`
 }
 

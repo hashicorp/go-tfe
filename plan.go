@@ -5,7 +5,6 @@ import (
 	"errors"
 	"fmt"
 	"io"
-	"net/http"
 	"net/url"
 	"time"
 )
@@ -110,98 +109,24 @@ func (s *plans) Logs(ctx context.Context, planID string) (io.Reader, error) {
 		return nil, fmt.Errorf("Invalid log URL: %v", err)
 	}
 
-	return &PlanLogReader{
+	done := func() (bool, error) {
+		p, err := s.Read(ctx, p.ID)
+		if err != nil {
+			return false, err
+		}
+
+		switch p.Status {
+		case PlanCanceled, PlanErrored, PlanFinished:
+			return true, nil
+		default:
+			return false, nil
+		}
+	}
+
+	return &LogReader{
 		client: s.client,
 		ctx:    ctx,
+		done:   done,
 		logURL: u,
-		plan:   p,
 	}, nil
-}
-
-// PlanLogReader implements io.Reader for streaming plan logs.
-type PlanLogReader struct {
-	client *Client
-	ctx    context.Context
-	logURL *url.URL
-	offset int64
-	plan   *Plan
-	reads  uint64
-}
-
-func (r *PlanLogReader) Read(l []byte) (int, error) {
-	if written, err := r.read(l); err != io.ErrNoProgress {
-		return written, err
-	}
-
-	// Loop until we can any data, the context is canceled or the plan
-	// is finsished running. If we would return right away without any
-	// data, we could and up causing a io.ErrNoProgress error.
-	for {
-		select {
-		case <-r.ctx.Done():
-			return 0, r.ctx.Err()
-		case <-time.After(500 * time.Millisecond):
-			if written, err := r.read(l); err != io.ErrNoProgress {
-				return written, err
-			}
-		}
-	}
-}
-
-func (r *PlanLogReader) read(l []byte) (int, error) {
-	// Update the query string.
-	r.logURL.RawQuery = fmt.Sprintf("limit=%d&offset=%d", len(l), r.offset)
-
-	// Create a new request.
-	req, err := http.NewRequest("GET", r.logURL.String(), nil)
-	if err != nil {
-		return 0, err
-	}
-	req = req.WithContext(r.ctx)
-
-	// Retrieve the next chunk.
-	resp, err := r.client.http.Do(req)
-	if err != nil {
-		return 0, err
-	}
-	defer resp.Body.Close()
-
-	// Basic response checking.
-	if err := checkResponseCode(resp); err != nil {
-		return 0, err
-	}
-
-	// Read the retrieved chunk.
-	written, err := resp.Body.Read(l)
-	if err != nil && err != io.EOF {
-		// Ignore io.EOF errors returned when reading from the response
-		// body as this indicates the end of the chunk and not the end
-		// of the logfile.
-		return written, err
-	}
-
-	// Check if we need to continue the loop and wait 500 miliseconds
-	// before checking if there is a new chunk available or that the
-	// plan is finished and we are done reading all chunks.
-	if written == 0 {
-		if r.reads%2 == 0 {
-			r.plan, err = r.client.Plans.Read(r.ctx, r.plan.ID)
-			if err != nil {
-				return 0, err
-			}
-		}
-
-		switch r.plan.Status {
-		case PlanCanceled, PlanErrored, PlanFinished:
-			return 0, io.EOF
-		default:
-			r.reads++
-			return 0, io.ErrNoProgress
-		}
-	}
-
-	// Update the offset for the next read.
-	r.offset += int64(written)
-
-	return written, nil
 }
