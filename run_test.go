@@ -3,6 +3,7 @@ package tfe
 import (
 	"context"
 	"testing"
+	"time"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
@@ -180,6 +181,74 @@ func TestRunsCancel(t *testing.T) {
 
 	t.Run("with invalid run ID", func(t *testing.T) {
 		err := client.Runs.Cancel(ctx, badIdentifier, RunCancelOptions{})
+		assert.EqualError(t, err, "Invalid value for run ID")
+	})
+}
+
+func TestRunsForceCancel(t *testing.T) {
+	client := testClient(t)
+	ctx := context.Background()
+
+	wTest, wTestCleanup := createWorkspace(t, client, nil)
+	defer wTestCleanup()
+
+	// We need to create 2 runs here. The first run will automatically
+	// be planned so that one cannot be cancelled. The second one will
+	// be pending until the first one is confirmed or discarded, so we
+	// can cancel that one.
+	_, _ = createRun(t, client, wTest)
+	rTest, _ := createRun(t, client, wTest)
+
+	t.Run("run is not force-cancelable", func(t *testing.T) {
+		assert.False(t, rTest.Actions.IsForceCancelable)
+	})
+
+	t.Run("user is allowed to force-cancel", func(t *testing.T) {
+		assert.True(t, rTest.Permissions.CanForceCancel)
+	})
+
+	t.Run("after a normal cancel", func(t *testing.T) {
+		// Request the normal cancel
+		err := client.Runs.Cancel(ctx, rTest.ID, RunCancelOptions{})
+		require.NoError(t, err)
+
+		for i := 1; ; i++ {
+			// Refresh the view of the run
+			rTest, err = client.Runs.Read(ctx, rTest.ID)
+			require.NoError(t, err)
+
+			// Check if the timestamp is present.
+			if !rTest.ForceCancelAvailableAt.IsZero() {
+				break
+			}
+
+			if i > 30 {
+				t.Fatal("Timeout waiting for run to be canceled")
+			}
+
+			time.Sleep(time.Second)
+		}
+
+		t.Run("force-cancel-available-at timestamp is present", func(t *testing.T) {
+			assert.True(t, rTest.ForceCancelAvailableAt.After(time.Now()))
+		})
+
+		// This test case is minimal because a force-cancel is not needed in
+		// any normal circumstance. Only if Terraform encounters unexpected
+		// errors or behaves abnormaly should this functionality be required.
+		// Force-cancel only becomes available if a normal cancel is performed
+		// first, and the desired canceled state is not reached within a pre-
+		// determined amount of time (see
+		// https://www.terraform.io/docs/enterprise/api/run.html#forcefully-cancel-a-run).
+	})
+
+	t.Run("when the run does not exist", func(t *testing.T) {
+		err := client.Runs.ForceCancel(ctx, "nonexisting", RunForceCancelOptions{})
+		assert.Equal(t, err, ErrResourceNotFound)
+	})
+
+	t.Run("with invalid run ID", func(t *testing.T) {
+		err := client.Runs.ForceCancel(ctx, badIdentifier, RunForceCancelOptions{})
 		assert.EqualError(t, err, "Invalid value for run ID")
 	})
 }
