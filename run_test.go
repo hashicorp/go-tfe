@@ -210,14 +210,24 @@ func TestRunsForceCancel(t *testing.T) {
 	t.Run("after a normal cancel", func(t *testing.T) {
 		// Request the normal cancel
 		err := client.Runs.Cancel(ctx, rTest.ID, RunCancelOptions{})
-		assert.NoError(t, err)
+		require.NoError(t, err)
 
-		// Allow time for the async cancel request to operate.
-		time.Sleep(5 * time.Second)
+		for i := 1; ; i++ {
+			// Refresh the view of the run
+			rTest, err = client.Runs.Read(ctx, rTest.ID)
+			require.NoError(t, err)
 
-		// Refresh the view of the run
-		rTest, err = client.Runs.Read(ctx, rTest.ID)
-		assert.NoError(t, err)
+			// Check if the timestamp is present.
+			if !rTest.ForceCancelAvailableAt.IsZero() {
+				break
+			}
+
+			if i > 5 {
+				t.Fatal("Timeout waiting for run to be canceled")
+			}
+
+			time.Sleep(time.Second)
+		}
 
 		t.Run("force-cancel-available-at timestamp is present", func(t *testing.T) {
 			assert.True(t, rTest.ForceCancelAvailableAt.After(time.Now()))
