@@ -222,7 +222,7 @@ func TestRunsForceCancel(t *testing.T) {
 				break
 			}
 
-			if i > 5 {
+			if i > 30 {
 				t.Fatal("Timeout waiting for run to be canceled")
 			}
 
