@@ -201,3 +201,135 @@ func TestOrganizationsDelete(t *testing.T) {
 		assert.EqualError(t, err, "Invalid value for organization")
 	})
 }
+
+func TestOrganizationsCapacity(t *testing.T) {
+	client := testClient(t)
+	ctx := context.Background()
+
+	orgTest, orgTestCleanup := createOrganization(t, client)
+	defer orgTestCleanup()
+
+	wTest1, _ := createWorkspace(t, client, orgTest)
+	wTest2, _ := createWorkspace(t, client, orgTest)
+	wTest3, _ := createWorkspace(t, client, orgTest)
+	wTest4, _ := createWorkspace(t, client, orgTest)
+
+	t.Run("without queued runs", func(t *testing.T) {
+		c, err := client.Organizations.Capacity(ctx, orgTest.Name)
+		require.NoError(t, err)
+		assert.Equal(t, 0, c.Pending)
+		assert.Equal(t, 0, c.Running)
+	})
+
+	// For this test FRQ should be enabled and have a
+	// limit of 2 concurrent runs per organization.
+	t.Run("with queued runs", func(t *testing.T) {
+		_, _ = createRun(t, client, wTest1)
+		_, _ = createRun(t, client, wTest2)
+		_, _ = createRun(t, client, wTest3)
+		_, _ = createRun(t, client, wTest4)
+
+		c, err := client.Organizations.Capacity(ctx, orgTest.Name)
+		require.NoError(t, err)
+		assert.Equal(t, 2, c.Pending)
+		assert.Equal(t, 2, c.Running)
+	})
+
+	t.Run("with invalid name", func(t *testing.T) {
+		org, err := client.Organizations.Read(ctx, badIdentifier)
+		assert.Nil(t, org)
+		assert.EqualError(t, err, "Invalid value for organization")
+	})
+
+	t.Run("when the org does not exist", func(t *testing.T) {
+		_, err := client.Organizations.Read(ctx, randomString(t))
+		assert.Error(t, err)
+	})
+}
+
+func TestOrganizationsRunQueue(t *testing.T) {
+	client := testClient(t)
+	ctx := context.Background()
+
+	orgTest, orgTestCleanup := createOrganization(t, client)
+	defer orgTestCleanup()
+
+	wTest1, _ := createWorkspace(t, client, orgTest)
+	wTest2, _ := createWorkspace(t, client, orgTest)
+	wTest3, _ := createWorkspace(t, client, orgTest)
+	wTest4, _ := createWorkspace(t, client, orgTest)
+
+	t.Run("without queued runs", func(t *testing.T) {
+		q, err := client.Organizations.RunQueue(ctx, orgTest.Name, QueueOptions{})
+		require.NoError(t, err)
+		assert.Equal(t, 0, len(q.Items))
+	})
+
+	// Create a couple or runs to fill the queue.
+	rTest1, _ := createRun(t, client, wTest1)
+	rTest2, _ := createRun(t, client, wTest2)
+	rTest3, _ := createRun(t, client, wTest3)
+	rTest4, _ := createRun(t, client, wTest4)
+
+	// For this test FRQ should be enabled and have a
+	// limit of 2 concurrent runs per organization.
+	t.Run("with queued runs", func(t *testing.T) {
+		q, err := client.Organizations.RunQueue(ctx, orgTest.Name, QueueOptions{})
+		require.NoError(t, err)
+
+		found := []string{}
+		for _, r := range q.Items {
+			found = append(found, r.ID)
+		}
+
+		assert.Contains(t, found, rTest1.ID)
+		assert.Contains(t, found, rTest2.ID)
+		assert.Contains(t, found, rTest3.ID)
+		assert.Contains(t, found, rTest4.ID)
+	})
+
+	t.Run("without queue options", func(t *testing.T) {
+		q, err := client.Organizations.RunQueue(ctx, orgTest.Name, QueueOptions{})
+		require.NoError(t, err)
+
+		found := []string{}
+		for _, r := range q.Items {
+			found = append(found, r.ID)
+		}
+
+		assert.Contains(t, found, rTest1.ID)
+		assert.Contains(t, found, rTest2.ID)
+		assert.Contains(t, found, rTest3.ID)
+		assert.Contains(t, found, rTest4.ID)
+		assert.Equal(t, 1, q.CurrentPage)
+		assert.Equal(t, 4, q.TotalCount)
+	})
+
+	t.Run("with queue options", func(t *testing.T) {
+		// Request a page number which is out of range. The result should
+		// be successful, but return no results if the paging options are
+		// properly passed along.
+		q, err := client.Organizations.RunQueue(ctx, orgTest.Name, QueueOptions{
+			ListOptions: ListOptions{
+				PageNumber: 999,
+				PageSize:   100,
+			},
+		})
+		require.NoError(t, err)
+
+		assert.Empty(t, q.Items)
+		assert.Equal(t, 999, q.CurrentPage)
+		assert.Equal(t, 4, q.TotalCount)
+	})
+
+	t.Run("with invalid name", func(t *testing.T) {
+		org, err := client.Organizations.Read(ctx, badIdentifier)
+		assert.Nil(t, org)
+		assert.EqualError(t, err, "Invalid value for organization")
+	})
+
+	t.Run("when the org does not exist", func(t *testing.T) {
+		_, err := client.Organizations.Read(ctx, randomString(t))
+		assert.Error(t, err)
+	})
+}

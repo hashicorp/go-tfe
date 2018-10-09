@@ -88,6 +88,7 @@ type Run struct {
 	IsDestroy              bool                 `jsonapi:"attr,is-destroy"`
 	Message                string               `jsonapi:"attr,message"`
 	Permissions            *RunPermissions      `jsonapi:"attr,permissions"`
+	PositionInQueue        int                  `jsonapi:"attr,position-in-queue"`
 	Source                 RunSource            `jsonapi:"attr,source"`
 	Status                 RunStatus            `jsonapi:"attr,status"`
 	StatusTimestamps       *RunStatusTimestamps `jsonapi:"attr,status-timestamps"`
