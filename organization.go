@@ -36,7 +36,7 @@ type Organizations interface {
 	Capacity(ctx context.Context, organization string) (*Capacity, error)
 
 	// RunQueue shows the current run queue of an organization.
-	RunQueue(ctx context.Context, organization string, options RunQueueOptions) (*Queue, error)
+	RunQueue(ctx context.Context, organization string, options RunQueueOptions) (*RunQueue, error)
 }
 
 // organizations implements Organizations.
@@ -93,8 +93,8 @@ type Capacity struct {
 	Running      int    `jsonapi:"attr,running"`
 }
 
-// Queue represents the current run queue of an organization.
-type Queue struct {
+// RunQueue represents the current run queue of an organization.
+type RunQueue struct {
 	*Pagination
 	Items []*Run
 }
@@ -289,7 +289,7 @@ type RunQueueOptions struct {
 }
 
 // RunQueue shows the current run queue of an organization.
-func (s *organizations) RunQueue(ctx context.Context, organization string, options RunQueueOptions) (*Queue, error) {
+func (s *organizations) RunQueue(ctx context.Context, organization string, options RunQueueOptions) (*RunQueue, error) {
 	if !validStringID(&organization) {
 		return nil, errors.New("Invalid value for organization")
 	}
@@ -300,11 +300,11 @@ func (s *organizations) RunQueue(ctx context.Context, organization string, optio
 		return nil, err
 	}
 
-	q := &Queue{}
-	err = s.client.do(ctx, req, q)
+	rq := &RunQueue{}
+	err = s.client.do(ctx, req, rq)
 	if err != nil {
 		return nil, err
 	}
 
-	return q, nil
+	return rq, nil
 }
