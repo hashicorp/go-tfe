@@ -260,9 +260,9 @@ func TestOrganizationsRunQueue(t *testing.T) {
 	wTest4, _ := createWorkspace(t, client, orgTest)
 
 	t.Run("without queued runs", func(t *testing.T) {
-		q, err := client.Organizations.RunQueue(ctx, orgTest.Name, RunQueueOptions{})
+		rq, err := client.Organizations.RunQueue(ctx, orgTest.Name, RunQueueOptions{})
 		require.NoError(t, err)
-		assert.Equal(t, 0, len(q.Items))
+		assert.Equal(t, 0, len(rq.Items))
 	})
 
 	// Create a couple or runs to fill the queue.
@@ -274,11 +274,11 @@ func TestOrganizationsRunQueue(t *testing.T) {
 	// For this test FRQ should be enabled and have a
 	// limit of 2 concurrent runs per organization.
 	t.Run("with queued runs", func(t *testing.T) {
-		q, err := client.Organizations.RunQueue(ctx, orgTest.Name, RunQueueOptions{})
+		rq, err := client.Organizations.RunQueue(ctx, orgTest.Name, RunQueueOptions{})
 		require.NoError(t, err)
 
 		found := []string{}
-		for _, r := range q.Items {
+		for _, r := range rq.Items {
 			found = append(found, r.ID)
 		}
 
@@ -289,11 +289,11 @@ func TestOrganizationsRunQueue(t *testing.T) {
 	})
 
 	t.Run("without queue options", func(t *testing.T) {
-		q, err := client.Organizations.RunQueue(ctx, orgTest.Name, RunQueueOptions{})
+		rq, err := client.Organizations.RunQueue(ctx, orgTest.Name, RunQueueOptions{})
 		require.NoError(t, err)
 
 		found := []string{}
-		for _, r := range q.Items {
+		for _, r := range rq.Items {
 			found = append(found, r.ID)
 		}
 
@@ -301,15 +301,15 @@ func TestOrganizationsRunQueue(t *testing.T) {
 		assert.Contains(t, found, rTest2.ID)
 		assert.Contains(t, found, rTest3.ID)
 		assert.Contains(t, found, rTest4.ID)
-		assert.Equal(t, 1, q.CurrentPage)
-		assert.Equal(t, 4, q.TotalCount)
+		assert.Equal(t, 1, rq.CurrentPage)
+		assert.Equal(t, 4, rq.TotalCount)
 	})
 
 	t.Run("with queue options", func(t *testing.T) {
 		// Request a page number which is out of range. The result should
 		// be successful, but return no results if the paging options are
 		// properly passed along.
-		q, err := client.Organizations.RunQueue(ctx, orgTest.Name, RunQueueOptions{
+		rq, err := client.Organizations.RunQueue(ctx, orgTest.Name, RunQueueOptions{
 			ListOptions: ListOptions{
 				PageNumber: 999,
 				PageSize:   100,
@@ -317,9 +317,9 @@ func TestOrganizationsRunQueue(t *testing.T) {
 		})
 		require.NoError(t, err)
 
-		assert.Empty(t, q.Items)
-		assert.Equal(t, 999, q.CurrentPage)
-		assert.Equal(t, 4, q.TotalCount)
+		assert.Empty(t, rq.Items)
+		assert.Equal(t, 999, rq.CurrentPage)
+		assert.Equal(t, 4, rq.TotalCount)
 	})
 
 	t.Run("with invalid name", func(t *testing.T) {
