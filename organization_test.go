@@ -260,7 +260,7 @@ func TestOrganizationsRunQueue(t *testing.T) {
 	wTest4, _ := createWorkspace(t, client, orgTest)
 
 	t.Run("without queued runs", func(t *testing.T) {
-		q, err := client.Organizations.RunQueue(ctx, orgTest.Name, QueueOptions{})
+		q, err := client.Organizations.RunQueue(ctx, orgTest.Name, RunQueueOptions{})
 		require.NoError(t, err)
 		assert.Equal(t, 0, len(q.Items))
 	})
@@ -274,7 +274,7 @@ func TestOrganizationsRunQueue(t *testing.T) {
 	// For this test FRQ should be enabled and have a
 	// limit of 2 concurrent runs per organization.
 	t.Run("with queued runs", func(t *testing.T) {
-		q, err := client.Organizations.RunQueue(ctx, orgTest.Name, QueueOptions{})
+		q, err := client.Organizations.RunQueue(ctx, orgTest.Name, RunQueueOptions{})
 		require.NoError(t, err)
 
 		found := []string{}
@@ -289,7 +289,7 @@ func TestOrganizationsRunQueue(t *testing.T) {
 	})
 
 	t.Run("without queue options", func(t *testing.T) {
-		q, err := client.Organizations.RunQueue(ctx, orgTest.Name, QueueOptions{})
+		q, err := client.Organizations.RunQueue(ctx, orgTest.Name, RunQueueOptions{})
 		require.NoError(t, err)
 
 		found := []string{}
@@ -309,7 +309,7 @@ func TestOrganizationsRunQueue(t *testing.T) {
 		// Request a page number which is out of range. The result should
 		// be successful, but return no results if the paging options are
 		// properly passed along.
-		q, err := client.Organizations.RunQueue(ctx, orgTest.Name, QueueOptions{
+		q, err := client.Organizations.RunQueue(ctx, orgTest.Name, RunQueueOptions{
 			ListOptions: ListOptions{
 				PageNumber: 999,
 				PageSize:   100,
