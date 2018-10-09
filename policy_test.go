@@ -24,13 +24,11 @@ func TestPoliciesList(t *testing.T) {
 		assert.Contains(t, pl.Items, pTest1)
 		assert.Contains(t, pl.Items, pTest2)
 
-		t.Skip("paging not supported yet in API")
 		assert.Equal(t, 1, pl.CurrentPage)
 		assert.Equal(t, 2, pl.TotalCount)
 	})
 
-	t.Run("with list options", func(t *testing.T) {
-		t.Skip("paging not supported yet in API")
+	t.Run("with pagination", func(t *testing.T) {
 		// Request a page number which is out of range. The result should
 		// be successful, but return no results if the paging options are
 		// properly passed along.
@@ -44,6 +42,21 @@ func TestPoliciesList(t *testing.T) {
 		assert.Empty(t, pl.Items)
 		assert.Equal(t, 999, pl.CurrentPage)
 		assert.Equal(t, 2, pl.TotalCount)
+	})
+
+	t.Run("with search", func(t *testing.T) {
+		// Search by one of the policy's names; we should get only that policy
+		// and pagination data should reflect the search as well
+		pl, err := client.Policies.List(ctx, orgTest.Name, PolicyListOptions{
+			ListOptions: ListOptions{
+				Search: pTest1.Name,
+			},
+		})
+		require.NoError(t, err)
+		assert.Contains(t, pl.Items, pTest1)
+		assert.NotContains(t, pl.Items, pTest2)
+		assert.Equal(t, 1, pl.CurrentPage)
+		assert.Equal(t, 1, pl.TotalCount)
 	})
 
 	t.Run("without a valid organization", func(t *testing.T) {
@@ -177,7 +190,9 @@ func TestPoliciesRead(t *testing.T) {
 		require.NoError(t, err)
 		assert.Equal(t, pTest.ID, p.ID)
 		assert.Equal(t, pTest.Name, p.Name)
+		assert.Equal(t, pTest.PolicySetCount, p.PolicySetCount)
 		assert.Empty(t, p.Enforce)
+		assert.Equal(t, orgTest.Name, p.Organization.Name)
 	})
 
 	err := client.Policies.Upload(ctx, pTest.ID, []byte(`main = rule { true }`))
@@ -188,7 +203,9 @@ func TestPoliciesRead(t *testing.T) {
 		require.NoError(t, err)
 		assert.Equal(t, pTest.ID, p.ID)
 		assert.Equal(t, pTest.Name, p.Name)
+		assert.Equal(t, pTest.PolicySetCount, p.PolicySetCount)
 		assert.NotEmpty(t, p.Enforce)
+		assert.Equal(t, orgTest.Name, p.Organization.Name)
 	})
 
 	t.Run("when the policy does not exist", func(t *testing.T) {
