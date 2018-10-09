@@ -36,7 +36,7 @@ type Organizations interface {
 	Capacity(ctx context.Context, organization string) (*Capacity, error)
 
 	// RunQueue shows the current run queue of an organization.
-	RunQueue(ctx context.Context, organization string, options QueueOptions) (*Queue, error)
+	RunQueue(ctx context.Context, organization string, options RunQueueOptions) (*Queue, error)
 }
 
 // organizations implements Organizations.
@@ -283,13 +283,13 @@ func (s *organizations) Capacity(ctx context.Context, organization string) (*Cap
 	return c, nil
 }
 
-// QueueOptions represents the options for showing the queue.
-type QueueOptions struct {
+// RunQueueOptions represents the options for showing the queue.
+type RunQueueOptions struct {
 	ListOptions
 }
 
 // RunQueue shows the current run queue of an organization.
-func (s *organizations) RunQueue(ctx context.Context, organization string, options QueueOptions) (*Queue, error) {
+func (s *organizations) RunQueue(ctx context.Context, organization string, options RunQueueOptions) (*Queue, error) {
 	if !validStringID(&organization) {
 		return nil, errors.New("Invalid value for organization")
 	}
