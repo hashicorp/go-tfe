@@ -48,9 +48,7 @@ func TestPoliciesList(t *testing.T) {
 		// Search by one of the policy's names; we should get only that policy
 		// and pagination data should reflect the search as well
 		pl, err := client.Policies.List(ctx, orgTest.Name, PolicyListOptions{
-			ListOptions: ListOptions{
-				Search: pTest1.Name,
-			},
+			Search: &pTest1.Name,
 		})
 		require.NoError(t, err)
 		assert.Contains(t, pl.Items, pTest1)
@@ -182,7 +180,10 @@ func TestPoliciesRead(t *testing.T) {
 	client := testClient(t)
 	ctx := context.Background()
 
-	pTest, pTestCleanup := createPolicy(t, client, nil)
+	orgTest, orgTestCleanup := createOrganization(t, client)
+	defer orgTestCleanup()
+
+	pTest, pTestCleanup := createPolicy(t, client, orgTest)
 	defer pTestCleanup()
 
 	t.Run("when the policy exists without content", func(t *testing.T) {

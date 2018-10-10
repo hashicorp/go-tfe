@@ -93,6 +93,7 @@ type Client struct {
 	Plans                 Plans
 	Policies              Policies
 	PolicyChecks          PolicyChecks
+	PolicySets            PolicySets
 	Runs                  Runs
 	SSHKeys               SSHKeys
 	StateVersions         StateVersions
@@ -162,6 +163,7 @@ func NewClient(cfg *Config) (*Client, error) {
 	client.Plans = &plans{client: client}
 	client.Policies = &policies{client: client}
 	client.PolicyChecks = &policyChecks{client: client}
+	client.PolicySets = &policySets{client: client}
 	client.Runs = &runs{client: client}
 	client.SSHKeys = &sshKeys{client: client}
 	client.StateVersions = &stateVersions{client: client}

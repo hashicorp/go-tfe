@@ -80,6 +80,55 @@ func createUploadedConfigurationVersion(t *testing.T, client *Client, w *Workspa
 	return cv, cvCleanup
 }
 
+func createPolicySet(t *testing.T, client *Client, org *Organization, policies []*Policy, workspaces []*Workspace) (*PolicySet, func()) {
+	var orgCleanup func()
+
+	if org == nil {
+		org, orgCleanup = createOrganization(t, client)
+	}
+
+	name := randomString(t)
+	ctx := context.Background()
+	ps, err := client.PolicySets.Create(ctx, org.Name, PolicySetCreateOptions{
+		Name: String(name),
+	})
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	if len(policies) > 0 {
+		err := client.PolicySets.AddPolicies(ctx, ps.ID, PolicySetAddPoliciesOptions{
+			Policies: policies,
+		})
+
+		if err != nil {
+			t.Fatal(err)
+		}
+	}
+
+	if len(workspaces) > 0 {
+		err := client.PolicySets.AttachToWorkspaces(ctx, ps.ID, PolicySetAttachToWorkspacesOptions{
+			Workspaces: workspaces,
+		})
+
+		if err != nil {
+			t.Fatal(err)
+		}
+	}
+
+	return ps, func() {
+		if err := client.PolicySets.Delete(ctx, ps.ID); err != nil {
+			t.Errorf("Error destroying policy set! WARNING: Dangling resources\n"+
+				"may exist! The full error is shown below.\n\n"+
+				"PolicySet: %s\nError: %s", ps.ID, err)
+		}
+
+		if orgCleanup != nil {
+			orgCleanup()
+		}
+	}
+}
+
 func createPolicy(t *testing.T, client *Client, org *Organization) (*Policy, func()) {
 	var orgCleanup func()
 
