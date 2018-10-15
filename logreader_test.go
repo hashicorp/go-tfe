@@ -37,7 +37,87 @@ func testLogReader(t *testing.T, h http.HandlerFunc) (*httptest.Server, *LogRead
 	return ts, lr
 }
 
-func TestLogReader_withMarkers(t *testing.T) {
+func TestLogReader_withMarkersSingle(t *testing.T) {
+	t.Parallel()
+
+	logReads := 0
+	ts, lr := testLogReader(t, http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		logReads++
+		switch {
+		case logReads == 1:
+			w.Write([]byte("\x02Terraform run started - logs - Terraform run finished\x03"))
+		}
+	}))
+	defer ts.Close()
+
+	doneReads := 0
+	lr.done = func() (bool, error) {
+		doneReads++
+		if logReads >= 1 {
+			return true, nil
+		}
+		return false, nil
+	}
+
+	logs, err := ioutil.ReadAll(lr)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	expected := "Terraform run started - logs - Terraform run finished"
+	if string(logs) != expected {
+		t.Fatalf("expected %s, got: %s", expected, string(logs))
+	}
+	if doneReads != 1 {
+		t.Fatalf("expected 1 done reads, got %d reads", doneReads)
+	}
+	if logReads != 2 {
+		t.Fatalf("expected 2 log reads, got %d reads", logReads)
+	}
+}
+
+func TestLogReader_withMarkersDouble(t *testing.T) {
+	t.Parallel()
+
+	logReads := 0
+	ts, lr := testLogReader(t, http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		logReads++
+		switch {
+		case logReads == 1:
+			w.Write([]byte("\x02Terraform run started"))
+		case logReads == 2:
+			w.Write([]byte(" - logs - Terraform run finished\x03"))
+		}
+	}))
+	defer ts.Close()
+
+	doneReads := 0
+	lr.done = func() (bool, error) {
+		doneReads++
+		if logReads >= 2 {
+			return true, nil
+		}
+		return false, nil
+	}
+
+	logs, err := ioutil.ReadAll(lr)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	expected := "Terraform run started - logs - Terraform run finished"
+	if string(logs) != expected {
+		t.Fatalf("expected %s, got: %s", expected, string(logs))
+	}
+	if doneReads != 1 {
+		t.Fatalf("expected 1 done reads, got %d reads", doneReads)
+	}
+	if logReads != 3 {
+		t.Fatalf("expected 3 log reads, got %d reads", logReads)
+	}
+}
+
+func TestLogReader_withMarkersMulti(t *testing.T) {
 	t.Parallel()
 
 	logReads := 0
@@ -72,15 +152,15 @@ func TestLogReader_withMarkers(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	expected := "\x02Terraform run started - logs - Terraform run finished\x03"
+	expected := "Terraform run started - logs - Terraform run finished"
 	if string(logs) != expected {
 		t.Fatalf("expected %s, got: %s", expected, string(logs))
 	}
-	if doneReads != 4 {
-		t.Fatalf("expected 4 done reads, got %d reads", doneReads)
+	if doneReads != 3 {
+		t.Fatalf("expected 3 done reads, got %d reads", doneReads)
 	}
-	if logReads != 31 {
-		t.Fatalf("expected 31 log reads, got %d reads", logReads)
+	if logReads != 30 {
+		t.Fatalf("expected 30 log reads, got %d reads", logReads)
 	}
 }
 
@@ -160,12 +240,12 @@ func TestLogReader_withoutEndOfTextMarker(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	expected := "\x02Terraform run started - logs - Terraform run finished"
+	expected := "Terraform run started - logs - Terraform run finished"
 	if string(logs) != expected {
 		t.Fatalf("expected %s, got: %s", expected, string(logs))
 	}
-	if doneReads != 4 {
-		t.Fatalf("expected 4 done reads, got %d reads", doneReads)
+	if doneReads != 3 {
+		t.Fatalf("expected 3 done reads, got %d reads", doneReads)
 	}
 	if logReads != 41 {
 		t.Fatalf("expected 41 log reads, got %d reads", logReads)
