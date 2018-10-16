@@ -116,6 +116,9 @@ type PolicyCreateOptions struct {
 	// The name of the policy.
 	Name *string `jsonapi:"attr,name"`
 
+	// A description of the policy's purpose.
+	Description *string `jsonapi:"attr,description,omitempty"`
+
 	// The enforcements of the policy.
 	Enforce []*EnforcementOptions `jsonapi:"attr,enforce"`
 }
@@ -200,24 +203,17 @@ type PolicyUpdateOptions struct {
 	// For internal use only!
 	ID string `jsonapi:"primary,policies"`
 
-	// The enforcements of the policy.
-	Enforce []*EnforcementOptions `jsonapi:"attr,enforce"`
-}
+	// A description of the policy's purpose.
+	Description *string `jsonapi:"attr,description,omitempty"`
 
-func (o PolicyUpdateOptions) valid() error {
-	if o.Enforce == nil {
-		return errors.New("Enforce is required")
-	}
-	return nil
+	// The enforcements of the policy.
+	Enforce []*EnforcementOptions `jsonapi:"attr,enforce,omitempty"`
 }
 
 // Update an existing policy.
 func (s *policies) Update(ctx context.Context, policyID string, options PolicyUpdateOptions) (*Policy, error) {
 	if !validStringID(&policyID) {
 		return nil, errors.New("Invalid value for policy ID")
-	}
-	if err := options.valid(); err != nil {
-		return nil, err
 	}
 
 	// Make sure we don't send a user provided ID.
