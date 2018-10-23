@@ -34,14 +34,15 @@ type ApplyStatus string
 
 //List all available apply statuses.
 const (
-	ApplyCanceled   ApplyStatus = "canceled"
-	ApplyCreated    ApplyStatus = "created"
-	ApplyErrored    ApplyStatus = "errored"
-	ApplyFinished   ApplyStatus = "finished"
-	ApplyMFAWaiting ApplyStatus = "mfa_waiting"
-	ApplyPending    ApplyStatus = "pending"
-	ApplyQueued     ApplyStatus = "queued"
-	ApplyRunning    ApplyStatus = "running"
+	ApplyCanceled    ApplyStatus = "canceled"
+	ApplyCreated     ApplyStatus = "created"
+	ApplyErrored     ApplyStatus = "errored"
+	ApplyFinished    ApplyStatus = "finished"
+	ApplyMFAWaiting  ApplyStatus = "mfa_waiting"
+	ApplyPending     ApplyStatus = "pending"
+	ApplyQueued      ApplyStatus = "queued"
+	ApplyRunning     ApplyStatus = "running"
+	ApplyUnreachable ApplyStatus = "unreachable"
 )
 
 // Apply represents a Terraform Enterprise apply.
@@ -115,7 +116,7 @@ func (s *applies) Logs(ctx context.Context, applyID string) (io.Reader, error) {
 		}
 
 		switch a.Status {
-		case ApplyCanceled, ApplyErrored, ApplyFinished:
+		case ApplyCanceled, ApplyErrored, ApplyFinished, ApplyUnreachable:
 			return true, nil
 		default:
 			return false, nil
