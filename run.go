@@ -48,18 +48,20 @@ type RunStatus string
 
 //List all available run statuses.
 const (
-	RunApplied        RunStatus = "applied"
-	RunApplying       RunStatus = "applying"
-	RunCanceled       RunStatus = "canceled"
-	RunConfirmed      RunStatus = "confirmed"
-	RunDiscarded      RunStatus = "discarded"
-	RunErrored        RunStatus = "errored"
-	RunPending        RunStatus = "pending"
-	RunPlanned        RunStatus = "planned"
-	RunPlanning       RunStatus = "planning"
-	RunPolicyChecked  RunStatus = "policy_checked"
-	RunPolicyChecking RunStatus = "policy_checking"
-	RunPolicyOverride RunStatus = "policy_override"
+	RunApplied            RunStatus = "applied"
+	RunApplying           RunStatus = "applying"
+	RunCanceled           RunStatus = "canceled"
+	RunConfirmed          RunStatus = "confirmed"
+	RunDiscarded          RunStatus = "discarded"
+	RunErrored            RunStatus = "errored"
+	RunPending            RunStatus = "pending"
+	RunPlanned            RunStatus = "planned"
+	RunPlannedAndFinished RunStatus = "planned_and_finished"
+	RunPlanning           RunStatus = "planning"
+	RunPolicyChecked      RunStatus = "policy_checked"
+	RunPolicyChecking     RunStatus = "policy_checking"
+	RunPolicyOverride     RunStatus = "policy_override"
+	RunPolicySoftFailed   RunStatus = "policy_soft_failed"
 )
 
 // RunSource represents a source type of a run.
