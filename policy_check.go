@@ -51,13 +51,14 @@ type PolicyStatus string
 
 //List all available policy check statuses.
 const (
-	PolicyErrored    PolicyStatus = "errored"
-	PolicyHardFailed PolicyStatus = "hard_failed"
-	PolicyOverridden PolicyStatus = "overridden"
-	PolicyPasses     PolicyStatus = "passed"
-	PolicyPending    PolicyStatus = "pending"
-	PolicyQueued     PolicyStatus = "queued"
-	PolicySoftFailed PolicyStatus = "soft_failed"
+	PolicyErrored     PolicyStatus = "errored"
+	PolicyHardFailed  PolicyStatus = "hard_failed"
+	PolicyOverridden  PolicyStatus = "overridden"
+	PolicyPasses      PolicyStatus = "passed"
+	PolicyPending     PolicyStatus = "pending"
+	PolicyQueued      PolicyStatus = "queued"
+	PolicySoftFailed  PolicyStatus = "soft_failed"
+	PolicyUnreachable PolicyStatus = "unreachable"
 )
 
 // PolicyCheckList represents a list of policy checks.

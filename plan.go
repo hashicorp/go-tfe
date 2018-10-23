@@ -34,14 +34,15 @@ type PlanStatus string
 
 //List all available plan statuses.
 const (
-	PlanCanceled   PlanStatus = "canceled"
-	PlanCreated    PlanStatus = "created"
-	PlanErrored    PlanStatus = "errored"
-	PlanFinished   PlanStatus = "finished"
-	PlanMFAWaiting PlanStatus = "mfa_waiting"
-	PlanPending    PlanStatus = "pending"
-	PlanQueued     PlanStatus = "queued"
-	PlanRunning    PlanStatus = "running"
+	PlanCanceled    PlanStatus = "canceled"
+	PlanCreated     PlanStatus = "created"
+	PlanErrored     PlanStatus = "errored"
+	PlanFinished    PlanStatus = "finished"
+	PlanMFAWaiting  PlanStatus = "mfa_waiting"
+	PlanPending     PlanStatus = "pending"
+	PlanQueued      PlanStatus = "queued"
+	PlanRunning     PlanStatus = "running"
+	PlanUnreachable PlanStatus = "unreachable"
 )
 
 // Plan represents a Terraform Enterprise plan.
@@ -116,7 +117,7 @@ func (s *plans) Logs(ctx context.Context, planID string) (io.Reader, error) {
 		}
 
 		switch p.Status {
-		case PlanCanceled, PlanErrored, PlanFinished:
+		case PlanCanceled, PlanErrored, PlanFinished, PlanUnreachable:
 			return true, nil
 		default:
 			return false, nil
