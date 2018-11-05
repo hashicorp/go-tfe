@@ -5,11 +5,14 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/hashicorp/atlas-go/archive"
 	"net/url"
+	//"os"
 	"time"
-
-	slug "github.com/hashicorp/go-slug"
+	//	slug "github.com/hashicorp/go-slug"
 )
+
+var _ archive.Archive
 
 // Compile-time proof of interface implementation.
 var _ ConfigurationVersions = (*configurationVersions)(nil)
@@ -183,14 +186,38 @@ func (s *configurationVersions) Read(ctx context.Context, cvID string) (*Configu
 // upload URL from a configuration version and the path to the configuration
 // files on disk.
 func (s *configurationVersions) Upload(ctx context.Context, url, path string) error {
-	body := bytes.NewBuffer(nil)
 
-	_, err := slug.Pack(path, body)
+	archiveOpts := archive.ArchiveOpts{Exclude: []string{".git", ".terraform"}}
+
+	// Get the archive reader
+
+	r, err := archive.CreateArchive(path, &archiveOpts)
 	if err != nil {
+		//fmt.Fprintf(cli.errStream, "error archiving: %s\n", err)
+		//return archive.ExitCodeArchiveError
 		return err
 	}
+	defer r.Close()
+
+	// ** This seems like it would be nice to have working.
+	// Put a progress bar around the reader
+	/*pr := &ioprogress.Reader{
+		Reader: r,
+		Size:   r.Size,
+		DrawFunc: ioprogress.DrawTerminalf(os.Stdout, func(p, t int64) string {
+			return fmt.Sprintf(
+				"Uploading %s: %s",
+				//				slug,
+				ioprogress.DrawTextFormatBytes(p, t))
+		}),doneCh
+	}*/
+
+	//doneCh, uploadErrCh, err := atlas - upload - cli.Uploadedload(pr, r.Size, &uploadOpts)
+	body := bytes.NewBuffer(nil)
+	body.ReadFrom(r.ReadCloser)
 
 	req, err := s.client.newRequest("PUT", url, body)
+
 	if err != nil {
 		return err
 	}
