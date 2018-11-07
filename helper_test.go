@@ -87,33 +87,14 @@ func createPolicySet(t *testing.T, client *Client, org *Organization, policies [
 		org, orgCleanup = createOrganization(t, client)
 	}
 
-	name := randomString(t)
 	ctx := context.Background()
 	ps, err := client.PolicySets.Create(ctx, org.Name, PolicySetCreateOptions{
-		Name: String(name),
+		Name:       String(randomString(t)),
+		Policies:   policies,
+		Workspaces: workspaces,
 	})
 	if err != nil {
 		t.Fatal(err)
-	}
-
-	if len(policies) > 0 {
-		err := client.PolicySets.AddPolicies(ctx, ps.ID, PolicySetAddPoliciesOptions{
-			Policies: policies,
-		})
-
-		if err != nil {
-			t.Fatal(err)
-		}
-	}
-
-	if len(workspaces) > 0 {
-		err := client.PolicySets.AttachToWorkspaces(ctx, ps.ID, PolicySetAttachToWorkspacesOptions{
-			Workspaces: workspaces,
-		})
-
-		if err != nil {
-			t.Fatal(err)
-		}
 	}
 
 	return ps, func() {

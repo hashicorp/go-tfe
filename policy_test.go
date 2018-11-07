@@ -39,6 +39,7 @@ func TestPoliciesList(t *testing.T) {
 			},
 		})
 		require.NoError(t, err)
+
 		assert.Empty(t, pl.Items)
 		assert.Equal(t, 999, pl.CurrentPage)
 		assert.Equal(t, 2, pl.TotalCount)
@@ -51,6 +52,7 @@ func TestPoliciesList(t *testing.T) {
 			Search: &pTest1.Name,
 		})
 		require.NoError(t, err)
+
 		assert.Contains(t, pl.Items, pTest1)
 		assert.NotContains(t, pl.Items, pTest2)
 		assert.Equal(t, 1, pl.CurrentPage)
@@ -191,6 +193,7 @@ func TestPoliciesRead(t *testing.T) {
 	t.Run("when the policy exists without content", func(t *testing.T) {
 		p, err := client.Policies.Read(ctx, pTest.ID)
 		require.NoError(t, err)
+
 		assert.Equal(t, pTest.ID, p.ID)
 		assert.Equal(t, pTest.Name, p.Name)
 		assert.Equal(t, pTest.PolicySetCount, p.PolicySetCount)
@@ -204,6 +207,7 @@ func TestPoliciesRead(t *testing.T) {
 	t.Run("when the policy exists with content", func(t *testing.T) {
 		p, err := client.Policies.Read(ctx, pTest.ID)
 		require.NoError(t, err)
+
 		assert.Equal(t, pTest.ID, p.ID)
 		assert.Equal(t, pTest.Name, p.Name)
 		assert.Equal(t, pTest.Description, p.Description)
@@ -247,8 +251,8 @@ func TestPoliciesUpdate(t *testing.T) {
 			},
 		})
 		require.NoError(t, err)
-
 		require.Equal(t, 1, len(pAfter.Enforce))
+
 		assert.Equal(t, pBefore.ID, pAfter.ID)
 		assert.Equal(t, pBefore.Name, pAfter.Name)
 		assert.Equal(t, pBefore.Description, pAfter.Description)
@@ -286,6 +290,7 @@ func TestPoliciesUpdate(t *testing.T) {
 			Description: String("A brand new description"),
 		})
 		require.NoError(t, err)
+
 		assert.Equal(t, pBefore.Name, pAfter.Name)
 		assert.Equal(t, pBefore.Enforce, pAfter.Enforce)
 		assert.NotEqual(t, pBefore.Description, pAfter.Description)

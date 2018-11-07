@@ -203,24 +203,22 @@ func TestWorkspacesUpdate(t *testing.T) {
 	orgTest, orgTestCleanup := createOrganization(t, client)
 	defer orgTestCleanup()
 
-	wTest, wTestCleanup := createWorkspace(t, client, orgTest)
+	wTest, _ := createWorkspace(t, client, orgTest)
 
 	t.Run("when updating a subset of values", func(t *testing.T) {
 		options := WorkspaceUpdateOptions{
 			Name:             String(wTest.Name),
+			AutoApply:        Bool(true),
 			TerraformVersion: String("0.10.0"),
 		}
 
 		wAfter, err := client.Workspaces.Update(ctx, orgTest.Name, wTest.Name, options)
-		if err != nil {
-			wTestCleanup()
-		}
 		require.NoError(t, err)
 
 		assert.Equal(t, wTest.Name, wAfter.Name)
-		assert.Equal(t, wTest.AutoApply, wAfter.AutoApply)
-		assert.Equal(t, wTest.WorkingDirectory, wAfter.WorkingDirectory)
+		assert.NotEqual(t, wTest.AutoApply, wAfter.AutoApply)
 		assert.NotEqual(t, wTest.TerraformVersion, wAfter.TerraformVersion)
+		assert.Equal(t, wTest.WorkingDirectory, wAfter.WorkingDirectory)
 	})
 
 	t.Run("with valid options", func(t *testing.T) {
@@ -232,9 +230,6 @@ func TestWorkspacesUpdate(t *testing.T) {
 		}
 
 		w, err := client.Workspaces.Update(ctx, orgTest.Name, wTest.Name, options)
-		if err != nil {
-			wTestCleanup()
-		}
 		require.NoError(t, err)
 
 		// Get a refreshed view of the workspace from the API
