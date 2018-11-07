@@ -16,10 +16,12 @@ func TestPolicyChecksList(t *testing.T) {
 	orgTest, orgTestCleanup := createOrganization(t, client)
 	defer orgTestCleanup()
 
-	createUploadedPolicy(t, client, true, orgTest)
-	createUploadedPolicy(t, client, true, orgTest)
-
+	pTest1, _ := createUploadedPolicy(t, client, true, orgTest)
+	pTest2, _ := createUploadedPolicy(t, client, true, orgTest)
 	wTest, _ := createWorkspace(t, client, orgTest)
+
+	createPolicySet(t, client, orgTest, []*Policy{pTest1, pTest2}, []*Workspace{wTest})
+
 	rTest, _ := createPlannedRun(t, client, wTest)
 
 	t.Run("without list options", func(t *testing.T) {
@@ -78,9 +80,11 @@ func TestPolicyChecksRead(t *testing.T) {
 	orgTest, orgTestCleanup := createOrganization(t, client)
 	defer orgTestCleanup()
 
-	createUploadedPolicy(t, client, true, orgTest)
-
+	pTest, _ := createUploadedPolicy(t, client, true, orgTest)
 	wTest, _ := createWorkspace(t, client, orgTest)
+
+	createPolicySet(t, client, orgTest, []*Policy{pTest}, []*Workspace{wTest})
+
 	rTest, _ := createPlannedRun(t, client, wTest)
 	require.Equal(t, 1, len(rTest.PolicyChecks))
 
@@ -120,10 +124,12 @@ func TestPolicyChecksOverride(t *testing.T) {
 	defer orgTestCleanup()
 
 	t.Run("when the policy failed", func(t *testing.T) {
-		_, pTestCleanup := createUploadedPolicy(t, client, false, orgTest)
+		pTest, pTestCleanup := createUploadedPolicy(t, client, false, orgTest)
 		defer pTestCleanup()
 
 		wTest, _ := createWorkspace(t, client, orgTest)
+
+		createPolicySet(t, client, orgTest, []*Policy{pTest}, []*Workspace{wTest})
 		rTest, _ := createPlannedRun(t, client, wTest)
 
 		pcl, err := client.PolicyChecks.List(ctx, rTest.ID, PolicyCheckListOptions{})
@@ -139,10 +145,11 @@ func TestPolicyChecksOverride(t *testing.T) {
 	})
 
 	t.Run("when the policy passed", func(t *testing.T) {
-		_, pTestCleanup := createUploadedPolicy(t, client, true, orgTest)
+		pTest, pTestCleanup := createUploadedPolicy(t, client, true, orgTest)
 		defer pTestCleanup()
 
 		wTest, _ := createWorkspace(t, client, orgTest)
+		createPolicySet(t, client, orgTest, []*Policy{pTest}, []*Workspace{wTest})
 		rTest, _ := createPlannedRun(t, client, wTest)
 
 		pcl, err := client.PolicyChecks.List(ctx, rTest.ID, PolicyCheckListOptions{})
@@ -168,9 +175,10 @@ func TestPolicyChecksLogs(t *testing.T) {
 	orgTest, orgTestCleanup := createOrganization(t, client)
 	defer orgTestCleanup()
 
-	createUploadedPolicy(t, client, true, orgTest)
+	pTest, _ := createUploadedPolicy(t, client, true, orgTest)
 
 	wTest, _ := createWorkspace(t, client, orgTest)
+	createPolicySet(t, client, orgTest, []*Policy{pTest}, []*Workspace{wTest})
 	rTest, _ := createPlannedRun(t, client, wTest)
 	require.Equal(t, 1, len(rTest.PolicyChecks))
 
