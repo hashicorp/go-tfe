@@ -181,10 +181,9 @@ func TestVariablesUpdate(t *testing.T) {
 
 	t.Run("with valid options", func(t *testing.T) {
 		options := VariableUpdateOptions{
-			Key:       String("newname"),
-			Value:     String("newvalue"),
-			HCL:       Bool(true),
-			Sensitive: Bool(true),
+			Key:   String("newname"),
+			Value: String("newvalue"),
+			HCL:   Bool(true),
 		}
 
 		v, err := client.Variables.Update(ctx, vTest.ID, options)
@@ -192,8 +191,7 @@ func TestVariablesUpdate(t *testing.T) {
 
 		assert.Equal(t, *options.Key, v.Key)
 		assert.Equal(t, *options.HCL, v.HCL)
-		assert.Equal(t, *options.Sensitive, v.Sensitive)
-		assert.Empty(t, v.Value) // Because its now sensitive
+		assert.Equal(t, *options.Value, v.Value)
 	})
 
 	t.Run("when updating a subset of values", func(t *testing.T) {
@@ -207,6 +205,18 @@ func TestVariablesUpdate(t *testing.T) {
 
 		assert.Equal(t, *options.Key, v.Key)
 		assert.Equal(t, *options.HCL, v.HCL)
+	})
+
+	t.Run("with sensitive set", func(t *testing.T) {
+		options := VariableUpdateOptions{
+			Sensitive: Bool(true),
+		}
+
+		v, err := client.Variables.Update(ctx, vTest.ID, options)
+		require.NoError(t, err)
+
+		assert.Equal(t, *options.Sensitive, v.Sensitive)
+		assert.Empty(t, v.Value) // Because its now sensitive
 	})
 
 	t.Run("without any changes", func(t *testing.T) {

@@ -15,15 +15,15 @@ func TestPolicySetsList(t *testing.T) {
 	orgTest, orgTestCleanup := createOrganization(t, client)
 	defer orgTestCleanup()
 
-	psTest1, _ := createPolicySet(t, client, orgTest, []*Policy{}, []*Workspace{})
-	psTest2, _ := createPolicySet(t, client, orgTest, []*Policy{}, []*Workspace{})
+	psTest1, _ := createPolicySet(t, client, orgTest, nil, nil)
+	psTest2, _ := createPolicySet(t, client, orgTest, nil, nil)
 
 	t.Run("without list options", func(t *testing.T) {
 		psl, err := client.PolicySets.List(ctx, orgTest.Name, PolicySetListOptions{})
 		require.NoError(t, err)
+
 		assert.Contains(t, psl.Items, psTest1)
 		assert.Contains(t, psl.Items, psTest2)
-
 		assert.Equal(t, 1, psl.CurrentPage)
 		assert.Equal(t, 2, psl.TotalCount)
 	})
@@ -39,6 +39,7 @@ func TestPolicySetsList(t *testing.T) {
 			},
 		})
 		require.NoError(t, err)
+
 		assert.Empty(t, psl.Items)
 		assert.Equal(t, 999, psl.CurrentPage)
 		assert.Equal(t, 2, psl.TotalCount)
@@ -48,9 +49,10 @@ func TestPolicySetsList(t *testing.T) {
 		// Search by one of the policy set's names; we should get only that policy
 		// set and pagination data should reflect the search as well
 		psl, err := client.PolicySets.List(ctx, orgTest.Name, PolicySetListOptions{
-			Search: &psTest1.Name,
+			Search: String(psTest1.Name),
 		})
 		require.NoError(t, err)
+
 		assert.Contains(t, psl.Items, psTest1)
 		assert.NotContains(t, psl.Items, psTest2)
 		assert.Equal(t, 1, psl.CurrentPage)
@@ -72,11 +74,14 @@ func TestPolicySetsCreate(t *testing.T) {
 	defer orgTestCleanup()
 
 	t.Run("with valid attributes", func(t *testing.T) {
-		ps, err := client.PolicySets.Create(ctx, orgTest.Name, PolicySetCreateOptions{
-			Name: String("a-policy-set"),
-		})
+		options := PolicySetCreateOptions{
+			Name: String("policy-set"),
+		}
+
+		ps, err := client.PolicySets.Create(ctx, orgTest.Name, options)
 		require.NoError(t, err)
-		assert.Equal(t, ps.Name, "a-policy-set")
+
+		assert.Equal(t, ps.Name, *options.Name)
 		assert.Equal(t, ps.Description, "")
 		assert.False(t, ps.Global)
 	})
@@ -87,16 +92,19 @@ func TestPolicySetsCreate(t *testing.T) {
 			Description: String("Policies in this set will be checked in ALL workspaces!"),
 			Global:      Bool(true),
 		}
+
 		ps, err := client.PolicySets.Create(ctx, orgTest.Name, options)
 		require.NoError(t, err)
-		assert.Equal(t, &ps.Name, options.Name)
-		assert.Equal(t, &ps.Description, options.Description)
+
+		assert.Equal(t, ps.Name, *options.Name)
+		assert.Equal(t, ps.Description, *options.Description)
 		assert.True(t, ps.Global)
 	})
 
 	t.Run("with policies and workspaces provided", func(t *testing.T) {
 		pTest, _ := createPolicy(t, client, orgTest)
 		wTest, _ := createWorkspace(t, client, orgTest)
+
 		options := PolicySetCreateOptions{
 			Name:       String("populated-policy-set"),
 			Policies:   []*Policy{pTest},
@@ -105,7 +113,8 @@ func TestPolicySetsCreate(t *testing.T) {
 
 		ps, err := client.PolicySets.Create(ctx, orgTest.Name, options)
 		require.NoError(t, err)
-		assert.Equal(t, &ps.Name, options.Name)
+
+		assert.Equal(t, ps.Name, *options.Name)
 		assert.Equal(t, ps.PolicyCount, 1)
 		assert.Equal(t, ps.Policies[0].ID, pTest.ID)
 		assert.Equal(t, ps.WorkspaceCount, 1)
@@ -119,13 +128,17 @@ func TestPolicySetsCreate(t *testing.T) {
 	})
 
 	t.Run("with an invalid name provided", func(t *testing.T) {
-		ps, err := client.PolicySets.Create(ctx, orgTest.Name, PolicySetCreateOptions{Name: String("nope!")})
+		ps, err := client.PolicySets.Create(ctx, orgTest.Name, PolicySetCreateOptions{
+			Name: String("nope!"),
+		})
 		assert.Nil(t, ps)
 		assert.EqualError(t, err, "Invalid value for name")
 	})
 
 	t.Run("without a valid organization", func(t *testing.T) {
-		ps, err := client.PolicySets.Create(ctx, badIdentifier, PolicySetCreateOptions{Name: String("policy-set")})
+		ps, err := client.PolicySets.Create(ctx, badIdentifier, PolicySetCreateOptions{
+			Name: String("policy-set"),
+		})
 		assert.Nil(t, ps)
 		assert.EqualError(t, err, "Invalid value for organization")
 	})
@@ -138,12 +151,12 @@ func TestPolicySetsRead(t *testing.T) {
 	orgTest, orgTestCleanup := createOrganization(t, client)
 	defer orgTestCleanup()
 
-	psTest, psTestCleanup := createPolicySet(t, client, orgTest, []*Policy{}, []*Workspace{})
-	defer psTestCleanup()
+	psTest, _ := createPolicySet(t, client, orgTest, nil, nil)
 
 	t.Run("with a valid ID", func(t *testing.T) {
 		ps, err := client.PolicySets.Read(ctx, psTest.ID)
 		require.NoError(t, err)
+
 		assert.Equal(t, ps.ID, psTest.ID)
 	})
 
@@ -161,8 +174,7 @@ func TestPolicySetsUpdate(t *testing.T) {
 	orgTest, orgTestCleanup := createOrganization(t, client)
 	defer orgTestCleanup()
 
-	psTest, psTestCleanup := createPolicySet(t, client, orgTest, []*Policy{}, []*Workspace{})
-	defer psTestCleanup()
+	psTest, _ := createPolicySet(t, client, orgTest, nil, nil)
 
 	t.Run("with valid attributes", func(t *testing.T) {
 		options := PolicySetUpdateOptions{
@@ -170,22 +182,27 @@ func TestPolicySetsUpdate(t *testing.T) {
 			Description: String("Policies in this set will be checked in ALL workspaces!"),
 			Global:      Bool(true),
 		}
+
 		ps, err := client.PolicySets.Update(ctx, psTest.ID, options)
 		require.NoError(t, err)
-		assert.Equal(t, &ps.Name, options.Name)
-		assert.Equal(t, &ps.Description, options.Description)
+
+		assert.Equal(t, ps.Name, *options.Name)
+		assert.Equal(t, ps.Description, *options.Description)
 		assert.True(t, ps.Global)
 	})
 
 	t.Run("with invalid attributes", func(t *testing.T) {
-		options := PolicySetUpdateOptions{Name: String("nope!")}
-		ps, err := client.PolicySets.Update(ctx, psTest.ID, options)
+		ps, err := client.PolicySets.Update(ctx, psTest.ID, PolicySetUpdateOptions{
+			Name: String("nope!"),
+		})
 		assert.Nil(t, ps)
 		assert.EqualError(t, err, "Invalid value for name")
 	})
 
 	t.Run("without a valid ID", func(t *testing.T) {
-		ps, err := client.PolicySets.Update(ctx, badIdentifier, PolicySetUpdateOptions{Global: Bool(true)})
+		ps, err := client.PolicySets.Update(ctx, badIdentifier, PolicySetUpdateOptions{
+			Name: String("policy-set"),
+		})
 		assert.Nil(t, ps)
 		assert.EqualError(t, err, "Invalid value for policy set ID")
 	})
@@ -198,29 +215,35 @@ func TestPolicySetsAddPolicies(t *testing.T) {
 	orgTest, orgTestCleanup := createOrganization(t, client)
 	defer orgTestCleanup()
 
-	psTest, psTestCleanup := createPolicySet(t, client, orgTest, []*Policy{}, []*Workspace{})
-	defer psTestCleanup()
-
 	pTest1, _ := createPolicy(t, client, orgTest)
 	pTest2, _ := createPolicy(t, client, orgTest)
+	psTest, _ := createPolicySet(t, client, orgTest, nil, nil)
 
 	t.Run("with policies provided", func(t *testing.T) {
 		err := client.PolicySets.AddPolicies(ctx, psTest.ID, PolicySetAddPoliciesOptions{
 			Policies: []*Policy{pTest1, pTest2},
 		})
 		require.NoError(t, err)
-		ps, _ := client.PolicySets.Read(ctx, psTest.ID)
+
+		ps, err := client.PolicySets.Read(ctx, psTest.ID)
+		require.NoError(t, err)
 		assert.Equal(t, ps.PolicyCount, 2)
 
 		ids := []string{}
 		for _, policy := range ps.Policies {
 			ids = append(ids, policy.ID)
 		}
+
 		assert.Contains(t, ids, pTest1.ID)
 		assert.Contains(t, ids, pTest2.ID)
 	})
 
-	t.Run("without any policies provided", func(t *testing.T) {
+	t.Run("without policies provided", func(t *testing.T) {
+		err := client.PolicySets.AddPolicies(ctx, psTest.ID, PolicySetAddPoliciesOptions{})
+		assert.EqualError(t, err, "Policies is required")
+	})
+
+	t.Run("with empty policies slice", func(t *testing.T) {
 		err := client.PolicySets.AddPolicies(ctx, psTest.ID, PolicySetAddPoliciesOptions{
 			Policies: []*Policy{},
 		})
@@ -228,7 +251,9 @@ func TestPolicySetsAddPolicies(t *testing.T) {
 	})
 
 	t.Run("without a valid ID", func(t *testing.T) {
-		err := client.PolicySets.AddPolicies(ctx, badIdentifier, PolicySetAddPoliciesOptions{})
+		err := client.PolicySets.AddPolicies(ctx, badIdentifier, PolicySetAddPoliciesOptions{
+			Policies: []*Policy{pTest1, pTest2},
+		})
 		assert.EqualError(t, err, "Invalid value for policy set ID")
 	})
 }
@@ -242,21 +267,27 @@ func TestPolicySetsRemovePolicies(t *testing.T) {
 
 	pTest1, _ := createPolicy(t, client, orgTest)
 	pTest2, _ := createPolicy(t, client, orgTest)
-
-	psTest, psTestCleanup := createPolicySet(t, client, orgTest, []*Policy{pTest1, pTest2}, []*Workspace{})
-	defer psTestCleanup()
+	psTest, _ := createPolicySet(t, client, orgTest, []*Policy{pTest1, pTest2}, nil)
 
 	t.Run("with policies provided", func(t *testing.T) {
 		err := client.PolicySets.RemovePolicies(ctx, psTest.ID, PolicySetRemovePoliciesOptions{
 			Policies: []*Policy{pTest1, pTest2},
 		})
 		require.NoError(t, err)
-		ps, _ := client.PolicySets.Read(ctx, psTest.ID)
-		assert.Equal(t, ps.PolicyCount, 0)
+
+		ps, err := client.PolicySets.Read(ctx, psTest.ID)
+		require.NoError(t, err)
+
+		assert.Equal(t, 0, ps.PolicyCount)
 		assert.Empty(t, ps.Policies)
 	})
 
-	t.Run("without any policies provided", func(t *testing.T) {
+	t.Run("without policies provided", func(t *testing.T) {
+		err := client.PolicySets.RemovePolicies(ctx, psTest.ID, PolicySetRemovePoliciesOptions{})
+		assert.EqualError(t, err, "Policies is required")
+	})
+
+	t.Run("with empty policies slice", func(t *testing.T) {
 		err := client.PolicySets.RemovePolicies(ctx, psTest.ID, PolicySetRemovePoliciesOptions{
 			Policies: []*Policy{},
 		})
@@ -264,7 +295,9 @@ func TestPolicySetsRemovePolicies(t *testing.T) {
 	})
 
 	t.Run("without a valid ID", func(t *testing.T) {
-		err := client.PolicySets.RemovePolicies(ctx, badIdentifier, PolicySetRemovePoliciesOptions{})
+		err := client.PolicySets.RemovePolicies(ctx, badIdentifier, PolicySetRemovePoliciesOptions{
+			Policies: []*Policy{pTest1, pTest2},
+		})
 		assert.EqualError(t, err, "Invalid value for policy set ID")
 	})
 }
@@ -276,37 +309,59 @@ func TestPolicySetsAttachToWorkspaces(t *testing.T) {
 	orgTest, orgTestCleanup := createOrganization(t, client)
 	defer orgTestCleanup()
 
-	psTest, psTestCleanup := createPolicySet(t, client, orgTest, []*Policy{}, []*Workspace{})
-	defer psTestCleanup()
-
 	wTest1, _ := createWorkspace(t, client, orgTest)
 	wTest2, _ := createWorkspace(t, client, orgTest)
+	psTest, _ := createPolicySet(t, client, orgTest, nil, nil)
 
 	t.Run("with workspaces provided", func(t *testing.T) {
-		err := client.PolicySets.AttachToWorkspaces(ctx, psTest.ID, PolicySetAttachToWorkspacesOptions{
-			Workspaces: []*Workspace{wTest1, wTest2},
-		})
+		err := client.PolicySets.AttachToWorkspaces(
+			ctx,
+			psTest.ID,
+			PolicySetAttachToWorkspacesOptions{
+				Workspaces: []*Workspace{wTest1, wTest2},
+			},
+		)
 		require.NoError(t, err)
-		ps, _ := client.PolicySets.Read(ctx, psTest.ID)
-		assert.Equal(t, ps.WorkspaceCount, 2)
+
+		ps, err := client.PolicySets.Read(ctx, psTest.ID)
+		require.NoError(t, err)
+		assert.Equal(t, 2, ps.WorkspaceCount)
 
 		ids := []string{}
 		for _, ws := range ps.Workspaces {
 			ids = append(ids, ws.ID)
 		}
+
 		assert.Contains(t, ids, wTest1.ID)
 		assert.Contains(t, ids, wTest2.ID)
 	})
 
-	t.Run("without any workspaces provided", func(t *testing.T) {
-		err := client.PolicySets.AttachToWorkspaces(ctx, psTest.ID, PolicySetAttachToWorkspacesOptions{
-			Workspaces: []*Workspace{},
-		})
+	t.Run("without workspaces provided", func(t *testing.T) {
+		err := client.PolicySets.AttachToWorkspaces(
+			ctx,
+			psTest.ID,
+			PolicySetAttachToWorkspacesOptions{},
+		)
+		assert.EqualError(t, err, "Workspaces is required")
+	})
+
+	t.Run("with empty workspaces slice", func(t *testing.T) {
+		err := client.PolicySets.AttachToWorkspaces(
+			ctx,
+			psTest.ID,
+			PolicySetAttachToWorkspacesOptions{Workspaces: []*Workspace{}},
+		)
 		assert.EqualError(t, err, "Must provide at least one workspace")
 	})
 
 	t.Run("without a valid ID", func(t *testing.T) {
-		err := client.PolicySets.AttachToWorkspaces(ctx, badIdentifier, PolicySetAttachToWorkspacesOptions{})
+		err := client.PolicySets.AttachToWorkspaces(
+			ctx,
+			badIdentifier,
+			PolicySetAttachToWorkspacesOptions{
+				Workspaces: []*Workspace{wTest1, wTest2},
+			},
+		)
 		assert.EqualError(t, err, "Invalid value for policy set ID")
 	})
 }
@@ -320,29 +375,51 @@ func TestPolicySetsDetachFromWorkspaces(t *testing.T) {
 
 	wTest1, _ := createWorkspace(t, client, orgTest)
 	wTest2, _ := createWorkspace(t, client, orgTest)
-
-	psTest, psTestCleanup := createPolicySet(t, client, orgTest, []*Policy{}, []*Workspace{wTest1, wTest2})
-	defer psTestCleanup()
+	psTest, _ := createPolicySet(t, client, orgTest, nil, []*Workspace{wTest1, wTest2})
 
 	t.Run("with workspaces provided", func(t *testing.T) {
-		err := client.PolicySets.DetachFromWorkspaces(ctx, psTest.ID, PolicySetDetachFromWorkspacesOptions{
-			Workspaces: []*Workspace{wTest1, wTest2},
-		})
+		err := client.PolicySets.DetachFromWorkspaces(
+			ctx,
+			psTest.ID,
+			PolicySetDetachFromWorkspacesOptions{
+				Workspaces: []*Workspace{wTest1, wTest2},
+			},
+		)
 		require.NoError(t, err)
-		ps, _ := client.PolicySets.Read(ctx, psTest.ID)
-		assert.Equal(t, ps.WorkspaceCount, 0)
+
+		ps, err := client.PolicySets.Read(ctx, psTest.ID)
+		require.NoError(t, err)
+
+		assert.Equal(t, 0, ps.WorkspaceCount)
 		assert.Empty(t, ps.Workspaces)
 	})
 
-	t.Run("without any workspaces provided", func(t *testing.T) {
-		err := client.PolicySets.DetachFromWorkspaces(ctx, psTest.ID, PolicySetDetachFromWorkspacesOptions{
-			Workspaces: []*Workspace{},
-		})
+	t.Run("without workspaces provided", func(t *testing.T) {
+		err := client.PolicySets.DetachFromWorkspaces(
+			ctx,
+			psTest.ID,
+			PolicySetDetachFromWorkspacesOptions{},
+		)
+		assert.EqualError(t, err, "Workspaces is required")
+	})
+
+	t.Run("with empty workspaces slice", func(t *testing.T) {
+		err := client.PolicySets.DetachFromWorkspaces(
+			ctx,
+			psTest.ID,
+			PolicySetDetachFromWorkspacesOptions{Workspaces: []*Workspace{}},
+		)
 		assert.EqualError(t, err, "Must provide at least one workspace")
 	})
 
 	t.Run("without a valid ID", func(t *testing.T) {
-		err := client.PolicySets.DetachFromWorkspaces(ctx, badIdentifier, PolicySetDetachFromWorkspacesOptions{})
+		err := client.PolicySets.DetachFromWorkspaces(
+			ctx,
+			badIdentifier,
+			PolicySetDetachFromWorkspacesOptions{
+				Workspaces: []*Workspace{wTest1, wTest2},
+			},
+		)
 		assert.EqualError(t, err, "Invalid value for policy set ID")
 	})
 }
@@ -354,7 +431,7 @@ func TestPolicySetsDelete(t *testing.T) {
 	orgTest, orgTestCleanup := createOrganization(t, client)
 	defer orgTestCleanup()
 
-	psTest, _ := createPolicySet(t, client, orgTest, []*Policy{}, []*Workspace{})
+	psTest, _ := createPolicySet(t, client, orgTest, nil, nil)
 
 	t.Run("with valid options", func(t *testing.T) {
 		err := client.PolicySets.Delete(ctx, psTest.ID)
