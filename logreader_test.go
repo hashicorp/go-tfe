@@ -44,49 +44,8 @@ func TestLogReader_withMarkersSingle(t *testing.T) {
 	ts, lr := testLogReader(t, http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		logReads++
 		switch {
-		case logReads == 1:
-			w.Write([]byte("\x02Terraform run started - logs - Terraform run finished\x03"))
-		}
-	}))
-	defer ts.Close()
-
-	doneReads := 0
-	lr.done = func() (bool, error) {
-		doneReads++
-		if logReads >= 1 {
-			return true, nil
-		}
-		return false, nil
-	}
-
-	logs, err := ioutil.ReadAll(lr)
-	if err != nil {
-		t.Fatal(err)
-	}
-
-	expected := "Terraform run started - logs - Terraform run finished"
-	if string(logs) != expected {
-		t.Fatalf("expected %s, got: %s", expected, string(logs))
-	}
-	if doneReads != 1 {
-		t.Fatalf("expected 1 done reads, got %d reads", doneReads)
-	}
-	if logReads != 2 {
-		t.Fatalf("expected 2 log reads, got %d reads", logReads)
-	}
-}
-
-func TestLogReader_withMarkersDouble(t *testing.T) {
-	t.Parallel()
-
-	logReads := 0
-	ts, lr := testLogReader(t, http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		logReads++
-		switch {
-		case logReads == 1:
-			w.Write([]byte("\x02Terraform run started"))
 		case logReads == 2:
-			w.Write([]byte(" - logs - Terraform run finished\x03"))
+			w.Write([]byte("\x02Terraform run started - logs - Terraform run finished\x03"))
 		}
 	}))
 	defer ts.Close()
@@ -117,6 +76,47 @@ func TestLogReader_withMarkersDouble(t *testing.T) {
 	}
 }
 
+func TestLogReader_withMarkersDouble(t *testing.T) {
+	t.Parallel()
+
+	logReads := 0
+	ts, lr := testLogReader(t, http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		logReads++
+		switch {
+		case logReads == 2:
+			w.Write([]byte("\x02Terraform run started"))
+		case logReads == 3:
+			w.Write([]byte(" - logs - Terraform run finished\x03"))
+		}
+	}))
+	defer ts.Close()
+
+	doneReads := 0
+	lr.done = func() (bool, error) {
+		doneReads++
+		if logReads >= 3 {
+			return true, nil
+		}
+		return false, nil
+	}
+
+	logs, err := ioutil.ReadAll(lr)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	expected := "Terraform run started - logs - Terraform run finished"
+	if string(logs) != expected {
+		t.Fatalf("expected %s, got: %s", expected, string(logs))
+	}
+	if doneReads != 1 {
+		t.Fatalf("expected 1 done reads, got %d reads", doneReads)
+	}
+	if logReads != 4 {
+		t.Fatalf("expected 4 log reads, got %d reads", logReads)
+	}
+}
+
 func TestLogReader_withMarkersMulti(t *testing.T) {
 	t.Parallel()
 
@@ -124,15 +124,15 @@ func TestLogReader_withMarkersMulti(t *testing.T) {
 	ts, lr := testLogReader(t, http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		logReads++
 		switch {
-		case logReads == 1:
-			w.Write([]byte("\x02"))
 		case logReads == 2:
+			w.Write([]byte("\x02"))
+		case logReads == 3:
 			w.Write([]byte("Terraform run started"))
-		case logReads == 15:
+		case logReads == 16:
 			w.Write([]byte(" - logs - "))
-		case logReads == 29:
-			w.Write([]byte("Terraform run finished"))
 		case logReads == 30:
+			w.Write([]byte("Terraform run finished"))
+		case logReads == 31:
 			w.Write([]byte("\x03"))
 		}
 	}))
@@ -141,7 +141,7 @@ func TestLogReader_withMarkersMulti(t *testing.T) {
 	doneReads := 0
 	lr.done = func() (bool, error) {
 		doneReads++
-		if logReads >= 30 {
+		if logReads >= 31 {
 			return true, nil
 		}
 		return false, nil
@@ -159,8 +159,8 @@ func TestLogReader_withMarkersMulti(t *testing.T) {
 	if doneReads != 3 {
 		t.Fatalf("expected 3 done reads, got %d reads", doneReads)
 	}
-	if logReads != 30 {
-		t.Fatalf("expected 30 log reads, got %d reads", logReads)
+	if logReads != 31 {
+		t.Fatalf("expected 31 log reads, got %d reads", logReads)
 	}
 }
 
@@ -171,11 +171,11 @@ func TestLogReader_withoutMarkers(t *testing.T) {
 	ts, lr := testLogReader(t, http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		logReads++
 		switch {
-		case logReads == 1:
+		case logReads == 2:
 			w.Write([]byte("Terraform run started"))
-		case logReads == 15:
+		case logReads == 16:
 			w.Write([]byte(" - logs - "))
-		case logReads == 30:
+		case logReads == 31:
 			w.Write([]byte("Terraform run finished"))
 		}
 	}))
@@ -184,7 +184,7 @@ func TestLogReader_withoutMarkers(t *testing.T) {
 	doneReads := 0
 	lr.done = func() (bool, error) {
 		doneReads++
-		if logReads >= 30 {
+		if logReads >= 31 {
 			return true, nil
 		}
 		return false, nil
@@ -202,8 +202,8 @@ func TestLogReader_withoutMarkers(t *testing.T) {
 	if doneReads != 25 {
 		t.Fatalf("expected 14 done reads, got %d reads", doneReads)
 	}
-	if logReads != 31 {
-		t.Fatalf("expected 31 log reads, got %d reads", logReads)
+	if logReads != 32 {
+		t.Fatalf("expected 32 log reads, got %d reads", logReads)
 	}
 }
 
@@ -214,13 +214,13 @@ func TestLogReader_withoutEndOfTextMarker(t *testing.T) {
 	ts, lr := testLogReader(t, http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		logReads++
 		switch {
-		case logReads == 1:
-			w.Write([]byte("\x02"))
 		case logReads == 2:
+			w.Write([]byte("\x02"))
+		case logReads == 3:
 			w.Write([]byte("Terraform run started"))
-		case logReads == 15:
+		case logReads == 16:
 			w.Write([]byte(" - logs - "))
-		case logReads == 30:
+		case logReads == 31:
 			w.Write([]byte("Terraform run finished"))
 		}
 	}))
@@ -229,7 +229,7 @@ func TestLogReader_withoutEndOfTextMarker(t *testing.T) {
 	doneReads := 0
 	lr.done = func() (bool, error) {
 		doneReads++
-		if logReads >= 30 {
+		if logReads >= 31 {
 			return true, nil
 		}
 		return false, nil
@@ -247,7 +247,7 @@ func TestLogReader_withoutEndOfTextMarker(t *testing.T) {
 	if doneReads != 3 {
 		t.Fatalf("expected 3 done reads, got %d reads", doneReads)
 	}
-	if logReads != 41 {
-		t.Fatalf("expected 41 log reads, got %d reads", logReads)
+	if logReads != 42 {
+		t.Fatalf("expected 42 log reads, got %d reads", logReads)
 	}
 }

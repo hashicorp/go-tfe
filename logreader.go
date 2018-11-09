@@ -64,7 +64,7 @@ func (r *LogReader) read(l []byte) (int, error) {
 	req = req.WithContext(r.ctx)
 
 	// Retrieve the next chunk.
-	resp, err := r.client.http.Do(req)
+	resp, err := r.client.http.HTTPClient.Do(req)
 	if err != nil {
 		return 0, err
 	}
