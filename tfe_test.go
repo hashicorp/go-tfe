@@ -6,20 +6,31 @@ import (
 	"net/http/httptest"
 	"os"
 	"testing"
+
+	"golang.org/x/time/rate"
 )
 
 func TestClient_newClient(t *testing.T) {
-	t.Run("uses env vars if values are missing", func(t *testing.T) {
-		defer setupEnvVars("abcd1234", "https://mytfe.local")()
+	ts := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("X-RateLimit-Limit", "30")
+	}))
+	defer ts.Close()
 
-		client, err := NewClient(nil)
+	cfg := &Config{
+		HTTPClient: ts.Client(),
+	}
+
+	t.Run("uses env vars if values are missing", func(t *testing.T) {
+		defer setupEnvVars("abcd1234", ts.URL)()
+
+		client, err := NewClient(cfg)
 		if err != nil {
 			t.Fatal(err)
 		}
 		if client.token != "abcd1234" {
 			t.Fatalf("unexpected token: %q", client.token)
 		}
-		if client.baseURL.String() != "https://mytfe.local"+DefaultBasePath {
+		if client.baseURL.String() != ts.URL+DefaultBasePath {
 			t.Fatalf("unexpected address: %q", client.baseURL.String())
 		}
 	})
@@ -27,19 +38,17 @@ func TestClient_newClient(t *testing.T) {
 	t.Run("fails if token is empty", func(t *testing.T) {
 		defer setupEnvVars("", "")()
 
-		_, err := NewClient(&Config{})
+		_, err := NewClient(cfg)
 		if err == nil || err.Error() != "Missing API token" {
 			t.Fatalf("unexpected error: %v", err)
 		}
 	})
 
 	t.Run("makes a new client with good settings", func(t *testing.T) {
-		httpClient := &http.Client{}
-
 		config := &Config{
-			Address:    "http://tfe.foo",
+			Address:    ts.URL,
 			Token:      "abcd1234",
-			HTTPClient: httpClient,
+			HTTPClient: ts.Client(),
 		}
 
 		client, err := NewClient(config)
@@ -53,23 +62,8 @@ func TestClient_newClient(t *testing.T) {
 		if config.Token != client.token {
 			t.Fatalf("unexpected client token %q", client.token)
 		}
-		if httpClient != client.http {
+		if ts.Client() != client.http.HTTPClient {
 			t.Fatal("unexpected HTTP client value")
-		}
-	})
-
-	t.Run("creates a default http client", func(t *testing.T) {
-		defer setupEnvVars("", "")()
-
-		client, err := NewClient(&Config{
-			Token: "abcd1234",
-		})
-		if err != nil {
-			t.Fatal(err)
-		}
-
-		if client.http == nil {
-			t.Fatal("expected default http client, got nil")
 		}
 	})
 }
@@ -100,6 +94,12 @@ func TestClient_headers(t *testing.T) {
 	testedCalls := 0
 	ts := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		testedCalls++
+
+		if testedCalls == 1 {
+			w.Header().Set("X-RateLimit-Limit", "30")
+			return
+		}
+
 		if r.Header.Get("Accept") != "application/vnd.api+json" {
 			t.Fatalf("unexpected accept header: %q", r.Header.Get("Accept"))
 		}
@@ -146,8 +146,8 @@ func TestClient_headers(t *testing.T) {
 	_, _ = client.Workspaces.Lock(ctx, "ws-123456789", WorkspaceLockOptions{})
 	_, _ = client.Workspaces.Read(ctx, "organization", "workspace")
 
-	if testedCalls != 5 {
-		t.Fatalf("expected 5 tested calls, got: %d", testedCalls)
+	if testedCalls != 6 {
+		t.Fatalf("expected 6 tested calls, got: %d", testedCalls)
 	}
 }
 
@@ -155,6 +155,12 @@ func TestClient_userAgent(t *testing.T) {
 	testedCalls := 0
 	ts := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		testedCalls++
+
+		if testedCalls == 1 {
+			w.Header().Set("X-RateLimit-Limit", "30")
+			return
+		}
+
 		if r.Header.Get("User-Agent") != "hashicorp" {
 			t.Fatalf("unexpected user agent header: %q", r.Header.Get("User-Agent"))
 		}
@@ -185,8 +191,67 @@ func TestClient_userAgent(t *testing.T) {
 	_, _ = client.Workspaces.Lock(ctx, "ws-123456789", WorkspaceLockOptions{})
 	_, _ = client.Workspaces.Read(ctx, "organization", "workspace")
 
-	if testedCalls != 5 {
-		t.Fatalf("expected 5 tested calls, got: %d", testedCalls)
+	if testedCalls != 6 {
+		t.Fatalf("expected 6 tested calls, got: %d", testedCalls)
+	}
+}
+
+func TestClient_configureLimiter(t *testing.T) {
+	rateLimit := ""
+	ts := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("X-RateLimit-Limit", rateLimit)
+	}))
+	defer ts.Close()
+
+	cfg := &Config{
+		Address:    ts.URL,
+		Token:      "dummy-token",
+		HTTPClient: ts.Client(),
+	}
+
+	cases := map[string]struct {
+		rate  string
+		limit rate.Limit
+		burst int
+	}{
+		"no-value": {
+			rate:  "",
+			limit: rate.Inf,
+			burst: 0,
+		},
+		"limit-0": {
+			rate:  "0",
+			limit: rate.Inf,
+			burst: 0,
+		},
+		"limit-30": {
+			rate:  "30",
+			limit: rate.Limit(19.8),
+			burst: 9,
+		},
+		"limit-100": {
+			rate:  "100",
+			limit: rate.Limit(66),
+			burst: 33,
+		},
+	}
+
+	for name, tc := range cases {
+		// First set the test rate limit.
+		rateLimit = tc.rate
+
+		client, err := NewClient(cfg)
+		if err != nil {
+			t.Fatal(err)
+		}
+
+		if client.limiter.Limit() != tc.limit {
+			t.Fatalf("test %s expected limit %f, got: %f", name, tc.limit, client.limiter.Limit())
+		}
+
+		if client.limiter.Burst() != tc.burst {
+			t.Fatalf("test %s expected burst %d, got: %d", name, tc.burst, client.limiter.Burst())
+		}
 	}
 }
 
