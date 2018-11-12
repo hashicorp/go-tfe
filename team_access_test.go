@@ -60,7 +60,7 @@ func TestTeamAccessesList(t *testing.T) {
 	t.Run("without list options", func(t *testing.T) {
 		tal, err := client.TeamAccess.List(ctx, TeamAccessListOptions{})
 		assert.Nil(t, tal)
-		assert.EqualError(t, err, "Workspace ID is required")
+		assert.EqualError(t, err, "workspace ID is required")
 	})
 
 	t.Run("without a valid workspace ID", func(t *testing.T) {
@@ -68,7 +68,7 @@ func TestTeamAccessesList(t *testing.T) {
 			WorkspaceID: String(badIdentifier),
 		})
 		assert.Nil(t, tal)
-		assert.EqualError(t, err, "Invalid value for workspace ID")
+		assert.EqualError(t, err, "invalid value for workspace ID")
 	})
 }
 
@@ -124,7 +124,7 @@ func TestTeamAccessesAdd(t *testing.T) {
 			Workspace: wTest,
 		})
 		assert.Nil(t, ta)
-		assert.EqualError(t, err, "Access is required")
+		assert.EqualError(t, err, "access is required")
 	})
 
 	t.Run("when options is missing team", func(t *testing.T) {
@@ -133,7 +133,7 @@ func TestTeamAccessesAdd(t *testing.T) {
 			Workspace: wTest,
 		})
 		assert.Nil(t, ta)
-		assert.EqualError(t, err, "Team is required")
+		assert.EqualError(t, err, "team is required")
 	})
 
 	t.Run("when options is missing workspace", func(t *testing.T) {
@@ -142,7 +142,7 @@ func TestTeamAccessesAdd(t *testing.T) {
 			Team:   tmTest,
 		})
 		assert.Nil(t, ta)
-		assert.EqualError(t, err, "Workspace is required")
+		assert.EqualError(t, err, "workspace is required")
 	})
 }
 
@@ -177,7 +177,7 @@ func TestTeamAccessesRead(t *testing.T) {
 	t.Run("without a valid team access ID", func(t *testing.T) {
 		ta, err := client.TeamAccess.Read(ctx, badIdentifier)
 		assert.Nil(t, ta)
-		assert.EqualError(t, err, "Invalid value for team access ID")
+		assert.EqualError(t, err, "invalid value for team access ID")
 	})
 }
 
@@ -209,6 +209,6 @@ func TestTeamAccessesRemove(t *testing.T) {
 
 	t.Run("when the team access ID is invalid", func(t *testing.T) {
 		err := client.TeamAccess.Remove(ctx, badIdentifier)
-		assert.EqualError(t, err, "Invalid value for team access ID")
+		assert.EqualError(t, err, "invalid value for team access ID")
 	})
 }

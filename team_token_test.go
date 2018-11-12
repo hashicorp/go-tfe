@@ -33,7 +33,7 @@ func TestTeamTokensGenerate(t *testing.T) {
 	t.Run("without valid team ID", func(t *testing.T) {
 		tt, err := client.TeamTokens.Generate(ctx, badIdentifier)
 		assert.Nil(t, tt)
-		assert.EqualError(t, err, "Invalid value for team ID")
+		assert.EqualError(t, err, "invalid value for team ID")
 	})
 }
 func TestTeamTokensRead(t *testing.T) {
@@ -62,7 +62,7 @@ func TestTeamTokensRead(t *testing.T) {
 	t.Run("without valid organization", func(t *testing.T) {
 		tt, err := client.OrganizationTokens.Read(ctx, badIdentifier)
 		assert.Nil(t, tt)
-		assert.EqualError(t, err, "Invalid value for organization")
+		assert.EqualError(t, err, "invalid value for organization")
 	})
 }
 
@@ -87,6 +87,6 @@ func TestTeamTokensDelete(t *testing.T) {
 
 	t.Run("without valid team ID", func(t *testing.T) {
 		err := client.TeamTokens.Delete(ctx, badIdentifier)
-		assert.EqualError(t, err, "Invalid value for team ID")
+		assert.EqualError(t, err, "invalid value for team ID")
 	})
 }

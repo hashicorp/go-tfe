@@ -71,14 +71,14 @@ func TestOrganizationsCreate(t *testing.T) {
 			Name: String("foo"),
 		})
 		assert.Nil(t, org)
-		assert.EqualError(t, err, "Email is required")
+		assert.EqualError(t, err, "email is required")
 	})
 
 	t.Run("when no name is provided", func(t *testing.T) {
 		_, err := client.Organizations.Create(ctx, OrganizationCreateOptions{
 			Email: String("foo@bar.com"),
 		})
-		assert.EqualError(t, err, "Name is required")
+		assert.EqualError(t, err, "name is required")
 	})
 
 	t.Run("with invalid name", func(t *testing.T) {
@@ -87,7 +87,7 @@ func TestOrganizationsCreate(t *testing.T) {
 			Email: String("foo@bar.com"),
 		})
 		assert.Nil(t, org)
-		assert.EqualError(t, err, "Invalid value for name")
+		assert.EqualError(t, err, "invalid value for name")
 	})
 }
 
@@ -116,7 +116,7 @@ func TestOrganizationsRead(t *testing.T) {
 	t.Run("with invalid name", func(t *testing.T) {
 		org, err := client.Organizations.Read(ctx, badIdentifier)
 		assert.Nil(t, org)
-		assert.EqualError(t, err, "Invalid value for organization")
+		assert.EqualError(t, err, "invalid value for organization")
 	})
 
 	t.Run("when the org does not exist", func(t *testing.T) {
@@ -167,7 +167,7 @@ func TestOrganizationsUpdate(t *testing.T) {
 	t.Run("with invalid name", func(t *testing.T) {
 		org, err := client.Organizations.Update(ctx, badIdentifier, OrganizationUpdateOptions{})
 		assert.Nil(t, org)
-		assert.EqualError(t, err, "Invalid value for organization")
+		assert.EqualError(t, err, "invalid value for organization")
 	})
 
 	t.Run("when only updating a subset of fields", func(t *testing.T) {
@@ -198,7 +198,7 @@ func TestOrganizationsDelete(t *testing.T) {
 
 	t.Run("with invalid name", func(t *testing.T) {
 		err := client.Organizations.Delete(ctx, badIdentifier)
-		assert.EqualError(t, err, "Invalid value for organization")
+		assert.EqualError(t, err, "invalid value for organization")
 	})
 }
 
@@ -238,7 +238,7 @@ func TestOrganizationsCapacity(t *testing.T) {
 	t.Run("with invalid name", func(t *testing.T) {
 		org, err := client.Organizations.Read(ctx, badIdentifier)
 		assert.Nil(t, org)
-		assert.EqualError(t, err, "Invalid value for organization")
+		assert.EqualError(t, err, "invalid value for organization")
 	})
 
 	t.Run("when the org does not exist", func(t *testing.T) {
@@ -325,7 +325,7 @@ func TestOrganizationsRunQueue(t *testing.T) {
 	t.Run("with invalid name", func(t *testing.T) {
 		org, err := client.Organizations.Read(ctx, badIdentifier)
 		assert.Nil(t, org)
-		assert.EqualError(t, err, "Invalid value for organization")
+		assert.EqualError(t, err, "invalid value for organization")
 	})
 
 	t.Run("when the org does not exist", func(t *testing.T) {

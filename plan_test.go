@@ -34,7 +34,7 @@ func TestPlansRead(t *testing.T) {
 	t.Run("with invalid plan ID", func(t *testing.T) {
 		p, err := client.Plans.Read(ctx, badIdentifier)
 		assert.Nil(t, p)
-		assert.EqualError(t, err, "Invalid value for plan ID")
+		assert.EqualError(t, err, "invalid value for plan ID")
 	})
 }
 

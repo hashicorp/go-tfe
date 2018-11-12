@@ -62,7 +62,7 @@ func TestPolicySetsList(t *testing.T) {
 	t.Run("without a valid organization", func(t *testing.T) {
 		ps, err := client.PolicySets.List(ctx, badIdentifier, PolicySetListOptions{})
 		assert.Nil(t, ps)
-		assert.EqualError(t, err, "Invalid value for organization")
+		assert.EqualError(t, err, "invalid value for organization")
 	})
 }
 
@@ -124,7 +124,7 @@ func TestPolicySetsCreate(t *testing.T) {
 	t.Run("without a name provided", func(t *testing.T) {
 		ps, err := client.PolicySets.Create(ctx, orgTest.Name, PolicySetCreateOptions{})
 		assert.Nil(t, ps)
-		assert.EqualError(t, err, "Name is required")
+		assert.EqualError(t, err, "name is required")
 	})
 
 	t.Run("with an invalid name provided", func(t *testing.T) {
@@ -132,7 +132,7 @@ func TestPolicySetsCreate(t *testing.T) {
 			Name: String("nope!"),
 		})
 		assert.Nil(t, ps)
-		assert.EqualError(t, err, "Invalid value for name")
+		assert.EqualError(t, err, "invalid value for name")
 	})
 
 	t.Run("without a valid organization", func(t *testing.T) {
@@ -140,7 +140,7 @@ func TestPolicySetsCreate(t *testing.T) {
 			Name: String("policy-set"),
 		})
 		assert.Nil(t, ps)
-		assert.EqualError(t, err, "Invalid value for organization")
+		assert.EqualError(t, err, "invalid value for organization")
 	})
 }
 
@@ -163,7 +163,7 @@ func TestPolicySetsRead(t *testing.T) {
 	t.Run("without a valid ID", func(t *testing.T) {
 		ps, err := client.PolicySets.Read(ctx, badIdentifier)
 		assert.Nil(t, ps)
-		assert.EqualError(t, err, "Invalid value for policy set ID")
+		assert.EqualError(t, err, "invalid value for policy set ID")
 	})
 }
 
@@ -196,7 +196,7 @@ func TestPolicySetsUpdate(t *testing.T) {
 			Name: String("nope!"),
 		})
 		assert.Nil(t, ps)
-		assert.EqualError(t, err, "Invalid value for name")
+		assert.EqualError(t, err, "invalid value for name")
 	})
 
 	t.Run("without a valid ID", func(t *testing.T) {
@@ -204,7 +204,7 @@ func TestPolicySetsUpdate(t *testing.T) {
 			Name: String("policy-set"),
 		})
 		assert.Nil(t, ps)
-		assert.EqualError(t, err, "Invalid value for policy set ID")
+		assert.EqualError(t, err, "invalid value for policy set ID")
 	})
 }
 
@@ -240,21 +240,21 @@ func TestPolicySetsAddPolicies(t *testing.T) {
 
 	t.Run("without policies provided", func(t *testing.T) {
 		err := client.PolicySets.AddPolicies(ctx, psTest.ID, PolicySetAddPoliciesOptions{})
-		assert.EqualError(t, err, "Policies is required")
+		assert.EqualError(t, err, "policies is required")
 	})
 
 	t.Run("with empty policies slice", func(t *testing.T) {
 		err := client.PolicySets.AddPolicies(ctx, psTest.ID, PolicySetAddPoliciesOptions{
 			Policies: []*Policy{},
 		})
-		assert.EqualError(t, err, "Must provide at least one policy")
+		assert.EqualError(t, err, "must provide at least one policy")
 	})
 
 	t.Run("without a valid ID", func(t *testing.T) {
 		err := client.PolicySets.AddPolicies(ctx, badIdentifier, PolicySetAddPoliciesOptions{
 			Policies: []*Policy{pTest1, pTest2},
 		})
-		assert.EqualError(t, err, "Invalid value for policy set ID")
+		assert.EqualError(t, err, "invalid value for policy set ID")
 	})
 }
 
@@ -284,21 +284,21 @@ func TestPolicySetsRemovePolicies(t *testing.T) {
 
 	t.Run("without policies provided", func(t *testing.T) {
 		err := client.PolicySets.RemovePolicies(ctx, psTest.ID, PolicySetRemovePoliciesOptions{})
-		assert.EqualError(t, err, "Policies is required")
+		assert.EqualError(t, err, "policies is required")
 	})
 
 	t.Run("with empty policies slice", func(t *testing.T) {
 		err := client.PolicySets.RemovePolicies(ctx, psTest.ID, PolicySetRemovePoliciesOptions{
 			Policies: []*Policy{},
 		})
-		assert.EqualError(t, err, "Must provide at least one policy")
+		assert.EqualError(t, err, "must provide at least one policy")
 	})
 
 	t.Run("without a valid ID", func(t *testing.T) {
 		err := client.PolicySets.RemovePolicies(ctx, badIdentifier, PolicySetRemovePoliciesOptions{
 			Policies: []*Policy{pTest1, pTest2},
 		})
-		assert.EqualError(t, err, "Invalid value for policy set ID")
+		assert.EqualError(t, err, "invalid value for policy set ID")
 	})
 }
 
@@ -342,7 +342,7 @@ func TestPolicySetsAttachToWorkspaces(t *testing.T) {
 			psTest.ID,
 			PolicySetAttachToWorkspacesOptions{},
 		)
-		assert.EqualError(t, err, "Workspaces is required")
+		assert.EqualError(t, err, "workspaces is required")
 	})
 
 	t.Run("with empty workspaces slice", func(t *testing.T) {
@@ -351,7 +351,7 @@ func TestPolicySetsAttachToWorkspaces(t *testing.T) {
 			psTest.ID,
 			PolicySetAttachToWorkspacesOptions{Workspaces: []*Workspace{}},
 		)
-		assert.EqualError(t, err, "Must provide at least one workspace")
+		assert.EqualError(t, err, "must provide at least one workspace")
 	})
 
 	t.Run("without a valid ID", func(t *testing.T) {
@@ -362,7 +362,7 @@ func TestPolicySetsAttachToWorkspaces(t *testing.T) {
 				Workspaces: []*Workspace{wTest1, wTest2},
 			},
 		)
-		assert.EqualError(t, err, "Invalid value for policy set ID")
+		assert.EqualError(t, err, "invalid value for policy set ID")
 	})
 }
 
@@ -400,7 +400,7 @@ func TestPolicySetsDetachFromWorkspaces(t *testing.T) {
 			psTest.ID,
 			PolicySetDetachFromWorkspacesOptions{},
 		)
-		assert.EqualError(t, err, "Workspaces is required")
+		assert.EqualError(t, err, "workspaces is required")
 	})
 
 	t.Run("with empty workspaces slice", func(t *testing.T) {
@@ -409,7 +409,7 @@ func TestPolicySetsDetachFromWorkspaces(t *testing.T) {
 			psTest.ID,
 			PolicySetDetachFromWorkspacesOptions{Workspaces: []*Workspace{}},
 		)
-		assert.EqualError(t, err, "Must provide at least one workspace")
+		assert.EqualError(t, err, "must provide at least one workspace")
 	})
 
 	t.Run("without a valid ID", func(t *testing.T) {
@@ -420,7 +420,7 @@ func TestPolicySetsDetachFromWorkspaces(t *testing.T) {
 				Workspaces: []*Workspace{wTest1, wTest2},
 			},
 		)
-		assert.EqualError(t, err, "Invalid value for policy set ID")
+		assert.EqualError(t, err, "invalid value for policy set ID")
 	})
 }
 
@@ -449,6 +449,6 @@ func TestPolicySetsDelete(t *testing.T) {
 
 	t.Run("when the policy ID is invalid", func(t *testing.T) {
 		err := client.PolicySets.Delete(ctx, badIdentifier)
-		assert.EqualError(t, err, "Invalid value for policy set ID")
+		assert.EqualError(t, err, "invalid value for policy set ID")
 	})
 }

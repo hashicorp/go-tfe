@@ -76,7 +76,7 @@ func TestStateVersionsList(t *testing.T) {
 
 		svl, err := client.StateVersions.List(ctx, options)
 		assert.Nil(t, svl)
-		assert.EqualError(t, err, "Organization is required")
+		assert.EqualError(t, err, "organization is required")
 	})
 
 	t.Run("without a workspace", func(t *testing.T) {
@@ -86,7 +86,7 @@ func TestStateVersionsList(t *testing.T) {
 
 		svl, err := client.StateVersions.List(ctx, options)
 		assert.Nil(t, svl)
-		assert.EqualError(t, err, "Workspace is required")
+		assert.EqualError(t, err, "workspace is required")
 	})
 }
 
@@ -171,7 +171,7 @@ func TestStateVersionsCreate(t *testing.T) {
 			State: String(base64.StdEncoding.EncodeToString(state)),
 		})
 		assert.Nil(t, sv)
-		assert.EqualError(t, err, "Serial is required")
+		assert.EqualError(t, err, "serial is required")
 	})
 
 	t.Run("without state", func(t *testing.T) {
@@ -180,13 +180,13 @@ func TestStateVersionsCreate(t *testing.T) {
 			Serial: Int64(0),
 		})
 		assert.Nil(t, sv)
-		assert.EqualError(t, err, "State is required")
+		assert.EqualError(t, err, "state is required")
 	})
 
 	t.Run("with invalid workspace id", func(t *testing.T) {
 		sv, err := client.StateVersions.Create(ctx, badIdentifier, StateVersionCreateOptions{})
 		assert.Nil(t, sv)
-		assert.EqualError(t, err, "Invalid value for workspace ID")
+		assert.EqualError(t, err, "invalid value for workspace ID")
 	})
 }
 
@@ -218,7 +218,7 @@ func TestStateVersionsRead(t *testing.T) {
 	t.Run("with invalid state version id", func(t *testing.T) {
 		sv, err := client.StateVersions.Read(ctx, badIdentifier)
 		assert.Nil(t, sv)
-		assert.EqualError(t, err, "Invalid value for state version ID")
+		assert.EqualError(t, err, "invalid value for state version ID")
 	})
 }
 
@@ -256,7 +256,7 @@ func TestStateVersionsCurrent(t *testing.T) {
 	t.Run("with invalid workspace id", func(t *testing.T) {
 		sv, err := client.StateVersions.Current(ctx, badIdentifier)
 		assert.Nil(t, sv)
-		assert.EqualError(t, err, "Invalid value for workspace ID")
+		assert.EqualError(t, err, "invalid value for workspace ID")
 	})
 }
 

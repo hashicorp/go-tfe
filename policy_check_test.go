@@ -69,7 +69,7 @@ func TestPolicyChecksList(t *testing.T) {
 	t.Run("without a valid run ID", func(t *testing.T) {
 		pcl, err := client.PolicyChecks.List(ctx, badIdentifier, PolicyCheckListOptions{})
 		assert.Nil(t, pcl)
-		assert.EqualError(t, err, "Invalid value for run ID")
+		assert.EqualError(t, err, "invalid value for run ID")
 	})
 }
 
@@ -112,7 +112,7 @@ func TestPolicyChecksRead(t *testing.T) {
 	t.Run("without a valid policy check ID", func(t *testing.T) {
 		pc, err := client.PolicyChecks.Read(ctx, badIdentifier)
 		assert.Nil(t, pc)
-		assert.EqualError(t, err, "Invalid value for policy check ID")
+		assert.EqualError(t, err, "invalid value for policy check ID")
 	})
 }
 
@@ -164,7 +164,7 @@ func TestPolicyChecksOverride(t *testing.T) {
 	t.Run("without a valid policy check ID", func(t *testing.T) {
 		p, err := client.PolicyChecks.Override(ctx, badIdentifier)
 		assert.Nil(t, p)
-		assert.EqualError(t, err, "Invalid value for policy check ID")
+		assert.EqualError(t, err, "invalid value for policy check ID")
 	})
 }
 

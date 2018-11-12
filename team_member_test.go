@@ -39,7 +39,7 @@ func TestTeamMembersList(t *testing.T) {
 
 	t.Run("when the team ID is invalid", func(t *testing.T) {
 		users, err := client.TeamMembers.List(ctx, badIdentifier)
-		assert.EqualError(t, err, "Invalid value for team ID")
+		assert.EqualError(t, err, "invalid value for team ID")
 		assert.Nil(t, users)
 	})
 }
@@ -75,21 +75,21 @@ func TestTeamMembersAdd(t *testing.T) {
 
 	t.Run("when options is missing usernames", func(t *testing.T) {
 		err := client.TeamMembers.Add(ctx, tmTest.ID, TeamMemberAddOptions{})
-		assert.EqualError(t, err, "Usernames is required")
+		assert.EqualError(t, err, "usernames is required")
 	})
 
 	t.Run("when usernames is empty", func(t *testing.T) {
 		err := client.TeamMembers.Add(ctx, tmTest.ID, TeamMemberAddOptions{
 			Usernames: []string{},
 		})
-		assert.EqualError(t, err, "Invalid value for usernames")
+		assert.EqualError(t, err, "invalid value for usernames")
 	})
 
 	t.Run("when the team ID is invalid", func(t *testing.T) {
 		err := client.TeamMembers.Add(ctx, badIdentifier, TeamMemberAddOptions{
 			Usernames: []string{"user1"},
 		})
-		assert.EqualError(t, err, "Invalid value for team ID")
+		assert.EqualError(t, err, "invalid value for team ID")
 	})
 }
 
@@ -117,20 +117,20 @@ func TestTeamMembersRemove(t *testing.T) {
 
 	t.Run("when options is missing usernames", func(t *testing.T) {
 		err := client.TeamMembers.Remove(ctx, tmTest.ID, TeamMemberRemoveOptions{})
-		assert.EqualError(t, err, "Usernames is required")
+		assert.EqualError(t, err, "usernames is required")
 	})
 
 	t.Run("when usernames is empty", func(t *testing.T) {
 		err := client.TeamMembers.Remove(ctx, tmTest.ID, TeamMemberRemoveOptions{
 			Usernames: []string{},
 		})
-		assert.EqualError(t, err, "Invalid value for usernames")
+		assert.EqualError(t, err, "invalid value for usernames")
 	})
 
 	t.Run("when the team ID is invalid", func(t *testing.T) {
 		err := client.TeamMembers.Remove(ctx, badIdentifier, TeamMemberRemoveOptions{
 			Usernames: []string{"user1"},
 		})
-		assert.EqualError(t, err, "Invalid value for team ID")
+		assert.EqualError(t, err, "invalid value for team ID")
 	})
 }

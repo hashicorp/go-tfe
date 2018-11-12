@@ -39,7 +39,7 @@ func TestClient_newClient(t *testing.T) {
 		defer setupEnvVars("", "")()
 
 		_, err := NewClient(cfg)
-		if err == nil || err.Error() != "Missing API token" {
+		if err == nil || err.Error() != "missing API token" {
 			t.Fatalf("unexpected error: %v", err)
 		}
 	})
