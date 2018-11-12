@@ -51,7 +51,7 @@ func TestTeamsList(t *testing.T) {
 	t.Run("without a valid organization", func(t *testing.T) {
 		tl, err := client.Teams.List(ctx, badIdentifier, TeamListOptions{})
 		assert.Nil(t, tl)
-		assert.EqualError(t, err, "Invalid value for organization")
+		assert.EqualError(t, err, "invalid value for organization")
 	})
 }
 
@@ -86,7 +86,7 @@ func TestTeamsCreate(t *testing.T) {
 	t.Run("when options is missing name", func(t *testing.T) {
 		tm, err := client.Teams.Create(ctx, "foo", TeamCreateOptions{})
 		assert.Nil(t, tm)
-		assert.EqualError(t, err, "Name is required")
+		assert.EqualError(t, err, "name is required")
 	})
 
 	t.Run("when options has an invalid name", func(t *testing.T) {
@@ -94,7 +94,7 @@ func TestTeamsCreate(t *testing.T) {
 			Name: String(badIdentifier),
 		})
 		assert.Nil(t, tm)
-		assert.EqualError(t, err, "Invalid value for name")
+		assert.EqualError(t, err, "invalid value for name")
 	})
 
 	t.Run("when options has an invalid organization", func(t *testing.T) {
@@ -102,7 +102,7 @@ func TestTeamsCreate(t *testing.T) {
 			Name: String("foo"),
 		})
 		assert.Nil(t, tm)
-		assert.EqualError(t, err, "Invalid value for organization")
+		assert.EqualError(t, err, "invalid value for organization")
 	})
 }
 
@@ -135,7 +135,7 @@ func TestTeamsRead(t *testing.T) {
 	t.Run("without a team ID", func(t *testing.T) {
 		tm, err := client.Teams.Read(ctx, badIdentifier)
 		assert.Nil(t, tm)
-		assert.EqualError(t, err, "Invalid value for team ID")
+		assert.EqualError(t, err, "invalid value for team ID")
 	})
 }
 
@@ -159,6 +159,6 @@ func TestTeamsDelete(t *testing.T) {
 
 	t.Run("without valid team ID", func(t *testing.T) {
 		err := client.Teams.Delete(ctx, badIdentifier)
-		assert.EqualError(t, err, "Invalid value for team ID")
+		assert.EqualError(t, err, "invalid value for team ID")
 	})
 }

@@ -55,7 +55,7 @@ func TestRunsList(t *testing.T) {
 	t.Run("without a valid workspace ID", func(t *testing.T) {
 		rl, err := client.Runs.List(ctx, badIdentifier, RunListOptions{})
 		assert.Nil(t, rl)
-		assert.EqualError(t, err, "Invalid value for workspace ID")
+		assert.EqualError(t, err, "invalid value for workspace ID")
 	})
 }
 
@@ -91,7 +91,7 @@ func TestRunsCreate(t *testing.T) {
 	t.Run("without a workspace", func(t *testing.T) {
 		r, err := client.Runs.Create(ctx, RunCreateOptions{})
 		assert.Nil(t, r)
-		assert.EqualError(t, err, "Workspace is required")
+		assert.EqualError(t, err, "workspace is required")
 	})
 
 	t.Run("with additional attributes", func(t *testing.T) {
@@ -128,7 +128,7 @@ func TestRunsRead(t *testing.T) {
 	t.Run("with invalid run ID", func(t *testing.T) {
 		r, err := client.Runs.Read(ctx, badIdentifier)
 		assert.Nil(t, r)
-		assert.EqualError(t, err, "Invalid value for run ID")
+		assert.EqualError(t, err, "invalid value for run ID")
 	})
 }
 
@@ -151,7 +151,7 @@ func TestRunsApply(t *testing.T) {
 
 	t.Run("with invalid run ID", func(t *testing.T) {
 		err := client.Runs.Apply(ctx, badIdentifier, RunApplyOptions{})
-		assert.EqualError(t, err, "Invalid value for run ID")
+		assert.EqualError(t, err, "invalid value for run ID")
 	})
 }
 
@@ -181,7 +181,7 @@ func TestRunsCancel(t *testing.T) {
 
 	t.Run("with invalid run ID", func(t *testing.T) {
 		err := client.Runs.Cancel(ctx, badIdentifier, RunCancelOptions{})
-		assert.EqualError(t, err, "Invalid value for run ID")
+		assert.EqualError(t, err, "invalid value for run ID")
 	})
 }
 
@@ -249,7 +249,7 @@ func TestRunsForceCancel(t *testing.T) {
 
 	t.Run("with invalid run ID", func(t *testing.T) {
 		err := client.Runs.ForceCancel(ctx, badIdentifier, RunForceCancelOptions{})
-		assert.EqualError(t, err, "Invalid value for run ID")
+		assert.EqualError(t, err, "invalid value for run ID")
 	})
 }
 
@@ -272,6 +272,6 @@ func TestRunsDiscard(t *testing.T) {
 
 	t.Run("with invalid run ID", func(t *testing.T) {
 		err := client.Runs.Discard(ctx, badIdentifier, RunDiscardOptions{})
-		assert.EqualError(t, err, "Invalid value for run ID")
+		assert.EqualError(t, err, "invalid value for run ID")
 	})
 }

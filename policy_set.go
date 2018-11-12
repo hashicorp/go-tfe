@@ -83,7 +83,7 @@ type PolicySetListOptions struct {
 // List all the policies for a given organization
 func (s *policySets) List(ctx context.Context, organization string, options PolicySetListOptions) (*PolicySetList, error) {
 	if !validStringID(&organization) {
-		return nil, errors.New("Invalid value for organization")
+		return nil, errors.New("invalid value for organization")
 	}
 
 	u := fmt.Sprintf("organizations/%s/policy-sets", url.QueryEscape(organization))
@@ -124,10 +124,10 @@ type PolicySetCreateOptions struct {
 
 func (o PolicySetCreateOptions) valid() error {
 	if !validString(o.Name) {
-		return errors.New("Name is required")
+		return errors.New("name is required")
 	}
 	if !validStringID(o.Name) {
-		return errors.New("Invalid value for name")
+		return errors.New("invalid value for name")
 	}
 	return nil
 }
@@ -135,7 +135,7 @@ func (o PolicySetCreateOptions) valid() error {
 // Create a policy set and associate it with an organization.
 func (s *policySets) Create(ctx context.Context, organization string, options PolicySetCreateOptions) (*PolicySet, error) {
 	if !validStringID(&organization) {
-		return nil, errors.New("Invalid value for organization")
+		return nil, errors.New("invalid value for organization")
 	}
 	if err := options.valid(); err != nil {
 		return nil, err
@@ -162,7 +162,7 @@ func (s *policySets) Create(ctx context.Context, organization string, options Po
 // Read a policy set by its ID.
 func (s *policySets) Read(ctx context.Context, policySetID string) (*PolicySet, error) {
 	if !validStringID(&policySetID) {
-		return nil, errors.New("Invalid value for policy set ID")
+		return nil, errors.New("invalid value for policy set ID")
 	}
 
 	u := fmt.Sprintf("policy-sets/%s", url.QueryEscape(policySetID))
@@ -197,7 +197,7 @@ type PolicySetUpdateOptions struct {
 
 func (o PolicySetUpdateOptions) valid() error {
 	if o.Name != nil && !validStringID(o.Name) {
-		return errors.New("Invalid value for name")
+		return errors.New("invalid value for name")
 	}
 	return nil
 }
@@ -205,7 +205,7 @@ func (o PolicySetUpdateOptions) valid() error {
 // Update an existing policy set.
 func (s *policySets) Update(ctx context.Context, policySetID string, options PolicySetUpdateOptions) (*PolicySet, error) {
 	if !validStringID(&policySetID) {
-		return nil, errors.New("Invalid value for policy set ID")
+		return nil, errors.New("invalid value for policy set ID")
 	}
 	if err := options.valid(); err != nil {
 		return nil, err
@@ -237,10 +237,10 @@ type PolicySetAddPoliciesOptions struct {
 
 func (o PolicySetAddPoliciesOptions) valid() error {
 	if o.Policies == nil {
-		return errors.New("Policies is required")
+		return errors.New("policies is required")
 	}
 	if len(o.Policies) == 0 {
-		return errors.New("Must provide at least one policy")
+		return errors.New("must provide at least one policy")
 	}
 	return nil
 }
@@ -248,7 +248,7 @@ func (o PolicySetAddPoliciesOptions) valid() error {
 // Add policies to a policy set
 func (s *policySets) AddPolicies(ctx context.Context, policySetID string, options PolicySetAddPoliciesOptions) error {
 	if !validStringID(&policySetID) {
-		return errors.New("Invalid value for policy set ID")
+		return errors.New("invalid value for policy set ID")
 	}
 	if err := options.valid(); err != nil {
 		return err
@@ -271,10 +271,10 @@ type PolicySetRemovePoliciesOptions struct {
 
 func (o PolicySetRemovePoliciesOptions) valid() error {
 	if o.Policies == nil {
-		return errors.New("Policies is required")
+		return errors.New("policies is required")
 	}
 	if len(o.Policies) == 0 {
-		return errors.New("Must provide at least one policy")
+		return errors.New("must provide at least one policy")
 	}
 	return nil
 }
@@ -282,7 +282,7 @@ func (o PolicySetRemovePoliciesOptions) valid() error {
 // Remove policies from a policy set
 func (s *policySets) RemovePolicies(ctx context.Context, policySetID string, options PolicySetRemovePoliciesOptions) error {
 	if !validStringID(&policySetID) {
-		return errors.New("Invalid value for policy set ID")
+		return errors.New("invalid value for policy set ID")
 	}
 	if err := options.valid(); err != nil {
 		return err
@@ -305,10 +305,10 @@ type PolicySetAttachToWorkspacesOptions struct {
 
 func (o PolicySetAttachToWorkspacesOptions) valid() error {
 	if o.Workspaces == nil {
-		return errors.New("Workspaces is required")
+		return errors.New("workspaces is required")
 	}
 	if len(o.Workspaces) == 0 {
-		return errors.New("Must provide at least one workspace")
+		return errors.New("must provide at least one workspace")
 	}
 	return nil
 }
@@ -316,7 +316,7 @@ func (o PolicySetAttachToWorkspacesOptions) valid() error {
 // Attach a policy set to workspaces
 func (s *policySets) AttachToWorkspaces(ctx context.Context, policySetID string, options PolicySetAttachToWorkspacesOptions) error {
 	if !validStringID(&policySetID) {
-		return errors.New("Invalid value for policy set ID")
+		return errors.New("invalid value for policy set ID")
 	}
 	if err := options.valid(); err != nil {
 		return err
@@ -339,10 +339,10 @@ type PolicySetDetachFromWorkspacesOptions struct {
 
 func (o PolicySetDetachFromWorkspacesOptions) valid() error {
 	if o.Workspaces == nil {
-		return errors.New("Workspaces is required")
+		return errors.New("workspaces is required")
 	}
 	if len(o.Workspaces) == 0 {
-		return errors.New("Must provide at least one workspace")
+		return errors.New("must provide at least one workspace")
 	}
 	return nil
 }
@@ -350,7 +350,7 @@ func (o PolicySetDetachFromWorkspacesOptions) valid() error {
 // Detach a policy set from workspaces
 func (s *policySets) DetachFromWorkspaces(ctx context.Context, policySetID string, options PolicySetDetachFromWorkspacesOptions) error {
 	if !validStringID(&policySetID) {
-		return errors.New("Invalid value for policy set ID")
+		return errors.New("invalid value for policy set ID")
 	}
 	if err := options.valid(); err != nil {
 		return err
@@ -368,7 +368,7 @@ func (s *policySets) DetachFromWorkspaces(ctx context.Context, policySetID strin
 // Delete a policy set by its ID.
 func (s *policySets) Delete(ctx context.Context, policySetID string) error {
 	if !validStringID(&policySetID) {
-		return errors.New("Invalid value for policy set ID")
+		return errors.New("invalid value for policy set ID")
 	}
 
 	u := fmt.Sprintf("policy-sets/%s", url.QueryEscape(policySetID))

@@ -140,7 +140,7 @@ func NewClient(cfg *Config) (*Client, error) {
 	// Parse the address to make sure its a valid URL.
 	baseURL, err := url.Parse(config.Address)
 	if err != nil {
-		return nil, fmt.Errorf("Invalid address: %v", err)
+		return nil, fmt.Errorf("invalid address: %v", err)
 	}
 
 	baseURL.Path = config.BasePath
@@ -150,7 +150,7 @@ func NewClient(cfg *Config) (*Client, error) {
 
 	// This value must be provided by the user.
 	if config.Token == "" {
-		return nil, fmt.Errorf("Missing API token")
+		return nil, fmt.Errorf("missing API token")
 	}
 
 	// Create the client.

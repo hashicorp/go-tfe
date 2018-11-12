@@ -70,7 +70,7 @@ func TestOAuthTokensList(t *testing.T) {
 
 		otl, err := client.OAuthTokens.List(ctx, badIdentifier, options)
 		assert.Nil(t, otl)
-		assert.EqualError(t, err, "Invalid value for organization")
+		assert.EqualError(t, err, "invalid value for organization")
 	})
 }
 
@@ -97,7 +97,7 @@ func TestOAuthTokensRead(t *testing.T) {
 	t.Run("without a valid OAuth token ID", func(t *testing.T) {
 		ot, err := client.OAuthTokens.Read(ctx, badIdentifier)
 		assert.Nil(t, ot)
-		assert.EqualError(t, err, "Invalid value for OAuth token ID")
+		assert.EqualError(t, err, "invalid value for OAuth token ID")
 	})
 }
 
@@ -155,7 +155,7 @@ dpIe8YOINN27XaojJvVpT5uBVCcZLF+G7kaMjSwCTlDx3Q==
 	t.Run("without a valid policy ID", func(t *testing.T) {
 		ot, err := client.OAuthTokens.Update(ctx, badIdentifier, OAuthTokenUpdateOptions{})
 		assert.Nil(t, ot)
-		assert.EqualError(t, err, "Invalid value for OAuth token ID")
+		assert.EqualError(t, err, "invalid value for OAuth token ID")
 	})
 }
 
@@ -184,6 +184,6 @@ func TestOAuthTokensDelete(t *testing.T) {
 
 	t.Run("when the OAuth token ID is invalid", func(t *testing.T) {
 		err := client.OAuthTokens.Delete(ctx, badIdentifier)
-		assert.EqualError(t, err, "Invalid value for OAuth token ID")
+		assert.EqualError(t, err, "invalid value for OAuth token ID")
 	})
 }

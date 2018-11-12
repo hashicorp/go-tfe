@@ -69,7 +69,7 @@ func TestOAuthClientsList(t *testing.T) {
 
 		ocl, err := client.OAuthClients.List(ctx, badIdentifier, options)
 		assert.Nil(t, ocl)
-		assert.EqualError(t, err, "Invalid value for organization")
+		assert.EqualError(t, err, "invalid value for organization")
 	})
 }
 
@@ -115,7 +115,7 @@ func TestOAuthClientsCreate(t *testing.T) {
 		}
 
 		_, err := client.OAuthClients.Create(ctx, badIdentifier, options)
-		assert.EqualError(t, err, "Invalid value for organization")
+		assert.EqualError(t, err, "invalid value for organization")
 	})
 
 	t.Run("without an API URL", func(t *testing.T) {
@@ -126,7 +126,7 @@ func TestOAuthClientsCreate(t *testing.T) {
 		}
 
 		_, err := client.OAuthClients.Create(ctx, orgTest.Name, options)
-		assert.EqualError(t, err, "APIURL is required")
+		assert.EqualError(t, err, "API URL is required")
 	})
 
 	t.Run("without a HTTP URL", func(t *testing.T) {
@@ -137,7 +137,7 @@ func TestOAuthClientsCreate(t *testing.T) {
 		}
 
 		_, err := client.OAuthClients.Create(ctx, orgTest.Name, options)
-		assert.EqualError(t, err, "HTTPURL is required")
+		assert.EqualError(t, err, "HTTP URL is required")
 	})
 
 	t.Run("without an OAuth token", func(t *testing.T) {
@@ -148,7 +148,7 @@ func TestOAuthClientsCreate(t *testing.T) {
 		}
 
 		_, err := client.OAuthClients.Create(ctx, orgTest.Name, options)
-		assert.EqualError(t, err, "OAuthToken is required")
+		assert.EqualError(t, err, "OAuth token is required")
 	})
 
 	t.Run("without a service provider", func(t *testing.T) {
@@ -159,7 +159,7 @@ func TestOAuthClientsCreate(t *testing.T) {
 		}
 
 		_, err := client.OAuthClients.Create(ctx, orgTest.Name, options)
-		assert.EqualError(t, err, "ServiceProvider is required")
+		assert.EqualError(t, err, "service provider is required")
 	})
 }
 
@@ -192,7 +192,7 @@ func TestOAuthClientsRead(t *testing.T) {
 	t.Run("without a valid OAuth client ID", func(t *testing.T) {
 		oc, err := client.OAuthClients.Read(ctx, badIdentifier)
 		assert.Nil(t, oc)
-		assert.EqualError(t, err, "Invalid value for OAuth client ID")
+		assert.EqualError(t, err, "invalid value for OAuth client ID")
 	})
 }
 
@@ -221,6 +221,6 @@ func TestOAuthClientsDelete(t *testing.T) {
 
 	t.Run("when the OAuth client ID is invalid", func(t *testing.T) {
 		err := client.OAuthClients.Delete(ctx, badIdentifier)
-		assert.EqualError(t, err, "Invalid value for OAuth client ID")
+		assert.EqualError(t, err, "invalid value for OAuth client ID")
 	})
 }
