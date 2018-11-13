@@ -302,7 +302,7 @@ func TestPolicySetsRemovePolicies(t *testing.T) {
 	})
 }
 
-func TestPolicySetsAttachToWorkspaces(t *testing.T) {
+func TestPolicySetsAddWorkspaces(t *testing.T) {
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -314,10 +314,10 @@ func TestPolicySetsAttachToWorkspaces(t *testing.T) {
 	psTest, _ := createPolicySet(t, client, orgTest, nil, nil)
 
 	t.Run("with workspaces provided", func(t *testing.T) {
-		err := client.PolicySets.AttachToWorkspaces(
+		err := client.PolicySets.AddWorkspaces(
 			ctx,
 			psTest.ID,
-			PolicySetAttachToWorkspacesOptions{
+			PolicySetAddWorkspacesOptions{
 				Workspaces: []*Workspace{wTest1, wTest2},
 			},
 		)
@@ -337,28 +337,28 @@ func TestPolicySetsAttachToWorkspaces(t *testing.T) {
 	})
 
 	t.Run("without workspaces provided", func(t *testing.T) {
-		err := client.PolicySets.AttachToWorkspaces(
+		err := client.PolicySets.AddWorkspaces(
 			ctx,
 			psTest.ID,
-			PolicySetAttachToWorkspacesOptions{},
+			PolicySetAddWorkspacesOptions{},
 		)
 		assert.EqualError(t, err, "workspaces is required")
 	})
 
 	t.Run("with empty workspaces slice", func(t *testing.T) {
-		err := client.PolicySets.AttachToWorkspaces(
+		err := client.PolicySets.AddWorkspaces(
 			ctx,
 			psTest.ID,
-			PolicySetAttachToWorkspacesOptions{Workspaces: []*Workspace{}},
+			PolicySetAddWorkspacesOptions{Workspaces: []*Workspace{}},
 		)
 		assert.EqualError(t, err, "must provide at least one workspace")
 	})
 
 	t.Run("without a valid ID", func(t *testing.T) {
-		err := client.PolicySets.AttachToWorkspaces(
+		err := client.PolicySets.AddWorkspaces(
 			ctx,
 			badIdentifier,
-			PolicySetAttachToWorkspacesOptions{
+			PolicySetAddWorkspacesOptions{
 				Workspaces: []*Workspace{wTest1, wTest2},
 			},
 		)
@@ -366,7 +366,7 @@ func TestPolicySetsAttachToWorkspaces(t *testing.T) {
 	})
 }
 
-func TestPolicySetsDetachFromWorkspaces(t *testing.T) {
+func TestPolicySetsRemoveWorkspaces(t *testing.T) {
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -378,10 +378,10 @@ func TestPolicySetsDetachFromWorkspaces(t *testing.T) {
 	psTest, _ := createPolicySet(t, client, orgTest, nil, []*Workspace{wTest1, wTest2})
 
 	t.Run("with workspaces provided", func(t *testing.T) {
-		err := client.PolicySets.DetachFromWorkspaces(
+		err := client.PolicySets.RemoveWorkspaces(
 			ctx,
 			psTest.ID,
-			PolicySetDetachFromWorkspacesOptions{
+			PolicySetRemoveWorkspacesOptions{
 				Workspaces: []*Workspace{wTest1, wTest2},
 			},
 		)
@@ -395,28 +395,28 @@ func TestPolicySetsDetachFromWorkspaces(t *testing.T) {
 	})
 
 	t.Run("without workspaces provided", func(t *testing.T) {
-		err := client.PolicySets.DetachFromWorkspaces(
+		err := client.PolicySets.RemoveWorkspaces(
 			ctx,
 			psTest.ID,
-			PolicySetDetachFromWorkspacesOptions{},
+			PolicySetRemoveWorkspacesOptions{},
 		)
 		assert.EqualError(t, err, "workspaces is required")
 	})
 
 	t.Run("with empty workspaces slice", func(t *testing.T) {
-		err := client.PolicySets.DetachFromWorkspaces(
+		err := client.PolicySets.RemoveWorkspaces(
 			ctx,
 			psTest.ID,
-			PolicySetDetachFromWorkspacesOptions{Workspaces: []*Workspace{}},
+			PolicySetRemoveWorkspacesOptions{Workspaces: []*Workspace{}},
 		)
 		assert.EqualError(t, err, "must provide at least one workspace")
 	})
 
 	t.Run("without a valid ID", func(t *testing.T) {
-		err := client.PolicySets.DetachFromWorkspaces(
+		err := client.PolicySets.RemoveWorkspaces(
 			ctx,
 			badIdentifier,
-			PolicySetDetachFromWorkspacesOptions{
+			PolicySetRemoveWorkspacesOptions{
 				Workspaces: []*Workspace{wTest1, wTest2},
 			},
 		)
