@@ -249,11 +249,23 @@ func (c *Client) configureLimiter() error {
 		return err
 	}
 
-	// We make a single HTTP call in order to get the rate limit settings.
-	resp, err := c.http.HTTPClient.Get(u.String())
+	// Create a new request.
+	req, err := http.NewRequest("GET", u.String(), nil)
 	if err != nil {
-		return fmt.Errorf("error reading rate limit headers: %v", err)
+		return err
 	}
+
+	// Attach the default headers.
+	for k, v := range c.headers {
+		req.Header[k] = v
+	}
+
+	// Make a single request to retrieve the rate limit headers.
+	resp, err := c.http.HTTPClient.Do(req)
+	if err != nil {
+		return err
+	}
+	resp.Body.Close()
 
 	// Set default values for when rate limiting is disabled.
 	limit := rate.Inf
