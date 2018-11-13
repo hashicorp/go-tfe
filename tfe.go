@@ -170,7 +170,7 @@ func NewClient(cfg *Config) (*Client, error) {
 	}
 
 	// Configure the rate limiter.
-	if err := client.configureLimiter(config.Address); err != nil {
+	if err := client.configureLimiter(); err != nil {
 		return nil, err
 	}
 
@@ -243,9 +243,14 @@ func rateLimitBackoff(min, max time.Duration, attemptNum int, resp *http.Respons
 }
 
 // configureLimiter configures the rate limiter.
-func (c *Client) configureLimiter(address string) error {
+func (c *Client) configureLimiter() error {
+	u, err := c.baseURL.Parse("/")
+	if err != nil {
+		return err
+	}
+
 	// We make a single HTTP call in order to get the rate limit settings.
-	resp, err := c.http.HTTPClient.Get(address)
+	resp, err := c.http.HTTPClient.Get(u.String())
 	if err != nil {
 		return fmt.Errorf("error reading rate limit headers: %v", err)
 	}
