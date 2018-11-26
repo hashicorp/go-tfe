@@ -164,8 +164,8 @@ func NewClient(cfg *Config) (*Client, error) {
 			ErrorHandler: retryablehttp.PassthroughErrorHandler,
 			HTTPClient:   config.HTTPClient,
 			RetryWaitMin: 100 * time.Millisecond,
-			RetryWaitMax: 300 * time.Millisecond,
-			RetryMax:     5,
+			RetryWaitMax: 400 * time.Millisecond,
+			RetryMax:     30,
 		},
 	}
 
