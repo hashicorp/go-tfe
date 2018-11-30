@@ -283,7 +283,7 @@ func TestWorkspacesDelete(t *testing.T) {
 
 		// Try loading the workspace - it should fail.
 		_, err = client.Workspaces.Read(ctx, orgTest.Name, wTest.Name)
-		assert.Equal(t, err, ErrResourceNotFound)
+		assert.Equal(t, ErrResourceNotFound, err)
 	})
 
 	t.Run("when organization is invalid", func(t *testing.T) {
@@ -313,9 +313,8 @@ func TestWorkspacesLock(t *testing.T) {
 	})
 
 	t.Run("when workspace is already locked", func(t *testing.T) {
-		w, err := client.Workspaces.Lock(ctx, wTest.ID, WorkspaceLockOptions{})
-		require.NoError(t, err)
-		assert.True(t, w.Locked)
+		_, err := client.Workspaces.Lock(ctx, wTest.ID, WorkspaceLockOptions{})
+		assert.Equal(t, ErrWorkspaceLocked, err)
 	})
 
 	t.Run("without a valid workspace ID", func(t *testing.T) {
@@ -347,14 +346,47 @@ func TestWorkspacesUnlock(t *testing.T) {
 		assert.False(t, w.Locked)
 	})
 
-	t.Run("when workspace is already locked", func(t *testing.T) {
-		w, err := client.Workspaces.Unlock(ctx, wTest.ID)
-		require.NoError(t, err)
-		assert.False(t, w.Locked)
+	t.Run("when workspace is already unlocked", func(t *testing.T) {
+		_, err := client.Workspaces.Unlock(ctx, wTest.ID)
+		assert.Equal(t, ErrWorkspaceNotLocked, err)
 	})
 
 	t.Run("without a valid workspace ID", func(t *testing.T) {
 		w, err := client.Workspaces.Unlock(ctx, badIdentifier)
+		assert.Nil(t, w)
+		assert.EqualError(t, err, "invalid value for workspace ID")
+	})
+}
+
+func TestWorkspacesForceUnlock(t *testing.T) {
+	client := testClient(t)
+	ctx := context.Background()
+
+	orgTest, orgTestCleanup := createOrganization(t, client)
+	defer orgTestCleanup()
+
+	wTest, _ := createWorkspace(t, client, orgTest)
+
+	w, err := client.Workspaces.Lock(ctx, wTest.ID, WorkspaceLockOptions{})
+	if err != nil {
+		orgTestCleanup()
+	}
+	require.NoError(t, err)
+	require.True(t, w.Locked)
+
+	t.Run("with valid options", func(t *testing.T) {
+		w, err := client.Workspaces.ForceUnlock(ctx, wTest.ID)
+		require.NoError(t, err)
+		assert.False(t, w.Locked)
+	})
+
+	t.Run("when workspace is already unlocked", func(t *testing.T) {
+		_, err := client.Workspaces.ForceUnlock(ctx, wTest.ID)
+		assert.Equal(t, ErrWorkspaceNotLocked, err)
+	})
+
+	t.Run("without a valid workspace ID", func(t *testing.T) {
+		w, err := client.Workspaces.ForceUnlock(ctx, badIdentifier)
 		assert.Nil(t, w)
 		assert.EqualError(t, err, "invalid value for workspace ID")
 	})
