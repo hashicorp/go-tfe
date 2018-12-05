@@ -247,6 +247,38 @@ func TestOrganizationsCapacity(t *testing.T) {
 	})
 }
 
+func TestOrganizationsEntitlements(t *testing.T) {
+	client := testClient(t)
+	ctx := context.Background()
+
+	orgTest, orgTestCleanup := createOrganization(t, client)
+	defer orgTestCleanup()
+
+	t.Run("when the org exists", func(t *testing.T) {
+		entitlements, err := client.Organizations.Entitlements(ctx, orgTest.Name)
+		require.NoError(t, err)
+
+		assert.NotEmpty(t, entitlements.ID)
+		assert.True(t, entitlements.Operations)
+		assert.True(t, entitlements.PrivateModuleRegistry)
+		assert.True(t, entitlements.Sentinel)
+		assert.True(t, entitlements.StateStorage)
+		assert.True(t, entitlements.Teams)
+		assert.True(t, entitlements.VCSIntegrations)
+	})
+
+	t.Run("with invalid name", func(t *testing.T) {
+		entitlements, err := client.Organizations.Entitlements(ctx, badIdentifier)
+		assert.Nil(t, entitlements)
+		assert.EqualError(t, err, "invalid value for organization")
+	})
+
+	t.Run("when the org does not exist", func(t *testing.T) {
+		_, err := client.Organizations.Entitlements(ctx, randomString(t))
+		assert.Equal(t, ErrResourceNotFound, err)
+	})
+}
+
 func TestOrganizationsRunQueue(t *testing.T) {
 	client := testClient(t)
 	ctx := context.Background()
