@@ -88,6 +88,7 @@ func TestWorkspacesCreate(t *testing.T) {
 		options := WorkspaceCreateOptions{
 			Name:             String("foo"),
 			AutoApply:        Bool(true),
+			QueueAllRuns:     Bool(true),
 			TerraformVersion: String("0.11.0"),
 			WorkingDirectory: String("bar/"),
 		}
@@ -106,8 +107,9 @@ func TestWorkspacesCreate(t *testing.T) {
 			assert.NotEmpty(t, item.ID)
 			assert.Equal(t, *options.Name, item.Name)
 			assert.Equal(t, *options.AutoApply, item.AutoApply)
-			assert.Equal(t, *options.WorkingDirectory, item.WorkingDirectory)
+			assert.Equal(t, *options.QueueAllRuns, item.QueueAllRuns)
 			assert.Equal(t, *options.TerraformVersion, item.TerraformVersion)
+			assert.Equal(t, *options.WorkingDirectory, item.WorkingDirectory)
 		}
 	})
 
@@ -209,6 +211,7 @@ func TestWorkspacesUpdate(t *testing.T) {
 		options := WorkspaceUpdateOptions{
 			Name:             String(wTest.Name),
 			AutoApply:        Bool(true),
+			QueueAllRuns:     Bool(true),
 			TerraformVersion: String("0.10.0"),
 		}
 
@@ -217,6 +220,7 @@ func TestWorkspacesUpdate(t *testing.T) {
 
 		assert.Equal(t, wTest.Name, wAfter.Name)
 		assert.NotEqual(t, wTest.AutoApply, wAfter.AutoApply)
+		assert.NotEqual(t, wTest.QueueAllRuns, wAfter.QueueAllRuns)
 		assert.NotEqual(t, wTest.TerraformVersion, wAfter.TerraformVersion)
 		assert.Equal(t, wTest.WorkingDirectory, wAfter.WorkingDirectory)
 	})
@@ -225,6 +229,7 @@ func TestWorkspacesUpdate(t *testing.T) {
 		options := WorkspaceUpdateOptions{
 			Name:             String(randomString(t)),
 			AutoApply:        Bool(false),
+			QueueAllRuns:     Bool(false),
 			TerraformVersion: String("0.11.1"),
 			WorkingDirectory: String("baz/"),
 		}
@@ -242,6 +247,7 @@ func TestWorkspacesUpdate(t *testing.T) {
 		} {
 			assert.Equal(t, *options.Name, item.Name)
 			assert.Equal(t, *options.AutoApply, item.AutoApply)
+			assert.Equal(t, *options.QueueAllRuns, item.QueueAllRuns)
 			assert.Equal(t, *options.TerraformVersion, item.TerraformVersion)
 			assert.Equal(t, *options.WorkingDirectory, item.WorkingDirectory)
 		}

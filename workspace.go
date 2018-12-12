@@ -71,6 +71,7 @@ type Workspace struct {
 	Name                 string                `jsonapi:"attr,name"`
 	Operations           bool                  `jsonapi:"attr,operations"`
 	Permissions          *WorkspacePermissions `jsonapi:"attr,permissions"`
+	QueueAllRuns         bool                  `jsonapi:"attr,queue-all-runs"`
 	TerraformVersion     string                `jsonapi:"attr,terraform-version"`
 	VCSRepo              *VCSRepo              `jsonapi:"attr,vcs-repo"`
 	WorkingDirectory     string                `jsonapi:"attr,working-directory"`
@@ -151,6 +152,10 @@ type WorkspaceCreateOptions struct {
 	// and _. This will be used as an identifier and must be unique in the
 	// organization.
 	Name *string `jsonapi:"attr,name"`
+
+	// Whether to queue all runs. Unless this is set to true, runs triggered by
+	// a webhook will not be queued until at least one run is manually queued.
+	QueueAllRuns *bool `jsonapi:"attr,queue-all-runs,omitempty"`
 
 	// The version of Terraform to use for this workspace. Upon creating a
 	// workspace, the latest version is selected unless otherwise specified.
@@ -253,6 +258,10 @@ type WorkspaceUpdateOptions struct {
 	// organization. Warning: Changing a workspace's name changes its URL in the
 	// API and UI.
 	Name *string `jsonapi:"attr,name,omitempty"`
+
+	// Whether to queue all runs. Unless this is set to true, runs triggered by
+	// a webhook will not be queued until at least one run is manually queued.
+	QueueAllRuns *bool `jsonapi:"attr,queue-all-runs,omitempty"`
 
 	// The version of Terraform to use for this workspace.
 	TerraformVersion *string `jsonapi:"attr,terraform-version,omitempty"`
