@@ -41,19 +41,27 @@ type TeamList struct {
 
 // Team represents a Terraform Enterprise team.
 type Team struct {
-	ID          string           `jsonapi:"primary,teams"`
-	Name        string           `jsonapi:"attr,name"`
-	Permissions *TeamPermissions `jsonapi:"attr,permissions"`
-	UserCount   int              `jsonapi:"attr,users-count"`
+	ID                 string                  `jsonapi:"primary,teams"`
+	Name               string                  `jsonapi:"attr,name"`
+	Permissions        *TeamPermissions        `jsonapi:"attr,permissions"`
+	OrganizationAccess *TeamOrganizationAccess `jsonapi:"attr,organization-access"`
+	UserCount          int                     `jsonapi:"attr,users-count"`
 
 	// Relations
 	Users []*User `jsonapi:"relation,users"`
 }
 
-// TeamPermissions represents the team permissions.
+// TeamPermissions represents the current user's permissions on the team.
 type TeamPermissions struct {
 	CanDestroy          bool `json:"can-destroy"`
 	CanUpdateMembership bool `json:"can-update-membership"`
+}
+
+// TeamOrganizationAccess represents the team's permissions on its organization
+type TeamOrganizationAccess struct {
+	ManagePolicies    bool `json:"manage-policies"`
+	ManageWorkspaces  bool `json:"manage-workspaces"`
+	ManageVcsSettings bool `json:"manage-workspaces"`
 }
 
 // TeamListOptions represents the options for listing teams.
@@ -89,6 +97,9 @@ type TeamCreateOptions struct {
 
 	// Name of the team.
 	Name *string `jsonapi:"attr,name"`
+
+	// The team's organization-level permissions
+	OrganizationAccess *TeamOrganizationAccess `jsonapi:"attr,organization-access"`
 }
 
 func (o TeamCreateOptions) valid() error {

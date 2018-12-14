@@ -124,6 +124,11 @@ func TestTeamsRead(t *testing.T) {
 		t.Run("permissions are properly decoded", func(t *testing.T) {
 			assert.True(t, tm.Permissions.CanDestroy)
 		})
+
+		t.Run("organization access is properly decoded", func(t *testing.T) {
+			assert.True(t, tm.OrganizationAccess.ManagePolicies)
+			assert.False(t, tm.OrganizationAccess.ManageWorkspaces)
+		})
 	})
 
 	t.Run("when the team does not exist", func(t *testing.T) {
