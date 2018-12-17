@@ -24,6 +24,9 @@ type Teams interface {
 	// Read a team by its ID.
 	Read(ctx context.Context, teamID string) (*Team, error)
 
+	// Update a team by its ID.
+	Update(ctx context.Context, teamID string, options TeamUpdateOptions) (*Team, error)
+
 	// Delete a team by its ID.
 	Delete(ctx context.Context, teamID string) error
 }
@@ -61,7 +64,7 @@ type TeamPermissions struct {
 type TeamOrganizationAccess struct {
 	ManagePolicies    bool `json:"manage-policies"`
 	ManageWorkspaces  bool `json:"manage-workspaces"`
-	ManageVcsSettings bool `json:"manage-workspaces"`
+	ManageVcsSettings bool `json:"manage-vcs-settings"`
 }
 
 // TeamListOptions represents the options for listing teams.
@@ -158,6 +161,38 @@ func (s *teams) Read(ctx context.Context, teamID string) (*Team, error) {
 	}
 
 	return t, nil
+}
+
+// TeamUpdateOptions represents the options for updating a team.
+type TeamUpdateOptions struct {
+	// For internal use only!
+	ID string `jsonapi:"primary,teams"`
+
+	// New name for the team
+	Name *string `jsonapi:"attr,name"`
+
+	// The team's organization-level permissions
+	OrganizationAccess *TeamOrganizationAccess `jsonapi:"attr,organization-access"`
+}
+
+// Update attributes of an existing team.
+func (s *teams) Update(ctx context.Context, team string, options TeamUpdateOptions) (*Team, error) {
+	// Make sure we don't send a user provided ID.
+	options.ID = ""
+
+	u := fmt.Sprintf("teams/%s", url.QueryEscape(team))
+	req, err := s.client.newRequest("PATCH", u, &options)
+	if err != nil {
+		return nil, err
+	}
+
+	tm := &Team{}
+	err = s.client.do(ctx, req, tm)
+	if err != nil {
+		return nil, err
+	}
+
+	return tm, nil
 }
 
 // Delete a team by its ID.

@@ -2,10 +2,9 @@ package tfe
 
 import (
 	"context"
-	"testing"
-
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
+	"testing"
 )
 
 func TestTeamsList(t *testing.T) {
@@ -141,6 +140,47 @@ func TestTeamsRead(t *testing.T) {
 		tm, err := client.Teams.Read(ctx, badIdentifier)
 		assert.Nil(t, tm)
 		assert.EqualError(t, err, "invalid value for team ID")
+	})
+}
+
+func TestTeamsUpdate(t *testing.T) {
+	client := testClient(t)
+	ctx := context.Background()
+
+	orgTest, orgTestCleanup := createOrganization(t, client)
+	defer orgTestCleanup()
+
+	teamTest, teamTestCleanup := createTeam(t, client, orgTest)
+	defer teamTestCleanup()
+
+	t.Run("with valid options", func(t *testing.T) {
+		options := TeamUpdateOptions{
+			Name: String("Totally cool renamed team"),
+			OrganizationAccess: &TeamOrganizationAccess{
+				ManagePolicies:    false,
+				ManageVcsSettings: true},
+		}
+
+		team, err := client.Teams.Update(ctx, teamTest.ID, options)
+		require.NoError(t, err)
+
+		refreshed, err := client.Teams.Read(ctx, teamTest.ID)
+		require.NoError(t, err)
+
+		for _, item := range []*Team{
+			team,
+			refreshed,
+		} {
+			assert.Equal(t, *options.Name, item.Name)
+			assert.Equal(t,
+				options.OrganizationAccess.ManagePolicies,
+				item.OrganizationAccess.ManagePolicies,
+			)
+			assert.Equal(t,
+				options.OrganizationAccess.ManageVcsSettings,
+				item.OrganizationAccess.ManageVcsSettings,
+			)
+		}
 	})
 }
 
