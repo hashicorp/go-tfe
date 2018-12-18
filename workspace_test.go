@@ -478,3 +478,21 @@ func TestWorkspacesUnassignSSHKey(t *testing.T) {
 		assert.EqualError(t, err, "invalid value for workspace ID")
 	})
 }
+
+func TestWorkspaceRemoveVCS(t *testing.T) {
+	client := testClient(t)
+	ctx := context.Background()
+
+	orgTest, orgTestCleanup := createOrganization(t, client)
+	defer orgTestCleanup()
+
+	wTest, _ := createWorkspace(t, client, orgTest)
+
+	t.Run("remove vcs integration", func(t *testing.T) {
+
+		w, err := client.Workspaces.RemoveVCS(ctx, orgTest.Name, wTest.Name)
+		require.NoError(t, err)
+		assert.Equal(t, w.VCSRepo, nil)
+	})
+
+}

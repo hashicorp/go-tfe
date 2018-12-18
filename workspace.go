@@ -45,6 +45,9 @@ type Workspaces interface {
 
 	// UnassignSSHKey from a workspace.
 	UnassignSSHKey(ctx context.Context, workspaceID string) (*Workspace, error)
+
+	// RemoveVCS from a workspace.
+	RemoveVCS(ctx context.Context, organizationID, workspaceID string) (*Workspace, error)
 }
 
 // workspaces implements Workspaces.
@@ -467,6 +470,45 @@ func (s *workspaces) UnassignSSHKey(ctx context.Context, workspaceID string) (*W
 
 	u := fmt.Sprintf("workspaces/%s/relationships/ssh-key", url.QueryEscape(workspaceID))
 	req, err := s.client.newRequest("PATCH", u, &workspaceUnassignSSHKeyOptions{})
+	if err != nil {
+		return nil, err
+	}
+
+	w := &Workspace{}
+	err = s.client.do(ctx, req, w)
+	if err != nil {
+		return nil, err
+	}
+
+	return w, nil
+}
+
+// RemoveVCS from a workspace.
+func (s *workspaces) RemoveVCS(ctx context.Context, organizationID, workspaceID string) (*Workspace, error) {
+	if !validStringID(&organizationID) {
+		return nil, errors.New("invalid value for organizationID")
+	}
+	if !validStringID(&workspaceID) {
+		return nil, errors.New("invalid value for workspaceID")
+	}
+
+	// WorkspaceUpdateOptionsRemoveVCS
+	type WorkspaceUpdateOptionsRemoveVCS struct {
+		ID      string          `jsonapi:"primary,workspaces"`
+		VCSRepo *VCSRepoOptions `jsonapi:"attr,vcs-repo"`
+	}
+
+	options := WorkspaceUpdateOptionsRemoveVCS{
+		VCSRepo: nil,
+	}
+
+	u := fmt.Sprintf(
+		"organizations/%s/workspaces/%s",
+		url.QueryEscape(organizationID),
+		url.QueryEscape(workspaceID),
+	)
+
+	req, err := s.client.newRequest("PATCH", u, &options)
 	if err != nil {
 		return nil, err
 	}
