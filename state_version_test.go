@@ -97,8 +97,6 @@ func TestStateVersionsCreate(t *testing.T) {
 	wTest, wTestCleanup := createWorkspace(t, client, nil)
 	defer wTestCleanup()
 
-	rTest, _ := createRun(t, client, wTest)
-
 	state, err := ioutil.ReadFile("test-fixtures/state-version/terraform.tfstate")
 	if err != nil {
 		t.Fatal(err)
@@ -106,6 +104,11 @@ func TestStateVersionsCreate(t *testing.T) {
 
 	t.Run("with valid options", func(t *testing.T) {
 		ctx := context.Background()
+		_, err := client.Workspaces.Lock(ctx, wTest.ID, WorkspaceLockOptions{})
+		if err != nil {
+			t.Fatal(err)
+		}
+
 		sv, err := client.StateVersions.Create(ctx, wTest.ID, StateVersionCreateOptions{
 			MD5:    String(fmt.Sprintf("%x", md5.Sum(state))),
 			Serial: Int64(0),
@@ -116,6 +119,11 @@ func TestStateVersionsCreate(t *testing.T) {
 		// Get a refreshed view of the configuration version.
 		refreshed, err := client.StateVersions.Read(ctx, sv.ID)
 		require.NoError(t, err)
+
+		_, err = client.Workspaces.Unlock(ctx, wTest.ID)
+		if err != nil {
+			t.Fatal(err)
+		}
 
 		for _, item := range []*StateVersion{
 			sv,
@@ -129,6 +137,10 @@ func TestStateVersionsCreate(t *testing.T) {
 	})
 
 	t.Run("with a run to associate with", func(t *testing.T) {
+		t.Skip("This can only be tested with the run specific token")
+
+		rTest, _ := createRun(t, client, wTest)
+
 		ctx := context.Background()
 		sv, err := client.StateVersions.Create(ctx, wTest.ID, StateVersionCreateOptions{
 			MD5:    String(fmt.Sprintf("%x", md5.Sum(state))),

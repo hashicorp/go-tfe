@@ -391,6 +391,18 @@ func createStateVersion(t *testing.T, client *Client, serial int64, w *Workspace
 	}
 
 	ctx := context.Background()
+
+	_, err = client.Workspaces.Lock(ctx, w.ID, WorkspaceLockOptions{})
+	if err != nil {
+		t.Fatal(err)
+	}
+	defer func() {
+		_, err := client.Workspaces.Unlock(ctx, w.ID)
+		if err != nil {
+			t.Fatal(err)
+		}
+	}()
+
 	sv, err := client.StateVersions.Create(ctx, w.ID, StateVersionCreateOptions{
 		MD5:    String(fmt.Sprintf("%x", md5.Sum(state))),
 		Serial: Int64(serial),
