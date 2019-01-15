@@ -270,7 +270,7 @@ type WorkspaceUpdateOptions struct {
 	// object. To modify a workspace's existing VCS repo, include whichever of
 	// the keys below you wish to modify. To add a new VCS repo to a workspace
 	// that didn't previously have one, include at least the oauth-token-id and
-	// identifier keys.  VCSRepo *VCSRepo `jsonapi:"relation,vcs-repo,om-tempty"`
+	// identifier keys.
 	VCSRepo *VCSRepoOptions `jsonapi:"attr,vcs-repo,omitempty"`
 
 	// A relative path that Terraform will execute within. This defaults to the
