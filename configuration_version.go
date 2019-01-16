@@ -6,6 +6,7 @@ import (
 	"errors"
 	"fmt"
 	"net/url"
+	"os"
 	"time"
 
 	slug "github.com/hashicorp/go-slug"
@@ -184,6 +185,15 @@ func (s *configurationVersions) Read(ctx context.Context, cvID string) (*Configu
 // files on disk.
 func (s *configurationVersions) Upload(ctx context.Context, url, path string) error {
 	body := bytes.NewBuffer(nil)
+
+	file, err := os.Stat(path)
+	if err != nil {
+		return err
+	}
+
+	if !file.Mode().IsDir() {
+		return errors.New("path needs to be an existing directory")
+	}
 
 	_, err := slug.Pack(path, body, true)
 	if err != nil {
