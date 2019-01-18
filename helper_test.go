@@ -430,7 +430,8 @@ func createTeam(t *testing.T, client *Client, org *Organization) (*Team, func())
 
 	ctx := context.Background()
 	tm, err := client.Teams.Create(ctx, org.Name, TeamCreateOptions{
-		Name: String(randomString(t)),
+		Name:               String(randomString(t)),
+		OrganizationAccess: &OrganizationAccessOptions{ManagePolicies: Bool(true)},
 	})
 	if err != nil {
 		t.Fatal(err)
