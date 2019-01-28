@@ -577,6 +577,44 @@ func createWorkspace(t *testing.T, client *Client, org *Organization) (*Workspac
 	}
 }
 
+func createWorkspaceWithVCS(t *testing.T, client *Client, org *Organization) (*Workspace, func()) {
+	var orgCleanup func()
+
+	if org == nil {
+		org, orgCleanup = createOrganization(t, client)
+	}
+
+	ctx := context.Background()
+
+	token, ocTestCleanup := createOAuthToken(t, client, org)
+	w, err := client.Workspaces.Create(ctx, org.Name, WorkspaceCreateOptions{
+		Name: String(randomString(t)),
+		VCSRepo: &VCSRepoOptions{
+			OAuthTokenID: String(token.ID),
+		},
+	})
+
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	return w, func() {
+		if err := client.Workspaces.Delete(ctx, org.Name, w.Name); err != nil {
+			t.Errorf("Error destroying workspace! WARNING: Dangling resources\n"+
+				"may exist! The full error is shown below.\n\n"+
+				"Workspace: %s\nError: %s", w.Name, err)
+		}
+
+		if orgCleanup != nil {
+			orgCleanup()
+		}
+
+		if ocTestCleanup != nil {
+			ocTestCleanup()
+		}
+	}
+}
+
 func randomString(t *testing.T) string {
 	v, err := uuid.GenerateUUID()
 	if err != nil {

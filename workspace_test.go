@@ -479,18 +479,17 @@ func TestWorkspacesUnassignSSHKey(t *testing.T) {
 	})
 }
 
-func TestWorkspaceRemoveVCS(t *testing.T) {
+func TestWorkspaceRemoveVCSConnection(t *testing.T) {
 	client := testClient(t)
 	ctx := context.Background()
 
 	orgTest, orgTestCleanup := createOrganization(t, client)
 	defer orgTestCleanup()
 
-	wTest, _ := createWorkspace(t, client, orgTest)
+	wTest, _ := createWorkspaceWithVCS(t, client, orgTest)
 
 	t.Run("remove vcs integration", func(t *testing.T) {
-
-		w, err := client.Workspaces.RemoveVCS(ctx, orgTest.Name, wTest.Name)
+		w, err := client.Workspaces.RemoveVCSConnection(ctx, orgTest.Name, wTest.Name)
 		require.NoError(t, err)
 		assert.Equal(t, w.VCSRepo, nil)
 	})
