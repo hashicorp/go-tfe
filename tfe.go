@@ -261,7 +261,6 @@ func (c *Client) configureLimiter() error {
 	for k, v := range c.headers {
 		req.Header[k] = v
 	}
-
 	req.Header.Set("Accept", "application/vnd.api+json")
 
 	// Make a single request to retrieve the rate limit headers.
