@@ -492,7 +492,7 @@ func (s *workspaces) RemoveVCSConnection(ctx context.Context, organization, work
 		return nil, errors.New("invalid value for workspaceID")
 	}
 
-	// WorkspaceUpdateOptionsRemoveVCS
+	// workspaceRemoveVCSConnectionOptions
 	type workspaceRemoveVCSConnectionOptions struct {
 		ID      string          `jsonapi:"primary,workspaces"`
 		VCSRepo *VCSRepoOptions `jsonapi:"attr,vcs-repo"`
