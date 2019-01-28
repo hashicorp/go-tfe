@@ -493,5 +493,4 @@ func TestWorkspaceRemoveVCSConnection(t *testing.T) {
 		require.NoError(t, err)
 		assert.Equal(t, w.VCSRepo, nil)
 	})
-
 }
