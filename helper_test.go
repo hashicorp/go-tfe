@@ -584,16 +584,17 @@ func createWorkspaceWithVCS(t *testing.T, client *Client, org *Organization) (*W
 		org, orgCleanup = createOrganization(t, client)
 	}
 
+	oc, ocCleanup := createOAuthToken(t, client, org)
+
 	ctx := context.Background()
 
-	token, ocTestCleanup := createOAuthToken(t, client, org)
 	w, err := client.Workspaces.Create(ctx, org.Name, WorkspaceCreateOptions{
 		Name: String(randomString(t)),
 		VCSRepo: &VCSRepoOptions{
-			OAuthTokenID: String(token.ID),
+			Identifier:   String("dummyString"),
+			OAuthTokenID: String(oc.ID),
 		},
 	})
-
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -605,12 +606,12 @@ func createWorkspaceWithVCS(t *testing.T, client *Client, org *Organization) (*W
 				"Workspace: %s\nError: %s", w.Name, err)
 		}
 
-		if orgCleanup != nil {
-			orgCleanup()
+		if ocCleanup != nil {
+			ocCleanup()
 		}
 
-		if ocTestCleanup != nil {
-			ocTestCleanup()
+		if orgCleanup != nil {
+			orgCleanup()
 		}
 	}
 }
