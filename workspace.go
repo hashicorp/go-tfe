@@ -483,19 +483,19 @@ func (s *workspaces) UnassignSSHKey(ctx context.Context, workspaceID string) (*W
 	return w, nil
 }
 
+// workspaceRemoveVCSConnectionOptions
+type workspaceRemoveVCSConnectionOptions struct {
+	ID      string          `jsonapi:"primary,workspaces"`
+	VCSRepo *VCSRepoOptions `jsonapi:"attr,vcs-repo"`
+}
+
 // RemoveVCSConnection from a workspace.
 func (s *workspaces) RemoveVCSConnection(ctx context.Context, organization, workspace string) (*Workspace, error) {
 	if !validStringID(&organization) {
-		return nil, errors.New("invalid value for organizationID")
+		return nil, errors.New("invalid value for organization")
 	}
 	if !validStringID(&workspace) {
-		return nil, errors.New("invalid value for workspaceID")
-	}
-
-	// workspaceRemoveVCSConnectionOptions
-	type workspaceRemoveVCSConnectionOptions struct {
-		ID      string          `jsonapi:"primary,workspaces"`
-		VCSRepo *VCSRepoOptions `jsonapi:"attr,vcs-repo"`
+		return nil, errors.New("invalid value for workspace")
 	}
 
 	u := fmt.Sprintf(
