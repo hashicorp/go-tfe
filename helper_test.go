@@ -586,15 +586,21 @@ func createWorkspaceWithVCS(t *testing.T, client *Client, org *Organization) (*W
 
 	oc, ocCleanup := createOAuthToken(t, client, org)
 
-	ctx := context.Background()
+	githubIdentifier := os.Getenv("GITHUB_IDENTIFIER")
+	if githubIdentifier == "" {
+		t.Fatal("Export a valid GITHUB_IDENTIFIER before running this test!")
+	}
 
-	w, err := client.Workspaces.Create(ctx, org.Name, WorkspaceCreateOptions{
+	options := WorkspaceCreateOptions{
 		Name: String(randomString(t)),
 		VCSRepo: &VCSRepoOptions{
-			Identifier:   String("dummyString"),
+			Identifier:   String(githubIdentifier),
 			OAuthTokenID: String(oc.ID),
 		},
-	})
+	}
+
+	ctx := context.Background()
+	w, err := client.Workspaces.Create(ctx, org.Name, options)
 	if err != nil {
 		t.Fatal(err)
 	}
