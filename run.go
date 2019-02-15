@@ -126,9 +126,11 @@ type RunStatusTimestamps struct {
 	FinishedAt           time.Time `json:"finished-at"`
 	QueuedAt             time.Time `json:"queued-at"`
 	StartedAt            time.Time `json:"started-at"`
+	ApplyingAt           time.Time `json:"applying-at"`
+	AppliedAt            time.Time `json:"applied-at"`
+	PlanningAt           time.Time `json:"planning-at"`
 	PlannedAt            time.Time `json:"planned-at"`
 	PlannedAndFinishedAt time.Time `json:"planned-and-finished-at"`
-	PlanningAt           time.Time `json:"planning-at"`
 	PlanQueuabledAt      time.Time `json:"plan-queueable-at"`
 }
 
