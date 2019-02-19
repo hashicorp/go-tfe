@@ -577,6 +577,51 @@ func createWorkspace(t *testing.T, client *Client, org *Organization) (*Workspac
 	}
 }
 
+func createWorkspaceWithVCS(t *testing.T, client *Client, org *Organization) (*Workspace, func()) {
+	var orgCleanup func()
+
+	if org == nil {
+		org, orgCleanup = createOrganization(t, client)
+	}
+
+	oc, ocCleanup := createOAuthToken(t, client, org)
+
+	githubIdentifier := os.Getenv("GITHUB_IDENTIFIER")
+	if githubIdentifier == "" {
+		t.Fatal("Export a valid GITHUB_IDENTIFIER before running this test!")
+	}
+
+	options := WorkspaceCreateOptions{
+		Name: String(randomString(t)),
+		VCSRepo: &VCSRepoOptions{
+			Identifier:   String(githubIdentifier),
+			OAuthTokenID: String(oc.ID),
+		},
+	}
+
+	ctx := context.Background()
+	w, err := client.Workspaces.Create(ctx, org.Name, options)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	return w, func() {
+		if err := client.Workspaces.Delete(ctx, org.Name, w.Name); err != nil {
+			t.Errorf("Error destroying workspace! WARNING: Dangling resources\n"+
+				"may exist! The full error is shown below.\n\n"+
+				"Workspace: %s\nError: %s", w.Name, err)
+		}
+
+		if ocCleanup != nil {
+			ocCleanup()
+		}
+
+		if orgCleanup != nil {
+			orgCleanup()
+		}
+	}
+}
+
 func randomString(t *testing.T) string {
 	v, err := uuid.GenerateUUID()
 	if err != nil {

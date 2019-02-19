@@ -303,6 +303,22 @@ func TestWorkspacesDelete(t *testing.T) {
 	})
 }
 
+func TestWorkspacesRemoveVCSConnection(t *testing.T) {
+	client := testClient(t)
+	ctx := context.Background()
+
+	orgTest, orgTestCleanup := createOrganization(t, client)
+	defer orgTestCleanup()
+
+	wTest, _ := createWorkspaceWithVCS(t, client, orgTest)
+
+	t.Run("remove vcs integration", func(t *testing.T) {
+		w, err := client.Workspaces.RemoveVCSConnection(ctx, orgTest.Name, wTest.Name)
+		require.NoError(t, err)
+		assert.Equal(t, (*VCSRepo)(nil), w.VCSRepo)
+	})
+}
+
 func TestWorkspacesLock(t *testing.T) {
 	client := testClient(t)
 	ctx := context.Background()
