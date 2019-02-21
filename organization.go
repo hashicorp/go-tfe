@@ -80,7 +80,7 @@ type Organization struct {
 	CreatedAt              time.Time                `jsonapi:"attr,created-at,iso8601"`
 	Email                  string                   `jsonapi:"attr,email"`
 	EnterprisePlan         EnterprisePlanType       `jsonapi:"attr,enterprise-plan"`
-	OwnersTeamSamlRoleID   string                   `jsonapi:"attr,owners-team-saml-role-id"`
+	OwnersTeamSAMLRoleID   string                   `jsonapi:"attr,owners-team-saml-role-id"`
 	Permissions            *OrganizationPermissions `jsonapi:"attr,permissions"`
 	SAMLEnabled            bool                     `jsonapi:"attr,saml-enabled"`
 	SessionRemember        int                      `jsonapi:"attr,session-remember"`
@@ -168,7 +168,7 @@ type OrganizationCreateOptions struct {
 	CollaboratorAuthPolicy *AuthPolicyType `jsonapi:"attr,collaborator-auth-policy,omitempty"`
 
 	// The name of the "owners" team
-	OwnersTeamSamlRoleID *string `jsonapi:"attr,owners-team-saml-role-id,omitempty"`
+	OwnersTeamSAMLRoleID *string `jsonapi:"attr,owners-team-saml-role-id,omitempty"`
 }
 
 func (o OrganizationCreateOptions) valid() error {
@@ -249,7 +249,7 @@ type OrganizationUpdateOptions struct {
 	CollaboratorAuthPolicy *AuthPolicyType `jsonapi:"attr,collaborator-auth-policy,omitempty"`
 
 	// The name of the "owners" team
-	OwnersTeamSamlRoleID *string `jsonapi:"attr,owners-team-saml-role-id,omitempty"`
+	OwnersTeamSAMLRoleID *string `jsonapi:"attr,owners-team-saml-role-id,omitempty"`
 }
 
 // Update attributes of an existing organization.
