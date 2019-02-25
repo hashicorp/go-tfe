@@ -101,10 +101,13 @@ type WorkspaceActions struct {
 // WorkspacePermissions represents the workspace permissions.
 type WorkspacePermissions struct {
 	CanDestroy        bool `json:"can-destroy"`
+	CanForceUnlock    bool `json:"can-force-unlock"`
 	CanLock           bool `json:"can-lock"`
+	CanQueueApply     bool `json:"can-queue-apply"`
 	CanQueueDestroy   bool `json:"can-queue-destroy"`
 	CanQueueRun       bool `json:"can-queue-run"`
 	CanReadSettings   bool `json:"can-read-settings"`
+	CanUnlock         bool `json:"can-unlock"`
 	CanUpdate         bool `json:"can-update"`
 	CanUpdateVariable bool `json:"can-update-variable"`
 }
