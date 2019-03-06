@@ -2,10 +2,12 @@ package tfe
 
 import (
 	"context"
+	"errors"
 	"net/http"
 	"net/http/httptest"
 	"os"
 	"testing"
+	"time"
 
 	"golang.org/x/time/rate"
 )
@@ -260,6 +262,125 @@ func TestClient_configureLimiter(t *testing.T) {
 		if client.limiter.Burst() != tc.burst {
 			t.Fatalf("test %s expected burst %d, got: %d", name, tc.burst, client.limiter.Burst())
 		}
+	}
+}
+
+func TestClient_retryHTTPCheck(t *testing.T) {
+	ts := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Content-Type", "application/vnd.api+json")
+		w.Header().Set("X-RateLimit-Limit", "30")
+		w.WriteHeader(404) // We query the configured base URL which should return a 404.
+	}))
+	defer ts.Close()
+
+	cfg := &Config{
+		Address:    ts.URL,
+		Token:      "dummy-token",
+		HTTPClient: ts.Client(),
+	}
+
+	connErr := errors.New("connection error")
+
+	cases := map[string]struct {
+		resp              *http.Response
+		err               error
+		retryServerErrors bool
+		checkOK           bool
+		checkErr          error
+	}{
+		"429-no-server-errors": {
+			resp:     &http.Response{StatusCode: 429},
+			err:      nil,
+			checkOK:  true,
+			checkErr: nil,
+		},
+		"429-with-server-errors": {
+			resp:              &http.Response{StatusCode: 429},
+			err:               nil,
+			retryServerErrors: true,
+			checkOK:           true,
+			checkErr:          nil,
+		},
+		"500-no-server-errors": {
+			resp:     &http.Response{StatusCode: 500},
+			err:      nil,
+			checkOK:  false,
+			checkErr: nil,
+		},
+		"500-with-server-errors": {
+			resp:              &http.Response{StatusCode: 500},
+			err:               nil,
+			retryServerErrors: true,
+			checkOK:           true,
+			checkErr:          nil,
+		},
+		"err-no-server-errors": {
+			err:      connErr,
+			checkOK:  false,
+			checkErr: connErr,
+		},
+		"err-with-server-errors": {
+			err:               connErr,
+			retryServerErrors: true,
+			checkOK:           true,
+			checkErr:          connErr,
+		},
+	}
+
+	ctx := context.Background()
+
+	for name, tc := range cases {
+		client, err := NewClient(cfg)
+		if err != nil {
+			t.Fatal(err)
+		}
+
+		client.RetryServerErrors(tc.retryServerErrors)
+
+		checkOK, checkErr := client.retryHTTPCheck(ctx, tc.resp, tc.err)
+		if checkOK != tc.checkOK {
+			t.Fatalf("test %s expected checkOK %t, got: %t", name, tc.checkOK, checkOK)
+		}
+		if checkErr != tc.checkErr {
+			t.Fatalf("test %s expected checkErr %v, got: %v", name, tc.checkErr, checkErr)
+		}
+	}
+}
+
+func TestClient_retryHTTPBackoff(t *testing.T) {
+	ts := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Content-Type", "application/vnd.api+json")
+		w.Header().Set("X-RateLimit-Limit", "30")
+		w.WriteHeader(404) // We query the configured base URL which should return a 404.
+	}))
+	defer ts.Close()
+
+	var attempts int
+	retryLogHook := func(attemptNum int, resp *http.Response) {
+		attempts++
+	}
+
+	cfg := &Config{
+		Address:      ts.URL,
+		Token:        "dummy-token",
+		HTTPClient:   ts.Client(),
+		RetryLogHook: retryLogHook,
+	}
+
+	client, err := NewClient(cfg)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	retries := 3
+	resp := &http.Response{StatusCode: 500}
+
+	for i := 0; i < retries; i++ {
+		client.retryHTTPBackoff(time.Second, time.Second, i, resp)
+	}
+
+	if attempts != retries {
+		t.Fatalf("expected %d log hook callbacks, got: %d callbacks", retries, attempts)
 	}
 }
 
