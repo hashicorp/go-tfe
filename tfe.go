@@ -99,26 +99,27 @@ type Client struct {
 	http    *retryablehttp.Client
 	limiter *rate.Limiter
 
-	Applies               Applies
-	ConfigurationVersions ConfigurationVersions
-	OAuthClients          OAuthClients
-	OAuthTokens           OAuthTokens
-	Organizations         Organizations
-	OrganizationTokens    OrganizationTokens
-	Plans                 Plans
-	Policies              Policies
-	PolicyChecks          PolicyChecks
-	PolicySets            PolicySets
-	Runs                  Runs
-	SSHKeys               SSHKeys
-	StateVersions         StateVersions
-	Teams                 Teams
-	TeamAccess            TeamAccesses
-	TeamMembers           TeamMembers
-	TeamTokens            TeamTokens
-	Users                 Users
-	Variables             Variables
-	Workspaces            Workspaces
+	Applies                    Applies
+	ConfigurationVersions      ConfigurationVersions
+	NotificationConfigurations NotificationConfigurations
+	OAuthClients               OAuthClients
+	OAuthTokens                OAuthTokens
+	Organizations              Organizations
+	OrganizationTokens         OrganizationTokens
+	Plans                      Plans
+	Policies                   Policies
+	PolicyChecks               PolicyChecks
+	PolicySets                 PolicySets
+	Runs                       Runs
+	SSHKeys                    SSHKeys
+	StateVersions              StateVersions
+	Teams                      Teams
+	TeamAccess                 TeamAccesses
+	TeamMembers                TeamMembers
+	TeamTokens                 TeamTokens
+	Users                      Users
+	Variables                  Variables
+	Workspaces                 Workspaces
 }
 
 // NewClient creates a new Terraform Enterprise API client.
@@ -184,6 +185,7 @@ func NewClient(cfg *Config) (*Client, error) {
 	// Create the services.
 	client.Applies = &applies{client: client}
 	client.ConfigurationVersions = &configurationVersions{client: client}
+	client.NotificationConfigurations = &notificationConfigurations{client: client}
 	client.OAuthClients = &oAuthClients{client: client}
 	client.OAuthTokens = &oAuthTokens{client: client}
 	client.Organizations = &organizations{client: client}
