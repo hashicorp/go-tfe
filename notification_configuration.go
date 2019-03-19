@@ -12,10 +12,11 @@ import (
 // Compile-time proof of interface implementation.
 var _ NotificationConfigurations = (*notificationConfigurations)(nil)
 
-// NotificationConfigurations describes all the Notification Configuration related
-// methods that the Terraform Enterprise API supports.
+// NotificationConfigurations describes all the Notification Configuration
+// related methods that the Terraform Enterprise API supports.
 //
-// TFE API docs: https://www.terraform.io/docs/enterprise/api/notification-configurations.html
+// TFE API docs:
+// https://www.terraform.io/docs/enterprise/api/notification-configurations.html
 type NotificationConfigurations interface {
 	// List all the notification configurations within a workspace.
 	List(ctx context.Context, workspaceID string) (*NotificationConfigurationList, error)
@@ -51,16 +52,18 @@ const (
 	NotificationTriggerErrored        string = "run:errored"
 )
 
-// NotificationDestinationType represents the destination type of the notification configuration.
+// NotificationDestinationType represents the destination type of the
+// notification configuration.
 type NotificationDestinationType string
 
-// List of available notification destination types
+// List of available notification destination types.
 const (
 	NotificationDestinationTypeSlack   NotificationDestinationType = "slack"
 	NotificationDestinationTypeGeneric NotificationDestinationType = "generic"
 )
 
-// NotificationConfigurationList represents a list of Notification Configurations.
+// NotificationConfigurationList represents a list of Notification
+// Configurations.
 type NotificationConfigurationList struct {
 	*Pagination
 	Items []*NotificationConfiguration
@@ -80,7 +83,7 @@ type NotificationConfiguration struct {
 	URL               string                      `jsonapi:"attr,url"`
 }
 
-// DeliveryResponse represents a notification configuration delivery response
+// DeliveryResponse represents a notification configuration delivery response.
 type DeliveryResponse struct {
 	Body       string      `json:"body"`
 	Code       int         `json:"code"`
@@ -90,7 +93,7 @@ type DeliveryResponse struct {
 	URL        string      `json:"url"`
 }
 
-// List all the notification configurations associated with a workspace
+// List all the notification configurations associated with a workspace.
 func (s *notificationConfigurations) List(ctx context.Context, workspaceID string) (*NotificationConfigurationList, error) {
 	if !validStringID(&workspaceID) {
 		return nil, errors.New("invalid value for workspace ID")
@@ -111,7 +114,8 @@ func (s *notificationConfigurations) List(ctx context.Context, workspaceID strin
 	return ncl, nil
 }
 
-// NotificationConfigurationCreateOptions represents the options for creating a new notification configuration
+// NotificationConfigurationCreateOptions represents the options for
+// creating a new notification configuration.
 type NotificationConfigurationCreateOptions struct {
 	// For internal use only!
 	ID string `jsonapi:"primary,notification-configurations"`
@@ -151,12 +155,11 @@ func (o NotificationConfigurationCreateOptions) valid() error {
 	return nil
 }
 
-// Creates a notification configuration with the given options
+// Creates a notification configuration with the given options.
 func (s *notificationConfigurations) Create(ctx context.Context, workspaceID string, options NotificationConfigurationCreateOptions) (*NotificationConfiguration, error) {
 	if !validStringID(&workspaceID) {
 		return nil, errors.New("invalid value for workspace ID")
 	}
-
 	if err := options.valid(); err != nil {
 		return nil, err
 	}
@@ -179,7 +182,7 @@ func (s *notificationConfigurations) Create(ctx context.Context, workspaceID str
 	return nc, nil
 }
 
-// Read a notitification configuration by its ID
+// Read a notitification configuration by its ID.
 func (s *notificationConfigurations) Read(ctx context.Context, notificationConfigurationID string) (*NotificationConfiguration, error) {
 	if !validStringID(&notificationConfigurationID) {
 		return nil, errors.New("invalid value for notification configuration ID")
@@ -200,7 +203,8 @@ func (s *notificationConfigurations) Read(ctx context.Context, notificationConfi
 	return nc, nil
 }
 
-// NotificationConfigurationUpdateOptions represents the options for creating a new notification configuration
+// NotificationConfigurationUpdateOptions represents the options for
+// updating a existing notification configuration.
 type NotificationConfigurationUpdateOptions struct {
 	// For internal use only!
 	ID string `jsonapi:"primary,notification-configurations"`
@@ -221,7 +225,7 @@ type NotificationConfigurationUpdateOptions struct {
 	URL *string `jsonapi:"attr,url,omitempty"`
 }
 
-// Updates a notification configuration with the given options
+// Updates a notification configuration with the given options.
 func (s *notificationConfigurations) Update(ctx context.Context, notificationConfigurationID string, options NotificationConfigurationUpdateOptions) (*NotificationConfiguration, error) {
 	if !validStringID(&notificationConfigurationID) {
 		return nil, errors.New("invalid value for notification configuration ID")
@@ -245,7 +249,7 @@ func (s *notificationConfigurations) Update(ctx context.Context, notificationCon
 	return nc, nil
 }
 
-// Delete a notifications configuration by its ID
+// Delete a notifications configuration by its ID.
 func (s *notificationConfigurations) Delete(ctx context.Context, notificationConfigurationID string) error {
 	if !validStringID(&notificationConfigurationID) {
 		return errors.New("invalid value for notification configuration ID")
@@ -260,13 +264,15 @@ func (s *notificationConfigurations) Delete(ctx context.Context, notificationCon
 	return s.client.do(ctx, req, nil)
 }
 
-// Verifies a notification configuration by delivering a verification payload to the configured url
+// Verifies a notification configuration by delivering a verification
+// payload to the configured url.
 func (s *notificationConfigurations) Verify(ctx context.Context, notificationConfigurationID string) (*NotificationConfiguration, error) {
 	if !validStringID(&notificationConfigurationID) {
 		return nil, errors.New("invalid value for notification configuration ID")
 	}
 
-	u := fmt.Sprintf("notification-configurations/%s/actions/verify", url.QueryEscape(notificationConfigurationID))
+	u := fmt.Sprintf(
+		"notification-configurations/%s/actions/verify", url.QueryEscape(notificationConfigurationID))
 	req, err := s.client.newRequest("POST", u, nil)
 	if err != nil {
 		return nil, err

@@ -88,23 +88,27 @@ func createNotificationConfiguration(t *testing.T, client *Client, w *Workspace)
 	}
 
 	ctx := context.Background()
-	nc, err := client.NotificationConfigurations.Create(ctx, w.ID, NotificationConfigurationCreateOptions{
-		DestinationType: NotificationDestination(NotificationDestinationTypeGeneric),
-		Enabled:         Bool(false),
-		Name:            String(randomString(t)),
-		Token:           String(randomString(t)),
-		URL:             String("http://example.com"),
-		Triggers:        []string{NotificationTriggerCreated},
-	})
+	nc, err := client.NotificationConfigurations.Create(
+		ctx,
+		w.ID,
+		NotificationConfigurationCreateOptions{
+			DestinationType: NotificationDestination(NotificationDestinationTypeGeneric),
+			Enabled:         Bool(false),
+			Name:            String(randomString(t)),
+			Token:           String(randomString(t)),
+			URL:             String("http://example.com"),
+			Triggers:        []string{NotificationTriggerCreated},
+		},
+	)
 	if err != nil {
 		t.Fatal(err)
 	}
 
 	return nc, func() {
 		if err := client.NotificationConfigurations.Delete(ctx, nc.ID); err != nil {
-			t.Errorf("Error destroying notification configuration! WARNING: Dangling resources\n"+
-				"may exist! The full error is shown below.\n\n"+
-				"Notification Configuration: %s\nError: %s", nc.ID, err)
+			t.Errorf("Error destroying notification configuration! WARNING: Dangling\n"+
+				"resources may exist! The full error is shown below.\n\n"+
+				"NotificationConfiguration: %s\nError: %s", nc.ID, err)
 		}
 
 		if wCleanup != nil {

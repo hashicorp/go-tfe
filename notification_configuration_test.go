@@ -18,12 +18,6 @@ func TestNotificationConfigurationList(t *testing.T) {
 	ncTest1, _ := createNotificationConfiguration(t, client, w)
 	ncTest2, _ := createNotificationConfiguration(t, client, w)
 
-	t.Run("without a valid workspace", func(t *testing.T) {
-		ncl, err := client.NotificationConfigurations.List(ctx, badIdentifier)
-		assert.Nil(t, ncl)
-		assert.EqualError(t, err, "invalid value for workspace ID")
-	})
-
 	t.Run("with a valid workspace", func(t *testing.T) {
 		ncl, err := client.NotificationConfigurations.List(ctx, w.ID)
 		require.NoError(t, err)
@@ -37,6 +31,12 @@ func TestNotificationConfigurationList(t *testing.T) {
 		assert.Contains(t, found, ncTest2.ID)
 		assert.Equal(t, 2, len(ncl.Items))
 	})
+
+	t.Run("without a valid workspace", func(t *testing.T) {
+		ncl, err := client.NotificationConfigurations.List(ctx, badIdentifier)
+		assert.Nil(t, ncl)
+		assert.EqualError(t, err, "invalid value for workspace ID")
+	})
 }
 
 func TestNotificationConfigurationCreate(t *testing.T) {
@@ -46,10 +46,18 @@ func TestNotificationConfigurationCreate(t *testing.T) {
 	w, wCleanup := createWorkspace(t, client, nil)
 	defer wCleanup()
 
-	t.Run("without a valid workspace", func(t *testing.T) {
-		nc, err := client.NotificationConfigurations.Create(ctx, badIdentifier, NotificationConfigurationCreateOptions{})
-		assert.Nil(t, nc)
-		assert.EqualError(t, err, "invalid value for workspace ID")
+	t.Run("with all required values", func(t *testing.T) {
+		options := NotificationConfigurationCreateOptions{
+			DestinationType: NotificationDestination(NotificationDestinationTypeGeneric),
+			Enabled:         Bool(false),
+			Name:            String(randomString(t)),
+			Token:           String(randomString(t)),
+			URL:             String("http://example.com"),
+			Triggers:        []string{NotificationTriggerCreated},
+		}
+
+		_, err := client.NotificationConfigurations.Create(ctx, w.ID, options)
+		require.NoError(t, err)
 	})
 
 	t.Run("without a required value", func(t *testing.T) {
@@ -66,18 +74,10 @@ func TestNotificationConfigurationCreate(t *testing.T) {
 		assert.EqualError(t, err, "name is required")
 	})
 
-	t.Run("with all required values", func(t *testing.T) {
-		options := NotificationConfigurationCreateOptions{
-			DestinationType: NotificationDestination(NotificationDestinationTypeGeneric),
-			Enabled:         Bool(false),
-			Name:            String(randomString(t)),
-			Token:           String(randomString(t)),
-			URL:             String("http://example.com"),
-			Triggers:        []string{NotificationTriggerCreated},
-		}
-
-		_, err := client.NotificationConfigurations.Create(ctx, w.ID, options)
-		require.NoError(t, err)
+	t.Run("without a valid workspace", func(t *testing.T) {
+		nc, err := client.NotificationConfigurations.Create(ctx, badIdentifier, NotificationConfigurationCreateOptions{})
+		assert.Nil(t, nc)
+		assert.EqualError(t, err, "invalid value for workspace ID")
 	})
 }
 
@@ -95,7 +95,7 @@ func TestNotificationConfigurationRead(t *testing.T) {
 	})
 
 	t.Run("when the notification configuration does not exist", func(t *testing.T) {
-		_, err := client.NotificationConfigurations.Read(ctx, "nc-notreal")
+		_, err := client.NotificationConfigurations.Read(ctx, "nonexisting")
 		assert.Equal(t, err, ErrResourceNotFound)
 	})
 
@@ -112,12 +112,6 @@ func TestNotificationConfigurationUpdate(t *testing.T) {
 	ncTest, ncCleanup := createNotificationConfiguration(t, client, nil)
 	defer ncCleanup()
 
-	t.Run("without options", func(t *testing.T) {
-		nc, err := client.NotificationConfigurations.Update(ctx, ncTest.ID, NotificationConfigurationUpdateOptions{})
-		require.NoError(t, err)
-		assert.Equal(t, ncTest.Enabled, nc.Enabled)
-	})
-
 	t.Run("with options", func(t *testing.T) {
 		options := NotificationConfigurationUpdateOptions{
 			Enabled: Bool(true),
@@ -126,12 +120,17 @@ func TestNotificationConfigurationUpdate(t *testing.T) {
 
 		nc, err := client.NotificationConfigurations.Update(ctx, ncTest.ID, options)
 		require.NoError(t, err)
-		assert.NotEqual(t, ncTest.Enabled, nc.Enabled)
-		assert.NotEqual(t, ncTest.Name, nc.Name)
+		assert.Equal(t, nc.Enabled, true)
+		assert.Equal(t, nc.Name, "newName")
+	})
+
+	t.Run("without options", func(t *testing.T) {
+		_, err := client.NotificationConfigurations.Update(ctx, ncTest.ID, NotificationConfigurationUpdateOptions{})
+		require.NoError(t, err)
 	})
 
 	t.Run("when the notification configuration does not exist", func(t *testing.T) {
-		_, err := client.NotificationConfigurations.Update(ctx, "nc-notreal", NotificationConfigurationUpdateOptions{})
+		_, err := client.NotificationConfigurations.Update(ctx, "nonexisting", NotificationConfigurationUpdateOptions{})
 		assert.Equal(t, err, ErrResourceNotFound)
 	})
 
@@ -156,7 +155,7 @@ func TestNotificationConfigurationDelete(t *testing.T) {
 	})
 
 	t.Run("when the notification configuration does not exist", func(t *testing.T) {
-		err := client.NotificationConfigurations.Delete(ctx, "nc-notreal")
+		err := client.NotificationConfigurations.Delete(ctx, "nonexisting")
 		assert.Equal(t, err, ErrResourceNotFound)
 	})
 
@@ -172,13 +171,18 @@ func TestNotificationConfigurationVerify(t *testing.T) {
 
 	ncTest, _ := createNotificationConfiguration(t, client, nil)
 
-	t.Run("when the notification configuration ID is invalid", func(t *testing.T) {
-		_, err := client.NotificationConfigurations.Verify(ctx, badIdentifier)
-		assert.EqualError(t, err, "invalid value for notification configuration ID")
-	})
-
 	t.Run("with a valid ID", func(t *testing.T) {
 		_, err := client.NotificationConfigurations.Verify(ctx, ncTest.ID)
 		require.NoError(t, err)
+	})
+
+	t.Run("when the notification configuration does not exists", func(t *testing.T) {
+		_, err := client.NotificationConfigurations.Verify(ctx, "nonexisting")
+		assert.Equal(t, err, ErrResourceNotFound)
+	})
+
+	t.Run("when the notification configuration ID is invalid", func(t *testing.T) {
+		_, err := client.NotificationConfigurations.Verify(ctx, badIdentifier)
+		assert.EqualError(t, err, "invalid value for notification configuration ID")
 	})
 }
