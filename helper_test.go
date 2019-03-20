@@ -80,6 +80,43 @@ func createUploadedConfigurationVersion(t *testing.T, client *Client, w *Workspa
 	return cv, cvCleanup
 }
 
+func createNotificationConfiguration(t *testing.T, client *Client, w *Workspace) (*NotificationConfiguration, func()) {
+	var wCleanup func()
+
+	if w == nil {
+		w, wCleanup = createWorkspace(t, client, nil)
+	}
+
+	ctx := context.Background()
+	nc, err := client.NotificationConfigurations.Create(
+		ctx,
+		w.ID,
+		NotificationConfigurationCreateOptions{
+			DestinationType: NotificationDestination(NotificationDestinationTypeGeneric),
+			Enabled:         Bool(false),
+			Name:            String(randomString(t)),
+			Token:           String(randomString(t)),
+			URL:             String("http://example.com"),
+			Triggers:        []string{NotificationTriggerCreated},
+		},
+	)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	return nc, func() {
+		if err := client.NotificationConfigurations.Delete(ctx, nc.ID); err != nil {
+			t.Errorf("Error destroying notification configuration! WARNING: Dangling\n"+
+				"resources may exist! The full error is shown below.\n\n"+
+				"NotificationConfiguration: %s\nError: %s", nc.ID, err)
+		}
+
+		if wCleanup != nil {
+			wCleanup()
+		}
+	}
+}
+
 func createPolicySet(t *testing.T, client *Client, org *Organization, policies []*Policy, workspaces []*Workspace) (*PolicySet, func()) {
 	var orgCleanup func()
 
