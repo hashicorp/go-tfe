@@ -12,28 +12,54 @@ func TestNotificationConfigurationList(t *testing.T) {
 	client := testClient(t)
 	ctx := context.Background()
 
-	w, wCleanup := createWorkspace(t, client, nil)
-	defer wCleanup()
+	wTest, wTestCleanup := createWorkspace(t, client, nil)
+	defer wTestCleanup()
 
-	ncTest1, _ := createNotificationConfiguration(t, client, w)
-	ncTest2, _ := createNotificationConfiguration(t, client, w)
+	ncTest1, _ := createNotificationConfiguration(t, client, wTest)
+	ncTest2, _ := createNotificationConfiguration(t, client, wTest)
 
 	t.Run("with a valid workspace", func(t *testing.T) {
-		ncl, err := client.NotificationConfigurations.List(ctx, w.ID)
+		ncl, err := client.NotificationConfigurations.List(
+			ctx,
+			wTest.ID,
+			NotificationConfigurationListOptions{},
+		)
 		require.NoError(t, err)
+		assert.Contains(t, ncl.Items, ncTest1)
+		assert.Contains(t, ncl.Items, ncTest2)
 
-		found := []string{}
-		for _, nc := range ncl.Items {
-			found = append(found, nc.ID)
-		}
+		t.Skip("paging not supported yet in API")
+		assert.Equal(t, 1, ncl.CurrentPage)
+		assert.Equal(t, 2, ncl.TotalCount)
+	})
 
-		assert.Contains(t, found, ncTest1.ID)
-		assert.Contains(t, found, ncTest2.ID)
-		assert.Equal(t, 2, len(ncl.Items))
+	t.Run("with list options", func(t *testing.T) {
+		t.Skip("paging not supported yet in API")
+		// Request a page number which is out of range. The result should
+		// be successful, but return no results if the paging options are
+		// properly passed along.
+		ncl, err := client.NotificationConfigurations.List(
+			ctx,
+			wTest.ID,
+			NotificationConfigurationListOptions{
+				ListOptions: ListOptions{
+					PageNumber: 999,
+					PageSize:   100,
+				},
+			},
+		)
+		require.NoError(t, err)
+		assert.Empty(t, ncl.Items)
+		assert.Equal(t, 999, ncl.CurrentPage)
+		assert.Equal(t, 2, ncl.TotalCount)
 	})
 
 	t.Run("without a valid workspace", func(t *testing.T) {
-		ncl, err := client.NotificationConfigurations.List(ctx, badIdentifier)
+		ncl, err := client.NotificationConfigurations.List(
+			ctx,
+			badIdentifier,
+			NotificationConfigurationListOptions{},
+		)
 		assert.Nil(t, ncl)
 		assert.EqualError(t, err, "invalid value for workspace ID")
 	})
@@ -43,8 +69,8 @@ func TestNotificationConfigurationCreate(t *testing.T) {
 	client := testClient(t)
 	ctx := context.Background()
 
-	w, wCleanup := createWorkspace(t, client, nil)
-	defer wCleanup()
+	wTest, wTestCleanup := createWorkspace(t, client, nil)
+	defer wTestCleanup()
 
 	t.Run("with all required values", func(t *testing.T) {
 		options := NotificationConfigurationCreateOptions{
@@ -56,7 +82,7 @@ func TestNotificationConfigurationCreate(t *testing.T) {
 			Triggers:        []string{NotificationTriggerCreated},
 		}
 
-		_, err := client.NotificationConfigurations.Create(ctx, w.ID, options)
+		_, err := client.NotificationConfigurations.Create(ctx, wTest.ID, options)
 		require.NoError(t, err)
 	})
 
@@ -69,7 +95,7 @@ func TestNotificationConfigurationCreate(t *testing.T) {
 			Triggers:        []string{NotificationTriggerCreated},
 		}
 
-		nc, err := client.NotificationConfigurations.Create(ctx, w.ID, options)
+		nc, err := client.NotificationConfigurations.Create(ctx, wTest.ID, options)
 		assert.Nil(t, nc)
 		assert.EqualError(t, err, "name is required")
 	})
@@ -85,8 +111,8 @@ func TestNotificationConfigurationRead(t *testing.T) {
 	client := testClient(t)
 	ctx := context.Background()
 
-	ncTest, ncCleanup := createNotificationConfiguration(t, client, nil)
-	defer ncCleanup()
+	ncTest, ncTestCleanup := createNotificationConfiguration(t, client, nil)
+	defer ncTestCleanup()
 
 	t.Run("with a valid ID", func(t *testing.T) {
 		nc, err := client.NotificationConfigurations.Read(ctx, ncTest.ID)
@@ -109,8 +135,8 @@ func TestNotificationConfigurationUpdate(t *testing.T) {
 	client := testClient(t)
 	ctx := context.Background()
 
-	ncTest, ncCleanup := createNotificationConfiguration(t, client, nil)
-	defer ncCleanup()
+	ncTest, ncTestCleanup := createNotificationConfiguration(t, client, nil)
+	defer ncTestCleanup()
 
 	t.Run("with options", func(t *testing.T) {
 		options := NotificationConfigurationUpdateOptions{
@@ -144,7 +170,10 @@ func TestNotificationConfigurationDelete(t *testing.T) {
 	client := testClient(t)
 	ctx := context.Background()
 
-	ncTest, _ := createNotificationConfiguration(t, client, nil)
+	wTest, wTestCleanup := createWorkspace(t, client, nil)
+	defer wTestCleanup()
+
+	ncTest, _ := createNotificationConfiguration(t, client, wTest)
 
 	t.Run("with a valid ID", func(t *testing.T) {
 		err := client.NotificationConfigurations.Delete(ctx, ncTest.ID)
@@ -169,7 +198,8 @@ func TestNotificationConfigurationVerify(t *testing.T) {
 	client := testClient(t)
 	ctx := context.Background()
 
-	ncTest, _ := createNotificationConfiguration(t, client, nil)
+	ncTest, ncTestCleanup := createNotificationConfiguration(t, client, nil)
+	defer ncTestCleanup()
 
 	t.Run("with a valid ID", func(t *testing.T) {
 		_, err := client.NotificationConfigurations.Verify(ctx, ncTest.ID)

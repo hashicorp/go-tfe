@@ -19,7 +19,7 @@ var _ NotificationConfigurations = (*notificationConfigurations)(nil)
 // https://www.terraform.io/docs/enterprise/api/notification-configurations.html
 type NotificationConfigurations interface {
 	// List all the notification configurations within a workspace.
-	List(ctx context.Context, workspaceID string) (*NotificationConfigurationList, error)
+	List(ctx context.Context, workspaceID string, options NotificationConfigurationListOptions) (*NotificationConfigurationList, error)
 
 	// Create a new notification configuration with the given options.
 	Create(ctx context.Context, workspaceID string, options NotificationConfigurationCreateOptions) (*NotificationConfiguration, error)
@@ -93,14 +93,20 @@ type DeliveryResponse struct {
 	URL        string      `json:"url"`
 }
 
+// NotificationConfigurationListOptions represents the options for listing
+// notification configurations.
+type NotificationConfigurationListOptions struct {
+	ListOptions
+}
+
 // List all the notification configurations associated with a workspace.
-func (s *notificationConfigurations) List(ctx context.Context, workspaceID string) (*NotificationConfigurationList, error) {
+func (s *notificationConfigurations) List(ctx context.Context, workspaceID string, options NotificationConfigurationListOptions) (*NotificationConfigurationList, error) {
 	if !validStringID(&workspaceID) {
 		return nil, errors.New("invalid value for workspace ID")
 	}
 
 	u := fmt.Sprintf("workspaces/%s/notification-configurations", url.QueryEscape(workspaceID))
-	req, err := s.client.newRequest("GET", u, nil)
+	req, err := s.client.newRequest("GET", u, options)
 	if err != nil {
 		return nil, err
 	}
