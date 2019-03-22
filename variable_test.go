@@ -107,6 +107,18 @@ func TestVariablesCreate(t *testing.T) {
 		assert.EqualError(t, err, "key is required")
 	})
 
+	t.Run("when options has an empty key", func(t *testing.T) {
+		options := VariableCreateOptions{
+			Key:       String(""),
+			Value:     String(randomString(t)),
+			Category:  Category(CategoryTerraform),
+			Workspace: wTest,
+		}
+
+		_, err := client.Variables.Create(ctx, options)
+		assert.EqualError(t, err, "key is required")
+	})
+
 	t.Run("when options is missing value", func(t *testing.T) {
 		options := VariableCreateOptions{
 			Key:       String(randomString(t)),
@@ -114,8 +126,22 @@ func TestVariablesCreate(t *testing.T) {
 			Workspace: wTest,
 		}
 
-		_, err := client.Variables.Create(ctx, options)
-		assert.EqualError(t, err, "value is required")
+		v, err := client.Variables.Create(ctx, options)
+		require.NoError(t, err)
+		assert.Equal(t, "", v.Value)
+	})
+
+	t.Run("when options has an empty string value", func(t *testing.T) {
+		options := VariableCreateOptions{
+			Key:       String(randomString(t)),
+			Value:     String(""),
+			Category:  Category(CategoryTerraform),
+			Workspace: wTest,
+		}
+
+		v, err := client.Variables.Create(ctx, options)
+		require.NoError(t, err)
+		assert.Equal(t, *options.Value, v.Value)
 	})
 
 	t.Run("when options is missing category", func(t *testing.T) {

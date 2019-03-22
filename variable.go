@@ -129,9 +129,6 @@ func (o VariableCreateOptions) valid() error {
 	if !validString(o.Key) {
 		return errors.New("key is required")
 	}
-	if !validString(o.Value) {
-		return errors.New("value is required")
-	}
 	if o.Category == nil {
 		return errors.New("category is required")
 	}
