@@ -110,7 +110,7 @@ type VariableCreateOptions struct {
 	Key *string `jsonapi:"attr,key"`
 
 	// The value of the variable.
-	Value *string `jsonapi:"attr,value"`
+	Value *string `jsonapi:"attr,value,omitempty"`
 
 	// Whether this is a Terraform or environment variable.
 	Category *CategoryType `jsonapi:"attr,category"`

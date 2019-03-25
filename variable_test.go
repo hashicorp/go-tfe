@@ -96,6 +96,39 @@ func TestVariablesCreate(t *testing.T) {
 		// assert.Equal(t, *options.Workspace, v.Workspace)
 	})
 
+	t.Run("when options has an empty string value", func(t *testing.T) {
+		options := VariableCreateOptions{
+			Key:       String(randomString(t)),
+			Value:     String(""),
+			Category:  Category(CategoryTerraform),
+			Workspace: wTest,
+		}
+
+		v, err := client.Variables.Create(ctx, options)
+		require.NoError(t, err)
+
+		assert.NotEmpty(t, v.ID)
+		assert.Equal(t, *options.Key, v.Key)
+		assert.Equal(t, *options.Value, v.Value)
+		assert.Equal(t, *options.Category, v.Category)
+	})
+
+	t.Run("when options is missing value", func(t *testing.T) {
+		options := VariableCreateOptions{
+			Key:       String(randomString(t)),
+			Category:  Category(CategoryTerraform),
+			Workspace: wTest,
+		}
+
+		v, err := client.Variables.Create(ctx, options)
+		require.NoError(t, err)
+
+		assert.NotEmpty(t, v.ID)
+		assert.Equal(t, *options.Key, v.Key)
+		assert.Equal(t, "", v.Value)
+		assert.Equal(t, *options.Category, v.Category)
+	})
+
 	t.Run("when options is missing key", func(t *testing.T) {
 		options := VariableCreateOptions{
 			Value:     String(randomString(t)),
@@ -117,31 +150,6 @@ func TestVariablesCreate(t *testing.T) {
 
 		_, err := client.Variables.Create(ctx, options)
 		assert.EqualError(t, err, "key is required")
-	})
-
-	t.Run("when options is missing value", func(t *testing.T) {
-		options := VariableCreateOptions{
-			Key:       String(randomString(t)),
-			Category:  Category(CategoryTerraform),
-			Workspace: wTest,
-		}
-
-		v, err := client.Variables.Create(ctx, options)
-		require.NoError(t, err)
-		assert.Equal(t, "", v.Value)
-	})
-
-	t.Run("when options has an empty string value", func(t *testing.T) {
-		options := VariableCreateOptions{
-			Key:       String(randomString(t)),
-			Value:     String(""),
-			Category:  Category(CategoryTerraform),
-			Workspace: wTest,
-		}
-
-		v, err := client.Variables.Create(ctx, options)
-		require.NoError(t, err)
-		assert.Equal(t, *options.Value, v.Value)
 	})
 
 	t.Run("when options is missing category", func(t *testing.T) {
