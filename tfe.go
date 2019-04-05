@@ -299,6 +299,7 @@ func (c *Client) configureLimiter() error {
 		req.Header[k] = v
 	}
 	req.Header.Set("Accept", "application/vnd.api+json")
+	req.Header.Set("Authorization", "Bearer "+c.token)
 
 	// Make a single request to retrieve the rate limit headers.
 	resp, err := c.http.HTTPClient.Do(req)
