@@ -58,6 +58,8 @@ const (
 	RunPlanned            RunStatus = "planned"
 	RunPlannedAndFinished RunStatus = "planned_and_finished"
 	RunPlanning           RunStatus = "planning"
+	RunCostEstimating     RunStatus = "cost_estimating"
+	RunCostEstimated      RunStatus = "cost_estimated"
 	RunPolicyChecked      RunStatus = "policy_checked"
 	RunPolicyChecking     RunStatus = "policy_checking"
 	RunPolicyOverride     RunStatus = "policy_override"
@@ -98,6 +100,7 @@ type Run struct {
 	// Relations
 	Apply                *Apply                `jsonapi:"relation,apply"`
 	ConfigurationVersion *ConfigurationVersion `jsonapi:"relation,configuration-version"`
+	CostEstimation       *CostEstimation       `jsonapi:"relation,cost-estimation"`
 	Plan                 *Plan                 `jsonapi:"relation,plan"`
 	PolicyChecks         []*PolicyCheck        `jsonapi:"relation,policy-checks"`
 	Workspace            *Workspace            `jsonapi:"relation,workspace"`

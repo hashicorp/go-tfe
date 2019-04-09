@@ -262,8 +262,9 @@ func createOAuthToken(t *testing.T, client *Client, org *Organization) (*OAuthTo
 func createOrganization(t *testing.T, client *Client) (*Organization, func()) {
 	ctx := context.Background()
 	org, err := client.Organizations.Create(ctx, OrganizationCreateOptions{
-		Name:  String(randomString(t)),
-		Email: String(fmt.Sprintf("%s@tfe.local", randomString(t))),
+		Name:                  String(randomString(t)),
+		Email:                 String(fmt.Sprintf("%s@tfe.local", randomString(t))),
+		CostEstimationEnabled: Bool(true),
 	})
 	if err != nil {
 		t.Fatal(err)
