@@ -49,12 +49,14 @@ type RunStatus string
 //List all available run statuses.
 const (
 	RunApplied            RunStatus = "applied"
+	RunApplyQueued        RunStatus = "apply_queued"
 	RunApplying           RunStatus = "applying"
 	RunCanceled           RunStatus = "canceled"
 	RunConfirmed          RunStatus = "confirmed"
 	RunDiscarded          RunStatus = "discarded"
 	RunErrored            RunStatus = "errored"
 	RunPending            RunStatus = "pending"
+	RunPlanQueued         RunStatus = "plan_queued"
 	RunPlanned            RunStatus = "planned"
 	RunPlannedAndFinished RunStatus = "planned_and_finished"
 	RunPlanning           RunStatus = "planning"
