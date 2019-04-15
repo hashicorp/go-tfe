@@ -262,9 +262,8 @@ func createOAuthToken(t *testing.T, client *Client, org *Organization) (*OAuthTo
 func createOrganization(t *testing.T, client *Client) (*Organization, func()) {
 	ctx := context.Background()
 	org, err := client.Organizations.Create(ctx, OrganizationCreateOptions{
-		Name:                  String(randomString(t)),
-		Email:                 String(fmt.Sprintf("%s@tfe.local", randomString(t))),
-		CostEstimationEnabled: Bool(true),
+		Name:  String(randomString(t)),
+		Email: String(fmt.Sprintf("%s@tfe.local", randomString(t))),
 	})
 	if err != nil {
 		t.Fatal(err)
@@ -346,6 +345,10 @@ func createPlannedRun(t *testing.T, client *Client, w *Workspace) (*Run, func())
 		if r.Status == RunPlanned || r.Status == RunPolicyChecked || r.Status == RunPolicyOverride {
 			break
 		}
+		switch r.Status {
+		case RunPlanned, RunCostEstimated, RunPolicyChecked, RunPolicyOverride:
+			break
+		}
 
 		if i > 30 {
 			rCleanup()
@@ -356,6 +359,59 @@ func createPlannedRun(t *testing.T, client *Client, w *Workspace) (*Run, func())
 	}
 
 	return r, rCleanup
+}
+
+func createCostEstimationOrganization(t *testing.T, client *Client) (*Organization, func()) {
+	ctx := context.Background()
+	org, err := client.Organizations.Create(ctx, OrganizationCreateOptions{
+		Name:                  String(randomString(t)),
+		Email:                 String(fmt.Sprintf("%s@tfe.local", randomString(t))),
+		CostEstimationEnabled: Bool(true),
+	})
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	return org, func() {
+		if err := client.Organizations.Delete(ctx, org.Name); err != nil {
+			t.Errorf("Error destroying organization! WARNING: Dangling resources\n"+
+				"may exist! The full error is shown below.\n\n"+
+				"Organization: %s\nError: %s", org.Name, err)
+		}
+	}
+}
+
+func createCostEstimatedRun(t *testing.T, client *Client) (*Run, func()) {
+	org, oCleanup := createCostEstimationOrganization(t, client)
+	w, wCleanup := createWorkspace(t, client, org)
+	r, rCleanup := createRun(t, client, w)
+
+	var err error
+	ctx := context.Background()
+	for i := 0; ; i++ {
+		r, err = client.Runs.Read(ctx, r.ID)
+		if err != nil {
+			t.Fatal(err)
+		}
+
+		switch r.Status {
+		case RunPlanned, RunCostEstimated, RunPolicyChecked, RunPolicyOverride:
+			break
+		}
+
+		if i > 30 {
+			rCleanup()
+			t.Fatal("Timeout waiting for run to be planned")
+		}
+
+		time.Sleep(1 * time.Second)
+	}
+
+	return r, func() {
+		rCleanup()
+		wCleanup()
+		oCleanup()
+	}
 }
 
 func createAppliedRun(t *testing.T, client *Client, w *Workspace) (*Run, func()) {

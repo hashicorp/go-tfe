@@ -13,7 +13,7 @@ func TestCostEstimationsRead(t *testing.T) {
 	client := testClient(t)
 	ctx := context.Background()
 
-	rTest, rTestCleanup := createPlannedRun(t, client, nil)
+	rTest, rTestCleanup := createCostEstimatedRun(t, client)
 	defer rTestCleanup()
 
 	t.Run("when the costEstimation exists", func(t *testing.T) {
@@ -41,7 +41,7 @@ func TestCostEstimationsLogs(t *testing.T) {
 	client := testClient(t)
 	ctx := context.Background()
 
-	rTest, rTestCleanup := createPlannedRun(t, client, nil)
+	rTest, rTestCleanup := createCostEstimatedRun(t, client)
 	defer rTestCleanup()
 
 	t.Run("when the log exists", func(t *testing.T) {
