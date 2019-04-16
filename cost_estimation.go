@@ -12,8 +12,8 @@ import (
 // Compile-time proof of interface implementation.
 var _ CostEstimations = (*costEstimations)(nil)
 
-// CostEstimations describes all the costEstimation related methods that the Terraform Enterprise
-// API supports.
+// CostEstimations describes all the costEstimation related methods that
+// the Terraform Enterprise API supports.
 //
 // TFE API docs: https://www.terraform.io/docs/enterprise/api/ (TBD)
 type CostEstimations interface {
@@ -47,7 +47,6 @@ type CostEstimation struct {
 	Status           CostEstimationStatus            `jsonapi:"attr,status"`
 	StatusTimestamps *CostEstimationStatusTimestamps `jsonapi:"attr,status-timestamps"`
 	ErrorMessage     string                          `jsonapi:"attr,error-message"`
-	// Costs to be implemented once it's finalized for GA
 	// Costs            *CostEstimationCosts            `jsonapi:"attr,costs"`
 }
 
@@ -62,7 +61,7 @@ type CostEstimationStatusTimestamps struct {
 // Read a costEstimation by its ID.
 func (s *costEstimations) Read(ctx context.Context, costEstimationID string) (*CostEstimation, error) {
 	if !validStringID(&costEstimationID) {
-		return nil, errors.New("invalid value for costEstimation ID")
+		return nil, errors.New("invalid value for cost estimation ID")
 	}
 
 	u := fmt.Sprintf("cost-estimations/%s", url.QueryEscape(costEstimationID))
@@ -83,7 +82,7 @@ func (s *costEstimations) Read(ctx context.Context, costEstimationID string) (*C
 // Logs retrieves the logs of a costEstimation.
 func (s *costEstimations) Logs(ctx context.Context, costEstimationID string) (io.Reader, error) {
 	if !validStringID(&costEstimationID) {
-		return nil, errors.New("invalid value for costEstimation ID")
+		return nil, errors.New("invalid value for cost estimation ID")
 	}
 
 	// Get the costEstimation to make sure it exists.
@@ -94,7 +93,7 @@ func (s *costEstimations) Logs(ctx context.Context, costEstimationID string) (io
 
 	// Return an error if the log URL is empty.
 	if p.LogReadURL == "" {
-		return nil, fmt.Errorf("costEstimation %s does not have a log URL", costEstimationID)
+		return nil, fmt.Errorf("cost estimation %s does not have a log URL", costEstimationID)
 	}
 
 	u, err := url.Parse(p.LogReadURL)

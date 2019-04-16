@@ -168,11 +168,11 @@ type OrganizationCreateOptions struct {
 	// Authentication policy.
 	CollaboratorAuthPolicy *AuthPolicyType `jsonapi:"attr,collaborator-auth-policy,omitempty"`
 
-	// The name of the "owners" team
-	OwnersTeamSAMLRoleID *string `jsonapi:"attr,owners-team-saml-role-id,omitempty"`
-
 	// Enable Cost Estimation
 	CostEstimationEnabled *bool `jsonapi:"attr,cost-estimation-enabled,omitempty"`
+
+	// The name of the "owners" team
+	OwnersTeamSAMLRoleID *string `jsonapi:"attr,owners-team-saml-role-id,omitempty"`
 }
 
 func (o OrganizationCreateOptions) valid() error {
@@ -252,11 +252,11 @@ type OrganizationUpdateOptions struct {
 	// Authentication policy.
 	CollaboratorAuthPolicy *AuthPolicyType `jsonapi:"attr,collaborator-auth-policy,omitempty"`
 
-	// The name of the "owners" team
-	OwnersTeamSAMLRoleID *string `jsonapi:"attr,owners-team-saml-role-id,omitempty"`
-
 	// Enable Cost Estimation
 	CostEstimationEnabled *bool `jsonapi:"attr,cost-estimation-enabled,omitempty"`
+
+	// The name of the "owners" team
+	OwnersTeamSAMLRoleID *string `jsonapi:"attr,owners-team-saml-role-id,omitempty"`
 }
 
 // Update attributes of an existing organization.

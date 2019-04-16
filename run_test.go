@@ -235,7 +235,7 @@ func TestRunsForceCancel(t *testing.T) {
 
 		// This test case is minimal because a force-cancel is not needed in
 		// any normal circumstance. Only if Terraform encounters unexpected
-		// errors or behaves abnormaly should this functionality be required.
+		// errors or behaves abnormally should this functionality be required.
 		// Force-cancel only becomes available if a normal cancel is performed
 		// first, and the desired canceled state is not reached within a pre-
 		// determined amount of time (see

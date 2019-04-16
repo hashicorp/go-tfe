@@ -18,7 +18,7 @@ func TestAppliesRead(t *testing.T) {
 
 	t.Run("when the plan exists", func(t *testing.T) {
 		a, err := client.Applies.Read(ctx, rTest.Apply.ID)
-		assert.NoError(t, err)
+		require.NoError(t, err)
 		assert.NotEmpty(t, a.LogReadURL)
 		assert.Equal(t, a.Status, ApplyFinished)
 		assert.NotEmpty(t, a.StatusTimestamps)

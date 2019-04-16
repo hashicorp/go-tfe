@@ -52,14 +52,14 @@ const (
 	RunApplying           RunStatus = "applying"
 	RunCanceled           RunStatus = "canceled"
 	RunConfirmed          RunStatus = "confirmed"
+	RunCostEstimated      RunStatus = "cost_estimated"
+	RunCostEstimating     RunStatus = "cost_estimating"
 	RunDiscarded          RunStatus = "discarded"
 	RunErrored            RunStatus = "errored"
 	RunPending            RunStatus = "pending"
 	RunPlanned            RunStatus = "planned"
 	RunPlannedAndFinished RunStatus = "planned_and_finished"
 	RunPlanning           RunStatus = "planning"
-	RunCostEstimating     RunStatus = "cost_estimating"
-	RunCostEstimated      RunStatus = "cost_estimated"
 	RunPolicyChecked      RunStatus = "policy_checked"
 	RunPolicyChecking     RunStatus = "policy_checking"
 	RunPolicyOverride     RunStatus = "policy_override"
@@ -277,7 +277,7 @@ func (s *runs) Cancel(ctx context.Context, runID string, options RunCancelOption
 	return s.client.do(ctx, req, nil)
 }
 
-// RunCancelOptions represents the options for force-canceling a run.
+// RunForceCancelOptions represents the options for force-canceling a run.
 type RunForceCancelOptions struct {
 	// An optional comment explaining the reason for the force-cancel.
 	Comment *string `json:"comment,omitempty"`
