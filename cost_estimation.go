@@ -1,6 +1,7 @@
 package tfe
 
 import (
+	"bytes"
 	"context"
 	"errors"
 	"fmt"
@@ -85,40 +86,38 @@ func (s *costEstimations) Logs(ctx context.Context, costEstimationID string) (io
 		return nil, errors.New("invalid value for cost estimation ID")
 	}
 
-	// Get the costEstimation to make sure it exists.
-	p, err := s.Read(ctx, costEstimationID)
-	if err != nil {
-		return nil, err
-	}
-
-	// Return an error if the log URL is empty.
-	if p.LogReadURL == "" {
-		return nil, fmt.Errorf("cost estimation %s does not have a log URL", costEstimationID)
-	}
-
-	u, err := url.Parse(p.LogReadURL)
-	if err != nil {
-		return nil, fmt.Errorf("invalid log URL: %v", err)
-	}
-
-	done := func() (bool, error) {
-		p, err := s.Read(ctx, p.ID)
+	// Loop until the context is canceled or the cost estimation is finished
+	// running. The cost estimation logs are not streamed and so only available
+	// once the estimation is finished.
+	for {
+		// Get the costEstimation to make sure it exists.
+		ce, err := s.Read(ctx, costEstimationID)
 		if err != nil {
-			return false, err
+			return nil, err
 		}
 
-		switch p.Status {
-		case CostEstimationCanceled, CostEstimationErrored, CostEstimationFinished:
-			return true, nil
-		default:
-			return false, nil
+		switch ce.Status {
+		case CostEstimationQueued:
+			select {
+			case <-ctx.Done():
+				return nil, ctx.Err()
+			case <-time.After(500 * time.Millisecond):
+				continue
+			}
 		}
+
+		u := fmt.Sprintf("cost-estimations/%s/output", url.QueryEscape(costEstimationID))
+		req, err := s.client.newRequest("GET", u, nil)
+		if err != nil {
+			return nil, err
+		}
+
+		logs := bytes.NewBuffer(nil)
+		err = s.client.do(ctx, req, logs)
+		if err != nil {
+			return nil, err
+		}
+
+		return logs, nil
 	}
-
-	return &LogReader{
-		client: s.client,
-		ctx:    ctx,
-		done:   done,
-		logURL: u,
-	}, nil
 }

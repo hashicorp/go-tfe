@@ -77,10 +77,10 @@ func TestCostEstimationsLogs(t *testing.T) {
 		logReader, err := client.CostEstimations.Logs(ctx, p.ID)
 		require.NoError(t, err)
 
-		_, err = ioutil.ReadAll(logReader)
+		logs, err := ioutil.ReadAll(logReader)
 		require.NoError(t, err)
 
-		// skip testing log output since it's likely to change
+		assert.Contains(t, string(logs), "+----")
 	})
 
 	t.Run("when the log does not exist", func(t *testing.T) {

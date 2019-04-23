@@ -262,7 +262,7 @@ func createOAuthToken(t *testing.T, client *Client, org *Organization) (*OAuthTo
 func createOrganization(t *testing.T, client *Client) (*Organization, func()) {
 	ctx := context.Background()
 	org, err := client.Organizations.Create(ctx, OrganizationCreateOptions{
-		Name:  String(randomString(t)),
+		Name:  String("go-" + randomString(t)),
 		Email: String(fmt.Sprintf("%s@tfe.local", randomString(t))),
 	})
 	if err != nil {
@@ -344,18 +344,16 @@ func createPlannedRun(t *testing.T, client *Client, w *Workspace) (*Run, func())
 
 		switch r.Status {
 		case RunPlanned, RunCostEstimated, RunPolicyChecked, RunPolicyOverride:
-			break
+			return r, rCleanup
 		}
 
-		if i > 30 {
+		if i > 45 {
 			rCleanup()
-			t.Fatal("Timeout waiting for run to be planned")
+			t.Fatal("45 second timeout waiting for run to be planned")
 		}
 
 		time.Sleep(1 * time.Second)
 	}
-
-	return r, rCleanup
 }
 
 func createAppliedRun(t *testing.T, client *Client, w *Workspace) (*Run, func()) {
