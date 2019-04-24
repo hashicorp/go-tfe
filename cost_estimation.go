@@ -44,11 +44,9 @@ const (
 // CostEstimation represents a Terraform Enterprise costEstimation.
 type CostEstimation struct {
 	ID               string                          `jsonapi:"primary,cost-estimations"`
-	LogReadURL       string                          `jsonapi:"attr,log-read-url"`
+	ErrorMessage     string                          `jsonapi:"attr,error-message"`
 	Status           CostEstimationStatus            `jsonapi:"attr,status"`
 	StatusTimestamps *CostEstimationStatusTimestamps `jsonapi:"attr,status-timestamps"`
-	ErrorMessage     string                          `jsonapi:"attr,error-message"`
-	// Costs            *CostEstimationCosts            `jsonapi:"attr,costs"`
 }
 
 // CostEstimationStatusTimestamps holds the timestamps for individual costEstimation statuses.
@@ -71,13 +69,13 @@ func (s *costEstimations) Read(ctx context.Context, costEstimationID string) (*C
 		return nil, err
 	}
 
-	p := &CostEstimation{}
-	err = s.client.do(ctx, req, p)
+	ce := &CostEstimation{}
+	err = s.client.do(ctx, req, ce)
 	if err != nil {
 		return nil, err
 	}
 
-	return p, nil
+	return ce, nil
 }
 
 // Logs retrieves the logs of a costEstimation.
