@@ -262,7 +262,7 @@ func createOAuthToken(t *testing.T, client *Client, org *Organization) (*OAuthTo
 func createOrganization(t *testing.T, client *Client) (*Organization, func()) {
 	ctx := context.Background()
 	org, err := client.Organizations.Create(ctx, OrganizationCreateOptions{
-		Name:  String(randomString(t)),
+		Name:  String("tst-" + randomString(t)),
 		Email: String(fmt.Sprintf("%s@tfe.local", randomString(t))),
 	})
 	if err != nil {
@@ -342,19 +342,18 @@ func createPlannedRun(t *testing.T, client *Client, w *Workspace) (*Run, func())
 			t.Fatal(err)
 		}
 
-		if r.Status == RunPlanned || r.Status == RunPolicyChecked || r.Status == RunPolicyOverride {
-			break
+		switch r.Status {
+		case RunPlanned, RunCostEstimated, RunPolicyChecked, RunPolicyOverride:
+			return r, rCleanup
 		}
 
-		if i > 30 {
+		if i > 45 {
 			rCleanup()
-			t.Fatal("Timeout waiting for run to be planned")
+			t.Fatal("Timeout waiting for run to be applied")
 		}
 
 		time.Sleep(1 * time.Second)
 	}
-
-	return r, rCleanup
 }
 
 func createAppliedRun(t *testing.T, client *Client, w *Workspace) (*Run, func()) {
@@ -373,19 +372,18 @@ func createAppliedRun(t *testing.T, client *Client, w *Workspace) (*Run, func())
 		}
 
 		if r.Status == RunApplied {
-			break
+			return r, rCleanup
 		}
 
-		if i > 30 {
+		if i > 45 {
 			rCleanup()
 			t.Fatal("Timeout waiting for run to be applied")
 		}
 
 		time.Sleep(1 * time.Second)
 	}
-
-	return r, rCleanup
 }
+
 func createSSHKey(t *testing.T, client *Client, org *Organization) (*SSHKey, func()) {
 	var orgCleanup func()
 
