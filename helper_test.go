@@ -400,10 +400,26 @@ func createPlanExport(t *testing.T, client *Client, r *Run) (*PlanExport, func()
 		t.Fatal(err)
 	}
 
-	return pe, func() {
-		if rCleanup != nil {
-			rCleanup()
+	for i := 0; ; i++ {
+		pe, err := client.PlanExports.Read(ctx, pe.ID)
+		if err != nil {
+			t.Fatal(err)
 		}
+
+		if pe.Status == PlanExportFinished {
+			return pe, func() {
+				if rCleanup != nil {
+					rCleanup()
+				}
+			}
+		}
+
+		if i > 45 {
+			rCleanup()
+			t.Fatal("Timeout waiting for plan export to finish")
+		}
+
+		time.Sleep(1 * time.Second)
 	}
 }
 

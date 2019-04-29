@@ -101,6 +101,15 @@ func TestPlanExportsDownload(t *testing.T) {
 	client := testClient(t)
 	ctx := context.Background()
 
+	peTest, peCleanup := createPlanExport(t, client, nil)
+	defer peCleanup()
+
+	t.Run("with a valid ID", func(t *testing.T) {
+		pe, err := client.PlanExports.Download(ctx, peTest.ID)
+		assert.NotNil(t, pe)
+		assert.NoError(t, err)
+	})
+
 	t.Run("without a valid ID", func(t *testing.T) {
 		pe, err := client.PlanExports.Download(ctx, badIdentifier)
 		assert.Nil(t, pe)
