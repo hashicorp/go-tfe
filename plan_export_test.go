@@ -5,6 +5,7 @@ import (
 	"testing"
 
 	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 )
 
 func TestPlanExportsCreate(t *testing.T) {
@@ -24,7 +25,7 @@ func TestPlanExportsCreate(t *testing.T) {
 		}
 
 		pe, err := client.PlanExports.Create(ctx, options)
-		assert.NoError(t, err)
+		require.NoError(t, err)
 		assert.NotEmpty(t, pe.ID)
 		assert.Equal(t, PlanExportSentinelMockBundleV0, pe.DataType)
 	})
@@ -59,25 +60,16 @@ func TestPlanExportsRead(t *testing.T) {
 	peTest, peTestCleanup := createPlanExport(t, client, nil)
 	defer peTestCleanup()
 
-	t.Run("without a valid ID", func(t *testing.T) {
-		_, err := client.PlanExports.Read(ctx, badIdentifier)
-		assert.EqualError(t, err, "invalid value for plan export ID")
-	})
-
 	t.Run("with a valid ID", func(t *testing.T) {
 		pe, err := client.PlanExports.Read(ctx, peTest.ID)
-		assert.NoError(t, err)
+		require.NoError(t, err)
 		assert.Equal(t, peTest.ID, pe.ID)
 		assert.Equal(t, peTest.DataType, pe.DataType)
 	})
-}
-
-func TestPlanExportsDownload(t *testing.T) {
-	client := testClient(t)
-	ctx := context.Background()
 
 	t.Run("without a valid ID", func(t *testing.T) {
-		_, err := client.PlanExports.Download(ctx, badIdentifier)
+		pe, err := client.PlanExports.Read(ctx, badIdentifier)
+		assert.Nil(t, pe)
 		assert.EqualError(t, err, "invalid value for plan export ID")
 	})
 }
@@ -89,6 +81,11 @@ func TestPlanExportsDelete(t *testing.T) {
 	peTest, peTestCleanup := createPlanExport(t, client, nil)
 	defer peTestCleanup()
 
+	t.Run("with a valid ID", func(t *testing.T) {
+		err := client.PlanExports.Delete(ctx, peTest.ID)
+		assert.NoError(t, err)
+	})
+
 	t.Run("when the export does not exist", func(t *testing.T) {
 		err := client.Policies.Delete(ctx, "pe-doesntexist")
 		assert.Equal(t, err, ErrResourceNotFound)
@@ -98,9 +95,15 @@ func TestPlanExportsDelete(t *testing.T) {
 		err := client.PlanExports.Delete(ctx, badIdentifier)
 		assert.EqualError(t, err, "invalid value for plan export ID")
 	})
+}
 
-	t.Run("with a valid ID", func(t *testing.T) {
-		err := client.PlanExports.Delete(ctx, peTest.ID)
-		assert.NoError(t, err)
+func TestPlanExportsDownload(t *testing.T) {
+	client := testClient(t)
+	ctx := context.Background()
+
+	t.Run("without a valid ID", func(t *testing.T) {
+		pe, err := client.PlanExports.Download(ctx, badIdentifier)
+		assert.Nil(t, pe)
+		assert.EqualError(t, err, "invalid value for plan export ID")
 	})
 }

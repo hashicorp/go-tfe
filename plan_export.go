@@ -12,8 +12,8 @@ import (
 // Compile-time proof of interface implementation.
 var _ PlanExports = (*planExports)(nil)
 
-// PlanExports describes all the plan export related methods that the Terraform Enterprise
-// API supports.
+// PlanExports describes all the plan export related methods that the Terraform
+// Enterprise API supports.
 //
 // TFE API docs: https://www.terraform.io/docs/enterprise/api/plan-exports.html
 type PlanExports interface {
@@ -23,11 +23,11 @@ type PlanExports interface {
 	// Read a plan export by its ID.
 	Read(ctx context.Context, planExportID string) (*PlanExport, error)
 
-	// Download the data of an plan export.
-	Download(ctx context.Context, planExportID string) ([]byte, error)
-
 	// Delete a plan export by its ID.
 	Delete(ctx context.Context, planExportID string) error
+
+	// Download the data of an plan export.
+	Download(ctx context.Context, planExportID string) ([]byte, error)
 }
 
 // planExports implements PlanExports.
@@ -38,7 +38,7 @@ type planExports struct {
 // PlanExportDataType represents the type of data exported from a plan.
 type PlanExportDataType string
 
-//List all available plan export data types
+// List all available plan export data types.
 const (
 	PlanExportSentinelMockBundleV0 PlanExportDataType = "sentinel-mock-bundle-v0"
 )
@@ -46,7 +46,7 @@ const (
 // PlanExportStatus represents a plan export state.
 type PlanExportStatus string
 
-//List all available plan export statuses.
+// List all available plan export statuses.
 const (
 	PlanExportCanceled PlanExportStatus = "canceled"
 	PlanExportErrored  PlanExportStatus = "errored"
@@ -56,7 +56,7 @@ const (
 	PlanExportQueued   PlanExportStatus = "queued"
 )
 
-// PlanExportStatusTimestamps holds the timestamps for individual plan export statuses.
+// PlanExportStatusTimestamps holds the timestamps for plan export statuses.
 type PlanExportStatusTimestamps struct {
 	CanceledAt time.Time `json:"canceled-at"`
 	ErroredAt  time.Time `json:"errored-at"`
@@ -138,6 +138,21 @@ func (s *planExports) Read(ctx context.Context, planExportID string) (*PlanExpor
 	return pe, nil
 }
 
+// Delete a plan export by ID.
+func (s *planExports) Delete(ctx context.Context, planExportID string) error {
+	if !validStringID(&planExportID) {
+		return errors.New("invalid value for plan export ID")
+	}
+
+	u := fmt.Sprintf("plan-exports/%s", url.QueryEscape(planExportID))
+	req, err := s.client.newRequest("DELETE", u, nil)
+	if err != nil {
+		return err
+	}
+
+	return s.client.do(ctx, req, nil)
+}
+
 // Download a plan export's data. Data is exported in a .tar.gz format.
 func (s *planExports) Download(ctx context.Context, planExportID string) ([]byte, error) {
 	if !validStringID(&planExportID) {
@@ -157,19 +172,4 @@ func (s *planExports) Download(ctx context.Context, planExportID string) ([]byte
 	}
 
 	return buf.Bytes(), nil
-}
-
-// Delete a plan export by ID.
-func (s *planExports) Delete(ctx context.Context, planExportID string) error {
-	if !validStringID(&planExportID) {
-		return errors.New("invalid value for plan export ID")
-	}
-
-	u := fmt.Sprintf("plan-exports/%s", url.QueryEscape(planExportID))
-	req, err := s.client.newRequest("DELETE", u, nil)
-	if err != nil {
-		return err
-	}
-
-	return s.client.do(ctx, req, nil)
 }

@@ -384,25 +384,27 @@ func createAppliedRun(t *testing.T, client *Client, w *Workspace) (*Run, func())
 	}
 }
 
-func createPlanExport(t *testing.T, client *Client, plan *Plan) (*PlanExport, func()) {
-	var runCleanup func()
-	var run *Run
+func createPlanExport(t *testing.T, client *Client, r *Run) (*PlanExport, func()) {
+	var rCleanup func()
 
-	if plan == nil {
-		run, runCleanup = createPlannedRun(t, client, nil)
-		plan = run.Plan
+	if r == nil {
+		r, rCleanup = createPlannedRun(t, client, nil)
 	}
 
 	ctx := context.Background()
 	pe, err := client.PlanExports.Create(ctx, PlanExportCreateOptions{
-		Plan:     plan,
+		Plan:     r.Plan,
 		DataType: PlanExportType(PlanExportSentinelMockBundleV0),
 	})
 	if err != nil {
 		t.Fatal(err)
 	}
 
-	return pe, runCleanup
+	return pe, func() {
+		if rCleanup != nil {
+			rCleanup()
+		}
+	}
 }
 
 func createSSHKey(t *testing.T, client *Client, org *Organization) (*SSHKey, func()) {
