@@ -113,6 +113,7 @@ type Client struct {
 	Organizations              Organizations
 	OrganizationTokens         OrganizationTokens
 	Plans                      Plans
+	PlanExports                PlanExports
 	Policies                   Policies
 	PolicyChecks               PolicyChecks
 	PolicySets                 PolicySets
@@ -203,6 +204,7 @@ func NewClient(cfg *Config) (*Client, error) {
 	client.Organizations = &organizations{client: client}
 	client.OrganizationTokens = &organizationTokens{client: client}
 	client.Plans = &plans{client: client}
+	client.PlanExports = &planExports{client: client}
 	client.Policies = &policies{client: client}
 	client.PolicyChecks = &policyChecks{client: client}
 	client.PolicySets = &policySets{client: client}

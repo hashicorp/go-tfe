@@ -384,6 +384,45 @@ func createAppliedRun(t *testing.T, client *Client, w *Workspace) (*Run, func())
 	}
 }
 
+func createPlanExport(t *testing.T, client *Client, r *Run) (*PlanExport, func()) {
+	var rCleanup func()
+
+	if r == nil {
+		r, rCleanup = createPlannedRun(t, client, nil)
+	}
+
+	ctx := context.Background()
+	pe, err := client.PlanExports.Create(ctx, PlanExportCreateOptions{
+		Plan:     r.Plan,
+		DataType: PlanExportType(PlanExportSentinelMockBundleV0),
+	})
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	for i := 0; ; i++ {
+		pe, err := client.PlanExports.Read(ctx, pe.ID)
+		if err != nil {
+			t.Fatal(err)
+		}
+
+		if pe.Status == PlanExportFinished {
+			return pe, func() {
+				if rCleanup != nil {
+					rCleanup()
+				}
+			}
+		}
+
+		if i > 45 {
+			rCleanup()
+			t.Fatal("Timeout waiting for plan export to finish")
+		}
+
+		time.Sleep(1 * time.Second)
+	}
+}
+
 func createSSHKey(t *testing.T, client *Client, org *Organization) (*SSHKey, func()) {
 	var orgCleanup func()
 
