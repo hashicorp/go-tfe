@@ -86,12 +86,15 @@ func TestWorkspacesCreate(t *testing.T) {
 
 	t.Run("with valid options", func(t *testing.T) {
 		options := WorkspaceCreateOptions{
-			Name:             String("foo"),
-			AutoApply:        Bool(true),
-			QueueAllRuns:     Bool(true),
-			TerraformVersion: String("0.11.0"),
-			WorkingDirectory: String("bar/"),
+			Name:                String("foo"),
+			AutoApply:           Bool(true),
+			QueueAllRuns:        Bool(true),
+			TerraformVersion:    String("0.11.0"),
+			WorkingDirectory:    String("bar/"),
+			FileTriggersEnabled: Bool(true),
 		}
+		triggerPrefixes := []string{"/modules", "/shared"}
+		options.TriggerPrefixes = &triggerPrefixes
 
 		w, err := client.Workspaces.Create(ctx, orgTest.Name, options)
 		require.NoError(t, err)
@@ -110,6 +113,10 @@ func TestWorkspacesCreate(t *testing.T) {
 			assert.Equal(t, *options.QueueAllRuns, item.QueueAllRuns)
 			assert.Equal(t, *options.TerraformVersion, item.TerraformVersion)
 			assert.Equal(t, *options.WorkingDirectory, item.WorkingDirectory)
+
+			for i := range triggerPrefixes {
+				assert.Equal(t, triggerPrefixes[i], item.TriggerPrefixes[i])
+			}
 		}
 	})
 

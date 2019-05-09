@@ -78,6 +78,8 @@ type Workspace struct {
 	TerraformVersion     string                `jsonapi:"attr,terraform-version"`
 	VCSRepo              *VCSRepo              `jsonapi:"attr,vcs-repo"`
 	WorkingDirectory     string                `jsonapi:"attr,working-directory"`
+	FileTriggersEnabled  bool                  `jsonapi:"attr,file-triggers-enabled"`
+	TriggerPrefixes      []string              `jsonapi:"attr,trigger-prefixes"`
 
 	// Relations
 	CurrentRun   *Run          `jsonapi:"relation,current-run"`
@@ -176,6 +178,16 @@ type WorkspaceCreateOptions struct {
 	// root of your repository and is typically set to a subdirectory matching the
 	// environment when multiple environments exist within the same repository.
 	WorkingDirectory *string `jsonapi:"attr,working-directory,omitempty"`
+
+	// Whether to filter runs based on the changed files in a VCS push. If
+	// enabled, the working directory and trigger prefixes describe a set of
+	// paths which must contain changes for a VCS push to trigger a run. If
+	// disabled, any push will trigger a run.
+	FileTriggersEnabled *bool `jsonapi:"attr,file-triggers-enabled,omitempty"`
+
+	// List of repository-root-relative paths which list all locations to be
+	// tracked for changes. See FileTriggersEnabled above for more details.
+	TriggerPrefixes *[]string `jsonapi:"attr,trigger-prefixes,omitempty"`
 }
 
 // VCSRepoOptions represents the configuration options of a VCS integration.
@@ -284,6 +296,16 @@ type WorkspaceUpdateOptions struct {
 	// the environment when multiple environments exist within the same
 	// repository.
 	WorkingDirectory *string `jsonapi:"attr,working-directory,omitempty"`
+
+	// Whether to filter runs based on the changed files in a VCS push. If
+	// enabled, the working directory and trigger prefixes describe a set of
+	// paths which must contain changes for a VCS push to trigger a run. If
+	// disabled, any push will trigger a run.
+	FileTriggersEnabled *bool `jsonapi:"attr,file-triggers-enabled,omitempty"`
+
+	// List of repository-root-relative paths which list all locations to be
+	// tracked for changes. See FileTriggersEnabled above for more details.
+	TriggerPrefixes *[]string `jsonapi:"attr,trigger-prefixes,omitempty"`
 }
 
 // Update settings of an existing workspace.
