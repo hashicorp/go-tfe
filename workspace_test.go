@@ -88,13 +88,12 @@ func TestWorkspacesCreate(t *testing.T) {
 		options := WorkspaceCreateOptions{
 			Name:                String("foo"),
 			AutoApply:           Bool(true),
+			FileTriggersEnabled: Bool(true),
 			QueueAllRuns:        Bool(true),
 			TerraformVersion:    String("0.11.0"),
+			TriggerPrefixes:     []string{"/modules", "/shared"},
 			WorkingDirectory:    String("bar/"),
-			FileTriggersEnabled: Bool(true),
 		}
-		triggerPrefixes := []string{"/modules", "/shared"}
-		options.TriggerPrefixes = &triggerPrefixes
 
 		w, err := client.Workspaces.Create(ctx, orgTest.Name, options)
 		require.NoError(t, err)
@@ -110,13 +109,11 @@ func TestWorkspacesCreate(t *testing.T) {
 			assert.NotEmpty(t, item.ID)
 			assert.Equal(t, *options.Name, item.Name)
 			assert.Equal(t, *options.AutoApply, item.AutoApply)
+			assert.Equal(t, *options.FileTriggersEnabled, item.FileTriggersEnabled)
 			assert.Equal(t, *options.QueueAllRuns, item.QueueAllRuns)
 			assert.Equal(t, *options.TerraformVersion, item.TerraformVersion)
+			assert.Equal(t, options.TriggerPrefixes, item.TriggerPrefixes)
 			assert.Equal(t, *options.WorkingDirectory, item.WorkingDirectory)
-
-			for i := range triggerPrefixes {
-				assert.Equal(t, triggerPrefixes[i], item.TriggerPrefixes[i])
-			}
 		}
 	})
 
@@ -234,11 +231,13 @@ func TestWorkspacesUpdate(t *testing.T) {
 
 	t.Run("with valid options", func(t *testing.T) {
 		options := WorkspaceUpdateOptions{
-			Name:             String(randomString(t)),
-			AutoApply:        Bool(false),
-			QueueAllRuns:     Bool(false),
-			TerraformVersion: String("0.11.1"),
-			WorkingDirectory: String("baz/"),
+			Name:                String(randomString(t)),
+			AutoApply:           Bool(false),
+			FileTriggersEnabled: Bool(true),
+			QueueAllRuns:        Bool(false),
+			TerraformVersion:    String("0.11.1"),
+			TriggerPrefixes:     []string{"/modules", "/shared"},
+			WorkingDirectory:    String("baz/"),
 		}
 
 		w, err := client.Workspaces.Update(ctx, orgTest.Name, wTest.Name, options)
@@ -254,8 +253,10 @@ func TestWorkspacesUpdate(t *testing.T) {
 		} {
 			assert.Equal(t, *options.Name, item.Name)
 			assert.Equal(t, *options.AutoApply, item.AutoApply)
+			assert.Equal(t, *options.FileTriggersEnabled, item.FileTriggersEnabled)
 			assert.Equal(t, *options.QueueAllRuns, item.QueueAllRuns)
 			assert.Equal(t, *options.TerraformVersion, item.TerraformVersion)
+			assert.Equal(t, options.TriggerPrefixes, item.TriggerPrefixes)
 			assert.Equal(t, *options.WorkingDirectory, item.WorkingDirectory)
 		}
 	})
