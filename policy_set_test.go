@@ -2,6 +2,7 @@ package tfe
 
 import (
 	"context"
+	"os"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -119,6 +120,44 @@ func TestPolicySetsCreate(t *testing.T) {
 		assert.Equal(t, ps.Policies[0].ID, pTest.ID)
 		assert.Equal(t, ps.WorkspaceCount, 1)
 		assert.Equal(t, ps.Workspaces[0].ID, wTest.ID)
+	})
+
+	t.Run("with vcs policy set", func(t *testing.T) {
+		if ghToken := os.Getenv("GITHUB_TOKEN"); ghToken == "" {
+			t.Skip("Export a valid GITHUB_TOKEN before running this test")
+		}
+
+		githubIdentifier := os.Getenv("GITHUB_IDENTIFIER")
+		if githubIdentifier == "" {
+			t.Skip("Export a valid GITHUB_IDENTIFIER before running this test")
+		}
+
+		oc, _ := createOAuthToken(t, client, orgTest)
+
+		options := PolicySetCreateOptions{
+			Name:         String("vcs-policy-set"),
+			PoliciesPath: String("/policy-sets/foo"),
+			VCSRepo: &VCSRepoOptions{
+				Branch:            String("policies"),
+				Identifier:        String(githubIdentifier),
+				OAuthTokenID:      String(oc.ID),
+				IngressSubmodules: Bool(true),
+			},
+		}
+
+		ps, err := client.PolicySets.Create(ctx, orgTest.Name, options)
+		require.NoError(t, err)
+
+		assert.Equal(t, ps.Name, *options.Name)
+		assert.Equal(t, ps.Description, "")
+		assert.False(t, ps.Global)
+		assert.Equal(t, ps.PoliciesPath, "/policy-sets/foo")
+		assert.Equal(t, ps.VCSRepo, &VCSRepo{
+			Branch:            "policies",
+			Identifier:        githubIdentifier,
+			OAuthTokenID:      oc.ID,
+			IngressSubmodules: true,
+		})
 	})
 
 	t.Run("without a name provided", func(t *testing.T) {
