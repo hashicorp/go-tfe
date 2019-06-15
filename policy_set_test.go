@@ -123,10 +123,6 @@ func TestPolicySetsCreate(t *testing.T) {
 	})
 
 	t.Run("with vcs policy set", func(t *testing.T) {
-		if ghToken := os.Getenv("GITHUB_TOKEN"); ghToken == "" {
-			t.Skip("Export a valid GITHUB_TOKEN before running this test")
-		}
-
 		githubIdentifier := os.Getenv("GITHUB_IDENTIFIER")
 		if githubIdentifier == "" {
 			t.Skip("Export a valid GITHUB_IDENTIFIER before running this test")
