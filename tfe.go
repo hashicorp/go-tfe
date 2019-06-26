@@ -32,6 +32,8 @@ const (
 	DefaultAddress = "https://app.terraform.io"
 	// DefaultBasePath on which the API is served.
 	DefaultBasePath = "/api/v2/"
+	// No-op API endpoint used to configure the rate limiter
+	PingEndpoint = "ping"
 )
 
 var (
@@ -291,7 +293,11 @@ func rateLimitBackoff(min, max time.Duration, attemptNum int, resp *http.Respons
 // configureLimiter configures the rate limiter.
 func (c *Client) configureLimiter() error {
 	// Create a new request.
-	req, err := http.NewRequest("GET", c.baseURL.String(), nil)
+	u, err := c.baseURL.Parse(PingEndpoint)
+	if err != nil {
+		return err
+	}
+	req, err := http.NewRequest("GET", u.String(), nil)
 	if err != nil {
 		return err
 	}
