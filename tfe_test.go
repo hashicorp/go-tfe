@@ -16,7 +16,7 @@ func TestClient_newClient(t *testing.T) {
 	ts := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "application/vnd.api+json")
 		w.Header().Set("X-RateLimit-Limit", "30")
-		w.WriteHeader(204) // We query the configured ping URL which should return a 404.
+		w.WriteHeader(204) // We query the configured ping URL which should return a 204.
 	}))
 	defer ts.Close()
 
