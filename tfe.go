@@ -32,7 +32,8 @@ const (
 	DefaultAddress = "https://app.terraform.io"
 	// DefaultBasePath on which the API is served.
 	DefaultBasePath = "/api/v2/"
-	PingEndpoint    = "ping"
+	// No-op API endpoint used to configure the rate limiter
+	PingEndpoint = "ping"
 )
 
 var (
