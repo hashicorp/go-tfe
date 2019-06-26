@@ -16,7 +16,7 @@ func TestClient_newClient(t *testing.T) {
 	ts := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "application/vnd.api+json")
 		w.Header().Set("X-RateLimit-Limit", "30")
-		w.WriteHeader(404) // We query the configured base URL which should return a 404.
+		w.WriteHeader(204) // We query the configured ping URL which should return a 404.
 	}))
 	defer ts.Close()
 
@@ -102,7 +102,7 @@ func TestClient_headers(t *testing.T) {
 		if testedCalls == 1 {
 			w.Header().Set("Content-Type", "application/vnd.api+json")
 			w.Header().Set("X-RateLimit-Limit", "30")
-			w.WriteHeader(404) // We query the configured base URL which should return a 404.
+			w.WriteHeader(204) // We query the configured ping URL which should return a 204.
 			return
 		}
 
@@ -165,7 +165,7 @@ func TestClient_userAgent(t *testing.T) {
 		if testedCalls == 1 {
 			w.Header().Set("Content-Type", "application/vnd.api+json")
 			w.Header().Set("X-RateLimit-Limit", "30")
-			w.WriteHeader(404) // We query the configured base URL which should return a 404.
+			w.WriteHeader(204) // We query the configured ping URL which should return a 204.
 			return
 		}
 
@@ -209,7 +209,7 @@ func TestClient_configureLimiter(t *testing.T) {
 	ts := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "application/vnd.api+json")
 		w.Header().Set("X-RateLimit-Limit", rateLimit)
-		w.WriteHeader(404) // We query the configured base URL which should return a 404.
+		w.WriteHeader(204) // We query the configured ping URL which should return a 204.
 	}))
 	defer ts.Close()
 
@@ -269,7 +269,7 @@ func TestClient_retryHTTPCheck(t *testing.T) {
 	ts := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "application/vnd.api+json")
 		w.Header().Set("X-RateLimit-Limit", "30")
-		w.WriteHeader(404) // We query the configured base URL which should return a 404.
+		w.WriteHeader(204) // We query the configured ping URL which should return a 204.
 	}))
 	defer ts.Close()
 
@@ -351,7 +351,7 @@ func TestClient_retryHTTPBackoff(t *testing.T) {
 	ts := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "application/vnd.api+json")
 		w.Header().Set("X-RateLimit-Limit", "30")
-		w.WriteHeader(404) // We query the configured base URL which should return a 404.
+		w.WriteHeader(204) // We query the configured ping URL which should return a 204.
 	}))
 	defer ts.Close()
 
