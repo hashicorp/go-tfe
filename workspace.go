@@ -25,25 +25,25 @@ type Workspaces interface {
 	// Read a workspace by its name.
 	Read(ctx context.Context, organization string, workspace string) (*Workspace, error)
 
-	// ReadById reads a workspace by its ID.
+	// ReadByID reads a workspace by its ID.
 	ReadByID(ctx context.Context, workspaceID string) (*Workspace, error)
 
 	// Update settings of an existing workspace.
 	Update(ctx context.Context, organization string, workspace string, options WorkspaceUpdateOptions) (*Workspace, error)
 
-	// UpdateById updates the settings of an existing workspace.
+	// UpdateByID updates the settings of an existing workspace.
 	UpdateByID(ctx context.Context, workspaceID string, options WorkspaceUpdateOptions) (*Workspace, error)
 
 	// Delete a workspace by its name.
 	Delete(ctx context.Context, organization string, workspace string) error
 
-	// Delete a workspace by its ID.
+	// DeleteByID deletes a workspace by its ID.
 	DeleteByID(ctx context.Context, workspaceID string) error
 
 	// RemoveVCSConnection from a workspace.
 	RemoveVCSConnection(ctx context.Context, organization, workspace string) (*Workspace, error)
 
-	// RemoveVCSConnection from a workspace.
+	// RemoveVCSConnectionByID removes a VCS connection from a workspace.
 	RemoveVCSConnectionByID(ctx context.Context, workspaceID string) (*Workspace, error)
 
 	// Lock a workspace by its ID.
@@ -275,7 +275,7 @@ func (s *workspaces) Read(ctx context.Context, organization, workspace string) (
 	return w, nil
 }
 
-// Read a workspace by its ID.
+// ReadByID reads a workspace by its ID.
 func (s *workspaces) ReadByID(ctx context.Context, workspaceID string) (*Workspace, error) {
 	if !validStringID(&workspaceID) {
 		return nil, errors.New("invalid value for workspace ID")
@@ -372,7 +372,7 @@ func (s *workspaces) Update(ctx context.Context, organization, workspace string,
 	return w, nil
 }
 
-// Update settings of an existing workspace by its ID.
+// UpdateByID updates the settings of an existing workspace.
 func (s *workspaces) UpdateByID(ctx context.Context, workspaceID string, options WorkspaceUpdateOptions) (*Workspace, error) {
 	if !validStringID(&workspaceID) {
 		return nil, errors.New("invalid value for workspace ID")
@@ -418,7 +418,7 @@ func (s *workspaces) Delete(ctx context.Context, organization, workspace string)
 	return s.client.do(ctx, req, nil)
 }
 
-// Delete a workspace by its ID.
+// DeleteByID deletes a workspace by its ID.
 func (s *workspaces) DeleteByID(ctx context.Context, workspaceID string) error {
 	if !validStringID(&workspaceID) {
 		return errors.New("invalid value for workspace ID")
@@ -468,7 +468,7 @@ func (s *workspaces) RemoveVCSConnection(ctx context.Context, organization, work
 	return w, nil
 }
 
-// RemoveVCSConnection from a workspace by workspace ID.
+// RemoveVCSConnectionByID removes a VCS connection from a workspace.
 func (s *workspaces) RemoveVCSConnectionByID(ctx context.Context, workspaceID string) (*Workspace, error) {
 	if !validStringID(&workspaceID) {
 		return nil, errors.New("invalid value for workspace ID")
