@@ -202,6 +202,47 @@ func TestWorkspacesRead(t *testing.T) {
 	})
 }
 
+func TestWorkspacesReadByID(t *testing.T) {
+	client := testClient(t)
+	ctx := context.Background()
+
+	orgTest, orgTestCleanup := createOrganization(t, client)
+	defer orgTestCleanup()
+
+	wTest, wTestCleanup := createWorkspace(t, client, orgTest)
+	defer wTestCleanup()
+
+	t.Run("when the workspace exists", func(t *testing.T) {
+		w, err := client.Workspaces.ReadByID(ctx, wTest.ID)
+		require.NoError(t, err)
+		assert.Equal(t, wTest, w)
+
+		t.Run("permissions are properly decoded", func(t *testing.T) {
+			assert.True(t, w.Permissions.CanDestroy)
+		})
+
+		t.Run("relationships are properly decoded", func(t *testing.T) {
+			assert.Equal(t, orgTest.Name, w.Organization.Name)
+		})
+
+		t.Run("timestamps are properly decoded", func(t *testing.T) {
+			assert.NotEmpty(t, w.CreatedAt)
+		})
+	})
+
+	t.Run("when the workspace does not exist", func(t *testing.T) {
+		w, err := client.Workspaces.ReadByID(ctx, "nonexisting")
+		assert.Nil(t, w)
+		assert.Error(t, err)
+	})
+
+	t.Run("without a valid workspace ID", func(t *testing.T) {
+		w, err := client.Workspaces.ReadByID(ctx, badIdentifier)
+		assert.Nil(t, w)
+		assert.EqualError(t, err, "invalid value for workspace ID")
+	})
+}
+
 func TestWorkspacesUpdate(t *testing.T) {
 	client := testClient(t)
 	ctx := context.Background()
@@ -282,6 +323,80 @@ func TestWorkspacesUpdate(t *testing.T) {
 	})
 }
 
+func TestWorkspacesUpdateByID(t *testing.T) {
+	client := testClient(t)
+	ctx := context.Background()
+
+	orgTest, orgTestCleanup := createOrganization(t, client)
+	defer orgTestCleanup()
+
+	wTest, _ := createWorkspace(t, client, orgTest)
+
+	t.Run("when updating a subset of values", func(t *testing.T) {
+		options := WorkspaceUpdateOptions{
+			Name:             String(wTest.Name),
+			AutoApply:        Bool(true),
+			QueueAllRuns:     Bool(true),
+			TerraformVersion: String("0.10.0"),
+		}
+
+		wAfter, err := client.Workspaces.UpdateByID(ctx, wTest.ID, options)
+		require.NoError(t, err)
+
+		assert.Equal(t, wTest.Name, wAfter.Name)
+		assert.NotEqual(t, wTest.AutoApply, wAfter.AutoApply)
+		assert.NotEqual(t, wTest.QueueAllRuns, wAfter.QueueAllRuns)
+		assert.NotEqual(t, wTest.TerraformVersion, wAfter.TerraformVersion)
+		assert.Equal(t, wTest.WorkingDirectory, wAfter.WorkingDirectory)
+	})
+
+	t.Run("with valid options", func(t *testing.T) {
+		options := WorkspaceUpdateOptions{
+			Name:                String(randomString(t)),
+			AutoApply:           Bool(false),
+			FileTriggersEnabled: Bool(true),
+			QueueAllRuns:        Bool(false),
+			TerraformVersion:    String("0.11.1"),
+			TriggerPrefixes:     []string{"/modules", "/shared"},
+			WorkingDirectory:    String("baz/"),
+		}
+
+		w, err := client.Workspaces.UpdateByID(ctx, wTest.ID, options)
+		require.NoError(t, err)
+
+		// Get a refreshed view of the workspace from the API
+		refreshed, err := client.Workspaces.Read(ctx, orgTest.Name, *options.Name)
+		require.NoError(t, err)
+
+		for _, item := range []*Workspace{
+			w,
+			refreshed,
+		} {
+			assert.Equal(t, *options.Name, item.Name)
+			assert.Equal(t, *options.AutoApply, item.AutoApply)
+			assert.Equal(t, *options.FileTriggersEnabled, item.FileTriggersEnabled)
+			assert.Equal(t, *options.QueueAllRuns, item.QueueAllRuns)
+			assert.Equal(t, *options.TerraformVersion, item.TerraformVersion)
+			assert.Equal(t, options.TriggerPrefixes, item.TriggerPrefixes)
+			assert.Equal(t, *options.WorkingDirectory, item.WorkingDirectory)
+		}
+	})
+
+	t.Run("when an error is returned from the api", func(t *testing.T) {
+		w, err := client.Workspaces.UpdateByID(ctx, wTest.ID, WorkspaceUpdateOptions{
+			TerraformVersion: String("nonexisting"),
+		})
+		assert.Nil(t, w)
+		assert.Error(t, err)
+	})
+
+	t.Run("without a valid workspace ID", func(t *testing.T) {
+		w, err := client.Workspaces.UpdateByID(ctx, badIdentifier, WorkspaceUpdateOptions{})
+		assert.Nil(t, w)
+		assert.EqualError(t, err, "invalid value for workspace ID")
+	})
+}
+
 func TestWorkspacesDelete(t *testing.T) {
 	client := testClient(t)
 	ctx := context.Background()
@@ -311,6 +426,30 @@ func TestWorkspacesDelete(t *testing.T) {
 	})
 }
 
+func TestWorkspacesDeleteByID(t *testing.T) {
+	client := testClient(t)
+	ctx := context.Background()
+
+	orgTest, orgTestCleanup := createOrganization(t, client)
+	defer orgTestCleanup()
+
+	wTest, _ := createWorkspace(t, client, orgTest)
+
+	t.Run("with valid options", func(t *testing.T) {
+		err := client.Workspaces.DeleteByID(ctx, wTest.ID)
+		require.NoError(t, err)
+
+		// Try loading the workspace - it should fail.
+		_, err = client.Workspaces.ReadByID(ctx, wTest.ID)
+		assert.Equal(t, ErrResourceNotFound, err)
+	})
+
+	t.Run("without a valid workspace ID", func(t *testing.T) {
+		err := client.Workspaces.DeleteByID(ctx, badIdentifier)
+		assert.EqualError(t, err, "invalid value for workspace ID")
+	})
+}
+
 func TestWorkspacesRemoveVCSConnection(t *testing.T) {
 	client := testClient(t)
 	ctx := context.Background()
@@ -322,6 +461,22 @@ func TestWorkspacesRemoveVCSConnection(t *testing.T) {
 
 	t.Run("remove vcs integration", func(t *testing.T) {
 		w, err := client.Workspaces.RemoveVCSConnection(ctx, orgTest.Name, wTest.Name)
+		require.NoError(t, err)
+		assert.Equal(t, (*VCSRepo)(nil), w.VCSRepo)
+	})
+}
+
+func TestWorkspacesRemoveVCSConnectionByID(t *testing.T) {
+	client := testClient(t)
+	ctx := context.Background()
+
+	orgTest, orgTestCleanup := createOrganization(t, client)
+	defer orgTestCleanup()
+
+	wTest, _ := createWorkspaceWithVCS(t, client, orgTest)
+
+	t.Run("remove vcs integration", func(t *testing.T) {
+		w, err := client.Workspaces.RemoveVCSConnectionByID(ctx, wTest.ID)
 		require.NoError(t, err)
 		assert.Equal(t, (*VCSRepo)(nil), w.VCSRepo)
 	})
