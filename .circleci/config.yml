@@ -1,0 +1,17 @@
+# Golang CircleCI 2.0 configuration file
+#
+# Check https://circleci.com/docs/2.0/language-go/ for more details
+version: 2
+jobs:
+  build:
+    docker:
+      - image: circleci/golang:1.12.1
+    working_directory: /go/src/github.com/hashicorp/go-tfe
+    steps:
+      - checkout
+      - run: go get -v -t -d ./...
+      - run:
+          name: Run tests
+          command: |
+            go test -p=1 -v ./... -timeout=40m
+          no_output_timeout: 1800
