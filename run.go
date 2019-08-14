@@ -53,6 +53,8 @@ const (
 	RunApplying           RunStatus = "applying"
 	RunCanceled           RunStatus = "canceled"
 	RunConfirmed          RunStatus = "confirmed"
+	RunCostEstimated      RunStatus = "cost_estimated"
+	RunCostEstimating     RunStatus = "cost_estimating"
 	RunDiscarded          RunStatus = "discarded"
 	RunErrored            RunStatus = "errored"
 	RunPending            RunStatus = "pending"
@@ -100,6 +102,7 @@ type Run struct {
 	// Relations
 	Apply                *Apply                `jsonapi:"relation,apply"`
 	ConfigurationVersion *ConfigurationVersion `jsonapi:"relation,configuration-version"`
+	CostEstimate         *CostEstimate         `jsonapi:"relation,cost-estimate"`
 	Plan                 *Plan                 `jsonapi:"relation,plan"`
 	PolicyChecks         []*PolicyCheck        `jsonapi:"relation,policy-checks"`
 	Workspace            *Workspace            `jsonapi:"relation,workspace"`
