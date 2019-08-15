@@ -43,18 +43,16 @@ const (
 
 // CostEstimate represents a Terraform Enterprise costEstimate.
 type CostEstimate struct {
-	ID           string `jsonapi:"primary,cost-estimations"`
-	ErrorMessage string `jsonapi:"attr,error-message"`
-
-	ResourcesCount          string `jsonapi:"attr,resources-count"`
-	MatchedResourcesCount   string `jsonapi:"attr,matched-resources-count"`
-	UnmatchedResourcesCount string `jsonapi:"attr,unmatched-resources-count"`
-	PriorMonthlyCost        string `jsonapi:"attr,prior-monthly-cost"`
-	ProposedMonthlyCost     string `jsonapi:"attr,proposed-monthly-cost"`
-	DeltaMonthlyCost        string `jsonapi:"attr,delta-monthly-cost"`
-
-	Status           CostEstimateStatus            `jsonapi:"attr,status"`
-	StatusTimestamps *CostEstimateStatusTimestamps `jsonapi:"attr,status-timestamps"`
+	ID                      string                        `jsonapi:"primary,cost-estimations"`
+	DeltaMonthlyCost        string                        `jsonapi:"attr,delta-monthly-cost"`
+	ErrorMessage            string                        `jsonapi:"attr,error-message"`
+	MatchedResourcesCount   string                        `jsonapi:"attr,matched-resources-count"`
+	PriorMonthlyCost        string                        `jsonapi:"attr,prior-monthly-cost"`
+	ProposedMonthlyCost     string                        `jsonapi:"attr,proposed-monthly-cost"`
+	ResourcesCount          string                        `jsonapi:"attr,resources-count"`
+	Status                  CostEstimateStatus            `jsonapi:"attr,status"`
+	StatusTimestamps        *CostEstimateStatusTimestamps `jsonapi:"attr,status-timestamps"`
+	UnmatchedResourcesCount string                        `jsonapi:"attr,unmatched-resources-count"`
 }
 
 // CostEstimateStatusTimestamps holds the timestamps for individual costEstimate statuses.
@@ -107,7 +105,7 @@ func (s *costEstimates) Logs(ctx context.Context, costEstimateID string) (io.Rea
 			select {
 			case <-ctx.Done():
 				return nil, ctx.Err()
-			case <-time.After(500 * time.Millisecond):
+			case <-time.After(1000 * time.Millisecond):
 				continue
 			}
 		}
