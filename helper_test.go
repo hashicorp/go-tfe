@@ -343,7 +343,7 @@ func createPlannedRun(t *testing.T, client *Client, w *Workspace) (*Run, func())
 		}
 
 		switch r.Status {
-		case RunPlanned, RunPolicyChecked, RunPolicyOverride:
+		case RunPlanned, RunCostEstimated, RunPolicyChecked, RunPolicyOverride:
 			return r, rCleanup
 		}
 
