@@ -43,7 +43,7 @@ const (
 
 // CostEstimate represents a Terraform Enterprise costEstimate.
 type CostEstimate struct {
-	ID                      string                        `jsonapi:"primary,cost-estimations"`
+	ID                      string                        `jsonapi:"primary,cost-estimates"`
 	DeltaMonthlyCost        string                        `jsonapi:"attr,delta-monthly-cost"`
 	ErrorMessage            string                        `jsonapi:"attr,error-message"`
 	MatchedResourcesCount   string                        `jsonapi:"attr,matched-resources-count"`
@@ -66,10 +66,10 @@ type CostEstimateStatusTimestamps struct {
 // Read a costEstimate by its ID.
 func (s *costEstimates) Read(ctx context.Context, costEstimateID string) (*CostEstimate, error) {
 	if !validStringID(&costEstimateID) {
-		return nil, errors.New("invalid value for cost estimation ID")
+		return nil, errors.New("invalid value for cost estimate ID")
 	}
 
-	u := fmt.Sprintf("cost-estimations/%s", url.QueryEscape(costEstimateID))
+	u := fmt.Sprintf("cost-estimates/%s", url.QueryEscape(costEstimateID))
 	req, err := s.client.newRequest("GET", u, nil)
 	if err != nil {
 		return nil, err
@@ -87,12 +87,12 @@ func (s *costEstimates) Read(ctx context.Context, costEstimateID string) (*CostE
 // Logs retrieves the logs of a costEstimate.
 func (s *costEstimates) Logs(ctx context.Context, costEstimateID string) (io.Reader, error) {
 	if !validStringID(&costEstimateID) {
-		return nil, errors.New("invalid value for cost estimation ID")
+		return nil, errors.New("invalid value for cost estimate ID")
 	}
 
-	// Loop until the context is canceled or the cost estimation is finished
-	// running. The cost estimation logs are not streamed and so only available
-	// once the estimation is finished.
+	// Loop until the context is canceled or the cost estimate is finished
+	// running. The cost estimate logs are not streamed and so only available
+	// once the estimate is finished.
 	for {
 		// Get the costEstimate to make sure it exists.
 		ce, err := s.Read(ctx, costEstimateID)
@@ -110,7 +110,7 @@ func (s *costEstimates) Logs(ctx context.Context, costEstimateID string) (io.Rea
 			}
 		}
 
-		u := fmt.Sprintf("cost-estimations/%s/output", url.QueryEscape(costEstimateID))
+		u := fmt.Sprintf("cost-estimates/%s/output", url.QueryEscape(costEstimateID))
 		req, err := s.client.newRequest("GET", u, nil)
 		if err != nil {
 			return nil, err
