@@ -38,6 +38,7 @@ const (
 	CostEstimateCanceled CostEstimateStatus = "canceled"
 	CostEstimateErrored  CostEstimateStatus = "errored"
 	CostEstimateFinished CostEstimateStatus = "finished"
+	CostEstimatePending  CostEstimateStatus = "pending"
 	CostEstimateQueued   CostEstimateStatus = "queued"
 )
 
@@ -60,6 +61,7 @@ type CostEstimateStatusTimestamps struct {
 	CanceledAt time.Time `json:"canceled-at"`
 	ErroredAt  time.Time `json:"errored-at"`
 	FinishedAt time.Time `json:"finished-at"`
+	PendingAt  time.Time `json:"pending-at"`
 	QueuedAt   time.Time `json:"queued-at"`
 }
 
