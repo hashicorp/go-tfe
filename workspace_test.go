@@ -90,6 +90,7 @@ func TestWorkspacesCreate(t *testing.T) {
 			AutoApply:           Bool(true),
 			FileTriggersEnabled: Bool(true),
 			QueueAllRuns:        Bool(true),
+			Operations:          Bool(true),
 			TerraformVersion:    String("0.11.0"),
 			TriggerPrefixes:     []string{"/modules", "/shared"},
 			WorkingDirectory:    String("bar/"),
@@ -111,6 +112,7 @@ func TestWorkspacesCreate(t *testing.T) {
 			assert.Equal(t, *options.AutoApply, item.AutoApply)
 			assert.Equal(t, *options.FileTriggersEnabled, item.FileTriggersEnabled)
 			assert.Equal(t, *options.QueueAllRuns, item.QueueAllRuns)
+			assert.Equal(t, *options.Operations, item.Operations)
 			assert.Equal(t, *options.TerraformVersion, item.TerraformVersion)
 			assert.Equal(t, options.TriggerPrefixes, item.TriggerPrefixes)
 			assert.Equal(t, *options.WorkingDirectory, item.WorkingDirectory)
@@ -257,6 +259,7 @@ func TestWorkspacesUpdate(t *testing.T) {
 			Name:             String(wTest.Name),
 			AutoApply:        Bool(true),
 			QueueAllRuns:     Bool(true),
+			Operations:       Bool(true),
 			TerraformVersion: String("0.10.0"),
 		}
 
@@ -276,6 +279,7 @@ func TestWorkspacesUpdate(t *testing.T) {
 			AutoApply:           Bool(false),
 			FileTriggersEnabled: Bool(true),
 			QueueAllRuns:        Bool(false),
+			Operations:          Bool(false),
 			TerraformVersion:    String("0.11.1"),
 			TriggerPrefixes:     []string{"/modules", "/shared"},
 			WorkingDirectory:    String("baz/"),
@@ -296,6 +300,7 @@ func TestWorkspacesUpdate(t *testing.T) {
 			assert.Equal(t, *options.AutoApply, item.AutoApply)
 			assert.Equal(t, *options.FileTriggersEnabled, item.FileTriggersEnabled)
 			assert.Equal(t, *options.QueueAllRuns, item.QueueAllRuns)
+			assert.Equal(t, *options.Operations, item.Operations)
 			assert.Equal(t, *options.TerraformVersion, item.TerraformVersion)
 			assert.Equal(t, options.TriggerPrefixes, item.TriggerPrefixes)
 			assert.Equal(t, *options.WorkingDirectory, item.WorkingDirectory)
@@ -337,6 +342,7 @@ func TestWorkspacesUpdateByID(t *testing.T) {
 			Name:             String(wTest.Name),
 			AutoApply:        Bool(true),
 			QueueAllRuns:     Bool(true),
+			Operations:       Bool(true),
 			TerraformVersion: String("0.10.0"),
 		}
 
@@ -356,6 +362,7 @@ func TestWorkspacesUpdateByID(t *testing.T) {
 			AutoApply:           Bool(false),
 			FileTriggersEnabled: Bool(true),
 			QueueAllRuns:        Bool(false),
+			Operations:          Bool(false),
 			TerraformVersion:    String("0.11.1"),
 			TriggerPrefixes:     []string{"/modules", "/shared"},
 			WorkingDirectory:    String("baz/"),
@@ -376,6 +383,7 @@ func TestWorkspacesUpdateByID(t *testing.T) {
 			assert.Equal(t, *options.AutoApply, item.AutoApply)
 			assert.Equal(t, *options.FileTriggersEnabled, item.FileTriggersEnabled)
 			assert.Equal(t, *options.QueueAllRuns, item.QueueAllRuns)
+			assert.Equal(t, *options.Operations, item.Operations)
 			assert.Equal(t, *options.TerraformVersion, item.TerraformVersion)
 			assert.Equal(t, options.TriggerPrefixes, item.TriggerPrefixes)
 			assert.Equal(t, *options.WorkingDirectory, item.WorkingDirectory)
