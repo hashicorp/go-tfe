@@ -349,10 +349,35 @@ func createPlannedRun(t *testing.T, client *Client, w *Workspace) (*Run, func())
 
 		if i > 45 {
 			rCleanup()
-			t.Fatal("Timeout waiting for run to be applied")
+			t.Fatal("Timeout waiting for run to be planned")
 		}
 
 		time.Sleep(1 * time.Second)
+	}
+}
+
+func createCostEstimatedRun(t *testing.T, client *Client, w *Workspace) (*Run, func()) {
+	r, rCleanup := createRun(t, client, w)
+
+	var err error
+	ctx := context.Background()
+	for i := 0; ; i++ {
+		r, err = client.Runs.Read(ctx, r.ID)
+		if err != nil {
+			t.Fatal(err)
+		}
+
+		switch r.Status {
+		case RunCostEstimated, RunPolicyChecked, RunPolicyOverride:
+			return r, rCleanup
+		}
+
+		if i > 45 {
+			rCleanup()
+			t.Fatal("Timeout waiting for run to be cost estimated")
+		}
+
+		time.Sleep(2 * time.Second)
 	}
 }
 
