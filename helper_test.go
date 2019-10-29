@@ -685,9 +685,9 @@ func createWorkspaceWithVCS(t *testing.T, client *Client, org *Organization) (*W
 
 	oc, ocCleanup := createOAuthToken(t, client, org)
 
-	githubIdentifier := os.Getenv("GITHUB_IDENTIFIER")
+	githubIdentifier := os.Getenv("GITHUB_POLICY_SET_IDENTIFIER")
 	if githubIdentifier == "" {
-		t.Fatal("Export a valid GITHUB_IDENTIFIER before running this test!")
+		t.Fatal("Export a valid GITHUB_POLICY_SET_IDENTIFIER before running this test!")
 	}
 
 	options := WorkspaceCreateOptions{
