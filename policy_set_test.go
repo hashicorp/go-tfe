@@ -123,9 +123,9 @@ func TestPolicySetsCreate(t *testing.T) {
 	})
 
 	t.Run("with vcs policy set", func(t *testing.T) {
-		githubIdentifier := os.Getenv("GITHUB_IDENTIFIER")
+		githubIdentifier := os.Getenv("GITHUB_POLICY_SET_IDENTIFIER")
 		if githubIdentifier == "" {
-			t.Skip("Export a valid GITHUB_IDENTIFIER before running this test")
+			t.Skip("Export a valid GITHUB_POLICY_SET_IDENTIFIER before running this test")
 		}
 
 		oc, _ := createOAuthToken(t, client, orgTest)
