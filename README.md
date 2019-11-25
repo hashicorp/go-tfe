@@ -26,6 +26,7 @@ Currently the following endpoints are supported:
 - [x] [OAuth Clients](https://www.terraform.io/docs/enterprise/api/oauth-clients.html)
 - [x] [OAuth Tokens](https://www.terraform.io/docs/enterprise/api/oauth-tokens.html)
 - [x] [Organizations](https://www.terraform.io/docs/enterprise/api/organizations.html)
+- [ ] Organization Memberships
 - [x] [Organization Tokens](https://www.terraform.io/docs/enterprise/api/organization-tokens.html)
 - [x] [Policies](https://www.terraform.io/docs/enterprise/api/policies.html)
 - [x] [Policy Sets](https://www.terraform.io/docs/enterprise/api/policy-sets.html)
