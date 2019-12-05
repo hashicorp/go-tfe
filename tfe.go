@@ -175,10 +175,11 @@ func NewClient(cfg *Config) (*Client, error) {
 
 	// Create the client.
 	client := &Client{
-		baseURL:      baseURL,
-		token:        config.Token,
-		headers:      config.Headers,
-		retryLogHook: config.RetryLogHook,
+		baseURL:           baseURL,
+		token:             config.Token,
+		headers:           config.Headers,
+		retryLogHook:      config.RetryLogHook,
+		retryServerErrors: true,
 	}
 
 	client.http = &retryablehttp.Client{
