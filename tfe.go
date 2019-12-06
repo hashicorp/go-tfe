@@ -175,11 +175,10 @@ func NewClient(cfg *Config) (*Client, error) {
 
 	// Create the client.
 	client := &Client{
-		baseURL:           baseURL,
-		token:             config.Token,
-		headers:           config.Headers,
-		retryLogHook:      config.RetryLogHook,
-		retryServerErrors: true,
+		baseURL:      baseURL,
+		token:        config.Token,
+		headers:      config.Headers,
+		retryLogHook: config.RetryLogHook,
 	}
 
 	client.http = &retryablehttp.Client{
@@ -196,6 +195,10 @@ func NewClient(cfg *Config) (*Client, error) {
 	if err := client.configureLimiter(); err != nil {
 		return nil, err
 	}
+
+	// Once rate limits have been established, default to retrying requests on
+	// server errors.
+	client.RetryServerErrors(true)
 
 	// Create the services.
 	client.Applies = &applies{client: client}
