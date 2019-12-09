@@ -2,16 +2,33 @@
 #
 # Check https://circleci.com/docs/2.0/language-go/ for more details
 version: 2
+
+test_results_dir: &test_results_dir /tmp/test_results
+
 jobs:
   build:
     docker:
       - image: circleci/golang:1.12.1
+        environment:
+          TEST_RESULTS_DIR: *test_results_dir
+
     working_directory: /go/src/github.com/hashicorp/go-tfe
+
     steps:
       - checkout
+      
       - run: go get -v -t -d ./...
+      
+      - run:
+          name: Make test results directory
+          command: mkdir -p $TEST_RESULTS_DIR
+      
       - run:
           name: Run tests
           command: |
-            go test -p=1 -v ./... -timeout=40m
+              gotestsum --format short-verbose --junitfile \
+              $TEST_RESULTS_DIR/tests.xml -- -timeout=40m
           no_output_timeout: 1800
+
+      - store_test_results:
+          path: *test_results_dir
