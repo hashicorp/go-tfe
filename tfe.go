@@ -98,13 +98,12 @@ func DefaultConfig() *Config {
 // Client is the Terraform Enterprise API client. It provides the basic
 // connectivity and configuration for accessing the TFE API.
 type Client struct {
-	baseURL           *url.URL
-	token             string
-	headers           http.Header
-	http              *retryablehttp.Client
-	limiter           *rate.Limiter
-	retryLogHook      RetryLogHook
-	retryServerErrors bool
+	baseURL      *url.URL
+	token        string
+	headers      http.Header
+	http         *retryablehttp.Client
+	limiter      *rate.Limiter
+	retryLogHook RetryLogHook
 
 	Applies                    Applies
 	ConfigurationVersions      ConfigurationVersions
@@ -183,7 +182,7 @@ func NewClient(cfg *Config) (*Client, error) {
 
 	client.http = &retryablehttp.Client{
 		Backoff:      client.retryHTTPBackoff,
-		CheckRetry:   client.retryHTTPCheck,
+		CheckRetry:   client.retryHTTPCheckNoServerErrors,
 		ErrorHandler: retryablehttp.PassthroughErrorHandler,
 		HTTPClient:   config.HTTPClient,
 		RetryWaitMin: 100 * time.Millisecond,
@@ -231,22 +230,33 @@ func NewClient(cfg *Config) (*Client, error) {
 // RetryServerErrors configures the retry HTTP check to also retry
 // unexpected errors or requests that failed with a server error.
 func (c *Client) RetryServerErrors(retry bool) {
-	c.retryServerErrors = retry
+	if retry {
+		c.http.CheckRetry = c.retryHTTPCheck
+	} else {
+		c.http.CheckRetry = c.retryHTTPCheckNoServerErrors
+	}
 }
 
 // retryHTTPCheck provides a callback for Client.CheckRetry which
 // will retry both rate limit (429) and server (>= 500) errors.
 func (c *Client) retryHTTPCheck(ctx context.Context, resp *http.Response, err error) (bool, error) {
-	if ctx.Err() != nil {
-		return false, ctx.Err()
-	}
-	if err != nil {
-		return c.retryServerErrors, err
-	}
-	if resp.StatusCode == 429 || (c.retryServerErrors && resp.StatusCode >= 500) {
+	retry, err := retryablehttp.DefaultRetryPolicy(ctx, resp, err)
+
+	if !retry && resp != nil && resp.StatusCode == 429 {
 		return true, nil
 	}
-	return false, nil
+
+	return retry, err
+}
+
+func (c *Client) retryHTTPCheckNoServerErrors(ctx context.Context, resp *http.Response, err error) (bool, error) {
+	retry, err := c.retryHTTPCheck(ctx, resp, err)
+
+	if retry && resp != nil && resp.StatusCode >= 500 {
+		return false, nil
+	}
+
+	return retry, err
 }
 
 // retryHTTPBackoff provides a generic callback for Client.Backoff which

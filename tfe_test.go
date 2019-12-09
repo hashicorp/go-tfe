@@ -316,14 +316,14 @@ func TestClient_retryHTTPCheck(t *testing.T) {
 		},
 		"err-no-server-errors": {
 			err:      connErr,
-			checkOK:  false,
-			checkErr: connErr,
+			checkOK:  true,
+			checkErr: nil,
 		},
 		"err-with-server-errors": {
 			err:               connErr,
 			retryServerErrors: true,
 			checkOK:           true,
-			checkErr:          connErr,
+			checkErr:          nil,
 		},
 	}
 
@@ -337,7 +337,7 @@ func TestClient_retryHTTPCheck(t *testing.T) {
 
 		client.RetryServerErrors(tc.retryServerErrors)
 
-		checkOK, checkErr := client.retryHTTPCheck(ctx, tc.resp, tc.err)
+		checkOK, checkErr := client.http.CheckRetry(ctx, tc.resp, tc.err)
 		if checkOK != tc.checkOK {
 			t.Fatalf("test %s expected checkOK %t, got: %t", name, tc.checkOK, checkOK)
 		}
