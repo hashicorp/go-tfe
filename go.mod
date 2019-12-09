@@ -5,6 +5,7 @@ require (
 	github.com/google/go-querystring v1.0.0
 	github.com/hashicorp/go-cleanhttp v0.5.0
 	github.com/hashicorp/go-retryablehttp v0.5.2
+	github.com/hashicorp/go-service v0.0.0-20190301095854-3ec4b98dc730
 	github.com/hashicorp/go-slug v0.4.1
 	github.com/hashicorp/go-uuid v1.0.1
 	github.com/stretchr/testify v1.3.0

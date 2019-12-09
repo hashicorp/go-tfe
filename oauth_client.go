@@ -120,11 +120,11 @@ type OAuthClientCreateOptions struct {
 	// The token string you were given by your VCS provider.
 	OAuthToken *string `jsonapi:"attr,oauth-token-string"`
 
-	// The VCS provider being connected with.
-	ServiceProvider *ServiceProviderType `jsonapi:"attr,service-provider"`
-
 	// Private key associated with this vcs provider - only available for ado_server
 	PrivateKey *string `jsonapi:"attr,private-key"`
+
+	// The VCS provider being connected with.
+	ServiceProvider *ServiceProviderType `jsonapi:"attr,service-provider"`
 }
 
 func (o OAuthClientCreateOptions) valid() error {

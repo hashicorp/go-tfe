@@ -226,7 +226,6 @@ func TestOAuthClientsDelete(t *testing.T) {
 }
 
 func TestOAuthClientsCreateOptionsValid(t *testing.T) {
-
 	t.Run("with valid options", func(t *testing.T) {
 		options := OAuthClientCreateOptions{
 			APIURL:          String("https://api.github.com"),
