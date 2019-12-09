@@ -122,6 +122,9 @@ type OAuthClientCreateOptions struct {
 
 	// The VCS provider being connected with.
 	ServiceProvider *ServiceProviderType `jsonapi:"attr,service-provider"`
+
+	// Private key associated with this vcs provider - only available for ado_server
+	PrivateKey *string `jsonapi:"attr,private-key"`
 }
 
 func (o OAuthClientCreateOptions) valid() error {
@@ -136,6 +139,9 @@ func (o OAuthClientCreateOptions) valid() error {
 	}
 	if o.ServiceProvider == nil {
 		return errors.New("service provider is required")
+	}
+	if o.PrivateKey != nil && *o.ServiceProvider != *ServiceProvider(ServiceProviderAzureDevOpsServer) {
+		return errors.New("Private Key can only be present with Azure DevOps Server service provider")
 	}
 	return nil
 }
