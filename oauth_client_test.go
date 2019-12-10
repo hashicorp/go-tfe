@@ -224,3 +224,87 @@ func TestOAuthClientsDelete(t *testing.T) {
 		assert.EqualError(t, err, "invalid value for OAuth client ID")
 	})
 }
+
+func TestOAuthClientsCreateOptionsValid(t *testing.T) {
+	t.Run("with valid options", func(t *testing.T) {
+		options := OAuthClientCreateOptions{
+			APIURL:          String("https://api.github.com"),
+			HTTPURL:         String("https://github.com"),
+			OAuthToken:      String("NOTHING"),
+			ServiceProvider: ServiceProvider(ServiceProviderGithub),
+		}
+
+		err := options.valid()
+		assert.Nil(t, err)
+	})
+
+	t.Run("without an API URL", func(t *testing.T) {
+		options := OAuthClientCreateOptions{
+			HTTPURL:         String("https://github.com"),
+			OAuthToken:      String("NOTHING"),
+			ServiceProvider: ServiceProvider(ServiceProviderGithub),
+		}
+
+		err := options.valid()
+		assert.EqualError(t, err, "API URL is required")
+	})
+
+	t.Run("without a HTTP URL", func(t *testing.T) {
+		options := OAuthClientCreateOptions{
+			APIURL:          String("https://api.github.com"),
+			OAuthToken:      String("NOTHING"),
+			ServiceProvider: ServiceProvider(ServiceProviderGithub),
+		}
+
+		err := options.valid()
+		assert.EqualError(t, err, "HTTP URL is required")
+	})
+
+	t.Run("without an OAuth token", func(t *testing.T) {
+		options := OAuthClientCreateOptions{
+			APIURL:          String("https://api.github.com"),
+			HTTPURL:         String("https://github.com"),
+			ServiceProvider: ServiceProvider(ServiceProviderGithub),
+		}
+
+		err := options.valid()
+		assert.EqualError(t, err, "OAuth token is required")
+	})
+
+	t.Run("without a service provider", func(t *testing.T) {
+		options := OAuthClientCreateOptions{
+			APIURL:     String("https://api.github.com"),
+			HTTPURL:    String("https://github.com"),
+			OAuthToken: String("NOTHING"),
+		}
+
+		err := options.valid()
+		assert.EqualError(t, err, "service provider is required")
+	})
+
+	t.Run("with private key and not ado_server options", func(t *testing.T) {
+		options := OAuthClientCreateOptions{
+			APIURL:          String("https://api.github.com"),
+			HTTPURL:         String("https://github.com"),
+			OAuthToken:      String("NOTHING"),
+			ServiceProvider: ServiceProvider(ServiceProviderGithub),
+			PrivateKey:      String("NOTHING"),
+		}
+
+		err := options.valid()
+		assert.EqualError(t, err, "Private Key can only be present with Azure DevOps Server service provider")
+	})
+
+	t.Run("with valid options including private key", func(t *testing.T) {
+		options := OAuthClientCreateOptions{
+			APIURL:          String("https://ado.example.com"),
+			HTTPURL:         String("https://ado.example.com"),
+			OAuthToken:      String("NOTHING"),
+			ServiceProvider: ServiceProvider(ServiceProviderAzureDevOpsServer),
+			PrivateKey:      String("NOTHING"),
+		}
+
+		err := options.valid()
+		assert.Nil(t, err)
+	})
+}
