@@ -294,6 +294,19 @@ func TestOAuthClientsCreateOptionsValid(t *testing.T) {
 		assert.Nil(t, err)
 	})
 
+	t.Run("with empty private key and not ado_server options", func(t *testing.T) {
+		options := OAuthClientCreateOptions{
+			APIURL:          String("https://api.github.com"),
+			HTTPURL:         String("https://github.com"),
+			OAuthToken:      String("NOTHING"),
+			ServiceProvider: ServiceProvider(ServiceProviderGitlabEE),
+			PrivateKey:      String(""),
+		}
+
+		err := options.valid()
+		assert.Nil(t, err)
+	})
+
 	t.Run("with private key and not ado_server options", func(t *testing.T) {
 		options := OAuthClientCreateOptions{
 			APIURL:          String("https://api.github.com"),
