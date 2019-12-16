@@ -653,18 +653,17 @@ func createVariable(t *testing.T, client *Client, w *Workspace) (*Variable, func
 	}
 
 	ctx := context.Background()
-	v, err := client.Variables.Create(ctx, VariableCreateOptions{
-		Key:       String(randomString(t)),
-		Value:     String(randomString(t)),
-		Category:  Category(CategoryTerraform),
-		Workspace: w,
+	v, err := client.Variables.Create(ctx, w.ID, VariableCreateOptions{
+		Key:      String(randomString(t)),
+		Value:    String(randomString(t)),
+		Category: Category(CategoryTerraform),
 	})
 	if err != nil {
 		t.Fatal(err)
 	}
 
 	return v, func() {
-		if err := client.Variables.Delete(ctx, v.ID); err != nil {
+		if err := client.Variables.Delete(ctx, w.ID, v.ID); err != nil {
 			t.Errorf("Error destroying variable! WARNING: Dangling resources\n"+
 				"may exist! The full error is shown below.\n\n"+
 				"Variable: %s\nError: %s", v.Key, err)
