@@ -39,7 +39,8 @@ Currently the following endpoints are supported:
 - [x] [Team Memberships](https://www.terraform.io/docs/enterprise/api/team-members.html)
 - [x] [Team Tokens](https://www.terraform.io/docs/enterprise/api/team-tokens.html)
 - [x] [Teams](https://www.terraform.io/docs/enterprise/api/teams.html)
-- [x] [Variables](https://www.terraform.io/docs/enterprise/api/variables.html)
+- [x] [Workspace Variables](https://www.terraform.io/docs/enterprise/api/workspace-variables.html)
+- [x] [Policy Set Parameters](https://www.terraform.io/docs/enterprise/api/policy-set-params.html)
 - [x] [Workspaces](https://www.terraform.io/docs/enterprise/api/workspaces.html)
 - [ ] [Admin](https://www.terraform.io/docs/enterprise/api/admin/index.html)
 

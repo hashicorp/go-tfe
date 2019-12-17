@@ -675,6 +675,36 @@ func createVariable(t *testing.T, client *Client, w *Workspace) (*Variable, func
 	}
 }
 
+func createParameter(t *testing.T, client *Client, ps *PolicySet) (*Parameter, func()) {
+	var psCleanup func()
+
+	if ps == nil {
+		ps, psCleanup = createPolicySet(t, client, nil, nil, nil)
+	}
+
+	ctx := context.Background()
+	v, err := client.Parameters.Create(ctx, ps.ID, ParameterCreateOptions{
+		Key:      String(randomString(t)),
+		Value:    String(randomString(t)),
+		Category: Category(CategoryPolicySet),
+	})
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	return v, func() {
+		if err := client.Parameters.Delete(ctx, ps.ID, v.ID); err != nil {
+			t.Errorf("Error destroying variable! WARNING: Dangling resources\n"+
+				"may exist! The full error is shown below.\n\n"+
+				"Parameter: %s\nError: %s", v.Key, err)
+		}
+
+		if psCleanup != nil {
+			psCleanup()
+		}
+	}
+}
+
 func createWorkspace(t *testing.T, client *Client, org *Organization) (*Workspace, func()) {
 	var orgCleanup func()
 

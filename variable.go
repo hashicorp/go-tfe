@@ -43,6 +43,7 @@ type CategoryType string
 const (
 	CategoryEnv       CategoryType = "env"
 	CategoryTerraform CategoryType = "terraform"
+	CategoryPolicySet CategoryType = "policy-set"
 )
 
 // VariableList represents a list of variables.
