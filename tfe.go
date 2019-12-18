@@ -119,6 +119,7 @@ type Client struct {
 	PlanExports                PlanExports
 	Policies                   Policies
 	PolicyChecks               PolicyChecks
+	PolicySetParameters        PolicySetParameters
 	PolicySets                 PolicySets
 	Runs                       Runs
 	SSHKeys                    SSHKeys
@@ -130,7 +131,6 @@ type Client struct {
 	Users                      Users
 	Variables                  Variables
 	Workspaces                 Workspaces
-	Parameters                 Parameters
 }
 
 // NewClient creates a new Terraform Enterprise API client.
@@ -212,6 +212,7 @@ func NewClient(cfg *Config) (*Client, error) {
 	client.PlanExports = &planExports{client: client}
 	client.Policies = &policies{client: client}
 	client.PolicyChecks = &policyChecks{client: client}
+	client.PolicySetParameters = &policySetParameters{client: client}
 	client.PolicySets = &policySets{client: client}
 	client.Runs = &runs{client: client}
 	client.SSHKeys = &sshKeys{client: client}
@@ -223,7 +224,6 @@ func NewClient(cfg *Config) (*Client, error) {
 	client.Users = &users{client: client}
 	client.Variables = &variables{client: client}
 	client.Workspaces = &workspaces{client: client}
-	client.Parameters = &parameters{client: client}
 
 	return client, nil
 }

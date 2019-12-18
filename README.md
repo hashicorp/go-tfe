@@ -29,6 +29,7 @@ Currently the following endpoints are supported:
 - [x] [Organization Memberships](https://www.terraform.io/docs/cloud/api/organization-memberships.html)
 - [x] [Organization Tokens](https://www.terraform.io/docs/enterprise/api/organization-tokens.html)
 - [x] [Policies](https://www.terraform.io/docs/enterprise/api/policies.html)
+- [x] [Policy Set Parameters](https://www.terraform.io/docs/enterprise/api/policy-set-params.html)
 - [x] [Policy Sets](https://www.terraform.io/docs/enterprise/api/policy-sets.html)
 - [x] [Policy Checks](https://www.terraform.io/docs/enterprise/api/policy-checks.html)
 - [ ] [Registry Modules](https://www.terraform.io/docs/enterprise/api/modules.html)
@@ -40,7 +41,6 @@ Currently the following endpoints are supported:
 - [x] [Team Tokens](https://www.terraform.io/docs/enterprise/api/team-tokens.html)
 - [x] [Teams](https://www.terraform.io/docs/enterprise/api/teams.html)
 - [x] [Workspace Variables](https://www.terraform.io/docs/enterprise/api/workspace-variables.html)
-- [x] [Policy Set Parameters](https://www.terraform.io/docs/enterprise/api/policy-set-params.html)
 - [x] [Workspaces](https://www.terraform.io/docs/enterprise/api/workspaces.html)
 - [ ] [Admin](https://www.terraform.io/docs/enterprise/api/admin/index.html)
 

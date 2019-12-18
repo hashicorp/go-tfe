@@ -117,6 +117,36 @@ func createNotificationConfiguration(t *testing.T, client *Client, w *Workspace)
 	}
 }
 
+func createPolicySetParameter(t *testing.T, client *Client, ps *PolicySet) (*PolicySetParameter, func()) {
+	var psCleanup func()
+
+	if ps == nil {
+		ps, psCleanup = createPolicySet(t, client, nil, nil, nil)
+	}
+
+	ctx := context.Background()
+	v, err := client.PolicySetParameters.Create(ctx, ps.ID, PolicySetParameterCreateOptions{
+		Key:      String(randomString(t)),
+		Value:    String(randomString(t)),
+		Category: Category(CategoryPolicySet),
+	})
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	return v, func() {
+		if err := client.PolicySetParameters.Delete(ctx, ps.ID, v.ID); err != nil {
+			t.Errorf("Error destroying variable! WARNING: Dangling resources\n"+
+				"may exist! The full error is shown below.\n\n"+
+				"Parameter: %s\nError: %s", v.Key, err)
+		}
+
+		if psCleanup != nil {
+			psCleanup()
+		}
+	}
+}
+
 func createPolicySet(t *testing.T, client *Client, org *Organization, policies []*Policy, workspaces []*Workspace) (*PolicySet, func()) {
 	var orgCleanup func()
 
@@ -671,36 +701,6 @@ func createVariable(t *testing.T, client *Client, w *Workspace) (*Variable, func
 
 		if wCleanup != nil {
 			wCleanup()
-		}
-	}
-}
-
-func createParameter(t *testing.T, client *Client, ps *PolicySet) (*Parameter, func()) {
-	var psCleanup func()
-
-	if ps == nil {
-		ps, psCleanup = createPolicySet(t, client, nil, nil, nil)
-	}
-
-	ctx := context.Background()
-	v, err := client.Parameters.Create(ctx, ps.ID, ParameterCreateOptions{
-		Key:      String(randomString(t)),
-		Value:    String(randomString(t)),
-		Category: Category(CategoryPolicySet),
-	})
-	if err != nil {
-		t.Fatal(err)
-	}
-
-	return v, func() {
-		if err := client.Parameters.Delete(ctx, ps.ID, v.ID); err != nil {
-			t.Errorf("Error destroying variable! WARNING: Dangling resources\n"+
-				"may exist! The full error is shown below.\n\n"+
-				"Parameter: %s\nError: %s", v.Key, err)
-		}
-
-		if psCleanup != nil {
-			psCleanup()
 		}
 	}
 }

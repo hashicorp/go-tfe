@@ -42,8 +42,8 @@ type CategoryType string
 //List all available categories.
 const (
 	CategoryEnv       CategoryType = "env"
-	CategoryTerraform CategoryType = "terraform"
 	CategoryPolicySet CategoryType = "policy-set"
+	CategoryTerraform CategoryType = "terraform"
 )
 
 // VariableList represents a list of variables.

@@ -8,42 +8,42 @@ import (
 )
 
 // Compile-time proof of interface implementation.
-var _ Parameters = (*parameters)(nil)
+var _ PolicySetParameters = (*policySetParameters)(nil)
 
-// Parameters describes all the parameter related methods that the Terraform
+// PolicySetParameters describes all the parameter related methods that the Terraform
 // Enterprise API supports.
 //
 // TFE API docs: https://www.terraform.io/docs/enterprise/api/policy-set-params.html
-type Parameters interface {
+type PolicySetParameters interface {
 	// List all the parameters associated with the given policy-set.
-	List(ctx context.Context, policySetID string, options ParameterListOptions) (*ParameterList, error)
+	List(ctx context.Context, policySetID string, options PolicySetParameterListOptions) (*PolicySetParameterList, error)
 
 	// Create is used to create a new parameter.
-	Create(ctx context.Context, policySetID string, options ParameterCreateOptions) (*Parameter, error)
+	Create(ctx context.Context, policySetID string, options PolicySetParameterCreateOptions) (*PolicySetParameter, error)
 
 	// Read a parameter by its ID.
-	Read(ctx context.Context, policySetID string, parameterID string) (*Parameter, error)
+	Read(ctx context.Context, policySetID string, parameterID string) (*PolicySetParameter, error)
 
 	// Update values of an existing parameter.
-	Update(ctx context.Context, policySetID string, parameterID string, options ParameterUpdateOptions) (*Parameter, error)
+	Update(ctx context.Context, policySetID string, parameterID string, options PolicySetParameterUpdateOptions) (*PolicySetParameter, error)
 
 	// Delete a parameter by its ID.
 	Delete(ctx context.Context, policySetID string, parameterID string) error
 }
 
-// parameters implements Parameters.
-type parameters struct {
+// policySetParameters implements Parameters.
+type policySetParameters struct {
 	client *Client
 }
 
-// ParameterList represents a list of parameters.
-type ParameterList struct {
+// PolicySetParameterList represents a list of parameters.
+type PolicySetParameterList struct {
 	*Pagination
-	Items []*Parameter
+	Items []*PolicySetParameter
 }
 
-// Parameter represents a Terraform Enterprise parameter.
-type Parameter struct {
+// PolicySetParameter represents a Policy Set parameter
+type PolicySetParameter struct {
 	ID        string       `jsonapi:"primary,vars"`
 	Key       string       `jsonapi:"attr,key"`
 	Value     string       `jsonapi:"attr,value"`
@@ -54,17 +54,17 @@ type Parameter struct {
 	PolicySet *PolicySet `jsonapi:"relation,configurable"`
 }
 
-// ParameterListOptions represents the options for listing parameters.
-type ParameterListOptions struct {
+// PolicySetParameterListOptions represents the options for listing parameters.
+type PolicySetParameterListOptions struct {
 	ListOptions
 }
 
-func (o ParameterListOptions) valid() error {
+func (o PolicySetParameterListOptions) valid() error {
 	return nil
 }
 
 // List all the parameters associated with the given policy-set.
-func (s *parameters) List(ctx context.Context, policySetID string, options ParameterListOptions) (*ParameterList, error) {
+func (s *policySetParameters) List(ctx context.Context, policySetID string, options PolicySetParameterListOptions) (*PolicySetParameterList, error) {
 	if !validStringID(&policySetID) {
 		return nil, errors.New("invalid value for policy set ID")
 	}
@@ -78,7 +78,7 @@ func (s *parameters) List(ctx context.Context, policySetID string, options Param
 		return nil, err
 	}
 
-	vl := &ParameterList{}
+	vl := &PolicySetParameterList{}
 	err = s.client.do(ctx, req, vl)
 	if err != nil {
 		return nil, err
@@ -87,8 +87,8 @@ func (s *parameters) List(ctx context.Context, policySetID string, options Param
 	return vl, nil
 }
 
-// ParameterCreateOptions represents the options for creating a new parameter.
-type ParameterCreateOptions struct {
+// PolicySetParameterCreateOptions represents the options for creating a new parameter.
+type PolicySetParameterCreateOptions struct {
 	// For internal use only!
 	ID string `jsonapi:"primary,vars"`
 
@@ -98,14 +98,14 @@ type ParameterCreateOptions struct {
 	// The value of the parameter.
 	Value *string `jsonapi:"attr,value,omitempty"`
 
-	// Whether this is a Terraform or environment parameter.
+	// The Category of the parameter, should always be "policy-set"
 	Category *CategoryType `jsonapi:"attr,category"`
 
 	// Whether the value is sensitive.
 	Sensitive *bool `jsonapi:"attr,sensitive,omitempty"`
 }
 
-func (o ParameterCreateOptions) valid() error {
+func (o PolicySetParameterCreateOptions) valid() error {
 	if !validString(o.Key) {
 		return errors.New("key is required")
 	}
@@ -119,7 +119,7 @@ func (o ParameterCreateOptions) valid() error {
 }
 
 // Create is used to create a new parameter.
-func (s *parameters) Create(ctx context.Context, policySetID string, options ParameterCreateOptions) (*Parameter, error) {
+func (s *policySetParameters) Create(ctx context.Context, policySetID string, options PolicySetParameterCreateOptions) (*PolicySetParameter, error) {
 	if !validStringID(&policySetID) {
 		return nil, errors.New("invalid value for policy set ID")
 	}
@@ -136,17 +136,17 @@ func (s *parameters) Create(ctx context.Context, policySetID string, options Par
 		return nil, err
 	}
 
-	v := &Parameter{}
-	err = s.client.do(ctx, req, v)
+	p := &PolicySetParameter{}
+	err = s.client.do(ctx, req, p)
 	if err != nil {
 		return nil, err
 	}
 
-	return v, nil
+	return p, nil
 }
 
 // Read a parameter by its ID.
-func (s *parameters) Read(ctx context.Context, policySetID string, parameterID string) (*Parameter, error) {
+func (s *policySetParameters) Read(ctx context.Context, policySetID string, parameterID string) (*PolicySetParameter, error) {
 	if !validStringID(&policySetID) {
 		return nil, errors.New("invalid value for policy set ID")
 	}
@@ -160,17 +160,17 @@ func (s *parameters) Read(ctx context.Context, policySetID string, parameterID s
 		return nil, err
 	}
 
-	v := &Parameter{}
-	err = s.client.do(ctx, req, v)
+	p := &PolicySetParameter{}
+	err = s.client.do(ctx, req, p)
 	if err != nil {
 		return nil, err
 	}
 
-	return v, err
+	return p, err
 }
 
-// ParameterUpdateOptions represents the options for updating a parameter.
-type ParameterUpdateOptions struct {
+// PolicySetParameterUpdateOptions represents the options for updating a parameter.
+type PolicySetParameterUpdateOptions struct {
 	// For internal use only!
 	ID string `jsonapi:"primary,vars"`
 
@@ -185,7 +185,7 @@ type ParameterUpdateOptions struct {
 }
 
 // Update values of an existing parameter.
-func (s *parameters) Update(ctx context.Context, policySetID string, parameterID string, options ParameterUpdateOptions) (*Parameter, error) {
+func (s *policySetParameters) Update(ctx context.Context, policySetID string, parameterID string, options PolicySetParameterUpdateOptions) (*PolicySetParameter, error) {
 	if !validStringID(&policySetID) {
 		return nil, errors.New("invalid value for policy set ID")
 	}
@@ -202,17 +202,17 @@ func (s *parameters) Update(ctx context.Context, policySetID string, parameterID
 		return nil, err
 	}
 
-	v := &Parameter{}
-	err = s.client.do(ctx, req, v)
+	p := &PolicySetParameter{}
+	err = s.client.do(ctx, req, p)
 	if err != nil {
 		return nil, err
 	}
 
-	return v, nil
+	return p, nil
 }
 
 // Delete a parameter by its ID.
-func (s *parameters) Delete(ctx context.Context, policySetID string, parameterID string) error {
+func (s *policySetParameters) Delete(ctx context.Context, policySetID string, parameterID string) error {
 	if !validStringID(&policySetID) {
 		return errors.New("invalid value for policy set ID")
 	}
