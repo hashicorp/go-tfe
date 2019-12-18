@@ -70,17 +70,10 @@ type VariableListOptions struct {
 	ListOptions
 }
 
-func (o VariableListOptions) valid() error {
-	return nil
-}
-
 // List all the variables associated with the given workspace.
 func (s *variables) List(ctx context.Context, workspaceID string, options VariableListOptions) (*VariableList, error) {
 	if !validStringID(&workspaceID) {
 		return nil, errors.New("invalid value for workspace ID")
-	}
-	if err := options.valid(); err != nil {
-		return nil, err
 	}
 
 	u := fmt.Sprintf("workspaces/%s/vars", workspaceID)
