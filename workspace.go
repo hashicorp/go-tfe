@@ -102,6 +102,7 @@ type Workspace struct {
 // VCSRepo contains the configuration of a VCS integration.
 type VCSRepo struct {
 	Branch            string `json:"branch"`
+	DisplayIdentifier string `json:"display-identifier"`
 	Identifier        string `json:"identifier"`
 	IngressSubmodules bool   `json:"ingress-submodules"`
 	OAuthTokenID      string `json:"oauth-token-id"`
@@ -205,6 +206,7 @@ type WorkspaceCreateOptions struct {
 	WorkingDirectory *string `jsonapi:"attr,working-directory,omitempty"`
 }
 
+// TODO: move this struct out. VCSRepoOptions is used by workspaces, policy sets, and registry modules
 // VCSRepoOptions represents the configuration options of a VCS integration.
 type VCSRepoOptions struct {
 	Branch            *string `json:"branch,omitempty"`
