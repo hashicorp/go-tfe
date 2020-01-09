@@ -22,6 +22,12 @@ type OrganizationMemberships interface {
 	// Create a new organization membership with the given options.
 	Create(ctx context.Context, organization string, options OrganizationMembershipCreateOptions) (*OrganizationMembership, error)
 
+	// Read an organization membership by ID
+	Read(ctx context.Context, organizationMembershipID string) (*OrganizationMembership, error)
+
+	// Read an organization membership by ID with options
+	ReadWithOptions(ctx context.Context, organizationMembershipID string, options OrganizationMembershipReadOptions) (*OrganizationMembership, error)
+
 	// Delete an organization membership by its ID.
 	Delete(ctx context.Context, organizationMembershipID string) error
 }
@@ -70,7 +76,6 @@ func (s *organizationMemberships) List(ctx context.Context, organization string,
 		return nil, errors.New("invalid value for organization")
 	}
 
-	options.Include = "user"
 	u := fmt.Sprintf("organizations/%s/organization-memberships", url.QueryEscape(organization))
 	req, err := s.client.newRequest("GET", u, &options)
 	if err != nil {
@@ -126,6 +131,34 @@ func (s *organizationMemberships) Create(ctx context.Context, organization strin
 	}
 
 	return m, nil
+}
+
+// Read an organization membership by its ID.
+func (s *organizationMemberships) Read(ctx context.Context, organizationMembershipID string) (*OrganizationMembership, error) {
+	return s.ReadWithOptions(ctx, organizationMembershipID, OrganizationMembershipReadOptions{})
+}
+
+// OrganizationMembershipReadOptions represents the options for reading organization memberships.
+type OrganizationMembershipReadOptions struct {
+	Include string `url:"include"`
+}
+
+// Read an organization membership by ID with options
+func (s *organizationMemberships) ReadWithOptions(ctx context.Context, organizationMembershipID string, options OrganizationMembershipReadOptions) (*OrganizationMembership, error) {
+	if !validStringID(&organizationMembershipID) {
+		return nil, errors.New("invalid value for membership")
+	}
+
+	u := fmt.Sprintf("organization-memberships/%s", url.QueryEscape(organizationMembershipID))
+	req, err := s.client.newRequest("GET", u, &options)
+
+	mem := &OrganizationMembership{}
+	err = s.client.do(ctx, req, mem)
+	if err != nil {
+		return nil, err
+	}
+
+	return mem, nil
 }
 
 // Delete an organization membership by its ID.
