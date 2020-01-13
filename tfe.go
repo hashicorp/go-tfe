@@ -113,6 +113,7 @@ type Client struct {
 	OAuthClients               OAuthClients
 	OAuthTokens                OAuthTokens
 	Organizations              Organizations
+	OrganizationMemberships    OrganizationMemberships
 	OrganizationTokens         OrganizationTokens
 	Plans                      Plans
 	PlanExports                PlanExports
@@ -204,6 +205,7 @@ func NewClient(cfg *Config) (*Client, error) {
 	client.OAuthClients = &oAuthClients{client: client}
 	client.OAuthTokens = &oAuthTokens{client: client}
 	client.Organizations = &organizations{client: client}
+	client.OrganizationMemberships = &organizationMemberships{client: client}
 	client.OrganizationTokens = &organizationTokens{client: client}
 	client.Plans = &plans{client: client}
 	client.PlanExports = &planExports{client: client}

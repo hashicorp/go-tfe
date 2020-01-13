@@ -278,6 +278,34 @@ func createOrganization(t *testing.T, client *Client) (*Organization, func()) {
 	}
 }
 
+func createOrganizationMembership(t *testing.T, client *Client, org *Organization) (*OrganizationMembership, func()) {
+	var orgCleanup func()
+
+	if org == nil {
+		org, orgCleanup = createOrganization(t, client)
+	}
+
+	ctx := context.Background()
+	mem, err := client.OrganizationMemberships.Create(ctx, org.Name, OrganizationMembershipCreateOptions{
+		Email: String(fmt.Sprintf("%s@tfe.local", randomString(t))),
+	})
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	return mem, func() {
+		if err := client.OrganizationMemberships.Delete(ctx, mem.ID); err != nil {
+			t.Errorf("Error destroying membership! WARNING: Dangling resources\n"+
+				"may exist! The full error is shown below.\n\n"+
+				"Membership: %s\nError: %s", mem.ID, err)
+		}
+
+		if orgCleanup != nil {
+			orgCleanup()
+		}
+	}
+}
+
 func createOrganizationToken(t *testing.T, client *Client, org *Organization) (*OrganizationToken, func()) {
 	var orgCleanup func()
 
