@@ -76,6 +76,7 @@ func TestPolicySetParametersCreate(t *testing.T) {
 		assert.Equal(t, *options.Key, p.Key)
 		assert.Equal(t, *options.Value, p.Value)
 		assert.Equal(t, *options.Category, p.Category)
+		assert.Equal(t, psTest.ID, p.PolicySet.ID)
 		// The policy set isn't returned correcly by the API.
 		// assert.Equal(t, *options.PolicySet, v.PolicySet)
 	})
@@ -169,6 +170,7 @@ func TestPolicySetParametersRead(t *testing.T) {
 		assert.Equal(t, pTest.Key, p.Key)
 		assert.Equal(t, pTest.Sensitive, p.Sensitive)
 		assert.Equal(t, pTest.Value, p.Value)
+		assert.Equal(t, pTest.PolicySet.ID, p.PolicySet.ID)
 	})
 
 	t.Run("when the parameter does not exist", func(t *testing.T) {
