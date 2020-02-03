@@ -687,6 +687,7 @@ func createVariable(t *testing.T, client *Client, w *Workspace) (*Variable, func
 		Key:      String(randomString(t)),
 		Value:    String(randomString(t)),
 		Category: Category(CategoryTerraform),
+		Description: String(randomString(t)),
 	})
 	if err != nil {
 		t.Fatal(err)

@@ -67,6 +67,7 @@ func TestVariablesCreate(t *testing.T) {
 			Key:      String(randomString(t)),
 			Value:    String(randomString(t)),
 			Category: Category(CategoryTerraform),
+			Description: String(randomString(t)),
 		}
 
 		v, err := client.Variables.Create(ctx, wTest.ID, options)
@@ -75,6 +76,7 @@ func TestVariablesCreate(t *testing.T) {
 		assert.NotEmpty(t, v.ID)
 		assert.Equal(t, *options.Key, v.Key)
 		assert.Equal(t, *options.Value, v.Value)
+		assert.Equal(t, *options.Description, v.Description)
 		assert.Equal(t, *options.Category, v.Category)
 		// The workspace isn't returned correcly by the API.
 		// assert.Equal(t, *options.Workspace, v.Workspace)
@@ -82,9 +84,10 @@ func TestVariablesCreate(t *testing.T) {
 
 	t.Run("when options has an empty string value", func(t *testing.T) {
 		options := VariableCreateOptions{
-			Key:      String(randomString(t)),
-			Value:    String(""),
-			Category: Category(CategoryTerraform),
+			Key:         String(randomString(t)),
+			Value:       String(""),
+			Description: String(randomString(t)),
+			Category:    Category(CategoryTerraform),
 		}
 
 		v, err := client.Variables.Create(ctx, wTest.ID, options)
@@ -93,7 +96,38 @@ func TestVariablesCreate(t *testing.T) {
 		assert.NotEmpty(t, v.ID)
 		assert.Equal(t, *options.Key, v.Key)
 		assert.Equal(t, *options.Value, v.Value)
+		assert.Equal(t, *options.Description, v.Description)
 		assert.Equal(t, *options.Category, v.Category)
+	})
+
+	t.Run("when options has an empty string description", func(t *testing.T) {
+		options := VariableCreateOptions{
+			Key:         String(randomString(t)),
+			Value:       String(randomString(t)),
+			Description: String(""),
+			Category:    Category(CategoryTerraform),
+		}
+
+		v, err := client.Variables.Create(ctx, wTest.ID, options)
+		require.NoError(t, err)
+
+		assert.NotEmpty(t, v.ID)
+		assert.Equal(t, *options.Key, v.Key)
+		assert.Equal(t, *options.Value, v.Value)
+		assert.Equal(t, *options.Description, v.Description)
+		assert.Equal(t, *options.Category, v.Category)
+	})
+
+	t.Run("when options has a too-long description", func(t *testing.T) {
+		options := VariableCreateOptions{
+			Key:         String(randomString(t)),
+			Value:       String(randomString(t)),
+			Description: String("tortor aliquam nulla facilisi cras fermentum odio eu feugiat pretium nibh ipsum consequat nisl vel pretium lectus quam id leo in vitae turpis massa sed elementum tempus egestas sed sed risus pretium quam vulputate dignissim suspendisse in est ante in nibh mauris cursus mattis molestie a iaculis at erat pellentesque adipiscing commodo elit at imperdiet dui accumsan sit amet nulla facilisi morbi tempus iaculis urna id volutpat lacus laoreet non curabitur gravida arcu ac tortor dignissim convallis aenean et tortor"),
+			Category:    Category(CategoryTerraform),
+		}
+
+		_, err := client.Variables.Create(ctx, wTest.ID, options)
+		assert.Error(t, err)
 	})
 
 	t.Run("when options is missing value", func(t *testing.T) {

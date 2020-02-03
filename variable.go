@@ -57,6 +57,7 @@ type Variable struct {
 	ID        string       `jsonapi:"primary,vars"`
 	Key       string       `jsonapi:"attr,key"`
 	Value     string       `jsonapi:"attr,value"`
+	Description string     `jsonapi:"attr,description"`
 	Category  CategoryType `jsonapi:"attr,category"`
 	HCL       bool         `jsonapi:"attr,hcl"`
 	Sensitive bool         `jsonapi:"attr,sensitive"`
@@ -101,6 +102,9 @@ type VariableCreateOptions struct {
 
 	// The value of the variable.
 	Value *string `jsonapi:"attr,value,omitempty"`
+
+	// The description of the variable.
+	Description *string `jsonapi:"attr,description,omitempty"`
 
 	// Whether this is a Terraform or environment variable.
 	Category *CategoryType `jsonapi:"attr,category"`
@@ -183,6 +187,9 @@ type VariableUpdateOptions struct {
 
 	// The value of the variable.
 	Value *string `jsonapi:"attr,value,omitempty"`
+
+	// The description of the variable.
+	Description *string `jsonapi:"attr,description,omitempty"`
 
 	// Whether to evaluate the value of the variable as a string of HCL code.
 	HCL *bool `jsonapi:"attr,hcl,omitempty"`
