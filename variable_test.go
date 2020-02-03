@@ -127,7 +127,7 @@ func TestVariablesCreate(t *testing.T) {
 		}
 
 		_, err := client.Variables.Create(ctx, wTest.ID, options)
-		assert.EqualError(t, err, "Invalid Attribute\n\nDescription is too long (maximum is 512 characters)")
+		assert.Error(t, err)
 	})
 
 	t.Run("when options is missing value", func(t *testing.T) {
