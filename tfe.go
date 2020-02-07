@@ -122,6 +122,7 @@ type Client struct {
 	PolicySetParameters        PolicySetParameters
 	PolicySets                 PolicySets
 	Runs                       Runs
+	RunTriggers                RunTriggers
 	SSHKeys                    SSHKeys
 	StateVersions              StateVersions
 	Teams                      Teams
@@ -215,6 +216,7 @@ func NewClient(cfg *Config) (*Client, error) {
 	client.PolicySetParameters = &policySetParameters{client: client}
 	client.PolicySets = &policySets{client: client}
 	client.Runs = &runs{client: client}
+	client.RunTriggers = &runTriggers{client: client}
 	client.SSHKeys = &sshKeys{client: client}
 	client.StateVersions = &stateVersions{client: client}
 	client.Teams = &teams{client: client}

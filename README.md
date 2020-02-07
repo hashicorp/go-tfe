@@ -34,6 +34,7 @@ Currently the following endpoints are supported:
 - [x] [Policy Checks](https://www.terraform.io/docs/enterprise/api/policy-checks.html)
 - [ ] [Registry Modules](https://www.terraform.io/docs/enterprise/api/modules.html)
 - [x] [Runs](https://www.terraform.io/docs/enterprise/api/run.html)
+- [x] [Run Triggers](https://www.terraform.io/docs/cloud/api/run-triggers.html)
 - [x] [SSH Keys](https://www.terraform.io/docs/enterprise/api/ssh-keys.html)
 - [x] [State Versions](https://www.terraform.io/docs/enterprise/api/state-versions.html)
 - [x] [Team Access](https://www.terraform.io/docs/enterprise/api/team-access.html)
