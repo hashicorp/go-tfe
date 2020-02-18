@@ -362,6 +362,47 @@ func createOrganizationToken(t *testing.T, client *Client, org *Organization) (*
 	}
 }
 
+func createRunTrigger(t *testing.T, client *Client, w *Workspace, sourceable *Workspace) (*RunTrigger, func()) {
+	var wCleanup func()
+	var sourceableCleanup func()
+
+	if w == nil {
+		w, wCleanup = createWorkspace(t, client, nil)
+	}
+
+	if sourceable == nil {
+		sourceable, sourceableCleanup = createWorkspace(t, client, nil)
+	}
+
+	ctx := context.Background()
+	rt, err := client.RunTriggers.Create(
+		ctx,
+		w.ID,
+		RunTriggerCreateOptions{
+			Sourceable: sourceable,
+		},
+	)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	return rt, func() {
+		if err := client.RunTriggers.Delete(ctx, rt.ID); err != nil {
+			t.Errorf("Error destroying run trigger! WARNING: Dangling\n"+
+				"resources may exist! The full error is shown below.\n\n"+
+				"RunTrigger: %s\nError: %s", rt.ID, err)
+		}
+
+		if wCleanup != nil {
+			wCleanup()
+		}
+
+		if sourceableCleanup != nil {
+			sourceableCleanup()
+		}
+	}
+}
+
 func createRun(t *testing.T, client *Client, w *Workspace) (*Run, func()) {
 	var wCleanup func()
 
@@ -684,9 +725,9 @@ func createVariable(t *testing.T, client *Client, w *Workspace) (*Variable, func
 
 	ctx := context.Background()
 	v, err := client.Variables.Create(ctx, w.ID, VariableCreateOptions{
-		Key:      String(randomString(t)),
-		Value:    String(randomString(t)),
-		Category: Category(CategoryTerraform),
+		Key:         String(randomString(t)),
+		Value:       String(randomString(t)),
+		Category:    Category(CategoryTerraform),
 		Description: String(randomString(t)),
 	})
 	if err != nil {
