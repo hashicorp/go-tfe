@@ -51,7 +51,8 @@ type Team struct {
 	UserCount          int                 `jsonapi:"attr,users-count"`
 
 	// Relations
-	Users []*User `jsonapi:"relation,users"`
+	Users                  []*User                   `jsonapi:"relation,users"`
+	OrganizationMemberhips []*OrganizationMembership `jsonapi:"relation,organization-memberships"`
 }
 
 // OrganizationAccess represents the team's permissions on its organization
