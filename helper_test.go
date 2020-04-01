@@ -15,6 +15,9 @@ import (
 
 const badIdentifier = "! / nope"
 
+// Memoize test account details
+var _testAccountDetails *TestAccountDetails
+
 func testClient(t *testing.T) *Client {
 	client, err := NewClient(nil)
 	if err != nil {
@@ -22,6 +25,36 @@ func testClient(t *testing.T) *Client {
 	}
 
 	return client
+}
+
+// TestAccountDetails represents the info fetched from
+// /api/v2/account/details so we can determine the user
+// that is running the tests from the token being used.
+type TestAccountDetails struct {
+	ID       string `json:"id" jsonapi:"primary,users"`
+	Username string `jsonapi:"attr,username"`
+	Email    string `jsonapi:"attr,email"`
+}
+
+// fetchTestAccountDetails returns the username and external ID
+// of the user running the test
+func fetchTestAccountDetails(t *testing.T, client *Client) *TestAccountDetails {
+	if _testAccountDetails == nil {
+		tad := &TestAccountDetails{}
+		req, err := client.newRequest("GET", "account/details", nil)
+		if err != nil {
+			t.Fatalf("could not create request for user details: %v", err)
+		}
+
+		ctx := context.Background()
+		err = client.do(ctx, req, tad)
+		if err != nil {
+			t.Fatalf("could not fetch test user details: %v", err)
+		}
+		_testAccountDetails = tad
+		return tad
+	}
+	return _testAccountDetails
 }
 
 func createConfigurationVersion(t *testing.T, client *Client, w *Workspace) (*ConfigurationVersion, func()) {
