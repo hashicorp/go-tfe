@@ -47,6 +47,7 @@ type Team struct {
 	ID                 string              `jsonapi:"primary,teams"`
 	Name               string              `jsonapi:"attr,name"`
 	OrganizationAccess *OrganizationAccess `jsonapi:"attr,organization-access"`
+	Visibility         string              `jsonapi:"attr,visibility"`
 	Permissions        *TeamPermissions    `jsonapi:"attr,permissions"`
 	UserCount          int                 `jsonapi:"attr,users-count"`
 
@@ -103,6 +104,9 @@ type TeamCreateOptions struct {
 
 	// The team's organization access
 	OrganizationAccess *OrganizationAccessOptions `jsonapi:"attr,organization-access,omitempty"`
+
+	// The team's visibility ("secret", "organization")
+	Visibility *string `jsonapi:"attr,visibility,omitempty"`
 }
 
 // OrganizationAccessOptions represents the organization access options of a team.
@@ -177,6 +181,9 @@ type TeamUpdateOptions struct {
 
 	// The team's organization access
 	OrganizationAccess *OrganizationAccessOptions `jsonapi:"attr,organization-access,omitempty"`
+
+	// The team's visibility ("secret", "organization")
+	Visibility *string `jsonapi:"attr,visibility,omitempty"`
 }
 
 // Update a team by its ID.
