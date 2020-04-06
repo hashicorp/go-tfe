@@ -15,6 +15,9 @@ import (
 
 const badIdentifier = "! / nope"
 
+// Memoize test account details
+var _testAccountDetails *TestAccountDetails
+
 func testClient(t *testing.T) *Client {
 	client, err := NewClient(nil)
 	if err != nil {
@@ -22,6 +25,13 @@ func testClient(t *testing.T) *Client {
 	}
 
 	return client
+}
+
+func fetchTestAccountDetails(t *testing.T, client *Client) *TestAccountDetails {
+	if _testAccountDetails == nil {
+		_testAccountDetails = FetchTestAccountDetails(t, client)
+	}
+	return _testAccountDetails
 }
 
 func createConfigurationVersion(t *testing.T, client *Client, w *Workspace) (*ConfigurationVersion, func()) {

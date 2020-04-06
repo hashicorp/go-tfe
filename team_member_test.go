@@ -15,8 +15,10 @@ func TestTeamMembersList(t *testing.T) {
 	tmTest, tmTestCleanup := createTeam(t, client, nil)
 	defer tmTestCleanup()
 
+	testAcct := fetchTestAccountDetails(t, client)
+
 	options := TeamMemberAddOptions{
-		Usernames: []string{"admin"},
+		Usernames: []string{testAcct.Username},
 	}
 	err := client.TeamMembers.Add(ctx, tmTest.ID, options)
 	require.NoError(t, err)
@@ -28,7 +30,7 @@ func TestTeamMembersList(t *testing.T) {
 
 		found := false
 		for _, user := range users {
-			if user.Username == "admin" {
+			if user.Username == testAcct.Username {
 				found = true
 				break
 			}
@@ -51,9 +53,11 @@ func TestTeamMembersAdd(t *testing.T) {
 	tmTest, tmTestCleanup := createTeam(t, client, nil)
 	defer tmTestCleanup()
 
+	testAcct := fetchTestAccountDetails(t, client)
+
 	t.Run("with valid options", func(t *testing.T) {
 		options := TeamMemberAddOptions{
-			Usernames: []string{"admin"},
+			Usernames: []string{testAcct.Username},
 		}
 
 		err := client.TeamMembers.Add(ctx, tmTest.ID, options)
@@ -64,7 +68,7 @@ func TestTeamMembersAdd(t *testing.T) {
 
 		found := false
 		for _, user := range users {
-			if user.Username == "admin" {
+			if user.Username == testAcct.Username {
 				found = true
 				break
 			}
@@ -100,15 +104,17 @@ func TestTeamMembersRemove(t *testing.T) {
 	tmTest, tmTestCleanup := createTeam(t, client, nil)
 	defer tmTestCleanup()
 
+	testAcct := fetchTestAccountDetails(t, client)
+
 	options := TeamMemberAddOptions{
-		Usernames: []string{"admin"},
+		Usernames: []string{testAcct.Username},
 	}
 	err := client.TeamMembers.Add(ctx, tmTest.ID, options)
 	require.NoError(t, err)
 
 	t.Run("with valid options", func(t *testing.T) {
 		options := TeamMemberRemoveOptions{
-			Usernames: []string{"admin"},
+			Usernames: []string{testAcct.Username},
 		}
 
 		err := client.TeamMembers.Remove(ctx, tmTest.ID, options)
