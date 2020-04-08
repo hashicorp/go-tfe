@@ -109,7 +109,8 @@ func TestOrganizationsRead(t *testing.T) {
 
 		t.Run("timestamps are populated", func(t *testing.T) {
 			assert.NotEmpty(t, org.CreatedAt)
-			assert.NotEmpty(t, org.TrialExpiresAt)
+			// By default accounts are in the free tier and are not in a trial
+			assert.Empty(t, org.TrialExpiresAt)
 		})
 	})
 
@@ -203,6 +204,7 @@ func TestOrganizationsDelete(t *testing.T) {
 }
 
 func TestOrganizationsCapacity(t *testing.T) {
+	t.Skip("Capacity queues are not available in the API")
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -280,6 +282,7 @@ func TestOrganizationsEntitlements(t *testing.T) {
 }
 
 func TestOrganizationsRunQueue(t *testing.T) {
+	t.Skip("Capacity queues are not available in the API")
 	client := testClient(t)
 	ctx := context.Background()
 

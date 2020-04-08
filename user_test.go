@@ -65,8 +65,18 @@ func TestUsersUpdate(t *testing.T) {
 		require.NoError(t, err)
 
 		u, err := client.Users.ReadCurrent(ctx)
+
+		email := ""
+		if u.UnconfirmedEmail != "" {
+			email = u.UnconfirmedEmail
+		} else if u.Email != "" {
+			email = u.Email
+		} else {
+			t.Fatalf("cannot test with user %q because both email and unconfirmed email are empty", u.ID)
+		}
+
 		assert.NoError(t, err)
-		assert.Equal(t, "newtestemail@hashicorp.com", u.UnconfirmedEmail)
+		assert.Equal(t, "newtestemail@hashicorp.com", email)
 	})
 
 	t.Run("with invalid email address", func(t *testing.T) {
