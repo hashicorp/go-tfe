@@ -113,6 +113,10 @@ func TestTeamsRead(t *testing.T) {
 		require.NoError(t, err)
 		assert.Equal(t, tmTest, tm)
 
+		t.Run("visibility is returned", func(t *testing.T) {
+			assert.Equal(t, "secret", tm.Visibility)
+		})
+
 		t.Run("permissions are properly decoded", func(t *testing.T) {
 			assert.True(t, tm.Permissions.CanDestroy)
 		})
@@ -152,6 +156,7 @@ func TestTeamsUpdate(t *testing.T) {
 			OrganizationAccess: &OrganizationAccessOptions{
 				ManagePolicies:    Bool(false),
 				ManageVCSSettings: Bool(true)},
+			Visibility: String("organization"),
 		}
 
 		tm, err := client.Teams.Update(ctx, tmTest.ID, options)
@@ -165,6 +170,10 @@ func TestTeamsUpdate(t *testing.T) {
 			refreshed,
 		} {
 			assert.Equal(t, *options.Name, item.Name)
+			assert.Equal(t,
+				*options.Visibility,
+				item.Visibility,
+			)
 			assert.Equal(t,
 				*options.OrganizationAccess.ManagePolicies,
 				item.OrganizationAccess.ManagePolicies,
