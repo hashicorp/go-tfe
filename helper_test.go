@@ -557,6 +557,81 @@ func createPlanExport(t *testing.T, client *Client, r *Run) (*PlanExport, func()
 	}
 }
 
+func createRegistryModule(t *testing.T, client *Client, org *Organization) (*RegistryModule, func()) {
+	var orgCleanup func()
+
+	if org == nil {
+		org, orgCleanup = createOrganization(t, client)
+	}
+
+	ctx := context.Background()
+
+	options := RegistryModuleCreateOptions{
+		Name:     String("name"),
+		Provider: String("provider"),
+	}
+	rm, err := client.RegistryModules.Create(ctx, org.Name, options)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	return rm, func() {
+		if err := client.RegistryModules.Delete(ctx, org.Name, rm.Name); err != nil {
+			t.Errorf("Error destroying registry module! WARNING: Dangling resources\n"+
+				"may exist! The full error is shown below.\n\n"+
+				"Registry Module: %s\nError: %s", rm.Name, err)
+		}
+
+		if orgCleanup != nil {
+			orgCleanup()
+		}
+	}
+}
+
+func createRegistryModuleWithVersion(t *testing.T, client *Client, org *Organization) (*RegistryModule, func()) {
+	var orgCleanup func()
+
+	if org == nil {
+		org, orgCleanup = createOrganization(t, client)
+	}
+
+	ctx := context.Background()
+
+	options := RegistryModuleCreateOptions{
+		Name:     String("name"),
+		Provider: String("provider"),
+	}
+	rm, err := client.RegistryModules.Create(ctx, org.Name, options)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	optionsModuleVersion := RegistryModuleCreateVersionOptions{
+		Version: String("1.0.0"),
+	}
+	_, err = client.RegistryModules.CreateVersion(ctx, org.Name, rm.Name, rm.Provider, optionsModuleVersion)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	rm, err = client.RegistryModules.Read(ctx, org.Name, rm.Name, rm.Provider)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	return rm, func() {
+		if err := client.RegistryModules.Delete(ctx, org.Name, rm.Name); err != nil {
+			t.Errorf("Error destroying registry module! WARNING: Dangling resources\n"+
+				"may exist! The full error is shown below.\n\n"+
+				"Registry Module: %s\nError: %s", rm.Name, err)
+		}
+
+		if orgCleanup != nil {
+			orgCleanup()
+		}
+	}
+}
+
 func createSSHKey(t *testing.T, client *Client, org *Organization) (*SSHKey, func()) {
 	var orgCleanup func()
 
