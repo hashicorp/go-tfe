@@ -96,13 +96,15 @@ func TestRunsCreate(t *testing.T) {
 
 	t.Run("with additional attributes", func(t *testing.T) {
 		options := RunCreateOptions{
-			Message:   String("yo"),
-			Workspace: wTest,
+			Message:     String("yo"),
+			Workspace:   wTest,
+			TargetAddrs: []string{"null_resource.example"},
 		}
 
 		r, err := client.Runs.Create(ctx, options)
 		require.NoError(t, err)
 		assert.Equal(t, *options.Message, r.Message)
+		assert.Equal(t, options.TargetAddrs, r.TargetAddrs)
 	})
 }
 
