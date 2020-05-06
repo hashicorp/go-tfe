@@ -218,8 +218,9 @@ type PolicySetUpdateOptions struct {
 	// VCS repository information. When present, the policies and
 	// configuration will be sourced from the specified VCS repository
 	// instead of being defined within the policy set itself. Note that
-	// this option is mutually exclusive with the Policies option and
-	// both cannot be used at the same time.
+	// specifying this option may only be used on policy sets with no
+	// directly-attached policies (*PolicySet.Policies). Specifying this
+	// option when policies are already present will result in an error.
 	VCSRepo *VCSRepoOptions `jsonapi:"attr,vcs-repo,omitempty"`
 }
 
