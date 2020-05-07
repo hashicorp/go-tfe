@@ -73,6 +73,7 @@ func TestPolicySetsCreate(t *testing.T) {
 
 	orgTest, orgTestCleanup := createOrganization(t, client)
 	defer orgTestCleanup()
+	var vcsPolicyID string
 
 	t.Run("with valid attributes", func(t *testing.T) {
 		options := PolicySetCreateOptions{
@@ -144,6 +145,9 @@ func TestPolicySetsCreate(t *testing.T) {
 		ps, err := client.PolicySets.Create(ctx, orgTest.Name, options)
 		require.NoError(t, err)
 
+		// Save policy ID to be used by update func
+		vcsPolicyID = ps.ID
+
 		assert.Equal(t, ps.Name, *options.Name)
 		assert.Equal(t, ps.Description, "")
 		assert.False(t, ps.Global)
@@ -153,6 +157,40 @@ func TestPolicySetsCreate(t *testing.T) {
 			Identifier:        githubIdentifier,
 			OAuthTokenID:      oc.ID,
 			IngressSubmodules: true,
+		})
+	})
+
+	t.Run("with vcs policy updated", func(t *testing.T) {
+		githubIdentifier := os.Getenv("GITHUB_POLICY_SET_IDENTIFIER")
+		if githubIdentifier == "" {
+			t.Skip("Export a valid GITHUB_POLICY_SET_IDENTIFIER before running this test")
+		}
+
+		oc, _ := createOAuthToken(t, client, orgTest)
+
+		options := PolicySetUpdateOptions{
+			Name:         String("vcs-policy-set"),
+			PoliciesPath: String("/policy-sets/bar"),
+			VCSRepo: &VCSRepoOptions{
+				Branch:            String("policies"),
+				Identifier:        String(githubIdentifier),
+				OAuthTokenID:      String(oc.ID),
+				IngressSubmodules: Bool(false),
+			},
+		}
+
+		ps, err := client.PolicySets.Update(ctx, vcsPolicyID, options)
+		require.NoError(t, err)
+
+		assert.Equal(t, ps.Name, *options.Name)
+		assert.Equal(t, ps.Description, "")
+		assert.False(t, ps.Global)
+		assert.Equal(t, ps.PoliciesPath, "/policy-sets/bar")
+		assert.Equal(t, ps.VCSRepo, &VCSRepo{
+			Branch:            "policies",
+			Identifier:        githubIdentifier,
+			OAuthTokenID:      oc.ID,
+			IngressSubmodules: false,
 		})
 	})
 
