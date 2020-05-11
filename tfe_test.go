@@ -16,6 +16,7 @@ func TestClient_newClient(t *testing.T) {
 	ts := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "application/vnd.api+json")
 		w.Header().Set("X-RateLimit-Limit", "30")
+		w.Header().Set("TFP-API-Version", "34.21.9")
 		w.WriteHeader(204) // We query the configured ping URL which should return a 204.
 	}))
 	defer ts.Close()
@@ -68,6 +69,9 @@ func TestClient_newClient(t *testing.T) {
 		}
 		if ts.Client() != client.http.HTTPClient {
 			t.Fatal("unexpected HTTP client value")
+		}
+		if want := "34.21.9"; client.RemoteAPIVersion() != want {
+			t.Errorf("unexpected remote API version %q; want %q", client.RemoteAPIVersion(), want)
 		}
 	})
 }
