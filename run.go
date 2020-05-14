@@ -98,7 +98,7 @@ type Run struct {
 	Source                 RunSource            `jsonapi:"attr,source"`
 	Status                 RunStatus            `jsonapi:"attr,status"`
 	StatusTimestamps       *RunStatusTimestamps `jsonapi:"attr,status-timestamps"`
-	TargetAddrs            []string             `jsonapi:"attr,target_addrs,omitempty"`
+	TargetAddrs            []string             `jsonapi:"attr,target-addrs,omitempty"`
 
 	// Relations
 	Apply                *Apply                `jsonapi:"relation,apply"`
@@ -197,7 +197,7 @@ type RunCreateOptions struct {
 	// argument may be appropriate. This argument should not be used as part
 	// of routine workflow and Terraform will emit warnings reminding about
 	// this whenever this property is set.
-	TargetAddrs []string `jsonapi:"attr,target_addrs,omitempty"`
+	TargetAddrs []string `jsonapi:"attr,target-addrs,omitempty"`
 }
 
 func (o RunCreateOptions) valid() error {
