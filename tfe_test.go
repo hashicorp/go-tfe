@@ -73,6 +73,12 @@ func TestClient_newClient(t *testing.T) {
 		if want := "34.21.9"; client.RemoteAPIVersion() != want {
 			t.Errorf("unexpected remote API version %q; want %q", client.RemoteAPIVersion(), want)
 		}
+
+		client.SetFakeRemoteAPIVersion("1.0")
+
+		if want := "1.0"; client.RemoteAPIVersion() != want {
+			t.Errorf("unexpected remote API version %q; want %q", client.RemoteAPIVersion(), want)
+		}
 	})
 }
 
