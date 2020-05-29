@@ -81,6 +81,9 @@ type NotificationConfiguration struct {
 	Triggers          []string                    `jsonapi:"attr,triggers"`
 	UpdatedAt         time.Time                   `jsonapi:"attr,updated-at,iso8601"`
 	URL               string                      `jsonapi:"attr,url"`
+
+	// Relations
+	Subscribable *Workspace `jsonapi:"relation,subscribable"`
 }
 
 // DeliveryResponse represents a notification configuration delivery response.
