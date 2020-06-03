@@ -92,6 +92,8 @@ func TestTeamAccessesAdd(t *testing.T) {
 		}
 
 		ta, err := client.TeamAccess.Add(ctx, options)
+		defer client.TeamAccess.Remove(ctx, ta.ID)
+
 		require.NoError(t, err)
 
 		// Get a refreshed view from the API.
@@ -107,7 +109,50 @@ func TestTeamAccessesAdd(t *testing.T) {
 		}
 	})
 
+	t.Run("with valid custom options", func(t *testing.T) {
+		options := TeamAccessAddOptions{
+			Access:        Access(AccessCustom),
+			Runs:          RunsPermission(RunsPermissionRead),
+			StateVersions: StateVersionsPermission(StateVersionsPermissionNone),
+			Team:          tmTest,
+			Workspace:     wTest,
+		}
+
+		ta, err := client.TeamAccess.Add(ctx, options)
+		defer client.TeamAccess.Remove(ctx, ta.ID)
+
+		require.NoError(t, err)
+
+		// Get a refreshed view from the API.
+		refreshed, err := client.TeamAccess.Read(ctx, ta.ID)
+		require.NoError(t, err)
+
+		for _, item := range []*TeamAccess{
+			ta,
+			refreshed,
+		} {
+			assert.NotEmpty(t, item.ID)
+			assert.Equal(t, *options.Access, item.Access)
+		}
+	})
+
+	t.Run("with invalid custom options", func(t *testing.T) {
+		options := TeamAccessAddOptions{
+			Access:    Access(AccessRead),
+			Runs:      RunsPermission(RunsPermissionApply),
+			Team:      tmTest,
+			Workspace: wTest,
+		}
+
+		_, err := client.TeamAccess.Add(ctx, options)
+
+		assert.EqualError(t, err, "invalid attribute\n\nRuns is read-only when access level is 'read'; use the 'custom' access level to set this attribute.")
+	})
+
 	t.Run("when the team already has access", func(t *testing.T) {
+		_, taTestCleanup := createTeamAccess(t, client, tmTest, wTest, nil)
+		defer taTestCleanup()
+
 		options := TeamAccessAddOptions{
 			Access:    Access(AccessAdmin),
 			Team:      tmTest,
@@ -158,6 +203,14 @@ func TestTeamAccessesRead(t *testing.T) {
 		require.NoError(t, err)
 
 		assert.Equal(t, AccessAdmin, ta.Access)
+
+		t.Run("permission attributes are decoded", func(t *testing.T) {
+			assert.Equal(t, RunsPermissionApply, ta.Runs)
+			assert.Equal(t, VariablesPermissionWrite, ta.Variables)
+			assert.Equal(t, StateVersionsPermissionWrite, ta.StateVersions)
+			assert.Equal(t, SentinelMocksPermissionRead, ta.SentinelMocks)
+			assert.Equal(t, true, ta.WorkspaceLocking)
+		})
 
 		t.Run("team relationship is decoded", func(t *testing.T) {
 			assert.NotEmpty(t, ta.Team)

@@ -37,12 +37,44 @@ type teamAccesses struct {
 // AccessType represents a team access type.
 type AccessType string
 
-// List all available team access types.
+// RunsPermissionType represents the permissiontype to a workspace's runs.
+type RunsPermissionType string
+
+// VariablesPermissionType represents the permissiontype to a workspace's variables.
+type VariablesPermissionType string
+
+// StateVersionsPermissionType represents the permissiontype to a workspace's state versions.
+type StateVersionsPermissionType string
+
+// SentinelMocksPermissionType represents the permissiontype to a workspace's Sentinel mocks.
+type SentinelMocksPermissionType string
+
+// WorkspaceLockingPermissionType represents the permissiontype to lock or unlock a workspace.
+type WorkspaceLockingPermissionType bool
+
+// List all available team access types and permissions.
 const (
-	AccessAdmin AccessType = "admin"
-	AccessPlan  AccessType = "plan"
-	AccessRead  AccessType = "read"
-	AccessWrite AccessType = "write"
+	AccessAdmin  AccessType = "admin"
+	AccessPlan   AccessType = "plan"
+	AccessRead   AccessType = "read"
+	AccessWrite  AccessType = "write"
+	AccessCustom AccessType = "custom"
+
+	RunsPermissionRead  RunsPermissionType = "read"
+	RunsPermissionPlan  RunsPermissionType = "plan"
+	RunsPermissionApply RunsPermissionType = "apply"
+
+	VariablesPermissionNone  VariablesPermissionType = "none"
+	VariablesPermissionRead  VariablesPermissionType = "read"
+	VariablesPermissionWrite VariablesPermissionType = "write"
+
+	StateVersionsPermissionNone        StateVersionsPermissionType = "none"
+	StateVersionsPermissionReadOutputs StateVersionsPermissionType = "read-outputs"
+	StateVersionsPermissionRead        StateVersionsPermissionType = "read"
+	StateVersionsPermissionWrite       StateVersionsPermissionType = "write"
+
+	SentinelMocksPermissionNone SentinelMocksPermissionType = "none"
+	SentinelMocksPermissionRead SentinelMocksPermissionType = "read"
 )
 
 // TeamAccessList represents a list of team accesses.
@@ -53,8 +85,13 @@ type TeamAccessList struct {
 
 // TeamAccess represents the workspace access for a team.
 type TeamAccess struct {
-	ID     string     `jsonapi:"primary,team-workspaces"`
-	Access AccessType `jsonapi:"attr,access"`
+	ID               string                      `jsonapi:"primary,team-workspaces"`
+	Access           AccessType                  `jsonapi:"attr,access"`
+	Runs             RunsPermissionType          `jsonapi:"attr,runs"`
+	Variables        VariablesPermissionType     `jsonapi:"attr,variables"`
+	StateVersions    StateVersionsPermissionType `jsonapi:"attr,state-versions"`
+	SentinelMocks    SentinelMocksPermissionType `jsonapi:"attr,sentinel-mocks"`
+	WorkspaceLocking bool                        `jsonapi:"attr,workspace-locking"`
 
 	// Relations
 	Team      *Team      `jsonapi:"relation,team"`
@@ -104,6 +141,14 @@ type TeamAccessAddOptions struct {
 
 	// The type of access to grant.
 	Access *AccessType `jsonapi:"attr,access"`
+
+	// Custom workspace access permissions. These can only be edited when Access is 'custom'; otherwise, they are
+	// read-only and reflect the Access level's implicit permissions.
+	Runs             *RunsPermissionType          `jsonapi:"attr,runs,omitempty"`
+	Variables        *VariablesPermissionType     `jsonapi:"attr,variables,omitempty"`
+	StateVersions    *StateVersionsPermissionType `jsonapi:"attr,state-versions,omitempty"`
+	SentinelMocks    *SentinelMocksPermissionType `jsonapi:"attr,sentinel-mocks,omitempty"`
+	WorkspaceLocking *bool                        `jsonapi:"attr,workspace-locking,omitempty"`
 
 	// The team to add to the workspace
 	Team *Team `jsonapi:"relation,team"`
