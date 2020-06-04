@@ -25,6 +25,9 @@ type TeamAccesses interface {
 	// Read a team access by its ID.
 	Read(ctx context.Context, teamAccessID string) (*TeamAccess, error)
 
+	// Update a team access by its ID.
+	Update(ctx context.Context, teamAccessID string, options TeamAccessUpdateOptions) (*TeamAccess, error)
+
 	// Remove team access from a workspace.
 	Remove(ctx context.Context, teamAccessID string) error
 }
@@ -212,6 +215,47 @@ func (s *teamAccesses) Read(ctx context.Context, teamAccessID string) (*TeamAcce
 	}
 
 	return ta, nil
+}
+
+// TeamAccessUpdateOptions represents the options for updating team access.
+type TeamAccessUpdateOptions struct {
+	// For internal use only!
+	ID string `jsonapi:"primary,team-workspaces"`
+
+	// The type of access to grant.
+	Access *AccessType `jsonapi:"attr,access,omitempty"`
+
+	// Custom workspace access permissions. These can only be edited when Access is 'custom'; otherwise, they are
+	// read-only and reflect the Access level's implicit permissions.
+	Runs             *RunsPermissionType          `jsonapi:"attr,runs,omitempty"`
+	Variables        *VariablesPermissionType     `jsonapi:"attr,variables,omitempty"`
+	StateVersions    *StateVersionsPermissionType `jsonapi:"attr,state-versions,omitempty"`
+	SentinelMocks    *SentinelMocksPermissionType `jsonapi:"attr,sentinel-mocks,omitempty"`
+	WorkspaceLocking *bool                        `jsonapi:"attr,workspace-locking,omitempty"`
+}
+
+// Update team access for a workspace
+func (s *teamAccesses) Update(ctx context.Context, teamAccessID string, options TeamAccessUpdateOptions) (*TeamAccess, error) {
+	if !validStringID(&teamAccessID) {
+		return nil, errors.New("invalid value for team access ID")
+	}
+
+	// Make sure we don't send a user provided ID.
+	options.ID = ""
+
+	u := fmt.Sprintf("team-workspaces/%s", url.QueryEscape(teamAccessID))
+	req, err := s.client.newRequest("PATCH", u, &options)
+	if err != nil {
+		return nil, err
+	}
+
+	ta := &TeamAccess{}
+	err = s.client.do(ctx, req, ta)
+	if err != nil {
+		return nil, err
+	}
+
+	return ta, err
 }
 
 // Remove team access from a workspace.

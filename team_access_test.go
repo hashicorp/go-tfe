@@ -234,6 +234,36 @@ func TestTeamAccessesRead(t *testing.T) {
 	})
 }
 
+func TestTeamAccessesUpdate(t *testing.T) {
+	client := testClient(t)
+	ctx := context.Background()
+
+	orgTest, orgTestCleanup := createOrganization(t, client)
+	defer orgTestCleanup()
+
+	wTest, wTestCleanup := createWorkspace(t, client, orgTest)
+	defer wTestCleanup()
+
+	tmTest, tmTestCleanup := createTeam(t, client, orgTest)
+	defer tmTestCleanup()
+
+	taTest, taTestCleanup := createTeamAccess(t, client, tmTest, wTest, nil)
+	defer taTestCleanup()
+
+	t.Run("with valid attributes", func(t *testing.T) {
+		options := TeamAccessUpdateOptions{
+			Access: Access(AccessCustom),
+			Runs:   RunsPermission(RunsPermissionPlan),
+		}
+
+		ta, err := client.TeamAccess.Update(ctx, taTest.ID, options)
+		require.NoError(t, err)
+
+		assert.Equal(t, ta.Access, AccessCustom)
+		assert.Equal(t, ta.Runs, RunsPermissionPlan)
+	})
+}
+
 func TestTeamAccessesRemove(t *testing.T) {
 	client := testClient(t)
 	ctx := context.Background()
