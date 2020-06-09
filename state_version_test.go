@@ -76,7 +76,7 @@ func TestStateVersionsList(t *testing.T) {
 
 		svl, err := client.StateVersions.List(ctx, options)
 		assert.Nil(t, svl)
-		assert.EqualError(t, err, "Organization is required")
+		assert.EqualError(t, err, "organization is required")
 	})
 
 	t.Run("without a workspace", func(t *testing.T) {
@@ -86,7 +86,7 @@ func TestStateVersionsList(t *testing.T) {
 
 		svl, err := client.StateVersions.List(ctx, options)
 		assert.Nil(t, svl)
-		assert.EqualError(t, err, "Workspace is required")
+		assert.EqualError(t, err, "workspace is required")
 	})
 }
 
@@ -97,8 +97,6 @@ func TestStateVersionsCreate(t *testing.T) {
 	wTest, wTestCleanup := createWorkspace(t, client, nil)
 	defer wTestCleanup()
 
-	rTest, _ := createRun(t, client, wTest)
-
 	state, err := ioutil.ReadFile("test-fixtures/state-version/terraform.tfstate")
 	if err != nil {
 		t.Fatal(err)
@@ -106,10 +104,16 @@ func TestStateVersionsCreate(t *testing.T) {
 
 	t.Run("with valid options", func(t *testing.T) {
 		ctx := context.Background()
+		_, err := client.Workspaces.Lock(ctx, wTest.ID, WorkspaceLockOptions{})
+		if err != nil {
+			t.Fatal(err)
+		}
+
 		sv, err := client.StateVersions.Create(ctx, wTest.ID, StateVersionCreateOptions{
-			MD5:    String(fmt.Sprintf("%x", md5.Sum(state))),
-			Serial: Int64(0),
-			State:  String(base64.StdEncoding.EncodeToString(state)),
+			Lineage: String("741c4949-60b9-5bb1-5bf8-b14f4bb14af3"),
+			MD5:     String(fmt.Sprintf("%x", md5.Sum(state))),
+			Serial:  Int64(1),
+			State:   String(base64.StdEncoding.EncodeToString(state)),
 		})
 		require.NoError(t, err)
 
@@ -117,18 +121,71 @@ func TestStateVersionsCreate(t *testing.T) {
 		refreshed, err := client.StateVersions.Read(ctx, sv.ID)
 		require.NoError(t, err)
 
+		_, err = client.Workspaces.Unlock(ctx, wTest.ID)
+		if err != nil {
+			t.Fatal(err)
+		}
+
 		for _, item := range []*StateVersion{
 			sv,
 			refreshed,
 		} {
 			assert.NotEmpty(t, item.ID)
-			assert.Equal(t, int64(0), item.Serial)
+			assert.Equal(t, int64(1), item.Serial)
+			assert.NotEmpty(t, item.CreatedAt)
+			assert.NotEmpty(t, item.DownloadURL)
+		}
+	})
+
+	t.Run("with the force flag set", func(t *testing.T) {
+		ctx := context.Background()
+		_, err := client.Workspaces.Lock(ctx, wTest.ID, WorkspaceLockOptions{})
+		if err != nil {
+			t.Fatal(err)
+		}
+
+		sv, err := client.StateVersions.Create(ctx, wTest.ID, StateVersionCreateOptions{
+			Lineage: String("741c4949-60b9-5bb1-5bf8-b14f4bb14af3"),
+			MD5:     String(fmt.Sprintf("%x", md5.Sum(state))),
+			Serial:  Int64(1),
+			State:   String(base64.StdEncoding.EncodeToString(state)),
+		})
+		require.NoError(t, err)
+
+		sv, err = client.StateVersions.Create(ctx, wTest.ID, StateVersionCreateOptions{
+			Lineage: String("821c4747-a0b9-3bd1-8bf3-c14f4bb14be7"),
+			MD5:     String(fmt.Sprintf("%x", md5.Sum(state))),
+			Serial:  Int64(2),
+			State:   String(base64.StdEncoding.EncodeToString(state)),
+			Force:   Bool(true),
+		})
+		require.NoError(t, err)
+
+		// Get a refreshed view of the configuration version.
+		refreshed, err := client.StateVersions.Read(ctx, sv.ID)
+		require.NoError(t, err)
+
+		_, err = client.Workspaces.Unlock(ctx, wTest.ID)
+		if err != nil {
+			t.Fatal(err)
+		}
+
+		for _, item := range []*StateVersion{
+			sv,
+			refreshed,
+		} {
+			assert.NotEmpty(t, item.ID)
+			assert.Equal(t, int64(2), item.Serial)
 			assert.NotEmpty(t, item.CreatedAt)
 			assert.NotEmpty(t, item.DownloadURL)
 		}
 	})
 
 	t.Run("with a run to associate with", func(t *testing.T) {
+		t.Skip("This can only be tested with the run specific token")
+
+		rTest, _ := createRun(t, client, wTest)
+
 		ctx := context.Background()
 		sv, err := client.StateVersions.Create(ctx, wTest.ID, StateVersionCreateOptions{
 			MD5:    String(fmt.Sprintf("%x", md5.Sum(state))),
@@ -171,7 +228,7 @@ func TestStateVersionsCreate(t *testing.T) {
 			State: String(base64.StdEncoding.EncodeToString(state)),
 		})
 		assert.Nil(t, sv)
-		assert.EqualError(t, err, "Serial is required")
+		assert.EqualError(t, err, "serial is required")
 	})
 
 	t.Run("without state", func(t *testing.T) {
@@ -180,13 +237,13 @@ func TestStateVersionsCreate(t *testing.T) {
 			Serial: Int64(0),
 		})
 		assert.Nil(t, sv)
-		assert.EqualError(t, err, "State is required")
+		assert.EqualError(t, err, "state is required")
 	})
 
 	t.Run("with invalid workspace id", func(t *testing.T) {
 		sv, err := client.StateVersions.Create(ctx, badIdentifier, StateVersionCreateOptions{})
 		assert.Nil(t, sv)
-		assert.EqualError(t, err, "Invalid value for workspace ID")
+		assert.EqualError(t, err, "invalid value for workspace ID")
 	})
 }
 
@@ -218,7 +275,7 @@ func TestStateVersionsRead(t *testing.T) {
 	t.Run("with invalid state version id", func(t *testing.T) {
 		sv, err := client.StateVersions.Read(ctx, badIdentifier)
 		assert.Nil(t, sv)
-		assert.EqualError(t, err, "Invalid value for state version ID")
+		assert.EqualError(t, err, "invalid value for state version ID")
 	})
 }
 
@@ -256,7 +313,7 @@ func TestStateVersionsCurrent(t *testing.T) {
 	t.Run("with invalid workspace id", func(t *testing.T) {
 		sv, err := client.StateVersions.Current(ctx, badIdentifier)
 		assert.Nil(t, sv)
-		assert.EqualError(t, err, "Invalid value for workspace ID")
+		assert.EqualError(t, err, "invalid value for workspace ID")
 	})
 }
 

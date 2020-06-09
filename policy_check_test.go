@@ -2,6 +2,7 @@ package tfe
 
 import (
 	"context"
+	"io/ioutil"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -15,10 +16,11 @@ func TestPolicyChecksList(t *testing.T) {
 	orgTest, orgTestCleanup := createOrganization(t, client)
 	defer orgTestCleanup()
 
-	createUploadedPolicy(t, client, true, orgTest)
-	createUploadedPolicy(t, client, true, orgTest)
-
+	pTest1, _ := createUploadedPolicy(t, client, true, orgTest)
+	pTest2, _ := createUploadedPolicy(t, client, true, orgTest)
 	wTest, _ := createWorkspace(t, client, orgTest)
+	createPolicySet(t, client, orgTest, []*Policy{pTest1, pTest2}, []*Workspace{wTest})
+
 	rTest, _ := createPlannedRun(t, client, wTest)
 
 	t.Run("without list options", func(t *testing.T) {
@@ -66,7 +68,49 @@ func TestPolicyChecksList(t *testing.T) {
 	t.Run("without a valid run ID", func(t *testing.T) {
 		pcl, err := client.PolicyChecks.List(ctx, badIdentifier, PolicyCheckListOptions{})
 		assert.Nil(t, pcl)
-		assert.EqualError(t, err, "Invalid value for run ID")
+		assert.EqualError(t, err, "invalid value for run ID")
+	})
+}
+
+func TestPolicyChecksRead(t *testing.T) {
+	client := testClient(t)
+	ctx := context.Background()
+
+	orgTest, orgTestCleanup := createOrganization(t, client)
+	defer orgTestCleanup()
+
+	pTest, _ := createUploadedPolicy(t, client, true, orgTest)
+	wTest, _ := createWorkspace(t, client, orgTest)
+	createPolicySet(t, client, orgTest, []*Policy{pTest}, []*Workspace{wTest})
+
+	rTest, _ := createPlannedRun(t, client, wTest)
+	require.Equal(t, 1, len(rTest.PolicyChecks))
+
+	t.Run("when the policy check exists", func(t *testing.T) {
+		pc, err := client.PolicyChecks.Read(ctx, rTest.PolicyChecks[0].ID)
+		require.NoError(t, err)
+
+		assert.NotEmpty(t, pc.Permissions)
+		assert.Equal(t, PolicyScopeOrganization, pc.Scope)
+		assert.Equal(t, PolicyPasses, pc.Status)
+		assert.NotEmpty(t, pc.StatusTimestamps)
+
+		t.Run("result is properly decoded", func(t *testing.T) {
+			require.NotEmpty(t, pc.Result)
+			assert.Equal(t, 1, pc.Result.Passed)
+		})
+	})
+
+	t.Run("when the policy check does not exist", func(t *testing.T) {
+		pc, err := client.PolicyChecks.Read(ctx, "nonexisting")
+		assert.Nil(t, pc)
+		assert.Equal(t, ErrResourceNotFound, err)
+	})
+
+	t.Run("without a valid policy check ID", func(t *testing.T) {
+		pc, err := client.PolicyChecks.Read(ctx, badIdentifier)
+		assert.Nil(t, pc)
+		assert.EqualError(t, err, "invalid value for policy check ID")
 	})
 }
 
@@ -78,10 +122,11 @@ func TestPolicyChecksOverride(t *testing.T) {
 	defer orgTestCleanup()
 
 	t.Run("when the policy failed", func(t *testing.T) {
-		_, pTestCleanup := createUploadedPolicy(t, client, false, orgTest)
+		pTest, pTestCleanup := createUploadedPolicy(t, client, false, orgTest)
 		defer pTestCleanup()
 
 		wTest, _ := createWorkspace(t, client, orgTest)
+		createPolicySet(t, client, orgTest, []*Policy{pTest}, []*Workspace{wTest})
 		rTest, _ := createPlannedRun(t, client, wTest)
 
 		pcl, err := client.PolicyChecks.List(ctx, rTest.ID, PolicyCheckListOptions{})
@@ -97,10 +142,11 @@ func TestPolicyChecksOverride(t *testing.T) {
 	})
 
 	t.Run("when the policy passed", func(t *testing.T) {
-		_, pTestCleanup := createUploadedPolicy(t, client, true, orgTest)
+		pTest, pTestCleanup := createUploadedPolicy(t, client, true, orgTest)
 		defer pTestCleanup()
 
 		wTest, _ := createWorkspace(t, client, orgTest)
+		createPolicySet(t, client, orgTest, []*Policy{pTest}, []*Workspace{wTest})
 		rTest, _ := createPlannedRun(t, client, wTest)
 
 		pcl, err := client.PolicyChecks.List(ctx, rTest.ID, PolicyCheckListOptions{})
@@ -115,6 +161,40 @@ func TestPolicyChecksOverride(t *testing.T) {
 	t.Run("without a valid policy check ID", func(t *testing.T) {
 		p, err := client.PolicyChecks.Override(ctx, badIdentifier)
 		assert.Nil(t, p)
-		assert.EqualError(t, err, "Invalid value for policy check ID")
+		assert.EqualError(t, err, "invalid value for policy check ID")
+	})
+}
+
+func TestPolicyChecksLogs(t *testing.T) {
+	client := testClient(t)
+	ctx := context.Background()
+
+	orgTest, orgTestCleanup := createOrganization(t, client)
+	defer orgTestCleanup()
+
+	pTest, _ := createUploadedPolicy(t, client, true, orgTest)
+	wTest, _ := createWorkspace(t, client, orgTest)
+	createPolicySet(t, client, orgTest, []*Policy{pTest}, []*Workspace{wTest})
+
+	rTest, _ := createPlannedRun(t, client, wTest)
+	require.Equal(t, 1, len(rTest.PolicyChecks))
+
+	t.Run("when the log exists", func(t *testing.T) {
+		pc, err := client.PolicyChecks.Read(ctx, rTest.PolicyChecks[0].ID)
+		require.NoError(t, err)
+
+		logReader, err := client.PolicyChecks.Logs(ctx, pc.ID)
+		require.NoError(t, err)
+
+		logs, err := ioutil.ReadAll(logReader)
+		require.NoError(t, err)
+
+		assert.Contains(t, string(logs), "1 policies evaluated")
+	})
+
+	t.Run("when the log does not exist", func(t *testing.T) {
+		logs, err := client.PolicyChecks.Logs(ctx, "nonexisting")
+		assert.Nil(t, logs)
+		assert.Error(t, err)
 	})
 }

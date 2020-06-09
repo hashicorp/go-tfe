@@ -71,14 +71,14 @@ func TestOrganizationsCreate(t *testing.T) {
 			Name: String("foo"),
 		})
 		assert.Nil(t, org)
-		assert.EqualError(t, err, "Email is required")
+		assert.EqualError(t, err, "email is required")
 	})
 
 	t.Run("when no name is provided", func(t *testing.T) {
 		_, err := client.Organizations.Create(ctx, OrganizationCreateOptions{
 			Email: String("foo@bar.com"),
 		})
-		assert.EqualError(t, err, "Name is required")
+		assert.EqualError(t, err, "name is required")
 	})
 
 	t.Run("with invalid name", func(t *testing.T) {
@@ -87,7 +87,7 @@ func TestOrganizationsCreate(t *testing.T) {
 			Email: String("foo@bar.com"),
 		})
 		assert.Nil(t, org)
-		assert.EqualError(t, err, "Invalid value for name")
+		assert.EqualError(t, err, "invalid value for name")
 	})
 }
 
@@ -109,14 +109,15 @@ func TestOrganizationsRead(t *testing.T) {
 
 		t.Run("timestamps are populated", func(t *testing.T) {
 			assert.NotEmpty(t, org.CreatedAt)
-			assert.NotEmpty(t, org.TrialExpiresAt)
+			// By default accounts are in the free tier and are not in a trial
+			assert.Empty(t, org.TrialExpiresAt)
 		})
 	})
 
 	t.Run("with invalid name", func(t *testing.T) {
 		org, err := client.Organizations.Read(ctx, badIdentifier)
 		assert.Nil(t, org)
-		assert.EqualError(t, err, "Invalid value for organization")
+		assert.EqualError(t, err, "invalid value for organization")
 	})
 
 	t.Run("when the org does not exist", func(t *testing.T) {
@@ -167,7 +168,7 @@ func TestOrganizationsUpdate(t *testing.T) {
 	t.Run("with invalid name", func(t *testing.T) {
 		org, err := client.Organizations.Update(ctx, badIdentifier, OrganizationUpdateOptions{})
 		assert.Nil(t, org)
-		assert.EqualError(t, err, "Invalid value for organization")
+		assert.EqualError(t, err, "invalid value for organization")
 	})
 
 	t.Run("when only updating a subset of fields", func(t *testing.T) {
@@ -198,6 +199,172 @@ func TestOrganizationsDelete(t *testing.T) {
 
 	t.Run("with invalid name", func(t *testing.T) {
 		err := client.Organizations.Delete(ctx, badIdentifier)
-		assert.EqualError(t, err, "Invalid value for organization")
+		assert.EqualError(t, err, "invalid value for organization")
+	})
+}
+
+func TestOrganizationsCapacity(t *testing.T) {
+	t.Skip("Capacity queues are not available in the API")
+	client := testClient(t)
+	ctx := context.Background()
+
+	orgTest, orgTestCleanup := createOrganization(t, client)
+	defer orgTestCleanup()
+
+	wTest1, _ := createWorkspace(t, client, orgTest)
+	wTest2, _ := createWorkspace(t, client, orgTest)
+	wTest3, _ := createWorkspace(t, client, orgTest)
+	wTest4, _ := createWorkspace(t, client, orgTest)
+
+	t.Run("without queued runs", func(t *testing.T) {
+		c, err := client.Organizations.Capacity(ctx, orgTest.Name)
+		require.NoError(t, err)
+		assert.Equal(t, 0, c.Pending)
+		assert.Equal(t, 0, c.Running)
+	})
+
+	// For this test FRQ should be enabled and have a
+	// limit of 2 concurrent runs per organization.
+	t.Run("with queued runs", func(t *testing.T) {
+		_, _ = createRun(t, client, wTest1)
+		_, _ = createRun(t, client, wTest2)
+		_, _ = createRun(t, client, wTest3)
+		_, _ = createRun(t, client, wTest4)
+
+		c, err := client.Organizations.Capacity(ctx, orgTest.Name)
+		require.NoError(t, err)
+		assert.Equal(t, 2, c.Pending)
+		assert.Equal(t, 2, c.Running)
+	})
+
+	t.Run("with invalid name", func(t *testing.T) {
+		org, err := client.Organizations.Read(ctx, badIdentifier)
+		assert.Nil(t, org)
+		assert.EqualError(t, err, "invalid value for organization")
+	})
+
+	t.Run("when the org does not exist", func(t *testing.T) {
+		_, err := client.Organizations.Read(ctx, randomString(t))
+		assert.Error(t, err)
+	})
+}
+
+func TestOrganizationsEntitlements(t *testing.T) {
+	client := testClient(t)
+	ctx := context.Background()
+
+	orgTest, orgTestCleanup := createOrganization(t, client)
+	defer orgTestCleanup()
+
+	t.Run("when the org exists", func(t *testing.T) {
+		entitlements, err := client.Organizations.Entitlements(ctx, orgTest.Name)
+		require.NoError(t, err)
+
+		assert.NotEmpty(t, entitlements.ID)
+		assert.True(t, entitlements.Operations)
+		assert.True(t, entitlements.PrivateModuleRegistry)
+		assert.True(t, entitlements.Sentinel)
+		assert.True(t, entitlements.StateStorage)
+		assert.True(t, entitlements.Teams)
+		assert.True(t, entitlements.VCSIntegrations)
+	})
+
+	t.Run("with invalid name", func(t *testing.T) {
+		entitlements, err := client.Organizations.Entitlements(ctx, badIdentifier)
+		assert.Nil(t, entitlements)
+		assert.EqualError(t, err, "invalid value for organization")
+	})
+
+	t.Run("when the org does not exist", func(t *testing.T) {
+		_, err := client.Organizations.Entitlements(ctx, randomString(t))
+		assert.Equal(t, ErrResourceNotFound, err)
+	})
+}
+
+func TestOrganizationsRunQueue(t *testing.T) {
+	t.Skip("Capacity queues are not available in the API")
+	client := testClient(t)
+	ctx := context.Background()
+
+	orgTest, orgTestCleanup := createOrganization(t, client)
+	defer orgTestCleanup()
+
+	wTest1, _ := createWorkspace(t, client, orgTest)
+	wTest2, _ := createWorkspace(t, client, orgTest)
+	wTest3, _ := createWorkspace(t, client, orgTest)
+	wTest4, _ := createWorkspace(t, client, orgTest)
+
+	t.Run("without queued runs", func(t *testing.T) {
+		rq, err := client.Organizations.RunQueue(ctx, orgTest.Name, RunQueueOptions{})
+		require.NoError(t, err)
+		assert.Equal(t, 0, len(rq.Items))
+	})
+
+	// Create a couple or runs to fill the queue.
+	rTest1, _ := createRun(t, client, wTest1)
+	rTest2, _ := createRun(t, client, wTest2)
+	rTest3, _ := createRun(t, client, wTest3)
+	rTest4, _ := createRun(t, client, wTest4)
+
+	// For this test FRQ should be enabled and have a
+	// limit of 2 concurrent runs per organization.
+	t.Run("with queued runs", func(t *testing.T) {
+		rq, err := client.Organizations.RunQueue(ctx, orgTest.Name, RunQueueOptions{})
+		require.NoError(t, err)
+
+		found := []string{}
+		for _, r := range rq.Items {
+			found = append(found, r.ID)
+		}
+
+		assert.Contains(t, found, rTest1.ID)
+		assert.Contains(t, found, rTest2.ID)
+		assert.Contains(t, found, rTest3.ID)
+		assert.Contains(t, found, rTest4.ID)
+	})
+
+	t.Run("without queue options", func(t *testing.T) {
+		rq, err := client.Organizations.RunQueue(ctx, orgTest.Name, RunQueueOptions{})
+		require.NoError(t, err)
+
+		found := []string{}
+		for _, r := range rq.Items {
+			found = append(found, r.ID)
+		}
+
+		assert.Contains(t, found, rTest1.ID)
+		assert.Contains(t, found, rTest2.ID)
+		assert.Contains(t, found, rTest3.ID)
+		assert.Contains(t, found, rTest4.ID)
+		assert.Equal(t, 1, rq.CurrentPage)
+		assert.Equal(t, 4, rq.TotalCount)
+	})
+
+	t.Run("with queue options", func(t *testing.T) {
+		// Request a page number which is out of range. The result should
+		// be successful, but return no results if the paging options are
+		// properly passed along.
+		rq, err := client.Organizations.RunQueue(ctx, orgTest.Name, RunQueueOptions{
+			ListOptions: ListOptions{
+				PageNumber: 999,
+				PageSize:   100,
+			},
+		})
+		require.NoError(t, err)
+
+		assert.Empty(t, rq.Items)
+		assert.Equal(t, 999, rq.CurrentPage)
+		assert.Equal(t, 4, rq.TotalCount)
+	})
+
+	t.Run("with invalid name", func(t *testing.T) {
+		org, err := client.Organizations.Read(ctx, badIdentifier)
+		assert.Nil(t, org)
+		assert.EqualError(t, err, "invalid value for organization")
+	})
+
+	t.Run("when the org does not exist", func(t *testing.T) {
+		_, err := client.Organizations.Read(ctx, randomString(t))
+		assert.Error(t, err)
 	})
 }

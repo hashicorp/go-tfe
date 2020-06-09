@@ -16,16 +16,19 @@ var _ Variables = (*variables)(nil)
 // TFE API docs: https://www.terraform.io/docs/enterprise/api/variables.html
 type Variables interface {
 	// List all the variables associated with the given workspace.
-	List(ctx context.Context, options VariableListOptions) (*VariableList, error)
+	List(ctx context.Context, workspaceID string, options VariableListOptions) (*VariableList, error)
 
 	// Create is used to create a new variable.
-	Create(ctx context.Context, options VariableCreateOptions) (*Variable, error)
+	Create(ctx context.Context, workspaceID string, options VariableCreateOptions) (*Variable, error)
+
+	// Read a variable by its ID.
+	Read(ctx context.Context, workspaceID string, variableID string) (*Variable, error)
 
 	// Update values of an existing variable.
-	Update(ctx context.Context, variableID string, options VariableUpdateOptions) (*Variable, error)
+	Update(ctx context.Context, workspaceID string, variableID string, options VariableUpdateOptions) (*Variable, error)
 
 	// Delete a variable by its ID.
-	Delete(ctx context.Context, variableID string) error
+	Delete(ctx context.Context, workspaceID string, variableID string) error
 }
 
 // variables implements Variables.
@@ -39,6 +42,7 @@ type CategoryType string
 //List all available categories.
 const (
 	CategoryEnv       CategoryType = "env"
+	CategoryPolicySet CategoryType = "policy-set"
 	CategoryTerraform CategoryType = "terraform"
 )
 
@@ -53,38 +57,28 @@ type Variable struct {
 	ID        string       `jsonapi:"primary,vars"`
 	Key       string       `jsonapi:"attr,key"`
 	Value     string       `jsonapi:"attr,value"`
+	Description string     `jsonapi:"attr,description"`
 	Category  CategoryType `jsonapi:"attr,category"`
 	HCL       bool         `jsonapi:"attr,hcl"`
 	Sensitive bool         `jsonapi:"attr,sensitive"`
 
 	// Relations
-	Workspace *Workspace `jsonapi:"relation,workspace"`
+	Workspace *Workspace `jsonapi:"relation,configurable"`
 }
 
 // VariableListOptions represents the options for listing variables.
 type VariableListOptions struct {
 	ListOptions
-	Organization *string `url:"filter[organization][name]"`
-	Workspace    *string `url:"filter[workspace][name]"`
-}
-
-func (o VariableListOptions) valid() error {
-	if !validString(o.Organization) {
-		return errors.New("Organization is required")
-	}
-	if !validString(o.Workspace) {
-		return errors.New("Workspace is required")
-	}
-	return nil
 }
 
 // List all the variables associated with the given workspace.
-func (s *variables) List(ctx context.Context, options VariableListOptions) (*VariableList, error) {
-	if err := options.valid(); err != nil {
-		return nil, err
+func (s *variables) List(ctx context.Context, workspaceID string, options VariableListOptions) (*VariableList, error) {
+	if !validStringID(&workspaceID) {
+		return nil, errors.New("invalid value for workspace ID")
 	}
 
-	req, err := s.client.newRequest("GET", "vars", &options)
+	u := fmt.Sprintf("workspaces/%s/vars", workspaceID)
+	req, err := s.client.newRequest("GET", u, &options)
 	if err != nil {
 		return nil, err
 	}
@@ -107,7 +101,10 @@ type VariableCreateOptions struct {
 	Key *string `jsonapi:"attr,key"`
 
 	// The value of the variable.
-	Value *string `jsonapi:"attr,value"`
+	Value *string `jsonapi:"attr,value,omitempty"`
+
+	// The description of the variable.
+	Description *string `jsonapi:"attr,description,omitempty"`
 
 	// Whether this is a Terraform or environment variable.
 	Category *CategoryType `jsonapi:"attr,category"`
@@ -117,29 +114,23 @@ type VariableCreateOptions struct {
 
 	// Whether the value is sensitive.
 	Sensitive *bool `jsonapi:"attr,sensitive,omitempty"`
-
-	// The workspace that owns the variable.
-	Workspace *Workspace `jsonapi:"relation,workspace"`
 }
 
 func (o VariableCreateOptions) valid() error {
 	if !validString(o.Key) {
-		return errors.New("Key is required")
-	}
-	if !validString(o.Value) {
-		return errors.New("Value is required")
+		return errors.New("key is required")
 	}
 	if o.Category == nil {
-		return errors.New("Category is required")
-	}
-	if o.Workspace == nil {
-		return errors.New("Workspace is required")
+		return errors.New("category is required")
 	}
 	return nil
 }
 
 // Create is used to create a new variable.
-func (s *variables) Create(ctx context.Context, options VariableCreateOptions) (*Variable, error) {
+func (s *variables) Create(ctx context.Context, workspaceID string, options VariableCreateOptions) (*Variable, error) {
+	if !validStringID(&workspaceID) {
+		return nil, errors.New("invalid value for workspace ID")
+	}
 	if err := options.valid(); err != nil {
 		return nil, err
 	}
@@ -147,7 +138,8 @@ func (s *variables) Create(ctx context.Context, options VariableCreateOptions) (
 	// Make sure we don't send a user provided ID.
 	options.ID = ""
 
-	req, err := s.client.newRequest("POST", "vars", &options)
+	u := fmt.Sprintf("workspaces/%s/vars", url.QueryEscape(workspaceID))
+	req, err := s.client.newRequest("POST", u, &options)
 	if err != nil {
 		return nil, err
 	}
@@ -161,6 +153,30 @@ func (s *variables) Create(ctx context.Context, options VariableCreateOptions) (
 	return v, nil
 }
 
+// Read a variable by its ID.
+func (s *variables) Read(ctx context.Context, workspaceID string, variableID string) (*Variable, error) {
+	if !validStringID(&workspaceID) {
+		return nil, errors.New("invalid value for workspace ID")
+	}
+	if !validStringID(&variableID) {
+		return nil, errors.New("invalid value for variable ID")
+	}
+
+	u := fmt.Sprintf("workspaces/%s/vars/%s", url.QueryEscape(workspaceID), url.QueryEscape(variableID))
+	req, err := s.client.newRequest("GET", u, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	v := &Variable{}
+	err = s.client.do(ctx, req, v)
+	if err != nil {
+		return nil, err
+	}
+
+	return v, err
+}
+
 // VariableUpdateOptions represents the options for updating a variable.
 type VariableUpdateOptions struct {
 	// For internal use only!
@@ -172,6 +188,9 @@ type VariableUpdateOptions struct {
 	// The value of the variable.
 	Value *string `jsonapi:"attr,value,omitempty"`
 
+	// The description of the variable.
+	Description *string `jsonapi:"attr,description,omitempty"`
+
 	// Whether to evaluate the value of the variable as a string of HCL code.
 	HCL *bool `jsonapi:"attr,hcl,omitempty"`
 
@@ -180,15 +199,18 @@ type VariableUpdateOptions struct {
 }
 
 // Update values of an existing variable.
-func (s *variables) Update(ctx context.Context, variableID string, options VariableUpdateOptions) (*Variable, error) {
+func (s *variables) Update(ctx context.Context, workspaceID string, variableID string, options VariableUpdateOptions) (*Variable, error) {
+	if !validStringID(&workspaceID) {
+		return nil, errors.New("invalid value for workspace ID")
+	}
 	if !validStringID(&variableID) {
-		return nil, errors.New("Invalid value for variable ID")
+		return nil, errors.New("invalid value for variable ID")
 	}
 
 	// Make sure we don't send a user provided ID.
 	options.ID = variableID
 
-	u := fmt.Sprintf("vars/%s", url.QueryEscape(variableID))
+	u := fmt.Sprintf("workspaces/%s/vars/%s", url.QueryEscape(workspaceID), url.QueryEscape(variableID))
 	req, err := s.client.newRequest("PATCH", u, &options)
 	if err != nil {
 		return nil, err
@@ -204,12 +226,15 @@ func (s *variables) Update(ctx context.Context, variableID string, options Varia
 }
 
 // Delete a variable by its ID.
-func (s *variables) Delete(ctx context.Context, variableID string) error {
+func (s *variables) Delete(ctx context.Context, workspaceID string, variableID string) error {
+	if !validStringID(&workspaceID) {
+		return errors.New("invalid value for workspace ID")
+	}
 	if !validStringID(&variableID) {
-		return errors.New("Invalid value for variable ID")
+		return errors.New("invalid value for variable ID")
 	}
 
-	u := fmt.Sprintf("vars/%s", url.QueryEscape(variableID))
+	u := fmt.Sprintf("workspaces/%s/vars/%s", url.QueryEscape(workspaceID), url.QueryEscape(variableID))
 	req, err := s.client.newRequest("DELETE", u, nil)
 	if err != nil {
 		return err

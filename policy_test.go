@@ -24,13 +24,11 @@ func TestPoliciesList(t *testing.T) {
 		assert.Contains(t, pl.Items, pTest1)
 		assert.Contains(t, pl.Items, pTest2)
 
-		t.Skip("paging not supported yet in API")
 		assert.Equal(t, 1, pl.CurrentPage)
 		assert.Equal(t, 2, pl.TotalCount)
 	})
 
-	t.Run("with list options", func(t *testing.T) {
-		t.Skip("paging not supported yet in API")
+	t.Run("with pagination", func(t *testing.T) {
 		// Request a page number which is out of range. The result should
 		// be successful, but return no results if the paging options are
 		// properly passed along.
@@ -41,15 +39,30 @@ func TestPoliciesList(t *testing.T) {
 			},
 		})
 		require.NoError(t, err)
+
 		assert.Empty(t, pl.Items)
 		assert.Equal(t, 999, pl.CurrentPage)
 		assert.Equal(t, 2, pl.TotalCount)
 	})
 
+	t.Run("with search", func(t *testing.T) {
+		// Search by one of the policy's names; we should get only that policy
+		// and pagination data should reflect the search as well
+		pl, err := client.Policies.List(ctx, orgTest.Name, PolicyListOptions{
+			Search: &pTest1.Name,
+		})
+		require.NoError(t, err)
+
+		assert.Contains(t, pl.Items, pTest1)
+		assert.NotContains(t, pl.Items, pTest2)
+		assert.Equal(t, 1, pl.CurrentPage)
+		assert.Equal(t, 1, pl.TotalCount)
+	})
+
 	t.Run("without a valid organization", func(t *testing.T) {
 		ps, err := client.Policies.List(ctx, badIdentifier, PolicyListOptions{})
 		assert.Nil(t, ps)
-		assert.EqualError(t, err, "Invalid value for organization")
+		assert.EqualError(t, err, "invalid value for organization")
 	})
 }
 
@@ -63,7 +76,8 @@ func TestPoliciesCreate(t *testing.T) {
 	t.Run("with valid options", func(t *testing.T) {
 		name := randomString(t)
 		options := PolicyCreateOptions{
-			Name: String(name),
+			Name:        String(name),
+			Description: String("A sample policy"),
 			Enforce: []*EnforcementOptions{
 				{
 					Path: String(name + ".sentinel"),
@@ -85,6 +99,7 @@ func TestPoliciesCreate(t *testing.T) {
 		} {
 			assert.NotEmpty(t, item.ID)
 			assert.Equal(t, *options.Name, item.Name)
+			assert.Equal(t, *options.Description, item.Description)
 		}
 	})
 
@@ -99,7 +114,7 @@ func TestPoliciesCreate(t *testing.T) {
 			},
 		})
 		assert.Nil(t, p)
-		assert.EqualError(t, err, "Invalid value for name")
+		assert.EqualError(t, err, "invalid value for name")
 	})
 
 	t.Run("when options is missing name", func(t *testing.T) {
@@ -112,7 +127,7 @@ func TestPoliciesCreate(t *testing.T) {
 			},
 		})
 		assert.Nil(t, p)
-		assert.EqualError(t, err, "Name is required")
+		assert.EqualError(t, err, "name is required")
 	})
 
 	t.Run("when options is missing an enforcement", func(t *testing.T) {
@@ -122,7 +137,7 @@ func TestPoliciesCreate(t *testing.T) {
 
 		p, err := client.Policies.Create(ctx, orgTest.Name, options)
 		assert.Nil(t, p)
-		assert.EqualError(t, err, "Enforce is required")
+		assert.EqualError(t, err, "enforce is required")
 	})
 
 	t.Run("when options is missing enforcement path", func(t *testing.T) {
@@ -137,7 +152,7 @@ func TestPoliciesCreate(t *testing.T) {
 
 		p, err := client.Policies.Create(ctx, orgTest.Name, options)
 		assert.Nil(t, p)
-		assert.EqualError(t, err, "Enforcement path is required")
+		assert.EqualError(t, err, "enforcement path is required")
 	})
 
 	t.Run("when options is missing enforcement path", func(t *testing.T) {
@@ -153,7 +168,7 @@ func TestPoliciesCreate(t *testing.T) {
 
 		p, err := client.Policies.Create(ctx, orgTest.Name, options)
 		assert.Nil(t, p)
-		assert.EqualError(t, err, "Enforcement mode is required")
+		assert.EqualError(t, err, "enforcement mode is required")
 	})
 
 	t.Run("when options has an invalid organization", func(t *testing.T) {
@@ -161,7 +176,7 @@ func TestPoliciesCreate(t *testing.T) {
 			Name: String("foo"),
 		})
 		assert.Nil(t, p)
-		assert.EqualError(t, err, "Invalid value for organization")
+		assert.EqualError(t, err, "invalid value for organization")
 	})
 }
 
@@ -169,15 +184,21 @@ func TestPoliciesRead(t *testing.T) {
 	client := testClient(t)
 	ctx := context.Background()
 
-	pTest, pTestCleanup := createPolicy(t, client, nil)
+	orgTest, orgTestCleanup := createOrganization(t, client)
+	defer orgTestCleanup()
+
+	pTest, pTestCleanup := createPolicy(t, client, orgTest)
 	defer pTestCleanup()
 
 	t.Run("when the policy exists without content", func(t *testing.T) {
 		p, err := client.Policies.Read(ctx, pTest.ID)
 		require.NoError(t, err)
+
 		assert.Equal(t, pTest.ID, p.ID)
 		assert.Equal(t, pTest.Name, p.Name)
+		assert.Equal(t, pTest.PolicySetCount, p.PolicySetCount)
 		assert.Empty(t, p.Enforce)
+		assert.Equal(t, pTest.Organization.Name, p.Organization.Name)
 	})
 
 	err := client.Policies.Upload(ctx, pTest.ID, []byte(`main = rule { true }`))
@@ -186,9 +207,13 @@ func TestPoliciesRead(t *testing.T) {
 	t.Run("when the policy exists with content", func(t *testing.T) {
 		p, err := client.Policies.Read(ctx, pTest.ID)
 		require.NoError(t, err)
+
 		assert.Equal(t, pTest.ID, p.ID)
 		assert.Equal(t, pTest.Name, p.Name)
+		assert.Equal(t, pTest.Description, p.Description)
+		assert.Equal(t, pTest.PolicySetCount, p.PolicySetCount)
 		assert.NotEmpty(t, p.Enforce)
+		assert.Equal(t, pTest.Organization.Name, p.Organization.Name)
 	})
 
 	t.Run("when the policy does not exist", func(t *testing.T) {
@@ -200,7 +225,7 @@ func TestPoliciesRead(t *testing.T) {
 	t.Run("without a valid policy ID", func(t *testing.T) {
 		p, err := client.Policies.Read(ctx, badIdentifier)
 		assert.Nil(t, p)
-		assert.EqualError(t, err, "Invalid value for policy ID")
+		assert.EqualError(t, err, "invalid value for policy ID")
 	})
 }
 
@@ -226,10 +251,11 @@ func TestPoliciesUpdate(t *testing.T) {
 			},
 		})
 		require.NoError(t, err)
-
 		require.Equal(t, 1, len(pAfter.Enforce))
+
 		assert.Equal(t, pBefore.ID, pAfter.ID)
 		assert.Equal(t, pBefore.Name, pAfter.Name)
+		assert.Equal(t, pBefore.Description, pAfter.Description)
 		assert.Equal(t, pBefore.Enforce[0].Path, pAfter.Enforce[0].Path)
 		assert.Equal(t, EnforcementAdvisory, pAfter.Enforce[0].Mode)
 	})
@@ -256,19 +282,25 @@ func TestPoliciesUpdate(t *testing.T) {
 		assert.Equal(t, pBefore, pAfter)
 	})
 
-	t.Run("without options", func(t *testing.T) {
-		pBefore, pBeforeCleanup := createPolicy(t, client, orgTest)
+	t.Run("with a new description", func(t *testing.T) {
+		pBefore, pBeforeCleanup := createUploadedPolicy(t, client, true, orgTest)
 		defer pBeforeCleanup()
 
-		pAfter, err := client.Policies.Update(ctx, pBefore.ID, PolicyUpdateOptions{})
-		assert.Nil(t, pAfter)
-		assert.EqualError(t, err, "Enforce is required")
+		pAfter, err := client.Policies.Update(ctx, pBefore.ID, PolicyUpdateOptions{
+			Description: String("A brand new description"),
+		})
+		require.NoError(t, err)
+
+		assert.Equal(t, pBefore.Name, pAfter.Name)
+		assert.Equal(t, pBefore.Enforce, pAfter.Enforce)
+		assert.NotEqual(t, pBefore.Description, pAfter.Description)
+		assert.Equal(t, "A brand new description", pAfter.Description)
 	})
 
 	t.Run("without a valid policy ID", func(t *testing.T) {
 		p, err := client.Policies.Update(ctx, badIdentifier, PolicyUpdateOptions{})
 		assert.Nil(t, p)
-		assert.EqualError(t, err, "Invalid value for policy ID")
+		assert.EqualError(t, err, "invalid value for policy ID")
 	})
 }
 
@@ -297,7 +329,7 @@ func TestPoliciesDelete(t *testing.T) {
 
 	t.Run("when the policy ID is invalid", func(t *testing.T) {
 		err := client.Policies.Delete(ctx, badIdentifier)
-		assert.EqualError(t, err, "Invalid value for policy ID")
+		assert.EqualError(t, err, "invalid value for policy ID")
 	})
 }
 
@@ -325,7 +357,7 @@ func TestPoliciesUpload(t *testing.T) {
 
 	t.Run("without a valid policy ID", func(t *testing.T) {
 		err := client.Policies.Upload(ctx, badIdentifier, []byte(`main = rule { true }`))
-		assert.EqualError(t, err, "Invalid value for policy ID")
+		assert.EqualError(t, err, "invalid value for policy ID")
 	})
 }
 
@@ -355,7 +387,7 @@ func TestPoliciesDownload(t *testing.T) {
 
 	t.Run("without a valid policy ID", func(t *testing.T) {
 		content, err := client.Policies.Download(ctx, badIdentifier)
-		assert.EqualError(t, err, "Invalid value for policy ID")
+		assert.EqualError(t, err, "invalid value for policy ID")
 		assert.Nil(t, content)
 	})
 }

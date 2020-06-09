@@ -18,7 +18,7 @@ func TestPlansRead(t *testing.T) {
 
 	t.Run("when the plan exists", func(t *testing.T) {
 		p, err := client.Plans.Read(ctx, rTest.Plan.ID)
-		assert.NoError(t, err)
+		require.NoError(t, err)
 		assert.True(t, p.HasChanges)
 		assert.NotEmpty(t, p.LogReadURL)
 		assert.Equal(t, p.Status, PlanFinished)
@@ -34,7 +34,7 @@ func TestPlansRead(t *testing.T) {
 	t.Run("with invalid plan ID", func(t *testing.T) {
 		p, err := client.Plans.Read(ctx, badIdentifier)
 		assert.Nil(t, p)
-		assert.EqualError(t, err, "Invalid value for plan ID")
+		assert.EqualError(t, err, "invalid value for plan ID")
 	})
 }
 
@@ -59,13 +59,7 @@ func TestPlansLogs(t *testing.T) {
 	})
 
 	t.Run("when the log does not exist", func(t *testing.T) {
-		p, err := client.Plans.Read(ctx, rTest.Plan.ID)
-		require.NoError(t, err)
-
-		logs, err := client.Plans.Logs(
-			ctx,
-			p.LogReadURL[:len(p.LogReadURL)-10]+"nonexisting",
-		)
+		logs, err := client.Plans.Logs(ctx, "nonexisting")
 		assert.Nil(t, logs)
 		assert.Error(t, err)
 	})

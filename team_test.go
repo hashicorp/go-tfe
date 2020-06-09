@@ -51,7 +51,7 @@ func TestTeamsList(t *testing.T) {
 	t.Run("without a valid organization", func(t *testing.T) {
 		tl, err := client.Teams.List(ctx, badIdentifier, TeamListOptions{})
 		assert.Nil(t, tl)
-		assert.EqualError(t, err, "Invalid value for organization")
+		assert.EqualError(t, err, "invalid value for organization")
 	})
 }
 
@@ -86,15 +86,7 @@ func TestTeamsCreate(t *testing.T) {
 	t.Run("when options is missing name", func(t *testing.T) {
 		tm, err := client.Teams.Create(ctx, "foo", TeamCreateOptions{})
 		assert.Nil(t, tm)
-		assert.EqualError(t, err, "Name is required")
-	})
-
-	t.Run("when options has an invalid name", func(t *testing.T) {
-		tm, err := client.Teams.Create(ctx, "foo", TeamCreateOptions{
-			Name: String(badIdentifier),
-		})
-		assert.Nil(t, tm)
-		assert.EqualError(t, err, "Invalid value for name")
+		assert.EqualError(t, err, "name is required")
 	})
 
 	t.Run("when options has an invalid organization", func(t *testing.T) {
@@ -102,7 +94,7 @@ func TestTeamsCreate(t *testing.T) {
 			Name: String("foo"),
 		})
 		assert.Nil(t, tm)
-		assert.EqualError(t, err, "Invalid value for organization")
+		assert.EqualError(t, err, "invalid value for organization")
 	})
 }
 
@@ -121,8 +113,17 @@ func TestTeamsRead(t *testing.T) {
 		require.NoError(t, err)
 		assert.Equal(t, tmTest, tm)
 
+		t.Run("visibility is returned", func(t *testing.T) {
+			assert.Equal(t, "secret", tm.Visibility)
+		})
+
 		t.Run("permissions are properly decoded", func(t *testing.T) {
 			assert.True(t, tm.Permissions.CanDestroy)
+		})
+
+		t.Run("organization access is properly decoded", func(t *testing.T) {
+			assert.True(t, tm.OrganizationAccess.ManagePolicies)
+			assert.False(t, tm.OrganizationAccess.ManageWorkspaces)
 		})
 	})
 
@@ -132,10 +133,70 @@ func TestTeamsRead(t *testing.T) {
 		assert.Equal(t, err, ErrResourceNotFound)
 	})
 
-	t.Run("without a team ID", func(t *testing.T) {
+	t.Run("without a valid team ID", func(t *testing.T) {
 		tm, err := client.Teams.Read(ctx, badIdentifier)
 		assert.Nil(t, tm)
-		assert.EqualError(t, err, "Invalid value for team ID")
+		assert.EqualError(t, err, "invalid value for team ID")
+	})
+}
+
+func TestTeamsUpdate(t *testing.T) {
+	client := testClient(t)
+	ctx := context.Background()
+
+	orgTest, orgTestCleanup := createOrganization(t, client)
+	defer orgTestCleanup()
+
+	tmTest, tmTestCleanup := createTeam(t, client, orgTest)
+	defer tmTestCleanup()
+
+	t.Run("with valid options", func(t *testing.T) {
+		options := TeamUpdateOptions{
+			Name: String("foo bar"),
+			OrganizationAccess: &OrganizationAccessOptions{
+				ManagePolicies:    Bool(false),
+				ManageVCSSettings: Bool(true)},
+			Visibility: String("organization"),
+		}
+
+		tm, err := client.Teams.Update(ctx, tmTest.ID, options)
+		require.NoError(t, err)
+
+		refreshed, err := client.Teams.Read(ctx, tmTest.ID)
+		require.NoError(t, err)
+
+		for _, item := range []*Team{
+			tm,
+			refreshed,
+		} {
+			assert.Equal(t, *options.Name, item.Name)
+			assert.Equal(t,
+				*options.Visibility,
+				item.Visibility,
+			)
+			assert.Equal(t,
+				*options.OrganizationAccess.ManagePolicies,
+				item.OrganizationAccess.ManagePolicies,
+			)
+			assert.Equal(t,
+				*options.OrganizationAccess.ManageVCSSettings,
+				item.OrganizationAccess.ManageVCSSettings,
+			)
+		}
+	})
+
+	t.Run("when the team does not exist", func(t *testing.T) {
+		tm, err := client.Teams.Update(ctx, "nonexisting", TeamUpdateOptions{
+			Name: String("foo bar"),
+		})
+		assert.Nil(t, tm)
+		assert.Equal(t, err, ErrResourceNotFound)
+	})
+
+	t.Run("without a valid team ID", func(t *testing.T) {
+		tm, err := client.Teams.Update(ctx, badIdentifier, TeamUpdateOptions{})
+		assert.Nil(t, tm)
+		assert.EqualError(t, err, "invalid value for team ID")
 	})
 }
 
@@ -159,6 +220,6 @@ func TestTeamsDelete(t *testing.T) {
 
 	t.Run("without valid team ID", func(t *testing.T) {
 		err := client.Teams.Delete(ctx, badIdentifier)
-		assert.EqualError(t, err, "Invalid value for team ID")
+		assert.EqualError(t, err, "invalid value for team ID")
 	})
 }

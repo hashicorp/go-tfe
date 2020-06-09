@@ -6,6 +6,7 @@ import (
 	"encoding/base64"
 	"fmt"
 	"io/ioutil"
+	"os"
 	"testing"
 	"time"
 
@@ -15,6 +16,9 @@ import (
 
 const badIdentifier = "! / nope"
 
+// Memoize test account details
+var _testAccountDetails *TestAccountDetails
+
 func testClient(t *testing.T) *Client {
 	client, err := NewClient(nil)
 	if err != nil {
@@ -22,6 +26,13 @@ func testClient(t *testing.T) *Client {
 	}
 
 	return client
+}
+
+func fetchTestAccountDetails(t *testing.T, client *Client) *TestAccountDetails {
+	if _testAccountDetails == nil {
+		_testAccountDetails = FetchTestAccountDetails(t, client)
+	}
+	return _testAccountDetails
 }
 
 func createConfigurationVersion(t *testing.T, client *Client, w *Workspace) (*ConfigurationVersion, func()) {
@@ -78,6 +89,103 @@ func createUploadedConfigurationVersion(t *testing.T, client *Client, w *Workspa
 	}
 
 	return cv, cvCleanup
+}
+
+func createNotificationConfiguration(t *testing.T, client *Client, w *Workspace) (*NotificationConfiguration, func()) {
+	var wCleanup func()
+
+	if w == nil {
+		w, wCleanup = createWorkspace(t, client, nil)
+	}
+
+	ctx := context.Background()
+	nc, err := client.NotificationConfigurations.Create(
+		ctx,
+		w.ID,
+		NotificationConfigurationCreateOptions{
+			DestinationType: NotificationDestination(NotificationDestinationTypeGeneric),
+			Enabled:         Bool(false),
+			Name:            String(randomString(t)),
+			Token:           String(randomString(t)),
+			URL:             String("http://example.com"),
+			Triggers:        []string{NotificationTriggerCreated},
+		},
+	)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	return nc, func() {
+		if err := client.NotificationConfigurations.Delete(ctx, nc.ID); err != nil {
+			t.Errorf("Error destroying notification configuration! WARNING: Dangling\n"+
+				"resources may exist! The full error is shown below.\n\n"+
+				"NotificationConfiguration: %s\nError: %s", nc.ID, err)
+		}
+
+		if wCleanup != nil {
+			wCleanup()
+		}
+	}
+}
+
+func createPolicySetParameter(t *testing.T, client *Client, ps *PolicySet) (*PolicySetParameter, func()) {
+	var psCleanup func()
+
+	if ps == nil {
+		ps, psCleanup = createPolicySet(t, client, nil, nil, nil)
+	}
+
+	ctx := context.Background()
+	v, err := client.PolicySetParameters.Create(ctx, ps.ID, PolicySetParameterCreateOptions{
+		Key:      String(randomString(t)),
+		Value:    String(randomString(t)),
+		Category: Category(CategoryPolicySet),
+	})
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	return v, func() {
+		if err := client.PolicySetParameters.Delete(ctx, ps.ID, v.ID); err != nil {
+			t.Errorf("Error destroying variable! WARNING: Dangling resources\n"+
+				"may exist! The full error is shown below.\n\n"+
+				"Parameter: %s\nError: %s", v.Key, err)
+		}
+
+		if psCleanup != nil {
+			psCleanup()
+		}
+	}
+}
+
+func createPolicySet(t *testing.T, client *Client, org *Organization, policies []*Policy, workspaces []*Workspace) (*PolicySet, func()) {
+	var orgCleanup func()
+
+	if org == nil {
+		org, orgCleanup = createOrganization(t, client)
+	}
+
+	ctx := context.Background()
+	ps, err := client.PolicySets.Create(ctx, org.Name, PolicySetCreateOptions{
+		Name:       String(randomString(t)),
+		Policies:   policies,
+		Workspaces: workspaces,
+	})
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	return ps, func() {
+		if err := client.PolicySets.Delete(ctx, ps.ID); err != nil {
+			t.Errorf("Error destroying policy set! WARNING: Dangling resources\n"+
+				"may exist! The full error is shown below.\n\n"+
+				"PolicySet: %s\nError: %s", ps.ID, err)
+		}
+
+		if orgCleanup != nil {
+			orgCleanup()
+		}
+	}
 }
 
 func createPolicy(t *testing.T, client *Client, org *Organization) (*Policy, func()) {
@@ -146,18 +254,22 @@ func createUploadedPolicy(t *testing.T, client *Client, pass bool, org *Organiza
 	}
 }
 
-func createOAuthToken(t *testing.T, client *Client, org *Organization) (*OAuthToken, func()) {
+func createOAuthClient(t *testing.T, client *Client, org *Organization) (*OAuthClient, func()) {
 	var orgCleanup func()
 
 	if org == nil {
 		org, orgCleanup = createOrganization(t, client)
 	}
 
+	githubToken := os.Getenv("GITHUB_TOKEN")
+	if githubToken == "" {
+		t.Skip("Export a valid GITHUB_TOKEN before running this test!")
+	}
+
 	options := OAuthClientCreateOptions{
 		APIURL:          String("https://api.github.com"),
 		HTTPURL:         String("https://github.com"),
-		Key:             String(randomString(t)),
-		Secret:          String(randomString(t)),
+		OAuthToken:      String(githubToken),
 		ServiceProvider: ServiceProvider(ServiceProviderGithub),
 	}
 
@@ -170,24 +282,28 @@ func createOAuthToken(t *testing.T, client *Client, org *Organization) (*OAuthTo
 	// This currently panics as the token will not be there when the client is
 	// created. To get a token, the client needs to be connected through the UI
 	// first. So the test using this (TestOAuthTokensList) is currently disabled.
-	return oc.OAuthToken[0], func() {
-		// There currently isn't a way to delete an OAuth client.
-		//
-		// if err := client.OAuthClients.Delete(ctx, oc.ID); err != nil {
-		// 	t.Errorf("Error destroying OAuth client! WARNING: Dangling resources\n"+
-		// 		"may exist! The full error is shown below.\n\n"+
-		// 		"OAuthClient: %s\nError: %s", oc.ID, err)
-		// }
+	return oc, func() {
+		if err := client.OAuthClients.Delete(ctx, oc.ID); err != nil {
+			t.Errorf("Error destroying OAuth client! WARNING: Dangling resources\n"+
+				"may exist! The full error is shown below.\n\n"+
+				"OAuthClient: %s\nError: %s", oc.ID, err)
+		}
 
 		if orgCleanup != nil {
 			orgCleanup()
 		}
 	}
 }
+
+func createOAuthToken(t *testing.T, client *Client, org *Organization) (*OAuthToken, func()) {
+	ocTest, ocTestCleanup := createOAuthClient(t, client, org)
+	return ocTest.OAuthTokens[0], ocTestCleanup
+}
+
 func createOrganization(t *testing.T, client *Client) (*Organization, func()) {
 	ctx := context.Background()
 	org, err := client.Organizations.Create(ctx, OrganizationCreateOptions{
-		Name:  String(randomString(t)),
+		Name:  String("tst-" + randomString(t)),
 		Email: String(fmt.Sprintf("%s@tfe.local", randomString(t))),
 	})
 	if err != nil {
@@ -199,6 +315,34 @@ func createOrganization(t *testing.T, client *Client) (*Organization, func()) {
 			t.Errorf("Error destroying organization! WARNING: Dangling resources\n"+
 				"may exist! The full error is shown below.\n\n"+
 				"Organization: %s\nError: %s", org.Name, err)
+		}
+	}
+}
+
+func createOrganizationMembership(t *testing.T, client *Client, org *Organization) (*OrganizationMembership, func()) {
+	var orgCleanup func()
+
+	if org == nil {
+		org, orgCleanup = createOrganization(t, client)
+	}
+
+	ctx := context.Background()
+	mem, err := client.OrganizationMemberships.Create(ctx, org.Name, OrganizationMembershipCreateOptions{
+		Email: String(fmt.Sprintf("%s@tfe.local", randomString(t))),
+	})
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	return mem, func() {
+		if err := client.OrganizationMemberships.Delete(ctx, mem.ID); err != nil {
+			t.Errorf("Error destroying membership! WARNING: Dangling resources\n"+
+				"may exist! The full error is shown below.\n\n"+
+				"Membership: %s\nError: %s", mem.ID, err)
+		}
+
+		if orgCleanup != nil {
+			orgCleanup()
 		}
 	}
 }
@@ -225,6 +369,47 @@ func createOrganizationToken(t *testing.T, client *Client, org *Organization) (*
 
 		if orgCleanup != nil {
 			orgCleanup()
+		}
+	}
+}
+
+func createRunTrigger(t *testing.T, client *Client, w *Workspace, sourceable *Workspace) (*RunTrigger, func()) {
+	var wCleanup func()
+	var sourceableCleanup func()
+
+	if w == nil {
+		w, wCleanup = createWorkspace(t, client, nil)
+	}
+
+	if sourceable == nil {
+		sourceable, sourceableCleanup = createWorkspace(t, client, nil)
+	}
+
+	ctx := context.Background()
+	rt, err := client.RunTriggers.Create(
+		ctx,
+		w.ID,
+		RunTriggerCreateOptions{
+			Sourceable: sourceable,
+		},
+	)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	return rt, func() {
+		if err := client.RunTriggers.Delete(ctx, rt.ID); err != nil {
+			t.Errorf("Error destroying run trigger! WARNING: Dangling\n"+
+				"resources may exist! The full error is shown below.\n\n"+
+				"RunTrigger: %s\nError: %s", rt.ID, err)
+		}
+
+		if wCleanup != nil {
+			wCleanup()
+		}
+
+		if sourceableCleanup != nil {
+			sourceableCleanup()
 		}
 	}
 }
@@ -267,19 +452,110 @@ func createPlannedRun(t *testing.T, client *Client, w *Workspace) (*Run, func())
 			t.Fatal(err)
 		}
 
-		if r.Status == RunPlanned || r.Status == RunPolicyChecked || r.Status == RunPolicyOverride {
-			break
+		switch r.Status {
+		case RunPlanned, RunCostEstimated, RunPolicyChecked, RunPolicyOverride:
+			return r, rCleanup
 		}
 
-		if i > 30 {
+		if i > 45 {
 			rCleanup()
 			t.Fatal("Timeout waiting for run to be planned")
 		}
 
 		time.Sleep(1 * time.Second)
 	}
+}
 
-	return r, rCleanup
+func createCostEstimatedRun(t *testing.T, client *Client, w *Workspace) (*Run, func()) {
+	r, rCleanup := createRun(t, client, w)
+
+	var err error
+	ctx := context.Background()
+	for i := 0; ; i++ {
+		r, err = client.Runs.Read(ctx, r.ID)
+		if err != nil {
+			t.Fatal(err)
+		}
+
+		switch r.Status {
+		case RunCostEstimated, RunPolicyChecked, RunPolicyOverride:
+			return r, rCleanup
+		}
+
+		if i > 45 {
+			rCleanup()
+			t.Fatal("Timeout waiting for run to be cost estimated")
+		}
+
+		time.Sleep(2 * time.Second)
+	}
+}
+
+func createAppliedRun(t *testing.T, client *Client, w *Workspace) (*Run, func()) {
+	r, rCleanup := createPlannedRun(t, client, w)
+	ctx := context.Background()
+
+	err := client.Runs.Apply(ctx, r.ID, RunApplyOptions{})
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	for i := 0; ; i++ {
+		r, err = client.Runs.Read(ctx, r.ID)
+		if err != nil {
+			t.Fatal(err)
+		}
+
+		if r.Status == RunApplied {
+			return r, rCleanup
+		}
+
+		if i > 45 {
+			rCleanup()
+			t.Fatal("Timeout waiting for run to be applied")
+		}
+
+		time.Sleep(1 * time.Second)
+	}
+}
+
+func createPlanExport(t *testing.T, client *Client, r *Run) (*PlanExport, func()) {
+	var rCleanup func()
+
+	if r == nil {
+		r, rCleanup = createPlannedRun(t, client, nil)
+	}
+
+	ctx := context.Background()
+	pe, err := client.PlanExports.Create(ctx, PlanExportCreateOptions{
+		Plan:     r.Plan,
+		DataType: PlanExportType(PlanExportSentinelMockBundleV0),
+	})
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	for i := 0; ; i++ {
+		pe, err := client.PlanExports.Read(ctx, pe.ID)
+		if err != nil {
+			t.Fatal(err)
+		}
+
+		if pe.Status == PlanExportFinished {
+			return pe, func() {
+				if rCleanup != nil {
+					rCleanup()
+				}
+			}
+		}
+
+		if i > 45 {
+			rCleanup()
+			t.Fatal("Timeout waiting for plan export to finish")
+		}
+
+		time.Sleep(1 * time.Second)
+	}
 }
 
 func createRegistryModule(t *testing.T, client *Client, organization string) (*RegistryModule, func()) {
@@ -348,6 +624,18 @@ func createStateVersion(t *testing.T, client *Client, serial int64, w *Workspace
 	}
 
 	ctx := context.Background()
+
+	_, err = client.Workspaces.Lock(ctx, w.ID, WorkspaceLockOptions{})
+	if err != nil {
+		t.Fatal(err)
+	}
+	defer func() {
+		_, err := client.Workspaces.Unlock(ctx, w.ID)
+		if err != nil {
+			t.Fatal(err)
+		}
+	}()
+
 	sv, err := client.StateVersions.Create(ctx, w.ID, StateVersionCreateOptions{
 		MD5:    String(fmt.Sprintf("%x", md5.Sum(state))),
 		Serial: Int64(serial),
@@ -375,7 +663,8 @@ func createTeam(t *testing.T, client *Client, org *Organization) (*Team, func())
 
 	ctx := context.Background()
 	tm, err := client.Teams.Create(ctx, org.Name, TeamCreateOptions{
-		Name: String(randomString(t)),
+		Name:               String(randomString(t)),
+		OrganizationAccess: &OrganizationAccessOptions{ManagePolicies: Bool(true)},
 	})
 	if err != nil {
 		t.Fatal(err)
@@ -470,18 +759,18 @@ func createVariable(t *testing.T, client *Client, w *Workspace) (*Variable, func
 	}
 
 	ctx := context.Background()
-	v, err := client.Variables.Create(ctx, VariableCreateOptions{
-		Key:       String(randomString(t)),
-		Value:     String(randomString(t)),
-		Category:  Category(CategoryTerraform),
-		Workspace: w,
+	v, err := client.Variables.Create(ctx, w.ID, VariableCreateOptions{
+		Key:         String(randomString(t)),
+		Value:       String(randomString(t)),
+		Category:    Category(CategoryTerraform),
+		Description: String(randomString(t)),
 	})
 	if err != nil {
 		t.Fatal(err)
 	}
 
 	return v, func() {
-		if err := client.Variables.Delete(ctx, v.ID); err != nil {
+		if err := client.Variables.Delete(ctx, w.ID, v.ID); err != nil {
 			t.Errorf("Error destroying variable! WARNING: Dangling resources\n"+
 				"may exist! The full error is shown below.\n\n"+
 				"Variable: %s\nError: %s", v.Key, err)
@@ -513,6 +802,51 @@ func createWorkspace(t *testing.T, client *Client, org *Organization) (*Workspac
 			t.Errorf("Error destroying workspace! WARNING: Dangling resources\n"+
 				"may exist! The full error is shown below.\n\n"+
 				"Workspace: %s\nError: %s", w.Name, err)
+		}
+
+		if orgCleanup != nil {
+			orgCleanup()
+		}
+	}
+}
+
+func createWorkspaceWithVCS(t *testing.T, client *Client, org *Organization) (*Workspace, func()) {
+	var orgCleanup func()
+
+	if org == nil {
+		org, orgCleanup = createOrganization(t, client)
+	}
+
+	oc, ocCleanup := createOAuthToken(t, client, org)
+
+	githubIdentifier := os.Getenv("GITHUB_POLICY_SET_IDENTIFIER")
+	if githubIdentifier == "" {
+		t.Fatal("Export a valid GITHUB_POLICY_SET_IDENTIFIER before running this test!")
+	}
+
+	options := WorkspaceCreateOptions{
+		Name: String(randomString(t)),
+		VCSRepo: &VCSRepoOptions{
+			Identifier:   String(githubIdentifier),
+			OAuthTokenID: String(oc.ID),
+		},
+	}
+
+	ctx := context.Background()
+	w, err := client.Workspaces.Create(ctx, org.Name, options)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	return w, func() {
+		if err := client.Workspaces.Delete(ctx, org.Name, w.Name); err != nil {
+			t.Errorf("Error destroying workspace! WARNING: Dangling resources\n"+
+				"may exist! The full error is shown below.\n\n"+
+				"Workspace: %s\nError: %s", w.Name, err)
+		}
+
+		if ocCleanup != nil {
+			ocCleanup()
 		}
 
 		if orgCleanup != nil {
