@@ -17,8 +17,6 @@ jobs:
     steps:
       - checkout
       
-      - run: go get -v -t -d ./...
-      
       - run:
           name: Make test results directory
           command: mkdir -p $TEST_RESULTS_DIR
@@ -26,6 +24,7 @@ jobs:
       - run:
           name: Run tests
           command: |
+              export GO111MODULE=on
               gotestsum --format short-verbose --junitfile \
               $TEST_RESULTS_DIR/tests.xml -- -timeout=40m
           no_output_timeout: 1800
