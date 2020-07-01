@@ -3,9 +3,11 @@ package tfe
 import (
 	"context"
 	"crypto/md5"
+	"crypto/tls"
 	"encoding/base64"
 	"fmt"
 	"io/ioutil"
+	"net/http"
 	"os"
 	"testing"
 	"time"
@@ -19,6 +21,24 @@ const badIdentifier = "! / nope"
 var _testAccountDetails *TestAccountDetails
 
 func testClient(t *testing.T) *Client {
+	// allow using insecure HTTPS
+	// this makes it easier to test with tools like mitmproxy https://mitmproxy.org/
+
+	if os.Getenv("TEST_HTTPS_INSECURE") == "1" {
+		config := DefaultConfig()
+		config.HTTPClient = &http.Client{
+			Transport: &http.Transport{
+				Proxy:           http.ProxyFromEnvironment,
+				TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
+			},
+		}
+		client, err := NewClient(config)
+		if err != nil {
+			t.Fatal(err)
+		}
+		return client
+	}
+
 	client, err := NewClient(nil)
 	if err != nil {
 		t.Fatal(err)

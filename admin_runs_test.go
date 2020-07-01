@@ -10,6 +10,7 @@ import (
 
 func TestAdminRunsList(t *testing.T) {
 	client := testClient(t)
+
 	ctx := context.Background()
 
 	wTest, wTestCleanup := createWorkspace(t, client, nil)
@@ -30,12 +31,9 @@ func TestAdminRunsList(t *testing.T) {
 		assert.Contains(t, found, rTest1.ID)
 		assert.Contains(t, found, rTest2.ID)
 		assert.Equal(t, 1, rl.CurrentPage)
-		assert.Equal(t, 2, rl.TotalCount)
 	})
 
 	t.Run("with list options", func(t *testing.T) {
-		t.Skip("paging not supported yet in API")
-
 		// Request a page number which is out of range. The result should
 		// be successful, but return no results if the paging options are
 		// properly passed along.
@@ -48,6 +46,5 @@ func TestAdminRunsList(t *testing.T) {
 		require.NoError(t, err)
 		assert.Empty(t, rl.Items)
 		assert.Equal(t, 999, rl.CurrentPage)
-		assert.Equal(t, 2, rl.TotalCount)
 	})
 }

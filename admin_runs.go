@@ -57,13 +57,13 @@ type AdminRunsList struct {
 // AdminRunsListOptions represents the options for listing runs.
 type AdminRunsListOptions struct {
 	ListOptions
-	RunStatus *string `url:"filter[status]"`
+	RunStatus *string `url:"filter[status],omitempty"` // sending an empty param returns zero results
 	Query     *string `url:"q"`
 	Include   string  `url:"include"`
 }
 
 func (o AdminRunsListOptions) valid() error {
-	if *o.RunStatus != "" {
+	if o.RunStatus != nil && *o.RunStatus != "" {
 		validRunStatus := []string{"pending", "plan_queued", "planning", "planned", "confirmed", "apply_queued", "applying", "applied", "discarded", "errored", "canceled", "cost_estimating", "cost_estimated", "policy_checking", "policy_override", "policy_soft_failed", "policy_checked", "planned_and_finished"}
 		runStatus := strings.Split(*o.RunStatus, ",")
 
