@@ -90,25 +90,29 @@ func createUploadedConfigurationVersion(t *testing.T, client *Client, w *Workspa
 	return cv, cvCleanup
 }
 
-func createNotificationConfiguration(t *testing.T, client *Client, w *Workspace) (*NotificationConfiguration, func()) {
+func createNotificationConfiguration(t *testing.T, client *Client, w *Workspace, options *NotificationConfigurationCreateOptions) (*NotificationConfiguration, func()) {
 	var wCleanup func()
 
 	if w == nil {
 		w, wCleanup = createWorkspace(t, client, nil)
 	}
 
-	ctx := context.Background()
-	nc, err := client.NotificationConfigurations.Create(
-		ctx,
-		w.ID,
-		NotificationConfigurationCreateOptions{
+	if options == nil {
+		options = &NotificationConfigurationCreateOptions{
 			DestinationType: NotificationDestination(NotificationDestinationTypeGeneric),
 			Enabled:         Bool(false),
 			Name:            String(randomString(t)),
 			Token:           String(randomString(t)),
 			URL:             String("http://example.com"),
 			Triggers:        []string{NotificationTriggerCreated},
-		},
+		}
+	}
+
+	ctx := context.Background()
+	nc, err := client.NotificationConfigurations.Create(
+		ctx,
+		w.ID,
+		*options,
 	)
 	if err != nil {
 		t.Fatal(err)
