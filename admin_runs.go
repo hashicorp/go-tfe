@@ -6,7 +6,6 @@ import (
 	"fmt"
 	"net/url"
 	"strings"
-	"time"
 )
 
 // Compile-time proof of interface implementation.
@@ -27,25 +26,6 @@ type AdminRuns interface {
 // runs implements Users.
 type adminRuns struct {
 	client *Client
-}
-
-type adminRun struct {
-	ID                     string               `jsonapi:"primary,runs"`
-	Actions                *RunActions          `jsonapi:"attr,actions"`
-	CreatedAt              time.Time            `jsonapi:"attr,created-at,iso8601"`
-	ForceCancelAvailableAt time.Time            `jsonapi:"attr,force-cancel-available-at,iso8601"`
-	HasChanges             bool                 `jsonapi:"attr,has-changes"`
-	IsDestroy              bool                 `jsonapi:"attr,is-destroy"`
-	Message                string               `jsonapi:"attr,message"`
-	Permissions            *RunPermissions      `jsonapi:"attr,permissions"`
-	PositionInQueue        int                  `jsonapi:"attr,position-in-queue"`
-	Source                 RunSource            `jsonapi:"attr,source"`
-	Status                 RunStatus            `jsonapi:"attr,status"`
-	StatusTimestamps       *RunStatusTimestamps `jsonapi:"attr,status-timestamps"`
-
-	// Relations
-	Workspace    *Workspace    `jsonapi:"relation,workspace"`
-	Organization *Organization `jsonapi:"relation,workspace.organization"`
 }
 
 // AdminRunsList represents a list of runs.
