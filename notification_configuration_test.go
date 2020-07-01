@@ -15,8 +15,8 @@ func TestNotificationConfigurationList(t *testing.T) {
 	wTest, wTestCleanup := createWorkspace(t, client, nil)
 	defer wTestCleanup()
 
-	ncTest1, _ := createNotificationConfiguration(t, client, wTest)
-	ncTest2, _ := createNotificationConfiguration(t, client, wTest)
+	ncTest1, _ := createNotificationConfiguration(t, client, wTest, nil)
+	ncTest2, _ := createNotificationConfiguration(t, client, wTest, nil)
 
 	t.Run("with a valid workspace", func(t *testing.T) {
 		ncl, err := client.NotificationConfigurations.List(
@@ -69,8 +69,17 @@ func TestNotificationConfigurationCreate(t *testing.T) {
 	client := testClient(t)
 	ctx := context.Background()
 
-	wTest, wTestCleanup := createWorkspace(t, client, nil)
+	orgTest, orgTestCleanup := createOrganization(t, client)
+	defer orgTestCleanup()
+
+	wTest, wTestCleanup := createWorkspace(t, client, orgTest)
 	defer wTestCleanup()
+
+	// Create user to use when testing email destination type
+	orgMemberTest, orgMemberTestCleanup := createOrganizationMembership(t, client, orgTest)
+	defer orgMemberTestCleanup()
+
+	orgMemberTest.User = &User{ID: orgMemberTest.User.ID}
 
 	t.Run("with all required values", func(t *testing.T) {
 		options := NotificationConfigurationCreateOptions{
@@ -100,10 +109,47 @@ func TestNotificationConfigurationCreate(t *testing.T) {
 		assert.EqualError(t, err, "name is required")
 	})
 
+	t.Run("without a required value URL when destination type is generic", func(t *testing.T) {
+		options := NotificationConfigurationCreateOptions{
+			DestinationType: NotificationDestination(NotificationDestinationTypeGeneric),
+			Enabled:         Bool(false),
+			Name:            String(randomString(t)),
+			Token:           String(randomString(t)),
+			Triggers:        []string{NotificationTriggerCreated},
+		}
+
+		nc, err := client.NotificationConfigurations.Create(ctx, wTest.ID, options)
+		assert.Nil(t, nc)
+		assert.EqualError(t, err, "url is required")
+	})
+
 	t.Run("without a valid workspace", func(t *testing.T) {
 		nc, err := client.NotificationConfigurations.Create(ctx, badIdentifier, NotificationConfigurationCreateOptions{})
 		assert.Nil(t, nc)
 		assert.EqualError(t, err, "invalid value for workspace ID")
+	})
+
+	t.Run("with email users when destination type is email", func(t *testing.T) {
+		options := NotificationConfigurationCreateOptions{
+			DestinationType: NotificationDestination(NotificationDestinationTypeEmail),
+			Enabled:         Bool(false),
+			Name:            String(randomString(t)),
+			EmailUsers:      []*User{orgMemberTest.User},
+		}
+
+		_, err := client.NotificationConfigurations.Create(ctx, wTest.ID, options)
+		require.NoError(t, err)
+	})
+
+	t.Run("without email users when destination type is email", func(t *testing.T) {
+		options := NotificationConfigurationCreateOptions{
+			DestinationType: NotificationDestination(NotificationDestinationTypeEmail),
+			Enabled:         Bool(false),
+			Name:            String(randomString(t)),
+		}
+
+		_, err := client.NotificationConfigurations.Create(ctx, wTest.ID, options)
+		require.NoError(t, err)
 	})
 }
 
@@ -111,7 +157,7 @@ func TestNotificationConfigurationRead(t *testing.T) {
 	client := testClient(t)
 	ctx := context.Background()
 
-	ncTest, ncTestCleanup := createNotificationConfiguration(t, client, nil)
+	ncTest, ncTestCleanup := createNotificationConfiguration(t, client, nil, nil)
 	defer ncTestCleanup()
 
 	t.Run("with a valid ID", func(t *testing.T) {
@@ -135,8 +181,32 @@ func TestNotificationConfigurationUpdate(t *testing.T) {
 	client := testClient(t)
 	ctx := context.Background()
 
-	ncTest, ncTestCleanup := createNotificationConfiguration(t, client, nil)
+	orgTest, orgTestCleanup := createOrganization(t, client)
+	defer orgTestCleanup()
+
+	wTest, wTestCleanup := createWorkspace(t, client, orgTest)
+	defer wTestCleanup()
+
+	ncTest, ncTestCleanup := createNotificationConfiguration(t, client, wTest, nil)
 	defer ncTestCleanup()
+
+	// Create users to use when testing email destination type
+	orgMemberTest1, orgMemberTest1Cleanup := createOrganizationMembership(t, client, orgTest)
+	defer orgMemberTest1Cleanup()
+	orgMemberTest2, orgMemberTest2Cleanup := createOrganizationMembership(t, client, orgTest)
+	defer orgMemberTest2Cleanup()
+
+	orgMemberTest1.User = &User{ID: orgMemberTest1.User.ID}
+	orgMemberTest2.User = &User{ID: orgMemberTest2.User.ID}
+
+	options := &NotificationConfigurationCreateOptions{
+		DestinationType: NotificationDestination(NotificationDestinationTypeEmail),
+		Enabled:         Bool(false),
+		Name:            String(randomString(t)),
+		EmailUsers:      []*User{orgMemberTest1.User},
+	}
+	ncEmailTest, ncEmailTestCleanup := createNotificationConfiguration(t, client, wTest, options)
+	defer ncEmailTestCleanup()
 
 	t.Run("with options", func(t *testing.T) {
 		options := NotificationConfigurationUpdateOptions{
@@ -148,6 +218,34 @@ func TestNotificationConfigurationUpdate(t *testing.T) {
 		require.NoError(t, err)
 		assert.Equal(t, nc.Enabled, true)
 		assert.Equal(t, nc.Name, "newName")
+	})
+
+	t.Run("with email users when destination type is email", func(t *testing.T) {
+		options := NotificationConfigurationUpdateOptions{
+			Enabled:    Bool(true),
+			Name:       String("newName"),
+			EmailUsers: []*User{orgMemberTest1.User, orgMemberTest2.User},
+		}
+
+		nc, err := client.NotificationConfigurations.Update(ctx, ncEmailTest.ID, options)
+		require.NoError(t, err)
+		assert.Equal(t, nc.Enabled, true)
+		assert.Equal(t, nc.Name, "newName")
+		assert.Contains(t, nc.EmailUsers, orgMemberTest1.User)
+		assert.Contains(t, nc.EmailUsers, orgMemberTest2.User)
+	})
+
+	t.Run("without email users when destination type is email", func(t *testing.T) {
+		options := NotificationConfigurationUpdateOptions{
+			Enabled: Bool(true),
+			Name:    String("newName"),
+		}
+
+		nc, err := client.NotificationConfigurations.Update(ctx, ncEmailTest.ID, options)
+		require.NoError(t, err)
+		assert.Equal(t, nc.Enabled, true)
+		assert.Equal(t, nc.Name, "newName")
+		assert.Empty(t, nc.EmailUsers)
 	})
 
 	t.Run("without options", func(t *testing.T) {
@@ -173,7 +271,7 @@ func TestNotificationConfigurationDelete(t *testing.T) {
 	wTest, wTestCleanup := createWorkspace(t, client, nil)
 	defer wTestCleanup()
 
-	ncTest, _ := createNotificationConfiguration(t, client, wTest)
+	ncTest, _ := createNotificationConfiguration(t, client, wTest, nil)
 
 	t.Run("with a valid ID", func(t *testing.T) {
 		err := client.NotificationConfigurations.Delete(ctx, ncTest.ID)
@@ -198,7 +296,7 @@ func TestNotificationConfigurationVerify(t *testing.T) {
 	client := testClient(t)
 	ctx := context.Background()
 
-	ncTest, ncTestCleanup := createNotificationConfiguration(t, client, nil)
+	ncTest, ncTestCleanup := createNotificationConfiguration(t, client, nil, nil)
 	defer ncTestCleanup()
 
 	t.Run("with a valid ID", func(t *testing.T) {
