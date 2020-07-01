@@ -44,7 +44,7 @@ type AdminRunsListOptions struct {
 
 func (o AdminRunsListOptions) valid() error {
 	if o.RunStatus != nil && *o.RunStatus != "" {
-		validRunStatus := []string{"pending", "plan_queued", "planning", "planned", "confirmed", "apply_queued", "applying", "applied", "discarded", "errored", "canceled", "cost_estimating", "cost_estimated", "policy_checking", "policy_override", "policy_soft_failed", "policy_checked", "planned_and_finished"}
+		validRunStatus := []string{"pending", "plan_queued", "planning", "planned", "confirmed", "apply_queued", "applying", "applied", "discarded", "errored", "canceled", "cost_estimating", "cost_estimated", "policy_checking", "policy_override", "policy_soft_failed", "policy_checked", "planned_and_finished", "force_canceled"}
 		runStatus := strings.Split(*o.RunStatus, ",")
 
 		// iterate over our statuses
