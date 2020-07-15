@@ -21,29 +21,40 @@ version changes will be used for both bugfixes and non-breaking changes.
 
 Currently the following endpoints are supported:
 
-- [x] [Accounts](https://www.terraform.io/docs/enterprise/api/account.html)
-- [x] [Configuration Versions](https://www.terraform.io/docs/enterprise/api/configuration-versions.html)
-- [x] [OAuth Clients](https://www.terraform.io/docs/enterprise/api/oauth-clients.html)
-- [x] [OAuth Tokens](https://www.terraform.io/docs/enterprise/api/oauth-tokens.html)
-- [x] [Organizations](https://www.terraform.io/docs/enterprise/api/organizations.html)
+- [x] [Accounts](https://www.terraform.io/docs/cloud/api/account.html)
+- [x] [Applies](https://www.terraform.io/docs/cloud/api/applies.html)
+- [x] [Configuration Versions](https://www.terraform.io/docs/cloud/api/configuration-versions.html)
+- [x] [Cost Estimates](https://www.terraform.io/docs/cloud/api/cost-estimates.html)
+- [ ] [IP Ranges](https://www.terraform.io/docs/cloud/api/ip-ranges.html)
+- [x] [Notification Configurations](https://www.terraform.io/docs/cloud/api/notification-configurations.html)
+- [x] [OAuth Clients](https://www.terraform.io/docs/cloud/api/oauth-clients.html)
+- [x] [OAuth Tokens](https://www.terraform.io/docs/cloud/api/oauth-tokens.html)
+- [x] [Organizations](https://www.terraform.io/docs/cloud/api/organizations.html)
 - [x] [Organization Memberships](https://www.terraform.io/docs/cloud/api/organization-memberships.html)
-- [x] [Organization Tokens](https://www.terraform.io/docs/enterprise/api/organization-tokens.html)
-- [x] [Policies](https://www.terraform.io/docs/enterprise/api/policies.html)
-- [x] [Policy Set Parameters](https://www.terraform.io/docs/enterprise/api/policy-set-params.html)
-- [x] [Policy Sets](https://www.terraform.io/docs/enterprise/api/policy-sets.html)
-- [x] [Policy Checks](https://www.terraform.io/docs/enterprise/api/policy-checks.html)
-- [ ] [Registry Modules](https://www.terraform.io/docs/enterprise/api/modules.html)
-- [x] [Runs](https://www.terraform.io/docs/enterprise/api/run.html)
+- [x] [Organization Tokens](https://www.terraform.io/docs/cloud/api/organization-tokens.html)
+- [x] [Plan Exports](https://www.terraform.io/docs/cloud/api/plan-exports.html)
+- [x] [Plans](https://www.terraform.io/docs/cloud/api/plans.html)
+- [x] [Policies](https://www.terraform.io/docs/cloud/api/policies.html)
+- [x] [Policy Checks](https://www.terraform.io/docs/cloud/api/policy-checks.html)
+- [x] [Policy Sets](https://www.terraform.io/docs/cloud/api/policy-sets.html)
+- [x] [Policy Set Parameters](https://www.terraform.io/docs/cloud/api/policy-set-params.html)
+- [x] [Policy Checks](https://www.terraform.io/docs/cloud/api/policy-checks.html)
+- [x] [Registry Modules](https://www.terraform.io/docs/cloud/api/modules.html)
+- [x] [Runs](https://www.terraform.io/docs/cloud/api/run.html)
 - [x] [Run Triggers](https://www.terraform.io/docs/cloud/api/run-triggers.html)
-- [x] [SSH Keys](https://www.terraform.io/docs/enterprise/api/ssh-keys.html)
-- [x] [State Versions](https://www.terraform.io/docs/enterprise/api/state-versions.html)
-- [x] [Team Access](https://www.terraform.io/docs/enterprise/api/team-access.html)
-- [x] [Team Memberships](https://www.terraform.io/docs/enterprise/api/team-members.html)
-- [x] [Team Tokens](https://www.terraform.io/docs/enterprise/api/team-tokens.html)
-- [x] [Teams](https://www.terraform.io/docs/enterprise/api/teams.html)
-- [x] [Workspace Variables](https://www.terraform.io/docs/enterprise/api/workspace-variables.html)
-- [x] [Workspaces](https://www.terraform.io/docs/enterprise/api/workspaces.html)
-- [ ] [Admin](https://www.terraform.io/docs/enterprise/api/admin/index.html)
+- [x] [SSH Keys](https://www.terraform.io/docs/cloud/api/ssh-keys.html)
+- [x] [State Versions](https://www.terraform.io/docs/cloud/api/state-versions.html)
+- [ ] [State Version Outputs](https://www.terraform.io/docs/cloud/api/state-version-outputs.html)
+- [x] [Team Access](https://www.terraform.io/docs/cloud/api/team-access.html)
+- [x] [Team Memberships](https://www.terraform.io/docs/cloud/api/team-members.html)
+- [x] [Team Tokens](https://www.terraform.io/docs/cloud/api/team-tokens.html)
+- [x] [Teams](https://www.terraform.io/docs/cloud/api/teams.html)
+- [ ] [User Tokens](https://www.terraform.io/docs/cloud/api/user-tokens.html)
+- [x] [Users](https://www.terraform.io/docs/cloud/api/users.html)
+- [ ] [DEPRECATED] [Variables](https://www.terraform.io/docs/cloud/api/variables.html)
+- [x] [Workspaces](https://www.terraform.io/docs/cloud/api/workspaces.html)
+- [x] [Workspace Variables](https://www.terraform.io/docs/cloud/api/workspace-variables.html)
+- [ ] [Admin](https://www.terraform.io/docs/cloud/api/admin/index.html)
 
 ## Installation
 
@@ -131,13 +142,19 @@ func main() {
 
 ## Running tests
 
-### 1. (Optional) Create a policy sets repo
+### 1. (Optional) Create repositories for policy sets and registry modules
 
-If you are planning to run the full suite of tests or work on policy sets, you'll need to set up a policy set repository in GitHub.
+If you are planning to run the full suite of tests or work on policy sets or registry modules, you'll need to set up repositories for them in GitHub.
 
 Your policy set repository will need the following: 
 1. A policy set stored in a subdirectory `policy-sets/foo`
 1. A branch other than master named `policies`
+
+Your registry module repository will need to be a [valid module](https://www.terraform.io/docs/cloud/registry/publish.html#preparing-a-module-repository).
+It will need the following: 
+1. To be named `terraform-<PROVIDER>-<NAME>`
+1. At least one valid SemVer tag in the format `x.y.z`
+[terraform-random-module](ttps://github.com/caseylang/terraform-random-module) is a good example repo. 
    
 ### 2. Set up environment variables
 
@@ -150,6 +167,7 @@ and token.
 ##### Optional:
 1. `GITHUB_TOKEN` - [GitHub personal access token](https://help.github.com/en/github/authenticating-to-github/creating-a-personal-access-token-for-the-command-line). Required for running any tests that use VCS (OAuth clients, policy sets, etc).
 1. `GITHUB_POLICY_SET_IDENTIFIER` - GitHub policy set repository identifier in the format `username/repository`. Required for running policy set tests.
+1. `GITHUB_REGISTRY_MODULE_IDENTIFIER` - GitHub registry module repository identifier in the format `username/repository`. Required for running registry module tests.
 
 You can set your environment variables up however you prefer. The following are instructions for setting up environment variables using [envchain](https://github.com/sorah/envchain).
    1. Make sure you have envchain installed. [Instructions for this can be found in the envchain README](https://github.com/sorah/envchain#installation).

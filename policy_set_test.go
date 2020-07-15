@@ -154,6 +154,7 @@ func TestPolicySetsCreate(t *testing.T) {
 		assert.Equal(t, ps.PoliciesPath, "/policy-sets/foo")
 		assert.Equal(t, ps.VCSRepo, &VCSRepo{
 			Branch:            "policies",
+			DisplayIdentifier: githubIdentifier,
 			Identifier:        githubIdentifier,
 			OAuthTokenID:      oc.ID,
 			IngressSubmodules: true,
@@ -188,6 +189,7 @@ func TestPolicySetsCreate(t *testing.T) {
 		assert.Equal(t, ps.PoliciesPath, "/policy-sets/bar")
 		assert.Equal(t, ps.VCSRepo, &VCSRepo{
 			Branch:            "policies",
+			DisplayIdentifier: githubIdentifier,
 			Identifier:        githubIdentifier,
 			OAuthTokenID:      oc.ID,
 			IngressSubmodules: false,
