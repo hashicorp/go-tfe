@@ -440,11 +440,35 @@ func (c *Client) newRequest(method, path string, v interface{}) (*retryablehttp.
 		reqHeaders.Set("Content-Type", "application/vnd.api+json")
 
 		if v != nil {
-			buf := bytes.NewBuffer(nil)
-			if err := jsonapi.MarshalPayloadWithoutIncluded(buf, v); err != nil {
-				return nil, err
+			modelValue := reflect.ValueOf(v).Elem()
+			jsonApiFields := 0
+			jsonFields := 0
+			for i := 0; i < modelValue.NumField(); i++ {
+				structField := modelValue.Type().Field(i)
+				if structField.Tag.Get("jsonapi") != "" {
+					jsonApiFields++
+				}
+				if structField.Tag.Get("json") != "" {
+					jsonFields++
+				}
 			}
-			body = buf
+			if jsonApiFields > 0 && jsonFields > 0 {
+				return nil, errors.New("go-tfe bug: struct can't use both json and jsonapi attributes")
+			}
+
+			if jsonFields > 0 {
+				buf, err := json.Marshal(v)
+				if err != nil {
+					return nil, err
+				}
+				body = buf
+			} else {
+				buf := bytes.NewBuffer(nil)
+				if err := jsonapi.MarshalPayloadWithoutIncluded(buf, v); err != nil {
+					return nil, err
+				}
+				body = buf
+			}
 		}
 	case "PUT":
 		reqHeaders.Set("Accept", "application/json")
