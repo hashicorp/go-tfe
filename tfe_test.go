@@ -324,6 +324,37 @@ func TestClient_requestBodySerialization(t *testing.T) {
 		}
 	})
 
+	t.Run("non-pointer request", func(t *testing.T) {
+		body := InvalidBody{}
+		_, _, err := createRequest(body)
+		if err == nil || err.Error() != "go-tfe bug: DELETE/PATCH/POST body must be nil, ptr, or ptr slice" {
+			t.Fatalf("unexpected error: %v", err)
+		}
+	})
+
+	t.Run("slice of non-pointer request", func(t *testing.T) {
+		body := []InvalidBody{{}}
+		_, _, err := createRequest(body)
+		if err == nil || err.Error() != "go-tfe bug: DELETE/PATCH/POST body must be nil, ptr, or ptr slice" {
+			t.Fatalf("unexpected error: %v", err)
+		}
+	})
+
+	t.Run("map request", func(t *testing.T) {
+		body := make(map[string]string)
+		_, _, err := createRequest(body)
+		if err == nil || err.Error() != "go-tfe bug: DELETE/PATCH/POST body must be nil, ptr, or ptr slice" {
+			t.Fatalf("unexpected error: %v", err)
+		}
+	})
+
+	t.Run("string request", func(t *testing.T) {
+		body := "foo"
+		_, _, err := createRequest(body)
+		if err == nil || err.Error() != "go-tfe bug: DELETE/PATCH/POST body must be nil, ptr, or ptr slice" {
+			t.Fatalf("unexpected error: %v", err)
+		}
+	})
 }
 
 func createRequest(v interface{}) (*retryablehttp.Request, []byte, error) {

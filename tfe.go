@@ -448,13 +448,19 @@ func (c *Client) newRequest(method, path string, v interface{}) (*retryablehttp.
 			// non-pointers) but they wouldn't work anyway because the
 			// json-api library doesn't support serializing other things.
 			var modelType reflect.Type
-			if reflect.TypeOf(v).Kind() == reflect.Slice {
-				modelType = reflect.TypeOf(v).Elem().Elem()
-				// TODO: return an error if the element type isn't a pointer
-			} else {
-				// TODO: return an error for everything other than a slice
-				// or a pointer
+			bodyType := reflect.TypeOf(v)
+			invalidBodyError := errors.New("go-tfe bug: DELETE/PATCH/POST body must be nil, ptr, or ptr slice")
+			switch bodyType.Kind() {
+			case reflect.Slice:
+				sliceElem := bodyType.Elem()
+				if sliceElem.Kind() != reflect.Ptr {
+					return nil, invalidBodyError
+				}
+				modelType = sliceElem.Elem()
+			case reflect.Ptr:
 				modelType = reflect.ValueOf(v).Elem().Type()
+			default:
+				return nil, invalidBodyError
 			}
 
 			// Infer whether the request uses jsonapi or regular json
