@@ -440,62 +440,8 @@ func (c *Client) newRequest(method, path string, v interface{}) (*retryablehttp.
 		reqHeaders.Set("Content-Type", "application/vnd.api+json")
 
 		if v != nil {
-			// The body can be a slice of pointers or a pointer. In either
-			// case we want to choose the serialization type based on the
-			// individual record type. To determine that type, we need
-			// to either follow the pointer or examine the slice element type.
-			// There are other theoretical possiblities (e. g. maps,
-			// non-pointers) but they wouldn't work anyway because the
-			// json-api library doesn't support serializing other things.
-			var modelType reflect.Type
-			bodyType := reflect.TypeOf(v)
-			invalidBodyError := errors.New("go-tfe bug: DELETE/PATCH/POST body must be nil, ptr, or ptr slice")
-			switch bodyType.Kind() {
-			case reflect.Slice:
-				sliceElem := bodyType.Elem()
-				if sliceElem.Kind() != reflect.Ptr {
-					return nil, invalidBodyError
-				}
-				modelType = sliceElem.Elem()
-			case reflect.Ptr:
-				modelType = reflect.ValueOf(v).Elem().Type()
-			default:
-				return nil, invalidBodyError
-			}
-
-			// Infer whether the request uses jsonapi or regular json
-			// serialization based on how the fields are tagged.
-			jsonApiFields := 0
-			jsonFields := 0
-			for i := 0; i < modelType.NumField(); i++ {
-				structField := modelType.Field(i)
-				if structField.Tag.Get("jsonapi") != "" {
-					jsonApiFields++
-				}
-				if structField.Tag.Get("json") != "" {
-					jsonFields++
-				}
-			}
-			if jsonApiFields > 0 && jsonFields > 0 {
-				// Defining a struct with both json and jsonapi tags doesn't
-				// make sense, because a struct can only be serialized
-				// as one or another. If this does happen, it's a bug
-				// in the library that should be fixed at development time
-				return nil, errors.New("go-tfe bug: struct can't use both json and jsonapi attributes")
-			}
-
-			if jsonFields > 0 {
-				buf, err := json.Marshal(v)
-				if err != nil {
-					return nil, err
-				}
-				body = buf
-			} else {
-				buf := bytes.NewBuffer(nil)
-				if err := jsonapi.MarshalPayloadWithoutIncluded(buf, v); err != nil {
-					return nil, err
-				}
-				body = buf
+			if body, err = serializeRequestBody(v); err != nil {
+				return nil, err
 			}
 		}
 	case "PUT":
@@ -520,6 +466,65 @@ func (c *Client) newRequest(method, path string, v interface{}) (*retryablehttp.
 	}
 
 	return req, nil
+}
+
+// Helper method that serializes the given ptr or ptr slice into a JSON
+// request. It automatically uses jsonapi or json serialization, depending
+// on the body type's tags.
+func serializeRequestBody(v interface{}) (interface{}, error) {
+	// The body can be a slice of pointers or a pointer. In either
+	// case we want to choose the serialization type based on the
+	// individual record type. To determine that type, we need
+	// to either follow the pointer or examine the slice element type.
+	// There are other theoretical possiblities (e. g. maps,
+	// non-pointers) but they wouldn't work anyway because the
+	// json-api library doesn't support serializing other things.
+	var modelType reflect.Type
+	bodyType := reflect.TypeOf(v)
+	invalidBodyError := errors.New("go-tfe bug: DELETE/PATCH/POST body must be nil, ptr, or ptr slice")
+	switch bodyType.Kind() {
+	case reflect.Slice:
+		sliceElem := bodyType.Elem()
+		if sliceElem.Kind() != reflect.Ptr {
+			return nil, invalidBodyError
+		}
+		modelType = sliceElem.Elem()
+	case reflect.Ptr:
+		modelType = reflect.ValueOf(v).Elem().Type()
+	default:
+		return nil, invalidBodyError
+	}
+
+	// Infer whether the request uses jsonapi or regular json
+	// serialization based on how the fields are tagged.
+	jsonApiFields := 0
+	jsonFields := 0
+	for i := 0; i < modelType.NumField(); i++ {
+		structField := modelType.Field(i)
+		if structField.Tag.Get("jsonapi") != "" {
+			jsonApiFields++
+		}
+		if structField.Tag.Get("json") != "" {
+			jsonFields++
+		}
+	}
+	if jsonApiFields > 0 && jsonFields > 0 {
+		// Defining a struct with both json and jsonapi tags doesn't
+		// make sense, because a struct can only be serialized
+		// as one or another. If this does happen, it's a bug
+		// in the library that should be fixed at development time
+		return nil, errors.New("go-tfe bug: struct can't use both json and jsonapi attributes")
+	}
+
+	if jsonFields > 0 {
+		return json.Marshal(v)
+	} else {
+		buf := bytes.NewBuffer(nil)
+		if err := jsonapi.MarshalPayloadWithoutIncluded(buf, v); err != nil {
+			return nil, err
+		}
+		return buf, nil
+	}
 }
 
 // do sends an API request and returns the API response. The API response
