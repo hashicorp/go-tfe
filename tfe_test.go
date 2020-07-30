@@ -231,7 +231,7 @@ type InvalidBody struct {
 	Attr2 string `jsonapi:"attr,attr2"`
 }
 
-func TestClient_testAThing(t *testing.T) {
+func TestClient_requestBodySerialization(t *testing.T) {
 	t.Run("jsonapi request", func(t *testing.T) {
 		body := JSONAPIBody{StrAttr: "foo"}
 		_, requestBody, err := createRequest(&body)
@@ -245,6 +245,28 @@ func TestClient_testAThing(t *testing.T) {
 			t.Fatal(err)
 		}
 		if unmarshalledRequestBody.StrAttr != body.StrAttr {
+			t.Fatal("Request serialized incorrectly")
+		}
+	})
+
+	t.Run("jsonapi slice of pointers request", func(t *testing.T) {
+		var body []*JSONAPIBody
+		body = append(body, &JSONAPIBody{StrAttr: "foo"})
+		_, requestBody, err := createRequest(body)
+		if err != nil {
+			t.Fatal(err)
+		}
+
+		// The jsonapi library doesn't support unmarshalling bulk objects,
+		// so for this test we deserialize to the jsonapi intermediate
+		// format and validate it manually
+		parsedResponse := new(jsonapi.ManyPayload)
+		err = json.Unmarshal(requestBody, &parsedResponse)
+		if err != nil {
+			t.Fatal(err)
+		}
+
+		if len(parsedResponse.Data) != 1 || parsedResponse.Data[0].Attributes["str_attr"] != "foo" {
 			t.Fatal("Request serialized incorrectly")
 		}
 	})
@@ -263,6 +285,34 @@ func TestClient_testAThing(t *testing.T) {
 		}
 		if unmarshalledRequestBody.StrAttr != body.StrAttr {
 			t.Fatal("Request serialized incorrectly")
+		}
+	})
+
+	t.Run("plain json slice of pointers request", func(t *testing.T) {
+		var body []*JSONPlainBody
+		body = append(body, &JSONPlainBody{StrAttr: "foo"})
+		_, requestBody, err := createRequest(body)
+		if err != nil {
+			t.Fatal(err)
+		}
+
+		var unmarshalledRequestBody []*JSONPlainBody
+		err = json.Unmarshal(requestBody, &unmarshalledRequestBody)
+		if err != nil {
+			t.Fatal(err)
+		}
+		if len(unmarshalledRequestBody) != 1 || unmarshalledRequestBody[0].StrAttr != body[0].StrAttr {
+			t.Fatal("Request serialized incorrectly")
+		}
+	})
+
+	t.Run("nil request", func(t *testing.T) {
+		_, requestBody, err := createRequest(nil)
+		if err != nil {
+			t.Fatal(err)
+		}
+		if len(requestBody) != 0 {
+			t.Fatal("nil request serialized incorrectly")
 		}
 	})
 

@@ -440,11 +440,18 @@ func (c *Client) newRequest(method, path string, v interface{}) (*retryablehttp.
 		reqHeaders.Set("Content-Type", "application/vnd.api+json")
 
 		if v != nil {
-			modelValue := reflect.ValueOf(v).Elem()
+
+			var modelType reflect.Type
+			if reflect.TypeOf(v).Kind() == reflect.Slice {
+				modelType = reflect.TypeOf(v).Elem().Elem()
+			} else {
+				modelType = reflect.ValueOf(v).Elem().Type()
+			}
+
 			jsonApiFields := 0
 			jsonFields := 0
-			for i := 0; i < modelValue.NumField(); i++ {
-				structField := modelValue.Type().Field(i)
+			for i := 0; i < modelType.NumField(); i++ {
+				structField := modelType.Field(i)
 				if structField.Tag.Get("jsonapi") != "" {
 					jsonApiFields++
 				}
