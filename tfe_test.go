@@ -1,8 +1,12 @@
 package tfe
 
 import (
+	"bytes"
 	"context"
+	"encoding/json"
 	"errors"
+	"github.com/hashicorp/go-retryablehttp"
+	"github.com/svanharmelen/jsonapi"
 	"net/http"
 	"net/http/httptest"
 	"os"
@@ -212,6 +216,164 @@ func TestClient_userAgent(t *testing.T) {
 	if testedCalls != 6 {
 		t.Fatalf("expected 6 tested calls, got: %d", testedCalls)
 	}
+}
+
+type JSONAPIBody struct {
+	StrAttr string `jsonapi:"attr,str_attr"`
+}
+
+type JSONPlainBody struct {
+	StrAttr string `json:"str_attr"`
+}
+
+type InvalidBody struct {
+	Attr1 string `json:"attr1"`
+	Attr2 string `jsonapi:"attr,attr2"`
+}
+
+func TestClient_requestBodySerialization(t *testing.T) {
+	t.Run("jsonapi request", func(t *testing.T) {
+		body := JSONAPIBody{StrAttr: "foo"}
+		_, requestBody, err := createRequest(&body)
+		if err != nil {
+			t.Fatal(err)
+		}
+
+		unmarshalledRequestBody := JSONAPIBody{}
+		err = jsonapi.UnmarshalPayload(bytes.NewReader(requestBody), &unmarshalledRequestBody)
+		if err != nil {
+			t.Fatal(err)
+		}
+		if unmarshalledRequestBody.StrAttr != body.StrAttr {
+			t.Fatal("Request serialized incorrectly")
+		}
+	})
+
+	t.Run("jsonapi slice of pointers request", func(t *testing.T) {
+		var body []*JSONAPIBody
+		body = append(body, &JSONAPIBody{StrAttr: "foo"})
+		_, requestBody, err := createRequest(body)
+		if err != nil {
+			t.Fatal(err)
+		}
+
+		// The jsonapi library doesn't support unmarshalling bulk objects,
+		// so for this test we deserialize to the jsonapi intermediate
+		// format and validate it manually
+		parsedResponse := new(jsonapi.ManyPayload)
+		err = json.Unmarshal(requestBody, &parsedResponse)
+		if err != nil {
+			t.Fatal(err)
+		}
+
+		if len(parsedResponse.Data) != 1 || parsedResponse.Data[0].Attributes["str_attr"] != "foo" {
+			t.Fatal("Request serialized incorrectly")
+		}
+	})
+
+	t.Run("plain json request", func(t *testing.T) {
+		body := JSONPlainBody{StrAttr: "foo"}
+		_, requestBody, err := createRequest(&body)
+		if err != nil {
+			t.Fatal(err)
+		}
+
+		unmarshalledRequestBody := JSONPlainBody{}
+		err = json.Unmarshal(requestBody, &unmarshalledRequestBody)
+		if err != nil {
+			t.Fatal(err)
+		}
+		if unmarshalledRequestBody.StrAttr != body.StrAttr {
+			t.Fatal("Request serialized incorrectly")
+		}
+	})
+
+	t.Run("plain json slice of pointers request", func(t *testing.T) {
+		var body []*JSONPlainBody
+		body = append(body, &JSONPlainBody{StrAttr: "foo"})
+		_, requestBody, err := createRequest(body)
+		if err != nil {
+			t.Fatal(err)
+		}
+
+		var unmarshalledRequestBody []*JSONPlainBody
+		err = json.Unmarshal(requestBody, &unmarshalledRequestBody)
+		if err != nil {
+			t.Fatal(err)
+		}
+		if len(unmarshalledRequestBody) != 1 || unmarshalledRequestBody[0].StrAttr != body[0].StrAttr {
+			t.Fatal("Request serialized incorrectly")
+		}
+	})
+
+	t.Run("nil request", func(t *testing.T) {
+		_, requestBody, err := createRequest(nil)
+		if err != nil {
+			t.Fatal(err)
+		}
+		if len(requestBody) != 0 {
+			t.Fatal("nil request serialized incorrectly")
+		}
+	})
+
+	t.Run("invalid struct request", func(t *testing.T) {
+		body := InvalidBody{}
+		_, _, err := createRequest(&body)
+		if err == nil || err.Error() != "go-tfe bug: struct can't use both json and jsonapi attributes" {
+			t.Fatalf("unexpected error: %v", err)
+		}
+	})
+
+	t.Run("non-pointer request", func(t *testing.T) {
+		body := InvalidBody{}
+		_, _, err := createRequest(body)
+		if err == nil || err.Error() != "go-tfe bug: DELETE/PATCH/POST body must be nil, ptr, or ptr slice" {
+			t.Fatalf("unexpected error: %v", err)
+		}
+	})
+
+	t.Run("slice of non-pointer request", func(t *testing.T) {
+		body := []InvalidBody{{}}
+		_, _, err := createRequest(body)
+		if err == nil || err.Error() != "go-tfe bug: DELETE/PATCH/POST body must be nil, ptr, or ptr slice" {
+			t.Fatalf("unexpected error: %v", err)
+		}
+	})
+
+	t.Run("map request", func(t *testing.T) {
+		body := make(map[string]string)
+		_, _, err := createRequest(body)
+		if err == nil || err.Error() != "go-tfe bug: DELETE/PATCH/POST body must be nil, ptr, or ptr slice" {
+			t.Fatalf("unexpected error: %v", err)
+		}
+	})
+
+	t.Run("string request", func(t *testing.T) {
+		body := "foo"
+		_, _, err := createRequest(body)
+		if err == nil || err.Error() != "go-tfe bug: DELETE/PATCH/POST body must be nil, ptr, or ptr slice" {
+			t.Fatalf("unexpected error: %v", err)
+		}
+	})
+}
+
+func createRequest(v interface{}) (*retryablehttp.Request, []byte, error) {
+	config := DefaultConfig()
+	config.Token = "dummy"
+	client, err := NewClient(config)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	request, err := client.newRequest("POST", "/bar", v)
+	if err != nil {
+		return nil, nil, err
+	}
+	body, err := request.BodyBytes()
+	if err != nil {
+		return request, nil, err
+	}
+	return request, body, nil
 }
 
 func TestClient_configureLimiter(t *testing.T) {
