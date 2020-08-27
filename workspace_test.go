@@ -91,6 +91,7 @@ func TestWorkspacesCreate(t *testing.T) {
 			FileTriggersEnabled: Bool(true),
 			Operations:          Bool(true),
 			QueueAllRuns:        Bool(true),
+			SpeculativeEnabled:  Bool(true),
 			TerraformVersion:    String("0.11.0"),
 			TriggerPrefixes:     []string{"/modules", "/shared"},
 			WorkingDirectory:    String("bar/"),
@@ -113,6 +114,7 @@ func TestWorkspacesCreate(t *testing.T) {
 			assert.Equal(t, *options.FileTriggersEnabled, item.FileTriggersEnabled)
 			assert.Equal(t, *options.Operations, item.Operations)
 			assert.Equal(t, *options.QueueAllRuns, item.QueueAllRuns)
+			assert.Equal(t, *options.SpeculativeEnabled, item.SpeculativeEnabled)
 			assert.Equal(t, *options.TerraformVersion, item.TerraformVersion)
 			assert.Equal(t, options.TriggerPrefixes, item.TriggerPrefixes)
 			assert.Equal(t, *options.WorkingDirectory, item.WorkingDirectory)
@@ -280,6 +282,7 @@ func TestWorkspacesUpdate(t *testing.T) {
 			FileTriggersEnabled: Bool(true),
 			Operations:          Bool(false),
 			QueueAllRuns:        Bool(false),
+			SpeculativeEnabled:  Bool(true),
 			TerraformVersion:    String("0.11.1"),
 			TriggerPrefixes:     []string{"/modules", "/shared"},
 			WorkingDirectory:    String("baz/"),
@@ -301,6 +304,7 @@ func TestWorkspacesUpdate(t *testing.T) {
 			assert.Equal(t, *options.FileTriggersEnabled, item.FileTriggersEnabled)
 			assert.Equal(t, *options.Operations, item.Operations)
 			assert.Equal(t, *options.QueueAllRuns, item.QueueAllRuns)
+			assert.Equal(t, *options.SpeculativeEnabled, item.SpeculativeEnabled)
 			assert.Equal(t, *options.TerraformVersion, item.TerraformVersion)
 			assert.Equal(t, options.TriggerPrefixes, item.TriggerPrefixes)
 			assert.Equal(t, *options.WorkingDirectory, item.WorkingDirectory)
@@ -363,6 +367,7 @@ func TestWorkspacesUpdateByID(t *testing.T) {
 			FileTriggersEnabled: Bool(true),
 			Operations:          Bool(false),
 			QueueAllRuns:        Bool(false),
+			SpeculativeEnabled:  Bool(true),
 			TerraformVersion:    String("0.11.1"),
 			TriggerPrefixes:     []string{"/modules", "/shared"},
 			WorkingDirectory:    String("baz/"),
@@ -384,6 +389,7 @@ func TestWorkspacesUpdateByID(t *testing.T) {
 			assert.Equal(t, *options.FileTriggersEnabled, item.FileTriggersEnabled)
 			assert.Equal(t, *options.Operations, item.Operations)
 			assert.Equal(t, *options.QueueAllRuns, item.QueueAllRuns)
+			assert.Equal(t, *options.SpeculativeEnabled, item.SpeculativeEnabled)
 			assert.Equal(t, *options.TerraformVersion, item.TerraformVersion)
 			assert.Equal(t, options.TriggerPrefixes, item.TriggerPrefixes)
 			assert.Equal(t, *options.WorkingDirectory, item.WorkingDirectory)
