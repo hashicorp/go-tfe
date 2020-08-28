@@ -189,9 +189,9 @@ type WorkspaceCreateOptions struct {
 	QueueAllRuns *bool `jsonapi:"attr,queue-all-runs,omitempty"`
 
 	// Whether this workspace allows speculative plans. Setting this to false
-	// prevents Terraform Cloud from running plans on pull requests, which can
-	// improve security if the VCS repository is public or includes untrusted
-	// contributors.
+	// prevents Terraform Cloud or the Terraform Enterprise instance from
+	// running plans on pull requests, which can improve security if the VCS
+	// repository is public or includes untrusted contributors.
 	SpeculativeEnabled *bool `jsonapi:"attr,speculative-enabled,omitempty"`
 
 	// The version of Terraform to use for this workspace. Upon creating a
@@ -336,9 +336,9 @@ type WorkspaceUpdateOptions struct {
 	QueueAllRuns *bool `jsonapi:"attr,queue-all-runs,omitempty"`
 
 	// Whether this workspace allows speculative plans. Setting this to false
-	// prevents Terraform Cloud from running plans on pull requests, which can
-	// improve security if the VCS repository is public or includes untrusted
-	// contributors.
+	// prevents Terraform Cloud or the Terraform Enterprise instance from
+	// running plans on pull requests, which can improve security if the VCS
+	// repository is public or includes untrusted contributors.
 	SpeculativeEnabled *bool `jsonapi:"attr,speculative-enabled,omitempty"`
 
 	// The version of Terraform to use for this workspace.
