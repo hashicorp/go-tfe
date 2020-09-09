@@ -83,6 +83,9 @@ type ConfigurationVersion struct {
 	Status           ConfigurationStatus `jsonapi:"attr,status"`
 	StatusTimestamps *CVStatusTimestamps `jsonapi:"attr,status-timestamps"`
 	UploadURL        string              `jsonapi:"attr,upload-url"`
+
+	// Relationships
+	IngressAttributes *IngressAttribute `jsonapi:"relation,ingress-attributes"`
 }
 
 // CVStatusTimestamps holds the timestamps for individual configuration version
