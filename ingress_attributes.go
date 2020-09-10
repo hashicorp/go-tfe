@@ -7,16 +7,26 @@ import (
 	"net/url"
 )
 
+// Compile-time proof of interface implementation
 var _ IngressAttributes = (*ingressAttributes)(nil)
 
+// IngressAttributes describes all the ingress attribute related methods that the Terraform
+// Enterprise API supports.
+//
+// TFE API docs:
+// !! Currently undocumented !!
 type IngressAttributes interface {
+	// Read ingress attributes by its ID
 	Read(ctx context.Context, ingressAttributeID string) (*IngressAttribute, error)
 }
 
+// ingressAttributes implements IngressAttributes
 type ingressAttributes struct {
 	client *Client
 }
 
+// IngressAtribute is a representation of ingressed Terraform configuration in TFE.
+// This has a direction relationship with a Configuration Version.
 type IngressAttribute struct {
 	ID                string `jsonapi:"primary,ingress-attributes"`
 	Branch            string `jsonapi:"attr,branch"`
@@ -38,6 +48,7 @@ type IngressAttribute struct {
 	Tag               string `jsonapi:"attr,tag"`
 }
 
+// Read ingress attributes by its ID
 func (s *ingressAttributes) Read(ctx context.Context, ingressAttributeID string) (*IngressAttribute, error) {
 	if !validStringID(&ingressAttributeID) {
 		return nil, errors.New("invalid value for ingress attributes ID")
