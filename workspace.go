@@ -88,6 +88,7 @@ type Workspace struct {
 	Operations           bool                  `jsonapi:"attr,operations"`
 	Permissions          *WorkspacePermissions `jsonapi:"attr,permissions"`
 	QueueAllRuns         bool                  `jsonapi:"attr,queue-all-runs"`
+	SpeculativeEnabled   bool                  `jsonapi:"attr,speculative-enabled"`
 	TerraformVersion     string                `jsonapi:"attr,terraform-version"`
 	TriggerPrefixes      []string              `jsonapi:"attr,trigger-prefixes"`
 	VCSRepo              *VCSRepo              `jsonapi:"attr,vcs-repo"`
@@ -186,6 +187,12 @@ type WorkspaceCreateOptions struct {
 	// Whether to queue all runs. Unless this is set to true, runs triggered by
 	// a webhook will not be queued until at least one run is manually queued.
 	QueueAllRuns *bool `jsonapi:"attr,queue-all-runs,omitempty"`
+
+	// Whether this workspace allows speculative plans. Setting this to false
+	// prevents Terraform Cloud or the Terraform Enterprise instance from
+	// running plans on pull requests, which can improve security if the VCS
+	// repository is public or includes untrusted contributors.
+	SpeculativeEnabled *bool `jsonapi:"attr,speculative-enabled,omitempty"`
 
 	// The version of Terraform to use for this workspace. Upon creating a
 	// workspace, the latest version is selected unless otherwise specified.
@@ -327,6 +334,12 @@ type WorkspaceUpdateOptions struct {
 	// Whether to queue all runs. Unless this is set to true, runs triggered by
 	// a webhook will not be queued until at least one run is manually queued.
 	QueueAllRuns *bool `jsonapi:"attr,queue-all-runs,omitempty"`
+
+	// Whether this workspace allows speculative plans. Setting this to false
+	// prevents Terraform Cloud or the Terraform Enterprise instance from
+	// running plans on pull requests, which can improve security if the VCS
+	// repository is public or includes untrusted contributors.
+	SpeculativeEnabled *bool `jsonapi:"attr,speculative-enabled,omitempty"`
 
 	// The version of Terraform to use for this workspace.
 	TerraformVersion *string `jsonapi:"attr,terraform-version,omitempty"`
