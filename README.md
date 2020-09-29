@@ -44,7 +44,7 @@ Currently the following endpoints are supported:
 - [x] [Run Triggers](https://www.terraform.io/docs/cloud/api/run-triggers.html)
 - [x] [SSH Keys](https://www.terraform.io/docs/cloud/api/ssh-keys.html)
 - [x] [State Versions](https://www.terraform.io/docs/cloud/api/state-versions.html)
-- [ ] [State Version Outputs](https://www.terraform.io/docs/cloud/api/state-version-outputs.html)
+- [x] [State Version Outputs](https://www.terraform.io/docs/cloud/api/state-version-outputs.html)
 - [x] [Team Access](https://www.terraform.io/docs/cloud/api/team-access.html)
 - [x] [Team Memberships](https://www.terraform.io/docs/cloud/api/team-members.html)
 - [x] [Team Tokens](https://www.terraform.io/docs/cloud/api/team-tokens.html)
