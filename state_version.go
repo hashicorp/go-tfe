@@ -55,7 +55,8 @@ type StateVersion struct {
 	VCSCommitURL string    `jsonapi:"attr,vcs-commit-url"`
 
 	// Relations
-	Run *Run `jsonapi:"relation,run"`
+	Run     *Run           `jsonapi:"relation,run"`
+	Outputs []*StateOutput `jsonapi:"relation,outputs"`
 }
 
 // StateVersionListOptions represents the options for listing state versions.
@@ -166,7 +167,7 @@ func (s *stateVersions) Read(ctx context.Context, svID string) (*StateVersion, e
 		return nil, errors.New("invalid value for state version ID")
 	}
 
-	u := fmt.Sprintf("state-versions/%s", url.QueryEscape(svID))
+	u := fmt.Sprintf("state-versions/%s?include=outputs", url.QueryEscape(svID))
 	req, err := s.client.newRequest("GET", u, nil)
 	if err != nil {
 		return nil, err
@@ -187,7 +188,7 @@ func (s *stateVersions) Current(ctx context.Context, workspaceID string) (*State
 		return nil, errors.New("invalid value for workspace ID")
 	}
 
-	u := fmt.Sprintf("workspaces/%s/current-state-version", url.QueryEscape(workspaceID))
+	u := fmt.Sprintf("workspaces/%s/current-state-version?include=outputs", url.QueryEscape(workspaceID))
 	req, err := s.client.newRequest("GET", u, nil)
 	if err != nil {
 		return nil, err

@@ -127,6 +127,7 @@ type Client struct {
 	Runs                       Runs
 	RunTriggers                RunTriggers
 	SSHKeys                    SSHKeys
+	StateOutputs               StateOutputs
 	StateVersions              StateVersions
 	Teams                      Teams
 	TeamAccess                 TeamAccesses
@@ -229,6 +230,7 @@ func NewClient(cfg *Config) (*Client, error) {
 	client.Runs = &runs{client: client}
 	client.RunTriggers = &runTriggers{client: client}
 	client.SSHKeys = &sshKeys{client: client}
+	client.StateOutputs = &stateOutputs{client: client}
 	client.StateVersions = &stateVersions{client: client}
 	client.Teams = &teams{client: client}
 	client.TeamAccess = &teamAccesses{client: client}

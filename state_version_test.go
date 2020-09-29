@@ -43,6 +43,14 @@ func TestStateVersionsList(t *testing.T) {
 			sv.DownloadURL = ""
 		}
 
+		// outputs are populated only once the state has been parsed by TFC
+		// which can cause the tests to fail if it doesn't happen fast enough.
+		for idx, _ := range svl.Items {
+			svl.Items[idx].Outputs = nil
+		}
+		svTest1.Outputs = nil
+		svTest2.Outputs = nil
+
 		assert.Contains(t, svl.Items, svTest1)
 		assert.Contains(t, svl.Items, svTest2)
 		assert.Equal(t, 1, svl.CurrentPage)
@@ -263,6 +271,11 @@ func TestStateVersionsRead(t *testing.T) {
 		// again during the GET.
 		svTest.DownloadURL, sv.DownloadURL = "", ""
 
+		// outputs are populated only once the state has been parsed by TFC
+		// which can cause the tests to fail if it doesn't happen fast enough.
+		svTest.Outputs = nil
+		sv.Outputs = nil
+
 		assert.Equal(t, svTest, sv)
 	})
 
@@ -300,6 +313,11 @@ func TestStateVersionsCurrent(t *testing.T) {
 		// in this test - once at creation of the configuration version, and
 		// again during the GET.
 		svTest.DownloadURL, sv.DownloadURL = "", ""
+
+		// outputs are populated only once the state has been parsed by TFC
+		// which can cause the tests to fail if it doesn't happen fast enough.
+		svTest.Outputs = nil
+		sv.Outputs = nil
 
 		assert.Equal(t, svTest, sv)
 	})
