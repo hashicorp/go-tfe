@@ -55,8 +55,8 @@ type StateVersion struct {
 	VCSCommitURL string    `jsonapi:"attr,vcs-commit-url"`
 
 	// Relations
-	Run     *Run           `jsonapi:"relation,run"`
-	Outputs []*StateOutput `jsonapi:"relation,outputs"`
+	Run     *Run                  `jsonapi:"relation,run"`
+	Outputs []*StateVersionOutput `jsonapi:"relation,outputs"`
 }
 
 // StateVersionListOptions represents the options for listing state versions.

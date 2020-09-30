@@ -8,22 +8,22 @@ import (
 )
 
 // Compile-time proof of interface implementation.
-var _ StateOutputs = (*stateOutputs)(nil)
+var _ StateVersionOutputs = (*stateVersionOutputs)(nil)
 
 //State version outputs are the output values from a Terraform state file.
 //They include the name and value of the output, as well as a sensitive boolean
 //if the value should be hidden by default in UIs.
 //
 // TFE API docs: https://www.terraform.io/docs/cloud/api/state-version-outputs.html
-type StateOutputs interface {
-	Read(ctx context.Context, outputID string) (*StateOutput, error)
+type StateVersionOutputs interface {
+	Read(ctx context.Context, outputID string) (*StateVersionOutput, error)
 }
 
-type stateOutputs struct {
+type stateVersionOutputs struct {
 	client *Client
 }
 
-type StateOutput struct {
+type StateVersionOutput struct {
 	ID        string `jsonapi:"primary,state-version-outputs"`
 	Name      string `jsonapi:"attr,name"`
 	Sensitive bool   `jsonapi:"attr,sensitive"`
@@ -31,7 +31,7 @@ type StateOutput struct {
 	Value     string `jsonapi:"attr,value"`
 }
 
-func (s *stateOutputs) Read(ctx context.Context, outputID string) (*StateOutput, error) {
+func (s *stateVersionOutputs) Read(ctx context.Context, outputID string) (*StateVersionOutput, error) {
 	if !validStringID(&outputID) {
 		return nil, errors.New("invalid value for run ID")
 	}
@@ -42,7 +42,7 @@ func (s *stateOutputs) Read(ctx context.Context, outputID string) (*StateOutput,
 		return nil, err
 	}
 
-	so := &StateOutput{}
+	so := &StateVersionOutput{}
 	err = s.client.do(ctx, req, so)
 	if err != nil {
 		return nil, err
