@@ -111,6 +111,7 @@ type Client struct {
 	Applies                    Applies
 	ConfigurationVersions      ConfigurationVersions
 	CostEstimates              CostEstimates
+	IPRanges                   IPRanges
 	NotificationConfigurations NotificationConfigurations
 	OAuthClients               OAuthClients
 	OAuthTokens                OAuthTokens
@@ -214,6 +215,7 @@ func NewClient(cfg *Config) (*Client, error) {
 	client.Applies = &applies{client: client}
 	client.ConfigurationVersions = &configurationVersions{client: client}
 	client.CostEstimates = &costEstimates{client: client}
+	client.IPRanges = &ipRanges{client: client}
 	client.NotificationConfigurations = &notificationConfigurations{client: client}
 	client.OAuthClients = &oAuthClients{client: client}
 	client.OAuthTokens = &oAuthTokens{client: client}
