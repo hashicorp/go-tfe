@@ -25,7 +25,7 @@ Currently the following endpoints are supported:
 - [x] [Applies](https://www.terraform.io/docs/cloud/api/applies.html)
 - [x] [Configuration Versions](https://www.terraform.io/docs/cloud/api/configuration-versions.html)
 - [x] [Cost Estimates](https://www.terraform.io/docs/cloud/api/cost-estimates.html)
-- [ ] [IP Ranges](https://www.terraform.io/docs/cloud/api/ip-ranges.html)
+- [x] [IP Ranges](https://www.terraform.io/docs/cloud/api/ip-ranges.html)
 - [x] [Notification Configurations](https://www.terraform.io/docs/cloud/api/notification-configurations.html)
 - [x] [OAuth Clients](https://www.terraform.io/docs/cloud/api/oauth-clients.html)
 - [x] [OAuth Tokens](https://www.terraform.io/docs/cloud/api/oauth-tokens.html)
