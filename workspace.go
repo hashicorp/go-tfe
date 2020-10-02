@@ -77,10 +77,12 @@ type WorkspaceList struct {
 type Workspace struct {
 	ID                   string                `jsonapi:"primary,workspaces"`
 	Actions              *WorkspaceActions     `jsonapi:"attr,actions"`
+	AgentPoolID          string                `jsonapi:"attr,agent-pool-id"`
 	AutoApply            bool                  `jsonapi:"attr,auto-apply"`
 	CanQueueDestroyPlan  bool                  `jsonapi:"attr,can-queue-destroy-plan"`
 	CreatedAt            time.Time             `jsonapi:"attr,created-at,iso8601"`
 	Environment          string                `jsonapi:"attr,environment"`
+	ExecutionMode        string                `jsonapi:"attr,execution-mode"`
 	FileTriggersEnabled  bool                  `jsonapi:"attr,file-triggers-enabled"`
 	Locked               bool                  `jsonapi:"attr,locked"`
 	MigrationEnvironment string                `jsonapi:"attr,migration-environment"`
@@ -162,8 +164,18 @@ type WorkspaceCreateOptions struct {
 	// For internal use only!
 	ID string `jsonapi:"primary,workspaces"`
 
+	// Required when execution-mode is set to agent. The ID of the agent pool
+	// belonging to the workspace's organization. This value must not be specified
+	// if execution-mode is set to remote or local or if operations is set to true.
+	AgentPoolID *string `jsonapi:"attr,agent-pool-id,omitempty"`
+
 	// Whether to automatically apply changes when a Terraform plan is successful.
 	AutoApply *bool `jsonapi:"attr,auto-apply,omitempty"`
+
+	// Which execution mode to use. Valid values are remote, local, and agent.
+	// When set to local, the workspace will be used for state storage only.
+	// This value must not be specified if operations is specified.
+	ExecutionMode *string `jsonapi:"attr,execution-mode,omitempty"`
 
 	// Whether to filter runs based on the changed files in a VCS push. If
 	// enabled, the working directory and trigger prefixes describe a set of
@@ -313,6 +325,11 @@ type WorkspaceUpdateOptions struct {
 	// For internal use only!
 	ID string `jsonapi:"primary,workspaces"`
 
+	// Required when execution-mode is set to agent. The ID of the agent pool
+	// belonging to the workspace's organization. This value must not be specified
+	// if execution-mode is set to remote or local or if operations is set to true.
+	AgentPoolID *string `jsonapi:"attr,agent-pool-id,omitempty"`
+
 	// Whether to automatically apply changes when a Terraform plan is successful.
 	AutoApply *bool `jsonapi:"attr,auto-apply,omitempty"`
 
@@ -321,6 +338,11 @@ type WorkspaceUpdateOptions struct {
 	// organization. Warning: Changing a workspace's name changes its URL in the
 	// API and UI.
 	Name *string `jsonapi:"attr,name,omitempty"`
+
+	// Which execution mode to use. Valid values are remote, local, and agent.
+	// When set to local, the workspace will be used for state storage only.
+	// This value must not be specified if operations is specified.
+	ExecutionMode *string `jsonapi:"attr,execution-mode,omitempty"`
 
 	// Whether to filter runs based on the changed files in a VCS push. If
 	// enabled, the working directory and trigger prefixes describe a set of
