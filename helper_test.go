@@ -34,6 +34,24 @@ func fetchTestAccountDetails(t *testing.T, client *Client) *TestAccountDetails {
 	return _testAccountDetails
 }
 
+func createAgentPool(t *testing.T, client *Client, org *Organization) (*AgentPool, func()) {
+	var orgCleanup func()
+
+	if org == nil {
+		org, orgCleanup = createOrganization(t, client)
+	}
+
+	ctx := context.Background()
+	pool, err := client.AgentPools.Create(ctx, org.Name, AgentPoolCreateOptions{})
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	return pool, func() {
+		orgCleanup()
+	}
+}
+
 func createConfigurationVersion(t *testing.T, client *Client, w *Workspace) (*ConfigurationVersion, func()) {
 	var wCleanup func()
 
