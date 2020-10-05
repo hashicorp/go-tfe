@@ -1,7 +1,7 @@
 Terraform Enterprise Go Client
 ==============================
 
-[![Build Status](https://travis-ci.org/hashicorp/go-tfe.svg?branch=master)](https://travis-ci.org/hashicorp/go-tfe)
+[![Build Status](https://circleci.com/gh/hashicorp/go-tfe.svg?style=shield)](https://circleci.com/gh/hashicorp/go-tfe)
 [![GitHub license](https://img.shields.io/github/license/hashicorp/go-tfe.svg)](https://github.com/hashicorp/go-tfe/blob/master/LICENSE)
 [![GoDoc](https://godoc.org/github.com/hashicorp/go-tfe?status.svg)](https://godoc.org/github.com/hashicorp/go-tfe)
 [![Go Report Card](https://goreportcard.com/badge/github.com/hashicorp/go-tfe)](https://goreportcard.com/report/github.com/hashicorp/go-tfe)
