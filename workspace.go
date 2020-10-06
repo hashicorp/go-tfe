@@ -244,6 +244,9 @@ func (o WorkspaceCreateOptions) valid() error {
 	if !validStringID(o.Name) {
 		return errors.New("invalid value for name")
 	}
+	if o.Operations != nil && o.ExecutionMode != nil {
+		return errors.New("operations is deprecated and cannot be specified when execution mode is used")
+	}
 	return nil
 }
 

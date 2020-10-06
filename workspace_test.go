@@ -155,7 +155,19 @@ func TestWorkspacesCreate(t *testing.T) {
 		assert.EqualError(t, err, "invalid value for organization")
 	})
 
-	t.Run("when an error is returned from the api", func(t *testing.T) {
+	t.Run("when options includes both an operations value and an enforcement mode value", func(t *testing.T) {
+		options := WorkspaceCreateOptions{
+			Name:          String("foo"),
+			ExecutionMode: String("remote"),
+			Operations:    Bool(true),
+		}
+
+		w, err := client.Workspaces.Create(ctx, orgTest.Name, options)
+		assert.Nil(t, w)
+		assert.EqualError(t, err, "operations is deprecated and cannot be specified when execution mode is used")
+	})
+
+	t.Run("when an error is returned from the API", func(t *testing.T) {
 		w, err := client.Workspaces.Create(ctx, "bar", WorkspaceCreateOptions{
 			Name:             String("bar"),
 			TerraformVersion: String("nonexisting"),
