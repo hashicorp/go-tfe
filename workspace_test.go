@@ -155,6 +155,28 @@ func TestWorkspacesCreate(t *testing.T) {
 		assert.EqualError(t, err, "operations is deprecated and cannot be specified when execution mode is used")
 	})
 
+	t.Run("when an agent pool ID is specified without 'agent' execution mode", func(t *testing.T) {
+		options := WorkspaceCreateOptions{
+			Name:        String("foo"),
+			AgentPoolID: String("apool-xxxxx"),
+		}
+
+		w, err := client.Workspaces.Create(ctx, orgTest.Name, options)
+		assert.Nil(t, w)
+		assert.EqualError(t, err, "specifying an agent pool ID requires 'agent' execution mode")
+	})
+
+	t.Run("when 'agent' execution mode is specified without an an agent pool ID", func(t *testing.T) {
+		options := WorkspaceCreateOptions{
+			Name:          String("foo"),
+			ExecutionMode: String("agent"),
+		}
+
+		w, err := client.Workspaces.Create(ctx, orgTest.Name, options)
+		assert.Nil(t, w)
+		assert.EqualError(t, err, "'agent' execution mode requires an agent pool ID to be specified")
+	})
+
 	t.Run("when an error is returned from the API", func(t *testing.T) {
 		w, err := client.Workspaces.Create(ctx, "bar", WorkspaceCreateOptions{
 			Name:             String("bar"),
@@ -321,6 +343,27 @@ func TestWorkspacesUpdate(t *testing.T) {
 			assert.Equal(t, options.TriggerPrefixes, item.TriggerPrefixes)
 			assert.Equal(t, *options.WorkingDirectory, item.WorkingDirectory)
 		}
+	})
+
+	t.Run("when options includes both an operations value and an enforcement mode value", func(t *testing.T) {
+		options := WorkspaceUpdateOptions{
+			ExecutionMode: String("remote"),
+			Operations:    Bool(true),
+		}
+
+		wAfter, err := client.Workspaces.Update(ctx, orgTest.Name, wTest.Name, options)
+		assert.Nil(t, wAfter)
+		assert.EqualError(t, err, "operations is deprecated and cannot be specified when execution mode is used")
+	})
+
+	t.Run("when 'agent' execution mode is specified without an an agent pool ID", func(t *testing.T) {
+		options := WorkspaceUpdateOptions{
+			ExecutionMode: String("agent"),
+		}
+
+		wAfter, err := client.Workspaces.Update(ctx, orgTest.Name, wTest.Name, options)
+		assert.Nil(t, wAfter)
+		assert.EqualError(t, err, "'agent' execution mode requires an agent pool ID to be specified")
 	})
 
 	t.Run("when an error is returned from the api", func(t *testing.T) {
