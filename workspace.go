@@ -247,6 +247,13 @@ func (o WorkspaceCreateOptions) valid() error {
 	if o.Operations != nil && o.ExecutionMode != nil {
 		return errors.New("operations is deprecated and cannot be specified when execution mode is used")
 	}
+	if o.AgentPoolID != nil && (o.ExecutionMode == nil || *o.ExecutionMode != "agent") {
+		return errors.New("specifying an agent pool ID requires 'agent' execution mode")
+	}
+	if o.AgentPoolID == nil && (o.ExecutionMode != nil && *o.ExecutionMode == "agent") {
+		return errors.New("'agent' execution mode requires an agent pool ID to be specified")
+	}
+
 	return nil
 }
 
@@ -390,6 +397,20 @@ type WorkspaceUpdateOptions struct {
 	WorkingDirectory *string `jsonapi:"attr,working-directory,omitempty"`
 }
 
+func (o WorkspaceUpdateOptions) valid() error {
+	if o.Name != nil && !validStringID(o.Name) {
+		return errors.New("invalid value for name")
+	}
+	if o.Operations != nil && o.ExecutionMode != nil {
+		return errors.New("operations is deprecated and cannot be specified when execution mode is used")
+	}
+	if o.AgentPoolID == nil && (o.ExecutionMode != nil && *o.ExecutionMode == "agent") {
+		return errors.New("'agent' execution mode requires an agent pool ID to be specified")
+	}
+
+	return nil
+}
+
 // Update settings of an existing workspace.
 func (s *workspaces) Update(ctx context.Context, organization, workspace string, options WorkspaceUpdateOptions) (*Workspace, error) {
 	if !validStringID(&organization) {
@@ -397,6 +418,9 @@ func (s *workspaces) Update(ctx context.Context, organization, workspace string,
 	}
 	if !validStringID(&workspace) {
 		return nil, errors.New("invalid value for workspace")
+	}
+	if err := options.valid(); err != nil {
+		return nil, err
 	}
 
 	// Make sure we don't send a user provided ID.
