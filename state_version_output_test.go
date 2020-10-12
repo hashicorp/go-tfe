@@ -23,7 +23,11 @@ func TestStateVersionOutputsRead(t *testing.T) {
 	// give TFC some time to process the statefile and extract the outputs.
 	time.Sleep(waitForStateVersionOutputs)
 
-	sv, err := client.StateVersions.Current(ctx, wTest1.ID)
+	curOpts := &StateVersionCurrentOptions{
+		Include: "outputs",
+	}
+
+	sv, err := client.StateVersions.CurrentWithOptions(ctx, wTest1.ID, curOpts)
 	if err != nil {
 		t.Fatal(err)
 	}
