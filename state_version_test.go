@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"io/ioutil"
 	"testing"
+	"time"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
@@ -292,6 +293,28 @@ func TestStateVersionsRead(t *testing.T) {
 	})
 }
 
+func TestStateVersionsReadWithOptions(t *testing.T) {
+	client := testClient(t)
+	ctx := context.Background()
+
+	svTest, svTestCleanup := createStateVersion(t, client, 0, nil)
+	defer svTestCleanup()
+
+	// give TFC some time to process the statefile and extract the outputs.
+	time.Sleep(waitForStateVersionOutputs)
+
+	t.Run("when the state version exists", func(t *testing.T) {
+		curOpts := &StateVersionReadOptions{
+			Include: "outputs",
+		}
+
+		sv, err := client.StateVersions.ReadWithOptions(ctx, svTest.ID, curOpts)
+		require.NoError(t, err)
+
+		assert.NotEmpty(t, sv.Outputs)
+	})
+}
+
 func TestStateVersionsCurrent(t *testing.T) {
 	client := testClient(t)
 	ctx := context.Background()
@@ -332,6 +355,31 @@ func TestStateVersionsCurrent(t *testing.T) {
 		sv, err := client.StateVersions.Current(ctx, badIdentifier)
 		assert.Nil(t, sv)
 		assert.EqualError(t, err, "invalid value for workspace ID")
+	})
+}
+
+func TestStateVersionsCurrentWithOptions(t *testing.T) {
+	client := testClient(t)
+	ctx := context.Background()
+
+	wTest1, wTest1Cleanup := createWorkspace(t, client, nil)
+	defer wTest1Cleanup()
+
+	_, svTestCleanup := createStateVersion(t, client, 0, wTest1)
+	defer svTestCleanup()
+
+	// give TFC some time to process the statefile and extract the outputs.
+	time.Sleep(waitForStateVersionOutputs)
+
+	t.Run("when the state version exists", func(t *testing.T) {
+		curOpts := &StateVersionCurrentOptions{
+			Include: "outputs",
+		}
+
+		sv, err := client.StateVersions.CurrentWithOptions(ctx, wTest1.ID, curOpts)
+		require.NoError(t, err)
+
+		assert.NotEmpty(t, sv.Outputs)
 	})
 }
 
