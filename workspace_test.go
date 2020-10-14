@@ -75,6 +75,18 @@ func TestWorkspacesList(t *testing.T) {
 		assert.Nil(t, wl)
 		assert.EqualError(t, err, "invalid value for organization")
 	})
+
+	t.Run("with organization included", func(t *testing.T) {
+		wl, err := client.Workspaces.List(ctx, orgTest.Name, WorkspaceListOptions{
+			Include: String("organization"),
+		})
+
+		assert.NoError(t, err)
+
+		assert.NotEmpty(t, wl.Items)
+		assert.NotNil(t, wl.Items[0].Organization)
+		assert.NotEmpty(t, wl.Items[0].Organization.Email)
+	})
 }
 
 func TestWorkspacesCreate(t *testing.T) {
