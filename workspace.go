@@ -134,6 +134,9 @@ type WorkspaceListOptions struct {
 
 	// A search string (partial workspace name) used to filter the results.
 	Search *string `url:"search[name],omitempty"`
+
+	// A list of relations to include. See available resources https://www.terraform.io/docs/cloud/api/workspaces.html#available-related-resources
+	Include *string `url:"include"`
 }
 
 // List all the workspaces within an organization.
