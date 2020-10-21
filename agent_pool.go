@@ -69,7 +69,7 @@ func (s *agentPools) List(ctx context.Context, organization string, options Agen
 	return poolList, nil
 }
 
-// AgentPoolCreateOptions represents the options for creating an SSH key.
+// AgentPoolCreateOptions represents the options for creating an agent pool.
 type AgentPoolCreateOptions struct {
 	// For internal use only!
 	ID string `jsonapi:"primary,agent-pools"`
