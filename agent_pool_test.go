@@ -57,7 +57,9 @@ func TestAgentPoolsCreate(t *testing.T) {
 	defer orgTestCleanup()
 
 	t.Run("with valid options", func(t *testing.T) {
-		options := AgentPoolCreateOptions{}
+		options := AgentPoolCreateOptions{
+			Name: String("cool-pool"),
+		}
 
 		pool, err := client.AgentPools.Create(ctx, orgTest.Name, options)
 		require.NoError(t, err)
@@ -74,8 +76,16 @@ func TestAgentPoolsCreate(t *testing.T) {
 		}
 	})
 
+	t.Run("when options is missing name", func(t *testing.T) {
+		k, err := client.AgentPools.Create(ctx, "foo", AgentPoolCreateOptions{})
+		assert.Nil(t, k)
+		assert.EqualError(t, err, "name is required")
+	})
+
 	t.Run("with an invalid organization", func(t *testing.T) {
-		pool, err := client.AgentPools.Create(ctx, badIdentifier, AgentPoolCreateOptions{})
+		pool, err := client.AgentPools.Create(ctx, badIdentifier, AgentPoolCreateOptions{
+			Name: String("cool-pool"),
+		})
 		assert.Nil(t, pool)
 		assert.EqualError(t, err, "invalid value for organization")
 	})
@@ -105,6 +115,75 @@ func TestAgentPoolsRead(t *testing.T) {
 	t.Run("without a valid agent pool ID", func(t *testing.T) {
 		k, err := client.AgentPools.Read(ctx, badIdentifier)
 		assert.Nil(t, k)
+		assert.EqualError(t, err, "invalid value for agent pool ID")
+	})
+}
+
+func TestAgentPoolsUpdate(t *testing.T) {
+	client := testClient(t)
+	ctx := context.Background()
+
+	orgTest, orgTestCleanup := createOrganization(t, client)
+	defer orgTestCleanup()
+
+	t.Run("with valid options", func(t *testing.T) {
+		kBefore, kTestCleanup := createAgentPool(t, client, orgTest)
+		defer kTestCleanup()
+
+		kAfter, err := client.AgentPools.Update(ctx, kBefore.ID, AgentPoolUpdateOptions{
+			Name: String(randomString(t)),
+		})
+		require.NoError(t, err)
+
+		assert.Equal(t, kBefore.ID, kAfter.ID)
+		assert.NotEqual(t, kBefore.Name, kAfter.Name)
+	})
+
+	t.Run("when updating the name", func(t *testing.T) {
+		kBefore, kTestCleanup := createAgentPool(t, client, orgTest)
+		defer kTestCleanup()
+
+		kAfter, err := client.AgentPools.Update(ctx, kBefore.ID, AgentPoolUpdateOptions{
+			Name: String("updated-key-name"),
+		})
+		require.NoError(t, err)
+
+		assert.Equal(t, kBefore.ID, kAfter.ID)
+		assert.Equal(t, "updated-key-name", kAfter.Name)
+	})
+
+	t.Run("without a valid agent pool ID", func(t *testing.T) {
+		w, err := client.AgentPools.Update(ctx, badIdentifier, AgentPoolUpdateOptions{})
+		assert.Nil(t, w)
+		assert.EqualError(t, err, "invalid value for agent pool ID")
+	})
+}
+
+func TestAgentPoolsDelete(t *testing.T) {
+	client := testClient(t)
+	ctx := context.Background()
+
+	orgTest, orgTestCleanup := createOrganization(t, client)
+	defer orgTestCleanup()
+
+	kTest, _ := createAgentPool(t, client, orgTest)
+
+	t.Run("with valid options", func(t *testing.T) {
+		err := client.AgentPools.Delete(ctx, kTest.ID)
+		require.NoError(t, err)
+
+		// Try loading the agent pool - it should fail.
+		_, err = client.AgentPools.Read(ctx, kTest.ID)
+		assert.Equal(t, err, ErrResourceNotFound)
+	})
+
+	t.Run("when the agent pool does not exist", func(t *testing.T) {
+		err := client.AgentPools.Delete(ctx, kTest.ID)
+		assert.Equal(t, err, ErrResourceNotFound)
+	})
+
+	t.Run("when the agent pool ID is invalid", func(t *testing.T) {
+		err := client.AgentPools.Delete(ctx, badIdentifier)
 		assert.EqualError(t, err, "invalid value for agent pool ID")
 	})
 }

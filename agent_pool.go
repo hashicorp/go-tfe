@@ -21,8 +21,14 @@ type AgentPools interface {
 	// Create a new agent pool with the given options.
 	Create(ctx context.Context, organization string, options AgentPoolCreateOptions) (*AgentPool, error)
 
-	// Read a agentpool by its ID.
-	Read(ctx context.Context, agentpoolID string) (*AgentPool, error)
+	// Read a agent pool by its ID.
+	Read(ctx context.Context, agentPoolID string) (*AgentPool, error)
+
+	// Update an agent pool by its ID.
+	Update(ctx context.Context, agentPool string, options AgentPoolUpdateOptions) (*AgentPool, error)
+
+	// Delete an agent pool by its ID.
+	Delete(ctx context.Context, agentPoolID string) error
 }
 
 // agentPools implements AgentPools.
@@ -73,6 +79,16 @@ func (s *agentPools) List(ctx context.Context, organization string, options Agen
 type AgentPoolCreateOptions struct {
 	// For internal use only!
 	ID string `jsonapi:"primary,agent-pools"`
+
+	// A name to identify the agent pool.
+	Name *string `jsonapi:"attr,name"`
+}
+
+func (o AgentPoolCreateOptions) valid() error {
+	if !validString(o.Name) {
+		return errors.New("name is required")
+	}
+	return nil
 }
 
 // Create a new agent pool with the given options. Note only a single pool is
@@ -80,6 +96,10 @@ type AgentPoolCreateOptions struct {
 func (s *agentPools) Create(ctx context.Context, organization string, options AgentPoolCreateOptions) (*AgentPool, error) {
 	if !validStringID(&organization) {
 		return nil, errors.New("invalid value for organization")
+	}
+
+	if err := options.valid(); err != nil {
+		return nil, err
 	}
 
 	// Make sure we don't send a user provided ID.
@@ -119,4 +139,52 @@ func (s *agentPools) Read(ctx context.Context, agentpoolID string) (*AgentPool, 
 	}
 
 	return pool, nil
+}
+
+// AgentPoolUpdateOptions represents the options for updating an agent pool.
+type AgentPoolUpdateOptions struct {
+	// For internal use only!
+	ID string `jsonapi:"primary,agent-pools"`
+
+	// A new name to identify the agent pool.
+	Name *string `jsonapi:"attr,name"`
+}
+
+// Update an agent pool by its ID.
+func (s *agentPools) Update(ctx context.Context, agentPoolID string, options AgentPoolUpdateOptions) (*AgentPool, error) {
+	if !validStringID(&agentPoolID) {
+		return nil, errors.New("invalid value for agent pool ID")
+	}
+
+	// Make sure we don't send a user provided ID.
+	options.ID = ""
+
+	u := fmt.Sprintf("agent-pools/%s", url.QueryEscape(agentPoolID))
+	req, err := s.client.newRequest("PATCH", u, &options)
+	if err != nil {
+		return nil, err
+	}
+
+	k := &AgentPool{}
+	err = s.client.do(ctx, req, k)
+	if err != nil {
+		return nil, err
+	}
+
+	return k, nil
+}
+
+// Delete an agent pool by its ID.
+func (s *agentPools) Delete(ctx context.Context, agentPoolID string) error {
+	if !validStringID(&agentPoolID) {
+		return errors.New("invalid value for agent pool ID")
+	}
+
+	u := fmt.Sprintf("agent-pools/%s", url.QueryEscape(agentPoolID))
+	req, err := s.client.newRequest("DELETE", u, nil)
+	if err != nil {
+		return err
+	}
+
+	return s.client.do(ctx, req, nil)
 }

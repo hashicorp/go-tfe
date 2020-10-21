@@ -42,13 +42,23 @@ func createAgentPool(t *testing.T, client *Client, org *Organization) (*AgentPoo
 	}
 
 	ctx := context.Background()
-	pool, err := client.AgentPools.Create(ctx, org.Name, AgentPoolCreateOptions{})
+	pool, err := client.AgentPools.Create(ctx, org.Name, AgentPoolCreateOptions{
+		Name: String(randomString(t)),
+	})
 	if err != nil {
 		t.Fatal(err)
 	}
 
 	return pool, func() {
-		orgCleanup()
+		if err := client.AgentPools.Delete(ctx, pool.ID); err != nil {
+			t.Errorf("Error destroying agent pool! WARNING: Dangling resources "+
+				"may exist! The full error is shown below.\n\n"+
+				"Agent pool ID: %s\nError: %s", pool.ID, err)
+		}
+
+		if orgCleanup != nil {
+			orgCleanup()
+		}
 	}
 }
 
