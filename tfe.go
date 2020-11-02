@@ -123,6 +123,7 @@ type Client struct {
 	PolicyChecks               PolicyChecks
 	PolicySetParameters        PolicySetParameters
 	PolicySets                 PolicySets
+	PolicySetVersions          PolicySetVersions
 	RegistryModules            RegistryModules
 	Runs                       Runs
 	RunTriggers                RunTriggers
@@ -225,6 +226,7 @@ func NewClient(cfg *Config) (*Client, error) {
 	client.Policies = &policies{client: client}
 	client.PolicyChecks = &policyChecks{client: client}
 	client.PolicySetParameters = &policySetParameters{client: client}
+	client.PolicySetVersions = &policySetVersions{client: client}
 	client.PolicySets = &policySets{client: client}
 	client.RegistryModules = &registryModules{client: client}
 	client.Runs = &runs{client: client}
@@ -594,6 +596,11 @@ func (c *Client) do(ctx context.Context, req *retryablehttp.Request, v interface
 	// Items and Pagination struct fields.
 	if !items.IsValid() || !pagination.IsValid() {
 		return jsonapi.UnmarshalPayload(resp.Body, v)
+		// One alternative based on https://github.com/google/jsonapi/issues/68#issuecomment-275572468
+		//payload := new(jsonapi.OnePayload)
+		//return json.NewDecoder(resp.Body).Decode(payload)
+		// Second alternative based on https://github.com/google/jsonapi/issues/68#issuecomment-275572468
+		//return json.NewDecoder(resp.Body).Decode(v)
 	}
 
 	// Return an error if v.Items is not a slice.

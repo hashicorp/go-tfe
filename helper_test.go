@@ -139,7 +139,7 @@ func createPolicySetParameter(t *testing.T, client *Client, ps *PolicySet) (*Pol
 	}
 
 	ctx := context.Background()
-	v, err := client.PolicySetParameters.Create(ctx, ps.ID, PolicySetParameterCreateOptions{
+	psp, err := client.PolicySetParameters.Create(ctx, ps.ID, PolicySetParameterCreateOptions{
 		Key:      String(randomString(t)),
 		Value:    String(randomString(t)),
 		Category: Category(CategoryPolicySet),
@@ -148,17 +148,79 @@ func createPolicySetParameter(t *testing.T, client *Client, ps *PolicySet) (*Pol
 		t.Fatal(err)
 	}
 
-	return v, func() {
-		if err := client.PolicySetParameters.Delete(ctx, ps.ID, v.ID); err != nil {
-			t.Errorf("Error destroying variable! WARNING: Dangling resources\n"+
+	return psp, func() {
+		if err := client.PolicySetParameters.Delete(ctx, ps.ID, psp.ID); err != nil {
+			t.Errorf("Error destroying policy set parameter! WARNING: Dangling resources\n"+
 				"may exist! The full error is shown below.\n\n"+
-				"Parameter: %s\nError: %s", v.Key, err)
+				"Parameter: %s\nError: %s", psp.Key, err)
 		}
 
 		if psCleanup != nil {
 			psCleanup()
 		}
 	}
+}
+
+func createPolicySetVersion(t *testing.T, client *Client, ps *PolicySet) (*PolicySetVersion, func()) {
+	var psCleanup func()
+
+	if ps == nil {
+		ps, psCleanup = createPolicySet(t, client, nil, nil, nil)
+	}
+
+	ctx := context.Background()
+	psv, err := client.PolicySetVersions.Create(ctx, ps.ID, PolicySetVersionCreateOptions{})
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	return psv, func() {
+		// There currently isn't a way to delete a state, so we
+		// can only cleanup by deleting the policy set.
+		if psCleanup != nil {
+			psCleanup()
+		}
+	}
+}
+
+func createUploadedPolicySetVersion(t *testing.T, client *Client, ps *PolicySet) (*PolicySetVersion, func()) {
+	psv, psvCleanup := createPolicySetVersion(t, client, ps)
+
+	ctx := context.Background()
+
+	uploadLink := ""
+	for k, v := range *(psv.Links) {
+		if k == "upload" {
+			uploadLink = v.(string)
+		}
+	}
+
+	err := client.PolicySetVersions.Upload(ctx, uploadLink, "test-fixtures/policy-set-version")
+	if err != nil {
+		psvCleanup()
+		t.Fatal(err)
+	}
+
+	for i := 0; ; i++ {
+		psv, err = client.PolicySetVersions.Read(ctx, psv.ID)
+		if err != nil {
+			psvCleanup()
+			t.Fatal(err)
+		}
+
+		if psv.Status == PolicySetVersionUploaded {
+			break
+		}
+
+		if i > 10 {
+			psvCleanup()
+			t.Fatal("Timeout waiting for the policy set version to be uploaded")
+		}
+
+		time.Sleep(1 * time.Second)
+	}
+
+	return psv, psvCleanup
 }
 
 func createPolicySet(t *testing.T, client *Client, org *Organization, policies []*Policy, workspaces []*Workspace) (*PolicySet, func()) {
@@ -190,6 +252,7 @@ func createPolicySet(t *testing.T, client *Client, org *Organization, policies [
 		}
 	}
 }
+
 
 func createPolicy(t *testing.T, client *Client, org *Organization) (*Policy, func()) {
 	var orgCleanup func()
