@@ -37,17 +37,15 @@ func main() {
 		log.Println("Failed creating policy set version")
 		log.Fatal(err)
 	} else {
-		log.Print("The policy set version ID is:", psv.ID, "\n")
-		log.Print("The linked policy set ID is:", psv.PolicySet.ID, "\n")
+		log.Print("The policy set version Type is: ", psv.Data.Type, "\n")
+		log.Print("The policy set version ID is: ", psv.Data.ID, "\n")
+		log.Print("The linked policy set ID is: ", psv.Data.Relationships.PolicySet.Data.ID, "\n")
+		log.Print("The upload link is:", psv.Data.Links.Upload, "\n")
+		log.Print("The upload status is: ", psv.Data.Attributes.Status)
 	}
 
-	// Upload a policy set version tar ball
-	uploadLink := ""
-	for k, v := range *psv.Links {
-		if k == "upload" {
-			uploadLink = v.(string)
-		}
-	}
+	// Get the upload Link
+	uploadLink := psv.Data.Links.Upload
 
 	// Log upload URL
 	log.Print("The upload URL is:", uploadLink, "\n")
@@ -60,12 +58,14 @@ func main() {
 
 	// Try to read the policy set version
 	for i := 0; ; i++ {
-		psv, err = client.PolicySetVersions.Read(ctx, psv.ID)
+		psv, err = client.PolicySetVersions.Read(ctx, psv.Data.ID)
 		if err != nil {
 			log.Fatal(err)
+		} else {
+			log.Print("The upload status is: ", psv.Data.Attributes.Status)
 		}
 
-		if psv.Status == tfe.PolicySetVersionUploaded {
+		if psv.Data.Attributes.Status == tfe.PolicySetVersionReady {
 			break
 		}
 

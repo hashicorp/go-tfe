@@ -175,7 +175,7 @@ func createPolicySetVersion(t *testing.T, client *Client, ps *PolicySet) (*Polic
 	}
 
 	return psv, func() {
-		// There currently isn't a way to delete a state, so we
+		// There currently isn't a way to delete a policy set version, so we
 		// can only cleanup by deleting the policy set.
 		if psCleanup != nil {
 			psCleanup()
@@ -188,12 +188,7 @@ func createUploadedPolicySetVersion(t *testing.T, client *Client, ps *PolicySet)
 
 	ctx := context.Background()
 
-	uploadLink := ""
-	for k, v := range *(psv.Links) {
-		if k == "upload" {
-			uploadLink = v.(string)
-		}
-	}
+	uploadLink := psv.Data.Links.Upload
 
 	err := client.PolicySetVersions.Upload(ctx, uploadLink, "test-fixtures/policy-set-version")
 	if err != nil {
@@ -202,13 +197,13 @@ func createUploadedPolicySetVersion(t *testing.T, client *Client, ps *PolicySet)
 	}
 
 	for i := 0; ; i++ {
-		psv, err = client.PolicySetVersions.Read(ctx, psv.ID)
+		psv, err = client.PolicySetVersions.Read(ctx, psv.Data.ID)
 		if err != nil {
 			psvCleanup()
 			t.Fatal(err)
 		}
 
-		if psv.Status == PolicySetVersionUploaded {
+		if psv.Data.Attributes.Status == PolicySetVersionReady {
 			break
 		}
 

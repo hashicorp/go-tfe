@@ -10,7 +10,6 @@ import (
 	"time"
 
 	slug "github.com/hashicorp/go-slug"
-	jsonapi "github.com/svanharmelen/jsonapi"
 )
 
 // Compile-time proof of interface implementation.
@@ -48,7 +47,7 @@ type PolicySetVersionStatus string
 const (
 	PolicySetVersionErrored  PolicySetVersionStatus = "errored"
 	PolicySetVersionPending  PolicySetVersionStatus = "pending"
-	PolicySetVersionUploaded PolicySetVersionStatus = "uploaded"
+	PolicySetVersionReady PolicySetVersionStatus = "ready"
 )
 
 // PolicySetVersionSource represents a source of a policy set version.
@@ -63,23 +62,43 @@ const (
 	PolicySetVersionSourceTerraform PolicySetVersionSource = "terraform"
 )
 
-// PolicySetVersion is a representation of an uploaded policy set
-// in TFE for non-VCS-backed policy sets. A  policy set must have at
-// least one policy set version before it can be used.
 type PolicySetVersion struct {
-	ID               string                 `jsonapi:"primary,policy-set-versions"`
-	Source           PolicySetVersionSource `jsonapi:"attr,source"`
-	Status           PolicySetVersionStatus `jsonapi:"attr,status"`
-	StatusTimestamps *PSVStatusTimestamps   `jsonapi:"attr,status-timestamps"`
-	Error            string                 `jsonapi:"attr,error"`
-	CreatedAt        time.Time              `jsonapi:"attr,created-at,iso8601"`
-	UpdatedAt        time.Time              `jsonapi:"attr,updated-at,iso8601"`
+	Data             *PolicySetVersionData  `json:"data"`
+}
 
-	// Relations
-	PolicySet        *PolicySet             `jsonapi:"relation,policy-set"`
+type PolicySetVersionData struct {
+	Type             string                 `json:"type"`
+	ID               string                 `json:"id"`
+	Attributes       *PSVAttributes         `json:"attributes"`
+	Relationships    *PSVRelationships      `json:"relationships"`
+	Links            *PSVLinks            `json:"links"`
+}
 
-	// Links
-	Links            *jsonapi.Links         `json:"links,omitempty"`
+type PSVAttributes struct {
+	Source           PolicySetVersionSource `json:"source"`
+	Status           PolicySetVersionStatus `json:"status"`
+	StatusTimestamps *PSVStatusTimestamps   `json:"status-timestamps"`
+	Error            string                 `json:"error"`
+	CreatedAt        time.Time              `json:"created-at"`
+	UpdatedAt        time.Time              `json:"updated-at"`
+}
+
+type PSVRelationships struct {
+	PolicySet *PolicySetRelationship `json:"policy-set"`
+}
+
+type PolicySetRelationship struct {
+	Data *PolicySetData     `json:"data"`
+}
+
+type PolicySetData struct {
+	Type string  `json:"type"`
+	ID   string  `json:"id"`
+}
+
+type PSVLinks struct {
+	Self   string `json:"self"`
+	Upload string `json:"upload"`
 }
 
 // PSVStatusTimestamps holds the timestamps for individual policy set version

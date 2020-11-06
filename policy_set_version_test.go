@@ -24,24 +24,19 @@ func TestPolicySetVersionsCreate(t *testing.T) {
 		require.NoError(t, err)
 
 		// Get a refreshed view of the policy set version.
-		refreshed, err := client.PolicySetVersions.Read(ctx, psv.ID)
+		refreshed, err := client.PolicySetVersions.Read(ctx, psv.Data.ID)
 		require.NoError(t, err)
 
 		for _, item := range []*PolicySetVersion{
 			psv,
 			refreshed,
 		} {
-			assert.NotEmpty(t, item.ID)
-			assert.Empty(t, item.Error)
-			assert.Equal(t, item.Source, PolicySetVersionSourceAPI)
-			assert.Equal(t, item.Status, PolicySetVersionPending)
+			assert.NotEmpty(t, item.Data.ID)
+			assert.Empty(t, item.Data.Attributes.Error)
+			assert.Equal(t, item.Data.Attributes.Source, PolicySetVersionSourceAPI)
+			assert.Equal(t, item.Data.Attributes.Status, PolicySetVersionPending)
 
-			uploadLink := ""
-			for k, v := range *(item.Links) {
-				if k == "upload" {
-					uploadLink = v.(string)
-				}
-			}
+			uploadLink := item.Data.Links.Upload
 			assert.NotEmpty(t, uploadLink)
 		}
 	})
@@ -62,7 +57,7 @@ func TestPolicySetVersionsRead(t *testing.T) {
 	defer psvTestCleanup()
 
 	t.Run("when the policy set version exists", func(t *testing.T) {
-		psv, err := client.PolicySetVersions.Read(ctx, psvTest.ID)
+		psv, err := client.PolicySetVersions.Read(ctx, psvTest.Data.ID)
 		require.NoError(t, err)
 
 		assert.Equal(t, psvTest, psv)
@@ -90,12 +85,7 @@ func TestPolicySetVersionsUpload(t *testing.T) {
 
 	t.Run("with valid options", func(t *testing.T) {
 
-		uploadLink := ""
-		for k, v := range *(psv.Links) {
-			if k == "upload" {
-				uploadLink = v.(string)
-			}
-		}
+		uploadLink := psv.Data.Links.Upload
 
 		err := client.PolicySetVersions.Upload(
 			ctx,
@@ -107,10 +97,10 @@ func TestPolicySetVersionsUpload(t *testing.T) {
 		// We do this in a small loop, because it can take a second
 		// before the upload is finished.
 		for i := 0; ; i++ {
-			refreshed, err := client.PolicySetVersions.Read(ctx, psv.ID)
+			refreshed, err := client.PolicySetVersions.Read(ctx, psv.Data.ID)
 			require.NoError(t, err)
 
-			if refreshed.Status == PolicySetVersionUploaded {
+			if refreshed.Data.Attributes.Status == PolicySetVersionReady {
 				break
 			}
 
@@ -124,12 +114,7 @@ func TestPolicySetVersionsUpload(t *testing.T) {
 
 	t.Run("without a valid upload URL", func(t *testing.T) {
 
-		uploadLink := ""
-		for k, v := range *(psv.Links) {
-			if k == "upload" {
-				uploadLink = v.(string)
-			}
-		}
+		uploadLink := psv.Data.Links.Upload
 
 		err := client.PolicySetVersions.Upload(
 			ctx,
@@ -141,12 +126,7 @@ func TestPolicySetVersionsUpload(t *testing.T) {
 
 	t.Run("without a valid path", func(t *testing.T) {
 
-		uploadLink := ""
-		for k, v := range *(psv.Links) {
-			if k == "upload" {
-				uploadLink = v.(string)
-			}
-		}
+		uploadLink := psv.Data.Links.Upload
 
 		err := client.PolicySetVersions.Upload(
 			ctx,

@@ -595,12 +595,49 @@ func (c *Client) do(ctx context.Context, req *retryablehttp.Request, v interface
 	// Unmarshal a single value if v does not contain the
 	// Items and Pagination struct fields.
 	if !items.IsValid() || !pagination.IsValid() {
-		return jsonapi.UnmarshalPayload(resp.Body, v)
-		// One alternative based on https://github.com/google/jsonapi/issues/68#issuecomment-275572468
-		//payload := new(jsonapi.OnePayload)
-		//return json.NewDecoder(resp.Body).Decode(payload)
-		// Second alternative based on https://github.com/google/jsonapi/issues/68#issuecomment-275572468
-		//return json.NewDecoder(resp.Body).Decode(v)
+		var modelType reflect.Type
+		responseType := reflect.TypeOf(v)
+		invalidResponseError := errors.New("go-tfe bug: v must be nil, ptr, or ptr slice")
+		switch responseType.Kind() {
+		case reflect.Slice:
+			sliceElem := responseType.Elem()
+			if sliceElem.Kind() != reflect.Ptr {
+				return invalidResponseError
+			}
+			modelType = sliceElem.Elem()
+		case reflect.Ptr:
+			modelType = reflect.ValueOf(v).Elem().Type()
+		default:
+			return invalidResponseError
+		}
+
+		// Infer whether the response uses jsonapi or regular json
+		// serialization based on how the fields are tagged.
+		jsonApiFields := 0
+		jsonFields := 0
+		for i := 0; i < modelType.NumField(); i++ {
+			structField := modelType.Field(i)
+			if structField.Tag.Get("jsonapi") != "" {
+				jsonApiFields++
+			}
+			if structField.Tag.Get("json") != "" {
+				jsonFields++
+			}
+		}
+		if jsonApiFields > 0 && jsonFields > 0 {
+			// Defining a struct with both json and jsonapi tags doesn't
+			// make sense, because a struct can only be serialized
+			// as one or another. If this does happen, it's a bug
+			// in the library that should be fixed at development time
+			return errors.New("go-tfe bug: struct can't use both json and jsonapi attributes")
+		}
+
+		if jsonFields > 0 {
+			return json.NewDecoder(resp.Body).Decode(v)
+			//return json.Unmarshal(json.NewDecoder(resp.Body), &v)
+		} else {
+			return jsonapi.UnmarshalPayload(resp.Body, v)
+		}
 	}
 
 	// Return an error if v.Items is not a slice.
