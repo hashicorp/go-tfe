@@ -910,6 +910,9 @@ func createWorkspace(t *testing.T, client *Client, org *Organization) (*Workspac
 	}
 
 	return w, func() {
+		// Sleep to avoid error caused by deleting workspace too quickly
+		time.Sleep(1 * time.Second)
+
 		if err := client.Workspaces.Delete(ctx, org.Name, w.Name); err != nil {
 			t.Errorf("Error destroying workspace! WARNING: Dangling resources\n"+
 				"may exist! The full error is shown below.\n\n"+

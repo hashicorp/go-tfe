@@ -612,7 +612,6 @@ func (c *Client) do(ctx context.Context, req *retryablehttp.Request, v interface
 		}
 
 		// Infer whether the response uses jsonapi or regular json
-		// serialization based on how the fields are tagged.
 		jsonApiFields := 0
 		jsonFields := 0
 		for i := 0; i < modelType.NumField(); i++ {
@@ -624,17 +623,13 @@ func (c *Client) do(ctx context.Context, req *retryablehttp.Request, v interface
 				jsonFields++
 			}
 		}
-		if jsonApiFields > 0 && jsonFields > 0 {
-			// Defining a struct with both json and jsonapi tags doesn't
-			// make sense, because a struct can only be serialized
-			// as one or another. If this does happen, it's a bug
-			// in the library that should be fixed at development time
-			return errors.New("go-tfe bug: struct can't use both json and jsonapi attributes")
-		}
 
-		if jsonFields > 0 {
+		// Do special processing if there are no jsonAPI fields.
+		// This is needed to support Policy Set Versions.
+		// Originally, only jsonapi.UnmarshalPayload(resp.Body, v)
+		// was used since all existing structures used jsonapi.
+		if jsonApiFields == 0 {
 			return json.NewDecoder(resp.Body).Decode(v)
-			//return json.Unmarshal(json.NewDecoder(resp.Body), &v)
 		} else {
 			return jsonapi.UnmarshalPayload(resp.Body, v)
 		}
