@@ -78,4 +78,12 @@ func main() {
 		time.Sleep(1 * time.Second)
 	}
 
+	// Delete the policy set
+	// Note that there is no API to delete policy set versions
+	err = client.PolicySets.Delete(ctx, ps.ID)
+	if err != nil {
+		log.Fatal(err)
+	} else {
+		log.Println("Successfully deleted policy set", ps.ID)
+	}
 }
