@@ -47,7 +47,7 @@ type PolicySetVersionStatus string
 const (
 	PolicySetVersionErrored  PolicySetVersionStatus = "errored"
 	PolicySetVersionPending  PolicySetVersionStatus = "pending"
-	PolicySetVersionReady PolicySetVersionStatus = "ready"
+	PolicySetVersionReady    PolicySetVersionStatus = "ready"
 )
 
 // PolicySetVersionSource represents a source of a policy set version.
@@ -71,7 +71,7 @@ type PolicySetVersionData struct {
 	ID               string                 `json:"id"`
 	Attributes       *PSVAttributes         `json:"attributes"`
 	Relationships    *PSVRelationships      `json:"relationships"`
-	Links            *PSVLinks            `json:"links"`
+	Links            *PSVLinks              `json:"links"`
 }
 
 type PSVAttributes struct {
