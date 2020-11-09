@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 	"log"
+	"os"
 	"time"
 
 	tfe "github.com/hashicorp/go-tfe"
@@ -10,7 +11,8 @@ import (
 
 func main() {
 	config := &tfe.Config{
-		Token: "insert-your-token-here",
+		Address:    os.Getenv("TFE_ADDRESS"),
+		Token:      os.Getenv("TFE_TOKEN"),
 	}
 
 	client, err := tfe.NewClient(config)
@@ -22,7 +24,7 @@ func main() {
 	ctx := context.Background()
 
 	// Create a new policy set
-	ps, err := client.PolicySets.Create(ctx, "org-name", tfe.PolicySetCreateOptions{
+	ps, err := client.PolicySets.Create(ctx, os.Getenv("TFE_ORGANIZATION"), tfe.PolicySetCreateOptions{
 		Name: tfe.String("my-policy-set-tst"),
 	})
 	if err != nil {
