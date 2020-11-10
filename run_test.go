@@ -112,7 +112,7 @@ func TestRunsRead(t *testing.T) {
 	client := testClient(t)
 	ctx := context.Background()
 
-	rTest, rTestCleanup := createPlannedRun(t, client, nil)
+	rTest, rTestCleanup := createCostEstimatedRun(t, client, nil)
 	defer rTestCleanup()
 
 	t.Run("when the run exists", func(t *testing.T) {
