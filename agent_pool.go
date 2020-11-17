@@ -11,7 +11,7 @@ import (
 var _ AgentPools = (*agentPools)(nil)
 
 // AgentPools describes all the agent pool related methods that the Terraform
-// Enterprise API supports.
+// Cloud API supports. Note that agents are not available in Terraform Enterprise.
 //
 // TFE API docs: https://www.terraform.io/docs/cloud/api/agents.html
 type AgentPools interface {

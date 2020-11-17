@@ -179,6 +179,7 @@ type WorkspaceCreateOptions struct {
 	// Which execution mode to use. Valid values are remote, local, and agent.
 	// When set to local, the workspace will be used for state storage only.
 	// This value must not be specified if operations is specified.
+	// 'agent' execution mode is not available in Terraform Enterprise.
 	ExecutionMode *string `jsonapi:"attr,execution-mode,omitempty"`
 
 	// Whether to filter runs based on the changed files in a VCS push. If
@@ -357,6 +358,7 @@ type WorkspaceUpdateOptions struct {
 	// Which execution mode to use. Valid values are remote, local, and agent.
 	// When set to local, the workspace will be used for state storage only.
 	// This value must not be specified if operations is specified.
+	// 'agent' execution mode is not available in Terraform Enterprise.
 	ExecutionMode *string `jsonapi:"attr,execution-mode,omitempty"`
 
 	// Whether to filter runs based on the changed files in a VCS push. If
