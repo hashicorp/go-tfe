@@ -151,10 +151,21 @@ type AgentPoolUpdateOptions struct {
 	Name *string `jsonapi:"attr,name"`
 }
 
+func (o AgentPoolUpdateOptions) valid() error {
+	if o.Name != nil && !validStringID(o.Name) {
+		return errors.New("invalid value for name")
+	}
+	return nil
+}
+
 // Update an agent pool by its ID.
 func (s *agentPools) Update(ctx context.Context, agentPoolID string, options AgentPoolUpdateOptions) (*AgentPool, error) {
 	if !validStringID(&agentPoolID) {
 		return nil, errors.New("invalid value for agent pool ID")
+	}
+
+	if err := options.valid(); err != nil {
+		return nil, err
 	}
 
 	// Make sure we don't send a user provided ID.
