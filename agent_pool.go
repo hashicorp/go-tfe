@@ -53,8 +53,7 @@ type AgentPoolListOptions struct {
 	ListOptions
 }
 
-// List all the agent pools of the given organization. Note this currently is
-// limited to a single pool per organization (API enforced).
+// List all the agent pools of the given organization.
 func (s *agentPools) List(ctx context.Context, organization string, options AgentPoolListOptions) (*AgentPoolList, error) {
 	if !validStringID(&organization) {
 		return nil, errors.New("invalid value for organization")
@@ -88,11 +87,13 @@ func (o AgentPoolCreateOptions) valid() error {
 	if !validString(o.Name) {
 		return errors.New("name is required")
 	}
+	if !validStringID(o.Name) {
+		return errors.New("invalid value for name")
+	}
 	return nil
 }
 
-// Create a new agent pool with the given options. Note only a single pool is
-// allowed per organization (API enforced).
+// Create a new agent pool with the given options.
 func (s *agentPools) Create(ctx context.Context, organization string, options AgentPoolCreateOptions) (*AgentPool, error) {
 	if !validStringID(&organization) {
 		return nil, errors.New("invalid value for organization")
