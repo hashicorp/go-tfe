@@ -197,7 +197,8 @@ type WorkspaceCreateOptions struct {
 	// organization.
 	Name *string `jsonapi:"attr,name"`
 
-	// Whether the workspace will use remote or local execution mode.
+	// DEPRECATED. Whether the workspace will use remote or local execution mode.
+	// Use ExecutionMode instead.
 	Operations *bool `jsonapi:"attr,operations,omitempty"`
 
 	// Whether to queue all runs. Unless this is set to true, runs triggered by
@@ -364,7 +365,8 @@ type WorkspaceUpdateOptions struct {
 	// disabled, any push will trigger a run.
 	FileTriggersEnabled *bool `jsonapi:"attr,file-triggers-enabled,omitempty"`
 
-	// Whether the workspace will use remote or local execution mode.
+	// DEPRECATED. Whether the workspace will use remote or local execution mode.
+	// Use ExecutionMode instead.
 	Operations *bool `jsonapi:"attr,operations,omitempty"`
 
 	// Whether to queue all runs. Unless this is set to true, runs triggered by
