@@ -42,10 +42,13 @@ type AgentPoolList struct {
 	Items []*AgentPool
 }
 
-// AgentPool represents a Terraform Enterprise agent pool.
+// AgentPool represents a Terraform Cloud agent pool.
 type AgentPool struct {
 	ID   string `jsonapi:"primary,agent-pools"`
 	Name string `jsonapi:"attr,name"`
+
+	// Relations
+	Organization *Organization `jsonapi:"relation,organization"`
 }
 
 // AgentPoolListOptions represents the options for listing agent pools.
