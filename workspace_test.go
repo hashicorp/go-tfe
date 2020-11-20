@@ -99,6 +99,7 @@ func TestWorkspacesCreate(t *testing.T) {
 	t.Run("with valid options", func(t *testing.T) {
 		options := WorkspaceCreateOptions{
 			Name:                String("foo"),
+			AllowDestroyPlan:    Bool(false),
 			AutoApply:           Bool(true),
 			FileTriggersEnabled: Bool(true),
 			Operations:          Bool(true),
@@ -122,6 +123,7 @@ func TestWorkspacesCreate(t *testing.T) {
 		} {
 			assert.NotEmpty(t, item.ID)
 			assert.Equal(t, *options.Name, item.Name)
+			assert.Equal(t, *options.AllowDestroyPlan, item.AllowDestroyPlan)
 			assert.Equal(t, *options.AutoApply, item.AutoApply)
 			assert.Equal(t, *options.FileTriggersEnabled, item.FileTriggersEnabled)
 			assert.Equal(t, *options.Operations, item.Operations)
@@ -305,6 +307,7 @@ func TestWorkspacesUpdate(t *testing.T) {
 	t.Run("when updating a subset of values", func(t *testing.T) {
 		options := WorkspaceUpdateOptions{
 			Name:             String(wTest.Name),
+			AllowDestroyPlan: Bool(false),
 			AutoApply:        Bool(true),
 			Operations:       Bool(true),
 			QueueAllRuns:     Bool(true),
@@ -315,6 +318,7 @@ func TestWorkspacesUpdate(t *testing.T) {
 		require.NoError(t, err)
 
 		assert.Equal(t, wTest.Name, wAfter.Name)
+		assert.NotEqual(t, wTest.AllowDestroyPlan, wAfter.AllowDestroyPlan)
 		assert.NotEqual(t, wTest.AutoApply, wAfter.AutoApply)
 		assert.NotEqual(t, wTest.QueueAllRuns, wAfter.QueueAllRuns)
 		assert.NotEqual(t, wTest.TerraformVersion, wAfter.TerraformVersion)
@@ -324,6 +328,7 @@ func TestWorkspacesUpdate(t *testing.T) {
 	t.Run("with valid options", func(t *testing.T) {
 		options := WorkspaceUpdateOptions{
 			Name:                String(randomString(t)),
+			AllowDestroyPlan:    Bool(true),
 			AutoApply:           Bool(false),
 			FileTriggersEnabled: Bool(true),
 			Operations:          Bool(false),
@@ -346,6 +351,7 @@ func TestWorkspacesUpdate(t *testing.T) {
 			refreshed,
 		} {
 			assert.Equal(t, *options.Name, item.Name)
+			assert.Equal(t, *options.AllowDestroyPlan, item.AllowDestroyPlan)
 			assert.Equal(t, *options.AutoApply, item.AutoApply)
 			assert.Equal(t, *options.FileTriggersEnabled, item.FileTriggersEnabled)
 			assert.Equal(t, *options.Operations, item.Operations)
@@ -411,6 +417,7 @@ func TestWorkspacesUpdateByID(t *testing.T) {
 	t.Run("when updating a subset of values", func(t *testing.T) {
 		options := WorkspaceUpdateOptions{
 			Name:             String(wTest.Name),
+			AllowDestroyPlan: Bool(false),
 			AutoApply:        Bool(true),
 			Operations:       Bool(true),
 			QueueAllRuns:     Bool(true),
@@ -421,6 +428,7 @@ func TestWorkspacesUpdateByID(t *testing.T) {
 		require.NoError(t, err)
 
 		assert.Equal(t, wTest.Name, wAfter.Name)
+		assert.NotEqual(t, wTest.AllowDestroyPlan, wAfter.AllowDestroyPlan)
 		assert.NotEqual(t, wTest.AutoApply, wAfter.AutoApply)
 		assert.NotEqual(t, wTest.QueueAllRuns, wAfter.QueueAllRuns)
 		assert.NotEqual(t, wTest.TerraformVersion, wAfter.TerraformVersion)
@@ -430,6 +438,7 @@ func TestWorkspacesUpdateByID(t *testing.T) {
 	t.Run("with valid options", func(t *testing.T) {
 		options := WorkspaceUpdateOptions{
 			Name:                String(randomString(t)),
+			AllowDestroyPlan:    Bool(true),
 			AutoApply:           Bool(false),
 			FileTriggersEnabled: Bool(true),
 			Operations:          Bool(false),
@@ -452,6 +461,7 @@ func TestWorkspacesUpdateByID(t *testing.T) {
 			refreshed,
 		} {
 			assert.Equal(t, *options.Name, item.Name)
+			assert.Equal(t, *options.AllowDestroyPlan, item.AllowDestroyPlan)
 			assert.Equal(t, *options.AutoApply, item.AutoApply)
 			assert.Equal(t, *options.FileTriggersEnabled, item.FileTriggersEnabled)
 			assert.Equal(t, *options.Operations, item.Operations)

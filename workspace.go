@@ -78,6 +78,7 @@ type Workspace struct {
 	ID                   string                `jsonapi:"primary,workspaces"`
 	Actions              *WorkspaceActions     `jsonapi:"attr,actions"`
 	AgentPoolID          string                `jsonapi:"attr,agent-pool-id"`
+	AllowDestroyPlan     bool                  `jsonapi:"attr,allow-destroy-plan"`
 	AutoApply            bool                  `jsonapi:"attr,auto-apply"`
 	CanQueueDestroyPlan  bool                  `jsonapi:"attr,can-queue-destroy-plan"`
 	CreatedAt            time.Time             `jsonapi:"attr,created-at,iso8601"`
@@ -172,6 +173,9 @@ type WorkspaceCreateOptions struct {
 	// belonging to the workspace's organization. This value must not be specified
 	// if execution-mode is set to remote or local or if operations is set to true.
 	AgentPoolID *string `jsonapi:"attr,agent-pool-id,omitempty"`
+
+	// Whether destroy plans can be queued on the workspace.
+	AllowDestroyPlan *bool `jsonapi:"attr,allow-destroy-plan,omitempty"`
 
 	// Whether to automatically apply changes when a Terraform plan is successful.
 	AutoApply *bool `jsonapi:"attr,auto-apply,omitempty"`
@@ -345,6 +349,9 @@ type WorkspaceUpdateOptions struct {
 	// belonging to the workspace's organization. This value must not be specified
 	// if execution-mode is set to remote or local or if operations is set to true.
 	AgentPoolID *string `jsonapi:"attr,agent-pool-id,omitempty"`
+
+	// Whether destroy plans can be queued on the workspace.
+	AllowDestroyPlan *bool `jsonapi:"attr,allow-destroy-plan,omitempty"`
 
 	// Whether to automatically apply changes when a Terraform plan is successful.
 	AutoApply *bool `jsonapi:"attr,auto-apply,omitempty"`
