@@ -261,8 +261,12 @@ func TestOrganizationsEntitlements(t *testing.T) {
 		require.NoError(t, err)
 
 		assert.NotEmpty(t, entitlements.ID)
+		assert.True(t, entitlements.Agents)
+		assert.True(t, entitlements.AuditLogging)
+		assert.True(t, entitlements.CostEstimation)
 		assert.True(t, entitlements.Operations)
 		assert.True(t, entitlements.PrivateModuleRegistry)
+		assert.True(t, entitlements.SSO)
 		assert.True(t, entitlements.Sentinel)
 		assert.True(t, entitlements.StateStorage)
 		assert.True(t, entitlements.Teams)
