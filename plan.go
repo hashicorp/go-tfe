@@ -1,6 +1,7 @@
 package tfe
 
 import (
+	"bytes"
 	"context"
 	"errors"
 	"fmt"
@@ -22,6 +23,9 @@ type Plans interface {
 
 	// Logs retrieves the logs of a plan.
 	Logs(ctx context.Context, planID string) (io.Reader, error)
+	
+	// Provide the JSON of a plan as a string, for external policy checking.
+	JsonOutput(ctx context.Context, planID string) ([]byte, error)
 }
 
 // plans implements Plans.
@@ -133,4 +137,28 @@ func (s *plans) Logs(ctx context.Context, planID string) (io.Reader, error) {
 		done:   done,
 		logURL: u,
 	}, nil
+}
+
+
+// Provide the JSON version of the plan from the TFE API.
+func (s *plans) JsonOutput(ctx context.Context, planID string) ([]byte, error) {
+	if !validStringID(&planID) {
+		return nil, errors.New("invalid value for plan ID")
+	}
+
+	u := fmt.Sprintf("plans/%s/json-output", url.QueryEscape(planID))
+	// TODO: FInd a way to not have to use our own code to do this - maybe extend the API?
+	req, err := s.client.newRequest("GET", u, nil)
+	if err != nil {
+		return nil, fmt.Errorf("tfe: unable to get json plan %v", err)
+	}
+
+	// Using the built-in "do" action of the client, we provide a byte buffer that will be filled with the plan.
+	var buf bytes.Buffer
+	err = s.client.do(ctx, req, &buf)
+	if err != nil {
+		return nil, err
+	}
+
+	return buf.Bytes(), nil
 }
