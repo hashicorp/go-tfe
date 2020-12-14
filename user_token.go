@@ -27,7 +27,7 @@ type UserTokens interface {
 	Read(ctx context.Context, userID string) (*UserToken, error)
 
 	// Delete a user token by its ID.
-	Delete(ctx context.Context, userID string) error
+	Delete(ctx context.Context, tokenID string) error
 }
 
 // userTokens implements UserTokens.

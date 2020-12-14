@@ -8,7 +8,8 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func TestUserTokens_Basic(t *testing.T) {
+// TestUserTokens_List tests listing user tokens
+func TestUserTokens_List(t *testing.T) {
 	client := testClient(t)
 	ctx := context.Background()
 	user, err := client.Users.ReadCurrent(ctx)
@@ -31,6 +32,43 @@ func TestUserTokens_Basic(t *testing.T) {
 		}
 		if !found {
 			t.Fatalf("token (%s) not found in token list", token.ID)
+		}
+	})
+}
+
+func TestUserTokens_Create(t *testing.T) {
+	client := testClient(t)
+	ctx := context.Background()
+	user, err := client.Users.ReadCurrent(ctx)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	var tokens []string
+	defer func(t *testing.T) {
+		for _, token := range tokens {
+			err := client.UserTokens.Delete(ctx, token)
+			if err != nil {
+				t.Fatalf("Error deleting token in cleanup:%s", err)
+			}
+		}
+	}(t)
+
+	t.Run("create token with no description", func(t *testing.T) {
+		token, err := client.UserTokens.Create(ctx, user.ID, UserTokenCreateOptions{})
+		tokens = append(tokens, token.ID)
+		if err != nil {
+			t.Fatal(err)
+		}
+	})
+
+	t.Run("create token with description", func(t *testing.T) {
+		token, err := client.UserTokens.Create(ctx, user.ID, UserTokenCreateOptions{
+			Description: fmt.Sprintf("go-tfe-user-token-test-%s", randomString(t)),
+		})
+		tokens = append(tokens, token.ID)
+		if err != nil {
+			t.Fatal(err)
 		}
 	})
 }
