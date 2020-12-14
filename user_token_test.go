@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"testing"
 
+	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
 
@@ -16,6 +17,7 @@ func TestUserTokens_List(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
+
 	token, cleanupFunc := createToken(t, client, user)
 	defer cleanupFunc()
 
@@ -36,6 +38,7 @@ func TestUserTokens_List(t *testing.T) {
 	})
 }
 
+// TestUserTokens_Create tests basic creation of user tokens
 func TestUserTokens_Create(t *testing.T) {
 	client := testClient(t)
 	ctx := context.Background()
@@ -44,6 +47,7 @@ func TestUserTokens_Create(t *testing.T) {
 		t.Fatal(err)
 	}
 
+	// collect the created tokens for revoking after the test
 	var tokens []string
 	defer func(t *testing.T) {
 		for _, token := range tokens {
@@ -73,6 +77,32 @@ func TestUserTokens_Create(t *testing.T) {
 	})
 }
 
+// TestUserTokens_Read tests basic creation of user tokens
+func TestUserTokens_Read(t *testing.T) {
+	client := testClient(t)
+	ctx := context.Background()
+	user, err := client.Users.ReadCurrent(ctx)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	token, tokenCleanupFunc := createToken(t, client, user)
+	defer tokenCleanupFunc()
+
+	t.Run("read token", func(t *testing.T) {
+		to, err := client.UserTokens.Read(ctx, token.ID)
+		if err != nil {
+			t.Fatalf("expected to read token (%s), got error: %s", token.ID, err)
+		}
+		// The initial API call to create a token will return a value in the token
+		// object. Empty that out for comparison
+		token.Token = ""
+		assert.Equal(t, token, to)
+	})
+}
+
+// createToken is a helper method to create a valid token for a given user,
+// which returns both the token and a function to revoke it
 func createToken(t *testing.T, client *Client, user *User) (*UserToken, func()) {
 	t.Helper()
 	ctx := context.Background()

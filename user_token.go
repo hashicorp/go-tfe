@@ -24,7 +24,7 @@ type UserTokens interface {
 	Create(ctx context.Context, userID string, options UserTokenCreateOptions) (*UserToken, error)
 
 	// Read a user token by its ID.
-	Read(ctx context.Context, userID string) (*UserToken, error)
+	Read(ctx context.Context, tokenID string) (*UserToken, error)
 
 	// Delete a user token by its ID.
 	Delete(ctx context.Context, tokenID string) error
@@ -100,12 +100,12 @@ func (s *userTokens) List(ctx context.Context, userID string) (*UserTokenList, e
 }
 
 // Read a user token by its ID.
-func (s *userTokens) Read(ctx context.Context, userID string) (*UserToken, error) {
-	if !validStringID(&userID) {
+func (s *userTokens) Read(ctx context.Context, tokenID string) (*UserToken, error) {
+	if !validStringID(&tokenID) {
 		return nil, errors.New("invalid value for user ID")
 	}
 
-	u := fmt.Sprintf("users/%s/authentication-token", url.QueryEscape(userID))
+	u := fmt.Sprintf("authentication-tokens/%s", url.QueryEscape(tokenID))
 	req, err := s.client.newRequest("GET", u, nil)
 	if err != nil {
 		return nil, err
