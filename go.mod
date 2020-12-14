@@ -1,4 +1,4 @@
-module github.com/hashicorp/go-tfe
+module github.com/sfc-gh-ahess/go-tfe
 
 require (
 	github.com/davecgh/go-spew v1.1.1 // indirect
