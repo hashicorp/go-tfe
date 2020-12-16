@@ -38,8 +38,8 @@ func TestUserTokens_List(t *testing.T) {
 	})
 }
 
-// TestUserTokens_Create tests basic creation of user tokens
-func TestUserTokens_Create(t *testing.T) {
+// TestUserTokens_Generate tests basic creation of user tokens
+func TestUserTokens_Generate(t *testing.T) {
 	client := testClient(t)
 	ctx := context.Background()
 	user, err := client.Users.ReadCurrent(ctx)
@@ -59,7 +59,7 @@ func TestUserTokens_Create(t *testing.T) {
 	}(t)
 
 	t.Run("create token with no description", func(t *testing.T) {
-		token, err := client.UserTokens.Create(ctx, user.ID, UserTokenCreateOptions{})
+		token, err := client.UserTokens.Generate(ctx, user.ID, UserTokenGenerateOptions{})
 		tokens = append(tokens, token.ID)
 		if err != nil {
 			t.Fatal(err)
@@ -67,7 +67,7 @@ func TestUserTokens_Create(t *testing.T) {
 	})
 
 	t.Run("create token with description", func(t *testing.T) {
-		token, err := client.UserTokens.Create(ctx, user.ID, UserTokenCreateOptions{
+		token, err := client.UserTokens.Generate(ctx, user.ID, UserTokenGenerateOptions{
 			Description: fmt.Sprintf("go-tfe-user-token-test-%s", randomString(t)),
 		})
 		tokens = append(tokens, token.ID)
@@ -109,7 +109,7 @@ func createToken(t *testing.T, client *Client, user *User) (*UserToken, func()) 
 	if user == nil {
 		t.Fatal("Nil user in createToken")
 	}
-	token, err := client.UserTokens.Create(ctx, user.ID, UserTokenCreateOptions{
+	token, err := client.UserTokens.Generate(ctx, user.ID, UserTokenGenerateOptions{
 		Description: fmt.Sprintf("go-tfe-user-token-test-%s", randomString(t)),
 	})
 	if err != nil {

@@ -20,8 +20,8 @@ type UserTokens interface {
 	// List all the tokens of the given user ID.
 	List(ctx context.Context, userID string) (*UserTokenList, error)
 
-	// Create a new user token
-	Create(ctx context.Context, userID string, options UserTokenCreateOptions) (*UserToken, error)
+	// Generate a new user token
+	Generate(ctx context.Context, userID string, options UserTokenGenerateOptions) (*UserToken, error)
 
 	// Read a user token by its ID.
 	Read(ctx context.Context, tokenID string) (*UserToken, error)
@@ -44,20 +44,20 @@ type UserTokenList struct {
 // UserToken represents a Terraform Enterprise user token.
 type UserToken struct {
 	ID          string    `jsonapi:"primary,authentication-tokens"`
-	CreatedAt   time.Time `jsonapi:"attr,created-at,iso8601"`
+	GeneratedAt time.Time `jsonapi:"attr,created-at,iso8601"`
 	Description string    `jsonapi:"attr,description"`
 	LastUsedAt  time.Time `jsonapi:"attr,last-used-at,iso8601"`
 	Token       string    `jsonapi:"attr,token"`
 }
 
-// UserTokenCreateOptions the options for creating a user token.
-type UserTokenCreateOptions struct {
+// UserTokenGenerateOptions the options for creating a user token.
+type UserTokenGenerateOptions struct {
 	// Description of the token
 	Description string `jsonapi:"attr,description,omitempty"`
 }
 
-// Create a new user token
-func (s *userTokens) Create(ctx context.Context, userID string, options UserTokenCreateOptions) (*UserToken, error) {
+// Generate a new user token
+func (s *userTokens) Generate(ctx context.Context, userID string, options UserTokenGenerateOptions) (*UserToken, error) {
 	if !validStringID(&userID) {
 		return nil, errors.New("invalid value for user ID")
 	}
@@ -101,7 +101,7 @@ func (s *userTokens) List(ctx context.Context, userID string) (*UserTokenList, e
 // Read a user token by its ID.
 func (s *userTokens) Read(ctx context.Context, tokenID string) (*UserToken, error) {
 	if !validStringID(&tokenID) {
-		return nil, errors.New("invalid value for user ID")
+		return nil, errors.New("invalid value for token ID")
 	}
 
 	u := fmt.Sprintf("authentication-tokens/%s", url.QueryEscape(tokenID))
@@ -122,7 +122,7 @@ func (s *userTokens) Read(ctx context.Context, tokenID string) (*UserToken, erro
 // Delete a user token by its ID.
 func (s *userTokens) Delete(ctx context.Context, tokenID string) error {
 	if !validStringID(&tokenID) {
-		return errors.New("invalid value for user ID")
+		return errors.New("invalid value for token ID")
 	}
 
 	u := fmt.Sprintf("authentication-tokens/%s", url.QueryEscape(tokenID))
