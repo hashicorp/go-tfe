@@ -56,7 +56,7 @@ type UserTokenCreateOptions struct {
 	Description string `jsonapi:"attr,description,omitempty"`
 }
 
-// Create a new user token, replacing any existing token.
+// Create a new user token
 func (s *userTokens) Create(ctx context.Context, userID string, options UserTokenCreateOptions) (*UserToken, error) {
 	if !validStringID(&userID) {
 		return nil, errors.New("invalid value for user ID")
