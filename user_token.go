@@ -84,7 +84,6 @@ func (s *userTokens) List(ctx context.Context, userID string) (*UserTokenList, e
 	}
 
 	u := fmt.Sprintf("users/%s/authentication-tokens", url.QueryEscape(userID))
-	// req, err := s.client.newRequest("GET", u, &options)
 	req, err := s.client.newRequest("GET", u, nil)
 	if err != nil {
 		return nil, err
