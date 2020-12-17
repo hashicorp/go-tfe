@@ -44,7 +44,7 @@ type UserTokenList struct {
 // UserToken represents a Terraform Enterprise user token.
 type UserToken struct {
 	ID          string    `jsonapi:"primary,authentication-tokens"`
-	GeneratedAt time.Time `jsonapi:"attr,created-at,iso8601"`
+	CreatedAt   time.Time `jsonapi:"attr,created-at,iso8601"`
 	Description string    `jsonapi:"attr,description"`
 	LastUsedAt  time.Time `jsonapi:"attr,last-used-at,iso8601"`
 	Token       string    `jsonapi:"attr,token"`
