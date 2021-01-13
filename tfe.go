@@ -108,6 +108,8 @@ type Client struct {
 	retryServerErrors bool
 	remoteAPIVersion  string
 
+	Admin Admin
+
 	AgentPools                 AgentPools
 	Applies                    Applies
 	ConfigurationVersions      ConfigurationVersions
@@ -138,6 +140,13 @@ type Client struct {
 	UserTokens                 UserTokens
 	Variables                  Variables
 	Workspaces                 Workspaces
+}
+
+// Admin is the the Terraform Enterprise Admin API. It provides access to site
+// wide admin settings. These are only available for Terraform Enterprise and
+// do not function against Terraform Cloud.
+type Admin struct {
+	Organizations AdminOrganizations
 }
 
 // NewClient creates a new Terraform Enterprise API client.
@@ -211,6 +220,11 @@ func NewClient(cfg *Config) (*Client, error) {
 	// Save the API version so we can return it from the RemoteAPIVersion
 	// method later.
 	client.remoteAPIVersion = meta.APIVersion
+
+	// Create Admin
+	client.Admin = Admin{
+		Organizations: &adminOrganizations{client: client},
+	}
 
 	// Create the services.
 	client.AgentPools = &agentPools{client: client}
