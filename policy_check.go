@@ -77,6 +77,7 @@ type PolicyCheck struct {
 	Scope            PolicyScope             `jsonapi:"attr,scope"`
 	Status           PolicyStatus            `jsonapi:"attr,status"`
 	StatusTimestamps *PolicyStatusTimestamps `jsonapi:"attr,status-timestamps"`
+	Run              *Run                    `jsonapi:"relation,run"`
 }
 
 // PolicyActions represents the policy check actions.
