@@ -1,7 +1,6 @@
 package tfe
 
 import (
-	"bytes"
 	"context"
 	"errors"
 	"fmt"
