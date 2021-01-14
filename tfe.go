@@ -112,7 +112,6 @@ type Client struct {
 	Applies                    Applies
 	ConfigurationVersions      ConfigurationVersions
 	CostEstimates              CostEstimates
-	IPRanges                   IPRanges
 	NotificationConfigurations NotificationConfigurations
 	OAuthClients               OAuthClients
 	OAuthTokens                OAuthTokens
@@ -138,6 +137,13 @@ type Client struct {
 	Users                      Users
 	Variables                  Variables
 	Workspaces                 Workspaces
+
+	Meta Meta
+}
+
+// Meta contains any Terraform Cloud APIs which provide data about the API itself.
+type Meta struct {
+	IPRanges IPRanges
 }
 
 // NewClient creates a new Terraform Enterprise API client.
@@ -217,7 +223,6 @@ func NewClient(cfg *Config) (*Client, error) {
 	client.Applies = &applies{client: client}
 	client.ConfigurationVersions = &configurationVersions{client: client}
 	client.CostEstimates = &costEstimates{client: client}
-	client.IPRanges = &ipRanges{client: client}
 	client.NotificationConfigurations = &notificationConfigurations{client: client}
 	client.OAuthClients = &oAuthClients{client: client}
 	client.OAuthTokens = &oAuthTokens{client: client}
@@ -243,6 +248,10 @@ func NewClient(cfg *Config) (*Client, error) {
 	client.Users = &users{client: client}
 	client.Variables = &variables{client: client}
 	client.Workspaces = &workspaces{client: client}
+
+	client.Meta = Meta{
+		IPRanges: &ipRanges{client: client},
+	}
 
 	return client, nil
 }
