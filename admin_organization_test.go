@@ -8,6 +8,9 @@ import (
 )
 
 func TestModulePartnershipsList(t *testing.T) {
+
+	skipIfNotEnterprise(t)
+
 	client := testClient(t)
 	ctx := context.Background()
 

@@ -27,6 +27,28 @@ func testClient(t *testing.T) *Client {
 	return client
 }
 
+// skips a test if ENABLE_TFE is not set to equal "1"
+// this is used to conditionally skip tests if not running against a Terraform
+// Enterprise instance. Effectively these tests will only run against a Terraform
+// Enterprise instance.
+func skipIfNotEnterprise(t *testing.T) {
+	enableTFE := os.Getenv("ENABLE_TFE")
+	if enableTFE != "1" {
+		t.Skip("Skipping Terraform Enterprise related test. Set ENABLE_TFE=1 to run.")
+	}
+}
+
+// skips a test if ENABLE_TFE is set to equal "1"
+// this is used to conditionally skip tests if running against a Terraform
+// Enterprise instance. Effectively these tests will only run against a Terraform
+// Cloud instance.
+func skipIfEnterprise(t *testing.T) {
+	enableTFE := os.Getenv("ENABLE_TFE")
+	if enableTFE == "1" {
+		t.Skip("Skipping Terraform Cloud related test. Set ENABLE_TFE=0 to run.")
+	}
+}
+
 func fetchTestAccountDetails(t *testing.T, client *Client) *TestAccountDetails {
 	if _testAccountDetails == nil {
 		_testAccountDetails = FetchTestAccountDetails(t, client)
