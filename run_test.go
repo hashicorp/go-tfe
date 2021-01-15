@@ -52,6 +52,18 @@ func TestRunsList(t *testing.T) {
 		assert.Equal(t, 2, rl.TotalCount)
 	})
 
+	t.Run("with workspace included", func(t *testing.T) {
+		rl, err := client.Runs.List(ctx, wTest.ID, RunListOptions{
+			Include: String("workspace"),
+		})
+
+		assert.NoError(t, err)
+
+		assert.NotEmpty(t, rl.Items)
+		assert.NotNil(t, rl.Items[0].Workspace)
+		assert.NotEmpty(t, rl.Items[0].Workspace.Name)
+	})
+
 	t.Run("without a valid workspace ID", func(t *testing.T) {
 		rl, err := client.Runs.List(ctx, badIdentifier, RunListOptions{})
 		assert.Nil(t, rl)
