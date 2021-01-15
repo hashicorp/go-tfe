@@ -138,6 +138,13 @@ type Client struct {
 	UserTokens                 UserTokens
 	Variables                  Variables
 	Workspaces                 Workspaces
+
+	Meta Meta
+}
+
+// Meta contains any Terraform Cloud APIs which provide data about the API itself.
+type Meta struct {
+	IPRanges IPRanges
 }
 
 // NewClient creates a new Terraform Enterprise API client.
@@ -243,6 +250,10 @@ func NewClient(cfg *Config) (*Client, error) {
 	client.UserTokens = &userTokens{client: client}
 	client.Variables = &variables{client: client}
 	client.Workspaces = &workspaces{client: client}
+
+	client.Meta = Meta{
+		IPRanges: &ipRanges{client: client},
+	}
 
 	return client, nil
 }
