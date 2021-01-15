@@ -143,6 +143,10 @@ type RunStatusTimestamps struct {
 // RunListOptions represents the options for listing runs.
 type RunListOptions struct {
 	ListOptions
+
+	// A list of relations to include. See available resources:
+	// https://www.terraform.io/docs/cloud/api/run.html#available-related-resources
+	Include *string `url:"include"`
 }
 
 // List all the runs of the given workspace.
