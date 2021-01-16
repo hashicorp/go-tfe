@@ -62,6 +62,34 @@ func createAgentPool(t *testing.T, client *Client, org *Organization) (*AgentPoo
 	}
 }
 
+func createAgentToken(t *testing.T, client *Client, ap *AgentPool) (*AgentToken, func()) {
+	var apCleanup func()
+
+	if ap == nil {
+		ap, apCleanup = createAgentPool(t, client, nil)
+	}
+
+	ctx := context.Background()
+	at, err := client.AgentTokens.Generate(ctx, ap.ID, AgentTokenGenerateOptions{
+		Description: String(randomString(t)),
+	})
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	return at, func() {
+		if err := client.AgentTokens.Delete(ctx, ap.ID); err != nil {
+			t.Errorf("Error destroying agent token! WARNING: Dangling resources\n"+
+				"may exist! The full error is shown below.\n\n"+
+				"AgentToken: %s\nError: %s", ap.ID, err)
+		}
+
+		if apCleanup != nil {
+			apCleanup()
+		}
+	}
+}
+
 func createConfigurationVersion(t *testing.T, client *Client, w *Workspace) (*ConfigurationVersion, func()) {
 	var wCleanup func()
 

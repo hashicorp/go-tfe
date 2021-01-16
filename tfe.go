@@ -109,6 +109,7 @@ type Client struct {
 	remoteAPIVersion  string
 
 	AgentPools                 AgentPools
+	AgentTokens                AgentTokens
 	Applies                    Applies
 	ConfigurationVersions      ConfigurationVersions
 	CostEstimates              CostEstimates
@@ -221,6 +222,7 @@ func NewClient(cfg *Config) (*Client, error) {
 
 	// Create the services.
 	client.AgentPools = &agentPools{client: client}
+	client.AgentTokens = &agentTokens{client: client}
 	client.Applies = &applies{client: client}
 	client.ConfigurationVersions = &configurationVersions{client: client}
 	client.CostEstimates = &costEstimates{client: client}
