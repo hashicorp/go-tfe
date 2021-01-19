@@ -146,6 +146,26 @@ func TestRunsRead(t *testing.T) {
 	})
 }
 
+func TestRunsReadWithOptions(t *testing.T) {
+	client := testClient(t)
+	ctx := context.Background()
+
+	rTest, rTestCleanup := createRun(t, client, nil)
+	defer rTestCleanup()
+
+	t.Run("when the run exists", func(t *testing.T) {
+		curOpts := &RunReadOptions{
+			Include: "created_by",
+		}
+
+		r, err := client.Runs.ReadWithOptions(ctx, rTest.ID, curOpts)
+		require.NoError(t, err)
+
+		assert.NotEmpty(t, r.CreatedBy)
+		assert.NotEmpty(t, r.CreatedBy.Username)
+	})
+}
+
 func TestRunsApply(t *testing.T) {
 	client := testClient(t)
 	ctx := context.Background()

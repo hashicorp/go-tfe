@@ -25,6 +25,9 @@ type Runs interface {
 	// Read a run by its ID.
 	Read(ctx context.Context, runID string) (*Run, error)
 
+	// ReadWithOptions reads a run by its ID using the options supplied
+	ReadWithOptions(ctx context.Context, runID string, options *RunReadOptions) (*Run, error)
+
 	// Apply a run by its ID.
 	Apply(ctx context.Context, runID string, options RunApplyOptions) error
 
@@ -104,6 +107,7 @@ type Run struct {
 	Apply                *Apply                `jsonapi:"relation,apply"`
 	ConfigurationVersion *ConfigurationVersion `jsonapi:"relation,configuration-version"`
 	CostEstimate         *CostEstimate         `jsonapi:"relation,cost-estimate"`
+	CreatedBy            *User                 `jsonapi:"relation,created-by"`
 	Plan                 *Plan                 `jsonapi:"relation,plan"`
 	PolicyChecks         []*PolicyCheck        `jsonapi:"relation,policy-checks"`
 	Workspace            *Workspace            `jsonapi:"relation,workspace"`
@@ -236,12 +240,22 @@ func (s *runs) Create(ctx context.Context, options RunCreateOptions) (*Run, erro
 
 // Read a run by its ID.
 func (s *runs) Read(ctx context.Context, runID string) (*Run, error) {
+	return s.ReadWithOptions(ctx, runID, nil)
+}
+
+// RunReadOptions represents the options for reading a run.
+type RunReadOptions struct {
+	Include string `url:"include"`
+}
+
+// Read a run by its ID with the given options.
+func (s *runs) ReadWithOptions(ctx context.Context, runID string, options *RunReadOptions) (*Run, error) {
 	if !validStringID(&runID) {
 		return nil, errors.New("invalid value for run ID")
 	}
 
 	u := fmt.Sprintf("runs/%s", url.QueryEscape(runID))
-	req, err := s.client.newRequest("GET", u, nil)
+	req, err := s.client.newRequest("GET", u, options)
 	if err != nil {
 		return nil, err
 	}
