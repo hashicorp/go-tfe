@@ -78,10 +78,10 @@ func createAgentToken(t *testing.T, client *Client, ap *AgentPool) (*AgentToken,
 	}
 
 	return at, func() {
-		if err := client.AgentTokens.Delete(ctx, ap.ID); err != nil {
+		if err := client.AgentTokens.Delete(ctx, at.ID); err != nil {
 			t.Errorf("Error destroying agent token! WARNING: Dangling resources\n"+
 				"may exist! The full error is shown below.\n\n"+
-				"AgentToken: %s\nError: %s", ap.ID, err)
+				"AgentToken: %s\nError: %s", at.ID, err)
 		}
 
 		if apCleanup != nil {

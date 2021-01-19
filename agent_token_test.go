@@ -15,18 +15,23 @@ func TestAgentTokensList(t *testing.T) {
 	apTest, apTestCleanup := createAgentPool(t, client, nil)
 	defer apTestCleanup()
 
-	agentToken1, agentToken1Cleanup := createAgentToken(t, client, apTest)
-	defer agentToken1Cleanup()
-	agentToken2, agentToken2Cleanup := createAgentToken(t, client, apTest)
-	defer agentToken2Cleanup()
+	agentToken, agentTokenCleanup := createAgentToken(t, client, apTest)
+	defer agentTokenCleanup()
 
 	t.Run("with no list options", func(t *testing.T) {
 		tokenlist, err := client.AgentTokens.List(ctx, apTest.ID)
 		require.NoError(t, err)
-		assert.Contains(t, tokenlist.Items, agentToken1)
-		assert.Contains(t, tokenlist.Items, agentToken2)
+		var found bool
+		for _, j := range tokenlist.Items {
+			if j.ID == agentToken.ID {
+				found = true
+				break
+			}
+		}
+		if !found {
+			t.Fatalf("agent token (%s) not found in token list", agentToken.ID)
+		}
 
-		t.Skip("paging not supported yet in API")
 		assert.Equal(t, 1, tokenlist.CurrentPage)
 		assert.Equal(t, 2, tokenlist.TotalCount)
 	})
@@ -80,7 +85,10 @@ func TestAgentTokensRead(t *testing.T) {
 	t.Run("read token with valid token ID", func(t *testing.T) {
 		at, err := client.AgentTokens.Read(ctx, token.ID)
 		assert.NoError(t, err)
-		assert.Equal(t, token.Token, at.Token)
+		// The initial API call to create a token will return a value in the token
+		// object. Empty that out for comparison
+		token.Token = ""
+		assert.Equal(t, token, at)
 	})
 
 	t.Run("read token without valid token ID", func(t *testing.T) {
