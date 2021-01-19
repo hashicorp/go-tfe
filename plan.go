@@ -147,10 +147,10 @@ func (s *plans) JsonOutput(ctx context.Context, planID string) ([]byte, error) {
 	}
 
 	u := fmt.Sprintf("plans/%s/json-output", url.QueryEscape(planID))
-	// TODO: FInd a way to not have to use our own code to do this - maybe extend the API?
+	// Request the JSON plan from the API endpoint
 	req, err := s.client.newRequest("GET", u, nil)
 	if err != nil {
-		return nil, fmt.Errorf("tfe: unable to get json plan %v", err)
+		return nil, err
 	}
 
 	// Using the built-in "do" action of the client, we provide a byte buffer that will be filled with the plan.
