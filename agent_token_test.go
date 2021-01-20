@@ -15,21 +15,23 @@ func TestAgentTokensList(t *testing.T) {
 	apTest, apTestCleanup := createAgentPool(t, client, nil)
 	defer apTestCleanup()
 
-	agentToken, agentTokenCleanup := createAgentToken(t, client, apTest)
-	defer agentTokenCleanup()
+	agentToken1, agentToken1Cleanup := createAgentToken(t, client, apTest)
+	defer agentToken1Cleanup()
+	_, agentToken2Cleanup := createAgentToken(t, client, apTest)
+	defer agentToken2Cleanup()
 
 	t.Run("with no list options", func(t *testing.T) {
 		tokenlist, err := client.AgentTokens.List(ctx, apTest.ID)
 		require.NoError(t, err)
 		var found bool
 		for _, j := range tokenlist.Items {
-			if j.ID == agentToken.ID {
+			if j.ID == agentToken1.ID {
 				found = true
 				break
 			}
 		}
 		if !found {
-			t.Fatalf("agent token (%s) not found in token list", agentToken.ID)
+			t.Fatalf("agent token (%s) not found in token list", agentToken1.ID)
 		}
 
 		assert.Equal(t, 1, tokenlist.CurrentPage)
@@ -104,8 +106,7 @@ func TestAgentTokensDelete(t *testing.T) {
 	apTest, apTestCleanup := createAgentPool(t, client, nil)
 	defer apTestCleanup()
 
-	token, atTestCleanup := createAgentToken(t, client, apTest)
-	defer atTestCleanup()
+	token, _ := createAgentToken(t, client, apTest)
 
 	t.Run("with valid token ID", func(t *testing.T) {
 		err := client.AgentTokens.Delete(ctx, token.ID)
