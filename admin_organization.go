@@ -28,6 +28,9 @@ type AdminOrganizations interface {
 
 	// Update attributes of an existing organization via admin API.
 	Update(ctx context.Context, organization string, options AdminOrganizationUpdateOptions) (*AdminOrganization, error)
+
+	// Delete an organization by its name via admin API
+	Delete(ctx context.Context, organization string) error
 }
 
 // adminOrganizations implements AdminOrganizations.
@@ -156,4 +159,19 @@ func (s *adminOrganizations) Update(ctx context.Context, organization string, op
 	}
 
 	return org, nil
+}
+
+// Delete an organization by its name.
+func (s *adminOrganizations) Delete(ctx context.Context, organization string) error {
+	if !validStringID(&organization) {
+		return errors.New("invalid value for organization")
+	}
+
+	u := fmt.Sprintf("admin/organizations/%s", url.QueryEscape(organization))
+	req, err := s.client.newRequest("DELETE", u, nil)
+	if err != nil {
+		return err
+	}
+
+	return s.client.do(ctx, req, nil)
 }

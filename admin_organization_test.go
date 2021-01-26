@@ -49,6 +49,23 @@ func TestAdminOrganizations(t *testing.T) {
 	org, orgTestCleanup := createOrganization(t, client)
 	defer orgTestCleanup()
 
+	t.Run("deletes organization", func(t *testing.T) {
+		org2, org2TestCleanup := createOrganization(t, client)
+		cleanupFailed := false
+		var err error = nil
+		defer func() {
+			if cleanupFailed {
+				t.Error("Error destroying organization!", org.Name, err)
+				org2TestCleanup()
+			}
+		}()
+
+		err = client.Admin.Organizations.Delete(ctx, org2.Name)
+		if err != nil {
+			cleanupFailed = true
+		}
+	})
+
 	t.Run("fetches and updates organization", func(t *testing.T) {
 		adminOrg, err := client.Admin.Organizations.Read(ctx, org.Name)
 		assert.NotNilf(t, adminOrg, "Org returned as nil")
