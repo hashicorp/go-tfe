@@ -18,7 +18,7 @@ var _ AdminOrganizations = (*adminOrganizations)(nil)
 type AdminOrganizations interface {
 
 	// List the module sharing partnerships that an organization has
-	ListModuleConsumers(ctx context.Context, organization string) (*ModulePartnershipList, error)
+	ListModuleConsumers(ctx context.Context, organization string) (*OrganizationList, error)
 
 	// Update the module sharing partnerships that an organization has
 	UpdateModuleConsumers(ctx context.Context, organization string, options ModulePartnershipUpdateOptions) (*ModulePartnershipList, error)
@@ -81,24 +81,24 @@ type AdminOrganizationUpdateOptions struct {
 	TerraformBuildWorkerPlanTimeout  *string `jsonapi:"attr,terraform-build-worker-plan-timeout,omitempty"`
 }
 
-func (s *adminOrganizations) ListModuleConsumers(ctx context.Context, organization string) (*ModulePartnershipList, error) {
+func (s *adminOrganizations) ListModuleConsumers(ctx context.Context, organization string) (*OrganizationList, error) {
 	if !validStringID(&organization) {
 		return nil, errors.New("invalid value for organization")
 	}
 
-	u := fmt.Sprintf("admin/organizations/%s/module-consumers", url.QueryEscape(organization))
+	u := fmt.Sprintf("admin/organizations/%s/relationships/module-consumers", url.QueryEscape(organization))
 	req, err := s.client.newRequest("GET", u, nil)
 	if err != nil {
 		return nil, err
 	}
 
-	partnerships := &ModulePartnershipList{}
-	err = s.client.do(ctx, req, partnerships)
+	consumers := &OrganizationList{}
+	err = s.client.do(ctx, req, consumers)
 	if err != nil {
 		return nil, err
 	}
 
-	return partnerships, nil
+	return consumers, nil
 }
 
 func (s *adminOrganizations) UpdateModuleConsumers(ctx context.Context, organization string, options ModulePartnershipUpdateOptions) (*ModulePartnershipList, error) {

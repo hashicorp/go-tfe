@@ -27,14 +27,20 @@ func TestModulePartnershipsList(t *testing.T) {
 		opts := ModulePartnershipUpdateOptions{
 			ModuleConsumingOrganizationIDs: []*string{&org2.ExternalID},
 		}
-		consumerList, _ = client.Admin.Organizations.UpdateModuleConsumers(ctx, org.Name, opts)
-		assert.Equal(t, org2.ExternalID, *consumerList.Items[0].ConsumingOrganizationID)
-		assert.Equal(t, org.ExternalID, *consumerList.Items[0].ProducingOrganizationID)
+		oldConsumerList, _ := client.Admin.Organizations.UpdateModuleConsumers(ctx, org.Name, opts)
+		assert.Equal(t, org2.ExternalID, *oldConsumerList.Items[0].ConsumingOrganizationID)
+		assert.Equal(t, org.ExternalID, *oldConsumerList.Items[0].ProducingOrganizationID)
+
+		consumerList, _ = client.Admin.Organizations.ListModuleConsumers(ctx, org.Name)
+		assert.Equal(t, org2.ExternalID, consumerList.Items[0].ExternalID)
 
 		opts = ModulePartnershipUpdateOptions{
 			ModuleConsumingOrganizationIDs: []*string{},
 		}
-		consumerList, _ = client.Admin.Organizations.UpdateModuleConsumers(ctx, org.Name, opts)
+		oldConsumerList, _ = client.Admin.Organizations.UpdateModuleConsumers(ctx, org.Name, opts)
+		assert.Empty(t, oldConsumerList.Items)
+
+		consumerList, _ = client.Admin.Organizations.ListModuleConsumers(ctx, org.Name)
 		assert.Empty(t, consumerList.Items)
 	})
 }
