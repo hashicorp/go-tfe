@@ -20,8 +20,8 @@ type AdminOrganizations interface {
 	// List the module sharing partnerships that an organization has
 	ListModuleConsumers(ctx context.Context, organization string) (*OrganizationList, error)
 
-	// Update the module sharing partnerships that an organization has
-	UpdateModuleConsumers(ctx context.Context, organization string, options ModulePartnershipUpdateOptions) (*ModulePartnershipList, error)
+	// Update the module sharing consumers that an organization has
+	UpdateModuleConsumers(ctx context.Context, organization string, consumers ModuleConsumers) (*OrganizationList, error)
 
 	// Read attributes of an existing organization via admin API.
 	Read(ctx context.Context, organization string) (*AdminOrganization, error)
@@ -38,23 +38,14 @@ type adminOrganizations struct {
 	client *Client
 }
 
-// ModulePartnershipList represents the list of module sharing partnerships
-type ModulePartnershipList struct {
-	*Pagination
-	Items []*ModulePartnership
-}
+// ModuleConsumers is a typed list of organization names to represent the
+// list of module consumers for updates
+type ModuleConsumers []*string
 
-// ModulePartnership represents the module sharing partnership between two organizations
-type ModulePartnership struct {
-	ConsumingOrganizationID   *string `jsonapi:"attr,consuming-organization-id"`
-	ConsumingOrganizationName *string `jsonapi:"attr,consuming-organization-name"`
-	ProducingOrganizationID   *string `jsonapi:"attr,producing-organization-id"`
-	ProducingOrganizationName *string `jsonapi:"attr,producing-organization-name"`
-}
-
-// ModulePartnershipUpdateOptions represents the options for updating an organization's module sharing partnerships
-type ModulePartnershipUpdateOptions struct {
-	ModuleConsumingOrganizationIDs []*string `jsonapi:"attr,module-consuming-organization-ids"`
+// modulePartnershipUpdateOption represents the option for updating an organization's module sharing partnerships
+// this is private as it's used internally
+type modulePartnershipUpdateOption struct {
+	ID *string `jsonapi:"primary,organizations"`
 }
 
 // AdminOrganization represents a Terraform Enterprise organization returned from the Admin API.
@@ -92,27 +83,34 @@ func (s *adminOrganizations) ListModuleConsumers(ctx context.Context, organizati
 		return nil, err
 	}
 
-	consumers := &OrganizationList{}
-	err = s.client.do(ctx, req, consumers)
+	partnerships := &OrganizationList{}
+	err = s.client.do(ctx, req, partnerships)
 	if err != nil {
 		return nil, err
 	}
 
-	return consumers, nil
+	return partnerships, nil
 }
 
-func (s *adminOrganizations) UpdateModuleConsumers(ctx context.Context, organization string, options ModulePartnershipUpdateOptions) (*ModulePartnershipList, error) {
+func (s *adminOrganizations) UpdateModuleConsumers(ctx context.Context, organization string, consumers ModuleConsumers) (*OrganizationList, error) {
 	if !validStringID(&organization) {
 		return nil, errors.New("invalid value for organization")
 	}
 
-	u := fmt.Sprintf("admin/organizations/%s/module-consumers", url.QueryEscape(organization))
-	req, err := s.client.newRequest("PATCH", u, &options)
+	options := []*modulePartnershipUpdateOption{}
+	for _, consumer := range consumers {
+		options = append(options, &modulePartnershipUpdateOption{
+			ID: consumer,
+		})
+	}
+
+	u := fmt.Sprintf("admin/organizations/%s/relationships/module-consumers", url.QueryEscape(organization))
+	req, err := s.client.newRequest("PATCH", u, options)
 	if err != nil {
 		return nil, err
 	}
 
-	partnerships := &ModulePartnershipList{}
+	partnerships := &OrganizationList{}
 	err = s.client.do(ctx, req, partnerships)
 	if err != nil {
 		return nil, err

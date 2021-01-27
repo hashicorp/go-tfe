@@ -7,7 +7,7 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func TestModulePartnershipsList(t *testing.T) {
+func TestAdminOrganizationModulePartnershipsList(t *testing.T) {
 
 	skipIfNotEnterprise(t)
 
@@ -18,29 +18,31 @@ func TestModulePartnershipsList(t *testing.T) {
 	defer orgTestCleanup()
 
 	t.Run("creates and destroys consumers", func(t *testing.T) {
-		consumerList, _ := client.Admin.Organizations.ListModuleConsumers(ctx, org.Name)
+		consumerList, err := client.Admin.Organizations.ListModuleConsumers(ctx, org.Name)
+		assert.Nilf(t, err, "Failed to read org consumers %v", err)
 		assert.Empty(t, consumerList.Items)
 
 		org2, orgTestCleanup2 := createOrganization(t, client)
 		defer orgTestCleanup2()
 
-		opts := ModulePartnershipUpdateOptions{
-			ModuleConsumingOrganizationIDs: []*string{&org2.ExternalID},
+		opts := ModuleConsumers{
+			&org2.Name,
 		}
-		oldConsumerList, _ := client.Admin.Organizations.UpdateModuleConsumers(ctx, org.Name, opts)
-		assert.Equal(t, org2.ExternalID, *oldConsumerList.Items[0].ConsumingOrganizationID)
-		assert.Equal(t, org.ExternalID, *oldConsumerList.Items[0].ProducingOrganizationID)
+		consumerList, err = client.Admin.Organizations.UpdateModuleConsumers(ctx, org.Name, opts)
+		assert.Nilf(t, err, "Failed to read update consumers %v", err)
+		assert.Equal(t, org2.Name, consumerList.Items[0].Name)
 
-		consumerList, _ = client.Admin.Organizations.ListModuleConsumers(ctx, org.Name)
-		assert.Equal(t, org2.ExternalID, consumerList.Items[0].ExternalID)
+		consumerList, err = client.Admin.Organizations.ListModuleConsumers(ctx, org.Name)
+		assert.Nilf(t, err, "Failed to read org consumers %v", err)
+		assert.Equal(t, org2.Name, consumerList.Items[0].Name)
 
-		opts = ModulePartnershipUpdateOptions{
-			ModuleConsumingOrganizationIDs: []*string{},
-		}
-		oldConsumerList, _ = client.Admin.Organizations.UpdateModuleConsumers(ctx, org.Name, opts)
-		assert.Empty(t, oldConsumerList.Items)
+		opts = ModuleConsumers{}
+		consumerList, err = client.Admin.Organizations.UpdateModuleConsumers(ctx, org.Name, opts)
+		assert.Nilf(t, err, "Failed to read update consumers %v", err)
+		assert.Empty(t, consumerList.Items)
 
-		consumerList, _ = client.Admin.Organizations.ListModuleConsumers(ctx, org.Name)
+		consumerList, err = client.Admin.Organizations.ListModuleConsumers(ctx, org.Name)
+		assert.Nilf(t, err, "Failed to read org consumers %v", err)
 		assert.Empty(t, consumerList.Items)
 	})
 }
