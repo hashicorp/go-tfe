@@ -46,25 +46,21 @@ func TestAdminOrganizationModulePartnershipsList(t *testing.T) {
 		opts := ModuleConsumers{
 			&org2.Name,
 		}
-		consumerList, err = client.Admin.Organizations.UpdateModuleConsumers(ctx, org.Name, opts)
+		err = client.Admin.Organizations.UpdateModuleConsumers(ctx, org.Name, opts)
 		assert.Nilf(t, err, "Failed to read update consumers %v", err)
-		nameList := _toNameList(consumerList.Items)
-		assert.Truef(t, _listContains(org2.Name, nameList), "Expected %v to be in returned list", org2.Name)
 
 		consumerList, err = client.Admin.Organizations.ListModuleConsumers(ctx, org.Name)
 		assert.Nilf(t, err, "Failed to read org consumers %v", err)
-		nameList = _toNameList(consumerList.Items)
+		nameList := _toNameList(consumerList.Items)
 		assert.Truef(t, _listContains(org2.Name, nameList), "Expected %v to be in returned list", org2.Name)
 
 		opts = ModuleConsumers{
 			&org2.Name,
 			&org3.Name,
 		}
-		consumerList, err = client.Admin.Organizations.UpdateModuleConsumers(ctx, org.Name, opts)
+		err = client.Admin.Organizations.UpdateModuleConsumers(ctx, org.Name, opts)
 		assert.Nilf(t, err, "Failed to read update consumers %v", err)
 		nameList = _toNameList(consumerList.Items)
-		assert.Truef(t, _listContains(org2.Name, nameList), "Expected %v to be in returned list", org2.Name)
-		assert.Truef(t, _listContains(org3.Name, nameList), "Expected %v to be in returned list", org3.Name)
 
 		consumerList, err = client.Admin.Organizations.ListModuleConsumers(ctx, org.Name)
 		assert.Nilf(t, err, "Failed to read org consumers %v", err)
@@ -75,10 +71,8 @@ func TestAdminOrganizationModulePartnershipsList(t *testing.T) {
 		opts = ModuleConsumers{
 			&org3.Name,
 		}
-		consumerList, err = client.Admin.Organizations.UpdateModuleConsumers(ctx, org.Name, opts)
+		err = client.Admin.Organizations.UpdateModuleConsumers(ctx, org.Name, opts)
 		assert.Nilf(t, err, "Failed to read update consumers %v", err)
-		nameList = _toNameList(consumerList.Items)
-		assert.Truef(t, _listContains(org3.Name, nameList), "Expected %v to be in returned list", org3.Name)
 
 		consumerList, err = client.Admin.Organizations.ListModuleConsumers(ctx, org.Name)
 		assert.Nilf(t, err, "Failed to read org consumers %v", err)
@@ -86,9 +80,8 @@ func TestAdminOrganizationModulePartnershipsList(t *testing.T) {
 		assert.Truef(t, _listContains(org3.Name, nameList), "Expected %v to be in returned list", org3.Name)
 
 		opts = ModuleConsumers{}
-		consumerList, err = client.Admin.Organizations.UpdateModuleConsumers(ctx, org.Name, opts)
+		err = client.Admin.Organizations.UpdateModuleConsumers(ctx, org.Name, opts)
 		assert.Nilf(t, err, "Failed to read update consumers %v", err)
-		assert.Empty(t, consumerList.Items)
 
 		consumerList, err = client.Admin.Organizations.ListModuleConsumers(ctx, org.Name)
 		assert.Nilf(t, err, "Failed to read org consumers %v", err)

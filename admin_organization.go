@@ -21,7 +21,7 @@ type AdminOrganizations interface {
 	ListModuleConsumers(ctx context.Context, organization string) (*OrganizationList, error)
 
 	// Update the module sharing consumers that an organization has
-	UpdateModuleConsumers(ctx context.Context, organization string, consumers ModuleConsumers) (*OrganizationList, error)
+	UpdateModuleConsumers(ctx context.Context, organization string, consumers ModuleConsumers) error
 
 	// Read attributes of an existing organization via admin API.
 	Read(ctx context.Context, organization string) (*AdminOrganization, error)
@@ -92,9 +92,9 @@ func (s *adminOrganizations) ListModuleConsumers(ctx context.Context, organizati
 	return partnerships, nil
 }
 
-func (s *adminOrganizations) UpdateModuleConsumers(ctx context.Context, organization string, consumers ModuleConsumers) (*OrganizationList, error) {
+func (s *adminOrganizations) UpdateModuleConsumers(ctx context.Context, organization string, consumers ModuleConsumers) error {
 	if !validStringID(&organization) {
-		return nil, errors.New("invalid value for organization")
+		return errors.New("invalid value for organization")
 	}
 
 	options := []*modulePartnershipUpdateOption{}
@@ -107,16 +107,10 @@ func (s *adminOrganizations) UpdateModuleConsumers(ctx context.Context, organiza
 	u := fmt.Sprintf("admin/organizations/%s/relationships/module-consumers", url.QueryEscape(organization))
 	req, err := s.client.newRequest("PATCH", u, options)
 	if err != nil {
-		return nil, err
+		return err
 	}
 
-	partnerships := &OrganizationList{}
-	err = s.client.do(ctx, req, partnerships)
-	if err != nil {
-		return nil, err
-	}
-
-	return partnerships, nil
+	return s.client.do(ctx, req, nil)
 }
 
 func (s *adminOrganizations) Read(ctx context.Context, organization string) (*AdminOrganization, error) {
