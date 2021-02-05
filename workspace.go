@@ -82,6 +82,7 @@ type Workspace struct {
 	AutoApply            bool                  `jsonapi:"attr,auto-apply"`
 	CanQueueDestroyPlan  bool                  `jsonapi:"attr,can-queue-destroy-plan"`
 	CreatedAt            time.Time             `jsonapi:"attr,created-at,iso8601"`
+	Description          string                `jsonapi:"attr,description"`
 	Environment          string                `jsonapi:"attr,environment"`
 	ExecutionMode        string                `jsonapi:"attr,execution-mode"`
 	FileTriggersEnabled  bool                  `jsonapi:"attr,file-triggers-enabled"`
@@ -179,6 +180,9 @@ type WorkspaceCreateOptions struct {
 
 	// Whether to automatically apply changes when a Terraform plan is successful.
 	AutoApply *bool `jsonapi:"attr,auto-apply,omitempty"`
+
+	// A description for the workspace.
+	Description *string `jsonapi:"attr,description,omitempty"`
 
 	// Which execution mode to use. Valid values are remote, local, and agent.
 	// When set to local, the workspace will be used for state storage only.
@@ -361,6 +365,9 @@ type WorkspaceUpdateOptions struct {
 	// organization. Warning: Changing a workspace's name changes its URL in the
 	// API and UI.
 	Name *string `jsonapi:"attr,name,omitempty"`
+
+	// A description for the workspace.
+	Description *string `jsonapi:"attr,description,omitempty"`
 
 	// Which execution mode to use. Valid values are remote, local, and agent.
 	// When set to local, the workspace will be used for state storage only.
