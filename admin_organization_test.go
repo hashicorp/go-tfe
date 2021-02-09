@@ -47,7 +47,7 @@ func TestAdminOrganizationModulePartnershipsList(t *testing.T) {
 			&org2.Name,
 		}
 		err = client.Admin.Organizations.UpdateModuleConsumers(ctx, org.Name, opts)
-		assert.Nilf(t, err, "Failed to read update consumers %v", err)
+		assert.Nilf(t, err, "Failed to update consumers %v", err)
 
 		consumerList, err = client.Admin.Organizations.ListModuleConsumers(ctx, org.Name)
 		assert.Nilf(t, err, "Failed to read org consumers %v", err)
@@ -59,7 +59,7 @@ func TestAdminOrganizationModulePartnershipsList(t *testing.T) {
 			&org3.Name,
 		}
 		err = client.Admin.Organizations.UpdateModuleConsumers(ctx, org.Name, opts)
-		assert.Nilf(t, err, "Failed to read update consumers %v", err)
+		assert.Nilf(t, err, "Failed to update consumers %v", err)
 		nameList = _toNameList(consumerList.Items)
 
 		consumerList, err = client.Admin.Organizations.ListModuleConsumers(ctx, org.Name)
@@ -72,7 +72,7 @@ func TestAdminOrganizationModulePartnershipsList(t *testing.T) {
 			&org3.Name,
 		}
 		err = client.Admin.Organizations.UpdateModuleConsumers(ctx, org.Name, opts)
-		assert.Nilf(t, err, "Failed to read update consumers %v", err)
+		assert.Nilf(t, err, "Failed to update consumers %v", err)
 
 		consumerList, err = client.Admin.Organizations.ListModuleConsumers(ctx, org.Name)
 		assert.Nilf(t, err, "Failed to read org consumers %v", err)
@@ -81,7 +81,7 @@ func TestAdminOrganizationModulePartnershipsList(t *testing.T) {
 
 		opts = ModuleConsumers{}
 		err = client.Admin.Organizations.UpdateModuleConsumers(ctx, org.Name, opts)
-		assert.Nilf(t, err, "Failed to read update consumers %v", err)
+		assert.Nilf(t, err, "Failed to update consumers %v", err)
 
 		consumerList, err = client.Admin.Organizations.ListModuleConsumers(ctx, org.Name)
 		assert.Nilf(t, err, "Failed to read org consumers %v", err)
