@@ -101,6 +101,7 @@ func TestWorkspacesCreate(t *testing.T) {
 			Name:                String("foo"),
 			AllowDestroyPlan:    Bool(false),
 			AutoApply:           Bool(true),
+			Description:         String("qux"),
 			FileTriggersEnabled: Bool(true),
 			Operations:          Bool(true),
 			QueueAllRuns:        Bool(true),
@@ -123,6 +124,7 @@ func TestWorkspacesCreate(t *testing.T) {
 		} {
 			assert.NotEmpty(t, item.ID)
 			assert.Equal(t, *options.Name, item.Name)
+			assert.Equal(t, *options.Description, item.Description)
 			assert.Equal(t, *options.AllowDestroyPlan, item.AllowDestroyPlan)
 			assert.Equal(t, *options.AutoApply, item.AutoApply)
 			assert.Equal(t, *options.FileTriggersEnabled, item.FileTriggersEnabled)
@@ -334,6 +336,7 @@ func TestWorkspacesUpdate(t *testing.T) {
 			Operations:          Bool(false),
 			QueueAllRuns:        Bool(false),
 			SpeculativeEnabled:  Bool(true),
+			Description:         String("updated description"),
 			TerraformVersion:    String("0.11.1"),
 			TriggerPrefixes:     []string{"/modules", "/shared"},
 			WorkingDirectory:    String("baz/"),
@@ -354,6 +357,7 @@ func TestWorkspacesUpdate(t *testing.T) {
 			assert.Equal(t, *options.AllowDestroyPlan, item.AllowDestroyPlan)
 			assert.Equal(t, *options.AutoApply, item.AutoApply)
 			assert.Equal(t, *options.FileTriggersEnabled, item.FileTriggersEnabled)
+			assert.Equal(t, *options.Description, item.Description)
 			assert.Equal(t, *options.Operations, item.Operations)
 			assert.Equal(t, *options.QueueAllRuns, item.QueueAllRuns)
 			assert.Equal(t, *options.SpeculativeEnabled, item.SpeculativeEnabled)
