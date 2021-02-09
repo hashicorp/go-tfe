@@ -414,15 +414,70 @@ func TestOrganizationsModuleProducers(t *testing.T) {
 		err = client.Admin.Organizations.UpdateModuleConsumers(ctx, org3.Name, opts)
 		assert.Nilf(t, err, "Failed to update consumers %v", err)
 
-		producerList, err := client.Organizations.ModuleProducers(ctx, org2.Name)
+		producerList, err := client.Organizations.ModuleProducers(ctx, org2.Name, OrganizationListOptions{})
 		assert.Nilf(t, err, "Failed to read org producers %v", err)
 		nameList := _toNameList(producerList.Items)
 		assert.Truef(t, _listContains(org.Name, nameList), "Expected %v to be in returned list", org.Name)
 		assert.Truef(t, _listContains(org3.Name, nameList), "Expected %v to be in returned list", org3.Name)
 	})
 
+	t.Run("when producers exist with paging options", func(t *testing.T) {
+		org2, orgTestCleanup2 := createOrganization(t, client)
+		defer orgTestCleanup2()
+		org3, orgTestCleanup3 := createOrganization(t, client)
+		defer orgTestCleanup3()
+
+		_listContains := func(name string, items []string) bool {
+			for _, item := range items {
+				if name == item {
+					return true
+				}
+			}
+			return false
+		}
+		_toNameList := func(orgs []*Organization) []string {
+			names := []string{}
+			for _, org := range orgs {
+				names = append(names, org.Name)
+			}
+			return names
+		}
+
+		opts := ModuleConsumers{
+			&org2.Name,
+		}
+		err := client.Admin.Organizations.UpdateModuleConsumers(ctx, org.Name, opts)
+		assert.Nilf(t, err, "Failed to update consumers %v", err)
+
+		err = client.Admin.Organizations.UpdateModuleConsumers(ctx, org3.Name, opts)
+		assert.Nilf(t, err, "Failed to update consumers %v", err)
+
+		producerList1, err := client.Organizations.ModuleProducers(ctx, org2.Name, OrganizationListOptions{
+			ListOptions: ListOptions{
+				PageNumber: 1,
+				PageSize:   1,
+			},
+		})
+		assert.Nilf(t, err, "Failed to read org producers %v", err)
+		nameList1 := _toNameList(producerList1.Items)
+
+		producerList2, err := client.Organizations.ModuleProducers(ctx, org2.Name, OrganizationListOptions{
+			ListOptions: ListOptions{
+				PageNumber: 2,
+				PageSize:   1,
+			},
+		})
+		assert.Nilf(t, err, "Failed to read org producers %v", err)
+		nameList2 := _toNameList(producerList2.Items)
+
+		nameList := append(nameList1, nameList2...)
+
+		assert.Truef(t, _listContains(org.Name, nameList), "Expected %v to be in returned list", org.Name)
+		assert.Truef(t, _listContains(org3.Name, nameList), "Expected %v to be in returned list", org3.Name)
+	})
+
 	t.Run("when no producers exist", func(t *testing.T) {
-		producerList, err := client.Organizations.ModuleProducers(ctx, org.Name)
+		producerList, err := client.Organizations.ModuleProducers(ctx, org.Name, OrganizationListOptions{})
 		assert.Nilf(t, err, "Failed to read org producers %v", err)
 		assert.Empty(t, producerList.Items)
 	})

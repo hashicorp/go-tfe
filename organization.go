@@ -43,7 +43,7 @@ type Organizations interface {
 
 	// ModuleProducers shows the organizations that are producing modules that this organization can consume
 	// NOTE: this is a TFE only API and will fail if run against a non TFE instance
-	ModuleProducers(ctx context.Context, organization string) (*OrganizationList, error)
+	ModuleProducers(ctx context.Context, organization string, options OrganizationListOptions) (*OrganizationList, error)
 }
 
 // organizations implements Organizations.
@@ -376,13 +376,13 @@ func (s *organizations) RunQueue(ctx context.Context, organization string, optio
 }
 
 // ModuleProducers shows the organizations that are producing modules that this organization can consume
-func (s *organizations) ModuleProducers(ctx context.Context, organization string) (*OrganizationList, error) {
+func (s *organizations) ModuleProducers(ctx context.Context, organization string, options OrganizationListOptions) (*OrganizationList, error) {
 	if !validStringID(&organization) {
 		return nil, errors.New("invalid value for organization")
 	}
 
 	u := fmt.Sprintf("organizations/%s/relationships/module-producers", url.QueryEscape(organization))
-	req, err := s.client.newRequest("GET", u, nil)
+	req, err := s.client.newRequest("GET", u, &options)
 	if err != nil {
 		return nil, err
 	}
