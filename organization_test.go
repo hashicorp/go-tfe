@@ -407,15 +407,17 @@ func TestOrganizationsModuleProducers(t *testing.T) {
 
 		opts := ModuleConsumers{
 			&org2.Name,
-			&org3.Name,
 		}
 		err := client.Admin.Organizations.UpdateModuleConsumers(ctx, org.Name, opts)
 		assert.Nilf(t, err, "Failed to update consumers %v", err)
 
-		producerList, err := client.Organizations.ModuleProducers(ctx, org.Name)
+		err = client.Admin.Organizations.UpdateModuleConsumers(ctx, org3.Name, opts)
+		assert.Nilf(t, err, "Failed to update consumers %v", err)
+
+		producerList, err := client.Organizations.ModuleProducers(ctx, org2.Name)
 		assert.Nilf(t, err, "Failed to read org producers %v", err)
 		nameList := _toNameList(producerList.Items)
-		assert.Truef(t, _listContains(org2.Name, nameList), "Expected %v to be in returned list", org2.Name)
+		assert.Truef(t, _listContains(org.Name, nameList), "Expected %v to be in returned list", org.Name)
 		assert.Truef(t, _listContains(org3.Name, nameList), "Expected %v to be in returned list", org3.Name)
 	})
 
