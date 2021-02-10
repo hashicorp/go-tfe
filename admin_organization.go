@@ -60,6 +60,7 @@ type AdminOrganization struct {
 	SsoEnabled                       bool   `jsonapi:"attr,sso-enabled"`
 	TerraformBuildWorkerApplyTimeout string `jsonapi:"attr,terraform-build-worker-apply-timeout"`
 	TerraformBuildWorkerPlanTimeout  string `jsonapi:"attr,terraform-build-worker-plan-timeout"`
+	TerraformWorkerSudoEnabled       bool   `jsonapi:"attr,terraform-worker-sudo-enabled"`
 }
 
 // AdminOrganizationUpdateOptions represents the admin options for updating an organization.

@@ -202,6 +202,7 @@ func TestAdminOrganizations(t *testing.T) {
 		assert.Equal(t, adminOrg.IsDisabled, isDisabled)
 		assert.Equal(t, adminOrg.TerraformBuildWorkerApplyTimeout, terraformBuildWorkerApplyTimeout)
 		assert.Equal(t, adminOrg.TerraformBuildWorkerPlanTimeout, terraformBuildWorkerPlanTimeout)
+		assert.Equal(t, adminOrg.TerraformWorkerSudoEnabled, false)
 
 		isDisabled = true
 		opts = AdminOrganizationUpdateOptions{
