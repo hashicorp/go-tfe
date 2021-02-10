@@ -18,7 +18,6 @@ var _ AdminOrganizations = (*adminOrganizations)(nil)
 type AdminOrganizations interface {
 
 	// List the module sharing partnerships that an organization has
-	// TODO(kirch): Add pagination options to this API
 	ListModuleConsumers(ctx context.Context, organization string, options OrganizationListOptions) (*OrganizationList, error)
 
 	// Update the module sharing consumers that an organization has
