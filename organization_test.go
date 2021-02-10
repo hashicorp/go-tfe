@@ -453,7 +453,7 @@ func TestOrganizationsModuleProducers(t *testing.T) {
 		assert.Nilf(t, err, "Failed to update consumers %v", err)
 
 		producerList1, err := client.Organizations.ModuleProducers(ctx, org2.Name, OrganizationListOptions{
-			ListOptions: ListOptions{
+			ListOptions{
 				PageNumber: 1,
 				PageSize:   1,
 			},
@@ -462,7 +462,7 @@ func TestOrganizationsModuleProducers(t *testing.T) {
 		nameList1 := _toNameList(producerList1.Items)
 
 		producerList2, err := client.Organizations.ModuleProducers(ctx, org2.Name, OrganizationListOptions{
-			ListOptions: ListOptions{
+			ListOptions{
 				PageNumber: 2,
 				PageSize:   1,
 			},

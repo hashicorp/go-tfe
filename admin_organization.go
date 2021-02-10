@@ -18,7 +18,8 @@ var _ AdminOrganizations = (*adminOrganizations)(nil)
 type AdminOrganizations interface {
 
 	// List the module sharing partnerships that an organization has
-	ListModuleConsumers(ctx context.Context, organization string) (*OrganizationList, error)
+	// TODO(kirch): Add pagination options to this API
+	ListModuleConsumers(ctx context.Context, organization string, options OrganizationListOptions) (*OrganizationList, error)
 
 	// Update the module sharing consumers that an organization has
 	UpdateModuleConsumers(ctx context.Context, organization string, consumers ModuleConsumers) error
@@ -72,13 +73,13 @@ type AdminOrganizationUpdateOptions struct {
 	TerraformBuildWorkerPlanTimeout  *string `jsonapi:"attr,terraform-build-worker-plan-timeout,omitempty"`
 }
 
-func (s *adminOrganizations) ListModuleConsumers(ctx context.Context, organization string) (*OrganizationList, error) {
+func (s *adminOrganizations) ListModuleConsumers(ctx context.Context, organization string, options OrganizationListOptions) (*OrganizationList, error) {
 	if !validStringID(&organization) {
 		return nil, errors.New("invalid value for organization")
 	}
 
 	u := fmt.Sprintf("admin/organizations/%s/relationships/module-consumers", url.QueryEscape(organization))
-	req, err := s.client.newRequest("GET", u, nil)
+	req, err := s.client.newRequest("GET", u, options)
 	if err != nil {
 		return nil, err
 	}
