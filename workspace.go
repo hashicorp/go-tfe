@@ -147,7 +147,7 @@ type WorkspaceListOptions struct {
 // List all the workspaces within an organization.
 func (s *workspaces) List(ctx context.Context, organization string, options WorkspaceListOptions) (*WorkspaceList, error) {
 	if !validStringID(&organization) {
-		return nil, errors.New("invalid value for organization")
+		return nil, ErrInvalidOrg
 	}
 
 	u := fmt.Sprintf("organizations/%s/workspaces", url.QueryEscape(organization))
@@ -250,10 +250,10 @@ type VCSRepoOptions struct {
 
 func (o WorkspaceCreateOptions) valid() error {
 	if !validString(o.Name) {
-		return errors.New("name is required")
+		return ErrRequiredName
 	}
 	if !validStringID(o.Name) {
-		return errors.New("invalid value for name")
+		return ErrInvalidName
 	}
 	if o.Operations != nil && o.ExecutionMode != nil {
 		return errors.New("operations is deprecated and cannot be specified when execution mode is used")
@@ -271,7 +271,7 @@ func (o WorkspaceCreateOptions) valid() error {
 // Create is used to create a new workspace.
 func (s *workspaces) Create(ctx context.Context, organization string, options WorkspaceCreateOptions) (*Workspace, error) {
 	if !validStringID(&organization) {
-		return nil, errors.New("invalid value for organization")
+		return nil, ErrInvalidOrg
 	}
 	if err := options.valid(); err != nil {
 		return nil, err
@@ -298,7 +298,7 @@ func (s *workspaces) Create(ctx context.Context, organization string, options Wo
 // Read a workspace by its name.
 func (s *workspaces) Read(ctx context.Context, organization, workspace string) (*Workspace, error) {
 	if !validStringID(&organization) {
-		return nil, errors.New("invalid value for organization")
+		return nil, ErrInvalidOrg
 	}
 	if !validStringID(&workspace) {
 		return nil, errors.New("invalid value for workspace")
@@ -418,7 +418,7 @@ type WorkspaceUpdateOptions struct {
 
 func (o WorkspaceUpdateOptions) valid() error {
 	if o.Name != nil && !validStringID(o.Name) {
-		return errors.New("invalid value for name")
+		return ErrInvalidName
 	}
 	if o.Operations != nil && o.ExecutionMode != nil {
 		return errors.New("operations is deprecated and cannot be specified when execution mode is used")
@@ -433,7 +433,7 @@ func (o WorkspaceUpdateOptions) valid() error {
 // Update settings of an existing workspace.
 func (s *workspaces) Update(ctx context.Context, organization, workspace string, options WorkspaceUpdateOptions) (*Workspace, error) {
 	if !validStringID(&organization) {
-		return nil, errors.New("invalid value for organization")
+		return nil, ErrInvalidOrg
 	}
 	if !validStringID(&workspace) {
 		return nil, errors.New("invalid value for workspace")
@@ -491,7 +491,7 @@ func (s *workspaces) UpdateByID(ctx context.Context, workspaceID string, options
 // Delete a workspace by its name.
 func (s *workspaces) Delete(ctx context.Context, organization, workspace string) error {
 	if !validStringID(&organization) {
-		return errors.New("invalid value for organization")
+		return ErrInvalidOrg
 	}
 	if !validStringID(&workspace) {
 		return errors.New("invalid value for workspace")
@@ -534,7 +534,7 @@ type workspaceRemoveVCSConnectionOptions struct {
 // RemoveVCSConnection from a workspace.
 func (s *workspaces) RemoveVCSConnection(ctx context.Context, organization, workspace string) (*Workspace, error) {
 	if !validStringID(&organization) {
-		return nil, errors.New("invalid value for organization")
+		return nil, ErrInvalidOrg
 	}
 	if !validStringID(&workspace) {
 		return nil, errors.New("invalid value for workspace")

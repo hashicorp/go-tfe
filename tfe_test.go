@@ -5,14 +5,14 @@ import (
 	"context"
 	"encoding/json"
 	"errors"
-	"github.com/hashicorp/go-retryablehttp"
-	"github.com/svanharmelen/jsonapi"
 	"net/http"
 	"net/http/httptest"
 	"os"
 	"testing"
 	"time"
 
+	"github.com/hashicorp/go-retryablehttp"
+	"github.com/svanharmelen/jsonapi"
 	"golang.org/x/time/rate"
 )
 

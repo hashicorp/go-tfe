@@ -106,7 +106,7 @@ func TestNotificationConfigurationCreate(t *testing.T) {
 
 		nc, err := client.NotificationConfigurations.Create(ctx, wTest.ID, options)
 		assert.Nil(t, nc)
-		assert.EqualError(t, err, "name is required")
+		assert.Equal(t, err, ErrRequiredName)
 	})
 
 	t.Run("without a required value URL when destination type is generic", func(t *testing.T) {

@@ -168,7 +168,7 @@ func (o NotificationConfigurationCreateOptions) valid() error {
 		return errors.New("enabled is required")
 	}
 	if !validString(o.Name) {
-		return errors.New("name is required")
+		return ErrRequiredName
 	}
 
 	if *o.DestinationType == NotificationDestinationTypeGeneric || *o.DestinationType == NotificationDestinationTypeSlack {

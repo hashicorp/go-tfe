@@ -69,7 +69,7 @@ func TestOAuthClientsList(t *testing.T) {
 
 		ocl, err := client.OAuthClients.List(ctx, badIdentifier, options)
 		assert.Nil(t, ocl)
-		assert.EqualError(t, err, "invalid value for organization")
+		assert.Equal(t, err, ErrInvalidOrg)
 	})
 }
 
@@ -115,7 +115,7 @@ func TestOAuthClientsCreate(t *testing.T) {
 		}
 
 		_, err := client.OAuthClients.Create(ctx, badIdentifier, options)
-		assert.EqualError(t, err, "invalid value for organization")
+		assert.Equal(t, err, ErrInvalidOrg)
 	})
 
 	t.Run("without an API URL", func(t *testing.T) {

@@ -73,7 +73,7 @@ func TestWorkspacesList(t *testing.T) {
 	t.Run("without a valid organization", func(t *testing.T) {
 		wl, err := client.Workspaces.List(ctx, badIdentifier, WorkspaceListOptions{})
 		assert.Nil(t, wl)
-		assert.EqualError(t, err, "invalid value for organization")
+		assert.Equal(t, err, ErrInvalidOrg)
 	})
 
 	t.Run("with organization included", func(t *testing.T) {
@@ -140,7 +140,7 @@ func TestWorkspacesCreate(t *testing.T) {
 	t.Run("when options is missing name", func(t *testing.T) {
 		w, err := client.Workspaces.Create(ctx, "foo", WorkspaceCreateOptions{})
 		assert.Nil(t, w)
-		assert.EqualError(t, err, "name is required")
+		assert.Equal(t, err, ErrRequiredName)
 	})
 
 	t.Run("when options has an invalid name", func(t *testing.T) {
@@ -148,7 +148,7 @@ func TestWorkspacesCreate(t *testing.T) {
 			Name: String(badIdentifier),
 		})
 		assert.Nil(t, w)
-		assert.EqualError(t, err, "invalid value for name")
+		assert.Equal(t, err, ErrInvalidName)
 	})
 
 	t.Run("when options has an invalid organization", func(t *testing.T) {
@@ -156,7 +156,7 @@ func TestWorkspacesCreate(t *testing.T) {
 			Name: String("foo"),
 		})
 		assert.Nil(t, w)
-		assert.EqualError(t, err, "invalid value for organization")
+		assert.Equal(t, err, ErrInvalidOrg)
 	})
 
 	t.Run("when options includes both an operations value and an enforcement mode value", func(t *testing.T) {
@@ -246,7 +246,7 @@ func TestWorkspacesRead(t *testing.T) {
 	t.Run("without a valid organization", func(t *testing.T) {
 		w, err := client.Workspaces.Read(ctx, badIdentifier, wTest.Name)
 		assert.Nil(t, w)
-		assert.EqualError(t, err, "invalid value for organization")
+		assert.Equal(t, err, ErrInvalidOrg)
 	})
 
 	t.Run("without a valid workspace", func(t *testing.T) {
@@ -405,7 +405,7 @@ func TestWorkspacesUpdate(t *testing.T) {
 	t.Run("when options has an invalid organization", func(t *testing.T) {
 		w, err := client.Workspaces.Update(ctx, badIdentifier, wTest.Name, WorkspaceUpdateOptions{})
 		assert.Nil(t, w)
-		assert.EqualError(t, err, "invalid value for organization")
+		assert.Equal(t, err, ErrInvalidOrg)
 	})
 }
 
@@ -512,7 +512,7 @@ func TestWorkspacesDelete(t *testing.T) {
 
 	t.Run("when organization is invalid", func(t *testing.T) {
 		err := client.Workspaces.Delete(ctx, badIdentifier, wTest.Name)
-		assert.EqualError(t, err, "invalid value for organization")
+		assert.Equal(t, err, ErrInvalidOrg)
 	})
 
 	t.Run("when workspace is invalid", func(t *testing.T) {

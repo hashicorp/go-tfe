@@ -33,7 +33,7 @@ func TestOrganizationTokensGenerate(t *testing.T) {
 	t.Run("without valid organization", func(t *testing.T) {
 		ot, err := client.OrganizationTokens.Generate(ctx, badIdentifier)
 		assert.Nil(t, ot)
-		assert.EqualError(t, err, "invalid value for organization")
+		assert.Equal(t, err, ErrInvalidOrg)
 	})
 }
 
@@ -63,7 +63,7 @@ func TestOrganizationTokensRead(t *testing.T) {
 	t.Run("without valid organization", func(t *testing.T) {
 		ot, err := client.OrganizationTokens.Read(ctx, badIdentifier)
 		assert.Nil(t, ot)
-		assert.EqualError(t, err, "invalid value for organization")
+		assert.Equal(t, err, ErrInvalidOrg)
 	})
 }
 
@@ -88,6 +88,6 @@ func TestOrganizationTokensDelete(t *testing.T) {
 
 	t.Run("without valid organization", func(t *testing.T) {
 		err := client.OrganizationTokens.Delete(ctx, badIdentifier)
-		assert.EqualError(t, err, "invalid value for organization")
+		assert.Equal(t, err, ErrInvalidOrg)
 	})
 }

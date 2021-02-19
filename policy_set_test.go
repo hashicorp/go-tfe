@@ -63,7 +63,7 @@ func TestPolicySetsList(t *testing.T) {
 	t.Run("without a valid organization", func(t *testing.T) {
 		ps, err := client.PolicySets.List(ctx, badIdentifier, PolicySetListOptions{})
 		assert.Nil(t, ps)
-		assert.EqualError(t, err, "invalid value for organization")
+		assert.Equal(t, err, ErrInvalidOrg)
 	})
 }
 
@@ -199,7 +199,7 @@ func TestPolicySetsCreate(t *testing.T) {
 	t.Run("without a name provided", func(t *testing.T) {
 		ps, err := client.PolicySets.Create(ctx, orgTest.Name, PolicySetCreateOptions{})
 		assert.Nil(t, ps)
-		assert.EqualError(t, err, "name is required")
+		assert.Equal(t, err, ErrRequiredName)
 	})
 
 	t.Run("with an invalid name provided", func(t *testing.T) {
@@ -207,7 +207,7 @@ func TestPolicySetsCreate(t *testing.T) {
 			Name: String("nope!"),
 		})
 		assert.Nil(t, ps)
-		assert.EqualError(t, err, "invalid value for name")
+		assert.Equal(t, err, ErrInvalidName)
 	})
 
 	t.Run("without a valid organization", func(t *testing.T) {
@@ -215,7 +215,7 @@ func TestPolicySetsCreate(t *testing.T) {
 			Name: String("policy-set"),
 		})
 		assert.Nil(t, ps)
-		assert.EqualError(t, err, "invalid value for organization")
+		assert.Equal(t, err, ErrInvalidOrg)
 	})
 }
 
@@ -271,7 +271,7 @@ func TestPolicySetsUpdate(t *testing.T) {
 			Name: String("nope!"),
 		})
 		assert.Nil(t, ps)
-		assert.EqualError(t, err, "invalid value for name")
+		assert.Equal(t, err, ErrInvalidName)
 	})
 
 	t.Run("without a valid ID", func(t *testing.T) {

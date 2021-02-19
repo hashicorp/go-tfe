@@ -182,10 +182,10 @@ type OrganizationCreateOptions struct {
 
 func (o OrganizationCreateOptions) valid() error {
 	if !validString(o.Name) {
-		return errors.New("name is required")
+		return ErrRequiredName
 	}
 	if !validStringID(o.Name) {
-		return errors.New("invalid value for name")
+		return ErrInvalidName
 	}
 	if !validString(o.Email) {
 		return errors.New("email is required")
@@ -219,7 +219,7 @@ func (s *organizations) Create(ctx context.Context, options OrganizationCreateOp
 // Read an organization by its name.
 func (s *organizations) Read(ctx context.Context, organization string) (*Organization, error) {
 	if !validStringID(&organization) {
-		return nil, errors.New("invalid value for organization")
+		return nil, ErrInvalidOrg
 	}
 
 	u := fmt.Sprintf("organizations/%s", url.QueryEscape(organization))
@@ -267,7 +267,7 @@ type OrganizationUpdateOptions struct {
 // Update attributes of an existing organization.
 func (s *organizations) Update(ctx context.Context, organization string, options OrganizationUpdateOptions) (*Organization, error) {
 	if !validStringID(&organization) {
-		return nil, errors.New("invalid value for organization")
+		return nil, ErrInvalidOrg
 	}
 
 	// Make sure we don't send a user provided ID.
@@ -291,7 +291,7 @@ func (s *organizations) Update(ctx context.Context, organization string, options
 // Delete an organization by its name.
 func (s *organizations) Delete(ctx context.Context, organization string) error {
 	if !validStringID(&organization) {
-		return errors.New("invalid value for organization")
+		return ErrInvalidOrg
 	}
 
 	u := fmt.Sprintf("organizations/%s", url.QueryEscape(organization))
@@ -306,7 +306,7 @@ func (s *organizations) Delete(ctx context.Context, organization string) error {
 // Capacity shows the currently used capacity of an organization.
 func (s *organizations) Capacity(ctx context.Context, organization string) (*Capacity, error) {
 	if !validStringID(&organization) {
-		return nil, errors.New("invalid value for organization")
+		return nil, ErrInvalidOrg
 	}
 
 	u := fmt.Sprintf("organizations/%s/capacity", url.QueryEscape(organization))
@@ -327,7 +327,7 @@ func (s *organizations) Capacity(ctx context.Context, organization string) (*Cap
 // Entitlements shows the entitlements of an organization.
 func (s *organizations) Entitlements(ctx context.Context, organization string) (*Entitlements, error) {
 	if !validStringID(&organization) {
-		return nil, errors.New("invalid value for organization")
+		return nil, ErrInvalidOrg
 	}
 
 	u := fmt.Sprintf("organizations/%s/entitlement-set", url.QueryEscape(organization))
@@ -353,7 +353,7 @@ type RunQueueOptions struct {
 // RunQueue shows the current run queue of an organization.
 func (s *organizations) RunQueue(ctx context.Context, organization string, options RunQueueOptions) (*RunQueue, error) {
 	if !validStringID(&organization) {
-		return nil, errors.New("invalid value for organization")
+		return nil, ErrInvalidOrg
 	}
 
 	u := fmt.Sprintf("organizations/%s/runs/queue", url.QueryEscape(organization))

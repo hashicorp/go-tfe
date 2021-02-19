@@ -57,7 +57,7 @@ type SSHKeyListOptions struct {
 // List all the SSH keys for a given organization
 func (s *sshKeys) List(ctx context.Context, organization string, options SSHKeyListOptions) (*SSHKeyList, error) {
 	if !validStringID(&organization) {
-		return nil, errors.New("invalid value for organization")
+		return nil, ErrInvalidOrg
 	}
 
 	u := fmt.Sprintf("organizations/%s/ssh-keys", url.QueryEscape(organization))
@@ -89,7 +89,7 @@ type SSHKeyCreateOptions struct {
 
 func (o SSHKeyCreateOptions) valid() error {
 	if !validString(o.Name) {
-		return errors.New("name is required")
+		return ErrRequiredName
 	}
 	if !validString(o.Value) {
 		return errors.New("value is required")
@@ -100,7 +100,7 @@ func (o SSHKeyCreateOptions) valid() error {
 // Create an SSH key and associate it with an organization.
 func (s *sshKeys) Create(ctx context.Context, organization string, options SSHKeyCreateOptions) (*SSHKey, error) {
 	if !validStringID(&organization) {
-		return nil, errors.New("invalid value for organization")
+		return nil, ErrInvalidOrg
 	}
 
 	if err := options.valid(); err != nil {

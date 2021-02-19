@@ -72,7 +72,7 @@ func TestOrganizationMembershipsList(t *testing.T) {
 	t.Run("without a valid organization", func(t *testing.T) {
 		ml, err := client.OrganizationMemberships.List(ctx, badIdentifier, OrganizationMembershipListOptions{})
 		assert.Nil(t, ml)
-		assert.EqualError(t, err, "invalid value for organization")
+		assert.Equal(t, err, ErrInvalidOrg)
 	})
 }
 
@@ -112,7 +112,7 @@ func TestOrganizationMembershipsCreate(t *testing.T) {
 		})
 
 		assert.Nil(t, mem)
-		assert.EqualError(t, err, "invalid value for organization")
+		assert.Equal(t, err, ErrInvalidOrg)
 	})
 
 	t.Run("when an error is returned from the api", func(t *testing.T) {

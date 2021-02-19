@@ -119,10 +119,10 @@ type RegistryModuleCreateOptions struct {
 
 func (o RegistryModuleCreateOptions) valid() error {
 	if !validString(o.Name) {
-		return errors.New("name is required")
+		return ErrRequiredName
 	}
 	if !validStringID(o.Name) {
-		return errors.New("invalid value for name")
+		return ErrInvalidName
 	}
 	if !validString(o.Provider) {
 		return errors.New("provider is required")
@@ -136,7 +136,7 @@ func (o RegistryModuleCreateOptions) valid() error {
 // Create a new registry module without a VCS repo
 func (r *registryModules) Create(ctx context.Context, organization string, options RegistryModuleCreateOptions) (*RegistryModule, error) {
 	if !validStringID(&organization) {
-		return nil, errors.New("invalid value for organization")
+		return nil, ErrInvalidOrg
 	}
 	if err := options.valid(); err != nil {
 		return nil, err
@@ -184,13 +184,13 @@ func (o RegistryModuleCreateVersionOptions) valid() error {
 // Create a new registry module version
 func (r *registryModules) CreateVersion(ctx context.Context, organization string, name string, provider string, options RegistryModuleCreateVersionOptions) (*RegistryModuleVersion, error) {
 	if !validStringID(&organization) {
-		return nil, errors.New("invalid value for organization")
+		return nil, ErrInvalidOrg
 	}
 	if !validString(&name) {
-		return nil, errors.New("name is required")
+		return nil, ErrRequiredName
 	}
 	if !validStringID(&name) {
-		return nil, errors.New("invalid value for name")
+		return nil, ErrInvalidName
 	}
 	if !validString(&provider) {
 		return nil, errors.New("provider is required")
@@ -227,7 +227,7 @@ func (r *registryModules) CreateVersion(ctx context.Context, organization string
 
 // RegistryModuleCreateWithVCSConnectionOptions is used when creating a registry module with a VCS repo
 type RegistryModuleCreateWithVCSConnectionOptions struct {
-        ID string `jsonapi:"primary,registry-modules"`
+	ID string `jsonapi:"primary,registry-modules"`
 
 	// VCS repository information
 	VCSRepo *RegistryModuleVCSRepoOptions `jsonapi:"attr,vcs-repo"`
@@ -265,8 +265,8 @@ func (r *registryModules) CreateWithVCSConnection(ctx context.Context, options R
 		return nil, err
 	}
 
-        // Make sure we don't send a user provided ID.
-        options.ID = ""
+	// Make sure we don't send a user provided ID.
+	options.ID = ""
 
 	req, err := r.client.newRequest("POST", "registry-modules", &options)
 	if err != nil {
@@ -285,13 +285,13 @@ func (r *registryModules) CreateWithVCSConnection(ctx context.Context, options R
 // Read a specific registry module
 func (r *registryModules) Read(ctx context.Context, organization string, name string, provider string) (*RegistryModule, error) {
 	if !validStringID(&organization) {
-		return nil, errors.New("invalid value for organization")
+		return nil, ErrInvalidOrg
 	}
 	if !validString(&name) {
-		return nil, errors.New("name is required")
+		return nil, ErrRequiredName
 	}
 	if !validStringID(&name) {
-		return nil, errors.New("invalid value for name")
+		return nil, ErrInvalidName
 	}
 	if !validString(&provider) {
 		return nil, errors.New("provider is required")
@@ -323,13 +323,13 @@ func (r *registryModules) Read(ctx context.Context, organization string, name st
 // Delete is used to delete the entire registry module
 func (r *registryModules) Delete(ctx context.Context, organization string, name string) error {
 	if !validStringID(&organization) {
-		return errors.New("invalid value for organization")
+		return ErrInvalidOrg
 	}
 	if !validString(&name) {
-		return errors.New("name is required")
+		return ErrRequiredName
 	}
 	if !validStringID(&name) {
-		return errors.New("invalid value for name")
+		return ErrInvalidName
 	}
 
 	u := fmt.Sprintf(
@@ -348,13 +348,13 @@ func (r *registryModules) Delete(ctx context.Context, organization string, name 
 // DeleteProvider is used to delete the specific registry module provider
 func (r *registryModules) DeleteProvider(ctx context.Context, organization string, name string, provider string) error {
 	if !validStringID(&organization) {
-		return errors.New("invalid value for organization")
+		return ErrInvalidOrg
 	}
 	if !validString(&name) {
-		return errors.New("name is required")
+		return ErrRequiredName
 	}
 	if !validStringID(&name) {
-		return errors.New("invalid value for name")
+		return ErrInvalidName
 	}
 	if !validString(&provider) {
 		return errors.New("provider is required")
@@ -380,13 +380,13 @@ func (r *registryModules) DeleteProvider(ctx context.Context, organization strin
 // DeleteVersion is used to delete the specific registry module version
 func (r *registryModules) DeleteVersion(ctx context.Context, organization string, name string, provider string, version string) error {
 	if !validStringID(&organization) {
-		return errors.New("invalid value for organization")
+		return ErrInvalidOrg
 	}
 	if !validString(&name) {
-		return errors.New("name is required")
+		return ErrRequiredName
 	}
 	if !validStringID(&name) {
-		return errors.New("invalid value for name")
+		return ErrInvalidName
 	}
 	if !validString(&provider) {
 		return errors.New("provider is required")
