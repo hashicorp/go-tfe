@@ -23,7 +23,7 @@ var (
 	// ErrRequiredName is returned when a name option is not present.
 	ErrRequiredName = errors.New("name is required")
 
-	// ErrInvalidName is returned when the name option is has invalid value.
+	// ErrInvalidName is returned when the name option has invalid value.
 	ErrInvalidName = errors.New("invalid value for name")
 
 	// ErrInvalidOrg is returned when the organization option has an invalid value.
