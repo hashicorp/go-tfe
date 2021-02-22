@@ -972,3 +972,28 @@ func randomString(t *testing.T) string {
 	}
 	return v
 }
+
+// skips a test if ENABLE_TFE is not set to equal "1"
+// this is used to conditionally skip tests if not running against a Terraform
+// Enterprise instance. Effectively these tests will only run against a Terraform
+// Enterprise instance.
+func skipIfNotEnterprise(t *testing.T) {
+	if !enterpriseEnabled() {
+		t.Skip("Skipping Terraform Enterprise related test. Set ENABLE_TFE=1 to run.")
+	}
+}
+
+// skips a test if ENABLE_TFE is set to equal "1"
+// this is used to conditionally skip tests if running against a Terraform
+// Enterprise instance. Effectively these tests will only run against a Terraform
+// Cloud instance.
+func skipIfEnterprise(t *testing.T) {
+	if enterpriseEnabled() {
+		t.Skip("Skipping Terraform Cloud related test. Set ENABLE_TFE=0 to run.")
+	}
+}
+
+// Checks to see if ENABLE_TFE is set to 1, thereby enabling enterprise tests.
+func enterpriseEnabled() bool {
+	return os.Getenv("ENABLE_TFE") == "1"
+}
