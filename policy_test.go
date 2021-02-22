@@ -62,7 +62,7 @@ func TestPoliciesList(t *testing.T) {
 	t.Run("without a valid organization", func(t *testing.T) {
 		ps, err := client.Policies.List(ctx, badIdentifier, PolicyListOptions{})
 		assert.Nil(t, ps)
-		assert.Equal(t, err, ErrInvalidOrg)
+		assert.EqualError(t, err, ErrInvalidOrg.Error())
 	})
 }
 
@@ -114,7 +114,7 @@ func TestPoliciesCreate(t *testing.T) {
 			},
 		})
 		assert.Nil(t, p)
-		assert.Equal(t, err, ErrInvalidName)
+		assert.EqualError(t, err, ErrInvalidName.Error())
 	})
 
 	t.Run("when options is missing name", func(t *testing.T) {
@@ -127,7 +127,7 @@ func TestPoliciesCreate(t *testing.T) {
 			},
 		})
 		assert.Nil(t, p)
-		assert.Equal(t, err, ErrRequiredName)
+		assert.EqualError(t, err, ErrRequiredName.Error())
 	})
 
 	t.Run("when options is missing an enforcement", func(t *testing.T) {
@@ -176,7 +176,7 @@ func TestPoliciesCreate(t *testing.T) {
 			Name: String("foo"),
 		})
 		assert.Nil(t, p)
-		assert.Equal(t, err, ErrInvalidOrg)
+		assert.EqualError(t, err, ErrInvalidOrg.Error())
 	})
 }
 

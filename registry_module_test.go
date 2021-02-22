@@ -51,7 +51,7 @@ func TestRegistryModulesCreate(t *testing.T) {
 			}
 			rm, err := client.RegistryModules.Create(ctx, orgTest.Name, options)
 			assert.Nil(t, rm)
-			assert.Equal(t, err, ErrRequiredName)
+			assert.EqualError(t, err, ErrRequiredName.Error())
 		})
 
 		t.Run("with an invalid name", func(t *testing.T) {
@@ -61,7 +61,7 @@ func TestRegistryModulesCreate(t *testing.T) {
 			}
 			rm, err := client.RegistryModules.Create(ctx, orgTest.Name, options)
 			assert.Nil(t, rm)
-			assert.Equal(t, err, ErrInvalidName)
+			assert.EqualError(t, err, ErrInvalidName.Error())
 		})
 
 		t.Run("without a provider", func(t *testing.T) {
@@ -91,7 +91,7 @@ func TestRegistryModulesCreate(t *testing.T) {
 		}
 		rm, err := client.RegistryModules.Create(ctx, badIdentifier, options)
 		assert.Nil(t, rm)
-		assert.Equal(t, err, ErrInvalidOrg)
+		assert.EqualError(t, err, ErrInvalidOrg.Error())
 	})
 }
 
@@ -148,7 +148,7 @@ func TestRegistryModulesCreateVersion(t *testing.T) {
 		}
 		rmv, err := client.RegistryModules.CreateVersion(ctx, orgTest.Name, "", registryModuleTest.Provider, options)
 		assert.Nil(t, rmv)
-		assert.Equal(t, err, ErrRequiredName)
+		assert.EqualError(t, err, ErrRequiredName.Error())
 	})
 
 	t.Run("with an invalid name", func(t *testing.T) {
@@ -157,7 +157,7 @@ func TestRegistryModulesCreateVersion(t *testing.T) {
 		}
 		rmv, err := client.RegistryModules.CreateVersion(ctx, orgTest.Name, badIdentifier, registryModuleTest.Provider, options)
 		assert.Nil(t, rmv)
-		assert.Equal(t, err, ErrInvalidName)
+		assert.EqualError(t, err, ErrInvalidName.Error())
 	})
 
 	t.Run("without a provider", func(t *testing.T) {
@@ -184,7 +184,7 @@ func TestRegistryModulesCreateVersion(t *testing.T) {
 		}
 		rmv, err := client.RegistryModules.CreateVersion(ctx, badIdentifier, registryModuleTest.Name, registryModuleTest.Provider, options)
 		assert.Nil(t, rmv)
-		assert.Equal(t, err, ErrInvalidOrg)
+		assert.EqualError(t, err, ErrInvalidOrg.Error())
 	})
 
 }
@@ -324,13 +324,13 @@ func TestRegistryModulesRead(t *testing.T) {
 	t.Run("without a name", func(t *testing.T) {
 		rm, err := client.RegistryModules.Read(ctx, orgTest.Name, "", registryModuleTest.Provider)
 		assert.Nil(t, rm)
-		assert.Equal(t, err, ErrRequiredName)
+		assert.EqualError(t, err, ErrRequiredName.Error())
 	})
 
 	t.Run("with an invalid name", func(t *testing.T) {
 		rm, err := client.RegistryModules.Read(ctx, orgTest.Name, badIdentifier, registryModuleTest.Provider)
 		assert.Nil(t, rm)
-		assert.Equal(t, err, ErrInvalidName)
+		assert.EqualError(t, err, ErrInvalidName.Error())
 	})
 
 	t.Run("without a provider", func(t *testing.T) {
@@ -348,7 +348,7 @@ func TestRegistryModulesRead(t *testing.T) {
 	t.Run("without a valid organization", func(t *testing.T) {
 		rm, err := client.RegistryModules.Read(ctx, badIdentifier, registryModuleTest.Name, registryModuleTest.Provider)
 		assert.Nil(t, rm)
-		assert.Equal(t, err, ErrInvalidOrg)
+		assert.EqualError(t, err, ErrInvalidOrg.Error())
 	})
 
 	t.Run("when the registry module does not exist", func(t *testing.T) {
@@ -378,17 +378,17 @@ func TestRegistryModulesDelete(t *testing.T) {
 
 	t.Run("without a name", func(t *testing.T) {
 		err := client.RegistryModules.Delete(ctx, orgTest.Name, "")
-		assert.Equal(t, err, ErrRequiredName)
+		assert.EqualError(t, err, ErrRequiredName.Error())
 	})
 
 	t.Run("with an invalid name", func(t *testing.T) {
 		err := client.RegistryModules.Delete(ctx, orgTest.Name, badIdentifier)
-		assert.Equal(t, err, ErrInvalidName)
+		assert.EqualError(t, err, ErrInvalidName.Error())
 	})
 
 	t.Run("without a valid organization", func(t *testing.T) {
 		err := client.RegistryModules.Delete(ctx, badIdentifier, registryModuleTest.Name)
-		assert.Equal(t, err, ErrInvalidOrg)
+		assert.EqualError(t, err, ErrInvalidOrg.Error())
 	})
 
 	t.Run("when the registry module does not exist", func(t *testing.T) {
@@ -419,12 +419,12 @@ func TestRegistryModulesDeleteProvider(t *testing.T) {
 
 	t.Run("without a name", func(t *testing.T) {
 		err := client.RegistryModules.DeleteProvider(ctx, orgTest.Name, "", registryModuleTest.Provider)
-		assert.Equal(t, err, ErrRequiredName)
+		assert.EqualError(t, err, ErrRequiredName.Error())
 	})
 
 	t.Run("with an invalid name", func(t *testing.T) {
 		err := client.RegistryModules.DeleteProvider(ctx, orgTest.Name, badIdentifier, registryModuleTest.Provider)
-		assert.Equal(t, err, ErrInvalidName)
+		assert.EqualError(t, err, ErrInvalidName.Error())
 	})
 
 	t.Run("without a provider", func(t *testing.T) {
@@ -439,7 +439,7 @@ func TestRegistryModulesDeleteProvider(t *testing.T) {
 
 	t.Run("without a valid organization", func(t *testing.T) {
 		err := client.RegistryModules.DeleteProvider(ctx, badIdentifier, registryModuleTest.Name, registryModuleTest.Provider)
-		assert.Equal(t, err, ErrInvalidOrg)
+		assert.EqualError(t, err, ErrInvalidOrg.Error())
 	})
 
 	t.Run("when the registry module name and provider do not exist", func(t *testing.T) {
@@ -485,12 +485,12 @@ func TestRegistryModulesDeleteVersion(t *testing.T) {
 
 	t.Run("without a name", func(t *testing.T) {
 		err := client.RegistryModules.DeleteVersion(ctx, orgTest.Name, "", registryModuleTest.Provider, registryModuleTest.VersionStatuses[0].Version)
-		assert.Equal(t, err, ErrRequiredName)
+		assert.EqualError(t, err, ErrRequiredName.Error())
 	})
 
 	t.Run("with an invalid name", func(t *testing.T) {
 		err := client.RegistryModules.DeleteVersion(ctx, orgTest.Name, badIdentifier, registryModuleTest.Provider, registryModuleTest.VersionStatuses[0].Version)
-		assert.Equal(t, err, ErrInvalidName)
+		assert.EqualError(t, err, ErrInvalidName.Error())
 	})
 
 	t.Run("without a provider", func(t *testing.T) {
@@ -515,7 +515,7 @@ func TestRegistryModulesDeleteVersion(t *testing.T) {
 
 	t.Run("without a valid organization", func(t *testing.T) {
 		err := client.RegistryModules.DeleteVersion(ctx, badIdentifier, registryModuleTest.Name, registryModuleTest.Provider, registryModuleTest.VersionStatuses[0].Version)
-		assert.Equal(t, err, ErrInvalidOrg)
+		assert.EqualError(t, err, ErrInvalidOrg.Error())
 	})
 
 	t.Run("when the registry module name, provider, and version do not exist", func(t *testing.T) {

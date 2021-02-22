@@ -62,7 +62,7 @@ func TestTeamTokensRead(t *testing.T) {
 	t.Run("without valid organization", func(t *testing.T) {
 		tt, err := client.OrganizationTokens.Read(ctx, badIdentifier)
 		assert.Nil(t, tt)
-		assert.Equal(t, err, ErrInvalidOrg)
+		assert.EqualError(t, err, ErrInvalidOrg.Error())
 	})
 }
 

@@ -70,7 +70,7 @@ func TestOAuthTokensList(t *testing.T) {
 
 		otl, err := client.OAuthTokens.List(ctx, badIdentifier, options)
 		assert.Nil(t, otl)
-		assert.Equal(t, err, ErrInvalidOrg)
+		assert.EqualError(t, err, ErrInvalidOrg.Error())
 	})
 }
 

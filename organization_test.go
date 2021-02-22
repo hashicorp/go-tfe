@@ -78,7 +78,7 @@ func TestOrganizationsCreate(t *testing.T) {
 		_, err := client.Organizations.Create(ctx, OrganizationCreateOptions{
 			Email: String("foo@bar.com"),
 		})
-		assert.Equal(t, err, ErrRequiredName)
+		assert.EqualError(t, err, ErrRequiredName.Error())
 	})
 
 	t.Run("with invalid name", func(t *testing.T) {
@@ -87,7 +87,7 @@ func TestOrganizationsCreate(t *testing.T) {
 			Email: String("foo@bar.com"),
 		})
 		assert.Nil(t, org)
-		assert.Equal(t, err, ErrInvalidName)
+		assert.EqualError(t, err, ErrInvalidName.Error())
 	})
 }
 
@@ -117,7 +117,7 @@ func TestOrganizationsRead(t *testing.T) {
 	t.Run("with invalid name", func(t *testing.T) {
 		org, err := client.Organizations.Read(ctx, badIdentifier)
 		assert.Nil(t, org)
-		assert.Equal(t, err, ErrInvalidOrg)
+		assert.EqualError(t, err, ErrInvalidOrg.Error())
 	})
 
 	t.Run("when the org does not exist", func(t *testing.T) {
@@ -168,7 +168,7 @@ func TestOrganizationsUpdate(t *testing.T) {
 	t.Run("with invalid name", func(t *testing.T) {
 		org, err := client.Organizations.Update(ctx, badIdentifier, OrganizationUpdateOptions{})
 		assert.Nil(t, org)
-		assert.Equal(t, err, ErrInvalidOrg)
+		assert.EqualError(t, err, ErrInvalidOrg.Error())
 	})
 
 	t.Run("when only updating a subset of fields", func(t *testing.T) {
@@ -199,7 +199,7 @@ func TestOrganizationsDelete(t *testing.T) {
 
 	t.Run("with invalid name", func(t *testing.T) {
 		err := client.Organizations.Delete(ctx, badIdentifier)
-		assert.Equal(t, err, ErrInvalidOrg)
+		assert.EqualError(t, err, ErrInvalidOrg.Error())
 	})
 }
 
@@ -240,7 +240,7 @@ func TestOrganizationsCapacity(t *testing.T) {
 	t.Run("with invalid name", func(t *testing.T) {
 		org, err := client.Organizations.Read(ctx, badIdentifier)
 		assert.Nil(t, org)
-		assert.Equal(t, err, ErrInvalidOrg)
+		assert.EqualError(t, err, ErrInvalidOrg.Error())
 	})
 
 	t.Run("when the org does not exist", func(t *testing.T) {
@@ -276,7 +276,7 @@ func TestOrganizationsEntitlements(t *testing.T) {
 	t.Run("with invalid name", func(t *testing.T) {
 		entitlements, err := client.Organizations.Entitlements(ctx, badIdentifier)
 		assert.Nil(t, entitlements)
-		assert.Equal(t, err, ErrInvalidOrg)
+		assert.EqualError(t, err, ErrInvalidOrg.Error())
 	})
 
 	t.Run("when the org does not exist", func(t *testing.T) {
@@ -364,7 +364,7 @@ func TestOrganizationsRunQueue(t *testing.T) {
 	t.Run("with invalid name", func(t *testing.T) {
 		org, err := client.Organizations.Read(ctx, badIdentifier)
 		assert.Nil(t, org)
-		assert.Equal(t, err, ErrInvalidOrg)
+		assert.EqualError(t, err, ErrInvalidOrg.Error())
 	})
 
 	t.Run("when the org does not exist", func(t *testing.T) {

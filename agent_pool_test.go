@@ -45,7 +45,7 @@ func TestAgentPoolsList(t *testing.T) {
 	t.Run("without a valid organization", func(t *testing.T) {
 		pools, err := client.AgentPools.List(ctx, badIdentifier, AgentPoolListOptions{})
 		assert.Nil(t, pools)
-		assert.Equal(t, err, ErrInvalidOrg)
+		assert.EqualError(t, err, ErrInvalidOrg.Error())
 	})
 }
 
@@ -79,7 +79,7 @@ func TestAgentPoolsCreate(t *testing.T) {
 	t.Run("when options is missing name", func(t *testing.T) {
 		k, err := client.AgentPools.Create(ctx, "foo", AgentPoolCreateOptions{})
 		assert.Nil(t, k)
-		assert.Equal(t, err, ErrRequiredName)
+		assert.EqualError(t, err, ErrRequiredName.Error())
 	})
 
 	t.Run("with an invalid organization", func(t *testing.T) {
@@ -87,7 +87,7 @@ func TestAgentPoolsCreate(t *testing.T) {
 			Name: String("cool-pool"),
 		})
 		assert.Nil(t, pool)
-		assert.Equal(t, err, ErrInvalidOrg)
+		assert.EqualError(t, err, ErrInvalidOrg.Error())
 	})
 }
 
