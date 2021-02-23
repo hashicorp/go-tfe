@@ -90,7 +90,7 @@ type PolicyListOptions struct {
 // List all the policies for a given organization
 func (s *policies) List(ctx context.Context, organization string, options PolicyListOptions) (*PolicyList, error) {
 	if !validStringID(&organization) {
-		return nil, errors.New("invalid value for organization")
+		return nil, ErrInvalidOrg
 	}
 
 	u := fmt.Sprintf("organizations/%s/policies", url.QueryEscape(organization))
@@ -131,10 +131,10 @@ type EnforcementOptions struct {
 
 func (o PolicyCreateOptions) valid() error {
 	if !validString(o.Name) {
-		return errors.New("name is required")
+		return ErrRequiredName
 	}
 	if !validStringID(o.Name) {
-		return errors.New("invalid value for name")
+		return ErrInvalidName
 	}
 	if o.Enforce == nil {
 		return errors.New("enforce is required")
@@ -153,7 +153,7 @@ func (o PolicyCreateOptions) valid() error {
 // Create a policy and associate it with an organization.
 func (s *policies) Create(ctx context.Context, organization string, options PolicyCreateOptions) (*Policy, error) {
 	if !validStringID(&organization) {
-		return nil, errors.New("invalid value for organization")
+		return nil, ErrInvalidOrg
 	}
 	if err := options.valid(); err != nil {
 		return nil, err

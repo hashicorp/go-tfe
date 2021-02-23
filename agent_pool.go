@@ -59,7 +59,7 @@ type AgentPoolListOptions struct {
 // List all the agent pools of the given organization.
 func (s *agentPools) List(ctx context.Context, organization string, options AgentPoolListOptions) (*AgentPoolList, error) {
 	if !validStringID(&organization) {
-		return nil, errors.New("invalid value for organization")
+		return nil, ErrInvalidOrg
 	}
 
 	u := fmt.Sprintf("organizations/%s/agent-pools", url.QueryEscape(organization))
@@ -88,10 +88,10 @@ type AgentPoolCreateOptions struct {
 
 func (o AgentPoolCreateOptions) valid() error {
 	if !validString(o.Name) {
-		return errors.New("name is required")
+		return ErrRequiredName
 	}
 	if !validStringID(o.Name) {
-		return errors.New("invalid value for name")
+		return ErrInvalidName
 	}
 	return nil
 }
@@ -99,7 +99,7 @@ func (o AgentPoolCreateOptions) valid() error {
 // Create a new agent pool with the given options.
 func (s *agentPools) Create(ctx context.Context, organization string, options AgentPoolCreateOptions) (*AgentPool, error) {
 	if !validStringID(&organization) {
-		return nil, errors.New("invalid value for organization")
+		return nil, ErrInvalidOrg
 	}
 
 	if err := options.valid(); err != nil {
@@ -156,7 +156,7 @@ type AgentPoolUpdateOptions struct {
 
 func (o AgentPoolUpdateOptions) valid() error {
 	if o.Name != nil && !validStringID(o.Name) {
-		return errors.New("invalid value for name")
+		return ErrInvalidName
 	}
 	return nil
 }

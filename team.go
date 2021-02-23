@@ -79,7 +79,7 @@ type TeamListOptions struct {
 // List all the teams of the given organization.
 func (s *teams) List(ctx context.Context, organization string, options TeamListOptions) (*TeamList, error) {
 	if !validStringID(&organization) {
-		return nil, errors.New("invalid value for organization")
+		return nil, ErrInvalidOrg
 	}
 
 	u := fmt.Sprintf("organizations/%s/teams", url.QueryEscape(organization))
@@ -121,7 +121,7 @@ type OrganizationAccessOptions struct {
 
 func (o TeamCreateOptions) valid() error {
 	if !validString(o.Name) {
-		return errors.New("name is required")
+		return ErrRequiredName
 	}
 	return nil
 }
@@ -129,7 +129,7 @@ func (o TeamCreateOptions) valid() error {
 // Create a new team with the given options.
 func (s *teams) Create(ctx context.Context, organization string, options TeamCreateOptions) (*Team, error) {
 	if !validStringID(&organization) {
-		return nil, errors.New("invalid value for organization")
+		return nil, ErrInvalidOrg
 	}
 	if err := options.valid(); err != nil {
 		return nil, err

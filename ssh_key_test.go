@@ -49,7 +49,7 @@ func TestSSHKeysList(t *testing.T) {
 	t.Run("without a valid organization", func(t *testing.T) {
 		kl, err := client.SSHKeys.List(ctx, badIdentifier, SSHKeyListOptions{})
 		assert.Nil(t, kl)
-		assert.EqualError(t, err, "invalid value for organization")
+		assert.EqualError(t, err, ErrInvalidOrg.Error())
 	})
 }
 
@@ -87,7 +87,7 @@ func TestSSHKeysCreate(t *testing.T) {
 			Value: String(randomString(t)),
 		})
 		assert.Nil(t, k)
-		assert.EqualError(t, err, "name is required")
+		assert.EqualError(t, err, ErrRequiredName.Error())
 	})
 
 	t.Run("when options is missing value", func(t *testing.T) {
@@ -103,7 +103,7 @@ func TestSSHKeysCreate(t *testing.T) {
 			Name: String("foo"),
 		})
 		assert.Nil(t, k)
-		assert.EqualError(t, err, "invalid value for organization")
+		assert.EqualError(t, err, ErrInvalidOrg.Error())
 	})
 }
 
