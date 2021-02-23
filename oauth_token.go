@@ -62,7 +62,7 @@ type OAuthTokenListOptions struct {
 // List all the OAuth tokens for a given organization.
 func (s *oAuthTokens) List(ctx context.Context, organization string, options OAuthTokenListOptions) (*OAuthTokenList, error) {
 	if !validStringID(&organization) {
-		return nil, errors.New("invalid value for organization")
+		return nil, ErrInvalidOrg
 	}
 
 	u := fmt.Sprintf("organizations/%s/oauth-tokens", url.QueryEscape(organization))

@@ -51,7 +51,7 @@ func TestTeamsList(t *testing.T) {
 	t.Run("without a valid organization", func(t *testing.T) {
 		tl, err := client.Teams.List(ctx, badIdentifier, TeamListOptions{})
 		assert.Nil(t, tl)
-		assert.EqualError(t, err, "invalid value for organization")
+		assert.EqualError(t, err, ErrInvalidOrg.Error())
 	})
 }
 
@@ -86,7 +86,7 @@ func TestTeamsCreate(t *testing.T) {
 	t.Run("when options is missing name", func(t *testing.T) {
 		tm, err := client.Teams.Create(ctx, "foo", TeamCreateOptions{})
 		assert.Nil(t, tm)
-		assert.EqualError(t, err, "name is required")
+		assert.EqualError(t, err, ErrRequiredName.Error())
 	})
 
 	t.Run("when options has an invalid organization", func(t *testing.T) {
@@ -94,7 +94,7 @@ func TestTeamsCreate(t *testing.T) {
 			Name: String("foo"),
 		})
 		assert.Nil(t, tm)
-		assert.EqualError(t, err, "invalid value for organization")
+		assert.EqualError(t, err, ErrInvalidOrg.Error())
 	})
 }
 

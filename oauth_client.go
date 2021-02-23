@@ -88,7 +88,7 @@ type OAuthClientListOptions struct {
 // List all the OAuth clients for a given organization.
 func (s *oAuthClients) List(ctx context.Context, organization string, options OAuthClientListOptions) (*OAuthClientList, error) {
 	if !validStringID(&organization) {
-		return nil, errors.New("invalid value for organization")
+		return nil, ErrInvalidOrg
 	}
 
 	u := fmt.Sprintf("organizations/%s/oauth-clients", url.QueryEscape(organization))
@@ -149,7 +149,7 @@ func (o OAuthClientCreateOptions) valid() error {
 // Create an OAuth client to connect an organization and a VCS provider.
 func (s *oAuthClients) Create(ctx context.Context, organization string, options OAuthClientCreateOptions) (*OAuthClient, error) {
 	if !validStringID(&organization) {
-		return nil, errors.New("invalid value for organization")
+		return nil, ErrInvalidOrg
 	}
 	if err := options.valid(); err != nil {
 		return nil, err

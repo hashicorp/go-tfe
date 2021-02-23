@@ -37,20 +37,6 @@ const (
 	PingEndpoint = "ping"
 )
 
-var (
-	// ErrWorkspaceLocked is returned when trying to lock a
-	// locked workspace.
-	ErrWorkspaceLocked = errors.New("workspace already locked")
-	// ErrWorkspaceNotLocked is returned when trying to unlock
-	// a unlocked workspace.
-	ErrWorkspaceNotLocked = errors.New("workspace already unlocked")
-
-	// ErrUnauthorized is returned when a receiving a 401.
-	ErrUnauthorized = errors.New("unauthorized")
-	// ErrResourceNotFound is returned when a receiving a 404.
-	ErrResourceNotFound = errors.New("resource not found")
-)
-
 // RetryLogHook allows a function to run before each retry.
 type RetryLogHook func(attemptNum int, resp *http.Response)
 
