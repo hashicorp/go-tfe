@@ -115,7 +115,7 @@ func TestAgentPoolsRead(t *testing.T) {
 	t.Run("without a valid agent pool ID", func(t *testing.T) {
 		k, err := client.AgentPools.Read(ctx, badIdentifier)
 		assert.Nil(t, k)
-		assert.EqualError(t, err, "invalid value for agent pool ID")
+		assert.EqualError(t, err, ErrInvalidAgentPoolID.Error())
 	})
 }
 
@@ -155,7 +155,7 @@ func TestAgentPoolsUpdate(t *testing.T) {
 	t.Run("without a valid agent pool ID", func(t *testing.T) {
 		w, err := client.AgentPools.Update(ctx, badIdentifier, AgentPoolUpdateOptions{})
 		assert.Nil(t, w)
-		assert.EqualError(t, err, "invalid value for agent pool ID")
+		assert.EqualError(t, err, ErrInvalidAgentPoolID.Error())
 	})
 }
 
@@ -184,6 +184,6 @@ func TestAgentPoolsDelete(t *testing.T) {
 
 	t.Run("when the agent pool ID is invalid", func(t *testing.T) {
 		err := client.AgentPools.Delete(ctx, badIdentifier)
-		assert.EqualError(t, err, "invalid value for agent pool ID")
+		assert.EqualError(t, err, ErrInvalidAgentPoolID.Error())
 	})
 }

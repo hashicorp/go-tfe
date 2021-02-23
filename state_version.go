@@ -143,7 +143,7 @@ func (o StateVersionCreateOptions) valid() error {
 // Create a new state version for the given workspace.
 func (s *stateVersions) Create(ctx context.Context, workspaceID string, options StateVersionCreateOptions) (*StateVersion, error) {
 	if !validStringID(&workspaceID) {
-		return nil, errors.New("invalid value for workspace ID")
+		return nil, ErrInvalidWorkspaceID
 	}
 	if err := options.valid(); err != nil {
 		return nil, err
@@ -206,7 +206,7 @@ type StateVersionCurrentOptions struct {
 // CurrentWithOptions reads the latest available state from the given workspace using the options supplied.
 func (s *stateVersions) CurrentWithOptions(ctx context.Context, workspaceID string, options *StateVersionCurrentOptions) (*StateVersion, error) {
 	if !validStringID(&workspaceID) {
-		return nil, errors.New("invalid value for workspace ID")
+		return nil, ErrInvalidWorkspaceID
 	}
 
 	u := fmt.Sprintf("workspaces/%s/current-state-version", url.QueryEscape(workspaceID))

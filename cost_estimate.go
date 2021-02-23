@@ -3,7 +3,6 @@ package tfe
 import (
 	"bytes"
 	"context"
-	"errors"
 	"fmt"
 	"io"
 	"net/url"
@@ -70,7 +69,7 @@ type CostEstimateStatusTimestamps struct {
 // Read a costEstimate by its ID.
 func (s *costEstimates) Read(ctx context.Context, costEstimateID string) (*CostEstimate, error) {
 	if !validStringID(&costEstimateID) {
-		return nil, errors.New("invalid value for cost estimate ID")
+		return nil, ErrInvalidCostEstimateID
 	}
 
 	u := fmt.Sprintf("cost-estimates/%s", url.QueryEscape(costEstimateID))
@@ -91,7 +90,7 @@ func (s *costEstimates) Read(ctx context.Context, costEstimateID string) (*CostE
 // Logs retrieves the logs of a costEstimate.
 func (s *costEstimates) Logs(ctx context.Context, costEstimateID string) (io.Reader, error) {
 	if !validStringID(&costEstimateID) {
-		return nil, errors.New("invalid value for cost estimate ID")
+		return nil, ErrInvalidCostEstimateID
 	}
 
 	// Loop until the context is canceled or the cost estimate is finished

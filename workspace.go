@@ -326,7 +326,7 @@ func (s *workspaces) Read(ctx context.Context, organization, workspace string) (
 // ReadByID reads a workspace by its ID.
 func (s *workspaces) ReadByID(ctx context.Context, workspaceID string) (*Workspace, error) {
 	if !validStringID(&workspaceID) {
-		return nil, errors.New("invalid value for workspace ID")
+		return nil, ErrInvalidWorkspaceID
 	}
 
 	u := fmt.Sprintf("workspaces/%s", url.QueryEscape(workspaceID))
@@ -467,7 +467,7 @@ func (s *workspaces) Update(ctx context.Context, organization, workspace string,
 // UpdateByID updates the settings of an existing workspace.
 func (s *workspaces) UpdateByID(ctx context.Context, workspaceID string, options WorkspaceUpdateOptions) (*Workspace, error) {
 	if !validStringID(&workspaceID) {
-		return nil, errors.New("invalid value for workspace ID")
+		return nil, ErrInvalidWorkspaceID
 	}
 
 	// Make sure we don't send a user provided ID.
@@ -513,7 +513,7 @@ func (s *workspaces) Delete(ctx context.Context, organization, workspace string)
 // DeleteByID deletes a workspace by its ID.
 func (s *workspaces) DeleteByID(ctx context.Context, workspaceID string) error {
 	if !validStringID(&workspaceID) {
-		return errors.New("invalid value for workspace ID")
+		return ErrInvalidWorkspaceID
 	}
 
 	u := fmt.Sprintf("workspaces/%s", url.QueryEscape(workspaceID))
@@ -563,7 +563,7 @@ func (s *workspaces) RemoveVCSConnection(ctx context.Context, organization, work
 // RemoveVCSConnectionByID removes a VCS connection from a workspace.
 func (s *workspaces) RemoveVCSConnectionByID(ctx context.Context, workspaceID string) (*Workspace, error) {
 	if !validStringID(&workspaceID) {
-		return nil, errors.New("invalid value for workspace ID")
+		return nil, ErrInvalidWorkspaceID
 	}
 
 	u := fmt.Sprintf("workspaces/%s", url.QueryEscape(workspaceID))
@@ -591,7 +591,7 @@ type WorkspaceLockOptions struct {
 // Lock a workspace by its ID.
 func (s *workspaces) Lock(ctx context.Context, workspaceID string, options WorkspaceLockOptions) (*Workspace, error) {
 	if !validStringID(&workspaceID) {
-		return nil, errors.New("invalid value for workspace ID")
+		return nil, ErrInvalidWorkspaceID
 	}
 
 	u := fmt.Sprintf("workspaces/%s/actions/lock", url.QueryEscape(workspaceID))
@@ -612,7 +612,7 @@ func (s *workspaces) Lock(ctx context.Context, workspaceID string, options Works
 // Unlock a workspace by its ID.
 func (s *workspaces) Unlock(ctx context.Context, workspaceID string) (*Workspace, error) {
 	if !validStringID(&workspaceID) {
-		return nil, errors.New("invalid value for workspace ID")
+		return nil, ErrInvalidWorkspaceID
 	}
 
 	u := fmt.Sprintf("workspaces/%s/actions/unlock", url.QueryEscape(workspaceID))
@@ -633,7 +633,7 @@ func (s *workspaces) Unlock(ctx context.Context, workspaceID string) (*Workspace
 // ForceUnlock a workspace by its ID.
 func (s *workspaces) ForceUnlock(ctx context.Context, workspaceID string) (*Workspace, error) {
 	if !validStringID(&workspaceID) {
-		return nil, errors.New("invalid value for workspace ID")
+		return nil, ErrInvalidWorkspaceID
 	}
 
 	u := fmt.Sprintf("workspaces/%s/actions/force-unlock", url.QueryEscape(workspaceID))
@@ -674,7 +674,7 @@ func (o WorkspaceAssignSSHKeyOptions) valid() error {
 // AssignSSHKey to a workspace.
 func (s *workspaces) AssignSSHKey(ctx context.Context, workspaceID string, options WorkspaceAssignSSHKeyOptions) (*Workspace, error) {
 	if !validStringID(&workspaceID) {
-		return nil, errors.New("invalid value for workspace ID")
+		return nil, ErrInvalidWorkspaceID
 	}
 	if err := options.valid(); err != nil {
 		return nil, err
@@ -711,7 +711,7 @@ type workspaceUnassignSSHKeyOptions struct {
 // UnassignSSHKey from a workspace.
 func (s *workspaces) UnassignSSHKey(ctx context.Context, workspaceID string) (*Workspace, error) {
 	if !validStringID(&workspaceID) {
-		return nil, errors.New("invalid value for workspace ID")
+		return nil, ErrInvalidWorkspaceID
 	}
 
 	u := fmt.Sprintf("workspaces/%s/relationships/ssh-key", url.QueryEscape(workspaceID))
