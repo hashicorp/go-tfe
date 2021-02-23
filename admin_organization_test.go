@@ -128,7 +128,6 @@ func TestAdminOrganizations_Update(t *testing.T) {
 			TerraformBuildWorkerPlanTimeout:  &terraformBuildWorkerPlanTimeout,
 		}
 
-		fmt.Println(org.Name)
 		adminOrg, err = client.Admin.Organizations.Update(ctx, org.Name, opts)
 		assert.NotNilf(t, adminOrg, "Org returned as nil when it shouldn't be.")
 		assert.NoError(t, err)
