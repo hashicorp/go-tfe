@@ -18,7 +18,7 @@ func TestAdminOrganizations_Read(t *testing.T) {
 	t.Run("it fails to read an organization with an invalid id", func(t *testing.T) {
 		adminOrg, err := client.Admin.Organizations.Read(ctx, "")
 		require.Error(t, err)
-		assert.EqualError(t, err, "invalid value for organization")
+		assert.EqualError(t, err, ErrInvalidOrg.Error())
 		assert.Nil(t, adminOrg)
 	})
 
@@ -59,7 +59,7 @@ func TestAdminOrganizations_Delete(t *testing.T) {
 	t.Run("it fails to delete an organization with an invalid id", func(t *testing.T) {
 		err := client.Admin.Organizations.Delete(ctx, "")
 		require.Error(t, err)
-		assert.EqualError(t, err, "invalid value for organization")
+		assert.EqualError(t, err, ErrInvalidOrg.Error())
 	})
 
 	t.Run("it fails to delete an organization with an bad org name", func(t *testing.T) {
@@ -96,7 +96,7 @@ func TestAdminOrganizations_Update(t *testing.T) {
 	t.Run("it fails to update an organization with an invalid id", func(t *testing.T) {
 		_, err := client.Admin.Organizations.Update(ctx, "", AdminOrganizationUpdateOptions{})
 		require.Error(t, err)
-		assert.EqualError(t, err, "invalid value for organization")
+		assert.EqualError(t, err, ErrInvalidOrg.Error())
 	})
 
 	t.Run("it fails to update an organization with an bad org name", func(t *testing.T) {

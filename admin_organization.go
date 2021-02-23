@@ -2,7 +2,6 @@ package tfe
 
 import (
 	"context"
-	"errors"
 	"fmt"
 	"net/url"
 )
@@ -57,7 +56,7 @@ type AdminOrganizationUpdateOptions struct {
 
 func (s *adminOrganizations) Read(ctx context.Context, organization string) (*AdminOrganization, error) {
 	if !validStringID(&organization) {
-		return nil, errors.New("invalid value for organization")
+		return nil, ErrInvalidOrg
 	}
 
 	u := fmt.Sprintf("admin/organizations/%s", url.QueryEscape(organization))
@@ -77,7 +76,7 @@ func (s *adminOrganizations) Read(ctx context.Context, organization string) (*Ad
 
 func (s *adminOrganizations) Update(ctx context.Context, organization string, options AdminOrganizationUpdateOptions) (*AdminOrganization, error) {
 	if !validStringID(&organization) {
-		return nil, errors.New("invalid value for organization")
+		return nil, ErrInvalidOrg
 	}
 
 	u := fmt.Sprintf("admin/organizations/%s", url.QueryEscape(organization))
@@ -98,7 +97,7 @@ func (s *adminOrganizations) Update(ctx context.Context, organization string, op
 // Delete an organization by its name.
 func (s *adminOrganizations) Delete(ctx context.Context, organization string) error {
 	if !validStringID(&organization) {
-		return errors.New("invalid value for organization")
+		return ErrInvalidOrg
 	}
 
 	u := fmt.Sprintf("admin/organizations/%s", url.QueryEscape(organization))
