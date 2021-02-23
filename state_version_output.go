@@ -2,6 +2,7 @@ package tfe
 
 import (
 	"context"
+	"encoding/json"
 	"errors"
 	"fmt"
 	"net/url"
@@ -28,7 +29,20 @@ type StateVersionOutput struct {
 	Name      string `jsonapi:"attr,name"`
 	Sensitive bool   `jsonapi:"attr,sensitive"`
 	Type      string `jsonapi:"attr,type"`
-	Value     string `jsonapi:"attr,value"`
+	Value     OutputValue `jsonapi:"attr,value"`
+
+}
+
+// Since the Output can be one of many types, and we don't want to use interface{} here, this type
+// can store all types of output.   There may be more types that are not yet implemented here.
+type OutputValue struct {
+	RawValue  interface{}	// allow the absolute raw value to be retrieved
+
+	ValueBool 	bool
+	ValueInt	int
+	ValueString	string
+	ValueArray	[]interface{}
+	ValueMap	map[string]interface{}
 }
 
 func (s *stateVersionOutputs) Read(ctx context.Context, outputID string) (*StateVersionOutput, error) {
@@ -50,3 +64,34 @@ func (s *stateVersionOutputs) Read(ctx context.Context, outputID string) (*State
 
 	return so, nil
 }
+
+// Allow the 'value' component of this state output to be unmarshaled to the right kind of data.
+func (ov *OutputValue) UnmarshalJSON(b []byte) error {
+	// unmarshal the data and then store it.
+	var result interface{}
+	err := json.Unmarshal(b, &result)
+	if err != nil {
+		return err
+	}
+
+	// Store the absolute raw value
+	ov.RawValue = result
+
+	// Test what kind of data we have here and store it in the right place.
+	switch v := result.(type) {
+	case int:
+		ov.ValueInt = v
+	case string:
+		ov.ValueString = v
+	case bool:
+		ov.ValueBool = v
+	case []interface{}:
+		ov.ValueArray = v
+	case map[string]interface{}:
+		ov.ValueMap = v
+	default:
+		return fmt.Errorf("unknown output type: %v", v)
+	}
+	return nil
+}
+
