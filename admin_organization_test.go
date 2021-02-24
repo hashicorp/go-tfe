@@ -9,6 +9,52 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
+func TestAdminOrganizations_List(t *testing.T) {
+	skipIfCloud(t)
+
+	client := testClient(t)
+	ctx := context.Background()
+
+	t.Run("with no list options", func(t *testing.T) {
+		org, orgTestCleanup := createOrganization(t, client)
+		defer orgTestCleanup()
+
+		adminOrgList, err := client.Admin.Organizations.List(ctx, AdminOrganizationListOptions{})
+		require.NoError(t, err)
+
+		assert.Equal(t, true, adminOrgItemsContainsName(adminOrgList.Items, org.Name))
+		assert.Equal(t, 1, adminOrgList.CurrentPage)
+	})
+
+	t.Run("with list options", func(t *testing.T) {
+		org, orgTestCleanup := createOrganization(t, client)
+		defer orgTestCleanup()
+
+		adminOrgList, err := client.Admin.Organizations.List(ctx, AdminOrganizationListOptions{
+			Query: &org.Name,
+		})
+		assert.NoError(t, err)
+		assert.Equal(t, true, adminOrgItemsContainsName(adminOrgList.Items, org.Name))
+		assert.Equal(t, 1, adminOrgList.CurrentPage)
+		assert.Equal(t, 1, adminOrgList.TotalCount)
+	})
+
+	t.Run("with list options and bad query", func(t *testing.T) {
+		org, orgTestCleanup := createOrganization(t, client)
+		defer orgTestCleanup()
+
+		randomName := "random-org-name"
+
+		adminOrgList, err := client.Admin.Organizations.List(ctx, AdminOrganizationListOptions{
+			Query: &randomName,
+		})
+		assert.NoError(t, err)
+		assert.Equal(t, false, adminOrgItemsContainsName(adminOrgList.Items, org.Name))
+		assert.Equal(t, 1, adminOrgList.CurrentPage)
+		assert.Equal(t, 0, adminOrgList.TotalCount)
+	})
+}
+
 func TestAdminOrganizations_Read(t *testing.T) {
 	skipIfCloud(t)
 
@@ -157,4 +203,16 @@ func TestAdminOrganizations_Update(t *testing.T) {
 
 		assert.Equal(t, adminOrg.IsDisabled, isDisabled)
 	})
+}
+
+func adminOrgItemsContainsName(items []*AdminOrganization, name string) bool {
+	hasName := false
+	for _, item := range items {
+		if item.Name == name {
+			hasName = true
+			break
+		}
+	}
+
+	return hasName
 }

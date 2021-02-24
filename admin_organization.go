@@ -14,6 +14,9 @@ var _ AdminOrganizations = (*adminOrganizations)(nil)
 //
 // TFE API docs: https://www.terraform.io/docs/cloud/api/admin/organizations.html
 type AdminOrganizations interface {
+	// List all the organizations visible to the current user.
+	List(ctx context.Context, options AdminOrganizationListOptions) (*AdminOrganizationList, error)
+
 	// Read attributes of an existing organization via admin API.
 	Read(ctx context.Context, organization string) (*AdminOrganization, error)
 
@@ -31,7 +34,7 @@ type adminOrganizations struct {
 
 // AdminOrganization represents a Terraform Enterprise organization returned from the Admin API.
 type AdminOrganization struct {
-	Name 				 string `jsonapi:"primary,organizations"`
+	Name                             string `jsonapi:"primary,organizations"`
 	AccessBetaTools                  bool   `jsonapi:"attr,access-beta-tools"`
 	ExternalID                       string `jsonapi:"attr,external-id"`
 	IsDisabled                       bool   `jsonapi:"attr,is-disabled"`
@@ -49,6 +52,38 @@ type AdminOrganizationUpdateOptions struct {
 	IsDisabled                       *bool   `jsonapi:"attr,is-disabled,omitempty"`
 	TerraformBuildWorkerApplyTimeout *string `jsonapi:"attr,terraform-build-worker-apply-timeout,omitempty"`
 	TerraformBuildWorkerPlanTimeout  *string `jsonapi:"attr,terraform-build-worker-plan-timeout,omitempty"`
+}
+
+// AdminOrganizationList represents a list of organizations via Admin API.
+type AdminOrganizationList struct {
+	*Pagination
+	Items []*AdminOrganization
+}
+
+// AdminOrganizationListOptions represents the options for listing organizations via Admin API.
+type AdminOrganizationListOptions struct {
+	ListOptions
+
+	// A query string used to filter organizations.
+	// It can be name or notification email.
+	Query *string `url:"q,omitempty"`
+}
+
+// List all the organizations visible to the current user.
+func (s *adminOrganizations) List(ctx context.Context, options AdminOrganizationListOptions) (*AdminOrganizationList, error) {
+	url := "admin/organizations"
+	req, err := s.client.newRequest("GET", url, &options)
+	if err != nil {
+		return nil, err
+	}
+
+	orgl := &AdminOrganizationList{}
+	err = s.client.do(ctx, req, orgl)
+	if err != nil {
+		return nil, err
+	}
+
+	return orgl, nil
 }
 
 func (s *adminOrganizations) Read(ctx context.Context, organization string) (*AdminOrganization, error) {
