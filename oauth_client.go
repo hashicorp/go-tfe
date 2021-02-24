@@ -70,6 +70,8 @@ type OAuthClient struct {
 	CreatedAt           time.Time           `jsonapi:"attr,created-at,iso8601"`
 	HTTPURL             string              `jsonapi:"attr,http-url"`
 	Key                 string              `jsonapi:"attr,key"`
+	Secret              string              `jsonapi:"attr,secret"`
+	Uuid                string              `jsonapi:"attr,uuid"`
 	RSAPublicKey        string              `jsonapi:"attr,rsa-public-key"`
 	ServiceProvider     ServiceProviderType `jsonapi:"attr,service-provider"`
 	ServiceProviderName string              `jsonapi:"attr,service-provider-display-name"`
@@ -122,6 +124,12 @@ type OAuthClientCreateOptions struct {
 
 	// Private key associated with this vcs provider - only available for ado_server
 	PrivateKey *string `jsonapi:"attr,private-key"`
+
+	// Oauth secret, available with some providers, e.g. github
+	Secret *string `jsonapi:"attr,secret"`
+
+	// UUID of the vcs connection. If empty - automatically generated.
+	Uuid *string `jsonapi:"uuid,secret"`
 
 	// The VCS provider being connected with.
 	ServiceProvider *ServiceProviderType `jsonapi:"attr,service-provider"`
