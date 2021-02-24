@@ -68,7 +68,7 @@ func TestTeamAccessesList(t *testing.T) {
 			WorkspaceID: String(badIdentifier),
 		})
 		assert.Nil(t, tal)
-		assert.EqualError(t, err, "invalid value for workspace ID")
+		assert.EqualError(t, err, ErrInvalidWorkspaceID.Error())
 	})
 }
 

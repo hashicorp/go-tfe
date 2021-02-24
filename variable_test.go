@@ -51,7 +51,7 @@ func TestVariablesList(t *testing.T) {
 	t.Run("when workspace ID is invalid ID", func(t *testing.T) {
 		vl, err := client.Variables.List(ctx, badIdentifier, VariableListOptions{})
 		assert.Nil(t, vl)
-		assert.EqualError(t, err, "invalid value for workspace ID")
+		assert.EqualError(t, err, ErrInvalidWorkspaceID.Error())
 	})
 }
 
@@ -64,9 +64,9 @@ func TestVariablesCreate(t *testing.T) {
 
 	t.Run("with valid options", func(t *testing.T) {
 		options := VariableCreateOptions{
-			Key:      String(randomString(t)),
-			Value:    String(randomString(t)),
-			Category: Category(CategoryTerraform),
+			Key:         String(randomString(t)),
+			Value:       String(randomString(t)),
+			Category:    Category(CategoryTerraform),
 			Description: String(randomString(t)),
 		}
 
@@ -184,7 +184,7 @@ func TestVariablesCreate(t *testing.T) {
 		}
 
 		_, err := client.Variables.Create(ctx, badIdentifier, options)
-		assert.EqualError(t, err, "invalid value for workspace ID")
+		assert.EqualError(t, err, ErrInvalidWorkspaceID.Error())
 	})
 }
 
@@ -215,7 +215,7 @@ func TestVariablesRead(t *testing.T) {
 	t.Run("without a valid workspace ID", func(t *testing.T) {
 		v, err := client.Variables.Read(ctx, badIdentifier, vTest.ID)
 		assert.Nil(t, v)
-		assert.EqualError(t, err, "invalid value for workspace ID")
+		assert.EqualError(t, err, ErrInvalidWorkspaceID.Error())
 	})
 
 	t.Run("without a valid variable ID", func(t *testing.T) {
@@ -284,7 +284,7 @@ func TestVariablesUpdate(t *testing.T) {
 
 	t.Run("with invalid variable ID", func(t *testing.T) {
 		_, err := client.Variables.Update(ctx, badIdentifier, vTest.ID, VariableUpdateOptions{})
-		assert.EqualError(t, err, "invalid value for workspace ID")
+		assert.EqualError(t, err, ErrInvalidWorkspaceID.Error())
 	})
 
 	t.Run("with invalid variable ID", func(t *testing.T) {
@@ -314,7 +314,7 @@ func TestVariablesDelete(t *testing.T) {
 
 	t.Run("with invalid workspace ID", func(t *testing.T) {
 		err := client.Variables.Delete(ctx, badIdentifier, vTest.ID)
-		assert.EqualError(t, err, "invalid value for workspace ID")
+		assert.EqualError(t, err, ErrInvalidWorkspaceID.Error())
 	})
 
 	t.Run("with invalid variable ID", func(t *testing.T) {

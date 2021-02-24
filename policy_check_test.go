@@ -68,7 +68,7 @@ func TestPolicyChecksList(t *testing.T) {
 	t.Run("without a valid run ID", func(t *testing.T) {
 		pcl, err := client.PolicyChecks.List(ctx, badIdentifier, PolicyCheckListOptions{})
 		assert.Nil(t, pcl)
-		assert.EqualError(t, err, "invalid value for run ID")
+		assert.EqualError(t, err, ErrInvalidRunID.Error())
 	})
 }
 

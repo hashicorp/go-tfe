@@ -41,7 +41,7 @@ func TestAgentTokensList(t *testing.T) {
 	t.Run("without a valid agent pool ID", func(t *testing.T) {
 		tokenlist, err := client.AgentTokens.List(ctx, badIdentifier)
 		assert.Nil(t, tokenlist)
-		assert.EqualError(t, err, "invalid value for agent pool ID")
+		assert.EqualError(t, err, ErrInvalidAgentPoolID.Error())
 	})
 }
 
@@ -63,7 +63,7 @@ func TestAgentTokensGenerate(t *testing.T) {
 	t.Run("without valid description", func(t *testing.T) {
 		at, err := client.AgentTokens.Generate(ctx, badIdentifier, AgentTokenGenerateOptions{})
 		assert.Nil(t, at)
-		assert.EqualError(t, err, "invalid value for agent pool ID")
+		assert.EqualError(t, err, ErrInvalidAgentPoolID.Error())
 	})
 
 	t.Run("without valid agent pool ID", func(t *testing.T) {
@@ -71,7 +71,7 @@ func TestAgentTokensGenerate(t *testing.T) {
 			Description: String(randomString(t)),
 		})
 		assert.Nil(t, at)
-		assert.EqualError(t, err, "invalid value for agent pool ID")
+		assert.EqualError(t, err, ErrInvalidAgentPoolID.Error())
 	})
 }
 func TestAgentTokensRead(t *testing.T) {
@@ -95,7 +95,7 @@ func TestAgentTokensRead(t *testing.T) {
 
 	t.Run("read token without valid token ID", func(t *testing.T) {
 		_, err := client.AgentTokens.Read(ctx, badIdentifier)
-		assert.EqualError(t, err, "invalid value for agent token ID")
+		assert.EqualError(t, err, ErrInvalidAgentTokenID.Error())
 	})
 }
 
@@ -115,6 +115,6 @@ func TestAgentTokensDelete(t *testing.T) {
 
 	t.Run("without valid token ID", func(t *testing.T) {
 		err := client.AgentTokens.Delete(ctx, badIdentifier)
-		assert.EqualError(t, err, "invalid value for agent token ID")
+		assert.EqualError(t, err, ErrInvalidAgentTokenID.Error())
 	})
 }

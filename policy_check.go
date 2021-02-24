@@ -120,7 +120,7 @@ type PolicyCheckListOptions struct {
 // List all policy checks of the given run.
 func (s *policyChecks) List(ctx context.Context, runID string, options PolicyCheckListOptions) (*PolicyCheckList, error) {
 	if !validStringID(&runID) {
-		return nil, errors.New("invalid value for run ID")
+		return nil, ErrInvalidRunID
 	}
 
 	u := fmt.Sprintf("runs/%s/policy-checks", url.QueryEscape(runID))

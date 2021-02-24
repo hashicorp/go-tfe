@@ -65,7 +65,7 @@ func TestConfigurationVersionsList(t *testing.T) {
 
 		cvl, err := client.ConfigurationVersions.List(ctx, badIdentifier, options)
 		assert.Nil(t, cvl)
-		assert.EqualError(t, err, "invalid value for workspace ID")
+		assert.EqualError(t, err, ErrInvalidWorkspaceID.Error())
 	})
 }
 
@@ -106,7 +106,7 @@ func TestConfigurationVersionsCreate(t *testing.T) {
 			ConfigurationVersionCreateOptions{},
 		)
 		assert.Nil(t, cv)
-		assert.EqualError(t, err, "invalid value for workspace ID")
+		assert.EqualError(t, err, ErrInvalidWorkspaceID.Error())
 	})
 }
 
@@ -138,7 +138,7 @@ func TestConfigurationVersionsRead(t *testing.T) {
 	t.Run("with invalid configuration version id", func(t *testing.T) {
 		cv, err := client.ConfigurationVersions.Read(ctx, badIdentifier)
 		assert.Nil(t, cv)
-		assert.EqualError(t, err, "invalid value for configuration version ID")
+		assert.EqualError(t, err, ErrInvalidConfigVersionID.Error())
 	})
 }
 

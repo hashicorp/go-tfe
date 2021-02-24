@@ -61,7 +61,7 @@ func TestNotificationConfigurationList(t *testing.T) {
 			NotificationConfigurationListOptions{},
 		)
 		assert.Nil(t, ncl)
-		assert.EqualError(t, err, "invalid value for workspace ID")
+		assert.EqualError(t, err, ErrInvalidWorkspaceID.Error())
 	})
 }
 
@@ -126,7 +126,7 @@ func TestNotificationConfigurationCreate(t *testing.T) {
 	t.Run("without a valid workspace", func(t *testing.T) {
 		nc, err := client.NotificationConfigurations.Create(ctx, badIdentifier, NotificationConfigurationCreateOptions{})
 		assert.Nil(t, nc)
-		assert.EqualError(t, err, "invalid value for workspace ID")
+		assert.EqualError(t, err, ErrInvalidWorkspaceID.Error())
 	})
 
 	t.Run("with email users when destination type is email", func(t *testing.T) {
