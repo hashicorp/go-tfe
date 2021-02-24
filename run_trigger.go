@@ -74,7 +74,7 @@ func (o RunTriggerListOptions) valid() error {
 // List all the run triggers associated with a workspace.
 func (s *runTriggers) List(ctx context.Context, workspaceID string, options RunTriggerListOptions) (*RunTriggerList, error) {
 	if !validStringID(&workspaceID) {
-		return nil, errors.New("invalid value for workspace ID")
+		return nil, ErrInvalidWorkspaceID
 	}
 
 	if err := options.valid(); err != nil {
@@ -116,7 +116,7 @@ func (o RunTriggerCreateOptions) valid() error {
 // Creates a run trigger with the given options.
 func (s *runTriggers) Create(ctx context.Context, workspaceID string, options RunTriggerCreateOptions) (*RunTrigger, error) {
 	if !validStringID(&workspaceID) {
-		return nil, errors.New("invalid value for workspace ID")
+		return nil, ErrInvalidWorkspaceID
 	}
 	if err := options.valid(); err != nil {
 		return nil, err

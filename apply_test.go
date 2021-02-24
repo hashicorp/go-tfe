@@ -33,7 +33,7 @@ func TestAppliesRead(t *testing.T) {
 	t.Run("with invalid apply ID", func(t *testing.T) {
 		a, err := client.Applies.Read(ctx, badIdentifier)
 		assert.Nil(t, a)
-		assert.EqualError(t, err, "invalid value for apply ID")
+		assert.EqualError(t, err, ErrInvalidApplyID.Error())
 	})
 }
 

@@ -252,7 +252,7 @@ func TestStateVersionsCreate(t *testing.T) {
 	t.Run("with invalid workspace id", func(t *testing.T) {
 		sv, err := client.StateVersions.Create(ctx, badIdentifier, StateVersionCreateOptions{})
 		assert.Nil(t, sv)
-		assert.EqualError(t, err, "invalid value for workspace ID")
+		assert.EqualError(t, err, ErrInvalidWorkspaceID.Error())
 	})
 }
 
@@ -354,7 +354,7 @@ func TestStateVersionsCurrent(t *testing.T) {
 	t.Run("with invalid workspace id", func(t *testing.T) {
 		sv, err := client.StateVersions.Current(ctx, badIdentifier)
 		assert.Nil(t, sv)
-		assert.EqualError(t, err, "invalid value for workspace ID")
+		assert.EqualError(t, err, ErrInvalidWorkspaceID.Error())
 	})
 }
 

@@ -2,7 +2,6 @@ package tfe
 
 import (
 	"context"
-	"errors"
 	"fmt"
 	"io"
 	"net/url"
@@ -69,7 +68,7 @@ type ApplyStatusTimestamps struct {
 // Read an apply by its ID.
 func (s *applies) Read(ctx context.Context, applyID string) (*Apply, error) {
 	if !validStringID(&applyID) {
-		return nil, errors.New("invalid value for apply ID")
+		return nil, ErrInvalidApplyID
 	}
 
 	u := fmt.Sprintf("applies/%s", url.QueryEscape(applyID))
@@ -90,7 +89,7 @@ func (s *applies) Read(ctx context.Context, applyID string) (*Apply, error) {
 // Logs retrieves the logs of an apply.
 func (s *applies) Logs(ctx context.Context, applyID string) (io.Reader, error) {
 	if !validStringID(&applyID) {
-		return nil, errors.New("invalid value for apply ID")
+		return nil, ErrInvalidApplyID
 	}
 
 	// Get the apply to make sure it exists.

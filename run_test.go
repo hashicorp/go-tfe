@@ -67,7 +67,7 @@ func TestRunsList(t *testing.T) {
 	t.Run("without a valid workspace ID", func(t *testing.T) {
 		rl, err := client.Runs.List(ctx, badIdentifier, RunListOptions{})
 		assert.Nil(t, rl)
-		assert.EqualError(t, err, "invalid value for workspace ID")
+		assert.EqualError(t, err, ErrInvalidWorkspaceID.Error())
 	})
 }
 
@@ -142,7 +142,7 @@ func TestRunsRead(t *testing.T) {
 	t.Run("with invalid run ID", func(t *testing.T) {
 		r, err := client.Runs.Read(ctx, badIdentifier)
 		assert.Nil(t, r)
-		assert.EqualError(t, err, "invalid value for run ID")
+		assert.EqualError(t, err, ErrInvalidRunID.Error())
 	})
 }
 
@@ -185,7 +185,7 @@ func TestRunsApply(t *testing.T) {
 
 	t.Run("with invalid run ID", func(t *testing.T) {
 		err := client.Runs.Apply(ctx, badIdentifier, RunApplyOptions{})
-		assert.EqualError(t, err, "invalid value for run ID")
+		assert.EqualError(t, err, ErrInvalidRunID.Error())
 	})
 }
 
@@ -215,7 +215,7 @@ func TestRunsCancel(t *testing.T) {
 
 	t.Run("with invalid run ID", func(t *testing.T) {
 		err := client.Runs.Cancel(ctx, badIdentifier, RunCancelOptions{})
-		assert.EqualError(t, err, "invalid value for run ID")
+		assert.EqualError(t, err, ErrInvalidRunID.Error())
 	})
 }
 
@@ -283,7 +283,7 @@ func TestRunsForceCancel(t *testing.T) {
 
 	t.Run("with invalid run ID", func(t *testing.T) {
 		err := client.Runs.ForceCancel(ctx, badIdentifier, RunForceCancelOptions{})
-		assert.EqualError(t, err, "invalid value for run ID")
+		assert.EqualError(t, err, ErrInvalidRunID.Error())
 	})
 }
 
@@ -306,6 +306,6 @@ func TestRunsDiscard(t *testing.T) {
 
 	t.Run("with invalid run ID", func(t *testing.T) {
 		err := client.Runs.Discard(ctx, badIdentifier, RunDiscardOptions{})
-		assert.EqualError(t, err, "invalid value for run ID")
+		assert.EqualError(t, err, ErrInvalidRunID.Error())
 	})
 }

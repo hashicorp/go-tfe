@@ -44,6 +44,6 @@ func TestCostEstimatesRead(t *testing.T) {
 	t.Run("with invalid costEstimate ID", func(t *testing.T) {
 		ce, err := client.CostEstimates.Read(ctx, badIdentifier)
 		assert.Nil(t, ce)
-		assert.EqualError(t, err, "invalid value for cost estimate ID")
+		assert.EqualError(t, err, ErrInvalidCostEstimateID.Error())
 	})
 }
