@@ -31,8 +31,7 @@ type adminOrganizations struct {
 
 // AdminOrganization represents a Terraform Enterprise organization returned from the Admin API.
 type AdminOrganization struct {
-	Name string `jsonapi:"primary,organizations"`
-
+	Name 				 string `jsonapi:"primary,organizations"`
 	AccessBetaTools                  bool   `jsonapi:"attr,access-beta-tools"`
 	ExternalID                       string `jsonapi:"attr,external-id"`
 	IsDisabled                       bool   `jsonapi:"attr,is-disabled"`
