@@ -10,7 +10,7 @@ import (
 )
 
 func TestAdminOrganizations_Read(t *testing.T) {
-	skipIfNotEnterprise(t)
+	skipIfCloud(t)
 
 	client := testClient(t)
 	ctx := context.Background()
@@ -42,7 +42,6 @@ func TestAdminOrganizations_Read(t *testing.T) {
 		// attributes part of an AdminOrganization response that are not null
 		assert.NotNilf(t, adminOrg.AccessBetaTools, "AccessBetaTools is not nil")
 		assert.NotNilf(t, adminOrg.ExternalID, "ExternalID is not nil")
-		assert.NotNilf(t, adminOrg.GlobalModuleSharing, "GlobalModuleSharing is not nil")
 		assert.NotNilf(t, adminOrg.IsDisabled, "IsDisabled is not nil")
 		assert.NotNilf(t, adminOrg.NotificationEmail, "NotificationEmail is not nil")
 		assert.NotNilf(t, adminOrg.SsoEnabled, "SsoEnabled is not nil")
@@ -51,7 +50,7 @@ func TestAdminOrganizations_Read(t *testing.T) {
 }
 
 func TestAdminOrganizations_Delete(t *testing.T) {
-	skipIfNotEnterprise(t)
+	skipIfCloud(t)
 
 	client := testClient(t)
 	ctx := context.Background()
@@ -88,7 +87,7 @@ func TestAdminOrganizations_Delete(t *testing.T) {
 }
 
 func TestAdminOrganizations_Update(t *testing.T) {
-	skipIfNotEnterprise(t)
+	skipIfCloud(t)
 
 	client := testClient(t)
 	ctx := context.Background()
@@ -115,14 +114,12 @@ func TestAdminOrganizations_Update(t *testing.T) {
 		assert.NotNilf(t, adminOrg, "Org returned as nil")
 
 		accessBetaTools := true
-		globalModuleSharing := true
 		isDisabled := false
 		terraformBuildWorkerApplyTimeout := "24h"
 		terraformBuildWorkerPlanTimeout := "24h"
 
 		opts := AdminOrganizationUpdateOptions{
 			AccessBetaTools:                  &accessBetaTools,
-			GlobalModuleSharing:              &globalModuleSharing,
 			IsDisabled:                       &isDisabled,
 			TerraformBuildWorkerApplyTimeout: &terraformBuildWorkerApplyTimeout,
 			TerraformBuildWorkerPlanTimeout:  &terraformBuildWorkerPlanTimeout,
@@ -133,7 +130,6 @@ func TestAdminOrganizations_Update(t *testing.T) {
 		assert.NoError(t, err)
 
 		assert.Equal(t, accessBetaTools, adminOrg.AccessBetaTools)
-		assert.Equal(t, globalModuleSharing, adminOrg.GlobalModuleSharing)
 		assert.Equal(t, isDisabled, adminOrg.IsDisabled)
 		assert.Equal(t, terraformBuildWorkerApplyTimeout, adminOrg.TerraformBuildWorkerApplyTimeout)
 		assert.Equal(t, terraformBuildWorkerPlanTimeout, adminOrg.TerraformBuildWorkerPlanTimeout)
