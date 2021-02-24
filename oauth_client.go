@@ -129,7 +129,7 @@ type OAuthClientCreateOptions struct {
 	Secret *string `jsonapi:"attr,secret"`
 
 	// UUID of the vcs connection. If empty - automatically generated.
-	Uuid *string `jsonapi:"uuid,secret"`
+	Uuid *string `jsonapi:"attr,uuid"`
 
 	// The VCS provider being connected with.
 	ServiceProvider *ServiceProviderType `jsonapi:"attr,service-provider"`
