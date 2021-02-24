@@ -15,10 +15,10 @@ func TestAdminOrganizations_List(t *testing.T) {
 	client := testClient(t)
 	ctx := context.Background()
 
-	t.Run("with no list options", func(t *testing.T) {
-		org, orgTestCleanup := createOrganization(t, client)
-		defer orgTestCleanup()
+	org, orgTestCleanup := createOrganization(t, client)
+	defer orgTestCleanup()
 
+	t.Run("with no list options", func(t *testing.T) {
 		adminOrgList, err := client.Admin.Organizations.List(ctx, AdminOrganizationListOptions{})
 		require.NoError(t, err)
 
@@ -27,7 +27,8 @@ func TestAdminOrganizations_List(t *testing.T) {
 	})
 
 	t.Run("with list options", func(t *testing.T) {
-		org, orgTestCleanup := createOrganization(t, client)
+		// creating second org so that the query can only find the main org
+		_, orgTestCleanup := createOrganization(t, client)
 		defer orgTestCleanup()
 
 		adminOrgList, err := client.Admin.Organizations.List(ctx, AdminOrganizationListOptions{
@@ -39,10 +40,7 @@ func TestAdminOrganizations_List(t *testing.T) {
 		assert.Equal(t, 1, adminOrgList.TotalCount)
 	})
 
-	t.Run("with list options and bad query", func(t *testing.T) {
-		org, orgTestCleanup := createOrganization(t, client)
-		defer orgTestCleanup()
-
+	t.Run("with list options and org name that doesn't exist", func(t *testing.T) {
 		randomName := "random-org-name"
 
 		adminOrgList, err := client.Admin.Organizations.List(ctx, AdminOrganizationListOptions{
@@ -68,8 +66,8 @@ func TestAdminOrganizations_Read(t *testing.T) {
 		assert.Nil(t, adminOrg)
 	})
 
-	t.Run("it fails to read an organization with an bad org name", func(t *testing.T) {
-		orgName := fmt.Sprintf("bad-%s", randomString(t))
+	t.Run("it returns ErrResourceNotFound for an organization that doesn't exist", func(t *testing.T) {
+		orgName := fmt.Sprintf("non-existing-%s", randomString(t))
 		adminOrg, err := client.Admin.Organizations.Read(ctx, orgName)
 		require.Error(t, err)
 		assert.EqualError(t, err, ErrResourceNotFound.Error())
@@ -107,8 +105,8 @@ func TestAdminOrganizations_Delete(t *testing.T) {
 		assert.EqualError(t, err, ErrInvalidOrg.Error())
 	})
 
-	t.Run("it fails to delete an organization with an bad org name", func(t *testing.T) {
-		orgName := fmt.Sprintf("bad-%s", randomString(t))
+	t.Run("it returns ErrResourceNotFound during an attempt to delete an organization that doesn't exist", func(t *testing.T) {
+		orgName := fmt.Sprintf("non-existing-%s", randomString(t))
 		err := client.Admin.Organizations.Delete(ctx, orgName)
 		require.Error(t, err)
 		assert.EqualError(t, err, ErrResourceNotFound.Error())
@@ -144,8 +142,8 @@ func TestAdminOrganizations_Update(t *testing.T) {
 		assert.EqualError(t, err, ErrInvalidOrg.Error())
 	})
 
-	t.Run("it fails to update an organization with an bad org name", func(t *testing.T) {
-		orgName := fmt.Sprintf("bad-%s", randomString(t))
+	t.Run("it returns ErrResourceNotFound for during an update on an organization that doesn't exist", func(t *testing.T) {
+		orgName := fmt.Sprintf("non-existing-%s", randomString(t))
 		_, err := client.Admin.Organizations.Update(ctx, orgName, AdminOrganizationUpdateOptions{})
 		require.Error(t, err)
 		assert.EqualError(t, err, ErrResourceNotFound.Error())

@@ -65,7 +65,7 @@ type AdminOrganizationListOptions struct {
 	ListOptions
 
 	// A query string used to filter organizations.
-	// It can be name or notification email.
+	// Any organizations with a name or notification email partially matching this value will be returned.
 	Query *string `url:"q,omitempty"`
 }
 
