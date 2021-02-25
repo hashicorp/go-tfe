@@ -51,6 +51,17 @@ func TestAdminOrganizations_List(t *testing.T) {
 		assert.Equal(t, 1, adminOrgList.CurrentPage)
 		assert.Equal(t, 0, adminOrgList.TotalCount)
 	})
+
+	t.Run("with owners included", func(t *testing.T) {
+		adminOrgList, err := client.Admin.Organizations.List(ctx, AdminOrganizationListOptions{
+			Include: String("owners"),
+		})
+		assert.NoError(t, err)
+
+		assert.NotEmpty(t, adminOrgList.Items)
+		assert.NotNil(t, adminOrgList.Items[0].Owners)
+		assert.NotEmpty(t, adminOrgList.Items[0].Owners[0].Email)
+	})
 }
 
 func TestAdminOrganizations_Read(t *testing.T) {

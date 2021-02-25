@@ -10,6 +10,8 @@ import (
 )
 
 func TestIPRangesRead(t *testing.T) {
+	skipIfEnterprise(t)
+
 	client := testClient(t)
 	ctx := context.Background()
 

@@ -250,6 +250,8 @@ func TestOrganizationsCapacity(t *testing.T) {
 }
 
 func TestOrganizationsEntitlements(t *testing.T) {
+	skipIfEnterprise(t)
+
 	client := testClient(t)
 	ctx := context.Background()
 

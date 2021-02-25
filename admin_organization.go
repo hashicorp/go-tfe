@@ -43,6 +43,9 @@ type AdminOrganization struct {
 	TerraformBuildWorkerApplyTimeout string `jsonapi:"attr,terraform-build-worker-apply-timeout"`
 	TerraformBuildWorkerPlanTimeout  string `jsonapi:"attr,terraform-build-worker-plan-timeout"`
 	TerraformWorkerSudoEnabled       bool   `jsonapi:"attr,terraform-worker-sudo-enabled"`
+
+	// Relations
+	Owners []*User `jsonapi:"relation,owners"`
 }
 
 // AdminOrganizationUpdateOptions represents the admin options for updating an organization.
@@ -67,6 +70,10 @@ type AdminOrganizationListOptions struct {
 	// A query string used to filter organizations.
 	// Any organizations with a name or notification email partially matching this value will be returned.
 	Query *string `url:"q,omitempty"`
+
+	// A list of relations to include. See available resources
+	// https://www.terraform.io/docs/cloud/api/admin/organizations.html#available-related-resources
+	Include *string `url:"include"`
 }
 
 // List all the organizations visible to the current user.
