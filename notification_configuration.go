@@ -110,7 +110,7 @@ type NotificationConfigurationListOptions struct {
 // List all the notification configurations associated with a workspace.
 func (s *notificationConfigurations) List(ctx context.Context, workspaceID string, options NotificationConfigurationListOptions) (*NotificationConfigurationList, error) {
 	if !validStringID(&workspaceID) {
-		return nil, errors.New("invalid value for workspace ID")
+		return nil, ErrInvalidWorkspaceID
 	}
 
 	u := fmt.Sprintf("workspaces/%s/notification-configurations", url.QueryEscape(workspaceID))
@@ -182,7 +182,7 @@ func (o NotificationConfigurationCreateOptions) valid() error {
 // Creates a notification configuration with the given options.
 func (s *notificationConfigurations) Create(ctx context.Context, workspaceID string, options NotificationConfigurationCreateOptions) (*NotificationConfiguration, error) {
 	if !validStringID(&workspaceID) {
-		return nil, errors.New("invalid value for workspace ID")
+		return nil, ErrInvalidWorkspaceID
 	}
 	if err := options.valid(); err != nil {
 		return nil, err

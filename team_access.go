@@ -112,7 +112,7 @@ func (o TeamAccessListOptions) valid() error {
 		return errors.New("workspace ID is required")
 	}
 	if !validStringID(o.WorkspaceID) {
-		return errors.New("invalid value for workspace ID")
+		return ErrInvalidWorkspaceID
 	}
 	return nil
 }

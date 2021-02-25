@@ -293,7 +293,7 @@ func TestWorkspacesReadByID(t *testing.T) {
 	t.Run("without a valid workspace ID", func(t *testing.T) {
 		w, err := client.Workspaces.ReadByID(ctx, badIdentifier)
 		assert.Nil(t, w)
-		assert.EqualError(t, err, "invalid value for workspace ID")
+		assert.EqualError(t, err, ErrInvalidWorkspaceID.Error())
 	})
 }
 
@@ -488,7 +488,7 @@ func TestWorkspacesUpdateByID(t *testing.T) {
 	t.Run("without a valid workspace ID", func(t *testing.T) {
 		w, err := client.Workspaces.UpdateByID(ctx, badIdentifier, WorkspaceUpdateOptions{})
 		assert.Nil(t, w)
-		assert.EqualError(t, err, "invalid value for workspace ID")
+		assert.EqualError(t, err, ErrInvalidWorkspaceID.Error())
 	})
 }
 
@@ -541,7 +541,7 @@ func TestWorkspacesDeleteByID(t *testing.T) {
 
 	t.Run("without a valid workspace ID", func(t *testing.T) {
 		err := client.Workspaces.DeleteByID(ctx, badIdentifier)
-		assert.EqualError(t, err, "invalid value for workspace ID")
+		assert.EqualError(t, err, ErrInvalidWorkspaceID.Error())
 	})
 }
 
@@ -600,7 +600,7 @@ func TestWorkspacesLock(t *testing.T) {
 	t.Run("without a valid workspace ID", func(t *testing.T) {
 		w, err := client.Workspaces.Lock(ctx, badIdentifier, WorkspaceLockOptions{})
 		assert.Nil(t, w)
-		assert.EqualError(t, err, "invalid value for workspace ID")
+		assert.EqualError(t, err, ErrInvalidWorkspaceID.Error())
 	})
 }
 
@@ -634,7 +634,7 @@ func TestWorkspacesUnlock(t *testing.T) {
 	t.Run("without a valid workspace ID", func(t *testing.T) {
 		w, err := client.Workspaces.Unlock(ctx, badIdentifier)
 		assert.Nil(t, w)
-		assert.EqualError(t, err, "invalid value for workspace ID")
+		assert.EqualError(t, err, ErrInvalidWorkspaceID.Error())
 	})
 }
 
@@ -668,7 +668,7 @@ func TestWorkspacesForceUnlock(t *testing.T) {
 	t.Run("without a valid workspace ID", func(t *testing.T) {
 		w, err := client.Workspaces.ForceUnlock(ctx, badIdentifier)
 		assert.Nil(t, w)
-		assert.EqualError(t, err, "invalid value for workspace ID")
+		assert.EqualError(t, err, ErrInvalidWorkspaceID.Error())
 	})
 }
 
@@ -713,7 +713,7 @@ func TestWorkspacesAssignSSHKey(t *testing.T) {
 			SSHKeyID: String(sshKeyTest.ID),
 		})
 		assert.Nil(t, w)
-		assert.EqualError(t, err, "invalid value for workspace ID")
+		assert.EqualError(t, err, ErrInvalidWorkspaceID.Error())
 	})
 }
 
@@ -749,6 +749,6 @@ func TestWorkspacesUnassignSSHKey(t *testing.T) {
 	t.Run("without a valid workspace ID", func(t *testing.T) {
 		w, err := client.Workspaces.UnassignSSHKey(ctx, badIdentifier)
 		assert.Nil(t, w)
-		assert.EqualError(t, err, "invalid value for workspace ID")
+		assert.EqualError(t, err, ErrInvalidWorkspaceID.Error())
 	})
 }

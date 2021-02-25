@@ -2,7 +2,6 @@ package tfe
 
 import (
 	"context"
-	"errors"
 	"fmt"
 	"net/url"
 )
@@ -127,7 +126,7 @@ func (s *agentPools) Create(ctx context.Context, organization string, options Ag
 // Read a single agent pool by its ID.
 func (s *agentPools) Read(ctx context.Context, agentpoolID string) (*AgentPool, error) {
 	if !validStringID(&agentpoolID) {
-		return nil, errors.New("invalid value for agent pool ID")
+		return nil, ErrInvalidAgentPoolID
 	}
 
 	u := fmt.Sprintf("agent-pools/%s", url.QueryEscape(agentpoolID))
@@ -164,7 +163,7 @@ func (o AgentPoolUpdateOptions) valid() error {
 // Update an agent pool by its ID.
 func (s *agentPools) Update(ctx context.Context, agentPoolID string, options AgentPoolUpdateOptions) (*AgentPool, error) {
 	if !validStringID(&agentPoolID) {
-		return nil, errors.New("invalid value for agent pool ID")
+		return nil, ErrInvalidAgentPoolID
 	}
 
 	if err := options.valid(); err != nil {
@@ -192,7 +191,7 @@ func (s *agentPools) Update(ctx context.Context, agentPoolID string, options Age
 // Delete an agent pool by its ID.
 func (s *agentPools) Delete(ctx context.Context, agentPoolID string) error {
 	if !validStringID(&agentPoolID) {
-		return errors.New("invalid value for agent pool ID")
+		return ErrInvalidAgentPoolID
 	}
 
 	u := fmt.Sprintf("agent-pools/%s", url.QueryEscape(agentPoolID))

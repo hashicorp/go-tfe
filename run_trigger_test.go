@@ -72,7 +72,7 @@ func TestRunTriggerList(t *testing.T) {
 			},
 		)
 		assert.Nil(t, rtl)
-		assert.EqualError(t, err, "invalid value for workspace ID")
+		assert.EqualError(t, err, ErrInvalidWorkspaceID.Error())
 	})
 
 	t.Run("without run-trigger type", func(t *testing.T) {
@@ -131,7 +131,7 @@ func TestRunTriggerCreate(t *testing.T) {
 	t.Run("without a valid workspace", func(t *testing.T) {
 		rt, err := client.RunTriggers.Create(ctx, badIdentifier, RunTriggerCreateOptions{})
 		assert.Nil(t, rt)
-		assert.EqualError(t, err, "invalid value for workspace ID")
+		assert.EqualError(t, err, ErrInvalidWorkspaceID.Error())
 	})
 
 	t.Run("when an error is returned from the api", func(t *testing.T) {
