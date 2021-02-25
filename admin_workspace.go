@@ -10,8 +10,7 @@ import (
 // Compile-time proof of interface implementation.
 var _ AdminWorkspaces = (*adminWorkspaces)(nil)
 
-// AdminWorkspaces describes all the admin workspace related methods that the Terraform
-// Enterprise API supports.
+// AdminWorkspaces describes all the admin workspace related methods that the Terraform Enterprise API supports.
 // Note that admin settings are only available in Terraform Enterprise.
 //
 // TFE API docs: https://www.terraform.io/docs/cloud/api/admin/workspaces.html
@@ -38,17 +37,20 @@ type AdminWorkspace struct {
 	Locked  bool     `jsonapi:"attr,locked"`
 	VCSRepo *VCSRepo `jsonapi:"attr,vcs-repo"`
 
+	// Relations
 	Organization *Organization `jsonapi:"relation,organization"`
+	CurrentRun   *Run          `jsonapi:"relation,current-run"`
 }
 
 // AdminWorkspaceListOptions represents the options for listing workspaces.
 type AdminWorkspaceListOptions struct {
 	ListOptions
 
-	// A search string (partial workspace name) used to filter the results.
-	Search *string `url:"search[name],omitempty"`
+	// A query string (partial workspace name) used to filter the results.
+	Query *string `url:"q,omitempty"`
 
-	// A list of relations to include. See available resources https://www.terraform.io/docs/cloud/api/workspaces.html#available-related-resources
+	// A list of relations to include. See available resources
+	// https://www.terraform.io/docs/cloud/api/admin/workspaces.html#available-related-resources
 	Include *string `url:"include"`
 }
 

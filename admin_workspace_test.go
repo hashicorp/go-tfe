@@ -9,6 +9,122 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
+func TestAdminWorkspaces_List(t *testing.T) {
+	skipIfNotEnterprise(t)
+
+	client := testClient(t)
+	ctx := context.Background()
+
+	org, orgCleanup := createOrganization(t, client)
+	defer orgCleanup()
+
+	wTest1, wTest1Cleanup := createWorkspace(t, client, org)
+	defer wTest1Cleanup()
+
+	wTest2, wTest2Cleanup := createWorkspace(t, client, org)
+	defer wTest2Cleanup()
+
+	t.Run("without list options", func(t *testing.T) {
+		wl, err := client.Admin.Workspaces.List(ctx, AdminWorkspaceListOptions{})
+		require.NoError(t, err)
+
+		assert.Equal(t, workspaceItemsContainsID(wl.Items, wTest1.ID), true)
+		assert.Equal(t, workspaceItemsContainsID(wl.Items, wTest2.ID), true)
+	})
+
+	t.Run("with list options", func(t *testing.T) {
+		wl, err := client.Admin.Workspaces.List(ctx, AdminWorkspaceListOptions{
+			ListOptions: ListOptions{
+				PageNumber: 999,
+				PageSize:   100,
+			},
+		})
+		require.NoError(t, err)
+		// Out of range page number, so the items should be empty
+		assert.Empty(t, wl.Items)
+		assert.Equal(t, 999, wl.CurrentPage)
+
+		wl, err = client.Admin.Workspaces.List(ctx, AdminWorkspaceListOptions{
+			ListOptions: ListOptions{
+				PageNumber: 1,
+				PageSize:   100,
+			},
+		})
+		require.NoError(t, err)
+		assert.Equal(t, 1, wl.CurrentPage)
+		assert.Equal(t, workspaceItemsContainsID(wl.Items, wTest1.ID), true)
+		assert.Equal(t, workspaceItemsContainsID(wl.Items, wTest2.ID), true)
+	})
+
+	t.Run("when searching a known workspace", func(t *testing.T) {
+		// Use a known workspace prefix as search attribute. The result
+		// should be successful and only contain the matching workspace.
+		wl, err := client.Admin.Workspaces.List(ctx, AdminWorkspaceListOptions{
+			Query: String(wTest1.Name),
+		})
+		require.NoError(t, err)
+		assert.Equal(t, workspaceItemsContainsID(wl.Items, wTest1.ID), true)
+		assert.Equal(t, workspaceItemsContainsID(wl.Items, wTest2.ID), false)
+		assert.Equal(t, 1, wl.CurrentPage)
+		assert.Equal(t, true, wl.TotalCount == 1)
+	})
+
+	t.Run("when searching an unknown workspace", func(t *testing.T) {
+		// Use a nonexisting workspace name as search attribute. The result
+		// should be successful, but return no results.
+		wl, err := client.Admin.Workspaces.List(ctx, AdminWorkspaceListOptions{
+			Query: String("nonexisting"),
+		})
+		require.NoError(t, err)
+		assert.Empty(t, wl.Items)
+		assert.Equal(t, 1, wl.CurrentPage)
+		assert.Equal(t, 0, wl.TotalCount)
+	})
+
+	t.Run("with organization included", func(t *testing.T) {
+		wl, err := client.Admin.Workspaces.List(ctx, AdminWorkspaceListOptions{
+			Include: String("organization"),
+		})
+
+		assert.NoError(t, err)
+
+		assert.NotEmpty(t, wl.Items)
+		assert.NotNil(t, wl.Items[0].Organization)
+		assert.NotEmpty(t, wl.Items[0].Organization.Name)
+	})
+
+	t.Run("with current_run included", func(t *testing.T) {
+		cvTest, cvCleanup := createUploadedConfigurationVersion(t, client, wTest1)
+		defer cvCleanup()
+
+		runOpts := RunCreateOptions{
+			ConfigurationVersion: cvTest,
+			Workspace:            wTest1,
+		}
+		run, err := client.Runs.Create(ctx, runOpts)
+		assert.NoError(t, err)
+
+		wl, err := client.Admin.Workspaces.List(ctx, AdminWorkspaceListOptions{
+			Include: String("current_run"),
+		})
+
+		assert.NoError(t, err)
+
+		assert.NotEmpty(t, wl.Items)
+		assert.NotNil(t, wl.Items[0].CurrentRun)
+		assert.Equal(t, wl.Items[0].CurrentRun.ID, run.ID)
+	})
+
+	t.Run("with invalid resource included", func(t *testing.T) {
+		wl, err := client.Admin.Workspaces.List(ctx, AdminWorkspaceListOptions{
+			Include: String("invalid-included-resource"),
+		})
+		assert.Nil(t, wl)
+		assert.Error(t, err)
+		assert.EqualError(t, err, ErrInvalidIncludeParam.Error())
+	})
+}
+
 func TestAdminWorkspaces_Read(t *testing.T) {
 	skipIfNotEnterprise(t)
 
@@ -23,7 +139,7 @@ func TestAdminWorkspaces_Read(t *testing.T) {
 	})
 
 	t.Run("it fails to read a workspace that is non existant", func(t *testing.T) {
-		workspaceID := fmt.Sprintf("id-%s", randomString(t))
+		workspaceID := fmt.Sprintf("non-existent-%s", randomString(t))
 		adminWorkspace, err := client.Admin.Workspaces.Read(ctx, workspaceID)
 		require.Error(t, err)
 		assert.EqualError(t, err, ErrResourceNotFound.Error())
@@ -61,7 +177,7 @@ func TestAdminWorkspaces_Delete(t *testing.T) {
 	})
 
 	t.Run("it fails to delete an organization with an bad org name", func(t *testing.T) {
-		workspaceID := fmt.Sprintf("id-%s", randomString(t))
+		workspaceID := fmt.Sprintf("non-existent-%s", randomString(t))
 		err := client.Admin.Workspaces.Delete(ctx, workspaceID)
 		require.Error(t, err)
 		assert.EqualError(t, err, ErrResourceNotFound.Error())
@@ -86,104 +202,6 @@ func TestAdminWorkspaces_Delete(t *testing.T) {
 		assert.Error(t, err)
 		assert.EqualError(t, err, ErrResourceNotFound.Error())
 	})
-}
-
-func TestAdminWorkspaces_List(t *testing.T) {
-	skipIfNotEnterprise(t)
-
-	client := testClient(t)
-	ctx := context.Background()
-
-	org, orgCleanup := createOrganization(t, client)
-	defer orgCleanup()
-
-	wTest1, wTest1Cleanup := createWorkspace(t, client, org)
-	defer wTest1Cleanup()
-	wTest2, wTest2Cleanup := createWorkspace(t, client, org)
-	defer wTest2Cleanup()
-
-	t.Run("without list options", func(t *testing.T) {
-		wl, err := client.Admin.Workspaces.List(ctx, AdminWorkspaceListOptions{})
-		require.NoError(t, err)
-		fmt.Println(wl)
-
-		assert.Equal(t, workspaceItemsContainsID(wl.Items, wTest1.ID), true)
-		assert.Equal(t, workspaceItemsContainsID(wl.Items, wTest2.ID), true)
-	})
-
-	t.Run("with list options", func(t *testing.T) {
-
-		wl, err := client.Admin.Workspaces.List(ctx, AdminWorkspaceListOptions{
-			ListOptions: ListOptions{
-				PageNumber: 999,
-				PageSize:   100,
-			},
-		})
-		require.NoError(t, err)
-		// Out of range page number, so the items should be empty
-		assert.Empty(t, wl.Items)
-		assert.Equal(t, 999, wl.CurrentPage)
-		assert.Equal(t, true, wl.TotalCount >= 2)
-
-		wl, err = client.Admin.Workspaces.List(ctx, AdminWorkspaceListOptions{
-			ListOptions: ListOptions{
-				PageNumber: 1,
-				PageSize:   100,
-			},
-		})
-		require.NoError(t, err)
-		assert.Equal(t, 1, wl.CurrentPage)
-		assert.Equal(t, workspaceItemsContainsID(wl.Items, wTest1.ID), true)
-		assert.Equal(t, workspaceItemsContainsID(wl.Items, wTest2.ID), true)
-	})
-
-	t.Run("when searching a known workspace", func(t *testing.T) {
-		// Use a known workspace prefix as search attribute. The result
-		// should be successful and only contain the matching workspace.
-		name := wTest1.Name[:len(wTest1.Name)-3]
-		fmt.Println(name)
-		wl, err := client.Admin.Workspaces.List(ctx, AdminWorkspaceListOptions{
-			Search: String(wTest1.Name),
-		})
-		require.NoError(t, err)
-		fmt.Println(wl.TotalCount)
-		assert.Equal(t, workspaceItemsContainsID(wl.Items, wTest1.ID), true)
-		assert.Equal(t, workspaceItemsContainsID(wl.Items, wTest2.ID), false)
-		assert.Equal(t, 1, wl.CurrentPage)
-		assert.Equal(t, true, wl.TotalCount >= 1)
-	})
-
-	t.Run("when searching an unknown workspace", func(t *testing.T) {
-		// Use a nonexisting workspace name as search attribute. The result
-		// should be successful, but return no results.
-		wl, err := client.Admin.Workspaces.List(ctx, AdminWorkspaceListOptions{
-			Search: String("nonexisting"),
-		})
-		require.NoError(t, err)
-		assert.Empty(t, wl.Items)
-		assert.Equal(t, 1, wl.CurrentPage)
-		assert.Equal(t, 0, wl.TotalCount)
-	})
-
-	//k	t.Run("list with include without a valid organization", func(t *testing.T) {
-	//k		wl, err := client.Workspaces.List(ctx, AdminWorkspaceListOptions{
-	//k			Include: String("some-invalid-resources"),
-	//k		})
-	//k		assert.Nil(t, wl)
-	//k		assert.EqualError(t, err, ErrInvalidOrg.Error())
-	//k	})
-	//k
-	//k	t.Run("with organization included", func(t *testing.T) {
-	//k		wl, err := client.Workspaces.List(ctx, AdminWorkspaceListOptions{
-	//k			Include: String("organization"),
-	//k		})
-	//k
-	//k		assert.NoError(t, err)
-	//k
-	//k		assert.NotEmpty(t, wl.Items)
-	//k		assert.NotNil(t, wl.Items[0].Organization)
-	//k		assert.NotEmpty(t, wl.Items[0].Organization.Email)
-	//k	})
 }
 
 func workspaceItemsContainsID(items []*AdminWorkspace, id string) bool {
