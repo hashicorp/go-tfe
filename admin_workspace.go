@@ -80,7 +80,7 @@ func (s *adminWorkspaces) List(ctx context.Context, options AdminWorkspaceListOp
 // Read a workspace by its name.
 func (s *adminWorkspaces) Read(ctx context.Context, workspaceID string) (*AdminWorkspace, error) {
 	if !validStringID(&workspaceID) {
-		return nil, errors.New("invalid value for workspace")
+		return nil, ErrInvalidWorkspaceValue
 	}
 
 	u := fmt.Sprintf("admin/workspaces/%s", url.QueryEscape(workspaceID))
@@ -101,7 +101,7 @@ func (s *adminWorkspaces) Read(ctx context.Context, workspaceID string) (*AdminW
 // Delete a workspace by its name.
 func (s *adminWorkspaces) Delete(ctx context.Context, workspaceID string) error {
 	if !validStringID(&workspaceID) {
-		return errors.New("invalid value for workspace")
+		return ErrInvalidWorkspaceValue
 	}
 
 	u := fmt.Sprintf("admin/workspaces/%s", url.QueryEscape(workspaceID))

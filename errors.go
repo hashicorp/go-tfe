@@ -38,6 +38,9 @@ var (
 	// ErrInvalidWorkspaceID is returned when the workspace ID is invalid.
 	ErrInvalidWorkspaceID = errors.New("invalid value for workspace ID")
 
+	// ErrInvalidWorkspaceValue is returned when workspace value is invalid.
+	ErrInvalidWorkspaceValue = errors.New("invalid value for workspace")
+
 	// Run/Apply errors
 
 	// ErrInvalidRunID is returned when the run ID is invalid.

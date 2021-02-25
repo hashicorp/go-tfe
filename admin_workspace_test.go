@@ -173,7 +173,7 @@ func TestAdminWorkspaces_Delete(t *testing.T) {
 	t.Run("it fails to delete an organization with an invalid id", func(t *testing.T) {
 		err := client.Admin.Workspaces.Delete(ctx, "")
 		require.Error(t, err)
-		assert.EqualError(t, err, "invalid value for workspace")
+		assert.EqualError(t, err, ErrInvalidWorkspaceValue.Error())
 	})
 
 	t.Run("it fails to delete an organization with an bad org name", func(t *testing.T) {
