@@ -55,6 +55,7 @@ type AdminOrganizationUpdateOptions struct {
 	IsDisabled                       *bool   `jsonapi:"attr,is-disabled,omitempty"`
 	TerraformBuildWorkerApplyTimeout *string `jsonapi:"attr,terraform-build-worker-apply-timeout,omitempty"`
 	TerraformBuildWorkerPlanTimeout  *string `jsonapi:"attr,terraform-build-worker-plan-timeout,omitempty"`
+	TerraformWorkerSudoEnabled       bool    `jsonapi:"attr,terraform-worker-sudo-enabled,omitempty"`
 }
 
 // AdminOrganizationList represents a list of organizations via Admin API.

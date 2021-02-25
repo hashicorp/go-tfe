@@ -172,12 +172,14 @@ func TestAdminOrganizations_Update(t *testing.T) {
 		isDisabled := false
 		terraformBuildWorkerApplyTimeout := "24h"
 		terraformBuildWorkerPlanTimeout := "24h"
+		terraformWorkerSudoEnabled := true
 
 		opts := AdminOrganizationUpdateOptions{
 			AccessBetaTools:                  &accessBetaTools,
 			IsDisabled:                       &isDisabled,
 			TerraformBuildWorkerApplyTimeout: &terraformBuildWorkerApplyTimeout,
 			TerraformBuildWorkerPlanTimeout:  &terraformBuildWorkerPlanTimeout,
+			TerraformWorkerSudoEnabled:       terraformWorkerSudoEnabled,
 		}
 
 		adminOrg, err = client.Admin.Organizations.Update(ctx, org.Name, opts)
@@ -188,7 +190,7 @@ func TestAdminOrganizations_Update(t *testing.T) {
 		assert.Equal(t, isDisabled, adminOrg.IsDisabled)
 		assert.Equal(t, terraformBuildWorkerApplyTimeout, adminOrg.TerraformBuildWorkerApplyTimeout)
 		assert.Equal(t, terraformBuildWorkerPlanTimeout, adminOrg.TerraformBuildWorkerPlanTimeout)
-		assert.Equal(t, false, adminOrg.TerraformWorkerSudoEnabled)
+		assert.Equal(t, terraformWorkerSudoEnabled, adminOrg.TerraformWorkerSudoEnabled)
 
 		isDisabled = true
 		opts = AdminOrganizationUpdateOptions{
