@@ -972,15 +972,18 @@ func randomString(t *testing.T) string {
 	}
 	return v
 }
-func skipIfNotEnterprise(t *testing.T) {
+
+// skips a test if the environment is for Terraform Cloud.
+func skipIfCloud(t *testing.T) {
 	if !enterpriseEnabled() {
-		t.Skip("Skipping Terraform Enterprise related test. Set ENABLE_TFE=1 to run.")
+		t.Skip("Skipping test related to Terraform Cloud. Set ENABLE_TFE=1 to run.")
 	}
 }
 
+// skips a test if the environment is for Terraform Enterprise
 func skipIfEnterprise(t *testing.T) {
 	if enterpriseEnabled() {
-		t.Skip("Skipping Terraform Cloud related test. Set ENABLE_TFE=0 to run.")
+		t.Skip("Skipping test related to Terraform Enterprise. Set ENABLE_TFE=0 to run.")
 	}
 }
 

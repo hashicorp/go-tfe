@@ -134,7 +134,8 @@ type Client struct {
 // wide admin settings. These are only available for Terraform Enterprise and
 // do not function against Terraform Cloud.
 type Admin struct {
-	Workspaces AdminWorkspaces
+	Organizations AdminOrganizations
+	Workspaces    AdminWorkspaces
 }
 
 // Meta contains any Terraform Cloud APIs which provide data about the API itself.
@@ -216,7 +217,8 @@ func NewClient(cfg *Config) (*Client, error) {
 
 	// Create Admin
 	client.Admin = Admin{
-		Workspaces: &adminWorkspaces{client: client},
+		Organizations: &adminOrganizations{client: client},
+		Workspaces:    &adminWorkspaces{client: client},
 	}
 
 	// Create the services.

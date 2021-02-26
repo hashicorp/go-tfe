@@ -9,6 +9,8 @@ import (
 )
 
 func TestAgentTokensList(t *testing.T) {
+	skipIfEnterprise(t)
+
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -46,6 +48,8 @@ func TestAgentTokensList(t *testing.T) {
 }
 
 func TestAgentTokensGenerate(t *testing.T) {
+	skipIfEnterprise(t)
+
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -75,6 +79,8 @@ func TestAgentTokensGenerate(t *testing.T) {
 	})
 }
 func TestAgentTokensRead(t *testing.T) {
+	skipIfEnterprise(t)
+
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -100,6 +106,8 @@ func TestAgentTokensRead(t *testing.T) {
 }
 
 func TestAgentTokensDelete(t *testing.T) {
+	skipIfEnterprise(t)
+
 	client := testClient(t)
 	ctx := context.Background()
 

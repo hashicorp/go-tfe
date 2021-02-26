@@ -25,6 +25,7 @@ Tests are run against an actual backend so they require a valid backend address 
 1. `GITHUB_TOKEN` - [GitHub personal access token](https://help.github.com/en/github/authenticating-to-github/creating-a-personal-access-token-for-the-command-line). Required for running any tests that use VCS (OAuth clients, policy sets, etc).
 1. `GITHUB_POLICY_SET_IDENTIFIER` - GitHub policy set repository identifier in the format `username/repository`. Required for running policy set tests.
 1. `GITHUB_REGISTRY_MODULE_IDENTIFIER` - GitHub registry module repository identifier in the format `username/repository`. Required for running registry module tests.
+1. `ENABLE_TFE` - Some tests are only applicable to Terraform Enterprise or Terraform Cloud. By setting `ENABLE_TFE=1` you will enable enterprise only tests and disable cloud only tests. In CI `ENABLE_TFE` is not set so if you are writing enterprise only features you should manually test with `ENABLE_TFE=1` against a Terraform Enterprise instance.
 
 You can set your environment variables up however you prefer. The following are instructions for setting up environment variables using [envchain](https://github.com/sorah/envchain).
    1. Make sure you have envchain installed. [Instructions for this can be found in the envchain README](https://github.com/sorah/envchain#installation).
