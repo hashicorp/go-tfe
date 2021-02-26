@@ -134,7 +134,7 @@ func TestAdminWorkspaces_Read(t *testing.T) {
 	t.Run("it fails to read a workspace with an invalid name", func(t *testing.T) {
 		workspace, err := client.Admin.Workspaces.Read(ctx, "")
 		require.Error(t, err)
-		assert.EqualError(t, err, ErrInvalidOrg.Error())
+		assert.EqualError(t, err, ErrInvalidWorkspaceValue.Error())
 		assert.Nil(t, workspace)
 	})
 

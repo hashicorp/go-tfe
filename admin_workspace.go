@@ -17,11 +17,11 @@ type AdminWorkspaces interface {
 	// List all the workspaces within an organization.
 	List(ctx context.Context, options AdminWorkspaceListOptions) (*AdminWorkspaceList, error)
 
-	// Read a workspace by its name.
-	Read(ctx context.Context, workspace string) (*AdminWorkspace, error)
+	// Read a workspace by its ID.
+	Read(ctx context.Context, workspaceID string) (*AdminWorkspace, error)
 
-	// Delete a workspace by its name.
-	Delete(ctx context.Context, workspace string) error
+	// Delete a workspace by its ID.
+	Delete(ctx context.Context, workspaceID string) error
 }
 
 // adminWorkspaces implements AdminWorkspaces.
@@ -46,6 +46,7 @@ type AdminWorkspaceListOptions struct {
 	ListOptions
 
 	// A query string (partial workspace name) used to filter the results.
+	// https://www.terraform.io/docs/cloud/api/admin/workspaces.html#query-parameters
 	Query *string `url:"q,omitempty"`
 
 	// A list of relations to include. See available resources
@@ -76,7 +77,7 @@ func (s *adminWorkspaces) List(ctx context.Context, options AdminWorkspaceListOp
 	return awl, nil
 }
 
-// Read a workspace by its name.
+// Read a workspace by its ID.
 func (s *adminWorkspaces) Read(ctx context.Context, workspaceID string) (*AdminWorkspace, error) {
 	if !validStringID(&workspaceID) {
 		return nil, ErrInvalidWorkspaceValue
@@ -97,7 +98,7 @@ func (s *adminWorkspaces) Read(ctx context.Context, workspaceID string) (*AdminW
 	return aw, nil
 }
 
-// Delete a workspace by its name.
+// Delete a workspace by its ID.
 func (s *adminWorkspaces) Delete(ctx context.Context, workspaceID string) error {
 	if !validStringID(&workspaceID) {
 		return ErrInvalidWorkspaceValue
