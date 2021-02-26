@@ -28,8 +28,8 @@ func TestAdminWorkspaces_List(t *testing.T) {
 		wl, err := client.Admin.Workspaces.List(ctx, AdminWorkspaceListOptions{})
 		require.NoError(t, err)
 
-		assert.Equal(t, workspaceItemsContainsID(wl.Items, wTest1.ID), true)
-		assert.Equal(t, workspaceItemsContainsID(wl.Items, wTest2.ID), true)
+		assert.Equal(t, adminWorkspaceItemsContainsID(wl.Items, wTest1.ID), true)
+		assert.Equal(t, adminWorkspaceItemsContainsID(wl.Items, wTest2.ID), true)
 	})
 
 	t.Run("with list options", func(t *testing.T) {
@@ -52,8 +52,8 @@ func TestAdminWorkspaces_List(t *testing.T) {
 		})
 		require.NoError(t, err)
 		assert.Equal(t, 1, wl.CurrentPage)
-		assert.Equal(t, workspaceItemsContainsID(wl.Items, wTest1.ID), true)
-		assert.Equal(t, workspaceItemsContainsID(wl.Items, wTest2.ID), true)
+		assert.Equal(t, adminWorkspaceItemsContainsID(wl.Items, wTest1.ID), true)
+		assert.Equal(t, adminWorkspaceItemsContainsID(wl.Items, wTest2.ID), true)
 	})
 
 	t.Run("when searching a known workspace", func(t *testing.T) {
@@ -63,8 +63,8 @@ func TestAdminWorkspaces_List(t *testing.T) {
 			Query: String(wTest1.Name),
 		})
 		require.NoError(t, err)
-		assert.Equal(t, workspaceItemsContainsID(wl.Items, wTest1.ID), true)
-		assert.Equal(t, workspaceItemsContainsID(wl.Items, wTest2.ID), false)
+		assert.Equal(t, adminWorkspaceItemsContainsID(wl.Items, wTest1.ID), true)
+		assert.Equal(t, adminWorkspaceItemsContainsID(wl.Items, wTest2.ID), false)
 		assert.Equal(t, 1, wl.CurrentPage)
 		assert.Equal(t, true, wl.TotalCount == 1)
 	})
@@ -87,7 +87,6 @@ func TestAdminWorkspaces_List(t *testing.T) {
 		})
 
 		assert.NoError(t, err)
-
 		assert.NotEmpty(t, wl.Items)
 		assert.NotNil(t, wl.Items[0].Organization)
 		assert.NotEmpty(t, wl.Items[0].Organization.Name)
@@ -157,10 +156,8 @@ func TestAdminWorkspaces_Read(t *testing.T) {
 		assert.NoError(t, err)
 		assert.NotNilf(t, adminWorkspace, "Admin Workspace is not nil")
 		assert.Equal(t, adminWorkspace.ID, workspace.ID)
-
-		// attributes part of an AdminWorkspace response that are not null
-		assert.NotNilf(t, adminWorkspace.Name, "Name is not nil")
-		assert.NotNilf(t, adminWorkspace.Locked, "Locked is not nil")
+		assert.Equal(t, adminWorkspace.Name, workspace.Name)
+		assert.Equal(t, adminWorkspace.Locked, workspace.Locked)
 	})
 }
 
@@ -204,7 +201,7 @@ func TestAdminWorkspaces_Delete(t *testing.T) {
 	})
 }
 
-func workspaceItemsContainsID(items []*AdminWorkspace, id string) bool {
+func adminWorkspaceItemsContainsID(items []*AdminWorkspace, id string) bool {
 	hasID := false
 	for _, item := range items {
 		if item.ID == id {
