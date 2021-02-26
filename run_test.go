@@ -121,6 +121,8 @@ func TestRunsCreate(t *testing.T) {
 }
 
 func TestRunsRead(t *testing.T) {
+	skipIfEnterprise(t)
+
 	client := testClient(t)
 	ctx := context.Background()
 

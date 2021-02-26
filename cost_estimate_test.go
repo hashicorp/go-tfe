@@ -9,6 +9,8 @@ import (
 )
 
 func TestCostEstimatesRead(t *testing.T) {
+	skipIfEnterprise(t)
+
 	client := testClient(t)
 	ctx := context.Background()
 

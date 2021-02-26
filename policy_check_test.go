@@ -73,6 +73,8 @@ func TestPolicyChecksList(t *testing.T) {
 }
 
 func TestPolicyChecksRead(t *testing.T) {
+	skipIfEnterprise(t)
+
 	client := testClient(t)
 	ctx := context.Background()
 
