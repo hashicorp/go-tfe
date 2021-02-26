@@ -301,7 +301,7 @@ func (s *workspaces) Read(ctx context.Context, organization, workspace string) (
 		return nil, ErrInvalidOrg
 	}
 	if !validStringID(&workspace) {
-		return nil, errors.New("invalid value for workspace")
+		return nil, ErrInvalidWorkspaceValue
 	}
 
 	u := fmt.Sprintf(
@@ -436,7 +436,7 @@ func (s *workspaces) Update(ctx context.Context, organization, workspace string,
 		return nil, ErrInvalidOrg
 	}
 	if !validStringID(&workspace) {
-		return nil, errors.New("invalid value for workspace")
+		return nil, ErrInvalidWorkspaceValue
 	}
 	if err := options.valid(); err != nil {
 		return nil, err
@@ -494,7 +494,7 @@ func (s *workspaces) Delete(ctx context.Context, organization, workspace string)
 		return ErrInvalidOrg
 	}
 	if !validStringID(&workspace) {
-		return errors.New("invalid value for workspace")
+		return ErrInvalidWorkspaceValue
 	}
 
 	u := fmt.Sprintf(
@@ -537,7 +537,7 @@ func (s *workspaces) RemoveVCSConnection(ctx context.Context, organization, work
 		return nil, ErrInvalidOrg
 	}
 	if !validStringID(&workspace) {
-		return nil, errors.New("invalid value for workspace")
+		return nil, ErrInvalidWorkspaceValue
 	}
 
 	u := fmt.Sprintf(
