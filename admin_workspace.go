@@ -29,12 +29,16 @@ type adminWorkspaces struct {
 	client *Client
 }
 
+type AdminVCSRepo struct {
+	Identifier string `json:"identifier"`
+}
+
 // AdminWorkspaces represents a Terraform Enterprise admin workspace.
 type AdminWorkspace struct {
-	ID      string   `jsonapi:"primary,workspaces"`
-	Name    string   `jsonapi:"attr,name"`
-	Locked  bool     `jsonapi:"attr,locked"`
-	VCSRepo *VCSRepo `jsonapi:"attr,vcs-repo"`
+	ID      string        `jsonapi:"primary,workspaces"`
+	Name    string        `jsonapi:"attr,name"`
+	Locked  bool          `jsonapi:"attr,locked"`
+	VCSRepo *AdminVCSRepo `jsonapi:"attr,vcs-repo"`
 
 	// Relations
 	Organization *Organization `jsonapi:"relation,organization"`

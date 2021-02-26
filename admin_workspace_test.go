@@ -120,7 +120,7 @@ func TestAdminWorkspaces_List(t *testing.T) {
 		})
 		assert.Nil(t, wl)
 		assert.Error(t, err)
-		assert.EqualError(t, err, ErrInvalidIncludeParam.Error())
+		assert.EqualError(t, err, "bad request\n\nInvalid include parameter")
 	})
 }
 

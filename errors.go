@@ -12,9 +12,6 @@ var (
 	// ErrResourceNotFound is returned when a receiving a 404.
 	ErrResourceNotFound = errors.New("resource not found")
 
-	// ErrInvalidIncludeParam is returned when an 'include' parameter is invalid.
-	ErrInvalidIncludeParam = errors.New("bad request\n\nInvalid include parameter")
-
 	// ErrRequiredName is returned when a name option is not present.
 	ErrRequiredName = errors.New("name is required")
 
