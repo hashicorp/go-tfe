@@ -206,6 +206,8 @@ func TestAdminRuns_ForceCancel(t *testing.T) {
 }
 
 func TestAdminRuns_AdminRunsListOptions_valid(t *testing.T) {
+	skipIfCloud(t)
+
 	t.Run("has valid status", func(t *testing.T) {
 		opts := AdminRunsListOptions{
 			RunStatus: String(string(RunPending)),
