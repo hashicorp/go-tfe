@@ -2,6 +2,7 @@ package tfe
 
 import (
 	"context"
+	"fmt"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -203,6 +204,37 @@ func TestAdminRuns_ForceCancel(t *testing.T) {
 		assert.Equal(t, RunCanceled, rTestPlanningResult.Status)
 	})
 }
+
+func TestAdminRuns_AdminRunsListOptions_valid(t *testing.T) {
+	t.Run("has valid status", func(t *testing.T) {
+		opts := AdminRunsListOptions{
+			RunStatus: String(string(RunPending)),
+		}
+
+		err := opts.valid()
+		assert.NoError(t, err)
+	})
+
+	t.Run("has invalid status", func(t *testing.T) {
+		opts := AdminRunsListOptions{
+			RunStatus: String("random_status"),
+		}
+
+		err := opts.valid()
+		assert.Error(t, err)
+	})
+
+	t.Run("has invalid status, even with a valid one", func(t *testing.T) {
+		statuses := fmt.Sprintf("%s,%s", string(RunPending), "random_status")
+		opts := AdminRunsListOptions{
+			RunStatus: String(statuses),
+		}
+
+		err := opts.valid()
+		assert.Error(t, err)
+	})
+}
+
 func adminRunItemsContainsID(items []*AdminRun, id string) bool {
 	hasID := false
 	for _, item := range items {

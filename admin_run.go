@@ -12,9 +12,9 @@ import (
 // Compile-time proof of interface implementation.
 var _ AdminRuns = (*adminRuns)(nil)
 
-// AdminRuns describes all the admin run realted methods that the Terraform
+// AdminRuns describes all the admin run related methods that the Terraform
 // Enterprise  API supports.
-// It contains endpoints to help site administrators manage user accounts.
+// It contains endpoints to help site administrators manage their runs.
 //
 // TFE API docs: https://www.terraform.io/docs/cloud/api/admin/runs.html
 type AdminRuns interface {
@@ -25,7 +25,7 @@ type AdminRuns interface {
 	ForceCancel(ctx context.Context, runID string, options AdminRunForceCancelOptions) error
 }
 
-// runs implements Users.
+// adminRuns implements the AdminRuns interface.
 type adminRuns struct {
 	client *Client
 }
@@ -52,35 +52,10 @@ type AdminRunsList struct {
 // https://www.terraform.io/docs/cloud/api/admin/runs.html#query-parameters
 type AdminRunsListOptions struct {
 	ListOptions
+
 	RunStatus *string `url:"filter[status],omitempty"`
 	Query     *string `url:"q,omitempty"`
 	Include   *string `url:"include,omitempty"`
-}
-
-func (o AdminRunsListOptions) valid() error {
-	if validString(o.RunStatus) {
-		validRunStatus := []string{"pending", "plan_queued", "planning", "planned", "confirmed", "apply_queued", "applying", "applied", "discarded", "errored", "canceled", "cost_estimating", "cost_estimated", "policy_checking", "policy_override", "policy_soft_failed", "policy_checked", "planned_and_finished"}
-		runStatus := strings.Split(*o.RunStatus, ",")
-
-		// iterate over our statuses
-		for _, status := range runStatus {
-
-			// start with invalid
-			valid := false
-			for _, s := range validRunStatus {
-				if status == s {
-					// found a match, set to true and continue to the next status
-					valid = true
-					break
-				}
-			}
-
-			if valid == false {
-				return fmt.Errorf("invalid value %s for run status", status)
-			}
-		}
-	}
-	return nil
 }
 
 // List all the runs of the terraform enterprise installation.
@@ -126,4 +101,38 @@ func (s *adminRuns) ForceCancel(ctx context.Context, runID string, options Admin
 	}
 
 	return s.client.do(ctx, req, nil)
+}
+
+func (o AdminRunsListOptions) valid() error {
+	if validString(o.RunStatus) {
+		validRunStatus := map[string]int{
+			string(RunApplied):            1,
+			string(RunApplyQueued):        1,
+			string(RunApplying):           1,
+			string(RunCanceled):           1,
+			string(RunConfirmed):          1,
+			string(RunCostEstimated):      1,
+			string(RunCostEstimating):     1,
+			string(RunDiscarded):          1,
+			string(RunErrored):            1,
+			string(RunPending):            1,
+			string(RunPlanQueued):         1,
+			string(RunPlanned):            1,
+			string(RunPlannedAndFinished): 1,
+			string(RunPlanning):           1,
+			string(RunPolicyChecked):      1,
+			string(RunPolicyChecking):     1,
+			string(RunPolicyOverride):     1,
+			string(RunPolicySoftFailed):   1,
+		}
+		runStatus := strings.Split(*o.RunStatus, ",")
+
+		// iterate over our statuses, and ensure it is valid.
+		for _, status := range runStatus {
+			if _, present := validRunStatus[status]; !present {
+				return fmt.Errorf("invalid value %s for run status", status)
+			}
+		}
+	}
+	return nil
 }
