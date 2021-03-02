@@ -131,6 +131,78 @@ func TestAdminRuns_List(t *testing.T) {
 	})
 }
 
+func TestAdminRuns_ForceCancel(t *testing.T) {
+	skipIfCloud(t)
+
+	client := testClient(t)
+	ctx := context.Background()
+
+	org, orgCleanup := createOrganization(t, client)
+	defer orgCleanup()
+
+	wTest, wTestCleanup := createWorkspace(t, client, org)
+	defer wTestCleanup()
+
+	// We need to create 2 runs here.
+	// The first run will automatically be planned
+	// so that one cannot be cancelled.
+	rTest1, rCleanup1 := createRun(t, client, wTest)
+	defer rCleanup1()
+	// The second one will be pending until the first one is
+	// confirmed or discarded, so we can cancel that one.
+	rTest2, rCleanup2 := createRun(t, client, wTest)
+	defer rCleanup2()
+
+	assert.Equal(t, true, rTest1.Actions.IsCancelable)
+	assert.Equal(t, true, rTest1.Permissions.CanForceCancel)
+
+	assert.Equal(t, true, rTest2.Actions.IsCancelable)
+	assert.Equal(t, true, rTest2.Permissions.CanForceCancel)
+
+	t.Run("when the run does not exist", func(t *testing.T) {
+		err := client.Admin.Runs.ForceCancel(ctx, "nonexisting", AdminRunForceCancelOptions{})
+		assert.Equal(t, err, ErrResourceNotFound)
+	})
+
+	t.Run("with invalid run ID", func(t *testing.T) {
+		err := client.Admin.Runs.ForceCancel(ctx, badIdentifier, AdminRunForceCancelOptions{})
+		assert.EqualError(t, err, ErrInvalidRunID.Error())
+	})
+
+	t.Run("with can force cancel", func(t *testing.T) {
+		rTestPlanning, err := client.Runs.Read(ctx, rTest1.ID)
+		require.NoError(t, err)
+		assert.Equal(t, RunPlanning, rTestPlanning.Status)
+		assert.Equal(t, true, rTestPlanning.Actions.IsCancelable)
+		assert.Equal(t, true, rTestPlanning.Permissions.CanForceCancel)
+
+		rTestPending, err := client.Runs.Read(ctx, rTest2.ID)
+		require.NoError(t, err)
+		assert.Equal(t, RunPending, rTestPending.Status)
+		assert.Equal(t, true, rTestPending.Actions.IsCancelable)
+		assert.Equal(t, true, rTestPending.Permissions.CanForceCancel)
+
+		comment1 := "Misclick"
+		err = client.Admin.Runs.ForceCancel(ctx, rTestPending.ID, AdminRunForceCancelOptions{
+			Comment: String(comment1),
+		})
+		require.NoError(t, err)
+
+		rTestPendingResult, err := client.Runs.Read(ctx, rTestPending.ID)
+		require.NoError(t, err)
+		assert.Equal(t, RunCanceled, rTestPendingResult.Status)
+
+		comment2 := "Another misclick"
+		err = client.Admin.Runs.ForceCancel(ctx, rTestPlanning.ID, AdminRunForceCancelOptions{
+			Comment: String(comment2),
+		})
+		require.NoError(t, err)
+
+		rTestPlanningResult, err := client.Runs.Read(ctx, rTestPlanning.ID)
+		require.NoError(t, err)
+		assert.Equal(t, RunCanceled, rTestPlanningResult.Status)
+	})
+}
 func adminRunItemsContainsID(items []*AdminRun, id string) bool {
 	hasID := false
 	for _, item := range items {

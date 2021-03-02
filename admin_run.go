@@ -22,7 +22,7 @@ type AdminRuns interface {
 	List(ctx context.Context, options AdminRunsListOptions) (*AdminRunsList, error)
 
 	// Force-cancel a run by its ID.
-	ForceCancel(ctx context.Context, runID string, options RunForceCancelOptions) error
+	ForceCancel(ctx context.Context, runID string, options AdminRunForceCancelOptions) error
 }
 
 // runs implements Users.
@@ -105,9 +105,16 @@ func (s *adminRuns) List(ctx context.Context, options AdminRunsListOptions) (*Ad
 	return rl, nil
 }
 
+// AdminRunForceCancelOptions represents the options for force-canceling a run.
+type AdminRunForceCancelOptions struct {
+	// An optional comment explaining the reason for the force-cancel.
+	// https://www.terraform.io/docs/cloud/api/admin/runs.html#request-body
+	Comment *string `json:"comment,omitempty"`
+}
+
 // ForceCancel is used to forcefully cancel a run by its ID.
 // https://www.terraform.io/docs/cloud/api/admin/runs.html#force-a-run-into-the-quot-cancelled-quot-state
-func (s *adminRuns) ForceCancel(ctx context.Context, runID string, options RunForceCancelOptions) error {
+func (s *adminRuns) ForceCancel(ctx context.Context, runID string, options AdminRunForceCancelOptions) error {
 	if !validStringID(&runID) {
 		return errors.New("invalid value for run ID")
 	}
