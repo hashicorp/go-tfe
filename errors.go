@@ -73,4 +73,9 @@ var (
 
 	// ErrInvalidCostEstimateID is returned when the cost estimate ID is invalid.
 	ErrInvalidCostEstimateID = errors.New("invalid value for cost estimate ID")
+
+	// User
+
+	// ErrInvalidUservalue is invalid.
+	ErrInvalidUserValue = errors.New("invalid value for user")
 )
