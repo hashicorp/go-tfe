@@ -73,4 +73,13 @@ var (
 
 	// ErrInvalidCostEstimateID is returned when the cost estimate ID is invalid.
 	ErrInvalidCostEstimateID = errors.New("invalid value for cost estimate ID")
+
+	// Terraform Versions
+
+	// ErrInvalidTerraformVersionID is returned when the ID for a terraform
+	// version is invalid.
+	ErrInvalidTerraformVersionID = errors.New("invalid value for terraform version ID")
+
+	// ErrInvalidTerraformVersionType is returned when the type is not valid.
+	ErrInvalidTerraformVersionType = errors.New("invalid type for terraform version. Please use 'terraform-version'")
 )
