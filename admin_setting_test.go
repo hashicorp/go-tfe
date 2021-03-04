@@ -91,14 +91,6 @@ func TestAdminSettings_UpdateCostEstimation(t *testing.T) {
 	})
 	require.NoError(t, err)
 	assert.Equal(t, costEnabled, costEstimationSettings.Enabled)
-
-	enableCostEstimation := true
-	// Undo Updates, revert back to original
-	costEstimationSettings, err = client.Admin.Settings.UpdateCostEstimation(ctx, AdminCostEstimationSettingOptions{
-		Enabled: Bool(enableCostEstimation),
-	})
-	require.NoError(t, err)
-	assert.Equal(t, enableCostEstimation, costEstimationSettings.Enabled)
 }
 
 func TestAdminSettings_GetSAML(t *testing.T) {
