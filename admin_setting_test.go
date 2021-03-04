@@ -16,6 +16,7 @@ func TestAdminSettings_GetGeneral(t *testing.T) {
 
 	generalSettings, err := client.Admin.Settings.GetGeneral(ctx)
 	require.NoError(t, err)
+
 	assert.Equal(t, "general", generalSettings.ID)
 	assert.NotNil(t, generalSettings.LimitUserOrganizationCreation)
 	assert.NotNil(t, generalSettings.APIRateLimitingEnabled)
@@ -84,22 +85,20 @@ func TestAdminSettings_UpdateCostEstimation(t *testing.T) {
 	costEstimationSettings, err := client.Admin.Settings.GetCostEstimation(ctx)
 	require.NoError(t, err)
 
-	origEnabled := costEstimationSettings.Enabled
-
 	costEnabled := false
-
 	costEstimationSettings, err = client.Admin.Settings.UpdateCostEstimation(ctx, AdminCostEstimationSettingOptions{
 		Enabled: Bool(costEnabled),
 	})
 	require.NoError(t, err)
 	assert.Equal(t, costEnabled, costEstimationSettings.Enabled)
 
+	enableCostEstimation := true
 	// Undo Updates, revert back to original
 	costEstimationSettings, err = client.Admin.Settings.UpdateCostEstimation(ctx, AdminCostEstimationSettingOptions{
-		Enabled: Bool(origEnabled),
+		Enabled: Bool(enableCostEstimation),
 	})
 	require.NoError(t, err)
-	assert.Equal(t, origEnabled, costEstimationSettings.Enabled)
+	assert.Equal(t, enableCostEstimation, costEstimationSettings.Enabled)
 }
 
 func TestAdminSettings_GetSAML(t *testing.T) {
@@ -110,6 +109,7 @@ func TestAdminSettings_GetSAML(t *testing.T) {
 
 	samlSettings, err := client.Admin.Settings.GetSAML(ctx)
 	require.NoError(t, err)
+
 	assert.Equal(t, "saml", samlSettings.ID)
 	assert.NotNil(t, samlSettings.Enabled)
 	assert.NotNil(t, samlSettings.Debug)
@@ -133,9 +133,6 @@ func TestAdminSettings_UpdateSAML(t *testing.T) {
 	samlSettings, err := client.Admin.Settings.GetSAML(ctx)
 	require.NoError(t, err)
 
-	origEnabled := samlSettings.Enabled
-	origDebug := samlSettings.Debug
-
 	enabled := false
 	debug := false
 
@@ -146,15 +143,6 @@ func TestAdminSettings_UpdateSAML(t *testing.T) {
 	require.NoError(t, err)
 	assert.Equal(t, enabled, samlSettings.Enabled)
 	assert.Equal(t, debug, samlSettings.Debug)
-
-	// Undo Updates, revert back to original
-	samlSettings, err = client.Admin.Settings.UpdateSAML(ctx, AdminSAMLSettingsUpdateOptions{
-		Enabled: Bool(origEnabled),
-		Debug:   Bool(origDebug),
-	})
-	require.NoError(t, err)
-	assert.Equal(t, origEnabled, samlSettings.Enabled)
-	assert.Equal(t, origDebug, samlSettings.Debug)
 }
 
 func TestAdminSettings_RevokeSAMLIdpCert(t *testing.T) {
@@ -181,6 +169,7 @@ func TestAdminSettings_GetSMTP(t *testing.T) {
 
 	smtpSettings, err := client.Admin.Settings.GetSMTP(ctx)
 	require.NoError(t, err)
+
 	assert.Equal(t, "smtp", smtpSettings.ID)
 	assert.NotNil(t, smtpSettings.Enabled)
 	assert.NotNil(t, smtpSettings.Host)
@@ -196,14 +185,15 @@ func TestAdminSettings_UpdateSMTP(t *testing.T) {
 	client := testClient(t)
 	ctx := context.Background()
 
+	enabled := false
 	auth := string(SMTPAuthNone)
 	smtpSettings, err := client.Admin.Settings.UpdateSMTP(ctx, AdminSMTPSettingsUpdateOptions{
-		Enabled: Bool(false),
+		Enabled: Bool(enabled),
 		Auth:    String(auth),
 	})
 
 	require.NoError(t, err)
-	assert.Equal(t, false, smtpSettings.Enabled)
+	assert.Equal(t, enabled, smtpSettings.Enabled)
 }
 
 func TestAdminSettings_GetTwlio(t *testing.T) {
@@ -214,6 +204,7 @@ func TestAdminSettings_GetTwlio(t *testing.T) {
 
 	twilioSettings, err := client.Admin.Settings.GetTwilio(ctx)
 	require.NoError(t, err)
+
 	assert.Equal(t, "twilio", twilioSettings.ID)
 	assert.NotNil(t, twilioSettings.Enabled)
 	assert.NotNil(t, twilioSettings.AccountSid)
