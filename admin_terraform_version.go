@@ -62,14 +62,14 @@ type AdminTerraformVersionsList struct {
 }
 
 // List all the terraform versions.
-func (s *adminTerraformVersions) List(ctx context.Context, options AdminTerraformVersionsListOptions) (*AdminTerraformVersionsList, error) {
-	req, err := s.client.newRequest("GET", "admin/terraform-versions", &options)
+func (a *adminTerraformVersions) List(ctx context.Context, options AdminTerraformVersionsListOptions) (*AdminTerraformVersionsList, error) {
+	req, err := a.client.newRequest("GET", "admin/terraform-versions", &options)
 	if err != nil {
 		return nil, err
 	}
 
 	awl := &AdminTerraformVersionsList{}
-	err = s.client.do(ctx, req, awl)
+	err = a.client.do(ctx, req, awl)
 	if err != nil {
 		return nil, err
 	}
@@ -78,19 +78,19 @@ func (s *adminTerraformVersions) List(ctx context.Context, options AdminTerrafor
 }
 
 // Read a terraform version by its ID.
-func (s *adminTerraformVersions) Read(ctx context.Context, id string) (*AdminTerraformVersion, error) {
+func (a *adminTerraformVersions) Read(ctx context.Context, id string) (*AdminTerraformVersion, error) {
 	if !validStringID(&id) {
 		return nil, ErrInvalidTerraformVersionID
 	}
 
 	u := fmt.Sprintf("admin/terraform-versions/%s", url.QueryEscape(id))
-	req, err := s.client.newRequest("GET", u, nil)
+	req, err := a.client.newRequest("GET", u, nil)
 	if err != nil {
 		return nil, err
 	}
 
 	tfv := &AdminTerraformVersion{}
-	err = s.client.do(ctx, req, tfv)
+	err = a.client.do(ctx, req, tfv)
 	if err != nil {
 		return nil, err
 	}
@@ -121,18 +121,18 @@ func (o AdminTerraformVersionCreateOptions) valid() error {
 }
 
 // Create a new terraform version.
-func (s *adminTerraformVersions) Create(ctx context.Context, options AdminTerraformVersionCreateOptions) (*AdminTerraformVersion, error) {
+func (a *adminTerraformVersions) Create(ctx context.Context, options AdminTerraformVersionCreateOptions) (*AdminTerraformVersion, error) {
 	if err := options.valid(); err != nil {
 		return nil, err
 	}
 
-	req, err := s.client.newRequest("POST", "admin/terraform-versions", &options)
+	req, err := a.client.newRequest("POST", "admin/terraform-versions", &options)
 	if err != nil {
 		return nil, err
 	}
 
 	tfv := &AdminTerraformVersion{}
-	err = s.client.do(ctx, req, tfv)
+	err = a.client.do(ctx, req, tfv)
 	if err != nil {
 		return nil, err
 	}
@@ -163,7 +163,7 @@ func (o AdminTerraformVersionUpdateOptions) valid() error {
 }
 
 // Update an existing terraform version.
-func (s *adminTerraformVersions) Update(ctx context.Context, id string, options AdminTerraformVersionUpdateOptions) (*AdminTerraformVersion, error) {
+func (a *adminTerraformVersions) Update(ctx context.Context, id string, options AdminTerraformVersionUpdateOptions) (*AdminTerraformVersion, error) {
 	if !validStringID(&id) {
 		return nil, ErrInvalidTerraformVersionID
 	}
@@ -173,13 +173,13 @@ func (s *adminTerraformVersions) Update(ctx context.Context, id string, options 
 	}
 
 	u := fmt.Sprintf("admin/terraform-versions/%s", url.QueryEscape(id))
-	req, err := s.client.newRequest("PATCH", u, &options)
+	req, err := a.client.newRequest("PATCH", u, &options)
 	if err != nil {
 		return nil, err
 	}
 
 	tfv := &AdminTerraformVersion{}
-	err = s.client.do(ctx, req, tfv)
+	err = a.client.do(ctx, req, tfv)
 	if err != nil {
 		return nil, err
 	}
@@ -188,16 +188,16 @@ func (s *adminTerraformVersions) Update(ctx context.Context, id string, options 
 }
 
 // Delete a terraform version.
-func (s *adminTerraformVersions) Delete(ctx context.Context, id string) error {
+func (a *adminTerraformVersions) Delete(ctx context.Context, id string) error {
 	if !validStringID(&id) {
 		return ErrInvalidTerraformVersionID
 	}
 
 	u := fmt.Sprintf("admin/terraform-versions/%s", url.QueryEscape(id))
-	req, err := s.client.newRequest("DELETE", u, nil)
+	req, err := a.client.newRequest("DELETE", u, nil)
 	if err != nil {
 		return err
 	}
 
-	return s.client.do(ctx, req, nil)
+	return a.client.do(ctx, req, nil)
 }
