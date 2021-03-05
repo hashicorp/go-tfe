@@ -60,6 +60,12 @@ type Workspaces interface {
 
 	// UnassignSSHKey from a workspace.
 	UnassignSSHKey(ctx context.Context, workspaceID string) (*Workspace, error)
+
+	// Add remote state consumers to a workspace.
+	AddRemoteStateConsumers(ctx context.Context, workspaceID string, options WorkspaceAddRemoteStateConsumersOptions) error
+
+	// Remove remote state consumers from a workspace.
+	RemoveRemoteStateConsumers(ctx context.Context, workspaceID string, options WorkspaceRemoveRemoteStateConsumersOptions) error
 }
 
 // workspaces implements Workspaces.
@@ -86,6 +92,7 @@ type Workspace struct {
 	Environment          string                `jsonapi:"attr,environment"`
 	ExecutionMode        string                `jsonapi:"attr,execution-mode"`
 	FileTriggersEnabled  bool                  `jsonapi:"attr,file-triggers-enabled"`
+	GlobalRemoteState    bool                  `jsonapi:"attr,global-remote-state"`
 	Locked               bool                  `jsonapi:"attr,locked"`
 	MigrationEnvironment string                `jsonapi:"attr,migration-environment"`
 	Name                 string                `jsonapi:"attr,name"`
@@ -99,10 +106,11 @@ type Workspace struct {
 	WorkingDirectory     string                `jsonapi:"attr,working-directory"`
 
 	// Relations
-	AgentPool    *AgentPool    `jsonapi:"relation,agent-pool"`
-	CurrentRun   *Run          `jsonapi:"relation,current-run"`
-	Organization *Organization `jsonapi:"relation,organization"`
-	SSHKey       *SSHKey       `jsonapi:"relation,ssh-key"`
+	AgentPool            *AgentPool    `jsonapi:"relation,agent-pool"`
+	CurrentRun           *Run          `jsonapi:"relation,current-run"`
+	Organization         *Organization `jsonapi:"relation,organization"`
+	RemoteStateConsumers []*Workspace  `jsonapi:"relation,remote-state-consumers"`
+	SSHKey               *SSHKey       `jsonapi:"relation,ssh-key"`
 }
 
 // VCSRepo contains the configuration of a VCS integration.
@@ -195,6 +203,8 @@ type WorkspaceCreateOptions struct {
 	// paths which must contain changes for a VCS push to trigger a run. If
 	// disabled, any push will trigger a run.
 	FileTriggersEnabled *bool `jsonapi:"attr,file-triggers-enabled,omitempty"`
+
+	GlobalRemoteState *bool `jsonapi:"attr,global-remote-state,omitempty"`
 
 	// The legacy TFE environment to use as the source of the migration, in the
 	// form organization/environment. Omit this unless you are migrating a legacy
@@ -380,6 +390,8 @@ type WorkspaceUpdateOptions struct {
 	// paths which must contain changes for a VCS push to trigger a run. If
 	// disabled, any push will trigger a run.
 	FileTriggersEnabled *bool `jsonapi:"attr,file-triggers-enabled,omitempty"`
+
+	GlobalRemoteState *bool `jsonapi:"attr,global-remote-state,omitempty"`
 
 	// DEPRECATED. Whether the workspace will use remote or local execution mode.
 	// Use ExecutionMode instead.
@@ -727,4 +739,74 @@ func (s *workspaces) UnassignSSHKey(ctx context.Context, workspaceID string) (*W
 	}
 
 	return w, nil
+}
+
+// WorkspaceAddRemoteStateConsumersOptions represents the options for adding remote state consumers
+// to a workspace.
+type WorkspaceAddRemoteStateConsumersOptions struct {
+	/// The workspaces to add as remote state consumers to the workspace.
+	Workspaces []*Workspace
+}
+
+func (o WorkspaceAddRemoteStateConsumersOptions) valid() error {
+	if o.Workspaces == nil {
+		return errors.New("workspaces is required")
+	}
+	if len(o.Workspaces) == 0 {
+		return errors.New("must provide at least one workspace")
+	}
+	return nil
+}
+
+// Add workspaces to a policy set.
+func (s *workspaces) AddRemoteStateConsumers(ctx context.Context, workspaceID string, options WorkspaceAddRemoteStateConsumersOptions) error {
+	if !validStringID(&workspaceID) {
+		return errors.New("invalid value for workspace ID")
+	}
+	if err := options.valid(); err != nil {
+		return err
+	}
+
+	u := fmt.Sprintf("workspaces/%s/relationships/remote-state-consumers", url.QueryEscape(workspaceID))
+	req, err := s.client.newRequest("POST", u, options.Workspaces)
+	if err != nil {
+		return err
+	}
+
+	return s.client.do(ctx, req, nil)
+}
+
+// WorkspaceRemoveRemoteStateConsumersOptions represents the options for removing remote state
+// consumers from a workspace.
+type WorkspaceRemoveRemoteStateConsumersOptions struct {
+	/// The workspaces to remove as remote state consumers from the workspace.
+	Workspaces []*Workspace
+}
+
+func (o WorkspaceRemoveRemoteStateConsumersOptions) valid() error {
+	if o.Workspaces == nil {
+		return errors.New("workspaces is required")
+	}
+	if len(o.Workspaces) == 0 {
+		return errors.New("must provide at least one workspace")
+	}
+	return nil
+}
+
+// Remove workspaces from a policy set.
+func (s *workspaces) RemoveRemoteStateConsumers(ctx context.Context, workspaceID string, options WorkspaceRemoveRemoteStateConsumersOptions) error {
+	if !validStringID(&workspaceID) {
+		return errors.New("invalid value for workspace ID")
+	}
+	if err := options.valid(); err != nil {
+		return err
+	}
+
+	u := fmt.Sprintf("workspaces/%s/relationships/remote-state-consumers", url.QueryEscape(workspaceID))
+	req, err := s.client.newRequest("DELETE", u, options.Workspaces)
+	if err != nil {
+		return err
+	}
+
+	return s.client.do(ctx, req, nil)
 }
