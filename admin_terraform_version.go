@@ -61,7 +61,7 @@ type AdminTerraformVersionsList struct {
 	Items []*AdminTerraformVersion
 }
 
-// List all the workspaces within a worksapce.
+// List all the terraform versions.
 func (s *adminTerraformVersions) List(ctx context.Context, options AdminTerraformVersionsListOptions) (*AdminTerraformVersionsList, error) {
 	req, err := s.client.newRequest("GET", "admin/terraform-versions", &options)
 	if err != nil {
