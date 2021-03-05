@@ -75,8 +75,8 @@ func TestAdminTerraformVersions_CreateDelete(t *testing.T) {
 		require.NoError(t, err)
 
 		defer func() {
-			err = client.Admin.TerraformVersions.Delete(ctx, tfv.ID)
-			require.NoError(t, err)
+			deleteErr := client.Admin.TerraformVersions.Delete(ctx, tfv.ID)
+			require.NoError(t, deleteErr)
 		}()
 
 		assert.Equal(t, *opts.Version, tfv.Version)
@@ -118,8 +118,8 @@ func TestAdminTerraformVersions_ReadUpdate(t *testing.T) {
 		id := tfv.ID
 
 		defer func() {
-			err = client.Admin.TerraformVersions.Delete(ctx, id)
-			require.NoError(t, err)
+			deleteErr := client.Admin.TerraformVersions.Delete(ctx, id)
+			require.NoError(t, deleteErr)
 		}()
 
 		tfv, err = client.Admin.TerraformVersions.Read(ctx, id)
