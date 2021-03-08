@@ -63,7 +63,6 @@ func TestAdminTerraformVersions_CreateDelete(t *testing.T) {
 
 	t.Run("with valid options", func(t *testing.T) {
 		opts := AdminTerraformVersionCreateOptions{
-			Type:     String("terraform-version"),
 			Version:  String("1.1.1"),
 			URL:      String("https://www.hashicorp.com"),
 			Sha:      String(genSha("secret", "data")),
@@ -87,10 +86,8 @@ func TestAdminTerraformVersions_CreateDelete(t *testing.T) {
 		assert.Equal(t, *opts.Beta, tfv.Beta)
 	})
 
-	t.Run("with invalid options", func(t *testing.T) {
-		opts := AdminTerraformVersionCreateOptions{
-			Type: String("not-terraform"),
-		}
+	t.Run("with empty options", func(t *testing.T) {
+		opts := AdminTerraformVersionCreateOptions{}
 
 		_, err := client.Admin.TerraformVersions.Create(ctx, opts)
 		require.Error(t, err)
@@ -105,7 +102,6 @@ func TestAdminTerraformVersions_ReadUpdate(t *testing.T) {
 
 	t.Run("reads and updates", func(t *testing.T) {
 		opts := AdminTerraformVersionCreateOptions{
-			Type:     String("terraform-version"),
 			Version:  String("1.1.1"),
 			URL:      String("https://www.hashicorp.com"),
 			Sha:      String(genSha("secret", "data")),
@@ -135,7 +131,6 @@ func TestAdminTerraformVersions_ReadUpdate(t *testing.T) {
 		updateVersion := "1.1.2"
 		updateURL := "https://app.terraform.io/"
 		updateOpts := AdminTerraformVersionUpdateOptions{
-			Type:    String("terraform-version"),
 			Version: String(updateVersion),
 			URL:     String(updateURL),
 		}

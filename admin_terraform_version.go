@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"net/url"
+	"time"
 )
 
 // Compile-time proof of interface implementation.
@@ -38,15 +39,15 @@ type adminTerraformVersions struct {
 
 // AdminTerraformVersion represents a Terraform Version
 type AdminTerraformVersion struct {
-	ID        string `jsonapi:"primary,terraform-versions"`
-	Version   string `jsonapi:"attr,version"`
-	URL       string `jsonapi:"attr,url"`
-	Sha       string `jsonapi:"attr,sha"`
-	Official  bool   `jsonapi:"attr,official"`
-	Enabled   bool   `jsonapi:"attr,enabled"`
-	Beta      bool   `jsonapi:"attr,beta"`
-	Usage     int    `jsonapi:"attr,usage"`
-	CreatedAt string `jsonapi:"attr,created-at"`
+	ID        string    `jsonapi:"primary,terraform-versions"`
+	Version   string    `jsonapi:"attr,version"`
+	URL       string    `jsonapi:"attr,url"`
+	Sha       string    `jsonapi:"attr,sha"`
+	Official  bool      `jsonapi:"attr,official"`
+	Enabled   bool      `jsonapi:"attr,enabled"`
+	Beta      bool      `jsonapi:"attr,beta"`
+	Usage     int       `jsonapi:"attr,usage"`
+	CreatedAt time.Time `jsonapi:"attr,created-at,iso8601"`
 }
 
 // AdminTerraformVersionsListOptions represents the options for listing
@@ -68,13 +69,13 @@ func (a *adminTerraformVersions) List(ctx context.Context, options AdminTerrafor
 		return nil, err
 	}
 
-	awl := &AdminTerraformVersionsList{}
-	err = a.client.do(ctx, req, awl)
+	tvl := &AdminTerraformVersionsList{}
+	err = a.client.do(ctx, req, tvl)
 	if err != nil {
 		return nil, err
 	}
 
-	return awl, nil
+	return tvl, nil
 }
 
 // Read a terraform version by its ID.
@@ -101,7 +102,7 @@ func (a *adminTerraformVersions) Read(ctx context.Context, id string) (*AdminTer
 // AdminTerraformVersionCreateOptions for creating a terraform version.
 // https://www.terraform.io/docs/cloud/api/admin/terraform-versions.html#request-body
 type AdminTerraformVersionCreateOptions struct {
-	Type     *string `jsonapi:"primary,terraform-versions"`
+	Type     string  `jsonapi:"primary,terraform-versions"`
 	Version  *string `jsonapi:"attr,version"`
 	URL      *string `jsonapi:"attr,url"`
 	Sha      *string `jsonapi:"attr,sha"`
@@ -110,22 +111,8 @@ type AdminTerraformVersionCreateOptions struct {
 	Beta     *bool   `jsonapi:"attr,beta"`
 }
 
-func (o AdminTerraformVersionCreateOptions) valid() error {
-	if validStringID(o.Type) {
-		if *o.Type == "terraform-version" {
-			return nil
-		}
-	}
-
-	return ErrInvalidTerraformVersionType
-}
-
 // Create a new terraform version.
 func (a *adminTerraformVersions) Create(ctx context.Context, options AdminTerraformVersionCreateOptions) (*AdminTerraformVersion, error) {
-	if err := options.valid(); err != nil {
-		return nil, err
-	}
-
 	req, err := a.client.newRequest("POST", "admin/terraform-versions", &options)
 	if err != nil {
 		return nil, err
@@ -143,7 +130,7 @@ func (a *adminTerraformVersions) Create(ctx context.Context, options AdminTerraf
 // AdminTerraformVersionUpdateOptions for updating terraform version.
 // https://www.terraform.io/docs/cloud/api/admin/terraform-versions.html#request-body
 type AdminTerraformVersionUpdateOptions struct {
-	Type     *string `jsonapi:"primary,terraform-versions"`
+	Type     string  `jsonapi:"primary,terraform-versions"`
 	Version  *string `jsonapi:"attr,version,omitempty"`
 	URL      *string `jsonapi:"attr,url,omitempty"`
 	Sha      *string `jsonapi:"attr,sha,omitempty"`
@@ -152,24 +139,10 @@ type AdminTerraformVersionUpdateOptions struct {
 	Beta     *bool   `jsonapi:"attr,beta,omitempty"`
 }
 
-func (o AdminTerraformVersionUpdateOptions) valid() error {
-	if validStringID(o.Type) {
-		if *o.Type == "terraform-version" {
-			return nil
-		}
-	}
-
-	return ErrInvalidTerraformVersionType
-}
-
 // Update an existing terraform version.
 func (a *adminTerraformVersions) Update(ctx context.Context, id string, options AdminTerraformVersionUpdateOptions) (*AdminTerraformVersion, error) {
 	if !validStringID(&id) {
 		return nil, ErrInvalidTerraformVersionID
-	}
-
-	if err := options.valid(); err != nil {
-		return nil, err
 	}
 
 	u := fmt.Sprintf("admin/terraform-versions/%s", url.QueryEscape(id))
