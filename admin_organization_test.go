@@ -23,7 +23,7 @@ func TestAdminOrganizations_List(t *testing.T) {
 		require.NoError(t, err)
 
 		// Given that org creation occurs on every test, the ordering is not
-		// gauranteed. It may be that the `org` created in this test does not appear
+		// guaranteed. It may be that the `org` created in this test does not appear
 		// in this list, so we want to test that the items are filled.
 		assert.Equal(t, true, len(adminOrgList.Items) >= 1)
 		assert.Equal(t, 1, adminOrgList.CurrentPage)

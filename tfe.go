@@ -136,7 +136,7 @@ type Client struct {
 type Admin struct {
 	Organizations AdminOrganizations
 	Workspaces    AdminWorkspaces
-	Settings      AdminSettings
+	Settings      *AdminSettings
 	Runs          AdminRuns
 }
 
@@ -221,7 +221,7 @@ func NewClient(cfg *Config) (*Client, error) {
 	client.Admin = Admin{
 		Organizations: &adminOrganizations{client: client},
 		Workspaces:    &adminWorkspaces{client: client},
-		Settings:      &adminSettings{client: client},
+		Settings:      newAdminSettings(client),
 		Runs:          &adminRuns{client: client},
 	}
 
