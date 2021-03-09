@@ -23,6 +23,14 @@ func TestAdminSettings_General_Read(t *testing.T) {
 	assert.NotNil(t, generalSettings.APIRateLimit)
 	assert.NotNil(t, generalSettings.SendPassingStatusesEnabled)
 	assert.NotNil(t, generalSettings.AllowSpeculativePlansOnPR)
+	assert.NotNil(t, generalSettings.RequireTwoFactorForAdmin)
+	assert.NotNil(t, generalSettings.FairRunQueuingEnabled)
+	assert.NotNil(t, generalSettings.LimitOrgsPerUser)
+	assert.NotNil(t, generalSettings.DefaultOrgsPerUserCeiling)
+	assert.NotNil(t, generalSettings.LimitWorkspacesPerOrg)
+	assert.NotNil(t, generalSettings.DefaultWorkspacesPerOrgCeiling)
+	assert.NotNil(t, generalSettings.TerraformBuildWorkerApplyTimeout)
+	assert.NotNil(t, generalSettings.TerraformBuildWorkerPlanTimeout)
 }
 
 func TestAdminSettings_General_Update(t *testing.T) {
