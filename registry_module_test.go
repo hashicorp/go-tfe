@@ -2,6 +2,7 @@ package tfe
 
 import (
 	"context"
+	"fmt"
 	"os"
 	"strings"
 	"testing"
@@ -226,6 +227,8 @@ func TestRegistryModulesCreateWithVCSConnection(t *testing.T) {
 			OAuthTokenID:      oauthTokenTest.ID,
 			DisplayIdentifier: githubIdentifier,
 			IngressSubmodules: true,
+			RepositoryHTTPURL: fmt.Sprintf("https://github.com/%s", githubIdentifier),
+			ServiceProvider:   "github",
 		}, rm.VCSRepo)
 
 		t.Run("permissions are properly decoded", func(t *testing.T) {

@@ -2,6 +2,7 @@ package tfe
 
 import (
 	"context"
+	"fmt"
 	"os"
 	"testing"
 
@@ -158,6 +159,8 @@ func TestPolicySetsCreate(t *testing.T) {
 			Identifier:        githubIdentifier,
 			OAuthTokenID:      oc.ID,
 			IngressSubmodules: true,
+			RepositoryHTTPURL: fmt.Sprintf("https://github.com/%s", githubIdentifier),
+			ServiceProvider:   "github",
 		})
 	})
 
@@ -193,6 +196,8 @@ func TestPolicySetsCreate(t *testing.T) {
 			Identifier:        githubIdentifier,
 			OAuthTokenID:      oc.ID,
 			IngressSubmodules: false,
+			RepositoryHTTPURL: fmt.Sprintf("https://github.com/%s", githubIdentifier),
+			ServiceProvider:   "github",
 		})
 	})
 
