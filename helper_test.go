@@ -2,8 +2,11 @@ package tfe
 
 import (
 	"context"
+	"crypto/hmac"
 	"crypto/md5"
+	"crypto/sha256"
 	"encoding/base64"
+	"encoding/hex"
 	"fmt"
 	"io/ioutil"
 	"os"
@@ -963,6 +966,13 @@ func createWorkspaceWithVCS(t *testing.T, client *Client, org *Organization) (*W
 			orgCleanup()
 		}
 	}
+}
+
+func genSha(secret, data string) string {
+	h := hmac.New(sha256.New, []byte(secret))
+	h.Write([]byte(data))
+	sha := hex.EncodeToString(h.Sum(nil))
+	return sha
 }
 
 func randomString(t *testing.T) string {

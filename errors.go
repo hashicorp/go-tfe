@@ -78,4 +78,13 @@ var (
 
 	// ErrInvalidUservalue is invalid.
 	ErrInvalidUserValue = errors.New("invalid value for user")
+
+	// Terraform Versions
+
+	// ErrInvalidTerraformVersionID is returned when the ID for a terraform
+	// version is invalid.
+	ErrInvalidTerraformVersionID = errors.New("invalid value for terraform version ID")
+
+	// ErrInvalidTerraformVersionType is returned when the type is not valid.
+	ErrInvalidTerraformVersionType = errors.New("invalid type for terraform version. Please use 'terraform-version'")
 )
