@@ -29,7 +29,6 @@ func TestAdminSettings_SAML_Read(t *testing.T) {
 	assert.NotNil(t, samlSettings.SSOAPITokenSessionTimeout)
 	assert.NotNil(t, samlSettings.ACSConsumerURL)
 	assert.NotNil(t, samlSettings.MetadataURL)
-
 	assert.NotNil(t, samlSettings.TeamManagementEnabled)
 	assert.NotNil(t, samlSettings.Certificate)
 	assert.NotNil(t, samlSettings.AuthnRequestsSigned)
