@@ -34,19 +34,19 @@ type AdminCostEstimationSetting struct {
 }
 
 // Read returns the cost estimation settings.
-func (s *adminCostEstimationSettings) Read(ctx context.Context) (*AdminCostEstimationSetting, error) {
-	req, err := s.client.newRequest("GET", "admin/cost-estimation-settings", nil)
+func (a *adminCostEstimationSettings) Read(ctx context.Context) (*AdminCostEstimationSetting, error) {
+	req, err := a.client.newRequest("GET", "admin/cost-estimation-settings", nil)
 	if err != nil {
 		return nil, err
 	}
 
-	ags := &AdminCostEstimationSetting{}
-	err = s.client.do(ctx, req, ags)
+	ace := &AdminCostEstimationSetting{}
+	err = a.client.do(ctx, req, ace)
 	if err != nil {
 		return nil, err
 	}
 
-	return ags, nil
+	return ace, nil
 }
 
 // AdminCostEstimationSettingOptions represents the admin options for updating
@@ -64,14 +64,14 @@ type AdminCostEstimationSettingOptions struct {
 }
 
 // Update updates the cost-estimation settings.
-func (s *adminCostEstimationSettings) Update(ctx context.Context, options AdminCostEstimationSettingOptions) (*AdminCostEstimationSetting, error) {
-	req, err := s.client.newRequest("PATCH", "admin/cost-estimation-settings", &options)
+func (a *adminCostEstimationSettings) Update(ctx context.Context, options AdminCostEstimationSettingOptions) (*AdminCostEstimationSetting, error) {
+	req, err := a.client.newRequest("PATCH", "admin/cost-estimation-settings", &options)
 	if err != nil {
 		return nil, err
 	}
 
 	ace := &AdminCostEstimationSetting{}
-	err = s.client.do(ctx, req, ace)
+	err = a.client.do(ctx, req, ace)
 	if err != nil {
 		return nil, err
 	}

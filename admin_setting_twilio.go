@@ -32,14 +32,14 @@ type AdminTwilioSetting struct {
 }
 
 // Read returns the Twilio settings.
-func (s *adminTwilioSettings) Read(ctx context.Context) (*AdminTwilioSetting, error) {
-	req, err := s.client.newRequest("GET", "admin/twilio-settings", nil)
+func (a *adminTwilioSettings) Read(ctx context.Context) (*AdminTwilioSetting, error) {
+	req, err := a.client.newRequest("GET", "admin/twilio-settings", nil)
 	if err != nil {
 		return nil, err
 	}
 
 	twilio := &AdminTwilioSetting{}
-	err = s.client.do(ctx, req, twilio)
+	err = a.client.do(ctx, req, twilio)
 	if err != nil {
 		return nil, err
 	}
@@ -58,14 +58,14 @@ type AdminTwilioSettingsUpdateOptions struct {
 }
 
 // Update updates the Twilio settings.
-func (s *adminTwilioSettings) Update(ctx context.Context, options AdminTwilioSettingsUpdateOptions) (*AdminTwilioSetting, error) {
-	req, err := s.client.newRequest("PATCH", "admin/twilio-settings", &options)
+func (a *adminTwilioSettings) Update(ctx context.Context, options AdminTwilioSettingsUpdateOptions) (*AdminTwilioSetting, error) {
+	req, err := a.client.newRequest("PATCH", "admin/twilio-settings", &options)
 	if err != nil {
 		return nil, err
 	}
 
 	twilio := &AdminTwilioSetting{}
-	err = s.client.do(ctx, req, twilio)
+	err = a.client.do(ctx, req, twilio)
 	if err != nil {
 		return nil, err
 	}
@@ -80,11 +80,11 @@ type AdminTwilioSettingsVerifyOptions struct {
 }
 
 // Verify verifies Twilio settings.
-func (s *adminTwilioSettings) Verify(ctx context.Context, options AdminTwilioSettingsVerifyOptions) error {
-	req, err := s.client.newRequest("PATCH", "admin/twilio-settings/verify", &options)
+func (a *adminTwilioSettings) Verify(ctx context.Context, options AdminTwilioSettingsVerifyOptions) error {
+	req, err := a.client.newRequest("PATCH", "admin/twilio-settings/verify", &options)
 	if err != nil {
 		return err
 	}
 
-	return s.client.do(ctx, req, nil)
+	return a.client.do(ctx, req, nil)
 }

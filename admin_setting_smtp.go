@@ -32,14 +32,14 @@ type AdminSMTPSetting struct {
 }
 
 // Read returns the SMTP settings.
-func (s *adminSMTPSettings) Read(ctx context.Context) (*AdminSMTPSetting, error) {
-	req, err := s.client.newRequest("GET", "admin/smtp-settings", nil)
+func (a *adminSMTPSettings) Read(ctx context.Context) (*AdminSMTPSetting, error) {
+	req, err := a.client.newRequest("GET", "admin/smtp-settings", nil)
 	if err != nil {
 		return nil, err
 	}
 
 	smtp := &AdminSMTPSetting{}
-	err = s.client.do(ctx, req, smtp)
+	err = a.client.do(ctx, req, smtp)
 	if err != nil {
 		return nil, err
 	}
@@ -62,17 +62,17 @@ type AdminSMTPSettingsUpdateOptions struct {
 }
 
 // Updat updates the SMTP settings.
-func (s *adminSMTPSettings) Update(ctx context.Context, options AdminSMTPSettingsUpdateOptions) (*AdminSMTPSetting, error) {
+func (a *adminSMTPSettings) Update(ctx context.Context, options AdminSMTPSettingsUpdateOptions) (*AdminSMTPSetting, error) {
 	if !options.valid() {
 		return nil, ErrInvalidSMTPAuth
 	}
-	req, err := s.client.newRequest("PATCH", "admin/smtp-settings", &options)
+	req, err := a.client.newRequest("PATCH", "admin/smtp-settings", &options)
 	if err != nil {
 		return nil, err
 	}
 
 	smtp := &AdminSMTPSetting{}
-	err = s.client.do(ctx, req, smtp)
+	err = a.client.do(ctx, req, smtp)
 	if err != nil {
 		return nil, err
 	}

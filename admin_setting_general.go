@@ -31,14 +31,14 @@ type AdminGeneralSetting struct {
 }
 
 // Read returns the general settings.
-func (s *adminGeneralSettings) Read(ctx context.Context) (*AdminGeneralSetting, error) {
-	req, err := s.client.newRequest("GET", "admin/general-settings", nil)
+func (a *adminGeneralSettings) Read(ctx context.Context) (*AdminGeneralSetting, error) {
+	req, err := a.client.newRequest("GET", "admin/general-settings", nil)
 	if err != nil {
 		return nil, err
 	}
 
 	ags := &AdminGeneralSetting{}
-	err = s.client.do(ctx, req, ags)
+	err = a.client.do(ctx, req, ags)
 	if err != nil {
 		return nil, err
 	}
@@ -58,14 +58,14 @@ type AdminGeneralSettingsUpdateOptions struct {
 }
 
 // Update updates the general settings.
-func (s *adminGeneralSettings) Update(ctx context.Context, options AdminGeneralSettingsUpdateOptions) (*AdminGeneralSetting, error) {
-	req, err := s.client.newRequest("PATCH", "admin/general-settings", &options)
+func (a *adminGeneralSettings) Update(ctx context.Context, options AdminGeneralSettingsUpdateOptions) (*AdminGeneralSetting, error) {
+	req, err := a.client.newRequest("PATCH", "admin/general-settings", &options)
 	if err != nil {
 		return nil, err
 	}
 
 	ags := &AdminGeneralSetting{}
-	err = s.client.do(ctx, req, ags)
+	err = a.client.do(ctx, req, ags)
 	if err != nil {
 		return nil, err
 	}

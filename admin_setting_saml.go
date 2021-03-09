@@ -75,14 +75,14 @@ type AdminSAMLSettingsUpdateOptions struct {
 }
 
 // Update updates the SAML settings.
-func (s *adminSAMLSettings) Update(ctx context.Context, options AdminSAMLSettingsUpdateOptions) (*AdminSAMLSetting, error) {
-	req, err := s.client.newRequest("PATCH", "admin/saml-settings", &options)
+func (a *adminSAMLSettings) Update(ctx context.Context, options AdminSAMLSettingsUpdateOptions) (*AdminSAMLSetting, error) {
+	req, err := a.client.newRequest("PATCH", "admin/saml-settings", &options)
 	if err != nil {
 		return nil, err
 	}
 
 	saml := &AdminSAMLSetting{}
-	err = s.client.do(ctx, req, saml)
+	err = a.client.do(ctx, req, saml)
 	if err != nil {
 		return nil, err
 	}
@@ -92,14 +92,14 @@ func (s *adminSAMLSettings) Update(ctx context.Context, options AdminSAMLSetting
 
 // RevokeIdpCert revokes the older IdP certificate when the new IdP
 // certificate is known to be functioning correctly.
-func (s *adminSAMLSettings) RevokeIdpCert(ctx context.Context) (*AdminSAMLSetting, error) {
-	req, err := s.client.newRequest("POST", "admin/saml-settings/actions/revoke-old-certificate", nil)
+func (a *adminSAMLSettings) RevokeIdpCert(ctx context.Context) (*AdminSAMLSetting, error) {
+	req, err := a.client.newRequest("POST", "admin/saml-settings/actions/revoke-old-certificate", nil)
 	if err != nil {
 		return nil, err
 	}
 
 	saml := &AdminSAMLSetting{}
-	err = s.client.do(ctx, req, saml)
+	err = a.client.do(ctx, req, saml)
 	if err != nil {
 		return nil, err
 	}
