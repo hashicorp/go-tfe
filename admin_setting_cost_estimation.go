@@ -22,15 +22,19 @@ type adminCostEstimationSettings struct {
 
 // AdminCostEstimationSetting represents the admin cost estimation settings.
 type AdminCostEstimationSetting struct {
-	ID                  string `jsonapi:"primary,cost-estimation-settings"`
-	Enabled             bool   `jsonapi:"attr,enabled"`
-	AWSAccessKeyID      string `jsonapi:"attr,aws-access-key-id"`
-	AWSAccessKey        string `jsonapi:"attr,aws-secret-key"`
-	GCPCredentials      string `jsonapi:"attr,gcp-credentials"`
-	AzureClientID       string `jsonapi:"attr,azure-client-id"`
-	AzureClientSecret   string `jsonapi:"attr,azure-client-secret"`
-	AzureSubscriptionID string `jsonapi:"attr,azure-subscription-id"`
-	AzureTenantID       string `jsonapi:"attr,azure-tenant-id"`
+	ID                        string `jsonapi:"primary,cost-estimation-settings"`
+	Enabled                   bool   `jsonapi:"attr,enabled"`
+	AWSAccessKeyID            string `jsonapi:"attr,aws-access-key-id"`
+	AWSAccessKey              string `jsonapi:"attr,aws-secret-key"`
+	AWSEnabled                bool   `jsonapi:"attr,aws-enabled"`
+	AWSInstanceProfileEnabled bool   `jsonapi:"attr,aws-instance-profile-enabled"`
+	GCPCredentials            string `jsonapi:"attr,gcp-credentials"`
+	GCPEnabled                bool   `jsonapi:"attr,gcp-enabled"`
+	AzureEnabled              bool   `jsonapi:"attr,azure-enabled"`
+	AzureClientID             string `jsonapi:"attr,azure-client-id"`
+	AzureClientSecret         string `jsonapi:"attr,azure-client-secret"`
+	AzureSubscriptionID       string `jsonapi:"attr,azure-subscription-id"`
+	AzureTenantID             string `jsonapi:"attr,azure-tenant-id"`
 }
 
 // Read returns the cost estimation settings.

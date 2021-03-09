@@ -40,6 +40,11 @@ type AdminSAMLSetting struct {
 	SSOAPITokenSessionTimeout int    `jsonapi:"attr,sso-api-token-session-timeout"`
 	ACSConsumerURL            string `jsonapi:"attr,acs-consumer-url"`
 	MetadataURL               string `jsonapi:"attr,metadata-url"`
+	TeamManagementEnabled     bool   `jsonapi:"attr,team-management-enabled"`
+	Certificate               string `jsonapi:"attr,certificate"`
+	AuthnRequestsSigned       bool   `jsonapi:"attr,authn-requests-signed"`
+	WantAssertionsSigned      bool   `jsonapi:"attr,want-assertions-signed"`
+	PrivateKey                string `jsonapi:"attr,private-key"`
 }
 
 // Read returns the SAML settings.
