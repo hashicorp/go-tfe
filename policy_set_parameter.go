@@ -89,8 +89,9 @@ func (s *policySetParameters) List(ctx context.Context, policySetID string, opti
 
 // PolicySetParameterCreateOptions represents the options for creating a new parameter.
 type PolicySetParameterCreateOptions struct {
-	// For internal use only!
-	ID string `jsonapi:"primary,vars"`
+	// Type is the required field as part of JSON:API.
+	// https://jsonapi.org/format/#crud-creating
+	Type string `jsonapi:"primary,vars"`
 
 	// The name of the parameter.
 	Key *string `jsonapi:"attr,key"`
@@ -126,9 +127,6 @@ func (s *policySetParameters) Create(ctx context.Context, policySetID string, op
 	if err := options.valid(); err != nil {
 		return nil, err
 	}
-
-	// Make sure we don't send a user provided ID.
-	options.ID = ""
 
 	u := fmt.Sprintf("policy-sets/%s/parameters", url.QueryEscape(policySetID))
 	req, err := s.client.newRequest("POST", u, &options)
@@ -171,8 +169,9 @@ func (s *policySetParameters) Read(ctx context.Context, policySetID string, para
 
 // PolicySetParameterUpdateOptions represents the options for updating a parameter.
 type PolicySetParameterUpdateOptions struct {
-	// For internal use only!
-	ID string `jsonapi:"primary,vars"`
+	// Type is the required field as part of JSON:API.
+	// https://jsonapi.org/format/#crud-creating
+	Type string `jsonapi:"primary,vars"`
 
 	// The name of the parameter.
 	Key *string `jsonapi:"attr,key,omitempty"`
@@ -192,9 +191,6 @@ func (s *policySetParameters) Update(ctx context.Context, policySetID string, pa
 	if !validStringID(&parameterID) {
 		return nil, errors.New("invalid value for parameter ID")
 	}
-
-	// Make sure we don't send a user provided ID.
-	options.ID = parameterID
 
 	u := fmt.Sprintf("policy-sets/%s/parameters/%s", url.QueryEscape(policySetID), url.QueryEscape(parameterID))
 	req, err := s.client.newRequest("PATCH", u, &options)

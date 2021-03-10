@@ -78,8 +78,9 @@ func (s *agentPools) List(ctx context.Context, organization string, options Agen
 
 // AgentPoolCreateOptions represents the options for creating an agent pool.
 type AgentPoolCreateOptions struct {
-	// For internal use only!
-	ID string `jsonapi:"primary,agent-pools"`
+	// Type is the required field as part of JSON:API.
+	// https://jsonapi.org/format/#crud-creating
+	Type string `jsonapi:"primary,agent-pools"`
 
 	// A name to identify the agent pool.
 	Name *string `jsonapi:"attr,name"`
@@ -104,9 +105,6 @@ func (s *agentPools) Create(ctx context.Context, organization string, options Ag
 	if err := options.valid(); err != nil {
 		return nil, err
 	}
-
-	// Make sure we don't send a user provided ID.
-	options.ID = ""
 
 	u := fmt.Sprintf("organizations/%s/agent-pools", url.QueryEscape(organization))
 	req, err := s.client.newRequest("POST", u, &options)
@@ -146,8 +144,9 @@ func (s *agentPools) Read(ctx context.Context, agentpoolID string) (*AgentPool, 
 
 // AgentPoolUpdateOptions represents the options for updating an agent pool.
 type AgentPoolUpdateOptions struct {
-	// For internal use only!
-	ID string `jsonapi:"primary,agent-pools"`
+	// Type is the required field as part of JSON:API.
+	// https://jsonapi.org/format/#crud-creating
+	Type string `jsonapi:"primary,agent-pools"`
 
 	// A new name to identify the agent pool.
 	Name *string `jsonapi:"attr,name"`
@@ -169,9 +168,6 @@ func (s *agentPools) Update(ctx context.Context, agentPoolID string, options Age
 	if err := options.valid(); err != nil {
 		return nil, err
 	}
-
-	// Make sure we don't send a user provided ID.
-	options.ID = ""
 
 	u := fmt.Sprintf("agent-pools/%s", url.QueryEscape(agentPoolID))
 	req, err := s.client.newRequest("PATCH", u, &options)

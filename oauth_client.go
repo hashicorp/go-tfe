@@ -108,8 +108,9 @@ func (s *oAuthClients) List(ctx context.Context, organization string, options OA
 
 // OAuthClientCreateOptions represents the options for creating an OAuth client.
 type OAuthClientCreateOptions struct {
-	// For internal use only!
-	ID string `jsonapi:"primary,oauth-clients"`
+	// Type is the required field as part of JSON:API.
+	// https://jsonapi.org/format/#crud-creating
+	Type string `jsonapi:"primary,oauth-clients"`
 
 	// The base URL of your VCS provider's API.
 	APIURL *string `jsonapi:"attr,api-url"`
@@ -154,9 +155,6 @@ func (s *oAuthClients) Create(ctx context.Context, organization string, options 
 	if err := options.valid(); err != nil {
 		return nil, err
 	}
-
-	// Make sure we don't send a user provided ID.
-	options.ID = ""
 
 	u := fmt.Sprintf("organizations/%s/oauth-clients", url.QueryEscape(organization))
 	req, err := s.client.newRequest("POST", u, &options)

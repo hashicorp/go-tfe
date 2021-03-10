@@ -72,8 +72,9 @@ func (s *agentTokens) List(ctx context.Context, agentPoolID string) (*AgentToken
 
 // AgentTokenGenerateOptions represents the options for creating an agent token.
 type AgentTokenGenerateOptions struct {
-	// For internal use only!
-	ID string `jsonapi:"primary,agent-tokens"`
+	// Type is the required field as part of JSON:API.
+	// https://jsonapi.org/format/#crud-creating
+	Type string `jsonapi:"primary,agent-tokens"`
 
 	// Description of the token
 	Description *string `jsonapi:"attr,description"`
@@ -88,9 +89,6 @@ func (s *agentTokens) Generate(ctx context.Context, agentPoolID string, options 
 	if !validString(options.Description) {
 		return nil, ErrAgentTokenDescription
 	}
-
-	// Make sure we don't send a user provided ID.
-	options.ID = ""
 
 	u := fmt.Sprintf("agent-pools/%s/authentication-tokens", url.QueryEscape(agentPoolID))
 	req, err := s.client.newRequest("POST", u, &options)

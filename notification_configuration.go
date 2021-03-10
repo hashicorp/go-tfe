@@ -131,8 +131,9 @@ func (s *notificationConfigurations) List(ctx context.Context, workspaceID strin
 // NotificationConfigurationCreateOptions represents the options for
 // creating a new notification configuration.
 type NotificationConfigurationCreateOptions struct {
-	// For internal use only!
-	ID string `jsonapi:"primary,notification-configurations"`
+	// Type is the required field as part of JSON:API.
+	// https://jsonapi.org/format/#crud-creating
+	Type string `jsonapi:"primary,notification-configurations"`
 
 	// The destination type of the notification configuration
 	DestinationType *NotificationDestinationType `jsonapi:"attr,destination-type"`
@@ -188,9 +189,6 @@ func (s *notificationConfigurations) Create(ctx context.Context, workspaceID str
 		return nil, err
 	}
 
-	// Make sure we don't send a user provided ID.
-	options.ID = ""
-
 	u := fmt.Sprintf("workspaces/%s/notification-configurations", url.QueryEscape(workspaceID))
 	req, err := s.client.newRequest("POST", u, &options)
 	if err != nil {
@@ -230,8 +228,9 @@ func (s *notificationConfigurations) Read(ctx context.Context, notificationConfi
 // NotificationConfigurationUpdateOptions represents the options for
 // updating a existing notification configuration.
 type NotificationConfigurationUpdateOptions struct {
-	// For internal use only!
-	ID string `jsonapi:"primary,notification-configurations"`
+	// Type is the required field as part of JSON:API.
+	// https://jsonapi.org/format/#crud-creating
+	Type string `jsonapi:"primary,notification-configurations"`
 
 	// Whether the notification configuration should be enabled or not
 	Enabled *bool `jsonapi:"attr,enabled,omitempty"`
@@ -261,9 +260,6 @@ func (s *notificationConfigurations) Update(ctx context.Context, notificationCon
 	if !validStringID(&notificationConfigurationID) {
 		return nil, errors.New("invalid value for notification configuration ID")
 	}
-
-	// Make sure we don't send a user provided ID.
-	options.ID = ""
 
 	u := fmt.Sprintf("notification-configurations/%s", url.QueryEscape(notificationConfigurationID))
 	req, err := s.client.newRequest("PATCH", u, &options)

@@ -110,8 +110,9 @@ type RegistryModuleVersionStatuses struct {
 
 // RegistryModuleCreateOptions is used when creating a registry module without a VCS repo
 type RegistryModuleCreateOptions struct {
-	// For internal use only!
-	ID string `jsonapi:"primary,registry-modules"`
+	// Type is the required field as part of JSON:API.
+	// https://jsonapi.org/format/#crud-creating
+	Type string `jsonapi:"primary,registry-modules"`
 
 	Name     *string `jsonapi:"attr,name"`
 	Provider *string `jsonapi:"attr,provider"`
@@ -142,9 +143,6 @@ func (r *registryModules) Create(ctx context.Context, organization string, optio
 		return nil, err
 	}
 
-	// Make sure we don't send a user provided ID.
-	options.ID = ""
-
 	u := fmt.Sprintf(
 		"organizations/%s/registry-modules",
 		url.QueryEscape(organization),
@@ -165,8 +163,9 @@ func (r *registryModules) Create(ctx context.Context, organization string, optio
 
 // RegistryModuleCreateVersionOptions is used when creating a registry module version
 type RegistryModuleCreateVersionOptions struct {
-	// For internal use only!
-	ID string `jsonapi:"primary,registry-module-versions"`
+	// Type is the required field as part of JSON:API.
+	// https://jsonapi.org/format/#crud-creating
+	Type string `jsonapi:"primary,registry-module-versions"`
 
 	Version *string `jsonapi:"attr,version"`
 }
@@ -201,9 +200,6 @@ func (r *registryModules) CreateVersion(ctx context.Context, organization string
 	if err := options.valid(); err != nil {
 		return nil, err
 	}
-
-	// Make sure we don't send a user provided ID.
-	options.ID = ""
 
 	u := fmt.Sprintf(
 		"registry-modules/%s/%s/%s/versions",

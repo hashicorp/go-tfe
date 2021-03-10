@@ -176,8 +176,9 @@ func (s *runs) List(ctx context.Context, workspaceID string, options RunListOpti
 
 // RunCreateOptions represents the options for creating a new run.
 type RunCreateOptions struct {
-	// For internal use only!
-	ID string `jsonapi:"primary,runs"`
+	// Type is the required field as part of JSON:API.
+	// https://jsonapi.org/format/#crud-creating
+	Type string `jsonapi:"primary,runs"`
 
 	// Specifies if this plan is a destroy plan, which will destroy all
 	// provisioned resources.
@@ -220,9 +221,6 @@ func (s *runs) Create(ctx context.Context, options RunCreateOptions) (*Run, erro
 	if err := options.valid(); err != nil {
 		return nil, err
 	}
-
-	// Make sure we don't send a user provided ID.
-	options.ID = ""
 
 	req, err := s.client.newRequest("POST", "runs", &options)
 	if err != nil {

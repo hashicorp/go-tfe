@@ -104,8 +104,9 @@ func (s *stateVersions) List(ctx context.Context, options StateVersionListOption
 
 // StateVersionCreateOptions represents the options for creating a state version.
 type StateVersionCreateOptions struct {
-	// For internal use only!
-	ID string `jsonapi:"primary,state-versions"`
+	// Type is the required field as part of JSON:API.
+	// https://jsonapi.org/format/#crud-creating
+	Type string `jsonapi:"primary,state-versions"`
 
 	// The lineage of the state.
 	Lineage *string `jsonapi:"attr,lineage,omitempty"`
@@ -148,9 +149,6 @@ func (s *stateVersions) Create(ctx context.Context, workspaceID string, options 
 	if err := options.valid(); err != nil {
 		return nil, err
 	}
-
-	// Make sure we don't send a user provided ID.
-	options.ID = ""
 
 	u := fmt.Sprintf("workspaces/%s/state-versions", url.QueryEscape(workspaceID))
 	req, err := s.client.newRequest("POST", u, &options)

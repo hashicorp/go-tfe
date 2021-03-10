@@ -103,8 +103,9 @@ func (s *oAuthTokens) Read(ctx context.Context, oAuthTokenID string) (*OAuthToke
 
 // OAuthTokenUpdateOptions represents the options for updating an OAuth token.
 type OAuthTokenUpdateOptions struct {
-	// For internal use only!
-	ID string `jsonapi:"primary,oauth-tokens"`
+	// Type is the required field as part of JSON:API.
+	// https://jsonapi.org/format/#crud-creating
+	Type string `jsonapi:"primary,oauth-tokens"`
 
 	// A private SSH key to be used for git clone operations.
 	PrivateSSHKey *string `jsonapi:"attr,ssh-key"`
@@ -115,9 +116,6 @@ func (s *oAuthTokens) Update(ctx context.Context, oAuthTokenID string, options O
 	if !validStringID(&oAuthTokenID) {
 		return nil, errors.New("invalid value for OAuth token ID")
 	}
-
-	// Make sure we don't send a user provided ID.
-	options.ID = ""
 
 	u := fmt.Sprintf("oauth-tokens/%s", url.QueryEscape(oAuthTokenID))
 	req, err := s.client.newRequest("PATCH", u, &options)

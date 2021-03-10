@@ -75,8 +75,9 @@ type PlanExport struct {
 
 // PlanExportCreateOptions represents the options for exporting data from a plan.
 type PlanExportCreateOptions struct {
-	// For internal use only!
-	ID string `jsonapi:"primary,plan-exports"`
+	// Type is the required field as part of JSON:API.
+	// https://jsonapi.org/format/#crud-creating
+	Type string `jsonapi:"primary,plan-exports"`
 
 	// The plan to export.
 	Plan *Plan `jsonapi:"relation,plan"`
@@ -99,9 +100,6 @@ func (s *planExports) Create(ctx context.Context, options PlanExportCreateOption
 	if err := options.valid(); err != nil {
 		return nil, err
 	}
-
-	// Make sure we don't send a user provided ID.
-	options.ID = ""
 
 	req, err := s.client.newRequest("POST", "plan-exports", &options)
 	if err != nil {

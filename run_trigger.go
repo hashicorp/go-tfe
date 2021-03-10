@@ -99,8 +99,9 @@ func (s *runTriggers) List(ctx context.Context, workspaceID string, options RunT
 // RunTriggerCreateOptions represents the options for
 // creating a new run trigger.
 type RunTriggerCreateOptions struct {
-	// For internal use only!
-	ID string `jsonapi:"primary,run-triggers"`
+	// Type is the required field as part of JSON:API.
+	// https://jsonapi.org/format/#crud-creating
+	Type string `jsonapi:"primary,run-triggers"`
 
 	// The source workspace
 	Sourceable *Workspace `jsonapi:"relation,sourceable"`
@@ -121,9 +122,6 @@ func (s *runTriggers) Create(ctx context.Context, workspaceID string, options Ru
 	if err := options.valid(); err != nil {
 		return nil, err
 	}
-
-	// Make sure we don't send a user provided ID.
-	options.ID = ""
 
 	u := fmt.Sprintf("workspaces/%s/run-triggers", url.QueryEscape(workspaceID))
 	req, err := s.client.newRequest("POST", u, &options)

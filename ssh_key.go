@@ -77,8 +77,9 @@ func (s *sshKeys) List(ctx context.Context, organization string, options SSHKeyL
 
 // SSHKeyCreateOptions represents the options for creating an SSH key.
 type SSHKeyCreateOptions struct {
-	// For internal use only!
-	ID string `jsonapi:"primary,ssh-keys"`
+	// Type is the required field as part of JSON:API.
+	// https://jsonapi.org/format/#crud-creating
+	Type string `jsonapi:"primary,ssh-keys"`
 
 	// A name to identify the SSH key.
 	Name *string `jsonapi:"attr,name"`
@@ -106,9 +107,6 @@ func (s *sshKeys) Create(ctx context.Context, organization string, options SSHKe
 	if err := options.valid(); err != nil {
 		return nil, err
 	}
-
-	// Make sure we don't send a user provided ID.
-	options.ID = ""
 
 	u := fmt.Sprintf("organizations/%s/ssh-keys", url.QueryEscape(organization))
 	req, err := s.client.newRequest("POST", u, &options)

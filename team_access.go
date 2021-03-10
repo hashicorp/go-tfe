@@ -139,8 +139,9 @@ func (s *teamAccesses) List(ctx context.Context, options TeamAccessListOptions) 
 
 // TeamAccessAddOptions represents the options for adding team access.
 type TeamAccessAddOptions struct {
-	// For internal use only!
-	ID string `jsonapi:"primary,team-workspaces"`
+	// Type is the required field as part of JSON:API.
+	// https://jsonapi.org/format/#crud-creating
+	Type string `jsonapi:"primary,team-workspaces"`
 
 	// The type of access to grant.
 	Access *AccessType `jsonapi:"attr,access"`
@@ -179,9 +180,6 @@ func (s *teamAccesses) Add(ctx context.Context, options TeamAccessAddOptions) (*
 		return nil, err
 	}
 
-	// Make sure we don't send a user provided ID.
-	options.ID = ""
-
 	req, err := s.client.newRequest("POST", "team-workspaces", &options)
 	if err != nil {
 		return nil, err
@@ -219,8 +217,9 @@ func (s *teamAccesses) Read(ctx context.Context, teamAccessID string) (*TeamAcce
 
 // TeamAccessUpdateOptions represents the options for updating team access.
 type TeamAccessUpdateOptions struct {
-	// For internal use only!
-	ID string `jsonapi:"primary,team-workspaces"`
+	// Type is the required field as part of JSON:API.
+	// https://jsonapi.org/format/#crud-creating
+	Type string `jsonapi:"primary,team-workspaces"`
 
 	// The type of access to grant.
 	Access *AccessType `jsonapi:"attr,access,omitempty"`
@@ -239,9 +238,6 @@ func (s *teamAccesses) Update(ctx context.Context, teamAccessID string, options 
 	if !validStringID(&teamAccessID) {
 		return nil, errors.New("invalid value for team access ID")
 	}
-
-	// Make sure we don't send a user provided ID.
-	options.ID = ""
 
 	u := fmt.Sprintf("team-workspaces/%s", url.QueryEscape(teamAccessID))
 	req, err := s.client.newRequest("PATCH", u, &options)
