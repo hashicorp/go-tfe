@@ -2,7 +2,6 @@ package tfe
 
 import (
 	"context"
-	"fmt"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -20,7 +19,6 @@ func TestAdminUsers_List(t *testing.T) {
 
 	org, orgCleanup := createOrganization(t, client)
 	defer orgCleanup()
-	fmt.Println(org.Name)
 
 	t.Run("without list options", func(t *testing.T) {
 		ul, err := client.Admin.Users.List(ctx, AdminUserListOptions{})
@@ -122,8 +120,6 @@ func TestAdminUsers_Delete(t *testing.T) {
 		assert.Equal(t, 1, ul.CurrentPage)
 		assert.Equal(t, true, ul.TotalCount == 1)
 
-		fmt.Println(member.User.ID)
-
 		err = client.Admin.Users.Delete(ctx, member.User.ID)
 		require.NoError(t, err)
 
@@ -144,9 +140,11 @@ func TestAdminUsers_Delete(t *testing.T) {
 }
 
 func TestAdminUsers_AdminPrivlages_Suspensions(t *testing.T) {
-	// Doing both AdminPrivlages API and Suspensions API tests in
-	// one test run so as to avoid operating on the same test user and
-	// messing up the admin/suspension states.
+	// This test relies on a user already existing on the instance
+	// this test is run against. This user has a 'tst' as part of their
+	// email. We look this user up, and execute both the AdminPrivlage and
+	// Suspension operations on this user. This is why both are done in
+	// the same test.
 
 	skipIfCloud(t)
 
