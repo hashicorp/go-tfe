@@ -16,8 +16,6 @@ func TestAdminUsers_List(t *testing.T) {
 	ctx := context.Background()
 
 	currentUser, err := client.Users.ReadCurrent(ctx)
-	fmt.Println(currentUser.ID)
-	fmt.Println(currentUser.Email)
 	assert.NoError(t, err)
 
 	org, orgCleanup := createOrganization(t, client)
@@ -63,11 +61,14 @@ func TestAdminUsers_List(t *testing.T) {
 		assert.Equal(t, 1, ul.CurrentPage)
 		assert.Equal(t, true, ul.TotalCount == 1)
 
+		member, memberCleanup := createOrganizationMembership(t, client, org)
+		defer memberCleanup()
+
 		ul, err = client.Admin.Users.List(ctx, AdminUserListOptions{
-			Query: String(currentUser.Email),
+			Query: String(member.User.Email),
 		})
 		require.NoError(t, err)
-		assert.Equal(t, currentUser.Email, ul.Items[0].Email)
+		assert.Equal(t, member.User.Email, ul.Items[0].Email)
 		assert.Equal(t, 1, ul.CurrentPage)
 		assert.Equal(t, true, ul.TotalCount == 1)
 	})
@@ -92,6 +93,118 @@ func TestAdminUsers_List(t *testing.T) {
 		assert.NoError(t, err)
 		assert.NotEmpty(t, ul.Items)
 		assert.NotNil(t, ul.Items[0])
-		assert.Equal(t, currentUser.Email, ul.Items[0].Email)
+		// We use this `includesEmail` helper function because throughout
+		// the tests, there could be multiple admins, depending on the
+		// ordering of the test runs.
+		assert.Equal(t, true, includesEmail(currentUser.Email, ul.Items))
 	})
+}
+
+func TestAdminUsers_Delete(t *testing.T) {
+	skipIfCloud(t)
+
+	client := testClient(t)
+	ctx := context.Background()
+
+	org, orgCleanup := createOrganization(t, client)
+	defer orgCleanup()
+
+	t.Run("an existing user", func(t *testing.T) {
+		// Avoid the member cleanup function because the user
+		// gets deleted below.
+		member, _ := createOrganizationMembership(t, client, org)
+
+		ul, err := client.Admin.Users.List(ctx, AdminUserListOptions{
+			Query: String(member.User.Email),
+		})
+		require.NoError(t, err)
+		assert.Equal(t, member.User.Email, ul.Items[0].Email)
+		assert.Equal(t, 1, ul.CurrentPage)
+		assert.Equal(t, true, ul.TotalCount == 1)
+
+		fmt.Println(member.User.ID)
+
+		err = client.Admin.Users.Delete(ctx, member.User.ID)
+		require.NoError(t, err)
+
+		ul, err = client.Admin.Users.List(ctx, AdminUserListOptions{
+			Query: String(member.User.Email),
+		})
+		require.NoError(t, err)
+		assert.Empty(t, ul.Items)
+		assert.Equal(t, 1, ul.CurrentPage)
+		assert.Equal(t, 0, ul.TotalCount)
+
+	})
+
+	t.Run("an non-existing user", func(t *testing.T) {
+		err := client.Admin.Users.Delete(ctx, "non-existing-user-id")
+		require.Error(t, err)
+	})
+}
+
+func TestAdminUsers_AdminPrivlages_Suspensions(t *testing.T) {
+	// Doing both AdminPrivlages API and Suspensions API tests in
+	// one test run so as to avoid operating on the same test user and
+	// messing up the admin/suspension states.
+
+	skipIfCloud(t)
+
+	client := testClient(t)
+	ctx := context.Background()
+
+	ul, err := client.Admin.Users.List(ctx, AdminUserListOptions{
+		Query: String("tst"),
+	})
+	require.NoError(t, err)
+	if len(ul.Items) == 0 {
+		t.Skip("No test users available")
+	}
+	user := ul.Items[0]
+
+	user, err = client.Admin.Users.GrantAdminPrivlages(ctx, user.ID)
+	require.NoError(t, err)
+	require.True(t, user.IsAdmin)
+
+	user, err = client.Admin.Users.RevokeAdminPrivlages(ctx, user.ID)
+	require.NoError(t, err)
+	require.False(t, user.IsAdmin)
+
+	user, err = client.Admin.Users.Suspend(ctx, user.ID)
+	require.NoError(t, err)
+	require.True(t, user.IsSuspended)
+
+	user, err = client.Admin.Users.Unsuspend(ctx, user.ID)
+	require.NoError(t, err)
+	require.False(t, user.IsSuspended)
+}
+
+func TestAdminUsers_Disable2FA(t *testing.T) {
+	skipIfCloud(t)
+
+	client := testClient(t)
+	ctx := context.Background()
+
+	org, orgCleanup := createOrganization(t, client)
+	defer orgCleanup()
+
+	member, memberCleanup := createOrganizationMembership(t, client, org)
+	defer memberCleanup()
+
+	if !member.User.TwoFactor.Enabled {
+		t.Skip("User does not have 2FA enalbed. Skiping")
+	}
+	user, err := client.Admin.Users.Disable2FA(ctx, member.User.ID)
+	require.NoError(t, err)
+	require.NotNil(t, user)
+}
+
+func includesEmail(email string, userList []*AdminUser) bool {
+	for _, user := range userList {
+		if user.Email == email {
+			return true
+		}
+	}
+
+	return false
 }
