@@ -2,6 +2,8 @@ package tfe
 
 import (
 	"context"
+	"io/ioutil"
+	"strings"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -254,6 +256,45 @@ func TestWorkspacesRead(t *testing.T) {
 		assert.Nil(t, w)
 		assert.EqualError(t, err, ErrInvalidWorkspaceValue.Error())
 	})
+}
+
+func TestWorkspacesReadWithHistory(t *testing.T) {
+	client := testClient(t)
+
+	orgTest, orgTestCleanup := createOrganization(t, client)
+	defer orgTestCleanup()
+
+	wTest, wTestCleanup := createWorkspace(t, client, orgTest)
+	defer wTestCleanup()
+
+	_, rCleanup := createAppliedRun(t, client, wTest)
+	defer rCleanup()
+
+	w, err := client.Workspaces.Read(context.Background(), orgTest.Name, wTest.Name)
+	require.NoError(t, err)
+
+	assert.Equal(t, 1, w.RunsCount)
+	assert.Equal(t, 1, w.ResourceCount)
+}
+
+func TestWorkspacesReadReadme(t *testing.T) {
+	client := testClient(t)
+
+	orgTest, orgTestCleanup := createOrganization(t, client)
+	defer orgTestCleanup()
+
+	wTest, wTestCleanup := createWorkspaceWithVCS(t, client, orgTest)
+	defer wTestCleanup()
+
+	_, rCleanup := createAppliedRun(t, client, wTest)
+	defer rCleanup()
+
+	w, err := client.Workspaces.Readme(context.Background(), wTest.ID)
+	require.NoError(t, err)
+
+	readme, err := ioutil.ReadAll(w)
+	require.NoError(t, err)
+	require.True(t, strings.HasPrefix(string(readme), `This is a simple test`))
 }
 
 func TestWorkspacesReadByID(t *testing.T) {
