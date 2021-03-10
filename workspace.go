@@ -167,7 +167,9 @@ func (s *workspaces) List(ctx context.Context, organization string, options Work
 
 // WorkspaceCreateOptions represents the options for creating a new workspace.
 type WorkspaceCreateOptions struct {
-	// Type is the required field as part of JSON:API.
+	// Type is a public field utilized by JSON:API to
+	// set the resource type via the field tag.
+	// It is not a user-defined value and does not need to be set.
 	// https://jsonapi.org/format/#crud-creating
 	Type string `jsonapi:"primary,workspaces"`
 
@@ -344,7 +346,9 @@ func (s *workspaces) ReadByID(ctx context.Context, workspaceID string) (*Workspa
 
 // WorkspaceUpdateOptions represents the options for updating a workspace.
 type WorkspaceUpdateOptions struct {
-	// Type is the required field as part of JSON:API.
+	// Type is a public field utilized by JSON:API to
+	// set the resource type via the field tag.
+	// It is not a user-defined value and does not need to be set.
 	// https://jsonapi.org/format/#crud-creating
 	Type string `jsonapi:"primary,workspaces"`
 
@@ -647,7 +651,9 @@ func (s *workspaces) ForceUnlock(ctx context.Context, workspaceID string) (*Work
 // WorkspaceAssignSSHKeyOptions represents the options to assign an SSH key to
 // a workspace.
 type WorkspaceAssignSSHKeyOptions struct {
-	// Type is the required field as part of JSON:API.
+	// Type is a public field utilized by JSON:API to
+	// set the resource type via the field tag.
+	// It is not a user-defined value and does not need to be set.
 	// https://jsonapi.org/format/#crud-creating
 	Type string `jsonapi:"primary,workspaces"`
 
@@ -692,7 +698,9 @@ func (s *workspaces) AssignSSHKey(ctx context.Context, workspaceID string, optio
 // workspaceUnassignSSHKeyOptions represents the options to unassign an SSH key
 // to a workspace.
 type workspaceUnassignSSHKeyOptions struct {
-	// Type is the required field as part of JSON:API.
+	// Type is a public field utilized by JSON:API to
+	// set the resource type via the field tag.
+	// It is not a user-defined value and does not need to be set.
 	// https://jsonapi.org/format/#crud-creating
 	Type string `jsonapi:"primary,workspaces"`
 

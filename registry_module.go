@@ -110,7 +110,9 @@ type RegistryModuleVersionStatuses struct {
 
 // RegistryModuleCreateOptions is used when creating a registry module without a VCS repo
 type RegistryModuleCreateOptions struct {
-	// Type is the required field as part of JSON:API.
+	// Type is a public field utilized by JSON:API to
+	// set the resource type via the field tag.
+	// It is not a user-defined value and does not need to be set.
 	// https://jsonapi.org/format/#crud-creating
 	Type string `jsonapi:"primary,registry-modules"`
 
@@ -163,7 +165,9 @@ func (r *registryModules) Create(ctx context.Context, organization string, optio
 
 // RegistryModuleCreateVersionOptions is used when creating a registry module version
 type RegistryModuleCreateVersionOptions struct {
-	// Type is the required field as part of JSON:API.
+	// Type is a public field utilized by JSON:API to
+	// set the resource type via the field tag.
+	// It is not a user-defined value and does not need to be set.
 	// https://jsonapi.org/format/#crud-creating
 	Type string `jsonapi:"primary,registry-module-versions"`
 

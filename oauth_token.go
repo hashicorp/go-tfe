@@ -103,7 +103,9 @@ func (s *oAuthTokens) Read(ctx context.Context, oAuthTokenID string) (*OAuthToke
 
 // OAuthTokenUpdateOptions represents the options for updating an OAuth token.
 type OAuthTokenUpdateOptions struct {
-	// Type is the required field as part of JSON:API.
+	// Type is a public field utilized by JSON:API to
+	// set the resource type via the field tag.
+	// It is not a user-defined value and does not need to be set.
 	// https://jsonapi.org/format/#crud-creating
 	Type string `jsonapi:"primary,oauth-tokens"`
 

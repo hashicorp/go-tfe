@@ -104,7 +104,9 @@ func (s *stateVersions) List(ctx context.Context, options StateVersionListOption
 
 // StateVersionCreateOptions represents the options for creating a state version.
 type StateVersionCreateOptions struct {
-	// Type is the required field as part of JSON:API.
+	// Type is a public field utilized by JSON:API to
+	// set the resource type via the field tag.
+	// It is not a user-defined value and does not need to be set.
 	// https://jsonapi.org/format/#crud-creating
 	Type string `jsonapi:"primary,state-versions"`
 

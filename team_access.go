@@ -139,7 +139,9 @@ func (s *teamAccesses) List(ctx context.Context, options TeamAccessListOptions) 
 
 // TeamAccessAddOptions represents the options for adding team access.
 type TeamAccessAddOptions struct {
-	// Type is the required field as part of JSON:API.
+	// Type is a public field utilized by JSON:API to
+	// set the resource type via the field tag.
+	// It is not a user-defined value and does not need to be set.
 	// https://jsonapi.org/format/#crud-creating
 	Type string `jsonapi:"primary,team-workspaces"`
 
@@ -217,7 +219,9 @@ func (s *teamAccesses) Read(ctx context.Context, teamAccessID string) (*TeamAcce
 
 // TeamAccessUpdateOptions represents the options for updating team access.
 type TeamAccessUpdateOptions struct {
-	// Type is the required field as part of JSON:API.
+	// Type is a public field utilized by JSON:API to
+	// set the resource type via the field tag.
+	// It is not a user-defined value and does not need to be set.
 	// https://jsonapi.org/format/#crud-creating
 	Type string `jsonapi:"primary,team-workspaces"`
 

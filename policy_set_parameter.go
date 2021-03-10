@@ -89,7 +89,9 @@ func (s *policySetParameters) List(ctx context.Context, policySetID string, opti
 
 // PolicySetParameterCreateOptions represents the options for creating a new parameter.
 type PolicySetParameterCreateOptions struct {
-	// Type is the required field as part of JSON:API.
+	// Type is a public field utilized by JSON:API to
+	// set the resource type via the field tag.
+	// It is not a user-defined value and does not need to be set.
 	// https://jsonapi.org/format/#crud-creating
 	Type string `jsonapi:"primary,vars"`
 
@@ -169,7 +171,9 @@ func (s *policySetParameters) Read(ctx context.Context, policySetID string, para
 
 // PolicySetParameterUpdateOptions represents the options for updating a parameter.
 type PolicySetParameterUpdateOptions struct {
-	// Type is the required field as part of JSON:API.
+	// Type is a public field utilized by JSON:API to
+	// set the resource type via the field tag.
+	// It is not a user-defined value and does not need to be set.
 	// https://jsonapi.org/format/#crud-creating
 	Type string `jsonapi:"primary,vars"`
 

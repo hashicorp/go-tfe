@@ -131,7 +131,9 @@ func (s *notificationConfigurations) List(ctx context.Context, workspaceID strin
 // NotificationConfigurationCreateOptions represents the options for
 // creating a new notification configuration.
 type NotificationConfigurationCreateOptions struct {
-	// Type is the required field as part of JSON:API.
+	// Type is a public field utilized by JSON:API to
+	// set the resource type via the field tag.
+	// It is not a user-defined value and does not need to be set.
 	// https://jsonapi.org/format/#crud-creating
 	Type string `jsonapi:"primary,notification-configurations"`
 
@@ -228,7 +230,9 @@ func (s *notificationConfigurations) Read(ctx context.Context, notificationConfi
 // NotificationConfigurationUpdateOptions represents the options for
 // updating a existing notification configuration.
 type NotificationConfigurationUpdateOptions struct {
-	// Type is the required field as part of JSON:API.
+	// Type is a public field utilized by JSON:API to
+	// set the resource type via the field tag.
+	// It is not a user-defined value and does not need to be set.
 	// https://jsonapi.org/format/#crud-creating
 	Type string `jsonapi:"primary,notification-configurations"`
 

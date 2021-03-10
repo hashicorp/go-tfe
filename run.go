@@ -176,7 +176,9 @@ func (s *runs) List(ctx context.Context, workspaceID string, options RunListOpti
 
 // RunCreateOptions represents the options for creating a new run.
 type RunCreateOptions struct {
-	// Type is the required field as part of JSON:API.
+	// Type is a public field utilized by JSON:API to
+	// set the resource type via the field tag.
+	// It is not a user-defined value and does not need to be set.
 	// https://jsonapi.org/format/#crud-creating
 	Type string `jsonapi:"primary,runs"`
 

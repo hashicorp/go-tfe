@@ -78,7 +78,9 @@ func (s *agentPools) List(ctx context.Context, organization string, options Agen
 
 // AgentPoolCreateOptions represents the options for creating an agent pool.
 type AgentPoolCreateOptions struct {
-	// Type is the required field as part of JSON:API.
+	// Type is a public field utilized by JSON:API to
+	// set the resource type via the field tag.
+	// It is not a user-defined value and does not need to be set.
 	// https://jsonapi.org/format/#crud-creating
 	Type string `jsonapi:"primary,agent-pools"`
 
@@ -144,7 +146,9 @@ func (s *agentPools) Read(ctx context.Context, agentpoolID string) (*AgentPool, 
 
 // AgentPoolUpdateOptions represents the options for updating an agent pool.
 type AgentPoolUpdateOptions struct {
-	// Type is the required field as part of JSON:API.
+	// Type is a public field utilized by JSON:API to
+	// set the resource type via the field tag.
+	// It is not a user-defined value and does not need to be set.
 	// https://jsonapi.org/format/#crud-creating
 	Type string `jsonapi:"primary,agent-pools"`
 
