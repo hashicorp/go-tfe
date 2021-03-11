@@ -120,10 +120,10 @@ func TestPolicyChecksOverride(t *testing.T) {
 	client := testClient(t)
 	ctx := context.Background()
 
-	orgTest, orgTestCleanup := createOrganization(t, client)
-	defer orgTestCleanup()
-
 	t.Run("when the policy failed", func(t *testing.T) {
+		orgTest, orgTestCleanup := createOrganization(t, client)
+		defer orgTestCleanup()
+
 		pTest, pTestCleanup := createUploadedPolicy(t, client, false, orgTest)
 		defer pTestCleanup()
 
@@ -144,6 +144,9 @@ func TestPolicyChecksOverride(t *testing.T) {
 	})
 
 	t.Run("when the policy passed", func(t *testing.T) {
+		orgTest, orgTestCleanup := createOrganization(t, client)
+		defer orgTestCleanup()
+
 		pTest, pTestCleanup := createUploadedPolicy(t, client, true, orgTest)
 		defer pTestCleanup()
 
