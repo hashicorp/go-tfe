@@ -228,7 +228,7 @@ func TestRegistryModulesCreateWithVCSConnection(t *testing.T) {
 			DisplayIdentifier: githubIdentifier,
 			IngressSubmodules: true,
 			RepositoryHTTPURL: fmt.Sprintf("https://github.com/%s", githubIdentifier),
-			ServiceProvider:   "github",
+			ServiceProvider:   string(ServiceProviderGithub),
 		}, rm.VCSRepo)
 
 		t.Run("permissions are properly decoded", func(t *testing.T) {

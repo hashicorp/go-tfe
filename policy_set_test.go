@@ -160,7 +160,7 @@ func TestPolicySetsCreate(t *testing.T) {
 			OAuthTokenID:      oc.ID,
 			IngressSubmodules: true,
 			RepositoryHTTPURL: fmt.Sprintf("https://github.com/%s", githubIdentifier),
-			ServiceProvider:   "github",
+			ServiceProvider:   string(ServiceProviderGithub),
 		})
 	})
 
@@ -197,7 +197,7 @@ func TestPolicySetsCreate(t *testing.T) {
 			OAuthTokenID:      oc.ID,
 			IngressSubmodules: false,
 			RepositoryHTTPURL: fmt.Sprintf("https://github.com/%s", githubIdentifier),
-			ServiceProvider:   "github",
+			ServiceProvider:   string(ServiceProviderGithub),
 		})
 	})
 
