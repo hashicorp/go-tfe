@@ -27,25 +27,10 @@ func TestPolicyChecksList(t *testing.T) {
 		pcl, err := client.PolicyChecks.List(ctx, rTest.ID, PolicyCheckListOptions{})
 		require.NoError(t, err)
 		require.Equal(t, 1, len(pcl.Items))
-
-		t.Run("pagination is properly decoded", func(t *testing.T) {
-			t.Skip("paging not supported yet in API")
-			assert.Equal(t, 1, pcl.CurrentPage)
-			assert.Equal(t, 1, pcl.TotalCount)
-		})
-
-		t.Run("permissions are properly decoded", func(t *testing.T) {
-			assert.NotEmpty(t, pcl.Items[0].Permissions)
-		})
-
-		t.Run("result is properly decoded", func(t *testing.T) {
-			require.NotEmpty(t, pcl.Items[0].Result)
-			assert.Equal(t, 2, pcl.Items[0].Result.Passed)
-		})
-
-		t.Run("timestamps are properly decoded", func(t *testing.T) {
-			assert.NotEmpty(t, pcl.Items[0].StatusTimestamps)
-		})
+		assert.NotEmpty(t, pcl.Items[0].Permissions)
+		require.NotEmpty(t, pcl.Items[0].Result)
+		assert.Equal(t, 2, pcl.Items[0].Result.Passed)
+		assert.NotEmpty(t, pcl.Items[0].StatusTimestamps)
 	})
 
 	t.Run("with list options", func(t *testing.T) {
@@ -92,15 +77,13 @@ func TestPolicyChecksRead(t *testing.T) {
 		pc, err := client.PolicyChecks.Read(ctx, rTest.PolicyChecks[0].ID)
 		require.NoError(t, err)
 
-		t.Run("result is properly decoded", func(t *testing.T) {
-			require.NotEmpty(t, pc.Result)
-			assert.NotEmpty(t, pc.Permissions)
-			assert.Equal(t, PolicyScopeOrganization, pc.Scope)
-			assert.Equal(t, PolicyPasses, pc.Status)
-			assert.NotEmpty(t, pc.StatusTimestamps)
-			assert.Equal(t, 1, pc.Result.Passed)
-			assert.NotEmpty(t, pc.Run)
-		})
+		require.NotEmpty(t, pc.Result)
+		assert.NotEmpty(t, pc.Permissions)
+		assert.Equal(t, PolicyScopeOrganization, pc.Scope)
+		assert.Equal(t, PolicyPasses, pc.Status)
+		assert.NotEmpty(t, pc.StatusTimestamps)
+		assert.Equal(t, 1, pc.Result.Passed)
+		assert.NotEmpty(t, pc.Run)
 	})
 
 	t.Run("when the policy check does not exist", func(t *testing.T) {
@@ -120,10 +103,10 @@ func TestPolicyChecksOverride(t *testing.T) {
 	client := testClient(t)
 	ctx := context.Background()
 
-	orgTest, orgTestCleanup := createOrganization(t, client)
-	defer orgTestCleanup()
-
 	t.Run("when the policy failed", func(t *testing.T) {
+		orgTest, orgTestCleanup := createOrganization(t, client)
+		defer orgTestCleanup()
+
 		pTest, pTestCleanup := createUploadedPolicy(t, client, false, orgTest)
 		defer pTestCleanup()
 
@@ -144,6 +127,9 @@ func TestPolicyChecksOverride(t *testing.T) {
 	})
 
 	t.Run("when the policy passed", func(t *testing.T) {
+		orgTest, orgTestCleanup := createOrganization(t, client)
+		defer orgTestCleanup()
+
 		pTest, pTestCleanup := createUploadedPolicy(t, client, true, orgTest)
 		defer pTestCleanup()
 
