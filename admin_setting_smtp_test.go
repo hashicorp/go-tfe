@@ -33,10 +33,9 @@ func TestAdminSettings_SMTP_Update(t *testing.T) {
 	ctx := context.Background()
 
 	enabled := false
-	auth := string(SMTPAuthNone)
 	smtpSettings, err := client.Admin.Settings.SMTP.Update(ctx, AdminSMTPSettingsUpdateOptions{
 		Enabled: Bool(enabled),
-		Auth:    String(auth),
+		Auth:    SMTPAuthValue(SMTPAuthNone),
 	})
 
 	require.NoError(t, err)
