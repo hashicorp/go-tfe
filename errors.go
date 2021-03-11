@@ -79,6 +79,11 @@ var (
 	// ErrInvalidUservalue is invalid.
 	ErrInvalidUserValue = errors.New("invalid value for user")
 
+	// Settings
+
+	// ErrInvalidSMTPAuth is returned when the smtp auth type is not valid.
+	ErrInvalidSMTPAuth = errors.New("invalid smtp auth type")
+
 	// Terraform Versions
 
 	// ErrInvalidTerraformVersionID is returned when the ID for a terraform

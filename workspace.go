@@ -167,8 +167,11 @@ func (s *workspaces) List(ctx context.Context, organization string, options Work
 
 // WorkspaceCreateOptions represents the options for creating a new workspace.
 type WorkspaceCreateOptions struct {
-	// For internal use only!
-	ID string `jsonapi:"primary,workspaces"`
+	// Type is a public field utilized by JSON:API to
+	// set the resource type via the field tag.
+	// It is not a user-defined value and does not need to be set.
+	// https://jsonapi.org/format/#crud-creating
+	Type string `jsonapi:"primary,workspaces"`
 
 	// Required when execution-mode is set to agent. The ID of the agent pool
 	// belonging to the workspace's organization. This value must not be specified
@@ -277,9 +280,6 @@ func (s *workspaces) Create(ctx context.Context, organization string, options Wo
 		return nil, err
 	}
 
-	// Make sure we don't send a user provided ID.
-	options.ID = ""
-
 	u := fmt.Sprintf("organizations/%s/workspaces", url.QueryEscape(organization))
 	req, err := s.client.newRequest("POST", u, &options)
 	if err != nil {
@@ -346,8 +346,11 @@ func (s *workspaces) ReadByID(ctx context.Context, workspaceID string) (*Workspa
 
 // WorkspaceUpdateOptions represents the options for updating a workspace.
 type WorkspaceUpdateOptions struct {
-	// For internal use only!
-	ID string `jsonapi:"primary,workspaces"`
+	// Type is a public field utilized by JSON:API to
+	// set the resource type via the field tag.
+	// It is not a user-defined value and does not need to be set.
+	// https://jsonapi.org/format/#crud-creating
+	Type string `jsonapi:"primary,workspaces"`
 
 	// Required when execution-mode is set to agent. The ID of the agent pool
 	// belonging to the workspace's organization. This value must not be specified
@@ -442,9 +445,6 @@ func (s *workspaces) Update(ctx context.Context, organization, workspace string,
 		return nil, err
 	}
 
-	// Make sure we don't send a user provided ID.
-	options.ID = ""
-
 	u := fmt.Sprintf(
 		"organizations/%s/workspaces/%s",
 		url.QueryEscape(organization),
@@ -469,9 +469,6 @@ func (s *workspaces) UpdateByID(ctx context.Context, workspaceID string, options
 	if !validStringID(&workspaceID) {
 		return nil, ErrInvalidWorkspaceID
 	}
-
-	// Make sure we don't send a user provided ID.
-	options.ID = ""
 
 	u := fmt.Sprintf("workspaces/%s", url.QueryEscape(workspaceID))
 	req, err := s.client.newRequest("PATCH", u, &options)
@@ -654,8 +651,11 @@ func (s *workspaces) ForceUnlock(ctx context.Context, workspaceID string) (*Work
 // WorkspaceAssignSSHKeyOptions represents the options to assign an SSH key to
 // a workspace.
 type WorkspaceAssignSSHKeyOptions struct {
-	// For internal use only!
-	ID string `jsonapi:"primary,workspaces"`
+	// Type is a public field utilized by JSON:API to
+	// set the resource type via the field tag.
+	// It is not a user-defined value and does not need to be set.
+	// https://jsonapi.org/format/#crud-creating
+	Type string `jsonapi:"primary,workspaces"`
 
 	// The SSH key ID to assign.
 	SSHKeyID *string `jsonapi:"attr,id"`
@@ -680,9 +680,6 @@ func (s *workspaces) AssignSSHKey(ctx context.Context, workspaceID string, optio
 		return nil, err
 	}
 
-	// Make sure we don't send a user provided ID.
-	options.ID = ""
-
 	u := fmt.Sprintf("workspaces/%s/relationships/ssh-key", url.QueryEscape(workspaceID))
 	req, err := s.client.newRequest("PATCH", u, &options)
 	if err != nil {
@@ -701,8 +698,11 @@ func (s *workspaces) AssignSSHKey(ctx context.Context, workspaceID string, optio
 // workspaceUnassignSSHKeyOptions represents the options to unassign an SSH key
 // to a workspace.
 type workspaceUnassignSSHKeyOptions struct {
-	// For internal use only!
-	ID string `jsonapi:"primary,workspaces"`
+	// Type is a public field utilized by JSON:API to
+	// set the resource type via the field tag.
+	// It is not a user-defined value and does not need to be set.
+	// https://jsonapi.org/format/#crud-creating
+	Type string `jsonapi:"primary,workspaces"`
 
 	// Must be nil to unset the currently assigned SSH key.
 	SSHKeyID *string `jsonapi:"attr,id"`

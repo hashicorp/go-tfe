@@ -139,6 +139,7 @@ type Admin struct {
 	Runs              AdminRuns
 	TerraformVersions AdminTerraformVersions
 	Users             AdminUsers
+	Settings          *AdminSettings
 }
 
 // Meta contains any Terraform Cloud APIs which provide data about the API itself.
@@ -223,6 +224,7 @@ func NewClient(cfg *Config) (*Client, error) {
 		Organizations:     &adminOrganizations{client: client},
 		Workspaces:        &adminWorkspaces{client: client},
 		Runs:              &adminRuns{client: client},
+		Settings:          newAdminSettings(client),
 		TerraformVersions: &adminTerraformVersions{client: client},
 		Users:             &adminUsers{client: client},
 	}

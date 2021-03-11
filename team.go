@@ -99,8 +99,11 @@ func (s *teams) List(ctx context.Context, organization string, options TeamListO
 
 // TeamCreateOptions represents the options for creating a team.
 type TeamCreateOptions struct {
-	// For internal use only!
-	ID string `jsonapi:"primary,teams"`
+	// Type is a public field utilized by JSON:API to
+	// set the resource type via the field tag.
+	// It is not a user-defined value and does not need to be set.
+	// https://jsonapi.org/format/#crud-creating
+	Type string `jsonapi:"primary,teams"`
 
 	// Name of the team.
 	Name *string `jsonapi:"attr,name"`
@@ -134,9 +137,6 @@ func (s *teams) Create(ctx context.Context, organization string, options TeamCre
 	if err := options.valid(); err != nil {
 		return nil, err
 	}
-
-	// Make sure we don't send a user provided ID.
-	options.ID = ""
 
 	u := fmt.Sprintf("organizations/%s/teams", url.QueryEscape(organization))
 	req, err := s.client.newRequest("POST", u, &options)
@@ -176,8 +176,11 @@ func (s *teams) Read(ctx context.Context, teamID string) (*Team, error) {
 
 // TeamUpdateOptions represents the options for updating a team.
 type TeamUpdateOptions struct {
-	// For internal use only!
-	ID string `jsonapi:"primary,teams"`
+	// Type is a public field utilized by JSON:API to
+	// set the resource type via the field tag.
+	// It is not a user-defined value and does not need to be set.
+	// https://jsonapi.org/format/#crud-creating
+	Type string `jsonapi:"primary,teams"`
 
 	// New name for the team
 	Name *string `jsonapi:"attr,name,omitempty"`
@@ -194,9 +197,6 @@ func (s *teams) Update(ctx context.Context, teamID string, options TeamUpdateOpt
 	if !validStringID(&teamID) {
 		return nil, errors.New("invalid value for team ID")
 	}
-
-	// Make sure we don't send a user provided ID.
-	options.ID = ""
 
 	u := fmt.Sprintf("teams/%s", url.QueryEscape(teamID))
 	req, err := s.client.newRequest("PATCH", u, &options)

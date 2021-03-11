@@ -107,8 +107,11 @@ func (s *policySets) List(ctx context.Context, organization string, options Poli
 
 // PolicySetCreateOptions represents the options for creating a new policy set.
 type PolicySetCreateOptions struct {
-	// For internal use only!
-	ID string `jsonapi:"primary,policy-sets"`
+	// Type is a public field utilized by JSON:API to
+	// set the resource type via the field tag.
+	// It is not a user-defined value and does not need to be set.
+	// https://jsonapi.org/format/#crud-creating
+	Type string `jsonapi:"primary,policy-sets"`
 
 	// The name of the policy set.
 	Name *string `jsonapi:"attr,name"`
@@ -157,9 +160,6 @@ func (s *policySets) Create(ctx context.Context, organization string, options Po
 		return nil, err
 	}
 
-	// Make sure we don't send a user provided ID.
-	options.ID = ""
-
 	u := fmt.Sprintf("organizations/%s/policy-sets", url.QueryEscape(organization))
 	req, err := s.client.newRequest("POST", u, &options)
 	if err != nil {
@@ -198,8 +198,11 @@ func (s *policySets) Read(ctx context.Context, policySetID string) (*PolicySet, 
 
 // PolicySetUpdateOptions represents the options for updating a policy set.
 type PolicySetUpdateOptions struct {
-	// For internal use only!
-	ID string `jsonapi:"primary,policy-sets"`
+	// Type is a public field utilized by JSON:API to
+	// set the resource type via the field tag.
+	// It is not a user-defined value and does not need to be set.
+	// https://jsonapi.org/format/#crud-creating
+	Type string `jsonapi:"primary,policy-sets"`
 
 	/// The name of the policy set.
 	Name *string `jsonapi:"attr,name,omitempty"`
@@ -239,9 +242,6 @@ func (s *policySets) Update(ctx context.Context, policySetID string, options Pol
 	if err := options.valid(); err != nil {
 		return nil, err
 	}
-
-	// Make sure we don't send a user provided ID.
-	options.ID = ""
 
 	u := fmt.Sprintf("policy-sets/%s", url.QueryEscape(policySetID))
 	req, err := s.client.newRequest("PATCH", u, &options)
