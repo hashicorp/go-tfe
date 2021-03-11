@@ -304,8 +304,7 @@ func TestWorkspacesUpdate(t *testing.T) {
 	orgTest, orgTestCleanup := createOrganization(t, client)
 	defer orgTestCleanup()
 
-	wTest, wTestCleanup := createWorkspace(t, client, orgTest)
-	defer wTestCleanup()
+	wTest, _ := createWorkspace(t, client, orgTest)
 
 	t.Run("when updating a subset of values", func(t *testing.T) {
 		options := WorkspaceUpdateOptions{
@@ -417,8 +416,7 @@ func TestWorkspacesUpdateByID(t *testing.T) {
 	orgTest, orgTestCleanup := createOrganization(t, client)
 	defer orgTestCleanup()
 
-	wTest, wTestCleanup := createWorkspace(t, client, orgTest)
-	defer wTestCleanup()
+	wTest, _ := createWorkspace(t, client, orgTest)
 
 	t.Run("when updating a subset of values", func(t *testing.T) {
 		options := WorkspaceUpdateOptions{

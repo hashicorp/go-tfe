@@ -276,8 +276,7 @@ func TestTeamAccessesRemove(t *testing.T) {
 	tmTest, tmTestCleanup := createTeam(t, client, orgTest)
 	defer tmTestCleanup()
 
-	taTest, taTestCleanup := createTeamAccess(t, client, tmTest, nil, orgTest)
-	defer taTestCleanup()
+	taTest, _ := createTeamAccess(t, client, tmTest, nil, orgTest)
 
 	t.Run("with valid options", func(t *testing.T) {
 		err := client.TeamAccess.Remove(ctx, taTest.ID)
