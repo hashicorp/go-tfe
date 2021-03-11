@@ -304,7 +304,8 @@ func TestWorkspacesUpdate(t *testing.T) {
 	orgTest, orgTestCleanup := createOrganization(t, client)
 	defer orgTestCleanup()
 
-	wTest, _ := createWorkspace(t, client, orgTest)
+	wTest, wTestCleanup := createWorkspace(t, client, orgTest)
+	defer wTestCleanup()
 
 	t.Run("when updating a subset of values", func(t *testing.T) {
 		options := WorkspaceUpdateOptions{
@@ -416,7 +417,8 @@ func TestWorkspacesUpdateByID(t *testing.T) {
 	orgTest, orgTestCleanup := createOrganization(t, client)
 	defer orgTestCleanup()
 
-	wTest, _ := createWorkspace(t, client, orgTest)
+	wTest, wTestCleanup := createWorkspace(t, client, orgTest)
+	defer wTestCleanup()
 
 	t.Run("when updating a subset of values", func(t *testing.T) {
 		options := WorkspaceUpdateOptions{
@@ -552,7 +554,8 @@ func TestWorkspacesRemoveVCSConnection(t *testing.T) {
 	orgTest, orgTestCleanup := createOrganization(t, client)
 	defer orgTestCleanup()
 
-	wTest, _ := createWorkspaceWithVCS(t, client, orgTest)
+	wTest, wTestCleanup := createWorkspaceWithVCS(t, client, orgTest)
+	defer wTestCleanup()
 
 	t.Run("remove vcs integration", func(t *testing.T) {
 		w, err := client.Workspaces.RemoveVCSConnection(ctx, orgTest.Name, wTest.Name)
@@ -568,7 +571,8 @@ func TestWorkspacesRemoveVCSConnectionByID(t *testing.T) {
 	orgTest, orgTestCleanup := createOrganization(t, client)
 	defer orgTestCleanup()
 
-	wTest, _ := createWorkspaceWithVCS(t, client, orgTest)
+	wTest, wTestCleanup := createWorkspaceWithVCS(t, client, orgTest)
+	defer wTestCleanup()
 
 	t.Run("remove vcs integration", func(t *testing.T) {
 		w, err := client.Workspaces.RemoveVCSConnectionByID(ctx, wTest.ID)
@@ -584,7 +588,8 @@ func TestWorkspacesLock(t *testing.T) {
 	orgTest, orgTestCleanup := createOrganization(t, client)
 	defer orgTestCleanup()
 
-	wTest, _ := createWorkspace(t, client, orgTest)
+	wTest, wTestCleanup := createWorkspace(t, client, orgTest)
+	defer wTestCleanup()
 
 	t.Run("with valid options", func(t *testing.T) {
 		w, err := client.Workspaces.Lock(ctx, wTest.ID, WorkspaceLockOptions{})
@@ -611,7 +616,8 @@ func TestWorkspacesUnlock(t *testing.T) {
 	orgTest, orgTestCleanup := createOrganization(t, client)
 	defer orgTestCleanup()
 
-	wTest, _ := createWorkspace(t, client, orgTest)
+	wTest, wTestCleanup := createWorkspace(t, client, orgTest)
+	defer wTestCleanup()
 
 	w, err := client.Workspaces.Lock(ctx, wTest.ID, WorkspaceLockOptions{})
 	if err != nil {
@@ -645,7 +651,8 @@ func TestWorkspacesForceUnlock(t *testing.T) {
 	orgTest, orgTestCleanup := createOrganization(t, client)
 	defer orgTestCleanup()
 
-	wTest, _ := createWorkspace(t, client, orgTest)
+	wTest, wTestCleanup := createWorkspace(t, client, orgTest)
+	defer wTestCleanup()
 
 	w, err := client.Workspaces.Lock(ctx, wTest.ID, WorkspaceLockOptions{})
 	if err != nil {

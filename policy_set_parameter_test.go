@@ -15,10 +15,13 @@ func TestPolicySetParametersList(t *testing.T) {
 	orgTest, orgTestCleanup := createOrganization(t, client)
 	defer orgTestCleanup()
 
-	psTest, _ := createPolicySet(t, client, orgTest, nil, nil)
+	psTest, pTestCleanup := createPolicySet(t, client, orgTest, nil, nil)
+	defer pTestCleanup()
 
-	pTest1, _ := createPolicySetParameter(t, client, psTest)
-	pTest2, _ := createPolicySetParameter(t, client, psTest)
+	pTest1, pTestCleanup1 := createPolicySetParameter(t, client, psTest)
+	defer pTestCleanup1()
+	pTest2, pTestCleanup2 := createPolicySetParameter(t, client, psTest)
+	defer pTestCleanup2()
 
 	t.Run("without list options", func(t *testing.T) {
 		pl, err := client.PolicySetParameters.List(ctx, psTest.ID, PolicySetParameterListOptions{})

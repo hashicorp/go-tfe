@@ -15,8 +15,10 @@ func TestPoliciesList(t *testing.T) {
 	orgTest, orgTestCleanup := createOrganization(t, client)
 	defer orgTestCleanup()
 
-	pTest1, _ := createPolicy(t, client, orgTest)
-	pTest2, _ := createPolicy(t, client, orgTest)
+	pTest1, pTestCleanup1 := createPolicy(t, client, orgTest)
+	defer pTestCleanup1()
+	pTest2, pTestCleanup2 := createPolicy(t, client, orgTest)
+	defer pTestCleanup2()
 
 	t.Run("without list options", func(t *testing.T) {
 		pl, err := client.Policies.List(ctx, orgTest.Name, PolicyListOptions{})

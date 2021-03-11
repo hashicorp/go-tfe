@@ -17,7 +17,8 @@ func TestAgentPoolsList(t *testing.T) {
 	orgTest, orgTestCleanup := createOrganization(t, client)
 	defer orgTestCleanup()
 
-	agentPool, _ := createAgentPool(t, client, orgTest)
+	agentPool, agentPoolCleanup := createAgentPool(t, client, orgTest)
+	defer agentPoolCleanup()
 
 	t.Run("without list options", func(t *testing.T) {
 		pools, err := client.AgentPools.List(ctx, orgTest.Name, AgentPoolListOptions{})
@@ -104,7 +105,8 @@ func TestAgentPoolsRead(t *testing.T) {
 	orgTest, orgTestCleanup := createOrganization(t, client)
 	defer orgTestCleanup()
 
-	pool, _ := createAgentPool(t, client, orgTest)
+	pool, poolCleanup := createAgentPool(t, client, orgTest)
+	defer poolCleanup()
 
 	t.Run("when the agent pool exists", func(t *testing.T) {
 		k, err := client.AgentPools.Read(ctx, pool.ID)

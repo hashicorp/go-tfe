@@ -24,8 +24,10 @@ func TestRunTriggerList(t *testing.T) {
 	sourceable2Test, sourceable2TestCleanup := createWorkspace(t, client, orgTest)
 	defer sourceable2TestCleanup()
 
-	rtTest1, _ := createRunTrigger(t, client, wTest, sourceable1Test)
-	rtTest2, _ := createRunTrigger(t, client, wTest, sourceable2Test)
+	rtTest1, rtTestCleanup1 := createRunTrigger(t, client, wTest, sourceable1Test)
+	defer rtTestCleanup1()
+	rtTest2, rtTestCleanup2 := createRunTrigger(t, client, wTest, sourceable2Test)
+	defer rtTestCleanup2()
 
 	t.Run("without list options", func(t *testing.T) {
 		rtl, err := client.RunTriggers.List(

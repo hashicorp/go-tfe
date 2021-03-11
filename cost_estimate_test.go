@@ -27,8 +27,10 @@ func TestCostEstimatesRead(t *testing.T) {
 	)
 	require.NoError(t, err)
 
-	wTest, _ := createWorkspace(t, client, orgTest)
-	rTest, _ := createCostEstimatedRun(t, client, wTest)
+	wTest, wTestCleanup := createWorkspace(t, client, orgTest)
+	defer wTestCleanup()
+	rTest, rTestCleanup := createCostEstimatedRun(t, client, wTest)
+	defer rTestCleanup()
 
 	t.Run("when the costEstimate exists", func(t *testing.T) {
 		ce, err := client.CostEstimates.Read(ctx, rTest.CostEstimate.ID)
