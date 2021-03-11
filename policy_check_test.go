@@ -27,25 +27,10 @@ func TestPolicyChecksList(t *testing.T) {
 		pcl, err := client.PolicyChecks.List(ctx, rTest.ID, PolicyCheckListOptions{})
 		require.NoError(t, err)
 		require.Equal(t, 1, len(pcl.Items))
-
-		t.Run("pagination is properly decoded", func(t *testing.T) {
-			t.Skip("paging not supported yet in API")
-			assert.Equal(t, 1, pcl.CurrentPage)
-			assert.Equal(t, 1, pcl.TotalCount)
-		})
-
-		t.Run("permissions are properly decoded", func(t *testing.T) {
-			assert.NotEmpty(t, pcl.Items[0].Permissions)
-		})
-
-		t.Run("result is properly decoded", func(t *testing.T) {
-			require.NotEmpty(t, pcl.Items[0].Result)
-			assert.Equal(t, 2, pcl.Items[0].Result.Passed)
-		})
-
-		t.Run("timestamps are properly decoded", func(t *testing.T) {
-			assert.NotEmpty(t, pcl.Items[0].StatusTimestamps)
-		})
+		assert.NotEmpty(t, pcl.Items[0].Permissions)
+		require.NotEmpty(t, pcl.Items[0].Result)
+		assert.Equal(t, 2, pcl.Items[0].Result.Passed)
+		assert.NotEmpty(t, pcl.Items[0].StatusTimestamps)
 	})
 
 	t.Run("with list options", func(t *testing.T) {
