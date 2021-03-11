@@ -13,7 +13,10 @@ func TestAppliesRead(t *testing.T) {
 	client := testClient(t)
 	ctx := context.Background()
 
-	rTest, rTestCleanup := createAppliedRun(t, client, nil)
+	wTest, wTestCleanup := createWorkspace(t, client, nil)
+	defer wTestCleanup()
+
+	rTest, rTestCleanup := createAppliedRun(t, client, wTest)
 	defer rTestCleanup()
 
 	t.Run("when the plan exists", func(t *testing.T) {
