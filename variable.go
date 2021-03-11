@@ -94,8 +94,11 @@ func (s *variables) List(ctx context.Context, workspaceID string, options Variab
 
 // VariableCreateOptions represents the options for creating a new variable.
 type VariableCreateOptions struct {
-	// For internal use only!
-	ID string `jsonapi:"primary,vars"`
+	// Type is a public field utilized by JSON:API to
+	// set the resource type via the field tag.
+	// It is not a user-defined value and does not need to be set.
+	// https://jsonapi.org/format/#crud-creating
+	Type string `jsonapi:"primary,vars"`
 
 	// The name of the variable.
 	Key *string `jsonapi:"attr,key"`
@@ -134,9 +137,6 @@ func (s *variables) Create(ctx context.Context, workspaceID string, options Vari
 	if err := options.valid(); err != nil {
 		return nil, err
 	}
-
-	// Make sure we don't send a user provided ID.
-	options.ID = ""
 
 	u := fmt.Sprintf("workspaces/%s/vars", url.QueryEscape(workspaceID))
 	req, err := s.client.newRequest("POST", u, &options)
@@ -179,8 +179,11 @@ func (s *variables) Read(ctx context.Context, workspaceID string, variableID str
 
 // VariableUpdateOptions represents the options for updating a variable.
 type VariableUpdateOptions struct {
-	// For internal use only!
-	ID string `jsonapi:"primary,vars"`
+	// Type is a public field utilized by JSON:API to
+	// set the resource type via the field tag.
+	// It is not a user-defined value and does not need to be set.
+	// https://jsonapi.org/format/#crud-creating
+	Type string `jsonapi:"primary,vars"`
 
 	// The name of the variable.
 	Key *string `jsonapi:"attr,key,omitempty"`
@@ -206,9 +209,6 @@ func (s *variables) Update(ctx context.Context, workspaceID string, variableID s
 	if !validStringID(&variableID) {
 		return nil, errors.New("invalid value for variable ID")
 	}
-
-	// Make sure we don't send a user provided ID.
-	options.ID = variableID
 
 	u := fmt.Sprintf("workspaces/%s/vars/%s", url.QueryEscape(workspaceID), url.QueryEscape(variableID))
 	req, err := s.client.newRequest("PATCH", u, &options)

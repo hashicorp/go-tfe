@@ -155,8 +155,11 @@ func (s *organizations) List(ctx context.Context, options OrganizationListOption
 
 // OrganizationCreateOptions represents the options for creating an organization.
 type OrganizationCreateOptions struct {
-	// For internal use only!
-	ID string `jsonapi:"primary,organizations"`
+	// Type is a public field utilized by JSON:API to
+	// set the resource type via the field tag.
+	// It is not a user-defined value and does not need to be set.
+	// https://jsonapi.org/format/#crud-creating
+	Type string `jsonapi:"primary,organizations"`
 
 	// Name of the organization.
 	Name *string `jsonapi:"attr,name"`
@@ -199,9 +202,6 @@ func (s *organizations) Create(ctx context.Context, options OrganizationCreateOp
 		return nil, err
 	}
 
-	// Make sure we don't send a user provided ID.
-	options.ID = ""
-
 	req, err := s.client.newRequest("POST", "organizations", &options)
 	if err != nil {
 		return nil, err
@@ -239,8 +239,11 @@ func (s *organizations) Read(ctx context.Context, organization string) (*Organiz
 
 // OrganizationUpdateOptions represents the options for updating an organization.
 type OrganizationUpdateOptions struct {
-	// For internal use only!
-	ID string `jsonapi:"primary,organizations"`
+	// Type is a public field utilized by JSON:API to
+	// set the resource type via the field tag.
+	// It is not a user-defined value and does not need to be set.
+	// https://jsonapi.org/format/#crud-creating
+	Type string `jsonapi:"primary,organizations"`
 
 	// New name for the organization.
 	Name *string `jsonapi:"attr,name,omitempty"`
@@ -269,9 +272,6 @@ func (s *organizations) Update(ctx context.Context, organization string, options
 	if !validStringID(&organization) {
 		return nil, ErrInvalidOrg
 	}
-
-	// Make sure we don't send a user provided ID.
-	options.ID = ""
 
 	u := fmt.Sprintf("organizations/%s", url.QueryEscape(organization))
 	req, err := s.client.newRequest("PATCH", u, &options)
