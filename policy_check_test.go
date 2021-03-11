@@ -92,15 +92,13 @@ func TestPolicyChecksRead(t *testing.T) {
 		pc, err := client.PolicyChecks.Read(ctx, rTest.PolicyChecks[0].ID)
 		require.NoError(t, err)
 
-		t.Run("result is properly decoded", func(t *testing.T) {
-			require.NotEmpty(t, pc.Result)
-			assert.NotEmpty(t, pc.Permissions)
-			assert.Equal(t, PolicyScopeOrganization, pc.Scope)
-			assert.Equal(t, PolicyPasses, pc.Status)
-			assert.NotEmpty(t, pc.StatusTimestamps)
-			assert.Equal(t, 1, pc.Result.Passed)
-			assert.NotEmpty(t, pc.Run)
-		})
+		require.NotEmpty(t, pc.Result)
+		assert.NotEmpty(t, pc.Permissions)
+		assert.Equal(t, PolicyScopeOrganization, pc.Scope)
+		assert.Equal(t, PolicyPasses, pc.Status)
+		assert.NotEmpty(t, pc.StatusTimestamps)
+		assert.Equal(t, 1, pc.Result.Passed)
+		assert.NotEmpty(t, pc.Run)
 	})
 
 	t.Run("when the policy check does not exist", func(t *testing.T) {
