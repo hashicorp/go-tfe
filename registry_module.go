@@ -97,15 +97,15 @@ type RegistryModuleVersion struct {
 }
 
 type RegistryModulePermissions struct {
-	CanDelete bool `json:"can-delete"`
-	CanResync bool `json:"can-resync"`
-	CanRetry  bool `json:"can-retry"`
+	CanDelete bool `jsonapi:"attr,can-delete"`
+	CanResync bool `jsonapi:"attr,can-resync"`
+	CanRetry  bool `jsonapi:"attr,can-retry"`
 }
 
 type RegistryModuleVersionStatuses struct {
-	Version string                      `json:"version"`
-	Status  RegistryModuleVersionStatus `json:"status"`
-	Error   string                      `json:"error"`
+	Version string                      `jsonapi:"attr,version"`
+	Status  RegistryModuleVersionStatus `jsonapi:"attr,status"`
+	Error   string                      `jsonapi:"attr,error"`
 }
 
 // RegistryModuleCreateOptions is used when creating a registry module without a VCS repo
@@ -241,9 +241,9 @@ func (o RegistryModuleCreateWithVCSConnectionOptions) valid() error {
 }
 
 type RegistryModuleVCSRepoOptions struct {
-	Identifier        *string `json:"identifier"`
-	OAuthTokenID      *string `json:"oauth-token-id"`
-	DisplayIdentifier *string `json:"display-identifier"`
+	Identifier        *string `jsonapi:"attr,identifier"`
+	OAuthTokenID      *string `jsonapi:"attr,oauth-token-id"`
+	DisplayIdentifier *string `jsonapi:"attr,display-identifier"`
 }
 
 func (o RegistryModuleVCSRepoOptions) valid() error {

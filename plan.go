@@ -6,7 +6,6 @@ import (
 	"fmt"
 	"io"
 	"net/url"
-	"time"
 )
 
 // Compile-time proof of interface implementation.
@@ -62,12 +61,12 @@ type Plan struct {
 
 // PlanStatusTimestamps holds the timestamps for individual plan statuses.
 type PlanStatusTimestamps struct {
-	CanceledAt      time.Time `json:"canceled-at"`
-	ErroredAt       time.Time `json:"errored-at"`
-	FinishedAt      time.Time `json:"finished-at"`
-	ForceCanceledAt time.Time `json:"force-canceled-at"`
-	QueuedAt        time.Time `json:"queued-at"`
-	StartedAt       time.Time `json:"started-at"`
+	CanceledAt      string `jsonapi:"attr,canceled-at"`
+	ErroredAt       string `jsonapi:"attr,errored-at"`
+	FinishedAt      string `jsonapi:"attr,finished-at"`
+	ForceCanceledAt string `jsonapi:"attr,force-canceled-at"`
+	QueuedAt        string `jsonapi:"attr,queued-at"`
+	StartedAt       string `jsonapi:"attr,started-at"`
 }
 
 // Read a plan by its ID.

@@ -11,8 +11,9 @@ import (
 	"testing"
 	"time"
 
+	//"github.com/svanharmelen/jsonapi"
+	"github.com/google/jsonapi"
 	"github.com/hashicorp/go-retryablehttp"
-	"github.com/svanharmelen/jsonapi"
 	"golang.org/x/time/rate"
 )
 
@@ -223,11 +224,11 @@ type JSONAPIBody struct {
 }
 
 type JSONPlainBody struct {
-	StrAttr string `json:"str_attr"`
+	StrAttr string `jsonapi:"attr,str_attr"`
 }
 
 type InvalidBody struct {
-	Attr1 string `json:"attr1"`
+	Attr1 string `jsonapi:"attr,attr1"`
 	Attr2 string `jsonapi:"attr,attr2"`
 }
 

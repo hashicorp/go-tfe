@@ -6,7 +6,6 @@ import (
 	"errors"
 	"fmt"
 	"net/url"
-	"time"
 )
 
 // Compile-time proof of interface implementation.
@@ -58,11 +57,11 @@ const (
 
 // PlanExportStatusTimestamps holds the timestamps for plan export statuses.
 type PlanExportStatusTimestamps struct {
-	CanceledAt time.Time `json:"canceled-at"`
-	ErroredAt  time.Time `json:"errored-at"`
-	ExpiredAt  time.Time `json:"expired-at"`
-	FinishedAt time.Time `json:"finished-at"`
-	QueuedAt   time.Time `json:"queued-at"`
+	CanceledAt string `jsonapi:"attr,canceled-at"`
+	ErroredAt  string `jsonapi:"attr,errored-at"`
+	ExpiredAt  string `jsonapi:"attr,expired-at"`
+	FinishedAt string `jsonapi:"attr,finished-at"`
+	QueuedAt   string `jsonapi:"attr,queued-at"`
 }
 
 // PlanExport represents an export of Terraform Enterprise plan data.

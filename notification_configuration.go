@@ -74,7 +74,7 @@ type NotificationConfigurationList struct {
 type NotificationConfiguration struct {
 	ID                string                      `jsonapi:"primary,notification-configurations"`
 	CreatedAt         time.Time                   `jsonapi:"attr,created-at,iso8601"`
-	DeliveryResponses []*DeliveryResponse         `jsonapi:"attr,delivery-responses"`
+	DeliveryResponses []DeliveryResponse          `jsonapi:"attr,delivery-responses"`
 	DestinationType   NotificationDestinationType `jsonapi:"attr,destination-type"`
 	Enabled           bool                        `jsonapi:"attr,enabled"`
 	Name              string                      `jsonapi:"attr,name"`
@@ -93,12 +93,12 @@ type NotificationConfiguration struct {
 
 // DeliveryResponse represents a notification configuration delivery response.
 type DeliveryResponse struct {
-	Body       string      `json:"body"`
-	Code       int         `json:"code"`
-	Headers    http.Header `json:"headers"`
-	SentAt     time.Time   `json:"sent-at,iso8601"`
-	Successful bool        `json:"successful"`
-	URL        string      `json:"url"`
+	Body       string      `jsonapi:"attr,body"`
+	Code       int         `jsonapi:"attr,code"`
+	Headers    http.Header `jsonapi:"attr,headers"`
+	SentAt     time.Time   `jsonapi:"attr,sent-at,iso8601"`
+	Successful bool        `jsonapi:"attr,successful"`
+	URL        string      `jsonapi:"attr,url"`
 }
 
 // NotificationConfigurationListOptions represents the options for listing

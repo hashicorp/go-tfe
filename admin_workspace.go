@@ -30,7 +30,7 @@ type adminWorkspaces struct {
 }
 
 type AdminVCSRepo struct {
-	Identifier string `json:"identifier"`
+	Identifier string `jsonapi:"attr,identifier"`
 }
 
 // AdminWorkspaces represents a Terraform Enterprise admin workspace.

@@ -2,6 +2,7 @@ package tfe
 
 import (
 	"context"
+	"fmt"
 	"io/ioutil"
 	"testing"
 
@@ -20,6 +21,7 @@ func TestAppliesRead(t *testing.T) {
 	defer rTestCleanup()
 
 	t.Run("when the plan exists", func(t *testing.T) {
+		fmt.Println("OMAR APPLIES READ")
 		a, err := client.Applies.Read(ctx, rTest.Apply.ID)
 		require.NoError(t, err)
 		assert.NotEmpty(t, a.LogReadURL)
@@ -27,17 +29,17 @@ func TestAppliesRead(t *testing.T) {
 		assert.NotEmpty(t, a.StatusTimestamps)
 	})
 
-	t.Run("when the apply does not exist", func(t *testing.T) {
-		a, err := client.Applies.Read(ctx, "nonexisting")
-		assert.Nil(t, a)
-		assert.Equal(t, err, ErrResourceNotFound)
-	})
-
-	t.Run("with invalid apply ID", func(t *testing.T) {
-		a, err := client.Applies.Read(ctx, badIdentifier)
-		assert.Nil(t, a)
-		assert.EqualError(t, err, ErrInvalidApplyID.Error())
-	})
+	//	t.Run("when the apply does not exist", func(t *testing.T) {
+	//		a, err := client.Applies.Read(ctx, "nonexisting")
+	//		assert.Nil(t, a)
+	//		assert.Equal(t, err, ErrResourceNotFound)
+	//	})
+	//
+	//	t.Run("with invalid apply ID", func(t *testing.T) {
+	//		a, err := client.Applies.Read(ctx, badIdentifier)
+	//		assert.Nil(t, a)
+	//		assert.EqualError(t, err, ErrInvalidApplyID.Error())
+	//	})
 }
 
 func TestAppliesLogs(t *testing.T) {

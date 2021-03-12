@@ -84,7 +84,7 @@ func (s *adminRuns) List(ctx context.Context, options AdminRunsListOptions) (*Ad
 type AdminRunForceCancelOptions struct {
 	// An optional comment explaining the reason for the force-cancel.
 	// https://www.terraform.io/docs/cloud/api/admin/runs.html#request-body
-	Comment *string `json:"comment,omitempty"`
+	Comment *string `jsonapi:"attr,comment,omitempty"`
 }
 
 // ForceCancel is used to forcefully cancel a run by its ID.
