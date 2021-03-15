@@ -23,8 +23,10 @@ func TestStateVersionsList(t *testing.T) {
 	wTest, wTestCleanup := createWorkspace(t, client, orgTest)
 	defer wTestCleanup()
 
-	svTest1, _ := createStateVersion(t, client, 0, wTest)
-	svTest2, _ := createStateVersion(t, client, 1, wTest)
+	svTest1, svTestCleanup1 := createStateVersion(t, client, 0, wTest)
+	defer svTestCleanup1()
+	svTest2, svTestCleanup2 := createStateVersion(t, client, 1, wTest)
+	defer svTestCleanup2()
 
 	t.Run("without list options", func(t *testing.T) {
 		options := StateVersionListOptions{
@@ -193,7 +195,8 @@ func TestStateVersionsCreate(t *testing.T) {
 	t.Run("with a run to associate with", func(t *testing.T) {
 		t.Skip("This can only be tested with the run specific token")
 
-		rTest, _ := createRun(t, client, wTest)
+		rTest, rTestCleanup := createRun(t, client, wTest)
+		defer rTestCleanup()
 
 		ctx := context.Background()
 		sv, err := client.StateVersions.Create(ctx, wTest.ID, StateVersionCreateOptions{

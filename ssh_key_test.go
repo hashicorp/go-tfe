@@ -15,8 +15,10 @@ func TestSSHKeysList(t *testing.T) {
 	orgTest, orgTestCleanup := createOrganization(t, client)
 	defer orgTestCleanup()
 
-	kTest1, _ := createSSHKey(t, client, orgTest)
-	kTest2, _ := createSSHKey(t, client, orgTest)
+	kTest1, kTestCleanup1 := createSSHKey(t, client, orgTest)
+	defer kTestCleanup1()
+	kTest2, kTestCleanup2 := createSSHKey(t, client, orgTest)
+	defer kTestCleanup2()
 
 	t.Run("without list options", func(t *testing.T) {
 		kl, err := client.SSHKeys.List(ctx, orgTest.Name, SSHKeyListOptions{})
@@ -114,7 +116,8 @@ func TestSSHKeysRead(t *testing.T) {
 	orgTest, orgTestCleanup := createOrganization(t, client)
 	defer orgTestCleanup()
 
-	kTest, _ := createSSHKey(t, client, orgTest)
+	kTest, kTestCleanup := createSSHKey(t, client, orgTest)
+	defer kTestCleanup()
 
 	t.Run("when the SSH key exists", func(t *testing.T) {
 		k, err := client.SSHKeys.Read(ctx, kTest.ID)

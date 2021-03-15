@@ -409,7 +409,6 @@ func TestRegistryModulesDeleteProvider(t *testing.T) {
 	defer orgTestCleanup()
 
 	registryModuleTest, _ := createRegistryModule(t, client, orgTest)
-	//defer registryModuleTestCleanup()
 
 	t.Run("with valid name and provider", func(t *testing.T) {
 		err := client.RegistryModules.DeleteProvider(ctx, orgTest.Name, registryModuleTest.Name, registryModuleTest.Provider)

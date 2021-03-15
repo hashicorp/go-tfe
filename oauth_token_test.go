@@ -16,8 +16,10 @@ func TestOAuthTokensList(t *testing.T) {
 	orgTest, orgTestCleanup := createOrganization(t, client)
 	defer orgTestCleanup()
 
-	otTest1, _ := createOAuthToken(t, client, orgTest)
-	otTest2, _ := createOAuthToken(t, client, orgTest)
+	otTest1, otTest1Cleanup := createOAuthToken(t, client, orgTest)
+	defer otTest1Cleanup()
+	otTest2, otTest2Cleanup := createOAuthToken(t, client, orgTest)
+	defer otTest2Cleanup()
 
 	t.Run("without list options", func(t *testing.T) {
 		options := OAuthTokenListOptions{}
@@ -166,7 +168,8 @@ func TestOAuthTokensDelete(t *testing.T) {
 	orgTest, orgTestCleanup := createOrganization(t, client)
 	defer orgTestCleanup()
 
-	otTest, _ := createOAuthToken(t, client, orgTest)
+	otTest, otCleanup := createOAuthToken(t, client, orgTest)
+	defer otCleanup()
 
 	t.Run("with valid options", func(t *testing.T) {
 		err := client.OAuthTokens.Delete(ctx, otTest.ID)

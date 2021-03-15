@@ -16,8 +16,10 @@ func TestOAuthClientsList(t *testing.T) {
 	orgTest, orgTestCleanup := createOrganization(t, client)
 	defer orgTestCleanup()
 
-	ocTest1, _ := createOAuthClient(t, client, orgTest)
-	ocTest2, _ := createOAuthClient(t, client, orgTest)
+	ocTest1, ocTestCleanup1 := createOAuthClient(t, client, orgTest)
+	defer ocTestCleanup1()
+	ocTest2, ocTestCleanup2 := createOAuthClient(t, client, orgTest)
+	defer ocTestCleanup2()
 
 	t.Run("without list options", func(t *testing.T) {
 		options := OAuthClientListOptions{}

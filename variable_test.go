@@ -15,10 +15,13 @@ func TestVariablesList(t *testing.T) {
 	orgTest, orgTestCleanup := createOrganization(t, client)
 	defer orgTestCleanup()
 
-	wTest, _ := createWorkspace(t, client, orgTest)
+	wTest, wTestCleanup := createWorkspace(t, client, orgTest)
+	defer wTestCleanup()
 
-	vTest1, _ := createVariable(t, client, wTest)
-	vTest2, _ := createVariable(t, client, wTest)
+	vTest1, vTestCleanup1 := createVariable(t, client, wTest)
+	defer vTestCleanup1()
+	vTest2, vTestCleanup2 := createVariable(t, client, wTest)
+	defer vTestCleanup2()
 
 	t.Run("without list options", func(t *testing.T) {
 		vl, err := client.Variables.List(ctx, wTest.ID, VariableListOptions{})
