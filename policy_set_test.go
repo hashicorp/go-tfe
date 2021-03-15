@@ -17,8 +17,10 @@ func TestPolicySetsList(t *testing.T) {
 	orgTest, orgTestCleanup := createOrganization(t, client)
 	defer orgTestCleanup()
 
-	psTest1, _ := createPolicySet(t, client, orgTest, nil, nil)
-	psTest2, _ := createPolicySet(t, client, orgTest, nil, nil)
+	psTest1, psTestCleanup1 := createPolicySet(t, client, orgTest, nil, nil)
+	defer psTestCleanup1()
+	psTest2, psTestCleanup2 := createPolicySet(t, client, orgTest, nil, nil)
+	defer psTestCleanup2()
 
 	t.Run("without list options", func(t *testing.T) {
 		psl, err := client.PolicySets.List(ctx, orgTest.Name, PolicySetListOptions{})
@@ -105,8 +107,10 @@ func TestPolicySetsCreate(t *testing.T) {
 	})
 
 	t.Run("with policies and workspaces provided", func(t *testing.T) {
-		pTest, _ := createPolicy(t, client, orgTest)
-		wTest, _ := createWorkspace(t, client, orgTest)
+		pTest, pTestCleanup := createPolicy(t, client, orgTest)
+		defer pTestCleanup()
+		wTest, wTestCleanup := createWorkspace(t, client, orgTest)
+		defer wTestCleanup()
 
 		options := PolicySetCreateOptions{
 			Name:       String("populated-policy-set"),
@@ -130,7 +134,8 @@ func TestPolicySetsCreate(t *testing.T) {
 			t.Skip("Export a valid GITHUB_POLICY_SET_IDENTIFIER before running this test")
 		}
 
-		oc, _ := createOAuthToken(t, client, orgTest)
+		oc, ocTestCleanup := createOAuthToken(t, client, orgTest)
+		defer ocTestCleanup()
 
 		options := PolicySetCreateOptions{
 			Name:         String("vcs-policy-set"),
@@ -170,7 +175,8 @@ func TestPolicySetsCreate(t *testing.T) {
 			t.Skip("Export a valid GITHUB_POLICY_SET_IDENTIFIER before running this test")
 		}
 
-		oc, _ := createOAuthToken(t, client, orgTest)
+		oc, ocTestCleanup := createOAuthToken(t, client, orgTest)
+		defer ocTestCleanup()
 
 		options := PolicySetUpdateOptions{
 			Name:         String("vcs-policy-set"),
@@ -231,7 +237,8 @@ func TestPolicySetsRead(t *testing.T) {
 	orgTest, orgTestCleanup := createOrganization(t, client)
 	defer orgTestCleanup()
 
-	psTest, _ := createPolicySet(t, client, orgTest, nil, nil)
+	psTest, psTestCleanup := createPolicySet(t, client, orgTest, nil, nil)
+	defer psTestCleanup()
 
 	t.Run("with a valid ID", func(t *testing.T) {
 		ps, err := client.PolicySets.Read(ctx, psTest.ID)
@@ -254,7 +261,8 @@ func TestPolicySetsUpdate(t *testing.T) {
 	orgTest, orgTestCleanup := createOrganization(t, client)
 	defer orgTestCleanup()
 
-	psTest, _ := createPolicySet(t, client, orgTest, nil, nil)
+	psTest, psTestCleanup := createPolicySet(t, client, orgTest, nil, nil)
+	defer psTestCleanup()
 
 	t.Run("with valid attributes", func(t *testing.T) {
 		options := PolicySetUpdateOptions{
@@ -295,9 +303,12 @@ func TestPolicySetsAddPolicies(t *testing.T) {
 	orgTest, orgTestCleanup := createOrganization(t, client)
 	defer orgTestCleanup()
 
-	pTest1, _ := createPolicy(t, client, orgTest)
-	pTest2, _ := createPolicy(t, client, orgTest)
-	psTest, _ := createPolicySet(t, client, orgTest, nil, nil)
+	pTest1, pTestCleanup1 := createPolicy(t, client, orgTest)
+	defer pTestCleanup1()
+	pTest2, pTestCleanup2 := createPolicy(t, client, orgTest)
+	defer pTestCleanup2()
+	psTest, psTestCleanup := createPolicySet(t, client, orgTest, nil, nil)
+	defer psTestCleanup()
 
 	t.Run("with policies provided", func(t *testing.T) {
 		err := client.PolicySets.AddPolicies(ctx, psTest.ID, PolicySetAddPoliciesOptions{
@@ -345,9 +356,12 @@ func TestPolicySetsRemovePolicies(t *testing.T) {
 	orgTest, orgTestCleanup := createOrganization(t, client)
 	defer orgTestCleanup()
 
-	pTest1, _ := createPolicy(t, client, orgTest)
-	pTest2, _ := createPolicy(t, client, orgTest)
-	psTest, _ := createPolicySet(t, client, orgTest, []*Policy{pTest1, pTest2}, nil)
+	pTest1, pTestCleanup1 := createPolicy(t, client, orgTest)
+	defer pTestCleanup1()
+	pTest2, pTestCleanup2 := createPolicy(t, client, orgTest)
+	defer pTestCleanup2()
+	psTest, psTestCleanup := createPolicySet(t, client, orgTest, []*Policy{pTest1, pTest2}, nil)
+	defer psTestCleanup()
 
 	t.Run("with policies provided", func(t *testing.T) {
 		err := client.PolicySets.RemovePolicies(ctx, psTest.ID, PolicySetRemovePoliciesOptions{
@@ -389,9 +403,12 @@ func TestPolicySetsAddWorkspaces(t *testing.T) {
 	orgTest, orgTestCleanup := createOrganization(t, client)
 	defer orgTestCleanup()
 
-	wTest1, _ := createWorkspace(t, client, orgTest)
-	wTest2, _ := createWorkspace(t, client, orgTest)
-	psTest, _ := createPolicySet(t, client, orgTest, nil, nil)
+	wTest1, wTestCleanup1 := createWorkspace(t, client, orgTest)
+	defer wTestCleanup1()
+	wTest2, wTestCleanup2 := createWorkspace(t, client, orgTest)
+	defer wTestCleanup2()
+	psTest, psTestCleanup := createPolicySet(t, client, orgTest, nil, nil)
+	defer psTestCleanup()
 
 	t.Run("with workspaces provided", func(t *testing.T) {
 		err := client.PolicySets.AddWorkspaces(
@@ -453,9 +470,12 @@ func TestPolicySetsRemoveWorkspaces(t *testing.T) {
 	orgTest, orgTestCleanup := createOrganization(t, client)
 	defer orgTestCleanup()
 
-	wTest1, _ := createWorkspace(t, client, orgTest)
-	wTest2, _ := createWorkspace(t, client, orgTest)
-	psTest, _ := createPolicySet(t, client, orgTest, nil, []*Workspace{wTest1, wTest2})
+	wTest1, wTestCleanup1 := createWorkspace(t, client, orgTest)
+	defer wTestCleanup1()
+	wTest2, wTestCleanup2 := createWorkspace(t, client, orgTest)
+	defer wTestCleanup2()
+	psTest, psTestCleanup := createPolicySet(t, client, orgTest, nil, []*Workspace{wTest1, wTest2})
+	defer psTestCleanup()
 
 	t.Run("with workspaces provided", func(t *testing.T) {
 		err := client.PolicySets.RemoveWorkspaces(

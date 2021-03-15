@@ -15,7 +15,8 @@ func TestTeamAccessesList(t *testing.T) {
 	orgTest, orgTestCleanup := createOrganization(t, client)
 	defer orgTestCleanup()
 
-	wTest, _ := createWorkspace(t, client, orgTest)
+	wTest, wTestCleanup := createWorkspace(t, client, orgTest)
+	defer wTestCleanup()
 
 	tmTest1, tmTest1Cleanup := createTeam(t, client, orgTest)
 	defer tmTest1Cleanup()
@@ -79,7 +80,8 @@ func TestTeamAccessesAdd(t *testing.T) {
 	orgTest, orgTestCleanup := createOrganization(t, client)
 	defer orgTestCleanup()
 
-	wTest, _ := createWorkspace(t, client, orgTest)
+	wTest, wTestCleanup := createWorkspace(t, client, orgTest)
+	defer wTestCleanup()
 
 	tmTest, tmTestCleanup := createTeam(t, client, orgTest)
 	defer tmTestCleanup()

@@ -21,8 +21,10 @@ func TestAdminRuns_List(t *testing.T) {
 	wTest, wTestCleanup := createWorkspace(t, client, org)
 	defer wTestCleanup()
 
-	rTest1, _ := createRun(t, client, wTest)
-	rTest2, _ := createRun(t, client, wTest)
+	rTest1, rTestCleanup1 := createRun(t, client, wTest)
+	defer rTestCleanup1()
+	rTest2, rTestCleanup2 := createRun(t, client, wTest)
+	defer rTestCleanup2()
 
 	t.Run("without list options", func(t *testing.T) {
 		rl, err := client.Admin.Runs.List(ctx, AdminRunsListOptions{})
