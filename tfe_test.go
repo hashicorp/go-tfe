@@ -11,7 +11,6 @@ import (
 	"testing"
 	"time"
 
-	//"github.com/svanharmelen/jsonapi"
 	"github.com/google/jsonapi"
 	"github.com/hashicorp/go-retryablehttp"
 	"golang.org/x/time/rate"

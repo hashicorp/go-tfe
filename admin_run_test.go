@@ -156,7 +156,6 @@ func TestAdminRuns_ForceCancel(t *testing.T) {
 	rTest2, rCleanup2 := createRun(t, client, wTest)
 	defer rCleanup2()
 
-	fmt.Println(rTest1.ID)
 	assert.Equal(t, true, rTest1.Actions.IsCancelable)
 	assert.Equal(t, true, rTest1.Permissions.CanForceCancel)
 

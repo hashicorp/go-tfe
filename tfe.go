@@ -17,7 +17,6 @@ import (
 	"time"
 
 	"github.com/google/go-querystring/query"
-	//"github.com/svanharmelen/jsonapi"
 	"github.com/google/jsonapi"
 	"github.com/hashicorp/go-cleanhttp"
 	retryablehttp "github.com/hashicorp/go-retryablehttp"
