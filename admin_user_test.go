@@ -139,44 +139,6 @@ func TestAdminUsers_Delete(t *testing.T) {
 	})
 }
 
-func TestAdminUsers_AdminPrivlages_Suspensions(t *testing.T) {
-	// This test relies on a user already existing on the instance
-	// this test is run against. This user has a 'tst' as part of their
-	// email. We look this user up, and execute both the AdminPrivlage and
-	// Suspension operations on this user. This is why both are done in
-	// the same test.
-
-	skipIfCloud(t)
-
-	client := testClient(t)
-	ctx := context.Background()
-
-	ul, err := client.Admin.Users.List(ctx, AdminUserListOptions{
-		Query: String("tst"),
-	})
-	require.NoError(t, err)
-	if len(ul.Items) == 0 {
-		t.Skip("No test users available")
-	}
-	user := ul.Items[0]
-
-	user, err = client.Admin.Users.GrantAdmin(ctx, user.ID)
-	require.NoError(t, err)
-	require.True(t, user.IsAdmin)
-
-	user, err = client.Admin.Users.RevokeAdmin(ctx, user.ID)
-	require.NoError(t, err)
-	require.False(t, user.IsAdmin)
-
-	user, err = client.Admin.Users.Suspend(ctx, user.ID)
-	require.NoError(t, err)
-	require.True(t, user.IsSuspended)
-
-	user, err = client.Admin.Users.Unsuspend(ctx, user.ID)
-	require.NoError(t, err)
-	require.False(t, user.IsSuspended)
-}
-
 func TestAdminUsers_Disable2FA(t *testing.T) {
 	skipIfCloud(t)
 

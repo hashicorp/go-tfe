@@ -30,7 +30,7 @@ type AdminUsers interface {
 	// GrantAdmin grants admin privilages to a user by its ID.
 	GrantAdmin(ctx context.Context, userID string) (*AdminUser, error)
 
-	// RevokeAdmin revokees admin privlages to a user by its ID.
+	// RevokeAdmin revokees admin privilages to a user by its ID.
 	RevokeAdmin(ctx context.Context, userID string) (*AdminUser, error)
 
 	// Disable2FA disables a user's two-factor authentication in the situation
@@ -178,7 +178,7 @@ func (a *adminUsers) GrantAdmin(ctx context.Context, userID string) (*AdminUser,
 	return au, nil
 }
 
-// RevokeAdmin revokes admin privlages to a user by its ID.
+// RevokeAdmin revokes admin privilages to a user by its ID.
 func (a *adminUsers) RevokeAdmin(ctx context.Context, userID string) (*AdminUser, error) {
 	if !validStringID(&userID) {
 		return nil, ErrInvalidUserValue
