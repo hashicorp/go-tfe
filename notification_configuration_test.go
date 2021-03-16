@@ -15,8 +15,10 @@ func TestNotificationConfigurationList(t *testing.T) {
 	wTest, wTestCleanup := createWorkspace(t, client, nil)
 	defer wTestCleanup()
 
-	ncTest1, _ := createNotificationConfiguration(t, client, wTest, nil)
-	ncTest2, _ := createNotificationConfiguration(t, client, wTest, nil)
+	ncTest1, ncTestCleanup1 := createNotificationConfiguration(t, client, wTest, nil)
+	defer ncTestCleanup1()
+	ncTest2, ncTestCleanup2 := createNotificationConfiguration(t, client, wTest, nil)
+	defer ncTestCleanup2()
 
 	t.Run("with a valid workspace", func(t *testing.T) {
 		ncl, err := client.NotificationConfigurations.List(

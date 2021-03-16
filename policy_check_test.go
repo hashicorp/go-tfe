@@ -110,9 +110,11 @@ func TestPolicyChecksOverride(t *testing.T) {
 		pTest, pTestCleanup := createUploadedPolicy(t, client, false, orgTest)
 		defer pTestCleanup()
 
-		wTest, _ := createWorkspace(t, client, orgTest)
+		wTest, wTestCleanup := createWorkspace(t, client, orgTest)
+		defer wTestCleanup()
 		createPolicySet(t, client, orgTest, []*Policy{pTest}, []*Workspace{wTest})
-		rTest, _ := createPlannedRun(t, client, wTest)
+		rTest, tTestCleanup := createPlannedRun(t, client, wTest)
+		defer tTestCleanup()
 
 		pcl, err := client.PolicyChecks.List(ctx, rTest.ID, PolicyCheckListOptions{})
 		require.NoError(t, err)
@@ -133,9 +135,11 @@ func TestPolicyChecksOverride(t *testing.T) {
 		pTest, pTestCleanup := createUploadedPolicy(t, client, true, orgTest)
 		defer pTestCleanup()
 
-		wTest, _ := createWorkspace(t, client, orgTest)
+		wTest, wTestCleanup := createWorkspace(t, client, orgTest)
+		defer wTestCleanup()
 		createPolicySet(t, client, orgTest, []*Policy{pTest}, []*Workspace{wTest})
-		rTest, _ := createPlannedRun(t, client, wTest)
+		rTest, rTestCleanup := createPlannedRun(t, client, wTest)
+		defer rTestCleanup()
 
 		pcl, err := client.PolicyChecks.List(ctx, rTest.ID, PolicyCheckListOptions{})
 		require.NoError(t, err)
@@ -160,11 +164,14 @@ func TestPolicyChecksLogs(t *testing.T) {
 	orgTest, orgTestCleanup := createOrganization(t, client)
 	defer orgTestCleanup()
 
-	pTest, _ := createUploadedPolicy(t, client, true, orgTest)
-	wTest, _ := createWorkspace(t, client, orgTest)
+	pTest, pTestCleanup := createUploadedPolicy(t, client, true, orgTest)
+	defer pTestCleanup()
+	wTest, wTestCleanup := createWorkspace(t, client, orgTest)
+	defer wTestCleanup()
 	createPolicySet(t, client, orgTest, []*Policy{pTest}, []*Workspace{wTest})
 
-	rTest, _ := createPlannedRun(t, client, wTest)
+	rTest, rTestCleanup := createPlannedRun(t, client, wTest)
+	defer rTestCleanup()
 	require.Equal(t, 1, len(rTest.PolicyChecks))
 
 	t.Run("when the log exists", func(t *testing.T) {

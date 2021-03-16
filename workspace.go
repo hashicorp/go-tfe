@@ -112,6 +112,8 @@ type VCSRepo struct {
 	Identifier        string `json:"identifier"`
 	IngressSubmodules bool   `json:"ingress-submodules"`
 	OAuthTokenID      string `json:"oauth-token-id"`
+	RepositoryHTTPURL string `json:"repository-http-url"`
+	ServiceProvider   string `json:"service-provider"`
 }
 
 // WorkspaceActions represents the workspace actions.
