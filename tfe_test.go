@@ -224,11 +224,11 @@ type JSONAPIBody struct {
 }
 
 type JSONPlainBody struct {
-	StrAttr string `jsonapi:"attr,str_attr"`
+	StrAttr string `json:"str_attr"`
 }
 
 type InvalidBody struct {
-	Attr1 string `jsonapi:"attr,attr1"`
+	Attr1 string `json:"attr1"`
 	Attr2 string `jsonapi:"attr,attr2"`
 }
 

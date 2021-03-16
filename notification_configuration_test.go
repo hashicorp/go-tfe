@@ -86,7 +86,7 @@ func TestNotificationConfigurationCreate(t *testing.T) {
 	t.Run("with all required values", func(t *testing.T) {
 		options := NotificationConfigurationCreateOptions{
 			DestinationType: NotificationDestination(NotificationDestinationTypeGeneric),
-			Enabled:         Bool(false),
+			Enabled:         Bool(true),
 			Name:            String(randomString(t)),
 			Token:           String(randomString(t)),
 			URL:             String("http://example.com"),

@@ -2,7 +2,6 @@ package tfe
 
 import (
 	"context"
-	"fmt"
 	"io/ioutil"
 	"testing"
 
@@ -21,7 +20,6 @@ func TestAppliesRead(t *testing.T) {
 	defer rTestCleanup()
 
 	t.Run("when the plan exists", func(t *testing.T) {
-		fmt.Println("OMAR APPLIES READ")
 		a, err := client.Applies.Read(ctx, rTest.Apply.ID)
 		require.NoError(t, err)
 		assert.NotEmpty(t, a.LogReadURL)

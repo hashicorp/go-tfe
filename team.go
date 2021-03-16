@@ -117,9 +117,9 @@ type TeamCreateOptions struct {
 
 // OrganizationAccessOptions represents the organization access options of a team.
 type OrganizationAccessOptions struct {
-	ManagePolicies    *bool `jsonapi:"attr,manage-policies,omitempty"`
-	ManageWorkspaces  *bool `jsonapi:"attr,manage-workspaces,omitempty"`
-	ManageVCSSettings *bool `jsonapi:"attr,manage-vcs-settings,omitempty"`
+	ManagePolicies    bool `jsonapi:"attr,manage-policies,omitempty"`
+	ManageWorkspaces  bool `jsonapi:"attr,manage-workspaces,omitempty"`
+	ManageVCSSettings bool `jsonapi:"attr,manage-vcs-settings,omitempty"`
 }
 
 func (o TeamCreateOptions) valid() error {

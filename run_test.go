@@ -81,7 +81,7 @@ func TestRunsCreate(t *testing.T) {
 	wTest, wTestCleanup := createWorkspace(t, client, nil)
 	defer wTestCleanup()
 
-	cvTest, cvTestCleanup := createUploadedConfigurationVersion(t, client, wTest)
+	_, cvTestCleanup := createUploadedConfigurationVersion(t, client, wTest)
 	defer cvTestCleanup()
 
 	t.Run("without a configuration version", func(t *testing.T) {

@@ -108,6 +108,18 @@ func TestTeamsRead(t *testing.T) {
 	tmTest, tmTestCleanup := createTeam(t, client, orgTest)
 	defer tmTestCleanup()
 
+	opts := TeamCreateOptions{
+		Name: String(randomString(t)),
+		OrganizationAccess: &OrganizationAccessOptions{
+			ManagePolicies: true,
+		},
+	}
+	tm, err := client.Teams.Create(ctx, org.Name, opts)
+	defer func() {
+		err := client.Teams.Delete(ctx, tm.ID)
+		require.NoError(t, err)
+	}()
+
 	t.Run("when the team exists", func(t *testing.T) {
 		tm, err := client.Teams.Read(ctx, tmTest.ID)
 		require.NoError(t, err)
@@ -122,8 +134,8 @@ func TestTeamsRead(t *testing.T) {
 		})
 
 		t.Run("organization access is properly decoded", func(t *testing.T) {
-			assert.True(t, tm.OrganizationAccess.ManagePolicies)
-			assert.False(t, tm.OrganizationAccess.ManageWorkspaces)
+			assert.Equal(t, tm.OrganizationAccess.ManagePolicies, opts.OrganizationAccess.ManagePolicies)
+			assert.Equal(t, tm.OrganizationAccess.ManageWorkspaces, opts.OrganizationAccess.ManageWorkspaces)
 		})
 	})
 
@@ -154,8 +166,9 @@ func TestTeamsUpdate(t *testing.T) {
 		options := TeamUpdateOptions{
 			Name: String("foo bar"),
 			OrganizationAccess: &OrganizationAccessOptions{
-				ManagePolicies:    Bool(false),
-				ManageVCSSettings: Bool(true)},
+				ManagePolicies:    false,
+				ManageVCSSettings: true,
+			},
 			Visibility: String("organization"),
 		}
 
@@ -175,11 +188,11 @@ func TestTeamsUpdate(t *testing.T) {
 				item.Visibility,
 			)
 			assert.Equal(t,
-				*options.OrganizationAccess.ManagePolicies,
+				options.OrganizationAccess.ManagePolicies,
 				item.OrganizationAccess.ManagePolicies,
 			)
 			assert.Equal(t,
-				*options.OrganizationAccess.ManageVCSSettings,
+				options.OrganizationAccess.ManageVCSSettings,
 				item.OrganizationAccess.ManageVCSSettings,
 			)
 		}
