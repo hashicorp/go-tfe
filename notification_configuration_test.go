@@ -2,6 +2,7 @@ package tfe
 
 import (
 	"context"
+	"fmt"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -93,8 +94,11 @@ func TestNotificationConfigurationCreate(t *testing.T) {
 			Triggers:        []string{NotificationTriggerCreated},
 		}
 
-		_, err := client.NotificationConfigurations.Create(ctx, wTest.ID, options)
+		fmt.Println("OMAR BEFORE NC CREATE")
+		nc, err := client.NotificationConfigurations.Create(ctx, wTest.ID, options)
 		require.NoError(t, err)
+		fmt.Println("OMAR DELVIERY RESPONSE")
+		fmt.Printf("%+v", nc.DeliveryResponses)
 	})
 
 	t.Run("without a required value", func(t *testing.T) {

@@ -187,7 +187,7 @@ func TestAdminRuns_ForceCancel(t *testing.T) {
 
 		comment1 := "Misclick"
 		err = client.Admin.Runs.ForceCancel(ctx, rTestPending.ID, AdminRunForceCancelOptions{
-			Comment: String(comment1),
+			Comment: comment1,
 		})
 		require.NoError(t, err)
 
@@ -197,7 +197,7 @@ func TestAdminRuns_ForceCancel(t *testing.T) {
 
 		comment2 := "Another misclick"
 		err = client.Admin.Runs.ForceCancel(ctx, rTestPlanning.ID, AdminRunForceCancelOptions{
-			Comment: String(comment2),
+			Comment: comment2,
 		})
 		require.NoError(t, err)
 

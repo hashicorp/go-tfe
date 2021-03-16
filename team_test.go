@@ -114,7 +114,8 @@ func TestTeamsRead(t *testing.T) {
 			ManagePolicies: true,
 		},
 	}
-	tm, err := client.Teams.Create(ctx, org.Name, opts)
+	tm, err := client.Teams.Create(ctx, orgTest.Name, opts)
+	require.NoError(t, err)
 	defer func() {
 		err := client.Teams.Delete(ctx, tm.ID)
 		require.NoError(t, err)
