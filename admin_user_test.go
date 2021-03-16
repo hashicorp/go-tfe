@@ -160,11 +160,11 @@ func TestAdminUsers_AdminPrivlages_Suspensions(t *testing.T) {
 	}
 	user := ul.Items[0]
 
-	user, err = client.Admin.Users.GrantAdminPrivlages(ctx, user.ID)
+	user, err = client.Admin.Users.GrantAdmin(ctx, user.ID)
 	require.NoError(t, err)
 	require.True(t, user.IsAdmin)
 
-	user, err = client.Admin.Users.RevokeAdminPrivlages(ctx, user.ID)
+	user, err = client.Admin.Users.RevokeAdmin(ctx, user.ID)
 	require.NoError(t, err)
 	require.False(t, user.IsAdmin)
 

@@ -27,23 +27,15 @@ type AdminUsers interface {
 	// Unsuspend a user by its ID.
 	Unsuspend(ctx context.Context, userID string) (*AdminUser, error)
 
-	// GrantAdminPrivlages grants admin pirvlages to a user by its ID.
-	GrantAdminPrivlages(ctx context.Context, userID string) (*AdminUser, error)
+	// GrantAdmin grants admin privilages to a user by its ID.
+	GrantAdmin(ctx context.Context, userID string) (*AdminUser, error)
 
-	// RevokeAdminPrivlages revokees admin privlages to a user by its ID.
-	RevokeAdminPrivlages(ctx context.Context, userID string) (*AdminUser, error)
+	// RevokeAdmin revokees admin privlages to a user by its ID.
+	RevokeAdmin(ctx context.Context, userID string) (*AdminUser, error)
 
 	// Disable2FA disables a user's two-factor authentication in the situation
 	// where they have lost access to their device and recovery codes.
 	Disable2FA(ctx context.Context, userID string) (*AdminUser, error)
-
-	// ImpersonateUser allows an admin to begin a new session as another user in
-	// the system.
-	ImpersonateUser(ctx context.Context, userID string, options ImpersonateReasonOption) error
-
-	// UnimpersonateUser allows an admin to end an impersonationn session of
-	// another user in the system.
-	UnimpersonateUser(ctx context.Context, userID string) error
 }
 
 // adminUsers implements the AdminUsers interface.
@@ -165,8 +157,8 @@ func (a *adminUsers) Unsuspend(ctx context.Context, userID string) (*AdminUser, 
 	return au, nil
 }
 
-// GrantAdminPrivlages grants admin pirvlages to a user by its ID.
-func (a *adminUsers) GrantAdminPrivlages(ctx context.Context, userID string) (*AdminUser, error) {
+// GrantAdmin grants admin privilages to a user by its ID.
+func (a *adminUsers) GrantAdmin(ctx context.Context, userID string) (*AdminUser, error) {
 	if !validStringID(&userID) {
 		return nil, ErrInvalidUserValue
 	}
@@ -186,8 +178,8 @@ func (a *adminUsers) GrantAdminPrivlages(ctx context.Context, userID string) (*A
 	return au, nil
 }
 
-// RevokeAdminPrivlages revokees admin privlages to a user by its ID.
-func (a *adminUsers) RevokeAdminPrivlages(ctx context.Context, userID string) (*AdminUser, error) {
+// RevokeAdmin revokes admin privlages to a user by its ID.
+func (a *adminUsers) RevokeAdmin(ctx context.Context, userID string) (*AdminUser, error) {
 	if !validStringID(&userID) {
 		return nil, ErrInvalidUserValue
 	}
@@ -227,42 +219,4 @@ func (a *adminUsers) Disable2FA(ctx context.Context, userID string) (*AdminUser,
 	}
 
 	return au, nil
-}
-
-// ImpersonateReasonOption represents the options for impersonating a user.
-type ImpersonateReasonOption struct {
-	// Specifies the reason for impersonating a user.
-	Reason *string `json:"reason"`
-}
-
-// ImpersonateUser allows an admin to begin a new session as another user in
-// the system.
-func (a *adminUsers) ImpersonateUser(ctx context.Context, userID string, options ImpersonateReasonOption) error {
-	if !validStringID(&userID) {
-		return ErrInvalidUserValue
-	}
-
-	u := fmt.Sprintf("admin/users/%s/actions/impersonate", url.QueryEscape(userID))
-	req, err := a.client.newRequest("POST", u, &options)
-	if err != nil {
-		return err
-	}
-
-	return a.client.do(ctx, req, nil)
-}
-
-// UnimpersonateUser allows an admin to end an impersonationn session of
-// another user in the system.
-func (a *adminUsers) UnimpersonateUser(ctx context.Context, userID string) error {
-	if !validStringID(&userID) {
-		return ErrInvalidUserValue
-	}
-
-	u := fmt.Sprintf("admin/users/%s/actions/unimpersonate", url.QueryEscape(userID))
-	req, err := a.client.newRequest("POST", u, nil)
-	if err != nil {
-		return err
-	}
-
-	return a.client.do(ctx, req, nil)
 }
