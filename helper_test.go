@@ -495,10 +495,10 @@ func createRun(t *testing.T, client *Client, w *Workspace) (*Run, func()) {
 	}
 
 	return r, func() {
+		cvCleanup()
+
 		if wCleanup != nil {
 			wCleanup()
-		} else {
-			cvCleanup()
 		}
 	}
 }
@@ -536,6 +536,7 @@ func createCostEstimatedRun(t *testing.T, client *Client, w *Workspace) (*Run, f
 	for i := 0; ; i++ {
 		r, err = client.Runs.Read(ctx, r.ID)
 		if err != nil {
+			rCleanup()
 			t.Fatal(err)
 		}
 
@@ -565,6 +566,7 @@ func createAppliedRun(t *testing.T, client *Client, w *Workspace) (*Run, func())
 	for i := 0; ; i++ {
 		r, err = client.Runs.Read(ctx, r.ID)
 		if err != nil {
+			rCleanup()
 			t.Fatal(err)
 		}
 
@@ -797,7 +799,7 @@ func createTeam(t *testing.T, client *Client, org *Organization) (*Team, func())
 }
 
 func createTeamAccess(t *testing.T, client *Client, tm *Team, w *Workspace, org *Organization) (*TeamAccess, func()) {
-	var orgCleanup, tmCleanup func()
+	var orgCleanup, tmCleanup, wCleanup func()
 
 	if org == nil {
 		org, orgCleanup = createOrganization(t, client)
@@ -808,7 +810,7 @@ func createTeamAccess(t *testing.T, client *Client, tm *Team, w *Workspace, org 
 	}
 
 	if w == nil {
-		w, _ = createWorkspace(t, client, org)
+		w, wCleanup = createWorkspace(t, client, org)
 	}
 
 	ctx := context.Background()
@@ -834,6 +836,10 @@ func createTeamAccess(t *testing.T, client *Client, tm *Team, w *Workspace, org 
 
 		if orgCleanup != nil {
 			orgCleanup()
+		}
+
+		if wCleanup != nil {
+			wCleanup()
 		}
 	}
 }

@@ -197,7 +197,14 @@ func TestTeamAccessesRead(t *testing.T) {
 	client := testClient(t)
 	ctx := context.Background()
 
-	taTest, taTestCleanup := createTeamAccess(t, client, nil, nil, nil)
+	orgTest, orgTestCleanup := createOrganization(t, client)
+	defer orgTestCleanup()
+	wTest, wTestCleanup := createWorkspace(t, client, orgTest)
+	defer wTestCleanup()
+	tmTest, tmTestCleanup := createTeam(t, client, orgTest)
+	defer tmTestCleanup()
+
+	taTest, taTestCleanup := createTeamAccess(t, client, tmTest, wTest, orgTest)
 	defer taTestCleanup()
 
 	t.Run("when the team access exists", func(t *testing.T) {
@@ -249,7 +256,7 @@ func TestTeamAccessesUpdate(t *testing.T) {
 	tmTest, tmTestCleanup := createTeam(t, client, orgTest)
 	defer tmTestCleanup()
 
-	taTest, taTestCleanup := createTeamAccess(t, client, tmTest, wTest, nil)
+	taTest, taTestCleanup := createTeamAccess(t, client, tmTest, wTest, orgTest)
 	defer taTestCleanup()
 
 	t.Run("with valid attributes", func(t *testing.T) {
