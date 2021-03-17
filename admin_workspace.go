@@ -66,7 +66,7 @@ type AdminWorkspaceList struct {
 
 // List all the workspaces within a worksapce.
 func (s *adminWorkspaces) List(ctx context.Context, options AdminWorkspaceListOptions) (*AdminWorkspaceList, error) {
-	u := fmt.Sprintf("admin/workspaces")
+	u := "admin/workspaces"
 	req, err := s.client.newRequest("GET", u, &options)
 	if err != nil {
 		return nil, err

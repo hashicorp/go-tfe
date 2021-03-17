@@ -30,12 +30,15 @@ func TestUsersUpdate(t *testing.T) {
 	uTest, err := client.Users.ReadCurrent(ctx)
 	require.NoError(t, err)
 
-	// Make sure we reset the current user when were done.
+	// Make sure we reset the current user when we're done.
 	defer func() {
-		client.Users.Update(ctx, UserUpdateOptions{
+		_, err := client.Users.Update(ctx, UserUpdateOptions{
 			Email:    String(uTest.Email),
 			Username: String(uTest.Username),
 		})
+		if err != nil {
+			t.Logf("Error updating user: %s", err)
+		}
 	}()
 
 	t.Run("without any options", func(t *testing.T) {

@@ -65,7 +65,7 @@ func TestAdminTerraformVersions_CreateDelete(t *testing.T) {
 		opts := AdminTerraformVersionCreateOptions{
 			Version:  String("1.1.1"),
 			URL:      String("https://www.hashicorp.com"),
-			Sha:      String(genSha("secret", "data")),
+			Sha:      String(genSha(t, "secret", "data")),
 			Official: Bool(false),
 			Enabled:  Bool(false),
 			Beta:     Bool(false),
@@ -104,7 +104,7 @@ func TestAdminTerraformVersions_ReadUpdate(t *testing.T) {
 		opts := AdminTerraformVersionCreateOptions{
 			Version:  String("1.1.1"),
 			URL:      String("https://www.hashicorp.com"),
-			Sha:      String(genSha("secret", "data")),
+			Sha:      String(genSha(t, "secret", "data")),
 			Official: Bool(false),
 			Enabled:  Bool(false),
 			Beta:     Bool(false),

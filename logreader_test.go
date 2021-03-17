@@ -2,12 +2,21 @@ package tfe
 
 import (
 	"context"
+	"io"
 	"io/ioutil"
 	"net/http"
 	"net/http/httptest"
 	"net/url"
 	"testing"
 )
+
+// checkedWrite writes message to w and fails the test if there's an error.
+func checkedWrite(t *testing.T, w io.Writer, message []byte) {
+	_, err := w.Write(message)
+	if err != nil {
+		t.Fatalf("error writing response: %s", err)
+	}
+}
 
 func testLogReader(t *testing.T, h http.HandlerFunc) (*httptest.Server, *LogReader) {
 	ts := httptest.NewServer(h)
@@ -45,7 +54,7 @@ func TestLogReader_withMarkersSingle(t *testing.T) {
 		logReads++
 		switch {
 		case logReads == 2:
-			w.Write([]byte("\x02Terraform run started - logs - Terraform run finished\x03"))
+			checkedWrite(t, w, []byte("\x02Terraform run started - logs - Terraform run finished\x03"))
 		}
 	}))
 	defer ts.Close()
@@ -84,9 +93,9 @@ func TestLogReader_withMarkersDouble(t *testing.T) {
 		logReads++
 		switch {
 		case logReads == 2:
-			w.Write([]byte("\x02Terraform run started"))
+			checkedWrite(t, w, []byte("\x02Terraform run started"))
 		case logReads == 3:
-			w.Write([]byte(" - logs - Terraform run finished\x03"))
+			checkedWrite(t, w, []byte(" - logs - Terraform run finished\x03"))
 		}
 	}))
 	defer ts.Close()
@@ -125,15 +134,15 @@ func TestLogReader_withMarkersMulti(t *testing.T) {
 		logReads++
 		switch {
 		case logReads == 2:
-			w.Write([]byte("\x02"))
+			checkedWrite(t, w, []byte("\x02"))
 		case logReads == 3:
-			w.Write([]byte("Terraform run started"))
+			checkedWrite(t, w, []byte("Terraform run started"))
 		case logReads == 16:
-			w.Write([]byte(" - logs - "))
+			checkedWrite(t, w, []byte(" - logs - "))
 		case logReads == 30:
-			w.Write([]byte("Terraform run finished"))
+			checkedWrite(t, w, []byte("Terraform run finished"))
 		case logReads == 31:
-			w.Write([]byte("\x03"))
+			checkedWrite(t, w, []byte("\x03"))
 		}
 	}))
 	defer ts.Close()
@@ -172,11 +181,11 @@ func TestLogReader_withoutMarkers(t *testing.T) {
 		logReads++
 		switch {
 		case logReads == 2:
-			w.Write([]byte("Terraform run started"))
+			checkedWrite(t, w, []byte("Terraform run started"))
 		case logReads == 16:
-			w.Write([]byte(" - logs - "))
+			checkedWrite(t, w, []byte(" - logs - "))
 		case logReads == 31:
-			w.Write([]byte("Terraform run finished"))
+			checkedWrite(t, w, []byte("Terraform run finished"))
 		}
 	}))
 	defer ts.Close()
@@ -215,13 +224,13 @@ func TestLogReader_withoutEndOfTextMarker(t *testing.T) {
 		logReads++
 		switch {
 		case logReads == 2:
-			w.Write([]byte("\x02"))
+			checkedWrite(t, w, []byte("\x02"))
 		case logReads == 3:
-			w.Write([]byte("Terraform run started"))
+			checkedWrite(t, w, []byte("Terraform run started"))
 		case logReads == 16:
-			w.Write([]byte(" - logs - "))
+			checkedWrite(t, w, []byte(" - logs - "))
 		case logReads == 31:
-			w.Write([]byte("Terraform run finished"))
+			checkedWrite(t, w, []byte("Terraform run finished"))
 		}
 	}))
 	defer ts.Close()

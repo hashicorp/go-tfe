@@ -65,7 +65,7 @@ func (s *adminRuns) List(ctx context.Context, options AdminRunsListOptions) (*Ad
 		return nil, err
 	}
 
-	u := fmt.Sprintf("admin/runs")
+	u := "admin/runs"
 	req, err := s.client.newRequest("GET", u, &options)
 	if err != nil {
 		return nil, err

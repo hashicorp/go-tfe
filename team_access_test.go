@@ -92,7 +92,12 @@ func TestTeamAccessesAdd(t *testing.T) {
 		}
 
 		ta, err := client.TeamAccess.Add(ctx, options)
-		defer client.TeamAccess.Remove(ctx, ta.ID)
+		defer func() {
+			err := client.TeamAccess.Remove(ctx, ta.ID)
+			if err != nil {
+				t.Logf("error removing team access (%s): %s", ta.ID, err)
+			}
+		}()
 
 		require.NoError(t, err)
 
@@ -119,7 +124,12 @@ func TestTeamAccessesAdd(t *testing.T) {
 		}
 
 		ta, err := client.TeamAccess.Add(ctx, options)
-		defer client.TeamAccess.Remove(ctx, ta.ID)
+		defer func() {
+			err := client.TeamAccess.Remove(ctx, ta.ID)
+			if err != nil {
+				t.Logf("error removing team access (%s): %s", ta.ID, err)
+			}
+		}()
 
 		require.NoError(t, err)
 
