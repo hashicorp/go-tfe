@@ -5,7 +5,6 @@ import (
 	"context"
 	"encoding/json"
 	"errors"
-	"fmt"
 	"net/http"
 	"net/http/httptest"
 	"os"
@@ -405,34 +404,26 @@ type tfeAPITimestamps struct {
 	QueuedAt time.Time `json:"queued-at"`
 }
 
-type keyvalue map[string]string
-
 func Test_unmarshalResponse(t *testing.T) {
 	t.Run("unmarshal properly formatted json", func(t *testing.T) {
 		// This structure is intended to include multiple possible fields and
 		// formats that are valid for JSON:API
-		keyvalueslice := make([]keyvalue, 1)
-		keyvalueslice = append(keyvalueslice, keyvalue{
-			"body": "<html>",
-			"code": "200",
-		})
-		keyvalueslice = append(keyvalueslice, keyvalue{
-			"body": "<body>",
-			"code": "300",
-		})
-		fmt.Printf("%+v", keyvalueslice)
-		fmt.Println("")
 		data := map[string]interface{}{
 			"data": map[string]interface{}{
 				"type": "tfe",
 				"id":   "1",
 				"attributes": map[string]interface{}{
-					"name":               "terraform",
-					"created-at":         "2016-08-17T08:27:12Z",
-					"enabled":            "true",
-					"status":             tfeAPIStatusNormal,
-					"emails":             []string{"test@hashicorp.com"},
-					"delivery-responses": keyvalueslice,
+					"name":       "terraform",
+					"created-at": "2016-08-17T08:27:12Z",
+					"enabled":    "true",
+					"status":     tfeAPIStatusNormal,
+					"emails":     []string{"test@hashicorp.com"},
+					"delivery-responses": []*tfeAPIDeliveryResponse{
+						&tfeAPIDeliveryResponse{
+							Body: "<html>",
+							Code: 200,
+						},
+					},
 					"status-timestamps": map[string]string{
 						"queued-at": "2021-03-16T23:09:59+00:00",
 					},
@@ -453,12 +444,10 @@ func Test_unmarshalResponse(t *testing.T) {
 		assert.Equal(t, unmarshalledRequestBody.Emails[0], "test@hashicorp.com")
 		assert.NotEmpty(t, unmarshalledRequestBody.StatusTimestamps)
 		assert.NotNil(t, unmarshalledRequestBody.StatusTimestamps.QueuedAt)
-		//assert.NotEmpty(t, unmarshalledRequestBody.DeliveryResponses)
-		//assert.Equal(t, len(unmarshalledRequestBody.DeliveryResponses), 1)
-		fmt.Println("OMAR: DeliveryResponses")
-		fmt.Printf("%+v", unmarshalledRequestBody.DeliveryResponses)
-		//assert.Equal(t, &unmarshalledRequestBody.DeliveryResponses[0].Body, "<html>")
-		//assert.Equal(t, &unmarshalledRequestBody.DeliveryResponses[0].Code, 200)
+		assert.NotEmpty(t, unmarshalledRequestBody.DeliveryResponses)
+		assert.Equal(t, len(unmarshalledRequestBody.DeliveryResponses), 1)
+		assert.Equal(t, unmarshalledRequestBody.DeliveryResponses[0].Body, "<html>")
+		assert.Equal(t, unmarshalledRequestBody.DeliveryResponses[0].Code, 200)
 	})
 
 	t.Run("can only unmarshal Items that are slices", func(t *testing.T) {
