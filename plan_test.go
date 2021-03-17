@@ -23,6 +23,7 @@ func TestPlansRead(t *testing.T) {
 		assert.NotEmpty(t, p.LogReadURL)
 		assert.Equal(t, p.Status, PlanFinished)
 		assert.NotEmpty(t, p.StatusTimestamps)
+		assert.NotNil(t, p.StatusTimestamps.StartedAt)
 	})
 
 	t.Run("when the plan does not exist", func(t *testing.T) {

@@ -81,7 +81,7 @@ func TestRunsCreate(t *testing.T) {
 	wTest, wTestCleanup := createWorkspace(t, client, nil)
 	defer wTestCleanup()
 
-	_, cvTestCleanup := createUploadedConfigurationVersion(t, client, wTest)
+	cvTest, cvTestCleanup := createUploadedConfigurationVersion(t, client, wTest)
 	defer cvTestCleanup()
 
 	t.Run("without a configuration version", func(t *testing.T) {
@@ -96,37 +96,38 @@ func TestRunsCreate(t *testing.T) {
 		assert.NotNil(t, r.CreatedAt)
 		assert.NotNil(t, r.Source)
 		assert.NotEmpty(t, r.StatusTimestamps)
+		assert.NotNil(t, r.StatusTimestamps.StartedAt)
 	})
 
-	//	t.Run("with a configuration version", func(t *testing.T) {
-	//		options := RunCreateOptions{
-	//			ConfigurationVersion: cvTest,
-	//			Workspace:            wTest,
-	//		}
-	//
-	//		r, err := client.Runs.Create(ctx, options)
-	//		require.NoError(t, err)
-	//		assert.Equal(t, cvTest.ID, r.ConfigurationVersion.ID)
-	//	})
-	//
-	//	t.Run("without a workspace", func(t *testing.T) {
-	//		r, err := client.Runs.Create(ctx, RunCreateOptions{})
-	//		assert.Nil(t, r)
-	//		assert.EqualError(t, err, "workspace is required")
-	//	})
-	//
-	//	t.Run("with additional attributes", func(t *testing.T) {
-	//		options := RunCreateOptions{
-	//			Message:     String("yo"),
-	//			Workspace:   wTest,
-	//			TargetAddrs: []string{"null_resource.example"},
-	//		}
-	//
-	//		r, err := client.Runs.Create(ctx, options)
-	//		require.NoError(t, err)
-	//		assert.Equal(t, *options.Message, r.Message)
-	//		assert.Equal(t, options.TargetAddrs, r.TargetAddrs)
-	//	})
+	t.Run("with a configuration version", func(t *testing.T) {
+		options := RunCreateOptions{
+			ConfigurationVersion: cvTest,
+			Workspace:            wTest,
+		}
+
+		r, err := client.Runs.Create(ctx, options)
+		require.NoError(t, err)
+		assert.Equal(t, cvTest.ID, r.ConfigurationVersion.ID)
+	})
+
+	t.Run("without a workspace", func(t *testing.T) {
+		r, err := client.Runs.Create(ctx, RunCreateOptions{})
+		assert.Nil(t, r)
+		assert.EqualError(t, err, "workspace is required")
+	})
+
+	t.Run("with additional attributes", func(t *testing.T) {
+		options := RunCreateOptions{
+			Message:     String("yo"),
+			Workspace:   wTest,
+			TargetAddrs: []string{"null_resource.example"},
+		}
+
+		r, err := client.Runs.Create(ctx, options)
+		require.NoError(t, err)
+		assert.Equal(t, *options.Message, r.Message)
+		assert.Equal(t, options.TargetAddrs, r.TargetAddrs)
+	})
 }
 
 func TestRunsRead(t *testing.T) {

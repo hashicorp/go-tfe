@@ -1,10 +1,13 @@
 package tfe
 
 import (
+	"bytes"
 	"context"
+	"encoding/json"
 	"fmt"
 	"testing"
 
+	"github.com/google/jsonapi"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
@@ -237,6 +240,37 @@ func TestAdminRuns_AdminRunsListOptions_valid(t *testing.T) {
 		err := opts.valid()
 		assert.Error(t, err)
 	})
+}
+
+func TestAdminRun_Unmarshal(t *testing.T) {
+	adminRun := &AdminRun{}
+	data := map[string]interface{}{
+		"data": map[string]interface{}{
+			"type": "runs",
+			"id":   "run-VCsNJXa59eUza53R",
+			"attributes": map[string]interface{}{
+				"created-at":  "2018-03-02T23:42:06.651Z",
+				"has-changes": true,
+				"status":      RunApplied,
+				"status-timestamps": map[string]string{
+					"finished-at": "2021-03-16T23:09:59+00:00",
+				},
+			},
+		},
+	}
+	byteData, err := json.Marshal(data)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	err = jsonapi.UnmarshalPayload(bytes.NewReader(byteData), adminRun)
+	if err != nil {
+		t.Fatal(err)
+	}
+	assert.Equal(t, adminRun.ID, "run-VCsNJXa59eUza53R")
+	assert.Equal(t, adminRun.HasChanges, true)
+	assert.Equal(t, adminRun.Status, RunApplied)
+	assert.Equal(t, adminRun.StatusTimestamps.FinishedAt, "2021-03-16T23:09:59+00:00")
 }
 
 func adminRunItemsContainsID(items []*AdminRun, id string) bool {

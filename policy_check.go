@@ -97,9 +97,8 @@ type PolicyResult struct {
 	HardFailed     int  `jsonapi:"attr,hard-failed"`
 	Passed         int  `jsonapi:"attr,passed"`
 	Result         bool `jsonapi:"attr,result"`
-	// Sentinel       *sentinel.EvalResult `jsonapi:"attr,sentinel"`
-	SoftFailed  int `jsonapi:"attr,soft-failed"`
-	TotalFailed int `jsonapi:"attr,total-failed"`
+	SoftFailed     int  `jsonapi:"attr,soft-failed"`
+	TotalFailed    int  `jsonapi:"attr,total-failed"`
 }
 
 // PolicyStatusTimestamps holds the timestamps for individual policy check

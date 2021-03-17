@@ -102,6 +102,7 @@ func TestOrganizationsRead(t *testing.T) {
 		org, err := client.Organizations.Read(ctx, orgTest.Name)
 		require.NoError(t, err)
 		assert.Equal(t, orgTest, org)
+		assert.NotEmpty(t, org.Permissions)
 
 		t.Run("permissions are properly decoded", func(t *testing.T) {
 			assert.True(t, org.Permissions.CanDestroy)

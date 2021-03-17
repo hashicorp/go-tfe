@@ -31,6 +31,7 @@ func TestPolicyChecksList(t *testing.T) {
 		require.NotEmpty(t, pcl.Items[0].Result)
 		assert.Equal(t, 2, pcl.Items[0].Result.Passed)
 		assert.NotEmpty(t, pcl.Items[0].StatusTimestamps)
+		assert.NotNil(t, pcl.Items[0].StatusTimestamps.QueuedAt)
 	})
 
 	t.Run("with list options", func(t *testing.T) {

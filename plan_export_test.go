@@ -65,6 +65,8 @@ func TestPlanExportsRead(t *testing.T) {
 		require.NoError(t, err)
 		assert.Equal(t, peTest.ID, pe.ID)
 		assert.Equal(t, peTest.DataType, pe.DataType)
+		assert.NotEmpty(t, pe.StatusTimestamps)
+		assert.NotNil(t, pe.StatusTimestamps.QueuedAt)
 	})
 
 	t.Run("without a valid ID", func(t *testing.T) {

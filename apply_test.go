@@ -1,10 +1,13 @@
 package tfe
 
 import (
+	"bytes"
 	"context"
+	"encoding/json"
 	"io/ioutil"
 	"testing"
 
+	"github.com/google/jsonapi"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
@@ -65,4 +68,39 @@ func TestAppliesLogs(t *testing.T) {
 		assert.Nil(t, logs)
 		assert.Error(t, err)
 	})
+}
+
+func TestApplies_Unmarshal(t *testing.T) {
+	apply := &Apply{}
+	data := map[string]interface{}{
+		"data": map[string]interface{}{
+			"type": "applies",
+			"id":   "apply-47MBvjwzBG8YKc2v",
+			"attributes": map[string]interface{}{
+				"log-read-url":          "hashicorp.com",
+				"resource-additions":    1,
+				"resource-changes":      1,
+				"resource-destructions": 1,
+				"status":                ApplyCanceled,
+				"status-timestamps": map[string]string{
+					"queued-at": "2021-03-16T23:09:59+00:00",
+				},
+			},
+		},
+	}
+	byteData, err := json.Marshal(data)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	err = jsonapi.UnmarshalPayload(bytes.NewReader(byteData), apply)
+	if err != nil {
+		t.Fatal(err)
+	}
+	assert.Equal(t, apply.ID, "apply-47MBvjwzBG8YKc2v")
+	assert.Equal(t, apply.ResourceAdditions, 1)
+	assert.Equal(t, apply.ResourceChanges, 1)
+	assert.Equal(t, apply.ResourceDestructions, 1)
+	assert.Equal(t, apply.Status, ApplyCanceled)
+	assert.Equal(t, apply.StatusTimestamps.QueuedAt, "2021-03-16T23:09:59+00:00")
 }

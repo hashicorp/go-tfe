@@ -476,8 +476,6 @@ func (c *Client) newRequest(method, path string, v interface{}) (*retryablehttp.
 		body = v
 	}
 
-	fmt.Println("OMAR SERIALIZED BODY:")
-	fmt.Printf("%+v", body)
 	req, err := retryablehttp.NewRequest(method, u.String(), body)
 	if err != nil {
 		return nil, err

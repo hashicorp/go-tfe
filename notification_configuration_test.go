@@ -1,10 +1,14 @@
 package tfe
 
 import (
+	"bytes"
 	"context"
+	"encoding/json"
 	"fmt"
 	"testing"
+	"time"
 
+	"github.com/google/jsonapi"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
@@ -319,4 +323,55 @@ func TestNotificationConfigurationVerify(t *testing.T) {
 		_, err := client.NotificationConfigurations.Verify(ctx, badIdentifier)
 		assert.EqualError(t, err, "invalid value for notification configuration ID")
 	})
+}
+
+func TestNotificationConfiguration_Unmarshal(t *testing.T) {
+	nc := &NotificationConfiguration{}
+	headers := map[string][]string{
+		"cache-control":  {"private"},
+		"content-length": {"129"},
+	}
+	data := map[string]interface{}{
+		"data": map[string]interface{}{
+			"type": "notification-configurations",
+			"id":   "nc-ntv3HbhJqvFzamy7",
+			"attributes": map[string]interface{}{
+				"created-at": "2018-03-02T23:42:06.651Z",
+				"delivery-responses": []map[string]interface{}{
+					{
+						"body":       "<html>",
+						"code":       "200",
+						"headers":    headers,
+						"sent-at":    "2019-01-08 21:34:37 UTC",
+						"successful": "true",
+						"url":        "hashicorp.com",
+					},
+				},
+				"destination-type": NotificationDestinationTypeEmail,
+				"enabled":          true,
+				"name":             "general",
+				"token":            "secret",
+				"triggers":         []string{"run:applying", "run:completed"},
+				"url":              "hashicorp.com",
+				"email-addresses":  []string{"test@hashicorp.com"},
+			},
+		},
+	}
+	byteData, err := json.Marshal(data)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	err = jsonapi.UnmarshalPayload(bytes.NewReader(byteData), nc)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	iso8601TimeFormat := "2006-01-02T15:04:05Z"
+	parsedTime, err := time.Parse(iso8601TimeFormat, "2018-03-02T23:42:06.651Z")
+	require.NoError(t, err)
+	assert.Equal(t, nc.ID, "nc-ntv3HbhJqvFzamy7")
+	assert.Equal(t, nc.CreatedAt, parsedTime)
+	//assert.Equal(t, len(nc.DeliveryResponses), 1)
+	//assert.Equal(t, nc.DeliveryResponses[0].Body, "bad error")
 }

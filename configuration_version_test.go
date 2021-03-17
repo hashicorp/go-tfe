@@ -1,10 +1,13 @@
 package tfe
 
 import (
+	"bytes"
 	"context"
+	"encoding/json"
 	"testing"
 	"time"
 
+	"github.com/google/jsonapi"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
@@ -192,4 +195,42 @@ func TestConfigurationVersionsUpload(t *testing.T) {
 		)
 		assert.Error(t, err)
 	})
+}
+
+func TestConfigurationVersions_Unmarshal(t *testing.T) {
+	cv := &ConfigurationVersion{}
+	data := map[string]interface{}{
+		"data": map[string]interface{}{
+			"type": "configuration-versions",
+			"id":   "cv-ntv3HbhJqvFzamy7",
+			"attributes": map[string]interface{}{
+				"auto-queue-runs": true,
+				"error":           "bad error",
+				"error-message":   "message",
+				"source":          ConfigurationSourceTerraform,
+				"status":          ConfigurationUploaded,
+				"status-timestamps": map[string]string{
+					"finished-at": "2020-03-16T23:09:59+00:00",
+					"started-at":  "2021-03-16T23:09:59+00:00",
+				},
+			},
+		},
+	}
+	byteData, err := json.Marshal(data)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	err = jsonapi.UnmarshalPayload(bytes.NewReader(byteData), cv)
+	if err != nil {
+		t.Fatal(err)
+	}
+	assert.Equal(t, cv.ID, "cv-ntv3HbhJqvFzamy7")
+	assert.Equal(t, cv.AutoQueueRuns, true)
+	assert.Equal(t, cv.Error, "bad error")
+	assert.Equal(t, cv.ErrorMessage, "message")
+	assert.Equal(t, cv.Source, ConfigurationSourceTerraform)
+	assert.Equal(t, cv.Status, ConfigurationUploaded)
+	assert.Equal(t, cv.StatusTimestamps.FinishedAt, "2020-03-16T23:09:59+00:00")
+	assert.Equal(t, cv.StatusTimestamps.StartedAt, "2021-03-16T23:09:59+00:00")
 }

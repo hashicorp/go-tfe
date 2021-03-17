@@ -272,7 +272,7 @@ func (s *runs) ReadWithOptions(ctx context.Context, runID string, options *RunRe
 // RunApplyOptions represents the options for applying a run.
 type RunApplyOptions struct {
 	// An optional comment about the run.
-	Comment *string `jsonapi:"attr,comment,omitempty"`
+	Comment string `jsonapi:"attr,comment,omitempty"`
 }
 
 // Apply a run by its ID.
