@@ -664,8 +664,6 @@ func unmarshalResponse(responseBody io.Reader, model interface{}) error {
 	pagination.Set(reflect.ValueOf(p))
 
 	return nil
-
-	return nil
 }
 
 // ListOptions is used to specify pagination options when making API requests.
