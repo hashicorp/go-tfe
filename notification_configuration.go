@@ -96,7 +96,7 @@ type DeliveryResponse struct {
 	Body       string      `json:"body"`
 	Code       int         `json:"code"`
 	Headers    http.Header `json:"headers"`
-	SentAt     time.Time   `json:"sent-at,iso8601"`
+	SentAt     time.Time   `json:"sent-at"`
 	Successful bool        `json:"successful"`
 	URL        string      `json:"url"`
 }
