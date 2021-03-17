@@ -5,6 +5,7 @@ import (
 	"context"
 	"encoding/json"
 	"errors"
+	"fmt"
 	"net/http"
 	"net/http/httptest"
 	"os"
@@ -379,13 +380,19 @@ func createRequest(v interface{}) (*retryablehttp.Request, []byte, error) {
 }
 
 type tfeAPI struct {
-	ID               string            `jsonapi:"primary,tfe"`
-	Name             string            `jsonapi:"attr,name"`
-	CreatedAt        time.Time         `jsonapi:"attr,created-at,iso8601"`
-	Enalbed          bool              `jsonapi:"attr,enalbed"`
-	Emails           []string          `jsonapi:"attr,emails"`
-	Status           tfeAPIStatus      `jsonapi:"attr,status"`
-	StatusTimestamps *tfeAPITimestamps `jsonapi:"attr,status-timestamps"`
+	ID                string                    `jsonapi:"primary,tfe"`
+	Name              string                    `jsonapi:"attr,name"`
+	CreatedAt         time.Time                 `jsonapi:"attr,created-at,iso8601"`
+	Enalbed           bool                      `jsonapi:"attr,enalbed"`
+	Emails            []string                  `jsonapi:"attr,emails"`
+	Status            tfeAPIStatus              `jsonapi:"attr,status"`
+	StatusTimestamps  *tfeAPITimestamps         `jsonapi:"attr,status-timestamps"`
+	DeliveryResponses []*tfeAPIDeliveryResponse `jsonapi:"attr,delivery-responses"`
+}
+
+type tfeAPIDeliveryResponse struct {
+	Body string `json:"body"`
+	Code int    `json:"code"`
 }
 
 type tfeAPIStatus string
@@ -398,20 +405,34 @@ type tfeAPITimestamps struct {
 	QueuedAt time.Time `json:"queued-at"`
 }
 
+type keyvalue map[string]string
+
 func Test_unmarshalResponse(t *testing.T) {
 	t.Run("unmarshal properly formatted json", func(t *testing.T) {
-		// This structure is intended to include every possible field and format
-		// that is valid for JSON:API
+		// This structure is intended to include multiple possible fields and
+		// formats that are valid for JSON:API
+		keyvalueslice := make([]keyvalue, 1)
+		keyvalueslice = append(keyvalueslice, keyvalue{
+			"body": "<html>",
+			"code": "200",
+		})
+		keyvalueslice = append(keyvalueslice, keyvalue{
+			"body": "<body>",
+			"code": "300",
+		})
+		fmt.Printf("%+v", keyvalueslice)
+		fmt.Println("")
 		data := map[string]interface{}{
 			"data": map[string]interface{}{
 				"type": "tfe",
 				"id":   "1",
 				"attributes": map[string]interface{}{
-					"name":       "terraform",
-					"created-at": "2016-08-17T08:27:12Z",
-					"enabled":    "true",
-					"status":     tfeAPIStatusNormal,
-					"emails":     []string{"test@hashicorp.com"},
+					"name":               "terraform",
+					"created-at":         "2016-08-17T08:27:12Z",
+					"enabled":            "true",
+					"status":             tfeAPIStatusNormal,
+					"emails":             []string{"test@hashicorp.com"},
+					"delivery-responses": keyvalueslice,
 					"status-timestamps": map[string]string{
 						"queued-at": "2021-03-16T23:09:59+00:00",
 					},
@@ -432,6 +453,12 @@ func Test_unmarshalResponse(t *testing.T) {
 		assert.Equal(t, unmarshalledRequestBody.Emails[0], "test@hashicorp.com")
 		assert.NotEmpty(t, unmarshalledRequestBody.StatusTimestamps)
 		assert.NotNil(t, unmarshalledRequestBody.StatusTimestamps.QueuedAt)
+		//assert.NotEmpty(t, unmarshalledRequestBody.DeliveryResponses)
+		//assert.Equal(t, len(unmarshalledRequestBody.DeliveryResponses), 1)
+		fmt.Println("OMAR: DeliveryResponses")
+		fmt.Printf("%+v", unmarshalledRequestBody.DeliveryResponses)
+		//assert.Equal(t, &unmarshalledRequestBody.DeliveryResponses[0].Body, "<html>")
+		//assert.Equal(t, &unmarshalledRequestBody.DeliveryResponses[0].Code, 200)
 	})
 
 	t.Run("can only unmarshal Items that are slices", func(t *testing.T) {
