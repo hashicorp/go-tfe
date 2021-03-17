@@ -12,6 +12,8 @@ import (
 	"time"
 
 	"github.com/hashicorp/go-retryablehttp"
+	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 	"github.com/svanharmelen/jsonapi"
 	"golang.org/x/time/rate"
 )
@@ -374,6 +376,103 @@ func createRequest(v interface{}) (*retryablehttp.Request, []byte, error) {
 		return request, nil, err
 	}
 	return request, body, nil
+}
+
+type tfeAPI struct {
+	ID                string                    `jsonapi:"primary,tfe"`
+	Name              string                    `jsonapi:"attr,name"`
+	CreatedAt         time.Time                 `jsonapi:"attr,created-at,iso8601"`
+	Enalbed           bool                      `jsonapi:"attr,enalbed"`
+	Emails            []string                  `jsonapi:"attr,emails"`
+	Status            tfeAPIStatus              `jsonapi:"attr,status"`
+	StatusTimestamps  *tfeAPITimestamps         `jsonapi:"attr,status-timestamps"`
+	DeliveryResponses []*tfeAPIDeliveryResponse `jsonapi:"attr,delivery-responses"`
+}
+
+type tfeAPIDeliveryResponse struct {
+	Body string `json:"body"`
+	Code int    `json:"code"`
+}
+
+type tfeAPIStatus string
+
+const (
+	tfeAPIStatusNormal tfeAPIStatus = "normal"
+)
+
+type tfeAPITimestamps struct {
+	QueuedAt time.Time `json:"queued-at"`
+}
+
+func Test_unmarshalResponse(t *testing.T) {
+	t.Run("unmarshal properly formatted json", func(t *testing.T) {
+		// This structure is intended to include multiple possible fields and
+		// formats that are valid for JSON:API
+		data := map[string]interface{}{
+			"data": map[string]interface{}{
+				"type": "tfe",
+				"id":   "1",
+				"attributes": map[string]interface{}{
+					"name":       "terraform",
+					"created-at": "2016-08-17T08:27:12Z",
+					"enabled":    "true",
+					"status":     tfeAPIStatusNormal,
+					"emails":     []string{"test@hashicorp.com"},
+					"delivery-responses": []*tfeAPIDeliveryResponse{
+						&tfeAPIDeliveryResponse{
+							Body: "<html>",
+							Code: 200,
+						},
+					},
+					"status-timestamps": map[string]string{
+						"queued-at": "2021-03-16T23:09:59+00:00",
+					},
+				},
+			},
+		}
+		byteData, _ := json.Marshal(data)
+		responseBody := bytes.NewReader(byteData)
+
+		unmarshalledRequestBody := tfeAPI{}
+		err := unmarshalResponse(responseBody, &unmarshalledRequestBody)
+		require.NoError(t, err)
+
+		assert.Equal(t, unmarshalledRequestBody.ID, "1")
+		assert.Equal(t, unmarshalledRequestBody.Name, "terraform")
+		assert.Equal(t, unmarshalledRequestBody.Status, tfeAPIStatusNormal)
+		assert.Equal(t, len(unmarshalledRequestBody.Emails), 1)
+		assert.Equal(t, unmarshalledRequestBody.Emails[0], "test@hashicorp.com")
+		assert.NotEmpty(t, unmarshalledRequestBody.StatusTimestamps)
+		assert.NotNil(t, unmarshalledRequestBody.StatusTimestamps.QueuedAt)
+		assert.NotEmpty(t, unmarshalledRequestBody.DeliveryResponses)
+		assert.Equal(t, len(unmarshalledRequestBody.DeliveryResponses), 1)
+		assert.Equal(t, unmarshalledRequestBody.DeliveryResponses[0].Body, "<html>")
+		assert.Equal(t, unmarshalledRequestBody.DeliveryResponses[0].Code, 200)
+	})
+
+	t.Run("can only unmarshal Items that are slices", func(t *testing.T) {
+		responseBody := bytes.NewReader([]byte(""))
+		malformattedItemStruct := struct {
+			*Pagination
+			Items int
+		}{
+			Items: 1,
+		}
+		err := unmarshalResponse(responseBody, &malformattedItemStruct)
+		require.Error(t, err)
+		assert.EqualError(t, err, "v.Items must be a slice")
+	})
+
+	t.Run("can only unmarshal a struct", func(t *testing.T) {
+		payload := "random"
+		responseBody := bytes.NewReader([]byte(payload))
+
+		notStruct := "not a struct"
+		err := unmarshalResponse(responseBody, notStruct)
+		assert.Error(t, err)
+		assert.EqualError(t, err, "v must be a struct or an io.Writer")
+	})
+
 }
 
 func TestClient_configureLimiter(t *testing.T) {
