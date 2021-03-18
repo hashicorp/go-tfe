@@ -14,7 +14,9 @@ func TestRunsList(t *testing.T) {
 	client := testClient(t)
 	ctx := context.Background()
 
-	wTest, wTestCleanup := createWorkspace(t, client, nil)
+	orgTest, orgTestCleanup := createOrganization(t, client)
+	defer orgTestCleanup()
+	wTest, wTestCleanup := createWorkspace(t, client, orgTest)
 	defer wTestCleanup()
 
 	rTest1, rTestCleanup1 := createRun(t, client, wTest)
@@ -182,7 +184,12 @@ func TestRunsApply(t *testing.T) {
 	client := testClient(t)
 	ctx := context.Background()
 
-	rTest, rTestCleanup := createPlannedRun(t, client, nil)
+	orgTest, orgTestCleanup := createOrganization(t, client)
+	defer orgTestCleanup()
+	wTest, wTestCleanup := createWorkspace(t, client, orgTest)
+	defer wTestCleanup()
+
+	rTest, rTestCleanup := createPlannedRun(t, client, wTest)
 	defer rTestCleanup()
 
 	t.Run("when the run exists", func(t *testing.T) {
