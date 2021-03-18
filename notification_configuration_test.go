@@ -8,7 +8,6 @@ import (
 	"testing"
 	"time"
 
-	"github.com/google/jsonapi"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
@@ -91,18 +90,15 @@ func TestNotificationConfigurationCreate(t *testing.T) {
 	t.Run("with all required values", func(t *testing.T) {
 		options := NotificationConfigurationCreateOptions{
 			DestinationType: NotificationDestination(NotificationDestinationTypeGeneric),
-			Enabled:         Bool(true),
+			Enabled:         Bool(false),
 			Name:            String(randomString(t)),
 			Token:           String(randomString(t)),
 			URL:             String("http://example.com"),
 			Triggers:        []string{NotificationTriggerCreated},
 		}
 
-		fmt.Println("OMAR BEFORE NC CREATE")
-		nc, err := client.NotificationConfigurations.Create(ctx, wTest.ID, options)
+		_, err := client.NotificationConfigurations.Create(ctx, wTest.ID, options)
 		require.NoError(t, err)
-		fmt.Println("OMAR DELVIERY RESPONSE")
-		fmt.Printf("%+v", nc.DeliveryResponses)
 	})
 
 	t.Run("without a required value", func(t *testing.T) {
@@ -326,7 +322,6 @@ func TestNotificationConfigurationVerify(t *testing.T) {
 }
 
 func TestNotificationConfiguration_Unmarshal(t *testing.T) {
-	nc := &NotificationConfiguration{}
 	headers := map[string][]string{
 		"cache-control":  {"private"},
 		"content-length": {"129"},
@@ -337,9 +332,9 @@ func TestNotificationConfiguration_Unmarshal(t *testing.T) {
 			"id":   "nc-ntv3HbhJqvFzamy7",
 			"attributes": map[string]interface{}{
 				"created-at": "2018-03-02T23:42:06.651Z",
-				"delivery-responses": []map[string]interface{}{
-					{
-						"body":       "<html>",
+				"delivery-responses": []interface{}{
+					map[string]interface{}{
+						"body":       "html",
 						"code":       "200",
 						"headers":    headers,
 						"sent-at":    "2019-01-08 21:34:37 UTC",
@@ -358,20 +353,19 @@ func TestNotificationConfiguration_Unmarshal(t *testing.T) {
 		},
 	}
 	byteData, err := json.Marshal(data)
-	if err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, err)
+	fmt.Println(string(byteData))
 
-	err = jsonapi.UnmarshalPayload(bytes.NewReader(byteData), nc)
-	if err != nil {
-		t.Fatal(err)
-	}
+	responseBody := bytes.NewReader(byteData)
+	nc := &NotificationConfiguration{}
+	err = unmarshalResponse(responseBody, nc)
+	require.NoError(t, err)
 
 	iso8601TimeFormat := "2006-01-02T15:04:05Z"
 	parsedTime, err := time.Parse(iso8601TimeFormat, "2018-03-02T23:42:06.651Z")
 	require.NoError(t, err)
 	assert.Equal(t, nc.ID, "nc-ntv3HbhJqvFzamy7")
 	assert.Equal(t, nc.CreatedAt, parsedTime)
-	//assert.Equal(t, len(nc.DeliveryResponses), 1)
-	//assert.Equal(t, nc.DeliveryResponses[0].Body, "bad error")
+	assert.Equal(t, len(nc.DeliveryResponses), 1)
+	assert.Equal(t, "html", nc.DeliveryResponses[0].Body)
 }

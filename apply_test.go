@@ -7,7 +7,6 @@ import (
 	"io/ioutil"
 	"testing"
 
-	"github.com/google/jsonapi"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
@@ -71,7 +70,6 @@ func TestAppliesLogs(t *testing.T) {
 }
 
 func TestApplies_Unmarshal(t *testing.T) {
-	apply := &Apply{}
 	data := map[string]interface{}{
 		"data": map[string]interface{}{
 			"type": "applies",
@@ -88,15 +86,15 @@ func TestApplies_Unmarshal(t *testing.T) {
 			},
 		},
 	}
-	byteData, err := json.Marshal(data)
-	if err != nil {
-		t.Fatal(err)
-	}
 
-	err = jsonapi.UnmarshalPayload(bytes.NewReader(byteData), apply)
-	if err != nil {
-		t.Fatal(err)
-	}
+	byteData, err := json.Marshal(data)
+	require.NoError(t, err)
+	responseBody := bytes.NewReader(byteData)
+
+	apply := &Apply{}
+	err = unmarshalResponse(responseBody, apply)
+	require.NoError(t, err)
+
 	assert.Equal(t, apply.ID, "apply-47MBvjwzBG8YKc2v")
 	assert.Equal(t, apply.ResourceAdditions, 1)
 	assert.Equal(t, apply.ResourceChanges, 1)

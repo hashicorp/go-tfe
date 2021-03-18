@@ -28,13 +28,13 @@ type ipRanges struct {
 
 type IPRange struct {
 	// List of IP ranges in CIDR notation used for connections from user site to Terraform Cloud APIs
-	API []string `jsonapi:"attr,api"`
+	API []string `json:"api"`
 	// List of IP ranges in CIDR notation used for notifications
-	Notifications []string `jsonapi:"attr,notifications"`
+	Notifications []string `json:"notifications"`
 	// List of IP ranges in CIDR notation used for outbound requests from Sentinel policies
-	Sentinel []string `jsonapi:"attr,sentinel"`
+	Sentinel []string `json:"sentinel"`
 	// List of IP ranges in CIDR notation used for connecting to VCS providers
-	VCS []string `jsonapi:"attr,vcs"`
+	VCS []string `json:"vcs"`
 }
 
 func (i *ipRanges) Read(ctx context.Context, modifiedSince string) (*IPRange, error) {

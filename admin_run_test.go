@@ -7,7 +7,7 @@ import (
 	"fmt"
 	"testing"
 
-	"github.com/google/jsonapi"
+	retryablehttp "github.com/hashicorp/go-retryablehttp"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
@@ -190,7 +190,7 @@ func TestAdminRuns_ForceCancel(t *testing.T) {
 
 		comment1 := "Misclick"
 		err = client.Admin.Runs.ForceCancel(ctx, rTestPending.ID, AdminRunForceCancelOptions{
-			Comment: comment1,
+			Comment: String(comment1),
 		})
 		require.NoError(t, err)
 
@@ -200,7 +200,7 @@ func TestAdminRuns_ForceCancel(t *testing.T) {
 
 		comment2 := "Another misclick"
 		err = client.Admin.Runs.ForceCancel(ctx, rTestPlanning.ID, AdminRunForceCancelOptions{
-			Comment: comment2,
+			Comment: String(comment2),
 		})
 		require.NoError(t, err)
 
@@ -242,8 +242,23 @@ func TestAdminRuns_AdminRunsListOptions_valid(t *testing.T) {
 	})
 }
 
+func TestAdminRun_ForceCancel_Marshal(t *testing.T) {
+	opts := AdminRunForceCancelOptions{
+		Comment: String("cancel comment"),
+	}
+
+	reqBody, err := serializeRequestBody(&opts)
+	require.NoError(t, err)
+	req, err := retryablehttp.NewRequest("POST", "url", reqBody)
+	require.NoError(t, err)
+	bodyBytes, err := req.BodyBytes()
+	require.NoError(t, err)
+
+	expectedBody := `{"comment":"cancel comment"}`
+	assert.Equal(t, expectedBody, string(bodyBytes))
+}
+
 func TestAdminRun_Unmarshal(t *testing.T) {
-	adminRun := &AdminRun{}
 	data := map[string]interface{}{
 		"data": map[string]interface{}{
 			"type": "runs",
@@ -263,10 +278,10 @@ func TestAdminRun_Unmarshal(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	err = jsonapi.UnmarshalPayload(bytes.NewReader(byteData), adminRun)
-	if err != nil {
-		t.Fatal(err)
-	}
+	adminRun := &AdminRun{}
+	responseBody := bytes.NewReader(byteData)
+	err = unmarshalResponse(responseBody, adminRun)
+	require.NoError(t, err)
 	assert.Equal(t, adminRun.ID, "run-VCsNJXa59eUza53R")
 	assert.Equal(t, adminRun.HasChanges, true)
 	assert.Equal(t, adminRun.Status, RunApplied)

@@ -94,11 +94,18 @@ type NotificationConfiguration struct {
 // DeliveryResponse represents a notification configuration delivery response.
 type DeliveryResponse struct {
 	Body string `jsonapi:"attr,body"`
-	Code int    `jsonapi:"attr,code"`
+	Code string `jsonapi:"attr,code"`
 	//Headers    http.Header `jsonapi:"attr,headers"`
-	//SentAt     time.Time `jsonapi:"attr,sent-at,iso8601"`
-	Successful bool   `jsonapi:"attr,successful"`
+	SentAt     string `jsonapi:"attr,sent-at"`
+	Successful string `jsonapi:"attr,successful"`
 	URL        string `jsonapi:"attr,url"`
+
+	//Body       string      `json:"body"`
+	//Code       int         `json:"code"`
+	//Headers    http.Header `json:"headers"`
+	//SentAt     time.Time   `json:"sent-at,iso8601"`
+	//Successful bool        `json:"successful"`
+	//URL        string      `json:"url"`
 }
 
 // NotificationConfigurationListOptions represents the options for listing

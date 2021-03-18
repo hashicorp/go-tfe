@@ -7,7 +7,6 @@ import (
 	"testing"
 	"time"
 
-	"github.com/google/jsonapi"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
@@ -198,7 +197,6 @@ func TestConfigurationVersionsUpload(t *testing.T) {
 }
 
 func TestConfigurationVersions_Unmarshal(t *testing.T) {
-	cv := &ConfigurationVersion{}
 	data := map[string]interface{}{
 		"data": map[string]interface{}{
 			"type": "configuration-versions",
@@ -217,14 +215,13 @@ func TestConfigurationVersions_Unmarshal(t *testing.T) {
 		},
 	}
 	byteData, err := json.Marshal(data)
-	if err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, err)
 
-	err = jsonapi.UnmarshalPayload(bytes.NewReader(byteData), cv)
-	if err != nil {
-		t.Fatal(err)
-	}
+	responseBody := bytes.NewReader(byteData)
+	cv := &ConfigurationVersion{}
+	err = unmarshalResponse(responseBody, cv)
+	require.NoError(t, err)
+
 	assert.Equal(t, cv.ID, "cv-ntv3HbhJqvFzamy7")
 	assert.Equal(t, cv.AutoQueueRuns, true)
 	assert.Equal(t, cv.Error, "bad error")

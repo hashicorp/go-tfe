@@ -11,8 +11,8 @@ import (
 	"testing"
 	"time"
 
-	"github.com/google/jsonapi"
 	"github.com/hashicorp/go-retryablehttp"
+	"github.com/hashicorp/jsonapi"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 	"golang.org/x/time/rate"

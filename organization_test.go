@@ -1,8 +1,12 @@
 package tfe
 
 import (
+	"bytes"
 	"context"
+	"encoding/json"
+	"fmt"
 	"testing"
+	"time"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
@@ -390,4 +394,42 @@ func TestOrganizationsRunQueue(t *testing.T) {
 		_, err := client.Organizations.Read(ctx, randomString(t))
 		assert.Error(t, err)
 	})
+}
+
+func TestOrganization_Unmarshal(t *testing.T) {
+	data := map[string]interface{}{
+		"data": map[string]interface{}{
+			"type": "organizations",
+			"id":   "org-name",
+			"attributes": map[string]interface{}{
+				"collaborator-auth-policy": AuthPolicyPassword,
+				"cost-estimation-enabled":  true,
+				"created-at":               "2018-03-02T23:42:06.651Z",
+				"email":                    "test@hashicorp.com",
+				"permissions": map[string]interface{}{
+					"can-create-team": true,
+				},
+			},
+		},
+	}
+	byteData, err := json.Marshal(data)
+	require.NoError(t, err)
+	fmt.Println(string(byteData))
+
+	responseBody := bytes.NewReader(byteData)
+	org := &Organization{}
+	err = unmarshalResponse(responseBody, org)
+	require.NoError(t, err)
+
+	iso8601TimeFormat := "2006-01-02T15:04:05Z"
+	parsedTime, err := time.Parse(iso8601TimeFormat, "2018-03-02T23:42:06.651Z")
+	require.NoError(t, err)
+	assert.Equal(t, org.Name, "org-name")
+	assert.Equal(t, org.CreatedAt, parsedTime)
+	assert.Equal(t, org.CollaboratorAuthPolicy, AuthPolicyPassword)
+	assert.Equal(t, org.CostEstimationEnabled, true)
+	assert.Equal(t, org.Email, "test@hashicorp.com")
+	assert.NotEmpty(t, org.Permissions)
+	assert.Equal(t, org.Permissions.CanCreateTeam, true)
+
 }

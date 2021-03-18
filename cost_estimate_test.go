@@ -1,7 +1,9 @@
 package tfe
 
 import (
+	"bytes"
 	"context"
+	"encoding/json"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -50,4 +52,44 @@ func TestCostEstimatesRead(t *testing.T) {
 		assert.Nil(t, ce)
 		assert.EqualError(t, err, ErrInvalidCostEstimateID.Error())
 	})
+}
+
+func TestCostEsimate_Unmarshal(t *testing.T) {
+	data := map[string]interface{}{
+		"data": map[string]interface{}{
+			"type": "cost-estimates",
+			"id":   "ce-ntv3HbhJqvFzamy7",
+			"attributes": map[string]interface{}{
+				"delta-monthly-cost":      "100",
+				"error-message":           "message",
+				"matched-resources-count": 1,
+				"prior-monthly-cost":      "100",
+				"proposed-monthly-cost":   "100",
+				"resources-count":         1,
+				"status":                  CostEstimateCanceled,
+				"status-timestamps": map[string]string{
+					"finished-at": "2020-03-16T23:09:59+00:00",
+					"queued-at":   "2021-03-16T23:09:59+00:00",
+				},
+			},
+		},
+	}
+	byteData, err := json.Marshal(data)
+	require.NoError(t, err)
+
+	responseBody := bytes.NewReader(byteData)
+	ce := &CostEstimate{}
+	err = unmarshalResponse(responseBody, ce)
+	require.NoError(t, err)
+
+	assert.Equal(t, ce.ID, "ce-ntv3HbhJqvFzamy7")
+	assert.Equal(t, ce.DeltaMonthlyCost, "100")
+	assert.Equal(t, ce.ErrorMessage, "message")
+	assert.Equal(t, ce.MatchedResourcesCount, 1)
+	assert.Equal(t, ce.PriorMonthlyCost, "100")
+	assert.Equal(t, ce.ProposedMonthlyCost, "100")
+	assert.Equal(t, ce.ResourcesCount, 1)
+	assert.Equal(t, ce.Status, CostEstimateCanceled)
+	assert.Equal(t, ce.StatusTimestamps.FinishedAt, "2020-03-16T23:09:59+00:00")
+	assert.Equal(t, ce.StatusTimestamps.QueuedAt, "2021-03-16T23:09:59+00:00")
 }
