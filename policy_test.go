@@ -263,6 +263,11 @@ func TestPoliciesUpdate(t *testing.T) {
 	})
 
 	t.Run("when updating with a nonexisting path", func(t *testing.T) {
+		// Weirdly enough pAfter is not equal to pBefore as updating
+		// a nonexisting path causes the enforce mode to reset to the default
+		// hard-mandatory
+		t.Skip("see comment...")
+
 		pBefore, pBeforeCleanup := createUploadedPolicy(t, client, true, orgTest)
 		defer pBeforeCleanup()
 
@@ -278,9 +283,6 @@ func TestPoliciesUpdate(t *testing.T) {
 		})
 		require.NoError(t, err)
 
-		// Weirdly enough this is not equal as updating a nonexisting path
-		// causes the enforce mode to reset to the default hard-mandatory
-		t.Skip("see comment...")
 		assert.Equal(t, pBefore, pAfter)
 	})
 

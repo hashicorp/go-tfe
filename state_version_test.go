@@ -155,7 +155,7 @@ func TestStateVersionsCreate(t *testing.T) {
 			t.Fatal(err)
 		}
 
-		sv, err := client.StateVersions.Create(ctx, wTest.ID, StateVersionCreateOptions{
+		_, err = client.StateVersions.Create(ctx, wTest.ID, StateVersionCreateOptions{
 			Lineage: String("741c4949-60b9-5bb1-5bf8-b14f4bb14af3"),
 			MD5:     String(fmt.Sprintf("%x", md5.Sum(state))),
 			Serial:  Int64(1),
@@ -163,7 +163,7 @@ func TestStateVersionsCreate(t *testing.T) {
 		})
 		require.NoError(t, err)
 
-		sv, err = client.StateVersions.Create(ctx, wTest.ID, StateVersionCreateOptions{
+		sv, err := client.StateVersions.Create(ctx, wTest.ID, StateVersionCreateOptions{
 			Lineage: String("821c4747-a0b9-3bd1-8bf3-c14f4bb14be7"),
 			MD5:     String(fmt.Sprintf("%x", md5.Sum(state))),
 			Serial:  Int64(2),
