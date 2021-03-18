@@ -15,7 +15,6 @@ import (
 	"github.com/hashicorp/go-retryablehttp"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
-	"github.com/svanharmelen/jsonapi"
 	"golang.org/x/time/rate"
 )
 
@@ -380,19 +379,19 @@ func createRequest(v interface{}) (*retryablehttp.Request, []byte, error) {
 }
 
 type tfeAPI struct {
-	ID                string                    `jsonapi:"primary,tfe"`
-	Name              string                    `jsonapi:"attr,name"`
-	CreatedAt         time.Time                 `jsonapi:"attr,created-at,iso8601"`
-	Enalbed           bool                      `jsonapi:"attr,enalbed"`
-	Emails            []string                  `jsonapi:"attr,emails"`
-	Status            tfeAPIStatus              `jsonapi:"attr,status"`
-	StatusTimestamps  *tfeAPITimestamps         `jsonapi:"attr,status-timestamps"`
-	DeliveryResponses []*tfeAPIDeliveryResponse `jsonapi:"attr,delivery-responses"`
+	ID                string                   `jsonapi:"primary,tfe"`
+	Name              string                   `jsonapi:"attr,name"`
+	CreatedAt         time.Time                `jsonapi:"attr,created-at,iso8601"`
+	Enalbed           bool                     `jsonapi:"attr,enalbed"`
+	Emails            []string                 `jsonapi:"attr,emails"`
+	Status            tfeAPIStatus             `jsonapi:"attr,status"`
+	StatusTimestamps  tfeAPITimestamps         `jsonapi:"attr,status-timestamps"`
+	DeliveryResponses []tfeAPIDeliveryResponse `jsonapi:"attr,delivery-responses"`
 }
 
 type tfeAPIDeliveryResponse struct {
-	Body string `json:"body"`
-	Code int    `json:"code"`
+	Body string `jsonapi:"attr,body"`
+	Code int    `jsonapi:"attr,code"`
 }
 
 type tfeAPIStatus string
@@ -402,7 +401,7 @@ const (
 )
 
 type tfeAPITimestamps struct {
-	QueuedAt time.Time `json:"queued-at"`
+	QueuedAt string `jsonapi:"attr,queued-at"`
 }
 
 func Test_unmarshalResponse(t *testing.T) {
@@ -419,10 +418,14 @@ func Test_unmarshalResponse(t *testing.T) {
 					"enabled":    "true",
 					"status":     tfeAPIStatusNormal,
 					"emails":     []string{"test@hashicorp.com"},
-					"delivery-responses": []*tfeAPIDeliveryResponse{
-						&tfeAPIDeliveryResponse{
-							Body: "<html>",
-							Code: 200,
+					"delivery-responses": []interface{}{
+						map[string]interface{}{
+							"body": "<html>",
+							"code": 200,
+						},
+						map[string]interface{}{
+							"body": "<body>",
+							"code": 300,
 						},
 					},
 					"status-timestamps": map[string]string{
@@ -446,9 +449,11 @@ func Test_unmarshalResponse(t *testing.T) {
 		assert.NotEmpty(t, unmarshalledRequestBody.StatusTimestamps)
 		assert.NotNil(t, unmarshalledRequestBody.StatusTimestamps.QueuedAt)
 		assert.NotEmpty(t, unmarshalledRequestBody.DeliveryResponses)
-		assert.Equal(t, len(unmarshalledRequestBody.DeliveryResponses), 1)
+		assert.Equal(t, len(unmarshalledRequestBody.DeliveryResponses), 2)
 		assert.Equal(t, unmarshalledRequestBody.DeliveryResponses[0].Body, "<html>")
 		assert.Equal(t, unmarshalledRequestBody.DeliveryResponses[0].Code, 200)
+		assert.Equal(t, unmarshalledRequestBody.DeliveryResponses[1].Body, "<body>")
+		assert.Equal(t, unmarshalledRequestBody.DeliveryResponses[1].Code, 300)
 	})
 
 	t.Run("can only unmarshal Items that are slices", func(t *testing.T) {
@@ -474,6 +479,86 @@ func Test_unmarshalResponse(t *testing.T) {
 		assert.EqualError(t, err, "v must be a struct or an io.Writer")
 	})
 
+}
+
+type Company struct {
+	ID        string    `jsonapi:"primary,companies"`
+	Name      string    `jsonapi:"attr,name"`
+	Boss      Employee  `jsonapi:"attr,boss"`
+	Teams     []Cteam   `jsonapi:"attr,teams"`
+	FoundedAt time.Time `jsonapi:"attr,founded-at,iso8601"`
+}
+
+type Cteam struct {
+	Name    string     `jsonapi:"attr,name"`
+	Leader  *Employee  `jsonapi:"attr,leader"`
+	Members []Employee `jsonapi:"attr,members"`
+}
+
+type Employee struct {
+	Firstname string     `jsonapi:"attr,firstname"`
+	Surname   string     `jsonapi:"attr,surname"`
+	Age       int        `jsonapi:"attr,age"`
+	HiredAt   *time.Time `jsonapi:"attr,hired-at,iso8601"`
+}
+
+func TestUnmarshalNestedStructSlice(t *testing.T) {
+
+	fry := map[string]interface{}{
+		"firstname": "Philip J.",
+		"surname":   "Fry",
+		"age":       25,
+		"hired-at":  "2016-08-17T08:27:12Z",
+	}
+
+	bender := map[string]interface{}{
+		"firstname": "Bender Bending",
+		"surname":   "Rodriguez",
+		"age":       19,
+		"hired-at":  "2016-08-17T08:27:12Z",
+	}
+
+	deliveryCrew := map[string]interface{}{
+		"name": "Delivery Crew",
+		"members": []interface{}{
+			fry,
+			bender,
+		},
+	}
+
+	sample := map[string]interface{}{
+		"data": map[string]interface{}{
+			"type": "companies",
+			"id":   "123",
+			"attributes": map[string]interface{}{
+				"name": "Planet Express",
+				"teams": []interface{}{
+					deliveryCrew,
+				},
+			},
+		},
+	}
+
+	byteData, _ := json.Marshal(sample)
+	responseBody := bytes.NewReader(byteData)
+	out := &Company{}
+
+	err := unmarshalResponse(responseBody, out)
+	require.NoError(t, err)
+
+	if out.Teams[0].Name != "Delivery Crew" {
+		t.Fatalf("Nested struct not unmarshalled: Expected `Delivery Crew` but got `%s`", out.Teams[0].Name)
+	}
+
+	if len(out.Teams[0].Members) != 2 {
+		t.Fatalf("Nested struct not unmarshalled: Expected to have `2` Members but got `%d`",
+			len(out.Teams[0].Members))
+	}
+
+	if out.Teams[0].Members[0].Firstname != "Philip J." {
+		t.Fatalf("Nested struct not unmarshalled: Expected `Philip J.` but got `%s`",
+			out.Teams[0].Members[0].Firstname)
+	}
 }
 
 func TestClient_configureLimiter(t *testing.T) {
