@@ -1,7 +1,9 @@
 package tfe
 
 import (
+	"bytes"
 	"context"
+	"encoding/json"
 	"io/ioutil"
 	"testing"
 
@@ -193,4 +195,57 @@ func TestPolicyChecksLogs(t *testing.T) {
 		assert.Nil(t, logs)
 		assert.Error(t, err)
 	})
+}
+
+func TestPolicyCheck_Unmarshal(t *testing.T) {
+	data := map[string]interface{}{
+		"data": map[string]interface{}{
+			"type": "policy-checks",
+			"id":   "1",
+			"attributes": map[string]interface{}{
+				"actions": map[string]interface{}{
+					"is-overridable": true,
+				},
+				"permissions": map[string]interface{}{
+					"can-override": true,
+				},
+				"result": map[string]interface{}{
+					"advisory-failed": 1,
+					"duration":        1,
+					"hard-failed":     1,
+					"passed":          1,
+					"result":          true,
+					"soft-failed":     1,
+					"total-failed":    1,
+				},
+				"scope":  PolicyScopeOrganization,
+				"status": PolicyOverridden,
+				"status-timestamps": map[string]string{
+					"passed-at": "2021-03-16T23:09:59+00:00",
+				},
+			},
+		},
+	}
+
+	byteData, err := json.Marshal(data)
+	require.NoError(t, err)
+
+	responseBody := bytes.NewReader(byteData)
+	pc := &PolicyCheck{}
+	err = unmarshalResponse(responseBody, pc)
+	require.NoError(t, err)
+
+	assert.Equal(t, pc.ID, "1")
+	assert.Equal(t, pc.Actions.IsOverridable, true)
+	assert.Equal(t, pc.Permissions.CanOverride, true)
+	assert.Equal(t, pc.Result.AdvisoryFailed, 1)
+	assert.Equal(t, pc.Result.Duration, 1)
+	assert.Equal(t, pc.Result.HardFailed, 1)
+	assert.Equal(t, pc.Result.Passed, 1)
+	assert.Equal(t, pc.Result.Result, true)
+	assert.Equal(t, pc.Result.SoftFailed, 1)
+	assert.Equal(t, pc.Result.TotalFailed, 1)
+	assert.Equal(t, pc.Scope, PolicyScopeOrganization)
+	assert.Equal(t, pc.Status, PolicyOverridden)
+	assert.Equal(t, pc.StatusTimestamps.PassedAt, "2021-03-16T23:09:59+00:00")
 }

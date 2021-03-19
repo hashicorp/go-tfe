@@ -1,8 +1,9 @@
 package tfe
 
 import (
+	"bytes"
 	"context"
-	"fmt"
+	"encoding/json"
 	"testing"
 	"time"
 
@@ -93,7 +94,6 @@ func TestRunsCreate(t *testing.T) {
 
 		r, err := client.Runs.Create(ctx, options)
 		assert.NoError(t, err)
-		fmt.Println(r.CreatedAt)
 		assert.NotNil(t, r.ID)
 		assert.NotNil(t, r.CreatedAt)
 		assert.NotNil(t, r.Source)
@@ -334,4 +334,61 @@ func TestRunsDiscard(t *testing.T) {
 		err := client.Runs.Discard(ctx, badIdentifier, RunDiscardOptions{})
 		assert.EqualError(t, err, ErrInvalidRunID.Error())
 	})
+}
+
+func TestRun_Unmarshal(t *testing.T) {
+	data := map[string]interface{}{
+		"data": map[string]interface{}{
+			"type": "runs",
+			"id":   "1",
+			"attributes": map[string]interface{}{
+				"created-at":  "2018-03-02T23:42:06.651Z",
+				"has-changes": true,
+				"is-destroy":  false,
+				"message":     "run message",
+				"actions": map[string]interface{}{
+					"is-cancelable":       true,
+					"is-confirmable":      true,
+					"is-discardable":      true,
+					"is-force-cancelable": true,
+				},
+				"permissions": map[string]interface{}{
+					"can-apply":         true,
+					"can-cancel":        true,
+					"can-discard":       true,
+					"can-force-cancel":  true,
+					"can-force-execute": true,
+				},
+				"status-timestamps": map[string]string{
+					"finished-at": "2021-03-16T23:09:59+00:00",
+				},
+			},
+		},
+	}
+	byteData, err := json.Marshal(data)
+	require.NoError(t, err)
+
+	responseBody := bytes.NewReader(byteData)
+	run := &Run{}
+	err = unmarshalResponse(responseBody, run)
+	require.NoError(t, err)
+
+	iso8601TimeFormat := "2006-01-02T15:04:05Z"
+	parsedTime, err := time.Parse(iso8601TimeFormat, "2018-03-02T23:42:06.651Z")
+	require.NoError(t, err)
+	assert.Equal(t, run.ID, "1")
+	assert.Equal(t, run.CreatedAt, parsedTime)
+	assert.Equal(t, run.HasChanges, true)
+	assert.Equal(t, run.IsDestroy, false)
+	assert.Equal(t, run.Message, "run message")
+	assert.Equal(t, run.Actions.IsConfirmable, true)
+	assert.Equal(t, run.Actions.IsCancelable, true)
+	assert.Equal(t, run.Actions.IsDiscardable, true)
+	assert.Equal(t, run.Actions.IsForceCancelable, true)
+	assert.Equal(t, run.Permissions.CanApply, true)
+	assert.Equal(t, run.Permissions.CanCancel, true)
+	assert.Equal(t, run.Permissions.CanDiscard, true)
+	assert.Equal(t, run.Permissions.CanForceExecute, true)
+	assert.Equal(t, run.Permissions.CanForceCancel, true)
+	assert.Equal(t, run.StatusTimestamps.FinishedAt, "2021-03-16T23:09:59+00:00")
 }

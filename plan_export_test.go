@@ -1,7 +1,9 @@
 package tfe
 
 import (
+	"bytes"
 	"context"
+	"encoding/json"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -117,4 +119,33 @@ func TestPlanExportsDownload(t *testing.T) {
 		assert.Nil(t, pe)
 		assert.EqualError(t, err, "invalid value for plan export ID")
 	})
+}
+
+func TestPlanExport_Unmarshal(t *testing.T) {
+	data := map[string]interface{}{
+		"data": map[string]interface{}{
+			"type": "plan-exports",
+			"id":   "1",
+			"attributes": map[string]interface{}{
+				"data-type": PlanExportSentinelMockBundleV0,
+				"status":    PlanExportCanceled,
+				"status-timestamps": map[string]string{
+					"finished-at": "2021-03-16T23:09:59+00:00",
+				},
+			},
+		},
+	}
+
+	byteData, err := json.Marshal(data)
+	require.NoError(t, err)
+
+	responseBody := bytes.NewReader(byteData)
+	pe := &PlanExport{}
+	err = unmarshalResponse(responseBody, pe)
+	require.NoError(t, err)
+
+	assert.Equal(t, pe.DataType, PlanExportSentinelMockBundleV0)
+	assert.Equal(t, pe.Status, PlanExportCanceled)
+	assert.NotEmpty(t, pe.StatusTimestamps)
+	assert.Equal(t, pe.StatusTimestamps.FinishedAt, "2021-03-16T23:09:59+00:00")
 }

@@ -1,7 +1,9 @@
 package tfe
 
 import (
+	"bytes"
 	"context"
+	"encoding/json"
 	"io/ioutil"
 	"testing"
 
@@ -64,4 +66,41 @@ func TestPlansLogs(t *testing.T) {
 		assert.Nil(t, logs)
 		assert.Error(t, err)
 	})
+}
+
+func TestPlan_Unmarshal(t *testing.T) {
+	data := map[string]interface{}{
+		"data": map[string]interface{}{
+			"type": "plans",
+			"id":   "1",
+			"attributes": map[string]interface{}{
+				"has-changes":           true,
+				"log-read-url":          "hashicorp.com",
+				"resource-additions":    1,
+				"resource-changes":      1,
+				"resource-destructions": 1,
+				"status":                PlanCanceled,
+				"status-timestamps": map[string]string{
+					"finished-at": "2021-03-16T23:09:59+00:00",
+				},
+			},
+		},
+	}
+
+	byteData, err := json.Marshal(data)
+	require.NoError(t, err)
+
+	responseBody := bytes.NewReader(byteData)
+	plan := &Plan{}
+	err = unmarshalResponse(responseBody, plan)
+	require.NoError(t, err)
+
+	assert.Equal(t, plan.HasChanges, true)
+	assert.Equal(t, plan.LogReadURL, "hashicorp.com")
+	assert.Equal(t, plan.ResourceAdditions, 1)
+	assert.Equal(t, plan.ResourceChanges, 1)
+	assert.Equal(t, plan.ResourceDestructions, 1)
+	assert.Equal(t, plan.Status, PlanCanceled)
+	assert.NotEmpty(t, plan.StatusTimestamps)
+	assert.Equal(t, plan.StatusTimestamps.FinishedAt, "2021-03-16T23:09:59+00:00")
 }

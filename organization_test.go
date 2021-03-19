@@ -431,5 +431,4 @@ func TestOrganization_Unmarshal(t *testing.T) {
 	assert.Equal(t, org.Email, "test@hashicorp.com")
 	assert.NotEmpty(t, org.Permissions)
 	assert.Equal(t, org.Permissions.CanCreateTeam, true)
-
 }
