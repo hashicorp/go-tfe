@@ -291,6 +291,7 @@ func TestWorkspacesReadReadme(t *testing.T) {
 
 	w, err := client.Workspaces.Readme(context.Background(), wTest.ID)
 	require.NoError(t, err)
+	require.NotNil(t, w)
 
 	readme, err := ioutil.ReadAll(w)
 	require.NoError(t, err)
