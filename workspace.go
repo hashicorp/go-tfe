@@ -395,6 +395,9 @@ func (s *workspaces) Readme(ctx context.Context, workspaceID string) (io.Reader,
 	if err != nil {
 		return nil, err
 	}
+	if r.Readme == nil {
+		return nil, nil
+	}
 
 	return strings.NewReader(r.Readme.RawMarkdown), nil
 }
