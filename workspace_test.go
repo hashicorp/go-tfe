@@ -307,7 +307,7 @@ func TestWorkspacesReadReadme(t *testing.T) {
 	t.Run("when the readme does not exist", func(t *testing.T) {
 		w, err := client.Workspaces.Readme(ctx, "nonexisting")
 		assert.Nil(t, w)
-		assert.NoError(t, err)
+		assert.Error(t, err)
 	})
 
 	t.Run("without a valid workspace ID", func(t *testing.T) {
