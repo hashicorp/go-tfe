@@ -279,6 +279,7 @@ func TestWorkspacesReadWithHistory(t *testing.T) {
 
 func TestWorkspacesReadReadme(t *testing.T) {
 	client := testClient(t)
+	ctx := context.Background()
 
 	orgTest, orgTestCleanup := createOrganization(t, client)
 	defer orgTestCleanup()
@@ -289,13 +290,31 @@ func TestWorkspacesReadReadme(t *testing.T) {
 	_, rCleanup := createAppliedRun(t, client, wTest)
 	defer rCleanup()
 
-	w, err := client.Workspaces.Readme(context.Background(), wTest.ID)
-	require.NoError(t, err)
-	require.NotNil(t, w)
+	t.Run("when the readme exists", func(t *testing.T) {
+		w, err := client.Workspaces.Readme(ctx, wTest.ID)
+		require.NoError(t, err)
+		require.NotNil(t, w)
 
-	readme, err := ioutil.ReadAll(w)
-	require.NoError(t, err)
-	require.True(t, strings.HasPrefix(string(readme), `This is a simple test`))
+		readme, err := ioutil.ReadAll(w)
+		require.NoError(t, err)
+		require.True(
+			t,
+			strings.HasPrefix(string(readme), `This is a simple test`),
+			"got: %s", readme,
+		)
+	})
+
+	t.Run("when the readme does not exist", func(t *testing.T) {
+		w, err := client.Workspaces.Readme(ctx, "nonexisting")
+		assert.Nil(t, w)
+		assert.NoError(t, err)
+	})
+
+	t.Run("without a valid workspace ID", func(t *testing.T) {
+		w, err := client.Workspaces.Readme(ctx, badIdentifier)
+		assert.Nil(t, w)
+		assert.EqualError(t, err, ErrInvalidWorkspaceID.Error())
+	})
 }
 
 func TestWorkspacesReadByID(t *testing.T) {
