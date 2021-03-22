@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"net/url"
 	"os"
+	"time"
 
 	slug "github.com/hashicorp/go-slug"
 )
@@ -86,9 +87,9 @@ type ConfigurationVersion struct {
 // CVStatusTimestamps holds the timestamps for individual configuration version
 // statuses.
 type CVStatusTimestamps struct {
-	FinishedAt string `jsonapi:"attr,finished-at"`
-	QueuedAt   string `jsonapi:"attr,queued-at"`
-	StartedAt  string `jsonapi:"attr,started-at"`
+	FinishedAt time.Time `jsonapi:"attr,finished-at,rfc3339"`
+	QueuedAt   time.Time `jsonapi:"attr,queued-at,rfc3339"`
+	StartedAt  time.Time `jsonapi:"attr,started-at,rfc3339"`
 }
 
 // ConfigurationVersionListOptions represents the options for listing

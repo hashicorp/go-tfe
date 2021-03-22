@@ -208,8 +208,8 @@ func TestConfigurationVersions_Unmarshal(t *testing.T) {
 				"source":          ConfigurationSourceTerraform,
 				"status":          ConfigurationUploaded,
 				"status-timestamps": map[string]string{
-					"finished-at": "2020-03-16T23:09:59+00:00",
-					"started-at":  "2021-03-16T23:09:59+00:00",
+					"finished-at": "2020-03-16T23:15:59+00:00",
+					"started-at":  "2019-03-16T23:23:59+00:00",
 				},
 			},
 		},
@@ -222,12 +222,17 @@ func TestConfigurationVersions_Unmarshal(t *testing.T) {
 	err = unmarshalResponse(responseBody, cv)
 	require.NoError(t, err)
 
+	finishedParsedTime, err := time.Parse(time.RFC3339, "2020-03-16T23:15:59+00:00")
+	require.NoError(t, err)
+	startedParsedTime, err := time.Parse(time.RFC3339, "2019-03-16T23:23:59+00:00")
+	require.NoError(t, err)
+
 	assert.Equal(t, cv.ID, "cv-ntv3HbhJqvFzamy7")
 	assert.Equal(t, cv.AutoQueueRuns, true)
 	assert.Equal(t, cv.Error, "bad error")
 	assert.Equal(t, cv.ErrorMessage, "message")
 	assert.Equal(t, cv.Source, ConfigurationSourceTerraform)
 	assert.Equal(t, cv.Status, ConfigurationUploaded)
-	assert.Equal(t, cv.StatusTimestamps.FinishedAt, "2020-03-16T23:09:59+00:00")
-	assert.Equal(t, cv.StatusTimestamps.StartedAt, "2021-03-16T23:09:59+00:00")
+	assert.Equal(t, cv.StatusTimestamps.FinishedAt, finishedParsedTime)
+	assert.Equal(t, cv.StatusTimestamps.StartedAt, startedParsedTime)
 }
