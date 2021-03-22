@@ -6,6 +6,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"testing"
+	"time"
 
 	retryablehttp "github.com/hashicorp/go-retryablehttp"
 	"github.com/stretchr/testify/assert"
@@ -268,7 +269,7 @@ func TestAdminRun_Unmarshal(t *testing.T) {
 				"has-changes": true,
 				"status":      RunApplied,
 				"status-timestamps": map[string]string{
-					"finished-at": "2021-03-16T23:09:59+00:00",
+					"queued-at": "2020-03-16T23:15:59+00:00",
 				},
 			},
 		},
@@ -278,6 +279,9 @@ func TestAdminRun_Unmarshal(t *testing.T) {
 		t.Fatal(err)
 	}
 
+	queuedParsedTime, err := time.Parse(time.RFC3339, "2020-03-16T23:15:59+00:00")
+	require.NoError(t, err)
+
 	adminRun := &AdminRun{}
 	responseBody := bytes.NewReader(byteData)
 	err = unmarshalResponse(responseBody, adminRun)
@@ -285,7 +289,7 @@ func TestAdminRun_Unmarshal(t *testing.T) {
 	assert.Equal(t, adminRun.ID, "run-VCsNJXa59eUza53R")
 	assert.Equal(t, adminRun.HasChanges, true)
 	assert.Equal(t, adminRun.Status, RunApplied)
-	assert.Equal(t, adminRun.StatusTimestamps.FinishedAt, "2021-03-16T23:09:59+00:00")
+	assert.Equal(t, adminRun.StatusTimestamps.QueuedAt, queuedParsedTime)
 }
 
 func adminRunItemsContainsID(items []*AdminRun, id string) bool {
