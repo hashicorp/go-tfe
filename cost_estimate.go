@@ -58,12 +58,12 @@ type CostEstimate struct {
 
 // CostEstimateStatusTimestamps holds the timestamps for individual costEstimate statuses.
 type CostEstimateStatusTimestamps struct {
-	CanceledAt              string `jsonapi:"attr,canceled-at"`
-	ErroredAt               string `jsonapi:"attr,errored-at"`
-	FinishedAt              string `jsonapi:"attr,finished-at"`
-	PendingAt               string `jsonapi:"attr,pending-at"`
-	QueuedAt                string `jsonapi:"attr,queued-at"`
-	SkippedDueToTargetingAt string `jsonapi:"attr,skipped-due-to-targeting-at"`
+	CanceledAt              time.Time `jsonapi:"attr,canceled-at,rfc3339"`
+	ErroredAt               time.Time `jsonapi:"attr,errored-at,rfc3339"`
+	FinishedAt              time.Time `jsonapi:"attr,finished-at,rfc3339"`
+	PendingAt               time.Time `jsonapi:"attr,pending-at,rfc3339"`
+	QueuedAt                time.Time `jsonapi:"attr,queued-at,rfc3339"`
+	SkippedDueToTargetingAt time.Time `jsonapi:"attr,skipped-due-to-targeting-at,rfc3339"`
 }
 
 // Read a costEstimate by its ID.
