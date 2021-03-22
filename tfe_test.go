@@ -401,7 +401,7 @@ const (
 )
 
 type tfeAPITimestamps struct {
-	QueuedAt string `jsonapi:"attr,queued-at"`
+	QueuedAt time.Time `jsonapi:"attr,queued-at,rfc3339"`
 }
 
 func Test_unmarshalResponse(t *testing.T) {
@@ -429,7 +429,7 @@ func Test_unmarshalResponse(t *testing.T) {
 						},
 					},
 					"status-timestamps": map[string]string{
-						"queued-at": "2021-03-16T23:09:59+00:00",
+						"queued-at": "2020-03-16T23:15:59+00:00",
 					},
 				},
 			},
@@ -440,14 +440,15 @@ func Test_unmarshalResponse(t *testing.T) {
 		unmarshalledRequestBody := tfeAPI{}
 		err := unmarshalResponse(responseBody, &unmarshalledRequestBody)
 		require.NoError(t, err)
+		queuedParsedTime, err := time.Parse(time.RFC3339, "2020-03-16T23:15:59+00:00")
+		require.NoError(t, err)
 
 		assert.Equal(t, unmarshalledRequestBody.ID, "1")
 		assert.Equal(t, unmarshalledRequestBody.Name, "terraform")
 		assert.Equal(t, unmarshalledRequestBody.Status, tfeAPIStatusNormal)
 		assert.Equal(t, len(unmarshalledRequestBody.Emails), 1)
 		assert.Equal(t, unmarshalledRequestBody.Emails[0], "test@hashicorp.com")
-		assert.NotEmpty(t, unmarshalledRequestBody.StatusTimestamps)
-		assert.NotNil(t, unmarshalledRequestBody.StatusTimestamps.QueuedAt)
+		assert.Equal(t, unmarshalledRequestBody.StatusTimestamps.QueuedAt, queuedParsedTime)
 		assert.NotEmpty(t, unmarshalledRequestBody.DeliveryResponses)
 		assert.Equal(t, len(unmarshalledRequestBody.DeliveryResponses), 2)
 		assert.Equal(t, unmarshalledRequestBody.DeliveryResponses[0].Body, "<html>")

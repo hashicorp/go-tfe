@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"io"
 	"net/url"
+	"time"
 )
 
 // Compile-time proof of interface implementation.
@@ -56,12 +57,12 @@ type Apply struct {
 
 // ApplyStatusTimestamps holds the timestamps for individual apply statuses.
 type ApplyStatusTimestamps struct {
-	CanceledAt      string `jsonapi:"attr,canceled-at"`
-	ErroredAt       string `jsonapi:"attr,errored-at"`
-	FinishedAt      string `jsonapi:"attr,finished-at"`
-	ForceCanceledAt string `jsonapi:"attr,force-canceled-at"`
-	QueuedAt        string `jsonapi:"attr,queued-at"`
-	StartedAt       string `jsonapi:"attr,started-at"`
+	CanceledAt      time.Time `jsonapi:"attr,canceled-at,rfc3339"`
+	ErroredAt       time.Time `jsonapi:"attr,errored-at,rfc3339"`
+	FinishedAt      time.Time `jsonapi:"attr,finished-at,rfc3339"`
+	ForceCanceledAt time.Time `jsonapi:"attr,force-canceled-at,rfc3339"`
+	QueuedAt        time.Time `jsonapi:"attr,queued-at,rfc3339"`
+	StartedAt       time.Time `jsonapi:"attr,started-at,rfc3339"`
 }
 
 // Read an apply by its ID.

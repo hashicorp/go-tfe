@@ -128,8 +128,8 @@ type PolicyCreateOptions struct {
 
 // EnforcementOptions represents the enforcement options of a policy.
 type EnforcementOptions struct {
-	Path string           `jsonapi:"attr,path,omitempty"`
-	Mode EnforcementLevel `jsonapi:"attr,mode"`
+	Path *string           `jsonapi:"attr,path,omitempty"`
+	Mode *EnforcementLevel `jsonapi:"attr,mode"`
 }
 
 func (o PolicyCreateOptions) valid() error {
@@ -143,10 +143,10 @@ func (o PolicyCreateOptions) valid() error {
 		return errors.New("enforce is required")
 	}
 	for _, e := range o.Enforce {
-		if e.Path == "" {
+		if !validString(e.Path) {
 			return errors.New("enforcement path is required")
 		}
-		if e.Mode == "" {
+		if e.Mode == nil {
 			return errors.New("enforcement mode is required")
 		}
 	}

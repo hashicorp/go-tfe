@@ -6,6 +6,7 @@ import (
 	"encoding/json"
 	"io/ioutil"
 	"testing"
+	"time"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
@@ -221,7 +222,8 @@ func TestPolicyCheck_Unmarshal(t *testing.T) {
 				"scope":  PolicyScopeOrganization,
 				"status": PolicyOverridden,
 				"status-timestamps": map[string]string{
-					"passed-at": "2021-03-16T23:09:59+00:00",
+					"queued-at":  "2020-03-16T23:15:59+00:00",
+					"errored-at": "2019-03-16T23:23:59+00:00",
 				},
 			},
 		},
@@ -233,6 +235,11 @@ func TestPolicyCheck_Unmarshal(t *testing.T) {
 	responseBody := bytes.NewReader(byteData)
 	pc := &PolicyCheck{}
 	err = unmarshalResponse(responseBody, pc)
+	require.NoError(t, err)
+
+	queuedParsedTime, err := time.Parse(time.RFC3339, "2020-03-16T23:15:59+00:00")
+	require.NoError(t, err)
+	erroredParsedTime, err := time.Parse(time.RFC3339, "2019-03-16T23:23:59+00:00")
 	require.NoError(t, err)
 
 	assert.Equal(t, pc.ID, "1")
@@ -247,5 +254,6 @@ func TestPolicyCheck_Unmarshal(t *testing.T) {
 	assert.Equal(t, pc.Result.TotalFailed, 1)
 	assert.Equal(t, pc.Scope, PolicyScopeOrganization)
 	assert.Equal(t, pc.Status, PolicyOverridden)
-	assert.Equal(t, pc.StatusTimestamps.PassedAt, "2021-03-16T23:09:59+00:00")
+	assert.Equal(t, pc.StatusTimestamps.QueuedAt, queuedParsedTime)
+	assert.Equal(t, pc.StatusTimestamps.ErroredAt, erroredParsedTime)
 }

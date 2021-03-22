@@ -104,11 +104,11 @@ type PolicyResult struct {
 // PolicyStatusTimestamps holds the timestamps for individual policy check
 // statuses.
 type PolicyStatusTimestamps struct {
-	ErroredAt    string `jsonapi:"attr,errored-at"`
-	HardFailedAt string `jsonapi:"attr,hard-failed-at"`
-	PassedAt     string `jsonapi:"attr,passed-at"`
-	QueuedAt     string `jsonapi:"attr,queued-at"`
-	SoftFailedAt string `jsonapi:"attr,soft-failed-at"`
+	ErroredAt    time.Time `jsonapi:"attr,errored-at,rfc3339"`
+	HardFailedAt time.Time `jsonapi:"attr,hard-failed-at,rfc3339"`
+	PassedAt     time.Time `jsonapi:"attr,passed-at,rfc3339"`
+	QueuedAt     time.Time `jsonapi:"attr,queued-at,rfc3339"`
+	SoftFailedAt time.Time `jsonapi:"attr,soft-failed-at,rfc3339"`
 }
 
 // PolicyCheckListOptions represents the options for listing policy checks.

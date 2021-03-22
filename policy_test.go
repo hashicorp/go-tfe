@@ -85,8 +85,8 @@ func TestPoliciesCreate(t *testing.T) {
 			Description: String("A sample policy"),
 			Enforce: []*EnforcementOptions{
 				{
-					Path: name + ".sentinel",
-					Mode: EnforcementSoft,
+					Path: String(name + ".sentinel"),
+					Mode: EnforcementMode(EnforcementSoft),
 				},
 			},
 		}
@@ -113,8 +113,8 @@ func TestPoliciesCreate(t *testing.T) {
 			Name: String(badIdentifier),
 			Enforce: []*EnforcementOptions{
 				{
-					Path: badIdentifier + ".sentinel",
-					Mode: EnforcementSoft,
+					Path: String(badIdentifier + ".sentinel"),
+					Mode: EnforcementMode(EnforcementSoft),
 				},
 			},
 		})
@@ -126,8 +126,8 @@ func TestPoliciesCreate(t *testing.T) {
 		p, err := client.Policies.Create(ctx, orgTest.Name, PolicyCreateOptions{
 			Enforce: []*EnforcementOptions{
 				{
-					Path: randomString(t) + ".sentinel",
-					Mode: EnforcementSoft,
+					Path: String(randomString(t) + ".sentinel"),
+					Mode: EnforcementMode(EnforcementSoft),
 				},
 			},
 		})
@@ -150,7 +150,7 @@ func TestPoliciesCreate(t *testing.T) {
 			Name: String(randomString(t)),
 			Enforce: []*EnforcementOptions{
 				{
-					Mode: EnforcementSoft,
+					Mode: EnforcementMode(EnforcementSoft),
 				},
 			},
 		}
@@ -166,7 +166,7 @@ func TestPoliciesCreate(t *testing.T) {
 			Name: String(name),
 			Enforce: []*EnforcementOptions{
 				{
-					Path: name + ".sentinel",
+					Path: String(name + ".sentinel"),
 				},
 			},
 		}
@@ -250,8 +250,8 @@ func TestPoliciesUpdate(t *testing.T) {
 		pAfter, err := client.Policies.Update(ctx, pBefore.ID, PolicyUpdateOptions{
 			Enforce: []*EnforcementOptions{
 				{
-					Path: pBefore.Enforce[0].Path,
-					Mode: EnforcementAdvisory,
+					Path: String(pBefore.Enforce[0].Path),
+					Mode: EnforcementMode(EnforcementAdvisory),
 				},
 			},
 		})
@@ -274,8 +274,8 @@ func TestPoliciesUpdate(t *testing.T) {
 		pAfter, err := client.Policies.Update(ctx, pBefore.ID, PolicyUpdateOptions{
 			Enforce: []*EnforcementOptions{
 				{
-					Path: "nonexisting",
-					Mode: EnforcementAdvisory,
+					Path: String("nonexisting"),
+					Mode: EnforcementMode(EnforcementAdvisory),
 				},
 			},
 		})

@@ -5,6 +5,7 @@ import (
 	"context"
 	"encoding/json"
 	"testing"
+	"time"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
@@ -130,7 +131,8 @@ func TestPlanExport_Unmarshal(t *testing.T) {
 				"data-type": PlanExportSentinelMockBundleV0,
 				"status":    PlanExportCanceled,
 				"status-timestamps": map[string]string{
-					"finished-at": "2021-03-16T23:09:59+00:00",
+					"queued-at":  "2020-03-16T23:15:59+00:00",
+					"errored-at": "2019-03-16T23:23:59+00:00",
 				},
 			},
 		},
@@ -144,8 +146,14 @@ func TestPlanExport_Unmarshal(t *testing.T) {
 	err = unmarshalResponse(responseBody, pe)
 	require.NoError(t, err)
 
+	queuedParsedTime, err := time.Parse(time.RFC3339, "2020-03-16T23:15:59+00:00")
+	require.NoError(t, err)
+	erroredParsedTime, err := time.Parse(time.RFC3339, "2019-03-16T23:23:59+00:00")
+	require.NoError(t, err)
+
 	assert.Equal(t, pe.DataType, PlanExportSentinelMockBundleV0)
 	assert.Equal(t, pe.Status, PlanExportCanceled)
 	assert.NotEmpty(t, pe.StatusTimestamps)
-	assert.Equal(t, pe.StatusTimestamps.FinishedAt, "2021-03-16T23:09:59+00:00")
+	assert.Equal(t, pe.StatusTimestamps.QueuedAt, queuedParsedTime)
+	assert.Equal(t, pe.StatusTimestamps.ErroredAt, erroredParsedTime)
 }

@@ -132,16 +132,16 @@ type RunPermissions struct {
 
 // RunStatusTimestamps holds the timestamps for individual run statuses.
 type RunStatusTimestamps struct {
-	ErroredAt            string `jsonapi:"attr,errored-at"`
-	FinishedAt           string `jsonapi:"attr,finished-at"`
-	QueuedAt             string `jsonapi:"attr,queued-at"`
-	StartedAt            string `jsonapi:"attr,started-at"`
-	ApplyingAt           string `jsonapi:"attr,applying-at"`
-	AppliedAt            string `jsonapi:"attr,applied-at"`
-	PlanningAt           string `jsonapi:"attr,planning-at"`
-	PlannedAt            string `jsonapi:"attr,planned-at"`
-	PlannedAndFinishedAt string `jsonapi:"attr,planned-and-finished-at"`
-	PlanQueuabledAt      string `jsonapi:"attr,plan-queueable-at"`
+	ErroredAt            time.Time `jsonapi:"attr,errored-at,rfc3339"`
+	FinishedAt           time.Time `jsonapi:"attr,finished-at,rfc3339"`
+	QueuedAt             time.Time `jsonapi:"attr,queued-at,rfc3339"`
+	StartedAt            time.Time `jsonapi:"attr,started-at,rfc3339"`
+	ApplyingAt           time.Time `jsonapi:"attr,applying-at,rfc3339"`
+	AppliedAt            time.Time `jsonapi:"attr,applied-at,rfc3339"`
+	PlanningAt           time.Time `jsonapi:"attr,planning-at,rfc3339"`
+	PlannedAt            time.Time `jsonapi:"attr,planned-at,rfc3339"`
+	PlannedAndFinishedAt time.Time `jsonapi:"attr,planned-and-finished-at,rfc3339"`
+	PlanQueuabledAt      time.Time `jsonapi:"attr,plan-queueable-at,rfc3339"`
 }
 
 // RunListOptions represents the options for listing runs.
