@@ -4,7 +4,6 @@ import (
 	"bytes"
 	"context"
 	"encoding/json"
-	"fmt"
 	"testing"
 	"time"
 
@@ -414,7 +413,6 @@ func TestOrganization_Unmarshal(t *testing.T) {
 	}
 	byteData, err := json.Marshal(data)
 	require.NoError(t, err)
-	fmt.Println(string(byteData))
 
 	responseBody := bytes.NewReader(byteData)
 	org := &Organization{}
