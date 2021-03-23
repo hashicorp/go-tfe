@@ -138,8 +138,7 @@ func TestTeamsRead(t *testing.T) {
 		})
 
 		t.Run("organization access is properly decoded", func(t *testing.T) {
-			assert.Equal(t, tm.OrganizationAccess.ManagePolicies, opts.OrganizationAccess.ManagePolicies)
-			assert.Equal(t, tm.OrganizationAccess.ManageWorkspaces, opts.OrganizationAccess.ManageWorkspaces)
+			assert.Equal(t, tm.OrganizationAccess.ManagePolicies, *opts.OrganizationAccess.ManagePolicies)
 		})
 	})
 
@@ -192,11 +191,11 @@ func TestTeamsUpdate(t *testing.T) {
 				item.Visibility,
 			)
 			assert.Equal(t,
-				options.OrganizationAccess.ManagePolicies,
+				*options.OrganizationAccess.ManagePolicies,
 				item.OrganizationAccess.ManagePolicies,
 			)
 			assert.Equal(t,
-				options.OrganizationAccess.ManageVCSSettings,
+				*options.OrganizationAccess.ManageVCSSettings,
 				item.OrganizationAccess.ManageVCSSettings,
 			)
 		}
@@ -283,9 +282,7 @@ func TestTeamCreateOptions_Marshal(t *testing.T) {
 		Name:       String("team name"),
 		Visibility: String("organization"),
 		OrganizationAccess: &OrganizationAccessOptions{
-			ManagePolicies:    Bool(true),
-			ManageWorkspaces:  Bool(true),
-			ManageVCSSettings: Bool(true),
+			ManagePolicies: Bool(true),
 		},
 	}
 
@@ -296,7 +293,7 @@ func TestTeamCreateOptions_Marshal(t *testing.T) {
 	bodyBytes, err := req.BodyBytes()
 	require.NoError(t, err)
 
-	expectedBody := `{"data":{"type":"teams","attributes":{"name":"team name","organization-access":{"ManagePolicies":true,"ManageWorkspaces":true,"ManageVCSSettings":true},"visibility":"organization"}}}
+	expectedBody := `{"data":{"type":"teams","attributes":{"name":"team name","organization-access":{"manage-policies":true},"visibility":"organization"}}}
 `
 	assert.Equal(t, expectedBody, string(bodyBytes))
 }
