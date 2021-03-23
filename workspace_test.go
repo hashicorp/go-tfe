@@ -2,6 +2,8 @@ package tfe
 
 import (
 	"context"
+	"io/ioutil"
+	"strings"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -253,6 +255,65 @@ func TestWorkspacesRead(t *testing.T) {
 		w, err := client.Workspaces.Read(ctx, orgTest.Name, badIdentifier)
 		assert.Nil(t, w)
 		assert.EqualError(t, err, ErrInvalidWorkspaceValue.Error())
+	})
+}
+
+func TestWorkspacesReadWithHistory(t *testing.T) {
+	client := testClient(t)
+
+	orgTest, orgTestCleanup := createOrganization(t, client)
+	defer orgTestCleanup()
+
+	wTest, wTestCleanup := createWorkspace(t, client, orgTest)
+	defer wTestCleanup()
+
+	_, rCleanup := createAppliedRun(t, client, wTest)
+	defer rCleanup()
+
+	w, err := client.Workspaces.Read(context.Background(), orgTest.Name, wTest.Name)
+	require.NoError(t, err)
+
+	assert.Equal(t, 1, w.RunsCount)
+	assert.Equal(t, 1, w.ResourceCount)
+}
+
+func TestWorkspacesReadReadme(t *testing.T) {
+	client := testClient(t)
+	ctx := context.Background()
+
+	orgTest, orgTestCleanup := createOrganization(t, client)
+	defer orgTestCleanup()
+
+	wTest, wTestCleanup := createWorkspaceWithVCS(t, client, orgTest)
+	defer wTestCleanup()
+
+	_, rCleanup := createAppliedRun(t, client, wTest)
+	defer rCleanup()
+
+	t.Run("when the readme exists", func(t *testing.T) {
+		w, err := client.Workspaces.Readme(ctx, wTest.ID)
+		require.NoError(t, err)
+		require.NotNil(t, w)
+
+		readme, err := ioutil.ReadAll(w)
+		require.NoError(t, err)
+		require.True(
+			t,
+			strings.HasPrefix(string(readme), `This is a simple test`),
+			"got: %s", readme,
+		)
+	})
+
+	t.Run("when the readme does not exist", func(t *testing.T) {
+		w, err := client.Workspaces.Readme(ctx, "nonexisting")
+		assert.Nil(t, w)
+		assert.Error(t, err)
+	})
+
+	t.Run("without a valid workspace ID", func(t *testing.T) {
+		w, err := client.Workspaces.Readme(ctx, badIdentifier)
+		assert.Nil(t, w)
+		assert.EqualError(t, err, ErrInvalidWorkspaceID.Error())
 	})
 }
 

@@ -4,7 +4,9 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"io"
 	"net/url"
+	"strings"
 	"time"
 )
 
@@ -24,6 +26,9 @@ type Workspaces interface {
 
 	// Read a workspace by its name.
 	Read(ctx context.Context, organization string, workspace string) (*Workspace, error)
+
+	// Readme gets the readme of a workspace by its ID.
+	Readme(ctx context.Context, workspaceID string) (io.Reader, error)
 
 	// ReadByID reads a workspace by its ID.
 	ReadByID(ctx context.Context, workspaceID string) (*Workspace, error)
@@ -97,12 +102,31 @@ type Workspace struct {
 	TriggerPrefixes      []string              `jsonapi:"attr,trigger-prefixes"`
 	VCSRepo              *VCSRepo              `jsonapi:"attr,vcs-repo"`
 	WorkingDirectory     string                `jsonapi:"attr,working-directory"`
+	UpdatedAt            time.Time             `jsonapi:"attr,updated-at,iso8601"`
+	ResourceCount        int                   `jsonapi:"attr,resource-count"`
+	ApplyDurationAverage time.Duration         `jsonapi:"attr,apply-duration-average"`
+	PlanDurationAverage  time.Duration         `jsonapi:"attr,plan-duration-average"`
+	PolicyCheckFailures  int                   `jsonapi:"attr,policy-check-failures"`
+	RunFailures          int                   `jsonapi:"attr,run-failures"`
+	RunsCount            int                   `jsonapi:"attr,workspace-kpis-runs-count"`
 
 	// Relations
 	AgentPool    *AgentPool    `jsonapi:"relation,agent-pool"`
 	CurrentRun   *Run          `jsonapi:"relation,current-run"`
 	Organization *Organization `jsonapi:"relation,organization"`
 	SSHKey       *SSHKey       `jsonapi:"relation,ssh-key"`
+}
+
+// workspaceWithReadme is the same as a workspace but it has a readme.
+type workspaceWithReadme struct {
+	ID     string           `jsonapi:"primary,workspaces"`
+	Readme *workspaceReadme `jsonapi:"relation,readme"`
+}
+
+// workspaceReadme contains the readme of the workspace.
+type workspaceReadme struct {
+	ID          string `jsonapi:"primary,workspace-readme"`
+	RawMarkdown string `jsonapi:"attr,raw-markdown"`
 }
 
 // VCSRepo contains the configuration of a VCS integration.
@@ -322,6 +346,10 @@ func (s *workspaces) Read(ctx context.Context, organization, workspace string) (
 		return nil, err
 	}
 
+	// durations come over in ms
+	w.ApplyDurationAverage *= time.Millisecond
+	w.PlanDurationAverage *= time.Millisecond
+
 	return w, nil
 }
 
@@ -343,7 +371,35 @@ func (s *workspaces) ReadByID(ctx context.Context, workspaceID string) (*Workspa
 		return nil, err
 	}
 
+	// durations come over in ms
+	w.ApplyDurationAverage *= time.Millisecond
+	w.PlanDurationAverage *= time.Millisecond
+
 	return w, nil
+}
+
+// Readme gets the readme of a workspace by its ID.
+func (s *workspaces) Readme(ctx context.Context, workspaceID string) (io.Reader, error) {
+	if !validStringID(&workspaceID) {
+		return nil, ErrInvalidWorkspaceID
+	}
+
+	u := fmt.Sprintf("workspaces/%s?include=readme", url.QueryEscape(workspaceID))
+	req, err := s.client.newRequest("GET", u, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	r := &workspaceWithReadme{}
+	err = s.client.do(ctx, req, r)
+	if err != nil {
+		return nil, err
+	}
+	if r.Readme == nil {
+		return nil, nil
+	}
+
+	return strings.NewReader(r.Readme.RawMarkdown), nil
 }
 
 // WorkspaceUpdateOptions represents the options for updating a workspace.
