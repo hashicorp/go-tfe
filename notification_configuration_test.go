@@ -4,7 +4,6 @@ import (
 	"bytes"
 	"context"
 	"encoding/json"
-	"fmt"
 	"testing"
 	"time"
 
@@ -337,7 +336,7 @@ func TestNotificationConfiguration_Unmarshal(t *testing.T) {
 						"body":       "html",
 						"code":       "200",
 						"headers":    headers,
-						"sent-at":    "2019-01-08 21:34:37 UTC",
+						"sent-at":    "2021-03-23T17:13:52+00:00",
 						"successful": "true",
 						"url":        "hashicorp.com",
 					},
@@ -354,7 +353,6 @@ func TestNotificationConfiguration_Unmarshal(t *testing.T) {
 	}
 	byteData, err := json.Marshal(data)
 	require.NoError(t, err)
-	fmt.Println(string(byteData))
 
 	responseBody := bytes.NewReader(byteData)
 	nc := &NotificationConfiguration{}
@@ -364,8 +362,16 @@ func TestNotificationConfiguration_Unmarshal(t *testing.T) {
 	iso8601TimeFormat := "2006-01-02T15:04:05Z"
 	parsedTime, err := time.Parse(iso8601TimeFormat, "2018-03-02T23:42:06.651Z")
 	require.NoError(t, err)
+	sentAtTime, err := time.Parse(time.RFC3339, "2021-03-23T17:13:52+00:00")
+	require.NoError(t, err)
+
 	assert.Equal(t, nc.ID, "nc-ntv3HbhJqvFzamy7")
 	assert.Equal(t, nc.CreatedAt, parsedTime)
 	assert.Equal(t, len(nc.DeliveryResponses), 1)
 	assert.Equal(t, "html", nc.DeliveryResponses[0].Body)
+	assert.Equal(t, "200", nc.DeliveryResponses[0].Code)
+	assert.Equal(t, "true", nc.DeliveryResponses[0].Successful)
+	assert.Equal(t, sentAtTime, nc.DeliveryResponses[0].SentAt)
+	assert.Equal(t, []string{"129"}, nc.DeliveryResponses[0].Headers.ContentLength)
+	assert.Equal(t, []string{"private"}, nc.DeliveryResponses[0].Headers.CacheControl)
 }
