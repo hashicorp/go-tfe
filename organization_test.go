@@ -63,7 +63,12 @@ func TestOrganizationsCreate(t *testing.T) {
 		require.NoError(t, err)
 
 		// Make sure we clean up the created org.
-		defer client.Organizations.Delete(ctx, org.Name)
+		defer func() {
+			err := client.Organizations.Delete(ctx, org.Name)
+			if err != nil {
+				t.Logf("error deleting organization (%s): %s", org.Name, err)
+			}
+		}()
 
 		assert.Equal(t, *options.Name, org.Name)
 		assert.Equal(t, *options.Email, org.Email)
@@ -151,7 +156,12 @@ func TestOrganizationsUpdate(t *testing.T) {
 		require.NoError(t, err)
 
 		// Make sure we clean up the renamed org.
-		defer client.Organizations.Delete(ctx, org.Name)
+		defer func() {
+			err := client.Organizations.Delete(ctx, org.Name)
+			if err != nil {
+				t.Logf("Error deleting organization (%s): %s", org.Name, err)
+			}
+		}()
 
 		// Also get a fresh result from the API to ensure we get the
 		// expected values back.

@@ -974,9 +974,12 @@ func createWorkspaceWithVCS(t *testing.T, client *Client, org *Organization) (*W
 	}
 }
 
-func genSha(secret, data string) string {
+func genSha(t *testing.T, secret, data string) string {
 	h := hmac.New(sha256.New, []byte(secret))
-	h.Write([]byte(data))
+	_, err := h.Write([]byte(data))
+	if err != nil {
+		t.Fatalf("error writing hmac: %s", err)
+	}
 	sha := hex.EncodeToString(h.Sum(nil))
 	return sha
 }

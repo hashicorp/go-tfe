@@ -153,6 +153,9 @@ func (s *organizationMemberships) ReadWithOptions(ctx context.Context, organizat
 
 	u := fmt.Sprintf("organization-memberships/%s", url.QueryEscape(organizationMembershipID))
 	req, err := s.client.newRequest("GET", u, &options)
+	if err != nil {
+		return nil, err
+	}
 
 	mem := &OrganizationMembership{}
 	err = s.client.do(ctx, req, mem)
