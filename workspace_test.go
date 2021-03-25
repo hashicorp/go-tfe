@@ -2,7 +2,9 @@ package tfe
 
 import (
 	"context"
+	"fmt"
 	"testing"
+	"time"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
@@ -749,6 +751,57 @@ func TestWorkspacesUnassignSSHKey(t *testing.T) {
 	t.Run("without a valid workspace ID", func(t *testing.T) {
 		w, err := client.Workspaces.UnassignSSHKey(ctx, badIdentifier)
 		assert.Nil(t, w)
+		assert.EqualError(t, err, ErrInvalidWorkspaceID.Error())
+	})
+}
+
+func TestWorkspaces_AddRemoteStateConsumers(t *testing.T) {
+	client := testClient(t)
+	ctx := context.Background()
+
+	orgTest, orgTestCleanup := createOrganization(t, client)
+	defer orgTestCleanup()
+	fmt.Println(orgTest.Name)
+
+	wTest, wTestCleanup := createWorkspace(t, client, orgTest)
+	defer wTestCleanup()
+	fmt.Println(wTest.ID)
+
+	//	t.Run("successfully adds a remote state consumer", func(t *testing.T) {
+	//		wTestConsumer1, wTestCleanupConsumer1 := createWorkspace(t, client, orgTest)
+	//		defer wTestCleanupConsumer1()
+	//		wTestConsumer2, wTestCleanupConsumer2 := createWorkspace(t, client, orgTest)
+	//		defer wTestCleanupConsumer2()
+	//
+	//		err := client.Workspaces.AddRemoteStateConsumers(ctx, wTest.ID, WorkspaceAddRemoteStateConsumersOptions{
+	//			Workspaces: []*Workspace{wTestConsumer1, wTestConsumer2},
+	//		})
+	//		require.NoError(t, err)
+	//
+	//		w, err := client.Workspaces.Read(ctx, "omar-test", wTest.Name)
+	//		fmt.Println(w.ID)
+	//		time.Sleep(30 * time.Second)
+	//		require.NoError(t, err)
+	//		fmt.Println(len(w.RemoteStateConsumers))
+	//		//assert.Equal(t, wTest, w)
+	//		assert.Equal(t, 2, len(w.RemoteStateConsumers))
+	//	})
+
+	t.Run("with invalid options", func(t *testing.T) {
+		err := client.Workspaces.AddRemoteStateConsumers(ctx, wTest.ID, WorkspaceAddRemoteStateConsumersOptions{})
+		require.Error(t, err)
+		assert.EqualError(t, err, ErrWorkspacesRequired.Error())
+
+		err = client.Workspaces.AddRemoteStateConsumers(ctx, wTest.ID, WorkspaceAddRemoteStateConsumersOptions{
+			Workspaces: []*Workspace{},
+		})
+		require.Error(t, err)
+		assert.EqualError(t, err, ErrWorkspaceMinLimit.Error())
+	})
+
+	t.Run("without a valid workspace ID", func(t *testing.T) {
+		err := client.Workspaces.AddRemoteStateConsumers(ctx, badIdentifier, WorkspaceAddRemoteStateConsumersOptions{})
+		require.Error(t, err)
 		assert.EqualError(t, err, ErrInvalidWorkspaceID.Error())
 	})
 }

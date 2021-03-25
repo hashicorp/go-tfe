@@ -750,10 +750,10 @@ type WorkspaceAddRemoteStateConsumersOptions struct {
 
 func (o WorkspaceAddRemoteStateConsumersOptions) valid() error {
 	if o.Workspaces == nil {
-		return errors.New("workspaces is required")
+		return ErrWorkspacesRequired
 	}
 	if len(o.Workspaces) == 0 {
-		return errors.New("must provide at least one workspace")
+		return ErrWorkspaceMinLimit
 	}
 	return nil
 }
@@ -761,7 +761,7 @@ func (o WorkspaceAddRemoteStateConsumersOptions) valid() error {
 // Add workspaces to a policy set.
 func (s *workspaces) AddRemoteStateConsumers(ctx context.Context, workspaceID string, options WorkspaceAddRemoteStateConsumersOptions) error {
 	if !validStringID(&workspaceID) {
-		return errors.New("invalid value for workspace ID")
+		return ErrInvalidWorkspaceID
 	}
 	if err := options.valid(); err != nil {
 		return err
@@ -785,10 +785,10 @@ type WorkspaceRemoveRemoteStateConsumersOptions struct {
 
 func (o WorkspaceRemoveRemoteStateConsumersOptions) valid() error {
 	if o.Workspaces == nil {
-		return errors.New("workspaces is required")
+		return ErrWorkspacesRequired
 	}
 	if len(o.Workspaces) == 0 {
-		return errors.New("must provide at least one workspace")
+		return ErrWorkspaceMinLimit
 	}
 	return nil
 }
@@ -796,7 +796,7 @@ func (o WorkspaceRemoveRemoteStateConsumersOptions) valid() error {
 // Remove workspaces from a policy set.
 func (s *workspaces) RemoveRemoteStateConsumers(ctx context.Context, workspaceID string, options WorkspaceRemoveRemoteStateConsumersOptions) error {
 	if !validStringID(&workspaceID) {
-		return errors.New("invalid value for workspace ID")
+		return ErrInvalidWorkspaceID
 	}
 	if err := options.valid(); err != nil {
 		return err

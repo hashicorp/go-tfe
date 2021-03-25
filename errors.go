@@ -38,6 +38,12 @@ var (
 	// ErrInvalidWorkspaceValue is returned when workspace value is invalid.
 	ErrInvalidWorkspaceValue = errors.New("invalid value for workspace")
 
+	// ErrWorkspacesRequired is returned when the Workspaces are not present.
+	ErrWorkspacesRequired = errors.New("workspaces is required")
+
+	// ErrWorkspaceMinLimit is returned when the length of Workspaces is 0.
+	ErrWorkspaceMinLimit = errors.New("must provide at least one workspace")
+
 	// Run/Apply errors
 
 	// ErrInvalidRunID is returned when the run ID is invalid.
