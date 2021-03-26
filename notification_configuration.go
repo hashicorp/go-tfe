@@ -92,27 +92,12 @@ type NotificationConfiguration struct {
 
 // DeliveryResponse represents a notification configuration delivery response.
 type DeliveryResponse struct {
-	Body       string    `jsonapi:"attr,body"`
-	Code       string    `jsonapi:"attr,code"`
-	Headers    headers   `jsonapi:"attr,headers"`
-	SentAt     time.Time `jsonapi:"attr,sent-at,rfc3339"`
-	Successful string    `jsonapi:"attr,successful"`
-	URL        string    `jsonapi:"attr,url"`
-}
-
-type headers struct {
-	CacheControl             []string `jsonapi:"attr,cache-control"`
-	ContentLength            []string `jsonapi:"attr,content-length"`
-	ContentType              []string `jsonapi:"attr,content-type"`
-	ContentEncoding          []string `jsonapi:"attr,content-encoding"`
-	Vary                     []string `jsonapi:"attr,vary"`
-	Server                   []string `jsonapi:"attr,server"`
-	XAspnetmvcVersion        []string `jsonapi:"attr,x-aspnetmvc-version"`
-	AccessControlAllowOrigin []string `jsonapi:"attr,access-control-allow-origin"`
-	XAspnetVersion           []string `jsonapi:"attr,x-aspnet-version"`
-	XPoweredBy               []string `jsonapi:"attr,x-powered-by"`
-	SetCookie                []string `jsonapi:"attr,set-cookie"`
-	Date                     []string `jsonapi:"attr,date"`
+	Body       string              `jsonapi:"attr,body"`
+	Code       string              `jsonapi:"attr,code"`
+	Headers    map[string][]string `jsonapi:"attr,headers"`
+	SentAt     time.Time           `jsonapi:"attr,sent-at,rfc3339"`
+	Successful string              `jsonapi:"attr,successful"`
+	URL        string              `jsonapi:"attr,url"`
 }
 
 // NotificationConfigurationListOptions represents the options for listing

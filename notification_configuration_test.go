@@ -372,6 +372,6 @@ func TestNotificationConfiguration_Unmarshal(t *testing.T) {
 	assert.Equal(t, "200", nc.DeliveryResponses[0].Code)
 	assert.Equal(t, "true", nc.DeliveryResponses[0].Successful)
 	assert.Equal(t, sentAtTime, nc.DeliveryResponses[0].SentAt)
-	assert.Equal(t, []string{"129"}, nc.DeliveryResponses[0].Headers.ContentLength)
-	assert.Equal(t, []string{"private"}, nc.DeliveryResponses[0].Headers.CacheControl)
+	assert.Equal(t, []string{"129"}, nc.DeliveryResponses[0].Headers["content-length"])
+	assert.Equal(t, []string{"private"}, nc.DeliveryResponses[0].Headers["cache-control"])
 }
