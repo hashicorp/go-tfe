@@ -62,12 +62,12 @@ type PolicyList struct {
 
 // Policy represents a Terraform Enterprise policy.
 type Policy struct {
-	ID             string         `jsonapi:"primary,policies"`
-	Name           string         `jsonapi:"attr,name"`
-	Description    string         `jsonapi:"attr,description"`
-	Enforce        []*Enforcement `jsonapi:"attr,enforce"`
-	PolicySetCount int            `jsonapi:"attr,policy-set-count"`
-	UpdatedAt      time.Time      `jsonapi:"attr,updated-at,iso8601"`
+	ID             string        `jsonapi:"primary,policies"`
+	Name           string        `jsonapi:"attr,name"`
+	Description    string        `jsonapi:"attr,description"`
+	Enforce        []Enforcement `jsonapi:"attr,enforce"`
+	PolicySetCount int           `jsonapi:"attr,policy-set-count"`
+	UpdatedAt      time.Time     `jsonapi:"attr,updated-at,iso8601"`
 
 	// Relations
 	Organization *Organization `jsonapi:"relation,organization"`
@@ -75,8 +75,8 @@ type Policy struct {
 
 // Enforcement describes a enforcement.
 type Enforcement struct {
-	Path string           `json:"path"`
-	Mode EnforcementLevel `json:"mode"`
+	Path string           `jsonapi:"attr,path"`
+	Mode EnforcementLevel `jsonapi:"attr,mode"`
 }
 
 // PolicyListOptions represents the options for listing policies.
@@ -128,8 +128,8 @@ type PolicyCreateOptions struct {
 
 // EnforcementOptions represents the enforcement options of a policy.
 type EnforcementOptions struct {
-	Path *string           `json:"path,omitempty"`
-	Mode *EnforcementLevel `json:"mode"`
+	Path *string           `jsonapi:"attr,path,omitempty"`
+	Mode *EnforcementLevel `jsonapi:"attr,mode"`
 }
 
 func (o PolicyCreateOptions) valid() error {

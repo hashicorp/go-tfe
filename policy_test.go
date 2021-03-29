@@ -1,8 +1,11 @@
 package tfe
 
 import (
+	"bytes"
 	"context"
+	"encoding/json"
 	"testing"
+	"time"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
@@ -394,4 +397,44 @@ func TestPoliciesDownload(t *testing.T) {
 		assert.EqualError(t, err, "invalid value for policy ID")
 		assert.Nil(t, content)
 	})
+}
+
+func TestPolicy_Unmarshal(t *testing.T) {
+	data := map[string]interface{}{
+		"data": map[string]interface{}{
+			"type": "policies",
+			"id":   "policy-ntv3HbhJqvFzamy7",
+			"attributes": map[string]interface{}{
+				"name":        "general",
+				"description": "general policy",
+				"enforce": []interface{}{
+					map[string]interface{}{
+						"path": "some/path",
+						"mode": string(EnforcementAdvisory),
+					},
+				},
+				"updated-at":       "2018-03-02T23:42:06.651Z",
+				"policy-set-count": 1,
+			},
+		},
+	}
+
+	byteData, err := json.Marshal(data)
+	require.NoError(t, err)
+
+	responseBody := bytes.NewReader(byteData)
+	policy := &Policy{}
+	err = unmarshalResponse(responseBody, policy)
+	require.NoError(t, err)
+
+	iso8601TimeFormat := "2006-01-02T15:04:05Z"
+	parsedTime, err := time.Parse(iso8601TimeFormat, "2018-03-02T23:42:06.651Z")
+	require.NoError(t, err)
+	assert.Equal(t, policy.ID, "policy-ntv3HbhJqvFzamy7")
+	assert.Equal(t, policy.Name, "general")
+	assert.Equal(t, policy.Description, "general policy")
+	assert.Equal(t, policy.PolicySetCount, 1)
+	assert.Equal(t, policy.Enforce[0].Path, "some/path")
+	assert.Equal(t, policy.Enforce[0].Mode, EnforcementAdvisory)
+	assert.Equal(t, policy.UpdatedAt, parsedTime)
 }

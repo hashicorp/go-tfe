@@ -87,9 +87,9 @@ type ConfigurationVersion struct {
 // CVStatusTimestamps holds the timestamps for individual configuration version
 // statuses.
 type CVStatusTimestamps struct {
-	FinishedAt time.Time `json:"finished-at"`
-	QueuedAt   time.Time `json:"queued-at"`
-	StartedAt  time.Time `json:"started-at"`
+	FinishedAt time.Time `jsonapi:"attr,finished-at,rfc3339"`
+	QueuedAt   time.Time `jsonapi:"attr,queued-at,rfc3339"`
+	StartedAt  time.Time `jsonapi:"attr,started-at,rfc3339"`
 }
 
 // ConfigurationVersionListOptions represents the options for listing

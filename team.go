@@ -58,15 +58,15 @@ type Team struct {
 
 // OrganizationAccess represents the team's permissions on its organization
 type OrganizationAccess struct {
-	ManagePolicies    bool `json:"manage-policies"`
-	ManageWorkspaces  bool `json:"manage-workspaces"`
-	ManageVCSSettings bool `json:"manage-vcs-settings"`
+	ManagePolicies    bool `jsonapi:"attr,manage-policies"`
+	ManageWorkspaces  bool `jsonapi:"attr,manage-workspaces"`
+	ManageVCSSettings bool `jsonapi:"attr,manage-vcs-settings"`
 }
 
 // TeamPermissions represents the current user's permissions on the team.
 type TeamPermissions struct {
-	CanDestroy          bool `json:"can-destroy"`
-	CanUpdateMembership bool `json:"can-update-membership"`
+	CanDestroy          bool `jsonapi:"attr,can-destroy"`
+	CanUpdateMembership bool `jsonapi:"attr,can-update-membership"`
 }
 
 // TeamListOptions represents the options for listing teams.

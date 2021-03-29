@@ -19,7 +19,7 @@ import (
 	"github.com/google/go-querystring/query"
 	"github.com/hashicorp/go-cleanhttp"
 	retryablehttp "github.com/hashicorp/go-retryablehttp"
-	"github.com/svanharmelen/jsonapi"
+	"github.com/hashicorp/jsonapi"
 	"golang.org/x/time/rate"
 )
 
@@ -688,8 +688,8 @@ type Pagination struct {
 func parsePagination(body io.Reader) (*Pagination, error) {
 	var raw struct {
 		Meta struct {
-			Pagination Pagination `json:"pagination"`
-		} `json:"meta"`
+			Pagination Pagination `jsonapi:"pagination"`
+		} `jsonapi:"meta"`
 	}
 
 	// JSON decode the raw response.

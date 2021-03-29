@@ -131,32 +131,32 @@ type workspaceReadme struct {
 
 // VCSRepo contains the configuration of a VCS integration.
 type VCSRepo struct {
-	Branch            string `json:"branch"`
-	DisplayIdentifier string `json:"display-identifier"`
-	Identifier        string `json:"identifier"`
-	IngressSubmodules bool   `json:"ingress-submodules"`
-	OAuthTokenID      string `json:"oauth-token-id"`
-	RepositoryHTTPURL string `json:"repository-http-url"`
-	ServiceProvider   string `json:"service-provider"`
+	Branch            string `jsonapi:"attr,branch"`
+	DisplayIdentifier string `jsonapi:"attr,display-identifier"`
+	Identifier        string `jsonapi:"attr,identifier"`
+	IngressSubmodules bool   `jsonapi:"attr,ingress-submodules"`
+	OAuthTokenID      string `jsonapi:"attr,oauth-token-id"`
+	RepositoryHTTPURL string `jsonapi:"attr,repository-http-url"`
+	ServiceProvider   string `jsonapi:"attr,service-provider"`
 }
 
 // WorkspaceActions represents the workspace actions.
 type WorkspaceActions struct {
-	IsDestroyable bool `json:"is-destroyable"`
+	IsDestroyable bool `jsonapi:"attr,is-destroyable"`
 }
 
 // WorkspacePermissions represents the workspace permissions.
 type WorkspacePermissions struct {
-	CanDestroy        bool `json:"can-destroy"`
-	CanForceUnlock    bool `json:"can-force-unlock"`
-	CanLock           bool `json:"can-lock"`
-	CanQueueApply     bool `json:"can-queue-apply"`
-	CanQueueDestroy   bool `json:"can-queue-destroy"`
-	CanQueueRun       bool `json:"can-queue-run"`
-	CanReadSettings   bool `json:"can-read-settings"`
-	CanUnlock         bool `json:"can-unlock"`
-	CanUpdate         bool `json:"can-update"`
-	CanUpdateVariable bool `json:"can-update-variable"`
+	CanDestroy        bool `jsonapi:"attr,can-destroy"`
+	CanForceUnlock    bool `jsonapi:"attr,can-force-unlock"`
+	CanLock           bool `jsonapi:"attr,can-lock"`
+	CanQueueApply     bool `jsonapi:"attr,can-queue-apply"`
+	CanQueueDestroy   bool `jsonapi:"attr,can-queue-destroy"`
+	CanQueueRun       bool `jsonapi:"attr,can-queue-run"`
+	CanReadSettings   bool `jsonapi:"attr,can-read-settings"`
+	CanUnlock         bool `jsonapi:"attr,can-unlock"`
+	CanUpdate         bool `jsonapi:"attr,can-update"`
+	CanUpdateVariable bool `jsonapi:"attr,can-update-variable"`
 }
 
 // WorkspaceListOptions represents the options for listing workspaces.
@@ -271,10 +271,10 @@ type WorkspaceCreateOptions struct {
 // TODO: move this struct out. VCSRepoOptions is used by workspaces, policy sets, and registry modules
 // VCSRepoOptions represents the configuration options of a VCS integration.
 type VCSRepoOptions struct {
-	Branch            *string `json:"branch,omitempty"`
-	Identifier        *string `json:"identifier,omitempty"`
-	IngressSubmodules *bool   `json:"ingress-submodules,omitempty"`
-	OAuthTokenID      *string `json:"oauth-token-id,omitempty"`
+	Branch            *string `jsonapi:"attr,branch,omitempty"`
+	Identifier        *string `jsonapi:"attr,identifier,omitempty"`
+	IngressSubmodules *bool   `jsonapi:"attr,ingress-submodules,omitempty"`
+	OAuthTokenID      *string `jsonapi:"attr,oauth-token-id,omitempty"`
 }
 
 func (o WorkspaceCreateOptions) valid() error {
@@ -640,7 +640,7 @@ func (s *workspaces) RemoveVCSConnectionByID(ctx context.Context, workspaceID st
 // WorkspaceLockOptions represents the options for locking a workspace.
 type WorkspaceLockOptions struct {
 	// Specifies the reason for locking the workspace.
-	Reason *string `json:"reason,omitempty"`
+	Reason *string `jsonapi:"attr,reason,omitempty"`
 }
 
 // Lock a workspace by its ID.

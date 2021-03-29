@@ -220,17 +220,10 @@ func TestWorkspacesRead(t *testing.T) {
 		require.NoError(t, err)
 		assert.Equal(t, wTest, w)
 
-		t.Run("permissions are properly decoded", func(t *testing.T) {
-			assert.True(t, w.Permissions.CanDestroy)
-		})
-
-		t.Run("relationships are properly decoded", func(t *testing.T) {
-			assert.Equal(t, orgTest.Name, w.Organization.Name)
-		})
-
-		t.Run("timestamps are properly decoded", func(t *testing.T) {
-			assert.NotEmpty(t, w.CreatedAt)
-		})
+		assert.True(t, w.Permissions.CanDestroy)
+		assert.NotEmpty(t, w.Actions)
+		assert.Equal(t, orgTest.Name, w.Organization.Name)
+		assert.NotEmpty(t, w.CreatedAt)
 	})
 
 	t.Run("when the workspace does not exist", func(t *testing.T) {
@@ -332,17 +325,10 @@ func TestWorkspacesReadByID(t *testing.T) {
 		require.NoError(t, err)
 		assert.Equal(t, wTest, w)
 
-		t.Run("permissions are properly decoded", func(t *testing.T) {
-			assert.True(t, w.Permissions.CanDestroy)
-		})
-
-		t.Run("relationships are properly decoded", func(t *testing.T) {
-			assert.Equal(t, orgTest.Name, w.Organization.Name)
-		})
-
-		t.Run("timestamps are properly decoded", func(t *testing.T) {
-			assert.NotEmpty(t, w.CreatedAt)
-		})
+		assert.True(t, w.Permissions.CanDestroy)
+		assert.Equal(t, orgTest.Name, w.Organization.Name)
+		assert.NotEmpty(t, w.CreatedAt)
+		assert.NotEmpty(t, w.Actions)
 	})
 
 	t.Run("when the workspace does not exist", func(t *testing.T) {

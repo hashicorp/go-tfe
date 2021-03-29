@@ -115,33 +115,33 @@ type Run struct {
 
 // RunActions represents the run actions.
 type RunActions struct {
-	IsCancelable      bool `json:"is-cancelable"`
-	IsConfirmable     bool `json:"is-confirmable"`
-	IsDiscardable     bool `json:"is-discardable"`
-	IsForceCancelable bool `json:"is-force-cancelable"`
+	IsCancelable      bool `jsonapi:"attr,is-cancelable"`
+	IsConfirmable     bool `jsonapi:"attr,is-confirmable"`
+	IsDiscardable     bool `jsonapi:"attr,is-discardable"`
+	IsForceCancelable bool `jsonapi:"attr,is-force-cancelable"`
 }
 
 // RunPermissions represents the run permissions.
 type RunPermissions struct {
-	CanApply        bool `json:"can-apply"`
-	CanCancel       bool `json:"can-cancel"`
-	CanDiscard      bool `json:"can-discard"`
-	CanForceCancel  bool `json:"can-force-cancel"`
-	CanForceExecute bool `json:"can-force-execute"`
+	CanApply        bool `jsonapi:"attr,can-apply"`
+	CanCancel       bool `jsonapi:"attr,can-cancel"`
+	CanDiscard      bool `jsonapi:"attr,can-discard"`
+	CanForceCancel  bool `jsonapi:"attr,can-force-cancel"`
+	CanForceExecute bool `jsonapi:"attr,can-force-execute"`
 }
 
 // RunStatusTimestamps holds the timestamps for individual run statuses.
 type RunStatusTimestamps struct {
-	ErroredAt            time.Time `json:"errored-at"`
-	FinishedAt           time.Time `json:"finished-at"`
-	QueuedAt             time.Time `json:"queued-at"`
-	StartedAt            time.Time `json:"started-at"`
-	ApplyingAt           time.Time `json:"applying-at"`
-	AppliedAt            time.Time `json:"applied-at"`
-	PlanningAt           time.Time `json:"planning-at"`
-	PlannedAt            time.Time `json:"planned-at"`
-	PlannedAndFinishedAt time.Time `json:"planned-and-finished-at"`
-	PlanQueuabledAt      time.Time `json:"plan-queueable-at"`
+	ErroredAt            time.Time `jsonapi:"attr,errored-at,rfc3339"`
+	FinishedAt           time.Time `jsonapi:"attr,finished-at,rfc3339"`
+	QueuedAt             time.Time `jsonapi:"attr,queued-at,rfc3339"`
+	StartedAt            time.Time `jsonapi:"attr,started-at,rfc3339"`
+	ApplyingAt           time.Time `jsonapi:"attr,applying-at,rfc3339"`
+	AppliedAt            time.Time `jsonapi:"attr,applied-at,rfc3339"`
+	PlanningAt           time.Time `jsonapi:"attr,planning-at,rfc3339"`
+	PlannedAt            time.Time `jsonapi:"attr,planned-at,rfc3339"`
+	PlannedAndFinishedAt time.Time `jsonapi:"attr,planned-and-finished-at,rfc3339"`
+	PlanQueuabledAt      time.Time `jsonapi:"attr,plan-queueable-at,rfc3339"`
 }
 
 // RunListOptions represents the options for listing runs.
@@ -272,7 +272,7 @@ func (s *runs) ReadWithOptions(ctx context.Context, runID string, options *RunRe
 // RunApplyOptions represents the options for applying a run.
 type RunApplyOptions struct {
 	// An optional comment about the run.
-	Comment *string `json:"comment,omitempty"`
+	Comment *string `jsonapi:"attr,comment,omitempty"`
 }
 
 // Apply a run by its ID.
@@ -293,7 +293,7 @@ func (s *runs) Apply(ctx context.Context, runID string, options RunApplyOptions)
 // RunCancelOptions represents the options for canceling a run.
 type RunCancelOptions struct {
 	// An optional explanation for why the run was canceled.
-	Comment *string `json:"comment,omitempty"`
+	Comment *string `jsonapi:"attr,comment,omitempty"`
 }
 
 // Cancel a run by its ID.
@@ -314,7 +314,7 @@ func (s *runs) Cancel(ctx context.Context, runID string, options RunCancelOption
 // RunForceCancelOptions represents the options for force-canceling a run.
 type RunForceCancelOptions struct {
 	// An optional comment explaining the reason for the force-cancel.
-	Comment *string `json:"comment,omitempty"`
+	Comment *string `jsonapi:"attr,comment,omitempty"`
 }
 
 // ForceCancel is used to forcefully cancel a run by its ID.
@@ -335,7 +335,7 @@ func (s *runs) ForceCancel(ctx context.Context, runID string, options RunForceCa
 // RunDiscardOptions represents the options for discarding a run.
 type RunDiscardOptions struct {
 	// An optional explanation for why the run was discarded.
-	Comment *string `json:"comment,omitempty"`
+	Comment *string `jsonapi:"attr,comment,omitempty"`
 }
 
 // Discard a run by its ID.

@@ -12,9 +12,9 @@ import (
 	"time"
 
 	"github.com/hashicorp/go-retryablehttp"
+	"github.com/hashicorp/jsonapi"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
-	"github.com/svanharmelen/jsonapi"
 	"golang.org/x/time/rate"
 )
 
@@ -379,19 +379,19 @@ func createRequest(v interface{}) (*retryablehttp.Request, []byte, error) {
 }
 
 type tfeAPI struct {
-	ID                string                    `jsonapi:"primary,tfe"`
-	Name              string                    `jsonapi:"attr,name"`
-	CreatedAt         time.Time                 `jsonapi:"attr,created-at,iso8601"`
-	Enalbed           bool                      `jsonapi:"attr,enalbed"`
-	Emails            []string                  `jsonapi:"attr,emails"`
-	Status            tfeAPIStatus              `jsonapi:"attr,status"`
-	StatusTimestamps  *tfeAPITimestamps         `jsonapi:"attr,status-timestamps"`
-	DeliveryResponses []*tfeAPIDeliveryResponse `jsonapi:"attr,delivery-responses"`
+	ID                string                   `jsonapi:"primary,tfe"`
+	Name              string                   `jsonapi:"attr,name"`
+	CreatedAt         time.Time                `jsonapi:"attr,created-at,iso8601"`
+	Enalbed           bool                     `jsonapi:"attr,enalbed"`
+	Emails            []string                 `jsonapi:"attr,emails"`
+	Status            tfeAPIStatus             `jsonapi:"attr,status"`
+	StatusTimestamps  tfeAPITimestamps         `jsonapi:"attr,status-timestamps"`
+	DeliveryResponses []tfeAPIDeliveryResponse `jsonapi:"attr,delivery-responses"`
 }
 
 type tfeAPIDeliveryResponse struct {
-	Body string `json:"body"`
-	Code int    `json:"code"`
+	Body string `jsonapi:"attr,body"`
+	Code int    `jsonapi:"attr,code"`
 }
 
 type tfeAPIStatus string
@@ -401,7 +401,7 @@ const (
 )
 
 type tfeAPITimestamps struct {
-	QueuedAt time.Time `json:"queued-at"`
+	QueuedAt time.Time `jsonapi:"attr,queued-at,rfc3339"`
 }
 
 func Test_unmarshalResponse(t *testing.T) {
@@ -418,14 +418,18 @@ func Test_unmarshalResponse(t *testing.T) {
 					"enabled":    "true",
 					"status":     tfeAPIStatusNormal,
 					"emails":     []string{"test@hashicorp.com"},
-					"delivery-responses": []*tfeAPIDeliveryResponse{
-						&tfeAPIDeliveryResponse{
-							Body: "<html>",
-							Code: 200,
+					"delivery-responses": []interface{}{
+						map[string]interface{}{
+							"body": "<html>",
+							"code": 200,
+						},
+						map[string]interface{}{
+							"body": "<body>",
+							"code": 300,
 						},
 					},
 					"status-timestamps": map[string]string{
-						"queued-at": "2021-03-16T23:09:59+00:00",
+						"queued-at": "2020-03-16T23:15:59+00:00",
 					},
 				},
 			},
@@ -436,18 +440,21 @@ func Test_unmarshalResponse(t *testing.T) {
 		unmarshalledRequestBody := tfeAPI{}
 		err := unmarshalResponse(responseBody, &unmarshalledRequestBody)
 		require.NoError(t, err)
+		queuedParsedTime, err := time.Parse(time.RFC3339, "2020-03-16T23:15:59+00:00")
+		require.NoError(t, err)
 
 		assert.Equal(t, unmarshalledRequestBody.ID, "1")
 		assert.Equal(t, unmarshalledRequestBody.Name, "terraform")
 		assert.Equal(t, unmarshalledRequestBody.Status, tfeAPIStatusNormal)
 		assert.Equal(t, len(unmarshalledRequestBody.Emails), 1)
 		assert.Equal(t, unmarshalledRequestBody.Emails[0], "test@hashicorp.com")
-		assert.NotEmpty(t, unmarshalledRequestBody.StatusTimestamps)
-		assert.NotNil(t, unmarshalledRequestBody.StatusTimestamps.QueuedAt)
+		assert.Equal(t, unmarshalledRequestBody.StatusTimestamps.QueuedAt, queuedParsedTime)
 		assert.NotEmpty(t, unmarshalledRequestBody.DeliveryResponses)
-		assert.Equal(t, len(unmarshalledRequestBody.DeliveryResponses), 1)
+		assert.Equal(t, len(unmarshalledRequestBody.DeliveryResponses), 2)
 		assert.Equal(t, unmarshalledRequestBody.DeliveryResponses[0].Body, "<html>")
 		assert.Equal(t, unmarshalledRequestBody.DeliveryResponses[0].Code, 200)
+		assert.Equal(t, unmarshalledRequestBody.DeliveryResponses[1].Body, "<body>")
+		assert.Equal(t, unmarshalledRequestBody.DeliveryResponses[1].Code, 300)
 	})
 
 	t.Run("can only unmarshal Items that are slices", func(t *testing.T) {

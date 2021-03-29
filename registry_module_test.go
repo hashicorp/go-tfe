@@ -1,12 +1,15 @@
 package tfe
 
 import (
+	"bytes"
 	"context"
+	"encoding/json"
 	"fmt"
 	"os"
 	"strings"
 	"testing"
 
+	retryablehttp "github.com/hashicorp/go-retryablehttp"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
@@ -524,4 +527,87 @@ func TestRegistryModulesDeleteVersion(t *testing.T) {
 		err := client.RegistryModules.DeleteVersion(ctx, orgTest.Name, "nonexisting", "nonexisting", "2.0.0")
 		assert.Error(t, err)
 	})
+}
+
+func TestRegistryModule_Unmarshal(t *testing.T) {
+	data := map[string]interface{}{
+		"data": map[string]interface{}{
+			"type": "registry-modules",
+			"id":   "1",
+			"attributes": map[string]interface{}{
+				"name":     "module",
+				"provider": "tfe",
+				"permissions": map[string]interface{}{
+					"can-delete": true,
+					"can-resync": true,
+					"can-retry":  true,
+				},
+				"status": RegistryModuleStatusPending,
+				"vcs-repo": map[string]interface{}{
+					"branch":              "main",
+					"display-identifier":  "display",
+					"identifier":          "identifier",
+					"ingress-submodules":  true,
+					"oauth-token-id":      "token",
+					"repository-http-url": "github.com",
+					"service-provider":    "github",
+				},
+				"version-statuses": []interface{}{
+					map[string]interface{}{
+						"version": "1.1.1",
+						"status":  RegistryModuleVersionStatusPending,
+						"error":   "no error",
+					},
+				},
+			},
+		},
+	}
+
+	byteData, err := json.Marshal(data)
+	require.NoError(t, err)
+
+	responseBody := bytes.NewReader(byteData)
+	rm := &RegistryModule{}
+	err = unmarshalResponse(responseBody, rm)
+	require.NoError(t, err)
+
+	assert.Equal(t, rm.ID, "1")
+	assert.Equal(t, rm.Name, "module")
+	assert.Equal(t, rm.Provider, "tfe")
+	assert.Equal(t, rm.Permissions.CanDelete, true)
+	assert.Equal(t, rm.Permissions.CanRetry, true)
+	assert.Equal(t, rm.Status, RegistryModuleStatusPending)
+	assert.Equal(t, rm.VCSRepo.Branch, "main")
+	assert.Equal(t, rm.VCSRepo.DisplayIdentifier, "display")
+	assert.Equal(t, rm.VCSRepo.Identifier, "identifier")
+	assert.Equal(t, rm.VCSRepo.IngressSubmodules, true)
+	assert.Equal(t, rm.VCSRepo.OAuthTokenID, "token")
+	assert.Equal(t, rm.VCSRepo.RepositoryHTTPURL, "github.com")
+	assert.Equal(t, rm.VCSRepo.ServiceProvider, "github")
+	assert.Equal(t, rm.Status, RegistryModuleStatusPending)
+	assert.Equal(t, rm.VersionStatuses[0].Version, "1.1.1")
+	assert.Equal(t, rm.VersionStatuses[0].Status, RegistryModuleVersionStatusPending)
+	assert.Equal(t, rm.VersionStatuses[0].Error, "no error")
+}
+
+func TestRegistryCreateOptions_Marshal(t *testing.T) {
+	// https://www.terraform.io/docs/cloud/api/modules.html#sample-payload
+	opts := RegistryModuleCreateWithVCSConnectionOptions{
+		VCSRepo: &RegistryModuleVCSRepoOptions{
+			Identifier:        String("id"),
+			OAuthTokenID:      String("token"),
+			DisplayIdentifier: String("display-id"),
+		},
+	}
+
+	reqBody, err := serializeRequestBody(&opts)
+	require.NoError(t, err)
+	req, err := retryablehttp.NewRequest("POST", "url", reqBody)
+	require.NoError(t, err)
+	bodyBytes, err := req.BodyBytes()
+	require.NoError(t, err)
+
+	expectedBody := `{"data":{"type":"registry-modules","attributes":{"vcs-repo":{"Identifier":"id","OAuthTokenID":"token","DisplayIdentifier":"display-id"}}}}
+`
+	assert.Equal(t, expectedBody, string(bodyBytes))
 }

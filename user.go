@@ -41,8 +41,8 @@ type User struct {
 
 // TwoFactor represents the organization permissions.
 type TwoFactor struct {
-	Enabled  bool `json:"enabled"`
-	Verified bool `json:"verified"`
+	Enabled  bool `jsonapi:"attr,enabled"`
+	Verified bool `jsonapi:"attr,verified"`
 }
 
 // ReadCurrent reads the details of the currently authenticated user.

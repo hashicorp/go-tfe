@@ -1,9 +1,12 @@
 package tfe
 
 import (
+	"bytes"
 	"context"
+	"encoding/json"
 	"testing"
 
+	retryablehttp "github.com/hashicorp/go-retryablehttp"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
@@ -108,6 +111,19 @@ func TestTeamsRead(t *testing.T) {
 	tmTest, tmTestCleanup := createTeam(t, client, orgTest)
 	defer tmTestCleanup()
 
+	opts := TeamCreateOptions{
+		Name: String(randomString(t)),
+		OrganizationAccess: &OrganizationAccessOptions{
+			ManagePolicies: Bool(true),
+		},
+	}
+	tm, err := client.Teams.Create(ctx, orgTest.Name, opts)
+	require.NoError(t, err)
+	defer func() {
+		err := client.Teams.Delete(ctx, tm.ID)
+		require.NoError(t, err)
+	}()
+
 	t.Run("when the team exists", func(t *testing.T) {
 		tm, err := client.Teams.Read(ctx, tmTest.ID)
 		require.NoError(t, err)
@@ -122,8 +138,7 @@ func TestTeamsRead(t *testing.T) {
 		})
 
 		t.Run("organization access is properly decoded", func(t *testing.T) {
-			assert.True(t, tm.OrganizationAccess.ManagePolicies)
-			assert.False(t, tm.OrganizationAccess.ManageWorkspaces)
+			assert.Equal(t, tm.OrganizationAccess.ManagePolicies, *opts.OrganizationAccess.ManagePolicies)
 		})
 	})
 
@@ -155,7 +170,8 @@ func TestTeamsUpdate(t *testing.T) {
 			Name: String("foo bar"),
 			OrganizationAccess: &OrganizationAccessOptions{
 				ManagePolicies:    Bool(false),
-				ManageVCSSettings: Bool(true)},
+				ManageVCSSettings: Bool(true),
+			},
 			Visibility: String("organization"),
 		}
 
@@ -222,4 +238,62 @@ func TestTeamsDelete(t *testing.T) {
 		err := client.Teams.Delete(ctx, badIdentifier)
 		assert.EqualError(t, err, "invalid value for team ID")
 	})
+}
+
+func TestTeam_Unmarshal(t *testing.T) {
+	data := map[string]interface{}{
+		"data": map[string]interface{}{
+			"type": "teams",
+			"id":   "1",
+			"attributes": map[string]interface{}{
+				"name": "team hashi",
+				"organization-access": map[string]interface{}{
+					"manage-policies":     true,
+					"manage-workspaces":   true,
+					"manage-vcs-settings": true,
+				},
+				"permissions": map[string]interface{}{
+					"can-destroy":           true,
+					"can-update-membership": true,
+				},
+			},
+		},
+	}
+	byteData, err := json.Marshal(data)
+	require.NoError(t, err)
+
+	responseBody := bytes.NewReader(byteData)
+	team := &Team{}
+	err = unmarshalResponse(responseBody, team)
+	require.NoError(t, err)
+
+	require.NoError(t, err)
+	assert.Equal(t, team.ID, "1")
+	assert.Equal(t, team.Name, "team hashi")
+	assert.Equal(t, team.OrganizationAccess.ManageWorkspaces, true)
+	assert.Equal(t, team.OrganizationAccess.ManageVCSSettings, true)
+	assert.Equal(t, team.OrganizationAccess.ManagePolicies, true)
+	assert.Equal(t, team.Permissions.CanDestroy, true)
+	assert.Equal(t, team.Permissions.CanUpdateMembership, true)
+}
+
+func TestTeamCreateOptions_Marshal(t *testing.T) {
+	opts := TeamCreateOptions{
+		Name:       String("team name"),
+		Visibility: String("organization"),
+		OrganizationAccess: &OrganizationAccessOptions{
+			ManagePolicies: Bool(true),
+		},
+	}
+
+	reqBody, err := serializeRequestBody(&opts)
+	require.NoError(t, err)
+	req, err := retryablehttp.NewRequest("POST", "url", reqBody)
+	require.NoError(t, err)
+	bodyBytes, err := req.BodyBytes()
+	require.NoError(t, err)
+
+	expectedBody := `{"data":{"type":"teams","attributes":{"name":"team name","organization-access":{"manage-policies":true},"visibility":"organization"}}}
+`
+	assert.Equal(t, expectedBody, string(bodyBytes))
 }

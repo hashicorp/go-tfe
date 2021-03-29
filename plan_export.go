@@ -58,11 +58,11 @@ const (
 
 // PlanExportStatusTimestamps holds the timestamps for plan export statuses.
 type PlanExportStatusTimestamps struct {
-	CanceledAt time.Time `json:"canceled-at"`
-	ErroredAt  time.Time `json:"errored-at"`
-	ExpiredAt  time.Time `json:"expired-at"`
-	FinishedAt time.Time `json:"finished-at"`
-	QueuedAt   time.Time `json:"queued-at"`
+	CanceledAt time.Time `jsonapi:"attr,canceled-at,rfc3339"`
+	ErroredAt  time.Time `jsonapi:"attr,errored-at,rfc3339"`
+	ExpiredAt  time.Time `jsonapi:"attr,expired-at,rfc3339"`
+	FinishedAt time.Time `jsonapi:"attr,finished-at,rfc3339"`
+	QueuedAt   time.Time `jsonapi:"attr,queued-at,rfc3339"`
 }
 
 // PlanExport represents an export of Terraform Enterprise plan data.
