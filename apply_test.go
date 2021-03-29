@@ -1,9 +1,12 @@
 package tfe
 
 import (
+	"bytes"
 	"context"
+	"encoding/json"
 	"io/ioutil"
 	"testing"
+	"time"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
@@ -13,7 +16,10 @@ func TestAppliesRead(t *testing.T) {
 	client := testClient(t)
 	ctx := context.Background()
 
-	rTest, rTestCleanup := createAppliedRun(t, client, nil)
+	wTest, wTestCleanup := createWorkspace(t, client, nil)
+	defer wTestCleanup()
+
+	rTest, rTestCleanup := createAppliedRun(t, client, wTest)
 	defer rTestCleanup()
 
 	t.Run("when the plan exists", func(t *testing.T) {
@@ -62,4 +68,45 @@ func TestAppliesLogs(t *testing.T) {
 		assert.Nil(t, logs)
 		assert.Error(t, err)
 	})
+}
+
+func TestApplies_Unmarshal(t *testing.T) {
+	data := map[string]interface{}{
+		"data": map[string]interface{}{
+			"type": "applies",
+			"id":   "apply-47MBvjwzBG8YKc2v",
+			"attributes": map[string]interface{}{
+				"log-read-url":          "hashicorp.com",
+				"resource-additions":    1,
+				"resource-changes":      1,
+				"resource-destructions": 1,
+				"status":                ApplyCanceled,
+				"status-timestamps": map[string]string{
+					"queued-at":  "2020-03-16T23:15:59+00:00",
+					"errored-at": "2019-03-16T23:23:59+00:00",
+				},
+			},
+		},
+	}
+
+	byteData, err := json.Marshal(data)
+	require.NoError(t, err)
+	responseBody := bytes.NewReader(byteData)
+
+	apply := &Apply{}
+	err = unmarshalResponse(responseBody, apply)
+	require.NoError(t, err)
+
+	queuedParsedTime, err := time.Parse(time.RFC3339, "2020-03-16T23:15:59+00:00")
+	require.NoError(t, err)
+	erroredParsedTime, err := time.Parse(time.RFC3339, "2019-03-16T23:23:59+00:00")
+	require.NoError(t, err)
+
+	assert.Equal(t, apply.ID, "apply-47MBvjwzBG8YKc2v")
+	assert.Equal(t, apply.ResourceAdditions, 1)
+	assert.Equal(t, apply.ResourceChanges, 1)
+	assert.Equal(t, apply.ResourceDestructions, 1)
+	assert.Equal(t, apply.Status, ApplyCanceled)
+	assert.Equal(t, apply.StatusTimestamps.QueuedAt, queuedParsedTime)
+	assert.Equal(t, apply.StatusTimestamps.ErroredAt, erroredParsedTime)
 }

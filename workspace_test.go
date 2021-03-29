@@ -3,6 +3,8 @@ package tfe
 import (
 	"context"
 	"fmt"
+	"io/ioutil"
+	"strings"
 	"testing"
 	"time"
 
@@ -220,17 +222,10 @@ func TestWorkspacesRead(t *testing.T) {
 		require.NoError(t, err)
 		assert.Equal(t, wTest, w)
 
-		t.Run("permissions are properly decoded", func(t *testing.T) {
-			assert.True(t, w.Permissions.CanDestroy)
-		})
-
-		t.Run("relationships are properly decoded", func(t *testing.T) {
-			assert.Equal(t, orgTest.Name, w.Organization.Name)
-		})
-
-		t.Run("timestamps are properly decoded", func(t *testing.T) {
-			assert.NotEmpty(t, w.CreatedAt)
-		})
+		assert.True(t, w.Permissions.CanDestroy)
+		assert.NotEmpty(t, w.Actions)
+		assert.Equal(t, orgTest.Name, w.Organization.Name)
+		assert.NotEmpty(t, w.CreatedAt)
 	})
 
 	t.Run("when the workspace does not exist", func(t *testing.T) {
@@ -258,6 +253,65 @@ func TestWorkspacesRead(t *testing.T) {
 	})
 }
 
+func TestWorkspacesReadWithHistory(t *testing.T) {
+	client := testClient(t)
+
+	orgTest, orgTestCleanup := createOrganization(t, client)
+	defer orgTestCleanup()
+
+	wTest, wTestCleanup := createWorkspace(t, client, orgTest)
+	defer wTestCleanup()
+
+	_, rCleanup := createAppliedRun(t, client, wTest)
+	defer rCleanup()
+
+	w, err := client.Workspaces.Read(context.Background(), orgTest.Name, wTest.Name)
+	require.NoError(t, err)
+
+	assert.Equal(t, 1, w.RunsCount)
+	assert.Equal(t, 1, w.ResourceCount)
+}
+
+func TestWorkspacesReadReadme(t *testing.T) {
+	client := testClient(t)
+	ctx := context.Background()
+
+	orgTest, orgTestCleanup := createOrganization(t, client)
+	defer orgTestCleanup()
+
+	wTest, wTestCleanup := createWorkspaceWithVCS(t, client, orgTest)
+	defer wTestCleanup()
+
+	_, rCleanup := createAppliedRun(t, client, wTest)
+	defer rCleanup()
+
+	t.Run("when the readme exists", func(t *testing.T) {
+		w, err := client.Workspaces.Readme(ctx, wTest.ID)
+		require.NoError(t, err)
+		require.NotNil(t, w)
+
+		readme, err := ioutil.ReadAll(w)
+		require.NoError(t, err)
+		require.True(
+			t,
+			strings.HasPrefix(string(readme), `This is a simple test`),
+			"got: %s", readme,
+		)
+	})
+
+	t.Run("when the readme does not exist", func(t *testing.T) {
+		w, err := client.Workspaces.Readme(ctx, "nonexisting")
+		assert.Nil(t, w)
+		assert.Error(t, err)
+	})
+
+	t.Run("without a valid workspace ID", func(t *testing.T) {
+		w, err := client.Workspaces.Readme(ctx, badIdentifier)
+		assert.Nil(t, w)
+		assert.EqualError(t, err, ErrInvalidWorkspaceID.Error())
+	})
+}
+
 func TestWorkspacesReadByID(t *testing.T) {
 	client := testClient(t)
 	ctx := context.Background()
@@ -273,17 +327,10 @@ func TestWorkspacesReadByID(t *testing.T) {
 		require.NoError(t, err)
 		assert.Equal(t, wTest, w)
 
-		t.Run("permissions are properly decoded", func(t *testing.T) {
-			assert.True(t, w.Permissions.CanDestroy)
-		})
-
-		t.Run("relationships are properly decoded", func(t *testing.T) {
-			assert.Equal(t, orgTest.Name, w.Organization.Name)
-		})
-
-		t.Run("timestamps are properly decoded", func(t *testing.T) {
-			assert.NotEmpty(t, w.CreatedAt)
-		})
+		assert.True(t, w.Permissions.CanDestroy)
+		assert.Equal(t, orgTest.Name, w.Organization.Name)
+		assert.NotEmpty(t, w.CreatedAt)
+		assert.NotEmpty(t, w.Actions)
 	})
 
 	t.Run("when the workspace does not exist", func(t *testing.T) {
@@ -554,7 +601,8 @@ func TestWorkspacesRemoveVCSConnection(t *testing.T) {
 	orgTest, orgTestCleanup := createOrganization(t, client)
 	defer orgTestCleanup()
 
-	wTest, _ := createWorkspaceWithVCS(t, client, orgTest)
+	wTest, wTestCleanup := createWorkspaceWithVCS(t, client, orgTest)
+	defer wTestCleanup()
 
 	t.Run("remove vcs integration", func(t *testing.T) {
 		w, err := client.Workspaces.RemoveVCSConnection(ctx, orgTest.Name, wTest.Name)
@@ -570,7 +618,8 @@ func TestWorkspacesRemoveVCSConnectionByID(t *testing.T) {
 	orgTest, orgTestCleanup := createOrganization(t, client)
 	defer orgTestCleanup()
 
-	wTest, _ := createWorkspaceWithVCS(t, client, orgTest)
+	wTest, wTestCleanup := createWorkspaceWithVCS(t, client, orgTest)
+	defer wTestCleanup()
 
 	t.Run("remove vcs integration", func(t *testing.T) {
 		w, err := client.Workspaces.RemoveVCSConnectionByID(ctx, wTest.ID)
@@ -586,7 +635,8 @@ func TestWorkspacesLock(t *testing.T) {
 	orgTest, orgTestCleanup := createOrganization(t, client)
 	defer orgTestCleanup()
 
-	wTest, _ := createWorkspace(t, client, orgTest)
+	wTest, wTestCleanup := createWorkspace(t, client, orgTest)
+	defer wTestCleanup()
 
 	t.Run("with valid options", func(t *testing.T) {
 		w, err := client.Workspaces.Lock(ctx, wTest.ID, WorkspaceLockOptions{})
@@ -613,7 +663,8 @@ func TestWorkspacesUnlock(t *testing.T) {
 	orgTest, orgTestCleanup := createOrganization(t, client)
 	defer orgTestCleanup()
 
-	wTest, _ := createWorkspace(t, client, orgTest)
+	wTest, wTestCleanup := createWorkspace(t, client, orgTest)
+	defer wTestCleanup()
 
 	w, err := client.Workspaces.Lock(ctx, wTest.ID, WorkspaceLockOptions{})
 	if err != nil {
@@ -647,7 +698,8 @@ func TestWorkspacesForceUnlock(t *testing.T) {
 	orgTest, orgTestCleanup := createOrganization(t, client)
 	defer orgTestCleanup()
 
-	wTest, _ := createWorkspace(t, client, orgTest)
+	wTest, wTestCleanup := createWorkspace(t, client, orgTest)
+	defer wTestCleanup()
 
 	w, err := client.Workspaces.Lock(ctx, wTest.ID, WorkspaceLockOptions{})
 	if err != nil {

@@ -1,7 +1,9 @@
 package tfe
 
 import (
+	"bytes"
 	"context"
+	"encoding/json"
 	"testing"
 	"time"
 
@@ -192,4 +194,45 @@ func TestConfigurationVersionsUpload(t *testing.T) {
 		)
 		assert.Error(t, err)
 	})
+}
+
+func TestConfigurationVersions_Unmarshal(t *testing.T) {
+	data := map[string]interface{}{
+		"data": map[string]interface{}{
+			"type": "configuration-versions",
+			"id":   "cv-ntv3HbhJqvFzamy7",
+			"attributes": map[string]interface{}{
+				"auto-queue-runs": true,
+				"error":           "bad error",
+				"error-message":   "message",
+				"source":          ConfigurationSourceTerraform,
+				"status":          ConfigurationUploaded,
+				"status-timestamps": map[string]string{
+					"finished-at": "2020-03-16T23:15:59+00:00",
+					"started-at":  "2019-03-16T23:23:59+00:00",
+				},
+			},
+		},
+	}
+	byteData, err := json.Marshal(data)
+	require.NoError(t, err)
+
+	responseBody := bytes.NewReader(byteData)
+	cv := &ConfigurationVersion{}
+	err = unmarshalResponse(responseBody, cv)
+	require.NoError(t, err)
+
+	finishedParsedTime, err := time.Parse(time.RFC3339, "2020-03-16T23:15:59+00:00")
+	require.NoError(t, err)
+	startedParsedTime, err := time.Parse(time.RFC3339, "2019-03-16T23:23:59+00:00")
+	require.NoError(t, err)
+
+	assert.Equal(t, cv.ID, "cv-ntv3HbhJqvFzamy7")
+	assert.Equal(t, cv.AutoQueueRuns, true)
+	assert.Equal(t, cv.Error, "bad error")
+	assert.Equal(t, cv.ErrorMessage, "message")
+	assert.Equal(t, cv.Source, ConfigurationSourceTerraform)
+	assert.Equal(t, cv.Status, ConfigurationUploaded)
+	assert.Equal(t, cv.StatusTimestamps.FinishedAt, finishedParsedTime)
+	assert.Equal(t, cv.StatusTimestamps.StartedAt, startedParsedTime)
 }

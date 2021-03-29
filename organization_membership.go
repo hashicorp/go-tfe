@@ -94,8 +94,11 @@ func (s *organizationMemberships) List(ctx context.Context, organization string,
 
 // OrganizationMembershipCreateOptions represents the options for creating an organization membership.
 type OrganizationMembershipCreateOptions struct {
-	// For internal use only!
-	ID string `jsonapi:"primary,organization-memberships"`
+	// Type is a public field utilized by JSON:API to
+	// set the resource type via the field tag.
+	// It is not a user-defined value and does not need to be set.
+	// https://jsonapi.org/format/#crud-creating
+	Type string `jsonapi:"primary,organization-memberships"`
 
 	// User's email address.
 	Email *string `jsonapi:"attr,email"`
@@ -116,8 +119,6 @@ func (s *organizationMemberships) Create(ctx context.Context, organization strin
 	if err := options.valid(); err != nil {
 		return nil, err
 	}
-
-	options.ID = ""
 
 	u := fmt.Sprintf("organizations/%s/organization-memberships", url.QueryEscape(organization))
 	req, err := s.client.newRequest("POST", u, &options)
@@ -152,6 +153,9 @@ func (s *organizationMemberships) ReadWithOptions(ctx context.Context, organizat
 
 	u := fmt.Sprintf("organization-memberships/%s", url.QueryEscape(organizationMembershipID))
 	req, err := s.client.newRequest("GET", u, &options)
+	if err != nil {
+		return nil, err
+	}
 
 	mem := &OrganizationMembership{}
 	err = s.client.do(ctx, req, mem)

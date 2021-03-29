@@ -23,8 +23,10 @@ func TestStateVersionsList(t *testing.T) {
 	wTest, wTestCleanup := createWorkspace(t, client, orgTest)
 	defer wTestCleanup()
 
-	svTest1, _ := createStateVersion(t, client, 0, wTest)
-	svTest2, _ := createStateVersion(t, client, 1, wTest)
+	svTest1, svTestCleanup1 := createStateVersion(t, client, 0, wTest)
+	defer svTestCleanup1()
+	svTest2, svTestCleanup2 := createStateVersion(t, client, 1, wTest)
+	defer svTestCleanup2()
 
 	t.Run("without list options", func(t *testing.T) {
 		options := StateVersionListOptions{
@@ -153,7 +155,7 @@ func TestStateVersionsCreate(t *testing.T) {
 			t.Fatal(err)
 		}
 
-		sv, err := client.StateVersions.Create(ctx, wTest.ID, StateVersionCreateOptions{
+		_, err = client.StateVersions.Create(ctx, wTest.ID, StateVersionCreateOptions{
 			Lineage: String("741c4949-60b9-5bb1-5bf8-b14f4bb14af3"),
 			MD5:     String(fmt.Sprintf("%x", md5.Sum(state))),
 			Serial:  Int64(1),
@@ -161,7 +163,7 @@ func TestStateVersionsCreate(t *testing.T) {
 		})
 		require.NoError(t, err)
 
-		sv, err = client.StateVersions.Create(ctx, wTest.ID, StateVersionCreateOptions{
+		sv, err := client.StateVersions.Create(ctx, wTest.ID, StateVersionCreateOptions{
 			Lineage: String("821c4747-a0b9-3bd1-8bf3-c14f4bb14be7"),
 			MD5:     String(fmt.Sprintf("%x", md5.Sum(state))),
 			Serial:  Int64(2),
@@ -193,7 +195,8 @@ func TestStateVersionsCreate(t *testing.T) {
 	t.Run("with a run to associate with", func(t *testing.T) {
 		t.Skip("This can only be tested with the run specific token")
 
-		rTest, _ := createRun(t, client, wTest)
+		rTest, rTestCleanup := createRun(t, client, wTest)
+		defer rTestCleanup()
 
 		ctx := context.Background()
 		sv, err := client.StateVersions.Create(ctx, wTest.ID, StateVersionCreateOptions{

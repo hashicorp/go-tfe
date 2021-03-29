@@ -2,8 +2,11 @@ package tfe
 
 import (
 	"context"
+	"crypto/hmac"
 	"crypto/md5"
+	"crypto/sha256"
 	"encoding/base64"
+	"encoding/hex"
 	"fmt"
 	"io/ioutil"
 	"os"
@@ -492,10 +495,10 @@ func createRun(t *testing.T, client *Client, w *Workspace) (*Run, func()) {
 	}
 
 	return r, func() {
+		cvCleanup()
+
 		if wCleanup != nil {
 			wCleanup()
-		} else {
-			cvCleanup()
 		}
 	}
 }
@@ -533,6 +536,7 @@ func createCostEstimatedRun(t *testing.T, client *Client, w *Workspace) (*Run, f
 	for i := 0; ; i++ {
 		r, err = client.Runs.Read(ctx, r.ID)
 		if err != nil {
+			rCleanup()
 			t.Fatal(err)
 		}
 
@@ -562,6 +566,7 @@ func createAppliedRun(t *testing.T, client *Client, w *Workspace) (*Run, func())
 	for i := 0; ; i++ {
 		r, err = client.Runs.Read(ctx, r.ID)
 		if err != nil {
+			rCleanup()
 			t.Fatal(err)
 		}
 
@@ -794,7 +799,7 @@ func createTeam(t *testing.T, client *Client, org *Organization) (*Team, func())
 }
 
 func createTeamAccess(t *testing.T, client *Client, tm *Team, w *Workspace, org *Organization) (*TeamAccess, func()) {
-	var orgCleanup, tmCleanup func()
+	var orgCleanup, tmCleanup, wCleanup func()
 
 	if org == nil {
 		org, orgCleanup = createOrganization(t, client)
@@ -805,7 +810,7 @@ func createTeamAccess(t *testing.T, client *Client, tm *Team, w *Workspace, org 
 	}
 
 	if w == nil {
-		w, _ = createWorkspace(t, client, org)
+		w, wCleanup = createWorkspace(t, client, org)
 	}
 
 	ctx := context.Background()
@@ -831,6 +836,10 @@ func createTeamAccess(t *testing.T, client *Client, tm *Team, w *Workspace, org 
 
 		if orgCleanup != nil {
 			orgCleanup()
+		}
+
+		if wCleanup != nil {
+			wCleanup()
 		}
 	}
 }
@@ -963,6 +972,16 @@ func createWorkspaceWithVCS(t *testing.T, client *Client, org *Organization) (*W
 			orgCleanup()
 		}
 	}
+}
+
+func genSha(t *testing.T, secret, data string) string {
+	h := hmac.New(sha256.New, []byte(secret))
+	_, err := h.Write([]byte(data))
+	if err != nil {
+		t.Fatalf("error writing hmac: %s", err)
+	}
+	sha := hex.EncodeToString(h.Sum(nil))
+	return sha
 }
 
 func randomString(t *testing.T) string {

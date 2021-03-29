@@ -19,7 +19,7 @@ import (
 	"github.com/google/go-querystring/query"
 	"github.com/hashicorp/go-cleanhttp"
 	retryablehttp "github.com/hashicorp/go-retryablehttp"
-	"github.com/svanharmelen/jsonapi"
+	"github.com/hashicorp/jsonapi"
 	"golang.org/x/time/rate"
 )
 
@@ -134,9 +134,12 @@ type Client struct {
 // wide admin settings. These are only available for Terraform Enterprise and
 // do not function against Terraform Cloud.
 type Admin struct {
-	Organizations AdminOrganizations
-	Workspaces    AdminWorkspaces
-	Runs          AdminRuns
+	Organizations     AdminOrganizations
+	Workspaces        AdminWorkspaces
+	Runs              AdminRuns
+	TerraformVersions AdminTerraformVersions
+	Users             AdminUsers
+	Settings          *AdminSettings
 }
 
 // Meta contains any Terraform Cloud APIs which provide data about the API itself.
@@ -218,9 +221,12 @@ func NewClient(cfg *Config) (*Client, error) {
 
 	// Create Admin
 	client.Admin = Admin{
-		Organizations: &adminOrganizations{client: client},
-		Workspaces:    &adminWorkspaces{client: client},
-		Runs:          &adminRuns{client: client},
+		Organizations:     &adminOrganizations{client: client},
+		Workspaces:        &adminWorkspaces{client: client},
+		Runs:              &adminRuns{client: client},
+		Settings:          newAdminSettings(client),
+		TerraformVersions: &adminTerraformVersions{client: client},
+		Users:             &adminUsers{client: client},
 	}
 
 	// Create the services.
@@ -598,10 +604,14 @@ func (c *Client) do(ctx context.Context, req *retryablehttp.Request, v interface
 		return err
 	}
 
-	// Get the value of v so we can test if it's a struct.
-	dst := reflect.Indirect(reflect.ValueOf(v))
+	return unmarshalResponse(resp.Body, v)
+}
 
-	// Return an error if v is not a struct or an io.Writer.
+func unmarshalResponse(responseBody io.Reader, model interface{}) error {
+	// Get the value of model so we can test if it's a struct.
+	dst := reflect.Indirect(reflect.ValueOf(model))
+
+	// Return an error if model is not a struct or an io.Writer.
 	if dst.Kind() != reflect.Struct {
 		return fmt.Errorf("v must be a struct or an io.Writer")
 	}
@@ -613,7 +623,7 @@ func (c *Client) do(ctx context.Context, req *retryablehttp.Request, v interface
 	// Unmarshal a single value if v does not contain the
 	// Items and Pagination struct fields.
 	if !items.IsValid() || !pagination.IsValid() {
-		return jsonapi.UnmarshalPayload(resp.Body, v)
+		return jsonapi.UnmarshalPayload(responseBody, model)
 	}
 
 	// Return an error if v.Items is not a slice.
@@ -623,7 +633,7 @@ func (c *Client) do(ctx context.Context, req *retryablehttp.Request, v interface
 
 	// Create a temporary buffer and copy all the read data into it.
 	body := bytes.NewBuffer(nil)
-	reader := io.TeeReader(resp.Body, body)
+	reader := io.TeeReader(responseBody, body)
 
 	// Unmarshal as a list of values as v.Items is a slice.
 	raw, err := jsonapi.UnmarshalManyPayload(reader, items.Type().Elem())
@@ -678,8 +688,8 @@ type Pagination struct {
 func parsePagination(body io.Reader) (*Pagination, error) {
 	var raw struct {
 		Meta struct {
-			Pagination Pagination `json:"pagination"`
-		} `json:"meta"`
+			Pagination Pagination `jsonapi:"pagination"`
+		} `jsonapi:"meta"`
 	}
 
 	// JSON decode the raw response.

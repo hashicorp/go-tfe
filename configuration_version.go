@@ -87,9 +87,9 @@ type ConfigurationVersion struct {
 // CVStatusTimestamps holds the timestamps for individual configuration version
 // statuses.
 type CVStatusTimestamps struct {
-	FinishedAt time.Time `json:"finished-at"`
-	QueuedAt   time.Time `json:"queued-at"`
-	StartedAt  time.Time `json:"started-at"`
+	FinishedAt time.Time `jsonapi:"attr,finished-at,rfc3339"`
+	QueuedAt   time.Time `jsonapi:"attr,queued-at,rfc3339"`
+	StartedAt  time.Time `jsonapi:"attr,started-at,rfc3339"`
 }
 
 // ConfigurationVersionListOptions represents the options for listing
@@ -122,8 +122,11 @@ func (s *configurationVersions) List(ctx context.Context, workspaceID string, op
 // ConfigurationVersionCreateOptions represents the options for creating a
 // configuration version.
 type ConfigurationVersionCreateOptions struct {
-	// For internal use only!
-	ID string `jsonapi:"primary,configuration-versions"`
+	// Type is a public field utilized by JSON:API to
+	// set the resource type via the field tag.
+	// It is not a user-defined value and does not need to be set.
+	// https://jsonapi.org/format/#crud-creating
+	Type string `jsonapi:"primary,configuration-versions"`
 
 	// When true, runs are queued automatically when the configuration version
 	// is uploaded.
@@ -139,9 +142,6 @@ func (s *configurationVersions) Create(ctx context.Context, workspaceID string, 
 	if !validStringID(&workspaceID) {
 		return nil, ErrInvalidWorkspaceID
 	}
-
-	// Make sure we don't send a user provided ID.
-	options.ID = ""
 
 	u := fmt.Sprintf("workspaces/%s/configuration-versions", url.QueryEscape(workspaceID))
 	req, err := s.client.newRequest("POST", u, &options)

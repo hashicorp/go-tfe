@@ -4,7 +4,9 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"io"
 	"net/url"
+	"strings"
 	"time"
 )
 
@@ -24,6 +26,9 @@ type Workspaces interface {
 
 	// Read a workspace by its name.
 	Read(ctx context.Context, organization string, workspace string) (*Workspace, error)
+
+	// Readme gets the readme of a workspace by its ID.
+	Readme(ctx context.Context, workspaceID string) (io.Reader, error)
 
 	// ReadByID reads a workspace by its ID.
 	ReadByID(ctx context.Context, workspaceID string) (*Workspace, error)
@@ -104,6 +109,13 @@ type Workspace struct {
 	TriggerPrefixes      []string              `jsonapi:"attr,trigger-prefixes"`
 	VCSRepo              *VCSRepo              `jsonapi:"attr,vcs-repo"`
 	WorkingDirectory     string                `jsonapi:"attr,working-directory"`
+	UpdatedAt            time.Time             `jsonapi:"attr,updated-at,iso8601"`
+	ResourceCount        int                   `jsonapi:"attr,resource-count"`
+	ApplyDurationAverage time.Duration         `jsonapi:"attr,apply-duration-average"`
+	PlanDurationAverage  time.Duration         `jsonapi:"attr,plan-duration-average"`
+	PolicyCheckFailures  int                   `jsonapi:"attr,policy-check-failures"`
+	RunFailures          int                   `jsonapi:"attr,run-failures"`
+	RunsCount            int                   `jsonapi:"attr,workspace-kpis-runs-count"`
 
 	// Relations
 	AgentPool            *AgentPool    `jsonapi:"relation,agent-pool"`
@@ -113,32 +125,46 @@ type Workspace struct {
 	SSHKey               *SSHKey       `jsonapi:"relation,ssh-key"`
 }
 
+// workspaceWithReadme is the same as a workspace but it has a readme.
+type workspaceWithReadme struct {
+	ID     string           `jsonapi:"primary,workspaces"`
+	Readme *workspaceReadme `jsonapi:"relation,readme"`
+}
+
+// workspaceReadme contains the readme of the workspace.
+type workspaceReadme struct {
+	ID          string `jsonapi:"primary,workspace-readme"`
+	RawMarkdown string `jsonapi:"attr,raw-markdown"`
+}
+
 // VCSRepo contains the configuration of a VCS integration.
 type VCSRepo struct {
-	Branch            string `json:"branch"`
-	DisplayIdentifier string `json:"display-identifier"`
-	Identifier        string `json:"identifier"`
-	IngressSubmodules bool   `json:"ingress-submodules"`
-	OAuthTokenID      string `json:"oauth-token-id"`
+	Branch            string `jsonapi:"attr,branch"`
+	DisplayIdentifier string `jsonapi:"attr,display-identifier"`
+	Identifier        string `jsonapi:"attr,identifier"`
+	IngressSubmodules bool   `jsonapi:"attr,ingress-submodules"`
+	OAuthTokenID      string `jsonapi:"attr,oauth-token-id"`
+	RepositoryHTTPURL string `jsonapi:"attr,repository-http-url"`
+	ServiceProvider   string `jsonapi:"attr,service-provider"`
 }
 
 // WorkspaceActions represents the workspace actions.
 type WorkspaceActions struct {
-	IsDestroyable bool `json:"is-destroyable"`
+	IsDestroyable bool `jsonapi:"attr,is-destroyable"`
 }
 
 // WorkspacePermissions represents the workspace permissions.
 type WorkspacePermissions struct {
-	CanDestroy        bool `json:"can-destroy"`
-	CanForceUnlock    bool `json:"can-force-unlock"`
-	CanLock           bool `json:"can-lock"`
-	CanQueueApply     bool `json:"can-queue-apply"`
-	CanQueueDestroy   bool `json:"can-queue-destroy"`
-	CanQueueRun       bool `json:"can-queue-run"`
-	CanReadSettings   bool `json:"can-read-settings"`
-	CanUnlock         bool `json:"can-unlock"`
-	CanUpdate         bool `json:"can-update"`
-	CanUpdateVariable bool `json:"can-update-variable"`
+	CanDestroy        bool `jsonapi:"attr,can-destroy"`
+	CanForceUnlock    bool `jsonapi:"attr,can-force-unlock"`
+	CanLock           bool `jsonapi:"attr,can-lock"`
+	CanQueueApply     bool `jsonapi:"attr,can-queue-apply"`
+	CanQueueDestroy   bool `jsonapi:"attr,can-queue-destroy"`
+	CanQueueRun       bool `jsonapi:"attr,can-queue-run"`
+	CanReadSettings   bool `jsonapi:"attr,can-read-settings"`
+	CanUnlock         bool `jsonapi:"attr,can-unlock"`
+	CanUpdate         bool `jsonapi:"attr,can-update"`
+	CanUpdateVariable bool `jsonapi:"attr,can-update-variable"`
 }
 
 // WorkspaceListOptions represents the options for listing workspaces.
@@ -175,8 +201,11 @@ func (s *workspaces) List(ctx context.Context, organization string, options Work
 
 // WorkspaceCreateOptions represents the options for creating a new workspace.
 type WorkspaceCreateOptions struct {
-	// For internal use only!
-	ID string `jsonapi:"primary,workspaces"`
+	// Type is a public field utilized by JSON:API to
+	// set the resource type via the field tag.
+	// It is not a user-defined value and does not need to be set.
+	// https://jsonapi.org/format/#crud-creating
+	Type string `jsonapi:"primary,workspaces"`
 
 	// Required when execution-mode is set to agent. The ID of the agent pool
 	// belonging to the workspace's organization. This value must not be specified
@@ -252,10 +281,10 @@ type WorkspaceCreateOptions struct {
 // TODO: move this struct out. VCSRepoOptions is used by workspaces, policy sets, and registry modules
 // VCSRepoOptions represents the configuration options of a VCS integration.
 type VCSRepoOptions struct {
-	Branch            *string `json:"branch,omitempty"`
-	Identifier        *string `json:"identifier,omitempty"`
-	IngressSubmodules *bool   `json:"ingress-submodules,omitempty"`
-	OAuthTokenID      *string `json:"oauth-token-id,omitempty"`
+	Branch            *string `jsonapi:"attr,branch,omitempty"`
+	Identifier        *string `jsonapi:"attr,identifier,omitempty"`
+	IngressSubmodules *bool   `jsonapi:"attr,ingress-submodules,omitempty"`
+	OAuthTokenID      *string `jsonapi:"attr,oauth-token-id,omitempty"`
 }
 
 func (o WorkspaceCreateOptions) valid() error {
@@ -286,9 +315,6 @@ func (s *workspaces) Create(ctx context.Context, organization string, options Wo
 	if err := options.valid(); err != nil {
 		return nil, err
 	}
-
-	// Make sure we don't send a user provided ID.
-	options.ID = ""
 
 	u := fmt.Sprintf("organizations/%s/workspaces", url.QueryEscape(organization))
 	req, err := s.client.newRequest("POST", u, &options)
@@ -330,6 +356,10 @@ func (s *workspaces) Read(ctx context.Context, organization, workspace string) (
 		return nil, err
 	}
 
+	// durations come over in ms
+	w.ApplyDurationAverage *= time.Millisecond
+	w.PlanDurationAverage *= time.Millisecond
+
 	return w, nil
 }
 
@@ -351,13 +381,44 @@ func (s *workspaces) ReadByID(ctx context.Context, workspaceID string) (*Workspa
 		return nil, err
 	}
 
+	// durations come over in ms
+	w.ApplyDurationAverage *= time.Millisecond
+	w.PlanDurationAverage *= time.Millisecond
+
 	return w, nil
+}
+
+// Readme gets the readme of a workspace by its ID.
+func (s *workspaces) Readme(ctx context.Context, workspaceID string) (io.Reader, error) {
+	if !validStringID(&workspaceID) {
+		return nil, ErrInvalidWorkspaceID
+	}
+
+	u := fmt.Sprintf("workspaces/%s?include=readme", url.QueryEscape(workspaceID))
+	req, err := s.client.newRequest("GET", u, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	r := &workspaceWithReadme{}
+	err = s.client.do(ctx, req, r)
+	if err != nil {
+		return nil, err
+	}
+	if r.Readme == nil {
+		return nil, nil
+	}
+
+	return strings.NewReader(r.Readme.RawMarkdown), nil
 }
 
 // WorkspaceUpdateOptions represents the options for updating a workspace.
 type WorkspaceUpdateOptions struct {
-	// For internal use only!
-	ID string `jsonapi:"primary,workspaces"`
+	// Type is a public field utilized by JSON:API to
+	// set the resource type via the field tag.
+	// It is not a user-defined value and does not need to be set.
+	// https://jsonapi.org/format/#crud-creating
+	Type string `jsonapi:"primary,workspaces"`
 
 	// Required when execution-mode is set to agent. The ID of the agent pool
 	// belonging to the workspace's organization. This value must not be specified
@@ -454,9 +515,6 @@ func (s *workspaces) Update(ctx context.Context, organization, workspace string,
 		return nil, err
 	}
 
-	// Make sure we don't send a user provided ID.
-	options.ID = ""
-
 	u := fmt.Sprintf(
 		"organizations/%s/workspaces/%s",
 		url.QueryEscape(organization),
@@ -481,9 +539,6 @@ func (s *workspaces) UpdateByID(ctx context.Context, workspaceID string, options
 	if !validStringID(&workspaceID) {
 		return nil, ErrInvalidWorkspaceID
 	}
-
-	// Make sure we don't send a user provided ID.
-	options.ID = ""
 
 	u := fmt.Sprintf("workspaces/%s", url.QueryEscape(workspaceID))
 	req, err := s.client.newRequest("PATCH", u, &options)
@@ -597,7 +652,7 @@ func (s *workspaces) RemoveVCSConnectionByID(ctx context.Context, workspaceID st
 // WorkspaceLockOptions represents the options for locking a workspace.
 type WorkspaceLockOptions struct {
 	// Specifies the reason for locking the workspace.
-	Reason *string `json:"reason,omitempty"`
+	Reason *string `jsonapi:"attr,reason,omitempty"`
 }
 
 // Lock a workspace by its ID.
@@ -666,8 +721,11 @@ func (s *workspaces) ForceUnlock(ctx context.Context, workspaceID string) (*Work
 // WorkspaceAssignSSHKeyOptions represents the options to assign an SSH key to
 // a workspace.
 type WorkspaceAssignSSHKeyOptions struct {
-	// For internal use only!
-	ID string `jsonapi:"primary,workspaces"`
+	// Type is a public field utilized by JSON:API to
+	// set the resource type via the field tag.
+	// It is not a user-defined value and does not need to be set.
+	// https://jsonapi.org/format/#crud-creating
+	Type string `jsonapi:"primary,workspaces"`
 
 	// The SSH key ID to assign.
 	SSHKeyID *string `jsonapi:"attr,id"`
@@ -692,9 +750,6 @@ func (s *workspaces) AssignSSHKey(ctx context.Context, workspaceID string, optio
 		return nil, err
 	}
 
-	// Make sure we don't send a user provided ID.
-	options.ID = ""
-
 	u := fmt.Sprintf("workspaces/%s/relationships/ssh-key", url.QueryEscape(workspaceID))
 	req, err := s.client.newRequest("PATCH", u, &options)
 	if err != nil {
@@ -713,8 +768,11 @@ func (s *workspaces) AssignSSHKey(ctx context.Context, workspaceID string, optio
 // workspaceUnassignSSHKeyOptions represents the options to unassign an SSH key
 // to a workspace.
 type workspaceUnassignSSHKeyOptions struct {
-	// For internal use only!
-	ID string `jsonapi:"primary,workspaces"`
+	// Type is a public field utilized by JSON:API to
+	// set the resource type via the field tag.
+	// It is not a user-defined value and does not need to be set.
+	// https://jsonapi.org/format/#crud-creating
+	Type string `jsonapi:"primary,workspaces"`
 
 	// Must be nil to unset the currently assigned SSH key.
 	SSHKeyID *string `jsonapi:"attr,id"`

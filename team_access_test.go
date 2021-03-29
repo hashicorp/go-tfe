@@ -15,7 +15,8 @@ func TestTeamAccessesList(t *testing.T) {
 	orgTest, orgTestCleanup := createOrganization(t, client)
 	defer orgTestCleanup()
 
-	wTest, _ := createWorkspace(t, client, orgTest)
+	wTest, wTestCleanup := createWorkspace(t, client, orgTest)
+	defer wTestCleanup()
 
 	tmTest1, tmTest1Cleanup := createTeam(t, client, orgTest)
 	defer tmTest1Cleanup()
@@ -79,7 +80,8 @@ func TestTeamAccessesAdd(t *testing.T) {
 	orgTest, orgTestCleanup := createOrganization(t, client)
 	defer orgTestCleanup()
 
-	wTest, _ := createWorkspace(t, client, orgTest)
+	wTest, wTestCleanup := createWorkspace(t, client, orgTest)
+	defer wTestCleanup()
 
 	tmTest, tmTestCleanup := createTeam(t, client, orgTest)
 	defer tmTestCleanup()
@@ -92,7 +94,12 @@ func TestTeamAccessesAdd(t *testing.T) {
 		}
 
 		ta, err := client.TeamAccess.Add(ctx, options)
-		defer client.TeamAccess.Remove(ctx, ta.ID)
+		defer func() {
+			err := client.TeamAccess.Remove(ctx, ta.ID)
+			if err != nil {
+				t.Logf("error removing team access (%s): %s", ta.ID, err)
+			}
+		}()
 
 		require.NoError(t, err)
 
@@ -119,7 +126,12 @@ func TestTeamAccessesAdd(t *testing.T) {
 		}
 
 		ta, err := client.TeamAccess.Add(ctx, options)
-		defer client.TeamAccess.Remove(ctx, ta.ID)
+		defer func() {
+			err := client.TeamAccess.Remove(ctx, ta.ID)
+			if err != nil {
+				t.Logf("error removing team access (%s): %s", ta.ID, err)
+			}
+		}()
 
 		require.NoError(t, err)
 
@@ -195,7 +207,14 @@ func TestTeamAccessesRead(t *testing.T) {
 	client := testClient(t)
 	ctx := context.Background()
 
-	taTest, taTestCleanup := createTeamAccess(t, client, nil, nil, nil)
+	orgTest, orgTestCleanup := createOrganization(t, client)
+	defer orgTestCleanup()
+	wTest, wTestCleanup := createWorkspace(t, client, orgTest)
+	defer wTestCleanup()
+	tmTest, tmTestCleanup := createTeam(t, client, orgTest)
+	defer tmTestCleanup()
+
+	taTest, taTestCleanup := createTeamAccess(t, client, tmTest, wTest, orgTest)
 	defer taTestCleanup()
 
 	t.Run("when the team access exists", func(t *testing.T) {
@@ -247,7 +266,7 @@ func TestTeamAccessesUpdate(t *testing.T) {
 	tmTest, tmTestCleanup := createTeam(t, client, orgTest)
 	defer tmTestCleanup()
 
-	taTest, taTestCleanup := createTeamAccess(t, client, tmTest, wTest, nil)
+	taTest, taTestCleanup := createTeamAccess(t, client, tmTest, wTest, orgTest)
 	defer taTestCleanup()
 
 	t.Run("with valid attributes", func(t *testing.T) {

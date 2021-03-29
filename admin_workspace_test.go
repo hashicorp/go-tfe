@@ -1,7 +1,9 @@
 package tfe
 
 import (
+	"bytes"
 	"context"
+	"encoding/json"
 	"fmt"
 	"testing"
 
@@ -211,4 +213,33 @@ func adminWorkspaceItemsContainsID(items []*AdminWorkspace, id string) bool {
 	}
 
 	return hasID
+}
+
+func TestAdminWorkspace_Unmarshal(t *testing.T) {
+	data := map[string]interface{}{
+		"data": map[string]interface{}{
+			"type": "workspaces",
+			"id":   "workspaces-VCsNJXa59eUza53R",
+			"attributes": map[string]interface{}{
+				"name":   "workspace-name",
+				"locked": false,
+				"vcs-repo": map[string]string{
+					"identifier": "github",
+				},
+			},
+		},
+	}
+	byteData, err := json.Marshal(data)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	adminWorkspace := &AdminWorkspace{}
+	responseBody := bytes.NewReader(byteData)
+	err = unmarshalResponse(responseBody, adminWorkspace)
+	require.NoError(t, err)
+	assert.Equal(t, adminWorkspace.ID, "workspaces-VCsNJXa59eUza53R")
+	assert.Equal(t, adminWorkspace.Name, "workspace-name")
+	assert.Equal(t, adminWorkspace.Locked, false)
+	assert.Equal(t, adminWorkspace.VCSRepo.Identifier, "github")
 }

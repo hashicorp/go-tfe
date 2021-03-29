@@ -1,10 +1,14 @@
 package tfe
 
 import (
+	"bytes"
 	"context"
+	"encoding/json"
 	"fmt"
 	"testing"
+	"time"
 
+	retryablehttp "github.com/hashicorp/go-retryablehttp"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
@@ -21,8 +25,10 @@ func TestAdminRuns_List(t *testing.T) {
 	wTest, wTestCleanup := createWorkspace(t, client, org)
 	defer wTestCleanup()
 
-	rTest1, _ := createRun(t, client, wTest)
-	rTest2, _ := createRun(t, client, wTest)
+	rTest1, rTestCleanup1 := createRun(t, client, wTest)
+	defer rTestCleanup1()
+	rTest2, rTestCleanup2 := createRun(t, client, wTest)
+	defer rTestCleanup2()
 
 	t.Run("without list options", func(t *testing.T) {
 		rl, err := client.Admin.Runs.List(ctx, AdminRunsListOptions{})
@@ -235,6 +241,55 @@ func TestAdminRuns_AdminRunsListOptions_valid(t *testing.T) {
 		err := opts.valid()
 		assert.Error(t, err)
 	})
+}
+
+func TestAdminRun_ForceCancel_Marshal(t *testing.T) {
+	opts := AdminRunForceCancelOptions{
+		Comment: String("cancel comment"),
+	}
+
+	reqBody, err := serializeRequestBody(&opts)
+	require.NoError(t, err)
+	req, err := retryablehttp.NewRequest("POST", "url", reqBody)
+	require.NoError(t, err)
+	bodyBytes, err := req.BodyBytes()
+	require.NoError(t, err)
+
+	expectedBody := `{"comment":"cancel comment"}`
+	assert.Equal(t, expectedBody, string(bodyBytes))
+}
+
+func TestAdminRun_Unmarshal(t *testing.T) {
+	data := map[string]interface{}{
+		"data": map[string]interface{}{
+			"type": "runs",
+			"id":   "run-VCsNJXa59eUza53R",
+			"attributes": map[string]interface{}{
+				"created-at":  "2018-03-02T23:42:06.651Z",
+				"has-changes": true,
+				"status":      RunApplied,
+				"status-timestamps": map[string]string{
+					"queued-at": "2020-03-16T23:15:59+00:00",
+				},
+			},
+		},
+	}
+	byteData, err := json.Marshal(data)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	queuedParsedTime, err := time.Parse(time.RFC3339, "2020-03-16T23:15:59+00:00")
+	require.NoError(t, err)
+
+	adminRun := &AdminRun{}
+	responseBody := bytes.NewReader(byteData)
+	err = unmarshalResponse(responseBody, adminRun)
+	require.NoError(t, err)
+	assert.Equal(t, adminRun.ID, "run-VCsNJXa59eUza53R")
+	assert.Equal(t, adminRun.HasChanges, true)
+	assert.Equal(t, adminRun.Status, RunApplied)
+	assert.Equal(t, adminRun.StatusTimestamps.QueuedAt, queuedParsedTime)
 }
 
 func adminRunItemsContainsID(items []*AdminRun, id string) bool {

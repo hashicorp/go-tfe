@@ -121,15 +121,15 @@ type RunQueue struct {
 
 // OrganizationPermissions represents the organization permissions.
 type OrganizationPermissions struct {
-	CanCreateTeam               bool `json:"can-create-team"`
-	CanCreateWorkspace          bool `json:"can-create-workspace"`
-	CanCreateWorkspaceMigration bool `json:"can-create-workspace-migration"`
-	CanDestroy                  bool `json:"can-destroy"`
-	CanTraverse                 bool `json:"can-traverse"`
-	CanUpdate                   bool `json:"can-update"`
-	CanUpdateAPIToken           bool `json:"can-update-api-token"`
-	CanUpdateOAuth              bool `json:"can-update-oauth"`
-	CanUpdateSentinel           bool `json:"can-update-sentinel"`
+	CanCreateTeam               bool `jsonapi:"attr,can-create-team"`
+	CanCreateWorkspace          bool `jsonapi:"attr,can-create-workspace"`
+	CanCreateWorkspaceMigration bool `jsonapi:"attr,can-create-workspace-migration"`
+	CanDestroy                  bool `jsonapi:"attr,can-destroy"`
+	CanTraverse                 bool `jsonapi:"attr,can-traverse"`
+	CanUpdate                   bool `jsonapi:"attr,can-update"`
+	CanUpdateAPIToken           bool `jsonapi:"attr,can-update-api-token"`
+	CanUpdateOAuth              bool `jsonapi:"attr,can-update-oauth"`
+	CanUpdateSentinel           bool `jsonapi:"attr,can-update-sentinel"`
 }
 
 // OrganizationListOptions represents the options for listing organizations.
@@ -155,8 +155,11 @@ func (s *organizations) List(ctx context.Context, options OrganizationListOption
 
 // OrganizationCreateOptions represents the options for creating an organization.
 type OrganizationCreateOptions struct {
-	// For internal use only!
-	ID string `jsonapi:"primary,organizations"`
+	// Type is a public field utilized by JSON:API to
+	// set the resource type via the field tag.
+	// It is not a user-defined value and does not need to be set.
+	// https://jsonapi.org/format/#crud-creating
+	Type string `jsonapi:"primary,organizations"`
 
 	// Name of the organization.
 	Name *string `jsonapi:"attr,name"`
@@ -199,9 +202,6 @@ func (s *organizations) Create(ctx context.Context, options OrganizationCreateOp
 		return nil, err
 	}
 
-	// Make sure we don't send a user provided ID.
-	options.ID = ""
-
 	req, err := s.client.newRequest("POST", "organizations", &options)
 	if err != nil {
 		return nil, err
@@ -239,8 +239,11 @@ func (s *organizations) Read(ctx context.Context, organization string) (*Organiz
 
 // OrganizationUpdateOptions represents the options for updating an organization.
 type OrganizationUpdateOptions struct {
-	// For internal use only!
-	ID string `jsonapi:"primary,organizations"`
+	// Type is a public field utilized by JSON:API to
+	// set the resource type via the field tag.
+	// It is not a user-defined value and does not need to be set.
+	// https://jsonapi.org/format/#crud-creating
+	Type string `jsonapi:"primary,organizations"`
 
 	// New name for the organization.
 	Name *string `jsonapi:"attr,name,omitempty"`
@@ -269,9 +272,6 @@ func (s *organizations) Update(ctx context.Context, organization string, options
 	if !validStringID(&organization) {
 		return nil, ErrInvalidOrg
 	}
-
-	// Make sure we don't send a user provided ID.
-	options.ID = ""
 
 	u := fmt.Sprintf("organizations/%s", url.QueryEscape(organization))
 	req, err := s.client.newRequest("PATCH", u, &options)

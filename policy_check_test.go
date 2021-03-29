@@ -1,9 +1,12 @@
 package tfe
 
 import (
+	"bytes"
 	"context"
+	"encoding/json"
 	"io/ioutil"
 	"testing"
+	"time"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
@@ -27,25 +30,11 @@ func TestPolicyChecksList(t *testing.T) {
 		pcl, err := client.PolicyChecks.List(ctx, rTest.ID, PolicyCheckListOptions{})
 		require.NoError(t, err)
 		require.Equal(t, 1, len(pcl.Items))
-
-		t.Run("pagination is properly decoded", func(t *testing.T) {
-			t.Skip("paging not supported yet in API")
-			assert.Equal(t, 1, pcl.CurrentPage)
-			assert.Equal(t, 1, pcl.TotalCount)
-		})
-
-		t.Run("permissions are properly decoded", func(t *testing.T) {
-			assert.NotEmpty(t, pcl.Items[0].Permissions)
-		})
-
-		t.Run("result is properly decoded", func(t *testing.T) {
-			require.NotEmpty(t, pcl.Items[0].Result)
-			assert.Equal(t, 2, pcl.Items[0].Result.Passed)
-		})
-
-		t.Run("timestamps are properly decoded", func(t *testing.T) {
-			assert.NotEmpty(t, pcl.Items[0].StatusTimestamps)
-		})
+		assert.NotEmpty(t, pcl.Items[0].Permissions)
+		require.NotEmpty(t, pcl.Items[0].Result)
+		assert.Equal(t, 2, pcl.Items[0].Result.Passed)
+		assert.NotEmpty(t, pcl.Items[0].StatusTimestamps)
+		assert.NotNil(t, pcl.Items[0].StatusTimestamps.QueuedAt)
 	})
 
 	t.Run("with list options", func(t *testing.T) {
@@ -92,15 +81,13 @@ func TestPolicyChecksRead(t *testing.T) {
 		pc, err := client.PolicyChecks.Read(ctx, rTest.PolicyChecks[0].ID)
 		require.NoError(t, err)
 
-		t.Run("result is properly decoded", func(t *testing.T) {
-			require.NotEmpty(t, pc.Result)
-			assert.NotEmpty(t, pc.Permissions)
-			assert.Equal(t, PolicyScopeOrganization, pc.Scope)
-			assert.Equal(t, PolicyPasses, pc.Status)
-			assert.NotEmpty(t, pc.StatusTimestamps)
-			assert.Equal(t, 1, pc.Result.Passed)
-			assert.NotEmpty(t, pc.Run)
-		})
+		require.NotEmpty(t, pc.Result)
+		assert.NotEmpty(t, pc.Permissions)
+		assert.Equal(t, PolicyScopeOrganization, pc.Scope)
+		assert.Equal(t, PolicyPasses, pc.Status)
+		assert.NotEmpty(t, pc.StatusTimestamps)
+		assert.Equal(t, 1, pc.Result.Passed)
+		assert.NotEmpty(t, pc.Run)
 	})
 
 	t.Run("when the policy check does not exist", func(t *testing.T) {
@@ -120,16 +107,18 @@ func TestPolicyChecksOverride(t *testing.T) {
 	client := testClient(t)
 	ctx := context.Background()
 
-	orgTest, orgTestCleanup := createOrganization(t, client)
-	defer orgTestCleanup()
-
 	t.Run("when the policy failed", func(t *testing.T) {
+		orgTest, orgTestCleanup := createOrganization(t, client)
+		defer orgTestCleanup()
+
 		pTest, pTestCleanup := createUploadedPolicy(t, client, false, orgTest)
 		defer pTestCleanup()
 
-		wTest, _ := createWorkspace(t, client, orgTest)
+		wTest, wTestCleanup := createWorkspace(t, client, orgTest)
+		defer wTestCleanup()
 		createPolicySet(t, client, orgTest, []*Policy{pTest}, []*Workspace{wTest})
-		rTest, _ := createPlannedRun(t, client, wTest)
+		rTest, tTestCleanup := createPlannedRun(t, client, wTest)
+		defer tTestCleanup()
 
 		pcl, err := client.PolicyChecks.List(ctx, rTest.ID, PolicyCheckListOptions{})
 		require.NoError(t, err)
@@ -144,12 +133,17 @@ func TestPolicyChecksOverride(t *testing.T) {
 	})
 
 	t.Run("when the policy passed", func(t *testing.T) {
+		orgTest, orgTestCleanup := createOrganization(t, client)
+		defer orgTestCleanup()
+
 		pTest, pTestCleanup := createUploadedPolicy(t, client, true, orgTest)
 		defer pTestCleanup()
 
-		wTest, _ := createWorkspace(t, client, orgTest)
+		wTest, wTestCleanup := createWorkspace(t, client, orgTest)
+		defer wTestCleanup()
 		createPolicySet(t, client, orgTest, []*Policy{pTest}, []*Workspace{wTest})
-		rTest, _ := createPlannedRun(t, client, wTest)
+		rTest, rTestCleanup := createPlannedRun(t, client, wTest)
+		defer rTestCleanup()
 
 		pcl, err := client.PolicyChecks.List(ctx, rTest.ID, PolicyCheckListOptions{})
 		require.NoError(t, err)
@@ -174,11 +168,14 @@ func TestPolicyChecksLogs(t *testing.T) {
 	orgTest, orgTestCleanup := createOrganization(t, client)
 	defer orgTestCleanup()
 
-	pTest, _ := createUploadedPolicy(t, client, true, orgTest)
-	wTest, _ := createWorkspace(t, client, orgTest)
+	pTest, pTestCleanup := createUploadedPolicy(t, client, true, orgTest)
+	defer pTestCleanup()
+	wTest, wTestCleanup := createWorkspace(t, client, orgTest)
+	defer wTestCleanup()
 	createPolicySet(t, client, orgTest, []*Policy{pTest}, []*Workspace{wTest})
 
-	rTest, _ := createPlannedRun(t, client, wTest)
+	rTest, rTestCleanup := createPlannedRun(t, client, wTest)
+	defer rTestCleanup()
 	require.Equal(t, 1, len(rTest.PolicyChecks))
 
 	t.Run("when the log exists", func(t *testing.T) {
@@ -199,4 +196,64 @@ func TestPolicyChecksLogs(t *testing.T) {
 		assert.Nil(t, logs)
 		assert.Error(t, err)
 	})
+}
+
+func TestPolicyCheck_Unmarshal(t *testing.T) {
+	data := map[string]interface{}{
+		"data": map[string]interface{}{
+			"type": "policy-checks",
+			"id":   "1",
+			"attributes": map[string]interface{}{
+				"actions": map[string]interface{}{
+					"is-overridable": true,
+				},
+				"permissions": map[string]interface{}{
+					"can-override": true,
+				},
+				"result": map[string]interface{}{
+					"advisory-failed": 1,
+					"duration":        1,
+					"hard-failed":     1,
+					"passed":          1,
+					"result":          true,
+					"soft-failed":     1,
+					"total-failed":    1,
+				},
+				"scope":  PolicyScopeOrganization,
+				"status": PolicyOverridden,
+				"status-timestamps": map[string]string{
+					"queued-at":  "2020-03-16T23:15:59+00:00",
+					"errored-at": "2019-03-16T23:23:59+00:00",
+				},
+			},
+		},
+	}
+
+	byteData, err := json.Marshal(data)
+	require.NoError(t, err)
+
+	responseBody := bytes.NewReader(byteData)
+	pc := &PolicyCheck{}
+	err = unmarshalResponse(responseBody, pc)
+	require.NoError(t, err)
+
+	queuedParsedTime, err := time.Parse(time.RFC3339, "2020-03-16T23:15:59+00:00")
+	require.NoError(t, err)
+	erroredParsedTime, err := time.Parse(time.RFC3339, "2019-03-16T23:23:59+00:00")
+	require.NoError(t, err)
+
+	assert.Equal(t, pc.ID, "1")
+	assert.Equal(t, pc.Actions.IsOverridable, true)
+	assert.Equal(t, pc.Permissions.CanOverride, true)
+	assert.Equal(t, pc.Result.AdvisoryFailed, 1)
+	assert.Equal(t, pc.Result.Duration, 1)
+	assert.Equal(t, pc.Result.HardFailed, 1)
+	assert.Equal(t, pc.Result.Passed, 1)
+	assert.Equal(t, pc.Result.Result, true)
+	assert.Equal(t, pc.Result.SoftFailed, 1)
+	assert.Equal(t, pc.Result.TotalFailed, 1)
+	assert.Equal(t, pc.Scope, PolicyScopeOrganization)
+	assert.Equal(t, pc.Status, PolicyOverridden)
+	assert.Equal(t, pc.StatusTimestamps.QueuedAt, queuedParsedTime)
+	assert.Equal(t, pc.StatusTimestamps.ErroredAt, erroredParsedTime)
 }

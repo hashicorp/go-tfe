@@ -62,12 +62,12 @@ type PolicyList struct {
 
 // Policy represents a Terraform Enterprise policy.
 type Policy struct {
-	ID             string         `jsonapi:"primary,policies"`
-	Name           string         `jsonapi:"attr,name"`
-	Description    string         `jsonapi:"attr,description"`
-	Enforce        []*Enforcement `jsonapi:"attr,enforce"`
-	PolicySetCount int            `jsonapi:"attr,policy-set-count"`
-	UpdatedAt      time.Time      `jsonapi:"attr,updated-at,iso8601"`
+	ID             string        `jsonapi:"primary,policies"`
+	Name           string        `jsonapi:"attr,name"`
+	Description    string        `jsonapi:"attr,description"`
+	Enforce        []Enforcement `jsonapi:"attr,enforce"`
+	PolicySetCount int           `jsonapi:"attr,policy-set-count"`
+	UpdatedAt      time.Time     `jsonapi:"attr,updated-at,iso8601"`
 
 	// Relations
 	Organization *Organization `jsonapi:"relation,organization"`
@@ -75,8 +75,8 @@ type Policy struct {
 
 // Enforcement describes a enforcement.
 type Enforcement struct {
-	Path string           `json:"path"`
-	Mode EnforcementLevel `json:"mode"`
+	Path string           `jsonapi:"attr,path"`
+	Mode EnforcementLevel `jsonapi:"attr,mode"`
 }
 
 // PolicyListOptions represents the options for listing policies.
@@ -110,8 +110,11 @@ func (s *policies) List(ctx context.Context, organization string, options Policy
 
 // PolicyCreateOptions represents the options for creating a new policy.
 type PolicyCreateOptions struct {
-	// For internal use only!
-	ID string `jsonapi:"primary,policies"`
+	// Type is a public field utilized by JSON:API to
+	// set the resource type via the field tag.
+	// It is not a user-defined value and does not need to be set.
+	// https://jsonapi.org/format/#crud-creating
+	Type string `jsonapi:"primary,policies"`
 
 	// The name of the policy.
 	Name *string `jsonapi:"attr,name"`
@@ -125,8 +128,8 @@ type PolicyCreateOptions struct {
 
 // EnforcementOptions represents the enforcement options of a policy.
 type EnforcementOptions struct {
-	Path *string           `json:"path,omitempty"`
-	Mode *EnforcementLevel `json:"mode"`
+	Path *string           `jsonapi:"attr,path,omitempty"`
+	Mode *EnforcementLevel `jsonapi:"attr,mode"`
 }
 
 func (o PolicyCreateOptions) valid() error {
@@ -158,9 +161,6 @@ func (s *policies) Create(ctx context.Context, organization string, options Poli
 	if err := options.valid(); err != nil {
 		return nil, err
 	}
-
-	// Make sure we don't send a user provided ID.
-	options.ID = ""
 
 	u := fmt.Sprintf("organizations/%s/policies", url.QueryEscape(organization))
 	req, err := s.client.newRequest("POST", u, &options)
@@ -200,8 +200,11 @@ func (s *policies) Read(ctx context.Context, policyID string) (*Policy, error) {
 
 // PolicyUpdateOptions represents the options for updating a policy.
 type PolicyUpdateOptions struct {
-	// For internal use only!
-	ID string `jsonapi:"primary,policies"`
+	// Type is a public field utilized by JSON:API to
+	// set the resource type via the field tag.
+	// It is not a user-defined value and does not need to be set.
+	// https://jsonapi.org/format/#crud-creating
+	Type string `jsonapi:"primary,policies"`
 
 	// A description of the policy's purpose.
 	Description *string `jsonapi:"attr,description,omitempty"`
@@ -215,9 +218,6 @@ func (s *policies) Update(ctx context.Context, policyID string, options PolicyUp
 	if !validStringID(&policyID) {
 		return nil, errors.New("invalid value for policy ID")
 	}
-
-	// Make sure we don't send a user provided ID.
-	options.ID = ""
 
 	u := fmt.Sprintf("policies/%s", url.QueryEscape(policyID))
 	req, err := s.client.newRequest("PATCH", u, &options)

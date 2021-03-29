@@ -1,7 +1,9 @@
 package tfe
 
 import (
+	"bytes"
 	"context"
+	"encoding/json"
 	"testing"
 	"time"
 
@@ -13,11 +15,15 @@ func TestRunsList(t *testing.T) {
 	client := testClient(t)
 	ctx := context.Background()
 
-	wTest, wTestCleanup := createWorkspace(t, client, nil)
+	orgTest, orgTestCleanup := createOrganization(t, client)
+	defer orgTestCleanup()
+	wTest, wTestCleanup := createWorkspace(t, client, orgTest)
 	defer wTestCleanup()
 
-	rTest1, _ := createRun(t, client, wTest)
-	rTest2, _ := createRun(t, client, wTest)
+	rTest1, rTestCleanup1 := createRun(t, client, wTest)
+	defer rTestCleanup1()
+	rTest2, rTestCleanup2 := createRun(t, client, wTest)
+	defer rTestCleanup2()
 
 	t.Run("without list options", func(t *testing.T) {
 		rl, err := client.Runs.List(ctx, wTest.ID, RunListOptions{})
@@ -78,15 +84,21 @@ func TestRunsCreate(t *testing.T) {
 	wTest, wTestCleanup := createWorkspace(t, client, nil)
 	defer wTestCleanup()
 
-	cvTest, _ := createUploadedConfigurationVersion(t, client, wTest)
+	cvTest, cvTestCleanup := createUploadedConfigurationVersion(t, client, wTest)
+	defer cvTestCleanup()
 
 	t.Run("without a configuration version", func(t *testing.T) {
 		options := RunCreateOptions{
 			Workspace: wTest,
 		}
 
-		_, err := client.Runs.Create(ctx, options)
+		r, err := client.Runs.Create(ctx, options)
 		assert.NoError(t, err)
+		assert.NotNil(t, r.ID)
+		assert.NotNil(t, r.CreatedAt)
+		assert.NotNil(t, r.Source)
+		assert.NotEmpty(t, r.StatusTimestamps)
+		assert.NotNil(t, r.StatusTimestamps.StartedAt)
 	})
 
 	t.Run("with a configuration version", func(t *testing.T) {
@@ -172,7 +184,12 @@ func TestRunsApply(t *testing.T) {
 	client := testClient(t)
 	ctx := context.Background()
 
-	rTest, rTestCleanup := createPlannedRun(t, client, nil)
+	orgTest, orgTestCleanup := createOrganization(t, client)
+	defer orgTestCleanup()
+	wTest, wTestCleanup := createWorkspace(t, client, orgTest)
+	defer wTestCleanup()
+
+	rTest, rTestCleanup := createPlannedRun(t, client, wTest)
 	defer rTestCleanup()
 
 	t.Run("when the run exists", func(t *testing.T) {
@@ -202,8 +219,10 @@ func TestRunsCancel(t *testing.T) {
 	// be planned so that one cannot be cancelled. The second one will
 	// be pending until the first one is confirmed or discarded, so we
 	// can cancel that one.
-	_, _ = createRun(t, client, wTest)
-	rTest2, _ := createRun(t, client, wTest)
+	_, rTestCleanup1 := createRun(t, client, wTest)
+	defer rTestCleanup1()
+	rTest2, rTestCleanup2 := createRun(t, client, wTest)
+	defer rTestCleanup2()
 
 	t.Run("when the run exists", func(t *testing.T) {
 		err := client.Runs.Cancel(ctx, rTest2.ID, RunCancelOptions{})
@@ -232,8 +251,10 @@ func TestRunsForceCancel(t *testing.T) {
 	// be planned so that one cannot be cancelled. The second one will
 	// be pending until the first one is confirmed or discarded, so we
 	// can cancel that one.
-	_, _ = createRun(t, client, wTest)
-	rTest, _ := createRun(t, client, wTest)
+	_, rTestCleanup1 := createRun(t, client, wTest)
+	defer rTestCleanup1()
+	rTest, rTestCleanup2 := createRun(t, client, wTest)
+	defer rTestCleanup2()
 
 	t.Run("run is not force-cancelable", func(t *testing.T) {
 		assert.False(t, rTest.Actions.IsForceCancelable)
@@ -293,7 +314,10 @@ func TestRunsDiscard(t *testing.T) {
 	client := testClient(t)
 	ctx := context.Background()
 
-	rTest, rTestCleanup := createPlannedRun(t, client, nil)
+	wTest, wTestCleanup := createWorkspace(t, client, nil)
+	defer wTestCleanup()
+
+	rTest, rTestCleanup := createPlannedRun(t, client, wTest)
 	defer rTestCleanup()
 
 	t.Run("when the run exists", func(t *testing.T) {
@@ -310,4 +334,68 @@ func TestRunsDiscard(t *testing.T) {
 		err := client.Runs.Discard(ctx, badIdentifier, RunDiscardOptions{})
 		assert.EqualError(t, err, ErrInvalidRunID.Error())
 	})
+}
+
+func TestRun_Unmarshal(t *testing.T) {
+	data := map[string]interface{}{
+		"data": map[string]interface{}{
+			"type": "runs",
+			"id":   "1",
+			"attributes": map[string]interface{}{
+				"created-at":  "2018-03-02T23:42:06.651Z",
+				"has-changes": true,
+				"is-destroy":  false,
+				"message":     "run message",
+				"actions": map[string]interface{}{
+					"is-cancelable":       true,
+					"is-confirmable":      true,
+					"is-discardable":      true,
+					"is-force-cancelable": true,
+				},
+				"permissions": map[string]interface{}{
+					"can-apply":         true,
+					"can-cancel":        true,
+					"can-discard":       true,
+					"can-force-cancel":  true,
+					"can-force-execute": true,
+				},
+				"status-timestamps": map[string]string{
+					"queued-at":  "2020-03-16T23:15:59+00:00",
+					"errored-at": "2019-03-16T23:23:59+00:00",
+				},
+			},
+		},
+	}
+	byteData, err := json.Marshal(data)
+	require.NoError(t, err)
+
+	responseBody := bytes.NewReader(byteData)
+	run := &Run{}
+	err = unmarshalResponse(responseBody, run)
+	require.NoError(t, err)
+
+	queuedParsedTime, err := time.Parse(time.RFC3339, "2020-03-16T23:15:59+00:00")
+	require.NoError(t, err)
+	erroredParsedTime, err := time.Parse(time.RFC3339, "2019-03-16T23:23:59+00:00")
+	require.NoError(t, err)
+
+	iso8601TimeFormat := "2006-01-02T15:04:05Z"
+	parsedTime, err := time.Parse(iso8601TimeFormat, "2018-03-02T23:42:06.651Z")
+	require.NoError(t, err)
+	assert.Equal(t, run.ID, "1")
+	assert.Equal(t, run.CreatedAt, parsedTime)
+	assert.Equal(t, run.HasChanges, true)
+	assert.Equal(t, run.IsDestroy, false)
+	assert.Equal(t, run.Message, "run message")
+	assert.Equal(t, run.Actions.IsConfirmable, true)
+	assert.Equal(t, run.Actions.IsCancelable, true)
+	assert.Equal(t, run.Actions.IsDiscardable, true)
+	assert.Equal(t, run.Actions.IsForceCancelable, true)
+	assert.Equal(t, run.Permissions.CanApply, true)
+	assert.Equal(t, run.Permissions.CanCancel, true)
+	assert.Equal(t, run.Permissions.CanDiscard, true)
+	assert.Equal(t, run.Permissions.CanForceExecute, true)
+	assert.Equal(t, run.Permissions.CanForceCancel, true)
+	assert.Equal(t, run.StatusTimestamps.QueuedAt, queuedParsedTime)
+	assert.Equal(t, run.StatusTimestamps.ErroredAt, erroredParsedTime)
 }

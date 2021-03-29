@@ -30,7 +30,7 @@ type adminWorkspaces struct {
 }
 
 type AdminVCSRepo struct {
-	Identifier string `json:"identifier"`
+	Identifier string `jsonapi:"attr,identifier"`
 }
 
 // AdminWorkspaces represents a Terraform Enterprise admin workspace.
@@ -66,7 +66,7 @@ type AdminWorkspaceList struct {
 
 // List all the workspaces within a worksapce.
 func (s *adminWorkspaces) List(ctx context.Context, options AdminWorkspaceListOptions) (*AdminWorkspaceList, error) {
-	u := fmt.Sprintf("admin/workspaces")
+	u := "admin/workspaces"
 	req, err := s.client.newRequest("GET", u, &options)
 	if err != nil {
 		return nil, err

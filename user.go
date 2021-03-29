@@ -41,8 +41,8 @@ type User struct {
 
 // TwoFactor represents the organization permissions.
 type TwoFactor struct {
-	Enabled  bool `json:"enabled"`
-	Verified bool `json:"verified"`
+	Enabled  bool `jsonapi:"attr,enabled"`
+	Verified bool `jsonapi:"attr,verified"`
 }
 
 // ReadCurrent reads the details of the currently authenticated user.
@@ -63,8 +63,11 @@ func (s *users) ReadCurrent(ctx context.Context) (*User, error) {
 
 // UserUpdateOptions represents the options for updating a user.
 type UserUpdateOptions struct {
-	// For internal use only!
-	ID string `jsonapi:"primary,users"`
+	// Type is a public field utilized by JSON:API to
+	// set the resource type via the field tag.
+	// It is not a user-defined value and does not need to be set.
+	// https://jsonapi.org/format/#crud-creating
+	Type string `jsonapi:"primary,users"`
 
 	// New username.
 	Username *string `jsonapi:"attr,username,omitempty"`
@@ -75,9 +78,6 @@ type UserUpdateOptions struct {
 
 // Update attributes of the currently authenticated user.
 func (s *users) Update(ctx context.Context, options UserUpdateOptions) (*User, error) {
-	// Make sure we don't send a user provided ID.
-	options.ID = ""
-
 	req, err := s.client.newRequest("PATCH", "account/update", &options)
 	if err != nil {
 		return nil, err
