@@ -8,6 +8,8 @@ import (
 	"net/url"
 	"strings"
 	"time"
+
+	"github.com/hashicorp/jsonapi"
 )
 
 // Compile-time proof of interface implementation.
@@ -123,6 +125,40 @@ type Workspace struct {
 	Organization         *Organization `jsonapi:"relation,organization"`
 	RemoteStateConsumers []*Workspace  `jsonapi:"relation,remote-state-consumers"`
 	SSHKey               *SSHKey       `jsonapi:"relation,ssh-key"`
+}
+
+// Invoked for each relationship defined on the Post struct when marshaled
+func (w *Workspace) JSONAPIRelationshipLinks(relation string) *jsonapi.Links {
+	if relation == "remote-state-consumers" {
+		fmt.Println("OMAR LINKS MANY ")
+		return &jsonapi.Links{
+			"related": fmt.Sprintf("https://example.com/posts/%s/comments", w.ID),
+		}
+	}
+	return nil
+}
+
+func (b *Workspace) JSONAPILinks() *jsonapi.Links {
+	fmt.Println("OMAR LINKS SINGLE")
+	return &jsonapi.Links{
+		"self": fmt.Sprintf("https://example.com/api/blogs/%s", b.ID),
+		"comments": jsonapi.Link{
+			Href: fmt.Sprintf("https://example.com/api/blogs/%s/comments", b.ID),
+			Meta: jsonapi.Meta{
+				"counts": map[string]uint{
+					"likes":    4,
+					"comments": 20,
+				},
+			},
+		},
+	}
+}
+
+type RemoteStateConsumerLinks struct {
+	Links string `jsonapi:"attr,related"`
+}
+type RemoteLinks struct {
+	Related string `json:"related"`
 }
 
 // workspaceWithReadme is the same as a workspace but it has a readme.
@@ -345,6 +381,7 @@ func (s *workspaces) Read(ctx context.Context, organization, workspace string) (
 		url.QueryEscape(organization),
 		url.QueryEscape(workspace),
 	)
+	fmt.Println(u)
 	req, err := s.client.newRequest("GET", u, nil)
 	if err != nil {
 		return nil, err
@@ -825,13 +862,19 @@ func (s *workspaces) AddRemoteStateConsumers(ctx context.Context, workspaceID st
 		return err
 	}
 
+	fmt.Println("BEFORE REQUEST")
 	u := fmt.Sprintf("workspaces/%s/relationships/remote-state-consumers", url.QueryEscape(workspaceID))
 	req, err := s.client.newRequest("POST", u, options.Workspaces)
+	fmt.Println("AFTER REQUEST")
 	if err != nil {
 		return err
 	}
 
-	return s.client.do(ctx, req, nil)
+	w := &Workspace{}
+	err = s.client.do(ctx, req, w)
+	fmt.Println("WORKSPACE")
+	fmt.Printf("%+v", w)
+	return err
 }
 
 // WorkspaceRemoveRemoteStateConsumersOptions represents the options for removing remote state

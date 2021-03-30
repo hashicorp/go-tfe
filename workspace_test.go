@@ -819,25 +819,42 @@ func TestWorkspaces_AddRemoteStateConsumers(t *testing.T) {
 	defer wTestCleanup()
 	fmt.Println(wTest.ID)
 
-	//	t.Run("successfully adds a remote state consumer", func(t *testing.T) {
-	//		wTestConsumer1, wTestCleanupConsumer1 := createWorkspace(t, client, orgTest)
-	//		defer wTestCleanupConsumer1()
-	//		wTestConsumer2, wTestCleanupConsumer2 := createWorkspace(t, client, orgTest)
-	//		defer wTestCleanupConsumer2()
-	//
-	//		err := client.Workspaces.AddRemoteStateConsumers(ctx, wTest.ID, WorkspaceAddRemoteStateConsumersOptions{
-	//			Workspaces: []*Workspace{wTestConsumer1, wTestConsumer2},
-	//		})
-	//		require.NoError(t, err)
-	//
-	//		w, err := client.Workspaces.Read(ctx, "omar-test", wTest.Name)
-	//		fmt.Println(w.ID)
-	//		time.Sleep(30 * time.Second)
-	//		require.NoError(t, err)
-	//		fmt.Println(len(w.RemoteStateConsumers))
-	//		//assert.Equal(t, wTest, w)
-	//		assert.Equal(t, 2, len(w.RemoteStateConsumers))
-	//	})
+	t.Run("successfully adds a remote state consumer", func(t *testing.T) {
+		wTestConsumer1, wTestCleanupConsumer1 := createWorkspace(t, client, orgTest)
+		defer wTestCleanupConsumer1()
+		wTestConsumer2, wTestCleanupConsumer2 := createWorkspace(t, client, orgTest)
+		defer wTestCleanupConsumer2()
+
+		w, err := client.Workspaces.Read(ctx, "omar-test", wTest.Name)
+		fmt.Println(w.ID)
+		time.Sleep(1 * time.Second)
+		fmt.Println("OMAR 1")
+		err = client.Workspaces.AddRemoteStateConsumers(ctx, wTest.ID, WorkspaceAddRemoteStateConsumersOptions{
+			Workspaces: []*Workspace{wTestConsumer1, wTestConsumer2},
+		})
+		require.NoError(t, err)
+		time.Sleep(1 * time.Second)
+
+		fmt.Println("OMAR 2")
+		w, err = client.Workspaces.Read(ctx, "omar-test", wTest.Name)
+		fmt.Println(w.ID)
+		require.NoError(t, err)
+		fmt.Println("")
+		fmt.Printf("%+v", w.RemoteStateConsumers)
+
+		fmt.Println("OMAR 3")
+		w, err = client.Workspaces.Read(ctx, "omar-test", wTestConsumer1.Name)
+		fmt.Println(w.ID)
+		require.NoError(t, err)
+		fmt.Println("")
+		fmt.Printf("%+v", w.RemoteStateConsumers)
+
+		fmt.Println("")
+		//fmt.Printf("%+v", w.RemoteStateConsumerLinks)
+
+		//assert.Equal(t, wTest, w)
+		//assert.Equal(t, 2, len(w.RemoteStateConsumers))
+	})
 
 	t.Run("with invalid options", func(t *testing.T) {
 		err := client.Workspaces.AddRemoteStateConsumers(ctx, wTest.ID, WorkspaceAddRemoteStateConsumersOptions{})
