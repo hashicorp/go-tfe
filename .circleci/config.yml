@@ -8,7 +8,7 @@ test_results_dir: &test_results_dir /tmp/test_results
 jobs:
   run-tests:
     docker:
-      - image: docker.mirror.hashicorp.services/circleci/golang:1.14.10
+      - image: docker.mirror.hashicorp.services/circleci/golang:1.16.2
         environment:
           TEST_RESULTS_DIR: *test_results_dir
 
@@ -16,11 +16,11 @@ jobs:
 
     steps:
       - checkout
-      
+
       - run:
           name: Make test results directory
           command: mkdir -p $TEST_RESULTS_DIR
-      
+
       - run:
           name: Run tests
           command: |
