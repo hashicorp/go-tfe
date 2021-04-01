@@ -6,7 +6,6 @@ import (
 	"io/ioutil"
 	"strings"
 	"testing"
-	"time"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
@@ -813,11 +812,9 @@ func TestWorkspaces_AddRemoteStateConsumers(t *testing.T) {
 
 	orgTest, orgTestCleanup := createOrganization(t, client)
 	defer orgTestCleanup()
-	fmt.Println(orgTest.Name)
 
 	wTest, wTestCleanup := createWorkspace(t, client, orgTest)
 	defer wTestCleanup()
-	fmt.Println(wTest.ID)
 
 	t.Run("successfully adds a remote state consumer", func(t *testing.T) {
 		wTestConsumer1, wTestCleanupConsumer1 := createWorkspace(t, client, orgTest)
@@ -825,35 +822,22 @@ func TestWorkspaces_AddRemoteStateConsumers(t *testing.T) {
 		wTestConsumer2, wTestCleanupConsumer2 := createWorkspace(t, client, orgTest)
 		defer wTestCleanupConsumer2()
 
-		w, err := client.Workspaces.Read(ctx, "omar-test", wTest.Name)
-		fmt.Println(w.ID)
-		time.Sleep(1 * time.Second)
-		fmt.Println("OMAR 1")
-		err = client.Workspaces.AddRemoteStateConsumers(ctx, wTest.ID, WorkspaceAddRemoteStateConsumersOptions{
+		err := client.Workspaces.AddRemoteStateConsumers(ctx, wTest.ID, WorkspaceAddRemoteStateConsumersOptions{
 			Workspaces: []*Workspace{wTestConsumer1, wTestConsumer2},
 		})
 		require.NoError(t, err)
-		time.Sleep(1 * time.Second)
 
-		fmt.Println("OMAR 2")
-		w, err = client.Workspaces.Read(ctx, "omar-test", wTest.Name)
-		fmt.Println(w.ID)
+		w, err := client.Workspaces.Read(ctx, "omar-test", wTest.Name)
 		require.NoError(t, err)
-		fmt.Println("")
-		fmt.Printf("%+v", w.RemoteStateConsumers)
+		links := *w.RemoteStateConsumers.Links
+		related := links["related"]
+		assert.Equal(t, fmt.Sprintf("/api/v2/workspaces/%s/relationships/remote-state-consumers", wTest.ID), related)
 
-		fmt.Println("OMAR 3")
-		w, err = client.Workspaces.Read(ctx, "omar-test", wTestConsumer1.Name)
-		fmt.Println(w.ID)
+		rsc, err := client.Workspaces.ReadRemoteStateConsumers(ctx, wTest.ID)
 		require.NoError(t, err)
-		fmt.Println("")
-		fmt.Printf("%+v", w.RemoteStateConsumers)
-
-		fmt.Println("")
-		//fmt.Printf("%+v", w.RemoteStateConsumerLinks)
-
-		//assert.Equal(t, wTest, w)
-		//assert.Equal(t, 2, len(w.RemoteStateConsumers))
+		assert.Equal(t, 2, len(rsc.Items))
+		assert.Contains(t, rsc.Items, wTestConsumer1)
+		assert.Contains(t, rsc.Items, wTestConsumer2)
 	})
 
 	t.Run("with invalid options", func(t *testing.T) {
@@ -870,6 +854,78 @@ func TestWorkspaces_AddRemoteStateConsumers(t *testing.T) {
 
 	t.Run("without a valid workspace ID", func(t *testing.T) {
 		err := client.Workspaces.AddRemoteStateConsumers(ctx, badIdentifier, WorkspaceAddRemoteStateConsumersOptions{})
+		require.Error(t, err)
+		assert.EqualError(t, err, ErrInvalidWorkspaceID.Error())
+	})
+}
+
+func TestWorkspaces_RemoveRemoteStateConsumers(t *testing.T) {
+	client := testClient(t)
+	ctx := context.Background()
+
+	orgTest, orgTestCleanup := createOrganization(t, client)
+	defer orgTestCleanup()
+
+	wTest, wTestCleanup := createWorkspace(t, client, orgTest)
+	defer wTestCleanup()
+
+	t.Run("successfully removes a remote state consumer", func(t *testing.T) {
+		wTestConsumer1, wTestCleanupConsumer1 := createWorkspace(t, client, orgTest)
+		defer wTestCleanupConsumer1()
+		wTestConsumer2, wTestCleanupConsumer2 := createWorkspace(t, client, orgTest)
+		defer wTestCleanupConsumer2()
+
+		err := client.Workspaces.AddRemoteStateConsumers(ctx, wTest.ID, WorkspaceAddRemoteStateConsumersOptions{
+			Workspaces: []*Workspace{wTestConsumer1, wTestConsumer2},
+		})
+		require.NoError(t, err)
+
+		rsc, err := client.Workspaces.ReadRemoteStateConsumers(ctx, wTest.ID)
+		require.NoError(t, err)
+		assert.Equal(t, 2, len(rsc.Items))
+		assert.Contains(t, rsc.Items, wTestConsumer1)
+		assert.Contains(t, rsc.Items, wTestConsumer2)
+
+		err = client.Workspaces.RemoveRemoteStateConsumers(ctx, wTest.ID, WorkspaceRemoveRemoteStateConsumersOptions{
+			Workspaces: []*Workspace{wTestConsumer1},
+		})
+		require.NoError(t, err)
+
+		w, err := client.Workspaces.Read(ctx, "omar-test", wTest.Name)
+		require.NoError(t, err)
+		links := *w.RemoteStateConsumers.Links
+		related := links["related"]
+		assert.Equal(t, fmt.Sprintf("/api/v2/workspaces/%s/relationships/remote-state-consumers", wTest.ID), related)
+
+		rsc, err = client.Workspaces.ReadRemoteStateConsumers(ctx, wTest.ID)
+		require.NoError(t, err)
+		assert.Contains(t, rsc.Items, wTestConsumer2)
+		assert.Equal(t, 1, len(rsc.Items))
+
+		err = client.Workspaces.RemoveRemoteStateConsumers(ctx, wTest.ID, WorkspaceRemoveRemoteStateConsumersOptions{
+			Workspaces: []*Workspace{wTestConsumer2},
+		})
+		require.NoError(t, err)
+
+		rsc, err = client.Workspaces.ReadRemoteStateConsumers(ctx, wTest.ID)
+		require.NoError(t, err)
+		assert.Empty(t, len(rsc.Items))
+	})
+
+	t.Run("with invalid options", func(t *testing.T) {
+		err := client.Workspaces.RemoveRemoteStateConsumers(ctx, wTest.ID, WorkspaceRemoveRemoteStateConsumersOptions{})
+		require.Error(t, err)
+		assert.EqualError(t, err, ErrWorkspacesRequired.Error())
+
+		err = client.Workspaces.RemoveRemoteStateConsumers(ctx, wTest.ID, WorkspaceRemoveRemoteStateConsumersOptions{
+			Workspaces: []*Workspace{},
+		})
+		require.Error(t, err)
+		assert.EqualError(t, err, ErrWorkspaceMinLimit.Error())
+	})
+
+	t.Run("without a valid workspace ID", func(t *testing.T) {
+		err := client.Workspaces.RemoveRemoteStateConsumers(ctx, badIdentifier, WorkspaceRemoveRemoteStateConsumersOptions{})
 		require.Error(t, err)
 		assert.EqualError(t, err, ErrInvalidWorkspaceID.Error())
 	})

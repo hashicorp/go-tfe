@@ -1,5 +1,7 @@
 module github.com/hashicorp/go-tfe
 
+replace github.com/hashicorp/jsonapi => /Users/omarismail/work/hashi-jsonapi
+
 require (
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/google/go-querystring v1.0.0

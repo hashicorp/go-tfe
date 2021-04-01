@@ -909,7 +909,7 @@ func createWorkspace(t *testing.T, client *Client, org *Organization) (*Workspac
 	}
 
 	ctx := context.Background()
-	w, err := client.Workspaces.Create(ctx, org.Name, WorkspaceCreateOptions{
+	w, err := client.Workspaces.Create(ctx, "omar-test", WorkspaceCreateOptions{
 		Name: String(randomString(t)),
 	})
 	if err != nil {
@@ -917,7 +917,7 @@ func createWorkspace(t *testing.T, client *Client, org *Organization) (*Workspac
 	}
 
 	return w, func() {
-		if err := client.Workspaces.Delete(ctx, org.Name, w.Name); err != nil {
+		if err := client.Workspaces.Delete(ctx, "omar-test", w.Name); err != nil {
 			t.Errorf("Error destroying workspace! WARNING: Dangling resources\n"+
 				"may exist! The full error is shown below.\n\n"+
 				"Workspace: %s\nError: %s", w.Name, err)

@@ -73,6 +73,9 @@ type Workspaces interface {
 
 	// Remove remote state consumers from a workspace.
 	RemoveRemoteStateConsumers(ctx context.Context, workspaceID string, options WorkspaceRemoveRemoteStateConsumersOptions) error
+
+	// ReadRemoteStateConsumers todo
+	ReadRemoteStateConsumers(ctx context.Context, workspaceID string) (*WorkspaceList, error)
 }
 
 // workspaces implements Workspaces.
@@ -120,45 +123,15 @@ type Workspace struct {
 	RunsCount            int                   `jsonapi:"attr,workspace-kpis-runs-count"`
 
 	// Relations
-	AgentPool            *AgentPool    `jsonapi:"relation,agent-pool"`
-	CurrentRun           *Run          `jsonapi:"relation,current-run"`
-	Organization         *Organization `jsonapi:"relation,organization"`
-	RemoteStateConsumers []*Workspace  `jsonapi:"relation,remote-state-consumers"`
-	SSHKey               *SSHKey       `jsonapi:"relation,ssh-key"`
-}
-
-// Invoked for each relationship defined on the Post struct when marshaled
-func (w *Workspace) JSONAPIRelationshipLinks(relation string) *jsonapi.Links {
-	if relation == "remote-state-consumers" {
-		fmt.Println("OMAR LINKS MANY ")
-		return &jsonapi.Links{
-			"related": fmt.Sprintf("https://example.com/posts/%s/comments", w.ID),
-		}
-	}
-	return nil
-}
-
-func (b *Workspace) JSONAPILinks() *jsonapi.Links {
-	fmt.Println("OMAR LINKS SINGLE")
-	return &jsonapi.Links{
-		"self": fmt.Sprintf("https://example.com/api/blogs/%s", b.ID),
-		"comments": jsonapi.Link{
-			Href: fmt.Sprintf("https://example.com/api/blogs/%s/comments", b.ID),
-			Meta: jsonapi.Meta{
-				"counts": map[string]uint{
-					"likes":    4,
-					"comments": 20,
-				},
-			},
-		},
-	}
+	AgentPool            *AgentPool                `jsonapi:"relation,agent-pool"`
+	CurrentRun           *Run                      `jsonapi:"relation,current-run"`
+	Organization         *Organization             `jsonapi:"relation,organization"`
+	RemoteStateConsumers *RemoteStateConsumerLinks `jsonapi:"relation,remote-state-consumers"`
+	SSHKey               *SSHKey                   `jsonapi:"relation,ssh-key"`
 }
 
 type RemoteStateConsumerLinks struct {
-	Links string `jsonapi:"attr,related"`
-}
-type RemoteLinks struct {
-	Related string `json:"related"`
+	Links *jsonapi.Links `jsonapi:"links,omitempty"`
 }
 
 // workspaceWithReadme is the same as a workspace but it has a readme.
@@ -381,7 +354,6 @@ func (s *workspaces) Read(ctx context.Context, organization, workspace string) (
 		url.QueryEscape(organization),
 		url.QueryEscape(workspace),
 	)
-	fmt.Println(u)
 	req, err := s.client.newRequest("GET", u, nil)
 	if err != nil {
 		return nil, err
@@ -862,19 +834,13 @@ func (s *workspaces) AddRemoteStateConsumers(ctx context.Context, workspaceID st
 		return err
 	}
 
-	fmt.Println("BEFORE REQUEST")
 	u := fmt.Sprintf("workspaces/%s/relationships/remote-state-consumers", url.QueryEscape(workspaceID))
 	req, err := s.client.newRequest("POST", u, options.Workspaces)
-	fmt.Println("AFTER REQUEST")
 	if err != nil {
 		return err
 	}
 
-	w := &Workspace{}
-	err = s.client.do(ctx, req, w)
-	fmt.Println("WORKSPACE")
-	fmt.Printf("%+v", w)
-	return err
+	return s.client.do(ctx, req, nil)
 }
 
 // WorkspaceRemoveRemoteStateConsumersOptions represents the options for removing remote state
@@ -910,4 +876,25 @@ func (s *workspaces) RemoveRemoteStateConsumers(ctx context.Context, workspaceID
 	}
 
 	return s.client.do(ctx, req, nil)
+}
+
+func (s *workspaces) ReadRemoteStateConsumers(ctx context.Context, workspaceID string) (*WorkspaceList, error) {
+	if !validStringID(&workspaceID) {
+		return nil, ErrInvalidWorkspaceID
+	}
+
+	u := fmt.Sprintf("workspaces/%s/relationships/remote-state-consumers", workspaceID)
+
+	req, err := s.client.newRequest("GET", u, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	wl := &WorkspaceList{}
+	err = s.client.do(ctx, req, wl)
+	if err != nil {
+		return nil, err
+	}
+
+	return wl, nil
 }
