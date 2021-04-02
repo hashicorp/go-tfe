@@ -1,7 +1,5 @@
 module github.com/hashicorp/go-tfe
 
-replace github.com/hashicorp/jsonapi => /Users/omarismail/work/hashi-jsonapi
-
 require (
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/google/go-querystring v1.0.0
@@ -9,7 +7,7 @@ require (
 	github.com/hashicorp/go-retryablehttp v0.5.2
 	github.com/hashicorp/go-slug v0.4.1
 	github.com/hashicorp/go-uuid v1.0.1
-	github.com/hashicorp/jsonapi v0.0.0-20210326175023-166ae20eb0d1
+	github.com/hashicorp/jsonapi v0.0.0-20210401204629-95d572587ba2
 	github.com/stretchr/testify v1.3.0
 	golang.org/x/time v0.0.0-20190308202827-9d24e82272b4
 )
