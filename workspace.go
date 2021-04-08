@@ -74,7 +74,7 @@ type Workspaces interface {
 	// Remove remote state consumers from a workspace.
 	RemoveRemoteStateConsumers(ctx context.Context, workspaceID string, options WorkspaceRemoveRemoteStateConsumersOptions) error
 
-	// ReadRemoteStateConsumers todo
+	// ReadRemoteStateConsumers reads the remote state consumers for a workspace.
 	ReadRemoteStateConsumers(ctx context.Context, workspaceID string) (*WorkspaceList, error)
 }
 
@@ -825,7 +825,7 @@ func (o WorkspaceAddRemoteStateConsumersOptions) valid() error {
 	return nil
 }
 
-// Add workspaces to a policy set.
+// AddRemoteStateConsumere adds the remote state consumers to a given workspace.
 func (s *workspaces) AddRemoteStateConsumers(ctx context.Context, workspaceID string, options WorkspaceAddRemoteStateConsumersOptions) error {
 	if !validStringID(&workspaceID) {
 		return ErrInvalidWorkspaceID
@@ -860,7 +860,7 @@ func (o WorkspaceRemoveRemoteStateConsumersOptions) valid() error {
 	return nil
 }
 
-// Remove workspaces from a policy set.
+// RemoveRemoteStateConsumers removes the remote state consumers for a given workspace.
 func (s *workspaces) RemoveRemoteStateConsumers(ctx context.Context, workspaceID string, options WorkspaceRemoveRemoteStateConsumersOptions) error {
 	if !validStringID(&workspaceID) {
 		return ErrInvalidWorkspaceID
@@ -878,6 +878,7 @@ func (s *workspaces) RemoveRemoteStateConsumers(ctx context.Context, workspaceID
 	return s.client.do(ctx, req, nil)
 }
 
+// ReadRemoteStateConsumers returns the remote state consumers for a given workspace.
 func (s *workspaces) ReadRemoteStateConsumers(ctx context.Context, workspaceID string) (*WorkspaceList, error) {
 	if !validStringID(&workspaceID) {
 		return nil, ErrInvalidWorkspaceID
