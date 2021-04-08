@@ -123,11 +123,11 @@ type Workspace struct {
 	RunsCount            int                   `jsonapi:"attr,workspace-kpis-runs-count"`
 
 	// Relations
-	AgentPool            *AgentPool                `jsonapi:"relation,agent-pool"`
-	CurrentRun           *Run                      `jsonapi:"relation,current-run"`
-	Organization         *Organization             `jsonapi:"relation,organization"`
-	RemoteStateConsumers *RemoteStateConsumerLinks `jsonapi:"relation,remote-state-consumers"`
-	SSHKey               *SSHKey                   `jsonapi:"relation,ssh-key"`
+	AgentPool                  *AgentPool                `jsonapi:"relation,agent-pool"`
+	CurrentRun                 *Run                      `jsonapi:"relation,current-run"`
+	Organization               *Organization             `jsonapi:"relation,organization"`
+	RemoteStateConsumerDetails *RemoteStateConsumerLinks `jsonapi:"relation,remote-state-consumers"`
+	SSHKey                     *SSHKey                   `jsonapi:"relation,ssh-key"`
 }
 
 type RemoteStateConsumerLinks struct {
@@ -883,7 +883,7 @@ func (s *workspaces) ReadRemoteStateConsumers(ctx context.Context, workspaceID s
 		return nil, ErrInvalidWorkspaceID
 	}
 
-	u := fmt.Sprintf("workspaces/%s/relationships/remote-state-consumers", workspaceID)
+	u := fmt.Sprintf("workspaces/%s/relationships/remote-state-consumers", url.QueryEscape(workspaceID))
 
 	req, err := s.client.newRequest("GET", u, nil)
 	if err != nil {
