@@ -36,7 +36,6 @@ type AdminGeneralSetting struct {
 	DefaultWorkspacesPerOrgCeiling   int    `jsonapi:"attr,default-workspaces-per-organization-ceiling"`
 	TerraformBuildWorkerApplyTimeout string `jsonapi:"attr,terraform-build-worker-apply-timeout"`
 	TerraformBuildWorkerPlanTimeout  string `jsonapi:"attr,terraform-build-worker-plan-timeout"`
-	DefaultRemoteStateAccess         bool   `jsonapi:"attr,default-remote-state-access"`
 }
 
 // Read returns the general settings.
@@ -64,7 +63,6 @@ type AdminGeneralSettingsUpdateOptions struct {
 	APIRateLimit                      *int  `jsonapi:"attr,api-rate-limit,omitempty"`
 	SendPassingStatusUntriggeredPlans *bool `jsonapi:"attr,send-passing-statuses-for-untriggered-speculative-plans,omitempty"`
 	AllowSpeculativePlansOnPR         *bool `jsonapi:"attr,allow-speculative-plans-on-pull-requests-from-forks,omitempty"`
-	DefaultRemoteStateAccess          *bool `jsonapi:"attr,default-remote-state-access,omitempty"`
 }
 
 // Update updates the general settings.
