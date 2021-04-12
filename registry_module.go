@@ -241,9 +241,9 @@ func (o RegistryModuleCreateWithVCSConnectionOptions) valid() error {
 }
 
 type RegistryModuleVCSRepoOptions struct {
-	Identifier        *string `jsonapi:"attr,identifier"`
-	OAuthTokenID      *string `jsonapi:"attr,oauth-token-id"`
-	DisplayIdentifier *string `jsonapi:"attr,display-identifier"`
+	Identifier        *string `json:"identifier"`
+	OAuthTokenID      *string `json:"oauth-token-id"`
+	DisplayIdentifier *string `json:"display-identifier"`
 }
 
 func (o RegistryModuleVCSRepoOptions) valid() error {

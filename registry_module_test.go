@@ -607,7 +607,7 @@ func TestRegistryCreateOptions_Marshal(t *testing.T) {
 	bodyBytes, err := req.BodyBytes()
 	require.NoError(t, err)
 
-	expectedBody := `{"data":{"type":"registry-modules","attributes":{"vcs-repo":{"Identifier":"id","OAuthTokenID":"token","DisplayIdentifier":"display-id"}}}}
+	expectedBody := `{"data":{"type":"registry-modules","attributes":{"vcs-repo":{"identifier":"id","oauth-token-id":"token","display-identifier":"display-id"}}}}
 `
 	assert.Equal(t, expectedBody, string(bodyBytes))
 }
