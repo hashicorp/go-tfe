@@ -31,7 +31,6 @@ func TestAdminSettings_General_Read(t *testing.T) {
 	assert.NotNil(t, generalSettings.DefaultWorkspacesPerOrgCeiling)
 	assert.NotNil(t, generalSettings.TerraformBuildWorkerApplyTimeout)
 	assert.NotNil(t, generalSettings.TerraformBuildWorkerPlanTimeout)
-	assert.NotNil(t, generalSettings.DefaultRemoteStateAccess)
 }
 
 func TestAdminSettings_General_Update(t *testing.T) {
@@ -46,35 +45,29 @@ func TestAdminSettings_General_Update(t *testing.T) {
 	origLimitOrgCreation := generalSettings.LimitUserOrganizationCreation
 	origAPIRateLimitEnabled := generalSettings.APIRateLimitingEnabled
 	origAPIRateLimit := generalSettings.APIRateLimit
-	origDefaultRemoteState := generalSettings.DefaultRemoteStateAccess
 
 	limitOrgCreation := true
 	apiRateLimitEnabled := true
 	apiRateLimit := 50
-	defaultRemoteStateAccess := false
 
 	generalSettings, err = client.Admin.Settings.General.Update(ctx, AdminGeneralSettingsUpdateOptions{
-		LimitUserOrgCreation:     Bool(limitOrgCreation),
-		APIRateLimitingEnabled:   Bool(apiRateLimitEnabled),
-		APIRateLimit:             Int(apiRateLimit),
-		DefaultRemoteStateAccess: Bool(defaultRemoteStateAccess),
+		LimitUserOrgCreation:   Bool(limitOrgCreation),
+		APIRateLimitingEnabled: Bool(apiRateLimitEnabled),
+		APIRateLimit:           Int(apiRateLimit),
 	})
 	require.NoError(t, err)
 	assert.Equal(t, limitOrgCreation, generalSettings.LimitUserOrganizationCreation)
 	assert.Equal(t, apiRateLimitEnabled, generalSettings.APIRateLimitingEnabled)
 	assert.Equal(t, apiRateLimit, generalSettings.APIRateLimit)
-	assert.Equal(t, defaultRemoteStateAccess, generalSettings.DefaultRemoteStateAccess)
 
 	// Undo Updates, revert back to original
 	generalSettings, err = client.Admin.Settings.General.Update(ctx, AdminGeneralSettingsUpdateOptions{
-		LimitUserOrgCreation:     Bool(origLimitOrgCreation),
-		APIRateLimitingEnabled:   Bool(origAPIRateLimitEnabled),
-		APIRateLimit:             Int(origAPIRateLimit),
-		DefaultRemoteStateAccess: Bool(origDefaultRemoteState),
+		LimitUserOrgCreation:   Bool(origLimitOrgCreation),
+		APIRateLimitingEnabled: Bool(origAPIRateLimitEnabled),
+		APIRateLimit:           Int(origAPIRateLimit),
 	})
 	require.NoError(t, err)
 	assert.Equal(t, origLimitOrgCreation, generalSettings.LimitUserOrganizationCreation)
 	assert.Equal(t, origAPIRateLimitEnabled, generalSettings.APIRateLimitingEnabled)
 	assert.Equal(t, origAPIRateLimit, generalSettings.APIRateLimit)
-	assert.Equal(t, origDefaultRemoteState, generalSettings.DefaultRemoteStateAccess)
 }
