@@ -20,7 +20,7 @@ Note this client is in beta and is subject to change (though it is generally
 quite stable). We will indicate any breaking changes by releasing new versions.
 Until the release of v1.0, any minor version changes will indicate possible
 breaking changes. Patch version changes will be used for both bugfixes and
-non-breaking changes.
+non-breaking changes. 
 
 ## Installation
 
