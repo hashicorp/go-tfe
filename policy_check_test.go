@@ -19,12 +19,16 @@ func TestPolicyChecksList(t *testing.T) {
 	orgTest, orgTestCleanup := createOrganization(t, client)
 	defer orgTestCleanup()
 
-	pTest1, _ := createUploadedPolicy(t, client, true, orgTest)
-	pTest2, _ := createUploadedPolicy(t, client, true, orgTest)
-	wTest, _ := createWorkspace(t, client, orgTest)
+	pTest1, policyCleanup1 := createUploadedPolicy(t, client, true, orgTest)
+	defer policyCleanup1()
+	pTest2, policyCleanup2 := createUploadedPolicy(t, client, true, orgTest)
+	defer policyCleanup2()
+	wTest, wsCleanup := createWorkspace(t, client, orgTest)
+	defer wsCleanup()
 	createPolicySet(t, client, orgTest, []*Policy{pTest1, pTest2}, []*Workspace{wTest})
 
-	rTest, _ := createPlannedRun(t, client, wTest)
+	rTest, runCleanup := createPlannedRun(t, client, wTest)
+	defer runCleanup()
 
 	t.Run("without list options", func(t *testing.T) {
 		pcl, err := client.PolicyChecks.List(ctx, rTest.ID, PolicyCheckListOptions{})
