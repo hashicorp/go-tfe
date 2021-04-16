@@ -838,7 +838,7 @@ func TestWorkspaces_AddRemoteStateConsumers(t *testing.T) {
 		})
 		require.NoError(t, err)
 
-		w, err := client.Workspaces.Read(ctx, "omar-test", wTest.Name)
+		w, err := client.Workspaces.Read(ctx, orgTest.Name, wTest.Name)
 		require.NoError(t, err)
 		links := *w.RemoteStateConsumerDetails.Links
 		related := links["related"]
@@ -909,7 +909,7 @@ func TestWorkspaces_RemoveRemoteStateConsumers(t *testing.T) {
 		})
 		require.NoError(t, err)
 
-		w, err := client.Workspaces.Read(ctx, "omar-test", wTest.Name)
+		w, err := client.Workspaces.Read(ctx, orgTest.Name, wTest.Name)
 		require.NoError(t, err)
 		links := *w.RemoteStateConsumerDetails.Links
 		related := links["related"]
