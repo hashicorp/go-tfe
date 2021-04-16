@@ -290,10 +290,10 @@ type WorkspaceCreateOptions struct {
 // TODO: move this struct out. VCSRepoOptions is used by workspaces, policy sets, and registry modules
 // VCSRepoOptions represents the configuration options of a VCS integration.
 type VCSRepoOptions struct {
-	Branch            *string `jsonapi:"attr,branch,omitempty"`
-	Identifier        *string `jsonapi:"attr,identifier,omitempty"`
-	IngressSubmodules *bool   `jsonapi:"attr,ingress-submodules,omitempty"`
-	OAuthTokenID      *string `jsonapi:"attr,oauth-token-id,omitempty"`
+	Branch            *string `json:"branch,omitempty"`
+	Identifier        *string `json:"identifier,omitempty"`
+	IngressSubmodules *bool   `json:"ingress-submodules,omitempty"`
+	OAuthTokenID      *string `json:"oauth-token-id,omitempty"`
 }
 
 func (o WorkspaceCreateOptions) valid() error {

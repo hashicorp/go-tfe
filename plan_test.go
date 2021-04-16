@@ -112,3 +112,26 @@ func TestPlan_Unmarshal(t *testing.T) {
 	assert.Equal(t, plan.StatusTimestamps.QueuedAt, queuedParsedTime)
 	assert.Equal(t, plan.StatusTimestamps.ErroredAt, erroredParsedTime)
 }
+
+func TestPlansJSONOutput(t *testing.T) {
+	client := testClient(t)
+	ctx := context.Background()
+	rTest, rTestCleanup := createPlannedRun(t, client, nil)
+	defer rTestCleanup()
+
+	t.Run("when the JSON output exists", func(t *testing.T) {
+		d, err := client.Plans.JSONOutput(ctx, rTest.Plan.ID)
+		require.NoError(t, err)
+		var m map[string]interface{}
+		err = json.Unmarshal(d, &m)
+		require.NoError(t, err)
+		assert.Contains(t, m, "planned_values")
+		assert.Contains(t, m, "terraform_version")
+	})
+
+	t.Run("when the JSON output does not exist", func(t *testing.T) {
+		d, err := client.Plans.JSONOutput(ctx, "nonexisting")
+		assert.Nil(t, d)
+		assert.Error(t, err)
+	})
+}

@@ -1,11 +1,15 @@
 package tfe
 
 import (
+	"bytes"
 	"context"
+	"encoding/json"
 	"fmt"
+	"github.com/hashicorp/go-retryablehttp"
 	"io/ioutil"
 	"strings"
 	"testing"
+	"time"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
@@ -929,4 +933,87 @@ func TestWorkspaces_RemoveRemoteStateConsumers(t *testing.T) {
 		require.Error(t, err)
 		assert.EqualError(t, err, ErrInvalidWorkspaceID.Error())
 	})
+}
+
+func TestWorkspace_Unmarshal(t *testing.T) {
+	data := map[string]interface{}{
+		"data": map[string]interface{}{
+			"type": "workspaces",
+			"id":   "ws-1234",
+			"attributes": map[string]interface{}{
+				"name":           "my-workspace",
+				"auto-apply":     true,
+				"created-at":     "2020-07-15T23:38:43.821Z",
+				"resource-count": 2,
+				"permissions": map[string]interface{}{
+					"can-update": true,
+					"can-lock":   true,
+				},
+				"vcs-repo": map[string]interface{}{
+					"branch":              "main",
+					"display-identifier":  "repo-name",
+					"identifier":          "hashicorp/repo-name",
+					"ingress-submodules":  true,
+					"oauth-token-id":      "token",
+					"repository-http-url": "github.com",
+					"service-provider":    "github",
+				},
+				"actions": map[string]interface{}{
+					"is-destroyable": true,
+				},
+				"trigger-prefixes": []string{"prefix-"},
+			},
+		},
+	}
+
+	byteData, err := json.Marshal(data)
+	require.NoError(t, err)
+
+	responseBody := bytes.NewReader(byteData)
+	ws := &Workspace{}
+	err = unmarshalResponse(responseBody, ws)
+	require.NoError(t, err)
+
+	iso8601TimeFormat := "2006-01-02T15:04:05Z"
+	parsedTime, err := time.Parse(iso8601TimeFormat, "2020-07-15T23:38:43.821Z")
+
+	assert.Equal(t, ws.ID, "ws-1234")
+	assert.Equal(t, ws.Name, "my-workspace")
+	assert.Equal(t, ws.AutoApply, true)
+	assert.Equal(t, ws.CreatedAt, parsedTime)
+	assert.Equal(t, ws.ResourceCount, 2)
+	assert.Equal(t, ws.Permissions.CanUpdate, true)
+	assert.Equal(t, ws.Permissions.CanLock, true)
+	assert.Equal(t, ws.VCSRepo.Branch, "main")
+	assert.Equal(t, ws.VCSRepo.DisplayIdentifier, "repo-name")
+	assert.Equal(t, ws.VCSRepo.Identifier, "hashicorp/repo-name")
+	assert.Equal(t, ws.VCSRepo.IngressSubmodules, true)
+	assert.Equal(t, ws.VCSRepo.OAuthTokenID, "token")
+	assert.Equal(t, ws.VCSRepo.RepositoryHTTPURL, "github.com")
+	assert.Equal(t, ws.VCSRepo.ServiceProvider, "github")
+	assert.Equal(t, ws.Actions.IsDestroyable, true)
+	assert.Equal(t, ws.TriggerPrefixes, []string{"prefix-"})
+}
+
+func TestWorkspaceCreateOptions_Marshal(t *testing.T) {
+	opts := WorkspaceCreateOptions{
+		AllowDestroyPlan: Bool(true),
+		Name:             String("my-workspace"),
+		TriggerPrefixes:  []string{"prefix-"},
+		VCSRepo: &VCSRepoOptions{
+			Identifier:   String("id"),
+			OAuthTokenID: String("token"),
+		},
+	}
+
+	reqBody, err := serializeRequestBody(&opts)
+	require.NoError(t, err)
+	req, err := retryablehttp.NewRequest("POST", "url", reqBody)
+	require.NoError(t, err)
+	bodyBytes, err := req.BodyBytes()
+	require.NoError(t, err)
+
+	expectedBody := `{"data":{"type":"workspaces","attributes":{"allow-destroy-plan":true,"name":"my-workspace","trigger-prefixes":["prefix-"],"vcs-repo":{"identifier":"id","oauth-token-id":"token"}}}}
+`
+	assert.Equal(t, expectedBody, string(bodyBytes))
 }

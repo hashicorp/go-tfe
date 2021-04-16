@@ -123,13 +123,13 @@ type PolicyCreateOptions struct {
 	Description *string `jsonapi:"attr,description,omitempty"`
 
 	// The enforcements of the policy.
-	Enforce []*EnforcementOptions `jsonapi:"attr,enforce"`
+	Enforce []EnforcementOptions `jsonapi:"attr,enforce"`
 }
 
 // EnforcementOptions represents the enforcement options of a policy.
 type EnforcementOptions struct {
-	Path *string           `jsonapi:"attr,path,omitempty"`
-	Mode *EnforcementLevel `jsonapi:"attr,mode"`
+	Path *string           `json:"path,omitempty"`
+	Mode *EnforcementLevel `json:"mode"`
 }
 
 func (o PolicyCreateOptions) valid() error {
@@ -210,7 +210,7 @@ type PolicyUpdateOptions struct {
 	Description *string `jsonapi:"attr,description,omitempty"`
 
 	// The enforcements of the policy.
-	Enforce []*EnforcementOptions `jsonapi:"attr,enforce,omitempty"`
+	Enforce []EnforcementOptions `jsonapi:"attr,enforce,omitempty"`
 }
 
 // Update an existing policy.
