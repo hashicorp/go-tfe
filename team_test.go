@@ -169,8 +169,9 @@ func TestTeamsUpdate(t *testing.T) {
 		options := TeamUpdateOptions{
 			Name: String("foo bar"),
 			OrganizationAccess: &OrganizationAccessOptions{
-				ManagePolicies:    Bool(false),
-				ManageVCSSettings: Bool(true),
+				ManagePolicies:        Bool(false),
+				ManageVCSSettings:     Bool(true),
+				ManagePolicyOverrides: Bool(true),
 			},
 			Visibility: String("organization"),
 		}
@@ -197,6 +198,10 @@ func TestTeamsUpdate(t *testing.T) {
 			assert.Equal(t,
 				*options.OrganizationAccess.ManageVCSSettings,
 				item.OrganizationAccess.ManageVCSSettings,
+			)
+			assert.Equal(t,
+				*options.OrganizationAccess.ManagePolicyOverrides,
+				item.OrganizationAccess.ManagePolicyOverrides,
 			)
 		}
 	})

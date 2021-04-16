@@ -77,7 +77,7 @@ func (s *variables) List(ctx context.Context, workspaceID string, options Variab
 		return nil, ErrInvalidWorkspaceID
 	}
 
-	u := fmt.Sprintf("workspaces/%s/vars", workspaceID)
+	u := fmt.Sprintf("workspaces/%s/vars", url.QueryEscape(workspaceID))
 	req, err := s.client.newRequest("GET", u, &options)
 	if err != nil {
 		return nil, err

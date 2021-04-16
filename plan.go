@@ -1,6 +1,7 @@
 package tfe
 
 import (
+	"bytes"
 	"context"
 	"errors"
 	"fmt"
@@ -22,6 +23,9 @@ type Plans interface {
 
 	// Logs retrieves the logs of a plan.
 	Logs(ctx context.Context, planID string) (io.Reader, error)
+
+	// Retrieve the JSON execution plan
+	JSONOutput(ctx context.Context, planID string) ([]byte, error)
 }
 
 // plans implements Plans.
@@ -133,4 +137,25 @@ func (s *plans) Logs(ctx context.Context, planID string) (io.Reader, error) {
 		done:   done,
 		logURL: u,
 	}, nil
+}
+
+// Retrieve the JSON execution plan
+func (s *plans) JSONOutput(ctx context.Context, planID string) ([]byte, error) {
+	if !validStringID(&planID) {
+		return nil, errors.New("invalid value for plan ID")
+	}
+
+	u := fmt.Sprintf("plans/%s/json-output", url.QueryEscape(planID))
+	req, err := s.client.newRequest("GET", u, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	var buf bytes.Buffer
+	err = s.client.do(ctx, req, &buf)
+	if err != nil {
+		return nil, err
+	}
+
+	return buf.Bytes(), nil
 }
