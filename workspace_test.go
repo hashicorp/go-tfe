@@ -820,6 +820,13 @@ func TestWorkspaces_AddRemoteStateConsumers(t *testing.T) {
 	wTest, wTestCleanup := createWorkspace(t, client, orgTest)
 	defer wTestCleanup()
 
+	// Update workspace to not allow global remote state
+	options := WorkspaceUpdateOptions{
+		GlobalRemoteState: Bool(false),
+	}
+	wTest, err := client.Workspaces.Update(ctx, orgTest.Name, wTest.Name, options)
+	require.NoError(t, err)
+
 	t.Run("successfully adds a remote state consumer", func(t *testing.T) {
 		wTestConsumer1, wTestCleanupConsumer1 := createWorkspace(t, client, orgTest)
 		defer wTestCleanupConsumer1()
@@ -872,6 +879,13 @@ func TestWorkspaces_RemoveRemoteStateConsumers(t *testing.T) {
 
 	wTest, wTestCleanup := createWorkspace(t, client, orgTest)
 	defer wTestCleanup()
+
+	// Update workspace to not allow global remote state
+	options := WorkspaceUpdateOptions{
+		GlobalRemoteState: Bool(false),
+	}
+	wTest, err := client.Workspaces.Update(ctx, orgTest.Name, wTest.Name, options)
+	require.NoError(t, err)
 
 	t.Run("successfully removes a remote state consumer", func(t *testing.T) {
 		wTestConsumer1, wTestCleanupConsumer1 := createWorkspace(t, client, orgTest)
