@@ -844,7 +844,7 @@ func TestWorkspaces_AddRemoteStateConsumers(t *testing.T) {
 		related := links["related"]
 		assert.Equal(t, fmt.Sprintf("/api/v2/workspaces/%s/relationships/remote-state-consumers", wTest.ID), related)
 
-		rsc, err := client.Workspaces.ReadRemoteStateConsumers(ctx, wTest.ID)
+		rsc, err := client.Workspaces.RemoteStateConsumers(ctx, wTest.ID)
 		require.NoError(t, err)
 		assert.Equal(t, 2, len(rsc.Items))
 		assert.Contains(t, rsc.Items, wTestConsumer1)
@@ -898,7 +898,7 @@ func TestWorkspaces_RemoveRemoteStateConsumers(t *testing.T) {
 		})
 		require.NoError(t, err)
 
-		rsc, err := client.Workspaces.ReadRemoteStateConsumers(ctx, wTest.ID)
+		rsc, err := client.Workspaces.RemoteStateConsumers(ctx, wTest.ID)
 		require.NoError(t, err)
 		assert.Equal(t, 2, len(rsc.Items))
 		assert.Contains(t, rsc.Items, wTestConsumer1)
@@ -915,7 +915,7 @@ func TestWorkspaces_RemoveRemoteStateConsumers(t *testing.T) {
 		related := links["related"]
 		assert.Equal(t, fmt.Sprintf("/api/v2/workspaces/%s/relationships/remote-state-consumers", wTest.ID), related)
 
-		rsc, err = client.Workspaces.ReadRemoteStateConsumers(ctx, wTest.ID)
+		rsc, err = client.Workspaces.RemoteStateConsumers(ctx, wTest.ID)
 		require.NoError(t, err)
 		assert.Contains(t, rsc.Items, wTestConsumer2)
 		assert.Equal(t, 1, len(rsc.Items))
@@ -925,7 +925,7 @@ func TestWorkspaces_RemoveRemoteStateConsumers(t *testing.T) {
 		})
 		require.NoError(t, err)
 
-		rsc, err = client.Workspaces.ReadRemoteStateConsumers(ctx, wTest.ID)
+		rsc, err = client.Workspaces.RemoteStateConsumers(ctx, wTest.ID)
 		require.NoError(t, err)
 		assert.Empty(t, len(rsc.Items))
 	})
