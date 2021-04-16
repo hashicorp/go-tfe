@@ -949,6 +949,70 @@ func TestWorkspaces_RemoveRemoteStateConsumers(t *testing.T) {
 	})
 }
 
+func TestWorkspaces_UpdateRemoteStateConsumers(t *testing.T) {
+	client := testClient(t)
+	ctx := context.Background()
+
+	orgTest, orgTestCleanup := createOrganization(t, client)
+	defer orgTestCleanup()
+
+	wTest, wTestCleanup := createWorkspace(t, client, orgTest)
+	defer wTestCleanup()
+
+	// Update workspace to not allow global remote state
+	options := WorkspaceUpdateOptions{
+		GlobalRemoteState: Bool(false),
+	}
+	wTest, err := client.Workspaces.Update(ctx, orgTest.Name, wTest.Name, options)
+	require.NoError(t, err)
+
+	t.Run("successfully updates a remote state consumer", func(t *testing.T) {
+		wTestConsumer1, wTestCleanupConsumer1 := createWorkspace(t, client, orgTest)
+		defer wTestCleanupConsumer1()
+		wTestConsumer2, wTestCleanupConsumer2 := createWorkspace(t, client, orgTest)
+		defer wTestCleanupConsumer2()
+
+		err := client.Workspaces.AddRemoteStateConsumers(ctx, wTest.ID, WorkspaceAddRemoteStateConsumersOptions{
+			Workspaces: []*Workspace{wTestConsumer1},
+		})
+		require.NoError(t, err)
+
+		rsc, err := client.Workspaces.RemoteStateConsumers(ctx, wTest.ID)
+		require.NoError(t, err)
+		assert.Equal(t, 1, len(rsc.Items))
+		assert.Contains(t, rsc.Items, wTestConsumer1)
+
+		err = client.Workspaces.UpdateRemoteStateConsumers(ctx, wTest.ID, WorkspaceUpdateRemoteStateConsumersOptions{
+			Workspaces: []*Workspace{wTestConsumer2},
+		})
+		require.NoError(t, err)
+
+		rsc, err = client.Workspaces.RemoteStateConsumers(ctx, wTest.ID)
+		require.NoError(t, err)
+		assert.Equal(t, 1, len(rsc.Items))
+		assert.Contains(t, rsc.Items, wTestConsumer2)
+
+	})
+
+	t.Run("with invalid options", func(t *testing.T) {
+		err := client.Workspaces.UpdateRemoteStateConsumers(ctx, wTest.ID, WorkspaceUpdateRemoteStateConsumersOptions{})
+		require.Error(t, err)
+		assert.EqualError(t, err, ErrWorkspacesRequired.Error())
+
+		err = client.Workspaces.UpdateRemoteStateConsumers(ctx, wTest.ID, WorkspaceUpdateRemoteStateConsumersOptions{
+			Workspaces: []*Workspace{},
+		})
+		require.Error(t, err)
+		assert.EqualError(t, err, ErrWorkspaceMinLimit.Error())
+	})
+
+	t.Run("without a valid workspace ID", func(t *testing.T) {
+		err := client.Workspaces.UpdateRemoteStateConsumers(ctx, badIdentifier, WorkspaceUpdateRemoteStateConsumersOptions{})
+		require.Error(t, err)
+		assert.EqualError(t, err, ErrInvalidWorkspaceID.Error())
+	})
+}
+
 func TestWorkspace_Unmarshal(t *testing.T) {
 	data := map[string]interface{}{
 		"data": map[string]interface{}{
