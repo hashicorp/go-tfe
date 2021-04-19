@@ -4,7 +4,6 @@ import (
 	"bytes"
 	"context"
 	"encoding/json"
-	"fmt"
 	"github.com/hashicorp/go-retryablehttp"
 	"io/ioutil"
 	"strings"

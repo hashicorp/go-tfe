@@ -8,8 +8,6 @@ import (
 	"net/url"
 	"strings"
 	"time"
-
-	"github.com/hashicorp/jsonapi"
 )
 
 // Compile-time proof of interface implementation.
