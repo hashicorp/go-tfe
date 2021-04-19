@@ -127,15 +127,10 @@ type Workspace struct {
 	RunsCount            int                   `jsonapi:"attr,workspace-kpis-runs-count"`
 
 	// Relations
-	AgentPool                  *AgentPool                `jsonapi:"relation,agent-pool"`
-	CurrentRun                 *Run                      `jsonapi:"relation,current-run"`
-	Organization               *Organization             `jsonapi:"relation,organization"`
-	RemoteStateConsumerDetails *RemoteStateConsumerLinks `jsonapi:"relation,remote-state-consumers"`
-	SSHKey                     *SSHKey                   `jsonapi:"relation,ssh-key"`
-}
-
-type RemoteStateConsumerLinks struct {
-	Links *jsonapi.Links `jsonapi:"links,omitempty"`
+	AgentPool    *AgentPool    `jsonapi:"relation,agent-pool"`
+	CurrentRun   *Run          `jsonapi:"relation,current-run"`
+	Organization *Organization `jsonapi:"relation,organization"`
+	SSHKey       *SSHKey       `jsonapi:"relation,ssh-key"`
 }
 
 // workspaceWithReadme is the same as a workspace but it has a readme.

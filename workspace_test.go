@@ -840,9 +840,6 @@ func TestWorkspaces_AddRemoteStateConsumers(t *testing.T) {
 
 		w, err := client.Workspaces.Read(ctx, orgTest.Name, wTest.Name)
 		require.NoError(t, err)
-		links := *w.RemoteStateConsumerDetails.Links
-		related := links["related"]
-		assert.Equal(t, fmt.Sprintf("/api/v2/workspaces/%s/relationships/remote-state-consumers", wTest.ID), related)
 
 		rsc, err := client.Workspaces.RemoteStateConsumers(ctx, wTest.ID)
 		require.NoError(t, err)
@@ -911,9 +908,6 @@ func TestWorkspaces_RemoveRemoteStateConsumers(t *testing.T) {
 
 		w, err := client.Workspaces.Read(ctx, orgTest.Name, wTest.Name)
 		require.NoError(t, err)
-		links := *w.RemoteStateConsumerDetails.Links
-		related := links["related"]
-		assert.Equal(t, fmt.Sprintf("/api/v2/workspaces/%s/relationships/remote-state-consumers", wTest.ID), related)
 
 		rsc, err = client.Workspaces.RemoteStateConsumers(ctx, wTest.ID)
 		require.NoError(t, err)
