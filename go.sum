@@ -13,6 +13,8 @@ github.com/hashicorp/go-uuid v1.0.1 h1:fv1ep09latC32wFoVwnqcnKJGnMSdBanPczbHAYm1
 github.com/hashicorp/go-uuid v1.0.1/go.mod h1:6SBZvOh/SIDV7/2o3Jml5SYk/TvGqwFJ/bN7x4byOro=
 github.com/hashicorp/jsonapi v0.0.0-20210326175023-166ae20eb0d1 h1:V95qyPxj4IE39U+fyXdQXUWFCwqXUfTbIl/Gb+lb3zc=
 github.com/hashicorp/jsonapi v0.0.0-20210326175023-166ae20eb0d1/go.mod h1:Yog5+CPEM3c99L1CL2CFCYoSzgWm5vTU58idbRUaLik=
+github.com/hashicorp/jsonapi v0.0.0-20210413154710-353a8ffc8171 h1:FI3cl6s//o2gq3YMuSNTR4LoXcVi88SEWkD2R5iOrcU=
+github.com/hashicorp/jsonapi v0.0.0-20210413154710-353a8ffc8171/go.mod h1:Yog5+CPEM3c99L1CL2CFCYoSzgWm5vTU58idbRUaLik=
 github.com/pmezard/go-difflib v1.0.0 h1:4DBwDE0NGyQoBHbLQYPwSUPoCMWR5BEzIk/f1lZbAQM=
 github.com/pmezard/go-difflib v1.0.0/go.mod h1:iKH77koFhYxTK1pcRnkKkqfTogsbg7gZNVY4sRDYZ/4=
 github.com/stretchr/objx v0.1.0/go.mod h1:HFkY916IF+rwdDfMAkV7OtwuqBVzrE8GR6GFx+wExME=
