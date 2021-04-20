@@ -1,11 +1,8 @@
 package tfe
 
 import (
-	"bytes"
 	"context"
-	"encoding/json"
 	"testing"
-	"time"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
@@ -318,60 +315,4 @@ func TestNotificationConfigurationVerify(t *testing.T) {
 		_, err := client.NotificationConfigurations.Verify(ctx, badIdentifier)
 		assert.EqualError(t, err, "invalid value for notification configuration ID")
 	})
-}
-
-func TestNotificationConfiguration_Unmarshal(t *testing.T) {
-	headers := map[string][]string{
-		"cache-control":  {"private"},
-		"content-length": {"129"},
-	}
-	data := map[string]interface{}{
-		"data": map[string]interface{}{
-			"type": "notification-configurations",
-			"id":   "nc-ntv3HbhJqvFzamy7",
-			"attributes": map[string]interface{}{
-				"created-at": "2018-03-02T23:42:06.651Z",
-				"delivery-responses": []interface{}{
-					map[string]interface{}{
-						"body":       "html",
-						"code":       "200",
-						"headers":    headers,
-						"sent-at":    "2021-03-23T17:13:52+00:00",
-						"successful": "true",
-						"url":        "hashicorp.com",
-					},
-				},
-				"destination-type": NotificationDestinationTypeEmail,
-				"enabled":          true,
-				"name":             "general",
-				"token":            "secret",
-				"triggers":         []string{"run:applying", "run:completed"},
-				"url":              "hashicorp.com",
-				"email-addresses":  []string{"test@hashicorp.com"},
-			},
-		},
-	}
-	byteData, err := json.Marshal(data)
-	require.NoError(t, err)
-
-	responseBody := bytes.NewReader(byteData)
-	nc := &NotificationConfiguration{}
-	err = unmarshalResponse(responseBody, nc)
-	require.NoError(t, err)
-
-	iso8601TimeFormat := "2006-01-02T15:04:05Z"
-	parsedTime, err := time.Parse(iso8601TimeFormat, "2018-03-02T23:42:06.651Z")
-	require.NoError(t, err)
-	sentAtTime, err := time.Parse(time.RFC3339, "2021-03-23T17:13:52+00:00")
-	require.NoError(t, err)
-
-	assert.Equal(t, nc.ID, "nc-ntv3HbhJqvFzamy7")
-	assert.Equal(t, nc.CreatedAt, parsedTime)
-	assert.Equal(t, len(nc.DeliveryResponses), 1)
-	assert.Equal(t, "html", nc.DeliveryResponses[0].Body)
-	assert.Equal(t, "200", nc.DeliveryResponses[0].Code)
-	assert.Equal(t, "true", nc.DeliveryResponses[0].Successful)
-	assert.Equal(t, sentAtTime, nc.DeliveryResponses[0].SentAt)
-	assert.Equal(t, []string{"129"}, nc.DeliveryResponses[0].Headers["content-length"])
-	assert.Equal(t, []string{"private"}, nc.DeliveryResponses[0].Headers["cache-control"])
 }

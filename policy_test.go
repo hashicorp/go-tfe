@@ -7,6 +7,7 @@ import (
 	"testing"
 	"time"
 
+	retryablehttp "github.com/hashicorp/go-retryablehttp"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
@@ -218,6 +219,8 @@ func TestPoliciesRead(t *testing.T) {
 		assert.Equal(t, pTest.Description, p.Description)
 		assert.Equal(t, pTest.PolicySetCount, p.PolicySetCount)
 		assert.NotEmpty(t, p.Enforce)
+		assert.NotEmpty(t, p.Enforce[0].Path)
+		assert.NotEmpty(t, p.Enforce[0].Mode)
 		assert.Equal(t, pTest.Organization.Name, p.Organization.Name)
 	})
 
@@ -275,6 +278,8 @@ func TestPoliciesUpdate(t *testing.T) {
 		defer pBeforeCleanup()
 
 		require.Equal(t, 1, len(pBefore.Enforce))
+		pathBefore := pBefore.Enforce[0].Path
+		modeBefore := pBefore.Enforce[0].Mode
 
 		pAfter, err := client.Policies.Update(ctx, pBefore.ID, PolicyUpdateOptions{
 			Enforce: []*EnforcementOptions{
@@ -286,7 +291,10 @@ func TestPoliciesUpdate(t *testing.T) {
 		})
 		require.NoError(t, err)
 
+		require.Equal(t, 1, len(pAfter.Enforce))
 		assert.Equal(t, pBefore, pAfter)
+		assert.Equal(t, pathBefore, pAfter.Enforce[0].Path)
+		assert.Equal(t, modeBefore, pAfter.Enforce[0].Mode)
 	})
 
 	t.Run("with a new description", func(t *testing.T) {
@@ -437,4 +445,59 @@ func TestPolicy_Unmarshal(t *testing.T) {
 	assert.Equal(t, policy.Enforce[0].Path, "some/path")
 	assert.Equal(t, policy.Enforce[0].Mode, EnforcementAdvisory)
 	assert.Equal(t, policy.UpdatedAt, parsedTime)
+}
+
+func TestPolicyCreateOptions_Marshal(t *testing.T) {
+	opts := PolicyCreateOptions{
+		Name:        String("my-policy"),
+		Description: String("details"),
+		Enforce: []*EnforcementOptions{
+			{
+				Path: String("/foo"),
+				Mode: EnforcementMode(EnforcementSoft),
+			},
+			{
+				Path: String("/bar"),
+				Mode: EnforcementMode(EnforcementSoft),
+			},
+		},
+	}
+
+	reqBody, err := serializeRequestBody(&opts)
+	require.NoError(t, err)
+	req, err := retryablehttp.NewRequest("POST", "url", reqBody)
+	require.NoError(t, err)
+	bodyBytes, err := req.BodyBytes()
+	require.NoError(t, err)
+
+	expectedBody := `{"data":{"type":"policies","attributes":{"description":"details","enforce":[{"path":"/foo","mode":"soft-mandatory"},{"path":"/bar","mode":"soft-mandatory"}],"name":"my-policy"}}}
+`
+	assert.Equal(t, expectedBody, string(bodyBytes))
+}
+
+func TestPolicyUpdateOptions_Marshal(t *testing.T) {
+	opts := PolicyUpdateOptions{
+		Description: String("details"),
+		Enforce: []*EnforcementOptions{
+			{
+				Path: String("/foo"),
+				Mode: EnforcementMode(EnforcementSoft),
+			},
+			{
+				Path: String("/bar"),
+				Mode: EnforcementMode(EnforcementSoft),
+			},
+		},
+	}
+
+	reqBody, err := serializeRequestBody(&opts)
+	require.NoError(t, err)
+	req, err := retryablehttp.NewRequest("POST", "url", reqBody)
+	require.NoError(t, err)
+	bodyBytes, err := req.BodyBytes()
+	require.NoError(t, err)
+
+	expectedBody := `{"data":{"type":"policies","attributes":{"description":"details","enforce":[{"path":"/foo","mode":"soft-mandatory"},{"path":"/bar","mode":"soft-mandatory"}]}}}
+`
+	assert.Equal(t, expectedBody, string(bodyBytes))
 }

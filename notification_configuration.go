@@ -73,7 +73,7 @@ type NotificationConfigurationList struct {
 type NotificationConfiguration struct {
 	ID                string                      `jsonapi:"primary,notification-configurations"`
 	CreatedAt         time.Time                   `jsonapi:"attr,created-at,iso8601"`
-	DeliveryResponses []DeliveryResponse          `jsonapi:"attr,delivery-responses"`
+	DeliveryResponses []*DeliveryResponse         `jsonapi:"attr,delivery-responses"`
 	DestinationType   NotificationDestinationType `jsonapi:"attr,destination-type"`
 	Enabled           bool                        `jsonapi:"attr,enabled"`
 	Name              string                      `jsonapi:"attr,name"`
