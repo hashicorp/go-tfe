@@ -7,6 +7,7 @@ import (
 	"testing"
 	"time"
 
+	retryablehttp "github.com/hashicorp/go-retryablehttp"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
@@ -374,4 +375,35 @@ func TestNotificationConfiguration_Unmarshal(t *testing.T) {
 	assert.Equal(t, sentAtTime, nc.DeliveryResponses[0].SentAt)
 	assert.Equal(t, []string{"129"}, nc.DeliveryResponses[0].Headers["content-length"])
 	assert.Equal(t, []string{"private"}, nc.DeliveryResponses[0].Headers["cache-control"])
+}
+
+func TestNotificationConfiguration_Marshal(t *testing.T) {
+	user := &User{
+		AvatarURL:        "url.com",
+		Email:            "test@hashicorp.com",
+		IsServiceAccount: true,
+		Username:         "testing",
+	}
+
+	opts := NotificationConfigurationCreateOptions{
+		DestinationType: NotificationDestination(NotificationDestinationTypeGeneric),
+		Enabled:         Bool(false),
+		Name:            String("name"),
+		Token:           String("token"),
+		URL:             String("http://example.com"),
+		Triggers:        []string{NotificationTriggerCreated},
+		EmailAddresses:  []string{"test@hashicorp.com", "test2@hashicorp.com"},
+		EmailUsers:      []*User{user},
+	}
+
+	reqBody, err := serializeRequestBody(&opts)
+	require.NoError(t, err)
+	req, err := retryablehttp.NewRequest("POST", "url", reqBody)
+	require.NoError(t, err)
+	bodyBytes, err := req.BodyBytes()
+	require.NoError(t, err)
+
+	expectedBody := `{"data":{"type":"notification-configurations","attributes":{"destination-type":"generic","email-addresses":["test@hashicorp.com","test2@hashicorp.com"],"enabled":false,"name":"name","token":"token","triggers":["run:created"],"url":"http://example.com"},"relationships":{"users":{"data":[{"type":"users"}]}}}}
+`
+	assert.Equal(t, expectedBody, string(bodyBytes))
 }

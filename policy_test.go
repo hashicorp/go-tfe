@@ -84,7 +84,7 @@ func TestPoliciesCreate(t *testing.T) {
 		options := PolicyCreateOptions{
 			Name:        String(name),
 			Description: String("A sample policy"),
-			Enforce: []EnforcementOptions{
+			Enforce: []*EnforcementOptions{
 				{
 					Path: String(name + ".sentinel"),
 					Mode: EnforcementMode(EnforcementSoft),
@@ -112,7 +112,7 @@ func TestPoliciesCreate(t *testing.T) {
 	t.Run("when options has an invalid name", func(t *testing.T) {
 		p, err := client.Policies.Create(ctx, orgTest.Name, PolicyCreateOptions{
 			Name: String(badIdentifier),
-			Enforce: []EnforcementOptions{
+			Enforce: []*EnforcementOptions{
 				{
 					Path: String(badIdentifier + ".sentinel"),
 					Mode: EnforcementMode(EnforcementSoft),
@@ -125,7 +125,7 @@ func TestPoliciesCreate(t *testing.T) {
 
 	t.Run("when options is missing name", func(t *testing.T) {
 		p, err := client.Policies.Create(ctx, orgTest.Name, PolicyCreateOptions{
-			Enforce: []EnforcementOptions{
+			Enforce: []*EnforcementOptions{
 				{
 					Path: String(randomString(t) + ".sentinel"),
 					Mode: EnforcementMode(EnforcementSoft),
@@ -149,7 +149,7 @@ func TestPoliciesCreate(t *testing.T) {
 	t.Run("when options is missing enforcement path", func(t *testing.T) {
 		options := PolicyCreateOptions{
 			Name: String(randomString(t)),
-			Enforce: []EnforcementOptions{
+			Enforce: []*EnforcementOptions{
 				{
 					Mode: EnforcementMode(EnforcementSoft),
 				},
@@ -165,7 +165,7 @@ func TestPoliciesCreate(t *testing.T) {
 		name := randomString(t)
 		options := PolicyCreateOptions{
 			Name: String(name),
-			Enforce: []EnforcementOptions{
+			Enforce: []*EnforcementOptions{
 				{
 					Path: String(name + ".sentinel"),
 				},
@@ -219,6 +219,8 @@ func TestPoliciesRead(t *testing.T) {
 		assert.Equal(t, pTest.Description, p.Description)
 		assert.Equal(t, pTest.PolicySetCount, p.PolicySetCount)
 		assert.NotEmpty(t, p.Enforce)
+		assert.NotEmpty(t, p.Enforce[0].Path)
+		assert.NotEmpty(t, p.Enforce[0].Mode)
 		assert.Equal(t, pTest.Organization.Name, p.Organization.Name)
 	})
 
@@ -249,7 +251,7 @@ func TestPoliciesUpdate(t *testing.T) {
 		require.Equal(t, 1, len(pBefore.Enforce))
 
 		pAfter, err := client.Policies.Update(ctx, pBefore.ID, PolicyUpdateOptions{
-			Enforce: []EnforcementOptions{
+			Enforce: []*EnforcementOptions{
 				{
 					Path: String(pBefore.Enforce[0].Path),
 					Mode: EnforcementMode(EnforcementAdvisory),
@@ -276,9 +278,11 @@ func TestPoliciesUpdate(t *testing.T) {
 		defer pBeforeCleanup()
 
 		require.Equal(t, 1, len(pBefore.Enforce))
+		pathBefore := pBefore.Enforce[0].Path
+		modeBefore := pBefore.Enforce[0].Mode
 
 		pAfter, err := client.Policies.Update(ctx, pBefore.ID, PolicyUpdateOptions{
-			Enforce: []EnforcementOptions{
+			Enforce: []*EnforcementOptions{
 				{
 					Path: String("nonexisting"),
 					Mode: EnforcementMode(EnforcementAdvisory),
@@ -287,7 +291,10 @@ func TestPoliciesUpdate(t *testing.T) {
 		})
 		require.NoError(t, err)
 
+		require.Equal(t, 1, len(pAfter.Enforce))
 		assert.Equal(t, pBefore, pAfter)
+		assert.Equal(t, pathBefore, pAfter.Enforce[0].Path)
+		assert.Equal(t, modeBefore, pAfter.Enforce[0].Mode)
 	})
 
 	t.Run("with a new description", func(t *testing.T) {
@@ -444,12 +451,12 @@ func TestPolicyCreateOptions_Marshal(t *testing.T) {
 	opts := PolicyCreateOptions{
 		Name:        String("my-policy"),
 		Description: String("details"),
-		Enforce: []EnforcementOptions{
-			EnforcementOptions{
+		Enforce: []*EnforcementOptions{
+			{
 				Path: String("/foo"),
 				Mode: EnforcementMode(EnforcementSoft),
 			},
-			EnforcementOptions{
+			{
 				Path: String("/bar"),
 				Mode: EnforcementMode(EnforcementSoft),
 			},
@@ -471,12 +478,12 @@ func TestPolicyCreateOptions_Marshal(t *testing.T) {
 func TestPolicyUpdateOptions_Marshal(t *testing.T) {
 	opts := PolicyUpdateOptions{
 		Description: String("details"),
-		Enforce: []EnforcementOptions{
-			EnforcementOptions{
+		Enforce: []*EnforcementOptions{
+			{
 				Path: String("/foo"),
 				Mode: EnforcementMode(EnforcementSoft),
 			},
-			EnforcementOptions{
+			{
 				Path: String("/bar"),
 				Mode: EnforcementMode(EnforcementSoft),
 			},

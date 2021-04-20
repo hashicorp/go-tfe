@@ -62,12 +62,12 @@ type PolicyList struct {
 
 // Policy represents a Terraform Enterprise policy.
 type Policy struct {
-	ID             string        `jsonapi:"primary,policies"`
-	Name           string        `jsonapi:"attr,name"`
-	Description    string        `jsonapi:"attr,description"`
-	Enforce        []Enforcement `jsonapi:"attr,enforce"`
-	PolicySetCount int           `jsonapi:"attr,policy-set-count"`
-	UpdatedAt      time.Time     `jsonapi:"attr,updated-at,iso8601"`
+	ID             string         `jsonapi:"primary,policies"`
+	Name           string         `jsonapi:"attr,name"`
+	Description    string         `jsonapi:"attr,description"`
+	Enforce        []*Enforcement `jsonapi:"attr,enforce"`
+	PolicySetCount int            `jsonapi:"attr,policy-set-count"`
+	UpdatedAt      time.Time      `jsonapi:"attr,updated-at,iso8601"`
 
 	// Relations
 	Organization *Organization `jsonapi:"relation,organization"`
@@ -123,7 +123,7 @@ type PolicyCreateOptions struct {
 	Description *string `jsonapi:"attr,description,omitempty"`
 
 	// The enforcements of the policy.
-	Enforce []EnforcementOptions `jsonapi:"attr,enforce"`
+	Enforce []*EnforcementOptions `jsonapi:"attr,enforce"`
 }
 
 // EnforcementOptions represents the enforcement options of a policy.
@@ -210,7 +210,7 @@ type PolicyUpdateOptions struct {
 	Description *string `jsonapi:"attr,description,omitempty"`
 
 	// The enforcements of the policy.
-	Enforce []EnforcementOptions `jsonapi:"attr,enforce,omitempty"`
+	Enforce []*EnforcementOptions `jsonapi:"attr,enforce,omitempty"`
 }
 
 // Update an existing policy.
