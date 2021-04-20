@@ -37,8 +37,14 @@ type AuditEvent struct {
 
 // AuditEventList represents a list of audit events.
 type AuditEventList struct {
-	*Pagination `json:"pagination"`
-	Data        []*AuditEvent `json:"data"`
+	Pagination struct {
+		CurrentPage  int `json:"current_page"`
+		PreviousPage int `json:"prev_page"`
+		NextPage     int `json:"next_page"`
+		TotalPages   int `json:"total_pages"`
+		TotalCount   int `json:"total_count"`
+	} `json:"pagination"`
+	Data []*AuditEvent `json:"data"`
 }
 
 // AuditEventAuthType represents tye types of audit event auth.
