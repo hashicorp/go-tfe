@@ -98,7 +98,7 @@ type Client struct {
 	AgentPools                 AgentPools
 	AgentTokens                AgentTokens
 	Applies                    Applies
-	AuditTrails                AuditTrails
+	AuditEvents                AuditEvents
 	ConfigurationVersions      ConfigurationVersions
 	CostEstimates              CostEstimates
 	NotificationConfigurations NotificationConfigurations
@@ -234,7 +234,7 @@ func NewClient(cfg *Config) (*Client, error) {
 	client.AgentPools = &agentPools{client: client}
 	client.AgentTokens = &agentTokens{client: client}
 	client.Applies = &applies{client: client}
-	client.AuditTrails = &auditTrails{client: client}
+	client.AuditEvents = &auditEvents{client: client}
 	client.ConfigurationVersions = &configurationVersions{client: client}
 	client.CostEstimates = &costEstimates{client: client}
 	client.NotificationConfigurations = &notificationConfigurations{client: client}

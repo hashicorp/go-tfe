@@ -9,12 +9,12 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func TestAuditTrailsList(t *testing.T) {
+func TestAuditEventsList(t *testing.T) {
 	client := testClient(t)
 	ctx := context.Background()
 
 	t.Run("with no time limit", func(t *testing.T) {
-		a, err := client.AuditTrails.List(ctx, AuditTrailListOptions{})
+		a, err := client.AuditEvents.List(ctx, AuditEventListOptions{})
 		require.NoError(t, err)
 		assert.NotEmpty(t, a.Data)
 		assert.NotEmpty(t, a.Pagination)
@@ -22,7 +22,7 @@ func TestAuditTrailsList(t *testing.T) {
 
 	t.Run("with time limit", func(t *testing.T) {
 		sinceTime := time.Now()
-		a, err := client.AuditTrails.List(ctx, AuditTrailListOptions{Since: &sinceTime})
+		a, err := client.AuditEvents.List(ctx, AuditEventListOptions{Since: &sinceTime})
 		require.NoError(t, err)
 		assert.NotEmpty(t, a.Pagination)
 	})
