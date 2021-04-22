@@ -112,6 +112,17 @@ func TestRunsCreate(t *testing.T) {
 		assert.Equal(t, cvTest.ID, r.ConfigurationVersion.ID)
 	})
 
+	t.Run("with refresh enabled", func(t *testing.T) {
+		options := RunCreateOptions{
+			Workspace: wTest,
+			IsRefresh: Bool(true),
+		}
+
+		r, err := client.Runs.Create(ctx, options)
+		require.NoError(t, err)
+		assert.Equal(t, true, r.IsRefresh)
+	})
+
 	t.Run("without a workspace", func(t *testing.T) {
 		r, err := client.Runs.Create(ctx, RunCreateOptions{})
 		assert.Nil(t, r)
