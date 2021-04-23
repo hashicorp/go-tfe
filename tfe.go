@@ -559,7 +559,7 @@ func serializeRequestBody(v interface{}) (interface{}, error) {
 	}
 }
 
-// do sends an API request and returns the API response. The API response
+// Do sends an API request and returns the API response. The API response
 // is JSONAPI decoded and the document's primary data is stored in the value
 // pointed to by v, or returned as an error if an API error has occurred.
 
@@ -568,6 +568,11 @@ func serializeRequestBody(v interface{}) (interface{}, error) {
 //
 // The provided ctx must be non-nil. If it is canceled or times out, ctx.Err()
 // will be returned.
+
+func (c *Client) Do(ctx context.Context, req *retryablehttp.Request, v interface{}) error {
+	return c.do(ctx, req, v)
+}
+
 func (c *Client) do(ctx context.Context, req *retryablehttp.Request, v interface{}) error {
 	// Wait will block until the limiter can obtain a new token
 	// or returns an error if the given context is canceled.
