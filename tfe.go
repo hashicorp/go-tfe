@@ -434,13 +434,17 @@ func (c *Client) configureLimiter(rawLimit string) {
 	c.limiter = rate.NewLimiter(limit, burst)
 }
 
-// newRequest creates an API request. A relative URL path can be provided in
+// NewRequest creates an API request. A relative URL path can be provided in
 // path, in which case it is resolved relative to the apiVersionPath of the
 // Client. Relative URL paths should always be specified without a preceding
 // slash.
 // If v is supplied, the value will be JSONAPI encoded and included as the
 // request body. If the method is GET, the value will be parsed and added as
 // query parameters.
+func (c *Client) NewRequest(method, path string, v interface{}) (*retryablehttp.Request, error) {
+	return c.newRequest(method, path, v)
+}
+
 func (c *Client) newRequest(method, path string, v interface{}) (*retryablehttp.Request, error) {
 	u, err := c.baseURL.Parse(path)
 	if err != nil {
