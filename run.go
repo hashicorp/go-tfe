@@ -95,7 +95,7 @@ type Run struct {
 	ForceCancelAvailableAt time.Time            `jsonapi:"attr,force-cancel-available-at,iso8601"`
 	HasChanges             bool                 `jsonapi:"attr,has-changes"`
 	IsDestroy              bool                 `jsonapi:"attr,is-destroy"`
-	IsRefresh              bool                 `jsonapi:"attr,is-refresh"`
+	Refresh                bool                 `jsonapi:"attr,refresh"`
 	Message                string               `jsonapi:"attr,message"`
 	Permissions            *RunPermissions      `jsonapi:"attr,permissions"`
 	PositionInQueue        int                  `jsonapi:"attr,position-in-queue"`
@@ -187,9 +187,9 @@ type RunCreateOptions struct {
 	// provisioned resources.
 	IsDestroy *bool `jsonapi:"attr,is-destroy,omitempty"`
 
-	// IsRefresh determines if the run should
+	// Refresh determines if the run should
 	// update the state prior to checking for differences
-	IsRefresh *bool `jsonapi:"attr,is-refresh,omitempty"`
+	Refresh *bool `jsonapi:"attr,refresh,omitempty"`
 
 	// Specifies the message to be associated with this run.
 	Message *string `jsonapi:"attr,message,omitempty"`
