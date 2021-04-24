@@ -13,6 +13,7 @@ import (
 
 func TestCostEstimatesRead(t *testing.T) {
 	skipIfEnterprise(t)
+	skipIfFreeOnly(t)
 
 	client := testClient(t)
 	ctx := context.Background()

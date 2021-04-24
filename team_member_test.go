@@ -9,6 +9,8 @@ import (
 )
 
 func TestTeamMembersList(t *testing.T) {
+	skipIfFreeOnly(t)
+
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -47,6 +49,8 @@ func TestTeamMembersList(t *testing.T) {
 }
 
 func TestTeamMembersAddWithInvalidOptions(t *testing.T) {
+	skipIfFreeOnly(t)
+
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -89,6 +93,8 @@ func TestTeamMembersAddWithInvalidOptions(t *testing.T) {
 }
 
 func TestTeamMembersAddByUsername(t *testing.T) {
+	skipIfFreeOnly(t)
+
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -121,6 +127,8 @@ func TestTeamMembersAddByUsername(t *testing.T) {
 }
 
 func TestTeamMembersAddByOrganizationMembers(t *testing.T) {
+	skipIfFreeOnly(t)
+
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -157,6 +165,8 @@ func TestTeamMembersAddByOrganizationMembers(t *testing.T) {
 }
 
 func TestTeamMembersRemoveWithInvalidOptions(t *testing.T) {
+	skipIfFreeOnly(t)
+
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -199,6 +209,8 @@ func TestTeamMembersRemoveWithInvalidOptions(t *testing.T) {
 }
 
 func TestTeamMembersRemoveByUsernames(t *testing.T) {
+	skipIfFreeOnly(t)
+
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -224,6 +236,8 @@ func TestTeamMembersRemoveByUsernames(t *testing.T) {
 }
 
 func TestTeamMembersRemoveByOrganizationMemberships(t *testing.T) {
+	skipIfFreeOnly(t)
+
 	client := testClient(t)
 	ctx := context.Background()
 
