@@ -9,6 +9,12 @@ import (
 )
 
 func TestTeamMembersList(t *testing.T) {
+	// The TeamMembers.List() endpoint is available for everyone,
+	// but this test uses extra functionality that is only available
+	// to paid accounts. Organizations under a free account can
+	// create team tokens, but they only have access to one team: the
+	// owners team. This teste creates new teams, and that feature is
+	// unavaiable to paid accounts.
 	skipIfFreeOnly(t)
 
 	client := testClient(t)
