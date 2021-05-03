@@ -132,8 +132,9 @@ func TestRunsCreate(t *testing.T) {
 	})
 }
 
-func TestRunsRead(t *testing.T) {
+func TestRunsRead_CostEstimate(t *testing.T) {
 	skipIfEnterprise(t)
+	skipIfFreeOnly(t)
 
 	client := testClient(t)
 	ctx := context.Background()

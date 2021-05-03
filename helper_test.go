@@ -1009,6 +1009,15 @@ func skipIfEnterprise(t *testing.T) {
 	}
 }
 
+// skips a test if the test requires a paid feature, and this flag
+// SKIP_PAID is set.
+func skipIfFreeOnly(t *testing.T) {
+	skip := os.Getenv("SKIP_PAID") == "1"
+	if skip {
+		t.Skip("Skipping test that requires a paid feature. Remove 'SKIP_PAID=1' if you want to run this test")
+	}
+}
+
 // Checks to see if ENABLE_TFE is set to 1, thereby enabling enterprise tests.
 func enterpriseEnabled() bool {
 	return os.Getenv("ENABLE_TFE") == "1"

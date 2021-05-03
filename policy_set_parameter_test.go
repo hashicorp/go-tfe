@@ -9,6 +9,8 @@ import (
 )
 
 func TestPolicySetParametersList(t *testing.T) {
+	skipIfFreeOnly(t)
+
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -59,6 +61,8 @@ func TestPolicySetParametersList(t *testing.T) {
 }
 
 func TestPolicySetParametersCreate(t *testing.T) {
+	skipIfFreeOnly(t)
+
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -159,6 +163,8 @@ func TestPolicySetParametersCreate(t *testing.T) {
 }
 
 func TestPolicySetParametersRead(t *testing.T) {
+	skipIfFreeOnly(t)
+
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -196,6 +202,8 @@ func TestPolicySetParametersRead(t *testing.T) {
 }
 
 func TestPolicySetParametersUpdate(t *testing.T) {
+	skipIfFreeOnly(t)
+
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -259,7 +267,9 @@ func TestPolicySetParametersUpdate(t *testing.T) {
 	})
 }
 
-func TestParametersDelete(t *testing.T) {
+func TestPolicySetParametersDelete(t *testing.T) {
+	skipIfFreeOnly(t)
+
 	client := testClient(t)
 	ctx := context.Background()
 

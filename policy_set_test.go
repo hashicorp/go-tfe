@@ -11,6 +11,8 @@ import (
 )
 
 func TestPolicySetsList(t *testing.T) {
+	skipIfFreeOnly(t)
+
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -71,6 +73,8 @@ func TestPolicySetsList(t *testing.T) {
 }
 
 func TestPolicySetsCreate(t *testing.T) {
+	skipIfFreeOnly(t)
+
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -231,6 +235,8 @@ func TestPolicySetsCreate(t *testing.T) {
 }
 
 func TestPolicySetsRead(t *testing.T) {
+	skipIfFreeOnly(t)
+
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -255,6 +261,8 @@ func TestPolicySetsRead(t *testing.T) {
 }
 
 func TestPolicySetsUpdate(t *testing.T) {
+	skipIfFreeOnly(t)
+
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -297,6 +305,8 @@ func TestPolicySetsUpdate(t *testing.T) {
 }
 
 func TestPolicySetsAddPolicies(t *testing.T) {
+	skipIfFreeOnly(t)
+
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -350,6 +360,8 @@ func TestPolicySetsAddPolicies(t *testing.T) {
 }
 
 func TestPolicySetsRemovePolicies(t *testing.T) {
+	skipIfFreeOnly(t)
+
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -397,6 +409,8 @@ func TestPolicySetsRemovePolicies(t *testing.T) {
 }
 
 func TestPolicySetsAddWorkspaces(t *testing.T) {
+	skipIfFreeOnly(t)
+
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -464,6 +478,8 @@ func TestPolicySetsAddWorkspaces(t *testing.T) {
 }
 
 func TestPolicySetsRemoveWorkspaces(t *testing.T) {
+	skipIfFreeOnly(t)
+
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -525,6 +541,8 @@ func TestPolicySetsRemoveWorkspaces(t *testing.T) {
 }
 
 func TestPolicySetsDelete(t *testing.T) {
+	skipIfFreeOnly(t)
+
 	client := testClient(t)
 	ctx := context.Background()
 

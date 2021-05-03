@@ -9,6 +9,8 @@ import (
 )
 
 func TestTeamTokensGenerate(t *testing.T) {
+	skipIfFreeOnly(t)
+
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -37,6 +39,8 @@ func TestTeamTokensGenerate(t *testing.T) {
 	})
 }
 func TestTeamTokensRead(t *testing.T) {
+	skipIfFreeOnly(t)
+
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -67,6 +71,8 @@ func TestTeamTokensRead(t *testing.T) {
 }
 
 func TestTeamTokensDelete(t *testing.T) {
+	skipIfFreeOnly(t)
+
 	client := testClient(t)
 	ctx := context.Background()
 
