@@ -29,7 +29,7 @@ func TestPolicyChecksList(t *testing.T) {
 	defer wsCleanup()
 	createPolicySet(t, client, orgTest, []*Policy{pTest1, pTest2}, []*Workspace{wTest})
 
-	rTest, runCleanup := createPlannedRun(t, client, wTest)
+	rTest, runCleanup := createPolicyCheckedRun(t, client, wTest)
 	defer runCleanup()
 
 	t.Run("without list options", func(t *testing.T) {
@@ -81,7 +81,7 @@ func TestPolicyChecksRead(t *testing.T) {
 	wTest, _ := createWorkspace(t, client, orgTest)
 	createPolicySet(t, client, orgTest, []*Policy{pTest}, []*Workspace{wTest})
 
-	rTest, _ := createPlannedRun(t, client, wTest)
+	rTest, _ := createPolicyCheckedRun(t, client, wTest)
 	require.Equal(t, 1, len(rTest.PolicyChecks))
 
 	t.Run("when the policy check exists", func(t *testing.T) {
@@ -126,7 +126,7 @@ func TestPolicyChecksOverride(t *testing.T) {
 		wTest, wTestCleanup := createWorkspace(t, client, orgTest)
 		defer wTestCleanup()
 		createPolicySet(t, client, orgTest, []*Policy{pTest}, []*Workspace{wTest})
-		rTest, tTestCleanup := createPlannedRun(t, client, wTest)
+		rTest, tTestCleanup := createPolicyCheckedRun(t, client, wTest)
 		defer tTestCleanup()
 
 		pcl, err := client.PolicyChecks.List(ctx, rTest.ID, PolicyCheckListOptions{})
@@ -151,7 +151,7 @@ func TestPolicyChecksOverride(t *testing.T) {
 		wTest, wTestCleanup := createWorkspace(t, client, orgTest)
 		defer wTestCleanup()
 		createPolicySet(t, client, orgTest, []*Policy{pTest}, []*Workspace{wTest})
-		rTest, rTestCleanup := createPlannedRun(t, client, wTest)
+		rTest, rTestCleanup := createPolicyCheckedRun(t, client, wTest)
 		defer rTestCleanup()
 
 		pcl, err := client.PolicyChecks.List(ctx, rTest.ID, PolicyCheckListOptions{})
@@ -185,7 +185,7 @@ func TestPolicyChecksLogs(t *testing.T) {
 	defer wTestCleanup()
 	createPolicySet(t, client, orgTest, []*Policy{pTest}, []*Workspace{wTest})
 
-	rTest, rTestCleanup := createPlannedRun(t, client, wTest)
+	rTest, rTestCleanup := createPolicyCheckedRun(t, client, wTest)
 	defer rTestCleanup()
 	require.Equal(t, 1, len(rTest.PolicyChecks))
 

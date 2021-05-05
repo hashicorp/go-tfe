@@ -503,7 +503,7 @@ func createRun(t *testing.T, client *Client, w *Workspace) (*Run, func()) {
 	}
 }
 
-func createPlannedRun(t *testing.T, client *Client, w *Workspace) (*Run, func()) {
+func createRunWithStatus(t *testing.T, client *Client, w *Workspace, timeout int, statuses ...RunStatus) (*Run, func()) {
 	r, rCleanup := createRun(t, client, w)
 
 	var err error
@@ -514,73 +514,45 @@ func createPlannedRun(t *testing.T, client *Client, w *Workspace) (*Run, func())
 			t.Fatal(err)
 		}
 
-		switch r.Status {
-		case RunPlanned, RunCostEstimated, RunPolicyChecked, RunPolicyOverride:
-			return r, rCleanup
+		for _, status := range statuses {
+			if status == RunApplied && (r.Status == RunPlanned || r.Status == RunCostEstimated) {
+				err := client.Runs.Apply(ctx, r.ID, RunApplyOptions{})
+				if err != nil {
+					t.Fatal(err)
+				}
+			} else if status == r.Status {
+				return r, rCleanup
+			}
 		}
 
-		if i > 45 {
+		if i > timeout {
+			runStatus := r.Status
 			rCleanup()
-			t.Fatal("Timeout waiting for run to be planned")
+			t.Fatal(fmt.Printf("Timeout waiting for run to reach status %v, had status %s", statuses, runStatus))
 		}
 
 		time.Sleep(1 * time.Second)
+	}
+}
+
+func createPlannedRun(t *testing.T, client *Client, w *Workspace) (*Run, func()) {
+	if paidFeaturesDisabled() {
+		return createRunWithStatus(t, client, w, 45, RunPlanned)
+	} else {
+		return createRunWithStatus(t, client, w, 45, RunCostEstimated)
 	}
 }
 
 func createCostEstimatedRun(t *testing.T, client *Client, w *Workspace) (*Run, func()) {
-	r, rCleanup := createRun(t, client, w)
+	return createRunWithStatus(t, client, w, 45, RunCostEstimated)
+}
 
-	var err error
-	ctx := context.Background()
-	for i := 0; ; i++ {
-		r, err = client.Runs.Read(ctx, r.ID)
-		if err != nil {
-			rCleanup()
-			t.Fatal(err)
-		}
-
-		switch r.Status {
-		case RunCostEstimated, RunPolicyChecked, RunPolicyOverride:
-			return r, rCleanup
-		}
-
-		if i > 45 {
-			rCleanup()
-			t.Fatal("Timeout waiting for run to be cost estimated")
-		}
-
-		time.Sleep(2 * time.Second)
-	}
+func createPolicyCheckedRun(t *testing.T, client *Client, w *Workspace) (*Run, func()) {
+	return createRunWithStatus(t, client, w, 45, RunPolicyChecked, RunPolicyOverride)
 }
 
 func createAppliedRun(t *testing.T, client *Client, w *Workspace) (*Run, func()) {
-	r, rCleanup := createPlannedRun(t, client, w)
-	ctx := context.Background()
-
-	err := client.Runs.Apply(ctx, r.ID, RunApplyOptions{})
-	if err != nil {
-		t.Fatal(err)
-	}
-
-	for i := 0; ; i++ {
-		r, err = client.Runs.Read(ctx, r.ID)
-		if err != nil {
-			rCleanup()
-			t.Fatal(err)
-		}
-
-		if r.Status == RunApplied {
-			return r, rCleanup
-		}
-
-		if i > 45 {
-			rCleanup()
-			t.Fatal("Timeout waiting for run to be applied")
-		}
-
-		time.Sleep(1 * time.Second)
-	}
+	return createRunWithStatus(t, client, w, 90, RunApplied)
 }
 
 func createPlanExport(t *testing.T, client *Client, r *Run) (*PlanExport, func()) {
@@ -1012,8 +984,7 @@ func skipIfEnterprise(t *testing.T) {
 // skips a test if the test requires a paid feature, and this flag
 // SKIP_PAID is set.
 func skipIfFreeOnly(t *testing.T) {
-	skip := os.Getenv("SKIP_PAID") == "1"
-	if skip {
+	if paidFeaturesDisabled() {
 		t.Skip("Skipping test that requires a paid feature. Remove 'SKIP_PAID=1' if you want to run this test")
 	}
 }
@@ -1021,4 +992,8 @@ func skipIfFreeOnly(t *testing.T) {
 // Checks to see if ENABLE_TFE is set to 1, thereby enabling enterprise tests.
 func enterpriseEnabled() bool {
 	return os.Getenv("ENABLE_TFE") == "1"
+}
+
+func paidFeaturesDisabled() bool {
+	return os.Getenv("SKIP_PAID") == "1"
 }
