@@ -503,7 +503,7 @@ func createRun(t *testing.T, client *Client, w *Workspace) (*Run, func()) {
 	}
 }
 
-func createRunWithStatus(t *testing.T, client *Client, w *Workspace, timeout int, statuses ...RunStatus) (*Run, func()) {
+func createRunWithStatus(t *testing.T, client *Client, w *Workspace, timeout int, desiredStatuses ...RunStatus) (*Run, func()) {
 	r, rCleanup := createRun(t, client, w)
 
 	var err error
@@ -514,13 +514,15 @@ func createRunWithStatus(t *testing.T, client *Client, w *Workspace, timeout int
 			t.Fatal(err)
 		}
 
-		for _, status := range statuses {
-			if status == RunApplied && (r.Status == RunPlanned || r.Status == RunCostEstimated) {
+		for _, desiredStatus := range desiredStatuses {
+			// if we're creating an applied run, we need to manually confirm the apply once the plan finishes
+			hasApplyableStatus := r.Status == RunPlanned || r.Status == RunCostEstimated || r.Status == RunPolicyChecked
+			if desiredStatus == RunApplied && hasApplyableStatus {
 				err := client.Runs.Apply(ctx, r.ID, RunApplyOptions{})
 				if err != nil {
 					t.Fatal(err)
 				}
-			} else if status == r.Status {
+			} else if desiredStatus == r.Status {
 				return r, rCleanup
 			}
 		}
@@ -528,7 +530,7 @@ func createRunWithStatus(t *testing.T, client *Client, w *Workspace, timeout int
 		if i > timeout {
 			runStatus := r.Status
 			rCleanup()
-			t.Fatal(fmt.Printf("Timeout waiting for run to reach status %v, had status %s", statuses, runStatus))
+			t.Fatal(fmt.Printf("Timeout waiting for run to reach status %v, had status %s", desiredStatuses, runStatus))
 		}
 
 		time.Sleep(1 * time.Second)
