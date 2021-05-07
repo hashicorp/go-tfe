@@ -95,11 +95,12 @@ type Run struct {
 	ForceCancelAvailableAt time.Time            `jsonapi:"attr,force-cancel-available-at,iso8601"`
 	HasChanges             bool                 `jsonapi:"attr,has-changes"`
 	IsDestroy              bool                 `jsonapi:"attr,is-destroy"`
-	Refresh                bool                 `jsonapi:"attr,refresh"`
-	RefreshOnly            bool                 `jsonapi:"attr,refresh-only"`
 	Message                string               `jsonapi:"attr,message"`
 	Permissions            *RunPermissions      `jsonapi:"attr,permissions"`
 	PositionInQueue        int                  `jsonapi:"attr,position-in-queue"`
+	Refresh                bool                 `jsonapi:"attr,refresh"`
+	RefreshOnly            bool                 `jsonapi:"attr,refresh-only"`
+	ReplaceAddrs           []string             `jsonapi:"attr,replace-addrs,omitempty"`
 	Source                 RunSource            `jsonapi:"attr,source"`
 	Status                 RunStatus            `jsonapi:"attr,status"`
 	StatusTimestamps       *RunStatusTimestamps `jsonapi:"attr,status-timestamps"`
@@ -219,6 +220,11 @@ type RunCreateOptions struct {
 	// of routine workflow and Terraform will emit warnings reminding about
 	// this whenever this property is set.
 	TargetAddrs []string `jsonapi:"attr,target-addrs,omitempty"`
+
+	// If non-empty, requests Terraform to create a plan that replaces
+	// (destroys and then re-creates) the objects specified by the given
+	// resource addresses.
+	ReplaceAddrs []string `jsonapi:"attr,replace-addrs,omitempty"`
 }
 
 func (o RunCreateOptions) valid() error {

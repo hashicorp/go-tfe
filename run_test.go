@@ -112,17 +112,6 @@ func TestRunsCreate(t *testing.T) {
 		assert.Equal(t, cvTest.ID, r.ConfigurationVersion.ID)
 	})
 
-	t.Run("with refresh disabled", func(t *testing.T) {
-		options := RunCreateOptions{
-			Workspace: wTest,
-			Refresh:   Bool(false),
-		}
-
-		r, err := client.Runs.Create(ctx, options)
-		require.NoError(t, err)
-		assert.Equal(t, false, r.Refresh)
-	})
-
 	t.Run("with refresh not set", func(t *testing.T) {
 		options := RunCreateOptions{
 			Workspace: wTest,
@@ -133,7 +122,7 @@ func TestRunsCreate(t *testing.T) {
 		assert.Equal(t, true, r.Refresh)
 	})
 
-	t.Run("with refresh-only set", func(t *testing.T) {
+	t.Run("with refresh-only requested", func(t *testing.T) {
 		options := RunCreateOptions{
 			Workspace:   wTest,
 			RefreshOnly: Bool(true),
@@ -152,14 +141,18 @@ func TestRunsCreate(t *testing.T) {
 
 	t.Run("with additional attributes", func(t *testing.T) {
 		options := RunCreateOptions{
-			Message:     String("yo"),
-			Workspace:   wTest,
-			TargetAddrs: []string{"null_resource.example"},
+			Message:      String("yo"),
+			Workspace:    wTest,
+			Refresh:      Bool(false),
+			ReplaceAddrs: []string{"null_resource.example"},
+			TargetAddrs:  []string{"null_resource.example"},
 		}
 
 		r, err := client.Runs.Create(ctx, options)
 		require.NoError(t, err)
 		assert.Equal(t, *options.Message, r.Message)
+		assert.Equal(t, *options.Refresh, r.Refresh)
+		assert.Equal(t, options.ReplaceAddrs, r.ReplaceAddrs)
 		assert.Equal(t, options.TargetAddrs, r.TargetAddrs)
 	})
 }
