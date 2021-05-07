@@ -112,15 +112,36 @@ func TestRunsCreate(t *testing.T) {
 		assert.Equal(t, cvTest.ID, r.ConfigurationVersion.ID)
 	})
 
-	t.Run("with refresh enabled", func(t *testing.T) {
+	t.Run("with refresh disabled", func(t *testing.T) {
 		options := RunCreateOptions{
 			Workspace: wTest,
-			Refresh:   Bool(true),
+			Refresh:   Bool(false),
+		}
+
+		r, err := client.Runs.Create(ctx, options)
+		require.NoError(t, err)
+		assert.Equal(t, false, r.Refresh)
+	})
+
+	t.Run("with refresh not set", func(t *testing.T) {
+		options := RunCreateOptions{
+			Workspace: wTest,
 		}
 
 		r, err := client.Runs.Create(ctx, options)
 		require.NoError(t, err)
 		assert.Equal(t, true, r.Refresh)
+	})
+
+	t.Run("with refresh-only set", func(t *testing.T) {
+		options := RunCreateOptions{
+			Workspace:   wTest,
+			RefreshOnly: Bool(true),
+		}
+
+		r, err := client.Runs.Create(ctx, options)
+		require.NoError(t, err)
+		assert.Equal(t, true, r.RefreshOnly)
 	})
 
 	t.Run("without a workspace", func(t *testing.T) {

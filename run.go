@@ -96,6 +96,7 @@ type Run struct {
 	HasChanges             bool                 `jsonapi:"attr,has-changes"`
 	IsDestroy              bool                 `jsonapi:"attr,is-destroy"`
 	Refresh                bool                 `jsonapi:"attr,refresh"`
+	RefreshOnly            bool                 `jsonapi:"attr,refresh-only"`
 	Message                string               `jsonapi:"attr,message"`
 	Permissions            *RunPermissions      `jsonapi:"attr,permissions"`
 	PositionInQueue        int                  `jsonapi:"attr,position-in-queue"`
@@ -190,6 +191,10 @@ type RunCreateOptions struct {
 	// Refresh determines if the run should
 	// update the state prior to checking for differences
 	Refresh *bool `jsonapi:"attr,refresh,omitempty"`
+
+	// RefreshOnly determines if the run should ignore config changes
+	// and refresh the state only
+	RefreshOnly *bool `jsonapi:"attr,refresh-only,omitempty"`
 
 	// Specifies the message to be associated with this run.
 	Message *string `jsonapi:"attr,message,omitempty"`
