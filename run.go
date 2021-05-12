@@ -193,7 +193,7 @@ type RunCreateOptions struct {
 	// update the state prior to checking for differences
 	Refresh *bool `jsonapi:"attr,refresh,omitempty"`
 
-	// RefreshOnly determines if the run should ignore config changes
+	// RefreshOnly determines whether the run should ignore config changes
 	// and refresh the state only
 	RefreshOnly *bool `jsonapi:"attr,refresh-only,omitempty"`
 
@@ -221,7 +221,7 @@ type RunCreateOptions struct {
 	// this whenever this property is set.
 	TargetAddrs []string `jsonapi:"attr,target-addrs,omitempty"`
 
-	// If non-empty, requests Terraform to create a plan that replaces
+	// If non-empty, requests that Terraform create a plan that replaces
 	// (destroys and then re-creates) the objects specified by the given
 	// resource addresses.
 	ReplaceAddrs []string `jsonapi:"attr,replace-addrs,omitempty"`
