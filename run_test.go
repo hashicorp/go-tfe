@@ -112,7 +112,7 @@ func TestRunsCreate(t *testing.T) {
 		assert.Equal(t, cvTest.ID, r.ConfigurationVersion.ID)
 	})
 
-	t.Run("with refresh not set", func(t *testing.T) {
+	t.Run("refresh defaults to true if not set as a create option", func(t *testing.T) {
 		options := RunCreateOptions{
 			Workspace: wTest,
 		}
