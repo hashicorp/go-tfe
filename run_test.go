@@ -123,6 +123,9 @@ func TestRunsCreate(t *testing.T) {
 	})
 
 	t.Run("with refresh-only requested", func(t *testing.T) {
+		// TODO: remove this skip after the release of Terraform 0.15.4
+		t.Skip("Skipping this test until -refresh-only is released in the Terraform CLI")
+
 		options := RunCreateOptions{
 			Workspace:   wTest,
 			RefreshOnly: Bool(true),
