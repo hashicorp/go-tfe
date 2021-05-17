@@ -434,10 +434,12 @@ func (c *Client) configureLimiter(rawLimit string) {
 	c.limiter = rate.NewLimiter(limit, burst)
 }
 
-// newRequest creates an API request. A relative URL path can be provided in
-// path, in which case it is resolved relative to the apiVersionPath of the
-// Client. Relative URL paths should always be specified without a preceding
-// slash.
+// newRequest creates an API request with proper headers and serialization.
+//
+// A relative URL path can be provided, in which case it is resolved relative to the baseURL
+// of the Client. Relative URL paths should always be specified without a preceding slash. Adding a
+// preceding slash allows for ignoring the configured baseURL for non-standard endpoints.
+//
 // If v is supplied, the value will be JSONAPI encoded and included as the
 // request body. If the method is GET, the value will be parsed and added as
 // query parameters.
