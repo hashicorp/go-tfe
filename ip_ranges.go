@@ -38,8 +38,7 @@ type IPRange struct {
 }
 
 func (i *ipRanges) Read(ctx context.Context, modifiedSince string) (*IPRange, error) {
-	i.client.baseURL.Path = "/api/"
-	req, err := i.client.newRequest("GET", "meta/ip-ranges", nil)
+	req, err := i.client.newRequest("GET", "/api/meta/ip-ranges", nil)
 	if err != nil {
 		return nil, err
 	}
