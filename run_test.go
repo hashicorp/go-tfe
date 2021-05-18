@@ -112,6 +112,30 @@ func TestRunsCreate(t *testing.T) {
 		assert.Equal(t, cvTest.ID, r.ConfigurationVersion.ID)
 	})
 
+	t.Run("refresh defaults to true if not set as a create option", func(t *testing.T) {
+		options := RunCreateOptions{
+			Workspace: wTest,
+		}
+
+		r, err := client.Runs.Create(ctx, options)
+		require.NoError(t, err)
+		assert.Equal(t, true, r.Refresh)
+	})
+
+	t.Run("with refresh-only requested", func(t *testing.T) {
+		// TODO: remove this skip after the release of Terraform 0.15.4
+		t.Skip("Skipping this test until -refresh-only is released in the Terraform CLI")
+
+		options := RunCreateOptions{
+			Workspace:   wTest,
+			RefreshOnly: Bool(true),
+		}
+
+		r, err := client.Runs.Create(ctx, options)
+		require.NoError(t, err)
+		assert.Equal(t, true, r.RefreshOnly)
+	})
+
 	t.Run("without a workspace", func(t *testing.T) {
 		r, err := client.Runs.Create(ctx, RunCreateOptions{})
 		assert.Nil(t, r)
@@ -120,14 +144,18 @@ func TestRunsCreate(t *testing.T) {
 
 	t.Run("with additional attributes", func(t *testing.T) {
 		options := RunCreateOptions{
-			Message:     String("yo"),
-			Workspace:   wTest,
-			TargetAddrs: []string{"null_resource.example"},
+			Message:      String("yo"),
+			Workspace:    wTest,
+			Refresh:      Bool(false),
+			ReplaceAddrs: []string{"null_resource.example"},
+			TargetAddrs:  []string{"null_resource.example"},
 		}
 
 		r, err := client.Runs.Create(ctx, options)
 		require.NoError(t, err)
 		assert.Equal(t, *options.Message, r.Message)
+		assert.Equal(t, *options.Refresh, r.Refresh)
+		assert.Equal(t, options.ReplaceAddrs, r.ReplaceAddrs)
 		assert.Equal(t, options.TargetAddrs, r.TargetAddrs)
 	})
 }
