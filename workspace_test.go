@@ -112,6 +112,8 @@ func TestWorkspacesCreate(t *testing.T) {
 			Operations:          Bool(true),
 			QueueAllRuns:        Bool(true),
 			SpeculativeEnabled:  Bool(true),
+			SourceName:          String("my-app"),
+			SourceURL:           String("my-app-hostname.io"),
 			TerraformVersion:    String("0.11.0"),
 			TriggerPrefixes:     []string{"/modules", "/shared"},
 			WorkingDirectory:    String("bar/"),
@@ -137,6 +139,8 @@ func TestWorkspacesCreate(t *testing.T) {
 			assert.Equal(t, *options.Operations, item.Operations)
 			assert.Equal(t, *options.QueueAllRuns, item.QueueAllRuns)
 			assert.Equal(t, *options.SpeculativeEnabled, item.SpeculativeEnabled)
+			assert.Equal(t, *options.SourceName, item.SourceName)
+			assert.Equal(t, *options.SourceURL, item.SourceURL)
 			assert.Equal(t, *options.TerraformVersion, item.TerraformVersion)
 			assert.Equal(t, options.TriggerPrefixes, item.TriggerPrefixes)
 			assert.Equal(t, *options.WorkingDirectory, item.WorkingDirectory)

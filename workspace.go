@@ -112,6 +112,8 @@ type Workspace struct {
 	Permissions          *WorkspacePermissions `jsonapi:"attr,permissions"`
 	QueueAllRuns         bool                  `jsonapi:"attr,queue-all-runs"`
 	SpeculativeEnabled   bool                  `jsonapi:"attr,speculative-enabled"`
+	SourceName           string                `jsonapi:"attr,source-name"`
+	SourceURL            string                `jsonapi:"attr,source-url"`
 	TerraformVersion     string                `jsonapi:"attr,terraform-version"`
 	TriggerPrefixes      []string              `jsonapi:"attr,trigger-prefixes"`
 	VCSRepo              *VCSRepo              `jsonapi:"attr,vcs-repo"`
@@ -264,6 +266,15 @@ type WorkspaceCreateOptions struct {
 	// running plans on pull requests, which can improve security if the VCS
 	// repository is public or includes untrusted contributors.
 	SpeculativeEnabled *bool `jsonapi:"attr,speculative-enabled,omitempty"`
+
+	// A friendly name for the application or client creating this workspace.
+	// If set, this will be displayed on the workspace as "Created via <SOURCE NAME>".
+	SourceName *string `jsonapi:"attr,source-name,omitempty"`
+
+	// A URL for the application or client creating this workspace. This can be
+	// the URL of a related resource in another app, or a link to documentation
+	// or other info about the client.
+	SourceURL *string `jsonapi:"attr,source-url,omitempty"`
 
 	// The version of Terraform to use for this workspace. Upon creating a
 	// workspace, the latest version is selected unless otherwise specified.
