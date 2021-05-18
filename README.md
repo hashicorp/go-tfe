@@ -58,14 +58,7 @@ if err != nil {
 
 ## Documentation
 
-For complete usage of the API client, see the full [package docs](https://godoc.org/github.com/hashicorp/go-tfe).
-
-## API Coverage
-
-Most of the [Terraform Cloud/Enterprise V2 API](https://www.terraform.io/docs/cloud/api/index.html) is supported in this
-client. Currently, the separate [Admin API](https://www.terraform.io/docs/cloud/api/admin/index.html) - applicable only
-to Terraform Enterprise - is not.
-
+For complete usage of the API client, see the full [package docs](https://pkg.go.dev/github.com/hashicorp/go-tfe).
 
 ## Examples
 
@@ -98,18 +91,18 @@ Documentation updates and test fixes that only touch test files don't require a 
       - ENHANCEMENTS: Use this for smaller new features added
       - BUG FIXES: Use this for any bugs that were fixed.
       - NOTES: Use this section if you need to include any additional notes on things like upgrading, upcoming deprecations, or any other information you might want to highlight.
-      
+
       Markdown example:
-      
+
       ```markdown
       ENHANCEMENTS
       * Add description of new small feature (#3)[link-to-pull-request]
-  
+
       BUG FIXES
       * Fix description of a bug (#2)[link-to-pull-request]
       * Fix description of another bug (#1)[link-to-pull-request]
       ```
-      
+
    - Don't attach any binaries. The zip and tar.gz assets are automatically created and attached after you publish your release.    
    - Click "Publish release" to save and publish your release.
-     
+
