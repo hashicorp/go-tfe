@@ -126,6 +126,11 @@ func TestRegistryModulesCreateVersion(t *testing.T) {
 			assert.NotEmpty(t, rmv.CreatedAt)
 			assert.NotEmpty(t, rmv.UpdatedAt)
 		})
+
+		t.Run("links are properly decoded", func(t *testing.T) {
+			assert.NotEmpty(t, rmv.Links["upload"])
+			assert.Contains(t, rmv.Links["upload"], "/object/")
+		})
 	})
 
 	t.Run("with invalid options", func(t *testing.T) {
@@ -526,6 +531,44 @@ func TestRegistryModulesDeleteVersion(t *testing.T) {
 	t.Run("when the registry module name, provider, and version do not exist", func(t *testing.T) {
 		err := client.RegistryModules.DeleteVersion(ctx, orgTest.Name, "nonexisting", "nonexisting", "2.0.0")
 		assert.Error(t, err)
+	})
+}
+
+func TestRegistryModulesUpload(t *testing.T) {
+	client := testClient(t)
+	ctx := context.Background()
+
+	orgTest, orgTestCleanup := createOrganization(t, client)
+	defer orgTestCleanup()
+
+	rm, _ := createRegistryModule(t, client, orgTest)
+
+	optionsModuleVersion := RegistryModuleCreateVersionOptions{
+		Version: String("1.0.0"),
+	}
+	rmv, err := client.RegistryModules.CreateVersion(ctx, orgTest.Name, rm.Name, rm.Provider, optionsModuleVersion)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	t.Run("with valid upload URL", func(t *testing.T) {
+		err = client.RegistryModules.Upload(
+			ctx,
+			*rmv,
+			"test-fixtures/config-version",
+		)
+		require.NoError(t, err)
+	})
+
+	t.Run("with missing upload URL", func(t *testing.T) {
+		delete(rmv.Links, "upload")
+
+		err = client.RegistryModules.Upload(
+			ctx,
+			*rmv,
+			"test-fixtures/config-version",
+		)
+		assert.EqualError(t, err, "Provided RegistryModuleVersion does not contain an upload link")
 	})
 }
 
