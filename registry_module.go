@@ -1,10 +1,14 @@
 package tfe
 
 import (
+	"bytes"
 	"context"
 	"errors"
 	"fmt"
 	"net/url"
+	"os"
+
+	slug "github.com/hashicorp/go-slug"
 )
 
 // Compile-time proof of interface implementation.
@@ -35,6 +39,11 @@ type RegistryModules interface {
 
 	// Delete a specific registry module version
 	DeleteVersion(ctx context.Context, organization string, name string, provider string, version string) error
+
+	// Upload Terraform configuration files for the provided registry module version. It
+	// requires a path to the configuration files on disk, which will be packaged by
+	// hashicorp/go-slug before being uploaded.
+	Upload(ctx context.Context, rmv RegistryModuleVersion, path string) error
 }
 
 // registryModules implements RegistryModules.
@@ -94,6 +103,41 @@ type RegistryModuleVersion struct {
 
 	// Relations
 	RegistryModule *RegistryModule `jsonapi:"relation,registry-module"`
+
+	// Links
+	Links map[string]interface{} `jsonapi:"links,omitempty"`
+}
+
+// Upload uploads Terraform configuration files for the provided registry module version. It
+// requires a path to the configuration files on disk, which will be packaged by
+// hashicorp/go-slug before being uploaded.
+func (r *registryModules) Upload(ctx context.Context, rmv RegistryModuleVersion, path string) error {
+	uploadURL, ok := rmv.Links["upload"].(string)
+	if !ok {
+		return fmt.Errorf("Provided RegistryModuleVersion does not contain an upload link")
+	}
+
+	file, err := os.Stat(path)
+	if err != nil {
+		return err
+	}
+	if !file.Mode().IsDir() {
+		return ErrMissingDirectory
+	}
+
+	body := bytes.NewBuffer(nil)
+
+	_, err = slug.Pack(path, body, true)
+	if err != nil {
+		return err
+	}
+
+	req, err := r.client.newRequest("PUT", uploadURL, body)
+	if err != nil {
+		return err
+	}
+
+	return r.client.do(ctx, req, nil)
 }
 
 type RegistryModulePermissions struct {
