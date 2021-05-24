@@ -113,7 +113,7 @@ func TestWorkspacesCreate(t *testing.T) {
 			QueueAllRuns:        Bool(true),
 			SpeculativeEnabled:  Bool(true),
 			SourceName:          String("my-app"),
-			SourceURL:           String("my-app-hostname.io"),
+			SourceURL:           String("http://my-app-hostname.io"),
 			TerraformVersion:    String("0.11.0"),
 			TriggerPrefixes:     []string{"/modules", "/shared"},
 			WorkingDirectory:    String("bar/"),
