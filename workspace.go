@@ -267,13 +267,14 @@ type WorkspaceCreateOptions struct {
 	// repository is public or includes untrusted contributors.
 	SpeculativeEnabled *bool `jsonapi:"attr,speculative-enabled,omitempty"`
 
-	// A friendly name for the application or client creating this workspace.
-	// If set, this will be displayed on the workspace as "Created via <SOURCE NAME>".
+	// BETA. A friendly name for the application or client creating this
+	// workspace. If set, this will be displayed on the workspace as
+	// "Created via <SOURCE NAME>".
 	SourceName *string `jsonapi:"attr,source-name,omitempty"`
 
-	// A URL for the application or client creating this workspace. This can be
-	// the URL of a related resource in another app, or a link to documentation
-	// or other info about the client.
+	// BETA. A URL for the application or client creating this workspace. This
+	// can be the URL of a related resource in another app, or a link to
+	// documentation or other info about the client.
 	SourceURL *string `jsonapi:"attr,source-url,omitempty"`
 
 	// The version of Terraform to use for this workspace. Upon creating a
