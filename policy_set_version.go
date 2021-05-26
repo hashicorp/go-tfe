@@ -24,6 +24,15 @@ type policySetParameters struct {
 	client *Client
 }
 
+// PolciySetVersionSource represents a source type of a policy set version.
+type PolciySetVersionSource string
+
+// List all available run sources.
+const (
+	PolciySetVersionSourceAPI PolciySetVersionSource = "tfe-api"
+	PolciySetVersionSourceUI  PolciySetVersionSource = "tfe-ui"
+)
+
 type PolicySetVersion struct {
 	ID     string `jsonapi:"primary,policy-set-versions"`
 	Source string `jsonapi:"attr,source"`
