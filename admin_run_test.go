@@ -269,7 +269,7 @@ func TestAdminRun_Unmarshal(t *testing.T) {
 				"has-changes": true,
 				"status":      RunApplied,
 				"status-timestamps": map[string]string{
-					"queued-at": "2020-03-16T23:15:59+00:00",
+					"plan-queued-at": "2020-03-16T23:15:59+00:00",
 				},
 			},
 		},
@@ -279,7 +279,7 @@ func TestAdminRun_Unmarshal(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	queuedParsedTime, err := time.Parse(time.RFC3339, "2020-03-16T23:15:59+00:00")
+	planQueuedParsedTime, err := time.Parse(time.RFC3339, "2020-03-16T23:15:59+00:00")
 	require.NoError(t, err)
 
 	adminRun := &AdminRun{}
@@ -289,7 +289,7 @@ func TestAdminRun_Unmarshal(t *testing.T) {
 	assert.Equal(t, adminRun.ID, "run-VCsNJXa59eUza53R")
 	assert.Equal(t, adminRun.HasChanges, true)
 	assert.Equal(t, adminRun.Status, RunApplied)
-	assert.Equal(t, adminRun.StatusTimestamps.QueuedAt, queuedParsedTime)
+	assert.Equal(t, adminRun.StatusTimestamps.PlanQueuedAt, planQueuedParsedTime)
 }
 
 func adminRunItemsContainsID(items []*AdminRun, id string) bool {
