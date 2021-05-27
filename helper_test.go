@@ -516,8 +516,8 @@ func createRunWithStatus(t *testing.T, client *Client, w *Workspace, timeout int
 
 		for _, desiredStatus := range desiredStatuses {
 			// if we're creating an applied run, we need to manually confirm the apply once the plan finishes
-			hasApplyableStatus := r.Status == RunPlanned || r.Status == RunCostEstimated || r.Status == RunPolicyChecked
-			if desiredStatus == RunApplied && hasApplyableStatus {
+			isApplyable := hasApplyableStatus(r)
+			if desiredStatus == RunApplied && isApplyable {
 				err := client.Runs.Apply(ctx, r.ID, RunApplyOptions{})
 				if err != nil {
 					t.Fatal(err)
@@ -555,6 +555,16 @@ func createPolicyCheckedRun(t *testing.T, client *Client, w *Workspace) (*Run, f
 
 func createAppliedRun(t *testing.T, client *Client, w *Workspace) (*Run, func()) {
 	return createRunWithStatus(t, client, w, 90, RunApplied)
+}
+
+func hasApplyableStatus(r *Run) bool {
+	if len(r.PolicyChecks) > 0 {
+		return r.Status == RunPolicyChecked || r.Status == RunPolicyOverride
+	} else if r.CostEstimate != nil {
+		return r.Status == RunCostEstimated
+	} else {
+		return r.Status == RunPlanned
+	}
 }
 
 func createPlanExport(t *testing.T, client *Client, r *Run) (*PlanExport, func()) {
