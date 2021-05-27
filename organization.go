@@ -56,17 +56,6 @@ const (
 	AuthPolicyTwoFactor AuthPolicyType = "two_factor_mandatory"
 )
 
-// EnterprisePlanType represents an enterprise plan type.
-type EnterprisePlanType string
-
-// List of available enterprise plan types.
-const (
-	EnterprisePlanDisabled EnterprisePlanType = "disabled"
-	EnterprisePlanPremium  EnterprisePlanType = "premium"
-	EnterprisePlanPro      EnterprisePlanType = "pro"
-	EnterprisePlanTrial    EnterprisePlanType = "trial"
-)
-
 // OrganizationList represents a list of organizations.
 type OrganizationList struct {
 	*Pagination
@@ -80,7 +69,6 @@ type Organization struct {
 	CostEstimationEnabled  bool                     `jsonapi:"attr,cost-estimation-enabled"`
 	CreatedAt              time.Time                `jsonapi:"attr,created-at,iso8601"`
 	Email                  string                   `jsonapi:"attr,email"`
-	EnterprisePlan         EnterprisePlanType       `jsonapi:"attr,enterprise-plan"`
 	ExternalID             string                   `jsonapi:"attr,external-id"`
 	OwnersTeamSAMLRoleID   string                   `jsonapi:"attr,owners-team-saml-role-id"`
 	Permissions            *OrganizationPermissions `jsonapi:"attr,permissions"`
