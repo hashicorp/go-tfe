@@ -538,7 +538,11 @@ func createRunWithStatus(t *testing.T, client *Client, w *Workspace, timeout int
 }
 
 func createPlannedRun(t *testing.T, client *Client, w *Workspace) (*Run, func()) {
-	return createRunWithStatus(t, client, w, 45, plannedRunStatus())
+	if paidFeaturesDisabled() {
+		return createRunWithStatus(t, client, w, 45, RunPlanned)
+	} else {
+		return createRunWithStatus(t, client, w, 45, RunCostEstimated)
+	}
 }
 
 func createCostEstimatedRun(t *testing.T, client *Client, w *Workspace) (*Run, func()) {
@@ -553,19 +557,13 @@ func createAppliedRun(t *testing.T, client *Client, w *Workspace) (*Run, func())
 	return createRunWithStatus(t, client, w, 90, RunApplied)
 }
 
-func plannedRunStatus() RunStatus {
-	if paidFeaturesDisabled() {
-		return RunPlanned
-	} else {
-		return RunCostEstimated
-	}
-}
-
 func hasApplyableStatus(r *Run) bool {
 	if len(r.PolicyChecks) > 0 {
 		return r.Status == RunPolicyChecked || r.Status == RunPolicyOverride
+	} else if r.CostEstimate != nil {
+		return r.Status == RunCostEstimated
 	} else {
-		return r.Status == plannedRunStatus()
+		return r.Status == RunPlanned
 	}
 }
 
