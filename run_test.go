@@ -98,7 +98,7 @@ func TestRunsCreate(t *testing.T) {
 		assert.NotNil(t, r.CreatedAt)
 		assert.NotNil(t, r.Source)
 		assert.NotEmpty(t, r.StatusTimestamps)
-		assert.NotNil(t, r.StatusTimestamps.StartedAt)
+		assert.NotZero(t, r.StatusTimestamps.PlanQueueableAt)
 	})
 
 	t.Run("with a configuration version", func(t *testing.T) {
@@ -389,8 +389,8 @@ func TestRun_Unmarshal(t *testing.T) {
 					"can-force-execute": true,
 				},
 				"status-timestamps": map[string]string{
-					"queued-at":  "2020-03-16T23:15:59+00:00",
-					"errored-at": "2019-03-16T23:23:59+00:00",
+					"plan-queued-at": "2020-03-16T23:15:59+00:00",
+					"errored-at":     "2019-03-16T23:23:59+00:00",
 				},
 			},
 		},
@@ -403,7 +403,7 @@ func TestRun_Unmarshal(t *testing.T) {
 	err = unmarshalResponse(responseBody, run)
 	require.NoError(t, err)
 
-	queuedParsedTime, err := time.Parse(time.RFC3339, "2020-03-16T23:15:59+00:00")
+	planQueuedParsedTime, err := time.Parse(time.RFC3339, "2020-03-16T23:15:59+00:00")
 	require.NoError(t, err)
 	erroredParsedTime, err := time.Parse(time.RFC3339, "2019-03-16T23:23:59+00:00")
 	require.NoError(t, err)
@@ -425,6 +425,6 @@ func TestRun_Unmarshal(t *testing.T) {
 	assert.Equal(t, run.Permissions.CanDiscard, true)
 	assert.Equal(t, run.Permissions.CanForceExecute, true)
 	assert.Equal(t, run.Permissions.CanForceCancel, true)
-	assert.Equal(t, run.StatusTimestamps.QueuedAt, queuedParsedTime)
+	assert.Equal(t, run.StatusTimestamps.PlanQueuedAt, planQueuedParsedTime)
 	assert.Equal(t, run.StatusTimestamps.ErroredAt, erroredParsedTime)
 }

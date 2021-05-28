@@ -135,16 +135,23 @@ type RunPermissions struct {
 
 // RunStatusTimestamps holds the timestamps for individual run statuses.
 type RunStatusTimestamps struct {
-	ErroredAt            time.Time `jsonapi:"attr,errored-at,rfc3339"`
-	FinishedAt           time.Time `jsonapi:"attr,finished-at,rfc3339"`
-	QueuedAt             time.Time `jsonapi:"attr,queued-at,rfc3339"`
-	StartedAt            time.Time `jsonapi:"attr,started-at,rfc3339"`
-	ApplyingAt           time.Time `jsonapi:"attr,applying-at,rfc3339"`
 	AppliedAt            time.Time `jsonapi:"attr,applied-at,rfc3339"`
-	PlanningAt           time.Time `jsonapi:"attr,planning-at,rfc3339"`
-	PlannedAt            time.Time `jsonapi:"attr,planned-at,rfc3339"`
+	ApplyQueuedAt        time.Time `jsonapi:"attr,apply-queued-at,rfc3339"`
+	ApplyingAt           time.Time `jsonapi:"attr,applying-at,rfc3339"`
+	CanceledAt           time.Time `jsonapi:"attr,canceled-at,rfc3339"`
+	ConfirmedAt          time.Time `jsonapi:"attr,confirmed-at,rfc3339"`
+	CostEstimatedAt      time.Time `jsonapi:"attr,cost-estimated-at,rfc3339"`
+	CostEstimatingAt     time.Time `jsonapi:"attr,cost-estimating-at,rfc3339"`
+	DiscardedAt          time.Time `jsonapi:"attr,discarded-at,rfc3339"`
+	ErroredAt            time.Time `jsonapi:"attr,errored-at,rfc3339"`
+	ForceCanceledAt      time.Time `jsonapi:"attr,force-canceled-at,rfc3339"`
+	PlanQueueableAt      time.Time `jsonapi:"attr,plan-queueable-at,rfc3339"`
+	PlanQueuedAt         time.Time `jsonapi:"attr,plan-queued-at,rfc3339"`
 	PlannedAndFinishedAt time.Time `jsonapi:"attr,planned-and-finished-at,rfc3339"`
-	PlanQueuabledAt      time.Time `jsonapi:"attr,plan-queueable-at,rfc3339"`
+	PlannedAt            time.Time `jsonapi:"attr,planned-at,rfc3339"`
+	PlanningAt           time.Time `jsonapi:"attr,planning-at,rfc3339"`
+	PolicyCheckedAt      time.Time `jsonapi:"attr,policy-checked-at,rfc3339"`
+	PolicySoftFailedAt   time.Time `jsonapi:"attr,policy-soft-failed-at,rfc3339"`
 }
 
 // RunListOptions represents the options for listing runs.
