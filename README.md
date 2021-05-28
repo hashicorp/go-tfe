@@ -2,7 +2,7 @@ Terraform Cloud/Enterprise Go Client
 ==============================
 
 [![Build Status](https://circleci.com/gh/hashicorp/go-tfe.svg?style=shield)](https://circleci.com/gh/hashicorp/go-tfe)
-[![GitHub license](https://img.shields.io/github/license/hashicorp/go-tfe.svg)](https://github.com/hashicorp/go-tfe/blob/master/LICENSE)
+[![GitHub license](https://img.shields.io/github/license/hashicorp/go-tfe.svg)](https://github.com/hashicorp/go-tfe/blob/main/LICENSE)
 [![GoDoc](https://godoc.org/github.com/hashicorp/go-tfe?status.svg)](https://godoc.org/github.com/hashicorp/go-tfe)
 [![Go Report Card](https://goreportcard.com/badge/github.com/hashicorp/go-tfe)](https://goreportcard.com/report/github.com/hashicorp/go-tfe)
 [![GitHub issues](https://img.shields.io/github/issues/hashicorp/go-tfe.svg)](https://github.com/hashicorp/go-tfe/issues)
@@ -62,11 +62,11 @@ For complete usage of the API client, see the full [package docs](https://pkg.go
 
 ## Examples
 
-See the [examples directory](https://github.com/hashicorp/go-tfe/tree/master/examples).
+See the [examples directory](https://github.com/hashicorp/go-tfe/tree/main/examples).
 
 ## Running tests
 
-See [TESTS.md](https://github.com/hashicorp/go-tfe/tree/master/TESTS.md).
+See [TESTS.md](https://github.com/hashicorp/go-tfe/tree/main/TESTS.md).
 
 ## Issues and Contributing
 
@@ -75,17 +75,18 @@ we welcome any contributions. Fork this repository and submit a pull request.
 
 ## Releases
 
-Documentation updates and test fixes that only touch test files don't require a release or tag. You can just merge these changes into master once they have been approved.
+Documentation updates and test fixes that only touch test files don't require a release or tag. You can just merge these changes into `main` once they have been approved.
 
 ### Creating a release
-1. Merge your approved branch into master.
-1. [Create a new release in GitHub](https://help.github.com/en/github/administering-a-repository/creating-releases).
-   - Click on "Releases" and then "Draft a new release"
-   - Set the `tag version` to a new tag, using [Semantic Versioning](https://semver.org/) as a guideline. 
-   - Set the `target` as master.
-   - Set the `Release title` to the tag you created, `vX.Y.Z`
-   - Use the description section to describe why you're releasing and what changes you've made. You should include links to merged PRs
-   - Consider using the following headers in the description of your release:
+
+[Create a new release in GitHub](https://help.github.com/en/github/administering-a-repository/creating-releases).
+
+- Click on "Releases" and then "Draft a new release"
+- Set the `tag version` to a new tag, using [Semantic Versioning](https://semver.org/) as a guideline. 
+- Set the `target` as `main`.
+- Set the `Release title` to the tag you created, `vX.Y.Z`
+- Use the description section to describe why you're releasing and what changes you've made. You should include links to merged PRs
+- Consider using the following headers in the description of your release:
       - BREAKING CHANGES: Use this for any changes that aren't backwards compatible. Include details on how to handle these changes.
       - FEATURES: Use this for any large new features added, 
       - ENHANCEMENTS: Use this for smaller new features added
@@ -103,6 +104,6 @@ Documentation updates and test fixes that only touch test files don't require a 
       * Fix description of another bug (#1)[link-to-pull-request]
       ```
 
-   - Don't attach any binaries. The zip and tar.gz assets are automatically created and attached after you publish your release.    
-   - Click "Publish release" to save and publish your release.
+- Don't attach any binaries. The zip and tar.gz assets are automatically created and attached after you publish your release.
+- Click "Publish release" to save and publish your release.
 
