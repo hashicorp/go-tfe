@@ -1,5 +1,13 @@
 package tfe
 
+import (
+	"context"
+	"errors"
+	"fmt"
+	"net/url"
+	"time"
+)
+
 // Compile-time proof of interface implementation.
 var _ PolicySetVersions = (*policySetVersions)(nil)
 
@@ -16,11 +24,11 @@ type PolicySetVersions interface {
 	Read(ctx context.Context, policySetID string) (*PolicySetVersion, error)
 
 	// Upload a tarball to the Policy Set Version.
-	Upload(ctx context.Context, policySetID string, context []byte) (*PolicySetVersion, error)
+	Upload(ctx context.Context, psv PolicySetVersion, path string) error
 }
 
 // policySetVersions implements Policy Set Versions.
-type policySetParameters struct {
+type policySetVersions struct {
 	client *Client
 }
 
@@ -89,21 +97,18 @@ func (p *policySetVersions) Read(ctx context.Context, policySetID string) (*Poli
 	return psv, nil
 }
 
-func (p *policySetVersions) Upload(ctx context.Context, policySetID string, content []byte) (*PolicySetVersion, error) {
-	if !validStringID(&policyID) {
-		return errors.New("invalid value for policy ID")
-	}
-
-	psv, err := p.Read(ctx, policySetID)
-	if err != nil {
-		return err
-	}
+func (p *policySetVersions) Upload(ctx context.Context, psv PolicySetVersion, path string) error {
 	uploadURL, ok := psv.Links["upload"].(string)
 	if !ok {
 		return fmt.Errorf("The Policy Set Version does not contain an upload link.")
 	}
 
-	req, err := p.client.newRequest("PUT", uploadURL, content)
+	body, err := readFile(path)
+	if err != nil {
+		return err
+	}
+
+	req, err := p.client.newRequest("PUT", uploadURL, body)
 	if err != nil {
 		return err
 	}

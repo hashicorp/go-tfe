@@ -21,6 +21,8 @@ import (
 	retryablehttp "github.com/hashicorp/go-retryablehttp"
 	"github.com/hashicorp/jsonapi"
 	"golang.org/x/time/rate"
+
+	slug "github.com/hashicorp/go-slug"
 )
 
 const (
@@ -744,4 +746,23 @@ func checkResponseCode(r *http.Response) error {
 	}
 
 	return fmt.Errorf(strings.Join(errs, "\n"))
+}
+
+func readFile(path string) (*bytes.Buffer, error) {
+	body := bytes.NewBuffer(nil)
+
+	file, err := os.Stat(path)
+	if err != nil {
+		return body, err
+	}
+	if !file.Mode().IsDir() {
+		return body, ErrMissingDirectory
+	}
+
+	_, err = slug.Pack(path, body, true)
+	if err != nil {
+		return body, err
+	}
+
+	return body, nil
 }
