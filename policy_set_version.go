@@ -20,8 +20,8 @@ type PolicySetVersions interface {
 	// Create is used to create a new Policy Set Version.
 	Create(ctx context.Context, policySetID string) (*PolicySetVersion, error)
 
-	// Read is used to read a Policy Set Version by the policy set ID.
-	Read(ctx context.Context, policySetID string) (*PolicySetVersion, error)
+	// Read is used to read a Policy Set Version by its ID.
+	Read(ctx context.Context, policySetVersionID string) (*PolicySetVersion, error)
 
 	// Upload a tarball to the Policy Set Version.
 	Upload(ctx context.Context, psv PolicySetVersion, path string) error
@@ -37,18 +37,30 @@ type PolciySetVersionSource string
 
 // List all available run sources.
 const (
-	PolciySetVersionSourceAPI PolciySetVersionSource = "tfe-api"
-	PolciySetVersionSourceUI  PolciySetVersionSource = "tfe-ui"
+	PolciySetVersionSourceAPI       PolciySetVersionSource = "tfe-api"
+	PolciySetVersionSourceADO       PolciySetVersionSource = "ado"
+	PolciySetVersionSourceBitBucket PolciySetVersionSource = "bitbucket"
+	PolciySetVersionSourceGitHub    PolciySetVersionSource = "github"
+	PolciySetVersionSourceGitLab    PolciySetVersionSource = "gitlab"
 )
 
+// PolciySetVersionStatusTimestamps holds the timestamps for individual policy
+// set version statuses.
+type PolciySetVersionStatusTimestamps struct {
+	PendingAt    time.Time `jsonapi:"attr,pending-at,rfc3339"`
+	IngressingAt time.Time `jsonapi:"attr,ingressing-at,rfc3339"`
+	ReadyAt      time.Time `jsonapi:"attr,ready-at,rfc3339"`
+	ErroredAt    time.Time `jsonapi:"attr,errored-at,rfc3339"`
+}
+
 type PolicySetVersion struct {
-	ID     string `jsonapi:"primary,policy-set-versions"`
-	Source string `jsonapi:"attr,source"`
-	Status string `jsonapi:"attr,status"`
-	// TODO: StatusTimestamps  string `jsonapi:"attr,status-timestamps"`
-	Error     string    `jsonapi:"attr,error"`
-	CreatedAt time.Time `jsonapi:"attr,created-at,iso8601"`
-	UpdatedAt time.Time `jsonapi:"attr,updated-at,iso8601"`
+	ID               string                           `jsonapi:"primary,policy-set-versions"`
+	Source           string                           `jsonapi:"attr,source"`
+	Status           PolciySetVersionSource           `jsonapi:"attr,status"`
+	StatusTimestamps PolciySetVersionStatusTimestamps `jsonapi:"attr,status-timestamps"`
+	Error            string                           `jsonapi:"attr,error"`
+	CreatedAt        time.Time                        `jsonapi:"attr,created-at,iso8601"`
+	UpdatedAt        time.Time                        `jsonapi:"attr,updated-at,iso8601"`
 
 	// Relations
 	PolicySet *PolicySet `jsonapi:"relation,policy-set"`
@@ -77,12 +89,12 @@ func (p *policySetVersions) Create(ctx context.Context, policySetID string) (*Po
 	return psv, nil
 }
 
-func (p *policySetVersions) Read(ctx context.Context, policySetID string) (*PolicySetVersion, error) {
-	if !validStringID(&policySetID) {
+func (p *policySetVersions) Read(ctx context.Context, policySetVersionID string) (*PolicySetVersion, error) {
+	if !validStringID(&policySetVersionID) {
 		return nil, errors.New("invalid value for policy set ID")
 	}
 
-	u := fmt.Sprintf("policy-set-versions/%s", url.QueryEscape(policySetID))
+	u := fmt.Sprintf("policy-set-versions/%s", url.QueryEscape(policySetVersionID))
 	req, err := p.client.newRequest("GET", u, nil)
 	if err != nil {
 		return nil, err
