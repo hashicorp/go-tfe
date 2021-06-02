@@ -95,3 +95,43 @@ func TestPolicySetVersionsUpload(t *testing.T) {
 		assert.EqualError(t, err, "The Policy Set Version does not contain an upload link.")
 	})
 }
+
+func TestPolicySetVersionsUploadURL(t *testing.T) {
+	t.Run("successfully returns upload link", func(t *testing.T) {
+		links := map[string]interface{}{
+			"upload": "example.com",
+		}
+		psv := PolicySetVersion{
+			Links: links,
+		}
+
+		uploadURL, err := psv.uploadURL()
+		require.NoError(t, err)
+
+		assert.Equal(t, uploadURL, "example.com")
+	})
+
+	t.Run("errors when there is no upload key in the Links", func(t *testing.T) {
+		links := map[string]interface{}{
+			"bad-field": "example.com",
+		}
+		psv := PolicySetVersion{
+			Links: links,
+		}
+
+		_, err := psv.uploadURL()
+		assert.EqualError(t, err, "The Policy Set Version does not contain an upload link.")
+	})
+
+	t.Run("errors when the upload link is empty", func(t *testing.T) {
+		links := map[string]interface{}{
+			"upload": "",
+		}
+		psv := PolicySetVersion{
+			Links: links,
+		}
+
+		_, err := psv.uploadURL()
+		assert.EqualError(t, err, "The Policy Set Version upload URL is empty.")
+	})
+}

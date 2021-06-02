@@ -80,7 +80,7 @@ type PolicySetVersion struct {
 	Links map[string]interface{} `jsonapi:"links,omitempty"`
 }
 
-func (p PolicySetVersion) UploadURL() (string, error) {
+func (p PolicySetVersion) uploadURL() (string, error) {
 	uploadURL, ok := p.Links["upload"].(string)
 	if !ok {
 		return uploadURL, fmt.Errorf("The Policy Set Version does not contain an upload link.")
@@ -139,7 +139,7 @@ func (p *policySetVersions) Read(ctx context.Context, policySetVersionID string)
 // to the set of sentinel files, which will be packaged by hashicorp/go-slug
 // before being uploaded.
 func (p *policySetVersions) Upload(ctx context.Context, psv PolicySetVersion, path string) error {
-	uploadURL, err := psv.UploadURL()
+	uploadURL, err := psv.uploadURL()
 	if err != nil {
 		return err
 	}
