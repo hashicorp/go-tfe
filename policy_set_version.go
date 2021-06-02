@@ -15,7 +15,6 @@ var _ PolicySetVersions = (*policySetVersions)(nil)
 // Enterprise API supports.
 //
 // TFE API docs: https://www.terraform.io/docs/cloud/api/policy-sets.html#create-a-policy-set-version
-
 type PolicySetVersions interface {
 	// Create is used to create a new Policy Set Version.
 	Create(ctx context.Context, policySetID string) (*PolicySetVersion, error)
@@ -23,11 +22,13 @@ type PolicySetVersions interface {
 	// Read is used to read a Policy Set Version by its ID.
 	Read(ctx context.Context, policySetVersionID string) (*PolicySetVersion, error)
 
-	// Upload a tarball to the Policy Set Version.
+	// Upload uploads policy files. It takes a Policy Set Version and a path
+	// to the set of sentinel files, which will be packaged by hashicorp/go-slug
+	// before being uploaded.
 	Upload(ctx context.Context, psv PolicySetVersion, path string) error
 }
 
-// policySetVersions implements Policy Set Versions.
+// policySetVersions implements PolicySetVersions.
 type policySetVersions struct {
 	client *Client
 }
@@ -35,7 +36,7 @@ type policySetVersions struct {
 // PolciySetVersionSource represents a source type of a policy set version.
 type PolciySetVersionSource string
 
-// List all available run sources.
+// List all available sources for a Policy Set Version.
 const (
 	PolciySetVersionSourceAPI       PolciySetVersionSource = "tfe-api"
 	PolciySetVersionSourceADO       PolciySetVersionSource = "ado"
@@ -43,15 +44,6 @@ const (
 	PolciySetVersionSourceGitHub    PolciySetVersionSource = "github"
 	PolciySetVersionSourceGitLab    PolciySetVersionSource = "gitlab"
 )
-
-// PolciySetVersionStatusTimestamps holds the timestamps for individual policy
-// set version statuses.
-type PolciySetVersionStatusTimestamps struct {
-	PendingAt    time.Time `jsonapi:"attr,pending-at,rfc3339"`
-	IngressingAt time.Time `jsonapi:"attr,ingressing-at,rfc3339"`
-	ReadyAt      time.Time `jsonapi:"attr,ready-at,rfc3339"`
-	ErroredAt    time.Time `jsonapi:"attr,errored-at,rfc3339"`
-}
 
 // PolicySetVersionStatus represents a policy set version status.
 type PolicySetVersionStatus string
@@ -62,6 +54,15 @@ const (
 	PolicySetVersionPending PolicySetVersionStatus = "pending"
 	PolicySetVersionReady   PolicySetVersionStatus = "ready"
 )
+
+// PolciySetVersionStatusTimestamps holds the timestamps for individual policy
+// set version statuses.
+type PolciySetVersionStatusTimestamps struct {
+	PendingAt    time.Time `jsonapi:"attr,pending-at,rfc3339"`
+	IngressingAt time.Time `jsonapi:"attr,ingressing-at,rfc3339"`
+	ReadyAt      time.Time `jsonapi:"attr,ready-at,rfc3339"`
+	ErroredAt    time.Time `jsonapi:"attr,errored-at,rfc3339"`
+}
 
 type PolicySetVersion struct {
 	ID               string                           `jsonapi:"primary,policy-set-versions"`
@@ -79,6 +80,20 @@ type PolicySetVersion struct {
 	Links map[string]interface{} `jsonapi:"links,omitempty"`
 }
 
+func (p PolicySetVersion) UploadURL() (string, error) {
+	uploadURL, ok := p.Links["upload"].(string)
+	if !ok {
+		return uploadURL, fmt.Errorf("The Policy Set Version does not contain an upload link.")
+	}
+
+	if uploadURL == "" {
+		return uploadURL, fmt.Errorf("The Policy Set Version upload URL is empty.")
+	}
+
+	return uploadURL, nil
+}
+
+// Create is used to create a new Policy Set Version.
 func (p *policySetVersions) Create(ctx context.Context, policySetID string) (*PolicySetVersion, error) {
 	if !validStringID(&policySetID) {
 		return nil, errors.New("invalid value for policy set ID")
@@ -99,6 +114,7 @@ func (p *policySetVersions) Create(ctx context.Context, policySetID string) (*Po
 	return psv, nil
 }
 
+// Read is used to read a Policy Set Version by its ID.
 func (p *policySetVersions) Read(ctx context.Context, policySetVersionID string) (*PolicySetVersion, error) {
 	if !validStringID(&policySetVersionID) {
 		return nil, errors.New("invalid value for policy set ID")
@@ -119,10 +135,13 @@ func (p *policySetVersions) Read(ctx context.Context, policySetVersionID string)
 	return psv, nil
 }
 
+// Upload uploads policy files. It takes a Policy Set Version and a path
+// to the set of sentinel files, which will be packaged by hashicorp/go-slug
+// before being uploaded.
 func (p *policySetVersions) Upload(ctx context.Context, psv PolicySetVersion, path string) error {
-	uploadURL, ok := psv.Links["upload"].(string)
-	if !ok {
-		return fmt.Errorf("The Policy Set Version does not contain an upload link.")
+	uploadURL, err := psv.UploadURL()
+	if err != nil {
+		return err
 	}
 
 	body, err := readFile(path)
