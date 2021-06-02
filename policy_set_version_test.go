@@ -22,7 +22,7 @@ func TestPolicySetVersionsCreate(t *testing.T) {
 		require.NoError(t, err)
 
 		assert.NotEmpty(t, psv.ID)
-		assert.Equal(t, psv.Source, string(PolciySetVersionSourceAPI))
+		assert.Equal(t, psv.Source, PolciySetVersionSourceAPI)
 		assert.Equal(t, psv.PolicySet.ID, psTest.ID)
 	})
 
@@ -64,28 +64,33 @@ func TestPolicySetVersionsUpload(t *testing.T) {
 	client := testClient(t)
 	ctx := context.Background()
 
-	psTest, psTestCleanup := createPolicySet(t, client, nil, nil, nil)
-	defer psTestCleanup()
-
-	psv, err := client.PolicySetVersions.Create(ctx, psTest.ID)
-	require.NoError(t, err)
+	psv, psvCleanup := createPolicySetVersion(t, client, nil)
+	defer psvCleanup()
 
 	t.Run("with valid upload URL", func(t *testing.T) {
+		psv, err := client.PolicySetVersions.Read(ctx, psv.ID)
+		require.NoError(t, err)
+		assert.Equal(t, psv.Status, PolicySetVersionPending)
+
 		err = client.PolicySetVersions.Upload(
 			ctx,
 			*psv,
-			"test-fixtures/config-version",
+			"test-fixtures/policy-set-version",
 		)
 		require.NoError(t, err)
+
+		psv, err = client.PolicySetVersions.Read(ctx, psv.ID)
+		require.NoError(t, err)
+		assert.Equal(t, psv.Status, PolicySetVersionReady)
 	})
 
 	t.Run("with missing upload URL", func(t *testing.T) {
 		delete(psv.Links, "upload")
 
-		err = client.PolicySetVersions.Upload(
+		err := client.PolicySetVersions.Upload(
 			ctx,
 			*psv,
-			"test-fixtures/config-version",
+			"test-fixtures/policy-set-version",
 		)
 		assert.EqualError(t, err, "The Policy Set Version does not contain an upload link.")
 	})

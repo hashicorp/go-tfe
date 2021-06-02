@@ -53,10 +53,20 @@ type PolciySetVersionStatusTimestamps struct {
 	ErroredAt    time.Time `jsonapi:"attr,errored-at,rfc3339"`
 }
 
+// PolicySetVersionStatus represents a policy set version status.
+type PolicySetVersionStatus string
+
+//List all available policy set version statuses.
+const (
+	PolicySetVersionErrored PolicySetVersionStatus = "errored"
+	PolicySetVersionPending PolicySetVersionStatus = "pending"
+	PolicySetVersionReady   PolicySetVersionStatus = "ready"
+)
+
 type PolicySetVersion struct {
 	ID               string                           `jsonapi:"primary,policy-set-versions"`
-	Source           string                           `jsonapi:"attr,source"`
-	Status           PolciySetVersionSource           `jsonapi:"attr,status"`
+	Source           PolciySetVersionSource           `jsonapi:"attr,source"`
+	Status           PolicySetVersionStatus           `jsonapi:"attr,status"`
 	StatusTimestamps PolciySetVersionStatusTimestamps `jsonapi:"attr,status-timestamps"`
 	Error            string                           `jsonapi:"attr,error"`
 	CreatedAt        time.Time                        `jsonapi:"attr,created-at,iso8601"`
