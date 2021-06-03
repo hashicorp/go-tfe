@@ -22,7 +22,7 @@ func TestPolicySetVersionsCreate(t *testing.T) {
 		require.NoError(t, err)
 
 		assert.NotEmpty(t, psv.ID)
-		assert.Equal(t, psv.Source, PolciySetVersionSourceAPI)
+		assert.Equal(t, psv.Source, PolicySetVersionSourceAPI)
 		assert.Equal(t, psv.PolicySet.ID, psTest.ID)
 	})
 
