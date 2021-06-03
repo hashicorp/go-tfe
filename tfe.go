@@ -748,7 +748,7 @@ func checkResponseCode(r *http.Response) error {
 	return fmt.Errorf(strings.Join(errs, "\n"))
 }
 
-func readFile(path string) (*bytes.Buffer, error) {
+func packContents(path string) (*bytes.Buffer, error) {
 	body := bytes.NewBuffer(nil)
 
 	file, err := os.Stat(path)

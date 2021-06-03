@@ -113,7 +113,7 @@ func (r *registryModules) Upload(ctx context.Context, rmv RegistryModuleVersion,
 		return fmt.Errorf("Provided RegistryModuleVersion does not contain an upload link")
 	}
 
-	body, err := readFile(path)
+	body, err := packContents(path)
 	if err != nil {
 		return err
 	}

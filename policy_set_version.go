@@ -33,16 +33,16 @@ type policySetVersions struct {
 	client *Client
 }
 
-// PolciySetVersionSource represents a source type of a policy set version.
-type PolciySetVersionSource string
+// PolicySetVersionSource represents a source type of a policy set version.
+type PolicySetVersionSource string
 
 // List all available sources for a Policy Set Version.
 const (
-	PolciySetVersionSourceAPI       PolciySetVersionSource = "tfe-api"
-	PolciySetVersionSourceADO       PolciySetVersionSource = "ado"
-	PolciySetVersionSourceBitBucket PolciySetVersionSource = "bitbucket"
-	PolciySetVersionSourceGitHub    PolciySetVersionSource = "github"
-	PolciySetVersionSourceGitLab    PolciySetVersionSource = "gitlab"
+	PolicySetVersionSourceAPI       PolicySetVersionSource = "tfe-api"
+	PolicySetVersionSourceADO       PolicySetVersionSource = "ado"
+	PolicySetVersionSourceBitBucket PolicySetVersionSource = "bitbucket"
+	PolicySetVersionSourceGitHub    PolicySetVersionSource = "github"
+	PolicySetVersionSourceGitLab    PolicySetVersionSource = "gitlab"
 )
 
 // PolicySetVersionStatus represents a policy set version status.
@@ -50,14 +50,15 @@ type PolicySetVersionStatus string
 
 //List all available policy set version statuses.
 const (
-	PolicySetVersionErrored PolicySetVersionStatus = "errored"
-	PolicySetVersionPending PolicySetVersionStatus = "pending"
-	PolicySetVersionReady   PolicySetVersionStatus = "ready"
+	PolicySetVersionErrored    PolicySetVersionStatus = "errored"
+	PolicySetVersionIngressing PolicySetVersionStatus = "ingressing"
+	PolicySetVersionPending    PolicySetVersionStatus = "pending"
+	PolicySetVersionReady      PolicySetVersionStatus = "ready"
 )
 
-// PolciySetVersionStatusTimestamps holds the timestamps for individual policy
+// PolicySetVersionStatusTimestamps holds the timestamps for individual policy
 // set version statuses.
-type PolciySetVersionStatusTimestamps struct {
+type PolicySetVersionStatusTimestamps struct {
 	PendingAt    time.Time `jsonapi:"attr,pending-at,rfc3339"`
 	IngressingAt time.Time `jsonapi:"attr,ingressing-at,rfc3339"`
 	ReadyAt      time.Time `jsonapi:"attr,ready-at,rfc3339"`
@@ -66,10 +67,11 @@ type PolciySetVersionStatusTimestamps struct {
 
 type PolicySetVersion struct {
 	ID               string                           `jsonapi:"primary,policy-set-versions"`
-	Source           PolciySetVersionSource           `jsonapi:"attr,source"`
+	Source           PolicySetVersionSource           `jsonapi:"attr,source"`
 	Status           PolicySetVersionStatus           `jsonapi:"attr,status"`
-	StatusTimestamps PolciySetVersionStatusTimestamps `jsonapi:"attr,status-timestamps"`
+	StatusTimestamps PolicySetVersionStatusTimestamps `jsonapi:"attr,status-timestamps"`
 	Error            string                           `jsonapi:"attr,error"`
+	ErrorMessage     string                           `jsonapi:"attr,error-message"`
 	CreatedAt        time.Time                        `jsonapi:"attr,created-at,iso8601"`
 	UpdatedAt        time.Time                        `jsonapi:"attr,updated-at,iso8601"`
 
@@ -144,7 +146,7 @@ func (p *policySetVersions) Upload(ctx context.Context, psv PolicySetVersion, pa
 		return err
 	}
 
-	body, err := readFile(path)
+	body, err := packContents(path)
 	if err != nil {
 		return err
 	}
