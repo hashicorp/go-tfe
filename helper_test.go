@@ -916,7 +916,11 @@ func createWorkspace(t *testing.T, client *Client, org *Organization) (*Workspac
 	}
 }
 
-func createWorkspaceWithVCS(t *testing.T, client *Client, org *Organization) (*Workspace, func()) {
+// queueAllRuns: Whether runs should be queued immediately after workspace creation. When set to
+// false, runs triggered by a VCS change will not be queued until at least one run is manually
+// queued. If set to true, a run will be automatically started after the configuration is ingressed
+// from VCS.
+func createWorkspaceWithVCS(t *testing.T, client *Client, org *Organization, queueAllRuns bool) (*Workspace, func()) {
 	var orgCleanup func()
 
 	if org == nil {
@@ -931,7 +935,8 @@ func createWorkspaceWithVCS(t *testing.T, client *Client, org *Organization) (*W
 	}
 
 	options := WorkspaceCreateOptions{
-		Name: String(randomString(t)),
+		Name:         String(randomString(t)),
+		QueueAllRuns: Bool(queueAllRuns),
 		VCSRepo: &VCSRepoOptions{
 			Identifier:   String(githubIdentifier),
 			OAuthTokenID: String(oc.ID),
