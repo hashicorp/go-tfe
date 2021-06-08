@@ -1,0 +1,13 @@
+# This policy is a sample policy that has a list of tags and 
+# has a rule to confirm the length of the tags.
+
+# List of environment tags
+tags = [
+  "Production",
+  "Staging",
+]
+
+# Main rule
+main = rule {
+  length(tags) is 2
+}

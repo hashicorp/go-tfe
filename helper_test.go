@@ -250,6 +250,27 @@ func createPolicySet(t *testing.T, client *Client, org *Organization, policies [
 	}
 }
 
+func createPolicySetVersion(t *testing.T, client *Client, ps *PolicySet) (*PolicySetVersion, func()) {
+	var psCleanup func()
+
+	if ps == nil {
+		ps, psCleanup = createPolicySet(t, client, nil, nil, nil)
+	}
+
+	ctx := context.Background()
+	psv, err := client.PolicySetVersions.Create(ctx, ps.ID)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	return psv, func() {
+		// Deleting a Policy Set Version is done through deleting a Policy Set.
+		if psCleanup != nil {
+			psCleanup()
+		}
+	}
+}
+
 func createPolicy(t *testing.T, client *Client, org *Organization) (*Policy, func()) {
 	var orgCleanup func()
 

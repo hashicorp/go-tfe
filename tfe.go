@@ -21,6 +21,8 @@ import (
 	retryablehttp "github.com/hashicorp/go-retryablehttp"
 	"github.com/hashicorp/jsonapi"
 	"golang.org/x/time/rate"
+
+	slug "github.com/hashicorp/go-slug"
 )
 
 const (
@@ -111,6 +113,7 @@ type Client struct {
 	Policies                   Policies
 	PolicyChecks               PolicyChecks
 	PolicySetParameters        PolicySetParameters
+	PolicySetVersions          PolicySetVersions
 	PolicySets                 PolicySets
 	RegistryModules            RegistryModules
 	Runs                       Runs
@@ -246,6 +249,7 @@ func NewClient(cfg *Config) (*Client, error) {
 	client.Policies = &policies{client: client}
 	client.PolicyChecks = &policyChecks{client: client}
 	client.PolicySetParameters = &policySetParameters{client: client}
+	client.PolicySetVersions = &policySetVersions{client: client}
 	client.PolicySets = &policySets{client: client}
 	client.RegistryModules = &registryModules{client: client}
 	client.Runs = &runs{client: client}
@@ -742,4 +746,23 @@ func checkResponseCode(r *http.Response) error {
 	}
 
 	return fmt.Errorf(strings.Join(errs, "\n"))
+}
+
+func packContents(path string) (*bytes.Buffer, error) {
+	body := bytes.NewBuffer(nil)
+
+	file, err := os.Stat(path)
+	if err != nil {
+		return body, err
+	}
+	if !file.Mode().IsDir() {
+		return body, ErrMissingDirectory
+	}
+
+	_, err = slug.Pack(path, body, true)
+	if err != nil {
+		return body, err
+	}
+
+	return body, nil
 }

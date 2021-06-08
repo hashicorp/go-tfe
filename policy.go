@@ -35,7 +35,7 @@ type Policies interface {
 	// Upload the policy content of the policy.
 	Upload(ctx context.Context, policyID string, content []byte) error
 
-	// Upload the policy content of the policy.
+	// Download the policy content of the policy.
 	Download(ctx context.Context, policyID string) ([]byte, error)
 }
 
