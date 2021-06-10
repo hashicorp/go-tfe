@@ -151,7 +151,7 @@ func TestConfigurationVersionsReadWithOptions(t *testing.T) {
 	orgTest, orgTestCleanup := createOrganization(t, client)
 	defer orgTestCleanup()
 
-	wTest, wTestCleanup := createWorkspaceWithVCS(t, client, orgTest, true)
+	wTest, wTestCleanup := createWorkspaceWithVCS(t, client, orgTest, WorkspaceCreateOptions{QueueAllRuns: Bool(true)})
 	defer wTestCleanup()
 
 	// Hack: Wait for TFC to ingress the configuration and queue a run

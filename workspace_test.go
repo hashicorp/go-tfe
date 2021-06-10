@@ -286,7 +286,7 @@ func TestWorkspacesReadReadme(t *testing.T) {
 	orgTest, orgTestCleanup := createOrganization(t, client)
 	defer orgTestCleanup()
 
-	wTest, wTestCleanup := createWorkspaceWithVCS(t, client, orgTest, false)
+	wTest, wTestCleanup := createWorkspaceWithVCS(t, client, orgTest, WorkspaceCreateOptions{})
 	defer wTestCleanup()
 
 	_, rCleanup := createAppliedRun(t, client, wTest)
@@ -608,7 +608,7 @@ func TestWorkspacesRemoveVCSConnection(t *testing.T) {
 	orgTest, orgTestCleanup := createOrganization(t, client)
 	defer orgTestCleanup()
 
-	wTest, wTestCleanup := createWorkspaceWithVCS(t, client, orgTest, false)
+	wTest, wTestCleanup := createWorkspaceWithVCS(t, client, orgTest, WorkspaceCreateOptions{})
 	defer wTestCleanup()
 
 	t.Run("remove vcs integration", func(t *testing.T) {
@@ -625,7 +625,7 @@ func TestWorkspacesRemoveVCSConnectionByID(t *testing.T) {
 	orgTest, orgTestCleanup := createOrganization(t, client)
 	defer orgTestCleanup()
 
-	wTest, wTestCleanup := createWorkspaceWithVCS(t, client, orgTest, false)
+	wTest, wTestCleanup := createWorkspaceWithVCS(t, client, orgTest, WorkspaceCreateOptions{})
 	defer wTestCleanup()
 
 	t.Run("remove vcs integration", func(t *testing.T) {

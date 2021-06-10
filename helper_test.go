@@ -920,7 +920,7 @@ func createWorkspace(t *testing.T, client *Client, org *Organization) (*Workspac
 // false, runs triggered by a VCS change will not be queued until at least one run is manually
 // queued. If set to true, a run will be automatically started after the configuration is ingressed
 // from VCS.
-func createWorkspaceWithVCS(t *testing.T, client *Client, org *Organization, queueAllRuns bool) (*Workspace, func()) {
+func createWorkspaceWithVCS(t *testing.T, client *Client, org *Organization, options WorkspaceCreateOptions) (*Workspace, func()) {
 	var orgCleanup func()
 
 	if org == nil {
@@ -934,13 +934,15 @@ func createWorkspaceWithVCS(t *testing.T, client *Client, org *Organization, que
 		t.Fatal("Export a valid GITHUB_POLICY_SET_IDENTIFIER before running this test!")
 	}
 
-	options := WorkspaceCreateOptions{
-		Name:         String(randomString(t)),
-		QueueAllRuns: Bool(queueAllRuns),
-		VCSRepo: &VCSRepoOptions{
+	if options.Name == nil {
+		options.Name = String(randomString(t))
+	}
+
+	if options.VCSRepo == nil {
+		options.VCSRepo = &VCSRepoOptions{
 			Identifier:   String(githubIdentifier),
 			OAuthTokenID: String(oc.ID),
-		},
+		}
 	}
 
 	ctx := context.Background()
