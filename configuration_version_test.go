@@ -144,6 +144,46 @@ func TestConfigurationVersionsRead(t *testing.T) {
 	})
 }
 
+func TestConfigurationVersionsReadWithOptions(t *testing.T) {
+	client := testClient(t)
+	ctx := context.Background()
+
+	orgTest, orgTestCleanup := createOrganization(t, client)
+	defer orgTestCleanup()
+
+	wTest, wTestCleanup := createWorkspaceWithVCS(t, client, orgTest, WorkspaceCreateOptions{QueueAllRuns: Bool(true)})
+	defer wTestCleanup()
+
+	// Hack: Wait for TFC to ingress the configuration and queue a run
+	time.Sleep(3 * time.Second)
+
+	w, err := client.Workspaces.ReadByIDWithOptions(ctx, wTest.ID, &WorkspaceReadOptions{
+		Include: "current-run.configuration-version",
+	})
+
+	if err != nil {
+		require.NoError(t, err)
+	}
+
+	if w.CurrentRun == nil {
+		t.Fatal("A run was expected to be found on this workspace as a test pre-condition")
+	}
+
+	cv := w.CurrentRun.ConfigurationVersion
+
+	t.Run("when the configuration version exists", func(t *testing.T) {
+		options := &ConfigurationVersionReadOptions{
+			Include: "ingress-attributes",
+		}
+
+		cv, err := client.ConfigurationVersions.ReadWithOptions(ctx, cv.ID, options)
+		require.NoError(t, err)
+
+		assert.NotZero(t, cv.IngressAttributes)
+		assert.NotZero(t, cv.IngressAttributes.CommitURL)
+	})
+}
+
 func TestConfigurationVersionsUpload(t *testing.T) {
 	client := testClient(t)
 	ctx := context.Background()

@@ -4,11 +4,12 @@ import (
 	"bytes"
 	"context"
 	"encoding/json"
-	"github.com/hashicorp/go-retryablehttp"
 	"io/ioutil"
 	"strings"
 	"testing"
 	"time"
+
+	"github.com/hashicorp/go-retryablehttp"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
@@ -285,7 +286,7 @@ func TestWorkspacesReadReadme(t *testing.T) {
 	orgTest, orgTestCleanup := createOrganization(t, client)
 	defer orgTestCleanup()
 
-	wTest, wTestCleanup := createWorkspaceWithVCS(t, client, orgTest)
+	wTest, wTestCleanup := createWorkspaceWithVCS(t, client, orgTest, WorkspaceCreateOptions{})
 	defer wTestCleanup()
 
 	_, rCleanup := createAppliedRun(t, client, wTest)
@@ -607,7 +608,7 @@ func TestWorkspacesRemoveVCSConnection(t *testing.T) {
 	orgTest, orgTestCleanup := createOrganization(t, client)
 	defer orgTestCleanup()
 
-	wTest, wTestCleanup := createWorkspaceWithVCS(t, client, orgTest)
+	wTest, wTestCleanup := createWorkspaceWithVCS(t, client, orgTest, WorkspaceCreateOptions{})
 	defer wTestCleanup()
 
 	t.Run("remove vcs integration", func(t *testing.T) {
@@ -624,7 +625,7 @@ func TestWorkspacesRemoveVCSConnectionByID(t *testing.T) {
 	orgTest, orgTestCleanup := createOrganization(t, client)
 	defer orgTestCleanup()
 
-	wTest, wTestCleanup := createWorkspaceWithVCS(t, client, orgTest)
+	wTest, wTestCleanup := createWorkspaceWithVCS(t, client, orgTest, WorkspaceCreateOptions{})
 	defer wTestCleanup()
 
 	t.Run("remove vcs integration", func(t *testing.T) {

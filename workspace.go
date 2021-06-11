@@ -33,6 +33,9 @@ type Workspaces interface {
 	// ReadByID reads a workspace by its ID.
 	ReadByID(ctx context.Context, workspaceID string) (*Workspace, error)
 
+	// ReadByIDWithOptions reads a workspace by its ID with the given options.
+	ReadByIDWithOptions(ctx context.Context, workspaceID string, options *WorkspaceReadOptions) (*Workspace, error)
+
 	// Update settings of an existing workspace.
 	Update(ctx context.Context, organization string, workspace string, options WorkspaceUpdateOptions) (*Workspace, error)
 
@@ -173,6 +176,11 @@ type WorkspacePermissions struct {
 	CanUnlock         bool `jsonapi:"attr,can-unlock"`
 	CanUpdate         bool `jsonapi:"attr,can-update"`
 	CanUpdateVariable bool `jsonapi:"attr,can-update-variable"`
+}
+
+// WorkspaceReadOptions represents the options for reading a workspace.
+type WorkspaceReadOptions struct {
+	Include string `url:"include"`
 }
 
 // WorkspaceListOptions represents the options for listing workspaces.
@@ -383,12 +391,17 @@ func (s *workspaces) Read(ctx context.Context, organization, workspace string) (
 
 // ReadByID reads a workspace by its ID.
 func (s *workspaces) ReadByID(ctx context.Context, workspaceID string) (*Workspace, error) {
+	return s.ReadByIDWithOptions(ctx, workspaceID, nil)
+}
+
+// ReadByIDWithOptions reads a workspace by its ID with the given options.
+func (s *workspaces) ReadByIDWithOptions(ctx context.Context, workspaceID string, options *WorkspaceReadOptions) (*Workspace, error) {
 	if !validStringID(&workspaceID) {
 		return nil, ErrInvalidWorkspaceID
 	}
 
 	u := fmt.Sprintf("workspaces/%s", url.QueryEscape(workspaceID))
-	req, err := s.client.newRequest("GET", u, nil)
+	req, err := s.client.newRequest("GET", u, options)
 	if err != nil {
 		return nil, err
 	}
