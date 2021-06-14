@@ -387,17 +387,18 @@ func TestWorkspacesUpdate(t *testing.T) {
 
 	t.Run("with valid options", func(t *testing.T) {
 		options := WorkspaceUpdateOptions{
-			Name:                String(randomString(t)),
-			AllowDestroyPlan:    Bool(true),
-			AutoApply:           Bool(false),
-			FileTriggersEnabled: Bool(true),
-			Operations:          Bool(false),
-			QueueAllRuns:        Bool(false),
-			SpeculativeEnabled:  Bool(true),
-			Description:         String("updated description"),
-			TerraformVersion:    String("0.11.1"),
-			TriggerPrefixes:     []string{"/modules", "/shared"},
-			WorkingDirectory:    String("baz/"),
+			Name:                       String(randomString(t)),
+			AllowDestroyPlan:           Bool(true),
+			AutoApply:                  Bool(false),
+			FileTriggersEnabled:        Bool(true),
+			Operations:                 Bool(false),
+			QueueAllRuns:               Bool(false),
+			SpeculativeEnabled:         Bool(true),
+			Description:                String("updated description"),
+			StructuredRunOutputEnabled: Bool(true),
+			TerraformVersion:           String("0.11.1"),
+			TriggerPrefixes:            []string{"/modules", "/shared"},
+			WorkingDirectory:           String("baz/"),
 		}
 
 		w, err := client.Workspaces.Update(ctx, orgTest.Name, wTest.Name, options)
@@ -419,6 +420,7 @@ func TestWorkspacesUpdate(t *testing.T) {
 			assert.Equal(t, *options.Operations, item.Operations)
 			assert.Equal(t, *options.QueueAllRuns, item.QueueAllRuns)
 			assert.Equal(t, *options.SpeculativeEnabled, item.SpeculativeEnabled)
+			assert.Equal(t, *options.StructuredRunOutputEnabled, item.StructuredRunOutputEnabled)
 			assert.Equal(t, *options.TerraformVersion, item.TerraformVersion)
 			assert.Equal(t, options.TriggerPrefixes, item.TriggerPrefixes)
 			assert.Equal(t, *options.WorkingDirectory, item.WorkingDirectory)
