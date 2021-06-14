@@ -96,38 +96,39 @@ type WorkspaceList struct {
 
 // Workspace represents a Terraform Enterprise workspace.
 type Workspace struct {
-	ID                   string                `jsonapi:"primary,workspaces"`
-	Actions              *WorkspaceActions     `jsonapi:"attr,actions"`
-	AgentPoolID          string                `jsonapi:"attr,agent-pool-id"`
-	AllowDestroyPlan     bool                  `jsonapi:"attr,allow-destroy-plan"`
-	AutoApply            bool                  `jsonapi:"attr,auto-apply"`
-	CanQueueDestroyPlan  bool                  `jsonapi:"attr,can-queue-destroy-plan"`
-	CreatedAt            time.Time             `jsonapi:"attr,created-at,iso8601"`
-	Description          string                `jsonapi:"attr,description"`
-	Environment          string                `jsonapi:"attr,environment"`
-	ExecutionMode        string                `jsonapi:"attr,execution-mode"`
-	FileTriggersEnabled  bool                  `jsonapi:"attr,file-triggers-enabled"`
-	GlobalRemoteState    bool                  `jsonapi:"attr,global-remote-state"`
-	Locked               bool                  `jsonapi:"attr,locked"`
-	MigrationEnvironment string                `jsonapi:"attr,migration-environment"`
-	Name                 string                `jsonapi:"attr,name"`
-	Operations           bool                  `jsonapi:"attr,operations"`
-	Permissions          *WorkspacePermissions `jsonapi:"attr,permissions"`
-	QueueAllRuns         bool                  `jsonapi:"attr,queue-all-runs"`
-	SpeculativeEnabled   bool                  `jsonapi:"attr,speculative-enabled"`
-	SourceName           string                `jsonapi:"attr,source-name"`
-	SourceURL            string                `jsonapi:"attr,source-url"`
-	TerraformVersion     string                `jsonapi:"attr,terraform-version"`
-	TriggerPrefixes      []string              `jsonapi:"attr,trigger-prefixes"`
-	VCSRepo              *VCSRepo              `jsonapi:"attr,vcs-repo"`
-	WorkingDirectory     string                `jsonapi:"attr,working-directory"`
-	UpdatedAt            time.Time             `jsonapi:"attr,updated-at,iso8601"`
-	ResourceCount        int                   `jsonapi:"attr,resource-count"`
-	ApplyDurationAverage time.Duration         `jsonapi:"attr,apply-duration-average"`
-	PlanDurationAverage  time.Duration         `jsonapi:"attr,plan-duration-average"`
-	PolicyCheckFailures  int                   `jsonapi:"attr,policy-check-failures"`
-	RunFailures          int                   `jsonapi:"attr,run-failures"`
-	RunsCount            int                   `jsonapi:"attr,workspace-kpis-runs-count"`
+	ID                         string                `jsonapi:"primary,workspaces"`
+	Actions                    *WorkspaceActions     `jsonapi:"attr,actions"`
+	AgentPoolID                string                `jsonapi:"attr,agent-pool-id"`
+	AllowDestroyPlan           bool                  `jsonapi:"attr,allow-destroy-plan"`
+	AutoApply                  bool                  `jsonapi:"attr,auto-apply"`
+	CanQueueDestroyPlan        bool                  `jsonapi:"attr,can-queue-destroy-plan"`
+	CreatedAt                  time.Time             `jsonapi:"attr,created-at,iso8601"`
+	Description                string                `jsonapi:"attr,description"`
+	Environment                string                `jsonapi:"attr,environment"`
+	ExecutionMode              string                `jsonapi:"attr,execution-mode"`
+	FileTriggersEnabled        bool                  `jsonapi:"attr,file-triggers-enabled"`
+	GlobalRemoteState          bool                  `jsonapi:"attr,global-remote-state"`
+	Locked                     bool                  `jsonapi:"attr,locked"`
+	MigrationEnvironment       string                `jsonapi:"attr,migration-environment"`
+	Name                       string                `jsonapi:"attr,name"`
+	Operations                 bool                  `jsonapi:"attr,operations"`
+	Permissions                *WorkspacePermissions `jsonapi:"attr,permissions"`
+	QueueAllRuns               bool                  `jsonapi:"attr,queue-all-runs"`
+	SpeculativeEnabled         bool                  `jsonapi:"attr,speculative-enabled"`
+	SourceName                 string                `jsonapi:"attr,source-name"`
+	SourceURL                  string                `jsonapi:"attr,source-url"`
+	StructuredRunOutputEnabled bool                  `jsonapi:"attr,structured-run-output-enabled"`
+	TerraformVersion           string                `jsonapi:"attr,terraform-version"`
+	TriggerPrefixes            []string              `jsonapi:"attr,trigger-prefixes"`
+	VCSRepo                    *VCSRepo              `jsonapi:"attr,vcs-repo"`
+	WorkingDirectory           string                `jsonapi:"attr,working-directory"`
+	UpdatedAt                  time.Time             `jsonapi:"attr,updated-at,iso8601"`
+	ResourceCount              int                   `jsonapi:"attr,resource-count"`
+	ApplyDurationAverage       time.Duration         `jsonapi:"attr,apply-duration-average"`
+	PlanDurationAverage        time.Duration         `jsonapi:"attr,plan-duration-average"`
+	PolicyCheckFailures        int                   `jsonapi:"attr,policy-check-failures"`
+	RunFailures                int                   `jsonapi:"attr,run-failures"`
+	RunsCount                  int                   `jsonapi:"attr,workspace-kpis-runs-count"`
 
 	// Relations
 	AgentPool    *AgentPool    `jsonapi:"relation,agent-pool"`
@@ -284,6 +285,12 @@ type WorkspaceCreateOptions struct {
 	// can be the URL of a related resource in another app, or a link to
 	// documentation or other info about the client.
 	SourceURL *string `jsonapi:"attr,source-url,omitempty"`
+
+	// BETA. Enable the experimental advanced run user interface.
+	// This only applies to runs using Terraform version 0.15.2 or newer,
+	// and runs executed using older versions will see the classic experience
+	// regardless of this setting.
+	StructuredRunOutputEnabled *bool `jsonapi:"attr,structured-run-output-enabled,omitempty"`
 
 	// The version of Terraform to use for this workspace. Upon creating a
 	// workspace, the latest version is selected unless otherwise specified.
@@ -498,6 +505,12 @@ type WorkspaceUpdateOptions struct {
 	// running plans on pull requests, which can improve security if the VCS
 	// repository is public or includes untrusted contributors.
 	SpeculativeEnabled *bool `jsonapi:"attr,speculative-enabled,omitempty"`
+
+	// BETA. Enable the experimental advanced run user interface.
+	// This only applies to runs using Terraform version 0.15.2 or newer,
+	// and runs executed using older versions will see the classic experience
+	// regardless of this setting.
+	StructuredRunOutputEnabled *bool `jsonapi:"attr,structured-run-output-enabled,omitempty"`
 
 	// The version of Terraform to use for this workspace.
 	TerraformVersion *string `jsonapi:"attr,terraform-version,omitempty"`
