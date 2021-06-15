@@ -187,6 +187,9 @@ func (s *policySets) Create(ctx context.Context, organization string, options Po
 	return ps, err
 }
 
+// PolicySetReadOptions are read options.
+// For a full list of relations, please see:
+// https://www.terraform.io/docs/cloud/api/policy-sets.html#relationships
 type PolicySetReadOptions struct {
 	Include string `url:"include"`
 }
