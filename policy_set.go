@@ -71,8 +71,9 @@ type PolicySet struct {
 	UpdatedAt      time.Time `jsonapi:"attr,updated-at,iso8601"`
 
 	// Relations
+	// The organization to which the policy set belongs to.
 	Organization *Organization `jsonapi:"relation,organization"`
-	// The workspaces to which the policy set applies
+	// The workspaces to which the policy set applies.
 	Workspaces []*Workspace `jsonapi:"relation,workspaces"`
 	// Individually managed policies which are associated with the policy set.
 	Policies []*Policy `jsonapi:"relation,policies"`
