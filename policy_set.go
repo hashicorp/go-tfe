@@ -25,6 +25,9 @@ type PolicySets interface {
 	// Read a policy set by its ID.
 	Read(ctx context.Context, policySetID string) (*PolicySet, error)
 
+	// ReadWithOptions reads a policy set by its ID using the options supplied.
+	ReadWithOptions(ctx context.Context, policySetID string, options *PolicySetReadOptions) (*PolicySet, error)
+
 	// Update an existing policy set.
 	Update(ctx context.Context, policySetID string, options PolicySetUpdateOptions) (*PolicySet, error)
 
@@ -80,9 +83,9 @@ type PolicySet struct {
 	// The most recently created policy set version, regardless of status.
 	// Note that this relationship may include an errored and unusable version,
 	// and is intended to allow checking for errors.
-	PolicySetVersionNewest *PolicySetVersion `jsonapi:"relation,newest-version"`
+	PolicySetNewestVersion *PolicySetVersion `jsonapi:"relation,newest-version"`
 	// The most recent successful policy set version.
-	PolicySetVersionCurrent *PolicySetVersion `jsonapi:"relation,current-version"`
+	PolicySetCurrentVersion *PolicySetVersion `jsonapi:"relation,current-version"`
 }
 
 // PolicySetListOptions represents the options for listing policy sets.
@@ -184,14 +187,23 @@ func (s *policySets) Create(ctx context.Context, organization string, options Po
 	return ps, err
 }
 
+type PolicySetReadOptions struct {
+	Include string `url:"include"`
+}
+
 // Read a policy set by its ID.
 func (s *policySets) Read(ctx context.Context, policySetID string) (*PolicySet, error) {
+	return s.ReadWithOptions(ctx, policySetID, nil)
+}
+
+// ReadWithOptions reads a policy by its ID using the options supplied.
+func (s *policySets) ReadWithOptions(ctx context.Context, policySetID string, options *PolicySetReadOptions) (*PolicySet, error) {
 	if !validStringID(&policySetID) {
 		return nil, errors.New("invalid value for policy set ID")
 	}
 
 	u := fmt.Sprintf("policy-sets/%s", url.QueryEscape(policySetID))
-	req, err := s.client.newRequest("GET", u, nil)
+	req, err := s.client.newRequest("GET", u, options)
 	if err != nil {
 		return nil, err
 	}
