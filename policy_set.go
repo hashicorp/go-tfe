@@ -79,7 +79,7 @@ type PolicySet struct {
 	Policies []*Policy `jsonapi:"relation,policies"`
 	// The most recently created policy set version, regardless of status.
 	// Note that this relationship may include an errored and unusable version,
-	// and is intended to allow checking for VCS errors.
+	// and is intended to allow checking for errors.
 	PolicySetVersionNewest *PolicySetVersion `jsonapi:"relation,newest-version"`
 	// The most recent successful policy set version.
 	PolicySetVersionCurrent *PolicySetVersion `jsonapi:"relation,current-version"`
