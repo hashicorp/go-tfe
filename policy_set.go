@@ -72,8 +72,16 @@ type PolicySet struct {
 
 	// Relations
 	Organization *Organization `jsonapi:"relation,organization"`
-	Policies     []*Policy     `jsonapi:"relation,policies"`
-	Workspaces   []*Workspace  `jsonapi:"relation,workspaces"`
+	// The workspaces to which the policy set applies
+	Workspaces []*Workspace `jsonapi:"relation,workspaces"`
+	// Individually managed policies which are associated with the policy set.
+	Policies []*Policy `jsonapi:"relation,policies"`
+	// The most recently created policy set version, regardless of status.
+	// Note that this relationship may include an errored and unusable version,
+	// and is intended to allow checking for VCS errors.
+	PolicySetVersionNewest *PolicySetVersion `jsonapi:"relation,newest-version"`
+	// The most recent successful policy set version.
+	PolicySetVersionCurrent *PolicySetVersion `jsonapi:"relation,current-version"`
 }
 
 // PolicySetListOptions represents the options for listing policy sets.
