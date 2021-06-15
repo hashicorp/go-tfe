@@ -267,9 +267,9 @@ func TestPolicySetsRead(t *testing.T) {
 		require.NoError(t, err)
 
 		// The newest one is the policy set version created in this test.
-		assert.Equal(t, ps.PolicySetNewestVersion.ID, psv.ID)
+		assert.Equal(t, ps.NewestVersion.ID, psv.ID)
 		// The current policy set version is nil because nothing has been uploaded
-		assert.Nil(t, ps.PolicySetCurrentVersion)
+		assert.Nil(t, ps.CurrentVersion)
 
 		psvNew, psvCleanupNew := createPolicySetVersion(t, client, psTest)
 		defer psvCleanupNew()
@@ -288,13 +288,13 @@ func TestPolicySetsRead(t *testing.T) {
 
 		// The newest policy set version is changed to the most recent one
 		// that was created.
-		assert.Equal(t, ps.PolicySetNewestVersion.ID, psvNew.ID)
-		assert.Equal(t, ps.PolicySetNewestVersion.Status, PolicySetVersionPending)
+		assert.Equal(t, ps.NewestVersion.ID, psvNew.ID)
+		assert.Equal(t, ps.NewestVersion.Status, PolicySetVersionPending)
 		// The current one is now set because policies were uploaded to the
 		// policy set version. Notice how it is set to the one that was uplaoded,
 		// not the newest policy set version.
-		assert.Equal(t, ps.PolicySetCurrentVersion.ID, psv.ID)
-		assert.Equal(t, ps.PolicySetCurrentVersion.Status, PolicySetVersionReady)
+		assert.Equal(t, ps.CurrentVersion.ID, psv.ID)
+		assert.Equal(t, ps.CurrentVersion.Status, PolicySetVersionReady)
 	})
 }
 
