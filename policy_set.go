@@ -83,9 +83,9 @@ type PolicySet struct {
 	// The most recently created policy set version, regardless of status.
 	// Note that this relationship may include an errored and unusable version,
 	// and is intended to allow checking for errors.
-	PolicySetNewestVersion *PolicySetVersion `jsonapi:"relation,newest-version"`
+	NewestVersion *PolicySetVersion `jsonapi:"relation,newest-version"`
 	// The most recent successful policy set version.
-	PolicySetCurrentVersion *PolicySetVersion `jsonapi:"relation,current-version"`
+	CurrentVersion *PolicySetVersion `jsonapi:"relation,current-version"`
 }
 
 // PolicySetListOptions represents the options for listing policy sets.
