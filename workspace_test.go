@@ -105,19 +105,20 @@ func TestWorkspacesCreate(t *testing.T) {
 
 	t.Run("with valid options", func(t *testing.T) {
 		options := WorkspaceCreateOptions{
-			Name:                String("foo"),
-			AllowDestroyPlan:    Bool(false),
-			AutoApply:           Bool(true),
-			Description:         String("qux"),
-			FileTriggersEnabled: Bool(true),
-			Operations:          Bool(true),
-			QueueAllRuns:        Bool(true),
-			SpeculativeEnabled:  Bool(true),
-			SourceName:          String("my-app"),
-			SourceURL:           String("http://my-app-hostname.io"),
-			TerraformVersion:    String("0.11.0"),
-			TriggerPrefixes:     []string{"/modules", "/shared"},
-			WorkingDirectory:    String("bar/"),
+			Name:                       String("foo"),
+			AllowDestroyPlan:           Bool(false),
+			AutoApply:                  Bool(true),
+			Description:                String("qux"),
+			FileTriggersEnabled:        Bool(true),
+			Operations:                 Bool(true),
+			QueueAllRuns:               Bool(true),
+			SpeculativeEnabled:         Bool(true),
+			SourceName:                 String("my-app"),
+			SourceURL:                  String("http://my-app-hostname.io"),
+			StructuredRunOutputEnabled: Bool(true),
+			TerraformVersion:           String("0.11.0"),
+			TriggerPrefixes:            []string{"/modules", "/shared"},
+			WorkingDirectory:           String("bar/"),
 		}
 
 		w, err := client.Workspaces.Create(ctx, orgTest.Name, options)
@@ -142,6 +143,7 @@ func TestWorkspacesCreate(t *testing.T) {
 			assert.Equal(t, *options.SpeculativeEnabled, item.SpeculativeEnabled)
 			assert.Equal(t, *options.SourceName, item.SourceName)
 			assert.Equal(t, *options.SourceURL, item.SourceURL)
+			assert.Equal(t, *options.StructuredRunOutputEnabled, item.StructuredRunOutputEnabled)
 			assert.Equal(t, *options.TerraformVersion, item.TerraformVersion)
 			assert.Equal(t, options.TriggerPrefixes, item.TriggerPrefixes)
 			assert.Equal(t, *options.WorkingDirectory, item.WorkingDirectory)
@@ -385,17 +387,18 @@ func TestWorkspacesUpdate(t *testing.T) {
 
 	t.Run("with valid options", func(t *testing.T) {
 		options := WorkspaceUpdateOptions{
-			Name:                String(randomString(t)),
-			AllowDestroyPlan:    Bool(true),
-			AutoApply:           Bool(false),
-			FileTriggersEnabled: Bool(true),
-			Operations:          Bool(false),
-			QueueAllRuns:        Bool(false),
-			SpeculativeEnabled:  Bool(true),
-			Description:         String("updated description"),
-			TerraformVersion:    String("0.11.1"),
-			TriggerPrefixes:     []string{"/modules", "/shared"},
-			WorkingDirectory:    String("baz/"),
+			Name:                       String(randomString(t)),
+			AllowDestroyPlan:           Bool(true),
+			AutoApply:                  Bool(false),
+			FileTriggersEnabled:        Bool(true),
+			Operations:                 Bool(false),
+			QueueAllRuns:               Bool(false),
+			SpeculativeEnabled:         Bool(true),
+			Description:                String("updated description"),
+			StructuredRunOutputEnabled: Bool(true),
+			TerraformVersion:           String("0.11.1"),
+			TriggerPrefixes:            []string{"/modules", "/shared"},
+			WorkingDirectory:           String("baz/"),
 		}
 
 		w, err := client.Workspaces.Update(ctx, orgTest.Name, wTest.Name, options)
@@ -417,6 +420,7 @@ func TestWorkspacesUpdate(t *testing.T) {
 			assert.Equal(t, *options.Operations, item.Operations)
 			assert.Equal(t, *options.QueueAllRuns, item.QueueAllRuns)
 			assert.Equal(t, *options.SpeculativeEnabled, item.SpeculativeEnabled)
+			assert.Equal(t, *options.StructuredRunOutputEnabled, item.StructuredRunOutputEnabled)
 			assert.Equal(t, *options.TerraformVersion, item.TerraformVersion)
 			assert.Equal(t, options.TriggerPrefixes, item.TriggerPrefixes)
 			assert.Equal(t, *options.WorkingDirectory, item.WorkingDirectory)
@@ -497,16 +501,17 @@ func TestWorkspacesUpdateByID(t *testing.T) {
 
 	t.Run("with valid options", func(t *testing.T) {
 		options := WorkspaceUpdateOptions{
-			Name:                String(randomString(t)),
-			AllowDestroyPlan:    Bool(true),
-			AutoApply:           Bool(false),
-			FileTriggersEnabled: Bool(true),
-			Operations:          Bool(false),
-			QueueAllRuns:        Bool(false),
-			SpeculativeEnabled:  Bool(true),
-			TerraformVersion:    String("0.11.1"),
-			TriggerPrefixes:     []string{"/modules", "/shared"},
-			WorkingDirectory:    String("baz/"),
+			Name:                       String(randomString(t)),
+			AllowDestroyPlan:           Bool(true),
+			AutoApply:                  Bool(false),
+			FileTriggersEnabled:        Bool(true),
+			Operations:                 Bool(false),
+			QueueAllRuns:               Bool(false),
+			SpeculativeEnabled:         Bool(true),
+			StructuredRunOutputEnabled: Bool(true),
+			TerraformVersion:           String("0.11.1"),
+			TriggerPrefixes:            []string{"/modules", "/shared"},
+			WorkingDirectory:           String("baz/"),
 		}
 
 		w, err := client.Workspaces.UpdateByID(ctx, wTest.ID, options)
@@ -527,6 +532,7 @@ func TestWorkspacesUpdateByID(t *testing.T) {
 			assert.Equal(t, *options.Operations, item.Operations)
 			assert.Equal(t, *options.QueueAllRuns, item.QueueAllRuns)
 			assert.Equal(t, *options.SpeculativeEnabled, item.SpeculativeEnabled)
+			assert.Equal(t, *options.StructuredRunOutputEnabled, item.StructuredRunOutputEnabled)
 			assert.Equal(t, *options.TerraformVersion, item.TerraformVersion)
 			assert.Equal(t, options.TriggerPrefixes, item.TriggerPrefixes)
 			assert.Equal(t, *options.WorkingDirectory, item.WorkingDirectory)
@@ -1051,7 +1057,7 @@ func TestWorkspace_Unmarshal(t *testing.T) {
 	require.NoError(t, err)
 
 	iso8601TimeFormat := "2006-01-02T15:04:05Z"
-	parsedTime, err := time.Parse(iso8601TimeFormat, "2020-07-15T23:38:43.821Z")
+	parsedTime, _ := time.Parse(iso8601TimeFormat, "2020-07-15T23:38:43.821Z")
 
 	assert.Equal(t, ws.ID, "ws-1234")
 	assert.Equal(t, ws.Name, "my-workspace")
