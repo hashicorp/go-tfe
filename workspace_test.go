@@ -119,6 +119,16 @@ func TestWorkspacesCreate(t *testing.T) {
 			TerraformVersion:           String("0.11.0"),
 			TriggerPrefixes:            []string{"/modules", "/shared"},
 			WorkingDirectory:           String("bar/"),
+			Tags:                       []TagOptions{
+				                            {
+																			Name: "tag1",
+																			Type: "tags",
+																		},
+																		{
+																			Id:   "tag-1234abcd568EFGH",
+																			Type: "tags",
+																		},
+																	},
 		}
 
 		w, err := client.Workspaces.Create(ctx, orgTest.Name, options)
@@ -1064,6 +1074,42 @@ func TestWorkspaces_UpdateRemoteStateConsumers(t *testing.T) {
 		require.Error(t, err)
 		assert.EqualError(t, err, ErrInvalidWorkspaceID.Error())
 	})
+}
+
+func TestWorkspaces_(t *testing.T) {
+	client := testClient(t)
+	ctx := context.Background()
+
+	orgTest, orgTestCleanup := createOrganization(t, client)
+	defer orgTestCleanup()
+
+	wTest, wTestCleanup := createWorkspace(t, client, orgTest)
+	defer wTestCleanup()
+
+	wTagOptions := WorkspaceTagsOptions{ Tags: {
+		{
+			Name: "tag1",
+			Type: "tags",
+		},
+		{
+			Name: "tag2",
+			Type: "tags",
+		},
+		{
+			Name: "tag3",
+			Type: "tags",
+		},
+	}
+
+	t.Run("successfully adds tags", func(t *testing.T) {
+		err := client.Workspaces.AddTags(ctx, wTest.ID, wTagOptions)
+		require.NoError(t, err)
+
+		ws, err := client.Workspaces.Read(ctx, wTest.ID)
+		require.NoError(t, err)
+		assert.Equal(t, 3 len(ws.TagNames))
+		assert.Equal(t, ws.TagNames, []string{"tag1", "tag2", "tag3"})
+	}
 }
 
 func TestWorkspace_Unmarshal(t *testing.T) {

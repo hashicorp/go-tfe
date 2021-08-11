@@ -84,6 +84,12 @@ type Workspaces interface {
 	// UpdateRemoteStateConsumers updates all the remote state consumers for a workspace
 	// to match the workspaces in the update options.
 	UpdateRemoteStateConsumers(ctx context.Context, workspaceID string, options WorkspaceUpdateRemoteStateConsumersOptions) error
+
+	// AddTags appends tags to a workspace
+	AddTags(ctx context.Context, workspaceID string, options WorkspaceTagsOptions) (*Workspace error)
+
+	// DeleteTags removes tags from a workspace
+	DeleteTags(ctx context.Context, workspaceID string, options WorkspaceTagsOptions) (*Workspace error)
 }
 
 // workspaces implements Workspaces.
@@ -132,6 +138,7 @@ type Workspace struct {
 	PolicyCheckFailures        int                   `jsonapi:"attr,policy-check-failures"`
 	RunFailures                int                   `jsonapi:"attr,run-failures"`
 	RunsCount                  int                   `jsonapi:"attr,workspace-kpis-runs-count"`
+	TagNames                   []string              `jsonapi:"attr,tag-names"`
 
 	// Relations
 	AgentPool    *AgentPool          `jsonapi:"relation,agent-pool"`
@@ -321,6 +328,16 @@ type WorkspaceCreateOptions struct {
 	// root of your repository and is typically set to a subdirectory matching the
 	// environment when multiple environments exist within the same repository.
 	WorkingDirectory *string `jsonapi:"attr,working-directory,omitempty"`
+
+	// A list of tags to attach to the workspace. If the tag does not already
+	// exist, it is created and added to the workspace.
+	Tags []TagOptions `jsonapi:"relation,tags,data,omitempty`
+}
+
+type TagOptions struct {
+	Id   *string `json:"id,omitempty"`
+	Name *string `json:"attributes,name,omitempty"`
+	Type *string `json:"type,omitempty"`
 }
 
 // TODO: move this struct out. VCSRepoOptions is used by workspaces, policy sets, and registry modules
@@ -980,6 +997,54 @@ func (s *workspaces) UpdateRemoteStateConsumers(ctx context.Context, workspaceID
 
 	u := fmt.Sprintf("workspaces/%s/relationships/remote-state-consumers", url.QueryEscape(workspaceID))
 	req, err := s.client.newRequest("PATCH", u, options.Workspaces)
+	if err != nil {
+		return err
+	}
+
+	return s.client.do(ctx, req, nil)
+}
+
+type WorkspaceTagsOptions struct {
+	Tags []TagOptions `jsonapi:"relation,tags,data,omitempty`
+}
+
+func (o WorkspaceTagsOptions) valid() error {
+/*
+ Is this helpful? does it matter if we allow them to pass and empty list?
+  if len(o.Names) == 0 {
+    return ErrMinTagsLimit
+  }
+*/
+  for i, s := range o.Tags {
+		if (s.Name == nil && s.Id == nil) {
+			return ErrMissingTagIdentifier
+		}
+	}
+}
+
+func (s *workspace) AddTags(ctx context.Context, workspaceID string, options WorkspaceTagsOptions) error {
+	if err := options.valid(); err != nil {
+		return err
+	}
+
+	u := fmt.Sprintf("workspaces/%s/relationships/tags", url.QueryEscape(workspaceID))
+	req, err := s.client.newRequest("POST", u, options)
+
+	if err != nil {
+		return err
+	}
+
+	return s.client.do(ctx, req, nil)
+}
+
+func (s *workspace) DeleteTags(ctx context.Context, workspaceID string, options WorkspaceTagsOptions) error {
+	if err := options.valid(); err != nil {
+		return err
+	}
+
+	u := fmt.Sprintf("workspaces/%s/relationships/tags", url.QueryEscape(workspaceID))
+	req, err := s.client.newRequest("DELETE", u, options)
+
 	if err != nil {
 		return err
 	}
