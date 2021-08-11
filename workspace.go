@@ -86,10 +86,10 @@ type Workspaces interface {
 	UpdateRemoteStateConsumers(ctx context.Context, workspaceID string, options WorkspaceUpdateRemoteStateConsumersOptions) error
 
 	// AddTags appends tags to a workspace
-	AddTags(ctx context.Context, workspaceID string, options WorkspaceTagsOptions) (*Workspace error)
+	AddTags(ctx context.Context, workspaceID string, options WorkspaceTagsOptions) error
 
 	// DeleteTags removes tags from a workspace
-	DeleteTags(ctx context.Context, workspaceID string, options WorkspaceTagsOptions) (*Workspace error)
+	DeleteTags(ctx context.Context, workspaceID string, options WorkspaceTagsOptions) error
 }
 
 // workspaces implements Workspaces.
@@ -1009,14 +1009,16 @@ type WorkspaceTagsOptions struct {
 }
 
 func (o WorkspaceTagsOptions) valid() error {
-  for i, s := range o.Tags {
-		if (s.Name == nil && s.Id == nil) {
+	for _, s := range o.Tags {
+		if s.Name == nil && s.Id == nil {
 			return ErrMissingTagIdentifier
 		}
 	}
+
+	return nil
 }
 
-func (s *workspace) AddTags(ctx context.Context, workspaceID string, options WorkspaceTagsOptions) error {
+func (s *workspaces) AddTags(ctx context.Context, workspaceID string, options WorkspaceTagsOptions) error {
 	if err := options.valid(); err != nil {
 		return err
 	}
@@ -1031,7 +1033,7 @@ func (s *workspace) AddTags(ctx context.Context, workspaceID string, options Wor
 	return s.client.do(ctx, req, nil)
 }
 
-func (s *workspace) DeleteTags(ctx context.Context, workspaceID string, options WorkspaceTagsOptions) error {
+func (s *workspaces) DeleteTags(ctx context.Context, workspaceID string, options WorkspaceTagsOptions) error {
 	if err := options.valid(); err != nil {
 		return err
 	}

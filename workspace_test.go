@@ -119,16 +119,16 @@ func TestWorkspacesCreate(t *testing.T) {
 			TerraformVersion:           String("0.11.0"),
 			TriggerPrefixes:            []string{"/modules", "/shared"},
 			WorkingDirectory:           String("bar/"),
-			Tags:                       []TagOptions{
-				                            {
-																			Name: "tag1",
-																			Type: "tags",
-																		},
-																		{
-																			Id:   "tag-1234abcd568EFGH",
-																			Type: "tags",
-																		},
-																	},
+			Tags: []TagOptions{
+				{
+					Name: String("tag1"),
+					Type: String("tags"),
+				},
+				{
+					Id:   String("tag-1234abcd568EFGH"),
+					Type: String("tags"),
+				},
+			},
 		}
 
 		w, err := client.Workspaces.Create(ctx, orgTest.Name, options)
@@ -1086,18 +1086,20 @@ func TestWorkspaces_(t *testing.T) {
 	wTest, wTestCleanup := createWorkspace(t, client, orgTest)
 	defer wTestCleanup()
 
-	wTagOptions := WorkspaceTagsOptions{ Tags: {
-		{
-			Name: "tag1",
-			Type: "tags",
-		},
-		{
-			Name: "tag2",
-			Type: "tags",
-		},
-		{
-			Name: "tag3",
-			Type: "tags",
+	wTagOptions := WorkspaceTagsOptions{
+		Tags: []TagOptions{
+			{
+				Name: String("tag1"),
+				Type: String("tags"),
+			},
+			{
+				Name: String("tag2"),
+				Type: String("tags"),
+			},
+			{
+				Name: String("tag3"),
+				Type: String("tags"),
+			},
 		},
 	}
 
@@ -1105,11 +1107,11 @@ func TestWorkspaces_(t *testing.T) {
 		err := client.Workspaces.AddTags(ctx, wTest.ID, wTagOptions)
 		require.NoError(t, err)
 
-		ws, err := client.Workspaces.Read(ctx, wTest.ID)
+		w, err := client.Workspaces.Read(ctx, orgTest.Name, wTest.Name)
 		require.NoError(t, err)
-		assert.Equal(t, 3 len(ws.TagNames))
-		assert.Equal(t, ws.TagNames, []string{"tag1", "tag2", "tag3"})
-	}
+		assert.Equal(t, 3, len(w.TagNames))
+		assert.Equal(t, w.TagNames, []string{"tag1", "tag2", "tag3"})
+	})
 }
 
 func TestWorkspace_Unmarshal(t *testing.T) {
