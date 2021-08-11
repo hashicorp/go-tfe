@@ -1024,7 +1024,7 @@ func (s *workspaces) AddTags(ctx context.Context, workspaceID string, options Wo
 	}
 
 	u := fmt.Sprintf("workspaces/%s/relationships/tags", url.QueryEscape(workspaceID))
-	req, err := s.client.newRequest("POST", u, options)
+	req, err := s.client.newRequest("POST", u, &options)
 
 	if err != nil {
 		return err
@@ -1039,7 +1039,7 @@ func (s *workspaces) DeleteTags(ctx context.Context, workspaceID string, options
 	}
 
 	u := fmt.Sprintf("workspaces/%s/relationships/tags", url.QueryEscape(workspaceID))
-	req, err := s.client.newRequest("DELETE", u, options)
+	req, err := s.client.newRequest("DELETE", u, &options)
 
 	if err != nil {
 		return err
