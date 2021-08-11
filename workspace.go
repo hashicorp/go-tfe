@@ -1009,12 +1009,6 @@ type WorkspaceTagsOptions struct {
 }
 
 func (o WorkspaceTagsOptions) valid() error {
-/*
- Is this helpful? does it matter if we allow them to pass and empty list?
-  if len(o.Names) == 0 {
-    return ErrMinTagsLimit
-  }
-*/
   for i, s := range o.Tags {
 		if (s.Name == nil && s.Id == nil) {
 			return ErrMissingTagIdentifier
