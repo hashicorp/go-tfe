@@ -119,14 +119,12 @@ func TestWorkspacesCreate(t *testing.T) {
 			TerraformVersion:           String("0.11.0"),
 			TriggerPrefixes:            []string{"/modules", "/shared"},
 			WorkingDirectory:           String("bar/"),
-			Tags: []TagOptions{
+			Tags: []*Tag{
 				{
-					Name: String("tag1"),
-					Type: String("tags"),
+					Name: "tag1",
 				},
 				{
-					Id:   String("tag-1234abcd568EFGH"),
-					Type: String("tags"),
+					ID: "tag-1234abcd568EFGH",
 				},
 			},
 		}
@@ -1086,25 +1084,20 @@ func TestWorkspaces_(t *testing.T) {
 	wTest, wTestCleanup := createWorkspace(t, client, orgTest)
 	defer wTestCleanup()
 
-	wTagOptions := WorkspaceTagsOptions{
-		Tags: []TagOptions{
-			{
-				Name: String("tag1"),
-				Type: String("tags"),
-			},
-			{
-				Name: String("tag2"),
-				Type: String("tags"),
-			},
-			{
-				Name: String("tag3"),
-				Type: String("tags"),
-			},
+	tags := []*Tag{
+		{
+			Name: "tag1",
+		},
+		{
+			Name: "tag2",
+		},
+		{
+			Name: "tag3",
 		},
 	}
 
 	t.Run("successfully adds tags", func(t *testing.T) {
-		err := client.Workspaces.AddTags(ctx, wTest.ID, wTagOptions)
+		err := client.Workspaces.AddTags(ctx, wTest.ID, tags)
 		require.NoError(t, err)
 
 		w, err := client.Workspaces.Read(ctx, orgTest.Name, wTest.Name)

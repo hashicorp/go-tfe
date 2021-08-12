@@ -86,10 +86,10 @@ type Workspaces interface {
 	UpdateRemoteStateConsumers(ctx context.Context, workspaceID string, options WorkspaceUpdateRemoteStateConsumersOptions) error
 
 	// AddTags appends tags to a workspace
-	AddTags(ctx context.Context, workspaceID string, options WorkspaceTagsOptions) error
+	AddTags(ctx context.Context, workspaceID string, tags []*Tag) error
 
 	// DeleteTags removes tags from a workspace
-	DeleteTags(ctx context.Context, workspaceID string, options WorkspaceTagsOptions) error
+	DeleteTags(ctx context.Context, workspaceID string, tags []*Tag) error
 }
 
 // workspaces implements Workspaces.
@@ -331,13 +331,7 @@ type WorkspaceCreateOptions struct {
 
 	// A list of tags to attach to the workspace. If the tag does not already
 	// exist, it is created and added to the workspace.
-	Tags []TagOptions `jsonapi:"relation,tags,data,omitempty`
-}
-
-type TagOptions struct {
-	Id   *string `json:"id,omitempty"`
-	Name *string `json:"attributes,name,omitempty"`
-	Type *string `json:"type,omitempty"`
+	Tags []*Tag `jsonapi:"relation,tags,data,omitempty`
 }
 
 // TODO: move this struct out. VCSRepoOptions is used by workspaces, policy sets, and registry modules
@@ -1005,12 +999,13 @@ func (s *workspaces) UpdateRemoteStateConsumers(ctx context.Context, workspaceID
 }
 
 type WorkspaceTagsOptions struct {
-	Tags []TagOptions `jsonapi:"relation,tags,data,omitempty`
+	Type string `jsonapi:"primary,workspaces"`
+	Tags []*Tag `jsonapi:"relation,tags,omitempty`
 }
 
 func (o WorkspaceTagsOptions) valid() error {
 	for _, s := range o.Tags {
-		if s.Name == nil && s.Id == nil {
+		if s.Name == "" && s.ID == "" {
 			return ErrMissingTagIdentifier
 		}
 	}
@@ -1018,13 +1013,17 @@ func (o WorkspaceTagsOptions) valid() error {
 	return nil
 }
 
-func (s *workspaces) AddTags(ctx context.Context, workspaceID string, options WorkspaceTagsOptions) error {
-	if err := options.valid(); err != nil {
+func (s *workspaces) AddTags(ctx context.Context, workspaceID string, tags []*Tag) error {
+	w := WorkspaceTagsOptions{
+		Tags: tags,
+	}
+
+	if err := w.valid(); err != nil {
 		return err
 	}
 
 	u := fmt.Sprintf("workspaces/%s/relationships/tags", url.QueryEscape(workspaceID))
-	req, err := s.client.newRequest("POST", u, &options)
+	req, err := s.client.newRequest("POST", u, &w)
 
 	if err != nil {
 		return err
@@ -1033,13 +1032,17 @@ func (s *workspaces) AddTags(ctx context.Context, workspaceID string, options Wo
 	return s.client.do(ctx, req, nil)
 }
 
-func (s *workspaces) DeleteTags(ctx context.Context, workspaceID string, options WorkspaceTagsOptions) error {
-	if err := options.valid(); err != nil {
+func (s *workspaces) DeleteTags(ctx context.Context, workspaceID string, tags []*Tag) error {
+	w := WorkspaceTagsOptions{
+		Tags: tags,
+	}
+
+	if err := w.valid(); err != nil {
 		return err
 	}
 
 	u := fmt.Sprintf("workspaces/%s/relationships/tags", url.QueryEscape(workspaceID))
-	req, err := s.client.newRequest("DELETE", u, &options)
+	req, err := s.client.newRequest("DELETE", u, &w)
 
 	if err != nil {
 		return err
