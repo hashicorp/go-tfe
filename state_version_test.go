@@ -417,3 +417,24 @@ func TestStateVersionsDownload(t *testing.T) {
 		assert.Equal(t, ErrResourceNotFound, err)
 	})
 }
+
+func TestStateVersionOutputsList(t *testing.T) {
+	client := testClient(t)
+	ctx := context.Background()
+
+	wTest1, wTest1Cleanup := createWorkspace(t, client, nil)
+	defer wTest1Cleanup()
+
+	sv, svTestCleanup := createStateVersion(t, client, 0, wTest1)
+	defer svTestCleanup()
+
+	// give TFC some time to process the statefile and extract the outputs.
+	time.Sleep(waitForStateVersionOutputs)
+
+	svList, err := client.StateVersions.Outputs(ctx, sv.ID)
+	require.NoError(t, err)
+
+	fmt.Println(svList[0])
+	// TODO: testing
+	assert.NotEmpty(t, svList)
+}

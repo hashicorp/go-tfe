@@ -619,7 +619,7 @@ func unmarshalResponse(responseBody io.Reader, model interface{}) error {
 
 	// Return an error if model is not a struct or an io.Writer.
 	if dst.Kind() != reflect.Struct {
-		return fmt.Errorf("v must be a struct or an io.Writer")
+		return fmt.Errorf("%v must be a struct or an io.Writer", model)
 	}
 
 	// Try to get the Items and Pagination struct fields.

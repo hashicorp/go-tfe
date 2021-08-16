@@ -7,8 +7,10 @@ require (
 	github.com/hashicorp/go-retryablehttp v0.5.2
 	github.com/hashicorp/go-slug v0.7.0
 	github.com/hashicorp/go-uuid v1.0.1
-	github.com/hashicorp/jsonapi v0.0.0-20210518035559-1e50d74c8db3
+	github.com/hashicorp/jsonapi v0.0.0-20210816140428-9a4775ce26c8
 	github.com/stretchr/testify v1.3.0
+	github.com/zclconf/go-cty v1.9.0 // indirect
+	golang.org/x/text v0.3.7 // indirect
 	golang.org/x/time v0.0.0-20190308202827-9d24e82272b4
 )
 

@@ -38,6 +38,9 @@ type StateVersions interface {
 
 	// Download retrieves the actual stored state of a state version
 	Download(ctx context.Context, url string) ([]byte, error)
+
+	// Outputs retrieves all the outputs of a state version by its ID.
+	Outputs(ctx context.Context, svID string) ([]*StateVersionOutput, error)
 }
 
 // stateVersions implements StateVersions.
@@ -244,4 +247,30 @@ func (s *stateVersions) Download(ctx context.Context, url string) ([]byte, error
 	}
 
 	return buf.Bytes(), nil
+}
+
+type StateVersionOutputsList struct {
+	*Pagination
+	Items []*StateVersionOutput
+}
+
+// Outputs retrieves all the outputs of a state version by its ID.
+func (s *stateVersions) Outputs(ctx context.Context, svID string) ([]*StateVersionOutput, error) {
+	if !validStringID(&svID) {
+		return nil, errors.New("invalid value for state version ID")
+	}
+
+	u := fmt.Sprintf("state-versions/%s/outputs", url.QueryEscape(svID))
+	req, err := s.client.newRequest("GET", u, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	sv := &StateVersionOutputsList{}
+	err = s.client.do(ctx, req, sv)
+	if err != nil {
+		return nil, err
+	}
+
+	return sv.Items, nil
 }
