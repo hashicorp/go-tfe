@@ -4,8 +4,6 @@ import (
 	"context"
 	"fmt"
 	"net/url"
-	//	gocty "github.com/zclconf/go-cty/cty/gocty"
-	"github.com/zclconf/go-cty/cty"
 )
 
 // Compile-time proof of interface implementation.
@@ -29,11 +27,8 @@ type StateVersionOutput struct {
 	Name      string      `jsonapi:"attr,name"`
 	Sensitive bool        `jsonapi:"attr,sensitive"`
 	Type      string      `jsonapi:"attr,type"`
-	RawValue  interface{} `jsonapi:"attr,value"`
-	Value     cty.Value
+	Value     interface{} `jsonapi:"attr,value"`
 }
-
-// TODO: convert RawValue -> Value
 
 func (s *stateVersionOutputs) Read(ctx context.Context, outputID string) (*StateVersionOutput, error) {
 	if !validStringID(&outputID) {

@@ -434,7 +434,5 @@ func TestStateVersionOutputsList(t *testing.T) {
 	svList, err := client.StateVersions.Outputs(ctx, sv.ID)
 	require.NoError(t, err)
 
-	fmt.Println(svList[0])
-	// TODO: testing
 	assert.NotEmpty(t, svList)
 }
