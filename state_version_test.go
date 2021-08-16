@@ -431,8 +431,24 @@ func TestStateVersionOutputsList(t *testing.T) {
 	// give TFC some time to process the statefile and extract the outputs.
 	time.Sleep(waitForStateVersionOutputs)
 
-	svList, err := client.StateVersions.Outputs(ctx, sv.ID)
+	outputs, err := client.StateVersions.Outputs(ctx, sv.ID)
 	require.NoError(t, err)
 
-	assert.NotEmpty(t, svList)
+	assert.NotEmpty(t, outputs)
+
+	values := map[string]interface{}{}
+	for _, op := range outputs {
+		values[op.Name] = op.Value
+	}
+
+	// These asserts are based off of the values in
+	// test-fixtures/state-version/terraform.tfstate
+	assert.Equal(t, "9023256633839603543", values["test_output_string"].(string))
+	assert.Equal(t, float64(5), values["test_output_number"].(float64))
+	assert.Equal(t, true, values["test_output_bool"].(bool))
+	assert.Equal(t, []interface{}{"us-west-1a"}, values["test_output_list_string"].([]interface{}))
+	assert.Equal(t, []interface{}{float64(1), float64(2)}, values["test_output_tuple_number"].([]interface{}))
+	assert.Equal(t, []interface{}{"one", "two"}, values["test_output_tuple_string"].([]interface{}))
+	assert.Equal(t, map[string]interface{}{"foo": "bar"}, values["test_output_object"].(map[string]interface{}))
+
 }
