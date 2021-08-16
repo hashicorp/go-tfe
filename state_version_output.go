@@ -29,7 +29,8 @@ type StateVersionOutput struct {
 	Name      string      `jsonapi:"attr,name"`
 	Sensitive bool        `jsonapi:"attr,sensitive"`
 	Type      string      `jsonapi:"attr,type"`
-	Value     interface{} `jsonapi:"attr,value"`
+	RawValue  interface{} `jsonapi:"attr,value"`
+	Value     cty.Value
 }
 
 // OutputValue can be one of many types.

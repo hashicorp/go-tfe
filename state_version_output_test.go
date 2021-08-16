@@ -41,7 +41,7 @@ func TestStateVersionOutputsRead(t *testing.T) {
 
 		assert.Equal(t, so.ID, output.ID)
 		assert.Equal(t, so.Name, output.Name)
-		assert.Equal(t, so.Value, output.Value)
+		assert.Equal(t, so.RawValue, output.RawValue)
 	})
 
 	t.Run("when a state output does not exist", func(t *testing.T) {
