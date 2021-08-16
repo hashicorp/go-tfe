@@ -33,11 +33,7 @@ type StateVersionOutput struct {
 	Value     cty.Value
 }
 
-// OutputValue can be one of many types.
-type OutputValue struct {
-	CtyType  cty.Type
-	CtyValue cty.Value
-}
+// TODO: convert RawValue -> Value
 
 func (s *stateVersionOutputs) Read(ctx context.Context, outputID string) (*StateVersionOutput, error) {
 	if !validStringID(&outputID) {
