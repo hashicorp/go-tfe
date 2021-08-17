@@ -1,5 +1,7 @@
 module github.com/hashicorp/go-tfe
 
+go 1.17
+
 require (
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/google/go-querystring v1.0.0
@@ -12,4 +14,4 @@ require (
 	golang.org/x/time v0.0.0-20190308202827-9d24e82272b4
 )
 
-go 1.16
+require github.com/pmezard/go-difflib v1.0.0 // indirect
