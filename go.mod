@@ -9,8 +9,6 @@ require (
 	github.com/hashicorp/go-uuid v1.0.1
 	github.com/hashicorp/jsonapi v0.0.0-20210817203359-15d518142555
 	github.com/stretchr/testify v1.3.0
-	github.com/zclconf/go-cty v1.9.0 // indirect
-	golang.org/x/text v0.3.7 // indirect
 	golang.org/x/time v0.0.0-20190308202827-9d24e82272b4
 )
 
