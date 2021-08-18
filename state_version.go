@@ -40,7 +40,7 @@ type StateVersions interface {
 	Download(ctx context.Context, url string) ([]byte, error)
 
 	// Outputs retrieves all the outputs of a state version by its ID.
-	Outputs(ctx context.Context, svID string) ([]*StateVersionOutput, error)
+	Outputs(ctx context.Context, svID string, options StateVersionOutputsListOptions) ([]*StateVersionOutput, error)
 }
 
 // stateVersions implements StateVersions.
@@ -249,19 +249,26 @@ func (s *stateVersions) Download(ctx context.Context, url string) ([]byte, error
 	return buf.Bytes(), nil
 }
 
+// StateVersionOutputsList represents a list of StateVersionOutput items.
 type StateVersionOutputsList struct {
 	*Pagination
 	Items []*StateVersionOutput
 }
 
+// StateVersionOutputsListOptions represents the options for listing state
+// version outputs.
+type StateVersionOutputsListOptions struct {
+	ListOptions
+}
+
 // Outputs retrieves all the outputs of a state version by its ID.
-func (s *stateVersions) Outputs(ctx context.Context, svID string) ([]*StateVersionOutput, error) {
+func (s *stateVersions) Outputs(ctx context.Context, svID string, options StateVersionOutputsListOptions) ([]*StateVersionOutput, error) {
 	if !validStringID(&svID) {
 		return nil, errors.New("invalid value for state version ID")
 	}
 
 	u := fmt.Sprintf("state-versions/%s/outputs", url.QueryEscape(svID))
-	req, err := s.client.newRequest("GET", u, nil)
+	req, err := s.client.newRequest("GET", u, options)
 	if err != nil {
 		return nil, err
 	}
