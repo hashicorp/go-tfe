@@ -453,6 +453,18 @@ func TestStateVersionOutputs(t *testing.T) {
 		assert.Equal(t, map[string]interface{}{"foo": "bar"}, values["test_output_object"].(map[string]interface{}))
 	})
 
+	t.Run("with list options", func(t *testing.T) {
+		options := StateVersionOutputsListOptions{
+			ListOptions: ListOptions{
+				PageNumber: 999,
+				PageSize:   100,
+			},
+		}
+		outputs, err := client.StateVersions.Outputs(ctx, sv.ID, options)
+		require.NoError(t, err)
+		assert.Empty(t, outputs)
+	})
+
 	t.Run("when the state version does not exist", func(t *testing.T) {
 		outputs, err := client.StateVersions.Outputs(ctx, "sv-999999999", StateVersionOutputsListOptions{})
 		assert.Nil(t, outputs)
