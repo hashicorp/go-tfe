@@ -417,3 +417,58 @@ func TestStateVersionsDownload(t *testing.T) {
 		assert.Equal(t, ErrResourceNotFound, err)
 	})
 }
+
+func TestStateVersionOutputs(t *testing.T) {
+	client := testClient(t)
+	ctx := context.Background()
+
+	wTest1, wTest1Cleanup := createWorkspace(t, client, nil)
+	defer wTest1Cleanup()
+
+	sv, svTestCleanup := createStateVersion(t, client, 0, wTest1)
+	defer svTestCleanup()
+
+	// give TFC some time to process the statefile and extract the outputs.
+	time.Sleep(waitForStateVersionOutputs)
+
+	t.Run("when the state version exists", func(t *testing.T) {
+		outputs, err := client.StateVersions.Outputs(ctx, sv.ID, StateVersionOutputsListOptions{})
+		require.NoError(t, err)
+
+		assert.NotEmpty(t, outputs)
+
+		values := map[string]interface{}{}
+		for _, op := range outputs {
+			values[op.Name] = op.Value
+		}
+
+		// These asserts are based off of the values in
+		// test-fixtures/state-version/terraform.tfstate
+		assert.Equal(t, "9023256633839603543", values["test_output_string"].(string))
+		assert.Equal(t, float64(5), values["test_output_number"].(float64))
+		assert.Equal(t, true, values["test_output_bool"].(bool))
+		assert.Equal(t, []interface{}{"us-west-1a"}, values["test_output_list_string"].([]interface{}))
+		assert.Equal(t, []interface{}{float64(1), float64(2)}, values["test_output_tuple_number"].([]interface{}))
+		assert.Equal(t, []interface{}{"one", "two"}, values["test_output_tuple_string"].([]interface{}))
+		assert.Equal(t, map[string]interface{}{"foo": "bar"}, values["test_output_object"].(map[string]interface{}))
+	})
+
+	t.Run("with list options", func(t *testing.T) {
+		options := StateVersionOutputsListOptions{
+			ListOptions: ListOptions{
+				PageNumber: 999,
+				PageSize:   100,
+			},
+		}
+		outputs, err := client.StateVersions.Outputs(ctx, sv.ID, options)
+		require.NoError(t, err)
+		assert.Empty(t, outputs)
+	})
+
+	t.Run("when the state version does not exist", func(t *testing.T) {
+		outputs, err := client.StateVersions.Outputs(ctx, "sv-999999999", StateVersionOutputsListOptions{})
+		assert.Nil(t, outputs)
+		assert.Error(t, err)
+	})
+
+}
