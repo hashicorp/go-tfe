@@ -3,10 +3,13 @@ package tfe
 import (
 	"context"
 	"testing"
+	"time"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
+
+const waitForPolicySetVersionUpload = 500 * time.Millisecond
 
 func TestPolicySetVersionsCreate(t *testing.T) {
 	skipIfFreeOnly(t)
@@ -79,9 +82,13 @@ func TestPolicySetVersionsUpload(t *testing.T) {
 		)
 		require.NoError(t, err)
 
+		// give TFC soe time to process uploading the
+		// policy set version before reaeding..
+		time.Sleep(waitForPolicySetVersionUpload)
+
 		psv, err = client.PolicySetVersions.Read(ctx, psv.ID)
 		require.NoError(t, err)
-		assert.Equal(t, psv.Status, PolicySetVersionReady)
+		assert.Equal(t, PolicySetVersionReady, psv.Status)
 	})
 
 	t.Run("with missing upload URL", func(t *testing.T) {

@@ -5,6 +5,7 @@ import (
 	"context"
 	"encoding/json"
 	"errors"
+	"fmt"
 	"net/http"
 	"net/http/httptest"
 	"os"
@@ -477,7 +478,7 @@ func Test_unmarshalResponse(t *testing.T) {
 		notStruct := "not a struct"
 		err := unmarshalResponse(responseBody, notStruct)
 		assert.Error(t, err)
-		assert.EqualError(t, err, "v must be a struct or an io.Writer")
+		assert.EqualError(t, err, fmt.Sprintf("%v must be a struct or an io.Writer", notStruct))
 	})
 
 }
