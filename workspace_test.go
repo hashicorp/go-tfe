@@ -284,14 +284,24 @@ func TestWorkspacesReadWithOptions(t *testing.T) {
 		}
 		w, err := client.Workspaces.ReadWithOptions(ctx, orgTest.Name, wTest.Name, opts)
 		require.NoError(t, err)
-		assert.Equal(t, wTest.ID, w.ID)
 
+		assert.Equal(t, wTest.ID, w.ID)
 		assert.NotEmpty(t, w.Outputs)
 
 		svOutputs, err := client.StateVersions.Outputs(ctx, svTest.ID, StateVersionOutputsListOptions{})
 		require.NoError(t, err)
 
 		assert.Len(t, w.Outputs, len(svOutputs))
+
+		wsOutputs := map[string]interface{}{}
+		for _, op := range w.Outputs {
+			wsOutputs[op.Name] = op.Value
+		}
+		for _, svop := range svOutputs {
+			val, ok := wsOutputs[svop.Name]
+			assert.True(t, ok)
+			assert.Equal(t, svop.Value, val)
+		}
 	})
 }
 
