@@ -24,8 +24,11 @@ type Workspaces interface {
 	// Create is used to create a new workspace.
 	Create(ctx context.Context, organization string, options WorkspaceCreateOptions) (*Workspace, error)
 
-	// Read a workspace by its name.
+	// Read a workspace by its name and organization name.
 	Read(ctx context.Context, organization string, workspace string) (*Workspace, error)
+
+	// ReadWithOptions reads a workspace by name and organization name with given options.
+	ReadWithOptions(ctx context.Context, organization string, workspace string, options *WorkspaceReadOptions) (*Workspace, error)
 
 	// Readme gets the readme of a workspace by its ID.
 	Readme(ctx context.Context, workspaceID string) (io.Reader, error)
@@ -131,10 +134,19 @@ type Workspace struct {
 	RunsCount                  int                   `jsonapi:"attr,workspace-kpis-runs-count"`
 
 	// Relations
-	AgentPool    *AgentPool    `jsonapi:"relation,agent-pool"`
-	CurrentRun   *Run          `jsonapi:"relation,current-run"`
-	Organization *Organization `jsonapi:"relation,organization"`
-	SSHKey       *SSHKey       `jsonapi:"relation,ssh-key"`
+	AgentPool    *AgentPool          `jsonapi:"relation,agent-pool"`
+	CurrentRun   *Run                `jsonapi:"relation,current-run"`
+	Organization *Organization       `jsonapi:"relation,organization"`
+	SSHKey       *SSHKey             `jsonapi:"relation,ssh-key"`
+	Outputs      []*WorkspaceOutputs `jsonapi:"relation,outputs"`
+}
+
+type WorkspaceOutputs struct {
+	ID        string      `jsonapi:"primary,workspace-outputs"`
+	Name      string      `jsonapi:"attr,name"`
+	Sensitive bool        `jsonapi:"attr,sensitive"`
+	Type      string      `jsonapi:"attr,type"`
+	Value     interface{} `jsonapi:"attr,value"`
 }
 
 // workspaceWithReadme is the same as a workspace but it has a readme.
@@ -364,8 +376,13 @@ func (s *workspaces) Create(ctx context.Context, organization string, options Wo
 	return w, nil
 }
 
-// Read a workspace by its name.
+// Read a workspace by its name and organization name.
 func (s *workspaces) Read(ctx context.Context, organization, workspace string) (*Workspace, error) {
+	return s.ReadWithOptions(ctx, organization, workspace, nil)
+}
+
+// ReadWithOptions reads a workspace by name and organization name with given options.
+func (s *workspaces) ReadWithOptions(ctx context.Context, organization string, workspace string, options *WorkspaceReadOptions) (*Workspace, error) {
 	if !validStringID(&organization) {
 		return nil, ErrInvalidOrg
 	}
@@ -378,7 +395,7 @@ func (s *workspaces) Read(ctx context.Context, organization, workspace string) (
 		url.QueryEscape(organization),
 		url.QueryEscape(workspace),
 	)
-	req, err := s.client.newRequest("GET", u, nil)
+	req, err := s.client.newRequest("GET", u, options)
 	if err != nil {
 		return nil, err
 	}
