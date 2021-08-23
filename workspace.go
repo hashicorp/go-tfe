@@ -145,7 +145,7 @@ type WorkspaceOutputs struct {
 	ID        string      `jsonapi:"primary,workspace-outputs"`
 	Name      string      `jsonapi:"attr,name"`
 	Sensitive bool        `jsonapi:"attr,sensitive"`
-	Type      string      `jsonapi:"attr,type"`
+	Type      string      `jsonapi:"attr,output-type"`
 	Value     interface{} `jsonapi:"attr,value"`
 }
 

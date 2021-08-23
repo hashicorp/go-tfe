@@ -294,13 +294,19 @@ func TestWorkspacesReadWithOptions(t *testing.T) {
 		assert.Len(t, w.Outputs, len(svOutputs))
 
 		wsOutputs := map[string]interface{}{}
+		wsOutputsTypes := map[string]string{}
 		for _, op := range w.Outputs {
 			wsOutputs[op.Name] = op.Value
+			wsOutputsTypes[op.Name] = op.Type
 		}
 		for _, svop := range svOutputs {
 			val, ok := wsOutputs[svop.Name]
 			assert.True(t, ok)
 			assert.Equal(t, svop.Value, val)
+
+			val, ok = wsOutputsTypes[svop.Name]
+			assert.True(t, ok)
+			assert.Equal(t, svop.Type, val)
 		}
 	})
 }
