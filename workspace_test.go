@@ -262,6 +262,55 @@ func TestWorkspacesRead(t *testing.T) {
 	})
 }
 
+func TestWorkspacesReadWithOptions(t *testing.T) {
+	client := testClient(t)
+	ctx := context.Background()
+
+	orgTest, orgTestCleanup := createOrganization(t, client)
+	defer orgTestCleanup()
+
+	wTest, wTestCleanup := createWorkspace(t, client, orgTest)
+	defer wTestCleanup()
+
+	svTest, svTestCleanup := createStateVersion(t, client, 0, wTest)
+	defer svTestCleanup()
+
+	// give TFC some time to process the statefile and extract the outputs.
+	time.Sleep(waitForStateVersionOutputs)
+
+	t.Run("when options to include resource", func(t *testing.T) {
+		opts := &WorkspaceReadOptions{
+			Include: "outputs",
+		}
+		w, err := client.Workspaces.ReadWithOptions(ctx, orgTest.Name, wTest.Name, opts)
+		require.NoError(t, err)
+
+		assert.Equal(t, wTest.ID, w.ID)
+		assert.NotEmpty(t, w.Outputs)
+
+		svOutputs, err := client.StateVersions.Outputs(ctx, svTest.ID, StateVersionOutputsListOptions{})
+		require.NoError(t, err)
+
+		assert.Len(t, w.Outputs, len(svOutputs))
+
+		wsOutputs := map[string]interface{}{}
+		wsOutputsTypes := map[string]string{}
+		for _, op := range w.Outputs {
+			wsOutputs[op.Name] = op.Value
+			wsOutputsTypes[op.Name] = op.Type
+		}
+		for _, svop := range svOutputs {
+			val, ok := wsOutputs[svop.Name]
+			assert.True(t, ok)
+			assert.Equal(t, svop.Value, val)
+
+			val, ok = wsOutputsTypes[svop.Name]
+			assert.True(t, ok)
+			assert.Equal(t, svop.Type, val)
+		}
+	})
+}
+
 func TestWorkspacesReadWithHistory(t *testing.T) {
 	client := testClient(t)
 
