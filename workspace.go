@@ -331,7 +331,7 @@ type WorkspaceCreateOptions struct {
 
 	// A list of tags to attach to the workspace. If the tag does not already
 	// exist, it is created and added to the workspace.
-	Tags []*Tag `jsonapi:"relation,tags,omitempty"`
+	Tags []*Tag `jsonapi:"relation,tags,allowattrs,omitempty"`
 }
 
 // TODO: move this struct out. VCSRepoOptions is used by workspaces, policy sets, and registry modules
@@ -998,9 +998,20 @@ func (s *workspaces) UpdateRemoteStateConsumers(ctx context.Context, workspaceID
 	return s.client.do(ctx, req, nil)
 }
 
+type workspaceTags struct {
+	Tags []*workspaceTag `json:"data,omitempty"`
+}
+type workspaceTag struct {
+	ID         string            `json:"id,omitempty"`
+	Attributes workspaceTagAttrs `json:"attributes,omitempty"`
+	Type       string            `json:"type,omitempty"`
+}
+type workspaceTagAttrs struct {
+	Name string `json:"name,omitempty"`
+}
+
 type WorkspaceTagsOptions struct {
-	Type string `jsonapi:"primary,workspaces"`
-	Tags []*Tag `jsonapi:"relation,tags,omitempty"`
+	Tags []*Tag
 }
 
 func (o WorkspaceTagsOptions) valid() error {
@@ -1022,8 +1033,19 @@ func (s *workspaces) AddTags(ctx context.Context, workspaceID string, tags []*Ta
 		return err
 	}
 
+	var tagBody workspaceTags
+	for _, tag := range tags {
+		if tag.ID != "" {
+			tagBody.Tags = append(tagBody.Tags, &workspaceTag{ID: tag.ID, Type: "tags"})
+		} else if tag.Name != "" {
+			tagBody.Tags = append(tagBody.Tags, &workspaceTag{Attributes: workspaceTagAttrs{
+				Name: tag.Name,
+			}, Type: "tags"})
+		}
+	}
+
 	u := fmt.Sprintf("workspaces/%s/relationships/tags", url.QueryEscape(workspaceID))
-	req, err := s.client.newRequest("POST", u, &w)
+	req, err := s.client.newRequest("POST", u, &tagBody)
 
 	if err != nil {
 		return err
@@ -1041,8 +1063,19 @@ func (s *workspaces) RemoveTags(ctx context.Context, workspaceID string, tags []
 		return err
 	}
 
+	var tagBody workspaceTags
+	for _, tag := range tags {
+		if tag.ID != "" {
+			tagBody.Tags = append(tagBody.Tags, &workspaceTag{ID: tag.ID, Type: "tags"})
+		} else if tag.Name != "" {
+			tagBody.Tags = append(tagBody.Tags, &workspaceTag{Attributes: workspaceTagAttrs{
+				Name: tag.Name,
+			}, Type: "tags"})
+		}
+	}
+
 	u := fmt.Sprintf("workspaces/%s/relationships/tags", url.QueryEscape(workspaceID))
-	req, err := s.client.newRequest("DELETE", u, &w)
+	req, err := s.client.newRequest("DELETE", u, &tagBody)
 
 	if err != nil {
 		return err

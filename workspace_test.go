@@ -124,7 +124,7 @@ func TestWorkspacesCreate(t *testing.T) {
 					Name: "tag1",
 				},
 				{
-					ID: "tag-1234abcd568EFGH",
+					Name: "tag2",
 				},
 			},
 		}
@@ -152,6 +152,8 @@ func TestWorkspacesCreate(t *testing.T) {
 			assert.Equal(t, *options.SourceName, item.SourceName)
 			assert.Equal(t, *options.SourceURL, item.SourceURL)
 			assert.Equal(t, *options.StructuredRunOutputEnabled, item.StructuredRunOutputEnabled)
+			assert.Equal(t, options.Tags[0].Name, item.TagNames[0])
+			assert.Equal(t, options.Tags[1].Name, item.TagNames[1])
 			assert.Equal(t, *options.TerraformVersion, item.TerraformVersion)
 			assert.Equal(t, options.TriggerPrefixes, item.TriggerPrefixes)
 			assert.Equal(t, *options.WorkingDirectory, item.WorkingDirectory)
