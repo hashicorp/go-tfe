@@ -334,7 +334,7 @@ type WorkspaceCreateOptions struct {
 
 	// A list of tags to attach to the workspace. If the tag does not already
 	// exist, it is created and added to the workspace.
-	Tags []*Tag `jsonapi:"relation,tags,allowattrs,omitempty"`
+	Tags []*Tag `jsonapi:"relation,tags,omitempty"`
 }
 
 // TODO: move this struct out. VCSRepoOptions is used by workspaces, policy sets, and registry modules
