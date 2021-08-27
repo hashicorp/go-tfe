@@ -62,6 +62,7 @@ $ envchain YOUR_NAMESPACE_HERE go test ./... -timeout=30m
 ```sh
 $ go test ./... -timeout=30m
 ```
+
 #### Running specific tests
 
 The commands below use notification configurations as an example.

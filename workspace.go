@@ -88,8 +88,8 @@ type Workspaces interface {
 	// AddTags appends tags to a workspace
 	AddTags(ctx context.Context, workspaceID string, tags []*Tag) error
 
-	// DeleteTags removes tags from a workspace
-	DeleteTags(ctx context.Context, workspaceID string, tags []*Tag) error
+	// RemoveTags removes tags from a workspace
+	RemoveTags(ctx context.Context, workspaceID string, tags []*Tag) error
 }
 
 // workspaces implements Workspaces.
@@ -331,7 +331,7 @@ type WorkspaceCreateOptions struct {
 
 	// A list of tags to attach to the workspace. If the tag does not already
 	// exist, it is created and added to the workspace.
-	Tags []*Tag `jsonapi:"relation,tags,data,omitempty`
+	Tags []*Tag `jsonapi:"relation,tags,omitempty"`
 }
 
 // TODO: move this struct out. VCSRepoOptions is used by workspaces, policy sets, and registry modules
@@ -1000,7 +1000,7 @@ func (s *workspaces) UpdateRemoteStateConsumers(ctx context.Context, workspaceID
 
 type WorkspaceTagsOptions struct {
 	Type string `jsonapi:"primary,workspaces"`
-	Tags []*Tag `jsonapi:"relation,tags,omitempty`
+	Tags []*Tag `jsonapi:"relation,tags,omitempty"`
 }
 
 func (o WorkspaceTagsOptions) valid() error {
@@ -1032,7 +1032,7 @@ func (s *workspaces) AddTags(ctx context.Context, workspaceID string, tags []*Ta
 	return s.client.do(ctx, req, nil)
 }
 
-func (s *workspaces) DeleteTags(ctx context.Context, workspaceID string, tags []*Tag) error {
+func (s *workspaces) RemoveTags(ctx context.Context, workspaceID string, tags []*Tag) error {
 	w := WorkspaceTagsOptions{
 		Tags: tags,
 	}

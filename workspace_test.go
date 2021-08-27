@@ -1074,7 +1074,7 @@ func TestWorkspaces_UpdateRemoteStateConsumers(t *testing.T) {
 	})
 }
 
-func TestWorkspaces_(t *testing.T) {
+func TestWorkspaces_AddTags(t *testing.T) {
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -1104,6 +1104,16 @@ func TestWorkspaces_(t *testing.T) {
 		require.NoError(t, err)
 		assert.Equal(t, 3, len(w.TagNames))
 		assert.Equal(t, w.TagNames, []string{"tag1", "tag2", "tag3"})
+	})
+
+	t.Run("successfully removes tags", func(t *testing.T) {
+		err := client.Workspaces.RemoveTags(ctx, wTest.ID, tags)
+		require.NoError(t, err)
+
+		w, err := client.Workspaces.Read(ctx, orgTest.Name, wTest.Name)
+		require.NoError(t, err)
+		assert.Equal(t, 0, len(w.TagNames))
+		assert.Equal(t, w.TagNames, []string{})
 	})
 }
 
