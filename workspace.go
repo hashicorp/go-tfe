@@ -86,10 +86,10 @@ type Workspaces interface {
 	UpdateRemoteStateConsumers(ctx context.Context, workspaceID string, options WorkspaceUpdateRemoteStateConsumersOptions) error
 
 	// AddTags appends tags to a workspace
-	AddTags(ctx context.Context, workspaceID string, tags []*Tag) error
+	AddTags(ctx context.Context, workspaceID string, options WorkspaceAddTagsOptions) error
 
 	// RemoveTags removes tags from a workspace
-	RemoveTags(ctx context.Context, workspaceID string, tags []*Tag) error
+	RemoveTags(ctx context.Context, workspaceID string, options WorkspaceRemoveTagsOptions) error
 }
 
 // workspaces implements Workspaces.
@@ -1001,23 +1001,11 @@ func (s *workspaces) UpdateRemoteStateConsumers(ctx context.Context, workspaceID
 	return s.client.do(ctx, req, nil)
 }
 
-type workspaceTags struct {
-	Tags []*workspaceTag `json:"data,omitempty"`
-}
-type workspaceTag struct {
-	ID         string            `json:"id,omitempty"`
-	Attributes workspaceTagAttrs `json:"attributes,omitempty"`
-	Type       string            `json:"type,omitempty"`
-}
-type workspaceTagAttrs struct {
-	Name string `json:"name,omitempty"`
-}
-
-type WorkspaceTagsOptions struct {
+type WorkspaceAddTagsOptions struct {
 	Tags []*Tag
 }
 
-func (o WorkspaceTagsOptions) valid() error {
+func (o WorkspaceAddTagsOptions) valid() error {
 	for _, s := range o.Tags {
 		if s.Name == "" && s.ID == "" {
 			return ErrMissingTagIdentifier
@@ -1027,29 +1015,17 @@ func (o WorkspaceTagsOptions) valid() error {
 	return nil
 }
 
-func (s *workspaces) AddTags(ctx context.Context, workspaceID string, tags []*Tag) error {
-	w := WorkspaceTagsOptions{
-		Tags: tags,
+// AddTags adds a list of tags to a workspace.
+func (s *workspaces) AddTags(ctx context.Context, workspaceID string, options WorkspaceAddTagsOptions) error {
+	if !validStringID(&workspaceID) {
+		return ErrInvalidWorkspaceID
 	}
-
-	if err := w.valid(); err != nil {
+	if err := options.valid(); err != nil {
 		return err
 	}
 
-	var tagBody workspaceTags
-	for _, tag := range tags {
-		if tag.ID != "" {
-			tagBody.Tags = append(tagBody.Tags, &workspaceTag{ID: tag.ID, Type: "tags"})
-		} else if tag.Name != "" {
-			tagBody.Tags = append(tagBody.Tags, &workspaceTag{Attributes: workspaceTagAttrs{
-				Name: tag.Name,
-			}, Type: "tags"})
-		}
-	}
-
 	u := fmt.Sprintf("workspaces/%s/relationships/tags", url.QueryEscape(workspaceID))
-	req, err := s.client.newRequest("POST", u, &tagBody)
-
+	req, err := s.client.newRequest("POST", u, options.Tags)
 	if err != nil {
 		return err
 	}
@@ -1057,29 +1033,31 @@ func (s *workspaces) AddTags(ctx context.Context, workspaceID string, tags []*Ta
 	return s.client.do(ctx, req, nil)
 }
 
-func (s *workspaces) RemoveTags(ctx context.Context, workspaceID string, tags []*Tag) error {
-	w := WorkspaceTagsOptions{
-		Tags: tags,
-	}
+type WorkspaceRemoveTagsOptions struct {
+	Tags []*Tag
+}
 
-	if err := w.valid(); err != nil {
-		return err
-	}
-
-	var tagBody workspaceTags
-	for _, tag := range tags {
-		if tag.ID != "" {
-			tagBody.Tags = append(tagBody.Tags, &workspaceTag{ID: tag.ID, Type: "tags"})
-		} else if tag.Name != "" {
-			tagBody.Tags = append(tagBody.Tags, &workspaceTag{Attributes: workspaceTagAttrs{
-				Name: tag.Name,
-			}, Type: "tags"})
+func (o WorkspaceRemoveTagsOptions) valid() error {
+	for _, s := range o.Tags {
+		if s.Name == "" && s.ID == "" {
+			return ErrMissingTagIdentifier
 		}
 	}
 
-	u := fmt.Sprintf("workspaces/%s/relationships/tags", url.QueryEscape(workspaceID))
-	req, err := s.client.newRequest("DELETE", u, &tagBody)
+	return nil
+}
 
+// RemoveTags removes a list of tags from a workspace.
+func (s *workspaces) RemoveTags(ctx context.Context, workspaceID string, options WorkspaceRemoveTagsOptions) error {
+	if !validStringID(&workspaceID) {
+		return ErrInvalidWorkspaceID
+	}
+	if err := options.valid(); err != nil {
+		return err
+	}
+
+	u := fmt.Sprintf("workspaces/%s/relationships/tags", url.QueryEscape(workspaceID))
+	req, err := s.client.newRequest("DELETE", u, options.Tags)
 	if err != nil {
 		return err
 	}
