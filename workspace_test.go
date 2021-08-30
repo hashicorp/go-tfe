@@ -65,6 +65,30 @@ func TestWorkspacesList(t *testing.T) {
 		assert.Equal(t, 1, wl.TotalCount)
 	})
 
+	t.Run("when searching using a tag", func(t *testing.T) {
+		tagName := "tagtest"
+
+		// Add the tag to the first workspace for searching.
+		err := client.Workspaces.AddTags(ctx, wTest1.ID, WorkspaceAddTagsOptions{
+			Tags: []*Tag{
+				{
+					Name: tagName,
+				},
+			},
+		})
+		require.NoError(t, err)
+
+		// The result should be successful and only contain the workspace with the
+		// new tag.
+		wl, err := client.Workspaces.List(ctx, orgTest.Name, WorkspaceListOptions{
+			Tags: &tagName,
+		})
+		require.NoError(t, err)
+		assert.Equal(t, wl.Items[0].ID, wTest1.ID)
+		assert.Equal(t, 1, wl.CurrentPage)
+		assert.Equal(t, 1, wl.TotalCount)
+	})
+
 	t.Run("when searching an unknown workspace", func(t *testing.T) {
 		// Use a nonexisting workspace name as search attribute. The result
 		// should be successful, but return no results.

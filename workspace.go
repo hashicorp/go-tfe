@@ -214,7 +214,7 @@ type WorkspaceListOptions struct {
 	Tags *string `url:"search[tags],omitempty"`
 
 	// A list of relations to include. See available resources https://www.terraform.io/docs/cloud/api/workspaces.html#available-related-resources
-	Include *string `url:"include"`
+	Include *string `url:"include,omitempty"`
 }
 
 // List all the workspaces within an organization.
