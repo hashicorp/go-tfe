@@ -5,6 +5,7 @@ import (
 	"context"
 	"encoding/json"
 	"io/ioutil"
+	"sort"
 	"strings"
 	"testing"
 	"time"
@@ -65,6 +66,30 @@ func TestWorkspacesList(t *testing.T) {
 		assert.Equal(t, 1, wl.TotalCount)
 	})
 
+	t.Run("when searching using a tag", func(t *testing.T) {
+		tagName := "tagtest"
+
+		// Add the tag to the first workspace for searching.
+		err := client.Workspaces.AddTags(ctx, wTest1.ID, WorkspaceAddTagsOptions{
+			Tags: []*Tag{
+				{
+					Name: tagName,
+				},
+			},
+		})
+		require.NoError(t, err)
+
+		// The result should be successful and only contain the workspace with the
+		// new tag.
+		wl, err := client.Workspaces.List(ctx, orgTest.Name, WorkspaceListOptions{
+			Tags: &tagName,
+		})
+		require.NoError(t, err)
+		assert.Equal(t, wl.Items[0].ID, wTest1.ID)
+		assert.Equal(t, 1, wl.CurrentPage)
+		assert.Equal(t, 1, wl.TotalCount)
+	})
+
 	t.Run("when searching an unknown workspace", func(t *testing.T) {
 		// Use a nonexisting workspace name as search attribute. The result
 		// should be successful, but return no results.
@@ -119,6 +144,14 @@ func TestWorkspacesCreate(t *testing.T) {
 			TerraformVersion:           String("0.11.0"),
 			TriggerPrefixes:            []string{"/modules", "/shared"},
 			WorkingDirectory:           String("bar/"),
+			Tags: []*Tag{
+				{
+					Name: "tag1",
+				},
+				{
+					Name: "tag2",
+				},
+			},
 		}
 
 		w, err := client.Workspaces.Create(ctx, orgTest.Name, options)
@@ -144,6 +177,8 @@ func TestWorkspacesCreate(t *testing.T) {
 			assert.Equal(t, *options.SourceName, item.SourceName)
 			assert.Equal(t, *options.SourceURL, item.SourceURL)
 			assert.Equal(t, *options.StructuredRunOutputEnabled, item.StructuredRunOutputEnabled)
+			assert.Equal(t, options.Tags[0].Name, item.TagNames[0])
+			assert.Equal(t, options.Tags[1].Name, item.TagNames[1])
 			assert.Equal(t, *options.TerraformVersion, item.TerraformVersion)
 			assert.Equal(t, options.TriggerPrefixes, item.TriggerPrefixes)
 			assert.Equal(t, *options.WorkingDirectory, item.WorkingDirectory)
@@ -1061,6 +1096,195 @@ func TestWorkspaces_UpdateRemoteStateConsumers(t *testing.T) {
 
 	t.Run("without a valid workspace ID", func(t *testing.T) {
 		err := client.Workspaces.UpdateRemoteStateConsumers(ctx, badIdentifier, WorkspaceUpdateRemoteStateConsumersOptions{})
+		require.Error(t, err)
+		assert.EqualError(t, err, ErrInvalidWorkspaceID.Error())
+	})
+}
+
+func TestWorkspaces_AddTags(t *testing.T) {
+	client := testClient(t)
+	ctx := context.Background()
+
+	orgTest, orgTestCleanup := createOrganization(t, client)
+	defer orgTestCleanup()
+
+	wTest, wTestCleanup := createWorkspace(t, client, orgTest)
+	defer wTestCleanup()
+
+	options := WorkspaceAddTagsOptions{
+		Tags: []*Tag{
+			{
+				Name: "tag1",
+			},
+			{
+				Name: "tag2",
+			},
+			{
+				Name: "tag3",
+			},
+		},
+	}
+
+	t.Run("successfully adds tags", func(t *testing.T) {
+		err := client.Workspaces.AddTags(ctx, wTest.ID, options)
+		require.NoError(t, err)
+
+		w, err := client.Workspaces.Read(ctx, orgTest.Name, wTest.Name)
+		require.NoError(t, err)
+		assert.Equal(t, 3, len(w.TagNames))
+		assert.Equal(t, w.TagNames, []string{"tag1", "tag2", "tag3"})
+
+		err = client.Workspaces.AddTags(ctx, wTest.ID, WorkspaceAddTagsOptions{
+			Tags: []*Tag{
+				{
+					Name: "tag4",
+				},
+			},
+		})
+		require.NoError(t, err)
+
+		w, err = client.Workspaces.Read(ctx, orgTest.Name, wTest.Name)
+		require.NoError(t, err)
+		assert.Equal(t, 4, len(w.TagNames))
+		sort.Strings(w.TagNames)
+		assert.EqualValues(t, w.TagNames, []string{"tag1", "tag2", "tag3", "tag4"})
+
+		wt, err := client.Workspaces.Tags(ctx, wTest.ID, WorkspaceTagListOptions{})
+		require.NoError(t, err)
+		assert.Equal(t, 4, len(wt.Items))
+		assert.Equal(t, wt.Items[3].Name, "tag4")
+	})
+
+	t.Run("successfully adds tags by id and name", func(t *testing.T) {
+		wTest2, wTest2Cleanup := createWorkspace(t, client, orgTest)
+		defer wTest2Cleanup()
+
+		// add a tag to another workspace
+		err := client.Workspaces.AddTags(ctx, wTest2.ID, WorkspaceAddTagsOptions{
+			Tags: []*Tag{
+				{
+					Name: "tagbyid",
+				},
+			},
+		})
+		require.NoError(t, err)
+
+		// get the id of the new tag
+		tags, err := client.Workspaces.Tags(ctx, wTest2.ID, WorkspaceTagListOptions{})
+		require.NoError(t, err)
+
+		// add the tag to our workspace by id
+		err = client.Workspaces.AddTags(ctx, wTest.ID, WorkspaceAddTagsOptions{
+			Tags: []*Tag{
+				{
+					ID: tags.Items[0].ID,
+				},
+			},
+		})
+		require.NoError(t, err)
+
+		// tag is now in the tag_names
+		w, err := client.Workspaces.Read(ctx, orgTest.Name, wTest.Name)
+		require.NoError(t, err)
+		assert.Equal(t, 5, len(w.TagNames))
+		sort.Strings(w.TagNames)
+		assert.Equal(t, w.TagNames, []string{"tag1", "tag2", "tag3", "tag4", "tagbyid"})
+
+		// tag is now in our tag list
+		wt, err := client.Workspaces.Tags(ctx, wTest.ID, WorkspaceTagListOptions{})
+		require.NoError(t, err)
+		assert.Equal(t, 5, len(wt.Items))
+		assert.Equal(t, wt.Items[4].ID, tags.Items[0].ID)
+		assert.Equal(t, wt.Items[4].Name, "tagbyid")
+	})
+
+	t.Run("with invalid options", func(t *testing.T) {
+		err := client.Workspaces.AddTags(ctx, wTest.ID, WorkspaceAddTagsOptions{
+			Tags: []*Tag{},
+		})
+		require.Error(t, err)
+		assert.EqualError(t, err, ErrMissingTagIdentifier.Error())
+	})
+
+	t.Run("without a valid workspace ID", func(t *testing.T) {
+		err := client.Workspaces.AddTags(ctx, badIdentifier, WorkspaceAddTagsOptions{})
+		require.Error(t, err)
+		assert.EqualError(t, err, ErrInvalidWorkspaceID.Error())
+	})
+}
+
+func TestWorkspaces_RemoveTags(t *testing.T) {
+	client := testClient(t)
+	ctx := context.Background()
+
+	orgTest, orgTestCleanup := createOrganization(t, client)
+	defer orgTestCleanup()
+
+	wTest, wTestCleanup := createWorkspace(t, client, orgTest)
+	defer wTestCleanup()
+
+	tags := []*Tag{
+		{
+			Name: "tag1",
+		},
+		{
+			Name: "tag2",
+		},
+		{
+			Name: "tag3",
+		},
+	}
+	addOptions := WorkspaceAddTagsOptions{
+		Tags: tags,
+	}
+	removeOptions := WorkspaceRemoveTagsOptions{
+		Tags: tags[0:2],
+	}
+
+	t.Run("successfully removes tags", func(t *testing.T) {
+		err := client.Workspaces.AddTags(ctx, wTest.ID, addOptions)
+		require.NoError(t, err)
+
+		w, err := client.Workspaces.Read(ctx, orgTest.Name, wTest.Name)
+		require.NoError(t, err)
+		assert.Equal(t, 3, len(w.TagNames))
+		assert.Equal(t, w.TagNames, []string{"tag1", "tag2", "tag3"})
+
+		err = client.Workspaces.RemoveTags(ctx, wTest.ID, removeOptions)
+		require.NoError(t, err)
+
+		w, err = client.Workspaces.Read(ctx, orgTest.Name, wTest.Name)
+		require.NoError(t, err)
+		assert.Equal(t, 1, len(w.TagNames))
+		assert.Equal(t, w.TagNames, []string{"tag3"})
+
+		wt, err := client.Workspaces.Tags(ctx, wTest.ID, WorkspaceTagListOptions{})
+		require.NoError(t, err)
+		assert.Equal(t, 1, len(wt.Items))
+		assert.EqualValues(t, wt.Items[0].Name, "tag3")
+	})
+
+	t.Run("attempts to remove a tag that doesn't exist", func(t *testing.T) {
+		err := client.Workspaces.RemoveTags(ctx, wTest.ID, WorkspaceRemoveTagsOptions{
+			Tags: []*Tag{
+				{
+					Name: "NonExistentTag",
+				},
+			},
+		})
+		require.NoError(t, err)
+	})
+
+	t.Run("with invalid options", func(t *testing.T) {
+		err := client.Workspaces.RemoveTags(ctx, wTest.ID, WorkspaceRemoveTagsOptions{
+			Tags: []*Tag{},
+		})
+		require.Error(t, err)
+		assert.EqualError(t, err, ErrMissingTagIdentifier.Error())
+	})
+
+	t.Run("without a valid workspace ID", func(t *testing.T) {
+		err := client.Workspaces.RemoveTags(ctx, badIdentifier, WorkspaceRemoveTagsOptions{})
 		require.Error(t, err)
 		assert.EqualError(t, err, ErrInvalidWorkspaceID.Error())
 	})
