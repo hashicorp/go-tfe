@@ -1264,6 +1264,17 @@ func TestWorkspaces_RemoveTags(t *testing.T) {
 		assert.EqualValues(t, wt.Items[0].Name, "tag3")
 	})
 
+	t.Run("attempts to remove a tag that doesn't exist", func(t *testing.T) {
+		err := client.Workspaces.RemoveTags(ctx, wTest.ID, WorkspaceRemoveTagsOptions{
+			Tags: []*Tag{
+				{
+					Name: "NonExistentTag",
+				},
+			},
+		})
+		require.NoError(t, err)
+	})
+
 	t.Run("with invalid options", func(t *testing.T) {
 		err := client.Workspaces.RemoveTags(ctx, wTest.ID, WorkspaceRemoveTagsOptions{
 			Tags: []*Tag{},
