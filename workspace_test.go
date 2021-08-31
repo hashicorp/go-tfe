@@ -5,6 +5,7 @@ import (
 	"context"
 	"encoding/json"
 	"io/ioutil"
+	"sort"
 	"strings"
 	"testing"
 	"time"
@@ -1145,7 +1146,56 @@ func TestWorkspaces_AddTags(t *testing.T) {
 		w, err = client.Workspaces.Read(ctx, orgTest.Name, wTest.Name)
 		require.NoError(t, err)
 		assert.Equal(t, 4, len(w.TagNames))
-		assert.Equal(t, w.TagNames, []string{"tag1", "tag2", "tag3", "tag4"})
+		sort.Strings(w.TagNames)
+		assert.EqualValues(t, w.TagNames, []string{"tag1", "tag2", "tag3", "tag4"})
+
+		wt, err := client.Workspaces.Tags(ctx, wTest.ID, WorkspaceTagListOptions{})
+		require.NoError(t, err)
+		assert.Equal(t, 4, len(wt.Items))
+		assert.Equal(t, wt.Items[3].Name, "tag4")
+	})
+
+	t.Run("successfully adds tags by id and name", func(t *testing.T) {
+		wTest2, wTest2Cleanup := createWorkspace(t, client, orgTest)
+		defer wTest2Cleanup()
+
+		// add a tag to another workspace
+		err := client.Workspaces.AddTags(ctx, wTest2.ID, WorkspaceAddTagsOptions{
+			Tags: []*Tag{
+				{
+					Name: "tagbyid",
+				},
+			},
+		})
+		require.NoError(t, err)
+
+		// get the id of the new tag
+		tags, err := client.Workspaces.Tags(ctx, wTest2.ID, WorkspaceTagListOptions{})
+		require.NoError(t, err)
+
+		// add the tag to our workspace by id
+		err = client.Workspaces.AddTags(ctx, wTest.ID, WorkspaceAddTagsOptions{
+			Tags: []*Tag{
+				{
+					ID: tags.Items[0].ID,
+				},
+			},
+		})
+		require.NoError(t, err)
+
+		// tag is now in the tag_names
+		w, err := client.Workspaces.Read(ctx, orgTest.Name, wTest.Name)
+		require.NoError(t, err)
+		assert.Equal(t, 5, len(w.TagNames))
+		sort.Strings(w.TagNames)
+		assert.Equal(t, w.TagNames, []string{"tag1", "tag2", "tag3", "tag4", "tagbyid"})
+
+		// tag is now in our tag list
+		wt, err := client.Workspaces.Tags(ctx, wTest.ID, WorkspaceTagListOptions{})
+		require.NoError(t, err)
+		assert.Equal(t, 5, len(wt.Items))
+		assert.Equal(t, wt.Items[4].ID, tags.Items[0].ID)
+		assert.Equal(t, wt.Items[4].Name, "tagbyid")
 	})
 
 	t.Run("with invalid options", func(t *testing.T) {
@@ -1207,6 +1257,11 @@ func TestWorkspaces_RemoveTags(t *testing.T) {
 		require.NoError(t, err)
 		assert.Equal(t, 1, len(w.TagNames))
 		assert.Equal(t, w.TagNames, []string{"tag3"})
+
+		wt, err := client.Workspaces.Tags(ctx, wTest.ID, WorkspaceTagListOptions{})
+		require.NoError(t, err)
+		assert.Equal(t, 1, len(wt.Items))
+		assert.EqualValues(t, wt.Items[0].Name, "tag3")
 	})
 
 	t.Run("with invalid options", func(t *testing.T) {

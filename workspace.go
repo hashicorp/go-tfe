@@ -85,6 +85,9 @@ type Workspaces interface {
 	// to match the workspaces in the update options.
 	UpdateRemoteStateConsumers(ctx context.Context, workspaceID string, options WorkspaceUpdateRemoteStateConsumersOptions) error
 
+	// Tags reads the tags for a workspace.
+	Tags(ctx context.Context, workspaceID string, options WorkspaceTagListOptions) (*TagList, error)
+
 	// AddTags appends tags to a workspace
 	AddTags(ctx context.Context, workspaceID string, options WorkspaceAddTagsOptions) error
 
@@ -146,6 +149,7 @@ type Workspace struct {
 	Organization *Organization       `jsonapi:"relation,organization"`
 	SSHKey       *SSHKey             `jsonapi:"relation,ssh-key"`
 	Outputs      []*WorkspaceOutputs `jsonapi:"relation,outputs"`
+	Tags         []*Tag              `jsonapi:"relation,tags"`
 }
 
 type WorkspaceOutputs struct {
@@ -999,6 +1003,36 @@ func (s *workspaces) UpdateRemoteStateConsumers(ctx context.Context, workspaceID
 	}
 
 	return s.client.do(ctx, req, nil)
+}
+
+type WorkspaceTagListOptions struct {
+	ListOptions
+
+	// A query string used to filter workspace tags.
+	// Any workspace tag with a name partially matching this value will be returned.
+	Query *string `url:"name,omitempty"`
+}
+
+// Tags returns the tags for a given workspace.
+func (s *workspaces) Tags(ctx context.Context, workspaceID string, options WorkspaceTagListOptions) (*TagList, error) {
+	if !validStringID(&workspaceID) {
+		return nil, ErrInvalidWorkspaceID
+	}
+
+	u := fmt.Sprintf("workspaces/%s/relationships/tags", url.QueryEscape(workspaceID))
+
+	req, err := s.client.newRequest("GET", u, &options)
+	if err != nil {
+		return nil, err
+	}
+
+	tl := &TagList{}
+	err = s.client.do(ctx, req, tl)
+	if err != nil {
+		return nil, err
+	}
+
+	return tl, nil
 }
 
 type WorkspaceAddTagsOptions struct {
