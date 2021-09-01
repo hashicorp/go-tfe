@@ -17,13 +17,10 @@ func TestRunsList(t *testing.T) {
 
 	orgTest, orgTestCleanup := createOrganization(t, client)
 	defer orgTestCleanup()
-	wTest, wTestCleanup := createWorkspace(t, client, orgTest)
-	defer wTestCleanup()
 
-	rTest1, rTestCleanup1 := createRun(t, client, wTest)
-	defer rTestCleanup1()
-	rTest2, rTestCleanup2 := createRun(t, client, wTest)
-	defer rTestCleanup2()
+	wTest, _ := createWorkspace(t, client, orgTest)
+	rTest1, _ := createRun(t, client, wTest)
+	rTest2, _ := createRun(t, client, wTest)
 
 	t.Run("without list options", func(t *testing.T) {
 		rl, err := client.Runs.List(ctx, wTest.ID, RunListOptions{})
@@ -84,8 +81,7 @@ func TestRunsCreate(t *testing.T) {
 	wTest, wTestCleanup := createWorkspace(t, client, nil)
 	defer wTestCleanup()
 
-	cvTest, cvTestCleanup := createUploadedConfigurationVersion(t, client, wTest)
-	defer cvTestCleanup()
+	cvTest, _ := createUploadedConfigurationVersion(t, client, wTest)
 
 	t.Run("without a configuration version", func(t *testing.T) {
 		options := RunCreateOptions{
@@ -215,11 +211,9 @@ func TestRunsApply(t *testing.T) {
 
 	orgTest, orgTestCleanup := createOrganization(t, client)
 	defer orgTestCleanup()
-	wTest, wTestCleanup := createWorkspace(t, client, orgTest)
-	defer wTestCleanup()
+	wTest, _ := createWorkspace(t, client, orgTest)
 
-	rTest, rTestCleanup := createPlannedRun(t, client, wTest)
-	defer rTestCleanup()
+	rTest, _ := createPlannedRun(t, client, wTest)
 
 	t.Run("when the run exists", func(t *testing.T) {
 		err := client.Runs.Apply(ctx, rTest.ID, RunApplyOptions{})
@@ -248,13 +242,11 @@ func TestRunsCancel(t *testing.T) {
 	// be planned so that one cannot be cancelled. The second one will
 	// be pending until the first one is confirmed or discarded, so we
 	// can cancel that one.
-	_, rTestCleanup1 := createRun(t, client, wTest)
-	defer rTestCleanup1()
-	rTest2, rTestCleanup2 := createRun(t, client, wTest)
-	defer rTestCleanup2()
+	createRun(t, client, wTest)
+	rTest, _ := createRun(t, client, wTest)
 
 	t.Run("when the run exists", func(t *testing.T) {
-		err := client.Runs.Cancel(ctx, rTest2.ID, RunCancelOptions{})
+		err := client.Runs.Cancel(ctx, rTest.ID, RunCancelOptions{})
 		assert.NoError(t, err)
 	})
 
@@ -280,10 +272,8 @@ func TestRunsForceCancel(t *testing.T) {
 	// be planned so that one cannot be cancelled. The second one will
 	// be pending until the first one is confirmed or discarded, so we
 	// can cancel that one.
-	_, rTestCleanup1 := createRun(t, client, wTest)
-	defer rTestCleanup1()
-	rTest, rTestCleanup2 := createRun(t, client, wTest)
-	defer rTestCleanup2()
+	createRun(t, client, wTest)
+	rTest, _ := createRun(t, client, wTest)
 
 	t.Run("run is not force-cancelable", func(t *testing.T) {
 		assert.False(t, rTest.Actions.IsForceCancelable)
@@ -346,8 +336,7 @@ func TestRunsDiscard(t *testing.T) {
 	wTest, wTestCleanup := createWorkspace(t, client, nil)
 	defer wTestCleanup()
 
-	rTest, rTestCleanup := createPlannedRun(t, client, wTest)
-	defer rTestCleanup()
+	rTest, _ := createPlannedRun(t, client, wTest)
 
 	t.Run("when the run exists", func(t *testing.T) {
 		err := client.Runs.Discard(ctx, rTest.ID, RunDiscardOptions{})
