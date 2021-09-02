@@ -1040,6 +1040,9 @@ type WorkspaceAddTagsOptions struct {
 }
 
 func (o WorkspaceAddTagsOptions) valid() error {
+	if len(o.Tags) == 0 {
+		return ErrMissingTagIdentifier
+	}
 	for _, s := range o.Tags {
 		if s.Name == "" && s.ID == "" {
 			return ErrMissingTagIdentifier
@@ -1072,6 +1075,9 @@ type WorkspaceRemoveTagsOptions struct {
 }
 
 func (o WorkspaceRemoveTagsOptions) valid() error {
+	if len(o.Tags) == 0 {
+		return ErrMissingTagIdentifier
+	}
 	for _, s := range o.Tags {
 		if s.Name == "" && s.ID == "" {
 			return ErrMissingTagIdentifier
