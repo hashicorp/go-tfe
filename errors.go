@@ -44,8 +44,8 @@ var (
 	// ErrWorkspaceMinLimit is returned when the length of Workspaces is 0.
 	ErrWorkspaceMinLimit = errors.New("must provide at least one workspace")
 
-	// ErrMissingTagIdentifier is returned if a Tag argmunet lacks an Id or Name to match on
-	ErrMissingTagIdentifier = errors.New("bad request\n\nMust specify at least one tag")
+	// ErrMissingTagIdentifier is returned when tag resource identifiers are invalid
+	ErrMissingTagIdentifier = errors.New("must specify at least one tag by ID or name")
 
 	// Run/Apply errors
 
