@@ -132,6 +132,20 @@ func TestRunsCreate(t *testing.T) {
 		assert.Equal(t, true, r.RefreshOnly)
 	})
 
+	t.Run("with auto-apply requeted", func(t *testing.T) {
+		// ensure the worksapce auto-apply is false so it does not default to that.
+		assert.Equal(t, false, wTest.AutoApply)
+
+		options := RunCreateOptions{
+			Workspace: wTest,
+			AutoApply: Bool(true),
+		}
+
+		r, err := client.Runs.Create(ctx, options)
+		require.NoError(t, err)
+		assert.Equal(t, true, r.AutoApply)
+	})
+
 	t.Run("without a workspace", func(t *testing.T) {
 		r, err := client.Runs.Create(ctx, RunCreateOptions{})
 		assert.Nil(t, r)
