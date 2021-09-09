@@ -83,11 +83,13 @@ func TestConfigurationVersionsCreate(t *testing.T) {
 			wTest.ID,
 			ConfigurationVersionCreateOptions{},
 		)
+		assert.NotEmpty(t, cv.UploadURL)
 		require.NoError(t, err)
 
 		// Get a refreshed view of the configuration version.
 		refreshed, err := client.ConfigurationVersions.Read(ctx, cv.ID)
 		require.NoError(t, err)
+		assert.Empty(t, refreshed.UploadURL)
 
 		for _, item := range []*ConfigurationVersion{
 			cv,
@@ -97,7 +99,6 @@ func TestConfigurationVersionsCreate(t *testing.T) {
 			assert.Empty(t, item.Error)
 			assert.Equal(t, item.Source, ConfigurationSourceAPI)
 			assert.Equal(t, item.Status, ConfigurationPending)
-			assert.NotEmpty(t, item.UploadURL)
 		}
 	})
 

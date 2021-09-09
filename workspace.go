@@ -24,8 +24,11 @@ type Workspaces interface {
 	// Create is used to create a new workspace.
 	Create(ctx context.Context, organization string, options WorkspaceCreateOptions) (*Workspace, error)
 
-	// Read a workspace by its name.
+	// Read a workspace by its name and organization name.
 	Read(ctx context.Context, organization string, workspace string) (*Workspace, error)
+
+	// ReadWithOptions reads a workspace by name and organization name with given options.
+	ReadWithOptions(ctx context.Context, organization string, workspace string, options *WorkspaceReadOptions) (*Workspace, error)
 
 	// Readme gets the readme of a workspace by its ID.
 	Readme(ctx context.Context, workspaceID string) (io.Reader, error)
@@ -81,6 +84,15 @@ type Workspaces interface {
 	// UpdateRemoteStateConsumers updates all the remote state consumers for a workspace
 	// to match the workspaces in the update options.
 	UpdateRemoteStateConsumers(ctx context.Context, workspaceID string, options WorkspaceUpdateRemoteStateConsumersOptions) error
+
+	// Tags reads the tags for a workspace.
+	Tags(ctx context.Context, workspaceID string, options WorkspaceTagListOptions) (*TagList, error)
+
+	// AddTags appends tags to a workspace
+	AddTags(ctx context.Context, workspaceID string, options WorkspaceAddTagsOptions) error
+
+	// RemoveTags removes tags from a workspace
+	RemoveTags(ctx context.Context, workspaceID string, options WorkspaceRemoveTagsOptions) error
 }
 
 // workspaces implements Workspaces.
@@ -129,12 +141,23 @@ type Workspace struct {
 	PolicyCheckFailures        int                   `jsonapi:"attr,policy-check-failures"`
 	RunFailures                int                   `jsonapi:"attr,run-failures"`
 	RunsCount                  int                   `jsonapi:"attr,workspace-kpis-runs-count"`
+	TagNames                   []string              `jsonapi:"attr,tag-names"`
 
 	// Relations
-	AgentPool    *AgentPool    `jsonapi:"relation,agent-pool"`
-	CurrentRun   *Run          `jsonapi:"relation,current-run"`
-	Organization *Organization `jsonapi:"relation,organization"`
-	SSHKey       *SSHKey       `jsonapi:"relation,ssh-key"`
+	AgentPool    *AgentPool          `jsonapi:"relation,agent-pool"`
+	CurrentRun   *Run                `jsonapi:"relation,current-run"`
+	Organization *Organization       `jsonapi:"relation,organization"`
+	SSHKey       *SSHKey             `jsonapi:"relation,ssh-key"`
+	Outputs      []*WorkspaceOutputs `jsonapi:"relation,outputs"`
+	Tags         []*Tag              `jsonapi:"relation,tags"`
+}
+
+type WorkspaceOutputs struct {
+	ID        string      `jsonapi:"primary,workspace-outputs"`
+	Name      string      `jsonapi:"attr,name"`
+	Sensitive bool        `jsonapi:"attr,sensitive"`
+	Type      string      `jsonapi:"attr,output-type"`
+	Value     interface{} `jsonapi:"attr,value"`
 }
 
 // workspaceWithReadme is the same as a workspace but it has a readme.
@@ -191,8 +214,11 @@ type WorkspaceListOptions struct {
 	// A search string (partial workspace name) used to filter the results.
 	Search *string `url:"search[name],omitempty"`
 
+	// A search string (comma-separated tag names) used to filter the results.
+	Tags *string `url:"search[tags],omitempty"`
+
 	// A list of relations to include. See available resources https://www.terraform.io/docs/cloud/api/workspaces.html#available-related-resources
-	Include *string `url:"include"`
+	Include *string `url:"include,omitempty"`
 }
 
 // List all the workspaces within an organization.
@@ -309,6 +335,10 @@ type WorkspaceCreateOptions struct {
 	// root of your repository and is typically set to a subdirectory matching the
 	// environment when multiple environments exist within the same repository.
 	WorkingDirectory *string `jsonapi:"attr,working-directory,omitempty"`
+
+	// A list of tags to attach to the workspace. If the tag does not already
+	// exist, it is created and added to the workspace.
+	Tags []*Tag `jsonapi:"relation,tags,omitempty"`
 }
 
 // TODO: move this struct out. VCSRepoOptions is used by workspaces, policy sets, and registry modules
@@ -364,8 +394,13 @@ func (s *workspaces) Create(ctx context.Context, organization string, options Wo
 	return w, nil
 }
 
-// Read a workspace by its name.
+// Read a workspace by its name and organization name.
 func (s *workspaces) Read(ctx context.Context, organization, workspace string) (*Workspace, error) {
+	return s.ReadWithOptions(ctx, organization, workspace, nil)
+}
+
+// ReadWithOptions reads a workspace by name and organization name with given options.
+func (s *workspaces) ReadWithOptions(ctx context.Context, organization string, workspace string, options *WorkspaceReadOptions) (*Workspace, error) {
 	if !validStringID(&organization) {
 		return nil, ErrInvalidOrg
 	}
@@ -378,7 +413,7 @@ func (s *workspaces) Read(ctx context.Context, organization, workspace string) (
 		url.QueryEscape(organization),
 		url.QueryEscape(workspace),
 	)
-	req, err := s.client.newRequest("GET", u, nil)
+	req, err := s.client.newRequest("GET", u, options)
 	if err != nil {
 		return nil, err
 	}
@@ -963,6 +998,106 @@ func (s *workspaces) UpdateRemoteStateConsumers(ctx context.Context, workspaceID
 
 	u := fmt.Sprintf("workspaces/%s/relationships/remote-state-consumers", url.QueryEscape(workspaceID))
 	req, err := s.client.newRequest("PATCH", u, options.Workspaces)
+	if err != nil {
+		return err
+	}
+
+	return s.client.do(ctx, req, nil)
+}
+
+type WorkspaceTagListOptions struct {
+	ListOptions
+
+	// A query string used to filter workspace tags.
+	// Any workspace tag with a name partially matching this value will be returned.
+	Query *string `url:"name,omitempty"`
+}
+
+// Tags returns the tags for a given workspace.
+func (s *workspaces) Tags(ctx context.Context, workspaceID string, options WorkspaceTagListOptions) (*TagList, error) {
+	if !validStringID(&workspaceID) {
+		return nil, ErrInvalidWorkspaceID
+	}
+
+	u := fmt.Sprintf("workspaces/%s/relationships/tags", url.QueryEscape(workspaceID))
+
+	req, err := s.client.newRequest("GET", u, &options)
+	if err != nil {
+		return nil, err
+	}
+
+	tl := &TagList{}
+	err = s.client.do(ctx, req, tl)
+	if err != nil {
+		return nil, err
+	}
+
+	return tl, nil
+}
+
+type WorkspaceAddTagsOptions struct {
+	Tags []*Tag
+}
+
+func (o WorkspaceAddTagsOptions) valid() error {
+	if len(o.Tags) == 0 {
+		return ErrMissingTagIdentifier
+	}
+	for _, s := range o.Tags {
+		if s.Name == "" && s.ID == "" {
+			return ErrMissingTagIdentifier
+		}
+	}
+
+	return nil
+}
+
+// AddTags adds a list of tags to a workspace.
+func (s *workspaces) AddTags(ctx context.Context, workspaceID string, options WorkspaceAddTagsOptions) error {
+	if !validStringID(&workspaceID) {
+		return ErrInvalidWorkspaceID
+	}
+	if err := options.valid(); err != nil {
+		return err
+	}
+
+	u := fmt.Sprintf("workspaces/%s/relationships/tags", url.QueryEscape(workspaceID))
+	req, err := s.client.newRequest("POST", u, options.Tags)
+	if err != nil {
+		return err
+	}
+
+	return s.client.do(ctx, req, nil)
+}
+
+type WorkspaceRemoveTagsOptions struct {
+	Tags []*Tag
+}
+
+func (o WorkspaceRemoveTagsOptions) valid() error {
+	if len(o.Tags) == 0 {
+		return ErrMissingTagIdentifier
+	}
+	for _, s := range o.Tags {
+		if s.Name == "" && s.ID == "" {
+			return ErrMissingTagIdentifier
+		}
+	}
+
+	return nil
+}
+
+// RemoveTags removes a list of tags from a workspace.
+func (s *workspaces) RemoveTags(ctx context.Context, workspaceID string, options WorkspaceRemoveTagsOptions) error {
+	if !validStringID(&workspaceID) {
+		return ErrInvalidWorkspaceID
+	}
+	if err := options.valid(); err != nil {
+		return err
+	}
+
+	u := fmt.Sprintf("workspaces/%s/relationships/tags", url.QueryEscape(workspaceID))
+	req, err := s.client.newRequest("DELETE", u, options.Tags)
 	if err != nil {
 		return err
 	}

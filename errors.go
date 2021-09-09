@@ -44,6 +44,9 @@ var (
 	// ErrWorkspaceMinLimit is returned when the length of Workspaces is 0.
 	ErrWorkspaceMinLimit = errors.New("must provide at least one workspace")
 
+	// ErrMissingTagIdentifier is returned when tag resource identifiers are invalid
+	ErrMissingTagIdentifier = errors.New("must specify at least one tag by ID or name")
+
 	// Run/Apply errors
 
 	// ErrInvalidRunID is returned when the run ID is invalid.
