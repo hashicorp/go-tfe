@@ -132,7 +132,7 @@ func TestRunsCreate(t *testing.T) {
 		assert.Equal(t, true, r.RefreshOnly)
 	})
 
-	t.Run("with auto-apply requeted", func(t *testing.T) {
+	t.Run("with auto-apply requested", func(t *testing.T) {
 		// ensure the worksapce auto-apply is false so it does not default to that.
 		assert.Equal(t, false, wTest.AutoApply)
 
