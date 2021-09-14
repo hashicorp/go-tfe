@@ -119,6 +119,7 @@ type IngressAttributes struct {
 	Branch            string `jsonapi:"attr,branch"`
 	CloneURL          string `jsonapi:"attr,clone-url"`
 	CommitMessage     string `jsonapi:"attr,commit-message"`
+	CommitSHA         string `jsonapi:"attr,commit-sha"`
 	CommitURL         string `jsonapi:"attr,commit-url"`
 	CompareURL        string `jsonapi:"attr,compare-url"`
 	Identifier        string `jsonapi:"attr,identifier"`
