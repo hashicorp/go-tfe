@@ -91,6 +91,7 @@ type RunList struct {
 type Run struct {
 	ID                     string               `jsonapi:"primary,runs"`
 	Actions                *RunActions          `jsonapi:"attr,actions"`
+	AutoApply              bool                 `jsonapi:"attr,auto-apply,omitempty"`
 	CreatedAt              time.Time            `jsonapi:"attr,created-at,iso8601"`
 	ForceCancelAvailableAt time.Time            `jsonapi:"attr,force-cancel-available-at,iso8601"`
 	HasChanges             bool                 `jsonapi:"attr,has-changes"`
@@ -232,6 +233,10 @@ type RunCreateOptions struct {
 	// (destroys and then re-creates) the objects specified by the given
 	// resource addresses.
 	ReplaceAddrs []string `jsonapi:"attr,replace-addrs,omitempty"`
+
+	// AutoApply determines if the run should be applied automatically without
+	// user confirmation. It defaults to the Workspace.AutoApply setting.
+	AutoApply *bool `jsonapi:"attr,auto-apply,omitempty"`
 }
 
 func (o RunCreateOptions) valid() error {
