@@ -73,7 +73,7 @@ type Workspaces interface {
 	UnassignSSHKey(ctx context.Context, workspaceID string) (*Workspace, error)
 
 	// RemoteStateConsumers reads the remote state consumers for a workspace.
-	RemoteStateConsumers(ctx context.Context, workspaceID string) (*WorkspaceList, error)
+	RemoteStateConsumers(ctx context.Context, workspaceID string, options *RemoteStateConsumersListOptions) (*WorkspaceList, error)
 
 	// AddRemoteStateConsumers adds remote state consumers to a workspace.
 	AddRemoteStateConsumers(ctx context.Context, workspaceID string, options WorkspaceAddRemoteStateConsumersOptions) error
@@ -878,15 +878,19 @@ func (s *workspaces) UnassignSSHKey(ctx context.Context, workspaceID string) (*W
 	return w, nil
 }
 
+type RemoteStateConsumersListOptions struct {
+	ListOptions
+}
+
 // RemoteStateConsumers returns the remote state consumers for a given workspace.
-func (s *workspaces) RemoteStateConsumers(ctx context.Context, workspaceID string) (*WorkspaceList, error) {
+func (s *workspaces) RemoteStateConsumers(ctx context.Context, workspaceID string, options *RemoteStateConsumersListOptions) (*WorkspaceList, error) {
 	if !validStringID(&workspaceID) {
 		return nil, ErrInvalidWorkspaceID
 	}
 
 	u := fmt.Sprintf("workspaces/%s/relationships/remote-state-consumers", url.QueryEscape(workspaceID))
 
-	req, err := s.client.newRequest("GET", u, nil)
+	req, err := s.client.newRequest("GET", u, &options)
 	if err != nil {
 		return nil, err
 	}
