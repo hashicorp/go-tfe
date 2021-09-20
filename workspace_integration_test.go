@@ -938,7 +938,7 @@ func TestWorkspaces_AddRemoteStateConsumers(t *testing.T) {
 		_, err = client.Workspaces.Read(ctx, orgTest.Name, wTest.Name)
 		require.NoError(t, err)
 
-		rsc, err := client.Workspaces.RemoteStateConsumers(ctx, wTest.ID)
+		rsc, err := client.Workspaces.RemoteStateConsumers(ctx, wTest.ID, nil)
 		require.NoError(t, err)
 		assert.Equal(t, 2, len(rsc.Items))
 		assert.Contains(t, rsc.Items, wTestConsumer1)
@@ -992,7 +992,7 @@ func TestWorkspaces_RemoveRemoteStateConsumers(t *testing.T) {
 		})
 		require.NoError(t, err)
 
-		rsc, err := client.Workspaces.RemoteStateConsumers(ctx, wTest.ID)
+		rsc, err := client.Workspaces.RemoteStateConsumers(ctx, wTest.ID, nil)
 		require.NoError(t, err)
 		assert.Equal(t, 2, len(rsc.Items))
 		assert.Contains(t, rsc.Items, wTestConsumer1)
@@ -1006,7 +1006,7 @@ func TestWorkspaces_RemoveRemoteStateConsumers(t *testing.T) {
 		_, err = client.Workspaces.Read(ctx, orgTest.Name, wTest.Name)
 		require.NoError(t, err)
 
-		rsc, err = client.Workspaces.RemoteStateConsumers(ctx, wTest.ID)
+		rsc, err = client.Workspaces.RemoteStateConsumers(ctx, wTest.ID, nil)
 		require.NoError(t, err)
 		assert.Contains(t, rsc.Items, wTestConsumer2)
 		assert.Equal(t, 1, len(rsc.Items))
@@ -1016,7 +1016,7 @@ func TestWorkspaces_RemoveRemoteStateConsumers(t *testing.T) {
 		})
 		require.NoError(t, err)
 
-		rsc, err = client.Workspaces.RemoteStateConsumers(ctx, wTest.ID)
+		rsc, err = client.Workspaces.RemoteStateConsumers(ctx, wTest.ID, nil)
 		require.NoError(t, err)
 		assert.Empty(t, len(rsc.Items))
 	})
@@ -1068,7 +1068,7 @@ func TestWorkspaces_UpdateRemoteStateConsumers(t *testing.T) {
 		})
 		require.NoError(t, err)
 
-		rsc, err := client.Workspaces.RemoteStateConsumers(ctx, wTest.ID)
+		rsc, err := client.Workspaces.RemoteStateConsumers(ctx, wTest.ID, nil)
 		require.NoError(t, err)
 		assert.Equal(t, 1, len(rsc.Items))
 		assert.Contains(t, rsc.Items, wTestConsumer1)
@@ -1078,7 +1078,7 @@ func TestWorkspaces_UpdateRemoteStateConsumers(t *testing.T) {
 		})
 		require.NoError(t, err)
 
-		rsc, err = client.Workspaces.RemoteStateConsumers(ctx, wTest.ID)
+		rsc, err = client.Workspaces.RemoteStateConsumers(ctx, wTest.ID, nil)
 		require.NoError(t, err)
 		assert.Equal(t, 1, len(rsc.Items))
 		assert.Contains(t, rsc.Items, wTestConsumer2)
