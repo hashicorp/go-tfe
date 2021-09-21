@@ -17,7 +17,6 @@ mockgen -source=admin_workspace.go -destination=admin_workspace_mocks.go -packag
 mockgen -source=agent_pool.go -destination=agent_pool_mocks.go -package=tfe
 mockgen -source=agent_token.go -destination=agent_token_mocks.go -package=tfe
 mockgen -source=apply.go -destination=apply_mocks.go -package=tfe
-mockgen -source=clean_test.go -destination=clean_test_mocks.go -package=tfe
 mockgen -source=configuration_version.go -destination=configuration_version_mocks.go -package=tfe
 mockgen -source=cost_estimate.go -destination=cost_estimate_mocks.go -package=tfe
 mockgen -source=ip_ranges.go -destination=ip_ranges_mocks.go -package=tfe
