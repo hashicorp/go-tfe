@@ -571,7 +571,7 @@ func TestRegistryModulesUpload(t *testing.T) {
 			*rmv,
 			"test-fixtures/config-version",
 		)
-		assert.EqualError(t, err, "Provided RegistryModuleVersion does not contain an upload link")
+		assert.EqualError(t, err, "provided RegistryModuleVersion does not contain an upload link")
 	})
 }
 
