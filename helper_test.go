@@ -16,7 +16,7 @@ import (
 	"github.com/hashicorp/go-uuid"
 )
 
-const badIdentifier = "! / nope"
+const badIdentifier = "! / nope" //nolint
 
 // Memoize test account details
 var _testAccountDetails *TestAccountDetails
