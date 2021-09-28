@@ -4,7 +4,7 @@ linters:
   enable:
     - gosimple
     - stylecheck
-    - revive #deprecated
+    - revive #golint is deprecated and golangci-lint recommends to use revive instead
     #other deprecated lint libraries: maligned, scopelint, interfacer
 issues:
   exclude-rules:
