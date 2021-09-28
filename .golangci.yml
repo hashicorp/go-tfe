@@ -1,5 +1,11 @@
 run:
   timeout: 5m
+linters:
+  enable:
+    - gosimple
+    - stylecheck
+    - golint #deprecated
+    #other deprecated lint libraries: maligned, scopelint, interfacer
 issues:
   exclude-rules:
   - path: _test\.go
