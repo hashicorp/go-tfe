@@ -4,7 +4,7 @@ linters:
   enable:
     - gosimple
     - stylecheck
-    - golint #deprecated
+    - revive #deprecated
     #other deprecated lint libraries: maligned, scopelint, interfacer
 issues:
   exclude-rules:
