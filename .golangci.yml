@@ -6,7 +6,3 @@ issues:
     linters:
     - unused
     - deadcode
-
-
-
-
