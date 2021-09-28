@@ -531,18 +531,18 @@ func serializeRequestBody(v interface{}) (interface{}, error) {
 
 	// Infer whether the request uses jsonapi or regular json
 	// serialization based on how the fields are tagged.
-	jsonApiFields := 0
+	jsonAPIFields := 0
 	jsonFields := 0
 	for i := 0; i < modelType.NumField(); i++ {
 		structField := modelType.Field(i)
 		if structField.Tag.Get("jsonapi") != "" {
-			jsonApiFields++
+			jsonAPIFields++
 		}
 		if structField.Tag.Get("json") != "" {
 			jsonFields++
 		}
 	}
-	if jsonApiFields > 0 && jsonFields > 0 {
+	if jsonAPIFields > 0 && jsonFields > 0 {
 		// Defining a struct with both json and jsonapi tags doesn't
 		// make sense, because a struct can only be serialized
 		// as one or another. If this does happen, it's a bug
@@ -552,13 +552,12 @@ func serializeRequestBody(v interface{}) (interface{}, error) {
 
 	if jsonFields > 0 {
 		return json.Marshal(v)
-	} else {
-		buf := bytes.NewBuffer(nil)
-		if err := jsonapi.MarshalPayloadWithoutIncluded(buf, v); err != nil {
-			return nil, err
-		}
-		return buf, nil
 	}
+	buf := bytes.NewBuffer(nil)
+	if err := jsonapi.MarshalPayloadWithoutIncluded(buf, v); err != nil {
+		return nil, err
+	}
+	return buf, nil
 }
 
 // do sends an API request and returns the API response. The API response

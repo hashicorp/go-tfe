@@ -561,9 +561,8 @@ func createRunWithStatus(t *testing.T, client *Client, w *Workspace, timeout int
 func createPlannedRun(t *testing.T, client *Client, w *Workspace) (*Run, func()) {
 	if paidFeaturesDisabled() {
 		return createRunWithStatus(t, client, w, 45, RunPlanned)
-	} else {
-		return createRunWithStatus(t, client, w, 45, RunCostEstimated)
 	}
+	return createRunWithStatus(t, client, w, 45, RunCostEstimated)
 }
 
 func createCostEstimatedRun(t *testing.T, client *Client, w *Workspace) (*Run, func()) {
