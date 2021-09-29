@@ -142,6 +142,6 @@ func TestPolicySetVersionsUploadURL(t *testing.T) {
 		}
 
 		_, err := psv.uploadURL()
-		assert.EqualError(t, err, "The Policy Set Version upload URL is empty.")
+		assert.EqualError(t, err, "the Policy Set Version upload URL is empty")
 	})
 }
