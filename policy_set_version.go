@@ -85,11 +85,11 @@ type PolicySetVersion struct {
 func (p PolicySetVersion) uploadURL() (string, error) {
 	uploadURL, ok := p.Links["upload"].(string)
 	if !ok {
-		return uploadURL, fmt.Errorf("The Policy Set Version does not contain an upload link.")
+		return uploadURL, fmt.Errorf("the Policy Set Version does not contain an upload link")
 	}
 
 	if uploadURL == "" {
-		return uploadURL, fmt.Errorf("The Policy Set Version upload URL is empty.")
+		return uploadURL, fmt.Errorf("the Policy Set Version upload URL is empty")
 	}
 
 	return uploadURL, nil

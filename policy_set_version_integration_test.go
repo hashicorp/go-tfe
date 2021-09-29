@@ -102,7 +102,7 @@ func TestPolicySetVersionsUpload(t *testing.T) {
 			*psv,
 			"test-fixtures/policy-set-version",
 		)
-		assert.EqualError(t, err, "The Policy Set Version does not contain an upload link.")
+		assert.EqualError(t, err, "the Policy Set Version does not contain an upload link")
 	})
 }
 
@@ -130,7 +130,7 @@ func TestPolicySetVersionsUploadURL(t *testing.T) {
 		}
 
 		_, err := psv.uploadURL()
-		assert.EqualError(t, err, "The Policy Set Version does not contain an upload link.")
+		assert.EqualError(t, err, "the Policy Set Version does not contain an upload link")
 	})
 
 	t.Run("errors when the upload link is empty", func(t *testing.T) {
@@ -142,6 +142,6 @@ func TestPolicySetVersionsUploadURL(t *testing.T) {
 		}
 
 		_, err := psv.uploadURL()
-		assert.EqualError(t, err, "The Policy Set Version upload URL is empty.")
+		assert.EqualError(t, err, "the Policy Set Version upload URL is empty")
 	})
 }

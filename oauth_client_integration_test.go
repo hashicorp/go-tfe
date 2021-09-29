@@ -322,7 +322,7 @@ func TestOAuthClientsCreateOptionsValid(t *testing.T) {
 		}
 
 		err := options.valid()
-		assert.EqualError(t, err, "Private Key can only be present with Azure DevOps Server service provider")
+		assert.EqualError(t, err, "private Key can only be present with Azure DevOps Server service provider")
 	})
 
 	t.Run("with valid options including private key", func(t *testing.T) {
