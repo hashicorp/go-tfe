@@ -1,16 +1,17 @@
 run:
   timeout: 5m
 linters:
+#enabled by default: deadcode, errcheck, gosimple, govet, ineffasign, staticcheck, struccheck, typecheck, unused, varcheck
   enable:
     - whitespace #https://github.com/ultraware/whitespace
-    - noctx #https://github.com/sonatard/noctx
+    # - noctx #https://github.com/sonatard/noctx
     - nilerr #https://github.com/gostaticanalysis/nilerr
     - nestif #https://github.com/nakabonne/nestif
-    - gocritic #https://github.com/go-critic/go-critic
-    - goconst #https://github.com/jgautheron/goconst
+    # - gocritic #https://github.com/go-critic/go-critic #TODO: reasses usefulness
+    # - goconst #https://github.com/jgautheron/goconst #TODO: reasses usefulness
     - exportloopref #https://github.com/kyoh86/exportloopref
-    - errname #https://github.com/Antonboom/errname
-    - errorlint #https://github.com/polyfloyd/go-errorlint
+    # - errname #https://github.com/Antonboom/errname #TODO: reasses usefulness
+    # - errorlint #https://github.com/polyfloyd/go-errorlint #TODO: reasses usefulness
     - bodyclose #https://github.com/timakin/bodyclose
     # - cyclop #https://github.com/bkielbasa/cyclop
     - errcheck #https://github.com/kisielk/errcheck
