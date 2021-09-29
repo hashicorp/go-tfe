@@ -2,9 +2,20 @@ run:
   timeout: 5m
 linters:
   enable:
-    - gosimple
-    - stylecheck
-    - revive #golint is deprecated and golangci-lint recommends to use revive instead
+    - whitespace #https://github.com/ultraware/whitespace
+    - noctx #https://github.com/sonatard/noctx
+    - nilerr #https://github.com/gostaticanalysis/nilerr
+    - nestif #https://github.com/nakabonne/nestif
+    - gocritic #https://github.com/go-critic/go-critic
+    - goconst #https://github.com/jgautheron/goconst
+    - exportloopref #https://github.com/kyoh86/exportloopref
+    - errname #https://github.com/Antonboom/errname
+    - errorlint #https://github.com/polyfloyd/go-errorlint
+    - bodyclose #https://github.com/timakin/bodyclose
+    # - cyclop #https://github.com/bkielbasa/cyclop
+    - errcheck #https://github.com/kisielk/errcheck
+    - stylecheck #https://github.com/dominikh/go-tools/tree/master/stylecheck
+    - revive #golint is deprecated and golangci-lint recommends to use revive instead https://github.com/mgechev/revive
     #other deprecated lint libraries: maligned, scopelint, interfacer
 issues:
   exclude-rules:
@@ -12,3 +23,26 @@ issues:
     linters:
     - unused
     - deadcode
+linters-settings:
+  errcheck:
+    # report about not checking of errors in type assertions: `a := b.(MyStruct)`;
+    # default is false: such cases aren't reported by default.
+    check-type-assertions: true
+    # report about assignment of errors to blank identifier: `num, _ := strconv.Atoi(numStr)`;
+    # default is false: such cases aren't reported by default.
+    check-blank: true
+    # list of functions to exclude from checking, where each entry is a single function to exclude.
+    # see https://github.com/kisielk/errcheck#excluding-functions for details
+    # exclude-functions:
+    #   - io/ioutil.ReadFile
+    #   - io.Copy(*bytes.Buffer)
+    #   - io.Copy(os.Stdout)
+  revive:
+    # see https://github.com/mgechev/revive#available-rules for details.
+    ignore-generated-header: false #recommended in their configuration
+    severity: warning
+    rules:
+      - name: indent-error-flow #Prevents redundant else statements
+        severity: warning
+      - name: useless-break
+        severity: warning
