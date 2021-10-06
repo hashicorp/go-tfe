@@ -342,7 +342,7 @@ func TestRunsForceCancel(t *testing.T) {
 		// Force-cancel only becomes available if a normal cancel is performed
 		// first, and the desired canceled state is not reached within a pre-
 		// determined amount of time (see
-		// https://www.terraform.io/docs/enterprise/api/run.html#forcefully-cancel-a-run).
+		// https://www.terraform.io/docs/cloud/api/run.html#forcefully-cancel-a-run).
 	})
 
 	t.Run("when the run does not exist", func(t *testing.T) {

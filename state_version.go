@@ -16,7 +16,7 @@ var _ StateVersions = (*stateVersions)(nil)
 // the Terraform Enterprise API supports.
 //
 // TFE API docs:
-// https://www.terraform.io/docs/enterprise/api/state-versions.html
+// https://www.terraform.io/docs/cloud/api/state-versions.html
 type StateVersions interface {
 	// List all the state versions for a given workspace.
 	List(ctx context.Context, options StateVersionListOptions) (*StateVersionList, error)
