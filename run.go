@@ -14,7 +14,7 @@ var _ Runs = (*runs)(nil)
 // Runs describes all the run related methods that the Terraform Enterprise
 // API supports.
 //
-// TFE API docs: https://www.terraform.io/docs/enterprise/api/run.html
+// TFE API docs: https://www.terraform.io/docs/cloud/api/run.html
 type Runs interface {
 	// List all the runs of the given workspace.
 	List(ctx context.Context, workspaceID string, options RunListOptions) (*RunList, error)
