@@ -15,7 +15,7 @@ var _ Organizations = (*organizations)(nil)
 // Terraform Enterprise API supports.
 //
 // TFE API docs:
-// https://www.terraform.io/docs/enterprise/api/organizations.html
+// https://www.terraform.io/docs/cloud/api/organizations.html
 type Organizations interface {
 	// List all the organizations visible to the current user.
 	List(ctx context.Context, options OrganizationListOptions) (*OrganizationList, error)

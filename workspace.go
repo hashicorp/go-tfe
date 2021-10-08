@@ -16,7 +16,7 @@ var _ Workspaces = (*workspaces)(nil)
 // Workspaces describes all the workspace related methods that the Terraform
 // Enterprise API supports.
 //
-// TFE API docs: https://www.terraform.io/docs/enterprise/api/workspaces.html
+// TFE API docs: https://www.terraform.io/docs/cloud/api/workspaces.html
 type Workspaces interface {
 	// List all the workspaces within an organization.
 	List(ctx context.Context, organization string, options WorkspaceListOptions) (*WorkspaceList, error)

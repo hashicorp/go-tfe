@@ -14,7 +14,7 @@ var _ PolicySets = (*policySets)(nil)
 // PolicySets describes all the policy set related methods that the Terraform
 // Enterprise API supports.
 //
-// TFE API docs: https://www.terraform.io/docs/enterprise/api/policies.html
+// TFE API docs: https://www.terraform.io/docs/cloud/api/policies.html
 type PolicySets interface {
 	// List all the policy sets for a given organization.
 	List(ctx context.Context, organization string, options PolicySetListOptions) (*PolicySetList, error)
