@@ -1,0 +1,41 @@
+name: test
+on:
+  pull_request:
+    branches: [ main ]
+jobs:
+  codegen:
+    name: Codegen
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Restore go build cache #This action allows caching dependencies and build outputs to improve workflow execution time 
+        uses: actions/cache@v2
+        with:
+          path: ~/.cache/go-build
+          key: ${{ runner.os }}-go-${{ hashFiles('**/go.mod') }}
+      - name: Set local Go version
+        run: |
+          VERSION=`cat .go-version| awk '{printf$1}'`
+          echo "go_version=$VERSION" >> $GITHUB_ENV      
+      - name: Setup Go Environment #https://github.com/marketplace/actions/setup-go-environment
+        uses: actions/setup-go@v2
+        with:
+          go-version: "${{ env.go_version }}"
+      - name: Install mockgen
+        run: |
+          set -eux -o pipefail
+          MOCKGEN_VERSION=$(curl -Ls -o /dev/null -w %{url_effective}   https://github.com/golang/mock/releases/latest | awk -F'/v' '{printf$2}')
+          MOCKGEN_ZIP=mock_${MOCKGEN_VERSION}_linux_amd64.tar.gz
+          curl -OL https://github.com/golang/mock/releases/download/v$MOCKGEN_VERSION/$MOCKGEN_ZIP
+          sudo tar xvzf $MOCKGEN_ZIP --strip-components 1 -C /usr/local
+          sudo chmod +x /usr/local/mockgen
+          rm -f $MOCKGEN_ZIP
+          echo /usr/local/ >> $GITHUB_PATH
+      - name: Get dependencies
+        run: go mod download
+      - name: Generate mocks
+        run:  ./generate_mocks.sh
+      - name: Ensure nothing changed
+        run: git diff --exit-code
