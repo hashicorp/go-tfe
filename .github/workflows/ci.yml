@@ -37,5 +37,7 @@ jobs:
         run: go mod download
       - name: Generate mocks
         run:  ./generate_mocks.sh
+      - name: verify go.mod and go.sum are consistent
+        run : go mod tidy
       - name: Ensure nothing changed
         run: git diff --exit-code
