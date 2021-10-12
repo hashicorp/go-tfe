@@ -180,6 +180,41 @@ func TestRunsCreate(t *testing.T) {
 		assert.Equal(t, *options.Refresh, r.Refresh)
 		assert.Equal(t, options.ReplaceAddrs, r.ReplaceAddrs)
 		assert.Equal(t, options.TargetAddrs, r.TargetAddrs)
+		assert.Nil(t, r.Variables)
+	})
+
+	t.Run("with variables", func(t *testing.T) {
+		vars := []*RunVariable{
+			{
+				Key:   "test_variable",
+				Value: "Hello, World!",
+			},
+			{
+				Key:   "test_foo",
+				Value: "Hello, Foo!",
+			},
+		}
+
+		options := RunCreateOptions{
+			Message:   String("yo"),
+			Workspace: wTest,
+			Variables: vars,
+		}
+
+		r, err := client.Runs.Create(ctx, options)
+		require.NoError(t, err)
+		assert.NotNil(t, r.Variables)
+		assert.Equal(t, len(vars), len(r.Variables))
+
+		for _, v := range r.Variables {
+			if v.Key == "test_foo" {
+				assert.Equal(t, v.Value, "Hello, Foo!")
+			} else if v.Key == "test_variable" {
+				assert.Equal(t, v.Value, "Hello, World!")
+			} else {
+				t.Fatalf("Unexpected variable key: %s", v.Key)
+			}
+		}
 	})
 }
 
