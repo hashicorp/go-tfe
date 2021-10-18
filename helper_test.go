@@ -974,7 +974,6 @@ func createWorkspaceWithVCS(t *testing.T, client *Client, org *Organization, opt
 
 	return w, func() {
 		if err := client.Workspaces.Delete(ctx, org.Name, w.Name); err != nil {
-			t.Log("org name:", org.Name)
 			t.Errorf("Error destroying workspace! WARNING: Dangling resources\n"+
 				"may exist! The full error is shown below.\n\n"+
 				"Workspace: %s\nError: %s", w.Name, err)

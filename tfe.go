@@ -480,7 +480,6 @@ func (c *Client) newRequest(method, path string, v interface{}) (*retryablehttp.
 
 		if v != nil {
 			if body, err = serializeRequestBody(v); err != nil {
-				fmt.Println("failed serializeRequestBody")
 				return nil, err
 			}
 		}
@@ -492,7 +491,6 @@ func (c *Client) newRequest(method, path string, v interface{}) (*retryablehttp.
 
 	req, err := retryablehttp.NewRequest(method, u.String(), body)
 	if err != nil {
-		fmt.Println("failed retryablehttp.NewRequest")
 		return nil, err
 	}
 
@@ -505,7 +503,6 @@ func (c *Client) newRequest(method, path string, v interface{}) (*retryablehttp.
 	for k, v := range reqHeaders {
 		req.Header[k] = v
 	}
-	fmt.Println("Did not failed at request")
 	return req, nil
 }
 
@@ -580,6 +577,8 @@ func (c *Client) do(ctx context.Context, req *retryablehttp.Request, v interface
 	// Wait will block until the limiter can obtain a new token
 	// or returns an error if the given context is canceled.
 	if err := c.limiter.Wait(ctx); err != nil {
+		fmt.Println("c.limiter.Wait(")
+
 		return err
 	}
 
@@ -588,6 +587,7 @@ func (c *Client) do(ctx context.Context, req *retryablehttp.Request, v interface
 
 	// Execute the request and check the response.
 	resp, err := c.http.Do(req)
+	fmt.Println("my err and status code:", err, resp.StatusCode)
 	if err != nil {
 		// If we got an error, and the context has been canceled,
 		// the context's error is probably more useful.
@@ -602,20 +602,24 @@ func (c *Client) do(ctx context.Context, req *retryablehttp.Request, v interface
 
 	// Basic response checking.
 	if err := checkResponseCode(resp); err != nil {
+		fmt.Println("error checkResponseCode(resp)")
+
 		return err
 	}
 
 	// Return here if decoding the response isn't needed.
 	if v == nil {
+		fmt.Println("error nil")
 		return nil
 	}
 
 	// If v implements io.Writer, write the raw response body.
 	if w, ok := v.(io.Writer); ok {
 		_, err = io.Copy(w, resp.Body)
+		fmt.Println("error implements io.Writer")
 		return err
 	}
-
+	fmt.Println("error unmarshalResponse(resp.Body, v)")
 	return unmarshalResponse(resp.Body, v)
 }
 
