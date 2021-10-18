@@ -65,13 +65,12 @@ func TestOrganizationsCreate(t *testing.T) {
 		org, err := client.Organizations.Create(ctx, options)
 		require.NoError(t, err)
 
-		// Make sure we clean up the created org.
-		defer func() {
+		t.Cleanup(func() {
 			err := client.Organizations.Delete(ctx, org.Name)
 			if err != nil {
 				t.Logf("error deleting organization (%s): %s", org.Name, err)
 			}
-		}()
+		})
 
 		assert.Equal(t, *options.Name, org.Name)
 		assert.Equal(t, *options.Email, org.Email)
@@ -141,6 +140,22 @@ func TestOrganizationsRead(t *testing.T) {
 func TestOrganizationsUpdate(t *testing.T) {
 	client := testClient(t)
 	ctx := context.Background()
+
+	t.Run("with TFC-only options", func(t *testing.T) {
+		skipIfEnterprise(t)
+
+		orgTest, orgTestCleanup := createOrganization(t, client)
+		t.Cleanup(orgTestCleanup)
+
+		options := OrganizationUpdateOptions{
+			SendPassingStatusesForUntriggeredSpeculativePlans: Bool(false),
+		}
+
+		org, err := client.Organizations.Update(ctx, orgTest.Name, options)
+		require.NoError(t, err)
+
+		assert.Equal(t, false, org.SendPassingStatusesForUntriggeredSpeculativePlans)
+	})
 
 	t.Run("with valid options", func(t *testing.T) {
 		orgTest, orgTestCleanup := createOrganization(t, client)
