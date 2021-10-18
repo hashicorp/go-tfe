@@ -587,8 +587,8 @@ func (c *Client) do(ctx context.Context, req *retryablehttp.Request, v interface
 
 	// Execute the request and check the response.
 	resp, err := c.http.Do(req)
-	fmt.Println("my err and status code:", err, resp.StatusCode)
 	if err != nil {
+		fmt.Println("my err and status code:", err, resp.StatusCode)
 		// If we got an error, and the context has been canceled,
 		// the context's error is probably more useful.
 		select {
@@ -603,24 +603,27 @@ func (c *Client) do(ctx context.Context, req *retryablehttp.Request, v interface
 	// Basic response checking.
 	if err := checkResponseCode(resp); err != nil {
 		fmt.Println("error checkResponseCode(resp)")
-
 		return err
 	}
 
 	// Return here if decoding the response isn't needed.
 	if v == nil {
-		fmt.Println("error nil")
 		return nil
 	}
 
 	// If v implements io.Writer, write the raw response body.
 	if w, ok := v.(io.Writer); ok {
 		_, err = io.Copy(w, resp.Body)
-		fmt.Println("error implements io.Writer")
+		if err != nil {
+			fmt.Println("error implements io.Writer")
+		}
 		return err
 	}
-	fmt.Println("error unmarshalResponse(resp.Body, v)")
-	return unmarshalResponse(resp.Body, v)
+	errUnmarshal := unmarshalResponse(resp.Body, v)
+	if errUnmarshal != nil {
+		fmt.Println("error unmarshal:", errUnmarshal)
+	}
+	return errUnmarshal
 }
 
 func unmarshalResponse(responseBody io.Reader, model interface{}) error {
