@@ -636,6 +636,7 @@ func (s *workspaces) UpdateByID(ctx context.Context, workspaceID string, options
 
 // Delete a workspace by its name.
 func (s *workspaces) Delete(ctx context.Context, organization, workspace string) error {
+	fmt.Println("About to delete workspace...")
 	if !validStringID(&organization) {
 		return ErrInvalidOrg
 	}
@@ -650,6 +651,7 @@ func (s *workspaces) Delete(ctx context.Context, organization, workspace string)
 	)
 	req, err := s.client.newRequest("DELETE", u, nil)
 	if err != nil {
+		fmt.Println("failed retryablehttp request:", req, err)
 		return err
 	}
 

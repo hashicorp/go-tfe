@@ -480,6 +480,7 @@ func (c *Client) newRequest(method, path string, v interface{}) (*retryablehttp.
 
 		if v != nil {
 			if body, err = serializeRequestBody(v); err != nil {
+				fmt.Println("failed serializeRequestBody")
 				return nil, err
 			}
 		}
@@ -491,6 +492,7 @@ func (c *Client) newRequest(method, path string, v interface{}) (*retryablehttp.
 
 	req, err := retryablehttp.NewRequest(method, u.String(), body)
 	if err != nil {
+		fmt.Println("failed retryablehttp.NewRequest")
 		return nil, err
 	}
 
@@ -503,7 +505,7 @@ func (c *Client) newRequest(method, path string, v interface{}) (*retryablehttp.
 	for k, v := range reqHeaders {
 		req.Header[k] = v
 	}
-
+	fmt.Println("Did not failed at request")
 	return req, nil
 }
 
