@@ -637,9 +637,12 @@ func (s *workspaces) UpdateByID(ctx context.Context, workspaceID string, options
 // Delete a workspace by its name.
 func (s *workspaces) Delete(ctx context.Context, organization, workspace string) error {
 	if !validStringID(&organization) {
+		fmt.Println("here")
 		return ErrInvalidOrg
 	}
 	if !validStringID(&workspace) {
+		fmt.Println("here2")
+
 		return ErrInvalidWorkspaceValue
 	}
 
@@ -650,8 +653,11 @@ func (s *workspaces) Delete(ctx context.Context, organization, workspace string)
 	)
 	req, err := s.client.newRequest("DELETE", u, nil)
 	if err != nil {
+		fmt.Println("here3")
+
 		return err
 	}
+	fmt.Println("here4")
 
 	return s.client.do(ctx, req, nil) //failing somewhere here
 }
