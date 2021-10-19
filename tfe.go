@@ -592,10 +592,6 @@ func (c *Client) do(ctx context.Context, req *retryablehttp.Request, v interface
 		fmt.Println("my status code:", resp.StatusCode)
 		fmt.Println("my resp body:", string(body))
 		fmt.Println("my err:", err)
-
-		if err != nil {
-			log.Fatal(err)
-		}
 	}
 	if err != nil {
 		fmt.Println("my err and status code:", err, resp.StatusCode)
