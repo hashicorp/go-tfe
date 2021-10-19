@@ -1,6 +1,7 @@
 package tfe
 
 import (
+	"io/ioutil"
 	"log"
 
 	"bytes"
@@ -587,6 +588,10 @@ func (c *Client) do(ctx context.Context, req *retryablehttp.Request, v interface
 	// Execute the request and check the response.
 	resp, err := c.http.Do(req)
 	if err != nil {
+		// body, err := ioutil.ReadAll(resp.Body)
+		fmt.Println("my status code - ", resp.StatusCode)
+		// fmt.Println("my resp body:", string(body))
+		fmt.Println("my err - ", err)
 		// If we got an error, and the context has been canceled,
 		// the context's error is probably more useful.
 		select {
@@ -600,6 +605,10 @@ func (c *Client) do(ctx context.Context, req *retryablehttp.Request, v interface
 
 	// Basic response checking.
 	if err := checkResponseCode(resp); err != nil {
+		body, err := ioutil.ReadAll(resp.Body)
+		fmt.Println("my status code:", resp.StatusCode)
+		fmt.Println("my resp body:", string(body))
+		fmt.Println("my err:", err)
 		return err
 	}
 
