@@ -1,7 +1,6 @@
 package tfe
 
 import (
-	"io/ioutil"
 	"log"
 
 	"bytes"
@@ -605,10 +604,10 @@ func (c *Client) do(ctx context.Context, req *retryablehttp.Request, v interface
 
 	// Basic response checking.
 	if err := checkResponseCode(resp); err != nil {
-		body, err := ioutil.ReadAll(resp.Body)
-		fmt.Println("my status code:", resp.StatusCode)
-		fmt.Println("my resp body:", string(body))
 		fmt.Println("my err:", err)
+		// body, err := ioutil.ReadAll(resp.Body)
+		fmt.Println("my status code:", resp.StatusCode)
+		// fmt.Println("my resp body:", string(body)) //my resp body: {"errors":[{"status":"404","title":"not found"}]}
 		return err
 	}
 
