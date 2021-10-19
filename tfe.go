@@ -577,8 +577,7 @@ func (c *Client) do(ctx context.Context, req *retryablehttp.Request, v interface
 	// Wait will block until the limiter can obtain a new token
 	// or returns an error if the given context is canceled.
 	if err := c.limiter.Wait(ctx); err != nil {
-		fmt.Println("c.limiter.Wait(")
-
+		fmt.Println("my c.limiter.Wait(")
 		return err
 	}
 

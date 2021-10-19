@@ -372,6 +372,7 @@ func (o WorkspaceCreateOptions) valid() error {
 
 // Create is used to create a new workspace.
 func (s *workspaces) Create(ctx context.Context, organization string, options WorkspaceCreateOptions) (*Workspace, error) {
+	fmt.Println("START CREATING WORKSPACE...")
 	if !validStringID(&organization) {
 		return nil, ErrInvalidOrg
 	}
@@ -636,13 +637,13 @@ func (s *workspaces) UpdateByID(ctx context.Context, workspaceID string, options
 
 // Delete a workspace by its name.
 func (s *workspaces) Delete(ctx context.Context, organization, workspace string) error {
+	fmt.Println("START DELETING...")
 	if !validStringID(&organization) {
 		fmt.Println("here")
 		return ErrInvalidOrg
 	}
 	if !validStringID(&workspace) {
 		fmt.Println("here2")
-
 		return ErrInvalidWorkspaceValue
 	}
 
@@ -654,11 +655,10 @@ func (s *workspaces) Delete(ctx context.Context, organization, workspace string)
 	req, err := s.client.newRequest("DELETE", u, nil)
 	if err != nil {
 		fmt.Println("here3")
-
 		return err
 	}
-	fmt.Println("here4")
 
+	fmt.Println("here4")
 	return s.client.do(ctx, req, nil) //failing somewhere here
 }
 

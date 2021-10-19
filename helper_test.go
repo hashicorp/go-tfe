@@ -925,7 +925,6 @@ func createWorkspace(t *testing.T, client *Client, org *Organization) (*Workspac
 
 	return w, func() {
 		if err := client.Workspaces.Delete(ctx, org.Name, w.Name); err != nil {
-			t.Log("organization name:", org.Name)
 			t.Errorf("Error destroying workspace! WARNING: Dangling resources\n"+
 				"may exist! The full error is shown below.\n\n"+
 				"Workspace: %s\nError: %s", w.Name, err)
