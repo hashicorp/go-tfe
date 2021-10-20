@@ -12,9 +12,6 @@ var (
 	// ErrResourceNotFound is returned when receiving a 404.
 	ErrResourceNotFound = errors.New("resource not found")
 
-	// ErrUnprocessableEntity is returned when receiving a 422.
-	ErrUnprocessableEntity = errors.New("unprocessable entity")
-
 	// ErrRequiredName is returned when a name option is not present.
 	ErrRequiredName = errors.New("name is required")
 
