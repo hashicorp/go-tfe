@@ -263,7 +263,7 @@ func TestRunsCancel(t *testing.T) {
 	ctx := context.Background()
 
 	wTest, wTestCleanup := createWorkspace(t, client, nil)
-	defer wTestCleanup()
+	t.Cleanup(wTestCleanup)
 
 	// We need to create 2 runs here. The first run will automatically
 	// be planned so that one cannot be cancelled. The second one will
