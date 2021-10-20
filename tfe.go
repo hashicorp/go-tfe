@@ -582,15 +582,11 @@ func (c *Client) do(ctx context.Context, req *retryablehttp.Request, v interface
 	}
 
 	// Add the context to the request.
-	req = req.WithContext(ctx)
+	reqWithCxt := req.WithContext(ctx)
 
 	// Execute the request and check the response.
-	resp, err := c.http.Do(req)
+	resp, err := c.http.Do(reqWithCxt)
 	if err != nil {
-		// body, err := ioutil.ReadAll(resp.Body)
-		fmt.Println("my status code - ", resp.StatusCode)
-		// fmt.Println("my resp body:", string(body))
-		fmt.Println("my err - ", err)
 		// If we got an error, and the context has been canceled,
 		// the context's error is probably more useful.
 		select {
@@ -604,10 +600,6 @@ func (c *Client) do(ctx context.Context, req *retryablehttp.Request, v interface
 
 	// Basic response checking.
 	if err := checkResponseCode(resp); err != nil {
-		fmt.Println("my err:", err)
-		// body, err := ioutil.ReadAll(resp.Body)
-		fmt.Println("my status code:", resp.StatusCode)
-		// fmt.Println("my resp body:", string(body)) //my resp body: {"errors":[{"status":"404","title":"not found"}]}
 		return err
 	}
 
@@ -618,7 +610,7 @@ func (c *Client) do(ctx context.Context, req *retryablehttp.Request, v interface
 
 	// If v implements io.Writer, write the raw response body.
 	if w, ok := v.(io.Writer); ok {
-		_, err = io.Copy(w, resp.Body)
+		_, err := io.Copy(w, resp.Body)
 		return err
 	}
 
@@ -641,7 +633,8 @@ func unmarshalResponse(responseBody io.Reader, model interface{}) error {
 	// Unmarshal a single value if v does not contain the
 	// Items and Pagination struct fields.
 	if !items.IsValid() || !pagination.IsValid() {
-		return jsonapi.UnmarshalPayload(responseBody, model)
+		errPayload := jsonapi.UnmarshalPayload(responseBody, model)
+		return errPayload
 	}
 
 	// Return an error if v.Items is not a slice.
@@ -680,7 +673,6 @@ func unmarshalResponse(responseBody io.Reader, model interface{}) error {
 
 	// Pointer-swap the decoded pagination details.
 	pagination.Set(reflect.ValueOf(p))
-
 	return nil
 }
 
@@ -771,9 +763,9 @@ func packContents(path string) (*bytes.Buffer, error) {
 		return body, ErrMissingDirectory
 	}
 
-	_, err = slug.Pack(path, body, true)
-	if err != nil {
-		return body, err
+	_, errSlug := slug.Pack(path, body, true)
+	if errSlug != nil {
+		return body, errSlug
 	}
 
 	return body, nil
