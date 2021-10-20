@@ -721,8 +721,6 @@ func checkResponseCode(r *http.Response) error {
 		return ErrUnauthorized
 	case 404:
 		return ErrResourceNotFound
-	case 422:
-		return ErrUnprocessableEntity
 	case 409:
 		switch {
 		case strings.HasSuffix(r.Request.URL.Path, "actions/lock"):
