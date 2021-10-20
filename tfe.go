@@ -633,8 +633,7 @@ func unmarshalResponse(responseBody io.Reader, model interface{}) error {
 	// Unmarshal a single value if v does not contain the
 	// Items and Pagination struct fields.
 	if !items.IsValid() || !pagination.IsValid() {
-		errPayload := jsonapi.UnmarshalPayload(responseBody, model)
-		return errPayload
+		return jsonapi.UnmarshalPayload(responseBody, model)
 	}
 
 	// Return an error if v.Items is not a slice.
@@ -673,6 +672,7 @@ func unmarshalResponse(responseBody io.Reader, model interface{}) error {
 
 	// Pointer-swap the decoded pagination details.
 	pagination.Set(reflect.ValueOf(p))
+
 	return nil
 }
 
