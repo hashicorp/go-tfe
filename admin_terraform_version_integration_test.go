@@ -89,6 +89,28 @@ func TestAdminTerraformVersions_CreateDelete(t *testing.T) {
 		assert.Equal(t, *opts.Beta, tfv.Beta)
 	})
 
+    t.Run("with only required options", func(t *testing.T) {
+	  opts := AdminTerraformVersionCreateOptions{
+		Version:  String("1.1.1"),
+		URL:      String("https://www.hashicorp.com"),
+		Sha:      String(genSha(t, "secret", "data")),
+	  }
+	  tfv, err := client.Admin.TerraformVersions.Create(ctx, opts)
+	  require.NoError(t, err)
+
+	  defer func() {
+		deleteErr := client.Admin.TerraformVersions.Delete(ctx, tfv.ID)
+		require.NoError(t, deleteErr)
+	  }()
+
+	  assert.Equal(t, *opts.Version, tfv.Version)
+	  assert.Equal(t, *opts.URL, tfv.URL)
+	  assert.Equal(t, *opts.Sha, tfv.Sha)
+	  assert.Equal(t, false, tfv.Official)
+	  assert.Equal(t, true, tfv.Enabled)
+	  assert.Equal(t, false, tfv.Beta)
+    })
+
 	t.Run("with empty options", func(t *testing.T) {
 		opts := AdminTerraformVersionCreateOptions{}
 
@@ -149,7 +171,7 @@ func TestAdminTerraformVersions_ReadUpdate(t *testing.T) {
 		assert.Equal(t, *opts.Beta, tfv.Beta)
 	})
 
-	t.Run("with non existant terraform version", func(t *testing.T) {
+	t.Run("with non-existent terraform version", func(t *testing.T) {
 		randomID := "random-id"
 		_, err := client.Admin.TerraformVersions.Read(ctx, randomID)
 		require.Error(t, err)
