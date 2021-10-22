@@ -1,7 +1,6 @@
 package tfe
 
 import (
-	"io/ioutil"
 	"log"
 
 	"bytes"
@@ -204,18 +203,9 @@ func NewClient(cfg *Config) (*Client, error) {
 	}
 
 	client.http = &retryablehttp.Client{
-		Backoff:    client.retryHTTPBackoff,
-		CheckRetry: client.retryHTTPCheck,
-		ErrorHandler: func(resp *http.Response, err error, numTries int) (*http.Response, error) {
-			responseData, errRead := ioutil.ReadAll(resp.Body)
-			if errRead != nil {
-				log.Fatal(errRead)
-			}
-
-			responseString := string(responseData)
-			fmt.Println("luces: ", responseString)
-			return resp, err
-		},
+		Backoff:      client.retryHTTPBackoff,
+		CheckRetry:   client.retryHTTPCheck,
+		ErrorHandler: retryablehttp.PassthroughErrorHandler,
 		HTTPClient:   config.HTTPClient,
 		RetryWaitMin: 100 * time.Millisecond,
 		RetryWaitMax: 400 * time.Millisecond,
