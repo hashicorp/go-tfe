@@ -174,7 +174,6 @@ func TestAdminOrganizations_Update(t *testing.T) {
 		assert.NotNilf(t, adminOrg, "Org returned as nil")
 
 		accessBetaTools := true
-		accessInternalTools := true
 		isDisabled := false
 		terraformBuildWorkerApplyTimeout := "24h"
 		terraformBuildWorkerPlanTimeout := "24h"
@@ -182,7 +181,6 @@ func TestAdminOrganizations_Update(t *testing.T) {
 
 		opts := AdminOrganizationUpdateOptions{
 			AccessBetaTools:                  &accessBetaTools,
-			AccessInternalTools:              &accessInternalTools,
 			IsDisabled:                       &isDisabled,
 			TerraformBuildWorkerApplyTimeout: &terraformBuildWorkerApplyTimeout,
 			TerraformBuildWorkerPlanTimeout:  &terraformBuildWorkerPlanTimeout,
@@ -194,7 +192,6 @@ func TestAdminOrganizations_Update(t *testing.T) {
 		assert.NoError(t, err)
 
 		assert.Equal(t, accessBetaTools, adminOrg.AccessBetaTools)
-		assert.Equal(t, accessInternalTools, adminOrg.AccessInternalTools)
 		assert.Equal(t, isDisabled, adminOrg.IsDisabled)
 		assert.Equal(t, terraformBuildWorkerApplyTimeout, adminOrg.TerraformBuildWorkerApplyTimeout)
 		assert.Equal(t, terraformBuildWorkerPlanTimeout, adminOrg.TerraformBuildWorkerPlanTimeout)
