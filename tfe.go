@@ -582,10 +582,10 @@ func (c *Client) do(ctx context.Context, req *retryablehttp.Request, v interface
 	}
 
 	// Add the context to the request.
-	req = req.WithContext(ctx)
+	reqWithCxt := req.WithContext(ctx)
 
 	// Execute the request and check the response.
-	resp, err := c.http.Do(req)
+	resp, err := c.http.Do(reqWithCxt)
 	if err != nil {
 		// If we got an error, and the context has been canceled,
 		// the context's error is probably more useful.
@@ -610,7 +610,7 @@ func (c *Client) do(ctx context.Context, req *retryablehttp.Request, v interface
 
 	// If v implements io.Writer, write the raw response body.
 	if w, ok := v.(io.Writer); ok {
-		_, err = io.Copy(w, resp.Body)
+		_, err := io.Copy(w, resp.Body)
 		return err
 	}
 
@@ -763,9 +763,9 @@ func packContents(path string) (*bytes.Buffer, error) {
 		return body, ErrMissingDirectory
 	}
 
-	_, err = slug.Pack(path, body, true)
-	if err != nil {
-		return body, err
+	_, errSlug := slug.Pack(path, body, true)
+	if errSlug != nil {
+		return body, errSlug
 	}
 
 	return body, nil

@@ -260,6 +260,8 @@ func TestRunsApply(t *testing.T) {
 
 func TestRunsCancel(t *testing.T) {
 	client := testClient(t)
+	client.RetryServerErrors(true) // because ocasionally we get a 500 internal when deleting an organization's workspace
+
 	ctx := context.Background()
 
 	wTest, wTestCleanup := createWorkspace(t, client, nil)
