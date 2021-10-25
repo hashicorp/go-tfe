@@ -170,9 +170,20 @@ func (s *stateVersions) Create(ctx context.Context, workspaceID string, options 
 	return sv, nil
 }
 
+// https://www.terraform.io/cloud-docs/api-docs/state-versions#available-related-resources
+type StateVersionIncludeOps string
+
+const (
+	SVcreatedby               StateVersionIncludeOps = "created_by"
+	SVrun                     StateVersionIncludeOps = "run"
+	SVrunCreatedBy            StateVersionIncludeOps = "run.created_by"
+	SVrunConfigurationVersion StateVersionIncludeOps = "run.configuration_version"
+	SVoutputs                 StateVersionIncludeOps = "outputs"
+)
+
 // StateVersionReadOptions represents the options for reading state version.
 type StateVersionReadOptions struct {
-	Include string `url:"include"`
+	Include []StateVersionIncludeOps `url:"include"`
 }
 
 // Read a state version by its ID.
@@ -203,7 +214,7 @@ func (s *stateVersions) Read(ctx context.Context, svID string) (*StateVersion, e
 
 // StateVersionCurrentOptions represents the options for reading the current state version.
 type StateVersionCurrentOptions struct {
-	Include string `url:"include"`
+	Include []StateVersionIncludeOps `url:"include"`
 }
 
 // CurrentWithOptions reads the latest available state from the given workspace using the options supplied.

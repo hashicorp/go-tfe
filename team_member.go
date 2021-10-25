@@ -61,9 +61,9 @@ func (s *teamMembers) ListUsers(ctx context.Context, teamID string) ([]*User, er
 	}
 
 	options := struct {
-		Include string `url:"include"`
+		Include []TeamIncludeOps `url:"include"`
 	}{
-		Include: "users",
+		Include: []TeamIncludeOps{TeamUsers},
 	}
 
 	u := fmt.Sprintf("teams/%s", url.QueryEscape(teamID))
@@ -88,9 +88,9 @@ func (s *teamMembers) ListOrganizationMemberships(ctx context.Context, teamID st
 	}
 
 	options := struct {
-		Include string `url:"include"`
+		Include []TeamIncludeOps `url:"include"`
 	}{
-		Include: "organization-memberships",
+		Include: []TeamIncludeOps{TeamOrganizationMemberships},
 	}
 
 	u := fmt.Sprintf("teams/%s", url.QueryEscape(teamID))

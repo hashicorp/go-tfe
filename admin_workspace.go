@@ -45,6 +45,16 @@ type AdminWorkspace struct {
 	CurrentRun   *Run          `jsonapi:"relation,current-run"`
 }
 
+// A list of relations to include. See available resources
+// https://www.terraform.io/docs/cloud/api/admin/workspaces.html#available-related-resources
+type AdminWorkspaceIncludeOps string
+
+var (
+	AdminWorkspaceOrg        AdminWorkspaceIncludeOps = "organization"
+	AdminWorkspaceCurrentRun AdminWorkspaceIncludeOps = "current_run"
+	AdminWorkspaceOrgOwners  AdminWorkspaceIncludeOps = "organization.owners"
+)
+
 // AdminWorkspaceListOptions represents the options for listing workspaces.
 type AdminWorkspaceListOptions struct {
 	ListOptions
@@ -53,9 +63,7 @@ type AdminWorkspaceListOptions struct {
 	// https://www.terraform.io/docs/cloud/api/admin/workspaces.html#query-parameters
 	Query *string `url:"q,omitempty"`
 
-	// A list of relations to include. See available resources
-	// https://www.terraform.io/docs/cloud/api/admin/workspaces.html#available-related-resources
-	Include *string `url:"include"`
+	Include *[]AdminWorkspaceIncludeOps `url:"include"`
 }
 
 // AdminWorkspaceList represents a list of workspaces.

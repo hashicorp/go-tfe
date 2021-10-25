@@ -106,6 +106,7 @@ type Run struct {
 	Status                 RunStatus            `jsonapi:"attr,status"`
 	StatusTimestamps       *RunStatusTimestamps `jsonapi:"attr,status-timestamps"`
 	TargetAddrs            []string             `jsonapi:"attr,target-addrs,omitempty"`
+	Variables              []*RunVariable       `jsonapi:"attr,variables"`
 
 	// Relations
 	Apply                *Apply                `jsonapi:"relation,apply"`
@@ -155,13 +156,42 @@ type RunStatusTimestamps struct {
 	PolicySoftFailedAt   time.Time `jsonapi:"attr,policy-soft-failed-at,rfc3339"`
 }
 
+// A list of relations to include. See available resources:
+// https://www.terraform.io/docs/cloud/api/run.html#available-related-resources
+type RunIncludeOps string
+
+var (
+	RunPlan             RunIncludeOps = "plan"
+	RunApply            RunIncludeOps = "apply"
+	RunCreatedBy        RunIncludeOps = "created_by"
+	RunCostEstimate     RunIncludeOps = "cost_estimate"
+	RunConfigVer        RunIncludeOps = "configuration_version"
+	RunConfigVerIngress RunIncludeOps = "configuration_version.ingress_attributes"
+	RunWorkspace        RunIncludeOps = "workspace"
+	RunWorkspaceOrg     RunIncludeOps = "workspace.organization"
+)
+
 // RunListOptions represents the options for listing runs.
 type RunListOptions struct {
 	ListOptions
 
-	// A list of relations to include. See available resources:
-	// https://www.terraform.io/docs/cloud/api/run.html#available-related-resources
-	Include *string `url:"include"`
+	Include *[]RunIncludeOps `url:"include"`
+}
+
+// RunVariable represents a variable that can be applied to a run. All values must be expressed as an HCL literal
+// in the same syntax you would use when writing terraform code. See https://www.terraform.io/docs/language/expressions/types.html#types
+// for more details.
+type RunVariable struct {
+	Key   string `jsonapi:"attr,key"`
+	Value string `jsonapi:"attr,value"`
+}
+
+// RunVariable represents a variable that can be applied to a run. All values must be expressed as an HCL literal
+// in the same syntax you would use when writing terraform code. See https://www.terraform.io/docs/language/expressions/types.html#types
+// for more details.
+type RunVariable struct {
+	Key   string `jsonapi:"attr,key"`
+	Value string `jsonapi:"attr,value"`
 }
 
 // List all the runs of the given workspace.
@@ -237,6 +267,10 @@ type RunCreateOptions struct {
 	// AutoApply determines if the run should be applied automatically without
 	// user confirmation. It defaults to the Workspace.AutoApply setting.
 	AutoApply *bool `jsonapi:"attr,auto-apply,omitempty"`
+
+	// RunVariables allows you to specify terraform input variables for
+	// a particular run, prioritized over variables defined on the workspace.
+	Variables []*RunVariable `jsonapi:"attr,variables,omitempty"`
 }
 
 func (o RunCreateOptions) valid() error {
@@ -273,7 +307,7 @@ func (s *runs) Read(ctx context.Context, runID string) (*Run, error) {
 
 // RunReadOptions represents the options for reading a run.
 type RunReadOptions struct {
-	Include string `url:"include"`
+	Include []RunIncludeOps `url:"include"`
 }
 
 // Read a run by its ID with the given options.

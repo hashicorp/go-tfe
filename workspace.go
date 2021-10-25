@@ -202,9 +202,25 @@ type WorkspacePermissions struct {
 	CanUpdateVariable bool `jsonapi:"attr,can-update-variable"`
 }
 
+// https://www.terraform.io/docs/cloud/api/workspaces.html#available-related-resources
+type WSIncludeOps string
+
+const (
+	WSOrganization               WSIncludeOps = "organization"
+	WSCurrentConfigVer           WSIncludeOps = "current_configuration_version"
+	WSCurrentConfigVerIngress    WSIncludeOps = "current_configuration_version.ingress_attributes"
+	WSCurrentRun                 WSIncludeOps = "current_run"
+	WSCurrentRunPlan             WSIncludeOps = "current_run.plan"
+	WSCurrentRunConfigVer        WSIncludeOps = "current_run.configuration_version"
+	WSCurrentrunConfigVerIngress WSIncludeOps = "current_run.configuration_version.ingress_attributes"
+	WSLockedBy                   WSIncludeOps = "locked_by"
+	WSReadme                     WSIncludeOps = "readme"
+	WSOutputs                    WSIncludeOps = "outputs"
+)
+
 // WorkspaceReadOptions represents the options for reading a workspace.
 type WorkspaceReadOptions struct {
-	Include string `url:"include"`
+	Include []WSIncludeOps `url:"include"`
 }
 
 // WorkspaceListOptions represents the options for listing workspaces.
@@ -218,7 +234,7 @@ type WorkspaceListOptions struct {
 	Tags *string `url:"search[tags],omitempty"`
 
 	// A list of relations to include. See available resources https://www.terraform.io/docs/cloud/api/workspaces.html#available-related-resources
-	Include *string `url:"include,omitempty"`
+	Include []WSIncludeOps `url:"include,omitempty"`
 }
 
 // List all the workspaces within an organization.
