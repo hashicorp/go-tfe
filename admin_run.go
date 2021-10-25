@@ -48,14 +48,22 @@ type AdminRunsList struct {
 	Items []*AdminRun
 }
 
+// https://www.terraform.io/cloud-docs/api-docs/admin/runs#available-related-resources
+type AdminRunIncludeOps string
+
+var (
+	AdminRunWorkspace    AdminRunIncludeOps = "workspace"
+	AdminRunWorkspaceOrg AdminRunIncludeOps = "workspace.organization"
+)
+
 // AdminRunsListOptions represents the options for listing runs.
 // https://www.terraform.io/docs/cloud/api/admin/runs.html#query-parameters
 type AdminRunsListOptions struct {
 	ListOptions
 
-	RunStatus *string `url:"filter[status],omitempty"`
-	Query     *string `url:"q,omitempty"`
-	Include   *string `url:"include,omitempty"`
+	RunStatus *string               `url:"filter[status],omitempty"`
+	Query     *string               `url:"q,omitempty"`
+	Include   *[]AdminRunIncludeOps `url:"include,omitempty"`
 }
 
 // List all the runs of the terraform enterprise installation.

@@ -60,7 +60,7 @@ func TestRunsList(t *testing.T) {
 
 	t.Run("with workspace included", func(t *testing.T) {
 		rl, err := client.Runs.List(ctx, wTest.ID, RunListOptions{
-			Include: String("workspace"),
+			Include: &([]RunIncludeOps{RunWorkspace}),
 		})
 
 		assert.NoError(t, err)
@@ -180,6 +180,41 @@ func TestRunsCreate(t *testing.T) {
 		assert.Equal(t, *options.Refresh, r.Refresh)
 		assert.Equal(t, options.ReplaceAddrs, r.ReplaceAddrs)
 		assert.Equal(t, options.TargetAddrs, r.TargetAddrs)
+		assert.Nil(t, r.Variables)
+	})
+
+	t.Run("with variables", func(t *testing.T) {
+		vars := []*RunVariable{
+			{
+				Key:   "test_variable",
+				Value: "Hello, World!",
+			},
+			{
+				Key:   "test_foo",
+				Value: "Hello, Foo!",
+			},
+		}
+
+		options := RunCreateOptions{
+			Message:   String("yo"),
+			Workspace: wTest,
+			Variables: vars,
+		}
+
+		r, err := client.Runs.Create(ctx, options)
+		require.NoError(t, err)
+		assert.NotNil(t, r.Variables)
+		assert.Equal(t, len(vars), len(r.Variables))
+
+		for _, v := range r.Variables {
+			if v.Key == "test_foo" {
+				assert.Equal(t, v.Value, "Hello, Foo!")
+			} else if v.Key == "test_variable" {
+				assert.Equal(t, v.Value, "Hello, World!")
+			} else {
+				t.Fatalf("Unexpected variable key: %s", v.Key)
+			}
+		}
 	})
 }
 
@@ -221,7 +256,7 @@ func TestRunsReadWithOptions(t *testing.T) {
 
 	t.Run("when the run exists", func(t *testing.T) {
 		curOpts := &RunReadOptions{
-			Include: "created_by",
+			Include: []RunIncludeOps{RunCreatedBy},
 		}
 
 		r, err := client.Runs.ReadWithOptions(ctx, rTest.ID, curOpts)
@@ -260,8 +295,6 @@ func TestRunsApply(t *testing.T) {
 
 func TestRunsCancel(t *testing.T) {
 	client := testClient(t)
-	client.RetryServerErrors(true) // because ocasionally we get a 500 internal when deleting an organization's workspace
-
 	ctx := context.Background()
 
 	wTest, wTestCleanup := createWorkspace(t, client, nil)

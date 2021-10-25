@@ -98,9 +98,17 @@ type CVStatusTimestamps struct {
 	StartedAt  time.Time `jsonapi:"attr,started-at,rfc3339"`
 }
 
+// A list of relations to include. See available resources:
+// https://www.terraform.io/docs/cloud/api/configuration-versions.html#available-related-resources
+type ConfigurationVersionIncludeOps string
+
+const (
+	ConfigurationVerIngressAttributes ConfigurationVersionIncludeOps = "ingress_attributes"
+)
+
 // ConfigurationVersionReadOptions represents the options for reading a configuration version.
 type ConfigurationVersionReadOptions struct {
-	Include string `url:"include"`
+	Include []ConfigurationVersionIncludeOps `url:"include"`
 }
 
 // ConfigurationVersionListOptions represents the options for listing
@@ -108,8 +116,6 @@ type ConfigurationVersionReadOptions struct {
 type ConfigurationVersionListOptions struct {
 	ListOptions
 
-	// A list of relations to include. See available resources:
-	// https://www.terraform.io/docs/cloud/api/configuration-versions.html#available-related-resources
 	Include *string `url:"include"`
 }
 

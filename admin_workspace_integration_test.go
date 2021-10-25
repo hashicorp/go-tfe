@@ -88,7 +88,7 @@ func TestAdminWorkspaces_List(t *testing.T) {
 
 	t.Run("with organization included", func(t *testing.T) {
 		wl, err := client.Admin.Workspaces.List(ctx, AdminWorkspaceListOptions{
-			Include: String("organization"),
+			Include: &([]AdminWorkspaceIncludeOps{AdminWorkspaceOrg}),
 		})
 
 		assert.NoError(t, err)
@@ -109,7 +109,7 @@ func TestAdminWorkspaces_List(t *testing.T) {
 		assert.NoError(t, err)
 
 		wl, err := client.Admin.Workspaces.List(ctx, AdminWorkspaceListOptions{
-			Include: String("current_run"),
+			Include: &([]AdminWorkspaceIncludeOps{AdminWorkspaceCurrentRun}),
 		})
 
 		assert.NoError(t, err)
@@ -117,15 +117,6 @@ func TestAdminWorkspaces_List(t *testing.T) {
 		assert.NotEmpty(t, wl.Items)
 		assert.NotNil(t, wl.Items[0].CurrentRun)
 		assert.Equal(t, wl.Items[0].CurrentRun.ID, run.ID)
-	})
-
-	t.Run("with invalid resource included", func(t *testing.T) {
-		wl, err := client.Admin.Workspaces.List(ctx, AdminWorkspaceListOptions{
-			Include: String("invalid-included-resource"),
-		})
-		assert.Nil(t, wl)
-		assert.Error(t, err)
-		assert.EqualError(t, err, "bad request\n\nInvalid include parameter")
 	})
 }
 

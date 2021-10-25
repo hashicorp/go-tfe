@@ -187,11 +187,22 @@ func (s *policySets) Create(ctx context.Context, organization string, options Po
 	return ps, err
 }
 
+type PolicySetIncludeOps string
+
+const (
+	PolicySetCurrentVersion PolicySetIncludeOps = "current-version"
+	PolicySetNewestVersion  PolicySetIncludeOps = "newest-version"
+	PolicySetOrganization   PolicySetIncludeOps = "organization"
+	PolicySetPolicies       PolicySetIncludeOps = "policies"
+	PolicySetWorkspaces     PolicySetIncludeOps = "workspaces"
+	PolicySetPolicySet      PolicySetIncludeOps = "policy-set"
+)
+
 // PolicySetReadOptions are read options.
 // For a full list of relations, please see:
 // https://www.terraform.io/docs/cloud/api/policy-sets.html#relationships
 type PolicySetReadOptions struct {
-	Include string `url:"include"`
+	Include []PolicySetIncludeOps `url:"include"`
 }
 
 // Read a policy set by its ID.

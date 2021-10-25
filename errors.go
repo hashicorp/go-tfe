@@ -6,10 +6,10 @@ import (
 
 // Generic errors applicable to all resources.
 var (
-	// ErrUnauthorized is returned when a receiving a 401.
+	// ErrUnauthorized is returned when receiving a 401.
 	ErrUnauthorized = errors.New("unauthorized")
 
-	// ErrResourceNotFound is returned when a receiving a 404.
+	// ErrResourceNotFound is returned when receiving a 404.
 	ErrResourceNotFound = errors.New("resource not found")
 
 	// ErrRequiredName is returned when a name option is not present.

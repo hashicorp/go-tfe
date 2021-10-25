@@ -2,6 +2,7 @@ package tfe
 
 import (
 	"log"
+	"sort"
 
 	"bytes"
 	"context"
@@ -109,6 +110,7 @@ type Client struct {
 	OAuthTokens                OAuthTokens
 	Organizations              Organizations
 	OrganizationMemberships    OrganizationMemberships
+	OrganizationTags           OrganizationTags
 	OrganizationTokens         OrganizationTokens
 	Plans                      Plans
 	PlanExports                PlanExports
@@ -245,6 +247,7 @@ func NewClient(cfg *Config) (*Client, error) {
 	client.OAuthTokens = &oAuthTokens{client: client}
 	client.Organizations = &organizations{client: client}
 	client.OrganizationMemberships = &organizationMemberships{client: client}
+	client.OrganizationTags = &organizationTags{client: client}
 	client.OrganizationTokens = &organizationTokens{client: client}
 	client.Plans = &plans{client: client}
 	client.PlanExports = &planExports{client: client}
@@ -466,13 +469,12 @@ func (c *Client) newRequest(method, path string, v interface{}) (*retryablehttp.
 	switch method {
 	case "GET":
 		reqHeaders.Set("Accept", "application/vnd.api+json")
-
 		if v != nil {
 			q, err := query.Values(v)
 			if err != nil {
 				return nil, err
 			}
-			u.RawQuery = q.Encode()
+			u.RawQuery = EncodeIncludeParams(q)
 		}
 	case "DELETE", "PATCH", "POST":
 		reqHeaders.Set("Accept", "application/vnd.api+json")
@@ -505,6 +507,38 @@ func (c *Client) newRequest(method, path string, v interface{}) (*retryablehttp.
 	}
 
 	return req, nil
+}
+
+// Encode encodes the values into ``URL encoded'' form
+// ("bar=baz&foo=quux") sorted by key.
+func EncodeIncludeParams(v url.Values) string {
+	if v == nil {
+		return ""
+	}
+	var buf strings.Builder
+	keys := make([]string, 0, len(v))
+	for k := range v {
+		keys = append(keys, k)
+	}
+	sort.Strings(keys)
+	for _, k := range keys {
+		vs := v[k]
+		if len(vs) > 1 {
+			val := strings.Join(vs, ",")
+			vs = append(vs, val)
+		}
+		keyEscaped := url.QueryEscape(k)
+
+		for _, v := range vs {
+			if buf.Len() > 0 {
+				buf.WriteByte('&')
+			}
+			buf.WriteString(keyEscaped)
+			buf.WriteByte('=')
+			buf.WriteString(url.QueryEscape(v))
+		}
+	}
+	return buf.String()
 }
 
 // Helper method that serializes the given ptr or ptr slice into a JSON

@@ -64,11 +64,19 @@ type OrganizationMembership struct {
 	Teams        []*Team       `jsonapi:"relation,teams"`
 }
 
+// https://www.terraform.io/cloud-docs/api-docs/organization-memberships#available-related-resources
+type OrganizationMembershipIncludeOps string
+
+const (
+	OrganizationMembershipUser OrganizationMembershipIncludeOps = "user"
+	OrganizationMembershipTeam OrganizationMembershipIncludeOps = "teams"
+)
+
 // OrganizationMembershipListOptions represents the options for listing organization memberships.
 type OrganizationMembershipListOptions struct {
 	ListOptions
 
-	Include string `url:"include"`
+	Include []OrganizationMembershipIncludeOps `url:"include"`
 }
 
 // List all the organization memberships of the given organization.
@@ -142,7 +150,7 @@ func (s *organizationMemberships) Read(ctx context.Context, organizationMembersh
 
 // OrganizationMembershipReadOptions represents the options for reading organization memberships.
 type OrganizationMembershipReadOptions struct {
-	Include string `url:"include"`
+	Include []OrganizationMembershipIncludeOps `url:"include"`
 }
 
 // Read an organization membership by ID with options

@@ -70,11 +70,17 @@ type TeamPermissions struct {
 	CanUpdateMembership bool `jsonapi:"attr,can-update-membership"`
 }
 
+type TeamIncludeOps string
+
+// https://www.terraform.io/docs/cloud/api/teams.html#available-related-resources
+const TeamUsers TeamIncludeOps = "users"
+const TeamOrganizationMemberships TeamIncludeOps = "organization-memberships"
+
 // TeamListOptions represents the options for listing teams.
 type TeamListOptions struct {
 	ListOptions
 
-	Include string `url:"include"`
+	Include []TeamIncludeOps `url:"include"`
 }
 
 // List all the teams of the given organization.
