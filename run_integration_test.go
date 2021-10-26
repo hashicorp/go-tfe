@@ -188,6 +188,7 @@ func TestRunsRead_CostEstimate(t *testing.T) {
 	skipIfFreeOnly(t)
 
 	client := testClient(t)
+
 	ctx := context.Background()
 
 	rTest, rTestCleanup := createCostEstimatedRun(t, client, nil)
@@ -260,7 +261,6 @@ func TestRunsApply(t *testing.T) {
 
 func TestRunsCancel(t *testing.T) {
 	client := testClient(t)
-	client.RetryServerErrors(true) // because ocasionally we get a 500 internal when deleting an organization's workspace
 
 	ctx := context.Background()
 

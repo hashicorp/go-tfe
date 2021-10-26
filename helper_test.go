@@ -23,6 +23,7 @@ var _testAccountDetails *TestAccountDetails
 
 func testClient(t *testing.T) *Client {
 	client, err := NewClient(nil)
+	client.RetryServerErrors(true) // because ocasionally we get a 500 internal when deleting an organization's workspace
 	if err != nil {
 		t.Fatal(err)
 	}

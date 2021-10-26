@@ -31,6 +31,7 @@ func testLogReader(t *testing.T, h http.HandlerFunc) (*httptest.Server, *LogRead
 	}
 
 	client, err := NewClient(cfg)
+
 	if err != nil {
 		t.Fatal(err)
 	}
