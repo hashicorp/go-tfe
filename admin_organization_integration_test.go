@@ -174,6 +174,7 @@ func TestAdminOrganizations_Update(t *testing.T) {
 		assert.NotNilf(t, adminOrg, "Org returned as nil")
 
 		accessBetaTools := true
+		globalModuleSharing := false
 		isDisabled := false
 		terraformBuildWorkerApplyTimeout := "24h"
 		terraformBuildWorkerPlanTimeout := "24h"
@@ -181,6 +182,7 @@ func TestAdminOrganizations_Update(t *testing.T) {
 
 		opts := AdminOrganizationUpdateOptions{
 			AccessBetaTools:                  &accessBetaTools,
+			GlobalModuleSharing:              &globalModuleSharing,
 			IsDisabled:                       &isDisabled,
 			TerraformBuildWorkerApplyTimeout: &terraformBuildWorkerApplyTimeout,
 			TerraformBuildWorkerPlanTimeout:  &terraformBuildWorkerPlanTimeout,
@@ -192,31 +194,38 @@ func TestAdminOrganizations_Update(t *testing.T) {
 		assert.NoError(t, err)
 
 		assert.Equal(t, accessBetaTools, adminOrg.AccessBetaTools)
+		assert.Equal(t, globalModuleSharing, adminOrg.GlobalModuleSharing)
 		assert.Equal(t, isDisabled, adminOrg.IsDisabled)
 		assert.Equal(t, terraformBuildWorkerApplyTimeout, adminOrg.TerraformBuildWorkerApplyTimeout)
 		assert.Equal(t, terraformBuildWorkerPlanTimeout, adminOrg.TerraformBuildWorkerPlanTimeout)
 		assert.Equal(t, terraformWorkerSudoEnabled, adminOrg.TerraformWorkerSudoEnabled)
 
 		isDisabled = true
+		globalModuleSharing = true
 		opts = AdminOrganizationUpdateOptions{
-			IsDisabled: &isDisabled,
+			GlobalModuleSharing: &globalModuleSharing,
+			IsDisabled:          &isDisabled,
 		}
 
 		adminOrg, err = client.Admin.Organizations.Update(ctx, org.Name, opts)
 		assert.NoError(t, err)
 		assert.NotNilf(t, adminOrg, "Org returned as nil when it shouldn't be.")
 
+		assert.Equal(t, adminOrg.GlobalModuleSharing, globalModuleSharing)
 		assert.Equal(t, adminOrg.IsDisabled, isDisabled)
 
+		globalModuleSharing = false
 		isDisabled = false
 		opts = AdminOrganizationUpdateOptions{
-			IsDisabled: &isDisabled,
+			GlobalModuleSharing: &globalModuleSharing,
+			IsDisabled:          &isDisabled,
 		}
 
 		adminOrg, err = client.Admin.Organizations.Update(ctx, org.Name, opts)
 		assert.NoError(t, err)
 		assert.NotNilf(t, adminOrg, "Org returned as nil when it shouldn't be.")
 
+		assert.Equal(t, adminOrg.GlobalModuleSharing, globalModuleSharing)
 		assert.Equal(t, adminOrg.IsDisabled, isDisabled)
 	})
 }
