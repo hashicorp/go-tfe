@@ -188,7 +188,6 @@ func TestRunsRead_CostEstimate(t *testing.T) {
 	skipIfFreeOnly(t)
 
 	client := testClient(t)
-
 	ctx := context.Background()
 
 	rTest, rTestCleanup := createCostEstimatedRun(t, client, nil)
