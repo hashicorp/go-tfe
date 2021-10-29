@@ -9,6 +9,7 @@ import (
 	reflect "reflect"
 
 	gomock "github.com/golang/mock/gomock"
+	tfe "github.com/hashicorp/go-tfe"
 )
 
 // MockTwilioSettings is a mock of TwilioSettings interface.
@@ -35,10 +36,10 @@ func (m *MockTwilioSettings) EXPECT() *MockTwilioSettingsMockRecorder {
 }
 
 // Read mocks base method.
-func (m *MockTwilioSettings) Read(ctx context.Context) (*AdminTwilioSetting, error) {
+func (m *MockTwilioSettings) Read(ctx context.Context) (*tfe.AdminTwilioSetting, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Read", ctx)
-	ret0, _ := ret[0].(*AdminTwilioSetting)
+	ret0, _ := ret[0].(*tfe.AdminTwilioSetting)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -50,10 +51,10 @@ func (mr *MockTwilioSettingsMockRecorder) Read(ctx interface{}) *gomock.Call {
 }
 
 // Update mocks base method.
-func (m *MockTwilioSettings) Update(ctx context.Context, options AdminTwilioSettingsUpdateOptions) (*AdminTwilioSetting, error) {
+func (m *MockTwilioSettings) Update(ctx context.Context, options tfe.AdminTwilioSettingsUpdateOptions) (*tfe.AdminTwilioSetting, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Update", ctx, options)
-	ret0, _ := ret[0].(*AdminTwilioSetting)
+	ret0, _ := ret[0].(*tfe.AdminTwilioSetting)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -65,7 +66,7 @@ func (mr *MockTwilioSettingsMockRecorder) Update(ctx, options interface{}) *gomo
 }
 
 // Verify mocks base method.
-func (m *MockTwilioSettings) Verify(ctx context.Context, options AdminTwilioSettingsVerifyOptions) error {
+func (m *MockTwilioSettings) Verify(ctx context.Context, options tfe.AdminTwilioSettingsVerifyOptions) error {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Verify", ctx, options)
 	ret0, _ := ret[0].(error)

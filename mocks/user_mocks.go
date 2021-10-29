@@ -9,6 +9,7 @@ import (
 	reflect "reflect"
 
 	gomock "github.com/golang/mock/gomock"
+	tfe "github.com/hashicorp/go-tfe"
 )
 
 // MockUsers is a mock of Users interface.
@@ -35,10 +36,10 @@ func (m *MockUsers) EXPECT() *MockUsersMockRecorder {
 }
 
 // ReadCurrent mocks base method.
-func (m *MockUsers) ReadCurrent(ctx context.Context) (*User, error) {
+func (m *MockUsers) ReadCurrent(ctx context.Context) (*tfe.User, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "ReadCurrent", ctx)
-	ret0, _ := ret[0].(*User)
+	ret0, _ := ret[0].(*tfe.User)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -50,10 +51,10 @@ func (mr *MockUsersMockRecorder) ReadCurrent(ctx interface{}) *gomock.Call {
 }
 
 // Update mocks base method.
-func (m *MockUsers) Update(ctx context.Context, options UserUpdateOptions) (*User, error) {
+func (m *MockUsers) Update(ctx context.Context, options tfe.UserUpdateOptions) (*tfe.User, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Update", ctx, options)
-	ret0, _ := ret[0].(*User)
+	ret0, _ := ret[0].(*tfe.User)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }

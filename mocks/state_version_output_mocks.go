@@ -9,6 +9,7 @@ import (
 	reflect "reflect"
 
 	gomock "github.com/golang/mock/gomock"
+	tfe "github.com/hashicorp/go-tfe"
 )
 
 // MockStateVersionOutputs is a mock of StateVersionOutputs interface.
@@ -35,10 +36,10 @@ func (m *MockStateVersionOutputs) EXPECT() *MockStateVersionOutputsMockRecorder 
 }
 
 // Read mocks base method.
-func (m *MockStateVersionOutputs) Read(ctx context.Context, outputID string) (*StateVersionOutput, error) {
+func (m *MockStateVersionOutputs) Read(ctx context.Context, outputID string) (*tfe.StateVersionOutput, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Read", ctx, outputID)
-	ret0, _ := ret[0].(*StateVersionOutput)
+	ret0, _ := ret[0].(*tfe.StateVersionOutput)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }

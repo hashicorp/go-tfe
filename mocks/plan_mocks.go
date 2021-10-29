@@ -10,6 +10,7 @@ import (
 	reflect "reflect"
 
 	gomock "github.com/golang/mock/gomock"
+	tfe "github.com/hashicorp/go-tfe"
 )
 
 // MockPlans is a mock of Plans interface.
@@ -66,10 +67,10 @@ func (mr *MockPlansMockRecorder) Logs(ctx, planID interface{}) *gomock.Call {
 }
 
 // Read mocks base method.
-func (m *MockPlans) Read(ctx context.Context, planID string) (*Plan, error) {
+func (m *MockPlans) Read(ctx context.Context, planID string) (*tfe.Plan, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Read", ctx, planID)
-	ret0, _ := ret[0].(*Plan)
+	ret0, _ := ret[0].(*tfe.Plan)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }

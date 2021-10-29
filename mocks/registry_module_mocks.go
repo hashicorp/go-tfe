@@ -9,6 +9,7 @@ import (
 	reflect "reflect"
 
 	gomock "github.com/golang/mock/gomock"
+	tfe "github.com/hashicorp/go-tfe"
 )
 
 // MockRegistryModules is a mock of RegistryModules interface.
@@ -35,10 +36,10 @@ func (m *MockRegistryModules) EXPECT() *MockRegistryModulesMockRecorder {
 }
 
 // Create mocks base method.
-func (m *MockRegistryModules) Create(ctx context.Context, organization string, options RegistryModuleCreateOptions) (*RegistryModule, error) {
+func (m *MockRegistryModules) Create(ctx context.Context, organization string, options tfe.RegistryModuleCreateOptions) (*tfe.RegistryModule, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Create", ctx, organization, options)
-	ret0, _ := ret[0].(*RegistryModule)
+	ret0, _ := ret[0].(*tfe.RegistryModule)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -50,10 +51,10 @@ func (mr *MockRegistryModulesMockRecorder) Create(ctx, organization, options int
 }
 
 // CreateVersion mocks base method.
-func (m *MockRegistryModules) CreateVersion(ctx context.Context, organization, name, provider string, options RegistryModuleCreateVersionOptions) (*RegistryModuleVersion, error) {
+func (m *MockRegistryModules) CreateVersion(ctx context.Context, organization, name, provider string, options tfe.RegistryModuleCreateVersionOptions) (*tfe.RegistryModuleVersion, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "CreateVersion", ctx, organization, name, provider, options)
-	ret0, _ := ret[0].(*RegistryModuleVersion)
+	ret0, _ := ret[0].(*tfe.RegistryModuleVersion)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -65,10 +66,10 @@ func (mr *MockRegistryModulesMockRecorder) CreateVersion(ctx, organization, name
 }
 
 // CreateWithVCSConnection mocks base method.
-func (m *MockRegistryModules) CreateWithVCSConnection(ctx context.Context, options RegistryModuleCreateWithVCSConnectionOptions) (*RegistryModule, error) {
+func (m *MockRegistryModules) CreateWithVCSConnection(ctx context.Context, options tfe.RegistryModuleCreateWithVCSConnectionOptions) (*tfe.RegistryModule, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "CreateWithVCSConnection", ctx, options)
-	ret0, _ := ret[0].(*RegistryModule)
+	ret0, _ := ret[0].(*tfe.RegistryModule)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -122,10 +123,10 @@ func (mr *MockRegistryModulesMockRecorder) DeleteVersion(ctx, organization, name
 }
 
 // Read mocks base method.
-func (m *MockRegistryModules) Read(ctx context.Context, organization, name, provider string) (*RegistryModule, error) {
+func (m *MockRegistryModules) Read(ctx context.Context, organization, name, provider string) (*tfe.RegistryModule, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Read", ctx, organization, name, provider)
-	ret0, _ := ret[0].(*RegistryModule)
+	ret0, _ := ret[0].(*tfe.RegistryModule)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -137,7 +138,7 @@ func (mr *MockRegistryModulesMockRecorder) Read(ctx, organization, name, provide
 }
 
 // Upload mocks base method.
-func (m *MockRegistryModules) Upload(ctx context.Context, rmv RegistryModuleVersion, path string) error {
+func (m *MockRegistryModules) Upload(ctx context.Context, rmv tfe.RegistryModuleVersion, path string) error {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Upload", ctx, rmv, path)
 	ret0, _ := ret[0].(error)

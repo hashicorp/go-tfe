@@ -9,6 +9,7 @@ import (
 	reflect "reflect"
 
 	gomock "github.com/golang/mock/gomock"
+	tfe "github.com/hashicorp/go-tfe"
 )
 
 // MockAdminWorkspaces is a mock of AdminWorkspaces interface.
@@ -49,10 +50,10 @@ func (mr *MockAdminWorkspacesMockRecorder) Delete(ctx, workspaceID interface{}) 
 }
 
 // List mocks base method.
-func (m *MockAdminWorkspaces) List(ctx context.Context, options AdminWorkspaceListOptions) (*AdminWorkspaceList, error) {
+func (m *MockAdminWorkspaces) List(ctx context.Context, options tfe.AdminWorkspaceListOptions) (*tfe.AdminWorkspaceList, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "List", ctx, options)
-	ret0, _ := ret[0].(*AdminWorkspaceList)
+	ret0, _ := ret[0].(*tfe.AdminWorkspaceList)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -64,10 +65,10 @@ func (mr *MockAdminWorkspacesMockRecorder) List(ctx, options interface{}) *gomoc
 }
 
 // Read mocks base method.
-func (m *MockAdminWorkspaces) Read(ctx context.Context, workspaceID string) (*AdminWorkspace, error) {
+func (m *MockAdminWorkspaces) Read(ctx context.Context, workspaceID string) (*tfe.AdminWorkspace, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Read", ctx, workspaceID)
-	ret0, _ := ret[0].(*AdminWorkspace)
+	ret0, _ := ret[0].(*tfe.AdminWorkspace)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }

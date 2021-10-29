@@ -9,6 +9,7 @@ import (
 	reflect "reflect"
 
 	gomock "github.com/golang/mock/gomock"
+	tfe "github.com/hashicorp/go-tfe"
 )
 
 // MockConfigurationVersions is a mock of ConfigurationVersions interface.
@@ -35,10 +36,10 @@ func (m *MockConfigurationVersions) EXPECT() *MockConfigurationVersionsMockRecor
 }
 
 // Create mocks base method.
-func (m *MockConfigurationVersions) Create(ctx context.Context, workspaceID string, options ConfigurationVersionCreateOptions) (*ConfigurationVersion, error) {
+func (m *MockConfigurationVersions) Create(ctx context.Context, workspaceID string, options tfe.ConfigurationVersionCreateOptions) (*tfe.ConfigurationVersion, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Create", ctx, workspaceID, options)
-	ret0, _ := ret[0].(*ConfigurationVersion)
+	ret0, _ := ret[0].(*tfe.ConfigurationVersion)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -50,10 +51,10 @@ func (mr *MockConfigurationVersionsMockRecorder) Create(ctx, workspaceID, option
 }
 
 // List mocks base method.
-func (m *MockConfigurationVersions) List(ctx context.Context, workspaceID string, options ConfigurationVersionListOptions) (*ConfigurationVersionList, error) {
+func (m *MockConfigurationVersions) List(ctx context.Context, workspaceID string, options tfe.ConfigurationVersionListOptions) (*tfe.ConfigurationVersionList, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "List", ctx, workspaceID, options)
-	ret0, _ := ret[0].(*ConfigurationVersionList)
+	ret0, _ := ret[0].(*tfe.ConfigurationVersionList)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -65,10 +66,10 @@ func (mr *MockConfigurationVersionsMockRecorder) List(ctx, workspaceID, options 
 }
 
 // Read mocks base method.
-func (m *MockConfigurationVersions) Read(ctx context.Context, cvID string) (*ConfigurationVersion, error) {
+func (m *MockConfigurationVersions) Read(ctx context.Context, cvID string) (*tfe.ConfigurationVersion, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Read", ctx, cvID)
-	ret0, _ := ret[0].(*ConfigurationVersion)
+	ret0, _ := ret[0].(*tfe.ConfigurationVersion)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -80,10 +81,10 @@ func (mr *MockConfigurationVersionsMockRecorder) Read(ctx, cvID interface{}) *go
 }
 
 // ReadWithOptions mocks base method.
-func (m *MockConfigurationVersions) ReadWithOptions(ctx context.Context, cvID string, options *ConfigurationVersionReadOptions) (*ConfigurationVersion, error) {
+func (m *MockConfigurationVersions) ReadWithOptions(ctx context.Context, cvID string, options *tfe.ConfigurationVersionReadOptions) (*tfe.ConfigurationVersion, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "ReadWithOptions", ctx, cvID, options)
-	ret0, _ := ret[0].(*ConfigurationVersion)
+	ret0, _ := ret[0].(*tfe.ConfigurationVersion)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }

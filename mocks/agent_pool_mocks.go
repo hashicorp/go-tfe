@@ -9,6 +9,7 @@ import (
 	reflect "reflect"
 
 	gomock "github.com/golang/mock/gomock"
+	tfe "github.com/hashicorp/go-tfe"
 )
 
 // MockAgentPools is a mock of AgentPools interface.
@@ -35,10 +36,10 @@ func (m *MockAgentPools) EXPECT() *MockAgentPoolsMockRecorder {
 }
 
 // Create mocks base method.
-func (m *MockAgentPools) Create(ctx context.Context, organization string, options AgentPoolCreateOptions) (*AgentPool, error) {
+func (m *MockAgentPools) Create(ctx context.Context, organization string, options tfe.AgentPoolCreateOptions) (*tfe.AgentPool, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Create", ctx, organization, options)
-	ret0, _ := ret[0].(*AgentPool)
+	ret0, _ := ret[0].(*tfe.AgentPool)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -64,10 +65,10 @@ func (mr *MockAgentPoolsMockRecorder) Delete(ctx, agentPoolID interface{}) *gomo
 }
 
 // List mocks base method.
-func (m *MockAgentPools) List(ctx context.Context, organization string, options AgentPoolListOptions) (*AgentPoolList, error) {
+func (m *MockAgentPools) List(ctx context.Context, organization string, options tfe.AgentPoolListOptions) (*tfe.AgentPoolList, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "List", ctx, organization, options)
-	ret0, _ := ret[0].(*AgentPoolList)
+	ret0, _ := ret[0].(*tfe.AgentPoolList)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -79,10 +80,10 @@ func (mr *MockAgentPoolsMockRecorder) List(ctx, organization, options interface{
 }
 
 // Read mocks base method.
-func (m *MockAgentPools) Read(ctx context.Context, agentPoolID string) (*AgentPool, error) {
+func (m *MockAgentPools) Read(ctx context.Context, agentPoolID string) (*tfe.AgentPool, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Read", ctx, agentPoolID)
-	ret0, _ := ret[0].(*AgentPool)
+	ret0, _ := ret[0].(*tfe.AgentPool)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -94,10 +95,10 @@ func (mr *MockAgentPoolsMockRecorder) Read(ctx, agentPoolID interface{}) *gomock
 }
 
 // Update mocks base method.
-func (m *MockAgentPools) Update(ctx context.Context, agentPool string, options AgentPoolUpdateOptions) (*AgentPool, error) {
+func (m *MockAgentPools) Update(ctx context.Context, agentPool string, options tfe.AgentPoolUpdateOptions) (*tfe.AgentPool, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Update", ctx, agentPool, options)
-	ret0, _ := ret[0].(*AgentPool)
+	ret0, _ := ret[0].(*tfe.AgentPool)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }

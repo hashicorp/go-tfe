@@ -9,6 +9,7 @@ import (
 	reflect "reflect"
 
 	gomock "github.com/golang/mock/gomock"
+	tfe "github.com/hashicorp/go-tfe"
 )
 
 // MockPolicySetVersions is a mock of PolicySetVersions interface.
@@ -35,10 +36,10 @@ func (m *MockPolicySetVersions) EXPECT() *MockPolicySetVersionsMockRecorder {
 }
 
 // Create mocks base method.
-func (m *MockPolicySetVersions) Create(ctx context.Context, policySetID string) (*PolicySetVersion, error) {
+func (m *MockPolicySetVersions) Create(ctx context.Context, policySetID string) (*tfe.PolicySetVersion, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Create", ctx, policySetID)
-	ret0, _ := ret[0].(*PolicySetVersion)
+	ret0, _ := ret[0].(*tfe.PolicySetVersion)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -50,10 +51,10 @@ func (mr *MockPolicySetVersionsMockRecorder) Create(ctx, policySetID interface{}
 }
 
 // Read mocks base method.
-func (m *MockPolicySetVersions) Read(ctx context.Context, policySetVersionID string) (*PolicySetVersion, error) {
+func (m *MockPolicySetVersions) Read(ctx context.Context, policySetVersionID string) (*tfe.PolicySetVersion, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Read", ctx, policySetVersionID)
-	ret0, _ := ret[0].(*PolicySetVersion)
+	ret0, _ := ret[0].(*tfe.PolicySetVersion)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -65,7 +66,7 @@ func (mr *MockPolicySetVersionsMockRecorder) Read(ctx, policySetVersionID interf
 }
 
 // Upload mocks base method.
-func (m *MockPolicySetVersions) Upload(ctx context.Context, psv PolicySetVersion, path string) error {
+func (m *MockPolicySetVersions) Upload(ctx context.Context, psv tfe.PolicySetVersion, path string) error {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Upload", ctx, psv, path)
 	ret0, _ := ret[0].(error)

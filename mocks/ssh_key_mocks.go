@@ -9,6 +9,7 @@ import (
 	reflect "reflect"
 
 	gomock "github.com/golang/mock/gomock"
+	tfe "github.com/hashicorp/go-tfe"
 )
 
 // MockSSHKeys is a mock of SSHKeys interface.
@@ -35,10 +36,10 @@ func (m *MockSSHKeys) EXPECT() *MockSSHKeysMockRecorder {
 }
 
 // Create mocks base method.
-func (m *MockSSHKeys) Create(ctx context.Context, organization string, options SSHKeyCreateOptions) (*SSHKey, error) {
+func (m *MockSSHKeys) Create(ctx context.Context, organization string, options tfe.SSHKeyCreateOptions) (*tfe.SSHKey, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Create", ctx, organization, options)
-	ret0, _ := ret[0].(*SSHKey)
+	ret0, _ := ret[0].(*tfe.SSHKey)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -64,10 +65,10 @@ func (mr *MockSSHKeysMockRecorder) Delete(ctx, sshKeyID interface{}) *gomock.Cal
 }
 
 // List mocks base method.
-func (m *MockSSHKeys) List(ctx context.Context, organization string, options SSHKeyListOptions) (*SSHKeyList, error) {
+func (m *MockSSHKeys) List(ctx context.Context, organization string, options tfe.SSHKeyListOptions) (*tfe.SSHKeyList, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "List", ctx, organization, options)
-	ret0, _ := ret[0].(*SSHKeyList)
+	ret0, _ := ret[0].(*tfe.SSHKeyList)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -79,10 +80,10 @@ func (mr *MockSSHKeysMockRecorder) List(ctx, organization, options interface{}) 
 }
 
 // Read mocks base method.
-func (m *MockSSHKeys) Read(ctx context.Context, sshKeyID string) (*SSHKey, error) {
+func (m *MockSSHKeys) Read(ctx context.Context, sshKeyID string) (*tfe.SSHKey, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Read", ctx, sshKeyID)
-	ret0, _ := ret[0].(*SSHKey)
+	ret0, _ := ret[0].(*tfe.SSHKey)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -94,10 +95,10 @@ func (mr *MockSSHKeysMockRecorder) Read(ctx, sshKeyID interface{}) *gomock.Call 
 }
 
 // Update mocks base method.
-func (m *MockSSHKeys) Update(ctx context.Context, sshKeyID string, options SSHKeyUpdateOptions) (*SSHKey, error) {
+func (m *MockSSHKeys) Update(ctx context.Context, sshKeyID string, options tfe.SSHKeyUpdateOptions) (*tfe.SSHKey, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Update", ctx, sshKeyID, options)
-	ret0, _ := ret[0].(*SSHKey)
+	ret0, _ := ret[0].(*tfe.SSHKey)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }

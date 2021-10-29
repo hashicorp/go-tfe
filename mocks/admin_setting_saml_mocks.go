@@ -9,6 +9,7 @@ import (
 	reflect "reflect"
 
 	gomock "github.com/golang/mock/gomock"
+	tfe "github.com/hashicorp/go-tfe"
 )
 
 // MockSAMLSettings is a mock of SAMLSettings interface.
@@ -35,10 +36,10 @@ func (m *MockSAMLSettings) EXPECT() *MockSAMLSettingsMockRecorder {
 }
 
 // Read mocks base method.
-func (m *MockSAMLSettings) Read(ctx context.Context) (*AdminSAMLSetting, error) {
+func (m *MockSAMLSettings) Read(ctx context.Context) (*tfe.AdminSAMLSetting, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Read", ctx)
-	ret0, _ := ret[0].(*AdminSAMLSetting)
+	ret0, _ := ret[0].(*tfe.AdminSAMLSetting)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -50,10 +51,10 @@ func (mr *MockSAMLSettingsMockRecorder) Read(ctx interface{}) *gomock.Call {
 }
 
 // RevokeIdpCert mocks base method.
-func (m *MockSAMLSettings) RevokeIdpCert(ctx context.Context) (*AdminSAMLSetting, error) {
+func (m *MockSAMLSettings) RevokeIdpCert(ctx context.Context) (*tfe.AdminSAMLSetting, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "RevokeIdpCert", ctx)
-	ret0, _ := ret[0].(*AdminSAMLSetting)
+	ret0, _ := ret[0].(*tfe.AdminSAMLSetting)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -65,10 +66,10 @@ func (mr *MockSAMLSettingsMockRecorder) RevokeIdpCert(ctx interface{}) *gomock.C
 }
 
 // Update mocks base method.
-func (m *MockSAMLSettings) Update(ctx context.Context, options AdminSAMLSettingsUpdateOptions) (*AdminSAMLSetting, error) {
+func (m *MockSAMLSettings) Update(ctx context.Context, options tfe.AdminSAMLSettingsUpdateOptions) (*tfe.AdminSAMLSetting, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Update", ctx, options)
-	ret0, _ := ret[0].(*AdminSAMLSetting)
+	ret0, _ := ret[0].(*tfe.AdminSAMLSetting)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }

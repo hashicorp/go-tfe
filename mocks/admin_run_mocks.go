@@ -9,6 +9,7 @@ import (
 	reflect "reflect"
 
 	gomock "github.com/golang/mock/gomock"
+	tfe "github.com/hashicorp/go-tfe"
 )
 
 // MockAdminRuns is a mock of AdminRuns interface.
@@ -35,7 +36,7 @@ func (m *MockAdminRuns) EXPECT() *MockAdminRunsMockRecorder {
 }
 
 // ForceCancel mocks base method.
-func (m *MockAdminRuns) ForceCancel(ctx context.Context, runID string, options AdminRunForceCancelOptions) error {
+func (m *MockAdminRuns) ForceCancel(ctx context.Context, runID string, options tfe.AdminRunForceCancelOptions) error {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "ForceCancel", ctx, runID, options)
 	ret0, _ := ret[0].(error)
@@ -49,10 +50,10 @@ func (mr *MockAdminRunsMockRecorder) ForceCancel(ctx, runID, options interface{}
 }
 
 // List mocks base method.
-func (m *MockAdminRuns) List(ctx context.Context, options AdminRunsListOptions) (*AdminRunsList, error) {
+func (m *MockAdminRuns) List(ctx context.Context, options tfe.AdminRunsListOptions) (*tfe.AdminRunsList, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "List", ctx, options)
-	ret0, _ := ret[0].(*AdminRunsList)
+	ret0, _ := ret[0].(*tfe.AdminRunsList)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }

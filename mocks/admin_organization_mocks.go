@@ -9,6 +9,7 @@ import (
 	reflect "reflect"
 
 	gomock "github.com/golang/mock/gomock"
+	tfe "github.com/hashicorp/go-tfe"
 )
 
 // MockAdminOrganizations is a mock of AdminOrganizations interface.
@@ -49,10 +50,10 @@ func (mr *MockAdminOrganizationsMockRecorder) Delete(ctx, organization interface
 }
 
 // List mocks base method.
-func (m *MockAdminOrganizations) List(ctx context.Context, options AdminOrganizationListOptions) (*AdminOrganizationList, error) {
+func (m *MockAdminOrganizations) List(ctx context.Context, options tfe.AdminOrganizationListOptions) (*tfe.AdminOrganizationList, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "List", ctx, options)
-	ret0, _ := ret[0].(*AdminOrganizationList)
+	ret0, _ := ret[0].(*tfe.AdminOrganizationList)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -64,10 +65,10 @@ func (mr *MockAdminOrganizationsMockRecorder) List(ctx, options interface{}) *go
 }
 
 // Read mocks base method.
-func (m *MockAdminOrganizations) Read(ctx context.Context, organization string) (*AdminOrganization, error) {
+func (m *MockAdminOrganizations) Read(ctx context.Context, organization string) (*tfe.AdminOrganization, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Read", ctx, organization)
-	ret0, _ := ret[0].(*AdminOrganization)
+	ret0, _ := ret[0].(*tfe.AdminOrganization)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -79,10 +80,10 @@ func (mr *MockAdminOrganizationsMockRecorder) Read(ctx, organization interface{}
 }
 
 // Update mocks base method.
-func (m *MockAdminOrganizations) Update(ctx context.Context, organization string, options AdminOrganizationUpdateOptions) (*AdminOrganization, error) {
+func (m *MockAdminOrganizations) Update(ctx context.Context, organization string, options tfe.AdminOrganizationUpdateOptions) (*tfe.AdminOrganization, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Update", ctx, organization, options)
-	ret0, _ := ret[0].(*AdminOrganization)
+	ret0, _ := ret[0].(*tfe.AdminOrganization)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }

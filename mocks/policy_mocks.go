@@ -9,6 +9,7 @@ import (
 	reflect "reflect"
 
 	gomock "github.com/golang/mock/gomock"
+	tfe "github.com/hashicorp/go-tfe"
 )
 
 // MockPolicies is a mock of Policies interface.
@@ -35,10 +36,10 @@ func (m *MockPolicies) EXPECT() *MockPoliciesMockRecorder {
 }
 
 // Create mocks base method.
-func (m *MockPolicies) Create(ctx context.Context, organization string, options PolicyCreateOptions) (*Policy, error) {
+func (m *MockPolicies) Create(ctx context.Context, organization string, options tfe.PolicyCreateOptions) (*tfe.Policy, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Create", ctx, organization, options)
-	ret0, _ := ret[0].(*Policy)
+	ret0, _ := ret[0].(*tfe.Policy)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -79,10 +80,10 @@ func (mr *MockPoliciesMockRecorder) Download(ctx, policyID interface{}) *gomock.
 }
 
 // List mocks base method.
-func (m *MockPolicies) List(ctx context.Context, organization string, options PolicyListOptions) (*PolicyList, error) {
+func (m *MockPolicies) List(ctx context.Context, organization string, options tfe.PolicyListOptions) (*tfe.PolicyList, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "List", ctx, organization, options)
-	ret0, _ := ret[0].(*PolicyList)
+	ret0, _ := ret[0].(*tfe.PolicyList)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -94,10 +95,10 @@ func (mr *MockPoliciesMockRecorder) List(ctx, organization, options interface{})
 }
 
 // Read mocks base method.
-func (m *MockPolicies) Read(ctx context.Context, policyID string) (*Policy, error) {
+func (m *MockPolicies) Read(ctx context.Context, policyID string) (*tfe.Policy, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Read", ctx, policyID)
-	ret0, _ := ret[0].(*Policy)
+	ret0, _ := ret[0].(*tfe.Policy)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -109,10 +110,10 @@ func (mr *MockPoliciesMockRecorder) Read(ctx, policyID interface{}) *gomock.Call
 }
 
 // Update mocks base method.
-func (m *MockPolicies) Update(ctx context.Context, policyID string, options PolicyUpdateOptions) (*Policy, error) {
+func (m *MockPolicies) Update(ctx context.Context, policyID string, options tfe.PolicyUpdateOptions) (*tfe.Policy, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Update", ctx, policyID, options)
-	ret0, _ := ret[0].(*Policy)
+	ret0, _ := ret[0].(*tfe.Policy)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }

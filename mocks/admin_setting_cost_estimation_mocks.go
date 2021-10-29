@@ -9,6 +9,7 @@ import (
 	reflect "reflect"
 
 	gomock "github.com/golang/mock/gomock"
+	tfe "github.com/hashicorp/go-tfe"
 )
 
 // MockCostEstimationSettings is a mock of CostEstimationSettings interface.
@@ -35,10 +36,10 @@ func (m *MockCostEstimationSettings) EXPECT() *MockCostEstimationSettingsMockRec
 }
 
 // Read mocks base method.
-func (m *MockCostEstimationSettings) Read(ctx context.Context) (*AdminCostEstimationSetting, error) {
+func (m *MockCostEstimationSettings) Read(ctx context.Context) (*tfe.AdminCostEstimationSetting, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Read", ctx)
-	ret0, _ := ret[0].(*AdminCostEstimationSetting)
+	ret0, _ := ret[0].(*tfe.AdminCostEstimationSetting)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -50,10 +51,10 @@ func (mr *MockCostEstimationSettingsMockRecorder) Read(ctx interface{}) *gomock.
 }
 
 // Update mocks base method.
-func (m *MockCostEstimationSettings) Update(ctx context.Context, options AdminCostEstimationSettingOptions) (*AdminCostEstimationSetting, error) {
+func (m *MockCostEstimationSettings) Update(ctx context.Context, options tfe.AdminCostEstimationSettingOptions) (*tfe.AdminCostEstimationSetting, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Update", ctx, options)
-	ret0, _ := ret[0].(*AdminCostEstimationSetting)
+	ret0, _ := ret[0].(*tfe.AdminCostEstimationSetting)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }

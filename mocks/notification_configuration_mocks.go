@@ -9,6 +9,7 @@ import (
 	reflect "reflect"
 
 	gomock "github.com/golang/mock/gomock"
+	tfe "github.com/hashicorp/go-tfe"
 )
 
 // MockNotificationConfigurations is a mock of NotificationConfigurations interface.
@@ -35,10 +36,10 @@ func (m *MockNotificationConfigurations) EXPECT() *MockNotificationConfiguration
 }
 
 // Create mocks base method.
-func (m *MockNotificationConfigurations) Create(ctx context.Context, workspaceID string, options NotificationConfigurationCreateOptions) (*NotificationConfiguration, error) {
+func (m *MockNotificationConfigurations) Create(ctx context.Context, workspaceID string, options tfe.NotificationConfigurationCreateOptions) (*tfe.NotificationConfiguration, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Create", ctx, workspaceID, options)
-	ret0, _ := ret[0].(*NotificationConfiguration)
+	ret0, _ := ret[0].(*tfe.NotificationConfiguration)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -64,10 +65,10 @@ func (mr *MockNotificationConfigurationsMockRecorder) Delete(ctx, notificationCo
 }
 
 // List mocks base method.
-func (m *MockNotificationConfigurations) List(ctx context.Context, workspaceID string, options NotificationConfigurationListOptions) (*NotificationConfigurationList, error) {
+func (m *MockNotificationConfigurations) List(ctx context.Context, workspaceID string, options tfe.NotificationConfigurationListOptions) (*tfe.NotificationConfigurationList, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "List", ctx, workspaceID, options)
-	ret0, _ := ret[0].(*NotificationConfigurationList)
+	ret0, _ := ret[0].(*tfe.NotificationConfigurationList)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -79,10 +80,10 @@ func (mr *MockNotificationConfigurationsMockRecorder) List(ctx, workspaceID, opt
 }
 
 // Read mocks base method.
-func (m *MockNotificationConfigurations) Read(ctx context.Context, notificationConfigurationID string) (*NotificationConfiguration, error) {
+func (m *MockNotificationConfigurations) Read(ctx context.Context, notificationConfigurationID string) (*tfe.NotificationConfiguration, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Read", ctx, notificationConfigurationID)
-	ret0, _ := ret[0].(*NotificationConfiguration)
+	ret0, _ := ret[0].(*tfe.NotificationConfiguration)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -94,10 +95,10 @@ func (mr *MockNotificationConfigurationsMockRecorder) Read(ctx, notificationConf
 }
 
 // Update mocks base method.
-func (m *MockNotificationConfigurations) Update(ctx context.Context, notificationConfigurationID string, options NotificationConfigurationUpdateOptions) (*NotificationConfiguration, error) {
+func (m *MockNotificationConfigurations) Update(ctx context.Context, notificationConfigurationID string, options tfe.NotificationConfigurationUpdateOptions) (*tfe.NotificationConfiguration, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Update", ctx, notificationConfigurationID, options)
-	ret0, _ := ret[0].(*NotificationConfiguration)
+	ret0, _ := ret[0].(*tfe.NotificationConfiguration)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -109,10 +110,10 @@ func (mr *MockNotificationConfigurationsMockRecorder) Update(ctx, notificationCo
 }
 
 // Verify mocks base method.
-func (m *MockNotificationConfigurations) Verify(ctx context.Context, notificationConfigurationID string) (*NotificationConfiguration, error) {
+func (m *MockNotificationConfigurations) Verify(ctx context.Context, notificationConfigurationID string) (*tfe.NotificationConfiguration, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Verify", ctx, notificationConfigurationID)
-	ret0, _ := ret[0].(*NotificationConfiguration)
+	ret0, _ := ret[0].(*tfe.NotificationConfiguration)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }

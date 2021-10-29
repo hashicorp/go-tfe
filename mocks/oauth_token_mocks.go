@@ -9,6 +9,7 @@ import (
 	reflect "reflect"
 
 	gomock "github.com/golang/mock/gomock"
+	tfe "github.com/hashicorp/go-tfe"
 )
 
 // MockOAuthTokens is a mock of OAuthTokens interface.
@@ -49,10 +50,10 @@ func (mr *MockOAuthTokensMockRecorder) Delete(ctx, oAuthTokenID interface{}) *go
 }
 
 // List mocks base method.
-func (m *MockOAuthTokens) List(ctx context.Context, organization string, options OAuthTokenListOptions) (*OAuthTokenList, error) {
+func (m *MockOAuthTokens) List(ctx context.Context, organization string, options tfe.OAuthTokenListOptions) (*tfe.OAuthTokenList, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "List", ctx, organization, options)
-	ret0, _ := ret[0].(*OAuthTokenList)
+	ret0, _ := ret[0].(*tfe.OAuthTokenList)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -64,10 +65,10 @@ func (mr *MockOAuthTokensMockRecorder) List(ctx, organization, options interface
 }
 
 // Read mocks base method.
-func (m *MockOAuthTokens) Read(ctx context.Context, oAuthTokenID string) (*OAuthToken, error) {
+func (m *MockOAuthTokens) Read(ctx context.Context, oAuthTokenID string) (*tfe.OAuthToken, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Read", ctx, oAuthTokenID)
-	ret0, _ := ret[0].(*OAuthToken)
+	ret0, _ := ret[0].(*tfe.OAuthToken)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -79,10 +80,10 @@ func (mr *MockOAuthTokensMockRecorder) Read(ctx, oAuthTokenID interface{}) *gomo
 }
 
 // Update mocks base method.
-func (m *MockOAuthTokens) Update(ctx context.Context, oAuthTokenID string, options OAuthTokenUpdateOptions) (*OAuthToken, error) {
+func (m *MockOAuthTokens) Update(ctx context.Context, oAuthTokenID string, options tfe.OAuthTokenUpdateOptions) (*tfe.OAuthToken, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Update", ctx, oAuthTokenID, options)
-	ret0, _ := ret[0].(*OAuthToken)
+	ret0, _ := ret[0].(*tfe.OAuthToken)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }

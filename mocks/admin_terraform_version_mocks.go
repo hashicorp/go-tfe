@@ -9,6 +9,7 @@ import (
 	reflect "reflect"
 
 	gomock "github.com/golang/mock/gomock"
+	tfe "github.com/hashicorp/go-tfe"
 )
 
 // MockAdminTerraformVersions is a mock of AdminTerraformVersions interface.
@@ -35,10 +36,10 @@ func (m *MockAdminTerraformVersions) EXPECT() *MockAdminTerraformVersionsMockRec
 }
 
 // Create mocks base method.
-func (m *MockAdminTerraformVersions) Create(ctx context.Context, options AdminTerraformVersionCreateOptions) (*AdminTerraformVersion, error) {
+func (m *MockAdminTerraformVersions) Create(ctx context.Context, options tfe.AdminTerraformVersionCreateOptions) (*tfe.AdminTerraformVersion, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Create", ctx, options)
-	ret0, _ := ret[0].(*AdminTerraformVersion)
+	ret0, _ := ret[0].(*tfe.AdminTerraformVersion)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -64,10 +65,10 @@ func (mr *MockAdminTerraformVersionsMockRecorder) Delete(ctx, id interface{}) *g
 }
 
 // List mocks base method.
-func (m *MockAdminTerraformVersions) List(ctx context.Context, options AdminTerraformVersionsListOptions) (*AdminTerraformVersionsList, error) {
+func (m *MockAdminTerraformVersions) List(ctx context.Context, options tfe.AdminTerraformVersionsListOptions) (*tfe.AdminTerraformVersionsList, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "List", ctx, options)
-	ret0, _ := ret[0].(*AdminTerraformVersionsList)
+	ret0, _ := ret[0].(*tfe.AdminTerraformVersionsList)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -79,10 +80,10 @@ func (mr *MockAdminTerraformVersionsMockRecorder) List(ctx, options interface{})
 }
 
 // Read mocks base method.
-func (m *MockAdminTerraformVersions) Read(ctx context.Context, id string) (*AdminTerraformVersion, error) {
+func (m *MockAdminTerraformVersions) Read(ctx context.Context, id string) (*tfe.AdminTerraformVersion, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Read", ctx, id)
-	ret0, _ := ret[0].(*AdminTerraformVersion)
+	ret0, _ := ret[0].(*tfe.AdminTerraformVersion)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -94,10 +95,10 @@ func (mr *MockAdminTerraformVersionsMockRecorder) Read(ctx, id interface{}) *gom
 }
 
 // Update mocks base method.
-func (m *MockAdminTerraformVersions) Update(ctx context.Context, id string, options AdminTerraformVersionUpdateOptions) (*AdminTerraformVersion, error) {
+func (m *MockAdminTerraformVersions) Update(ctx context.Context, id string, options tfe.AdminTerraformVersionUpdateOptions) (*tfe.AdminTerraformVersion, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Update", ctx, id, options)
-	ret0, _ := ret[0].(*AdminTerraformVersion)
+	ret0, _ := ret[0].(*tfe.AdminTerraformVersion)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }

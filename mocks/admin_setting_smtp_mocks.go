@@ -9,6 +9,7 @@ import (
 	reflect "reflect"
 
 	gomock "github.com/golang/mock/gomock"
+	tfe "github.com/hashicorp/go-tfe"
 )
 
 // MockSMTPSettings is a mock of SMTPSettings interface.
@@ -35,10 +36,10 @@ func (m *MockSMTPSettings) EXPECT() *MockSMTPSettingsMockRecorder {
 }
 
 // Read mocks base method.
-func (m *MockSMTPSettings) Read(ctx context.Context) (*AdminSMTPSetting, error) {
+func (m *MockSMTPSettings) Read(ctx context.Context) (*tfe.AdminSMTPSetting, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Read", ctx)
-	ret0, _ := ret[0].(*AdminSMTPSetting)
+	ret0, _ := ret[0].(*tfe.AdminSMTPSetting)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -50,10 +51,10 @@ func (mr *MockSMTPSettingsMockRecorder) Read(ctx interface{}) *gomock.Call {
 }
 
 // Update mocks base method.
-func (m *MockSMTPSettings) Update(ctx context.Context, options AdminSMTPSettingsUpdateOptions) (*AdminSMTPSetting, error) {
+func (m *MockSMTPSettings) Update(ctx context.Context, options tfe.AdminSMTPSettingsUpdateOptions) (*tfe.AdminSMTPSetting, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Update", ctx, options)
-	ret0, _ := ret[0].(*AdminSMTPSetting)
+	ret0, _ := ret[0].(*tfe.AdminSMTPSetting)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }

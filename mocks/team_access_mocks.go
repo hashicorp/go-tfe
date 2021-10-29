@@ -9,6 +9,7 @@ import (
 	reflect "reflect"
 
 	gomock "github.com/golang/mock/gomock"
+	tfe "github.com/hashicorp/go-tfe"
 )
 
 // MockTeamAccesses is a mock of TeamAccesses interface.
@@ -35,10 +36,10 @@ func (m *MockTeamAccesses) EXPECT() *MockTeamAccessesMockRecorder {
 }
 
 // Add mocks base method.
-func (m *MockTeamAccesses) Add(ctx context.Context, options TeamAccessAddOptions) (*TeamAccess, error) {
+func (m *MockTeamAccesses) Add(ctx context.Context, options tfe.TeamAccessAddOptions) (*tfe.TeamAccess, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Add", ctx, options)
-	ret0, _ := ret[0].(*TeamAccess)
+	ret0, _ := ret[0].(*tfe.TeamAccess)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -50,10 +51,10 @@ func (mr *MockTeamAccessesMockRecorder) Add(ctx, options interface{}) *gomock.Ca
 }
 
 // List mocks base method.
-func (m *MockTeamAccesses) List(ctx context.Context, options TeamAccessListOptions) (*TeamAccessList, error) {
+func (m *MockTeamAccesses) List(ctx context.Context, options tfe.TeamAccessListOptions) (*tfe.TeamAccessList, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "List", ctx, options)
-	ret0, _ := ret[0].(*TeamAccessList)
+	ret0, _ := ret[0].(*tfe.TeamAccessList)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -65,10 +66,10 @@ func (mr *MockTeamAccessesMockRecorder) List(ctx, options interface{}) *gomock.C
 }
 
 // Read mocks base method.
-func (m *MockTeamAccesses) Read(ctx context.Context, teamAccessID string) (*TeamAccess, error) {
+func (m *MockTeamAccesses) Read(ctx context.Context, teamAccessID string) (*tfe.TeamAccess, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Read", ctx, teamAccessID)
-	ret0, _ := ret[0].(*TeamAccess)
+	ret0, _ := ret[0].(*tfe.TeamAccess)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -94,10 +95,10 @@ func (mr *MockTeamAccessesMockRecorder) Remove(ctx, teamAccessID interface{}) *g
 }
 
 // Update mocks base method.
-func (m *MockTeamAccesses) Update(ctx context.Context, teamAccessID string, options TeamAccessUpdateOptions) (*TeamAccess, error) {
+func (m *MockTeamAccesses) Update(ctx context.Context, teamAccessID string, options tfe.TeamAccessUpdateOptions) (*tfe.TeamAccess, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Update", ctx, teamAccessID, options)
-	ret0, _ := ret[0].(*TeamAccess)
+	ret0, _ := ret[0].(*tfe.TeamAccess)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }

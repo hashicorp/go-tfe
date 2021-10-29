@@ -9,6 +9,7 @@ import (
 	reflect "reflect"
 
 	gomock "github.com/golang/mock/gomock"
+	tfe "github.com/hashicorp/go-tfe"
 )
 
 // MockTeamTokens is a mock of TeamTokens interface.
@@ -49,10 +50,10 @@ func (mr *MockTeamTokensMockRecorder) Delete(ctx, teamID interface{}) *gomock.Ca
 }
 
 // Generate mocks base method.
-func (m *MockTeamTokens) Generate(ctx context.Context, teamID string) (*TeamToken, error) {
+func (m *MockTeamTokens) Generate(ctx context.Context, teamID string) (*tfe.TeamToken, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Generate", ctx, teamID)
-	ret0, _ := ret[0].(*TeamToken)
+	ret0, _ := ret[0].(*tfe.TeamToken)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -64,10 +65,10 @@ func (mr *MockTeamTokensMockRecorder) Generate(ctx, teamID interface{}) *gomock.
 }
 
 // Read mocks base method.
-func (m *MockTeamTokens) Read(ctx context.Context, teamID string) (*TeamToken, error) {
+func (m *MockTeamTokens) Read(ctx context.Context, teamID string) (*tfe.TeamToken, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Read", ctx, teamID)
-	ret0, _ := ret[0].(*TeamToken)
+	ret0, _ := ret[0].(*tfe.TeamToken)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }

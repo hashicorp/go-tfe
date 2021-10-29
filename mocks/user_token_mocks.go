@@ -9,6 +9,7 @@ import (
 	reflect "reflect"
 
 	gomock "github.com/golang/mock/gomock"
+	tfe "github.com/hashicorp/go-tfe"
 )
 
 // MockUserTokens is a mock of UserTokens interface.
@@ -49,10 +50,10 @@ func (mr *MockUserTokensMockRecorder) Delete(ctx, tokenID interface{}) *gomock.C
 }
 
 // Generate mocks base method.
-func (m *MockUserTokens) Generate(ctx context.Context, userID string, options UserTokenGenerateOptions) (*UserToken, error) {
+func (m *MockUserTokens) Generate(ctx context.Context, userID string, options tfe.UserTokenGenerateOptions) (*tfe.UserToken, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Generate", ctx, userID, options)
-	ret0, _ := ret[0].(*UserToken)
+	ret0, _ := ret[0].(*tfe.UserToken)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -64,10 +65,10 @@ func (mr *MockUserTokensMockRecorder) Generate(ctx, userID, options interface{})
 }
 
 // List mocks base method.
-func (m *MockUserTokens) List(ctx context.Context, userID string) (*UserTokenList, error) {
+func (m *MockUserTokens) List(ctx context.Context, userID string) (*tfe.UserTokenList, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "List", ctx, userID)
-	ret0, _ := ret[0].(*UserTokenList)
+	ret0, _ := ret[0].(*tfe.UserTokenList)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -79,10 +80,10 @@ func (mr *MockUserTokensMockRecorder) List(ctx, userID interface{}) *gomock.Call
 }
 
 // Read mocks base method.
-func (m *MockUserTokens) Read(ctx context.Context, tokenID string) (*UserToken, error) {
+func (m *MockUserTokens) Read(ctx context.Context, tokenID string) (*tfe.UserToken, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Read", ctx, tokenID)
-	ret0, _ := ret[0].(*UserToken)
+	ret0, _ := ret[0].(*tfe.UserToken)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }

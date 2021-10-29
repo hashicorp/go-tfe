@@ -9,6 +9,7 @@ import (
 	reflect "reflect"
 
 	gomock "github.com/golang/mock/gomock"
+	tfe "github.com/hashicorp/go-tfe"
 )
 
 // MockOrganizationTokens is a mock of OrganizationTokens interface.
@@ -49,10 +50,10 @@ func (mr *MockOrganizationTokensMockRecorder) Delete(ctx, organization interface
 }
 
 // Generate mocks base method.
-func (m *MockOrganizationTokens) Generate(ctx context.Context, organization string) (*OrganizationToken, error) {
+func (m *MockOrganizationTokens) Generate(ctx context.Context, organization string) (*tfe.OrganizationToken, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Generate", ctx, organization)
-	ret0, _ := ret[0].(*OrganizationToken)
+	ret0, _ := ret[0].(*tfe.OrganizationToken)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -64,10 +65,10 @@ func (mr *MockOrganizationTokensMockRecorder) Generate(ctx, organization interfa
 }
 
 // Read mocks base method.
-func (m *MockOrganizationTokens) Read(ctx context.Context, organization string) (*OrganizationToken, error) {
+func (m *MockOrganizationTokens) Read(ctx context.Context, organization string) (*tfe.OrganizationToken, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Read", ctx, organization)
-	ret0, _ := ret[0].(*OrganizationToken)
+	ret0, _ := ret[0].(*tfe.OrganizationToken)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }

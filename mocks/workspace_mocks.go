@@ -10,6 +10,7 @@ import (
 	reflect "reflect"
 
 	gomock "github.com/golang/mock/gomock"
+	tfe "github.com/hashicorp/go-tfe"
 )
 
 // MockWorkspaces is a mock of Workspaces interface.
@@ -36,7 +37,7 @@ func (m *MockWorkspaces) EXPECT() *MockWorkspacesMockRecorder {
 }
 
 // AddRemoteStateConsumers mocks base method.
-func (m *MockWorkspaces) AddRemoteStateConsumers(ctx context.Context, workspaceID string, options WorkspaceAddRemoteStateConsumersOptions) error {
+func (m *MockWorkspaces) AddRemoteStateConsumers(ctx context.Context, workspaceID string, options tfe.WorkspaceAddRemoteStateConsumersOptions) error {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "AddRemoteStateConsumers", ctx, workspaceID, options)
 	ret0, _ := ret[0].(error)
@@ -50,7 +51,7 @@ func (mr *MockWorkspacesMockRecorder) AddRemoteStateConsumers(ctx, workspaceID, 
 }
 
 // AddTags mocks base method.
-func (m *MockWorkspaces) AddTags(ctx context.Context, workspaceID string, options WorkspaceAddTagsOptions) error {
+func (m *MockWorkspaces) AddTags(ctx context.Context, workspaceID string, options tfe.WorkspaceAddTagsOptions) error {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "AddTags", ctx, workspaceID, options)
 	ret0, _ := ret[0].(error)
@@ -64,10 +65,10 @@ func (mr *MockWorkspacesMockRecorder) AddTags(ctx, workspaceID, options interfac
 }
 
 // AssignSSHKey mocks base method.
-func (m *MockWorkspaces) AssignSSHKey(ctx context.Context, workspaceID string, options WorkspaceAssignSSHKeyOptions) (*Workspace, error) {
+func (m *MockWorkspaces) AssignSSHKey(ctx context.Context, workspaceID string, options tfe.WorkspaceAssignSSHKeyOptions) (*tfe.Workspace, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "AssignSSHKey", ctx, workspaceID, options)
-	ret0, _ := ret[0].(*Workspace)
+	ret0, _ := ret[0].(*tfe.Workspace)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -79,10 +80,10 @@ func (mr *MockWorkspacesMockRecorder) AssignSSHKey(ctx, workspaceID, options int
 }
 
 // Create mocks base method.
-func (m *MockWorkspaces) Create(ctx context.Context, organization string, options WorkspaceCreateOptions) (*Workspace, error) {
+func (m *MockWorkspaces) Create(ctx context.Context, organization string, options tfe.WorkspaceCreateOptions) (*tfe.Workspace, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Create", ctx, organization, options)
-	ret0, _ := ret[0].(*Workspace)
+	ret0, _ := ret[0].(*tfe.Workspace)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -122,10 +123,10 @@ func (mr *MockWorkspacesMockRecorder) DeleteByID(ctx, workspaceID interface{}) *
 }
 
 // ForceUnlock mocks base method.
-func (m *MockWorkspaces) ForceUnlock(ctx context.Context, workspaceID string) (*Workspace, error) {
+func (m *MockWorkspaces) ForceUnlock(ctx context.Context, workspaceID string) (*tfe.Workspace, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "ForceUnlock", ctx, workspaceID)
-	ret0, _ := ret[0].(*Workspace)
+	ret0, _ := ret[0].(*tfe.Workspace)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -137,10 +138,10 @@ func (mr *MockWorkspacesMockRecorder) ForceUnlock(ctx, workspaceID interface{}) 
 }
 
 // List mocks base method.
-func (m *MockWorkspaces) List(ctx context.Context, organization string, options WorkspaceListOptions) (*WorkspaceList, error) {
+func (m *MockWorkspaces) List(ctx context.Context, organization string, options tfe.WorkspaceListOptions) (*tfe.WorkspaceList, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "List", ctx, organization, options)
-	ret0, _ := ret[0].(*WorkspaceList)
+	ret0, _ := ret[0].(*tfe.WorkspaceList)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -152,10 +153,10 @@ func (mr *MockWorkspacesMockRecorder) List(ctx, organization, options interface{
 }
 
 // Lock mocks base method.
-func (m *MockWorkspaces) Lock(ctx context.Context, workspaceID string, options WorkspaceLockOptions) (*Workspace, error) {
+func (m *MockWorkspaces) Lock(ctx context.Context, workspaceID string, options tfe.WorkspaceLockOptions) (*tfe.Workspace, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Lock", ctx, workspaceID, options)
-	ret0, _ := ret[0].(*Workspace)
+	ret0, _ := ret[0].(*tfe.Workspace)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -167,10 +168,10 @@ func (mr *MockWorkspacesMockRecorder) Lock(ctx, workspaceID, options interface{}
 }
 
 // Read mocks base method.
-func (m *MockWorkspaces) Read(ctx context.Context, organization, workspace string) (*Workspace, error) {
+func (m *MockWorkspaces) Read(ctx context.Context, organization, workspace string) (*tfe.Workspace, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Read", ctx, organization, workspace)
-	ret0, _ := ret[0].(*Workspace)
+	ret0, _ := ret[0].(*tfe.Workspace)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -182,10 +183,10 @@ func (mr *MockWorkspacesMockRecorder) Read(ctx, organization, workspace interfac
 }
 
 // ReadByID mocks base method.
-func (m *MockWorkspaces) ReadByID(ctx context.Context, workspaceID string) (*Workspace, error) {
+func (m *MockWorkspaces) ReadByID(ctx context.Context, workspaceID string) (*tfe.Workspace, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "ReadByID", ctx, workspaceID)
-	ret0, _ := ret[0].(*Workspace)
+	ret0, _ := ret[0].(*tfe.Workspace)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -197,10 +198,10 @@ func (mr *MockWorkspacesMockRecorder) ReadByID(ctx, workspaceID interface{}) *go
 }
 
 // ReadByIDWithOptions mocks base method.
-func (m *MockWorkspaces) ReadByIDWithOptions(ctx context.Context, workspaceID string, options *WorkspaceReadOptions) (*Workspace, error) {
+func (m *MockWorkspaces) ReadByIDWithOptions(ctx context.Context, workspaceID string, options *tfe.WorkspaceReadOptions) (*tfe.Workspace, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "ReadByIDWithOptions", ctx, workspaceID, options)
-	ret0, _ := ret[0].(*Workspace)
+	ret0, _ := ret[0].(*tfe.Workspace)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -212,10 +213,10 @@ func (mr *MockWorkspacesMockRecorder) ReadByIDWithOptions(ctx, workspaceID, opti
 }
 
 // ReadWithOptions mocks base method.
-func (m *MockWorkspaces) ReadWithOptions(ctx context.Context, organization, workspace string, options *WorkspaceReadOptions) (*Workspace, error) {
+func (m *MockWorkspaces) ReadWithOptions(ctx context.Context, organization, workspace string, options *tfe.WorkspaceReadOptions) (*tfe.Workspace, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "ReadWithOptions", ctx, organization, workspace, options)
-	ret0, _ := ret[0].(*Workspace)
+	ret0, _ := ret[0].(*tfe.Workspace)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -242,10 +243,10 @@ func (mr *MockWorkspacesMockRecorder) Readme(ctx, workspaceID interface{}) *gomo
 }
 
 // RemoteStateConsumers mocks base method.
-func (m *MockWorkspaces) RemoteStateConsumers(ctx context.Context, workspaceID string, options *RemoteStateConsumersListOptions) (*WorkspaceList, error) {
+func (m *MockWorkspaces) RemoteStateConsumers(ctx context.Context, workspaceID string, options *tfe.RemoteStateConsumersListOptions) (*tfe.WorkspaceList, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "RemoteStateConsumers", ctx, workspaceID, options)
-	ret0, _ := ret[0].(*WorkspaceList)
+	ret0, _ := ret[0].(*tfe.WorkspaceList)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -257,7 +258,7 @@ func (mr *MockWorkspacesMockRecorder) RemoteStateConsumers(ctx, workspaceID, opt
 }
 
 // RemoveRemoteStateConsumers mocks base method.
-func (m *MockWorkspaces) RemoveRemoteStateConsumers(ctx context.Context, workspaceID string, options WorkspaceRemoveRemoteStateConsumersOptions) error {
+func (m *MockWorkspaces) RemoveRemoteStateConsumers(ctx context.Context, workspaceID string, options tfe.WorkspaceRemoveRemoteStateConsumersOptions) error {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "RemoveRemoteStateConsumers", ctx, workspaceID, options)
 	ret0, _ := ret[0].(error)
@@ -271,7 +272,7 @@ func (mr *MockWorkspacesMockRecorder) RemoveRemoteStateConsumers(ctx, workspaceI
 }
 
 // RemoveTags mocks base method.
-func (m *MockWorkspaces) RemoveTags(ctx context.Context, workspaceID string, options WorkspaceRemoveTagsOptions) error {
+func (m *MockWorkspaces) RemoveTags(ctx context.Context, workspaceID string, options tfe.WorkspaceRemoveTagsOptions) error {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "RemoveTags", ctx, workspaceID, options)
 	ret0, _ := ret[0].(error)
@@ -285,10 +286,10 @@ func (mr *MockWorkspacesMockRecorder) RemoveTags(ctx, workspaceID, options inter
 }
 
 // RemoveVCSConnection mocks base method.
-func (m *MockWorkspaces) RemoveVCSConnection(ctx context.Context, organization, workspace string) (*Workspace, error) {
+func (m *MockWorkspaces) RemoveVCSConnection(ctx context.Context, organization, workspace string) (*tfe.Workspace, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "RemoveVCSConnection", ctx, organization, workspace)
-	ret0, _ := ret[0].(*Workspace)
+	ret0, _ := ret[0].(*tfe.Workspace)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -300,10 +301,10 @@ func (mr *MockWorkspacesMockRecorder) RemoveVCSConnection(ctx, organization, wor
 }
 
 // RemoveVCSConnectionByID mocks base method.
-func (m *MockWorkspaces) RemoveVCSConnectionByID(ctx context.Context, workspaceID string) (*Workspace, error) {
+func (m *MockWorkspaces) RemoveVCSConnectionByID(ctx context.Context, workspaceID string) (*tfe.Workspace, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "RemoveVCSConnectionByID", ctx, workspaceID)
-	ret0, _ := ret[0].(*Workspace)
+	ret0, _ := ret[0].(*tfe.Workspace)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -315,10 +316,10 @@ func (mr *MockWorkspacesMockRecorder) RemoveVCSConnectionByID(ctx, workspaceID i
 }
 
 // Tags mocks base method.
-func (m *MockWorkspaces) Tags(ctx context.Context, workspaceID string, options WorkspaceTagListOptions) (*TagList, error) {
+func (m *MockWorkspaces) Tags(ctx context.Context, workspaceID string, options tfe.WorkspaceTagListOptions) (*tfe.TagList, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Tags", ctx, workspaceID, options)
-	ret0, _ := ret[0].(*TagList)
+	ret0, _ := ret[0].(*tfe.TagList)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -330,10 +331,10 @@ func (mr *MockWorkspacesMockRecorder) Tags(ctx, workspaceID, options interface{}
 }
 
 // UnassignSSHKey mocks base method.
-func (m *MockWorkspaces) UnassignSSHKey(ctx context.Context, workspaceID string) (*Workspace, error) {
+func (m *MockWorkspaces) UnassignSSHKey(ctx context.Context, workspaceID string) (*tfe.Workspace, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "UnassignSSHKey", ctx, workspaceID)
-	ret0, _ := ret[0].(*Workspace)
+	ret0, _ := ret[0].(*tfe.Workspace)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -345,10 +346,10 @@ func (mr *MockWorkspacesMockRecorder) UnassignSSHKey(ctx, workspaceID interface{
 }
 
 // Unlock mocks base method.
-func (m *MockWorkspaces) Unlock(ctx context.Context, workspaceID string) (*Workspace, error) {
+func (m *MockWorkspaces) Unlock(ctx context.Context, workspaceID string) (*tfe.Workspace, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Unlock", ctx, workspaceID)
-	ret0, _ := ret[0].(*Workspace)
+	ret0, _ := ret[0].(*tfe.Workspace)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -360,10 +361,10 @@ func (mr *MockWorkspacesMockRecorder) Unlock(ctx, workspaceID interface{}) *gomo
 }
 
 // Update mocks base method.
-func (m *MockWorkspaces) Update(ctx context.Context, organization, workspace string, options WorkspaceUpdateOptions) (*Workspace, error) {
+func (m *MockWorkspaces) Update(ctx context.Context, organization, workspace string, options tfe.WorkspaceUpdateOptions) (*tfe.Workspace, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Update", ctx, organization, workspace, options)
-	ret0, _ := ret[0].(*Workspace)
+	ret0, _ := ret[0].(*tfe.Workspace)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -375,10 +376,10 @@ func (mr *MockWorkspacesMockRecorder) Update(ctx, organization, workspace, optio
 }
 
 // UpdateByID mocks base method.
-func (m *MockWorkspaces) UpdateByID(ctx context.Context, workspaceID string, options WorkspaceUpdateOptions) (*Workspace, error) {
+func (m *MockWorkspaces) UpdateByID(ctx context.Context, workspaceID string, options tfe.WorkspaceUpdateOptions) (*tfe.Workspace, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "UpdateByID", ctx, workspaceID, options)
-	ret0, _ := ret[0].(*Workspace)
+	ret0, _ := ret[0].(*tfe.Workspace)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -390,7 +391,7 @@ func (mr *MockWorkspacesMockRecorder) UpdateByID(ctx, workspaceID, options inter
 }
 
 // UpdateRemoteStateConsumers mocks base method.
-func (m *MockWorkspaces) UpdateRemoteStateConsumers(ctx context.Context, workspaceID string, options WorkspaceUpdateRemoteStateConsumersOptions) error {
+func (m *MockWorkspaces) UpdateRemoteStateConsumers(ctx context.Context, workspaceID string, options tfe.WorkspaceUpdateRemoteStateConsumersOptions) error {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "UpdateRemoteStateConsumers", ctx, workspaceID, options)
 	ret0, _ := ret[0].(error)

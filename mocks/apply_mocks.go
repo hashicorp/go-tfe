@@ -10,6 +10,7 @@ import (
 	reflect "reflect"
 
 	gomock "github.com/golang/mock/gomock"
+	tfe "github.com/hashicorp/go-tfe"
 )
 
 // MockApplies is a mock of Applies interface.
@@ -51,10 +52,10 @@ func (mr *MockAppliesMockRecorder) Logs(ctx, applyID interface{}) *gomock.Call {
 }
 
 // Read mocks base method.
-func (m *MockApplies) Read(ctx context.Context, applyID string) (*Apply, error) {
+func (m *MockApplies) Read(ctx context.Context, applyID string) (*tfe.Apply, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Read", ctx, applyID)
-	ret0, _ := ret[0].(*Apply)
+	ret0, _ := ret[0].(*tfe.Apply)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }

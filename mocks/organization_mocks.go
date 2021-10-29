@@ -9,6 +9,7 @@ import (
 	reflect "reflect"
 
 	gomock "github.com/golang/mock/gomock"
+	tfe "github.com/hashicorp/go-tfe"
 )
 
 // MockOrganizations is a mock of Organizations interface.
@@ -35,10 +36,10 @@ func (m *MockOrganizations) EXPECT() *MockOrganizationsMockRecorder {
 }
 
 // Capacity mocks base method.
-func (m *MockOrganizations) Capacity(ctx context.Context, organization string) (*Capacity, error) {
+func (m *MockOrganizations) Capacity(ctx context.Context, organization string) (*tfe.Capacity, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Capacity", ctx, organization)
-	ret0, _ := ret[0].(*Capacity)
+	ret0, _ := ret[0].(*tfe.Capacity)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -50,10 +51,10 @@ func (mr *MockOrganizationsMockRecorder) Capacity(ctx, organization interface{})
 }
 
 // Create mocks base method.
-func (m *MockOrganizations) Create(ctx context.Context, options OrganizationCreateOptions) (*Organization, error) {
+func (m *MockOrganizations) Create(ctx context.Context, options tfe.OrganizationCreateOptions) (*tfe.Organization, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Create", ctx, options)
-	ret0, _ := ret[0].(*Organization)
+	ret0, _ := ret[0].(*tfe.Organization)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -79,10 +80,10 @@ func (mr *MockOrganizationsMockRecorder) Delete(ctx, organization interface{}) *
 }
 
 // Entitlements mocks base method.
-func (m *MockOrganizations) Entitlements(ctx context.Context, organization string) (*Entitlements, error) {
+func (m *MockOrganizations) Entitlements(ctx context.Context, organization string) (*tfe.Entitlements, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Entitlements", ctx, organization)
-	ret0, _ := ret[0].(*Entitlements)
+	ret0, _ := ret[0].(*tfe.Entitlements)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -94,10 +95,10 @@ func (mr *MockOrganizationsMockRecorder) Entitlements(ctx, organization interfac
 }
 
 // List mocks base method.
-func (m *MockOrganizations) List(ctx context.Context, options OrganizationListOptions) (*OrganizationList, error) {
+func (m *MockOrganizations) List(ctx context.Context, options tfe.OrganizationListOptions) (*tfe.OrganizationList, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "List", ctx, options)
-	ret0, _ := ret[0].(*OrganizationList)
+	ret0, _ := ret[0].(*tfe.OrganizationList)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -109,10 +110,10 @@ func (mr *MockOrganizationsMockRecorder) List(ctx, options interface{}) *gomock.
 }
 
 // Read mocks base method.
-func (m *MockOrganizations) Read(ctx context.Context, organization string) (*Organization, error) {
+func (m *MockOrganizations) Read(ctx context.Context, organization string) (*tfe.Organization, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Read", ctx, organization)
-	ret0, _ := ret[0].(*Organization)
+	ret0, _ := ret[0].(*tfe.Organization)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -124,10 +125,10 @@ func (mr *MockOrganizationsMockRecorder) Read(ctx, organization interface{}) *go
 }
 
 // RunQueue mocks base method.
-func (m *MockOrganizations) RunQueue(ctx context.Context, organization string, options RunQueueOptions) (*RunQueue, error) {
+func (m *MockOrganizations) RunQueue(ctx context.Context, organization string, options tfe.RunQueueOptions) (*tfe.RunQueue, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "RunQueue", ctx, organization, options)
-	ret0, _ := ret[0].(*RunQueue)
+	ret0, _ := ret[0].(*tfe.RunQueue)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -139,10 +140,10 @@ func (mr *MockOrganizationsMockRecorder) RunQueue(ctx, organization, options int
 }
 
 // Update mocks base method.
-func (m *MockOrganizations) Update(ctx context.Context, organization string, options OrganizationUpdateOptions) (*Organization, error) {
+func (m *MockOrganizations) Update(ctx context.Context, organization string, options tfe.OrganizationUpdateOptions) (*tfe.Organization, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Update", ctx, organization, options)
-	ret0, _ := ret[0].(*Organization)
+	ret0, _ := ret[0].(*tfe.Organization)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }

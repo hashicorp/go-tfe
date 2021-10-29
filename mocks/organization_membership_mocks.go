@@ -9,6 +9,7 @@ import (
 	reflect "reflect"
 
 	gomock "github.com/golang/mock/gomock"
+	tfe "github.com/hashicorp/go-tfe"
 )
 
 // MockOrganizationMemberships is a mock of OrganizationMemberships interface.
@@ -35,10 +36,10 @@ func (m *MockOrganizationMemberships) EXPECT() *MockOrganizationMembershipsMockR
 }
 
 // Create mocks base method.
-func (m *MockOrganizationMemberships) Create(ctx context.Context, organization string, options OrganizationMembershipCreateOptions) (*OrganizationMembership, error) {
+func (m *MockOrganizationMemberships) Create(ctx context.Context, organization string, options tfe.OrganizationMembershipCreateOptions) (*tfe.OrganizationMembership, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Create", ctx, organization, options)
-	ret0, _ := ret[0].(*OrganizationMembership)
+	ret0, _ := ret[0].(*tfe.OrganizationMembership)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -64,10 +65,10 @@ func (mr *MockOrganizationMembershipsMockRecorder) Delete(ctx, organizationMembe
 }
 
 // List mocks base method.
-func (m *MockOrganizationMemberships) List(ctx context.Context, organization string, options OrganizationMembershipListOptions) (*OrganizationMembershipList, error) {
+func (m *MockOrganizationMemberships) List(ctx context.Context, organization string, options tfe.OrganizationMembershipListOptions) (*tfe.OrganizationMembershipList, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "List", ctx, organization, options)
-	ret0, _ := ret[0].(*OrganizationMembershipList)
+	ret0, _ := ret[0].(*tfe.OrganizationMembershipList)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -79,10 +80,10 @@ func (mr *MockOrganizationMembershipsMockRecorder) List(ctx, organization, optio
 }
 
 // Read mocks base method.
-func (m *MockOrganizationMemberships) Read(ctx context.Context, organizationMembershipID string) (*OrganizationMembership, error) {
+func (m *MockOrganizationMemberships) Read(ctx context.Context, organizationMembershipID string) (*tfe.OrganizationMembership, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Read", ctx, organizationMembershipID)
-	ret0, _ := ret[0].(*OrganizationMembership)
+	ret0, _ := ret[0].(*tfe.OrganizationMembership)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -94,10 +95,10 @@ func (mr *MockOrganizationMembershipsMockRecorder) Read(ctx, organizationMembers
 }
 
 // ReadWithOptions mocks base method.
-func (m *MockOrganizationMemberships) ReadWithOptions(ctx context.Context, organizationMembershipID string, options OrganizationMembershipReadOptions) (*OrganizationMembership, error) {
+func (m *MockOrganizationMemberships) ReadWithOptions(ctx context.Context, organizationMembershipID string, options tfe.OrganizationMembershipReadOptions) (*tfe.OrganizationMembership, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "ReadWithOptions", ctx, organizationMembershipID, options)
-	ret0, _ := ret[0].(*OrganizationMembership)
+	ret0, _ := ret[0].(*tfe.OrganizationMembership)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }

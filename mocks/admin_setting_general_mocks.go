@@ -9,6 +9,7 @@ import (
 	reflect "reflect"
 
 	gomock "github.com/golang/mock/gomock"
+	tfe "github.com/hashicorp/go-tfe"
 )
 
 // MockGeneralSettings is a mock of GeneralSettings interface.
@@ -35,10 +36,10 @@ func (m *MockGeneralSettings) EXPECT() *MockGeneralSettingsMockRecorder {
 }
 
 // Read mocks base method.
-func (m *MockGeneralSettings) Read(ctx context.Context) (*AdminGeneralSetting, error) {
+func (m *MockGeneralSettings) Read(ctx context.Context) (*tfe.AdminGeneralSetting, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Read", ctx)
-	ret0, _ := ret[0].(*AdminGeneralSetting)
+	ret0, _ := ret[0].(*tfe.AdminGeneralSetting)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -50,10 +51,10 @@ func (mr *MockGeneralSettingsMockRecorder) Read(ctx interface{}) *gomock.Call {
 }
 
 // Update mocks base method.
-func (m *MockGeneralSettings) Update(ctx context.Context, options AdminGeneralSettingsUpdateOptions) (*AdminGeneralSetting, error) {
+func (m *MockGeneralSettings) Update(ctx context.Context, options tfe.AdminGeneralSettingsUpdateOptions) (*tfe.AdminGeneralSetting, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Update", ctx, options)
-	ret0, _ := ret[0].(*AdminGeneralSetting)
+	ret0, _ := ret[0].(*tfe.AdminGeneralSetting)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }

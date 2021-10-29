@@ -9,6 +9,7 @@ import (
 	reflect "reflect"
 
 	gomock "github.com/golang/mock/gomock"
+	tfe "github.com/hashicorp/go-tfe"
 )
 
 // MockVariables is a mock of Variables interface.
@@ -35,10 +36,10 @@ func (m *MockVariables) EXPECT() *MockVariablesMockRecorder {
 }
 
 // Create mocks base method.
-func (m *MockVariables) Create(ctx context.Context, workspaceID string, options VariableCreateOptions) (*Variable, error) {
+func (m *MockVariables) Create(ctx context.Context, workspaceID string, options tfe.VariableCreateOptions) (*tfe.Variable, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Create", ctx, workspaceID, options)
-	ret0, _ := ret[0].(*Variable)
+	ret0, _ := ret[0].(*tfe.Variable)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -64,10 +65,10 @@ func (mr *MockVariablesMockRecorder) Delete(ctx, workspaceID, variableID interfa
 }
 
 // List mocks base method.
-func (m *MockVariables) List(ctx context.Context, workspaceID string, options VariableListOptions) (*VariableList, error) {
+func (m *MockVariables) List(ctx context.Context, workspaceID string, options tfe.VariableListOptions) (*tfe.VariableList, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "List", ctx, workspaceID, options)
-	ret0, _ := ret[0].(*VariableList)
+	ret0, _ := ret[0].(*tfe.VariableList)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -79,10 +80,10 @@ func (mr *MockVariablesMockRecorder) List(ctx, workspaceID, options interface{})
 }
 
 // Read mocks base method.
-func (m *MockVariables) Read(ctx context.Context, workspaceID, variableID string) (*Variable, error) {
+func (m *MockVariables) Read(ctx context.Context, workspaceID, variableID string) (*tfe.Variable, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Read", ctx, workspaceID, variableID)
-	ret0, _ := ret[0].(*Variable)
+	ret0, _ := ret[0].(*tfe.Variable)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -94,10 +95,10 @@ func (mr *MockVariablesMockRecorder) Read(ctx, workspaceID, variableID interface
 }
 
 // Update mocks base method.
-func (m *MockVariables) Update(ctx context.Context, workspaceID, variableID string, options VariableUpdateOptions) (*Variable, error) {
+func (m *MockVariables) Update(ctx context.Context, workspaceID, variableID string, options tfe.VariableUpdateOptions) (*tfe.Variable, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Update", ctx, workspaceID, variableID, options)
-	ret0, _ := ret[0].(*Variable)
+	ret0, _ := ret[0].(*tfe.Variable)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }

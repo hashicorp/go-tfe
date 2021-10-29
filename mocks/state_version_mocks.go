@@ -9,6 +9,7 @@ import (
 	reflect "reflect"
 
 	gomock "github.com/golang/mock/gomock"
+	tfe "github.com/hashicorp/go-tfe"
 )
 
 // MockStateVersions is a mock of StateVersions interface.
@@ -35,10 +36,10 @@ func (m *MockStateVersions) EXPECT() *MockStateVersionsMockRecorder {
 }
 
 // Create mocks base method.
-func (m *MockStateVersions) Create(ctx context.Context, workspaceID string, options StateVersionCreateOptions) (*StateVersion, error) {
+func (m *MockStateVersions) Create(ctx context.Context, workspaceID string, options tfe.StateVersionCreateOptions) (*tfe.StateVersion, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Create", ctx, workspaceID, options)
-	ret0, _ := ret[0].(*StateVersion)
+	ret0, _ := ret[0].(*tfe.StateVersion)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -50,10 +51,10 @@ func (mr *MockStateVersionsMockRecorder) Create(ctx, workspaceID, options interf
 }
 
 // Current mocks base method.
-func (m *MockStateVersions) Current(ctx context.Context, workspaceID string) (*StateVersion, error) {
+func (m *MockStateVersions) Current(ctx context.Context, workspaceID string) (*tfe.StateVersion, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Current", ctx, workspaceID)
-	ret0, _ := ret[0].(*StateVersion)
+	ret0, _ := ret[0].(*tfe.StateVersion)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -65,10 +66,10 @@ func (mr *MockStateVersionsMockRecorder) Current(ctx, workspaceID interface{}) *
 }
 
 // CurrentWithOptions mocks base method.
-func (m *MockStateVersions) CurrentWithOptions(ctx context.Context, workspaceID string, options *StateVersionCurrentOptions) (*StateVersion, error) {
+func (m *MockStateVersions) CurrentWithOptions(ctx context.Context, workspaceID string, options *tfe.StateVersionCurrentOptions) (*tfe.StateVersion, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "CurrentWithOptions", ctx, workspaceID, options)
-	ret0, _ := ret[0].(*StateVersion)
+	ret0, _ := ret[0].(*tfe.StateVersion)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -95,10 +96,10 @@ func (mr *MockStateVersionsMockRecorder) Download(ctx, url interface{}) *gomock.
 }
 
 // List mocks base method.
-func (m *MockStateVersions) List(ctx context.Context, options StateVersionListOptions) (*StateVersionList, error) {
+func (m *MockStateVersions) List(ctx context.Context, options tfe.StateVersionListOptions) (*tfe.StateVersionList, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "List", ctx, options)
-	ret0, _ := ret[0].(*StateVersionList)
+	ret0, _ := ret[0].(*tfe.StateVersionList)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -110,10 +111,10 @@ func (mr *MockStateVersionsMockRecorder) List(ctx, options interface{}) *gomock.
 }
 
 // Outputs mocks base method.
-func (m *MockStateVersions) Outputs(ctx context.Context, svID string, options StateVersionOutputsListOptions) ([]*StateVersionOutput, error) {
+func (m *MockStateVersions) Outputs(ctx context.Context, svID string, options tfe.StateVersionOutputsListOptions) ([]*tfe.StateVersionOutput, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Outputs", ctx, svID, options)
-	ret0, _ := ret[0].([]*StateVersionOutput)
+	ret0, _ := ret[0].([]*tfe.StateVersionOutput)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -125,10 +126,10 @@ func (mr *MockStateVersionsMockRecorder) Outputs(ctx, svID, options interface{})
 }
 
 // Read mocks base method.
-func (m *MockStateVersions) Read(ctx context.Context, svID string) (*StateVersion, error) {
+func (m *MockStateVersions) Read(ctx context.Context, svID string) (*tfe.StateVersion, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Read", ctx, svID)
-	ret0, _ := ret[0].(*StateVersion)
+	ret0, _ := ret[0].(*tfe.StateVersion)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -140,10 +141,10 @@ func (mr *MockStateVersionsMockRecorder) Read(ctx, svID interface{}) *gomock.Cal
 }
 
 // ReadWithOptions mocks base method.
-func (m *MockStateVersions) ReadWithOptions(ctx context.Context, svID string, options *StateVersionReadOptions) (*StateVersion, error) {
+func (m *MockStateVersions) ReadWithOptions(ctx context.Context, svID string, options *tfe.StateVersionReadOptions) (*tfe.StateVersion, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "ReadWithOptions", ctx, svID, options)
-	ret0, _ := ret[0].(*StateVersion)
+	ret0, _ := ret[0].(*tfe.StateVersion)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }

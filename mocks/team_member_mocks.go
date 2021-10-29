@@ -9,6 +9,7 @@ import (
 	reflect "reflect"
 
 	gomock "github.com/golang/mock/gomock"
+	tfe "github.com/hashicorp/go-tfe"
 )
 
 // MockTeamMembers is a mock of TeamMembers interface.
@@ -35,7 +36,7 @@ func (m *MockTeamMembers) EXPECT() *MockTeamMembersMockRecorder {
 }
 
 // Add mocks base method.
-func (m *MockTeamMembers) Add(ctx context.Context, teamID string, options TeamMemberAddOptions) error {
+func (m *MockTeamMembers) Add(ctx context.Context, teamID string, options tfe.TeamMemberAddOptions) error {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Add", ctx, teamID, options)
 	ret0, _ := ret[0].(error)
@@ -49,10 +50,10 @@ func (mr *MockTeamMembersMockRecorder) Add(ctx, teamID, options interface{}) *go
 }
 
 // List mocks base method.
-func (m *MockTeamMembers) List(ctx context.Context, teamID string) ([]*User, error) {
+func (m *MockTeamMembers) List(ctx context.Context, teamID string) ([]*tfe.User, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "List", ctx, teamID)
-	ret0, _ := ret[0].([]*User)
+	ret0, _ := ret[0].([]*tfe.User)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -64,10 +65,10 @@ func (mr *MockTeamMembersMockRecorder) List(ctx, teamID interface{}) *gomock.Cal
 }
 
 // ListOrganizationMemberships mocks base method.
-func (m *MockTeamMembers) ListOrganizationMemberships(ctx context.Context, teamID string) ([]*OrganizationMembership, error) {
+func (m *MockTeamMembers) ListOrganizationMemberships(ctx context.Context, teamID string) ([]*tfe.OrganizationMembership, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "ListOrganizationMemberships", ctx, teamID)
-	ret0, _ := ret[0].([]*OrganizationMembership)
+	ret0, _ := ret[0].([]*tfe.OrganizationMembership)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -79,10 +80,10 @@ func (mr *MockTeamMembersMockRecorder) ListOrganizationMemberships(ctx, teamID i
 }
 
 // ListUsers mocks base method.
-func (m *MockTeamMembers) ListUsers(ctx context.Context, teamID string) ([]*User, error) {
+func (m *MockTeamMembers) ListUsers(ctx context.Context, teamID string) ([]*tfe.User, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "ListUsers", ctx, teamID)
-	ret0, _ := ret[0].([]*User)
+	ret0, _ := ret[0].([]*tfe.User)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -94,7 +95,7 @@ func (mr *MockTeamMembersMockRecorder) ListUsers(ctx, teamID interface{}) *gomoc
 }
 
 // Remove mocks base method.
-func (m *MockTeamMembers) Remove(ctx context.Context, teamID string, options TeamMemberRemoveOptions) error {
+func (m *MockTeamMembers) Remove(ctx context.Context, teamID string, options tfe.TeamMemberRemoveOptions) error {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Remove", ctx, teamID, options)
 	ret0, _ := ret[0].(error)

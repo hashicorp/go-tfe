@@ -9,6 +9,7 @@ import (
 	reflect "reflect"
 
 	gomock "github.com/golang/mock/gomock"
+	tfe "github.com/hashicorp/go-tfe"
 )
 
 // MockPolicySetParameters is a mock of PolicySetParameters interface.
@@ -35,10 +36,10 @@ func (m *MockPolicySetParameters) EXPECT() *MockPolicySetParametersMockRecorder 
 }
 
 // Create mocks base method.
-func (m *MockPolicySetParameters) Create(ctx context.Context, policySetID string, options PolicySetParameterCreateOptions) (*PolicySetParameter, error) {
+func (m *MockPolicySetParameters) Create(ctx context.Context, policySetID string, options tfe.PolicySetParameterCreateOptions) (*tfe.PolicySetParameter, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Create", ctx, policySetID, options)
-	ret0, _ := ret[0].(*PolicySetParameter)
+	ret0, _ := ret[0].(*tfe.PolicySetParameter)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -64,10 +65,10 @@ func (mr *MockPolicySetParametersMockRecorder) Delete(ctx, policySetID, paramete
 }
 
 // List mocks base method.
-func (m *MockPolicySetParameters) List(ctx context.Context, policySetID string, options PolicySetParameterListOptions) (*PolicySetParameterList, error) {
+func (m *MockPolicySetParameters) List(ctx context.Context, policySetID string, options tfe.PolicySetParameterListOptions) (*tfe.PolicySetParameterList, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "List", ctx, policySetID, options)
-	ret0, _ := ret[0].(*PolicySetParameterList)
+	ret0, _ := ret[0].(*tfe.PolicySetParameterList)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -79,10 +80,10 @@ func (mr *MockPolicySetParametersMockRecorder) List(ctx, policySetID, options in
 }
 
 // Read mocks base method.
-func (m *MockPolicySetParameters) Read(ctx context.Context, policySetID, parameterID string) (*PolicySetParameter, error) {
+func (m *MockPolicySetParameters) Read(ctx context.Context, policySetID, parameterID string) (*tfe.PolicySetParameter, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Read", ctx, policySetID, parameterID)
-	ret0, _ := ret[0].(*PolicySetParameter)
+	ret0, _ := ret[0].(*tfe.PolicySetParameter)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -94,10 +95,10 @@ func (mr *MockPolicySetParametersMockRecorder) Read(ctx, policySetID, parameterI
 }
 
 // Update mocks base method.
-func (m *MockPolicySetParameters) Update(ctx context.Context, policySetID, parameterID string, options PolicySetParameterUpdateOptions) (*PolicySetParameter, error) {
+func (m *MockPolicySetParameters) Update(ctx context.Context, policySetID, parameterID string, options tfe.PolicySetParameterUpdateOptions) (*tfe.PolicySetParameter, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Update", ctx, policySetID, parameterID, options)
-	ret0, _ := ret[0].(*PolicySetParameter)
+	ret0, _ := ret[0].(*tfe.PolicySetParameter)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }

@@ -9,6 +9,7 @@ import (
 	reflect "reflect"
 
 	gomock "github.com/golang/mock/gomock"
+	tfe "github.com/hashicorp/go-tfe"
 )
 
 // MockRuns is a mock of Runs interface.
@@ -35,7 +36,7 @@ func (m *MockRuns) EXPECT() *MockRunsMockRecorder {
 }
 
 // Apply mocks base method.
-func (m *MockRuns) Apply(ctx context.Context, runID string, options RunApplyOptions) error {
+func (m *MockRuns) Apply(ctx context.Context, runID string, options tfe.RunApplyOptions) error {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Apply", ctx, runID, options)
 	ret0, _ := ret[0].(error)
@@ -49,7 +50,7 @@ func (mr *MockRunsMockRecorder) Apply(ctx, runID, options interface{}) *gomock.C
 }
 
 // Cancel mocks base method.
-func (m *MockRuns) Cancel(ctx context.Context, runID string, options RunCancelOptions) error {
+func (m *MockRuns) Cancel(ctx context.Context, runID string, options tfe.RunCancelOptions) error {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Cancel", ctx, runID, options)
 	ret0, _ := ret[0].(error)
@@ -63,10 +64,10 @@ func (mr *MockRunsMockRecorder) Cancel(ctx, runID, options interface{}) *gomock.
 }
 
 // Create mocks base method.
-func (m *MockRuns) Create(ctx context.Context, options RunCreateOptions) (*Run, error) {
+func (m *MockRuns) Create(ctx context.Context, options tfe.RunCreateOptions) (*tfe.Run, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Create", ctx, options)
-	ret0, _ := ret[0].(*Run)
+	ret0, _ := ret[0].(*tfe.Run)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -78,7 +79,7 @@ func (mr *MockRunsMockRecorder) Create(ctx, options interface{}) *gomock.Call {
 }
 
 // Discard mocks base method.
-func (m *MockRuns) Discard(ctx context.Context, runID string, options RunDiscardOptions) error {
+func (m *MockRuns) Discard(ctx context.Context, runID string, options tfe.RunDiscardOptions) error {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Discard", ctx, runID, options)
 	ret0, _ := ret[0].(error)
@@ -92,7 +93,7 @@ func (mr *MockRunsMockRecorder) Discard(ctx, runID, options interface{}) *gomock
 }
 
 // ForceCancel mocks base method.
-func (m *MockRuns) ForceCancel(ctx context.Context, runID string, options RunForceCancelOptions) error {
+func (m *MockRuns) ForceCancel(ctx context.Context, runID string, options tfe.RunForceCancelOptions) error {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "ForceCancel", ctx, runID, options)
 	ret0, _ := ret[0].(error)
@@ -106,10 +107,10 @@ func (mr *MockRunsMockRecorder) ForceCancel(ctx, runID, options interface{}) *go
 }
 
 // List mocks base method.
-func (m *MockRuns) List(ctx context.Context, workspaceID string, options RunListOptions) (*RunList, error) {
+func (m *MockRuns) List(ctx context.Context, workspaceID string, options tfe.RunListOptions) (*tfe.RunList, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "List", ctx, workspaceID, options)
-	ret0, _ := ret[0].(*RunList)
+	ret0, _ := ret[0].(*tfe.RunList)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -121,10 +122,10 @@ func (mr *MockRunsMockRecorder) List(ctx, workspaceID, options interface{}) *gom
 }
 
 // Read mocks base method.
-func (m *MockRuns) Read(ctx context.Context, runID string) (*Run, error) {
+func (m *MockRuns) Read(ctx context.Context, runID string) (*tfe.Run, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Read", ctx, runID)
-	ret0, _ := ret[0].(*Run)
+	ret0, _ := ret[0].(*tfe.Run)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -136,10 +137,10 @@ func (mr *MockRunsMockRecorder) Read(ctx, runID interface{}) *gomock.Call {
 }
 
 // ReadWithOptions mocks base method.
-func (m *MockRuns) ReadWithOptions(ctx context.Context, runID string, options *RunReadOptions) (*Run, error) {
+func (m *MockRuns) ReadWithOptions(ctx context.Context, runID string, options *tfe.RunReadOptions) (*tfe.Run, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "ReadWithOptions", ctx, runID, options)
-	ret0, _ := ret[0].(*Run)
+	ret0, _ := ret[0].(*tfe.Run)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }

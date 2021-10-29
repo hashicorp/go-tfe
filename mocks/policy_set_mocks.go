@@ -9,6 +9,7 @@ import (
 	reflect "reflect"
 
 	gomock "github.com/golang/mock/gomock"
+	tfe "github.com/hashicorp/go-tfe"
 )
 
 // MockPolicySets is a mock of PolicySets interface.
@@ -35,7 +36,7 @@ func (m *MockPolicySets) EXPECT() *MockPolicySetsMockRecorder {
 }
 
 // AddPolicies mocks base method.
-func (m *MockPolicySets) AddPolicies(ctx context.Context, policySetID string, options PolicySetAddPoliciesOptions) error {
+func (m *MockPolicySets) AddPolicies(ctx context.Context, policySetID string, options tfe.PolicySetAddPoliciesOptions) error {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "AddPolicies", ctx, policySetID, options)
 	ret0, _ := ret[0].(error)
@@ -49,7 +50,7 @@ func (mr *MockPolicySetsMockRecorder) AddPolicies(ctx, policySetID, options inte
 }
 
 // AddWorkspaces mocks base method.
-func (m *MockPolicySets) AddWorkspaces(ctx context.Context, policySetID string, options PolicySetAddWorkspacesOptions) error {
+func (m *MockPolicySets) AddWorkspaces(ctx context.Context, policySetID string, options tfe.PolicySetAddWorkspacesOptions) error {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "AddWorkspaces", ctx, policySetID, options)
 	ret0, _ := ret[0].(error)
@@ -63,10 +64,10 @@ func (mr *MockPolicySetsMockRecorder) AddWorkspaces(ctx, policySetID, options in
 }
 
 // Create mocks base method.
-func (m *MockPolicySets) Create(ctx context.Context, organization string, options PolicySetCreateOptions) (*PolicySet, error) {
+func (m *MockPolicySets) Create(ctx context.Context, organization string, options tfe.PolicySetCreateOptions) (*tfe.PolicySet, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Create", ctx, organization, options)
-	ret0, _ := ret[0].(*PolicySet)
+	ret0, _ := ret[0].(*tfe.PolicySet)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -92,10 +93,10 @@ func (mr *MockPolicySetsMockRecorder) Delete(ctx, policyID interface{}) *gomock.
 }
 
 // List mocks base method.
-func (m *MockPolicySets) List(ctx context.Context, organization string, options PolicySetListOptions) (*PolicySetList, error) {
+func (m *MockPolicySets) List(ctx context.Context, organization string, options tfe.PolicySetListOptions) (*tfe.PolicySetList, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "List", ctx, organization, options)
-	ret0, _ := ret[0].(*PolicySetList)
+	ret0, _ := ret[0].(*tfe.PolicySetList)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -107,10 +108,10 @@ func (mr *MockPolicySetsMockRecorder) List(ctx, organization, options interface{
 }
 
 // Read mocks base method.
-func (m *MockPolicySets) Read(ctx context.Context, policySetID string) (*PolicySet, error) {
+func (m *MockPolicySets) Read(ctx context.Context, policySetID string) (*tfe.PolicySet, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Read", ctx, policySetID)
-	ret0, _ := ret[0].(*PolicySet)
+	ret0, _ := ret[0].(*tfe.PolicySet)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -122,10 +123,10 @@ func (mr *MockPolicySetsMockRecorder) Read(ctx, policySetID interface{}) *gomock
 }
 
 // ReadWithOptions mocks base method.
-func (m *MockPolicySets) ReadWithOptions(ctx context.Context, policySetID string, options *PolicySetReadOptions) (*PolicySet, error) {
+func (m *MockPolicySets) ReadWithOptions(ctx context.Context, policySetID string, options *tfe.PolicySetReadOptions) (*tfe.PolicySet, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "ReadWithOptions", ctx, policySetID, options)
-	ret0, _ := ret[0].(*PolicySet)
+	ret0, _ := ret[0].(*tfe.PolicySet)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -137,7 +138,7 @@ func (mr *MockPolicySetsMockRecorder) ReadWithOptions(ctx, policySetID, options 
 }
 
 // RemovePolicies mocks base method.
-func (m *MockPolicySets) RemovePolicies(ctx context.Context, policySetID string, options PolicySetRemovePoliciesOptions) error {
+func (m *MockPolicySets) RemovePolicies(ctx context.Context, policySetID string, options tfe.PolicySetRemovePoliciesOptions) error {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "RemovePolicies", ctx, policySetID, options)
 	ret0, _ := ret[0].(error)
@@ -151,7 +152,7 @@ func (mr *MockPolicySetsMockRecorder) RemovePolicies(ctx, policySetID, options i
 }
 
 // RemoveWorkspaces mocks base method.
-func (m *MockPolicySets) RemoveWorkspaces(ctx context.Context, policySetID string, options PolicySetRemoveWorkspacesOptions) error {
+func (m *MockPolicySets) RemoveWorkspaces(ctx context.Context, policySetID string, options tfe.PolicySetRemoveWorkspacesOptions) error {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "RemoveWorkspaces", ctx, policySetID, options)
 	ret0, _ := ret[0].(error)
@@ -165,10 +166,10 @@ func (mr *MockPolicySetsMockRecorder) RemoveWorkspaces(ctx, policySetID, options
 }
 
 // Update mocks base method.
-func (m *MockPolicySets) Update(ctx context.Context, policySetID string, options PolicySetUpdateOptions) (*PolicySet, error) {
+func (m *MockPolicySets) Update(ctx context.Context, policySetID string, options tfe.PolicySetUpdateOptions) (*tfe.PolicySet, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Update", ctx, policySetID, options)
-	ret0, _ := ret[0].(*PolicySet)
+	ret0, _ := ret[0].(*tfe.PolicySet)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }

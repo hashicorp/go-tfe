@@ -9,6 +9,7 @@ import (
 	reflect "reflect"
 
 	gomock "github.com/golang/mock/gomock"
+	tfe "github.com/hashicorp/go-tfe"
 )
 
 // MockPlanExports is a mock of PlanExports interface.
@@ -35,10 +36,10 @@ func (m *MockPlanExports) EXPECT() *MockPlanExportsMockRecorder {
 }
 
 // Create mocks base method.
-func (m *MockPlanExports) Create(ctx context.Context, options PlanExportCreateOptions) (*PlanExport, error) {
+func (m *MockPlanExports) Create(ctx context.Context, options tfe.PlanExportCreateOptions) (*tfe.PlanExport, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Create", ctx, options)
-	ret0, _ := ret[0].(*PlanExport)
+	ret0, _ := ret[0].(*tfe.PlanExport)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -79,10 +80,10 @@ func (mr *MockPlanExportsMockRecorder) Download(ctx, planExportID interface{}) *
 }
 
 // Read mocks base method.
-func (m *MockPlanExports) Read(ctx context.Context, planExportID string) (*PlanExport, error) {
+func (m *MockPlanExports) Read(ctx context.Context, planExportID string) (*tfe.PlanExport, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Read", ctx, planExportID)
-	ret0, _ := ret[0].(*PlanExport)
+	ret0, _ := ret[0].(*tfe.PlanExport)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }

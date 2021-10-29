@@ -9,6 +9,7 @@ import (
 	reflect "reflect"
 
 	gomock "github.com/golang/mock/gomock"
+	tfe "github.com/hashicorp/go-tfe"
 )
 
 // MockIPRanges is a mock of IPRanges interface.
@@ -35,10 +36,10 @@ func (m *MockIPRanges) EXPECT() *MockIPRangesMockRecorder {
 }
 
 // Read mocks base method.
-func (m *MockIPRanges) Read(ctx context.Context, modifiedSince string) (*IPRange, error) {
+func (m *MockIPRanges) Read(ctx context.Context, modifiedSince string) (*tfe.IPRange, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Read", ctx, modifiedSince)
-	ret0, _ := ret[0].(*IPRange)
+	ret0, _ := ret[0].(*tfe.IPRange)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }

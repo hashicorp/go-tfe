@@ -9,6 +9,7 @@ import (
 	reflect "reflect"
 
 	gomock "github.com/golang/mock/gomock"
+	tfe "github.com/hashicorp/go-tfe"
 )
 
 // MockAdminUsers is a mock of AdminUsers interface.
@@ -49,10 +50,10 @@ func (mr *MockAdminUsersMockRecorder) Delete(ctx, userID interface{}) *gomock.Ca
 }
 
 // Disable2FA mocks base method.
-func (m *MockAdminUsers) Disable2FA(ctx context.Context, userID string) (*AdminUser, error) {
+func (m *MockAdminUsers) Disable2FA(ctx context.Context, userID string) (*tfe.AdminUser, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Disable2FA", ctx, userID)
-	ret0, _ := ret[0].(*AdminUser)
+	ret0, _ := ret[0].(*tfe.AdminUser)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -64,10 +65,10 @@ func (mr *MockAdminUsersMockRecorder) Disable2FA(ctx, userID interface{}) *gomoc
 }
 
 // GrantAdmin mocks base method.
-func (m *MockAdminUsers) GrantAdmin(ctx context.Context, userID string) (*AdminUser, error) {
+func (m *MockAdminUsers) GrantAdmin(ctx context.Context, userID string) (*tfe.AdminUser, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GrantAdmin", ctx, userID)
-	ret0, _ := ret[0].(*AdminUser)
+	ret0, _ := ret[0].(*tfe.AdminUser)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -79,10 +80,10 @@ func (mr *MockAdminUsersMockRecorder) GrantAdmin(ctx, userID interface{}) *gomoc
 }
 
 // List mocks base method.
-func (m *MockAdminUsers) List(ctx context.Context, options AdminUserListOptions) (*AdminUserList, error) {
+func (m *MockAdminUsers) List(ctx context.Context, options tfe.AdminUserListOptions) (*tfe.AdminUserList, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "List", ctx, options)
-	ret0, _ := ret[0].(*AdminUserList)
+	ret0, _ := ret[0].(*tfe.AdminUserList)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -94,10 +95,10 @@ func (mr *MockAdminUsersMockRecorder) List(ctx, options interface{}) *gomock.Cal
 }
 
 // RevokeAdmin mocks base method.
-func (m *MockAdminUsers) RevokeAdmin(ctx context.Context, userID string) (*AdminUser, error) {
+func (m *MockAdminUsers) RevokeAdmin(ctx context.Context, userID string) (*tfe.AdminUser, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "RevokeAdmin", ctx, userID)
-	ret0, _ := ret[0].(*AdminUser)
+	ret0, _ := ret[0].(*tfe.AdminUser)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -109,10 +110,10 @@ func (mr *MockAdminUsersMockRecorder) RevokeAdmin(ctx, userID interface{}) *gomo
 }
 
 // Suspend mocks base method.
-func (m *MockAdminUsers) Suspend(ctx context.Context, userID string) (*AdminUser, error) {
+func (m *MockAdminUsers) Suspend(ctx context.Context, userID string) (*tfe.AdminUser, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Suspend", ctx, userID)
-	ret0, _ := ret[0].(*AdminUser)
+	ret0, _ := ret[0].(*tfe.AdminUser)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -124,10 +125,10 @@ func (mr *MockAdminUsersMockRecorder) Suspend(ctx, userID interface{}) *gomock.C
 }
 
 // Unsuspend mocks base method.
-func (m *MockAdminUsers) Unsuspend(ctx context.Context, userID string) (*AdminUser, error) {
+func (m *MockAdminUsers) Unsuspend(ctx context.Context, userID string) (*tfe.AdminUser, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Unsuspend", ctx, userID)
-	ret0, _ := ret[0].(*AdminUser)
+	ret0, _ := ret[0].(*tfe.AdminUser)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }

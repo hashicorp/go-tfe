@@ -9,6 +9,7 @@ import (
 	reflect "reflect"
 
 	gomock "github.com/golang/mock/gomock"
+	tfe "github.com/hashicorp/go-tfe"
 )
 
 // MockRunTriggers is a mock of RunTriggers interface.
@@ -35,10 +36,10 @@ func (m *MockRunTriggers) EXPECT() *MockRunTriggersMockRecorder {
 }
 
 // Create mocks base method.
-func (m *MockRunTriggers) Create(ctx context.Context, workspaceID string, options RunTriggerCreateOptions) (*RunTrigger, error) {
+func (m *MockRunTriggers) Create(ctx context.Context, workspaceID string, options tfe.RunTriggerCreateOptions) (*tfe.RunTrigger, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Create", ctx, workspaceID, options)
-	ret0, _ := ret[0].(*RunTrigger)
+	ret0, _ := ret[0].(*tfe.RunTrigger)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -64,10 +65,10 @@ func (mr *MockRunTriggersMockRecorder) Delete(ctx, RunTriggerID interface{}) *go
 }
 
 // List mocks base method.
-func (m *MockRunTriggers) List(ctx context.Context, workspaceID string, options RunTriggerListOptions) (*RunTriggerList, error) {
+func (m *MockRunTriggers) List(ctx context.Context, workspaceID string, options tfe.RunTriggerListOptions) (*tfe.RunTriggerList, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "List", ctx, workspaceID, options)
-	ret0, _ := ret[0].(*RunTriggerList)
+	ret0, _ := ret[0].(*tfe.RunTriggerList)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -79,10 +80,10 @@ func (mr *MockRunTriggersMockRecorder) List(ctx, workspaceID, options interface{
 }
 
 // Read mocks base method.
-func (m *MockRunTriggers) Read(ctx context.Context, RunTriggerID string) (*RunTrigger, error) {
+func (m *MockRunTriggers) Read(ctx context.Context, RunTriggerID string) (*tfe.RunTrigger, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Read", ctx, RunTriggerID)
-	ret0, _ := ret[0].(*RunTrigger)
+	ret0, _ := ret[0].(*tfe.RunTrigger)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }

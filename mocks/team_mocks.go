@@ -9,6 +9,7 @@ import (
 	reflect "reflect"
 
 	gomock "github.com/golang/mock/gomock"
+	tfe "github.com/hashicorp/go-tfe"
 )
 
 // MockTeams is a mock of Teams interface.
@@ -35,10 +36,10 @@ func (m *MockTeams) EXPECT() *MockTeamsMockRecorder {
 }
 
 // Create mocks base method.
-func (m *MockTeams) Create(ctx context.Context, organization string, options TeamCreateOptions) (*Team, error) {
+func (m *MockTeams) Create(ctx context.Context, organization string, options tfe.TeamCreateOptions) (*tfe.Team, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Create", ctx, organization, options)
-	ret0, _ := ret[0].(*Team)
+	ret0, _ := ret[0].(*tfe.Team)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -64,10 +65,10 @@ func (mr *MockTeamsMockRecorder) Delete(ctx, teamID interface{}) *gomock.Call {
 }
 
 // List mocks base method.
-func (m *MockTeams) List(ctx context.Context, organization string, options TeamListOptions) (*TeamList, error) {
+func (m *MockTeams) List(ctx context.Context, organization string, options tfe.TeamListOptions) (*tfe.TeamList, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "List", ctx, organization, options)
-	ret0, _ := ret[0].(*TeamList)
+	ret0, _ := ret[0].(*tfe.TeamList)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -79,10 +80,10 @@ func (mr *MockTeamsMockRecorder) List(ctx, organization, options interface{}) *g
 }
 
 // Read mocks base method.
-func (m *MockTeams) Read(ctx context.Context, teamID string) (*Team, error) {
+func (m *MockTeams) Read(ctx context.Context, teamID string) (*tfe.Team, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Read", ctx, teamID)
-	ret0, _ := ret[0].(*Team)
+	ret0, _ := ret[0].(*tfe.Team)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -94,10 +95,10 @@ func (mr *MockTeamsMockRecorder) Read(ctx, teamID interface{}) *gomock.Call {
 }
 
 // Update mocks base method.
-func (m *MockTeams) Update(ctx context.Context, teamID string, options TeamUpdateOptions) (*Team, error) {
+func (m *MockTeams) Update(ctx context.Context, teamID string, options tfe.TeamUpdateOptions) (*tfe.Team, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Update", ctx, teamID, options)
-	ret0, _ := ret[0].(*Team)
+	ret0, _ := ret[0].(*tfe.Team)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }

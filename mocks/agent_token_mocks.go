@@ -9,6 +9,7 @@ import (
 	reflect "reflect"
 
 	gomock "github.com/golang/mock/gomock"
+	tfe "github.com/hashicorp/go-tfe"
 )
 
 // MockAgentTokens is a mock of AgentTokens interface.
@@ -49,10 +50,10 @@ func (mr *MockAgentTokensMockRecorder) Delete(ctx, agentTokenID interface{}) *go
 }
 
 // Generate mocks base method.
-func (m *MockAgentTokens) Generate(ctx context.Context, agentPoolID string, options AgentTokenGenerateOptions) (*AgentToken, error) {
+func (m *MockAgentTokens) Generate(ctx context.Context, agentPoolID string, options tfe.AgentTokenGenerateOptions) (*tfe.AgentToken, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Generate", ctx, agentPoolID, options)
-	ret0, _ := ret[0].(*AgentToken)
+	ret0, _ := ret[0].(*tfe.AgentToken)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -64,10 +65,10 @@ func (mr *MockAgentTokensMockRecorder) Generate(ctx, agentPoolID, options interf
 }
 
 // List mocks base method.
-func (m *MockAgentTokens) List(ctx context.Context, agentPoolID string) (*AgentTokenList, error) {
+func (m *MockAgentTokens) List(ctx context.Context, agentPoolID string) (*tfe.AgentTokenList, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "List", ctx, agentPoolID)
-	ret0, _ := ret[0].(*AgentTokenList)
+	ret0, _ := ret[0].(*tfe.AgentTokenList)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -79,10 +80,10 @@ func (mr *MockAgentTokensMockRecorder) List(ctx, agentPoolID interface{}) *gomoc
 }
 
 // Read mocks base method.
-func (m *MockAgentTokens) Read(ctx context.Context, agentTokenID string) (*AgentToken, error) {
+func (m *MockAgentTokens) Read(ctx context.Context, agentTokenID string) (*tfe.AgentToken, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Read", ctx, agentTokenID)
-	ret0, _ := ret[0].(*AgentToken)
+	ret0, _ := ret[0].(*tfe.AgentToken)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }

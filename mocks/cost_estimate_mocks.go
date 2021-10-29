@@ -10,6 +10,7 @@ import (
 	reflect "reflect"
 
 	gomock "github.com/golang/mock/gomock"
+	tfe "github.com/hashicorp/go-tfe"
 )
 
 // MockCostEstimates is a mock of CostEstimates interface.
@@ -51,10 +52,10 @@ func (mr *MockCostEstimatesMockRecorder) Logs(ctx, costEstimateID interface{}) *
 }
 
 // Read mocks base method.
-func (m *MockCostEstimates) Read(ctx context.Context, costEstimateID string) (*CostEstimate, error) {
+func (m *MockCostEstimates) Read(ctx context.Context, costEstimateID string) (*tfe.CostEstimate, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Read", ctx, costEstimateID)
-	ret0, _ := ret[0].(*CostEstimate)
+	ret0, _ := ret[0].(*tfe.CostEstimate)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }

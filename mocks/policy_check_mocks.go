@@ -10,6 +10,7 @@ import (
 	reflect "reflect"
 
 	gomock "github.com/golang/mock/gomock"
+	tfe "github.com/hashicorp/go-tfe"
 )
 
 // MockPolicyChecks is a mock of PolicyChecks interface.
@@ -36,10 +37,10 @@ func (m *MockPolicyChecks) EXPECT() *MockPolicyChecksMockRecorder {
 }
 
 // List mocks base method.
-func (m *MockPolicyChecks) List(ctx context.Context, runID string, options PolicyCheckListOptions) (*PolicyCheckList, error) {
+func (m *MockPolicyChecks) List(ctx context.Context, runID string, options tfe.PolicyCheckListOptions) (*tfe.PolicyCheckList, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "List", ctx, runID, options)
-	ret0, _ := ret[0].(*PolicyCheckList)
+	ret0, _ := ret[0].(*tfe.PolicyCheckList)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -66,10 +67,10 @@ func (mr *MockPolicyChecksMockRecorder) Logs(ctx, policyCheckID interface{}) *go
 }
 
 // Override mocks base method.
-func (m *MockPolicyChecks) Override(ctx context.Context, policyCheckID string) (*PolicyCheck, error) {
+func (m *MockPolicyChecks) Override(ctx context.Context, policyCheckID string) (*tfe.PolicyCheck, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Override", ctx, policyCheckID)
-	ret0, _ := ret[0].(*PolicyCheck)
+	ret0, _ := ret[0].(*tfe.PolicyCheck)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -81,10 +82,10 @@ func (mr *MockPolicyChecksMockRecorder) Override(ctx, policyCheckID interface{})
 }
 
 // Read mocks base method.
-func (m *MockPolicyChecks) Read(ctx context.Context, policyCheckID string) (*PolicyCheck, error) {
+func (m *MockPolicyChecks) Read(ctx context.Context, policyCheckID string) (*tfe.PolicyCheck, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Read", ctx, policyCheckID)
-	ret0, _ := ret[0].(*PolicyCheck)
+	ret0, _ := ret[0].(*tfe.PolicyCheck)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }

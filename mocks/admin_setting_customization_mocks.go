@@ -9,6 +9,7 @@ import (
 	reflect "reflect"
 
 	gomock "github.com/golang/mock/gomock"
+	tfe "github.com/hashicorp/go-tfe"
 )
 
 // MockCustomizationSettings is a mock of CustomizationSettings interface.
@@ -35,10 +36,10 @@ func (m *MockCustomizationSettings) EXPECT() *MockCustomizationSettingsMockRecor
 }
 
 // Read mocks base method.
-func (m *MockCustomizationSettings) Read(ctx context.Context) (*AdminCustomizationSetting, error) {
+func (m *MockCustomizationSettings) Read(ctx context.Context) (*tfe.AdminCustomizationSetting, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Read", ctx)
-	ret0, _ := ret[0].(*AdminCustomizationSetting)
+	ret0, _ := ret[0].(*tfe.AdminCustomizationSetting)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -50,10 +51,10 @@ func (mr *MockCustomizationSettingsMockRecorder) Read(ctx interface{}) *gomock.C
 }
 
 // Update mocks base method.
-func (m *MockCustomizationSettings) Update(ctx context.Context, options AdminCustomizationSettingsUpdateOptions) (*AdminCustomizationSetting, error) {
+func (m *MockCustomizationSettings) Update(ctx context.Context, options tfe.AdminCustomizationSettingsUpdateOptions) (*tfe.AdminCustomizationSetting, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Update", ctx, options)
-	ret0, _ := ret[0].(*AdminCustomizationSetting)
+	ret0, _ := ret[0].(*tfe.AdminCustomizationSetting)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
