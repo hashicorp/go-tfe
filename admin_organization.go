@@ -37,7 +37,7 @@ type AdminOrganization struct {
 	Name                             string `jsonapi:"primary,organizations"`
 	AccessBetaTools                  bool   `jsonapi:"attr,access-beta-tools"`
 	ExternalID                       string `jsonapi:"attr,external-id"`
-	GlobalModuleSharing              bool   `jsonapi:"attr,global-module-sharing"`
+	GlobalModuleSharing              *bool  `jsonapi:"attr,global-module-sharing"`
 	IsDisabled                       bool   `jsonapi:"attr,is-disabled"`
 	NotificationEmail                string `jsonapi:"attr,notification-email"`
 	SsoEnabled                       bool   `jsonapi:"attr,sso-enabled"`
