@@ -165,7 +165,9 @@ type RunListOptions struct {
 	Include *string `url:"include"`
 }
 
-// RunVariable represents a variable that can be applied to a run
+// RunVariable represents a variable that can be applied to a run. All values must be expressed as an HCL literal
+// in the same syntax you would use when writing terraform code. See https://www.terraform.io/docs/language/expressions/types.html#types
+// for more details.
 type RunVariable struct {
 	Key   string `jsonapi:"attr,key"`
 	Value string `jsonapi:"attr,value"`
