@@ -101,8 +101,8 @@ func (s *users) Update(ctx context.Context, options UserUpdateOptions) (*User, e
 	return u, nil
 }
 
-func (s *users) FetchById(ctx context.Context, userId string) (*User, error) {
-	req, err := s.client.newRequest("GET", "users/"+userId, nil)
+func (s *users) FetchByID(ctx context.Context, userID string) (*User, error) {
+	req, err := s.client.newRequest("GET", "users/"+userID, nil)
 	if err != nil {
 		return nil, err
 	}
