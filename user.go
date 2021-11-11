@@ -17,6 +17,8 @@ type Users interface {
 
 	// Update attributes of the currently authenticated user.
 	Update(ctx context.Context, options UserUpdateOptions) (*User, error)
+
+	FetchById(ctx context.Context, userId string) (*User, error)
 }
 
 // users implements Users.
@@ -26,14 +28,15 @@ type users struct {
 
 // User represents a Terraform Enterprise user.
 type User struct {
-	ID               string     `jsonapi:"primary,users"`
-	AvatarURL        string     `jsonapi:"attr,avatar-url"`
-	Email            string     `jsonapi:"attr,email"`
-	IsServiceAccount bool       `jsonapi:"attr,is-service-account"`
-	TwoFactor        *TwoFactor `jsonapi:"attr,two-factor"`
-	UnconfirmedEmail string     `jsonapi:"attr,unconfirmed-email"`
-	Username         string     `jsonapi:"attr,username"`
-	V2Only           bool       `jsonapi:"attr,v2-only"`
+	ID               string       `jsonapi:"primary,users"`
+	AvatarURL        string       `jsonapi:"attr,avatar-url"`
+	Email            string       `jsonapi:"attr,email"`
+	IsServiceAccount bool         `jsonapi:"attr,is-service-account"`
+	TwoFactor        *TwoFactor   `jsonapi:"attr,two-factor"`
+	Permissions      *Permissions `jsonapi:"attr,permissions"`
+	UnconfirmedEmail string       `jsonapi:"attr,unconfirmed-email"`
+	Username         string       `jsonapi:"attr,username"`
+	V2Only           bool         `jsonapi:"attr,v2-only"`
 
 	// Relations
 	// AuthenticationTokens *AuthenticationTokens `jsonapi:"relation,authentication-tokens"`
@@ -43,6 +46,12 @@ type User struct {
 type TwoFactor struct {
 	Enabled  bool `jsonapi:"attr,enabled"`
 	Verified bool `jsonapi:"attr,verified"`
+}
+
+type Permissions struct {
+	CanCreateOrganizations bool `jsonapi:"attr,can-create-organizations"`
+	CanChangeEmail         bool `jsonapi:"attr,can-change-email"`
+	CanChangeUsername      bool `jsonapi:"attr,can-change-username"`
 }
 
 // ReadCurrent reads the details of the currently authenticated user.
@@ -79,6 +88,21 @@ type UserUpdateOptions struct {
 // Update attributes of the currently authenticated user.
 func (s *users) Update(ctx context.Context, options UserUpdateOptions) (*User, error) {
 	req, err := s.client.newRequest("PATCH", "account/update", &options)
+	if err != nil {
+		return nil, err
+	}
+
+	u := &User{}
+	err = s.client.do(ctx, req, u)
+	if err != nil {
+		return nil, err
+	}
+
+	return u, nil
+}
+
+func (s *users) FetchById(ctx context.Context, userId string) (*User, error) {
+	req, err := s.client.newRequest("GET", "users/"+userId, nil)
 	if err != nil {
 		return nil, err
 	}

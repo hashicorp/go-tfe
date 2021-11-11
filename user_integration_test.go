@@ -93,3 +93,21 @@ func TestUsersUpdate(t *testing.T) {
 		assert.Error(t, err)
 	})
 }
+
+// This test is included in case you wish to run it during a review. Due to
+// the trivial nature of this test, I'll remove it once the PR has been approved
+func TestUsersFetchById(t *testing.T) {
+	client := testClient(t)
+	ctx := context.Background()
+
+	// include user id here
+	u, err := client.Users.FetchById(ctx, "")
+	assert.NoError(t, err)
+	assert.NotEmpty(t, u.ID)
+	assert.NotEmpty(t, u.AvatarURL)
+	assert.NotEmpty(t, u.Username)
+
+	t.Run("permissions are decoded", func(t *testing.T) {
+		assert.NotNil(t, u.Permissions)
+	})
+}
