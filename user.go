@@ -18,7 +18,7 @@ type Users interface {
 	// Update attributes of the currently authenticated user.
 	Update(ctx context.Context, options UserUpdateOptions) (*User, error)
 
-	FetchById(ctx context.Context, userId string) (*User, error)
+	FetchByID(ctx context.Context, userId string) (*User, error)
 }
 
 // users implements Users.
