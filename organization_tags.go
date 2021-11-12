@@ -10,10 +10,13 @@ import (
 var _ OrganizationTags = (*organizationTags)(nil)
 
 type OrganizationTags interface {
+	// List all tags within an organization
 	List(ctx context.Context, organization string, options OrganizationTagsListOptions) (*OrganizationTagsList, error)
 
+	// Delete tags from an organization
 	Delete(ctx context.Context, organization string, options OrganizationTagsDeleteOptions) error
 
+	// Associate an organization's workspace with a tag
 	AddWorkspaces(ctx context.Context, tag string, options AddWorkspacesToTagOptions) error
 }
 
@@ -21,28 +24,32 @@ type organizationTags struct {
 	client *Client
 }
 
+// OrganizationTagsList represents a list of organization tags
 type OrganizationTagsList struct {
 	*Pagination
 	Items []*OrganizationTag
 }
 
+// OrganizationTag represents a Terraform Enterprise Organization tag
 type OrganizationTag struct {
-	ID            string `jsonapi:"primary,tags"`
-	Name          string `jsonapi:"attr,name,omitempty"`
-	InstanceCount string `jsonapi:"attr,instance_count,omitempty"`
+	ID   string `jsonapi:"primary,tags"`
+	Name string `jsonapi:"attr,name,omitempty"`
 
-	// Relations
+	// Number of workspaces that have this tag
+	InstanceCount int `jsonapi:"attr,instance-count,omitempty"`
+
+	// The org this tag belongs to
 	Organization *Organization `jsonapi:"relation,organization"`
 }
 
+// OrganizationTagsListOptions represents the options for listing organization tags
 type OrganizationTagsListOptions struct {
 	ListOptions
 
-	FilterExclude  *string `url:"filter[exclude],omitempty"`
-	FilterTaggable *string `url:"filter[taggable],omitempty"`
-	FilterId       *string `url:"filter[id],omitempty"`
+	Filter *string `url:"filter[exclude][taggable][id],omitempty"`
 }
 
+// List all the tags in an organization. You can provide query params through OrganizationTagsListOptions
 func (s *organizationTags) List(ctx context.Context, organization string, options OrganizationTagsListOptions) (*OrganizationTagsList, error) {
 	if !validStringID(&organization) {
 		return nil, ErrInvalidOrg
@@ -60,17 +67,17 @@ func (s *organizationTags) List(ctx context.Context, organization string, option
 		return nil, err
 	}
 
-	fmt.Println(tags.Items[0])
-
 	return tags, nil
 }
 
+// OrganizationTagsDeleteOptions represents the request body for deleting a tag in an organization
 type OrganizationTagsDeleteOptions struct {
 	IDs []string
 }
 
+// this represents a single tag ID sent over the wire
 type tagID struct {
-	ID string `jsonapi:primary,tag`
+	ID string `jsonapi:"primary,tags"`
 }
 
 func (opts *OrganizationTagsDeleteOptions) valid() error {
@@ -88,6 +95,7 @@ func (opts *OrganizationTagsDeleteOptions) valid() error {
 	return nil
 }
 
+// Delete tags from a Terraform Enterprise organization
 func (s *organizationTags) Delete(ctx context.Context, organization string, options OrganizationTagsDeleteOptions) error {
 	if !validStringID(&organization) {
 		return ErrInvalidOrg
@@ -111,6 +119,7 @@ func (s *organizationTags) Delete(ctx context.Context, organization string, opti
 	return s.client.do(ctx, req, nil)
 }
 
+// AddWorkspacesToTagOptions represents the request body to add a workspace to a tag
 type AddWorkspacesToTagOptions struct {
 	WorkspaceIDs []string
 }
@@ -130,10 +139,12 @@ func (w *AddWorkspacesToTagOptions) valid() error {
 	return nil
 }
 
+// this represents how workspace IDs will be sent over the wire
 type workspaceID struct {
-	Id string `jsonapi:primary,workspaces`
+	ID string `jsonapi:"primary,workspaces"`
 }
 
+// Add workspaces to a tag
 func (s *organizationTags) AddWorkspaces(ctx context.Context, tag string, options AddWorkspacesToTagOptions) error {
 	if !validStringID(&tag) {
 		return errors.New("invalid tag id")
@@ -143,12 +154,12 @@ func (s *organizationTags) AddWorkspaces(ctx context.Context, tag string, option
 		return err
 	}
 
-	u := fmt.Sprintf("tags/%s/relationships/workspaces", url.QueryEscape(tag))
 	var workspaces []*workspaceID
 	for _, id := range options.WorkspaceIDs {
-		workspaces = append(workspaces, &workspaceID{Id: id})
+		workspaces = append(workspaces, &workspaceID{ID: id})
 	}
 
+	u := fmt.Sprintf("tags/%s/relationships/workspaces", url.QueryEscape(tag))
 	req, err := s.client.newRequest("POST", u, workspaces)
 	if err != nil {
 		return err
