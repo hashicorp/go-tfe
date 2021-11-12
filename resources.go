@@ -28,8 +28,8 @@ type Resource struct {
 	ID                       string `jsonapi:"primary,resources"`
 	Address                  string `jsonapi:"attr,address"`
 	Name                     string `jsonapi:"attr,name"`
-	CreatedAt                string `jsonapi:"attr,created-at"`
-	UpdatedAt                string `jsonapi:"attr,updated-at"`
+	CreatedAt                string `jsonapi:"attr,created-at,iso8601"`
+	UpdatedAt                string `jsonapi:"attr,updated-at,iso8601"`
 	Module                   string `jsonapi:"attr,module"`
 	Provider                 string `jsonapi:"attr,provider"`
 	ProviderType             string `jsonapi:"attr,provider-type"`
@@ -40,7 +40,6 @@ type Resource struct {
 // ResourceListOptions represents the options for listing resources.
 type ResourceListOptions struct {
 	ListOptions
-	WorkspaceID *string `url:"workspace_id,omitempty"`
 }
 
 // List all the resources within a workspace
@@ -48,7 +47,6 @@ func (s *resources) List(ctx context.Context, workspaceID string, options Resour
 	if !validStringID(&workspaceID) {
 		return nil, ErrInvalidWorkspaceID
 	}
-	options.WorkspaceID = &workspaceID
 	u := fmt.Sprintf("workspaces/%s/resources", workspaceID)
 	req, err := s.client.newRequest("GET", u, &options)
 	if err != nil {

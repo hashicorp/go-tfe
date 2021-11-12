@@ -268,7 +268,7 @@ func NewClient(cfg *Config) (*Client, error) {
 	client.UserTokens = &userTokens{client: client}
 	client.Variables = &variables{client: client}
 	client.Workspaces = &workspaces{client: client}
-	client.Resources = &resources{client}
+	client.Resources = &resources{client: client}
 
 	client.Meta = Meta{
 		IPRanges: &ipRanges{client: client},
