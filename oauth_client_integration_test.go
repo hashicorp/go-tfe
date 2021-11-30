@@ -168,6 +168,35 @@ func TestOAuthClientsCreate(t *testing.T) {
 	})
 }
 
+func TestOAuthClientsCreate_rsaKeyPair(t *testing.T) {
+	client := testClient(t)
+	ctx := context.Background()
+
+	orgTest, orgTestCleanup := createOrganization(t, client)
+	defer orgTestCleanup()
+
+	t.Run("with key, rsa public/private key options", func(t *testing.T) {
+		key := randomString(t)
+		options := OAuthClientCreateOptions{
+			APIURL:          String("https://bbs.com"),
+			HTTPURL:         String("https://bbs.com"),
+			ServiceProvider: ServiceProvider(ServiceProviderBitbucketServer),
+			Key:             String(key),
+			Secret:          String(privateKey),
+			RSAPublicKey:    String(publicKey),
+		}
+
+		oc, err := client.OAuthClients.Create(ctx, orgTest.Name, options)
+		assert.NoError(t, err)
+		assert.NotEmpty(t, oc.ID)
+		assert.Equal(t, "https://bbs.com", oc.APIURL)
+		assert.Equal(t, "https://bbs.com", oc.HTTPURL)
+		assert.Equal(t, ServiceProviderBitbucketServer, oc.ServiceProvider)
+		assert.Equal(t, publicKey, oc.RSAPublicKey)
+		assert.Equal(t, key, oc.Key)
+	})
+}
+
 func TestOAuthClientsRead(t *testing.T) {
 	client := testClient(t)
 	ctx := context.Background()
@@ -336,5 +365,74 @@ func TestOAuthClientsCreateOptionsValid(t *testing.T) {
 
 		err := options.valid()
 		assert.Nil(t, err)
+	})
+}
+
+const publicKey = `
+-----BEGIN PUBLIC KEY-----
+MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAoKizy4xbN6qZFAwIJV24
+-----END PUBLIC KEY-----
+`
+
+const privateKey = `
+-----BEGIN RSA PRIVATE KEY-----
+MIIEpAIBAAKCAQEAoKizy4xbN6qZFAwIJV24liz/vYBSvR3SjEiUzhpp0uMAmICN
+-----END RSA PRIVATE KEY-----
+`
+
+func TestOAuthClientsUpdate_rsaKeyPair(t *testing.T) {
+	client := testClient(t)
+	ctx := context.Background()
+
+	orgTest, orgTestCleanup := createOrganization(t, client)
+	defer orgTestCleanup()
+
+	t.Run("updates a new key", func(t *testing.T) {
+		originalKey := randomString(t)
+		options := OAuthClientCreateOptions{
+			APIURL:          String("https://bbs.com"),
+			HTTPURL:         String("https://bbs.com"),
+			ServiceProvider: ServiceProvider(ServiceProviderBitbucketServer),
+			Key:             String(originalKey),
+			Secret:          String(privateKey),
+			RSAPublicKey:    String(publicKey),
+		}
+
+		origOC, err := client.OAuthClients.Create(ctx, orgTest.Name, options)
+		assert.NoError(t, err)
+		assert.NotEmpty(t, origOC.ID)
+
+		newKey := randomString(t)
+		updateOpts := OAuthClientUpdateOptions{
+			Key: String(newKey),
+		}
+		oc, err := client.OAuthClients.Update(ctx, origOC.ID, updateOpts)
+		assert.NoError(t, err)
+		assert.NotEmpty(t, oc.ID)
+		assert.Equal(t, ServiceProviderBitbucketServer, oc.ServiceProvider)
+		assert.Equal(t, oc.RSAPublicKey, origOC.RSAPublicKey)
+		assert.Equal(t, newKey, oc.Key)
+	})
+
+	t.Run("errors when missing key", func(t *testing.T) {
+		originalKey := randomString(t)
+		options := OAuthClientCreateOptions{
+			APIURL:          String("https://bbs.com"),
+			HTTPURL:         String("https://bbs.com"),
+			ServiceProvider: ServiceProvider(ServiceProviderBitbucketServer),
+			Key:             String(originalKey),
+			Secret:          String(privateKey),
+			RSAPublicKey:    String(publicKey),
+		}
+
+		origOC, err := client.OAuthClients.Create(ctx, orgTest.Name, options)
+		assert.NoError(t, err)
+		assert.NotEmpty(t, origOC.ID)
+
+		updateOpts := OAuthClientUpdateOptions{
+			Key: String(""),
+		}
+		_, err = client.OAuthClients.Update(ctx, origOC.ID, updateOpts)
+		assert.Error(t, err, "The Consumer Key for BitBucket Server must be present. Please add a value for `key`.")
 	})
 }
