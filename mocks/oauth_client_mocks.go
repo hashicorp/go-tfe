@@ -93,3 +93,18 @@ func (mr *MockOAuthClientsMockRecorder) Read(ctx, oAuthClientID interface{}) *go
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Read", reflect.TypeOf((*MockOAuthClients)(nil).Read), ctx, oAuthClientID)
 }
+
+// Update mocks base method.
+func (m *MockOAuthClients) Update(ctx context.Context, oAuthClientID string, options tfe.OAuthClientUpdateOptions) (*tfe.OAuthClient, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Update", ctx, oAuthClientID, options)
+	ret0, _ := ret[0].(*tfe.OAuthClient)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// Update indicates an expected call of Update.
+func (mr *MockOAuthClientsMockRecorder) Update(ctx, oAuthClientID, options interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Update", reflect.TypeOf((*MockOAuthClients)(nil).Update), ctx, oAuthClientID, options)
+}
