@@ -47,3 +47,18 @@ func TestTaskStagesRead(t *testing.T) {
 		})
 	})
 }
+
+func TestTaskStagesList(t *testing.T) {
+	client := testClient(t)
+	ctx := context.Background()
+
+	runID := "run-TRdorPvcxENJ5t52"
+
+	t.Run("with no params", func(t *testing.T) {
+		taskStageList, err := client.TaskStages.List(ctx, runID, nil)
+		require.NoError(t, err)
+
+		assert.NotNil(t, taskStageList.Items)
+		assert.NotEmpty(t, taskStageList.Items[0].ID)
+	})
+}
