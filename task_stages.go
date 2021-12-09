@@ -8,6 +8,8 @@ import (
 
 type TaskStages interface {
 	Read(ctx context.Context, taskStageID string, options *TaskStageReadOptions) (*TaskStage, error)
+
+	List(ctx context.Context, runID string, options *TaskStageListOptions) (*TaskStageList, error)
 }
 
 type taskStages struct {
@@ -23,6 +25,11 @@ type TaskStage struct {
 
 	Run         *Run          `jsonapi:"relation,run"`
 	TaskResults []*TaskResult `jsonapi:"relation,task-results"`
+}
+
+type TaskStageList struct {
+	*Pagination
+	Items []*TaskStage
 }
 
 type RunTaskStatusTimestamp struct {
@@ -52,6 +59,31 @@ func (s *taskStages) Read(ctx context.Context, taskStageID string, options *Task
 	}
 
 	return t, nil
+}
+
+type TaskStageListOptions struct {
+	ListOptions
+}
+
+func (s *taskStages) List(ctx context.Context, runID string, options *TaskStageListOptions) (*TaskStageList, error) {
+	if !validStringID(&runID) {
+		return nil, ErrInvalidRunID
+	}
+
+	u := fmt.Sprintf("runs/%s/task-stages", runID)
+	req, err := s.client.newRequest("GET", u, &options)
+	if err != nil {
+		return nil, err
+	}
+
+	tlist := &TaskStageList{}
+
+	err = s.client.do(ctx, req, tlist)
+	if err != nil {
+		return nil, err
+	}
+
+	return tlist, nil
 }
 
 type TaskResultStatus string
