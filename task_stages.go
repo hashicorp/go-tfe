@@ -87,10 +87,15 @@ func (s *taskStages) List(ctx context.Context, runID string, options *TaskStageL
 }
 
 type TaskResultStatus string
+type TaskEnforcementLevel string
 
 const (
-	Passed TaskResultStatus = "passed"
-	Failed TaskResultStatus = "failed"
+	TaskPassed      TaskResultStatus     = "passed"
+	TaskFailed      TaskResultStatus     = "failed"
+	TaskPending     TaskResultStatus     = "pending"
+	TaskUnreachable TaskResultStatus     = "unreachable"
+	Advisory        TaskEnforcementLevel = "advisory"
+	Mandatory       TaskEnforcementLevel = "mandatory"
 )
 
 type TaskResult struct {
@@ -105,7 +110,7 @@ type TaskResult struct {
 	TaskName                      string                 `jsonapi:"attr,task-name"`
 	TaskUrl                       string                 `jsonapi:"attr,task-url"`
 	WorkspaceTaskID               string                 `jsonapi:"attr,workspace-task-id"`
-	WorkspaceTaskEnforcementLevel string                 `jsonapi:"attr,workspace-task-enforcement-level"`
+	WorkspaceTaskEnforcementLevel TaskEnforcementLevel   `jsonapi:"attr,workspace-task-enforcement-level"`
 
 	TaskStage *TaskStage `jsonapi:"relation,task_stage"`
 }
