@@ -146,6 +146,42 @@ func TestAdminOrganizations_Delete(t *testing.T) {
 	})
 }
 
+func TestAdminOrganizations_ModuleConsumers(t *testing.T) {
+	skipIfCloud(t)
+
+	client := testClient(t)
+	ctx := context.Background()
+
+	t.Run("can list and update module consumers", func(t *testing.T) {
+		org1, org1TestCleanup := createOrganization(t, client)
+		defer org1TestCleanup()
+
+		org2, org2TestCleanup := createOrganization(t, client)
+		defer org2TestCleanup()
+
+		err := client.Admin.Organizations.UpdateModuleConsumers(ctx, org1.Name, []string{org2.Name})
+		assert.NoError(t, err)
+
+		adminModuleConsumerList, err := client.Admin.Organizations.ListModuleConsumers(ctx, org1.Name, AdminOrganizationListModuleConsumersOptions{})
+		require.NoError(t, err)
+
+		assert.Equal(t, len(adminModuleConsumerList.Items), 1)
+		assert.Equal(t, adminModuleConsumerList.Items[0].Name, org2.Name)
+
+		org3, org3TestCleanup := createOrganization(t, client)
+		defer org3TestCleanup()
+
+		err = client.Admin.Organizations.UpdateModuleConsumers(ctx, org1.Name, []string{org3.Name})
+		assert.NoError(t, err)
+
+		adminModuleConsumerList, err = client.Admin.Organizations.ListModuleConsumers(ctx, org1.Name, AdminOrganizationListModuleConsumersOptions{})
+		require.NoError(t, err)
+
+		assert.Equal(t, len(adminModuleConsumerList.Items), 1)
+		assert.Equal(t, adminModuleConsumerList.Items[0].Name, org3.Name)
+	})
+}
+
 func TestAdminOrganizations_Update(t *testing.T) {
 	skipIfCloud(t)
 
