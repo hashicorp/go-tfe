@@ -64,6 +64,21 @@ func (mr *MockAdminOrganizationsMockRecorder) List(ctx, options interface{}) *go
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "List", reflect.TypeOf((*MockAdminOrganizations)(nil).List), ctx, options)
 }
 
+// ListModuleConsumers mocks base method.
+func (m *MockAdminOrganizations) ListModuleConsumers(ctx context.Context, organization string, options tfe.AdminOrganizationListModuleConsumersOptions) (*tfe.AdminOrganizationList, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "ListModuleConsumers", ctx, organization, options)
+	ret0, _ := ret[0].(*tfe.AdminOrganizationList)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// ListModuleConsumers indicates an expected call of ListModuleConsumers.
+func (mr *MockAdminOrganizationsMockRecorder) ListModuleConsumers(ctx, organization, options interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListModuleConsumers", reflect.TypeOf((*MockAdminOrganizations)(nil).ListModuleConsumers), ctx, organization, options)
+}
+
 // Read mocks base method.
 func (m *MockAdminOrganizations) Read(ctx context.Context, organization string) (*tfe.AdminOrganization, error) {
 	m.ctrl.T.Helper()
@@ -92,4 +107,18 @@ func (m *MockAdminOrganizations) Update(ctx context.Context, organization string
 func (mr *MockAdminOrganizationsMockRecorder) Update(ctx, organization, options interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Update", reflect.TypeOf((*MockAdminOrganizations)(nil).Update), ctx, organization, options)
+}
+
+// UpdateModuleConsumers mocks base method.
+func (m *MockAdminOrganizations) UpdateModuleConsumers(ctx context.Context, organization string, consumerOrganizations []string) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "UpdateModuleConsumers", ctx, organization, consumerOrganizations)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// UpdateModuleConsumers indicates an expected call of UpdateModuleConsumers.
+func (mr *MockAdminOrganizationsMockRecorder) UpdateModuleConsumers(ctx, organization, consumerOrganizations interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdateModuleConsumers", reflect.TypeOf((*MockAdminOrganizations)(nil).UpdateModuleConsumers), ctx, organization, consumerOrganizations)
 }
