@@ -179,6 +179,9 @@ func (s *adminOrganizations) UpdateModuleConsumers(ctx context.Context, organiza
 
 	var organizations []*AdminOrganizationID
 	for _, id := range consumerOrganizationIDs {
+		if !validStringID(&id) {
+			return ErrInvalidOrg
+		}
 		organizations = append(organizations, &AdminOrganizationID{ID: id})
 	}
 

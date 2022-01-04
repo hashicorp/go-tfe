@@ -152,6 +152,14 @@ func TestAdminOrganizations_ModuleConsumers(t *testing.T) {
 	client := testClient(t)
 	ctx := context.Background()
 
+	t.Run("returns error if invalid org string is used", func(t *testing.T) {
+		org1, org1TestCleanup := createOrganization(t, client)
+		defer org1TestCleanup()
+
+		err := client.Admin.Organizations.UpdateModuleConsumers(ctx, org1.Name, []string{"1Hello!"})
+		assert.EqualError(t, err, ErrInvalidOrg.Error())
+	})
+
 	t.Run("can list and update module consumers", func(t *testing.T) {
 		org1, org1TestCleanup := createOrganization(t, client)
 		defer org1TestCleanup()
