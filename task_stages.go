@@ -103,12 +103,12 @@ type TaskResult struct {
 	Status                        TaskResultStatus       `jsonapi:"attr,status"`
 	Message                       string                 `jsonapi:"attr,message"`
 	StatusTimestamps              RunTaskStatusTimestamp `jsonapi:"attr,status-timestamps"`
-	Url                           string                 `jsonapi:"attr,url"`
+	URL                           string                 `jsonapi:"attr,url"`
 	CreatedAt                     time.Time              `jsonapi:"attr,created-at,iso8601"`
 	UpdatedAt                     time.Time              `jsonapi:"attr,updated-at,iso8601"`
 	TaskID                        string                 `jsonapi:"attr,task-id"`
 	TaskName                      string                 `jsonapi:"attr,task-name"`
-	TaskUrl                       string                 `jsonapi:"attr,task-url"`
+	TaskURL                       string                 `jsonapi:"attr,task-url"`
 	WorkspaceTaskID               string                 `jsonapi:"attr,workspace-task-id"`
 	WorkspaceTaskEnforcementLevel TaskEnforcementLevel   `jsonapi:"attr,workspace-task-enforcement-level"`
 
