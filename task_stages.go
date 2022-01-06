@@ -17,11 +17,11 @@ type taskStages struct {
 }
 
 type TaskStage struct {
-	ID               string                 `jsonapi:"primary,task-stages"`
-	Stage            string                 `jsonapi:"attr,stage"`
-	StatusTimestamps RunTaskStatusTimestamp `jsonapi:"attr,status-timestamps"`
-	CreatedAt        time.Time              `jsonapi:"attr,created-at,iso8601"`
-	UpdatedAt        time.Time              `jsonapi:"attr,updated-at,iso8601"`
+	ID               string                  `jsonapi:"primary,task-stages"`
+	Stage            string                  `jsonapi:"attr,stage"`
+	StatusTimestamps RunTaskStatusTimestamps `jsonapi:"attr,status-timestamps"`
+	CreatedAt        time.Time               `jsonapi:"attr,created-at,iso8601"`
+	UpdatedAt        time.Time               `jsonapi:"attr,updated-at,iso8601"`
 
 	Run         *Run          `jsonapi:"relation,run"`
 	TaskResults []*TaskResult `jsonapi:"relation,task-results"`
@@ -32,7 +32,7 @@ type TaskStageList struct {
 	Items []*TaskStage
 }
 
-type RunTaskStatusTimestamp struct {
+type RunTaskStatusTimestamps struct {
 	ErroredAt time.Time `jsonapi:"attr,errored-at,rfc3339"`
 	RunningAt time.Time `jsonapi:"attr,running-at,rfc3339"`
 }
@@ -92,6 +92,7 @@ type TaskEnforcementLevel string
 const (
 	TaskPassed      TaskResultStatus     = "passed"
 	TaskFailed      TaskResultStatus     = "failed"
+	TaskRunning     TaskResultStatus     = "running"
 	TaskPending     TaskResultStatus     = "pending"
 	TaskUnreachable TaskResultStatus     = "unreachable"
 	Advisory        TaskEnforcementLevel = "advisory"
@@ -99,18 +100,18 @@ const (
 )
 
 type TaskResult struct {
-	ID                            string                 `jsonapi:"primary,task-results"`
-	Status                        TaskResultStatus       `jsonapi:"attr,status"`
-	Message                       string                 `jsonapi:"attr,message"`
-	StatusTimestamps              RunTaskStatusTimestamp `jsonapi:"attr,status-timestamps"`
-	URL                           string                 `jsonapi:"attr,url"`
-	CreatedAt                     time.Time              `jsonapi:"attr,created-at,iso8601"`
-	UpdatedAt                     time.Time              `jsonapi:"attr,updated-at,iso8601"`
-	TaskID                        string                 `jsonapi:"attr,task-id"`
-	TaskName                      string                 `jsonapi:"attr,task-name"`
-	TaskURL                       string                 `jsonapi:"attr,task-url"`
-	WorkspaceTaskID               string                 `jsonapi:"attr,workspace-task-id"`
-	WorkspaceTaskEnforcementLevel TaskEnforcementLevel   `jsonapi:"attr,workspace-task-enforcement-level"`
+	ID                            string                  `jsonapi:"primary,task-results"`
+	Status                        TaskResultStatus        `jsonapi:"attr,status"`
+	Message                       string                  `jsonapi:"attr,message"`
+	StatusTimestamps              RunTaskStatusTimestamps `jsonapi:"attr,status-timestamps"`
+	URL                           string                  `jsonapi:"attr,url"`
+	CreatedAt                     time.Time               `jsonapi:"attr,created-at,iso8601"`
+	UpdatedAt                     time.Time               `jsonapi:"attr,updated-at,iso8601"`
+	TaskID                        string                  `jsonapi:"attr,task-id"`
+	TaskName                      string                  `jsonapi:"attr,task-name"`
+	TaskURL                       string                  `jsonapi:"attr,task-url"`
+	WorkspaceTaskID               string                  `jsonapi:"attr,workspace-task-id"`
+	WorkspaceTaskEnforcementLevel TaskEnforcementLevel    `jsonapi:"attr,workspace-task-enforcement-level"`
 
 	TaskStage *TaskStage `jsonapi:"relation,task_stage"`
 }
