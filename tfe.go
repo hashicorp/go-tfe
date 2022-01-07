@@ -135,6 +135,7 @@ type Client struct {
 	UserTokens                 UserTokens
 	Variables                  Variables
 	Workspaces                 Workspaces
+	WorkspaceRunTasks          WorkspaceRunTasks
 
 	Meta Meta
 }
@@ -260,6 +261,7 @@ func NewClient(cfg *Config) (*Client, error) {
 	client.PolicySets = &policySets{client: client}
 	client.RegistryModules = &registryModules{client: client}
 	client.Runs = &runs{client: client}
+	client.RunTasks = &runTasks{client: client}
 	client.RunTriggers = &runTriggers{client: client}
 	client.SSHKeys = &sshKeys{client: client}
 	client.StateVersionOutputs = &stateVersionOutputs{client: client}
@@ -273,6 +275,7 @@ func NewClient(cfg *Config) (*Client, error) {
 	client.UserTokens = &userTokens{client: client}
 	client.Variables = &variables{client: client}
 	client.Workspaces = &workspaces{client: client}
+	client.WorkspaceRunTasks = &workspaceRunTasks{client: client}
 
 	client.Meta = Meta{
 		IPRanges: &ipRanges{client: client},

@@ -11,7 +11,7 @@ var _ RunTasks = (*runTasks)(nil)
 type RunTasks interface {
 	Create(ctx context.Context, organization string, options RunTaskCreateOptions) (*RunTask, error)
 
-	List(ctx context.Context, organization string, options RunTaskListOptions) (*RunTaskList, error)
+	List(ctx context.Context, organization string, options *RunTaskListOptions) (*RunTaskList, error)
 
 	Read(ctx context.Context, runTaskID string) (*RunTask, error)
 
@@ -27,13 +27,14 @@ type runTasks struct {
 }
 
 type RunTask struct {
-	ID       string `jsonapi:"primary,tasks"`
-	Name     string `jsonapi:"attr,name"`
-	URL      string `jsonapi:"attr,url"`
-	Category string `jsonapi:"attr,category"`
-	HmacKey  string `jsonapi:"attr,hmac-key,omitempty"`
+	ID       string  `jsonapi:"primary,tasks"`
+	Name     string  `jsonapi:"attr,name"`
+	URL      string  `jsonapi:"attr,url"`
+	Category string  `jsonapi:"attr,category"`
+	HmacKey  *string `jsonapi:"attr,hmac-key,omitempty"`
 
-	Organization *Organization `jsonapi:"relation,organization"`
+	Organization      *Organization       `jsonapi:"relation,organization"`
+	WorkspaceRunTasks []*WorkspaceRunTask `jsonapi:"relation,tasks"`
 }
 
 type RunTaskList struct {
@@ -94,7 +95,7 @@ type RunTaskListOptions struct {
 	ListOptions
 }
 
-func (s *runTasks) List(ctx context.Context, organization string, options RunTaskListOptions) (*RunTaskList, error) {
+func (s *runTasks) List(ctx context.Context, organization string, options *RunTaskListOptions) (*RunTaskList, error) {
 	if !validStringID(&organization) {
 		return nil, ErrInvalidOrg
 	}
@@ -166,7 +167,7 @@ func (o *RunTaskUpdateOptions) valid() error {
 	return nil
 }
 
-func (s *runTasks) Update(ctx context.Context, runTaskID string, options *RunTaskUpdateOptions) (*RunTask, error) {
+func (s *runTasks) Update(ctx context.Context, runTaskID string, options RunTaskUpdateOptions) (*RunTask, error) {
 	if !validStringID(&runTaskID) {
 		return nil, ErrInvalidRunTaskID
 	}
