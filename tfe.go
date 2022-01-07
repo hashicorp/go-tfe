@@ -124,6 +124,7 @@ type Client struct {
 	SSHKeys                    SSHKeys
 	StateVersionOutputs        StateVersionOutputs
 	StateVersions              StateVersions
+	TaskResults                TaskResults
 	TaskStages                 TaskStages
 	Teams                      Teams
 	TeamAccess                 TeamAccesses

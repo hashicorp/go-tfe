@@ -52,6 +52,11 @@ var (
 	// ErrInvalidRunID is returned when the run ID is invalid.
 	ErrInvalidRunID = errors.New("invalid value for run ID")
 
+	// Task Result errrors
+
+	//ErrInvalidTaskResultID is returned when the task result ID is invalid
+	ErrInvalidTaskResultID = errors.New("invalid value for task result ID")
+
 	// Task Stage errors
 
 	//ErrInvalidTaskStageID is returned when the task stage ID is invalid.
