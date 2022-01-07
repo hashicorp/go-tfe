@@ -120,6 +120,7 @@ type Client struct {
 	PolicySets                 PolicySets
 	RegistryModules            RegistryModules
 	Runs                       Runs
+	RunTasks                   RunTasks
 	RunTriggers                RunTriggers
 	SSHKeys                    SSHKeys
 	StateVersionOutputs        StateVersionOutputs

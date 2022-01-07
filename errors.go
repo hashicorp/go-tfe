@@ -52,6 +52,17 @@ var (
 	// ErrInvalidRunID is returned when the run ID is invalid.
 	ErrInvalidRunID = errors.New("invalid value for run ID")
 
+	// Run Task errors
+
+	//ErrInvalidRunTaskCategory is returned when a run task has a category other than "task"
+	ErrInvalidRunTaskCategory = errors.New(`category must be "tasks"`)
+
+	//ErrInvalidRunTaskID is returned when the run task ID is invalid
+	ErrInvalidRunTaskID = errors.New("invalid value for run task ID")
+
+	//ErrInvalidRunTaskURL is returned when the run task URL is invalid
+	ErrInvalidRunTaskURL = errors.New("invalid url for run task URL")
+
 	// Task Result errrors
 
 	//ErrInvalidTaskResultID is returned when the task result ID is invalid
