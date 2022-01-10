@@ -702,6 +702,36 @@ func createRegistryModuleWithVersion(t *testing.T, client *Client, org *Organiza
 	}
 }
 
+func createRunTask(t *testing.T, client *Client, org *Organization) (*RunTask, func()) {
+	var orgCleanup func()
+
+	if org == nil {
+		org, orgCleanup = createOrganization(t, client)
+	}
+
+	ctx := context.Background()
+	r, err := client.RunTasks.Create(ctx, org.Name, RunTaskCreateOptions{
+		Name:     "tst-" + randomString(t),
+		URL:      "http://54.167.177.151/success",
+		Category: "tasks",
+	})
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	return r, func() {
+		if err := client.RunTasks.Delete(ctx, r.ID); err != nil {
+			t.Errorf("Error removing Run Task! WARNING: Run task limit\n"+
+				"may be reached if not deleted! The full error is shown below.\n\n"+
+				"Run Task: %s\nError: %s", r.Name, err)
+		}
+
+		if orgCleanup != nil {
+			orgCleanup()
+		}
+	}
+}
+
 func createSSHKey(t *testing.T, client *Client, org *Organization) (*SSHKey, func()) {
 	var orgCleanup func()
 
@@ -981,6 +1011,52 @@ func createWorkspaceWithVCS(t *testing.T, client *Client, org *Organization, opt
 
 		if ocCleanup != nil {
 			ocCleanup()
+		}
+
+		if orgCleanup != nil {
+			orgCleanup()
+		}
+	}
+}
+
+func createWorkspaceRunTask(t *testing.T, client *Client, workspace *Workspace, runTask *RunTask) (*WorkspaceRunTask, func()) {
+	var organization *Organization
+	var runTaskCleanup func()
+	var workspaceCleanup func()
+	var orgCleanup func()
+
+	if workspace == nil {
+		organization, orgCleanup = createOrganization(t, client)
+		workspace, workspaceCleanup = createWorkspace(t, client, organization)
+	}
+
+	if runTask == nil {
+		runTask, runTaskCleanup = createRunTask(t, client, organization)
+	}
+
+	ctx := context.Background()
+	wr, err := client.WorkspaceRunTasks.Create(ctx, workspace.ID, WorkspaceRunTaskCreateOptions{
+		EnforcementLevel: Advisory,
+		RunTask:          *runTask,
+	})
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	return wr, func() {
+		if err := client.WorkspaceRunTasks.Delete(ctx, workspace.ID, wr.ID); err != nil {
+			t.Errorf("Error destroying workspace run task!\n"+
+				"Workspace: %s\n"+
+				"Workspace Run Task: %s\n"+
+				"Error: %s", workspace.ID, wr.ID, err)
+		}
+
+		if runTaskCleanup != nil {
+			runTaskCleanup()
+		}
+
+		if workspaceCleanup != nil {
+			workspaceCleanup()
 		}
 
 		if orgCleanup != nil {
