@@ -34,7 +34,7 @@ type RunTask struct {
 	HmacKey  *string `jsonapi:"attr,hmac-key,omitempty"`
 
 	Organization      *Organization       `jsonapi:"relation,organization"`
-	WorkspaceRunTasks []*WorkspaceRunTask `jsonapi:"relation,tasks"`
+	WorkspaceRunTasks []*WorkspaceRunTask `jsonapi:"relation,workspace-tasks"`
 }
 
 type RunTaskList struct {
@@ -59,7 +59,7 @@ func (o *RunTaskCreateOptions) valid() error {
 		return ErrInvalidRunTaskURL
 	}
 
-	if o.Category != "tasks" {
+	if o.Category != "task" {
 		return ErrInvalidRunTaskCategory
 	}
 
@@ -152,15 +152,15 @@ type RunTaskUpdateOptions struct {
 }
 
 func (o *RunTaskUpdateOptions) valid() error {
-	if !validString(o.Name) {
+	if o.Name != nil && !validString(o.Name) {
 		return ErrRequiredName
 	}
 
-	if !validString(o.URL) {
+	if o.URL != nil && !validString(o.URL) {
 		return ErrInvalidRunTaskURL
 	}
 
-	if *o.Category != "tasks" {
+	if o.Category != nil && *o.Category != "task" {
 		return ErrInvalidRunTaskCategory
 	}
 
@@ -177,7 +177,7 @@ func (s *runTasks) Update(ctx context.Context, runTaskID string, options RunTask
 	}
 
 	u := fmt.Sprintf("tasks/%s", url.QueryEscape(runTaskID))
-	req, err := s.client.newRequest("PATCH", u, options)
+	req, err := s.client.newRequest("PATCH", u, &options)
 	if err != nil {
 		return nil, err
 	}

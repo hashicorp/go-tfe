@@ -713,7 +713,7 @@ func createRunTask(t *testing.T, client *Client, org *Organization) (*RunTask, f
 	r, err := client.RunTasks.Create(ctx, org.Name, RunTaskCreateOptions{
 		Name:     "tst-" + randomString(t),
 		URL:      "http://54.167.177.151/success",
-		Category: "tasks",
+		Category: "task",
 	})
 	if err != nil {
 		t.Fatal(err)
@@ -1037,7 +1037,7 @@ func createWorkspaceRunTask(t *testing.T, client *Client, workspace *Workspace, 
 	ctx := context.Background()
 	wr, err := client.WorkspaceRunTasks.Create(ctx, workspace.ID, WorkspaceRunTaskCreateOptions{
 		EnforcementLevel: Advisory,
-		RunTask:          *runTask,
+		RunTask:          runTask,
 	})
 	if err != nil {
 		t.Fatal(err)

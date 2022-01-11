@@ -39,8 +39,6 @@ type WorkspaceRunTaskList struct {
 
 type WorkspaceRunTaskListOptions struct {
 	ListOptions
-
-	Include *string `url:"include,omitempty"`
 }
 
 func (s *workspaceRunTasks) List(ctx context.Context, workspaceID string, options *WorkspaceRunTaskListOptions) (*WorkspaceRunTaskList, error) {
@@ -94,16 +92,12 @@ func (s *workspaceRunTasks) Read(ctx context.Context, workspaceID string, worksp
 type WorkspaceRunTaskCreateOptions struct {
 	Type             string               `jsonapi:"primary,workspace-tasks"`
 	EnforcementLevel TaskEnforcementLevel `jsonapi:"attr,enforcement-level"`
-	RunTask          RunTask              `jsoniapi:"relation,tasks"`
+	RunTask          *RunTask             `jsonapi:"relation,task"`
 }
 
 func (o *WorkspaceRunTaskCreateOptions) valid() error {
 	if o.RunTask.ID == "" {
 		return ErrInvalidRunTaskID
-	}
-
-	if o.Type != "workspace-tasks" {
-		return ErrInvalidWorkspaceRunTaskType
 	}
 
 	return nil
@@ -119,13 +113,13 @@ func (s *workspaceRunTasks) Create(ctx context.Context, workspaceID string, opti
 	}
 
 	u := fmt.Sprintf("workspaces/%s/tasks", workspaceID)
-	req, err := s.client.newRequest("POST", u, options)
+	req, err := s.client.newRequest("POST", u, &options)
 	if err != nil {
 		return nil, err
 	}
 
 	wr := &WorkspaceRunTask{}
-	err = s.client.do(ctx, req, &wr)
+	err = s.client.do(ctx, req, wr)
 	if err != nil {
 		return nil, err
 	}
@@ -135,7 +129,7 @@ func (s *workspaceRunTasks) Create(ctx context.Context, workspaceID string, opti
 
 type WorkspaceRunTaskUpdateOptions struct {
 	Type             string               `jsonapi:"primary,workspace-tasks"`
-	EnforcementLevel TaskEnforcementLevel `jsonapi:"attr,enforcement-level"`
+	EnforcementLevel TaskEnforcementLevel `jsonapi:"attr,enforcement-level,omitempty"`
 }
 
 func (s *workspaceRunTasks) Update(ctx context.Context, workspaceID string, workspaceTaskID string, options WorkspaceRunTaskUpdateOptions) (*WorkspaceRunTask, error) {
