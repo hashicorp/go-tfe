@@ -24,11 +24,11 @@ const (
 )
 
 type TaskStage struct {
-	ID               string                  `jsonapi:"primary,task-stages"`
-	Stage            Stage                   `jsonapi:"attr,stage"`
-	StatusTimestamps RunTaskStatusTimestamps `jsonapi:"attr,status-timestamps"`
-	CreatedAt        time.Time               `jsonapi:"attr,created-at,iso8601"`
-	UpdatedAt        time.Time               `jsonapi:"attr,updated-at,iso8601"`
+	ID               string                    `jsonapi:"primary,task-stages"`
+	Stage            Stage                     `jsonapi:"attr,stage"`
+	StatusTimestamps TaskStageStatusTimestamps `jsonapi:"attr,status-timestamps"`
+	CreatedAt        time.Time                 `jsonapi:"attr,created-at,iso8601"`
+	UpdatedAt        time.Time                 `jsonapi:"attr,updated-at,iso8601"`
 
 	Run         *Run          `jsonapi:"relation,run"`
 	TaskResults []*TaskResult `jsonapi:"relation,task-results"`
@@ -39,7 +39,7 @@ type TaskStageList struct {
 	Items []*TaskStage
 }
 
-type RunTaskStatusTimestamps struct {
+type TaskStageStatusTimestamps struct {
 	ErroredAt  time.Time `jsonapi:"attr,errored-at,rfc3339"`
 	RunningAt  time.Time `jsonapi:"attr,running-at,rfc3339"`
 	CanceledAt time.Time `jsonapi:"attr,canceled-at,rfc3339"`

@@ -29,19 +29,27 @@ const (
 	Mandatory       TaskEnforcementLevel = "mandatory"
 )
 
+type TaskResultStatusTimestamps struct {
+	ErroredAt  time.Time `jsonapi:"attr,errored-at,rfc3339"`
+	RunningAt  time.Time `jsonapi:"attr,running-at,rfc3339"`
+	CanceledAt time.Time `jsonapi:"attr,canceled-at,rfc3339"`
+	FailedAt   time.Time `jsonapi:"attr,failed-at,rfc3339"`
+	PassedAt   time.Time `jsonapi:"attr,passed-at,rfc3339"`
+}
+
 type TaskResult struct {
-	ID                            string                  `jsonapi:"primary,task-results"`
-	Status                        TaskResultStatus        `jsonapi:"attr,status"`
-	Message                       string                  `jsonapi:"attr,message"`
-	StatusTimestamps              RunTaskStatusTimestamps `jsonapi:"attr,status-timestamps"`
-	URL                           string                  `jsonapi:"attr,url"`
-	CreatedAt                     time.Time               `jsonapi:"attr,created-at,iso8601"`
-	UpdatedAt                     time.Time               `jsonapi:"attr,updated-at,iso8601"`
-	TaskID                        string                  `jsonapi:"attr,task-id"`
-	TaskName                      string                  `jsonapi:"attr,task-name"`
-	TaskURL                       string                  `jsonapi:"attr,task-url"`
-	WorkspaceTaskID               string                  `jsonapi:"attr,workspace-task-id"`
-	WorkspaceTaskEnforcementLevel TaskEnforcementLevel    `jsonapi:"attr,workspace-task-enforcement-level"`
+	ID                            string                     `jsonapi:"primary,task-results"`
+	Status                        TaskResultStatus           `jsonapi:"attr,status"`
+	Message                       string                     `jsonapi:"attr,message"`
+	StatusTimestamps              TaskResultStatusTimestamps `jsonapi:"attr,status-timestamps"`
+	URL                           string                     `jsonapi:"attr,url"`
+	CreatedAt                     time.Time                  `jsonapi:"attr,created-at,iso8601"`
+	UpdatedAt                     time.Time                  `jsonapi:"attr,updated-at,iso8601"`
+	TaskID                        string                     `jsonapi:"attr,task-id"`
+	TaskName                      string                     `jsonapi:"attr,task-name"`
+	TaskURL                       string                     `jsonapi:"attr,task-url"`
+	WorkspaceTaskID               string                     `jsonapi:"attr,workspace-task-id"`
+	WorkspaceTaskEnforcementLevel TaskEnforcementLevel       `jsonapi:"attr,workspace-task-enforcement-level"`
 
 	TaskStage *TaskStage `jsonapi:"relation,task_stage"`
 }
