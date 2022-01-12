@@ -20,7 +20,6 @@ type Stage string
 
 const (
 	PreApply Stage = "pre_apply"
-	PostPlan Stage = "post_plan"
 )
 
 type TaskStage struct {

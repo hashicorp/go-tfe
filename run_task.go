@@ -20,6 +20,8 @@ type RunTasks interface {
 	Update(ctx context.Context, runTaskID string, options RunTaskUpdateOptions) (*RunTask, error)
 
 	Delete(ctx context.Context, runTaskID string) error
+
+	AttachToWorkspace(ctx context.Context, workspaceID string, runTaskID string, enforcementLevel TaskEnforcementLevel) (*WorkspaceRunTask, error)
 }
 
 type runTasks struct {
@@ -203,4 +205,11 @@ func (s *runTasks) Delete(ctx context.Context, runTaskID string) error {
 	}
 
 	return s.client.do(ctx, req, nil)
+}
+
+func (s *runTasks) AttachToWorkspace(ctx context.Context, workspaceID string, runTaskID string, enforcement TaskEnforcementLevel) (*WorkspaceRunTask, error) {
+	return s.client.WorkspaceRunTasks.Create(ctx, workspaceID, WorkspaceRunTaskCreateOptions{
+		EnforcementLevel: enforcement,
+		RunTask:          &RunTask{ID: runTaskID},
+	})
 }

@@ -159,3 +159,23 @@ func TestRunTasksDelete(t *testing.T) {
 		assert.EqualError(t, err, ErrInvalidRunTaskID.Error())
 	})
 }
+
+func TestRunTasksAttachToWorkspace(t *testing.T) {
+	client := testClient(t)
+	ctx := context.Background()
+
+	orgTest, orgTestCleanup := createOrganization(t, client)
+	defer orgTestCleanup()
+
+	runTaskTest, runTaskTestCleanup := createRunTask(t, client, orgTest)
+	defer runTaskTestCleanup()
+
+	wkspaceTest, wkspaceTestCleanup := createWorkspace(t, client, orgTest)
+	defer wkspaceTestCleanup()
+
+	t.Run("to a valid workspace", func(t *testing.T) {
+		wr, err := client.RunTasks.AttachToWorkspace(ctx, wkspaceTest.ID, runTaskTest.ID, Advisory)
+		require.NoError(t, err)
+		require.NotNil(t, wr.ID)
+	})
+}
