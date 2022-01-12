@@ -19,8 +19,8 @@ type taskStages struct {
 type Stage string
 
 const (
-	PreApply Stage = "pre-apply"
-	PostPlan Stage = "post-plan"
+	PreApply Stage = "pre_apply"
+	PostPlan Stage = "post_plan"
 )
 
 type TaskStage struct {
