@@ -50,6 +50,12 @@ func TestAdminTerraformVersions_List(t *testing.T) {
 			assert.NotNil(t, item.URL)
 			assert.NotNil(t, item.Sha)
 			assert.NotNil(t, item.Official)
+			assert.NotNil(t, item.Deprecated)
+			if item.Deprecated {
+				assert.NotNil(t, item.DeprecatedReason)
+			} else {
+				assert.Nil(t, item.DeprecatedReason)
+			}
 			assert.NotNil(t, item.Enabled)
 			assert.NotNil(t, item.Beta)
 			assert.NotNil(t, item.Usage)
@@ -66,12 +72,14 @@ func TestAdminTerraformVersions_CreateDelete(t *testing.T) {
 
 	t.Run("with valid options", func(t *testing.T) {
 		opts := AdminTerraformVersionCreateOptions{
-			Version:  String("1.1.1"),
-			URL:      String("https://www.hashicorp.com"),
-			Sha:      String(genSha(t, "secret", "data")),
-			Official: Bool(false),
-			Enabled:  Bool(false),
-			Beta:     Bool(false),
+			Version:          String("1.1.100"),
+			URL:              String("https://www.hashicorp.com"),
+			Sha:              String(genSha(t, "secret", "data")),
+			Deprecated:       Bool(true),
+			DeprecatedReason: String("Test Reason"),
+			Official:         Bool(false),
+			Enabled:          Bool(false),
+			Beta:             Bool(false),
 		}
 		tfv, err := client.Admin.TerraformVersions.Create(ctx, opts)
 		require.NoError(t, err)
@@ -85,31 +93,35 @@ func TestAdminTerraformVersions_CreateDelete(t *testing.T) {
 		assert.Equal(t, *opts.URL, tfv.URL)
 		assert.Equal(t, *opts.Sha, tfv.Sha)
 		assert.Equal(t, *opts.Official, tfv.Official)
+		assert.Equal(t, *opts.Deprecated, tfv.Deprecated)
+		assert.Equal(t, *opts.DeprecatedReason, *tfv.DeprecatedReason)
 		assert.Equal(t, *opts.Enabled, tfv.Enabled)
 		assert.Equal(t, *opts.Beta, tfv.Beta)
 	})
 
-    t.Run("with only required options", func(t *testing.T) {
-	  opts := AdminTerraformVersionCreateOptions{
-		Version:  String("1.1.1"),
-		URL:      String("https://www.hashicorp.com"),
-		Sha:      String(genSha(t, "secret", "data")),
-	  }
-	  tfv, err := client.Admin.TerraformVersions.Create(ctx, opts)
-	  require.NoError(t, err)
+	t.Run("with only required options", func(t *testing.T) {
+		opts := AdminTerraformVersionCreateOptions{
+			Version: String("1.1.100"),
+			URL:     String("https://www.hashicorp.com"),
+			Sha:     String(genSha(t, "secret", "data")),
+		}
+		tfv, err := client.Admin.TerraformVersions.Create(ctx, opts)
+		require.NoError(t, err)
 
-	  defer func() {
-		deleteErr := client.Admin.TerraformVersions.Delete(ctx, tfv.ID)
-		require.NoError(t, deleteErr)
-	  }()
+		defer func() {
+			deleteErr := client.Admin.TerraformVersions.Delete(ctx, tfv.ID)
+			require.NoError(t, deleteErr)
+		}()
 
-	  assert.Equal(t, *opts.Version, tfv.Version)
-	  assert.Equal(t, *opts.URL, tfv.URL)
-	  assert.Equal(t, *opts.Sha, tfv.Sha)
-	  assert.Equal(t, false, tfv.Official)
-	  assert.Equal(t, true, tfv.Enabled)
-	  assert.Equal(t, false, tfv.Beta)
-    })
+		assert.Equal(t, *opts.Version, tfv.Version)
+		assert.Equal(t, *opts.URL, tfv.URL)
+		assert.Equal(t, *opts.Sha, tfv.Sha)
+		assert.Equal(t, false, tfv.Official)
+		assert.Equal(t, false, tfv.Deprecated)
+		assert.Nil(t, tfv.DeprecatedReason)
+		assert.Equal(t, true, tfv.Enabled)
+		assert.Equal(t, false, tfv.Beta)
+	})
 
 	t.Run("with empty options", func(t *testing.T) {
 		opts := AdminTerraformVersionCreateOptions{}
@@ -127,12 +139,14 @@ func TestAdminTerraformVersions_ReadUpdate(t *testing.T) {
 
 	t.Run("reads and updates", func(t *testing.T) {
 		opts := AdminTerraformVersionCreateOptions{
-			Version:  String("1.1.1"),
-			URL:      String("https://www.hashicorp.com"),
-			Sha:      String(genSha(t, "secret", "data")),
-			Official: Bool(false),
-			Enabled:  Bool(false),
-			Beta:     Bool(false),
+			Version:          String("1.1.100"),
+			URL:              String("https://www.hashicorp.com"),
+			Sha:              String(genSha(t, "secret", "data")),
+			Official:         Bool(false),
+			Deprecated:       Bool(true),
+			DeprecatedReason: String("Test Reason"),
+			Enabled:          Bool(false),
+			Beta:             Bool(false),
 		}
 		tfv, err := client.Admin.TerraformVersions.Create(ctx, opts)
 		require.NoError(t, err)
@@ -150,14 +164,17 @@ func TestAdminTerraformVersions_ReadUpdate(t *testing.T) {
 		assert.Equal(t, *opts.URL, tfv.URL)
 		assert.Equal(t, *opts.Sha, tfv.Sha)
 		assert.Equal(t, *opts.Official, tfv.Official)
+		assert.Equal(t, *opts.Deprecated, tfv.Deprecated)
+		assert.Equal(t, *opts.DeprecatedReason, *tfv.DeprecatedReason)
 		assert.Equal(t, *opts.Enabled, tfv.Enabled)
 		assert.Equal(t, *opts.Beta, tfv.Beta)
 
-		updateVersion := "1.1.2"
+		updateVersion := "1.1.200"
 		updateURL := "https://app.terraform.io/"
 		updateOpts := AdminTerraformVersionUpdateOptions{
-			Version: String(updateVersion),
-			URL:     String(updateURL),
+			Version:    String(updateVersion),
+			URL:        String(updateURL),
+			Deprecated: Bool(false),
 		}
 
 		tfv, err = client.Admin.TerraformVersions.Update(ctx, id, updateOpts)
@@ -167,6 +184,7 @@ func TestAdminTerraformVersions_ReadUpdate(t *testing.T) {
 		assert.Equal(t, updateURL, tfv.URL)
 		assert.Equal(t, *opts.Sha, tfv.Sha)
 		assert.Equal(t, *opts.Official, tfv.Official)
+		assert.Equal(t, *updateOpts.Deprecated, tfv.Deprecated)
 		assert.Equal(t, *opts.Enabled, tfv.Enabled)
 		assert.Equal(t, *opts.Beta, tfv.Beta)
 	})
