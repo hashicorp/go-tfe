@@ -122,6 +122,31 @@ func TestWorkspacesList(t *testing.T) {
 		assert.NotNil(t, wl.Items[0].Organization)
 		assert.NotEmpty(t, wl.Items[0].Organization.Email)
 	})
+
+	t.Run("with current-state-version,current-run included", func(t *testing.T) {
+		_, rCleanup := createAppliedRun(t, client, wTest1)
+		t.Cleanup(rCleanup)
+
+		wl, err := client.Workspaces.List(ctx, orgTest.Name, WorkspaceListOptions{
+			Include: String("current-state-version,current-run"),
+		})
+
+		assert.NoError(t, err)
+		assert.NotEmpty(t, wl.Items)
+
+		foundWTest1 := false
+		for _, ws := range wl.Items {
+			if ws.ID == wTest1.ID {
+				foundWTest1 = true
+				assert.NotNil(t, wl.Items[0].CurrentStateVersion)
+				assert.NotEmpty(t, wl.Items[0].CurrentStateVersion.DownloadURL)
+				assert.NotNil(t, wl.Items[0].CurrentRun)
+				assert.NotEmpty(t, wl.Items[0].CurrentRun.Message)
+			}
+		}
+
+		assert.True(t, foundWTest1)
+	})
 }
 
 func TestWorkspacesCreate(t *testing.T) {
