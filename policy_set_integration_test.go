@@ -28,7 +28,7 @@ func TestPolicySetsList(t *testing.T) {
 	defer psTestCleanup2()
 
 	t.Run("without list options", func(t *testing.T) {
-		psl, err := client.PolicySets.List(ctx, orgTest.Name, PolicySetListOptions{})
+		psl, err := client.PolicySets.List(ctx, orgTest.Name, nil)
 		require.NoError(t, err)
 
 		assert.Contains(t, psl.Items, psTest1)
@@ -41,7 +41,7 @@ func TestPolicySetsList(t *testing.T) {
 		// Request a page number which is out of range. The result should
 		// be successful, but return no results if the paging options are
 		// properly passed along.
-		psl, err := client.PolicySets.List(ctx, orgTest.Name, PolicySetListOptions{
+		psl, err := client.PolicySets.List(ctx, orgTest.Name, &PolicySetListOptions{
 			ListOptions: ListOptions{
 				PageNumber: 999,
 				PageSize:   100,
@@ -57,7 +57,7 @@ func TestPolicySetsList(t *testing.T) {
 	t.Run("with search", func(t *testing.T) {
 		// Search by one of the policy set's names; we should get only that policy
 		// set and pagination data should reflect the search as well
-		psl, err := client.PolicySets.List(ctx, orgTest.Name, PolicySetListOptions{
+		psl, err := client.PolicySets.List(ctx, orgTest.Name, &PolicySetListOptions{
 			Search: String(psTest1.Name),
 		})
 		require.NoError(t, err)
@@ -69,7 +69,7 @@ func TestPolicySetsList(t *testing.T) {
 	})
 
 	t.Run("without a valid organization", func(t *testing.T) {
-		ps, err := client.PolicySets.List(ctx, badIdentifier, PolicySetListOptions{})
+		ps, err := client.PolicySets.List(ctx, badIdentifier, nil)
 		assert.Nil(t, ps)
 		assert.EqualError(t, err, ErrInvalidOrg.Error())
 	})

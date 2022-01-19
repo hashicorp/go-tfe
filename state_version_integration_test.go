@@ -31,8 +31,14 @@ func TestStateVersionsList(t *testing.T) {
 	svTest2, svTestCleanup2 := createStateVersion(t, client, 1, wTest)
 	defer svTestCleanup2()
 
+	t.Run("without StateVersionListOptions", func(t *testing.T) {
+		svl, err := client.StateVersions.List(ctx, nil)
+		assert.Nil(t, svl)
+		assert.EqualError(t, err, "StateVersionListOptions is required")
+	})
+
 	t.Run("without list options", func(t *testing.T) {
-		options := StateVersionListOptions{
+		options := &StateVersionListOptions{
 			Organization: String(orgTest.Name),
 			Workspace:    String(wTest.Name),
 		}
@@ -67,7 +73,7 @@ func TestStateVersionsList(t *testing.T) {
 		// Request a page number which is out of range. The result should
 		// be successful, but return no results if the paging options are
 		// properly passed along.
-		options := StateVersionListOptions{
+		options := &StateVersionListOptions{
 			ListOptions: ListOptions{
 				PageNumber: 999,
 				PageSize:   100,
@@ -84,7 +90,7 @@ func TestStateVersionsList(t *testing.T) {
 	})
 
 	t.Run("without an organization", func(t *testing.T) {
-		options := StateVersionListOptions{
+		options := &StateVersionListOptions{
 			Workspace: String(wTest.Name),
 		}
 
@@ -94,7 +100,7 @@ func TestStateVersionsList(t *testing.T) {
 	})
 
 	t.Run("without a workspace", func(t *testing.T) {
-		options := StateVersionListOptions{
+		options := &StateVersionListOptions{
 			Organization: String(orgTest.Name),
 		}
 

@@ -11,7 +11,7 @@ var _ OrganizationTags = (*organizationTags)(nil)
 
 type OrganizationTags interface {
 	// List all tags within an organization
-	List(ctx context.Context, organization string, options OrganizationTagsListOptions) (*OrganizationTagsList, error)
+	List(ctx context.Context, organization string, options *OrganizationTagsListOptions) (*OrganizationTagsList, error)
 
 	// Delete tags from an organization
 	Delete(ctx context.Context, organization string, options OrganizationTagsDeleteOptions) error
@@ -50,13 +50,13 @@ type OrganizationTagsListOptions struct {
 }
 
 // List all the tags in an organization. You can provide query params through OrganizationTagsListOptions
-func (s *organizationTags) List(ctx context.Context, organization string, options OrganizationTagsListOptions) (*OrganizationTagsList, error) {
+func (s *organizationTags) List(ctx context.Context, organization string, options *OrganizationTagsListOptions) (*OrganizationTagsList, error) {
 	if !validStringID(&organization) {
 		return nil, ErrInvalidOrg
 	}
 
 	u := fmt.Sprintf("organizations/%s/tags", url.QueryEscape(organization))
-	req, err := s.client.newRequest("GET", u, &options)
+	req, err := s.client.newRequest("GET", u, options)
 	if err != nil {
 		return nil, err
 	}

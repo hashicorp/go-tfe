@@ -18,7 +18,7 @@ var _ Organizations = (*organizations)(nil)
 // https://www.terraform.io/docs/cloud/api/organizations.html
 type Organizations interface {
 	// List all the organizations visible to the current user.
-	List(ctx context.Context, options OrganizationListOptions) (*OrganizationList, error)
+	List(ctx context.Context, options *OrganizationListOptions) (*OrganizationList, error)
 
 	// Create a new organization with the given options.
 	Create(ctx context.Context, options OrganizationCreateOptions) (*Organization, error)
@@ -127,8 +127,8 @@ type OrganizationListOptions struct {
 }
 
 // List all the organizations visible to the current user.
-func (s *organizations) List(ctx context.Context, options OrganizationListOptions) (*OrganizationList, error) {
-	req, err := s.client.newRequest("GET", "organizations", &options)
+func (s *organizations) List(ctx context.Context, options *OrganizationListOptions) (*OrganizationList, error) {
+	req, err := s.client.newRequest("GET", "organizations", options)
 	if err != nil {
 		return nil, err
 	}

@@ -18,7 +18,7 @@ var _ RunTriggers = (*runTriggers)(nil)
 // https://www.terraform.io/docs/cloud/api/run-triggers.html
 type RunTriggers interface {
 	// List all the run triggers within a workspace.
-	List(ctx context.Context, workspaceID string, options RunTriggerListOptions) (*RunTriggerList, error)
+	List(ctx context.Context, workspaceID string, options *RunTriggerListOptions) (*RunTriggerList, error)
 
 	// Create a new run trigger with the given options.
 	Create(ctx context.Context, workspaceID string, options RunTriggerCreateOptions) (*RunTrigger, error)
@@ -61,24 +61,10 @@ type RunTriggerListOptions struct {
 	RunTriggerType *string `url:"filter[run-trigger][type]"`
 }
 
-func (o RunTriggerListOptions) valid() error {
-	if !validString(o.RunTriggerType) {
-		return errors.New("run-trigger type is required")
-	}
-	if *o.RunTriggerType != "inbound" && *o.RunTriggerType != "outbound" {
-		return errors.New("invalid value for run-trigger type")
-	}
-	return nil
-}
-
 // List all the run triggers associated with a workspace.
-func (s *runTriggers) List(ctx context.Context, workspaceID string, options RunTriggerListOptions) (*RunTriggerList, error) {
+func (s *runTriggers) List(ctx context.Context, workspaceID string, options *RunTriggerListOptions) (*RunTriggerList, error) {
 	if !validStringID(&workspaceID) {
 		return nil, ErrInvalidWorkspaceID
-	}
-
-	if err := options.valid(); err != nil {
-		return nil, err
 	}
 
 	u := fmt.Sprintf("workspaces/%s/run-triggers", url.QueryEscape(workspaceID))

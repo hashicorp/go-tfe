@@ -80,7 +80,7 @@ func (mr *MockPoliciesMockRecorder) Download(ctx, policyID interface{}) *gomock.
 }
 
 // List mocks base method.
-func (m *MockPolicies) List(ctx context.Context, organization string, options tfe.PolicyListOptions) (*tfe.PolicyList, error) {
+func (m *MockPolicies) List(ctx context.Context, organization string, options *tfe.PolicyListOptions) (*tfe.PolicyList, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "List", ctx, organization, options)
 	ret0, _ := ret[0].(*tfe.PolicyList)

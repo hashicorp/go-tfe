@@ -24,14 +24,14 @@ func TestAdminUsers_List(t *testing.T) {
 	defer orgCleanup()
 
 	t.Run("without list options", func(t *testing.T) {
-		ul, err := client.Admin.Users.List(ctx, AdminUserListOptions{})
+		ul, err := client.Admin.Users.List(ctx, nil)
 		require.NoError(t, err)
 
 		assert.NotEmpty(t, ul.Items)
 	})
 
 	t.Run("with list options", func(t *testing.T) {
-		ul, err := client.Admin.Users.List(ctx, AdminUserListOptions{
+		ul, err := client.Admin.Users.List(ctx, &AdminUserListOptions{
 			ListOptions: ListOptions{
 				PageNumber: 999,
 				PageSize:   100,
@@ -42,7 +42,7 @@ func TestAdminUsers_List(t *testing.T) {
 		assert.Empty(t, ul.Items)
 		assert.Equal(t, 999, ul.CurrentPage)
 
-		ul, err = client.Admin.Users.List(ctx, AdminUserListOptions{
+		ul, err = client.Admin.Users.List(ctx, &AdminUserListOptions{
 			ListOptions: ListOptions{
 				PageNumber: 1,
 				PageSize:   100,
@@ -54,7 +54,7 @@ func TestAdminUsers_List(t *testing.T) {
 	})
 
 	t.Run("query by username or email", func(t *testing.T) {
-		ul, err := client.Admin.Users.List(ctx, AdminUserListOptions{
+		ul, err := client.Admin.Users.List(ctx, &AdminUserListOptions{
 			Query: String(currentUser.Username),
 		})
 		require.NoError(t, err)
@@ -65,7 +65,7 @@ func TestAdminUsers_List(t *testing.T) {
 		member, memberCleanup := createOrganizationMembership(t, client, org)
 		defer memberCleanup()
 
-		ul, err = client.Admin.Users.List(ctx, AdminUserListOptions{
+		ul, err = client.Admin.Users.List(ctx, &AdminUserListOptions{
 			Query: String(member.User.Email),
 		})
 		require.NoError(t, err)
@@ -75,7 +75,7 @@ func TestAdminUsers_List(t *testing.T) {
 	})
 
 	t.Run("with organization included", func(t *testing.T) {
-		ul, err := client.Admin.Users.List(ctx, AdminUserListOptions{
+		ul, err := client.Admin.Users.List(ctx, &AdminUserListOptions{
 			Include: &([]AdminUserIncludeOps{AdminUserOrgs}),
 		})
 
@@ -87,7 +87,7 @@ func TestAdminUsers_List(t *testing.T) {
 	})
 
 	t.Run("filter by admin", func(t *testing.T) {
-		ul, err := client.Admin.Users.List(ctx, AdminUserListOptions{
+		ul, err := client.Admin.Users.List(ctx, &AdminUserListOptions{
 			Administrators: String("true"),
 		})
 
@@ -115,7 +115,7 @@ func TestAdminUsers_Delete(t *testing.T) {
 		// gets deleted below.
 		member, _ := createOrganizationMembership(t, client, org)
 
-		ul, err := client.Admin.Users.List(ctx, AdminUserListOptions{
+		ul, err := client.Admin.Users.List(ctx, &AdminUserListOptions{
 			Query: String(member.User.Email),
 		})
 		require.NoError(t, err)
@@ -126,7 +126,7 @@ func TestAdminUsers_Delete(t *testing.T) {
 		err = client.Admin.Users.Delete(ctx, member.User.ID)
 		require.NoError(t, err)
 
-		ul, err = client.Admin.Users.List(ctx, AdminUserListOptions{
+		ul, err = client.Admin.Users.List(ctx, &AdminUserListOptions{
 			Query: String(member.User.Email),
 		})
 		require.NoError(t, err)

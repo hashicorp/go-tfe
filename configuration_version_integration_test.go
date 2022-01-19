@@ -27,9 +27,7 @@ func TestConfigurationVersionsList(t *testing.T) {
 	defer cvTest2Cleanup()
 
 	t.Run("without list options", func(t *testing.T) {
-		options := ConfigurationVersionListOptions{}
-
-		cvl, err := client.ConfigurationVersions.List(ctx, wTest.ID, options)
+		cvl, err := client.ConfigurationVersions.List(ctx, wTest.ID, nil)
 		require.NoError(t, err)
 
 		// We need to strip the upload URL as that is a dynamic link.
@@ -51,7 +49,7 @@ func TestConfigurationVersionsList(t *testing.T) {
 		// Request a page number which is out of range. The result should
 		// be successful, but return no results if the paging options are
 		// properly passed along.
-		options := ConfigurationVersionListOptions{
+		options := &ConfigurationVersionListOptions{
 			ListOptions: ListOptions{
 				PageNumber: 999,
 				PageSize:   100,
@@ -66,9 +64,7 @@ func TestConfigurationVersionsList(t *testing.T) {
 	})
 
 	t.Run("without a valid organization", func(t *testing.T) {
-		options := ConfigurationVersionListOptions{}
-
-		cvl, err := client.ConfigurationVersions.List(ctx, badIdentifier, options)
+		cvl, err := client.ConfigurationVersions.List(ctx, badIdentifier, nil)
 		assert.Nil(t, cvl)
 		assert.EqualError(t, err, ErrInvalidWorkspaceID.Error())
 	})

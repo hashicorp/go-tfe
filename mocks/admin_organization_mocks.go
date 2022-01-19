@@ -50,7 +50,7 @@ func (mr *MockAdminOrganizationsMockRecorder) Delete(ctx, organization interface
 }
 
 // List mocks base method.
-func (m *MockAdminOrganizations) List(ctx context.Context, options tfe.AdminOrganizationListOptions) (*tfe.AdminOrganizationList, error) {
+func (m *MockAdminOrganizations) List(ctx context.Context, options *tfe.AdminOrganizationListOptions) (*tfe.AdminOrganizationList, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "List", ctx, options)
 	ret0, _ := ret[0].(*tfe.AdminOrganizationList)

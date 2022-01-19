@@ -96,7 +96,7 @@ func (mr *MockStateVersionsMockRecorder) Download(ctx, url interface{}) *gomock.
 }
 
 // List mocks base method.
-func (m *MockStateVersions) List(ctx context.Context, options tfe.StateVersionListOptions) (*tfe.StateVersionList, error) {
+func (m *MockStateVersions) List(ctx context.Context, options *tfe.StateVersionListOptions) (*tfe.StateVersionList, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "List", ctx, options)
 	ret0, _ := ret[0].(*tfe.StateVersionList)

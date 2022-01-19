@@ -18,7 +18,7 @@ var _ OAuthClients = (*oAuthClients)(nil)
 // https://www.terraform.io/docs/enterprise/api/oauth-clients.html
 type OAuthClients interface {
 	// List all the OAuth clients for a given organization.
-	List(ctx context.Context, organization string, options OAuthClientListOptions) (*OAuthClientList, error)
+	List(ctx context.Context, organization string, options *OAuthClientListOptions) (*OAuthClientList, error)
 
 	// Create an OAuth client to connect an organization and a VCS provider.
 	Create(ctx context.Context, organization string, options OAuthClientCreateOptions) (*OAuthClient, error)
@@ -90,13 +90,13 @@ type OAuthClientListOptions struct {
 }
 
 // List all the OAuth clients for a given organization.
-func (s *oAuthClients) List(ctx context.Context, organization string, options OAuthClientListOptions) (*OAuthClientList, error) {
+func (s *oAuthClients) List(ctx context.Context, organization string, options *OAuthClientListOptions) (*OAuthClientList, error) {
 	if !validStringID(&organization) {
 		return nil, ErrInvalidOrg
 	}
 
 	u := fmt.Sprintf("organizations/%s/oauth-clients", url.QueryEscape(organization))
-	req, err := s.client.newRequest("GET", u, &options)
+	req, err := s.client.newRequest("GET", u, options)
 	if err != nil {
 		return nil, err
 	}

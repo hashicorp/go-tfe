@@ -27,7 +27,7 @@ func TestNotificationConfigurationList(t *testing.T) {
 		ncl, err := client.NotificationConfigurations.List(
 			ctx,
 			wTest.ID,
-			NotificationConfigurationListOptions{},
+			nil,
 		)
 		require.NoError(t, err)
 		assert.Contains(t, ncl.Items, ncTest1)
@@ -46,7 +46,7 @@ func TestNotificationConfigurationList(t *testing.T) {
 		ncl, err := client.NotificationConfigurations.List(
 			ctx,
 			wTest.ID,
-			NotificationConfigurationListOptions{
+			&NotificationConfigurationListOptions{
 				ListOptions: ListOptions{
 					PageNumber: 999,
 					PageSize:   100,
@@ -63,7 +63,7 @@ func TestNotificationConfigurationList(t *testing.T) {
 		ncl, err := client.NotificationConfigurations.List(
 			ctx,
 			badIdentifier,
-			NotificationConfigurationListOptions{},
+			nil,
 		)
 		assert.Nil(t, ncl)
 		assert.EqualError(t, err, ErrInvalidWorkspaceID.Error())

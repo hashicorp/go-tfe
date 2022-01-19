@@ -32,7 +32,7 @@ func TestWorkspacesList(t *testing.T) {
 	defer wTest2Cleanup()
 
 	t.Run("without list options", func(t *testing.T) {
-		wl, err := client.Workspaces.List(ctx, orgTest.Name, WorkspaceListOptions{})
+		wl, err := client.Workspaces.List(ctx, orgTest.Name, nil)
 		require.NoError(t, err)
 		assert.Contains(t, wl.Items, wTest1)
 		assert.Contains(t, wl.Items, wTest2)
@@ -44,7 +44,7 @@ func TestWorkspacesList(t *testing.T) {
 		// Request a page number which is out of range. The result should
 		// be successful, but return no results if the paging options are
 		// properly passed along.
-		wl, err := client.Workspaces.List(ctx, orgTest.Name, WorkspaceListOptions{
+		wl, err := client.Workspaces.List(ctx, orgTest.Name, &WorkspaceListOptions{
 			ListOptions: ListOptions{
 				PageNumber: 999,
 				PageSize:   100,
@@ -59,7 +59,7 @@ func TestWorkspacesList(t *testing.T) {
 	t.Run("when searching a known workspace", func(t *testing.T) {
 		// Use a known workspace prefix as search attribute. The result
 		// should be successful and only contain the matching workspace.
-		wl, err := client.Workspaces.List(ctx, orgTest.Name, WorkspaceListOptions{
+		wl, err := client.Workspaces.List(ctx, orgTest.Name, &WorkspaceListOptions{
 			Search: String(wTest1.Name[:len(wTest1.Name)-5]),
 		})
 		require.NoError(t, err)
@@ -84,7 +84,7 @@ func TestWorkspacesList(t *testing.T) {
 
 		// The result should be successful and only contain the workspace with the
 		// new tag.
-		wl, err := client.Workspaces.List(ctx, orgTest.Name, WorkspaceListOptions{
+		wl, err := client.Workspaces.List(ctx, orgTest.Name, &WorkspaceListOptions{
 			Tags: &tagName,
 		})
 		require.NoError(t, err)
@@ -96,7 +96,7 @@ func TestWorkspacesList(t *testing.T) {
 	t.Run("when searching an unknown workspace", func(t *testing.T) {
 		// Use a nonexisting workspace name as search attribute. The result
 		// should be successful, but return no results.
-		wl, err := client.Workspaces.List(ctx, orgTest.Name, WorkspaceListOptions{
+		wl, err := client.Workspaces.List(ctx, orgTest.Name, &WorkspaceListOptions{
 			Search: String("nonexisting"),
 		})
 		require.NoError(t, err)
@@ -106,13 +106,13 @@ func TestWorkspacesList(t *testing.T) {
 	})
 
 	t.Run("without a valid organization", func(t *testing.T) {
-		wl, err := client.Workspaces.List(ctx, badIdentifier, WorkspaceListOptions{})
+		wl, err := client.Workspaces.List(ctx, badIdentifier, nil)
 		assert.Nil(t, wl)
 		assert.EqualError(t, err, ErrInvalidOrg.Error())
 	})
 
 	t.Run("with organization included", func(t *testing.T) {
-		wl, err := client.Workspaces.List(ctx, orgTest.Name, WorkspaceListOptions{
+		wl, err := client.Workspaces.List(ctx, orgTest.Name, &WorkspaceListOptions{
 			Include: []WSIncludeOps{WSOrganization},
 		})
 
@@ -127,7 +127,7 @@ func TestWorkspacesList(t *testing.T) {
 		_, rCleanup := createAppliedRun(t, client, wTest1)
 		t.Cleanup(rCleanup)
 
-		wl, err := client.Workspaces.List(ctx, orgTest.Name, WorkspaceListOptions{
+		wl, err := client.Workspaces.List(ctx, orgTest.Name, &WorkspaceListOptions{
 			Include: []WSIncludeOps{WSCurrentStateVer, WSCurrentRun},
 		})
 
@@ -1177,7 +1177,7 @@ func TestWorkspaces_AddTags(t *testing.T) {
 		sort.Strings(w.TagNames)
 		assert.EqualValues(t, w.TagNames, []string{"tag1", "tag2", "tag3", "tag4"})
 
-		wt, err := client.Workspaces.Tags(ctx, wTest.ID, WorkspaceTagListOptions{})
+		wt, err := client.Workspaces.Tags(ctx, wTest.ID, nil)
 		require.NoError(t, err)
 		assert.Equal(t, 4, len(wt.Items))
 		assert.Equal(t, wt.Items[3].Name, "tag4")
@@ -1198,7 +1198,7 @@ func TestWorkspaces_AddTags(t *testing.T) {
 		require.NoError(t, err)
 
 		// get the id of the new tag
-		tags, err := client.Workspaces.Tags(ctx, wTest2.ID, WorkspaceTagListOptions{})
+		tags, err := client.Workspaces.Tags(ctx, wTest2.ID, nil)
 		require.NoError(t, err)
 
 		// add the tag to our workspace by id
@@ -1219,7 +1219,7 @@ func TestWorkspaces_AddTags(t *testing.T) {
 		assert.Equal(t, w.TagNames, []string{"tag1", "tag2", "tag3", "tag4", "tagbyid"})
 
 		// tag is now in our tag list
-		wt, err := client.Workspaces.Tags(ctx, wTest.ID, WorkspaceTagListOptions{})
+		wt, err := client.Workspaces.Tags(ctx, wTest.ID, nil)
 		require.NoError(t, err)
 		assert.Equal(t, 5, len(wt.Items))
 		assert.Equal(t, wt.Items[4].ID, tags.Items[0].ID)
@@ -1286,7 +1286,7 @@ func TestWorkspaces_RemoveTags(t *testing.T) {
 		assert.Equal(t, 1, len(w.TagNames))
 		assert.Equal(t, w.TagNames, []string{"tag3"})
 
-		wt, err := client.Workspaces.Tags(ctx, wTest.ID, WorkspaceTagListOptions{})
+		wt, err := client.Workspaces.Tags(ctx, wTest.ID, nil)
 		require.NoError(t, err)
 		assert.Equal(t, 1, len(wt.Items))
 		assert.EqualValues(t, wt.Items[0].Name, "tag3")

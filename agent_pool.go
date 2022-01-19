@@ -15,7 +15,7 @@ var _ AgentPools = (*agentPools)(nil)
 // TFE API docs: https://www.terraform.io/docs/cloud/api/agents.html
 type AgentPools interface {
 	// List all the agent pools of the given organization.
-	List(ctx context.Context, organization string, options AgentPoolListOptions) (*AgentPoolList, error)
+	List(ctx context.Context, organization string, options *AgentPoolListOptions) (*AgentPoolList, error)
 
 	// Create a new agent pool with the given options.
 	Create(ctx context.Context, organization string, options AgentPoolCreateOptions) (*AgentPool, error)
@@ -56,13 +56,13 @@ type AgentPoolListOptions struct {
 }
 
 // List all the agent pools of the given organization.
-func (s *agentPools) List(ctx context.Context, organization string, options AgentPoolListOptions) (*AgentPoolList, error) {
+func (s *agentPools) List(ctx context.Context, organization string, options *AgentPoolListOptions) (*AgentPoolList, error) {
 	if !validStringID(&organization) {
 		return nil, ErrInvalidOrg
 	}
 
 	u := fmt.Sprintf("organizations/%s/agent-pools", url.QueryEscape(organization))
-	req, err := s.client.newRequest("GET", u, &options)
+	req, err := s.client.newRequest("GET", u, options)
 	if err != nil {
 		return nil, err
 	}

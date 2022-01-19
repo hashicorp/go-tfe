@@ -16,7 +16,7 @@ var _ Variables = (*variables)(nil)
 // TFE API docs: https://www.terraform.io/docs/cloud/api/workspace-variables.html
 type Variables interface {
 	// List all the variables associated with the given workspace.
-	List(ctx context.Context, workspaceID string, options VariableListOptions) (*VariableList, error)
+	List(ctx context.Context, workspaceID string, options *VariableListOptions) (*VariableList, error)
 
 	// Create is used to create a new variable.
 	Create(ctx context.Context, workspaceID string, options VariableCreateOptions) (*Variable, error)
@@ -72,13 +72,13 @@ type VariableListOptions struct {
 }
 
 // List all the variables associated with the given workspace.
-func (s *variables) List(ctx context.Context, workspaceID string, options VariableListOptions) (*VariableList, error) {
+func (s *variables) List(ctx context.Context, workspaceID string, options *VariableListOptions) (*VariableList, error) {
 	if !validStringID(&workspaceID) {
 		return nil, ErrInvalidWorkspaceID
 	}
 
 	u := fmt.Sprintf("workspaces/%s/vars", url.QueryEscape(workspaceID))
-	req, err := s.client.newRequest("GET", u, &options)
+	req, err := s.client.newRequest("GET", u, options)
 	if err != nil {
 		return nil, err
 	}

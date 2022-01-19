@@ -65,7 +65,7 @@ func (mr *MockAgentPoolsMockRecorder) Delete(ctx, agentPoolID interface{}) *gomo
 }
 
 // List mocks base method.
-func (m *MockAgentPools) List(ctx context.Context, organization string, options tfe.AgentPoolListOptions) (*tfe.AgentPoolList, error) {
+func (m *MockAgentPools) List(ctx context.Context, organization string, options *tfe.AgentPoolListOptions) (*tfe.AgentPoolList, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "List", ctx, organization, options)
 	ret0, _ := ret[0].(*tfe.AgentPoolList)

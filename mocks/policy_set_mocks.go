@@ -93,7 +93,7 @@ func (mr *MockPolicySetsMockRecorder) Delete(ctx, policyID interface{}) *gomock.
 }
 
 // List mocks base method.
-func (m *MockPolicySets) List(ctx context.Context, organization string, options tfe.PolicySetListOptions) (*tfe.PolicySetList, error) {
+func (m *MockPolicySets) List(ctx context.Context, organization string, options *tfe.PolicySetListOptions) (*tfe.PolicySetList, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "List", ctx, organization, options)
 	ret0, _ := ret[0].(*tfe.PolicySetList)

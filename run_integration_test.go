@@ -26,7 +26,7 @@ func TestRunsList(t *testing.T) {
 	rTest2, _ := createRun(t, client, wTest)
 
 	t.Run("without list options", func(t *testing.T) {
-		rl, err := client.Runs.List(ctx, wTest.ID, RunListOptions{})
+		rl, err := client.Runs.List(ctx, wTest.ID, nil)
 		require.NoError(t, err)
 
 		found := []string{}
@@ -41,7 +41,7 @@ func TestRunsList(t *testing.T) {
 	})
 
 	t.Run("without list options and include as nil", func(t *testing.T) {
-		rl, err := client.Runs.List(ctx, wTest.ID, RunListOptions{
+		rl, err := client.Runs.List(ctx, wTest.ID, &RunListOptions{
 			Include: nil,
 		})
 		require.NoError(t, err)
@@ -63,7 +63,7 @@ func TestRunsList(t *testing.T) {
 		// Request a page number which is out of range. The result should
 		// be successful, but return no results if the paging options are
 		// properly passed along.
-		rl, err := client.Runs.List(ctx, wTest.ID, RunListOptions{
+		rl, err := client.Runs.List(ctx, wTest.ID, &RunListOptions{
 			ListOptions: ListOptions{
 				PageNumber: 999,
 				PageSize:   100,
@@ -76,7 +76,7 @@ func TestRunsList(t *testing.T) {
 	})
 
 	t.Run("with workspace included", func(t *testing.T) {
-		rl, err := client.Runs.List(ctx, wTest.ID, RunListOptions{
+		rl, err := client.Runs.List(ctx, wTest.ID, &RunListOptions{
 			Include: &([]RunIncludeOps{RunWorkspace}),
 		})
 
@@ -88,7 +88,7 @@ func TestRunsList(t *testing.T) {
 	})
 
 	t.Run("without a valid workspace ID", func(t *testing.T) {
-		rl, err := client.Runs.List(ctx, badIdentifier, RunListOptions{})
+		rl, err := client.Runs.List(ctx, badIdentifier, nil)
 		assert.Nil(t, rl)
 		assert.EqualError(t, err, ErrInvalidWorkspaceID.Error())
 	})

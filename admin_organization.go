@@ -15,7 +15,7 @@ var _ AdminOrganizations = (*adminOrganizations)(nil)
 // TFE API docs: https://www.terraform.io/docs/cloud/api/admin/organizations.html
 type AdminOrganizations interface {
 	// List all the organizations visible to the current user.
-	List(ctx context.Context, options AdminOrganizationListOptions) (*AdminOrganizationList, error)
+	List(ctx context.Context, options *AdminOrganizationListOptions) (*AdminOrganizationList, error)
 
 	// Read attributes of an existing organization via admin API.
 	Read(ctx context.Context, organization string) (*AdminOrganization, error)
@@ -101,9 +101,9 @@ type AdminOrganizationID struct {
 }
 
 // List all the organizations visible to the current user.
-func (s *adminOrganizations) List(ctx context.Context, options AdminOrganizationListOptions) (*AdminOrganizationList, error) {
+func (s *adminOrganizations) List(ctx context.Context, options *AdminOrganizationListOptions) (*AdminOrganizationList, error) {
 	url := "admin/organizations"
-	req, err := s.client.newRequest("GET", url, &options)
+	req, err := s.client.newRequest("GET", url, options)
 	if err != nil {
 		return nil, err
 	}

@@ -25,9 +25,7 @@ func TestOAuthClientsList(t *testing.T) {
 	defer ocTestCleanup2()
 
 	t.Run("without list options", func(t *testing.T) {
-		options := OAuthClientListOptions{}
-
-		ocl, err := client.OAuthClients.List(ctx, orgTest.Name, options)
+		ocl, err := client.OAuthClients.List(ctx, orgTest.Name, nil)
 		require.NoError(t, err)
 
 		t.Run("the OAuth tokens relationship is decoded correcly", func(t *testing.T) {
@@ -55,7 +53,7 @@ func TestOAuthClientsList(t *testing.T) {
 		// Request a page number which is out of range. The result should
 		// be successful, but return no results if the paging options are
 		// properly passed along.
-		options := OAuthClientListOptions{
+		options := &OAuthClientListOptions{
 			ListOptions: ListOptions{
 				PageNumber: 999,
 				PageSize:   100,
@@ -70,9 +68,7 @@ func TestOAuthClientsList(t *testing.T) {
 	})
 
 	t.Run("without a valid organization", func(t *testing.T) {
-		options := OAuthClientListOptions{}
-
-		ocl, err := client.OAuthClients.List(ctx, badIdentifier, options)
+		ocl, err := client.OAuthClients.List(ctx, badIdentifier, nil)
 		assert.Nil(t, ocl)
 		assert.EqualError(t, err, ErrInvalidOrg.Error())
 	})

@@ -36,7 +36,7 @@ func TestRunTriggerList(t *testing.T) {
 		rtl, err := client.RunTriggers.List(
 			ctx,
 			wTest.ID,
-			RunTriggerListOptions{
+			&RunTriggerListOptions{
 				RunTriggerType: String("inbound"),
 			},
 		)
@@ -54,7 +54,7 @@ func TestRunTriggerList(t *testing.T) {
 		rtl, err := client.RunTriggers.List(
 			ctx,
 			wTest.ID,
-			RunTriggerListOptions{
+			&RunTriggerListOptions{
 				ListOptions: ListOptions{
 					PageNumber: 999,
 					PageSize:   100,
@@ -72,7 +72,7 @@ func TestRunTriggerList(t *testing.T) {
 		rtl, err := client.RunTriggers.List(
 			ctx,
 			badIdentifier,
-			RunTriggerListOptions{
+			&RunTriggerListOptions{
 				RunTriggerType: String("inbound"),
 			},
 		)
@@ -84,22 +84,22 @@ func TestRunTriggerList(t *testing.T) {
 		rtl, err := client.RunTriggers.List(
 			ctx,
 			wTest.ID,
-			RunTriggerListOptions{},
+			nil,
 		)
 		assert.Nil(t, rtl)
-		assert.EqualError(t, err, "run-trigger type is required")
+		assert.EqualError(t, err, "bad request\n\nFilter parameter run-trigger type is required and must be either 'inbound' or 'outbound'")
 	})
 
 	t.Run("with invalid run-trigger type", func(t *testing.T) {
 		rtl, err := client.RunTriggers.List(
 			ctx,
 			wTest.ID,
-			RunTriggerListOptions{
+			&RunTriggerListOptions{
 				RunTriggerType: String("invalid"),
 			},
 		)
 		assert.Nil(t, rtl)
-		assert.EqualError(t, err, "invalid value for run-trigger type")
+		assert.EqualError(t, err, "bad request\n\nFilter parameter run-trigger type is required and must be either 'inbound' or 'outbound'")
 	})
 }
 

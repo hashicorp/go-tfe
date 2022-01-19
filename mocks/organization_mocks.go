@@ -95,7 +95,7 @@ func (mr *MockOrganizationsMockRecorder) Entitlements(ctx, organization interfac
 }
 
 // List mocks base method.
-func (m *MockOrganizations) List(ctx context.Context, options tfe.OrganizationListOptions) (*tfe.OrganizationList, error) {
+func (m *MockOrganizations) List(ctx context.Context, options *tfe.OrganizationListOptions) (*tfe.OrganizationList, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "List", ctx, options)
 	ret0, _ := ret[0].(*tfe.OrganizationList)

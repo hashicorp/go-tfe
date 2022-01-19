@@ -19,7 +19,7 @@ var _ Workspaces = (*workspaces)(nil)
 // TFE API docs: https://www.terraform.io/docs/cloud/api/workspaces.html
 type Workspaces interface {
 	// List all the workspaces within an organization.
-	List(ctx context.Context, organization string, options WorkspaceListOptions) (*WorkspaceList, error)
+	List(ctx context.Context, organization string, options *WorkspaceListOptions) (*WorkspaceList, error)
 
 	// Create is used to create a new workspace.
 	Create(ctx context.Context, organization string, options WorkspaceCreateOptions) (*Workspace, error)
@@ -86,7 +86,7 @@ type Workspaces interface {
 	UpdateRemoteStateConsumers(ctx context.Context, workspaceID string, options WorkspaceUpdateRemoteStateConsumersOptions) error
 
 	// Tags reads the tags for a workspace.
-	Tags(ctx context.Context, workspaceID string, options WorkspaceTagListOptions) (*TagList, error)
+	Tags(ctx context.Context, workspaceID string, options *WorkspaceTagListOptions) (*TagList, error)
 
 	// AddTags appends tags to a workspace
 	AddTags(ctx context.Context, workspaceID string, options WorkspaceAddTagsOptions) error
@@ -240,13 +240,13 @@ type WorkspaceListOptions struct {
 }
 
 // List all the workspaces within an organization.
-func (s *workspaces) List(ctx context.Context, organization string, options WorkspaceListOptions) (*WorkspaceList, error) {
+func (s *workspaces) List(ctx context.Context, organization string, options *WorkspaceListOptions) (*WorkspaceList, error) {
 	if !validStringID(&organization) {
 		return nil, ErrInvalidOrg
 	}
 
 	u := fmt.Sprintf("organizations/%s/workspaces", url.QueryEscape(organization))
-	req, err := s.client.newRequest("GET", u, &options)
+	req, err := s.client.newRequest("GET", u, options)
 	if err != nil {
 		return nil, err
 	}
@@ -908,7 +908,7 @@ func (s *workspaces) RemoteStateConsumers(ctx context.Context, workspaceID strin
 
 	u := fmt.Sprintf("workspaces/%s/relationships/remote-state-consumers", url.QueryEscape(workspaceID))
 
-	req, err := s.client.newRequest("GET", u, &options)
+	req, err := s.client.newRequest("GET", u, options)
 	if err != nil {
 		return nil, err
 	}
@@ -1036,14 +1036,14 @@ type WorkspaceTagListOptions struct {
 }
 
 // Tags returns the tags for a given workspace.
-func (s *workspaces) Tags(ctx context.Context, workspaceID string, options WorkspaceTagListOptions) (*TagList, error) {
+func (s *workspaces) Tags(ctx context.Context, workspaceID string, options *WorkspaceTagListOptions) (*TagList, error) {
 	if !validStringID(&workspaceID) {
 		return nil, ErrInvalidWorkspaceID
 	}
 
 	u := fmt.Sprintf("workspaces/%s/relationships/tags", url.QueryEscape(workspaceID))
 
-	req, err := s.client.newRequest("GET", u, &options)
+	req, err := s.client.newRequest("GET", u, options)
 	if err != nil {
 		return nil, err
 	}
