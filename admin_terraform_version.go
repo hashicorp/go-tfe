@@ -56,7 +56,7 @@ type AdminTerraformVersionsListOptions struct {
 	ListOptions
 
 	// A query string to find an exact version
-	Version *string `url:"version,omitempty"`
+	Filter *string `url:"filter[version],omitempty"`
 
 	// A search query string to find all versions that match version substring
 	Search *string `url:"search[version],omitempty"`
