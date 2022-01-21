@@ -39,15 +39,17 @@ type adminTerraformVersions struct {
 
 // AdminTerraformVersion represents a Terraform Version
 type AdminTerraformVersion struct {
-	ID        string    `jsonapi:"primary,terraform-versions"`
-	Version   string    `jsonapi:"attr,version"`
-	URL       string    `jsonapi:"attr,url"`
-	Sha       string    `jsonapi:"attr,sha"`
-	Official  bool      `jsonapi:"attr,official"`
-	Enabled   bool      `jsonapi:"attr,enabled"`
-	Beta      bool      `jsonapi:"attr,beta"`
-	Usage     int       `jsonapi:"attr,usage"`
-	CreatedAt time.Time `jsonapi:"attr,created-at,iso8601"`
+	ID               string    `jsonapi:"primary,terraform-versions"`
+	Version          string    `jsonapi:"attr,version"`
+	URL              string    `jsonapi:"attr,url"`
+	Sha              string    `jsonapi:"attr,sha"`
+	Deprecated       bool      `jsonapi:"attr,deprecated"`
+	DeprecatedReason *string   `jsonapi:"attr,deprecated-reason,omitempty"`
+	Official         bool      `jsonapi:"attr,official"`
+	Enabled          bool      `jsonapi:"attr,enabled"`
+	Beta             bool      `jsonapi:"attr,beta"`
+	Usage            int       `jsonapi:"attr,usage"`
+	CreatedAt        time.Time `jsonapi:"attr,created-at,iso8601"`
 }
 
 // AdminTerraformVersionsListOptions represents the options for listing
@@ -102,13 +104,15 @@ func (a *adminTerraformVersions) Read(ctx context.Context, id string) (*AdminTer
 // AdminTerraformVersionCreateOptions for creating a terraform version.
 // https://www.terraform.io/docs/cloud/api/admin/terraform-versions.html#request-body
 type AdminTerraformVersionCreateOptions struct {
-	Type     string  `jsonapi:"primary,terraform-versions"`
-	Version  *string `jsonapi:"attr,version"`
-	URL      *string `jsonapi:"attr,url"`
-	Sha      *string `jsonapi:"attr,sha"`
-	Official *bool   `jsonapi:"attr,official,omitempty"`
-	Enabled  *bool   `jsonapi:"attr,enabled,omitempty"`
-	Beta     *bool   `jsonapi:"attr,beta,omitempty"`
+	Type             string  `jsonapi:"primary,terraform-versions"`
+	Version          *string `jsonapi:"attr,version"`
+	URL              *string `jsonapi:"attr,url"`
+	Sha              *string `jsonapi:"attr,sha"`
+	Official         *bool   `jsonapi:"attr,official,omitempty"`
+	Deprecated       *bool   `jsonapi:"attr,deprecated,omitempty"`
+	DeprecatedReason *string `jsonapi:"attr,deprecated-reason,omitempty"`
+	Enabled          *bool   `jsonapi:"attr,enabled,omitempty"`
+	Beta             *bool   `jsonapi:"attr,beta,omitempty"`
 }
 
 // Create a new terraform version.
@@ -130,13 +134,15 @@ func (a *adminTerraformVersions) Create(ctx context.Context, options AdminTerraf
 // AdminTerraformVersionUpdateOptions for updating terraform version.
 // https://www.terraform.io/docs/cloud/api/admin/terraform-versions.html#request-body
 type AdminTerraformVersionUpdateOptions struct {
-	Type     string  `jsonapi:"primary,terraform-versions"`
-	Version  *string `jsonapi:"attr,version,omitempty"`
-	URL      *string `jsonapi:"attr,url,omitempty"`
-	Sha      *string `jsonapi:"attr,sha,omitempty"`
-	Official *bool   `jsonapi:"attr,official,omitempty"`
-	Enabled  *bool   `jsonapi:"attr,enabled,omitempty"`
-	Beta     *bool   `jsonapi:"attr,beta,omitempty"`
+	Type             string  `jsonapi:"primary,terraform-versions"`
+	Version          *string `jsonapi:"attr,version,omitempty"`
+	URL              *string `jsonapi:"attr,url,omitempty"`
+	Sha              *string `jsonapi:"attr,sha,omitempty"`
+	Official         *bool   `jsonapi:"attr,official,omitempty"`
+	Deprecated       *bool   `jsonapi:"attr,deprecated,omitempty"`
+	DeprecatedReason *string `jsonapi:"attr,deprecated-reason,omitempty"`
+	Enabled          *bool   `jsonapi:"attr,enabled,omitempty"`
+	Beta             *bool   `jsonapi:"attr,beta,omitempty"`
 }
 
 // Update an existing terraform version.
