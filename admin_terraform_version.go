@@ -56,6 +56,12 @@ type AdminTerraformVersion struct {
 // terraform versions.
 type AdminTerraformVersionsListOptions struct {
 	ListOptions
+
+	// A query string to find an exact version
+	Filter *string `url:"filter[version],omitempty"`
+
+	// A search query string to find all versions that match version substring
+	Search *string `url:"search[version],omitempty"`
 }
 
 // AdminTerraformVersionsList represents a list of terraform versions.

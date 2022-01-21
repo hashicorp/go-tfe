@@ -5,6 +5,7 @@ package tfe
 
 import (
 	"context"
+	"strings"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -61,6 +62,36 @@ func TestAdminTerraformVersions_List(t *testing.T) {
 			assert.NotNil(t, item.Usage)
 			assert.NotNil(t, item.CreatedAt)
 		}
+	})
+
+	t.Run("with filter query string", func(t *testing.T) {
+		tfList, err := client.Admin.TerraformVersions.List(ctx, AdminTerraformVersionsListOptions{
+			Filter: String("1.0.4"),
+		})
+		require.NoError(t, err)
+		assert.Equal(t, 1, len(tfList.Items))
+
+		// Query for a Terraform version that does not exist
+		tfList, err = client.Admin.TerraformVersions.List(ctx, AdminTerraformVersionsListOptions{
+			Filter: String("1000.1000.42"),
+		})
+		require.NoError(t, err)
+		assert.Empty(t, tfList.Items)
+	})
+
+	t.Run("with search version query string", func(t *testing.T) {
+		searchVersion := "1.0"
+		tfList, err := client.Admin.TerraformVersions.List(ctx, AdminTerraformVersionsListOptions{
+			Search: String(searchVersion),
+		})
+		require.NoError(t, err)
+		assert.NotEmpty(t, tfList.Items)
+
+		t.Run("ensure each version matches substring", func(t *testing.T) {
+			for _, item := range tfList.Items {
+				assert.Equal(t, true, strings.Contains(item.Version, searchVersion))
+			}
+		})
 	})
 }
 
