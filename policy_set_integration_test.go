@@ -284,20 +284,20 @@ func TestPolicySetsRead(t *testing.T) {
 		require.NoError(t, err)
 
 		opts := &PolicySetReadOptions{
-			Include: "current-version,newest-version",
+			Include: []PolicySetIncludeOps{PolicySetCurrentVersion, PolicySetNewestVersion},
 		}
-		ps, err = client.PolicySets.ReadWithOptions(ctx, psTest.ID, opts)
+		psWithOptions, err := client.PolicySets.ReadWithOptions(ctx, psTest.ID, opts)
 		require.NoError(t, err)
 
 		// The newest policy set version is changed to the most recent one
 		// that was created.
-		assert.Equal(t, ps.NewestVersion.ID, psvNew.ID)
-		assert.Equal(t, ps.NewestVersion.Status, PolicySetVersionPending)
+		assert.Equal(t, psWithOptions.NewestVersion.ID, psvNew.ID)
+		assert.Equal(t, psWithOptions.NewestVersion.Status, PolicySetVersionPending)
 		// The current one is now set because policies were uploaded to the
 		// policy set version. Notice how it is set to the one that was uplaoded,
 		// not the newest policy set version.
-		assert.Equal(t, ps.CurrentVersion.ID, psv.ID)
-		assert.Equal(t, ps.CurrentVersion.Status, PolicySetVersionReady)
+		assert.Equal(t, psWithOptions.CurrentVersion.ID, psv.ID)
+		assert.Equal(t, psWithOptions.CurrentVersion.Status, PolicySetVersionReady)
 	})
 }
 

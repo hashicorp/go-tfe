@@ -70,6 +70,14 @@ type AdminOrganizationList struct {
 	Items []*AdminOrganization
 }
 
+// A list of relations to include. See available resources
+// https://www.terraform.io/docs/cloud/api/admin/organizations.html#available-related-resources
+type AdminOrgIncludeOps string
+
+const (
+	AdminOrgOwners AdminOrgIncludeOps = "owners"
+)
+
 // AdminOrganizationListOptions represents the options for listing organizations via Admin API.
 type AdminOrganizationListOptions struct {
 	ListOptions
@@ -78,9 +86,7 @@ type AdminOrganizationListOptions struct {
 	// Any organizations with a name or notification email partially matching this value will be returned.
 	Query *string `url:"q,omitempty"`
 
-	// A list of relations to include. See available resources
-	// https://www.terraform.io/docs/cloud/api/admin/organizations.html#available-related-resources
-	Include *string `url:"include"`
+	Include *[]AdminOrgIncludeOps `url:"include,omitempty"`
 }
 
 // AdminOrganizationListModuleConsumersOptions represents the options for listing organization module consumers through the Admin API
