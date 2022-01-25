@@ -5,6 +5,7 @@ package tfe
 
 import (
 	"context"
+	"strings"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -56,6 +57,36 @@ func TestAdminTerraformVersions_List(t *testing.T) {
 			assert.NotNil(t, item.CreatedAt)
 		}
 	})
+
+	t.Run("with filter query string", func(t *testing.T) {
+		tfList, err := client.Admin.TerraformVersions.List(ctx, AdminTerraformVersionsListOptions{
+			Filter: String("1.0.4"),
+		})
+		require.NoError(t, err)
+		assert.Equal(t, 1, len(tfList.Items))
+
+		// Query for a Terraform version that does not exist
+		tfList, err = client.Admin.TerraformVersions.List(ctx, AdminTerraformVersionsListOptions{
+			Filter: String("1000.1000.42"),
+		})
+		require.NoError(t, err)
+		assert.Empty(t, tfList.Items)
+	})
+
+	t.Run("with search version query string", func(t *testing.T) {
+		searchVersion := "1.0"
+		tfList, err := client.Admin.TerraformVersions.List(ctx, AdminTerraformVersionsListOptions{
+			Search: String(searchVersion),
+		})
+		require.NoError(t, err)
+		assert.NotEmpty(t, tfList.Items)
+
+		t.Run("ensure each version matches substring", func(t *testing.T) {
+			for _, item := range tfList.Items {
+				assert.Equal(t, true, strings.Contains(item.Version, searchVersion))
+			}
+		})
+	})
 }
 
 func TestAdminTerraformVersions_CreateDelete(t *testing.T) {
@@ -89,27 +120,27 @@ func TestAdminTerraformVersions_CreateDelete(t *testing.T) {
 		assert.Equal(t, *opts.Beta, tfv.Beta)
 	})
 
-    t.Run("with only required options", func(t *testing.T) {
-	  opts := AdminTerraformVersionCreateOptions{
-		Version:  String("1.1.1"),
-		URL:      String("https://www.hashicorp.com"),
-		Sha:      String(genSha(t, "secret", "data")),
-	  }
-	  tfv, err := client.Admin.TerraformVersions.Create(ctx, opts)
-	  require.NoError(t, err)
+	t.Run("with only required options", func(t *testing.T) {
+		opts := AdminTerraformVersionCreateOptions{
+			Version: String("1.1.1"),
+			URL:     String("https://www.hashicorp.com"),
+			Sha:     String(genSha(t, "secret", "data")),
+		}
+		tfv, err := client.Admin.TerraformVersions.Create(ctx, opts)
+		require.NoError(t, err)
 
-	  defer func() {
-		deleteErr := client.Admin.TerraformVersions.Delete(ctx, tfv.ID)
-		require.NoError(t, deleteErr)
-	  }()
+		defer func() {
+			deleteErr := client.Admin.TerraformVersions.Delete(ctx, tfv.ID)
+			require.NoError(t, deleteErr)
+		}()
 
-	  assert.Equal(t, *opts.Version, tfv.Version)
-	  assert.Equal(t, *opts.URL, tfv.URL)
-	  assert.Equal(t, *opts.Sha, tfv.Sha)
-	  assert.Equal(t, false, tfv.Official)
-	  assert.Equal(t, true, tfv.Enabled)
-	  assert.Equal(t, false, tfv.Beta)
-    })
+		assert.Equal(t, *opts.Version, tfv.Version)
+		assert.Equal(t, *opts.URL, tfv.URL)
+		assert.Equal(t, *opts.Sha, tfv.Sha)
+		assert.Equal(t, false, tfv.Official)
+		assert.Equal(t, true, tfv.Enabled)
+		assert.Equal(t, false, tfv.Beta)
+	})
 
 	t.Run("with empty options", func(t *testing.T) {
 		opts := AdminTerraformVersionCreateOptions{}

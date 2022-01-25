@@ -144,12 +144,13 @@ type Workspace struct {
 	TagNames                   []string              `jsonapi:"attr,tag-names"`
 
 	// Relations
-	AgentPool    *AgentPool          `jsonapi:"relation,agent-pool"`
-	CurrentRun   *Run                `jsonapi:"relation,current-run"`
-	Organization *Organization       `jsonapi:"relation,organization"`
-	SSHKey       *SSHKey             `jsonapi:"relation,ssh-key"`
-	Outputs      []*WorkspaceOutputs `jsonapi:"relation,outputs"`
-	Tags         []*Tag              `jsonapi:"relation,tags"`
+	AgentPool           *AgentPool          `jsonapi:"relation,agent-pool"`
+	CurrentRun          *Run                `jsonapi:"relation,current-run"`
+	CurrentStateVersion *StateVersion       `jsonapi:"relation,current-state-version"`
+	Organization        *Organization       `jsonapi:"relation,organization"`
+	SSHKey              *SSHKey             `jsonapi:"relation,ssh-key"`
+	Outputs             []*WorkspaceOutputs `jsonapi:"relation,outputs"`
+	Tags                []*Tag              `jsonapi:"relation,tags"`
 }
 
 type WorkspaceOutputs struct {

@@ -186,14 +186,6 @@ type RunVariable struct {
 	Value string `jsonapi:"attr,value"`
 }
 
-// RunVariable represents a variable that can be applied to a run. All values must be expressed as an HCL literal
-// in the same syntax you would use when writing terraform code. See https://www.terraform.io/docs/language/expressions/types.html#types
-// for more details.
-type RunVariable struct {
-	Key   string `jsonapi:"attr,key"`
-	Value string `jsonapi:"attr,value"`
-}
-
 // List all the runs of the given workspace.
 func (s *runs) List(ctx context.Context, workspaceID string, options RunListOptions) (*RunList, error) {
 	if !validStringID(&workspaceID) {
