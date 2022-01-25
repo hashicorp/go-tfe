@@ -167,8 +167,9 @@ var (
 	RunCostEstimate     RunIncludeOps = "cost_estimate"
 	RunConfigVer        RunIncludeOps = "configuration_version"
 	RunConfigVerIngress RunIncludeOps = "configuration_version.ingress_attributes"
-	RunWorkspace        RunIncludeOps = "workspace"
-	RunWorkspaceOrg     RunIncludeOps = "workspace.organization"
+	// https://www.terraform.io/docs/cloud/api/admin/run.html#available-related-resources
+	RunWorkspace    RunIncludeOps = "workspace"
+	RunWorkspaceOrg RunIncludeOps = "workspace.organization"
 )
 
 // RunListOptions represents the options for listing runs.

@@ -73,8 +73,10 @@ type TeamPermissions struct {
 type TeamIncludeOps string
 
 // https://www.terraform.io/docs/cloud/api/teams.html#available-related-resources
-const TeamUsers TeamIncludeOps = "users"
-const TeamOrganizationMemberships TeamIncludeOps = "organization-memberships"
+const (
+	TeamUsers                   TeamIncludeOps = "users"
+	TeamOrganizationMemberships TeamIncludeOps = "organization-memberships"
+)
 
 // TeamListOptions represents the options for listing teams.
 type TeamListOptions struct {
