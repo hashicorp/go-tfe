@@ -12,8 +12,6 @@ jobs:
         environment:
           TEST_RESULTS_DIR: *test_results_dir
 
-    working_directory: /go/src/github.com/hashicorp/go-tfe
-
     steps:
       - checkout
 
