@@ -153,8 +153,7 @@ func TestSSHKeysUpdate(t *testing.T) {
 		defer kTestCleanup()
 
 		kAfter, err := client.SSHKeys.Update(ctx, kBefore.ID, SSHKeyUpdateOptions{
-			Name:  String(randomString(t)),
-			Value: String(randomString(t)),
+			Name: String(randomString(t)),
 		})
 		require.NoError(t, err)
 
@@ -173,19 +172,6 @@ func TestSSHKeysUpdate(t *testing.T) {
 
 		assert.Equal(t, kBefore.ID, kAfter.ID)
 		assert.Equal(t, "updated-key-name", kAfter.Name)
-	})
-
-	t.Run("when updating the value", func(t *testing.T) {
-		kBefore, kTestCleanup := createSSHKey(t, client, orgTest)
-		defer kTestCleanup()
-
-		kAfter, err := client.SSHKeys.Update(ctx, kBefore.ID, SSHKeyUpdateOptions{
-			Value: String("updated-key-value"),
-		})
-		require.NoError(t, err)
-
-		assert.Equal(t, kBefore.ID, kAfter.ID)
-		assert.Equal(t, kBefore.Name, kAfter.Name)
 	})
 
 	t.Run("without a valid SSH key ID", func(t *testing.T) {
