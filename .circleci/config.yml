@@ -8,7 +8,7 @@ test_results_dir: &test_results_dir /tmp/test_results
 jobs:
   run-tests:
     docker:
-      - image: docker.mirror.hashicorp.services/cimg/go:1.16.2
+      - image: docker.mirror.hashicorp.services/cimg/go:1.17
         environment:
           TEST_RESULTS_DIR: *test_results_dir
 
