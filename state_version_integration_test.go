@@ -470,7 +470,7 @@ func TestStateVersionOutputs(t *testing.T) {
 
 	t.Run("when the state version does not exist", func(t *testing.T) {
 		outputs, err := client.StateVersions.Outputs(ctx, "sv-999999999", StateVersionOutputsListOptions{})
-		assert.Nil(t, outputs.Items)
+		assert.Nil(t, outputs)
 		assert.Error(t, err)
 	})
 
