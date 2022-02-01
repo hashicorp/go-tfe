@@ -153,9 +153,6 @@ type SSHKeyUpdateOptions struct {
 
 	// A new name to identify the SSH key.
 	Name *string `jsonapi:"attr,name,omitempty"`
-
-	// Updated content of the SSH private key.
-	Value *string `jsonapi:"attr,value,omitempty"`
 }
 
 // Update an SSH key by its ID.
