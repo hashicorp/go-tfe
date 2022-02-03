@@ -1,8 +1,7 @@
 name: golangci-lint
 on:
   push:
-    branches:
-      - releases-1.0.x
+    branches: [ main, releases-1.0.x ]
   pull_request:
 jobs:
   golangci:

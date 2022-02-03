@@ -1,7 +1,7 @@
 name: test
 on:
   pull_request:
-    branches: [ releases-1.0.x ]
+    branches: [ main, releases-1.0.x ]
 jobs:
   codegen:
     name: Codegen
