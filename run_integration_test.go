@@ -40,6 +40,23 @@ func TestRunsList(t *testing.T) {
 		assert.Equal(t, 2, rl.TotalCount)
 	})
 
+	t.Run("without list options and include as nil", func(t *testing.T) {
+		rl, err := client.Runs.List(ctx, wTest.ID, RunListOptions{
+			Include: nil,
+		})
+		require.NoError(t, err)
+
+		found := []string{}
+		for _, r := range rl.Items {
+			found = append(found, r.ID)
+		}
+
+		assert.Contains(t, found, rTest1.ID)
+		assert.Contains(t, found, rTest2.ID)
+		assert.Equal(t, 1, rl.CurrentPage)
+		assert.Equal(t, 2, rl.TotalCount)
+	})
+
 	t.Run("with list options", func(t *testing.T) {
 		t.Skip("paging not supported yet in API")
 
@@ -60,7 +77,7 @@ func TestRunsList(t *testing.T) {
 
 	t.Run("with workspace included", func(t *testing.T) {
 		rl, err := client.Runs.List(ctx, wTest.ID, RunListOptions{
-			Include: String("workspace"),
+			Include: &([]RunIncludeOps{RunWorkspace}),
 		})
 
 		assert.NoError(t, err)
@@ -256,7 +273,7 @@ func TestRunsReadWithOptions(t *testing.T) {
 
 	t.Run("when the run exists", func(t *testing.T) {
 		curOpts := &RunReadOptions{
-			Include: "created_by",
+			Include: []RunIncludeOps{RunCreatedBy},
 		}
 
 		r, err := client.Runs.ReadWithOptions(ctx, rTest.ID, curOpts)

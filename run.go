@@ -159,13 +159,25 @@ type RunStatusTimestamps struct {
 	PolicySoftFailedAt   time.Time `jsonapi:"attr,policy-soft-failed-at,rfc3339"`
 }
 
+// A list of relations to include. See available resources:
+// https://www.terraform.io/docs/cloud/api/run.html#available-related-resources
+type RunIncludeOps string
+
+const (
+	RunPlan             RunIncludeOps = "plan"
+	RunApply            RunIncludeOps = "apply"
+	RunCreatedBy        RunIncludeOps = "created_by"
+	RunCostEstimate     RunIncludeOps = "cost_estimate"
+	RunConfigVer        RunIncludeOps = "configuration_version"
+	RunConfigVerIngress RunIncludeOps = "configuration_version.ingress_attributes"
+	RunWorkspace        RunIncludeOps = "workspace"
+)
+
 // RunListOptions represents the options for listing runs.
 type RunListOptions struct {
 	ListOptions
 
-	// A list of relations to include. See available resources:
-	// https://www.terraform.io/docs/cloud/api/run.html#available-related-resources
-	Include *string `url:"include"`
+	Include *[]RunIncludeOps `url:"include,omitempty"`
 }
 
 // RunVariable represents a variable that can be applied to a run. All values must be expressed as an HCL literal
@@ -289,7 +301,7 @@ func (s *runs) Read(ctx context.Context, runID string) (*Run, error) {
 
 // RunReadOptions represents the options for reading a run.
 type RunReadOptions struct {
-	Include string `url:"include"`
+	Include []RunIncludeOps `url:"include,omitempty"`
 }
 
 // Read a run by its ID with the given options.
