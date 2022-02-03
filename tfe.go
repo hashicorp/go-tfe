@@ -2,6 +2,7 @@ package tfe
 
 import (
 	"log"
+	"sort"
 
 	"bytes"
 	"context"
@@ -38,7 +39,8 @@ const (
 	// DefaultBasePath on which the API is served.
 	DefaultBasePath = "/api/v2/"
 	// PingEndpoint is a no-op API endpoint used to configure the rate limiter
-	PingEndpoint = "ping"
+	PingEndpoint      = "ping"
+	IncludeQueryParam = "include"
 )
 
 // RetryLogHook allows a function to run before each retry.
@@ -474,7 +476,7 @@ func (c *Client) newRequest(method, path string, v interface{}) (*retryablehttp.
 			if err != nil {
 				return nil, err
 			}
-			u.RawQuery = q.Encode()
+			u.RawQuery = encodeQueryParams(q)
 		}
 	case "DELETE", "PATCH", "POST":
 		reqHeaders.Set("Accept", "application/vnd.api+json")
@@ -507,6 +509,39 @@ func (c *Client) newRequest(method, path string, v interface{}) (*retryablehttp.
 	}
 
 	return req, nil
+}
+
+// Encode encodes the values into ``URL encoded'' form
+// ("bar=baz&foo=quux") sorted by key.
+func encodeQueryParams(v url.Values) string {
+	if v == nil {
+		return ""
+	}
+	var buf strings.Builder
+	keys := make([]string, 0, len(v))
+	for k := range v {
+		keys = append(keys, k)
+	}
+	sort.Strings(keys)
+	for _, k := range keys {
+		vs := v[k]
+		if len(vs) > 1 && k == IncludeQueryParam {
+			val := strings.Join(vs, ",")
+			vs = vs[:0]
+			vs = append(vs, val)
+		}
+		keyEscaped := url.QueryEscape(k)
+
+		for _, v := range vs {
+			if buf.Len() > 0 {
+				buf.WriteByte('&')
+			}
+			buf.WriteString(keyEscaped)
+			buf.WriteByte('=')
+			buf.WriteString(url.QueryEscape(v))
+		}
+	}
+	return buf.String()
 }
 
 // Helper method that serializes the given ptr or ptr slice into a JSON

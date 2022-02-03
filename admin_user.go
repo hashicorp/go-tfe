@@ -64,6 +64,14 @@ type AdminUserList struct {
 	Items []*AdminUser
 }
 
+// A list of relations to include. See available resources
+// https://www.terraform.io/docs/cloud/api/admin/users.html#available-related-resources
+type AdminUserIncludeOps string
+
+const (
+	AdminUserOrgs AdminUserIncludeOps = "organizations"
+)
+
 // AdminUserListOptions represents the options for listing users.
 // https://www.terraform.io/docs/cloud/api/admin/users.html#query-parameters
 type AdminUserListOptions struct {
@@ -78,9 +86,7 @@ type AdminUserListOptions struct {
 	// Can be "true" or "false" to show only suspended users or users who are not suspended.
 	SuspendedUsers *string `url:"filter[suspended]"`
 
-	// A list of relations to include. See available resources
-	// https://www.terraform.io/docs/cloud/api/admin/users.html#available-related-resources
-	Include *string `url:"include"`
+	Include *[]AdminUserIncludeOps `url:"include,omitempty"`
 }
 
 // List all user accounts in the Terraform Enterprise installation
