@@ -113,7 +113,7 @@ func TestWorkspacesList(t *testing.T) {
 
 	t.Run("with organization included", func(t *testing.T) {
 		wl, err := client.Workspaces.List(ctx, orgTest.Name, WorkspaceListOptions{
-			Include: String("organization"),
+			Include: []WSIncludeOps{WSOrganization},
 		})
 
 		assert.NoError(t, err)
@@ -128,7 +128,7 @@ func TestWorkspacesList(t *testing.T) {
 		t.Cleanup(rCleanup)
 
 		wl, err := client.Workspaces.List(ctx, orgTest.Name, WorkspaceListOptions{
-			Include: String("current-state-version,current-run"),
+			Include: []WSIncludeOps{WSCurrentStateVer, WSCurrentRun},
 		})
 
 		assert.NoError(t, err)
@@ -343,7 +343,7 @@ func TestWorkspacesReadWithOptions(t *testing.T) {
 
 	t.Run("when options to include resource", func(t *testing.T) {
 		opts := &WorkspaceReadOptions{
-			Include: "outputs",
+			Include: []WSIncludeOps{WSOutputs},
 		}
 		w, err := client.Workspaces.ReadWithOptions(ctx, orgTest.Name, wTest.Name, opts)
 		require.NoError(t, err)
