@@ -59,7 +59,7 @@ func TestAdminOrganizations_List(t *testing.T) {
 
 	t.Run("with owners included", func(t *testing.T) {
 		adminOrgList, err := client.Admin.Organizations.List(ctx, AdminOrganizationListOptions{
-			Include: String("owners"),
+			Include: &([]AdminOrgIncludeOps{AdminOrgOwners}),
 		})
 		assert.NoError(t, err)
 
