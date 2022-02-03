@@ -2,7 +2,7 @@ name: golangci-lint
 on:
   push:
     branches:
-      - main
+      - releases-1.0.x
   pull_request:
 jobs:
   golangci:
