@@ -143,6 +143,7 @@ type Client struct {
 	UserTokens                 UserTokens
 	Variables                  Variables
 	VariableSets               VariableSets
+	VariableSetVariables       VariableSetVariables
 	Workspaces                 Workspaces
 	WorkspaceRunTasks          WorkspaceRunTasks
 
@@ -284,6 +285,7 @@ func NewClient(cfg *Config) (*Client, error) {
 	client.UserTokens = &userTokens{client: client}
 	client.Variables = &variables{client: client}
 	client.VariableSets = &variableSets{client: client}
+	client.VariableSetVariables = &variableSetVariables{client: client}
 	client.Workspaces = &workspaces{client: client}
 	client.WorkspaceRunTasks = &workspaceRunTasks{client: client}
 

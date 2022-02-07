@@ -50,7 +50,8 @@ type VariableSet struct {
 	Global      bool   `jsonapi:"attr,global"`
 
 	// Relations
-	Workspaces []*Workspace `jsonapi:"relation,workspaces,omitempty"`
+	Workspaces []*Workspace           `jsonapi:"relation,workspaces,omitempty"`
+	Variables  []*VariableSetVariable `jsonapi:"relation,vars,omitempty"`
 }
 
 type VariableSetListOptions struct {
