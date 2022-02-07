@@ -809,6 +809,17 @@ func TestWorkspacesUnlock(t *testing.T) {
 		assert.Equal(t, ErrWorkspaceNotLocked, err)
 	})
 
+	t.Run("when a workspace is locked by a run", func(t *testing.T) {
+		wTest2, wTest2Cleanup := createWorkspace(t, client, orgTest)
+		defer wTest2Cleanup()
+
+		_, rTestCleanup := createRun(t, client, wTest2)
+		defer rTestCleanup()
+
+		_, err := client.Workspaces.Unlock(ctx, wTest2.ID)
+		assert.Equal(t, ErrWorkspaceLockedByRun, err)
+	})
+
 	t.Run("without a valid workspace ID", func(t *testing.T) {
 		w, err := client.Workspaces.Unlock(ctx, badIdentifier)
 		assert.Nil(t, w)
