@@ -32,6 +32,10 @@ var (
 	// a unlocked workspace.
 	ErrWorkspaceNotLocked = errors.New("workspace already unlocked")
 
+	// ErrWorkspaceLockedByRun is returned when trying to unlock a
+	// workspace locked by a run
+	ErrWorkspaceLockedByRun = errors.New("unable to unlock workspace locked by run")
+
 	// ErrInvalidWorkspaceID is returned when the workspace ID is invalid.
 	ErrInvalidWorkspaceID = errors.New("invalid value for workspace ID")
 
