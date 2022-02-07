@@ -1011,6 +1011,7 @@ func createWorkspaceWithVCS(t *testing.T, client *Client, org *Organization, opt
 	ctx := context.Background()
 	w, err := client.Workspaces.Create(ctx, org.Name, options)
 	if err != nil {
+
 		t.Fatal(err)
 	}
 
@@ -1073,6 +1074,86 @@ func createWorkspaceRunTask(t *testing.T, client *Client, workspace *Workspace, 
 
 		if orgCleanup != nil {
 			orgCleanup()
+		}
+	}
+}
+
+func createVariableSet(t *testing.T, client *Client, org *Organization, options VariableSetCreateOptions) (*VariableSet, func()) {
+	var orgCleanup func()
+
+	if org == nil {
+		org, orgCleanup = createOrganization(t, client)
+	}
+
+	if options.Name == nil {
+		options.Name = String(randomString(t))
+	}
+
+	if options.Global == nil {
+		options.Global = Bool(false)
+	}
+
+	ctx := context.Background()
+	vs, err := client.VariableSets.Create(ctx, org.Name, options)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	return vs, func() {
+		if err := client.VariableSets.Delete(ctx, vs.ID); err != nil {
+			t.Errorf("Error destroying variable set! WARNING: Dangling resources\n"+
+				"may exist! The full error is shown below.\n\n"+
+				"VariableSet: %s\nError: %s", vs.Name, err)
+		}
+
+		if orgCleanup != nil {
+			orgCleanup()
+		}
+	}
+}
+
+func createVariableSetVariable(t *testing.T, client *Client, vs *VariableSet, options VariableSetVariableCreateOptions) (*VariableSetVariable, func()) {
+	var vsCleanup func()
+
+	if vs == nil {
+		vs, vsCleanup = createVariableSet(t, client, nil, VariableSetCreateOptions{})
+	}
+
+	if options.Key == nil {
+		options.Key = String(randomString(t))
+	}
+
+	if options.Value == nil {
+		options.Value = String(randomString(t))
+	}
+
+	if options.Category == nil {
+		options.Category = Category(CategoryTerraform)
+	}
+
+	if options.HCL == nil {
+		options.HCL = Bool(false)
+	}
+
+	if options.Sensitive == nil {
+		options.Sensitive = Bool(false)
+	}
+
+	ctx := context.Background()
+	v, err := client.VariableSetVariables.Create(ctx, vs.ID, options)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	return v, func() {
+		if err := client.VariableSetVariables.Delete(ctx, vs.ID, v.ID); err != nil {
+			t.Errorf("Error destroying variable! WARNING: Dangling resources\n"+
+				"may exist! The full error is shown below.\n\n"+
+				"Variable: %s\nError: %s", v.Key, err)
+		}
+
+		if vsCleanup != nil {
+			vsCleanup()
 		}
 	}
 }
