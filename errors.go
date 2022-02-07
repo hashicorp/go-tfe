@@ -55,7 +55,7 @@ var (
 	// Run Task errors
 
 	// ErrInvalidRunTaskCategory is returned when a run task has a category other than "task"
-	ErrInvalidRunTaskCategory = errors.New(`category must be "tasks"`)
+	ErrInvalidRunTaskCategory = errors.New(`category must be "task"`)
 
 	// ErrInvalidRunTaskID is returned when the run task ID is invalid
 	ErrInvalidRunTaskID = errors.New("invalid value for run task ID")
