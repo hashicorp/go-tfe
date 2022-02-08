@@ -354,7 +354,7 @@ func TestWorkspacesReadWithOptions(t *testing.T) {
 		svOutputs, err := client.StateVersions.Outputs(ctx, svTest.ID, StateVersionOutputsListOptions{})
 		require.NoError(t, err)
 
-		assert.Len(t, w.Outputs, len(svOutputs.Items))
+		assert.Len(t, w.Outputs, len(svOutputs))
 
 		wsOutputs := map[string]interface{}{}
 		wsOutputsTypes := map[string]string{}
@@ -362,7 +362,7 @@ func TestWorkspacesReadWithOptions(t *testing.T) {
 			wsOutputs[op.Name] = op.Value
 			wsOutputsTypes[op.Name] = op.Type
 		}
-		for _, svop := range svOutputs.Items {
+		for _, svop := range svOutputs {
 			val, ok := wsOutputs[svop.Name]
 			assert.True(t, ok)
 			assert.Equal(t, svop.Value, val)
