@@ -12,7 +12,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-const waitForStateVersionOutputs = 500 * time.Millisecond
+const waitForStateVersionOutputs = 700 * time.Millisecond
 
 func TestStateVersionOutputsRead(t *testing.T) {
 	client := testClient(t)
