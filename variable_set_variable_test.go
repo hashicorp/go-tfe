@@ -40,4 +40,261 @@ func TestVariableSetVariablesList(t *testing.T) {
 		assert.Equal(t, 1, vl.CurrentPage)
 		assert.Equal(t, 2, vl.TotalCount)
 	})
+
+	t.Run("with list options", func(t *testing.T) {
+		t.Skip("paging not supported yet in API")
+		// Request a page number which is out of range. The result should
+		// be successful, but return no results if the paging options are
+		// properly passed along.
+		vl, err := client.VariableSetVariables.List(ctx, vsTest.ID, VariableSetVariableListOptions{
+			ListOptions: ListOptions{
+				PageNumber: 999,
+				PageSize:   100,
+			},
+		})
+		require.NoError(t, err)
+		assert.Empty(t, vl.Items)
+		assert.Equal(t, 999, vl.CurrentPage)
+		assert.Equal(t, 2, vl.TotalCount)
+	})
+
+	t.Run("when variable set ID is invalid ID", func(t *testing.T) {
+		vl, err := client.VariableSetVariables.List(ctx, badIdentifier, VariableSetVariableListOptions{})
+		assert.Nil(t, vl)
+		assert.EqualError(t, err, "invalid value for variable set ID")
+	})
+}
+
+func TestVariableSetVariablesCreate(t *testing.T) {
+	client := testClient(t)
+	ctx := context.Background()
+
+	orgTest, orgTestCleanup := createOrganization(t, client)
+	defer orgTestCleanup()
+
+	vsTest, vsTestCleanup := createVariableSet(t, client, orgTest, VariableSetCreateOptions{})
+	defer vsTestCleanup()
+
+	t.Run("with valid options", func(t *testing.T) {
+		options := VariableSetVariableCreateOptions{
+			Key:         String(randomString(t)),
+			Value:       String(randomString(t)),
+			Category:    Category(CategoryTerraform),
+			Description: String(randomString(t)),
+			HCL:         Bool(false),
+			Sensitive:   Bool(false),
+		}
+
+		v, err := client.VariableSetVariables.Create(ctx, vsTest.ID, options)
+		require.NoError(t, err)
+
+		assert.NotEmpty(t, v.ID)
+		assert.Equal(t, *options.Key, v.Key)
+		assert.Equal(t, *options.Value, v.Value)
+		assert.Equal(t, *options.Description, v.Description)
+		assert.Equal(t, *options.Category, v.Category)
+	})
+
+	t.Run("when options has an empty string value", func(t *testing.T) {
+		options := VariableSetVariableCreateOptions{
+			Key:         String(randomString(t)),
+			Value:       String(""),
+			Description: String(randomString(t)),
+			Category:    Category(CategoryTerraform),
+		}
+
+		v, err := client.VariableSetVariables.Create(ctx, vsTest.ID, options)
+		require.NoError(t, err)
+
+		assert.NotEmpty(t, v.ID)
+		assert.Equal(t, *options.Key, v.Key)
+		assert.Equal(t, *options.Value, v.Value)
+		assert.Equal(t, *options.Description, v.Description)
+		assert.Equal(t, *options.Category, v.Category)
+	})
+
+	t.Run("when options has an empty string description", func(t *testing.T) {
+		options := VariableSetVariableCreateOptions{
+			Key:         String(randomString(t)),
+			Value:       String(randomString(t)),
+			Description: String(""),
+			Category:    Category(CategoryTerraform),
+		}
+
+		v, err := client.VariableSetVariables.Create(ctx, vsTest.ID, options)
+		require.NoError(t, err)
+
+		assert.NotEmpty(t, v.ID)
+		assert.Equal(t, *options.Key, v.Key)
+		assert.Equal(t, *options.Value, v.Value)
+		assert.Equal(t, *options.Description, v.Description)
+		assert.Equal(t, *options.Category, v.Category)
+	})
+
+	t.Run("when options has a too-long description", func(t *testing.T) {
+		options := VariableSetVariableCreateOptions{
+			Key:         String(randomString(t)),
+			Value:       String(randomString(t)),
+			Description: String("tortor aliquam nulla facilisi cras fermentum odio eu feugiat pretium nibh ipsum consequat nisl vel pretium lectus quam id leo in vitae turpis massa sed elementum tempus egestas sed sed risus pretium quam vulputate dignissim suspendisse in est ante in nibh mauris cursus mattis molestie a iaculis at erat pellentesque adipiscing commodo elit at imperdiet dui accumsan sit amet nulla facilisi morbi tempus iaculis urna id volutpat lacus laoreet non curabitur gravida arcu ac tortor dignissim convallis aenean et tortor"),
+			Category:    Category(CategoryTerraform),
+		}
+
+		_, err := client.VariableSetVariables.Create(ctx, vsTest.ID, options)
+		assert.Error(t, err)
+	})
+
+	t.Run("when options is missing value", func(t *testing.T) {
+		options := VariableSetVariableCreateOptions{
+			Key:      String(randomString(t)),
+			Category: Category(CategoryTerraform),
+		}
+
+		v, err := client.VariableSetVariables.Create(ctx, vsTest.ID, options)
+		require.NoError(t, err)
+
+		assert.NotEmpty(t, v.ID)
+		assert.Equal(t, *options.Key, v.Key)
+		assert.Equal(t, "", v.Value)
+		assert.Equal(t, *options.Category, v.Category)
+	})
+
+	t.Run("when options is missing key", func(t *testing.T) {
+		options := VariableSetVariableCreateOptions{
+			Value:    String(randomString(t)),
+			Category: Category(CategoryTerraform),
+		}
+
+		_, err := client.VariableSetVariables.Create(ctx, vsTest.ID, options)
+		assert.EqualError(t, err, "key is required")
+	})
+
+	t.Run("when options has an empty key", func(t *testing.T) {
+		options := VariableSetVariableCreateOptions{
+			Key:      String(""),
+			Value:    String(randomString(t)),
+			Category: Category(CategoryTerraform),
+		}
+
+		_, err := client.VariableSetVariables.Create(ctx, vsTest.ID, options)
+		assert.EqualError(t, err, "key is required")
+	})
+
+	t.Run("when options is missing category", func(t *testing.T) {
+		options := VariableSetVariableCreateOptions{
+			Key:   String(randomString(t)),
+			Value: String(randomString(t)),
+		}
+
+		_, err := client.VariableSetVariables.Create(ctx, vsTest.ID, options)
+		assert.EqualError(t, err, "category is required")
+	})
+
+	t.Run("when workspace ID is invalid", func(t *testing.T) {
+		options := VariableSetVariableCreateOptions{
+			Key:      String(randomString(t)),
+			Value:    String(randomString(t)),
+			Category: Category(CategoryTerraform),
+		}
+
+		_, err := client.VariableSetVariables.Create(ctx, badIdentifier, options)
+		assert.EqualError(t, err, "invalid value for variable set ID")
+	})
+}
+
+func TestVariableSetVariablesUpdate(t *testing.T) {
+	client := testClient(t)
+	ctx := context.Background()
+
+	vTest, vTestCleanup := createVariableSetVariable(t, client, nil, VariableSetVariableCreateOptions{})
+	defer vTestCleanup()
+
+	t.Run("with valid options", func(t *testing.T) {
+		options := VariableSetVariableUpdateOptions{
+			Key:   String("newname"),
+			Value: String("newvalue"),
+			HCL:   Bool(true),
+		}
+
+		v, err := client.VariableSetVariables.Update(ctx, vTest.VariableSet.ID, vTest.ID, options)
+		require.NoError(t, err)
+
+		assert.Equal(t, *options.Key, v.Key)
+		assert.Equal(t, *options.HCL, v.HCL)
+		assert.Equal(t, *options.Value, v.Value)
+	})
+
+	t.Run("when updating a subset of values", func(t *testing.T) {
+		options := VariableSetVariableUpdateOptions{
+			Key: String("someothername"),
+			HCL: Bool(false),
+		}
+
+		v, err := client.VariableSetVariables.Update(ctx, vTest.VariableSet.ID, vTest.ID, options)
+		require.NoError(t, err)
+
+		assert.Equal(t, *options.Key, v.Key)
+		assert.Equal(t, *options.HCL, v.HCL)
+	})
+
+	t.Run("with sensitive set", func(t *testing.T) {
+		options := VariableSetVariableUpdateOptions{
+			Sensitive: Bool(true),
+		}
+
+		v, err := client.VariableSetVariables.Update(ctx, vTest.VariableSet.ID, vTest.ID, options)
+		require.NoError(t, err)
+
+		assert.Equal(t, *options.Sensitive, v.Sensitive)
+		assert.Empty(t, v.Value) // Because its now sensitive
+	})
+
+	t.Run("without any changes", func(t *testing.T) {
+		vTest, vTestCleanup := createVariableSetVariable(t, client, nil, VariableSetVariableCreateOptions{})
+		defer vTestCleanup()
+
+		v, err := client.VariableSetVariables.Update(ctx, vTest.VariableSet.ID, vTest.ID, VariableSetVariableUpdateOptions{})
+		require.NoError(t, err)
+
+		assert.Equal(t, vTest, v)
+	})
+
+	t.Run("with invalid variable ID", func(t *testing.T) {
+		_, err := client.VariableSetVariables.Update(ctx, badIdentifier, vTest.ID, VariableSetVariableUpdateOptions{})
+		assert.EqualError(t, err, "invalid value for variable set ID")
+	})
+
+	t.Run("with invalid variable ID", func(t *testing.T) {
+		_, err := client.VariableSetVariables.Update(ctx, vTest.VariableSet.ID, badIdentifier, VariableSetVariableUpdateOptions{})
+		assert.EqualError(t, err, "invalid value for variable ID")
+	})
+}
+
+func TestVariableSetVariablesDelete(t *testing.T) {
+	client := testClient(t)
+	ctx := context.Background()
+
+	vsTest, vsTestCleanup := createVariableSet(t, client, nil, VariableSetCreateOptions{})
+	defer vsTestCleanup()
+
+	vTest, _ := createVariableSetVariable(t, client, vsTest, VariableSetVariableCreateOptions{})
+
+	t.Run("with valid options", func(t *testing.T) {
+		err := client.VariableSetVariables.Delete(ctx, vsTest.ID, vTest.ID)
+		assert.NoError(t, err)
+	})
+
+	t.Run("with non existing variable ID", func(t *testing.T) {
+		err := client.VariableSetVariables.Delete(ctx, vsTest.ID, "nonexisting")
+		assert.Equal(t, err, ErrResourceNotFound)
+	})
+
+	t.Run("with invalid workspace ID", func(t *testing.T) {
+		err := client.VariableSetVariables.Delete(ctx, badIdentifier, vTest.ID)
+		assert.EqualError(t, err, "invalid value for variable set ID")
+	})
+
+	t.Run("with invalid variable ID", func(t *testing.T) {
+		err := client.VariableSetVariables.Delete(ctx, vsTest.ID, badIdentifier)
+		assert.EqualError(t, err, "invalid value for variable ID")
+	})
 }

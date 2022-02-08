@@ -1127,6 +1127,10 @@ func createVariableSetVariable(t *testing.T, client *Client, vs *VariableSet, op
 		options.Value = String(randomString(t))
 	}
 
+	if options.Description == nil {
+		options.Description = String("")
+	}
+
 	if options.Category == nil {
 		options.Category = Category(CategoryTerraform)
 	}
@@ -1138,6 +1142,10 @@ func createVariableSetVariable(t *testing.T, client *Client, vs *VariableSet, op
 	if options.Sensitive == nil {
 		options.Sensitive = Bool(false)
 	}
+
+	out := bytes.NewBuffer(nil)
+	jsonstuff := jsonapi.MarshalOnePayloadEmbedded(out, options)
+	fmt.Printf("%+v\n", jsonstuff)
 
 	ctx := context.Background()
 	v, err := client.VariableSetVariables.Create(ctx, vs.ID, options)

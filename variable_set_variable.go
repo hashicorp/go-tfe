@@ -38,12 +38,13 @@ type VariableSetVariableList struct {
 }
 
 type VariableSetVariable struct {
-	ID        string       `jsonapi:"primary,vars"`
-	Key       string       `jsonapi:"attr,key"`
-	Value     string       `jsonapi:"attr,value"`
-	Category  CategoryType `jsonapi:"attr,category"`
-	HCL       string       `jsonapi:"attr,hcl"`
-	Sensitive bool         `jsonapi:"attr,sensitive"`
+	ID          string       `jsonapi:"primary,vars"`
+	Key         string       `jsonapi:"attr,key"`
+	Value       string       `jsonapi:"attr,value"`
+	Description string       `jsonapi:"attr,description"`
+	Category    CategoryType `jsonapi:"attr,category"`
+	HCL         string       `jsonapi:"attr,hcl"`
+	Sensitive   bool         `jsonapi:"attr,sensitive"`
 
 	// Relations
 	VariableSet *VariableSet `jsonapi:"relation,configurable"`
@@ -95,6 +96,9 @@ type VariableSetVariableCreateOptions struct {
 	// The value of the variable.
 	Value *string `jsonapi:"attr,value,omitempty"`
 
+	// The description of the variable.
+	Description *string `jsonapi:"attr,description,omitempty"`
+
 	// Whether this is a Terraform or environment variable.
 	Category *CategoryType `jsonapi:"attr,category"`
 
@@ -123,6 +127,12 @@ func (s *variableSetVariables) Create(ctx context.Context, variableSetID string,
 	if err := options.valid(); err != nil {
 		return nil, err
 	}
+
+	/*
+		out := bytes.NewBuffer(nil)
+		jsonstuff := jsonapi.MarshalOnePayloadEmbedded(out, i&options)
+		fmt.Printf("%+v\n", jsonstuff)
+	*/
 
 	u := fmt.Sprintf("varsets/%s/relationships/vars", url.QueryEscape(variableSetID))
 	req, err := s.client.newRequest("POST", u, &options)
