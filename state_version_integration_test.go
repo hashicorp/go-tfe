@@ -466,6 +466,10 @@ func TestStateVersionOutputs(t *testing.T) {
 		outputs, err := client.StateVersions.Outputs(ctx, sv.ID, options)
 		require.NoError(t, err)
 		assert.Empty(t, outputs.Items)
+		assert.Equal(t, 999, outputs.CurrentPage)
+
+		// Based on fixture test-fixtures/state-version/terraform.tfstate
+		assert.Equal(t, 7, outputs.TotalCount)
 	})
 
 	t.Run("when the state version does not exist", func(t *testing.T) {
