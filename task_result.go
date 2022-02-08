@@ -6,29 +6,39 @@ import (
 	"time"
 )
 
+// Compile-time proof of interface implementation
 var _ TaskResults = (*taskResults)(nil)
 
+// TaskResults describes all the task result related methods that the TFC/E API supports.
+// **Note**: This API is still in BETA and is subject to change
 type TaskResults interface {
+	// Read a task result by ID
 	Read(ctx context.Context, taskResultID string) (*TaskResult, error)
 }
 
+// taskResults implements TaskResults
 type taskResults struct {
 	client *Client
 }
 
+//TaskResultStatus is an enum that represents all possible statuses for a task result
 type TaskResultStatus string
+
+//TaskEnforcementLevel is an enum that describes the enforcement levels for a run task
 type TaskEnforcementLevel string
 
 const (
-	TaskPassed      TaskResultStatus     = "passed"
-	TaskFailed      TaskResultStatus     = "failed"
-	TaskRunning     TaskResultStatus     = "running"
-	TaskPending     TaskResultStatus     = "pending"
-	TaskUnreachable TaskResultStatus     = "unreachable"
-	Advisory        TaskEnforcementLevel = "advisory"
-	Mandatory       TaskEnforcementLevel = "mandatory"
+	TaskPassed      TaskResultStatus = "passed"
+	TaskFailed      TaskResultStatus = "failed"
+	TaskRunning     TaskResultStatus = "running"
+	TaskPending     TaskResultStatus = "pending"
+	TaskUnreachable TaskResultStatus = "unreachable"
+
+	Advisory  TaskEnforcementLevel = "advisory"
+	Mandatory TaskEnforcementLevel = "mandatory"
 )
 
+// TaskResultStatusTimestamps represents the set of timestamps recorded for a task result
 type TaskResultStatusTimestamps struct {
 	ErroredAt  time.Time `jsonapi:"attr,errored-at,rfc3339"`
 	RunningAt  time.Time `jsonapi:"attr,running-at,rfc3339"`
@@ -37,6 +47,7 @@ type TaskResultStatusTimestamps struct {
 	PassedAt   time.Time `jsonapi:"attr,passed-at,rfc3339"`
 }
 
+// TaskResult represents the result of a TFC/E run task
 type TaskResult struct {
 	ID                            string                     `jsonapi:"primary,task-results"`
 	Status                        TaskResultStatus           `jsonapi:"attr,status"`
@@ -51,9 +62,11 @@ type TaskResult struct {
 	WorkspaceTaskID               string                     `jsonapi:"attr,workspace-task-id"`
 	WorkspaceTaskEnforcementLevel TaskEnforcementLevel       `jsonapi:"attr,workspace-task-enforcement-level"`
 
+	// The task stage this result belongs to
 	TaskStage *TaskStage `jsonapi:"relation,task_stage"`
 }
 
+// Read a task result by ID
 func (t *taskResults) Read(ctx context.Context, taskResultID string) (*TaskResult, error) {
 	if !validStringID(&taskResultID) {
 		return nil, ErrInvalidTaskResultID

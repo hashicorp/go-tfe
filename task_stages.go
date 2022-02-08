@@ -6,22 +6,34 @@ import (
 	"time"
 )
 
+// Compile-time proof of interface  implementation
+var _ TaskStages = (*taskStages)(nil)
+
+// TaskStages describes all the task stage related methods that the TFC/E API
+// supports.
+// **Note: This API is still in BETA and is subject to change.**
 type TaskStages interface {
+	// Read a task stage by ID
 	Read(ctx context.Context, taskStageID string, options *TaskStageReadOptions) (*TaskStage, error)
 
+	// List all task stages for a given rrun
 	List(ctx context.Context, runID string, options *TaskStageListOptions) (*TaskStageList, error)
 }
 
+// taskStages implements TaskStages
 type taskStages struct {
 	client *Client
 }
 
+// Stage is an enum that represents the possible run stages for run tasks
 type Stage string
 
 const (
+	PostPlan Stage = "post_plan"
 	PreApply Stage = "pre_apply"
 )
 
+// TaskStage represents a TFC/E run's stage where run tasks can occur
 type TaskStage struct {
 	ID               string                    `jsonapi:"primary,task-stages"`
 	Stage            Stage                     `jsonapi:"attr,stage"`
@@ -33,11 +45,13 @@ type TaskStage struct {
 	TaskResults []*TaskResult `jsonapi:"relation,task-results"`
 }
 
+// TaskStageList represents a list of task stages
 type TaskStageList struct {
 	*Pagination
 	Items []*TaskStage
 }
 
+// TaskStageStatusTimestamps represents the set of timestamps recorded for a task stage
 type TaskStageStatusTimestamps struct {
 	ErroredAt  time.Time `jsonapi:"attr,errored-at,rfc3339"`
 	RunningAt  time.Time `jsonapi:"attr,running-at,rfc3339"`
@@ -46,10 +60,12 @@ type TaskStageStatusTimestamps struct {
 	PassedAt   time.Time `jsonapi:"attr,passed-at,rfc3339"`
 }
 
+// TaskStageReadOptions represents the set of options when reading a task stage
 type TaskStageReadOptions struct {
 	Include string `url:"include"`
 }
 
+// Read a task stage by ID
 func (s *taskStages) Read(ctx context.Context, taskStageID string, options *TaskStageReadOptions) (*TaskStage, error) {
 	if !validStringID(&taskStageID) {
 		return nil, ErrInvalidTaskStageID
@@ -70,10 +86,12 @@ func (s *taskStages) Read(ctx context.Context, taskStageID string, options *Task
 	return t, nil
 }
 
+// TaskStageListOptions represents the options for listing task stages for a run
 type TaskStageListOptions struct {
 	ListOptions
 }
 
+// List task stages for a run
 func (s *taskStages) List(ctx context.Context, runID string, options *TaskStageListOptions) (*TaskStageList, error) {
 	if !validStringID(&runID) {
 		return nil, ErrInvalidRunID
