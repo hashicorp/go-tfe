@@ -438,10 +438,10 @@ func TestStateVersionOutputs(t *testing.T) {
 		outputs, err := client.StateVersions.Outputs(ctx, sv.ID, StateVersionOutputsListOptions{})
 		require.NoError(t, err)
 
-		assert.NotEmpty(t, outputs.Items)
+		assert.NotEmpty(t, outputs)
 
 		values := map[string]interface{}{}
-		for _, op := range outputs.Items {
+		for _, op := range outputs {
 			values[op.Name] = op.Value
 		}
 
@@ -465,7 +465,7 @@ func TestStateVersionOutputs(t *testing.T) {
 		}
 		outputs, err := client.StateVersions.Outputs(ctx, sv.ID, options)
 		require.NoError(t, err)
-		assert.Empty(t, outputs.Items)
+		assert.Empty(t, outputs)
 	})
 
 	t.Run("when the state version does not exist", func(t *testing.T) {
