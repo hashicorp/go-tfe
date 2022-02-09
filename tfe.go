@@ -718,6 +718,9 @@ func checkResponseCode(r *http.Response) error {
 		return nil
 	}
 
+	var errs []string
+	var err error
+
 	switch r.StatusCode {
 	case 401:
 		return ErrUnauthorized
@@ -728,21 +731,39 @@ func checkResponseCode(r *http.Response) error {
 		case strings.HasSuffix(r.Request.URL.Path, "actions/lock"):
 			return ErrWorkspaceLocked
 		case strings.HasSuffix(r.Request.URL.Path, "actions/unlock"):
+			errs, err = decodeErrorPayload(r)
+			if err != nil {
+				return err
+			}
+
+			if errorPayloadContains(errs, "is locked by Run") {
+				return ErrWorkspaceLockedByRun
+			}
+
 			return ErrWorkspaceNotLocked
 		case strings.HasSuffix(r.Request.URL.Path, "actions/force-unlock"):
 			return ErrWorkspaceNotLocked
 		}
 	}
 
+	errs, err = decodeErrorPayload(r)
+	if err != nil {
+		return err
+	}
+
+	return fmt.Errorf(strings.Join(errs, "\n"))
+}
+
+func decodeErrorPayload(r *http.Response) ([]string, error) {
 	// Decode the error payload.
+	var errs []string
 	errPayload := &jsonapi.ErrorsPayload{}
 	err := json.NewDecoder(r.Body).Decode(errPayload)
 	if err != nil || len(errPayload.Errors) == 0 {
-		return fmt.Errorf(r.Status)
+		return errs, fmt.Errorf(r.Status)
 	}
 
 	// Parse and format the errors.
-	var errs []string
 	for _, e := range errPayload.Errors {
 		if e.Detail == "" {
 			errs = append(errs, e.Title)
@@ -751,7 +772,16 @@ func checkResponseCode(r *http.Response) error {
 		}
 	}
 
-	return fmt.Errorf(strings.Join(errs, "\n"))
+	return errs, nil
+}
+
+func errorPayloadContains(errors []string, match string) bool {
+	for _, e := range errors {
+		if strings.Contains(e, match) {
+			return true
+		}
+	}
+	return false
 }
 
 func packContents(path string) (*bytes.Buffer, error) {
