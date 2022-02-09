@@ -134,6 +134,7 @@ type Workspace struct {
 	TriggerPrefixes            []string              `jsonapi:"attr,trigger-prefixes"`
 	VCSRepo                    *VCSRepo              `jsonapi:"attr,vcs-repo"`
 	WorkingDirectory           string                `jsonapi:"attr,working-directory"`
+	TriggerNestedChanges       bool                  `jsonapi:"attr,trigger-nested-changes"`
 	UpdatedAt                  time.Time             `jsonapi:"attr,updated-at,iso8601"`
 	ResourceCount              int                   `jsonapi:"attr,resource-count"`
 	ApplyDurationAverage       time.Duration         `jsonapi:"attr,apply-duration-average"`
@@ -336,6 +337,9 @@ type WorkspaceCreateOptions struct {
 	// root of your repository and is typically set to a subdirectory matching the
 	// environment when multiple environments exist within the same repository.
 	WorkingDirectory *string `jsonapi:"attr,working-directory,omitempty"`
+
+	// todo
+	TriggerNestedChanges *bool `jsonapi:"attr,trigger-nested-changes"`
 
 	// A list of tags to attach to the workspace. If the tag does not already
 	// exist, it is created and added to the workspace.
@@ -567,6 +571,9 @@ type WorkspaceUpdateOptions struct {
 	// the environment when multiple environments exist within the same
 	// repository.
 	WorkingDirectory *string `jsonapi:"attr,working-directory,omitempty"`
+
+	// todo
+	TriggerNestedChanges *bool `jsonapi:"attr,trigger-nested-changes"`
 }
 
 func (o WorkspaceUpdateOptions) valid() error {
