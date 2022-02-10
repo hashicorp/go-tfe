@@ -43,7 +43,7 @@ type VariableSetVariable struct {
 	Value       string       `jsonapi:"attr,value"`
 	Description string       `jsonapi:"attr,description"`
 	Category    CategoryType `jsonapi:"attr,category"`
-	HCL         string       `jsonapi:"attr,hcl"`
+	HCL         bool         `jsonapi:"attr,hcl"`
 	Sensitive   bool         `jsonapi:"attr,sensitive"`
 
 	// Relations
@@ -128,12 +128,6 @@ func (s *variableSetVariables) Create(ctx context.Context, variableSetID string,
 		return nil, err
 	}
 
-	/*
-		out := bytes.NewBuffer(nil)
-		jsonstuff := jsonapi.MarshalOnePayloadEmbedded(out, i&options)
-		fmt.Printf("%+v\n", jsonstuff)
-	*/
-
 	u := fmt.Sprintf("varsets/%s/relationships/vars", url.QueryEscape(variableSetID))
 	req, err := s.client.newRequest("POST", u, &options)
 	if err != nil {
@@ -182,7 +176,7 @@ func (s *variableSetVariables) Update(ctx context.Context, variableSetID string,
 		return nil, errors.New("invalid value for variable ID")
 	}
 
-	u := fmt.Sprintf("varsets/%s/vars/%s", url.QueryEscape(variableSetID), url.QueryEscape(variableID))
+	u := fmt.Sprintf("varsets/%s/relationships/vars/%s", url.QueryEscape(variableSetID), url.QueryEscape(variableID))
 	req, err := s.client.newRequest("PATCH", u, &options)
 	if err != nil {
 		return nil, err

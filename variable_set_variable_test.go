@@ -205,7 +205,10 @@ func TestVariableSetVariablesUpdate(t *testing.T) {
 	client := testClient(t)
 	ctx := context.Background()
 
-	vTest, vTestCleanup := createVariableSetVariable(t, client, nil, VariableSetVariableCreateOptions{})
+	vsTest, vsTestCleanup := createVariableSet(t, client, nil, VariableSetCreateOptions{})
+	defer vsTestCleanup()
+
+	vTest, vTestCleanup := createVariableSetVariable(t, client, vsTest, VariableSetVariableCreateOptions{})
 	defer vTestCleanup()
 
 	t.Run("with valid options", func(t *testing.T) {
@@ -215,7 +218,7 @@ func TestVariableSetVariablesUpdate(t *testing.T) {
 			HCL:   Bool(true),
 		}
 
-		v, err := client.VariableSetVariables.Update(ctx, vTest.VariableSet.ID, vTest.ID, options)
+		v, err := client.VariableSetVariables.Update(ctx, vsTest.ID, vTest.ID, options)
 		require.NoError(t, err)
 
 		assert.Equal(t, *options.Key, v.Key)
@@ -229,7 +232,7 @@ func TestVariableSetVariablesUpdate(t *testing.T) {
 			HCL: Bool(false),
 		}
 
-		v, err := client.VariableSetVariables.Update(ctx, vTest.VariableSet.ID, vTest.ID, options)
+		v, err := client.VariableSetVariables.Update(ctx, vsTest.ID, vTest.ID, options)
 		require.NoError(t, err)
 
 		assert.Equal(t, *options.Key, v.Key)
@@ -241,7 +244,7 @@ func TestVariableSetVariablesUpdate(t *testing.T) {
 			Sensitive: Bool(true),
 		}
 
-		v, err := client.VariableSetVariables.Update(ctx, vTest.VariableSet.ID, vTest.ID, options)
+		v, err := client.VariableSetVariables.Update(ctx, vsTest.ID, vTest.ID, options)
 		require.NoError(t, err)
 
 		assert.Equal(t, *options.Sensitive, v.Sensitive)
@@ -249,10 +252,18 @@ func TestVariableSetVariablesUpdate(t *testing.T) {
 	})
 
 	t.Run("without any changes", func(t *testing.T) {
-		vTest, vTestCleanup := createVariableSetVariable(t, client, nil, VariableSetVariableCreateOptions{})
+		vTest, vTestCleanup := createVariableSetVariable(t, client, vsTest, VariableSetVariableCreateOptions{})
 		defer vTestCleanup()
 
-		v, err := client.VariableSetVariables.Update(ctx, vTest.VariableSet.ID, vTest.ID, VariableSetVariableUpdateOptions{})
+		ua := VariableSetVariableUpdateOptions{
+			Key:         String(vTest.Key),
+			Value:       String(vTest.Value),
+			Description: String(vTest.Description),
+			Sensitive:   Bool(vTest.Sensitive),
+			HCL:         Bool(vTest.HCL),
+		}
+
+		v, err := client.VariableSetVariables.Update(ctx, vsTest.ID, vTest.ID, ua)
 		require.NoError(t, err)
 
 		assert.Equal(t, vTest, v)
@@ -264,7 +275,7 @@ func TestVariableSetVariablesUpdate(t *testing.T) {
 	})
 
 	t.Run("with invalid variable ID", func(t *testing.T) {
-		_, err := client.VariableSetVariables.Update(ctx, vTest.VariableSet.ID, badIdentifier, VariableSetVariableUpdateOptions{})
+		_, err := client.VariableSetVariables.Update(ctx, vsTest.ID, badIdentifier, VariableSetVariableUpdateOptions{})
 		assert.EqualError(t, err, "invalid value for variable ID")
 	})
 }
