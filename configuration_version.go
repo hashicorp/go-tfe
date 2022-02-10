@@ -21,7 +21,7 @@ var _ ConfigurationVersions = (*configurationVersions)(nil)
 // https://www.terraform.io/docs/enterprise/api/configuration-versions.html
 type ConfigurationVersions interface {
 	// List returns all configuration versions of a workspace.
-	List(ctx context.Context, workspaceID string, options ConfigurationVersionListOptions) (*ConfigurationVersionList, error)
+	List(ctx context.Context, workspaceID string, options *ConfigurationVersionListOptions) (*ConfigurationVersionList, error)
 
 	// Create is used to create a new configuration version. The created
 	// configuration version will be usable once data is uploaded to it.
@@ -146,13 +146,13 @@ type IngressAttributes struct {
 }
 
 // List returns all configuration versions of a workspace.
-func (s *configurationVersions) List(ctx context.Context, workspaceID string, options ConfigurationVersionListOptions) (*ConfigurationVersionList, error) {
+func (s *configurationVersions) List(ctx context.Context, workspaceID string, options *ConfigurationVersionListOptions) (*ConfigurationVersionList, error) {
 	if !validStringID(&workspaceID) {
 		return nil, ErrInvalidWorkspaceID
 	}
 
 	u := fmt.Sprintf("workspaces/%s/configuration-versions", url.QueryEscape(workspaceID))
-	req, err := s.client.newRequest("GET", u, &options)
+	req, err := s.client.newRequest("GET", u, options)
 	if err != nil {
 		return nil, err
 	}

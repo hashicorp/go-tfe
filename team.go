@@ -16,7 +16,7 @@ var _ Teams = (*teams)(nil)
 // TFE API docs: https://www.terraform.io/docs/cloud/api/teams.html
 type Teams interface {
 	// List all the teams of the given organization.
-	List(ctx context.Context, organization string, options TeamListOptions) (*TeamList, error)
+	List(ctx context.Context, organization string, options *TeamListOptions) (*TeamList, error)
 
 	// Create a new team with the given options.
 	Create(ctx context.Context, organization string, options TeamCreateOptions) (*Team, error)
@@ -88,13 +88,13 @@ type TeamListOptions struct {
 }
 
 // List all the teams of the given organization.
-func (s *teams) List(ctx context.Context, organization string, options TeamListOptions) (*TeamList, error) {
+func (s *teams) List(ctx context.Context, organization string, options *TeamListOptions) (*TeamList, error) {
 	if !validStringID(&organization) {
 		return nil, ErrInvalidOrg
 	}
 
 	u := fmt.Sprintf("organizations/%s/teams", url.QueryEscape(organization))
-	req, err := s.client.newRequest("GET", u, &options)
+	req, err := s.client.newRequest("GET", u, options)
 	if err != nil {
 		return nil, err
 	}

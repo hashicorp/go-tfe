@@ -65,7 +65,7 @@ func (mr *MockVariablesMockRecorder) Delete(ctx, workspaceID, variableID interfa
 }
 
 // List mocks base method.
-func (m *MockVariables) List(ctx context.Context, workspaceID string, options tfe.VariableListOptions) (*tfe.VariableList, error) {
+func (m *MockVariables) List(ctx context.Context, workspaceID string, options *tfe.VariableListOptions) (*tfe.VariableList, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "List", ctx, workspaceID, options)
 	ret0, _ := ret[0].(*tfe.VariableList)

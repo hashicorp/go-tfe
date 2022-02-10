@@ -34,7 +34,7 @@ func TestTeamAccessesList(t *testing.T) {
 	defer taTest2Cleanup()
 
 	t.Run("with valid options", func(t *testing.T) {
-		tal, err := client.TeamAccess.List(ctx, TeamAccessListOptions{
+		tal, err := client.TeamAccess.List(ctx, &TeamAccessListOptions{
 			WorkspaceID: String(wTest.ID),
 		})
 		require.NoError(t, err)
@@ -51,7 +51,7 @@ func TestTeamAccessesList(t *testing.T) {
 		// Request a page number which is out of range. The result should
 		// be successful, but return no results if the paging options are
 		// properly passed along.
-		tal, err := client.TeamAccess.List(ctx, TeamAccessListOptions{
+		tal, err := client.TeamAccess.List(ctx, &TeamAccessListOptions{
 			ListOptions: ListOptions{
 				PageNumber: 999,
 				PageSize:   100,
@@ -63,14 +63,25 @@ func TestTeamAccessesList(t *testing.T) {
 		assert.Equal(t, 2, tal.TotalCount)
 	})
 
-	t.Run("without list options", func(t *testing.T) {
-		tal, err := client.TeamAccess.List(ctx, TeamAccessListOptions{})
+	t.Run("without TeamAccessListOptions", func(t *testing.T) {
+		tal, err := client.TeamAccess.List(ctx, nil)
+		assert.Nil(t, tal)
+		assert.EqualError(t, err, "TeamAccessListOptions is required")
+	})
+
+	t.Run("without WorkspaceID options", func(t *testing.T) {
+		tal, err := client.TeamAccess.List(ctx, &TeamAccessListOptions{
+			ListOptions: ListOptions{
+				PageNumber: 2,
+				PageSize:   25,
+			},
+		})
 		assert.Nil(t, tal)
 		assert.EqualError(t, err, "workspace ID is required")
 	})
 
-	t.Run("without a valid workspace ID", func(t *testing.T) {
-		tal, err := client.TeamAccess.List(ctx, TeamAccessListOptions{
+	t.Run("without a valid workspaceID", func(t *testing.T) {
+		tal, err := client.TeamAccess.List(ctx, &TeamAccessListOptions{
 			WorkspaceID: String(badIdentifier),
 		})
 		assert.Nil(t, tal)

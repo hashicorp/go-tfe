@@ -50,7 +50,7 @@ if err != nil {
 	log.Fatal(err)
 }
 
-orgs, err := client.Organizations.List(context.Background(), tfe.OrganizationListOptions{})
+orgs, err := client.Organizations.List(context.Background(), nil)
 if err != nil {
 	log.Fatal(err)
 }

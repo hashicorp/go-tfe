@@ -19,7 +19,7 @@ var _ StateVersions = (*stateVersions)(nil)
 // https://www.terraform.io/docs/cloud/api/state-versions.html
 type StateVersions interface {
 	// List all the state versions for a given workspace.
-	List(ctx context.Context, options StateVersionListOptions) (*StateVersionList, error)
+	List(ctx context.Context, options *StateVersionListOptions) (*StateVersionList, error)
 
 	// Create a new state version for the given workspace.
 	Create(ctx context.Context, workspaceID string, options StateVersionCreateOptions) (*StateVersion, error)
@@ -75,6 +75,7 @@ type StateVersionListOptions struct {
 	Workspace    *string `url:"filter[workspace][name]"`
 }
 
+//check that StateVersionListOptions fields had valid values
 func (o StateVersionListOptions) valid() error {
 	if !validString(o.Organization) {
 		return errors.New("organization is required")
@@ -86,12 +87,16 @@ func (o StateVersionListOptions) valid() error {
 }
 
 // List all the state versions for a given workspace.
-func (s *stateVersions) List(ctx context.Context, options StateVersionListOptions) (*StateVersionList, error) {
+func (s *stateVersions) List(ctx context.Context, options *StateVersionListOptions) (*StateVersionList, error) {
+	if options == nil {
+		return nil, errors.New("StateVersionListOptions is required")
+	}
+
 	if err := options.valid(); err != nil {
 		return nil, err
 	}
 
-	req, err := s.client.newRequest("GET", "state-versions", &options)
+	req, err := s.client.newRequest("GET", "state-versions", options)
 	if err != nil {
 		return nil, err
 	}

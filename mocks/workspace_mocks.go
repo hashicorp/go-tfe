@@ -138,7 +138,7 @@ func (mr *MockWorkspacesMockRecorder) ForceUnlock(ctx, workspaceID interface{}) 
 }
 
 // List mocks base method.
-func (m *MockWorkspaces) List(ctx context.Context, organization string, options tfe.WorkspaceListOptions) (*tfe.WorkspaceList, error) {
+func (m *MockWorkspaces) List(ctx context.Context, organization string, options *tfe.WorkspaceListOptions) (*tfe.WorkspaceList, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "List", ctx, organization, options)
 	ret0, _ := ret[0].(*tfe.WorkspaceList)
@@ -316,7 +316,7 @@ func (mr *MockWorkspacesMockRecorder) RemoveVCSConnectionByID(ctx, workspaceID i
 }
 
 // Tags mocks base method.
-func (m *MockWorkspaces) Tags(ctx context.Context, workspaceID string, options tfe.WorkspaceTagListOptions) (*tfe.TagList, error) {
+func (m *MockWorkspaces) Tags(ctx context.Context, workspaceID string, options *tfe.WorkspaceTagListOptions) (*tfe.TagList, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Tags", ctx, workspaceID, options)
 	ret0, _ := ret[0].(*tfe.TagList)

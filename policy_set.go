@@ -17,7 +17,7 @@ var _ PolicySets = (*policySets)(nil)
 // TFE API docs: https://www.terraform.io/docs/cloud/api/policies.html
 type PolicySets interface {
 	// List all the policy sets for a given organization.
-	List(ctx context.Context, organization string, options PolicySetListOptions) (*PolicySetList, error)
+	List(ctx context.Context, organization string, options *PolicySetListOptions) (*PolicySetList, error)
 
 	// Create a policy set and associate it with an organization.
 	Create(ctx context.Context, organization string, options PolicySetCreateOptions) (*PolicySet, error)
@@ -97,13 +97,13 @@ type PolicySetListOptions struct {
 }
 
 // List all the policies for a given organization.
-func (s *policySets) List(ctx context.Context, organization string, options PolicySetListOptions) (*PolicySetList, error) {
+func (s *policySets) List(ctx context.Context, organization string, options *PolicySetListOptions) (*PolicySetList, error) {
 	if !validStringID(&organization) {
 		return nil, ErrInvalidOrg
 	}
 
 	u := fmt.Sprintf("organizations/%s/policy-sets", url.QueryEscape(organization))
-	req, err := s.client.newRequest("GET", u, &options)
+	req, err := s.client.newRequest("GET", u, options)
 	if err != nil {
 		return nil, err
 	}

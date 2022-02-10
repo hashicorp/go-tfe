@@ -19,14 +19,14 @@ func TestAdminTerraformVersions_List(t *testing.T) {
 	ctx := context.Background()
 
 	t.Run("without list options", func(t *testing.T) {
-		tfList, err := client.Admin.TerraformVersions.List(ctx, AdminTerraformVersionsListOptions{})
+		tfList, err := client.Admin.TerraformVersions.List(ctx, nil)
 		require.NoError(t, err)
 
 		assert.NotEmpty(t, tfList.Items)
 	})
 
 	t.Run("with list options", func(t *testing.T) {
-		tfList, err := client.Admin.TerraformVersions.List(ctx, AdminTerraformVersionsListOptions{
+		tfList, err := client.Admin.TerraformVersions.List(ctx, &AdminTerraformVersionsListOptions{
 			ListOptions: ListOptions{
 				PageNumber: 999,
 				PageSize:   100,
@@ -37,7 +37,7 @@ func TestAdminTerraformVersions_List(t *testing.T) {
 		assert.Empty(t, tfList.Items)
 		assert.Equal(t, 999, tfList.CurrentPage)
 
-		tfList, err = client.Admin.TerraformVersions.List(ctx, AdminTerraformVersionsListOptions{
+		tfList, err = client.Admin.TerraformVersions.List(ctx, &AdminTerraformVersionsListOptions{
 			ListOptions: ListOptions{
 				PageNumber: 1,
 				PageSize:   100,
@@ -65,14 +65,14 @@ func TestAdminTerraformVersions_List(t *testing.T) {
 	})
 
 	t.Run("with filter query string", func(t *testing.T) {
-		tfList, err := client.Admin.TerraformVersions.List(ctx, AdminTerraformVersionsListOptions{
+		tfList, err := client.Admin.TerraformVersions.List(ctx, &AdminTerraformVersionsListOptions{
 			Filter: String("1.0.4"),
 		})
 		require.NoError(t, err)
 		assert.Equal(t, 1, len(tfList.Items))
 
 		// Query for a Terraform version that does not exist
-		tfList, err = client.Admin.TerraformVersions.List(ctx, AdminTerraformVersionsListOptions{
+		tfList, err = client.Admin.TerraformVersions.List(ctx, &AdminTerraformVersionsListOptions{
 			Filter: String("1000.1000.42"),
 		})
 		require.NoError(t, err)
@@ -81,7 +81,7 @@ func TestAdminTerraformVersions_List(t *testing.T) {
 
 	t.Run("with search version query string", func(t *testing.T) {
 		searchVersion := "1.0"
-		tfList, err := client.Admin.TerraformVersions.List(ctx, AdminTerraformVersionsListOptions{
+		tfList, err := client.Admin.TerraformVersions.List(ctx, &AdminTerraformVersionsListOptions{
 			Search: String(searchVersion),
 		})
 		require.NoError(t, err)

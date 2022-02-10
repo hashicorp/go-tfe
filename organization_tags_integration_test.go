@@ -39,7 +39,7 @@ func TestOrganizationTagsList(t *testing.T) {
 	var testTagID string
 
 	t.Run("with no query params", func(t *testing.T) {
-		tags, err := client.OrganizationTags.List(ctx, orgTest.Name, OrganizationTagsListOptions{})
+		tags, err := client.OrganizationTags.List(ctx, orgTest.Name, nil)
 		require.NoError(t, err)
 
 		assert.Equal(t, 10, len(tags.Items))
@@ -58,7 +58,7 @@ func TestOrganizationTagsList(t *testing.T) {
 	})
 
 	t.Run("with query params", func(t *testing.T) {
-		tags, err := client.OrganizationTags.List(ctx, orgTest.Name, OrganizationTagsListOptions{
+		tags, err := client.OrganizationTags.List(ctx, orgTest.Name, &OrganizationTagsListOptions{
 			ListOptions: ListOptions{
 				PageNumber: 1,
 				PageSize:   5,
@@ -107,7 +107,7 @@ func TestOrganizationTagsDelete(t *testing.T) {
 	require.NoError(t, err)
 
 	t.Run("delete tags by id", func(t *testing.T) {
-		tags, err := client.OrganizationTags.List(ctx, orgTest.Name, OrganizationTagsListOptions{})
+		tags, err := client.OrganizationTags.List(ctx, orgTest.Name, nil)
 		require.NoError(t, err)
 
 		var tagIds []string
@@ -123,7 +123,7 @@ func TestOrganizationTagsDelete(t *testing.T) {
 		require.NoError(t, err)
 
 		//sanity check ensure tags were deleted from the organization
-		tags, err = client.OrganizationTags.List(ctx, orgTest.Name, OrganizationTagsListOptions{})
+		tags, err = client.OrganizationTags.List(ctx, orgTest.Name, nil)
 		require.NoError(t, err)
 
 		assert.Equal(t, 5, len(tags.Items))
@@ -158,7 +158,7 @@ func TestOrganizationTagsAddWorkspace(t *testing.T) {
 
 	t.Run("add tags to new workspaces", func(t *testing.T) {
 		// fetch tag ids to associate to workspace
-		tags, err := client.OrganizationTags.List(ctx, orgTest.Name, OrganizationTagsListOptions{})
+		tags, err := client.OrganizationTags.List(ctx, orgTest.Name, nil)
 		require.NoError(t, err)
 
 		tagID := tags.Items[0].ID
@@ -176,11 +176,11 @@ func TestOrganizationTagsAddWorkspace(t *testing.T) {
 		require.NoError(t, err)
 
 		//Ensure the tag was properly associated with the workspaces
-		fetched, err := client.Workspaces.Tags(ctx, workspaceToAdd1.ID, WorkspaceTagListOptions{})
+		fetched, err := client.Workspaces.Tags(ctx, workspaceToAdd1.ID, nil)
 		require.NoError(t, err)
 		assert.Equal(t, fetched.Items[0].ID, tagID)
 
-		fetched, err = client.Workspaces.Tags(ctx, workspaceToAdd2.ID, WorkspaceTagListOptions{})
+		fetched, err = client.Workspaces.Tags(ctx, workspaceToAdd2.ID, nil)
 		require.NoError(t, err)
 		assert.Equal(t, fetched.Items[0].ID, tagID)
 	})
