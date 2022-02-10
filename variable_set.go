@@ -96,7 +96,7 @@ type VariableSetCreateOptions struct {
 
 	// The name of the variable set.
 	// Affects variable precedence when there are conflicts between Variable Sets
-	// TODO: Add link to documentation
+	// https://www.terraform.io/cloud-docs/api-docs/variable-sets#apply-variable-set-to-workspaces
 	Name *string `jsonapi:"attr,name"`
 
 	// A description to provide context for the variable set.
@@ -171,7 +171,7 @@ type VariableSetUpdateOptions struct {
 
 	// The name of the variable set.
 	// Affects variable precedence when there are conflicts between Variable Sets
-	// TODO: Add link to documentation
+	// https://www.terraform.io/cloud-docs/api-docs/variable-sets#apply-variable-set-to-workspaces
 	Name *string `jsonapi:"attr,name"`
 
 	// A description to provide context for the variable set.
