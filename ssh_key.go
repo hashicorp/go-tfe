@@ -17,7 +17,7 @@ var _ SSHKeys = (*sshKeys)(nil)
 // https://www.terraform.io/docs/cloud/api/ssh-keys.html
 type SSHKeys interface {
 	// List all the SSH keys for a given organization
-	List(ctx context.Context, organization string, options SSHKeyListOptions) (*SSHKeyList, error)
+	List(ctx context.Context, organization string, options *SSHKeyListOptions) (*SSHKeyList, error)
 
 	// Create an SSH key and associate it with an organization.
 	Create(ctx context.Context, organization string, options SSHKeyCreateOptions) (*SSHKey, error)
@@ -55,13 +55,13 @@ type SSHKeyListOptions struct {
 }
 
 // List all the SSH keys for a given organization
-func (s *sshKeys) List(ctx context.Context, organization string, options SSHKeyListOptions) (*SSHKeyList, error) {
+func (s *sshKeys) List(ctx context.Context, organization string, options *SSHKeyListOptions) (*SSHKeyList, error) {
 	if !validStringID(&organization) {
 		return nil, ErrInvalidOrg
 	}
 
 	u := fmt.Sprintf("organizations/%s/ssh-keys", url.QueryEscape(organization))
-	req, err := s.client.newRequest("GET", u, &options)
+	req, err := s.client.newRequest("GET", u, options)
 	if err != nil {
 		return nil, err
 	}

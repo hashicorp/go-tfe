@@ -65,7 +65,7 @@ func (mr *MockOAuthClientsMockRecorder) Delete(ctx, oAuthClientID interface{}) *
 }
 
 // List mocks base method.
-func (m *MockOAuthClients) List(ctx context.Context, organization string, options tfe.OAuthClientListOptions) (*tfe.OAuthClientList, error) {
+func (m *MockOAuthClients) List(ctx context.Context, organization string, options *tfe.OAuthClientListOptions) (*tfe.OAuthClientList, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "List", ctx, organization, options)
 	ret0, _ := ret[0].(*tfe.OAuthClientList)

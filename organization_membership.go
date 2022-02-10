@@ -17,7 +17,7 @@ var _ OrganizationMemberships = (*organizationMemberships)(nil)
 // https://www.terraform.io/docs/cloud/api/organization-memberships.html
 type OrganizationMemberships interface {
 	// List all the organization memberships of the given organization.
-	List(ctx context.Context, organization string, options OrganizationMembershipListOptions) (*OrganizationMembershipList, error)
+	List(ctx context.Context, organization string, options *OrganizationMembershipListOptions) (*OrganizationMembershipList, error)
 
 	// Create a new organization membership with the given options.
 	Create(ctx context.Context, organization string, options OrganizationMembershipCreateOptions) (*OrganizationMembership, error)
@@ -80,13 +80,13 @@ type OrganizationMembershipListOptions struct {
 }
 
 // List all the organization memberships of the given organization.
-func (s *organizationMemberships) List(ctx context.Context, organization string, options OrganizationMembershipListOptions) (*OrganizationMembershipList, error) {
+func (s *organizationMemberships) List(ctx context.Context, organization string, options *OrganizationMembershipListOptions) (*OrganizationMembershipList, error) {
 	if !validStringID(&organization) {
 		return nil, ErrInvalidOrg
 	}
 
 	u := fmt.Sprintf("organizations/%s/organization-memberships", url.QueryEscape(organization))
-	req, err := s.client.newRequest("GET", u, &options)
+	req, err := s.client.newRequest("GET", u, options)
 	if err != nil {
 		return nil, err
 	}

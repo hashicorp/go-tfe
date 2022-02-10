@@ -17,7 +17,7 @@ var _ Runs = (*runs)(nil)
 // TFE API docs: https://www.terraform.io/docs/cloud/api/run.html
 type Runs interface {
 	// List all the runs of the given workspace.
-	List(ctx context.Context, workspaceID string, options RunListOptions) (*RunList, error)
+	List(ctx context.Context, workspaceID string, options *RunListOptions) (*RunList, error)
 
 	// Create a new run with the given options.
 	Create(ctx context.Context, options RunCreateOptions) (*Run, error)
@@ -189,13 +189,13 @@ type RunVariable struct {
 }
 
 // List all the runs of the given workspace.
-func (s *runs) List(ctx context.Context, workspaceID string, options RunListOptions) (*RunList, error) {
+func (s *runs) List(ctx context.Context, workspaceID string, options *RunListOptions) (*RunList, error) {
 	if !validStringID(&workspaceID) {
 		return nil, ErrInvalidWorkspaceID
 	}
 
 	u := fmt.Sprintf("workspaces/%s/runs", url.QueryEscape(workspaceID))
-	req, err := s.client.newRequest("GET", u, &options)
+	req, err := s.client.newRequest("GET", u, options)
 	if err != nil {
 		return nil, err
 	}

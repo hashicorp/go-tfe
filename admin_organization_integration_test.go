@@ -22,7 +22,7 @@ func TestAdminOrganizations_List(t *testing.T) {
 	defer orgTestCleanup()
 
 	t.Run("with no list options", func(t *testing.T) {
-		adminOrgList, err := client.Admin.Organizations.List(ctx, AdminOrganizationListOptions{})
+		adminOrgList, err := client.Admin.Organizations.List(ctx, nil)
 		require.NoError(t, err)
 
 		// Given that org creation occurs on every test, the ordering is not
@@ -36,7 +36,7 @@ func TestAdminOrganizations_List(t *testing.T) {
 		_, orgTestCleanup := createOrganization(t, client)
 		defer orgTestCleanup()
 
-		adminOrgList, err := client.Admin.Organizations.List(ctx, AdminOrganizationListOptions{
+		adminOrgList, err := client.Admin.Organizations.List(ctx, &AdminOrganizationListOptions{
 			Query: &org.Name,
 		})
 		assert.NoError(t, err)
@@ -48,7 +48,7 @@ func TestAdminOrganizations_List(t *testing.T) {
 	t.Run("with list options and org name that doesn't exist", func(t *testing.T) {
 		randomName := "random-org-name"
 
-		adminOrgList, err := client.Admin.Organizations.List(ctx, AdminOrganizationListOptions{
+		adminOrgList, err := client.Admin.Organizations.List(ctx, &AdminOrganizationListOptions{
 			Query: &randomName,
 		})
 		assert.NoError(t, err)
@@ -58,7 +58,7 @@ func TestAdminOrganizations_List(t *testing.T) {
 	})
 
 	t.Run("with owners included", func(t *testing.T) {
-		adminOrgList, err := client.Admin.Organizations.List(ctx, AdminOrganizationListOptions{
+		adminOrgList, err := client.Admin.Organizations.List(ctx, &AdminOrganizationListOptions{
 			Include: &([]AdminOrgIncludeOps{AdminOrgOwners}),
 		})
 		assert.NoError(t, err)

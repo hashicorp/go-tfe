@@ -20,7 +20,7 @@ var _ PolicyChecks = (*policyChecks)(nil)
 // https://www.terraform.io/docs/cloud/api/policy-checks.html
 type PolicyChecks interface {
 	// List all policy checks of the given run.
-	List(ctx context.Context, runID string, options PolicyCheckListOptions) (*PolicyCheckList, error)
+	List(ctx context.Context, runID string, options *PolicyCheckListOptions) (*PolicyCheckList, error)
 
 	// Read a policy check by its ID.
 	Read(ctx context.Context, policyCheckID string) (*PolicyCheck, error)
@@ -117,13 +117,13 @@ type PolicyCheckListOptions struct {
 }
 
 // List all policy checks of the given run.
-func (s *policyChecks) List(ctx context.Context, runID string, options PolicyCheckListOptions) (*PolicyCheckList, error) {
+func (s *policyChecks) List(ctx context.Context, runID string, options *PolicyCheckListOptions) (*PolicyCheckList, error) {
 	if !validStringID(&runID) {
 		return nil, ErrInvalidRunID
 	}
 
 	u := fmt.Sprintf("runs/%s/policy-checks", url.QueryEscape(runID))
-	req, err := s.client.newRequest("GET", u, &options)
+	req, err := s.client.newRequest("GET", u, options)
 	if err != nil {
 		return nil, err
 	}

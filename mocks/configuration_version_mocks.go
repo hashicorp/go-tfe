@@ -51,7 +51,7 @@ func (mr *MockConfigurationVersionsMockRecorder) Create(ctx, workspaceID, option
 }
 
 // List mocks base method.
-func (m *MockConfigurationVersions) List(ctx context.Context, workspaceID string, options tfe.ConfigurationVersionListOptions) (*tfe.ConfigurationVersionList, error) {
+func (m *MockConfigurationVersions) List(ctx context.Context, workspaceID string, options *tfe.ConfigurationVersionListOptions) (*tfe.ConfigurationVersionList, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "List", ctx, workspaceID, options)
 	ret0, _ := ret[0].(*tfe.ConfigurationVersionList)

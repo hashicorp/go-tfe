@@ -34,7 +34,7 @@ func TestAdminRuns_List(t *testing.T) {
 	defer rTestCleanup2()
 
 	t.Run("without list options", func(t *testing.T) {
-		rl, err := client.Admin.Runs.List(ctx, AdminRunsListOptions{})
+		rl, err := client.Admin.Runs.List(ctx, nil)
 		require.NoError(t, err)
 
 		assert.NotEmpty(t, rl.Items)
@@ -43,7 +43,7 @@ func TestAdminRuns_List(t *testing.T) {
 	})
 
 	t.Run("with list options", func(t *testing.T) {
-		rl, err := client.Admin.Runs.List(ctx, AdminRunsListOptions{
+		rl, err := client.Admin.Runs.List(ctx, &AdminRunsListOptions{
 			ListOptions: ListOptions{
 				PageNumber: 999,
 				PageSize:   100,
@@ -54,7 +54,7 @@ func TestAdminRuns_List(t *testing.T) {
 		assert.Empty(t, rl.Items)
 		assert.Equal(t, 999, rl.CurrentPage)
 
-		rl, err = client.Admin.Runs.List(ctx, AdminRunsListOptions{
+		rl, err = client.Admin.Runs.List(ctx, &AdminRunsListOptions{
 			ListOptions: ListOptions{
 				PageNumber: 1,
 				PageSize:   100,
@@ -68,7 +68,7 @@ func TestAdminRuns_List(t *testing.T) {
 	})
 
 	t.Run("with workspace included", func(t *testing.T) {
-		rl, err := client.Admin.Runs.List(ctx, AdminRunsListOptions{
+		rl, err := client.Admin.Runs.List(ctx, &AdminRunsListOptions{
 			Include: &([]AdminRunIncludeOps{AdminRunWorkspace}),
 		})
 
@@ -80,7 +80,7 @@ func TestAdminRuns_List(t *testing.T) {
 	})
 
 	t.Run("with workspace.organization included", func(t *testing.T) {
-		rl, err := client.Admin.Runs.List(ctx, AdminRunsListOptions{
+		rl, err := client.Admin.Runs.List(ctx, &AdminRunsListOptions{
 			Include: &([]AdminRunIncludeOps{AdminRunWorkspaceOrg}),
 		})
 
@@ -99,7 +99,7 @@ func TestAdminRuns_List(t *testing.T) {
 		assert.NoError(t, err)
 
 		// There should be pending Runs
-		rl, err := client.Admin.Runs.List(ctx, AdminRunsListOptions{
+		rl, err := client.Admin.Runs.List(ctx, &AdminRunsListOptions{
 			RunStatus: String(string(RunPending)),
 		})
 		assert.NoError(t, err)
@@ -113,7 +113,7 @@ func TestAdminRuns_List(t *testing.T) {
 
 	t.Run("with RunStatus.applied filter", func(t *testing.T) {
 		// There should be no applied Runs
-		rl, err := client.Admin.Runs.List(ctx, AdminRunsListOptions{
+		rl, err := client.Admin.Runs.List(ctx, &AdminRunsListOptions{
 			RunStatus: String(string(RunApplied)),
 		})
 		assert.NoError(t, err)
@@ -121,7 +121,7 @@ func TestAdminRuns_List(t *testing.T) {
 	})
 
 	t.Run("with query", func(t *testing.T) {
-		rl, err := client.Admin.Runs.List(ctx, AdminRunsListOptions{
+		rl, err := client.Admin.Runs.List(ctx, &AdminRunsListOptions{
 			Query: String(rTest1.ID),
 		})
 		assert.NoError(t, err)
@@ -130,7 +130,7 @@ func TestAdminRuns_List(t *testing.T) {
 		assert.Equal(t, adminRunItemsContainsID(rl.Items, rTest1.ID), true)
 		assert.Equal(t, adminRunItemsContainsID(rl.Items, rTest2.ID), false)
 
-		rl, err = client.Admin.Runs.List(ctx, AdminRunsListOptions{
+		rl, err = client.Admin.Runs.List(ctx, &AdminRunsListOptions{
 			Query: String(rTest2.ID),
 		})
 		assert.NoError(t, err)

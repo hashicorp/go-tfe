@@ -16,7 +16,7 @@ var _ AdminUsers = (*adminUsers)(nil)
 // TFE API docs: https://www.terraform.io/docs/cloud/api/admin/users.html
 type AdminUsers interface {
 	// List all the users of the given installation.
-	List(ctx context.Context, options AdminUserListOptions) (*AdminUserList, error)
+	List(ctx context.Context, options *AdminUserListOptions) (*AdminUserList, error)
 
 	// Delete a user by its ID.
 	Delete(ctx context.Context, userID string) error
@@ -90,9 +90,9 @@ type AdminUserListOptions struct {
 }
 
 // List all user accounts in the Terraform Enterprise installation
-func (a *adminUsers) List(ctx context.Context, options AdminUserListOptions) (*AdminUserList, error) {
+func (a *adminUsers) List(ctx context.Context, options *AdminUserListOptions) (*AdminUserList, error) {
 	u := "admin/users"
-	req, err := a.client.newRequest("GET", u, &options)
+	req, err := a.client.newRequest("GET", u, options)
 	if err != nil {
 		return nil, err
 	}

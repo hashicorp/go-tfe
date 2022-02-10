@@ -19,7 +19,7 @@ var _ AdminRuns = (*adminRuns)(nil)
 // TFE API docs: https://www.terraform.io/docs/cloud/api/admin/runs.html
 type AdminRuns interface {
 	// List all the runs of the given installation.
-	List(ctx context.Context, options AdminRunsListOptions) (*AdminRunsList, error)
+	List(ctx context.Context, options *AdminRunsListOptions) (*AdminRunsList, error)
 
 	// Force-cancel a run by its ID.
 	ForceCancel(ctx context.Context, runID string, options AdminRunForceCancelOptions) error
@@ -69,13 +69,15 @@ type AdminRunsListOptions struct {
 
 // List all the runs of the terraform enterprise installation.
 // https://www.terraform.io/docs/cloud/api/admin/runs.html#list-all-runs
-func (s *adminRuns) List(ctx context.Context, options AdminRunsListOptions) (*AdminRunsList, error) {
-	if err := options.valid(); err != nil {
-		return nil, err
+func (s *adminRuns) List(ctx context.Context, options *AdminRunsListOptions) (*AdminRunsList, error) {
+	if options != nil {
+		if err := options.valid(); err != nil {
+			return nil, err
+		}
 	}
 
 	u := "admin/runs"
-	req, err := s.client.newRequest("GET", u, &options)
+	req, err := s.client.newRequest("GET", u, options)
 	if err != nil {
 		return nil, err
 	}
@@ -112,6 +114,7 @@ func (s *adminRuns) ForceCancel(ctx context.Context, runID string, options Admin
 	return s.client.do(ctx, req, nil)
 }
 
+// Check that the field RunStatus has a valid string value
 func (o AdminRunsListOptions) valid() error {
 	if validString(o.RunStatus) {
 		validRunStatus := map[string]int{

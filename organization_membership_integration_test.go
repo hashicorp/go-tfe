@@ -29,7 +29,7 @@ func TestOrganizationMembershipsList(t *testing.T) {
 		memTest1.User = &User{ID: memTest1.User.ID}
 		memTest2.User = &User{ID: memTest2.User.ID}
 
-		ml, err := client.OrganizationMemberships.List(ctx, orgTest.Name, OrganizationMembershipListOptions{})
+		ml, err := client.OrganizationMemberships.List(ctx, orgTest.Name, nil)
 		require.NoError(t, err)
 
 		assert.Contains(t, ml.Items, memTest1)
@@ -42,7 +42,7 @@ func TestOrganizationMembershipsList(t *testing.T) {
 		_, memTest2Cleanup := createOrganizationMembership(t, client, orgTest)
 		defer memTest2Cleanup()
 
-		ml, err := client.OrganizationMemberships.List(ctx, orgTest.Name, OrganizationMembershipListOptions{
+		ml, err := client.OrganizationMemberships.List(ctx, orgTest.Name, &OrganizationMembershipListOptions{
 			ListOptions: ListOptions{
 				PageNumber: 999,
 				PageSize:   100,
@@ -63,7 +63,7 @@ func TestOrganizationMembershipsList(t *testing.T) {
 		memTest2, memTest2Cleanup := createOrganizationMembership(t, client, orgTest)
 		defer memTest2Cleanup()
 
-		ml, err := client.OrganizationMemberships.List(ctx, orgTest.Name, OrganizationMembershipListOptions{
+		ml, err := client.OrganizationMemberships.List(ctx, orgTest.Name, &OrganizationMembershipListOptions{
 			Include: []OrganizationMembershipIncludeOps{OrganizationMembershipUser},
 		})
 		require.NoError(t, err)
@@ -73,7 +73,7 @@ func TestOrganizationMembershipsList(t *testing.T) {
 	})
 
 	t.Run("without a valid organization", func(t *testing.T) {
-		ml, err := client.OrganizationMemberships.List(ctx, badIdentifier, OrganizationMembershipListOptions{})
+		ml, err := client.OrganizationMemberships.List(ctx, badIdentifier, nil)
 		assert.Nil(t, ml)
 		assert.EqualError(t, err, ErrInvalidOrg.Error())
 	})
@@ -206,7 +206,7 @@ func TestOrganizationMembershipsDelete(t *testing.T) {
 		require.NoError(t, err)
 
 		// Get a refreshed view from the API.
-		refreshed, err := client.OrganizationMemberships.List(ctx, orgTest.Name, OrganizationMembershipListOptions{})
+		refreshed, err := client.OrganizationMemberships.List(ctx, orgTest.Name, nil)
 		require.NoError(t, err)
 		assert.NotContains(t, refreshed.Items, mem)
 	})

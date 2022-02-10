@@ -15,7 +15,7 @@ var _ AdminWorkspaces = (*adminWorkspaces)(nil)
 // TFE API docs: https://www.terraform.io/docs/cloud/api/admin/workspaces.html
 type AdminWorkspaces interface {
 	// List all the workspaces within a workspace.
-	List(ctx context.Context, options AdminWorkspaceListOptions) (*AdminWorkspaceList, error)
+	List(ctx context.Context, options *AdminWorkspaceListOptions) (*AdminWorkspaceList, error)
 
 	// Read a workspace by its ID.
 	Read(ctx context.Context, workspaceID string) (*AdminWorkspace, error)
@@ -73,9 +73,9 @@ type AdminWorkspaceList struct {
 }
 
 // List all the workspaces within a worksapce.
-func (s *adminWorkspaces) List(ctx context.Context, options AdminWorkspaceListOptions) (*AdminWorkspaceList, error) {
+func (s *adminWorkspaces) List(ctx context.Context, options *AdminWorkspaceListOptions) (*AdminWorkspaceList, error) {
 	u := "admin/workspaces"
-	req, err := s.client.newRequest("GET", u, &options)
+	req, err := s.client.newRequest("GET", u, options)
 	if err != nil {
 		return nil, err
 	}

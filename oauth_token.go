@@ -18,7 +18,7 @@ var _ OAuthTokens = (*oAuthTokens)(nil)
 // https://www.terraform.io/docs/cloud/api/oauth-tokens.html
 type OAuthTokens interface {
 	// List all the OAuth tokens for a given organization.
-	List(ctx context.Context, organization string, options OAuthTokenListOptions) (*OAuthTokenList, error)
+	List(ctx context.Context, organization string, options *OAuthTokenListOptions) (*OAuthTokenList, error)
 	// Read a OAuth token by its ID.
 	Read(ctx context.Context, oAuthTokenID string) (*OAuthToken, error)
 
@@ -60,13 +60,13 @@ type OAuthTokenListOptions struct {
 }
 
 // List all the OAuth tokens for a given organization.
-func (s *oAuthTokens) List(ctx context.Context, organization string, options OAuthTokenListOptions) (*OAuthTokenList, error) {
+func (s *oAuthTokens) List(ctx context.Context, organization string, options *OAuthTokenListOptions) (*OAuthTokenList, error) {
 	if !validStringID(&organization) {
 		return nil, ErrInvalidOrg
 	}
 
 	u := fmt.Sprintf("organizations/%s/oauth-tokens", url.QueryEscape(organization))
-	req, err := s.client.newRequest("GET", u, &options)
+	req, err := s.client.newRequest("GET", u, options)
 	if err != nil {
 		return nil, err
 	}

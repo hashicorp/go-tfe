@@ -17,7 +17,7 @@ var _ TeamAccesses = (*teamAccesses)(nil)
 // https://www.terraform.io/docs/cloud/api/team-access.html
 type TeamAccesses interface {
 	// List all the team accesses for a given workspace.
-	List(ctx context.Context, options TeamAccessListOptions) (*TeamAccessList, error)
+	List(ctx context.Context, options *TeamAccessListOptions) (*TeamAccessList, error)
 
 	// Add team access for a workspace.
 	Add(ctx context.Context, options TeamAccessAddOptions) (*TeamAccess, error)
@@ -107,6 +107,7 @@ type TeamAccessListOptions struct {
 	WorkspaceID *string `url:"filter[workspace][id],omitempty"`
 }
 
+//check that workspaceID field has a valid value
 func (o TeamAccessListOptions) valid() error {
 	if !validString(o.WorkspaceID) {
 		return errors.New("workspace ID is required")
@@ -118,12 +119,16 @@ func (o TeamAccessListOptions) valid() error {
 }
 
 // List all the team accesses for a given workspace.
-func (s *teamAccesses) List(ctx context.Context, options TeamAccessListOptions) (*TeamAccessList, error) {
+func (s *teamAccesses) List(ctx context.Context, options *TeamAccessListOptions) (*TeamAccessList, error) {
+	if options == nil {
+		return nil, errors.New("TeamAccessListOptions is required")
+	}
+
 	if err := options.valid(); err != nil {
 		return nil, err
 	}
 
-	req, err := s.client.newRequest("GET", "team-workspaces", &options)
+	req, err := s.client.newRequest("GET", "team-workspaces", options)
 	if err != nil {
 		return nil, err
 	}

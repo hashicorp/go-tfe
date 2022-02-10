@@ -25,7 +25,7 @@ func TestAgentPoolsList(t *testing.T) {
 	defer agentPoolCleanup()
 
 	t.Run("without list options", func(t *testing.T) {
-		pools, err := client.AgentPools.List(ctx, orgTest.Name, AgentPoolListOptions{})
+		pools, err := client.AgentPools.List(ctx, orgTest.Name, nil)
 		require.NoError(t, err)
 		assert.Contains(t, pools.Items, agentPool)
 
@@ -37,7 +37,7 @@ func TestAgentPoolsList(t *testing.T) {
 		// Request a page number which is out of range. The result should
 		// be successful, but return no results if the paging options are
 		// properly passed along.
-		pools, err := client.AgentPools.List(ctx, orgTest.Name, AgentPoolListOptions{
+		pools, err := client.AgentPools.List(ctx, orgTest.Name, &AgentPoolListOptions{
 			ListOptions: ListOptions{
 				PageNumber: 999,
 				PageSize:   100,
@@ -50,7 +50,7 @@ func TestAgentPoolsList(t *testing.T) {
 	})
 
 	t.Run("without a valid organization", func(t *testing.T) {
-		pools, err := client.AgentPools.List(ctx, badIdentifier, AgentPoolListOptions{})
+		pools, err := client.AgentPools.List(ctx, badIdentifier, nil)
 		assert.Nil(t, pools)
 		assert.EqualError(t, err, ErrInvalidOrg.Error())
 	})

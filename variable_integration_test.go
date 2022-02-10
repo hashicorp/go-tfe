@@ -27,7 +27,7 @@ func TestVariablesList(t *testing.T) {
 	defer vTestCleanup2()
 
 	t.Run("without list options", func(t *testing.T) {
-		vl, err := client.Variables.List(ctx, wTest.ID, VariableListOptions{})
+		vl, err := client.Variables.List(ctx, wTest.ID, nil)
 		require.NoError(t, err)
 		assert.Contains(t, vl.Items, vTest1)
 		assert.Contains(t, vl.Items, vTest2)
@@ -42,7 +42,7 @@ func TestVariablesList(t *testing.T) {
 		// Request a page number which is out of range. The result should
 		// be successful, but return no results if the paging options are
 		// properly passed along.
-		vl, err := client.Variables.List(ctx, wTest.ID, VariableListOptions{
+		vl, err := client.Variables.List(ctx, wTest.ID, &VariableListOptions{
 			ListOptions: ListOptions{
 				PageNumber: 999,
 				PageSize:   100,
@@ -55,7 +55,7 @@ func TestVariablesList(t *testing.T) {
 	})
 
 	t.Run("when workspace ID is invalid ID", func(t *testing.T) {
-		vl, err := client.Variables.List(ctx, badIdentifier, VariableListOptions{})
+		vl, err := client.Variables.List(ctx, badIdentifier, nil)
 		assert.Nil(t, vl)
 		assert.EqualError(t, err, ErrInvalidWorkspaceID.Error())
 	})

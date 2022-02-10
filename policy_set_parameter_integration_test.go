@@ -29,7 +29,7 @@ func TestPolicySetParametersList(t *testing.T) {
 	defer pTestCleanup2()
 
 	t.Run("without list options", func(t *testing.T) {
-		pl, err := client.PolicySetParameters.List(ctx, psTest.ID, PolicySetParameterListOptions{})
+		pl, err := client.PolicySetParameters.List(ctx, psTest.ID, nil)
 		require.NoError(t, err)
 		assert.Contains(t, pl.Items, pTest1)
 		assert.Contains(t, pl.Items, pTest2)
@@ -44,7 +44,7 @@ func TestPolicySetParametersList(t *testing.T) {
 		// Request a page number which is out of range. The result should
 		// be successful, but return no results if the paging options are
 		// properly passed along.
-		pl, err := client.PolicySetParameters.List(ctx, psTest.ID, PolicySetParameterListOptions{
+		pl, err := client.PolicySetParameters.List(ctx, psTest.ID, &PolicySetParameterListOptions{
 			ListOptions: ListOptions{
 				PageNumber: 999,
 				PageSize:   100,
@@ -57,7 +57,7 @@ func TestPolicySetParametersList(t *testing.T) {
 	})
 
 	t.Run("when policy set ID is invalid ID", func(t *testing.T) {
-		pl, err := client.PolicySetParameters.List(ctx, badIdentifier, PolicySetParameterListOptions{})
+		pl, err := client.PolicySetParameters.List(ctx, badIdentifier, nil)
 		assert.Nil(t, pl)
 		assert.EqualError(t, err, "invalid value for policy set ID")
 	})

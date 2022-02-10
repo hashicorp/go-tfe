@@ -50,7 +50,7 @@ func (mr *MockAdminRunsMockRecorder) ForceCancel(ctx, runID, options interface{}
 }
 
 // List mocks base method.
-func (m *MockAdminRuns) List(ctx context.Context, options tfe.AdminRunsListOptions) (*tfe.AdminRunsList, error) {
+func (m *MockAdminRuns) List(ctx context.Context, options *tfe.AdminRunsListOptions) (*tfe.AdminRunsList, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "List", ctx, options)
 	ret0, _ := ret[0].(*tfe.AdminRunsList)

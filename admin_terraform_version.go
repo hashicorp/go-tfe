@@ -17,7 +17,7 @@ var _ AdminTerraformVersions = (*adminTerraformVersions)(nil)
 // TFE API docs: https://www.terraform.io/docs/cloud/api/admin/terraform-versions.html
 type AdminTerraformVersions interface {
 	// List all the terraform versions.
-	List(ctx context.Context, options AdminTerraformVersionsListOptions) (*AdminTerraformVersionsList, error)
+	List(ctx context.Context, options *AdminTerraformVersionsListOptions) (*AdminTerraformVersionsList, error)
 
 	// Read a terraform version by its ID.
 	Read(ctx context.Context, id string) (*AdminTerraformVersion, error)
@@ -71,8 +71,8 @@ type AdminTerraformVersionsList struct {
 }
 
 // List all the terraform versions.
-func (a *adminTerraformVersions) List(ctx context.Context, options AdminTerraformVersionsListOptions) (*AdminTerraformVersionsList, error) {
-	req, err := a.client.newRequest("GET", "admin/terraform-versions", &options)
+func (a *adminTerraformVersions) List(ctx context.Context, options *AdminTerraformVersionsListOptions) (*AdminTerraformVersionsList, error) {
+	req, err := a.client.newRequest("GET", "admin/terraform-versions", options)
 	if err != nil {
 		return nil, err
 	}

@@ -24,7 +24,7 @@ func TestSSHKeysList(t *testing.T) {
 	defer kTestCleanup2()
 
 	t.Run("without list options", func(t *testing.T) {
-		kl, err := client.SSHKeys.List(ctx, orgTest.Name, SSHKeyListOptions{})
+		kl, err := client.SSHKeys.List(ctx, orgTest.Name, nil)
 		require.NoError(t, err)
 		assert.Contains(t, kl.Items, kTest1)
 		assert.Contains(t, kl.Items, kTest2)
@@ -39,7 +39,7 @@ func TestSSHKeysList(t *testing.T) {
 		// Request a page number which is out of range. The result should
 		// be successful, but return no results if the paging options are
 		// properly passed along.
-		kl, err := client.SSHKeys.List(ctx, orgTest.Name, SSHKeyListOptions{
+		kl, err := client.SSHKeys.List(ctx, orgTest.Name, &SSHKeyListOptions{
 			ListOptions: ListOptions{
 				PageNumber: 999,
 				PageSize:   100,
@@ -52,7 +52,7 @@ func TestSSHKeysList(t *testing.T) {
 	})
 
 	t.Run("without a valid organization", func(t *testing.T) {
-		kl, err := client.SSHKeys.List(ctx, badIdentifier, SSHKeyListOptions{})
+		kl, err := client.SSHKeys.List(ctx, badIdentifier, nil)
 		assert.Nil(t, kl)
 		assert.EqualError(t, err, ErrInvalidOrg.Error())
 	})

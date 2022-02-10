@@ -36,7 +36,7 @@ func TestPolicyChecksList(t *testing.T) {
 	defer runCleanup()
 
 	t.Run("without list options", func(t *testing.T) {
-		pcl, err := client.PolicyChecks.List(ctx, rTest.ID, PolicyCheckListOptions{})
+		pcl, err := client.PolicyChecks.List(ctx, rTest.ID, nil)
 		require.NoError(t, err)
 		require.Equal(t, 1, len(pcl.Items))
 		assert.NotEmpty(t, pcl.Items[0].Permissions)
@@ -51,7 +51,7 @@ func TestPolicyChecksList(t *testing.T) {
 		// Request a page number which is out of range. The result should
 		// be successful, but return no results if the paging options are
 		// properly passed along.
-		pcl, err := client.PolicyChecks.List(ctx, rTest.ID, PolicyCheckListOptions{
+		pcl, err := client.PolicyChecks.List(ctx, rTest.ID, &PolicyCheckListOptions{
 			ListOptions: ListOptions{
 				PageNumber: 999,
 				PageSize:   100,
@@ -64,7 +64,7 @@ func TestPolicyChecksList(t *testing.T) {
 	})
 
 	t.Run("without a valid run ID", func(t *testing.T) {
-		pcl, err := client.PolicyChecks.List(ctx, badIdentifier, PolicyCheckListOptions{})
+		pcl, err := client.PolicyChecks.List(ctx, badIdentifier, nil)
 		assert.Nil(t, pcl)
 		assert.EqualError(t, err, ErrInvalidRunID.Error())
 	})
@@ -132,7 +132,7 @@ func TestPolicyChecksOverride(t *testing.T) {
 		rTest, tTestCleanup := createPolicyCheckedRun(t, client, wTest)
 		defer tTestCleanup()
 
-		pcl, err := client.PolicyChecks.List(ctx, rTest.ID, PolicyCheckListOptions{})
+		pcl, err := client.PolicyChecks.List(ctx, rTest.ID, nil)
 		require.NoError(t, err)
 		require.Equal(t, 1, len(pcl.Items))
 		require.Equal(t, PolicySoftFailed, pcl.Items[0].Status)
@@ -157,7 +157,7 @@ func TestPolicyChecksOverride(t *testing.T) {
 		rTest, rTestCleanup := createPolicyCheckedRun(t, client, wTest)
 		defer rTestCleanup()
 
-		pcl, err := client.PolicyChecks.List(ctx, rTest.ID, PolicyCheckListOptions{})
+		pcl, err := client.PolicyChecks.List(ctx, rTest.ID, nil)
 		require.NoError(t, err)
 		require.Equal(t, 1, len(pcl.Items))
 		require.Equal(t, PolicyPasses, pcl.Items[0].Status)

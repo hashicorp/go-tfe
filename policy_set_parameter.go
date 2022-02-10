@@ -16,7 +16,7 @@ var _ PolicySetParameters = (*policySetParameters)(nil)
 // TFE API docs: https://www.terraform.io/docs/cloud/api/policy-set-params.html
 type PolicySetParameters interface {
 	// List all the parameters associated with the given policy-set.
-	List(ctx context.Context, policySetID string, options PolicySetParameterListOptions) (*PolicySetParameterList, error)
+	List(ctx context.Context, policySetID string, options *PolicySetParameterListOptions) (*PolicySetParameterList, error)
 
 	// Create is used to create a new parameter.
 	Create(ctx context.Context, policySetID string, options PolicySetParameterCreateOptions) (*PolicySetParameter, error)
@@ -59,21 +59,14 @@ type PolicySetParameterListOptions struct {
 	ListOptions
 }
 
-func (o PolicySetParameterListOptions) valid() error {
-	return nil
-}
-
 // List all the parameters associated with the given policy-set.
-func (s *policySetParameters) List(ctx context.Context, policySetID string, options PolicySetParameterListOptions) (*PolicySetParameterList, error) {
+func (s *policySetParameters) List(ctx context.Context, policySetID string, options *PolicySetParameterListOptions) (*PolicySetParameterList, error) {
 	if !validStringID(&policySetID) {
 		return nil, errors.New("invalid value for policy set ID")
 	}
-	if err := options.valid(); err != nil {
-		return nil, err
-	}
 
 	u := fmt.Sprintf("policy-sets/%s/parameters", policySetID)
-	req, err := s.client.newRequest("GET", u, &options)
+	req, err := s.client.newRequest("GET", u, options)
 	if err != nil {
 		return nil, err
 	}
