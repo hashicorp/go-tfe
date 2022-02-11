@@ -62,6 +62,8 @@ type OrganizationAccess struct {
 	ManagePolicyOverrides bool `jsonapi:"attr,manage-policy-overrides"`
 	ManageWorkspaces      bool `jsonapi:"attr,manage-workspaces"`
 	ManageVCSSettings     bool `jsonapi:"attr,manage-vcs-settings"`
+	ManageProviders       bool `jsonapi:"attr,manage-providers"`
+	ManageModules         bool `jsonapi:"attr,manage-modules"`
 }
 
 // TeamPermissions represents the current user's permissions on the team.
@@ -122,6 +124,8 @@ type OrganizationAccessOptions struct {
 	ManagePolicyOverrides *bool `json:"manage-policy-overrides,omitempty"`
 	ManageWorkspaces      *bool `json:"manage-workspaces,omitempty"`
 	ManageVCSSettings     *bool `json:"manage-vcs-settings,omitempty"`
+	ManageProviders       *bool `json:"manage-providers,omitempty"`
+	ManageModules         *bool `json:"manage-modules,omitempty"`
 }
 
 func (o TeamCreateOptions) valid() error {

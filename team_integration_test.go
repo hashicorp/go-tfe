@@ -183,6 +183,8 @@ func TestTeamsUpdate(t *testing.T) {
 				ManagePolicies:        Bool(false),
 				ManageVCSSettings:     Bool(true),
 				ManagePolicyOverrides: Bool(true),
+				ManageProviders:       Bool(true),
+				ManageModules:         Bool(false),
 			},
 			Visibility: String("organization"),
 		}
@@ -213,6 +215,14 @@ func TestTeamsUpdate(t *testing.T) {
 			assert.Equal(t,
 				*options.OrganizationAccess.ManagePolicyOverrides,
 				item.OrganizationAccess.ManagePolicyOverrides,
+			)
+			assert.Equal(t,
+				*options.OrganizationAccess.ManageProviders,
+				item.OrganizationAccess.ManageProviders,
+			)
+			assert.Equal(t,
+				*options.OrganizationAccess.ManageModules,
+				item.OrganizationAccess.ManageModules,
 			)
 		}
 	})
