@@ -170,7 +170,7 @@ func TestAdminOrganizations_ModuleConsumers(t *testing.T) {
 		err := client.Admin.Organizations.UpdateModuleConsumers(ctx, org1.Name, []string{org2.Name})
 		assert.NoError(t, err)
 
-		adminModuleConsumerList, err := client.Admin.Organizations.ListModuleConsumers(ctx, org1.Name, AdminOrganizationListModuleConsumersOptions{})
+		adminModuleConsumerList, err := client.Admin.Organizations.ListModuleConsumers(ctx, org1.Name, nil)
 		require.NoError(t, err)
 
 		assert.Equal(t, len(adminModuleConsumerList.Items), 1)
@@ -182,7 +182,7 @@ func TestAdminOrganizations_ModuleConsumers(t *testing.T) {
 		err = client.Admin.Organizations.UpdateModuleConsumers(ctx, org1.Name, []string{org3.Name})
 		assert.NoError(t, err)
 
-		adminModuleConsumerList, err = client.Admin.Organizations.ListModuleConsumers(ctx, org1.Name, AdminOrganizationListModuleConsumersOptions{})
+		adminModuleConsumerList, err = client.Admin.Organizations.ListModuleConsumers(ctx, org1.Name, nil)
 		require.NoError(t, err)
 
 		assert.Equal(t, len(adminModuleConsumerList.Items), 1)

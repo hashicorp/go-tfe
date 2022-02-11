@@ -441,7 +441,7 @@ func TestStateVersionOutputs(t *testing.T) {
 	time.Sleep(waitForStateVersionOutputs)
 
 	t.Run("when the state version exists", func(t *testing.T) {
-		outputs, err := client.StateVersions.Outputs(ctx, sv.ID, StateVersionOutputsListOptions{})
+		outputs, err := client.StateVersions.Outputs(ctx, sv.ID, nil)
 		require.NoError(t, err)
 
 		assert.NotEmpty(t, outputs.Items)
@@ -463,7 +463,7 @@ func TestStateVersionOutputs(t *testing.T) {
 	})
 
 	t.Run("with list options", func(t *testing.T) {
-		options := StateVersionOutputsListOptions{
+		options := &StateVersionOutputsListOptions{
 			ListOptions: ListOptions{
 				PageNumber: 999,
 				PageSize:   100,
@@ -479,7 +479,7 @@ func TestStateVersionOutputs(t *testing.T) {
 	})
 
 	t.Run("when the state version does not exist", func(t *testing.T) {
-		outputs, err := client.StateVersions.Outputs(ctx, "sv-999999999", StateVersionOutputsListOptions{})
+		outputs, err := client.StateVersions.Outputs(ctx, "sv-999999999", nil)
 		assert.Nil(t, outputs)
 		assert.Error(t, err)
 	})
