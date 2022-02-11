@@ -787,6 +787,8 @@ func createTeam(t *testing.T, client *Client, org *Organization) (*Team, func())
 		OrganizationAccess: &OrganizationAccessOptions{
 			ManagePolicies:        Bool(true),
 			ManagePolicyOverrides: Bool(true),
+			ManageProviders:       Bool(true),
+			ManageModules:         Bool(true),
 		},
 	})
 	if err != nil {
