@@ -111,7 +111,7 @@ func (mr *MockStateVersionsMockRecorder) List(ctx, options interface{}) *gomock.
 }
 
 // Outputs mocks base method.
-func (m *MockStateVersions) Outputs(ctx context.Context, svID string, options tfe.StateVersionOutputsListOptions) (*tfe.StateVersionOutputsList, error) {
+func (m *MockStateVersions) Outputs(ctx context.Context, svID string, options *tfe.StateVersionOutputsListOptions) (*tfe.StateVersionOutputsList, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Outputs", ctx, svID, options)
 	ret0, _ := ret[0].(*tfe.StateVersionOutputsList)

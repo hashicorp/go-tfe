@@ -40,7 +40,7 @@ type StateVersions interface {
 	Download(ctx context.Context, url string) ([]byte, error)
 
 	// Outputs retrieves all the outputs of a state version by its ID.
-	Outputs(ctx context.Context, svID string, options StateVersionOutputsListOptions) (*StateVersionOutputsList, error)
+	Outputs(ctx context.Context, svID string, options *StateVersionOutputsListOptions) (*StateVersionOutputsList, error)
 }
 
 // stateVersions implements StateVersions.
@@ -278,7 +278,7 @@ type StateVersionOutputsListOptions struct {
 }
 
 // Outputs retrieves all the outputs of a state version by its ID.
-func (s *stateVersions) Outputs(ctx context.Context, svID string, options StateVersionOutputsListOptions) (*StateVersionOutputsList, error) {
+func (s *stateVersions) Outputs(ctx context.Context, svID string, options *StateVersionOutputsListOptions) (*StateVersionOutputsList, error) {
 	if !validStringID(&svID) {
 		return nil, errors.New("invalid value for state version ID")
 	}

@@ -351,7 +351,7 @@ func TestWorkspacesReadWithOptions(t *testing.T) {
 		assert.Equal(t, wTest.ID, w.ID)
 		assert.NotEmpty(t, w.Outputs)
 
-		svOutputs, err := client.StateVersions.Outputs(ctx, svTest.ID, StateVersionOutputsListOptions{})
+		svOutputs, err := client.StateVersions.Outputs(ctx, svTest.ID, nil)
 		require.NoError(t, err)
 
 		assert.Len(t, w.Outputs, len(svOutputs.Items))

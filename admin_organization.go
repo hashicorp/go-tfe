@@ -27,7 +27,7 @@ type AdminOrganizations interface {
 	Delete(ctx context.Context, organization string) error
 
 	// ListModuleConsumers lists specific organizations in the Terraform Enterprise installation that have permission to use an organization's modules.
-	ListModuleConsumers(ctx context.Context, organization string, options AdminOrganizationListModuleConsumersOptions) (*AdminOrganizationList, error)
+	ListModuleConsumers(ctx context.Context, organization string, options *AdminOrganizationListModuleConsumersOptions) (*AdminOrganizationList, error)
 
 	// UpdateModuleConsumers specifies a list of organizations that can use modules from the sharing organization's private registry. Setting a list of module consumers will turn off global module sharing for an organization.
 	UpdateModuleConsumers(ctx context.Context, organization string, consumerOrganizations []string) error
@@ -117,7 +117,7 @@ func (s *adminOrganizations) List(ctx context.Context, options *AdminOrganizatio
 	return orgl, nil
 }
 
-func (s *adminOrganizations) ListModuleConsumers(ctx context.Context, organization string, options AdminOrganizationListModuleConsumersOptions) (*AdminOrganizationList, error) {
+func (s *adminOrganizations) ListModuleConsumers(ctx context.Context, organization string, options *AdminOrganizationListModuleConsumersOptions) (*AdminOrganizationList, error) {
 	if !validStringID(&organization) {
 		return nil, ErrInvalidOrg
 	}
