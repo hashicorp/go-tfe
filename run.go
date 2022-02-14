@@ -177,7 +177,7 @@ const (
 type RunListOptions struct {
 	ListOptions
 
-	Include *[]RunIncludeOps `url:"include,omitempty"`
+	Include []RunIncludeOps `url:"include,omitempty"`
 }
 
 // RunVariable represents a variable that can be applied to a run. All values must be expressed as an HCL literal

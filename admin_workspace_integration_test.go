@@ -65,7 +65,7 @@ func TestAdminWorkspaces_List(t *testing.T) {
 		// Use a known workspace prefix as search attribute. The result
 		// should be successful and only contain the matching workspace.
 		wl, err := client.Admin.Workspaces.List(ctx, &AdminWorkspaceListOptions{
-			Query: String(wTest1.Name),
+			Query: wTest1.Name,
 		})
 		require.NoError(t, err)
 		assert.Equal(t, adminWorkspaceItemsContainsID(wl.Items, wTest1.ID), true)
@@ -78,7 +78,7 @@ func TestAdminWorkspaces_List(t *testing.T) {
 		// Use a nonexisting workspace name as search attribute. The result
 		// should be successful, but return no results.
 		wl, err := client.Admin.Workspaces.List(ctx, &AdminWorkspaceListOptions{
-			Query: String("nonexisting"),
+			Query: "nonexisting",
 		})
 		require.NoError(t, err)
 		assert.Empty(t, wl.Items)
@@ -88,7 +88,7 @@ func TestAdminWorkspaces_List(t *testing.T) {
 
 	t.Run("with organization included", func(t *testing.T) {
 		wl, err := client.Admin.Workspaces.List(ctx, &AdminWorkspaceListOptions{
-			Include: &([]AdminWorkspaceIncludeOps{AdminWorkspaceOrg}),
+			Include: []AdminWorkspaceIncludeOps{AdminWorkspaceOrg},
 		})
 
 		assert.NoError(t, err)
@@ -109,7 +109,7 @@ func TestAdminWorkspaces_List(t *testing.T) {
 		assert.NoError(t, err)
 
 		wl, err := client.Admin.Workspaces.List(ctx, &AdminWorkspaceListOptions{
-			Include: &([]AdminWorkspaceIncludeOps{AdminWorkspaceCurrentRun}),
+			Include: []AdminWorkspaceIncludeOps{AdminWorkspaceCurrentRun},
 		})
 
 		assert.NoError(t, err)

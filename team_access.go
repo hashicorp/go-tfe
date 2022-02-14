@@ -104,15 +104,15 @@ type TeamAccess struct {
 // TeamAccessListOptions represents the options for listing team accesses.
 type TeamAccessListOptions struct {
 	ListOptions
-	WorkspaceID *string `url:"filter[workspace][id],omitempty"`
+	WorkspaceID string `url:"filter[workspace][id],omitempty"`
 }
 
 //check that workspaceID field has a valid value
 func (o TeamAccessListOptions) valid() error {
-	if !validString(o.WorkspaceID) {
+	if !validString(&o.WorkspaceID) {
 		return errors.New("workspace ID is required")
 	}
-	if !validStringID(o.WorkspaceID) {
+	if !validStringID(&o.WorkspaceID) {
 		return ErrInvalidWorkspaceID
 	}
 	return nil

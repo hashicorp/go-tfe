@@ -58,7 +58,7 @@ func TestPolicySetsList(t *testing.T) {
 		// Search by one of the policy set's names; we should get only that policy
 		// set and pagination data should reflect the search as well
 		psl, err := client.PolicySets.List(ctx, orgTest.Name, &PolicySetListOptions{
-			Search: String(psTest1.Name),
+			Search: psTest1.Name,
 		})
 		require.NoError(t, err)
 

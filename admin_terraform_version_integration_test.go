@@ -66,14 +66,14 @@ func TestAdminTerraformVersions_List(t *testing.T) {
 
 	t.Run("with filter query string", func(t *testing.T) {
 		tfList, err := client.Admin.TerraformVersions.List(ctx, &AdminTerraformVersionsListOptions{
-			Filter: String("1.0.4"),
+			Filter: "1.0.4",
 		})
 		require.NoError(t, err)
 		assert.Equal(t, 1, len(tfList.Items))
 
 		// Query for a Terraform version that does not exist
 		tfList, err = client.Admin.TerraformVersions.List(ctx, &AdminTerraformVersionsListOptions{
-			Filter: String("1000.1000.42"),
+			Filter: "1000.1000.42",
 		})
 		require.NoError(t, err)
 		assert.Empty(t, tfList.Items)
@@ -82,7 +82,7 @@ func TestAdminTerraformVersions_List(t *testing.T) {
 	t.Run("with search version query string", func(t *testing.T) {
 		searchVersion := "1.0"
 		tfList, err := client.Admin.TerraformVersions.List(ctx, &AdminTerraformVersionsListOptions{
-			Search: String(searchVersion),
+			Search: searchVersion,
 		})
 		require.NoError(t, err)
 		assert.NotEmpty(t, tfList.Items)

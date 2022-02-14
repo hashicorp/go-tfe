@@ -62,9 +62,9 @@ const (
 type AdminRunsListOptions struct {
 	ListOptions
 
-	RunStatus *string               `url:"filter[status],omitempty"`
-	Query     *string               `url:"q,omitempty"`
-	Include   *[]AdminRunIncludeOps `url:"include,omitempty"`
+	RunStatus string               `url:"filter[status],omitempty"`
+	Query     string               `url:"q,omitempty"`
+	Include   []AdminRunIncludeOps `url:"include,omitempty"`
 }
 
 // List all the runs of the terraform enterprise installation.
@@ -116,7 +116,7 @@ func (s *adminRuns) ForceCancel(ctx context.Context, runID string, options Admin
 
 // Check that the field RunStatus has a valid string value
 func (o AdminRunsListOptions) valid() error {
-	if validString(o.RunStatus) {
+	if validString(&o.RunStatus) {
 		validRunStatus := map[string]int{
 			string(RunApplied):            1,
 			string(RunApplyQueued):        1,
@@ -137,7 +137,7 @@ func (o AdminRunsListOptions) valid() error {
 			string(RunPolicyOverride):     1,
 			string(RunPolicySoftFailed):   1,
 		}
-		runStatus := strings.Split(*o.RunStatus, ",")
+		runStatus := strings.Split(o.RunStatus, ",")
 
 		// iterate over our statuses, and ensure it is valid.
 		for _, status := range runStatus {

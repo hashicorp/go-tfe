@@ -58,7 +58,7 @@ type RunTrigger struct {
 // run triggers.
 type RunTriggerListOptions struct {
 	ListOptions
-	RunTriggerType *string `url:"filter[run-trigger][type]"`
+	RunTriggerType string `url:"filter[run-trigger][type]"`
 }
 
 // List all the run triggers associated with a workspace.

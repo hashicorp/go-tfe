@@ -117,7 +117,7 @@ type ConfigurationVersionReadOptions struct {
 type ConfigurationVersionListOptions struct {
 	ListOptions
 
-	Include *[]ConfigurationVersionIncludeOps `url:"include,omitempty"`
+	Include []ConfigurationVersionIncludeOps `url:"include,omitempty"`
 }
 
 // IngressAttributes include commit information associated with configuration versions sourced from VCS.
