@@ -1105,6 +1105,13 @@ func skipIfFreeOnly(t *testing.T) {
 	}
 }
 
+// skips a test if the test requires a beta feature
+func skipIfBeta(t *testing.T) {
+	if !betaFeaturesEnabled() {
+		t.Skip("Skipping test related to a Terraform Cloud beta feature. Set ENABLE_BETA=1 to run.")
+	}
+}
+
 // Checks to see if ENABLE_TFE is set to 1, thereby enabling enterprise tests.
 func enterpriseEnabled() bool {
 	return os.Getenv("ENABLE_TFE") == "1"
@@ -1112,4 +1119,9 @@ func enterpriseEnabled() bool {
 
 func paidFeaturesDisabled() bool {
 	return os.Getenv("SKIP_PAID") == "1"
+}
+
+// Checks to see if ENABLE_BETA is set to 1, thereby enabling tests for beta features.
+func betaFeaturesEnabled() bool {
+	return os.Getenv("ENABLE_BETA") == "1"
 }

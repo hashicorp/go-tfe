@@ -9,6 +9,8 @@ import (
 )
 
 func TestTaskStagesRead(t *testing.T) {
+	skipIfBeta(t)
+
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -74,6 +76,8 @@ func TestTaskStagesRead(t *testing.T) {
 }
 
 func TestTaskStagesList(t *testing.T) {
+	skipIfBeta(t)
+
 	client := testClient(t)
 	ctx := context.Background()
 

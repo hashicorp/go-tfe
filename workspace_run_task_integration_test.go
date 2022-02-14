@@ -10,6 +10,8 @@ import (
 )
 
 func TestWorkspaceRunTasksCreate(t *testing.T) {
+	skipIfBeta(t)
+
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -41,6 +43,8 @@ func TestWorkspaceRunTasksCreate(t *testing.T) {
 }
 
 func TestWorkspaceRunTasksList(t *testing.T) {
+	skipIfBeta(t)
+
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -73,6 +77,8 @@ func TestWorkspaceRunTasksList(t *testing.T) {
 }
 
 func TestWorkspaceRunTasksRead(t *testing.T) {
+	skipIfBeta(t)
+
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -106,6 +112,8 @@ func TestWorkspaceRunTasksRead(t *testing.T) {
 }
 
 func TestWorkspaceRunTasksUpdate(t *testing.T) {
+	skipIfBeta(t)
+
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -135,6 +143,8 @@ func TestWorkspaceRunTasksUpdate(t *testing.T) {
 }
 
 func TestWorkspaceRunTasksDelete(t *testing.T) {
+	skipIfBeta(t)
+
 	client := testClient(t)
 	ctx := context.Background()
 
