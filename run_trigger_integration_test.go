@@ -37,7 +37,7 @@ func TestRunTriggerList(t *testing.T) {
 			ctx,
 			wTest.ID,
 			&RunTriggerListOptions{
-				RunTriggerType: String("inbound"),
+				RunTriggerType: "inbound",
 			},
 		)
 		require.NoError(t, err)
@@ -59,7 +59,7 @@ func TestRunTriggerList(t *testing.T) {
 					PageNumber: 999,
 					PageSize:   100,
 				},
-				RunTriggerType: String("inbound"),
+				RunTriggerType: "inbound",
 			},
 		)
 		require.NoError(t, err)
@@ -73,7 +73,7 @@ func TestRunTriggerList(t *testing.T) {
 			ctx,
 			badIdentifier,
 			&RunTriggerListOptions{
-				RunTriggerType: String("inbound"),
+				RunTriggerType: "inbound",
 			},
 		)
 		assert.Nil(t, rtl)
@@ -95,7 +95,7 @@ func TestRunTriggerList(t *testing.T) {
 			ctx,
 			wTest.ID,
 			&RunTriggerListOptions{
-				RunTriggerType: String("invalid"),
+				RunTriggerType: "invalid",
 			},
 		)
 		assert.Nil(t, rtl)

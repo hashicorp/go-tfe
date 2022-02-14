@@ -37,7 +37,7 @@ func TestAdminOrganizations_List(t *testing.T) {
 		defer orgTestCleanup()
 
 		adminOrgList, err := client.Admin.Organizations.List(ctx, &AdminOrganizationListOptions{
-			Query: &org.Name,
+			Query: org.Name,
 		})
 		assert.NoError(t, err)
 		assert.Equal(t, true, adminOrgItemsContainsName(adminOrgList.Items, org.Name))
@@ -49,7 +49,7 @@ func TestAdminOrganizations_List(t *testing.T) {
 		randomName := "random-org-name"
 
 		adminOrgList, err := client.Admin.Organizations.List(ctx, &AdminOrganizationListOptions{
-			Query: &randomName,
+			Query: randomName,
 		})
 		assert.NoError(t, err)
 		assert.Equal(t, false, adminOrgItemsContainsName(adminOrgList.Items, org.Name))
@@ -59,7 +59,7 @@ func TestAdminOrganizations_List(t *testing.T) {
 
 	t.Run("with owners included", func(t *testing.T) {
 		adminOrgList, err := client.Admin.Organizations.List(ctx, &AdminOrganizationListOptions{
-			Include: &([]AdminOrgIncludeOps{AdminOrgOwners}),
+			Include: []AdminOrgIncludeOps{AdminOrgOwners},
 		})
 		assert.NoError(t, err)
 

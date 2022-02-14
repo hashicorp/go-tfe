@@ -230,10 +230,10 @@ type WorkspaceListOptions struct {
 	ListOptions
 
 	// A search string (partial workspace name) used to filter the results.
-	Search *string `url:"search[name],omitempty"`
+	Search string `url:"search[name],omitempty"`
 
 	// A search string (comma-separated tag names) used to filter the results.
-	Tags *string `url:"search[tags],omitempty"`
+	Tags string `url:"search[tags],omitempty"`
 
 	// A list of relations to include. See available resources https://www.terraform.io/docs/cloud/api/workspaces.html#available-related-resources
 	Include []WSIncludeOps `url:"include,omitempty"`

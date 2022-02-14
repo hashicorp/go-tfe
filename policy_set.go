@@ -93,7 +93,7 @@ type PolicySetListOptions struct {
 	ListOptions
 
 	// A search string (partial policy set name) used to filter the results.
-	Search *string `url:"search[name],omitempty"`
+	Search string `url:"search[name],omitempty"`
 }
 
 // List all the policies for a given organization.

@@ -42,7 +42,7 @@ func TestRunsList(t *testing.T) {
 
 	t.Run("without list options and include as nil", func(t *testing.T) {
 		rl, err := client.Runs.List(ctx, wTest.ID, &RunListOptions{
-			Include: nil,
+			Include: []RunIncludeOps{},
 		})
 		require.NoError(t, err)
 
@@ -77,7 +77,7 @@ func TestRunsList(t *testing.T) {
 
 	t.Run("with workspace included", func(t *testing.T) {
 		rl, err := client.Runs.List(ctx, wTest.ID, &RunListOptions{
-			Include: &([]RunIncludeOps{RunWorkspace}),
+			Include: []RunIncludeOps{RunWorkspace},
 		})
 
 		assert.NoError(t, err)

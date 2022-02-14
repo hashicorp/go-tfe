@@ -60,7 +60,7 @@ func TestWorkspacesList(t *testing.T) {
 		// Use a known workspace prefix as search attribute. The result
 		// should be successful and only contain the matching workspace.
 		wl, err := client.Workspaces.List(ctx, orgTest.Name, &WorkspaceListOptions{
-			Search: String(wTest1.Name[:len(wTest1.Name)-5]),
+			Search: wTest1.Name[:len(wTest1.Name)-5],
 		})
 		require.NoError(t, err)
 		assert.Contains(t, wl.Items, wTest1)
@@ -85,7 +85,7 @@ func TestWorkspacesList(t *testing.T) {
 		// The result should be successful and only contain the workspace with the
 		// new tag.
 		wl, err := client.Workspaces.List(ctx, orgTest.Name, &WorkspaceListOptions{
-			Tags: &tagName,
+			Tags: tagName,
 		})
 		require.NoError(t, err)
 		assert.Equal(t, wl.Items[0].ID, wTest1.ID)
@@ -97,7 +97,7 @@ func TestWorkspacesList(t *testing.T) {
 		// Use a nonexisting workspace name as search attribute. The result
 		// should be successful, but return no results.
 		wl, err := client.Workspaces.List(ctx, orgTest.Name, &WorkspaceListOptions{
-			Search: String("nonexisting"),
+			Search: "nonexisting",
 		})
 		require.NoError(t, err)
 		assert.Empty(t, wl.Items)

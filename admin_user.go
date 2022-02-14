@@ -78,15 +78,15 @@ type AdminUserListOptions struct {
 	ListOptions
 
 	// A search query string. Users are searchable by username and email address.
-	Query *string `url:"q,omitempty"`
+	Query string `url:"q,omitempty"`
 
 	// Can be "true" or "false" to show only administrators or non-administrators.
-	Administrators *string `url:"filter[admin]"`
+	Administrators string `url:"filter[admin]"`
 
 	// Can be "true" or "false" to show only suspended users or users who are not suspended.
-	SuspendedUsers *string `url:"filter[suspended]"`
+	SuspendedUsers string `url:"filter[suspended]"`
 
-	Include *[]AdminUserIncludeOps `url:"include,omitempty"`
+	Include []AdminUserIncludeOps `url:"include,omitempty"`
 }
 
 // List all user accounts in the Terraform Enterprise installation

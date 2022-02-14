@@ -39,8 +39,8 @@ func TestStateVersionsList(t *testing.T) {
 
 	t.Run("without list options", func(t *testing.T) {
 		options := &StateVersionListOptions{
-			Organization: String(orgTest.Name),
-			Workspace:    String(wTest.Name),
+			Organization: orgTest.Name,
+			Workspace:    wTest.Name,
 		}
 
 		svl, err := client.StateVersions.List(ctx, options)
@@ -78,8 +78,8 @@ func TestStateVersionsList(t *testing.T) {
 				PageNumber: 999,
 				PageSize:   100,
 			},
-			Organization: String(orgTest.Name),
-			Workspace:    String(wTest.Name),
+			Organization: orgTest.Name,
+			Workspace:    wTest.Name,
 		}
 
 		svl, err := client.StateVersions.List(ctx, options)
@@ -91,7 +91,7 @@ func TestStateVersionsList(t *testing.T) {
 
 	t.Run("without an organization", func(t *testing.T) {
 		options := &StateVersionListOptions{
-			Workspace: String(wTest.Name),
+			Workspace: wTest.Name,
 		}
 
 		svl, err := client.StateVersions.List(ctx, options)
@@ -101,7 +101,7 @@ func TestStateVersionsList(t *testing.T) {
 
 	t.Run("without a workspace", func(t *testing.T) {
 		options := &StateVersionListOptions{
-			Organization: String(orgTest.Name),
+			Organization: orgTest.Name,
 		}
 
 		svl, err := client.StateVersions.List(ctx, options)

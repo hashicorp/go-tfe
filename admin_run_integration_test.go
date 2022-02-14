@@ -69,7 +69,7 @@ func TestAdminRuns_List(t *testing.T) {
 
 	t.Run("with workspace included", func(t *testing.T) {
 		rl, err := client.Admin.Runs.List(ctx, &AdminRunsListOptions{
-			Include: &([]AdminRunIncludeOps{AdminRunWorkspace}),
+			Include: []AdminRunIncludeOps{AdminRunWorkspace},
 		})
 
 		assert.NoError(t, err)
@@ -81,7 +81,7 @@ func TestAdminRuns_List(t *testing.T) {
 
 	t.Run("with workspace.organization included", func(t *testing.T) {
 		rl, err := client.Admin.Runs.List(ctx, &AdminRunsListOptions{
-			Include: &([]AdminRunIncludeOps{AdminRunWorkspaceOrg}),
+			Include: []AdminRunIncludeOps{AdminRunWorkspaceOrg},
 		})
 
 		assert.NoError(t, err)
@@ -100,7 +100,7 @@ func TestAdminRuns_List(t *testing.T) {
 
 		// There should be pending Runs
 		rl, err := client.Admin.Runs.List(ctx, &AdminRunsListOptions{
-			RunStatus: String(string(RunPending)),
+			RunStatus: string(RunPending),
 		})
 		assert.NoError(t, err)
 		assert.NotEmpty(t, rl.Items)
@@ -114,7 +114,7 @@ func TestAdminRuns_List(t *testing.T) {
 	t.Run("with RunStatus.applied filter", func(t *testing.T) {
 		// There should be no applied Runs
 		rl, err := client.Admin.Runs.List(ctx, &AdminRunsListOptions{
-			RunStatus: String(string(RunApplied)),
+			RunStatus: string(RunApplied),
 		})
 		assert.NoError(t, err)
 		assert.Empty(t, rl.Items)
@@ -122,7 +122,7 @@ func TestAdminRuns_List(t *testing.T) {
 
 	t.Run("with query", func(t *testing.T) {
 		rl, err := client.Admin.Runs.List(ctx, &AdminRunsListOptions{
-			Query: String(rTest1.ID),
+			Query: rTest1.ID,
 		})
 		assert.NoError(t, err)
 
@@ -131,7 +131,7 @@ func TestAdminRuns_List(t *testing.T) {
 		assert.Equal(t, adminRunItemsContainsID(rl.Items, rTest2.ID), false)
 
 		rl, err = client.Admin.Runs.List(ctx, &AdminRunsListOptions{
-			Query: String(rTest2.ID),
+			Query: rTest2.ID,
 		})
 		assert.NoError(t, err)
 
@@ -219,7 +219,7 @@ func TestAdminRuns_AdminRunsListOptions_valid(t *testing.T) {
 
 	t.Run("has valid status", func(t *testing.T) {
 		opts := AdminRunsListOptions{
-			RunStatus: String(string(RunPending)),
+			RunStatus: string(RunPending),
 		}
 
 		err := opts.valid()
@@ -228,7 +228,7 @@ func TestAdminRuns_AdminRunsListOptions_valid(t *testing.T) {
 
 	t.Run("has invalid status", func(t *testing.T) {
 		opts := AdminRunsListOptions{
-			RunStatus: String("random_status"),
+			RunStatus: "random_status",
 		}
 
 		err := opts.valid()
@@ -238,7 +238,7 @@ func TestAdminRuns_AdminRunsListOptions_valid(t *testing.T) {
 	t.Run("has invalid status, even with a valid one", func(t *testing.T) {
 		statuses := fmt.Sprintf("%s,%s", string(RunPending), "random_status")
 		opts := AdminRunsListOptions{
-			RunStatus: String(statuses),
+			RunStatus: statuses,
 		}
 
 		err := opts.valid()
