@@ -46,7 +46,7 @@ type OrganizationTag struct {
 type OrganizationTagsListOptions struct {
 	ListOptions
 
-	Filter *string `url:"filter[exclude][taggable][id],omitempty"`
+	Filter string `url:"filter[exclude][taggable][id],omitempty"`
 }
 
 // List all the tags in an organization. You can provide query params through OrganizationTagsListOptions

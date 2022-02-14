@@ -55,7 +55,7 @@ func TestAdminUsers_List(t *testing.T) {
 
 	t.Run("query by username or email", func(t *testing.T) {
 		ul, err := client.Admin.Users.List(ctx, &AdminUserListOptions{
-			Query: String(currentUser.Username),
+			Query: currentUser.Username,
 		})
 		require.NoError(t, err)
 		assert.Equal(t, currentUser.ID, ul.Items[0].ID)
@@ -66,7 +66,7 @@ func TestAdminUsers_List(t *testing.T) {
 		defer memberCleanup()
 
 		ul, err = client.Admin.Users.List(ctx, &AdminUserListOptions{
-			Query: String(member.User.Email),
+			Query: member.User.Email,
 		})
 		require.NoError(t, err)
 		assert.Equal(t, member.User.Email, ul.Items[0].Email)
@@ -76,7 +76,7 @@ func TestAdminUsers_List(t *testing.T) {
 
 	t.Run("with organization included", func(t *testing.T) {
 		ul, err := client.Admin.Users.List(ctx, &AdminUserListOptions{
-			Include: &([]AdminUserIncludeOps{AdminUserOrgs}),
+			Include: []AdminUserIncludeOps{AdminUserOrgs},
 		})
 
 		assert.NoError(t, err)
@@ -88,7 +88,7 @@ func TestAdminUsers_List(t *testing.T) {
 
 	t.Run("filter by admin", func(t *testing.T) {
 		ul, err := client.Admin.Users.List(ctx, &AdminUserListOptions{
-			Administrators: String("true"),
+			Administrators: "true",
 		})
 
 		assert.NoError(t, err)
@@ -116,7 +116,7 @@ func TestAdminUsers_Delete(t *testing.T) {
 		member, _ := createOrganizationMembership(t, client, org)
 
 		ul, err := client.Admin.Users.List(ctx, &AdminUserListOptions{
-			Query: String(member.User.Email),
+			Query: member.User.Email,
 		})
 		require.NoError(t, err)
 		assert.Equal(t, member.User.Email, ul.Items[0].Email)
@@ -127,7 +127,7 @@ func TestAdminUsers_Delete(t *testing.T) {
 		require.NoError(t, err)
 
 		ul, err = client.Admin.Users.List(ctx, &AdminUserListOptions{
-			Query: String(member.User.Email),
+			Query: member.User.Email,
 		})
 		require.NoError(t, err)
 		assert.Empty(t, ul.Items)

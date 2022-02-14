@@ -60,7 +60,7 @@ func TestPoliciesList(t *testing.T) {
 		// Search by one of the policy's names; we should get only that policy
 		// and pagination data should reflect the search as well
 		pl, err := client.Policies.List(ctx, orgTest.Name, &PolicyListOptions{
-			Search: &pTest1.Name,
+			Search: pTest1.Name,
 		})
 		require.NoError(t, err)
 

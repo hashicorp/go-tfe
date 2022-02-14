@@ -35,7 +35,7 @@ func TestTeamAccessesList(t *testing.T) {
 
 	t.Run("with valid options", func(t *testing.T) {
 		tal, err := client.TeamAccess.List(ctx, &TeamAccessListOptions{
-			WorkspaceID: String(wTest.ID),
+			WorkspaceID: wTest.ID,
 		})
 		require.NoError(t, err)
 		assert.Contains(t, tal.Items, taTest1)
@@ -82,7 +82,7 @@ func TestTeamAccessesList(t *testing.T) {
 
 	t.Run("without a valid workspaceID", func(t *testing.T) {
 		tal, err := client.TeamAccess.List(ctx, &TeamAccessListOptions{
-			WorkspaceID: String(badIdentifier),
+			WorkspaceID: badIdentifier,
 		})
 		assert.Nil(t, tal)
 		assert.EqualError(t, err, ErrInvalidWorkspaceID.Error())

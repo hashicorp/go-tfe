@@ -71,16 +71,16 @@ type StateVersion struct {
 // StateVersionListOptions represents the options for listing state versions.
 type StateVersionListOptions struct {
 	ListOptions
-	Organization *string `url:"filter[organization][name]"`
-	Workspace    *string `url:"filter[workspace][name]"`
+	Organization string `url:"filter[organization][name]"`
+	Workspace    string `url:"filter[workspace][name]"`
 }
 
 //check that StateVersionListOptions fields had valid values
 func (o StateVersionListOptions) valid() error {
-	if !validString(o.Organization) {
+	if !validString(&o.Organization) {
 		return errors.New("organization is required")
 	}
-	if !validString(o.Workspace) {
+	if !validString(&o.Workspace) {
 		return errors.New("workspace is required")
 	}
 	return nil

@@ -86,9 +86,9 @@ type AdminOrganizationListOptions struct {
 
 	// A query string used to filter organizations.
 	// Any organizations with a name or notification email partially matching this value will be returned.
-	Query *string `url:"q,omitempty"`
+	Query string `url:"q,omitempty"`
 
-	Include *[]AdminOrgIncludeOps `url:"include,omitempty"`
+	Include []AdminOrgIncludeOps `url:"include,omitempty"`
 }
 
 // AdminOrganizationListModuleConsumersOptions represents the options for listing organization module consumers through the Admin API

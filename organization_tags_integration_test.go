@@ -63,7 +63,7 @@ func TestOrganizationTagsList(t *testing.T) {
 				PageNumber: 1,
 				PageSize:   5,
 			},
-			Filter: &testTagID,
+			Filter: testTagID,
 		})
 		require.NoError(t, err)
 
