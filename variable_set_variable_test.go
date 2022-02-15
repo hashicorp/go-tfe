@@ -31,7 +31,7 @@ func TestVariableSetVariablesList(t *testing.T) {
 	defer vTestCleanup2()
 
 	t.Run("without list options", func(t *testing.T) {
-		vl, err := client.VariableSetVariables.List(ctx, vsTest.ID, VariableSetVariableListOptions{})
+		vl, err := client.VariableSetVariables.List(ctx, vsTest.ID, nil)
 		require.NoError(t, err)
 		assert.Contains(t, vl.Items, vTest1)
 		assert.Contains(t, vl.Items, vTest2)
@@ -46,7 +46,7 @@ func TestVariableSetVariablesList(t *testing.T) {
 		// Request a page number which is out of range. The result should
 		// be successful, but return no results if the paging options are
 		// properly passed along.
-		vl, err := client.VariableSetVariables.List(ctx, vsTest.ID, VariableSetVariableListOptions{
+		vl, err := client.VariableSetVariables.List(ctx, vsTest.ID, &VariableSetVariableListOptions{
 			ListOptions: ListOptions{
 				PageNumber: 999,
 				PageSize:   100,
@@ -59,7 +59,7 @@ func TestVariableSetVariablesList(t *testing.T) {
 	})
 
 	t.Run("when variable set ID is invalid ID", func(t *testing.T) {
-		vl, err := client.VariableSetVariables.List(ctx, badIdentifier, VariableSetVariableListOptions{})
+		vl, err := client.VariableSetVariables.List(ctx, badIdentifier, nil)
 		assert.Nil(t, vl)
 		assert.EqualError(t, err, "invalid value for variable set ID")
 	})
@@ -85,7 +85,7 @@ func TestVariableSetVariablesCreate(t *testing.T) {
 			Sensitive:   Bool(false),
 		}
 
-		v, err := client.VariableSetVariables.Create(ctx, vsTest.ID, options)
+		v, err := client.VariableSetVariables.Create(ctx, vsTest.ID, &options)
 		require.NoError(t, err)
 
 		assert.NotEmpty(t, v.ID)
@@ -103,7 +103,7 @@ func TestVariableSetVariablesCreate(t *testing.T) {
 			Category:    Category(CategoryTerraform),
 		}
 
-		v, err := client.VariableSetVariables.Create(ctx, vsTest.ID, options)
+		v, err := client.VariableSetVariables.Create(ctx, vsTest.ID, &options)
 		require.NoError(t, err)
 
 		assert.NotEmpty(t, v.ID)
@@ -121,7 +121,7 @@ func TestVariableSetVariablesCreate(t *testing.T) {
 			Category:    Category(CategoryTerraform),
 		}
 
-		v, err := client.VariableSetVariables.Create(ctx, vsTest.ID, options)
+		v, err := client.VariableSetVariables.Create(ctx, vsTest.ID, &options)
 		require.NoError(t, err)
 
 		assert.NotEmpty(t, v.ID)
@@ -139,7 +139,7 @@ func TestVariableSetVariablesCreate(t *testing.T) {
 			Category:    Category(CategoryTerraform),
 		}
 
-		_, err := client.VariableSetVariables.Create(ctx, vsTest.ID, options)
+		_, err := client.VariableSetVariables.Create(ctx, vsTest.ID, &options)
 		assert.Error(t, err)
 	})
 
@@ -149,7 +149,7 @@ func TestVariableSetVariablesCreate(t *testing.T) {
 			Category: Category(CategoryTerraform),
 		}
 
-		v, err := client.VariableSetVariables.Create(ctx, vsTest.ID, options)
+		v, err := client.VariableSetVariables.Create(ctx, vsTest.ID, &options)
 		require.NoError(t, err)
 
 		assert.NotEmpty(t, v.ID)
@@ -164,7 +164,7 @@ func TestVariableSetVariablesCreate(t *testing.T) {
 			Category: Category(CategoryTerraform),
 		}
 
-		_, err := client.VariableSetVariables.Create(ctx, vsTest.ID, options)
+		_, err := client.VariableSetVariables.Create(ctx, vsTest.ID, &options)
 		assert.EqualError(t, err, "key is required")
 	})
 
@@ -175,7 +175,7 @@ func TestVariableSetVariablesCreate(t *testing.T) {
 			Category: Category(CategoryTerraform),
 		}
 
-		_, err := client.VariableSetVariables.Create(ctx, vsTest.ID, options)
+		_, err := client.VariableSetVariables.Create(ctx, vsTest.ID, &options)
 		assert.EqualError(t, err, "key is required")
 	})
 
@@ -185,7 +185,7 @@ func TestVariableSetVariablesCreate(t *testing.T) {
 			Value: String(randomString(t)),
 		}
 
-		_, err := client.VariableSetVariables.Create(ctx, vsTest.ID, options)
+		_, err := client.VariableSetVariables.Create(ctx, vsTest.ID, &options)
 		assert.EqualError(t, err, "category is required")
 	})
 
@@ -196,7 +196,7 @@ func TestVariableSetVariablesCreate(t *testing.T) {
 			Category: Category(CategoryTerraform),
 		}
 
-		_, err := client.VariableSetVariables.Create(ctx, badIdentifier, options)
+		_, err := client.VariableSetVariables.Create(ctx, badIdentifier, &options)
 		assert.EqualError(t, err, "invalid value for variable set ID")
 	})
 }
@@ -218,7 +218,7 @@ func TestVariableSetVariablesUpdate(t *testing.T) {
 			HCL:   Bool(true),
 		}
 
-		v, err := client.VariableSetVariables.Update(ctx, vsTest.ID, vTest.ID, options)
+		v, err := client.VariableSetVariables.Update(ctx, vsTest.ID, vTest.ID, &options)
 		require.NoError(t, err)
 
 		assert.Equal(t, *options.Key, v.Key)
@@ -232,7 +232,7 @@ func TestVariableSetVariablesUpdate(t *testing.T) {
 			HCL: Bool(false),
 		}
 
-		v, err := client.VariableSetVariables.Update(ctx, vsTest.ID, vTest.ID, options)
+		v, err := client.VariableSetVariables.Update(ctx, vsTest.ID, vTest.ID, &options)
 		require.NoError(t, err)
 
 		assert.Equal(t, *options.Key, v.Key)
@@ -244,7 +244,7 @@ func TestVariableSetVariablesUpdate(t *testing.T) {
 			Sensitive: Bool(true),
 		}
 
-		v, err := client.VariableSetVariables.Update(ctx, vsTest.ID, vTest.ID, options)
+		v, err := client.VariableSetVariables.Update(ctx, vsTest.ID, vTest.ID, &options)
 		require.NoError(t, err)
 
 		assert.Equal(t, *options.Sensitive, v.Sensitive)
@@ -255,7 +255,7 @@ func TestVariableSetVariablesUpdate(t *testing.T) {
 		vTest, vTestCleanup := createVariableSetVariable(t, client, vsTest, VariableSetVariableCreateOptions{})
 		defer vTestCleanup()
 
-		ua := VariableSetVariableUpdateOptions{
+		options := VariableSetVariableUpdateOptions{
 			Key:         String(vTest.Key),
 			Value:       String(vTest.Value),
 			Description: String(vTest.Description),
@@ -263,19 +263,19 @@ func TestVariableSetVariablesUpdate(t *testing.T) {
 			HCL:         Bool(vTest.HCL),
 		}
 
-		v, err := client.VariableSetVariables.Update(ctx, vsTest.ID, vTest.ID, ua)
+		v, err := client.VariableSetVariables.Update(ctx, vsTest.ID, vTest.ID, &options)
 		require.NoError(t, err)
 
 		assert.Equal(t, vTest, v)
 	})
 
 	t.Run("with invalid variable ID", func(t *testing.T) {
-		_, err := client.VariableSetVariables.Update(ctx, badIdentifier, vTest.ID, VariableSetVariableUpdateOptions{})
+		_, err := client.VariableSetVariables.Update(ctx, badIdentifier, vTest.ID, nil)
 		assert.EqualError(t, err, "invalid value for variable set ID")
 	})
 
 	t.Run("with invalid variable ID", func(t *testing.T) {
-		_, err := client.VariableSetVariables.Update(ctx, vsTest.ID, badIdentifier, VariableSetVariableUpdateOptions{})
+		_, err := client.VariableSetVariables.Update(ctx, vsTest.ID, badIdentifier, nil)
 		assert.EqualError(t, err, "invalid value for variable ID")
 	})
 }

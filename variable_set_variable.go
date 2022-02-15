@@ -16,13 +16,13 @@ var _ VariableSetVariables = (*variableSetVariables)(nil)
 // TFE API docs: https://www.terraform.io/cloud-docs/api-docs/variable-sets#variable-relationships
 type VariableSetVariables interface {
 	// List all variables in the variable set.
-	List(ctx context.Context, variableSetID string, options VariableSetVariableListOptions) (*VariableSetVariableList, error)
+	List(ctx context.Context, variableSetID string, options *VariableSetVariableListOptions) (*VariableSetVariableList, error)
 
 	// Create is used to create a new variable within a given variable set
-	Create(ctx context.Context, variableSetID string, options VariableSetVariableCreateOptions) (*VariableSetVariable, error)
+	Create(ctx context.Context, variableSetID string, options *VariableSetVariableCreateOptions) (*VariableSetVariable, error)
 
 	// Update valuse of an existing variable
-	Update(ctx context.Context, variableSetID string, variableID string, options VariableSetVariableUpdateOptions) (*VariableSetVariable, error)
+	Update(ctx context.Context, variableSetID string, variableID string, options *VariableSetVariableUpdateOptions) (*VariableSetVariable, error)
 
 	// Delete a variable by its ID
 	Delete(ctx context.Context, variableSetID string, variableID string) error
@@ -59,16 +59,18 @@ func (o VariableSetVariableListOptions) valid() error {
 }
 
 // List all variables associated with the given variable set.
-func (s *variableSetVariables) List(ctx context.Context, variableSetID string, options VariableSetVariableListOptions) (*VariableSetVariableList, error) {
+func (s *variableSetVariables) List(ctx context.Context, variableSetID string, options *VariableSetVariableListOptions) (*VariableSetVariableList, error) {
 	if !validStringID(&variableSetID) {
 		return nil, errors.New("invalid value for variable set ID")
 	}
-	if err := options.valid(); err != nil {
-		return nil, err
+	if options != nil {
+		if err := options.valid(); err != nil {
+			return nil, err
+		}
 	}
 
 	u := fmt.Sprintf("varsets/%s/relationships/vars", variableSetID)
-	req, err := s.client.newRequest("GET", u, &options)
+	req, err := s.client.newRequest("GET", u, options)
 	if err != nil {
 		return nil, err
 	}
@@ -120,16 +122,18 @@ func (o VariableSetVariableCreateOptions) valid() error {
 }
 
 // Create is used to create a new variable.
-func (s *variableSetVariables) Create(ctx context.Context, variableSetID string, options VariableSetVariableCreateOptions) (*VariableSetVariable, error) {
+func (s *variableSetVariables) Create(ctx context.Context, variableSetID string, options *VariableSetVariableCreateOptions) (*VariableSetVariable, error) {
 	if !validStringID(&variableSetID) {
 		return nil, errors.New("invalid value for variable set ID")
 	}
-	if err := options.valid(); err != nil {
-		return nil, err
+	if options != nil {
+		if err := options.valid(); err != nil {
+			return nil, err
+		}
 	}
 
 	u := fmt.Sprintf("varsets/%s/relationships/vars", url.QueryEscape(variableSetID))
-	req, err := s.client.newRequest("POST", u, &options)
+	req, err := s.client.newRequest("POST", u, options)
 	if err != nil {
 		return nil, err
 	}
@@ -168,7 +172,7 @@ type VariableSetVariableUpdateOptions struct {
 }
 
 // Update values of an existing variable.
-func (s *variableSetVariables) Update(ctx context.Context, variableSetID string, variableID string, options VariableSetVariableUpdateOptions) (*VariableSetVariable, error) {
+func (s *variableSetVariables) Update(ctx context.Context, variableSetID string, variableID string, options *VariableSetVariableUpdateOptions) (*VariableSetVariable, error) {
 	if !validStringID(&variableSetID) {
 		return nil, errors.New("invalid value for variable set ID")
 	}
@@ -177,7 +181,7 @@ func (s *variableSetVariables) Update(ctx context.Context, variableSetID string,
 	}
 
 	u := fmt.Sprintf("varsets/%s/relationships/vars/%s", url.QueryEscape(variableSetID), url.QueryEscape(variableID))
-	req, err := s.client.newRequest("PATCH", u, &options)
+	req, err := s.client.newRequest("PATCH", u, options)
 	if err != nil {
 		return nil, err
 	}

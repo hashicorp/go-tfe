@@ -16,22 +16,22 @@ var _ VariableSets = (*variableSets)(nil)
 // TFE API docs: https://www.terraform.io/cloud-docs/api-docs/variable-sets
 type VariableSets interface {
 	// List all the variable sets within an organization.
-	List(ctx context.Context, organization string, options VariableSetListOptions) (*VariableSetList, error)
+	List(ctx context.Context, organization string, options *VariableSetListOptions) (*VariableSetList, error)
 
 	// Create is used to create a new variable set.
-	Create(ctx context.Context, organization string, options VariableSetCreateOptions) (*VariableSet, error)
+	Create(ctx context.Context, organization string, options *VariableSetCreateOptions) (*VariableSet, error)
 
 	// Read a variable set by its ID.
-	Read(ctx context.Context, variableSetVariableSetReadOptionsID string, options VariableSetReadOptions) (*VariableSet, error)
+	Read(ctx context.Context, variableSetVariableSetReadOptionsID string, options *VariableSetReadOptions) (*VariableSet, error)
 
 	// Update an existing variable set.
-	Update(ctx context.Context, variableSetID string, options VariableSetUpdateOptions) (*VariableSet, error)
+	Update(ctx context.Context, variableSetID string, options *VariableSetUpdateOptions) (*VariableSet, error)
 
 	// Delete a variable set by ID.
 	Delete(ctx context.Context, variableSetID string) error
 
 	// Assign a variable set to workspaces
-	Assign(ctx context.Context, variableSetID string, options VariableSetAssignOptions) (*VariableSet, error)
+	Assign(ctx context.Context, variableSetID string, options *VariableSetAssignOptions) (*VariableSet, error)
 }
 
 type variableSets struct {
@@ -73,16 +73,18 @@ func (o VariableSetListOptions) valid() error {
 }
 
 // List all Variable Sets in the organization
-func (s *variableSets) List(ctx context.Context, organization string, options VariableSetListOptions) (*VariableSetList, error) {
+func (s *variableSets) List(ctx context.Context, organization string, options *VariableSetListOptions) (*VariableSetList, error) {
 	if !validStringID(&organization) {
 		return nil, ErrInvalidOrg
 	}
-	if err := options.valid(); err != nil {
-		return nil, err
+	if options != nil {
+		if err := options.valid(); err != nil {
+			return nil, err
+		}
 	}
 
 	u := fmt.Sprintf("organizations/%s/varsets", url.QueryEscape(organization))
-	req, err := s.client.newRequest("GET", u, &options)
+	req, err := s.client.newRequest("GET", u, options)
 	if err != nil {
 		return nil, err
 	}
@@ -127,16 +129,18 @@ func (o VariableSetCreateOptions) valid() error {
 }
 
 // Create is used to create a new variable set.
-func (s *variableSets) Create(ctx context.Context, organization string, options VariableSetCreateOptions) (*VariableSet, error) {
+func (s *variableSets) Create(ctx context.Context, organization string, options *VariableSetCreateOptions) (*VariableSet, error) {
 	if !validStringID(&organization) {
 		return nil, ErrInvalidOrg
 	}
-	if err := options.valid(); err != nil {
-		return nil, err
+	if options != nil {
+		if err := options.valid(); err != nil {
+			return nil, err
+		}
 	}
 
 	u := fmt.Sprintf("organizations/%s/varsets", url.QueryEscape(organization))
-	req, err := s.client.newRequest("POST", u, &options)
+	req, err := s.client.newRequest("POST", u, options)
 	if err != nil {
 		return nil, err
 	}
@@ -155,7 +159,7 @@ type VariableSetReadOptions struct {
 }
 
 // Read is used to inspect a given variable set based on ID
-func (s *variableSets) Read(ctx context.Context, variableSetID string, options VariableSetReadOptions) (*VariableSet, error) {
+func (s *variableSets) Read(ctx context.Context, variableSetID string, options *VariableSetReadOptions) (*VariableSet, error) {
 	if !validStringID(&variableSetID) {
 		return nil, errors.New("invalid variable set ID")
 	}
@@ -197,13 +201,13 @@ type VariableSetUpdateOptions struct {
 	Include *[]VariableSetIncludeOps `url:"include:omitempty"`
 }
 
-func (s *variableSets) Update(ctx context.Context, variableSetID string, options VariableSetUpdateOptions) (*VariableSet, error) {
+func (s *variableSets) Update(ctx context.Context, variableSetID string, options *VariableSetUpdateOptions) (*VariableSet, error) {
 	if !validStringID(&variableSetID) {
 		return nil, errors.New("invalid value for variable set ID")
 	}
 
 	u := fmt.Sprintf("varsets/%s", url.QueryEscape(variableSetID))
-	req, err := s.client.newRequest("PATCH", u, &options)
+	req, err := s.client.newRequest("PATCH", u, options)
 	if err != nil {
 		return nil, err
 	}
@@ -248,8 +252,8 @@ type VariableSetAssignOptions struct {
 }
 
 // Use Update to assign a variable set to workspaces
-func (s *variableSets) Assign(ctx context.Context, variableSetID string, options VariableSetAssignOptions) (*VariableSet, error) {
-	if options.Workspaces == nil {
+func (s *variableSets) Assign(ctx context.Context, variableSetID string, options *VariableSetAssignOptions) (*VariableSet, error) {
+	if options == nil || options.Workspaces == nil {
 		return nil, errors.New("No workspaces list provided")
 	}
 
@@ -257,7 +261,7 @@ func (s *variableSets) Assign(ctx context.Context, variableSetID string, options
 
 	// We force inclusion of workspaces as that is the primary data for which we are concerned with confirming changes.
 	u := fmt.Sprintf("varsets/%s?include=%s", url.QueryEscape(variableSetID), VariableSetWorkspaces)
-	req, err := s.client.newRequest("PATCH", u, &options)
+	req, err := s.client.newRequest("PATCH", u, options)
 	if err != nil {
 		return nil, err
 	}

@@ -24,7 +24,7 @@ func TestVariableSetsList(t *testing.T) {
 	defer vsTestCleanup2()
 
 	t.Run("without list options", func(t *testing.T) {
-		vsl, err := client.VariableSets.List(ctx, orgTest.Name, VariableSetListOptions{})
+		vsl, err := client.VariableSets.List(ctx, orgTest.Name, nil)
 		require.NoError(t, err)
 		assert.Contains(t, vsl.Items, vsTest1)
 		assert.Contains(t, vsl.Items, vsTest2)
@@ -39,7 +39,7 @@ func TestVariableSetsList(t *testing.T) {
 		// Request a page number which is out of range. The result should
 		// be successful, but return no results if the paging options are
 		// properly passed along.
-		vsl, err := client.VariableSets.List(ctx, orgTest.Name, VariableSetListOptions{
+		vsl, err := client.VariableSets.List(ctx, orgTest.Name, &VariableSetListOptions{
 			ListOptions: ListOptions{
 				PageNumber: 999,
 				PageSize:   100,
@@ -52,7 +52,7 @@ func TestVariableSetsList(t *testing.T) {
 	})
 
 	t.Run("when Organization name is invalid ID", func(t *testing.T) {
-		vsl, err := client.VariableSets.List(ctx, badIdentifier, VariableSetListOptions{})
+		vsl, err := client.VariableSets.List(ctx, badIdentifier, nil)
 		assert.Nil(t, vsl)
 		assert.EqualError(t, err, ErrInvalidOrg.Error())
 	})
@@ -72,11 +72,11 @@ func TestVariableSetsCreate(t *testing.T) {
 			Global:      Bool(false),
 		}
 
-		vs, err := client.VariableSets.Create(ctx, orgTest.Name, options)
+		vs, err := client.VariableSets.Create(ctx, orgTest.Name, &options)
 		require.NoError(t, err)
 
 		//Get refreshed view from the API
-		refreshed, err := client.VariableSets.Read(ctx, vs.ID, VariableSetReadOptions{})
+		refreshed, err := client.VariableSets.Read(ctx, vs.ID, nil)
 		require.NoError(t, err)
 
 		for _, item := range []*VariableSet{
@@ -91,7 +91,7 @@ func TestVariableSetsCreate(t *testing.T) {
 	})
 
 	t.Run("when options is missing name", func(t *testing.T) {
-		vs, err := client.VariableSets.Create(ctx, "foo", VariableSetCreateOptions{
+		vs, err := client.VariableSets.Create(ctx, "foo", &VariableSetCreateOptions{
 			Global: Bool(true),
 		})
 		assert.Nil(t, vs)
@@ -99,7 +99,7 @@ func TestVariableSetsCreate(t *testing.T) {
 	})
 
 	t.Run("when options is missing global flag", func(t *testing.T) {
-		vs, err := client.VariableSets.Create(ctx, "foo", VariableSetCreateOptions{
+		vs, err := client.VariableSets.Create(ctx, "foo", &VariableSetCreateOptions{
 			Name: String("foo"),
 		})
 		assert.Nil(t, vs)
@@ -118,13 +118,13 @@ func TestVariableSetsRead(t *testing.T) {
 	defer vsTestCleanup()
 
 	t.Run("when the variable set exists", func(t *testing.T) {
-		vs, err := client.VariableSets.Read(ctx, vsTest.ID, VariableSetReadOptions{})
+		vs, err := client.VariableSets.Read(ctx, vsTest.ID, nil)
 		require.NoError(t, err)
 		assert.Equal(t, vsTest, vs)
 	})
 
 	t.Run("when variable set does not exist", func(t *testing.T) {
-		vs, err := client.VariableSets.Read(ctx, "nonexisting", VariableSetReadOptions{})
+		vs, err := client.VariableSets.Read(ctx, "nonexisting", nil)
 		assert.Nil(t, vs)
 		assert.Error(t, err)
 	})
@@ -150,7 +150,7 @@ func TestVariableSetsUpdate(t *testing.T) {
 			Global:      Bool(true),
 		}
 
-		vsAfter, err := client.VariableSets.Update(ctx, vsTest.ID, options)
+		vsAfter, err := client.VariableSets.Update(ctx, vsTest.ID, &options)
 		require.NoError(t, err)
 
 		assert.Equal(t, *options.Name, vsAfter.Name)
@@ -159,7 +159,7 @@ func TestVariableSetsUpdate(t *testing.T) {
 	})
 
 	t.Run("when options has an invalid variable set ID", func(t *testing.T) {
-		vsAfter, err := client.VariableSets.Update(ctx, badIdentifier, VariableSetUpdateOptions{
+		vsAfter, err := client.VariableSets.Update(ctx, badIdentifier, &VariableSetUpdateOptions{
 			Name:        String("UpdatedName"),
 			Description: String("Updated Description"),
 			Global:      Bool(true),
@@ -183,7 +183,7 @@ func TestVariableSetsDelete(t *testing.T) {
 		require.NoError(t, err)
 
 		// Try loading the variable set - it should fail.
-		_, err = client.VariableSets.Read(ctx, vsTest.ID, VariableSetReadOptions{})
+		_, err = client.VariableSets.Read(ctx, vsTest.ID, nil)
 		assert.Equal(t, ErrResourceNotFound, err)
 	})
 
@@ -209,7 +209,7 @@ func TestVariableSetsAssign(t *testing.T) {
 			Workspaces: []*Workspace{wTest},
 		}
 
-		vsAfter, err := client.VariableSets.Assign(ctx, vsTest.ID, options)
+		vsAfter, err := client.VariableSets.Assign(ctx, vsTest.ID, &options)
 		require.NoError(t, err)
 
 		assert.Equal(t, len(options.Workspaces), len(vsAfter.Workspaces))
@@ -219,7 +219,7 @@ func TestVariableSetsAssign(t *testing.T) {
 			Workspaces: []*Workspace{},
 		}
 
-		vsAfter, err = client.VariableSets.Assign(ctx, vsTest.ID, options)
+		vsAfter, err = client.VariableSets.Assign(ctx, vsTest.ID, &options)
 		require.NoError(t, err)
 
 		assert.Equal(t, len(options.Workspaces), len(vsAfter.Workspaces))
