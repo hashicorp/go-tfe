@@ -155,6 +155,16 @@ var (
 	ErrInvalidCommentID = errors.New("invalid value for comment ID")
 
 	ErrInvalidCommentBody = errors.New("invalid value for comment body")
+
+	ErrInvalidNamespace = errors.New("invalid value for namespace")
+
+	ErrInvalidPrivateProviderNamespaceDoesntMatchOrganization = errors.New("invalid namespace must match organization name for private providers")
+
+	ErrInvalidRegistryName = errors.New("invalid value for registry-name")
+
+	ErrInvalidRegistryNameType = errors.New("invalid type for registry-name. Please use 'RegistryName'")
+
+	ErrInvalidKeyID = errors.New("invalid value for key-id")
 )
 
 // Missing values for required field/option
@@ -268,4 +278,6 @@ var (
 	ErrEmptyTeamName = errors.New("team name can not be empty")
 
 	ErrInvalidEmail = errors.New("email is invalid")
+
+	ErrRequiredPrivateRegistry = errors.New("only private registry is allowed")
 )

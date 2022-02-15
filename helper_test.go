@@ -10,6 +10,7 @@ import (
 	"errors"
 	"fmt"
 	"io/ioutil"
+	"math/rand"
 	"os"
 	"sync"
 	"testing"
@@ -761,20 +762,29 @@ func createPrivateRegistryProvider(t *testing.T, client *Client, org *Organizati
 
 	ctx := context.Background()
 
-	privateName := PrivateRegistry
-
 	options := RegistryProviderCreateOptions{
-		Name:         String("tst-name-" + randomString(t)),
-		Namespace:    &org.Name,
-		RegistryName: &privateName,
+		Name:         "tst-name-" + randomString(t),
+		Namespace:    org.Name,
+		RegistryName: PrivateRegistry,
 	}
+
 	prv, err := client.RegistryProviders.Create(ctx, org.Name, options)
+
 	if err != nil {
 		t.Fatal(err)
 	}
 
+	prv.Organization = org
+
 	return prv, func() {
-		if err := client.RegistryProviders.Delete(ctx, org.Name, prv.RegistryName, prv.Namespace, prv.Name); err != nil {
+		id := RegistryProviderID {
+			OrganizationName: org.Name,
+			RegistryName:     prv.RegistryName,
+			Namespace:        prv.Namespace,
+			Name:             prv.Name,
+		}
+
+		if err := client.RegistryProviders.Delete(ctx, id); err != nil {
 			t.Errorf("Error destroying registry provider! WARNING: Dangling resources\n"+
 				"may exist! The full error is shown below.\n\n"+
 				"Registry Provider: %s/%s\nError: %s", prv.Namespace, prv.Name, err)
@@ -795,20 +805,29 @@ func createPublicRegistryProvider(t *testing.T, client *Client, org *Organizatio
 
 	ctx := context.Background()
 
-	publicName := PublicRegistry
-
 	options := RegistryProviderCreateOptions{
-		Name:         String("tst-name-" + randomString(t)),
-		Namespace:    String("tst-namespace-" + randomString(t)),
-		RegistryName: &publicName,
+		Name:         "tst-name-" + randomString(t),
+		Namespace:    "tst-namespace-" + randomString(t),
+		RegistryName: PublicRegistry,
 	}
+
 	prv, err := client.RegistryProviders.Create(ctx, org.Name, options)
+
 	if err != nil {
 		t.Fatal(err)
 	}
 
+	prv.Organization = org
+
 	return prv, func() {
-		if err := client.RegistryProviders.Delete(ctx, org.Name, prv.RegistryName, prv.Namespace, prv.Name); err != nil {
+		id := RegistryProviderID {
+			OrganizationName: org.Name,
+			RegistryName:     prv.RegistryName,
+			Namespace:        prv.Namespace,
+			Name:             prv.Name,
+		}
+
+		if err := client.RegistryProviders.Delete(ctx, id); err != nil {
 			t.Errorf("Error destroying registry provider! WARNING: Dangling resources\n"+
 				"may exist! The full error is shown below.\n\n"+
 				"Registry Provider: %s/%s\nError: %s", prv.Namespace, prv.Name, err)
@@ -816,6 +835,53 @@ func createPublicRegistryProvider(t *testing.T, client *Client, org *Organizatio
 
 		if orgCleanup != nil {
 			orgCleanup()
+		}
+	}
+}
+
+func createRegistryProviderVersion(t *testing.T, client *Client, provider *RegistryProvider) (*RegistryProviderVersion, func()) {
+	var providerCleanup func()
+
+	if provider == nil {
+		provider, providerCleanup = createPrivateRegistryProvider(t, client, nil)
+	}
+
+	providerID := RegistryProviderID {
+		OrganizationName: provider.Organization.Name,
+		RegistryName:     provider.RegistryName,
+		Namespace:        provider.Namespace,
+		Name:             provider.Name,
+	}
+
+	ctx := context.Background()
+
+	options := RegistryProviderVersionCreateOptions{
+		Version: randomSemver(t),
+		KeyID:   randomString(t),
+	}
+
+	prvv, err := client.RegistryProviderVersions.Create(ctx, providerID, options)
+
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	prvv.RegistryProvider = provider
+
+	return prvv, func() {
+		id := RegistryProviderVersionID {
+			Version:            options.Version,
+			RegistryProviderID: providerID,
+		}
+
+		if err := client.RegistryProviderVersions.Delete(ctx, id); err != nil {
+			t.Errorf("Error destroying registry provider version! WARNING: Dangling resources\n"+
+				"may exist! The full error is shown below.\n\n"+
+				"Registry Provider Version: %s/%s/%s\nError: %s", prvv.RegistryProvider.Namespace, prvv.RegistryProvider.Name, prvv.Version, err)
+		}
+
+		if providerCleanup != nil {
+			providerCleanup()
 		}
 	}
 }
@@ -1338,6 +1404,10 @@ func randomString(t *testing.T) string {
 		t.Fatal(err)
 	}
 	return v
+}
+
+func randomSemver(t *testing.T) string {
+	return fmt.Sprintf("%d.%d.%d", rand.Intn(99)+3, rand.Intn(99)+1, rand.Intn(99)+1)
 }
 
 // skips a test if the environment is for Terraform Cloud.

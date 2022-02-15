@@ -1,3 +1,6 @@
+//go:build integration
+// +build integration
+
 package tfe
 
 import (
@@ -21,10 +24,12 @@ func TestRegistryProvidersList(t *testing.T) {
 		providers := make([]*RegistryProvider, 0)
 		// these providers will be destroyed when the org is cleaned up
 		for i := 0; i < createN; i++ {
+			// Create public providers
 			providerTest, _ := createPublicRegistryProvider(t, client, orgTest)
 			providers = append(providers, providerTest)
 		}
 		for i := 0; i < createN; i++ {
+			// Create private providers
 			providerTest, _ := createPrivateRegistryProvider(t, client, orgTest)
 			providers = append(providers, providerTest)
 		}
@@ -87,9 +92,8 @@ func TestRegistryProvidersList(t *testing.T) {
 		})
 
 		t.Run("filters on registry name", func(t *testing.T) {
-			publicName := PublicRegistry
 			returnedProviders, err := client.RegistryProviders.List(ctx, orgTest.Name, &RegistryProviderListOptions{
-				RegistryName: &publicName,
+				RegistryName: PublicRegistry,
 				ListOptions: ListOptions{
 					PageNumber: 0,
 					PageSize:   providerN,
@@ -107,7 +111,7 @@ func TestRegistryProvidersList(t *testing.T) {
 						break
 					}
 				}
-				assert.Equal(t, publicName, rp.RegistryName)
+				assert.Equal(t, PublicRegistry, rp.RegistryName)
 				assert.True(t, foundProvider, "Expected to find provider %s but did not:\nexpected:\n%v\nreturned\n%v", rp.ID, providers, returnedProviders)
 			}
 		})
@@ -115,7 +119,7 @@ func TestRegistryProvidersList(t *testing.T) {
 		t.Run("searches", func(t *testing.T) {
 			expectedProvider := providers[0]
 			returnedProviders, err := client.RegistryProviders.List(ctx, orgTest.Name, &RegistryProviderListOptions{
-				Search: &expectedProvider.Name,
+				Search: expectedProvider.Name,
 				ListOptions: ListOptions{
 					PageNumber: 0,
 					PageSize:   providerN,
@@ -141,6 +145,41 @@ func TestRegistryProvidersList(t *testing.T) {
 		assert.Equal(t, 0, providers.TotalCount)
 		assert.Equal(t, 0, providers.TotalPages)
 	})
+
+	t.Run("with include provider versions", func(t *testing.T) {
+		version1, version1Cleanup := createRegistryProviderVersion(t, client, nil)
+		defer version1Cleanup()
+
+		provider := version1.RegistryProvider
+
+		version2, version2Cleanup := createRegistryProviderVersion(t, client, provider)
+		defer version2Cleanup()
+
+		versions := []*RegistryProviderVersion{version1, version2}
+
+		options := RegistryProviderListOptions{
+			Include: &[]RegistryProviderIncludeOps{
+				RegistryProviderVersionsInclude,
+			},
+		}
+
+		providersRead, err := client.RegistryProviders.List(ctx, provider.Organization.Name, &options)
+		assert.NoError(t, err)
+		providerRead := providersRead.Items[0]
+		assert.Equal(t, providerRead.ID, provider.ID)
+		assert.Equal(t, len(versions), len(providerRead.RegistryProviderVersions))
+		foundVersion := &RegistryProviderVersion{}
+		for _, v := range providerRead.RegistryProviderVersions {
+			for i := 0; i < len(versions); i++ {
+				if v.ID == versions[i].ID {
+					foundVersion = versions[i]
+					break
+				}
+			}
+			assert.True(t, foundVersion.ID != "", "Expected to find versions: %v but did not", versions)
+			assert.Equal(t, v.Version, foundVersion.Version)
+		}
+	})
 }
 
 func TestRegistryProvidersCreate(t *testing.T) {
@@ -150,33 +189,30 @@ func TestRegistryProvidersCreate(t *testing.T) {
 	orgTest, orgTestCleanup := createOrganization(t, client)
 	defer orgTestCleanup()
 
-	publicName := PublicRegistry
-	privateName := PrivateRegistry
-
 	t.Run("with valid options", func(t *testing.T) {
 
 		publicProviderOptions := RegistryProviderCreateOptions{
-			Name:         String("provider_name"),
-			Namespace:    String("public_namespace"),
-			RegistryName: &publicName,
+			Name:         "provider_name",
+			Namespace:    "public_namespace",
+			RegistryName: PublicRegistry,
 		}
 		privateProviderOptions := RegistryProviderCreateOptions{
-			Name:         String("provider_name"),
-			Namespace:    &orgTest.Name,
-			RegistryName: &privateName,
+			Name:         "provider_name",
+			Namespace:    orgTest.Name,
+			RegistryName: PrivateRegistry,
 		}
 
 		registryOptions := []RegistryProviderCreateOptions{publicProviderOptions, privateProviderOptions}
 
 		for _, options := range registryOptions {
-			testName := fmt.Sprintf("with %s provider", *options.RegistryName)
+			testName := fmt.Sprintf("with %s provider", options.RegistryName)
 			t.Run(testName, func(t *testing.T) {
 				prv, err := client.RegistryProviders.Create(ctx, orgTest.Name, options)
 				require.NoError(t, err)
 				assert.NotEmpty(t, prv.ID)
-				assert.Equal(t, *options.Name, prv.Name)
-				assert.Equal(t, *options.Namespace, prv.Namespace)
-				assert.Equal(t, *options.RegistryName, prv.RegistryName)
+				assert.Equal(t, options.Name, prv.Name)
+				assert.Equal(t, options.Namespace, prv.Namespace)
+				assert.Equal(t, options.RegistryName, prv.RegistryName)
 
 				t.Run("permissions are properly decoded", func(t *testing.T) {
 					assert.True(t, prv.Permissions.CanDelete)
@@ -197,19 +233,19 @@ func TestRegistryProvidersCreate(t *testing.T) {
 	t.Run("with invalid options", func(t *testing.T) {
 		t.Run("without a name", func(t *testing.T) {
 			options := RegistryProviderCreateOptions{
-				Namespace:    String("namespace"),
-				RegistryName: &publicName,
+				Namespace:    "namespace",
+				RegistryName: PublicRegistry,
 			}
 			rm, err := client.RegistryProviders.Create(ctx, orgTest.Name, options)
 			assert.Nil(t, rm)
-			assert.EqualError(t, err, ErrRequiredName.Error())
+			assert.EqualError(t, err, ErrInvalidName.Error())
 		})
 
 		t.Run("with an invalid name", func(t *testing.T) {
 			options := RegistryProviderCreateOptions{
-				Name:         String("invalid name"),
-				Namespace:    String("namespace"),
-				RegistryName: &publicName,
+				Name:         "invalid name",
+				Namespace:    "namespace",
+				RegistryName: PublicRegistry,
 			}
 			rm, err := client.RegistryProviders.Create(ctx, orgTest.Name, options)
 			assert.Nil(t, rm)
@@ -218,41 +254,52 @@ func TestRegistryProvidersCreate(t *testing.T) {
 
 		t.Run("without a namespace", func(t *testing.T) {
 			options := RegistryProviderCreateOptions{
-				Name:         String("name"),
-				RegistryName: &publicName,
+				Name:         "name",
+				RegistryName: PublicRegistry,
 			}
 			rm, err := client.RegistryProviders.Create(ctx, orgTest.Name, options)
 			assert.Nil(t, rm)
-			assert.EqualError(t, err, "namespace is required")
+			assert.EqualError(t, err, ErrInvalidNamespace.Error())
 		})
 
 		t.Run("with an invalid namespace", func(t *testing.T) {
 			options := RegistryProviderCreateOptions{
-				Name:         String("name"),
-				Namespace:    String("invalid namespace"),
-				RegistryName: &publicName,
+				Name:         "name",
+				Namespace:    "invalid namespace",
+				RegistryName: PublicRegistry,
 			}
 			rm, err := client.RegistryProviders.Create(ctx, orgTest.Name, options)
 			assert.Nil(t, rm)
-			assert.EqualError(t, err, "invalid value for namespace")
+			assert.EqualError(t, err, ErrInvalidNamespace.Error())
 		})
 
 		t.Run("without a registry-name", func(t *testing.T) {
 			options := RegistryProviderCreateOptions{
-				Name:      String("name"),
-				Namespace: String("namespace"),
+				Name:      "name",
+				Namespace: "namespace",
 			}
 			rm, err := client.RegistryProviders.Create(ctx, orgTest.Name, options)
 			assert.Nil(t, rm)
-			assert.EqualError(t, err, "registry-name is required")
+			assert.EqualError(t, err, ErrInvalidRegistryName.Error())
+		})
+
+		t.Run("with an invalid registry-name", func(t *testing.T) {
+			options := RegistryProviderCreateOptions{
+				Name:         "name",
+				Namespace:    "namespace",
+				RegistryName: "invalid",
+			}
+			rm, err := client.RegistryProviders.Create(ctx, orgTest.Name, options)
+			assert.Nil(t, rm)
+			assert.EqualError(t, err, ErrInvalidRegistryName.Error())
 		})
 	})
 
 	t.Run("without a valid organization", func(t *testing.T) {
 		options := RegistryProviderCreateOptions{
-			Name:         String("name"),
-			Namespace:    String("namespace"),
-			RegistryName: &publicName,
+			Name:         "name",
+			Namespace:    "namespace",
+			RegistryName: PublicRegistry,
 		}
 		rm, err := client.RegistryProviders.Create(ctx, badIdentifier, options)
 		assert.Nil(t, rm)
@@ -261,13 +308,13 @@ func TestRegistryProvidersCreate(t *testing.T) {
 
 	t.Run("without a matching namespace organization.name for private registry", func(t *testing.T) {
 		options := RegistryProviderCreateOptions{
-			Name:         String("name"),
-			Namespace:    String("namespace"),
-			RegistryName: &privateName,
+			Name:         "name",
+			Namespace:    "namespace",
+			RegistryName: PrivateRegistry,
 		}
 		rm, err := client.RegistryProviders.Create(ctx, orgTest.Name, options)
 		assert.Nil(t, rm)
-		assert.EqualError(t, err, "namespace must match organization name for private providers")
+		assert.EqualError(t, err, ErrInvalidPrivateProviderNamespaceDoesntMatchOrganization.Error())
 	})
 }
 
@@ -301,7 +348,14 @@ func TestRegistryProvidersRead(t *testing.T) {
 				registryProviderTest, providerTestCleanup := prvCtx.ProviderCreator(t, client, orgTest)
 				defer providerTestCleanup()
 
-				prv, err := client.RegistryProviders.Read(ctx, orgTest.Name, registryProviderTest.RegistryName, registryProviderTest.Namespace, registryProviderTest.Name, nil)
+				id := RegistryProviderID{
+					OrganizationName: orgTest.Name,
+					RegistryName:     registryProviderTest.RegistryName,
+					Namespace:        registryProviderTest.Namespace,
+					Name:             registryProviderTest.Name,
+				}
+
+				prv, err := client.RegistryProviders.Read(ctx, id, nil)
 				assert.NoError(t, err)
 				assert.NotEmpty(t, prv.ID)
 				assert.Equal(t, registryProviderTest.Name, prv.Name)
@@ -323,44 +377,61 @@ func TestRegistryProvidersRead(t *testing.T) {
 			})
 
 			t.Run("when the registry provider does not exist", func(t *testing.T) {
-				_, err := client.RegistryProviders.Read(ctx, orgTest.Name, prvCtx.RegistryName, "nonexistent", "nonexistent", nil)
+				id := RegistryProviderID{
+					OrganizationName: orgTest.Name,
+					RegistryName:     prvCtx.RegistryName,
+					Namespace:        "nonexistent",
+					Name:             "nonexistent",
+				}
+				_, err := client.RegistryProviders.Read(ctx, id, nil)
 				assert.Error(t, err)
 				// Local TFC/E will return a forbidden here when TFC/E is in development mode
 				// In non development mode this returns a 404
 				assert.Equal(t, ErrResourceNotFound, err)
 			})
-
-			t.Run("without a name", func(t *testing.T) {
-				_, err := client.RegistryProviders.Read(ctx, orgTest.Name, prvCtx.RegistryName, "namespace", "", nil)
-				assert.EqualError(t, err, ErrRequiredName.Error())
-			})
-
-			t.Run("with an invalid name", func(t *testing.T) {
-				_, err := client.RegistryProviders.Read(ctx, orgTest.Name, prvCtx.RegistryName, "namespace", badIdentifier, nil)
-				assert.EqualError(t, err, ErrInvalidName.Error())
-			})
-
-			t.Run("without a namespace", func(t *testing.T) {
-				_, err := client.RegistryProviders.Read(ctx, orgTest.Name, prvCtx.RegistryName, "", "name", nil)
-				assert.EqualError(t, err, "namespace is required")
-			})
-
-			t.Run("with an invalid namespace", func(t *testing.T) {
-				_, err := client.RegistryProviders.Read(ctx, orgTest.Name, prvCtx.RegistryName, badIdentifier, "name", nil)
-				assert.EqualError(t, err, "invalid value for namespace")
-			})
-
-			t.Run("without a registry-name", func(t *testing.T) {
-				_, err := client.RegistryProviders.Read(ctx, orgTest.Name, "", "namespace", "name", nil)
-				assert.EqualError(t, err, "registry-name is required")
-			})
-
-			t.Run("without a valid organization", func(t *testing.T) {
-				_, err := client.RegistryProviders.Read(ctx, badIdentifier, prvCtx.RegistryName, "namespace", "name", nil)
-				assert.EqualError(t, err, ErrInvalidOrg.Error())
-			})
 		})
 	}
+
+	t.Run("populates version relationships", func(t *testing.T) {
+		version1, version1Cleanup := createRegistryProviderVersion(t, client, nil)
+		defer version1Cleanup()
+
+		provider := version1.RegistryProvider
+
+		version2, version2Cleanup := createRegistryProviderVersion(t, client, provider)
+		defer version2Cleanup()
+
+		versions := []*RegistryProviderVersion{version1, version2}
+
+		id := RegistryProviderID{
+			OrganizationName: provider.Organization.Name,
+			RegistryName:     provider.RegistryName,
+			Namespace:        provider.Namespace,
+			Name:             provider.Name,
+		}
+
+		options := RegistryProviderReadOptions{
+			Include: &[]RegistryProviderIncludeOps{
+				RegistryProviderVersionsInclude,
+			},
+		}
+
+		providerRead, err := client.RegistryProviders.Read(ctx, id, &options)
+		assert.NoError(t, err)
+		assert.Equal(t, providerRead.ID, provider.ID)
+		assert.Equal(t, len(versions), len(providerRead.RegistryProviderVersions))
+		foundVersion := &RegistryProviderVersion{}
+		for _, v := range providerRead.RegistryProviderVersions {
+			for i := 0; i < len(versions); i++ {
+				if v.ID == versions[i].ID {
+					foundVersion = versions[i]
+					break
+				}
+			}
+			assert.True(t, foundVersion.ID != "", "Expected to find versions: %v but did not", versions)
+			assert.Equal(t, v.Version, foundVersion.Version)
+		}
+	})
 }
 
 func TestRegistryProvidersDelete(t *testing.T) {
@@ -392,51 +463,119 @@ func TestRegistryProvidersDelete(t *testing.T) {
 			t.Run("with valid provider", func(t *testing.T) {
 				registryProviderTest, _ := prvCtx.ProviderCreator(t, client, orgTest)
 
-				err := client.RegistryProviders.Delete(ctx, orgTest.Name, registryProviderTest.RegistryName, registryProviderTest.Namespace, registryProviderTest.Name)
+				id := RegistryProviderID{
+					OrganizationName: orgTest.Name,
+					RegistryName:     registryProviderTest.RegistryName,
+					Namespace:        registryProviderTest.Namespace,
+					Name:             registryProviderTest.Name,
+				}
+
+				err := client.RegistryProviders.Delete(ctx, id)
 				require.NoError(t, err)
 
-				prv, err := client.RegistryProviders.Read(ctx, orgTest.Name, registryProviderTest.RegistryName, registryProviderTest.Namespace, registryProviderTest.Name, nil)
+				prv, err := client.RegistryProviders.Read(ctx, id, nil)
 				assert.Nil(t, prv)
 				assert.Error(t, err)
 			})
 
 			t.Run("when the registry provider does not exist", func(t *testing.T) {
-				err := client.RegistryProviders.Delete(ctx, orgTest.Name, prvCtx.RegistryName, "nonexistent", "nonexistent")
+				id := RegistryProviderID{
+					OrganizationName: orgTest.Name,
+					RegistryName:     prvCtx.RegistryName,
+					Namespace:        "nonexistent",
+					Name:             "nonexistent",
+				}
+				err := client.RegistryProviders.Delete(ctx, id)
 				assert.Error(t, err)
 				// Local TFC/E will return a forbidden here when TFC/E is in development mode
 				// In non development mode this returns a 404
 				assert.Equal(t, ErrResourceNotFound, err)
 			})
-
-			t.Run("without a name", func(t *testing.T) {
-				err := client.RegistryProviders.Delete(ctx, orgTest.Name, prvCtx.RegistryName, "namespace", "")
-				assert.EqualError(t, err, ErrRequiredName.Error())
-			})
-
-			t.Run("with an invalid name", func(t *testing.T) {
-				err := client.RegistryProviders.Delete(ctx, orgTest.Name, prvCtx.RegistryName, "namespace", badIdentifier)
-				assert.EqualError(t, err, ErrInvalidName.Error())
-			})
-
-			t.Run("without a namespace", func(t *testing.T) {
-				err := client.RegistryProviders.Delete(ctx, orgTest.Name, prvCtx.RegistryName, "", "name")
-				assert.EqualError(t, err, "namespace is required")
-			})
-
-			t.Run("with an invalid namespace", func(t *testing.T) {
-				err := client.RegistryProviders.Delete(ctx, orgTest.Name, prvCtx.RegistryName, badIdentifier, "name")
-				assert.EqualError(t, err, "invalid value for namespace")
-			})
-
-			t.Run("without a registry-name", func(t *testing.T) {
-				err := client.RegistryProviders.Delete(ctx, orgTest.Name, "", "namespace", "name")
-				assert.EqualError(t, err, "registry-name is required")
-			})
-
-			t.Run("without a valid organization", func(t *testing.T) {
-				err := client.RegistryProviders.Delete(ctx, badIdentifier, prvCtx.RegistryName, "namespace", "name")
-				assert.EqualError(t, err, ErrInvalidOrg.Error())
-			})
 		})
 	}
+}
+
+func TestRegistryProvidersIDValidation(t *testing.T) {
+	orgName := "orgName"
+	registryName := PublicRegistry
+
+	t.Run("valid", func(t *testing.T) {
+		id := RegistryProviderID{
+			OrganizationName: orgName,
+			RegistryName:     registryName,
+			Namespace:        "namespace",
+			Name:             "name",
+		}
+		assert.NoError(t, id.valid())
+	})
+
+	t.Run("without a name", func(t *testing.T) {
+		id := RegistryProviderID{
+			OrganizationName: orgName,
+			RegistryName:     registryName,
+			Namespace:        "namespace",
+			Name:             "",
+		}
+		assert.EqualError(t, id.valid(), ErrInvalidName.Error())
+	})
+
+	t.Run("with an invalid name", func(t *testing.T) {
+		id := RegistryProviderID{
+			OrganizationName: orgName,
+			RegistryName:     registryName,
+			Namespace:        "namespace",
+			Name:             badIdentifier,
+		}
+		assert.EqualError(t, id.valid(), ErrInvalidName.Error())
+	})
+
+	t.Run("without a namespace", func(t *testing.T) {
+		id := RegistryProviderID{
+			OrganizationName: orgName,
+			RegistryName:     registryName,
+			Namespace:        "",
+			Name:             "name",
+		}
+		assert.EqualError(t, id.valid(), ErrInvalidNamespace.Error())
+	})
+
+	t.Run("with an invalid namespace", func(t *testing.T) {
+		id := RegistryProviderID{
+			OrganizationName: orgName,
+			RegistryName:     registryName,
+			Namespace:        badIdentifier,
+			Name:             "name",
+		}
+		assert.EqualError(t, id.valid(), ErrInvalidNamespace.Error())
+	})
+
+	t.Run("without a registry-name", func(t *testing.T) {
+		id := RegistryProviderID{
+			OrganizationName: orgName,
+			RegistryName:     "",
+			Namespace:        "namespace",
+			Name:             "name",
+		}
+		assert.EqualError(t, id.valid(), ErrInvalidRegistryName.Error())
+	})
+
+	t.Run("with in invalid registry-name", func(t *testing.T) {
+		id := RegistryProviderID{
+			OrganizationName: orgName,
+			RegistryName:     "invalid registry name",
+			Namespace:        "namespace",
+			Name:             "name",
+		}
+		assert.EqualError(t, id.valid(), ErrInvalidRegistryName.Error())
+	})
+
+	t.Run("without a valid organization", func(t *testing.T) {
+		id := RegistryProviderID{
+			OrganizationName: badIdentifier,
+			RegistryName:     registryName,
+			Namespace:        "namespace",
+			Name:             "name",
+		}
+		assert.EqualError(t, id.valid(), ErrInvalidOrg.Error())
+	})
 }
