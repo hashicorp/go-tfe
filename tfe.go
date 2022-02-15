@@ -129,6 +129,7 @@ type Client struct {
 	PolicySets                 PolicySets
 	RegistryModules            RegistryModules
 	RegistryProviders          RegistryProviders
+	RegistryProviderVersions   RegistryProviderVersions
 	Runs                       Runs
 	RunTasks                   RunTasks
 	RunTriggers                RunTriggers
@@ -274,6 +275,7 @@ func NewClient(cfg *Config) (*Client, error) {
 	client.PolicySets = &policySets{client: client}
 	client.RegistryModules = &registryModules{client: client}
 	client.RegistryProviders = &registryProviders{client: client}
+	client.RegistryProviderVersions = &registryProviderVersions{client: client}
 	client.Runs = &runs{client: client}
 	client.RunTasks = &runTasks{client: client}
 	client.RunTriggers = &runTriggers{client: client}

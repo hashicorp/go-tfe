@@ -2,7 +2,6 @@ package tfe
 
 import (
 	"context"
-	"errors"
 	"fmt"
 	"net/url"
 )
@@ -10,7 +9,7 @@ import (
 // Compile-time proof of interface implementation.
 var _ RegistryProviders = (*registryProviders)(nil)
 
-// RegistryProviders describes all the registry provider related methods that the Terraform
+// RegistryProviders describes all the registry provider-related methods that the Terraform
 // Enterprise API supports.
 //
 // TFE API docs: https://www.terraform.io/docs/cloud/api/providers.html
@@ -18,14 +17,14 @@ type RegistryProviders interface {
 	// List all the providers within an organization.
 	List(ctx context.Context, organization string, options *RegistryProviderListOptions) (*RegistryProviderList, error)
 
-	// Create a registry provider
+	// Create a registry provider.
 	Create(ctx context.Context, organization string, options RegistryProviderCreateOptions) (*RegistryProvider, error)
 
-	// Read a registry provider
-	Read(ctx context.Context, organization string, registryName RegistryName, namespace string, name string, options *RegistryProviderReadOptions) (*RegistryProvider, error)
+	// Read a registry provider.
+	Read(ctx context.Context, providerID RegistryProviderID, options *RegistryProviderReadOptions) (*RegistryProvider, error)
 
-	// Delete a registry provider
-	Delete(ctx context.Context, organization string, registryName RegistryName, namespace string, name string) error
+	// Delete a registry provider.
+	Delete(ctx context.Context, providerID RegistryProviderID) error
 }
 
 // registryProviders implements RegistryProviders.
@@ -42,33 +41,51 @@ const (
 	PublicRegistry  RegistryName = "public"
 )
 
+// RegistryProviderIncludeOps represents which jsonapi include can be used with registry providers
+type RegistryProviderIncludeOps string
+
+// List of available includes
+const (
+	RegistryProviderVersionsInclude RegistryProviderIncludeOps = "registry-provider-versions"
+)
+
 // RegistryProvider represents a registry provider
 type RegistryProvider struct {
 	ID           string                       `jsonapi:"primary,registry-providers"`
-	Namespace    string                       `jsonapi:"attr,namespace"`
 	Name         string                       `jsonapi:"attr,name"`
-	RegistryName RegistryName                 `jsonapi:"attr,registry-name"`
-	Permissions  *RegistryProviderPermissions `jsonapi:"attr,permissions"`
+	Namespace    string                       `jsonapi:"attr,namespace"`
 	CreatedAt    string                       `jsonapi:"attr,created-at"`
 	UpdatedAt    string                       `jsonapi:"attr,updated-at"`
+	RegistryName RegistryName                 `jsonapi:"attr,registry-name"`
+	Permissions  *RegistryProviderPermissions `jsonapi:"attr,permissions"`
 
 	// Relations
-	Organization             *Organization             `jsonapi:"relation,organization"`
-	RegistryProviderVersions []RegistryProviderVersion `jsonapi:"relation,registry-provider-version"`
+	Organization             *Organization              `jsonapi:"relation,organization"`
+	RegistryProviderVersions []*RegistryProviderVersion `jsonapi:"relation,registry-provider-versions"`
+
+	// Links
+	Links map[string]interface{} `jsonapi:"links,omitempty"`
 }
 
 type RegistryProviderPermissions struct {
-	CanDelete bool `jsonapi:"attr,can-delete"`
+	CanDelete bool `jsonapi:"attr,can-delete,omitempty"`
+	CanUploadAsset bool `jsonapi:"attr,can-upload-asset,omitempty"`
 }
 
 type RegistryProviderListOptions struct {
 	ListOptions
+
 	// A query string to filter by registry_name
-	RegistryName *RegistryName `url:"filter[registry_name],omitempty"`
+	RegistryName RegistryName `url:"filter[registry_name],omitempty"`
+
 	// A query string to filter by organization
-	OrganizationName *string `url:"filter[organization_name],omitempty"`
+	OrganizationName string `url:"filter[organization_name],omitempty"`
+
 	// A query string to do a fuzzy search
-	Search *string `url:"q,omitempty"`
+	Search string `url:"q,omitempty"`
+
+	// Include related jsonapi relationships
+	Include *[]RegistryProviderIncludeOps `url:"include,omitempty"`
 }
 
 type RegistryProviderList struct {
@@ -76,12 +93,20 @@ type RegistryProviderList struct {
 	Items []*RegistryProvider
 }
 
-func (o RegistryProviderListOptions) valid() error {
-	return nil
+// RegistryProviderID is the multi key ID for addressing a provider
+type RegistryProviderID struct {
+	OrganizationName string       `jsonapi:"attr,organization-name"`
+	RegistryName     RegistryName `jsonapi:"attr,registry-name"`
+	Namespace        string       `jsonapi:"attr,namespace"`
+	Name             string       `jsonapi:"attr,name"`
+}
+
+type RegistryProviderReadOptions struct {
+	// Include related jsonapi relationships
+	Include *[]RegistryProviderIncludeOps `url:"include,omitempty"`
 }
 
 func (r *registryProviders) List(ctx context.Context, organization string, options *RegistryProviderListOptions) (*RegistryProviderList, error) {
-
 	if !validStringID(&organization) {
 		return nil, ErrInvalidOrg
 	}
@@ -114,41 +139,24 @@ type RegistryProviderCreateOptions struct {
 	// https://jsonapi.org/format/#crud-creating
 	Type string `jsonapi:"primary,registry-providers"`
 
-	Namespace    *string       `jsonapi:"attr,namespace"`
-	Name         *string       `jsonapi:"attr,name"`
-	RegistryName *RegistryName `jsonapi:"attr,registry-name"`
-}
-
-func (o RegistryProviderCreateOptions) valid() error {
-	if !validString(o.Name) {
-		return ErrRequiredName
-	}
-	if !validStringID(o.Name) {
-		return ErrInvalidName
-	}
-	if !validString(o.Namespace) {
-		return errors.New("namespace is required")
-	}
-	if !validStringID(o.Namespace) {
-		return errors.New("invalid value for namespace")
-	}
-	if !validString((*string)(o.RegistryName)) {
-		return errors.New("registry-name is required")
-	}
-	return nil
+	Name         string       `jsonapi:"attr,name"`
+	Namespace    string       `jsonapi:"attr,namespace"`
+	RegistryName RegistryName `jsonapi:"attr,registry-name"`
 }
 
 func (r *registryProviders) Create(ctx context.Context, organization string, options RegistryProviderCreateOptions) (*RegistryProvider, error) {
 	if !validStringID(&organization) {
 		return nil, ErrInvalidOrg
 	}
+
 	if err := options.valid(); err != nil {
 		return nil, err
 	}
-	// Private providers must match their namespace and organization name
+
+	// For private providers, the organization name and namespace must be the same.
 	// This is enforced by the API as well
-	if *options.RegistryName == PrivateRegistry && organization != *options.Namespace {
-		return nil, errors.New("namespace must match organization name for private providers")
+	if options.RegistryName == PrivateRegistry && organization != options.Namespace {
+		return nil, ErrInvalidPrivateProviderNamespaceDoesntMatchOrganization
 	}
 
 	u := fmt.Sprintf(
@@ -159,6 +167,7 @@ func (r *registryProviders) Create(ctx context.Context, organization string, opt
 	if err != nil {
 		return nil, err
 	}
+
 	prv := &RegistryProvider{}
 	err = r.client.do(ctx, req, prv)
 	if err != nil {
@@ -168,35 +177,17 @@ func (r *registryProviders) Create(ctx context.Context, organization string, opt
 	return prv, nil
 }
 
-type RegistryProviderReadOptions struct {
-}
-
-func (r *registryProviders) Read(ctx context.Context, organization string, registryName RegistryName, namespace string, name string, options *RegistryProviderReadOptions) (*RegistryProvider, error) {
-	if !validStringID(&organization) {
-		return nil, ErrInvalidOrg
-	}
-	if !validString(&name) {
-		return nil, ErrRequiredName
-	}
-	if !validStringID(&name) {
-		return nil, ErrInvalidName
-	}
-	if !validString(&namespace) {
-		return nil, errors.New("namespace is required")
-	}
-	if !validStringID(&namespace) {
-		return nil, errors.New("invalid value for namespace")
-	}
-	if !validString((*string)(&registryName)) {
-		return nil, errors.New("registry-name is required")
+func (r *registryProviders) Read(ctx context.Context, providerID RegistryProviderID, options *RegistryProviderReadOptions) (*RegistryProvider, error) {
+	if err := providerID.valid(); err != nil {
+		return nil, err
 	}
 
 	u := fmt.Sprintf(
 		"organizations/%s/registry-providers/%s/%s/%s",
-		url.QueryEscape(organization),
-		url.QueryEscape(string(registryName)),
-		url.QueryEscape(namespace),
-		url.QueryEscape(name),
+		url.QueryEscape(providerID.OrganizationName),
+		url.QueryEscape(string(providerID.RegistryName)),
+		url.QueryEscape(providerID.Namespace),
+		url.QueryEscape(providerID.Name),
 	)
 	req, err := r.client.newRequest("GET", u, options)
 	if err != nil {
@@ -212,32 +203,17 @@ func (r *registryProviders) Read(ctx context.Context, organization string, regis
 	return prv, nil
 }
 
-func (r *registryProviders) Delete(ctx context.Context, organization string, registryName RegistryName, namespace string, name string) error {
-	if !validStringID(&organization) {
-		return ErrInvalidOrg
-	}
-	if !validString(&name) {
-		return ErrRequiredName
-	}
-	if !validStringID(&name) {
-		return ErrInvalidName
-	}
-	if !validString(&namespace) {
-		return errors.New("namespace is required")
-	}
-	if !validStringID(&namespace) {
-		return errors.New("invalid value for namespace")
-	}
-	if !validString((*string)(&registryName)) {
-		return errors.New("registry-name is required")
+func (r *registryProviders) Delete(ctx context.Context, providerID RegistryProviderID) error {
+	if err := providerID.valid(); err != nil {
+		return err
 	}
 
 	u := fmt.Sprintf(
 		"organizations/%s/registry-providers/%s/%s/%s",
-		url.QueryEscape(organization),
-		url.QueryEscape(string(registryName)),
-		url.QueryEscape(namespace),
-		url.QueryEscape(name),
+		url.QueryEscape(providerID.OrganizationName),
+		url.QueryEscape(string(providerID.RegistryName)),
+		url.QueryEscape(providerID.Namespace),
+		url.QueryEscape(providerID.Name),
 	)
 	req, err := r.client.newRequest("DELETE", u, nil)
 	if err != nil {
@@ -245,4 +221,45 @@ func (r *registryProviders) Delete(ctx context.Context, organization string, reg
 	}
 
 	return r.client.do(ctx, req, nil)
+}
+
+func (rn RegistryName) valid() error {
+	switch rn {
+	case PrivateRegistry, PublicRegistry:
+		return nil
+	}
+	return ErrInvalidRegistryName
+}
+
+func (o RegistryProviderCreateOptions) valid() error {
+	if !validStringID(&o.Name) {
+		return ErrInvalidName
+	}
+	if !validStringID(&o.Namespace) {
+		return ErrInvalidNamespace
+	}
+	if err := o.RegistryName.valid(); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (id RegistryProviderID) valid() error {
+	if !validStringID(&id.OrganizationName) {
+		return ErrInvalidOrg
+	}
+	if !validStringID(&id.Name) {
+		return ErrInvalidName
+	}
+	if !validStringID(&id.Namespace) {
+		return ErrInvalidNamespace
+	}
+	if err := id.RegistryName.valid(); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (o RegistryProviderListOptions) valid() error {
+	return nil
 }
