@@ -32,12 +32,12 @@ func TestRunTriggerList(t *testing.T) {
 	rtTest2, rtTestCleanup2 := createRunTrigger(t, client, wTest, sourceable2Test)
 	defer rtTestCleanup2()
 
-	t.Run("without list options", func(t *testing.T) {
+	t.Run("without ListOptions and with RunTriggerType", func(t *testing.T) {
 		rtl, err := client.RunTriggers.List(
 			ctx,
 			wTest.ID,
 			&RunTriggerListOptions{
-				RunTriggerType: "inbound",
+				RunTriggerType: RunTriggerInbound,
 			},
 		)
 		require.NoError(t, err)
@@ -47,7 +47,7 @@ func TestRunTriggerList(t *testing.T) {
 		assert.Equal(t, 2, rtl.TotalCount)
 	})
 
-	t.Run("with list options", func(t *testing.T) {
+	t.Run("with ListOptions and a RunTriggerType", func(t *testing.T) {
 		// Request a page number which is out of range. The result should
 		// be successful, but return no results if the paging options are
 		// properly passed along.
@@ -59,7 +59,7 @@ func TestRunTriggerList(t *testing.T) {
 					PageNumber: 999,
 					PageSize:   100,
 				},
-				RunTriggerType: "inbound",
+				RunTriggerType: RunTriggerInbound,
 			},
 		)
 		require.NoError(t, err)
@@ -73,14 +73,14 @@ func TestRunTriggerList(t *testing.T) {
 			ctx,
 			badIdentifier,
 			&RunTriggerListOptions{
-				RunTriggerType: "inbound",
+				RunTriggerType: RunTriggerInbound,
 			},
 		)
 		assert.Nil(t, rtl)
 		assert.EqualError(t, err, ErrInvalidWorkspaceID.Error())
 	})
 
-	t.Run("without run-trigger type", func(t *testing.T) {
+	t.Run("without defining RunTriggerFilterOps as a filter param", func(t *testing.T) {
 		rtl, err := client.RunTriggers.List(
 			ctx,
 			wTest.ID,
@@ -90,12 +90,12 @@ func TestRunTriggerList(t *testing.T) {
 		assert.EqualError(t, err, "bad request\n\nFilter parameter run-trigger type is required and must be either 'inbound' or 'outbound'")
 	})
 
-	t.Run("with invalid run-trigger type", func(t *testing.T) {
+	t.Run("with invalid option for runTriggerType", func(t *testing.T) {
 		rtl, err := client.RunTriggers.List(
 			ctx,
 			wTest.ID,
 			&RunTriggerListOptions{
-				RunTriggerType: "invalid",
+				RunTriggerType: "oubound",
 			},
 		)
 		assert.Nil(t, rtl)
