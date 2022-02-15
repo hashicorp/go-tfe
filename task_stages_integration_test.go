@@ -61,7 +61,7 @@ func TestTaskStagesRead(t *testing.T) {
 		require.NoError(t, err)
 
 		taskStage, err := client.TaskStages.Read(ctx, r.TaskStages[0].ID, &TaskStageReadOptions{
-			Include: "task_results",
+			Include: []TaskStageIncludeOps{TaskStageTaskResults},
 		})
 		require.NoError(t, err)
 

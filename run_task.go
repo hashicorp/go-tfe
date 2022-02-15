@@ -120,11 +120,21 @@ func (s *runTasks) Create(ctx context.Context, organization string, options RunT
 	return r, nil
 }
 
+// A list of relations to include with a run task. See available resources:
+// https://www.terraform.io/cloud-docs/api-docs/run-tasks#list-run-tasks
+type RunTaskIncludeOps string
+
+const (
+	RunTaskWorkspaceTasks RunTaskIncludeOps = "workspace_tasks"
+	RunTaskWorkspace      RunTaskIncludeOps = "workspace_tasks.workspace"
+)
+
 // RunTaskListOptions represents the set of options for listing run tasks
 type RunTaskListOptions struct {
-	// A list of relations to include
-	Include string `url:"include"`
 	ListOptions
+
+	// A list of relations to include
+	Include []RunTaskIncludeOps `url:"include"`
 }
 
 // List all the run tasks for an organization
@@ -155,7 +165,7 @@ func (s *runTasks) Read(ctx context.Context, runTaskID string) (*RunTask, error)
 
 // RunTaskReadOptions represents the set of options for reading a run task
 type RunTaskReadOptions struct {
-	Include string `url:"include"`
+	Include []RunTaskIncludeOps `url:"include"`
 }
 
 // Read is used to read an organization's run task by ID with options

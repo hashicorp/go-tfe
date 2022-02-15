@@ -30,7 +30,6 @@ type Stage string
 
 const (
 	PostPlan Stage = "post_plan"
-	PreApply Stage = "pre_apply"
 )
 
 // TaskStage represents a TFC/E run's stage where run tasks can occur
@@ -60,9 +59,16 @@ type TaskStageStatusTimestamps struct {
 	PassedAt   time.Time `jsonapi:"attr,passed-at,rfc3339"`
 }
 
+// A list of relations to include.
+type TaskStageIncludeOps string
+
+const (
+	TaskStageTaskResults TaskStageIncludeOps = "task_results"
+)
+
 // TaskStageReadOptions represents the set of options when reading a task stage
 type TaskStageReadOptions struct {
-	Include string `url:"include"`
+	Include []TaskStageIncludeOps `url:"include"`
 }
 
 // Read a task stage by ID

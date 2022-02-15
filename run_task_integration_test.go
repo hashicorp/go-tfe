@@ -106,7 +106,7 @@ func TestRunTasksRead(t *testing.T) {
 		defer wrTest2Cleanup()
 
 		r, err := client.RunTasks.ReadWithOptions(ctx, runTaskTest.ID, &RunTaskReadOptions{
-			Include: "workspace_tasks",
+			Include: []RunTaskIncludeOps{RunTaskWorkspaceTasks},
 		})
 
 		require.NoError(t, err)
