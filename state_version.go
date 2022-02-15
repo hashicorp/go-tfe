@@ -3,7 +3,6 @@ package tfe
 import (
 	"bytes"
 	"context"
-	"errors"
 	"fmt"
 	"net/url"
 	"time"
@@ -78,10 +77,10 @@ type StateVersionListOptions struct {
 //check that StateVersionListOptions fields had valid values
 func (o StateVersionListOptions) valid() error {
 	if !validString(&o.Organization) {
-		return errors.New("organization is required")
+		return ErrRequiredOrg
 	}
 	if !validString(&o.Workspace) {
-		return errors.New("workspace is required")
+		return ErrRequiredWorkspace
 	}
 	return nil
 }
@@ -89,7 +88,7 @@ func (o StateVersionListOptions) valid() error {
 // List all the state versions for a given workspace.
 func (s *stateVersions) List(ctx context.Context, options *StateVersionListOptions) (*StateVersionList, error) {
 	if options == nil {
-		return nil, errors.New("StateVersionListOptions is required")
+		return nil, ErrRequiredStateVerListOps
 	}
 
 	if err := options.valid(); err != nil {
@@ -140,13 +139,13 @@ type StateVersionCreateOptions struct {
 
 func (o StateVersionCreateOptions) valid() error {
 	if !validString(o.MD5) {
-		return errors.New("MD5 is required")
+		return ErrRequiredM5
 	}
 	if o.Serial == nil {
-		return errors.New("serial is required")
+		return ErrRequiredSerial
 	}
 	if !validString(o.State) {
-		return errors.New("state is required")
+		return ErrRequiredState
 	}
 	return nil
 }
@@ -194,7 +193,7 @@ type StateVersionReadOptions struct {
 // Read a state version by its ID.
 func (s *stateVersions) ReadWithOptions(ctx context.Context, svID string, options *StateVersionReadOptions) (*StateVersion, error) {
 	if !validStringID(&svID) {
-		return nil, errors.New("invalid value for state version ID")
+		return nil, ErrInvalidStateVerID
 	}
 
 	u := fmt.Sprintf("state-versions/%s", url.QueryEscape(svID))
@@ -280,7 +279,7 @@ type StateVersionOutputsListOptions struct {
 // Outputs retrieves all the outputs of a state version by its ID.
 func (s *stateVersions) Outputs(ctx context.Context, svID string, options *StateVersionOutputsListOptions) (*StateVersionOutputsList, error) {
 	if !validStringID(&svID) {
-		return nil, errors.New("invalid value for state version ID")
+		return nil, ErrInvalidStateVerID
 	}
 
 	u := fmt.Sprintf("state-versions/%s/outputs", url.QueryEscape(svID))

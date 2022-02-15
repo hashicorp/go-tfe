@@ -179,7 +179,7 @@ func TestRunsCreate(t *testing.T) {
 	t.Run("without a workspace", func(t *testing.T) {
 		r, err := client.Runs.Create(ctx, RunCreateOptions{})
 		assert.Nil(t, r)
-		assert.EqualError(t, err, "workspace is required")
+		assert.Equal(t, err, ErrRequiredWorkspace)
 	})
 
 	t.Run("with additional attributes", func(t *testing.T) {

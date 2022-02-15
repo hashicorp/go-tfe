@@ -2,7 +2,6 @@ package tfe
 
 import (
 	"context"
-	"errors"
 	"fmt"
 	"net/url"
 )
@@ -158,10 +157,10 @@ func (o RegistryModuleCreateOptions) valid() error {
 		return ErrInvalidName
 	}
 	if !validString(o.Provider) {
-		return errors.New("provider is required")
+		return ErrRequiredProvider
 	}
 	if !validStringID(o.Provider) {
-		return errors.New("invalid value for provider")
+		return ErrInvalidProvider
 	}
 	return nil
 }
@@ -206,10 +205,10 @@ type RegistryModuleCreateVersionOptions struct {
 
 func (o RegistryModuleCreateVersionOptions) valid() error {
 	if !validString(o.Version) {
-		return errors.New("version is required")
+		return ErrRequiredVersion
 	}
 	if !validStringID(o.Version) {
-		return errors.New("invalid value for version")
+		return ErrInvalidVersion
 	}
 	return nil
 }
@@ -226,10 +225,10 @@ func (r *registryModules) CreateVersion(ctx context.Context, organization string
 		return nil, ErrInvalidName
 	}
 	if !validString(&provider) {
-		return nil, errors.New("provider is required")
+		return nil, ErrRequiredProvider
 	}
 	if !validStringID(&provider) {
-		return nil, errors.New("invalid value for provider")
+		return nil, ErrInvalidProvider
 	}
 	if err := options.valid(); err != nil {
 		return nil, err
@@ -265,7 +264,7 @@ type RegistryModuleCreateWithVCSConnectionOptions struct {
 
 func (o RegistryModuleCreateWithVCSConnectionOptions) valid() error {
 	if o.VCSRepo == nil {
-		return errors.New("vcs repo is required")
+		return ErrRequiredVCSRepo
 	}
 	return o.VCSRepo.valid()
 }
@@ -278,13 +277,13 @@ type RegistryModuleVCSRepoOptions struct {
 
 func (o RegistryModuleVCSRepoOptions) valid() error {
 	if !validString(o.Identifier) {
-		return errors.New("identifier is required")
+		return ErrRequiredIdentifier
 	}
 	if !validString(o.OAuthTokenID) {
-		return errors.New("oauth token ID is required")
+		return ErrRequiredOauthTokenID
 	}
 	if !validString(o.DisplayIdentifier) {
-		return errors.New("display identifier is required")
+		return ErrRequiredDisplayIdentifier
 	}
 	return nil
 }
@@ -324,10 +323,10 @@ func (r *registryModules) Read(ctx context.Context, organization string, name st
 		return nil, ErrInvalidName
 	}
 	if !validString(&provider) {
-		return nil, errors.New("provider is required")
+		return nil, ErrRequiredProvider
 	}
 	if !validStringID(&provider) {
-		return nil, errors.New("invalid value for provider")
+		return nil, ErrInvalidProvider
 	}
 
 	u := fmt.Sprintf(
@@ -387,10 +386,10 @@ func (r *registryModules) DeleteProvider(ctx context.Context, organization strin
 		return ErrInvalidName
 	}
 	if !validString(&provider) {
-		return errors.New("provider is required")
+		return ErrRequiredProvider
 	}
 	if !validStringID(&provider) {
-		return errors.New("invalid value for provider")
+		return ErrInvalidProvider
 	}
 
 	u := fmt.Sprintf(
@@ -419,16 +418,16 @@ func (r *registryModules) DeleteVersion(ctx context.Context, organization string
 		return ErrInvalidName
 	}
 	if !validString(&provider) {
-		return errors.New("provider is required")
+		return ErrRequiredProvider
 	}
 	if !validStringID(&provider) {
-		return errors.New("invalid value for provider")
+		return ErrInvalidProvider
 	}
 	if !validString(&version) {
-		return errors.New("version is required")
+		return ErrRequiredVersion
 	}
 	if !validStringID(&version) {
-		return errors.New("invalid value for version")
+		return ErrInvalidVersion
 	}
 
 	u := fmt.Sprintf(

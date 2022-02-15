@@ -2,7 +2,6 @@ package tfe
 
 import (
 	"context"
-	"errors"
 	"fmt"
 	"net/url"
 	"time"
@@ -105,7 +104,7 @@ type RunTriggerCreateOptions struct {
 
 func (o RunTriggerCreateOptions) valid() error {
 	if o.Sourceable == nil {
-		return errors.New("sourceable is required")
+		return ErrRequiredSourceable
 	}
 	return nil
 }
@@ -137,7 +136,7 @@ func (s *runTriggers) Create(ctx context.Context, workspaceID string, options Ru
 // Read a run trigger by its ID.
 func (s *runTriggers) Read(ctx context.Context, runTriggerID string) (*RunTrigger, error) {
 	if !validStringID(&runTriggerID) {
-		return nil, errors.New("invalid value for run trigger ID")
+		return nil, ErrInvalidRunTriggerID
 	}
 
 	u := fmt.Sprintf("run-triggers/%s", url.QueryEscape(runTriggerID))
@@ -158,7 +157,7 @@ func (s *runTriggers) Read(ctx context.Context, runTriggerID string) (*RunTrigge
 // Delete a run trigger by its ID.
 func (s *runTriggers) Delete(ctx context.Context, runTriggerID string) error {
 	if !validStringID(&runTriggerID) {
-		return errors.New("invalid value for run trigger ID")
+		return ErrInvalidRunTriggerID
 	}
 
 	u := fmt.Sprintf("run-triggers/%s", url.QueryEscape(runTriggerID))

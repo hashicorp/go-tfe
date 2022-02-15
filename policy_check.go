@@ -3,7 +3,6 @@ package tfe
 import (
 	"bytes"
 	"context"
-	"errors"
 	"fmt"
 	"io"
 	"net/url"
@@ -140,7 +139,7 @@ func (s *policyChecks) List(ctx context.Context, runID string, options *PolicyCh
 // Read a policy check by its ID.
 func (s *policyChecks) Read(ctx context.Context, policyCheckID string) (*PolicyCheck, error) {
 	if !validStringID(&policyCheckID) {
-		return nil, errors.New("invalid value for policy check ID")
+		return nil, ErrInvalidPolicyCheckID
 	}
 
 	u := fmt.Sprintf("policy-checks/%s", url.QueryEscape(policyCheckID))
@@ -161,7 +160,7 @@ func (s *policyChecks) Read(ctx context.Context, policyCheckID string) (*PolicyC
 // Override a soft-mandatory or warning policy.
 func (s *policyChecks) Override(ctx context.Context, policyCheckID string) (*PolicyCheck, error) {
 	if !validStringID(&policyCheckID) {
-		return nil, errors.New("invalid value for policy check ID")
+		return nil, ErrInvalidPolicyCheckID
 	}
 
 	u := fmt.Sprintf("policy-checks/%s/actions/override", url.QueryEscape(policyCheckID))
@@ -182,7 +181,7 @@ func (s *policyChecks) Override(ctx context.Context, policyCheckID string) (*Pol
 // Logs retrieves the logs of a policy check.
 func (s *policyChecks) Logs(ctx context.Context, policyCheckID string) (io.Reader, error) {
 	if !validStringID(&policyCheckID) {
-		return nil, errors.New("invalid value for policy check ID")
+		return nil, ErrInvalidPolicyCheckID
 	}
 
 	// Loop until the context is canceled or the policy check is finished

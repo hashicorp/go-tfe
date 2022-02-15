@@ -2,7 +2,6 @@ package tfe
 
 import (
 	"context"
-	"errors"
 	"fmt"
 	"net/url"
 )
@@ -95,7 +94,7 @@ func (o SSHKeyCreateOptions) valid() error {
 		return ErrRequiredName
 	}
 	if !validString(o.Value) {
-		return errors.New("value is required")
+		return ErrRequiredValue
 	}
 	return nil
 }
@@ -128,7 +127,7 @@ func (s *sshKeys) Create(ctx context.Context, organization string, options SSHKe
 // Read an SSH key by its ID.
 func (s *sshKeys) Read(ctx context.Context, sshKeyID string) (*SSHKey, error) {
 	if !validStringID(&sshKeyID) {
-		return nil, errors.New("invalid value for SSH key ID")
+		return nil, ErrInvalidSHHKeyID
 	}
 
 	u := fmt.Sprintf("ssh-keys/%s", url.QueryEscape(sshKeyID))
@@ -158,7 +157,7 @@ type SSHKeyUpdateOptions struct {
 // Update an SSH key by its ID.
 func (s *sshKeys) Update(ctx context.Context, sshKeyID string, options SSHKeyUpdateOptions) (*SSHKey, error) {
 	if !validStringID(&sshKeyID) {
-		return nil, errors.New("invalid value for SSH key ID")
+		return nil, ErrInvalidSHHKeyID
 	}
 
 	// Make sure we don't send a user provided ID.
@@ -182,7 +181,7 @@ func (s *sshKeys) Update(ctx context.Context, sshKeyID string, options SSHKeyUpd
 // Delete an SSH key by its ID.
 func (s *sshKeys) Delete(ctx context.Context, sshKeyID string) error {
 	if !validStringID(&sshKeyID) {
-		return errors.New("invalid value for SSH key ID")
+		return ErrInvalidSHHKeyID
 	}
 
 	u := fmt.Sprintf("ssh-keys/%s", url.QueryEscape(sshKeyID))

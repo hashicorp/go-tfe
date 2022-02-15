@@ -125,7 +125,7 @@ func TestNotificationConfigurationCreate(t *testing.T) {
 
 		nc, err := client.NotificationConfigurations.Create(ctx, wTest.ID, options)
 		assert.Nil(t, nc)
-		assert.EqualError(t, err, "url is required")
+		assert.Equal(t, err, ErrRequiredURL)
 	})
 
 	t.Run("without a valid workspace", func(t *testing.T) {
@@ -178,7 +178,7 @@ func TestNotificationConfigurationRead(t *testing.T) {
 
 	t.Run("when the notification configuration ID is invalid", func(t *testing.T) {
 		_, err := client.NotificationConfigurations.Read(ctx, badIdentifier)
-		assert.EqualError(t, err, "invalid value for notification configuration ID")
+		assert.Equal(t, err, ErrInvalidNotificationConfigID)
 	})
 }
 
@@ -265,7 +265,7 @@ func TestNotificationConfigurationUpdate(t *testing.T) {
 
 	t.Run("when the notification configuration ID is invalid", func(t *testing.T) {
 		_, err := client.NotificationConfigurations.Update(ctx, badIdentifier, NotificationConfigurationUpdateOptions{})
-		assert.EqualError(t, err, "invalid value for notification configuration ID")
+		assert.Equal(t, err, ErrInvalidNotificationConfigID)
 	})
 }
 
@@ -293,7 +293,7 @@ func TestNotificationConfigurationDelete(t *testing.T) {
 
 	t.Run("when the notification configuration ID is invalid", func(t *testing.T) {
 		err := client.NotificationConfigurations.Delete(ctx, badIdentifier)
-		assert.EqualError(t, err, "invalid value for notification configuration ID")
+		assert.Equal(t, err, ErrInvalidNotificationConfigID)
 	})
 }
 
@@ -316,6 +316,6 @@ func TestNotificationConfigurationVerify(t *testing.T) {
 
 	t.Run("when the notification configuration ID is invalid", func(t *testing.T) {
 		_, err := client.NotificationConfigurations.Verify(ctx, badIdentifier)
-		assert.EqualError(t, err, "invalid value for notification configuration ID")
+		assert.Equal(t, err, ErrInvalidNotificationConfigID)
 	})
 }

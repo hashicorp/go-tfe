@@ -106,7 +106,7 @@ func TestOrganizationMembershipsCreate(t *testing.T) {
 		mem, err := client.OrganizationMemberships.Create(ctx, orgTest.Name, OrganizationMembershipCreateOptions{})
 
 		assert.Nil(t, mem)
-		assert.EqualError(t, err, "email is required")
+		assert.Equal(t, err, ErrRequiredEmail)
 	})
 
 	t.Run("with an invalid organization", func(t *testing.T) {
@@ -157,7 +157,7 @@ func TestOrganizationMembershipsRead(t *testing.T) {
 	t.Run("with invalid membership id", func(t *testing.T) {
 		mem, err := client.OrganizationMemberships.Read(ctx, badIdentifier)
 		assert.Nil(t, mem)
-		assert.EqualError(t, err, "invalid value for membership")
+		assert.Equal(t, err, ErrInvalidMembership)
 	})
 }
 
@@ -188,7 +188,7 @@ func TestOrganizationMembershipsReadWithOptions(t *testing.T) {
 	t.Run("with invalid membership id", func(t *testing.T) {
 		mem, err := client.OrganizationMemberships.ReadWithOptions(ctx, badIdentifier, options)
 		assert.Nil(t, mem)
-		assert.EqualError(t, err, "invalid value for membership")
+		assert.Equal(t, err, ErrInvalidMembership)
 	})
 }
 
@@ -214,7 +214,7 @@ func TestOrganizationMembershipsDelete(t *testing.T) {
 	t.Run("when membership is invalid", func(t *testing.T) {
 		err := client.OrganizationMemberships.Delete(ctx, badIdentifier)
 
-		assert.EqualError(t, err, "invalid value for membership")
+		assert.Equal(t, err, ErrInvalidMembership)
 	})
 
 	t.Run("when an error is returned from the api", func(t *testing.T) {

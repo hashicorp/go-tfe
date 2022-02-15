@@ -2,7 +2,6 @@ package tfe
 
 import (
 	"context"
-	"errors"
 	"fmt"
 	"net/url"
 	"time"
@@ -164,10 +163,10 @@ type NotificationConfigurationCreateOptions struct {
 
 func (o NotificationConfigurationCreateOptions) valid() error {
 	if o.DestinationType == nil {
-		return errors.New("destination type is required")
+		return ErrRequiredDestinationType
 	}
 	if o.Enabled == nil {
-		return errors.New("enabled is required")
+		return ErrRequiredEnabled
 	}
 	if !validString(o.Name) {
 		return ErrRequiredName
@@ -175,7 +174,7 @@ func (o NotificationConfigurationCreateOptions) valid() error {
 
 	if *o.DestinationType == NotificationDestinationTypeGeneric || *o.DestinationType == NotificationDestinationTypeSlack {
 		if o.URL == nil {
-			return errors.New("url is required")
+			return ErrRequiredURL
 		}
 	}
 	return nil
@@ -208,7 +207,7 @@ func (s *notificationConfigurations) Create(ctx context.Context, workspaceID str
 // Read a notification configuration by its ID.
 func (s *notificationConfigurations) Read(ctx context.Context, notificationConfigurationID string) (*NotificationConfiguration, error) {
 	if !validStringID(&notificationConfigurationID) {
-		return nil, errors.New("invalid value for notification configuration ID")
+		return nil, ErrInvalidNotificationConfigID
 	}
 
 	u := fmt.Sprintf("notification-configurations/%s", url.QueryEscape(notificationConfigurationID))
@@ -261,7 +260,7 @@ type NotificationConfigurationUpdateOptions struct {
 // Updates a notification configuration with the given options.
 func (s *notificationConfigurations) Update(ctx context.Context, notificationConfigurationID string, options NotificationConfigurationUpdateOptions) (*NotificationConfiguration, error) {
 	if !validStringID(&notificationConfigurationID) {
-		return nil, errors.New("invalid value for notification configuration ID")
+		return nil, ErrInvalidNotificationConfigID
 	}
 
 	u := fmt.Sprintf("notification-configurations/%s", url.QueryEscape(notificationConfigurationID))
@@ -282,7 +281,7 @@ func (s *notificationConfigurations) Update(ctx context.Context, notificationCon
 // Delete a notifications configuration by its ID.
 func (s *notificationConfigurations) Delete(ctx context.Context, notificationConfigurationID string) error {
 	if !validStringID(&notificationConfigurationID) {
-		return errors.New("invalid value for notification configuration ID")
+		return ErrInvalidNotificationConfigID
 	}
 
 	u := fmt.Sprintf("notification-configurations/%s", url.QueryEscape(notificationConfigurationID))
@@ -298,7 +297,7 @@ func (s *notificationConfigurations) Delete(ctx context.Context, notificationCon
 // payload to the configured url.
 func (s *notificationConfigurations) Verify(ctx context.Context, notificationConfigurationID string) (*NotificationConfiguration, error) {
 	if !validStringID(&notificationConfigurationID) {
-		return nil, errors.New("invalid value for notification configuration ID")
+		return nil, ErrInvalidNotificationConfigID
 	}
 
 	u := fmt.Sprintf(

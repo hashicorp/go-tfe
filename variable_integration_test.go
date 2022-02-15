@@ -158,7 +158,7 @@ func TestVariablesCreate(t *testing.T) {
 		}
 
 		_, err := client.Variables.Create(ctx, wTest.ID, options)
-		assert.EqualError(t, err, "key is required")
+		assert.Equal(t, err, ErrRequiredKey)
 	})
 
 	t.Run("when options has an empty key", func(t *testing.T) {
@@ -169,7 +169,7 @@ func TestVariablesCreate(t *testing.T) {
 		}
 
 		_, err := client.Variables.Create(ctx, wTest.ID, options)
-		assert.EqualError(t, err, "key is required")
+		assert.Equal(t, err, ErrRequiredKey)
 	})
 
 	t.Run("when options is missing category", func(t *testing.T) {
@@ -179,7 +179,7 @@ func TestVariablesCreate(t *testing.T) {
 		}
 
 		_, err := client.Variables.Create(ctx, wTest.ID, options)
-		assert.EqualError(t, err, "category is required")
+		assert.Equal(t, err, ErrRequiredCategory)
 	})
 
 	t.Run("when workspace ID is invalid", func(t *testing.T) {
@@ -227,7 +227,7 @@ func TestVariablesRead(t *testing.T) {
 	t.Run("without a valid variable ID", func(t *testing.T) {
 		v, err := client.Variables.Read(ctx, vTest.Workspace.ID, badIdentifier)
 		assert.Nil(t, v)
-		assert.EqualError(t, err, "invalid value for variable ID")
+		assert.Equal(t, err, ErrInvalidVariableID)
 	})
 }
 
@@ -295,7 +295,7 @@ func TestVariablesUpdate(t *testing.T) {
 
 	t.Run("with invalid variable ID", func(t *testing.T) {
 		_, err := client.Variables.Update(ctx, vTest.Workspace.ID, badIdentifier, VariableUpdateOptions{})
-		assert.EqualError(t, err, "invalid value for variable ID")
+		assert.Equal(t, err, ErrInvalidVariableID)
 	})
 }
 
@@ -325,6 +325,6 @@ func TestVariablesDelete(t *testing.T) {
 
 	t.Run("with invalid variable ID", func(t *testing.T) {
 		err := client.Variables.Delete(ctx, wTest.ID, badIdentifier)
-		assert.EqualError(t, err, "invalid value for variable ID")
+		assert.Equal(t, err, ErrInvalidVariableID)
 	})
 }

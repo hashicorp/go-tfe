@@ -34,7 +34,7 @@ func TestStateVersionsList(t *testing.T) {
 	t.Run("without StateVersionListOptions", func(t *testing.T) {
 		svl, err := client.StateVersions.List(ctx, nil)
 		assert.Nil(t, svl)
-		assert.EqualError(t, err, "StateVersionListOptions is required")
+		assert.Equal(t, err, ErrRequiredStateVerListOps)
 	})
 
 	t.Run("without list options", func(t *testing.T) {
@@ -96,7 +96,7 @@ func TestStateVersionsList(t *testing.T) {
 
 		svl, err := client.StateVersions.List(ctx, options)
 		assert.Nil(t, svl)
-		assert.EqualError(t, err, "organization is required")
+		assert.Equal(t, err, ErrRequiredOrg)
 	})
 
 	t.Run("without a workspace", func(t *testing.T) {
@@ -106,7 +106,7 @@ func TestStateVersionsList(t *testing.T) {
 
 		svl, err := client.StateVersions.List(ctx, options)
 		assert.Nil(t, svl)
-		assert.EqualError(t, err, "workspace is required")
+		assert.Equal(t, err, ErrRequiredWorkspace)
 	})
 }
 
@@ -240,7 +240,7 @@ func TestStateVersionsCreate(t *testing.T) {
 			State:  String(base64.StdEncoding.EncodeToString(state)),
 		})
 		assert.Nil(t, sv)
-		assert.EqualError(t, err, "MD5 is required")
+		assert.Equal(t, err, ErrRequiredM5)
 	})
 
 	t.Run("withous serial", func(t *testing.T) {
@@ -249,7 +249,7 @@ func TestStateVersionsCreate(t *testing.T) {
 			State: String(base64.StdEncoding.EncodeToString(state)),
 		})
 		assert.Nil(t, sv)
-		assert.EqualError(t, err, "serial is required")
+		assert.Equal(t, err, ErrRequiredSerial)
 	})
 
 	t.Run("without state", func(t *testing.T) {
@@ -258,7 +258,7 @@ func TestStateVersionsCreate(t *testing.T) {
 			Serial: Int64(0),
 		})
 		assert.Nil(t, sv)
-		assert.EqualError(t, err, "state is required")
+		assert.Equal(t, err, ErrRequiredState)
 	})
 
 	t.Run("with invalid workspace id", func(t *testing.T) {
@@ -301,7 +301,7 @@ func TestStateVersionsRead(t *testing.T) {
 	t.Run("with invalid state version id", func(t *testing.T) {
 		sv, err := client.StateVersions.Read(ctx, badIdentifier)
 		assert.Nil(t, sv)
-		assert.EqualError(t, err, "invalid value for state version ID")
+		assert.Equal(t, err, ErrInvalidStateVerID)
 	})
 }
 

@@ -2,7 +2,6 @@ package tfe
 
 import (
 	"context"
-	"errors"
 	"fmt"
 	"io"
 	"net/url"
@@ -376,13 +375,13 @@ func (o WorkspaceCreateOptions) valid() error {
 		return ErrInvalidName
 	}
 	if o.Operations != nil && o.ExecutionMode != nil {
-		return errors.New("operations is deprecated and cannot be specified when execution mode is used")
+		return ErrUnsupportedOperations
 	}
 	if o.AgentPoolID != nil && (o.ExecutionMode == nil || *o.ExecutionMode != "agent") {
-		return errors.New("specifying an agent pool ID requires 'agent' execution mode")
+		return ErrRequiredAgentMode
 	}
 	if o.AgentPoolID == nil && (o.ExecutionMode != nil && *o.ExecutionMode == "agent") {
-		return errors.New("'agent' execution mode requires an agent pool ID to be specified")
+		return ErrRequiredAgentPoolID
 	}
 
 	return nil
@@ -591,10 +590,10 @@ func (o WorkspaceUpdateOptions) valid() error {
 		return ErrInvalidName
 	}
 	if o.Operations != nil && o.ExecutionMode != nil {
-		return errors.New("operations is deprecated and cannot be specified when execution mode is used")
+		return ErrUnsupportedOperations
 	}
 	if o.AgentPoolID == nil && (o.ExecutionMode != nil && *o.ExecutionMode == "agent") {
-		return errors.New("'agent' execution mode requires an agent pool ID to be specified")
+		return ErrRequiredAgentPoolID
 	}
 
 	return nil
@@ -830,10 +829,10 @@ type WorkspaceAssignSSHKeyOptions struct {
 
 func (o WorkspaceAssignSSHKeyOptions) valid() error {
 	if !validString(o.SSHKeyID) {
-		return errors.New("SSH key ID is required")
+		return ErrRequiredSHHKeyID
 	}
 	if !validStringID(o.SSHKeyID) {
-		return errors.New("invalid value for SSH key ID")
+		return ErrInvalidSHHKeyID
 	}
 	return nil
 }

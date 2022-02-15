@@ -100,7 +100,7 @@ func TestSSHKeysCreate(t *testing.T) {
 			Name: String(randomString(t)),
 		})
 		assert.Nil(t, k)
-		assert.EqualError(t, err, "value is required")
+		assert.Equal(t, err, ErrRequiredValue)
 	})
 
 	t.Run("when options has an invalid organization", func(t *testing.T) {
@@ -137,7 +137,7 @@ func TestSSHKeysRead(t *testing.T) {
 	t.Run("without a valid SSH key ID", func(t *testing.T) {
 		k, err := client.SSHKeys.Read(ctx, badIdentifier)
 		assert.Nil(t, k)
-		assert.EqualError(t, err, "invalid value for SSH key ID")
+		assert.Equal(t, err, ErrInvalidSHHKeyID)
 	})
 }
 
@@ -177,7 +177,7 @@ func TestSSHKeysUpdate(t *testing.T) {
 	t.Run("without a valid SSH key ID", func(t *testing.T) {
 		w, err := client.SSHKeys.Update(ctx, badIdentifier, SSHKeyUpdateOptions{})
 		assert.Nil(t, w)
-		assert.EqualError(t, err, "invalid value for SSH key ID")
+		assert.Equal(t, err, ErrInvalidSHHKeyID)
 	})
 }
 
@@ -206,6 +206,6 @@ func TestSSHKeysDelete(t *testing.T) {
 
 	t.Run("when the SSH key ID is invalid", func(t *testing.T) {
 		err := client.SSHKeys.Delete(ctx, badIdentifier)
-		assert.EqualError(t, err, "invalid value for SSH key ID")
+		assert.Equal(t, err, ErrInvalidSHHKeyID)
 	})
 }

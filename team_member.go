@@ -2,7 +2,6 @@ package tfe
 
 import (
 	"context"
-	"errors"
 	"fmt"
 	"net/url"
 
@@ -57,7 +56,7 @@ func (s *teamMembers) List(ctx context.Context, teamID string) ([]*User, error) 
 // ListUsers returns the Users of this team.
 func (s *teamMembers) ListUsers(ctx context.Context, teamID string) ([]*User, error) {
 	if !validStringID(&teamID) {
-		return nil, errors.New("invalid value for team ID")
+		return nil, ErrInvalidTeamID
 	}
 
 	options := struct {
@@ -84,7 +83,7 @@ func (s *teamMembers) ListUsers(ctx context.Context, teamID string) ([]*User, er
 // ListOrganizationMemberships returns the OrganizationMemberships of this team.
 func (s *teamMembers) ListOrganizationMemberships(ctx context.Context, teamID string) ([]*OrganizationMembership, error) {
 	if !validStringID(&teamID) {
-		return nil, errors.New("invalid value for team ID")
+		return nil, ErrInvalidTeamID
 	}
 
 	options := struct {
@@ -117,16 +116,16 @@ type TeamMemberAddOptions struct {
 
 func (o *TeamMemberAddOptions) valid() error {
 	if o.Usernames == nil && o.OrganizationMembershipIDs == nil {
-		return errors.New("usernames or organization membership ids are required")
+		return ErrRequiredUsernameOrMembershipIds
 	}
 	if o.Usernames != nil && o.OrganizationMembershipIDs != nil {
-		return errors.New("only one of usernames or organization membership ids can be provided")
+		return ErrRequiredOnlyOneField
 	}
 	if o.Usernames != nil && len(o.Usernames) == 0 {
-		return errors.New("invalid value for usernames")
+		return ErrInvalidUsernames
 	}
 	if o.OrganizationMembershipIDs != nil && len(o.OrganizationMembershipIDs) == 0 {
-		return errors.New("invalid value for organization membership ids")
+		return ErrInvalidMembershipIDs
 	}
 	return nil
 }
@@ -143,7 +142,7 @@ func (o *TeamMemberAddOptions) kind() string {
 // Add multiple users to a team.
 func (s *teamMembers) Add(ctx context.Context, teamID string, options TeamMemberAddOptions) error {
 	if !validStringID(&teamID) {
-		return errors.New("invalid value for team ID")
+		return ErrInvalidTeamID
 	}
 	if err := options.valid(); err != nil {
 		return err
@@ -188,16 +187,16 @@ type TeamMemberRemoveOptions struct {
 
 func (o *TeamMemberRemoveOptions) valid() error {
 	if o.Usernames == nil && o.OrganizationMembershipIDs == nil {
-		return errors.New("usernames or organization membership ids are required")
+		return ErrRequiredUsernameOrMembershipIds
 	}
 	if o.Usernames != nil && o.OrganizationMembershipIDs != nil {
-		return errors.New("only one of usernames or organization membership ids can be provided")
+		return ErrRequiredOnlyOneField
 	}
 	if o.Usernames != nil && len(o.Usernames) == 0 {
-		return errors.New("invalid value for usernames")
+		return ErrInvalidUsernames
 	}
 	if o.OrganizationMembershipIDs != nil && len(o.OrganizationMembershipIDs) == 0 {
-		return errors.New("invalid value for organization membership ids")
+		return ErrInvalidMembershipIDs
 	}
 	return nil
 }
@@ -214,7 +213,7 @@ func (o *TeamMemberRemoveOptions) kind() string {
 // Remove multiple users from a team.
 func (s *teamMembers) Remove(ctx context.Context, teamID string, options TeamMemberRemoveOptions) error {
 	if !validStringID(&teamID) {
-		return errors.New("invalid value for team ID")
+		return ErrInvalidTeamID
 	}
 	if err := options.valid(); err != nil {
 		return err

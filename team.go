@@ -2,7 +2,6 @@ package tfe
 
 import (
 	"context"
-	"errors"
 	"fmt"
 	"net/url"
 )
@@ -170,7 +169,7 @@ func (s *teams) Create(ctx context.Context, organization string, options TeamCre
 // Read a single team by its ID.
 func (s *teams) Read(ctx context.Context, teamID string) (*Team, error) {
 	if !validStringID(&teamID) {
-		return nil, errors.New("invalid value for team ID")
+		return nil, ErrInvalidTeamID
 	}
 
 	u := fmt.Sprintf("teams/%s", url.QueryEscape(teamID))
@@ -209,7 +208,7 @@ type TeamUpdateOptions struct {
 // Update a team by its ID.
 func (s *teams) Update(ctx context.Context, teamID string, options TeamUpdateOptions) (*Team, error) {
 	if !validStringID(&teamID) {
-		return nil, errors.New("invalid value for team ID")
+		return nil, ErrInvalidTeamID
 	}
 
 	u := fmt.Sprintf("teams/%s", url.QueryEscape(teamID))
@@ -230,7 +229,7 @@ func (s *teams) Update(ctx context.Context, teamID string, options TeamUpdateOpt
 // Delete a team by its ID.
 func (s *teams) Delete(ctx context.Context, teamID string) error {
 	if !validStringID(&teamID) {
-		return errors.New("invalid value for team ID")
+		return ErrInvalidTeamID
 	}
 
 	u := fmt.Sprintf("teams/%s", url.QueryEscape(teamID))

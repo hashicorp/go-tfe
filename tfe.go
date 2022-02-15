@@ -7,7 +7,6 @@ import (
 	"bytes"
 	"context"
 	"encoding/json"
-	"errors"
 	"fmt"
 	"io"
 	"math/rand"
@@ -557,18 +556,17 @@ func serializeRequestBody(v interface{}) (interface{}, error) {
 	// json-api library doesn't support serializing other things.
 	var modelType reflect.Type
 	bodyType := reflect.TypeOf(v)
-	invalidBodyError := errors.New("go-tfe bug: DELETE/PATCH/POST body must be nil, ptr, or ptr slice")
 	switch bodyType.Kind() {
 	case reflect.Slice:
 		sliceElem := bodyType.Elem()
 		if sliceElem.Kind() != reflect.Ptr {
-			return nil, invalidBodyError
+			return nil, ErrInvalidRequestBody
 		}
 		modelType = sliceElem.Elem()
 	case reflect.Ptr:
 		modelType = reflect.ValueOf(v).Elem().Type()
 	default:
-		return nil, invalidBodyError
+		return nil, ErrInvalidRequestBody
 	}
 
 	// Infer whether the request uses jsonapi or regular json
@@ -589,7 +587,7 @@ func serializeRequestBody(v interface{}) (interface{}, error) {
 		// make sense, because a struct can only be serialized
 		// as one or another. If this does happen, it's a bug
 		// in the library that should be fixed at development time
-		return nil, errors.New("go-tfe bug: struct can't use both json and jsonapi attributes")
+		return nil, ErrInvalidStructFormat
 	}
 
 	if jsonFields > 0 {

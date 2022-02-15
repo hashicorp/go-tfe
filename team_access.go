@@ -2,7 +2,6 @@ package tfe
 
 import (
 	"context"
-	"errors"
 	"fmt"
 	"net/url"
 )
@@ -110,7 +109,7 @@ type TeamAccessListOptions struct {
 //check that workspaceID field has a valid value
 func (o TeamAccessListOptions) valid() error {
 	if !validString(&o.WorkspaceID) {
-		return errors.New("workspace ID is required")
+		return ErrRequiredWorkspaceID
 	}
 	if !validStringID(&o.WorkspaceID) {
 		return ErrInvalidWorkspaceID
@@ -121,7 +120,7 @@ func (o TeamAccessListOptions) valid() error {
 // List all the team accesses for a given workspace.
 func (s *teamAccesses) List(ctx context.Context, options *TeamAccessListOptions) (*TeamAccessList, error) {
 	if options == nil {
-		return nil, errors.New("TeamAccessListOptions is required")
+		return nil, ErrRequireTeamAccessListOps
 	}
 
 	if err := options.valid(); err != nil {
@@ -170,13 +169,13 @@ type TeamAccessAddOptions struct {
 
 func (o TeamAccessAddOptions) valid() error {
 	if o.Access == nil {
-		return errors.New("access is required")
+		return ErrRequiredAccess
 	}
 	if o.Team == nil {
-		return errors.New("team is required")
+		return ErrRequiredTeam
 	}
 	if o.Workspace == nil {
-		return errors.New("workspace is required")
+		return ErrRequiredWorkspace
 	}
 	return nil
 }
@@ -204,7 +203,7 @@ func (s *teamAccesses) Add(ctx context.Context, options TeamAccessAddOptions) (*
 // Read a team access by its ID.
 func (s *teamAccesses) Read(ctx context.Context, teamAccessID string) (*TeamAccess, error) {
 	if !validStringID(&teamAccessID) {
-		return nil, errors.New("invalid value for team access ID")
+		return nil, ErrInvalidAccessTeamID
 	}
 
 	u := fmt.Sprintf("team-workspaces/%s", url.QueryEscape(teamAccessID))
@@ -245,7 +244,7 @@ type TeamAccessUpdateOptions struct {
 // Update team access for a workspace
 func (s *teamAccesses) Update(ctx context.Context, teamAccessID string, options TeamAccessUpdateOptions) (*TeamAccess, error) {
 	if !validStringID(&teamAccessID) {
-		return nil, errors.New("invalid value for team access ID")
+		return nil, ErrInvalidAccessTeamID
 	}
 
 	u := fmt.Sprintf("team-workspaces/%s", url.QueryEscape(teamAccessID))
@@ -266,7 +265,7 @@ func (s *teamAccesses) Update(ctx context.Context, teamAccessID string, options 
 // Remove team access from a workspace.
 func (s *teamAccesses) Remove(ctx context.Context, teamAccessID string) error {
 	if !validStringID(&teamAccessID) {
-		return errors.New("invalid value for team access ID")
+		return ErrInvalidAccessTeamID
 	}
 
 	u := fmt.Sprintf("team-workspaces/%s", url.QueryEscape(teamAccessID))

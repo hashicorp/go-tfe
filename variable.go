@@ -2,7 +2,6 @@ package tfe
 
 import (
 	"context"
-	"errors"
 	"fmt"
 	"net/url"
 )
@@ -121,10 +120,10 @@ type VariableCreateOptions struct {
 
 func (o VariableCreateOptions) valid() error {
 	if !validString(o.Key) {
-		return errors.New("key is required")
+		return ErrRequiredKey
 	}
 	if o.Category == nil {
-		return errors.New("category is required")
+		return ErrRequiredCategory
 	}
 	return nil
 }
@@ -159,7 +158,7 @@ func (s *variables) Read(ctx context.Context, workspaceID string, variableID str
 		return nil, ErrInvalidWorkspaceID
 	}
 	if !validStringID(&variableID) {
-		return nil, errors.New("invalid value for variable ID")
+		return nil, ErrInvalidVariableID
 	}
 
 	u := fmt.Sprintf("workspaces/%s/vars/%s", url.QueryEscape(workspaceID), url.QueryEscape(variableID))
@@ -207,7 +206,7 @@ func (s *variables) Update(ctx context.Context, workspaceID string, variableID s
 		return nil, ErrInvalidWorkspaceID
 	}
 	if !validStringID(&variableID) {
-		return nil, errors.New("invalid value for variable ID")
+		return nil, ErrInvalidVariableID
 	}
 
 	u := fmt.Sprintf("workspaces/%s/vars/%s", url.QueryEscape(workspaceID), url.QueryEscape(variableID))
@@ -231,7 +230,7 @@ func (s *variables) Delete(ctx context.Context, workspaceID string, variableID s
 		return ErrInvalidWorkspaceID
 	}
 	if !validStringID(&variableID) {
-		return errors.New("invalid value for variable ID")
+		return ErrInvalidVariableID
 	}
 
 	u := fmt.Sprintf("workspaces/%s/vars/%s", url.QueryEscape(workspaceID), url.QueryEscape(variableID))
