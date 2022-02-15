@@ -254,7 +254,7 @@ type VariableSetAssignOptions struct {
 // Use Update to assign a variable set to workspaces
 func (s *variableSets) Assign(ctx context.Context, variableSetID string, options *VariableSetAssignOptions) (*VariableSet, error) {
 	if options == nil || options.Workspaces == nil {
-		return nil, errors.New("No workspaces list provided")
+		return nil, errors.New("no workspaces list provided")
 	}
 
 	options.Global = Bool(false)
