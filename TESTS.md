@@ -28,6 +28,7 @@ Tests are run against an actual backend so they require a valid backend address 
 1. `ENABLE_TFE` - Some tests are only applicable to Terraform Enterprise or Terraform Cloud. By setting `ENABLE_TFE=1` you will enable enterprise only tests and disable cloud only tests. In CI `ENABLE_TFE` is not set so if you are writing enterprise only features you should manually test with `ENABLE_TFE=1` against a Terraform Enterprise instance.
 1. `SKIP_PAID` - Some tests depend on paid only features. By setting `SKIP_PAID=1`, you will skip tests that access paid features.
 1. `ENABLE_BETA` - Some tests require access to beta features. By setting `ENABLE_BETA=1` you will enable tests that require access to beta features. IN CI `ENABLE_BETA` is not set so if you are writing beta only features you should manually test with `ENABLE_BETA=1` against a Terraform Enterprise instance with those features enabled.  
+1. `TFC_RUN_TASK_URL` - Run task integration tests require a URL to use when creating run tasks. To learn more about the Run Task API, [read here](https://www.terraform.io/cloud-docs/api-docs/run-tasks)
 
 You can set your environment variables up however you prefer. The following are instructions for setting up environment variables using [envchain](https://github.com/sorah/envchain).
    1. Make sure you have envchain installed. [Instructions for this can be found in the envchain README](https://github.com/sorah/envchain#installation).

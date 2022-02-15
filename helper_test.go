@@ -709,10 +709,15 @@ func createRunTask(t *testing.T, client *Client, org *Organization) (*RunTask, f
 		org, orgCleanup = createOrganization(t, client)
 	}
 
+	runTaskURL := os.Getenv("TFC_RUN_TASK_URL")
+	if runTaskURL == "" {
+		t.Error("Cannot create a run task with an empty URL. You must set TFC_RUN_TASK_URL for run task related tests.")
+	}
+
 	ctx := context.Background()
 	r, err := client.RunTasks.Create(ctx, org.Name, RunTaskCreateOptions{
 		Name:     "tst-" + randomString(t),
-		URL:      "http://54.167.177.151/success",
+		URL:      runTaskURL,
 		Category: "task",
 	})
 	if err != nil {

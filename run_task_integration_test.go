@@ -2,6 +2,7 @@ package tfe
 
 import (
 	"context"
+	"os"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -17,20 +18,24 @@ func TestRunTasksCreate(t *testing.T) {
 	orgTest, orgTestCleanup := createOrganization(t, client)
 	defer orgTestCleanup()
 
-	runTaskServerURI := "http://54.167.177.151/success"
+	runTaskServerURL := os.Getenv("TFC_RUN_TASK_URL")
+	if runTaskServerURL == "" {
+		t.Error("Cannot create a run task with an empty URL. You must set TFC_RUN_TASK_URL for run task related tests.")
+	}
+
 	runTaskName := "tst-runtask-" + randomString(t)
 
 	t.Run("add run task to organization", func(t *testing.T) {
 		r, err := client.RunTasks.Create(ctx, orgTest.Name, RunTaskCreateOptions{
 			Name:     runTaskName,
-			URL:      runTaskServerURI,
+			URL:      runTaskServerURL,
 			Category: "task",
 		})
 		require.NoError(t, err)
 
 		assert.NotEmpty(t, r.ID)
 		assert.Equal(t, r.Name, runTaskName)
-		assert.Equal(t, r.URL, runTaskServerURI)
+		assert.Equal(t, r.URL, runTaskServerURL)
 		assert.Equal(t, r.Category, "task")
 
 		t.Run("ensure org is deserialized properly", func(t *testing.T) {

@@ -2,7 +2,6 @@ package tfe
 
 import (
 	"context"
-	"fmt"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -25,8 +24,6 @@ func TestWorkspaceRunTasksCreate(t *testing.T) {
 	defer wkspaceTestCleanup()
 
 	t.Run("attach run task to workspace", func(t *testing.T) {
-		fmt.Println(wkspaceTest.ID)
-		fmt.Println(runTaskTest.ID)
 		wr, err := client.WorkspaceRunTasks.Create(ctx, wkspaceTest.ID, WorkspaceRunTaskCreateOptions{
 			EnforcementLevel: Mandatory,
 			RunTask:          runTaskTest,
@@ -152,7 +149,7 @@ func TestWorkspaceRunTasksDelete(t *testing.T) {
 	defer orgTestCleanup()
 
 	wkspaceTest, wkspaceTestCleanup := createWorkspace(t, client, orgTest)
-	// defer wkspaceTestCleanup()
+	defer wkspaceTestCleanup()
 
 	runTaskTest, runTaskTestCleanup := createRunTask(t, client, orgTest)
 	defer runTaskTestCleanup()
