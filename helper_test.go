@@ -717,15 +717,15 @@ func createRegistryModuleWithVersion(t *testing.T, client *Client, org *Organiza
 }
 
 func createRunTask(t *testing.T, client *Client, org *Organization) (*RunTask, func()) {
+	runTaskURL := os.Getenv("TFC_RUN_TASK_URL")
+	if runTaskURL == "" {
+		t.Error("Cannot create a run task with an empty URL. You must set TFC_RUN_TASK_URL for run task related tests.")
+	}
+
 	var orgCleanup func()
 
 	if org == nil {
 		org, orgCleanup = createOrganization(t, client)
-	}
-
-	runTaskURL := os.Getenv("TFC_RUN_TASK_URL")
-	if runTaskURL == "" {
-		t.Error("Cannot create a run task with an empty URL. You must set TFC_RUN_TASK_URL for run task related tests.")
 	}
 
 	ctx := context.Background()
@@ -734,6 +734,7 @@ func createRunTask(t *testing.T, client *Client, org *Organization) (*RunTask, f
 		URL:      runTaskURL,
 		Category: "task",
 	})
+
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -743,6 +744,74 @@ func createRunTask(t *testing.T, client *Client, org *Organization) (*RunTask, f
 			t.Errorf("Error removing Run Task! WARNING: Run task limit\n"+
 				"may be reached if not deleted! The full error is shown below.\n\n"+
 				"Run Task: %s\nError: %s", r.Name, err)
+		}
+
+		if orgCleanup != nil {
+			orgCleanup()
+		}
+	}
+}
+
+func createPrivateRegistryProvider(t *testing.T, client *Client, org *Organization) (*RegistryProvider, func()) {
+	var orgCleanup func()
+
+	if org == nil {
+		org, orgCleanup = createOrganization(t, client)
+	}
+
+	ctx := context.Background()
+
+	privateName := PrivateRegistry
+
+	options := RegistryProviderCreateOptions{
+		Name:         String("tst-name-" + randomString(t)),
+		Namespace:    &org.Name,
+		RegistryName: &privateName,
+	}
+	prv, err := client.RegistryProviders.Create(ctx, org.Name, options)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	return prv, func() {
+		if err := client.RegistryProviders.Delete(ctx, org.Name, prv.RegistryName, prv.Namespace, prv.Name); err != nil {
+			t.Errorf("Error destroying registry provider! WARNING: Dangling resources\n"+
+				"may exist! The full error is shown below.\n\n"+
+				"Registry Provider: %s/%s\nError: %s", prv.Namespace, prv.Name, err)
+		}
+
+		if orgCleanup != nil {
+			orgCleanup()
+		}
+	}
+}
+
+func createPublicRegistryProvider(t *testing.T, client *Client, org *Organization) (*RegistryProvider, func()) {
+	var orgCleanup func()
+
+	if org == nil {
+		org, orgCleanup = createOrganization(t, client)
+	}
+
+	ctx := context.Background()
+
+	publicName := PublicRegistry
+
+	options := RegistryProviderCreateOptions{
+		Name:         String("tst-name-" + randomString(t)),
+		Namespace:    String("tst-namespace-" + randomString(t)),
+		RegistryName: &publicName,
+	}
+	prv, err := client.RegistryProviders.Create(ctx, org.Name, options)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	return prv, func() {
+		if err := client.RegistryProviders.Delete(ctx, org.Name, prv.RegistryName, prv.Namespace, prv.Name); err != nil {
+			t.Errorf("Error destroying registry provider! WARNING: Dangling resources\n"+
+				"may exist! The full error is shown below.\n\n"+
+				"Registry Provider: %s/%s\nError: %s", prv.Namespace, prv.Name, err)
 		}
 
 		if orgCleanup != nil {
