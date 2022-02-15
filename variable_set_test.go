@@ -76,7 +76,7 @@ func TestVariableSetsCreate(t *testing.T) {
 		require.NoError(t, err)
 
 		//Get refreshed view from the API
-		refreshed, err := client.VariableSets.Read(ctx, vs.ID)
+		refreshed, err := client.VariableSets.Read(ctx, vs.ID, VariableSetReadOptions{})
 		require.NoError(t, err)
 
 		for _, item := range []*VariableSet{
@@ -118,13 +118,13 @@ func TestVariableSetsRead(t *testing.T) {
 	defer vsTestCleanup()
 
 	t.Run("when the variable set exists", func(t *testing.T) {
-		vs, err := client.VariableSets.Read(ctx, vsTest.ID)
+		vs, err := client.VariableSets.Read(ctx, vsTest.ID, VariableSetReadOptions{})
 		require.NoError(t, err)
 		assert.Equal(t, vsTest, vs)
 	})
 
 	t.Run("when variable set does not exist", func(t *testing.T) {
-		vs, err := client.VariableSets.Read(ctx, "nonexisting")
+		vs, err := client.VariableSets.Read(ctx, "nonexisting", VariableSetReadOptions{})
 		assert.Nil(t, vs)
 		assert.Error(t, err)
 	})
@@ -183,7 +183,7 @@ func TestVariableSetsDelete(t *testing.T) {
 		require.NoError(t, err)
 
 		// Try loading the variable set - it should fail.
-		_, err = client.VariableSets.Read(ctx, vsTest.ID)
+		_, err = client.VariableSets.Read(ctx, vsTest.ID, VariableSetReadOptions{})
 		assert.Equal(t, ErrResourceNotFound, err)
 	})
 

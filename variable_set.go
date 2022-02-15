@@ -22,7 +22,7 @@ type VariableSets interface {
 	Create(ctx context.Context, organization string, options VariableSetCreateOptions) (*VariableSet, error)
 
 	// Read a variable set by its ID.
-	Read(ctx context.Context, variableSetID string) (*VariableSet, error)
+	Read(ctx context.Context, variableSetVariableSetReadOptionsID string, options VariableSetReadOptions) (*VariableSet, error)
 
 	// Update an existing variable set.
 	Update(ctx context.Context, variableSetID string, options VariableSetUpdateOptions) (*VariableSet, error)
@@ -54,8 +54,18 @@ type VariableSet struct {
 	Variables  []*VariableSetVariable `jsonapi:"relation,vars,omitempty"`
 }
 
+// A list of relations to include. See available resources
+// https://www.terraform.io/docs/cloud/api/admin/organizations.html#available-related-resources
+type VariableSetIncludeOps string
+
+const (
+	VariableSetWorkspaces VariableSetIncludeOps = "workspaces"
+	VariableSetVars       VariableSetIncludeOps = "vars"
+)
+
 type VariableSetListOptions struct {
 	ListOptions
+	Include string `url:"include"`
 }
 
 func (o VariableSetListOptions) valid() error {
@@ -140,14 +150,18 @@ func (s *variableSets) Create(ctx context.Context, organization string, options 
 	return vl, nil
 }
 
+type VariableSetReadOptions struct {
+	Include *[]VariableSetIncludeOps `url:"include:omitempty"`
+}
+
 // Read is used to inspect a given variable set based on ID
-func (s *variableSets) Read(ctx context.Context, variableSetID string) (*VariableSet, error) {
+func (s *variableSets) Read(ctx context.Context, variableSetID string, options VariableSetReadOptions) (*VariableSet, error) {
 	if !validStringID(&variableSetID) {
 		return nil, errors.New("invalid variable set ID")
 	}
 
-	u := fmt.Sprintf("varsets/%s?include=workspaces", url.QueryEscape(variableSetID))
-	req, err := s.client.newRequest("GET", u, nil)
+	u := fmt.Sprintf("varsets/%s", url.QueryEscape(variableSetID))
+	req, err := s.client.newRequest("GET", u, options)
 	if err != nil {
 		return nil, err
 	}
@@ -175,10 +189,12 @@ type VariableSetUpdateOptions struct {
 	Name *string `jsonapi:"attr,name"`
 
 	// A description to provide context for the variable set.
-	Description *string `jsonapi:"attr,description"`
+	Description *string `jsonapi:"attr,description,omitempty"`
 
 	// If true the variable set is considered in all runs in the organization.
-	Global *bool `jsonapi:"attr,global"`
+	Global *bool `jsonapi:"attr,global,omitempty"`
+
+	Include *[]VariableSetIncludeOps `url:"include:omitempty"`
 }
 
 func (s *variableSets) Update(ctx context.Context, variableSetID string, options VariableSetUpdateOptions) (*VariableSet, error) {
@@ -186,7 +202,7 @@ func (s *variableSets) Update(ctx context.Context, variableSetID string, options
 		return nil, errors.New("invalid value for variable set ID")
 	}
 
-	u := fmt.Sprintf("varsets/%s?include=workspaces", url.QueryEscape(variableSetID))
+	u := fmt.Sprintf("varsets/%s", url.QueryEscape(variableSetID))
 	req, err := s.client.newRequest("PATCH", u, &options)
 	if err != nil {
 		return nil, err
@@ -239,7 +255,8 @@ func (s *variableSets) Assign(ctx context.Context, variableSetID string, options
 
 	options.Global = Bool(false)
 
-	u := fmt.Sprintf("varsets/%s?include=workspaces", url.QueryEscape(variableSetID))
+	// We force inclusion of workspaces as that is the primary data for which we are concerned with confirming changes.
+	u := fmt.Sprintf("varsets/%s?include=%s", url.QueryEscape(variableSetID), VariableSetWorkspaces)
 	req, err := s.client.newRequest("PATCH", u, &options)
 	if err != nil {
 		return nil, err
