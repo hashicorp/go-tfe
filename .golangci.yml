@@ -10,6 +10,7 @@ linters:
     - nestif #https://github.com/nakabonne/nestif
     - exportloopref #https://github.com/kyoh86/exportloopref
     - bodyclose #https://github.com/timakin/bodyclose
+    - goconst #https://github.com/jgautheron/goconst
     - errcheck #https://github.com/kisielk/errcheck
     - stylecheck #https://github.com/dominikh/go-tools/tree/master/stylecheck
     - revive #golint is deprecated and golangci-lint recommends to use revive instead https://github.com/mgechev/revive
@@ -25,6 +26,10 @@ linters-settings:
     # https://github.com/kisielk/errcheck#excluding-functions
     check-type-assertions: true
     check-blank: true  
+  goconst:
+    min-len: 20 
+    min-occurrences: 5 
+    ignore-calls: false
   revive:
     # see https://github.com/mgechev/revive#available-rules for details.
     ignore-generated-header: false #recommended in their configuration
