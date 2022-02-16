@@ -81,10 +81,10 @@ type AdminUserListOptions struct {
 	Query string `url:"q,omitempty"`
 
 	// Can be "true" or "false" to show only administrators or non-administrators.
-	Administrators string `url:"filter[admin]"`
+	Administrators string `url:"filter[admin],omitempty"`
 
 	// Can be "true" or "false" to show only suspended users or users who are not suspended.
-	SuspendedUsers string `url:"filter[suspended]"`
+	SuspendedUsers string `url:"filter[suspended],omitempty"`
 
 	Include []AdminUserIncludeOps `url:"include,omitempty"`
 }
