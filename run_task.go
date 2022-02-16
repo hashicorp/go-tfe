@@ -46,7 +46,7 @@ type RunTask struct {
 	Name     string  `jsonapi:"attr,name"`
 	URL      string  `jsonapi:"attr,url"`
 	Category string  `jsonapi:"attr,category"`
-	HmacKey  *string `jsonapi:"attr,hmac-key,omitempty"`
+	HMACKey  *string `jsonapi:"attr,hmac-key,omitempty"`
 
 	Organization      *Organization       `jsonapi:"relation,organization"`
 	WorkspaceRunTasks []*WorkspaceRunTask `jsonapi:"relation,workspace-tasks"`
@@ -76,7 +76,7 @@ type RunTaskCreateOptions struct {
 	Category string `jsonapi:"attr,category"`
 
 	// Optional: An HMAC key to verify the run task
-	HmacKey *string `jsonapi:"attr,hmac-key,omitempty"`
+	HMACKey *string `jsonapi:"attr,hmac-key,omitempty"`
 }
 
 func (o *RunTaskCreateOptions) valid() error {
@@ -207,7 +207,7 @@ type RunTaskUpdateOptions struct {
 	Category *string `jsonapi:"attr,category,omitempty"`
 
 	// Optional: An HMAC key to verify the run task
-	HmacKey *string `jsonapi:"attr,hmac-key,omitempty"`
+	HMACKey *string `jsonapi:"attr,hmac-key,omitempty"`
 }
 
 func (o *RunTaskUpdateOptions) valid() error {

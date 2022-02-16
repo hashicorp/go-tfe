@@ -89,7 +89,7 @@ func TestRunTasksRead(t *testing.T) {
 		assert.Equal(t, runTaskTest.ID, r.ID)
 		assert.Equal(t, runTaskTest.URL, r.URL)
 		assert.Equal(t, runTaskTest.Category, r.Category)
-		assert.Equal(t, runTaskTest.HmacKey, r.HmacKey)
+		assert.Equal(t, runTaskTest.HMACKey, r.HMACKey)
 	})
 
 	t.Run("with options", func(t *testing.T) {
