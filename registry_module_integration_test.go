@@ -77,7 +77,7 @@ func TestRegistryModulesCreate(t *testing.T) {
 			}
 			rm, err := client.RegistryModules.Create(ctx, orgTest.Name, options)
 			assert.Nil(t, rm)
-			assert.EqualError(t, err, "provider is required")
+			assert.Equal(t, err, ErrRequiredProvider)
 		})
 
 		t.Run("with an invalid provider", func(t *testing.T) {
@@ -87,7 +87,7 @@ func TestRegistryModulesCreate(t *testing.T) {
 			}
 			rm, err := client.RegistryModules.Create(ctx, orgTest.Name, options)
 			assert.Nil(t, rm)
-			assert.EqualError(t, err, "invalid value for provider")
+			assert.Equal(t, err, ErrInvalidProvider)
 		})
 	})
 
@@ -141,7 +141,7 @@ func TestRegistryModulesCreateVersion(t *testing.T) {
 			options := RegistryModuleCreateVersionOptions{}
 			rmv, err := client.RegistryModules.CreateVersion(ctx, orgTest.Name, registryModuleTest.Name, registryModuleTest.Provider, options)
 			assert.Nil(t, rmv)
-			assert.EqualError(t, err, "version is required")
+			assert.Equal(t, err, ErrRequiredVersion)
 		})
 
 		t.Run("with invalid version", func(t *testing.T) {
@@ -150,7 +150,7 @@ func TestRegistryModulesCreateVersion(t *testing.T) {
 			}
 			rmv, err := client.RegistryModules.CreateVersion(ctx, orgTest.Name, registryModuleTest.Name, registryModuleTest.Provider, options)
 			assert.Nil(t, rmv)
-			assert.EqualError(t, err, "invalid value for version")
+			assert.Equal(t, err, ErrInvalidVersion)
 		})
 	})
 
@@ -178,7 +178,7 @@ func TestRegistryModulesCreateVersion(t *testing.T) {
 		}
 		rmv, err := client.RegistryModules.CreateVersion(ctx, orgTest.Name, registryModuleTest.Name, "", options)
 		assert.Nil(t, rmv)
-		assert.EqualError(t, err, "provider is required")
+		assert.Equal(t, err, ErrRequiredProvider)
 	})
 
 	t.Run("with an invalid provider", func(t *testing.T) {
@@ -187,7 +187,7 @@ func TestRegistryModulesCreateVersion(t *testing.T) {
 		}
 		rmv, err := client.RegistryModules.CreateVersion(ctx, orgTest.Name, registryModuleTest.Name, badIdentifier, options)
 		assert.Nil(t, rmv)
-		assert.EqualError(t, err, "invalid value for provider")
+		assert.Equal(t, err, ErrInvalidProvider)
 	})
 
 	t.Run("without a valid organization", func(t *testing.T) {
@@ -269,7 +269,7 @@ func TestRegistryModulesCreateWithVCSConnection(t *testing.T) {
 			}
 			rm, err := client.RegistryModules.CreateWithVCSConnection(ctx, options)
 			assert.Nil(t, rm)
-			assert.EqualError(t, err, "identifier is required")
+			assert.Equal(t, err, ErrRequiredIdentifier)
 		})
 
 		t.Run("without an oauth token ID", func(t *testing.T) {
@@ -282,7 +282,7 @@ func TestRegistryModulesCreateWithVCSConnection(t *testing.T) {
 			}
 			rm, err := client.RegistryModules.CreateWithVCSConnection(ctx, options)
 			assert.Nil(t, rm)
-			assert.EqualError(t, err, "oauth token ID is required")
+			assert.Equal(t, err, ErrRequiredOauthTokenID)
 		})
 
 		t.Run("without a display identifier", func(t *testing.T) {
@@ -295,7 +295,7 @@ func TestRegistryModulesCreateWithVCSConnection(t *testing.T) {
 			}
 			rm, err := client.RegistryModules.CreateWithVCSConnection(ctx, options)
 			assert.Nil(t, rm)
-			assert.EqualError(t, err, "display identifier is required")
+			assert.Equal(t, err, ErrRequiredDisplayIdentifier)
 		})
 	})
 
@@ -303,7 +303,7 @@ func TestRegistryModulesCreateWithVCSConnection(t *testing.T) {
 		options := RegistryModuleCreateWithVCSConnectionOptions{}
 		rm, err := client.RegistryModules.CreateWithVCSConnection(ctx, options)
 		assert.Nil(t, rm)
-		assert.EqualError(t, err, "vcs repo is required")
+		assert.Equal(t, err, ErrRequiredVCSRepo)
 	})
 
 }
@@ -350,13 +350,13 @@ func TestRegistryModulesRead(t *testing.T) {
 	t.Run("without a provider", func(t *testing.T) {
 		rm, err := client.RegistryModules.Read(ctx, orgTest.Name, registryModuleTest.Name, "")
 		assert.Nil(t, rm)
-		assert.EqualError(t, err, "provider is required")
+		assert.Equal(t, err, ErrRequiredProvider)
 	})
 
 	t.Run("with an invalid provider", func(t *testing.T) {
 		rm, err := client.RegistryModules.Read(ctx, orgTest.Name, registryModuleTest.Name, badIdentifier)
 		assert.Nil(t, rm)
-		assert.EqualError(t, err, "invalid value for provider")
+		assert.Equal(t, err, ErrInvalidProvider)
 	})
 
 	t.Run("without a valid organization", func(t *testing.T) {
@@ -442,12 +442,12 @@ func TestRegistryModulesDeleteProvider(t *testing.T) {
 
 	t.Run("without a provider", func(t *testing.T) {
 		err := client.RegistryModules.DeleteProvider(ctx, orgTest.Name, registryModuleTest.Name, "")
-		assert.EqualError(t, err, "provider is required")
+		assert.Equal(t, err, ErrRequiredProvider)
 	})
 
 	t.Run("with an invalid provider", func(t *testing.T) {
 		err := client.RegistryModules.DeleteProvider(ctx, orgTest.Name, registryModuleTest.Name, badIdentifier)
-		assert.EqualError(t, err, "invalid value for provider")
+		assert.Equal(t, err, ErrInvalidProvider)
 	})
 
 	t.Run("without a valid organization", func(t *testing.T) {
@@ -508,22 +508,22 @@ func TestRegistryModulesDeleteVersion(t *testing.T) {
 
 	t.Run("without a provider", func(t *testing.T) {
 		err := client.RegistryModules.DeleteVersion(ctx, orgTest.Name, registryModuleTest.Name, "", registryModuleTest.VersionStatuses[0].Version)
-		assert.EqualError(t, err, "provider is required")
+		assert.Equal(t, err, ErrRequiredProvider)
 	})
 
 	t.Run("with an invalid provider", func(t *testing.T) {
 		err := client.RegistryModules.DeleteVersion(ctx, orgTest.Name, registryModuleTest.Name, badIdentifier, registryModuleTest.VersionStatuses[0].Version)
-		assert.EqualError(t, err, "invalid value for provider")
+		assert.Equal(t, err, ErrInvalidProvider)
 	})
 
 	t.Run("without a version", func(t *testing.T) {
 		err := client.RegistryModules.DeleteVersion(ctx, orgTest.Name, registryModuleTest.Name, registryModuleTest.Provider, "")
-		assert.EqualError(t, err, "version is required")
+		assert.Equal(t, err, ErrRequiredVersion)
 	})
 
 	t.Run("with an invalid version", func(t *testing.T) {
 		err := client.RegistryModules.DeleteVersion(ctx, orgTest.Name, registryModuleTest.Name, registryModuleTest.Provider, badIdentifier)
-		assert.EqualError(t, err, "invalid value for version")
+		assert.Equal(t, err, ErrInvalidVersion)
 	})
 
 	t.Run("without a valid organization", func(t *testing.T) {

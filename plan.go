@@ -3,7 +3,6 @@ package tfe
 import (
 	"bytes"
 	"context"
-	"errors"
 	"fmt"
 	"io"
 	"net/url"
@@ -77,7 +76,7 @@ type PlanStatusTimestamps struct {
 // Read a plan by its ID.
 func (s *plans) Read(ctx context.Context, planID string) (*Plan, error) {
 	if !validStringID(&planID) {
-		return nil, errors.New("invalid value for plan ID")
+		return nil, ErrInvalidPlanID
 	}
 
 	u := fmt.Sprintf("plans/%s", url.QueryEscape(planID))
@@ -98,7 +97,7 @@ func (s *plans) Read(ctx context.Context, planID string) (*Plan, error) {
 // Logs retrieves the logs of a plan.
 func (s *plans) Logs(ctx context.Context, planID string) (io.Reader, error) {
 	if !validStringID(&planID) {
-		return nil, errors.New("invalid value for plan ID")
+		return nil, ErrInvalidPlanID
 	}
 
 	// Get the plan to make sure it exists.
@@ -142,7 +141,7 @@ func (s *plans) Logs(ctx context.Context, planID string) (io.Reader, error) {
 // Retrieve the JSON execution plan
 func (s *plans) JSONOutput(ctx context.Context, planID string) ([]byte, error) {
 	if !validStringID(&planID) {
-		return nil, errors.New("invalid value for plan ID")
+		return nil, ErrInvalidPlanID
 	}
 
 	u := fmt.Sprintf("plans/%s/json-output", url.QueryEscape(planID))

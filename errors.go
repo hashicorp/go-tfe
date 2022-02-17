@@ -12,17 +12,25 @@ var (
 	// ErrResourceNotFound is returned when receiving a 404.
 	ErrResourceNotFound = errors.New("resource not found")
 
-	// ErrRequiredName is returned when a name option is not present.
-	ErrRequiredName = errors.New("name is required")
-
-	// ErrInvalidName is returned when the name option has invalid value.
-	ErrInvalidName = errors.New("invalid value for name")
-
 	// ErrMissingDirectory is returned when the path does not have an existing directory.
 	ErrMissingDirectory = errors.New("path needs to be an existing directory")
 )
 
-// Resource Errors
+// Options/fields that cannot be defined
+var (
+	ErrUnsupportedOperations = errors.New("operations is deprecated and cannot be specified when execution mode is used")
+
+	ErrUnsupportedPrivateKey = errors.New("private Key can only be present with Azure DevOps Server service provider")
+)
+
+// internal errors
+var (
+	ErrInvalidRequestBody = errors.New("go-tfe bug: DELETE/PATCH/POST body must be nil, ptr, or ptr slice")
+
+	ErrInvalidStructFormat = errors.New("go-tfe bug: struct can't use both json and jsonapi attributes")
+)
+
+// Run Errors
 var (
 	// ErrWorkspaceLocked is returned when trying to lock a
 	// locked workspace.
@@ -35,25 +43,28 @@ var (
 	// ErrWorkspaceLockedByRun is returned when trying to unlock a
 	// workspace locked by a run
 	ErrWorkspaceLockedByRun = errors.New("unable to unlock workspace locked by run")
+)
 
-	// ErrInvalidWorkspaceID is returned when the workspace ID is invalid.
+// Invalid values for resources/struct fields
+var (
 	ErrInvalidWorkspaceID = errors.New("invalid value for workspace ID")
 
-	// ErrInvalidWorkspaceValue is returned when workspace value is invalid.
 	ErrInvalidWorkspaceValue = errors.New("invalid value for workspace")
 
-	// ErrWorkspacesRequired is returned when the Workspaces are not present.
-	ErrWorkspacesRequired = errors.New("workspaces is required")
+	ErrInvalidTerraformVersionID = errors.New("invalid value for terraform version ID")
 
-	// ErrWorkspaceMinLimit is returned when the length of Workspaces is 0.
-	ErrWorkspaceMinLimit = errors.New("must provide at least one workspace")
+	ErrInvalidTerraformVersionType = errors.New("invalid type for terraform version. Please use 'terraform-version'")
 
-	// ErrMissingTagIdentifier is returned when tag resource identifiers are invalid
-	ErrMissingTagIdentifier = errors.New("must specify at least one tag by ID or name")
+	ErrInvalidConfigVersionID = errors.New("invalid value for configuration version ID")
 
-	// Run/Apply errors
+	ErrInvalidCostEstimateID = errors.New("invalid value for cost estimate ID")
 
-	// ErrInvalidRunID is returned when the run ID is invalid.
+	ErrInvalidSMTPAuth = errors.New("invalid smtp auth type")
+
+	ErrInvalidAgentPoolID = errors.New("invalid value for agent pool ID")
+
+	ErrInvalidAgentTokenID = errors.New("invalid value for agent token ID")
+
 	ErrInvalidRunID = errors.New("invalid value for run ID")
 
 	// Run Task errors
@@ -88,50 +99,154 @@ var (
 	// ErrInvalidApplyID is returned when the apply ID is invalid.
 	ErrInvalidApplyID = errors.New("invalid value for apply ID")
 
-	// Organzation errors
-
-	// ErrInvalidOrg is returned when the organization option has an invalid value.
 	ErrInvalidOrg = errors.New("invalid value for organization")
 
-	// Agent errors
+	ErrInvalidName = errors.New("invalid value for name")
 
-	// ErrInvalidAgentPoolID is returned when the agent pool ID is invalid.
-	ErrInvalidAgentPoolID = errors.New("invalid value for agent pool ID")
+	ErrInvalidNotificationConfigID = errors.New("invalid value for notification configuration ID")
 
-	// ErrInvalidAgentTokenID is returned when the agent toek ID is invalid.
-	ErrInvalidAgentTokenID = errors.New("invalid value for agent token ID")
+	ErrInvalidMembership = errors.New("invalid value for membership")
 
-	// Token errors
+	ErrInvalidMembershipIDs = errors.New("invalid value for organization membership ids")
 
-	// ErrAgentTokenDescription is returned when the description is blank.
-	ErrAgentTokenDescription = errors.New("agent token description can't be blank")
+	ErrInvalidOauthClientID = errors.New("invalid value for OAuth client ID")
 
-	// Config errors
+	ErrInvalidOauthTokenID = errors.New("invalid value for OAuth token ID")
 
-	// ErrInvalidConfigVersionID is returned when the configuration version ID is invalid.
-	ErrInvalidConfigVersionID = errors.New("invalid value for configuration version ID")
+	ErrInvalidPolicySetID = errors.New("invalid value for policy set ID")
 
-	// Cost Esimation Errors
+	ErrInvalidPolicyCheckID = errors.New("invalid value for policy check ID")
 
-	// ErrInvalidCostEstimateID is returned when the cost estimate ID is invalid.
-	ErrInvalidCostEstimateID = errors.New("invalid value for cost estimate ID")
+	ErrInvalidTag = errors.New("invalid tag id")
 
-	// User
+	ErrInvalidPlanExportID = errors.New("invalid value for plan export ID")
 
-	// ErrInvalidUservalue is invalid.
+	ErrInvalidPlanID = errors.New("invalid value for plan ID")
+
+	ErrInvalidParamID = errors.New("invalid value for parameter ID")
+
+	ErrInvalidPolicyID = errors.New("invalid value for policy ID")
+
+	ErrInvalidProvider = errors.New("invalid value for provider")
+
+	ErrInvalidVersion = errors.New("invalid value for version")
+
+	ErrInvalidRunTriggerID = errors.New("invalid value for run trigger ID")
+
+	ErrInvalidSHHKeyID = errors.New("invalid value for SSH key ID")
+
+	ErrInvalidStateVerID = errors.New("invalid value for state version ID")
+
+	ErrInvalidAccessTeamID = errors.New("invalid value for team access ID")
+
+	ErrInvalidTeamID = errors.New("invalid value for team ID")
+
+	ErrInvalidUsernames = errors.New("invalid value for usernames")
+
+	ErrInvalidUserID = errors.New("invalid value for user ID")
+
 	ErrInvalidUserValue = errors.New("invalid value for user")
 
-	// Settings
+	ErrInvalidTokenID = errors.New("invalid value for token ID")
 
-	// ErrInvalidSMTPAuth is returned when the smtp auth type is not valid.
-	ErrInvalidSMTPAuth = errors.New("invalid smtp auth type")
+	ErrInvalidCategory = errors.New("category must be policy-set")
 
-	// Terraform Versions
+	ErrInvalidPolicies = errors.New("must provide at least one policy")
 
-	// ErrInvalidTerraformVersionID is returned when the ID for a terraform
-	// version is invalid.
-	ErrInvalidTerraformVersionID = errors.New("invalid value for terraform version ID")
+	ErrInvalidVariableID = errors.New("invalid value for variable ID")
+)
 
-	// ErrInvalidTerraformVersionType is returned when the type is not valid.
-	ErrInvalidTerraformVersionType = errors.New("invalid type for terraform version. Please use 'terraform-version'")
+// Missing required field/option
+var (
+	ErrRequiredAccess = errors.New("access is required")
+
+	ErrRequiredAgentPoolID = errors.New("'agent' execution mode requires an agent pool ID to be specified")
+
+	ErrRequiredAgentMode = errors.New("specifying an agent pool ID requires 'agent' execution mode")
+
+	ErrRequiredCategory = errors.New("category is required")
+
+	ErrRequiredDestinationType = errors.New("destination type is required")
+
+	ErrRequiredDataType = errors.New("data type is required")
+
+	ErrRequiredKey = errors.New("key is required")
+
+	ErrRequiredName = errors.New("name is required")
+
+	ErrRequiredEnabled = errors.New("enabled is required")
+
+	ErrRequiredEnforce = errors.New("enforce is required")
+
+	ErrRequiredEnforcementPath = errors.New("enforcement path is required")
+
+	ErrRequiredEnforcementMode = errors.New("enforcement mode is required")
+
+	ErrRequiredEmail = errors.New("email is required")
+
+	ErrRequiredM5 = errors.New("MD5 is required")
+
+	ErrRequiredURL = errors.New("url is required")
+
+	ErrRequiredAPIURL = errors.New("API URL is required")
+
+	ErrRequiredHTTPURL = errors.New("HTTP URL is required")
+
+	ErrRequiredServiceProvider = errors.New("service provider is required")
+
+	ErrRequiredProvider = errors.New("provider is required")
+
+	ErrRequiredOauthToken = errors.New("OAuth token is required")
+
+	ErrRequiredOauthTokenID = errors.New("oauth token ID is required")
+
+	ErrMissingTagIdentifier = errors.New("must specify at least one tag by ID or name")
+
+	ErrAgentTokenDescription = errors.New("agent token description can't be blank")
+
+	ErrRequiredTagID = errors.New("you must specify at least one tag id to remove")
+
+	ErrRequiredTagWorkspaceID = errors.New("you must specify at least one workspace to add tag to")
+
+	ErrRequiredWorkspace = errors.New("workspace is required")
+
+	ErrRequiredWorkspaceID = errors.New("workspace ID is required")
+
+	ErrWorkspacesRequired = errors.New("workspaces is required")
+
+	ErrWorkspaceMinLimit = errors.New("must provide at least one workspace")
+
+	ErrRequiredPlan = errors.New("plan is required")
+
+	ErrRequiredPolicies = errors.New("policies is required")
+
+	ErrRequiredVersion = errors.New("version is required")
+
+	ErrRequiredVCSRepo = errors.New("vcs repo is required")
+
+	ErrRequiredIdentifier = errors.New("identifier is required")
+
+	ErrRequiredDisplayIdentifier = errors.New("display identifier is required")
+
+	ErrRequiredSourceable = errors.New("sourceable is required")
+
+	ErrRequiredValue = errors.New("value is required")
+
+	ErrRequiredOrg = errors.New("organization is required")
+
+	ErrRequiredTeam = errors.New("team is required")
+
+	ErrRequiredStateVerListOps = errors.New("StateVersionListOptions is required")
+
+	ErrRequireTeamAccessListOps = errors.New("TeamAccessListOptions is required")
+
+	ErrRequiredSerial = errors.New("serial is required")
+
+	ErrRequiredState = errors.New("state is required")
+
+	ErrRequiredSHHKeyID = errors.New("SSH key ID is required")
+
+	ErrRequiredOnlyOneField = errors.New("only one of usernames or organization membership ids can be provided")
+
+	ErrRequiredUsernameOrMembershipIds = errors.New("usernames or organization membership ids are required")
 )

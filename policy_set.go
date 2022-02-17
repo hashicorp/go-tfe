@@ -2,7 +2,6 @@ package tfe
 
 import (
 	"context"
-	"errors"
 	"fmt"
 	"net/url"
 	"time"
@@ -211,7 +210,7 @@ func (s *policySets) Read(ctx context.Context, policySetID string) (*PolicySet, 
 // ReadWithOptions reads a policy by its ID using the options supplied.
 func (s *policySets) ReadWithOptions(ctx context.Context, policySetID string, options *PolicySetReadOptions) (*PolicySet, error) {
 	if !validStringID(&policySetID) {
-		return nil, errors.New("invalid value for policy set ID")
+		return nil, ErrInvalidPolicySetID
 	}
 
 	u := fmt.Sprintf("policy-sets/%s", url.QueryEscape(policySetID))
@@ -270,7 +269,7 @@ func (o PolicySetUpdateOptions) valid() error {
 // Update an existing policy set.
 func (s *policySets) Update(ctx context.Context, policySetID string, options PolicySetUpdateOptions) (*PolicySet, error) {
 	if !validStringID(&policySetID) {
-		return nil, errors.New("invalid value for policy set ID")
+		return nil, ErrInvalidPolicySetID
 	}
 	if err := options.valid(); err != nil {
 		return nil, err
@@ -300,10 +299,10 @@ type PolicySetAddPoliciesOptions struct {
 
 func (o PolicySetAddPoliciesOptions) valid() error {
 	if o.Policies == nil {
-		return errors.New("policies is required")
+		return ErrRequiredPolicies
 	}
 	if len(o.Policies) == 0 {
-		return errors.New("must provide at least one policy")
+		return ErrInvalidPolicies
 	}
 	return nil
 }
@@ -311,7 +310,7 @@ func (o PolicySetAddPoliciesOptions) valid() error {
 // Add policies to a policy set
 func (s *policySets) AddPolicies(ctx context.Context, policySetID string, options PolicySetAddPoliciesOptions) error {
 	if !validStringID(&policySetID) {
-		return errors.New("invalid value for policy set ID")
+		return ErrInvalidPolicySetID
 	}
 	if err := options.valid(); err != nil {
 		return err
@@ -335,10 +334,10 @@ type PolicySetRemovePoliciesOptions struct {
 
 func (o PolicySetRemovePoliciesOptions) valid() error {
 	if o.Policies == nil {
-		return errors.New("policies is required")
+		return ErrRequiredPolicies
 	}
 	if len(o.Policies) == 0 {
-		return errors.New("must provide at least one policy")
+		return ErrInvalidPolicies
 	}
 	return nil
 }
@@ -346,7 +345,7 @@ func (o PolicySetRemovePoliciesOptions) valid() error {
 // Remove policies from a policy set
 func (s *policySets) RemovePolicies(ctx context.Context, policySetID string, options PolicySetRemovePoliciesOptions) error {
 	if !validStringID(&policySetID) {
-		return errors.New("invalid value for policy set ID")
+		return ErrInvalidPolicySetID
 	}
 	if err := options.valid(); err != nil {
 		return err
@@ -370,10 +369,10 @@ type PolicySetAddWorkspacesOptions struct {
 
 func (o PolicySetAddWorkspacesOptions) valid() error {
 	if o.Workspaces == nil {
-		return errors.New("workspaces is required")
+		return ErrWorkspacesRequired
 	}
 	if len(o.Workspaces) == 0 {
-		return errors.New("must provide at least one workspace")
+		return ErrWorkspaceMinLimit
 	}
 	return nil
 }
@@ -381,7 +380,7 @@ func (o PolicySetAddWorkspacesOptions) valid() error {
 // Add workspaces to a policy set.
 func (s *policySets) AddWorkspaces(ctx context.Context, policySetID string, options PolicySetAddWorkspacesOptions) error {
 	if !validStringID(&policySetID) {
-		return errors.New("invalid value for policy set ID")
+		return ErrInvalidPolicySetID
 	}
 	if err := options.valid(); err != nil {
 		return err
@@ -405,10 +404,10 @@ type PolicySetRemoveWorkspacesOptions struct {
 
 func (o PolicySetRemoveWorkspacesOptions) valid() error {
 	if o.Workspaces == nil {
-		return errors.New("workspaces is required")
+		return ErrWorkspacesRequired
 	}
 	if len(o.Workspaces) == 0 {
-		return errors.New("must provide at least one workspace")
+		return ErrWorkspaceMinLimit
 	}
 	return nil
 }
@@ -416,7 +415,7 @@ func (o PolicySetRemoveWorkspacesOptions) valid() error {
 // Remove workspaces from a policy set.
 func (s *policySets) RemoveWorkspaces(ctx context.Context, policySetID string, options PolicySetRemoveWorkspacesOptions) error {
 	if !validStringID(&policySetID) {
-		return errors.New("invalid value for policy set ID")
+		return ErrInvalidPolicySetID
 	}
 	if err := options.valid(); err != nil {
 		return err
@@ -434,7 +433,7 @@ func (s *policySets) RemoveWorkspaces(ctx context.Context, policySetID string, o
 // Delete a policy set by its ID.
 func (s *policySets) Delete(ctx context.Context, policySetID string) error {
 	if !validStringID(&policySetID) {
-		return errors.New("invalid value for policy set ID")
+		return ErrInvalidPolicySetID
 	}
 
 	u := fmt.Sprintf("policy-sets/%s", url.QueryEscape(policySetID))

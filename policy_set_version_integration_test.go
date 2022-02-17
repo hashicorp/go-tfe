@@ -34,7 +34,7 @@ func TestPolicySetVersionsCreate(t *testing.T) {
 
 	t.Run("with invalid identifier", func(t *testing.T) {
 		_, err := client.PolicySetVersions.Create(ctx, badIdentifier)
-		assert.EqualError(t, err, "invalid value for policy set ID")
+		assert.Equal(t, err, ErrInvalidPolicySetID)
 	})
 }
 

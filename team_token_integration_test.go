@@ -38,7 +38,7 @@ func TestTeamTokensGenerate(t *testing.T) {
 	t.Run("without valid team ID", func(t *testing.T) {
 		tt, err := client.TeamTokens.Generate(ctx, badIdentifier)
 		assert.Nil(t, tt)
-		assert.EqualError(t, err, "invalid value for team ID")
+		assert.Equal(t, err, ErrInvalidTeamID)
 	})
 }
 func TestTeamTokensRead(t *testing.T) {
@@ -96,6 +96,6 @@ func TestTeamTokensDelete(t *testing.T) {
 
 	t.Run("without valid team ID", func(t *testing.T) {
 		err := client.TeamTokens.Delete(ctx, badIdentifier)
-		assert.EqualError(t, err, "invalid value for team ID")
+		assert.Equal(t, err, ErrInvalidTeamID)
 	})
 }

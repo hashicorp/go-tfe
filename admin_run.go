@@ -2,7 +2,6 @@ package tfe
 
 import (
 	"context"
-	"errors"
 	"fmt"
 	"net/url"
 	"strings"
@@ -102,7 +101,7 @@ type AdminRunForceCancelOptions struct {
 // https://www.terraform.io/docs/cloud/api/admin/runs.html#force-a-run-into-the-quot-cancelled-quot-state
 func (s *adminRuns) ForceCancel(ctx context.Context, runID string, options AdminRunForceCancelOptions) error {
 	if !validStringID(&runID) {
-		return errors.New("invalid value for run ID")
+		return ErrInvalidRunID
 	}
 
 	u := fmt.Sprintf("admin/runs/%s/actions/force-cancel", url.QueryEscape(runID))

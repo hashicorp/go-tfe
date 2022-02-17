@@ -2,7 +2,6 @@ package tfe
 
 import (
 	"context"
-	"errors"
 	"fmt"
 	"net/url"
 	"time"
@@ -269,7 +268,7 @@ type RunCreateOptions struct {
 
 func (o RunCreateOptions) valid() error {
 	if o.Workspace == nil {
-		return errors.New("workspace is required")
+		return ErrRequiredWorkspace
 	}
 	return nil
 }

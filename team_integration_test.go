@@ -160,7 +160,7 @@ func TestTeamsRead(t *testing.T) {
 	t.Run("without a valid team ID", func(t *testing.T) {
 		tm, err := client.Teams.Read(ctx, badIdentifier)
 		assert.Nil(t, tm)
-		assert.EqualError(t, err, "invalid value for team ID")
+		assert.Equal(t, err, ErrInvalidTeamID)
 	})
 }
 
@@ -238,7 +238,7 @@ func TestTeamsUpdate(t *testing.T) {
 	t.Run("without a valid team ID", func(t *testing.T) {
 		tm, err := client.Teams.Update(ctx, badIdentifier, TeamUpdateOptions{})
 		assert.Nil(t, tm)
-		assert.EqualError(t, err, "invalid value for team ID")
+		assert.Equal(t, err, ErrInvalidTeamID)
 	})
 }
 
@@ -264,7 +264,7 @@ func TestTeamsDelete(t *testing.T) {
 
 	t.Run("without valid team ID", func(t *testing.T) {
 		err := client.Teams.Delete(ctx, badIdentifier)
-		assert.EqualError(t, err, "invalid value for team ID")
+		assert.Equal(t, err, ErrInvalidTeamID)
 	})
 }
 

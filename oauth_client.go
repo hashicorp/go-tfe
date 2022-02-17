@@ -2,7 +2,6 @@ package tfe
 
 import (
 	"context"
-	"errors"
 	"fmt"
 	"net/url"
 	"time"
@@ -149,19 +148,19 @@ type OAuthClientCreateOptions struct {
 
 func (o OAuthClientCreateOptions) valid() error {
 	if !validString(o.APIURL) {
-		return errors.New("API URL is required")
+		return ErrRequiredAPIURL
 	}
 	if !validString(o.HTTPURL) {
-		return errors.New("HTTP URL is required")
+		return ErrRequiredHTTPURL
 	}
 	if o.ServiceProvider == nil {
-		return errors.New("service provider is required")
+		return ErrRequiredServiceProvider
 	}
 	if !validString(o.OAuthToken) && *o.ServiceProvider != *ServiceProvider(ServiceProviderBitbucketServer) {
-		return errors.New("OAuth token is required")
+		return ErrRequiredOauthToken
 	}
 	if validString(o.PrivateKey) && *o.ServiceProvider != *ServiceProvider(ServiceProviderAzureDevOpsServer) {
-		return errors.New("private Key can only be present with Azure DevOps Server service provider")
+		return ErrUnsupportedPrivateKey
 	}
 	return nil
 }
@@ -193,7 +192,7 @@ func (s *oAuthClients) Create(ctx context.Context, organization string, options 
 // Read an OAuth client by its ID.
 func (s *oAuthClients) Read(ctx context.Context, oAuthClientID string) (*OAuthClient, error) {
 	if !validStringID(&oAuthClientID) {
-		return nil, errors.New("invalid value for OAuth client ID")
+		return nil, ErrInvalidOauthClientID
 	}
 
 	u := fmt.Sprintf("oauth-clients/%s", url.QueryEscape(oAuthClientID))
@@ -239,7 +238,7 @@ type OAuthClientUpdateOptions struct {
 // Update an OAuth client by its ID.
 func (s *oAuthClients) Update(ctx context.Context, oAuthClientID string, options OAuthClientUpdateOptions) (*OAuthClient, error) {
 	if !validStringID(&oAuthClientID) {
-		return nil, errors.New("invalid value for OAuth client ID")
+		return nil, ErrInvalidOauthClientID
 	}
 
 	u := fmt.Sprintf("oauth-clients/%s", url.QueryEscape(oAuthClientID))
@@ -260,7 +259,7 @@ func (s *oAuthClients) Update(ctx context.Context, oAuthClientID string, options
 // Delete an OAuth client by its ID.
 func (s *oAuthClients) Delete(ctx context.Context, oAuthClientID string) error {
 	if !validStringID(&oAuthClientID) {
-		return errors.New("invalid value for OAuth client ID")
+		return ErrInvalidOauthClientID
 	}
 
 	u := fmt.Sprintf("oauth-clients/%s", url.QueryEscape(oAuthClientID))

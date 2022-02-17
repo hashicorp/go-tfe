@@ -127,7 +127,7 @@ func TestOAuthClientsCreate(t *testing.T) {
 		}
 
 		_, err := client.OAuthClients.Create(ctx, orgTest.Name, options)
-		assert.EqualError(t, err, "API URL is required")
+		assert.Equal(t, err, ErrRequiredAPIURL)
 	})
 
 	t.Run("without a HTTP URL", func(t *testing.T) {
@@ -138,7 +138,7 @@ func TestOAuthClientsCreate(t *testing.T) {
 		}
 
 		_, err := client.OAuthClients.Create(ctx, orgTest.Name, options)
-		assert.EqualError(t, err, "HTTP URL is required")
+		assert.Equal(t, err, ErrRequiredHTTPURL)
 	})
 
 	t.Run("without an OAuth token", func(t *testing.T) {
@@ -149,7 +149,7 @@ func TestOAuthClientsCreate(t *testing.T) {
 		}
 
 		_, err := client.OAuthClients.Create(ctx, orgTest.Name, options)
-		assert.EqualError(t, err, "OAuth token is required")
+		assert.Equal(t, err, ErrRequiredOauthToken)
 	})
 
 	t.Run("without a service provider", func(t *testing.T) {
@@ -160,7 +160,7 @@ func TestOAuthClientsCreate(t *testing.T) {
 		}
 
 		_, err := client.OAuthClients.Create(ctx, orgTest.Name, options)
-		assert.EqualError(t, err, "service provider is required")
+		assert.Equal(t, err, ErrRequiredServiceProvider)
 	})
 }
 
@@ -222,7 +222,7 @@ func TestOAuthClientsRead(t *testing.T) {
 	t.Run("without a valid OAuth client ID", func(t *testing.T) {
 		oc, err := client.OAuthClients.Read(ctx, badIdentifier)
 		assert.Nil(t, oc)
-		assert.EqualError(t, err, "invalid value for OAuth client ID")
+		assert.Equal(t, err, ErrInvalidOauthClientID)
 	})
 }
 
@@ -251,7 +251,7 @@ func TestOAuthClientsDelete(t *testing.T) {
 
 	t.Run("when the OAuth client ID is invalid", func(t *testing.T) {
 		err := client.OAuthClients.Delete(ctx, badIdentifier)
-		assert.EqualError(t, err, "invalid value for OAuth client ID")
+		assert.Equal(t, err, ErrInvalidOauthClientID)
 	})
 }
 
@@ -276,7 +276,7 @@ func TestOAuthClientsCreateOptionsValid(t *testing.T) {
 		}
 
 		err := options.valid()
-		assert.EqualError(t, err, "API URL is required")
+		assert.Equal(t, err, ErrRequiredAPIURL)
 	})
 
 	t.Run("without a HTTP URL", func(t *testing.T) {
@@ -287,7 +287,7 @@ func TestOAuthClientsCreateOptionsValid(t *testing.T) {
 		}
 
 		err := options.valid()
-		assert.EqualError(t, err, "HTTP URL is required")
+		assert.Equal(t, err, ErrRequiredHTTPURL)
 	})
 
 	t.Run("without an OAuth token", func(t *testing.T) {
@@ -298,7 +298,7 @@ func TestOAuthClientsCreateOptionsValid(t *testing.T) {
 		}
 
 		err := options.valid()
-		assert.EqualError(t, err, "OAuth token is required")
+		assert.Equal(t, err, ErrRequiredOauthToken)
 	})
 
 	t.Run("without a service provider", func(t *testing.T) {
@@ -309,7 +309,7 @@ func TestOAuthClientsCreateOptionsValid(t *testing.T) {
 		}
 
 		err := options.valid()
-		assert.EqualError(t, err, "service provider is required")
+		assert.Equal(t, err, ErrRequiredServiceProvider)
 	})
 
 	t.Run("without private key and not ado_server options", func(t *testing.T) {
@@ -347,7 +347,7 @@ func TestOAuthClientsCreateOptionsValid(t *testing.T) {
 		}
 
 		err := options.valid()
-		assert.EqualError(t, err, "private Key can only be present with Azure DevOps Server service provider")
+		assert.Equal(t, err, ErrUnsupportedPrivateKey)
 	})
 
 	t.Run("with valid options including private key", func(t *testing.T) {

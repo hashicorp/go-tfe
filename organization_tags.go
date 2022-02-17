@@ -82,7 +82,7 @@ type tagID struct {
 
 func (opts *OrganizationTagsDeleteOptions) valid() error {
 	if opts.IDs == nil || len(opts.IDs) == 0 {
-		return errors.New("you must specify at least one tag id to remove")
+		return ErrRequiredTagID
 	}
 
 	for _, id := range opts.IDs {
@@ -126,7 +126,7 @@ type AddWorkspacesToTagOptions struct {
 
 func (w *AddWorkspacesToTagOptions) valid() error {
 	if w.WorkspaceIDs == nil || len(w.WorkspaceIDs) == 0 {
-		return errors.New("you must specify at least one workspace to add tag to")
+		return ErrRequiredTagWorkspaceID
 	}
 
 	for _, id := range w.WorkspaceIDs {
@@ -147,7 +147,7 @@ type workspaceID struct {
 // Add workspaces to a tag
 func (s *organizationTags) AddWorkspaces(ctx context.Context, tag string, options AddWorkspacesToTagOptions) error {
 	if !validStringID(&tag) {
-		return errors.New("invalid tag id")
+		return ErrInvalidTag
 	}
 
 	if err := options.valid(); err != nil {

@@ -3,7 +3,6 @@ package tfe
 import (
 	"bytes"
 	"context"
-	"errors"
 	"fmt"
 	"net/url"
 	"time"
@@ -140,14 +139,14 @@ func (o PolicyCreateOptions) valid() error {
 		return ErrInvalidName
 	}
 	if o.Enforce == nil {
-		return errors.New("enforce is required")
+		return ErrRequiredEnforce
 	}
 	for _, e := range o.Enforce {
 		if !validString(e.Path) {
-			return errors.New("enforcement path is required")
+			return ErrRequiredEnforcementPath
 		}
 		if e.Mode == nil {
-			return errors.New("enforcement mode is required")
+			return ErrRequiredEnforcementMode
 		}
 	}
 	return nil
@@ -180,7 +179,7 @@ func (s *policies) Create(ctx context.Context, organization string, options Poli
 // Read a policy by its ID.
 func (s *policies) Read(ctx context.Context, policyID string) (*Policy, error) {
 	if !validStringID(&policyID) {
-		return nil, errors.New("invalid value for policy ID")
+		return nil, ErrInvalidPolicyID
 	}
 
 	u := fmt.Sprintf("policies/%s", url.QueryEscape(policyID))
@@ -216,7 +215,7 @@ type PolicyUpdateOptions struct {
 // Update an existing policy.
 func (s *policies) Update(ctx context.Context, policyID string, options PolicyUpdateOptions) (*Policy, error) {
 	if !validStringID(&policyID) {
-		return nil, errors.New("invalid value for policy ID")
+		return nil, ErrInvalidPolicyID
 	}
 
 	u := fmt.Sprintf("policies/%s", url.QueryEscape(policyID))
@@ -237,7 +236,7 @@ func (s *policies) Update(ctx context.Context, policyID string, options PolicyUp
 // Delete a policy by its ID.
 func (s *policies) Delete(ctx context.Context, policyID string) error {
 	if !validStringID(&policyID) {
-		return errors.New("invalid value for policy ID")
+		return ErrInvalidPolicyID
 	}
 
 	u := fmt.Sprintf("policies/%s", url.QueryEscape(policyID))
@@ -252,7 +251,7 @@ func (s *policies) Delete(ctx context.Context, policyID string) error {
 // Upload the policy content of the policy.
 func (s *policies) Upload(ctx context.Context, policyID string, content []byte) error {
 	if !validStringID(&policyID) {
-		return errors.New("invalid value for policy ID")
+		return ErrInvalidPolicyID
 	}
 
 	u := fmt.Sprintf("policies/%s/upload", url.QueryEscape(policyID))
@@ -267,7 +266,7 @@ func (s *policies) Upload(ctx context.Context, policyID string, content []byte) 
 // Download the policy content of the policy.
 func (s *policies) Download(ctx context.Context, policyID string) ([]byte, error) {
 	if !validStringID(&policyID) {
-		return nil, errors.New("invalid value for policy ID")
+		return nil, ErrInvalidPolicyID
 	}
 
 	u := fmt.Sprintf("policies/%s/download", url.QueryEscape(policyID))

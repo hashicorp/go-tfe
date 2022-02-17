@@ -244,7 +244,7 @@ func TestWorkspacesCreate(t *testing.T) {
 
 		w, err := client.Workspaces.Create(ctx, orgTest.Name, options)
 		assert.Nil(t, w)
-		assert.EqualError(t, err, "operations is deprecated and cannot be specified when execution mode is used")
+		assert.Equal(t, err, ErrUnsupportedOperations)
 	})
 
 	t.Run("when an agent pool ID is specified without 'agent' execution mode", func(t *testing.T) {
@@ -255,7 +255,7 @@ func TestWorkspacesCreate(t *testing.T) {
 
 		w, err := client.Workspaces.Create(ctx, orgTest.Name, options)
 		assert.Nil(t, w)
-		assert.EqualError(t, err, "specifying an agent pool ID requires 'agent' execution mode")
+		assert.Equal(t, err, ErrRequiredAgentMode)
 	})
 
 	t.Run("when 'agent' execution mode is specified without an an agent pool ID", func(t *testing.T) {
@@ -266,7 +266,7 @@ func TestWorkspacesCreate(t *testing.T) {
 
 		w, err := client.Workspaces.Create(ctx, orgTest.Name, options)
 		assert.Nil(t, w)
-		assert.EqualError(t, err, "'agent' execution mode requires an agent pool ID to be specified")
+		assert.Equal(t, err, ErrRequiredAgentPoolID)
 	})
 
 	t.Run("when an error is returned from the API", func(t *testing.T) {
@@ -547,7 +547,7 @@ func TestWorkspacesUpdate(t *testing.T) {
 
 		wAfter, err := client.Workspaces.Update(ctx, orgTest.Name, wTest.Name, options)
 		assert.Nil(t, wAfter)
-		assert.EqualError(t, err, "operations is deprecated and cannot be specified when execution mode is used")
+		assert.Equal(t, err, ErrUnsupportedOperations)
 	})
 
 	t.Run("when 'agent' execution mode is specified without an an agent pool ID", func(t *testing.T) {
@@ -557,7 +557,7 @@ func TestWorkspacesUpdate(t *testing.T) {
 
 		wAfter, err := client.Workspaces.Update(ctx, orgTest.Name, wTest.Name, options)
 		assert.Nil(t, wAfter)
-		assert.EqualError(t, err, "'agent' execution mode requires an agent pool ID to be specified")
+		assert.Equal(t, err, ErrRequiredAgentPoolID)
 	})
 
 	t.Run("when an error is returned from the api", func(t *testing.T) {
@@ -887,7 +887,7 @@ func TestWorkspacesAssignSSHKey(t *testing.T) {
 	t.Run("without an SSH key ID", func(t *testing.T) {
 		w, err := client.Workspaces.AssignSSHKey(ctx, wTest.ID, WorkspaceAssignSSHKeyOptions{})
 		assert.Nil(t, w)
-		assert.EqualError(t, err, "SSH key ID is required")
+		assert.Equal(t, err, ErrRequiredSHHKeyID)
 	})
 
 	t.Run("without a valid SSH key ID", func(t *testing.T) {
@@ -895,7 +895,7 @@ func TestWorkspacesAssignSSHKey(t *testing.T) {
 			SSHKeyID: String(badIdentifier),
 		})
 		assert.Nil(t, w)
-		assert.EqualError(t, err, "invalid value for SSH key ID")
+		assert.Equal(t, err, ErrInvalidSHHKeyID)
 	})
 
 	t.Run("without a valid workspace ID", func(t *testing.T) {
