@@ -54,11 +54,19 @@ type RunTrigger struct {
 	Workspace  *Workspace `jsonapi:"relation,workspace"`
 }
 
+// https://www.terraform.io/cloud-docs/api-docs/run-triggers#query-parameters
+type RunTriggerFilterOps string
+
+const (
+	RunTriggerOutbound RunTriggerFilterOps = "outbound"
+	RunTriggerInbound  RunTriggerFilterOps = "inbound"
+)
+
 // RunTriggerListOptions represents the options for listing
 // run triggers.
 type RunTriggerListOptions struct {
 	ListOptions
-	RunTriggerType string `url:"filter[run-trigger][type]"`
+	RunTriggerType RunTriggerFilterOps `url:"filter[run-trigger][type]"`
 }
 
 // List all the run triggers associated with a workspace.
