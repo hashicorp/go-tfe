@@ -2,7 +2,6 @@ package tfe
 
 import (
 	"context"
-	"errors"
 	"fmt"
 	"net/url"
 	"time"
@@ -44,7 +43,7 @@ type TeamToken struct {
 // Generate a new team token, replacing any existing token.
 func (s *teamTokens) Generate(ctx context.Context, teamID string) (*TeamToken, error) {
 	if !validStringID(&teamID) {
-		return nil, errors.New("invalid value for team ID")
+		return nil, ErrInvalidTeamID
 	}
 
 	u := fmt.Sprintf("teams/%s/authentication-token", url.QueryEscape(teamID))
@@ -65,7 +64,7 @@ func (s *teamTokens) Generate(ctx context.Context, teamID string) (*TeamToken, e
 // Read a team token by its ID.
 func (s *teamTokens) Read(ctx context.Context, teamID string) (*TeamToken, error) {
 	if !validStringID(&teamID) {
-		return nil, errors.New("invalid value for team ID")
+		return nil, ErrInvalidTeamID
 	}
 
 	u := fmt.Sprintf("teams/%s/authentication-token", url.QueryEscape(teamID))
@@ -86,7 +85,7 @@ func (s *teamTokens) Read(ctx context.Context, teamID string) (*TeamToken, error
 // Delete a team token by its ID.
 func (s *teamTokens) Delete(ctx context.Context, teamID string) error {
 	if !validStringID(&teamID) {
-		return errors.New("invalid value for team ID")
+		return ErrInvalidTeamID
 	}
 
 	u := fmt.Sprintf("teams/%s/authentication-token", url.QueryEscape(teamID))

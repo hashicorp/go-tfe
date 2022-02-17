@@ -2,7 +2,6 @@ package tfe
 
 import (
 	"context"
-	"errors"
 	"fmt"
 	"net/url"
 	"time"
@@ -183,7 +182,7 @@ func (o OrganizationCreateOptions) valid() error {
 		return ErrInvalidName
 	}
 	if !validString(o.Email) {
-		return errors.New("email is required")
+		return ErrRequiredEmail
 	}
 	return nil
 }

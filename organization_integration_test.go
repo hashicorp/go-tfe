@@ -81,7 +81,7 @@ func TestOrganizationsCreate(t *testing.T) {
 			Name: String("foo"),
 		})
 		assert.Nil(t, org)
-		assert.EqualError(t, err, "email is required")
+		assert.Equal(t, err, ErrRequiredEmail)
 	})
 
 	t.Run("when no name is provided", func(t *testing.T) {

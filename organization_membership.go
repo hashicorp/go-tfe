@@ -2,7 +2,6 @@ package tfe
 
 import (
 	"context"
-	"errors"
 	"fmt"
 	"net/url"
 )
@@ -114,7 +113,7 @@ type OrganizationMembershipCreateOptions struct {
 
 func (o OrganizationMembershipCreateOptions) valid() error {
 	if o.Email == nil {
-		return errors.New("email is required")
+		return ErrRequiredEmail
 	}
 	return nil
 }
@@ -156,7 +155,7 @@ type OrganizationMembershipReadOptions struct {
 // Read an organization membership by ID with options
 func (s *organizationMemberships) ReadWithOptions(ctx context.Context, organizationMembershipID string, options OrganizationMembershipReadOptions) (*OrganizationMembership, error) {
 	if !validStringID(&organizationMembershipID) {
-		return nil, errors.New("invalid value for membership")
+		return nil, ErrInvalidMembership
 	}
 
 	u := fmt.Sprintf("organization-memberships/%s", url.QueryEscape(organizationMembershipID))
@@ -177,7 +176,7 @@ func (s *organizationMemberships) ReadWithOptions(ctx context.Context, organizat
 // Delete an organization membership by its ID.
 func (s *organizationMemberships) Delete(ctx context.Context, organizationMembershipID string) error {
 	if !validStringID(&organizationMembershipID) {
-		return errors.New("invalid value for membership")
+		return ErrInvalidMembership
 	}
 
 	u := fmt.Sprintf("organization-memberships/%s", url.QueryEscape(organizationMembershipID))

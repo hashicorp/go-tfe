@@ -130,7 +130,7 @@ func TestRunTriggerCreate(t *testing.T) {
 
 		rt, err := client.RunTriggers.Create(ctx, wTest.ID, options)
 		assert.Nil(t, rt)
-		assert.EqualError(t, err, "sourceable is required")
+		assert.Equal(t, err, ErrRequiredSourceable)
 	})
 
 	t.Run("without a valid workspace", func(t *testing.T) {
@@ -182,7 +182,7 @@ func TestRunTriggerRead(t *testing.T) {
 
 	t.Run("when the run trigger ID is invalid", func(t *testing.T) {
 		_, err := client.RunTriggers.Read(ctx, badIdentifier)
-		assert.EqualError(t, err, "invalid value for run trigger ID")
+		assert.Equal(t, err, ErrInvalidRunTriggerID)
 	})
 }
 
@@ -217,6 +217,6 @@ func TestRunTriggerDelete(t *testing.T) {
 
 	t.Run("when the run trigger ID is invalid", func(t *testing.T) {
 		err := client.RunTriggers.Delete(ctx, badIdentifier)
-		assert.EqualError(t, err, "invalid value for run trigger ID")
+		assert.Equal(t, err, ErrInvalidRunTriggerID)
 	})
 }

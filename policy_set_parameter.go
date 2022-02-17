@@ -2,7 +2,6 @@ package tfe
 
 import (
 	"context"
-	"errors"
 	"fmt"
 	"net/url"
 )
@@ -62,7 +61,7 @@ type PolicySetParameterListOptions struct {
 // List all the parameters associated with the given policy-set.
 func (s *policySetParameters) List(ctx context.Context, policySetID string, options *PolicySetParameterListOptions) (*PolicySetParameterList, error) {
 	if !validStringID(&policySetID) {
-		return nil, errors.New("invalid value for policy set ID")
+		return nil, ErrInvalidPolicySetID
 	}
 
 	u := fmt.Sprintf("policy-sets/%s/parameters", policySetID)
@@ -103,13 +102,13 @@ type PolicySetParameterCreateOptions struct {
 
 func (o PolicySetParameterCreateOptions) valid() error {
 	if !validString(o.Key) {
-		return errors.New("key is required")
+		return ErrRequiredKey
 	}
 	if o.Category == nil {
-		return errors.New("category is required")
+		return ErrRequiredCategory
 	}
 	if *o.Category != CategoryPolicySet {
-		return errors.New("category must be policy-set")
+		return ErrInvalidCategory
 	}
 	return nil
 }
@@ -117,7 +116,7 @@ func (o PolicySetParameterCreateOptions) valid() error {
 // Create is used to create a new parameter.
 func (s *policySetParameters) Create(ctx context.Context, policySetID string, options PolicySetParameterCreateOptions) (*PolicySetParameter, error) {
 	if !validStringID(&policySetID) {
-		return nil, errors.New("invalid value for policy set ID")
+		return nil, ErrInvalidPolicySetID
 	}
 	if err := options.valid(); err != nil {
 		return nil, err
@@ -141,10 +140,10 @@ func (s *policySetParameters) Create(ctx context.Context, policySetID string, op
 // Read a parameter by its ID.
 func (s *policySetParameters) Read(ctx context.Context, policySetID string, parameterID string) (*PolicySetParameter, error) {
 	if !validStringID(&policySetID) {
-		return nil, errors.New("invalid value for policy set ID")
+		return nil, ErrInvalidPolicySetID
 	}
 	if !validStringID(&parameterID) {
-		return nil, errors.New("invalid value for parameter ID")
+		return nil, ErrInvalidParamID
 	}
 
 	u := fmt.Sprintf("policy-sets/%s/parameters/%s", url.QueryEscape(policySetID), url.QueryEscape(parameterID))
@@ -183,10 +182,10 @@ type PolicySetParameterUpdateOptions struct {
 // Update values of an existing parameter.
 func (s *policySetParameters) Update(ctx context.Context, policySetID string, parameterID string, options PolicySetParameterUpdateOptions) (*PolicySetParameter, error) {
 	if !validStringID(&policySetID) {
-		return nil, errors.New("invalid value for policy set ID")
+		return nil, ErrInvalidPolicySetID
 	}
 	if !validStringID(&parameterID) {
-		return nil, errors.New("invalid value for parameter ID")
+		return nil, ErrInvalidParamID
 	}
 
 	u := fmt.Sprintf("policy-sets/%s/parameters/%s", url.QueryEscape(policySetID), url.QueryEscape(parameterID))
@@ -207,10 +206,10 @@ func (s *policySetParameters) Update(ctx context.Context, policySetID string, pa
 // Delete a parameter by its ID.
 func (s *policySetParameters) Delete(ctx context.Context, policySetID string, parameterID string) error {
 	if !validStringID(&policySetID) {
-		return errors.New("invalid value for policy set ID")
+		return ErrInvalidPolicySetID
 	}
 	if !validStringID(&parameterID) {
-		return errors.New("invalid value for parameter ID")
+		return ErrInvalidParamID
 	}
 
 	u := fmt.Sprintf("policy-sets/%s/parameters/%s", url.QueryEscape(policySetID), url.QueryEscape(parameterID))

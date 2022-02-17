@@ -322,7 +322,7 @@ func TestClient_requestBodySerialization(t *testing.T) {
 	t.Run("invalid struct request", func(t *testing.T) {
 		body := InvalidBody{}
 		_, _, err := createRequest(&body)
-		if err == nil || err.Error() != "go-tfe bug: struct can't use both json and jsonapi attributes" {
+		if err == nil || err != ErrInvalidStructFormat {
 			t.Fatalf("unexpected error: %v", err)
 		}
 	})
