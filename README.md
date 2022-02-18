@@ -16,11 +16,9 @@ documentation and API, the platform will always be stated as 'Terraform
 Enterprise' - but a feature will be explicitly noted as only supported in one or
 the other, if applicable (rare).
 
-## Release Information
+## Version Information
 
-This project uses semantic versioning to convey the impact of released changes.
-
-Since the release of go-tfe 1.0, we don't anticipate releasing any major breaking changes. From time to time, breaking changes that reflect a bug fix may appear as a minor version change. Minor version changes will otherwise indicate new features and enhancements. Patch version changes will be used for bug fixes, performance improvements, and otherwise unimpactful changes.
+Almost always, minor version changes will indicate backwards-compatible features and enhancements. Occasionally, function signature changes that reflect a bug fix may appear as a minor version change. Patch version changes will be used for bug fixes, performance improvements, and otherwise unimpactful changes.
 
 ## Installation
 
