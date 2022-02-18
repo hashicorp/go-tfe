@@ -131,7 +131,7 @@ type StateVersionCreateOptions struct {
 
 	// Force can be set to skip certain validations. Wrong use
 	// of this flag can cause data loss, so USE WITH CAUTION!
-	Force *bool `jsonapi:"attr,force"`
+	Force *bool `jsonapi:"attr,force,omitempty"`
 
 	// Specifies the run to associate the state with.
 	Run *Run `jsonapi:"relation,run,omitempty"`

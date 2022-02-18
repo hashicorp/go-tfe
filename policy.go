@@ -127,7 +127,7 @@ type PolicyCreateOptions struct {
 
 // EnforcementOptions represents the enforcement options of a policy.
 type EnforcementOptions struct {
-	Path *string           `json:"path,omitempty"`
+	Path *string           `json:"path"`
 	Mode *EnforcementLevel `json:"mode"`
 }
 

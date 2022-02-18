@@ -103,7 +103,7 @@ type TeamAccess struct {
 // TeamAccessListOptions represents the options for listing team accesses.
 type TeamAccessListOptions struct {
 	ListOptions
-	WorkspaceID string `url:"filter[workspace][id],omitempty"`
+	WorkspaceID string `url:"filter[workspace][id]"`
 }
 
 //check that workspaceID field has a valid value

@@ -109,7 +109,7 @@ type OAuthTokenUpdateOptions struct {
 	Type string `jsonapi:"primary,oauth-tokens"`
 
 	// A private SSH key to be used for git clone operations.
-	PrivateSSHKey *string `jsonapi:"attr,ssh-key"`
+	PrivateSSHKey *string `jsonapi:"attr,ssh-key,omitempty"`
 }
 
 // Update an existing OAuth token.
