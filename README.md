@@ -16,11 +16,11 @@ documentation and API, the platform will always be stated as 'Terraform
 Enterprise' - but a feature will be explicitly noted as only supported in one or
 the other, if applicable (rare).
 
-Note this client is in beta and is subject to change (though it is generally
-quite stable). We will indicate any breaking changes by releasing new versions.
-Until the release of v1.0, any minor version changes will indicate possible
-breaking changes. Patch version changes will be used for both bugfixes and
-non-breaking changes.
+## Release Information
+
+This project uses semantic versioning to convey the impact of released changes.
+
+Since the release of go-tfe 1.0, we don't anticipate releasing any major breaking changes. From time to time, breaking changes that reflect a bug fix may appear as a minor version change. Minor version changes will otherwise indicate new features and enhancements. Patch version changes will be used for bug fixes, performance improvements, and otherwise unimpactful changes.
 
 ## Installation
 
