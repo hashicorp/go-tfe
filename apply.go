@@ -105,7 +105,7 @@ func (s *applies) Logs(ctx context.Context, applyID string) (io.Reader, error) {
 
 	u, err := url.Parse(a.LogReadURL)
 	if err != nil {
-		return nil, fmt.Errorf("invalid log URL: %v", err)
+		return nil, fmt.Errorf("invalid log URL: %w", err)
 	}
 
 	done := func() (bool, error) {

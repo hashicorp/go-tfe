@@ -135,3 +135,15 @@ var (
 	// ErrInvalidTerraformVersionType is returned when the type is not valid.
 	ErrInvalidTerraformVersionType = errors.New("invalid type for terraform version. Please use 'terraform-version'")
 )
+
+// Library errors that usually indicate a bug in the implementation of go-tfe
+var (
+	// ErrBugItemsSlice is returned when an API response attribute called Items is not a slice
+	ErrBugItemsSlice = errors.New(`model field "Items" must be a slice`)
+
+	// ErrBugRequestBodyType is returned when a request body for DELETE/PATCH/POST is not a reference type
+	ErrBugRequestBodyType = errors.New("go-tfe bug: DELETE/PATCH/POST body must be nil, ptr, or ptr slice")
+
+	// ErrBugStructFieldTags is returned when a mix of json and jsonapi tagged fields are used in the same struct
+	ErrBugStructFieldTags = errors.New("go-tfe bug: struct can't use both json and jsonapi attributes")
+)
