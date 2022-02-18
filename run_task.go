@@ -144,7 +144,7 @@ func (s *runTasks) List(ctx context.Context, organization string, options *RunTa
 	}
 
 	u := fmt.Sprintf("organizations/%s/tasks", url.QueryEscape(organization))
-	req, err := s.client.newRequest("GET", u, &options)
+	req, err := s.client.newRequest("GET", u, options)
 	if err != nil {
 		return nil, err
 	}

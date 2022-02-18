@@ -153,7 +153,7 @@ func (s *example) List(ctx context.Context, organization string, options *Exampl
 	}
 
 	u := fmt.Sprintf("organizations/%s/examples", url.QueryEscape(organization))
-	req, err := s.client.newRequest("GET", u, &options)
+	req, err := s.client.newRequest("GET", u, options)
 	if err != nil {
 		return nil, err
 	}
