@@ -183,7 +183,7 @@ func NewClient(cfg *Config) (*Client, error) {
 	// Parse the address to make sure its a valid URL.
 	baseURL, err := url.Parse(config.Address)
 	if err != nil {
-		return nil, fmt.Errorf("invalid address: %v", err)
+		return nil, fmt.Errorf("invalid address: %w", err)
 	}
 
 	baseURL.Path = config.BasePath
@@ -665,22 +665,22 @@ func unmarshalResponse(responseBody io.Reader, model interface{}) error {
 	items := dst.FieldByName("Items")
 	pagination := dst.FieldByName("Pagination")
 
-	// Unmarshal a single value if v does not contain the
+	// Unmarshal a single value if model does not contain the
 	// Items and Pagination struct fields.
 	if !items.IsValid() || !pagination.IsValid() {
 		return jsonapi.UnmarshalPayload(responseBody, model)
 	}
 
-	// Return an error if v.Items is not a slice.
+	// Return an error if model.Items is not a slice.
 	if items.Type().Kind() != reflect.Slice {
-		return fmt.Errorf("v.Items must be a slice")
+		return ErrItemsMustBeSlice
 	}
 
 	// Create a temporary buffer and copy all the read data into it.
 	body := bytes.NewBuffer(nil)
 	reader := io.TeeReader(responseBody, body)
 
-	// Unmarshal as a list of values as v.Items is a slice.
+	// Unmarshal as a list of values as model.Items is a slice.
 	raw, err := jsonapi.UnmarshalManyPayload(reader, items.Type().Elem())
 	if err != nil {
 		return err

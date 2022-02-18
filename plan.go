@@ -113,7 +113,7 @@ func (s *plans) Logs(ctx context.Context, planID string) (io.Reader, error) {
 
 	u, err := url.Parse(p.LogReadURL)
 	if err != nil {
-		return nil, fmt.Errorf("invalid log URL: %v", err)
+		return nil, fmt.Errorf("invalid log URL: %w", err)
 	}
 
 	done := func() (bool, error) {
