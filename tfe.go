@@ -28,10 +28,10 @@ import (
 )
 
 const (
-	userAgent        = "go-tfe"
-	headerRateLimit  = "X-RateLimit-Limit"
-	headerRateReset  = "X-RateLimit-Reset"
-	headerAPIVersion = "TFP-API-Version"
+	_userAgent        = "go-tfe"
+	_headerRateLimit  = "X-RateLimit-Limit"
+	_headerRateReset  = "X-RateLimit-Reset"
+	_headerAPIVersion = "TFP-API-Version"
 
 	// DefaultAddress of Terraform Enterprise.
 	DefaultAddress = "https://app.terraform.io"
@@ -81,7 +81,7 @@ func DefaultConfig() *Config {
 	}
 
 	// Set the default user agent.
-	config.Headers.Set("User-Agent", userAgent)
+	config.Headers.Set("User-Agent", _userAgent)
 
 	return config
 }
@@ -367,8 +367,8 @@ func rateLimitBackoff(min, max time.Duration, attemptNum int, resp *http.Respons
 	// First create some jitter bounded by the min and max durations.
 	jitter := time.Duration(rnd.Float64() * float64(max-min))
 
-	if resp != nil && resp.Header.Get(headerRateReset) != "" {
-		v := resp.Header.Get(headerRateReset)
+	if resp != nil && resp.Header.Get(_headerRateReset) != "" {
+		v := resp.Header.Get(_headerRateReset)
 		reset, err := strconv.ParseFloat(v, 64)
 		if err != nil {
 			log.Fatal(err)
@@ -421,8 +421,8 @@ func (c *Client) getRawAPIMetadata() (rawAPIMetadata, error) {
 	}
 	resp.Body.Close()
 
-	meta.APIVersion = resp.Header.Get(headerAPIVersion)
-	meta.RateLimit = resp.Header.Get(headerRateLimit)
+	meta.APIVersion = resp.Header.Get(_headerAPIVersion)
+	meta.RateLimit = resp.Header.Get(_headerRateLimit)
 
 	return meta, nil
 }
