@@ -257,7 +257,11 @@ func (r *registryModules) CreateVersion(ctx context.Context, organization string
 
 // RegistryModuleCreateWithVCSConnectionOptions is used when creating a registry module with a VCS repo
 type RegistryModuleCreateWithVCSConnectionOptions struct {
-	ID string `jsonapi:"primary,registry-modules"`
+	// Type is a public field utilized by JSON:API to
+	// set the resource type via the field tag.
+	// It is not a user-defined value and does not need to be set.
+	// https://jsonapi.org/format/#crud-creating
+	Type string `jsonapi:"primary,registry-modules"`
 
 	// VCS repository information
 	VCSRepo *RegistryModuleVCSRepoOptions `jsonapi:"attr,vcs-repo"`
@@ -294,9 +298,6 @@ func (r *registryModules) CreateWithVCSConnection(ctx context.Context, options R
 	if err := options.valid(); err != nil {
 		return nil, err
 	}
-
-	// Make sure we don't send a user provided ID.
-	options.ID = ""
 
 	req, err := r.client.newRequest("POST", "registry-modules", &options)
 	if err != nil {
