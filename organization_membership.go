@@ -63,6 +63,18 @@ type OrganizationMembership struct {
 	Teams        []*Team       `jsonapi:"relation,teams"`
 }
 
+// OrganizationMembershipCreateOptions represents the options for creating an organization membership.
+type OrganizationMembershipCreateOptions struct {
+	// Type is a public field utilized by JSON:API to
+	// set the resource type via the field tag.
+	// It is not a user-defined value and does not need to be set.
+	// https://jsonapi.org/format/#crud-creating
+	Type string `jsonapi:"primary,organization-memberships"`
+
+	// User's email address.
+	Email *string `jsonapi:"attr,email"`
+}
+
 // https://www.terraform.io/cloud-docs/api-docs/organization-memberships#available-related-resources
 type OrganizationMembershipIncludeOps string
 
@@ -97,25 +109,6 @@ func (s *organizationMemberships) List(ctx context.Context, organization string,
 	}
 
 	return ml, nil
-}
-
-// OrganizationMembershipCreateOptions represents the options for creating an organization membership.
-type OrganizationMembershipCreateOptions struct {
-	// Type is a public field utilized by JSON:API to
-	// set the resource type via the field tag.
-	// It is not a user-defined value and does not need to be set.
-	// https://jsonapi.org/format/#crud-creating
-	Type string `jsonapi:"primary,organization-memberships"`
-
-	// User's email address.
-	Email *string `jsonapi:"attr,email"`
-}
-
-func (o OrganizationMembershipCreateOptions) valid() error {
-	if o.Email == nil {
-		return ErrRequiredEmail
-	}
-	return nil
 }
 
 // Create an organization membership with the given options.
@@ -186,4 +179,11 @@ func (s *organizationMemberships) Delete(ctx context.Context, organizationMember
 	}
 
 	return s.client.do(ctx, req, nil)
+}
+
+func (o OrganizationMembershipCreateOptions) valid() error {
+	if o.Email == nil {
+		return ErrRequiredEmail
+	}
+	return nil
 }

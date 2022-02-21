@@ -86,27 +86,6 @@ type TeamListOptions struct {
 	Include []TeamIncludeOps `url:"include,omitempty"`
 }
 
-// List all the teams of the given organization.
-func (s *teams) List(ctx context.Context, organization string, options *TeamListOptions) (*TeamList, error) {
-	if !validStringID(&organization) {
-		return nil, ErrInvalidOrg
-	}
-
-	u := fmt.Sprintf("organizations/%s/teams", url.QueryEscape(organization))
-	req, err := s.client.newRequest("GET", u, options)
-	if err != nil {
-		return nil, err
-	}
-
-	tl := &TeamList{}
-	err = s.client.do(ctx, req, tl)
-	if err != nil {
-		return nil, err
-	}
-
-	return tl, nil
-}
-
 // TeamCreateOptions represents the options for creating a team.
 type TeamCreateOptions struct {
 	// Type is a public field utilized by JSON:API to
@@ -135,11 +114,43 @@ type OrganizationAccessOptions struct {
 	ManageModules         *bool `json:"manage-modules,omitempty"`
 }
 
-func (o TeamCreateOptions) valid() error {
-	if !validString(o.Name) {
-		return ErrRequiredName
+// TeamUpdateOptions represents the options for updating a team.
+type TeamUpdateOptions struct {
+	// Type is a public field utilized by JSON:API to
+	// set the resource type via the field tag.
+	// It is not a user-defined value and does not need to be set.
+	// https://jsonapi.org/format/#crud-creating
+	Type string `jsonapi:"primary,teams"`
+
+	// New name for the team
+	Name *string `jsonapi:"attr,name,omitempty"`
+
+	// The team's organization access
+	OrganizationAccess *OrganizationAccessOptions `jsonapi:"attr,organization-access,omitempty"`
+
+	// The team's visibility ("secret", "organization")
+	Visibility *string `jsonapi:"attr,visibility,omitempty"`
+}
+
+// List all the teams of the given organization.
+func (s *teams) List(ctx context.Context, organization string, options *TeamListOptions) (*TeamList, error) {
+	if !validStringID(&organization) {
+		return nil, ErrInvalidOrg
 	}
-	return nil
+
+	u := fmt.Sprintf("organizations/%s/teams", url.QueryEscape(organization))
+	req, err := s.client.newRequest("GET", u, options)
+	if err != nil {
+		return nil, err
+	}
+
+	tl := &TeamList{}
+	err = s.client.do(ctx, req, tl)
+	if err != nil {
+		return nil, err
+	}
+
+	return tl, nil
 }
 
 // Create a new team with the given options.
@@ -187,24 +198,6 @@ func (s *teams) Read(ctx context.Context, teamID string) (*Team, error) {
 	return t, nil
 }
 
-// TeamUpdateOptions represents the options for updating a team.
-type TeamUpdateOptions struct {
-	// Type is a public field utilized by JSON:API to
-	// set the resource type via the field tag.
-	// It is not a user-defined value and does not need to be set.
-	// https://jsonapi.org/format/#crud-creating
-	Type string `jsonapi:"primary,teams"`
-
-	// New name for the team
-	Name *string `jsonapi:"attr,name,omitempty"`
-
-	// The team's organization access
-	OrganizationAccess *OrganizationAccessOptions `jsonapi:"attr,organization-access,omitempty"`
-
-	// The team's visibility ("secret", "organization")
-	Visibility *string `jsonapi:"attr,visibility,omitempty"`
-}
-
 // Update a team by its ID.
 func (s *teams) Update(ctx context.Context, teamID string, options TeamUpdateOptions) (*Team, error) {
 	if !validStringID(&teamID) {
@@ -239,4 +232,11 @@ func (s *teams) Delete(ctx context.Context, teamID string) error {
 	}
 
 	return s.client.do(ctx, req, nil)
+}
+
+func (o TeamCreateOptions) valid() error {
+	if !validString(o.Name) {
+		return ErrRequiredName
+	}
+	return nil
 }

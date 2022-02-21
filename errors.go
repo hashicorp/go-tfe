@@ -103,6 +103,8 @@ var (
 
 	ErrInvalidRunTriggerID = errors.New("invalid value for run trigger ID")
 
+	ErrInvalidRunTriggerType = errors.New(`invalid value for RunTriggerType. It must be either "inbound" or "outbound"`)
+
 	ErrInvalidSHHKeyID = errors.New("invalid value for SSH key ID")
 
 	ErrInvalidStateVerID = errors.New("invalid value for state version ID")
@@ -170,6 +172,8 @@ var (
 
 	ErrRequiredOauthTokenID = errors.New("oauth token ID is required")
 
+	ErrRequiredTestNumber = errors.New("TestNumber is required")
+
 	ErrMissingTagIdentifier = errors.New("must specify at least one tag by ID or name")
 
 	ErrAgentTokenDescription = errors.New("agent token description can't be blank")
@@ -198,6 +202,8 @@ var (
 
 	ErrRequiredDisplayIdentifier = errors.New("display identifier is required")
 
+	ErrRequiredSha = errors.New("sha is required")
+
 	ErrRequiredSourceable = errors.New("sourceable is required")
 
 	ErrRequiredValue = errors.New("value is required")
@@ -206,9 +212,15 @@ var (
 
 	ErrRequiredTeam = errors.New("team is required")
 
+	ErrRequiredAdminRunListOps = errors.New("ErrRequiredAdminRunListOps is required")
+
 	ErrRequiredStateVerListOps = errors.New("StateVersionListOptions is required")
 
-	ErrRequireTeamAccessListOps = errors.New("TeamAccessListOptions is required")
+	ErrRequiredTeamAccessListOps = errors.New("TeamAccessListOptions is required")
+
+	ErrRequiredRunTriggerListOps = errors.New("RunTriggerListOptions is required")
+
+	ErrRequiredTFVerCreateOps = errors.New("version, URL and sha is required for AdminTerraformVersionCreateOptions")
 
 	ErrRequiredSerial = errors.New("serial is required")
 

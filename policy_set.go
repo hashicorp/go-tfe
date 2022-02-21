@@ -87,35 +87,6 @@ type PolicySet struct {
 	CurrentVersion *PolicySetVersion `jsonapi:"relation,current-version"`
 }
 
-// PolicySetListOptions represents the options for listing policy sets.
-type PolicySetListOptions struct {
-	ListOptions
-
-	// A search string (partial policy set name) used to filter the results.
-	Search string `url:"search[name],omitempty"`
-}
-
-// List all the policies for a given organization.
-func (s *policySets) List(ctx context.Context, organization string, options *PolicySetListOptions) (*PolicySetList, error) {
-	if !validStringID(&organization) {
-		return nil, ErrInvalidOrg
-	}
-
-	u := fmt.Sprintf("organizations/%s/policy-sets", url.QueryEscape(organization))
-	req, err := s.client.newRequest("GET", u, options)
-	if err != nil {
-		return nil, err
-	}
-
-	psl := &PolicySetList{}
-	err = s.client.do(ctx, req, psl)
-	if err != nil {
-		return nil, err
-	}
-
-	return psl, nil
-}
-
 // PolicySetCreateOptions represents the options for creating a new policy set.
 type PolicySetCreateOptions struct {
 	// Type is a public field utilized by JSON:API to
@@ -151,41 +122,6 @@ type PolicySetCreateOptions struct {
 	// The initial list of workspaces for which the policy set should be enforced.
 	Workspaces []*Workspace `jsonapi:"relation,workspaces,omitempty"`
 }
-
-func (o PolicySetCreateOptions) valid() error {
-	if !validString(o.Name) {
-		return ErrRequiredName
-	}
-	if !validStringID(o.Name) {
-		return ErrInvalidName
-	}
-	return nil
-}
-
-// Create a policy set and associate it with an organization.
-func (s *policySets) Create(ctx context.Context, organization string, options PolicySetCreateOptions) (*PolicySet, error) {
-	if !validStringID(&organization) {
-		return nil, ErrInvalidOrg
-	}
-	if err := options.valid(); err != nil {
-		return nil, err
-	}
-
-	u := fmt.Sprintf("organizations/%s/policy-sets", url.QueryEscape(organization))
-	req, err := s.client.newRequest("POST", u, &options)
-	if err != nil {
-		return nil, err
-	}
-
-	ps := &PolicySet{}
-	err = s.client.do(ctx, req, ps)
-	if err != nil {
-		return nil, err
-	}
-
-	return ps, err
-}
-
 type PolicySetIncludeOps string
 
 const (
@@ -200,32 +136,6 @@ const (
 // https://www.terraform.io/docs/cloud/api/policy-sets.html#relationships
 type PolicySetReadOptions struct {
 	Include []PolicySetIncludeOps `url:"include,omitempty"`
-}
-
-// Read a policy set by its ID.
-func (s *policySets) Read(ctx context.Context, policySetID string) (*PolicySet, error) {
-	return s.ReadWithOptions(ctx, policySetID, nil)
-}
-
-// ReadWithOptions reads a policy by its ID using the options supplied.
-func (s *policySets) ReadWithOptions(ctx context.Context, policySetID string, options *PolicySetReadOptions) (*PolicySet, error) {
-	if !validStringID(&policySetID) {
-		return nil, ErrInvalidPolicySetID
-	}
-
-	u := fmt.Sprintf("policy-sets/%s", url.QueryEscape(policySetID))
-	req, err := s.client.newRequest("GET", u, options)
-	if err != nil {
-		return nil, err
-	}
-
-	ps := &PolicySet{}
-	err = s.client.do(ctx, req, ps)
-	if err != nil {
-		return nil, err
-	}
-
-	return ps, err
 }
 
 // PolicySetUpdateOptions represents the options for updating a policy set.
@@ -259,11 +169,111 @@ type PolicySetUpdateOptions struct {
 	VCSRepo *VCSRepoOptions `jsonapi:"attr,vcs-repo,omitempty"`
 }
 
-func (o PolicySetUpdateOptions) valid() error {
-	if o.Name != nil && !validStringID(o.Name) {
-		return ErrInvalidName
+// PolicySetAddPoliciesOptions represents the options for adding policies
+// to a policy set.
+type PolicySetAddPoliciesOptions struct {
+	/// The policies to add to the policy set.
+	Policies []*Policy
+}
+
+// PolicySetRemovePoliciesOptions represents the options for removing
+// policies from a policy set.
+type PolicySetRemovePoliciesOptions struct {
+	/// The policies to remove from the policy set.
+	Policies []*Policy
+}
+
+// PolicySetAddWorkspacesOptions represents the options for adding workspaces
+// to a policy set.
+type PolicySetAddWorkspacesOptions struct {
+	/// The workspaces to add to the policy set.
+	Workspaces []*Workspace
+}
+
+// PolicySetRemoveWorkspacesOptions represents the options for removing
+// workspaces from a policy set.
+type PolicySetRemoveWorkspacesOptions struct {
+	/// The workspaces to remove from the policy set.
+	Workspaces []*Workspace
+}
+
+// PolicySetListOptions represents the options for listing policy sets.
+type PolicySetListOptions struct {
+	ListOptions
+
+	// A search string (partial policy set name) used to filter the results.
+	Search string `url:"search[name],omitempty"`
+}
+
+// List all the policies for a given organization.
+func (s *policySets) List(ctx context.Context, organization string, options *PolicySetListOptions) (*PolicySetList, error) {
+	if !validStringID(&organization) {
+		return nil, ErrInvalidOrg
 	}
-	return nil
+
+	u := fmt.Sprintf("organizations/%s/policy-sets", url.QueryEscape(organization))
+	req, err := s.client.newRequest("GET", u, options)
+	if err != nil {
+		return nil, err
+	}
+
+	psl := &PolicySetList{}
+	err = s.client.do(ctx, req, psl)
+	if err != nil {
+		return nil, err
+	}
+
+	return psl, nil
+}
+
+// Create a policy set and associate it with an organization.
+func (s *policySets) Create(ctx context.Context, organization string, options PolicySetCreateOptions) (*PolicySet, error) {
+	if !validStringID(&organization) {
+		return nil, ErrInvalidOrg
+	}
+	if err := options.valid(); err != nil {
+		return nil, err
+	}
+
+	u := fmt.Sprintf("organizations/%s/policy-sets", url.QueryEscape(organization))
+	req, err := s.client.newRequest("POST", u, &options)
+	if err != nil {
+		return nil, err
+	}
+
+	ps := &PolicySet{}
+	err = s.client.do(ctx, req, ps)
+	if err != nil {
+		return nil, err
+	}
+
+	return ps, err
+}
+
+// Read a policy set by its ID.
+func (s *policySets) Read(ctx context.Context, policySetID string) (*PolicySet, error) {
+	return s.ReadWithOptions(ctx, policySetID, nil)
+}
+
+// ReadWithOptions reads a policy by its ID using the options supplied.
+func (s *policySets) ReadWithOptions(ctx context.Context, policySetID string, options *PolicySetReadOptions) (*PolicySet, error) {
+	if !validStringID(&policySetID) {
+		return nil, ErrInvalidPolicySetID
+	}
+
+	u := fmt.Sprintf("policy-sets/%s", url.QueryEscape(policySetID))
+	req, err := s.client.newRequest("GET", u, options)
+	if err != nil {
+		return nil, err
+	}
+
+	ps := &PolicySet{}
+	err = s.client.do(ctx, req, ps)
+	if err != nil {
+		return nil, err
+	}
+
+	return ps, err
 }
 
 // Update an existing policy set.
@@ -290,23 +300,6 @@ func (s *policySets) Update(ctx context.Context, policySetID string, options Pol
 	return ps, err
 }
 
-// PolicySetAddPoliciesOptions represents the options for adding policies
-// to a policy set.
-type PolicySetAddPoliciesOptions struct {
-	/// The policies to add to the policy set.
-	Policies []*Policy
-}
-
-func (o PolicySetAddPoliciesOptions) valid() error {
-	if o.Policies == nil {
-		return ErrRequiredPolicies
-	}
-	if len(o.Policies) == 0 {
-		return ErrInvalidPolicies
-	}
-	return nil
-}
-
 // Add policies to a policy set
 func (s *policySets) AddPolicies(ctx context.Context, policySetID string, options PolicySetAddPoliciesOptions) error {
 	if !validStringID(&policySetID) {
@@ -323,23 +316,6 @@ func (s *policySets) AddPolicies(ctx context.Context, policySetID string, option
 	}
 
 	return s.client.do(ctx, req, nil)
-}
-
-// PolicySetRemovePoliciesOptions represents the options for removing
-// policies from a policy set.
-type PolicySetRemovePoliciesOptions struct {
-	/// The policies to remove from the policy set.
-	Policies []*Policy
-}
-
-func (o PolicySetRemovePoliciesOptions) valid() error {
-	if o.Policies == nil {
-		return ErrRequiredPolicies
-	}
-	if len(o.Policies) == 0 {
-		return ErrInvalidPolicies
-	}
-	return nil
 }
 
 // Remove policies from a policy set
@@ -360,23 +336,6 @@ func (s *policySets) RemovePolicies(ctx context.Context, policySetID string, opt
 	return s.client.do(ctx, req, nil)
 }
 
-// PolicySetAddWorkspacesOptions represents the options for adding workspaces
-// to a policy set.
-type PolicySetAddWorkspacesOptions struct {
-	/// The workspaces to add to the policy set.
-	Workspaces []*Workspace
-}
-
-func (o PolicySetAddWorkspacesOptions) valid() error {
-	if o.Workspaces == nil {
-		return ErrWorkspacesRequired
-	}
-	if len(o.Workspaces) == 0 {
-		return ErrWorkspaceMinLimit
-	}
-	return nil
-}
-
 // Add workspaces to a policy set.
 func (s *policySets) AddWorkspaces(ctx context.Context, policySetID string, options PolicySetAddWorkspacesOptions) error {
 	if !validStringID(&policySetID) {
@@ -393,23 +352,6 @@ func (s *policySets) AddWorkspaces(ctx context.Context, policySetID string, opti
 	}
 
 	return s.client.do(ctx, req, nil)
-}
-
-// PolicySetRemoveWorkspacesOptions represents the options for removing
-// workspaces from a policy set.
-type PolicySetRemoveWorkspacesOptions struct {
-	/// The workspaces to remove from the policy set.
-	Workspaces []*Workspace
-}
-
-func (o PolicySetRemoveWorkspacesOptions) valid() error {
-	if o.Workspaces == nil {
-		return ErrWorkspacesRequired
-	}
-	if len(o.Workspaces) == 0 {
-		return ErrWorkspaceMinLimit
-	}
-	return nil
 }
 
 // Remove workspaces from a policy set.
@@ -443,4 +385,61 @@ func (s *policySets) Delete(ctx context.Context, policySetID string) error {
 	}
 
 	return s.client.do(ctx, req, nil)
+}
+
+func (o PolicySetCreateOptions) valid() error {
+	if !validString(o.Name) {
+		return ErrRequiredName
+	}
+	if !validStringID(o.Name) {
+		return ErrInvalidName
+	}
+	return nil
+}
+
+func (o PolicySetUpdateOptions) valid() error {
+	if o.Name != nil && !validStringID(o.Name) {
+		return ErrInvalidName
+	}
+	return nil
+}
+
+func (o PolicySetAddPoliciesOptions) valid() error {
+	if o.Policies == nil {
+		return ErrRequiredPolicies
+	}
+	if len(o.Policies) == 0 {
+		return ErrInvalidPolicies
+	}
+	return nil
+}
+
+func (o PolicySetRemovePoliciesOptions) valid() error {
+	if o.Policies == nil {
+		return ErrRequiredPolicies
+	}
+	if len(o.Policies) == 0 {
+		return ErrInvalidPolicies
+	}
+	return nil
+}
+
+func (o PolicySetAddWorkspacesOptions) valid() error {
+	if o.Workspaces == nil {
+		return ErrWorkspacesRequired
+	}
+	if len(o.Workspaces) == 0 {
+		return ErrWorkspaceMinLimit
+	}
+	return nil
+}
+
+func (o PolicySetRemoveWorkspacesOptions) valid() error {
+	if o.Workspaces == nil {
+		return ErrWorkspacesRequired
+	}
+	if len(o.Workspaces) == 0 {
+		return ErrWorkspaceMinLimit
+	}
+	return nil
 }

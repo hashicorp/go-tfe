@@ -81,10 +81,20 @@ type AdminTwilioSettingsVerifyOptions struct {
 
 // Verify verifies Twilio settings.
 func (a *adminTwilioSettings) Verify(ctx context.Context, options AdminTwilioSettingsVerifyOptions) error {
+	if err := options.valid(); err != nil {
+		return err
+	}
 	req, err := a.client.newRequest("PATCH", "admin/twilio-settings/verify", &options)
 	if err != nil {
 		return err
 	}
 
 	return a.client.do(ctx, req, nil)
+}
+
+func (o AdminTwilioSettingsVerifyOptions) valid() error {
+	if !validString(o.TestNumber) {
+		return ErrRequiredTestNumber
+	}
+	return nil
 }

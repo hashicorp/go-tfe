@@ -87,16 +87,6 @@ type PlanExportCreateOptions struct {
 	DataType *PlanExportDataType `jsonapi:"attr,data-type"`
 }
 
-func (o PlanExportCreateOptions) valid() error {
-	if o.Plan == nil {
-		return ErrRequiredPlan
-	}
-	if o.DataType == nil {
-		return ErrRequiredDataType
-	}
-	return nil
-}
-
 func (s *planExports) Create(ctx context.Context, options PlanExportCreateOptions) (*PlanExport, error) {
 	if err := options.valid(); err != nil {
 		return nil, err
@@ -171,4 +161,14 @@ func (s *planExports) Download(ctx context.Context, planExportID string) ([]byte
 	}
 
 	return buf.Bytes(), nil
+}
+
+func (o PlanExportCreateOptions) valid() error {
+	if o.Plan == nil {
+		return ErrRequiredPlan
+	}
+	if o.DataType == nil {
+		return ErrRequiredDataType
+	}
+	return nil
 }

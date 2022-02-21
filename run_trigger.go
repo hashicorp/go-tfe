@@ -68,10 +68,26 @@ type RunTriggerListOptions struct {
 	RunTriggerType RunTriggerFilterOps `url:"filter[run-trigger][type]"`
 }
 
+// RunTriggerCreateOptions represents the options for
+// creating a new run trigger.
+type RunTriggerCreateOptions struct {
+	// Type is a public field utilized by JSON:API to
+	// set the resource type via the field tag.
+	// It is not a user-defined value and does not need to be set.
+	// https://jsonapi.org/format/#crud-creating
+	Type string `jsonapi:"primary,run-triggers"`
+
+	// The source workspace
+	Sourceable *Workspace `jsonapi:"relation,sourceable"`
+}
+
 // List all the run triggers associated with a workspace.
 func (s *runTriggers) List(ctx context.Context, workspaceID string, options *RunTriggerListOptions) (*RunTriggerList, error) {
 	if !validStringID(&workspaceID) {
 		return nil, ErrInvalidWorkspaceID
+	}
+	if err := options.valid(); err != nil {
+		return nil, err
 	}
 
 	u := fmt.Sprintf("workspaces/%s/run-triggers", url.QueryEscape(workspaceID))
@@ -87,26 +103,6 @@ func (s *runTriggers) List(ctx context.Context, workspaceID string, options *Run
 	}
 
 	return rtl, nil
-}
-
-// RunTriggerCreateOptions represents the options for
-// creating a new run trigger.
-type RunTriggerCreateOptions struct {
-	// Type is a public field utilized by JSON:API to
-	// set the resource type via the field tag.
-	// It is not a user-defined value and does not need to be set.
-	// https://jsonapi.org/format/#crud-creating
-	Type string `jsonapi:"primary,run-triggers"`
-
-	// The source workspace
-	Sourceable *Workspace `jsonapi:"relation,sourceable"`
-}
-
-func (o RunTriggerCreateOptions) valid() error {
-	if o.Sourceable == nil {
-		return ErrRequiredSourceable
-	}
-	return nil
 }
 
 // Creates a run trigger with the given options.
@@ -167,4 +163,21 @@ func (s *runTriggers) Delete(ctx context.Context, runTriggerID string) error {
 	}
 
 	return s.client.do(ctx, req, nil)
+}
+
+func (o RunTriggerCreateOptions) valid() error {
+	if o.Sourceable == nil {
+		return ErrRequiredSourceable
+	}
+	return nil
+}
+
+func (o *RunTriggerListOptions) valid() error {
+	if o == nil {
+		return ErrRequiredRunTriggerListOps
+	}
+	if (o.RunTriggerType != RunTriggerInbound) && (o.RunTriggerType != RunTriggerOutbound) {
+		return ErrInvalidRunTriggerType
+	}
+	return nil
 }

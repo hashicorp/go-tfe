@@ -102,29 +102,6 @@ type RegistryModuleVersion struct {
 	// Links
 	Links map[string]interface{} `jsonapi:"links,omitempty"`
 }
-
-// Upload uploads Terraform configuration files for the provided registry module version. It
-// requires a path to the configuration files on disk, which will be packaged by
-// hashicorp/go-slug before being uploaded.
-func (r *registryModules) Upload(ctx context.Context, rmv RegistryModuleVersion, path string) error {
-	uploadURL, ok := rmv.Links["upload"].(string)
-	if !ok {
-		return fmt.Errorf("provided RegistryModuleVersion does not contain an upload link")
-	}
-
-	body, err := packContents(path)
-	if err != nil {
-		return err
-	}
-
-	req, err := r.client.newRequest("PUT", uploadURL, body)
-	if err != nil {
-		return err
-	}
-
-	return r.client.do(ctx, req, nil)
-}
-
 type RegistryModulePermissions struct {
 	CanDelete bool `jsonapi:"attr,can-delete"`
 	CanResync bool `jsonapi:"attr,can-resync"`
@@ -149,20 +126,51 @@ type RegistryModuleCreateOptions struct {
 	Provider *string `jsonapi:"attr,provider"`
 }
 
-func (o RegistryModuleCreateOptions) valid() error {
-	if !validString(o.Name) {
-		return ErrRequiredName
+// RegistryModuleCreateVersionOptions is used when creating a registry module version
+type RegistryModuleCreateVersionOptions struct {
+	// Type is a public field utilized by JSON:API to
+	// set the resource type via the field tag.
+	// It is not a user-defined value and does not need to be set.
+	// https://jsonapi.org/format/#crud-creating
+	Type string `jsonapi:"primary,registry-module-versions"`
+
+	Version *string `jsonapi:"attr,version"`
+}
+
+// RegistryModuleCreateWithVCSConnectionOptions is used when creating a registry module with a VCS repo
+type RegistryModuleCreateWithVCSConnectionOptions struct {
+	ID string `jsonapi:"primary,registry-modules"`
+
+	// VCS repository information
+	VCSRepo *RegistryModuleVCSRepoOptions `jsonapi:"attr,vcs-repo"`
+}
+
+type RegistryModuleVCSRepoOptions struct {
+	Identifier        *string `json:"identifier"`
+	OAuthTokenID      *string `json:"oauth-token-id"`
+	DisplayIdentifier *string `json:"display-identifier"`
+}
+
+// Upload uploads Terraform configuration files for the provided registry module version. It
+// requires a path to the configuration files on disk, which will be packaged by
+// hashicorp/go-slug before being uploaded.
+func (r *registryModules) Upload(ctx context.Context, rmv RegistryModuleVersion, path string) error {
+	uploadURL, ok := rmv.Links["upload"].(string)
+	if !ok {
+		return fmt.Errorf("provided RegistryModuleVersion does not contain an upload link")
 	}
-	if !validStringID(o.Name) {
-		return ErrInvalidName
+
+	body, err := packContents(path)
+	if err != nil {
+		return err
 	}
-	if !validString(o.Provider) {
-		return ErrRequiredProvider
+
+	req, err := r.client.newRequest("PUT", uploadURL, body)
+	if err != nil {
+		return err
 	}
-	if !validStringID(o.Provider) {
-		return ErrInvalidProvider
-	}
-	return nil
+
+	return r.client.do(ctx, req, nil)
 }
 
 // Create a new registry module without a VCS repo
@@ -190,27 +198,6 @@ func (r *registryModules) Create(ctx context.Context, organization string, optio
 	}
 
 	return rm, nil
-}
-
-// RegistryModuleCreateVersionOptions is used when creating a registry module version
-type RegistryModuleCreateVersionOptions struct {
-	// Type is a public field utilized by JSON:API to
-	// set the resource type via the field tag.
-	// It is not a user-defined value and does not need to be set.
-	// https://jsonapi.org/format/#crud-creating
-	Type string `jsonapi:"primary,registry-module-versions"`
-
-	Version *string `jsonapi:"attr,version"`
-}
-
-func (o RegistryModuleCreateVersionOptions) valid() error {
-	if !validString(o.Version) {
-		return ErrRequiredVersion
-	}
-	if !validStringID(o.Version) {
-		return ErrInvalidVersion
-	}
-	return nil
 }
 
 // Create a new registry module version
@@ -252,40 +239,6 @@ func (r *registryModules) CreateVersion(ctx context.Context, organization string
 	}
 
 	return rmv, nil
-}
-
-// RegistryModuleCreateWithVCSConnectionOptions is used when creating a registry module with a VCS repo
-type RegistryModuleCreateWithVCSConnectionOptions struct {
-	ID string `jsonapi:"primary,registry-modules"`
-
-	// VCS repository information
-	VCSRepo *RegistryModuleVCSRepoOptions `jsonapi:"attr,vcs-repo"`
-}
-
-func (o RegistryModuleCreateWithVCSConnectionOptions) valid() error {
-	if o.VCSRepo == nil {
-		return ErrRequiredVCSRepo
-	}
-	return o.VCSRepo.valid()
-}
-
-type RegistryModuleVCSRepoOptions struct {
-	Identifier        *string `json:"identifier"`
-	OAuthTokenID      *string `json:"oauth-token-id"`
-	DisplayIdentifier *string `json:"display-identifier"`
-}
-
-func (o RegistryModuleVCSRepoOptions) valid() error {
-	if !validString(o.Identifier) {
-		return ErrRequiredIdentifier
-	}
-	if !validString(o.OAuthTokenID) {
-		return ErrRequiredOauthTokenID
-	}
-	if !validString(o.DisplayIdentifier) {
-		return ErrRequiredDisplayIdentifier
-	}
-	return nil
 }
 
 // CreateWithVCSConnection is used to create and publish a new registry module with a VCS repo
@@ -443,4 +396,50 @@ func (r *registryModules) DeleteVersion(ctx context.Context, organization string
 	}
 
 	return r.client.do(ctx, req, nil)
+}
+
+func (o RegistryModuleCreateVersionOptions) valid() error {
+	if !validString(o.Version) {
+		return ErrRequiredVersion
+	}
+	if !validStringID(o.Version) {
+		return ErrInvalidVersion
+	}
+	return nil
+}
+
+func (o RegistryModuleCreateOptions) valid() error {
+	if !validString(o.Name) {
+		return ErrRequiredName
+	}
+	if !validStringID(o.Name) {
+		return ErrInvalidName
+	}
+	if !validString(o.Provider) {
+		return ErrRequiredProvider
+	}
+	if !validStringID(o.Provider) {
+		return ErrInvalidProvider
+	}
+	return nil
+}
+
+func (o RegistryModuleVCSRepoOptions) valid() error {
+	if !validString(o.Identifier) {
+		return ErrRequiredIdentifier
+	}
+	if !validString(o.OAuthTokenID) {
+		return ErrRequiredOauthTokenID
+	}
+	if !validString(o.DisplayIdentifier) {
+		return ErrRequiredDisplayIdentifier
+	}
+	return nil
+}
+
+func (o RegistryModuleCreateWithVCSConnectionOptions) valid() error {
+	if o.VCSRepo == nil {
+		return ErrRequiredVCSRepo
+	}
+	return o.VCSRepo.valid()
 }

@@ -53,6 +53,45 @@ type PolicySetParameter struct {
 	PolicySet *PolicySet `jsonapi:"relation,configurable"`
 }
 
+// PolicySetParameterCreateOptions represents the options for creating a new parameter.
+type PolicySetParameterCreateOptions struct {
+	// Type is a public field utilized by JSON:API to
+	// set the resource type via the field tag.
+	// It is not a user-defined value and does not need to be set.
+	// https://jsonapi.org/format/#crud-creating
+	Type string `jsonapi:"primary,vars"`
+
+	// The name of the parameter.
+	Key *string `jsonapi:"attr,key"`
+
+	// The value of the parameter.
+	Value *string `jsonapi:"attr,value,omitempty"`
+
+	// The Category of the parameter, should always be "policy-set"
+	Category *CategoryType `jsonapi:"attr,category"`
+
+	// Whether the value is sensitive.
+	Sensitive *bool `jsonapi:"attr,sensitive,omitempty"`
+}
+
+// PolicySetParameterUpdateOptions represents the options for updating a parameter.
+type PolicySetParameterUpdateOptions struct {
+	// Type is a public field utilized by JSON:API to
+	// set the resource type via the field tag.
+	// It is not a user-defined value and does not need to be set.
+	// https://jsonapi.org/format/#crud-creating
+	Type string `jsonapi:"primary,vars"`
+
+	// The name of the parameter.
+	Key *string `jsonapi:"attr,key,omitempty"`
+
+	// The value of the parameter.
+	Value *string `jsonapi:"attr,value,omitempty"`
+
+	// Whether the value is sensitive.
+	Sensitive *bool `jsonapi:"attr,sensitive,omitempty"`
+}
+
 // PolicySetParameterListOptions represents the options for listing parameters.
 type PolicySetParameterListOptions struct {
 	ListOptions
@@ -77,40 +116,6 @@ func (s *policySetParameters) List(ctx context.Context, policySetID string, opti
 	}
 
 	return vl, nil
-}
-
-// PolicySetParameterCreateOptions represents the options for creating a new parameter.
-type PolicySetParameterCreateOptions struct {
-	// Type is a public field utilized by JSON:API to
-	// set the resource type via the field tag.
-	// It is not a user-defined value and does not need to be set.
-	// https://jsonapi.org/format/#crud-creating
-	Type string `jsonapi:"primary,vars"`
-
-	// The name of the parameter.
-	Key *string `jsonapi:"attr,key"`
-
-	// The value of the parameter.
-	Value *string `jsonapi:"attr,value,omitempty"`
-
-	// The Category of the parameter, should always be "policy-set"
-	Category *CategoryType `jsonapi:"attr,category"`
-
-	// Whether the value is sensitive.
-	Sensitive *bool `jsonapi:"attr,sensitive,omitempty"`
-}
-
-func (o PolicySetParameterCreateOptions) valid() error {
-	if !validString(o.Key) {
-		return ErrRequiredKey
-	}
-	if o.Category == nil {
-		return ErrRequiredCategory
-	}
-	if *o.Category != CategoryPolicySet {
-		return ErrInvalidCategory
-	}
-	return nil
 }
 
 // Create is used to create a new parameter.
@@ -161,24 +166,6 @@ func (s *policySetParameters) Read(ctx context.Context, policySetID string, para
 	return p, err
 }
 
-// PolicySetParameterUpdateOptions represents the options for updating a parameter.
-type PolicySetParameterUpdateOptions struct {
-	// Type is a public field utilized by JSON:API to
-	// set the resource type via the field tag.
-	// It is not a user-defined value and does not need to be set.
-	// https://jsonapi.org/format/#crud-creating
-	Type string `jsonapi:"primary,vars"`
-
-	// The name of the parameter.
-	Key *string `jsonapi:"attr,key,omitempty"`
-
-	// The value of the parameter.
-	Value *string `jsonapi:"attr,value,omitempty"`
-
-	// Whether the value is sensitive.
-	Sensitive *bool `jsonapi:"attr,sensitive,omitempty"`
-}
-
 // Update values of an existing parameter.
 func (s *policySetParameters) Update(ctx context.Context, policySetID string, parameterID string, options PolicySetParameterUpdateOptions) (*PolicySetParameter, error) {
 	if !validStringID(&policySetID) {
@@ -219,4 +206,17 @@ func (s *policySetParameters) Delete(ctx context.Context, policySetID string, pa
 	}
 
 	return s.client.do(ctx, req, nil)
+}
+
+func (o PolicySetParameterCreateOptions) valid() error {
+	if !validString(o.Key) {
+		return ErrRequiredKey
+	}
+	if o.Category == nil {
+		return ErrRequiredCategory
+	}
+	if *o.Category != CategoryPolicySet {
+		return ErrInvalidCategory
+	}
+	return nil
 }

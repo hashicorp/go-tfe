@@ -47,6 +47,20 @@ type teamMemberOrgMembership struct {
 	ID string `jsonapi:"primary,organization-memberships"`
 }
 
+// TeamMemberAddOptions represents the options for
+// adding or removing team members.
+type TeamMemberAddOptions struct {
+	Usernames                 []string
+	OrganizationMembershipIDs []string
+}
+
+// TeamMemberRemoveOptions represents the options for
+// adding or removing team members.
+type TeamMemberRemoveOptions struct {
+	Usernames                 []string
+	OrganizationMembershipIDs []string
+}
+
 // List returns all Users of a team calling ListUsers
 // See ListOrganizationMemberships for fetching memberships
 func (s *teamMembers) List(ctx context.Context, teamID string) ([]*User, error) {
@@ -107,29 +121,6 @@ func (s *teamMembers) ListOrganizationMemberships(ctx context.Context, teamID st
 	return t.OrganizationMemberships, nil
 }
 
-// TeamMemberAddOptions represents the options for
-// adding or removing team members.
-type TeamMemberAddOptions struct {
-	Usernames                 []string
-	OrganizationMembershipIDs []string
-}
-
-func (o *TeamMemberAddOptions) valid() error {
-	if o.Usernames == nil && o.OrganizationMembershipIDs == nil {
-		return ErrRequiredUsernameOrMembershipIds
-	}
-	if o.Usernames != nil && o.OrganizationMembershipIDs != nil {
-		return ErrRequiredOnlyOneField
-	}
-	if o.Usernames != nil && len(o.Usernames) == 0 {
-		return ErrInvalidUsernames
-	}
-	if o.OrganizationMembershipIDs != nil && len(o.OrganizationMembershipIDs) == 0 {
-		return ErrInvalidMembershipIDs
-	}
-	return nil
-}
-
 // kind returns "users" or "organization-memberships"
 // depending on which is defined
 func (o *TeamMemberAddOptions) kind() string {
@@ -178,29 +169,6 @@ func (s *teamMembers) Add(ctx context.Context, teamID string, options TeamMember
 	return s.client.do(ctx, req, nil)
 }
 
-// TeamMemberRemoveOptions represents the options for
-// adding or removing team members.
-type TeamMemberRemoveOptions struct {
-	Usernames                 []string
-	OrganizationMembershipIDs []string
-}
-
-func (o *TeamMemberRemoveOptions) valid() error {
-	if o.Usernames == nil && o.OrganizationMembershipIDs == nil {
-		return ErrRequiredUsernameOrMembershipIds
-	}
-	if o.Usernames != nil && o.OrganizationMembershipIDs != nil {
-		return ErrRequiredOnlyOneField
-	}
-	if o.Usernames != nil && len(o.Usernames) == 0 {
-		return ErrInvalidUsernames
-	}
-	if o.OrganizationMembershipIDs != nil && len(o.OrganizationMembershipIDs) == 0 {
-		return ErrInvalidMembershipIDs
-	}
-	return nil
-}
-
 // kind returns "users" or "organization-memberships"
 // depending on which is defined
 func (o *TeamMemberRemoveOptions) kind() string {
@@ -247,4 +215,36 @@ func (s *teamMembers) Remove(ctx context.Context, teamID string, options TeamMem
 	}
 
 	return s.client.do(ctx, req, nil)
+}
+
+func (o *TeamMemberRemoveOptions) valid() error {
+	if o.Usernames == nil && o.OrganizationMembershipIDs == nil {
+		return ErrRequiredUsernameOrMembershipIds
+	}
+	if o.Usernames != nil && o.OrganizationMembershipIDs != nil {
+		return ErrRequiredOnlyOneField
+	}
+	if o.Usernames != nil && len(o.Usernames) == 0 {
+		return ErrInvalidUsernames
+	}
+	if o.OrganizationMembershipIDs != nil && len(o.OrganizationMembershipIDs) == 0 {
+		return ErrInvalidMembershipIDs
+	}
+	return nil
+}
+
+func (o *TeamMemberAddOptions) valid() error {
+	if o.Usernames == nil && o.OrganizationMembershipIDs == nil {
+		return ErrRequiredUsernameOrMembershipIds
+	}
+	if o.Usernames != nil && o.OrganizationMembershipIDs != nil {
+		return ErrRequiredOnlyOneField
+	}
+	if o.Usernames != nil && len(o.Usernames) == 0 {
+		return ErrInvalidUsernames
+	}
+	if o.OrganizationMembershipIDs != nil && len(o.OrganizationMembershipIDs) == 0 {
+		return ErrInvalidMembershipIDs
+	}
+	return nil
 }

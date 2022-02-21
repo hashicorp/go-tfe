@@ -50,6 +50,30 @@ type AgentPool struct {
 	Organization *Organization `jsonapi:"relation,organization"`
 }
 
+// AgentPoolCreateOptions represents the options for creating an agent pool.
+type AgentPoolCreateOptions struct {
+	// Type is a public field utilized by JSON:API to
+	// set the resource type via the field tag.
+	// It is not a user-defined value and does not need to be set.
+	// https://jsonapi.org/format/#crud-creating
+	Type string `jsonapi:"primary,agent-pools"`
+
+	// A name to identify the agent pool.
+	Name *string `jsonapi:"attr,name"`
+}
+
+// AgentPoolUpdateOptions represents the options for updating an agent pool.
+type AgentPoolUpdateOptions struct {
+	// Type is a public field utilized by JSON:API to
+	// set the resource type via the field tag.
+	// It is not a user-defined value and does not need to be set.
+	// https://jsonapi.org/format/#crud-creating
+	Type string `jsonapi:"primary,agent-pools"`
+
+	// A new name to identify the agent pool.
+	Name *string `jsonapi:"attr,name"`
+}
+
 // AgentPoolListOptions represents the options for listing agent pools.
 type AgentPoolListOptions struct {
 	ListOptions
@@ -74,28 +98,6 @@ func (s *agentPools) List(ctx context.Context, organization string, options *Age
 	}
 
 	return poolList, nil
-}
-
-// AgentPoolCreateOptions represents the options for creating an agent pool.
-type AgentPoolCreateOptions struct {
-	// Type is a public field utilized by JSON:API to
-	// set the resource type via the field tag.
-	// It is not a user-defined value and does not need to be set.
-	// https://jsonapi.org/format/#crud-creating
-	Type string `jsonapi:"primary,agent-pools"`
-
-	// A name to identify the agent pool.
-	Name *string `jsonapi:"attr,name"`
-}
-
-func (o AgentPoolCreateOptions) valid() error {
-	if !validString(o.Name) {
-		return ErrRequiredName
-	}
-	if !validStringID(o.Name) {
-		return ErrInvalidName
-	}
-	return nil
 }
 
 // Create a new agent pool with the given options.
@@ -144,25 +146,6 @@ func (s *agentPools) Read(ctx context.Context, agentpoolID string) (*AgentPool, 
 	return pool, nil
 }
 
-// AgentPoolUpdateOptions represents the options for updating an agent pool.
-type AgentPoolUpdateOptions struct {
-	// Type is a public field utilized by JSON:API to
-	// set the resource type via the field tag.
-	// It is not a user-defined value and does not need to be set.
-	// https://jsonapi.org/format/#crud-creating
-	Type string `jsonapi:"primary,agent-pools"`
-
-	// A new name to identify the agent pool.
-	Name *string `jsonapi:"attr,name"`
-}
-
-func (o AgentPoolUpdateOptions) valid() error {
-	if o.Name != nil && !validStringID(o.Name) {
-		return ErrInvalidName
-	}
-	return nil
-}
-
 // Update an agent pool by its ID.
 func (s *agentPools) Update(ctx context.Context, agentPoolID string, options AgentPoolUpdateOptions) (*AgentPool, error) {
 	if !validStringID(&agentPoolID) {
@@ -201,4 +184,21 @@ func (s *agentPools) Delete(ctx context.Context, agentPoolID string) error {
 	}
 
 	return s.client.do(ctx, req, nil)
+}
+
+func (o AgentPoolUpdateOptions) valid() error {
+	if o.Name != nil && !validStringID(o.Name) {
+		return ErrInvalidName
+	}
+	return nil
+}
+
+func (o AgentPoolCreateOptions) valid() error {
+	if !validString(o.Name) {
+		return ErrRequiredName
+	}
+	if !validStringID(o.Name) {
+		return ErrInvalidName
+	}
+	return nil
 }

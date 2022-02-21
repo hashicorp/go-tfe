@@ -184,27 +184,6 @@ type RunVariable struct {
 	Value string `jsonapi:"attr,value"`
 }
 
-// List all the runs of the given workspace.
-func (s *runs) List(ctx context.Context, workspaceID string, options *RunListOptions) (*RunList, error) {
-	if !validStringID(&workspaceID) {
-		return nil, ErrInvalidWorkspaceID
-	}
-
-	u := fmt.Sprintf("workspaces/%s/runs", url.QueryEscape(workspaceID))
-	req, err := s.client.newRequest("GET", u, options)
-	if err != nil {
-		return nil, err
-	}
-
-	rl := &RunList{}
-	err = s.client.do(ctx, req, rl)
-	if err != nil {
-		return nil, err
-	}
-
-	return rl, nil
-}
-
 // RunCreateOptions represents the options for creating a new run.
 type RunCreateOptions struct {
 	// Type is a public field utilized by JSON:API to
@@ -263,11 +242,54 @@ type RunCreateOptions struct {
 	Variables []*RunVariable `jsonapi:"attr,variables,omitempty"`
 }
 
-func (o RunCreateOptions) valid() error {
-	if o.Workspace == nil {
-		return ErrRequiredWorkspace
+// RunReadOptions represents the options for reading a run.
+type RunReadOptions struct {
+	Include []RunIncludeOps `url:"include,omitempty"`
+}
+
+// RunApplyOptions represents the options for applying a run.
+type RunApplyOptions struct {
+	// An optional comment about the run.
+	Comment *string `jsonapi:"attr,comment,omitempty"`
+}
+
+// RunCancelOptions represents the options for canceling a run.
+type RunCancelOptions struct {
+	// An optional explanation for why the run was canceled.
+	Comment *string `jsonapi:"attr,comment,omitempty"`
+}
+
+// RunForceCancelOptions represents the options for force-canceling a run.
+type RunForceCancelOptions struct {
+	// An optional comment explaining the reason for the force-cancel.
+	Comment *string `jsonapi:"attr,comment,omitempty"`
+}
+
+// RunDiscardOptions represents the options for discarding a run.
+type RunDiscardOptions struct {
+	// An optional explanation for why the run was discarded.
+	Comment *string `jsonapi:"attr,comment,omitempty"`
+}
+
+// List all the runs of the given workspace.
+func (s *runs) List(ctx context.Context, workspaceID string, options *RunListOptions) (*RunList, error) {
+	if !validStringID(&workspaceID) {
+		return nil, ErrInvalidWorkspaceID
 	}
-	return nil
+
+	u := fmt.Sprintf("workspaces/%s/runs", url.QueryEscape(workspaceID))
+	req, err := s.client.newRequest("GET", u, options)
+	if err != nil {
+		return nil, err
+	}
+
+	rl := &RunList{}
+	err = s.client.do(ctx, req, rl)
+	if err != nil {
+		return nil, err
+	}
+
+	return rl, nil
 }
 
 // Create a new run with the given options.
@@ -295,11 +317,6 @@ func (s *runs) Read(ctx context.Context, runID string) (*Run, error) {
 	return s.ReadWithOptions(ctx, runID, nil)
 }
 
-// RunReadOptions represents the options for reading a run.
-type RunReadOptions struct {
-	Include []RunIncludeOps `url:"include,omitempty"`
-}
-
 // Read a run by its ID with the given options.
 func (s *runs) ReadWithOptions(ctx context.Context, runID string, options *RunReadOptions) (*Run, error) {
 	if !validStringID(&runID) {
@@ -321,12 +338,6 @@ func (s *runs) ReadWithOptions(ctx context.Context, runID string, options *RunRe
 	return r, nil
 }
 
-// RunApplyOptions represents the options for applying a run.
-type RunApplyOptions struct {
-	// An optional comment about the run.
-	Comment *string `jsonapi:"attr,comment,omitempty"`
-}
-
 // Apply a run by its ID.
 func (s *runs) Apply(ctx context.Context, runID string, options RunApplyOptions) error {
 	if !validStringID(&runID) {
@@ -340,12 +351,6 @@ func (s *runs) Apply(ctx context.Context, runID string, options RunApplyOptions)
 	}
 
 	return s.client.do(ctx, req, nil)
-}
-
-// RunCancelOptions represents the options for canceling a run.
-type RunCancelOptions struct {
-	// An optional explanation for why the run was canceled.
-	Comment *string `jsonapi:"attr,comment,omitempty"`
 }
 
 // Cancel a run by its ID.
@@ -363,12 +368,6 @@ func (s *runs) Cancel(ctx context.Context, runID string, options RunCancelOption
 	return s.client.do(ctx, req, nil)
 }
 
-// RunForceCancelOptions represents the options for force-canceling a run.
-type RunForceCancelOptions struct {
-	// An optional comment explaining the reason for the force-cancel.
-	Comment *string `jsonapi:"attr,comment,omitempty"`
-}
-
 // ForceCancel is used to forcefully cancel a run by its ID.
 func (s *runs) ForceCancel(ctx context.Context, runID string, options RunForceCancelOptions) error {
 	if !validStringID(&runID) {
@@ -384,12 +383,6 @@ func (s *runs) ForceCancel(ctx context.Context, runID string, options RunForceCa
 	return s.client.do(ctx, req, nil)
 }
 
-// RunDiscardOptions represents the options for discarding a run.
-type RunDiscardOptions struct {
-	// An optional explanation for why the run was discarded.
-	Comment *string `jsonapi:"attr,comment,omitempty"`
-}
-
 // Discard a run by its ID.
 func (s *runs) Discard(ctx context.Context, runID string, options RunDiscardOptions) error {
 	if !validStringID(&runID) {
@@ -403,4 +396,11 @@ func (s *runs) Discard(ctx context.Context, runID string, options RunDiscardOpti
 	}
 
 	return s.client.do(ctx, req, nil)
+}
+
+func (o RunCreateOptions) valid() error {
+	if o.Workspace == nil {
+		return ErrRequiredWorkspace
+	}
+	return nil
 }

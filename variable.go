@@ -70,27 +70,6 @@ type VariableListOptions struct {
 	ListOptions
 }
 
-// List all the variables associated with the given workspace.
-func (s *variables) List(ctx context.Context, workspaceID string, options *VariableListOptions) (*VariableList, error) {
-	if !validStringID(&workspaceID) {
-		return nil, ErrInvalidWorkspaceID
-	}
-
-	u := fmt.Sprintf("workspaces/%s/vars", url.QueryEscape(workspaceID))
-	req, err := s.client.newRequest("GET", u, options)
-	if err != nil {
-		return nil, err
-	}
-
-	vl := &VariableList{}
-	err = s.client.do(ctx, req, vl)
-	if err != nil {
-		return nil, err
-	}
-
-	return vl, nil
-}
-
 // VariableCreateOptions represents the options for creating a new variable.
 type VariableCreateOptions struct {
 	// Type is a public field utilized by JSON:API to
@@ -118,14 +97,49 @@ type VariableCreateOptions struct {
 	Sensitive *bool `jsonapi:"attr,sensitive,omitempty"`
 }
 
-func (o VariableCreateOptions) valid() error {
-	if !validString(o.Key) {
-		return ErrRequiredKey
+// VariableUpdateOptions represents the options for updating a variable.
+type VariableUpdateOptions struct {
+	// Type is a public field utilized by JSON:API to
+	// set the resource type via the field tag.
+	// It is not a user-defined value and does not need to be set.
+	// https://jsonapi.org/format/#crud-creating
+	Type string `jsonapi:"primary,vars"`
+
+	// The name of the variable.
+	Key *string `jsonapi:"attr,key,omitempty"`
+
+	// The value of the variable.
+	Value *string `jsonapi:"attr,value,omitempty"`
+
+	// The description of the variable.
+	Description *string `jsonapi:"attr,description,omitempty"`
+
+	// Whether to evaluate the value of the variable as a string of HCL code.
+	HCL *bool `jsonapi:"attr,hcl,omitempty"`
+
+	// Whether the value is sensitive.
+	Sensitive *bool `jsonapi:"attr,sensitive,omitempty"`
+}
+
+// List all the variables associated with the given workspace.
+func (s *variables) List(ctx context.Context, workspaceID string, options *VariableListOptions) (*VariableList, error) {
+	if !validStringID(&workspaceID) {
+		return nil, ErrInvalidWorkspaceID
 	}
-	if o.Category == nil {
-		return ErrRequiredCategory
+
+	u := fmt.Sprintf("workspaces/%s/vars", url.QueryEscape(workspaceID))
+	req, err := s.client.newRequest("GET", u, options)
+	if err != nil {
+		return nil, err
 	}
-	return nil
+
+	vl := &VariableList{}
+	err = s.client.do(ctx, req, vl)
+	if err != nil {
+		return nil, err
+	}
+
+	return vl, nil
 }
 
 // Create is used to create a new variable.
@@ -176,30 +190,6 @@ func (s *variables) Read(ctx context.Context, workspaceID string, variableID str
 	return v, err
 }
 
-// VariableUpdateOptions represents the options for updating a variable.
-type VariableUpdateOptions struct {
-	// Type is a public field utilized by JSON:API to
-	// set the resource type via the field tag.
-	// It is not a user-defined value and does not need to be set.
-	// https://jsonapi.org/format/#crud-creating
-	Type string `jsonapi:"primary,vars"`
-
-	// The name of the variable.
-	Key *string `jsonapi:"attr,key,omitempty"`
-
-	// The value of the variable.
-	Value *string `jsonapi:"attr,value,omitempty"`
-
-	// The description of the variable.
-	Description *string `jsonapi:"attr,description,omitempty"`
-
-	// Whether to evaluate the value of the variable as a string of HCL code.
-	HCL *bool `jsonapi:"attr,hcl,omitempty"`
-
-	// Whether the value is sensitive.
-	Sensitive *bool `jsonapi:"attr,sensitive,omitempty"`
-}
-
 // Update values of an existing variable.
 func (s *variables) Update(ctx context.Context, workspaceID string, variableID string, options VariableUpdateOptions) (*Variable, error) {
 	if !validStringID(&workspaceID) {
@@ -240,4 +230,14 @@ func (s *variables) Delete(ctx context.Context, workspaceID string, variableID s
 	}
 
 	return s.client.do(ctx, req, nil)
+}
+
+func (o VariableCreateOptions) valid() error {
+	if !validString(o.Key) {
+		return ErrRequiredKey
+	}
+	if o.Category == nil {
+		return ErrRequiredCategory
+	}
+	return nil
 }
