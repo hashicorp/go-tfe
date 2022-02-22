@@ -123,6 +123,9 @@ type AdminTerraformVersionCreateOptions struct {
 
 // Create a new terraform version.
 func (a *adminTerraformVersions) Create(ctx context.Context, options AdminTerraformVersionCreateOptions) (*AdminTerraformVersion, error) {
+	if err := options.valid(); err != nil {
+		return nil, err
+	}
 	req, err := a.client.newRequest("POST", "admin/terraform-versions", &options)
 	if err != nil {
 		return nil, err
@@ -185,4 +188,21 @@ func (a *adminTerraformVersions) Delete(ctx context.Context, id string) error {
 	}
 
 	return a.client.do(ctx, req, nil)
+}
+
+func (o AdminTerraformVersionCreateOptions) valid() error {
+	if (o == AdminTerraformVersionCreateOptions{}) {
+		return ErrRequiredTFVerCreateOps
+	}
+	if !validString(o.Version) {
+		return ErrRequiredVersion
+	}
+	if !validString(o.URL) {
+		return ErrRequiredURL
+	}
+	if !validString(o.Sha) {
+		return ErrRequiredSha
+	}
+
+	return nil
 }

@@ -66,7 +66,7 @@ func TestTeamAccessesList(t *testing.T) {
 	t.Run("without TeamAccessListOptions", func(t *testing.T) {
 		tal, err := client.TeamAccess.List(ctx, nil)
 		assert.Nil(t, tal)
-		assert.Equal(t, err, ErrRequireTeamAccessListOps)
+		assert.Equal(t, err, ErrRequiredTeamAccessListOps)
 	})
 
 	t.Run("without WorkspaceID options", func(t *testing.T) {

@@ -87,7 +87,7 @@ func TestRunTriggerList(t *testing.T) {
 			nil,
 		)
 		assert.Nil(t, rtl)
-		assert.EqualError(t, err, "bad request\n\nFilter parameter run-trigger type is required and must be either 'inbound' or 'outbound'")
+		assert.Equal(t, err, ErrRequiredRunTriggerListOps)
 	})
 
 	t.Run("with invalid option for runTriggerType", func(t *testing.T) {
@@ -99,7 +99,7 @@ func TestRunTriggerList(t *testing.T) {
 			},
 		)
 		assert.Nil(t, rtl)
-		assert.EqualError(t, err, "bad request\n\nFilter parameter run-trigger type is required and must be either 'inbound' or 'outbound'")
+		assert.Equal(t, err, ErrInvalidRunTriggerType)
 	})
 }
 

@@ -75,7 +75,10 @@ type StateVersionListOptions struct {
 }
 
 //check that StateVersionListOptions fields had valid values
-func (o StateVersionListOptions) valid() error {
+func (o *StateVersionListOptions) valid() error {
+	if o == nil {
+		return ErrRequiredStateVerListOps
+	}
 	if !validString(&o.Organization) {
 		return ErrRequiredOrg
 	}
@@ -87,10 +90,6 @@ func (o StateVersionListOptions) valid() error {
 
 // List all the state versions for a given workspace.
 func (s *stateVersions) List(ctx context.Context, options *StateVersionListOptions) (*StateVersionList, error) {
-	if options == nil {
-		return nil, ErrRequiredStateVerListOps
-	}
-
 	if err := options.valid(); err != nil {
 		return nil, err
 	}
