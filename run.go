@@ -170,6 +170,7 @@ const (
 	RunConfigVer        RunIncludeOps = "configuration_version"
 	RunConfigVerIngress RunIncludeOps = "configuration_version.ingress_attributes"
 	RunWorkspace        RunIncludeOps = "workspace"
+	RunTaskStages       RunIncludeOps = "task_stages"
 )
 
 // RunListOptions represents the options for listing runs.

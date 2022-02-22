@@ -68,7 +68,7 @@ const (
 
 // TaskStageReadOptions represents the set of options when reading a task stage
 type TaskStageReadOptions struct {
-	Include []TaskStageIncludeOps `url:"include"`
+	Include []TaskStageIncludeOps `url:"include,omitempty"`
 }
 
 // Read a task stage by ID
