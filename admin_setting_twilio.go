@@ -96,5 +96,6 @@ func (o AdminTwilioSettingsVerifyOptions) valid() error {
 	if !validString(o.TestNumber) {
 		return ErrRequiredTestNumber
 	}
+
 	return nil
 }

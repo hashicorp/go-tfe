@@ -146,5 +146,6 @@ func (o *AdminRunsListOptions) valid() error {
 			}
 		}
 	}
+
 	return nil
 }

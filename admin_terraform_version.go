@@ -204,5 +204,6 @@ func (o AdminTerraformVersionCreateOptions) valid() error {
 	if !validString(o.Sha) {
 		return ErrRequiredSha
 	}
+
 	return nil
 }

@@ -190,6 +190,7 @@ func (o AgentPoolUpdateOptions) valid() error {
 	if o.Name != nil && !validStringID(o.Name) {
 		return ErrInvalidName
 	}
+
 	return nil
 }
 
@@ -200,5 +201,6 @@ func (o AgentPoolCreateOptions) valid() error {
 	if !validStringID(o.Name) {
 		return ErrInvalidName
 	}
+
 	return nil
 }
