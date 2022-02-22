@@ -50,36 +50,6 @@ func (mr *MockStateVersionsMockRecorder) Create(ctx, workspaceID, options interf
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Create", reflect.TypeOf((*MockStateVersions)(nil).Create), ctx, workspaceID, options)
 }
 
-// Current mocks base method.
-func (m *MockStateVersions) Current(ctx context.Context, workspaceID string) (*tfe.StateVersion, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "Current", ctx, workspaceID)
-	ret0, _ := ret[0].(*tfe.StateVersion)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
-}
-
-// Current indicates an expected call of Current.
-func (mr *MockStateVersionsMockRecorder) Current(ctx, workspaceID interface{}) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Current", reflect.TypeOf((*MockStateVersions)(nil).Current), ctx, workspaceID)
-}
-
-// CurrentWithOptions mocks base method.
-func (m *MockStateVersions) CurrentWithOptions(ctx context.Context, workspaceID string, options *tfe.StateVersionCurrentOptions) (*tfe.StateVersion, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "CurrentWithOptions", ctx, workspaceID, options)
-	ret0, _ := ret[0].(*tfe.StateVersion)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
-}
-
-// CurrentWithOptions indicates an expected call of CurrentWithOptions.
-func (mr *MockStateVersionsMockRecorder) CurrentWithOptions(ctx, workspaceID, options interface{}) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CurrentWithOptions", reflect.TypeOf((*MockStateVersions)(nil).CurrentWithOptions), ctx, workspaceID, options)
-}
-
 // Download mocks base method.
 func (m *MockStateVersions) Download(ctx context.Context, url string) ([]byte, error) {
 	m.ctrl.T.Helper()
@@ -110,19 +80,19 @@ func (mr *MockStateVersionsMockRecorder) List(ctx, options interface{}) *gomock.
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "List", reflect.TypeOf((*MockStateVersions)(nil).List), ctx, options)
 }
 
-// Outputs mocks base method.
-func (m *MockStateVersions) Outputs(ctx context.Context, svID string, options *tfe.StateVersionOutputsListOptions) (*tfe.StateVersionOutputsList, error) {
+// ListOutputs mocks base method.
+func (m *MockStateVersions) ListOutputs(ctx context.Context, svID string, options *tfe.StateVersionOutputsListOptions) (*tfe.StateVersionOutputsList, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "Outputs", ctx, svID, options)
+	ret := m.ctrl.Call(m, "ListOutputs", ctx, svID, options)
 	ret0, _ := ret[0].(*tfe.StateVersionOutputsList)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
 
-// Outputs indicates an expected call of Outputs.
-func (mr *MockStateVersionsMockRecorder) Outputs(ctx, svID, options interface{}) *gomock.Call {
+// ListOutputs indicates an expected call of ListOutputs.
+func (mr *MockStateVersionsMockRecorder) ListOutputs(ctx, svID, options interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Outputs", reflect.TypeOf((*MockStateVersions)(nil).Outputs), ctx, svID, options)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListOutputs", reflect.TypeOf((*MockStateVersions)(nil).ListOutputs), ctx, svID, options)
 }
 
 // Read mocks base method.
@@ -138,6 +108,36 @@ func (m *MockStateVersions) Read(ctx context.Context, svID string) (*tfe.StateVe
 func (mr *MockStateVersionsMockRecorder) Read(ctx, svID interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Read", reflect.TypeOf((*MockStateVersions)(nil).Read), ctx, svID)
+}
+
+// ReadCurrent mocks base method.
+func (m *MockStateVersions) ReadCurrent(ctx context.Context, workspaceID string) (*tfe.StateVersion, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "ReadCurrent", ctx, workspaceID)
+	ret0, _ := ret[0].(*tfe.StateVersion)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// ReadCurrent indicates an expected call of ReadCurrent.
+func (mr *MockStateVersionsMockRecorder) ReadCurrent(ctx, workspaceID interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ReadCurrent", reflect.TypeOf((*MockStateVersions)(nil).ReadCurrent), ctx, workspaceID)
+}
+
+// ReadCurrentWithOptions mocks base method.
+func (m *MockStateVersions) ReadCurrentWithOptions(ctx context.Context, workspaceID string, options *tfe.StateVersionCurrentOptions) (*tfe.StateVersion, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "ReadCurrentWithOptions", ctx, workspaceID, options)
+	ret0, _ := ret[0].(*tfe.StateVersion)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// ReadCurrentWithOptions indicates an expected call of ReadCurrentWithOptions.
+func (mr *MockStateVersionsMockRecorder) ReadCurrentWithOptions(ctx, workspaceID, options interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ReadCurrentWithOptions", reflect.TypeOf((*MockStateVersions)(nil).ReadCurrentWithOptions), ctx, workspaceID, options)
 }
 
 // ReadWithOptions mocks base method.

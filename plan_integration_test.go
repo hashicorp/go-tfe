@@ -123,7 +123,7 @@ func TestPlansJSONOutput(t *testing.T) {
 	defer rTestCleanup()
 
 	t.Run("when the JSON output exists", func(t *testing.T) {
-		d, err := client.Plans.JSONOutput(ctx, rTest.Plan.ID)
+		d, err := client.Plans.ReadJSONOutput(ctx, rTest.Plan.ID)
 		require.NoError(t, err)
 		var m map[string]interface{}
 		err = json.Unmarshal(d, &m)
@@ -133,7 +133,7 @@ func TestPlansJSONOutput(t *testing.T) {
 	})
 
 	t.Run("when the JSON output does not exist", func(t *testing.T) {
-		d, err := client.Plans.JSONOutput(ctx, "nonexisting")
+		d, err := client.Plans.ReadJSONOutput(ctx, "nonexisting")
 		assert.Nil(t, d)
 		assert.Error(t, err)
 	})

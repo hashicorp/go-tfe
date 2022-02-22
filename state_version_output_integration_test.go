@@ -31,7 +31,7 @@ func TestStateVersionOutputsRead(t *testing.T) {
 		Include: []StateVersionIncludeOps{SVoutputs},
 	}
 
-	sv, err := client.StateVersions.CurrentWithOptions(ctx, wTest1.ID, curOpts)
+	sv, err := client.StateVersions.ReadCurrentWithOptions(ctx, wTest1.ID, curOpts)
 	if err != nil {
 		t.Fatal(err)
 	}

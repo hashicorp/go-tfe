@@ -341,7 +341,7 @@ func TestStateVersionsCurrent(t *testing.T) {
 	defer svTestCleanup()
 
 	t.Run("when a state version exists", func(t *testing.T) {
-		sv, err := client.StateVersions.Current(ctx, wTest1.ID)
+		sv, err := client.StateVersions.ReadCurrent(ctx, wTest1.ID)
 		require.NoError(t, err)
 
 		// Don't compare the DownloadURL because it will be generated twice
@@ -358,13 +358,13 @@ func TestStateVersionsCurrent(t *testing.T) {
 	})
 
 	t.Run("when a state version does not exist", func(t *testing.T) {
-		sv, err := client.StateVersions.Current(ctx, wTest2.ID)
+		sv, err := client.StateVersions.ReadCurrent(ctx, wTest2.ID)
 		assert.Nil(t, sv)
 		assert.Equal(t, ErrResourceNotFound, err)
 	})
 
 	t.Run("with invalid workspace id", func(t *testing.T) {
-		sv, err := client.StateVersions.Current(ctx, badIdentifier)
+		sv, err := client.StateVersions.ReadCurrent(ctx, badIdentifier)
 		assert.Nil(t, sv)
 		assert.EqualError(t, err, ErrInvalidWorkspaceID.Error())
 	})
@@ -388,7 +388,7 @@ func TestStateVersionsCurrentWithOptions(t *testing.T) {
 			Include: []StateVersionIncludeOps{SVoutputs},
 		}
 
-		sv, err := client.StateVersions.CurrentWithOptions(ctx, wTest1.ID, curOpts)
+		sv, err := client.StateVersions.ReadCurrentWithOptions(ctx, wTest1.ID, curOpts)
 		require.NoError(t, err)
 
 		assert.NotEmpty(t, sv.Outputs)
@@ -441,7 +441,7 @@ func TestStateVersionOutputs(t *testing.T) {
 	time.Sleep(waitForStateVersionOutputs)
 
 	t.Run("when the state version exists", func(t *testing.T) {
-		outputs, err := client.StateVersions.Outputs(ctx, sv.ID, nil)
+		outputs, err := client.StateVersions.ListOutputs(ctx, sv.ID, nil)
 		require.NoError(t, err)
 
 		assert.NotEmpty(t, outputs.Items)
@@ -469,7 +469,7 @@ func TestStateVersionOutputs(t *testing.T) {
 				PageSize:   100,
 			},
 		}
-		outputs, err := client.StateVersions.Outputs(ctx, sv.ID, options)
+		outputs, err := client.StateVersions.ListOutputs(ctx, sv.ID, options)
 		require.NoError(t, err)
 		assert.Empty(t, outputs.Items)
 		assert.Equal(t, 999, outputs.CurrentPage)
@@ -479,7 +479,7 @@ func TestStateVersionOutputs(t *testing.T) {
 	})
 
 	t.Run("when the state version does not exist", func(t *testing.T) {
-		outputs, err := client.StateVersions.Outputs(ctx, "sv-999999999", nil)
+		outputs, err := client.StateVersions.ListOutputs(ctx, "sv-999999999", nil)
 		assert.Nil(t, outputs)
 		assert.Error(t, err)
 	})

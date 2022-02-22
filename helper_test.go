@@ -74,7 +74,7 @@ func createAgentToken(t *testing.T, client *Client, ap *AgentPool) (*AgentToken,
 	}
 
 	ctx := context.Background()
-	at, err := client.AgentTokens.Generate(ctx, ap.ID, AgentTokenGenerateOptions{
+	at, err := client.AgentTokens.Create(ctx, ap.ID, AgentTokenCreateOptions{
 		Description: String(randomString(t)),
 	})
 	if err != nil {
@@ -439,7 +439,7 @@ func createOrganizationToken(t *testing.T, client *Client, org *Organization) (*
 	}
 
 	ctx := context.Background()
-	tk, err := client.OrganizationTokens.Generate(ctx, org.Name)
+	tk, err := client.OrganizationTokens.Create(ctx, org.Name)
 	if err != nil {
 		t.Fatal(err)
 	}

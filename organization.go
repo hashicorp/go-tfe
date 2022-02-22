@@ -31,14 +31,14 @@ type Organizations interface {
 	// Delete an organization by its name.
 	Delete(ctx context.Context, organization string) error
 
-	// Capacity shows the current run capacity of an organization.
-	Capacity(ctx context.Context, organization string) (*Capacity, error)
+	// ReadCapacity shows the current run capacity of an organization.
+	ReadCapacity(ctx context.Context, organization string) (*Capacity, error)
 
-	// Entitlements shows the entitlements of an organization.
-	Entitlements(ctx context.Context, organization string) (*Entitlements, error)
+	// ReadEntitlements shows the entitlements of an organization.
+	ReadEntitlements(ctx context.Context, organization string) (*Entitlements, error)
 
-	// RunQueue shows the current run queue of an organization.
-	RunQueue(ctx context.Context, organization string, options RunQueueOptions) (*RunQueue, error)
+	// ReadRunQueue shows the current run queue of an organization.
+	ReadRunQueue(ctx context.Context, organization string, options ReadRunQueueOptions) (*RunQueue, error)
 }
 
 // organizations implements Organizations.
@@ -297,8 +297,8 @@ func (s *organizations) Delete(ctx context.Context, organization string) error {
 	return s.client.do(ctx, req, nil)
 }
 
-// Capacity shows the currently used capacity of an organization.
-func (s *organizations) Capacity(ctx context.Context, organization string) (*Capacity, error) {
+// ReadCapacity shows the currently used capacity of an organization.
+func (s *organizations) ReadCapacity(ctx context.Context, organization string) (*Capacity, error) {
 	if !validStringID(&organization) {
 		return nil, ErrInvalidOrg
 	}
@@ -318,8 +318,8 @@ func (s *organizations) Capacity(ctx context.Context, organization string) (*Cap
 	return c, nil
 }
 
-// Entitlements shows the entitlements of an organization.
-func (s *organizations) Entitlements(ctx context.Context, organization string) (*Entitlements, error) {
+// ReadEntitlements shows the entitlements of an organization.
+func (s *organizations) ReadEntitlements(ctx context.Context, organization string) (*Entitlements, error) {
 	if !validStringID(&organization) {
 		return nil, ErrInvalidOrg
 	}
@@ -339,13 +339,13 @@ func (s *organizations) Entitlements(ctx context.Context, organization string) (
 	return e, nil
 }
 
-// RunQueueOptions represents the options for showing the queue.
-type RunQueueOptions struct {
+// ReadRunQueueOptions represents the options for showing the queue.
+type ReadRunQueueOptions struct {
 	ListOptions
 }
 
-// RunQueue shows the current run queue of an organization.
-func (s *organizations) RunQueue(ctx context.Context, organization string, options RunQueueOptions) (*RunQueue, error) {
+// ReadRunQueue shows the current run queue of an organization.
+func (s *organizations) ReadRunQueue(ctx context.Context, organization string, options ReadRunQueueOptions) (*RunQueue, error) {
 	if !validStringID(&organization) {
 		return nil, ErrInvalidOrg
 	}

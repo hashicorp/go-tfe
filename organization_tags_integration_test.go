@@ -176,11 +176,11 @@ func TestOrganizationTagsAddWorkspace(t *testing.T) {
 		require.NoError(t, err)
 
 		//Ensure the tag was properly associated with the workspaces
-		fetched, err := client.Workspaces.Tags(ctx, workspaceToAdd1.ID, nil)
+		fetched, err := client.Workspaces.ListTags(ctx, workspaceToAdd1.ID, nil)
 		require.NoError(t, err)
 		assert.Equal(t, fetched.Items[0].ID, tagID)
 
-		fetched, err = client.Workspaces.Tags(ctx, workspaceToAdd2.ID, nil)
+		fetched, err = client.Workspaces.ListTags(ctx, workspaceToAdd2.ID, nil)
 		require.NoError(t, err)
 		assert.Equal(t, fetched.Items[0].ID, tagID)
 	})

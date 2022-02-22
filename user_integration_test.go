@@ -35,7 +35,7 @@ func TestUsersUpdate(t *testing.T) {
 
 	// Make sure we reset the current user when we're done.
 	defer func() {
-		_, err := client.Users.Update(ctx, UserUpdateOptions{
+		_, err := client.Users.UpdateCurrent(ctx, UserUpdateOptions{
 			Email:    String(uTest.Email),
 			Username: String(uTest.Username),
 		})
@@ -45,7 +45,7 @@ func TestUsersUpdate(t *testing.T) {
 	}()
 
 	t.Run("without any options", func(t *testing.T) {
-		_, err := client.Users.Update(ctx, UserUpdateOptions{})
+		_, err := client.Users.UpdateCurrent(ctx, UserUpdateOptions{})
 		require.NoError(t, err)
 
 		u, err := client.Users.ReadCurrent(ctx)
@@ -54,7 +54,7 @@ func TestUsersUpdate(t *testing.T) {
 	})
 
 	t.Run("with a new username", func(t *testing.T) {
-		_, err := client.Users.Update(ctx, UserUpdateOptions{
+		_, err := client.Users.UpdateCurrent(ctx, UserUpdateOptions{
 			Username: String("NewTestUsername"),
 		})
 		require.NoError(t, err)
@@ -65,7 +65,7 @@ func TestUsersUpdate(t *testing.T) {
 	})
 
 	t.Run("with a new email address", func(t *testing.T) {
-		_, err := client.Users.Update(ctx, UserUpdateOptions{
+		_, err := client.Users.UpdateCurrent(ctx, UserUpdateOptions{
 			Email: String("newtestemail@hashicorp.com"),
 		})
 		require.NoError(t, err)
@@ -86,7 +86,7 @@ func TestUsersUpdate(t *testing.T) {
 	})
 
 	t.Run("with invalid email address", func(t *testing.T) {
-		u, err := client.Users.Update(ctx, UserUpdateOptions{
+		u, err := client.Users.UpdateCurrent(ctx, UserUpdateOptions{
 			Email: String("notamailaddress"),
 		})
 		assert.Nil(t, u)

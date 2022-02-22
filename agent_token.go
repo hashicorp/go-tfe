@@ -19,8 +19,8 @@ type AgentTokens interface {
 	// List all the agent tokens of the given agent pool.
 	List(ctx context.Context, agentPoolID string) (*AgentTokenList, error)
 
-	// Generate a new agent token with the given options.
-	Generate(ctx context.Context, agentPoolID string, options AgentTokenGenerateOptions) (*AgentToken, error)
+	// Create a new agent token with the given options.
+	Create(ctx context.Context, agentPoolID string, options AgentTokenCreateOptions) (*AgentToken, error)
 
 	// Read an agent token by its ID.
 	Read(ctx context.Context, agentTokenID string) (*AgentToken, error)
@@ -70,8 +70,8 @@ func (s *agentTokens) List(ctx context.Context, agentPoolID string) (*AgentToken
 	return tokenList, nil
 }
 
-// AgentTokenGenerateOptions represents the options for creating an agent token.
-type AgentTokenGenerateOptions struct {
+// AgentTokenCreateOptions represents the options for creating an agent token.
+type AgentTokenCreateOptions struct {
 	// Type is a public field utilized by JSON:API to
 	// set the resource type via the field tag.
 	// It is not a user-defined value and does not need to be set.
@@ -82,8 +82,8 @@ type AgentTokenGenerateOptions struct {
 	Description *string `jsonapi:"attr,description"`
 }
 
-// Generate a new agent token with the given options.
-func (s *agentTokens) Generate(ctx context.Context, agentPoolID string, options AgentTokenGenerateOptions) (*AgentToken, error) {
+// Create a new agent token with the given options.
+func (s *agentTokens) Create(ctx context.Context, agentPoolID string, options AgentTokenCreateOptions) (*AgentToken, error) {
 	if !validStringID(&agentPoolID) {
 		return nil, ErrInvalidAgentPoolID
 	}
