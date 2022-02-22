@@ -165,7 +165,7 @@ func (s *runTasks) Read(ctx context.Context, runTaskID string) (*RunTask, error)
 
 // RunTaskReadOptions represents the set of options for reading a run task
 type RunTaskReadOptions struct {
-	Include []RunTaskIncludeOps `url:"include"`
+	Include []RunTaskIncludeOps `url:"include,omitempty"`
 }
 
 // Read is used to read an organization's run task by ID with options

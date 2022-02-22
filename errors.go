@@ -66,10 +66,6 @@ var (
 
 	ErrInvalidSMTPAuth = errors.New("invalid smtp auth type")
 
-	ErrInvalidCostEstimateID = errors.New("invalid value for cost estimate ID")
-
-	ErrInvalidSMTPAuth = errors.New("invalid smtp auth type")
-
 	ErrInvalidAgentPoolID = errors.New("invalid value for agent pool ID")
 
 	ErrInvalidAgentTokenID = errors.New("invalid value for agent token ID")
