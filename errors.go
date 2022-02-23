@@ -72,6 +72,20 @@ var (
 
 	ErrInvalidRunID = errors.New("invalid value for run ID")
 
+	ErrInvalidRunTaskCategory = errors.New(`category must be "task"`)
+
+	ErrInvalidRunTaskID = errors.New("invalid value for run task ID")
+
+	ErrInvalidRunTaskURL = errors.New("invalid url for run task URL")
+
+	ErrInvalidWorkspaceRunTaskID = errors.New("invalid value for workspace run task ID")
+
+	ErrInvalidWorkspaceRunTaskType = errors.New(`invalid value for type, please use "workspace-tasks"`)
+
+	ErrInvalidTaskResultID = errors.New("invalid value for task result ID")
+
+	ErrInvalidTaskStageID = errors.New("invalid value for task stage ID")
+
 	ErrInvalidApplyID = errors.New("invalid value for apply ID")
 
 	ErrInvalidOrg = errors.New("invalid value for organization")

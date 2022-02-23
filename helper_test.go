@@ -702,6 +702,41 @@ func createRegistryModuleWithVersion(t *testing.T, client *Client, org *Organiza
 	}
 }
 
+func createRunTask(t *testing.T, client *Client, org *Organization) (*RunTask, func()) {
+	var orgCleanup func()
+
+	if org == nil {
+		org, orgCleanup = createOrganization(t, client)
+	}
+
+	runTaskURL := os.Getenv("TFC_RUN_TASK_URL")
+	if runTaskURL == "" {
+		t.Error("Cannot create a run task with an empty URL. You must set TFC_RUN_TASK_URL for run task related tests.")
+	}
+
+	ctx := context.Background()
+	r, err := client.RunTasks.Create(ctx, org.Name, RunTaskCreateOptions{
+		Name:     "tst-" + randomString(t),
+		URL:      runTaskURL,
+		Category: "task",
+	})
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	return r, func() {
+		if err := client.RunTasks.Delete(ctx, r.ID); err != nil {
+			t.Errorf("Error removing Run Task! WARNING: Run task limit\n"+
+				"may be reached if not deleted! The full error is shown below.\n\n"+
+				"Run Task: %s\nError: %s", r.Name, err)
+		}
+
+		if orgCleanup != nil {
+			orgCleanup()
+		}
+	}
+}
+
 func createSSHKey(t *testing.T, client *Client, org *Organization) (*SSHKey, func()) {
 	var orgCleanup func()
 
@@ -991,6 +1026,52 @@ func createWorkspaceWithVCS(t *testing.T, client *Client, org *Organization, opt
 	}
 }
 
+func createWorkspaceRunTask(t *testing.T, client *Client, workspace *Workspace, runTask *RunTask) (*WorkspaceRunTask, func()) {
+	var organization *Organization
+	var runTaskCleanup func()
+	var workspaceCleanup func()
+	var orgCleanup func()
+
+	if workspace == nil {
+		organization, orgCleanup = createOrganization(t, client)
+		workspace, workspaceCleanup = createWorkspace(t, client, organization)
+	}
+
+	if runTask == nil {
+		runTask, runTaskCleanup = createRunTask(t, client, organization)
+	}
+
+	ctx := context.Background()
+	wr, err := client.WorkspaceRunTasks.Create(ctx, workspace.ID, WorkspaceRunTaskCreateOptions{
+		EnforcementLevel: Advisory,
+		RunTask:          runTask,
+	})
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	return wr, func() {
+		if err := client.WorkspaceRunTasks.Delete(ctx, workspace.ID, wr.ID); err != nil {
+			t.Errorf("Error destroying workspace run task!\n"+
+				"Workspace: %s\n"+
+				"Workspace Run Task: %s\n"+
+				"Error: %s", workspace.ID, wr.ID, err)
+		}
+
+		if runTaskCleanup != nil {
+			runTaskCleanup()
+		}
+
+		if workspaceCleanup != nil {
+			workspaceCleanup()
+		}
+
+		if orgCleanup != nil {
+			orgCleanup()
+		}
+	}
+}
+
 func genSha(t *testing.T, secret, data string) string {
 	h := hmac.New(sha256.New, []byte(secret))
 	_, err := h.Write([]byte(data))
@@ -1031,6 +1112,13 @@ func skipIfFreeOnly(t *testing.T) {
 	}
 }
 
+// skips a test if the test requires a beta feature
+func skipIfBeta(t *testing.T) {
+	if !betaFeaturesEnabled() {
+		t.Skip("Skipping test related to a Terraform Cloud beta feature. Set ENABLE_BETA=1 to run.")
+	}
+}
+
 // Checks to see if ENABLE_TFE is set to 1, thereby enabling enterprise tests.
 func enterpriseEnabled() bool {
 	return os.Getenv("ENABLE_TFE") == "1"
@@ -1038,4 +1126,9 @@ func enterpriseEnabled() bool {
 
 func paidFeaturesDisabled() bool {
 	return os.Getenv("SKIP_PAID") == "1"
+}
+
+// Checks to see if ENABLE_BETA is set to 1, thereby enabling tests for beta features.
+func betaFeaturesEnabled() bool {
+	return os.Getenv("ENABLE_BETA") == "1"
 }

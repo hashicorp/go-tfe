@@ -28,10 +28,10 @@ import (
 )
 
 const (
-	userAgent        = "go-tfe"
-	headerRateLimit  = "X-RateLimit-Limit"
-	headerRateReset  = "X-RateLimit-Reset"
-	headerAPIVersion = "TFP-API-Version"
+	_userAgent        = "go-tfe"
+	_headerRateLimit  = "X-RateLimit-Limit"
+	_headerRateReset  = "X-RateLimit-Reset"
+	_headerAPIVersion = "TFP-API-Version"
 
 	// DefaultAddress of Terraform Enterprise.
 	DefaultAddress = "https://app.terraform.io"
@@ -82,7 +82,7 @@ func DefaultConfig() *Config {
 	}
 
 	// Set the default user agent.
-	config.Headers.Set("User-Agent", userAgent)
+	config.Headers.Set("User-Agent", _userAgent)
 
 	return config
 }
@@ -121,10 +121,13 @@ type Client struct {
 	PolicySets                 PolicySets
 	RegistryModules            RegistryModules
 	Runs                       Runs
+	RunTasks                   RunTasks
 	RunTriggers                RunTriggers
 	SSHKeys                    SSHKeys
 	StateVersionOutputs        StateVersionOutputs
 	StateVersions              StateVersions
+	TaskResults                TaskResults
+	TaskStages                 TaskStages
 	Teams                      Teams
 	TeamAccess                 TeamAccesses
 	TeamMembers                TeamMembers
@@ -133,6 +136,7 @@ type Client struct {
 	UserTokens                 UserTokens
 	Variables                  Variables
 	Workspaces                 Workspaces
+	WorkspaceRunTasks          WorkspaceRunTasks
 
 	Meta Meta
 }
@@ -258,10 +262,12 @@ func NewClient(cfg *Config) (*Client, error) {
 	client.PolicySets = &policySets{client: client}
 	client.RegistryModules = &registryModules{client: client}
 	client.Runs = &runs{client: client}
+	client.RunTasks = &runTasks{client: client}
 	client.RunTriggers = &runTriggers{client: client}
 	client.SSHKeys = &sshKeys{client: client}
 	client.StateVersionOutputs = &stateVersionOutputs{client: client}
 	client.StateVersions = &stateVersions{client: client}
+	client.TaskStages = &taskStages{client: client}
 	client.Teams = &teams{client: client}
 	client.TeamAccess = &teamAccesses{client: client}
 	client.TeamMembers = &teamMembers{client: client}
@@ -270,6 +276,7 @@ func NewClient(cfg *Config) (*Client, error) {
 	client.UserTokens = &userTokens{client: client}
 	client.Variables = &variables{client: client}
 	client.Workspaces = &workspaces{client: client}
+	client.WorkspaceRunTasks = &workspaceRunTasks{client: client}
 
 	client.Meta = Meta{
 		IPRanges: &ipRanges{client: client},
@@ -361,8 +368,8 @@ func rateLimitBackoff(min, max time.Duration, attemptNum int, resp *http.Respons
 	// First create some jitter bounded by the min and max durations.
 	jitter := time.Duration(rnd.Float64() * float64(max-min))
 
-	if resp != nil && resp.Header.Get(headerRateReset) != "" {
-		v := resp.Header.Get(headerRateReset)
+	if resp != nil && resp.Header.Get(_headerRateReset) != "" {
+		v := resp.Header.Get(_headerRateReset)
 		reset, err := strconv.ParseFloat(v, 64)
 		if err != nil {
 			log.Fatal(err)
@@ -415,8 +422,8 @@ func (c *Client) getRawAPIMetadata() (rawAPIMetadata, error) {
 	}
 	resp.Body.Close()
 
-	meta.APIVersion = resp.Header.Get(headerAPIVersion)
-	meta.RateLimit = resp.Header.Get(headerRateLimit)
+	meta.APIVersion = resp.Header.Get(_headerAPIVersion)
+	meta.RateLimit = resp.Header.Get(_headerRateLimit)
 
 	return meta, nil
 }
