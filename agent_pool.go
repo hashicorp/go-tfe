@@ -55,6 +55,18 @@ type AgentPoolListOptions struct {
 	ListOptions
 }
 
+// AgentPoolCreateOptions represents the options for creating an agent pool.
+type AgentPoolCreateOptions struct {
+	// Type is a public field utilized by JSON:API to
+	// set the resource type via the field tag.
+	// It is not a user-defined value and does not need to be set.
+	// https://jsonapi.org/format/#crud-creating
+	Type string `jsonapi:"primary,agent-pools"`
+
+	// A name to identify the agent pool.
+	Name *string `jsonapi:"attr,name"`
+}
+
 // List all the agent pools of the given organization.
 func (s *agentPools) List(ctx context.Context, organization string, options *AgentPoolListOptions) (*AgentPoolList, error) {
 	if !validStringID(&organization) {
@@ -74,28 +86,6 @@ func (s *agentPools) List(ctx context.Context, organization string, options *Age
 	}
 
 	return poolList, nil
-}
-
-// AgentPoolCreateOptions represents the options for creating an agent pool.
-type AgentPoolCreateOptions struct {
-	// Type is a public field utilized by JSON:API to
-	// set the resource type via the field tag.
-	// It is not a user-defined value and does not need to be set.
-	// https://jsonapi.org/format/#crud-creating
-	Type string `jsonapi:"primary,agent-pools"`
-
-	// A name to identify the agent pool.
-	Name *string `jsonapi:"attr,name"`
-}
-
-func (o AgentPoolCreateOptions) valid() error {
-	if !validString(o.Name) {
-		return ErrRequiredName
-	}
-	if !validStringID(o.Name) {
-		return ErrInvalidName
-	}
-	return nil
 }
 
 // Create a new agent pool with the given options.
@@ -156,13 +146,6 @@ type AgentPoolUpdateOptions struct {
 	Name *string `jsonapi:"attr,name"`
 }
 
-func (o AgentPoolUpdateOptions) valid() error {
-	if o.Name != nil && !validStringID(o.Name) {
-		return ErrInvalidName
-	}
-	return nil
-}
-
 // Update an agent pool by its ID.
 func (s *agentPools) Update(ctx context.Context, agentPoolID string, options AgentPoolUpdateOptions) (*AgentPool, error) {
 	if !validStringID(&agentPoolID) {
@@ -201,4 +184,21 @@ func (s *agentPools) Delete(ctx context.Context, agentPoolID string) error {
 	}
 
 	return s.client.do(ctx, req, nil)
+}
+
+func (o AgentPoolCreateOptions) valid() error {
+	if !validString(o.Name) {
+		return ErrRequiredName
+	}
+	if !validStringID(o.Name) {
+		return ErrInvalidName
+	}
+	return nil
+}
+
+func (o AgentPoolUpdateOptions) valid() error {
+	if o.Name != nil && !validStringID(o.Name) {
+		return ErrInvalidName
+	}
+	return nil
 }

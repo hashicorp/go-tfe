@@ -238,27 +238,6 @@ type WorkspaceListOptions struct {
 	Include []WSIncludeOps `url:"include,omitempty"`
 }
 
-// List all the workspaces within an organization.
-func (s *workspaces) List(ctx context.Context, organization string, options *WorkspaceListOptions) (*WorkspaceList, error) {
-	if !validStringID(&organization) {
-		return nil, ErrInvalidOrg
-	}
-
-	u := fmt.Sprintf("organizations/%s/workspaces", url.QueryEscape(organization))
-	req, err := s.client.newRequest("GET", u, options)
-	if err != nil {
-		return nil, err
-	}
-
-	wl := &WorkspaceList{}
-	err = s.client.do(ctx, req, wl)
-	if err != nil {
-		return nil, err
-	}
-
-	return wl, nil
-}
-
 // WorkspaceCreateOptions represents the options for creating a new workspace.
 type WorkspaceCreateOptions struct {
 	// Type is a public field utilized by JSON:API to
@@ -367,24 +346,187 @@ type VCSRepoOptions struct {
 	OAuthTokenID      *string `json:"oauth-token-id,omitempty"`
 }
 
-func (o WorkspaceCreateOptions) valid() error {
-	if !validString(o.Name) {
-		return ErrRequiredName
-	}
-	if !validStringID(o.Name) {
-		return ErrInvalidName
-	}
-	if o.Operations != nil && o.ExecutionMode != nil {
-		return ErrUnsupportedOperations
-	}
-	if o.AgentPoolID != nil && (o.ExecutionMode == nil || *o.ExecutionMode != "agent") {
-		return ErrRequiredAgentMode
-	}
-	if o.AgentPoolID == nil && (o.ExecutionMode != nil && *o.ExecutionMode == "agent") {
-		return ErrRequiredAgentPoolID
+// WorkspaceUpdateOptions represents the options for updating a workspace.
+type WorkspaceUpdateOptions struct {
+	// Type is a public field utilized by JSON:API to
+	// set the resource type via the field tag.
+	// It is not a user-defined value and does not need to be set.
+	// https://jsonapi.org/format/#crud-creating
+	Type string `jsonapi:"primary,workspaces"`
+
+	// Required when execution-mode is set to agent. The ID of the agent pool
+	// belonging to the workspace's organization. This value must not be specified
+	// if execution-mode is set to remote or local or if operations is set to true.
+	AgentPoolID *string `jsonapi:"attr,agent-pool-id,omitempty"`
+
+	// Whether destroy plans can be queued on the workspace.
+	AllowDestroyPlan *bool `jsonapi:"attr,allow-destroy-plan,omitempty"`
+
+	// Whether to automatically apply changes when a Terraform plan is successful.
+	AutoApply *bool `jsonapi:"attr,auto-apply,omitempty"`
+
+	// A new name for the workspace, which can only include letters, numbers, -,
+	// and _. This will be used as an identifier and must be unique in the
+	// organization. Warning: Changing a workspace's name changes its URL in the
+	// API and UI.
+	Name *string `jsonapi:"attr,name,omitempty"`
+
+	// A description for the workspace.
+	Description *string `jsonapi:"attr,description,omitempty"`
+
+	// Which execution mode to use. Valid values are remote, local, and agent.
+	// When set to local, the workspace will be used for state storage only.
+	// This value must not be specified if operations is specified.
+	// 'agent' execution mode is not available in Terraform Enterprise.
+	ExecutionMode *string `jsonapi:"attr,execution-mode,omitempty"`
+
+	// Whether to filter runs based on the changed files in a VCS push. If
+	// enabled, the working directory and trigger prefixes describe a set of
+	// paths which must contain changes for a VCS push to trigger a run. If
+	// disabled, any push will trigger a run.
+	FileTriggersEnabled *bool `jsonapi:"attr,file-triggers-enabled,omitempty"`
+
+	GlobalRemoteState *bool `jsonapi:"attr,global-remote-state,omitempty"`
+
+	// DEPRECATED. Whether the workspace will use remote or local execution mode.
+	// Use ExecutionMode instead.
+	Operations *bool `jsonapi:"attr,operations,omitempty"`
+
+	// Whether to queue all runs. Unless this is set to true, runs triggered by
+	// a webhook will not be queued until at least one run is manually queued.
+	QueueAllRuns *bool `jsonapi:"attr,queue-all-runs,omitempty"`
+
+	// Whether this workspace allows speculative plans. Setting this to false
+	// prevents Terraform Cloud or the Terraform Enterprise instance from
+	// running plans on pull requests, which can improve security if the VCS
+	// repository is public or includes untrusted contributors.
+	SpeculativeEnabled *bool `jsonapi:"attr,speculative-enabled,omitempty"`
+
+	// BETA. Enable the experimental advanced run user interface.
+	// This only applies to runs using Terraform version 0.15.2 or newer,
+	// and runs executed using older versions will see the classic experience
+	// regardless of this setting.
+	StructuredRunOutputEnabled *bool `jsonapi:"attr,structured-run-output-enabled,omitempty"`
+
+	// The version of Terraform to use for this workspace.
+	TerraformVersion *string `jsonapi:"attr,terraform-version,omitempty"`
+
+	// List of repository-root-relative paths which list all locations to be
+	// tracked for changes. See FileTriggersEnabled above for more details.
+	TriggerPrefixes []string `jsonapi:"attr,trigger-prefixes,omitempty"`
+
+	// To delete a workspace's existing VCS repo, specify null instead of an
+	// object. To modify a workspace's existing VCS repo, include whichever of
+	// the keys below you wish to modify. To add a new VCS repo to a workspace
+	// that didn't previously have one, include at least the oauth-token-id and
+	// identifier keys.
+	VCSRepo *VCSRepoOptions `jsonapi:"attr,vcs-repo,omitempty"`
+
+	// A relative path that Terraform will execute within. This defaults to the
+	// root of your repository and is typically set to a subdirectory matching
+	// the environment when multiple environments exist within the same
+	// repository.
+	WorkingDirectory *string `jsonapi:"attr,working-directory,omitempty"`
+}
+
+// WorkspaceLockOptions represents the options for locking a workspace.
+type WorkspaceLockOptions struct {
+	// Specifies the reason for locking the workspace.
+	Reason *string `jsonapi:"attr,reason,omitempty"`
+}
+
+// workspaceRemoveVCSConnectionOptions
+type workspaceRemoveVCSConnectionOptions struct {
+	ID      string          `jsonapi:"primary,workspaces"`
+	VCSRepo *VCSRepoOptions `jsonapi:"attr,vcs-repo"`
+}
+
+// WorkspaceAssignSSHKeyOptions represents the options to assign an SSH key to
+// a workspace.
+type WorkspaceAssignSSHKeyOptions struct {
+	// Type is a public field utilized by JSON:API to
+	// set the resource type via the field tag.
+	// It is not a user-defined value and does not need to be set.
+	// https://jsonapi.org/format/#crud-creating
+	Type string `jsonapi:"primary,workspaces"`
+
+	// The SSH key ID to assign.
+	SSHKeyID *string `jsonapi:"attr,id"`
+}
+
+// workspaceUnassignSSHKeyOptions represents the options to unassign an SSH key
+// to a workspace.
+type workspaceUnassignSSHKeyOptions struct {
+	// Type is a public field utilized by JSON:API to
+	// set the resource type via the field tag.
+	// It is not a user-defined value and does not need to be set.
+	// https://jsonapi.org/format/#crud-creating
+	Type string `jsonapi:"primary,workspaces"`
+
+	// Must be nil to unset the currently assigned SSH key.
+	SSHKeyID *string `jsonapi:"attr,id"`
+}
+
+type RemoteStateConsumersListOptions struct {
+	ListOptions
+}
+
+// WorkspaceAddRemoteStateConsumersOptions represents the options for adding remote state consumers
+// to a workspace.
+type WorkspaceAddRemoteStateConsumersOptions struct {
+	/// The workspaces to add as remote state consumers to the workspace.
+	Workspaces []*Workspace
+}
+
+// WorkspaceRemoveRemoteStateConsumersOptions represents the options for removing remote state
+// consumers from a workspace.
+type WorkspaceRemoveRemoteStateConsumersOptions struct {
+	/// The workspaces to remove as remote state consumers from the workspace.
+	Workspaces []*Workspace
+}
+
+// WorkspaceUpdateRemoteStateConsumersOptions represents the options for
+// updatintg remote state consumers from a workspace.
+type WorkspaceUpdateRemoteStateConsumersOptions struct {
+	/// The workspaces to update remote state consumers for the workspace.
+	Workspaces []*Workspace
+}
+
+type WorkspaceTagListOptions struct {
+	ListOptions
+
+	// A query string used to filter workspace tags.
+	// Any workspace tag with a name partially matching this value will be returned.
+	Query *string `url:"name,omitempty"`
+}
+
+type WorkspaceAddTagsOptions struct {
+	Tags []*Tag
+}
+
+type WorkspaceRemoveTagsOptions struct {
+	Tags []*Tag
+}
+
+// List all the workspaces within an organization.
+func (s *workspaces) List(ctx context.Context, organization string, options *WorkspaceListOptions) (*WorkspaceList, error) {
+	if !validStringID(&organization) {
+		return nil, ErrInvalidOrg
 	}
 
-	return nil
+	u := fmt.Sprintf("organizations/%s/workspaces", url.QueryEscape(organization))
+	req, err := s.client.newRequest("GET", u, options)
+	if err != nil {
+		return nil, err
+	}
+
+	wl := &WorkspaceList{}
+	err = s.client.do(ctx, req, wl)
+	if err != nil {
+		return nil, err
+	}
+
+	return wl, nil
 }
 
 // Create is used to create a new workspace.
@@ -502,103 +644,6 @@ func (s *workspaces) Readme(ctx context.Context, workspaceID string) (io.Reader,
 	return strings.NewReader(r.Readme.RawMarkdown), nil
 }
 
-// WorkspaceUpdateOptions represents the options for updating a workspace.
-type WorkspaceUpdateOptions struct {
-	// Type is a public field utilized by JSON:API to
-	// set the resource type via the field tag.
-	// It is not a user-defined value and does not need to be set.
-	// https://jsonapi.org/format/#crud-creating
-	Type string `jsonapi:"primary,workspaces"`
-
-	// Required when execution-mode is set to agent. The ID of the agent pool
-	// belonging to the workspace's organization. This value must not be specified
-	// if execution-mode is set to remote or local or if operations is set to true.
-	AgentPoolID *string `jsonapi:"attr,agent-pool-id,omitempty"`
-
-	// Whether destroy plans can be queued on the workspace.
-	AllowDestroyPlan *bool `jsonapi:"attr,allow-destroy-plan,omitempty"`
-
-	// Whether to automatically apply changes when a Terraform plan is successful.
-	AutoApply *bool `jsonapi:"attr,auto-apply,omitempty"`
-
-	// A new name for the workspace, which can only include letters, numbers, -,
-	// and _. This will be used as an identifier and must be unique in the
-	// organization. Warning: Changing a workspace's name changes its URL in the
-	// API and UI.
-	Name *string `jsonapi:"attr,name,omitempty"`
-
-	// A description for the workspace.
-	Description *string `jsonapi:"attr,description,omitempty"`
-
-	// Which execution mode to use. Valid values are remote, local, and agent.
-	// When set to local, the workspace will be used for state storage only.
-	// This value must not be specified if operations is specified.
-	// 'agent' execution mode is not available in Terraform Enterprise.
-	ExecutionMode *string `jsonapi:"attr,execution-mode,omitempty"`
-
-	// Whether to filter runs based on the changed files in a VCS push. If
-	// enabled, the working directory and trigger prefixes describe a set of
-	// paths which must contain changes for a VCS push to trigger a run. If
-	// disabled, any push will trigger a run.
-	FileTriggersEnabled *bool `jsonapi:"attr,file-triggers-enabled,omitempty"`
-
-	GlobalRemoteState *bool `jsonapi:"attr,global-remote-state,omitempty"`
-
-	// DEPRECATED. Whether the workspace will use remote or local execution mode.
-	// Use ExecutionMode instead.
-	Operations *bool `jsonapi:"attr,operations,omitempty"`
-
-	// Whether to queue all runs. Unless this is set to true, runs triggered by
-	// a webhook will not be queued until at least one run is manually queued.
-	QueueAllRuns *bool `jsonapi:"attr,queue-all-runs,omitempty"`
-
-	// Whether this workspace allows speculative plans. Setting this to false
-	// prevents Terraform Cloud or the Terraform Enterprise instance from
-	// running plans on pull requests, which can improve security if the VCS
-	// repository is public or includes untrusted contributors.
-	SpeculativeEnabled *bool `jsonapi:"attr,speculative-enabled,omitempty"`
-
-	// BETA. Enable the experimental advanced run user interface.
-	// This only applies to runs using Terraform version 0.15.2 or newer,
-	// and runs executed using older versions will see the classic experience
-	// regardless of this setting.
-	StructuredRunOutputEnabled *bool `jsonapi:"attr,structured-run-output-enabled,omitempty"`
-
-	// The version of Terraform to use for this workspace.
-	TerraformVersion *string `jsonapi:"attr,terraform-version,omitempty"`
-
-	// List of repository-root-relative paths which list all locations to be
-	// tracked for changes. See FileTriggersEnabled above for more details.
-	TriggerPrefixes []string `jsonapi:"attr,trigger-prefixes,omitempty"`
-
-	// To delete a workspace's existing VCS repo, specify null instead of an
-	// object. To modify a workspace's existing VCS repo, include whichever of
-	// the keys below you wish to modify. To add a new VCS repo to a workspace
-	// that didn't previously have one, include at least the oauth-token-id and
-	// identifier keys.
-	VCSRepo *VCSRepoOptions `jsonapi:"attr,vcs-repo,omitempty"`
-
-	// A relative path that Terraform will execute within. This defaults to the
-	// root of your repository and is typically set to a subdirectory matching
-	// the environment when multiple environments exist within the same
-	// repository.
-	WorkingDirectory *string `jsonapi:"attr,working-directory,omitempty"`
-}
-
-func (o WorkspaceUpdateOptions) valid() error {
-	if o.Name != nil && !validStringID(o.Name) {
-		return ErrInvalidName
-	}
-	if o.Operations != nil && o.ExecutionMode != nil {
-		return ErrUnsupportedOperations
-	}
-	if o.AgentPoolID == nil && (o.ExecutionMode != nil && *o.ExecutionMode == "agent") {
-		return ErrRequiredAgentPoolID
-	}
-
-	return nil
-}
-
 // Update settings of an existing workspace.
 func (s *workspaces) Update(ctx context.Context, organization, workspace string, options WorkspaceUpdateOptions) (*Workspace, error) {
 	if !validStringID(&organization) {
@@ -688,12 +733,6 @@ func (s *workspaces) DeleteByID(ctx context.Context, workspaceID string) error {
 	return s.client.do(ctx, req, nil)
 }
 
-// workspaceRemoveVCSConnectionOptions
-type workspaceRemoveVCSConnectionOptions struct {
-	ID      string          `jsonapi:"primary,workspaces"`
-	VCSRepo *VCSRepoOptions `jsonapi:"attr,vcs-repo"`
-}
-
 // RemoveVCSConnection from a workspace.
 func (s *workspaces) RemoveVCSConnection(ctx context.Context, organization, workspace string) (*Workspace, error) {
 	if !validStringID(&organization) {
@@ -743,12 +782,6 @@ func (s *workspaces) RemoveVCSConnectionByID(ctx context.Context, workspaceID st
 	}
 
 	return w, nil
-}
-
-// WorkspaceLockOptions represents the options for locking a workspace.
-type WorkspaceLockOptions struct {
-	// Specifies the reason for locking the workspace.
-	Reason *string `jsonapi:"attr,reason,omitempty"`
 }
 
 // Lock a workspace by its ID.
@@ -814,29 +847,6 @@ func (s *workspaces) ForceUnlock(ctx context.Context, workspaceID string) (*Work
 	return w, nil
 }
 
-// WorkspaceAssignSSHKeyOptions represents the options to assign an SSH key to
-// a workspace.
-type WorkspaceAssignSSHKeyOptions struct {
-	// Type is a public field utilized by JSON:API to
-	// set the resource type via the field tag.
-	// It is not a user-defined value and does not need to be set.
-	// https://jsonapi.org/format/#crud-creating
-	Type string `jsonapi:"primary,workspaces"`
-
-	// The SSH key ID to assign.
-	SSHKeyID *string `jsonapi:"attr,id"`
-}
-
-func (o WorkspaceAssignSSHKeyOptions) valid() error {
-	if !validString(o.SSHKeyID) {
-		return ErrRequiredSHHKeyID
-	}
-	if !validStringID(o.SSHKeyID) {
-		return ErrInvalidSHHKeyID
-	}
-	return nil
-}
-
 // AssignSSHKey to a workspace.
 func (s *workspaces) AssignSSHKey(ctx context.Context, workspaceID string, options WorkspaceAssignSSHKeyOptions) (*Workspace, error) {
 	if !validStringID(&workspaceID) {
@@ -861,19 +871,6 @@ func (s *workspaces) AssignSSHKey(ctx context.Context, workspaceID string, optio
 	return w, nil
 }
 
-// workspaceUnassignSSHKeyOptions represents the options to unassign an SSH key
-// to a workspace.
-type workspaceUnassignSSHKeyOptions struct {
-	// Type is a public field utilized by JSON:API to
-	// set the resource type via the field tag.
-	// It is not a user-defined value and does not need to be set.
-	// https://jsonapi.org/format/#crud-creating
-	Type string `jsonapi:"primary,workspaces"`
-
-	// Must be nil to unset the currently assigned SSH key.
-	SSHKeyID *string `jsonapi:"attr,id"`
-}
-
 // UnassignSSHKey from a workspace.
 func (s *workspaces) UnassignSSHKey(ctx context.Context, workspaceID string) (*Workspace, error) {
 	if !validStringID(&workspaceID) {
@@ -893,10 +890,6 @@ func (s *workspaces) UnassignSSHKey(ctx context.Context, workspaceID string) (*W
 	}
 
 	return w, nil
-}
-
-type RemoteStateConsumersListOptions struct {
-	ListOptions
 }
 
 // RemoteStateConsumers returns the remote state consumers for a given workspace.
@@ -921,23 +914,6 @@ func (s *workspaces) ListRemoteStateConsumers(ctx context.Context, workspaceID s
 	return wl, nil
 }
 
-// WorkspaceAddRemoteStateConsumersOptions represents the options for adding remote state consumers
-// to a workspace.
-type WorkspaceAddRemoteStateConsumersOptions struct {
-	// The workspaces to add as remote state consumers to the workspace.
-	Workspaces []*Workspace
-}
-
-func (o WorkspaceAddRemoteStateConsumersOptions) valid() error {
-	if o.Workspaces == nil {
-		return ErrWorkspacesRequired
-	}
-	if len(o.Workspaces) == 0 {
-		return ErrWorkspaceMinLimit
-	}
-	return nil
-}
-
 // AddRemoteStateConsumere adds the remote state consumers to a given workspace.
 func (s *workspaces) AddRemoteStateConsumers(ctx context.Context, workspaceID string, options WorkspaceAddRemoteStateConsumersOptions) error {
 	if !validStringID(&workspaceID) {
@@ -954,23 +930,6 @@ func (s *workspaces) AddRemoteStateConsumers(ctx context.Context, workspaceID st
 	}
 
 	return s.client.do(ctx, req, nil)
-}
-
-// WorkspaceRemoveRemoteStateConsumersOptions represents the options for removing remote state
-// consumers from a workspace.
-type WorkspaceRemoveRemoteStateConsumersOptions struct {
-	// The workspaces to remove as remote state consumers from the workspace.
-	Workspaces []*Workspace
-}
-
-func (o WorkspaceRemoveRemoteStateConsumersOptions) valid() error {
-	if o.Workspaces == nil {
-		return ErrWorkspacesRequired
-	}
-	if len(o.Workspaces) == 0 {
-		return ErrWorkspaceMinLimit
-	}
-	return nil
 }
 
 // RemoveRemoteStateConsumers removes the remote state consumers for a given workspace.
@@ -991,23 +950,6 @@ func (s *workspaces) RemoveRemoteStateConsumers(ctx context.Context, workspaceID
 	return s.client.do(ctx, req, nil)
 }
 
-// WorkspaceUpdateRemoteStateConsumersOptions represents the options for
-// updatintg remote state consumers from a workspace.
-type WorkspaceUpdateRemoteStateConsumersOptions struct {
-	// The workspaces to update remote state consumers for the workspace.
-	Workspaces []*Workspace
-}
-
-func (o WorkspaceUpdateRemoteStateConsumersOptions) valid() error {
-	if o.Workspaces == nil {
-		return ErrWorkspacesRequired
-	}
-	if len(o.Workspaces) == 0 {
-		return ErrWorkspaceMinLimit
-	}
-	return nil
-}
-
 // UpdateRemoteStateConsumers removes the remote state consumers for a given workspace.
 func (s *workspaces) UpdateRemoteStateConsumers(ctx context.Context, workspaceID string, options WorkspaceUpdateRemoteStateConsumersOptions) error {
 	if !validStringID(&workspaceID) {
@@ -1024,14 +966,6 @@ func (s *workspaces) UpdateRemoteStateConsumers(ctx context.Context, workspaceID
 	}
 
 	return s.client.do(ctx, req, nil)
-}
-
-type WorkspaceTagListOptions struct {
-	ListOptions
-
-	// A query string used to filter workspace tags.
-	// Any workspace tag with a name partially matching this value will be returned.
-	Query *string `url:"name,omitempty"`
 }
 
 // ListTags returns the tags for a given workspace.
@@ -1056,23 +990,6 @@ func (s *workspaces) ListTags(ctx context.Context, workspaceID string, options *
 	return tl, nil
 }
 
-type WorkspaceAddTagsOptions struct {
-	Tags []*Tag
-}
-
-func (o WorkspaceAddTagsOptions) valid() error {
-	if len(o.Tags) == 0 {
-		return ErrMissingTagIdentifier
-	}
-	for _, s := range o.Tags {
-		if s.Name == "" && s.ID == "" {
-			return ErrMissingTagIdentifier
-		}
-	}
-
-	return nil
-}
-
 // AddTags adds a list of tags to a workspace.
 func (s *workspaces) AddTags(ctx context.Context, workspaceID string, options WorkspaceAddTagsOptions) error {
 	if !validStringID(&workspaceID) {
@@ -1091,23 +1008,6 @@ func (s *workspaces) AddTags(ctx context.Context, workspaceID string, options Wo
 	return s.client.do(ctx, req, nil)
 }
 
-type WorkspaceRemoveTagsOptions struct {
-	Tags []*Tag
-}
-
-func (o WorkspaceRemoveTagsOptions) valid() error {
-	if len(o.Tags) == 0 {
-		return ErrMissingTagIdentifier
-	}
-	for _, s := range o.Tags {
-		if s.Name == "" && s.ID == "" {
-			return ErrMissingTagIdentifier
-		}
-	}
-
-	return nil
-}
-
 // RemoveTags removes a list of tags from a workspace.
 func (s *workspaces) RemoveTags(ctx context.Context, workspaceID string, options WorkspaceRemoveTagsOptions) error {
 	if !validStringID(&workspaceID) {
@@ -1124,4 +1024,104 @@ func (s *workspaces) RemoveTags(ctx context.Context, workspaceID string, options
 	}
 
 	return s.client.do(ctx, req, nil)
+}
+
+func (o WorkspaceCreateOptions) valid() error {
+	if !validString(o.Name) {
+		return ErrRequiredName
+	}
+	if !validStringID(o.Name) {
+		return ErrInvalidName
+	}
+	if o.Operations != nil && o.ExecutionMode != nil {
+		return ErrUnsupportedOperations
+	}
+	if o.AgentPoolID != nil && (o.ExecutionMode == nil || *o.ExecutionMode != "agent") {
+		return ErrRequiredAgentMode
+	}
+	if o.AgentPoolID == nil && (o.ExecutionMode != nil && *o.ExecutionMode == "agent") {
+		return ErrRequiredAgentPoolID
+	}
+
+	return nil
+}
+
+func (o WorkspaceUpdateOptions) valid() error {
+	if o.Name != nil && !validStringID(o.Name) {
+		return ErrInvalidName
+	}
+	if o.Operations != nil && o.ExecutionMode != nil {
+		return ErrUnsupportedOperations
+	}
+	if o.AgentPoolID == nil && (o.ExecutionMode != nil && *o.ExecutionMode == "agent") {
+		return ErrRequiredAgentPoolID
+	}
+
+	return nil
+}
+
+func (o WorkspaceAssignSSHKeyOptions) valid() error {
+	if !validString(o.SSHKeyID) {
+		return ErrRequiredSHHKeyID
+	}
+	if !validStringID(o.SSHKeyID) {
+		return ErrInvalidSHHKeyID
+	}
+	return nil
+}
+
+func (o WorkspaceAddRemoteStateConsumersOptions) valid() error {
+	if o.Workspaces == nil {
+		return ErrWorkspacesRequired
+	}
+	if len(o.Workspaces) == 0 {
+		return ErrWorkspaceMinLimit
+	}
+	return nil
+}
+
+func (o WorkspaceRemoveRemoteStateConsumersOptions) valid() error {
+	if o.Workspaces == nil {
+		return ErrWorkspacesRequired
+	}
+	if len(o.Workspaces) == 0 {
+		return ErrWorkspaceMinLimit
+	}
+	return nil
+}
+
+func (o WorkspaceUpdateRemoteStateConsumersOptions) valid() error {
+	if o.Workspaces == nil {
+		return ErrWorkspacesRequired
+	}
+	if len(o.Workspaces) == 0 {
+		return ErrWorkspaceMinLimit
+	}
+	return nil
+}
+
+func (o WorkspaceAddTagsOptions) valid() error {
+	if len(o.Tags) == 0 {
+		return ErrMissingTagIdentifier
+	}
+	for _, s := range o.Tags {
+		if s.Name == "" && s.ID == "" {
+			return ErrMissingTagIdentifier
+		}
+	}
+
+	return nil
+}
+
+func (o WorkspaceRemoveTagsOptions) valid() error {
+	if len(o.Tags) == 0 {
+		return ErrMissingTagIdentifier
+	}
+	for _, s := range o.Tags {
+		if s.Name == "" && s.ID == "" {
+			return ErrMissingTagIdentifier
+		}
+	}
+
+	return nil
 }

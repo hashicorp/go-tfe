@@ -57,6 +57,12 @@ type AdminTwilioSettingsUpdateOptions struct {
 	FromNumber *string `jsonapi:"attr,from-number,omitempty"`
 }
 
+// AdminTwilioSettingsVerifyOptions represents the test number to verify Twilio.
+// https://www.terraform.io/docs/cloud/api/admin/settings.html#verify-twilio-settings
+type AdminTwilioSettingsVerifyOptions struct {
+	TestNumber *string `jsonapi:"attr,test-number"`
+}
+
 // Update updates the Twilio settings.
 func (a *adminTwilioSettings) Update(ctx context.Context, options AdminTwilioSettingsUpdateOptions) (*AdminTwilioSetting, error) {
 	req, err := a.client.newRequest("PATCH", "admin/twilio-settings", &options)
@@ -71,12 +77,6 @@ func (a *adminTwilioSettings) Update(ctx context.Context, options AdminTwilioSet
 	}
 
 	return twilio, nil
-}
-
-// AdminTwilioSettingsVerifyOptions represents the test number to verify Twilio.
-// https://www.terraform.io/docs/cloud/api/admin/settings.html#verify-twilio-settings
-type AdminTwilioSettingsVerifyOptions struct {
-	TestNumber *string `jsonapi:"attr,test-number"`
 }
 
 // Verify verifies Twilio settings.

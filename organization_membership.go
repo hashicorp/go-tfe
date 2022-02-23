@@ -78,6 +78,23 @@ type OrganizationMembershipListOptions struct {
 	Include []OrganizationMembershipIncludeOps `url:"include,omitempty"`
 }
 
+// OrganizationMembershipCreateOptions represents the options for creating an organization membership.
+type OrganizationMembershipCreateOptions struct {
+	// Type is a public field utilized by JSON:API to
+	// set the resource type via the field tag.
+	// It is not a user-defined value and does not need to be set.
+	// https://jsonapi.org/format/#crud-creating
+	Type string `jsonapi:"primary,organization-memberships"`
+
+	// User's email address.
+	Email *string `jsonapi:"attr,email"`
+}
+
+// OrganizationMembershipReadOptions represents the options for reading organization memberships.
+type OrganizationMembershipReadOptions struct {
+	Include []OrganizationMembershipIncludeOps `url:"include,omitempty"`
+}
+
 // List all the organization memberships of the given organization.
 func (s *organizationMemberships) List(ctx context.Context, organization string, options *OrganizationMembershipListOptions) (*OrganizationMembershipList, error) {
 	if !validStringID(&organization) {
@@ -97,25 +114,6 @@ func (s *organizationMemberships) List(ctx context.Context, organization string,
 	}
 
 	return ml, nil
-}
-
-// OrganizationMembershipCreateOptions represents the options for creating an organization membership.
-type OrganizationMembershipCreateOptions struct {
-	// Type is a public field utilized by JSON:API to
-	// set the resource type via the field tag.
-	// It is not a user-defined value and does not need to be set.
-	// https://jsonapi.org/format/#crud-creating
-	Type string `jsonapi:"primary,organization-memberships"`
-
-	// User's email address.
-	Email *string `jsonapi:"attr,email"`
-}
-
-func (o OrganizationMembershipCreateOptions) valid() error {
-	if o.Email == nil {
-		return ErrRequiredEmail
-	}
-	return nil
 }
 
 // Create an organization membership with the given options.
@@ -145,11 +143,6 @@ func (s *organizationMemberships) Create(ctx context.Context, organization strin
 // Read an organization membership by its ID.
 func (s *organizationMemberships) Read(ctx context.Context, organizationMembershipID string) (*OrganizationMembership, error) {
 	return s.ReadWithOptions(ctx, organizationMembershipID, OrganizationMembershipReadOptions{})
-}
-
-// OrganizationMembershipReadOptions represents the options for reading organization memberships.
-type OrganizationMembershipReadOptions struct {
-	Include []OrganizationMembershipIncludeOps `url:"include,omitempty"`
 }
 
 // Read an organization membership by ID with options
@@ -186,4 +179,11 @@ func (s *organizationMemberships) Delete(ctx context.Context, organizationMember
 	}
 
 	return s.client.do(ctx, req, nil)
+}
+
+func (o OrganizationMembershipCreateOptions) valid() error {
+	if o.Email == nil {
+		return ErrRequiredEmail
+	}
+	return nil
 }

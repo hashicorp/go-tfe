@@ -45,6 +45,21 @@ type TwoFactor struct {
 	Verified bool `jsonapi:"attr,verified"`
 }
 
+// UserUpdateOptions represents the options for updating a user.
+type UserUpdateOptions struct {
+	// Type is a public field utilized by JSON:API to
+	// set the resource type via the field tag.
+	// It is not a user-defined value and does not need to be set.
+	// https://jsonapi.org/format/#crud-creating
+	Type string `jsonapi:"primary,users"`
+
+	// New username.
+	Username *string `jsonapi:"attr,username,omitempty"`
+
+	// New email address (must be consumed afterwards to take effect).
+	Email *string `jsonapi:"attr,email,omitempty"`
+}
+
 // ReadCurrent reads the details of the currently authenticated user.
 func (s *users) ReadCurrent(ctx context.Context) (*User, error) {
 	req, err := s.client.newRequest("GET", "account/details", nil)
@@ -59,21 +74,6 @@ func (s *users) ReadCurrent(ctx context.Context) (*User, error) {
 	}
 
 	return u, nil
-}
-
-// UserUpdateOptions represents the options for updating a user.
-type UserUpdateOptions struct {
-	// Type is a public field utilized by JSON:API to
-	// set the resource type via the field tag.
-	// It is not a user-defined value and does not need to be set.
-	// https://jsonapi.org/format/#crud-creating
-	Type string `jsonapi:"primary,users"`
-
-	// New username.
-	Username *string `jsonapi:"attr,username,omitempty"`
-
-	// New email address (must be consumed afterwards to take effect).
-	Email *string `jsonapi:"attr,email,omitempty"`
 }
 
 // Update attributes of the currently authenticated user.

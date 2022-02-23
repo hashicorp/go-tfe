@@ -125,22 +125,6 @@ type OrganizationListOptions struct {
 	ListOptions
 }
 
-// List all the organizations visible to the current user.
-func (s *organizations) List(ctx context.Context, options *OrganizationListOptions) (*OrganizationList, error) {
-	req, err := s.client.newRequest("GET", "organizations", options)
-	if err != nil {
-		return nil, err
-	}
-
-	orgl := &OrganizationList{}
-	err = s.client.do(ctx, req, orgl)
-	if err != nil {
-		return nil, err
-	}
-
-	return orgl, nil
-}
-
 // OrganizationCreateOptions represents the options for creating an organization.
 type OrganizationCreateOptions struct {
 	// Type is a public field utilized by JSON:API to
@@ -174,17 +158,58 @@ type OrganizationCreateOptions struct {
 	SendPassingStatusesForUntriggeredSpeculativePlans *bool `jsonapi:"attr,send-passing-statuses-for-untriggered-speculative-plans,omitempty"`
 }
 
-func (o OrganizationCreateOptions) valid() error {
-	if !validString(o.Name) {
-		return ErrRequiredName
+// OrganizationUpdateOptions represents the options for updating an organization.
+type OrganizationUpdateOptions struct {
+	// Type is a public field utilized by JSON:API to
+	// set the resource type via the field tag.
+	// It is not a user-defined value and does not need to be set.
+	// https://jsonapi.org/format/#crud-creating
+	Type string `jsonapi:"primary,organizations"`
+
+	// New name for the organization.
+	Name *string `jsonapi:"attr,name,omitempty"`
+
+	// New admin email address.
+	Email *string `jsonapi:"attr,email,omitempty"`
+
+	// Session expiration (minutes).
+	SessionRemember *int `jsonapi:"attr,session-remember,omitempty"`
+
+	// Session timeout after inactivity (minutes).
+	SessionTimeout *int `jsonapi:"attr,session-timeout,omitempty"`
+
+	// Authentication policy.
+	CollaboratorAuthPolicy *AuthPolicyType `jsonapi:"attr,collaborator-auth-policy,omitempty"`
+
+	// Enable Cost Estimation
+	CostEstimationEnabled *bool `jsonapi:"attr,cost-estimation-enabled,omitempty"`
+
+	// The name of the "owners" team
+	OwnersTeamSAMLRoleID *string `jsonapi:"attr,owners-team-saml-role-id,omitempty"`
+
+	// SendPassingStatusesForUntriggeredSpeculativePlans toggles behavior of untriggered speculative plans to send status updates to version control systems like GitHub.
+	SendPassingStatusesForUntriggeredSpeculativePlans *bool `jsonapi:"attr,send-passing-statuses-for-untriggered-speculative-plans,omitempty"`
+}
+
+// ReadRunQueueOptions represents the options for showing the queue.
+type ReadRunQueueOptions struct {
+	ListOptions
+}
+
+// List all the organizations visible to the current user.
+func (s *organizations) List(ctx context.Context, options *OrganizationListOptions) (*OrganizationList, error) {
+	req, err := s.client.newRequest("GET", "organizations", options)
+	if err != nil {
+		return nil, err
 	}
-	if !validStringID(o.Name) {
-		return ErrInvalidName
+
+	orgl := &OrganizationList{}
+	err = s.client.do(ctx, req, orgl)
+	if err != nil {
+		return nil, err
 	}
-	if !validString(o.Email) {
-		return ErrRequiredEmail
-	}
-	return nil
+
+	return orgl, nil
 }
 
 // Create a new organization with the given options.
@@ -226,39 +251,6 @@ func (s *organizations) Read(ctx context.Context, organization string) (*Organiz
 	}
 
 	return org, nil
-}
-
-// OrganizationUpdateOptions represents the options for updating an organization.
-type OrganizationUpdateOptions struct {
-	// Type is a public field utilized by JSON:API to
-	// set the resource type via the field tag.
-	// It is not a user-defined value and does not need to be set.
-	// https://jsonapi.org/format/#crud-creating
-	Type string `jsonapi:"primary,organizations"`
-
-	// New name for the organization.
-	Name *string `jsonapi:"attr,name,omitempty"`
-
-	// New admin email address.
-	Email *string `jsonapi:"attr,email,omitempty"`
-
-	// Session expiration (minutes).
-	SessionRemember *int `jsonapi:"attr,session-remember,omitempty"`
-
-	// Session timeout after inactivity (minutes).
-	SessionTimeout *int `jsonapi:"attr,session-timeout,omitempty"`
-
-	// Authentication policy.
-	CollaboratorAuthPolicy *AuthPolicyType `jsonapi:"attr,collaborator-auth-policy,omitempty"`
-
-	// Enable Cost Estimation
-	CostEstimationEnabled *bool `jsonapi:"attr,cost-estimation-enabled,omitempty"`
-
-	// The name of the "owners" team
-	OwnersTeamSAMLRoleID *string `jsonapi:"attr,owners-team-saml-role-id,omitempty"`
-
-	// SendPassingStatusesForUntriggeredSpeculativePlans toggles behavior of untriggered speculative plans to send status updates to version control systems like GitHub.
-	SendPassingStatusesForUntriggeredSpeculativePlans *bool `jsonapi:"attr,send-passing-statuses-for-untriggered-speculative-plans,omitempty"`
 }
 
 // Update attributes of an existing organization.
@@ -339,11 +331,6 @@ func (s *organizations) ReadEntitlements(ctx context.Context, organization strin
 	return e, nil
 }
 
-// ReadRunQueueOptions represents the options for showing the queue.
-type ReadRunQueueOptions struct {
-	ListOptions
-}
-
 // ReadRunQueue shows the current run queue of an organization.
 func (s *organizations) ReadRunQueue(ctx context.Context, organization string, options ReadRunQueueOptions) (*RunQueue, error) {
 	if !validStringID(&organization) {
@@ -363,4 +350,17 @@ func (s *organizations) ReadRunQueue(ctx context.Context, organization string, o
 	}
 
 	return rq, nil
+}
+
+func (o OrganizationCreateOptions) valid() error {
+	if !validString(o.Name) {
+		return ErrRequiredName
+	}
+	if !validStringID(o.Name) {
+		return ErrInvalidName
+	}
+	if !validString(o.Email) {
+		return ErrRequiredEmail
+	}
+	return nil
 }

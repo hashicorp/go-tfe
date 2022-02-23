@@ -53,6 +53,30 @@ type SSHKeyListOptions struct {
 	ListOptions
 }
 
+// SSHKeyCreateOptions represents the options for creating an SSH key.
+type SSHKeyCreateOptions struct {
+	// Type is a public field utilized by JSON:API to
+	// set the resource type via the field tag.
+	// It is not a user-defined value and does not need to be set.
+	// https://jsonapi.org/format/#crud-creating
+	Type string `jsonapi:"primary,ssh-keys"`
+
+	// A name to identify the SSH key.
+	Name *string `jsonapi:"attr,name"`
+
+	// The content of the SSH private key.
+	Value *string `jsonapi:"attr,value"`
+}
+
+// SSHKeyUpdateOptions represents the options for updating an SSH key.
+type SSHKeyUpdateOptions struct {
+	// For internal use only!
+	ID string `jsonapi:"primary,ssh-keys"`
+
+	// A new name to identify the SSH key.
+	Name *string `jsonapi:"attr,name,omitempty"`
+}
+
 // List all the SSH keys for a given organization
 func (s *sshKeys) List(ctx context.Context, organization string, options *SSHKeyListOptions) (*SSHKeyList, error) {
 	if !validStringID(&organization) {
@@ -72,31 +96,6 @@ func (s *sshKeys) List(ctx context.Context, organization string, options *SSHKey
 	}
 
 	return kl, nil
-}
-
-// SSHKeyCreateOptions represents the options for creating an SSH key.
-type SSHKeyCreateOptions struct {
-	// Type is a public field utilized by JSON:API to
-	// set the resource type via the field tag.
-	// It is not a user-defined value and does not need to be set.
-	// https://jsonapi.org/format/#crud-creating
-	Type string `jsonapi:"primary,ssh-keys"`
-
-	// A name to identify the SSH key.
-	Name *string `jsonapi:"attr,name"`
-
-	// The content of the SSH private key.
-	Value *string `jsonapi:"attr,value"`
-}
-
-func (o SSHKeyCreateOptions) valid() error {
-	if !validString(o.Name) {
-		return ErrRequiredName
-	}
-	if !validString(o.Value) {
-		return ErrRequiredValue
-	}
-	return nil
 }
 
 // Create an SSH key and associate it with an organization.
@@ -145,18 +144,6 @@ func (s *sshKeys) Read(ctx context.Context, sshKeyID string) (*SSHKey, error) {
 	return k, nil
 }
 
-// SSHKeyUpdateOptions represents the options for updating an SSH key.
-type SSHKeyUpdateOptions struct {
-	// Type is a public field utilized by JSON:API to
-	// set the resource type via the field tag.
-	// It is not a user-defined value and does not need to be set.
-	// https://jsonapi.org/format/#crud-creating
-	Type string `jsonapi:"primary,ssh-keys"`
-
-	// A new name to identify the SSH key.
-	Name *string `jsonapi:"attr,name,omitempty"`
-}
-
 // Update an SSH key by its ID.
 func (s *sshKeys) Update(ctx context.Context, sshKeyID string, options SSHKeyUpdateOptions) (*SSHKey, error) {
 	if !validStringID(&sshKeyID) {
@@ -191,4 +178,14 @@ func (s *sshKeys) Delete(ctx context.Context, sshKeyID string) error {
 	}
 
 	return s.client.do(ctx, req, nil)
+}
+
+func (o SSHKeyCreateOptions) valid() error {
+	if !validString(o.Name) {
+		return ErrRequiredName
+	}
+	if !validString(o.Value) {
+		return ErrRequiredValue
+	}
+	return nil
 }

@@ -24,11 +24,6 @@ type AdminRuns interface {
 	ForceCancel(ctx context.Context, runID string, options AdminRunForceCancelOptions) error
 }
 
-// adminRuns implements the AdminRuns interface.
-type adminRuns struct {
-	client *Client
-}
-
 type AdminRun struct {
 	ID               string               `jsonapi:"primary,runs"`
 	CreatedAt        time.Time            `jsonapi:"attr,created-at,iso8601"`
@@ -64,6 +59,11 @@ type AdminRunsListOptions struct {
 	RunStatus string               `url:"filter[status],omitempty"`
 	Query     string               `url:"q,omitempty"`
 	Include   []AdminRunIncludeOps `url:"include,omitempty"`
+}
+
+// adminRuns implements the AdminRuns interface.
+type adminRuns struct {
+	client *Client
 }
 
 // List all the runs of the terraform enterprise installation.

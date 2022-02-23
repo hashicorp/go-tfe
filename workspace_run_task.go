@@ -53,6 +53,21 @@ type WorkspaceRunTaskListOptions struct {
 	ListOptions
 }
 
+// WorkspaceRunTaskCreateOptions represents the set of options for creating a workspace run task
+type WorkspaceRunTaskCreateOptions struct {
+	Type string `jsonapi:"primary,workspace-tasks"`
+	// Required: The enforcement level for a run task
+	EnforcementLevel TaskEnforcementLevel `jsonapi:"attr,enforcement-level"`
+	// Required: The run task to attach to the workspace
+	RunTask *RunTask `jsonapi:"relation,task"`
+}
+
+// WorkspaceRunTaskUpdateOptions represent the set of options for updating a workspace run task.
+type WorkspaceRunTaskUpdateOptions struct {
+	Type             string               `jsonapi:"primary,workspace-tasks"`
+	EnforcementLevel TaskEnforcementLevel `jsonapi:"attr,enforcement-level,omitempty"`
+}
+
 // List all run tasks attached to a workspace
 func (s *workspaceRunTasks) List(ctx context.Context, workspaceID string, options *WorkspaceRunTaskListOptions) (*WorkspaceRunTaskList, error) {
 	if !validStringID(&workspaceID) {
@@ -103,23 +118,6 @@ func (s *workspaceRunTasks) Read(ctx context.Context, workspaceID, workspaceTask
 	return wr, nil
 }
 
-// WorkspaceRunTaskCreateOptions represents the set of options for creating a workspace run task
-type WorkspaceRunTaskCreateOptions struct {
-	Type string `jsonapi:"primary,workspace-tasks"`
-	// Required: The enforcement level for a run task
-	EnforcementLevel TaskEnforcementLevel `jsonapi:"attr,enforcement-level"`
-	// Required: The run task to attach to the workspace
-	RunTask *RunTask `jsonapi:"relation,task"`
-}
-
-func (o *WorkspaceRunTaskCreateOptions) valid() error {
-	if o.RunTask.ID == "" {
-		return ErrInvalidRunTaskID
-	}
-
-	return nil
-}
-
 // Create is used to attach a run task to a workspace, or in other words: create a workspace run task. The run task must exist in the workspace's organization.
 func (s *workspaceRunTasks) Create(ctx context.Context, workspaceID string, options WorkspaceRunTaskCreateOptions) (*WorkspaceRunTask, error) {
 	if !validStringID(&workspaceID) {
@@ -143,12 +141,6 @@ func (s *workspaceRunTasks) Create(ctx context.Context, workspaceID string, opti
 	}
 
 	return wr, nil
-}
-
-// WorkspaceRunTaskUpdateOptions represent the set of options for updating a workspace run task.
-type WorkspaceRunTaskUpdateOptions struct {
-	Type             string               `jsonapi:"primary,workspace-tasks"`
-	EnforcementLevel TaskEnforcementLevel `jsonapi:"attr,enforcement-level,omitempty"`
 }
 
 // Update an existing workspace run task by ID
@@ -201,4 +193,12 @@ func (s *workspaceRunTasks) Delete(ctx context.Context, workspaceID, workspaceTa
 	}
 
 	return s.client.do(ctx, req, nil)
+}
+
+func (o *WorkspaceRunTaskCreateOptions) valid() error {
+	if o.RunTask.ID == "" {
+		return ErrInvalidRunTaskID
+	}
+
+	return nil
 }

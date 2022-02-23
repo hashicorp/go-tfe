@@ -34,12 +34,6 @@ type agentTokens struct {
 	client *Client
 }
 
-// AgentTokenList represents a list of agent tokens.
-type AgentTokenList struct {
-	*Pagination
-	Items []*AgentToken
-}
-
 // AgentToken represents a Terraform Cloud agent token.
 type AgentToken struct {
 	ID          string    `jsonapi:"primary,authentication-tokens"`
@@ -47,6 +41,24 @@ type AgentToken struct {
 	Description string    `jsonapi:"attr,description"`
 	LastUsedAt  time.Time `jsonapi:"attr,last-used-at,iso8601"`
 	Token       string    `jsonapi:"attr,token"`
+}
+
+// AgentTokenList represents a list of agent tokens.
+type AgentTokenList struct {
+	*Pagination
+	Items []*AgentToken
+}
+
+// AgentTokenCreateOptions represents the options for creating an agent token.
+type AgentTokenCreateOptions struct {
+	// Type is a public field utilized by JSON:API to
+	// set the resource type via the field tag.
+	// It is not a user-defined value and does not need to be set.
+	// https://jsonapi.org/format/#crud-creating
+	Type string `jsonapi:"primary,agent-tokens"`
+
+	// Description of the token
+	Description *string `jsonapi:"attr,description"`
 }
 
 // List all the agent tokens of the given agent pool.
@@ -68,18 +80,6 @@ func (s *agentTokens) List(ctx context.Context, agentPoolID string) (*AgentToken
 	}
 
 	return tokenList, nil
-}
-
-// AgentTokenCreateOptions represents the options for creating an agent token.
-type AgentTokenCreateOptions struct {
-	// Type is a public field utilized by JSON:API to
-	// set the resource type via the field tag.
-	// It is not a user-defined value and does not need to be set.
-	// https://jsonapi.org/format/#crud-creating
-	Type string `jsonapi:"primary,agent-tokens"`
-
-	// Description of the token
-	Description *string `jsonapi:"attr,description"`
 }
 
 // Create a new agent token with the given options.
