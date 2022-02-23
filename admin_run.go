@@ -69,10 +69,8 @@ type AdminRunsListOptions struct {
 // List all the runs of the terraform enterprise installation.
 // https://www.terraform.io/docs/cloud/api/admin/runs.html#list-all-runs
 func (s *adminRuns) List(ctx context.Context, options *AdminRunsListOptions) (*AdminRunsList, error) {
-	if options != nil {
-		if err := options.valid(); err != nil {
-			return nil, err
-		}
+	if err := options.valid(); err != nil {
+		return nil, err
 	}
 
 	u := "admin/runs"
@@ -114,7 +112,10 @@ func (s *adminRuns) ForceCancel(ctx context.Context, runID string, options Admin
 }
 
 // Check that the field RunStatus has a valid string value
-func (o AdminRunsListOptions) valid() error {
+func (o *AdminRunsListOptions) valid() error {
+	if o == nil { // no need to validate fields
+		return nil
+	}
 	if validString(&o.RunStatus) {
 		validRunStatus := map[string]int{
 			string(RunApplied):            1,
@@ -145,5 +146,6 @@ func (o AdminRunsListOptions) valid() error {
 			}
 		}
 	}
+
 	return nil
 }

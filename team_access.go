@@ -107,22 +107,22 @@ type TeamAccessListOptions struct {
 }
 
 //check that workspaceID field has a valid value
-func (o TeamAccessListOptions) valid() error {
+func (o *TeamAccessListOptions) valid() error {
+	if o == nil {
+		return ErrRequiredTeamAccessListOps
+	}
 	if !validString(&o.WorkspaceID) {
 		return ErrRequiredWorkspaceID
 	}
 	if !validStringID(&o.WorkspaceID) {
 		return ErrInvalidWorkspaceID
 	}
+
 	return nil
 }
 
 // List all the team accesses for a given workspace.
 func (s *teamAccesses) List(ctx context.Context, options *TeamAccessListOptions) (*TeamAccessList, error) {
-	if options == nil {
-		return nil, ErrRequireTeamAccessListOps
-	}
-
 	if err := options.valid(); err != nil {
 		return nil, err
 	}

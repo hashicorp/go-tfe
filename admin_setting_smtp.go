@@ -31,9 +31,9 @@ const (
 )
 
 var validSMTPAuthType = map[SMTPAuthType]struct{}{
-	SMTPAuthNone:  struct{}{},
-	SMTPAuthPlain: struct{}{},
-	SMTPAuthLogin: struct{}{},
+	SMTPAuthNone:  {},
+	SMTPAuthPlain: {},
+	SMTPAuthLogin: {},
 }
 
 // AdminSMTPSetting represents a the SMTP settings in Terraform Enterprise.
@@ -79,8 +79,8 @@ type AdminSMTPSettingsUpdateOptions struct {
 
 // Updat updates the SMTP settings.
 func (a *adminSMTPSettings) Update(ctx context.Context, options AdminSMTPSettingsUpdateOptions) (*AdminSMTPSetting, error) {
-	if !options.valid() {
-		return nil, ErrInvalidSMTPAuth
+	if err := options.valid(); err != nil {
+		return nil, err
 	}
 	req, err := a.client.newRequest("PATCH", "admin/smtp-settings", &options)
 	if err != nil {
@@ -96,7 +96,10 @@ func (a *adminSMTPSettings) Update(ctx context.Context, options AdminSMTPSetting
 	return smtp, nil
 }
 
-func (o AdminSMTPSettingsUpdateOptions) valid() bool {
+func (o AdminSMTPSettingsUpdateOptions) valid() error {
 	_, isValidType := validSMTPAuthType[*o.Auth]
-	return isValidType
+	if !isValidType {
+		return ErrInvalidSMTPAuth
+	}
+	return nil
 }

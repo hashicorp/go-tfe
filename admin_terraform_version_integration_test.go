@@ -155,10 +155,8 @@ func TestAdminTerraformVersions_CreateDelete(t *testing.T) {
 	})
 
 	t.Run("with empty options", func(t *testing.T) {
-		opts := AdminTerraformVersionCreateOptions{}
-
-		_, err := client.Admin.TerraformVersions.Create(ctx, opts)
-		require.Error(t, err)
+		_, err := client.Admin.TerraformVersions.Create(ctx, AdminTerraformVersionCreateOptions{})
+		require.Equal(t, err, ErrRequiredTFVerCreateOps)
 	})
 }
 

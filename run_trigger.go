@@ -61,6 +61,12 @@ const (
 	RunTriggerInbound  RunTriggerFilterOps = "inbound"
 )
 
+// List of available filter options for RunTriggerType
+var validRunTriggerType = map[RunTriggerFilterOps]struct{}{
+	RunTriggerOutbound: {},
+	RunTriggerInbound:  {}, // we set it to empty struct because it has the smallest memory footprint and we only need keys, not values
+}
+
 // RunTriggerListOptions represents the options for listing
 // run triggers.
 type RunTriggerListOptions struct {
@@ -72,6 +78,9 @@ type RunTriggerListOptions struct {
 func (s *runTriggers) List(ctx context.Context, workspaceID string, options *RunTriggerListOptions) (*RunTriggerList, error) {
 	if !validStringID(&workspaceID) {
 		return nil, ErrInvalidWorkspaceID
+	}
+	if err := options.valid(); err != nil {
+		return nil, err
 	}
 
 	u := fmt.Sprintf("workspaces/%s/run-triggers", url.QueryEscape(workspaceID))
@@ -167,4 +176,15 @@ func (s *runTriggers) Delete(ctx context.Context, runTriggerID string) error {
 	}
 
 	return s.client.do(ctx, req, nil)
+}
+
+func (o *RunTriggerListOptions) valid() error {
+	if o == nil {
+		return ErrRequiredRunTriggerListOps
+	}
+	_, isValidRunTriggerType := validRunTriggerType[o.RunTriggerType]
+	if !isValidRunTriggerType {
+		return ErrInvalidRunTriggerType
+	}
+	return nil
 }
