@@ -113,7 +113,7 @@ func (s *adminRuns) ForceCancel(ctx context.Context, runID string, options Admin
 
 // Check that the field RunStatus has a valid string value
 func (o *AdminRunsListOptions) valid() error {
-	if o == nil { //no need to validate fields
+	if o == nil { // no need to validate fields
 		return nil
 	}
 	if validString(&o.RunStatus) {
