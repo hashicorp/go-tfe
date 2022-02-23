@@ -34,7 +34,7 @@ func TestTaskStagesRead(t *testing.T) {
 
 	t.Run("without include param", func(t *testing.T) {
 		r, err := client.Runs.ReadWithOptions(ctx, rTest.ID, &RunReadOptions{
-			Include: "task_stages",
+			Include: []RunIncludeOps{RunTaskStages},
 		})
 		require.NoError(t, err)
 
@@ -59,7 +59,7 @@ func TestTaskStagesRead(t *testing.T) {
 
 	t.Run("with include param task_results", func(t *testing.T) {
 		r, err := client.Runs.ReadWithOptions(ctx, rTest.ID, &RunReadOptions{
-			Include: "task_stages",
+			Include: []RunIncludeOps{RunTaskStages},
 		})
 		require.NoError(t, err)
 
