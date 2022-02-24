@@ -35,21 +35,6 @@ func (m *MockOrganizations) EXPECT() *MockOrganizationsMockRecorder {
 	return m.recorder
 }
 
-// Capacity mocks base method.
-func (m *MockOrganizations) Capacity(ctx context.Context, organization string) (*tfe.Capacity, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "Capacity", ctx, organization)
-	ret0, _ := ret[0].(*tfe.Capacity)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
-}
-
-// Capacity indicates an expected call of Capacity.
-func (mr *MockOrganizationsMockRecorder) Capacity(ctx, organization interface{}) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Capacity", reflect.TypeOf((*MockOrganizations)(nil).Capacity), ctx, organization)
-}
-
 // Create mocks base method.
 func (m *MockOrganizations) Create(ctx context.Context, options tfe.OrganizationCreateOptions) (*tfe.Organization, error) {
 	m.ctrl.T.Helper()
@@ -77,21 +62,6 @@ func (m *MockOrganizations) Delete(ctx context.Context, organization string) err
 func (mr *MockOrganizationsMockRecorder) Delete(ctx, organization interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Delete", reflect.TypeOf((*MockOrganizations)(nil).Delete), ctx, organization)
-}
-
-// Entitlements mocks base method.
-func (m *MockOrganizations) Entitlements(ctx context.Context, organization string) (*tfe.Entitlements, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "Entitlements", ctx, organization)
-	ret0, _ := ret[0].(*tfe.Entitlements)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
-}
-
-// Entitlements indicates an expected call of Entitlements.
-func (mr *MockOrganizationsMockRecorder) Entitlements(ctx, organization interface{}) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Entitlements", reflect.TypeOf((*MockOrganizations)(nil).Entitlements), ctx, organization)
 }
 
 // List mocks base method.
@@ -124,19 +94,49 @@ func (mr *MockOrganizationsMockRecorder) Read(ctx, organization interface{}) *go
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Read", reflect.TypeOf((*MockOrganizations)(nil).Read), ctx, organization)
 }
 
-// RunQueue mocks base method.
-func (m *MockOrganizations) RunQueue(ctx context.Context, organization string, options tfe.RunQueueOptions) (*tfe.RunQueue, error) {
+// ReadCapacity mocks base method.
+func (m *MockOrganizations) ReadCapacity(ctx context.Context, organization string) (*tfe.Capacity, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "RunQueue", ctx, organization, options)
+	ret := m.ctrl.Call(m, "ReadCapacity", ctx, organization)
+	ret0, _ := ret[0].(*tfe.Capacity)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// ReadCapacity indicates an expected call of ReadCapacity.
+func (mr *MockOrganizationsMockRecorder) ReadCapacity(ctx, organization interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ReadCapacity", reflect.TypeOf((*MockOrganizations)(nil).ReadCapacity), ctx, organization)
+}
+
+// ReadEntitlements mocks base method.
+func (m *MockOrganizations) ReadEntitlements(ctx context.Context, organization string) (*tfe.Entitlements, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "ReadEntitlements", ctx, organization)
+	ret0, _ := ret[0].(*tfe.Entitlements)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// ReadEntitlements indicates an expected call of ReadEntitlements.
+func (mr *MockOrganizationsMockRecorder) ReadEntitlements(ctx, organization interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ReadEntitlements", reflect.TypeOf((*MockOrganizations)(nil).ReadEntitlements), ctx, organization)
+}
+
+// ReadRunQueue mocks base method.
+func (m *MockOrganizations) ReadRunQueue(ctx context.Context, organization string, options tfe.ReadRunQueueOptions) (*tfe.RunQueue, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "ReadRunQueue", ctx, organization, options)
 	ret0, _ := ret[0].(*tfe.RunQueue)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
 
-// RunQueue indicates an expected call of RunQueue.
-func (mr *MockOrganizationsMockRecorder) RunQueue(ctx, organization, options interface{}) *gomock.Call {
+// ReadRunQueue indicates an expected call of ReadRunQueue.
+func (mr *MockOrganizationsMockRecorder) ReadRunQueue(ctx, organization, options interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "RunQueue", reflect.TypeOf((*MockOrganizations)(nil).RunQueue), ctx, organization, options)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ReadRunQueue", reflect.TypeOf((*MockOrganizations)(nil).ReadRunQueue), ctx, organization, options)
 }
 
 // Update mocks base method.

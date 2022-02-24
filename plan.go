@@ -24,7 +24,7 @@ type Plans interface {
 	Logs(ctx context.Context, planID string) (io.Reader, error)
 
 	// Retrieve the JSON execution plan
-	JSONOutput(ctx context.Context, planID string) ([]byte, error)
+	ReadJSONOutput(ctx context.Context, planID string) ([]byte, error)
 }
 
 // plans implements Plans.
@@ -139,7 +139,7 @@ func (s *plans) Logs(ctx context.Context, planID string) (io.Reader, error) {
 }
 
 // Retrieve the JSON execution plan
-func (s *plans) JSONOutput(ctx context.Context, planID string) ([]byte, error) {
+func (s *plans) ReadJSONOutput(ctx context.Context, planID string) ([]byte, error) {
 	if !validStringID(&planID) {
 		return nil, ErrInvalidPlanID
 	}

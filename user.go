@@ -16,7 +16,7 @@ type Users interface {
 	ReadCurrent(ctx context.Context) (*User, error)
 
 	// Update attributes of the currently authenticated user.
-	Update(ctx context.Context, options UserUpdateOptions) (*User, error)
+	UpdateCurrent(ctx context.Context, options UserUpdateOptions) (*User, error)
 }
 
 // users implements Users.
@@ -77,7 +77,7 @@ type UserUpdateOptions struct {
 }
 
 // Update attributes of the currently authenticated user.
-func (s *users) Update(ctx context.Context, options UserUpdateOptions) (*User, error) {
+func (s *users) UpdateCurrent(ctx context.Context, options UserUpdateOptions) (*User, error) {
 	req, err := s.client.newRequest("PATCH", "account/update", &options)
 	if err != nil {
 		return nil, err

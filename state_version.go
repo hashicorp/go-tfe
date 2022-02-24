@@ -29,17 +29,17 @@ type StateVersions interface {
 	// ReadWithOptions reads a state version by its ID using the options supplied
 	ReadWithOptions(ctx context.Context, svID string, options *StateVersionReadOptions) (*StateVersion, error)
 
-	// Current reads the latest available state from the given workspace.
-	Current(ctx context.Context, workspaceID string) (*StateVersion, error)
+	// ReadCurrent reads the latest available state from the given workspace.
+	ReadCurrent(ctx context.Context, workspaceID string) (*StateVersion, error)
 
-	// CurrentWithOptions reads the latest available state from the given workspace using the options supplied
-	CurrentWithOptions(ctx context.Context, workspaceID string, options *StateVersionCurrentOptions) (*StateVersion, error)
+	// ReadCurrentWithOptions reads the latest available state from the given workspace using the options supplied
+	ReadCurrentWithOptions(ctx context.Context, workspaceID string, options *StateVersionCurrentOptions) (*StateVersion, error)
 
 	// Download retrieves the actual stored state of a state version
 	Download(ctx context.Context, url string) ([]byte, error)
 
-	// Outputs retrieves all the outputs of a state version by its ID.
-	Outputs(ctx context.Context, svID string, options *StateVersionOutputsListOptions) (*StateVersionOutputsList, error)
+	// ListOutputs retrieves all the outputs of a state version by its ID.
+	ListOutputs(ctx context.Context, svID string, options *StateVersionOutputsListOptions) (*StateVersionOutputsList, error)
 }
 
 // stateVersions implements StateVersions.
@@ -220,8 +220,8 @@ type StateVersionCurrentOptions struct {
 	Include []StateVersionIncludeOps `url:"include,omitempty"`
 }
 
-// CurrentWithOptions reads the latest available state from the given workspace using the options supplied.
-func (s *stateVersions) CurrentWithOptions(ctx context.Context, workspaceID string, options *StateVersionCurrentOptions) (*StateVersion, error) {
+// ReadCurrentWithOptions reads the latest available state from the given workspace using the options supplied.
+func (s *stateVersions) ReadCurrentWithOptions(ctx context.Context, workspaceID string, options *StateVersionCurrentOptions) (*StateVersion, error) {
 	if !validStringID(&workspaceID) {
 		return nil, ErrInvalidWorkspaceID
 	}
@@ -241,9 +241,9 @@ func (s *stateVersions) CurrentWithOptions(ctx context.Context, workspaceID stri
 	return sv, nil
 }
 
-// Current reads the latest available state from the given workspace.
-func (s *stateVersions) Current(ctx context.Context, workspaceID string) (*StateVersion, error) {
-	return s.CurrentWithOptions(ctx, workspaceID, nil)
+// ReadCurrent reads the latest available state from the given workspace.
+func (s *stateVersions) ReadCurrent(ctx context.Context, workspaceID string) (*StateVersion, error) {
+	return s.ReadCurrentWithOptions(ctx, workspaceID, nil)
 }
 
 // Download retrieves the actual stored state of a state version
@@ -275,8 +275,8 @@ type StateVersionOutputsListOptions struct {
 	ListOptions
 }
 
-// Outputs retrieves all the outputs of a state version by its ID.
-func (s *stateVersions) Outputs(ctx context.Context, svID string, options *StateVersionOutputsListOptions) (*StateVersionOutputsList, error) {
+// ListOutputs retrieves all the outputs of a state version by its ID.
+func (s *stateVersions) ListOutputs(ctx context.Context, svID string, options *StateVersionOutputsListOptions) (*StateVersionOutputsList, error) {
 	if !validStringID(&svID) {
 		return nil, ErrInvalidStateVerID
 	}

@@ -51,7 +51,7 @@ func TestAgentTokensList(t *testing.T) {
 	})
 }
 
-func TestAgentTokensGenerate(t *testing.T) {
+func TestAgentTokensCreate(t *testing.T) {
 	skipIfEnterprise(t)
 	skipIfFreeOnly(t)
 
@@ -62,7 +62,7 @@ func TestAgentTokensGenerate(t *testing.T) {
 	defer apTestCleanup()
 
 	t.Run("with valid description", func(t *testing.T) {
-		token, err := client.AgentTokens.Generate(ctx, apTest.ID, AgentTokenGenerateOptions{
+		token, err := client.AgentTokens.Create(ctx, apTest.ID, AgentTokenCreateOptions{
 			Description: String(randomString(t)),
 		})
 		require.NoError(t, err)
@@ -70,13 +70,13 @@ func TestAgentTokensGenerate(t *testing.T) {
 	})
 
 	t.Run("without valid description", func(t *testing.T) {
-		at, err := client.AgentTokens.Generate(ctx, badIdentifier, AgentTokenGenerateOptions{})
+		at, err := client.AgentTokens.Create(ctx, badIdentifier, AgentTokenCreateOptions{})
 		assert.Nil(t, at)
 		assert.EqualError(t, err, ErrInvalidAgentPoolID.Error())
 	})
 
 	t.Run("without valid agent pool ID", func(t *testing.T) {
-		at, err := client.AgentTokens.Generate(ctx, badIdentifier, AgentTokenGenerateOptions{
+		at, err := client.AgentTokens.Create(ctx, badIdentifier, AgentTokenCreateOptions{
 			Description: String(randomString(t)),
 		})
 		assert.Nil(t, at)

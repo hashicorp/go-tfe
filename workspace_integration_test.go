@@ -351,7 +351,7 @@ func TestWorkspacesReadWithOptions(t *testing.T) {
 		assert.Equal(t, wTest.ID, w.ID)
 		assert.NotEmpty(t, w.Outputs)
 
-		svOutputs, err := client.StateVersions.Outputs(ctx, svTest.ID, nil)
+		svOutputs, err := client.StateVersions.ListOutputs(ctx, svTest.ID, nil)
 		require.NoError(t, err)
 
 		assert.Len(t, w.Outputs, len(svOutputs.Items))
@@ -974,7 +974,7 @@ func TestWorkspaces_AddRemoteStateConsumers(t *testing.T) {
 		_, err = client.Workspaces.Read(ctx, orgTest.Name, wTest.Name)
 		require.NoError(t, err)
 
-		rsc, err := client.Workspaces.RemoteStateConsumers(ctx, wTest.ID, nil)
+		rsc, err := client.Workspaces.ListRemoteStateConsumers(ctx, wTest.ID, nil)
 		require.NoError(t, err)
 		assert.Equal(t, 2, len(rsc.Items))
 		assert.Contains(t, rsc.Items, wTestConsumer1)
@@ -1028,7 +1028,7 @@ func TestWorkspaces_RemoveRemoteStateConsumers(t *testing.T) {
 		})
 		require.NoError(t, err)
 
-		rsc, err := client.Workspaces.RemoteStateConsumers(ctx, wTest.ID, nil)
+		rsc, err := client.Workspaces.ListRemoteStateConsumers(ctx, wTest.ID, nil)
 		require.NoError(t, err)
 		assert.Equal(t, 2, len(rsc.Items))
 		assert.Contains(t, rsc.Items, wTestConsumer1)
@@ -1042,7 +1042,7 @@ func TestWorkspaces_RemoveRemoteStateConsumers(t *testing.T) {
 		_, err = client.Workspaces.Read(ctx, orgTest.Name, wTest.Name)
 		require.NoError(t, err)
 
-		rsc, err = client.Workspaces.RemoteStateConsumers(ctx, wTest.ID, nil)
+		rsc, err = client.Workspaces.ListRemoteStateConsumers(ctx, wTest.ID, nil)
 		require.NoError(t, err)
 		assert.Contains(t, rsc.Items, wTestConsumer2)
 		assert.Equal(t, 1, len(rsc.Items))
@@ -1052,7 +1052,7 @@ func TestWorkspaces_RemoveRemoteStateConsumers(t *testing.T) {
 		})
 		require.NoError(t, err)
 
-		rsc, err = client.Workspaces.RemoteStateConsumers(ctx, wTest.ID, nil)
+		rsc, err = client.Workspaces.ListRemoteStateConsumers(ctx, wTest.ID, nil)
 		require.NoError(t, err)
 		assert.Empty(t, len(rsc.Items))
 	})
@@ -1104,7 +1104,7 @@ func TestWorkspaces_UpdateRemoteStateConsumers(t *testing.T) {
 		})
 		require.NoError(t, err)
 
-		rsc, err := client.Workspaces.RemoteStateConsumers(ctx, wTest.ID, nil)
+		rsc, err := client.Workspaces.ListRemoteStateConsumers(ctx, wTest.ID, nil)
 		require.NoError(t, err)
 		assert.Equal(t, 1, len(rsc.Items))
 		assert.Contains(t, rsc.Items, wTestConsumer1)
@@ -1114,7 +1114,7 @@ func TestWorkspaces_UpdateRemoteStateConsumers(t *testing.T) {
 		})
 		require.NoError(t, err)
 
-		rsc, err = client.Workspaces.RemoteStateConsumers(ctx, wTest.ID, nil)
+		rsc, err = client.Workspaces.ListRemoteStateConsumers(ctx, wTest.ID, nil)
 		require.NoError(t, err)
 		assert.Equal(t, 1, len(rsc.Items))
 		assert.Contains(t, rsc.Items, wTestConsumer2)
@@ -1188,7 +1188,7 @@ func TestWorkspaces_AddTags(t *testing.T) {
 		sort.Strings(w.TagNames)
 		assert.EqualValues(t, w.TagNames, []string{"tag1", "tag2", "tag3", "tag4"})
 
-		wt, err := client.Workspaces.Tags(ctx, wTest.ID, nil)
+		wt, err := client.Workspaces.ListTags(ctx, wTest.ID, nil)
 		require.NoError(t, err)
 		assert.Equal(t, 4, len(wt.Items))
 		assert.Equal(t, wt.Items[3].Name, "tag4")
@@ -1209,7 +1209,7 @@ func TestWorkspaces_AddTags(t *testing.T) {
 		require.NoError(t, err)
 
 		// get the id of the new tag
-		tags, err := client.Workspaces.Tags(ctx, wTest2.ID, nil)
+		tags, err := client.Workspaces.ListTags(ctx, wTest2.ID, nil)
 		require.NoError(t, err)
 
 		// add the tag to our workspace by id
@@ -1230,7 +1230,7 @@ func TestWorkspaces_AddTags(t *testing.T) {
 		assert.Equal(t, w.TagNames, []string{"tag1", "tag2", "tag3", "tag4", "tagbyid"})
 
 		// tag is now in our tag list
-		wt, err := client.Workspaces.Tags(ctx, wTest.ID, nil)
+		wt, err := client.Workspaces.ListTags(ctx, wTest.ID, nil)
 		require.NoError(t, err)
 		assert.Equal(t, 5, len(wt.Items))
 		assert.Equal(t, wt.Items[4].ID, tags.Items[0].ID)
@@ -1297,7 +1297,7 @@ func TestWorkspaces_RemoveTags(t *testing.T) {
 		assert.Equal(t, 1, len(w.TagNames))
 		assert.Equal(t, w.TagNames, []string{"tag3"})
 
-		wt, err := client.Workspaces.Tags(ctx, wTest.ID, nil)
+		wt, err := client.Workspaces.ListTags(ctx, wTest.ID, nil)
 		require.NoError(t, err)
 		assert.Equal(t, 1, len(wt.Items))
 		assert.EqualValues(t, wt.Items[0].Name, "tag3")

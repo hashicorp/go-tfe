@@ -235,7 +235,7 @@ func TestOrganizationsDelete(t *testing.T) {
 	})
 }
 
-func TestOrganizationsCapacity(t *testing.T) {
+func TestOrganizationsReadCapacity(t *testing.T) {
 	t.Skip("Capacity queues are not available in the API")
 	client := testClient(t)
 	ctx := context.Background()
@@ -253,7 +253,7 @@ func TestOrganizationsCapacity(t *testing.T) {
 	defer wTestCleanup4()
 
 	t.Run("without queued runs", func(t *testing.T) {
-		c, err := client.Organizations.Capacity(ctx, orgTest.Name)
+		c, err := client.Organizations.ReadCapacity(ctx, orgTest.Name)
 		require.NoError(t, err)
 		assert.Equal(t, 0, c.Pending)
 		assert.Equal(t, 0, c.Running)
@@ -271,7 +271,7 @@ func TestOrganizationsCapacity(t *testing.T) {
 		_, runCleanup4 := createRun(t, client, wTest4)
 		defer runCleanup4()
 
-		c, err := client.Organizations.Capacity(ctx, orgTest.Name)
+		c, err := client.Organizations.ReadCapacity(ctx, orgTest.Name)
 		require.NoError(t, err)
 		assert.Equal(t, 2, c.Pending)
 		assert.Equal(t, 2, c.Running)
@@ -289,7 +289,7 @@ func TestOrganizationsCapacity(t *testing.T) {
 	})
 }
 
-func TestOrganizationsEntitlements(t *testing.T) {
+func TestOrganizationsReadEntitlements(t *testing.T) {
 	skipIfEnterprise(t)
 	skipIfFreeOnly(t)
 
@@ -300,7 +300,7 @@ func TestOrganizationsEntitlements(t *testing.T) {
 	defer orgTestCleanup()
 
 	t.Run("when the org exists", func(t *testing.T) {
-		entitlements, err := client.Organizations.Entitlements(ctx, orgTest.Name)
+		entitlements, err := client.Organizations.ReadEntitlements(ctx, orgTest.Name)
 		require.NoError(t, err)
 
 		assert.NotEmpty(t, entitlements.ID)
@@ -317,18 +317,18 @@ func TestOrganizationsEntitlements(t *testing.T) {
 	})
 
 	t.Run("with invalid name", func(t *testing.T) {
-		entitlements, err := client.Organizations.Entitlements(ctx, badIdentifier)
+		entitlements, err := client.Organizations.ReadEntitlements(ctx, badIdentifier)
 		assert.Nil(t, entitlements)
 		assert.EqualError(t, err, ErrInvalidOrg.Error())
 	})
 
 	t.Run("when the org does not exist", func(t *testing.T) {
-		_, err := client.Organizations.Entitlements(ctx, randomString(t))
+		_, err := client.Organizations.ReadEntitlements(ctx, randomString(t))
 		assert.Equal(t, ErrResourceNotFound, err)
 	})
 }
 
-func TestOrganizationsRunQueue(t *testing.T) {
+func TestOrganizationsReadRunQueue(t *testing.T) {
 	t.Skip("Capacity queues are not available in the API")
 	client := testClient(t)
 	ctx := context.Background()
@@ -346,7 +346,7 @@ func TestOrganizationsRunQueue(t *testing.T) {
 	defer wTestCleanup4()
 
 	t.Run("without queued runs", func(t *testing.T) {
-		rq, err := client.Organizations.RunQueue(ctx, orgTest.Name, RunQueueOptions{})
+		rq, err := client.Organizations.ReadRunQueue(ctx, orgTest.Name, ReadRunQueueOptions{})
 		require.NoError(t, err)
 		assert.Equal(t, 0, len(rq.Items))
 	})
@@ -364,7 +364,7 @@ func TestOrganizationsRunQueue(t *testing.T) {
 	// For this test FRQ should be enabled and have a
 	// limit of 2 concurrent runs per organization.
 	t.Run("with queued runs", func(t *testing.T) {
-		rq, err := client.Organizations.RunQueue(ctx, orgTest.Name, RunQueueOptions{})
+		rq, err := client.Organizations.ReadRunQueue(ctx, orgTest.Name, ReadRunQueueOptions{})
 		require.NoError(t, err)
 
 		found := []string{}
@@ -379,7 +379,7 @@ func TestOrganizationsRunQueue(t *testing.T) {
 	})
 
 	t.Run("without queue options", func(t *testing.T) {
-		rq, err := client.Organizations.RunQueue(ctx, orgTest.Name, RunQueueOptions{})
+		rq, err := client.Organizations.ReadRunQueue(ctx, orgTest.Name, ReadRunQueueOptions{})
 		require.NoError(t, err)
 
 		found := []string{}
@@ -399,7 +399,7 @@ func TestOrganizationsRunQueue(t *testing.T) {
 		// Request a page number which is out of range. The result should
 		// be successful, but return no results if the paging options are
 		// properly passed along.
-		rq, err := client.Organizations.RunQueue(ctx, orgTest.Name, RunQueueOptions{
+		rq, err := client.Organizations.ReadRunQueue(ctx, orgTest.Name, ReadRunQueueOptions{
 			ListOptions: ListOptions{
 				PageNumber: 999,
 				PageSize:   100,

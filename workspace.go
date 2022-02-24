@@ -71,8 +71,8 @@ type Workspaces interface {
 	// UnassignSSHKey from a workspace.
 	UnassignSSHKey(ctx context.Context, workspaceID string) (*Workspace, error)
 
-	// RemoteStateConsumers reads the remote state consumers for a workspace.
-	RemoteStateConsumers(ctx context.Context, workspaceID string, options *RemoteStateConsumersListOptions) (*WorkspaceList, error)
+	// ListRemoteStateConsumers reads the remote state consumers for a workspace.
+	ListRemoteStateConsumers(ctx context.Context, workspaceID string, options *RemoteStateConsumersListOptions) (*WorkspaceList, error)
 
 	// AddRemoteStateConsumers adds remote state consumers to a workspace.
 	AddRemoteStateConsumers(ctx context.Context, workspaceID string, options WorkspaceAddRemoteStateConsumersOptions) error
@@ -84,8 +84,8 @@ type Workspaces interface {
 	// to match the workspaces in the update options.
 	UpdateRemoteStateConsumers(ctx context.Context, workspaceID string, options WorkspaceUpdateRemoteStateConsumersOptions) error
 
-	// Tags reads the tags for a workspace.
-	Tags(ctx context.Context, workspaceID string, options *WorkspaceTagListOptions) (*TagList, error)
+	// ListTags reads the tags for a workspace.
+	ListTags(ctx context.Context, workspaceID string, options *WorkspaceTagListOptions) (*TagList, error)
 
 	// AddTags appends tags to a workspace
 	AddTags(ctx context.Context, workspaceID string, options WorkspaceAddTagsOptions) error
@@ -900,7 +900,7 @@ type RemoteStateConsumersListOptions struct {
 }
 
 // RemoteStateConsumers returns the remote state consumers for a given workspace.
-func (s *workspaces) RemoteStateConsumers(ctx context.Context, workspaceID string, options *RemoteStateConsumersListOptions) (*WorkspaceList, error) {
+func (s *workspaces) ListRemoteStateConsumers(ctx context.Context, workspaceID string, options *RemoteStateConsumersListOptions) (*WorkspaceList, error) {
 	if !validStringID(&workspaceID) {
 		return nil, ErrInvalidWorkspaceID
 	}
@@ -1034,8 +1034,8 @@ type WorkspaceTagListOptions struct {
 	Query *string `url:"name,omitempty"`
 }
 
-// Tags returns the tags for a given workspace.
-func (s *workspaces) Tags(ctx context.Context, workspaceID string, options *WorkspaceTagListOptions) (*TagList, error) {
+// ListTags returns the tags for a given workspace.
+func (s *workspaces) ListTags(ctx context.Context, workspaceID string, options *WorkspaceTagListOptions) (*TagList, error) {
 	if !validStringID(&workspaceID) {
 		return nil, ErrInvalidWorkspaceID
 	}

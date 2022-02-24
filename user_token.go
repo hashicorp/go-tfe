@@ -19,8 +19,8 @@ type UserTokens interface {
 	// List all the tokens of the given user ID.
 	List(ctx context.Context, userID string) (*UserTokenList, error)
 
-	// Generate a new user token
-	Generate(ctx context.Context, userID string, options UserTokenGenerateOptions) (*UserToken, error)
+	// Create a new user token
+	Create(ctx context.Context, userID string, options UserTokenCreateOptions) (*UserToken, error)
 
 	// Read a user token by its ID.
 	Read(ctx context.Context, tokenID string) (*UserToken, error)
@@ -49,14 +49,14 @@ type UserToken struct {
 	Token       string    `jsonapi:"attr,token"`
 }
 
-// UserTokenGenerateOptions the options for creating a user token.
-type UserTokenGenerateOptions struct {
+// UserTokenCreateOptions the options for creating a user token.
+type UserTokenCreateOptions struct {
 	// Description of the token
 	Description string `jsonapi:"attr,description,omitempty"`
 }
 
-// Generate a new user token
-func (s *userTokens) Generate(ctx context.Context, userID string, options UserTokenGenerateOptions) (*UserToken, error) {
+// Create a new user token
+func (s *userTokens) Create(ctx context.Context, userID string, options UserTokenCreateOptions) (*UserToken, error) {
 	if !validStringID(&userID) {
 		return nil, ErrInvalidUserID
 	}
