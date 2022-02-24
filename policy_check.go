@@ -48,7 +48,7 @@ const (
 // PolicyStatus represents a policy check state.
 type PolicyStatus string
 
-//List all available policy check statuses.
+// List all available policy check statuses.
 const (
 	PolicyCanceled    PolicyStatus = "canceled"
 	PolicyErrored     PolicyStatus = "errored"

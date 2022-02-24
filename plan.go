@@ -35,7 +35,7 @@ type plans struct {
 // PlanStatus represents a plan state.
 type PlanStatus string
 
-//List all available plan statuses.
+// List all available plan statuses.
 const (
 	PlanCanceled    PlanStatus = "canceled"
 	PlanCreated     PlanStatus = "created"

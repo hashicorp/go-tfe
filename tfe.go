@@ -344,7 +344,7 @@ func (c *Client) retryHTTPBackoff(min, max time.Duration, attemptNum int, resp *
 
 	// Use the rate limit backoff function when we are rate limited.
 	if resp != nil && resp.StatusCode == 429 {
-		return rateLimitBackoff(min, max, attemptNum, resp)
+		return rateLimitBackoff(min, max, resp)
 	}
 
 	// Set custom duration's when we experience a service interruption.
@@ -361,7 +361,7 @@ func (c *Client) retryHTTPBackoff(min, max time.Duration, attemptNum int, resp *
 // min and max are mainly used for bounding the jitter that will be added to
 // the reset time retrieved from the headers. But if the final wait time is
 // less then min, min will be used instead.
-func rateLimitBackoff(min, max time.Duration, attemptNum int, resp *http.Response) time.Duration {
+func rateLimitBackoff(min, max time.Duration, resp *http.Response) time.Duration {
 	// rnd is used to generate pseudo-random numbers.
 	rnd := rand.New(rand.NewSource(time.Now().UnixNano()))
 
@@ -558,7 +558,7 @@ func serializeRequestBody(v interface{}) (interface{}, error) {
 	// case we want to choose the serialization type based on the
 	// individual record type. To determine that type, we need
 	// to either follow the pointer or examine the slice element type.
-	// There are other theoretical possiblities (e. g. maps,
+	// There are other theoretical possibilities (e. g. maps,
 	// non-pointers) but they wouldn't work anyway because the
 	// json-api library doesn't support serializing other things.
 	var modelType reflect.Type

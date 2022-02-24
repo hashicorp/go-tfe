@@ -15,9 +15,9 @@ linters:
     - stylecheck #https://github.com/dominikh/go-tools/tree/master/stylecheck
     - revive #golint is deprecated and golangci-lint recommends to use revive instead https://github.com/mgechev/revive
     #other deprecated lint libraries: maligned, scopelint, interfacer
-    - gocritic
-    - unparam
-    - misspell
+    - gocritic #https://github.com/go-critic/go-critic
+    - unparam #https://github.com/mvdan/unparam
+    - misspell #https://github.com/client9/misspell
 issues:
   exclude-rules:
   - path: _test\.go
@@ -38,6 +38,11 @@ linters-settings:
       - diagnostic
       - opinionated
       - performance
+    disabled-checks:
+      - unnamedResult
+      - hugeParam
+      - singleCaseSwitch
+      - ifElseChain
   revive:
     # see https://github.com/mgechev/revive#available-rules for details.
     ignore-generated-header: false #recommended in their configuration

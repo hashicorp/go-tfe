@@ -75,7 +75,7 @@ func (s *workspaceRunTasks) List(ctx context.Context, workspaceID string, option
 }
 
 // Read a workspace run task by ID
-func (s *workspaceRunTasks) Read(ctx context.Context, workspaceID string, workspaceTaskID string) (*WorkspaceRunTask, error) {
+func (s *workspaceRunTasks) Read(ctx context.Context, workspaceID, workspaceTaskID string) (*WorkspaceRunTask, error) {
 	if !validStringID(&workspaceID) {
 		return nil, ErrInvalidWorkspaceID
 	}
@@ -152,7 +152,7 @@ type WorkspaceRunTaskUpdateOptions struct {
 }
 
 // Update an existing workspace run task by ID
-func (s *workspaceRunTasks) Update(ctx context.Context, workspaceID string, workspaceTaskID string, options WorkspaceRunTaskUpdateOptions) (*WorkspaceRunTask, error) {
+func (s *workspaceRunTasks) Update(ctx context.Context, workspaceID, workspaceTaskID string, options WorkspaceRunTaskUpdateOptions) (*WorkspaceRunTask, error) {
 	if !validStringID(&workspaceID) {
 		return nil, ErrInvalidWorkspaceID
 	}
@@ -181,7 +181,7 @@ func (s *workspaceRunTasks) Update(ctx context.Context, workspaceID string, work
 }
 
 // Delete a workspace run task by ID
-func (s *workspaceRunTasks) Delete(ctx context.Context, workspaceID string, workspaceTaskID string) error {
+func (s *workspaceRunTasks) Delete(ctx context.Context, workspaceID, workspaceTaskID string) error {
 	if !validStringID(&workspaceID) {
 		return ErrInvalidWorkspaceID
 	}

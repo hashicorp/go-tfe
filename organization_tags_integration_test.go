@@ -122,7 +122,7 @@ func TestOrganizationTagsDelete(t *testing.T) {
 		})
 		require.NoError(t, err)
 
-		//sanity check ensure tags were deleted from the organization
+		// sanity check ensure tags were deleted from the organization
 		tags, err = client.OrganizationTags.List(ctx, orgTest.Name, nil)
 		require.NoError(t, err)
 
@@ -175,7 +175,7 @@ func TestOrganizationTagsAddWorkspace(t *testing.T) {
 		})
 		require.NoError(t, err)
 
-		//Ensure the tag was properly associated with the workspaces
+		// Ensure the tag was properly associated with the workspaces
 		fetched, err := client.Workspaces.ListTags(ctx, workspaceToAdd1.ID, nil)
 		require.NoError(t, err)
 		assert.Equal(t, fetched.Items[0].ID, tagID)

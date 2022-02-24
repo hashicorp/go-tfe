@@ -236,7 +236,7 @@ type PolicySetUpdateOptions struct {
 	// https://jsonapi.org/format/#crud-creating
 	Type string `jsonapi:"primary,policy-sets"`
 
-	/// The name of the policy set.
+	// The name of the policy set.
 	Name *string `jsonapi:"attr,name,omitempty"`
 
 	// The description of the policy set.
@@ -293,7 +293,7 @@ func (s *policySets) Update(ctx context.Context, policySetID string, options Pol
 // PolicySetAddPoliciesOptions represents the options for adding policies
 // to a policy set.
 type PolicySetAddPoliciesOptions struct {
-	/// The policies to add to the policy set.
+	// The policies to add to the policy set.
 	Policies []*Policy
 }
 
@@ -328,7 +328,7 @@ func (s *policySets) AddPolicies(ctx context.Context, policySetID string, option
 // PolicySetRemovePoliciesOptions represents the options for removing
 // policies from a policy set.
 type PolicySetRemovePoliciesOptions struct {
-	/// The policies to remove from the policy set.
+	// The policies to remove from the policy set.
 	Policies []*Policy
 }
 
@@ -363,7 +363,7 @@ func (s *policySets) RemovePolicies(ctx context.Context, policySetID string, opt
 // PolicySetAddWorkspacesOptions represents the options for adding workspaces
 // to a policy set.
 type PolicySetAddWorkspacesOptions struct {
-	/// The workspaces to add to the policy set.
+	// The workspaces to add to the policy set.
 	Workspaces []*Workspace
 }
 
@@ -398,7 +398,7 @@ func (s *policySets) AddWorkspaces(ctx context.Context, policySetID string, opti
 // PolicySetRemoveWorkspacesOptions represents the options for removing
 // workspaces from a policy set.
 type PolicySetRemoveWorkspacesOptions struct {
-	/// The workspaces to remove from the policy set.
+	// The workspaces to remove from the policy set.
 	Workspaces []*Workspace
 }
 

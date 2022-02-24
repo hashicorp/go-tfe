@@ -106,7 +106,7 @@ type TeamAccessListOptions struct {
 	WorkspaceID string `url:"filter[workspace][id]"`
 }
 
-//check that workspaceID field has a valid value
+// check that workspaceID field has a valid value
 func (o *TeamAccessListOptions) valid() error {
 	if o == nil {
 		return ErrRequiredTeamAccessListOps

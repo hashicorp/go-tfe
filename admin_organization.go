@@ -102,8 +102,8 @@ type AdminOrganizationID struct {
 
 // List all the organizations visible to the current user.
 func (s *adminOrganizations) List(ctx context.Context, options *AdminOrganizationListOptions) (*AdminOrganizationList, error) {
-	url := "admin/organizations"
-	req, err := s.client.newRequest("GET", url, options)
+	u := "admin/organizations"
+	req, err := s.client.newRequest("GET", u, options)
 	if err != nil {
 		return nil, err
 	}
@@ -122,9 +122,9 @@ func (s *adminOrganizations) ListModuleConsumers(ctx context.Context, organizati
 		return nil, ErrInvalidOrg
 	}
 
-	url := fmt.Sprintf("admin/organizations/%s/relationships/module-consumers", url.QueryEscape(organization))
+	u := fmt.Sprintf("admin/organizations/%s/relationships/module-consumers", url.QueryEscape(organization))
 
-	req, err := s.client.newRequest("GET", url, nil)
+	req, err := s.client.newRequest("GET", u, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -183,7 +183,7 @@ func (s *adminOrganizations) UpdateModuleConsumers(ctx context.Context, organiza
 		return ErrInvalidOrg
 	}
 
-	url := fmt.Sprintf("admin/organizations/%s/relationships/module-consumers", url.QueryEscape(organization))
+	u := fmt.Sprintf("admin/organizations/%s/relationships/module-consumers", url.QueryEscape(organization))
 
 	var organizations []*AdminOrganizationID
 	for _, id := range consumerOrganizationIDs {
@@ -193,7 +193,7 @@ func (s *adminOrganizations) UpdateModuleConsumers(ctx context.Context, organiza
 		organizations = append(organizations, &AdminOrganizationID{ID: id})
 	}
 
-	req, err := s.client.newRequest("PATCH", url, organizations)
+	req, err := s.client.newRequest("PATCH", u, organizations)
 	if err != nil {
 		return err
 	}

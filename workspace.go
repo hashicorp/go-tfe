@@ -417,7 +417,7 @@ func (s *workspaces) Read(ctx context.Context, organization, workspace string) (
 }
 
 // ReadWithOptions reads a workspace by name and organization name with given options.
-func (s *workspaces) ReadWithOptions(ctx context.Context, organization string, workspace string, options *WorkspaceReadOptions) (*Workspace, error) {
+func (s *workspaces) ReadWithOptions(ctx context.Context, organization, workspace string, options *WorkspaceReadOptions) (*Workspace, error) {
 	if !validStringID(&organization) {
 		return nil, ErrInvalidOrg
 	}
@@ -924,7 +924,7 @@ func (s *workspaces) ListRemoteStateConsumers(ctx context.Context, workspaceID s
 // WorkspaceAddRemoteStateConsumersOptions represents the options for adding remote state consumers
 // to a workspace.
 type WorkspaceAddRemoteStateConsumersOptions struct {
-	/// The workspaces to add as remote state consumers to the workspace.
+	// The workspaces to add as remote state consumers to the workspace.
 	Workspaces []*Workspace
 }
 
@@ -959,7 +959,7 @@ func (s *workspaces) AddRemoteStateConsumers(ctx context.Context, workspaceID st
 // WorkspaceRemoveRemoteStateConsumersOptions represents the options for removing remote state
 // consumers from a workspace.
 type WorkspaceRemoveRemoteStateConsumersOptions struct {
-	/// The workspaces to remove as remote state consumers from the workspace.
+	// The workspaces to remove as remote state consumers from the workspace.
 	Workspaces []*Workspace
 }
 
@@ -994,7 +994,7 @@ func (s *workspaces) RemoveRemoteStateConsumers(ctx context.Context, workspaceID
 // WorkspaceUpdateRemoteStateConsumersOptions represents the options for
 // updatintg remote state consumers from a workspace.
 type WorkspaceUpdateRemoteStateConsumersOptions struct {
-	/// The workspaces to update remote state consumers for the workspace.
+	// The workspaces to update remote state consumers for the workspace.
 	Workspaces []*Workspace
 }
 

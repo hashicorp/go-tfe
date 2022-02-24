@@ -214,7 +214,7 @@ func (o RegistryModuleCreateVersionOptions) valid() error {
 }
 
 // Create a new registry module version
-func (r *registryModules) CreateVersion(ctx context.Context, organization string, name string, provider string, options RegistryModuleCreateVersionOptions) (*RegistryModuleVersion, error) {
+func (r *registryModules) CreateVersion(ctx context.Context, organization, name, provider string, options RegistryModuleCreateVersionOptions) (*RegistryModuleVersion, error) {
 	if !validStringID(&organization) {
 		return nil, ErrInvalidOrg
 	}
@@ -313,7 +313,7 @@ func (r *registryModules) CreateWithVCSConnection(ctx context.Context, options R
 }
 
 // Read a specific registry module
-func (r *registryModules) Read(ctx context.Context, organization string, name string, provider string) (*RegistryModule, error) {
+func (r *registryModules) Read(ctx context.Context, organization, name, provider string) (*RegistryModule, error) {
 	if !validStringID(&organization) {
 		return nil, ErrInvalidOrg
 	}
@@ -351,7 +351,7 @@ func (r *registryModules) Read(ctx context.Context, organization string, name st
 }
 
 // Delete is used to delete the entire registry module
-func (r *registryModules) Delete(ctx context.Context, organization string, name string) error {
+func (r *registryModules) Delete(ctx context.Context, organization, name string) error {
 	if !validStringID(&organization) {
 		return ErrInvalidOrg
 	}
@@ -376,7 +376,7 @@ func (r *registryModules) Delete(ctx context.Context, organization string, name 
 }
 
 // DeleteProvider is used to delete the specific registry module provider
-func (r *registryModules) DeleteProvider(ctx context.Context, organization string, name string, provider string) error {
+func (r *registryModules) DeleteProvider(ctx context.Context, organization, name, provider string) error {
 	if !validStringID(&organization) {
 		return ErrInvalidOrg
 	}
@@ -408,7 +408,7 @@ func (r *registryModules) DeleteProvider(ctx context.Context, organization strin
 }
 
 // DeleteVersion is used to delete the specific registry module version
-func (r *registryModules) DeleteVersion(ctx context.Context, organization string, name string, provider string, version string) error {
+func (r *registryModules) DeleteVersion(ctx context.Context, organization, name, provider, version string) error {
 	if !validStringID(&organization) {
 		return ErrInvalidOrg
 	}

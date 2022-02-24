@@ -38,7 +38,7 @@ type variables struct {
 // CategoryType represents a category type.
 type CategoryType string
 
-//List all available categories.
+// List all available categories.
 const (
 	CategoryEnv       CategoryType = "env"
 	CategoryPolicySet CategoryType = "policy-set"
@@ -153,7 +153,7 @@ func (s *variables) Create(ctx context.Context, workspaceID string, options Vari
 }
 
 // Read a variable by its ID.
-func (s *variables) Read(ctx context.Context, workspaceID string, variableID string) (*Variable, error) {
+func (s *variables) Read(ctx context.Context, workspaceID, variableID string) (*Variable, error) {
 	if !validStringID(&workspaceID) {
 		return nil, ErrInvalidWorkspaceID
 	}
@@ -201,7 +201,7 @@ type VariableUpdateOptions struct {
 }
 
 // Update values of an existing variable.
-func (s *variables) Update(ctx context.Context, workspaceID string, variableID string, options VariableUpdateOptions) (*Variable, error) {
+func (s *variables) Update(ctx context.Context, workspaceID, variableID string, options VariableUpdateOptions) (*Variable, error) {
 	if !validStringID(&workspaceID) {
 		return nil, ErrInvalidWorkspaceID
 	}
@@ -225,7 +225,7 @@ func (s *variables) Update(ctx context.Context, workspaceID string, variableID s
 }
 
 // Delete a variable by its ID.
-func (s *variables) Delete(ctx context.Context, workspaceID string, variableID string) error {
+func (s *variables) Delete(ctx context.Context, workspaceID, variableID string) error {
 	if !validStringID(&workspaceID) {
 		return ErrInvalidWorkspaceID
 	}
