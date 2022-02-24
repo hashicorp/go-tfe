@@ -32,12 +32,12 @@ func TestTaskStagesRead(t *testing.T) {
 	rTest, rTestCleanup := createRun(t, client, wkspaceTest)
 	defer rTestCleanup()
 
-	t.Run("without include param", func(t *testing.T) {
-		r, err := client.Runs.ReadWithOptions(ctx, rTest.ID, &RunReadOptions{
-			Include: []RunIncludeOps{RunTaskStages},
-		})
-		require.NoError(t, err)
+	r, err := client.Runs.ReadWithOptions(ctx, rTest.ID, &RunReadOptions{
+		Include: []RunIncludeOps{RunTaskStages},
+	})
+	require.NoError(t, err)
 
+	t.Run("without read options", func(t *testing.T) {
 		taskStage, err := client.TaskStages.Read(ctx, r.TaskStages[0].ID, nil)
 		require.NoError(t, err)
 
@@ -58,11 +58,6 @@ func TestTaskStagesRead(t *testing.T) {
 	})
 
 	t.Run("with include param task_results", func(t *testing.T) {
-		r, err := client.Runs.ReadWithOptions(ctx, rTest.ID, &RunReadOptions{
-			Include: []RunIncludeOps{RunTaskStages},
-		})
-		require.NoError(t, err)
-
 		taskStage, err := client.TaskStages.Read(ctx, r.TaskStages[0].ID, &TaskStageReadOptions{
 			Include: []TaskStageIncludeOps{TaskStageTaskResults},
 		})
