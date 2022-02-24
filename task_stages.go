@@ -68,7 +68,7 @@ const (
 
 // TaskStageReadOptions represents the set of options when reading a task stage
 type TaskStageReadOptions struct {
-	Include []TaskStageIncludeOps `url:"include"`
+	Include []TaskStageIncludeOps `url:"include,omitempty"`
 }
 
 // Read a task stage by ID
@@ -78,7 +78,7 @@ func (s *taskStages) Read(ctx context.Context, taskStageID string, options *Task
 	}
 
 	u := fmt.Sprintf("task-stages/%s", taskStageID)
-	req, err := s.client.newRequest("GET", u, &options)
+	req, err := s.client.newRequest("GET", u, options)
 	if err != nil {
 		return nil, err
 	}
@@ -104,7 +104,7 @@ func (s *taskStages) List(ctx context.Context, runID string, options *TaskStageL
 	}
 
 	u := fmt.Sprintf("runs/%s/task-stages", runID)
-	req, err := s.client.newRequest("GET", u, &options)
+	req, err := s.client.newRequest("GET", u, options)
 	if err != nil {
 		return nil, err
 	}
