@@ -11,7 +11,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func TestTeamTokensGenerate(t *testing.T) {
+func TestTeamTokensCreate(t *testing.T) {
 	skipIfFreeOnly(t)
 
 	client := testClient(t)
@@ -22,21 +22,21 @@ func TestTeamTokensGenerate(t *testing.T) {
 
 	var tmToken string
 	t.Run("with valid options", func(t *testing.T) {
-		tt, err := client.TeamTokens.Generate(ctx, tmTest.ID)
+		tt, err := client.TeamTokens.Create(ctx, tmTest.ID)
 		require.NoError(t, err)
 		require.NotEmpty(t, tt.Token)
 		tmToken = tt.Token
 	})
 
 	t.Run("when a token already exists", func(t *testing.T) {
-		tt, err := client.TeamTokens.Generate(ctx, tmTest.ID)
+		tt, err := client.TeamTokens.Create(ctx, tmTest.ID)
 		require.NoError(t, err)
 		require.NotEmpty(t, tt.Token)
 		assert.NotEqual(t, tmToken, tt.Token)
 	})
 
 	t.Run("without valid team ID", func(t *testing.T) {
-		tt, err := client.TeamTokens.Generate(ctx, badIdentifier)
+		tt, err := client.TeamTokens.Create(ctx, badIdentifier)
 		assert.Nil(t, tt)
 		assert.Equal(t, err, ErrInvalidTeamID)
 	})

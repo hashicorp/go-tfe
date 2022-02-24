@@ -897,7 +897,7 @@ func createTeamToken(t *testing.T, client *Client, tm *Team) (*TeamToken, func()
 	}
 
 	ctx := context.Background()
-	tt, err := client.TeamTokens.Generate(ctx, tm.ID)
+	tt, err := client.TeamTokens.Create(ctx, tm.ID)
 	if err != nil {
 		t.Fatal(err)
 	}

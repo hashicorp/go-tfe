@@ -16,8 +16,8 @@ var _ TeamTokens = (*teamTokens)(nil)
 // TFE API docs:
 // https://www.terraform.io/docs/cloud/api/team-tokens.html
 type TeamTokens interface {
-	// Generate a new team token, replacing any existing token.
-	Generate(ctx context.Context, teamID string) (*TeamToken, error)
+	// Create a new team token, replacing any existing token.
+	Create(ctx context.Context, teamID string) (*TeamToken, error)
 
 	// Read a team token by its ID.
 	Read(ctx context.Context, teamID string) (*TeamToken, error)
@@ -40,8 +40,8 @@ type TeamToken struct {
 	Token       string    `jsonapi:"attr,token"`
 }
 
-// Generate a new team token, replacing any existing token.
-func (s *teamTokens) Generate(ctx context.Context, teamID string) (*TeamToken, error) {
+// Create a new team token, replacing any existing token.
+func (s *teamTokens) Create(ctx context.Context, teamID string) (*TeamToken, error) {
 	if !validStringID(&teamID) {
 		return nil, ErrInvalidTeamID
 	}
