@@ -147,8 +147,11 @@ func (s *sshKeys) Read(ctx context.Context, sshKeyID string) (*SSHKey, error) {
 
 // SSHKeyUpdateOptions represents the options for updating an SSH key.
 type SSHKeyUpdateOptions struct {
-	// For internal use only!
-	ID string `jsonapi:"primary,ssh-keys"`
+	// Type is a public field utilized by JSON:API to
+	// set the resource type via the field tag.
+	// It is not a user-defined value and does not need to be set.
+	// https://jsonapi.org/format/#crud-creating
+	Type string `jsonapi:"primary,ssh-keys"`
 
 	// A new name to identify the SSH key.
 	Name *string `jsonapi:"attr,name,omitempty"`
@@ -159,9 +162,6 @@ func (s *sshKeys) Update(ctx context.Context, sshKeyID string, options SSHKeyUpd
 	if !validStringID(&sshKeyID) {
 		return nil, ErrInvalidSHHKeyID
 	}
-
-	// Make sure we don't send a user provided ID.
-	options.ID = ""
 
 	u := fmt.Sprintf("ssh-keys/%s", url.QueryEscape(sshKeyID))
 	req, err := s.client.newRequest("PATCH", u, &options)
