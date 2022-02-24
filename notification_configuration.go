@@ -40,7 +40,6 @@ type notificationConfigurations struct {
 	client *Client
 }
 
-// List of available notification triggers.
 const (
 	NotificationTriggerCreated        string = "run:created"
 	NotificationTriggerPlanning       string = "run:planning"
@@ -114,29 +113,29 @@ type NotificationConfigurationCreateOptions struct {
 	// https://jsonapi.org/format/#crud-creating
 	Type string `jsonapi:"primary,notification-configurations"`
 
-	// The destination type of the notification configuration
+	// Required: The destination type of the notification configuration
 	DestinationType *NotificationDestinationType `jsonapi:"attr,destination-type"`
 
-	// Whether the notification configuration should be enabled or not
+	// Required: Whether the notification configuration should be enabled or not
 	Enabled *bool `jsonapi:"attr,enabled"`
 
-	// The name of the notification configuration
+	// Required: The name of the notification configuration
 	Name *string `jsonapi:"attr,name"`
 
-	// The token of the notification configuration
+	// Optional: The token of the notification configuration
 	Token *string `jsonapi:"attr,token,omitempty"`
 
-	// The list of run events that will trigger notifications.
+	// Optional: The list of run events that will trigger notifications.
 	Triggers []string `jsonapi:"attr,triggers,omitempty"`
 
-	// The url of the notification configuration
+	// Optional: The url of the notification configuration
 	URL *string `jsonapi:"attr,url,omitempty"`
 
-	// The list of email addresses that will receive notification emails.
+	// Optional: The list of email addresses that will receive notification emails.
 	// EmailAddresses is only available for TFE users. It is not available in TFC.
 	EmailAddresses []string `jsonapi:"attr,email-addresses,omitempty"`
 
-	// The list of users belonging to the organization that will receive notification emails.
+	// Optional: The list of users belonging to the organization that will receive notification emails.
 	EmailUsers []*User `jsonapi:"relation,users,omitempty"`
 }
 
@@ -149,26 +148,26 @@ type NotificationConfigurationUpdateOptions struct {
 	// https://jsonapi.org/format/#crud-creating
 	Type string `jsonapi:"primary,notification-configurations"`
 
-	// Whether the notification configuration should be enabled or not
+	// Optional: Whether the notification configuration should be enabled or not
 	Enabled *bool `jsonapi:"attr,enabled,omitempty"`
 
-	// The name of the notification configuration
+	// Optional: The name of the notification configuration
 	Name *string `jsonapi:"attr,name,omitempty"`
 
-	// The token of the notification configuration
+	// Optional: The token of the notification configuration
 	Token *string `jsonapi:"attr,token,omitempty"`
 
-	// The list of run events that will trigger notifications.
+	// Optional: The list of run events that will trigger notifications.
 	Triggers []string `jsonapi:"attr,triggers,omitempty"`
 
-	// The url of the notification configuration
+	// Optional: The url of the notification configuration
 	URL *string `jsonapi:"attr,url,omitempty"`
 
-	// The list of email addresses that will receive notification emails.
+	// Optional: The list of email addresses that will receive notification emails.
 	// EmailAddresses is only available for TFE users. It is not available in TFC.
 	EmailAddresses []string `jsonapi:"attr,email-addresses,omitempty"`
 
-	// The list of users belonging to the organization that will receive notification emails.
+	// Optional: The list of users belonging to the organization that will receive notification emails.
 	EmailUsers []*User `jsonapi:"relation,users,omitempty"`
 }
 
@@ -193,7 +192,7 @@ func (s *notificationConfigurations) List(ctx context.Context, workspaceID strin
 	return ncl, nil
 }
 
-// Creates a notification configuration with the given options.
+// Create a notification configuration with the given options.
 func (s *notificationConfigurations) Create(ctx context.Context, workspaceID string, options NotificationConfigurationCreateOptions) (*NotificationConfiguration, error) {
 	if !validStringID(&workspaceID) {
 		return nil, ErrInvalidWorkspaceID
@@ -274,7 +273,7 @@ func (s *notificationConfigurations) Delete(ctx context.Context, notificationCon
 	return s.client.do(ctx, req, nil)
 }
 
-// Verifies a notification configuration by delivering a verification
+// Verify a notification configuration by delivering a verification
 // payload to the configured url.
 func (s *notificationConfigurations) Verify(ctx context.Context, notificationConfigurationID string) (*NotificationConfiguration, error) {
 	if !validStringID(&notificationConfigurationID) {

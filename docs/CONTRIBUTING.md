@@ -130,7 +130,7 @@ func (s *example) Create(ctx context.Context, organization string, options Examp
 	return r, nil
 }
 
-// A list of relations to include with an example. See available resources:
+// ExampleIncludeOps represents the available options for include query params.
 // https://www.terraform.io/cloud-docs/api-docs/examples#list-examples (replace this URL with the actual documentation URL)
 type ExampleIncludeOps string
 
@@ -142,7 +142,8 @@ const (
 type ExampleListOptions struct {
 	ListOptions
 
-	// A list of relations to include
+	// Optional: A list of relations to include with an example. See available resources:
+	// https://www.terraform.io/cloud-docs/api-docs/examples#list-examples (replace this URL with the actual documentation URL)
 	Include []ExampleIncludeOps `url:"include,omitempty"`
 }
 
@@ -174,6 +175,8 @@ func (s *example) Read(ctx context.Context, exampleID string) (*Example, error) 
 
 // ExampleReadOptions represents the set of options for reading an example
 type ExampleReadOptions struct {
+	// Optional: A list of relations to include with an example. See available resources:
+	// https://www.terraform.io/cloud-docs/api-docs/examples#list-examples (replace this URL with the actual documentation URL)
 	Include []RunTaskIncludeOps `url:"include,omitempty"`
 }
 

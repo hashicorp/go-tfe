@@ -88,7 +88,7 @@ type EnforcementOptions struct {
 type PolicyListOptions struct {
 	ListOptions
 
-	// A search string (partial policy name) used to filter the results.
+	// Optional: A search string (partial policy name) used to filter the results.
 	Search string `url:"search[name],omitempty"`
 }
 
@@ -100,13 +100,13 @@ type PolicyCreateOptions struct {
 	// https://jsonapi.org/format/#crud-creating
 	Type string `jsonapi:"primary,policies"`
 
-	// The name of the policy.
+	// Required: The name of the policy.
 	Name *string `jsonapi:"attr,name"`
 
-	// A description of the policy's purpose.
+	// Optional: A description of the policy's purpose.
 	Description *string `jsonapi:"attr,description,omitempty"`
 
-	// The enforcements of the policy.
+	// Required: The enforcements of the policy.
 	Enforce []*EnforcementOptions `jsonapi:"attr,enforce"`
 }
 
@@ -118,10 +118,10 @@ type PolicyUpdateOptions struct {
 	// https://jsonapi.org/format/#crud-creating
 	Type string `jsonapi:"primary,policies"`
 
-	// A description of the policy's purpose.
+	// Optional: A description of the policy's purpose.
 	Description *string `jsonapi:"attr,description,omitempty"`
 
-	// The enforcements of the policy.
+	// Optional: The enforcements of the policy.
 	Enforce []*EnforcementOptions `jsonapi:"attr,enforce,omitempty"`
 }
 

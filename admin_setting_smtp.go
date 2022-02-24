@@ -7,7 +7,7 @@ import (
 // Compile-time proof of interface implementation.
 var _ SMTPSettings = (*adminSMTPSettings)(nil)
 
-// SMTPSettings describes all the SMTP admin settings.
+// SMTPSettings describes all the SMTP admin settings for the Admin Setting API https://www.terraform.io/cloud-docs/api-docs/admin/settings.
 type SMTPSettings interface {
 	// Read returns the SMTP settings.
 	Read(ctx context.Context) (*AdminSMTPSetting, error)
@@ -77,7 +77,7 @@ type AdminSMTPSettingsUpdateOptions struct {
 	TestEmailAddress *string       `jsonapi:"attr,test-email-address,omitempty"`
 }
 
-// Updat updates the SMTP settings.
+// Update updates the SMTP settings.
 func (a *adminSMTPSettings) Update(ctx context.Context, options AdminSMTPSettingsUpdateOptions) (*AdminSMTPSetting, error) {
 	if err := options.valid(); err != nil {
 		return nil, err

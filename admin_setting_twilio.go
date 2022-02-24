@@ -7,7 +7,8 @@ import (
 // Compile-time proof of interface implementation.
 var _ TwilioSettings = (*adminTwilioSettings)(nil)
 
-// TwilioSettings describes all the Twilio admin settings.
+// TwilioSettings describes all the Twilio admin settings for the Admin Setting API.
+// https://www.terraform.io/cloud-docs/api-docs/admin/settings.
 type TwilioSettings interface {
 	// Read returns the Twilio settings.
 	Read(ctx context.Context) (*AdminTwilioSetting, error)
@@ -60,7 +61,7 @@ type AdminTwilioSettingsUpdateOptions struct {
 // AdminTwilioSettingsVerifyOptions represents the test number to verify Twilio.
 // https://www.terraform.io/docs/cloud/api/admin/settings.html#verify-twilio-settings
 type AdminTwilioSettingsVerifyOptions struct {
-	TestNumber *string `jsonapi:"attr,test-number"`
+	TestNumber *string `jsonapi:"attr,test-number"` // Required
 }
 
 // Update updates the Twilio settings.

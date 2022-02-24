@@ -98,7 +98,7 @@ type CVStatusTimestamps struct {
 	StartedAt  time.Time `jsonapi:"attr,started-at,rfc3339"`
 }
 
-// A list of relations to include. See available resources:
+// ConfigurationVersionIncludeOps represents the available options for include query params.
 // https://www.terraform.io/docs/cloud/api/configuration-versions.html#available-related-resources
 type ConfigurationVersionIncludeOps string
 
@@ -109,6 +109,8 @@ const (
 
 // ConfigurationVersionReadOptions represents the options for reading a configuration version.
 type ConfigurationVersionReadOptions struct {
+	// Optional: A list of relations to include. See available resources:
+	// https://www.terraform.io/docs/cloud/api/configuration-versions.html#available-related-resources
 	Include []ConfigurationVersionIncludeOps `url:"include,omitempty"`
 }
 
@@ -116,7 +118,8 @@ type ConfigurationVersionReadOptions struct {
 // configuration versions.
 type ConfigurationVersionListOptions struct {
 	ListOptions
-
+	// Optional: A list of relations to include. See available resources:
+	// https://www.terraform.io/docs/cloud/api/configuration-versions.html#available-related-resources
 	Include []ConfigurationVersionIncludeOps `url:"include,omitempty"`
 }
 
@@ -129,11 +132,11 @@ type ConfigurationVersionCreateOptions struct {
 	// https://jsonapi.org/format/#crud-creating
 	Type string `jsonapi:"primary,configuration-versions"`
 
-	// When true, runs are queued automatically when the configuration version
+	// Optional: When true, runs are queued automatically when the configuration version
 	// is uploaded.
 	AutoQueueRuns *bool `jsonapi:"attr,auto-queue-runs,omitempty"`
 
-	// When true, this configuration version can only be used for planning.
+	// Optional: When true, this configuration version can only be used for planning.
 	Speculative *bool `jsonapi:"attr,speculative,omitempty"`
 }
 

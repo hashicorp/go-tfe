@@ -63,7 +63,7 @@ type AgentPoolCreateOptions struct {
 	// https://jsonapi.org/format/#crud-creating
 	Type string `jsonapi:"primary,agent-pools"`
 
-	// A name to identify the agent pool.
+	// Required: A name to identify the agent pool.
 	Name *string `jsonapi:"attr,name"`
 }
 

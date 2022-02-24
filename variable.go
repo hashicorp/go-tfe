@@ -78,22 +78,22 @@ type VariableCreateOptions struct {
 	// https://jsonapi.org/format/#crud-creating
 	Type string `jsonapi:"primary,vars"`
 
-	// The name of the variable.
+	// Required: The name of the variable.
 	Key *string `jsonapi:"attr,key"`
 
-	// The value of the variable.
+	// Optional: The value of the variable.
 	Value *string `jsonapi:"attr,value,omitempty"`
 
-	// The description of the variable.
+	// Optional: The description of the variable.
 	Description *string `jsonapi:"attr,description,omitempty"`
 
-	// Whether this is a Terraform or environment variable.
+	// Required: Whether this is a Terraform or environment variable.
 	Category *CategoryType `jsonapi:"attr,category"`
 
-	// Whether to evaluate the value of the variable as a string of HCL code.
+	// Optional: Whether to evaluate the value of the variable as a string of HCL code.
 	HCL *bool `jsonapi:"attr,hcl,omitempty"`
 
-	// Whether the value is sensitive.
+	// Optional: Whether the value is sensitive.
 	Sensitive *bool `jsonapi:"attr,sensitive,omitempty"`
 }
 

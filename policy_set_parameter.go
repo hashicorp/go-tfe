@@ -66,16 +66,16 @@ type PolicySetParameterCreateOptions struct {
 	// https://jsonapi.org/format/#crud-creating
 	Type string `jsonapi:"primary,vars"`
 
-	// The name of the parameter.
+	// Required: The name of the parameter.
 	Key *string `jsonapi:"attr,key"`
 
-	// The value of the parameter.
+	// Optional: The value of the parameter.
 	Value *string `jsonapi:"attr,value,omitempty"`
 
-	// The Category of the parameter, should always be "policy-set"
+	// Required: The Category of the parameter, should always be "policy-set"
 	Category *CategoryType `jsonapi:"attr,category"`
 
-	// Whether the value is sensitive.
+	// Optional: Whether the value is sensitive.
 	Sensitive *bool `jsonapi:"attr,sensitive,omitempty"`
 }
 
@@ -87,13 +87,13 @@ type PolicySetParameterUpdateOptions struct {
 	// https://jsonapi.org/format/#crud-creating
 	Type string `jsonapi:"primary,vars"`
 
-	// The name of the parameter.
+	// Optional: The name of the parameter.
 	Key *string `jsonapi:"attr,key,omitempty"`
 
-	// The value of the parameter.
+	// Optional: The value of the parameter.
 	Value *string `jsonapi:"attr,value,omitempty"`
 
-	// Whether the value is sensitive.
+	// Optional: Whether the value is sensitive.
 	Sensitive *bool `jsonapi:"attr,sensitive,omitempty"`
 }
 

@@ -53,10 +53,10 @@ type UserUpdateOptions struct {
 	// https://jsonapi.org/format/#crud-creating
 	Type string `jsonapi:"primary,users"`
 
-	// New username.
+	// Optional: New username.
 	Username *string `jsonapi:"attr,username,omitempty"`
 
-	// New email address (must be consumed afterwards to take effect).
+	// Optional: New email address (must be consumed afterwards to take effect).
 	Email *string `jsonapi:"attr,email,omitempty"`
 }
 
@@ -76,7 +76,7 @@ func (s *users) ReadCurrent(ctx context.Context) (*User, error) {
 	return u, nil
 }
 
-// Update attributes of the currently authenticated user.
+// UpdateCurrent updates attributes of the currently authenticated user.
 func (s *users) UpdateCurrent(ctx context.Context, options UserUpdateOptions) (*User, error) {
 	req, err := s.client.newRequest("PATCH", "account/update", &options)
 	if err != nil {

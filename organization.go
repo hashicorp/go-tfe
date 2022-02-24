@@ -133,28 +133,28 @@ type OrganizationCreateOptions struct {
 	// https://jsonapi.org/format/#crud-creating
 	Type string `jsonapi:"primary,organizations"`
 
-	// Name of the organization.
+	// Required: Name of the organization.
 	Name *string `jsonapi:"attr,name"`
 
-	// Admin email address.
+	// Required: Admin email address.
 	Email *string `jsonapi:"attr,email"`
 
-	// Session expiration (minutes).
+	// Optional: Session expiration (minutes).
 	SessionRemember *int `jsonapi:"attr,session-remember,omitempty"`
 
-	// Session timeout after inactivity (minutes).
+	// Optional: Session timeout after inactivity (minutes).
 	SessionTimeout *int `jsonapi:"attr,session-timeout,omitempty"`
 
-	// Authentication policy.
+	// Optional: Authentication policy.
 	CollaboratorAuthPolicy *AuthPolicyType `jsonapi:"attr,collaborator-auth-policy,omitempty"`
 
-	// Enable Cost Estimation
+	// Optional: Enable Cost Estimation
 	CostEstimationEnabled *bool `jsonapi:"attr,cost-estimation-enabled,omitempty"`
 
-	// The name of the "owners" team
+	// Optional: The name of the "owners" team
 	OwnersTeamSAMLRoleID *string `jsonapi:"attr,owners-team-saml-role-id,omitempty"`
 
-	// SendPassingStatusesForUntriggeredSpeculativePlans toggles behavior of untriggered speculative plans to send status updates to version control systems like GitHub.
+	// Optional: SendPassingStatusesForUntriggeredSpeculativePlans toggles behavior of untriggered speculative plans to send status updates to version control systems like GitHub.
 	SendPassingStatusesForUntriggeredSpeculativePlans *bool `jsonapi:"attr,send-passing-statuses-for-untriggered-speculative-plans,omitempty"`
 }
 

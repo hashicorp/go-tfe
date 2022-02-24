@@ -51,7 +51,7 @@ type UserToken struct {
 
 // UserTokenCreateOptions the options for creating a user token.
 type UserTokenCreateOptions struct {
-	// Description of the token
+	// Optional: Description of the token
 	Description string `jsonapi:"attr,description,omitempty"`
 }
 

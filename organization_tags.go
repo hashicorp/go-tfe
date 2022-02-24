@@ -9,6 +9,10 @@ import (
 
 var _ OrganizationTags = (*organizationTags)(nil)
 
+// OrganizationMemberships describes all the list of tags used with all resources across the organization.
+//
+// TFE API docs:
+// https://www.terraform.io/cloud-docs/api-docs/organization-tags
 type OrganizationTags interface {
 	// List all tags within an organization
 	List(ctx context.Context, organization string, options *OrganizationTagsListOptions) (*OrganizationTagsList, error)
@@ -20,6 +24,7 @@ type OrganizationTags interface {
 	AddWorkspaces(ctx context.Context, tag string, options AddWorkspacesToTagOptions) error
 }
 
+// organizationTags implements OrganizationTags.
 type organizationTags struct {
 	client *Client
 }
@@ -32,10 +37,11 @@ type OrganizationTagsList struct {
 
 // OrganizationTag represents a Terraform Enterprise Organization tag
 type OrganizationTag struct {
-	ID   string `jsonapi:"primary,tags"`
+	ID string `jsonapi:"primary,tags"`
+	// Optional:
 	Name string `jsonapi:"attr,name,omitempty"`
 
-	// Number of workspaces that have this tag
+	// Optional: Number of workspaces that have this tag
 	InstanceCount int `jsonapi:"attr,instance-count,omitempty"`
 
 	// The org this tag belongs to
@@ -45,18 +51,18 @@ type OrganizationTag struct {
 // OrganizationTagsListOptions represents the options for listing organization tags
 type OrganizationTagsListOptions struct {
 	ListOptions
-
+	// Optional:
 	Filter string `url:"filter[exclude][taggable][id],omitempty"`
 }
 
 // OrganizationTagsDeleteOptions represents the request body for deleting a tag in an organization
 type OrganizationTagsDeleteOptions struct {
-	IDs []string
+	IDs []string // Required
 }
 
 // AddWorkspacesToTagOptions represents the request body to add a workspace to a tag
 type AddWorkspacesToTagOptions struct {
-	WorkspaceIDs []string
+	WorkspaceIDs []string // Required
 }
 
 // this represents a single tag ID

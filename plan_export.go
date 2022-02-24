@@ -80,13 +80,14 @@ type PlanExportCreateOptions struct {
 	// https://jsonapi.org/format/#crud-creating
 	Type string `jsonapi:"primary,plan-exports"`
 
-	// The plan to export.
+	// Required: The plan to export.
 	Plan *Plan `jsonapi:"relation,plan"`
 
-	// The name of the policy set.
+	// Required: The name of the policy set.
 	DataType *PlanExportDataType `jsonapi:"attr,data-type"`
 }
 
+// Create a plan export
 func (s *planExports) Create(ctx context.Context, options PlanExportCreateOptions) (*PlanExport, error) {
 	if err := options.valid(); err != nil {
 		return nil, err

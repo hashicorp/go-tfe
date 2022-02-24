@@ -99,29 +99,29 @@ type OAuthClientCreateOptions struct {
 	// A display name for the OAuth Client.
 	Name *string `jsonapi:"attr,name"`
 
-	// The base URL of your VCS provider's API.
+	// Required: The base URL of your VCS provider's API.
 	APIURL *string `jsonapi:"attr,api-url"`
 
-	// The homepage of your VCS provider.
+	// Required: The homepage of your VCS provider.
 	HTTPURL *string `jsonapi:"attr,http-url"`
 
-	// The OAuth Client key.
+	// Optional: The OAuth Client key.
 	Key *string `jsonapi:"attr,key,omitempty"`
 
-	// The token string you were given by your VCS provider.
+	// Optional: The token string you were given by your VCS provider.
 	OAuthToken *string `jsonapi:"attr,oauth-token-string,omitempty"`
 
-	// Private key associated with this vcs provider - only available for ado_server
+	// Optional: Private key associated with this vcs provider - only available for ado_server
 	PrivateKey *string `jsonapi:"attr,private-key,omitempty"`
 
-	// Secret key associated with this vcs provider - only available for ado_server
+	// Optional: Secret key associated with this vcs provider - only available for ado_server
 	Secret *string `jsonapi:"attr,secret,omitempty"`
 
-	// RSAPublicKey the text of the SSH public key associated with your BitBucket
+	// Optional: RSAPublicKey the text of the SSH public key associated with your BitBucket
 	// Server Application Link.
 	RSAPublicKey *string `jsonapi:"attr,rsa-public-key,omitempty"`
 
-	// The VCS provider being connected with.
+	// Required: The VCS provider being connected with.
 	ServiceProvider *ServiceProviderType `jsonapi:"attr,service-provider"`
 }
 
@@ -133,20 +133,20 @@ type OAuthClientUpdateOptions struct {
 	// https://jsonapi.org/format/#crud-creating
 	Type string `jsonapi:"primary,oauth-clients"`
 
-	// A display name for the OAuth Client.
+	// Optional: A display name for the OAuth Client.
 	Name *string `jsonapi:"attr,name,omitempty"`
 
-	// The OAuth Client key.
+	// Optional: The OAuth Client key.
 	Key *string `jsonapi:"attr,key,omitempty"`
 
-	// Secret key associated with this vcs provider - only available for ado_server
+	// Optional: Secret key associated with this vcs provider - only available for ado_server
 	Secret *string `jsonapi:"attr,secret,omitempty"`
 
-	// RSAPublicKey the text of the SSH public key associated with your BitBucket
+	// Optional: RSAPublicKey the text of the SSH public key associated with your BitBucket
 	// Server Application Link.
 	RSAPublicKey *string `jsonapi:"attr,rsa-public-key,omitempty"`
 
-	// The token string you were given by your VCS provider.
+	// Optional: The token string you were given by your VCS provider.
 	OAuthToken *string `jsonapi:"attr,oauth-token-string,omitempty"`
 }
 

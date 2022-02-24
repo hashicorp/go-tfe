@@ -7,7 +7,8 @@ import (
 // Compile-time proof of interface implementation.
 var _ CostEstimationSettings = (*adminCostEstimationSettings)(nil)
 
-// CostEstimationSettings describes all the cost estimation admin settings.
+// CostEstimationSettings describes all the cost estimation admin settings for the Admin Setting API.
+// https://www.terraform.io/cloud-docs/api-docs/admin/settings
 type CostEstimationSettings interface {
 	// Read returns the cost estimation settings.
 	Read(ctx context.Context) (*AdminCostEstimationSetting, error)

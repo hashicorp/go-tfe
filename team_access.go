@@ -39,42 +39,46 @@ type teamAccesses struct {
 // AccessType represents a team access type.
 type AccessType string
 
-// RunsPermissionType represents the permissiontype to a workspace's runs.
-type RunsPermissionType string
-
-// VariablesPermissionType represents the permissiontype to a workspace's variables.
-type VariablesPermissionType string
-
-// StateVersionsPermissionType represents the permissiontype to a workspace's state versions.
-type StateVersionsPermissionType string
-
-// SentinelMocksPermissionType represents the permissiontype to a workspace's Sentinel mocks.
-type SentinelMocksPermissionType string
-
-// WorkspaceLockingPermissionType represents the permissiontype to lock or unlock a workspace.
-type WorkspaceLockingPermissionType bool
-
-// List all available team access types and permissions.
 const (
 	AccessAdmin  AccessType = "admin"
 	AccessPlan   AccessType = "plan"
 	AccessRead   AccessType = "read"
 	AccessWrite  AccessType = "write"
 	AccessCustom AccessType = "custom"
+)
 
+// RunsPermissionType represents the permissiontype to a workspace's runs.
+type RunsPermissionType string
+
+const (
 	RunsPermissionRead  RunsPermissionType = "read"
 	RunsPermissionPlan  RunsPermissionType = "plan"
 	RunsPermissionApply RunsPermissionType = "apply"
+)
 
+// VariablesPermissionType represents the permissiontype to a workspace's variables.
+type VariablesPermissionType string
+
+const (
 	VariablesPermissionNone  VariablesPermissionType = "none"
 	VariablesPermissionRead  VariablesPermissionType = "read"
 	VariablesPermissionWrite VariablesPermissionType = "write"
+)
 
+// StateVersionsPermissionType represents the permissiontype to a workspace's state versions.
+type StateVersionsPermissionType string
+
+const (
 	StateVersionsPermissionNone        StateVersionsPermissionType = "none"
 	StateVersionsPermissionReadOutputs StateVersionsPermissionType = "read-outputs"
 	StateVersionsPermissionRead        StateVersionsPermissionType = "read"
 	StateVersionsPermissionWrite       StateVersionsPermissionType = "write"
+)
 
+// SentinelMocksPermissionType represents the permissiontype to a workspace's Sentinel mocks.
+type SentinelMocksPermissionType string
+
+const (
 	SentinelMocksPermissionNone SentinelMocksPermissionType = "none"
 	SentinelMocksPermissionRead SentinelMocksPermissionType = "read"
 )
@@ -249,7 +253,6 @@ func (s *teamAccesses) Remove(ctx context.Context, teamAccessID string) error {
 	return s.client.do(ctx, req, nil)
 }
 
-// check that workspaceID field has a valid value
 func (o *TeamAccessListOptions) valid() error {
 	if o == nil {
 		return ErrRequiredTeamAccessListOps

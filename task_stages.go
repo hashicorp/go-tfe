@@ -59,7 +59,7 @@ type TaskStageStatusTimestamps struct {
 	PassedAt   time.Time `jsonapi:"attr,passed-at,rfc3339"`
 }
 
-// A list of relations to include.
+// TaskStageIncludeOps represents the available options for include query params.
 type TaskStageIncludeOps string
 
 const (
@@ -68,6 +68,7 @@ const (
 
 // TaskStageReadOptions represents the set of options when reading a task stage
 type TaskStageReadOptions struct {
+	// Optional: A list of relations to include.
 	Include []TaskStageIncludeOps `url:"include,omitempty"`
 }
 

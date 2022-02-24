@@ -39,10 +39,9 @@ type organizationMemberships struct {
 // OrganizationMembershipStatus represents an organization membership status.
 type OrganizationMembershipStatus string
 
-// List all available organization membership statuses.
 const (
-	OrganizationMembershipActive  = "active"
-	OrganizationMembershipInvited = "invited"
+	OrganizationMembershipActive  OrganizationMembershipStatus = "active"
+	OrganizationMembershipInvited OrganizationMembershipStatus = "invited"
 )
 
 // OrganizationMembershipList represents a list of organization memberships.
@@ -63,6 +62,7 @@ type OrganizationMembership struct {
 	Teams        []*Team       `jsonapi:"relation,teams"`
 }
 
+// OrganizationMembershipIncludeOps represents the available options for include query params.
 // https://www.terraform.io/cloud-docs/api-docs/organization-memberships#available-related-resources
 type OrganizationMembershipIncludeOps string
 
@@ -74,7 +74,8 @@ const (
 // OrganizationMembershipListOptions represents the options for listing organization memberships.
 type OrganizationMembershipListOptions struct {
 	ListOptions
-
+	// Optional: A list of relations to include. See available resources
+	// https://www.terraform.io/cloud-docs/api-docs/organization-memberships#available-related-resources
 	Include []OrganizationMembershipIncludeOps `url:"include,omitempty"`
 }
 
@@ -86,12 +87,14 @@ type OrganizationMembershipCreateOptions struct {
 	// https://jsonapi.org/format/#crud-creating
 	Type string `jsonapi:"primary,organization-memberships"`
 
-	// User's email address.
+	// Required: User's email address.
 	Email *string `jsonapi:"attr,email"`
 }
 
 // OrganizationMembershipReadOptions represents the options for reading organization memberships.
 type OrganizationMembershipReadOptions struct {
+	// Optional: A list of relations to include. See available resources
+	// https://www.terraform.io/cloud-docs/api-docs/organization-memberships#available-related-resources
 	Include []OrganizationMembershipIncludeOps `url:"include,omitempty"`
 }
 

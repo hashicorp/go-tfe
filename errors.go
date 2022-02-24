@@ -25,29 +25,23 @@ var (
 
 // Library errors that usually indicate a bug in the implementation of go-tfe
 var (
-	// ErrItemsMustBeSlice is returned when an API response attribute called Items is not a slice
-	ErrItemsMustBeSlice = errors.New(`model field "Items" must be a slice`)
+	ErrItemsMustBeSlice = errors.New(`model field "Items" must be a slice`) // ErrItemsMustBeSlice is returned when an API response attribute called Items is not a slice
 
-	// ErrInvalidRequestBody is returned when a request body for DELETE/PATCH/POST is not a reference type
-	ErrInvalidRequestBody = errors.New("go-tfe bug: DELETE/PATCH/POST body must be nil, ptr, or ptr slice")
+	ErrInvalidRequestBody = errors.New("go-tfe bug: DELETE/PATCH/POST body must be nil, ptr, or ptr slice") // ErrInvalidRequestBody is returned when a request body for DELETE/PATCH/POST is not a reference type
 
-	// ErrInvalidStructFormat is returned when a mix of json and jsonapi tagged fields are used in the same struct
-	ErrInvalidStructFormat = errors.New("go-tfe bug: struct can't use both json and jsonapi attributes")
+	ErrInvalidStructFormat = errors.New("go-tfe bug: struct can't use both json and jsonapi attributes") // ErrInvalidStructFormat is returned when a mix of json and jsonapi tagged fields are used in the same struct
 )
 
 // Resource Errors
 var (
-	// ErrWorkspaceLocked is returned when trying to lock a
+	ErrWorkspaceLocked = errors.New("workspace already locked") // ErrWorkspaceLocked is returned when trying to lock a
 	// locked workspace.
-	ErrWorkspaceLocked = errors.New("workspace already locked")
 
-	// ErrWorkspaceNotLocked is returned when trying to unlock
+	ErrWorkspaceNotLocked = errors.New("workspace already unlocked") // ErrWorkspaceNotLocked is returned when trying to unlock
 	// a unlocked workspace.
-	ErrWorkspaceNotLocked = errors.New("workspace already unlocked")
 
-	// ErrWorkspaceLockedByRun is returned when trying to unlock a
+	ErrWorkspaceLockedByRun = errors.New("unable to unlock workspace locked by run") // ErrWorkspaceLockedByRun is returned when trying to unlock a
 	// workspace locked by a run
-	ErrWorkspaceLockedByRun = errors.New("unable to unlock workspace locked by run")
 )
 
 // Invalid values for resources/struct fields
