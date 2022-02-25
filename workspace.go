@@ -474,21 +474,21 @@ type RemoteStateConsumersListOptions struct {
 // WorkspaceAddRemoteStateConsumersOptions represents the options for adding remote state consumers
 // to a workspace.
 type WorkspaceAddRemoteStateConsumersOptions struct {
-	/// The workspaces to add as remote state consumers to the workspace.
+	// The workspaces to add as remote state consumers to the workspace.
 	Workspaces []*Workspace
 }
 
 // WorkspaceRemoveRemoteStateConsumersOptions represents the options for removing remote state
 // consumers from a workspace.
 type WorkspaceRemoveRemoteStateConsumersOptions struct {
-	/// The workspaces to remove as remote state consumers from the workspace.
+	// The workspaces to remove as remote state consumers from the workspace.
 	Workspaces []*Workspace
 }
 
 // WorkspaceUpdateRemoteStateConsumersOptions represents the options for
 // updatintg remote state consumers from a workspace.
 type WorkspaceUpdateRemoteStateConsumersOptions struct {
-	/// The workspaces to update remote state consumers for the workspace.
+	// The workspaces to update remote state consumers for the workspace.
 	Workspaces []*Workspace
 }
 

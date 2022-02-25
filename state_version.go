@@ -269,7 +269,7 @@ func (s *stateVersions) ListOutputs(ctx context.Context, svID string, options *S
 	return sv, nil
 }
 
-//check that StateVersionListOptions fields had valid values
+// check that StateVersionListOptions fields had valid values
 func (o *StateVersionListOptions) valid() error {
 	if o == nil {
 		return ErrRequiredStateVerListOps

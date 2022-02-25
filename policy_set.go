@@ -155,7 +155,7 @@ type PolicySetUpdateOptions struct {
 	// https://jsonapi.org/format/#crud-creating
 	Type string `jsonapi:"primary,policy-sets"`
 
-	/// The name of the policy set.
+	// The name of the policy set.
 	Name *string `jsonapi:"attr,name,omitempty"`
 
 	// The description of the policy set.
@@ -181,28 +181,28 @@ type PolicySetUpdateOptions struct {
 // PolicySetAddPoliciesOptions represents the options for adding policies
 // to a policy set.
 type PolicySetAddPoliciesOptions struct {
-	/// The policies to add to the policy set.
+	// The policies to add to the policy set.
 	Policies []*Policy
 }
 
 // PolicySetRemovePoliciesOptions represents the options for removing
 // policies from a policy set.
 type PolicySetRemovePoliciesOptions struct {
-	/// The policies to remove from the policy set.
+	// The policies to remove from the policy set.
 	Policies []*Policy
 }
 
 // PolicySetAddWorkspacesOptions represents the options for adding workspaces
 // to a policy set.
 type PolicySetAddWorkspacesOptions struct {
-	/// The workspaces to add to the policy set.
+	// The workspaces to add to the policy set.
 	Workspaces []*Workspace
 }
 
 // PolicySetRemoveWorkspacesOptions represents the options for removing
 // workspaces from a policy set.
 type PolicySetRemoveWorkspacesOptions struct {
-	/// The workspaces to remove from the policy set.
+	// The workspaces to remove from the policy set.
 	Workspaces []*Workspace
 }
 

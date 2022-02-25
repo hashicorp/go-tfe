@@ -249,7 +249,7 @@ func (s *teamAccesses) Remove(ctx context.Context, teamAccessID string) error {
 	return s.client.do(ctx, req, nil)
 }
 
-//check that workspaceID field has a valid value
+// check that workspaceID field has a valid value
 func (o *TeamAccessListOptions) valid() error {
 	if o == nil {
 		return ErrRequiredTeamAccessListOps
