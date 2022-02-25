@@ -67,6 +67,12 @@ type StateVersion struct {
 	Outputs []*StateVersionOutput `jsonapi:"relation,outputs"`
 }
 
+// StateVersionOutputsList represents a list of StateVersionOutput items.
+type StateVersionOutputsList struct {
+	*Pagination
+	Items []*StateVersionOutput
+}
+
 // StateVersionListOptions represents the options for listing state versions.
 type StateVersionListOptions struct {
 	ListOptions
@@ -74,37 +80,31 @@ type StateVersionListOptions struct {
 	Workspace    string `url:"filter[workspace][name]"`
 }
 
-func (o *StateVersionListOptions) valid() error {
-	if o == nil {
-		return ErrRequiredStateVerListOps
-	}
-	if !validString(&o.Organization) {
-		return ErrRequiredOrg
-	}
-	if !validString(&o.Workspace) {
-		return ErrRequiredWorkspace
-	}
-	return nil
+// https://www.terraform.io/cloud-docs/api-docs/state-versions#available-related-resources
+type StateVersionIncludeOps string
+
+const (
+	SVcreatedby               StateVersionIncludeOps = "created_by"
+	SVrun                     StateVersionIncludeOps = "run"
+	SVrunCreatedBy            StateVersionIncludeOps = "run.created_by"
+	SVrunConfigurationVersion StateVersionIncludeOps = "run.configuration_version"
+	SVoutputs                 StateVersionIncludeOps = "outputs"
+)
+
+// StateVersionReadOptions represents the options for reading state version.
+type StateVersionReadOptions struct {
+	Include []StateVersionIncludeOps `url:"include,omitempty"`
 }
 
-// List all the state versions for a given workspace.
-func (s *stateVersions) List(ctx context.Context, options *StateVersionListOptions) (*StateVersionList, error) {
-	if err := options.valid(); err != nil {
-		return nil, err
-	}
+// StateVersionOutputsListOptions represents the options for listing state
+// version outputs.
+type StateVersionOutputsListOptions struct {
+	ListOptions
+}
 
-	req, err := s.client.newRequest("GET", "state-versions", options)
-	if err != nil {
-		return nil, err
-	}
-
-	svl := &StateVersionList{}
-	err = s.client.do(ctx, req, svl)
-	if err != nil {
-		return nil, err
-	}
-
-	return svl, nil
+// StateVersionCurrentOptions represents the options for reading the current state version.
+type StateVersionCurrentOptions struct {
+	Include []StateVersionIncludeOps `url:"include,omitempty"`
 }
 
 // StateVersionCreateOptions represents the options for creating a state version.
@@ -135,17 +135,24 @@ type StateVersionCreateOptions struct {
 	Run *Run `jsonapi:"relation,run,omitempty"`
 }
 
-func (o StateVersionCreateOptions) valid() error {
-	if !validString(o.MD5) {
-		return ErrRequiredM5
+// List all the state versions for a given workspace.
+func (s *stateVersions) List(ctx context.Context, options *StateVersionListOptions) (*StateVersionList, error) {
+	if err := options.valid(); err != nil {
+		return nil, err
 	}
-	if o.Serial == nil {
-		return ErrRequiredSerial
+
+	req, err := s.client.newRequest("GET", "state-versions", options)
+	if err != nil {
+		return nil, err
 	}
-	if !validString(o.State) {
-		return ErrRequiredState
+
+	svl := &StateVersionList{}
+	err = s.client.do(ctx, req, svl)
+	if err != nil {
+		return nil, err
 	}
-	return nil
+
+	return svl, nil
 }
 
 // Create a new state version for the given workspace.
@@ -172,22 +179,6 @@ func (s *stateVersions) Create(ctx context.Context, workspaceID string, options 
 	return sv, nil
 }
 
-// https://www.terraform.io/cloud-docs/api-docs/state-versions#available-related-resources
-type StateVersionIncludeOps string
-
-const (
-	SVcreatedby               StateVersionIncludeOps = "created_by"
-	SVrun                     StateVersionIncludeOps = "run"
-	SVrunCreatedBy            StateVersionIncludeOps = "run.created_by"
-	SVrunConfigurationVersion StateVersionIncludeOps = "run.configuration_version"
-	SVoutputs                 StateVersionIncludeOps = "outputs"
-)
-
-// StateVersionReadOptions represents the options for reading state version.
-type StateVersionReadOptions struct {
-	Include []StateVersionIncludeOps `url:"include,omitempty"`
-}
-
 // Read a state version by its ID.
 func (s *stateVersions) ReadWithOptions(ctx context.Context, svID string, options *StateVersionReadOptions) (*StateVersion, error) {
 	if !validStringID(&svID) {
@@ -212,11 +203,6 @@ func (s *stateVersions) ReadWithOptions(ctx context.Context, svID string, option
 // Read a state version by its ID.
 func (s *stateVersions) Read(ctx context.Context, svID string) (*StateVersion, error) {
 	return s.ReadWithOptions(ctx, svID, nil)
-}
-
-// StateVersionCurrentOptions represents the options for reading the current state version.
-type StateVersionCurrentOptions struct {
-	Include []StateVersionIncludeOps `url:"include,omitempty"`
 }
 
 // ReadCurrentWithOptions reads the latest available state from the given workspace using the options supplied.
@@ -262,18 +248,6 @@ func (s *stateVersions) Download(ctx context.Context, u string) ([]byte, error) 
 	return buf.Bytes(), nil
 }
 
-// StateVersionOutputsList represents a list of StateVersionOutput items.
-type StateVersionOutputsList struct {
-	*Pagination
-	Items []*StateVersionOutput
-}
-
-// StateVersionOutputsListOptions represents the options for listing state
-// version outputs.
-type StateVersionOutputsListOptions struct {
-	ListOptions
-}
-
 // ListOutputs retrieves all the outputs of a state version by its ID.
 func (s *stateVersions) ListOutputs(ctx context.Context, svID string, options *StateVersionOutputsListOptions) (*StateVersionOutputsList, error) {
 	if !validStringID(&svID) {
@@ -293,4 +267,31 @@ func (s *stateVersions) ListOutputs(ctx context.Context, svID string, options *S
 	}
 
 	return sv, nil
+}
+
+// check that StateVersionListOptions fields had valid values
+func (o *StateVersionListOptions) valid() error {
+	if o == nil {
+		return ErrRequiredStateVerListOps
+	}
+	if !validString(&o.Organization) {
+		return ErrRequiredOrg
+	}
+	if !validString(&o.Workspace) {
+		return ErrRequiredWorkspace
+	}
+	return nil
+}
+
+func (o StateVersionCreateOptions) valid() error {
+	if !validString(o.MD5) {
+		return ErrRequiredM5
+	}
+	if o.Serial == nil {
+		return ErrRequiredSerial
+	}
+	if !validString(o.State) {
+		return ErrRequiredState
+	}
+	return nil
 }

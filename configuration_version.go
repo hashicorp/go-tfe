@@ -120,6 +120,23 @@ type ConfigurationVersionListOptions struct {
 	Include []ConfigurationVersionIncludeOps `url:"include,omitempty"`
 }
 
+// ConfigurationVersionCreateOptions represents the options for creating a
+// configuration version.
+type ConfigurationVersionCreateOptions struct {
+	// Type is a public field utilized by JSON:API to
+	// set the resource type via the field tag.
+	// It is not a user-defined value and does not need to be set.
+	// https://jsonapi.org/format/#crud-creating
+	Type string `jsonapi:"primary,configuration-versions"`
+
+	// When true, runs are queued automatically when the configuration version
+	// is uploaded.
+	AutoQueueRuns *bool `jsonapi:"attr,auto-queue-runs,omitempty"`
+
+	// When true, this configuration version can only be used for planning.
+	Speculative *bool `jsonapi:"attr,speculative,omitempty"`
+}
+
 // IngressAttributes include commit information associated with configuration versions sourced from VCS.
 type IngressAttributes struct {
 	ID                string `jsonapi:"primary,ingress-attributes"`
@@ -164,23 +181,6 @@ func (s *configurationVersions) List(ctx context.Context, workspaceID string, op
 	}
 
 	return cvl, nil
-}
-
-// ConfigurationVersionCreateOptions represents the options for creating a
-// configuration version.
-type ConfigurationVersionCreateOptions struct {
-	// Type is a public field utilized by JSON:API to
-	// set the resource type via the field tag.
-	// It is not a user-defined value and does not need to be set.
-	// https://jsonapi.org/format/#crud-creating
-	Type string `jsonapi:"primary,configuration-versions"`
-
-	// When true, runs are queued automatically when the configuration version
-	// is uploaded.
-	AutoQueueRuns *bool `jsonapi:"attr,auto-queue-runs,omitempty"`
-
-	// When true, this configuration version can only be used for planning.
-	Speculative *bool `jsonapi:"attr,speculative,omitempty"`
 }
 
 // Create is used to create a new configuration version. The created

@@ -71,6 +71,11 @@ type TaskStageReadOptions struct {
 	Include []TaskStageIncludeOps `url:"include,omitempty"`
 }
 
+// TaskStageListOptions represents the options for listing task stages for a run
+type TaskStageListOptions struct {
+	ListOptions
+}
+
 // Read a task stage by ID
 func (s *taskStages) Read(ctx context.Context, taskStageID string, options *TaskStageReadOptions) (*TaskStage, error) {
 	if !validStringID(&taskStageID) {
@@ -90,11 +95,6 @@ func (s *taskStages) Read(ctx context.Context, taskStageID string, options *Task
 	}
 
 	return t, nil
-}
-
-// TaskStageListOptions represents the options for listing task stages for a run
-type TaskStageListOptions struct {
-	ListOptions
 }
 
 // List task stages for a run

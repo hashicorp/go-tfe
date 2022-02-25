@@ -106,41 +106,6 @@ type TeamAccessListOptions struct {
 	WorkspaceID string `url:"filter[workspace][id]"`
 }
 
-// check that workspaceID field has a valid value
-func (o *TeamAccessListOptions) valid() error {
-	if o == nil {
-		return ErrRequiredTeamAccessListOps
-	}
-	if !validString(&o.WorkspaceID) {
-		return ErrRequiredWorkspaceID
-	}
-	if !validStringID(&o.WorkspaceID) {
-		return ErrInvalidWorkspaceID
-	}
-
-	return nil
-}
-
-// List all the team accesses for a given workspace.
-func (s *teamAccesses) List(ctx context.Context, options *TeamAccessListOptions) (*TeamAccessList, error) {
-	if err := options.valid(); err != nil {
-		return nil, err
-	}
-
-	req, err := s.client.newRequest("GET", "team-workspaces", options)
-	if err != nil {
-		return nil, err
-	}
-
-	tal := &TeamAccessList{}
-	err = s.client.do(ctx, req, tal)
-	if err != nil {
-		return nil, err
-	}
-
-	return tal, nil
-}
-
 // TeamAccessAddOptions represents the options for adding team access.
 type TeamAccessAddOptions struct {
 	// Type is a public field utilized by JSON:API to
@@ -167,17 +132,44 @@ type TeamAccessAddOptions struct {
 	Workspace *Workspace `jsonapi:"relation,workspace"`
 }
 
-func (o TeamAccessAddOptions) valid() error {
-	if o.Access == nil {
-		return ErrRequiredAccess
+// TeamAccessUpdateOptions represents the options for updating team access.
+type TeamAccessUpdateOptions struct {
+	// Type is a public field utilized by JSON:API to
+	// set the resource type via the field tag.
+	// It is not a user-defined value and does not need to be set.
+	// https://jsonapi.org/format/#crud-creating
+	Type string `jsonapi:"primary,team-workspaces"`
+
+	// The type of access to grant.
+	Access *AccessType `jsonapi:"attr,access,omitempty"`
+
+	// Custom workspace access permissions. These can only be edited when Access is 'custom'; otherwise, they are
+	// read-only and reflect the Access level's implicit permissions.
+	Runs             *RunsPermissionType          `jsonapi:"attr,runs,omitempty"`
+	Variables        *VariablesPermissionType     `jsonapi:"attr,variables,omitempty"`
+	StateVersions    *StateVersionsPermissionType `jsonapi:"attr,state-versions,omitempty"`
+	SentinelMocks    *SentinelMocksPermissionType `jsonapi:"attr,sentinel-mocks,omitempty"`
+	WorkspaceLocking *bool                        `jsonapi:"attr,workspace-locking,omitempty"`
+}
+
+// List all the team accesses for a given workspace.
+func (s *teamAccesses) List(ctx context.Context, options *TeamAccessListOptions) (*TeamAccessList, error) {
+	if err := options.valid(); err != nil {
+		return nil, err
 	}
-	if o.Team == nil {
-		return ErrRequiredTeam
+
+	req, err := s.client.newRequest("GET", "team-workspaces", options)
+	if err != nil {
+		return nil, err
 	}
-	if o.Workspace == nil {
-		return ErrRequiredWorkspace
+
+	tal := &TeamAccessList{}
+	err = s.client.do(ctx, req, tal)
+	if err != nil {
+		return nil, err
 	}
-	return nil
+
+	return tal, nil
 }
 
 // Add team access for a workspace.
@@ -221,26 +213,6 @@ func (s *teamAccesses) Read(ctx context.Context, teamAccessID string) (*TeamAcce
 	return ta, nil
 }
 
-// TeamAccessUpdateOptions represents the options for updating team access.
-type TeamAccessUpdateOptions struct {
-	// Type is a public field utilized by JSON:API to
-	// set the resource type via the field tag.
-	// It is not a user-defined value and does not need to be set.
-	// https://jsonapi.org/format/#crud-creating
-	Type string `jsonapi:"primary,team-workspaces"`
-
-	// The type of access to grant.
-	Access *AccessType `jsonapi:"attr,access,omitempty"`
-
-	// Custom workspace access permissions. These can only be edited when Access is 'custom'; otherwise, they are
-	// read-only and reflect the Access level's implicit permissions.
-	Runs             *RunsPermissionType          `jsonapi:"attr,runs,omitempty"`
-	Variables        *VariablesPermissionType     `jsonapi:"attr,variables,omitempty"`
-	StateVersions    *StateVersionsPermissionType `jsonapi:"attr,state-versions,omitempty"`
-	SentinelMocks    *SentinelMocksPermissionType `jsonapi:"attr,sentinel-mocks,omitempty"`
-	WorkspaceLocking *bool                        `jsonapi:"attr,workspace-locking,omitempty"`
-}
-
 // Update team access for a workspace
 func (s *teamAccesses) Update(ctx context.Context, teamAccessID string, options TeamAccessUpdateOptions) (*TeamAccess, error) {
 	if !validStringID(&teamAccessID) {
@@ -275,4 +247,32 @@ func (s *teamAccesses) Remove(ctx context.Context, teamAccessID string) error {
 	}
 
 	return s.client.do(ctx, req, nil)
+}
+
+// check that workspaceID field has a valid value
+func (o *TeamAccessListOptions) valid() error {
+	if o == nil {
+		return ErrRequiredTeamAccessListOps
+	}
+	if !validString(&o.WorkspaceID) {
+		return ErrRequiredWorkspaceID
+	}
+	if !validStringID(&o.WorkspaceID) {
+		return ErrInvalidWorkspaceID
+	}
+
+	return nil
+}
+
+func (o TeamAccessAddOptions) valid() error {
+	if o.Access == nil {
+		return ErrRequiredAccess
+	}
+	if o.Team == nil {
+		return ErrRequiredTeam
+	}
+	if o.Workspace == nil {
+		return ErrRequiredWorkspace
+	}
+	return nil
 }

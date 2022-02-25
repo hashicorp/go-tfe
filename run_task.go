@@ -58,6 +58,28 @@ type RunTaskList struct {
 	Items []*RunTask
 }
 
+// A list of relations to include with a run task. See available resources:
+// https://www.terraform.io/cloud-docs/api-docs/run-tasks#list-run-tasks
+type RunTaskIncludeOps string
+
+const (
+	RunTaskWorkspaceTasks RunTaskIncludeOps = "workspace_tasks"
+	RunTaskWorkspace      RunTaskIncludeOps = "workspace_tasks.workspace"
+)
+
+// RunTaskListOptions represents the set of options for listing run tasks
+type RunTaskListOptions struct {
+	ListOptions
+
+	// A list of relations to include
+	Include []RunTaskIncludeOps `url:"include"`
+}
+
+// RunTaskReadOptions represents the set of options for reading a run task
+type RunTaskReadOptions struct {
+	Include []RunTaskIncludeOps `url:"include"`
+}
+
 // RunTaskCreateOptions represents the set of options for creating a run task
 type RunTaskCreateOptions struct {
 	// Type is a public field utilized by JSON:API to
@@ -79,20 +101,25 @@ type RunTaskCreateOptions struct {
 	HMACKey *string `jsonapi:"attr,hmac-key,omitempty"`
 }
 
-func (o *RunTaskCreateOptions) valid() error {
-	if !validString(&o.Name) {
-		return ErrRequiredName
-	}
+// RunTaskUpdateOptions represents the set of options for updating an organization's run task
+type RunTaskUpdateOptions struct {
+	// Type is a public field utilized by JSON:API to
+	// set the resource type via the field tag.
+	// It is not a user-defined value and does not need to be set.
+	// https://jsonapi.org/format/#crud-creating
+	Type string `jsonapi:"primary,tasks"`
 
-	if !validString(&o.URL) {
-		return ErrInvalidRunTaskURL
-	}
+	// Optional: The name of the run task, defaults to previous value
+	Name *string `jsonapi:"attr,name,omitempty"`
 
-	if o.Category != "task" {
-		return ErrInvalidRunTaskCategory
-	}
+	// Optional: The URL to send a run task payload, defaults to previous value
+	URL *string `jsonapi:"attr,url,omitempty"`
 
-	return nil
+	// Optional: Must be "task", defaults to "task"
+	Category *string `jsonapi:"attr,category,omitempty"`
+
+	// Optional: An HMAC key to verify the run task
+	HMACKey *string `jsonapi:"attr,hmac-key,omitempty"`
 }
 
 // Create is used to create a new run task for an organization
@@ -118,23 +145,6 @@ func (s *runTasks) Create(ctx context.Context, organization string, options RunT
 	}
 
 	return r, nil
-}
-
-// A list of relations to include with a run task. See available resources:
-// https://www.terraform.io/cloud-docs/api-docs/run-tasks#list-run-tasks
-type RunTaskIncludeOps string
-
-const (
-	RunTaskWorkspaceTasks RunTaskIncludeOps = "workspace_tasks"
-	RunTaskWorkspace      RunTaskIncludeOps = "workspace_tasks.workspace"
-)
-
-// RunTaskListOptions represents the set of options for listing run tasks
-type RunTaskListOptions struct {
-	ListOptions
-
-	// A list of relations to include
-	Include []RunTaskIncludeOps `url:"include,omitempty"`
 }
 
 // List all the run tasks for an organization
@@ -163,11 +173,6 @@ func (s *runTasks) Read(ctx context.Context, runTaskID string) (*RunTask, error)
 	return s.ReadWithOptions(ctx, runTaskID, nil)
 }
 
-// RunTaskReadOptions represents the set of options for reading a run task
-type RunTaskReadOptions struct {
-	Include []RunTaskIncludeOps `url:"include,omitempty"`
-}
-
 // Read is used to read an organization's run task by ID with options
 func (s *runTasks) ReadWithOptions(ctx context.Context, runTaskID string, options *RunTaskReadOptions) (*RunTask, error) {
 	if !validStringID(&runTaskID) {
@@ -187,43 +192,6 @@ func (s *runTasks) ReadWithOptions(ctx context.Context, runTaskID string, option
 	}
 
 	return r, nil
-}
-
-// RunTaskUpdateOptions represents the set of options for updating an organization's run task
-type RunTaskUpdateOptions struct {
-	// Type is a public field utilized by JSON:API to
-	// set the resource type via the field tag.
-	// It is not a user-defined value and does not need to be set.
-	// https://jsonapi.org/format/#crud-creating
-	Type string `jsonapi:"primary,tasks"`
-
-	// Optional: The name of the run task, defaults to previous value
-	Name *string `jsonapi:"attr,name,omitempty"`
-
-	// Optional: The URL to send a run task payload, defaults to previous value
-	URL *string `jsonapi:"attr,url,omitempty"`
-
-	// Optional: Must be "task", defaults to "task"
-	Category *string `jsonapi:"attr,category,omitempty"`
-
-	// Optional: An HMAC key to verify the run task
-	HMACKey *string `jsonapi:"attr,hmac-key,omitempty"`
-}
-
-func (o *RunTaskUpdateOptions) valid() error {
-	if o.Name != nil && !validString(o.Name) {
-		return ErrRequiredName
-	}
-
-	if o.URL != nil && !validString(o.URL) {
-		return ErrInvalidRunTaskURL
-	}
-
-	if o.Category != nil && *o.Category != "task" {
-		return ErrInvalidRunTaskCategory
-	}
-
-	return nil
 }
 
 // Update an existing run task for an organization by ID
@@ -272,4 +240,36 @@ func (s *runTasks) AttachToWorkspace(ctx context.Context, workspaceID, runTaskID
 		EnforcementLevel: enforcement,
 		RunTask:          &RunTask{ID: runTaskID},
 	})
+}
+
+func (o *RunTaskCreateOptions) valid() error {
+	if !validString(&o.Name) {
+		return ErrRequiredName
+	}
+
+	if !validString(&o.URL) {
+		return ErrInvalidRunTaskURL
+	}
+
+	if o.Category != "task" {
+		return ErrInvalidRunTaskCategory
+	}
+
+	return nil
+}
+
+func (o *RunTaskUpdateOptions) valid() error {
+	if o.Name != nil && !validString(o.Name) {
+		return ErrRequiredName
+	}
+
+	if o.URL != nil && !validString(o.URL) {
+		return ErrInvalidRunTaskURL
+	}
+
+	if o.Category != nil && *o.Category != "task" {
+		return ErrInvalidRunTaskCategory
+	}
+
+	return nil
 }

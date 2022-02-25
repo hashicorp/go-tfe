@@ -22,16 +22,6 @@ type LogReader struct {
 	endOfText   bool
 }
 
-// backoff will perform exponential backoff based on the iteration and
-// limited by the provided min and max (in milliseconds) durations.
-func backoff(min, max float64, iter int) time.Duration {
-	backoff := math.Pow(2, float64(iter)/5) * min
-	if backoff > max {
-		backoff = max
-	}
-	return time.Duration(backoff) * time.Millisecond
-}
-
 func (r *LogReader) Read(l []byte) (int, error) {
 	if written, err := r.read(l); err != io.ErrNoProgress {
 		return written, err
@@ -139,4 +129,14 @@ func (r *LogReader) read(l []byte) (int, error) {
 		}
 	}
 	return 0, io.ErrNoProgress
+}
+
+// backoff will perform exponential backoff based on the iteration and
+// limited by the provided min and max (in milliseconds) durations.
+func backoff(min, max float64, iter int) time.Duration {
+	backoff := math.Pow(2, float64(iter)/5) * min
+	if backoff > max {
+		backoff = max
+	}
+	return time.Duration(backoff) * time.Millisecond
 }

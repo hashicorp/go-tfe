@@ -58,6 +58,18 @@ type OAuthTokenListOptions struct {
 	ListOptions
 }
 
+// OAuthTokenUpdateOptions represents the options for updating an OAuth token.
+type OAuthTokenUpdateOptions struct {
+	// Type is a public field utilized by JSON:API to
+	// set the resource type via the field tag.
+	// It is not a user-defined value and does not need to be set.
+	// https://jsonapi.org/format/#crud-creating
+	Type string `jsonapi:"primary,oauth-tokens"`
+
+	// A private SSH key to be used for git clone operations.
+	PrivateSSHKey *string `jsonapi:"attr,ssh-key,omitempty"`
+}
+
 // List all the OAuth tokens for a given organization.
 func (s *oAuthTokens) List(ctx context.Context, organization string, options *OAuthTokenListOptions) (*OAuthTokenList, error) {
 	if !validStringID(&organization) {
@@ -98,18 +110,6 @@ func (s *oAuthTokens) Read(ctx context.Context, oAuthTokenID string) (*OAuthToke
 	}
 
 	return ot, err
-}
-
-// OAuthTokenUpdateOptions represents the options for updating an OAuth token.
-type OAuthTokenUpdateOptions struct {
-	// Type is a public field utilized by JSON:API to
-	// set the resource type via the field tag.
-	// It is not a user-defined value and does not need to be set.
-	// https://jsonapi.org/format/#crud-creating
-	Type string `jsonapi:"primary,oauth-tokens"`
-
-	// A private SSH key to be used for git clone operations.
-	PrivateSSHKey *string `jsonapi:"attr,ssh-key,omitempty"`
 }
 
 // Update an existing OAuth token.

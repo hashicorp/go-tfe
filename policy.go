@@ -78,12 +78,51 @@ type Enforcement struct {
 	Mode EnforcementLevel `jsonapi:"attr,mode"`
 }
 
+// EnforcementOptions represents the enforcement options of a policy.
+type EnforcementOptions struct {
+	Path *string           `json:"path"`
+	Mode *EnforcementLevel `json:"mode"`
+}
+
 // PolicyListOptions represents the options for listing policies.
 type PolicyListOptions struct {
 	ListOptions
 
 	// A search string (partial policy name) used to filter the results.
 	Search string `url:"search[name],omitempty"`
+}
+
+// PolicyCreateOptions represents the options for creating a new policy.
+type PolicyCreateOptions struct {
+	// Type is a public field utilized by JSON:API to
+	// set the resource type via the field tag.
+	// It is not a user-defined value and does not need to be set.
+	// https://jsonapi.org/format/#crud-creating
+	Type string `jsonapi:"primary,policies"`
+
+	// The name of the policy.
+	Name *string `jsonapi:"attr,name"`
+
+	// A description of the policy's purpose.
+	Description *string `jsonapi:"attr,description,omitempty"`
+
+	// The enforcements of the policy.
+	Enforce []*EnforcementOptions `jsonapi:"attr,enforce"`
+}
+
+// PolicyUpdateOptions represents the options for updating a policy.
+type PolicyUpdateOptions struct {
+	// Type is a public field utilized by JSON:API to
+	// set the resource type via the field tag.
+	// It is not a user-defined value and does not need to be set.
+	// https://jsonapi.org/format/#crud-creating
+	Type string `jsonapi:"primary,policies"`
+
+	// A description of the policy's purpose.
+	Description *string `jsonapi:"attr,description,omitempty"`
+
+	// The enforcements of the policy.
+	Enforce []*EnforcementOptions `jsonapi:"attr,enforce,omitempty"`
 }
 
 // List all the policies for a given organization
@@ -105,51 +144,6 @@ func (s *policies) List(ctx context.Context, organization string, options *Polic
 	}
 
 	return pl, nil
-}
-
-// PolicyCreateOptions represents the options for creating a new policy.
-type PolicyCreateOptions struct {
-	// Type is a public field utilized by JSON:API to
-	// set the resource type via the field tag.
-	// It is not a user-defined value and does not need to be set.
-	// https://jsonapi.org/format/#crud-creating
-	Type string `jsonapi:"primary,policies"`
-
-	// The name of the policy.
-	Name *string `jsonapi:"attr,name"`
-
-	// A description of the policy's purpose.
-	Description *string `jsonapi:"attr,description,omitempty"`
-
-	// The enforcements of the policy.
-	Enforce []*EnforcementOptions `jsonapi:"attr,enforce"`
-}
-
-// EnforcementOptions represents the enforcement options of a policy.
-type EnforcementOptions struct {
-	Path *string           `json:"path"`
-	Mode *EnforcementLevel `json:"mode"`
-}
-
-func (o PolicyCreateOptions) valid() error {
-	if !validString(o.Name) {
-		return ErrRequiredName
-	}
-	if !validStringID(o.Name) {
-		return ErrInvalidName
-	}
-	if o.Enforce == nil {
-		return ErrRequiredEnforce
-	}
-	for _, e := range o.Enforce {
-		if !validString(e.Path) {
-			return ErrRequiredEnforcementPath
-		}
-		if e.Mode == nil {
-			return ErrRequiredEnforcementMode
-		}
-	}
-	return nil
 }
 
 // Create a policy and associate it with an organization.
@@ -195,21 +189,6 @@ func (s *policies) Read(ctx context.Context, policyID string) (*Policy, error) {
 	}
 
 	return p, err
-}
-
-// PolicyUpdateOptions represents the options for updating a policy.
-type PolicyUpdateOptions struct {
-	// Type is a public field utilized by JSON:API to
-	// set the resource type via the field tag.
-	// It is not a user-defined value and does not need to be set.
-	// https://jsonapi.org/format/#crud-creating
-	Type string `jsonapi:"primary,policies"`
-
-	// A description of the policy's purpose.
-	Description *string `jsonapi:"attr,description,omitempty"`
-
-	// The enforcements of the policy.
-	Enforce []*EnforcementOptions `jsonapi:"attr,enforce,omitempty"`
 }
 
 // Update an existing policy.
@@ -282,4 +261,25 @@ func (s *policies) Download(ctx context.Context, policyID string) ([]byte, error
 	}
 
 	return buf.Bytes(), nil
+}
+
+func (o PolicyCreateOptions) valid() error {
+	if !validString(o.Name) {
+		return ErrRequiredName
+	}
+	if !validStringID(o.Name) {
+		return ErrInvalidName
+	}
+	if o.Enforce == nil {
+		return ErrRequiredEnforce
+	}
+	for _, e := range o.Enforce {
+		if !validString(e.Path) {
+			return ErrRequiredEnforcementPath
+		}
+		if e.Mode == nil {
+			return ErrRequiredEnforcementMode
+		}
+	}
+	return nil
 }
