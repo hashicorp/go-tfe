@@ -149,7 +149,7 @@ func (s *teamMembers) Add(ctx context.Context, teamID string, options TeamMember
 	}
 
 	usersOrMemberships := options.kind()
-	URL := fmt.Sprintf("teams/%s/relationships/%s", url.QueryEscape(teamID), usersOrMemberships)
+	u := fmt.Sprintf("teams/%s/relationships/%s", url.QueryEscape(teamID), usersOrMemberships)
 
 	var req *retryablehttp.Request
 
@@ -159,7 +159,7 @@ func (s *teamMembers) Add(ctx context.Context, teamID string, options TeamMember
 		for _, name := range options.Usernames {
 			members = append(members, &teamMemberUser{Username: name})
 		}
-		req, err = s.client.newRequest("POST", URL, members)
+		req, err = s.client.newRequest("POST", u, members)
 		if err != nil {
 			return err
 		}
@@ -169,7 +169,7 @@ func (s *teamMembers) Add(ctx context.Context, teamID string, options TeamMember
 		for _, ID := range options.OrganizationMembershipIDs {
 			members = append(members, &teamMemberOrgMembership{ID: ID})
 		}
-		req, err = s.client.newRequest("POST", URL, members)
+		req, err = s.client.newRequest("POST", u, members)
 		if err != nil {
 			return err
 		}
@@ -220,7 +220,7 @@ func (s *teamMembers) Remove(ctx context.Context, teamID string, options TeamMem
 	}
 
 	usersOrMemberships := options.kind()
-	URL := fmt.Sprintf("teams/%s/relationships/%s", url.QueryEscape(teamID), usersOrMemberships)
+	u := fmt.Sprintf("teams/%s/relationships/%s", url.QueryEscape(teamID), usersOrMemberships)
 
 	var req *retryablehttp.Request
 
@@ -230,7 +230,7 @@ func (s *teamMembers) Remove(ctx context.Context, teamID string, options TeamMem
 		for _, name := range options.Usernames {
 			members = append(members, &teamMemberUser{Username: name})
 		}
-		req, err = s.client.newRequest("DELETE", URL, members)
+		req, err = s.client.newRequest("DELETE", u, members)
 		if err != nil {
 			return err
 		}
@@ -240,7 +240,7 @@ func (s *teamMembers) Remove(ctx context.Context, teamID string, options TeamMem
 		for _, ID := range options.OrganizationMembershipIDs {
 			members = append(members, &teamMemberOrgMembership{ID: ID})
 		}
-		req, err = s.client.newRequest("DELETE", URL, members)
+		req, err = s.client.newRequest("DELETE", u, members)
 		if err != nil {
 			return err
 		}

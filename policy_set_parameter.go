@@ -138,7 +138,7 @@ func (s *policySetParameters) Create(ctx context.Context, policySetID string, op
 }
 
 // Read a parameter by its ID.
-func (s *policySetParameters) Read(ctx context.Context, policySetID string, parameterID string) (*PolicySetParameter, error) {
+func (s *policySetParameters) Read(ctx context.Context, policySetID, parameterID string) (*PolicySetParameter, error) {
 	if !validStringID(&policySetID) {
 		return nil, ErrInvalidPolicySetID
 	}
@@ -180,7 +180,7 @@ type PolicySetParameterUpdateOptions struct {
 }
 
 // Update values of an existing parameter.
-func (s *policySetParameters) Update(ctx context.Context, policySetID string, parameterID string, options PolicySetParameterUpdateOptions) (*PolicySetParameter, error) {
+func (s *policySetParameters) Update(ctx context.Context, policySetID, parameterID string, options PolicySetParameterUpdateOptions) (*PolicySetParameter, error) {
 	if !validStringID(&policySetID) {
 		return nil, ErrInvalidPolicySetID
 	}
@@ -204,7 +204,7 @@ func (s *policySetParameters) Update(ctx context.Context, policySetID string, pa
 }
 
 // Delete a parameter by its ID.
-func (s *policySetParameters) Delete(ctx context.Context, policySetID string, parameterID string) error {
+func (s *policySetParameters) Delete(ctx context.Context, policySetID, parameterID string) error {
 	if !validStringID(&policySetID) {
 		return ErrInvalidPolicySetID
 	}

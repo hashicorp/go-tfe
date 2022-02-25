@@ -23,7 +23,7 @@ var _testAccountDetails *TestAccountDetails
 
 func testClient(t *testing.T) *Client {
 	client, err := NewClient(nil)
-	client.RetryServerErrors(true) // because ocasionally we get a 500 internal when deleting an organization's workspace
+	client.RetryServerErrors(true) // because occasionally we get a 500 internal when deleting an organization's workspace
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -457,7 +457,7 @@ func createOrganizationToken(t *testing.T, client *Client, org *Organization) (*
 	}
 }
 
-func createRunTrigger(t *testing.T, client *Client, w *Workspace, sourceable *Workspace) (*RunTrigger, func()) {
+func createRunTrigger(t *testing.T, client *Client, w, sourceable *Workspace) (*RunTrigger, func()) {
 	var wCleanup func()
 	var sourceableCleanup func()
 

@@ -21,10 +21,10 @@ type taskResults struct {
 	client *Client
 }
 
-//TaskResultStatus is an enum that represents all possible statuses for a task result
+// TaskResultStatus is an enum that represents all possible statuses for a task result
 type TaskResultStatus string
 
-//TaskEnforcementLevel is an enum that describes the enforcement levels for a run task
+// TaskEnforcementLevel is an enum that describes the enforcement levels for a run task
 type TaskEnforcementLevel string
 
 const (

@@ -47,7 +47,7 @@ const (
 // PolicySetVersionStatus represents a policy set version status.
 type PolicySetVersionStatus string
 
-//List all available policy set version statuses.
+// List all available policy set version statuses.
 const (
 	PolicySetVersionErrored    PolicySetVersionStatus = "errored"
 	PolicySetVersionIngressing PolicySetVersionStatus = "ingressing"

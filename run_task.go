@@ -267,7 +267,7 @@ func (s *runTasks) Delete(ctx context.Context, runTaskID string) error {
 }
 
 // Convenient method to attach a run task to a workspace. See: WorkspaceRunTasks.Create()
-func (s *runTasks) AttachToWorkspace(ctx context.Context, workspaceID string, runTaskID string, enforcement TaskEnforcementLevel) (*WorkspaceRunTask, error) {
+func (s *runTasks) AttachToWorkspace(ctx context.Context, workspaceID, runTaskID string, enforcement TaskEnforcementLevel) (*WorkspaceRunTask, error) {
 	return s.client.WorkspaceRunTasks.Create(ctx, workspaceID, WorkspaceRunTaskCreateOptions{
 		EnforcementLevel: enforcement,
 		RunTask:          &RunTask{ID: runTaskID},

@@ -47,7 +47,7 @@ type configurationVersions struct {
 // ConfigurationStatus represents a configuration version status.
 type ConfigurationStatus string
 
-//List all available configuration version statuses.
+// List all available configuration version statuses.
 const (
 	ConfigurationErrored  ConfigurationStatus = "errored"
 	ConfigurationPending  ConfigurationStatus = "pending"
@@ -234,7 +234,7 @@ func (s *configurationVersions) ReadWithOptions(ctx context.Context, cvID string
 // Upload packages and uploads Terraform configuration files. It requires the
 // upload URL from a configuration version and the path to the configuration
 // files on disk.
-func (s *configurationVersions) Upload(ctx context.Context, url, path string) error {
+func (s *configurationVersions) Upload(ctx context.Context, u, path string) error {
 	file, err := os.Stat(path)
 	if err != nil {
 		return err
@@ -250,7 +250,7 @@ func (s *configurationVersions) Upload(ctx context.Context, url, path string) er
 		return err
 	}
 
-	req, err := s.client.newRequest("PUT", url, body)
+	req, err := s.client.newRequest("PUT", u, body)
 	if err != nil {
 		return err
 	}

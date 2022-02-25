@@ -74,7 +74,6 @@ type StateVersionListOptions struct {
 	Workspace    string `url:"filter[workspace][name]"`
 }
 
-//check that StateVersionListOptions fields had valid values
 func (o *StateVersionListOptions) valid() error {
 	if o == nil {
 		return ErrRequiredStateVerListOps
@@ -247,8 +246,8 @@ func (s *stateVersions) ReadCurrent(ctx context.Context, workspaceID string) (*S
 }
 
 // Download retrieves the actual stored state of a state version
-func (s *stateVersions) Download(ctx context.Context, url string) ([]byte, error) {
-	req, err := s.client.newRequest("GET", url, nil)
+func (s *stateVersions) Download(ctx context.Context, u string) ([]byte, error) {
+	req, err := s.client.newRequest("GET", u, nil)
 	if err != nil {
 		return nil, err
 	}

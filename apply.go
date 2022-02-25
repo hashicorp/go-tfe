@@ -31,7 +31,7 @@ type applies struct {
 // ApplyStatus represents an apply state.
 type ApplyStatus string
 
-//List all available apply statuses.
+// List all available apply statuses.
 const (
 	ApplyCanceled    ApplyStatus = "canceled"
 	ApplyCreated     ApplyStatus = "created"

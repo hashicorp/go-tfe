@@ -9,9 +9,9 @@ import (
 // Compile-time proof of interface implementation.
 var _ StateVersionOutputs = (*stateVersionOutputs)(nil)
 
-//State version outputs are the output values from a Terraform state file.
-//They include the name and value of the output, as well as a sensitive boolean
-//if the value should be hidden by default in UIs.
+// State version outputs are the output values from a Terraform state file.
+// They include the name and value of the output, as well as a sensitive boolean
+// if the value should be hidden by default in UIs.
 //
 // TFE API docs: https://www.terraform.io/docs/cloud/api/state-version-outputs.html
 type StateVersionOutputs interface {
