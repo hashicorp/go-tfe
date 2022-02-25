@@ -56,7 +56,11 @@ if err != nil {
 
 ## Documentation
 
-For complete usage of the API client, see the full [package docs](https://pkg.go.dev/github.com/hashicorp/go-tfe).
+For complete usage of the API client, see the [full package docs](https://pkg.go.dev/github.com/hashicorp/go-tfe).
+
+## API Coverage
+
+This API client covers most of the existing Terraform Cloud API calls and is updated regularly to add new or missing endpoints. For a complete list of what is supported/unsupported, please [refer to this page](docs/COVERAGE.md).
 
 ## Examples
 
@@ -64,11 +68,11 @@ See the [examples directory](https://github.com/hashicorp/go-tfe/tree/main/examp
 
 ## Running tests
 
-See [TESTS.md](TESTS.md).
+See [TESTS.md](docs/TESTS.md).
 
 ## Issues and Contributing
 
-See [CONTRIBUTING.md](CONTRIBUTING.md)
+See [CONTRIBUTING.md](docs/CONTRIBUTING.md)
 
 ## Releases
 
