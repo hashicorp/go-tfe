@@ -679,12 +679,17 @@ func createRegistryModuleWithVersion(t *testing.T, client *Client, org *Organiza
 	optionsModuleVersion := RegistryModuleCreateVersionOptions{
 		Version: String("1.0.0"),
 	}
-	_, err = client.RegistryModules.CreateVersion(ctx, org.Name, rm.Name, rm.Provider, optionsModuleVersion)
+	rmID := RegistryModuleID{
+		Organization: org.Name,
+		Name:         rm.Name,
+		Provider:     rm.Provider,
+	}
+	_, err = client.RegistryModules.CreateVersion(ctx, rmID, optionsModuleVersion)
 	if err != nil {
 		t.Fatal(err)
 	}
 
-	rm, err = client.RegistryModules.Read(ctx, org.Name, rm.Name, rm.Provider)
+	rm, err = client.RegistryModules.Read(ctx, rmID)
 	if err != nil {
 		t.Fatal(err)
 	}

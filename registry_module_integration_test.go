@@ -116,7 +116,12 @@ func TestRegistryModulesCreateVersion(t *testing.T) {
 		options := RegistryModuleCreateVersionOptions{
 			Version: String("1.2.3"),
 		}
-		rmv, err := client.RegistryModules.CreateVersion(ctx, orgTest.Name, registryModuleTest.Name, registryModuleTest.Provider, options)
+
+		rmv, err := client.RegistryModules.CreateVersion(ctx, RegistryModuleID{
+			Organization: orgTest.Name,
+			Name:         registryModuleTest.Name,
+			Provider:     registryModuleTest.Provider,
+		}, options)
 		require.NoError(t, err)
 		assert.NotEmpty(t, rmv.ID)
 		assert.Equal(t, *options.Version, rmv.Version)
@@ -139,7 +144,11 @@ func TestRegistryModulesCreateVersion(t *testing.T) {
 	t.Run("with invalid options", func(t *testing.T) {
 		t.Run("without version", func(t *testing.T) {
 			options := RegistryModuleCreateVersionOptions{}
-			rmv, err := client.RegistryModules.CreateVersion(ctx, orgTest.Name, registryModuleTest.Name, registryModuleTest.Provider, options)
+			rmv, err := client.RegistryModules.CreateVersion(ctx, RegistryModuleID{
+				Organization: orgTest.Name,
+				Name:         registryModuleTest.Name,
+				Provider:     registryModuleTest.Provider,
+			}, options)
 			assert.Nil(t, rmv)
 			assert.Equal(t, err, ErrRequiredVersion)
 		})
@@ -148,7 +157,11 @@ func TestRegistryModulesCreateVersion(t *testing.T) {
 			options := RegistryModuleCreateVersionOptions{
 				Version: String("invalid version"),
 			}
-			rmv, err := client.RegistryModules.CreateVersion(ctx, orgTest.Name, registryModuleTest.Name, registryModuleTest.Provider, options)
+			rmv, err := client.RegistryModules.CreateVersion(ctx, RegistryModuleID{
+				Organization: orgTest.Name,
+				Name:         registryModuleTest.Name,
+				Provider:     registryModuleTest.Provider,
+			}, options)
 			assert.Nil(t, rmv)
 			assert.Equal(t, err, ErrInvalidVersion)
 		})
@@ -158,7 +171,11 @@ func TestRegistryModulesCreateVersion(t *testing.T) {
 		options := RegistryModuleCreateVersionOptions{
 			Version: String("1.2.3"),
 		}
-		rmv, err := client.RegistryModules.CreateVersion(ctx, orgTest.Name, "", registryModuleTest.Provider, options)
+		rmv, err := client.RegistryModules.CreateVersion(ctx, RegistryModuleID{
+			Organization: orgTest.Name,
+			Name:         "",
+			Provider:     registryModuleTest.Provider,
+		}, options)
 		assert.Nil(t, rmv)
 		assert.EqualError(t, err, ErrRequiredName.Error())
 	})
@@ -167,7 +184,11 @@ func TestRegistryModulesCreateVersion(t *testing.T) {
 		options := RegistryModuleCreateVersionOptions{
 			Version: String("1.2.3"),
 		}
-		rmv, err := client.RegistryModules.CreateVersion(ctx, orgTest.Name, badIdentifier, registryModuleTest.Provider, options)
+		rmv, err := client.RegistryModules.CreateVersion(ctx, RegistryModuleID{
+			Organization: orgTest.Name,
+			Name:         badIdentifier,
+			Provider:     registryModuleTest.Provider,
+		}, options)
 		assert.Nil(t, rmv)
 		assert.EqualError(t, err, ErrInvalidName.Error())
 	})
@@ -176,7 +197,11 @@ func TestRegistryModulesCreateVersion(t *testing.T) {
 		options := RegistryModuleCreateVersionOptions{
 			Version: String("1.2.3"),
 		}
-		rmv, err := client.RegistryModules.CreateVersion(ctx, orgTest.Name, registryModuleTest.Name, "", options)
+		rmv, err := client.RegistryModules.CreateVersion(ctx, RegistryModuleID{
+			Organization: orgTest.Name,
+			Name:         registryModuleTest.Name,
+			Provider:     "",
+		}, options)
 		assert.Nil(t, rmv)
 		assert.Equal(t, err, ErrRequiredProvider)
 	})
@@ -185,7 +210,11 @@ func TestRegistryModulesCreateVersion(t *testing.T) {
 		options := RegistryModuleCreateVersionOptions{
 			Version: String("1.2.3"),
 		}
-		rmv, err := client.RegistryModules.CreateVersion(ctx, orgTest.Name, registryModuleTest.Name, badIdentifier, options)
+		rmv, err := client.RegistryModules.CreateVersion(ctx, RegistryModuleID{
+			Organization: orgTest.Name,
+			Name:         registryModuleTest.Name,
+			Provider:     badIdentifier,
+		}, options)
 		assert.Nil(t, rmv)
 		assert.Equal(t, err, ErrInvalidProvider)
 	})
@@ -194,7 +223,11 @@ func TestRegistryModulesCreateVersion(t *testing.T) {
 		options := RegistryModuleCreateVersionOptions{
 			Version: String("1.2.3"),
 		}
-		rmv, err := client.RegistryModules.CreateVersion(ctx, badIdentifier, registryModuleTest.Name, registryModuleTest.Provider, options)
+		rmv, err := client.RegistryModules.CreateVersion(ctx, RegistryModuleID{
+			Organization: badIdentifier,
+			Name:         registryModuleTest.Name,
+			Provider:     registryModuleTest.Provider,
+		}, options)
 		assert.Nil(t, rmv)
 		assert.EqualError(t, err, ErrInvalidOrg.Error())
 	})
@@ -319,7 +352,11 @@ func TestRegistryModulesRead(t *testing.T) {
 	defer registryModuleTestCleanup()
 
 	t.Run("with valid name and provider", func(t *testing.T) {
-		rm, err := client.RegistryModules.Read(ctx, orgTest.Name, registryModuleTest.Name, registryModuleTest.Provider)
+		rm, err := client.RegistryModules.Read(ctx, RegistryModuleID{
+			Organization: orgTest.Name,
+			Name:         registryModuleTest.Name,
+			Provider:     registryModuleTest.Provider,
+		})
 		require.NoError(t, err)
 		assert.Equal(t, registryModuleTest.ID, rm.ID)
 
@@ -336,37 +373,61 @@ func TestRegistryModulesRead(t *testing.T) {
 	})
 
 	t.Run("without a name", func(t *testing.T) {
-		rm, err := client.RegistryModules.Read(ctx, orgTest.Name, "", registryModuleTest.Provider)
+		rm, err := client.RegistryModules.Read(ctx, RegistryModuleID{
+			Organization: orgTest.Name,
+			Name:         "",
+			Provider:     registryModuleTest.Provider,
+		})
 		assert.Nil(t, rm)
 		assert.EqualError(t, err, ErrRequiredName.Error())
 	})
 
 	t.Run("with an invalid name", func(t *testing.T) {
-		rm, err := client.RegistryModules.Read(ctx, orgTest.Name, badIdentifier, registryModuleTest.Provider)
+		rm, err := client.RegistryModules.Read(ctx, RegistryModuleID{
+			Organization: orgTest.Name,
+			Name:         badIdentifier,
+			Provider:     registryModuleTest.Provider,
+		})
 		assert.Nil(t, rm)
 		assert.EqualError(t, err, ErrInvalidName.Error())
 	})
 
 	t.Run("without a provider", func(t *testing.T) {
-		rm, err := client.RegistryModules.Read(ctx, orgTest.Name, registryModuleTest.Name, "")
+		rm, err := client.RegistryModules.Read(ctx, RegistryModuleID{
+			Organization: orgTest.Name,
+			Name:         registryModuleTest.Name,
+			Provider:     "",
+		})
 		assert.Nil(t, rm)
 		assert.Equal(t, err, ErrRequiredProvider)
 	})
 
 	t.Run("with an invalid provider", func(t *testing.T) {
-		rm, err := client.RegistryModules.Read(ctx, orgTest.Name, registryModuleTest.Name, badIdentifier)
+		rm, err := client.RegistryModules.Read(ctx, RegistryModuleID{
+			Organization: orgTest.Name,
+			Name:         registryModuleTest.Name,
+			Provider:     badIdentifier,
+		})
 		assert.Nil(t, rm)
 		assert.Equal(t, err, ErrInvalidProvider)
 	})
 
 	t.Run("without a valid organization", func(t *testing.T) {
-		rm, err := client.RegistryModules.Read(ctx, badIdentifier, registryModuleTest.Name, registryModuleTest.Provider)
+		rm, err := client.RegistryModules.Read(ctx, RegistryModuleID{
+			Organization: badIdentifier,
+			Name:         registryModuleTest.Name,
+			Provider:     registryModuleTest.Provider,
+		})
 		assert.Nil(t, rm)
 		assert.EqualError(t, err, ErrInvalidOrg.Error())
 	})
 
 	t.Run("when the registry module does not exist", func(t *testing.T) {
-		rm, err := client.RegistryModules.Read(ctx, orgTest.Name, "nonexisting", "nonexisting")
+		rm, err := client.RegistryModules.Read(ctx, RegistryModuleID{
+			Organization: orgTest.Name,
+			Name:         "nonexisting",
+			Provider:     "nonexisting",
+		})
 		assert.Nil(t, rm)
 		assert.Error(t, err)
 	})
@@ -385,7 +446,11 @@ func TestRegistryModulesDelete(t *testing.T) {
 		err := client.RegistryModules.Delete(ctx, orgTest.Name, registryModuleTest.Name)
 		require.NoError(t, err)
 
-		rm, err := client.RegistryModules.Read(ctx, orgTest.Name, registryModuleTest.Name, registryModuleTest.Provider)
+		rm, err := client.RegistryModules.Read(ctx, RegistryModuleID{
+			Organization: orgTest.Name,
+			Name:         registryModuleTest.Name,
+			Provider:     registryModuleTest.Provider,
+		})
 		assert.Nil(t, rm)
 		assert.Error(t, err)
 	})
@@ -422,41 +487,73 @@ func TestRegistryModulesDeleteProvider(t *testing.T) {
 	registryModuleTest, _ := createRegistryModule(t, client, orgTest)
 
 	t.Run("with valid name and provider", func(t *testing.T) {
-		err := client.RegistryModules.DeleteProvider(ctx, orgTest.Name, registryModuleTest.Name, registryModuleTest.Provider)
+		err := client.RegistryModules.DeleteProvider(ctx, RegistryModuleID{
+			Organization: orgTest.Name,
+			Name:         registryModuleTest.Name,
+			Provider:     registryModuleTest.Provider,
+		})
 		require.NoError(t, err)
 
-		rm, err := client.RegistryModules.Read(ctx, orgTest.Name, registryModuleTest.Name, registryModuleTest.Provider)
+		rm, err := client.RegistryModules.Read(ctx, RegistryModuleID{
+			Organization: orgTest.Name,
+			Name:         registryModuleTest.Name,
+			Provider:     registryModuleTest.Provider,
+		})
 		assert.Nil(t, rm)
 		assert.Error(t, err)
 	})
 
 	t.Run("without a name", func(t *testing.T) {
-		err := client.RegistryModules.DeleteProvider(ctx, orgTest.Name, "", registryModuleTest.Provider)
+		err := client.RegistryModules.DeleteProvider(ctx, RegistryModuleID{
+			Organization: orgTest.Name,
+			Name:         "",
+			Provider:     registryModuleTest.Provider,
+		})
 		assert.EqualError(t, err, ErrRequiredName.Error())
 	})
 
 	t.Run("with an invalid name", func(t *testing.T) {
-		err := client.RegistryModules.DeleteProvider(ctx, orgTest.Name, badIdentifier, registryModuleTest.Provider)
+		err := client.RegistryModules.DeleteProvider(ctx, RegistryModuleID{
+			Organization: orgTest.Name,
+			Name:         badIdentifier,
+			Provider:     registryModuleTest.Provider,
+		})
 		assert.EqualError(t, err, ErrInvalidName.Error())
 	})
 
 	t.Run("without a provider", func(t *testing.T) {
-		err := client.RegistryModules.DeleteProvider(ctx, orgTest.Name, registryModuleTest.Name, "")
+		err := client.RegistryModules.DeleteProvider(ctx, RegistryModuleID{
+			Organization: orgTest.Name,
+			Name:         registryModuleTest.Name,
+			Provider:     "",
+		})
 		assert.Equal(t, err, ErrRequiredProvider)
 	})
 
 	t.Run("with an invalid provider", func(t *testing.T) {
-		err := client.RegistryModules.DeleteProvider(ctx, orgTest.Name, registryModuleTest.Name, badIdentifier)
+		err := client.RegistryModules.DeleteProvider(ctx, RegistryModuleID{
+			Organization: orgTest.Name,
+			Name:         registryModuleTest.Name,
+			Provider:     badIdentifier,
+		})
 		assert.Equal(t, err, ErrInvalidProvider)
 	})
 
 	t.Run("without a valid organization", func(t *testing.T) {
-		err := client.RegistryModules.DeleteProvider(ctx, badIdentifier, registryModuleTest.Name, registryModuleTest.Provider)
+		err := client.RegistryModules.DeleteProvider(ctx, RegistryModuleID{
+			Organization: badIdentifier,
+			Name:         registryModuleTest.Name,
+			Provider:     registryModuleTest.Provider,
+		})
 		assert.EqualError(t, err, ErrInvalidOrg.Error())
 	})
 
 	t.Run("when the registry module name and provider do not exist", func(t *testing.T) {
-		err := client.RegistryModules.DeleteProvider(ctx, orgTest.Name, "nonexisting", "nonexisting")
+		err := client.RegistryModules.DeleteProvider(ctx, RegistryModuleID{
+			Organization: orgTest.Name,
+			Name:         "nonexisting",
+			Provider:     "nonexisting",
+		})
 		assert.Error(t, err)
 		assert.Equal(t, ErrResourceNotFound, err)
 	})
@@ -476,19 +573,35 @@ func TestRegistryModulesDeleteVersion(t *testing.T) {
 		options := RegistryModuleCreateVersionOptions{
 			Version: String("1.2.3"),
 		}
-		rmv, err := client.RegistryModules.CreateVersion(ctx, orgTest.Name, registryModuleTest.Name, registryModuleTest.Provider, options)
+		rmv, err := client.RegistryModules.CreateVersion(ctx, RegistryModuleID{
+			Organization: orgTest.Name,
+			Name:         registryModuleTest.Name,
+			Provider:     registryModuleTest.Provider,
+		}, options)
 		require.NoError(t, err)
 		require.NotEmpty(t, rmv.Version)
 
-		rm, err := client.RegistryModules.Read(ctx, orgTest.Name, registryModuleTest.Name, registryModuleTest.Provider)
+		rm, err := client.RegistryModules.Read(ctx, RegistryModuleID{
+			Organization: orgTest.Name,
+			Name:         registryModuleTest.Name,
+			Provider:     registryModuleTest.Provider,
+		})
 		require.NoError(t, err)
 		require.NotEmpty(t, rm.VersionStatuses)
 		require.Equal(t, 2, len(rm.VersionStatuses))
 
-		err = client.RegistryModules.DeleteVersion(ctx, orgTest.Name, registryModuleTest.Name, registryModuleTest.Provider, rmv.Version)
+		err = client.RegistryModules.DeleteVersion(ctx, RegistryModuleID{
+			Organization: orgTest.Name,
+			Name:         registryModuleTest.Name,
+			Provider:     registryModuleTest.Provider,
+		}, rmv.Version)
 		require.NoError(t, err)
 
-		rm, err = client.RegistryModules.Read(ctx, orgTest.Name, registryModuleTest.Name, registryModuleTest.Provider)
+		rm, err = client.RegistryModules.Read(ctx, RegistryModuleID{
+			Organization: orgTest.Name,
+			Name:         registryModuleTest.Name,
+			Provider:     registryModuleTest.Provider,
+		})
 		require.NoError(t, err)
 		assert.NotEmpty(t, rm.VersionStatuses)
 		assert.Equal(t, 1, len(rm.VersionStatuses))
@@ -497,42 +610,74 @@ func TestRegistryModulesDeleteVersion(t *testing.T) {
 	})
 
 	t.Run("without a name", func(t *testing.T) {
-		err := client.RegistryModules.DeleteVersion(ctx, orgTest.Name, "", registryModuleTest.Provider, registryModuleTest.VersionStatuses[0].Version)
+		err := client.RegistryModules.DeleteVersion(ctx, RegistryModuleID{
+			Organization: orgTest.Name,
+			Name:         "",
+			Provider:     registryModuleTest.Provider,
+		}, registryModuleTest.VersionStatuses[0].Version)
 		assert.EqualError(t, err, ErrRequiredName.Error())
 	})
 
 	t.Run("with an invalid name", func(t *testing.T) {
-		err := client.RegistryModules.DeleteVersion(ctx, orgTest.Name, badIdentifier, registryModuleTest.Provider, registryModuleTest.VersionStatuses[0].Version)
+		err := client.RegistryModules.DeleteVersion(ctx, RegistryModuleID{
+			Organization: orgTest.Name,
+			Name:         badIdentifier,
+			Provider:     registryModuleTest.Provider,
+		}, registryModuleTest.VersionStatuses[0].Version)
 		assert.EqualError(t, err, ErrInvalidName.Error())
 	})
 
 	t.Run("without a provider", func(t *testing.T) {
-		err := client.RegistryModules.DeleteVersion(ctx, orgTest.Name, registryModuleTest.Name, "", registryModuleTest.VersionStatuses[0].Version)
+		err := client.RegistryModules.DeleteVersion(ctx, RegistryModuleID{
+			Organization: orgTest.Name,
+			Name:         registryModuleTest.Name,
+			Provider:     "",
+		}, registryModuleTest.VersionStatuses[0].Version)
 		assert.Equal(t, err, ErrRequiredProvider)
 	})
 
 	t.Run("with an invalid provider", func(t *testing.T) {
-		err := client.RegistryModules.DeleteVersion(ctx, orgTest.Name, registryModuleTest.Name, badIdentifier, registryModuleTest.VersionStatuses[0].Version)
+		err := client.RegistryModules.DeleteVersion(ctx, RegistryModuleID{
+			Organization: orgTest.Name,
+			Name:         registryModuleTest.Name,
+			Provider:     badIdentifier,
+		}, registryModuleTest.VersionStatuses[0].Version)
 		assert.Equal(t, err, ErrInvalidProvider)
 	})
 
 	t.Run("without a version", func(t *testing.T) {
-		err := client.RegistryModules.DeleteVersion(ctx, orgTest.Name, registryModuleTest.Name, registryModuleTest.Provider, "")
+		err := client.RegistryModules.DeleteVersion(ctx, RegistryModuleID{
+			Organization: orgTest.Name,
+			Name:         registryModuleTest.Name,
+			Provider:     registryModuleTest.Provider,
+		}, "")
 		assert.Equal(t, err, ErrRequiredVersion)
 	})
 
 	t.Run("with an invalid version", func(t *testing.T) {
-		err := client.RegistryModules.DeleteVersion(ctx, orgTest.Name, registryModuleTest.Name, registryModuleTest.Provider, badIdentifier)
+		err := client.RegistryModules.DeleteVersion(ctx, RegistryModuleID{
+			Organization: orgTest.Name,
+			Name:         registryModuleTest.Name,
+			Provider:     registryModuleTest.Provider,
+		}, badIdentifier)
 		assert.Equal(t, err, ErrInvalidVersion)
 	})
 
 	t.Run("without a valid organization", func(t *testing.T) {
-		err := client.RegistryModules.DeleteVersion(ctx, badIdentifier, registryModuleTest.Name, registryModuleTest.Provider, registryModuleTest.VersionStatuses[0].Version)
+		err := client.RegistryModules.DeleteVersion(ctx, RegistryModuleID{
+			Organization: badIdentifier,
+			Name:         registryModuleTest.Name,
+			Provider:     registryModuleTest.Provider,
+		}, registryModuleTest.VersionStatuses[0].Version)
 		assert.EqualError(t, err, ErrInvalidOrg.Error())
 	})
 
 	t.Run("when the registry module name, provider, and version do not exist", func(t *testing.T) {
-		err := client.RegistryModules.DeleteVersion(ctx, orgTest.Name, "nonexisting", "nonexisting", "2.0.0")
+		err := client.RegistryModules.DeleteVersion(ctx, RegistryModuleID{
+			Organization: orgTest.Name,
+			Name:         "nonexisting",
+			Provider:     "nonexisting",
+		}, "2.0.0")
 		assert.Error(t, err)
 	})
 }
@@ -549,7 +694,11 @@ func TestRegistryModulesUpload(t *testing.T) {
 	optionsModuleVersion := RegistryModuleCreateVersionOptions{
 		Version: String("1.0.0"),
 	}
-	rmv, err := client.RegistryModules.CreateVersion(ctx, orgTest.Name, rm.Name, rm.Provider, optionsModuleVersion)
+	rmv, err := client.RegistryModules.CreateVersion(ctx, RegistryModuleID{
+		Organization: orgTest.Name,
+		Name:         rm.Name,
+		Provider:     rm.Provider,
+	}, optionsModuleVersion)
 	if err != nil {
 		t.Fatal(err)
 	}
