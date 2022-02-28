@@ -51,18 +51,18 @@ func (mr *MockRegistryModulesMockRecorder) Create(ctx, organization, options int
 }
 
 // CreateVersion mocks base method.
-func (m *MockRegistryModules) CreateVersion(ctx context.Context, organization, name, provider string, options tfe.RegistryModuleCreateVersionOptions) (*tfe.RegistryModuleVersion, error) {
+func (m *MockRegistryModules) CreateVersion(ctx context.Context, moduleID tfe.RegistryModuleID, options tfe.RegistryModuleCreateVersionOptions) (*tfe.RegistryModuleVersion, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "CreateVersion", ctx, organization, name, provider, options)
+	ret := m.ctrl.Call(m, "CreateVersion", ctx, moduleID, options)
 	ret0, _ := ret[0].(*tfe.RegistryModuleVersion)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
 
 // CreateVersion indicates an expected call of CreateVersion.
-func (mr *MockRegistryModulesMockRecorder) CreateVersion(ctx, organization, name, provider, options interface{}) *gomock.Call {
+func (mr *MockRegistryModulesMockRecorder) CreateVersion(ctx, moduleID, options interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateVersion", reflect.TypeOf((*MockRegistryModules)(nil).CreateVersion), ctx, organization, name, provider, options)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateVersion", reflect.TypeOf((*MockRegistryModules)(nil).CreateVersion), ctx, moduleID, options)
 }
 
 // CreateWithVCSConnection mocks base method.
@@ -95,46 +95,46 @@ func (mr *MockRegistryModulesMockRecorder) Delete(ctx, organization, name interf
 }
 
 // DeleteProvider mocks base method.
-func (m *MockRegistryModules) DeleteProvider(ctx context.Context, organization, name, provider string) error {
+func (m *MockRegistryModules) DeleteProvider(ctx context.Context, moduleID tfe.RegistryModuleID) error {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "DeleteProvider", ctx, organization, name, provider)
+	ret := m.ctrl.Call(m, "DeleteProvider", ctx, moduleID)
 	ret0, _ := ret[0].(error)
 	return ret0
 }
 
 // DeleteProvider indicates an expected call of DeleteProvider.
-func (mr *MockRegistryModulesMockRecorder) DeleteProvider(ctx, organization, name, provider interface{}) *gomock.Call {
+func (mr *MockRegistryModulesMockRecorder) DeleteProvider(ctx, moduleID interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteProvider", reflect.TypeOf((*MockRegistryModules)(nil).DeleteProvider), ctx, organization, name, provider)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteProvider", reflect.TypeOf((*MockRegistryModules)(nil).DeleteProvider), ctx, moduleID)
 }
 
 // DeleteVersion mocks base method.
-func (m *MockRegistryModules) DeleteVersion(ctx context.Context, organization, name, provider, version string) error {
+func (m *MockRegistryModules) DeleteVersion(ctx context.Context, moduleID tfe.RegistryModuleID, version string) error {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "DeleteVersion", ctx, organization, name, provider, version)
+	ret := m.ctrl.Call(m, "DeleteVersion", ctx, moduleID, version)
 	ret0, _ := ret[0].(error)
 	return ret0
 }
 
 // DeleteVersion indicates an expected call of DeleteVersion.
-func (mr *MockRegistryModulesMockRecorder) DeleteVersion(ctx, organization, name, provider, version interface{}) *gomock.Call {
+func (mr *MockRegistryModulesMockRecorder) DeleteVersion(ctx, moduleID, version interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteVersion", reflect.TypeOf((*MockRegistryModules)(nil).DeleteVersion), ctx, organization, name, provider, version)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteVersion", reflect.TypeOf((*MockRegistryModules)(nil).DeleteVersion), ctx, moduleID, version)
 }
 
 // Read mocks base method.
-func (m *MockRegistryModules) Read(ctx context.Context, organization, name, provider string) (*tfe.RegistryModule, error) {
+func (m *MockRegistryModules) Read(ctx context.Context, moduleID tfe.RegistryModuleID) (*tfe.RegistryModule, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "Read", ctx, organization, name, provider)
+	ret := m.ctrl.Call(m, "Read", ctx, moduleID)
 	ret0, _ := ret[0].(*tfe.RegistryModule)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
 
 // Read indicates an expected call of Read.
-func (mr *MockRegistryModulesMockRecorder) Read(ctx, organization, name, provider interface{}) *gomock.Call {
+func (mr *MockRegistryModulesMockRecorder) Read(ctx, moduleID interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Read", reflect.TypeOf((*MockRegistryModules)(nil).Read), ctx, organization, name, provider)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Read", reflect.TypeOf((*MockRegistryModules)(nil).Read), ctx, moduleID)
 }
 
 // Upload mocks base method.
