@@ -59,6 +59,7 @@ const (
 	RunCostEstimating     RunStatus = "cost_estimating"
 	RunDiscarded          RunStatus = "discarded"
 	RunErrored            RunStatus = "errored"
+	RunFetching           RunStatus = "fetching"
 	RunPending            RunStatus = "pending"
 	RunPlanQueued         RunStatus = "plan_queued"
 	RunPlanned            RunStatus = "planned"
