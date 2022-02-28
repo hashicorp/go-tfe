@@ -66,7 +66,7 @@ type OAuthTokenUpdateOptions struct {
 	// https://jsonapi.org/format/#crud-creating
 	Type string `jsonapi:"primary,oauth-tokens"`
 
-	// A private SSH key to be used for git clone operations.
+	// Optional: A private SSH key to be used for git clone operations.
 	PrivateSSHKey *string `jsonapi:"attr,ssh-key,omitempty"`
 }
 

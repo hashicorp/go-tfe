@@ -24,6 +24,7 @@ type AdminRuns interface {
 	ForceCancel(ctx context.Context, runID string, options AdminRunForceCancelOptions) error
 }
 
+// AdminRun represents AdminRuns interface.
 type AdminRun struct {
 	ID               string               `jsonapi:"primary,runs"`
 	CreatedAt        time.Time            `jsonapi:"attr,created-at,iso8601"`
@@ -42,6 +43,7 @@ type AdminRunsList struct {
 	Items []*AdminRun
 }
 
+// AdminRunIncludeOps represents the available options for include query params.
 // https://www.terraform.io/cloud-docs/api-docs/admin/runs#available-related-resources
 type AdminRunIncludeOps string
 
@@ -56,9 +58,11 @@ const (
 type AdminRunsListOptions struct {
 	ListOptions
 
-	RunStatus string               `url:"filter[status],omitempty"`
-	Query     string               `url:"q,omitempty"`
-	Include   []AdminRunIncludeOps `url:"include,omitempty"`
+	RunStatus string `url:"filter[status],omitempty"`
+	Query     string `url:"q,omitempty"`
+	// Optional: A list of relations to include. See available resources
+	// https://www.terraform.io/cloud-docs/api-docs/admin/runs#available-related-resources
+	Include []AdminRunIncludeOps `url:"include,omitempty"`
 }
 
 // adminRuns implements the AdminRuns interface.
@@ -111,7 +115,6 @@ func (s *adminRuns) ForceCancel(ctx context.Context, runID string, options Admin
 	return s.client.do(ctx, req, nil)
 }
 
-// Check that the field RunStatus has a valid string value
 func (o *AdminRunsListOptions) valid() error {
 	if o == nil { // no need to validate fields
 		return nil

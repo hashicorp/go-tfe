@@ -71,9 +71,10 @@ type TeamPermissions struct {
 	CanUpdateMembership bool `jsonapi:"attr,can-update-membership"`
 }
 
+// TeamIncludeOps represents the available options for include query params.
+// https://www.terraform.io/docs/cloud/api/teams.html#available-related-resources
 type TeamIncludeOps string
 
-// https://www.terraform.io/docs/cloud/api/teams.html#available-related-resources
 const (
 	TeamUsers                   TeamIncludeOps = "users"
 	TeamOrganizationMemberships TeamIncludeOps = "organization-memberships"
@@ -82,7 +83,8 @@ const (
 // TeamListOptions represents the options for listing teams.
 type TeamListOptions struct {
 	ListOptions
-
+	// Optional: A list of relations to include.
+	// https://www.terraform.io/docs/cloud/api/teams.html#available-related-resources
 	Include []TeamIncludeOps `url:"include,omitempty"`
 }
 
@@ -112,13 +114,13 @@ type TeamUpdateOptions struct {
 	// https://jsonapi.org/format/#crud-creating
 	Type string `jsonapi:"primary,teams"`
 
-	// New name for the team
+	// Optional: New name for the team
 	Name *string `jsonapi:"attr,name,omitempty"`
 
-	// The team's organization access
+	// Optional: The team's organization access
 	OrganizationAccess *OrganizationAccessOptions `jsonapi:"attr,organization-access,omitempty"`
 
-	// The team's visibility ("secret", "organization")
+	// Optional: The team's visibility ("secret", "organization")
 	Visibility *string `jsonapi:"attr,visibility,omitempty"`
 }
 

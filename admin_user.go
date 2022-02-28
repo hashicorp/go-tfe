@@ -64,7 +64,7 @@ type AdminUserList struct {
 	Items []*AdminUser
 }
 
-// A list of relations to include. See available resources
+// AdminUserIncludeOps represents the available options for include query params.
 // https://www.terraform.io/docs/cloud/api/admin/users.html#available-related-resources
 type AdminUserIncludeOps string
 
@@ -77,15 +77,17 @@ const (
 type AdminUserListOptions struct {
 	ListOptions
 
-	// A search query string. Users are searchable by username and email address.
+	// Optional: A search query string. Users are searchable by username and email address.
 	Query string `url:"q,omitempty"`
 
-	// Can be "true" or "false" to show only administrators or non-administrators.
+	// Optional: Can be "true" or "false" to show only administrators or non-administrators.
 	Administrators string `url:"filter[admin],omitempty"`
 
-	// Can be "true" or "false" to show only suspended users or users who are not suspended.
+	// Optional: Can be "true" or "false" to show only suspended users or users who are not suspended.
 	SuspendedUsers string `url:"filter[suspended],omitempty"`
 
+	// Optional: A list of relations to include. See available resources
+	// https://www.terraform.io/docs/cloud/api/admin/users.html#available-related-resources
 	Include []AdminUserIncludeOps `url:"include,omitempty"`
 }
 

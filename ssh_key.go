@@ -73,7 +73,7 @@ type SSHKeyUpdateOptions struct {
 	// For internal use only!
 	ID string `jsonapi:"primary,ssh-keys"`
 
-	// A new name to identify the SSH key.
+	// Optional: A new name to identify the SSH key.
 	Name *string `jsonapi:"attr,name,omitempty"`
 }
 

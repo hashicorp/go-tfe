@@ -122,8 +122,9 @@ type RegistryModuleCreateOptions struct {
 	// It is not a user-defined value and does not need to be set.
 	// https://jsonapi.org/format/#crud-creating
 	Type string `jsonapi:"primary,registry-modules"`
-
-	Name     *string `jsonapi:"attr,name"`
+	// Required:
+	Name *string `jsonapi:"attr,name"`
+	// Required:
 	Provider *string `jsonapi:"attr,provider"`
 }
 
@@ -146,14 +147,14 @@ type RegistryModuleCreateWithVCSConnectionOptions struct {
 	// https://jsonapi.org/format/#crud-creating
 	Type string `jsonapi:"primary,registry-modules"`
 
-	// VCS repository information
+	// Required: VCS repository information
 	VCSRepo *RegistryModuleVCSRepoOptions `jsonapi:"attr,vcs-repo"`
 }
 
 type RegistryModuleVCSRepoOptions struct {
-	Identifier        *string `json:"identifier"`
-	OAuthTokenID      *string `json:"oauth-token-id"`
-	DisplayIdentifier *string `json:"display-identifier"`
+	Identifier        *string `json:"identifier"`         // Required
+	OAuthTokenID      *string `json:"oauth-token-id"`     // Required
+	DisplayIdentifier *string `json:"display-identifier"` // Required
 }
 
 // Upload uploads Terraform configuration files for the provided registry module version. It
@@ -205,7 +206,7 @@ func (r *registryModules) Create(ctx context.Context, organization string, optio
 	return rm, nil
 }
 
-// Create a new registry module version
+// CreateVersion creates a new registry module version
 func (r *registryModules) CreateVersion(ctx context.Context, organization, name, provider string, options RegistryModuleCreateVersionOptions) (*RegistryModuleVersion, error) {
 	if !validStringID(&organization) {
 		return nil, ErrInvalidOrg

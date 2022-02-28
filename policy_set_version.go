@@ -64,6 +64,7 @@ type PolicySetVersionStatusTimestamps struct {
 	ErroredAt    time.Time `jsonapi:"attr,errored-at,rfc3339"`
 }
 
+// PolicySetVersion represents a Terraform Enterprise Policy Set Version
 type PolicySetVersion struct {
 	ID               string                           `jsonapi:"primary,policy-set-versions"`
 	Source           PolicySetVersionSource           `jsonapi:"attr,source"`

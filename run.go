@@ -158,7 +158,7 @@ type RunStatusTimestamps struct {
 	PolicySoftFailedAt   time.Time `jsonapi:"attr,policy-soft-failed-at,rfc3339"`
 }
 
-// A list of relations to include. See available resources:
+// RunIncludeOps represents the available options for include query params.
 // https://www.terraform.io/docs/cloud/api/run.html#available-related-resources
 type RunIncludeOps string
 
@@ -176,12 +176,15 @@ const (
 // RunListOptions represents the options for listing runs.
 type RunListOptions struct {
 	ListOptions
-
+	// Optional: A list of relations to include. See available resources:
+	// https://www.terraform.io/docs/cloud/api/run.html#available-related-resources
 	Include []RunIncludeOps `url:"include,omitempty"`
 }
 
 // RunReadOptions represents the options for reading a run.
 type RunReadOptions struct {
+	// Optional: A list of relations to include. See available resources:
+	// https://www.terraform.io/docs/cloud/api/run.html#available-related-resources
 	Include []RunIncludeOps `url:"include,omitempty"`
 }
 

@@ -72,7 +72,7 @@ type AdminOrganizationList struct {
 	Items []*AdminOrganization
 }
 
-// A list of relations to include. See available resources
+// AdminOrgIncludeOps represents the available options for include query params.
 // https://www.terraform.io/docs/cloud/api/admin/organizations.html#available-related-resources
 type AdminOrgIncludeOps string
 
@@ -84,10 +84,11 @@ const (
 type AdminOrganizationListOptions struct {
 	ListOptions
 
-	// A query string used to filter organizations.
+	// Optional: A query string used to filter organizations.
 	// Any organizations with a name or notification email partially matching this value will be returned.
 	Query string `url:"q,omitempty"`
-
+	// Optional: A list of relations to include. See available resources
+	// https://www.terraform.io/docs/cloud/api/admin/organizations.html#available-related-resources
 	Include []AdminOrgIncludeOps `url:"include,omitempty"`
 }
 
@@ -117,6 +118,7 @@ func (s *adminOrganizations) List(ctx context.Context, options *AdminOrganizatio
 	return orgl, nil
 }
 
+// ListModuleConsumers lists specific organizations in the Terraform Enterprise installation that have permission to use an organization's modules.
 func (s *adminOrganizations) ListModuleConsumers(ctx context.Context, organization string, options *AdminOrganizationListModuleConsumersOptions) (*AdminOrganizationList, error) {
 	if !validStringID(&organization) {
 		return nil, ErrInvalidOrg
@@ -138,6 +140,7 @@ func (s *adminOrganizations) ListModuleConsumers(ctx context.Context, organizati
 	return orgl, nil
 }
 
+// Read an organization by its name.
 func (s *adminOrganizations) Read(ctx context.Context, organization string) (*AdminOrganization, error) {
 	if !validStringID(&organization) {
 		return nil, ErrInvalidOrg
@@ -158,6 +161,7 @@ func (s *adminOrganizations) Read(ctx context.Context, organization string) (*Ad
 	return org, nil
 }
 
+// Update an organization by its name.
 func (s *adminOrganizations) Update(ctx context.Context, organization string, options AdminOrganizationUpdateOptions) (*AdminOrganization, error) {
 	if !validStringID(&organization) {
 		return nil, ErrInvalidOrg
@@ -178,6 +182,7 @@ func (s *adminOrganizations) Update(ctx context.Context, organization string, op
 	return org, nil
 }
 
+// UpdateModuleConsumers updates an organization to specify a list of organizations that can use modules from the sharing organization's private registry.
 func (s *adminOrganizations) UpdateModuleConsumers(ctx context.Context, organization string, consumerOrganizationIDs []string) error {
 	if !validStringID(&organization) {
 		return ErrInvalidOrg

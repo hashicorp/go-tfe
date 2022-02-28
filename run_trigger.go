@@ -111,7 +111,7 @@ func (s *runTriggers) List(ctx context.Context, workspaceID string, options *Run
 	return rtl, nil
 }
 
-// Creates a run trigger with the given options.
+// Create a run trigger with the given options.
 func (s *runTriggers) Create(ctx context.Context, workspaceID string, options RunTriggerCreateOptions) (*RunTrigger, error) {
 	if !validStringID(&workspaceID) {
 		return nil, ErrInvalidWorkspaceID

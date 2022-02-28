@@ -7,7 +7,8 @@ import (
 // Compile-time proof of interface implementation.
 var _ GeneralSettings = (*adminGeneralSettings)(nil)
 
-// GeneralSettings describes the general admin settings.
+// GeneralSettings describes the general admin settings for the Admin Setting API.
+// https://www.terraform.io/cloud-docs/api-docs/admin/settings
 type GeneralSettings interface {
 	// Read returns the general settings
 	Read(ctx context.Context) (*AdminGeneralSetting, error)

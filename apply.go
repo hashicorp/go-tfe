@@ -23,7 +23,7 @@ type Applies interface {
 	Logs(ctx context.Context, applyID string) (io.Reader, error)
 }
 
-// applies implements Applys.
+// applies implements Applies interface.
 type applies struct {
 	client *Client
 }

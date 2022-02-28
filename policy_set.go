@@ -13,7 +13,7 @@ var _ PolicySets = (*policySets)(nil)
 // PolicySets describes all the policy set related methods that the Terraform
 // Enterprise API supports.
 //
-// TFE API docs: https://www.terraform.io/docs/cloud/api/policies.html
+// TFE API docs: https://www.terraform.io/docs/cloud/api/policy-sets.html
 type PolicySets interface {
 	// List all the policy sets for a given organization.
 	List(ctx context.Context, organization string, options *PolicySetListOptions) (*PolicySetList, error)
@@ -87,6 +87,7 @@ type PolicySet struct {
 	CurrentVersion *PolicySetVersion `jsonapi:"relation,current-version"`
 }
 
+// PolicySetIncludeOps represents the available options for include query params.
 type PolicySetIncludeOps string
 
 const (
@@ -100,7 +101,7 @@ const (
 type PolicySetListOptions struct {
 	ListOptions
 
-	// A search string (partial policy set name) used to filter the results.
+	// Optional: A search string (partial policy set name) used to filter the results.
 	Search string `url:"search[name],omitempty"`
 }
 
@@ -108,6 +109,8 @@ type PolicySetListOptions struct {
 // For a full list of relations, please see:
 // https://www.terraform.io/docs/cloud/api/policy-sets.html#relationships
 type PolicySetReadOptions struct {
+	// Optional: A list of relations to include. See available resources
+	// https://www.terraform.io/cloud-docs/api-docs/policy-sets#relationships
 	Include []PolicySetIncludeOps `url:"include,omitempty"`
 }
 
@@ -119,31 +122,31 @@ type PolicySetCreateOptions struct {
 	// https://jsonapi.org/format/#crud-creating
 	Type string `jsonapi:"primary,policy-sets"`
 
-	// The name of the policy set.
+	// Required: The name of the policy set.
 	Name *string `jsonapi:"attr,name"`
 
-	// The description of the policy set.
+	// Optional: The description of the policy set.
 	Description *string `jsonapi:"attr,description,omitempty"`
 
-	// Whether or not the policy set is global.
+	// Optional: Whether or not the policy set is global.
 	Global *bool `jsonapi:"attr,global,omitempty"`
 
-	// The sub-path within the attached VCS repository to ingress. All
+	// Optional: The sub-path within the attached VCS repository to ingress. All
 	// files and directories outside of this sub-path will be ignored.
 	// This option may only be specified when a VCS repo is present.
 	PoliciesPath *string `jsonapi:"attr,policies-path,omitempty"`
 
-	// The initial members of the policy set.
+	// Optional: The initial members of the policy set.
 	Policies []*Policy `jsonapi:"relation,policies,omitempty"`
 
-	// VCS repository information. When present, the policies and
+	// Optional: VCS repository information. When present, the policies and
 	// configuration will be sourced from the specified VCS repository
 	// instead of being defined within the policy set itself. Note that
 	// this option is mutually exclusive with the Policies option and
 	// both cannot be used at the same time.
 	VCSRepo *VCSRepoOptions `jsonapi:"attr,vcs-repo,omitempty"`
 
-	// The initial list of workspaces for which the policy set should be enforced.
+	// Optional: The initial list of workspaces for which the policy set should be enforced.
 	Workspaces []*Workspace `jsonapi:"relation,workspaces,omitempty"`
 }
 
@@ -155,21 +158,21 @@ type PolicySetUpdateOptions struct {
 	// https://jsonapi.org/format/#crud-creating
 	Type string `jsonapi:"primary,policy-sets"`
 
-	// The name of the policy set.
+	// Optional: The name of the policy set.
 	Name *string `jsonapi:"attr,name,omitempty"`
 
-	// The description of the policy set.
+	// Optional: The description of the policy set.
 	Description *string `jsonapi:"attr,description,omitempty"`
 
-	// Whether or not the policy set is global.
+	// Optional: Whether or not the policy set is global.
 	Global *bool `jsonapi:"attr,global,omitempty"`
 
-	// The sub-path within the attached VCS repository to ingress. All
+	// Optional: The sub-path within the attached VCS repository to ingress. All
 	// files and directories outside of this sub-path will be ignored.
 	// This option may only be specified when a VCS repo is present.
 	PoliciesPath *string `jsonapi:"attr,policies-path,omitempty"`
 
-	// VCS repository information. When present, the policies and
+	// Optional: VCS repository information. When present, the policies and
 	// configuration will be sourced from the specified VCS repository
 	// instead of being defined within the policy set itself. Note that
 	// specifying this option may only be used on policy sets with no
@@ -301,7 +304,7 @@ func (s *policySets) Update(ctx context.Context, policySetID string, options Pol
 	return ps, err
 }
 
-// Add policies to a policy set
+// AddPolicies adds policies to a policy set
 func (s *policySets) AddPolicies(ctx context.Context, policySetID string, options PolicySetAddPoliciesOptions) error {
 	if !validStringID(&policySetID) {
 		return ErrInvalidPolicySetID
@@ -319,7 +322,7 @@ func (s *policySets) AddPolicies(ctx context.Context, policySetID string, option
 	return s.client.do(ctx, req, nil)
 }
 
-// Remove policies from a policy set
+// RemovePolicies remove policies from a policy set
 func (s *policySets) RemovePolicies(ctx context.Context, policySetID string, options PolicySetRemovePoliciesOptions) error {
 	if !validStringID(&policySetID) {
 		return ErrInvalidPolicySetID
@@ -337,7 +340,7 @@ func (s *policySets) RemovePolicies(ctx context.Context, policySetID string, opt
 	return s.client.do(ctx, req, nil)
 }
 
-// Add workspaces to a policy set.
+// Addworkspaces adds workspaces to a policy set.
 func (s *policySets) AddWorkspaces(ctx context.Context, policySetID string, options PolicySetAddWorkspacesOptions) error {
 	if !validStringID(&policySetID) {
 		return ErrInvalidPolicySetID
@@ -355,7 +358,7 @@ func (s *policySets) AddWorkspaces(ctx context.Context, policySetID string, opti
 	return s.client.do(ctx, req, nil)
 }
 
-// Remove workspaces from a policy set.
+// RemoveWorkspaces removes workspaces from a policy set.
 func (s *policySets) RemoveWorkspaces(ctx context.Context, policySetID string, options PolicySetRemoveWorkspacesOptions) error {
 	if !validStringID(&policySetID) {
 		return ErrInvalidPolicySetID

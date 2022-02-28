@@ -57,10 +57,10 @@ type AdminTerraformVersion struct {
 type AdminTerraformVersionsListOptions struct {
 	ListOptions
 
-	// A query string to find an exact version
+	// Optional: A query string to find an exact version
 	Filter string `url:"filter[version],omitempty"`
 
-	// A search query string to find all versions that match version substring
+	// Optional: A search query string to find all versions that match version substring
 	Search string `url:"search[version],omitempty"`
 }
 
@@ -68,9 +68,9 @@ type AdminTerraformVersionsListOptions struct {
 // https://www.terraform.io/docs/cloud/api/admin/terraform-versions.html#request-body
 type AdminTerraformVersionCreateOptions struct {
 	Type             string  `jsonapi:"primary,terraform-versions"`
-	Version          *string `jsonapi:"attr,version"`
-	URL              *string `jsonapi:"attr,url"`
-	Sha              *string `jsonapi:"attr,sha"`
+	Version          *string `jsonapi:"attr,version"` // Required
+	URL              *string `jsonapi:"attr,url"`     // Required
+	Sha              *string `jsonapi:"attr,sha"`     // Required
 	Official         *bool   `jsonapi:"attr,official,omitempty"`
 	Deprecated       *bool   `jsonapi:"attr,deprecated,omitempty"`
 	DeprecatedReason *string `jsonapi:"attr,deprecated-reason,omitempty"`

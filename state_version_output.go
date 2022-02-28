@@ -18,10 +18,12 @@ type StateVersionOutputs interface {
 	Read(ctx context.Context, outputID string) (*StateVersionOutput, error)
 }
 
+// stateVersionOutputs implements StateVersionOutputs.
 type stateVersionOutputs struct {
 	client *Client
 }
 
+// StateVersionOutput represents a State Version Outputs
 type StateVersionOutput struct {
 	ID        string      `jsonapi:"primary,state-version-outputs"`
 	Name      string      `jsonapi:"attr,name"`
@@ -30,6 +32,7 @@ type StateVersionOutput struct {
 	Value     interface{} `jsonapi:"attr,value"`
 }
 
+// Read a State Version Output
 func (s *stateVersionOutputs) Read(ctx context.Context, outputID string) (*StateVersionOutput, error) {
 	if !validStringID(&outputID) {
 		return nil, ErrInvalidRunID

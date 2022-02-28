@@ -80,6 +80,7 @@ type StateVersionListOptions struct {
 	Workspace    string `url:"filter[workspace][name]"`
 }
 
+// StateVersionIncludeOps represents the available options for include query params.
 // https://www.terraform.io/cloud-docs/api-docs/state-versions#available-related-resources
 type StateVersionIncludeOps string
 
@@ -93,6 +94,8 @@ const (
 
 // StateVersionReadOptions represents the options for reading state version.
 type StateVersionReadOptions struct {
+	// Optional: A list of relations to include. See available resources:
+	// https://www.terraform.io/cloud-docs/api-docs/state-versions#available-related-resources
 	Include []StateVersionIncludeOps `url:"include,omitempty"`
 }
 
@@ -104,6 +107,8 @@ type StateVersionOutputsListOptions struct {
 
 // StateVersionCurrentOptions represents the options for reading the current state version.
 type StateVersionCurrentOptions struct {
+	// Optional: A list of relations to include. See available resources:
+	// https://www.terraform.io/cloud-docs/api-docs/state-versions#available-related-resources
 	Include []StateVersionIncludeOps `url:"include,omitempty"`
 }
 
@@ -115,23 +120,23 @@ type StateVersionCreateOptions struct {
 	// https://jsonapi.org/format/#crud-creating
 	Type string `jsonapi:"primary,state-versions"`
 
-	// The lineage of the state.
+	// Optional: The lineage of the state.
 	Lineage *string `jsonapi:"attr,lineage,omitempty"`
 
-	// The MD5 hash of the state version.
+	// Required: The MD5 hash of the state version.
 	MD5 *string `jsonapi:"attr,md5"`
 
-	// The serial of the state.
+	// Required: The serial of the state.
 	Serial *int64 `jsonapi:"attr,serial"`
 
-	// The base64 encoded state.
+	// Required: The base64 encoded state.
 	State *string `jsonapi:"attr,state"`
 
-	// Force can be set to skip certain validations. Wrong use
+	// Optional: Force can be set to skip certain validations. Wrong use
 	// of this flag can cause data loss, so USE WITH CAUTION!
 	Force *bool `jsonapi:"attr,force,omitempty"`
 
-	// Specifies the run to associate the state with.
+	// Optional: Specifies the run to associate the state with.
 	Run *Run `jsonapi:"relation,run,omitempty"`
 }
 

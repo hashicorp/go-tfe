@@ -24,11 +24,12 @@ type AdminWorkspaces interface {
 	Delete(ctx context.Context, workspaceID string) error
 }
 
-// adminWorkspaces implements AdminWorkspaces.
+// adminWorkspaces implements AdminWorkspaces interface.
 type adminWorkspaces struct {
 	client *Client
 }
 
+// AdminVCSRepo represents a VCS repository
 type AdminVCSRepo struct {
 	Identifier string `jsonapi:"attr,identifier"`
 }
@@ -45,7 +46,7 @@ type AdminWorkspace struct {
 	CurrentRun   *Run          `jsonapi:"relation,current-run"`
 }
 
-// A list of relations to include. See available resources
+// AdminWorkspaceIncludeOps represents the available options for include query params.
 // https://www.terraform.io/docs/cloud/api/admin/workspaces.html#available-related-resources
 type AdminWorkspaceIncludeOps string
 
@@ -62,7 +63,8 @@ type AdminWorkspaceListOptions struct {
 	// A query string (partial workspace name) used to filter the results.
 	// https://www.terraform.io/docs/cloud/api/admin/workspaces.html#query-parameters
 	Query string `url:"q,omitempty"`
-
+	// Optional: A list of relations to include. See available resources
+	// https://www.terraform.io/docs/cloud/api/admin/workspaces.html#available-related-resources
 	Include []AdminWorkspaceIncludeOps `url:"include,omitempty"`
 }
 
@@ -72,7 +74,7 @@ type AdminWorkspaceList struct {
 	Items []*AdminWorkspace
 }
 
-// List all the workspaces within a worksapce.
+// List all the workspaces within a workspace.
 func (s *adminWorkspaces) List(ctx context.Context, options *AdminWorkspaceListOptions) (*AdminWorkspaceList, error) {
 	u := "admin/workspaces"
 	req, err := s.client.newRequest("GET", u, options)
