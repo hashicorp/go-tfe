@@ -97,9 +97,12 @@ func (a *adminSMTPSettings) Update(ctx context.Context, options AdminSMTPSetting
 }
 
 func (o AdminSMTPSettingsUpdateOptions) valid() error {
-	_, isValidType := validSMTPAuthType[*o.Auth]
-	if !isValidType {
-		return ErrInvalidSMTPAuth
+	if validString((*string)(o.Auth)) {
+		_, isValidType := validSMTPAuthType[*o.Auth]
+		if !isValidType {
+			return ErrInvalidSMTPAuth
+		}
 	}
+
 	return nil
 }
