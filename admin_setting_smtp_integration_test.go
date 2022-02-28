@@ -36,11 +36,23 @@ func TestAdminSettings_SMTP_Update(t *testing.T) {
 	ctx := context.Background()
 
 	enabled := false
-	smtpSettings, err := client.Admin.Settings.SMTP.Update(ctx, AdminSMTPSettingsUpdateOptions{
-		Enabled: Bool(enabled),
-		Auth:    SMTPAuthValue(SMTPAuthNone),
-	})
 
-	require.NoError(t, err)
-	assert.Equal(t, enabled, smtpSettings.Enabled)
+	t.Run("with Auth option defined", func(t *testing.T) {
+		smtpSettings, err := client.Admin.Settings.SMTP.Update(ctx, AdminSMTPSettingsUpdateOptions{
+			Enabled: Bool(enabled),
+			Auth:    SMTPAuthValue(SMTPAuthNone),
+		})
+
+		require.NoError(t, err)
+		assert.Equal(t, enabled, smtpSettings.Enabled)
+	})
+	t.Run("with no Auth option", func(t *testing.T) {
+		smtpSettings, err := client.Admin.Settings.SMTP.Update(ctx, AdminSMTPSettingsUpdateOptions{
+			Enabled: Bool(enabled),
+		})
+
+		require.NoError(t, err)
+		assert.Equal(t, SMTPAuthNone, smtpSettings.Auth)
+		assert.Equal(t, enabled, smtpSettings.Enabled)
+	})
 }
