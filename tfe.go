@@ -79,7 +79,11 @@ func DefaultConfig() *Config {
 
 	// Set the default address if none is given.
 	if config.Address == "" {
-		config.Address = DefaultAddress
+		if host := os.Getenv("TFE_HOSTNAME"); host != "" {
+			config.Address = fmt.Sprintf("https://%s", host)
+		} else {
+			config.Address = DefaultAddress
+		}
 	}
 
 	// Set the default user agent.
