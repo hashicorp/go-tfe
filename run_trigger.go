@@ -54,24 +54,28 @@ type RunTrigger struct {
 }
 
 // https://www.terraform.io/cloud-docs/api-docs/run-triggers#query-parameters
-type RunTriggerFilterOps string
+type RunTriggerFilterOp string
 
 const (
-	RunTriggerOutbound RunTriggerFilterOps = "outbound"
-	RunTriggerInbound  RunTriggerFilterOps = "inbound"
+	RunTriggerOutbound RunTriggerFilterOp = "outbound" // create runs in other workspaces.
+	RunTriggerInbound  RunTriggerFilterOp = "inbound"  // create runs in the specified workspace
 )
 
-// List of available filter options for RunTriggerType
-var validRunTriggerType = map[RunTriggerFilterOps]struct{}{
-	RunTriggerOutbound: {},
-	RunTriggerInbound:  {}, // we set it to empty struct because it has the smallest memory footprint and we only need keys, not values
-}
+// A list of relations to include
+// https://www.terraform.io/cloud-docs/api-docs/run-triggers#available-related-resources
+type RunTriggerIncludeOpt string
+
+const (
+	RunTriggerWorkspace  RunTriggerIncludeOpt = "workspace"
+	RunTriggerSourceable RunTriggerIncludeOpt = "sourceable"
+)
 
 // RunTriggerListOptions represents the options for listing
 // run triggers.
 type RunTriggerListOptions struct {
 	ListOptions
-	RunTriggerType RunTriggerFilterOps `url:"filter[run-trigger][type]"`
+	RunTriggerType RunTriggerFilterOp     `url:"filter[run-trigger][type]"` // Required
+	Include        []RunTriggerIncludeOpt `url:"include,omitempty"`         // optional
 }
 
 // RunTriggerCreateOptions represents the options for
@@ -175,10 +179,26 @@ func (o *RunTriggerListOptions) valid() error {
 	if o == nil {
 		return ErrRequiredRunTriggerListOps
 	}
-	_, isValidRunTriggerType := validRunTriggerType[o.RunTriggerType]
-	if !isValidRunTriggerType {
+
+	switch o.RunTriggerType {
+	case RunTriggerOutbound, RunTriggerInbound:
+		// Do nothing
+	default:
 		return ErrInvalidRunTriggerType
 	}
+
+	for _, i := range o.Include {
+		switch i {
+		case RunTriggerWorkspace, RunTriggerSourceable:
+			if o.RunTriggerType != RunTriggerInbound {
+				return ErrUnsupportedRunTriggerType
+			}
+			// Do nothing
+		default:
+			return ErrUnsupportedOperations
+		}
+	}
+
 	return nil
 }
 

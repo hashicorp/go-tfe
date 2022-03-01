@@ -317,7 +317,7 @@ func TestStateVersionsReadWithOptions(t *testing.T) {
 
 	t.Run("when the state version exists", func(t *testing.T) {
 		curOpts := &StateVersionReadOptions{
-			Include: []StateVersionIncludeOps{SVoutputs},
+			Include: []StateVersionIncludeOpt{SVoutputs},
 		}
 
 		sv, err := client.StateVersions.ReadWithOptions(ctx, svTest.ID, curOpts)
@@ -385,7 +385,7 @@ func TestStateVersionsCurrentWithOptions(t *testing.T) {
 
 	t.Run("when the state version exists", func(t *testing.T) {
 		curOpts := &StateVersionCurrentOptions{
-			Include: []StateVersionIncludeOps{SVoutputs},
+			Include: []StateVersionIncludeOpt{SVoutputs},
 		}
 
 		sv, err := client.StateVersions.ReadCurrentWithOptions(ctx, wTest1.ID, curOpts)

@@ -82,10 +82,17 @@ type OAuthClient struct {
 	OAuthTokens  []*OAuthToken `jsonapi:"relation,oauth-tokens"`
 }
 
+// A list of relations to include
+type OAuthClientIncludeOpt string
+
+const OauthClientOauthTokens OAuthClientIncludeOpt = "oauth_tokens"
+
 // OAuthClientListOptions represents the options for listing
 // OAuth clients.
 type OAuthClientListOptions struct {
 	ListOptions
+
+	Include []OAuthClientIncludeOpt `url:"include,omitempty"`
 }
 
 // OAuthClientCreateOptions represents the options for creating an OAuth client.

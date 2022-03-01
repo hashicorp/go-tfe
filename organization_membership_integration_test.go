@@ -64,7 +64,7 @@ func TestOrganizationMembershipsList(t *testing.T) {
 		defer memTest2Cleanup()
 
 		ml, err := client.OrganizationMemberships.List(ctx, orgTest.Name, &OrganizationMembershipListOptions{
-			Include: []OrganizationMembershipIncludeOps{OrganizationMembershipUser},
+			Include: []OrganizationMembershipIncludeOpt{OrganizationMembershipUser},
 		})
 		require.NoError(t, err)
 
@@ -96,7 +96,7 @@ func TestOrganizationMembershipsCreate(t *testing.T) {
 
 		// Get a refreshed view from the API.
 		refreshed, err := client.OrganizationMemberships.ReadWithOptions(ctx, mem.ID, OrganizationMembershipReadOptions{
-			Include: []OrganizationMembershipIncludeOps{OrganizationMembershipUser},
+			Include: []OrganizationMembershipIncludeOpt{OrganizationMembershipUser},
 		})
 		require.NoError(t, err)
 		assert.Equal(t, refreshed, mem)
@@ -169,7 +169,7 @@ func TestOrganizationMembershipsReadWithOptions(t *testing.T) {
 	defer memTestCleanup()
 
 	options := OrganizationMembershipReadOptions{
-		Include: []OrganizationMembershipIncludeOps{OrganizationMembershipUser},
+		Include: []OrganizationMembershipIncludeOpt{OrganizationMembershipUser},
 	}
 
 	t.Run("when the membership exists", func(t *testing.T) {

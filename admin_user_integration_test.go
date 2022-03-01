@@ -76,7 +76,7 @@ func TestAdminUsers_List(t *testing.T) {
 
 	t.Run("with organization included", func(t *testing.T) {
 		ul, err := client.Admin.Users.List(ctx, &AdminUserListOptions{
-			Include: []AdminUserIncludeOps{AdminUserOrgs},
+			Include: []AdminUserIncludeOpt{AdminUserOrgs},
 		})
 
 		assert.NoError(t, err)

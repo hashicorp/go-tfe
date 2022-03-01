@@ -59,13 +59,13 @@ type RunTaskList struct {
 	Items []*RunTask
 }
 
-// RunTaskIncludeOps represents the available options for include query params.
+// RunTaskIncludeOpt represents the available options for include query params.
 // https://www.terraform.io/cloud-docs/api-docs/run-tasks#list-run-tasks
-type RunTaskIncludeOps string
+type RunTaskIncludeOpt string
 
 const (
-	RunTaskWorkspaceTasks RunTaskIncludeOps = "workspace_tasks"
-	RunTaskWorkspace      RunTaskIncludeOps = "workspace_tasks.workspace"
+	RunTaskWorkspaceTasks RunTaskIncludeOpt = "workspace_tasks"
+	RunTaskWorkspace      RunTaskIncludeOpt = "workspace_tasks.workspace"
 )
 
 // RunTaskListOptions represents the set of options for listing run tasks
@@ -73,14 +73,14 @@ type RunTaskListOptions struct {
 	ListOptions
 	// Optional: A list of relations to include with a run task. See available resources:
 	// https://www.terraform.io/cloud-docs/api-docs/run-tasks#list-run-tasks
-	Include []RunTaskIncludeOps `url:"include,omitempty"`
+	Include []RunTaskIncludeOpt `url:"include,omitempty"`
 }
 
 // RunTaskReadOptions represents the set of options for reading a run task
 type RunTaskReadOptions struct {
 	// Optional: A list of relations to include with a run task. See available resources:
 	// https://www.terraform.io/cloud-docs/api-docs/run-tasks#list-run-tasks
-	Include []RunTaskIncludeOps `url:"include"`
+	Include []RunTaskIncludeOpt `url:"include,omitempty"`
 }
 
 // RunTaskCreateOptions represents the set of options for creating a run task

@@ -87,14 +87,14 @@ type PolicySet struct {
 	CurrentVersion *PolicySetVersion `jsonapi:"relation,current-version"`
 }
 
-// PolicySetIncludeOps represents the available options for include query params.
-type PolicySetIncludeOps string
+// PolicySetIncludeOpt represents the available options for include query params.
+type PolicySetIncludeOpt string
 
 const (
-	PolicySetPolicies       PolicySetIncludeOps = "policies"
-	PolicySetWorkspaces     PolicySetIncludeOps = "workspaces"
-	PolicySetCurrentVersion PolicySetIncludeOps = "current_version"
-	PolicySetNewestVersion  PolicySetIncludeOps = "newest_version"
+	PolicySetPolicies       PolicySetIncludeOpt = "policies"
+	PolicySetWorkspaces     PolicySetIncludeOpt = "workspaces"
+	PolicySetCurrentVersion PolicySetIncludeOpt = "current_version"
+	PolicySetNewestVersion  PolicySetIncludeOpt = "newest_version"
 )
 
 // PolicySetListOptions represents the options for listing policy sets.
@@ -111,7 +111,7 @@ type PolicySetListOptions struct {
 type PolicySetReadOptions struct {
 	// Optional: A list of relations to include. See available resources
 	// https://www.terraform.io/cloud-docs/api-docs/policy-sets#relationships
-	Include []PolicySetIncludeOps `url:"include,omitempty"`
+	Include []PolicySetIncludeOpt `url:"include,omitempty"`
 }
 
 // PolicySetCreateOptions represents the options for creating a new policy set.

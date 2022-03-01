@@ -49,6 +49,14 @@ func TestAgentPoolsList(t *testing.T) {
 		assert.Equal(t, 1, pools.TotalCount)
 	})
 
+	t.Run("with Include options", func(t *testing.T) {
+		pools, err := client.AgentPools.List(ctx, orgTest.Name, &AgentPoolListOptions{
+			Include: []AgentPoolIncludeOpt{AgentPoolWorkspaces},
+		})
+		require.NoError(t, err)
+		assert.NotEmpty(t, pools.Items[0].Organization.Name)
+	})
+
 	t.Run("without a valid organization", func(t *testing.T) {
 		pools, err := client.AgentPools.List(ctx, badIdentifier, nil)
 		assert.Nil(t, pools)

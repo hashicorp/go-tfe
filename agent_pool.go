@@ -50,9 +50,16 @@ type AgentPool struct {
 	Organization *Organization `jsonapi:"relation,organization"`
 }
 
+// A list of relations to include
+type AgentPoolIncludeOpt string
+
+const AgentPoolWorkspaces AgentPoolIncludeOpt = "workspaces"
+
 // AgentPoolListOptions represents the options for listing agent pools.
 type AgentPoolListOptions struct {
 	ListOptions
+
+	Include []AgentPoolIncludeOpt `url:"include,omitempty"`
 }
 
 // AgentPoolCreateOptions represents the options for creating an agent pool.

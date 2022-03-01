@@ -69,7 +69,7 @@ func TestAdminRuns_List(t *testing.T) {
 
 	t.Run("with workspace included", func(t *testing.T) {
 		rl, err := client.Admin.Runs.List(ctx, &AdminRunsListOptions{
-			Include: []AdminRunIncludeOps{AdminRunWorkspace},
+			Include: []AdminRunIncludeOpt{AdminRunWorkspace},
 		})
 
 		assert.NoError(t, err)
@@ -81,7 +81,7 @@ func TestAdminRuns_List(t *testing.T) {
 
 	t.Run("with workspace.organization included", func(t *testing.T) {
 		rl, err := client.Admin.Runs.List(ctx, &AdminRunsListOptions{
-			Include: []AdminRunIncludeOps{AdminRunWorkspaceOrg},
+			Include: []AdminRunIncludeOpt{AdminRunWorkspaceOrg},
 		})
 
 		assert.NoError(t, err)

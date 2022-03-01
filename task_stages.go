@@ -59,17 +59,17 @@ type TaskStageStatusTimestamps struct {
 	PassedAt   time.Time `jsonapi:"attr,passed-at,rfc3339"`
 }
 
-// TaskStageIncludeOps represents the available options for include query params.
-type TaskStageIncludeOps string
+// TaskStageIncludeOpt represents the available options for include query params.
+type TaskStageIncludeOpt string
 
 const (
-	TaskStageTaskResults TaskStageIncludeOps = "task_results"
+	TaskStageTaskResults TaskStageIncludeOpt = "task_results"
 )
 
 // TaskStageReadOptions represents the set of options when reading a task stage
 type TaskStageReadOptions struct {
 	// Optional: A list of relations to include.
-	Include []TaskStageIncludeOps `url:"include,omitempty"`
+	Include []TaskStageIncludeOpt `url:"include,omitempty"`
 }
 
 // TaskStageListOptions represents the options for listing task stages for a run

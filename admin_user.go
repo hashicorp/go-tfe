@@ -64,12 +64,12 @@ type AdminUserList struct {
 	Items []*AdminUser
 }
 
-// AdminUserIncludeOps represents the available options for include query params.
+// AdminUserIncludeOpt represents the available options for include query params.
 // https://www.terraform.io/docs/cloud/api/admin/users.html#available-related-resources
-type AdminUserIncludeOps string
+type AdminUserIncludeOpt string
 
 const (
-	AdminUserOrgs AdminUserIncludeOps = "organizations"
+	AdminUserOrgs AdminUserIncludeOpt = "organizations"
 )
 
 // AdminUserListOptions represents the options for listing users.
@@ -88,7 +88,7 @@ type AdminUserListOptions struct {
 
 	// Optional: A list of relations to include. See available resources
 	// https://www.terraform.io/docs/cloud/api/admin/users.html#available-related-resources
-	Include []AdminUserIncludeOps `url:"include,omitempty"`
+	Include []AdminUserIncludeOpt `url:"include,omitempty"`
 }
 
 // List all user accounts in the Terraform Enterprise installation

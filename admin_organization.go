@@ -72,12 +72,12 @@ type AdminOrganizationList struct {
 	Items []*AdminOrganization
 }
 
-// AdminOrgIncludeOps represents the available options for include query params.
+// AdminOrgIncludeOpt represents the available options for include query params.
 // https://www.terraform.io/docs/cloud/api/admin/organizations.html#available-related-resources
-type AdminOrgIncludeOps string
+type AdminOrgIncludeOpt string
 
 const (
-	AdminOrgOwners AdminOrgIncludeOps = "owners"
+	AdminOrgOwners AdminOrgIncludeOpt = "owners"
 )
 
 // AdminOrganizationListOptions represents the options for listing organizations via Admin API.
@@ -89,7 +89,7 @@ type AdminOrganizationListOptions struct {
 	Query string `url:"q,omitempty"`
 	// Optional: A list of relations to include. See available resources
 	// https://www.terraform.io/docs/cloud/api/admin/organizations.html#available-related-resources
-	Include []AdminOrgIncludeOps `url:"include,omitempty"`
+	Include []AdminOrgIncludeOpt `url:"include,omitempty"`
 }
 
 // AdminOrganizationListModuleConsumersOptions represents the options for listing organization module consumers through the Admin API

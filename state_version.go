@@ -80,23 +80,23 @@ type StateVersionListOptions struct {
 	Workspace    string `url:"filter[workspace][name]"`
 }
 
-// StateVersionIncludeOps represents the available options for include query params.
+// StateVersionIncludeOpt represents the available options for include query params.
 // https://www.terraform.io/cloud-docs/api-docs/state-versions#available-related-resources
-type StateVersionIncludeOps string
+type StateVersionIncludeOpt string
 
 const (
-	SVcreatedby               StateVersionIncludeOps = "created_by"
-	SVrun                     StateVersionIncludeOps = "run"
-	SVrunCreatedBy            StateVersionIncludeOps = "run.created_by"
-	SVrunConfigurationVersion StateVersionIncludeOps = "run.configuration_version"
-	SVoutputs                 StateVersionIncludeOps = "outputs"
+	SVcreatedby               StateVersionIncludeOpt = "created_by"
+	SVrun                     StateVersionIncludeOpt = "run"
+	SVrunCreatedBy            StateVersionIncludeOpt = "run.created_by"
+	SVrunConfigurationVersion StateVersionIncludeOpt = "run.configuration_version"
+	SVoutputs                 StateVersionIncludeOpt = "outputs"
 )
 
 // StateVersionReadOptions represents the options for reading state version.
 type StateVersionReadOptions struct {
 	// Optional: A list of relations to include. See available resources:
 	// https://www.terraform.io/cloud-docs/api-docs/state-versions#available-related-resources
-	Include []StateVersionIncludeOps `url:"include,omitempty"`
+	Include []StateVersionIncludeOpt `url:"include,omitempty"`
 }
 
 // StateVersionOutputsListOptions represents the options for listing state
@@ -109,7 +109,7 @@ type StateVersionOutputsListOptions struct {
 type StateVersionCurrentOptions struct {
 	// Optional: A list of relations to include. See available resources:
 	// https://www.terraform.io/cloud-docs/api-docs/state-versions#available-related-resources
-	Include []StateVersionIncludeOps `url:"include,omitempty"`
+	Include []StateVersionIncludeOpt `url:"include,omitempty"`
 }
 
 // StateVersionCreateOptions represents the options for creating a state version.

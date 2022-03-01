@@ -158,19 +158,19 @@ type RunStatusTimestamps struct {
 	PolicySoftFailedAt   time.Time `jsonapi:"attr,policy-soft-failed-at,rfc3339"`
 }
 
-// RunIncludeOps represents the available options for include query params.
+// RunIncludeOpt represents the available options for include query params.
 // https://www.terraform.io/docs/cloud/api/run.html#available-related-resources
-type RunIncludeOps string
+type RunIncludeOpt string
 
 const (
-	RunPlan             RunIncludeOps = "plan"
-	RunApply            RunIncludeOps = "apply"
-	RunCreatedBy        RunIncludeOps = "created_by"
-	RunCostEstimate     RunIncludeOps = "cost_estimate"
-	RunConfigVer        RunIncludeOps = "configuration_version"
-	RunConfigVerIngress RunIncludeOps = "configuration_version.ingress_attributes"
-	RunWorkspace        RunIncludeOps = "workspace"
-	RunTaskStages       RunIncludeOps = "task_stages"
+	RunPlan             RunIncludeOpt = "plan"
+	RunApply            RunIncludeOpt = "apply"
+	RunCreatedBy        RunIncludeOpt = "created_by"
+	RunCostEstimate     RunIncludeOpt = "cost_estimate"
+	RunConfigVer        RunIncludeOpt = "configuration_version"
+	RunConfigVerIngress RunIncludeOpt = "configuration_version.ingress_attributes"
+	RunWorkspace        RunIncludeOpt = "workspace"
+	RunTaskStages       RunIncludeOpt = "task_stages"
 )
 
 // RunListOptions represents the options for listing runs.
@@ -178,14 +178,14 @@ type RunListOptions struct {
 	ListOptions
 	// Optional: A list of relations to include. See available resources:
 	// https://www.terraform.io/docs/cloud/api/run.html#available-related-resources
-	Include []RunIncludeOps `url:"include,omitempty"`
+	Include []RunIncludeOpt `url:"include,omitempty"`
 }
 
 // RunReadOptions represents the options for reading a run.
 type RunReadOptions struct {
 	// Optional: A list of relations to include. See available resources:
 	// https://www.terraform.io/docs/cloud/api/run.html#available-related-resources
-	Include []RunIncludeOps `url:"include,omitempty"`
+	Include []RunIncludeOpt `url:"include,omitempty"`
 }
 
 // RunCreateOptions represents the options for creating a new run.

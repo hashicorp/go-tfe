@@ -80,7 +80,7 @@ func TestRunTriggerList(t *testing.T) {
 		assert.EqualError(t, err, ErrInvalidWorkspaceID.Error())
 	})
 
-	t.Run("without defining RunTriggerFilterOps as a filter param", func(t *testing.T) {
+	t.Run("without defining RunTriggerListOptions", func(t *testing.T) {
 		rtl, err := client.RunTriggers.List(
 			ctx,
 			wTest.ID,
@@ -88,6 +88,21 @@ func TestRunTriggerList(t *testing.T) {
 		)
 		assert.Nil(t, rtl)
 		assert.Equal(t, err, ErrRequiredRunTriggerListOps)
+	})
+
+	t.Run("without defining RunTriggerFilterOp as a filter param", func(t *testing.T) {
+		rtl, err := client.RunTriggers.List(
+			ctx,
+			wTest.ID,
+			&RunTriggerListOptions{
+				ListOptions: ListOptions{
+					PageNumber: 999,
+					PageSize:   100,
+				},
+			},
+		)
+		assert.Nil(t, rtl)
+		assert.Equal(t, err, ErrInvalidRunTriggerType)
 	})
 
 	t.Run("with invalid option for runTriggerType", func(t *testing.T) {
@@ -100,6 +115,32 @@ func TestRunTriggerList(t *testing.T) {
 		)
 		assert.Nil(t, rtl)
 		assert.Equal(t, err, ErrInvalidRunTriggerType)
+	})
+
+	t.Run("with sourceable include option", func(t *testing.T) {
+		rtl, err := client.RunTriggers.List(
+			ctx,
+			wTest.ID,
+			&RunTriggerListOptions{
+				RunTriggerType: RunTriggerInbound,
+				Include:        []RunTriggerIncludeOpt{RunTriggerSourceable},
+			},
+		)
+		require.NoError(t, err)
+		assert.NotEmpty(t, rtl.Items)
+		assert.NotEmpty(t, rtl.Items[0].Sourceable.Name)
+	})
+
+	t.Run("with a RunTriggerType that does not return included data", func(t *testing.T) {
+		_, err := client.RunTriggers.List(
+			ctx,
+			wTest.ID,
+			&RunTriggerListOptions{
+				RunTriggerType: RunTriggerOutbound,
+				Include:        []RunTriggerIncludeOpt{RunTriggerSourceable},
+			},
+		)
+		assert.Equal(t, err, ErrUnsupportedRunTriggerType)
 	})
 }
 
