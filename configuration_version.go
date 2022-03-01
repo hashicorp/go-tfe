@@ -100,6 +100,8 @@ type ConfigurationVersion struct {
 // CVStatusTimestamps holds the timestamps for individual configuration version
 // statuses.
 type CVStatusTimestamps struct {
+	ArchivedAt time.Time `jsonapi:"attr,archived-at,rfc3339"`
+	FetchingAt time.Time `jsonapi:"attr,fetching-at,rfc3339"`
 	FinishedAt time.Time `jsonapi:"attr,finished-at,rfc3339"`
 	QueuedAt   time.Time `jsonapi:"attr,queued-at,rfc3339"`
 	StartedAt  time.Time `jsonapi:"attr,started-at,rfc3339"`
