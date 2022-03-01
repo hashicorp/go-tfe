@@ -43,14 +43,14 @@ type AdminRunsList struct {
 	Items []*AdminRun
 }
 
-// AdminRunIncludeOps represents the available options for include query params.
+// AdminRunIncludeOpt represents the available options for include query params.
 // https://www.terraform.io/cloud-docs/api-docs/admin/runs#available-related-resources
-type AdminRunIncludeOps string
+type AdminRunIncludeOpt string
 
 const (
-	AdminRunWorkspace          AdminRunIncludeOps = "workspace"
-	AdminRunWorkspaceOrg       AdminRunIncludeOps = "workspace.organization"
-	AdminRunWorkspaceOrgOwners AdminRunIncludeOps = "workspace.organization.owners"
+	AdminRunWorkspace          AdminRunIncludeOpt = "workspace"
+	AdminRunWorkspaceOrg       AdminRunIncludeOpt = "workspace.organization"
+	AdminRunWorkspaceOrgOwners AdminRunIncludeOpt = "workspace.organization.owners"
 )
 
 // AdminRunsListOptions represents the options for listing runs.
@@ -62,7 +62,7 @@ type AdminRunsListOptions struct {
 	Query     string `url:"q,omitempty"`
 	// Optional: A list of relations to include. See available resources
 	// https://www.terraform.io/cloud-docs/api-docs/admin/runs#available-related-resources
-	Include []AdminRunIncludeOps `url:"include,omitempty"`
+	Include []AdminRunIncludeOpt `url:"include,omitempty"`
 }
 
 // adminRuns implements the AdminRuns interface.

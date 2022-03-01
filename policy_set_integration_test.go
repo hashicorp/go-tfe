@@ -284,7 +284,7 @@ func TestPolicySetsRead(t *testing.T) {
 		require.NoError(t, err)
 
 		opts := &PolicySetReadOptions{
-			Include: []PolicySetIncludeOps{PolicySetCurrentVersion, PolicySetNewestVersion},
+			Include: []PolicySetIncludeOpt{PolicySetCurrentVersion, PolicySetNewestVersion},
 		}
 		psWithOptions, err := client.PolicySets.ReadWithOptions(ctx, psTest.ID, opts)
 		require.NoError(t, err)

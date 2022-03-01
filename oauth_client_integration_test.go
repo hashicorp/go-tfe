@@ -67,6 +67,14 @@ func TestOAuthClientsList(t *testing.T) {
 		assert.Equal(t, 2, ocl.TotalCount)
 	})
 
+	t.Run("with Include options", func(t *testing.T) {
+		ocl, err := client.OAuthClients.List(ctx, orgTest.Name, &OAuthClientListOptions{
+			Include: []OAuthClientIncludeOpt{OauthClientOauthTokens},
+		})
+		require.NoError(t, err)
+		assert.NotEmpty(t, ocl.Items[0].OAuthTokens[0].ID)
+	})
+
 	t.Run("without a valid organization", func(t *testing.T) {
 		ocl, err := client.OAuthClients.List(ctx, badIdentifier, nil)
 		assert.Nil(t, ocl)

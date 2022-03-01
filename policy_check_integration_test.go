@@ -63,6 +63,14 @@ func TestPolicyChecksList(t *testing.T) {
 		assert.Equal(t, 1, pcl.TotalCount)
 	})
 
+	t.Run("with Include option", func(t *testing.T) {
+		pcl, err := client.PolicyChecks.List(ctx, rTest.ID, &PolicyCheckListOptions{
+			Include: []PolicyCheckIncludeOpt{PolicyCheckRun},
+		})
+		require.NoError(t, err)
+		assert.NotEmpty(t, pcl.Items[0].Run.Status)
+	})
+
 	t.Run("without a valid run ID", func(t *testing.T) {
 		pcl, err := client.PolicyChecks.List(ctx, badIdentifier, nil)
 		assert.Nil(t, pcl)

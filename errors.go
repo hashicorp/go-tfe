@@ -21,6 +21,8 @@ var (
 	ErrUnsupportedOperations = errors.New("operations is deprecated and cannot be specified when execution mode is used")
 
 	ErrUnsupportedPrivateKey = errors.New("private Key can only be present with Azure DevOps Server service provider")
+
+	ErrUnsupportedRunTriggerType = errors.New(`"RunTriggerType" must be "inbound" when requesting "include" query params`)
 )
 
 // Library errors that usually indicate a bug in the implementation of go-tfe
@@ -116,7 +118,9 @@ var (
 
 	ErrInvalidRunTriggerID = errors.New("invalid value for run trigger ID")
 
-	ErrInvalidRunTriggerType = errors.New(`invalid value for RunTriggerType. It must be either "inbound" or "outbound"`)
+	ErrInvalidRunTriggerType = errors.New(`invalid value or no value for RunTriggerType. It must be either "inbound" or "outbound"`)
+
+	ErrInvalidRunTriggerInclude = errors.New(`invalid value for "include" field`)
 
 	ErrInvalidSHHKeyID = errors.New("invalid value for SSH key ID")
 

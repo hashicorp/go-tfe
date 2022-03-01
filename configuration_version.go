@@ -98,20 +98,20 @@ type CVStatusTimestamps struct {
 	StartedAt  time.Time `jsonapi:"attr,started-at,rfc3339"`
 }
 
-// ConfigurationVersionIncludeOps represents the available options for include query params.
+// ConfigurationVersionIncludeOpt represents the available options for include query params.
 // https://www.terraform.io/docs/cloud/api/configuration-versions.html#available-related-resources
-type ConfigurationVersionIncludeOps string
+type ConfigurationVersionIncludeOpt string
 
 const (
-	ConfigurationVerIngressAttributes ConfigurationVersionIncludeOps = "ingress_attributes"
-	ConfigurationRun                  ConfigurationVersionIncludeOps = "run"
+	ConfigurationVerIngressAttributes ConfigurationVersionIncludeOpt = "ingress_attributes"
+	ConfigurationRun                  ConfigurationVersionIncludeOpt = "run"
 )
 
 // ConfigurationVersionReadOptions represents the options for reading a configuration version.
 type ConfigurationVersionReadOptions struct {
 	// Optional: A list of relations to include. See available resources:
 	// https://www.terraform.io/docs/cloud/api/configuration-versions.html#available-related-resources
-	Include []ConfigurationVersionIncludeOps `url:"include,omitempty"`
+	Include []ConfigurationVersionIncludeOpt `url:"include,omitempty"`
 }
 
 // ConfigurationVersionListOptions represents the options for listing
@@ -120,7 +120,7 @@ type ConfigurationVersionListOptions struct {
 	ListOptions
 	// Optional: A list of relations to include. See available resources:
 	// https://www.terraform.io/docs/cloud/api/configuration-versions.html#available-related-resources
-	Include []ConfigurationVersionIncludeOps `url:"include,omitempty"`
+	Include []ConfigurationVersionIncludeOpt `url:"include,omitempty"`
 }
 
 // ConfigurationVersionCreateOptions represents the options for creating a

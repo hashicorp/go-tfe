@@ -110,9 +110,19 @@ type PolicyStatusTimestamps struct {
 	SoftFailedAt time.Time `jsonapi:"attr,soft-failed-at,rfc3339"`
 }
 
+// A list of relations to include
+type PolicyCheckIncludeOpt string
+
+const (
+	PolicyCheckRunWorkspace PolicyCheckIncludeOpt = "run.workspace"
+	PolicyCheckRun          PolicyCheckIncludeOpt = "run"
+)
+
 // PolicyCheckListOptions represents the options for listing policy checks.
 type PolicyCheckListOptions struct {
 	ListOptions
+
+	Include []PolicyCheckIncludeOpt `url:"include,omitempty"` // optional
 }
 
 // List all policy checks of the given run.

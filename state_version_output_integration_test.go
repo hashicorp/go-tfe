@@ -28,7 +28,7 @@ func TestStateVersionOutputsRead(t *testing.T) {
 	time.Sleep(waitForStateVersionOutputs)
 
 	curOpts := &StateVersionCurrentOptions{
-		Include: []StateVersionIncludeOps{SVoutputs},
+		Include: []StateVersionIncludeOpt{SVoutputs},
 	}
 
 	sv, err := client.StateVersions.ReadCurrentWithOptions(ctx, wTest1.ID, curOpts)

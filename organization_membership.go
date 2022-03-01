@@ -62,13 +62,13 @@ type OrganizationMembership struct {
 	Teams        []*Team       `jsonapi:"relation,teams"`
 }
 
-// OrganizationMembershipIncludeOps represents the available options for include query params.
+// OrganizationMembershipIncludeOpt represents the available options for include query params.
 // https://www.terraform.io/cloud-docs/api-docs/organization-memberships#available-related-resources
-type OrganizationMembershipIncludeOps string
+type OrganizationMembershipIncludeOpt string
 
 const (
-	OrganizationMembershipUser OrganizationMembershipIncludeOps = "user"
-	OrganizationMembershipTeam OrganizationMembershipIncludeOps = "teams"
+	OrganizationMembershipUser OrganizationMembershipIncludeOpt = "user"
+	OrganizationMembershipTeam OrganizationMembershipIncludeOpt = "teams"
 )
 
 // OrganizationMembershipListOptions represents the options for listing organization memberships.
@@ -76,7 +76,7 @@ type OrganizationMembershipListOptions struct {
 	ListOptions
 	// Optional: A list of relations to include. See available resources
 	// https://www.terraform.io/cloud-docs/api-docs/organization-memberships#available-related-resources
-	Include []OrganizationMembershipIncludeOps `url:"include,omitempty"`
+	Include []OrganizationMembershipIncludeOpt `url:"include,omitempty"`
 }
 
 // OrganizationMembershipCreateOptions represents the options for creating an organization membership.
@@ -95,7 +95,7 @@ type OrganizationMembershipCreateOptions struct {
 type OrganizationMembershipReadOptions struct {
 	// Optional: A list of relations to include. See available resources
 	// https://www.terraform.io/cloud-docs/api-docs/organization-memberships#available-related-resources
-	Include []OrganizationMembershipIncludeOps `url:"include,omitempty"`
+	Include []OrganizationMembershipIncludeOpt `url:"include,omitempty"`
 }
 
 // List all the organization memberships of the given organization.

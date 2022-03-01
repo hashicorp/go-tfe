@@ -158,7 +158,7 @@ func TestConfigurationVersionsReadWithOptions(t *testing.T) {
 	time.Sleep(3 * time.Second)
 
 	w, err := client.Workspaces.ReadByIDWithOptions(ctx, wTest.ID, &WorkspaceReadOptions{
-		Include: []WSIncludeOps{WSCurrentRunConfigVer},
+		Include: []WSIncludeOpt{WSCurrentRunConfigVer},
 	})
 
 	if err != nil {
@@ -173,7 +173,7 @@ func TestConfigurationVersionsReadWithOptions(t *testing.T) {
 
 	t.Run("when the configuration version exists", func(t *testing.T) {
 		options := &ConfigurationVersionReadOptions{
-			Include: []ConfigurationVersionIncludeOps{ConfigurationVerIngressAttributes},
+			Include: []ConfigurationVersionIncludeOpt{ConfigurationVerIngressAttributes},
 		}
 
 		cv, err := client.ConfigurationVersions.ReadWithOptions(ctx, cv.ID, options)

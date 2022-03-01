@@ -202,29 +202,29 @@ type WorkspacePermissions struct {
 	CanUpdateVariable bool `jsonapi:"attr,can-update-variable"`
 }
 
-// WSIncludeOps represents the available options for include query params.
+// WSIncludeOpt represents the available options for include query params.
 // https://www.terraform.io/docs/cloud/api/workspaces.html#available-related-resources
-type WSIncludeOps string
+type WSIncludeOpt string
 
 const (
-	WSOrganization               WSIncludeOps = "organization"
-	WSCurrentConfigVer           WSIncludeOps = "current_configuration_version"
-	WSCurrentConfigVerIngress    WSIncludeOps = "current_configuration_version.ingress_attributes"
-	WSCurrentRun                 WSIncludeOps = "current_run"
-	WSCurrentRunPlan             WSIncludeOps = "current_run.plan"
-	WSCurrentRunConfigVer        WSIncludeOps = "current_run.configuration_version"
-	WSCurrentrunConfigVerIngress WSIncludeOps = "current_run.configuration_version.ingress_attributes"
-	WSLockedBy                   WSIncludeOps = "locked_by"
-	WSReadme                     WSIncludeOps = "readme"
-	WSOutputs                    WSIncludeOps = "outputs"
-	WSCurrentStateVer            WSIncludeOps = "current-state-version"
+	WSOrganization               WSIncludeOpt = "organization"
+	WSCurrentConfigVer           WSIncludeOpt = "current_configuration_version"
+	WSCurrentConfigVerIngress    WSIncludeOpt = "current_configuration_version.ingress_attributes"
+	WSCurrentRun                 WSIncludeOpt = "current_run"
+	WSCurrentRunPlan             WSIncludeOpt = "current_run.plan"
+	WSCurrentRunConfigVer        WSIncludeOpt = "current_run.configuration_version"
+	WSCurrentrunConfigVerIngress WSIncludeOpt = "current_run.configuration_version.ingress_attributes"
+	WSLockedBy                   WSIncludeOpt = "locked_by"
+	WSReadme                     WSIncludeOpt = "readme"
+	WSOutputs                    WSIncludeOpt = "outputs"
+	WSCurrentStateVer            WSIncludeOpt = "current-state-version"
 )
 
 // WorkspaceReadOptions represents the options for reading a workspace.
 type WorkspaceReadOptions struct {
 	// Optional: A list of relations to include.
 	// https://www.terraform.io/docs/cloud/api/workspaces.html#available-related-resources
-	Include []WSIncludeOps `url:"include,omitempty"`
+	Include []WSIncludeOpt `url:"include,omitempty"`
 }
 
 // WorkspaceListOptions represents the options for listing workspaces.
@@ -238,7 +238,7 @@ type WorkspaceListOptions struct {
 	Tags string `url:"search[tags],omitempty"`
 
 	// Optional: A list of relations to include. See available resources https://www.terraform.io/docs/cloud/api/workspaces.html#available-related-resources
-	Include []WSIncludeOps `url:"include,omitempty"`
+	Include []WSIncludeOpt `url:"include,omitempty"`
 }
 
 // WorkspaceCreateOptions represents the options for creating a new workspace.

@@ -113,7 +113,7 @@ func TestWorkspacesList(t *testing.T) {
 
 	t.Run("with organization included", func(t *testing.T) {
 		wl, err := client.Workspaces.List(ctx, orgTest.Name, &WorkspaceListOptions{
-			Include: []WSIncludeOps{WSOrganization},
+			Include: []WSIncludeOpt{WSOrganization},
 		})
 
 		assert.NoError(t, err)
@@ -128,7 +128,7 @@ func TestWorkspacesList(t *testing.T) {
 		t.Cleanup(rCleanup)
 
 		wl, err := client.Workspaces.List(ctx, orgTest.Name, &WorkspaceListOptions{
-			Include: []WSIncludeOps{WSCurrentStateVer, WSCurrentRun},
+			Include: []WSIncludeOpt{WSCurrentStateVer, WSCurrentRun},
 		})
 
 		assert.NoError(t, err)
@@ -343,7 +343,7 @@ func TestWorkspacesReadWithOptions(t *testing.T) {
 
 	t.Run("when options to include resource", func(t *testing.T) {
 		opts := &WorkspaceReadOptions{
-			Include: []WSIncludeOps{WSOutputs},
+			Include: []WSIncludeOpt{WSOutputs},
 		}
 		w, err := client.Workspaces.ReadWithOptions(ctx, orgTest.Name, wTest.Name, opts)
 		require.NoError(t, err)
