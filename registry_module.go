@@ -18,22 +18,22 @@ type RegistryModules interface {
 	Create(ctx context.Context, organization string, options RegistryModuleCreateOptions) (*RegistryModule, error)
 
 	// Create a registry module version
-	CreateVersion(ctx context.Context, organization string, name string, provider string, options RegistryModuleCreateVersionOptions) (*RegistryModuleVersion, error)
+	CreateVersion(ctx context.Context, moduleID RegistryModuleID, options RegistryModuleCreateVersionOptions) (*RegistryModuleVersion, error)
 
 	// Create and publish a registry module with a VCS repo
 	CreateWithVCSConnection(ctx context.Context, options RegistryModuleCreateWithVCSConnectionOptions) (*RegistryModule, error)
 
 	// Read a registry module
-	Read(ctx context.Context, organization string, name string, provider string) (*RegistryModule, error)
+	Read(ctx context.Context, moduleID RegistryModuleID) (*RegistryModule, error)
 
 	// Delete a registry module
 	Delete(ctx context.Context, organization string, name string) error
 
 	// Delete a specific registry module provider
-	DeleteProvider(ctx context.Context, organization string, name string, provider string) error
+	DeleteProvider(ctx context.Context, moduleID RegistryModuleID) error
 
 	// Delete a specific registry module version
-	DeleteVersion(ctx context.Context, organization string, name string, provider string, version string) error
+	DeleteVersion(ctx context.Context, moduleID RegistryModuleID, version string) error
 
 	// Upload Terraform configuration files for the provided registry module version. It
 	// requires a path to the configuration files on disk, which will be packaged by
@@ -70,6 +70,16 @@ const (
 	RegistryModuleVersionStatusRegIngressFailed    RegistryModuleVersionStatus = "reg_ingress_failed"
 	RegistryModuleVersionStatusOk                  RegistryModuleVersionStatus = "ok"
 )
+
+// RegistryModuleID represents the set of IDs that identify a RegistryModule
+type RegistryModuleID struct {
+	// The organization the module belongs to, see RegistryModule.Organization.Name
+	Organization string
+	// The name of the module, see RegistryModule.Name
+	Name string
+	// The module's provider, see RegistryModule.Provider
+	Provider string
+}
 
 // RegistryModule represents a registry module
 type RegistryModule struct {
@@ -207,31 +217,20 @@ func (r *registryModules) Create(ctx context.Context, organization string, optio
 }
 
 // CreateVersion creates a new registry module version
-func (r *registryModules) CreateVersion(ctx context.Context, organization, name, provider string, options RegistryModuleCreateVersionOptions) (*RegistryModuleVersion, error) {
-	if !validStringID(&organization) {
-		return nil, ErrInvalidOrg
+func (r *registryModules) CreateVersion(ctx context.Context, moduleID RegistryModuleID, options RegistryModuleCreateVersionOptions) (*RegistryModuleVersion, error) {
+	if err := moduleID.valid(); err != nil {
+		return nil, err
 	}
-	if !validString(&name) {
-		return nil, ErrRequiredName
-	}
-	if !validStringID(&name) {
-		return nil, ErrInvalidName
-	}
-	if !validString(&provider) {
-		return nil, ErrRequiredProvider
-	}
-	if !validStringID(&provider) {
-		return nil, ErrInvalidProvider
-	}
+
 	if err := options.valid(); err != nil {
 		return nil, err
 	}
 
 	u := fmt.Sprintf(
 		"registry-modules/%s/%s/%s/versions",
-		url.QueryEscape(organization),
-		url.QueryEscape(name),
-		url.QueryEscape(provider),
+		url.QueryEscape(moduleID.Organization),
+		url.QueryEscape(moduleID.Name),
+		url.QueryEscape(moduleID.Provider),
 	)
 	req, err := r.client.newRequest("POST", u, &options)
 	if err != nil {
@@ -268,28 +267,16 @@ func (r *registryModules) CreateWithVCSConnection(ctx context.Context, options R
 }
 
 // Read a specific registry module
-func (r *registryModules) Read(ctx context.Context, organization, name, provider string) (*RegistryModule, error) {
-	if !validStringID(&organization) {
-		return nil, ErrInvalidOrg
-	}
-	if !validString(&name) {
-		return nil, ErrRequiredName
-	}
-	if !validStringID(&name) {
-		return nil, ErrInvalidName
-	}
-	if !validString(&provider) {
-		return nil, ErrRequiredProvider
-	}
-	if !validStringID(&provider) {
-		return nil, ErrInvalidProvider
+func (r *registryModules) Read(ctx context.Context, moduleID RegistryModuleID) (*RegistryModule, error) {
+	if err := moduleID.valid(); err != nil {
+		return nil, err
 	}
 
 	u := fmt.Sprintf(
 		"registry-modules/show/%s/%s/%s",
-		url.QueryEscape(organization),
-		url.QueryEscape(name),
-		url.QueryEscape(provider),
+		url.QueryEscape(moduleID.Organization),
+		url.QueryEscape(moduleID.Name),
+		url.QueryEscape(moduleID.Provider),
 	)
 	req, err := r.client.newRequest("GET", u, nil)
 	if err != nil {
@@ -331,28 +318,16 @@ func (r *registryModules) Delete(ctx context.Context, organization, name string)
 }
 
 // DeleteProvider is used to delete the specific registry module provider
-func (r *registryModules) DeleteProvider(ctx context.Context, organization, name, provider string) error {
-	if !validStringID(&organization) {
-		return ErrInvalidOrg
-	}
-	if !validString(&name) {
-		return ErrRequiredName
-	}
-	if !validStringID(&name) {
-		return ErrInvalidName
-	}
-	if !validString(&provider) {
-		return ErrRequiredProvider
-	}
-	if !validStringID(&provider) {
-		return ErrInvalidProvider
+func (r *registryModules) DeleteProvider(ctx context.Context, moduleID RegistryModuleID) error {
+	if err := moduleID.valid(); err != nil {
+		return err
 	}
 
 	u := fmt.Sprintf(
 		"registry-modules/actions/delete/%s/%s/%s",
-		url.QueryEscape(organization),
-		url.QueryEscape(name),
-		url.QueryEscape(provider),
+		url.QueryEscape(moduleID.Organization),
+		url.QueryEscape(moduleID.Name),
+		url.QueryEscape(moduleID.Provider),
 	)
 	req, err := r.client.newRequest("POST", u, nil)
 	if err != nil {
@@ -363,21 +338,9 @@ func (r *registryModules) DeleteProvider(ctx context.Context, organization, name
 }
 
 // DeleteVersion is used to delete the specific registry module version
-func (r *registryModules) DeleteVersion(ctx context.Context, organization, name, provider, version string) error {
-	if !validStringID(&organization) {
-		return ErrInvalidOrg
-	}
-	if !validString(&name) {
-		return ErrRequiredName
-	}
-	if !validStringID(&name) {
-		return ErrInvalidName
-	}
-	if !validString(&provider) {
-		return ErrRequiredProvider
-	}
-	if !validStringID(&provider) {
-		return ErrInvalidProvider
+func (r *registryModules) DeleteVersion(ctx context.Context, moduleID RegistryModuleID, version string) error {
+	if err := moduleID.valid(); err != nil {
+		return err
 	}
 	if !validString(&version) {
 		return ErrRequiredVersion
@@ -388,9 +351,9 @@ func (r *registryModules) DeleteVersion(ctx context.Context, organization, name,
 
 	u := fmt.Sprintf(
 		"registry-modules/actions/delete/%s/%s/%s/%s",
-		url.QueryEscape(organization),
-		url.QueryEscape(name),
-		url.QueryEscape(provider),
+		url.QueryEscape(moduleID.Organization),
+		url.QueryEscape(moduleID.Name),
+		url.QueryEscape(moduleID.Provider),
 		url.QueryEscape(version),
 	)
 	req, err := r.client.newRequest("POST", u, nil)
@@ -399,6 +362,30 @@ func (r *registryModules) DeleteVersion(ctx context.Context, organization, name,
 	}
 
 	return r.client.do(ctx, req, nil)
+}
+
+func (o RegistryModuleID) valid() error {
+	if !validStringID(&o.Organization) {
+		return ErrInvalidOrg
+	}
+
+	if !validString(&o.Name) {
+		return ErrRequiredName
+	}
+
+	if !validStringID(&o.Name) {
+		return ErrInvalidName
+	}
+
+	if !validString(&o.Provider) {
+		return ErrRequiredProvider
+	}
+
+	if !validStringID(&o.Provider) {
+		return ErrInvalidProvider
+	}
+
+	return nil
 }
 
 func (o RegistryModuleCreateOptions) valid() error {
