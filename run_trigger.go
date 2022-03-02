@@ -175,36 +175,55 @@ func (s *runTriggers) Delete(ctx context.Context, runTriggerID string) error {
 	return s.client.do(ctx, req, nil)
 }
 
+func (o RunTriggerCreateOptions) valid() error {
+	if o.Sourceable == nil {
+		return ErrRequiredSourceable
+	}
+	return nil
+}
+
 func (o *RunTriggerListOptions) valid() error {
 	if o == nil {
 		return ErrRequiredRunTriggerListOps
 	}
 
-	switch o.RunTriggerType {
+	if err := validateRunTriggerFilterParam(o.RunTriggerType, o.Include); err != nil {
+		return err
+	}
+
+	if err := validateRunTriggerIncludeParams(o.Include); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func validateRunTriggerFilterParam(filterParam RunTriggerFilterOp, includeParams []RunTriggerIncludeOpt) error {
+	switch filterParam {
 	case RunTriggerOutbound, RunTriggerInbound:
 		// Do nothing
 	default:
-		return ErrInvalidRunTriggerType
+		return ErrInvalidRunTriggerType // return an error even if string is empty because this a required field
 	}
 
-	for _, i := range o.Include {
-		switch i {
-		case RunTriggerWorkspace, RunTriggerSourceable:
-			if o.RunTriggerType != RunTriggerInbound {
-				return ErrUnsupportedRunTriggerType
-			}
-			// Do nothing
-		default:
-			return ErrUnsupportedOperations
+	if len(includeParams) > 0 {
+		if filterParam != RunTriggerInbound {
+			return ErrUnsupportedRunTriggerType // if user passes RunTriggerOutbound the platform will not return any "include" data
 		}
 	}
 
 	return nil
 }
 
-func (o RunTriggerCreateOptions) valid() error {
-	if o.Sourceable == nil {
-		return ErrRequiredSourceable
+func validateRunTriggerIncludeParams(params []RunTriggerIncludeOpt) error {
+	for _, p := range params {
+		switch p {
+		case RunTriggerWorkspace, RunTriggerSourceable:
+			// Do nothing
+		default:
+			return ErrInvalidIncludeValue
+		}
 	}
+
 	return nil
 }

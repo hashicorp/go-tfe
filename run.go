@@ -283,6 +283,9 @@ func (s *runs) List(ctx context.Context, workspaceID string, options *RunListOpt
 	if !validStringID(&workspaceID) {
 		return nil, ErrInvalidWorkspaceID
 	}
+	if err := options.valid(); err != nil {
+		return nil, err
+	}
 
 	u := fmt.Sprintf("workspaces/%s/runs", url.QueryEscape(workspaceID))
 	req, err := s.client.newRequest("GET", u, options)
@@ -328,6 +331,9 @@ func (s *runs) Read(ctx context.Context, runID string) (*Run, error) {
 func (s *runs) ReadWithOptions(ctx context.Context, runID string, options *RunReadOptions) (*Run, error) {
 	if !validStringID(&runID) {
 		return nil, ErrInvalidRunID
+	}
+	if err := options.valid(); err != nil {
+		return nil, err
 	}
 
 	u := fmt.Sprintf("runs/%s", url.QueryEscape(runID))
@@ -409,5 +415,40 @@ func (o RunCreateOptions) valid() error {
 	if o.Workspace == nil {
 		return ErrRequiredWorkspace
 	}
+	return nil
+}
+
+func (o *RunReadOptions) valid() error {
+	if o == nil {
+		return nil // nothing to validate
+	}
+
+	if err := validateRunIncludeParam(o.Include); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (o *RunListOptions) valid() error {
+	if o == nil {
+		return nil // nothing to validate
+	}
+
+	if err := validateRunIncludeParam(o.Include); err != nil {
+		return err
+	}
+	return nil
+}
+
+func validateRunIncludeParam(params []RunIncludeOpt) error {
+	for _, p := range params {
+		switch p {
+		case RunPlan, RunApply, RunCreatedBy, RunCostEstimate, RunConfigVer, RunConfigVerIngress, RunWorkspace, RunTaskStages:
+			// do nothing
+		default:
+			return ErrInvalidIncludeValue
+		}
+	}
+
 	return nil
 }

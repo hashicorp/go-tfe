@@ -94,6 +94,21 @@ func (mr *MockAgentPoolsMockRecorder) Read(ctx, agentPoolID interface{}) *gomock
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Read", reflect.TypeOf((*MockAgentPools)(nil).Read), ctx, agentPoolID)
 }
 
+// ReadWithOptions mocks base method.
+func (m *MockAgentPools) ReadWithOptions(ctx context.Context, agentPoolID string, options *tfe.AgentPoolReadOptions) (*tfe.AgentPool, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "ReadWithOptions", ctx, agentPoolID, options)
+	ret0, _ := ret[0].(*tfe.AgentPool)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// ReadWithOptions indicates an expected call of ReadWithOptions.
+func (mr *MockAgentPoolsMockRecorder) ReadWithOptions(ctx, agentPoolID, options interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ReadWithOptions", reflect.TypeOf((*MockAgentPools)(nil).ReadWithOptions), ctx, agentPoolID, options)
+}
+
 // Update mocks base method.
 func (m *MockAgentPools) Update(ctx context.Context, agentPool string, options tfe.AgentPoolUpdateOptions) (*tfe.AgentPool, error) {
 	m.ctrl.T.Helper()

@@ -120,7 +120,7 @@ var (
 
 	ErrInvalidRunTriggerType = errors.New(`invalid value or no value for RunTriggerType. It must be either "inbound" or "outbound"`)
 
-	ErrInvalidRunTriggerInclude = errors.New(`invalid value for "include" field`)
+	ErrInvalidIncludeValue = errors.New(`invalid value for "include" field`)
 
 	ErrInvalidSHHKeyID = errors.New("invalid value for SSH key ID")
 

@@ -130,6 +130,9 @@ func (s *policyChecks) List(ctx context.Context, runID string, options *PolicyCh
 	if !validStringID(&runID) {
 		return nil, ErrInvalidRunID
 	}
+	if err := options.valid(); err != nil {
+		return nil, err
+	}
 
 	u := fmt.Sprintf("runs/%s/policy-checks", url.QueryEscape(runID))
 	req, err := s.client.newRequest("GET", u, options)
@@ -227,4 +230,29 @@ func (s *policyChecks) Logs(ctx context.Context, policyCheckID string) (io.Reade
 
 		return logs, nil
 	}
+}
+
+func (o *PolicyCheckListOptions) valid() error {
+	if o == nil {
+		return nil // nothing to validate
+	}
+
+	if err := validatePolicyCheckIncludeParams(o.Include); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func validatePolicyCheckIncludeParams(params []PolicyCheckIncludeOpt) error {
+	for _, p := range params {
+		switch p {
+		case PolicyCheckRunWorkspace, PolicyCheckRun:
+			// do nothing
+		default:
+			return ErrInvalidIncludeValue
+		}
+	}
+
+	return nil
 }

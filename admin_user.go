@@ -68,9 +68,7 @@ type AdminUserList struct {
 // https://www.terraform.io/docs/cloud/api/admin/users.html#available-related-resources
 type AdminUserIncludeOpt string
 
-const (
-	AdminUserOrgs AdminUserIncludeOpt = "organizations"
-)
+const AdminUserOrgs AdminUserIncludeOpt = "organizations"
 
 // AdminUserListOptions represents the options for listing users.
 // https://www.terraform.io/docs/cloud/api/admin/users.html#query-parameters
@@ -93,6 +91,10 @@ type AdminUserListOptions struct {
 
 // List all user accounts in the Terraform Enterprise installation
 func (a *adminUsers) List(ctx context.Context, options *AdminUserListOptions) (*AdminUserList, error) {
+	if err := options.valid(); err != nil {
+		return nil, err
+	}
+
 	u := "admin/users"
 	req, err := a.client.newRequest("GET", u, options)
 	if err != nil {
@@ -227,4 +229,28 @@ func (a *adminUsers) Disable2FA(ctx context.Context, userID string) (*AdminUser,
 	}
 
 	return au, nil
+}
+
+func (o *AdminUserListOptions) valid() error {
+	if o == nil {
+		return nil // nothing to validate
+	}
+
+	if err := validateAdminUserIncludeParams(o.Include); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func validateAdminUserIncludeParams(params []AdminUserIncludeOpt) error {
+	for _, p := range params {
+		switch p {
+		case AdminUserOrgs:
+			// do nothing
+		default:
+			return ErrInvalidIncludeValue
+		}
+	}
+	return nil
 }

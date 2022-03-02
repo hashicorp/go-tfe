@@ -92,6 +92,14 @@ func TestAdminRuns_List(t *testing.T) {
 		assert.NotEmpty(t, rl.Items[0].Workspace.Organization.Name)
 	})
 
+	t.Run("with invalid Include option", func(t *testing.T) {
+		_, err := client.Admin.Runs.List(ctx, &AdminRunsListOptions{
+			Include: []AdminRunIncludeOpt{"workpsace"},
+		})
+
+		assert.Equal(t, err, ErrInvalidIncludeValue)
+	})
+
 	t.Run("with RunStatus.pending filter", func(t *testing.T) {
 		r1, err := client.Runs.Read(ctx, rTest1.ID)
 		assert.NoError(t, err)
@@ -243,6 +251,15 @@ func TestAdminRuns_AdminRunsListOptions_valid(t *testing.T) {
 
 		err := opts.valid()
 		assert.Error(t, err)
+	})
+
+	t.Run("has trailing comma and trailing space", func(t *testing.T) {
+		opts := AdminRunsListOptions{
+			RunStatus: "pending, ",
+		}
+
+		err := opts.valid()
+		assert.NoError(t, err)
 	})
 }
 

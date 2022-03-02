@@ -162,6 +162,9 @@ func (s *oAuthClients) List(ctx context.Context, organization string, options *O
 	if !validStringID(&organization) {
 		return nil, ErrInvalidOrg
 	}
+	if err := options.valid(); err != nil {
+		return nil, err
+	}
 
 	u := fmt.Sprintf("organizations/%s/oauth-clients", url.QueryEscape(organization))
 	req, err := s.client.newRequest("GET", u, options)
@@ -275,5 +278,30 @@ func (o OAuthClientCreateOptions) valid() error {
 	if validString(o.PrivateKey) && *o.ServiceProvider != *ServiceProvider(ServiceProviderAzureDevOpsServer) {
 		return ErrUnsupportedPrivateKey
 	}
+	return nil
+}
+
+func (o *OAuthClientListOptions) valid() error {
+	if o == nil {
+		return nil // nothing to validate
+	}
+
+	if err := validateOauthClientIncludeParams(o.Include); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func validateOauthClientIncludeParams(params []OAuthClientIncludeOpt) error {
+	for _, p := range params {
+		switch p {
+		case OauthClientOauthTokens:
+			// do nothing
+		default:
+			return ErrInvalidIncludeValue
+		}
+	}
+
 	return nil
 }

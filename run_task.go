@@ -155,6 +155,9 @@ func (s *runTasks) List(ctx context.Context, organization string, options *RunTa
 	if !validStringID(&organization) {
 		return nil, ErrInvalidOrg
 	}
+	if err := options.valid(); err != nil {
+		return nil, err
+	}
 
 	u := fmt.Sprintf("organizations/%s/tasks", url.QueryEscape(organization))
 	req, err := s.client.newRequest("GET", u, options)
@@ -180,6 +183,9 @@ func (s *runTasks) Read(ctx context.Context, runTaskID string) (*RunTask, error)
 func (s *runTasks) ReadWithOptions(ctx context.Context, runTaskID string, options *RunTaskReadOptions) (*RunTask, error) {
 	if !validStringID(&runTaskID) {
 		return nil, ErrInvalidRunTaskID
+	}
+	if err := options.valid(); err != nil {
+		return nil, err
 	}
 
 	u := fmt.Sprintf("tasks/%s", url.QueryEscape(runTaskID))
@@ -272,6 +278,43 @@ func (o *RunTaskUpdateOptions) valid() error {
 
 	if o.Category != nil && *o.Category != "task" {
 		return ErrInvalidRunTaskCategory
+	}
+
+	return nil
+}
+
+func (o *RunTaskListOptions) valid() error {
+	if o == nil {
+		return nil // nothing to validate
+	}
+
+	if err := validateRunTaskIncludeParams(o.Include); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (o *RunTaskReadOptions) valid() error {
+	if o == nil {
+		return nil // nothing to validate
+	}
+
+	if err := validateRunTaskIncludeParams(o.Include); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func validateRunTaskIncludeParams(params []RunTaskIncludeOpt) error {
+	for _, p := range params {
+		switch p {
+		case RunTaskWorkspaceTasks, RunTaskWorkspace:
+			// do nothing
+		default:
+			return ErrInvalidIncludeValue
+		}
 	}
 
 	return nil

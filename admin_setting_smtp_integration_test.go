@@ -35,16 +35,17 @@ func TestAdminSettings_SMTP_Update(t *testing.T) {
 	client := testClient(t)
 	ctx := context.Background()
 
-	enabled := false
+	enabled := true
+	disabled := false
 
 	t.Run("with Auth option defined", func(t *testing.T) {
 		smtpSettings, err := client.Admin.Settings.SMTP.Update(ctx, AdminSMTPSettingsUpdateOptions{
-			Enabled: Bool(enabled),
+			Enabled: Bool(disabled),
 			Auth:    SMTPAuthValue(SMTPAuthNone),
 		})
 
 		require.NoError(t, err)
-		assert.Equal(t, enabled, smtpSettings.Enabled)
+		assert.Equal(t, disabled, smtpSettings.Enabled)
 	})
 	t.Run("with no Auth option", func(t *testing.T) {
 		smtpSettings, err := client.Admin.Settings.SMTP.Update(ctx, AdminSMTPSettingsUpdateOptions{
@@ -54,5 +55,14 @@ func TestAdminSettings_SMTP_Update(t *testing.T) {
 		require.NoError(t, err)
 		assert.Equal(t, SMTPAuthNone, smtpSettings.Auth)
 		assert.Equal(t, enabled, smtpSettings.Enabled)
+	})
+	t.Run("with invalid Auth option", func(t *testing.T) {
+		var SMTPAuthPlained SMTPAuthType = "plained"
+		_, err := client.Admin.Settings.SMTP.Update(ctx, AdminSMTPSettingsUpdateOptions{
+			Enabled: Bool(enabled),
+			Auth:    &SMTPAuthPlained,
+		})
+
+		assert.Equal(t, err, ErrInvalidSMTPAuth)
 	})
 }

@@ -62,9 +62,7 @@ type TaskStageStatusTimestamps struct {
 // TaskStageIncludeOpt represents the available options for include query params.
 type TaskStageIncludeOpt string
 
-const (
-	TaskStageTaskResults TaskStageIncludeOpt = "task_results"
-)
+const TaskStageTaskResults TaskStageIncludeOpt = "task_results"
 
 // TaskStageReadOptions represents the set of options when reading a task stage
 type TaskStageReadOptions struct {
@@ -81,6 +79,9 @@ type TaskStageListOptions struct {
 func (s *taskStages) Read(ctx context.Context, taskStageID string, options *TaskStageReadOptions) (*TaskStage, error) {
 	if !validStringID(&taskStageID) {
 		return nil, ErrInvalidTaskStageID
+	}
+	if err := options.valid(); err != nil {
+		return nil, err
 	}
 
 	u := fmt.Sprintf("task-stages/%s", taskStageID)
@@ -118,4 +119,29 @@ func (s *taskStages) List(ctx context.Context, runID string, options *TaskStageL
 	}
 
 	return tlist, nil
+}
+
+func (o *TaskStageReadOptions) valid() error {
+	if o == nil {
+		return nil // nothing to validate
+	}
+
+	if err := validateTaskStageIncludeParams(o.Include); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func validateTaskStageIncludeParams(params []TaskStageIncludeOpt) error {
+	for _, p := range params {
+		switch p {
+		case TaskStageTaskResults:
+			// do nothing
+		default:
+			return ErrInvalidIncludeValue
+		}
+	}
+
+	return nil
 }

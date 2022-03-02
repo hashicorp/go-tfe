@@ -139,7 +139,9 @@ func (s *teams) List(ctx context.Context, organization string, options *TeamList
 	if !validStringID(&organization) {
 		return nil, ErrInvalidOrg
 	}
-
+	if err := options.valid(); err != nil {
+		return nil, err
+	}
 	u := fmt.Sprintf("organizations/%s/teams", url.QueryEscape(organization))
 	req, err := s.client.newRequest("GET", u, options)
 	if err != nil {
@@ -240,5 +242,30 @@ func (o TeamCreateOptions) valid() error {
 	if !validString(o.Name) {
 		return ErrRequiredName
 	}
+	return nil
+}
+
+func (o *TeamListOptions) valid() error {
+	if o == nil {
+		return nil // nothing to validate
+	}
+
+	if err := validateTeamIncludeParams(o.Include); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func validateTeamIncludeParams(params []TeamIncludeOpt) error {
+	for _, p := range params {
+		switch p {
+		case TeamUsers, TeamOrganizationMemberships:
+			// do nothing
+		default:
+			return ErrInvalidIncludeValue
+		}
+	}
+
 	return nil
 }
