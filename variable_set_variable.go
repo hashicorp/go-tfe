@@ -21,6 +21,9 @@ type VariableSetVariables interface {
 	// Create is used to create a new variable within a given variable set
 	Create(ctx context.Context, variableSetID string, options *VariableSetVariableCreateOptions) (*VariableSetVariable, error)
 
+	// Read a variable by its ID
+	Read(ctx context.Context, variableSetID string, variableId string) (*VariableSetVariable, error)
+
 	// Update valuse of an existing variable
 	Update(ctx context.Context, variableSetID string, variableID string, options *VariableSetVariableUpdateOptions) (*VariableSetVariable, error)
 
@@ -145,6 +148,31 @@ func (s *variableSetVariables) Create(ctx context.Context, variableSetID string,
 	}
 
 	return v, nil
+}
+
+// Read a variable by its ID.
+func (s *variableSetVariables) Read(ctx context.Context, variableSetID string, variableID string) (*VariableSetVariable, error) {
+	if !validStringID(&variableSetID) {
+		return nil, errors.New("invalid value for variable set ID")
+	}
+	if !validStringID(&variableID) {
+		return nil, errors.New("invalid value for variable ID")
+	}
+
+	u := fmt.Sprintf("varsets/%s/relationships/vars/%s", url.QueryEscape(variableSetID), url.QueryEscape(variableID))
+	req, err := s.client.newRequest("GET", u, nil)
+
+	if err != nil {
+		return nil, err
+	}
+
+	v := &VariableSetVariable{}
+	err = s.client.do(ctx, req, v)
+	if err != nil {
+		return nil, err
+	}
+
+	return v, err
 }
 
 // VariableSetVariableUpdateOptions represents the options for updating a variable.

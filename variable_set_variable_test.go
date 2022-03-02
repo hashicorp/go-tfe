@@ -201,6 +201,49 @@ func TestVariableSetVariablesCreate(t *testing.T) {
 	})
 }
 
+func TestVariableSetVariablesRead(t *testing.T) {
+	client := testClient(t)
+	ctx := context.Background()
+
+	orgTest, orgTestCleanup := createOrganization(t, client)
+	defer orgTestCleanup()
+
+	vsTest, vsTestCleanup := createVariableSet(t, client, orgTest, VariableSetCreateOptions{})
+	defer vsTestCleanup()
+
+	vTest, vTestCleanup := createVariableSetVariable(t, client, vsTest, VariableSetVariableCreateOptions{})
+	defer vTestCleanup()
+
+	t.Run("when the variable exists", func(t *testing.T) {
+		v, err := client.VariableSetVariables.Read(ctx, vsTest.ID, vTest.ID)
+		require.NoError(t, err)
+		assert.Equal(t, vTest.ID, v.ID)
+		assert.Equal(t, vTest.Category, v.Category)
+		assert.Equal(t, vTest.HCL, v.HCL)
+		assert.Equal(t, vTest.Key, v.Key)
+		assert.Equal(t, vTest.Sensitive, v.Sensitive)
+		assert.Equal(t, vTest.Value, v.Value)
+	})
+
+	t.Run("when the variable does not exist", func(t *testing.T) {
+		v, err := client.VariableSetVariables.Read(ctx, vsTest.ID, "nonexisting")
+		assert.Nil(t, v)
+		assert.Equal(t, ErrResourceNotFound, err)
+	})
+
+	t.Run("without a valid variable set ID", func(t *testing.T) {
+		v, err := client.VariableSetVariables.Read(ctx, badIdentifier, vTest.ID)
+		assert.Nil(t, v)
+		assert.EqualError(t, err, "invalid value for variable set ID")
+	})
+
+	t.Run("without a valid variable ID", func(t *testing.T) {
+		v, err := client.VariableSetVariables.Read(ctx, vsTest.ID, badIdentifier)
+		assert.Nil(t, v)
+		assert.EqualError(t, err, "invalid value for variable ID")
+	})
+}
+
 func TestVariableSetVariablesUpdate(t *testing.T) {
 	client := testClient(t)
 	ctx := context.Background()
