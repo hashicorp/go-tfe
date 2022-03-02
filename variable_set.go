@@ -22,7 +22,7 @@ type VariableSets interface {
 	Create(ctx context.Context, organization string, options *VariableSetCreateOptions) (*VariableSet, error)
 
 	// Read a variable set by its ID.
-	Read(ctx context.Context, variableSetVariableSetReadOptionsID string, options *VariableSetReadOptions) (*VariableSet, error)
+	Read(ctx context.Context, variableSetID string, options *VariableSetReadOptions) (*VariableSet, error)
 
 	// Update an existing variable set.
 	Update(ctx context.Context, variableSetID string, options *VariableSetUpdateOptions) (*VariableSet, error)
