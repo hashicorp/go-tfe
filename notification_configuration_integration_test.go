@@ -93,7 +93,7 @@ func TestNotificationConfigurationCreate(t *testing.T) {
 			Name:            String(randomString(t)),
 			Token:           String(randomString(t)),
 			URL:             String("http://example.com"),
-			Triggers:        []string{NotificationTriggerCreated},
+			Triggers:        []NotificationTriggerType{NotificationTriggerCreated},
 		}
 
 		_, err := client.NotificationConfigurations.Create(ctx, wTest.ID, options)
@@ -106,7 +106,7 @@ func TestNotificationConfigurationCreate(t *testing.T) {
 			Enabled:         Bool(false),
 			Token:           String(randomString(t)),
 			URL:             String("http://example.com"),
-			Triggers:        []string{NotificationTriggerCreated},
+			Triggers:        []NotificationTriggerType{NotificationTriggerCreated},
 		}
 
 		nc, err := client.NotificationConfigurations.Create(ctx, wTest.ID, options)
@@ -120,7 +120,7 @@ func TestNotificationConfigurationCreate(t *testing.T) {
 			Enabled:         Bool(false),
 			Name:            String(randomString(t)),
 			Token:           String(randomString(t)),
-			Triggers:        []string{NotificationTriggerCreated},
+			Triggers:        []NotificationTriggerType{NotificationTriggerCreated},
 		}
 
 		nc, err := client.NotificationConfigurations.Create(ctx, wTest.ID, options)
@@ -132,6 +132,21 @@ func TestNotificationConfigurationCreate(t *testing.T) {
 		nc, err := client.NotificationConfigurations.Create(ctx, badIdentifier, NotificationConfigurationCreateOptions{})
 		assert.Nil(t, nc)
 		assert.EqualError(t, err, ErrInvalidWorkspaceID.Error())
+	})
+
+	t.Run("with an invalid notification trigger", func(t *testing.T) {
+		options := NotificationConfigurationCreateOptions{
+			DestinationType: NotificationDestination(NotificationDestinationTypeGeneric),
+			Enabled:         Bool(false),
+			Name:            String(randomString(t)),
+			Token:           String(randomString(t)),
+			URL:             String("http://example.com"),
+			Triggers:        []NotificationTriggerType{"the beacons of gondor are lit"},
+		}
+
+		nc, err := client.NotificationConfigurations.Create(ctx, wTest.ID, options)
+		assert.Nil(t, nc)
+		assert.EqualError(t, err, ErrInvalidNotificationTrigger.Error())
 	})
 
 	t.Run("with email users when destination type is email", func(t *testing.T) {
@@ -223,6 +238,16 @@ func TestNotificationConfigurationUpdate(t *testing.T) {
 		require.NoError(t, err)
 		assert.Equal(t, nc.Enabled, true)
 		assert.Equal(t, nc.Name, "newName")
+	})
+
+	t.Run("with invalid notification trigger", func(t *testing.T) {
+		options := NotificationConfigurationUpdateOptions{
+			Triggers: []NotificationTriggerType{"fly you fools!"},
+		}
+
+		nc, err := client.NotificationConfigurations.Update(ctx, ncTest.ID, options)
+		assert.Nil(t, nc)
+		assert.EqualError(t, err, ErrInvalidNotificationTrigger.Error())
 	})
 
 	t.Run("with email users when destination type is email", func(t *testing.T) {

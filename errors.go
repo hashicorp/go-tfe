@@ -143,6 +143,8 @@ var (
 	ErrInvalidPolicies = errors.New("must provide at least one policy")
 
 	ErrInvalidVariableID = errors.New("invalid value for variable ID")
+
+	ErrInvalidNotificationTrigger = errors.New("invalid value for notification trigger")
 )
 
 // Missing values for required field/option

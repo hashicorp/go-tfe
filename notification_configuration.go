@@ -40,13 +40,17 @@ type notificationConfigurations struct {
 	client *Client
 }
 
+// NotificationTriggerType represents the different TFE notifications that can be sent
+// as a run's progress transitions between different states
+type NotificationTriggerType string
+
 const (
-	NotificationTriggerCreated        string = "run:created"
-	NotificationTriggerPlanning       string = "run:planning"
-	NotificationTriggerNeedsAttention string = "run:needs_attention"
-	NotificationTriggerApplying       string = "run:applying"
-	NotificationTriggerCompleted      string = "run:completed"
-	NotificationTriggerErrored        string = "run:errored"
+	NotificationTriggerCreated        NotificationTriggerType = "run:created"
+	NotificationTriggerPlanning       NotificationTriggerType = "run:planning"
+	NotificationTriggerNeedsAttention NotificationTriggerType = "run:needs_attention"
+	NotificationTriggerApplying       NotificationTriggerType = "run:applying"
+	NotificationTriggerCompleted      NotificationTriggerType = "run:completed"
+	NotificationTriggerErrored        NotificationTriggerType = "run:errored"
 )
 
 // NotificationDestinationType represents the destination type of the
@@ -126,7 +130,7 @@ type NotificationConfigurationCreateOptions struct {
 	Token *string `jsonapi:"attr,token,omitempty"`
 
 	// Optional: The list of run events that will trigger notifications.
-	Triggers []string `jsonapi:"attr,triggers,omitempty"`
+	Triggers []NotificationTriggerType `jsonapi:"attr,triggers,omitempty"`
 
 	// Optional: The url of the notification configuration
 	URL *string `jsonapi:"attr,url,omitempty"`
@@ -158,7 +162,7 @@ type NotificationConfigurationUpdateOptions struct {
 	Token *string `jsonapi:"attr,token,omitempty"`
 
 	// Optional: The list of run events that will trigger notifications.
-	Triggers []string `jsonapi:"attr,triggers,omitempty"`
+	Triggers []NotificationTriggerType `jsonapi:"attr,triggers,omitempty"`
 
 	// Optional: The url of the notification configuration
 	URL *string `jsonapi:"attr,url,omitempty"`
@@ -243,6 +247,10 @@ func (s *notificationConfigurations) Update(ctx context.Context, notificationCon
 		return nil, ErrInvalidNotificationConfigID
 	}
 
+	if err := options.valid(); err != nil {
+		return nil, err
+	}
+
 	u := fmt.Sprintf("notification-configurations/%s", url.QueryEscape(notificationConfigurationID))
 	req, err := s.client.newRequest("PATCH", u, &options)
 	if err != nil {
@@ -307,10 +315,44 @@ func (o NotificationConfigurationCreateOptions) valid() error {
 		return ErrRequiredName
 	}
 
+	if !validNotificationTriggerType(o.Triggers) {
+		return ErrInvalidNotificationTrigger
+	}
+
 	if *o.DestinationType == NotificationDestinationTypeGeneric || *o.DestinationType == NotificationDestinationTypeSlack {
 		if o.URL == nil {
 			return ErrRequiredURL
 		}
 	}
 	return nil
+}
+
+func (o NotificationConfigurationUpdateOptions) valid() error {
+	if o.Name != nil && !validString(o.Name) {
+		return ErrRequiredName
+	}
+
+	if !validNotificationTriggerType(o.Triggers) {
+		return ErrInvalidNotificationTrigger
+	}
+
+	return nil
+}
+
+func validNotificationTriggerType(triggers []NotificationTriggerType) bool {
+	for _, t := range triggers {
+		switch t {
+		case NotificationTriggerApplying,
+			NotificationTriggerNeedsAttention,
+			NotificationTriggerCompleted,
+			NotificationTriggerCreated,
+			NotificationTriggerErrored,
+			NotificationTriggerPlanning:
+			continue
+		default:
+			return false
+		}
+	}
+
+	return true
 }
