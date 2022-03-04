@@ -2,6 +2,7 @@ package tfe
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"io"
 	"math"
@@ -23,19 +24,19 @@ type LogReader struct {
 }
 
 func (r *LogReader) Read(l []byte) (int, error) {
-	if written, err := r.read(l); err != io.ErrNoProgress {
+	if written, err := r.read(l); !errors.Is(err, io.ErrNoProgress) {
 		return written, err
 	}
 
 	// Loop until we can any data, the context is canceled or the
 	// run is finsished. If we would return right away without any
-	// data, we could and up causing a io.ErrNoProgress error.
+	// data, we could end up causing a io.ErrNoProgress error.
 	for r.reads = 1; ; r.reads++ {
 		select {
 		case <-r.ctx.Done():
 			return 0, r.ctx.Err()
 		case <-time.After(backoff(500, 2000, r.reads)):
-			if written, err := r.read(l); err != io.ErrNoProgress {
+			if written, err := r.read(l); !errors.Is(err, io.ErrNoProgress) {
 				return written, err
 			}
 		}
@@ -72,7 +73,7 @@ func (r *LogReader) read(l []byte) (int, error) {
 
 	// Read the retrieved chunk.
 	written, err := resp.Body.Read(l)
-	if err != nil && err != io.EOF {
+	if err != nil && !errors.Is(err, io.EOF) {
 		// Ignore io.EOF errors returned when reading from the response
 		// body as this indicates the end of the chunk and not the end
 		// of the logfile.
