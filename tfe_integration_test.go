@@ -16,6 +16,7 @@ import (
 
 	"github.com/hashicorp/go-retryablehttp"
 	"github.com/hashicorp/jsonapi"
+	"github.com/stretchr/testify/assert"
 	"golang.org/x/time/rate"
 )
 
@@ -108,6 +109,27 @@ func TestClient_defaultConfig(t *testing.T) {
 
 	t.Run("with environment variables", func(t *testing.T) {
 		defer setupEnvVars("abcd1234", "https://mytfe.local")()
+	})
+
+	t.Run("performs address resolution", func(t *testing.T) {
+		t.Run("with TFE_ADDRESS set", func(t *testing.T) {
+			os.Setenv("TFE_ADDRESS", "https://terraform.io")
+			client := DefaultConfig()
+			assert.Equal(t, client.Address, "https://terraform.io")
+			os.Unsetenv("TFE_ADDRESS")
+		})
+
+		t.Run("with TFE_HOSTNAME set", func(t *testing.T) {
+			os.Setenv("TFE_HOSTNAME", "iloveterraform.io")
+			client := DefaultConfig()
+			assert.Equal(t, client.Address, "https://iloveterraform.io")
+			os.Unsetenv("TFE_HOSTNAME")
+		})
+
+		t.Run("with no env var set", func(t *testing.T) {
+			client := DefaultConfig()
+			assert.Equal(t, client.Address, DefaultAddress)
+		})
 	})
 }
 
