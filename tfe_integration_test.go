@@ -93,42 +93,31 @@ func TestClient_newClient(t *testing.T) {
 func TestClient_defaultConfig(t *testing.T) {
 	t.Run("with no environment variables", func(t *testing.T) {
 		defer setupEnvVars("", "")()
+		os.Unsetenv("TFE_HOSTNAME")
 
 		config := DefaultConfig()
 
-		if config.Address != DefaultAddress {
-			t.Fatalf("expected %q, got %q", DefaultAddress, config.Address)
-		}
-		if config.Token != "" {
-			t.Fatalf("expected empty token, got %q", config.Token)
-		}
-		if config.HTTPClient == nil {
-			t.Fatalf("expected default http client, got %v", config.HTTPClient)
-		}
+		assert.Equal(t, config.Address, DefaultAddress)
+		assert.Equal(t, config.Token, "")
+		assert.NotNil(t, config.HTTPClient)
 	})
 
 	t.Run("with environment variables", func(t *testing.T) {
-		defer setupEnvVars("abcd1234", "https://mytfe.local")()
-	})
-
-	t.Run("performs address resolution", func(t *testing.T) {
 		t.Run("with TFE_ADDRESS set", func(t *testing.T) {
-			os.Setenv("TFE_ADDRESS", "https://terraform.io")
+			defer setupEnvVars("abcd1234", "https://mytfe.local")()
+
 			client := DefaultConfig()
-			assert.Equal(t, client.Address, "https://terraform.io")
-			os.Unsetenv("TFE_ADDRESS")
+			assert.Equal(t, client.Address, "https://mytfe.local")
 		})
 
 		t.Run("with TFE_HOSTNAME set", func(t *testing.T) {
+			defer setupEnvVars("abcd1234", "")()
 			os.Setenv("TFE_HOSTNAME", "iloveterraform.io")
+
 			client := DefaultConfig()
 			assert.Equal(t, client.Address, "https://iloveterraform.io")
-			os.Unsetenv("TFE_HOSTNAME")
-		})
 
-		t.Run("with no env var set", func(t *testing.T) {
-			client := DefaultConfig()
-			assert.Equal(t, client.Address, DefaultAddress)
+			os.Unsetenv("TFE_HOSTNAME")
 		})
 	})
 }
