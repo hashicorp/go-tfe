@@ -189,6 +189,9 @@ func (s *stateVersions) ReadWithOptions(ctx context.Context, svID string, option
 	if !validStringID(&svID) {
 		return nil, ErrInvalidStateVerID
 	}
+	if err := options.valid(); err != nil {
+		return nil, err
+	}
 
 	u := fmt.Sprintf("state-versions/%s", url.QueryEscape(svID))
 	req, err := s.client.newRequest("GET", u, options)
@@ -214,6 +217,9 @@ func (s *stateVersions) Read(ctx context.Context, svID string) (*StateVersion, e
 func (s *stateVersions) ReadCurrentWithOptions(ctx context.Context, workspaceID string, options *StateVersionCurrentOptions) (*StateVersion, error) {
 	if !validStringID(&workspaceID) {
 		return nil, ErrInvalidWorkspaceID
+	}
+	if err := options.valid(); err != nil {
+		return nil, err
 	}
 
 	u := fmt.Sprintf("workspaces/%s/current-state-version", url.QueryEscape(workspaceID))
@@ -298,5 +304,39 @@ func (o StateVersionCreateOptions) valid() error {
 	if !validString(o.State) {
 		return ErrRequiredState
 	}
+	return nil
+}
+
+func (o *StateVersionReadOptions) valid() error {
+	if o == nil {
+		return nil // nothing to validate
+	}
+
+	if err := validateStateVerIncludeParams(o.Include); err != nil {
+		return err
+	}
+	return nil
+}
+func (o *StateVersionCurrentOptions) valid() error {
+	if o == nil {
+		return nil // nothing to validate
+	}
+
+	if err := validateStateVerIncludeParams(o.Include); err != nil {
+		return err
+	}
+	return nil
+}
+
+func validateStateVerIncludeParams(params []StateVersionIncludeOpt) error {
+	for _, p := range params {
+		switch p {
+		case SVcreatedby, SVrun, SVrunCreatedBy, SVrunConfigurationVersion, SVoutputs:
+			// do nothing
+		default:
+			return ErrInvalidIncludeValue
+		}
+	}
+
 	return nil
 }

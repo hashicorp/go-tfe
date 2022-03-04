@@ -76,6 +76,10 @@ type AdminWorkspaceList struct {
 
 // List all the workspaces within a workspace.
 func (s *adminWorkspaces) List(ctx context.Context, options *AdminWorkspaceListOptions) (*AdminWorkspaceList, error) {
+	if err := options.valid(); err != nil {
+		return nil, err
+	}
+
 	u := "admin/workspaces"
 	req, err := s.client.newRequest("GET", u, options)
 	if err != nil {
@@ -125,4 +129,29 @@ func (s *adminWorkspaces) Delete(ctx context.Context, workspaceID string) error 
 	}
 
 	return s.client.do(ctx, req, nil)
+}
+
+func (o *AdminWorkspaceListOptions) valid() error {
+	if o == nil {
+		return nil // nothing to validate
+	}
+
+	if err := validateAdminWSIncludeParams(o.Include); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func validateAdminWSIncludeParams(params []AdminWorkspaceIncludeOpt) error {
+	for _, p := range params {
+		switch p {
+		case AdminWorkspaceOrg, AdminWorkspaceCurrentRun, AdminWorkspaceOrgOwners:
+			// do nothing
+		default:
+			return ErrInvalidIncludeValue
+		}
+	}
+
+	return nil
 }

@@ -116,37 +116,65 @@ func (s *adminRuns) ForceCancel(ctx context.Context, runID string, options Admin
 }
 
 func (o *AdminRunsListOptions) valid() error {
-	if o == nil { // no need to validate fields
+	if o == nil { // nothing to validate
 		return nil
 	}
-	if validString(&o.RunStatus) {
-		validRunStatus := map[string]int{
-			string(RunApplied):            1,
-			string(RunApplyQueued):        1,
-			string(RunApplying):           1,
-			string(RunCanceled):           1,
-			string(RunConfirmed):          1,
-			string(RunCostEstimated):      1,
-			string(RunCostEstimating):     1,
-			string(RunDiscarded):          1,
-			string(RunErrored):            1,
-			string(RunPending):            1,
-			string(RunPlanQueued):         1,
-			string(RunPlanned):            1,
-			string(RunPlannedAndFinished): 1,
-			string(RunPlanning):           1,
-			string(RunPolicyChecked):      1,
-			string(RunPolicyChecking):     1,
-			string(RunPolicyOverride):     1,
-			string(RunPolicySoftFailed):   1,
-		}
-		runStatus := strings.Split(o.RunStatus, ",")
 
+	if err := validateAdminRunFilterParams(o.RunStatus); err != nil {
+		return err
+	}
+
+	if err := validateAdminRunIncludeParams(o.Include); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func validateAdminRunFilterParams(runStatus string) error {
+	// For the platform, an invalid filter value is a semantically understood query that returns an empty set, no error, no warning. But for go-tfe, an invalid value is good enough reason to error prior to a network call to the platform:
+	if validString(&runStatus) {
+		sanitizedRunstatus := strings.TrimSpace(runStatus)
+		runStatuses := strings.Split(sanitizedRunstatus, ",")
 		// iterate over our statuses, and ensure it is valid.
-		for _, status := range runStatus {
-			if _, present := validRunStatus[status]; !present {
-				return fmt.Errorf("invalid value %s for run status", status)
+		for _, status := range runStatuses {
+			switch status {
+			case string(RunApplied),
+				string(RunApplyQueued),
+				string(RunApplying),
+				string(RunCanceled),
+				string(RunConfirmed),
+				string(RunCostEstimate),
+				string(RunCostEstimating),
+				string(RunDiscarded),
+				string(RunErrored),
+				string(RunPending),
+				string(RunPlanQueued),
+				string(RunPlanned),
+				string(RunPlannedAndFinished),
+				string(RunPlanning),
+				string(RunPolicyChecked),
+				string(RunPolicyChecking),
+				string(RunPolicyOverride),
+				string(RunPolicySoftFailed),
+				"":
+				// do nothing
+			default:
+				return fmt.Errorf(`invalid value "%s" for run status`, status)
 			}
+		}
+	}
+
+	return nil
+}
+
+func validateAdminRunIncludeParams(params []AdminRunIncludeOpt) error {
+	for _, p := range params {
+		switch p {
+		case AdminRunWorkspace, AdminRunWorkspaceOrg, AdminRunWorkspaceOrgOwners:
+			// do nothing
+		default:
+			return ErrInvalidIncludeValue
 		}
 	}
 

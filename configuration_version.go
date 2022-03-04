@@ -98,20 +98,20 @@ type CVStatusTimestamps struct {
 	StartedAt  time.Time `jsonapi:"attr,started-at,rfc3339"`
 }
 
-// ConfigurationVersionIncludeOpt represents the available options for include query params.
+// ConfigVerIncludeOpt represents the available options for include query params.
 // https://www.terraform.io/docs/cloud/api/configuration-versions.html#available-related-resources
-type ConfigurationVersionIncludeOpt string
+type ConfigVerIncludeOpt string
 
 const (
-	ConfigurationVerIngressAttributes ConfigurationVersionIncludeOpt = "ingress_attributes"
-	ConfigurationRun                  ConfigurationVersionIncludeOpt = "run"
+	ConfigVerIngressAttributes ConfigVerIncludeOpt = "ingress_attributes"
+	ConfigVerRun               ConfigVerIncludeOpt = "run"
 )
 
 // ConfigurationVersionReadOptions represents the options for reading a configuration version.
 type ConfigurationVersionReadOptions struct {
 	// Optional: A list of relations to include. See available resources:
 	// https://www.terraform.io/docs/cloud/api/configuration-versions.html#available-related-resources
-	Include []ConfigurationVersionIncludeOpt `url:"include,omitempty"`
+	Include []ConfigVerIncludeOpt `url:"include,omitempty"`
 }
 
 // ConfigurationVersionListOptions represents the options for listing
@@ -120,7 +120,7 @@ type ConfigurationVersionListOptions struct {
 	ListOptions
 	// Optional: A list of relations to include. See available resources:
 	// https://www.terraform.io/docs/cloud/api/configuration-versions.html#available-related-resources
-	Include []ConfigurationVersionIncludeOpt `url:"include,omitempty"`
+	Include []ConfigVerIncludeOpt `url:"include,omitempty"`
 }
 
 // ConfigurationVersionCreateOptions represents the options for creating a
@@ -170,6 +170,9 @@ func (s *configurationVersions) List(ctx context.Context, workspaceID string, op
 	if !validStringID(&workspaceID) {
 		return nil, ErrInvalidWorkspaceID
 	}
+	if err := options.valid(); err != nil {
+		return nil, err
+	}
 
 	u := fmt.Sprintf("workspaces/%s/configuration-versions", url.QueryEscape(workspaceID))
 	req, err := s.client.newRequest("GET", u, options)
@@ -218,6 +221,9 @@ func (s *configurationVersions) ReadWithOptions(ctx context.Context, cvID string
 	if !validStringID(&cvID) {
 		return nil, ErrInvalidConfigVersionID
 	}
+	if err := options.valid(); err != nil {
+		return nil, err
+	}
 
 	u := fmt.Sprintf("configuration-versions/%s", url.QueryEscape(cvID))
 	req, err := s.client.newRequest("GET", u, options)
@@ -259,4 +265,41 @@ func (s *configurationVersions) Upload(ctx context.Context, u, path string) erro
 	}
 
 	return s.client.do(ctx, req, nil)
+}
+
+func (o *ConfigurationVersionReadOptions) valid() error {
+	if o == nil {
+		return nil // nothing to validate
+	}
+
+	if err := validateConfigVerIncludeParams(o.Include); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (o *ConfigurationVersionListOptions) valid() error {
+	if o == nil {
+		return nil // nothing to validate
+	}
+
+	if err := validateConfigVerIncludeParams(o.Include); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func validateConfigVerIncludeParams(params []ConfigVerIncludeOpt) error {
+	for _, p := range params {
+		switch p {
+		case ConfigVerIngressAttributes, ConfigVerRun:
+			// do nothing
+		default:
+			return ErrInvalidIncludeValue
+		}
+	}
+
+	return nil
 }

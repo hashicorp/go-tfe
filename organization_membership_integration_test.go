@@ -64,7 +64,7 @@ func TestOrganizationMembershipsList(t *testing.T) {
 		defer memTest2Cleanup()
 
 		ml, err := client.OrganizationMemberships.List(ctx, orgTest.Name, &OrganizationMembershipListOptions{
-			Include: []OrganizationMembershipIncludeOpt{OrganizationMembershipUser},
+			Include: []OrgMembershipIncludeOpt{OrgMembershipUser},
 		})
 		require.NoError(t, err)
 
@@ -96,7 +96,7 @@ func TestOrganizationMembershipsCreate(t *testing.T) {
 
 		// Get a refreshed view from the API.
 		refreshed, err := client.OrganizationMemberships.ReadWithOptions(ctx, mem.ID, OrganizationMembershipReadOptions{
-			Include: []OrganizationMembershipIncludeOpt{OrganizationMembershipUser},
+			Include: []OrgMembershipIncludeOpt{OrgMembershipUser},
 		})
 		require.NoError(t, err)
 		assert.Equal(t, refreshed, mem)
@@ -169,7 +169,7 @@ func TestOrganizationMembershipsReadWithOptions(t *testing.T) {
 	defer memTestCleanup()
 
 	options := OrganizationMembershipReadOptions{
-		Include: []OrganizationMembershipIncludeOpt{OrganizationMembershipUser},
+		Include: []OrgMembershipIncludeOpt{OrgMembershipUser},
 	}
 
 	t.Run("when the membership exists", func(t *testing.T) {
@@ -177,6 +177,18 @@ func TestOrganizationMembershipsReadWithOptions(t *testing.T) {
 		require.NoError(t, err)
 
 		assert.Equal(t, memTest, mem)
+	})
+
+	t.Run("without options", func(t *testing.T) {
+		_, err := client.OrganizationMemberships.ReadWithOptions(ctx, memTest.ID, OrganizationMembershipReadOptions{})
+		require.NoError(t, err)
+	})
+
+	t.Run("without invalid include option", func(t *testing.T) {
+		_, err := client.OrganizationMemberships.ReadWithOptions(ctx, memTest.ID, OrganizationMembershipReadOptions{
+			Include: []OrgMembershipIncludeOpt{"users"},
+		})
+		assert.Equal(t, err, ErrInvalidIncludeValue)
 	})
 
 	t.Run("when the membership does not exist", func(t *testing.T) {

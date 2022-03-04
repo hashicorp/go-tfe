@@ -23,6 +23,9 @@ type AgentPools interface {
 	// Read a agent pool by its ID.
 	Read(ctx context.Context, agentPoolID string) (*AgentPool, error)
 
+	// Read a agent pool by its ID with the given options.
+	ReadWithOptions(ctx context.Context, agentPoolID string, options *AgentPoolReadOptions) (*AgentPool, error)
+
 	// Update an agent pool by its ID.
 	Update(ctx context.Context, agentPool string, options AgentPoolUpdateOptions) (*AgentPool, error)
 
@@ -48,6 +51,7 @@ type AgentPool struct {
 
 	// Relations
 	Organization *Organization `jsonapi:"relation,organization"`
+	Workspaces   []*Workspace  `jsonapi:"relation,workspaces"`
 }
 
 // A list of relations to include
@@ -55,10 +59,13 @@ type AgentPoolIncludeOpt string
 
 const AgentPoolWorkspaces AgentPoolIncludeOpt = "workspaces"
 
+type AgentPoolReadOptions struct {
+	Include []AgentPoolIncludeOpt `url:"include,omitempty"`
+}
+
 // AgentPoolListOptions represents the options for listing agent pools.
 type AgentPoolListOptions struct {
 	ListOptions
-
 	Include []AgentPoolIncludeOpt `url:"include,omitempty"`
 }
 
@@ -78,6 +85,9 @@ type AgentPoolCreateOptions struct {
 func (s *agentPools) List(ctx context.Context, organization string, options *AgentPoolListOptions) (*AgentPoolList, error) {
 	if !validStringID(&organization) {
 		return nil, ErrInvalidOrg
+	}
+	if err := options.valid(); err != nil {
+		return nil, err
 	}
 
 	u := fmt.Sprintf("organizations/%s/agent-pools", url.QueryEscape(organization))
@@ -120,10 +130,18 @@ func (s *agentPools) Create(ctx context.Context, organization string, options Ag
 	return pool, nil
 }
 
-// Read a single agent pool by its ID.
+// Read a single agent pool by its ID
 func (s *agentPools) Read(ctx context.Context, agentpoolID string) (*AgentPool, error) {
+	return s.ReadWithOptions(ctx, agentpoolID, nil)
+}
+
+// Read a single agent pool by its ID with options.
+func (s *agentPools) ReadWithOptions(ctx context.Context, agentpoolID string, options *AgentPoolReadOptions) (*AgentPool, error) {
 	if !validStringID(&agentpoolID) {
 		return nil, ErrInvalidAgentPoolID
+	}
+	if err := options.valid(); err != nil {
+		return nil, err
 	}
 
 	u := fmt.Sprintf("agent-pools/%s", url.QueryEscape(agentpoolID))
@@ -207,5 +225,40 @@ func (o AgentPoolUpdateOptions) valid() error {
 	if o.Name != nil && !validStringID(o.Name) {
 		return ErrInvalidName
 	}
+	return nil
+}
+
+func (o *AgentPoolReadOptions) valid() error {
+	if o == nil {
+		return nil // nothing to validate
+	}
+	if err := validateAgentPoolIncludeParams(o.Include); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (o *AgentPoolListOptions) valid() error {
+	if o == nil {
+		return nil // nothing to validate
+	}
+	if err := validateAgentPoolIncludeParams(o.Include); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func validateAgentPoolIncludeParams(params []AgentPoolIncludeOpt) error {
+	for _, p := range params {
+		switch p {
+		case AgentPoolWorkspaces:
+			// do nothing
+		default:
+			return ErrInvalidIncludeValue
+		}
+	}
+
 	return nil
 }

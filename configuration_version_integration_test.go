@@ -173,7 +173,7 @@ func TestConfigurationVersionsReadWithOptions(t *testing.T) {
 
 	t.Run("when the configuration version exists", func(t *testing.T) {
 		options := &ConfigurationVersionReadOptions{
-			Include: []ConfigurationVersionIncludeOpt{ConfigurationVerIngressAttributes},
+			Include: []ConfigVerIncludeOpt{ConfigVerIngressAttributes},
 		}
 
 		cv, err := client.ConfigurationVersions.ReadWithOptions(ctx, cv.ID, options)

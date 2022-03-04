@@ -76,9 +76,7 @@ type AdminOrganizationList struct {
 // https://www.terraform.io/docs/cloud/api/admin/organizations.html#available-related-resources
 type AdminOrgIncludeOpt string
 
-const (
-	AdminOrgOwners AdminOrgIncludeOpt = "owners"
-)
+const AdminOrgOwners AdminOrgIncludeOpt = "owners"
 
 // AdminOrganizationListOptions represents the options for listing organizations via Admin API.
 type AdminOrganizationListOptions struct {
@@ -103,6 +101,9 @@ type AdminOrganizationID struct {
 
 // List all the organizations visible to the current user.
 func (s *adminOrganizations) List(ctx context.Context, options *AdminOrganizationListOptions) (*AdminOrganizationList, error) {
+	if err := options.valid(); err != nil {
+		return nil, err
+	}
 	u := "admin/organizations"
 	req, err := s.client.newRequest("GET", u, options)
 	if err != nil {
@@ -224,4 +225,29 @@ func (s *adminOrganizations) Delete(ctx context.Context, organization string) er
 	}
 
 	return s.client.do(ctx, req, nil)
+}
+
+func (o *AdminOrganizationListOptions) valid() error {
+	if o == nil {
+		return nil // nothing to validate
+	}
+
+	if err := validateAdminOrgIncludeParams(o.Include); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func validateAdminOrgIncludeParams(params []AdminOrgIncludeOpt) error {
+	for _, p := range params {
+		switch p {
+		case AdminOrgOwners:
+			// do nothing
+		default:
+			return ErrInvalidIncludeValue
+		}
+	}
+
+	return nil
 }

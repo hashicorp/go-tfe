@@ -517,6 +517,9 @@ func (s *workspaces) List(ctx context.Context, organization string, options *Wor
 	if !validStringID(&organization) {
 		return nil, ErrInvalidOrg
 	}
+	if err := options.valid(); err != nil {
+		return nil, err
+	}
 
 	u := fmt.Sprintf("organizations/%s/workspaces", url.QueryEscape(organization))
 	req, err := s.client.newRequest("GET", u, options)
@@ -569,6 +572,9 @@ func (s *workspaces) ReadWithOptions(ctx context.Context, organization, workspac
 	}
 	if !validStringID(&workspace) {
 		return nil, ErrInvalidWorkspaceValue
+	}
+	if err := options.valid(); err != nil {
+		return nil, err
 	}
 
 	u := fmt.Sprintf(
@@ -1124,6 +1130,43 @@ func (o WorkspaceRemoveTagsOptions) valid() error {
 	for _, s := range o.Tags {
 		if s.Name == "" && s.ID == "" {
 			return ErrMissingTagIdentifier
+		}
+	}
+
+	return nil
+}
+
+func (o *WorkspaceListOptions) valid() error {
+	if o == nil {
+		return nil // nothing to validate
+	}
+
+	if err := validateWorkspaceIncludeParams(o.Include); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (o *WorkspaceReadOptions) valid() error {
+	if o == nil {
+		return nil // nothing to validate
+	}
+
+	if err := validateWorkspaceIncludeParams(o.Include); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func validateWorkspaceIncludeParams(params []WSIncludeOpt) error {
+	for _, p := range params {
+		switch p {
+		case WSOrganization, WSCurrentConfigVer, WSCurrentConfigVerIngress, WSCurrentRun, WSCurrentRunPlan, WSCurrentRunConfigVer, WSCurrentrunConfigVerIngress, WSLockedBy, WSReadme, WSOutputs, WSCurrentStateVer:
+			// do nothing
+		default:
+			return ErrInvalidIncludeValue
 		}
 	}
 

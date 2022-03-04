@@ -264,6 +264,9 @@ func (s *policySets) ReadWithOptions(ctx context.Context, policySetID string, op
 	if !validStringID(&policySetID) {
 		return nil, ErrInvalidPolicySetID
 	}
+	if err := options.valid(); err != nil {
+		return nil, err
+	}
 
 	u := fmt.Sprintf("policy-sets/%s", url.QueryEscape(policySetID))
 	req, err := s.client.newRequest("GET", u, options)
@@ -445,5 +448,30 @@ func (o PolicySetAddWorkspacesOptions) valid() error {
 	if len(o.Workspaces) == 0 {
 		return ErrWorkspaceMinLimit
 	}
+	return nil
+}
+
+func (o *PolicySetReadOptions) valid() error {
+	if o == nil {
+		return nil // nothing to validate
+	}
+
+	if err := validatePolicySetIncludeParams(o.Include); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func validatePolicySetIncludeParams(params []PolicySetIncludeOpt) error {
+	for _, p := range params {
+		switch p {
+		case PolicySetPolicies, PolicySetWorkspaces, PolicySetCurrentVersion, PolicySetNewestVersion:
+			// do nothing
+		default:
+			return ErrInvalidIncludeValue
+		}
+	}
+
 	return nil
 }

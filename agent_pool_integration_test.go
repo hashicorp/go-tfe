@@ -33,6 +33,21 @@ func TestAgentPoolsList(t *testing.T) {
 		assert.Equal(t, 1, pools.TotalCount)
 	})
 
+	t.Run("with Include option", func(t *testing.T) {
+		_, wTestCleanup := createWorkspaceWithVCS(t, client, orgTest, WorkspaceCreateOptions{
+			Name:          String("bar"),
+			ExecutionMode: String("agent"),
+			AgentPoolID:   String(agentPool.ID),
+		})
+		defer wTestCleanup()
+
+		k, err := client.AgentPools.List(ctx, orgTest.Name, &AgentPoolListOptions{
+			Include: []AgentPoolIncludeOpt{AgentPoolWorkspaces},
+		})
+		require.NoError(t, err)
+		assert.NotEmpty(t, k.Items[0].Workspaces[0])
+	})
+
 	t.Run("with list options", func(t *testing.T) {
 		// Request a page number which is out of range. The result should
 		// be successful, but return no results if the paging options are
@@ -47,14 +62,6 @@ func TestAgentPoolsList(t *testing.T) {
 		assert.Empty(t, pools.Items)
 		assert.Equal(t, 999, pools.CurrentPage)
 		assert.Equal(t, 1, pools.TotalCount)
-	})
-
-	t.Run("with Include options", func(t *testing.T) {
-		pools, err := client.AgentPools.List(ctx, orgTest.Name, &AgentPoolListOptions{
-			Include: []AgentPoolIncludeOpt{AgentPoolWorkspaces},
-		})
-		require.NoError(t, err)
-		assert.NotEmpty(t, pools.Items[0].Organization.Name)
 	})
 
 	t.Run("without a valid organization", func(t *testing.T) {
@@ -138,6 +145,21 @@ func TestAgentPoolsRead(t *testing.T) {
 		k, err := client.AgentPools.Read(ctx, badIdentifier)
 		assert.Nil(t, k)
 		assert.EqualError(t, err, ErrInvalidAgentPoolID.Error())
+	})
+
+	t.Run("with Include option", func(t *testing.T) {
+		_, wTestCleanup := createWorkspaceWithVCS(t, client, orgTest, WorkspaceCreateOptions{
+			Name:          String("foo"),
+			ExecutionMode: String("agent"),
+			AgentPoolID:   String(pool.ID),
+		})
+		defer wTestCleanup()
+
+		k, err := client.AgentPools.ReadWithOptions(ctx, pool.ID, &AgentPoolReadOptions{
+			Include: []AgentPoolIncludeOpt{AgentPoolWorkspaces},
+		})
+		require.NoError(t, err)
+		assert.NotEmpty(t, k.Workspaces[0])
 	})
 }
 
