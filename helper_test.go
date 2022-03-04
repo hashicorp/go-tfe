@@ -164,7 +164,7 @@ func createNotificationConfiguration(t *testing.T, client *Client, w *Workspace,
 			Name:            String(randomString(t)),
 			Token:           String(randomString(t)),
 			URL:             String("http://example.com"),
-			Triggers:        []string{NotificationTriggerCreated},
+			Triggers:        []NotificationTriggerType{NotificationTriggerCreated},
 		}
 	}
 
