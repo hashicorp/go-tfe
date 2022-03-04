@@ -872,8 +872,8 @@ func decodeErrorPayload(r *http.Response) ([]string, error) {
 	return errs, nil
 }
 
-func errorPayloadContains(errors []string, match string) bool {
-	for _, e := range errors {
+func errorPayloadContains(payloadErrors []string, match string) bool {
+	for _, e := range payloadErrors {
 		if strings.Contains(e, match) {
 			return true
 		}
