@@ -13,6 +13,7 @@
 * Added missing include fields for `AdminRuns`, `AgentPools`, `ConfigurationVersions`, `OAuthClients`, `Organizations`, `PolicyChecks`, `PolicySets`, `Policies` and `RunTriggers` [#334](https://github.com/hashicorp/go-tfe/pull/334)
 * Cleanup documentation and improve consistency [#331](https://github.com/hashicorp/go-tfe/pull/331)
 * Add more linters to our CI pipeline [#326](https://github.com/hashicorp/go-tfe/pull/326)
+* Resolve `TFE_HOSTNAME` as fallback for `TFE_ADDRESS` [#340](https://github.com/hashicorp/go-tfe/pull/326)
 
 ## Bug Fixes
 * Fixed invalid memory address error when `AdminSMTPSettingsUpdateOptions.Auth` field is empty and accessed [#335](https://github.com/hashicorp/go-tfe/pull/335) 
