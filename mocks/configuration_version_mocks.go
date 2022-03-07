@@ -35,6 +35,20 @@ func (m *MockConfigurationVersions) EXPECT() *MockConfigurationVersionsMockRecor
 	return m.recorder
 }
 
+// Archive mocks base method.
+func (m *MockConfigurationVersions) Archive(ctx context.Context, cvID string) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Archive", ctx, cvID)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// Archive indicates an expected call of Archive.
+func (mr *MockConfigurationVersionsMockRecorder) Archive(ctx, cvID interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Archive", reflect.TypeOf((*MockConfigurationVersions)(nil).Archive), ctx, cvID)
+}
+
 // Create mocks base method.
 func (m *MockConfigurationVersions) Create(ctx context.Context, workspaceID string, options tfe.ConfigurationVersionCreateOptions) (*tfe.ConfigurationVersion, error) {
 	m.ctrl.T.Helper()
