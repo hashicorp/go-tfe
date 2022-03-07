@@ -6,7 +6,7 @@
 * All list option structs are now pointers [#309](https://github.com/hashicorp/go-tfe/pull/309)
 * All errors have been refactored into constants in `errors.go` [#310](https://github.com/hashicorp/go-tfe/pull/310)
 * The `ID` field in Create/Update option structs has been renamed to `Type` in accordance with the JSON:API spec [#190](https://github.com/hashicorp/go-tfe/pull/190), [#323](https://github.com/hashicorp/go-tfe/pull/323), [#332](https://github.com/hashicorp/go-tfe/pull/332)
-* ID tuples (of 3 IDs or more) used to identify a resource have been refactored into a struct [#337](https://github.com/hashicorp/go-tfe/pull/337)
+* Nested URL params (consisting of an organization, module and provider name) used to identify a `RegistryModule` have been refactored into a struct `RegistryModuleID`. [#337](https://github.com/hashicorp/go-tfe/pull/337)
 
 
 ## Enhancements
