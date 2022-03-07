@@ -3,7 +3,9 @@ package tfe
 import (
 	"bytes"
 	"context"
+	"errors"
 	"fmt"
+	"io/fs"
 	"net/url"
 	"os"
 	"time"
@@ -245,9 +247,14 @@ func (s *configurationVersions) ReadWithOptions(ctx context.Context, cvID string
 // files on disk.
 func (s *configurationVersions) Upload(ctx context.Context, u, path string) error {
 	file, err := os.Stat(path)
+
 	if err != nil {
-		return err
+		if errors.Is(err, fs.ErrNotExist) {
+			return fmt.Errorf(`failed to find terraform configuration files under the path "%v": %w`, path, err)
+		}
+		return fmt.Errorf(`unable to upload terraform configuration files from the path "%v": %w`, path, err)
 	}
+
 	if !file.Mode().IsDir() {
 		return ErrMissingDirectory
 	}

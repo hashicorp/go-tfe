@@ -1,6 +1,8 @@
 package tfe
 
 import (
+	"errors"
+	"io/fs"
 	"log"
 	"sort"
 
@@ -870,8 +872,8 @@ func decodeErrorPayload(r *http.Response) ([]string, error) {
 	return errs, nil
 }
 
-func errorPayloadContains(errors []string, match string) bool {
-	for _, e := range errors {
+func errorPayloadContains(payloadErrors []string, match string) bool {
+	for _, e := range payloadErrors {
 		if strings.Contains(e, match) {
 			return true
 		}
@@ -884,8 +886,12 @@ func packContents(path string) (*bytes.Buffer, error) {
 
 	file, err := os.Stat(path)
 	if err != nil {
-		return body, err
+		if errors.Is(err, fs.ErrNotExist) {
+			return body, fmt.Errorf(`failed to find files under the path "%v": %w`, path, err)
+		}
+		return body, fmt.Errorf(`unable to upload files from the path "%v": %w`, path, err)
 	}
+
 	if !file.Mode().IsDir() {
 		return body, ErrMissingDirectory
 	}
