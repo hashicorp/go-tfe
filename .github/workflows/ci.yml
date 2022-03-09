@@ -1,6 +1,6 @@
 name: test
 on:
-  pull_request:
+  push:
     branches: [ main, releases-1.0.x, feat/run-add-comment ]
 jobs:
   codegen:
