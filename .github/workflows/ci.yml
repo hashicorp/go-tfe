@@ -1,7 +1,7 @@
 name: test
 on:
   pull_request:
-    branches: [ main, releases-1.0.x, run-add-comment ]
+    branches: [ main, releases-1.0.x, feat/run-add-comment ]
 jobs:
   codegen:
     name: Codegen
