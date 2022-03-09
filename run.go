@@ -38,6 +38,9 @@ type Runs interface {
 
 	// Discard a run by its ID.
 	Discard(ctx context.Context, runID string, options RunDiscardOptions) error
+
+	// AddComment to add a comment on a run.
+	AddComment(ctx context.Context, runID string, options RunCommentOptions) error
 }
 
 // runs implements Runs.
@@ -278,6 +281,13 @@ type RunDiscardOptions struct {
 	Comment *string `jsonapi:"attr,comment,omitempty"`
 }
 
+// RunCommentOptions represents the options for a run comment.
+type RunCommentOptions struct {
+	Type string  `jsonapi:"primary,comments"`
+	Body *string `jsonapi:"attr,body,omitempty"`
+	Run  *Run    `jsonapi:"relation,run"`
+}
+
 // List all the runs of the given workspace.
 func (s *runs) List(ctx context.Context, workspaceID string, options *RunListOptions) (*RunList, error) {
 	if !validStringID(&workspaceID) {
@@ -403,6 +413,21 @@ func (s *runs) Discard(ctx context.Context, runID string, options RunDiscardOpti
 	}
 
 	u := fmt.Sprintf("runs/%s/actions/discard", url.QueryEscape(runID))
+	req, err := s.client.newRequest("POST", u, &options)
+	if err != nil {
+		return err
+	}
+
+	return s.client.do(ctx, req, nil)
+}
+
+// AddComment to add a comment on a run.
+func (s *runs) AddComment(ctx context.Context, runID string, options RunCommentOptions) error {
+	if !validStringID(&runID) {
+		return ErrInvalidRunID
+	}
+
+	u := fmt.Sprintf("runs/%s/comments", url.QueryEscape(runID))
 	req, err := s.client.newRequest("POST", u, &options)
 	if err != nil {
 		return err
