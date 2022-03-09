@@ -16,7 +16,7 @@ var _ Comments = (*comments)(nil)
 // https://www.terraform.io/docs/cloud/api/comments.html
 type Comments interface {
 	// List all comments of the given run.
-	List(ctx context.Context, runID string, options *CommentListOptions) (*CommentList, error)
+	List(ctx context.Context, runID string) (*CommentList, error)
 
 	// Read a comment by its ID.
 	Read(ctx context.Context, CommentID string) (*Comment, error)
@@ -36,15 +36,10 @@ type CommentList struct {
 	Items []*Comment
 }
 
-// Comment represents a Terraform Enterprise comment..
+// Comment represents a Terraform Enterprise comment.
 type Comment struct {
 	ID   string `jsonapi:"primary,comments"`
 	Body string `jsonapi:"attr,body"`
-}
-
-// CommentListOptions represents the options for listing comments.
-type CommentListOptions struct {
-	ListOptions
 }
 
 type CommentCreateOptions struct {
@@ -62,16 +57,13 @@ type CommentCreateOptions struct {
 }
 
 // List all comments of the given run.
-func (s *comments) List(ctx context.Context, runID string, options *CommentListOptions) (*CommentList, error) {
+func (s *comments) List(ctx context.Context, runID string) (*CommentList, error) {
 	if !validStringID(&runID) {
 		return nil, ErrInvalidRunID
 	}
-	if err := options.valid(); err != nil {
-		return nil, err
-	}
 
 	u := fmt.Sprintf("runs/%s/comments", url.QueryEscape(runID))
-	req, err := s.client.newRequest("GET", u, options)
+	req, err := s.client.newRequest("GET", u, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -129,12 +121,4 @@ func (s *comments) Read(ctx context.Context, CommentID string) (*Comment, error)
 	}
 
 	return comm, nil
-}
-
-func (o *CommentListOptions) valid() error {
-	if o == nil {
-		return nil // nothing to validate
-	}
-
-	return nil
 }
