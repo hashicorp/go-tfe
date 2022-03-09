@@ -35,6 +35,20 @@ func (m *MockRuns) EXPECT() *MockRunsMockRecorder {
 	return m.recorder
 }
 
+// AddComment mocks base method.
+func (m *MockRuns) AddComment(ctx context.Context, runID string, options tfe.RunCommentOptions) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "AddComment", ctx, runID, options)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// AddComment indicates an expected call of AddComment.
+func (mr *MockRunsMockRecorder) AddComment(ctx, runID, options interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "AddComment", reflect.TypeOf((*MockRuns)(nil).AddComment), ctx, runID, options)
+}
+
 // Apply mocks base method.
 func (m *MockRuns) Apply(ctx context.Context, runID string, options tfe.RunApplyOptions) error {
 	m.ctrl.T.Helper()
