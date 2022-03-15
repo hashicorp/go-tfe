@@ -113,10 +113,10 @@ type VariableSetCreateOptions struct {
 	Name *string `jsonapi:"attr,name"`
 
 	// A description to provide context for the variable set.
-	Description *string `jsonapi:"attr,description"`
+	Description *string `jsonapi:"attr,description,omitempty"`
 
 	// If true the variable set is considered in all runs in the organization.
-	Global *bool `jsonapi:"attr,global"`
+	Global *bool `jsonapi:"attr,global,omitempty"`
 }
 
 func (o VariableSetCreateOptions) valid() error {
