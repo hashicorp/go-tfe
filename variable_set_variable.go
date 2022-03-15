@@ -22,7 +22,7 @@ type VariableSetVariables interface {
 	Create(ctx context.Context, variableSetID string, options *VariableSetVariableCreateOptions) (*VariableSetVariable, error)
 
 	// Read a variable by its ID
-	Read(ctx context.Context, variableSetID string, variableId string) (*VariableSetVariable, error)
+	Read(ctx context.Context, variableSetID string, variableID string) (*VariableSetVariable, error)
 
 	// Update valuse of an existing variable
 	Update(ctx context.Context, variableSetID string, variableID string, options *VariableSetVariableUpdateOptions) (*VariableSetVariable, error)
