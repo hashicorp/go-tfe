@@ -18,6 +18,7 @@ import (
 
 const badIdentifier = "! / nope" //nolint
 
+// inconsequential change
 // Memoize test account details
 var _testAccountDetails *TestAccountDetails
 
