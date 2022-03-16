@@ -7,6 +7,7 @@ import (
 	"bytes"
 	"context"
 	"encoding/json"
+	"github.com/hashicorp/go-slug"
 	"testing"
 	"time"
 
@@ -298,6 +299,44 @@ func TestConfigurationVersionsArchive(t *testing.T) {
 	t.Run("with invalid configuration version id", func(t *testing.T) {
 		err := client.ConfigurationVersions.Archive(ctx, badIdentifier)
 		assert.EqualError(t, err, ErrInvalidConfigVersionID.Error())
+	})
+}
+
+func TestConfigurationVersionsDownload(t *testing.T) {
+	client := testClient(t)
+	ctx := context.Background()
+
+	t.Run("with a valid ID for downloadable configuration version", func(t *testing.T) {
+		uploadedCv, uploadedCvCleanup := createUploadedConfigurationVersion(t, client, nil)
+		defer uploadedCvCleanup()
+
+		expectedCvFile := bytes.NewBuffer(nil)
+		_, expectedCvFileErr := slug.Pack("test-fixtures/config-version", expectedCvFile, true)
+		if expectedCvFileErr != nil {
+			t.Fatal(expectedCvFileErr)
+		}
+
+		cvFile, err := client.ConfigurationVersions.Download(ctx, uploadedCv.ID)
+
+		assert.NotNil(t, cvFile)
+		assert.NoError(t, err)
+		assert.True(t, bytes.Equal(cvFile, expectedCvFile.Bytes()), "Configuration version should match")
+	})
+
+	t.Run("with a valid ID for a non downloadable configuration version", func(t *testing.T) {
+		pendingCv, pendingCvCleanup := createConfigurationVersion(t, client, nil)
+		defer pendingCvCleanup()
+
+		cvFile, err := client.ConfigurationVersions.Download(ctx, pendingCv.ID)
+
+		assert.Nil(t, cvFile)
+		assert.EqualError(t, err, ErrResourceNotFound.Error())
+	})
+
+	t.Run("with an invalid ID", func(t *testing.T) {
+		cvFile, err := client.ConfigurationVersions.Download(ctx, "nonexistent")
+		assert.Nil(t, cvFile)
+		assert.EqualError(t, err, ErrResourceNotFound.Error())
 	})
 }
 
