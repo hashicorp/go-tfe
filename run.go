@@ -59,6 +59,7 @@ const (
 	RunCostEstimating     RunStatus = "cost_estimating"
 	RunDiscarded          RunStatus = "discarded"
 	RunErrored            RunStatus = "errored"
+	RunFetching           RunStatus = "fetching"
 	RunPending            RunStatus = "pending"
 	RunPlanQueued         RunStatus = "plan_queued"
 	RunPlanned            RunStatus = "planned"
@@ -148,6 +149,8 @@ type RunStatusTimestamps struct {
 	CostEstimatingAt     time.Time `jsonapi:"attr,cost-estimating-at,rfc3339"`
 	DiscardedAt          time.Time `jsonapi:"attr,discarded-at,rfc3339"`
 	ErroredAt            time.Time `jsonapi:"attr,errored-at,rfc3339"`
+	FetchedAt            time.Time `jsonapi:"attr,fetched-at,rfc3339"`
+	FetchingAt           time.Time `jsonapi:"attr,fetching-at,rfc3339"`
 	ForceCanceledAt      time.Time `jsonapi:"attr,force-canceled-at,rfc3339"`
 	PlanQueueableAt      time.Time `jsonapi:"attr,plan-queueable-at,rfc3339"`
 	PlanQueuedAt         time.Time `jsonapi:"attr,plan-queued-at,rfc3339"`

@@ -39,6 +39,10 @@ type ConfigurationVersions interface {
 	// the upload URL from a configuration version and the full path to the
 	// configuration files on disk.
 	Upload(ctx context.Context, url string, path string) error
+
+	// Archive a configuration version. This can only be done on configuration versions that
+	// were created with the API or CLI, are in an uploaded state, and have no runs in progress.
+	Archive(ctx context.Context, cvID string) error
 }
 
 // configurationVersions implements ConfigurationVersions.
@@ -51,7 +55,9 @@ type ConfigurationStatus string
 
 // List all available configuration version statuses.
 const (
+	ConfigurationArchived ConfigurationStatus = "archived"
 	ConfigurationErrored  ConfigurationStatus = "errored"
+	ConfigurationFetching ConfigurationStatus = "fetching"
 	ConfigurationPending  ConfigurationStatus = "pending"
 	ConfigurationUploaded ConfigurationStatus = "uploaded"
 )
@@ -95,6 +101,8 @@ type ConfigurationVersion struct {
 // CVStatusTimestamps holds the timestamps for individual configuration version
 // statuses.
 type CVStatusTimestamps struct {
+	ArchivedAt time.Time `jsonapi:"attr,archived-at,rfc3339"`
+	FetchingAt time.Time `jsonapi:"attr,fetching-at,rfc3339"`
 	FinishedAt time.Time `jsonapi:"attr,finished-at,rfc3339"`
 	QueuedAt   time.Time `jsonapi:"attr,queued-at,rfc3339"`
 	StartedAt  time.Time `jsonapi:"attr,started-at,rfc3339"`
@@ -267,6 +275,24 @@ func (s *configurationVersions) Upload(ctx context.Context, u, path string) erro
 	}
 
 	req, err := s.client.newRequest("PUT", u, body)
+	if err != nil {
+		return err
+	}
+
+	return s.client.do(ctx, req, nil)
+}
+
+// Archive a configuration version. This can only be done on configuration versions that
+// were created with the API or CLI, are in an uploaded state, and have no runs in progress.
+func (s *configurationVersions) Archive(ctx context.Context, cvID string) error {
+	if !validStringID(&cvID) {
+		return ErrInvalidConfigVersionID
+	}
+
+	body := bytes.NewBuffer(nil)
+
+	u := fmt.Sprintf("configuration-versions/%s/actions/archive", url.QueryEscape(cvID))
+	req, err := s.client.newRequest("POST", u, body)
 	if err != nil {
 		return err
 	}
