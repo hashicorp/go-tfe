@@ -39,7 +39,7 @@ func TestCommentsList(t *testing.T) {
 
 	t.Run("create a comment", func(t *testing.T) {
 		options := CommentCreateOptions{
-			Body: String(commentBody1),
+			Body: commentBody1,
 		}
 		cl, err := client.Comments.Create(ctx, rTest.ID, options)
 		require.NoError(t, err)
@@ -48,7 +48,7 @@ func TestCommentsList(t *testing.T) {
 
 	t.Run("create 2nd comment", func(t *testing.T) {
 		options := CommentCreateOptions{
-			Body: String(commentBody2),
+			Body: commentBody2,
 		}
 		cl, err := client.Comments.Create(ctx, rTest.ID, options)
 		require.NoError(t, err)

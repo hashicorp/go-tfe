@@ -19,7 +19,7 @@ type Comments interface {
 	List(ctx context.Context, runID string) (*CommentList, error)
 
 	// Read a comment by its ID.
-	Read(ctx context.Context, CommentID string) (*Comment, error)
+	Read(ctx context.Context, commentID string) (*Comment, error)
 
 	// Create a new comment with the given options.
 	Create(ctx context.Context, runID string, options CommentCreateOptions) (*Comment, error)
@@ -50,10 +50,7 @@ type CommentCreateOptions struct {
 	Type string `jsonapi:"primary,comments"`
 
 	// Required: Body of the comment.
-	Body *string `jsonapi:"attr,body"`
-
-	// Optional: Run where the comment is attached
-	Run *Run `jsonapi:"relation,run"`
+	Body string `jsonapi:"attr,body"`
 }
 
 // List all comments of the given run.
@@ -79,12 +76,12 @@ func (s *comments) List(ctx context.Context, runID string) (*CommentList, error)
 
 // Create a new comment with the given options.
 func (s *comments) Create(ctx context.Context, runID string, options CommentCreateOptions) (*Comment, error) {
-	if !validStringID(&runID) {
-		return nil, ErrInvalidRunID
+	if err := options.valid(); err != nil {
+		return nil, err
 	}
 
-	if !validString(options.Body) {
-		return nil, ErrCommentBody
+	if !validStringID(&runID) {
+		return nil, ErrInvalidRunID
 	}
 
 	u := fmt.Sprintf("runs/%s/comments", url.QueryEscape(runID))
@@ -103,12 +100,12 @@ func (s *comments) Create(ctx context.Context, runID string, options CommentCrea
 }
 
 // Read a comment by its ID.
-func (s *comments) Read(ctx context.Context, CommentID string) (*Comment, error) {
-	if !validStringID(&CommentID) {
+func (s *comments) Read(ctx context.Context, commentID string) (*Comment, error) {
+	if !validStringID(&commentID) {
 		return nil, ErrInvalidCommentID
 	}
 
-	u := fmt.Sprintf("comments/%s", url.QueryEscape(CommentID))
+	u := fmt.Sprintf("comments/%s", url.QueryEscape(commentID))
 	req, err := s.client.newRequest("GET", u, nil)
 	if err != nil {
 		return nil, err
@@ -121,4 +118,12 @@ func (s *comments) Read(ctx context.Context, CommentID string) (*Comment, error)
 	}
 
 	return comm, nil
+}
+
+func (o CommentCreateOptions) valid() error {
+	if !validString(&o.Body) {
+		return ErrInvalidCommentBody
+	}
+
+	return nil
 }

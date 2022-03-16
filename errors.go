@@ -147,6 +147,8 @@ var (
 	ErrInvalidNotificationTrigger = errors.New("invalid value for notification trigger")
 
 	ErrInvalidCommentID = errors.New("invalid value for comment ID")
+
+	ErrInvalidCommentBody = errors.New("invalid value for comment body")
 )
 
 // Missing values for required field/option
