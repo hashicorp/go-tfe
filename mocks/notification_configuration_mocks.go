@@ -65,7 +65,7 @@ func (mr *MockNotificationConfigurationsMockRecorder) Delete(ctx, notificationCo
 }
 
 // List mocks base method.
-func (m *MockNotificationConfigurations) List(ctx context.Context, workspaceID string, options tfe.NotificationConfigurationListOptions) (*tfe.NotificationConfigurationList, error) {
+func (m *MockNotificationConfigurations) List(ctx context.Context, workspaceID string, options *tfe.NotificationConfigurationListOptions) (*tfe.NotificationConfigurationList, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "List", ctx, workspaceID, options)
 	ret0, _ := ret[0].(*tfe.NotificationConfigurationList)

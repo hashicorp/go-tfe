@@ -51,7 +51,7 @@ func (mr *MockTeamAccessesMockRecorder) Add(ctx, options interface{}) *gomock.Ca
 }
 
 // List mocks base method.
-func (m *MockTeamAccesses) List(ctx context.Context, options tfe.TeamAccessListOptions) (*tfe.TeamAccessList, error) {
+func (m *MockTeamAccesses) List(ctx context.Context, options *tfe.TeamAccessListOptions) (*tfe.TeamAccessList, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "List", ctx, options)
 	ret0, _ := ret[0].(*tfe.TeamAccessList)

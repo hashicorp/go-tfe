@@ -36,21 +36,6 @@ func (m *MockPlans) EXPECT() *MockPlansMockRecorder {
 	return m.recorder
 }
 
-// JSONOutput mocks base method.
-func (m *MockPlans) JSONOutput(ctx context.Context, planID string) ([]byte, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "JSONOutput", ctx, planID)
-	ret0, _ := ret[0].([]byte)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
-}
-
-// JSONOutput indicates an expected call of JSONOutput.
-func (mr *MockPlansMockRecorder) JSONOutput(ctx, planID interface{}) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "JSONOutput", reflect.TypeOf((*MockPlans)(nil).JSONOutput), ctx, planID)
-}
-
 // Logs mocks base method.
 func (m *MockPlans) Logs(ctx context.Context, planID string) (io.Reader, error) {
 	m.ctrl.T.Helper()
@@ -79,4 +64,19 @@ func (m *MockPlans) Read(ctx context.Context, planID string) (*tfe.Plan, error) 
 func (mr *MockPlansMockRecorder) Read(ctx, planID interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Read", reflect.TypeOf((*MockPlans)(nil).Read), ctx, planID)
+}
+
+// ReadJSONOutput mocks base method.
+func (m *MockPlans) ReadJSONOutput(ctx context.Context, planID string) ([]byte, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "ReadJSONOutput", ctx, planID)
+	ret0, _ := ret[0].([]byte)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// ReadJSONOutput indicates an expected call of ReadJSONOutput.
+func (mr *MockPlansMockRecorder) ReadJSONOutput(ctx, planID interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ReadJSONOutput", reflect.TypeOf((*MockPlans)(nil).ReadJSONOutput), ctx, planID)
 }

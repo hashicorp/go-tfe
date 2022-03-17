@@ -34,8 +34,8 @@ func TestTeamAccessesList(t *testing.T) {
 	defer taTest2Cleanup()
 
 	t.Run("with valid options", func(t *testing.T) {
-		tal, err := client.TeamAccess.List(ctx, TeamAccessListOptions{
-			WorkspaceID: String(wTest.ID),
+		tal, err := client.TeamAccess.List(ctx, &TeamAccessListOptions{
+			WorkspaceID: wTest.ID,
 		})
 		require.NoError(t, err)
 		assert.Contains(t, tal.Items, taTest1)
@@ -51,7 +51,7 @@ func TestTeamAccessesList(t *testing.T) {
 		// Request a page number which is out of range. The result should
 		// be successful, but return no results if the paging options are
 		// properly passed along.
-		tal, err := client.TeamAccess.List(ctx, TeamAccessListOptions{
+		tal, err := client.TeamAccess.List(ctx, &TeamAccessListOptions{
 			ListOptions: ListOptions{
 				PageNumber: 999,
 				PageSize:   100,
@@ -63,15 +63,26 @@ func TestTeamAccessesList(t *testing.T) {
 		assert.Equal(t, 2, tal.TotalCount)
 	})
 
-	t.Run("without list options", func(t *testing.T) {
-		tal, err := client.TeamAccess.List(ctx, TeamAccessListOptions{})
+	t.Run("without TeamAccessListOptions", func(t *testing.T) {
+		tal, err := client.TeamAccess.List(ctx, nil)
 		assert.Nil(t, tal)
-		assert.EqualError(t, err, "workspace ID is required")
+		assert.Equal(t, err, ErrRequiredTeamAccessListOps)
 	})
 
-	t.Run("without a valid workspace ID", func(t *testing.T) {
-		tal, err := client.TeamAccess.List(ctx, TeamAccessListOptions{
-			WorkspaceID: String(badIdentifier),
+	t.Run("without WorkspaceID options", func(t *testing.T) {
+		tal, err := client.TeamAccess.List(ctx, &TeamAccessListOptions{
+			ListOptions: ListOptions{
+				PageNumber: 2,
+				PageSize:   25,
+			},
+		})
+		assert.Nil(t, tal)
+		assert.Equal(t, err, ErrRequiredWorkspaceID)
+	})
+
+	t.Run("without a valid workspaceID", func(t *testing.T) {
+		tal, err := client.TeamAccess.List(ctx, &TeamAccessListOptions{
+			WorkspaceID: badIdentifier,
 		})
 		assert.Nil(t, tal)
 		assert.EqualError(t, err, ErrInvalidWorkspaceID.Error())
@@ -188,7 +199,7 @@ func TestTeamAccessesAdd(t *testing.T) {
 			Workspace: wTest,
 		})
 		assert.Nil(t, ta)
-		assert.EqualError(t, err, "access is required")
+		assert.Equal(t, err, ErrRequiredAccess)
 	})
 
 	t.Run("when options is missing team", func(t *testing.T) {
@@ -197,7 +208,7 @@ func TestTeamAccessesAdd(t *testing.T) {
 			Workspace: wTest,
 		})
 		assert.Nil(t, ta)
-		assert.EqualError(t, err, "team is required")
+		assert.Equal(t, err, ErrRequiredTeam)
 	})
 
 	t.Run("when options is missing workspace", func(t *testing.T) {
@@ -206,7 +217,7 @@ func TestTeamAccessesAdd(t *testing.T) {
 			Team:   tmTest,
 		})
 		assert.Nil(t, ta)
-		assert.EqualError(t, err, "workspace is required")
+		assert.Equal(t, err, ErrRequiredWorkspace)
 	})
 }
 
@@ -258,7 +269,7 @@ func TestTeamAccessesRead(t *testing.T) {
 	t.Run("without a valid team access ID", func(t *testing.T) {
 		ta, err := client.TeamAccess.Read(ctx, badIdentifier)
 		assert.Nil(t, ta)
-		assert.EqualError(t, err, "invalid value for team access ID")
+		assert.Equal(t, err, ErrInvalidAccessTeamID)
 	})
 }
 
@@ -324,6 +335,6 @@ func TestTeamAccessesRemove(t *testing.T) {
 
 	t.Run("when the team access ID is invalid", func(t *testing.T) {
 		err := client.TeamAccess.Remove(ctx, badIdentifier)
-		assert.EqualError(t, err, "invalid value for team access ID")
+		assert.Equal(t, err, ErrInvalidAccessTeamID)
 	})
 }

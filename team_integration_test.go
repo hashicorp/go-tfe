@@ -29,7 +29,7 @@ func TestTeamsList(t *testing.T) {
 	defer tmTest2Cleanup()
 
 	t.Run("without list options", func(t *testing.T) {
-		tl, err := client.Teams.List(ctx, orgTest.Name, TeamListOptions{})
+		tl, err := client.Teams.List(ctx, orgTest.Name, nil)
 		require.NoError(t, err)
 		assert.Contains(t, tl.Items, tmTest1)
 		assert.Contains(t, tl.Items, tmTest2)
@@ -44,7 +44,7 @@ func TestTeamsList(t *testing.T) {
 		// Request a page number which is out of range. The result should
 		// be successful, but return no results if the paging options are
 		// properly passed along.
-		tl, err := client.Teams.List(ctx, orgTest.Name, TeamListOptions{
+		tl, err := client.Teams.List(ctx, orgTest.Name, &TeamListOptions{
 			ListOptions: ListOptions{
 				PageNumber: 999,
 				PageSize:   100,
@@ -57,7 +57,7 @@ func TestTeamsList(t *testing.T) {
 	})
 
 	t.Run("without a valid organization", func(t *testing.T) {
-		tl, err := client.Teams.List(ctx, badIdentifier, TeamListOptions{})
+		tl, err := client.Teams.List(ctx, badIdentifier, nil)
 		assert.Nil(t, tl)
 		assert.EqualError(t, err, ErrInvalidOrg.Error())
 	})
@@ -160,7 +160,7 @@ func TestTeamsRead(t *testing.T) {
 	t.Run("without a valid team ID", func(t *testing.T) {
 		tm, err := client.Teams.Read(ctx, badIdentifier)
 		assert.Nil(t, tm)
-		assert.EqualError(t, err, "invalid value for team ID")
+		assert.Equal(t, err, ErrInvalidTeamID)
 	})
 }
 
@@ -238,7 +238,7 @@ func TestTeamsUpdate(t *testing.T) {
 	t.Run("without a valid team ID", func(t *testing.T) {
 		tm, err := client.Teams.Update(ctx, badIdentifier, TeamUpdateOptions{})
 		assert.Nil(t, tm)
-		assert.EqualError(t, err, "invalid value for team ID")
+		assert.Equal(t, err, ErrInvalidTeamID)
 	})
 }
 
@@ -264,7 +264,7 @@ func TestTeamsDelete(t *testing.T) {
 
 	t.Run("without valid team ID", func(t *testing.T) {
 		err := client.Teams.Delete(ctx, badIdentifier)
-		assert.EqualError(t, err, "invalid value for team ID")
+		assert.Equal(t, err, ErrInvalidTeamID)
 	})
 }
 

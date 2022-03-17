@@ -8,7 +8,6 @@ import (
 	"context"
 	"encoding/json"
 	"errors"
-	"fmt"
 	"net/http"
 	"net/http/httptest"
 	"os"
@@ -18,7 +17,6 @@ import (
 	"github.com/hashicorp/go-retryablehttp"
 	"github.com/hashicorp/jsonapi"
 	"github.com/stretchr/testify/assert"
-	"github.com/stretchr/testify/require"
 	"golang.org/x/time/rate"
 )
 
@@ -95,22 +93,32 @@ func TestClient_newClient(t *testing.T) {
 func TestClient_defaultConfig(t *testing.T) {
 	t.Run("with no environment variables", func(t *testing.T) {
 		defer setupEnvVars("", "")()
+		os.Unsetenv("TFE_HOSTNAME")
 
 		config := DefaultConfig()
 
-		if config.Address != DefaultAddress {
-			t.Fatalf("expected %q, got %q", DefaultAddress, config.Address)
-		}
-		if config.Token != "" {
-			t.Fatalf("expected empty token, got %q", config.Token)
-		}
-		if config.HTTPClient == nil {
-			t.Fatalf("expected default http client, got %v", config.HTTPClient)
-		}
+		assert.Equal(t, config.Address, DefaultAddress)
+		assert.Equal(t, config.Token, "")
+		assert.NotNil(t, config.HTTPClient)
 	})
 
 	t.Run("with environment variables", func(t *testing.T) {
-		defer setupEnvVars("abcd1234", "https://mytfe.local")()
+		t.Run("with TFE_ADDRESS set", func(t *testing.T) {
+			defer setupEnvVars("abcd1234", "https://mytfe.local")()
+
+			client := DefaultConfig()
+			assert.Equal(t, client.Address, "https://mytfe.local")
+		})
+
+		t.Run("with TFE_HOSTNAME set", func(t *testing.T) {
+			defer setupEnvVars("abcd1234", "")()
+			os.Setenv("TFE_HOSTNAME", "iloveterraform.io")
+
+			client := DefaultConfig()
+			assert.Equal(t, client.Address, "https://iloveterraform.io")
+
+			os.Unsetenv("TFE_HOSTNAME")
+		})
 	})
 }
 
@@ -166,7 +174,7 @@ func TestClient_headers(t *testing.T) {
 	ctx := context.Background()
 
 	// Make a few calls so we can check they all send the expected headers.
-	_, _ = client.Organizations.List(ctx, OrganizationListOptions{})
+	_, _ = client.Organizations.List(ctx, nil)
 	_, _ = client.Plans.Logs(ctx, "plan-123456789")
 	_ = client.Runs.Apply(ctx, "run-123456789", RunApplyOptions{})
 	_, _ = client.Workspaces.Lock(ctx, "ws-123456789", WorkspaceLockOptions{})
@@ -213,7 +221,7 @@ func TestClient_userAgent(t *testing.T) {
 	ctx := context.Background()
 
 	// Make a few calls so we can check they all send the expected headers.
-	_, _ = client.Organizations.List(ctx, OrganizationListOptions{})
+	_, _ = client.Organizations.List(ctx, nil)
 	_, _ = client.Plans.Logs(ctx, "plan-123456789")
 	_ = client.Runs.Apply(ctx, "run-123456789", RunApplyOptions{})
 	_, _ = client.Workspaces.Lock(ctx, "ws-123456789", WorkspaceLockOptions{})
@@ -325,7 +333,7 @@ func TestClient_requestBodySerialization(t *testing.T) {
 	t.Run("invalid struct request", func(t *testing.T) {
 		body := InvalidBody{}
 		_, _, err := createRequest(&body)
-		if err == nil || err.Error() != "go-tfe bug: struct can't use both json and jsonapi attributes" {
+		if err == nil || err != ErrInvalidStructFormat {
 			t.Fatalf("unexpected error: %v", err)
 		}
 	})
@@ -380,110 +388,6 @@ func createRequest(v interface{}) (*retryablehttp.Request, []byte, error) {
 		return request, nil, err
 	}
 	return request, body, nil
-}
-
-type tfeAPI struct {
-	ID                string                   `jsonapi:"primary,tfe"`
-	Name              string                   `jsonapi:"attr,name"`
-	CreatedAt         time.Time                `jsonapi:"attr,created-at,iso8601"`
-	Enalbed           bool                     `jsonapi:"attr,enalbed"`
-	Emails            []string                 `jsonapi:"attr,emails"`
-	Status            tfeAPIStatus             `jsonapi:"attr,status"`
-	StatusTimestamps  tfeAPITimestamps         `jsonapi:"attr,status-timestamps"`
-	DeliveryResponses []tfeAPIDeliveryResponse `jsonapi:"attr,delivery-responses"`
-}
-
-type tfeAPIDeliveryResponse struct {
-	Body string `jsonapi:"attr,body"`
-	Code int    `jsonapi:"attr,code"`
-}
-
-type tfeAPIStatus string
-
-const (
-	tfeAPIStatusNormal tfeAPIStatus = "normal"
-)
-
-type tfeAPITimestamps struct {
-	QueuedAt time.Time `jsonapi:"attr,queued-at,rfc3339"`
-}
-
-func Test_unmarshalResponse(t *testing.T) {
-	t.Run("unmarshal properly formatted json", func(t *testing.T) {
-		// This structure is intended to include multiple possible fields and
-		// formats that are valid for JSON:API
-		data := map[string]interface{}{
-			"data": map[string]interface{}{
-				"type": "tfe",
-				"id":   "1",
-				"attributes": map[string]interface{}{
-					"name":       "terraform",
-					"created-at": "2016-08-17T08:27:12Z",
-					"enabled":    "true",
-					"status":     tfeAPIStatusNormal,
-					"emails":     []string{"test@hashicorp.com"},
-					"delivery-responses": []interface{}{
-						map[string]interface{}{
-							"body": "<html>",
-							"code": 200,
-						},
-						map[string]interface{}{
-							"body": "<body>",
-							"code": 300,
-						},
-					},
-					"status-timestamps": map[string]string{
-						"queued-at": "2020-03-16T23:15:59+00:00",
-					},
-				},
-			},
-		}
-		byteData, _ := json.Marshal(data)
-		responseBody := bytes.NewReader(byteData)
-
-		unmarshalledRequestBody := tfeAPI{}
-		err := unmarshalResponse(responseBody, &unmarshalledRequestBody)
-		require.NoError(t, err)
-		queuedParsedTime, err := time.Parse(time.RFC3339, "2020-03-16T23:15:59+00:00")
-		require.NoError(t, err)
-
-		assert.Equal(t, unmarshalledRequestBody.ID, "1")
-		assert.Equal(t, unmarshalledRequestBody.Name, "terraform")
-		assert.Equal(t, unmarshalledRequestBody.Status, tfeAPIStatusNormal)
-		assert.Equal(t, len(unmarshalledRequestBody.Emails), 1)
-		assert.Equal(t, unmarshalledRequestBody.Emails[0], "test@hashicorp.com")
-		assert.Equal(t, unmarshalledRequestBody.StatusTimestamps.QueuedAt, queuedParsedTime)
-		assert.NotEmpty(t, unmarshalledRequestBody.DeliveryResponses)
-		assert.Equal(t, len(unmarshalledRequestBody.DeliveryResponses), 2)
-		assert.Equal(t, unmarshalledRequestBody.DeliveryResponses[0].Body, "<html>")
-		assert.Equal(t, unmarshalledRequestBody.DeliveryResponses[0].Code, 200)
-		assert.Equal(t, unmarshalledRequestBody.DeliveryResponses[1].Body, "<body>")
-		assert.Equal(t, unmarshalledRequestBody.DeliveryResponses[1].Code, 300)
-	})
-
-	t.Run("can only unmarshal Items that are slices", func(t *testing.T) {
-		responseBody := bytes.NewReader([]byte(""))
-		malformattedItemStruct := struct {
-			*Pagination
-			Items int
-		}{
-			Items: 1,
-		}
-		err := unmarshalResponse(responseBody, &malformattedItemStruct)
-		require.Error(t, err)
-		assert.EqualError(t, err, "v.Items must be a slice")
-	})
-
-	t.Run("can only unmarshal a struct", func(t *testing.T) {
-		payload := "random"
-		responseBody := bytes.NewReader([]byte(payload))
-
-		notStruct := "not a struct"
-		err := unmarshalResponse(responseBody, notStruct)
-		assert.Error(t, err)
-		assert.EqualError(t, err, fmt.Sprintf("%v must be a struct or an io.Writer", notStruct))
-	})
-
 }
 
 func TestClient_configureLimiter(t *testing.T) {

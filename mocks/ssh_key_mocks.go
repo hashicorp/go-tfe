@@ -65,7 +65,7 @@ func (mr *MockSSHKeysMockRecorder) Delete(ctx, sshKeyID interface{}) *gomock.Cal
 }
 
 // List mocks base method.
-func (m *MockSSHKeys) List(ctx context.Context, organization string, options tfe.SSHKeyListOptions) (*tfe.SSHKeyList, error) {
+func (m *MockSSHKeys) List(ctx context.Context, organization string, options *tfe.SSHKeyListOptions) (*tfe.SSHKeyList, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "List", ctx, organization, options)
 	ret0, _ := ret[0].(*tfe.SSHKeyList)

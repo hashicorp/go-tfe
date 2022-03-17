@@ -23,7 +23,7 @@ var _testAccountDetails *TestAccountDetails
 
 func testClient(t *testing.T) *Client {
 	client, err := NewClient(nil)
-	client.RetryServerErrors(true) // because ocasionally we get a 500 internal when deleting an organization's workspace
+	client.RetryServerErrors(true) // because occasionally we get a 500 internal when deleting an organization's workspace
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -74,7 +74,7 @@ func createAgentToken(t *testing.T, client *Client, ap *AgentPool) (*AgentToken,
 	}
 
 	ctx := context.Background()
-	at, err := client.AgentTokens.Generate(ctx, ap.ID, AgentTokenGenerateOptions{
+	at, err := client.AgentTokens.Create(ctx, ap.ID, AgentTokenCreateOptions{
 		Description: String(randomString(t)),
 	})
 	if err != nil {
@@ -164,7 +164,7 @@ func createNotificationConfiguration(t *testing.T, client *Client, w *Workspace,
 			Name:            String(randomString(t)),
 			Token:           String(randomString(t)),
 			URL:             String("http://example.com"),
-			Triggers:        []string{NotificationTriggerCreated},
+			Triggers:        []NotificationTriggerType{NotificationTriggerCreated},
 		}
 	}
 
@@ -439,7 +439,7 @@ func createOrganizationToken(t *testing.T, client *Client, org *Organization) (*
 	}
 
 	ctx := context.Background()
-	tk, err := client.OrganizationTokens.Generate(ctx, org.Name)
+	tk, err := client.OrganizationTokens.Create(ctx, org.Name)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -457,7 +457,7 @@ func createOrganizationToken(t *testing.T, client *Client, org *Organization) (*
 	}
 }
 
-func createRunTrigger(t *testing.T, client *Client, w *Workspace, sourceable *Workspace) (*RunTrigger, func()) {
+func createRunTrigger(t *testing.T, client *Client, w, sourceable *Workspace) (*RunTrigger, func()) {
 	var wCleanup func()
 	var sourceableCleanup func()
 
@@ -679,12 +679,17 @@ func createRegistryModuleWithVersion(t *testing.T, client *Client, org *Organiza
 	optionsModuleVersion := RegistryModuleCreateVersionOptions{
 		Version: String("1.0.0"),
 	}
-	_, err = client.RegistryModules.CreateVersion(ctx, org.Name, rm.Name, rm.Provider, optionsModuleVersion)
+	rmID := RegistryModuleID{
+		Organization: org.Name,
+		Name:         rm.Name,
+		Provider:     rm.Provider,
+	}
+	_, err = client.RegistryModules.CreateVersion(ctx, rmID, optionsModuleVersion)
 	if err != nil {
 		t.Fatal(err)
 	}
 
-	rm, err = client.RegistryModules.Read(ctx, org.Name, rm.Name, rm.Provider)
+	rm, err = client.RegistryModules.Read(ctx, rmID)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -897,7 +902,7 @@ func createTeamToken(t *testing.T, client *Client, tm *Team) (*TeamToken, func()
 	}
 
 	ctx := context.Background()
-	tt, err := client.TeamTokens.Generate(ctx, tm.ID)
+	tt, err := client.TeamTokens.Create(ctx, tm.ID)
 	if err != nil {
 		t.Fatal(err)
 	}

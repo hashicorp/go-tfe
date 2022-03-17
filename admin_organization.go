@@ -15,7 +15,7 @@ var _ AdminOrganizations = (*adminOrganizations)(nil)
 // TFE API docs: https://www.terraform.io/docs/cloud/api/admin/organizations.html
 type AdminOrganizations interface {
 	// List all the organizations visible to the current user.
-	List(ctx context.Context, options AdminOrganizationListOptions) (*AdminOrganizationList, error)
+	List(ctx context.Context, options *AdminOrganizationListOptions) (*AdminOrganizationList, error)
 
 	// Read attributes of an existing organization via admin API.
 	Read(ctx context.Context, organization string) (*AdminOrganization, error)
@@ -27,7 +27,7 @@ type AdminOrganizations interface {
 	Delete(ctx context.Context, organization string) error
 
 	// ListModuleConsumers lists specific organizations in the Terraform Enterprise installation that have permission to use an organization's modules.
-	ListModuleConsumers(ctx context.Context, organization string, options AdminOrganizationListModuleConsumersOptions) (*AdminOrganizationList, error)
+	ListModuleConsumers(ctx context.Context, organization string, options *AdminOrganizationListModuleConsumersOptions) (*AdminOrganizationList, error)
 
 	// UpdateModuleConsumers specifies a list of organizations that can use modules from the sharing organization's private registry. Setting a list of module consumers will turn off global module sharing for an organization.
 	UpdateModuleConsumers(ctx context.Context, organization string, consumerOrganizations []string) error
@@ -72,17 +72,22 @@ type AdminOrganizationList struct {
 	Items []*AdminOrganization
 }
 
+// AdminOrgIncludeOpt represents the available options for include query params.
+// https://www.terraform.io/docs/cloud/api/admin/organizations.html#available-related-resources
+type AdminOrgIncludeOpt string
+
+const AdminOrgOwners AdminOrgIncludeOpt = "owners"
+
 // AdminOrganizationListOptions represents the options for listing organizations via Admin API.
 type AdminOrganizationListOptions struct {
 	ListOptions
 
-	// A query string used to filter organizations.
+	// Optional: A query string used to filter organizations.
 	// Any organizations with a name or notification email partially matching this value will be returned.
-	Query *string `url:"q,omitempty"`
-
-	// A list of relations to include. See available resources
+	Query string `url:"q,omitempty"`
+	// Optional: A list of relations to include. See available resources
 	// https://www.terraform.io/docs/cloud/api/admin/organizations.html#available-related-resources
-	Include *string `url:"include"`
+	Include []AdminOrgIncludeOpt `url:"include,omitempty"`
 }
 
 // AdminOrganizationListModuleConsumersOptions represents the options for listing organization module consumers through the Admin API
@@ -95,9 +100,12 @@ type AdminOrganizationID struct {
 }
 
 // List all the organizations visible to the current user.
-func (s *adminOrganizations) List(ctx context.Context, options AdminOrganizationListOptions) (*AdminOrganizationList, error) {
-	url := "admin/organizations"
-	req, err := s.client.newRequest("GET", url, &options)
+func (s *adminOrganizations) List(ctx context.Context, options *AdminOrganizationListOptions) (*AdminOrganizationList, error) {
+	if err := options.valid(); err != nil {
+		return nil, err
+	}
+	u := "admin/organizations"
+	req, err := s.client.newRequest("GET", u, options)
 	if err != nil {
 		return nil, err
 	}
@@ -111,14 +119,15 @@ func (s *adminOrganizations) List(ctx context.Context, options AdminOrganization
 	return orgl, nil
 }
 
-func (s *adminOrganizations) ListModuleConsumers(ctx context.Context, organization string, options AdminOrganizationListModuleConsumersOptions) (*AdminOrganizationList, error) {
+// ListModuleConsumers lists specific organizations in the Terraform Enterprise installation that have permission to use an organization's modules.
+func (s *adminOrganizations) ListModuleConsumers(ctx context.Context, organization string, options *AdminOrganizationListModuleConsumersOptions) (*AdminOrganizationList, error) {
 	if !validStringID(&organization) {
 		return nil, ErrInvalidOrg
 	}
 
-	url := fmt.Sprintf("admin/organizations/%s/relationships/module-consumers", url.QueryEscape(organization))
+	u := fmt.Sprintf("admin/organizations/%s/relationships/module-consumers", url.QueryEscape(organization))
 
-	req, err := s.client.newRequest("GET", url, nil)
+	req, err := s.client.newRequest("GET", u, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -132,6 +141,7 @@ func (s *adminOrganizations) ListModuleConsumers(ctx context.Context, organizati
 	return orgl, nil
 }
 
+// Read an organization by its name.
 func (s *adminOrganizations) Read(ctx context.Context, organization string) (*AdminOrganization, error) {
 	if !validStringID(&organization) {
 		return nil, ErrInvalidOrg
@@ -152,6 +162,7 @@ func (s *adminOrganizations) Read(ctx context.Context, organization string) (*Ad
 	return org, nil
 }
 
+// Update an organization by its name.
 func (s *adminOrganizations) Update(ctx context.Context, organization string, options AdminOrganizationUpdateOptions) (*AdminOrganization, error) {
 	if !validStringID(&organization) {
 		return nil, ErrInvalidOrg
@@ -172,12 +183,13 @@ func (s *adminOrganizations) Update(ctx context.Context, organization string, op
 	return org, nil
 }
 
+// UpdateModuleConsumers updates an organization to specify a list of organizations that can use modules from the sharing organization's private registry.
 func (s *adminOrganizations) UpdateModuleConsumers(ctx context.Context, organization string, consumerOrganizationIDs []string) error {
 	if !validStringID(&organization) {
 		return ErrInvalidOrg
 	}
 
-	url := fmt.Sprintf("admin/organizations/%s/relationships/module-consumers", url.QueryEscape(organization))
+	u := fmt.Sprintf("admin/organizations/%s/relationships/module-consumers", url.QueryEscape(organization))
 
 	var organizations []*AdminOrganizationID
 	for _, id := range consumerOrganizationIDs {
@@ -187,7 +199,7 @@ func (s *adminOrganizations) UpdateModuleConsumers(ctx context.Context, organiza
 		organizations = append(organizations, &AdminOrganizationID{ID: id})
 	}
 
-	req, err := s.client.newRequest("PATCH", url, organizations)
+	req, err := s.client.newRequest("PATCH", u, organizations)
 	if err != nil {
 		return err
 	}
@@ -213,4 +225,29 @@ func (s *adminOrganizations) Delete(ctx context.Context, organization string) er
 	}
 
 	return s.client.do(ctx, req, nil)
+}
+
+func (o *AdminOrganizationListOptions) valid() error {
+	if o == nil {
+		return nil // nothing to validate
+	}
+
+	if err := validateAdminOrgIncludeParams(o.Include); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func validateAdminOrgIncludeParams(params []AdminOrgIncludeOpt) error {
+	for _, p := range params {
+		switch p {
+		case AdminOrgOwners:
+			// do nothing
+		default:
+			return ErrInvalidIncludeValue
+		}
+	}
+
+	return nil
 }

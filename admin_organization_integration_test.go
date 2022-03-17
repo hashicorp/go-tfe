@@ -22,7 +22,7 @@ func TestAdminOrganizations_List(t *testing.T) {
 	defer orgTestCleanup()
 
 	t.Run("with no list options", func(t *testing.T) {
-		adminOrgList, err := client.Admin.Organizations.List(ctx, AdminOrganizationListOptions{})
+		adminOrgList, err := client.Admin.Organizations.List(ctx, nil)
 		require.NoError(t, err)
 
 		// Given that org creation occurs on every test, the ordering is not
@@ -36,8 +36,8 @@ func TestAdminOrganizations_List(t *testing.T) {
 		_, orgTestCleanup := createOrganization(t, client)
 		defer orgTestCleanup()
 
-		adminOrgList, err := client.Admin.Organizations.List(ctx, AdminOrganizationListOptions{
-			Query: &org.Name,
+		adminOrgList, err := client.Admin.Organizations.List(ctx, &AdminOrganizationListOptions{
+			Query: org.Name,
 		})
 		assert.NoError(t, err)
 		assert.Equal(t, true, adminOrgItemsContainsName(adminOrgList.Items, org.Name))
@@ -48,8 +48,8 @@ func TestAdminOrganizations_List(t *testing.T) {
 	t.Run("with list options and org name that doesn't exist", func(t *testing.T) {
 		randomName := "random-org-name"
 
-		adminOrgList, err := client.Admin.Organizations.List(ctx, AdminOrganizationListOptions{
-			Query: &randomName,
+		adminOrgList, err := client.Admin.Organizations.List(ctx, &AdminOrganizationListOptions{
+			Query: randomName,
 		})
 		assert.NoError(t, err)
 		assert.Equal(t, false, adminOrgItemsContainsName(adminOrgList.Items, org.Name))
@@ -58,8 +58,8 @@ func TestAdminOrganizations_List(t *testing.T) {
 	})
 
 	t.Run("with owners included", func(t *testing.T) {
-		adminOrgList, err := client.Admin.Organizations.List(ctx, AdminOrganizationListOptions{
-			Include: String("owners"),
+		adminOrgList, err := client.Admin.Organizations.List(ctx, &AdminOrganizationListOptions{
+			Include: []AdminOrgIncludeOpt{AdminOrgOwners},
 		})
 		assert.NoError(t, err)
 
@@ -170,7 +170,7 @@ func TestAdminOrganizations_ModuleConsumers(t *testing.T) {
 		err := client.Admin.Organizations.UpdateModuleConsumers(ctx, org1.Name, []string{org2.Name})
 		assert.NoError(t, err)
 
-		adminModuleConsumerList, err := client.Admin.Organizations.ListModuleConsumers(ctx, org1.Name, AdminOrganizationListModuleConsumersOptions{})
+		adminModuleConsumerList, err := client.Admin.Organizations.ListModuleConsumers(ctx, org1.Name, nil)
 		require.NoError(t, err)
 
 		assert.Equal(t, len(adminModuleConsumerList.Items), 1)
@@ -182,7 +182,7 @@ func TestAdminOrganizations_ModuleConsumers(t *testing.T) {
 		err = client.Admin.Organizations.UpdateModuleConsumers(ctx, org1.Name, []string{org3.Name})
 		assert.NoError(t, err)
 
-		adminModuleConsumerList, err = client.Admin.Organizations.ListModuleConsumers(ctx, org1.Name, AdminOrganizationListModuleConsumersOptions{})
+		adminModuleConsumerList, err = client.Admin.Organizations.ListModuleConsumers(ctx, org1.Name, nil)
 		require.NoError(t, err)
 
 		assert.Equal(t, len(adminModuleConsumerList.Items), 1)

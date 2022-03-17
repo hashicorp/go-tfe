@@ -50,7 +50,7 @@ func (mr *MockAdminWorkspacesMockRecorder) Delete(ctx, workspaceID interface{}) 
 }
 
 // List mocks base method.
-func (m *MockAdminWorkspaces) List(ctx context.Context, options tfe.AdminWorkspaceListOptions) (*tfe.AdminWorkspaceList, error) {
+func (m *MockAdminWorkspaces) List(ctx context.Context, options *tfe.AdminWorkspaceListOptions) (*tfe.AdminWorkspaceList, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "List", ctx, options)
 	ret0, _ := ret[0].(*tfe.AdminWorkspaceList)

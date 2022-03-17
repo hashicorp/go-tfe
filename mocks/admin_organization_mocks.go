@@ -50,7 +50,7 @@ func (mr *MockAdminOrganizationsMockRecorder) Delete(ctx, organization interface
 }
 
 // List mocks base method.
-func (m *MockAdminOrganizations) List(ctx context.Context, options tfe.AdminOrganizationListOptions) (*tfe.AdminOrganizationList, error) {
+func (m *MockAdminOrganizations) List(ctx context.Context, options *tfe.AdminOrganizationListOptions) (*tfe.AdminOrganizationList, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "List", ctx, options)
 	ret0, _ := ret[0].(*tfe.AdminOrganizationList)
@@ -65,7 +65,7 @@ func (mr *MockAdminOrganizationsMockRecorder) List(ctx, options interface{}) *go
 }
 
 // ListModuleConsumers mocks base method.
-func (m *MockAdminOrganizations) ListModuleConsumers(ctx context.Context, organization string, options tfe.AdminOrganizationListModuleConsumersOptions) (*tfe.AdminOrganizationList, error) {
+func (m *MockAdminOrganizations) ListModuleConsumers(ctx context.Context, organization string, options *tfe.AdminOrganizationListModuleConsumersOptions) (*tfe.AdminOrganizationList, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "ListModuleConsumers", ctx, organization, options)
 	ret0, _ := ret[0].(*tfe.AdminOrganizationList)

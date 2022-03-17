@@ -7,6 +7,7 @@ import (
 	"bytes"
 	"context"
 	"encoding/json"
+	"github.com/hashicorp/go-slug"
 	"testing"
 	"time"
 
@@ -27,9 +28,7 @@ func TestConfigurationVersionsList(t *testing.T) {
 	defer cvTest2Cleanup()
 
 	t.Run("without list options", func(t *testing.T) {
-		options := ConfigurationVersionListOptions{}
-
-		cvl, err := client.ConfigurationVersions.List(ctx, wTest.ID, options)
+		cvl, err := client.ConfigurationVersions.List(ctx, wTest.ID, nil)
 		require.NoError(t, err)
 
 		// We need to strip the upload URL as that is a dynamic link.
@@ -51,7 +50,7 @@ func TestConfigurationVersionsList(t *testing.T) {
 		// Request a page number which is out of range. The result should
 		// be successful, but return no results if the paging options are
 		// properly passed along.
-		options := ConfigurationVersionListOptions{
+		options := &ConfigurationVersionListOptions{
 			ListOptions: ListOptions{
 				PageNumber: 999,
 				PageSize:   100,
@@ -66,9 +65,7 @@ func TestConfigurationVersionsList(t *testing.T) {
 	})
 
 	t.Run("without a valid organization", func(t *testing.T) {
-		options := ConfigurationVersionListOptions{}
-
-		cvl, err := client.ConfigurationVersions.List(ctx, badIdentifier, options)
+		cvl, err := client.ConfigurationVersions.List(ctx, badIdentifier, nil)
 		assert.Nil(t, cvl)
 		assert.EqualError(t, err, ErrInvalidWorkspaceID.Error())
 	})
@@ -162,7 +159,7 @@ func TestConfigurationVersionsReadWithOptions(t *testing.T) {
 	time.Sleep(3 * time.Second)
 
 	w, err := client.Workspaces.ReadByIDWithOptions(ctx, wTest.ID, &WorkspaceReadOptions{
-		Include: "current-run.configuration-version",
+		Include: []WSIncludeOpt{WSCurrentRunConfigVer},
 	})
 
 	if err != nil {
@@ -177,7 +174,7 @@ func TestConfigurationVersionsReadWithOptions(t *testing.T) {
 
 	t.Run("when the configuration version exists", func(t *testing.T) {
 		options := &ConfigurationVersionReadOptions{
-			Include: "ingress-attributes",
+			Include: []ConfigVerIncludeOpt{ConfigVerIngressAttributes},
 		}
 
 		cv, err := client.ConfigurationVersions.ReadWithOptions(ctx, cv.ID, options)
@@ -238,6 +235,108 @@ func TestConfigurationVersionsUpload(t *testing.T) {
 			"nonexisting",
 		)
 		assert.Error(t, err)
+	})
+}
+
+func TestConfigurationVersionsArchive(t *testing.T) {
+	client := testClient(t)
+	ctx := context.Background()
+
+	cv, cvCleanup := createConfigurationVersion(t, client, nil)
+	defer cvCleanup()
+
+	t.Run("when the configuration version exists and has been uploaded", func(t *testing.T) {
+		err := client.ConfigurationVersions.Upload(
+			ctx,
+			cv.UploadURL,
+			"test-fixtures/config-version",
+		)
+		require.NoError(t, err)
+
+		// We do this is a small loop, because it can take a second
+		// before the upload is finished.
+		for i := 0; ; i++ {
+			refreshed, err := client.ConfigurationVersions.Read(ctx, cv.ID)
+			require.NoError(t, err)
+
+			if refreshed.Status == ConfigurationUploaded {
+				break
+			}
+
+			if i > 10 {
+				t.Fatal("Timeout waiting for the configuration version to be uploaded")
+			}
+
+			time.Sleep(1 * time.Second)
+		}
+
+		err = client.ConfigurationVersions.Archive(ctx, cv.ID)
+		require.NoError(t, err)
+
+		// We do this is a small loop, because it can take a second
+		// before the archive is finished.
+		for i := 0; ; i++ {
+			refreshed, err := client.ConfigurationVersions.Read(ctx, cv.ID)
+			require.NoError(t, err)
+
+			if refreshed.Status == ConfigurationArchived {
+				break
+			}
+
+			if i > 10 {
+				t.Fatal("Timeout waiting for the configuration version to be archived")
+			}
+
+			time.Sleep(1 * time.Second)
+		}
+	})
+
+	t.Run("when the configuration version does not exist", func(t *testing.T) {
+		err := client.ConfigurationVersions.Archive(ctx, "nonexisting")
+		assert.Equal(t, err, ErrResourceNotFound)
+	})
+
+	t.Run("with invalid configuration version id", func(t *testing.T) {
+		err := client.ConfigurationVersions.Archive(ctx, badIdentifier)
+		assert.EqualError(t, err, ErrInvalidConfigVersionID.Error())
+	})
+}
+
+func TestConfigurationVersionsDownload(t *testing.T) {
+	client := testClient(t)
+	ctx := context.Background()
+
+	t.Run("with a valid ID for downloadable configuration version", func(t *testing.T) {
+		uploadedCv, uploadedCvCleanup := createUploadedConfigurationVersion(t, client, nil)
+		defer uploadedCvCleanup()
+
+		expectedCvFile := bytes.NewBuffer(nil)
+		_, expectedCvFileErr := slug.Pack("test-fixtures/config-version", expectedCvFile, true)
+		if expectedCvFileErr != nil {
+			t.Fatal(expectedCvFileErr)
+		}
+
+		cvFile, err := client.ConfigurationVersions.Download(ctx, uploadedCv.ID)
+
+		assert.NotNil(t, cvFile)
+		assert.NoError(t, err)
+		assert.True(t, bytes.Equal(cvFile, expectedCvFile.Bytes()), "Configuration version should match")
+	})
+
+	t.Run("with a valid ID for a non downloadable configuration version", func(t *testing.T) {
+		pendingCv, pendingCvCleanup := createConfigurationVersion(t, client, nil)
+		defer pendingCvCleanup()
+
+		cvFile, err := client.ConfigurationVersions.Download(ctx, pendingCv.ID)
+
+		assert.Nil(t, cvFile)
+		assert.EqualError(t, err, ErrResourceNotFound.Error())
+	})
+
+	t.Run("with an invalid ID", func(t *testing.T) {
+		cvFile, err := client.ConfigurationVersions.Download(ctx, "nonexistent")
+		assert.Nil(t, cvFile)
+		assert.EqualError(t, err, ErrResourceNotFound.Error())
 	})
 }
 

@@ -35,6 +35,21 @@ func (m *MockAgentTokens) EXPECT() *MockAgentTokensMockRecorder {
 	return m.recorder
 }
 
+// Create mocks base method.
+func (m *MockAgentTokens) Create(ctx context.Context, agentPoolID string, options tfe.AgentTokenCreateOptions) (*tfe.AgentToken, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Create", ctx, agentPoolID, options)
+	ret0, _ := ret[0].(*tfe.AgentToken)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// Create indicates an expected call of Create.
+func (mr *MockAgentTokensMockRecorder) Create(ctx, agentPoolID, options interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Create", reflect.TypeOf((*MockAgentTokens)(nil).Create), ctx, agentPoolID, options)
+}
+
 // Delete mocks base method.
 func (m *MockAgentTokens) Delete(ctx context.Context, agentTokenID string) error {
 	m.ctrl.T.Helper()
@@ -47,21 +62,6 @@ func (m *MockAgentTokens) Delete(ctx context.Context, agentTokenID string) error
 func (mr *MockAgentTokensMockRecorder) Delete(ctx, agentTokenID interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Delete", reflect.TypeOf((*MockAgentTokens)(nil).Delete), ctx, agentTokenID)
-}
-
-// Generate mocks base method.
-func (m *MockAgentTokens) Generate(ctx context.Context, agentPoolID string, options tfe.AgentTokenGenerateOptions) (*tfe.AgentToken, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "Generate", ctx, agentPoolID, options)
-	ret0, _ := ret[0].(*tfe.AgentToken)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
-}
-
-// Generate indicates an expected call of Generate.
-func (mr *MockAgentTokensMockRecorder) Generate(ctx, agentPoolID, options interface{}) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Generate", reflect.TypeOf((*MockAgentTokens)(nil).Generate), ctx, agentPoolID, options)
 }
 
 // List mocks base method.

@@ -65,7 +65,7 @@ func (mr *MockTeamsMockRecorder) Delete(ctx, teamID interface{}) *gomock.Call {
 }
 
 // List mocks base method.
-func (m *MockTeams) List(ctx context.Context, organization string, options tfe.TeamListOptions) (*tfe.TeamList, error) {
+func (m *MockTeams) List(ctx context.Context, organization string, options *tfe.TeamListOptions) (*tfe.TeamList, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "List", ctx, organization, options)
 	ret0, _ := ret[0].(*tfe.TeamList)

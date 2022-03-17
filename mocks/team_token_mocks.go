@@ -35,6 +35,21 @@ func (m *MockTeamTokens) EXPECT() *MockTeamTokensMockRecorder {
 	return m.recorder
 }
 
+// Create mocks base method.
+func (m *MockTeamTokens) Create(ctx context.Context, teamID string) (*tfe.TeamToken, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Create", ctx, teamID)
+	ret0, _ := ret[0].(*tfe.TeamToken)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// Create indicates an expected call of Create.
+func (mr *MockTeamTokensMockRecorder) Create(ctx, teamID interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Create", reflect.TypeOf((*MockTeamTokens)(nil).Create), ctx, teamID)
+}
+
 // Delete mocks base method.
 func (m *MockTeamTokens) Delete(ctx context.Context, teamID string) error {
 	m.ctrl.T.Helper()
@@ -47,21 +62,6 @@ func (m *MockTeamTokens) Delete(ctx context.Context, teamID string) error {
 func (mr *MockTeamTokensMockRecorder) Delete(ctx, teamID interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Delete", reflect.TypeOf((*MockTeamTokens)(nil).Delete), ctx, teamID)
-}
-
-// Generate mocks base method.
-func (m *MockTeamTokens) Generate(ctx context.Context, teamID string) (*tfe.TeamToken, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "Generate", ctx, teamID)
-	ret0, _ := ret[0].(*tfe.TeamToken)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
-}
-
-// Generate indicates an expected call of Generate.
-func (mr *MockTeamTokensMockRecorder) Generate(ctx, teamID interface{}) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Generate", reflect.TypeOf((*MockTeamTokens)(nil).Generate), ctx, teamID)
 }
 
 // Read mocks base method.
