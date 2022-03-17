@@ -43,6 +43,9 @@ type ConfigurationVersions interface {
 	// Archive a configuration version. This can only be done on configuration versions that
 	// were created with the API or CLI, are in an uploaded state, and have no runs in progress.
 	Archive(ctx context.Context, cvID string) error
+
+	// Download a configuration version.  Only configuration versions in the uploaded state may be downloaded.
+	Download(ctx context.Context, cvID string) ([]byte, error)
 }
 
 // configurationVersions implements ConfigurationVersions.
@@ -335,4 +338,25 @@ func validateConfigVerIncludeParams(params []ConfigVerIncludeOpt) error {
 	}
 
 	return nil
+}
+
+// Download a configuration version.  Only configuration versions in the uploaded state may be downloaded.
+func (s *configurationVersions) Download(ctx context.Context, cvID string) ([]byte, error) {
+	if !validStringID(&cvID) {
+		return nil, ErrInvalidConfigVersionID
+	}
+
+	u := fmt.Sprintf("configuration-versions/%s/download", url.QueryEscape(cvID))
+	req, err := s.client.newRequest("GET", u, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	var buf bytes.Buffer
+	err = s.client.do(ctx, req, &buf)
+	if err != nil {
+		return nil, err
+	}
+
+	return buf.Bytes(), nil
 }

@@ -64,6 +64,21 @@ func (mr *MockConfigurationVersionsMockRecorder) Create(ctx, workspaceID, option
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Create", reflect.TypeOf((*MockConfigurationVersions)(nil).Create), ctx, workspaceID, options)
 }
 
+// Download mocks base method.
+func (m *MockConfigurationVersions) Download(ctx context.Context, cvID string) ([]byte, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Download", ctx, cvID)
+	ret0, _ := ret[0].([]byte)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// Download indicates an expected call of Download.
+func (mr *MockConfigurationVersionsMockRecorder) Download(ctx, cvID interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Download", reflect.TypeOf((*MockConfigurationVersions)(nil).Download), ctx, cvID)
+}
+
 // List mocks base method.
 func (m *MockConfigurationVersions) List(ctx context.Context, workspaceID string, options *tfe.ConfigurationVersionListOptions) (*tfe.ConfigurationVersionList, error) {
 	m.ctrl.T.Helper()
