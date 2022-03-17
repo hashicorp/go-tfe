@@ -14,6 +14,7 @@
 * Cleanup documentation and improve consistency [#331](https://github.com/hashicorp/go-tfe/pull/331)
 * Add more linters to our CI pipeline [#326](https://github.com/hashicorp/go-tfe/pull/326)
 * Resolve `TFE_HOSTNAME` as fallback for `TFE_ADDRESS` [#340](https://github.com/hashicorp/go-tfe/pull/326)
+* Adds a`fetching` status to `RunStatus` and adds the `Archive` method to the ConfigurationVersions interface [#338](https://github.com/hashicorp/go-tfe/pull/338)
 
 ## Bug Fixes
 * Fixed invalid memory address error when `AdminSMTPSettingsUpdateOptions.Auth` field is empty and accessed [#335](https://github.com/hashicorp/go-tfe/pull/335) 
