@@ -138,7 +138,7 @@ func (mr *MockWorkspacesMockRecorder) ForceUnlock(ctx, workspaceID interface{}) 
 }
 
 // List mocks base method.
-func (m *MockWorkspaces) List(ctx context.Context, organization string, options tfe.WorkspaceListOptions) (*tfe.WorkspaceList, error) {
+func (m *MockWorkspaces) List(ctx context.Context, organization string, options *tfe.WorkspaceListOptions) (*tfe.WorkspaceList, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "List", ctx, organization, options)
 	ret0, _ := ret[0].(*tfe.WorkspaceList)
@@ -150,6 +150,36 @@ func (m *MockWorkspaces) List(ctx context.Context, organization string, options 
 func (mr *MockWorkspacesMockRecorder) List(ctx, organization, options interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "List", reflect.TypeOf((*MockWorkspaces)(nil).List), ctx, organization, options)
+}
+
+// ListRemoteStateConsumers mocks base method.
+func (m *MockWorkspaces) ListRemoteStateConsumers(ctx context.Context, workspaceID string, options *tfe.RemoteStateConsumersListOptions) (*tfe.WorkspaceList, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "ListRemoteStateConsumers", ctx, workspaceID, options)
+	ret0, _ := ret[0].(*tfe.WorkspaceList)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// ListRemoteStateConsumers indicates an expected call of ListRemoteStateConsumers.
+func (mr *MockWorkspacesMockRecorder) ListRemoteStateConsumers(ctx, workspaceID, options interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListRemoteStateConsumers", reflect.TypeOf((*MockWorkspaces)(nil).ListRemoteStateConsumers), ctx, workspaceID, options)
+}
+
+// ListTags mocks base method.
+func (m *MockWorkspaces) ListTags(ctx context.Context, workspaceID string, options *tfe.WorkspaceTagListOptions) (*tfe.TagList, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "ListTags", ctx, workspaceID, options)
+	ret0, _ := ret[0].(*tfe.TagList)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// ListTags indicates an expected call of ListTags.
+func (mr *MockWorkspacesMockRecorder) ListTags(ctx, workspaceID, options interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListTags", reflect.TypeOf((*MockWorkspaces)(nil).ListTags), ctx, workspaceID, options)
 }
 
 // Lock mocks base method.
@@ -242,21 +272,6 @@ func (mr *MockWorkspacesMockRecorder) Readme(ctx, workspaceID interface{}) *gomo
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Readme", reflect.TypeOf((*MockWorkspaces)(nil).Readme), ctx, workspaceID)
 }
 
-// RemoteStateConsumers mocks base method.
-func (m *MockWorkspaces) RemoteStateConsumers(ctx context.Context, workspaceID string, options *tfe.RemoteStateConsumersListOptions) (*tfe.WorkspaceList, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "RemoteStateConsumers", ctx, workspaceID, options)
-	ret0, _ := ret[0].(*tfe.WorkspaceList)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
-}
-
-// RemoteStateConsumers indicates an expected call of RemoteStateConsumers.
-func (mr *MockWorkspacesMockRecorder) RemoteStateConsumers(ctx, workspaceID, options interface{}) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "RemoteStateConsumers", reflect.TypeOf((*MockWorkspaces)(nil).RemoteStateConsumers), ctx, workspaceID, options)
-}
-
 // RemoveRemoteStateConsumers mocks base method.
 func (m *MockWorkspaces) RemoveRemoteStateConsumers(ctx context.Context, workspaceID string, options tfe.WorkspaceRemoveRemoteStateConsumersOptions) error {
 	m.ctrl.T.Helper()
@@ -313,21 +328,6 @@ func (m *MockWorkspaces) RemoveVCSConnectionByID(ctx context.Context, workspaceI
 func (mr *MockWorkspacesMockRecorder) RemoveVCSConnectionByID(ctx, workspaceID interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "RemoveVCSConnectionByID", reflect.TypeOf((*MockWorkspaces)(nil).RemoveVCSConnectionByID), ctx, workspaceID)
-}
-
-// Tags mocks base method.
-func (m *MockWorkspaces) Tags(ctx context.Context, workspaceID string, options tfe.WorkspaceTagListOptions) (*tfe.TagList, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "Tags", ctx, workspaceID, options)
-	ret0, _ := ret[0].(*tfe.TagList)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
-}
-
-// Tags indicates an expected call of Tags.
-func (mr *MockWorkspacesMockRecorder) Tags(ctx, workspaceID, options interface{}) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Tags", reflect.TypeOf((*MockWorkspaces)(nil).Tags), ctx, workspaceID, options)
 }
 
 // UnassignSSHKey mocks base method.

@@ -65,7 +65,7 @@ func (mr *MockPolicySetParametersMockRecorder) Delete(ctx, policySetID, paramete
 }
 
 // List mocks base method.
-func (m *MockPolicySetParameters) List(ctx context.Context, policySetID string, options tfe.PolicySetParameterListOptions) (*tfe.PolicySetParameterList, error) {
+func (m *MockPolicySetParameters) List(ctx context.Context, policySetID string, options *tfe.PolicySetParameterListOptions) (*tfe.PolicySetParameterList, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "List", ctx, policySetID, options)
 	ret0, _ := ret[0].(*tfe.PolicySetParameterList)

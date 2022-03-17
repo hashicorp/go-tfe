@@ -50,17 +50,17 @@ func (mr *MockUsersMockRecorder) ReadCurrent(ctx interface{}) *gomock.Call {
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ReadCurrent", reflect.TypeOf((*MockUsers)(nil).ReadCurrent), ctx)
 }
 
-// Update mocks base method.
-func (m *MockUsers) Update(ctx context.Context, options tfe.UserUpdateOptions) (*tfe.User, error) {
+// UpdateCurrent mocks base method.
+func (m *MockUsers) UpdateCurrent(ctx context.Context, options tfe.UserUpdateOptions) (*tfe.User, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "Update", ctx, options)
+	ret := m.ctrl.Call(m, "UpdateCurrent", ctx, options)
 	ret0, _ := ret[0].(*tfe.User)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
 
-// Update indicates an expected call of Update.
-func (mr *MockUsersMockRecorder) Update(ctx, options interface{}) *gomock.Call {
+// UpdateCurrent indicates an expected call of UpdateCurrent.
+func (mr *MockUsersMockRecorder) UpdateCurrent(ctx, options interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Update", reflect.TypeOf((*MockUsers)(nil).Update), ctx, options)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdateCurrent", reflect.TypeOf((*MockUsers)(nil).UpdateCurrent), ctx, options)
 }

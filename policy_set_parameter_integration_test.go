@@ -29,7 +29,7 @@ func TestPolicySetParametersList(t *testing.T) {
 	defer pTestCleanup2()
 
 	t.Run("without list options", func(t *testing.T) {
-		pl, err := client.PolicySetParameters.List(ctx, psTest.ID, PolicySetParameterListOptions{})
+		pl, err := client.PolicySetParameters.List(ctx, psTest.ID, nil)
 		require.NoError(t, err)
 		assert.Contains(t, pl.Items, pTest1)
 		assert.Contains(t, pl.Items, pTest2)
@@ -44,7 +44,7 @@ func TestPolicySetParametersList(t *testing.T) {
 		// Request a page number which is out of range. The result should
 		// be successful, but return no results if the paging options are
 		// properly passed along.
-		pl, err := client.PolicySetParameters.List(ctx, psTest.ID, PolicySetParameterListOptions{
+		pl, err := client.PolicySetParameters.List(ctx, psTest.ID, &PolicySetParameterListOptions{
 			ListOptions: ListOptions{
 				PageNumber: 999,
 				PageSize:   100,
@@ -57,9 +57,9 @@ func TestPolicySetParametersList(t *testing.T) {
 	})
 
 	t.Run("when policy set ID is invalid ID", func(t *testing.T) {
-		pl, err := client.PolicySetParameters.List(ctx, badIdentifier, PolicySetParameterListOptions{})
+		pl, err := client.PolicySetParameters.List(ctx, badIdentifier, nil)
 		assert.Nil(t, pl)
-		assert.EqualError(t, err, "invalid value for policy set ID")
+		assert.Equal(t, err, ErrInvalidPolicySetID)
 	})
 }
 
@@ -129,7 +129,7 @@ func TestPolicySetParametersCreate(t *testing.T) {
 		}
 
 		_, err := client.PolicySetParameters.Create(ctx, psTest.ID, options)
-		assert.EqualError(t, err, "key is required")
+		assert.Equal(t, err, ErrRequiredKey)
 	})
 
 	t.Run("when options has an empty key", func(t *testing.T) {
@@ -140,7 +140,7 @@ func TestPolicySetParametersCreate(t *testing.T) {
 		}
 
 		_, err := client.PolicySetParameters.Create(ctx, psTest.ID, options)
-		assert.EqualError(t, err, "key is required")
+		assert.Equal(t, err, ErrRequiredKey)
 	})
 
 	t.Run("when options is missing category", func(t *testing.T) {
@@ -150,7 +150,7 @@ func TestPolicySetParametersCreate(t *testing.T) {
 		}
 
 		_, err := client.PolicySetParameters.Create(ctx, psTest.ID, options)
-		assert.EqualError(t, err, "category is required")
+		assert.Equal(t, err, ErrRequiredCategory)
 	})
 
 	t.Run("when policy set ID is invalid", func(t *testing.T) {
@@ -161,7 +161,7 @@ func TestPolicySetParametersCreate(t *testing.T) {
 		}
 
 		_, err := client.PolicySetParameters.Create(ctx, badIdentifier, options)
-		assert.EqualError(t, err, "invalid value for policy set ID")
+		assert.Equal(t, err, ErrInvalidPolicySetID)
 	})
 }
 
@@ -194,13 +194,13 @@ func TestPolicySetParametersRead(t *testing.T) {
 	t.Run("without a valid policy set ID", func(t *testing.T) {
 		p, err := client.PolicySetParameters.Read(ctx, badIdentifier, pTest.ID)
 		assert.Nil(t, p)
-		assert.EqualError(t, err, "invalid value for policy set ID")
+		assert.Equal(t, err, ErrInvalidPolicySetID)
 	})
 
 	t.Run("without a valid parameter ID", func(t *testing.T) {
 		p, err := client.PolicySetParameters.Read(ctx, pTest.PolicySet.ID, badIdentifier)
 		assert.Nil(t, p)
-		assert.EqualError(t, err, "invalid value for parameter ID")
+		assert.Equal(t, err, ErrInvalidParamID)
 	})
 }
 
@@ -261,12 +261,12 @@ func TestPolicySetParametersUpdate(t *testing.T) {
 
 	t.Run("with invalid parameter ID", func(t *testing.T) {
 		_, err := client.PolicySetParameters.Update(ctx, badIdentifier, pTest.ID, PolicySetParameterUpdateOptions{})
-		assert.EqualError(t, err, "invalid value for policy set ID")
+		assert.Equal(t, err, ErrInvalidPolicySetID)
 	})
 
 	t.Run("with invalid parameter ID", func(t *testing.T) {
 		_, err := client.PolicySetParameters.Update(ctx, pTest.PolicySet.ID, badIdentifier, PolicySetParameterUpdateOptions{})
-		assert.EqualError(t, err, "invalid value for parameter ID")
+		assert.Equal(t, err, ErrInvalidParamID)
 	})
 }
 
@@ -293,11 +293,11 @@ func TestPolicySetParametersDelete(t *testing.T) {
 
 	t.Run("with invalid policy set ID", func(t *testing.T) {
 		err := client.PolicySetParameters.Delete(ctx, badIdentifier, pTest.ID)
-		assert.EqualError(t, err, "invalid value for policy set ID")
+		assert.Equal(t, err, ErrInvalidPolicySetID)
 	})
 
 	t.Run("with invalid parameter ID", func(t *testing.T) {
 		err := client.PolicySetParameters.Delete(ctx, psTest.ID, badIdentifier)
-		assert.EqualError(t, err, "invalid value for parameter ID")
+		assert.Equal(t, err, ErrInvalidParamID)
 	})
 }

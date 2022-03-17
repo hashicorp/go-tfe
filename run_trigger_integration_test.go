@@ -32,12 +32,12 @@ func TestRunTriggerList(t *testing.T) {
 	rtTest2, rtTestCleanup2 := createRunTrigger(t, client, wTest, sourceable2Test)
 	defer rtTestCleanup2()
 
-	t.Run("without list options", func(t *testing.T) {
+	t.Run("without ListOptions and with RunTriggerType", func(t *testing.T) {
 		rtl, err := client.RunTriggers.List(
 			ctx,
 			wTest.ID,
-			RunTriggerListOptions{
-				RunTriggerType: String("inbound"),
+			&RunTriggerListOptions{
+				RunTriggerType: RunTriggerInbound,
 			},
 		)
 		require.NoError(t, err)
@@ -47,19 +47,19 @@ func TestRunTriggerList(t *testing.T) {
 		assert.Equal(t, 2, rtl.TotalCount)
 	})
 
-	t.Run("with list options", func(t *testing.T) {
+	t.Run("with ListOptions and a RunTriggerType", func(t *testing.T) {
 		// Request a page number which is out of range. The result should
 		// be successful, but return no results if the paging options are
 		// properly passed along.
 		rtl, err := client.RunTriggers.List(
 			ctx,
 			wTest.ID,
-			RunTriggerListOptions{
+			&RunTriggerListOptions{
 				ListOptions: ListOptions{
 					PageNumber: 999,
 					PageSize:   100,
 				},
-				RunTriggerType: String("inbound"),
+				RunTriggerType: RunTriggerInbound,
 			},
 		)
 		require.NoError(t, err)
@@ -72,34 +72,75 @@ func TestRunTriggerList(t *testing.T) {
 		rtl, err := client.RunTriggers.List(
 			ctx,
 			badIdentifier,
-			RunTriggerListOptions{
-				RunTriggerType: String("inbound"),
+			&RunTriggerListOptions{
+				RunTriggerType: RunTriggerInbound,
 			},
 		)
 		assert.Nil(t, rtl)
 		assert.EqualError(t, err, ErrInvalidWorkspaceID.Error())
 	})
 
-	t.Run("without run-trigger type", func(t *testing.T) {
+	t.Run("without defining RunTriggerListOptions", func(t *testing.T) {
 		rtl, err := client.RunTriggers.List(
 			ctx,
 			wTest.ID,
-			RunTriggerListOptions{},
+			nil,
 		)
 		assert.Nil(t, rtl)
-		assert.EqualError(t, err, "run-trigger type is required")
+		assert.Equal(t, err, ErrRequiredRunTriggerListOps)
 	})
 
-	t.Run("with invalid run-trigger type", func(t *testing.T) {
+	t.Run("without defining RunTriggerFilterOp as a filter param", func(t *testing.T) {
 		rtl, err := client.RunTriggers.List(
 			ctx,
 			wTest.ID,
-			RunTriggerListOptions{
-				RunTriggerType: String("invalid"),
+			&RunTriggerListOptions{
+				ListOptions: ListOptions{
+					PageNumber: 999,
+					PageSize:   100,
+				},
 			},
 		)
 		assert.Nil(t, rtl)
-		assert.EqualError(t, err, "invalid value for run-trigger type")
+		assert.Equal(t, err, ErrInvalidRunTriggerType)
+	})
+
+	t.Run("with invalid option for runTriggerType", func(t *testing.T) {
+		rtl, err := client.RunTriggers.List(
+			ctx,
+			wTest.ID,
+			&RunTriggerListOptions{
+				RunTriggerType: "oubound",
+			},
+		)
+		assert.Nil(t, rtl)
+		assert.Equal(t, err, ErrInvalidRunTriggerType)
+	})
+
+	t.Run("with sourceable include option", func(t *testing.T) {
+		rtl, err := client.RunTriggers.List(
+			ctx,
+			wTest.ID,
+			&RunTriggerListOptions{
+				RunTriggerType: RunTriggerInbound,
+				Include:        []RunTriggerIncludeOpt{RunTriggerSourceable},
+			},
+		)
+		require.NoError(t, err)
+		assert.NotEmpty(t, rtl.Items)
+		assert.NotEmpty(t, rtl.Items[0].Sourceable.Name)
+	})
+
+	t.Run("with a RunTriggerType that does not return included data", func(t *testing.T) {
+		_, err := client.RunTriggers.List(
+			ctx,
+			wTest.ID,
+			&RunTriggerListOptions{
+				RunTriggerType: RunTriggerOutbound,
+				Include:        []RunTriggerIncludeOpt{RunTriggerSourceable},
+			},
+		)
+		assert.Equal(t, err, ErrUnsupportedRunTriggerType)
 	})
 }
 
@@ -130,7 +171,7 @@ func TestRunTriggerCreate(t *testing.T) {
 
 		rt, err := client.RunTriggers.Create(ctx, wTest.ID, options)
 		assert.Nil(t, rt)
-		assert.EqualError(t, err, "sourceable is required")
+		assert.Equal(t, err, ErrRequiredSourceable)
 	})
 
 	t.Run("without a valid workspace", func(t *testing.T) {
@@ -182,7 +223,7 @@ func TestRunTriggerRead(t *testing.T) {
 
 	t.Run("when the run trigger ID is invalid", func(t *testing.T) {
 		_, err := client.RunTriggers.Read(ctx, badIdentifier)
-		assert.EqualError(t, err, "invalid value for run trigger ID")
+		assert.Equal(t, err, ErrInvalidRunTriggerID)
 	})
 }
 
@@ -217,6 +258,6 @@ func TestRunTriggerDelete(t *testing.T) {
 
 	t.Run("when the run trigger ID is invalid", func(t *testing.T) {
 		err := client.RunTriggers.Delete(ctx, badIdentifier)
-		assert.EqualError(t, err, "invalid value for run trigger ID")
+		assert.Equal(t, err, ErrInvalidRunTriggerID)
 	})
 }

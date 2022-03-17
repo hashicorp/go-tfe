@@ -80,7 +80,7 @@ func (mr *MockAdminUsersMockRecorder) GrantAdmin(ctx, userID interface{}) *gomoc
 }
 
 // List mocks base method.
-func (m *MockAdminUsers) List(ctx context.Context, options tfe.AdminUserListOptions) (*tfe.AdminUserList, error) {
+func (m *MockAdminUsers) List(ctx context.Context, options *tfe.AdminUserListOptions) (*tfe.AdminUserList, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "List", ctx, options)
 	ret0, _ := ret[0].(*tfe.AdminUserList)

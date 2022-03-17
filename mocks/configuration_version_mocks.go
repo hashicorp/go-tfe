@@ -35,6 +35,20 @@ func (m *MockConfigurationVersions) EXPECT() *MockConfigurationVersionsMockRecor
 	return m.recorder
 }
 
+// Archive mocks base method.
+func (m *MockConfigurationVersions) Archive(ctx context.Context, cvID string) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Archive", ctx, cvID)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// Archive indicates an expected call of Archive.
+func (mr *MockConfigurationVersionsMockRecorder) Archive(ctx, cvID interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Archive", reflect.TypeOf((*MockConfigurationVersions)(nil).Archive), ctx, cvID)
+}
+
 // Create mocks base method.
 func (m *MockConfigurationVersions) Create(ctx context.Context, workspaceID string, options tfe.ConfigurationVersionCreateOptions) (*tfe.ConfigurationVersion, error) {
 	m.ctrl.T.Helper()
@@ -50,8 +64,23 @@ func (mr *MockConfigurationVersionsMockRecorder) Create(ctx, workspaceID, option
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Create", reflect.TypeOf((*MockConfigurationVersions)(nil).Create), ctx, workspaceID, options)
 }
 
+// Download mocks base method.
+func (m *MockConfigurationVersions) Download(ctx context.Context, cvID string) ([]byte, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Download", ctx, cvID)
+	ret0, _ := ret[0].([]byte)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// Download indicates an expected call of Download.
+func (mr *MockConfigurationVersionsMockRecorder) Download(ctx, cvID interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Download", reflect.TypeOf((*MockConfigurationVersions)(nil).Download), ctx, cvID)
+}
+
 // List mocks base method.
-func (m *MockConfigurationVersions) List(ctx context.Context, workspaceID string, options tfe.ConfigurationVersionListOptions) (*tfe.ConfigurationVersionList, error) {
+func (m *MockConfigurationVersions) List(ctx context.Context, workspaceID string, options *tfe.ConfigurationVersionListOptions) (*tfe.ConfigurationVersionList, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "List", ctx, workspaceID, options)
 	ret0, _ := ret[0].(*tfe.ConfigurationVersionList)

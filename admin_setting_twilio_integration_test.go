@@ -39,3 +39,14 @@ func TestAdminSettings_Twilio_Update(t *testing.T) {
 	require.NoError(t, err)
 	assert.Equal(t, false, twilioSettings.Enabled)
 }
+
+func TestAdminSettings_Twilio_Verify(t *testing.T) {
+	skipIfCloud(t)
+
+	client := testClient(t)
+	ctx := context.Background()
+
+	err := client.Admin.Settings.Twilio.Verify(ctx, AdminTwilioSettingsVerifyOptions{})
+
+	assert.Equal(t, err, ErrRequiredTestNumber)
+}
