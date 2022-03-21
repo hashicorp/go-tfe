@@ -319,7 +319,7 @@ func TestVariableSetVariablesUpdate(t *testing.T) {
 
 	t.Run("with invalid variable ID", func(t *testing.T) {
 		_, err := client.VariableSetVariables.Update(ctx, vsTest.ID, badIdentifier, nil)
-		assert.EqualError(t, err, ErrInvalidVariableSetID.Error())
+		assert.EqualError(t, err, ErrInvalidVariableID.Error())
 	})
 }
 
@@ -339,7 +339,7 @@ func TestVariableSetVariablesDelete(t *testing.T) {
 
 	t.Run("with non existing variable ID", func(t *testing.T) {
 		err := client.VariableSetVariables.Delete(ctx, vsTest.ID, "nonexisting")
-		assert.Equal(t, err, ErrResourceNotFound.Error())
+		assert.EqualError(t, err, ErrResourceNotFound.Error())
 	})
 
 	t.Run("with invalid workspace ID", func(t *testing.T) {
