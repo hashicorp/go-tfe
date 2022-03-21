@@ -103,7 +103,7 @@ func TestVariableSetsCreate(t *testing.T) {
 			Name: String("foo"),
 		})
 		assert.Nil(t, vs)
-		assert.EqualError(t, err, "global flag is required")
+		assert.EqualError(t, err, ErrRequiredGlobalFlag.Error())
 	})
 }
 
@@ -165,7 +165,7 @@ func TestVariableSetsUpdate(t *testing.T) {
 			Global:      Bool(true),
 		})
 		assert.Nil(t, vsAfter)
-		assert.EqualError(t, err, "invalid value for variable set ID")
+		assert.EqualError(t, err, ErrInvalidVariableSetID.Error())
 	})
 }
 
@@ -189,7 +189,7 @@ func TestVariableSetsDelete(t *testing.T) {
 
 	t.Run("when ID is invlaid", func(t *testing.T) {
 		err := client.VariableSets.Delete(ctx, badIdentifier)
-		assert.EqualError(t, err, "invalid value for variable set ID")
+		assert.EqualError(t, err, ErrInvalidVariableSetID.Error())
 	})
 }
 

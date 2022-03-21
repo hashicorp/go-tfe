@@ -145,6 +145,8 @@ var (
 	ErrInvalidVariableID = errors.New("invalid value for variable ID")
 
 	ErrInvalidNotificationTrigger = errors.New("invalid value for notification trigger")
+
+	ErrInvalidVariableSetID = errors.New("invalid variable set ID")
 )
 
 // Missing values for required field/option
@@ -248,4 +250,8 @@ var (
 	ErrRequiredOnlyOneField = errors.New("only one of usernames or organization membership ids can be provided")
 
 	ErrRequiredUsernameOrMembershipIds = errors.New("usernames or organization membership ids are required")
+
+	ErrRequiredGlobalFlag = errors.New("global flag is required")
+
+	ErrRequiredWorkspacesList = errors.New("no workspaces list provided")
 )

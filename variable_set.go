@@ -2,7 +2,6 @@ package tfe
 
 import (
 	"context"
-	"errors"
 	"fmt"
 	"net/url"
 )
@@ -124,7 +123,7 @@ func (o VariableSetCreateOptions) valid() error {
 		return ErrRequiredName
 	}
 	if o.Global == nil {
-		return errors.New("global flag is required")
+		return ErrRequiredGlobalFlag
 	}
 	return nil
 }
@@ -162,7 +161,7 @@ type VariableSetReadOptions struct {
 // Read is used to inspect a given variable set based on ID
 func (s *variableSets) Read(ctx context.Context, variableSetID string, options *VariableSetReadOptions) (*VariableSet, error) {
 	if !validStringID(&variableSetID) {
-		return nil, errors.New("invalid variable set ID")
+		return nil, ErrInvalidVariableSetID
 	}
 
 	u := fmt.Sprintf("varsets/%s", url.QueryEscape(variableSetID))
@@ -204,7 +203,7 @@ type VariableSetUpdateOptions struct {
 
 func (s *variableSets) Update(ctx context.Context, variableSetID string, options *VariableSetUpdateOptions) (*VariableSet, error) {
 	if !validStringID(&variableSetID) {
-		return nil, errors.New("invalid value for variable set ID")
+		return nil, ErrInvalidVariableSetID
 	}
 
 	u := fmt.Sprintf("varsets/%s", url.QueryEscape(variableSetID))
@@ -225,7 +224,7 @@ func (s *variableSets) Update(ctx context.Context, variableSetID string, options
 // Delete a variable set by its ID.
 func (s *variableSets) Delete(ctx context.Context, variableSetID string) error {
 	if !validStringID(&variableSetID) {
-		return errors.New("invalid value for variable set ID")
+		return ErrInvalidVariableSetID
 	}
 
 	u := fmt.Sprintf("varsets/%s", url.QueryEscape(variableSetID))
@@ -255,7 +254,7 @@ type VariableSetAssignOptions struct {
 // Use Update to assign a variable set to workspaces
 func (s *variableSets) Assign(ctx context.Context, variableSetID string, options *VariableSetAssignOptions) (*VariableSet, error) {
 	if options == nil || options.Workspaces == nil {
-		return nil, errors.New("no workspaces list provided")
+		return nil, ErrRequiredWorkspacesList
 	}
 
 	options.Global = Bool(false)
