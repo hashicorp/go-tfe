@@ -61,7 +61,7 @@ func TestVariableSetVariablesList(t *testing.T) {
 	t.Run("when variable set ID is invalid ID", func(t *testing.T) {
 		vl, err := client.VariableSetVariables.List(ctx, badIdentifier, nil)
 		assert.Nil(t, vl)
-		assert.EqualError(t, err, "invalid value for variable set ID")
+		assert.EqualError(t, err, ErrInvalidVariableSetID.Error())
 	})
 }
 
@@ -165,7 +165,7 @@ func TestVariableSetVariablesCreate(t *testing.T) {
 		}
 
 		_, err := client.VariableSetVariables.Create(ctx, vsTest.ID, &options)
-		assert.EqualError(t, err, "key is required")
+		assert.EqualError(t, err, ErrRequiredKey.Error())
 	})
 
 	t.Run("when options has an empty key", func(t *testing.T) {
@@ -176,7 +176,7 @@ func TestVariableSetVariablesCreate(t *testing.T) {
 		}
 
 		_, err := client.VariableSetVariables.Create(ctx, vsTest.ID, &options)
-		assert.EqualError(t, err, "key is required")
+		assert.EqualError(t, err, ErrRequiredKey.Error())
 	})
 
 	t.Run("when options is missing category", func(t *testing.T) {
@@ -186,7 +186,7 @@ func TestVariableSetVariablesCreate(t *testing.T) {
 		}
 
 		_, err := client.VariableSetVariables.Create(ctx, vsTest.ID, &options)
-		assert.EqualError(t, err, "category is required")
+		assert.EqualError(t, err, ErrRequiredCategory.Error())
 	})
 
 	t.Run("when workspace ID is invalid", func(t *testing.T) {
@@ -197,7 +197,7 @@ func TestVariableSetVariablesCreate(t *testing.T) {
 		}
 
 		_, err := client.VariableSetVariables.Create(ctx, badIdentifier, &options)
-		assert.EqualError(t, err, "invalid value for variable set ID")
+		assert.EqualError(t, err, ErrInvalidVariableSetID.Error())
 	})
 }
 
@@ -234,13 +234,13 @@ func TestVariableSetVariablesRead(t *testing.T) {
 	t.Run("without a valid variable set ID", func(t *testing.T) {
 		v, err := client.VariableSetVariables.Read(ctx, badIdentifier, vTest.ID)
 		assert.Nil(t, v)
-		assert.EqualError(t, err, "invalid value for variable set ID")
+		assert.EqualError(t, err, ErrInvalidVariableSetID.Error())
 	})
 
 	t.Run("without a valid variable ID", func(t *testing.T) {
 		v, err := client.VariableSetVariables.Read(ctx, vsTest.ID, badIdentifier)
 		assert.Nil(t, v)
-		assert.EqualError(t, err, "invalid value for variable ID")
+		assert.EqualError(t, err, ErrInvalidVariableID.Error())
 	})
 }
 
@@ -314,12 +314,12 @@ func TestVariableSetVariablesUpdate(t *testing.T) {
 
 	t.Run("with invalid variable ID", func(t *testing.T) {
 		_, err := client.VariableSetVariables.Update(ctx, badIdentifier, vTest.ID, nil)
-		assert.EqualError(t, err, "invalid value for variable set ID")
+		assert.EqualError(t, err, ErrInvalidVariableSetID.Error())
 	})
 
 	t.Run("with invalid variable ID", func(t *testing.T) {
 		_, err := client.VariableSetVariables.Update(ctx, vsTest.ID, badIdentifier, nil)
-		assert.EqualError(t, err, "invalid value for variable ID")
+		assert.EqualError(t, err, ErrInvalidVariableSetID.Error())
 	})
 }
 
@@ -339,16 +339,16 @@ func TestVariableSetVariablesDelete(t *testing.T) {
 
 	t.Run("with non existing variable ID", func(t *testing.T) {
 		err := client.VariableSetVariables.Delete(ctx, vsTest.ID, "nonexisting")
-		assert.Equal(t, err, ErrResourceNotFound)
+		assert.Equal(t, err, ErrResourceNotFound.Error())
 	})
 
 	t.Run("with invalid workspace ID", func(t *testing.T) {
 		err := client.VariableSetVariables.Delete(ctx, badIdentifier, vTest.ID)
-		assert.EqualError(t, err, "invalid value for variable set ID")
+		assert.EqualError(t, err, ErrInvalidVariableSetID.Error())
 	})
 
 	t.Run("with invalid variable ID", func(t *testing.T) {
 		err := client.VariableSetVariables.Delete(ctx, vsTest.ID, badIdentifier)
-		assert.EqualError(t, err, "invalid value for variable ID")
+		assert.EqualError(t, err, ErrInvalidVariableID.Error())
 	})
 }
