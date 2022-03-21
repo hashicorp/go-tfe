@@ -15,9 +15,6 @@ func TestVariableSetsList(t *testing.T) {
 	orgTest, orgTestCleanup := createOrganization(t, client)
 	defer orgTestCleanup()
 
-	//wTest, wTestCleanup := createWorkspace(t, client, orgTest)
-	//defer wTestCleanup()
-
 	vsTest1, vsTestCleanup1 := createVariableSet(t, client, orgTest, VariableSetCreateOptions{})
 	defer vsTestCleanup1()
 	vsTest2, vsTestCleanup2 := createVariableSet(t, client, orgTest, VariableSetCreateOptions{})
@@ -75,7 +72,7 @@ func TestVariableSetsCreate(t *testing.T) {
 		vs, err := client.VariableSets.Create(ctx, orgTest.Name, &options)
 		require.NoError(t, err)
 
-		//Get refreshed view from the API
+		// Get refreshed view from the API
 		refreshed, err := client.VariableSets.Read(ctx, vs.ID, nil)
 		require.NoError(t, err)
 

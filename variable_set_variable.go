@@ -2,7 +2,6 @@ package tfe
 
 import (
 	"context"
-	"errors"
 	"fmt"
 	"net/url"
 )
@@ -64,7 +63,7 @@ func (o VariableSetVariableListOptions) valid() error {
 // List all variables associated with the given variable set.
 func (s *variableSetVariables) List(ctx context.Context, variableSetID string, options *VariableSetVariableListOptions) (*VariableSetVariableList, error) {
 	if !validStringID(&variableSetID) {
-		return nil, errors.New("invalid value for variable set ID")
+		return nil, ErrInvalidVariableSetID
 	}
 	if options != nil {
 		if err := options.valid(); err != nil {
@@ -116,10 +115,10 @@ type VariableSetVariableCreateOptions struct {
 
 func (o VariableSetVariableCreateOptions) valid() error {
 	if !validString(o.Key) {
-		return errors.New("key is required")
+		return ErrRequiredKey
 	}
 	if o.Category == nil {
-		return errors.New("category is required")
+		return ErrRequiredCategory
 	}
 	return nil
 }
@@ -127,7 +126,7 @@ func (o VariableSetVariableCreateOptions) valid() error {
 // Create is used to create a new variable.
 func (s *variableSetVariables) Create(ctx context.Context, variableSetID string, options *VariableSetVariableCreateOptions) (*VariableSetVariable, error) {
 	if !validStringID(&variableSetID) {
-		return nil, errors.New("invalid value for variable set ID")
+		return nil, ErrInvalidVariableSetID
 	}
 	if options != nil {
 		if err := options.valid(); err != nil {
@@ -151,12 +150,12 @@ func (s *variableSetVariables) Create(ctx context.Context, variableSetID string,
 }
 
 // Read a variable by its ID.
-func (s *variableSetVariables) Read(ctx context.Context, variableSetID string, variableID string) (*VariableSetVariable, error) {
+func (s *variableSetVariables) Read(ctx context.Context, variableSetID, variableID string) (*VariableSetVariable, error) {
 	if !validStringID(&variableSetID) {
-		return nil, errors.New("invalid value for variable set ID")
+		return nil, ErrInvalidVariableSetID
 	}
 	if !validStringID(&variableID) {
-		return nil, errors.New("invalid value for variable ID")
+		return nil, ErrInvalidVariableID
 	}
 
 	u := fmt.Sprintf("varsets/%s/relationships/vars/%s", url.QueryEscape(variableSetID), url.QueryEscape(variableID))
@@ -200,12 +199,12 @@ type VariableSetVariableUpdateOptions struct {
 }
 
 // Update values of an existing variable.
-func (s *variableSetVariables) Update(ctx context.Context, variableSetID string, variableID string, options *VariableSetVariableUpdateOptions) (*VariableSetVariable, error) {
+func (s *variableSetVariables) Update(ctx context.Context, variableSetID, variableID string, options *VariableSetVariableUpdateOptions) (*VariableSetVariable, error) {
 	if !validStringID(&variableSetID) {
-		return nil, errors.New("invalid value for variable set ID")
+		return nil, ErrInvalidVariableSetID
 	}
 	if !validStringID(&variableID) {
-		return nil, errors.New("invalid value for variable ID")
+		return nil, ErrInvalidVariableID
 	}
 
 	u := fmt.Sprintf("varsets/%s/relationships/vars/%s", url.QueryEscape(variableSetID), url.QueryEscape(variableID))
@@ -224,12 +223,12 @@ func (s *variableSetVariables) Update(ctx context.Context, variableSetID string,
 }
 
 // Delete a variable by its ID.
-func (s *variableSetVariables) Delete(ctx context.Context, variableSetID string, variableID string) error {
+func (s *variableSetVariables) Delete(ctx context.Context, variableSetID, variableID string) error {
 	if !validStringID(&variableSetID) {
-		return errors.New("invalid value for variable set ID")
+		return ErrInvalidVariableSetID
 	}
 	if !validStringID(&variableID) {
-		return errors.New("invalid value for variable ID")
+		return ErrInvalidVariableID
 	}
 
 	u := fmt.Sprintf("varsets/%s/relationships/vars/%s", url.QueryEscape(variableSetID), url.QueryEscape(variableID))
