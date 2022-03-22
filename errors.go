@@ -145,6 +145,10 @@ var (
 	ErrInvalidVariableID = errors.New("invalid value for variable ID")
 
 	ErrInvalidNotificationTrigger = errors.New("invalid value for notification trigger")
+
+	ErrInvalidCommentID = errors.New("invalid value for comment ID")
+
+	ErrInvalidCommentBody = errors.New("invalid value for comment body")
 )
 
 // Missing values for required field/option
@@ -248,4 +252,6 @@ var (
 	ErrRequiredOnlyOneField = errors.New("only one of usernames or organization membership ids can be provided")
 
 	ErrRequiredUsernameOrMembershipIds = errors.New("usernames or organization membership ids are required")
+
+	ErrCommentBody = errors.New("comment body is required")
 )

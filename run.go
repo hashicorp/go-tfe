@@ -119,6 +119,7 @@ type Run struct {
 	PolicyChecks         []*PolicyCheck        `jsonapi:"relation,policy-checks"`
 	TaskStages           []*TaskStage          `jsonapi:"relation,task-stages,omitempty"`
 	Workspace            *Workspace            `jsonapi:"relation,workspace"`
+	Comments             []*Comment            `jsonapi:"relation,comments"`
 }
 
 // RunActions represents the run actions.
