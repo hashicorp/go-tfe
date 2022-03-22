@@ -29,8 +29,8 @@ type VariableSets interface {
 	// Delete a variable set by ID.
 	Delete(ctx context.Context, variableSetID string) error
 
-	// Add and remove workspace assignments to match the supplied list
-	Assign(ctx context.Context, variableSetID string, options *VariableSetAssignOptions) (*VariableSet, error)
+	// Update list of workspaces to which the variable set is applied to match the supplied list
+	Apply(ctx context.Context, variableSetID string, options *VariableSetApplyOptions) (*VariableSet, error)
 }
 
 type variableSets struct {
@@ -234,8 +234,8 @@ func (s *variableSets) Delete(ctx context.Context, variableSetID string) error {
 	return s.client.do(ctx, req, nil)
 }
 
-// VariableSetAssignOptions represents a subset of update options specifically for assigning variable sets to workspaces
-type VariableSetAssignOptions struct {
+// VariableSetApplyOptions represents a subset of update options specifically for applying variable sets to workspaces
+type VariableSetAapplyOptions struct {
 	// Type is a public field utilized by JSON:API to
 	// set the resource type via the field tag.
 	// It is not a user-defined value and does not need to be set.
@@ -245,12 +245,12 @@ type VariableSetAssignOptions struct {
 	// Used to set the variable set from Global to not Global if necessary
 	Global *bool `jsonapi:"attr,global"`
 
-	// The workspaces to be assigned to. An empty set means remove all assignments
+	// The workspaces to be applied to. An empty set means remove all applied
 	Workspaces []*Workspace `jsonapi:"relation,workspaces"`
 }
 
-// Update variable set assignments to match the supplied workspaces list.
-func (s *variableSets) Assign(ctx context.Context, variableSetID string, options *VariableSetAssignOptions) (*VariableSet, error) {
+// Update variable set to be applied to only the workspaces in the supplied list.
+func (s *variableSets) Apply(ctx context.Context, variableSetID string, options *VariableSetApplyOptions) (*VariableSet, error) {
 	if options == nil || options.Workspaces == nil {
 		return nil, ErrRequiredWorkspacesList
 	}
