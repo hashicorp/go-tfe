@@ -235,7 +235,7 @@ func (s *variableSets) Delete(ctx context.Context, variableSetID string) error {
 }
 
 // VariableSetApplyOptions represents a subset of update options specifically for applying variable sets to workspaces
-type VariableSetAapplyOptions struct {
+type VariableSetApplyOptions struct {
 	// Type is a public field utilized by JSON:API to
 	// set the resource type via the field tag.
 	// It is not a user-defined value and does not need to be set.
