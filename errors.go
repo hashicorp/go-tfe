@@ -147,6 +147,10 @@ var (
 	ErrInvalidNotificationTrigger = errors.New("invalid value for notification trigger")
 
 	ErrInvalidVariableSetID = errors.New("invalid variable set ID")
+
+	ErrInvalidCommentID = errors.New("invalid value for comment ID")
+
+	ErrInvalidCommentBody = errors.New("invalid value for comment body")
 )
 
 // Missing values for required field/option
@@ -254,4 +258,6 @@ var (
 	ErrRequiredGlobalFlag = errors.New("global flag is required")
 
 	ErrRequiredWorkspacesList = errors.New("no workspaces list provided")
+
+	ErrCommentBody = errors.New("comment body is required")
 )
