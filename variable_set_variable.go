@@ -71,7 +71,7 @@ func (s *variableSetVariables) List(ctx context.Context, variableSetID string, o
 		}
 	}
 
-	u := fmt.Sprintf("varsets/%s/relationships/vars", variableSetID)
+	u := fmt.Sprintf("varsets/%s/relationships/vars", url.QueryEscape(variableSetID))
 	req, err := s.client.newRequest("GET", u, options)
 	if err != nil {
 		return nil, err
