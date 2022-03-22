@@ -56,11 +56,11 @@ type VariableSet struct {
 
 // A list of relations to include. See available resources
 // https://www.terraform.io/docs/cloud/api/admin/organizations.html#available-related-resources
-type VariableSetIncludeOps string
+type VariableSetIncludeOpt string
 
 const (
-	VariableSetWorkspaces VariableSetIncludeOps = "workspaces"
-	VariableSetVars       VariableSetIncludeOps = "vars"
+	VariableSetWorkspaces VariableSetIncludeOpt = "workspaces"
+	VariableSetVars       VariableSetIncludeOpt = "vars"
 )
 
 type VariableSetListOptions struct {
@@ -155,7 +155,7 @@ func (s *variableSets) Create(ctx context.Context, organization string, options 
 }
 
 type VariableSetReadOptions struct {
-	Include *[]VariableSetIncludeOps `url:"include:omitempty"`
+	Include *[]VariableSetIncludeOpt `url:"include:omitempty"`
 }
 
 // Read is used to inspect a given variable set based on ID
@@ -190,15 +190,13 @@ type VariableSetUpdateOptions struct {
 	// The name of the variable set.
 	// Affects variable precedence when there are conflicts between Variable Sets
 	// https://www.terraform.io/cloud-docs/api-docs/variable-sets#apply-variable-set-to-workspaces
-	Name *string `jsonapi:"attr,name"`
+	Name *string `jsonapi:"attr,name,omitempty"`
 
 	// A description to provide context for the variable set.
 	Description *string `jsonapi:"attr,description,omitempty"`
 
 	// If true the variable set is considered in all runs in the organization.
 	Global *bool `jsonapi:"attr,global,omitempty"`
-
-	Include *[]VariableSetIncludeOps `url:"include:omitempty"`
 }
 
 func (s *variableSets) Update(ctx context.Context, variableSetID string, options *VariableSetUpdateOptions) (*VariableSet, error) {
@@ -246,9 +244,6 @@ type VariableSetAssignOptions struct {
 
 	// Used to set the variable set from Global to not Global if necessary
 	Global *bool `jsonapi:"attr,global"`
-
-	// The workspaces to be assigned to. An empty set means remove all assignments
-	Workspaces []*Workspace `jsonapi:"relation,workspaces"`
 }
 
 // Update variable set assignments to match the supplied workspaces list.
