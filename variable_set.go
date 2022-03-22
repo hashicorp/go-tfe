@@ -29,7 +29,7 @@ type VariableSets interface {
 	// Delete a variable set by ID.
 	Delete(ctx context.Context, variableSetID string) error
 
-	// Assign a variable set to workspaces
+	// Add and remove workspace assignments to match the supplied list
 	Assign(ctx context.Context, variableSetID string, options *VariableSetAssignOptions) (*VariableSet, error)
 }
 
@@ -251,7 +251,7 @@ type VariableSetAssignOptions struct {
 	Workspaces []*Workspace `jsonapi:"relation,workspaces"`
 }
 
-// Use Update to assign a variable set to workspaces
+// Update variable set assignments to match the supplied workspaces list.
 func (s *variableSets) Assign(ctx context.Context, variableSetID string, options *VariableSetAssignOptions) (*VariableSet, error) {
 	if options == nil || options.Workspaces == nil {
 		return nil, ErrRequiredWorkspacesList
