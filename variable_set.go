@@ -244,6 +244,9 @@ type VariableSetAssignOptions struct {
 
 	// Used to set the variable set from Global to not Global if necessary
 	Global *bool `jsonapi:"attr,global"`
+
+	// The workspaces to be assigned to. An empty set means remove all assignments
+	Workspaces []*Workspace `jsonapi:"relation,workspaces"`
 }
 
 // Update variable set assignments to match the supplied workspaces list.
