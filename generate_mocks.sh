@@ -36,6 +36,7 @@ mockgen -source=policy_set_parameter.go -destination=mocks/policy_set_parameter_
 mockgen -source=policy_set_version.go -destination=mocks/policy_set_version_mocks.go -package=mocks
 mockgen -source=registry_module.go -destination=mocks/registry_module_mocks.go -package=mocks
 mockgen -source=run.go -destination=mocks/run_mocks.go -package=mocks
+mockgen -source=run_task.go -destination=mocks/run_tasks.go -package=mocks
 mockgen -source=run_trigger.go -destination=mocks/run_trigger_mocks.go -package=mocks
 mockgen -source=ssh_key.go -destination=mocks/ssh_key_mocks.go -package=mocks
 mockgen -source=state_version.go -destination=mocks/state_version_mocks.go -package=mocks
@@ -49,3 +50,4 @@ mockgen -source=user.go -destination=mocks/user_mocks.go -package=mocks
 mockgen -source=user_token.go -destination=mocks/user_token_mocks.go -package=mocks
 mockgen -source=variable.go -destination=mocks/variable_mocks.go -package=mocks
 mockgen -source=workspace.go -destination=mocks/workspace_mocks.go -package=mocks
+mockgen -source=workspace_run_task.go -destination=mocks/workspace_run_tasks.go -package=mocks

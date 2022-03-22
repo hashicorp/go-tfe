@@ -65,7 +65,7 @@ func (mr *MockRunTriggersMockRecorder) Delete(ctx, RunTriggerID interface{}) *go
 }
 
 // List mocks base method.
-func (m *MockRunTriggers) List(ctx context.Context, workspaceID string, options tfe.RunTriggerListOptions) (*tfe.RunTriggerList, error) {
+func (m *MockRunTriggers) List(ctx context.Context, workspaceID string, options *tfe.RunTriggerListOptions) (*tfe.RunTriggerList, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "List", ctx, workspaceID, options)
 	ret0, _ := ret[0].(*tfe.RunTriggerList)

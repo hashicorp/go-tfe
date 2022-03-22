@@ -12,7 +12,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-const waitForStateVersionOutputs = 500 * time.Millisecond
+const waitForStateVersionOutputs = 700 * time.Millisecond
 
 func TestStateVersionOutputsRead(t *testing.T) {
 	client := testClient(t)
@@ -28,10 +28,10 @@ func TestStateVersionOutputsRead(t *testing.T) {
 	time.Sleep(waitForStateVersionOutputs)
 
 	curOpts := &StateVersionCurrentOptions{
-		Include: "outputs",
+		Include: []StateVersionIncludeOpt{SVoutputs},
 	}
 
-	sv, err := client.StateVersions.CurrentWithOptions(ctx, wTest1.ID, curOpts)
+	sv, err := client.StateVersions.ReadCurrentWithOptions(ctx, wTest1.ID, curOpts)
 	if err != nil {
 		t.Fatal(err)
 	}

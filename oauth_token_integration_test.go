@@ -25,9 +25,7 @@ func TestOAuthTokensList(t *testing.T) {
 	defer otTest2Cleanup()
 
 	t.Run("without list options", func(t *testing.T) {
-		options := OAuthTokenListOptions{}
-
-		otl, err := client.OAuthTokens.List(ctx, orgTest.Name, options)
+		otl, err := client.OAuthTokens.List(ctx, orgTest.Name, nil)
 		require.NoError(t, err)
 
 		t.Run("the OAuth client relationship is decoded correcly", func(t *testing.T) {
@@ -56,7 +54,7 @@ func TestOAuthTokensList(t *testing.T) {
 		// Request a page number which is out of range. The result should
 		// be successful, but return no results if the paging options are
 		// properly passed along.
-		options := OAuthTokenListOptions{
+		options := &OAuthTokenListOptions{
 			ListOptions: ListOptions{
 				PageNumber: 999,
 				PageSize:   100,
@@ -71,9 +69,7 @@ func TestOAuthTokensList(t *testing.T) {
 	})
 
 	t.Run("without a valid organization", func(t *testing.T) {
-		options := OAuthTokenListOptions{}
-
-		otl, err := client.OAuthTokens.List(ctx, badIdentifier, options)
+		otl, err := client.OAuthTokens.List(ctx, badIdentifier, nil)
 		assert.Nil(t, otl)
 		assert.EqualError(t, err, ErrInvalidOrg.Error())
 	})
@@ -102,7 +98,7 @@ func TestOAuthTokensRead(t *testing.T) {
 	t.Run("without a valid OAuth token ID", func(t *testing.T) {
 		ot, err := client.OAuthTokens.Read(ctx, badIdentifier)
 		assert.Nil(t, ot)
-		assert.EqualError(t, err, "invalid value for OAuth token ID")
+		assert.Equal(t, err, ErrInvalidOauthTokenID)
 	})
 }
 
@@ -160,7 +156,7 @@ dpIe8YOINN27XaojJvVpT5uBVCcZLF+G7kaMjSwCTlDx3Q==
 	t.Run("without a valid policy ID", func(t *testing.T) {
 		ot, err := client.OAuthTokens.Update(ctx, badIdentifier, OAuthTokenUpdateOptions{})
 		assert.Nil(t, ot)
-		assert.EqualError(t, err, "invalid value for OAuth token ID")
+		assert.Equal(t, err, ErrInvalidOauthTokenID)
 	})
 }
 
@@ -190,6 +186,6 @@ func TestOAuthTokensDelete(t *testing.T) {
 
 	t.Run("when the OAuth token ID is invalid", func(t *testing.T) {
 		err := client.OAuthTokens.Delete(ctx, badIdentifier)
-		assert.EqualError(t, err, "invalid value for OAuth token ID")
+		assert.Equal(t, err, ErrInvalidOauthTokenID)
 	})
 }

@@ -21,19 +21,21 @@ type taskResults struct {
 	client *Client
 }
 
-//TaskResultStatus is an enum that represents all possible statuses for a task result
+// TaskResultStatus is an enum that represents all possible statuses for a task result
 type TaskResultStatus string
-
-//TaskEnforcementLevel is an enum that describes the enforcement levels for a run task
-type TaskEnforcementLevel string
 
 const (
 	TaskPassed      TaskResultStatus = "passed"
 	TaskFailed      TaskResultStatus = "failed"
-	TaskRunning     TaskResultStatus = "running"
 	TaskPending     TaskResultStatus = "pending"
+	TaskRunning     TaskResultStatus = "running"
 	TaskUnreachable TaskResultStatus = "unreachable"
+)
 
+// TaskEnforcementLevel is an enum that describes the enforcement levels for a run task
+type TaskEnforcementLevel string
+
+const (
 	Advisory  TaskEnforcementLevel = "advisory"
 	Mandatory TaskEnforcementLevel = "mandatory"
 )

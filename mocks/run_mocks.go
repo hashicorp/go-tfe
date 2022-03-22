@@ -107,7 +107,7 @@ func (mr *MockRunsMockRecorder) ForceCancel(ctx, runID, options interface{}) *go
 }
 
 // List mocks base method.
-func (m *MockRuns) List(ctx context.Context, workspaceID string, options tfe.RunListOptions) (*tfe.RunList, error) {
+func (m *MockRuns) List(ctx context.Context, workspaceID string, options *tfe.RunListOptions) (*tfe.RunList, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "List", ctx, workspaceID, options)
 	ret0, _ := ret[0].(*tfe.RunList)

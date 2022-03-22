@@ -59,16 +59,20 @@ type TaskStageStatusTimestamps struct {
 	PassedAt   time.Time `jsonapi:"attr,passed-at,rfc3339"`
 }
 
-// A list of relations to include.
-type TaskStageIncludeOps string
+// TaskStageIncludeOpt represents the available options for include query params.
+type TaskStageIncludeOpt string
 
-const (
-	TaskStageTaskResults TaskStageIncludeOps = "task_results"
-)
+const TaskStageTaskResults TaskStageIncludeOpt = "task_results"
 
 // TaskStageReadOptions represents the set of options when reading a task stage
 type TaskStageReadOptions struct {
-	Include []TaskStageIncludeOps `url:"include"`
+	// Optional: A list of relations to include.
+	Include []TaskStageIncludeOpt `url:"include,omitempty"`
+}
+
+// TaskStageListOptions represents the options for listing task stages for a run
+type TaskStageListOptions struct {
+	ListOptions
 }
 
 // Read a task stage by ID
@@ -76,9 +80,12 @@ func (s *taskStages) Read(ctx context.Context, taskStageID string, options *Task
 	if !validStringID(&taskStageID) {
 		return nil, ErrInvalidTaskStageID
 	}
+	if err := options.valid(); err != nil {
+		return nil, err
+	}
 
 	u := fmt.Sprintf("task-stages/%s", taskStageID)
-	req, err := s.client.newRequest("GET", u, &options)
+	req, err := s.client.newRequest("GET", u, options)
 	if err != nil {
 		return nil, err
 	}
@@ -92,11 +99,6 @@ func (s *taskStages) Read(ctx context.Context, taskStageID string, options *Task
 	return t, nil
 }
 
-// TaskStageListOptions represents the options for listing task stages for a run
-type TaskStageListOptions struct {
-	ListOptions
-}
-
 // List task stages for a run
 func (s *taskStages) List(ctx context.Context, runID string, options *TaskStageListOptions) (*TaskStageList, error) {
 	if !validStringID(&runID) {
@@ -104,7 +106,7 @@ func (s *taskStages) List(ctx context.Context, runID string, options *TaskStageL
 	}
 
 	u := fmt.Sprintf("runs/%s/task-stages", runID)
-	req, err := s.client.newRequest("GET", u, &options)
+	req, err := s.client.newRequest("GET", u, options)
 	if err != nil {
 		return nil, err
 	}
@@ -117,4 +119,29 @@ func (s *taskStages) List(ctx context.Context, runID string, options *TaskStageL
 	}
 
 	return tlist, nil
+}
+
+func (o *TaskStageReadOptions) valid() error {
+	if o == nil {
+		return nil // nothing to validate
+	}
+
+	if err := validateTaskStageIncludeParams(o.Include); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func validateTaskStageIncludeParams(params []TaskStageIncludeOpt) error {
+	for _, p := range params {
+		switch p {
+		case TaskStageTaskResults:
+			// do nothing
+		default:
+			return ErrInvalidIncludeValue
+		}
+	}
+
+	return nil
 }

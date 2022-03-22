@@ -2,15 +2,28 @@
 
 If you find an issue with this package, please create an issue in GitHub. If you'd like, we welcome any contributions. Fork this repository and submit a pull request.
 
+## Running the Linters Locally
+
+1. Ensure you have have [installed golangci-lint](https://golangci-lint.run/usage/install/#local-installation)
+2. From the CLI, run `golangci-lint run`
+
 ## Writing Tests
 
-The test suite contains many acceptance tests that are run against the latest version of Terraform Enterprise. You can read more about running the tests against your own Terraform Enterprise environment in [TESTS.md](TESTS.md). Our CI system (Circle) will not test your fork unless you are an authorized employee, so a HashiCorp maintainer will initiate the tests or you and report any missing tests or simple problems. In order to speed up this process, it's not uncommon for your commits to be incorportated into another PR that we can commit test changes to.
+The test suite contains many acceptance tests that are run against the latest version of Terraform Enterprise. You can read more about running the tests against your own Terraform Enterprise environment in [TESTS.md](TESTS.md). Our CI system (Circle) will not test your fork unless you are an authorized employee, so a HashiCorp maintainer will initiate the tests or you and report any missing tests or simple problems. In order to speed up this process, it's not uncommon for your commits to be incorporated into another PR that we can commit test changes to.
 
 ## Editor Settings
 
 We've included VSCode settings to assist with configuring the go extension. For other editors that integrate with the [Go Language Server](https://github.com/golang/tools/tree/master/gopls), the main thing to do is to add the `integration` build tags so that the test files are found by the language server. See `.vscode/settings.json` for more details.
 
-## Adding a new Endpoint
+## Generating Mocks
+
+You'll need to generate mocks if an existing endpoint method is modified or a new method is added. To generate mocks, simply run `./generate_mocks.sh` If you're adding a new API resource to go-tfe, you'll need to add the command to `generate_mocks.sh`. For example if someone creates `example_resource.go`, you'll add:
+
+```
+mockgen -source=example_resource.go -destination=mocks/example_resource_mocks.go -package=mocks
+```
+
+## Adding a New Endpoint
 
 Here you will find a scaffold to get you started when building a json:api RESTful endpoint. The comments are meant to guide you but should be replaced with endpoint-specific and type-specific documentation. Additionally, you'll need to add an integration test that covers each method of the main interface.
 
@@ -69,12 +82,6 @@ type Example struct {
 	Organization *Organization `jsonapi:"relation,organization"`
 }
 
-// ExampleList represents a list of examples
-type ExampleList struct {
-	*Pagination
-	Items []*Example
-}
-
 // ExampleCreateOptions represents the set of options for creating an example
 type ExampleCreateOptions struct {
 	// Type is a public field utilized by JSON:API to
@@ -93,16 +100,53 @@ type ExampleCreateOptions struct {
 	OptionalValue *string `jsonapi:"attr,optional-value,omitempty"`
 }
 
-func (o *ExampleCreateOptions) valid() error {
-	if !validString(&o.Name) {
-		return ErrRequiredName
-	}
+// ExampleIncludeOpt represents the available options for include query params.
+// https://www.terraform.io/cloud-docs/api-docs/examples#list-examples (replace this URL with the actual documentation URL)
+type ExampleIncludeOpt string
 
-	if !validString(&o.URL) {
-		return ErrInvalidRunTaskURL
-	}
+const (
+	ExampleOrganization ExampleIncludeOpt = "organization"
+	ExampleRun ExampleIncludeOpt = "run"
+)
 
-	return nil
+// ExampleListOptions represents the set of options for listing examples
+type ExampleListOptions struct {
+	ListOptions
+
+	// Optional: A list of relations to include with an example. See available resources:
+	// https://www.terraform.io/cloud-docs/api-docs/examples#list-examples (replace this URL with the actual documentation URL)
+	Include []ExampleIncludeOpt `url:"include,omitempty"`
+}
+
+// ExampleList represents a list of examples
+type ExampleList struct {
+	*Pagination
+	Items []*Example
+}
+
+// ExampleReadOptions represents the set of options for reading an example
+type ExampleReadOptions struct {
+	// Optional: A list of relations to include with an example. See available resources:
+	// https://www.terraform.io/cloud-docs/api-docs/examples#list-examples (replace this URL with the actual documentation URL)
+	Include []RunTaskIncludeOpt `url:"include,omitempty"`
+}
+
+// ExampleUpdateOptions represents the set of options for updating an organization's examples
+type ExampleUpdateOptions struct {
+	// Type is a public field utilized by JSON:API to
+	// set the resource type via the field tag.
+	// It is not a user-defined value and does not need to be set.
+	// https://jsonapi.org/format/#crud-creating
+	Type string `jsonapi:"primary,tasks"`
+
+	// Optional: The name of the example, defaults to previous value
+	Name *string `jsonapi:"attr,name,omitempty"`
+
+	// Optional: The URL to send a example payload, defaults to previous value
+	URL *string `jsonapi:"attr,url,omitempty"`
+
+	// Optional: An optional value
+	OptionalValue *string `jsonapi:"attr,optional-value,omitempty"`
 }
 
 // Create is used to create a new example for an organization
@@ -130,26 +174,13 @@ func (s *example) Create(ctx context.Context, organization string, options Examp
 	return r, nil
 }
 
-// A list of relations to include with an example. See available resources:
-// https://www.terraform.io/cloud-docs/api-docs/examples#list-examples (replace this URL with the actual documentation URL)
-type ExampleIncludeOps string
-
-const (
-	ExampleOrganization ExampleIncludeOps = "organization"
-)
-
-// ExampleListOptions represents the set of options for listing examples
-type ExampleListOptions struct {
-	ListOptions
-
-	// A list of relations to include
-	Include []ExampleIncludeOps `url:"include,omitempty"`
-}
-
 // List all the examples for an organization
 func (s *example) List(ctx context.Context, organization string, options *ExampleListOptions) (*ExampleList, error) {
 	if !validStringID(&organization) {
 		return nil, ErrInvalidOrg
+	}
+	if err := options.valid(); err != nil {
+		return nil, err
 	}
 
 	u := fmt.Sprintf("organizations/%s/examples", url.QueryEscape(organization))
@@ -172,15 +203,13 @@ func (s *example) Read(ctx context.Context, exampleID string) (*Example, error) 
 	return s.ReadWithOptions(ctx, exampleID, nil)
 }
 
-// ExampleReadOptions represents the set of options for reading an example
-type ExampleReadOptions struct {
-	Include []RunTaskIncludeOps `url:"include,omitempty"`
-}
-
 // Read is used to read an organization's example by ID with options
 func (s *example) ReadWithOptions(ctx context.Context, exampleID string, options *ExampleReadOptions) (*Example, error) {
 	if !validStringID(&exampleID) {
 		return nil, ErrInvalidExampleID
+	}
+	if err := options.valid(); err != nil {
+		return nil, err
 	}
 
 	u := fmt.Sprintf("examples/%s", url.QueryEscape(exampleID))
@@ -196,36 +225,6 @@ func (s *example) ReadWithOptions(ctx context.Context, exampleID string, options
 	}
 
 	return e, nil
-}
-
-// ExampleUpdateOptions represents the set of options for updating an organization's examples
-type ExampleUpdateOptions struct {
-	// Type is a public field utilized by JSON:API to
-	// set the resource type via the field tag.
-	// It is not a user-defined value and does not need to be set.
-	// https://jsonapi.org/format/#crud-creating
-	Type string `jsonapi:"primary,tasks"`
-
-	// Optional: The name of the example, defaults to previous value
-	Name *string `jsonapi:"attr,name,omitempty"`
-
-	// Optional: The URL to send a example payload, defaults to previous value
-	URL *string `jsonapi:"attr,url,omitempty"`
-
-	// Optional: An optional value
-	OptionalValue *string `jsonapi:"attr,optional-value,omitempty"`
-}
-
-func (o *ExampleUpdateOptions) valid() error {
-	if o.Name != nil && !validString(o.Name) {
-		return ErrRequiredName
-	}
-
-	if o.URL != nil && !validString(o.URL) {
-		return ErrInvalidRunTaskURL
-	}
-
-	return nil
 }
 
 // Update an existing example for an organization by ID
@@ -267,4 +266,72 @@ func (s *example) Delete(ctx context.Context, exampleID string) error {
 
 	return s.client.do(ctx, req, nil)
 }
+
+func (o *ExampleUpdateOptions) valid() error {
+	if o.Name != nil && !validString(o.Name) {
+		return ErrRequiredName
+	}
+
+	if o.URL != nil && !validString(o.URL) {
+		return ErrInvalidRunTaskURL
+	}
+
+	return nil
+}
+
+func (o *ExampleCreateOptions) valid() error {
+	if !validString(&o.Name) {
+		return ErrRequiredName
+	}
+
+	if !validString(&o.URL) {
+		return ErrInvalidRunTaskURL
+	}
+
+	return nil
+}
+
+func (o *ExampleListOptions) valid() error {
+	if o == nil {
+		return nil // nothing to validate 
+	}
+	if err := validateExampleIncludeParams(o.Include); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (o *ExampleReadOptions) valid() error {
+	if o == nil {
+		return nil // nothing to validate 
+	}
+	if err := validateExampleIncludeParams(o.Include); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func validateExampleIncludeParams(params []ExampleIncludeOpt) error {
+	for _, p := range params {
+		switch p {
+		case ExampleOrganization, ExampleRun:
+			// do nothing
+		default:
+			return ErrInvalidIncludeValue
+		}
+	}
+
+	return nil
+}
 ```
+
+## Generating Mocks
+
+To generate mocks, simply run `./generate_mocks.sh`. You'll need to do so if an existing endpoint method is modified or a new method is added. If you're adding a new API resource to go-tfe, you'll need to add the command to `generate_mocks.sh`. For example if someone creates `example_resource.go`, you'll add:
+
+```
+mockgen -source=example_resource.go -destination=mocks/example_resource_mocks.go -package=mocks
+```
+

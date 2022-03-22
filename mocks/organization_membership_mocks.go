@@ -65,7 +65,7 @@ func (mr *MockOrganizationMembershipsMockRecorder) Delete(ctx, organizationMembe
 }
 
 // List mocks base method.
-func (m *MockOrganizationMemberships) List(ctx context.Context, organization string, options tfe.OrganizationMembershipListOptions) (*tfe.OrganizationMembershipList, error) {
+func (m *MockOrganizationMemberships) List(ctx context.Context, organization string, options *tfe.OrganizationMembershipListOptions) (*tfe.OrganizationMembershipList, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "List", ctx, organization, options)
 	ret0, _ := ret[0].(*tfe.OrganizationMembershipList)

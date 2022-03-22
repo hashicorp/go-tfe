@@ -37,7 +37,7 @@ func (m *MockPolicyChecks) EXPECT() *MockPolicyChecksMockRecorder {
 }
 
 // List mocks base method.
-func (m *MockPolicyChecks) List(ctx context.Context, runID string, options tfe.PolicyCheckListOptions) (*tfe.PolicyCheckList, error) {
+func (m *MockPolicyChecks) List(ctx context.Context, runID string, options *tfe.PolicyCheckListOptions) (*tfe.PolicyCheckList, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "List", ctx, runID, options)
 	ret0, _ := ret[0].(*tfe.PolicyCheckList)

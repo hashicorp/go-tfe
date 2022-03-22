@@ -1,12 +1,14 @@
 package tfe
 
 import (
+	"errors"
+	"io/fs"
 	"log"
+	"sort"
 
 	"bytes"
 	"context"
 	"encoding/json"
-	"errors"
 	"fmt"
 	"io"
 	"math/rand"
@@ -28,23 +30,24 @@ import (
 )
 
 const (
-	_userAgent        = "go-tfe"
-	_headerRateLimit  = "X-RateLimit-Limit"
-	_headerRateReset  = "X-RateLimit-Reset"
-	_headerAPIVersion = "TFP-API-Version"
+	_userAgent         = "go-tfe"
+	_headerRateLimit   = "X-RateLimit-Limit"
+	_headerRateReset   = "X-RateLimit-Reset"
+	_headerAPIVersion  = "TFP-API-Version"
+	_includeQueryParam = "include"
 
-	// DefaultAddress of Terraform Enterprise.
-	DefaultAddress = "https://app.terraform.io"
-	// DefaultBasePath on which the API is served.
+	DefaultAddress  = "https://app.terraform.io"
 	DefaultBasePath = "/api/v2/"
 	// PingEndpoint is a no-op API endpoint used to configure the rate limiter
 	PingEndpoint = "ping"
 )
 
 // RetryLogHook allows a function to run before each retry.
+
 type RetryLogHook func(attemptNum int, resp *http.Response)
 
 // Config provides configuration details to the API client.
+
 type Config struct {
 	// The address of the Terraform Enterprise API.
 	Address string
@@ -66,6 +69,7 @@ type Config struct {
 }
 
 // DefaultConfig returns a default config structure.
+
 func DefaultConfig() *Config {
 	config := &Config{
 		Address:    os.Getenv("TFE_ADDRESS"),
@@ -77,7 +81,11 @@ func DefaultConfig() *Config {
 
 	// Set the default address if none is given.
 	if config.Address == "" {
-		config.Address = DefaultAddress
+		if host := os.Getenv("TFE_HOSTNAME"); host != "" {
+			config.Address = fmt.Sprintf("https://%s", host)
+		} else {
+			config.Address = DefaultAddress
+		}
 	}
 
 	// Set the default user agent.
@@ -87,7 +95,7 @@ func DefaultConfig() *Config {
 }
 
 // Client is the Terraform Enterprise API client. It provides the basic
-// connectivity and configuration for accessing the TFE API.
+// connectivity and configuration for accessing the TFE API
 type Client struct {
 	baseURL           *url.URL
 	token             string
@@ -102,6 +110,7 @@ type Client struct {
 	AgentPools                 AgentPools
 	AgentTokens                AgentTokens
 	Applies                    Applies
+	Comments                   Comments
 	ConfigurationVersions      ConfigurationVersions
 	CostEstimates              CostEstimates
 	NotificationConfigurations NotificationConfigurations
@@ -142,7 +151,7 @@ type Client struct {
 
 // Admin is the the Terraform Enterprise Admin API. It provides access to site
 // wide admin settings. These are only available for Terraform Enterprise and
-// do not function against Terraform Cloud.
+// do not function against Terraform Cloud
 type Admin struct {
 	Organizations     AdminOrganizations
 	Workspaces        AdminWorkspaces
@@ -186,7 +195,7 @@ func NewClient(cfg *Config) (*Client, error) {
 	// Parse the address to make sure its a valid URL.
 	baseURL, err := url.Parse(config.Address)
 	if err != nil {
-		return nil, fmt.Errorf("invalid address: %v", err)
+		return nil, fmt.Errorf("invalid address: %w", err)
 	}
 
 	baseURL.Path = config.BasePath
@@ -243,6 +252,7 @@ func NewClient(cfg *Config) (*Client, error) {
 	client.AgentPools = &agentPools{client: client}
 	client.AgentTokens = &agentTokens{client: client}
 	client.Applies = &applies{client: client}
+	client.Comments = &comments{client: client}
 	client.ConfigurationVersions = &configurationVersions{client: client}
 	client.CostEstimates = &costEstimates{client: client}
 	client.NotificationConfigurations = &notificationConfigurations{client: client}
@@ -309,18 +319,21 @@ func (c *Client) RemoteAPIVersion() string {
 //
 // This is intended for use in tests, when you may want to configure your TFE client to
 // return something different than the actual API version in order to test error handling.
+
 func (c *Client) SetFakeRemoteAPIVersion(fakeAPIVersion string) {
 	c.remoteAPIVersion = fakeAPIVersion
 }
 
 // RetryServerErrors configures the retry HTTP check to also retry
 // unexpected errors or requests that failed with a server error.
+
 func (c *Client) RetryServerErrors(retry bool) {
 	c.retryServerErrors = retry
 }
 
 // retryHTTPCheck provides a callback for Client.CheckRetry which
 // will retry both rate limit (429) and server (>= 500) errors.
+
 func (c *Client) retryHTTPCheck(ctx context.Context, resp *http.Response, err error) (bool, error) {
 	if ctx.Err() != nil {
 		return false, ctx.Err()
@@ -336,6 +349,7 @@ func (c *Client) retryHTTPCheck(ctx context.Context, resp *http.Response, err er
 
 // retryHTTPBackoff provides a generic callback for Client.Backoff which
 // will pass through all calls based on the status code of the response.
+
 func (c *Client) retryHTTPBackoff(min, max time.Duration, attemptNum int, resp *http.Response) time.Duration {
 	if c.retryLogHook != nil {
 		c.retryLogHook(attemptNum, resp)
@@ -343,7 +357,7 @@ func (c *Client) retryHTTPBackoff(min, max time.Duration, attemptNum int, resp *
 
 	// Use the rate limit backoff function when we are rate limited.
 	if resp != nil && resp.StatusCode == 429 {
-		return rateLimitBackoff(min, max, attemptNum, resp)
+		return rateLimitBackoff(min, max, resp)
 	}
 
 	// Set custom duration's when we experience a service interruption.
@@ -360,7 +374,8 @@ func (c *Client) retryHTTPBackoff(min, max time.Duration, attemptNum int, resp *
 // min and max are mainly used for bounding the jitter that will be added to
 // the reset time retrieved from the headers. But if the final wait time is
 // less then min, min will be used instead.
-func rateLimitBackoff(min, max time.Duration, attemptNum int, resp *http.Response) time.Duration {
+
+func rateLimitBackoff(min, max time.Duration, resp *http.Response) time.Duration {
 	// rnd is used to generate pseudo-random numbers.
 	rnd := rand.New(rand.NewSource(time.Now().UnixNano()))
 
@@ -428,6 +443,7 @@ func (c *Client) getRawAPIMetadata() (rawAPIMetadata, error) {
 }
 
 // configureLimiter configures the rate limiter.
+
 func (c *Client) configureLimiter(rawLimit string) {
 	// Set default values for when rate limiting is disabled.
 	limit := rate.Inf
@@ -481,7 +497,7 @@ func (c *Client) newRequest(method, path string, v interface{}) (*retryablehttp.
 			if err != nil {
 				return nil, err
 			}
-			u.RawQuery = q.Encode()
+			u.RawQuery = encodeQueryParams(q)
 		}
 	case "DELETE", "PATCH", "POST":
 		reqHeaders.Set("Accept", "application/vnd.api+json")
@@ -516,31 +532,65 @@ func (c *Client) newRequest(method, path string, v interface{}) (*retryablehttp.
 	return req, nil
 }
 
+// Encode encodes the values into ``URL encoded'' form
+// ("bar=baz&foo=quux") sorted by key.
+
+func encodeQueryParams(v url.Values) string {
+	if v == nil {
+		return ""
+	}
+	var buf strings.Builder
+	keys := make([]string, 0, len(v))
+	for k := range v {
+		keys = append(keys, k)
+	}
+	sort.Strings(keys)
+	for _, k := range keys {
+		vs := v[k]
+		if len(vs) > 1 && k == _includeQueryParam {
+			val := strings.Join(vs, ",")
+			vs = vs[:0]
+			vs = append(vs, val)
+		}
+		keyEscaped := url.QueryEscape(k)
+
+		for _, v := range vs {
+			if buf.Len() > 0 {
+				buf.WriteByte('&')
+			}
+			buf.WriteString(keyEscaped)
+			buf.WriteByte('=')
+			buf.WriteString(url.QueryEscape(v))
+		}
+	}
+	return buf.String()
+}
+
 // Helper method that serializes the given ptr or ptr slice into a JSON
 // request. It automatically uses jsonapi or json serialization, depending
 // on the body type's tags.
+
 func serializeRequestBody(v interface{}) (interface{}, error) {
 	// The body can be a slice of pointers or a pointer. In either
 	// case we want to choose the serialization type based on the
 	// individual record type. To determine that type, we need
 	// to either follow the pointer or examine the slice element type.
-	// There are other theoretical possiblities (e. g. maps,
+	// There are other theoretical possibilities (e. g. maps,
 	// non-pointers) but they wouldn't work anyway because the
 	// json-api library doesn't support serializing other things.
 	var modelType reflect.Type
 	bodyType := reflect.TypeOf(v)
-	invalidBodyError := errors.New("go-tfe bug: DELETE/PATCH/POST body must be nil, ptr, or ptr slice")
 	switch bodyType.Kind() {
 	case reflect.Slice:
 		sliceElem := bodyType.Elem()
 		if sliceElem.Kind() != reflect.Ptr {
-			return nil, invalidBodyError
+			return nil, ErrInvalidRequestBody
 		}
 		modelType = sliceElem.Elem()
 	case reflect.Ptr:
 		modelType = reflect.ValueOf(v).Elem().Type()
 	default:
-		return nil, invalidBodyError
+		return nil, ErrInvalidRequestBody
 	}
 
 	// Infer whether the request uses jsonapi or regular json
@@ -561,7 +611,7 @@ func serializeRequestBody(v interface{}) (interface{}, error) {
 		// make sense, because a struct can only be serialized
 		// as one or another. If this does happen, it's a bug
 		// in the library that should be fixed at development time
-		return nil, errors.New("go-tfe bug: struct can't use both json and jsonapi attributes")
+		return nil, ErrInvalidStructFormat
 	}
 
 	if jsonFields > 0 {
@@ -583,6 +633,7 @@ func serializeRequestBody(v interface{}) (interface{}, error) {
 //
 // The provided ctx must be non-nil. If it is canceled or times out, ctx.Err()
 // will be returned.
+
 func (c *Client) do(ctx context.Context, req *retryablehttp.Request, v interface{}) error {
 	// Wait will block until the limiter can obtain a new token
 	// or returns an error if the given context is canceled.
@@ -626,6 +677,46 @@ func (c *Client) do(ctx context.Context, req *retryablehttp.Request, v interface
 	return unmarshalResponse(resp.Body, v)
 }
 
+// customDo is similar to func (c *Client) do(ctx context.Context, req *retryablehttp.Request, v interface{}) error. Except that The IP ranges API is not returning jsonapi like every other endpoint
+// which means we need to handle it differently.
+
+func (i *ipRanges) customDo(ctx context.Context, req *retryablehttp.Request, ir *IPRange) error {
+	// Wait will block until the limiter can obtain a new token
+	// or returns an error if the given context is canceled.
+	if err := i.client.limiter.Wait(ctx); err != nil {
+		return err
+	}
+
+	// Add the context to the request.
+	req = req.WithContext(ctx)
+
+	// Execute the request and check the response.
+	resp, err := i.client.http.Do(req)
+	if err != nil {
+		// If we got an error, and the context has been canceled,
+		// the context's error is probably more useful.
+		select {
+		case <-ctx.Done():
+			return ctx.Err()
+		default:
+			return err
+		}
+	}
+	defer resp.Body.Close()
+
+	if resp.StatusCode < 200 && resp.StatusCode >= 400 {
+		return fmt.Errorf("error HTTP response while retrieving IP ranges: %d", resp.StatusCode)
+	} else if resp.StatusCode == 304 {
+		return nil
+	}
+
+	err = json.NewDecoder(resp.Body).Decode(ir)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
 func unmarshalResponse(responseBody io.Reader, model interface{}) error {
 	// Get the value of model so we can test if it's a struct.
 	dst := reflect.Indirect(reflect.ValueOf(model))
@@ -639,22 +730,22 @@ func unmarshalResponse(responseBody io.Reader, model interface{}) error {
 	items := dst.FieldByName("Items")
 	pagination := dst.FieldByName("Pagination")
 
-	// Unmarshal a single value if v does not contain the
+	// Unmarshal a single value if model does not contain the
 	// Items and Pagination struct fields.
 	if !items.IsValid() || !pagination.IsValid() {
 		return jsonapi.UnmarshalPayload(responseBody, model)
 	}
 
-	// Return an error if v.Items is not a slice.
+	// Return an error if model.Items is not a slice.
 	if items.Type().Kind() != reflect.Slice {
-		return fmt.Errorf("v.Items must be a slice")
+		return ErrItemsMustBeSlice
 	}
 
 	// Create a temporary buffer and copy all the read data into it.
 	body := bytes.NewBuffer(nil)
 	reader := io.TeeReader(responseBody, body)
 
-	// Unmarshal as a list of values as v.Items is a slice.
+	// Unmarshal as a list of values as model.Items is a slice.
 	raw, err := jsonapi.UnmarshalManyPayload(reader, items.Type().Elem())
 	if err != nil {
 		return err
@@ -720,6 +811,7 @@ func parsePagination(body io.Reader) (*Pagination, error) {
 }
 
 // checkResponseCode can be used to check the status code of an HTTP request.
+
 func checkResponseCode(r *http.Response) error {
 	if r.StatusCode >= 200 && r.StatusCode <= 299 {
 		return nil
@@ -782,8 +874,8 @@ func decodeErrorPayload(r *http.Response) ([]string, error) {
 	return errs, nil
 }
 
-func errorPayloadContains(errors []string, match string) bool {
-	for _, e := range errors {
+func errorPayloadContains(payloadErrors []string, match string) bool {
+	for _, e := range payloadErrors {
 		if strings.Contains(e, match) {
 			return true
 		}
@@ -796,8 +888,12 @@ func packContents(path string) (*bytes.Buffer, error) {
 
 	file, err := os.Stat(path)
 	if err != nil {
-		return body, err
+		if errors.Is(err, fs.ErrNotExist) {
+			return body, fmt.Errorf(`failed to find files under the path "%v": %w`, path, err)
+		}
+		return body, fmt.Errorf(`unable to upload files from the path "%v": %w`, path, err)
 	}
+
 	if !file.Mode().IsDir() {
 		return body, ErrMissingDirectory
 	}

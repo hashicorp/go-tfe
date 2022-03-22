@@ -32,7 +32,7 @@ func TestWorkspacesList(t *testing.T) {
 	defer wTest2Cleanup()
 
 	t.Run("without list options", func(t *testing.T) {
-		wl, err := client.Workspaces.List(ctx, orgTest.Name, WorkspaceListOptions{})
+		wl, err := client.Workspaces.List(ctx, orgTest.Name, nil)
 		require.NoError(t, err)
 		assert.Contains(t, wl.Items, wTest1)
 		assert.Contains(t, wl.Items, wTest2)
@@ -44,7 +44,7 @@ func TestWorkspacesList(t *testing.T) {
 		// Request a page number which is out of range. The result should
 		// be successful, but return no results if the paging options are
 		// properly passed along.
-		wl, err := client.Workspaces.List(ctx, orgTest.Name, WorkspaceListOptions{
+		wl, err := client.Workspaces.List(ctx, orgTest.Name, &WorkspaceListOptions{
 			ListOptions: ListOptions{
 				PageNumber: 999,
 				PageSize:   100,
@@ -59,8 +59,8 @@ func TestWorkspacesList(t *testing.T) {
 	t.Run("when searching a known workspace", func(t *testing.T) {
 		// Use a known workspace prefix as search attribute. The result
 		// should be successful and only contain the matching workspace.
-		wl, err := client.Workspaces.List(ctx, orgTest.Name, WorkspaceListOptions{
-			Search: String(wTest1.Name[:len(wTest1.Name)-5]),
+		wl, err := client.Workspaces.List(ctx, orgTest.Name, &WorkspaceListOptions{
+			Search: wTest1.Name[:len(wTest1.Name)-5],
 		})
 		require.NoError(t, err)
 		assert.Contains(t, wl.Items, wTest1)
@@ -84,8 +84,8 @@ func TestWorkspacesList(t *testing.T) {
 
 		// The result should be successful and only contain the workspace with the
 		// new tag.
-		wl, err := client.Workspaces.List(ctx, orgTest.Name, WorkspaceListOptions{
-			Tags: &tagName,
+		wl, err := client.Workspaces.List(ctx, orgTest.Name, &WorkspaceListOptions{
+			Tags: tagName,
 		})
 		require.NoError(t, err)
 		assert.Equal(t, wl.Items[0].ID, wTest1.ID)
@@ -96,8 +96,8 @@ func TestWorkspacesList(t *testing.T) {
 	t.Run("when searching an unknown workspace", func(t *testing.T) {
 		// Use a nonexisting workspace name as search attribute. The result
 		// should be successful, but return no results.
-		wl, err := client.Workspaces.List(ctx, orgTest.Name, WorkspaceListOptions{
-			Search: String("nonexisting"),
+		wl, err := client.Workspaces.List(ctx, orgTest.Name, &WorkspaceListOptions{
+			Search: "nonexisting",
 		})
 		require.NoError(t, err)
 		assert.Empty(t, wl.Items)
@@ -106,14 +106,14 @@ func TestWorkspacesList(t *testing.T) {
 	})
 
 	t.Run("without a valid organization", func(t *testing.T) {
-		wl, err := client.Workspaces.List(ctx, badIdentifier, WorkspaceListOptions{})
+		wl, err := client.Workspaces.List(ctx, badIdentifier, nil)
 		assert.Nil(t, wl)
 		assert.EqualError(t, err, ErrInvalidOrg.Error())
 	})
 
 	t.Run("with organization included", func(t *testing.T) {
-		wl, err := client.Workspaces.List(ctx, orgTest.Name, WorkspaceListOptions{
-			Include: String("organization"),
+		wl, err := client.Workspaces.List(ctx, orgTest.Name, &WorkspaceListOptions{
+			Include: []WSIncludeOpt{WSOrganization},
 		})
 
 		assert.NoError(t, err)
@@ -127,8 +127,8 @@ func TestWorkspacesList(t *testing.T) {
 		_, rCleanup := createAppliedRun(t, client, wTest1)
 		t.Cleanup(rCleanup)
 
-		wl, err := client.Workspaces.List(ctx, orgTest.Name, WorkspaceListOptions{
-			Include: String("current-state-version,current-run"),
+		wl, err := client.Workspaces.List(ctx, orgTest.Name, &WorkspaceListOptions{
+			Include: []WSIncludeOpt{WSCurrentStateVer, WSCurrentRun},
 		})
 
 		assert.NoError(t, err)
@@ -244,7 +244,7 @@ func TestWorkspacesCreate(t *testing.T) {
 
 		w, err := client.Workspaces.Create(ctx, orgTest.Name, options)
 		assert.Nil(t, w)
-		assert.EqualError(t, err, "operations is deprecated and cannot be specified when execution mode is used")
+		assert.Equal(t, err, ErrUnsupportedOperations)
 	})
 
 	t.Run("when an agent pool ID is specified without 'agent' execution mode", func(t *testing.T) {
@@ -255,7 +255,7 @@ func TestWorkspacesCreate(t *testing.T) {
 
 		w, err := client.Workspaces.Create(ctx, orgTest.Name, options)
 		assert.Nil(t, w)
-		assert.EqualError(t, err, "specifying an agent pool ID requires 'agent' execution mode")
+		assert.Equal(t, err, ErrRequiredAgentMode)
 	})
 
 	t.Run("when 'agent' execution mode is specified without an an agent pool ID", func(t *testing.T) {
@@ -266,7 +266,7 @@ func TestWorkspacesCreate(t *testing.T) {
 
 		w, err := client.Workspaces.Create(ctx, orgTest.Name, options)
 		assert.Nil(t, w)
-		assert.EqualError(t, err, "'agent' execution mode requires an agent pool ID to be specified")
+		assert.Equal(t, err, ErrRequiredAgentPoolID)
 	})
 
 	t.Run("when an error is returned from the API", func(t *testing.T) {
@@ -343,7 +343,7 @@ func TestWorkspacesReadWithOptions(t *testing.T) {
 
 	t.Run("when options to include resource", func(t *testing.T) {
 		opts := &WorkspaceReadOptions{
-			Include: "outputs",
+			Include: []WSIncludeOpt{WSOutputs},
 		}
 		w, err := client.Workspaces.ReadWithOptions(ctx, orgTest.Name, wTest.Name, opts)
 		require.NoError(t, err)
@@ -351,10 +351,10 @@ func TestWorkspacesReadWithOptions(t *testing.T) {
 		assert.Equal(t, wTest.ID, w.ID)
 		assert.NotEmpty(t, w.Outputs)
 
-		svOutputs, err := client.StateVersions.Outputs(ctx, svTest.ID, StateVersionOutputsListOptions{})
+		svOutputs, err := client.StateVersions.ListOutputs(ctx, svTest.ID, nil)
 		require.NoError(t, err)
 
-		assert.Len(t, w.Outputs, len(svOutputs))
+		assert.Len(t, w.Outputs, len(svOutputs.Items))
 
 		wsOutputs := map[string]interface{}{}
 		wsOutputsTypes := map[string]string{}
@@ -362,7 +362,7 @@ func TestWorkspacesReadWithOptions(t *testing.T) {
 			wsOutputs[op.Name] = op.Value
 			wsOutputsTypes[op.Name] = op.Type
 		}
-		for _, svop := range svOutputs {
+		for _, svop := range svOutputs.Items {
 			val, ok := wsOutputs[svop.Name]
 			assert.True(t, ok)
 			assert.Equal(t, svop.Value, val)
@@ -547,7 +547,7 @@ func TestWorkspacesUpdate(t *testing.T) {
 
 		wAfter, err := client.Workspaces.Update(ctx, orgTest.Name, wTest.Name, options)
 		assert.Nil(t, wAfter)
-		assert.EqualError(t, err, "operations is deprecated and cannot be specified when execution mode is used")
+		assert.Equal(t, err, ErrUnsupportedOperations)
 	})
 
 	t.Run("when 'agent' execution mode is specified without an an agent pool ID", func(t *testing.T) {
@@ -557,7 +557,7 @@ func TestWorkspacesUpdate(t *testing.T) {
 
 		wAfter, err := client.Workspaces.Update(ctx, orgTest.Name, wTest.Name, options)
 		assert.Nil(t, wAfter)
-		assert.EqualError(t, err, "'agent' execution mode requires an agent pool ID to be specified")
+		assert.Equal(t, err, ErrRequiredAgentPoolID)
 	})
 
 	t.Run("when an error is returned from the api", func(t *testing.T) {
@@ -887,7 +887,7 @@ func TestWorkspacesAssignSSHKey(t *testing.T) {
 	t.Run("without an SSH key ID", func(t *testing.T) {
 		w, err := client.Workspaces.AssignSSHKey(ctx, wTest.ID, WorkspaceAssignSSHKeyOptions{})
 		assert.Nil(t, w)
-		assert.EqualError(t, err, "SSH key ID is required")
+		assert.Equal(t, err, ErrRequiredSHHKeyID)
 	})
 
 	t.Run("without a valid SSH key ID", func(t *testing.T) {
@@ -895,7 +895,7 @@ func TestWorkspacesAssignSSHKey(t *testing.T) {
 			SSHKeyID: String(badIdentifier),
 		})
 		assert.Nil(t, w)
-		assert.EqualError(t, err, "invalid value for SSH key ID")
+		assert.Equal(t, err, ErrInvalidSHHKeyID)
 	})
 
 	t.Run("without a valid workspace ID", func(t *testing.T) {
@@ -974,7 +974,7 @@ func TestWorkspaces_AddRemoteStateConsumers(t *testing.T) {
 		_, err = client.Workspaces.Read(ctx, orgTest.Name, wTest.Name)
 		require.NoError(t, err)
 
-		rsc, err := client.Workspaces.RemoteStateConsumers(ctx, wTest.ID, nil)
+		rsc, err := client.Workspaces.ListRemoteStateConsumers(ctx, wTest.ID, nil)
 		require.NoError(t, err)
 		assert.Equal(t, 2, len(rsc.Items))
 		assert.Contains(t, rsc.Items, wTestConsumer1)
@@ -1028,7 +1028,7 @@ func TestWorkspaces_RemoveRemoteStateConsumers(t *testing.T) {
 		})
 		require.NoError(t, err)
 
-		rsc, err := client.Workspaces.RemoteStateConsumers(ctx, wTest.ID, nil)
+		rsc, err := client.Workspaces.ListRemoteStateConsumers(ctx, wTest.ID, nil)
 		require.NoError(t, err)
 		assert.Equal(t, 2, len(rsc.Items))
 		assert.Contains(t, rsc.Items, wTestConsumer1)
@@ -1042,7 +1042,7 @@ func TestWorkspaces_RemoveRemoteStateConsumers(t *testing.T) {
 		_, err = client.Workspaces.Read(ctx, orgTest.Name, wTest.Name)
 		require.NoError(t, err)
 
-		rsc, err = client.Workspaces.RemoteStateConsumers(ctx, wTest.ID, nil)
+		rsc, err = client.Workspaces.ListRemoteStateConsumers(ctx, wTest.ID, nil)
 		require.NoError(t, err)
 		assert.Contains(t, rsc.Items, wTestConsumer2)
 		assert.Equal(t, 1, len(rsc.Items))
@@ -1052,7 +1052,7 @@ func TestWorkspaces_RemoveRemoteStateConsumers(t *testing.T) {
 		})
 		require.NoError(t, err)
 
-		rsc, err = client.Workspaces.RemoteStateConsumers(ctx, wTest.ID, nil)
+		rsc, err = client.Workspaces.ListRemoteStateConsumers(ctx, wTest.ID, nil)
 		require.NoError(t, err)
 		assert.Empty(t, len(rsc.Items))
 	})
@@ -1104,7 +1104,7 @@ func TestWorkspaces_UpdateRemoteStateConsumers(t *testing.T) {
 		})
 		require.NoError(t, err)
 
-		rsc, err := client.Workspaces.RemoteStateConsumers(ctx, wTest.ID, nil)
+		rsc, err := client.Workspaces.ListRemoteStateConsumers(ctx, wTest.ID, nil)
 		require.NoError(t, err)
 		assert.Equal(t, 1, len(rsc.Items))
 		assert.Contains(t, rsc.Items, wTestConsumer1)
@@ -1114,7 +1114,7 @@ func TestWorkspaces_UpdateRemoteStateConsumers(t *testing.T) {
 		})
 		require.NoError(t, err)
 
-		rsc, err = client.Workspaces.RemoteStateConsumers(ctx, wTest.ID, nil)
+		rsc, err = client.Workspaces.ListRemoteStateConsumers(ctx, wTest.ID, nil)
 		require.NoError(t, err)
 		assert.Equal(t, 1, len(rsc.Items))
 		assert.Contains(t, rsc.Items, wTestConsumer2)
@@ -1188,7 +1188,7 @@ func TestWorkspaces_AddTags(t *testing.T) {
 		sort.Strings(w.TagNames)
 		assert.EqualValues(t, w.TagNames, []string{"tag1", "tag2", "tag3", "tag4"})
 
-		wt, err := client.Workspaces.Tags(ctx, wTest.ID, WorkspaceTagListOptions{})
+		wt, err := client.Workspaces.ListTags(ctx, wTest.ID, nil)
 		require.NoError(t, err)
 		assert.Equal(t, 4, len(wt.Items))
 		assert.Equal(t, wt.Items[3].Name, "tag4")
@@ -1209,7 +1209,7 @@ func TestWorkspaces_AddTags(t *testing.T) {
 		require.NoError(t, err)
 
 		// get the id of the new tag
-		tags, err := client.Workspaces.Tags(ctx, wTest2.ID, WorkspaceTagListOptions{})
+		tags, err := client.Workspaces.ListTags(ctx, wTest2.ID, nil)
 		require.NoError(t, err)
 
 		// add the tag to our workspace by id
@@ -1230,7 +1230,7 @@ func TestWorkspaces_AddTags(t *testing.T) {
 		assert.Equal(t, w.TagNames, []string{"tag1", "tag2", "tag3", "tag4", "tagbyid"})
 
 		// tag is now in our tag list
-		wt, err := client.Workspaces.Tags(ctx, wTest.ID, WorkspaceTagListOptions{})
+		wt, err := client.Workspaces.ListTags(ctx, wTest.ID, nil)
 		require.NoError(t, err)
 		assert.Equal(t, 5, len(wt.Items))
 		assert.Equal(t, wt.Items[4].ID, tags.Items[0].ID)
@@ -1297,7 +1297,7 @@ func TestWorkspaces_RemoveTags(t *testing.T) {
 		assert.Equal(t, 1, len(w.TagNames))
 		assert.Equal(t, w.TagNames, []string{"tag3"})
 
-		wt, err := client.Workspaces.Tags(ctx, wTest.ID, WorkspaceTagListOptions{})
+		wt, err := client.Workspaces.ListTags(ctx, wTest.ID, nil)
 		require.NoError(t, err)
 		assert.Equal(t, 1, len(wt.Items))
 		assert.EqualValues(t, wt.Items[0].Name, "tag3")
