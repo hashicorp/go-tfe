@@ -30,7 +30,7 @@ type VariableSets interface {
 	Delete(ctx context.Context, variableSetID string) error
 
 	// Update list of workspaces to which the variable set is applied to match the supplied list
-	Apply(ctx context.Context, variableSetID string, options *VariableSetApplyOptions) (*VariableSet, error)
+	UpdateWorkspaces(ctx context.Context, variableSetID string, options *VariableSetUpdateWorkspacesOptions) (*VariableSet, error)
 }
 
 type variableSets struct {
@@ -68,7 +68,7 @@ type VariableSetListOptions struct {
 	Include string `url:"include"`
 }
 
-func (o VariableSetListOptions) valid() error {
+func (o *VariableSetListOptions) valid() error {
 	return nil
 }
 
@@ -104,7 +104,7 @@ type VariableSetCreateOptions struct {
 	// set the resource type via the field tag.
 	// It is not a user-defined value and does not need to be set.
 	// https://jsonapi.org/format/#crud-creating
-	Type string `jsonapi:"primary,vars"`
+	Type string `jsonapi:"primary,varsets"`
 
 	// The name of the variable set.
 	// Affects variable precedence when there are conflicts between Variable Sets
@@ -118,7 +118,10 @@ type VariableSetCreateOptions struct {
 	Global *bool `jsonapi:"attr,global,omitempty"`
 }
 
-func (o VariableSetCreateOptions) valid() error {
+func (o *VariableSetCreateOptions) valid() error {
+	if o == nil {
+		return nil
+	}
 	if !validString(o.Name) {
 		return ErrRequiredName
 	}
@@ -133,10 +136,8 @@ func (s *variableSets) Create(ctx context.Context, organization string, options 
 	if !validStringID(&organization) {
 		return nil, ErrInvalidOrg
 	}
-	if options != nil {
-		if err := options.valid(); err != nil {
-			return nil, err
-		}
+	if err := options.valid(); err != nil {
+		return nil, err
 	}
 
 	u := fmt.Sprintf("organizations/%s/varsets", url.QueryEscape(organization))
@@ -185,7 +186,7 @@ type VariableSetUpdateOptions struct {
 	// set the resource type via the field tag.
 	// It is not a user-defined value and does not need to be set.
 	// https://jsonapi.org/format/#crud-creating
-	Type string `jsonapi:"primary,vars"`
+	Type string `jsonapi:"primary,varsets"`
 
 	// The name of the variable set.
 	// Affects variable precedence when there are conflicts between Variable Sets
@@ -234,32 +235,46 @@ func (s *variableSets) Delete(ctx context.Context, variableSetID string) error {
 	return s.client.do(ctx, req, nil)
 }
 
-// VariableSetApplyOptions represents a subset of update options specifically for applying variable sets to workspaces
-type VariableSetApplyOptions struct {
+// VariableSetUpdateWorkspacesOptions represents a subset of update options specifically for applying variable sets to workspaces
+type VariableSetUpdateWorkspacesOptions struct {
 	// Type is a public field utilized by JSON:API to
 	// set the resource type via the field tag.
 	// It is not a user-defined value and does not need to be set.
 	// https://jsonapi.org/format/#crud-creating
-	Type string `jsonapi:"primary,vars"`
-
-	// Used to set the variable set from Global to not Global if necessary
-	Global *bool `jsonapi:"attr,global"`
+	Type string `jsonapi:"primary,varsets"`
 
 	// The workspaces to be applied to. An empty set means remove all applied
 	Workspaces []*Workspace `jsonapi:"relation,workspaces"`
 }
 
+func (o *VariableSetUpdateWorkspacesOptions) valid() error {
+	if o == nil || o.Workspaces == nil {
+		return ErrRequiredWorkspacesList
+	}
+	return nil
+}
+
+type privateVariableSetUpdateWorkspacesOptions struct {
+	Type       string       `jsonapi:"primary,varsets"`
+	Global     bool         `jsonapi:"attr,global"`
+	Workspaces []*Workspace `jsonapi:"relation,workspaces"`
+}
+
 // Update variable set to be applied to only the workspaces in the supplied list.
-func (s *variableSets) Apply(ctx context.Context, variableSetID string, options *VariableSetApplyOptions) (*VariableSet, error) {
-	if options == nil || options.Workspaces == nil {
-		return nil, ErrRequiredWorkspacesList
+func (s *variableSets) UpdateWorkspaces(ctx context.Context, variableSetID string, options *VariableSetUpdateWorkspacesOptions) (*VariableSet, error) {
+	if err := options.valid(); err != nil {
+		return nil, err
 	}
 
-	options.Global = Bool(false)
+	// Use private strcut to ensure global is set to false when applying to workspaces
+	o := privateVariableSetUpdateWorkspacesOptions{
+		Global:     bool(false),
+		Workspaces: options.Workspaces,
+	}
 
 	// We force inclusion of workspaces as that is the primary data for which we are concerned with confirming changes.
 	u := fmt.Sprintf("varsets/%s?include=%s", url.QueryEscape(variableSetID), VariableSetWorkspaces)
-	req, err := s.client.newRequest("PATCH", u, options)
+	req, err := s.client.newRequest("PATCH", u, &o)
 	if err != nil {
 		return nil, err
 	}

@@ -190,7 +190,7 @@ func TestVariableSetsDelete(t *testing.T) {
 	})
 }
 
-func TestVariableSetsApply(t *testing.T) {
+func TestVariableSetsUpdateWorkspaces(t *testing.T) {
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -202,21 +202,21 @@ func TestVariableSetsApply(t *testing.T) {
 	wTest, _ := createWorkspace(t, client, orgTest)
 
 	t.Run("with valid workspaces", func(t *testing.T) {
-		options := VariableSetApplyOptions{
+		options := VariableSetUpdateWorkspacesOptions{
 			Workspaces: []*Workspace{wTest},
 		}
 
-		vsAfter, err := client.VariableSets.Apply(ctx, vsTest.ID, &options)
+		vsAfter, err := client.VariableSets.UpdateWorkspaces(ctx, vsTest.ID, &options)
 		require.NoError(t, err)
 
 		assert.Equal(t, len(options.Workspaces), len(vsAfter.Workspaces))
 		assert.Equal(t, options.Workspaces[0].ID, vsAfter.Workspaces[0].ID)
 
-		options = VariableSetApplyOptions{
+		options = VariableSetUpdateWorkspacesOptions{
 			Workspaces: []*Workspace{},
 		}
 
-		vsAfter, err = client.VariableSets.Apply(ctx, vsTest.ID, &options)
+		vsAfter, err = client.VariableSets.UpdateWorkspaces(ctx, vsTest.ID, &options)
 		require.NoError(t, err)
 
 		assert.Equal(t, len(options.Workspaces), len(vsAfter.Workspaces))
