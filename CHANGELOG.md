@@ -1,3 +1,9 @@
+# v1.1.0 (Unreleased)
+
+## Enhancements
+
+* Add beta support for SSOTeamID to `Team`, `TeamCreateOptions`, `TeamUpdateOptions` by @xlgmokha [#364](https://github.com/hashicorp/go-tfe/pull/364)
+
 # v1.0.0
 
 ## Breaking Changes
@@ -20,4 +26,3 @@
 
 ## Bug Fixes
 * Fixed invalid memory address error when `AdminSMTPSettingsUpdateOptions.Auth` field is empty and accessed by @uturunku1 [#335](https://github.com/hashicorp/go-tfe/pull/335) 
-
