@@ -135,7 +135,7 @@ func TestVariableSetsUpdate(t *testing.T) {
 	defer orgTestCleanup()
 
 	vsTest, _ := createVariableSet(t, client, orgTest, VariableSetCreateOptions{
-		Name:        String("OrinigalName"),
+		Name:        String("OriginalName"),
 		Description: String("Original Description"),
 		Global:      Bool(false),
 	})
