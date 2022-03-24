@@ -146,6 +146,8 @@ var (
 
 	ErrInvalidNotificationTrigger = errors.New("invalid value for notification trigger")
 
+	ErrInvalidVariableSetID = errors.New("invalid variable set ID")
+
 	ErrInvalidCommentID = errors.New("invalid value for comment ID")
 
 	ErrInvalidCommentBody = errors.New("invalid value for comment body")
@@ -252,6 +254,10 @@ var (
 	ErrRequiredOnlyOneField = errors.New("only one of usernames or organization membership ids can be provided")
 
 	ErrRequiredUsernameOrMembershipIds = errors.New("usernames or organization membership ids are required")
+
+	ErrRequiredGlobalFlag = errors.New("global flag is required")
+
+	ErrRequiredWorkspacesList = errors.New("no workspaces list provided")
 
 	ErrCommentBody = errors.New("comment body is required")
 )
