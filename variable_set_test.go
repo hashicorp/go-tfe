@@ -184,7 +184,7 @@ func TestVariableSetsDelete(t *testing.T) {
 		assert.Equal(t, ErrResourceNotFound, err)
 	})
 
-	t.Run("when ID is invlaid", func(t *testing.T) {
+	t.Run("when ID is invalid", func(t *testing.T) {
 		err := client.VariableSets.Delete(ctx, badIdentifier)
 		assert.EqualError(t, err, ErrInvalidVariableSetID.Error())
 	})
