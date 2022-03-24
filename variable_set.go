@@ -266,7 +266,7 @@ func (s *variableSets) UpdateWorkspaces(ctx context.Context, variableSetID strin
 		return nil, err
 	}
 
-	// Use private strcut to ensure global is set to false when applying to workspaces
+	// Use private struct to ensure global is set to false when applying to workspaces
 	o := privateVariableSetUpdateWorkspacesOptions{
 		Global:     bool(false),
 		Workspaces: options.Workspaces,
