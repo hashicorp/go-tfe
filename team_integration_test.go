@@ -93,6 +93,22 @@ func TestTeamsCreate(t *testing.T) {
 		}
 	})
 
+	t.Run("with sso-team-id", func(t *testing.T) {
+		skipIfBeta(t)
+
+		options := TeamCreateOptions{
+			Name:      String("rockettes"),
+			SSOTeamID: String("7dddb675-73e0-4858-a8ad-0e597064301b"),
+		}
+		team, err := client.Teams.Create(ctx, orgTest.Name, options)
+
+		assert.Nil(t, err)
+		assert.Equal(t, *options.Name, team.Name)
+
+		assert.NotNil(t, options.SSOTeamID, team.SSOTeamID)
+		assert.Equal(t, *options.SSOTeamID, *team.SSOTeamID)
+	})
+
 	t.Run("when options is missing name", func(t *testing.T) {
 		tm, err := client.Teams.Create(ctx, "foo", TeamCreateOptions{})
 		assert.Nil(t, tm)
@@ -121,15 +137,16 @@ func TestTeamsRead(t *testing.T) {
 	defer tmTestCleanup()
 
 	opts := TeamCreateOptions{
-		Name: String(randomString(t)),
+		Name:      String(randomString(t)),
+		SSOTeamID: String(randomString(t)),
 		OrganizationAccess: &OrganizationAccessOptions{
 			ManagePolicies: Bool(true),
 		},
 	}
-	tm, err := client.Teams.Create(ctx, orgTest.Name, opts)
+	ssoTeam, err := client.Teams.Create(ctx, orgTest.Name, opts)
 	require.NoError(t, err)
 	defer func() {
-		err := client.Teams.Delete(ctx, tm.ID)
+		err := client.Teams.Delete(ctx, ssoTeam.ID)
 		require.NoError(t, err)
 	}()
 
@@ -148,6 +165,13 @@ func TestTeamsRead(t *testing.T) {
 
 		t.Run("organization access is properly decoded", func(t *testing.T) {
 			assert.Equal(t, tm.OrganizationAccess.ManagePolicies, *opts.OrganizationAccess.ManagePolicies)
+		})
+
+		t.Run("SSO team id is returned", func(t *testing.T) {
+			skipIfBeta(t)
+
+			assert.NotNil(t, ssoTeam.SSOTeamID)
+			assert.Equal(t, *opts.SSOTeamID, *ssoTeam.SSOTeamID)
 		})
 	})
 
@@ -298,6 +322,7 @@ func TestTeam_Unmarshal(t *testing.T) {
 	require.NoError(t, err)
 	assert.Equal(t, team.ID, "1")
 	assert.Equal(t, team.Name, "team hashi")
+	assert.Nil(t, team.SSOTeamID)
 	assert.Equal(t, team.OrganizationAccess.ManageWorkspaces, true)
 	assert.Equal(t, team.OrganizationAccess.ManageVCSSettings, true)
 	assert.Equal(t, team.OrganizationAccess.ManagePolicies, true)

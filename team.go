@@ -49,6 +49,7 @@ type Team struct {
 	Visibility         string              `jsonapi:"attr,visibility"`
 	Permissions        *TeamPermissions    `jsonapi:"attr,permissions"`
 	UserCount          int                 `jsonapi:"attr,users-count"`
+	SSOTeamID          *string             `jsonapi:"attr,sso-team-id"`
 
 	// Relations
 	Users                   []*User                   `jsonapi:"relation,users"`
@@ -99,6 +100,9 @@ type TeamCreateOptions struct {
 	// Name of the team.
 	Name *string `jsonapi:"attr,name"`
 
+	// Optional: Unique Identifier to control team membership via SAML
+	SSOTeamID *string `jsonapi:"attr,sso-team-id,omitempty"`
+
 	// The team's organization access
 	OrganizationAccess *OrganizationAccessOptions `jsonapi:"attr,organization-access,omitempty"`
 
@@ -116,6 +120,9 @@ type TeamUpdateOptions struct {
 
 	// Optional: New name for the team
 	Name *string `jsonapi:"attr,name,omitempty"`
+
+	// Optional: Unique Identifier to control team membership via SAML
+	SSOTeamID *string `jsonapi:"attr,sso-team-id,omitempty"`
 
 	// Optional: The team's organization access
 	OrganizationAccess *OrganizationAccessOptions `jsonapi:"attr,organization-access,omitempty"`
