@@ -1,7 +1,9 @@
-# v1.1.0 (Unreleased)
+# v1.1.0
 
 ## Enhancements
 
+* Add Variable Set API support by @rexredinger [#305](https://github.com/hashicorp/go-tfe/pull/305)
+* Add Comments API support by @alex-ikse [#355](https://github.com/hashicorp/go-tfe/pull/355)
 * Add beta support for SSOTeamID to `Team`, `TeamCreateOptions`, `TeamUpdateOptions` by @xlgmokha [#364](https://github.com/hashicorp/go-tfe/pull/364)
 
 # v1.0.0
