@@ -172,6 +172,64 @@ func TestWorkspacesCreate(t *testing.T) {
 			TerraformVersion:           String("0.11.0"),
 			TriggerPrefixes:            []string{"/modules", "/shared"},
 			WorkingDirectory:           String("bar/"),
+			Tags: []*Tag{
+				{
+					Name: "tag1",
+				},
+				{
+					Name: "tag2",
+				},
+			},
+		}
+
+		w, err := client.Workspaces.Create(ctx, orgTest.Name, options)
+		require.NoError(t, err)
+
+		// Get a refreshed view from the API.
+		refreshed, err := client.Workspaces.Read(ctx, orgTest.Name, *options.Name)
+		require.NoError(t, err)
+
+		for _, item := range []*Workspace{
+			w,
+			refreshed,
+		} {
+			assert.NotEmpty(t, item.ID)
+			assert.Equal(t, *options.Name, item.Name)
+			assert.Equal(t, *options.Description, item.Description)
+			assert.Equal(t, *options.AllowDestroyPlan, item.AllowDestroyPlan)
+			assert.Equal(t, *options.AutoApply, item.AutoApply)
+			assert.Equal(t, *options.FileTriggersEnabled, item.FileTriggersEnabled)
+			assert.Equal(t, *options.Operations, item.Operations)
+			assert.Equal(t, *options.QueueAllRuns, item.QueueAllRuns)
+			assert.Equal(t, *options.SpeculativeEnabled, item.SpeculativeEnabled)
+			assert.Equal(t, *options.SourceName, item.SourceName)
+			assert.Equal(t, *options.SourceURL, item.SourceURL)
+			assert.Equal(t, *options.StructuredRunOutputEnabled, item.StructuredRunOutputEnabled)
+			assert.Equal(t, options.Tags[0].Name, item.TagNames[0])
+			assert.Equal(t, options.Tags[1].Name, item.TagNames[1])
+			assert.Equal(t, *options.TerraformVersion, item.TerraformVersion)
+			assert.Equal(t, options.TriggerPrefixes, item.TriggerPrefixes)
+			assert.Equal(t, *options.WorkingDirectory, item.WorkingDirectory)
+		}
+	})
+
+	t.Run("with trigger nested changes", func(t *testing.T) {
+		skipIfBeta(t)
+		options := WorkspaceCreateOptions{
+			Name:                       String("foo2"),
+			AllowDestroyPlan:           Bool(false),
+			AutoApply:                  Bool(true),
+			Description:                String("qux"),
+			FileTriggersEnabled:        Bool(true),
+			Operations:                 Bool(true),
+			QueueAllRuns:               Bool(true),
+			SpeculativeEnabled:         Bool(true),
+			SourceName:                 String("my-app"),
+			SourceURL:                  String("http://my-app-hostname.io"),
+			StructuredRunOutputEnabled: Bool(true),
+			TerraformVersion:           String("0.11.0"),
+			TriggerPrefixes:            []string{"/modules", "/shared"},
+			WorkingDirectory:           String("bar/"),
 			TriggerNestedChanges:       Bool(true),
 			Tags: []*Tag{
 				{
@@ -497,6 +555,29 @@ func TestWorkspacesUpdate(t *testing.T) {
 		assert.NotEqual(t, wTest.QueueAllRuns, wAfter.QueueAllRuns)
 		assert.NotEqual(t, wTest.TerraformVersion, wAfter.TerraformVersion)
 		assert.Equal(t, wTest.WorkingDirectory, wAfter.WorkingDirectory)
+	})
+
+	t.Run("with trigger nested changes", func(t *testing.T) {
+		skipIfBeta(t)
+		options := WorkspaceUpdateOptions{
+			Name:                 String(wTest.Name),
+			AllowDestroyPlan:     Bool(false),
+			AutoApply:            Bool(true),
+			Operations:           Bool(true),
+			QueueAllRuns:         Bool(true),
+			TerraformVersion:     String("0.10.0"),
+			TriggerNestedChanges: Bool(true),
+		}
+
+		wAfter, err := client.Workspaces.Update(ctx, orgTest.Name, wTest.Name, options)
+		require.NoError(t, err)
+
+		assert.Equal(t, wTest.Name, wAfter.Name)
+		assert.NotEqual(t, wTest.AllowDestroyPlan, wAfter.AllowDestroyPlan)
+		assert.NotEqual(t, wTest.AutoApply, wAfter.AutoApply)
+		assert.NotEqual(t, wTest.QueueAllRuns, wAfter.QueueAllRuns)
+		assert.NotEqual(t, wTest.TerraformVersion, wAfter.TerraformVersion)
+		assert.Equal(t, wTest.WorkingDirectory, wAfter.WorkingDirectory)
 		assert.Equal(t, wTest.TriggerNestedChanges, wAfter.TriggerNestedChanges)
 	})
 
@@ -514,7 +595,6 @@ func TestWorkspacesUpdate(t *testing.T) {
 			TerraformVersion:           String("0.11.1"),
 			TriggerPrefixes:            []string{"/modules", "/shared"},
 			WorkingDirectory:           String("baz/"),
-			TriggerNestedChanges:       Bool(true),
 		}
 
 		w, err := client.Workspaces.Update(ctx, orgTest.Name, wTest.Name, options)
@@ -540,7 +620,6 @@ func TestWorkspacesUpdate(t *testing.T) {
 			assert.Equal(t, *options.TerraformVersion, item.TerraformVersion)
 			assert.Equal(t, options.TriggerPrefixes, item.TriggerPrefixes)
 			assert.Equal(t, *options.WorkingDirectory, item.WorkingDirectory)
-			assert.Equal(t, *options.TriggerNestedChanges, item.TriggerNestedChanges)
 		}
 	})
 
@@ -614,7 +693,6 @@ func TestWorkspacesUpdateByID(t *testing.T) {
 		assert.NotEqual(t, wTest.QueueAllRuns, wAfter.QueueAllRuns)
 		assert.NotEqual(t, wTest.TerraformVersion, wAfter.TerraformVersion)
 		assert.Equal(t, wTest.WorkingDirectory, wAfter.WorkingDirectory)
-		assert.Equal(t, wTest.TriggerNestedChanges, wAfter.TriggerNestedChanges)
 	})
 
 	t.Run("with valid options", func(t *testing.T) {
@@ -630,7 +708,48 @@ func TestWorkspacesUpdateByID(t *testing.T) {
 			TerraformVersion:           String("0.11.1"),
 			TriggerPrefixes:            []string{"/modules", "/shared"},
 			WorkingDirectory:           String("baz/"),
-			TriggerNestedChanges:       Bool(false),
+		}
+
+		w, err := client.Workspaces.UpdateByID(ctx, wTest.ID, options)
+		require.NoError(t, err)
+
+		// Get a refreshed view of the workspace from the API
+		refreshed, err := client.Workspaces.Read(ctx, orgTest.Name, *options.Name)
+		require.NoError(t, err)
+
+		for _, item := range []*Workspace{
+			w,
+			refreshed,
+		} {
+			assert.Equal(t, *options.Name, item.Name)
+			assert.Equal(t, *options.AllowDestroyPlan, item.AllowDestroyPlan)
+			assert.Equal(t, *options.AutoApply, item.AutoApply)
+			assert.Equal(t, *options.FileTriggersEnabled, item.FileTriggersEnabled)
+			assert.Equal(t, *options.Operations, item.Operations)
+			assert.Equal(t, *options.QueueAllRuns, item.QueueAllRuns)
+			assert.Equal(t, *options.SpeculativeEnabled, item.SpeculativeEnabled)
+			assert.Equal(t, *options.StructuredRunOutputEnabled, item.StructuredRunOutputEnabled)
+			assert.Equal(t, *options.TerraformVersion, item.TerraformVersion)
+			assert.Equal(t, options.TriggerPrefixes, item.TriggerPrefixes)
+			assert.Equal(t, *options.WorkingDirectory, item.WorkingDirectory)
+		}
+	})
+
+	t.Run("with trigger nested changes", func(t *testing.T) {
+		skipIfBeta(t)
+		options := WorkspaceUpdateOptions{
+			Name:                       String(randomString(t)),
+			AllowDestroyPlan:           Bool(true),
+			AutoApply:                  Bool(false),
+			FileTriggersEnabled:        Bool(true),
+			Operations:                 Bool(false),
+			QueueAllRuns:               Bool(false),
+			SpeculativeEnabled:         Bool(true),
+			StructuredRunOutputEnabled: Bool(true),
+			TerraformVersion:           String("0.11.1"),
+			TriggerPrefixes:            []string{"/modules", "/shared"},
+			WorkingDirectory:           String("baz/"),
+			TriggerNestedChanges:       Bool(true),
 		}
 
 		w, err := client.Workspaces.UpdateByID(ctx, wTest.ID, options)

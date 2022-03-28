@@ -336,6 +336,7 @@ type WorkspaceCreateOptions struct {
 	// environment when multiple environments exist within the same repository.
 	WorkingDirectory *string `jsonapi:"attr,working-directory,omitempty"`
 
+	// **Note: This field is still in BETA and subject to change.**
 	// Optional: Whether to trigger a run when any nested file below the root or the
 	// working directory (if configured) is changed. By default, it is enabled. Setting
 	// this to false, any changes in any file will trigger a run only in the current
@@ -439,10 +440,11 @@ type WorkspaceUpdateOptions struct {
 	// repository.
 	WorkingDirectory *string `jsonapi:"attr,working-directory,omitempty"`
 
+	// **Note: This field is still in BETA and subject to change.**
 	// Optional: Whether to trigger a run when any nested file below the root or the
 	// working directory (if configured) is changed. By default, it is enabled. Setting this to false, will prevent
 	// the change in any nested files to trigger a run.
-	TriggerNestedChanges *bool `jsonapi:"attr,trigger-nested-changes"`
+	TriggerNestedChanges *bool `jsonapi:"attr,trigger-nested-changes,omitempty"`
 }
 
 // WorkspaceLockOptions represents the options for locking a workspace.
