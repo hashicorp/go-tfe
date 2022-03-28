@@ -172,6 +172,7 @@ func TestWorkspacesCreate(t *testing.T) {
 			TerraformVersion:           String("0.11.0"),
 			TriggerPrefixes:            []string{"/modules", "/shared"},
 			WorkingDirectory:           String("bar/"),
+			TriggerNestedChanges:       Bool(true),
 			Tags: []*Tag{
 				{
 					Name: "tag1",
@@ -210,6 +211,7 @@ func TestWorkspacesCreate(t *testing.T) {
 			assert.Equal(t, *options.TerraformVersion, item.TerraformVersion)
 			assert.Equal(t, options.TriggerPrefixes, item.TriggerPrefixes)
 			assert.Equal(t, *options.WorkingDirectory, item.WorkingDirectory)
+			assert.Equal(t, *options.TriggerNestedChanges, item.TriggerNestedChanges)
 		}
 	})
 
@@ -495,6 +497,7 @@ func TestWorkspacesUpdate(t *testing.T) {
 		assert.NotEqual(t, wTest.QueueAllRuns, wAfter.QueueAllRuns)
 		assert.NotEqual(t, wTest.TerraformVersion, wAfter.TerraformVersion)
 		assert.Equal(t, wTest.WorkingDirectory, wAfter.WorkingDirectory)
+		assert.Equal(t, wTest.TriggerNestedChanges, wAfter.TriggerNestedChanges)
 	})
 
 	t.Run("with valid options", func(t *testing.T) {
@@ -511,6 +514,7 @@ func TestWorkspacesUpdate(t *testing.T) {
 			TerraformVersion:           String("0.11.1"),
 			TriggerPrefixes:            []string{"/modules", "/shared"},
 			WorkingDirectory:           String("baz/"),
+			TriggerNestedChanges:       Bool(true),
 		}
 
 		w, err := client.Workspaces.Update(ctx, orgTest.Name, wTest.Name, options)
@@ -536,6 +540,7 @@ func TestWorkspacesUpdate(t *testing.T) {
 			assert.Equal(t, *options.TerraformVersion, item.TerraformVersion)
 			assert.Equal(t, options.TriggerPrefixes, item.TriggerPrefixes)
 			assert.Equal(t, *options.WorkingDirectory, item.WorkingDirectory)
+			assert.Equal(t, *options.TriggerNestedChanges, item.TriggerNestedChanges)
 		}
 	})
 
@@ -609,6 +614,7 @@ func TestWorkspacesUpdateByID(t *testing.T) {
 		assert.NotEqual(t, wTest.QueueAllRuns, wAfter.QueueAllRuns)
 		assert.NotEqual(t, wTest.TerraformVersion, wAfter.TerraformVersion)
 		assert.Equal(t, wTest.WorkingDirectory, wAfter.WorkingDirectory)
+		assert.Equal(t, wTest.TriggerNestedChanges, wAfter.TriggerNestedChanges)
 	})
 
 	t.Run("with valid options", func(t *testing.T) {
@@ -624,6 +630,7 @@ func TestWorkspacesUpdateByID(t *testing.T) {
 			TerraformVersion:           String("0.11.1"),
 			TriggerPrefixes:            []string{"/modules", "/shared"},
 			WorkingDirectory:           String("baz/"),
+			TriggerNestedChanges:       Bool(false),
 		}
 
 		w, err := client.Workspaces.UpdateByID(ctx, wTest.ID, options)
@@ -648,6 +655,7 @@ func TestWorkspacesUpdateByID(t *testing.T) {
 			assert.Equal(t, *options.TerraformVersion, item.TerraformVersion)
 			assert.Equal(t, options.TriggerPrefixes, item.TriggerPrefixes)
 			assert.Equal(t, *options.WorkingDirectory, item.WorkingDirectory)
+			assert.Equal(t, *options.TriggerNestedChanges, item.TriggerNestedChanges)
 		}
 	})
 

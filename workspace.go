@@ -133,6 +133,7 @@ type Workspace struct {
 	TriggerPrefixes            []string              `jsonapi:"attr,trigger-prefixes"`
 	VCSRepo                    *VCSRepo              `jsonapi:"attr,vcs-repo"`
 	WorkingDirectory           string                `jsonapi:"attr,working-directory"`
+	TriggerNestedChanges       bool                  `jsonapi:"attr,trigger-nested-changes"`
 	UpdatedAt                  time.Time             `jsonapi:"attr,updated-at,iso8601"`
 	ResourceCount              int                   `jsonapi:"attr,resource-count"`
 	ApplyDurationAverage       time.Duration         `jsonapi:"attr,apply-duration-average"`
@@ -335,6 +336,12 @@ type WorkspaceCreateOptions struct {
 	// environment when multiple environments exist within the same repository.
 	WorkingDirectory *string `jsonapi:"attr,working-directory,omitempty"`
 
+	// Optional: Whether to trigger a run when any nested file below the root or the
+	// working directory (if configured) is changed. By default, it is enabled. Setting
+	// this to false, any changes in any file will trigger a run only in the current
+	// directory
+	TriggerNestedChanges *bool `jsonapi:"attr,trigger-nested-changes,omitempty"`
+
 	// A list of tags to attach to the workspace. If the tag does not already
 	// exist, it is created and added to the workspace.
 	Tags []*Tag `jsonapi:"relation,tags,omitempty"`
@@ -431,6 +438,11 @@ type WorkspaceUpdateOptions struct {
 	// the environment when multiple environments exist within the same
 	// repository.
 	WorkingDirectory *string `jsonapi:"attr,working-directory,omitempty"`
+
+	// Optional: Whether to trigger a run when any nested file below the root or the
+	// working directory (if configured) is changed. By default, it is enabled. Setting this to false, will prevent
+	// the change in any nested files to trigger a run.
+	TriggerNestedChanges *bool `jsonapi:"attr,trigger-nested-changes"`
 }
 
 // WorkspaceLockOptions represents the options for locking a workspace.
