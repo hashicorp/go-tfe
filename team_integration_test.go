@@ -105,8 +105,8 @@ func TestTeamsCreate(t *testing.T) {
 		assert.Nil(t, err)
 		assert.Equal(t, *options.Name, team.Name)
 
-		assert.NotNil(t, options.SSOTeamID, team.SSOTeamID)
-		assert.Equal(t, *options.SSOTeamID, *team.SSOTeamID)
+		assert.NotNil(t, team.SSOTeamID)
+		assert.Equal(t, *options.SSOTeamID, team.SSOTeamID)
 	})
 
 	t.Run("when options is missing name", func(t *testing.T) {
@@ -171,7 +171,7 @@ func TestTeamsRead(t *testing.T) {
 			skipIfBeta(t)
 
 			assert.NotNil(t, ssoTeam.SSOTeamID)
-			assert.Equal(t, *opts.SSOTeamID, *ssoTeam.SSOTeamID)
+			assert.Equal(t, *opts.SSOTeamID, ssoTeam.SSOTeamID)
 		})
 	})
 
@@ -322,7 +322,7 @@ func TestTeam_Unmarshal(t *testing.T) {
 	require.NoError(t, err)
 	assert.Equal(t, team.ID, "1")
 	assert.Equal(t, team.Name, "team hashi")
-	assert.Nil(t, team.SSOTeamID)
+	assert.Empty(t, team.SSOTeamID)
 	assert.Equal(t, team.OrganizationAccess.ManageWorkspaces, true)
 	assert.Equal(t, team.OrganizationAccess.ManageVCSSettings, true)
 	assert.Equal(t, team.OrganizationAccess.ManagePolicies, true)
