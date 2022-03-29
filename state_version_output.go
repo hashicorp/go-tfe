@@ -57,7 +57,7 @@ func (s *stateVersionOutputs) ReadCurrent(ctx context.Context, workspaceID strin
 // Read a State Version Output
 func (s *stateVersionOutputs) Read(ctx context.Context, outputID string) (*StateVersionOutput, error) {
 	if !validStringID(&outputID) {
-		return nil, ErrInvalidRunID
+		return nil, ErrInvalidOutputID
 	}
 
 	u := fmt.Sprintf("state-version-outputs/%s", url.QueryEscape(outputID))
