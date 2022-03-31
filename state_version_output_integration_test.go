@@ -63,4 +63,22 @@ func TestStateVersionOutputsRead(t *testing.T) {
 
 		assert.Greater(t, len(so.Items), 0, "workspace state version outputs were empty")
 	})
+
+	t.Run("Sensitive secrets are null", func(t *testing.T) {
+		so, err := client.StateVersionOutputs.ReadCurrent(ctx, wTest1.ID)
+		assert.Nil(t, err)
+		assert.NotNil(t, so)
+
+		var found *StateVersionOutput = nil
+		for _, s := range so.Items {
+			if s.Name == "test_output_string" {
+				found = s
+				break
+			}
+		}
+
+		assert.NotNil(t, found)
+		assert.True(t, found.Sensitive)
+		assert.Nil(t, found.Value)
+	})
 }
