@@ -2,6 +2,14 @@
 
 If you find an issue with this package, please create an issue in GitHub. If you'd like, we welcome any contributions. Fork this repository and submit a pull request.
 
+## Adding new functionality or fixing relevant bugs
+
+If you are adding a new endpoint, make sure to update COVERAGE.md where we keep a list of the TFC APIs that this SDK supports.
+
+If you are making relevant changes that is worth communicating to our users, please include a note about it in our CHANGELOG.md. You can include it as part of the PR where you are submitting your changes.
+
+CHANGELOG.md should have the next minor version listed as `# v1.X.0 (Unreleased)` and any changes can go under there. But if you feel that your changes are better suited for a patch version (like a critical bug fix), you may list a new section for this version. You should repeat the same formatting style introduced by previous versions.
+
 ## Running the Linters Locally
 
 1. Ensure you have have [installed golangci-lint](https://golangci-lint.run/usage/install/#local-installation)
@@ -23,7 +31,31 @@ You'll need to generate mocks if an existing endpoint method is modified or a ne
 mockgen -source=example_resource.go -destination=mocks/example_resource_mocks.go -package=mocks
 ```
 
-## Adding a New Endpoint
+## Adding API changes that are still behind a feature flag
+
+On top of your code changes, or anywhere visible, add a comment that reads like this: 
+
+```
+// **Note: This field is still in BETA and subject to change.**
+ExampleNewField *bool `jsonapi:"attr,example-new-field,omitempty"`
+```
+
+When adding test cases, use the skipIfBeta() test helper to omit beta features from running in CI.
+
+```
+t.Run("with nested changes trigger", func (t *testing.T) {
+  skipIfBeta(t)
+  options := WorkspaceCreateOptions {
+     // rest of required fields here
+     ExampleNewField: Bool(true),
+   }
+  // the rest of your test logic here
+})
+```
+
+**Note**: After your PR has been merged, and the feature either reaches GA or the flag is enabled in CI, you can remove the skipIfBeta() flag.
+
+## Best Practices for Adding a New Endpoint
 
 Here you will find a scaffold to get you started when building a json:api RESTful endpoint. The comments are meant to guide you but should be replaced with endpoint-specific and type-specific documentation. Additionally, you'll need to add an integration test that covers each method of the main interface.
 
@@ -334,4 +366,3 @@ To generate mocks, simply run `./generate_mocks.sh`. You'll need to do so if an 
 ```
 mockgen -source=example_resource.go -destination=mocks/example_resource_mocks.go -package=mocks
 ```
-
