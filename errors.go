@@ -126,6 +126,8 @@ var (
 
 	ErrInvalidStateVerID = errors.New("invalid value for state version ID")
 
+	ErrInvalidOutputID = errors.New("invalid value for state version output ID")
+
 	ErrInvalidAccessTeamID = errors.New("invalid value for team access ID")
 
 	ErrInvalidTeamID = errors.New("invalid value for team ID")

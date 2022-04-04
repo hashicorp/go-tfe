@@ -1,3 +1,9 @@
+# v1.2.0 (Unreleased)
+
+## Enhancements
+
+* Adds support for reading current state version outputs to StateVersionOutputs, which can be useful for reading outputs when users don't have the necessary permissions to read the entire state.
+
 # v1.1.0
 
 ## Enhancements
@@ -27,4 +33,4 @@
 * API Coverage documentation by @laurenolivia [#334](https://github.com/hashicorp/go-tfe/pull/334)
 
 ## Bug Fixes
-* Fixed invalid memory address error when `AdminSMTPSettingsUpdateOptions.Auth` field is empty and accessed by @uturunku1 [#335](https://github.com/hashicorp/go-tfe/pull/335) 
+* Fixed invalid memory address error when `AdminSMTPSettingsUpdateOptions.Auth` field is empty and accessed by @uturunku1 [#335](https://github.com/hashicorp/go-tfe/pull/335)

@@ -49,3 +49,18 @@ func (mr *MockStateVersionOutputsMockRecorder) Read(ctx, outputID interface{}) *
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Read", reflect.TypeOf((*MockStateVersionOutputs)(nil).Read), ctx, outputID)
 }
+
+// ReadCurrent mocks base method.
+func (m *MockStateVersionOutputs) ReadCurrent(ctx context.Context, workspaceID string) (*tfe.StateVersionOutputsList, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "ReadCurrent", ctx, workspaceID)
+	ret0, _ := ret[0].(*tfe.StateVersionOutputsList)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// ReadCurrent indicates an expected call of ReadCurrent.
+func (mr *MockStateVersionOutputsMockRecorder) ReadCurrent(ctx, workspaceID interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ReadCurrent", reflect.TypeOf((*MockStateVersionOutputs)(nil).ReadCurrent), ctx, workspaceID)
+}

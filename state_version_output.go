@@ -16,6 +16,7 @@ var _ StateVersionOutputs = (*stateVersionOutputs)(nil)
 // TFE API docs: https://www.terraform.io/docs/cloud/api/state-version-outputs.html
 type StateVersionOutputs interface {
 	Read(ctx context.Context, outputID string) (*StateVersionOutput, error)
+	ReadCurrent(ctx context.Context, workspaceID string) (*StateVersionOutputsList, error)
 }
 
 // stateVersionOutputs implements StateVersionOutputs.
@@ -32,10 +33,31 @@ type StateVersionOutput struct {
 	Value     interface{} `jsonapi:"attr,value"`
 }
 
+// ReadCurrent reads the current state version outputs for the specified workspace
+func (s *stateVersionOutputs) ReadCurrent(ctx context.Context, workspaceID string) (*StateVersionOutputsList, error) {
+	if !validStringID(&workspaceID) {
+		return nil, ErrInvalidWorkspaceID
+	}
+
+	u := fmt.Sprintf("workspaces/%s/current-state-version-outputs", url.QueryEscape(workspaceID))
+	req, err := s.client.newRequest("GET", u, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	so := &StateVersionOutputsList{}
+	err = s.client.do(ctx, req, so)
+	if err != nil {
+		return nil, err
+	}
+
+	return so, nil
+}
+
 // Read a State Version Output
 func (s *stateVersionOutputs) Read(ctx context.Context, outputID string) (*StateVersionOutput, error) {
 	if !validStringID(&outputID) {
-		return nil, ErrInvalidRunID
+		return nil, ErrInvalidOutputID
 	}
 
 	u := fmt.Sprintf("state-version-outputs/%s", url.QueryEscape(outputID))
