@@ -88,6 +88,7 @@ type PolicySet struct {
 }
 
 // PolicySetIncludeOpt represents the available options for include query params.
+// https://www.terraform.io/cloud-docs/api-docs/policy-sets#available-related-resources
 type PolicySetIncludeOpt string
 
 const (
@@ -110,7 +111,7 @@ type PolicySetListOptions struct {
 // https://www.terraform.io/docs/cloud/api/policy-sets.html#relationships
 type PolicySetReadOptions struct {
 	// Optional: A list of relations to include. See available resources
-	// https://www.terraform.io/cloud-docs/api-docs/policy-sets#relationships
+	// https://www.terraform.io/cloud-docs/api-docs/policy-sets#available-related-resources
 	Include []PolicySetIncludeOpt `url:"include,omitempty"`
 }
 

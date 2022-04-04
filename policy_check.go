@@ -111,6 +111,7 @@ type PolicyStatusTimestamps struct {
 }
 
 // A list of relations to include
+// https://www.terraform.io/cloud-docs/api-docs/policy-checks#available-related-resources
 type PolicyCheckIncludeOpt string
 
 const (
@@ -122,7 +123,9 @@ const (
 type PolicyCheckListOptions struct {
 	ListOptions
 
-	Include []PolicyCheckIncludeOpt `url:"include,omitempty"` // optional
+	// Optional: A list of relations to include. See available resources
+	// https://www.terraform.io/cloud-docs/api-docs/policy-checks#available-related-resources
+	Include []PolicyCheckIncludeOpt `url:"include,omitempty"`
 }
 
 // List all policy checks of the given run.
