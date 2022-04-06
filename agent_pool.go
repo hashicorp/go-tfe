@@ -55,6 +55,7 @@ type AgentPool struct {
 }
 
 // A list of relations to include
+// https://www.terraform.io/cloud-docs/api-docs/agents#available-related-resources
 type AgentPoolIncludeOpt string
 
 const AgentPoolWorkspaces AgentPoolIncludeOpt = "workspaces"
@@ -66,6 +67,8 @@ type AgentPoolReadOptions struct {
 // AgentPoolListOptions represents the options for listing agent pools.
 type AgentPoolListOptions struct {
 	ListOptions
+	// Optional: A list of relations to include. See available resources
+	// https://www.terraform.io/cloud-docs/api-docs/agents#available-related-resources
 	Include []AgentPoolIncludeOpt `url:"include,omitempty"`
 }
 
