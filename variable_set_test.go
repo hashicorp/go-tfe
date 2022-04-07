@@ -230,7 +230,7 @@ func TestVariableSetsApplyToAndRemoveFromWorkspaces(t *testing.T) {
 		require.NoError(t, err)
 
 		// Variable set should be applied to [wTest1, wTest2]
-		assert.Equal(t, len(options.Workspaces), len(vsAfter.Workspaces))
+		assert.Equal(t, 2, len(vsAfter.Workspaces))
 		assert.Equal(t, options.Workspaces[1].ID, vsAfter.Workspaces[1].ID)
 	})
 
