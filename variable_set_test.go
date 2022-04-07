@@ -190,6 +190,67 @@ func TestVariableSetsDelete(t *testing.T) {
 	})
 }
 
+func TestVariableSetsApplyToAndRemoveFromWorkspaces(t *testing.T) {
+	client := testClient(t)
+	ctx := context.Background()
+
+	orgTest, orgTestCleanup := createOrganization(t, client)
+	defer orgTestCleanup()
+
+	vsTest, _ := createVariableSet(t, client, orgTest, VariableSetCreateOptions{})
+
+	wTest1, _ := createWorkspace(t, client, orgTest)
+	wTest2, _ := createWorkspace(t, client, orgTest)
+
+	t.Run("with first workspace added", func(t *testing.T) {
+		options := VariableSetApplyToWorkspacesOptions{
+			Workspaces: []*Workspace{wTest1},
+		}
+
+		err := client.VariableSets.ApplyToWorkspaces(ctx, vsTest.ID, &options)
+		require.NoError(t, err)
+
+		vsAfter, err := client.VariableSets.Read(ctx, vsTest.ID, nil)
+		require.NoError(t, err)
+
+		// Variable set should be applied to [wTest1]
+		assert.Equal(t, len(options.Workspaces), len(vsAfter.Workspaces))
+		assert.Equal(t, options.Workspaces[0].ID, vsAfter.Workspaces[0].ID)
+	})
+
+	t.Run("with second workspace added", func(t *testing.T) {
+		options := VariableSetApplyToWorkspacesOptions{
+			Workspaces: []*Workspace{wTest2},
+		}
+
+		err := client.VariableSets.ApplyToWorkspaces(ctx, vsTest.ID, &options)
+		require.NoError(t, err)
+
+		vsAfter, err := client.VariableSets.Read(ctx, vsTest.ID, nil)
+		require.NoError(t, err)
+
+		// Variable set should be applied to [wTest1, wTest2]
+		assert.Equal(t, len(options.Workspaces), len(vsAfter.Workspaces))
+		assert.Equal(t, options.Workspaces[1].ID, vsAfter.Workspaces[1].ID)
+	})
+
+	t.Run("with first workspace removed", func(t *testing.T) {
+		options := VariableSetRemoveFromWorkspacesOptions{
+			Workspaces: []*Workspace{wTest1},
+		}
+
+		err := client.VariableSets.RemoveFromWorkspaces(ctx, vsTest.ID, &options)
+		require.NoError(t, err)
+
+		vsAfter, err := client.VariableSets.Read(ctx, vsTest.ID, nil)
+		require.NoError(t, err)
+
+		// Variable set should be applied to [wTest2]
+		assert.Equal(t, 1, len(vsAfter.Workspaces))
+		assert.Equal(t, wTest2.ID, vsAfter.Workspaces[0].ID)
+	})
+}
+
 func TestVariableSetsUpdateWorkspaces(t *testing.T) {
 	client := testClient(t)
 	ctx := context.Background()

@@ -29,7 +29,13 @@ type VariableSets interface {
 	// Delete a variable set by ID.
 	Delete(ctx context.Context, variableSetID string) error
 
-	// Update list of workspaces to which the variable set is applied to match the supplied list
+	// Apply variable set to workspaces in the supplied list.
+	ApplyToWorkspaces(ctx context.Context, variableSetID string, options *VariableSetApplyToWorkspacesOptions) error
+
+	// Remove variable set from workspaces in the supplied list.
+	RemoveFromWorkspaces(ctx context.Context, variableSetID string, options *VariableSetRemoveFromWorkspacesOptions) error
+
+	// Update list of workspaces to which the variable set is applied to match the supplied list.
 	UpdateWorkspaces(ctx context.Context, variableSetID string, options *VariableSetUpdateWorkspacesOptions) (*VariableSet, error)
 }
 
@@ -200,6 +206,7 @@ type VariableSetUpdateOptions struct {
 	Global *bool `jsonapi:"attr,global,omitempty"`
 }
 
+// Update an existing variable set.
 func (s *variableSets) Update(ctx context.Context, variableSetID string, options *VariableSetUpdateOptions) (*VariableSet, error) {
 	if !validStringID(&variableSetID) {
 		return nil, ErrInvalidVariableSetID
@@ -228,6 +235,72 @@ func (s *variableSets) Delete(ctx context.Context, variableSetID string) error {
 
 	u := fmt.Sprintf("varsets/%s", url.QueryEscape(variableSetID))
 	req, err := s.client.newRequest("DELETE", u, nil)
+	if err != nil {
+		return err
+	}
+
+	return s.client.do(ctx, req, nil)
+}
+
+// VariableSetApplyToWorkspacesOptions represents the options for applying variable sets to workspaces.
+type VariableSetApplyToWorkspacesOptions struct {
+	// The workspaces to apply the variable set to (additive).
+	Workspaces []*Workspace
+}
+
+func (o *VariableSetApplyToWorkspacesOptions) valid() error {
+	for _, s := range o.Workspaces {
+		if !validStringID(&s.ID) {
+			return ErrRequiredWorkspaceID
+		}
+	}
+	return nil
+}
+
+// Apply variable set to workspaces in the supplied list.
+func (s *variableSets) ApplyToWorkspaces(ctx context.Context, variableSetID string, options *VariableSetApplyToWorkspacesOptions) error {
+	if !validStringID(&variableSetID) {
+		return ErrInvalidVariableSetID
+	}
+	if err := options.valid(); err != nil {
+		return err
+	}
+
+	u := fmt.Sprintf("varsets/%s/relationships/workspaces", url.QueryEscape(variableSetID))
+	req, err := s.client.newRequest("POST", u, options.Workspaces)
+	if err != nil {
+		return err
+	}
+
+	return s.client.do(ctx, req, nil)
+}
+
+// VariableSetRemoveFromWorkspacesOptions represents the options for removing variable sets from workspaces.
+type VariableSetRemoveFromWorkspacesOptions struct {
+	// The workspaces to remove the variable set from.
+	Workspaces []*Workspace
+}
+
+func (o *VariableSetRemoveFromWorkspacesOptions) valid() error {
+	for _, s := range o.Workspaces {
+		if !validStringID(&s.ID) {
+			return ErrRequiredWorkspaceID
+		}
+	}
+	return nil
+}
+
+// Remove variable set from workspaces in the supplied list.
+func (s *variableSets) RemoveFromWorkspaces(ctx context.Context, variableSetID string, options *VariableSetRemoveFromWorkspacesOptions) error {
+	if !validStringID(&variableSetID) {
+		return ErrInvalidVariableSetID
+	}
+	if err := options.valid(); err != nil {
+		return err
+	}
+
+	u := fmt.Sprintf("varsets/%s/relationships/workspaces", url.QueryEscape(variableSetID))
+	req, err := s.client.newRequest("DELETE", u, options.Workspaces)
 	if err != nil {
 		return err
 	}
