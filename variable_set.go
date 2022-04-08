@@ -258,6 +258,7 @@ func (o *VariableSetApplyToWorkspacesOptions) valid() error {
 }
 
 // Apply variable set to workspaces in the supplied list.
+// Note: this method will return an error if the variable set has global = true.
 func (s *variableSets) ApplyToWorkspaces(ctx context.Context, variableSetID string, options *VariableSetApplyToWorkspacesOptions) error {
 	if !validStringID(&variableSetID) {
 		return ErrInvalidVariableSetID
@@ -310,7 +311,6 @@ func (s *variableSets) RemoveFromWorkspaces(ctx context.Context, variableSetID s
 }
 
 // VariableSetUpdateWorkspacesOptions represents a subset of update options specifically for applying variable sets to workspaces
-// Note: this method will return an error if the variable set has global = true.
 type VariableSetUpdateWorkspacesOptions struct {
 	// Type is a public field utilized by JSON:API to
 	// set the resource type via the field tag.
