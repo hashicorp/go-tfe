@@ -39,15 +39,18 @@ type VariableSets interface {
 	UpdateWorkspaces(ctx context.Context, variableSetID string, options *VariableSetUpdateWorkspacesOptions) (*VariableSet, error)
 }
 
+// variableSets implements VariableSets.
 type variableSets struct {
 	client *Client
 }
 
+// VariableSetList represents a list of variable sets.
 type VariableSetList struct {
 	*Pagination
 	Items []*VariableSet
 }
 
+// VariableSet represents a Terraform Enterprise variable set.
 type VariableSet struct {
 	ID          string `jsonapi:"primary,varsets"`
 	Name        string `jsonapi:"attr,name"`
@@ -69,6 +72,7 @@ const (
 	VariableSetVars       VariableSetIncludeOpt = "vars"
 )
 
+// VariableSetListOptions represents the options for listing variable sets.
 type VariableSetListOptions struct {
 	ListOptions
 	Include string `url:"include"`
@@ -161,6 +165,7 @@ func (s *variableSets) Create(ctx context.Context, organization string, options 
 	return vl, nil
 }
 
+// VariableSetReadOptions represents the options for reading variable sets.
 type VariableSetReadOptions struct {
 	Include *[]VariableSetIncludeOpt `url:"include:omitempty"`
 }
