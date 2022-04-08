@@ -173,7 +173,8 @@ func TestVariableSetsDelete(t *testing.T) {
 	orgTest, orgTestCleanup := createOrganization(t, client)
 	defer orgTestCleanup()
 
-	vsTest, _ := createVariableSet(t, client, orgTest, VariableSetCreateOptions{})
+	vsTest, vsTestCleanup := createVariableSet(t, client, orgTest, VariableSetCreateOptions{})
+	defer vsTestCleanup()
 
 	t.Run("with valid ID", func(t *testing.T) {
 		err := client.VariableSets.Delete(ctx, vsTest.ID)
@@ -197,10 +198,13 @@ func TestVariableSetsApplyToAndRemoveFromWorkspaces(t *testing.T) {
 	orgTest, orgTestCleanup := createOrganization(t, client)
 	defer orgTestCleanup()
 
-	vsTest, _ := createVariableSet(t, client, orgTest, VariableSetCreateOptions{})
+	vsTest, vsTestCleanup := createVariableSet(t, client, orgTest, VariableSetCreateOptions{})
+	defer vsTestCleanup()
 
-	wTest1, _ := createWorkspace(t, client, orgTest)
-	wTest2, _ := createWorkspace(t, client, orgTest)
+	wTest1, wTest1Cleanup := createWorkspace(t, client, orgTest)
+	defer wTest1Cleanup()
+	wTest2, wTest2Cleanup := createWorkspace(t, client, orgTest)
+	defer wTest2Cleanup()
 
 	t.Run("with first workspace added", func(t *testing.T) {
 		options := VariableSetApplyToWorkspacesOptions{
@@ -259,9 +263,11 @@ func TestVariableSetsUpdateWorkspaces(t *testing.T) {
 	orgTest, orgTestCleanup := createOrganization(t, client)
 	defer orgTestCleanup()
 
-	vsTest, _ := createVariableSet(t, client, orgTest, VariableSetCreateOptions{})
+	vsTest, vsTestCleanup := createVariableSet(t, client, orgTest, VariableSetCreateOptions{})
+	defer vsTestCleanup()
 
-	wTest, _ := createWorkspace(t, client, orgTest)
+	wTest, wTestCleanup := createWorkspace(t, client, orgTest)
+	defer wTestCleanup()
 
 	t.Run("with valid workspaces", func(t *testing.T) {
 		options := VariableSetUpdateWorkspacesOptions{
