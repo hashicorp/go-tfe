@@ -130,6 +130,7 @@ type Workspace struct {
 	SourceURL                  string                `jsonapi:"attr,source-url"`
 	StructuredRunOutputEnabled bool                  `jsonapi:"attr,structured-run-output-enabled"`
 	TerraformVersion           string                `jsonapi:"attr,terraform-version"`
+	TriggerPatterns            []string              `jsonapi:"attr,trigger-patterns"`
 	TriggerPrefixes            []string              `jsonapi:"attr,trigger-prefixes"`
 	VCSRepo                    *VCSRepo              `jsonapi:"attr,vcs-repo"`
 	WorkingDirectory           string                `jsonapi:"attr,working-directory"`
@@ -321,6 +322,10 @@ type WorkspaceCreateOptions struct {
 	// workspace, the latest version is selected unless otherwise specified.
 	TerraformVersion *string `jsonapi:"attr,terraform-version,omitempty"`
 
+	// Optional: List of patterns used to match against changed files in order
+	// to decide whether to trigger a run or not.
+	TriggerPatterns []string `jsonapi:"attr,trigger-patterns,omitempty"`
+
 	// List of repository-root-relative paths which list all locations to be
 	// tracked for changes. See FileTriggersEnabled above for more details.
 	TriggerPrefixes []string `jsonapi:"attr,trigger-prefixes,omitempty"`
@@ -414,6 +419,10 @@ type WorkspaceUpdateOptions struct {
 
 	// Optional: The version of Terraform to use for this workspace.
 	TerraformVersion *string `jsonapi:"attr,terraform-version,omitempty"`
+
+	// Optional: List of patterns used to match against changed files in order
+	// to decide whether to trigger a run or not.
+	TriggerPatterns []string `jsonapi:"attr,trigger-patterns,omitempty"`
 
 	// Optional: List of repository-root-relative paths which list all locations to be
 	// tracked for changes. See FileTriggersEnabled above for more details.
