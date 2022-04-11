@@ -173,8 +173,8 @@ func TestVariableSetsDelete(t *testing.T) {
 	orgTest, orgTestCleanup := createOrganization(t, client)
 	defer orgTestCleanup()
 
-	vsTest, vsTestCleanup := createVariableSet(t, client, orgTest, VariableSetCreateOptions{})
-	defer vsTestCleanup()
+	// Do not defer cleanup since the next step in this test is to delete it
+	vsTest, _ := createVariableSet(t, client, orgTest, VariableSetCreateOptions{})
 
 	t.Run("with valid ID", func(t *testing.T) {
 		err := client.VariableSets.Delete(ctx, vsTest.ID)
