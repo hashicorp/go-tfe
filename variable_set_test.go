@@ -254,6 +254,41 @@ func TestVariableSetsApplyToAndRemoveFromWorkspaces(t *testing.T) {
 		assert.Equal(t, 1, len(vsAfter.Workspaces))
 		assert.Equal(t, wTest2.ID, vsAfter.Workspaces[0].ID)
 	})
+
+	t.Run("when variable set ID is invalid", func(t *testing.T) {
+		applyOptions := VariableSetApplyToWorkspacesOptions{
+			Workspaces: []*Workspace{wTest1},
+		}
+
+		err := client.VariableSets.ApplyToWorkspaces(ctx, badIdentifier, &applyOptions)
+		assert.EqualError(t, err, ErrInvalidVariableID.Error())
+
+		removeOptions := VariableSetRemoveFromWorkspacesOptions{
+			Workspaces: []*Workspace{wTest1},
+		}
+		err = client.VariableSets.RemoveFromWorkspaces(ctx, badIdentifier, &removeOptions)
+		assert.EqualError(t, err, ErrInvalidVariableID.Error())
+	})
+
+	t.Run("when workspace ID is invalid", func(t *testing.T) {
+		badWorkspace := &Workspace{
+			ID: badIdentifier,
+		}
+
+		applyOptions := VariableSetApplyToWorkspacesOptions{
+			Workspaces: []*Workspace{badWorkspace},
+		}
+
+		err := client.VariableSets.ApplyToWorkspaces(ctx, vsTest.ID, &applyOptions)
+		assert.EqualError(t, err, ErrRequiredWorkspaceID.Error())
+
+		removeOptions := VariableSetRemoveFromWorkspacesOptions{
+			Workspaces: []*Workspace{badWorkspace},
+		}
+
+		err = client.VariableSets.RemoveFromWorkspaces(ctx, vsTest.ID, &removeOptions)
+		assert.EqualError(t, err, ErrRequiredWorkspaceID.Error())
+	})
 }
 
 func TestVariableSetsUpdateWorkspaces(t *testing.T) {
