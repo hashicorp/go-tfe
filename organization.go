@@ -94,6 +94,7 @@ type Entitlements struct {
 	CostEstimation        bool   `jsonapi:"attr,cost-estimation"`
 	Operations            bool   `jsonapi:"attr,operations"`
 	PrivateModuleRegistry bool   `jsonapi:"attr,private-module-registry"`
+	RunTasks              bool   `jsonapi:"attr,run-tasks"`
 	SSO                   bool   `jsonapi:"attr,sso"`
 	Sentinel              bool   `jsonapi:"attr,sentinel"`
 	StateStorage          bool   `jsonapi:"attr,state-storage"`

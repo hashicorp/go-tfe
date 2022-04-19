@@ -481,3 +481,23 @@ func TestOrganizationsReadRunTasksPermission(t *testing.T) {
 		})
 	})
 }
+
+func TestOrganizationsReadRunTasksEntitlement(t *testing.T) {
+	skipIfEnterprise(t)
+	skipIfFreeOnly(t)
+	skipIfBeta(t)
+
+	client := testClient(t)
+	ctx := context.Background()
+
+	orgTest, orgTestCleanup := createOrganization(t, client)
+	defer orgTestCleanup()
+
+	t.Run("when the org exists", func(t *testing.T) {
+		entitlements, err := client.Organizations.ReadEntitlements(ctx, orgTest.Name)
+		require.NoError(t, err)
+
+		assert.NotEmpty(t, entitlements.ID)
+		assert.True(t, entitlements.RunTasks)
+	})
+}
