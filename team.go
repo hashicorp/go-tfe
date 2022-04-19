@@ -64,6 +64,7 @@ type OrganizationAccess struct {
 	ManageVCSSettings     bool `jsonapi:"attr,manage-vcs-settings"`
 	ManageProviders       bool `jsonapi:"attr,manage-providers"`
 	ManageModules         bool `jsonapi:"attr,manage-modules"`
+	ManageRunTasks        bool `jsonapi:"attr,manage-run-tasks"`
 }
 
 // TeamPermissions represents the current user's permissions on the team.
@@ -139,6 +140,7 @@ type OrganizationAccessOptions struct {
 	ManageVCSSettings     *bool `json:"manage-vcs-settings,omitempty"`
 	ManageProviders       *bool `json:"manage-providers,omitempty"`
 	ManageModules         *bool `json:"manage-modules,omitempty"`
+	ManageRunTasks        *bool `json:"manage-run-tasks,omitempty"`
 }
 
 // List all the teams of the given organization.

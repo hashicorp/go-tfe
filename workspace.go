@@ -193,6 +193,7 @@ type WorkspacePermissions struct {
 	CanDestroy        bool `jsonapi:"attr,can-destroy"`
 	CanForceUnlock    bool `jsonapi:"attr,can-force-unlock"`
 	CanLock           bool `jsonapi:"attr,can-lock"`
+	CanManageRunTasks bool `jsonapi:"attr,can-manage-run-tasks"`
 	CanQueueApply     bool `jsonapi:"attr,can-queue-apply"`
 	CanQueueDestroy   bool `jsonapi:"attr,can-queue-destroy"`
 	CanQueueRun       bool `jsonapi:"attr,can-queue-run"`

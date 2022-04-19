@@ -338,3 +338,67 @@ func TestTeamAccessesRemove(t *testing.T) {
 		assert.Equal(t, err, ErrInvalidAccessTeamID)
 	})
 }
+
+func TestTeamAccessesReadRunTasks(t *testing.T) {
+	skipIfFreeOnly(t)
+	skipIfBeta(t)
+	skipIfEnterprise(t)
+
+	client := testClient(t)
+	ctx := context.Background()
+
+	orgTest, orgTestCleanup := createOrganization(t, client)
+	defer orgTestCleanup()
+	wTest, wTestCleanup := createWorkspace(t, client, orgTest)
+	defer wTestCleanup()
+	tmTest, tmTestCleanup := createTeam(t, client, orgTest)
+	defer tmTestCleanup()
+
+	taTest, taTestCleanup := createTeamAccess(t, client, tmTest, wTest, orgTest)
+	defer taTestCleanup()
+
+	t.Run("when the team access exists", func(t *testing.T) {
+		ta, err := client.TeamAccess.Read(ctx, taTest.ID)
+		require.NoError(t, err)
+
+		assert.Equal(t, AccessAdmin, ta.Access)
+
+		t.Run("permission attributes are decoded", func(t *testing.T) {
+			assert.Equal(t, true, ta.RunTasks)
+		})
+	})
+}
+
+func TestTeamAccessesUpdateRunTasks(t *testing.T) {
+	skipIfFreeOnly(t)
+	skipIfBeta(t)
+
+	client := testClient(t)
+	ctx := context.Background()
+
+	orgTest, orgTestCleanup := createOrganization(t, client)
+	defer orgTestCleanup()
+
+	wTest, wTestCleanup := createWorkspace(t, client, orgTest)
+	defer wTestCleanup()
+
+	tmTest, tmTestCleanup := createTeam(t, client, orgTest)
+	defer tmTestCleanup()
+
+	taTest, taTestCleanup := createTeamAccess(t, client, tmTest, wTest, orgTest)
+	defer taTestCleanup()
+
+	t.Run("with valid attributes", func(t *testing.T) {
+		newAccess := !taTest.RunTasks
+		options := TeamAccessUpdateOptions{
+			Access:   Access(AccessCustom),
+			RunTasks: &newAccess,
+		}
+
+		ta, err := client.TeamAccess.Update(ctx, taTest.ID, options)
+		require.NoError(t, err)
+
+		assert.Equal(t, AccessCustom, ta.Access)
+		assert.Equal(t, newAccess, ta.RunTasks)
+	})
+}
