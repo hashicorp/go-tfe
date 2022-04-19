@@ -94,8 +94,6 @@ func TestTeamsCreate(t *testing.T) {
 	})
 
 	t.Run("with sso-team-id", func(t *testing.T) {
-		skipIfBeta(t)
-
 		options := TeamCreateOptions{
 			Name:      String("rockettes"),
 			SSOTeamID: String("7dddb675-73e0-4858-a8ad-0e597064301b"),
@@ -168,8 +166,6 @@ func TestTeamsRead(t *testing.T) {
 		})
 
 		t.Run("SSO team id is returned", func(t *testing.T) {
-			skipIfBeta(t)
-
 			assert.NotNil(t, ssoTeam.SSOTeamID)
 			assert.Equal(t, *opts.SSOTeamID, *ssoTeam.SSOTeamID)
 		})
