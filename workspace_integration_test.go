@@ -339,7 +339,7 @@ func TestWorkspacesReadWithOptions(t *testing.T) {
 	defer svTestCleanup()
 
 	// give TFC some time to process the statefile and extract the outputs.
-	time.Sleep(waitForStateVersionOutputs)
+	waitForSVOutputs(t, client, svTest.ID)
 
 	t.Run("when options to include resource", func(t *testing.T) {
 		opts := &WorkspaceReadOptions{

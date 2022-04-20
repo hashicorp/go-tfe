@@ -6,13 +6,10 @@ package tfe
 import (
 	"context"
 	"testing"
-	"time"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
-
-const waitForStateVersionOutputs = 1000 * time.Millisecond
 
 func TestStateVersionOutputsRead(t *testing.T) {
 	client := testClient(t)
@@ -21,11 +18,11 @@ func TestStateVersionOutputsRead(t *testing.T) {
 	wTest1, wTest1Cleanup := createWorkspace(t, client, nil)
 	defer wTest1Cleanup()
 
-	_, svTestCleanup := createStateVersion(t, client, 0, wTest1)
+	svTest, svTestCleanup := createStateVersion(t, client, 0, wTest1)
 	defer svTestCleanup()
 
 	// give TFC some time to process the statefile and extract the outputs.
-	time.Sleep(waitForStateVersionOutputs)
+	waitForSVOutputs(t, client, svTest.ID)
 
 	curOpts := &StateVersionCurrentOptions{
 		Include: []StateVersionIncludeOpt{SVoutputs},

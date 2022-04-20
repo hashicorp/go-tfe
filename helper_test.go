@@ -7,6 +7,7 @@ import (
 	"crypto/sha256"
 	"encoding/base64"
 	"encoding/hex"
+	"errors"
 	"fmt"
 	"io/ioutil"
 	"os"
@@ -20,6 +21,8 @@ const badIdentifier = "! / nope" //nolint
 
 // Memoize test account details
 var _testAccountDetails *TestAccountDetails
+
+type retryableFn func() (interface{}, error)
 
 func testClient(t *testing.T) *Client {
 	client, err := NewClient(nil)
@@ -1157,6 +1160,45 @@ func createVariableSetVariable(t *testing.T, client *Client, vs *VariableSet, op
 
 		if vsCleanup != nil {
 			vsCleanup()
+		}
+	}
+}
+
+func waitForSVOutputs(t *testing.T, client *Client, svID string) {
+	t.Helper()
+	retry(func() (interface{}, error) {
+		outputs, err := client.StateVersions.ListOutputs(context.Background(), svID, nil)
+		if err != nil {
+			return nil, err
+		}
+
+		if len(outputs.Items) == 0 {
+			return nil, errors.New("no state version outputs found")
+		}
+
+		return outputs, nil
+	})
+}
+
+func retry(f retryableFn) (interface{}, error) {
+	tick := time.NewTicker(2 * time.Second)
+
+	retries := 0
+	maxRetries := 5
+
+	for {
+		select {
+		case <-tick.C:
+			res, err := f()
+			if err == nil {
+				return res, err
+			}
+
+			if retries >= maxRetries {
+				return nil, err
+			}
+
+			retries += 1
 		}
 	}
 }
