@@ -17,6 +17,51 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
+func TestRegistryModulesList(t *testing.T) {
+	client := testClient(t)
+	ctx := context.Background()
+
+	orgTest, orgTestCleanup := createOrganization(t, client)
+	defer orgTestCleanup()
+
+	registryModuleTest1, registryModuleTest1Cleanup := createRegistryModule(t, client, orgTest)
+	defer registryModuleTest1Cleanup()
+	registryModuleTest2, registryModuleTest2Cleanup := createRegistryModule(t, client, orgTest)
+	defer registryModuleTest2Cleanup()
+
+	t.Run("with no list options", func(t *testing.T) {
+		modl, err := client.RegistryModules.List(ctx, orgTest.Name, &RegistryModuleListOptions{})
+		require.NoError(t, err)
+		assert.Contains(t, modl.Items, registryModuleTest1)
+		assert.Contains(t, modl.Items, registryModuleTest2)
+		assert.Equal(t, 1, modl.CurrentPage)
+		assert.Equal(t, 2, modl.TotalCount)
+	})
+
+	t.Run("with list options", func(t *testing.T) {
+		modl, err := client.RegistryModules.List(ctx, orgTest.Name, &RegistryModuleListOptions{
+			ListOptions: ListOptions{
+				PageNumber: 999,
+				PageSize:   100,
+			},
+		})
+		require.NoError(t, err)
+		// Out of range page number, so the items should be empty
+		assert.Empty(t, modl.Items)
+		assert.Equal(t, 999, modl.CurrentPage)
+
+		modl, err = client.RegistryModules.List(ctx, orgTest.Name, &RegistryModuleListOptions{
+			ListOptions: ListOptions{
+				PageNumber: 1,
+				PageSize:   100,
+			},
+		})
+		require.NoError(t, err)
+		assert.NotEmpty(t, modl.Items)
+		assert.Equal(t, 1, modl.CurrentPage)
+	})
+}
+
 func TestRegistryModulesCreate(t *testing.T) {
 	client := testClient(t)
 	ctx := context.Background()

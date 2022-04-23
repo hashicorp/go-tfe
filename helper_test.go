@@ -637,7 +637,7 @@ func createRegistryModule(t *testing.T, client *Client, org *Organization) (*Reg
 	ctx := context.Background()
 
 	options := RegistryModuleCreateOptions{
-		Name:     String("name"),
+		Name:     String(randomString(t)),
 		Provider: String("provider"),
 	}
 	rm, err := client.RegistryModules.Create(ctx, org.Name, options)
