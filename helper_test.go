@@ -11,6 +11,7 @@ import (
 	"fmt"
 	"io/ioutil"
 	"os"
+	"sync"
 	"testing"
 	"time"
 
@@ -1166,7 +1167,10 @@ func createVariableSetVariable(t *testing.T, client *Client, vs *VariableSet, op
 
 func waitForSVOutputs(t *testing.T, client *Client, svID string) {
 	t.Helper()
-	retry(func() (interface{}, error) {
+	wg := &sync.WaitGroup{}
+	wg.Add(1)
+
+	go retry(func() (interface{}, error) {
 		outputs, err := client.StateVersions.ListOutputs(context.Background(), svID, nil)
 		if err != nil {
 			return nil, err
@@ -1176,8 +1180,12 @@ func waitForSVOutputs(t *testing.T, client *Client, svID string) {
 			return nil, errors.New("no state version outputs found")
 		}
 
+		wg.Done()
+
 		return outputs, nil
 	})
+
+	wg.Wait()
 }
 
 func retry(f retryableFn) (interface{}, error) {
