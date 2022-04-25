@@ -19,6 +19,7 @@ import (
 )
 
 const badIdentifier = "! / nope" //nolint
+const tickDuration = 2
 
 // Memoize test account details
 var _testAccountDetails *TestAccountDetails
@@ -1222,7 +1223,7 @@ func waitForRunLock(t *testing.T, client *Client, workspaceID string) {
 }
 
 func retry(f retryableFn) (interface{}, error) {
-	tick := time.NewTicker(2 * time.Second)
+	tick := time.NewTicker(tickDuration * time.Second)
 
 	retries := 0
 	maxRetries := 5
