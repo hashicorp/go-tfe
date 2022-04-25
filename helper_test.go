@@ -1170,20 +1170,53 @@ func waitForSVOutputs(t *testing.T, client *Client, svID string) {
 	wg := &sync.WaitGroup{}
 	wg.Add(1)
 
-	go retry(func() (interface{}, error) {
-		outputs, err := client.StateVersions.ListOutputs(context.Background(), svID, nil)
-		if err != nil {
-			return nil, err
-		}
+	go func() {
+		_, err := retry(func() (interface{}, error) {
+			outputs, err := client.StateVersions.ListOutputs(context.Background(), svID, nil)
+			if err != nil {
+				return nil, err
+			}
 
-		if len(outputs.Items) == 0 {
-			return nil, errors.New("no state version outputs found")
+			if len(outputs.Items) == 0 {
+				return nil, errors.New("no state version outputs found")
+			}
+
+			return outputs, nil
+		})
+		if err != nil {
+			t.Error(err)
 		}
 
 		wg.Done()
+	}()
 
-		return outputs, nil
-	})
+	wg.Wait()
+}
+
+func waitForRunLock(t *testing.T, client *Client, workspaceID string) {
+	t.Helper()
+	wg := &sync.WaitGroup{}
+	wg.Add(1)
+
+	go func() {
+		_, err := retry(func() (interface{}, error) {
+			ws, err := client.Workspaces.ReadByID(context.Background(), workspaceID)
+			if err != nil {
+				return nil, err
+			}
+
+			if !ws.Locked {
+				return nil, errors.New("workspace is not locked by run")
+			}
+
+			return ws, nil
+		})
+		if err != nil {
+			t.Error(err)
+		}
+
+		wg.Done()
+	}()
 
 	wg.Wait()
 }
