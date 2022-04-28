@@ -10,7 +10,6 @@ import (
 	"fmt"
 	"io/ioutil"
 	"testing"
-	"time"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
@@ -313,7 +312,7 @@ func TestStateVersionsReadWithOptions(t *testing.T) {
 	defer svTestCleanup()
 
 	// give TFC some time to process the statefile and extract the outputs.
-	time.Sleep(waitForStateVersionOutputs)
+	waitForSVOutputs(t, client, svTest.ID)
 
 	t.Run("when the state version exists", func(t *testing.T) {
 		curOpts := &StateVersionReadOptions{
@@ -377,11 +376,11 @@ func TestStateVersionsCurrentWithOptions(t *testing.T) {
 	wTest1, wTest1Cleanup := createWorkspace(t, client, nil)
 	defer wTest1Cleanup()
 
-	_, svTestCleanup := createStateVersion(t, client, 0, wTest1)
+	svTest, svTestCleanup := createStateVersion(t, client, 0, wTest1)
 	defer svTestCleanup()
 
 	// give TFC some time to process the statefile and extract the outputs.
-	time.Sleep(waitForStateVersionOutputs)
+	waitForSVOutputs(t, client, svTest.ID)
 
 	t.Run("when the state version exists", func(t *testing.T) {
 		curOpts := &StateVersionCurrentOptions{
@@ -438,7 +437,7 @@ func TestStateVersionOutputs(t *testing.T) {
 	defer svTestCleanup()
 
 	// give TFC some time to process the statefile and extract the outputs.
-	time.Sleep(waitForStateVersionOutputs)
+	waitForSVOutputs(t, client, sv.ID)
 
 	t.Run("when the state version exists", func(t *testing.T) {
 		outputs, err := client.StateVersions.ListOutputs(ctx, sv.ID, nil)
