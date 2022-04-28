@@ -48,6 +48,7 @@ type RunTask struct {
 	URL      string  `jsonapi:"attr,url"`
 	Category string  `jsonapi:"attr,category"`
 	HMACKey  *string `jsonapi:"attr,hmac-key,omitempty"`
+	Enabled  bool    `jsonapi:"attr,enabled"`
 
 	Organization      *Organization       `jsonapi:"relation,organization"`
 	WorkspaceRunTasks []*WorkspaceRunTask `jsonapi:"relation,workspace-tasks"`
@@ -102,6 +103,9 @@ type RunTaskCreateOptions struct {
 
 	// Optional: An HMAC key to verify the run task
 	HMACKey *string `jsonapi:"attr,hmac-key,omitempty"`
+
+	// Optional: Whether the task should be enabled
+	Enabled *bool `jsonapi:"attr,enabled,omitempty"`
 }
 
 // RunTaskUpdateOptions represents the set of options for updating an organization's run task
@@ -123,6 +127,9 @@ type RunTaskUpdateOptions struct {
 
 	// Optional: An HMAC key to verify the run task
 	HMACKey *string `jsonapi:"attr,hmac-key,omitempty"`
+
+	// Optional: Whether the task should be enabled
+	Enabled *bool `jsonapi:"attr,enabled,omitempty"`
 }
 
 // Create is used to create a new run task for an organization
