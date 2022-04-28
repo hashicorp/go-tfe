@@ -122,6 +122,21 @@ func (mr *MockRegistryModulesMockRecorder) DeleteVersion(ctx, moduleID, version 
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteVersion", reflect.TypeOf((*MockRegistryModules)(nil).DeleteVersion), ctx, moduleID, version)
 }
 
+// List mocks base method.
+func (m *MockRegistryModules) List(ctx context.Context, organization string, options *tfe.RegistryModuleListOptions) (*tfe.RegistryModuleList, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "List", ctx, organization, options)
+	ret0, _ := ret[0].(*tfe.RegistryModuleList)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// List indicates an expected call of List.
+func (mr *MockRegistryModulesMockRecorder) List(ctx, organization, options interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "List", reflect.TypeOf((*MockRegistryModules)(nil).List), ctx, organization, options)
+}
+
 // Read mocks base method.
 func (m *MockRegistryModules) Read(ctx context.Context, moduleID tfe.RegistryModuleID) (*tfe.RegistryModule, error) {
 	m.ctrl.T.Helper()
