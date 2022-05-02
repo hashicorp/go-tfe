@@ -29,19 +29,28 @@ type VariableSets interface {
 	// Delete a variable set by ID.
 	Delete(ctx context.Context, variableSetID string) error
 
-	// Update list of workspaces to which the variable set is applied to match the supplied list
+	// Apply variable set to workspaces in the supplied list.
+	ApplyToWorkspaces(ctx context.Context, variableSetID string, options *VariableSetApplyToWorkspacesOptions) error
+
+	// Remove variable set from workspaces in the supplied list.
+	RemoveFromWorkspaces(ctx context.Context, variableSetID string, options *VariableSetRemoveFromWorkspacesOptions) error
+
+	// Update list of workspaces to which the variable set is applied to match the supplied list.
 	UpdateWorkspaces(ctx context.Context, variableSetID string, options *VariableSetUpdateWorkspacesOptions) (*VariableSet, error)
 }
 
+// variableSets implements VariableSets.
 type variableSets struct {
 	client *Client
 }
 
+// VariableSetList represents a list of variable sets.
 type VariableSetList struct {
 	*Pagination
 	Items []*VariableSet
 }
 
+// VariableSet represents a Terraform Enterprise variable set.
 type VariableSet struct {
 	ID          string `jsonapi:"primary,varsets"`
 	Name        string `jsonapi:"attr,name"`
@@ -63,13 +72,85 @@ const (
 	VariableSetVars       VariableSetIncludeOpt = "vars"
 )
 
+// VariableSetListOptions represents the options for listing variable sets.
 type VariableSetListOptions struct {
 	ListOptions
 	Include string `url:"include"`
 }
 
-func (o *VariableSetListOptions) valid() error {
-	return nil
+// VariableSetCreateOptions represents the options for creating a new variable set within in a organization.
+type VariableSetCreateOptions struct {
+	// Type is a public field utilized by JSON:API to
+	// set the resource type via the field tag.
+	// It is not a user-defined value and does not need to be set.
+	// https://jsonapi.org/format/#crud-creating
+	Type string `jsonapi:"primary,varsets"`
+
+	// The name of the variable set.
+	// Affects variable precedence when there are conflicts between Variable Sets
+	// https://www.terraform.io/cloud-docs/api-docs/variable-sets#apply-variable-set-to-workspaces
+	Name *string `jsonapi:"attr,name"`
+
+	// A description to provide context for the variable set.
+	Description *string `jsonapi:"attr,description,omitempty"`
+
+	// If true the variable set is considered in all runs in the organization.
+	Global *bool `jsonapi:"attr,global,omitempty"`
+}
+
+// VariableSetReadOptions represents the options for reading variable sets.
+type VariableSetReadOptions struct {
+	Include *[]VariableSetIncludeOpt `url:"include:omitempty"`
+}
+
+// VariableSetUpdateOptions represents the options for updating a variable set.
+type VariableSetUpdateOptions struct {
+	// Type is a public field utilized by JSON:API to
+	// set the resource type via the field tag.
+	// It is not a user-defined value and does not need to be set.
+	// https://jsonapi.org/format/#crud-creating
+	Type string `jsonapi:"primary,varsets"`
+
+	// The name of the variable set.
+	// Affects variable precedence when there are conflicts between Variable Sets
+	// https://www.terraform.io/cloud-docs/api-docs/variable-sets#apply-variable-set-to-workspaces
+	Name *string `jsonapi:"attr,name,omitempty"`
+
+	// A description to provide context for the variable set.
+	Description *string `jsonapi:"attr,description,omitempty"`
+
+	// If true the variable set is considered in all runs in the organization.
+	Global *bool `jsonapi:"attr,global,omitempty"`
+}
+
+// VariableSetApplyToWorkspacesOptions represents the options for applying variable sets to workspaces.
+type VariableSetApplyToWorkspacesOptions struct {
+	// The workspaces to apply the variable set to (additive).
+	Workspaces []*Workspace
+}
+
+// VariableSetRemoveFromWorkspacesOptions represents the options for removing variable sets from workspaces.
+type VariableSetRemoveFromWorkspacesOptions struct {
+	// The workspaces to remove the variable set from.
+	Workspaces []*Workspace
+}
+
+// VariableSetUpdateWorkspacesOptions represents a subset of update options specifically for applying variable sets to workspaces
+type VariableSetUpdateWorkspacesOptions struct {
+	// Type is a public field utilized by JSON:API to
+	// set the resource type via the field tag.
+	// It is not a user-defined value and does not need to be set.
+	// https://jsonapi.org/format/#crud-creating
+	Type string `jsonapi:"primary,varsets"`
+
+	// The workspaces to be applied to. An empty set means remove all applied
+	Workspaces []*Workspace `jsonapi:"relation,workspaces"`
+}
+
+type privateVariableSetUpdateWorkspacesOptions struct {
+	Type       string       `jsonapi:"primary,varsets"`
+	Global     bool         `jsonapi:"attr,global"`
+	Workspaces []*Workspace `jsonapi:"relation,workspaces"`
 }
 
 // List all Variable Sets in the organization
@@ -98,39 +179,6 @@ func (s *variableSets) List(ctx context.Context, organization string, options *V
 	return vl, nil
 }
 
-// VariableSetCreateOptions represents the options for creating a new variable set within in a organization.
-type VariableSetCreateOptions struct {
-	// Type is a public field utilized by JSON:API to
-	// set the resource type via the field tag.
-	// It is not a user-defined value and does not need to be set.
-	// https://jsonapi.org/format/#crud-creating
-	Type string `jsonapi:"primary,varsets"`
-
-	// The name of the variable set.
-	// Affects variable precedence when there are conflicts between Variable Sets
-	// https://www.terraform.io/cloud-docs/api-docs/variable-sets#apply-variable-set-to-workspaces
-	Name *string `jsonapi:"attr,name"`
-
-	// A description to provide context for the variable set.
-	Description *string `jsonapi:"attr,description,omitempty"`
-
-	// If true the variable set is considered in all runs in the organization.
-	Global *bool `jsonapi:"attr,global,omitempty"`
-}
-
-func (o *VariableSetCreateOptions) valid() error {
-	if o == nil {
-		return nil
-	}
-	if !validString(o.Name) {
-		return ErrRequiredName
-	}
-	if o.Global == nil {
-		return ErrRequiredGlobalFlag
-	}
-	return nil
-}
-
 // Create is used to create a new variable set.
 func (s *variableSets) Create(ctx context.Context, organization string, options *VariableSetCreateOptions) (*VariableSet, error) {
 	if !validStringID(&organization) {
@@ -155,10 +203,6 @@ func (s *variableSets) Create(ctx context.Context, organization string, options 
 	return vl, nil
 }
 
-type VariableSetReadOptions struct {
-	Include *[]VariableSetIncludeOpt `url:"include:omitempty"`
-}
-
 // Read is used to inspect a given variable set based on ID
 func (s *variableSets) Read(ctx context.Context, variableSetID string, options *VariableSetReadOptions) (*VariableSet, error) {
 	if !validStringID(&variableSetID) {
@@ -180,26 +224,7 @@ func (s *variableSets) Read(ctx context.Context, variableSetID string, options *
 	return vs, err
 }
 
-// VariableSetUpdateOptions represents the options for updating a variable set.
-type VariableSetUpdateOptions struct {
-	// Type is a public field utilized by JSON:API to
-	// set the resource type via the field tag.
-	// It is not a user-defined value and does not need to be set.
-	// https://jsonapi.org/format/#crud-creating
-	Type string `jsonapi:"primary,varsets"`
-
-	// The name of the variable set.
-	// Affects variable precedence when there are conflicts between Variable Sets
-	// https://www.terraform.io/cloud-docs/api-docs/variable-sets#apply-variable-set-to-workspaces
-	Name *string `jsonapi:"attr,name,omitempty"`
-
-	// A description to provide context for the variable set.
-	Description *string `jsonapi:"attr,description,omitempty"`
-
-	// If true the variable set is considered in all runs in the organization.
-	Global *bool `jsonapi:"attr,global,omitempty"`
-}
-
+// Update an existing variable set.
 func (s *variableSets) Update(ctx context.Context, variableSetID string, options *VariableSetUpdateOptions) (*VariableSet, error) {
 	if !validStringID(&variableSetID) {
 		return nil, ErrInvalidVariableSetID
@@ -235,29 +260,42 @@ func (s *variableSets) Delete(ctx context.Context, variableSetID string) error {
 	return s.client.do(ctx, req, nil)
 }
 
-// VariableSetUpdateWorkspacesOptions represents a subset of update options specifically for applying variable sets to workspaces
-type VariableSetUpdateWorkspacesOptions struct {
-	// Type is a public field utilized by JSON:API to
-	// set the resource type via the field tag.
-	// It is not a user-defined value and does not need to be set.
-	// https://jsonapi.org/format/#crud-creating
-	Type string `jsonapi:"primary,varsets"`
-
-	// The workspaces to be applied to. An empty set means remove all applied
-	Workspaces []*Workspace `jsonapi:"relation,workspaces"`
-}
-
-func (o *VariableSetUpdateWorkspacesOptions) valid() error {
-	if o == nil || o.Workspaces == nil {
-		return ErrRequiredWorkspacesList
+// Apply variable set to workspaces in the supplied list.
+// Note: this method will return an error if the variable set has global = true.
+func (s *variableSets) ApplyToWorkspaces(ctx context.Context, variableSetID string, options *VariableSetApplyToWorkspacesOptions) error {
+	if !validStringID(&variableSetID) {
+		return ErrInvalidVariableSetID
 	}
-	return nil
+	if err := options.valid(); err != nil {
+		return err
+	}
+
+	u := fmt.Sprintf("varsets/%s/relationships/workspaces", url.QueryEscape(variableSetID))
+	req, err := s.client.newRequest("POST", u, options.Workspaces)
+	if err != nil {
+		return err
+	}
+
+	return s.client.do(ctx, req, nil)
 }
 
-type privateVariableSetUpdateWorkspacesOptions struct {
-	Type       string       `jsonapi:"primary,varsets"`
-	Global     bool         `jsonapi:"attr,global"`
-	Workspaces []*Workspace `jsonapi:"relation,workspaces"`
+// Remove variable set from workspaces in the supplied list.
+// Note: this method will return an error if the variable set has global = true.
+func (s *variableSets) RemoveFromWorkspaces(ctx context.Context, variableSetID string, options *VariableSetRemoveFromWorkspacesOptions) error {
+	if !validStringID(&variableSetID) {
+		return ErrInvalidVariableSetID
+	}
+	if err := options.valid(); err != nil {
+		return err
+	}
+
+	u := fmt.Sprintf("varsets/%s/relationships/workspaces", url.QueryEscape(variableSetID))
+	req, err := s.client.newRequest("DELETE", u, options.Workspaces)
+	if err != nil {
+		return err
+	}
+
+	return s.client.do(ctx, req, nil)
 }
 
 // Update variable set to be applied to only the workspaces in the supplied list.
@@ -286,4 +324,46 @@ func (s *variableSets) UpdateWorkspaces(ctx context.Context, variableSetID strin
 	}
 
 	return v, nil
+}
+
+func (o *VariableSetListOptions) valid() error {
+	return nil
+}
+
+func (o *VariableSetCreateOptions) valid() error {
+	if o == nil {
+		return nil
+	}
+	if !validString(o.Name) {
+		return ErrRequiredName
+	}
+	if o.Global == nil {
+		return ErrRequiredGlobalFlag
+	}
+	return nil
+}
+
+func (o *VariableSetApplyToWorkspacesOptions) valid() error {
+	for _, s := range o.Workspaces {
+		if !validStringID(&s.ID) {
+			return ErrRequiredWorkspaceID
+		}
+	}
+	return nil
+}
+
+func (o *VariableSetRemoveFromWorkspacesOptions) valid() error {
+	for _, s := range o.Workspaces {
+		if !validStringID(&s.ID) {
+			return ErrRequiredWorkspaceID
+		}
+	}
+	return nil
+}
+
+func (o *VariableSetUpdateWorkspacesOptions) valid() error {
+	if o == nil || o.Workspaces == nil {
+		return ErrRequiredWorkspacesList
+	}
+	return nil
 }

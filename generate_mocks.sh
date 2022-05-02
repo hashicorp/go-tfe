@@ -49,5 +49,6 @@ mockgen -source=team_token.go -destination=mocks/team_token_mocks.go -package=mo
 mockgen -source=user.go -destination=mocks/user_mocks.go -package=mocks
 mockgen -source=user_token.go -destination=mocks/user_token_mocks.go -package=mocks
 mockgen -source=variable.go -destination=mocks/variable_mocks.go -package=mocks
+mockgen -source=variable_set.go -destination=mocks/variable_set_mocks.go -package=mocks
 mockgen -source=workspace.go -destination=mocks/workspace_mocks.go -package=mocks
 mockgen -source=workspace_run_task.go -destination=mocks/workspace_run_tasks.go -package=mocks
