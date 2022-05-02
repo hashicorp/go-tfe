@@ -33,6 +33,7 @@ func TestRunTasksCreate(t *testing.T) {
 			Name:     runTaskName,
 			URL:      runTaskServerURL,
 			Category: "task",
+			Enabled:  Bool(true),
 		})
 		require.NoError(t, err)
 
@@ -93,6 +94,7 @@ func TestRunTasksRead(t *testing.T) {
 		assert.Equal(t, runTaskTest.URL, r.URL)
 		assert.Equal(t, runTaskTest.Category, r.Category)
 		assert.Equal(t, runTaskTest.HMACKey, r.HMACKey)
+		assert.Equal(t, runTaskTest.Enabled, r.Enabled)
 	})
 
 	t.Run("with options", func(t *testing.T) {
