@@ -295,8 +295,19 @@ func TestRunsApply(t *testing.T) {
 	rTest, _ := createPlannedRun(t, client, wTest)
 
 	t.Run("when the run exists", func(t *testing.T) {
-		err := client.Runs.Apply(ctx, rTest.ID, RunApplyOptions{})
+		err := client.Runs.Apply(ctx, rTest.ID, RunApplyOptions{
+			Comment: String("Hello, Earl"),
+		})
 		assert.NoError(t, err)
+
+		r, err := client.Runs.Read(ctx, rTest.ID)
+		assert.NoError(t, err)
+
+		assert.Len(t, r.Comments, 1)
+
+		c, err := client.Comments.Read(ctx, r.Comments[0].ID)
+		assert.NoError(t, err)
+		assert.Equal(t, "Hello, Earl", c.Body)
 	})
 
 	t.Run("when the run does not exist", func(t *testing.T) {

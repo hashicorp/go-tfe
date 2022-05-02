@@ -253,13 +253,13 @@ type RunCreateOptions struct {
 // RunApplyOptions represents the options for applying a run.
 type RunApplyOptions struct {
 	// An optional comment about the run.
-	Comment *string `jsonapi:"attr,comment,omitempty"`
+	Comment *string `json:"comment,omitempty"`
 }
 
 // RunCancelOptions represents the options for canceling a run.
 type RunCancelOptions struct {
 	// An optional explanation for why the run was canceled.
-	Comment *string `jsonapi:"attr,comment,omitempty"`
+	Comment *string `json:"comment,omitempty"`
 }
 
 // RunVariable represents a variable that can be applied to a run. All values must be expressed as an HCL literal
@@ -273,13 +273,13 @@ type RunVariable struct {
 // RunForceCancelOptions represents the options for force-canceling a run.
 type RunForceCancelOptions struct {
 	// An optional comment explaining the reason for the force-cancel.
-	Comment *string `jsonapi:"attr,comment,omitempty"`
+	Comment *string `json:"comment,omitempty"`
 }
 
 // RunDiscardOptions represents the options for discarding a run.
 type RunDiscardOptions struct {
 	// An optional explanation for why the run was discarded.
-	Comment *string `jsonapi:"attr,comment,omitempty"`
+	Comment *string `json:"comment,omitempty"`
 }
 
 // List all the runs of the given workspace.
