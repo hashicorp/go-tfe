@@ -59,9 +59,10 @@ type NotificationDestinationType string
 
 // List of available notification destination types.
 const (
-	NotificationDestinationTypeEmail   NotificationDestinationType = "email"
-	NotificationDestinationTypeGeneric NotificationDestinationType = "generic"
-	NotificationDestinationTypeSlack   NotificationDestinationType = "slack"
+	NotificationDestinationTypeEmail          NotificationDestinationType = "email"
+	NotificationDestinationTypeGeneric        NotificationDestinationType = "generic"
+	NotificationDestinationTypeSlack          NotificationDestinationType = "slack"
+	NotificationDestinationTypeMicrosoftTeams NotificationDestinationType = "microsoft-teams"
 )
 
 // NotificationConfigurationList represents a list of Notification
@@ -319,7 +320,10 @@ func (o NotificationConfigurationCreateOptions) valid() error {
 		return ErrInvalidNotificationTrigger
 	}
 
-	if *o.DestinationType == NotificationDestinationTypeGeneric || *o.DestinationType == NotificationDestinationTypeSlack {
+	if *o.DestinationType == NotificationDestinationTypeGeneric ||
+		*o.DestinationType == NotificationDestinationTypeSlack ||
+		*o.DestinationType == NotificationDestinationTypeMicrosoftTeams {
+
 		if o.URL == nil {
 			return ErrRequiredURL
 		}
