@@ -346,3 +346,45 @@ func TestTeamCreateOptions_Marshal(t *testing.T) {
 `
 	assert.Equal(t, expectedBody, string(bodyBytes))
 }
+
+func TestTeamsUpdateRunTasks(t *testing.T) {
+	skipIfFreeOnly(t)
+	skipIfBeta(t)
+	skipIfEnterprise(t)
+
+	client := testClient(t)
+	ctx := context.Background()
+
+	orgTest, orgTestCleanup := createOrganization(t, client)
+	defer orgTestCleanup()
+
+	tmTest, tmTestCleanup := createTeam(t, client, orgTest)
+	defer tmTestCleanup()
+
+	t.Run("with valid options", func(t *testing.T) {
+		options := TeamUpdateOptions{
+			Name: String("foo bar"),
+			OrganizationAccess: &OrganizationAccessOptions{
+				ManageRunTasks: Bool(true),
+			},
+			Visibility: String("organization"),
+		}
+
+		tm, err := client.Teams.Update(ctx, tmTest.ID, options)
+		require.NoError(t, err)
+
+		refreshed, err := client.Teams.Read(ctx, tmTest.ID)
+		require.NoError(t, err)
+
+		for _, item := range []*Team{
+			tm,
+			refreshed,
+		} {
+			assert.Equal(t, *options.Name, item.Name)
+			assert.Equal(t,
+				*options.OrganizationAccess.ManageRunTasks,
+				item.OrganizationAccess.ManageRunTasks,
+			)
+		}
+	})
+}

@@ -1414,3 +1414,24 @@ func TestWorkspaceCreateOptions_Marshal(t *testing.T) {
 `
 	assert.Equal(t, expectedBody, string(bodyBytes))
 }
+
+func TestWorkspacesRunTasksPermission(t *testing.T) {
+	skipIfFreeOnly(t)
+	skipIfBeta(t)
+
+	client := testClient(t)
+	ctx := context.Background()
+
+	orgTest, orgTestCleanup := createOrganization(t, client)
+	defer orgTestCleanup()
+
+	wTest, wTestCleanup := createWorkspace(t, client, orgTest)
+	defer wTestCleanup()
+
+	t.Run("when the workspace exists", func(t *testing.T) {
+		w, err := client.Workspaces.Read(ctx, orgTest.Name, wTest.Name)
+		require.NoError(t, err)
+		assert.Equal(t, wTest, w)
+		assert.True(t, w.Permissions.CanManageRunTasks)
+	})
+}

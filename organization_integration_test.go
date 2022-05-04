@@ -459,3 +459,25 @@ func TestOrganization_Unmarshal(t *testing.T) {
 	assert.NotEmpty(t, org.Permissions)
 	assert.Equal(t, org.Permissions.CanCreateTeam, true)
 }
+
+func TestOrganizationsReadRunTasksPermission(t *testing.T) {
+	skipIfFreeOnly(t)
+	skipIfBeta(t)
+
+	client := testClient(t)
+	ctx := context.Background()
+
+	orgTest, orgTestCleanup := createOrganization(t, client)
+	defer orgTestCleanup()
+
+	t.Run("when the org exists", func(t *testing.T) {
+		org, err := client.Organizations.Read(ctx, orgTest.Name)
+		require.NoError(t, err)
+		assert.Equal(t, orgTest, org)
+		assert.NotEmpty(t, org.Permissions)
+
+		t.Run("permissions are properly decoded", func(t *testing.T) {
+			assert.True(t, org.Permissions.CanManageRunTasks)
+		})
+	})
+}
