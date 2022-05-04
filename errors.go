@@ -262,4 +262,6 @@ var (
 	ErrRequiredWorkspacesList = errors.New("no workspaces list provided")
 
 	ErrCommentBody = errors.New("comment body is required")
+
+	ErrEmptyTeamName = errors.New("team name can not be empty")
 )

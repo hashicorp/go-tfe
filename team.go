@@ -88,6 +88,9 @@ type TeamListOptions struct {
 	// Optional: A list of relations to include.
 	// https://www.terraform.io/docs/cloud/api/teams.html#available-related-resources
 	Include []TeamIncludeOpt `url:"include,omitempty"`
+
+	// Optional: A list of team names to filter by.
+	Names []string `url:"filter[names],omitempty"`
 }
 
 // TeamCreateOptions represents the options for creating a team.
@@ -263,6 +266,10 @@ func (o *TeamListOptions) valid() error {
 		return err
 	}
 
+	if err := validateTeamNames(o.Names); err != nil {
+		return err
+	}
+
 	return nil
 }
 
@@ -273,6 +280,16 @@ func validateTeamIncludeParams(params []TeamIncludeOpt) error {
 			// do nothing
 		default:
 			return ErrInvalidIncludeValue
+		}
+	}
+
+	return nil
+}
+
+func validateTeamNames(names []string) error {
+	for _, name := range names {
+		if name == "" {
+			return ErrEmptyTeamName
 		}
 	}
 

@@ -54,6 +54,21 @@ func TestTeamsList(t *testing.T) {
 		assert.Empty(t, tl.Items)
 		assert.Equal(t, 999, tl.CurrentPage)
 		assert.Equal(t, 2, tl.TotalCount)
+
+		tl, err = client.Teams.List(ctx, orgTest.Name, &TeamListOptions{
+			Names: []string{tmTest2.Name},
+		})
+
+		assert.Equal(t, tl.Items, 1)
+		assert.Contains(t, tl.Items, tmTest2)
+
+		t.Run("with invalid names query param", func(t *testing.T) {
+			// should return an error because we've included an empty string
+			tl, err = client.Teams.List(ctx, orgTest.Name, &TeamListOptions{
+				Names: []string{tmTest2.Name, ""},
+			})
+			assert.Equal(t, err, ErrEmptyTeamName)
+		})
 	})
 
 	t.Run("without a valid organization", func(t *testing.T) {
