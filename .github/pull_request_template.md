@@ -36,7 +36,7 @@ _Include any links here that might be helpful for people reviewing your PR. If t
 
 -->
 
-## Output from tests (HashiCorp employees only)
+## Output from tests (This may require access to a TFE instance, and may be ignored if you have no environment to test against.)
 
 <!--
 _Please run the tests locally for any files you changes and include the output here._
