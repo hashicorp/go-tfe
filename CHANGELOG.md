@@ -4,6 +4,7 @@
 
 * Adds support for reading current state version outputs to StateVersionOutputs, which can be useful for reading outputs when users don't have the necessary permissions to read the entire state.
 * Adds Variable Set methods for `ApplyToWorkspaces` and `RemoveFromWorkspaces` [#375](https://github.com/hashicorp/go-tfe/pull/375)
+* Adds Run Tasks API support by @glennsarti [#381](https://github.com/hashicorp/go-tfe/pull/381), [#382](https://github.com/hashicorp/go-tfe/pull/382) and [#383](https://github.com/hashicorp/go-tfe/pull/383)
 
 # v1.1.0
 
