@@ -77,6 +77,9 @@ type OrganizationMembershipListOptions struct {
 	// Optional: A list of relations to include. See available resources
 	// https://www.terraform.io/cloud-docs/api-docs/organization-memberships#available-related-resources
 	Include []OrgMembershipIncludeOpt `url:"include,omitempty"`
+
+	// Optional: A list of organization member emails to filter by.
+	Emails []string `url:"filter[email],omitempty"`
 }
 
 // OrganizationMembershipCreateOptions represents the options for creating an organization membership.
@@ -206,6 +209,10 @@ func (o *OrganizationMembershipListOptions) valid() error {
 		return err
 	}
 
+	if err := validateOrgMembershipEmailParams(o.Emails); err != nil {
+		return err
+	}
+
 	return nil
 }
 
@@ -224,6 +231,16 @@ func validateOrgMembershipIncludeParams(params []OrgMembershipIncludeOpt) error 
 			// do nothing
 		default:
 			return ErrInvalidIncludeValue
+		}
+	}
+
+	return nil
+}
+
+func validateOrgMembershipEmailParams(emails []string) error {
+	for _, email := range emails {
+		if !validEmail(email) {
+			return ErrInvalidEmail
 		}
 	}
 

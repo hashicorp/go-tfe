@@ -264,4 +264,6 @@ var (
 	ErrCommentBody = errors.New("comment body is required")
 
 	ErrEmptyTeamName = errors.New("team name can not be empty")
+
+	ErrInvalidEmail = errors.New("email is invalid")
 )
