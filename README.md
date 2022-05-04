@@ -60,7 +60,68 @@ For complete usage of the API client, see the [full package docs](https://pkg.go
 
 ## API Coverage
 
-This API client covers most of the existing Terraform Cloud API calls and is updated regularly to add new or missing endpoints. For a complete list of what is supported/unsupported, please [refer to this page](docs/COVERAGE.md).
+This API client covers most of the existing Terraform Cloud API calls and is updated regularly to add new or missing endpoints.
+
+- [x] Account
+- [x] Agent Pools
+- [x] Agent Tokens
+- [x] Applies
+- [ ] Audit Trails
+- [x] Comments
+- [x] Configuration Versions
+- [x] Cost Estimation
+- [ ] Feature Sets
+- [ ] Invoices
+- [x] IP Ranges
+- [x] Notification Configurations
+- [x] OAuth Clients
+- [x] OAuth Tokens
+- [x] Organizations
+- [x] Organization Memberships
+- [x] Organization Tags
+- [x] Organization Tokens
+- [x] Plan Exports
+- [x] Plans
+- [x] Policies
+- [x] Policy Checks
+- [x] Policy Sets
+- [x] Policy Set Parameters
+- [ ] Private Registry
+	- [x] Modules
+	- [ ] Providers
+	- [ ] Provider Provider Versions and Platforms
+	- [ ] GPG Keys
+- [x] Runs
+- [x] Run Tasks
+- [ ] Run Tasks Integration
+- [x] Run Triggers
+- [x] SSH Keys
+- [x] State Versions
+- [x] State Version Outputs
+- [ ] Subscriptions
+- [x] Team Access
+- [x] Team Membership
+- [x] Team Tokens
+- [x] Teams
+- [x] User Tokens
+- [x] Users
+- [x] Variables
+- [ ] VCS Events
+- [x] Workspaces
+- [x] Workspace-Specific Variables
+- [x] Workspace Resources
+- [x] Variable Sets
+- [x] Admin
+  - [x] Module Sharing
+  - [x] Organizations
+  - [x] Runs
+  - [x] Settings
+  - [x] Terraform Versions
+  - [x] Users
+  - [x] Workspaces
+- [x] Changelog
+- [x] Stability Policy
+
 
 ## Examples
 
