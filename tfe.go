@@ -551,7 +551,7 @@ func encodeQueryParams(v url.Values) string {
 	sort.Strings(keys)
 	for _, k := range keys {
 		vs := v[k]
-		if len(vs) > 1 && k == _includeQueryParam {
+		if len(vs) > 1 && validSliceKey(k) {
 			val := strings.Join(vs, ",")
 			vs = vs[:0]
 			vs = append(vs, val)
@@ -908,4 +908,8 @@ func packContents(path string) (*bytes.Buffer, error) {
 	}
 
 	return body, nil
+}
+
+func validSliceKey(key string) bool {
+	return key == _includeQueryParam || strings.Contains(key, "filter[")
 }

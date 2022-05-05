@@ -1,6 +1,7 @@
 package tfe
 
 import (
+	"net/mail"
 	"regexp"
 )
 
@@ -19,4 +20,10 @@ func validString(v *string) bool {
 
 func validStringID(v *string) bool {
 	return v != nil && reStringID.MatchString(*v)
+}
+
+// validEmail checks if the given input is a correct email
+func validEmail(v string) bool {
+	_, err := mail.ParseAddress(v)
+	return err == nil
 }

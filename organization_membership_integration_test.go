@@ -72,6 +72,35 @@ func TestOrganizationMembershipsList(t *testing.T) {
 		assert.Contains(t, ml.Items, memTest2)
 	})
 
+	t.Run("with email filter option", func(t *testing.T) {
+		_, memTest1Cleanup := createOrganizationMembership(t, client, orgTest)
+		defer memTest1Cleanup()
+		memTest2, memTest2Cleanup := createOrganizationMembership(t, client, orgTest)
+		defer memTest2Cleanup()
+
+		memTest3, memTest3Cleanup := createOrganizationMembership(t, client, orgTest)
+		defer memTest3Cleanup()
+
+		memTest2.User = &User{ID: memTest2.User.ID}
+		memTest3.User = &User{ID: memTest3.User.ID}
+
+		ml, err := client.OrganizationMemberships.List(ctx, orgTest.Name, &OrganizationMembershipListOptions{
+			Emails: []string{memTest2.Email, memTest3.Email},
+		})
+		require.NoError(t, err)
+
+		assert.Len(t, ml.Items, 2)
+		assert.Contains(t, ml.Items, memTest2)
+		assert.Contains(t, ml.Items, memTest3)
+
+		t.Run("with invalid email", func(t *testing.T) {
+			ml, err = client.OrganizationMemberships.List(ctx, orgTest.Name, &OrganizationMembershipListOptions{
+				Emails: []string{"foobar"},
+			})
+			assert.Equal(t, err, ErrInvalidEmail)
+		})
+	})
+
 	t.Run("without a valid organization", func(t *testing.T) {
 		ml, err := client.OrganizationMemberships.List(ctx, badIdentifier, nil)
 		assert.Nil(t, ml)

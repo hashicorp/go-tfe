@@ -27,6 +27,8 @@ func TestTeamsList(t *testing.T) {
 	defer tmTest1Cleanup()
 	tmTest2, tmTest2Cleanup := createTeam(t, client, orgTest)
 	defer tmTest2Cleanup()
+	tmTest3, tmTest3Cleanup := createTeam(t, client, orgTest)
+	defer tmTest3Cleanup()
 
 	t.Run("without list options", func(t *testing.T) {
 		tl, err := client.Teams.List(ctx, orgTest.Name, nil)
@@ -54,6 +56,22 @@ func TestTeamsList(t *testing.T) {
 		assert.Empty(t, tl.Items)
 		assert.Equal(t, 999, tl.CurrentPage)
 		assert.Equal(t, 2, tl.TotalCount)
+
+		tl, err = client.Teams.List(ctx, orgTest.Name, &TeamListOptions{
+			Names: []string{tmTest2.Name, tmTest3.Name},
+		})
+
+		assert.Equal(t, tl.Items, 2)
+		assert.Contains(t, tl.Items, tmTest2)
+		assert.Contains(t, tl.Items, tmTest3)
+
+		t.Run("with invalid names query param", func(t *testing.T) {
+			// should return an error because we've included an empty string
+			tl, err = client.Teams.List(ctx, orgTest.Name, &TeamListOptions{
+				Names: []string{tmTest2.Name, ""},
+			})
+			assert.Equal(t, err, ErrEmptyTeamName)
+		})
 	})
 
 	t.Run("without a valid organization", func(t *testing.T) {
