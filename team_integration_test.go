@@ -27,6 +27,8 @@ func TestTeamsList(t *testing.T) {
 	defer tmTest1Cleanup()
 	tmTest2, tmTest2Cleanup := createTeam(t, client, orgTest)
 	defer tmTest2Cleanup()
+	tmTest3, tmTest3Cleanup := createTeam(t, client, orgTest)
+	defer tmTest3Cleanup()
 
 	t.Run("without list options", func(t *testing.T) {
 		tl, err := client.Teams.List(ctx, orgTest.Name, nil)
@@ -56,11 +58,12 @@ func TestTeamsList(t *testing.T) {
 		assert.Equal(t, 2, tl.TotalCount)
 
 		tl, err = client.Teams.List(ctx, orgTest.Name, &TeamListOptions{
-			Names: []string{tmTest2.Name},
+			Names: []string{tmTest2.Name, tmTest3.Name},
 		})
 
-		assert.Equal(t, tl.Items, 1)
+		assert.Equal(t, tl.Items, 2)
 		assert.Contains(t, tl.Items, tmTest2)
+		assert.Contains(t, tl.Items, tmTest3)
 
 		t.Run("with invalid names query param", func(t *testing.T) {
 			// should return an error because we've included an empty string
