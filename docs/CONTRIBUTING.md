@@ -4,7 +4,7 @@ If you find an issue with this package, please create an issue in GitHub. If you
 
 ## Adding new functionality or fixing relevant bugs
 
-If you are adding a new endpoint, make sure to update the coverage list in README.md where we keep a list of the TFC APIs that this SDK supports.
+If you are adding a new endpoint, make sure to update the [coverage list in README.md](../README.md#API-Coverage) where we keep a list of the TFC APIs that this SDK supports.
 
 If you are making relevant changes that is worth communicating to our users, please include a note about it in our CHANGELOG.md. You can include it as part of the PR where you are submitting your changes.
 
