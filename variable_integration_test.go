@@ -278,6 +278,18 @@ func TestVariablesUpdate(t *testing.T) {
 		assert.Empty(t, v.Value) // Because its now sensitive
 	})
 
+	t.Run("with category set", func(t *testing.T) {
+		category := CategoryEnv
+		options := VariableUpdateOptions{
+			Category: &category,
+		}
+
+		v, err := client.Variables.Update(ctx, vTest.Workspace.ID, vTest.ID, options)
+		require.NoError(t, err)
+
+		assert.Equal(t, *options.Category, v.Category)
+	})
+
 	t.Run("without any changes", func(t *testing.T) {
 		vTest, vTestCleanup := createVariable(t, client, nil)
 		defer vTestCleanup()
