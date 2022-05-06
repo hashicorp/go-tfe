@@ -325,7 +325,7 @@ func (o *ExampleCreateOptions) valid() error {
 
 func (o *ExampleListOptions) valid() error {
 	if o == nil {
-		return nil // nothing to validate 
+		return nil // nothing to validate
 	}
 	if err := validateExampleIncludeParams(o.Include); err != nil {
 		return err
@@ -336,7 +336,7 @@ func (o *ExampleListOptions) valid() error {
 
 func (o *ExampleReadOptions) valid() error {
 	if o == nil {
-		return nil // nothing to validate 
+		return nil // nothing to validate
 	}
 	if err := validateExampleIncludeParams(o.Include); err != nil {
 		return err
