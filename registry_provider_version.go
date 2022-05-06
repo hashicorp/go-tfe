@@ -27,7 +27,7 @@ type RegistryProviderVersions interface {
 	Delete(ctx context.Context, versionID RegistryProviderVersionID) error
 }
 
-// registryProviders implements RegistryProviders.
+// registryProvidersVersions implements RegistryProvidersVersions
 type registryProviderVersions struct {
 	client *Client
 }

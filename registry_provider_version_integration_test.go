@@ -214,7 +214,7 @@ func TestRegistryProviderVersionsList(t *testing.T) {
 		}
 		versionN := len(versions)
 
-		id := RegistryProviderID{
+		providerID := RegistryProviderID{
 			OrganizationName: provider.Organization.Name,
 			Namespace:        provider.Namespace,
 			Name:             provider.Name,
@@ -222,7 +222,7 @@ func TestRegistryProviderVersionsList(t *testing.T) {
 		}
 
 		t.Run("returns all versions", func(t *testing.T) {
-			returnedVersions, err := client.RegistryProviderVersions.List(ctx, id, &RegistryProviderVersionListOptions{
+			returnedVersions, err := client.RegistryProviderVersions.List(ctx, providerID, &RegistryProviderVersionListOptions{
 				ListOptions: ListOptions{
 					PageNumber: 0,
 					PageSize:   versionN,
@@ -251,7 +251,7 @@ func TestRegistryProviderVersionsList(t *testing.T) {
 			for page := 0; page < pageN; page++ {
 				testName := fmt.Sprintf("returns page %d of versions", page)
 				t.Run(testName, func(t *testing.T) {
-					returnedVersions, err := client.RegistryProviderVersions.List(ctx, id, &RegistryProviderVersionListOptions{
+					returnedVersions, err := client.RegistryProviderVersions.List(ctx, providerID, &RegistryProviderVersionListOptions{
 						ListOptions: ListOptions{
 							PageNumber: page,
 							PageSize:   pageSize,
@@ -281,20 +281,21 @@ func TestRegistryProviderVersionsList(t *testing.T) {
 		provider, providerCleanup := createPrivateRegistryProvider(t, client, nil)
 		defer providerCleanup()
 
-		id := RegistryProviderID{
+		providerID := RegistryProviderID{
 			OrganizationName: provider.Organization.Name,
 			Namespace:        provider.Namespace,
 			Name:             provider.Name,
 			RegistryName:     provider.RegistryName,
 		}
 
-		versions, err := client.RegistryProviderVersions.List(ctx, id, nil)
+		versions, err := client.RegistryProviderVersions.List(ctx, providerID, nil)
 		require.NoError(t, err)
 		assert.Empty(t, versions.Items)
 		assert.Equal(t, 0, versions.TotalCount)
 		assert.Equal(t, 0, versions.TotalPages)
 	})
 
+	// TODO
 	t.Run("with include provider platforms", func(t *testing.T) {
 	})
 }
@@ -309,7 +310,7 @@ func TestRegistryProviderVersionsDelete(t *testing.T) {
 	t.Run("with valid version", func(t *testing.T) {
 		version, _ := createRegistryProviderVersion(t, client, provider)
 
-		versionId := RegistryProviderVersionID{
+		versionID := RegistryProviderVersionID{
 			RegistryProviderID: RegistryProviderID{
 				OrganizationName: version.RegistryProvider.Organization.Name,
 				RegistryName:     version.RegistryProvider.RegistryName,
@@ -319,12 +320,12 @@ func TestRegistryProviderVersionsDelete(t *testing.T) {
 			Version: version.Version,
 		}
 
-		err := client.RegistryProviderVersions.Delete(ctx, versionId)
+		err := client.RegistryProviderVersions.Delete(ctx, versionID)
 		assert.NoError(t, err)
 	})
 
 	t.Run("with non existing version", func(t *testing.T) {
-		versionId := RegistryProviderVersionID{
+		versionID := RegistryProviderVersionID{
 			RegistryProviderID: RegistryProviderID{
 				OrganizationName: provider.Organization.Name,
 				RegistryName:     provider.RegistryName,
@@ -334,7 +335,7 @@ func TestRegistryProviderVersionsDelete(t *testing.T) {
 			Version: "1.0.0",
 		}
 
-		err := client.RegistryProviderVersions.Delete(ctx, versionId)
+		err := client.RegistryProviderVersions.Delete(ctx, versionID)
 		assert.Error(t, err)
 	})
 }
@@ -347,7 +348,7 @@ func TestRegistryProviderVersionsRead(t *testing.T) {
 		version, versionCleanup := createRegistryProviderVersion(t, client, nil)
 		defer versionCleanup()
 
-		versionId := RegistryProviderVersionID{
+		versionID := RegistryProviderVersionID{
 			RegistryProviderID: RegistryProviderID{
 				OrganizationName: version.RegistryProvider.Organization.Name,
 				RegistryName:     version.RegistryProvider.RegistryName,
@@ -357,7 +358,7 @@ func TestRegistryProviderVersionsRead(t *testing.T) {
 			Version: version.Version,
 		}
 
-		readVersion, err := client.RegistryProviderVersions.Read(ctx, versionId, nil)
+		readVersion, err := client.RegistryProviderVersions.Read(ctx, versionID, nil)
 		assert.NoError(t, err)
 		assert.Equal(t, version.ID, readVersion.ID)
 		assert.Equal(t, version.Version, readVersion.Version)
@@ -388,7 +389,7 @@ func TestRegistryProviderVersionsRead(t *testing.T) {
 		provider, providerCleanup := createPrivateRegistryProvider(t, client, nil)
 		defer providerCleanup()
 
-		versionId := RegistryProviderVersionID{
+		versionID := RegistryProviderVersionID{
 			RegistryProviderID: RegistryProviderID{
 				OrganizationName: provider.Organization.Name,
 				RegistryName:     provider.RegistryName,
@@ -398,7 +399,7 @@ func TestRegistryProviderVersionsRead(t *testing.T) {
 			Version: "1.0.0",
 		}
 
-		_, err := client.RegistryProviderVersions.Read(ctx, versionId, nil)
+		_, err := client.RegistryProviderVersions.Read(ctx, versionID, nil)
 		assert.Error(t, err)
 	})
 

@@ -165,6 +165,10 @@ var (
 	ErrInvalidRegistryNameType = errors.New("invalid type for registry-name. Please use 'RegistryName'")
 
 	ErrInvalidKeyID = errors.New("invalid value for key-id")
+
+	ErrInvalidOS = errors.New("invalid value for OS")
+
+	ErrInvalidArch = errors.New("invalid value for arch")
 )
 
 // Missing values for required field/option
@@ -280,4 +284,12 @@ var (
 	ErrInvalidEmail = errors.New("email is invalid")
 
 	ErrRequiredPrivateRegistry = errors.New("only private registry is allowed")
+
+	ErrRequiredOS = errors.New("OS is required")
+
+	ErrRequiredArch = errors.New("arch is required")
+
+	ErrRequiredShasum = errors.New("shasum is required")
+
+	ErrRequiredFilename = errors.New("filename is required")
 )

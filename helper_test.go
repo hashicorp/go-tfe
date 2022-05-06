@@ -392,7 +392,7 @@ func createOAuthToken(t *testing.T, client *Client, org *Organization) (*OAuthTo
 
 func createOrganization(t *testing.T, client *Client) (*Organization, func()) {
 	return createOrganizationWithOptions(t, client, OrganizationCreateOptions{
-		Name:  String("tst-" + randomString(t)),
+		Name:  String("org-" + randomString(t)), // Max of 40 chars
 		Email: String(fmt.Sprintf("%s@tfe.local", randomString(t))),
 	})
 }
@@ -763,7 +763,7 @@ func createPrivateRegistryProvider(t *testing.T, client *Client, org *Organizati
 	ctx := context.Background()
 
 	options := RegistryProviderCreateOptions{
-		Name:         "tst-name-" + randomString(t),
+		Name:         "test-registry-provider-" + randomString(t),
 		Namespace:    org.Name,
 		RegistryName: PrivateRegistry,
 	}
@@ -777,7 +777,7 @@ func createPrivateRegistryProvider(t *testing.T, client *Client, org *Organizati
 	prv.Organization = org
 
 	return prv, func() {
-		id := RegistryProviderID {
+		id := RegistryProviderID{
 			OrganizationName: org.Name,
 			RegistryName:     prv.RegistryName,
 			Namespace:        prv.Namespace,
@@ -806,8 +806,8 @@ func createPublicRegistryProvider(t *testing.T, client *Client, org *Organizatio
 	ctx := context.Background()
 
 	options := RegistryProviderCreateOptions{
-		Name:         "tst-name-" + randomString(t),
-		Namespace:    "tst-namespace-" + randomString(t),
+		Name:         "test-name-" + randomString(t),
+		Namespace:    "test-namespace-" + randomString(t),
 		RegistryName: PublicRegistry,
 	}
 
@@ -820,7 +820,7 @@ func createPublicRegistryProvider(t *testing.T, client *Client, org *Organizatio
 	prv.Organization = org
 
 	return prv, func() {
-		id := RegistryProviderID {
+		id := RegistryProviderID{
 			OrganizationName: org.Name,
 			RegistryName:     prv.RegistryName,
 			Namespace:        prv.Namespace,
@@ -839,6 +839,67 @@ func createPublicRegistryProvider(t *testing.T, client *Client, org *Organizatio
 	}
 }
 
+func createRegistryProviderPlatform(t *testing.T, client *Client, provider *RegistryProvider, version *RegistryProviderVersion) (*RegistryProviderPlatform, func()) {
+	var providerCleanup func()
+	var versionCleanup func()
+
+	if provider == nil {
+		provider, providerCleanup = createPrivateRegistryProvider(t, client, nil)
+	}
+
+	providerID := RegistryProviderID{
+		OrganizationName: provider.Organization.Name,
+		RegistryName:     provider.RegistryName,
+		Namespace:        provider.Namespace,
+		Name:             provider.Name,
+	}
+
+	if version == nil {
+		version, versionCleanup = createRegistryProviderVersion(t, client, provider)
+	}
+
+	versionID := RegistryProviderVersionID{
+		RegistryProviderID: providerID,
+		Version:            version.Version,
+	}
+
+	ctx := context.Background()
+
+	options := RegistryProviderPlatformCreateOptions{
+		OS:       randomString(t),
+		Arch:     randomString(t),
+		Shasum:   genSha(t, "secret", "data"),
+		Filename: randomString(t),
+	}
+
+	rpp, err := client.RegistryProviderPlatforms.Create(ctx, versionID, options)
+
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	return rpp, func() {
+		platformID := RegistryProviderPlatformID{
+			RegistryProviderVersionID: versionID,
+			OS:                        rpp.OS,
+			Arch:                      rpp.Arch,
+		}
+
+		if err := client.RegistryProviderPlatforms.Delete(ctx, platformID); err != nil {
+			t.Errorf("Error destroying registry provider platform! WARNING: Dangling resources\n"+
+				"may exist! The full error is shown below.\n\n"+
+				"Registry Provider Version: %s/%s/%s/%s\nError: %s", rpp.RegistryProviderVersion.RegistryProvider.Namespace, rpp.RegistryProviderVersion.RegistryProvider.Name, rpp.OS, rpp.Arch, err)
+		}
+
+		if versionCleanup != nil {
+			versionCleanup()
+		}
+		if providerCleanup != nil {
+			providerCleanup()
+		}
+	}
+}
+
 func createRegistryProviderVersion(t *testing.T, client *Client, provider *RegistryProvider) (*RegistryProviderVersion, func()) {
 	var providerCleanup func()
 
@@ -846,7 +907,7 @@ func createRegistryProviderVersion(t *testing.T, client *Client, provider *Regis
 		provider, providerCleanup = createPrivateRegistryProvider(t, client, nil)
 	}
 
-	providerID := RegistryProviderID {
+	providerID := RegistryProviderID{
 		OrganizationName: provider.Organization.Name,
 		RegistryName:     provider.RegistryName,
 		Namespace:        provider.Namespace,
@@ -856,8 +917,9 @@ func createRegistryProviderVersion(t *testing.T, client *Client, provider *Regis
 	ctx := context.Background()
 
 	options := RegistryProviderVersionCreateOptions{
-		Version: randomSemver(t),
-		KeyID:   randomString(t),
+		Version:   randomSemver(t),
+		KeyID:     randomString(t),
+		Protocols: []string{"4.0", "5.0", "6.0"},
 	}
 
 	prvv, err := client.RegistryProviderVersions.Create(ctx, providerID, options)
@@ -869,7 +931,7 @@ func createRegistryProviderVersion(t *testing.T, client *Client, provider *Regis
 	prvv.RegistryProvider = provider
 
 	return prvv, func() {
-		id := RegistryProviderVersionID {
+		id := RegistryProviderVersionID{
 			Version:            options.Version,
 			RegistryProviderID: providerID,
 		}
