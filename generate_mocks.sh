@@ -36,6 +36,7 @@ mockgen -source=policy_set_parameter.go -destination=mocks/policy_set_parameter_
 mockgen -source=policy_set_version.go -destination=mocks/policy_set_version_mocks.go -package=mocks
 mockgen -source=registry_module.go -destination=mocks/registry_module_mocks.go -package=mocks
 mockgen -source=registry_provider.go -destination=mocks/registry_provider_mocks.go -package=mocks
+mockgen -source=registry_provider_platform.go -destination=mocks/registry_provider_platform_mocks.go -package=mocks
 mockgen -source=registry_provider_version.go -destination=mocks/registry_provider_version_mocks.go -package=mocks
 mockgen -source=run.go -destination=mocks/run_mocks.go -package=mocks
 mockgen -source=run_task.go -destination=mocks/run_tasks.go -package=mocks

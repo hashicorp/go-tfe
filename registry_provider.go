@@ -51,13 +51,13 @@ const (
 
 // RegistryProvider represents a registry provider
 type RegistryProvider struct {
-	ID           string                       `jsonapi:"primary,registry-providers"`
-	Name         string                       `jsonapi:"attr,name"`
-	Namespace    string                       `jsonapi:"attr,namespace"`
-	CreatedAt    string                       `jsonapi:"attr,created-at"`
-	UpdatedAt    string                       `jsonapi:"attr,updated-at"`
-	RegistryName RegistryName                 `jsonapi:"attr,registry-name"`
-	Permissions  *RegistryProviderPermissions `jsonapi:"attr,permissions"`
+	ID           string                      `jsonapi:"primary,registry-providers"`
+	Name         string                      `jsonapi:"attr,name"`
+	Namespace    string                      `jsonapi:"attr,namespace"`
+	CreatedAt    string                      `jsonapi:"attr,created-at,iso8601"`
+	UpdatedAt    string                      `jsonapi:"attr,updated-at,iso8601"`
+	RegistryName RegistryName                `jsonapi:"attr,registry-name"`
+	Permissions  RegistryProviderPermissions `jsonapi:"attr,permissions"`
 
 	// Relations
 	Organization             *Organization              `jsonapi:"relation,organization"`
@@ -68,23 +68,22 @@ type RegistryProvider struct {
 }
 
 type RegistryProviderPermissions struct {
-	CanDelete bool `jsonapi:"attr,can-delete,omitempty"`
-	CanUploadAsset bool `jsonapi:"attr,can-upload-asset,omitempty"`
+	CanDelete bool `jsonapi:"attr,can-delete"`
 }
 
 type RegistryProviderListOptions struct {
 	ListOptions
 
-	// A query string to filter by registry_name
+	// Optional: A query string to filter by registry_name
 	RegistryName RegistryName `url:"filter[registry_name],omitempty"`
 
-	// A query string to filter by organization
+	// Optional: A query string to filter by organization
 	OrganizationName string `url:"filter[organization_name],omitempty"`
 
-	// A query string to do a fuzzy search
+	// Optional: A query string to do a fuzzy search
 	Search string `url:"q,omitempty"`
 
-	// Include related jsonapi relationships
+	// Optional: Include related jsonapi relationships
 	Include *[]RegistryProviderIncludeOps `url:"include,omitempty"`
 }
 
@@ -95,25 +94,41 @@ type RegistryProviderList struct {
 
 // RegistryProviderID is the multi key ID for addressing a provider
 type RegistryProviderID struct {
-	OrganizationName string       `jsonapi:"attr,organization-name"`
-	RegistryName     RegistryName `jsonapi:"attr,registry-name"`
-	Namespace        string       `jsonapi:"attr,namespace"`
-	Name             string       `jsonapi:"attr,name"`
+	OrganizationName string
+	RegistryName     RegistryName
+	Namespace        string
+	Name             string
+}
+
+// RegistryProviderCreateOptions is used when creating a registry provider
+type RegistryProviderCreateOptions struct {
+	// Type is a public field utilized by JSON:API to
+	// set the resource type via the field tag.
+	// It is not a user-defined value and does not need to be set.
+	// https://jsonapi.org/format/#crud-creating
+	Type string `jsonapi:"primary,registry-providers"`
+
+	// Required: The name of the registry provider
+	Name string `jsonapi:"attr,name"`
+
+	// Required: The namespace of the provider. For private providers, this is the same as the organization name
+	Namespace string `jsonapi:"attr,namespace"`
+
+	// Required: Whether this is a publicly maintained provider or private. Must be either public or private.
+	RegistryName RegistryName `jsonapi:"attr,registry-name"`
 }
 
 type RegistryProviderReadOptions struct {
-	// Include related jsonapi relationships
-	Include *[]RegistryProviderIncludeOps `url:"include,omitempty"`
+	// Optional: Include related jsonapi relationships
+	Include []RegistryProviderIncludeOps `url:"include,omitempty"`
 }
 
 func (r *registryProviders) List(ctx context.Context, organization string, options *RegistryProviderListOptions) (*RegistryProviderList, error) {
 	if !validStringID(&organization) {
 		return nil, ErrInvalidOrg
 	}
-	if options != nil {
-		if err := options.valid(); err != nil {
-			return nil, err
-		}
+	if err := options.valid(); err != nil {
+		return nil, err
 	}
 
 	u := fmt.Sprintf("organizations/%s/registry-providers", url.QueryEscape(organization))
@@ -131,19 +146,6 @@ func (r *registryProviders) List(ctx context.Context, organization string, optio
 	return pl, nil
 }
 
-// RegistryProviderCreateOptions is used when creating a registry provider
-type RegistryProviderCreateOptions struct {
-	// Type is a public field utilized by JSON:API to
-	// set the resource type via the field tag.
-	// It is not a user-defined value and does not need to be set.
-	// https://jsonapi.org/format/#crud-creating
-	Type string `jsonapi:"primary,registry-providers"`
-
-	Name         string       `jsonapi:"attr,name"`
-	Namespace    string       `jsonapi:"attr,namespace"`
-	RegistryName RegistryName `jsonapi:"attr,registry-name"`
-}
-
 func (r *registryProviders) Create(ctx context.Context, organization string, options RegistryProviderCreateOptions) (*RegistryProvider, error) {
 	if !validStringID(&organization) {
 		return nil, ErrInvalidOrg
@@ -151,12 +153,6 @@ func (r *registryProviders) Create(ctx context.Context, organization string, opt
 
 	if err := options.valid(); err != nil {
 		return nil, err
-	}
-
-	// For private providers, the organization name and namespace must be the same.
-	// This is enforced by the API as well
-	if options.RegistryName == PrivateRegistry && organization != options.Namespace {
-		return nil, ErrInvalidPrivateProviderNamespaceDoesntMatchOrganization
 	}
 
 	u := fmt.Sprintf(
@@ -223,23 +219,12 @@ func (r *registryProviders) Delete(ctx context.Context, providerID RegistryProvi
 	return r.client.do(ctx, req, nil)
 }
 
-func (rn RegistryName) valid() error {
-	switch rn {
-	case PrivateRegistry, PublicRegistry:
-		return nil
-	}
-	return ErrInvalidRegistryName
-}
-
 func (o RegistryProviderCreateOptions) valid() error {
 	if !validStringID(&o.Name) {
 		return ErrInvalidName
 	}
 	if !validStringID(&o.Namespace) {
 		return ErrInvalidNamespace
-	}
-	if err := o.RegistryName.valid(); err != nil {
-		return err
 	}
 	return nil
 }
@@ -254,12 +239,12 @@ func (id RegistryProviderID) valid() error {
 	if !validStringID(&id.Namespace) {
 		return ErrInvalidNamespace
 	}
-	if err := id.RegistryName.valid(); err != nil {
-		return err
+	if !validStringID((*string)(&id.RegistryName)) {
+		return ErrInvalidRegistryName
 	}
 	return nil
 }
 
-func (o RegistryProviderListOptions) valid() error {
+func (o *RegistryProviderListOptions) valid() error {
 	return nil
 }

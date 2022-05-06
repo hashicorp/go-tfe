@@ -21,28 +21,28 @@ type RegistryProviderVersions interface {
 	Create(ctx context.Context, providerID RegistryProviderID, options RegistryProviderVersionCreateOptions) (*RegistryProviderVersion, error)
 
 	// Read a registry provider version.
-	Read(ctx context.Context, versionID RegistryProviderVersionID, options *RegistryProviderVersionReadOptions) (*RegistryProviderVersion, error)
+	Read(ctx context.Context, versionID RegistryProviderVersionID) (*RegistryProviderVersion, error)
 
 	// Delete a registry provider version.
 	Delete(ctx context.Context, versionID RegistryProviderVersionID) error
 }
 
-// registryProviders implements RegistryProviders.
+// registryProvidersVersions implements RegistryProvidersVersions
 type registryProviderVersions struct {
 	client *Client
 }
 
 // RegistryProviderVersion represents a registry provider version
 type RegistryProviderVersion struct {
-	ID        string   `jsonapi:"primary,registry-provider-versions"`
-	Version   string   `jsonapi:"attr,version"`
-	CreatedAt string   `jsonapi:"attr,created-at"`
-	UpdatedAt string   `jsonapi:"attr,updated-at"`
-	KeyID     string   `jsonapi:"attr,key-id"`
-	Protocols []string `jsonapi:"attr,protocols,omitempty"`
-	Permissions *RegistryProviderPermissions `jsonapi:"attr,permissions"`
-	ShasumsUploaded bool `jsonapi:"attr,shasums-uploaded"`
-	ShasumsSigUploaded bool `jsonapi:"attr,sasums-sig-uploaded"`
+	ID                 string                             `jsonapi:"primary,registry-provider-versions"`
+	Version            string                             `jsonapi:"attr,version"`
+	CreatedAt          string                             `jsonapi:"attr,created-at,iso8601"`
+	UpdatedAt          string                             `jsonapi:"attr,updated-at,iso8601"`
+	KeyID              string                             `jsonapi:"attr,key-id"`
+	Protocols          []string                           `jsonapi:"attr,protocols"`
+	Permissions        RegistryProviderVersionPermissions `jsonapi:"attr,permissions"`
+	ShasumsUploaded    bool                               `jsonapi:"attr,shasums-uploaded"`
+	ShasumsSigUploaded bool                               `jsonapi:"attr,shasums-sig-uploaded"`
 
 	// Relations
 	RegistryProvider          *RegistryProvider           `jsonapi:"relation,registry-provider"`
@@ -55,7 +55,12 @@ type RegistryProviderVersion struct {
 // RegistryProviderVersionID is the multi key ID for addressing a version provider
 type RegistryProviderVersionID struct {
 	RegistryProviderID
-	Version string `jsonapi:"attr,version"`
+	Version string
+}
+
+type RegistryProviderVersionPermissions struct {
+	CanDelete      bool `jsonapi:"attr,can-delete"`
+	CanUploadAsset bool `jsonapi:"attr,can-upload-asset"`
 }
 
 type RegistryProviderVersionList struct {
@@ -67,11 +72,14 @@ type RegistryProviderVersionListOptions struct {
 	ListOptions
 }
 
-type RegistryProviderVersionReadOptions struct{}
-
 type RegistryProviderVersionCreateOptions struct {
+	// Required: A valid semver version string.
 	Version   string   `jsonapi:"attr,version"`
+
+	// Required: A valid gpg-key string.
 	KeyID     string   `jsonapi:"attr,key-id"`
+
+	// Required: An array of Terraform provider API versions that this version supports.
 	Protocols []string `jsonapi:"attr,protocols"`
 }
 
@@ -80,10 +88,8 @@ func (r *registryProviderVersions) List(ctx context.Context, providerID Registry
 	if err := providerID.valid(); err != nil {
 		return nil, err
 	}
-	if options != nil {
-		if err := options.valid(); err != nil {
-			return nil, err
-		}
+	if err := options.valid(); err != nil {
+		return nil, err
 	}
 
 	u := fmt.Sprintf(
@@ -143,7 +149,7 @@ func (r *registryProviderVersions) Create(ctx context.Context, providerID Regist
 }
 
 // Read a registry provider version
-func (r *registryProviderVersions) Read(ctx context.Context, versionID RegistryProviderVersionID, options *RegistryProviderVersionReadOptions) (*RegistryProviderVersion, error) {
+func (r *registryProviderVersions) Read(ctx context.Context, versionID RegistryProviderVersionID) (*RegistryProviderVersion, error) {
 	if err := versionID.valid(); err != nil {
 		return nil, err
 	}
@@ -156,7 +162,7 @@ func (r *registryProviderVersions) Read(ctx context.Context, versionID RegistryP
 		url.QueryEscape(versionID.Name),
 		url.QueryEscape(versionID.Version),
 	)
-	req, err := r.client.newRequest("GET", u, options)
+	req, err := r.client.newRequest("GET", u, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -192,7 +198,8 @@ func (r *registryProviderVersions) Delete(ctx context.Context, versionID Registr
 	return r.client.do(ctx, req, nil)
 }
 
-func (v RegistryProviderVersion) ShasumsUploadURL() (string, error) {
+// ShasumsUploadURL returns the upload URL to upload shasums if one is available
+func (v *RegistryProviderVersion) ShasumsUploadURL() (string, error) {
 	uploadURL, ok := v.Links["shasums-upload"].(string)
 	if !ok {
 		return uploadURL, fmt.Errorf("the Registry Provider Version does not contain a shasums upload link")
@@ -203,7 +210,8 @@ func (v RegistryProviderVersion) ShasumsUploadURL() (string, error) {
 	return uploadURL, nil
 }
 
-func (v RegistryProviderVersion) ShasumsSigUploadURL() (string, error) {
+// ShasumsSigUploadURL returns the URL to upload a shasums sig
+func (v *RegistryProviderVersion) ShasumsSigUploadURL() (string, error) {
 	uploadURL, ok := v.Links["shasums-sig-upload"].(string)
 	if !ok {
 		return uploadURL, fmt.Errorf("the Registry Provider Version does not contain a shasums sig upload link")
@@ -214,7 +222,8 @@ func (v RegistryProviderVersion) ShasumsSigUploadURL() (string, error) {
 	return uploadURL, nil
 }
 
-func (v RegistryProviderVersion) ShasumsDownloadURL() (string, error) {
+// ShasumsDownloadURL returns the URL to download the shasums for the registry version
+func (v *RegistryProviderVersion) ShasumsDownloadURL() (string, error) {
 	downloadURL, ok := v.Links["shasums-download"].(string)
 	if !ok {
 		return downloadURL, fmt.Errorf("the Registry Provider Version does not contain a shasums download link")
@@ -225,7 +234,8 @@ func (v RegistryProviderVersion) ShasumsDownloadURL() (string, error) {
 	return downloadURL, nil
 }
 
-func (v RegistryProviderVersion) ShasumsSigDownloadURL() (string, error) {
+// ShasumsSigDownloadURL returns the URL to download the shasums sig for the registry version
+func (v *RegistryProviderVersion) ShasumsSigDownloadURL() (string, error) {
 	downloadURL, ok := v.Links["shasums-sig-download"].(string)
 	if !ok {
 		return downloadURL, fmt.Errorf("the Registry Provider Version does not contain a shasums sig download link")
@@ -249,7 +259,7 @@ func (id RegistryProviderVersionID) valid() error {
 	return nil
 }
 
-func (o RegistryProviderVersionListOptions) valid() error {
+func (o *RegistryProviderVersionListOptions) valid() error {
 	return nil
 }
 
