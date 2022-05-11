@@ -390,11 +390,15 @@ func createOAuthToken(t *testing.T, client *Client, org *Organization) (*OAuthTo
 }
 
 func createOrganization(t *testing.T, client *Client) (*Organization, func()) {
-	ctx := context.Background()
-	org, err := client.Organizations.Create(ctx, OrganizationCreateOptions{
+	return createOrganizationWithOptions(t, client, OrganizationCreateOptions{
 		Name:  String("tst-" + randomString(t)),
 		Email: String(fmt.Sprintf("%s@tfe.local", randomString(t))),
 	})
+}
+
+func createOrganizationWithOptions(t *testing.T, client *Client, options OrganizationCreateOptions) (*Organization, func()) {
+	ctx := context.Background()
+	org, err := client.Organizations.Create(ctx, options)
 	if err != nil {
 		t.Fatal(err)
 	}

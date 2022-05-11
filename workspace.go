@@ -131,6 +131,7 @@ type Workspace struct {
 	StructuredRunOutputEnabled bool                  `jsonapi:"attr,structured-run-output-enabled"`
 	TerraformVersion           string                `jsonapi:"attr,terraform-version"`
 	TriggerPrefixes            []string              `jsonapi:"attr,trigger-prefixes"`
+	TriggerPatterns            []string              `jsonapi:"attr,trigger-patterns"`
 	VCSRepo                    *VCSRepo              `jsonapi:"attr,vcs-repo"`
 	WorkingDirectory           string                `jsonapi:"attr,working-directory"`
 	UpdatedAt                  time.Time             `jsonapi:"attr,updated-at,iso8601"`
@@ -326,6 +327,10 @@ type WorkspaceCreateOptions struct {
 	// tracked for changes. See FileTriggersEnabled above for more details.
 	TriggerPrefixes []string `jsonapi:"attr,trigger-prefixes,omitempty"`
 
+	// Optional: List of patterns used to match against changed files in order
+	// to decide whether to trigger a run or not.
+	TriggerPatterns []string `jsonapi:"attr,trigger-patterns,omitempty"`
+
 	// Settings for the workspace's VCS repository. If omitted, the workspace is
 	// created without a VCS repo. If included, you must specify at least the
 	// oauth-token-id and identifier keys below.
@@ -419,6 +424,10 @@ type WorkspaceUpdateOptions struct {
 	// Optional: List of repository-root-relative paths which list all locations to be
 	// tracked for changes. See FileTriggersEnabled above for more details.
 	TriggerPrefixes []string `jsonapi:"attr,trigger-prefixes,omitempty"`
+
+	// Optional: List of patterns used to match against changed files in order
+	// to decide whether to trigger a run or not.
+	TriggerPatterns []string `jsonapi:"attr,trigger-patterns,omitempty"`
 
 	// Optional: To delete a workspace's existing VCS repo, specify null instead of an
 	// object. To modify a workspace's existing VCS repo, include whichever of
@@ -1053,6 +1062,9 @@ func (o WorkspaceCreateOptions) valid() error {
 	if o.AgentPoolID == nil && (o.ExecutionMode != nil && *o.ExecutionMode == "agent") {
 		return ErrRequiredAgentPoolID
 	}
+	if o.TriggerPrefixes != nil && o.TriggerPatterns != nil {
+		return ErrUnsupportedBothTriggerPatternsAndPrefixes
+	}
 
 	return nil
 }
@@ -1066,6 +1078,9 @@ func (o WorkspaceUpdateOptions) valid() error {
 	}
 	if o.AgentPoolID == nil && (o.ExecutionMode != nil && *o.ExecutionMode == "agent") {
 		return ErrRequiredAgentPoolID
+	}
+	if o.TriggerPrefixes != nil && o.TriggerPatterns != nil {
+		return ErrUnsupportedBothTriggerPatternsAndPrefixes
 	}
 
 	return nil

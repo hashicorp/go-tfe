@@ -23,6 +23,8 @@ var (
 	ErrUnsupportedPrivateKey = errors.New("private Key can only be present with Azure DevOps Server service provider")
 
 	ErrUnsupportedRunTriggerType = errors.New(`"RunTriggerType" must be "inbound" when requesting "include" query params`)
+
+	ErrUnsupportedBothTriggerPatternsAndPrefixes = errors.New(`"TriggerPatterns" and "TriggerPrefixes"" cannot be used in conjunction`)
 )
 
 // Library errors that usually indicate a bug in the implementation of go-tfe
