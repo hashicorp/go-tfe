@@ -325,7 +325,7 @@ func (o *ExampleCreateOptions) valid() error {
 
 func (o *ExampleListOptions) valid() error {
 	if o == nil {
-		return nil // nothing to validate 
+		return nil // nothing to validate
 	}
 	if err := validateExampleIncludeParams(o.Include); err != nil {
 		return err
@@ -336,7 +336,7 @@ func (o *ExampleListOptions) valid() error {
 
 func (o *ExampleReadOptions) valid() error {
 	if o == nil {
-		return nil // nothing to validate 
+		return nil // nothing to validate
 	}
 	if err := validateExampleIncludeParams(o.Include); err != nil {
 		return err
@@ -357,12 +357,4 @@ func validateExampleIncludeParams(params []ExampleIncludeOpt) error {
 
 	return nil
 }
-```
-
-## Generating Mocks
-
-To generate mocks, simply run `./generate_mocks.sh`. You'll need to do so if an existing endpoint method is modified or a new method is added. If you're adding a new API resource to go-tfe, you'll need to add the command to `generate_mocks.sh`. For example if someone creates `example_resource.go`, you'll add:
-
-```
-mockgen -source=example_resource.go -destination=mocks/example_resource_mocks.go -package=mocks
 ```
