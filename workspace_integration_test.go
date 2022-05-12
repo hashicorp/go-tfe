@@ -632,7 +632,11 @@ func TestWorkspacesUpdate(t *testing.T) {
 		})
 		defer orgTestCleanup()
 
-		wTest, _ := createWorkspace(t, client, orgTest)
+		wTest, _ := createWorkspaceWithOptions(t, client, orgTest, WorkspaceCreateOptions{
+			Name:            String(randomString(t)),
+			TriggerPrefixes: []string{"/prefix-1/", "/prefix-2/"},
+		})
+		assert.Equal(t, wTest.TriggerPrefixes, []string{"/prefix-1/", "/prefix-2/"}) // Sanity test
 
 		options := WorkspaceUpdateOptions{
 			Name:                String("foobar"),
@@ -640,9 +644,7 @@ func TestWorkspacesUpdate(t *testing.T) {
 			TriggerPatterns:     []string{"/module-1/**/*", "/**/networking/*"},
 		}
 		w, err := client.Workspaces.Update(ctx, orgTest.Name, wTest.Name, options)
-
 		require.NoError(t, err)
-		assert.Equal(t, options.TriggerPatterns, w.TriggerPatterns)
 
 		// Get a refreshed view from the API.
 		refreshed, err := client.Workspaces.Read(ctx, orgTest.Name, *options.Name)
@@ -652,6 +654,7 @@ func TestWorkspacesUpdate(t *testing.T) {
 			w,
 			refreshed,
 		} {
+			assert.Empty(t, options.TriggerPrefixes)
 			assert.Equal(t, options.TriggerPatterns, item.TriggerPatterns)
 		}
 	})
