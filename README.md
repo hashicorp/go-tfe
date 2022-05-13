@@ -67,6 +67,7 @@ This API client covers most of the existing Terraform Cloud API calls and is upd
 - [x] Agent Tokens
 - [x] Applies
 - [ ] Audit Trails
+- [x] Changelog
 - [x] Comments
 - [x] Configuration Versions
 - [x] Cost Estimation
@@ -96,6 +97,7 @@ This API client covers most of the existing Terraform Cloud API calls and is upd
 - [ ] Run Tasks Integration
 - [x] Run Triggers
 - [x] SSH Keys
+- [x] Stability Policy
 - [x] State Versions
 - [x] State Version Outputs
 - [ ] Subscriptions
@@ -105,12 +107,12 @@ This API client covers most of the existing Terraform Cloud API calls and is upd
 - [x] Teams
 - [x] User Tokens
 - [x] Users
+- [x] Variable Sets
 - [x] Variables
 - [ ] VCS Events
 - [x] Workspaces
 - [x] Workspace-Specific Variables
 - [x] Workspace Resources
-- [x] Variable Sets
 - [x] Admin
   - [x] Module Sharing
   - [x] Organizations
@@ -119,8 +121,6 @@ This API client covers most of the existing Terraform Cloud API calls and is upd
   - [x] Terraform Versions
   - [x] Users
   - [x] Workspaces
-- [x] Changelog
-- [x] Stability Policy
 
 
 ## Examples
