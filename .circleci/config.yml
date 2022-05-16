@@ -12,6 +12,8 @@ jobs:
         environment:
           TEST_RESULTS_DIR: *test_results_dir
 
+    resource_class: large
+
     steps:
       - checkout
 
