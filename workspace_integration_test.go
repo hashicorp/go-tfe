@@ -7,6 +7,7 @@ import (
 	"bytes"
 	"context"
 	"encoding/json"
+	"fmt"
 	"io/ioutil"
 	"sort"
 	"strings"
@@ -276,6 +277,49 @@ func TestWorkspacesCreate(t *testing.T) {
 		})
 		assert.Nil(t, w)
 		assert.Error(t, err)
+	})
+
+	t.Run("when options include trigger-patterns (behind a feature flag)", func(t *testing.T) {
+		// Remove the below organization creation and use the one from the outer scope once the feature flag is removed
+		orgTest, orgTestCleanup := createOrganizationWithOptions(t, client, OrganizationCreateOptions{
+			Name:  String("tst-" + randomString(t)[0:20] + "-ff-on"),
+			Email: String(fmt.Sprintf("%s@tfe.local", randomString(t))),
+		})
+		defer orgTestCleanup()
+
+		options := WorkspaceCreateOptions{
+			Name:                String("foobar"),
+			FileTriggersEnabled: Bool(true),
+			TriggerPatterns:     []string{"/module-1/**/*", "/**/networking/*"},
+		}
+		w, err := client.Workspaces.Create(ctx, orgTest.Name, options)
+
+		require.NoError(t, err)
+		assert.Equal(t, options.TriggerPatterns, w.TriggerPatterns)
+
+		// Get a refreshed view from the API.
+		refreshed, err := client.Workspaces.Read(ctx, orgTest.Name, *options.Name)
+		require.NoError(t, err)
+
+		for _, item := range []*Workspace{
+			w,
+			refreshed,
+		} {
+			assert.Equal(t, options.TriggerPatterns, item.TriggerPatterns)
+		}
+	})
+
+	t.Run("when options include both trigger-patterns and trigger-paths error is returned", func(t *testing.T) {
+		options := WorkspaceCreateOptions{
+			Name:                String("foobar"),
+			FileTriggersEnabled: Bool(true),
+			TriggerPrefixes:     []string{"/module-1", "/module-2"},
+			TriggerPatterns:     []string{"/module-1/**/*", "/**/networking/*"},
+		}
+		w, err := client.Workspaces.Create(ctx, orgTest.Name, options)
+
+		assert.Nil(t, w)
+		assert.EqualError(t, err, ErrUnsupportedBothTriggerPatternsAndPrefixes.Error())
 	})
 }
 
@@ -578,6 +622,54 @@ func TestWorkspacesUpdate(t *testing.T) {
 		w, err := client.Workspaces.Update(ctx, badIdentifier, wTest.Name, WorkspaceUpdateOptions{})
 		assert.Nil(t, w)
 		assert.EqualError(t, err, ErrInvalidOrg.Error())
+	})
+
+	t.Run("when options include trigger-patterns (behind a feature flag)", func(t *testing.T) {
+		// Remove the below organization and workspace creation and use the one from the outer scope once the feature flag is removed
+		orgTest, orgTestCleanup := createOrganizationWithOptions(t, client, OrganizationCreateOptions{
+			Name:  String("tst-" + randomString(t)[0:20] + "-ff-on"),
+			Email: String(fmt.Sprintf("%s@tfe.local", randomString(t))),
+		})
+		defer orgTestCleanup()
+
+		wTest, _ := createWorkspaceWithOptions(t, client, orgTest, WorkspaceCreateOptions{
+			Name:            String(randomString(t)),
+			TriggerPrefixes: []string{"/prefix-1/", "/prefix-2/"},
+		})
+		assert.Equal(t, wTest.TriggerPrefixes, []string{"/prefix-1/", "/prefix-2/"}) // Sanity test
+
+		options := WorkspaceUpdateOptions{
+			Name:                String("foobar"),
+			FileTriggersEnabled: Bool(true),
+			TriggerPatterns:     []string{"/module-1/**/*", "/**/networking/*"},
+		}
+		w, err := client.Workspaces.Update(ctx, orgTest.Name, wTest.Name, options)
+		require.NoError(t, err)
+
+		// Get a refreshed view from the API.
+		refreshed, err := client.Workspaces.Read(ctx, orgTest.Name, *options.Name)
+		require.NoError(t, err)
+
+		for _, item := range []*Workspace{
+			w,
+			refreshed,
+		} {
+			assert.Empty(t, options.TriggerPrefixes)
+			assert.Equal(t, options.TriggerPatterns, item.TriggerPatterns)
+		}
+	})
+
+	t.Run("when options include both trigger-patterns and trigger-paths error is returned", func(t *testing.T) {
+		options := WorkspaceUpdateOptions{
+			Name:                String("foobar"),
+			FileTriggersEnabled: Bool(true),
+			TriggerPrefixes:     []string{"/module-1", "/module-2"},
+			TriggerPatterns:     []string{"/module-1/**/*", "/**/networking/*"},
+		}
+		w, err := client.Workspaces.Update(ctx, orgTest.Name, wTest.Name, options)
+
+		assert.Nil(t, w)
+		assert.EqualError(t, err, ErrUnsupportedBothTriggerPatternsAndPrefixes.Error())
 	})
 }
 
@@ -1359,6 +1451,7 @@ func TestWorkspace_Unmarshal(t *testing.T) {
 					"is-destroyable": true,
 				},
 				"trigger-prefixes": []string{"prefix-"},
+				"trigger-patterns": []string{"pattern1/**/*", "pattern2/**/submodule/*"},
 			},
 		},
 	}
@@ -1390,6 +1483,7 @@ func TestWorkspace_Unmarshal(t *testing.T) {
 	assert.Equal(t, ws.VCSRepo.ServiceProvider, "github")
 	assert.Equal(t, ws.Actions.IsDestroyable, true)
 	assert.Equal(t, ws.TriggerPrefixes, []string{"prefix-"})
+	assert.Equal(t, ws.TriggerPatterns, []string{"pattern1/**/*", "pattern2/**/submodule/*"})
 }
 
 func TestWorkspaceCreateOptions_Marshal(t *testing.T) {
@@ -1397,6 +1491,7 @@ func TestWorkspaceCreateOptions_Marshal(t *testing.T) {
 		AllowDestroyPlan: Bool(true),
 		Name:             String("my-workspace"),
 		TriggerPrefixes:  []string{"prefix-"},
+		TriggerPatterns:  []string{"pattern1/**/*", "pattern2/**/*"},
 		VCSRepo: &VCSRepoOptions{
 			Identifier:   String("id"),
 			OAuthTokenID: String("token"),
@@ -1410,7 +1505,7 @@ func TestWorkspaceCreateOptions_Marshal(t *testing.T) {
 	bodyBytes, err := req.BodyBytes()
 	require.NoError(t, err)
 
-	expectedBody := `{"data":{"type":"workspaces","attributes":{"allow-destroy-plan":true,"name":"my-workspace","trigger-prefixes":["prefix-"],"vcs-repo":{"identifier":"id","oauth-token-id":"token"}}}}
+	expectedBody := `{"data":{"type":"workspaces","attributes":{"allow-destroy-plan":true,"name":"my-workspace","trigger-patterns":["pattern1/**/*","pattern2/**/*"],"trigger-prefixes":["prefix-"],"vcs-repo":{"identifier":"id","oauth-token-id":"token"}}}}
 `
 	assert.Equal(t, expectedBody, string(bodyBytes))
 }

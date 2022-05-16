@@ -390,11 +390,15 @@ func createOAuthToken(t *testing.T, client *Client, org *Organization) (*OAuthTo
 }
 
 func createOrganization(t *testing.T, client *Client) (*Organization, func()) {
-	ctx := context.Background()
-	org, err := client.Organizations.Create(ctx, OrganizationCreateOptions{
+	return createOrganizationWithOptions(t, client, OrganizationCreateOptions{
 		Name:  String("tst-" + randomString(t)),
 		Email: String(fmt.Sprintf("%s@tfe.local", randomString(t))),
 	})
+}
+
+func createOrganizationWithOptions(t *testing.T, client *Client, options OrganizationCreateOptions) (*Organization, func()) {
+	ctx := context.Background()
+	org, err := client.Organizations.Create(ctx, options)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -957,6 +961,12 @@ func createVariable(t *testing.T, client *Client, w *Workspace) (*Variable, func
 }
 
 func createWorkspace(t *testing.T, client *Client, org *Organization) (*Workspace, func()) {
+	return createWorkspaceWithOptions(t, client, org, WorkspaceCreateOptions{
+		Name: String(randomString(t)),
+	})
+}
+
+func createWorkspaceWithOptions(t *testing.T, client *Client, org *Organization, options WorkspaceCreateOptions) (*Workspace, func()) {
 	var orgCleanup func()
 
 	if org == nil {
@@ -964,9 +974,7 @@ func createWorkspace(t *testing.T, client *Client, org *Organization) (*Workspac
 	}
 
 	ctx := context.Background()
-	w, err := client.Workspaces.Create(ctx, org.Name, WorkspaceCreateOptions{
-		Name: String(randomString(t)),
-	})
+	w, err := client.Workspaces.Create(ctx, org.Name, options)
 	if err != nil {
 		t.Fatal(err)
 	}
