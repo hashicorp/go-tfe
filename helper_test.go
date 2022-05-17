@@ -60,7 +60,7 @@ func createAgentPool(t *testing.T, client *Client, org *Organization) (*AgentPoo
 
 	return pool, func() {
 		if err := client.AgentPools.Delete(ctx, pool.ID); err != nil {
-			t.Errorf("Error destroying agent pool! WARNING: Dangling resources "+
+			t.Logf("Error destroying agent pool! WARNING: Dangling resources "+
 				"may exist! The full error is shown below.\n\n"+
 				"Agent pool ID: %s\nError: %s", pool.ID, err)
 		}
