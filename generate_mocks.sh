@@ -17,6 +17,7 @@ mockgen -source=admin_workspace.go -destination=mocks/admin_workspace_mocks.go -
 mockgen -source=agent_pool.go -destination=mocks/agent_pool_mocks.go -package=mocks
 mockgen -source=agent_token.go -destination=mocks/agent_token_mocks.go -package=mocks
 mockgen -source=apply.go -destination=mocks/apply_mocks.go -package=mocks
+mockgen -source=audit_trail.go -destination=mocks/audit_trail.go -package=mocks
 mockgen -source=configuration_version.go -destination=mocks/configuration_version_mocks.go -package=mocks
 mockgen -source=cost_estimate.go -destination=mocks/cost_estimate_mocks.go -package=mocks
 mockgen -source=ip_ranges.go -destination=mocks/ip_ranges_mocks.go -package=mocks
