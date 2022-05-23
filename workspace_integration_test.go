@@ -309,7 +309,7 @@ func TestWorkspacesCreate(t *testing.T) {
 		}
 	})
 
-	t.Run("when options include both trigger-patterns and trigger-paths error is returned", func(t *testing.T) {
+	t.Run("when options include both non-empty trigger-patterns and trigger-paths error is returned", func(t *testing.T) {
 		options := WorkspaceCreateOptions{
 			Name:                String("foobar"),
 			FileTriggersEnabled: Bool(true),
@@ -320,6 +320,26 @@ func TestWorkspacesCreate(t *testing.T) {
 
 		assert.Nil(t, w)
 		assert.EqualError(t, err, ErrUnsupportedBothTriggerPatternsAndPrefixes.Error())
+	})
+
+	t.Run("when options include trigger-patterns populated and empty trigger-paths workspace is created", func(t *testing.T) {
+		// Remove the below organization creation and use the one from the outer scope once the feature flag is removed
+		orgTest, orgTestCleanup := createOrganizationWithOptions(t, client, OrganizationCreateOptions{
+			Name:  String("tst-" + randomString(t)[0:20] + "-ff-on"),
+			Email: String(fmt.Sprintf("%s@tfe.local", randomString(t))),
+		})
+		defer orgTestCleanup()
+
+		options := WorkspaceCreateOptions{
+			Name:                String("foobar"),
+			FileTriggersEnabled: Bool(true),
+			TriggerPrefixes:     []string{},
+			TriggerPatterns:     []string{"/module-1/**/*", "/**/networking/*"},
+		}
+		w, err := client.Workspaces.Create(ctx, orgTest.Name, options)
+
+		require.NoError(t, err)
+		assert.Equal(t, options.TriggerPatterns, w.TriggerPatterns)
 	})
 }
 
