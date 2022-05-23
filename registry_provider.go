@@ -44,13 +44,13 @@ const (
 
 // RegistryProvider represents a registry provider
 type RegistryProvider struct {
-	ID           string                       `jsonapi:"primary,registry-providers"`
-	Namespace    string                       `jsonapi:"attr,namespace"`
-	Name         string                       `jsonapi:"attr,name"`
-	RegistryName RegistryName                 `jsonapi:"attr,registry-name"`
-	Permissions  *RegistryProviderPermissions `jsonapi:"attr,permissions"`
-	CreatedAt    string                       `jsonapi:"attr,created-at"`
-	UpdatedAt    string                       `jsonapi:"attr,updated-at"`
+	ID           string                      `jsonapi:"primary,registry-providers"`
+	Namespace    string                      `jsonapi:"attr,namespace"`
+	Name         string                      `jsonapi:"attr,name"`
+	RegistryName RegistryName                `jsonapi:"attr,registry-name"`
+	Permissions  RegistryProviderPermissions `jsonapi:"attr,permissions"`
+	CreatedAt    string                      `jsonapi:"attr,created-at"`
+	UpdatedAt    string                      `jsonapi:"attr,updated-at"`
 
 	// Relations
 	Organization             *Organization             `jsonapi:"relation,organization"`
