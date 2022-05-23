@@ -49,7 +49,7 @@ type Team struct {
 	Visibility         string              `jsonapi:"attr,visibility"`
 	Permissions        *TeamPermissions    `jsonapi:"attr,permissions"`
 	UserCount          int                 `jsonapi:"attr,users-count"`
-	SSOTeamID          *string             `jsonapi:"attr,sso-team-id"`
+	SSOTeamID          string              `jsonapi:"attr,sso-team-id"`
 
 	// Relations
 	Users                   []*User                   `jsonapi:"relation,users"`
