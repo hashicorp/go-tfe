@@ -21,11 +21,11 @@ func TestRegistryProvidersList(t *testing.T) {
 		providers := make([]*RegistryProvider, 0)
 		// these providers will be destroyed when the org is cleaned up
 		for i := 0; i < createN; i++ {
-			providerTest, _ := createPublicRegistryProvider(t, client, orgTest)
+			providerTest, _ := createRegistryProvider(t, client, orgTest, PublicRegistry)
 			providers = append(providers, providerTest)
 		}
 		for i := 0; i < createN; i++ {
-			providerTest, _ := createPrivateRegistryProvider(t, client, orgTest)
+			providerTest, _ := createRegistryProvider(t, client, orgTest, PrivateRegistry)
 			providers = append(providers, providerTest)
 		}
 		providerN := len(providers)
@@ -279,17 +279,14 @@ func TestRegistryProvidersRead(t *testing.T) {
 	defer orgTestCleanup()
 
 	type ProviderContext struct {
-		ProviderCreator func(t *testing.T, client *Client, org *Organization) (*RegistryProvider, func())
 		RegistryName    RegistryName
 	}
 
 	providerContexts := []ProviderContext{
 		{
-			ProviderCreator: createPublicRegistryProvider,
 			RegistryName:    PublicRegistry,
 		},
 		{
-			ProviderCreator: createPrivateRegistryProvider,
 			RegistryName:    PrivateRegistry,
 		},
 	}
@@ -298,7 +295,7 @@ func TestRegistryProvidersRead(t *testing.T) {
 		testName := fmt.Sprintf("with %s provider", prvCtx.RegistryName)
 		t.Run(testName, func(t *testing.T) {
 			t.Run("with valid provider", func(t *testing.T) {
-				registryProviderTest, providerTestCleanup := prvCtx.ProviderCreator(t, client, orgTest)
+				registryProviderTest, providerTestCleanup := createRegistryProvider(t, client, orgTest, prvCtx.RegistryName)
 				defer providerTestCleanup()
 
 				prv, err := client.RegistryProviders.Read(ctx, orgTest.Name, registryProviderTest.RegistryName, registryProviderTest.Namespace, registryProviderTest.Name, nil)
@@ -371,17 +368,14 @@ func TestRegistryProvidersDelete(t *testing.T) {
 	defer orgTestCleanup()
 
 	type ProviderContext struct {
-		ProviderCreator func(t *testing.T, client *Client, org *Organization) (*RegistryProvider, func())
 		RegistryName    RegistryName
 	}
 
 	providerContexts := []ProviderContext{
 		{
-			ProviderCreator: createPublicRegistryProvider,
 			RegistryName:    PublicRegistry,
 		},
 		{
-			ProviderCreator: createPrivateRegistryProvider,
 			RegistryName:    PrivateRegistry,
 		},
 	}
@@ -390,7 +384,7 @@ func TestRegistryProvidersDelete(t *testing.T) {
 		testName := fmt.Sprintf("with %s provider", prvCtx.RegistryName)
 		t.Run(testName, func(t *testing.T) {
 			t.Run("with valid provider", func(t *testing.T) {
-				registryProviderTest, _ := prvCtx.ProviderCreator(t, client, orgTest)
+				registryProviderTest, _ := createRegistryProvider(t, client, orgTest, prvCtx.RegistryName)
 
 				err := client.RegistryProviders.Delete(ctx, orgTest.Name, registryProviderTest.RegistryName, registryProviderTest.Namespace, registryProviderTest.Name)
 				require.NoError(t, err)

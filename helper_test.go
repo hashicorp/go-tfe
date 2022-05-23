@@ -755,7 +755,7 @@ func createRunTask(t *testing.T, client *Client, org *Organization) (*RunTask, f
 	}
 }
 
-func createPrivateRegistryProvider(t *testing.T, client *Client, org *Organization) (*RegistryProvider, func()) {
+func createRegistryProvider(t *testing.T, client *Client, org *Organization, registryName RegistryName) (*RegistryProvider, func()) {
 	var orgCleanup func()
 
 	if org == nil {
@@ -764,46 +764,19 @@ func createPrivateRegistryProvider(t *testing.T, client *Client, org *Organizati
 
 	ctx := context.Background()
 
-	privateName := PrivateRegistry
+	if registryName != PrivateRegistry && registryName != PublicRegistry {
+		t.Fatal("Registry name must be either public or private")
+	}
+
+	namespaceName := String("tst-namespace-" + randomString(t))
+	if registryName == PrivateRegistry {
+		namespaceName = &org.Name
+	}
 
 	options := RegistryProviderCreateOptions{
 		Name:         String("tst-name-" + randomString(t)),
-		Namespace:    &org.Name,
-		RegistryName: &privateName,
-	}
-	prv, err := client.RegistryProviders.Create(ctx, org.Name, options)
-	if err != nil {
-		t.Fatal(err)
-	}
-
-	return prv, func() {
-		if err := client.RegistryProviders.Delete(ctx, org.Name, prv.RegistryName, prv.Namespace, prv.Name); err != nil {
-			t.Errorf("Error destroying registry provider! WARNING: Dangling resources\n"+
-				"may exist! The full error is shown below.\n\n"+
-				"Registry Provider: %s/%s\nError: %s", prv.Namespace, prv.Name, err)
-		}
-
-		if orgCleanup != nil {
-			orgCleanup()
-		}
-	}
-}
-
-func createPublicRegistryProvider(t *testing.T, client *Client, org *Organization) (*RegistryProvider, func()) {
-	var orgCleanup func()
-
-	if org == nil {
-		org, orgCleanup = createOrganization(t, client)
-	}
-
-	ctx := context.Background()
-
-	publicName := PublicRegistry
-
-	options := RegistryProviderCreateOptions{
-		Name:         String("tst-name-" + randomString(t)),
-		Namespace:    String("tst-namespace-" + randomString(t)),
-		RegistryName: &publicName,
+		Namespace:    namespaceName,
+		RegistryName: &registryName,
 	}
 	prv, err := client.RegistryProviders.Create(ctx, org.Name, options)
 	if err != nil {
