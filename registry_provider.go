@@ -145,11 +145,6 @@ func (r *registryProviders) Create(ctx context.Context, organization string, opt
 	if err := options.valid(); err != nil {
 		return nil, err
 	}
-	// Private providers must match their namespace and organization name
-	// This is enforced by the API as well
-	if *options.RegistryName == PrivateRegistry && organization != *options.Namespace {
-		return nil, errors.New("namespace must match organization name for private providers")
-	}
 
 	u := fmt.Sprintf(
 		"organizations/%s/registry-providers",
