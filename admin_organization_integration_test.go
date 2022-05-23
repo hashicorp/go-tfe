@@ -21,7 +21,7 @@ func TestAdminOrganizations_List(t *testing.T) {
 	org, orgTestCleanup := createOrganization(t, client)
 	defer orgTestCleanup()
 
-	t.Run("with no list options", func(t *testing.T) {
+	t.Run("simulating", func(t *testing.T) {
 		adminOrgList, err := client.Admin.Organizations.List(ctx, nil)
 		require.NoError(t, err)
 
@@ -31,7 +31,7 @@ func TestAdminOrganizations_List(t *testing.T) {
 		assert.NotEmpty(t, adminOrgList.Items)
 	})
 
-	t.Run("with list options", func(t *testing.T) {
+	t.Run("changes", func(t *testing.T) {
 		// creating second org so that the query can only find the main org
 		_, orgTestCleanup := createOrganization(t, client)
 		defer orgTestCleanup()
