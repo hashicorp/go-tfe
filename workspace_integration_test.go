@@ -1446,6 +1446,7 @@ func TestWorkspace_Unmarshal(t *testing.T) {
 					"oauth-token-id":      "token",
 					"repository-http-url": "github.com",
 					"service-provider":    "github",
+					"webhook-url":         "https://app.terraform.io/webhooks/vcs/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee",
 				},
 				"actions": map[string]interface{}{
 					"is-destroyable": true,
@@ -1481,6 +1482,7 @@ func TestWorkspace_Unmarshal(t *testing.T) {
 	assert.Equal(t, ws.VCSRepo.OAuthTokenID, "token")
 	assert.Equal(t, ws.VCSRepo.RepositoryHTTPURL, "github.com")
 	assert.Equal(t, ws.VCSRepo.ServiceProvider, "github")
+	assert.Equal(t, ws.VCSRepo.WebhookURL, "https://app.terraform.io/webhooks/vcs/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee")
 	assert.Equal(t, ws.Actions.IsDestroyable, true)
 	assert.Equal(t, ws.TriggerPrefixes, []string{"prefix-"})
 	assert.Equal(t, ws.TriggerPatterns, []string{"pattern1/**/*", "pattern2/**/submodule/*"})

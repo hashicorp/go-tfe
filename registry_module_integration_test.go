@@ -746,6 +746,7 @@ func TestRegistryModule_Unmarshal(t *testing.T) {
 					"oauth-token-id":      "token",
 					"repository-http-url": "github.com",
 					"service-provider":    "github",
+					"webhook-url":         "https://app.terraform.io/webhooks/vcs/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee",
 				},
 				"version-statuses": []interface{}{
 					map[string]interface{}{
@@ -779,6 +780,7 @@ func TestRegistryModule_Unmarshal(t *testing.T) {
 	assert.Equal(t, rm.VCSRepo.OAuthTokenID, "token")
 	assert.Equal(t, rm.VCSRepo.RepositoryHTTPURL, "github.com")
 	assert.Equal(t, rm.VCSRepo.ServiceProvider, "github")
+	assert.Equal(t, rm.VCSRepo.WebhookURL, "https://app.terraform.io/webhooks/vcs/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee")
 	assert.Equal(t, rm.Status, RegistryModuleStatusPending)
 	assert.Equal(t, rm.VersionStatuses[0].Version, "1.1.1")
 	assert.Equal(t, rm.VersionStatuses[0].Status, RegistryModuleVersionStatusPending)
