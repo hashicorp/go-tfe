@@ -36,8 +36,9 @@ const (
 	_headerAPIVersion  = "TFP-API-Version"
 	_includeQueryParam = "include"
 
-	DefaultAddress  = "https://app.terraform.io"
-	DefaultBasePath = "/api/v2/"
+	DefaultAddress      = "https://app.terraform.io"
+	DefaultBasePath     = "/api/v2/"
+	DefaultRegistryPath = "/api/registry/"
 	// PingEndpoint is a no-op API endpoint used to configure the rate limiter
 	PingEndpoint = "ping"
 )
@@ -54,6 +55,9 @@ type Config struct {
 
 	// The base path on which the API is served.
 	BasePath string
+
+	// The base path for the Registry API
+	RegistryBasePath string
 
 	// API token used to access the Terraform Enterprise API.
 	Token string
@@ -77,6 +81,7 @@ func DefaultConfig() *Config {
 	config := &Config{
 		Address:           os.Getenv("TFE_ADDRESS"),
 		BasePath:          DefaultBasePath,
+		RegistryBasePath:  DefaultRegistryPath,
 		Token:             os.Getenv("TFE_TOKEN"),
 		Headers:           make(http.Header),
 		HTTPClient:        cleanhttp.DefaultPooledClient(),
@@ -102,6 +107,7 @@ func DefaultConfig() *Config {
 // connectivity and configuration for accessing the TFE API
 type Client struct {
 	baseURL           *url.URL
+	registryBaseURL   *url.URL
 	token             string
 	headers           http.Header
 	http              *retryablehttp.Client
@@ -118,6 +124,7 @@ type Client struct {
 	Comments                   Comments
 	ConfigurationVersions      ConfigurationVersions
 	CostEstimates              CostEstimates
+	GPGKeys                    GPGKeys
 	NotificationConfigurations NotificationConfigurations
 	OAuthClients               OAuthClients
 	OAuthTokens                OAuthTokens
@@ -188,6 +195,9 @@ func NewClient(cfg *Config) (*Client, error) {
 		if cfg.BasePath != "" {
 			config.BasePath = cfg.BasePath
 		}
+		if cfg.RegistryBasePath != "" {
+			config.RegistryBasePath = cfg.RegistryBasePath
+		}
 		if cfg.Token != "" {
 			config.Token = cfg.Token
 		}
@@ -214,6 +224,16 @@ func NewClient(cfg *Config) (*Client, error) {
 		baseURL.Path += "/"
 	}
 
+	registryURL, err := url.Parse(config.Address)
+	if err != nil {
+		return nil, fmt.Errorf("invalid address: %w", err)
+	}
+
+	registryURL.Path = config.RegistryBasePath
+	if !strings.HasSuffix(registryURL.Path, "/") {
+		registryURL.Path += "/"
+	}
+
 	// This value must be provided by the user.
 	if config.Token == "" {
 		return nil, fmt.Errorf("missing API token")
@@ -222,6 +242,7 @@ func NewClient(cfg *Config) (*Client, error) {
 	// Create the client.
 	client := &Client{
 		baseURL:           baseURL,
+		registryBaseURL:   registryURL,
 		token:             config.Token,
 		headers:           config.Headers,
 		retryLogHook:      config.RetryLogHook,
@@ -268,6 +289,7 @@ func NewClient(cfg *Config) (*Client, error) {
 	client.Comments = &comments{client: client}
 	client.ConfigurationVersions = &configurationVersions{client: client}
 	client.CostEstimates = &costEstimates{client: client}
+	client.GPGKeys = &gpgKeys{client: client}
 	client.NotificationConfigurations = &notificationConfigurations{client: client}
 	client.OAuthClients = &oAuthClients{client: client}
 	client.OAuthTokens = &oAuthTokens{client: client}
@@ -496,9 +518,18 @@ func (c *Client) configureLimiter(rawLimit string) {
 // request body. If the method is GET, the value will be parsed and added as
 // query parameters.
 func (c *Client) newRequest(method, path string, v interface{}) (*retryablehttp.Request, error) {
-	u, err := c.baseURL.Parse(path)
-	if err != nil {
-		return nil, err
+	var u *url.URL
+	var err error
+	if strings.Contains(path, "/api/registry/") {
+		u, err = c.registryBaseURL.Parse(path)
+		if err != nil {
+			return nil, err
+		}
+	} else {
+		u, err = c.baseURL.Parse(path)
+		if err != nil {
+			return nil, err
+		}
 	}
 
 	// Create a request specific headers map.

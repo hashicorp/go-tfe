@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
+	"os"
 	"testing"
 	"time"
 
@@ -129,5 +130,21 @@ func Test_EncodeQueryParams(t *testing.T) {
 		}
 		requestURLquery := encodeQueryParams(urlVals)
 		assert.Equal(t, requestURLquery, "include=workspace%2Ccost_estimate")
+	})
+}
+
+func Test_RegistryBasePath(t *testing.T) {
+	client, err := NewClient(&Config{
+		Token: "foo",
+	})
+	require.NoError(t, err)
+
+	t.Run("ensures client creates a request with registry base path", func(t *testing.T) {
+		path := "/api/registry/some/path/to/resource"
+		req, err := client.newRequest("GET", path, nil)
+		require.NoError(t, err)
+
+		expected := os.Getenv("TFE_ADDRESS") + path
+		assert.Equal(t, req.URL.String(), expected)
 	})
 }
