@@ -272,7 +272,7 @@ func TestRegistryModulesCreateWithVCSConnection(t *testing.T) {
 		assert.Equal(t, rm.VCSRepo.OAuthTokenID, oauthTokenTest.ID)
 		assert.Equal(t, rm.VCSRepo.RepositoryHTTPURL, fmt.Sprintf("https://github.com/%s", githubIdentifier))
 		assert.Equal(t, rm.VCSRepo.ServiceProvider, string(ServiceProviderGithub))
-		assert.Regexp(t, "^https://app\.terraform\.io/webhooks/vcs/[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$", rm.VCSRepo.WebhookURL)
+		assert.Regexp(t, "^https://app\\.terraform\\.io/webhooks/vcs/[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$", rm.VCSRepo.WebhookURL)
 
 		t.Run("permissions are properly decoded", func(t *testing.T) {
 			assert.True(t, rm.Permissions.CanDelete)

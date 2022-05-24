@@ -172,7 +172,7 @@ func TestPolicySetsCreate(t *testing.T) {
 		assert.Equal(t, ps.VCSRepo.OAuthTokenID, oc.ID)
 		assert.Equal(t, ps.VCSRepo.RepositoryHTTPURL, fmt.Sprintf("https://github.com/%s", githubIdentifier))
 		assert.Equal(t, ps.VCSRepo.ServiceProvider, string(ServiceProviderGithub))
-		assert.Regexp(t, "^https://app\.terraform\.io/webhooks/vcs/[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$", ps.VCSRepo.WebhookURL)
+		assert.Regexp(t, "^https://app\\.terraform\\.io/webhooks/vcs/[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$", ps.VCSRepo.WebhookURL)
 	})
 
 	t.Run("with vcs policy updated", func(t *testing.T) {
@@ -209,7 +209,7 @@ func TestPolicySetsCreate(t *testing.T) {
 		assert.Equal(t, ps.VCSRepo.OAuthTokenID, oc.ID)
 		assert.Equal(t, ps.VCSRepo.RepositoryHTTPURL, fmt.Sprintf("https://github.com/%s", githubIdentifier))
 		assert.Equal(t, ps.VCSRepo.ServiceProvider, string(ServiceProviderGithub))
-		assert.Regexp(t, "^https://app\.terraform\.io/webhooks/vcs/[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$", ps.VCSRepo.WebhookURL)
+		assert.Regexp(t, "^https://app\\.terraform\\.io/webhooks/vcs/[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$", ps.VCSRepo.WebhookURL)
 	})
 
 	t.Run("without a name provided", func(t *testing.T) {
