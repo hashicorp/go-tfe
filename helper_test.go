@@ -60,7 +60,7 @@ func createAgentPool(t *testing.T, client *Client, org *Organization) (*AgentPoo
 
 	return pool, func() {
 		if err := client.AgentPools.Delete(ctx, pool.ID); err != nil {
-			t.Errorf("Error destroying agent pool! WARNING: Dangling resources "+
+			t.Logf("Error destroying agent pool! WARNING: Dangling resources "+
 				"may exist! The full error is shown below.\n\n"+
 				"Agent pool ID: %s\nError: %s", pool.ID, err)
 		}
@@ -561,7 +561,10 @@ func createRunWithStatus(t *testing.T, client *Client, w *Workspace, timeout int
 		if i > timeout {
 			runStatus := r.Status
 			rCleanup()
-			t.Fatal(fmt.Printf("Timeout waiting for run to reach status %v, had status %s", desiredStatuses, runStatus))
+			t.Fatal(fmt.Printf("Timeout waiting for run ID %s to reach status %v, had status %s",
+				r.ID,
+				desiredStatuses,
+				runStatus))
 		}
 
 		time.Sleep(1 * time.Second)

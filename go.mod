@@ -6,11 +6,11 @@ require (
 	github.com/golang/mock v1.6.0
 	github.com/google/go-querystring v1.1.0
 	github.com/hashicorp/go-cleanhttp v0.5.2
-	github.com/hashicorp/go-retryablehttp v0.7.0
-	github.com/hashicorp/go-slug v0.8.0
-	github.com/hashicorp/go-uuid v1.0.2
+	github.com/hashicorp/go-retryablehttp v0.7.1
+	github.com/hashicorp/go-slug v0.8.1
+	github.com/hashicorp/go-uuid v1.0.3
 	github.com/hashicorp/jsonapi v0.0.0-20210826224640-ee7dae0fb22d
-	github.com/stretchr/testify v1.7.0
+	github.com/stretchr/testify v1.7.1
 	golang.org/x/time v0.0.0-20190308202827-9d24e82272b4
 )
 
