@@ -84,3 +84,7 @@ $ envchain YOUR_NAMESPACE_HERE go test ./... -timeout=30m -tags=integration
 ```sh
 $ TFE_TOKEN=xyz TFE_ADDRESS=xyz ENABLE_TFE=1 go test ./... -timeout=30m -tags=integration
 ```
+
+### Running tests for TFC features that require paid plans (HashiCorp Employees)
+
+You can use the test helper `upgradeOrganizationSubscription()` to upgrade your test organization to a Business Plan, giving the organization access to all features in Terraform Cloud. This method requires `TFE_TOKEN` to be a user token with administrator access in the target test environment. Furthermore, you **can not** have enterprise features enabled (`ENABLE_TFE=1`) in order to use this method since the API call fails against TFE test environments.
