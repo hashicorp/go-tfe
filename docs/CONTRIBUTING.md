@@ -10,6 +10,12 @@ If you are making relevant changes that is worth communicating to our users, ple
 
 CHANGELOG.md should have the next minor version listed as `# v1.X.0 (Unreleased)` and any changes can go under there. But if you feel that your changes are better suited for a patch version (like a critical bug fix), you may list a new section for this version. You should repeat the same formatting style introduced by previous versions.
 
+### Scoping pull requests that add new resources 
+
+There are instances where several new resources being added (i.e Workspace Run Tasks and Organization Run Tasks) are coalesced into one PR. In order to keep the review process as efficient and least error prone as possible, we ask that you please scope each PR to an individual resource even if the multiple resources you're adding share similarities. If joining multiple related PRs into one single PR makes more sense logistically, we'd ask that you organize your commit history by resource. A general convention for this repository is one commit for the implementation of the resource's methods, one for the integration test, and one for cleanup and housekeeping (e.g modifying the changelog/docs, generating mocks, etc).   
+
+**Note HashiCorp Employees Only:** When submitting a new set of endpoints please ensure that one of your respective team members approves the changes as well before merging. 
+
 ## Running the Linters Locally
 
 1. Ensure you have have [installed golangci-lint](https://golangci-lint.run/usage/install/#local-installation)
