@@ -72,6 +72,8 @@ type AgentPoolListOptions struct {
 	// Optional: A list of relations to include. See available resources
 	// https://www.terraform.io/cloud-docs/api-docs/agents#available-related-resources
 	Include []AgentPoolIncludeOpt `url:"include,omitempty"`
+
+	Query string `url:"q,omitempty"`
 }
 
 // AgentPoolCreateOptions represents the options for creating an agent pool.

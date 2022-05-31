@@ -68,6 +68,21 @@ func TestAgentPoolsList(t *testing.T) {
 		assert.Nil(t, pools)
 		assert.EqualError(t, err, ErrInvalidOrg.Error())
 	})
+
+	t.Run("with query options", func(t *testing.T) {
+
+		pools, err := client.AgentPools.List(ctx, orgTest.Name, &AgentPoolListOptions{
+			Query: agentPool.Name,
+		})
+		require.NoError(t, err)
+		assert.Equal(t, len(pools.Items), 1)
+
+		pools, err = client.AgentPools.List(ctx, orgTest.Name, &AgentPoolListOptions{
+			Query: agentPool.Name + "not_going_to_match",
+		})
+		require.NoError(t, err)
+		assert.Empty(t, pools.Items)
+	})
 }
 
 func TestAgentPoolsCreate(t *testing.T) {
