@@ -73,6 +73,7 @@ type AgentPoolListOptions struct {
 	// https://www.terraform.io/cloud-docs/api-docs/agents#available-related-resources
 	Include []AgentPoolIncludeOpt `url:"include,omitempty"`
 
+	// Optional: A search query string used to filter agent pool. Agent pools are searchable by name
 	Query string `url:"q,omitempty"`
 }
 
