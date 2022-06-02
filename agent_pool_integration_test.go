@@ -12,14 +12,13 @@ import (
 )
 
 func TestAgentPoolsList(t *testing.T) {
-	skipIfEnterprise(t)
-	skipIfFreeOnly(t)
-
 	client := testClient(t)
 	ctx := context.Background()
 
 	orgTest, orgTestCleanup := createOrganization(t, client)
 	defer orgTestCleanup()
+
+	upgradeOrganizationSubscription(t, client, orgTest)
 
 	agentPool, agentPoolCleanup := createAgentPool(t, client, orgTest)
 	defer agentPoolCleanup()
@@ -72,9 +71,6 @@ func TestAgentPoolsList(t *testing.T) {
 }
 
 func TestAgentPoolsCreate(t *testing.T) {
-	skipIfEnterprise(t)
-	skipIfFreeOnly(t)
-
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -119,14 +115,13 @@ func TestAgentPoolsCreate(t *testing.T) {
 }
 
 func TestAgentPoolsRead(t *testing.T) {
-	skipIfEnterprise(t)
-	skipIfFreeOnly(t)
-
 	client := testClient(t)
 	ctx := context.Background()
 
 	orgTest, orgTestCleanup := createOrganization(t, client)
 	defer orgTestCleanup()
+
+	upgradeOrganizationSubscription(t, client, orgTest)
 
 	pool, poolCleanup := createAgentPool(t, client, orgTest)
 	defer poolCleanup()
@@ -166,14 +161,13 @@ func TestAgentPoolsRead(t *testing.T) {
 }
 
 func TestAgentPoolsUpdate(t *testing.T) {
-	skipIfEnterprise(t)
-	skipIfFreeOnly(t)
-
 	client := testClient(t)
 	ctx := context.Background()
 
 	orgTest, orgTestCleanup := createOrganization(t, client)
 	defer orgTestCleanup()
+
+	upgradeOrganizationSubscription(t, client, orgTest)
 
 	t.Run("with valid options", func(t *testing.T) {
 		kBefore, kTestCleanup := createAgentPool(t, client, orgTest)
@@ -209,28 +203,27 @@ func TestAgentPoolsUpdate(t *testing.T) {
 }
 
 func TestAgentPoolsDelete(t *testing.T) {
-	skipIfEnterprise(t)
-	skipIfFreeOnly(t)
-
 	client := testClient(t)
 	ctx := context.Background()
 
 	orgTest, orgTestCleanup := createOrganization(t, client)
 	defer orgTestCleanup()
 
-	kTest, _ := createAgentPool(t, client, orgTest)
+	upgradeOrganizationSubscription(t, client, orgTest)
+
+	agentPool, _ := createAgentPool(t, client, orgTest)
 
 	t.Run("with valid options", func(t *testing.T) {
-		err := client.AgentPools.Delete(ctx, kTest.ID)
+		err := client.AgentPools.Delete(ctx, agentPool.ID)
 		require.NoError(t, err)
 
 		// Try loading the agent pool - it should fail.
-		_, err = client.AgentPools.Read(ctx, kTest.ID)
+		_, err = client.AgentPools.Read(ctx, agentPool.ID)
 		assert.Equal(t, err, ErrResourceNotFound)
 	})
 
 	t.Run("when the agent pool does not exist", func(t *testing.T) {
-		err := client.AgentPools.Delete(ctx, kTest.ID)
+		err := client.AgentPools.Delete(ctx, agentPool.ID)
 		assert.Equal(t, err, ErrResourceNotFound)
 	})
 
