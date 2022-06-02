@@ -81,6 +81,8 @@ func TestAgentPoolsCreate(t *testing.T) {
 	orgTest, orgTestCleanup := createOrganization(t, client)
 	defer orgTestCleanup()
 
+	upgradeOrganizationSubscription(t, client, orgTest)
+
 	t.Run("with valid options", func(t *testing.T) {
 		options := AgentPoolCreateOptions{
 			Name: String("cool-pool"),
