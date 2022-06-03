@@ -1302,18 +1302,19 @@ func waitForRunLock(t *testing.T, client *Client, workspaceID string) {
 	wg.Wait()
 }
 
-func retry(f retryableFn) (interface{}, error) {
+func retry(f retryableFn) (interface{}, error) { //nolint
 	tick := time.NewTicker(tickDuration * time.Second)
-
 	retries := 0
 	maxRetries := 5
 
-	for {
+	defer tick.Stop()
+
+	for { //nolint
 		select {
 		case <-tick.C:
 			res, err := f()
 			if err == nil {
-				return res, err
+				return res, nil
 			}
 
 			if retries >= maxRetries {

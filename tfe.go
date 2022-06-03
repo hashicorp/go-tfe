@@ -854,7 +854,7 @@ func checkResponseCode(r *http.Response) error {
 		return err
 	}
 
-	return fmt.Errorf(strings.Join(errs, "\n"))
+	return errors.New(strings.Join(errs, "\n"))
 }
 
 func decodeErrorPayload(r *http.Response) ([]string, error) {
@@ -863,7 +863,7 @@ func decodeErrorPayload(r *http.Response) ([]string, error) {
 	errPayload := &jsonapi.ErrorsPayload{}
 	err := json.NewDecoder(r.Body).Decode(errPayload)
 	if err != nil || len(errPayload.Errors) == 0 {
-		return errs, fmt.Errorf(r.Status)
+		return errs, errors.New(r.Status)
 	}
 
 	// Parse and format the errors.
