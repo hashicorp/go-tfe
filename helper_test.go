@@ -61,6 +61,22 @@ func testClient(t *testing.T) *Client {
 	return client
 }
 
+func testAuditTrailClient(t *testing.T, userClient *Client, org *Organization) *Client {
+	upgradeOrganizationSubscription(t, userClient, org)
+
+	orgToken, orgTokenCleanup := createOrganizationToken(t, userClient, org)
+	t.Cleanup(orgTokenCleanup)
+
+	client, err := NewClient(&Config{
+		Token: orgToken.Token,
+	})
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	return client
+}
+
 func fetchTestAccountDetails(t *testing.T, client *Client) *TestAccountDetails {
 	if _testAccountDetails == nil {
 		_testAccountDetails = FetchTestAccountDetails(t, client)

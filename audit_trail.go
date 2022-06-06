@@ -15,13 +15,14 @@ import (
 var _ AuditTrails = (*auditTrails)(nil)
 
 // AuditTrails describes all the audit event related methods that the Terraform
-// Cloud API supports. **Note:** These methods require an organization token for
-// an organization in the Business tier and are only available in Terraform Cloud.
+// Cloud API supports.
+// **Note:** These methods require the client to be configured with an organization token for
+// an organization in the Business tier. Furthermore, these methods are only available in Terraform Cloud.
 //
 // TFC API Docs: https://www.terraform.io/cloud-docs/api-docs/audit-trails
 type AuditTrails interface {
 	// Read all the audit events in an organization.
-	List(ctx context.Context, orgToken string, options *AuditTrailListOptions) (*AuditTrailList, error)
+	List(ctx context.Context, options *AuditTrailListOptions) (*AuditTrailList, error)
 }
 
 // auditTrails implements AuditTrails
@@ -78,14 +79,15 @@ type AuditTrailListOptions struct {
 }
 
 // List all the audit events in an organization.
-func (s *auditTrails) List(ctx context.Context, orgToken string, options *AuditTrailListOptions) (*AuditTrailList, error) {
+func (s *auditTrails) List(ctx context.Context, options *AuditTrailListOptions) (*AuditTrailList, error) {
 	u, err := s.client.baseURL.Parse("/api/v2/organization/audit-trail")
 	if err != nil {
 		return nil, err
 	}
 
 	headers := make(http.Header)
-	headers.Set("Authorization", "Bearer "+orgToken)
+	headers.Set("User-Agent", _userAgent)
+	headers.Set("Authorization", "Bearer "+s.client.token)
 	headers.Set("Content-Type", "application/json")
 
 	if options != nil {
