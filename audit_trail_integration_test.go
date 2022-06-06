@@ -15,25 +15,23 @@ import (
 func TestAuditTrailsList(t *testing.T) {
 	skipIfEnterprise(t)
 
-	client := testClient(t)
+	userClient := testClient(t)
 	ctx := context.Background()
 
-	org, orgCleanup := createOrganization(t, client)
+	org, orgCleanup := createOrganization(t, userClient)
 	t.Cleanup(orgCleanup)
 
-	upgradeOrganizationSubscription(t, client, org)
+	auditTrailClient := testAuditTrailClient(t, userClient, org)
 
-	orgToken, orgTokenCleanup := createOrganizationToken(t, client, org)
-	t.Cleanup(orgTokenCleanup)
 	// First let's generate some audit events in this test organization
-	_, wkspace1Cleanup := createWorkspace(t, client, org)
+	_, wkspace1Cleanup := createWorkspace(t, userClient, org)
 	t.Cleanup(wkspace1Cleanup)
 
-	_, wkspace2Cleanup := createWorkspace(t, client, org)
+	_, wkspace2Cleanup := createWorkspace(t, userClient, org)
 	t.Cleanup(wkspace2Cleanup)
 
 	t.Run("with no specified timeframe", func(t *testing.T) {
-		atl, err := client.AuditTrails.List(ctx, orgToken.Token, nil)
+		atl, err := auditTrailClient.AuditTrails.List(ctx, nil)
 		require.NoError(t, err)
 		require.Greater(t, len(atl.Items), 0)
 
@@ -75,10 +73,10 @@ func TestAuditTrailsList(t *testing.T) {
 		time.Sleep(1 * time.Second)
 
 		// Let's create an event that is sent to the audit log
-		_, wsCleanup := createWorkspace(t, client, org)
+		_, wsCleanup := createWorkspace(t, userClient, org)
 		t.Cleanup(wsCleanup)
 
-		atl, err := client.AuditTrails.List(ctx, orgToken.Token, &AuditTrailListOptions{
+		atl, err := auditTrailClient.AuditTrails.List(ctx, &AuditTrailListOptions{
 			Since: since,
 			ListOptions: &ListOptions{
 				PageNumber: 1,
