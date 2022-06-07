@@ -36,16 +36,16 @@ func (m *MockAuditTrails) EXPECT() *MockAuditTrailsMockRecorder {
 }
 
 // List mocks base method.
-func (m *MockAuditTrails) List(ctx context.Context, orgToken string, options *tfe.AuditTrailListOptions) (*tfe.AuditTrailList, error) {
+func (m *MockAuditTrails) List(ctx context.Context, options *tfe.AuditTrailListOptions) (*tfe.AuditTrailList, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "List", ctx, orgToken, options)
+	ret := m.ctrl.Call(m, "List", ctx, options)
 	ret0, _ := ret[0].(*tfe.AuditTrailList)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
 
 // List indicates an expected call of List.
-func (mr *MockAuditTrailsMockRecorder) List(ctx, orgToken, options interface{}) *gomock.Call {
+func (mr *MockAuditTrailsMockRecorder) List(ctx, options interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "List", reflect.TypeOf((*MockAuditTrails)(nil).List), ctx, orgToken, options)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "List", reflect.TypeOf((*MockAuditTrails)(nil).List), ctx, options)
 }
