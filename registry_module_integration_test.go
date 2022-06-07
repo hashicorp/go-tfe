@@ -266,6 +266,21 @@ func TestRegistryModulesCreateVersion(t *testing.T) {
 		})
 	})
 
+	t.Run("with prerelease and metadata version", func(t *testing.T) {
+		options := RegistryModuleCreateVersionOptions{
+			Version: String("1.2.3-alpha+feature"),
+		}
+
+		rmv, err := client.RegistryModules.CreateVersion(ctx, RegistryModuleID{
+			Organization: orgTest.Name,
+			Name:         registryModuleTest.Name,
+			Provider:     registryModuleTest.Provider,
+		}, options)
+		require.NoError(t, err)
+		assert.NotEmpty(t, rmv.ID)
+		assert.Equal(t, *options.Version, rmv.Version)
+	})
+
 	t.Run("with invalid options", func(t *testing.T) {
 		t.Run("without version", func(t *testing.T) {
 			options := RegistryModuleCreateVersionOptions{}
@@ -772,6 +787,46 @@ func TestRegistryModulesDeleteVersion(t *testing.T) {
 	t.Run("with valid name and provider", func(t *testing.T) {
 		options := RegistryModuleCreateVersionOptions{
 			Version: String("1.2.3"),
+		}
+		rmv, err := client.RegistryModules.CreateVersion(ctx, RegistryModuleID{
+			Organization: orgTest.Name,
+			Name:         registryModuleTest.Name,
+			Provider:     registryModuleTest.Provider,
+		}, options)
+		require.NoError(t, err)
+		require.NotEmpty(t, rmv.Version)
+
+		rm, err := client.RegistryModules.Read(ctx, RegistryModuleID{
+			Organization: orgTest.Name,
+			Name:         registryModuleTest.Name,
+			Provider:     registryModuleTest.Provider,
+		})
+		require.NoError(t, err)
+		require.NotEmpty(t, rm.VersionStatuses)
+		require.Equal(t, 2, len(rm.VersionStatuses))
+
+		err = client.RegistryModules.DeleteVersion(ctx, RegistryModuleID{
+			Organization: orgTest.Name,
+			Name:         registryModuleTest.Name,
+			Provider:     registryModuleTest.Provider,
+		}, rmv.Version)
+		require.NoError(t, err)
+
+		rm, err = client.RegistryModules.Read(ctx, RegistryModuleID{
+			Organization: orgTest.Name,
+			Name:         registryModuleTest.Name,
+			Provider:     registryModuleTest.Provider,
+		})
+		require.NoError(t, err)
+		assert.NotEmpty(t, rm.VersionStatuses)
+		assert.Equal(t, 1, len(rm.VersionStatuses))
+		assert.NotEqual(t, registryModuleTest.VersionStatuses[0].Version, rmv.Version)
+		assert.Equal(t, registryModuleTest.VersionStatuses, rm.VersionStatuses)
+	})
+
+	t.Run("with prerelease and metadata version", func(t *testing.T) {
+		options := RegistryModuleCreateVersionOptions{
+			Version: String("1.2.3-alpha+feature"),
 		}
 		rmv, err := client.RegistryModules.CreateVersion(ctx, RegistryModuleID{
 			Organization: orgTest.Name,
