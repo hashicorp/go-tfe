@@ -414,6 +414,9 @@ func createOAuthToken(t *testing.T, client *Client, org *Organization) (*OAuthTo
 	return ocTest.OAuthTokens[0], ocTestCleanup
 }
 
+// createOrganization creates an organization for tests using the special prefix
+// "tst-" that the API uses especially to grant access to orgs for testing.
+// Don't change this prefix unless we refactor the code!
 func createOrganization(t *testing.T, client *Client) (*Organization, func()) {
 	return createOrganizationWithOptions(t, client, OrganizationCreateOptions{
 		Name:  String("tst-" + randomString(t)),
