@@ -11,6 +11,7 @@
 * Adds `Names` query param field to `TeamListOptions` by @sebasslash [#393](https://github.com/hashicorp/go-tfe/pull/393)
 * Adds `Emails` query param field to `OrganizationMembershipListOptions` by @sebasslash [#393](https://github.com/hashicorp/go-tfe/pull/393)
 * Adds Run Tasks API support by @glennsarti [#381](https://github.com/hashicorp/go-tfe/pull/381), [#382](https://github.com/hashicorp/go-tfe/pull/382) and [#383](https://github.com/hashicorp/go-tfe/pull/383)
+* Adds Private Registry Provider, Provider Version, and Provider Platform APIs support by @joekarl and @annawinkler [#313](https://github.com/hashicorp/go-tfe/pull/313)
 
 
 ## Bug fixes
