@@ -182,6 +182,7 @@ type VCSRepo struct {
 	OAuthTokenID      string `jsonapi:"attr,oauth-token-id"`
 	RepositoryHTTPURL string `jsonapi:"attr,repository-http-url"`
 	ServiceProvider   string `jsonapi:"attr,service-provider"`
+	WebhookURL        string `jsonapi:"attr,webhook-url"`
 }
 
 // WorkspaceActions represents the workspace actions.
