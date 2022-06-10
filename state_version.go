@@ -144,6 +144,8 @@ type StateVersionCreateOptions struct {
 	// https://www.terraform.io/internals/json-format#state-representation
 	// Supplying this state representation can provide more details to the platform
 	// about the current terraform state.
+	//
+	// **Note**: This field is in BETA, subject to change and not widely available yet.
 	ExtState json.RawMessage `jsonapi:"attr,ext-state,omitempty"`
 }
 
