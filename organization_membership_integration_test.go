@@ -109,6 +109,7 @@ func TestOrganizationMembershipsList(t *testing.T) {
 }
 
 func TestOrganizationMembershipsCreate(t *testing.T) {
+	skipIfFreeOnly(t)
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -116,17 +117,25 @@ func TestOrganizationMembershipsCreate(t *testing.T) {
 	defer orgTestCleanup()
 
 	t.Run("with valid options", func(t *testing.T) {
+		//create a new team using createTeam function (include Cleanup)
+
+		tmTest, tmTestCleanup := createTeam(t, client, orgTest)
+		defer tmTestCleanup()
+
 		options := OrganizationMembershipCreateOptions{
 			Email: String(fmt.Sprintf("%s@tfe.local", randomString(t))),
+			Teams: []*Team{tmTest},
 		}
 
 		mem, err := client.OrganizationMemberships.Create(ctx, orgTest.Name, options)
+		//fmt.Println("It's ME!", mem, err)
 		require.NoError(t, err)
 
 		// Get a refreshed view from the API.
 		refreshed, err := client.OrganizationMemberships.ReadWithOptions(ctx, mem.ID, OrganizationMembershipReadOptions{
 			Include: []OrgMembershipIncludeOpt{OrgMembershipUser},
 		})
+		fmt.Println("It's ME refreshed!", refreshed, err)
 		require.NoError(t, err)
 		assert.Equal(t, refreshed, mem)
 	})
