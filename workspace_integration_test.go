@@ -939,21 +939,12 @@ func TestWorkspacesUnlock(t *testing.T) {
 	wTest, wTestCleanup := createWorkspace(t, client, orgTest)
 	defer wTestCleanup()
 
-	wTest2, wTest2Cleanup := createWorkspace(t, client, orgTest)
-	defer wTest2Cleanup()
-
 	w, err := client.Workspaces.Lock(ctx, wTest.ID, WorkspaceLockOptions{})
 	if err != nil {
 		orgTestCleanup()
 	}
 	require.NoError(t, err)
 	require.True(t, w.Locked)
-
-	_, rTestCleanup := createRun(t, client, wTest2)
-	defer rTestCleanup()
-
-	// Wait for wTest2 to be locked by a run
-	waitForRunLock(t, client, wTest2.ID)
 
 	t.Run("with valid options", func(t *testing.T) {
 		w, err := client.Workspaces.Unlock(ctx, wTest.ID)
@@ -967,6 +958,15 @@ func TestWorkspacesUnlock(t *testing.T) {
 	})
 
 	t.Run("when a workspace is locked by a run", func(t *testing.T) {
+		wTest2, wTest2Cleanup := createWorkspace(t, client, orgTest)
+		defer wTest2Cleanup()
+
+		_, rTestCleanup := createRun(t, client, wTest2)
+		defer rTestCleanup()
+
+		// Wait for wTest2 to be locked by a run
+		waitForRunLock(t, client, wTest2.ID)
+
 		_, err = client.Workspaces.Unlock(ctx, wTest2.ID)
 		assert.Equal(t, ErrWorkspaceLockedByRun, err)
 	})
