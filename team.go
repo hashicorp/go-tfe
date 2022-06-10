@@ -171,6 +171,8 @@ func (s *teams) List(ctx context.Context, organization string, options *TeamList
 
 // Create a new team with the given options.
 func (s *teams) Create(ctx context.Context, organization string, options TeamCreateOptions) (*Team, error) {
+	fmt.Println("organization in Create function", &organization)
+	fmt.Println("TeamCreateOptions:", &options) //how do i return the value, not the memory address?
 	if !validStringID(&organization) {
 		return nil, ErrInvalidOrg
 	}
@@ -180,6 +182,8 @@ func (s *teams) Create(ctx context.Context, organization string, options TeamCre
 
 	u := fmt.Sprintf("organizations/%s/teams", url.QueryEscape(organization))
 	req, err := s.client.newRequest("POST", u, &options)
+	fmt.Println("request: ", req.URL, "URL Error:", err)
+
 	if err != nil {
 		return nil, err
 	}

@@ -1032,6 +1032,7 @@ func createTeam(t *testing.T, client *Client, org *Organization) (*Team, func())
 			ManageModules:         Bool(true),
 		},
 	})
+
 	if err != nil {
 		t.Fatal(err)
 	}
