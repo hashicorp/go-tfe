@@ -100,10 +100,11 @@ func TestAdminTerraformVersions_CreateDelete(t *testing.T) {
 
 	client := testClient(t)
 	ctx := context.Background()
+	version := genSafeRandomTerraformVersion()
 
 	t.Run("with valid options", func(t *testing.T) {
 		opts := AdminTerraformVersionCreateOptions{
-			Version:          String("1.1.100"),
+			Version:          String(version),
 			URL:              String("https://www.hashicorp.com"),
 			Sha:              String(genSha(t, "secret", "data")),
 			Deprecated:       Bool(true),
@@ -131,8 +132,9 @@ func TestAdminTerraformVersions_CreateDelete(t *testing.T) {
 	})
 
 	t.Run("with only required options", func(t *testing.T) {
+		version := genSafeRandomTerraformVersion()
 		opts := AdminTerraformVersionCreateOptions{
-			Version: String("1.1.100"),
+			Version: String(version),
 			URL:     String("https://www.hashicorp.com"),
 			Sha:     String(genSha(t, "secret", "data")),
 		}
@@ -167,8 +169,9 @@ func TestAdminTerraformVersions_ReadUpdate(t *testing.T) {
 	ctx := context.Background()
 
 	t.Run("reads and updates", func(t *testing.T) {
+		version := genSafeRandomTerraformVersion()
 		opts := AdminTerraformVersionCreateOptions{
-			Version:          String("1.1.100"),
+			Version:          String(version),
 			URL:              String("https://www.hashicorp.com"),
 			Sha:              String(genSha(t, "secret", "data")),
 			Official:         Bool(false),
@@ -198,7 +201,7 @@ func TestAdminTerraformVersions_ReadUpdate(t *testing.T) {
 		assert.Equal(t, *opts.Enabled, tfv.Enabled)
 		assert.Equal(t, *opts.Beta, tfv.Beta)
 
-		updateVersion := "1.1.200"
+		updateVersion := genSafeRandomTerraformVersion()
 		updateURL := "https://app.terraform.io/"
 		updateOpts := AdminTerraformVersionUpdateOptions{
 			Version:    String(updateVersion),
