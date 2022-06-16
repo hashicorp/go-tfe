@@ -114,30 +114,38 @@ func TestOrganizationMembershipsCreate(t *testing.T) {
 	ctx := context.Background()
 
 	orgTest, orgTestCleanup := createOrganization(t, client)
+	upgradeOrganizationSubscription(t, client, orgTest)
+
 	defer orgTestCleanup()
 
 	t.Run("with valid options", func(t *testing.T) {
 		//create a new team using createTeam function (include Cleanup)
 
-		tmTest, tmTestCleanup := createTeam(t, client, orgTest)
-		defer tmTestCleanup()
+		tmTest1, tmTestCleanup1 := createTeam(t, client, orgTest)
+		t.Cleanup(tmTestCleanup1)
+		tmTest2, tmTestCleanup2 := createTeam(t, client, orgTest)
+		t.Cleanup(tmTestCleanup2)
 
 		options := OrganizationMembershipCreateOptions{
 			Email: String(fmt.Sprintf("%s@tfe.local", randomString(t))),
-			Teams: []*Team{tmTest},
+			Teams: []*Team{tmTest1, tmTest2},
 		}
 
 		mem, err := client.OrganizationMemberships.Create(ctx, orgTest.Name, options)
-		//fmt.Println("It's ME!", mem, err)
 		require.NoError(t, err)
 
 		// Get a refreshed view from the API.
 		refreshed, err := client.OrganizationMemberships.ReadWithOptions(ctx, mem.ID, OrganizationMembershipReadOptions{
-			Include: []OrgMembershipIncludeOpt{OrgMembershipUser},
+			Include: []OrgMembershipIncludeOpt{OrgMembershipUser, OrgMembershipTeam},
 		})
-		fmt.Println("It's ME refreshed!", refreshed, err)
+
 		require.NoError(t, err)
-		assert.Equal(t, refreshed, mem)
+		require.Equal(t, len(refreshed.Teams), 2)
+
+		teamIDs := []string{refreshed.Teams[0].ID, refreshed.Teams[1].ID}
+		assert.Contains(t, teamIDs, tmTest1.ID)
+		assert.Contains(t, teamIDs, tmTest2.ID)
+		assert.Equal(t, refreshed.Email, mem.Email)
 	})
 
 	t.Run("when options is missing email", func(t *testing.T) {
@@ -145,6 +153,19 @@ func TestOrganizationMembershipsCreate(t *testing.T) {
 
 		assert.Nil(t, mem)
 		assert.Equal(t, err, ErrRequiredEmail)
+	})
+
+	t.Run("when options is missing teams", func(t *testing.T) {
+
+		options := OrganizationMembershipCreateOptions{
+			Email: String(fmt.Sprintf("%s@tfe.local", randomString(t))),
+			Teams: []*Team{},
+		}
+
+		mem, err := client.OrganizationMemberships.Create(ctx, orgTest.Name, options)
+
+		fmt.Println("missing teams error: ", err)
+		assert.Nil(t, mem)
 	})
 
 	t.Run("with an invalid organization", func(t *testing.T) {
