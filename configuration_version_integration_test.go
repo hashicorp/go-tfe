@@ -242,55 +242,6 @@ func TestConfigurationVersionsArchive(t *testing.T) {
 	client := testClient(t)
 	ctx := context.Background()
 
-	cv, cvCleanup := createConfigurationVersion(t, client, nil)
-	defer cvCleanup()
-
-	t.Run("when the configuration version exists and has been uploaded", func(t *testing.T) {
-		err := client.ConfigurationVersions.Upload(
-			ctx,
-			cv.UploadURL,
-			"test-fixtures/config-version",
-		)
-		require.NoError(t, err)
-
-		// We do this is a small loop, because it can take a second
-		// before the upload is finished.
-		for i := 0; ; i++ {
-			refreshed, err := client.ConfigurationVersions.Read(ctx, cv.ID)
-			require.NoError(t, err)
-
-			if refreshed.Status == ConfigurationUploaded {
-				break
-			}
-
-			if i > 10 {
-				t.Fatal("Timeout waiting for the configuration version to be uploaded")
-			}
-
-			time.Sleep(1 * time.Second)
-		}
-
-		err = client.ConfigurationVersions.Archive(ctx, cv.ID)
-		require.NoError(t, err)
-
-		// We do this is a small loop, because it can take a second
-		// before the archive is finished.
-		for i := 0; ; i++ {
-			refreshed, err := client.ConfigurationVersions.Read(ctx, cv.ID)
-			require.NoError(t, err)
-
-			if refreshed.Status == ConfigurationArchived {
-				break
-			}
-
-			if i > 10 {
-				t.Fatal("Timeout waiting for the configuration version to be archived")
-			}
-
-			time.Sleep(1 * time.Second)
-		}
-	})
-
 	t.Run("when the configuration version does not exist", func(t *testing.T) {
 		err := client.ConfigurationVersions.Archive(ctx, "nonexisting")
 		assert.Equal(t, err, ErrResourceNotFound)
