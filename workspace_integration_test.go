@@ -94,6 +94,28 @@ func TestWorkspacesList(t *testing.T) {
 		assert.Equal(t, 1, wl.TotalCount)
 	})
 
+	t.Run("when searching using exclude-tags", func(t *testing.T) {
+		for wsID, tag := range map[string]string{wTest1.ID: "foo", wTest2.ID: "bar"} {
+			err := client.Workspaces.AddTags(ctx, wsID, WorkspaceAddTagsOptions{
+				Tags: []*Tag{
+					{
+						Name: tag,
+					},
+				},
+			})
+			require.NoError(t, err)
+		}
+
+		wl, err := client.Workspaces.List(ctx, orgTest.Name, &WorkspaceListOptions{
+			ExcludeTags: "foo",
+		})
+
+		require.NoError(t, err)
+		assert.Contains(t, wl.Items[0].ID, wTest2.ID)
+		assert.Equal(t, 1, wl.CurrentPage)
+		assert.Equal(t, 1, wl.TotalCount)
+	})
+
 	t.Run("when searching an unknown workspace", func(t *testing.T) {
 		// Use a nonexisting workspace name as search attribute. The result
 		// should be successful, but return no results.
