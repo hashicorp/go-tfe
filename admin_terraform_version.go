@@ -100,13 +100,13 @@ type AdminTerraformVersionsList struct {
 
 // List all the terraform versions.
 func (a *adminTerraformVersions) List(ctx context.Context, options *AdminTerraformVersionsListOptions) (*AdminTerraformVersionsList, error) {
-	req, err := a.client.newRequest("GET", "admin/terraform-versions", options)
+	req, err := a.client.NewRequest("GET", "admin/terraform-versions", options)
 	if err != nil {
 		return nil, err
 	}
 
 	tvl := &AdminTerraformVersionsList{}
-	err = a.client.do(ctx, req, tvl)
+	err = req.Do(ctx, tvl)
 	if err != nil {
 		return nil, err
 	}
@@ -121,13 +121,13 @@ func (a *adminTerraformVersions) Read(ctx context.Context, id string) (*AdminTer
 	}
 
 	u := fmt.Sprintf("admin/terraform-versions/%s", url.QueryEscape(id))
-	req, err := a.client.newRequest("GET", u, nil)
+	req, err := a.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, err
 	}
 
 	tfv := &AdminTerraformVersion{}
-	err = a.client.do(ctx, req, tfv)
+	err = req.Do(ctx, tfv)
 	if err != nil {
 		return nil, err
 	}
@@ -140,13 +140,13 @@ func (a *adminTerraformVersions) Create(ctx context.Context, options AdminTerraf
 	if err := options.valid(); err != nil {
 		return nil, err
 	}
-	req, err := a.client.newRequest("POST", "admin/terraform-versions", &options)
+	req, err := a.client.NewRequest("POST", "admin/terraform-versions", &options)
 	if err != nil {
 		return nil, err
 	}
 
 	tfv := &AdminTerraformVersion{}
-	err = a.client.do(ctx, req, tfv)
+	err = req.Do(ctx, tfv)
 	if err != nil {
 		return nil, err
 	}
@@ -161,13 +161,13 @@ func (a *adminTerraformVersions) Update(ctx context.Context, id string, options 
 	}
 
 	u := fmt.Sprintf("admin/terraform-versions/%s", url.QueryEscape(id))
-	req, err := a.client.newRequest("PATCH", u, &options)
+	req, err := a.client.NewRequest("PATCH", u, &options)
 	if err != nil {
 		return nil, err
 	}
 
 	tfv := &AdminTerraformVersion{}
-	err = a.client.do(ctx, req, tfv)
+	err = req.Do(ctx, tfv)
 	if err != nil {
 		return nil, err
 	}
@@ -182,12 +182,12 @@ func (a *adminTerraformVersions) Delete(ctx context.Context, id string) error {
 	}
 
 	u := fmt.Sprintf("admin/terraform-versions/%s", url.QueryEscape(id))
-	req, err := a.client.newRequest("DELETE", u, nil)
+	req, err := a.client.NewRequest("DELETE", u, nil)
 	if err != nil {
 		return err
 	}
 
-	return a.client.do(ctx, req, nil)
+	return req.Do(ctx, nil)
 }
 
 func (o AdminTerraformVersionCreateOptions) valid() error {

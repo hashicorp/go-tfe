@@ -72,13 +72,13 @@ func (s *applies) Read(ctx context.Context, applyID string) (*Apply, error) {
 	}
 
 	u := fmt.Sprintf("applies/%s", url.QueryEscape(applyID))
-	req, err := s.client.newRequest("GET", u, nil)
+	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, err
 	}
 
 	a := &Apply{}
-	err = s.client.do(ctx, req, a)
+	err = req.Do(ctx, a)
 	if err != nil {
 		return nil, err
 	}

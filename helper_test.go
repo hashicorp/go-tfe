@@ -1437,7 +1437,7 @@ func upgradeOrganizationSubscription(t *testing.T, client *Client, organization 
 		t.Skip("Can not upgrade an organization's subscription when enterprise is enabled. Set ENABLE_TFE=0 to run.")
 	}
 
-	req, err := client.newRequest("GET", "admin/feature-sets", featureSetListOptions{
+	req, err := client.NewRequest("GET", "admin/feature-sets", featureSetListOptions{
 		Q: "Business",
 	})
 	if err != nil {
@@ -1446,7 +1446,7 @@ func upgradeOrganizationSubscription(t *testing.T, client *Client, organization 
 	}
 
 	fsl := &featureSetList{}
-	err = client.do(context.Background(), req, fsl)
+	err = req.Do(context.Background(), fsl)
 	if err != nil {
 		t.Fatalf("failed to enumerate feature sets: %v", err)
 		return
@@ -1464,13 +1464,13 @@ func upgradeOrganizationSubscription(t *testing.T, client *Client, organization 
 	}
 
 	u := fmt.Sprintf("admin/organizations/%s/subscription", url.QueryEscape(organization.Name))
-	req, err = client.newRequest("POST", u, &opts)
+	req, err = client.NewRequest("POST", u, &opts)
 	if err != nil {
 		t.Fatalf("Failed to create request: %v", err)
 		return
 	}
 
-	err = client.do(context.Background(), req, nil)
+	err = req.Do(context.Background(), nil)
 	if err != nil {
 		t.Fatalf("Failed to upgrade subscription: %v", err)
 	}

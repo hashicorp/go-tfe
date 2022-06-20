@@ -94,13 +94,13 @@ func (s *agentPools) List(ctx context.Context, organization string, options *Age
 	}
 
 	u := fmt.Sprintf("organizations/%s/agent-pools", url.QueryEscape(organization))
-	req, err := s.client.newRequest("GET", u, options)
+	req, err := s.client.NewRequest("GET", u, options)
 	if err != nil {
 		return nil, err
 	}
 
 	poolList := &AgentPoolList{}
-	err = s.client.do(ctx, req, poolList)
+	err = req.Do(ctx, poolList)
 	if err != nil {
 		return nil, err
 	}
@@ -119,13 +119,13 @@ func (s *agentPools) Create(ctx context.Context, organization string, options Ag
 	}
 
 	u := fmt.Sprintf("organizations/%s/agent-pools", url.QueryEscape(organization))
-	req, err := s.client.newRequest("POST", u, &options)
+	req, err := s.client.NewRequest("POST", u, &options)
 	if err != nil {
 		return nil, err
 	}
 
 	pool := &AgentPool{}
-	err = s.client.do(ctx, req, pool)
+	err = req.Do(ctx, pool)
 	if err != nil {
 		return nil, err
 	}
@@ -148,13 +148,13 @@ func (s *agentPools) ReadWithOptions(ctx context.Context, agentpoolID string, op
 	}
 
 	u := fmt.Sprintf("agent-pools/%s", url.QueryEscape(agentpoolID))
-	req, err := s.client.newRequest("GET", u, nil)
+	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, err
 	}
 
 	pool := &AgentPool{}
-	err = s.client.do(ctx, req, pool)
+	err = req.Do(ctx, pool)
 	if err != nil {
 		return nil, err
 	}
@@ -185,13 +185,13 @@ func (s *agentPools) Update(ctx context.Context, agentPoolID string, options Age
 	}
 
 	u := fmt.Sprintf("agent-pools/%s", url.QueryEscape(agentPoolID))
-	req, err := s.client.newRequest("PATCH", u, &options)
+	req, err := s.client.NewRequest("PATCH", u, &options)
 	if err != nil {
 		return nil, err
 	}
 
 	k := &AgentPool{}
-	err = s.client.do(ctx, req, k)
+	err = req.Do(ctx, k)
 	if err != nil {
 		return nil, err
 	}
@@ -206,12 +206,12 @@ func (s *agentPools) Delete(ctx context.Context, agentPoolID string) error {
 	}
 
 	u := fmt.Sprintf("agent-pools/%s", url.QueryEscape(agentPoolID))
-	req, err := s.client.newRequest("DELETE", u, nil)
+	req, err := s.client.NewRequest("DELETE", u, nil)
 	if err != nil {
 		return err
 	}
 
-	return s.client.do(ctx, req, nil)
+	return req.Do(ctx, nil)
 }
 
 func (o AgentPoolCreateOptions) valid() error {

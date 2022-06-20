@@ -155,13 +155,13 @@ func (s *teams) List(ctx context.Context, organization string, options *TeamList
 		return nil, err
 	}
 	u := fmt.Sprintf("organizations/%s/teams", url.QueryEscape(organization))
-	req, err := s.client.newRequest("GET", u, options)
+	req, err := s.client.NewRequest("GET", u, options)
 	if err != nil {
 		return nil, err
 	}
 
 	tl := &TeamList{}
-	err = s.client.do(ctx, req, tl)
+	err = req.Do(ctx, tl)
 	if err != nil {
 		return nil, err
 	}
@@ -179,13 +179,13 @@ func (s *teams) Create(ctx context.Context, organization string, options TeamCre
 	}
 
 	u := fmt.Sprintf("organizations/%s/teams", url.QueryEscape(organization))
-	req, err := s.client.newRequest("POST", u, &options)
+	req, err := s.client.NewRequest("POST", u, &options)
 	if err != nil {
 		return nil, err
 	}
 
 	t := &Team{}
-	err = s.client.do(ctx, req, t)
+	err = req.Do(ctx, t)
 	if err != nil {
 		return nil, err
 	}
@@ -200,13 +200,13 @@ func (s *teams) Read(ctx context.Context, teamID string) (*Team, error) {
 	}
 
 	u := fmt.Sprintf("teams/%s", url.QueryEscape(teamID))
-	req, err := s.client.newRequest("GET", u, nil)
+	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, err
 	}
 
 	t := &Team{}
-	err = s.client.do(ctx, req, t)
+	err = req.Do(ctx, t)
 	if err != nil {
 		return nil, err
 	}
@@ -221,13 +221,13 @@ func (s *teams) Update(ctx context.Context, teamID string, options TeamUpdateOpt
 	}
 
 	u := fmt.Sprintf("teams/%s", url.QueryEscape(teamID))
-	req, err := s.client.newRequest("PATCH", u, &options)
+	req, err := s.client.NewRequest("PATCH", u, &options)
 	if err != nil {
 		return nil, err
 	}
 
 	t := &Team{}
-	err = s.client.do(ctx, req, t)
+	err = req.Do(ctx, t)
 	if err != nil {
 		return nil, err
 	}
@@ -242,12 +242,12 @@ func (s *teams) Delete(ctx context.Context, teamID string) error {
 	}
 
 	u := fmt.Sprintf("teams/%s", url.QueryEscape(teamID))
-	req, err := s.client.newRequest("DELETE", u, nil)
+	req, err := s.client.NewRequest("DELETE", u, nil)
 	if err != nil {
 		return err
 	}
 
-	return s.client.do(ctx, req, nil)
+	return req.Do(ctx, nil)
 }
 
 func (o TeamCreateOptions) valid() error {

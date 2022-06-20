@@ -73,13 +73,13 @@ func (s *costEstimates) Read(ctx context.Context, costEstimateID string) (*CostE
 	}
 
 	u := fmt.Sprintf("cost-estimates/%s", url.QueryEscape(costEstimateID))
-	req, err := s.client.newRequest("GET", u, nil)
+	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, err
 	}
 
 	ce := &CostEstimate{}
-	err = s.client.do(ctx, req, ce)
+	err = req.Do(ctx, ce)
 	if err != nil {
 		return nil, err
 	}
@@ -114,13 +114,13 @@ func (s *costEstimates) Logs(ctx context.Context, costEstimateID string) (io.Rea
 		}
 
 		u := fmt.Sprintf("cost-estimates/%s/output", url.QueryEscape(costEstimateID))
-		req, err := s.client.newRequest("GET", u, nil)
+		req, err := s.client.NewRequest("GET", u, nil)
 		if err != nil {
 			return nil, err
 		}
 
 		logs := bytes.NewBuffer(nil)
-		err = s.client.do(ctx, req, logs)
+		err = req.Do(ctx, logs)
 		if err != nil {
 			return nil, err
 		}
