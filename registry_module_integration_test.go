@@ -9,6 +9,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"os"
+	"regexp"
 	"strings"
 	"testing"
 
@@ -16,6 +17,51 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
+
+func TestRegistryModulesList(t *testing.T) {
+	client := testClient(t)
+	ctx := context.Background()
+
+	orgTest, orgTestCleanup := createOrganization(t, client)
+	defer orgTestCleanup()
+
+	registryModuleTest1, registryModuleTest1Cleanup := createRegistryModule(t, client, orgTest)
+	defer registryModuleTest1Cleanup()
+	registryModuleTest2, registryModuleTest2Cleanup := createRegistryModule(t, client, orgTest)
+	defer registryModuleTest2Cleanup()
+
+	t.Run("with no list options", func(t *testing.T) {
+		modl, err := client.RegistryModules.List(ctx, orgTest.Name, &RegistryModuleListOptions{})
+		require.NoError(t, err)
+		assert.Contains(t, modl.Items, registryModuleTest1)
+		assert.Contains(t, modl.Items, registryModuleTest2)
+		assert.Equal(t, 1, modl.CurrentPage)
+		assert.Equal(t, 2, modl.TotalCount)
+	})
+
+	t.Run("with list options", func(t *testing.T) {
+		modl, err := client.RegistryModules.List(ctx, orgTest.Name, &RegistryModuleListOptions{
+			ListOptions: ListOptions{
+				PageNumber: 999,
+				PageSize:   100,
+			},
+		})
+		require.NoError(t, err)
+		// Out of range page number, so the items should be empty
+		assert.Empty(t, modl.Items)
+		assert.Equal(t, 999, modl.CurrentPage)
+
+		modl, err = client.RegistryModules.List(ctx, orgTest.Name, &RegistryModuleListOptions{
+			ListOptions: ListOptions{
+				PageNumber: 1,
+				PageSize:   100,
+			},
+		})
+		require.NoError(t, err)
+		assert.NotEmpty(t, modl.Items)
+		assert.Equal(t, 1, modl.CurrentPage)
+	})
+}
 
 func TestRegistryModulesCreate(t *testing.T) {
 	client := testClient(t)
@@ -265,15 +311,14 @@ func TestRegistryModulesCreateWithVCSConnection(t *testing.T) {
 		assert.NotEmpty(t, rm.ID)
 		assert.Equal(t, registryModuleName, rm.Name)
 		assert.Equal(t, registryModuleProvider, rm.Provider)
-		assert.Equal(t, &VCSRepo{
-			Branch:            "",
-			Identifier:        githubIdentifier,
-			OAuthTokenID:      oauthTokenTest.ID,
-			DisplayIdentifier: githubIdentifier,
-			IngressSubmodules: true,
-			RepositoryHTTPURL: fmt.Sprintf("https://github.com/%s", githubIdentifier),
-			ServiceProvider:   string(ServiceProviderGithub),
-		}, rm.VCSRepo)
+		assert.Equal(t, rm.VCSRepo.Branch, "")
+		assert.Equal(t, rm.VCSRepo.DisplayIdentifier, githubIdentifier)
+		assert.Equal(t, rm.VCSRepo.Identifier, githubIdentifier)
+		assert.Equal(t, rm.VCSRepo.IngressSubmodules, true)
+		assert.Equal(t, rm.VCSRepo.OAuthTokenID, oauthTokenTest.ID)
+		assert.Equal(t, rm.VCSRepo.RepositoryHTTPURL, fmt.Sprintf("https://github.com/%s", githubIdentifier))
+		assert.Equal(t, rm.VCSRepo.ServiceProvider, string(ServiceProviderGithub))
+		assert.Regexp(t, fmt.Sprintf("^%s/webhooks/vcs/[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$", regexp.QuoteMeta(DefaultConfig().Address)), rm.VCSRepo.WebhookURL)
 
 		t.Run("permissions are properly decoded", func(t *testing.T) {
 			assert.True(t, rm.Permissions.CanDelete)
@@ -746,6 +791,7 @@ func TestRegistryModule_Unmarshal(t *testing.T) {
 					"oauth-token-id":      "token",
 					"repository-http-url": "github.com",
 					"service-provider":    "github",
+					"webhook-url":         "https://app.terraform.io/webhooks/vcs/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee",
 				},
 				"version-statuses": []interface{}{
 					map[string]interface{}{
@@ -779,6 +825,7 @@ func TestRegistryModule_Unmarshal(t *testing.T) {
 	assert.Equal(t, rm.VCSRepo.OAuthTokenID, "token")
 	assert.Equal(t, rm.VCSRepo.RepositoryHTTPURL, "github.com")
 	assert.Equal(t, rm.VCSRepo.ServiceProvider, "github")
+	assert.Equal(t, rm.VCSRepo.WebhookURL, "https://app.terraform.io/webhooks/vcs/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee")
 	assert.Equal(t, rm.Status, RegistryModuleStatusPending)
 	assert.Equal(t, rm.VersionStatuses[0].Version, "1.1.1")
 	assert.Equal(t, rm.VersionStatuses[0].Status, RegistryModuleVersionStatusPending)

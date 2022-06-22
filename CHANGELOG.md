@@ -1,4 +1,16 @@
-# v1.2.0 (Unreleased)
+# v1.3.0
+
+## Enhancements
+* Adds support for Microsoft Teams notification configuration by @JarrettSpiker [#398](https://github.com/hashicorp/go-tfe/pull/389)
+* Add support for Audit Trail API by @sebasslash [#407](https://github.com/hashicorp/go-tfe/pull/407)
+* Adds Private Registry Provider, Provider Version, and Provider Platform APIs support by @joekarl and @annawinkler [#313](https://github.com/hashicorp/go-tfe/pull/313)
+* Adds List Registry Modules endpoint by @chroju [#385](https://github.com/hashicorp/go-tfe/pull/385)
+* Adds `WebhookURL` field to `VCSRepo` struct by @kgns [#413](https://github.com/hashicorp/go-tfe/pull/413)
+* Adds `Category` field to `VariableUpdateOptions` struct by @jtyr [#397](https://github.com/hashicorp/go-tfe/pull/397)
+* Adds `TriggerPatterns` to `Workspace` by @matejrisek [#400](https://github.com/hashicorp/go-tfe/pull/400)
+* [beta] Adds `ExtState` field to `StateVersionCreateOptions` by @brandonc [#416](https://github.com/hashicorp/go-tfe/pull/416)
+
+# v1.2.0
 
 ## Enhancements
 * Adds support for reading current state version outputs to StateVersionOutputs, which can be useful for reading outputs when users don't have the necessary permissions to read the entire state by @brandonc [#370](https://github.com/hashicorp/go-tfe/pull/370)

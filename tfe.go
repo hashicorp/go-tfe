@@ -110,6 +110,7 @@ type Client struct {
 	AgentPools                 AgentPools
 	AgentTokens                AgentTokens
 	Applies                    Applies
+	AuditTrails                AuditTrails
 	Comments                   Comments
 	ConfigurationVersions      ConfigurationVersions
 	CostEstimates              CostEstimates
@@ -128,6 +129,9 @@ type Client struct {
 	PolicySetVersions          PolicySetVersions
 	PolicySets                 PolicySets
 	RegistryModules            RegistryModules
+	RegistryProviders          RegistryProviders
+	RegistryProviderPlatforms  RegistryProviderPlatforms
+	RegistryProviderVersions   RegistryProviderVersions
 	Runs                       Runs
 	RunTasks                   RunTasks
 	RunTriggers                RunTriggers
@@ -254,6 +258,7 @@ func NewClient(cfg *Config) (*Client, error) {
 	client.AgentPools = &agentPools{client: client}
 	client.AgentTokens = &agentTokens{client: client}
 	client.Applies = &applies{client: client}
+	client.AuditTrails = &auditTrails{client: client}
 	client.Comments = &comments{client: client}
 	client.ConfigurationVersions = &configurationVersions{client: client}
 	client.CostEstimates = &costEstimates{client: client}
@@ -272,6 +277,9 @@ func NewClient(cfg *Config) (*Client, error) {
 	client.PolicySetVersions = &policySetVersions{client: client}
 	client.PolicySets = &policySets{client: client}
 	client.RegistryModules = &registryModules{client: client}
+	client.RegistryProviders = &registryProviders{client: client}
+	client.RegistryProviderPlatforms = &registryProviderPlatforms{client: client}
+	client.RegistryProviderVersions = &registryProviderVersions{client: client}
 	client.Runs = &runs{client: client}
 	client.RunTasks = &runTasks{client: client}
 	client.RunTriggers = &runTriggers{client: client}
@@ -854,7 +862,7 @@ func checkResponseCode(r *http.Response) error {
 		return err
 	}
 
-	return fmt.Errorf(strings.Join(errs, "\n"))
+	return errors.New(strings.Join(errs, "\n"))
 }
 
 func decodeErrorPayload(r *http.Response) ([]string, error) {
@@ -863,7 +871,7 @@ func decodeErrorPayload(r *http.Response) ([]string, error) {
 	errPayload := &jsonapi.ErrorsPayload{}
 	err := json.NewDecoder(r.Body).Decode(errPayload)
 	if err != nil || len(errPayload.Errors) == 0 {
-		return errs, fmt.Errorf(r.Status)
+		return errs, errors.New(r.Status)
 	}
 
 	// Parse and format the errors.

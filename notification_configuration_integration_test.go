@@ -128,6 +128,32 @@ func TestNotificationConfigurationCreate(t *testing.T) {
 		assert.Equal(t, err, ErrRequiredURL)
 	})
 
+	t.Run("without a required value URL when destination type is slack", func(t *testing.T) {
+		options := NotificationConfigurationCreateOptions{
+			DestinationType: NotificationDestination(NotificationDestinationTypeSlack),
+			Enabled:         Bool(false),
+			Name:            String(randomString(t)),
+			Triggers:        []NotificationTriggerType{NotificationTriggerCreated},
+		}
+
+		nc, err := client.NotificationConfigurations.Create(ctx, wTest.ID, options)
+		assert.Nil(t, nc)
+		assert.Equal(t, err, ErrRequiredURL)
+	})
+
+	t.Run("without a required value URL when destination type is MS Teams", func(t *testing.T) {
+		options := NotificationConfigurationCreateOptions{
+			DestinationType: NotificationDestination(NotificationDestinationTypeMicrosoftTeams),
+			Enabled:         Bool(false),
+			Name:            String(randomString(t)),
+			Triggers:        []NotificationTriggerType{NotificationTriggerCreated},
+		}
+
+		nc, err := client.NotificationConfigurations.Create(ctx, wTest.ID, options)
+		assert.Nil(t, nc)
+		assert.Equal(t, err, ErrRequiredURL)
+	})
+
 	t.Run("without a valid workspace", func(t *testing.T) {
 		nc, err := client.NotificationConfigurations.Create(ctx, badIdentifier, NotificationConfigurationCreateOptions{})
 		assert.Nil(t, nc)

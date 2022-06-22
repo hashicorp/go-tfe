@@ -309,7 +309,7 @@ func TestWorkspacesCreate(t *testing.T) {
 		}
 	})
 
-	t.Run("when options include both trigger-patterns and trigger-paths error is returned", func(t *testing.T) {
+	t.Run("when options include both non-empty trigger-patterns and trigger-paths error is returned", func(t *testing.T) {
 		options := WorkspaceCreateOptions{
 			Name:                String("foobar"),
 			FileTriggersEnabled: Bool(true),
@@ -320,6 +320,26 @@ func TestWorkspacesCreate(t *testing.T) {
 
 		assert.Nil(t, w)
 		assert.EqualError(t, err, ErrUnsupportedBothTriggerPatternsAndPrefixes.Error())
+	})
+
+	t.Run("when options include trigger-patterns populated and empty trigger-paths workspace is created", func(t *testing.T) {
+		// Remove the below organization creation and use the one from the outer scope once the feature flag is removed
+		orgTest, orgTestCleanup := createOrganizationWithOptions(t, client, OrganizationCreateOptions{
+			Name:  String("tst-" + randomString(t)[0:20] + "-ff-on"),
+			Email: String(fmt.Sprintf("%s@tfe.local", randomString(t))),
+		})
+		defer orgTestCleanup()
+
+		options := WorkspaceCreateOptions{
+			Name:                String("foobar"),
+			FileTriggersEnabled: Bool(true),
+			TriggerPrefixes:     []string{},
+			TriggerPatterns:     []string{"/module-1/**/*", "/**/networking/*"},
+		}
+		w, err := client.Workspaces.Create(ctx, orgTest.Name, options)
+
+		require.NoError(t, err)
+		assert.Equal(t, options.TriggerPatterns, w.TriggerPatterns)
 	})
 }
 
@@ -671,6 +691,42 @@ func TestWorkspacesUpdate(t *testing.T) {
 		assert.Nil(t, w)
 		assert.EqualError(t, err, ErrUnsupportedBothTriggerPatternsAndPrefixes.Error())
 	})
+
+	t.Run("when options include trigger-patterns populated and empty trigger-paths workspace is updated", func(t *testing.T) {
+		// Remove the below organization creation and use the one from the outer scope once the feature flag is removed
+		orgTest, orgTestCleanup := createOrganizationWithOptions(t, client, OrganizationCreateOptions{
+			Name:  String("tst-" + randomString(t)[0:20] + "-ff-on"),
+			Email: String(fmt.Sprintf("%s@tfe.local", randomString(t))),
+		})
+		defer orgTestCleanup()
+
+		wTest, _ := createWorkspaceWithOptions(t, client, orgTest, WorkspaceCreateOptions{
+			Name:            String(randomString(t)),
+			TriggerPatterns: []string{"/pattern-1/**/*", "/pattern-2/**/*"},
+		})
+		assert.Equal(t, wTest.TriggerPatterns, []string{"/pattern-1/**/*", "/pattern-2/**/*"}) // Sanity test
+
+		options := WorkspaceUpdateOptions{
+			Name:                String("foobar"),
+			FileTriggersEnabled: Bool(true),
+			TriggerPrefixes:     []string{},
+			TriggerPatterns:     []string{"/module-1/**/*", "/**/networking/*"},
+		}
+		w, err := client.Workspaces.Update(ctx, orgTest.Name, wTest.Name, options)
+		require.NoError(t, err)
+
+		// Get a refreshed view from the API.
+		refreshed, err := client.Workspaces.Read(ctx, orgTest.Name, *options.Name)
+		require.NoError(t, err)
+
+		for _, item := range []*Workspace{
+			w,
+			refreshed,
+		} {
+			assert.Empty(t, options.TriggerPrefixes)
+			assert.Equal(t, options.TriggerPatterns, item.TriggerPatterns)
+		}
+	})
 }
 
 func TestWorkspacesUpdateByID(t *testing.T) {
@@ -883,21 +939,12 @@ func TestWorkspacesUnlock(t *testing.T) {
 	wTest, wTestCleanup := createWorkspace(t, client, orgTest)
 	defer wTestCleanup()
 
-	wTest2, wTest2Cleanup := createWorkspace(t, client, orgTest)
-	defer wTest2Cleanup()
-
 	w, err := client.Workspaces.Lock(ctx, wTest.ID, WorkspaceLockOptions{})
 	if err != nil {
 		orgTestCleanup()
 	}
 	require.NoError(t, err)
 	require.True(t, w.Locked)
-
-	_, rTestCleanup := createRun(t, client, wTest2)
-	defer rTestCleanup()
-
-	// Wait for wTest2 to be locked by a run
-	waitForRunLock(t, client, wTest2.ID)
 
 	t.Run("with valid options", func(t *testing.T) {
 		w, err := client.Workspaces.Unlock(ctx, wTest.ID)
@@ -911,6 +958,15 @@ func TestWorkspacesUnlock(t *testing.T) {
 	})
 
 	t.Run("when a workspace is locked by a run", func(t *testing.T) {
+		wTest2, wTest2Cleanup := createWorkspace(t, client, orgTest)
+		defer wTest2Cleanup()
+
+		_, rTestCleanup := createRun(t, client, wTest2)
+		defer rTestCleanup()
+
+		// Wait for wTest2 to be locked by a run
+		waitForRunLock(t, client, wTest2.ID)
+
 		_, err = client.Workspaces.Unlock(ctx, wTest2.ID)
 		assert.Equal(t, ErrWorkspaceLockedByRun, err)
 	})
@@ -1446,6 +1502,7 @@ func TestWorkspace_Unmarshal(t *testing.T) {
 					"oauth-token-id":      "token",
 					"repository-http-url": "github.com",
 					"service-provider":    "github",
+					"webhook-url":         "https://app.terraform.io/webhooks/vcs/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee",
 				},
 				"actions": map[string]interface{}{
 					"is-destroyable": true,
@@ -1481,6 +1538,7 @@ func TestWorkspace_Unmarshal(t *testing.T) {
 	assert.Equal(t, ws.VCSRepo.OAuthTokenID, "token")
 	assert.Equal(t, ws.VCSRepo.RepositoryHTTPURL, "github.com")
 	assert.Equal(t, ws.VCSRepo.ServiceProvider, "github")
+	assert.Equal(t, ws.VCSRepo.WebhookURL, "https://app.terraform.io/webhooks/vcs/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee")
 	assert.Equal(t, ws.Actions.IsDestroyable, true)
 	assert.Equal(t, ws.TriggerPrefixes, []string{"prefix-"})
 	assert.Equal(t, ws.TriggerPatterns, []string{"pattern1/**/*", "pattern2/**/submodule/*"})

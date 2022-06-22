@@ -1,1 +1,2 @@
-*       @hashicorp/tf-cli
+*.go @hashicorp/tf-cli
+*.md @hashicorp/tf-cli

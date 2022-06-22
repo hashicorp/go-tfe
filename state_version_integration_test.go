@@ -121,6 +121,11 @@ func TestStateVersionsCreate(t *testing.T) {
 		t.Fatal(err)
 	}
 
+	extState, err := ioutil.ReadFile("test-fixtures/ext-state-version/state.json")
+	if err != nil {
+		t.Fatal(err)
+	}
+
 	t.Run("with valid options", func(t *testing.T) {
 		ctx := context.Background()
 		_, err := client.Workspaces.Lock(ctx, wTest.ID, WorkspaceLockOptions{})
@@ -133,6 +138,42 @@ func TestStateVersionsCreate(t *testing.T) {
 			MD5:     String(fmt.Sprintf("%x", md5.Sum(state))),
 			Serial:  Int64(1),
 			State:   String(base64.StdEncoding.EncodeToString(state)),
+		})
+		require.NoError(t, err)
+
+		// Get a refreshed view of the configuration version.
+		refreshed, err := client.StateVersions.Read(ctx, sv.ID)
+		require.NoError(t, err)
+
+		_, err = client.Workspaces.Unlock(ctx, wTest.ID)
+		if err != nil {
+			t.Fatal(err)
+		}
+
+		for _, item := range []*StateVersion{
+			sv,
+			refreshed,
+		} {
+			assert.NotEmpty(t, item.ID)
+			assert.Equal(t, int64(1), item.Serial)
+			assert.NotEmpty(t, item.CreatedAt)
+			assert.NotEmpty(t, item.DownloadURL)
+		}
+	})
+
+	t.Run("with external state representation", func(t *testing.T) {
+		ctx := context.Background()
+		_, err := client.Workspaces.Lock(ctx, wTest.ID, WorkspaceLockOptions{})
+		if err != nil {
+			t.Fatal(err)
+		}
+
+		sv, err := client.StateVersions.Create(ctx, wTest.ID, StateVersionCreateOptions{
+			Lineage:  String("741c4949-60b9-5bb1-5bf8-b14f4bb14af3"),
+			MD5:      String(fmt.Sprintf("%x", md5.Sum(state))),
+			Serial:   Int64(1),
+			State:    String(base64.StdEncoding.EncodeToString(state)),
+			ExtState: extState,
 		})
 		require.NoError(t, err)
 

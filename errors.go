@@ -24,7 +24,7 @@ var (
 
 	ErrUnsupportedRunTriggerType = errors.New(`"RunTriggerType" must be "inbound" when requesting "include" query params`)
 
-	ErrUnsupportedBothTriggerPatternsAndPrefixes = errors.New(`"TriggerPatterns" and "TriggerPrefixes"" cannot be used in conjunction`)
+	ErrUnsupportedBothTriggerPatternsAndPrefixes = errors.New(`"TriggerPatterns" and "TriggerPrefixes" cannot be populated at the same time`)
 )
 
 // Library errors that usually indicate a bug in the implementation of go-tfe
@@ -155,6 +155,16 @@ var (
 	ErrInvalidCommentID = errors.New("invalid value for comment ID")
 
 	ErrInvalidCommentBody = errors.New("invalid value for comment body")
+
+	ErrInvalidNamespace = errors.New("invalid value for namespace")
+
+	ErrInvalidKeyID = errors.New("invalid value for key-id")
+
+	ErrInvalidOS = errors.New("invalid value for OS")
+
+	ErrInvalidArch = errors.New("invalid value for arch")
+
+	ErrInvalidRegistryName = errors.New("invalid value for registry-name")
 )
 
 // Missing values for required field/option
@@ -268,4 +278,14 @@ var (
 	ErrEmptyTeamName = errors.New("team name can not be empty")
 
 	ErrInvalidEmail = errors.New("email is invalid")
+
+	ErrRequiredPrivateRegistry = errors.New("only private registry is allowed")
+
+	ErrRequiredOS = errors.New("OS is required")
+
+	ErrRequiredArch = errors.New("arch is required")
+
+	ErrRequiredShasum = errors.New("shasum is required")
+
+	ErrRequiredFilename = errors.New("filename is required")
 )

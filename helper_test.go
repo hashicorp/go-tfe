@@ -10,6 +10,8 @@ import (
 	"errors"
 	"fmt"
 	"io/ioutil"
+	"math/rand"
+	"net/url"
 	"os"
 	"sync"
 	"testing"
@@ -24,11 +26,50 @@ const tickDuration = 2
 // Memoize test account details
 var _testAccountDetails *TestAccountDetails
 
+type featureSet struct {
+	ID string `jsonapi:"primary,feature-sets"`
+}
+
+type featureSetList struct {
+	Items []*featureSet
+	*Pagination
+}
+
+type featureSetListOptions struct {
+	Q string `url:"q,omitempty"`
+}
+
 type retryableFn func() (interface{}, error)
+
+type updateFeatureSetOptions struct {
+	Type               string    `jsonapi:"primary,subscription"`
+	RunsCeiling        int       `jsonapi:"attr,runs-ceiling"`
+	ContractStartAt    time.Time `jsonapi:"attr,contract-start-at,iso8601"`
+	ContractUserLimit  int       `jsonapi:"attr,contract-user-limit"`
+	ContractApplyLimit int       `jsonapi:"attr,contract-apply-limit"`
+
+	FeatureSet *featureSet `jsonapi:"relation,feature-set"`
+}
 
 func testClient(t *testing.T) *Client {
 	client, err := NewClient(nil)
 	client.RetryServerErrors(true) // because occasionally we get a 500 internal when deleting an organization's workspace
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	return client
+}
+
+func testAuditTrailClient(t *testing.T, userClient *Client, org *Organization) *Client {
+	upgradeOrganizationSubscription(t, userClient, org)
+
+	orgToken, orgTokenCleanup := createOrganizationToken(t, userClient, org)
+	t.Cleanup(orgTokenCleanup)
+
+	client, err := NewClient(&Config{
+		Token: orgToken.Token,
+	})
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -389,6 +430,9 @@ func createOAuthToken(t *testing.T, client *Client, org *Organization) (*OAuthTo
 	return ocTest.OAuthTokens[0], ocTestCleanup
 }
 
+// createOrganization creates an organization for tests using the special prefix
+// "tst-" that the API uses especially to grant access to orgs for testing.
+// Don't change this prefix unless we refactor the code!
 func createOrganization(t *testing.T, client *Client) (*Organization, func()) {
 	return createOrganizationWithOptions(t, client, OrganizationCreateOptions{
 		Name:  String("tst-" + randomString(t)),
@@ -649,7 +693,7 @@ func createRegistryModule(t *testing.T, client *Client, org *Organization) (*Reg
 	ctx := context.Background()
 
 	options := RegistryModuleCreateOptions{
-		Name:     String("name"),
+		Name:     String(randomString(t)),
 		Provider: String("provider"),
 	}
 	rm, err := client.RegistryModules.Create(ctx, org.Name, options)
@@ -750,6 +794,167 @@ func createRunTask(t *testing.T, client *Client, org *Organization) (*RunTask, f
 
 		if orgCleanup != nil {
 			orgCleanup()
+		}
+	}
+}
+
+func createRegistryProvider(t *testing.T, client *Client, org *Organization, registryName RegistryName) (*RegistryProvider, func()) {
+	var orgCleanup func()
+
+	if org == nil {
+		org, orgCleanup = createOrganization(t, client)
+	}
+
+	if (registryName != PublicRegistry) && (registryName != PrivateRegistry) {
+		t.Fatal("RegistryName must be public or private")
+	}
+
+	ctx := context.Background()
+
+	namespaceName := "test-namespace-" + randomString(t)
+	if registryName == PrivateRegistry {
+		namespaceName = org.Name
+	}
+
+	options := RegistryProviderCreateOptions{
+		Name:         "test-registry-provider-" + randomString(t),
+		Namespace:    namespaceName,
+		RegistryName: registryName,
+	}
+
+	prv, err := client.RegistryProviders.Create(ctx, org.Name, options)
+
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	prv.Organization = org
+
+	return prv, func() {
+		id := RegistryProviderID{
+			OrganizationName: org.Name,
+			RegistryName:     prv.RegistryName,
+			Namespace:        prv.Namespace,
+			Name:             prv.Name,
+		}
+
+		if err := client.RegistryProviders.Delete(ctx, id); err != nil {
+			t.Errorf("Error destroying registry provider! WARNING: Dangling resources\n"+
+				"may exist! The full error is shown below.\n\n"+
+				"Registry Provider: %s/%s\nError: %s", prv.Namespace, prv.Name, err)
+		}
+
+		if orgCleanup != nil {
+			orgCleanup()
+		}
+	}
+}
+
+func createRegistryProviderPlatform(t *testing.T, client *Client, provider *RegistryProvider, version *RegistryProviderVersion) (*RegistryProviderPlatform, func()) {
+	var providerCleanup func()
+	var versionCleanup func()
+
+	if provider == nil {
+		provider, providerCleanup = createRegistryProvider(t, client, nil, PrivateRegistry)
+	}
+
+	providerID := RegistryProviderID{
+		OrganizationName: provider.Organization.Name,
+		RegistryName:     provider.RegistryName,
+		Namespace:        provider.Namespace,
+		Name:             provider.Name,
+	}
+
+	if version == nil {
+		version, versionCleanup = createRegistryProviderVersion(t, client, provider)
+	}
+
+	versionID := RegistryProviderVersionID{
+		RegistryProviderID: providerID,
+		Version:            version.Version,
+	}
+
+	ctx := context.Background()
+
+	options := RegistryProviderPlatformCreateOptions{
+		OS:       randomString(t),
+		Arch:     randomString(t),
+		Shasum:   genSha(t, "secret", "data"),
+		Filename: randomString(t),
+	}
+
+	rpp, err := client.RegistryProviderPlatforms.Create(ctx, versionID, options)
+
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	return rpp, func() {
+		platformID := RegistryProviderPlatformID{
+			RegistryProviderVersionID: versionID,
+			OS:                        rpp.OS,
+			Arch:                      rpp.Arch,
+		}
+
+		if err := client.RegistryProviderPlatforms.Delete(ctx, platformID); err != nil {
+			t.Errorf("Error destroying registry provider platform! WARNING: Dangling resources\n"+
+				"may exist! The full error is shown below.\n\n"+
+				"Registry Provider Version: %s/%s/%s/%s\nError: %s", rpp.RegistryProviderVersion.RegistryProvider.Namespace, rpp.RegistryProviderVersion.RegistryProvider.Name, rpp.OS, rpp.Arch, err)
+		}
+
+		if versionCleanup != nil {
+			versionCleanup()
+		}
+		if providerCleanup != nil {
+			providerCleanup()
+		}
+	}
+}
+
+func createRegistryProviderVersion(t *testing.T, client *Client, provider *RegistryProvider) (*RegistryProviderVersion, func()) {
+	var providerCleanup func()
+
+	if provider == nil {
+		provider, providerCleanup = createRegistryProvider(t, client, nil, PrivateRegistry)
+	}
+
+	providerID := RegistryProviderID{
+		OrganizationName: provider.Organization.Name,
+		RegistryName:     provider.RegistryName,
+		Namespace:        provider.Namespace,
+		Name:             provider.Name,
+	}
+
+	ctx := context.Background()
+
+	options := RegistryProviderVersionCreateOptions{
+		Version:   randomSemver(t),
+		KeyID:     randomString(t),
+		Protocols: []string{"4.0", "5.0", "6.0"},
+	}
+
+	prvv, err := client.RegistryProviderVersions.Create(ctx, providerID, options)
+
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	prvv.RegistryProvider = provider
+
+	return prvv, func() {
+		id := RegistryProviderVersionID{
+			Version:            options.Version,
+			RegistryProviderID: providerID,
+		}
+
+		if err := client.RegistryProviderVersions.Delete(ctx, id); err != nil {
+			t.Errorf("Error destroying registry provider version! WARNING: Dangling resources\n"+
+				"may exist! The full error is shown below.\n\n"+
+				"Registry Provider Version: %s/%s/%s\nError: %s", prvv.RegistryProvider.Namespace, prvv.RegistryProvider.Name, prvv.Version, err)
+		}
+
+		if providerCleanup != nil {
+			providerCleanup()
 		}
 	}
 }
@@ -1177,6 +1382,51 @@ func createVariableSetVariable(t *testing.T, client *Client, vs *VariableSet, op
 	}
 }
 
+// Attempts to upgrade an organization to the business plan. Requires a user token with admin access.
+func upgradeOrganizationSubscription(t *testing.T, client *Client, organization *Organization) {
+	if enterpriseEnabled() {
+		t.Skip("Can not upgrade an organization's subscription when enterprise is enabled. Set ENABLE_TFE=0 to run.")
+	}
+
+	req, err := client.newRequest("GET", "admin/feature-sets", featureSetListOptions{
+		Q: "Business",
+	})
+	if err != nil {
+		t.Fatal(err)
+		return
+	}
+
+	fsl := &featureSetList{}
+	err = client.do(context.Background(), req, fsl)
+	if err != nil {
+		t.Fatalf("failed to enumerate feature sets: %v", err)
+		return
+	} else if len(fsl.Items) == 0 {
+		t.Fatalf("feature set response was empty")
+		return
+	}
+
+	opts := updateFeatureSetOptions{
+		RunsCeiling:        10,
+		ContractStartAt:    time.Now(),
+		ContractUserLimit:  1000,
+		ContractApplyLimit: 5000,
+		FeatureSet:         fsl.Items[0],
+	}
+
+	u := fmt.Sprintf("admin/organizations/%s/subscription", url.QueryEscape(organization.Name))
+	req, err = client.newRequest("POST", u, &opts)
+	if err != nil {
+		t.Fatalf("Failed to create request: %v", err)
+		return
+	}
+
+	err = client.do(context.Background(), req, nil)
+	if err != nil {
+		t.Fatalf("Failed to upgrade subscription: %v", err)
+	}
+}
+
 func waitForSVOutputs(t *testing.T, client *Client, svID string) {
 	t.Helper()
 	wg := &sync.WaitGroup{}
@@ -1233,18 +1483,19 @@ func waitForRunLock(t *testing.T, client *Client, workspaceID string) {
 	wg.Wait()
 }
 
-func retry(f retryableFn) (interface{}, error) {
+func retry(f retryableFn) (interface{}, error) { //nolint
 	tick := time.NewTicker(tickDuration * time.Second)
-
 	retries := 0
 	maxRetries := 5
 
-	for {
+	defer tick.Stop()
+
+	for { //nolint
 		select {
 		case <-tick.C:
 			res, err := f()
 			if err == nil {
-				return res, err
+				return res, nil
 			}
 
 			if retries >= maxRetries {
@@ -1266,12 +1517,32 @@ func genSha(t *testing.T, secret, data string) string {
 	return sha
 }
 
+// genSafeRandomTerraformVersion returns a random version number of the form
+// `1.0.<RANDOM>`, which TFC won't ever select as the latest available
+// Terraform. (At the time of writing, a fresh TFC instance will include
+// official Terraforms 1.2 and higher.) This is necessary because newly created
+// workspaces default to the latest available version, and there's nothing
+// preventing unrelated processes from creating workspaces during these tests.
+func genSafeRandomTerraformVersion() string {
+	rInt := rand.New(rand.NewSource(time.Now().UnixNano())).Int()
+	// Avoid colliding with an official Terraform version. Highest 1.0 was
+	// 1.0.11, so add a little padding and call it good.
+	for rInt < 20 {
+		rInt = rand.New(rand.NewSource(time.Now().UnixNano())).Int()
+	}
+	return fmt.Sprintf("1.0.%d", rInt)
+}
+
 func randomString(t *testing.T) string {
 	v, err := uuid.GenerateUUID()
 	if err != nil {
 		t.Fatal(err)
 	}
 	return v
+}
+
+func randomSemver(t *testing.T) string {
+	return fmt.Sprintf("%d.%d.%d", rand.Intn(99)+3, rand.Intn(99)+1, rand.Intn(99)+1)
 }
 
 // skips a test if the environment is for Terraform Cloud.

@@ -66,7 +66,7 @@ This API client covers most of the existing Terraform Cloud API calls and is upd
 - [x] Agent Pools
 - [x] Agent Tokens
 - [x] Applies
-- [ ] Audit Trails
+- [x] Audit Trails
 - [x] Changelog
 - [x] Comments
 - [x] Configuration Versions

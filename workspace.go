@@ -182,6 +182,7 @@ type VCSRepo struct {
 	OAuthTokenID      string `jsonapi:"attr,oauth-token-id"`
 	RepositoryHTTPURL string `jsonapi:"attr,repository-http-url"`
 	ServiceProvider   string `jsonapi:"attr,service-provider"`
+	WebhookURL        string `jsonapi:"attr,webhook-url"`
 }
 
 // WorkspaceActions represents the workspace actions.
@@ -1062,7 +1063,8 @@ func (o WorkspaceCreateOptions) valid() error {
 	if o.AgentPoolID == nil && (o.ExecutionMode != nil && *o.ExecutionMode == "agent") {
 		return ErrRequiredAgentPoolID
 	}
-	if o.TriggerPrefixes != nil && o.TriggerPatterns != nil {
+	if o.TriggerPrefixes != nil && len(o.TriggerPrefixes) > 0 &&
+		o.TriggerPatterns != nil && len(o.TriggerPatterns) > 0 {
 		return ErrUnsupportedBothTriggerPatternsAndPrefixes
 	}
 
@@ -1079,7 +1081,8 @@ func (o WorkspaceUpdateOptions) valid() error {
 	if o.AgentPoolID == nil && (o.ExecutionMode != nil && *o.ExecutionMode == "agent") {
 		return ErrRequiredAgentPoolID
 	}
-	if o.TriggerPrefixes != nil && o.TriggerPatterns != nil {
+	if o.TriggerPrefixes != nil && len(o.TriggerPrefixes) > 0 &&
+		o.TriggerPatterns != nil && len(o.TriggerPatterns) > 0 {
 		return ErrUnsupportedBothTriggerPatternsAndPrefixes
 	}
 

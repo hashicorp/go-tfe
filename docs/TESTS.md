@@ -16,10 +16,10 @@ It will need the following:
    
 ## 2. Set up environment variables (ENVVARS)
 
-You'll need to have environment variables setup in your environment to run the tests. There are different options to facilitate setting up environment variables, [envchain](https://github.com/sorah/envchain) is one option:
+You'll need to have environment variables setup in your environment to run the tests. There are different options to facilitate setting up environment variables, using the tool [envchain](https://github.com/sorah/envchain) is one option:
    1. Install envchain - [refer to the envchain README for details](https://github.com/sorah/envchain#installation)
-   1. Pick a namespace for storing your environment variables, such as: `go-tfe`
-   1. For each environment variable you need to set, run the following command:
+   1. Run the script `./scripts/setup-test-envvars.sh` to setup the env vars. This script uses envchain, will use a default namespace of `go-tfe` and will prompt you for environment variable values. To run: `sh ./scripts/setup-test-envvars.sh`
+   1. Or manually, pick a namespace for storing your environment variables, such as: `go-tfe`. Then, for each environment variable you need to set, run the following command:
       ```sh
       envchain --set YOUR_NAMESPACE_HERE ENVIRONMENT_VARIABLE_HERE
       ```
@@ -84,3 +84,7 @@ $ envchain YOUR_NAMESPACE_HERE go test ./... -timeout=30m -tags=integration
 ```sh
 $ TFE_TOKEN=xyz TFE_ADDRESS=xyz ENABLE_TFE=1 go test ./... -timeout=30m -tags=integration
 ```
+
+### Running tests for TFC features that require paid plans (HashiCorp Employees)
+
+You can use the test helper `upgradeOrganizationSubscription()` to upgrade your test organization to a Business Plan, giving the organization access to all features in Terraform Cloud. This method requires `TFE_TOKEN` to be a user token with administrator access in the target test environment. Furthermore, you **can not** have enterprise features enabled (`ENABLE_TFE=1`) in order to use this method since the API call fails against TFE test environments.

@@ -14,6 +14,9 @@ var _ RegistryModules = (*registryModules)(nil)
 //
 // TFE API docs: https://www.terraform.io/docs/cloud/api/modules.html
 type RegistryModules interface {
+	// List all the registory modules within an organization
+	List(ctx context.Context, organization string, options *RegistryModuleListOptions) (*RegistryModuleList, error)
+
 	// Create a registry module without a VCS repo
 	Create(ctx context.Context, organization string, options RegistryModuleCreateOptions) (*RegistryModule, error)
 
@@ -81,6 +84,12 @@ type RegistryModuleID struct {
 	Provider string
 }
 
+// RegistryModuleList represents a list of registry modules.
+type RegistryModuleList struct {
+	*Pagination
+	Items []*RegistryModule
+}
+
 // RegistryModule represents a registry module
 type RegistryModule struct {
 	ID              string                          `jsonapi:"primary,registry-modules"`
@@ -125,6 +134,11 @@ type RegistryModuleVersionStatuses struct {
 	Error   string                      `jsonapi:"attr,error"`
 }
 
+// RegistryModuleListOptions represents the options for listing registry modules.
+type RegistryModuleListOptions struct {
+	ListOptions
+}
+
 // RegistryModuleCreateOptions is used when creating a registry module without a VCS repo
 type RegistryModuleCreateOptions struct {
 	// Type is a public field utilized by JSON:API to
@@ -165,6 +179,27 @@ type RegistryModuleVCSRepoOptions struct {
 	Identifier        *string `json:"identifier"`         // Required
 	OAuthTokenID      *string `json:"oauth-token-id"`     // Required
 	DisplayIdentifier *string `json:"display-identifier"` // Required
+}
+
+// List all the registory modules within an organization.
+func (s *registryModules) List(ctx context.Context, organization string, options *RegistryModuleListOptions) (*RegistryModuleList, error) {
+	if !validStringID(&organization) {
+		return nil, ErrInvalidOrg
+	}
+
+	u := fmt.Sprintf("organizations/%s/registry-modules", url.QueryEscape(organization))
+	req, err := s.client.newRequest("GET", u, options)
+	if err != nil {
+		return nil, err
+	}
+
+	ml := &RegistryModuleList{}
+	err = s.client.do(ctx, req, ml)
+	if err != nil {
+		return nil, err
+	}
+
+	return ml, nil
 }
 
 // Upload uploads Terraform configuration files for the provided registry module version. It

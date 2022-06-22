@@ -7,6 +7,7 @@ import (
 	"context"
 	"fmt"
 	"os"
+	"regexp"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -165,15 +166,14 @@ func TestPolicySetsCreate(t *testing.T) {
 		assert.Equal(t, ps.Description, "")
 		assert.False(t, ps.Global)
 		assert.Equal(t, ps.PoliciesPath, "/policy-sets/foo")
-		assert.Equal(t, ps.VCSRepo, &VCSRepo{
-			Branch:            "policies",
-			DisplayIdentifier: githubIdentifier,
-			Identifier:        githubIdentifier,
-			OAuthTokenID:      oc.ID,
-			IngressSubmodules: true,
-			RepositoryHTTPURL: fmt.Sprintf("https://github.com/%s", githubIdentifier),
-			ServiceProvider:   string(ServiceProviderGithub),
-		})
+		assert.Equal(t, ps.VCSRepo.Branch, "policies")
+		assert.Equal(t, ps.VCSRepo.DisplayIdentifier, githubIdentifier)
+		assert.Equal(t, ps.VCSRepo.Identifier, githubIdentifier)
+		assert.Equal(t, ps.VCSRepo.IngressSubmodules, true)
+		assert.Equal(t, ps.VCSRepo.OAuthTokenID, oc.ID)
+		assert.Equal(t, ps.VCSRepo.RepositoryHTTPURL, fmt.Sprintf("https://github.com/%s", githubIdentifier))
+		assert.Equal(t, ps.VCSRepo.ServiceProvider, string(ServiceProviderGithub))
+		assert.Regexp(t, fmt.Sprintf("^%s/webhooks/vcs/[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$", regexp.QuoteMeta(DefaultConfig().Address)), ps.VCSRepo.WebhookURL)
 	})
 
 	t.Run("with vcs policy updated", func(t *testing.T) {
@@ -203,15 +203,14 @@ func TestPolicySetsCreate(t *testing.T) {
 		assert.Equal(t, ps.Description, "")
 		assert.False(t, ps.Global)
 		assert.Equal(t, ps.PoliciesPath, "/policy-sets/bar")
-		assert.Equal(t, ps.VCSRepo, &VCSRepo{
-			Branch:            "policies",
-			DisplayIdentifier: githubIdentifier,
-			Identifier:        githubIdentifier,
-			OAuthTokenID:      oc.ID,
-			IngressSubmodules: false,
-			RepositoryHTTPURL: fmt.Sprintf("https://github.com/%s", githubIdentifier),
-			ServiceProvider:   string(ServiceProviderGithub),
-		})
+		assert.Equal(t, ps.VCSRepo.Branch, "policies")
+		assert.Equal(t, ps.VCSRepo.DisplayIdentifier, githubIdentifier)
+		assert.Equal(t, ps.VCSRepo.Identifier, githubIdentifier)
+		assert.Equal(t, ps.VCSRepo.IngressSubmodules, false)
+		assert.Equal(t, ps.VCSRepo.OAuthTokenID, oc.ID)
+		assert.Equal(t, ps.VCSRepo.RepositoryHTTPURL, fmt.Sprintf("https://github.com/%s", githubIdentifier))
+		assert.Equal(t, ps.VCSRepo.ServiceProvider, string(ServiceProviderGithub))
+		assert.Regexp(t, fmt.Sprintf("^%s/webhooks/vcs/[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$", regexp.QuoteMeta(DefaultConfig().Address)), ps.VCSRepo.WebhookURL)
 	})
 
 	t.Run("without a name provided", func(t *testing.T) {
