@@ -66,17 +66,21 @@ type Config struct {
 
 	// RetryLogHook is invoked each time a request is retried.
 	RetryLogHook RetryLogHook
+
+	// RetryServerErrors enables the retry logic in the client.
+	RetryServerErrors bool
 }
 
 // DefaultConfig returns a default config structure.
 
 func DefaultConfig() *Config {
 	config := &Config{
-		Address:    os.Getenv("TFE_ADDRESS"),
-		BasePath:   DefaultBasePath,
-		Token:      os.Getenv("TFE_TOKEN"),
-		Headers:    make(http.Header),
-		HTTPClient: cleanhttp.DefaultPooledClient(),
+		Address:           os.Getenv("TFE_ADDRESS"),
+		BasePath:          DefaultBasePath,
+		Token:             os.Getenv("TFE_TOKEN"),
+		Headers:           make(http.Header),
+		HTTPClient:        cleanhttp.DefaultPooledClient(),
+		RetryServerErrors: false,
 	}
 
 	// Set the default address if none is given.
@@ -196,6 +200,7 @@ func NewClient(cfg *Config) (*Client, error) {
 		if cfg.RetryLogHook != nil {
 			config.RetryLogHook = cfg.RetryLogHook
 		}
+		config.RetryServerErrors = cfg.RetryServerErrors
 	}
 
 	// Parse the address to make sure its a valid URL.
@@ -216,10 +221,11 @@ func NewClient(cfg *Config) (*Client, error) {
 
 	// Create the client.
 	client := &Client{
-		baseURL:      baseURL,
-		token:        config.Token,
-		headers:      config.Headers,
-		retryLogHook: config.RetryLogHook,
+		baseURL:           baseURL,
+		token:             config.Token,
+		headers:           config.Headers,
+		retryLogHook:      config.RetryLogHook,
+		retryServerErrors: config.RetryServerErrors,
 	}
 
 	client.http = &retryablehttp.Client{

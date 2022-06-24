@@ -1,3 +1,8 @@
+# v1.4.0 (Unreleased)
+
+## Enhancements
+* Adds `RetryServerErrors` field to the `Config` object by @sebasslash [#439](https://github.com/hashicorp/go-tfe/pull/439)
+
 # v1.3.0
 
 ## Enhancements
