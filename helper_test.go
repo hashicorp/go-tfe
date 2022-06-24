@@ -9,7 +9,7 @@ import (
 	"encoding/hex"
 	"errors"
 	"fmt"
-	"github.com/stretchr/testify/require"
+	"io"
 	"io/ioutil"
 	"math/rand"
 	"net/url"
@@ -17,6 +17,8 @@ import (
 	"sync"
 	"testing"
 	"time"
+
+	"github.com/stretchr/testify/require"
 
 	uuid "github.com/hashicorp/go-uuid"
 )
@@ -600,6 +602,208 @@ func createRunTrigger(t *testing.T, client *Client, w, sourceable *Workspace) (*
 	}
 }
 
+func createPolicyCheckedRun(t *testing.T, client *Client, w *Workspace) (*Run, func()) {
+	return createRunWaitForAnyStatuses(t, client, w, []RunStatus{RunPolicyChecked, RunPolicyOverride})
+}
+
+func createPlannedRun(t *testing.T, client *Client, w *Workspace) (*Run, func()) {
+	if paidFeaturesDisabled() {
+		return createRunWaitForStatus(t, client, w, RunPlanned)
+	} else {
+		return createRunWaitForStatus(t, client, w, RunCostEstimated)
+	}
+}
+
+func createCostEstimatedRun(t *testing.T, client *Client, w *Workspace) (*Run, func()) {
+	return createRunWaitForStatus(t, client, w, RunCostEstimated)
+}
+
+func createRunApply(t *testing.T, client *Client, w *Workspace) (*Run, func()) {
+	ctx := context.Background()
+	run, rCleanup := createRunUnapplied(t, client, w)
+	timeout := 2 * time.Minute
+
+	// If the run was not in error, it must be applyable
+	applyRun(t, client, ctx, run)
+
+	ctxPollRunApplied, cancelPollApplied := context.WithTimeout(ctx, timeout)
+
+	run = pollRunStatus(t, client, ctxPollRunApplied, run, []RunStatus{RunApplied, RunErrored})
+	if run.Status == RunErrored {
+		fatalDumpRunLog(t, client, ctx, run)
+	}
+
+	return run, func() {
+		rCleanup()
+		cancelPollApplied()
+	}
+}
+
+func createRunUnapplied(t *testing.T, client *Client, w *Workspace) (*Run, func()) {
+	var rCleanup func()
+	ctx := context.Background()
+	r, rCleanup := createRun(t, client, w)
+
+	timeout := 2 * time.Minute
+
+	ctxPollRunReady, cancelPollRunReady := context.WithTimeout(ctx, timeout)
+
+	run := pollRunStatus(
+		t,
+		client,
+		ctxPollRunReady,
+		r,
+		append(applyableStatuses(r), RunErrored),
+	)
+
+	if run.Status == RunErrored {
+		fatalDumpRunLog(t, client, ctx, run)
+	}
+
+	return run, func() {
+		rCleanup()
+		cancelPollRunReady()
+	}
+}
+
+func createRunWaitForStatus(t *testing.T, client *Client, w *Workspace, status RunStatus) (*Run, func()) {
+	return createRunWaitForAnyStatuses(t, client, w, []RunStatus{status})
+}
+
+func createRunWaitForAnyStatuses(t *testing.T, client *Client, w *Workspace, statuses []RunStatus) (*Run, func()) {
+	var rCleanup func()
+	ctx := context.Background()
+	r, rCleanup := createRun(t, client, w)
+
+	timeout := 2 * time.Minute
+
+	ctxPollRunReady, cancelPollRunReady := context.WithTimeout(ctx, timeout)
+
+	run := pollRunStatus(
+		t,
+		client,
+		ctxPollRunReady,
+		r,
+		append(statuses, RunErrored),
+	)
+
+	if run.Status == RunErrored {
+		fatalDumpRunLog(t, client, ctx, run)
+	}
+
+	return run, func() {
+		rCleanup()
+		cancelPollRunReady()
+	}
+}
+
+func applyableStatuses(r *Run) []RunStatus {
+	if len(r.PolicyChecks) > 0 {
+		return []RunStatus{
+			RunPolicyChecked,
+			RunPolicyOverride,
+		}
+	} else if r.CostEstimate != nil {
+		return []RunStatus{RunCostEstimated}
+	} else {
+		return []RunStatus{RunPlanned}
+	}
+}
+
+// pollRunStatus will poll the given run until its status matches one of the given run statuses or the given context
+// times out.
+func pollRunStatus(t *testing.T, client *Client, ctx context.Context, r *Run, rss []RunStatus) *Run {
+	deadline, ok := ctx.Deadline()
+	if !ok {
+		t.Logf("No deadline was set to poll run %q which could result in an infinite loop", r.ID)
+	}
+
+	t.Logf("Polling run %q for status included in %q with deadline of %s", r.ID, rss, deadline)
+
+	ticker := time.NewTicker(2 * time.Second)
+	defer ticker.Stop()
+
+	for finished := false; !finished; {
+		t.Log("...")
+		select {
+		case <-ctx.Done():
+			t.Fatalf("Run %q had status %q at deadline", r.ID, r.Status)
+		case <-ticker.C:
+			r = readRun(t, client, ctx, r)
+			t.Logf("Run %q had status %q", r.ID, r.Status)
+			for _, rs := range rss {
+				if rs == r.Status {
+					finished = true
+					break
+				}
+			}
+		}
+	}
+
+	return r
+}
+
+// readRun will re-read the given run.
+func readRun(t *testing.T, client *Client, ctx context.Context, r *Run) *Run {
+	t.Logf("Reading run %q", r.ID)
+
+	rr, err := client.Runs.Read(ctx, r.ID)
+	if err != nil {
+		t.Fatalf("Could not read run %q: %s", r.ID, err)
+	}
+
+	return rr
+}
+
+// applyRun will apply the given run.
+func applyRun(t *testing.T, client *Client, ctx context.Context, r *Run) {
+	t.Logf("Applying run %q", r.ID)
+
+	if err := client.Runs.Apply(ctx, r.ID, RunApplyOptions{}); err != nil {
+		t.Fatalf("Could not apply run %q: %s", r.ID, err)
+	}
+}
+
+// readPlan will read the given plan.
+func readPlan(t *testing.T, client *Client, ctx context.Context, p *Plan) *Plan {
+	t.Logf("Reading plan %q", p.ID)
+
+	rp, err := client.Plans.Read(ctx, p.ID)
+	if err != nil {
+		t.Fatalf("Could not read plan %q: %s", p.ID, err)
+	}
+
+	return rp
+}
+
+// readPlanLogs will read the logs of the given plan.
+func readPlanLogs(t *testing.T, client *Client, ctx context.Context, p *Plan) io.Reader {
+	t.Logf("Reading logs of plan %q", p.ID)
+
+	r, err := client.Plans.Logs(ctx, p.ID)
+	if err != nil {
+		t.Fatalf("Could not retrieve logs of plan %q: %s", p.ID, err)
+	}
+
+	return r
+}
+
+func fatalDumpRunLog(t *testing.T, client *Client, ctx context.Context, run *Run) {
+	t.Helper()
+	p := readPlan(t, client, ctx, run.Plan)
+	r := readPlanLogs(t, client, ctx, p)
+
+	l, err := io.ReadAll(r)
+	if err != nil {
+		t.Fatalf("Could not read logs of plan %q: %v", p.ID, err)
+	}
+
+	t.Log("Run errored - here's some logs to help figure out what happened")
+	t.Logf("---Start of logs---\n%s\n---End of logs---", l)
+
+	t.Fatalf("Run %q unexpectedly errored", run.ID)
+}
+
 func createRun(t *testing.T, client *Client, w *Workspace) (*Run, func()) {
 	var wCleanup func()
 
@@ -627,77 +831,11 @@ func createRun(t *testing.T, client *Client, w *Workspace) (*Run, func()) {
 	}
 }
 
-func createRunWithStatus(t *testing.T, client *Client, w *Workspace, timeout int, desiredStatuses ...RunStatus) (*Run, func()) {
-	r, rCleanup := createRun(t, client, w)
-
-	var err error
-	ctx := context.Background()
-	for i := 0; ; i++ {
-		r, err = client.Runs.Read(ctx, r.ID)
-		if err != nil {
-			t.Fatal(err)
-		}
-
-		for _, desiredStatus := range desiredStatuses {
-			// if we're creating an applied run, we need to manually confirm the apply once the plan finishes
-			isApplyable := hasApplyableStatus(r)
-			if desiredStatus == RunApplied && isApplyable {
-				err := client.Runs.Apply(ctx, r.ID, RunApplyOptions{})
-				if err != nil {
-					t.Fatal(err)
-				}
-			} else if desiredStatus == r.Status {
-				return r, rCleanup
-			}
-		}
-
-		if i > timeout {
-			runStatus := r.Status
-			rCleanup()
-			t.Fatal(fmt.Printf("Timeout waiting for run ID %s to reach status %v, had status %s",
-				r.ID,
-				desiredStatuses,
-				runStatus))
-		}
-
-		time.Sleep(1 * time.Second)
-	}
-}
-
-func createPlannedRun(t *testing.T, client *Client, w *Workspace) (*Run, func()) {
-	if paidFeaturesDisabled() {
-		return createRunWithStatus(t, client, w, 45, RunPlanned)
-	}
-	return createRunWithStatus(t, client, w, 45, RunCostEstimated)
-}
-
-func createCostEstimatedRun(t *testing.T, client *Client, w *Workspace) (*Run, func()) {
-	return createRunWithStatus(t, client, w, 45, RunCostEstimated)
-}
-
-func createPolicyCheckedRun(t *testing.T, client *Client, w *Workspace) (*Run, func()) {
-	return createRunWithStatus(t, client, w, 45, RunPolicyChecked, RunPolicyOverride)
-}
-
-func createAppliedRun(t *testing.T, client *Client, w *Workspace) (*Run, func()) {
-	return createRunWithStatus(t, client, w, 90, RunApplied)
-}
-
-func hasApplyableStatus(r *Run) bool {
-	if len(r.PolicyChecks) > 0 {
-		return r.Status == RunPolicyChecked || r.Status == RunPolicyOverride
-	} else if r.CostEstimate != nil {
-		return r.Status == RunCostEstimated
-	} else {
-		return r.Status == RunPlanned
-	}
-}
-
 func createPlanExport(t *testing.T, client *Client, r *Run) (*PlanExport, func()) {
 	var rCleanup func()
 
 	if r == nil {
-		r, rCleanup = createPlannedRun(t, client, nil)
+		r, rCleanup = createRunApply(t, client, nil)
 	}
 
 	ctx := context.Background()
@@ -709,27 +847,37 @@ func createPlanExport(t *testing.T, client *Client, r *Run) (*PlanExport, func()
 		t.Fatal(err)
 	}
 
-	for i := 0; ; i++ {
-		pe, err := client.PlanExports.Read(ctx, pe.ID)
-		if err != nil {
-			t.Fatal(err)
-		}
+	timeout := 2 * time.Minute
 
-		if pe.Status == PlanExportFinished {
-			return pe, func() {
-				if rCleanup != nil {
-					rCleanup()
+	ctxPollExportReady, cancelPollExportReady := context.WithTimeout(ctx, timeout)
+	t.Cleanup(cancelPollExportReady)
+
+	ticker := time.NewTicker(5 * time.Second)
+	defer ticker.Stop()
+
+	for {
+		t.Log("...")
+		select {
+		case <-ctxPollExportReady.Done():
+			rCleanup()
+			t.Fatalf("Run %q had status %q at deadline", r.ID, r.Status)
+		case <-ticker.C:
+			pe, err := client.PlanExports.Read(ctxPollExportReady, pe.ID)
+			if err != nil {
+				t.Fatal(err)
+			}
+
+			if pe.Status == PlanExportFinished {
+				return pe, func() {
+					if rCleanup != nil {
+						rCleanup()
+					}
 				}
 			}
 		}
-
-		if i > 45 {
-			rCleanup()
-			t.Fatal("Timeout waiting for plan export to finish")
-		}
-
-		time.Sleep(1 * time.Second)
 	}
+
+	return nil, rCleanup
 }
 
 func createRegistryModule(t *testing.T, client *Client, org *Organization) (*RegistryModule, func()) {

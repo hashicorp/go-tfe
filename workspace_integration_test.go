@@ -147,7 +147,7 @@ func TestWorkspacesList(t *testing.T) {
 	})
 
 	t.Run("with current-state-version,current-run included", func(t *testing.T) {
-		_, rCleanup := createAppliedRun(t, client, wTest1)
+		_, rCleanup := createRunApply(t, client, wTest1)
 		t.Cleanup(rCleanup)
 
 		wl, err := client.Workspaces.List(ctx, orgTest.Name, &WorkspaceListOptions{
@@ -469,7 +469,7 @@ func TestWorkspacesReadWithHistory(t *testing.T) {
 	wTest, wTestCleanup := createWorkspace(t, client, orgTest)
 	defer wTestCleanup()
 
-	_, rCleanup := createAppliedRun(t, client, wTest)
+	_, rCleanup := createRunApply(t, client, wTest)
 	defer rCleanup()
 
 	w, err := client.Workspaces.Read(context.Background(), orgTest.Name, wTest.Name)
@@ -489,7 +489,7 @@ func TestWorkspacesReadReadme(t *testing.T) {
 	wTest, wTestCleanup := createWorkspaceWithVCS(t, client, orgTest, WorkspaceCreateOptions{})
 	defer wTestCleanup()
 
-	_, rCleanup := createAppliedRun(t, client, wTest)
+	_, rCleanup := createRunApply(t, client, wTest)
 	defer rCleanup()
 
 	t.Run("when the readme exists", func(t *testing.T) {

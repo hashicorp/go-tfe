@@ -28,7 +28,7 @@ func FetchTestAccountDetails(t *testing.T, client *Client) *TestAccountDetails {
 	}
 
 	ctx := context.Background()
-	err = client.do(ctx, req, tad)
+	err = req.Do(ctx, tad)
 	if err != nil {
 		t.Fatalf("could not fetch test user details: %v", err)
 	}
