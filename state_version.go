@@ -3,7 +3,6 @@ package tfe
 import (
 	"bytes"
 	"context"
-	"encoding/json"
 	"fmt"
 	"net/url"
 	"time"
@@ -140,13 +139,13 @@ type StateVersionCreateOptions struct {
 	// Optional: Specifies the run to associate the state with.
 	Run *Run `jsonapi:"relation,run,omitempty"`
 
-	// Optional: The external, json representation of state data.
+	// Optional: The external, json representation of state data, base64 encoded.
 	// https://www.terraform.io/internals/json-format#state-representation
 	// Supplying this state representation can provide more details to the platform
 	// about the current terraform state.
 	//
 	// **Note**: This field is in BETA, subject to change and not widely available yet.
-	ExtState json.RawMessage `jsonapi:"attr,ext-state,omitempty"`
+	JSONState *string `jsonapi:"attr,json-state,omitempty"`
 }
 
 // List all the state versions for a given workspace.

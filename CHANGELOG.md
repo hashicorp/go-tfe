@@ -2,7 +2,7 @@
 
 ## Enhancements
 * Adds `RetryServerErrors` field to the `Config` object by @sebasslash [#439](https://github.com/hashicorp/go-tfe/pull/439)
-
+* [beta] Renames the optional StateVersion field `ExtState` to `JSONState` and changes to string for base64 encoding by @annawinkler [#444](https://github.com/hashicorp/go-tfe/pull/444)
 # v1.3.0
 
 ## Enhancements
