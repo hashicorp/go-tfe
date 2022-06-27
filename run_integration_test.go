@@ -94,6 +94,82 @@ func TestRunsList(t *testing.T) {
 	})
 }
 
+func TestRunsListQueryParams(t *testing.T) {
+	type testCase struct {
+		options     *RunListOptions
+		description string
+		assertion   func(tc testCase, rl *RunList, err error)
+	}
+
+	client := testClient(t)
+	ctx := context.Background()
+
+	orgTest, orgTestCleanup := createOrganization(t, client)
+	defer orgTestCleanup()
+
+	workspaceTest, _ := createWorkspace(t, client, orgTest)
+	createPlannedRun(t, client, workspaceTest)
+	pendingRun, _ := createRun(t, client, workspaceTest)
+
+	currentUser, _ := client.Users.ReadCurrent(ctx)
+
+	testCases := []testCase{
+		{
+			description: "with status query parameter",
+			options:     &RunListOptions{Status: string(RunPending), Include: []RunIncludeOpt{RunWorkspace}},
+			assertion: func(tc testCase, rl *RunList, err error) {
+				assert.NoError(t, err)
+				assert.Equal(t, 1, len(rl.Items))
+			},
+		},
+		{
+			description: "with source query parameter",
+			options:     &RunListOptions{Source: string(RunSourceAPI), Include: []RunIncludeOpt{RunWorkspace}},
+			assertion: func(tc testCase, rl *RunList, err error) {
+				assert.NoError(t, err)
+				assert.Equal(t, 2, len(rl.Items))
+				assert.Equal(t, rl.Items[0].Source, RunSourceAPI)
+			},
+		},
+		{
+			description: "with operation of plan_only parameter",
+			options:     &RunListOptions{Operation: string(RunOperationPlanOnly), Include: []RunIncludeOpt{RunWorkspace}},
+			assertion: func(tc testCase, rl *RunList, err error) {
+				assert.NoError(t, err)
+				assert.Equal(t, 0, len(rl.Items))
+			},
+		},
+		{
+			description: "with name parameter",
+			options:     &RunListOptions{Name: currentUser.Username, Include: []RunIncludeOpt{RunWorkspace}},
+			assertion: func(tc testCase, rl *RunList, err error) {
+				found := []string{}
+				for _, r := range rl.Items {
+					found = append(found, r.ID)
+				}
+				assert.Equal(t, 2, len(rl.Items))
+				assert.Contains(t, found, pendingRun.ID)
+			},
+		},
+		{
+			description: "with name & commit parameter",
+			options:     &RunListOptions{Name: randomString(t), Commit: randomString(t), Include: []RunIncludeOpt{RunWorkspace}},
+			assertion: func(tc testCase, rl *RunList, err error) {
+				assert.NoError(t, err)
+				assert.Equal(t, 0, len(rl.Items))
+			},
+		},
+	}
+
+	for _, testCase := range testCases {
+		t.Run(testCase.description, func(t *testing.T) {
+			skipIfBeta(t)
+			runs, err := client.Runs.List(ctx, workspaceTest.ID, testCase.options)
+			testCase.assertion(testCase, runs, err)
+		})
+	}
+}
+
 func TestRunsCreate(t *testing.T) {
 	client := testClient(t)
 	ctx := context.Background()

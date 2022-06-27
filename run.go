@@ -83,6 +83,18 @@ const (
 	RunSourceUI                   RunSource = "tfe-ui"
 )
 
+// RunOperation represents an operation type of run.
+type RunOperation string
+
+// List all available run operations.
+const (
+	RunOperationPlanApply   RunOperation = "plan_and_apply"
+	RunOperationPlanOnly    RunOperation = "plan_only"
+	RunOperationRefreshOnly RunOperation = "refresh_only"
+	RunOperationDestroy     RunOperation = "destroy"
+	RunOperationEmptyApply  RunOperation = "empty_apply"
+)
+
 // RunList represents a list of runs.
 type RunList struct {
 	*Pagination
@@ -180,6 +192,27 @@ const (
 // RunListOptions represents the options for listing runs.
 type RunListOptions struct {
 	ListOptions
+
+	// Optional: Username of user who created the run
+	// **Note: This API is still in BETA and is subject to change.**
+	Name string `url:"search[name],omitempty"`
+
+	// Optional: Commit SHA for runs triggered via a vcs event
+	// **Note: This API is still in BETA and is subject to change.**
+	Commit string `url:"search[commit],omitempty"`
+
+	// Optional: Current status of the run
+	// **Note: This API is still in BETA and is subject to change.**
+	Status string `url:"filter[status],omitempty"`
+
+	// Optional: Source that triggered the run
+	// **Note: This API is still in BETA and is subject to change.**
+	Source string `url:"filter[source],omitempty"`
+
+	// Optional: Operation type for the run
+	// **Note: This API is still in BETA and is subject to change.**
+	Operation string `url:"filter[operation],omitempty"`
+
 	// Optional: A list of relations to include. See available resources:
 	// https://www.terraform.io/docs/cloud/api/run.html#available-related-resources
 	Include []RunIncludeOpt `url:"include,omitempty"`
