@@ -273,7 +273,7 @@ func TestConfigurationVersionsArchive(t *testing.T) {
 			time.Sleep(1 * time.Second)
 		}
 
-		// configuration version should not be achievable, since it's the latest version
+		// configuration version should not be archived, since it's the latest version
 		err = client.ConfigurationVersions.Archive(ctx, cv.ID)
 		assert.Error(t, err)
 		assert.EqualError(t, err, "transition not allowed")
