@@ -201,22 +201,7 @@ func TestConfigurationVersionsUpload(t *testing.T) {
 		)
 		require.NoError(t, err)
 
-		// We do this is a small loop, because it can take a second
-		// before the upload is finished.
-		for i := 0; ; i++ {
-			refreshed, err := client.ConfigurationVersions.Read(ctx, cv.ID)
-			require.NoError(t, err)
-
-			if refreshed.Status == ConfigurationUploaded {
-				break
-			}
-
-			if i > 10 {
-				t.Fatal("Timeout waiting for the configuration version to be uploaded")
-			}
-
-			time.Sleep(1 * time.Second)
-		}
+		WaitUntilStatus(t, client, ctx, cv, ConfigurationUploaded)
 	})
 
 	t.Run("without a valid upload URL", func(t *testing.T) {
@@ -256,22 +241,7 @@ func TestConfigurationVersionsArchive(t *testing.T) {
 		)
 		require.NoError(t, err)
 
-		// We do this is a small loop, because it can take a second
-		// before the upload is finished.
-		for i := 0; ; i++ {
-			refreshed, err := client.ConfigurationVersions.Read(ctx, cv.ID)
-			require.NoError(t, err)
-
-			if refreshed.Status == ConfigurationUploaded {
-				break
-			}
-
-			if i > 10 {
-				t.Fatal("Timeout waiting for the configuration version to be uploaded")
-			}
-
-			time.Sleep(1 * time.Second)
-		}
+		WaitUntilStatus(t, client, ctx, cv, ConfigurationUploaded)
 
 		// configuration version should not be achievable, since it's the latest version
 		err = client.ConfigurationVersions.Archive(ctx, cv.ID)
@@ -287,26 +257,12 @@ func TestConfigurationVersionsArchive(t *testing.T) {
 		)
 		require.NoError(t, err)
 		defer newCvCleanup()
+		WaitUntilStatus(t, client, ctx, cv, ConfigurationUploaded)
 
 		err = client.ConfigurationVersions.Archive(ctx, cv.ID)
 		require.NoError(t, err)
 
-		// We do this is a small loop, because it can take a second
-		// before the archive is finished.
-		for i := 0; ; i++ {
-			refreshed, err := client.ConfigurationVersions.Read(ctx, cv.ID)
-			require.NoError(t, err)
-
-			if refreshed.Status == ConfigurationArchived {
-				break
-			}
-
-			if i > 10 {
-				t.Fatal("Timeout waiting for the configuration version to be archived")
-			}
-
-			time.Sleep(1 * time.Second)
-		}
+		WaitUntilStatus(t, client, ctx, cv, ConfigurationArchived)
 	})
 
 	t.Run("when the configuration version does not exist", func(t *testing.T) {
@@ -397,4 +353,22 @@ func TestConfigurationVersions_Unmarshal(t *testing.T) {
 	assert.Equal(t, cv.Status, ConfigurationUploaded)
 	assert.Equal(t, cv.StatusTimestamps.FinishedAt, finishedParsedTime)
 	assert.Equal(t, cv.StatusTimestamps.StartedAt, startedParsedTime)
+}
+
+// helper to wait until a configuration version has reached a certain status
+func WaitUntilStatus(t *testing.T, client *Client, ctx context.Context, cv *ConfigurationVersion, desiredStatus ConfigurationStatus) {
+	for i := 0; ; i++ {
+		refreshed, err := client.ConfigurationVersions.Read(ctx, cv.ID)
+		require.NoError(t, err)
+
+		if refreshed.Status == desiredStatus {
+			break
+		}
+
+		if i > 30 {
+			t.Fatal("Timeout waiting for the configuration version to be archived")
+		}
+
+		time.Sleep(1 * time.Second)
+	}
 }
