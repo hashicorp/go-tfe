@@ -13,7 +13,7 @@ import (
 )
 
 func TestRunTasksCreate(t *testing.T) {
-	skipIfBeta(t)
+	skipIfFreeOnly(t)
 
 	client := testClient(t)
 	ctx := context.Background()
@@ -49,7 +49,7 @@ func TestRunTasksCreate(t *testing.T) {
 }
 
 func TestRunTasksList(t *testing.T) {
-	skipIfBeta(t)
+	skipIfFreeOnly(t)
 
 	client := testClient(t)
 	ctx := context.Background()
@@ -75,7 +75,7 @@ func TestRunTasksList(t *testing.T) {
 }
 
 func TestRunTasksRead(t *testing.T) {
-	skipIfBeta(t)
+	skipIfFreeOnly(t)
 
 	client := testClient(t)
 	ctx := context.Background()
@@ -125,7 +125,7 @@ func TestRunTasksRead(t *testing.T) {
 }
 
 func TestRunTasksUpdate(t *testing.T) {
-	skipIfBeta(t)
+	skipIfFreeOnly(t)
 
 	client := testClient(t)
 	ctx := context.Background()
@@ -151,7 +151,7 @@ func TestRunTasksUpdate(t *testing.T) {
 }
 
 func TestRunTasksDelete(t *testing.T) {
-	skipIfBeta(t)
+	skipIfFreeOnly(t)
 
 	client := testClient(t)
 	ctx := context.Background()
@@ -181,7 +181,7 @@ func TestRunTasksDelete(t *testing.T) {
 }
 
 func TestRunTasksAttachToWorkspace(t *testing.T) {
-	skipIfBeta(t)
+	skipIfFreeOnly(t)
 
 	client := testClient(t)
 	ctx := context.Background()
@@ -197,6 +197,11 @@ func TestRunTasksAttachToWorkspace(t *testing.T) {
 
 	t.Run("to a valid workspace", func(t *testing.T) {
 		wr, err := client.RunTasks.AttachToWorkspace(ctx, wkspaceTest.ID, runTaskTest.ID, Advisory)
+
+		defer func() {
+			client.WorkspaceRunTasks.Delete(ctx, wkspaceTest.ID, wr.ID)
+		}()
+
 		require.NoError(t, err)
 		require.NotNil(t, wr.ID)
 	})
