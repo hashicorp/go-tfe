@@ -14,6 +14,10 @@ var (
 
 	// ErrMissingDirectory is returned when the path does not have an existing directory.
 	ErrMissingDirectory = errors.New("path needs to be an existing directory")
+
+	// ErrNamespaceNotAuthorized is returned when a user attempts to perform an action
+	// on a namespace (organization) they do not have access to.
+	ErrNamespaceNotAuthorized = errors.New("namespace not authorized")
 )
 
 // Options/fields that cannot be defined
@@ -288,4 +292,6 @@ var (
 	ErrRequiredShasum = errors.New("shasum is required")
 
 	ErrRequiredFilename = errors.New("filename is required")
+
+	ErrInvalidAsciiArmor = errors.New("ascii armor is invalid")
 )
