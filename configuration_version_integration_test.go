@@ -257,7 +257,7 @@ func TestConfigurationVersionsArchive(t *testing.T) {
 		)
 		require.NoError(t, err)
 		defer newCvCleanup()
-		WaitUntilStatus(t, client, ctx, cv, ConfigurationUploaded)
+		WaitUntilStatus(t, client, ctx, newCv, ConfigurationUploaded)
 
 		err = client.ConfigurationVersions.Archive(ctx, cv.ID)
 		require.NoError(t, err)
