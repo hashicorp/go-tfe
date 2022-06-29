@@ -8,6 +8,7 @@
 * [beta] Adds additional filter fields to `RunListOptions` by @mjyocca [#424](https://github.com/hashicorp/go-tfe/pull/424)
 * [beta] Renames the optional StateVersion field `ExtState` to `JSONStateOutputs` and changes the purpose and type by @annawinkler [#444](https://github.com/hashicorp/go-tfe/pull/444) and @brandoncroft [#452](https://github.com/hashicorp/go-tfe/pull/452)
 * Remove beta messaging for Run Tasks by @glennsarti [#447](https://github.com/hashicorp/go-tfe/pull/447)
+* Adds `Description` field to the `RunTask` object by @glennsarti [#447](https://github.com/hashicorp/go-tfe/pull/447)
 
 # v1.3.0
 

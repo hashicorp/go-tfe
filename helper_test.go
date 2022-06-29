@@ -973,10 +973,12 @@ func createRunTask(t *testing.T, client *Client, org *Organization) (*RunTask, f
 	}
 
 	ctx := context.Background()
+	description := randomString(t)
 	r, err := client.RunTasks.Create(ctx, org.Name, RunTaskCreateOptions{
-		Name:     "tst-" + randomString(t),
-		URL:      runTaskURL,
-		Category: "task",
+		Name:        "tst-" + randomString(t),
+		URL:         runTaskURL,
+		Description: &description,
+		Category:    "task",
 	})
 	if err != nil {
 		t.Fatal(err)

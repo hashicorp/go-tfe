@@ -42,12 +42,13 @@ type runTasks struct {
 
 // RunTask represents a TFC/E run task
 type RunTask struct {
-	ID       string  `jsonapi:"primary,tasks"`
-	Name     string  `jsonapi:"attr,name"`
-	URL      string  `jsonapi:"attr,url"`
-	Category string  `jsonapi:"attr,category"`
-	HMACKey  *string `jsonapi:"attr,hmac-key,omitempty"`
-	Enabled  bool    `jsonapi:"attr,enabled"`
+	ID          string  `jsonapi:"primary,tasks"`
+	Name        string  `jsonapi:"attr,name"`
+	URL         string  `jsonapi:"attr,url"`
+	Description string  `jsonapi:"attr,description"`
+	Category    string  `jsonapi:"attr,category"`
+	HMACKey     *string `jsonapi:"attr,hmac-key,omitempty"`
+	Enabled     bool    `jsonapi:"attr,enabled"`
 
 	Organization      *Organization       `jsonapi:"relation,organization"`
 	WorkspaceRunTasks []*WorkspaceRunTask `jsonapi:"relation,workspace-tasks"`
@@ -97,6 +98,9 @@ type RunTaskCreateOptions struct {
 	// Required: The URL to send a run task payload
 	URL string `jsonapi:"attr,url"`
 
+	// Optional: Description of the task
+	Description *string `jsonapi:"attr,description"`
+
 	// Required: Must be "task"
 	Category string `jsonapi:"attr,category"`
 
@@ -120,6 +124,9 @@ type RunTaskUpdateOptions struct {
 
 	// Optional: The URL to send a run task payload, defaults to previous value
 	URL *string `jsonapi:"attr,url,omitempty"`
+
+	// Optional: An optional description of the task
+	Description *string `jsonapi:"attr,description,omitempty"`
 
 	// Optional: Must be "task", defaults to "task"
 	Category *string `jsonapi:"attr,category,omitempty"`

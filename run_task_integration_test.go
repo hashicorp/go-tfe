@@ -27,13 +27,15 @@ func TestRunTasksCreate(t *testing.T) {
 	}
 
 	runTaskName := "tst-runtask-" + randomString(t)
+	runTaskDescription := "A Run Task Description"
 
 	t.Run("add run task to organization", func(t *testing.T) {
 		r, err := client.RunTasks.Create(ctx, orgTest.Name, RunTaskCreateOptions{
-			Name:     runTaskName,
-			URL:      runTaskServerURL,
-			Category: "task",
-			Enabled:  Bool(true),
+			Name:        runTaskName,
+			URL:         runTaskServerURL,
+			Description: &runTaskDescription,
+			Category:    "task",
+			Enabled:     Bool(true),
 		})
 		require.NoError(t, err)
 
@@ -41,6 +43,7 @@ func TestRunTasksCreate(t *testing.T) {
 		assert.Equal(t, r.Name, runTaskName)
 		assert.Equal(t, r.URL, runTaskServerURL)
 		assert.Equal(t, r.Category, "task")
+		assert.Equal(t, r.Description, runTaskDescription)
 
 		t.Run("ensure org is deserialized properly", func(t *testing.T) {
 			assert.Equal(t, r.Organization.Name, orgTest.Name)
@@ -93,6 +96,7 @@ func TestRunTasksRead(t *testing.T) {
 		assert.Equal(t, runTaskTest.ID, r.ID)
 		assert.Equal(t, runTaskTest.URL, r.URL)
 		assert.Equal(t, runTaskTest.Category, r.Category)
+		assert.Equal(t, runTaskTest.Description, r.Description)
 		assert.Equal(t, runTaskTest.HMACKey, r.HMACKey)
 		assert.Equal(t, runTaskTest.Enabled, r.Enabled)
 	})
@@ -147,6 +151,32 @@ func TestRunTasksUpdate(t *testing.T) {
 		require.NoError(t, err)
 
 		assert.Equal(t, rename, r.Name)
+	})
+
+	t.Run("toggle enabled", func(t *testing.T) {
+		runTaskTest.Enabled = !runTaskTest.Enabled
+		r, err := client.RunTasks.Update(ctx, runTaskTest.ID, RunTaskUpdateOptions{
+			Enabled: &runTaskTest.Enabled,
+		})
+		require.NoError(t, err)
+
+		r, err = client.RunTasks.Read(ctx, r.ID)
+		require.NoError(t, err)
+
+		assert.Equal(t, runTaskTest.Enabled, r.Enabled)
+	})
+
+	t.Run("update description", func(t *testing.T) {
+		newDescription := "An updated task description"
+		r, err := client.RunTasks.Update(ctx, runTaskTest.ID, RunTaskUpdateOptions{
+			Description: &newDescription,
+		})
+		require.NoError(t, err)
+
+		r, err = client.RunTasks.Read(ctx, r.ID)
+		require.NoError(t, err)
+
+		assert.Equal(t, newDescription, r.Description)
 	})
 }
 
