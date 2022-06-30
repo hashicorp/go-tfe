@@ -201,22 +201,7 @@ func TestConfigurationVersionsUpload(t *testing.T) {
 		)
 		require.NoError(t, err)
 
-		// We do this is a small loop, because it can take a second
-		// before the upload is finished.
-		for i := 0; ; i++ {
-			refreshed, err := client.ConfigurationVersions.Read(ctx, cv.ID)
-			require.NoError(t, err)
-
-			if refreshed.Status == ConfigurationUploaded {
-				break
-			}
-
-			if i > 10 {
-				t.Fatal("Timeout waiting for the configuration version to be uploaded")
-			}
-
-			time.Sleep(1 * time.Second)
-		}
+		WaitUntilStatus(t, client, cv, ConfigurationUploaded, 60)
 	})
 
 	t.Run("without a valid upload URL", func(t *testing.T) {
@@ -241,6 +226,44 @@ func TestConfigurationVersionsUpload(t *testing.T) {
 func TestConfigurationVersionsArchive(t *testing.T) {
 	client := testClient(t)
 	ctx := context.Background()
+
+	w, wCleanup := createWorkspace(t, client, nil)
+	defer wCleanup()
+
+	cv, cvCleanup := createConfigurationVersion(t, client, w)
+	defer cvCleanup()
+
+	t.Run("when the configuration version exists and has been uploaded", func(t *testing.T) {
+		err := client.ConfigurationVersions.Upload(
+			ctx,
+			cv.UploadURL,
+			"test-fixtures/config-version",
+		)
+		require.NoError(t, err)
+
+		WaitUntilStatus(t, client, cv, ConfigurationUploaded, 60)
+
+		// configuration version should not be archived, since it's the latest version
+		err = client.ConfigurationVersions.Archive(ctx, cv.ID)
+		assert.Error(t, err)
+		assert.EqualError(t, err, "transition not allowed")
+
+		// create subsequent version, since the latest configuration version cannot be archived
+		newCv, newCvCleanup := createConfigurationVersion(t, client, w)
+		err = client.ConfigurationVersions.Upload(
+			ctx,
+			newCv.UploadURL,
+			"test-fixtures/config-version",
+		)
+		require.NoError(t, err)
+		defer newCvCleanup()
+		WaitUntilStatus(t, client, newCv, ConfigurationUploaded, 60)
+
+		err = client.ConfigurationVersions.Archive(ctx, cv.ID)
+		require.NoError(t, err)
+
+		WaitUntilStatus(t, client, cv, ConfigurationArchived, 60)
+	})
 
 	t.Run("when the configuration version does not exist", func(t *testing.T) {
 		err := client.ConfigurationVersions.Archive(ctx, "nonexisting")
