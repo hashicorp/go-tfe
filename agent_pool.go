@@ -31,6 +31,9 @@ type AgentPools interface {
 
 	// Delete an agent pool by its ID.
 	Delete(ctx context.Context, agentPoolID string) error
+
+	// List ip-address by agent pool ID
+	ListAgentPoolIPs(ctx context.Context, agentPoolID string) (*AgentPoolList, error)
 }
 
 // agentPools implements AgentPools.
@@ -212,6 +215,28 @@ func (s *agentPools) Delete(ctx context.Context, agentPoolID string) error {
 	}
 
 	return s.client.do(ctx, req, nil)
+}
+
+// List IPs by agent pool ID.
+func (s *agentPools) ListAgentPoolIPs(ctx context.Context, agentPoolID string) (*AgentPoolList, error) {
+	if !validStringID(&agentPoolID) {
+		return nil, ErrInvalidAgentPoolID
+	}
+
+	u := fmt.Sprintf("agent-pools/%s/agents", url.QueryEscape(agentPoolID))
+	req, err := s.client.newRequest("GET", u, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	poolList := &AgentPoolList{}
+	err = s.client.do(ctx, req, poolList)
+	if err != nil {
+		return nil, err
+	}
+
+	return poolList, nil
+
 }
 
 func (o AgentPoolCreateOptions) valid() error {
