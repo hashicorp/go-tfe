@@ -4,6 +4,7 @@
 * Adds `RetryServerErrors` field to the `Config` object by @sebasslash [#439](https://github.com/hashicorp/go-tfe/pull/439)
 * Adds support for the GPG Keys API by @sebasslash [#429](https://github.com/hashicorp/go-tfe/pull/429)
 * [beta] Renames the optional StateVersion field `ExtState` to `JSONState` and changes to string for base64 encoding by @annawinkler [#444](https://github.com/hashicorp/go-tfe/pull/444)
+* Add support for new `WorkspaceLimit` Admin setting for organizations [#425](https://github.com/hashicorp/go-tfe/pull/425)
 
 # v1.3.0
 
