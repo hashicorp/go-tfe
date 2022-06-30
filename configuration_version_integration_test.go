@@ -201,7 +201,7 @@ func TestConfigurationVersionsUpload(t *testing.T) {
 		)
 		require.NoError(t, err)
 
-		WaitUntilStatus(t, client, ctx, cv, ConfigurationUploaded)
+		WaitUntilStatus(t, client, cv, ConfigurationUploaded, 60)
 	})
 
 	t.Run("without a valid upload URL", func(t *testing.T) {
@@ -241,7 +241,7 @@ func TestConfigurationVersionsArchive(t *testing.T) {
 		)
 		require.NoError(t, err)
 
-		WaitUntilStatus(t, client, ctx, cv, ConfigurationUploaded)
+		WaitUntilStatus(t, client, cv, ConfigurationUploaded, 60)
 
 		// configuration version should not be archived, since it's the latest version
 		err = client.ConfigurationVersions.Archive(ctx, cv.ID)
@@ -257,12 +257,12 @@ func TestConfigurationVersionsArchive(t *testing.T) {
 		)
 		require.NoError(t, err)
 		defer newCvCleanup()
-		WaitUntilStatus(t, client, ctx, newCv, ConfigurationUploaded)
+		WaitUntilStatus(t, client, newCv, ConfigurationUploaded, 60)
 
 		err = client.ConfigurationVersions.Archive(ctx, cv.ID)
 		require.NoError(t, err)
 
-		WaitUntilStatus(t, client, ctx, cv, ConfigurationArchived)
+		WaitUntilStatus(t, client, cv, ConfigurationArchived, 60)
 	})
 
 	t.Run("when the configuration version does not exist", func(t *testing.T) {
@@ -353,22 +353,4 @@ func TestConfigurationVersions_Unmarshal(t *testing.T) {
 	assert.Equal(t, cv.Status, ConfigurationUploaded)
 	assert.Equal(t, cv.StatusTimestamps.FinishedAt, finishedParsedTime)
 	assert.Equal(t, cv.StatusTimestamps.StartedAt, startedParsedTime)
-}
-
-// helper to wait until a configuration version has reached a certain status
-func WaitUntilStatus(t *testing.T, client *Client, ctx context.Context, cv *ConfigurationVersion, desiredStatus ConfigurationStatus) {
-	for i := 0; ; i++ {
-		refreshed, err := client.ConfigurationVersions.Read(ctx, cv.ID)
-		require.NoError(t, err)
-
-		if refreshed.Status == desiredStatus {
-			break
-		}
-
-		if i > 30 {
-			t.Fatal("Timeout waiting for the configuration version to be archived")
-		}
-
-		time.Sleep(1 * time.Second)
-	}
 }

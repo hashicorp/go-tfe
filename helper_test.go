@@ -9,6 +9,7 @@ import (
 	"encoding/hex"
 	"errors"
 	"fmt"
+	"github.com/stretchr/testify/require"
 	"io/ioutil"
 	"math/rand"
 	"net/url"
@@ -174,26 +175,29 @@ func createUploadedConfigurationVersion(t *testing.T, client *Client, w *Workspa
 		t.Fatal(err)
 	}
 
-	for i := 0; ; i++ {
-		cv, err = client.ConfigurationVersions.Read(ctx, cv.ID)
-		if err != nil {
-			cvCleanup()
-			t.Fatal(err)
-		}
+	WaitUntilStatus(t, client, cv, ConfigurationUploaded, 15)
 
-		if cv.Status == ConfigurationUploaded {
+	return cv, cvCleanup
+}
+
+// helper to wait until a configuration version has reached a certain status
+func WaitUntilStatus(t *testing.T, client *Client, cv *ConfigurationVersion, desiredStatus ConfigurationStatus, timeoutSeconds int) {
+	ctx := context.Background()
+
+	for i := 0; ; i++ {
+		refreshed, err := client.ConfigurationVersions.Read(ctx, cv.ID)
+		require.NoError(t, err)
+
+		if refreshed.Status == desiredStatus {
 			break
 		}
 
-		if i > 10 {
-			cvCleanup()
-			t.Fatal("Timeout waiting for the configuration version to be uploaded")
+		if i > timeoutSeconds {
+			t.Fatal("Timeout waiting for the configuration version to be archived")
 		}
 
 		time.Sleep(1 * time.Second)
 	}
-
-	return cv, cvCleanup
 }
 
 func createNotificationConfiguration(t *testing.T, client *Client, w *Workspace, options *NotificationConfigurationCreateOptions) (*NotificationConfiguration, func()) {
