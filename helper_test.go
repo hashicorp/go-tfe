@@ -53,8 +53,9 @@ type updateFeatureSetOptions struct {
 }
 
 func testClient(t *testing.T) *Client {
-	client, err := NewClient(nil)
-	client.RetryServerErrors(true) // because occasionally we get a 500 internal when deleting an organization's workspace
+	client, err := NewClient(&Config{
+		RetryServerErrors: true,
+	})
 	if err != nil {
 		t.Fatal(err)
 	}
