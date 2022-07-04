@@ -231,8 +231,8 @@ func TestAgentPoolsUpdate(t *testing.T) {
 		})
 		require.NoError(t, err)
 
+        assert.Equal(t, false, kAfter.OrganizationScoped)
 		assert.NotEqual(t, kBefore.OrganizationScoped, kAfter.OrganizationScoped)
-		assert.Equal(t, false, kAfter.OrganizationScoped)
 	})
 }
 
