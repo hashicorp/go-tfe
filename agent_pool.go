@@ -20,10 +20,10 @@ type AgentPools interface {
 	// Create a new agent pool with the given options.
 	Create(ctx context.Context, organization string, options AgentPoolCreateOptions) (*AgentPool, error)
 
-	// Read a agent pool by its ID.
+	// Read an agent pool by its ID.
 	Read(ctx context.Context, agentPoolID string) (*AgentPool, error)
 
-	// Read a agent pool by its ID with the given options.
+	// Read an agent pool by its ID with the given options.
 	ReadWithOptions(ctx context.Context, agentPoolID string, options *AgentPoolReadOptions) (*AgentPool, error)
 
 	// Update an agent pool by its ID.
@@ -31,9 +31,6 @@ type AgentPools interface {
 
 	// Delete an agent pool by its ID.
 	Delete(ctx context.Context, agentPoolID string) error
-
-	// List ip-address by agent pool ID
-	ListAgentPoolIPs(ctx context.Context, agentPoolID string) (*AgentPoolList, error)
 }
 
 // agentPools implements AgentPools.
@@ -215,28 +212,6 @@ func (s *agentPools) Delete(ctx context.Context, agentPoolID string) error {
 	}
 
 	return s.client.do(ctx, req, nil)
-}
-
-// List IPs by agent pool ID.
-func (s *agentPools) ListAgentPoolIPs(ctx context.Context, agentPoolID string) (*AgentPoolList, error) {
-	if !validStringID(&agentPoolID) {
-		return nil, ErrInvalidAgentPoolID
-	}
-
-	u := fmt.Sprintf("agent-pools/%s/agents", url.QueryEscape(agentPoolID))
-	req, err := s.client.newRequest("GET", u, nil)
-	if err != nil {
-		return nil, err
-	}
-
-	poolList := &AgentPoolList{}
-	err = s.client.do(ctx, req, poolList)
-	if err != nil {
-		return nil, err
-	}
-
-	return poolList, nil
-
 }
 
 func (o AgentPoolCreateOptions) valid() error {
