@@ -247,9 +247,18 @@ func TestOAuthClientsDelete(t *testing.T) {
 		err := client.OAuthClients.Delete(ctx, ocTest.ID)
 		require.NoError(t, err)
 
-		// Try loading the OAuth client - it should fail.
-		_, err = client.OAuthClients.Read(ctx, ocTest.ID)
-		assert.Equal(t, err, ErrResourceNotFound)
+		// oauth client deletion can happen asynchronously. Retry the read a few times
+		// until we get an error
+		oauthReadError, _ := retry(func() (interface{}, error) {
+			// Try loading the OAuth client - it should fail.
+			_, err = client.OAuthClients.Read(ctx, ocTest.ID)
+			if err != nil {
+				return err, nil
+			}
+			return nil, err
+		})
+		assert.Equal(t, oauthReadError, ErrResourceNotFound)
+
 	})
 
 	t.Run("when the OAuth client does not exist", func(t *testing.T) {

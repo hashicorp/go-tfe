@@ -190,10 +190,19 @@ func TestAdminWorkspaces_Delete(t *testing.T) {
 		err = client.Admin.Workspaces.Delete(ctx, adminWorkspace.ID)
 		assert.NoError(t, err)
 
+		// Admin Workspace client deletion can happen asynchronously
+		// Retry the read a few times until we get an error
+		workspaceReadError, _ := retry(func() (interface{}, error) {
+			_, err = client.Admin.Workspaces.Read(ctx, workspace.ID)
+			if err != nil {
+				return err, nil
+			}
+			return nil, err
+		})
+
 		// Cannot find deleted workspace
-		_, err = client.Admin.Workspaces.Read(ctx, workspace.ID)
-		assert.Error(t, err)
-		assert.EqualError(t, err, ErrResourceNotFound.Error())
+		assert.Error(t, workspaceReadError.(error))
+		assert.EqualError(t, workspaceReadError.(error), ErrResourceNotFound.Error())
 	})
 }
 
