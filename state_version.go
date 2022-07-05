@@ -141,7 +141,8 @@ type StateVersionCreateOptions struct {
 
 	// Optional: The external, json representation of state outputs, base64 encoded.
 	// https://www.terraform.io/internals/json-format#values-representation (the contents of the
-	// "outputs" attribute) Supplying detailed outputs will provide more details to the platform
+	// "outputs" attribute)
+	// Supplying detailed outputs will provide more details to the platform
 	// about the current terraform state.
 	//
 	// **Note**: This field is in BETA, subject to change and not widely available yet.
