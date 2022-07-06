@@ -9,19 +9,18 @@ import (
 // Compile-time proof of interface implementation.
 var _ Agents = (*agents)(nil)
 
-// // AgentPools describes all the agent pool related methods that the
+// Agents describes all the agent-related methods that the
 // Terraform Cloud API supports.
-// Note that agents are not available in Terraform Enterprise.
 // TFE API docs: https://www.terraform.io/docs/cloud/api/agents.html
 type Agents interface {
-	// List all the agents of the given pool.
-	List(ctx context.Context, organization string, options *AgentPoolListOptions) (*AgentPoolList, error)
-
 	// Read an agent by its ID.
-	Read(ctx context.Context, agentPoolID string) (*Agent, error)
+	Read(ctx context.Context, agentID string) (*Agent, error)
 
 	// Read an agent by its ID with the given options.
-	ReadWithOptions(ctx context.Context, agentID string, options *AgentReadOptions) (*AgentPool, error)
+	ReadWithOptions(ctx context.Context, agentID string, options *AgentReadOptions) (*Agent, error)
+
+	// List all the agents of the given pool.
+	List(ctx context.Context, agentPoolID string, options *AgentPoolListOptions) (*AgentList, error)
 
 	// Delete an agent by its ID.
 	Delete(ctx context.Context, agentPoolID string) error
@@ -71,65 +70,65 @@ type AgentListOptions struct {
 }
 
 // Read a single agent by its ID
-func (s *agents) Read(ctx context.Context, agentpoolID string) (*Agent, error) {
+func (s *agents) Read(ctx context.Context, agentID string) (*Agent, error) {
 	return s.ReadWithOptions(ctx, agentID, nil)
 }
 
 // Read a single agent pool by its ID with options.
-func (s *agents) ReadWithOptions(ctx context.Context, agentpoolID string, options *AgentReadOptions) (*AgentPool, error) {
-	if !validStringID(&agentpoolID) {
-		return nil, ErrInvalidAgentPoolID
+func (s *agents) ReadWithOptions(ctx context.Context, agentID string, options *AgentReadOptions) (*Agent, error) {
+	if !validStringID(&agentID) {
+		return nil, ErrInvalidAgentID //undeclared var name
 	}
 	if err := options.valid(); err != nil {
 		return nil, err
 	}
 
-	u := fmt.Sprintf("agent-pools/%s", url.QueryEscape(agentpoolID))
+	u := fmt.Sprintf("agents/%s", url.QueryEscape(agentID))
 	req, err := s.client.newRequest("GET", u, nil)
 	if err != nil {
 		return nil, err
 	}
 
-	pool := &AgentPool{}
-	err = s.client.do(ctx, req, pool)
+	agent := &AgentPool{}
+	err = s.client.do(ctx, req, agent)
 	if err != nil {
 		return nil, err
 	}
 
-	return pool, nil
+	return agent, nil //cannot use agent as *Agent value in return statement
 }
 
 // List all the agent pools of the given organization.
-func (s *agentPools) List(ctx context.Context, organization string, options *AgentPoolListOptions) (*AgentPoolList, error) {
-	if !validStringID(&organization) {
+func (s *agents) List(ctx context.Context, agentPoolID string, options *AgentListOptions) (*AgentList, error) {
+	if !validStringID(&agentPoolID) {
 		return nil, ErrInvalidOrg
 	}
 	if err := options.valid(); err != nil {
 		return nil, err
 	}
 
-	u := fmt.Sprintf("organizations/%s/agent-pools", url.QueryEscape(organization))
+	u := fmt.Sprintf("agent-pools/%s/agents", url.QueryEscape(agentPoolID))
 	req, err := s.client.newRequest("GET", u, options)
 	if err != nil {
 		return nil, err
 	}
 
-	poolList := &AgentPoolList{}
-	err = s.client.do(ctx, req, poolList)
+	agentList := &AgentList{}
+	err = s.client.do(ctx, req, agentList)
 	if err != nil {
 		return nil, err
 	}
 
-	return poolList, nil
+	return agentList, nil
 }
 
 // Delete an agent pool by its ID.
-func (s *agentPools) Delete(ctx context.Context, agentPoolID string) error {
-	if !validStringID(&agentPoolID) {
-		return ErrInvalidAgentPoolID
+func (s *agents) Delete(ctx context.Context, agentID string) error {
+	if !validStringID(&agentID) {
+		return ErrInvalidAgentID
 	}
 
-	u := fmt.Sprintf("agent-pools/%s", url.QueryEscape(agentPoolID))
+	u := fmt.Sprintf("agents/%s", url.QueryEscape(agentID))
 	req, err := s.client.newRequest("DELETE", u, nil)
 	if err != nil {
 		return err
