@@ -121,7 +121,7 @@ func TestStateVersionsCreate(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	jsonState, err := ioutil.ReadFile("test-fixtures/ext-state-version/state.json")
+	jsonStateOutputs, err := ioutil.ReadFile("test-fixtures/json-state-outputs/everything.json")
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -169,11 +169,11 @@ func TestStateVersionsCreate(t *testing.T) {
 		}
 
 		sv, err := client.StateVersions.Create(ctx, wTest.ID, StateVersionCreateOptions{
-			Lineage:   String("741c4949-60b9-5bb1-5bf8-b14f4bb14af3"),
-			MD5:       String(fmt.Sprintf("%x", md5.Sum(state))),
-			Serial:    Int64(1),
-			State:     String(base64.StdEncoding.EncodeToString(state)),
-			JSONState: String(base64.StdEncoding.EncodeToString(jsonState)),
+			Lineage:          String("741c4949-60b9-5bb1-5bf8-b14f4bb14af3"),
+			MD5:              String(fmt.Sprintf("%x", md5.Sum(state))),
+			Serial:           Int64(1),
+			State:            String(base64.StdEncoding.EncodeToString(state)),
+			JSONStateOutputs: String(base64.StdEncoding.EncodeToString(jsonStateOutputs)),
 		})
 		require.NoError(t, err)
 
@@ -185,6 +185,8 @@ func TestStateVersionsCreate(t *testing.T) {
 		if err != nil {
 			t.Fatal(err)
 		}
+
+		// TODO: check state outputs for the ones we sent in JSONStateOutputs
 
 		for _, item := range []*StateVersion{
 			sv,

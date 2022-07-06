@@ -472,11 +472,24 @@ func TestWorkspacesReadWithHistory(t *testing.T) {
 	_, rCleanup := createRunApply(t, client, wTest)
 	defer rCleanup()
 
-	w, err := client.Workspaces.Read(context.Background(), orgTest.Name, wTest.Name)
-	require.NoError(t, err)
+	_, err := retry(func() (interface{}, error) {
+		w, err := client.Workspaces.Read(context.Background(), orgTest.Name, wTest.Name)
+		require.NoError(t, err)
 
-	assert.Equal(t, 1, w.RunsCount)
-	assert.Equal(t, 1, w.ResourceCount)
+		if w.RunsCount != 1 {
+			return nil, fmt.Errorf("expected %d runs but found %d", 1, w.RunsCount)
+		}
+
+		if w.ResourceCount != 1 {
+			return nil, fmt.Errorf("expected %d resources but found %d", 1, w.ResourceCount)
+		}
+
+		return w, nil
+	})
+
+	if err != nil {
+		t.Error(err)
+	}
 }
 
 func TestWorkspacesReadReadme(t *testing.T) {
