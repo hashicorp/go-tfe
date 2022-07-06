@@ -7,9 +7,11 @@ import (
 	"bytes"
 	"context"
 	"encoding/json"
-	"github.com/hashicorp/go-slug"
+	"errors"
 	"testing"
 	"time"
+
+	"github.com/hashicorp/go-slug"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
@@ -155,22 +157,25 @@ func TestConfigurationVersionsReadWithOptions(t *testing.T) {
 	wTest, wTestCleanup := createWorkspaceWithVCS(t, client, orgTest, WorkspaceCreateOptions{QueueAllRuns: Bool(true)})
 	defer wTestCleanup()
 
-	// Hack: Wait for TFC to ingress the configuration and queue a run
-	time.Sleep(3 * time.Second)
+	w, err := retry(func() (interface{}, error) {
+		w, err := client.Workspaces.ReadByIDWithOptions(ctx, wTest.ID, &WorkspaceReadOptions{
+			Include: []WSIncludeOpt{WSCurrentRunConfigVer},
+		})
 
-	w, err := client.Workspaces.ReadByIDWithOptions(ctx, wTest.ID, &WorkspaceReadOptions{
-		Include: []WSIncludeOpt{WSCurrentRunConfigVer},
+		if err != nil {
+			return nil, err
+		}
+
+		if w.CurrentRun == nil {
+			return nil, errors.New("A run was expected to be found on this workspace as a test pre-condition")
+		}
+
+		return w, nil
 	})
 
-	if err != nil {
-		require.NoError(t, err)
-	}
+	require.NoError(t, err)
 
-	if w.CurrentRun == nil {
-		t.Fatal("A run was expected to be found on this workspace as a test pre-condition")
-	}
-
-	cv := w.CurrentRun.ConfigurationVersion
+	cv := w.(*Workspace).CurrentRun.ConfigurationVersion
 
 	t.Run("when the configuration version exists", func(t *testing.T) {
 		options := &ConfigurationVersionReadOptions{
