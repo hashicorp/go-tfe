@@ -195,7 +195,7 @@ func TestRegistryProviderPlatformsDelete(t *testing.T) {
 		}
 
 		err := client.RegistryProviderPlatforms.Delete(ctx, platformID)
-		assert.NoError(t, err)
+		require.NoError(t, err)
 	})
 
 	t.Run("with a non-existant version", func(t *testing.T) {
@@ -243,7 +243,8 @@ func TestRegistryProviderPlatformsRead(t *testing.T) {
 		}
 
 		readPlatform, err := client.RegistryProviderPlatforms.Read(ctx, platformID)
-		assert.NoError(t, err)
+		require.NoError(t, err)
+
 		assert.Equal(t, platformID.OS, readPlatform.OS)
 		assert.Equal(t, platformID.Arch, readPlatform.Arch)
 		assert.Equal(t, platform.Filename, readPlatform.Filename)

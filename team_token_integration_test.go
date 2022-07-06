@@ -54,7 +54,7 @@ func TestTeamTokensRead(t *testing.T) {
 		_, ttTestCleanup := createTeamToken(t, client, tmTest)
 
 		tt, err := client.TeamTokens.Read(ctx, tmTest.ID)
-		assert.NoError(t, err)
+		require.NoError(t, err)
 		assert.NotEmpty(t, tt)
 
 		ttTestCleanup()
@@ -86,7 +86,7 @@ func TestTeamTokensDelete(t *testing.T) {
 
 	t.Run("with valid options", func(t *testing.T) {
 		err := client.TeamTokens.Delete(ctx, tmTest.ID)
-		assert.NoError(t, err)
+		require.NoError(t, err)
 	})
 
 	t.Run("when a token does not exist", func(t *testing.T) {

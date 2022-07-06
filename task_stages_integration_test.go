@@ -36,6 +36,8 @@ func TestTaskStagesRead(t *testing.T) {
 		Include: []RunIncludeOpt{RunTaskStages},
 	})
 	require.NoError(t, err)
+	require.NotEmpty(t, r.TaskStages)
+	require.NotNil(t, r.TaskStages[0])
 
 	t.Run("without read options", func(t *testing.T) {
 		taskStage, err := client.TaskStages.Read(ctx, r.TaskStages[0].ID, nil)
@@ -62,6 +64,8 @@ func TestTaskStagesRead(t *testing.T) {
 			Include: []TaskStageIncludeOpt{TaskStageTaskResults},
 		})
 		require.NoError(t, err)
+		require.NotEmpty(t, taskStage.TaskResults)
+		require.NotNil(t, taskStage.TaskResults[0])
 
 		t.Run("task results are properly decoded", func(t *testing.T) {
 			assert.NotEmpty(t, taskStage.TaskResults[0].ID)
@@ -104,7 +108,7 @@ func TestTaskStagesList(t *testing.T) {
 		taskStageList, err := client.TaskStages.List(ctx, rTest.ID, nil)
 		require.NoError(t, err)
 
-		assert.NotNil(t, taskStageList.Items)
+		require.NotEmpty(t, taskStageList.Items)
 		assert.NotEmpty(t, taskStageList.Items[0].ID)
 		assert.Equal(t, 2, len(taskStageList.Items[0].TaskResults))
 	})

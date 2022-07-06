@@ -116,7 +116,7 @@ func TestRunTasksRead(t *testing.T) {
 
 		require.NoError(t, err)
 
-		assert.NotEmpty(t, r.WorkspaceRunTasks)
+		require.NotEmpty(t, r.WorkspaceRunTasks)
 		assert.NotEmpty(t, r.WorkspaceRunTasks[0].ID)
 		assert.NotEmpty(t, r.WorkspaceRunTasks[0].EnforcementLevel)
 		assert.NotEmpty(t, r.WorkspaceRunTasks[1].ID)

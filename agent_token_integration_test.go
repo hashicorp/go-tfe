@@ -98,7 +98,7 @@ func TestAgentTokensRead(t *testing.T) {
 
 	t.Run("read token with valid token ID", func(t *testing.T) {
 		at, err := client.AgentTokens.Read(ctx, token.ID)
-		assert.NoError(t, err)
+		require.NoError(t, err)
 		// The initial API call to create a token will return a value in the token
 		// object. Empty that out for comparison
 		token.Token = ""
@@ -125,7 +125,7 @@ func TestAgentTokensDelete(t *testing.T) {
 
 	t.Run("with valid token ID", func(t *testing.T) {
 		err := client.AgentTokens.Delete(ctx, token.ID)
-		assert.NoError(t, err)
+		require.NoError(t, err)
 	})
 
 	t.Run("without valid token ID", func(t *testing.T) {

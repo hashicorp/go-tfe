@@ -322,7 +322,7 @@ func TestVariablesDelete(t *testing.T) {
 
 	t.Run("with valid options", func(t *testing.T) {
 		err := client.Variables.Delete(ctx, wTest.ID, vTest.ID)
-		assert.NoError(t, err)
+		require.NoError(t, err)
 	})
 
 	t.Run("with non existing variable ID", func(t *testing.T) {

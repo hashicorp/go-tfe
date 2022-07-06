@@ -185,7 +185,7 @@ func TestConfigurationVersionsReadWithOptions(t *testing.T) {
 		cv, err := client.ConfigurationVersions.ReadWithOptions(ctx, cv.ID, options)
 		require.NoError(t, err)
 
-		assert.NotZero(t, cv.IngressAttributes)
+		require.NotNil(t, cv.IngressAttributes)
 		assert.NotZero(t, cv.IngressAttributes.CommitURL)
 		assert.NotZero(t, cv.IngressAttributes.CommitSHA)
 	})
@@ -298,7 +298,7 @@ func TestConfigurationVersionsDownload(t *testing.T) {
 		cvFile, err := client.ConfigurationVersions.Download(ctx, uploadedCv.ID)
 
 		assert.NotNil(t, cvFile)
-		assert.NoError(t, err)
+		require.NoError(t, err)
 		assert.True(t, bytes.Equal(cvFile, expectedCvFile.Bytes()), "Configuration version should match")
 	})
 

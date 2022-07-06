@@ -876,8 +876,6 @@ func createPlanExport(t *testing.T, client *Client, r *Run) (*PlanExport, func()
 			}
 		}
 	}
-
-	return nil, rCleanup
 }
 
 func createRegistryModule(t *testing.T, client *Client, org *Organization) (*RegistryModule, func()) {

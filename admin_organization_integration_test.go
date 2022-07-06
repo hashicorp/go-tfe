@@ -39,7 +39,7 @@ func TestAdminOrganizations_List(t *testing.T) {
 		adminOrgList, err := client.Admin.Organizations.List(ctx, &AdminOrganizationListOptions{
 			Query: org.Name,
 		})
-		assert.NoError(t, err)
+		require.NoError(t, err)
 		assert.Equal(t, true, adminOrgItemsContainsName(adminOrgList.Items, org.Name))
 		assert.Equal(t, 1, adminOrgList.CurrentPage)
 		assert.Equal(t, 1, adminOrgList.TotalCount)
@@ -51,7 +51,7 @@ func TestAdminOrganizations_List(t *testing.T) {
 		adminOrgList, err := client.Admin.Organizations.List(ctx, &AdminOrganizationListOptions{
 			Query: randomName,
 		})
-		assert.NoError(t, err)
+		require.NoError(t, err)
 		assert.Equal(t, false, adminOrgItemsContainsName(adminOrgList.Items, org.Name))
 		assert.Equal(t, 1, adminOrgList.CurrentPage)
 		assert.Equal(t, 0, adminOrgList.TotalCount)
@@ -61,9 +61,9 @@ func TestAdminOrganizations_List(t *testing.T) {
 		adminOrgList, err := client.Admin.Organizations.List(ctx, &AdminOrganizationListOptions{
 			Include: []AdminOrgIncludeOpt{AdminOrgOwners},
 		})
-		assert.NoError(t, err)
+		require.NoError(t, err)
 
-		assert.NotEmpty(t, adminOrgList.Items)
+		require.NotEmpty(t, adminOrgList.Items)
 		assert.NotNil(t, adminOrgList.Items[0].Owners)
 		assert.NotEmpty(t, adminOrgList.Items[0].Owners[0].Email)
 	})
@@ -95,8 +95,8 @@ func TestAdminOrganizations_Read(t *testing.T) {
 		defer orgTestCleanup()
 
 		adminOrg, err := client.Admin.Organizations.Read(ctx, org.Name)
-		assert.NoError(t, err)
-		assert.NotNilf(t, adminOrg, "Organization is not nil")
+		require.NoError(t, err)
+		require.NotNilf(t, adminOrg, "Organization is not nil")
 		assert.Equal(t, adminOrg.Name, org.Name)
 
 		// attributes part of an AdminOrganization response that are not null
@@ -133,12 +133,12 @@ func TestAdminOrganizations_Delete(t *testing.T) {
 		originalOrg, _ := createOrganization(t, client)
 
 		adminOrg, err := client.Admin.Organizations.Read(ctx, originalOrg.Name)
-		assert.NoError(t, err)
-		assert.NotNilf(t, adminOrg, "Organization is not nil")
+		require.NoError(t, err)
+		require.NotNil(t, adminOrg)
 		assert.Equal(t, adminOrg.Name, originalOrg.Name)
 
 		err = client.Admin.Organizations.Delete(ctx, adminOrg.Name)
-		assert.NoError(t, err)
+		require.NoError(t, err)
 
 		// Cannot find deleted org
 		_, err = client.Admin.Organizations.Read(ctx, originalOrg.Name)
@@ -169,7 +169,7 @@ func TestAdminOrganizations_ModuleConsumers(t *testing.T) {
 		defer org2TestCleanup()
 
 		err := client.Admin.Organizations.UpdateModuleConsumers(ctx, org1.Name, []string{org2.Name})
-		assert.NoError(t, err)
+		require.NoError(t, err)
 
 		adminModuleConsumerList, err := client.Admin.Organizations.ListModuleConsumers(ctx, org1.Name, nil)
 		require.NoError(t, err)
@@ -181,7 +181,7 @@ func TestAdminOrganizations_ModuleConsumers(t *testing.T) {
 		defer org3TestCleanup()
 
 		err = client.Admin.Organizations.UpdateModuleConsumers(ctx, org1.Name, []string{org3.Name})
-		assert.NoError(t, err)
+		require.NoError(t, err)
 
 		adminModuleConsumerList, err = client.Admin.Organizations.ListModuleConsumers(ctx, org1.Name, nil)
 		require.NoError(t, err)
@@ -215,8 +215,8 @@ func TestAdminOrganizations_Update(t *testing.T) {
 		defer orgTestCleanup()
 
 		adminOrg, err := client.Admin.Organizations.Read(ctx, org.Name)
-		assert.NoError(t, err)
-		assert.NotNilf(t, adminOrg, "Org returned as nil")
+		require.NoError(t, err)
+		require.NotNilf(t, adminOrg, "Org returned as nil")
 
 		accessBetaTools := true
 		globalModuleSharing := false
@@ -235,8 +235,8 @@ func TestAdminOrganizations_Update(t *testing.T) {
 		}
 
 		adminOrg, err = client.Admin.Organizations.Update(ctx, org.Name, opts)
-		assert.NotNilf(t, adminOrg, "Org returned as nil when it shouldn't be.")
-		assert.NoError(t, err)
+		require.NotNilf(t, adminOrg, "Org returned as nil when it shouldn't be.")
+		require.NoError(t, err)
 
 		assert.Equal(t, accessBetaTools, adminOrg.AccessBetaTools)
 		assert.Equal(t, adminOrg.GlobalModuleSharing, &globalModuleSharing)
@@ -256,8 +256,8 @@ func TestAdminOrganizations_Update(t *testing.T) {
 		}
 
 		adminOrg, err = client.Admin.Organizations.Update(ctx, org.Name, opts)
-		assert.NoError(t, err)
-		assert.NotNilf(t, adminOrg, "Org returned as nil when it shouldn't be.")
+		require.NoError(t, err)
+		require.NotNilf(t, adminOrg, "Org returned as nil when it shouldn't be.")
 
 		assert.Equal(t, adminOrg.GlobalModuleSharing, &globalModuleSharing)
 		assert.Equal(t, adminOrg.IsDisabled, isDisabled)
@@ -273,8 +273,8 @@ func TestAdminOrganizations_Update(t *testing.T) {
 		}
 
 		adminOrg, err = client.Admin.Organizations.Update(ctx, org.Name, opts)
-		assert.NoError(t, err)
-		assert.NotNilf(t, adminOrg, "Org returned as nil when it shouldn't be.")
+		require.NoError(t, err)
+		require.NotNilf(t, adminOrg, "Org returned as nil when it shouldn't be.")
 
 		assert.Equal(t, &globalModuleSharing, adminOrg.GlobalModuleSharing)
 		assert.Equal(t, adminOrg.IsDisabled, isDisabled)

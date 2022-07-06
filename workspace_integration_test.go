@@ -139,10 +139,9 @@ func TestWorkspacesList(t *testing.T) {
 			Include: []WSIncludeOpt{WSOrganization},
 		})
 
-		assert.NoError(t, err)
-
-		assert.NotEmpty(t, wl.Items)
-		assert.NotNil(t, wl.Items[0].Organization)
+		require.NoError(t, err)
+		require.NotEmpty(t, wl.Items)
+		require.NotNil(t, wl.Items[0].Organization)
 		assert.NotEmpty(t, wl.Items[0].Organization.Email)
 	})
 
@@ -154,16 +153,17 @@ func TestWorkspacesList(t *testing.T) {
 			Include: []WSIncludeOpt{WSCurrentStateVer, WSCurrentRun},
 		})
 
-		assert.NoError(t, err)
-		assert.NotEmpty(t, wl.Items)
+		require.NoError(t, err)
+		require.NotEmpty(t, wl.Items)
 
 		foundWTest1 := false
 		for _, ws := range wl.Items {
 			if ws.ID == wTest1.ID {
 				foundWTest1 = true
-				assert.NotNil(t, wl.Items[0].CurrentStateVersion)
+				require.NotNil(t, wl.Items[0].CurrentStateVersion)
 				assert.NotEmpty(t, wl.Items[0].CurrentStateVersion.DownloadURL)
-				assert.NotNil(t, wl.Items[0].CurrentRun)
+
+				require.NotNil(t, wl.Items[0].CurrentRun)
 				assert.NotEmpty(t, wl.Items[0].CurrentRun.Message)
 			}
 		}

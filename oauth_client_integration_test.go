@@ -73,6 +73,9 @@ func TestOAuthClientsList(t *testing.T) {
 			Include: []OAuthClientIncludeOpt{OauthClientOauthTokens},
 		})
 		require.NoError(t, err)
+		require.NotEmpty(t, ocl.Items)
+		require.NotNil(t, ocl.Items[0])
+		require.NotEmpty(t, ocl.Items[0].OAuthTokens)
 		assert.NotEmpty(t, ocl.Items[0].OAuthTokens[0].ID)
 	})
 
@@ -104,7 +107,7 @@ func TestOAuthClientsCreate(t *testing.T) {
 		}
 
 		oc, err := client.OAuthClients.Create(ctx, orgTest.Name, options)
-		assert.NoError(t, err)
+		require.NoError(t, err)
 		assert.NotEmpty(t, oc.ID)
 		assert.Equal(t, "https://api.github.com", oc.APIURL)
 		assert.Equal(t, "https://github.com", oc.HTTPURL)
@@ -192,7 +195,7 @@ func TestOAuthClientsCreate_rsaKeyPair(t *testing.T) {
 		}
 
 		oc, err := client.OAuthClients.Create(ctx, orgTest.Name, options)
-		assert.NoError(t, err)
+		require.NoError(t, err)
 		assert.NotEmpty(t, oc.ID)
 		assert.Equal(t, "https://bbs.com", oc.APIURL)
 		assert.Equal(t, "https://bbs.com", oc.HTTPURL)
@@ -410,7 +413,7 @@ func TestOAuthClientsUpdate_rsaKeyPair(t *testing.T) {
 		}
 
 		origOC, err := client.OAuthClients.Create(ctx, orgTest.Name, options)
-		assert.NoError(t, err)
+		require.NoError(t, err)
 		assert.NotEmpty(t, origOC.ID)
 
 		newKey := randomString(t)
@@ -418,7 +421,7 @@ func TestOAuthClientsUpdate_rsaKeyPair(t *testing.T) {
 			Key: String(newKey),
 		}
 		oc, err := client.OAuthClients.Update(ctx, origOC.ID, updateOpts)
-		assert.NoError(t, err)
+		require.NoError(t, err)
 		assert.NotEmpty(t, oc.ID)
 		assert.Equal(t, ServiceProviderBitbucketServer, oc.ServiceProvider)
 		assert.Equal(t, oc.RSAPublicKey, origOC.RSAPublicKey)
@@ -437,7 +440,7 @@ func TestOAuthClientsUpdate_rsaKeyPair(t *testing.T) {
 		}
 
 		origOC, err := client.OAuthClients.Create(ctx, orgTest.Name, options)
-		assert.NoError(t, err)
+		require.NoError(t, err)
 		assert.NotEmpty(t, origOC.ID)
 
 		updateOpts := OAuthClientUpdateOptions{

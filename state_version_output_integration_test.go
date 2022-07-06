@@ -33,6 +33,9 @@ func TestStateVersionOutputsRead(t *testing.T) {
 		t.Fatal(err)
 	}
 
+	require.NotEmpty(t, sv.Outputs)
+	require.NotNil(t, sv.Outputs[0])
+
 	output := sv.Outputs[0]
 
 	t.Run("Read by ID", func(t *testing.T) {
@@ -54,17 +57,14 @@ func TestStateVersionOutputsRead(t *testing.T) {
 
 	t.Run("Read current workspace outputs", func(t *testing.T) {
 		so, err := client.StateVersionOutputs.ReadCurrent(ctx, wTest1.ID)
-
-		assert.Nil(t, err)
-		assert.NotNil(t, so)
-
-		assert.Greater(t, len(so.Items), 0, "workspace state version outputs were empty")
+		require.NoError(t, err)
+		assert.NotEmpty(t, so.Items)
 	})
 
 	t.Run("Sensitive secrets are null", func(t *testing.T) {
 		so, err := client.StateVersionOutputs.ReadCurrent(ctx, wTest1.ID)
-		assert.Nil(t, err)
-		assert.NotNil(t, so)
+		require.NoError(t, err)
+		require.NotEmpty(t, so.Items)
 
 		var found *StateVersionOutput = nil
 		for _, s := range so.Items {

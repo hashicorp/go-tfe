@@ -23,6 +23,7 @@ func TestVariableSetsList(t *testing.T) {
 	t.Run("without list options", func(t *testing.T) {
 		vsl, err := client.VariableSets.List(ctx, orgTest.Name, nil)
 		require.NoError(t, err)
+		require.NotEmpty(t, vsl.Items)
 		assert.Contains(t, vsl.Items, vsTest1)
 		assert.Contains(t, vsl.Items, vsTest2)
 

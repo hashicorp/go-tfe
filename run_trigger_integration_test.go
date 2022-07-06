@@ -127,7 +127,8 @@ func TestRunTriggerList(t *testing.T) {
 			},
 		)
 		require.NoError(t, err)
-		assert.NotEmpty(t, rtl.Items)
+		require.NotEmpty(t, rtl.Items)
+		require.NotNil(t, rtl.Items[0].Sourceable)
 		assert.NotEmpty(t, rtl.Items[0].Sourceable.Name)
 	})
 
