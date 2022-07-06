@@ -167,13 +167,13 @@ func (s *oAuthClients) List(ctx context.Context, organization string, options *O
 	}
 
 	u := fmt.Sprintf("organizations/%s/oauth-clients", url.QueryEscape(organization))
-	req, err := s.client.newRequest("GET", u, options)
+	req, err := s.client.NewRequest("GET", u, options)
 	if err != nil {
 		return nil, err
 	}
 
 	ocl := &OAuthClientList{}
-	err = s.client.do(ctx, req, ocl)
+	err = req.Do(ctx, ocl)
 	if err != nil {
 		return nil, err
 	}
@@ -191,13 +191,13 @@ func (s *oAuthClients) Create(ctx context.Context, organization string, options 
 	}
 
 	u := fmt.Sprintf("organizations/%s/oauth-clients", url.QueryEscape(organization))
-	req, err := s.client.newRequest("POST", u, &options)
+	req, err := s.client.NewRequest("POST", u, &options)
 	if err != nil {
 		return nil, err
 	}
 
 	oc := &OAuthClient{}
-	err = s.client.do(ctx, req, oc)
+	err = req.Do(ctx, oc)
 	if err != nil {
 		return nil, err
 	}
@@ -212,13 +212,13 @@ func (s *oAuthClients) Read(ctx context.Context, oAuthClientID string) (*OAuthCl
 	}
 
 	u := fmt.Sprintf("oauth-clients/%s", url.QueryEscape(oAuthClientID))
-	req, err := s.client.newRequest("GET", u, nil)
+	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, err
 	}
 
 	oc := &OAuthClient{}
-	err = s.client.do(ctx, req, oc)
+	err = req.Do(ctx, oc)
 	if err != nil {
 		return nil, err
 	}
@@ -233,13 +233,13 @@ func (s *oAuthClients) Update(ctx context.Context, oAuthClientID string, options
 	}
 
 	u := fmt.Sprintf("oauth-clients/%s", url.QueryEscape(oAuthClientID))
-	req, err := s.client.newRequest("PATCH", u, &options)
+	req, err := s.client.NewRequest("PATCH", u, &options)
 	if err != nil {
 		return nil, err
 	}
 
 	oc := &OAuthClient{}
-	err = s.client.do(ctx, req, oc)
+	err = req.Do(ctx, oc)
 	if err != nil {
 		return nil, err
 	}
@@ -254,12 +254,12 @@ func (s *oAuthClients) Delete(ctx context.Context, oAuthClientID string) error {
 	}
 
 	u := fmt.Sprintf("oauth-clients/%s", url.QueryEscape(oAuthClientID))
-	req, err := s.client.newRequest("DELETE", u, nil)
+	req, err := s.client.NewRequest("DELETE", u, nil)
 	if err != nil {
 		return err
 	}
 
-	return s.client.do(ctx, req, nil)
+	return req.Do(ctx, nil)
 }
 
 func (o OAuthClientCreateOptions) valid() error {

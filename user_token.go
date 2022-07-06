@@ -62,13 +62,13 @@ func (s *userTokens) Create(ctx context.Context, userID string, options UserToke
 	}
 
 	u := fmt.Sprintf("users/%s/authentication-tokens", url.QueryEscape(userID))
-	req, err := s.client.newRequest("POST", u, &options)
+	req, err := s.client.NewRequest("POST", u, &options)
 	if err != nil {
 		return nil, err
 	}
 
 	ut := &UserToken{}
-	err = s.client.do(ctx, req, ut)
+	err = req.Do(ctx, ut)
 	if err != nil {
 		return nil, err
 	}
@@ -83,13 +83,13 @@ func (s *userTokens) List(ctx context.Context, userID string) (*UserTokenList, e
 	}
 
 	u := fmt.Sprintf("users/%s/authentication-tokens", url.QueryEscape(userID))
-	req, err := s.client.newRequest("GET", u, nil)
+	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, err
 	}
 
 	tl := &UserTokenList{}
-	err = s.client.do(ctx, req, tl)
+	err = req.Do(ctx, tl)
 	if err != nil {
 		return nil, err
 	}
@@ -104,13 +104,13 @@ func (s *userTokens) Read(ctx context.Context, tokenID string) (*UserToken, erro
 	}
 
 	u := fmt.Sprintf("authentication-tokens/%s", url.QueryEscape(tokenID))
-	req, err := s.client.newRequest("GET", u, nil)
+	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, err
 	}
 
 	tt := &UserToken{}
-	err = s.client.do(ctx, req, tt)
+	err = req.Do(ctx, tt)
 	if err != nil {
 		return nil, err
 	}
@@ -125,10 +125,10 @@ func (s *userTokens) Delete(ctx context.Context, tokenID string) error {
 	}
 
 	u := fmt.Sprintf("authentication-tokens/%s", url.QueryEscape(tokenID))
-	req, err := s.client.newRequest("DELETE", u, nil)
+	req, err := s.client.NewRequest("DELETE", u, nil)
 	if err != nil {
 		return err
 	}
 
-	return s.client.do(ctx, req, nil)
+	return req.Do(ctx, nil)
 }

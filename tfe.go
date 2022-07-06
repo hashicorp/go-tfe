@@ -183,6 +183,75 @@ type Meta struct {
 	IPRanges IPRanges
 }
 
+func (c *Client) NewRequest(method, path string, reqAttr interface{}) (*ClientRequest, error) {
+	var u *url.URL
+	var err error
+	if strings.Contains(path, "/api/registry/") {
+		u, err = c.registryBaseURL.Parse(path)
+		if err != nil {
+			return nil, err
+		}
+	} else {
+		u, err = c.baseURL.Parse(path)
+		if err != nil {
+			return nil, err
+		}
+	}
+
+	// Create a request specific headers map.
+	reqHeaders := make(http.Header)
+	reqHeaders.Set("Authorization", "Bearer "+c.token)
+
+	var body interface{}
+	switch method {
+	case "GET":
+		reqHeaders.Set("Accept", "application/vnd.api+json")
+
+		if reqAttr != nil {
+			q, err := query.Values(reqAttr)
+			if err != nil {
+				return nil, err
+			}
+			u.RawQuery = encodeQueryParams(q)
+		}
+	case "DELETE", "PATCH", "POST":
+		reqHeaders.Set("Accept", "application/vnd.api+json")
+		reqHeaders.Set("Content-Type", "application/vnd.api+json")
+
+		if reqAttr != nil {
+			if body, err = serializeRequestBody(reqAttr); err != nil {
+				return nil, err
+			}
+		}
+	case "PUT":
+		reqHeaders.Set("Accept", "application/json")
+		reqHeaders.Set("Content-Type", "application/octet-stream")
+		body = reqAttr
+	}
+
+	req, err := retryablehttp.NewRequest(method, u.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	// Set the default headers.
+	for k, v := range c.headers {
+		req.Header[k] = v
+	}
+
+	// Set the request specific headers.
+	for k, v := range reqHeaders {
+		req.Header[k] = v
+	}
+
+	return &ClientRequest{
+		retryableRequest: req,
+		http:             c.http,
+		limiter:          c.limiter,
+		Header:           req.Header,
+	}, nil
+}
+
 // NewClient creates a new Terraform Enterprise API client.
 func NewClient(cfg *Config) (*Client, error) {
 	config := DefaultConfig()
@@ -508,82 +577,8 @@ func (c *Client) configureLimiter(rawLimit string) {
 	c.limiter = rate.NewLimiter(limit, burst)
 }
 
-// newRequest creates an API request with proper headers and serialization.
-//
-// A relative URL path can be provided, in which case it is resolved relative to the baseURL
-// of the Client. Relative URL paths should always be specified without a preceding slash. Adding a
-// preceding slash allows for ignoring the configured baseURL for non-standard endpoints.
-//
-// If v is supplied, the value will be JSONAPI encoded and included as the
-// request body. If the method is GET, the value will be parsed and added as
-// query parameters.
-func (c *Client) newRequest(method, path string, v interface{}) (*retryablehttp.Request, error) {
-	var u *url.URL
-	var err error
-	if strings.Contains(path, "/api/registry/") {
-		u, err = c.registryBaseURL.Parse(path)
-		if err != nil {
-			return nil, err
-		}
-	} else {
-		u, err = c.baseURL.Parse(path)
-		if err != nil {
-			return nil, err
-		}
-	}
-
-	// Create a request specific headers map.
-	reqHeaders := make(http.Header)
-	reqHeaders.Set("Authorization", "Bearer "+c.token)
-
-	var body interface{}
-	switch method {
-	case "GET":
-		reqHeaders.Set("Accept", "application/vnd.api+json")
-
-		if v != nil {
-			q, err := query.Values(v)
-			if err != nil {
-				return nil, err
-			}
-			u.RawQuery = encodeQueryParams(q)
-		}
-	case "DELETE", "PATCH", "POST":
-		reqHeaders.Set("Accept", "application/vnd.api+json")
-		reqHeaders.Set("Content-Type", "application/vnd.api+json")
-
-		if v != nil {
-			if body, err = serializeRequestBody(v); err != nil {
-				return nil, err
-			}
-		}
-	case "PUT":
-		reqHeaders.Set("Accept", "application/json")
-		reqHeaders.Set("Content-Type", "application/octet-stream")
-		body = v
-	}
-
-	req, err := retryablehttp.NewRequest(method, u.String(), body)
-	if err != nil {
-		return nil, err
-	}
-
-	// Set the default headers.
-	for k, v := range c.headers {
-		req.Header[k] = v
-	}
-
-	// Set the request specific headers.
-	for k, v := range reqHeaders {
-		req.Header[k] = v
-	}
-
-	return req, nil
-}
-
-// Encode encodes the values into ``URL encoded'' form
+// encodeQueryParams encodes the values into ``URL encoded'' form
 // ("bar=baz&foo=quux") sorted by key.
-
 func encodeQueryParams(v url.Values) string {
 	if v == nil {
 		return ""
@@ -615,10 +610,9 @@ func encodeQueryParams(v url.Values) string {
 	return buf.String()
 }
 
-// Helper method that serializes the given ptr or ptr slice into a JSON
+// serializeRequestBody serializes the given ptr or ptr slice into a JSON
 // request. It automatically uses jsonapi or json serialization, depending
 // on the body type's tags.
-
 func serializeRequestBody(v interface{}) (interface{}, error) {
 	// The body can be a slice of pointers or a pointer. In either
 	// case we want to choose the serialization type based on the
@@ -671,99 +665,6 @@ func serializeRequestBody(v interface{}) (interface{}, error) {
 		return nil, err
 	}
 	return buf, nil
-}
-
-// do sends an API request and returns the API response. The API response
-// is JSONAPI decoded and the document's primary data is stored in the value
-// pointed to by v, or returned as an error if an API error has occurred.
-
-// If v implements the io.Writer interface, the raw response body will be
-// written to v, without attempting to first decode it.
-//
-// The provided ctx must be non-nil. If it is canceled or times out, ctx.Err()
-// will be returned.
-
-func (c *Client) do(ctx context.Context, req *retryablehttp.Request, v interface{}) error {
-	// Wait will block until the limiter can obtain a new token
-	// or returns an error if the given context is canceled.
-	if err := c.limiter.Wait(ctx); err != nil {
-		return err
-	}
-
-	// Add the context to the request.
-	reqWithCxt := req.WithContext(ctx)
-
-	// Execute the request and check the response.
-	resp, err := c.http.Do(reqWithCxt)
-	if err != nil {
-		// If we got an error, and the context has been canceled,
-		// the context's error is probably more useful.
-		select {
-		case <-ctx.Done():
-			return ctx.Err()
-		default:
-			return err
-		}
-	}
-	defer resp.Body.Close()
-
-	// Basic response checking.
-	if err := checkResponseCode(resp); err != nil {
-		return err
-	}
-
-	// Return here if decoding the response isn't needed.
-	if v == nil {
-		return nil
-	}
-
-	// If v implements io.Writer, write the raw response body.
-	if w, ok := v.(io.Writer); ok {
-		_, err := io.Copy(w, resp.Body)
-		return err
-	}
-
-	return unmarshalResponse(resp.Body, v)
-}
-
-// customDo is similar to func (c *Client) do(ctx context.Context, req *retryablehttp.Request, v interface{}) error. Except that The IP ranges API is not returning jsonapi like every other endpoint
-// which means we need to handle it differently.
-
-func (i *ipRanges) customDo(ctx context.Context, req *retryablehttp.Request, ir *IPRange) error {
-	// Wait will block until the limiter can obtain a new token
-	// or returns an error if the given context is canceled.
-	if err := i.client.limiter.Wait(ctx); err != nil {
-		return err
-	}
-
-	// Add the context to the request.
-	req = req.WithContext(ctx)
-
-	// Execute the request and check the response.
-	resp, err := i.client.http.Do(req)
-	if err != nil {
-		// If we got an error, and the context has been canceled,
-		// the context's error is probably more useful.
-		select {
-		case <-ctx.Done():
-			return ctx.Err()
-		default:
-			return err
-		}
-	}
-	defer resp.Body.Close()
-
-	if resp.StatusCode < 200 && resp.StatusCode >= 400 {
-		return fmt.Errorf("error HTTP response while retrieving IP ranges: %d", resp.StatusCode)
-	} else if resp.StatusCode == 304 {
-		return nil
-	}
-
-	err = json.NewDecoder(resp.Body).Decode(ir)
-	if err != nil {
-		return err
-	}
-	return nil
 }
 
 func unmarshalResponse(responseBody io.Reader, model interface{}) error {

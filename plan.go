@@ -80,13 +80,13 @@ func (s *plans) Read(ctx context.Context, planID string) (*Plan, error) {
 	}
 
 	u := fmt.Sprintf("plans/%s", url.QueryEscape(planID))
-	req, err := s.client.newRequest("GET", u, nil)
+	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, err
 	}
 
 	p := &Plan{}
-	err = s.client.do(ctx, req, p)
+	err = req.Do(ctx, p)
 	if err != nil {
 		return nil, err
 	}
@@ -145,13 +145,13 @@ func (s *plans) ReadJSONOutput(ctx context.Context, planID string) ([]byte, erro
 	}
 
 	u := fmt.Sprintf("plans/%s/json-output", url.QueryEscape(planID))
-	req, err := s.client.newRequest("GET", u, nil)
+	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, err
 	}
 
 	var buf bytes.Buffer
-	err = s.client.do(ctx, req, &buf)
+	err = req.Do(ctx, &buf)
 	if err != nil {
 		return nil, err
 	}

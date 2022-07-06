@@ -50,13 +50,13 @@ type AdminSAMLSetting struct {
 
 // Read returns the SAML settings.
 func (a *adminSAMLSettings) Read(ctx context.Context) (*AdminSAMLSetting, error) {
-	req, err := a.client.newRequest("GET", "admin/saml-settings", nil)
+	req, err := a.client.NewRequest("GET", "admin/saml-settings", nil)
 	if err != nil {
 		return nil, err
 	}
 
 	saml := &AdminSAMLSetting{}
-	err = a.client.do(ctx, req, saml)
+	err = req.Do(ctx, saml)
 	if err != nil {
 		return nil, err
 	}
@@ -82,13 +82,13 @@ type AdminSAMLSettingsUpdateOptions struct {
 
 // Update updates the SAML settings.
 func (a *adminSAMLSettings) Update(ctx context.Context, options AdminSAMLSettingsUpdateOptions) (*AdminSAMLSetting, error) {
-	req, err := a.client.newRequest("PATCH", "admin/saml-settings", &options)
+	req, err := a.client.NewRequest("PATCH", "admin/saml-settings", &options)
 	if err != nil {
 		return nil, err
 	}
 
 	saml := &AdminSAMLSetting{}
-	err = a.client.do(ctx, req, saml)
+	err = req.Do(ctx, saml)
 	if err != nil {
 		return nil, err
 	}
@@ -99,13 +99,13 @@ func (a *adminSAMLSettings) Update(ctx context.Context, options AdminSAMLSetting
 // RevokeIdpCert revokes the older IdP certificate when the new IdP
 // certificate is known to be functioning correctly.
 func (a *adminSAMLSettings) RevokeIdpCert(ctx context.Context) (*AdminSAMLSetting, error) {
-	req, err := a.client.newRequest("POST", "admin/saml-settings/actions/revoke-old-certificate", nil)
+	req, err := a.client.NewRequest("POST", "admin/saml-settings/actions/revoke-old-certificate", nil)
 	if err != nil {
 		return nil, err
 	}
 
 	saml := &AdminSAMLSetting{}
-	err = a.client.do(ctx, req, saml)
+	err = req.Do(ctx, saml)
 	if err != nil {
 		return nil, err
 	}

@@ -43,13 +43,13 @@ type AdminSMTPSetting struct {
 
 // Read returns the SMTP settings.
 func (a *adminSMTPSettings) Read(ctx context.Context) (*AdminSMTPSetting, error) {
-	req, err := a.client.newRequest("GET", "admin/smtp-settings", nil)
+	req, err := a.client.NewRequest("GET", "admin/smtp-settings", nil)
 	if err != nil {
 		return nil, err
 	}
 
 	smtp := &AdminSMTPSetting{}
-	err = a.client.do(ctx, req, smtp)
+	err = req.Do(ctx, smtp)
 	if err != nil {
 		return nil, err
 	}
@@ -77,13 +77,13 @@ func (a *adminSMTPSettings) Update(ctx context.Context, options AdminSMTPSetting
 		return nil, err
 	}
 
-	req, err := a.client.newRequest("PATCH", "admin/smtp-settings", &options)
+	req, err := a.client.NewRequest("PATCH", "admin/smtp-settings", &options)
 	if err != nil {
 		return nil, err
 	}
 
 	smtp := &AdminSMTPSetting{}
-	err = a.client.do(ctx, req, smtp)
+	err = req.Do(ctx, smtp)
 	if err != nil {
 		return nil, err
 	}

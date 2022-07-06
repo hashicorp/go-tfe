@@ -101,13 +101,13 @@ func (s *runTriggers) List(ctx context.Context, workspaceID string, options *Run
 	}
 
 	u := fmt.Sprintf("workspaces/%s/run-triggers", url.QueryEscape(workspaceID))
-	req, err := s.client.newRequest("GET", u, options)
+	req, err := s.client.NewRequest("GET", u, options)
 	if err != nil {
 		return nil, err
 	}
 
 	rtl := &RunTriggerList{}
-	err = s.client.do(ctx, req, rtl)
+	err = req.Do(ctx, rtl)
 	if err != nil {
 		return nil, err
 	}
@@ -125,13 +125,13 @@ func (s *runTriggers) Create(ctx context.Context, workspaceID string, options Ru
 	}
 
 	u := fmt.Sprintf("workspaces/%s/run-triggers", url.QueryEscape(workspaceID))
-	req, err := s.client.newRequest("POST", u, &options)
+	req, err := s.client.NewRequest("POST", u, &options)
 	if err != nil {
 		return nil, err
 	}
 
 	rt := &RunTrigger{}
-	err = s.client.do(ctx, req, rt)
+	err = req.Do(ctx, rt)
 	if err != nil {
 		return nil, err
 	}
@@ -146,13 +146,13 @@ func (s *runTriggers) Read(ctx context.Context, runTriggerID string) (*RunTrigge
 	}
 
 	u := fmt.Sprintf("run-triggers/%s", url.QueryEscape(runTriggerID))
-	req, err := s.client.newRequest("GET", u, nil)
+	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, err
 	}
 
 	rt := &RunTrigger{}
-	err = s.client.do(ctx, req, rt)
+	err = req.Do(ctx, rt)
 	if err != nil {
 		return nil, err
 	}
@@ -167,12 +167,12 @@ func (s *runTriggers) Delete(ctx context.Context, runTriggerID string) error {
 	}
 
 	u := fmt.Sprintf("run-triggers/%s", url.QueryEscape(runTriggerID))
-	req, err := s.client.newRequest("DELETE", u, nil)
+	req, err := s.client.NewRequest("DELETE", u, nil)
 	if err != nil {
 		return err
 	}
 
-	return s.client.do(ctx, req, nil)
+	return req.Do(ctx, nil)
 }
 
 func (o RunTriggerCreateOptions) valid() error {

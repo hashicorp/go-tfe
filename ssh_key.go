@@ -84,13 +84,13 @@ func (s *sshKeys) List(ctx context.Context, organization string, options *SSHKey
 	}
 
 	u := fmt.Sprintf("organizations/%s/ssh-keys", url.QueryEscape(organization))
-	req, err := s.client.newRequest("GET", u, options)
+	req, err := s.client.NewRequest("GET", u, options)
 	if err != nil {
 		return nil, err
 	}
 
 	kl := &SSHKeyList{}
-	err = s.client.do(ctx, req, kl)
+	err = req.Do(ctx, kl)
 	if err != nil {
 		return nil, err
 	}
@@ -109,13 +109,13 @@ func (s *sshKeys) Create(ctx context.Context, organization string, options SSHKe
 	}
 
 	u := fmt.Sprintf("organizations/%s/ssh-keys", url.QueryEscape(organization))
-	req, err := s.client.newRequest("POST", u, &options)
+	req, err := s.client.NewRequest("POST", u, &options)
 	if err != nil {
 		return nil, err
 	}
 
 	k := &SSHKey{}
-	err = s.client.do(ctx, req, k)
+	err = req.Do(ctx, k)
 	if err != nil {
 		return nil, err
 	}
@@ -130,13 +130,13 @@ func (s *sshKeys) Read(ctx context.Context, sshKeyID string) (*SSHKey, error) {
 	}
 
 	u := fmt.Sprintf("ssh-keys/%s", url.QueryEscape(sshKeyID))
-	req, err := s.client.newRequest("GET", u, nil)
+	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, err
 	}
 
 	k := &SSHKey{}
-	err = s.client.do(ctx, req, k)
+	err = req.Do(ctx, k)
 	if err != nil {
 		return nil, err
 	}
@@ -151,13 +151,13 @@ func (s *sshKeys) Update(ctx context.Context, sshKeyID string, options SSHKeyUpd
 	}
 
 	u := fmt.Sprintf("ssh-keys/%s", url.QueryEscape(sshKeyID))
-	req, err := s.client.newRequest("PATCH", u, &options)
+	req, err := s.client.NewRequest("PATCH", u, &options)
 	if err != nil {
 		return nil, err
 	}
 
 	k := &SSHKey{}
-	err = s.client.do(ctx, req, k)
+	err = req.Do(ctx, k)
 	if err != nil {
 		return nil, err
 	}
@@ -172,12 +172,12 @@ func (s *sshKeys) Delete(ctx context.Context, sshKeyID string) error {
 	}
 
 	u := fmt.Sprintf("ssh-keys/%s", url.QueryEscape(sshKeyID))
-	req, err := s.client.newRequest("DELETE", u, nil)
+	req, err := s.client.NewRequest("DELETE", u, nil)
 	if err != nil {
 		return err
 	}
 
-	return s.client.do(ctx, req, nil)
+	return req.Do(ctx, nil)
 }
 
 func (o SSHKeyCreateOptions) valid() error {

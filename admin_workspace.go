@@ -81,13 +81,13 @@ func (s *adminWorkspaces) List(ctx context.Context, options *AdminWorkspaceListO
 	}
 
 	u := "admin/workspaces"
-	req, err := s.client.newRequest("GET", u, options)
+	req, err := s.client.NewRequest("GET", u, options)
 	if err != nil {
 		return nil, err
 	}
 
 	awl := &AdminWorkspaceList{}
-	err = s.client.do(ctx, req, awl)
+	err = req.Do(ctx, awl)
 	if err != nil {
 		return nil, err
 	}
@@ -102,13 +102,13 @@ func (s *adminWorkspaces) Read(ctx context.Context, workspaceID string) (*AdminW
 	}
 
 	u := fmt.Sprintf("admin/workspaces/%s", url.QueryEscape(workspaceID))
-	req, err := s.client.newRequest("GET", u, nil)
+	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, err
 	}
 
 	aw := &AdminWorkspace{}
-	err = s.client.do(ctx, req, aw)
+	err = req.Do(ctx, aw)
 	if err != nil {
 		return nil, err
 	}
@@ -123,12 +123,12 @@ func (s *adminWorkspaces) Delete(ctx context.Context, workspaceID string) error 
 	}
 
 	u := fmt.Sprintf("admin/workspaces/%s", url.QueryEscape(workspaceID))
-	req, err := s.client.newRequest("DELETE", u, nil)
+	req, err := s.client.NewRequest("DELETE", u, nil)
 	if err != nil {
 		return err
 	}
 
-	return s.client.do(ctx, req, nil)
+	return req.Do(ctx, nil)
 }
 
 func (o *AdminWorkspaceListOptions) valid() error {
