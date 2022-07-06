@@ -1,9 +1,10 @@
-# v1.4.0 (Unreleased)
+# v1.4.0
 
 ## Enhancements
 * Adds `RetryServerErrors` field to the `Config` object by @sebasslash [#439](https://github.com/hashicorp/go-tfe/pull/439)
 * Adds support for the GPG Keys API by @sebasslash [#429](https://github.com/hashicorp/go-tfe/pull/429)
-* Add support for new `WorkspaceLimit` Admin setting for organizations [#425](https://github.com/hashicorp/go-tfe/pull/425)
+* Adds support for new `WorkspaceLimit` Admin setting for organizations [#425](https://github.com/hashicorp/go-tfe/pull/425)
+* Adds support for new `ExcludeTags` workspace list filter field by @Uk1288 [#438](https://github.com/hashicorp/go-tfe/pull/438)
 * [beta] Adds additional filter fields to `RunListOptions` by @mjyocca [#424](https://github.com/hashicorp/go-tfe/pull/424)
 * [beta] Renames the optional StateVersion field `ExtState` to `JSONStateOutputs` and changes the purpose and type by @annawinkler [#444](https://github.com/hashicorp/go-tfe/pull/444) and @brandoncroft [#452](https://github.com/hashicorp/go-tfe/pull/452)
 
