@@ -217,13 +217,13 @@ func (s *policySets) List(ctx context.Context, organization string, options *Pol
 	}
 
 	u := fmt.Sprintf("organizations/%s/policy-sets", url.QueryEscape(organization))
-	req, err := s.client.newRequest("GET", u, options)
+	req, err := s.client.NewRequest("GET", u, options)
 	if err != nil {
 		return nil, err
 	}
 
 	psl := &PolicySetList{}
-	err = s.client.do(ctx, req, psl)
+	err = req.Do(ctx, psl)
 	if err != nil {
 		return nil, err
 	}
@@ -241,13 +241,13 @@ func (s *policySets) Create(ctx context.Context, organization string, options Po
 	}
 
 	u := fmt.Sprintf("organizations/%s/policy-sets", url.QueryEscape(organization))
-	req, err := s.client.newRequest("POST", u, &options)
+	req, err := s.client.NewRequest("POST", u, &options)
 	if err != nil {
 		return nil, err
 	}
 
 	ps := &PolicySet{}
-	err = s.client.do(ctx, req, ps)
+	err = req.Do(ctx, ps)
 	if err != nil {
 		return nil, err
 	}
@@ -270,13 +270,13 @@ func (s *policySets) ReadWithOptions(ctx context.Context, policySetID string, op
 	}
 
 	u := fmt.Sprintf("policy-sets/%s", url.QueryEscape(policySetID))
-	req, err := s.client.newRequest("GET", u, options)
+	req, err := s.client.NewRequest("GET", u, options)
 	if err != nil {
 		return nil, err
 	}
 
 	ps := &PolicySet{}
-	err = s.client.do(ctx, req, ps)
+	err = req.Do(ctx, ps)
 	if err != nil {
 		return nil, err
 	}
@@ -294,13 +294,13 @@ func (s *policySets) Update(ctx context.Context, policySetID string, options Pol
 	}
 
 	u := fmt.Sprintf("policy-sets/%s", url.QueryEscape(policySetID))
-	req, err := s.client.newRequest("PATCH", u, &options)
+	req, err := s.client.NewRequest("PATCH", u, &options)
 	if err != nil {
 		return nil, err
 	}
 
 	ps := &PolicySet{}
-	err = s.client.do(ctx, req, ps)
+	err = req.Do(ctx, ps)
 	if err != nil {
 		return nil, err
 	}
@@ -318,12 +318,12 @@ func (s *policySets) AddPolicies(ctx context.Context, policySetID string, option
 	}
 
 	u := fmt.Sprintf("policy-sets/%s/relationships/policies", url.QueryEscape(policySetID))
-	req, err := s.client.newRequest("POST", u, options.Policies)
+	req, err := s.client.NewRequest("POST", u, options.Policies)
 	if err != nil {
 		return err
 	}
 
-	return s.client.do(ctx, req, nil)
+	return req.Do(ctx, nil)
 }
 
 // RemovePolicies remove policies from a policy set
@@ -336,12 +336,12 @@ func (s *policySets) RemovePolicies(ctx context.Context, policySetID string, opt
 	}
 
 	u := fmt.Sprintf("policy-sets/%s/relationships/policies", url.QueryEscape(policySetID))
-	req, err := s.client.newRequest("DELETE", u, options.Policies)
+	req, err := s.client.NewRequest("DELETE", u, options.Policies)
 	if err != nil {
 		return err
 	}
 
-	return s.client.do(ctx, req, nil)
+	return req.Do(ctx, nil)
 }
 
 // Addworkspaces adds workspaces to a policy set.
@@ -354,12 +354,12 @@ func (s *policySets) AddWorkspaces(ctx context.Context, policySetID string, opti
 	}
 
 	u := fmt.Sprintf("policy-sets/%s/relationships/workspaces", url.QueryEscape(policySetID))
-	req, err := s.client.newRequest("POST", u, options.Workspaces)
+	req, err := s.client.NewRequest("POST", u, options.Workspaces)
 	if err != nil {
 		return err
 	}
 
-	return s.client.do(ctx, req, nil)
+	return req.Do(ctx, nil)
 }
 
 // RemoveWorkspaces removes workspaces from a policy set.
@@ -372,12 +372,12 @@ func (s *policySets) RemoveWorkspaces(ctx context.Context, policySetID string, o
 	}
 
 	u := fmt.Sprintf("policy-sets/%s/relationships/workspaces", url.QueryEscape(policySetID))
-	req, err := s.client.newRequest("DELETE", u, options.Workspaces)
+	req, err := s.client.NewRequest("DELETE", u, options.Workspaces)
 	if err != nil {
 		return err
 	}
 
-	return s.client.do(ctx, req, nil)
+	return req.Do(ctx, nil)
 }
 
 // Delete a policy set by its ID.
@@ -387,12 +387,12 @@ func (s *policySets) Delete(ctx context.Context, policySetID string) error {
 	}
 
 	u := fmt.Sprintf("policy-sets/%s", url.QueryEscape(policySetID))
-	req, err := s.client.newRequest("DELETE", u, nil)
+	req, err := s.client.NewRequest("DELETE", u, nil)
 	if err != nil {
 		return err
 	}
 
-	return s.client.do(ctx, req, nil)
+	return req.Do(ctx, nil)
 }
 
 func (o PolicySetCreateOptions) valid() error {

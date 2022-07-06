@@ -37,7 +37,7 @@ type IPRange struct {
 
 // Read an IPRange that was not modified since the specified date.
 func (i *ipRanges) Read(ctx context.Context, modifiedSince string) (*IPRange, error) {
-	req, err := i.client.newRequest("GET", "/api/meta/ip-ranges", nil)
+	req, err := i.client.NewRequest("GET", "/api/meta/ip-ranges", nil)
 	if err != nil {
 		return nil, err
 	}
@@ -47,7 +47,7 @@ func (i *ipRanges) Read(ctx context.Context, modifiedSince string) (*IPRange, er
 	}
 
 	ir := &IPRange{}
-	err = i.customDo(ctx, req, ir)
+	err = req.doIpRanges(ctx, ir)
 	if err != nil {
 		return nil, err
 	}

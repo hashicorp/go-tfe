@@ -131,13 +131,13 @@ func (s *variables) List(ctx context.Context, workspaceID string, options *Varia
 	}
 
 	u := fmt.Sprintf("workspaces/%s/vars", url.QueryEscape(workspaceID))
-	req, err := s.client.newRequest("GET", u, options)
+	req, err := s.client.NewRequest("GET", u, options)
 	if err != nil {
 		return nil, err
 	}
 
 	vl := &VariableList{}
-	err = s.client.do(ctx, req, vl)
+	err = req.Do(ctx, vl)
 	if err != nil {
 		return nil, err
 	}
@@ -155,13 +155,13 @@ func (s *variables) Create(ctx context.Context, workspaceID string, options Vari
 	}
 
 	u := fmt.Sprintf("workspaces/%s/vars", url.QueryEscape(workspaceID))
-	req, err := s.client.newRequest("POST", u, &options)
+	req, err := s.client.NewRequest("POST", u, &options)
 	if err != nil {
 		return nil, err
 	}
 
 	v := &Variable{}
-	err = s.client.do(ctx, req, v)
+	err = req.Do(ctx, v)
 	if err != nil {
 		return nil, err
 	}
@@ -179,13 +179,13 @@ func (s *variables) Read(ctx context.Context, workspaceID, variableID string) (*
 	}
 
 	u := fmt.Sprintf("workspaces/%s/vars/%s", url.QueryEscape(workspaceID), url.QueryEscape(variableID))
-	req, err := s.client.newRequest("GET", u, nil)
+	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, err
 	}
 
 	v := &Variable{}
-	err = s.client.do(ctx, req, v)
+	err = req.Do(ctx, v)
 	if err != nil {
 		return nil, err
 	}
@@ -203,13 +203,13 @@ func (s *variables) Update(ctx context.Context, workspaceID, variableID string, 
 	}
 
 	u := fmt.Sprintf("workspaces/%s/vars/%s", url.QueryEscape(workspaceID), url.QueryEscape(variableID))
-	req, err := s.client.newRequest("PATCH", u, &options)
+	req, err := s.client.NewRequest("PATCH", u, &options)
 	if err != nil {
 		return nil, err
 	}
 
 	v := &Variable{}
-	err = s.client.do(ctx, req, v)
+	err = req.Do(ctx, v)
 	if err != nil {
 		return nil, err
 	}
@@ -227,12 +227,12 @@ func (s *variables) Delete(ctx context.Context, workspaceID, variableID string) 
 	}
 
 	u := fmt.Sprintf("workspaces/%s/vars/%s", url.QueryEscape(workspaceID), url.QueryEscape(variableID))
-	req, err := s.client.newRequest("DELETE", u, nil)
+	req, err := s.client.NewRequest("DELETE", u, nil)
 	if err != nil {
 		return err
 	}
 
-	return s.client.do(ctx, req, nil)
+	return req.Do(ctx, nil)
 }
 
 func (o VariableCreateOptions) valid() error {

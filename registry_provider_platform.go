@@ -56,13 +56,13 @@ type RegistryProviderPlatformID struct {
 // RegistryProviderPlatformCreateOptions represents the set of options for creating a registry provider platform
 type RegistryProviderPlatformCreateOptions struct {
 	// Required: A valid operating system string
-	OS       string `jsonapi:"attr,os"`
+	OS string `jsonapi:"attr,os"`
 
 	// Required: A valid architecture string
-	Arch     string `jsonapi:"attr,arch"`
+	Arch string `jsonapi:"attr,arch"`
 
 	// Required: A valid shasum string
-	Shasum   string `jsonapi:"attr,shasum"`
+	Shasum string `jsonapi:"attr,shasum"`
 
 	// Required: A valid filename string
 	Filename string `jsonapi:"attr,filename"`
@@ -96,13 +96,13 @@ func (r *registryProviderPlatforms) Create(ctx context.Context, versionID Regist
 		url.QueryEscape(versionID.Name),
 		url.QueryEscape(versionID.Version),
 	)
-	req, err := r.client.newRequest("POST", u, &options)
+	req, err := r.client.NewRequest("POST", u, &options)
 	if err != nil {
 		return nil, err
 	}
 
 	rpp := &RegistryProviderPlatform{}
-	err = r.client.do(ctx, req, rpp)
+	err = req.Do(ctx, rpp)
 	if err != nil {
 		return nil, err
 	}
@@ -128,13 +128,13 @@ func (r *registryProviderPlatforms) List(ctx context.Context, versionID Registry
 		url.QueryEscape(versionID.RegistryProviderID.Name),
 		url.QueryEscape(versionID.Version),
 	)
-	req, err := r.client.newRequest("GET", u, options)
+	req, err := r.client.NewRequest("GET", u, options)
 	if err != nil {
 		return nil, err
 	}
 
 	ppl := &RegistryProviderPlatformList{}
-	err = r.client.do(ctx, req, ppl)
+	err = req.Do(ctx, ppl)
 	if err != nil {
 		return nil, err
 	}
@@ -159,13 +159,13 @@ func (r *registryProviderPlatforms) Read(ctx context.Context, platformID Registr
 		url.QueryEscape(platformID.OS),
 		url.QueryEscape(platformID.Arch),
 	)
-	req, err := r.client.newRequest("GET", u, nil)
+	req, err := r.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, err
 	}
 
 	rpp := &RegistryProviderPlatform{}
-	err = r.client.do(ctx, req, rpp)
+	err = req.Do(ctx, rpp)
 
 	if err != nil {
 		return nil, err
@@ -191,12 +191,12 @@ func (r *registryProviderPlatforms) Delete(ctx context.Context, platformID Regis
 		url.QueryEscape(platformID.OS),
 		url.QueryEscape(platformID.Arch),
 	)
-	req, err := r.client.newRequest("DELETE", u, nil)
+	req, err := r.client.NewRequest("DELETE", u, nil)
 	if err != nil {
 		return err
 	}
 
-	return r.client.do(ctx, req, nil)
+	return req.Do(ctx, nil)
 }
 
 func (id RegistryProviderPlatformID) valid() error {

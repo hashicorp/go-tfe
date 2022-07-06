@@ -165,13 +165,13 @@ func (s *teamAccesses) List(ctx context.Context, options *TeamAccessListOptions)
 		return nil, err
 	}
 
-	req, err := s.client.newRequest("GET", "team-workspaces", options)
+	req, err := s.client.NewRequest("GET", "team-workspaces", options)
 	if err != nil {
 		return nil, err
 	}
 
 	tal := &TeamAccessList{}
-	err = s.client.do(ctx, req, tal)
+	err = req.Do(ctx, tal)
 	if err != nil {
 		return nil, err
 	}
@@ -185,13 +185,13 @@ func (s *teamAccesses) Add(ctx context.Context, options TeamAccessAddOptions) (*
 		return nil, err
 	}
 
-	req, err := s.client.newRequest("POST", "team-workspaces", &options)
+	req, err := s.client.NewRequest("POST", "team-workspaces", &options)
 	if err != nil {
 		return nil, err
 	}
 
 	ta := &TeamAccess{}
-	err = s.client.do(ctx, req, ta)
+	err = req.Do(ctx, ta)
 	if err != nil {
 		return nil, err
 	}
@@ -206,13 +206,13 @@ func (s *teamAccesses) Read(ctx context.Context, teamAccessID string) (*TeamAcce
 	}
 
 	u := fmt.Sprintf("team-workspaces/%s", url.QueryEscape(teamAccessID))
-	req, err := s.client.newRequest("GET", u, nil)
+	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, err
 	}
 
 	ta := &TeamAccess{}
-	err = s.client.do(ctx, req, ta)
+	err = req.Do(ctx, ta)
 	if err != nil {
 		return nil, err
 	}
@@ -227,13 +227,13 @@ func (s *teamAccesses) Update(ctx context.Context, teamAccessID string, options 
 	}
 
 	u := fmt.Sprintf("team-workspaces/%s", url.QueryEscape(teamAccessID))
-	req, err := s.client.newRequest("PATCH", u, &options)
+	req, err := s.client.NewRequest("PATCH", u, &options)
 	if err != nil {
 		return nil, err
 	}
 
 	ta := &TeamAccess{}
-	err = s.client.do(ctx, req, ta)
+	err = req.Do(ctx, ta)
 	if err != nil {
 		return nil, err
 	}
@@ -248,12 +248,12 @@ func (s *teamAccesses) Remove(ctx context.Context, teamAccessID string) error {
 	}
 
 	u := fmt.Sprintf("team-workspaces/%s", url.QueryEscape(teamAccessID))
-	req, err := s.client.newRequest("DELETE", u, nil)
+	req, err := s.client.NewRequest("DELETE", u, nil)
 	if err != nil {
 		return err
 	}
 
-	return s.client.do(ctx, req, nil)
+	return req.Do(ctx, nil)
 }
 
 func (o *TeamAccessListOptions) valid() error {

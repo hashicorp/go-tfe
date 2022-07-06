@@ -104,13 +104,13 @@ func (s *policySetParameters) List(ctx context.Context, policySetID string, opti
 	}
 
 	u := fmt.Sprintf("policy-sets/%s/parameters", policySetID)
-	req, err := s.client.newRequest("GET", u, options)
+	req, err := s.client.NewRequest("GET", u, options)
 	if err != nil {
 		return nil, err
 	}
 
 	vl := &PolicySetParameterList{}
-	err = s.client.do(ctx, req, vl)
+	err = req.Do(ctx, vl)
 	if err != nil {
 		return nil, err
 	}
@@ -128,13 +128,13 @@ func (s *policySetParameters) Create(ctx context.Context, policySetID string, op
 	}
 
 	u := fmt.Sprintf("policy-sets/%s/parameters", url.QueryEscape(policySetID))
-	req, err := s.client.newRequest("POST", u, &options)
+	req, err := s.client.NewRequest("POST", u, &options)
 	if err != nil {
 		return nil, err
 	}
 
 	p := &PolicySetParameter{}
-	err = s.client.do(ctx, req, p)
+	err = req.Do(ctx, p)
 	if err != nil {
 		return nil, err
 	}
@@ -152,13 +152,13 @@ func (s *policySetParameters) Read(ctx context.Context, policySetID, parameterID
 	}
 
 	u := fmt.Sprintf("policy-sets/%s/parameters/%s", url.QueryEscape(policySetID), url.QueryEscape(parameterID))
-	req, err := s.client.newRequest("GET", u, nil)
+	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, err
 	}
 
 	p := &PolicySetParameter{}
-	err = s.client.do(ctx, req, p)
+	err = req.Do(ctx, p)
 	if err != nil {
 		return nil, err
 	}
@@ -176,13 +176,13 @@ func (s *policySetParameters) Update(ctx context.Context, policySetID, parameter
 	}
 
 	u := fmt.Sprintf("policy-sets/%s/parameters/%s", url.QueryEscape(policySetID), url.QueryEscape(parameterID))
-	req, err := s.client.newRequest("PATCH", u, &options)
+	req, err := s.client.NewRequest("PATCH", u, &options)
 	if err != nil {
 		return nil, err
 	}
 
 	p := &PolicySetParameter{}
-	err = s.client.do(ctx, req, p)
+	err = req.Do(ctx, p)
 	if err != nil {
 		return nil, err
 	}
@@ -200,12 +200,12 @@ func (s *policySetParameters) Delete(ctx context.Context, policySetID, parameter
 	}
 
 	u := fmt.Sprintf("policy-sets/%s/parameters/%s", url.QueryEscape(policySetID), url.QueryEscape(parameterID))
-	req, err := s.client.newRequest("DELETE", u, nil)
+	req, err := s.client.NewRequest("DELETE", u, nil)
 	if err != nil {
 		return err
 	}
 
-	return s.client.do(ctx, req, nil)
+	return req.Do(ctx, nil)
 }
 
 func (o PolicySetParameterCreateOptions) valid() error {

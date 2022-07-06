@@ -60,13 +60,13 @@ func (s *comments) List(ctx context.Context, runID string) (*CommentList, error)
 	}
 
 	u := fmt.Sprintf("runs/%s/comments", url.QueryEscape(runID))
-	req, err := s.client.newRequest("GET", u, nil)
+	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, err
 	}
 
 	cl := &CommentList{}
-	err = s.client.do(ctx, req, cl)
+	err = req.Do(ctx, cl)
 	if err != nil {
 		return nil, err
 	}
@@ -85,13 +85,13 @@ func (s *comments) Create(ctx context.Context, runID string, options CommentCrea
 	}
 
 	u := fmt.Sprintf("runs/%s/comments", url.QueryEscape(runID))
-	req, err := s.client.newRequest("POST", u, &options)
+	req, err := s.client.NewRequest("POST", u, &options)
 	if err != nil {
 		return nil, err
 	}
 
 	comm := &Comment{}
-	err = s.client.do(ctx, req, comm)
+	err = req.Do(ctx, comm)
 	if err != nil {
 		return nil, err
 	}
@@ -106,13 +106,13 @@ func (s *comments) Read(ctx context.Context, commentID string) (*Comment, error)
 	}
 
 	u := fmt.Sprintf("comments/%s", url.QueryEscape(commentID))
-	req, err := s.client.newRequest("GET", u, nil)
+	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, err
 	}
 
 	comm := &Comment{}
-	err = s.client.do(ctx, req, comm)
+	err = req.Do(ctx, comm)
 	if err != nil {
 		return nil, err
 	}

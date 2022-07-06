@@ -82,13 +82,13 @@ func (s *organizationTags) List(ctx context.Context, organization string, option
 	}
 
 	u := fmt.Sprintf("organizations/%s/tags", url.QueryEscape(organization))
-	req, err := s.client.newRequest("GET", u, options)
+	req, err := s.client.NewRequest("GET", u, options)
 	if err != nil {
 		return nil, err
 	}
 
 	tags := &OrganizationTagsList{}
-	err = s.client.do(ctx, req, tags)
+	err = req.Do(ctx, tags)
 	if err != nil {
 		return nil, err
 	}
@@ -112,12 +112,12 @@ func (s *organizationTags) Delete(ctx context.Context, organization string, opti
 		tagsToRemove = append(tagsToRemove, &tagID{ID: id})
 	}
 
-	req, err := s.client.newRequest("DELETE", u, tagsToRemove)
+	req, err := s.client.NewRequest("DELETE", u, tagsToRemove)
 	if err != nil {
 		return err
 	}
 
-	return s.client.do(ctx, req, nil)
+	return req.Do(ctx, nil)
 }
 
 // Add workspaces to a tag
@@ -136,12 +136,12 @@ func (s *organizationTags) AddWorkspaces(ctx context.Context, tag string, option
 	}
 
 	u := fmt.Sprintf("tags/%s/relationships/workspaces", url.QueryEscape(tag))
-	req, err := s.client.newRequest("POST", u, workspaces)
+	req, err := s.client.NewRequest("POST", u, workspaces)
 	if err != nil {
 		return err
 	}
 
-	return s.client.do(ctx, req, nil)
+	return req.Do(ctx, nil)
 }
 
 func (opts *OrganizationTagsDeleteOptions) valid() error {

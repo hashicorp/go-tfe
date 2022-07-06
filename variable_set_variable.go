@@ -72,13 +72,13 @@ func (s *variableSetVariables) List(ctx context.Context, variableSetID string, o
 	}
 
 	u := fmt.Sprintf("varsets/%s/relationships/vars", url.QueryEscape(variableSetID))
-	req, err := s.client.newRequest("GET", u, options)
+	req, err := s.client.NewRequest("GET", u, options)
 	if err != nil {
 		return nil, err
 	}
 
 	vl := &VariableSetVariableList{}
-	err = s.client.do(ctx, req, vl)
+	err = req.Do(ctx, vl)
 	if err != nil {
 		return nil, err
 	}
@@ -135,13 +135,13 @@ func (s *variableSetVariables) Create(ctx context.Context, variableSetID string,
 	}
 
 	u := fmt.Sprintf("varsets/%s/relationships/vars", url.QueryEscape(variableSetID))
-	req, err := s.client.newRequest("POST", u, options)
+	req, err := s.client.NewRequest("POST", u, options)
 	if err != nil {
 		return nil, err
 	}
 
 	v := &VariableSetVariable{}
-	err = s.client.do(ctx, req, v)
+	err = req.Do(ctx, v)
 	if err != nil {
 		return nil, err
 	}
@@ -159,14 +159,14 @@ func (s *variableSetVariables) Read(ctx context.Context, variableSetID, variable
 	}
 
 	u := fmt.Sprintf("varsets/%s/relationships/vars/%s", url.QueryEscape(variableSetID), url.QueryEscape(variableID))
-	req, err := s.client.newRequest("GET", u, nil)
+	req, err := s.client.NewRequest("GET", u, nil)
 
 	if err != nil {
 		return nil, err
 	}
 
 	v := &VariableSetVariable{}
-	err = s.client.do(ctx, req, v)
+	err = req.Do(ctx, v)
 	if err != nil {
 		return nil, err
 	}
@@ -208,13 +208,13 @@ func (s *variableSetVariables) Update(ctx context.Context, variableSetID, variab
 	}
 
 	u := fmt.Sprintf("varsets/%s/relationships/vars/%s", url.QueryEscape(variableSetID), url.QueryEscape(variableID))
-	req, err := s.client.newRequest("PATCH", u, options)
+	req, err := s.client.NewRequest("PATCH", u, options)
 	if err != nil {
 		return nil, err
 	}
 
 	v := &VariableSetVariable{}
-	err = s.client.do(ctx, req, v)
+	err = req.Do(ctx, v)
 	if err != nil {
 		return nil, err
 	}
@@ -232,10 +232,10 @@ func (s *variableSetVariables) Delete(ctx context.Context, variableSetID, variab
 	}
 
 	u := fmt.Sprintf("varsets/%s/relationships/vars/%s", url.QueryEscape(variableSetID), url.QueryEscape(variableID))
-	req, err := s.client.newRequest("DELETE", u, nil)
+	req, err := s.client.NewRequest("DELETE", u, nil)
 	if err != nil {
 		return err
 	}
 
-	return s.client.do(ctx, req, nil)
+	return req.Do(ctx, nil)
 }

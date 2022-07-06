@@ -139,13 +139,13 @@ type StateVersionCreateOptions struct {
 	// Optional: Specifies the run to associate the state with.
 	Run *Run `jsonapi:"relation,run,omitempty"`
 
-	// Optional: The external, json representation of state data, base64 encoded.
-	// https://www.terraform.io/internals/json-format#state-representation
-	// Supplying this state representation can provide more details to the platform
+	// Optional: The external, json representation of state outputs, base64 encoded. Supplying this field 
+	// will provide more detailed output type information to TFE.
+	// For more information on the contents of this field: https://www.terraform.io/internals/json-format#values-representation
 	// about the current terraform state.
 	//
 	// **Note**: This field is in BETA, subject to change and not widely available yet.
-	JSONState *string `jsonapi:"attr,json-state,omitempty"`
+	JSONStateOutputs *string `jsonapi:"attr,json-state-outputs,omitempty"`
 }
 
 // List all the state versions for a given workspace.
@@ -154,13 +154,13 @@ func (s *stateVersions) List(ctx context.Context, options *StateVersionListOptio
 		return nil, err
 	}
 
-	req, err := s.client.newRequest("GET", "state-versions", options)
+	req, err := s.client.NewRequest("GET", "state-versions", options)
 	if err != nil {
 		return nil, err
 	}
 
 	svl := &StateVersionList{}
-	err = s.client.do(ctx, req, svl)
+	err = req.Do(ctx, svl)
 	if err != nil {
 		return nil, err
 	}
@@ -178,13 +178,13 @@ func (s *stateVersions) Create(ctx context.Context, workspaceID string, options 
 	}
 
 	u := fmt.Sprintf("workspaces/%s/state-versions", url.QueryEscape(workspaceID))
-	req, err := s.client.newRequest("POST", u, &options)
+	req, err := s.client.NewRequest("POST", u, &options)
 	if err != nil {
 		return nil, err
 	}
 
 	sv := &StateVersion{}
-	err = s.client.do(ctx, req, sv)
+	err = req.Do(ctx, sv)
 	if err != nil {
 		return nil, err
 	}
@@ -202,13 +202,13 @@ func (s *stateVersions) ReadWithOptions(ctx context.Context, svID string, option
 	}
 
 	u := fmt.Sprintf("state-versions/%s", url.QueryEscape(svID))
-	req, err := s.client.newRequest("GET", u, options)
+	req, err := s.client.NewRequest("GET", u, options)
 	if err != nil {
 		return nil, err
 	}
 
 	sv := &StateVersion{}
-	err = s.client.do(ctx, req, sv)
+	err = req.Do(ctx, sv)
 	if err != nil {
 		return nil, err
 	}
@@ -231,13 +231,13 @@ func (s *stateVersions) ReadCurrentWithOptions(ctx context.Context, workspaceID 
 	}
 
 	u := fmt.Sprintf("workspaces/%s/current-state-version", url.QueryEscape(workspaceID))
-	req, err := s.client.newRequest("GET", u, options)
+	req, err := s.client.NewRequest("GET", u, options)
 	if err != nil {
 		return nil, err
 	}
 
 	sv := &StateVersion{}
-	err = s.client.do(ctx, req, sv)
+	err = req.Do(ctx, sv)
 	if err != nil {
 		return nil, err
 	}
@@ -252,14 +252,14 @@ func (s *stateVersions) ReadCurrent(ctx context.Context, workspaceID string) (*S
 
 // Download retrieves the actual stored state of a state version
 func (s *stateVersions) Download(ctx context.Context, u string) ([]byte, error) {
-	req, err := s.client.newRequest("GET", u, nil)
+	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, err
 	}
 	req.Header.Set("Accept", "application/json")
 
 	var buf bytes.Buffer
-	err = s.client.do(ctx, req, &buf)
+	err = req.Do(ctx, &buf)
 	if err != nil {
 		return nil, err
 	}
@@ -274,13 +274,13 @@ func (s *stateVersions) ListOutputs(ctx context.Context, svID string, options *S
 	}
 
 	u := fmt.Sprintf("state-versions/%s/outputs", url.QueryEscape(svID))
-	req, err := s.client.newRequest("GET", u, options)
+	req, err := s.client.NewRequest("GET", u, options)
 	if err != nil {
 		return nil, err
 	}
 
 	sv := &StateVersionOutputsList{}
-	err = s.client.do(ctx, req, sv)
+	err = req.Do(ctx, sv)
 	if err != nil {
 		return nil, err
 	}

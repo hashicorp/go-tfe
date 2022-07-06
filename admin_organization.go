@@ -107,13 +107,13 @@ func (s *adminOrganizations) List(ctx context.Context, options *AdminOrganizatio
 		return nil, err
 	}
 	u := "admin/organizations"
-	req, err := s.client.newRequest("GET", u, options)
+	req, err := s.client.NewRequest("GET", u, options)
 	if err != nil {
 		return nil, err
 	}
 
 	orgl := &AdminOrganizationList{}
-	err = s.client.do(ctx, req, orgl)
+	err = req.Do(ctx, orgl)
 	if err != nil {
 		return nil, err
 	}
@@ -129,13 +129,13 @@ func (s *adminOrganizations) ListModuleConsumers(ctx context.Context, organizati
 
 	u := fmt.Sprintf("admin/organizations/%s/relationships/module-consumers", url.QueryEscape(organization))
 
-	req, err := s.client.newRequest("GET", u, nil)
+	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, err
 	}
 
 	orgl := &AdminOrganizationList{}
-	err = s.client.do(ctx, req, orgl)
+	err = req.Do(ctx, orgl)
 	if err != nil {
 		return nil, err
 	}
@@ -150,13 +150,13 @@ func (s *adminOrganizations) Read(ctx context.Context, organization string) (*Ad
 	}
 
 	u := fmt.Sprintf("admin/organizations/%s", url.QueryEscape(organization))
-	req, err := s.client.newRequest("GET", u, nil)
+	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, err
 	}
 
 	org := &AdminOrganization{}
-	err = s.client.do(ctx, req, org)
+	err = req.Do(ctx, org)
 	if err != nil {
 		return nil, err
 	}
@@ -171,13 +171,13 @@ func (s *adminOrganizations) Update(ctx context.Context, organization string, op
 	}
 
 	u := fmt.Sprintf("admin/organizations/%s", url.QueryEscape(organization))
-	req, err := s.client.newRequest("PATCH", u, &options)
+	req, err := s.client.NewRequest("PATCH", u, &options)
 	if err != nil {
 		return nil, err
 	}
 
 	org := &AdminOrganization{}
-	err = s.client.do(ctx, req, org)
+	err = req.Do(ctx, org)
 	if err != nil {
 		return nil, err
 	}
@@ -201,12 +201,12 @@ func (s *adminOrganizations) UpdateModuleConsumers(ctx context.Context, organiza
 		organizations = append(organizations, &AdminOrganizationID{ID: id})
 	}
 
-	req, err := s.client.newRequest("PATCH", u, organizations)
+	req, err := s.client.NewRequest("PATCH", u, organizations)
 	if err != nil {
 		return err
 	}
 
-	err = s.client.do(ctx, req, nil)
+	err = req.Do(ctx, nil)
 	if err != nil {
 		return err
 	}
@@ -221,12 +221,12 @@ func (s *adminOrganizations) Delete(ctx context.Context, organization string) er
 	}
 
 	u := fmt.Sprintf("admin/organizations/%s", url.QueryEscape(organization))
-	req, err := s.client.newRequest("DELETE", u, nil)
+	req, err := s.client.NewRequest("DELETE", u, nil)
 	if err != nil {
 		return err
 	}
 
-	return s.client.do(ctx, req, nil)
+	return req.Do(ctx, nil)
 }
 
 func (o *AdminOrganizationListOptions) valid() error {
