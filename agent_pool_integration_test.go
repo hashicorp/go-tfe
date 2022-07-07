@@ -224,10 +224,10 @@ func TestAgentPoolsUpdate(t *testing.T) {
 	t.Run("when updating organization scope", func(t *testing.T) {
 		kBefore, kTestCleanup := createAgentPool(t, client, orgTest)
 		defer kTestCleanup()
-
+        organizationScoped := false
 		kAfter, err := client.AgentPools.Update(ctx, kBefore.ID, AgentPoolUpdateOptions{
 			Name: String(kBefore.Name),
-			OrganizationScoped: func(b bool) *bool { return &b }(false),
+			OrganizationScoped: &organizationScoped,
 		})
 		require.NoError(t, err)
 
