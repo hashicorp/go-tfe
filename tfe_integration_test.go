@@ -379,15 +379,15 @@ func createRequest(v interface{}) (*retryablehttp.Request, []byte, error) {
 		return nil, nil, err
 	}
 
-	request, err := client.newRequest("POST", "/bar", v)
+	request, err := client.NewRequest("POST", "/bar", v)
 	if err != nil {
 		return nil, nil, err
 	}
-	body, err := request.BodyBytes()
+	body, err := request.retryableRequest.BodyBytes()
 	if err != nil {
-		return request, nil, err
+		return request.retryableRequest, nil, err
 	}
-	return request, body, nil
+	return request.retryableRequest, body, nil
 }
 
 func TestClient_configureLimiter(t *testing.T) {

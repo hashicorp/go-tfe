@@ -141,10 +141,10 @@ func Test_RegistryBasePath(t *testing.T) {
 
 	t.Run("ensures client creates a request with registry base path", func(t *testing.T) {
 		path := "/api/registry/some/path/to/resource"
-		req, err := client.newRequest("GET", path, nil)
+		req, err := client.NewRequest("GET", path, nil)
 		require.NoError(t, err)
 
 		expected := os.Getenv("TFE_ADDRESS") + path
-		assert.Equal(t, req.URL.String(), expected)
+		assert.Equal(t, req.retryableRequest.URL.String(), expected)
 	})
 }

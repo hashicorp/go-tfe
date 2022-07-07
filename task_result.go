@@ -75,13 +75,13 @@ func (t *taskResults) Read(ctx context.Context, taskResultID string) (*TaskResul
 	}
 
 	u := fmt.Sprintf("task-results/%s", taskResultID)
-	req, err := t.client.newRequest("GET", u, nil)
+	req, err := t.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, err
 	}
 
 	r := &TaskResult{}
-	err = t.client.do(ctx, req, r)
+	err = req.Do(ctx, r)
 	if err != nil {
 		return nil, err
 	}

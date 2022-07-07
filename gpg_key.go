@@ -76,13 +76,13 @@ func (s *gpgKeys) Create(ctx context.Context, registryName RegistryName, options
 	}
 
 	u := fmt.Sprintf("/api/registry/%s/v2/gpg-keys", url.QueryEscape(string(registryName)))
-	req, err := s.client.newRequest("POST", u, &options)
+	req, err := s.client.NewRequest("POST", u, &options)
 	if err != nil {
 		return nil, err
 	}
 
 	g := &GPGKey{}
-	err = s.client.do(ctx, req, g)
+	err = req.Do(ctx, g)
 	if err != nil {
 		return nil, err
 	}
@@ -100,13 +100,13 @@ func (s *gpgKeys) Read(ctx context.Context, keyID GPGKeyID) (*GPGKey, error) {
 		url.QueryEscape(keyID.Namespace),
 		url.QueryEscape(keyID.KeyID),
 	)
-	req, err := s.client.newRequest("GET", u, nil)
+	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, err
 	}
 
 	g := &GPGKey{}
-	err = s.client.do(ctx, req, g)
+	err = req.Do(ctx, g)
 	if err != nil {
 		return nil, err
 	}
@@ -128,13 +128,13 @@ func (s *gpgKeys) Update(ctx context.Context, keyID GPGKeyID, options GPGKeyUpda
 		url.QueryEscape(keyID.Namespace),
 		url.QueryEscape(keyID.KeyID),
 	)
-	req, err := s.client.newRequest("PATCH", u, &options)
+	req, err := s.client.NewRequest("PATCH", u, &options)
 	if err != nil {
 		return nil, err
 	}
 
 	g := &GPGKey{}
-	err = s.client.do(ctx, req, g)
+	err = req.Do(ctx, g)
 	if err != nil {
 		if strings.Contains(err.Error(), "namespace not authorized") {
 			return nil, ErrNamespaceNotAuthorized
@@ -155,12 +155,12 @@ func (s *gpgKeys) Delete(ctx context.Context, keyID GPGKeyID) error {
 		url.QueryEscape(keyID.Namespace),
 		url.QueryEscape(keyID.KeyID),
 	)
-	req, err := s.client.newRequest("DELETE", u, nil)
+	req, err := s.client.NewRequest("DELETE", u, nil)
 	if err != nil {
 		return err
 	}
 
-	return s.client.do(ctx, req, nil)
+	return req.Do(ctx, nil)
 }
 
 func (o GPGKeyID) valid() error {

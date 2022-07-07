@@ -188,13 +188,13 @@ func (s *registryModules) List(ctx context.Context, organization string, options
 	}
 
 	u := fmt.Sprintf("organizations/%s/registry-modules", url.QueryEscape(organization))
-	req, err := s.client.newRequest("GET", u, options)
+	req, err := s.client.NewRequest("GET", u, options)
 	if err != nil {
 		return nil, err
 	}
 
 	ml := &RegistryModuleList{}
-	err = s.client.do(ctx, req, ml)
+	err = req.Do(ctx, ml)
 	if err != nil {
 		return nil, err
 	}
@@ -216,12 +216,12 @@ func (r *registryModules) Upload(ctx context.Context, rmv RegistryModuleVersion,
 		return err
 	}
 
-	req, err := r.client.newRequest("PUT", uploadURL, body)
+	req, err := r.client.NewRequest("PUT", uploadURL, body)
 	if err != nil {
 		return err
 	}
 
-	return r.client.do(ctx, req, nil)
+	return req.Do(ctx, nil)
 }
 
 // Create a new registry module without a VCS repo
@@ -237,13 +237,13 @@ func (r *registryModules) Create(ctx context.Context, organization string, optio
 		"organizations/%s/registry-modules",
 		url.QueryEscape(organization),
 	)
-	req, err := r.client.newRequest("POST", u, &options)
+	req, err := r.client.NewRequest("POST", u, &options)
 	if err != nil {
 		return nil, err
 	}
 
 	rm := &RegistryModule{}
-	err = r.client.do(ctx, req, rm)
+	err = req.Do(ctx, rm)
 	if err != nil {
 		return nil, err
 	}
@@ -267,13 +267,13 @@ func (r *registryModules) CreateVersion(ctx context.Context, moduleID RegistryMo
 		url.QueryEscape(moduleID.Name),
 		url.QueryEscape(moduleID.Provider),
 	)
-	req, err := r.client.newRequest("POST", u, &options)
+	req, err := r.client.NewRequest("POST", u, &options)
 	if err != nil {
 		return nil, err
 	}
 
 	rmv := &RegistryModuleVersion{}
-	err = r.client.do(ctx, req, rmv)
+	err = req.Do(ctx, rmv)
 	if err != nil {
 		return nil, err
 	}
@@ -287,13 +287,13 @@ func (r *registryModules) CreateWithVCSConnection(ctx context.Context, options R
 		return nil, err
 	}
 
-	req, err := r.client.newRequest("POST", "registry-modules", &options)
+	req, err := r.client.NewRequest("POST", "registry-modules", &options)
 	if err != nil {
 		return nil, err
 	}
 
 	rm := &RegistryModule{}
-	err = r.client.do(ctx, req, rm)
+	err = req.Do(ctx, rm)
 	if err != nil {
 		return nil, err
 	}
@@ -313,13 +313,13 @@ func (r *registryModules) Read(ctx context.Context, moduleID RegistryModuleID) (
 		url.QueryEscape(moduleID.Name),
 		url.QueryEscape(moduleID.Provider),
 	)
-	req, err := r.client.newRequest("GET", u, nil)
+	req, err := r.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, err
 	}
 
 	rm := &RegistryModule{}
-	err = r.client.do(ctx, req, rm)
+	err = req.Do(ctx, rm)
 	if err != nil {
 		return nil, err
 	}
@@ -344,12 +344,12 @@ func (r *registryModules) Delete(ctx context.Context, organization, name string)
 		url.QueryEscape(organization),
 		url.QueryEscape(name),
 	)
-	req, err := r.client.newRequest("POST", u, nil)
+	req, err := r.client.NewRequest("POST", u, nil)
 	if err != nil {
 		return err
 	}
 
-	return r.client.do(ctx, req, nil)
+	return req.Do(ctx, nil)
 }
 
 // DeleteProvider is used to delete the specific registry module provider
@@ -364,12 +364,12 @@ func (r *registryModules) DeleteProvider(ctx context.Context, moduleID RegistryM
 		url.QueryEscape(moduleID.Name),
 		url.QueryEscape(moduleID.Provider),
 	)
-	req, err := r.client.newRequest("POST", u, nil)
+	req, err := r.client.NewRequest("POST", u, nil)
 	if err != nil {
 		return err
 	}
 
-	return r.client.do(ctx, req, nil)
+	return req.Do(ctx, nil)
 }
 
 // DeleteVersion is used to delete the specific registry module version
@@ -391,12 +391,12 @@ func (r *registryModules) DeleteVersion(ctx context.Context, moduleID RegistryMo
 		url.QueryEscape(moduleID.Provider),
 		url.QueryEscape(version),
 	)
-	req, err := r.client.newRequest("POST", u, nil)
+	req, err := r.client.NewRequest("POST", u, nil)
 	if err != nil {
 		return err
 	}
 
-	return r.client.do(ctx, req, nil)
+	return req.Do(ctx, nil)
 }
 
 func (o RegistryModuleID) valid() error {

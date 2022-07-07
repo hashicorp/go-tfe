@@ -22,7 +22,7 @@ func TestAppliesRead(t *testing.T) {
 	wTest, wTestCleanup := createWorkspace(t, client, nil)
 	defer wTestCleanup()
 
-	rTest, rTestCleanup := createAppliedRun(t, client, wTest)
+	rTest, rTestCleanup := createRunApply(t, client, wTest)
 	defer rTestCleanup()
 
 	t.Run("when the plan exists", func(t *testing.T) {
@@ -50,7 +50,7 @@ func TestAppliesLogs(t *testing.T) {
 	client := testClient(t)
 	ctx := context.Background()
 
-	rTest, rTestCleanup := createAppliedRun(t, client, nil)
+	rTest, rTestCleanup := createRunApply(t, client, nil)
 	defer rTestCleanup()
 
 	t.Run("when the log exists", func(t *testing.T) {

@@ -96,13 +96,13 @@ func (a *adminUsers) List(ctx context.Context, options *AdminUserListOptions) (*
 	}
 
 	u := "admin/users"
-	req, err := a.client.newRequest("GET", u, options)
+	req, err := a.client.NewRequest("GET", u, options)
 	if err != nil {
 		return nil, err
 	}
 
 	aul := &AdminUserList{}
-	err = a.client.do(ctx, req, aul)
+	err = req.Do(ctx, aul)
 	if err != nil {
 		return nil, err
 	}
@@ -117,12 +117,12 @@ func (a *adminUsers) Delete(ctx context.Context, userID string) error {
 	}
 
 	u := fmt.Sprintf("admin/users/%s", url.QueryEscape(userID))
-	req, err := a.client.newRequest("DELETE", u, nil)
+	req, err := a.client.NewRequest("DELETE", u, nil)
 	if err != nil {
 		return err
 	}
 
-	return a.client.do(ctx, req, nil)
+	return req.Do(ctx, nil)
 }
 
 // Suspend a user by its ID.
@@ -132,13 +132,13 @@ func (a *adminUsers) Suspend(ctx context.Context, userID string) (*AdminUser, er
 	}
 
 	u := fmt.Sprintf("admin/users/%s/actions/suspend", url.QueryEscape(userID))
-	req, err := a.client.newRequest("POST", u, nil)
+	req, err := a.client.NewRequest("POST", u, nil)
 	if err != nil {
 		return nil, err
 	}
 
 	au := &AdminUser{}
-	err = a.client.do(ctx, req, au)
+	err = req.Do(ctx, au)
 	if err != nil {
 		return nil, err
 	}
@@ -153,13 +153,13 @@ func (a *adminUsers) Unsuspend(ctx context.Context, userID string) (*AdminUser, 
 	}
 
 	u := fmt.Sprintf("admin/users/%s/actions/unsuspend", url.QueryEscape(userID))
-	req, err := a.client.newRequest("POST", u, nil)
+	req, err := a.client.NewRequest("POST", u, nil)
 	if err != nil {
 		return nil, err
 	}
 
 	au := &AdminUser{}
-	err = a.client.do(ctx, req, au)
+	err = req.Do(ctx, au)
 	if err != nil {
 		return nil, err
 	}
@@ -174,13 +174,13 @@ func (a *adminUsers) GrantAdmin(ctx context.Context, userID string) (*AdminUser,
 	}
 
 	u := fmt.Sprintf("admin/users/%s/actions/grant_admin", url.QueryEscape(userID))
-	req, err := a.client.newRequest("POST", u, nil)
+	req, err := a.client.NewRequest("POST", u, nil)
 	if err != nil {
 		return nil, err
 	}
 
 	au := &AdminUser{}
-	err = a.client.do(ctx, req, au)
+	err = req.Do(ctx, au)
 	if err != nil {
 		return nil, err
 	}
@@ -195,13 +195,13 @@ func (a *adminUsers) RevokeAdmin(ctx context.Context, userID string) (*AdminUser
 	}
 
 	u := fmt.Sprintf("admin/users/%s/actions/revoke_admin", url.QueryEscape(userID))
-	req, err := a.client.newRequest("POST", u, nil)
+	req, err := a.client.NewRequest("POST", u, nil)
 	if err != nil {
 		return nil, err
 	}
 
 	au := &AdminUser{}
-	err = a.client.do(ctx, req, au)
+	err = req.Do(ctx, au)
 	if err != nil {
 		return nil, err
 	}
@@ -217,13 +217,13 @@ func (a *adminUsers) Disable2FA(ctx context.Context, userID string) (*AdminUser,
 	}
 
 	u := fmt.Sprintf("admin/users/%s/actions/disable_two_factor", url.QueryEscape(userID))
-	req, err := a.client.newRequest("POST", u, nil)
+	req, err := a.client.NewRequest("POST", u, nil)
 	if err != nil {
 		return nil, err
 	}
 
 	au := &AdminUser{}
-	err = a.client.do(ctx, req, au)
+	err = req.Do(ctx, au)
 	if err != nil {
 		return nil, err
 	}

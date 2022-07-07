@@ -62,13 +62,13 @@ type UserUpdateOptions struct {
 
 // ReadCurrent reads the details of the currently authenticated user.
 func (s *users) ReadCurrent(ctx context.Context) (*User, error) {
-	req, err := s.client.newRequest("GET", "account/details", nil)
+	req, err := s.client.NewRequest("GET", "account/details", nil)
 	if err != nil {
 		return nil, err
 	}
 
 	u := &User{}
-	err = s.client.do(ctx, req, u)
+	err = req.Do(ctx, u)
 	if err != nil {
 		return nil, err
 	}
@@ -78,13 +78,13 @@ func (s *users) ReadCurrent(ctx context.Context) (*User, error) {
 
 // UpdateCurrent updates attributes of the currently authenticated user.
 func (s *users) UpdateCurrent(ctx context.Context, options UserUpdateOptions) (*User, error) {
-	req, err := s.client.newRequest("PATCH", "account/update", &options)
+	req, err := s.client.NewRequest("PATCH", "account/update", &options)
 	if err != nil {
 		return nil, err
 	}
 
 	u := &User{}
-	err = s.client.do(ctx, req, u)
+	err = req.Do(ctx, u)
 	if err != nil {
 		return nil, err
 	}

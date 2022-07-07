@@ -183,13 +183,13 @@ func (s *notificationConfigurations) List(ctx context.Context, workspaceID strin
 	}
 
 	u := fmt.Sprintf("workspaces/%s/notification-configurations", url.QueryEscape(workspaceID))
-	req, err := s.client.newRequest("GET", u, options)
+	req, err := s.client.NewRequest("GET", u, options)
 	if err != nil {
 		return nil, err
 	}
 
 	ncl := &NotificationConfigurationList{}
-	err = s.client.do(ctx, req, ncl)
+	err = req.Do(ctx, ncl)
 	if err != nil {
 		return nil, err
 	}
@@ -207,13 +207,13 @@ func (s *notificationConfigurations) Create(ctx context.Context, workspaceID str
 	}
 
 	u := fmt.Sprintf("workspaces/%s/notification-configurations", url.QueryEscape(workspaceID))
-	req, err := s.client.newRequest("POST", u, &options)
+	req, err := s.client.NewRequest("POST", u, &options)
 	if err != nil {
 		return nil, err
 	}
 
 	nc := &NotificationConfiguration{}
-	err = s.client.do(ctx, req, nc)
+	err = req.Do(ctx, nc)
 	if err != nil {
 		return nil, err
 	}
@@ -228,13 +228,13 @@ func (s *notificationConfigurations) Read(ctx context.Context, notificationConfi
 	}
 
 	u := fmt.Sprintf("notification-configurations/%s", url.QueryEscape(notificationConfigurationID))
-	req, err := s.client.newRequest("GET", u, nil)
+	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, err
 	}
 
 	nc := &NotificationConfiguration{}
-	err = s.client.do(ctx, req, nc)
+	err = req.Do(ctx, nc)
 	if err != nil {
 		return nil, err
 	}
@@ -253,13 +253,13 @@ func (s *notificationConfigurations) Update(ctx context.Context, notificationCon
 	}
 
 	u := fmt.Sprintf("notification-configurations/%s", url.QueryEscape(notificationConfigurationID))
-	req, err := s.client.newRequest("PATCH", u, &options)
+	req, err := s.client.NewRequest("PATCH", u, &options)
 	if err != nil {
 		return nil, err
 	}
 
 	nc := &NotificationConfiguration{}
-	err = s.client.do(ctx, req, nc)
+	err = req.Do(ctx, nc)
 	if err != nil {
 		return nil, err
 	}
@@ -274,12 +274,12 @@ func (s *notificationConfigurations) Delete(ctx context.Context, notificationCon
 	}
 
 	u := fmt.Sprintf("notification-configurations/%s", url.QueryEscape(notificationConfigurationID))
-	req, err := s.client.newRequest("DELETE", u, nil)
+	req, err := s.client.NewRequest("DELETE", u, nil)
 	if err != nil {
 		return err
 	}
 
-	return s.client.do(ctx, req, nil)
+	return req.Do(ctx, nil)
 }
 
 // Verify a notification configuration by delivering a verification
@@ -291,13 +291,13 @@ func (s *notificationConfigurations) Verify(ctx context.Context, notificationCon
 
 	u := fmt.Sprintf(
 		"notification-configurations/%s/actions/verify", url.QueryEscape(notificationConfigurationID))
-	req, err := s.client.newRequest("POST", u, nil)
+	req, err := s.client.NewRequest("POST", u, nil)
 	if err != nil {
 		return nil, err
 	}
 
 	nc := &NotificationConfiguration{}
-	err = s.client.do(ctx, req, nc)
+	err = req.Do(ctx, nc)
 	if err != nil {
 		return nil, err
 	}

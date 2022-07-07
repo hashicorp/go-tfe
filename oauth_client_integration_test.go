@@ -5,6 +5,7 @@ package tfe
 
 import (
 	"context"
+	"fmt"
 	"os"
 	"testing"
 
@@ -247,8 +248,14 @@ func TestOAuthClientsDelete(t *testing.T) {
 		err := client.OAuthClients.Delete(ctx, ocTest.ID)
 		require.NoError(t, err)
 
-		// Try loading the OAuth client - it should fail.
-		_, err = client.OAuthClients.Read(ctx, ocTest.ID)
+		_, err = retry(func() (interface{}, error) {
+			c, err := client.OAuthClients.Read(ctx, ocTest.ID)
+			if err != ErrResourceNotFound {
+				return nil, fmt.Errorf("expected %s, but err was %s", ErrResourceNotFound, err)
+			}
+			return c, err
+		})
+
 		assert.Equal(t, err, ErrResourceNotFound)
 	})
 

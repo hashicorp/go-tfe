@@ -111,13 +111,13 @@ func (s *organizationMemberships) List(ctx context.Context, organization string,
 	}
 
 	u := fmt.Sprintf("organizations/%s/organization-memberships", url.QueryEscape(organization))
-	req, err := s.client.newRequest("GET", u, options)
+	req, err := s.client.NewRequest("GET", u, options)
 	if err != nil {
 		return nil, err
 	}
 
 	ml := &OrganizationMembershipList{}
-	err = s.client.do(ctx, req, ml)
+	err = req.Do(ctx, ml)
 	if err != nil {
 		return nil, err
 	}
@@ -135,13 +135,13 @@ func (s *organizationMemberships) Create(ctx context.Context, organization strin
 	}
 
 	u := fmt.Sprintf("organizations/%s/organization-memberships", url.QueryEscape(organization))
-	req, err := s.client.newRequest("POST", u, &options)
+	req, err := s.client.NewRequest("POST", u, &options)
 	if err != nil {
 		return nil, err
 	}
 
 	m := &OrganizationMembership{}
-	err = s.client.do(ctx, req, m)
+	err = req.Do(ctx, m)
 	if err != nil {
 		return nil, err
 	}
@@ -164,13 +164,13 @@ func (s *organizationMemberships) ReadWithOptions(ctx context.Context, organizat
 	}
 
 	u := fmt.Sprintf("organization-memberships/%s", url.QueryEscape(organizationMembershipID))
-	req, err := s.client.newRequest("GET", u, &options)
+	req, err := s.client.NewRequest("GET", u, &options)
 	if err != nil {
 		return nil, err
 	}
 
 	mem := &OrganizationMembership{}
-	err = s.client.do(ctx, req, mem)
+	err = req.Do(ctx, mem)
 	if err != nil {
 		return nil, err
 	}
@@ -185,12 +185,12 @@ func (s *organizationMemberships) Delete(ctx context.Context, organizationMember
 	}
 
 	u := fmt.Sprintf("organization-memberships/%s", url.QueryEscape(organizationMembershipID))
-	req, err := s.client.newRequest("DELETE", u, nil)
+	req, err := s.client.NewRequest("DELETE", u, nil)
 	if err != nil {
 		return err
 	}
 
-	return s.client.do(ctx, req, nil)
+	return req.Do(ctx, nil)
 }
 
 func (o OrganizationMembershipCreateOptions) valid() error {

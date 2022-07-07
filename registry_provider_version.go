@@ -74,10 +74,10 @@ type RegistryProviderVersionListOptions struct {
 
 type RegistryProviderVersionCreateOptions struct {
 	// Required: A valid semver version string.
-	Version   string   `jsonapi:"attr,version"`
+	Version string `jsonapi:"attr,version"`
 
 	// Required: A valid gpg-key string.
-	KeyID     string   `jsonapi:"attr,key-id"`
+	KeyID string `jsonapi:"attr,key-id"`
 
 	// Required: An array of Terraform provider API versions that this version supports.
 	Protocols []string `jsonapi:"attr,protocols"`
@@ -99,13 +99,13 @@ func (r *registryProviderVersions) List(ctx context.Context, providerID Registry
 		url.QueryEscape(providerID.Namespace),
 		url.QueryEscape(providerID.Name),
 	)
-	req, err := r.client.newRequest("GET", u, options)
+	req, err := r.client.NewRequest("GET", u, options)
 	if err != nil {
 		return nil, err
 	}
 
 	pvl := &RegistryProviderVersionList{}
-	err = r.client.do(ctx, req, pvl)
+	err = req.Do(ctx, pvl)
 	if err != nil {
 		return nil, err
 	}
@@ -134,13 +134,13 @@ func (r *registryProviderVersions) Create(ctx context.Context, providerID Regist
 		url.QueryEscape(providerID.Namespace),
 		url.QueryEscape(providerID.Name),
 	)
-	req, err := r.client.newRequest("POST", u, &options)
+	req, err := r.client.NewRequest("POST", u, &options)
 	if err != nil {
 		return nil, err
 	}
 
 	prvv := &RegistryProviderVersion{}
-	err = r.client.do(ctx, req, prvv)
+	err = req.Do(ctx, prvv)
 	if err != nil {
 		return nil, err
 	}
@@ -162,13 +162,13 @@ func (r *registryProviderVersions) Read(ctx context.Context, versionID RegistryP
 		url.QueryEscape(versionID.Name),
 		url.QueryEscape(versionID.Version),
 	)
-	req, err := r.client.newRequest("GET", u, nil)
+	req, err := r.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, err
 	}
 
 	prvv := &RegistryProviderVersion{}
-	err = r.client.do(ctx, req, prvv)
+	err = req.Do(ctx, prvv)
 	if err != nil {
 		return nil, err
 	}
@@ -190,12 +190,12 @@ func (r *registryProviderVersions) Delete(ctx context.Context, versionID Registr
 		url.QueryEscape(versionID.Name),
 		url.QueryEscape(versionID.Version),
 	)
-	req, err := r.client.newRequest("DELETE", u, nil)
+	req, err := r.client.NewRequest("DELETE", u, nil)
 	if err != nil {
 		return err
 	}
 
-	return r.client.do(ctx, req, nil)
+	return req.Do(ctx, nil)
 }
 
 // ShasumsUploadURL returns the upload URL to upload shasums if one is available
