@@ -227,7 +227,7 @@ func TestAgentPoolsUpdate(t *testing.T) {
 
 		kAfter, err := client.AgentPools.Update(ctx, kBefore.ID, AgentPoolUpdateOptions{
 			Name: String(kBefore.Name),
-			OrganizationScoped: false,
+			OrganizationScoped: func(b bool) *bool { return &b }(false),
 		})
 		require.NoError(t, err)
 
