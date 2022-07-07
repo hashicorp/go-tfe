@@ -163,7 +163,7 @@ func TestAgentPoolsRead(t *testing.T) {
 func TestAgentPoolsUpdate(t *testing.T) {
 	client := testClient(t)
 	ctx := context.Background()
-
+    organizationScoped := false
 	orgTest, orgTestCleanup := createOrganization(t, client)
 	defer orgTestCleanup()
 
@@ -175,6 +175,7 @@ func TestAgentPoolsUpdate(t *testing.T) {
 
 		kAfter, err := client.AgentPools.Update(ctx, kBefore.ID, AgentPoolUpdateOptions{
 			Name: String(randomString(t)),
+			OrganizationScoped: &organizationScoped,
 		})
 		require.NoError(t, err)
 
@@ -188,6 +189,7 @@ func TestAgentPoolsUpdate(t *testing.T) {
 
 		kAfter, err := client.AgentPools.Update(ctx, kBefore.ID, AgentPoolUpdateOptions{
 			Name: String("updated-key-name"),
+			OrganizationScoped: &organizationScoped,
 		})
 		require.NoError(t, err)
 
@@ -210,6 +212,7 @@ func TestAgentPoolsUpdate(t *testing.T) {
 
 		kAfter, err := client.AgentPools.Update(ctx, kBefore.ID, AgentPoolUpdateOptions{
 			Name: String(kBefore.Name),
+			OrganizationScoped: &organizationScoped,
 			AllowedWorkspaces: []*Workspace{
 				workspaceTest,
 			},
@@ -224,7 +227,7 @@ func TestAgentPoolsUpdate(t *testing.T) {
 	t.Run("when updating organization scope", func(t *testing.T) {
 		kBefore, kTestCleanup := createAgentPool(t, client, orgTest)
 		defer kTestCleanup()
-        organizationScoped := false
+
 		kAfter, err := client.AgentPools.Update(ctx, kBefore.ID, AgentPoolUpdateOptions{
 			Name: String(kBefore.Name),
 			OrganizationScoped: &organizationScoped,
