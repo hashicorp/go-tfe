@@ -1420,11 +1420,11 @@ func createWorkspaceWithVCS(t *testing.T, client *Client, org *Organization, opt
 	}
 
 	if options.VCSRepo == nil {
-		options.VCSRepo = &VCSRepoOptions{
-			Identifier:   String(githubIdentifier),
-			OAuthTokenID: String(oc.ID),
-		}
+		options.VCSRepo = &VCSRepoOptions{}
 	}
+
+	options.VCSRepo.Identifier = String(githubIdentifier)
+	options.VCSRepo.OAuthTokenID = String(oc.ID)
 
 	ctx := context.Background()
 	w, err := client.Workspaces.Create(ctx, org.Name, options)

@@ -182,6 +182,7 @@ type VCSRepo struct {
 	OAuthTokenID      string `jsonapi:"attr,oauth-token-id"`
 	RepositoryHTTPURL string `jsonapi:"attr,repository-http-url"`
 	ServiceProvider   string `jsonapi:"attr,service-provider"`
+	TagsRegex         string `jsonapi:"attr,tags-regex"`
 	WebhookURL        string `jsonapi:"attr,webhook-url"`
 }
 
@@ -357,6 +358,7 @@ type VCSRepoOptions struct {
 	Identifier        *string `json:"identifier,omitempty"`
 	IngressSubmodules *bool   `json:"ingress-submodules,omitempty"`
 	OAuthTokenID      *string `json:"oauth-token-id,omitempty"`
+	TagsRegex         *string `json:"tags-regex,omitempty"`
 }
 
 // WorkspaceUpdateOptions represents the options for updating a workspace.
@@ -1070,6 +1072,18 @@ func (o WorkspaceCreateOptions) valid() error {
 		o.TriggerPatterns != nil && len(o.TriggerPatterns) > 0 {
 		return ErrUnsupportedBothTriggerPatternsAndPrefixes
 	}
+	if o.VCSRepo != nil && o.VCSRepo.TagsRegex != nil &&
+		o.TriggerPatterns != nil && len(o.TriggerPatterns) > 0 {
+		return ErrUnsupportedBothTagsRegexAndTriggerPatterns
+	}
+	if o.VCSRepo != nil && o.VCSRepo.TagsRegex != nil &&
+		o.TriggerPrefixes != nil && len(o.TriggerPrefixes) > 0 {
+		return ErrUnsupportedBothTagsRegexAndTriggerPrefixes
+	}
+	if o.VCSRepo != nil && o.VCSRepo.TagsRegex != nil &&
+		o.FileTriggersEnabled != nil && *o.FileTriggersEnabled {
+		return ErrUnsupportedBothTagsRegexAndFileTriggersEnabled
+	}
 
 	return nil
 }
@@ -1087,6 +1101,19 @@ func (o WorkspaceUpdateOptions) valid() error {
 	if o.TriggerPrefixes != nil && len(o.TriggerPrefixes) > 0 &&
 		o.TriggerPatterns != nil && len(o.TriggerPatterns) > 0 {
 		return ErrUnsupportedBothTriggerPatternsAndPrefixes
+	}
+
+	if o.VCSRepo != nil && o.VCSRepo.TagsRegex != nil &&
+		o.TriggerPatterns != nil && len(o.TriggerPatterns) > 0 {
+		return ErrUnsupportedBothTagsRegexAndTriggerPatterns
+	}
+	if o.VCSRepo != nil && o.VCSRepo.TagsRegex != nil &&
+		o.TriggerPrefixes != nil && len(o.TriggerPrefixes) > 0 {
+		return ErrUnsupportedBothTagsRegexAndTriggerPrefixes
+	}
+	if o.VCSRepo != nil && o.VCSRepo.TagsRegex != nil &&
+		o.FileTriggersEnabled != nil && *o.FileTriggersEnabled {
+		return ErrUnsupportedBothTagsRegexAndFileTriggersEnabled
 	}
 
 	return nil

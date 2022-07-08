@@ -1,3 +1,7 @@
+# Unreleased
+
+* [beta] Add support for triggering Workspace runs through matching Git tags [#434](https://github.com/hashicorp/go-tfe/pull/434)
+
 # v1.4.0
 
 ## Enhancements

@@ -344,6 +344,76 @@ func TestWorkspacesCreate(t *testing.T) {
 		assert.EqualError(t, err, ErrUnsupportedBothTriggerPatternsAndPrefixes.Error())
 	})
 
+	t.Run("when options include tags-regex(behind a feature flag)", func(t *testing.T) {
+		skipIfBeta(t)
+		// Remove the below organization creation and use the one from the outer scope once the feature flag is removed
+		orgTest, orgTestCleanup := createOrganizationWithOptions(t, client, OrganizationCreateOptions{
+			Name:  String("tst-" + randomString(t)[0:20] + "-git-tag-ff-on"),
+			Email: String(fmt.Sprintf("%s@tfe.local", randomString(t))),
+		})
+		defer orgTestCleanup()
+
+		options := WorkspaceCreateOptions{
+			Name:                String("foobar"),
+			FileTriggersEnabled: Bool(false),
+			VCSRepo: &VCSRepoOptions{
+				TagsRegex: String("barfoo")},
+		}
+
+		w, wTestCleanup := createWorkspaceWithVCS(t, client, orgTest, options)
+		defer wTestCleanup()
+		assert.Equal(t, *options.VCSRepo.TagsRegex, w.VCSRepo.TagsRegex)
+
+		// Get a refreshed view from the API.
+		refreshed, err := client.Workspaces.Read(ctx, orgTest.Name, *options.Name)
+		require.NoError(t, err)
+
+		for _, item := range []*Workspace{
+			w,
+			refreshed,
+		} {
+			assert.Equal(t, *options.VCSRepo.TagsRegex, item.VCSRepo.TagsRegex)
+		}
+	})
+
+	t.Run("when options include both non-empty tags-regex and trigger-patterns error is returned", func(t *testing.T) {
+		options := WorkspaceCreateOptions{
+			Name:                String("foobar"),
+			FileTriggersEnabled: Bool(false),
+			VCSRepo:             &VCSRepoOptions{TagsRegex: String("foobar")},
+			TriggerPatterns:     []string{"/module-1/**/*", "/**/networking/*"},
+		}
+		w, err := client.Workspaces.Create(ctx, orgTest.Name, options)
+
+		assert.Nil(t, w)
+		assert.EqualError(t, err, ErrUnsupportedBothTagsRegexAndTriggerPatterns.Error())
+	})
+
+	t.Run("when options include both non-empty tags-regex and trigger-prefixes error is returned", func(t *testing.T) {
+		options := WorkspaceCreateOptions{
+			Name:                String("foobar"),
+			FileTriggersEnabled: Bool(false),
+			VCSRepo:             &VCSRepoOptions{TagsRegex: String("foobar")},
+			TriggerPrefixes:     []string{"/module-1", "/module-2"},
+		}
+		w, err := client.Workspaces.Create(ctx, orgTest.Name, options)
+
+		assert.Nil(t, w)
+		assert.EqualError(t, err, ErrUnsupportedBothTagsRegexAndTriggerPrefixes.Error())
+	})
+
+	t.Run("when options include both non-empty tags-regex and file-triggers-enabled as true an error is returned", func(t *testing.T) {
+		options := WorkspaceCreateOptions{
+			Name:                String("foobar"),
+			FileTriggersEnabled: Bool(true),
+			VCSRepo:             &VCSRepoOptions{TagsRegex: String("foobar")},
+		}
+		w, err := client.Workspaces.Create(ctx, orgTest.Name, options)
+
+		assert.Nil(t, w)
+		assert.EqualError(t, err, ErrUnsupportedBothTagsRegexAndFileTriggersEnabled.Error())
+	})
+
 	t.Run("when options include trigger-patterns populated and empty trigger-paths workspace is created", func(t *testing.T) {
 		// Remove the below organization creation and use the one from the outer scope once the feature flag is removed
 		orgTest, orgTestCleanup := createOrganizationWithOptions(t, client, OrganizationCreateOptions{
@@ -761,6 +831,89 @@ func TestWorkspacesUpdate(t *testing.T) {
 			assert.Empty(t, options.TriggerPrefixes)
 			assert.Equal(t, options.TriggerPatterns, item.TriggerPatterns)
 		}
+	})
+
+	t.Run("when options include VCSRepo tags-regex (behind a feature flag)", func(t *testing.T) {
+		skipIfBeta(t)
+		// Remove the below organization and workspace creation and use the one from the outer scope once the feature flag is removed
+		orgTest, orgTestCleanup := createOrganizationWithOptions(t, client, OrganizationCreateOptions{
+			Name:  String("tst-" + randomString(t)[0:20] + "-git-tag-ff-on"),
+			Email: String(fmt.Sprintf("%s@tfe.local", randomString(t))),
+		})
+		defer orgTestCleanup()
+
+		createOptions := WorkspaceCreateOptions{
+			Name:                String("foobar"),
+			FileTriggersEnabled: Bool(false),
+			VCSRepo: &VCSRepoOptions{
+				TagsRegex: String("barfoo")},
+		}
+
+		wTest, wTestCleanup := createWorkspaceWithVCS(t, client, orgTest, createOptions)
+		defer wTestCleanup()
+		assert.Equal(t, *createOptions.VCSRepo.TagsRegex, wTest.VCSRepo.TagsRegex)
+
+		assert.Equal(t, wTest.VCSRepo.TagsRegex, *String("barfoo")) // Sanity test
+
+		options := WorkspaceUpdateOptions{
+			Name:                String("foobar"),
+			FileTriggersEnabled: Bool(false),
+			VCSRepo:             &VCSRepoOptions{TagsRegex: String("foobar")},
+		}
+		w, err := client.Workspaces.Update(ctx, orgTest.Name, wTest.Name, options)
+		require.NoError(t, err)
+
+		assert.Equal(t, w.VCSRepo.TagsRegex, *String("foobar")) // Sanity test
+
+		// Get a refreshed view from the API.
+		refreshed, err := client.Workspaces.Read(ctx, orgTest.Name, *options.Name)
+		require.NoError(t, err)
+
+		for _, item := range []*Workspace{
+			w,
+			refreshed,
+		} {
+			assert.Empty(t, options.TriggerPrefixes)
+			assert.Empty(t, options.TriggerPatterns, item.TriggerPatterns)
+		}
+	})
+
+	t.Run("when options include tags-regex and file-triggers-enabled is true an error is returned", func(t *testing.T) {
+		options := WorkspaceUpdateOptions{
+			Name:                String("foobar"),
+			FileTriggersEnabled: Bool(true),
+			VCSRepo:             &VCSRepoOptions{TagsRegex: String("foobar")},
+		}
+		w, err := client.Workspaces.Update(ctx, orgTest.Name, wTest.Name, options)
+
+		assert.Nil(t, w)
+		assert.EqualError(t, err, ErrUnsupportedBothTagsRegexAndFileTriggersEnabled.Error())
+	})
+
+	t.Run("when options include both tags-regex and trigger-prefixes an error is returned", func(t *testing.T) {
+		options := WorkspaceUpdateOptions{
+			Name:                String("foobar"),
+			FileTriggersEnabled: Bool(false),
+			TriggerPrefixes:     []string{"/module-1", "/module-2"},
+			VCSRepo:             &VCSRepoOptions{TagsRegex: String("foobar")},
+		}
+		w, err := client.Workspaces.Update(ctx, orgTest.Name, wTest.Name, options)
+
+		assert.Nil(t, w)
+		assert.EqualError(t, err, ErrUnsupportedBothTagsRegexAndTriggerPrefixes.Error())
+	})
+
+	t.Run("when options include both tags-regex and trigger-patterns error is returned", func(t *testing.T) {
+		options := WorkspaceUpdateOptions{
+			Name:                String("foobar"),
+			FileTriggersEnabled: Bool(false),
+			TriggerPatterns:     []string{"/module-1/**/*", "/**/networking/*"},
+			VCSRepo:             &VCSRepoOptions{TagsRegex: String("foobar")},
+		}
+		w, err := client.Workspaces.Update(ctx, orgTest.Name, wTest.Name, options)
+
+		assert.Nil(t, w)
+		assert.EqualError(t, err, ErrUnsupportedBothTagsRegexAndTriggerPatterns.Error())
 	})
 }
 
