@@ -163,6 +163,7 @@ func TestAgentPoolsRead(t *testing.T) {
 func TestAgentPoolsUpdate(t *testing.T) {
 	client := testClient(t)
 	ctx := context.Background()
+
 	orgTest, orgTestCleanup := createOrganization(t, client)
 	defer orgTestCleanup()
 
