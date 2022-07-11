@@ -1,6 +1,7 @@
 # Unreleased
 
 * [beta] Add support for triggering Workspace runs through matching Git tags [#434](https://github.com/hashicorp/go-tfe/pull/434)
+* Add organization scope and allowed workspaces field for scope agents by @Netra2104 [#453](https://github.com/hashicorp/go-tfe/pull/453)
 
 ## Bug fixes
 * Fixed JSON mapping for Configuration Versions failing to properly set the `speculative` property [#459](https://github.com/hashicorp/go-tfe/pull/459)
