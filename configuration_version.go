@@ -92,7 +92,7 @@ type ConfigurationVersion struct {
 	Error            string              `jsonapi:"attr,error"`
 	ErrorMessage     string              `jsonapi:"attr,error-message"`
 	Source           ConfigurationSource `jsonapi:"attr,source"`
-	Speculative      bool                `jsonapi:"attr,speculative "`
+	Speculative      bool                `jsonapi:"attr,speculative"`
 	Status           ConfigurationStatus `jsonapi:"attr,status"`
 	StatusTimestamps *CVStatusTimestamps `jsonapi:"attr,status-timestamps"`
 	UploadURL        string              `jsonapi:"attr,upload-url"`
