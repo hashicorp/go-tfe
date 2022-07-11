@@ -2,6 +2,9 @@
 
 * [beta] Add support for triggering Workspace runs through matching Git tags [#434](https://github.com/hashicorp/go-tfe/pull/434)
 
+## Bug fixes
+* Fixed JSON mapping for Configuration Versions failing to properly set the `speculative` property [#459](https://github.com/hashicorp/go-tfe/pull/459)
+
 # v1.4.0
 
 ## Enhancements
