@@ -48,7 +48,7 @@ type AgentPoolList struct {
 type AgentPool struct {
 	ID                 string `jsonapi:"primary,agent-pools"`
 	Name               string `jsonapi:"attr,name"`
-	OrganizationScoped *bool   `jsonapi:"attr,organization-scoped"`
+	OrganizationScoped *bool   `jsonapi:"attr,organization-scoped,omitempty"`
 
 	// Relations
 	Organization      *Organization `jsonapi:"relation,organization"`
@@ -176,7 +176,7 @@ type AgentPoolUpdateOptions struct {
 	Name *string `jsonapi:"attr,name"`
 
 	// True if the agent pool is organization scoped, false otherwise.
-	OrganizationScoped *bool `jsonapi:"attr,organization-scoped"`
+	OrganizationScoped *bool `jsonapi:"attr,organization-scoped,omitempty"`
 
 	// A new list of workspaces that are associated with an agent pool.
 	AllowedWorkspaces []*Workspace `jsonapi:"relation,allowed-workspaces"`
