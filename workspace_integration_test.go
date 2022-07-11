@@ -327,6 +327,7 @@ func TestWorkspacesCreate(t *testing.T) {
 			AllowDestroyPlan:           Bool(false),
 			AutoApply:                  Bool(true),
 			Description:                String("qux"),
+			DriftDetection:             Bool(false),
 			FileTriggersEnabled:        Bool(true),
 			Operations:                 Bool(true),
 			QueueAllRuns:               Bool(true),
@@ -363,6 +364,7 @@ func TestWorkspacesCreate(t *testing.T) {
 			assert.Equal(t, *options.Description, item.Description)
 			assert.Equal(t, *options.AllowDestroyPlan, item.AllowDestroyPlan)
 			assert.Equal(t, *options.AutoApply, item.AutoApply)
+			assert.Equal(t, *options.DriftDetection, item.DriftDetection)
 			assert.Equal(t, *options.FileTriggersEnabled, item.FileTriggersEnabled)
 			assert.Equal(t, *options.Operations, item.Operations)
 			assert.Equal(t, *options.QueueAllRuns, item.QueueAllRuns)
@@ -724,7 +726,8 @@ func TestWorkspacesUpdate(t *testing.T) {
 			AutoApply:        Bool(true),
 			Operations:       Bool(true),
 			QueueAllRuns:     Bool(true),
-			TerraformVersion: String("0.10.0"),
+			DriftDetection:   Bool(true),
+			TerraformVersion: String("0.15.4"),
 		}
 
 		wAfter, err := client.Workspaces.Update(ctx, orgTest.Name, wTest.Name, options)
@@ -734,6 +737,7 @@ func TestWorkspacesUpdate(t *testing.T) {
 		assert.NotEqual(t, wTest.AllowDestroyPlan, wAfter.AllowDestroyPlan)
 		assert.NotEqual(t, wTest.AutoApply, wAfter.AutoApply)
 		assert.NotEqual(t, wTest.QueueAllRuns, wAfter.QueueAllRuns)
+		assert.NotEqual(t, wTest.DriftDetection, wAfter.DriftDetection)
 		assert.NotEqual(t, wTest.TerraformVersion, wAfter.TerraformVersion)
 		assert.Equal(t, wTest.WorkingDirectory, wAfter.WorkingDirectory)
 	})

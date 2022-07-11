@@ -115,6 +115,7 @@ type Workspace struct {
 	CanQueueDestroyPlan        bool                  `jsonapi:"attr,can-queue-destroy-plan"`
 	CreatedAt                  time.Time             `jsonapi:"attr,created-at,iso8601"`
 	Description                string                `jsonapi:"attr,description"`
+	DriftDetection             bool                  `jsonapi:"attr,drift-detection"`
 	Environment                string                `jsonapi:"attr,environment"`
 	ExecutionMode              string                `jsonapi:"attr,execution-mode"`
 	FileTriggersEnabled        bool                  `jsonapi:"attr,file-triggers-enabled"`
@@ -349,6 +350,10 @@ type WorkspaceCreateOptions struct {
 	// A list of tags to attach to the workspace. If the tag does not already
 	// exist, it is created and added to the workspace.
 	Tags []*Tag `jsonapi:"relation,tags,omitempty"`
+
+	// Optional: Whether to enabled drift detection for the workspace.
+	// Requires remote execution mode, TFCB entitlement, and a valid agent pool to work
+	DriftDetection *bool `jsonapi:"attr,drift-detection,omitempty"`
 }
 
 // TODO: move this struct out. VCSRepoOptions is used by workspaces, policy sets, and registry modules
@@ -447,6 +452,10 @@ type WorkspaceUpdateOptions struct {
 	// the environment when multiple environments exist within the same
 	// repository.
 	WorkingDirectory *string `jsonapi:"attr,working-directory,omitempty"`
+
+	// Optional: Whether to enabled drift detection for the workspace.
+	// Requires remote execution mode, TFCB entitlement, and a valid agent pool to work
+	DriftDetection *bool `jsonapi:"attr,drift-detection,omitempty"`
 }
 
 // WorkspaceLockOptions represents the options for locking a workspace.
