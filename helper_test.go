@@ -878,7 +878,7 @@ func createPlanExport(t *testing.T, client *Client, r *Run) (*PlanExport, func()
 	}
 }
 
-func createRegistryModule(t *testing.T, client *Client, org *Organization) (*RegistryModule, func()) {
+func createRegistryModule(t *testing.T, client *Client, org *Organization, registryName RegistryName) (*RegistryModule, func()) {
 	var orgCleanup func()
 
 	if org == nil {
@@ -888,9 +888,15 @@ func createRegistryModule(t *testing.T, client *Client, org *Organization) (*Reg
 	ctx := context.Background()
 
 	options := RegistryModuleCreateOptions{
-		Name:     String(randomString(t)),
-		Provider: String("provider"),
+		Name:         String(randomString(t)),
+		Provider:     String("provider"),
+		RegistryName: registryName,
 	}
+
+	if registryName == PublicRegistry {
+		options.Namespace = "namespace"
+	}
+
 	rm, err := client.RegistryModules.Create(ctx, org.Name, options)
 	if err != nil {
 		t.Fatal(err)

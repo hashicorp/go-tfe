@@ -1,7 +1,9 @@
 # Unreleased
 
 # v1.6.0
+## Enhancements
 * Add `Name` field to `OAuthClient` by @barrettclark [#466](https://github.com/hashicorp/go-tfe/pull/466)
+* Add support for creating both public and private `RegistryModule` without VCS by @Uk1288 [#460](https://github.com/hashicorp/go-tfe/pull/460)
 
 # v1.5.0
 

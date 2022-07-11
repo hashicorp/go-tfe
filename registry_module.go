@@ -159,6 +159,11 @@ type RegistryModuleCreateOptions struct {
 	Name *string `jsonapi:"attr,name"`
 	// Required:
 	Provider *string `jsonapi:"attr,provider"`
+	// Optional: Whether this is a publicly maintained module or private. Must be either public or private.
+	// Defaults to private if not specified
+	RegistryName RegistryName `jsonapi:"attr,registry-name,omitempty"`
+	// Optional: The namespace of this module. Required for public modules only.
+	Namespace string `jsonapi:"attr,namespace,omitempty"`
 }
 
 // RegistryModuleCreateVersionOptions is used when creating a registry module version
@@ -470,6 +475,22 @@ func (o RegistryModuleCreateOptions) valid() error {
 	}
 	if !validStringID(o.Provider) {
 		return ErrInvalidProvider
+	}
+
+	switch o.RegistryName {
+	case PublicRegistry:
+		if !validString(&o.Namespace) {
+			return ErrRequiredNamespace
+		}
+	case PrivateRegistry:
+		if validString(&o.Namespace) {
+			return ErrUnsupportedBothNamespaceAndPrivateRegistryName
+		}
+	case "":
+		// no-op:  RegistryName is optional
+	// for all other string
+	default:
+		return ErrInvalidRegistryName
 	}
 	return nil
 }

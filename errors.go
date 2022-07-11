@@ -35,6 +35,8 @@ var (
 	ErrUnsupportedRunTriggerType = errors.New(`"RunTriggerType" must be "inbound" when requesting "include" query params`)
 
 	ErrUnsupportedBothTriggerPatternsAndPrefixes = errors.New(`"TriggerPatterns" and "TriggerPrefixes" cannot be populated at the same time`)
+
+	ErrUnsupportedBothNamespaceAndPrivateRegistryName = errors.New(`"Namespace" cannot be populated when "RegistryName" is "private"`)
 )
 
 // Library errors that usually indicate a bug in the implementation of go-tfe
