@@ -48,7 +48,7 @@ type AgentPoolList struct {
 type AgentPool struct {
 	ID                 string `jsonapi:"primary,agent-pools"`
 	Name               string `jsonapi:"attr,name"`
-	OrganizationScoped *bool   `jsonapi:"attr,organization-scoped,omitempty"`
+	OrganizationScoped bool   `jsonapi:"attr,organization-scoped"`
 
 	// Relations
 	Organization      *Organization `jsonapi:"relation,organization"`
