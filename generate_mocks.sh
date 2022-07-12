@@ -57,3 +57,4 @@ mockgen -source=variable.go -destination=mocks/variable_mocks.go -package=mocks
 mockgen -source=variable_set.go -destination=mocks/variable_set_mocks.go -package=mocks
 mockgen -source=workspace.go -destination=mocks/workspace_mocks.go -package=mocks
 mockgen -source=workspace_run_task.go -destination=mocks/workspace_run_tasks.go -package=mocks
+mockgen -source=agent.go -destination=mocks/agents.go -package=mocks
