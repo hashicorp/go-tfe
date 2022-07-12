@@ -46,12 +46,14 @@ type AgentPoolList struct {
 
 // AgentPool represents a Terraform Cloud agent pool.
 type AgentPool struct {
-	ID   string `jsonapi:"primary,agent-pools"`
-	Name string `jsonapi:"attr,name"`
+	ID                 string `jsonapi:"primary,agent-pools"`
+	Name               string `jsonapi:"attr,name"`
+	OrganizationScoped bool   `jsonapi:"attr,organization-scoped"`
 
 	// Relations
-	Organization *Organization `jsonapi:"relation,organization"`
-	Workspaces   []*Workspace  `jsonapi:"relation,workspaces"`
+	Organization      *Organization `jsonapi:"relation,organization"`
+	Workspaces        []*Workspace  `jsonapi:"relation,workspaces"`
+	AllowedWorkspaces []*Workspace  `jsonapi:"relation,allowed-workspaces"`
 }
 
 // A list of relations to include
@@ -172,6 +174,12 @@ type AgentPoolUpdateOptions struct {
 
 	// A new name to identify the agent pool.
 	Name *string `jsonapi:"attr,name"`
+
+	// True if the agent pool is organization scoped, false otherwise.
+	OrganizationScoped *bool `jsonapi:"attr,organization-scoped,omitempty"`
+
+	// A new list of workspaces that are associated with an agent pool.
+	AllowedWorkspaces []*Workspace `jsonapi:"relation,allowed-workspaces"`
 }
 
 // Update an agent pool by its ID.
