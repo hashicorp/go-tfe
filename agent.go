@@ -20,7 +20,7 @@ type Agents interface {
 	ReadWithOptions(ctx context.Context, agentID string, options *AgentReadOptions) (*Agent, error)
 
 	// List all the agents of the given pool.
-	List(ctx context.Context, agentPoolID string, options *AgentPoolListOptions) (*AgentList, error)
+	List(ctx context.Context, agentPoolID string, options *AgentListOptions) (*AgentList, error)
 
 	// Delete an agent by its ID.
 	Delete(ctx context.Context, agentPoolID string) error
