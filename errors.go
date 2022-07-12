@@ -170,7 +170,7 @@ var (
 
 	ErrInvalidRegistryName = errors.New("invalid value for registry-name")
 
-	ErrInvalidAgentID = errors.New("Invalid value for Agent ID.")
+	ErrInvalidAgentID = errors.New("invalid value for Agent ID")
 )
 
 // Missing values for required field/option
