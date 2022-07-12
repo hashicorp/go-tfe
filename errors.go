@@ -169,6 +169,8 @@ var (
 	ErrInvalidArch = errors.New("invalid value for arch")
 
 	ErrInvalidRegistryName = errors.New("invalid value for registry-name")
+
+	ErrInvalidAgentID = errors.New("Invalid value for Agent ID.")
 )
 
 // Missing values for required field/option

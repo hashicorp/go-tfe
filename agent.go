@@ -89,7 +89,7 @@ func (s *agents) ReadWithOptions(ctx context.Context, agentID string, options *A
 		return nil, err
 	}
 
-	agent := &AgentPool{}
+	agent := &Agent{}
 	err = s.client.do(ctx, req, agent)
 	if err != nil {
 		return nil, err
@@ -135,4 +135,39 @@ func (s *agents) Delete(ctx context.Context, agentID string) error {
 	}
 
 	return s.client.do(ctx, req, nil)
+}
+
+func (o *AgentReadOptions) valid() error {
+	if o == nil {
+		return nil // nothing to validate
+	}
+	if err := validateAgentIncludeParams(o.Include); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (o *AgentListOptions) valid() error {
+	if o == nil {
+		return nil // nothing to validate
+	}
+	if err := validateAgentIncludeParams(o.Include); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func validateAgentIncludeParams(params []AgentIncludeOpt) error {
+	for _, p := range params {
+		switch p {
+		case AgentWorkspaces:
+			// do nothing
+		default:
+			return ErrInvalidIncludeValue
+		}
+	}
+
+	return nil
 }
