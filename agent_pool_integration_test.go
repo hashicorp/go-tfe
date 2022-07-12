@@ -227,13 +227,13 @@ func TestAgentPoolsUpdate(t *testing.T) {
 
 		organizationScoped := false
 		kAfter, err := client.AgentPools.Update(ctx, kBefore.ID, AgentPoolUpdateOptions{
-			Name: String(kBefore.Name),
+			Name:               String(kBefore.Name),
 			OrganizationScoped: &organizationScoped,
 		})
 		require.NoError(t, err)
 
-        assert.NotEqual(t, kBefore.OrganizationScoped, kAfter.OrganizationScoped)
-        assert.Equal(t, organizationScoped, kAfter.OrganizationScoped)
+		assert.NotEqual(t, kBefore.OrganizationScoped, kAfter.OrganizationScoped)
+		assert.Equal(t, organizationScoped, kAfter.OrganizationScoped)
 	})
 }
 
