@@ -78,13 +78,13 @@ func (s *adminRuns) List(ctx context.Context, options *AdminRunsListOptions) (*A
 	}
 
 	u := "admin/runs"
-	req, err := s.client.newRequest("GET", u, options)
+	req, err := s.client.NewRequest("GET", u, options)
 	if err != nil {
 		return nil, err
 	}
 
 	rl := &AdminRunsList{}
-	err = s.client.do(ctx, req, rl)
+	err = req.Do(ctx, rl)
 	if err != nil {
 		return nil, err
 	}
@@ -107,12 +107,12 @@ func (s *adminRuns) ForceCancel(ctx context.Context, runID string, options Admin
 	}
 
 	u := fmt.Sprintf("admin/runs/%s/actions/force-cancel", url.QueryEscape(runID))
-	req, err := s.client.newRequest("POST", u, &options)
+	req, err := s.client.NewRequest("POST", u, &options)
 	if err != nil {
 		return err
 	}
 
-	return s.client.do(ctx, req, nil)
+	return req.Do(ctx, nil)
 }
 
 func (o *AdminRunsListOptions) valid() error {

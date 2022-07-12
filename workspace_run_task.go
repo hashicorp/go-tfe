@@ -75,13 +75,13 @@ func (s *workspaceRunTasks) List(ctx context.Context, workspaceID string, option
 	}
 
 	u := fmt.Sprintf("workspaces/%s/tasks", url.QueryEscape(workspaceID))
-	req, err := s.client.newRequest("GET", u, options)
+	req, err := s.client.NewRequest("GET", u, options)
 	if err != nil {
 		return nil, err
 	}
 
 	rl := &WorkspaceRunTaskList{}
-	err = s.client.do(ctx, req, rl)
+	err = req.Do(ctx, rl)
 	if err != nil {
 		return nil, err
 	}
@@ -104,13 +104,13 @@ func (s *workspaceRunTasks) Read(ctx context.Context, workspaceID, workspaceTask
 		url.QueryEscape(workspaceID),
 		url.QueryEscape(workspaceTaskID),
 	)
-	req, err := s.client.newRequest("GET", u, nil)
+	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, err
 	}
 
 	wr := &WorkspaceRunTask{}
-	err = s.client.do(ctx, req, wr)
+	err = req.Do(ctx, wr)
 	if err != nil {
 		return nil, err
 	}
@@ -129,13 +129,13 @@ func (s *workspaceRunTasks) Create(ctx context.Context, workspaceID string, opti
 	}
 
 	u := fmt.Sprintf("workspaces/%s/tasks", workspaceID)
-	req, err := s.client.newRequest("POST", u, &options)
+	req, err := s.client.NewRequest("POST", u, &options)
 	if err != nil {
 		return nil, err
 	}
 
 	wr := &WorkspaceRunTask{}
-	err = s.client.do(ctx, req, wr)
+	err = req.Do(ctx, wr)
 	if err != nil {
 		return nil, err
 	}
@@ -158,13 +158,13 @@ func (s *workspaceRunTasks) Update(ctx context.Context, workspaceID, workspaceTa
 		url.QueryEscape(workspaceID),
 		url.QueryEscape(workspaceTaskID),
 	)
-	req, err := s.client.newRequest("PATCH", u, &options)
+	req, err := s.client.NewRequest("PATCH", u, &options)
 	if err != nil {
 		return nil, err
 	}
 
 	wr := &WorkspaceRunTask{}
-	err = s.client.do(ctx, req, wr)
+	err = req.Do(ctx, wr)
 	if err != nil {
 		return nil, err
 	}
@@ -187,12 +187,12 @@ func (s *workspaceRunTasks) Delete(ctx context.Context, workspaceID, workspaceTa
 		url.QueryEscape(workspaceID),
 		url.QueryEscape(workspaceTaskID),
 	)
-	req, err := s.client.newRequest("DELETE", u, nil)
+	req, err := s.client.NewRequest("DELETE", u, nil)
 	if err != nil {
 		return err
 	}
 
-	return s.client.do(ctx, req, nil)
+	return req.Do(ctx, nil)
 }
 
 func (o *WorkspaceRunTaskCreateOptions) valid() error {

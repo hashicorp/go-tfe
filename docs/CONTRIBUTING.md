@@ -198,13 +198,13 @@ func (s *example) Create(ctx context.Context, organization string, options Examp
 	}
 
 	u := fmt.Sprintf("organizations/%s/tasks", url.QueryEscape(organization))
-	req, err := s.client.newRequest("POST", u, &options)
+	req, err := s.client.NewRequest("POST", u, &options)
 	if err != nil {
 		return nil, err
 	}
 
 	r := &Example{}
-	err = s.client.do(ctx, req, r)
+	err = req.Do(ctx, r)
 	if err != nil {
 		return nil, err
 	}
@@ -222,13 +222,13 @@ func (s *example) List(ctx context.Context, organization string, options *Exampl
 	}
 
 	u := fmt.Sprintf("organizations/%s/examples", url.QueryEscape(organization))
-	req, err := s.client.newRequest("GET", u, options)
+	req, err := s.client.NewRequest("GET", u, options)
 	if err != nil {
 		return nil, err
 	}
 
 	el := &ExampleList{}
-	err = s.client.do(ctx, req, el)
+	err = req.Do(ctx, el)
 	if err != nil {
 		return nil, err
 	}
@@ -251,13 +251,13 @@ func (s *example) ReadWithOptions(ctx context.Context, exampleID string, options
 	}
 
 	u := fmt.Sprintf("examples/%s", url.QueryEscape(exampleID))
-	req, err := s.client.newRequest("GET", u, options)
+	req, err := s.client.NewRequest("GET", u, options)
 	if err != nil {
 		return nil, err
 	}
 
 	e := &Example{}
-	err = s.client.do(ctx, req, e)
+	err = req.Do(ctx, e)
 	if err != nil {
 		return nil, err
 	}
@@ -276,13 +276,13 @@ func (s *example) Update(ctx context.Context, exampleID string, options ExampleU
 	}
 
 	u := fmt.Sprintf("examples/%s", url.QueryEscape(exampleID))
-	req, err := s.client.newRequest("PATCH", u, &options)
+	req, err := s.client.NewRequest("PATCH", u, &options)
 	if err != nil {
 		return nil, err
 	}
 
 	r := &Example{}
-	err = s.client.do(ctx, req, r)
+	err = req.Do(ctx, r)
 	if err != nil {
 		return nil, err
 	}
@@ -297,12 +297,12 @@ func (s *example) Delete(ctx context.Context, exampleID string) error {
 	}
 
 	u := fmt.Sprintf("examples/%s", exampleID)
-	req, err := s.client.newRequest("DELETE", u, nil)
+	req, err := s.client.NewRequest("DELETE", u, nil)
 	if err != nil {
 		return err
 	}
 
-	return s.client.do(ctx, req, nil)
+	return req.Do(ctx, nil)
 }
 
 func (o *ExampleUpdateOptions) valid() error {

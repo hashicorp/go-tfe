@@ -47,13 +47,13 @@ func (s *organizationTokens) Create(ctx context.Context, organization string) (*
 	}
 
 	u := fmt.Sprintf("organizations/%s/authentication-token", url.QueryEscape(organization))
-	req, err := s.client.newRequest("POST", u, nil)
+	req, err := s.client.NewRequest("POST", u, nil)
 	if err != nil {
 		return nil, err
 	}
 
 	ot := &OrganizationToken{}
-	err = s.client.do(ctx, req, ot)
+	err = req.Do(ctx, ot)
 	if err != nil {
 		return nil, err
 	}
@@ -68,13 +68,13 @@ func (s *organizationTokens) Read(ctx context.Context, organization string) (*Or
 	}
 
 	u := fmt.Sprintf("organizations/%s/authentication-token", url.QueryEscape(organization))
-	req, err := s.client.newRequest("GET", u, nil)
+	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, err
 	}
 
 	ot := &OrganizationToken{}
-	err = s.client.do(ctx, req, ot)
+	err = req.Do(ctx, ot)
 	if err != nil {
 		return nil, err
 	}
@@ -89,10 +89,10 @@ func (s *organizationTokens) Delete(ctx context.Context, organization string) er
 	}
 
 	u := fmt.Sprintf("organizations/%s/authentication-token", url.QueryEscape(organization))
-	req, err := s.client.newRequest("DELETE", u, nil)
+	req, err := s.client.NewRequest("DELETE", u, nil)
 	if err != nil {
 		return err
 	}
 
-	return s.client.do(ctx, req, nil)
+	return req.Do(ctx, nil)
 }

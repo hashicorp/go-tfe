@@ -200,6 +200,41 @@ func TestAgentPoolsUpdate(t *testing.T) {
 		assert.Nil(t, w)
 		assert.EqualError(t, err, ErrInvalidAgentPoolID.Error())
 	})
+
+	t.Run("when updating allowed-workspaces", func(t *testing.T) {
+		kBefore, kTestCleanup := createAgentPool(t, client, orgTest)
+		defer kTestCleanup()
+
+		workspaceTest, workspaceTestCleanup := createWorkspace(t, client, orgTest)
+		defer workspaceTestCleanup()
+
+		kAfter, err := client.AgentPools.Update(ctx, kBefore.ID, AgentPoolUpdateOptions{
+			Name: String(kBefore.Name),
+			AllowedWorkspaces: []*Workspace{
+				workspaceTest,
+			},
+		})
+		require.NoError(t, err)
+
+		assert.NotEqual(t, kBefore.AllowedWorkspaces, kAfter.AllowedWorkspaces)
+		assert.Equal(t, 1, len(kAfter.AllowedWorkspaces))
+		assert.Equal(t, workspaceTest.ID, kAfter.AllowedWorkspaces[0].ID)
+	})
+
+	t.Run("when updating organization scope", func(t *testing.T) {
+		kBefore, kTestCleanup := createAgentPool(t, client, orgTest)
+		defer kTestCleanup()
+
+		organizationScoped := false
+		kAfter, err := client.AgentPools.Update(ctx, kBefore.ID, AgentPoolUpdateOptions{
+			Name:               String(kBefore.Name),
+			OrganizationScoped: &organizationScoped,
+		})
+		require.NoError(t, err)
+
+		assert.NotEqual(t, kBefore.OrganizationScoped, kAfter.OrganizationScoped)
+		assert.Equal(t, organizationScoped, kAfter.OrganizationScoped)
+	})
 }
 
 func TestAgentPoolsDelete(t *testing.T) {

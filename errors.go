@@ -26,6 +26,12 @@ var (
 
 	ErrUnsupportedPrivateKey = errors.New("private Key can only be present with Azure DevOps Server service provider")
 
+	ErrUnsupportedBothTagsRegexAndFileTriggersEnabled = errors.New(`"TagsRegex" cannot be populated when "FileTriggersEnabled" is true`)
+
+	ErrUnsupportedBothTagsRegexAndTriggerPatterns = errors.New(`"TagsRegex" and "TriggerPrefixes" cannot be populated at the same time`)
+
+	ErrUnsupportedBothTagsRegexAndTriggerPrefixes = errors.New(`"TagsRegex" and "TriggerPatterns" cannot be populated at the same time`)
+
 	ErrUnsupportedRunTriggerType = errors.New(`"RunTriggerType" must be "inbound" when requesting "include" query params`)
 
 	ErrUnsupportedBothTriggerPatternsAndPrefixes = errors.New(`"TriggerPatterns" and "TriggerPrefixes" cannot be populated at the same time`)

@@ -325,13 +325,13 @@ func (s *runs) List(ctx context.Context, workspaceID string, options *RunListOpt
 	}
 
 	u := fmt.Sprintf("workspaces/%s/runs", url.QueryEscape(workspaceID))
-	req, err := s.client.newRequest("GET", u, options)
+	req, err := s.client.NewRequest("GET", u, options)
 	if err != nil {
 		return nil, err
 	}
 
 	rl := &RunList{}
-	err = s.client.do(ctx, req, rl)
+	err = req.Do(ctx, rl)
 	if err != nil {
 		return nil, err
 	}
@@ -345,13 +345,13 @@ func (s *runs) Create(ctx context.Context, options RunCreateOptions) (*Run, erro
 		return nil, err
 	}
 
-	req, err := s.client.newRequest("POST", "runs", &options)
+	req, err := s.client.NewRequest("POST", "runs", &options)
 	if err != nil {
 		return nil, err
 	}
 
 	r := &Run{}
-	err = s.client.do(ctx, req, r)
+	err = req.Do(ctx, r)
 	if err != nil {
 		return nil, err
 	}
@@ -374,13 +374,13 @@ func (s *runs) ReadWithOptions(ctx context.Context, runID string, options *RunRe
 	}
 
 	u := fmt.Sprintf("runs/%s", url.QueryEscape(runID))
-	req, err := s.client.newRequest("GET", u, options)
+	req, err := s.client.NewRequest("GET", u, options)
 	if err != nil {
 		return nil, err
 	}
 
 	r := &Run{}
-	err = s.client.do(ctx, req, r)
+	err = req.Do(ctx, r)
 	if err != nil {
 		return nil, err
 	}
@@ -395,12 +395,12 @@ func (s *runs) Apply(ctx context.Context, runID string, options RunApplyOptions)
 	}
 
 	u := fmt.Sprintf("runs/%s/actions/apply", url.QueryEscape(runID))
-	req, err := s.client.newRequest("POST", u, &options)
+	req, err := s.client.NewRequest("POST", u, &options)
 	if err != nil {
 		return err
 	}
 
-	return s.client.do(ctx, req, nil)
+	return req.Do(ctx, nil)
 }
 
 // Cancel a run by its ID.
@@ -410,12 +410,12 @@ func (s *runs) Cancel(ctx context.Context, runID string, options RunCancelOption
 	}
 
 	u := fmt.Sprintf("runs/%s/actions/cancel", url.QueryEscape(runID))
-	req, err := s.client.newRequest("POST", u, &options)
+	req, err := s.client.NewRequest("POST", u, &options)
 	if err != nil {
 		return err
 	}
 
-	return s.client.do(ctx, req, nil)
+	return req.Do(ctx, nil)
 }
 
 // ForceCancel is used to forcefully cancel a run by its ID.
@@ -425,12 +425,12 @@ func (s *runs) ForceCancel(ctx context.Context, runID string, options RunForceCa
 	}
 
 	u := fmt.Sprintf("runs/%s/actions/force-cancel", url.QueryEscape(runID))
-	req, err := s.client.newRequest("POST", u, &options)
+	req, err := s.client.NewRequest("POST", u, &options)
 	if err != nil {
 		return err
 	}
 
-	return s.client.do(ctx, req, nil)
+	return req.Do(ctx, nil)
 }
 
 // Discard a run by its ID.
@@ -440,12 +440,12 @@ func (s *runs) Discard(ctx context.Context, runID string, options RunDiscardOpti
 	}
 
 	u := fmt.Sprintf("runs/%s/actions/discard", url.QueryEscape(runID))
-	req, err := s.client.newRequest("POST", u, &options)
+	req, err := s.client.NewRequest("POST", u, &options)
 	if err != nil {
 		return err
 	}
 
-	return s.client.do(ctx, req, nil)
+	return req.Do(ctx, nil)
 }
 
 func (o RunCreateOptions) valid() error {

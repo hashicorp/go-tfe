@@ -200,13 +200,13 @@ type ReadRunQueueOptions struct {
 
 // List all the organizations visible to the current user.
 func (s *organizations) List(ctx context.Context, options *OrganizationListOptions) (*OrganizationList, error) {
-	req, err := s.client.newRequest("GET", "organizations", options)
+	req, err := s.client.NewRequest("GET", "organizations", options)
 	if err != nil {
 		return nil, err
 	}
 
 	orgl := &OrganizationList{}
-	err = s.client.do(ctx, req, orgl)
+	err = req.Do(ctx, orgl)
 	if err != nil {
 		return nil, err
 	}
@@ -220,13 +220,13 @@ func (s *organizations) Create(ctx context.Context, options OrganizationCreateOp
 		return nil, err
 	}
 
-	req, err := s.client.newRequest("POST", "organizations", &options)
+	req, err := s.client.NewRequest("POST", "organizations", &options)
 	if err != nil {
 		return nil, err
 	}
 
 	org := &Organization{}
-	err = s.client.do(ctx, req, org)
+	err = req.Do(ctx, org)
 	if err != nil {
 		return nil, err
 	}
@@ -241,13 +241,13 @@ func (s *organizations) Read(ctx context.Context, organization string) (*Organiz
 	}
 
 	u := fmt.Sprintf("organizations/%s", url.QueryEscape(organization))
-	req, err := s.client.newRequest("GET", u, nil)
+	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, err
 	}
 
 	org := &Organization{}
-	err = s.client.do(ctx, req, org)
+	err = req.Do(ctx, org)
 	if err != nil {
 		return nil, err
 	}
@@ -262,13 +262,13 @@ func (s *organizations) Update(ctx context.Context, organization string, options
 	}
 
 	u := fmt.Sprintf("organizations/%s", url.QueryEscape(organization))
-	req, err := s.client.newRequest("PATCH", u, &options)
+	req, err := s.client.NewRequest("PATCH", u, &options)
 	if err != nil {
 		return nil, err
 	}
 
 	org := &Organization{}
-	err = s.client.do(ctx, req, org)
+	err = req.Do(ctx, org)
 	if err != nil {
 		return nil, err
 	}
@@ -283,12 +283,12 @@ func (s *organizations) Delete(ctx context.Context, organization string) error {
 	}
 
 	u := fmt.Sprintf("organizations/%s", url.QueryEscape(organization))
-	req, err := s.client.newRequest("DELETE", u, nil)
+	req, err := s.client.NewRequest("DELETE", u, nil)
 	if err != nil {
 		return err
 	}
 
-	return s.client.do(ctx, req, nil)
+	return req.Do(ctx, nil)
 }
 
 // ReadCapacity shows the currently used capacity of an organization.
@@ -298,13 +298,13 @@ func (s *organizations) ReadCapacity(ctx context.Context, organization string) (
 	}
 
 	u := fmt.Sprintf("organizations/%s/capacity", url.QueryEscape(organization))
-	req, err := s.client.newRequest("GET", u, nil)
+	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, err
 	}
 
 	c := &Capacity{}
-	err = s.client.do(ctx, req, c)
+	err = req.Do(ctx, c)
 	if err != nil {
 		return nil, err
 	}
@@ -319,13 +319,13 @@ func (s *organizations) ReadEntitlements(ctx context.Context, organization strin
 	}
 
 	u := fmt.Sprintf("organizations/%s/entitlement-set", url.QueryEscape(organization))
-	req, err := s.client.newRequest("GET", u, nil)
+	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, err
 	}
 
 	e := &Entitlements{}
-	err = s.client.do(ctx, req, e)
+	err = req.Do(ctx, e)
 	if err != nil {
 		return nil, err
 	}
@@ -340,13 +340,13 @@ func (s *organizations) ReadRunQueue(ctx context.Context, organization string, o
 	}
 
 	u := fmt.Sprintf("organizations/%s/runs/queue", url.QueryEscape(organization))
-	req, err := s.client.newRequest("GET", u, &options)
+	req, err := s.client.NewRequest("GET", u, &options)
 	if err != nil {
 		return nil, err
 	}
 
 	rq := &RunQueue{}
-	err = s.client.do(ctx, req, rq)
+	err = req.Do(ctx, rq)
 	if err != nil {
 		return nil, err
 	}

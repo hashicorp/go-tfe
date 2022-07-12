@@ -1,9 +1,20 @@
-# v1.4.0 (Unreleased)
+# Unreleased
+
+* [beta] Add support for triggering Workspace runs through matching Git tags [#434](https://github.com/hashicorp/go-tfe/pull/434)
+* Add organization scope and allowed workspaces field for scope agents by @Netra2104 [#453](https://github.com/hashicorp/go-tfe/pull/453)
+
+## Bug fixes
+* Fixed JSON mapping for Configuration Versions failing to properly set the `speculative` property [#459](https://github.com/hashicorp/go-tfe/pull/459)
+
+# v1.4.0
 
 ## Enhancements
 * Adds `RetryServerErrors` field to the `Config` object by @sebasslash [#439](https://github.com/hashicorp/go-tfe/pull/439)
 * Adds support for the GPG Keys API by @sebasslash [#429](https://github.com/hashicorp/go-tfe/pull/429)
-* [beta] Renames the optional StateVersion field `ExtState` to `JSONState` and changes to string for base64 encoding by @annawinkler [#444](https://github.com/hashicorp/go-tfe/pull/444)
+* Adds support for new `WorkspaceLimit` Admin setting for organizations [#425](https://github.com/hashicorp/go-tfe/pull/425)
+* Adds support for new `ExcludeTags` workspace list filter field by @Uk1288 [#438](https://github.com/hashicorp/go-tfe/pull/438)
+* [beta] Adds additional filter fields to `RunListOptions` by @mjyocca [#424](https://github.com/hashicorp/go-tfe/pull/424)
+* [beta] Renames the optional StateVersion field `ExtState` to `JSONStateOutputs` and changes the purpose and type by @annawinkler [#444](https://github.com/hashicorp/go-tfe/pull/444) and @brandoncroft [#452](https://github.com/hashicorp/go-tfe/pull/452)
 
 # v1.3.0
 

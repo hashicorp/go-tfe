@@ -165,13 +165,13 @@ func (s *variableSets) List(ctx context.Context, organization string, options *V
 	}
 
 	u := fmt.Sprintf("organizations/%s/varsets", url.QueryEscape(organization))
-	req, err := s.client.newRequest("GET", u, options)
+	req, err := s.client.NewRequest("GET", u, options)
 	if err != nil {
 		return nil, err
 	}
 
 	vl := &VariableSetList{}
-	err = s.client.do(ctx, req, vl)
+	err = req.Do(ctx, vl)
 	if err != nil {
 		return nil, err
 	}
@@ -189,13 +189,13 @@ func (s *variableSets) Create(ctx context.Context, organization string, options 
 	}
 
 	u := fmt.Sprintf("organizations/%s/varsets", url.QueryEscape(organization))
-	req, err := s.client.newRequest("POST", u, options)
+	req, err := s.client.NewRequest("POST", u, options)
 	if err != nil {
 		return nil, err
 	}
 
 	vl := &VariableSet{}
-	err = s.client.do(ctx, req, vl)
+	err = req.Do(ctx, vl)
 	if err != nil {
 		return nil, err
 	}
@@ -210,13 +210,13 @@ func (s *variableSets) Read(ctx context.Context, variableSetID string, options *
 	}
 
 	u := fmt.Sprintf("varsets/%s", url.QueryEscape(variableSetID))
-	req, err := s.client.newRequest("GET", u, options)
+	req, err := s.client.NewRequest("GET", u, options)
 	if err != nil {
 		return nil, err
 	}
 
 	vs := &VariableSet{}
-	err = s.client.do(ctx, req, vs)
+	err = req.Do(ctx, vs)
 	if err != nil {
 		return nil, err
 	}
@@ -231,13 +231,13 @@ func (s *variableSets) Update(ctx context.Context, variableSetID string, options
 	}
 
 	u := fmt.Sprintf("varsets/%s", url.QueryEscape(variableSetID))
-	req, err := s.client.newRequest("PATCH", u, options)
+	req, err := s.client.NewRequest("PATCH", u, options)
 	if err != nil {
 		return nil, err
 	}
 
 	v := &VariableSet{}
-	err = s.client.do(ctx, req, v)
+	err = req.Do(ctx, v)
 	if err != nil {
 		return nil, err
 	}
@@ -252,12 +252,12 @@ func (s *variableSets) Delete(ctx context.Context, variableSetID string) error {
 	}
 
 	u := fmt.Sprintf("varsets/%s", url.QueryEscape(variableSetID))
-	req, err := s.client.newRequest("DELETE", u, nil)
+	req, err := s.client.NewRequest("DELETE", u, nil)
 	if err != nil {
 		return err
 	}
 
-	return s.client.do(ctx, req, nil)
+	return req.Do(ctx, nil)
 }
 
 // Apply variable set to workspaces in the supplied list.
@@ -271,12 +271,12 @@ func (s *variableSets) ApplyToWorkspaces(ctx context.Context, variableSetID stri
 	}
 
 	u := fmt.Sprintf("varsets/%s/relationships/workspaces", url.QueryEscape(variableSetID))
-	req, err := s.client.newRequest("POST", u, options.Workspaces)
+	req, err := s.client.NewRequest("POST", u, options.Workspaces)
 	if err != nil {
 		return err
 	}
 
-	return s.client.do(ctx, req, nil)
+	return req.Do(ctx, nil)
 }
 
 // Remove variable set from workspaces in the supplied list.
@@ -290,12 +290,12 @@ func (s *variableSets) RemoveFromWorkspaces(ctx context.Context, variableSetID s
 	}
 
 	u := fmt.Sprintf("varsets/%s/relationships/workspaces", url.QueryEscape(variableSetID))
-	req, err := s.client.newRequest("DELETE", u, options.Workspaces)
+	req, err := s.client.NewRequest("DELETE", u, options.Workspaces)
 	if err != nil {
 		return err
 	}
 
-	return s.client.do(ctx, req, nil)
+	return req.Do(ctx, nil)
 }
 
 // Update variable set to be applied to only the workspaces in the supplied list.
@@ -312,13 +312,13 @@ func (s *variableSets) UpdateWorkspaces(ctx context.Context, variableSetID strin
 
 	// We force inclusion of workspaces as that is the primary data for which we are concerned with confirming changes.
 	u := fmt.Sprintf("varsets/%s?include=%s", url.QueryEscape(variableSetID), VariableSetWorkspaces)
-	req, err := s.client.newRequest("PATCH", u, &o)
+	req, err := s.client.NewRequest("PATCH", u, &o)
 	if err != nil {
 		return nil, err
 	}
 
 	v := &VariableSet{}
-	err = s.client.do(ctx, req, v)
+	err = req.Do(ctx, v)
 	if err != nil {
 		return nil, err
 	}

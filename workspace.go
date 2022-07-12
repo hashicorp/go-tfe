@@ -182,6 +182,7 @@ type VCSRepo struct {
 	OAuthTokenID      string `jsonapi:"attr,oauth-token-id"`
 	RepositoryHTTPURL string `jsonapi:"attr,repository-http-url"`
 	ServiceProvider   string `jsonapi:"attr,service-provider"`
+	TagsRegex         string `jsonapi:"attr,tags-regex"`
 	WebhookURL        string `jsonapi:"attr,webhook-url"`
 }
 
@@ -357,6 +358,7 @@ type VCSRepoOptions struct {
 	Identifier        *string `json:"identifier,omitempty"`
 	IngressSubmodules *bool   `json:"ingress-submodules,omitempty"`
 	OAuthTokenID      *string `json:"oauth-token-id,omitempty"`
+	TagsRegex         *string `json:"tags-regex,omitempty"`
 }
 
 // WorkspaceUpdateOptions represents the options for updating a workspace.
@@ -536,13 +538,13 @@ func (s *workspaces) List(ctx context.Context, organization string, options *Wor
 	}
 
 	u := fmt.Sprintf("organizations/%s/workspaces", url.QueryEscape(organization))
-	req, err := s.client.newRequest("GET", u, options)
+	req, err := s.client.NewRequest("GET", u, options)
 	if err != nil {
 		return nil, err
 	}
 
 	wl := &WorkspaceList{}
-	err = s.client.do(ctx, req, wl)
+	err = req.Do(ctx, wl)
 	if err != nil {
 		return nil, err
 	}
@@ -560,13 +562,13 @@ func (s *workspaces) Create(ctx context.Context, organization string, options Wo
 	}
 
 	u := fmt.Sprintf("organizations/%s/workspaces", url.QueryEscape(organization))
-	req, err := s.client.newRequest("POST", u, &options)
+	req, err := s.client.NewRequest("POST", u, &options)
 	if err != nil {
 		return nil, err
 	}
 
 	w := &Workspace{}
-	err = s.client.do(ctx, req, w)
+	err = req.Do(ctx, w)
 	if err != nil {
 		return nil, err
 	}
@@ -596,13 +598,13 @@ func (s *workspaces) ReadWithOptions(ctx context.Context, organization, workspac
 		url.QueryEscape(organization),
 		url.QueryEscape(workspace),
 	)
-	req, err := s.client.newRequest("GET", u, options)
+	req, err := s.client.NewRequest("GET", u, options)
 	if err != nil {
 		return nil, err
 	}
 
 	w := &Workspace{}
-	err = s.client.do(ctx, req, w)
+	err = req.Do(ctx, w)
 	if err != nil {
 		return nil, err
 	}
@@ -626,13 +628,13 @@ func (s *workspaces) ReadByIDWithOptions(ctx context.Context, workspaceID string
 	}
 
 	u := fmt.Sprintf("workspaces/%s", url.QueryEscape(workspaceID))
-	req, err := s.client.newRequest("GET", u, options)
+	req, err := s.client.NewRequest("GET", u, options)
 	if err != nil {
 		return nil, err
 	}
 
 	w := &Workspace{}
-	err = s.client.do(ctx, req, w)
+	err = req.Do(ctx, w)
 	if err != nil {
 		return nil, err
 	}
@@ -651,13 +653,13 @@ func (s *workspaces) Readme(ctx context.Context, workspaceID string) (io.Reader,
 	}
 
 	u := fmt.Sprintf("workspaces/%s?include=readme", url.QueryEscape(workspaceID))
-	req, err := s.client.newRequest("GET", u, nil)
+	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, err
 	}
 
 	r := &workspaceWithReadme{}
-	err = s.client.do(ctx, req, r)
+	err = req.Do(ctx, r)
 	if err != nil {
 		return nil, err
 	}
@@ -685,13 +687,13 @@ func (s *workspaces) Update(ctx context.Context, organization, workspace string,
 		url.QueryEscape(organization),
 		url.QueryEscape(workspace),
 	)
-	req, err := s.client.newRequest("PATCH", u, &options)
+	req, err := s.client.NewRequest("PATCH", u, &options)
 	if err != nil {
 		return nil, err
 	}
 
 	w := &Workspace{}
-	err = s.client.do(ctx, req, w)
+	err = req.Do(ctx, w)
 	if err != nil {
 		return nil, err
 	}
@@ -706,13 +708,13 @@ func (s *workspaces) UpdateByID(ctx context.Context, workspaceID string, options
 	}
 
 	u := fmt.Sprintf("workspaces/%s", url.QueryEscape(workspaceID))
-	req, err := s.client.newRequest("PATCH", u, &options)
+	req, err := s.client.NewRequest("PATCH", u, &options)
 	if err != nil {
 		return nil, err
 	}
 
 	w := &Workspace{}
-	err = s.client.do(ctx, req, w)
+	err = req.Do(ctx, w)
 	if err != nil {
 		return nil, err
 	}
@@ -734,12 +736,12 @@ func (s *workspaces) Delete(ctx context.Context, organization, workspace string)
 		url.QueryEscape(organization),
 		url.QueryEscape(workspace),
 	)
-	req, err := s.client.newRequest("DELETE", u, nil)
+	req, err := s.client.NewRequest("DELETE", u, nil)
 	if err != nil {
 		return err
 	}
 
-	return s.client.do(ctx, req, nil)
+	return req.Do(ctx, nil)
 }
 
 // DeleteByID deletes a workspace by its ID.
@@ -749,12 +751,12 @@ func (s *workspaces) DeleteByID(ctx context.Context, workspaceID string) error {
 	}
 
 	u := fmt.Sprintf("workspaces/%s", url.QueryEscape(workspaceID))
-	req, err := s.client.newRequest("DELETE", u, nil)
+	req, err := s.client.NewRequest("DELETE", u, nil)
 	if err != nil {
 		return err
 	}
 
-	return s.client.do(ctx, req, nil)
+	return req.Do(ctx, nil)
 }
 
 // RemoveVCSConnection from a workspace.
@@ -772,13 +774,13 @@ func (s *workspaces) RemoveVCSConnection(ctx context.Context, organization, work
 		url.QueryEscape(workspace),
 	)
 
-	req, err := s.client.newRequest("PATCH", u, &workspaceRemoveVCSConnectionOptions{})
+	req, err := s.client.NewRequest("PATCH", u, &workspaceRemoveVCSConnectionOptions{})
 	if err != nil {
 		return nil, err
 	}
 
 	w := &Workspace{}
-	err = s.client.do(ctx, req, w)
+	err = req.Do(ctx, w)
 	if err != nil {
 		return nil, err
 	}
@@ -794,13 +796,13 @@ func (s *workspaces) RemoveVCSConnectionByID(ctx context.Context, workspaceID st
 
 	u := fmt.Sprintf("workspaces/%s", url.QueryEscape(workspaceID))
 
-	req, err := s.client.newRequest("PATCH", u, &workspaceRemoveVCSConnectionOptions{})
+	req, err := s.client.NewRequest("PATCH", u, &workspaceRemoveVCSConnectionOptions{})
 	if err != nil {
 		return nil, err
 	}
 
 	w := &Workspace{}
-	err = s.client.do(ctx, req, w)
+	err = req.Do(ctx, w)
 	if err != nil {
 		return nil, err
 	}
@@ -815,13 +817,13 @@ func (s *workspaces) Lock(ctx context.Context, workspaceID string, options Works
 	}
 
 	u := fmt.Sprintf("workspaces/%s/actions/lock", url.QueryEscape(workspaceID))
-	req, err := s.client.newRequest("POST", u, &options)
+	req, err := s.client.NewRequest("POST", u, &options)
 	if err != nil {
 		return nil, err
 	}
 
 	w := &Workspace{}
-	err = s.client.do(ctx, req, w)
+	err = req.Do(ctx, w)
 	if err != nil {
 		return nil, err
 	}
@@ -836,13 +838,13 @@ func (s *workspaces) Unlock(ctx context.Context, workspaceID string) (*Workspace
 	}
 
 	u := fmt.Sprintf("workspaces/%s/actions/unlock", url.QueryEscape(workspaceID))
-	req, err := s.client.newRequest("POST", u, nil)
+	req, err := s.client.NewRequest("POST", u, nil)
 	if err != nil {
 		return nil, err
 	}
 
 	w := &Workspace{}
-	err = s.client.do(ctx, req, w)
+	err = req.Do(ctx, w)
 	if err != nil {
 		return nil, err
 	}
@@ -857,13 +859,13 @@ func (s *workspaces) ForceUnlock(ctx context.Context, workspaceID string) (*Work
 	}
 
 	u := fmt.Sprintf("workspaces/%s/actions/force-unlock", url.QueryEscape(workspaceID))
-	req, err := s.client.newRequest("POST", u, nil)
+	req, err := s.client.NewRequest("POST", u, nil)
 	if err != nil {
 		return nil, err
 	}
 
 	w := &Workspace{}
-	err = s.client.do(ctx, req, w)
+	err = req.Do(ctx, w)
 	if err != nil {
 		return nil, err
 	}
@@ -881,13 +883,13 @@ func (s *workspaces) AssignSSHKey(ctx context.Context, workspaceID string, optio
 	}
 
 	u := fmt.Sprintf("workspaces/%s/relationships/ssh-key", url.QueryEscape(workspaceID))
-	req, err := s.client.newRequest("PATCH", u, &options)
+	req, err := s.client.NewRequest("PATCH", u, &options)
 	if err != nil {
 		return nil, err
 	}
 
 	w := &Workspace{}
-	err = s.client.do(ctx, req, w)
+	err = req.Do(ctx, w)
 	if err != nil {
 		return nil, err
 	}
@@ -902,13 +904,13 @@ func (s *workspaces) UnassignSSHKey(ctx context.Context, workspaceID string) (*W
 	}
 
 	u := fmt.Sprintf("workspaces/%s/relationships/ssh-key", url.QueryEscape(workspaceID))
-	req, err := s.client.newRequest("PATCH", u, &workspaceUnassignSSHKeyOptions{})
+	req, err := s.client.NewRequest("PATCH", u, &workspaceUnassignSSHKeyOptions{})
 	if err != nil {
 		return nil, err
 	}
 
 	w := &Workspace{}
-	err = s.client.do(ctx, req, w)
+	err = req.Do(ctx, w)
 	if err != nil {
 		return nil, err
 	}
@@ -924,13 +926,13 @@ func (s *workspaces) ListRemoteStateConsumers(ctx context.Context, workspaceID s
 
 	u := fmt.Sprintf("workspaces/%s/relationships/remote-state-consumers", url.QueryEscape(workspaceID))
 
-	req, err := s.client.newRequest("GET", u, options)
+	req, err := s.client.NewRequest("GET", u, options)
 	if err != nil {
 		return nil, err
 	}
 
 	wl := &WorkspaceList{}
-	err = s.client.do(ctx, req, wl)
+	err = req.Do(ctx, wl)
 	if err != nil {
 		return nil, err
 	}
@@ -948,12 +950,12 @@ func (s *workspaces) AddRemoteStateConsumers(ctx context.Context, workspaceID st
 	}
 
 	u := fmt.Sprintf("workspaces/%s/relationships/remote-state-consumers", url.QueryEscape(workspaceID))
-	req, err := s.client.newRequest("POST", u, options.Workspaces)
+	req, err := s.client.NewRequest("POST", u, options.Workspaces)
 	if err != nil {
 		return err
 	}
 
-	return s.client.do(ctx, req, nil)
+	return req.Do(ctx, nil)
 }
 
 // RemoveRemoteStateConsumers removes the remote state consumers for a given workspace.
@@ -966,12 +968,12 @@ func (s *workspaces) RemoveRemoteStateConsumers(ctx context.Context, workspaceID
 	}
 
 	u := fmt.Sprintf("workspaces/%s/relationships/remote-state-consumers", url.QueryEscape(workspaceID))
-	req, err := s.client.newRequest("DELETE", u, options.Workspaces)
+	req, err := s.client.NewRequest("DELETE", u, options.Workspaces)
 	if err != nil {
 		return err
 	}
 
-	return s.client.do(ctx, req, nil)
+	return req.Do(ctx, nil)
 }
 
 // UpdateRemoteStateConsumers removes the remote state consumers for a given workspace.
@@ -984,12 +986,12 @@ func (s *workspaces) UpdateRemoteStateConsumers(ctx context.Context, workspaceID
 	}
 
 	u := fmt.Sprintf("workspaces/%s/relationships/remote-state-consumers", url.QueryEscape(workspaceID))
-	req, err := s.client.newRequest("PATCH", u, options.Workspaces)
+	req, err := s.client.NewRequest("PATCH", u, options.Workspaces)
 	if err != nil {
 		return err
 	}
 
-	return s.client.do(ctx, req, nil)
+	return req.Do(ctx, nil)
 }
 
 // ListTags returns the tags for a given workspace.
@@ -1000,13 +1002,13 @@ func (s *workspaces) ListTags(ctx context.Context, workspaceID string, options *
 
 	u := fmt.Sprintf("workspaces/%s/relationships/tags", url.QueryEscape(workspaceID))
 
-	req, err := s.client.newRequest("GET", u, options)
+	req, err := s.client.NewRequest("GET", u, options)
 	if err != nil {
 		return nil, err
 	}
 
 	tl := &TagList{}
-	err = s.client.do(ctx, req, tl)
+	err = req.Do(ctx, tl)
 	if err != nil {
 		return nil, err
 	}
@@ -1024,12 +1026,12 @@ func (s *workspaces) AddTags(ctx context.Context, workspaceID string, options Wo
 	}
 
 	u := fmt.Sprintf("workspaces/%s/relationships/tags", url.QueryEscape(workspaceID))
-	req, err := s.client.newRequest("POST", u, options.Tags)
+	req, err := s.client.NewRequest("POST", u, options.Tags)
 	if err != nil {
 		return err
 	}
 
-	return s.client.do(ctx, req, nil)
+	return req.Do(ctx, nil)
 }
 
 // RemoveTags removes a list of tags from a workspace.
@@ -1042,12 +1044,12 @@ func (s *workspaces) RemoveTags(ctx context.Context, workspaceID string, options
 	}
 
 	u := fmt.Sprintf("workspaces/%s/relationships/tags", url.QueryEscape(workspaceID))
-	req, err := s.client.newRequest("DELETE", u, options.Tags)
+	req, err := s.client.NewRequest("DELETE", u, options.Tags)
 	if err != nil {
 		return err
 	}
 
-	return s.client.do(ctx, req, nil)
+	return req.Do(ctx, nil)
 }
 
 func (o WorkspaceCreateOptions) valid() error {
@@ -1070,6 +1072,18 @@ func (o WorkspaceCreateOptions) valid() error {
 		o.TriggerPatterns != nil && len(o.TriggerPatterns) > 0 {
 		return ErrUnsupportedBothTriggerPatternsAndPrefixes
 	}
+	if o.VCSRepo != nil && o.VCSRepo.TagsRegex != nil &&
+		o.TriggerPatterns != nil && len(o.TriggerPatterns) > 0 {
+		return ErrUnsupportedBothTagsRegexAndTriggerPatterns
+	}
+	if o.VCSRepo != nil && o.VCSRepo.TagsRegex != nil &&
+		o.TriggerPrefixes != nil && len(o.TriggerPrefixes) > 0 {
+		return ErrUnsupportedBothTagsRegexAndTriggerPrefixes
+	}
+	if o.VCSRepo != nil && o.VCSRepo.TagsRegex != nil &&
+		o.FileTriggersEnabled != nil && *o.FileTriggersEnabled {
+		return ErrUnsupportedBothTagsRegexAndFileTriggersEnabled
+	}
 
 	return nil
 }
@@ -1087,6 +1101,19 @@ func (o WorkspaceUpdateOptions) valid() error {
 	if o.TriggerPrefixes != nil && len(o.TriggerPrefixes) > 0 &&
 		o.TriggerPatterns != nil && len(o.TriggerPatterns) > 0 {
 		return ErrUnsupportedBothTriggerPatternsAndPrefixes
+	}
+
+	if o.VCSRepo != nil && o.VCSRepo.TagsRegex != nil &&
+		o.TriggerPatterns != nil && len(o.TriggerPatterns) > 0 {
+		return ErrUnsupportedBothTagsRegexAndTriggerPatterns
+	}
+	if o.VCSRepo != nil && o.VCSRepo.TagsRegex != nil &&
+		o.TriggerPrefixes != nil && len(o.TriggerPrefixes) > 0 {
+		return ErrUnsupportedBothTagsRegexAndTriggerPrefixes
+	}
+	if o.VCSRepo != nil && o.VCSRepo.TagsRegex != nil &&
+		o.FileTriggersEnabled != nil && *o.FileTriggersEnabled {
+		return ErrUnsupportedBothTagsRegexAndFileTriggersEnabled
 	}
 
 	return nil

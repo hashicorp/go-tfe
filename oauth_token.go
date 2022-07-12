@@ -77,13 +77,13 @@ func (s *oAuthTokens) List(ctx context.Context, organization string, options *OA
 	}
 
 	u := fmt.Sprintf("organizations/%s/oauth-tokens", url.QueryEscape(organization))
-	req, err := s.client.newRequest("GET", u, options)
+	req, err := s.client.NewRequest("GET", u, options)
 	if err != nil {
 		return nil, err
 	}
 
 	otl := &OAuthTokenList{}
-	err = s.client.do(ctx, req, otl)
+	err = req.Do(ctx, otl)
 	if err != nil {
 		return nil, err
 	}
@@ -98,13 +98,13 @@ func (s *oAuthTokens) Read(ctx context.Context, oAuthTokenID string) (*OAuthToke
 	}
 
 	u := fmt.Sprintf("oauth-tokens/%s", url.QueryEscape(oAuthTokenID))
-	req, err := s.client.newRequest("GET", u, nil)
+	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, err
 	}
 
 	ot := &OAuthToken{}
-	err = s.client.do(ctx, req, ot)
+	err = req.Do(ctx, ot)
 	if err != nil {
 		return nil, err
 	}
@@ -119,13 +119,13 @@ func (s *oAuthTokens) Update(ctx context.Context, oAuthTokenID string, options O
 	}
 
 	u := fmt.Sprintf("oauth-tokens/%s", url.QueryEscape(oAuthTokenID))
-	req, err := s.client.newRequest("PATCH", u, &options)
+	req, err := s.client.NewRequest("PATCH", u, &options)
 	if err != nil {
 		return nil, err
 	}
 
 	ot := &OAuthToken{}
-	err = s.client.do(ctx, req, ot)
+	err = req.Do(ctx, ot)
 	if err != nil {
 		return nil, err
 	}
@@ -140,10 +140,10 @@ func (s *oAuthTokens) Delete(ctx context.Context, oAuthTokenID string) error {
 	}
 
 	u := fmt.Sprintf("oauth-tokens/%s", url.QueryEscape(oAuthTokenID))
-	req, err := s.client.newRequest("DELETE", u, nil)
+	req, err := s.client.NewRequest("DELETE", u, nil)
 	if err != nil {
 		return err
 	}
 
-	return s.client.do(ctx, req, nil)
+	return req.Do(ctx, nil)
 }

@@ -68,13 +68,13 @@ func (s *agentTokens) List(ctx context.Context, agentPoolID string) (*AgentToken
 	}
 
 	u := fmt.Sprintf("agent-pools/%s/authentication-tokens", url.QueryEscape(agentPoolID))
-	req, err := s.client.newRequest("GET", u, nil)
+	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, err
 	}
 
 	tokenList := &AgentTokenList{}
-	err = s.client.do(ctx, req, tokenList)
+	err = req.Do(ctx, tokenList)
 	if err != nil {
 		return nil, err
 	}
@@ -93,13 +93,13 @@ func (s *agentTokens) Create(ctx context.Context, agentPoolID string, options Ag
 	}
 
 	u := fmt.Sprintf("agent-pools/%s/authentication-tokens", url.QueryEscape(agentPoolID))
-	req, err := s.client.newRequest("POST", u, &options)
+	req, err := s.client.NewRequest("POST", u, &options)
 	if err != nil {
 		return nil, err
 	}
 
 	at := &AgentToken{}
-	err = s.client.do(ctx, req, at)
+	err = req.Do(ctx, at)
 	if err != nil {
 		return nil, err
 	}
@@ -114,13 +114,13 @@ func (s *agentTokens) Read(ctx context.Context, agentTokenID string) (*AgentToke
 	}
 
 	u := fmt.Sprintf("authentication-tokens/%s", url.QueryEscape(agentTokenID))
-	req, err := s.client.newRequest("GET", u, nil)
+	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, err
 	}
 
 	at := &AgentToken{}
-	err = s.client.do(ctx, req, at)
+	err = req.Do(ctx, at)
 	if err != nil {
 		return nil, err
 	}
@@ -135,10 +135,10 @@ func (s *agentTokens) Delete(ctx context.Context, agentTokenID string) error {
 	}
 
 	u := fmt.Sprintf("authentication-tokens/%s", url.QueryEscape(agentTokenID))
-	req, err := s.client.newRequest("DELETE", u, nil)
+	req, err := s.client.NewRequest("DELETE", u, nil)
 	if err != nil {
 		return err
 	}
 
-	return s.client.do(ctx, req, nil)
+	return req.Do(ctx, nil)
 }

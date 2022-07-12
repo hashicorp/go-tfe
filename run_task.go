@@ -143,13 +143,13 @@ func (s *runTasks) Create(ctx context.Context, organization string, options RunT
 	}
 
 	u := fmt.Sprintf("organizations/%s/tasks", url.QueryEscape(organization))
-	req, err := s.client.newRequest("POST", u, &options)
+	req, err := s.client.NewRequest("POST", u, &options)
 	if err != nil {
 		return nil, err
 	}
 
 	r := &RunTask{}
-	err = s.client.do(ctx, req, r)
+	err = req.Do(ctx, r)
 	if err != nil {
 		return nil, err
 	}
@@ -167,13 +167,13 @@ func (s *runTasks) List(ctx context.Context, organization string, options *RunTa
 	}
 
 	u := fmt.Sprintf("organizations/%s/tasks", url.QueryEscape(organization))
-	req, err := s.client.newRequest("GET", u, options)
+	req, err := s.client.NewRequest("GET", u, options)
 	if err != nil {
 		return nil, err
 	}
 
 	rl := &RunTaskList{}
-	err = s.client.do(ctx, req, rl)
+	err = req.Do(ctx, rl)
 	if err != nil {
 		return nil, err
 	}
@@ -196,13 +196,13 @@ func (s *runTasks) ReadWithOptions(ctx context.Context, runTaskID string, option
 	}
 
 	u := fmt.Sprintf("tasks/%s", url.QueryEscape(runTaskID))
-	req, err := s.client.newRequest("GET", u, options)
+	req, err := s.client.NewRequest("GET", u, options)
 	if err != nil {
 		return nil, err
 	}
 
 	r := &RunTask{}
-	err = s.client.do(ctx, req, r)
+	err = req.Do(ctx, r)
 	if err != nil {
 		return nil, err
 	}
@@ -221,13 +221,13 @@ func (s *runTasks) Update(ctx context.Context, runTaskID string, options RunTask
 	}
 
 	u := fmt.Sprintf("tasks/%s", url.QueryEscape(runTaskID))
-	req, err := s.client.newRequest("PATCH", u, &options)
+	req, err := s.client.NewRequest("PATCH", u, &options)
 	if err != nil {
 		return nil, err
 	}
 
 	r := &RunTask{}
-	err = s.client.do(ctx, req, r)
+	err = req.Do(ctx, r)
 	if err != nil {
 		return nil, err
 	}
@@ -242,12 +242,12 @@ func (s *runTasks) Delete(ctx context.Context, runTaskID string) error {
 	}
 
 	u := fmt.Sprintf("tasks/%s", runTaskID)
-	req, err := s.client.newRequest("DELETE", u, nil)
+	req, err := s.client.NewRequest("DELETE", u, nil)
 	if err != nil {
 		return err
 	}
 
-	return s.client.do(ctx, req, nil)
+	return req.Do(ctx, nil)
 }
 
 // AttachToWorkspace is a convenient method to attach a run task to a workspace. See: WorkspaceRunTasks.Create()
