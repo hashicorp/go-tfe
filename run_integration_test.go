@@ -163,7 +163,6 @@ func TestRunsListQueryParams(t *testing.T) {
 
 	for _, testCase := range testCases {
 		t.Run(testCase.description, func(t *testing.T) {
-			skipIfBeta(t)
 			runs, err := client.Runs.List(ctx, workspaceTest.ID, testCase.options)
 			testCase.assertion(testCase, runs, err)
 		})
