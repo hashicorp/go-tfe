@@ -63,6 +63,7 @@ For complete usage of the API client, see the [full package docs](https://pkg.go
 This API client covers most of the existing Terraform Cloud API calls and is updated regularly to add new or missing endpoints.
 
 - [x] Account
+- [x] Agents
 - [x] Agent Pools
 - [x] Agent Tokens
 - [x] Applies
