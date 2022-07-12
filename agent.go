@@ -84,7 +84,7 @@ func (s *agents) ReadWithOptions(ctx context.Context, agentID string, options *A
 	}
 
 	u := fmt.Sprintf("agents/%s", url.QueryEscape(agentID))
-	req, err := s.client.newRequest("GET", u, nil)
+	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -108,7 +108,7 @@ func (s *agents) List(ctx context.Context, agentPoolID string, options *AgentLis
 	}
 
 	u := fmt.Sprintf("agent-pools/%s/agents", url.QueryEscape(agentPoolID))
-	req, err := s.client.newRequest("GET", u, options)
+	req, err := s.client.NewRequest("GET", u, options)
 	if err != nil {
 		return nil, err
 	}
@@ -129,7 +129,7 @@ func (s *agents) Delete(ctx context.Context, agentID string) error {
 	}
 
 	u := fmt.Sprintf("agents/%s", url.QueryEscape(agentID))
-	req, err := s.client.newRequest("DELETE", u, nil)
+	req, err := s.client.NewRequest("DELETE", u, nil)
 	if err != nil {
 		return err
 	}
