@@ -90,7 +90,7 @@ func (s *agents) ReadWithOptions(ctx context.Context, agentID string, options *A
 	}
 
 	agent := &Agent{}
-	err = s.client.do(ctx, req, agent)
+	err = req.Do(ctx, agent)
 	if err != nil {
 		return nil, err
 	}
@@ -114,7 +114,7 @@ func (s *agents) List(ctx context.Context, agentPoolID string, options *AgentLis
 	}
 
 	agentList := &AgentList{}
-	err = s.client.do(ctx, req, agentList)
+	err = req.Do(ctx, agentList)
 	if err != nil {
 		return nil, err
 	}
@@ -134,7 +134,7 @@ func (s *agents) Delete(ctx context.Context, agentID string) error {
 		return err
 	}
 
-	return s.client.do(ctx, req, nil)
+	return req.Do(ctx, nil)
 }
 
 func (o *AgentReadOptions) valid() error {
