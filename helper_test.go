@@ -88,6 +88,40 @@ func fetchTestAccountDetails(t *testing.T, client *Client) *TestAccountDetails {
 	return _testAccountDetails
 }
 
+func createAgent(t *testing.T, client *Client, org *Organization, agentPool *AgentPool) (*Agent, func()) {
+	var orgCleanup func()
+	var agentPoolCleanup func()
+
+	if org == nil {
+		org, orgCleanup = createOrganization(t, client)
+	}
+
+	if agentPool == nil {
+		agentPool, agentPoolCleanup = createAgentPool(t, client, org)
+	}
+
+	ctx := context.Background()
+	agent, err := client.Agents.Create(ctx, org.Name, AgentPoolCreateOptions{
+		Name: String(randomString(t)),
+	}) //there is technically no API to create an Agent
+
+	return agent, func() {
+		if err := client.AgentPools.Delete(ctx, agent.ID); err != nil {
+			t.Logf("Error destroying agent pool! WARNING: Dangling resources "+
+				"may exist! The full error is shown below.\n\n"+
+				"Agent pool ID: %s\nError: %s", agent.ID, err)
+		}
+
+		if orgCleanup != nil {
+			orgCleanup()
+		}
+
+		if agentPoolCleanup != nil {
+			agentPoolCleanup()
+		}
+	}
+}
+
 func createAgentPool(t *testing.T, client *Client, org *Organization) (*AgentPool, func()) {
 	var orgCleanup func()
 

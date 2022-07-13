@@ -39,7 +39,7 @@ type AgentList struct {
 
 // Agent represents a Terraform Cloud agent.
 type Agent struct {
-	ID   string `jsonapi:"primary,agent-pools"`
+	ID   string `jsonapi:"primary,id"`
 	Name string `jsonapi:"attr,name"`
 	IP   string `jsonapi:"attr,ip-address"`
 
@@ -74,7 +74,7 @@ func (s *agents) Read(ctx context.Context, agentID string) (*Agent, error) {
 	return s.ReadWithOptions(ctx, agentID, nil)
 }
 
-// Read a single agent pool by its ID with options.
+// Read a single agent by its ID with options.
 func (s *agents) ReadWithOptions(ctx context.Context, agentID string, options *AgentReadOptions) (*Agent, error) {
 	if !validStringID(&agentID) {
 		return nil, ErrInvalidAgentID //undeclared var name
@@ -98,7 +98,7 @@ func (s *agents) ReadWithOptions(ctx context.Context, agentID string, options *A
 	return agent, nil //cannot use agent as *Agent value in return statement
 }
 
-// List all the agent pools of the given organization.
+// List all the agents of the given organization.
 func (s *agents) List(ctx context.Context, agentPoolID string, options *AgentListOptions) (*AgentList, error) {
 	if !validStringID(&agentPoolID) {
 		return nil, ErrInvalidOrg
@@ -122,7 +122,7 @@ func (s *agents) List(ctx context.Context, agentPoolID string, options *AgentLis
 	return agentList, nil
 }
 
-// Delete an agent pool by its ID.
+// Delete an agent by its ID.
 func (s *agents) Delete(ctx context.Context, agentID string) error {
 	if !validStringID(&agentID) {
 		return ErrInvalidAgentID
