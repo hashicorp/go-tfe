@@ -1,5 +1,7 @@
 # Unreleased
 
+# v1.5.0
+
 ## Enhancements
 * [beta] Add support for triggering Workspace runs through matching Git tags [#434](https://github.com/hashicorp/go-tfe/pull/434)
 * Add `Query` param field to `AgentPoolListOptions` to allow searching based on agent pool name, by @JarrettSpiker [#417](https://github.com/hashicorp/go-tfe/pull/417)
