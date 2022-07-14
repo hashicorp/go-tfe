@@ -290,11 +290,13 @@ func TestPolicySetsRead(t *testing.T) {
 
 		// The newest policy set version is changed to the most recent one
 		// that was created.
+		require.NotNil(t, psWithOptions.NewestVersion)
 		assert.Equal(t, psWithOptions.NewestVersion.ID, psvNew.ID)
 		assert.Equal(t, psWithOptions.NewestVersion.Status, PolicySetVersionPending)
 		// The current one is now set because policies were uploaded to the
 		// policy set version. Notice how it is set to the one that was uplaoded,
 		// not the newest policy set version.
+		require.NotNil(t, psWithOptions.CurrentVersion)
 		assert.Equal(t, psWithOptions.CurrentVersion.ID, psv.ID)
 		assert.Equal(t, psWithOptions.CurrentVersion.Status, PolicySetVersionReady)
 	})

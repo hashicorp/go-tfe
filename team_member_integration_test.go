@@ -240,7 +240,7 @@ func TestTeamMembersRemoveByUsernames(t *testing.T) {
 		}
 
 		err := client.TeamMembers.Remove(ctx, tmTest.ID, options)
-		assert.NoError(t, err)
+		require.NoError(t, err)
 	})
 }
 
@@ -271,6 +271,6 @@ func TestTeamMembersRemoveByOrganizationMemberships(t *testing.T) {
 		}
 
 		err := client.TeamMembers.Remove(ctx, tmTest.ID, options)
-		assert.NoError(t, err)
+		require.NoError(t, err)
 	})
 }

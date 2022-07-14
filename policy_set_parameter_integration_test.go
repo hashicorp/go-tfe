@@ -283,7 +283,7 @@ func TestPolicySetParametersDelete(t *testing.T) {
 
 	t.Run("with valid options", func(t *testing.T) {
 		err := client.PolicySetParameters.Delete(ctx, psTest.ID, pTest.ID)
-		assert.NoError(t, err)
+		require.NoError(t, err)
 	})
 
 	t.Run("with non existing parameter ID", func(t *testing.T) {

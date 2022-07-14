@@ -44,6 +44,7 @@ func TestStateVersionsList(t *testing.T) {
 
 		svl, err := client.StateVersions.List(ctx, options)
 		require.NoError(t, err)
+		require.NotEmpty(t, svl.Items)
 
 		// We need to strip the upload URL as that is a dynamic link.
 		svTest1.DownloadURL = ""

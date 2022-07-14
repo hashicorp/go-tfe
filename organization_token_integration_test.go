@@ -51,7 +51,7 @@ func TestOrganizationTokensRead(t *testing.T) {
 		_, otTestCleanup := createOrganizationToken(t, client, orgTest)
 
 		ot, err := client.OrganizationTokens.Read(ctx, orgTest.Name)
-		assert.NoError(t, err)
+		require.NoError(t, err)
 		assert.NotEmpty(t, ot)
 
 		otTestCleanup()
@@ -81,7 +81,7 @@ func TestOrganizationTokensDelete(t *testing.T) {
 
 	t.Run("with valid options", func(t *testing.T) {
 		err := client.OrganizationTokens.Delete(ctx, orgTest.Name)
-		assert.NoError(t, err)
+		require.NoError(t, err)
 	})
 
 	t.Run("when a token does not exist", func(t *testing.T) {

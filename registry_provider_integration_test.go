@@ -136,7 +136,9 @@ func TestRegistryProvidersList(t *testing.T) {
 		}
 
 		providersRead, err := client.RegistryProviders.List(ctx, provider.Organization.Name, &options)
-		assert.NoError(t, err)
+		require.NoError(t, err)
+
+		require.NotEmpty(t, providersRead.Items)
 		providerRead := providersRead.Items[0]
 		assert.Equal(t, providerRead.ID, provider.ID)
 		assert.Equal(t, len(versions), len(providerRead.RegistryProviderVersions))
@@ -316,7 +318,8 @@ func TestRegistryProvidersRead(t *testing.T) {
 				}
 
 				prv, err := client.RegistryProviders.Read(ctx, id, nil)
-				assert.NoError(t, err)
+				require.NoError(t, err)
+
 				assert.NotEmpty(t, prv.ID)
 				assert.Equal(t, registryProviderTest.Name, prv.Name)
 				assert.Equal(t, registryProviderTest.Namespace, prv.Namespace)
@@ -377,7 +380,9 @@ func TestRegistryProvidersRead(t *testing.T) {
 		}
 
 		providerRead, err := client.RegistryProviders.Read(ctx, id, &options)
-		assert.NoError(t, err)
+		require.NoError(t, err)
+		require.NotEmpty(t, providerRead.RegistryProviderVersions)
+
 		assert.Equal(t, providerRead.ID, provider.ID)
 		assert.Equal(t, len(versions), len(providerRead.RegistryProviderVersions))
 		foundVersion := &RegistryProviderVersion{}
@@ -463,7 +468,7 @@ func TestRegistryProvidersIDValidation(t *testing.T) {
 			Namespace:        "namespace",
 			Name:             "name",
 		}
-		assert.NoError(t, id.valid())
+		require.NoError(t, id.valid())
 	})
 
 	t.Run("without a name", func(t *testing.T) {

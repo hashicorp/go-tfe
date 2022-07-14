@@ -22,7 +22,7 @@ func TestPlanExportsCreate(t *testing.T) {
 	defer rTestCleanup()
 
 	pTest, err := client.Plans.Read(ctx, rTest.Plan.ID)
-	assert.NoError(t, err)
+	require.NoError(t, err)
 
 	t.Run("with valid options", func(t *testing.T) {
 		options := PlanExportCreateOptions{
@@ -91,7 +91,7 @@ func TestPlanExportsDelete(t *testing.T) {
 
 	t.Run("with a valid ID", func(t *testing.T) {
 		err := client.PlanExports.Delete(ctx, peTest.ID)
-		assert.NoError(t, err)
+		require.NoError(t, err)
 	})
 
 	t.Run("when the export does not exist", func(t *testing.T) {
@@ -115,7 +115,7 @@ func TestPlanExportsDownload(t *testing.T) {
 	t.Run("with a valid ID", func(t *testing.T) {
 		pe, err := client.PlanExports.Download(ctx, peTest.ID)
 		assert.NotNil(t, pe)
-		assert.NoError(t, err)
+		require.NoError(t, err)
 	})
 
 	t.Run("without a valid ID", func(t *testing.T) {

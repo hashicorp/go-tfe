@@ -44,7 +44,9 @@ func TestAgentPoolsList(t *testing.T) {
 			Include: []AgentPoolIncludeOpt{AgentPoolWorkspaces},
 		})
 		require.NoError(t, err)
-		assert.NotEmpty(t, k.Items[0].Workspaces[0])
+		require.NotEmpty(t, k.Items)
+		require.NotEmpty(t, k.Items[0].Workspaces)
+		assert.NotNil(t, k.Items[0].Workspaces[0])
 	})
 
 	t.Run("with list options", func(t *testing.T) {

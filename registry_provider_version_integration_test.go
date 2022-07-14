@@ -38,7 +38,7 @@ func TestRegistryProviderVersionsIDValidation(t *testing.T) {
 			Version:            version,
 			RegistryProviderID: validRegistryProviderId,
 		}
-		assert.NoError(t, id.valid())
+		require.NoError(t, id.valid())
 	})
 
 	t.Run("without a version", func(t *testing.T) {
@@ -121,9 +121,9 @@ func TestRegistryProviderVersionsCreate(t *testing.T) {
 
 		t.Run("includes upload links", func(t *testing.T) {
 			_, err := prvv.ShasumsUploadURL()
-			assert.NoError(t, err)
+			require.NoError(t, err)
 			_, err = prvv.ShasumsSigUploadURL()
-			assert.NoError(t, err)
+			require.NoError(t, err)
 			expectedLinks := []string{
 				"shasums-upload",
 				"shasums-sig-upload",
@@ -229,7 +229,7 @@ func TestRegistryProviderVersionsList(t *testing.T) {
 				},
 			})
 			require.NoError(t, err)
-			assert.NotEmpty(t, returnedVersions.Items)
+			require.NotEmpty(t, returnedVersions.Items)
 			assert.Equal(t, versionN, returnedVersions.TotalCount)
 			assert.Equal(t, 1, returnedVersions.TotalPages)
 			for _, rv := range returnedVersions.Items {
@@ -258,7 +258,8 @@ func TestRegistryProviderVersionsList(t *testing.T) {
 						},
 					})
 					require.NoError(t, err)
-					assert.NotEmpty(t, returnedVersions.Items)
+					require.NotEmpty(t, returnedVersions.Items)
+
 					assert.Equal(t, versionN, returnedVersions.TotalCount)
 					assert.Equal(t, pageN, returnedVersions.TotalPages)
 					assert.Equal(t, pageSize, len(returnedVersions.Items))
@@ -321,7 +322,7 @@ func TestRegistryProviderVersionsDelete(t *testing.T) {
 		}
 
 		err := client.RegistryProviderVersions.Delete(ctx, versionID)
-		assert.NoError(t, err)
+		require.NoError(t, err)
 	})
 
 	t.Run("with non existing version", func(t *testing.T) {
@@ -359,7 +360,7 @@ func TestRegistryProviderVersionsRead(t *testing.T) {
 		}
 
 		readVersion, err := client.RegistryProviderVersions.Read(ctx, versionID)
-		assert.NoError(t, err)
+		require.NoError(t, err)
 		assert.Equal(t, version.ID, readVersion.ID)
 		assert.Equal(t, version.Version, readVersion.Version)
 		assert.Equal(t, version.KeyID, readVersion.KeyID)
