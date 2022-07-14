@@ -853,7 +853,7 @@ func TestRegistryModule_Unmarshal(t *testing.T) {
 	assert.Equal(t, rm.Name, "module")
 	assert.Equal(t, rm.Provider, "tfe")
 	assert.Equal(t, rm.Namespace, "org-abc")
-	assert.Equal(t, rm.RegistryName, "private")
+	assert.Equal(t, rm.RegistryName, PrivateRegistry)
 	assert.Equal(t, rm.Permissions.CanDelete, true)
 	assert.Equal(t, rm.Permissions.CanRetry, true)
 	assert.Equal(t, rm.Status, RegistryModuleStatusPending)
