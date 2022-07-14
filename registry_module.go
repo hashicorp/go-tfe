@@ -3,7 +3,9 @@ package tfe
 import (
 	"context"
 	"fmt"
+	"log"
 	"net/url"
+	"strings"
 )
 
 // Compile-time proof of interface implementation.
@@ -82,6 +84,11 @@ type RegistryModuleID struct {
 	Name string
 	// The module's provider, see RegistryModule.Provider
 	Provider string
+	// The namespace of the module. For private modules this is the name of the organization that owns the module
+	// Required for public modules
+	Namespace string
+	// Either public or private. If not provided, defaults to private
+	RegistryName RegistryName
 }
 
 // RegistryModuleList represents a list of registry modules.
@@ -95,6 +102,8 @@ type RegistryModule struct {
 	ID              string                          `jsonapi:"primary,registry-modules"`
 	Name            string                          `jsonapi:"attr,name"`
 	Provider        string                          `jsonapi:"attr,provider"`
+	RegistryName    RegistryName                    `jsonapi:"attr,registry-name"`
+	Namespace       string                          `jsonapi:"attr,namespace"`
 	Permissions     *RegistryModulePermissions      `jsonapi:"attr,permissions"`
 	Status          RegistryModuleStatus            `jsonapi:"attr,status"`
 	VCSRepo         *VCSRepo                        `jsonapi:"attr,vcs-repo"`
@@ -307,12 +316,25 @@ func (r *registryModules) Read(ctx context.Context, moduleID RegistryModuleID) (
 		return nil, err
 	}
 
+	if moduleID.RegistryName == "" {
+		log.Println("[WARN] Support for using the RegistryModuleID without RegistryName is deprecated as of release 1.5.0 and may be removed in a future version. The preferred method is to include the RegistryName in RegistryModuleID.")
+		moduleID.RegistryName = PrivateRegistry
+	}
+
+	if moduleID.RegistryName == PrivateRegistry && strings.TrimSpace(moduleID.Namespace) == "" {
+		log.Println("[WARN] Support for using the RegistryModuleID without Namespace is deprecated as of release 1.5.0 and may be removed in a future version. The preferred method is to include the Namespace in RegistryModuleID.")
+		moduleID.Namespace = moduleID.Organization
+	}
+
 	u := fmt.Sprintf(
-		"registry-modules/show/%s/%s/%s",
+		"organizations/%s/registry-modules/%s/%s/%s/%s",
 		url.QueryEscape(moduleID.Organization),
+		url.QueryEscape(string(moduleID.RegistryName)),
+		url.QueryEscape(moduleID.Namespace),
 		url.QueryEscape(moduleID.Name),
 		url.QueryEscape(moduleID.Provider),
 	)
+
 	req, err := r.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, err
@@ -418,6 +440,17 @@ func (o RegistryModuleID) valid() error {
 
 	if !validStringID(&o.Provider) {
 		return ErrInvalidProvider
+	}
+	// RegistryName is optional, only validate if specified
+	if validString((*string)(&o.RegistryName)) {
+		registryNamesMap := map[RegistryName]RegistryName{PublicRegistry: PublicRegistry, PrivateRegistry: PrivateRegistry}
+		if _, ok := registryNamesMap[o.RegistryName]; !ok {
+			return ErrInvalidRegistryName
+		}
+	}
+
+	if o.RegistryName == PublicRegistry && !validString(&o.Namespace) {
+		return ErrRequiredNamespace
 	}
 
 	return nil
