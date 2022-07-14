@@ -441,16 +441,18 @@ func (o RegistryModuleID) valid() error {
 	if !validStringID(&o.Provider) {
 		return ErrInvalidProvider
 	}
-	// RegistryName is optional, only validate if specified
-	if validString((*string)(&o.RegistryName)) {
-		registryNamesMap := map[RegistryName]RegistryName{PublicRegistry: PublicRegistry, PrivateRegistry: PrivateRegistry}
-		if _, ok := registryNamesMap[o.RegistryName]; !ok {
-			return ErrInvalidRegistryName
-		}
-	}
 
-	if o.RegistryName == PublicRegistry && !validString(&o.Namespace) {
-		return ErrRequiredNamespace
+	switch o.RegistryName {
+	case PublicRegistry:
+		if !validString(&o.Namespace) {
+			return ErrRequiredNamespace
+		}
+	case PrivateRegistry:
+	case "":
+		// no-op:  RegistryName is optional
+	// for all other string
+	default:
+		return ErrInvalidRegistryName
 	}
 
 	return nil

@@ -426,9 +426,11 @@ func TestRegistryModulesRead(t *testing.T) {
 			RegistryName: PrivateRegistry,
 		})
 		require.NoError(t, err)
+		require.NotEmpty(t, rm)
 		assert.Equal(t, registryModuleTest.ID, rm.ID)
 
 		t.Run("permissions are properly decoded", func(t *testing.T) {
+			require.NotEmpty(t, rm.Permissions)
 			assert.True(t, rm.Permissions.CanDelete)
 			assert.True(t, rm.Permissions.CanResync)
 			assert.True(t, rm.Permissions.CanRetry)
