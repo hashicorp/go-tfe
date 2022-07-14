@@ -174,7 +174,7 @@ var (
 
 	ErrInvalidArch = errors.New("invalid value for arch")
 
-	ErrInvalidRegistryName = errors.New("invalid value for registry-name")
+	ErrInvalidRegistryName = errors.New(`invalid value for registry-name. It must be either "private" or "public"`)
 )
 
 // Missing values for required field/option
@@ -300,4 +300,6 @@ var (
 	ErrRequiredFilename = errors.New("filename is required")
 
 	ErrInvalidAsciiArmor = errors.New("ascii armor is invalid")
+
+	ErrRequiredNamespace = errors.New("namespace is required for public registry")
 )

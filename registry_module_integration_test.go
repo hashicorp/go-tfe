@@ -417,6 +417,31 @@ func TestRegistryModulesRead(t *testing.T) {
 		})
 	})
 
+	t.Run("with complete registry module ID fields", func(t *testing.T) {
+		rm, err := client.RegistryModules.Read(ctx, RegistryModuleID{
+			Organization: orgTest.Name,
+			Name:         registryModuleTest.Name,
+			Provider:     registryModuleTest.Provider,
+			Namespace:    orgTest.Name,
+			RegistryName: PrivateRegistry,
+		})
+		require.NoError(t, err)
+		require.NotEmpty(t, rm)
+		assert.Equal(t, registryModuleTest.ID, rm.ID)
+
+		t.Run("permissions are properly decoded", func(t *testing.T) {
+			require.NotEmpty(t, rm.Permissions)
+			assert.True(t, rm.Permissions.CanDelete)
+			assert.True(t, rm.Permissions.CanResync)
+			assert.True(t, rm.Permissions.CanRetry)
+		})
+
+		t.Run("timestamps are properly decoded", func(t *testing.T) {
+			assert.NotEmpty(t, rm.CreatedAt)
+			assert.NotEmpty(t, rm.UpdatedAt)
+		})
+	})
+
 	t.Run("without a name", func(t *testing.T) {
 		rm, err := client.RegistryModules.Read(ctx, RegistryModuleID{
 			Organization: orgTest.Name,
@@ -455,6 +480,18 @@ func TestRegistryModulesRead(t *testing.T) {
 		})
 		assert.Nil(t, rm)
 		assert.Equal(t, err, ErrInvalidProvider)
+	})
+
+	t.Run("with an invalid registry name", func(t *testing.T) {
+		rm, err := client.RegistryModules.Read(ctx, RegistryModuleID{
+			Organization: orgTest.Name,
+			Name:         registryModuleTest.Name,
+			Provider:     registryModuleTest.Provider,
+			Namespace:    orgTest.Name,
+			RegistryName: "PRIVATE",
+		})
+		assert.Nil(t, rm)
+		assert.Equal(t, err, ErrInvalidRegistryName)
 	})
 
 	t.Run("without a valid organization", func(t *testing.T) {
@@ -775,8 +812,10 @@ func TestRegistryModule_Unmarshal(t *testing.T) {
 			"type": "registry-modules",
 			"id":   "1",
 			"attributes": map[string]interface{}{
-				"name":     "module",
-				"provider": "tfe",
+				"name":          "module",
+				"provider":      "tfe",
+				"namespace":     "org-abc",
+				"registry-name": "private",
 				"permissions": map[string]interface{}{
 					"can-delete": true,
 					"can-resync": true,
@@ -815,6 +854,8 @@ func TestRegistryModule_Unmarshal(t *testing.T) {
 	assert.Equal(t, rm.ID, "1")
 	assert.Equal(t, rm.Name, "module")
 	assert.Equal(t, rm.Provider, "tfe")
+	assert.Equal(t, rm.Namespace, "org-abc")
+	assert.Equal(t, rm.RegistryName, PrivateRegistry)
 	assert.Equal(t, rm.Permissions.CanDelete, true)
 	assert.Equal(t, rm.Permissions.CanRetry, true)
 	assert.Equal(t, rm.Status, RegistryModuleStatusPending)
