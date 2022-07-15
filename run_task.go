@@ -11,8 +11,7 @@ var _ RunTasks = (*runTasks)(nil)
 
 // RunTasks represents all the run task related methods in the context of an organization
 // that the Terraform Cloud/Enterprise API supports.
-// **Note: This API is still in BETA and subject to change.**
-// https://www.terraform.io/cloud-docs/api-docs/run-tasks#run-tasks-api
+// https://www.terraform.io/cloud-docs/api-docs/run-tasks/run-tasks#run-tasks-api
 type RunTasks interface {
 	// Create a run task for an organization
 	Create(ctx context.Context, organization string, options RunTaskCreateOptions) (*RunTask, error)
@@ -43,12 +42,13 @@ type runTasks struct {
 
 // RunTask represents a TFC/E run task
 type RunTask struct {
-	ID       string  `jsonapi:"primary,tasks"`
-	Name     string  `jsonapi:"attr,name"`
-	URL      string  `jsonapi:"attr,url"`
-	Category string  `jsonapi:"attr,category"`
-	HMACKey  *string `jsonapi:"attr,hmac-key,omitempty"`
-	Enabled  bool    `jsonapi:"attr,enabled"`
+	ID          string  `jsonapi:"primary,tasks"`
+	Name        string  `jsonapi:"attr,name"`
+	URL         string  `jsonapi:"attr,url"`
+	Description string  `jsonapi:"attr,description"`
+	Category    string  `jsonapi:"attr,category"`
+	HMACKey     *string `jsonapi:"attr,hmac-key,omitempty"`
+	Enabled     bool    `jsonapi:"attr,enabled"`
 
 	Organization      *Organization       `jsonapi:"relation,organization"`
 	WorkspaceRunTasks []*WorkspaceRunTask `jsonapi:"relation,workspace-tasks"`
@@ -61,7 +61,7 @@ type RunTaskList struct {
 }
 
 // RunTaskIncludeOpt represents the available options for include query params.
-// https://www.terraform.io/cloud-docs/api-docs/run-tasks#list-run-tasks
+// https://www.terraform.io/cloud-docs/api-docs/run-tasks/run-tasks#list-run-tasks
 type RunTaskIncludeOpt string
 
 const (
@@ -73,14 +73,14 @@ const (
 type RunTaskListOptions struct {
 	ListOptions
 	// Optional: A list of relations to include with a run task. See available resources:
-	// https://www.terraform.io/cloud-docs/api-docs/run-tasks#list-run-tasks
+	// https://www.terraform.io/cloud-docs/api-docs/run-tasks/run-tasks#list-run-tasks
 	Include []RunTaskIncludeOpt `url:"include,omitempty"`
 }
 
 // RunTaskReadOptions represents the set of options for reading a run task
 type RunTaskReadOptions struct {
 	// Optional: A list of relations to include with a run task. See available resources:
-	// https://www.terraform.io/cloud-docs/api-docs/run-tasks#list-run-tasks
+	// https://www.terraform.io/cloud-docs/api-docs/run-tasks/run-tasks#list-run-tasks
 	Include []RunTaskIncludeOpt `url:"include,omitempty"`
 }
 
@@ -97,6 +97,9 @@ type RunTaskCreateOptions struct {
 
 	// Required: The URL to send a run task payload
 	URL string `jsonapi:"attr,url"`
+
+	// Optional: Description of the task
+	Description *string `jsonapi:"attr,description"`
 
 	// Required: Must be "task"
 	Category string `jsonapi:"attr,category"`
@@ -121,6 +124,9 @@ type RunTaskUpdateOptions struct {
 
 	// Optional: The URL to send a run task payload, defaults to previous value
 	URL *string `jsonapi:"attr,url,omitempty"`
+
+	// Optional: An optional description of the task
+	Description *string `jsonapi:"attr,description,omitempty"`
 
 	// Optional: Must be "task", defaults to "task"
 	Category *string `jsonapi:"attr,category,omitempty"`
