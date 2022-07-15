@@ -109,6 +109,7 @@ func TestOAuthClientsCreate(t *testing.T) {
 		oc, err := client.OAuthClients.Create(ctx, orgTest.Name, options)
 		require.NoError(t, err)
 		assert.NotEmpty(t, oc.ID)
+		assert.Nil(t, oc.Name)
 		assert.Equal(t, "https://api.github.com", oc.APIURL)
 		assert.Equal(t, "https://github.com", oc.HTTPURL)
 		assert.Equal(t, 1, len(oc.OAuthTokens))

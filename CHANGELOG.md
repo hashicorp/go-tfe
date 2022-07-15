@@ -1,5 +1,8 @@
 # Unreleased
 
+# v1.6.0
+* Add `Name` field to `OAuthClient` by @barrettclark [#466](https://github.com/hashicorp/go-tfe/pull/466)
+
 # v1.5.0
 
 ## Enhancements
