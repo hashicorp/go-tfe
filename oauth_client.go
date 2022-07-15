@@ -73,6 +73,7 @@ type OAuthClient struct {
 	HTTPURL             string              `jsonapi:"attr,http-url"`
 	Key                 string              `jsonapi:"attr,key"`
 	RSAPublicKey        string              `jsonapi:"attr,rsa-public-key"`
+	Name                *string             `jsonapi:"attr,name"`
 	Secret              string              `jsonapi:"attr,secret"`
 	ServiceProvider     ServiceProviderType `jsonapi:"attr,service-provider"`
 	ServiceProviderName string              `jsonapi:"attr,service-provider-display-name"`
