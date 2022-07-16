@@ -1080,7 +1080,7 @@ func (o WorkspaceCreateOptions) valid() error {
 		o.TriggerPrefixes != nil && len(o.TriggerPrefixes) > 0 {
 		return ErrUnsupportedBothTagsRegexAndTriggerPrefixes
 	}
-	if o.VCSRepo != nil && o.VCSRepo.TagsRegex != nil &&
+	if o.VCSRepo != nil && o.VCSRepo.TagsRegex != nil && *o.VCSRepo.TagsRegex != "" &&
 		o.FileTriggersEnabled != nil && *o.FileTriggersEnabled {
 		return ErrUnsupportedBothTagsRegexAndFileTriggersEnabled
 	}
@@ -1111,7 +1111,7 @@ func (o WorkspaceUpdateOptions) valid() error {
 		o.TriggerPrefixes != nil && len(o.TriggerPrefixes) > 0 {
 		return ErrUnsupportedBothTagsRegexAndTriggerPrefixes
 	}
-	if o.VCSRepo != nil && o.VCSRepo.TagsRegex != nil &&
+	if o.VCSRepo != nil && o.VCSRepo.TagsRegex != nil && *o.VCSRepo.TagsRegex != "" &&
 		o.FileTriggersEnabled != nil && *o.FileTriggersEnabled {
 		return ErrUnsupportedBothTagsRegexAndFileTriggersEnabled
 	}

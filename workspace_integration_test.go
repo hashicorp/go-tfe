@@ -413,6 +413,18 @@ func TestWorkspacesCreate(t *testing.T) {
 		assert.EqualError(t, err, ErrUnsupportedBothTagsRegexAndFileTriggersEnabled.Error())
 	})
 
+	t.Run("when options include both non-empty tags-regex and file-triggers-enabled as false an error is not returned", func(t *testing.T) {
+		options := WorkspaceCreateOptions{
+			Name:                String("foobar"),
+			FileTriggersEnabled: Bool(false),
+			VCSRepo:             &VCSRepoOptions{TagsRegex: String("foobar")},
+		}
+		w, err := client.Workspaces.Create(ctx, orgTest.Name, options)
+
+		require.NotNil(t, w)
+		require.NoError(t, err)
+	})
+
 	t.Run("when options include trigger-patterns populated and empty trigger-paths workspace is created", func(t *testing.T) {
 		// Remove the below organization creation and use the one from the outer scope once the feature flag is removed
 		orgTest, orgTestCleanup := createOrganizationWithOptions(t, client, OrganizationCreateOptions{
@@ -833,7 +845,6 @@ func TestWorkspacesUpdate(t *testing.T) {
 	})
 
 	t.Run("when options include VCSRepo tags-regex (behind a feature flag)", func(t *testing.T) {
-		skipIfBeta(t)
 		// Remove the below organization and workspace creation and use the one from the outer scope once the feature flag is removed
 		orgTest, orgTestCleanup := createOrganizationWithOptions(t, client, OrganizationCreateOptions{
 			Name:  String("tst-" + randomString(t)[0:20] + "-git-tag-ff-on"),
@@ -878,6 +889,18 @@ func TestWorkspacesUpdate(t *testing.T) {
 	})
 
 	t.Run("when options include tags-regex and file-triggers-enabled is true an error is returned", func(t *testing.T) {
+		options := WorkspaceUpdateOptions{
+			Name:                String("foobar"),
+			FileTriggersEnabled: Bool(true),
+			VCSRepo:             &VCSRepoOptions{TagsRegex: String("foobar")},
+		}
+		w, err := client.Workspaces.Update(ctx, orgTest.Name, wTest.Name, options)
+
+		assert.Nil(t, w)
+		assert.EqualError(t, err, ErrUnsupportedBothTagsRegexAndFileTriggersEnabled.Error())
+	})
+
+	t.Run("when options include both non-empty tags-regex and file-triggers-enabled an error is returned", func(t *testing.T) {
 		options := WorkspaceUpdateOptions{
 			Name:                String("foobar"),
 			FileTriggersEnabled: Bool(true),
