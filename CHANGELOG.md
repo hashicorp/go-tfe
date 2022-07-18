@@ -2,6 +2,7 @@
 
 # v1.6.0
 * Add `Name` field to `OAuthClient` by @barrettclark [#466](https://github.com/hashicorp/go-tfe/pull/466)
+* Add `ConfigurationSourceAdo` configuration source option by @mjyocca [#467](https://github.com/hashicorp/go-tfe/pull/467)
 
 # v1.5.0
 
@@ -10,7 +11,6 @@
 * Add `Query` param field to `AgentPoolListOptions` to allow searching based on agent pool name, by @JarrettSpiker [#417](https://github.com/hashicorp/go-tfe/pull/417)
 * Add organization scope and allowed workspaces field for scope agents by @Netra2104 [#453](https://github.com/hashicorp/go-tfe/pull/453)
 * Adds `Namespace` and `RegistryName` fields to `RegistryModuleID` to allow reading of Public Registry Modules by @Uk1288 [#464](https://github.com/hashicorp/go-tfe/pull/464)
-* Adds `ConfigurationSourceAdo` configuration source option [#467](https://github.com/hashicorp/go-tfe/pull/467)
 
 ## Bug fixes
 * Fixed JSON mapping for Configuration Versions failing to properly set the `speculative` property [#459](https://github.com/hashicorp/go-tfe/pull/459)
