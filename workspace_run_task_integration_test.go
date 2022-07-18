@@ -46,6 +46,47 @@ func TestWorkspaceRunTasksCreate(t *testing.T) {
 	})
 }
 
+func TestWorkspaceRunTasksCreateBeta(t *testing.T) {
+	// Once Pre-Plan Tasks are generally available, this can replace the above TestWorkspaceRunTasksCreate
+	skipIfBeta(t)
+	skipIfFreeOnly(t)
+
+	client := testClient(t)
+	ctx := context.Background()
+
+	orgTest, orgTestCleanup := createOrganization(t, client)
+	defer orgTestCleanup()
+
+	runTaskTest, runTaskTestCleanup := createRunTask(t, client, orgTest)
+	defer runTaskTestCleanup()
+
+	wkspaceTest, wkspaceTestCleanup := createWorkspace(t, client, orgTest)
+	defer wkspaceTestCleanup()
+
+	t.Run("attach run task to workspace", func(t *testing.T) {
+		s := PrePlan
+		wr, err := client.WorkspaceRunTasks.Create(ctx, wkspaceTest.ID, WorkspaceRunTaskCreateOptions{
+			EnforcementLevel: Mandatory,
+			Stage:            &s,
+			RunTask:          runTaskTest,
+		})
+
+		require.NoError(t, err)
+		defer func() {
+			client.WorkspaceRunTasks.Delete(ctx, wkspaceTest.ID, wr.ID)
+		}()
+
+		assert.NotEmpty(t, wr.ID)
+		assert.Equal(t, wr.EnforcementLevel, Mandatory)
+		assert.Equal(t, wr.Stage, s)
+
+		t.Run("ensure run task is deserialized properly", func(t *testing.T) {
+			assert.NotNil(t, wr.RunTask)
+			assert.NotEmpty(t, wr.RunTask.ID)
+		})
+	})
+}
+
 func TestWorkspaceRunTasksList(t *testing.T) {
 	skipIfFreeOnly(t)
 
@@ -143,6 +184,42 @@ func TestWorkspaceRunTasksUpdate(t *testing.T) {
 		require.NoError(t, err)
 
 		assert.Equal(t, wr.EnforcementLevel, Mandatory)
+	})
+}
+
+func TestWorkspaceRunTasksUpdateBeta(t *testing.T) {
+	// Once Pre-Plan Tasks are generally available, this can replace the above TestWorkspaceRunTasksUpdate
+	skipIfBeta(t)
+	skipIfFreeOnly(t)
+
+	client := testClient(t)
+	ctx := context.Background()
+
+	orgTest, orgTestCleanup := createOrganization(t, client)
+	defer orgTestCleanup()
+
+	wkspaceTest, wkspaceTestCleanup := createWorkspace(t, client, orgTest)
+	defer wkspaceTestCleanup()
+
+	runTaskTest, runTaskTestCleanup := createRunTask(t, client, orgTest)
+	defer runTaskTestCleanup()
+
+	wrTaskTest, wrTaskTestCleanup := createWorkspaceRunTask(t, client, wkspaceTest, runTaskTest)
+	defer wrTaskTestCleanup()
+
+	t.Run("update task", func(t *testing.T) {
+		stage := PrePlan
+		wr, err := client.WorkspaceRunTasks.Update(ctx, wkspaceTest.ID, wrTaskTest.ID, WorkspaceRunTaskUpdateOptions{
+			EnforcementLevel: Mandatory,
+			Stage:            &stage,
+		})
+		require.NoError(t, err)
+
+		wr, err = client.WorkspaceRunTasks.Read(ctx, wkspaceTest.ID, wr.ID)
+		require.NoError(t, err)
+
+		assert.Equal(t, wr.EnforcementLevel, Mandatory)
+		assert.Equal(t, wr.Stage, PrePlan)
 	})
 }
 
