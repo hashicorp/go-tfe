@@ -14,6 +14,7 @@ import (
 	"math/rand"
 	"net/url"
 	"os"
+	"os/exec"
 	"sync"
 	"testing"
 	"time"
@@ -88,9 +89,11 @@ func fetchTestAccountDetails(t *testing.T, client *Client) *TestAccountDetails {
 	return _testAccountDetails
 }
 
-func createAgent(t *testing.T, client *Client, org *Organization, agentPool *AgentPool) (*Agent, func()) {
+func createAgent(t *testing.T, client *Client, org *Organization, agentPool *AgentPool, agentPoolToken *AgentToken) (*Agent, func()) {
 	var orgCleanup func()
 	var agentPoolCleanup func()
+	var agentPoolTokenCleanup func()
+	var agent *Agent
 
 	if org == nil {
 		org, orgCleanup = createOrganization(t, client)
@@ -99,11 +102,50 @@ func createAgent(t *testing.T, client *Client, org *Organization, agentPool *Age
 	if agentPool == nil {
 		agentPool, agentPoolCleanup = createAgentPool(t, client, org)
 	}
+	if agentPoolToken == nil {
+		agentPoolToken, agentPoolTokenCleanup = createAgentToken(t, client, agentPool)
+	}
 
 	ctx := context.Background()
-	agent, err := client.Agents.Create(ctx, org.Name, AgentPoolCreateOptions{
-		Name: String(randomString(t)),
-	}) //there is technically no API to create an Agent
+	// agent, err := client.Agents.Create(ctx, org.Name, AgentPoolCreateOptions{
+	// 	Name: String(randomString(t)),
+	// })
+	cmd := exec.Command("docker",
+		"run", "-d",
+		"--env", "TFC_AGENT_TOKEN="+agentPoolToken.Token,
+		"--env", "TFC_AGENT_NAME="+"test-agent",
+		"--env", "TFC_ADDRESS="+"https://tfe.instance.com",
+		"docker.mirror.hashicorp.services/hashicorp/tfc-agent:latest")
+
+	if err := cmd.Run(); err != nil {
+		t.Fatalf("Could not run container: %s", err)
+	}
+	containerName := "test-agent"
+	t.Logf("Container running at %s", containerName)
+
+	go func(containerName string) {
+		// green := color.New(color.FgHiGreen)
+
+		// cmdLogger := i.TestLogger(green.Sprint("tfc-agent: "))
+		// cmd := exec.Command("docker", "logs", "-f", containerName)
+		// cmd.Stdout = cmdLogger
+		// cmd.Stderr = cmdLogger
+		_ = cmd.Run()
+	}(containerName)
+
+	// teardown := func() {
+	// 	i.T.Log("Cleaning up agent docker container " + containerName)
+	// 	cmd := exec.Command("docker", "rm", "-f", containerName)
+	// 	_ = cmd.Run()
+
+	// 	poolTeardown()
+	// }
+
+	defer func() {
+		t.Log("Cleaning up agent docker container " + containerName)
+		cmd := exec.Command("docker", "rm", "-f", containerName)
+		_ = cmd.Run()
+	}()
 
 	return agent, func() {
 		if err := client.AgentPools.Delete(ctx, agent.ID); err != nil {
@@ -119,7 +161,34 @@ func createAgent(t *testing.T, client *Client, org *Organization, agentPool *Age
 		if agentPoolCleanup != nil {
 			agentPoolCleanup()
 		}
+
+		if agentPoolTokenCleanup != nil {
+			agentPoolTokenCleanup()
+		}
 	}
+
+	// func poll() (*Agent, error) {
+	// 	ticker := time.NewTicker(time.Second*1)
+	//   defer ticker.Stop()
+
+	// 	for
+	// 		select {
+	// 		case <-ctx.Done():
+	// 				return nil, ctx.Err()
+
+	// 		case tick := <-ticker.C:
+	// 			agentList, err := client.Agent.List(ctx, agentPool.ID, nil)
+	// 			if err != nil {
+	// 					return nil, err
+	// 			}
+
+	// 			if len(agentList) > 0 {
+	// 					return agentList[0], nil
+	// 			}
+	// 		}
+	// 	}
+	// }
+
 }
 
 func createAgentPool(t *testing.T, client *Client, org *Organization) (*AgentPool, func()) {

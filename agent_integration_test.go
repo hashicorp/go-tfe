@@ -4,13 +4,12 @@
 package tfe
 
 import (
-	"context"
 	"testing"
 )
 
 func TestAgentsRead(t *testing.T) {
 	client := testClient(t)
-	ctx := context.Background()
+	// ctx := context.Background()
 
 	orgTest, orgTestCleanup := createOrganization(t, client)
 	defer orgTestCleanup()
@@ -19,8 +18,12 @@ func TestAgentsRead(t *testing.T) {
 	upgradeOrganizationSubscription(t, client, orgTest)
 
 	agentPool, agentPoolCleanup := createAgentPool(t, client, orgTest)
+	t.Log(agentPool)
 	defer agentPoolCleanup()
 
+	agent, agentCleanup := createAgent(t, client, orgTest, agentPool, nil)
+	defer agentCleanup()
+	t.Log(agent)
 	//createAgent fn that associates an org and agent pool
 	//defer createAgent fn
 
@@ -28,7 +31,7 @@ func TestAgentsRead(t *testing.T) {
 
 func TestAgentsList(t *testing.T) {
 	client := testClient(t)
-	ctx := context.Background()
+	// ctx := context.Background()
 
 	orgTest, orgTestCleanup := createOrganization(t, client)
 	defer orgTestCleanup()
@@ -36,13 +39,14 @@ func TestAgentsList(t *testing.T) {
 	upgradeOrganizationSubscription(t, client, orgTest)
 
 	agentPool, agentPoolCleanup := createAgentPool(t, client, orgTest)
+	t.Log(agentPool)
 	defer agentPoolCleanup()
 
 }
 
 func TestAgentsDelete(t *testing.T) {
 	client := testClient(t)
-	ctx := context.Background()
+	// ctx := context.Background()
 
 	orgTest, orgTestCleanup := createOrganization(t, client)
 	defer orgTestCleanup()
@@ -50,5 +54,6 @@ func TestAgentsDelete(t *testing.T) {
 	upgradeOrganizationSubscription(t, client, orgTest)
 
 	agentPool, _ := createAgentPool(t, client, orgTest)
+	t.Log(agentPool)
 
 }
