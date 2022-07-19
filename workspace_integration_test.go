@@ -344,10 +344,10 @@ func TestWorkspacesCreate(t *testing.T) {
 		assert.EqualError(t, err, ErrUnsupportedBothTriggerPatternsAndPrefixes.Error())
 	})
 
-	t.Run("when options include tags-regex(behind a feature flag)", func(t *testing.T) {
+	t.Run("when options include tags-regex", func(t *testing.T) {
 		// Remove the below organization creation and use the one from the outer scope once the feature flag is removed
 		orgTest, orgTestCleanup := createOrganizationWithOptions(t, client, OrganizationCreateOptions{
-			Name:  String("tst-" + randomString(t)[0:20] + "-git-tag-ff-on"),
+			Name:  String("tst-" + randomString(t)[0:20]),
 			Email: String(fmt.Sprintf("%s@tfe.local", randomString(t))),
 		})
 		defer orgTestCleanup()
@@ -844,10 +844,10 @@ func TestWorkspacesUpdate(t *testing.T) {
 		}
 	})
 
-	t.Run("when options include VCSRepo tags-regex (behind a feature flag)", func(t *testing.T) {
+	t.Run("when options include VCSRepo tags-regex", func(t *testing.T) {
 		// Remove the below organization and workspace creation and use the one from the outer scope once the feature flag is removed
 		orgTest, orgTestCleanup := createOrganizationWithOptions(t, client, OrganizationCreateOptions{
-			Name:  String("tst-" + randomString(t)[0:20] + "-git-tag-ff-on"),
+			Name:  String("tst-" + randomString(t)[0:20]),
 			Email: String(fmt.Sprintf("%s@tfe.local", randomString(t))),
 		})
 		defer orgTestCleanup()
