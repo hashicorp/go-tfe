@@ -93,7 +93,6 @@ func createAgent(t *testing.T, client *Client, org *Organization, agentPool *Age
 	var orgCleanup func()
 	var agentPoolCleanup func()
 	var agentPoolTokenCleanup func()
-	var agent *Agent
 
 	if org == nil {
 		org, orgCleanup = createOrganization(t, client)
@@ -123,15 +122,15 @@ func createAgent(t *testing.T, client *Client, org *Organization, agentPool *Age
 	containerName := "test-agent"
 	t.Logf("Container running at %s", containerName)
 
-	go func(containerName string) {
+	//go func(containerName string) {
 		// green := color.New(color.FgHiGreen)
 
 		// cmdLogger := i.TestLogger(green.Sprint("tfc-agent: "))
 		// cmd := exec.Command("docker", "logs", "-f", containerName)
 		// cmd.Stdout = cmdLogger
 		// cmd.Stderr = cmdLogger
-		_ = cmd.Run()
-	}(containerName)
+		//_ = cmd.Run()
+	//}(containerName)
 
 	// teardown := func() {
 	// 	i.T.Log("Cleaning up agent docker container " + containerName)
@@ -147,9 +146,41 @@ func createAgent(t *testing.T, client *Client, org *Organization, agentPool *Age
 		_ = cmd.Run()
 	}()
 
+	agent, err := func () (*Agent, error) {
+		ch := make(chan *Agent)
+		ticker := time.NewTicker(time.Second * 1)
+		defer ticker.Stop()
+		defer close(ch)
+
+		var wg sync.WaitGroup
+		for ;; {
+			select {
+			case <-ctx.Done():
+				return nil, ctx.Err()
+
+			case <-ticker.C:
+				wg.Add(1)
+				go func() {
+					defer wg.Done()
+					agentList, _ := client.Agents.List(ctx, agentPool.ID, nil)
+					if len(agentList.Items) > 0 {
+						ch <- agentList.Items[0]
+					}
+				}()
+
+			case val := <- ch:
+				return val, nil
+			}
+		}
+	}()
+
+	if err != nil {
+		t.Fatal(err)
+	}
+
 	return agent, func() {
-		if err := client.AgentPools.Delete(ctx, agent.ID); err != nil {
-			t.Logf("Error destroying agent pool! WARNING: Dangling resources "+
+		if err := client.Agents.Delete(ctx, agent.ID); err != nil {
+			t.Logf("Error destroying agent! WARNING: Dangling resources "+
 				"may exist! The full error is shown below.\n\n"+
 				"Agent pool ID: %s\nError: %s", agent.ID, err)
 		}
@@ -166,29 +197,6 @@ func createAgent(t *testing.T, client *Client, org *Organization, agentPool *Age
 			agentPoolTokenCleanup()
 		}
 	}
-
-	// func poll() (*Agent, error) {
-	// 	ticker := time.NewTicker(time.Second*1)
-	//   defer ticker.Stop()
-
-	// 	for
-	// 		select {
-	// 		case <-ctx.Done():
-	// 				return nil, ctx.Err()
-
-	// 		case tick := <-ticker.C:
-	// 			agentList, err := client.Agent.List(ctx, agentPool.ID, nil)
-	// 			if err != nil {
-	// 					return nil, err
-	// 			}
-
-	// 			if len(agentList) > 0 {
-	// 					return agentList[0], nil
-	// 			}
-	// 		}
-	// 	}
-	// }
-
 }
 
 func createAgentPool(t *testing.T, client *Client, org *Organization) (*AgentPool, func()) {

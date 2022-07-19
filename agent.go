@@ -34,7 +34,7 @@ type agents struct {
 // AgentList represents a list of agents.
 type AgentList struct {
 	*Pagination
-	Items []*Agents
+	Items []*Agent
 }
 
 // Agent represents a Terraform Cloud agent.
