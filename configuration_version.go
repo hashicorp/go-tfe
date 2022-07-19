@@ -74,6 +74,7 @@ const (
 	ConfigurationSourceBitbucket ConfigurationSource = "bitbucket"
 	ConfigurationSourceGithub    ConfigurationSource = "github"
 	ConfigurationSourceGitlab    ConfigurationSource = "gitlab"
+	ConfigurationSourceAdo       ConfigurationSource = "ado"
 	ConfigurationSourceTerraform ConfigurationSource = "terraform"
 )
 
