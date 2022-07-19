@@ -2,6 +2,7 @@
 
 # v1.6.0
 * Add `Name` field to `OAuthClient` by @barrettclark [#466](https://github.com/hashicorp/go-tfe/pull/466)
+* Add `ConfigurationSourceAdo` configuration source option by @mjyocca [#467](https://github.com/hashicorp/go-tfe/pull/467)
 
 # v1.5.0
 
