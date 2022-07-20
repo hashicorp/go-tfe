@@ -351,7 +351,7 @@ type WorkspaceCreateOptions struct {
 	// exist, it is created and added to the workspace.
 	Tags []*Tag `jsonapi:"relation,tags,omitempty"`
 
-	// Optional: Whether to enabled drift detection for the workspace.
+	// Optional: Whether to enable drift detection for the workspace.
 	// Requires remote execution mode, TFCB entitlement, and a valid agent pool to work
 	DriftDetection *bool `jsonapi:"attr,drift-detection,omitempty"`
 }
@@ -453,7 +453,7 @@ type WorkspaceUpdateOptions struct {
 	// repository.
 	WorkingDirectory *string `jsonapi:"attr,working-directory,omitempty"`
 
-	// Optional: Whether to enabled drift detection for the workspace.
+	// Optional: Whether to enable drift detection for the workspace.
 	// Requires remote execution mode, TFCB entitlement, and a valid agent pool to work
 	DriftDetection *bool `jsonapi:"attr,drift-detection,omitempty"`
 }
