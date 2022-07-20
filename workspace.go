@@ -271,6 +271,11 @@ type WorkspaceCreateOptions struct {
 	// Optional: A description for the workspace.
 	Description *string `jsonapi:"attr,description,omitempty"`
 
+	// Optional: Whether to enable drift detection for the workspace.
+	// Reference: https://www.terraform.io/cloud-docs/api-docs/workspaces#create-a-workspace
+	// Requires remote execution mode, Terraform Cloud Business entitlement, and a valid agent pool to work
+	DriftDetection *bool `jsonapi:"attr,drift-detection,omitempty"`
+
 	// Optional: Which execution mode to use. Valid values are remote, local, and agent.
 	// When set to local, the workspace will be used for state storage only.
 	// This value must not be specified if operations is specified.
@@ -350,10 +355,6 @@ type WorkspaceCreateOptions struct {
 	// A list of tags to attach to the workspace. If the tag does not already
 	// exist, it is created and added to the workspace.
 	Tags []*Tag `jsonapi:"relation,tags,omitempty"`
-
-	// Optional: Whether to enable drift detection for the workspace.
-	// Requires remote execution mode, TFCB entitlement, and a valid agent pool to work
-	DriftDetection *bool `jsonapi:"attr,drift-detection,omitempty"`
 }
 
 // TODO: move this struct out. VCSRepoOptions is used by workspaces, policy sets, and registry modules
@@ -393,6 +394,11 @@ type WorkspaceUpdateOptions struct {
 
 	// Optional: A description for the workspace.
 	Description *string `jsonapi:"attr,description,omitempty"`
+
+	// Optional: Whether to enable drift detection for the workspace.
+	// Reference: https://www.terraform.io/cloud-docs/api-docs/workspaces#update-a-workspace
+	// Requires remote execution mode, Terraform Cloud Business entitlement, and a valid agent pool to work
+	DriftDetection *bool `jsonapi:"attr,drift-detection,omitempty"`
 
 	// Optional: Which execution mode to use. Valid values are remote, local, and agent.
 	// When set to local, the workspace will be used for state storage only.
@@ -452,10 +458,6 @@ type WorkspaceUpdateOptions struct {
 	// the environment when multiple environments exist within the same
 	// repository.
 	WorkingDirectory *string `jsonapi:"attr,working-directory,omitempty"`
-
-	// Optional: Whether to enable drift detection for the workspace.
-	// Requires remote execution mode, TFCB entitlement, and a valid agent pool to work
-	DriftDetection *bool `jsonapi:"attr,drift-detection,omitempty"`
 }
 
 // WorkspaceLockOptions represents the options for locking a workspace.
