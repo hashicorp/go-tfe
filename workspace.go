@@ -144,13 +144,14 @@ type Workspace struct {
 	TagNames                   []string              `jsonapi:"attr,tag-names"`
 
 	// Relations
-	AgentPool           *AgentPool          `jsonapi:"relation,agent-pool"`
-	CurrentRun          *Run                `jsonapi:"relation,current-run"`
-	CurrentStateVersion *StateVersion       `jsonapi:"relation,current-state-version"`
-	Organization        *Organization       `jsonapi:"relation,organization"`
-	SSHKey              *SSHKey             `jsonapi:"relation,ssh-key"`
-	Outputs             []*WorkspaceOutputs `jsonapi:"relation,outputs"`
-	Tags                []*Tag              `jsonapi:"relation,tags"`
+	AgentPool               *AgentPool          `jsonapi:"relation,agent-pool"`
+	CurrentRun              *Run                `jsonapi:"relation,current-run"`
+	CurrentStateVersion     *StateVersion       `jsonapi:"relation,current-state-version"`
+	CurrentAssessmentResult *AssessmentResult   `jsonapi:"relation,current-assessment-result"`
+	Organization            *Organization       `jsonapi:"relation,organization"`
+	SSHKey                  *SSHKey             `jsonapi:"relation,ssh-key"`
+	Outputs                 []*WorkspaceOutputs `jsonapi:"relation,outputs"`
+	Tags                    []*Tag              `jsonapi:"relation,tags"`
 }
 
 type WorkspaceOutputs struct {
@@ -218,6 +219,7 @@ const (
 	WSCurrentRunPlan             WSIncludeOpt = "current_run.plan"
 	WSCurrentRunConfigVer        WSIncludeOpt = "current_run.configuration_version"
 	WSCurrentrunConfigVerIngress WSIncludeOpt = "current_run.configuration_version.ingress_attributes"
+	WSCurrentAssessmentResult    WSIncludeOpt = "current_assessment_result"
 	WSLockedBy                   WSIncludeOpt = "locked_by"
 	WSReadme                     WSIncludeOpt = "readme"
 	WSOutputs                    WSIncludeOpt = "outputs"
@@ -1212,7 +1214,7 @@ func (o *WorkspaceReadOptions) valid() error {
 func validateWorkspaceIncludeParams(params []WSIncludeOpt) error {
 	for _, p := range params {
 		switch p {
-		case WSOrganization, WSCurrentConfigVer, WSCurrentConfigVerIngress, WSCurrentRun, WSCurrentRunPlan, WSCurrentRunConfigVer, WSCurrentrunConfigVerIngress, WSLockedBy, WSReadme, WSOutputs, WSCurrentStateVer:
+		case WSOrganization, WSCurrentConfigVer, WSCurrentConfigVerIngress, WSCurrentRun, WSCurrentRunPlan, WSCurrentRunConfigVer, WSCurrentrunConfigVerIngress, WSLockedBy, WSReadme, WSOutputs, WSCurrentStateVer, WSCurrentAssessmentResult:
 			// do nothing
 		default:
 			return ErrInvalidIncludeValue
