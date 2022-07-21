@@ -37,16 +37,18 @@ You'll need to generate mocks if an existing endpoint method is modified or a ne
 mockgen -source=example_resource.go -destination=mocks/example_resource_mocks.go -package=mocks
 ```
 
-## Adding API changes that are still behind a feature flag
+## Adding API changes that are not generally available
 
-On top of your code changes, or anywhere visible, add a comment that reads like this:
+In general, beta features should not be merged/released until generally available. However, the maintainers recognize almost any reason to release beta features on a case-by-case basis. These could include: partial customer availability, software dependency, or any reason short of feature completeness.
+
+Beta features, if released, should be clearly commented:
 
 ```
 // **Note: This field is still in BETA and subject to change.**
 ExampleNewField *bool `jsonapi:"attr,example-new-field,omitempty"`
 ```
 
-When adding test cases, use the skipIfBeta() test helper to omit beta features from running in CI.
+When adding test cases, you can temporarily use the skipIfBeta() test helper to omit beta features from running in CI.
 
 ```
 t.Run("with nested changes trigger", func (t *testing.T) {
@@ -59,7 +61,7 @@ t.Run("with nested changes trigger", func (t *testing.T) {
 })
 ```
 
-**Note**: After your PR has been merged, and the feature either reaches GA or the flag is enabled in CI, you can remove the skipIfBeta() flag.
+**Note**: After your PR has been merged, and the feature either reaches general availability, you should remove the skipIfBeta() flag.
 
 ## Best Practices for Adding a New Endpoint
 
