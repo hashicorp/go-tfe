@@ -28,4 +28,3 @@ Documentation updates and test fixes that only touch test files don't require a 
 
 6. Don't attach any binaries. The zip and tar.gz assets are automatically created and attached after you publish your release.
 7. Click "Publish release" to save and publish your release.
-

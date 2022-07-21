@@ -1,5 +1,5 @@
 <!--
-Thank you for contributing to hashicorp/go-tfe!
+Thank you for contributing to hashicorp/go-tfe! Please read docs/CONTRIBUTING.md for detailed information when preparing your change.
 
 Here's what to expect after the pull request is opened:
 
@@ -10,6 +10,8 @@ Your change, depending on its impact, may be released in the following ways:
   1. For impactful bug fixes, it can be released fairly quickly as a patch release.
   2. For noncritical bug fixes and new features, it will be incorporated into the next minor version release.
   3. For breaking changes (those changes that alter the public method signatures), more consideration must be made and alternatives may be considered, depending on upgrade difficulty and release schedule.
+
+Please note that API features that are not generally available should not be merged/released without prior discussion with the maintainers. See docs/CONTRIBUTING Section "Adding API changes that are not generally available" for more information.
 
 Please fill out the remaining template to assist code reviewers and testers with incorporating your change. If a section does not apply, feel free to delete it.
 -->

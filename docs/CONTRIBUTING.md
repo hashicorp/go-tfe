@@ -114,7 +114,7 @@ type example struct {
 
 // Example represents a TFC/E example resource
 type Example struct {
-	ID            string  `jsonapi:"primary,tasks"`
+	ID            string  `jsonapi:"primary,examples"`
 	Name          string  `jsonapi:"attr,name"`
 	URL           string  `jsonapi:"attr,url"`
 	OptionalValue *string `jsonapi:"attr,optional-value,omitempty"`
@@ -128,7 +128,7 @@ type ExampleCreateOptions struct {
 	// set the resource type via the field tag.
 	// It is not a user-defined value and does not need to be set.
 	// https://jsonapi.org/format/#crud-creating
-	Type string `jsonapi:"primary,tasks"`
+	Type string `jsonapi:"primary,examples"`
 
 	// Required: The name of the example
 	Name string `jsonapi:"attr,name"`
@@ -177,7 +177,7 @@ type ExampleUpdateOptions struct {
 	// set the resource type via the field tag.
 	// It is not a user-defined value and does not need to be set.
 	// https://jsonapi.org/format/#crud-creating
-	Type string `jsonapi:"primary,tasks"`
+	Type string `jsonapi:"primary,examples"`
 
 	// Optional: The name of the example, defaults to previous value
 	Name *string `jsonapi:"attr,name,omitempty"`
