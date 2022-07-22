@@ -1,0 +1,23 @@
+name: instance
+on:
+  schedule:
+    - cron: 0 0 * * *
+jobs:
+  terraform:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set up Go
+        uses: actions/setup-go@v3
+        with:
+          go-version: go.mod
+          check-latest: true
+          cache: true
+
+      - name: Rebuild tflocal
+        env:
+          TFE_TOKEN: ${{ secrets.TF_WORKFLOW_TFLOCAL_CLOUD_TFC_TOKEN }}
+        run: |
+          cd .github/scripts/rebuild-tflocal
+          go run main.go hashicorp-v2 tflocal-go-tfe
