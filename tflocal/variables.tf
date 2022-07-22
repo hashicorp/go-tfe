@@ -80,18 +80,6 @@ variable "quay_password" {
   sensitive   = true
 }
 
-variable "circleci_token" {
-  description = "Token to hit the CircleCI API and update the go-tfe and terraform-provider-tfe projects with their respective dynamic variables"
-  type        = string
-  sensitive   = true
-}
-
-variable "update_circleci" {
-  description = "If true, will update downstream CircleCI projects with environment variables matching the outputs"
-  type        = bool
-  default     = false
-}
-
 variable "run_cleanup_script" {
   description = "On/off toggle for running the delete script to allow for easier troubleshooting from TFE UI for this job; set to 'true' or 'false'"
   type        = bool
