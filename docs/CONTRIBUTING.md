@@ -39,7 +39,7 @@ mockgen -source=example_resource.go -destination=mocks/example_resource_mocks.go
 
 ## Adding API changes that are not generally available
 
-In general, beta features should not be merged/released until generally available. However, the maintainers recognize almost any reason to release beta features on a case-by-case basis. These could include: partial customer availability, software dependency, or any reason short of feature completeness.
+In general, beta features should not be merged/released until generally available (GA). However, the maintainers recognize almost any reason to release beta features on a case-by-case basis. These could include: partial customer availability, software dependency, or any reason short of feature completeness.
 
 Beta features, if released, should be clearly commented:
 
@@ -61,7 +61,7 @@ t.Run("with nested changes trigger", func (t *testing.T) {
 })
 ```
 
-**Note**: After your PR has been merged, and the feature either reaches general availability, you should remove the skipIfBeta() flag.
+**Note**: After your PR has been merged, and the feature either reaches general availability, you should remove the `skipIfBeta()` flag.
 
 ## Best Practices for Adding a New Endpoint
 
