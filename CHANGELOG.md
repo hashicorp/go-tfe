@@ -1,7 +1,8 @@
 # Unreleased
-# v1.7.0
 
 ## Enhancements
+
+* Adds new run creation attributes: `allow-empty-apply`, `terraform-version`, `plan-only` by @sebasslash [#482](https://github.com/hashicorp/go-tfe/pull/447)
 
 # v1.6.0
 
