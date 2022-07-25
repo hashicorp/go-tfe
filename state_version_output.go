@@ -31,6 +31,8 @@ type StateVersionOutput struct {
 	Sensitive bool        `jsonapi:"attr,sensitive"`
 	Type      string      `jsonapi:"attr,type"`
 	Value     interface{} `jsonapi:"attr,value"`
+	// BETA: This field is experimental and not universally present in all versions of TFE/Terraform
+	DetailedType interface{} `jsonapi:"attr,detailed-type"`
 }
 
 // ReadCurrent reads the current state version outputs for the specified workspace
