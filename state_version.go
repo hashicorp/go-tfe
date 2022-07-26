@@ -154,14 +154,11 @@ type StateVersionCreateOptions struct {
 	JSONStateOutputs *string `jsonapi:"attr,json-state-outputs,omitempty"`
 }
 
-type StateVersionNullResrouce int
+type StateVersionModules map[string]interface{}
+type StateVersionProviders map[string]interface{}
+
+type StateVersionNullResource int
 type StateVersionTerraformRemoteState int
-
-type StateVersionModules struct{}
-
-type StateVersionProviders struct {
-	Provider StateVersionTerraformRemoteState `jsonapi:"attr,providers"`
-}
 
 type StateVersionResources struct {
 	Name     string `jsonapi:"attr,name"`
