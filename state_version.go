@@ -161,11 +161,11 @@ type StateVersionNullResource int
 type StateVersionTerraformRemoteState int
 
 type StateVersionResources struct {
-	Name     string `jsonapi:"attr,name"`
-	Count    string `jsonapi:"attr,count"`
-	Type     int    `jsonapi:"attr,type"`
-	Module   string `jsonapi:"attr,module"`
-	Provider string `jsonapi:"attr,name"`
+	Name     string
+	Count    string
+	Type     int
+	Module   string
+	Provider string
 }
 
 // List all the state versions for a given workspace.
