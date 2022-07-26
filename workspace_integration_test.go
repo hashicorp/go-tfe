@@ -345,7 +345,6 @@ func TestWorkspacesCreate(t *testing.T) {
 	})
 
 	t.Run("when options include tags-regex(behind a feature flag)", func(t *testing.T) {
-		skipIfBeta(t)
 		// Remove the below organization creation and use the one from the outer scope once the feature flag is removed
 		orgTest, orgTestCleanup := createOrganizationWithOptions(t, client, OrganizationCreateOptions{
 			Name:  String("tst-" + randomString(t)[0:20] + "-git-tag-ff-on"),
