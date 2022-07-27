@@ -299,6 +299,7 @@ type WorkspaceCreateOptions struct {
 	// Use ExecutionMode instead.
 	Operations *bool `jsonapi:"attr,operations,omitempty"`
 
+	// **Note: This field is still in BETA and subject to change.**
 	// Optional: Whether the workspace shows Terraform output in pull request comments.
 	PullRequestOutputsEnabled *bool `jsonapi:"attr,pull-request-outputs-enabled,omitempty"`
 
@@ -412,6 +413,7 @@ type WorkspaceUpdateOptions struct {
 	// Use ExecutionMode instead.
 	Operations *bool `jsonapi:"attr,operations,omitempty"`
 
+	// **Note: This field is still in BETA and subject to change.**
 	// Optional: Whether the workspace shows Terraform output in pull request comments.
 	PullRequestOutputsEnabled *bool `jsonapi:"attr,pull-request-outputs-enabled,omitempty"`
 
