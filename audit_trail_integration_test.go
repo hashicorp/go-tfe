@@ -33,16 +33,16 @@ func TestAuditTrailsList(t *testing.T) {
 	t.Run("with no specified timeframe", func(t *testing.T) {
 		atl, err := auditTrailClient.AuditTrails.List(ctx, nil)
 		require.NoError(t, err)
-		require.Greater(t, len(atl.Items), 0)
+		require.NotEmpty(t, atl.Items)
 
 		log := atl.Items[0]
 		assert.NotEmpty(t, log.ID)
 		assert.NotEmpty(t, log.Timestamp)
 		assert.NotEmpty(t, log.Type)
 		assert.NotEmpty(t, log.Version)
-		assert.NotNil(t, log.Resource)
-		assert.NotNil(t, log.Auth)
-		assert.NotNil(t, log.Request)
+		require.NotNil(t, log.Resource)
+		require.NotNil(t, log.Auth)
+		require.NotNil(t, log.Request)
 
 		t.Run("with resource deserialized correctly", func(t *testing.T) {
 			assert.NotEmpty(t, log.Resource.ID)
@@ -85,8 +85,8 @@ func TestAuditTrailsList(t *testing.T) {
 		})
 		require.NoError(t, err)
 
+		require.Greater(t, len(atl.Items), 0)
 		assert.LessOrEqual(t, len(atl.Items), 20)
-		assert.Greater(t, len(atl.Items), 0)
 
 		for _, log := range atl.Items {
 			assert.True(t, log.Timestamp.After(since))

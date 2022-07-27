@@ -132,13 +132,13 @@ func (r *registryProviders) List(ctx context.Context, organization string, optio
 	}
 
 	u := fmt.Sprintf("organizations/%s/registry-providers", url.QueryEscape(organization))
-	req, err := r.client.newRequest("GET", u, options)
+	req, err := r.client.NewRequest("GET", u, options)
 	if err != nil {
 		return nil, err
 	}
 
 	pl := &RegistryProviderList{}
-	err = r.client.do(ctx, req, pl)
+	err = req.Do(ctx, pl)
 	if err != nil {
 		return nil, err
 	}
@@ -159,13 +159,13 @@ func (r *registryProviders) Create(ctx context.Context, organization string, opt
 		"organizations/%s/registry-providers",
 		url.QueryEscape(organization),
 	)
-	req, err := r.client.newRequest("POST", u, &options)
+	req, err := r.client.NewRequest("POST", u, &options)
 	if err != nil {
 		return nil, err
 	}
 
 	prv := &RegistryProvider{}
-	err = r.client.do(ctx, req, prv)
+	err = req.Do(ctx, prv)
 	if err != nil {
 		return nil, err
 	}
@@ -185,13 +185,13 @@ func (r *registryProviders) Read(ctx context.Context, providerID RegistryProvide
 		url.QueryEscape(providerID.Namespace),
 		url.QueryEscape(providerID.Name),
 	)
-	req, err := r.client.newRequest("GET", u, options)
+	req, err := r.client.NewRequest("GET", u, options)
 	if err != nil {
 		return nil, err
 	}
 
 	prv := &RegistryProvider{}
-	err = r.client.do(ctx, req, prv)
+	err = req.Do(ctx, prv)
 	if err != nil {
 		return nil, err
 	}
@@ -211,12 +211,12 @@ func (r *registryProviders) Delete(ctx context.Context, providerID RegistryProvi
 		url.QueryEscape(providerID.Namespace),
 		url.QueryEscape(providerID.Name),
 	)
-	req, err := r.client.newRequest("DELETE", u, nil)
+	req, err := r.client.NewRequest("DELETE", u, nil)
 	if err != nil {
 		return err
 	}
 
-	return r.client.do(ctx, req, nil)
+	return req.Do(ctx, nil)
 }
 
 func (o RegistryProviderCreateOptions) valid() error {

@@ -3,7 +3,9 @@ package tfe
 import (
 	"context"
 	"fmt"
+	"log"
 	"net/url"
+	"strings"
 )
 
 // Compile-time proof of interface implementation.
@@ -82,6 +84,11 @@ type RegistryModuleID struct {
 	Name string
 	// The module's provider, see RegistryModule.Provider
 	Provider string
+	// The namespace of the module. For private modules this is the name of the organization that owns the module
+	// Required for public modules
+	Namespace string
+	// Either public or private. If not provided, defaults to private
+	RegistryName RegistryName
 }
 
 // RegistryModuleList represents a list of registry modules.
@@ -95,6 +102,8 @@ type RegistryModule struct {
 	ID              string                          `jsonapi:"primary,registry-modules"`
 	Name            string                          `jsonapi:"attr,name"`
 	Provider        string                          `jsonapi:"attr,provider"`
+	RegistryName    RegistryName                    `jsonapi:"attr,registry-name"`
+	Namespace       string                          `jsonapi:"attr,namespace"`
 	Permissions     *RegistryModulePermissions      `jsonapi:"attr,permissions"`
 	Status          RegistryModuleStatus            `jsonapi:"attr,status"`
 	VCSRepo         *VCSRepo                        `jsonapi:"attr,vcs-repo"`
@@ -150,6 +159,11 @@ type RegistryModuleCreateOptions struct {
 	Name *string `jsonapi:"attr,name"`
 	// Required:
 	Provider *string `jsonapi:"attr,provider"`
+	// Optional: Whether this is a publicly maintained module or private. Must be either public or private.
+	// Defaults to private if not specified
+	RegistryName RegistryName `jsonapi:"attr,registry-name,omitempty"`
+	// Optional: The namespace of this module. Required for public modules only.
+	Namespace string `jsonapi:"attr,namespace,omitempty"`
 }
 
 // RegistryModuleCreateVersionOptions is used when creating a registry module version
@@ -188,13 +202,13 @@ func (s *registryModules) List(ctx context.Context, organization string, options
 	}
 
 	u := fmt.Sprintf("organizations/%s/registry-modules", url.QueryEscape(organization))
-	req, err := s.client.newRequest("GET", u, options)
+	req, err := s.client.NewRequest("GET", u, options)
 	if err != nil {
 		return nil, err
 	}
 
 	ml := &RegistryModuleList{}
-	err = s.client.do(ctx, req, ml)
+	err = req.Do(ctx, ml)
 	if err != nil {
 		return nil, err
 	}
@@ -216,12 +230,12 @@ func (r *registryModules) Upload(ctx context.Context, rmv RegistryModuleVersion,
 		return err
 	}
 
-	req, err := r.client.newRequest("PUT", uploadURL, body)
+	req, err := r.client.NewRequest("PUT", uploadURL, body)
 	if err != nil {
 		return err
 	}
 
-	return r.client.do(ctx, req, nil)
+	return req.Do(ctx, nil)
 }
 
 // Create a new registry module without a VCS repo
@@ -237,13 +251,13 @@ func (r *registryModules) Create(ctx context.Context, organization string, optio
 		"organizations/%s/registry-modules",
 		url.QueryEscape(organization),
 	)
-	req, err := r.client.newRequest("POST", u, &options)
+	req, err := r.client.NewRequest("POST", u, &options)
 	if err != nil {
 		return nil, err
 	}
 
 	rm := &RegistryModule{}
-	err = r.client.do(ctx, req, rm)
+	err = req.Do(ctx, rm)
 	if err != nil {
 		return nil, err
 	}
@@ -267,13 +281,13 @@ func (r *registryModules) CreateVersion(ctx context.Context, moduleID RegistryMo
 		url.QueryEscape(moduleID.Name),
 		url.QueryEscape(moduleID.Provider),
 	)
-	req, err := r.client.newRequest("POST", u, &options)
+	req, err := r.client.NewRequest("POST", u, &options)
 	if err != nil {
 		return nil, err
 	}
 
 	rmv := &RegistryModuleVersion{}
-	err = r.client.do(ctx, req, rmv)
+	err = req.Do(ctx, rmv)
 	if err != nil {
 		return nil, err
 	}
@@ -287,13 +301,13 @@ func (r *registryModules) CreateWithVCSConnection(ctx context.Context, options R
 		return nil, err
 	}
 
-	req, err := r.client.newRequest("POST", "registry-modules", &options)
+	req, err := r.client.NewRequest("POST", "registry-modules", &options)
 	if err != nil {
 		return nil, err
 	}
 
 	rm := &RegistryModule{}
-	err = r.client.do(ctx, req, rm)
+	err = req.Do(ctx, rm)
 	if err != nil {
 		return nil, err
 	}
@@ -307,19 +321,32 @@ func (r *registryModules) Read(ctx context.Context, moduleID RegistryModuleID) (
 		return nil, err
 	}
 
+	if moduleID.RegistryName == "" {
+		log.Println("[WARN] Support for using the RegistryModuleID without RegistryName is deprecated as of release 1.5.0 and may be removed in a future version. The preferred method is to include the RegistryName in RegistryModuleID.")
+		moduleID.RegistryName = PrivateRegistry
+	}
+
+	if moduleID.RegistryName == PrivateRegistry && strings.TrimSpace(moduleID.Namespace) == "" {
+		log.Println("[WARN] Support for using the RegistryModuleID without Namespace is deprecated as of release 1.5.0 and may be removed in a future version. The preferred method is to include the Namespace in RegistryModuleID.")
+		moduleID.Namespace = moduleID.Organization
+	}
+
 	u := fmt.Sprintf(
-		"registry-modules/show/%s/%s/%s",
+		"organizations/%s/registry-modules/%s/%s/%s/%s",
 		url.QueryEscape(moduleID.Organization),
+		url.QueryEscape(string(moduleID.RegistryName)),
+		url.QueryEscape(moduleID.Namespace),
 		url.QueryEscape(moduleID.Name),
 		url.QueryEscape(moduleID.Provider),
 	)
-	req, err := r.client.newRequest("GET", u, nil)
+
+	req, err := r.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, err
 	}
 
 	rm := &RegistryModule{}
-	err = r.client.do(ctx, req, rm)
+	err = req.Do(ctx, rm)
 	if err != nil {
 		return nil, err
 	}
@@ -344,12 +371,12 @@ func (r *registryModules) Delete(ctx context.Context, organization, name string)
 		url.QueryEscape(organization),
 		url.QueryEscape(name),
 	)
-	req, err := r.client.newRequest("POST", u, nil)
+	req, err := r.client.NewRequest("POST", u, nil)
 	if err != nil {
 		return err
 	}
 
-	return r.client.do(ctx, req, nil)
+	return req.Do(ctx, nil)
 }
 
 // DeleteProvider is used to delete the specific registry module provider
@@ -364,12 +391,12 @@ func (r *registryModules) DeleteProvider(ctx context.Context, moduleID RegistryM
 		url.QueryEscape(moduleID.Name),
 		url.QueryEscape(moduleID.Provider),
 	)
-	req, err := r.client.newRequest("POST", u, nil)
+	req, err := r.client.NewRequest("POST", u, nil)
 	if err != nil {
 		return err
 	}
 
-	return r.client.do(ctx, req, nil)
+	return req.Do(ctx, nil)
 }
 
 // DeleteVersion is used to delete the specific registry module version
@@ -391,12 +418,12 @@ func (r *registryModules) DeleteVersion(ctx context.Context, moduleID RegistryMo
 		url.QueryEscape(moduleID.Provider),
 		url.QueryEscape(version),
 	)
-	req, err := r.client.newRequest("POST", u, nil)
+	req, err := r.client.NewRequest("POST", u, nil)
 	if err != nil {
 		return err
 	}
 
-	return r.client.do(ctx, req, nil)
+	return req.Do(ctx, nil)
 }
 
 func (o RegistryModuleID) valid() error {
@@ -420,6 +447,19 @@ func (o RegistryModuleID) valid() error {
 		return ErrInvalidProvider
 	}
 
+	switch o.RegistryName {
+	case PublicRegistry:
+		if !validString(&o.Namespace) {
+			return ErrRequiredNamespace
+		}
+	case PrivateRegistry:
+	case "":
+		// no-op:  RegistryName is optional
+	// for all other string
+	default:
+		return ErrInvalidRegistryName
+	}
+
 	return nil
 }
 
@@ -435,6 +475,22 @@ func (o RegistryModuleCreateOptions) valid() error {
 	}
 	if !validStringID(o.Provider) {
 		return ErrInvalidProvider
+	}
+
+	switch o.RegistryName {
+	case PublicRegistry:
+		if !validString(&o.Namespace) {
+			return ErrRequiredNamespace
+		}
+	case PrivateRegistry:
+		if validString(&o.Namespace) {
+			return ErrUnsupportedBothNamespaceAndPrivateRegistryName
+		}
+	case "":
+		// no-op:  RegistryName is optional
+	// for all other string
+	default:
+		return ErrInvalidRegistryName
 	}
 	return nil
 }

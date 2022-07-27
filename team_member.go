@@ -4,8 +4,6 @@ import (
 	"context"
 	"fmt"
 	"net/url"
-
-	retryablehttp "github.com/hashicorp/go-retryablehttp"
 )
 
 // Compile-time proof of interface implementation.
@@ -80,13 +78,13 @@ func (s *teamMembers) ListUsers(ctx context.Context, teamID string) ([]*User, er
 	}
 
 	u := fmt.Sprintf("teams/%s", url.QueryEscape(teamID))
-	req, err := s.client.newRequest("GET", u, options)
+	req, err := s.client.NewRequest("GET", u, options)
 	if err != nil {
 		return nil, err
 	}
 
 	t := &Team{}
-	err = s.client.do(ctx, req, t)
+	err = req.Do(ctx, t)
 	if err != nil {
 		return nil, err
 	}
@@ -107,13 +105,13 @@ func (s *teamMembers) ListOrganizationMemberships(ctx context.Context, teamID st
 	}
 
 	u := fmt.Sprintf("teams/%s", url.QueryEscape(teamID))
-	req, err := s.client.newRequest("GET", u, options)
+	req, err := s.client.NewRequest("GET", u, options)
 	if err != nil {
 		return nil, err
 	}
 
 	t := &Team{}
-	err = s.client.do(ctx, req, t)
+	err = req.Do(ctx, t)
 	if err != nil {
 		return nil, err
 	}
@@ -133,7 +131,7 @@ func (s *teamMembers) Add(ctx context.Context, teamID string, options TeamMember
 	usersOrMemberships := options.kind()
 	u := fmt.Sprintf("teams/%s/relationships/%s", url.QueryEscape(teamID), usersOrMemberships)
 
-	var req *retryablehttp.Request
+	var req *ClientRequest
 
 	if usersOrMemberships == "users" {
 		var err error
@@ -141,7 +139,7 @@ func (s *teamMembers) Add(ctx context.Context, teamID string, options TeamMember
 		for _, name := range options.Usernames {
 			members = append(members, &teamMemberUser{Username: name})
 		}
-		req, err = s.client.newRequest("POST", u, members)
+		req, err = s.client.NewRequest("POST", u, members)
 		if err != nil {
 			return err
 		}
@@ -151,13 +149,13 @@ func (s *teamMembers) Add(ctx context.Context, teamID string, options TeamMember
 		for _, ID := range options.OrganizationMembershipIDs {
 			members = append(members, &teamMemberOrgMembership{ID: ID})
 		}
-		req, err = s.client.newRequest("POST", u, members)
+		req, err = s.client.NewRequest("POST", u, members)
 		if err != nil {
 			return err
 		}
 	}
 
-	return s.client.do(ctx, req, nil)
+	return req.Do(ctx, nil)
 }
 
 // Remove multiple users from a team.
@@ -172,7 +170,7 @@ func (s *teamMembers) Remove(ctx context.Context, teamID string, options TeamMem
 	usersOrMemberships := options.kind()
 	u := fmt.Sprintf("teams/%s/relationships/%s", url.QueryEscape(teamID), usersOrMemberships)
 
-	var req *retryablehttp.Request
+	var req *ClientRequest
 
 	if usersOrMemberships == "users" {
 		var err error
@@ -180,7 +178,7 @@ func (s *teamMembers) Remove(ctx context.Context, teamID string, options TeamMem
 		for _, name := range options.Usernames {
 			members = append(members, &teamMemberUser{Username: name})
 		}
-		req, err = s.client.newRequest("DELETE", u, members)
+		req, err = s.client.NewRequest("DELETE", u, members)
 		if err != nil {
 			return err
 		}
@@ -190,13 +188,13 @@ func (s *teamMembers) Remove(ctx context.Context, teamID string, options TeamMem
 		for _, ID := range options.OrganizationMembershipIDs {
 			members = append(members, &teamMemberOrgMembership{ID: ID})
 		}
-		req, err = s.client.newRequest("DELETE", u, members)
+		req, err = s.client.NewRequest("DELETE", u, members)
 		if err != nil {
 			return err
 		}
 	}
 
-	return s.client.do(ctx, req, nil)
+	return req.Do(ctx, nil)
 }
 
 // kind returns "users" or "organization-memberships"

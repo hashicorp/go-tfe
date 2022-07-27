@@ -18,7 +18,7 @@ func TestAdminUsers_List(t *testing.T) {
 	ctx := context.Background()
 
 	currentUser, err := client.Users.ReadCurrent(ctx)
-	assert.NoError(t, err)
+	require.NoError(t, err)
 
 	org, orgCleanup := createOrganization(t, client)
 	defer orgCleanup()
@@ -79,10 +79,10 @@ func TestAdminUsers_List(t *testing.T) {
 			Include: []AdminUserIncludeOpt{AdminUserOrgs},
 		})
 
-		assert.NoError(t, err)
+		require.NoError(t, err)
+		require.NotEmpty(t, ul.Items)
+		require.NotEmpty(t, ul.Items[0].Organizations)
 
-		assert.NotEmpty(t, ul.Items)
-		assert.NotNil(t, ul.Items[0].Organizations)
 		assert.NotEmpty(t, ul.Items[0].Organizations[0].Name)
 	})
 
@@ -91,9 +91,9 @@ func TestAdminUsers_List(t *testing.T) {
 			Administrators: "true",
 		})
 
-		assert.NoError(t, err)
-		assert.NotEmpty(t, ul.Items)
-		assert.NotNil(t, ul.Items[0])
+		require.NoError(t, err)
+		require.NotEmpty(t, ul.Items)
+		require.NotNil(t, ul.Items[0])
 		// We use this `includesEmail` helper function because throughout
 		// the tests, there could be multiple admins, depending on the
 		// ordering of the test runs.

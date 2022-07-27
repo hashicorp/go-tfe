@@ -74,6 +74,7 @@ const (
 	ConfigurationSourceBitbucket ConfigurationSource = "bitbucket"
 	ConfigurationSourceGithub    ConfigurationSource = "github"
 	ConfigurationSourceGitlab    ConfigurationSource = "gitlab"
+	ConfigurationSourceAdo       ConfigurationSource = "ado"
 	ConfigurationSourceTerraform ConfigurationSource = "terraform"
 )
 
@@ -92,7 +93,7 @@ type ConfigurationVersion struct {
 	Error            string              `jsonapi:"attr,error"`
 	ErrorMessage     string              `jsonapi:"attr,error-message"`
 	Source           ConfigurationSource `jsonapi:"attr,source"`
-	Speculative      bool                `jsonapi:"attr,speculative "`
+	Speculative      bool                `jsonapi:"attr,speculative"`
 	Status           ConfigurationStatus `jsonapi:"attr,status"`
 	StatusTimestamps *CVStatusTimestamps `jsonapi:"attr,status-timestamps"`
 	UploadURL        string              `jsonapi:"attr,upload-url"`
@@ -188,13 +189,13 @@ func (s *configurationVersions) List(ctx context.Context, workspaceID string, op
 	}
 
 	u := fmt.Sprintf("workspaces/%s/configuration-versions", url.QueryEscape(workspaceID))
-	req, err := s.client.newRequest("GET", u, options)
+	req, err := s.client.NewRequest("GET", u, options)
 	if err != nil {
 		return nil, err
 	}
 
 	cvl := &ConfigurationVersionList{}
-	err = s.client.do(ctx, req, cvl)
+	err = req.Do(ctx, cvl)
 	if err != nil {
 		return nil, err
 	}
@@ -210,13 +211,13 @@ func (s *configurationVersions) Create(ctx context.Context, workspaceID string, 
 	}
 
 	u := fmt.Sprintf("workspaces/%s/configuration-versions", url.QueryEscape(workspaceID))
-	req, err := s.client.newRequest("POST", u, &options)
+	req, err := s.client.NewRequest("POST", u, &options)
 	if err != nil {
 		return nil, err
 	}
 
 	cv := &ConfigurationVersion{}
-	err = s.client.do(ctx, req, cv)
+	err = req.Do(ctx, cv)
 	if err != nil {
 		return nil, err
 	}
@@ -239,13 +240,13 @@ func (s *configurationVersions) ReadWithOptions(ctx context.Context, cvID string
 	}
 
 	u := fmt.Sprintf("configuration-versions/%s", url.QueryEscape(cvID))
-	req, err := s.client.newRequest("GET", u, options)
+	req, err := s.client.NewRequest("GET", u, options)
 	if err != nil {
 		return nil, err
 	}
 
 	cv := &ConfigurationVersion{}
-	err = s.client.do(ctx, req, cv)
+	err = req.Do(ctx, cv)
 	if err != nil {
 		return nil, err
 	}
@@ -277,12 +278,12 @@ func (s *configurationVersions) Upload(ctx context.Context, u, path string) erro
 		return err
 	}
 
-	req, err := s.client.newRequest("PUT", u, body)
+	req, err := s.client.NewRequest("PUT", u, body)
 	if err != nil {
 		return err
 	}
 
-	return s.client.do(ctx, req, nil)
+	return req.Do(ctx, nil)
 }
 
 // Archive a configuration version. This can only be done on configuration versions that
@@ -295,12 +296,12 @@ func (s *configurationVersions) Archive(ctx context.Context, cvID string) error 
 	body := bytes.NewBuffer(nil)
 
 	u := fmt.Sprintf("configuration-versions/%s/actions/archive", url.QueryEscape(cvID))
-	req, err := s.client.newRequest("POST", u, body)
+	req, err := s.client.NewRequest("POST", u, body)
 	if err != nil {
 		return err
 	}
 
-	return s.client.do(ctx, req, nil)
+	return req.Do(ctx, nil)
 }
 
 func (o *ConfigurationVersionReadOptions) valid() error {
@@ -347,13 +348,13 @@ func (s *configurationVersions) Download(ctx context.Context, cvID string) ([]by
 	}
 
 	u := fmt.Sprintf("configuration-versions/%s/download", url.QueryEscape(cvID))
-	req, err := s.client.newRequest("GET", u, nil)
+	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, err
 	}
 
 	var buf bytes.Buffer
-	err = s.client.do(ctx, req, &buf)
+	err = req.Do(ctx, &buf)
 	if err != nil {
 		return nil, err
 	}

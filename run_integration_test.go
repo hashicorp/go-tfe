@@ -45,6 +45,7 @@ func TestRunsList(t *testing.T) {
 			Include: []RunIncludeOpt{},
 		})
 		require.NoError(t, err)
+		require.NotEmpty(t, rl.Items)
 
 		found := []string{}
 		for _, r := range rl.Items {
@@ -79,11 +80,10 @@ func TestRunsList(t *testing.T) {
 		rl, err := client.Runs.List(ctx, wTest.ID, &RunListOptions{
 			Include: []RunIncludeOpt{RunWorkspace},
 		})
+		require.NoError(t, err)
 
-		assert.NoError(t, err)
-
-		assert.NotEmpty(t, rl.Items)
-		assert.NotNil(t, rl.Items[0].Workspace)
+		require.NotEmpty(t, rl.Items)
+		require.NotNil(t, rl.Items[0].Workspace)
 		assert.NotEmpty(t, rl.Items[0].Workspace.Name)
 	})
 
@@ -118,7 +118,7 @@ func TestRunsListQueryParams(t *testing.T) {
 			description: "with status query parameter",
 			options:     &RunListOptions{Status: string(RunPending), Include: []RunIncludeOpt{RunWorkspace}},
 			assertion: func(tc testCase, rl *RunList, err error) {
-				assert.NoError(t, err)
+				require.NoError(t, err)
 				assert.Equal(t, 1, len(rl.Items))
 			},
 		},
@@ -126,7 +126,7 @@ func TestRunsListQueryParams(t *testing.T) {
 			description: "with source query parameter",
 			options:     &RunListOptions{Source: string(RunSourceAPI), Include: []RunIncludeOpt{RunWorkspace}},
 			assertion: func(tc testCase, rl *RunList, err error) {
-				assert.NoError(t, err)
+				require.NoError(t, err)
 				assert.Equal(t, 2, len(rl.Items))
 				assert.Equal(t, rl.Items[0].Source, RunSourceAPI)
 			},
@@ -135,7 +135,7 @@ func TestRunsListQueryParams(t *testing.T) {
 			description: "with operation of plan_only parameter",
 			options:     &RunListOptions{Operation: string(RunOperationPlanOnly), Include: []RunIncludeOpt{RunWorkspace}},
 			assertion: func(tc testCase, rl *RunList, err error) {
-				assert.NoError(t, err)
+				require.NoError(t, err)
 				assert.Equal(t, 0, len(rl.Items))
 			},
 		},
@@ -155,7 +155,7 @@ func TestRunsListQueryParams(t *testing.T) {
 			description: "with name & commit parameter",
 			options:     &RunListOptions{Name: randomString(t), Commit: randomString(t), Include: []RunIncludeOpt{RunWorkspace}},
 			assertion: func(tc testCase, rl *RunList, err error) {
-				assert.NoError(t, err)
+				require.NoError(t, err)
 				assert.Equal(t, 0, len(rl.Items))
 			},
 		},
@@ -185,11 +185,11 @@ func TestRunsCreate(t *testing.T) {
 		}
 
 		r, err := client.Runs.Create(ctx, options)
-		assert.NoError(t, err)
+		require.NoError(t, err)
 		assert.NotNil(t, r.ID)
 		assert.NotNil(t, r.CreatedAt)
 		assert.NotNil(t, r.Source)
-		assert.NotEmpty(t, r.StatusTimestamps)
+		require.NotNil(t, r.StatusTimestamps)
 		assert.NotZero(t, r.StatusTimestamps.PlanQueueableAt)
 	})
 
@@ -323,7 +323,7 @@ func TestRunsRead_CostEstimate(t *testing.T) {
 
 	t.Run("when the run exists", func(t *testing.T) {
 		r, err := client.Runs.Read(ctx, rTest.ID)
-		assert.NoError(t, err)
+		require.NoError(t, err)
 		assert.Equal(t, rTest, r)
 	})
 
@@ -355,7 +355,7 @@ func TestRunsReadWithOptions(t *testing.T) {
 		r, err := client.Runs.ReadWithOptions(ctx, rTest.ID, curOpts)
 		require.NoError(t, err)
 
-		assert.NotEmpty(t, r.CreatedBy)
+		require.NotEmpty(t, r.CreatedBy)
 		assert.NotEmpty(t, r.CreatedBy.Username)
 	})
 }
@@ -374,15 +374,15 @@ func TestRunsApply(t *testing.T) {
 		err := client.Runs.Apply(ctx, rTest.ID, RunApplyOptions{
 			Comment: String("Hello, Earl"),
 		})
-		assert.NoError(t, err)
+		require.NoError(t, err)
 
 		r, err := client.Runs.Read(ctx, rTest.ID)
-		assert.NoError(t, err)
+		require.NoError(t, err)
 
 		assert.Len(t, r.Comments, 1)
 
 		c, err := client.Comments.Read(ctx, r.Comments[0].ID)
-		assert.NoError(t, err)
+		require.NoError(t, err)
 		assert.Equal(t, "Hello, Earl", c.Body)
 	})
 
@@ -414,7 +414,7 @@ func TestRunsCancel(t *testing.T) {
 
 	t.Run("when the run exists", func(t *testing.T) {
 		err := client.Runs.Cancel(ctx, rTest.ID, RunCancelOptions{})
-		assert.NoError(t, err)
+		require.NoError(t, err)
 	})
 
 	t.Run("when the run does not exist", func(t *testing.T) {
@@ -507,7 +507,7 @@ func TestRunsDiscard(t *testing.T) {
 
 	t.Run("when the run exists", func(t *testing.T) {
 		err := client.Runs.Discard(ctx, rTest.ID, RunDiscardOptions{})
-		assert.NoError(t, err)
+		require.NoError(t, err)
 	})
 
 	t.Run("when the run does not exist", func(t *testing.T) {

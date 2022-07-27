@@ -132,13 +132,13 @@ func (s *policies) List(ctx context.Context, organization string, options *Polic
 	}
 
 	u := fmt.Sprintf("organizations/%s/policies", url.QueryEscape(organization))
-	req, err := s.client.newRequest("GET", u, options)
+	req, err := s.client.NewRequest("GET", u, options)
 	if err != nil {
 		return nil, err
 	}
 
 	pl := &PolicyList{}
-	err = s.client.do(ctx, req, pl)
+	err = req.Do(ctx, pl)
 	if err != nil {
 		return nil, err
 	}
@@ -156,13 +156,13 @@ func (s *policies) Create(ctx context.Context, organization string, options Poli
 	}
 
 	u := fmt.Sprintf("organizations/%s/policies", url.QueryEscape(organization))
-	req, err := s.client.newRequest("POST", u, &options)
+	req, err := s.client.NewRequest("POST", u, &options)
 	if err != nil {
 		return nil, err
 	}
 
 	p := &Policy{}
-	err = s.client.do(ctx, req, p)
+	err = req.Do(ctx, p)
 	if err != nil {
 		return nil, err
 	}
@@ -177,13 +177,13 @@ func (s *policies) Read(ctx context.Context, policyID string) (*Policy, error) {
 	}
 
 	u := fmt.Sprintf("policies/%s", url.QueryEscape(policyID))
-	req, err := s.client.newRequest("GET", u, nil)
+	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, err
 	}
 
 	p := &Policy{}
-	err = s.client.do(ctx, req, p)
+	err = req.Do(ctx, p)
 	if err != nil {
 		return nil, err
 	}
@@ -198,13 +198,13 @@ func (s *policies) Update(ctx context.Context, policyID string, options PolicyUp
 	}
 
 	u := fmt.Sprintf("policies/%s", url.QueryEscape(policyID))
-	req, err := s.client.newRequest("PATCH", u, &options)
+	req, err := s.client.NewRequest("PATCH", u, &options)
 	if err != nil {
 		return nil, err
 	}
 
 	p := &Policy{}
-	err = s.client.do(ctx, req, p)
+	err = req.Do(ctx, p)
 	if err != nil {
 		return nil, err
 	}
@@ -219,12 +219,12 @@ func (s *policies) Delete(ctx context.Context, policyID string) error {
 	}
 
 	u := fmt.Sprintf("policies/%s", url.QueryEscape(policyID))
-	req, err := s.client.newRequest("DELETE", u, nil)
+	req, err := s.client.NewRequest("DELETE", u, nil)
 	if err != nil {
 		return err
 	}
 
-	return s.client.do(ctx, req, nil)
+	return req.Do(ctx, nil)
 }
 
 // Upload the policy content of the policy.
@@ -234,12 +234,12 @@ func (s *policies) Upload(ctx context.Context, policyID string, content []byte) 
 	}
 
 	u := fmt.Sprintf("policies/%s/upload", url.QueryEscape(policyID))
-	req, err := s.client.newRequest("PUT", u, content)
+	req, err := s.client.NewRequest("PUT", u, content)
 	if err != nil {
 		return err
 	}
 
-	return s.client.do(ctx, req, nil)
+	return req.Do(ctx, nil)
 }
 
 // Download the policy content of the policy.
@@ -249,13 +249,13 @@ func (s *policies) Download(ctx context.Context, policyID string) ([]byte, error
 	}
 
 	u := fmt.Sprintf("policies/%s/download", url.QueryEscape(policyID))
-	req, err := s.client.newRequest("GET", u, nil)
+	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, err
 	}
 
 	var buf bytes.Buffer
-	err = s.client.do(ctx, req, &buf)
+	err = req.Do(ctx, &buf)
 	if err != nil {
 		return nil, err
 	}

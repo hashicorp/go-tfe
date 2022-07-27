@@ -25,9 +25,9 @@ func TestRegistryModulesList(t *testing.T) {
 	orgTest, orgTestCleanup := createOrganization(t, client)
 	defer orgTestCleanup()
 
-	registryModuleTest1, registryModuleTest1Cleanup := createRegistryModule(t, client, orgTest)
+	registryModuleTest1, registryModuleTest1Cleanup := createRegistryModule(t, client, orgTest, PrivateRegistry)
 	defer registryModuleTest1Cleanup()
-	registryModuleTest2, registryModuleTest2Cleanup := createRegistryModule(t, client, orgTest)
+	registryModuleTest2, registryModuleTest2Cleanup := createRegistryModule(t, client, orgTest, PrivateRegistry)
 	defer registryModuleTest2Cleanup()
 
 	t.Run("with no list options", func(t *testing.T) {
@@ -71,29 +71,74 @@ func TestRegistryModulesCreate(t *testing.T) {
 	defer orgTestCleanup()
 
 	t.Run("with valid options", func(t *testing.T) {
-		options := RegistryModuleCreateOptions{
-			Name:     String("name"),
-			Provider: String("provider"),
+		assertRegistryModuleAttributes := func(t *testing.T, registryModule *RegistryModule) {
+			t.Run("permissions are properly decoded", func(t *testing.T) {
+				require.NotEmpty(t, registryModule.Permissions)
+				assert.True(t, registryModule.Permissions.CanDelete)
+				assert.True(t, registryModule.Permissions.CanResync)
+				assert.True(t, registryModule.Permissions.CanRetry)
+			})
+
+			t.Run("relationships are properly decoded", func(t *testing.T) {
+				require.NotEmpty(t, registryModule.Organization)
+				assert.Equal(t, orgTest.Name, registryModule.Organization.Name)
+			})
+
+			t.Run("timestamps are properly decoded", func(t *testing.T) {
+				assert.NotEmpty(t, registryModule.CreatedAt)
+				assert.NotEmpty(t, registryModule.UpdatedAt)
+			})
 		}
-		rm, err := client.RegistryModules.Create(ctx, orgTest.Name, options)
-		require.NoError(t, err)
-		assert.NotEmpty(t, rm.ID)
-		assert.Equal(t, *options.Name, rm.Name)
-		assert.Equal(t, *options.Provider, rm.Provider)
 
-		t.Run("permissions are properly decoded", func(t *testing.T) {
-			assert.True(t, rm.Permissions.CanDelete)
-			assert.True(t, rm.Permissions.CanResync)
-			assert.True(t, rm.Permissions.CanRetry)
+		t.Run("without RegistryName", func(t *testing.T) {
+			options := RegistryModuleCreateOptions{
+				Name:     String("name"),
+				Provider: String("provider"),
+			}
+			rm, err := client.RegistryModules.Create(ctx, orgTest.Name, options)
+			require.NoError(t, err)
+			assert.NotEmpty(t, rm.ID)
+			assert.Equal(t, *options.Name, rm.Name)
+			assert.Equal(t, *options.Provider, rm.Provider)
+			assert.Equal(t, PrivateRegistry, rm.RegistryName)
+			assert.Equal(t, orgTest.Name, rm.Namespace)
+
+			assertRegistryModuleAttributes(t, rm)
 		})
 
-		t.Run("relationships are properly decoded", func(t *testing.T) {
-			assert.Equal(t, orgTest.Name, rm.Organization.Name)
+		t.Run("with private RegistryName", func(t *testing.T) {
+			options := RegistryModuleCreateOptions{
+				Name:         String("another_name"),
+				Provider:     String("provider"),
+				RegistryName: PrivateRegistry,
+			}
+			rm, err := client.RegistryModules.Create(ctx, orgTest.Name, options)
+			require.NoError(t, err)
+			assert.NotEmpty(t, rm.ID)
+			assert.Equal(t, *options.Name, rm.Name)
+			assert.Equal(t, *options.Provider, rm.Provider)
+			assert.Equal(t, options.RegistryName, rm.RegistryName)
+			assert.Equal(t, orgTest.Name, rm.Namespace)
+
+			assertRegistryModuleAttributes(t, rm)
 		})
 
-		t.Run("timestamps are properly decoded", func(t *testing.T) {
-			assert.NotEmpty(t, rm.CreatedAt)
-			assert.NotEmpty(t, rm.UpdatedAt)
+		t.Run("with public RegistryName", func(t *testing.T) {
+			options := RegistryModuleCreateOptions{
+				Name:         String("vpc"),
+				Provider:     String("aws"),
+				RegistryName: PublicRegistry,
+				Namespace:    "terraform-aws-modules",
+			}
+			rm, err := client.RegistryModules.Create(ctx, orgTest.Name, options)
+			require.NoError(t, err)
+			assert.NotEmpty(t, rm.ID)
+			assert.Equal(t, *options.Name, rm.Name)
+			assert.Equal(t, *options.Provider, rm.Provider)
+			assert.Equal(t, options.RegistryName, rm.RegistryName)
+			assert.Equal(t, options.Namespace, rm.Namespace)
+
+			assertRegistryModuleAttributes(t, rm)
 		})
 	})
 
@@ -135,6 +180,40 @@ func TestRegistryModulesCreate(t *testing.T) {
 			assert.Nil(t, rm)
 			assert.Equal(t, err, ErrInvalidProvider)
 		})
+
+		t.Run("with an invalid registry name", func(t *testing.T) {
+			options := RegistryModuleCreateOptions{
+				Name:         String("name"),
+				Provider:     String("provider"),
+				RegistryName: "PRIVATE",
+			}
+			rm, err := client.RegistryModules.Create(ctx, orgTest.Name, options)
+			assert.Nil(t, rm)
+			assert.Equal(t, err, ErrInvalidRegistryName)
+		})
+
+		t.Run("without a namespace for public registry name", func(t *testing.T) {
+			options := RegistryModuleCreateOptions{
+				Name:         String("name"),
+				Provider:     String("provider"),
+				RegistryName: PublicRegistry,
+			}
+			rm, err := client.RegistryModules.Create(ctx, orgTest.Name, options)
+			assert.Nil(t, rm)
+			assert.Equal(t, err, ErrRequiredNamespace)
+		})
+
+		t.Run("with a namespace for private registry name", func(t *testing.T) {
+			options := RegistryModuleCreateOptions{
+				Name:         String("name"),
+				Provider:     String("provider"),
+				RegistryName: PrivateRegistry,
+				Namespace:    "namespace",
+			}
+			rm, err := client.RegistryModules.Create(ctx, orgTest.Name, options)
+			assert.Nil(t, rm)
+			assert.Equal(t, err, ErrUnsupportedBothNamespaceAndPrivateRegistryName)
+		})
 	})
 
 	t.Run("without a valid organization", func(t *testing.T) {
@@ -155,7 +234,7 @@ func TestRegistryModulesCreateVersion(t *testing.T) {
 	orgTest, orgTestCleanup := createOrganization(t, client)
 	defer orgTestCleanup()
 
-	registryModuleTest, registryModuleTestCleanup := createRegistryModule(t, client, orgTest)
+	registryModuleTest, registryModuleTestCleanup := createRegistryModule(t, client, orgTest, PrivateRegistry)
 	defer registryModuleTestCleanup()
 
 	t.Run("with valid options", func(t *testing.T) {
@@ -393,8 +472,11 @@ func TestRegistryModulesRead(t *testing.T) {
 	orgTest, orgTestCleanup := createOrganization(t, client)
 	defer orgTestCleanup()
 
-	registryModuleTest, registryModuleTestCleanup := createRegistryModule(t, client, orgTest)
+	registryModuleTest, registryModuleTestCleanup := createRegistryModule(t, client, orgTest, PrivateRegistry)
 	defer registryModuleTestCleanup()
+
+	publicRegistryModuleTest, publicRegistryModuleTestCleanup := createRegistryModule(t, client, orgTest, PublicRegistry)
+	defer publicRegistryModuleTestCleanup()
 
 	t.Run("with valid name and provider", func(t *testing.T) {
 		rm, err := client.RegistryModules.Read(ctx, RegistryModuleID{
@@ -406,6 +488,56 @@ func TestRegistryModulesRead(t *testing.T) {
 		assert.Equal(t, registryModuleTest.ID, rm.ID)
 
 		t.Run("permissions are properly decoded", func(t *testing.T) {
+			assert.True(t, rm.Permissions.CanDelete)
+			assert.True(t, rm.Permissions.CanResync)
+			assert.True(t, rm.Permissions.CanRetry)
+		})
+
+		t.Run("timestamps are properly decoded", func(t *testing.T) {
+			assert.NotEmpty(t, rm.CreatedAt)
+			assert.NotEmpty(t, rm.UpdatedAt)
+		})
+	})
+
+	t.Run("with complete registry module ID fields for private module", func(t *testing.T) {
+		rm, err := client.RegistryModules.Read(ctx, RegistryModuleID{
+			Organization: orgTest.Name,
+			Name:         registryModuleTest.Name,
+			Provider:     registryModuleTest.Provider,
+			Namespace:    orgTest.Name,
+			RegistryName: PrivateRegistry,
+		})
+		require.NoError(t, err)
+		require.NotEmpty(t, rm)
+		assert.Equal(t, registryModuleTest.ID, rm.ID)
+
+		t.Run("permissions are properly decoded", func(t *testing.T) {
+			require.NotEmpty(t, rm.Permissions)
+			assert.True(t, rm.Permissions.CanDelete)
+			assert.True(t, rm.Permissions.CanResync)
+			assert.True(t, rm.Permissions.CanRetry)
+		})
+
+		t.Run("timestamps are properly decoded", func(t *testing.T) {
+			assert.NotEmpty(t, rm.CreatedAt)
+			assert.NotEmpty(t, rm.UpdatedAt)
+		})
+	})
+
+	t.Run("with complete registry module ID fields for public module", func(t *testing.T) {
+		rm, err := client.RegistryModules.Read(ctx, RegistryModuleID{
+			Organization: orgTest.Name,
+			Name:         publicRegistryModuleTest.Name,
+			Provider:     publicRegistryModuleTest.Provider,
+			Namespace:    publicRegistryModuleTest.Namespace,
+			RegistryName: PublicRegistry,
+		})
+		require.NoError(t, err)
+		require.NotEmpty(t, rm)
+		assert.Equal(t, publicRegistryModuleTest.ID, rm.ID)
+
+		t.Run("permissions are properly decoded", func(t *testing.T) {
+			require.NotEmpty(t, rm.Permissions)
 			assert.True(t, rm.Permissions.CanDelete)
 			assert.True(t, rm.Permissions.CanResync)
 			assert.True(t, rm.Permissions.CanRetry)
@@ -457,6 +589,18 @@ func TestRegistryModulesRead(t *testing.T) {
 		assert.Equal(t, err, ErrInvalidProvider)
 	})
 
+	t.Run("with an invalid registry name", func(t *testing.T) {
+		rm, err := client.RegistryModules.Read(ctx, RegistryModuleID{
+			Organization: orgTest.Name,
+			Name:         registryModuleTest.Name,
+			Provider:     registryModuleTest.Provider,
+			Namespace:    orgTest.Name,
+			RegistryName: "PRIVATE",
+		})
+		assert.Nil(t, rm)
+		assert.Equal(t, err, ErrInvalidRegistryName)
+	})
+
 	t.Run("without a valid organization", func(t *testing.T) {
 		rm, err := client.RegistryModules.Read(ctx, RegistryModuleID{
 			Organization: badIdentifier,
@@ -465,6 +609,17 @@ func TestRegistryModulesRead(t *testing.T) {
 		})
 		assert.Nil(t, rm)
 		assert.EqualError(t, err, ErrInvalidOrg.Error())
+	})
+
+	t.Run("without a valid namespace for public registry module", func(t *testing.T) {
+		rm, err := client.RegistryModules.Read(ctx, RegistryModuleID{
+			Organization: orgTest.Name,
+			Name:         publicRegistryModuleTest.Name,
+			Provider:     publicRegistryModuleTest.Provider,
+			RegistryName: PublicRegistry,
+		})
+		assert.Nil(t, rm)
+		assert.EqualError(t, err, ErrRequiredNamespace.Error())
 	})
 
 	t.Run("when the registry module does not exist", func(t *testing.T) {
@@ -485,7 +640,7 @@ func TestRegistryModulesDelete(t *testing.T) {
 	orgTest, orgTestCleanup := createOrganization(t, client)
 	defer orgTestCleanup()
 
-	registryModuleTest, _ := createRegistryModule(t, client, orgTest)
+	registryModuleTest, _ := createRegistryModule(t, client, orgTest, PrivateRegistry)
 
 	t.Run("with valid name", func(t *testing.T) {
 		err := client.RegistryModules.Delete(ctx, orgTest.Name, registryModuleTest.Name)
@@ -529,7 +684,7 @@ func TestRegistryModulesDeleteProvider(t *testing.T) {
 	orgTest, orgTestCleanup := createOrganization(t, client)
 	defer orgTestCleanup()
 
-	registryModuleTest, _ := createRegistryModule(t, client, orgTest)
+	registryModuleTest, _ := createRegistryModule(t, client, orgTest, PrivateRegistry)
 
 	t.Run("with valid name and provider", func(t *testing.T) {
 		err := client.RegistryModules.DeleteProvider(ctx, RegistryModuleID{
@@ -734,7 +889,7 @@ func TestRegistryModulesUpload(t *testing.T) {
 	orgTest, orgTestCleanup := createOrganization(t, client)
 	defer orgTestCleanup()
 
-	rm, _ := createRegistryModule(t, client, orgTest)
+	rm, _ := createRegistryModule(t, client, orgTest, PrivateRegistry)
 
 	optionsModuleVersion := RegistryModuleCreateVersionOptions{
 		Version: String("1.0.0"),
@@ -775,8 +930,10 @@ func TestRegistryModule_Unmarshal(t *testing.T) {
 			"type": "registry-modules",
 			"id":   "1",
 			"attributes": map[string]interface{}{
-				"name":     "module",
-				"provider": "tfe",
+				"name":          "module",
+				"provider":      "tfe",
+				"namespace":     "org-abc",
+				"registry-name": "private",
 				"permissions": map[string]interface{}{
 					"can-delete": true,
 					"can-resync": true,
@@ -815,6 +972,8 @@ func TestRegistryModule_Unmarshal(t *testing.T) {
 	assert.Equal(t, rm.ID, "1")
 	assert.Equal(t, rm.Name, "module")
 	assert.Equal(t, rm.Provider, "tfe")
+	assert.Equal(t, rm.Namespace, "org-abc")
+	assert.Equal(t, rm.RegistryName, PrivateRegistry)
 	assert.Equal(t, rm.Permissions.CanDelete, true)
 	assert.Equal(t, rm.Permissions.CanRetry, true)
 	assert.Equal(t, rm.Status, RegistryModuleStatusPending)
@@ -832,7 +991,7 @@ func TestRegistryModule_Unmarshal(t *testing.T) {
 	assert.Equal(t, rm.VersionStatuses[0].Error, "no error")
 }
 
-func TestRegistryCreateOptions_Marshal(t *testing.T) {
+func TestRegistryCreateWithVCSOptions_Marshal(t *testing.T) {
 	// https://www.terraform.io/docs/cloud/api/modules.html#sample-payload
 	opts := RegistryModuleCreateWithVCSConnectionOptions{
 		VCSRepo: &RegistryModuleVCSRepoOptions{

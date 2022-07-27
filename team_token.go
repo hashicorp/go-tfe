@@ -47,13 +47,13 @@ func (s *teamTokens) Create(ctx context.Context, teamID string) (*TeamToken, err
 	}
 
 	u := fmt.Sprintf("teams/%s/authentication-token", url.QueryEscape(teamID))
-	req, err := s.client.newRequest("POST", u, nil)
+	req, err := s.client.NewRequest("POST", u, nil)
 	if err != nil {
 		return nil, err
 	}
 
 	tt := &TeamToken{}
-	err = s.client.do(ctx, req, tt)
+	err = req.Do(ctx, tt)
 	if err != nil {
 		return nil, err
 	}
@@ -68,13 +68,13 @@ func (s *teamTokens) Read(ctx context.Context, teamID string) (*TeamToken, error
 	}
 
 	u := fmt.Sprintf("teams/%s/authentication-token", url.QueryEscape(teamID))
-	req, err := s.client.newRequest("GET", u, nil)
+	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, err
 	}
 
 	tt := &TeamToken{}
-	err = s.client.do(ctx, req, tt)
+	err = req.Do(ctx, tt)
 	if err != nil {
 		return nil, err
 	}
@@ -89,10 +89,10 @@ func (s *teamTokens) Delete(ctx context.Context, teamID string) error {
 	}
 
 	u := fmt.Sprintf("teams/%s/authentication-token", url.QueryEscape(teamID))
-	req, err := s.client.newRequest("DELETE", u, nil)
+	req, err := s.client.NewRequest("DELETE", u, nil)
 	if err != nil {
 		return err
 	}
 
-	return s.client.do(ctx, req, nil)
+	return req.Do(ctx, nil)
 }

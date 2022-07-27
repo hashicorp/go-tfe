@@ -2,9 +2,10 @@ package tfe
 
 import (
 	"context"
+	"testing"
+
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
-	"testing"
 )
 
 func TestVariableSetVariablesList(t *testing.T) {
@@ -334,7 +335,7 @@ func TestVariableSetVariablesDelete(t *testing.T) {
 
 	t.Run("with valid options", func(t *testing.T) {
 		err := client.VariableSetVariables.Delete(ctx, vsTest.ID, vTest.ID)
-		assert.NoError(t, err)
+		require.NoError(t, err)
 	})
 
 	t.Run("with non existing variable ID", func(t *testing.T) {

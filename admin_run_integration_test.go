@@ -37,7 +37,7 @@ func TestAdminRuns_List(t *testing.T) {
 		rl, err := client.Admin.Runs.List(ctx, nil)
 		require.NoError(t, err)
 
-		assert.NotEmpty(t, rl.Items)
+		require.NotEmpty(t, rl.Items)
 		assert.Equal(t, adminRunItemsContainsID(rl.Items, rTest1.ID), true)
 		assert.Equal(t, adminRunItemsContainsID(rl.Items, rTest2.ID), true)
 	})
@@ -61,7 +61,7 @@ func TestAdminRuns_List(t *testing.T) {
 			},
 		})
 		require.NoError(t, err)
-		assert.NotEmpty(t, rl.Items)
+		require.NotEmpty(t, rl.Items)
 		assert.Equal(t, 1, rl.CurrentPage)
 		assert.Equal(t, adminRunItemsContainsID(rl.Items, rTest1.ID), true)
 		assert.Equal(t, adminRunItemsContainsID(rl.Items, rTest2.ID), true)
@@ -71,11 +71,10 @@ func TestAdminRuns_List(t *testing.T) {
 		rl, err := client.Admin.Runs.List(ctx, &AdminRunsListOptions{
 			Include: []AdminRunIncludeOpt{AdminRunWorkspace},
 		})
+		require.NoError(t, err)
 
-		assert.NoError(t, err)
-
-		assert.NotEmpty(t, rl.Items)
-		assert.NotNil(t, rl.Items[0].Workspace)
+		require.NotEmpty(t, rl.Items)
+		require.NotNil(t, rl.Items[0].Workspace)
 		assert.NotEmpty(t, rl.Items[0].Workspace.Name)
 	})
 
@@ -84,11 +83,11 @@ func TestAdminRuns_List(t *testing.T) {
 			Include: []AdminRunIncludeOpt{AdminRunWorkspaceOrg},
 		})
 
-		assert.NoError(t, err)
+		require.NoError(t, err)
+		require.NotEmpty(t, rl.Items)
 
-		assert.NotEmpty(t, rl.Items)
-		assert.NotNil(t, rl.Items[0].Workspace)
-		assert.NotNil(t, rl.Items[0].Workspace.Organization)
+		require.NotNil(t, rl.Items[0].Workspace)
+		require.NotNil(t, rl.Items[0].Workspace.Organization)
 		assert.NotEmpty(t, rl.Items[0].Workspace.Organization.Name)
 	})
 
@@ -102,16 +101,16 @@ func TestAdminRuns_List(t *testing.T) {
 
 	t.Run("with RunStatus.pending filter", func(t *testing.T) {
 		r1, err := client.Runs.Read(ctx, rTest1.ID)
-		assert.NoError(t, err)
+		require.NoError(t, err)
 		r2, err := client.Runs.Read(ctx, rTest2.ID)
-		assert.NoError(t, err)
+		require.NoError(t, err)
 
 		// There should be pending Runs
 		rl, err := client.Admin.Runs.List(ctx, &AdminRunsListOptions{
 			RunStatus: string(RunPending),
 		})
-		assert.NoError(t, err)
-		assert.NotEmpty(t, rl.Items)
+		require.NoError(t, err)
+		require.NotEmpty(t, rl.Items)
 
 		assert.Equal(t, r1.Status, RunPlanning)
 		assert.Equal(t, adminRunItemsContainsID(rl.Items, r1.ID), false)
@@ -124,7 +123,7 @@ func TestAdminRuns_List(t *testing.T) {
 		rl, err := client.Admin.Runs.List(ctx, &AdminRunsListOptions{
 			RunStatus: string(RunApplied),
 		})
-		assert.NoError(t, err)
+		require.NoError(t, err)
 		assert.Empty(t, rl.Items)
 	})
 
@@ -132,18 +131,18 @@ func TestAdminRuns_List(t *testing.T) {
 		rl, err := client.Admin.Runs.List(ctx, &AdminRunsListOptions{
 			Query: rTest1.ID,
 		})
-		assert.NoError(t, err)
+		require.NoError(t, err)
 
-		assert.NotEmpty(t, rl.Items)
+		require.NotEmpty(t, rl.Items)
 		assert.Equal(t, adminRunItemsContainsID(rl.Items, rTest1.ID), true)
 		assert.Equal(t, adminRunItemsContainsID(rl.Items, rTest2.ID), false)
 
 		rl, err = client.Admin.Runs.List(ctx, &AdminRunsListOptions{
 			Query: rTest2.ID,
 		})
-		assert.NoError(t, err)
+		require.NoError(t, err)
 
-		assert.NotEmpty(t, rl.Items)
+		require.NotEmpty(t, rl.Items)
 		assert.Equal(t, adminRunItemsContainsID(rl.Items, rTest1.ID), false)
 		assert.Equal(t, adminRunItemsContainsID(rl.Items, rTest2.ID), true)
 	})
@@ -191,12 +190,18 @@ func TestAdminRuns_ForceCancel(t *testing.T) {
 		rTestPlanning, err := client.Runs.Read(ctx, rTest1.ID)
 		require.NoError(t, err)
 		assert.Equal(t, RunPlanning, rTestPlanning.Status)
+
+		require.NotNil(t, rTestPlanning.Actions)
+		require.NotNil(t, rTestPlanning.Permissions)
 		assert.Equal(t, true, rTestPlanning.Actions.IsCancelable)
 		assert.Equal(t, true, rTestPlanning.Permissions.CanForceCancel)
 
 		rTestPending, err := client.Runs.Read(ctx, rTest2.ID)
 		require.NoError(t, err)
 		assert.Equal(t, RunPending, rTestPending.Status)
+
+		require.NotNil(t, rTestPlanning.Actions)
+		require.NotNil(t, rTestPlanning.Permissions)
 		assert.Equal(t, true, rTestPending.Actions.IsCancelable)
 		assert.Equal(t, true, rTestPending.Permissions.CanForceCancel)
 
@@ -231,7 +236,7 @@ func TestAdminRuns_AdminRunsListOptions_valid(t *testing.T) {
 		}
 
 		err := opts.valid()
-		assert.NoError(t, err)
+		require.NoError(t, err)
 	})
 
 	t.Run("has invalid status", func(t *testing.T) {
@@ -259,7 +264,7 @@ func TestAdminRuns_AdminRunsListOptions_valid(t *testing.T) {
 		}
 
 		err := opts.valid()
-		assert.NoError(t, err)
+		require.NoError(t, err)
 	})
 }
 

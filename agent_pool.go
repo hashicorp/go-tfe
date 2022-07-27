@@ -20,10 +20,10 @@ type AgentPools interface {
 	// Create a new agent pool with the given options.
 	Create(ctx context.Context, organization string, options AgentPoolCreateOptions) (*AgentPool, error)
 
-	// Read a agent pool by its ID.
+	// Read an agent pool by its ID.
 	Read(ctx context.Context, agentPoolID string) (*AgentPool, error)
 
-	// Read a agent pool by its ID with the given options.
+	// Read an agent pool by its ID with the given options.
 	ReadWithOptions(ctx context.Context, agentPoolID string, options *AgentPoolReadOptions) (*AgentPool, error)
 
 	// Update an agent pool by its ID.
@@ -46,12 +46,14 @@ type AgentPoolList struct {
 
 // AgentPool represents a Terraform Cloud agent pool.
 type AgentPool struct {
-	ID   string `jsonapi:"primary,agent-pools"`
-	Name string `jsonapi:"attr,name"`
+	ID                 string `jsonapi:"primary,agent-pools"`
+	Name               string `jsonapi:"attr,name"`
+	OrganizationScoped bool   `jsonapi:"attr,organization-scoped"`
 
 	// Relations
-	Organization *Organization `jsonapi:"relation,organization"`
-	Workspaces   []*Workspace  `jsonapi:"relation,workspaces"`
+	Organization      *Organization `jsonapi:"relation,organization"`
+	Workspaces        []*Workspace  `jsonapi:"relation,workspaces"`
+	AllowedWorkspaces []*Workspace  `jsonapi:"relation,allowed-workspaces"`
 }
 
 // A list of relations to include
@@ -70,6 +72,9 @@ type AgentPoolListOptions struct {
 	// Optional: A list of relations to include. See available resources
 	// https://www.terraform.io/cloud-docs/api-docs/agents#available-related-resources
 	Include []AgentPoolIncludeOpt `url:"include,omitempty"`
+
+	// Optional: A search query string used to filter agent pool. Agent pools are searchable by name
+	Query string `url:"q,omitempty"`
 }
 
 // AgentPoolCreateOptions represents the options for creating an agent pool.
@@ -94,13 +99,13 @@ func (s *agentPools) List(ctx context.Context, organization string, options *Age
 	}
 
 	u := fmt.Sprintf("organizations/%s/agent-pools", url.QueryEscape(organization))
-	req, err := s.client.newRequest("GET", u, options)
+	req, err := s.client.NewRequest("GET", u, options)
 	if err != nil {
 		return nil, err
 	}
 
 	poolList := &AgentPoolList{}
-	err = s.client.do(ctx, req, poolList)
+	err = req.Do(ctx, poolList)
 	if err != nil {
 		return nil, err
 	}
@@ -119,13 +124,13 @@ func (s *agentPools) Create(ctx context.Context, organization string, options Ag
 	}
 
 	u := fmt.Sprintf("organizations/%s/agent-pools", url.QueryEscape(organization))
-	req, err := s.client.newRequest("POST", u, &options)
+	req, err := s.client.NewRequest("POST", u, &options)
 	if err != nil {
 		return nil, err
 	}
 
 	pool := &AgentPool{}
-	err = s.client.do(ctx, req, pool)
+	err = req.Do(ctx, pool)
 	if err != nil {
 		return nil, err
 	}
@@ -148,13 +153,13 @@ func (s *agentPools) ReadWithOptions(ctx context.Context, agentpoolID string, op
 	}
 
 	u := fmt.Sprintf("agent-pools/%s", url.QueryEscape(agentpoolID))
-	req, err := s.client.newRequest("GET", u, nil)
+	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, err
 	}
 
 	pool := &AgentPool{}
-	err = s.client.do(ctx, req, pool)
+	err = req.Do(ctx, pool)
 	if err != nil {
 		return nil, err
 	}
@@ -172,6 +177,12 @@ type AgentPoolUpdateOptions struct {
 
 	// A new name to identify the agent pool.
 	Name *string `jsonapi:"attr,name"`
+
+	// True if the agent pool is organization scoped, false otherwise.
+	OrganizationScoped *bool `jsonapi:"attr,organization-scoped,omitempty"`
+
+	// A new list of workspaces that are associated with an agent pool.
+	AllowedWorkspaces []*Workspace `jsonapi:"relation,allowed-workspaces"`
 }
 
 // Update an agent pool by its ID.
@@ -185,13 +196,13 @@ func (s *agentPools) Update(ctx context.Context, agentPoolID string, options Age
 	}
 
 	u := fmt.Sprintf("agent-pools/%s", url.QueryEscape(agentPoolID))
-	req, err := s.client.newRequest("PATCH", u, &options)
+	req, err := s.client.NewRequest("PATCH", u, &options)
 	if err != nil {
 		return nil, err
 	}
 
 	k := &AgentPool{}
-	err = s.client.do(ctx, req, k)
+	err = req.Do(ctx, k)
 	if err != nil {
 		return nil, err
 	}
@@ -206,12 +217,12 @@ func (s *agentPools) Delete(ctx context.Context, agentPoolID string) error {
 	}
 
 	u := fmt.Sprintf("agent-pools/%s", url.QueryEscape(agentPoolID))
-	req, err := s.client.newRequest("DELETE", u, nil)
+	req, err := s.client.NewRequest("DELETE", u, nil)
 	if err != nil {
 		return err
 	}
 
-	return s.client.do(ctx, req, nil)
+	return req.Do(ctx, nil)
 }
 
 func (o AgentPoolCreateOptions) valid() error {

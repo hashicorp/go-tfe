@@ -12,7 +12,7 @@ import (
 )
 
 func TestWorkspaceRunTasksCreate(t *testing.T) {
-	skipIfBeta(t)
+	skipIfFreeOnly(t)
 
 	client := testClient(t)
 	ctx := context.Background()
@@ -33,6 +33,10 @@ func TestWorkspaceRunTasksCreate(t *testing.T) {
 		})
 
 		require.NoError(t, err)
+		defer func() {
+			client.WorkspaceRunTasks.Delete(ctx, wkspaceTest.ID, wr.ID)
+		}()
+
 		assert.NotEmpty(t, wr.ID)
 		assert.Equal(t, wr.EnforcementLevel, Mandatory)
 
@@ -43,7 +47,7 @@ func TestWorkspaceRunTasksCreate(t *testing.T) {
 }
 
 func TestWorkspaceRunTasksList(t *testing.T) {
-	skipIfBeta(t)
+	skipIfFreeOnly(t)
 
 	client := testClient(t)
 	ctx := context.Background()
@@ -77,7 +81,7 @@ func TestWorkspaceRunTasksList(t *testing.T) {
 }
 
 func TestWorkspaceRunTasksRead(t *testing.T) {
-	skipIfBeta(t)
+	skipIfFreeOnly(t)
 
 	client := testClient(t)
 	ctx := context.Background()
@@ -112,7 +116,7 @@ func TestWorkspaceRunTasksRead(t *testing.T) {
 }
 
 func TestWorkspaceRunTasksUpdate(t *testing.T) {
-	skipIfBeta(t)
+	skipIfFreeOnly(t)
 
 	client := testClient(t)
 	ctx := context.Background()
@@ -143,7 +147,7 @@ func TestWorkspaceRunTasksUpdate(t *testing.T) {
 }
 
 func TestWorkspaceRunTasksDelete(t *testing.T) {
-	skipIfBeta(t)
+	skipIfFreeOnly(t)
 
 	client := testClient(t)
 	ctx := context.Background()
@@ -173,8 +177,7 @@ func TestWorkspaceRunTasksDelete(t *testing.T) {
 	})
 
 	t.Run("when the workspace does not exist", func(t *testing.T) {
-		wkspaceTestCleanup()
-		err := client.WorkspaceRunTasks.Delete(ctx, wkspaceTest.ID, wrTaskTest.ID)
+		err := client.WorkspaceRunTasks.Delete(ctx, "does-not-exist", wrTaskTest.ID)
 		assert.EqualError(t, err, ErrResourceNotFound.Error())
 	})
 }

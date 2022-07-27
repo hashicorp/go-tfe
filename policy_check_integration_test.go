@@ -68,6 +68,9 @@ func TestPolicyChecksList(t *testing.T) {
 			Include: []PolicyCheckIncludeOpt{PolicyCheckRun},
 		})
 		require.NoError(t, err)
+		require.NotEmpty(t, pcl.Items)
+		require.NotNil(t, pcl.Items[0])
+		require.NotNil(t, pcl.Items[0].Run)
 		assert.NotEmpty(t, pcl.Items[0].Run.Status)
 	})
 

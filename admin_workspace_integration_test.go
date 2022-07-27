@@ -91,9 +91,9 @@ func TestAdminWorkspaces_List(t *testing.T) {
 			Include: []AdminWorkspaceIncludeOpt{AdminWorkspaceOrg},
 		})
 
-		assert.NoError(t, err)
-		assert.NotEmpty(t, wl.Items)
-		assert.NotNil(t, wl.Items[0].Organization)
+		require.NoError(t, err)
+		require.NotEmpty(t, wl.Items)
+		require.NotNil(t, wl.Items[0].Organization)
 		assert.NotEmpty(t, wl.Items[0].Organization.Name)
 	})
 
@@ -106,16 +106,16 @@ func TestAdminWorkspaces_List(t *testing.T) {
 			Workspace:            wTest1,
 		}
 		run, err := client.Runs.Create(ctx, runOpts)
-		assert.NoError(t, err)
+		require.NoError(t, err)
 
 		wl, err := client.Admin.Workspaces.List(ctx, &AdminWorkspaceListOptions{
 			Include: []AdminWorkspaceIncludeOpt{AdminWorkspaceCurrentRun},
 		})
 
-		assert.NoError(t, err)
+		require.NoError(t, err)
 
-		assert.NotEmpty(t, wl.Items)
-		assert.NotNil(t, wl.Items[0].CurrentRun)
+		require.NotEmpty(t, wl.Items)
+		require.NotNil(t, wl.Items[0].CurrentRun)
 		assert.Equal(t, wl.Items[0].CurrentRun.ID, run.ID)
 	})
 }
@@ -149,8 +149,8 @@ func TestAdminWorkspaces_Read(t *testing.T) {
 		defer workspaceCleanup()
 
 		adminWorkspace, err := client.Admin.Workspaces.Read(ctx, workspace.ID)
-		assert.NoError(t, err)
-		assert.NotNilf(t, adminWorkspace, "Admin Workspace is not nil")
+		require.NoError(t, err)
+		require.NotNilf(t, adminWorkspace, "Admin Workspace is not nil")
 		assert.Equal(t, adminWorkspace.ID, workspace.ID)
 		assert.Equal(t, adminWorkspace.Name, workspace.Name)
 		assert.Equal(t, adminWorkspace.Locked, workspace.Locked)
@@ -183,12 +183,12 @@ func TestAdminWorkspaces_Delete(t *testing.T) {
 		workspace, _ := createWorkspace(t, client, org)
 
 		adminWorkspace, err := client.Admin.Workspaces.Read(ctx, workspace.ID)
-		assert.NoError(t, err)
-		assert.NotNilf(t, adminWorkspace, "Admin Workspace is not nil")
+		require.NoError(t, err)
+		require.NotNilf(t, adminWorkspace, "Admin Workspace is not nil")
 		assert.Equal(t, adminWorkspace.ID, workspace.ID)
 
 		err = client.Admin.Workspaces.Delete(ctx, adminWorkspace.ID)
-		assert.NoError(t, err)
+		require.NoError(t, err)
 
 		// Cannot find deleted workspace
 		_, err = client.Admin.Workspaces.Read(ctx, workspace.ID)

@@ -102,13 +102,13 @@ func (p *policySetVersions) Create(ctx context.Context, policySetID string) (*Po
 	}
 
 	u := fmt.Sprintf("policy-sets/%s/versions", url.QueryEscape(policySetID))
-	req, err := p.client.newRequest("POST", u, nil)
+	req, err := p.client.NewRequest("POST", u, nil)
 	if err != nil {
 		return nil, err
 	}
 
 	psv := &PolicySetVersion{}
-	err = p.client.do(ctx, req, psv)
+	err = req.Do(ctx, psv)
 	if err != nil {
 		return nil, err
 	}
@@ -123,13 +123,13 @@ func (p *policySetVersions) Read(ctx context.Context, policySetVersionID string)
 	}
 
 	u := fmt.Sprintf("policy-set-versions/%s", url.QueryEscape(policySetVersionID))
-	req, err := p.client.newRequest("GET", u, nil)
+	req, err := p.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, err
 	}
 
 	psv := &PolicySetVersion{}
-	err = p.client.do(ctx, req, psv)
+	err = req.Do(ctx, psv)
 	if err != nil {
 		return nil, err
 	}
@@ -151,10 +151,10 @@ func (p *policySetVersions) Upload(ctx context.Context, psv PolicySetVersion, pa
 		return err
 	}
 
-	req, err := p.client.newRequest("PUT", uploadURL, body)
+	req, err := p.client.NewRequest("PUT", uploadURL, body)
 	if err != nil {
 		return err
 	}
 
-	return p.client.do(ctx, req, nil)
+	return req.Do(ctx, nil)
 }

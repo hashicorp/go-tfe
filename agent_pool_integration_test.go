@@ -44,7 +44,9 @@ func TestAgentPoolsList(t *testing.T) {
 			Include: []AgentPoolIncludeOpt{AgentPoolWorkspaces},
 		})
 		require.NoError(t, err)
-		assert.NotEmpty(t, k.Items[0].Workspaces[0])
+		require.NotEmpty(t, k.Items)
+		require.NotEmpty(t, k.Items[0].Workspaces)
+		assert.NotNil(t, k.Items[0].Workspaces[0])
 	})
 
 	t.Run("with list options", func(t *testing.T) {
@@ -67,6 +69,21 @@ func TestAgentPoolsList(t *testing.T) {
 		pools, err := client.AgentPools.List(ctx, badIdentifier, nil)
 		assert.Nil(t, pools)
 		assert.EqualError(t, err, ErrInvalidOrg.Error())
+	})
+
+	t.Run("with query options", func(t *testing.T) {
+
+		pools, err := client.AgentPools.List(ctx, orgTest.Name, &AgentPoolListOptions{
+			Query: agentPool.Name,
+		})
+		require.NoError(t, err)
+		assert.Equal(t, len(pools.Items), 1)
+
+		pools, err = client.AgentPools.List(ctx, orgTest.Name, &AgentPoolListOptions{
+			Query: agentPool.Name + "not_going_to_match",
+		})
+		require.NoError(t, err)
+		assert.Empty(t, pools.Items)
 	})
 }
 
@@ -199,6 +216,41 @@ func TestAgentPoolsUpdate(t *testing.T) {
 		w, err := client.AgentPools.Update(ctx, badIdentifier, AgentPoolUpdateOptions{})
 		assert.Nil(t, w)
 		assert.EqualError(t, err, ErrInvalidAgentPoolID.Error())
+	})
+
+	t.Run("when updating allowed-workspaces", func(t *testing.T) {
+		kBefore, kTestCleanup := createAgentPool(t, client, orgTest)
+		defer kTestCleanup()
+
+		workspaceTest, workspaceTestCleanup := createWorkspace(t, client, orgTest)
+		defer workspaceTestCleanup()
+
+		kAfter, err := client.AgentPools.Update(ctx, kBefore.ID, AgentPoolUpdateOptions{
+			Name: String(kBefore.Name),
+			AllowedWorkspaces: []*Workspace{
+				workspaceTest,
+			},
+		})
+		require.NoError(t, err)
+
+		assert.NotEqual(t, kBefore.AllowedWorkspaces, kAfter.AllowedWorkspaces)
+		assert.Equal(t, 1, len(kAfter.AllowedWorkspaces))
+		assert.Equal(t, workspaceTest.ID, kAfter.AllowedWorkspaces[0].ID)
+	})
+
+	t.Run("when updating organization scope", func(t *testing.T) {
+		kBefore, kTestCleanup := createAgentPool(t, client, orgTest)
+		defer kTestCleanup()
+
+		organizationScoped := false
+		kAfter, err := client.AgentPools.Update(ctx, kBefore.ID, AgentPoolUpdateOptions{
+			Name:               String(kBefore.Name),
+			OrganizationScoped: &organizationScoped,
+		})
+		require.NoError(t, err)
+
+		assert.NotEqual(t, kBefore.OrganizationScoped, kAfter.OrganizationScoped)
+		assert.Equal(t, organizationScoped, kAfter.OrganizationScoped)
 	})
 }
 

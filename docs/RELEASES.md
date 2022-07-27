@@ -1,6 +1,16 @@
 ## Release Process
 
-Documentation updates and test fixes that only touch test files don't require a release or tag. You can just merge these changes into `main` once they have been approved.
+go-tfe can be released as often as required. Documentation updates and test fixes that only touch test files don't require a release or tag. You can just merge these changes into `main` once they have been approved.
+
+### Preparing a release
+
+Start by comparing the main branch with the last release in order to fully understand which changes are being released. Compare the last release tag with main ([example](https://github.com/hashicorp/go-tfe/compare/v1.5.0...main)). For each meaningful change, double check the following:
+
+1. Is the change added to CHANGELOG.md?
+2. Does the public package API follow all endpoint conventions, such as naming, pointer usage, and options availability? Once these are released, they are permanent in the current major release version.
+3. Are new features generally available in the Terraform Cloud API? Or is there another considered reason to release them?
+
+Ensure CHANGELOG.md is up to date with the next release version before proceeding.
 
 ### Creating a release
 

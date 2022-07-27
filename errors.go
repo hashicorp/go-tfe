@@ -26,9 +26,17 @@ var (
 
 	ErrUnsupportedPrivateKey = errors.New("private Key can only be present with Azure DevOps Server service provider")
 
+	ErrUnsupportedBothTagsRegexAndFileTriggersEnabled = errors.New(`"TagsRegex" cannot be populated when "FileTriggersEnabled" is true`)
+
+	ErrUnsupportedBothTagsRegexAndTriggerPatterns = errors.New(`"TagsRegex" and "TriggerPrefixes" cannot be populated at the same time`)
+
+	ErrUnsupportedBothTagsRegexAndTriggerPrefixes = errors.New(`"TagsRegex" and "TriggerPatterns" cannot be populated at the same time`)
+
 	ErrUnsupportedRunTriggerType = errors.New(`"RunTriggerType" must be "inbound" when requesting "include" query params`)
 
 	ErrUnsupportedBothTriggerPatternsAndPrefixes = errors.New(`"TriggerPatterns" and "TriggerPrefixes" cannot be populated at the same time`)
+
+	ErrUnsupportedBothNamespaceAndPrivateRegistryName = errors.New(`"Namespace" cannot be populated when "RegistryName" is "private"`)
 )
 
 // Library errors that usually indicate a bug in the implementation of go-tfe
@@ -168,7 +176,9 @@ var (
 
 	ErrInvalidArch = errors.New("invalid value for arch")
 
-	ErrInvalidRegistryName = errors.New("invalid value for registry-name")
+	ErrInvalidAgentID = errors.New("invalid value for Agent ID")
+
+	ErrInvalidRegistryName = errors.New(`invalid value for registry-name. It must be either "private" or "public"`)
 )
 
 // Missing values for required field/option
@@ -294,4 +304,6 @@ var (
 	ErrRequiredFilename = errors.New("filename is required")
 
 	ErrInvalidAsciiArmor = errors.New("ascii armor is invalid")
+
+	ErrRequiredNamespace = errors.New("namespace is required for public registry")
 )

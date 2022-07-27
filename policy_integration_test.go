@@ -372,17 +372,17 @@ func TestPoliciesUpload(t *testing.T) {
 
 	t.Run("with valid options", func(t *testing.T) {
 		err := client.Policies.Upload(ctx, pTest.ID, []byte(`main = rule { true }`))
-		assert.NoError(t, err)
+		require.NoError(t, err)
 	})
 
 	t.Run("with empty content", func(t *testing.T) {
 		err := client.Policies.Upload(ctx, pTest.ID, []byte{})
-		assert.NoError(t, err)
+		require.NoError(t, err)
 	})
 
 	t.Run("without any content", func(t *testing.T) {
 		err := client.Policies.Upload(ctx, pTest.ID, nil)
-		assert.NoError(t, err)
+		require.NoError(t, err)
 	})
 
 	t.Run("without a valid policy ID", func(t *testing.T) {
@@ -413,7 +413,7 @@ func TestPoliciesDownload(t *testing.T) {
 		require.NoError(t, err)
 
 		content, err := client.Policies.Download(ctx, pTest.ID)
-		assert.NoError(t, err)
+		require.NoError(t, err)
 		assert.Equal(t, testContent, content)
 	})
 
