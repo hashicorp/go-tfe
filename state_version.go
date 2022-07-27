@@ -55,15 +55,15 @@ type StateVersionList struct {
 
 // StateVersion represents a Terraform Enterprise state version.
 type StateVersion struct {
-	ID                 string    `jsonapi:"primary,state-versions"`
-	CreatedAt          time.Time `jsonapi:"attr,created-at,iso8601"`
-	DownloadURL        string    `jsonapi:"attr,hosted-state-download-url"`
-	Serial             int64     `jsonapi:"attr,serial"`
-	VCSCommitSHA       string    `jsonapi:"attr,vcs-commit-sha"`
-	VCSCommitURL       string    `jsonapi:"attr,vcs-commit-url"`
-	ResourcesProcessed bool      `jsonapi:"attr,resources-processed"`
-	StateVersion       int       `jsonapi:"attr,state-version"`
-	TerraformVersion   string    `jsonapi:"attr,terraform-version"`
+	ID           string    `jsonapi:"primary,state-versions"`
+	CreatedAt    time.Time `jsonapi:"attr,created-at,iso8601"`
+	DownloadURL  string    `jsonapi:"attr,hosted-state-download-url"`
+	Serial       int64     `jsonapi:"attr,serial"`
+	VCSCommitSHA string    `jsonapi:"attr,vcs-commit-sha"`
+	VCSCommitURL string    `jsonapi:"attr,vcs-commit-url"`
+	// ResourcesProcessed bool      `jsonapi:"attr,resources-processed"`
+	// StateVersion       int       `jsonapi:"attr,state-version"`
+	// TerraformVersion   string    `jsonapi:"attr,terraform-version"`
 	// Modules            *StateVersionModules     `jsonapi:"attr,modules"`
 	// Providers          *StateVersionProviders   `jsonapi:"attr,providers"`
 	// Resources []*StateVersionResources `jsonapi:"attr,resources"`
