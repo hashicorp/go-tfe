@@ -154,8 +154,8 @@ type StateVersionCreateOptions struct {
 	JSONStateOutputs *string `jsonapi:"attr,json-state-outputs,omitempty"`
 }
 
-type StateVersionModules map[string]interface{}
-type StateVersionProviders map[string]interface{}
+type StateVersionModules map[string]map[string]interface{}
+type StateVersionProviders map[string]map[string]interface{}
 
 type StateVersionNullResource int
 type StateVersionTerraformRemoteState int
