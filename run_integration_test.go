@@ -201,7 +201,35 @@ func TestRunsCreate(t *testing.T) {
 
 		r, err := client.Runs.Create(ctx, options)
 		require.NoError(t, err)
+		require.NotNil(t, r.ConfigurationVersion)
 		assert.Equal(t, cvTest.ID, r.ConfigurationVersion.ID)
+	})
+
+	t.Run("with allow empty apply", func(t *testing.T) {
+		options := RunCreateOptions{
+			Workspace:       wTest,
+			AllowEmptyApply: Bool(true),
+		}
+
+		r, err := client.Runs.Create(ctx, options)
+		require.NoError(t, err)
+		assert.Equal(t, true, r.AllowEmptyApply)
+	})
+
+	t.Run("with terraform version and plan only", func(t *testing.T) {
+		options := RunCreateOptions{
+			Workspace:        wTest,
+			TerraformVersion: String("1.0.0"),
+		}
+		_, err := client.Runs.Create(ctx, options)
+		require.ErrorIs(t, err, ErrTerraformVersionValidForPlanOnly)
+
+		options.PlanOnly = Bool(true)
+
+		r, err := client.Runs.Create(ctx, options)
+		require.NoError(t, err)
+		assert.Equal(t, true, r.PlanOnly)
+		assert.Equal(t, "1.0.0", r.TerraformVersion)
 	})
 
 	t.Run("refresh defaults to true if not set as a create option", func(t *testing.T) {

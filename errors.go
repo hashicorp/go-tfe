@@ -306,4 +306,9 @@ var (
 	ErrInvalidAsciiArmor = errors.New("ascii armor is invalid")
 
 	ErrRequiredNamespace = errors.New("namespace is required for public registry")
+<<<<<<< HEAD
+=======
+
+	ErrTerraformVersionValidForPlanOnly = errors.New("setting terraform-version is only valid when plan-only is set to true")
+>>>>>>> main
 )

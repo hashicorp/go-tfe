@@ -106,6 +106,7 @@ type Run struct {
 	ID                     string               `jsonapi:"primary,runs"`
 	Actions                *RunActions          `jsonapi:"attr,actions"`
 	AutoApply              bool                 `jsonapi:"attr,auto-apply,omitempty"`
+	AllowEmptyApply        bool                 `jsonapi:"attr,allow-empty-apply"`
 	CreatedAt              time.Time            `jsonapi:"attr,created-at,iso8601"`
 	ForceCancelAvailableAt time.Time            `jsonapi:"attr,force-cancel-available-at,iso8601"`
 	HasChanges             bool                 `jsonapi:"attr,has-changes"`
@@ -113,6 +114,7 @@ type Run struct {
 	Message                string               `jsonapi:"attr,message"`
 	Permissions            *RunPermissions      `jsonapi:"attr,permissions"`
 	PositionInQueue        int                  `jsonapi:"attr,position-in-queue"`
+	PlanOnly               bool                 `jsonapi:"attr,plan-only"`
 	Refresh                bool                 `jsonapi:"attr,refresh"`
 	RefreshOnly            bool                 `jsonapi:"attr,refresh-only"`
 	ReplaceAddrs           []string             `jsonapi:"attr,replace-addrs,omitempty"`
@@ -120,6 +122,7 @@ type Run struct {
 	Status                 RunStatus            `jsonapi:"attr,status"`
 	StatusTimestamps       *RunStatusTimestamps `jsonapi:"attr,status-timestamps"`
 	TargetAddrs            []string             `jsonapi:"attr,target-addrs,omitempty"`
+	TerraformVersion       string               `jsonapi:"attr,terraform-version"`
 	Variables              []*RunVariable       `jsonapi:"attr,variables"`
 
 	// Relations
@@ -232,6 +235,18 @@ type RunCreateOptions struct {
 	// It is not a user-defined value and does not need to be set.
 	// https://jsonapi.org/format/#crud-creating
 	Type string `jsonapi:"primary,runs"`
+
+	// AllowEmptyApply specifies whether Terraform can apply the run even when the plan contains no changes.
+	// Often used to upgrade state after upgrading a workspace to a new terraform version.
+	AllowEmptyApply *bool `jsonapi:"attr,allow-empty-apply,omitempty"`
+
+	// TerraformVersion specifies the Terraform version to use in this run.
+	// Only valid for plan-only runs; must be a valid Terraform version available to the organization.
+	TerraformVersion *string `jsonapi:"attr,terraform-version,omitempty"`
+
+	// PlanOnly specifies if this is a speculative, plan-only run that Terraform cannot apply.
+	// Often used in conjunction with terraform-version in order to test whether an upgrade would succeed.
+	PlanOnly *bool `jsonapi:"attr,plan-only,omitempty"`
 
 	// Specifies if this plan is a destroy plan, which will destroy all
 	// provisioned resources.
@@ -452,6 +467,11 @@ func (o RunCreateOptions) valid() error {
 	if o.Workspace == nil {
 		return ErrRequiredWorkspace
 	}
+
+	if validString(o.TerraformVersion) && (o.PlanOnly == nil || !*o.PlanOnly) {
+		return ErrTerraformVersionValidForPlanOnly
+	}
+
 	return nil
 }
 
