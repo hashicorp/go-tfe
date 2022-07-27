@@ -55,18 +55,18 @@ type StateVersionList struct {
 
 // StateVersion represents a Terraform Enterprise state version.
 type StateVersion struct {
-	ID                 string                   `jsonapi:"primary,state-versions"`
-	CreatedAt          time.Time                `jsonapi:"attr,created-at,iso8601"`
-	DownloadURL        string                   `jsonapi:"attr,hosted-state-download-url"`
-	Serial             int64                    `jsonapi:"attr,serial"`
-	VCSCommitSHA       string                   `jsonapi:"attr,vcs-commit-sha"`
-	VCSCommitURL       string                   `jsonapi:"attr,vcs-commit-url"`
-	ResourcesProcessed bool                     `jsonapi:"attr,resources-processed"`
-	StateVersion       int                      `jsonapi:"attr,state-version"`
-	TerraformVersion   string                   `jsonapi:"attr,terraform-version"`
-	Modules            *StateVersionModules     `jsonapi:"attr,modules"`
-	Providers          *StateVersionProviders   `jsonapi:"attr,providers"`
-	Resources          []*StateVersionResources `jsonapi:"attr,resources"`
+	ID                 string    `jsonapi:"primary,state-versions"`
+	CreatedAt          time.Time `jsonapi:"attr,created-at,iso8601"`
+	DownloadURL        string    `jsonapi:"attr,hosted-state-download-url"`
+	Serial             int64     `jsonapi:"attr,serial"`
+	VCSCommitSHA       string    `jsonapi:"attr,vcs-commit-sha"`
+	VCSCommitURL       string    `jsonapi:"attr,vcs-commit-url"`
+	ResourcesProcessed bool      `jsonapi:"attr,resources-processed"`
+	StateVersion       int       `jsonapi:"attr,state-version"`
+	TerraformVersion   string    `jsonapi:"attr,terraform-version"`
+	// Modules            *StateVersionModules     `jsonapi:"attr,modules"`
+	// Providers          *StateVersionProviders   `jsonapi:"attr,providers"`
+	// Resources []*StateVersionResources `jsonapi:"attr,resources"`
 
 	// Relations
 	Run     *Run                  `jsonapi:"relation,run"`
@@ -154,24 +154,29 @@ type StateVersionCreateOptions struct {
 	JSONStateOutputs *string `jsonapi:"attr,json-state-outputs,omitempty"`
 }
 
-type StateVersionModules struct {
-	Root *StateVersionModuleRoot `jsonapi:"attr,root"`
-}
+// type StateVersionModules struct {
+// 	Root *StateVersionModuleRoot `jsonapi:"attr,root"`
+// }
 
-type StateVersionModuleRoot struct {
-	NullResource         int `jsonapi:"attr,null-resource"`
-	TerraformRemoteState int `jsonapi:"attr,data.terraform-remote-state"`
-}
+// type StateVersionModuleRoot struct {
+// 	NullResource         int `jsonapi:"attr,null-resource"`
+// 	TerraformRemoteState int `jsonapi:"attr,data.terraform-remote-state"`
+// }
 
-type StateVersionProviders map[string]struct{}
+// type StateVersionProviders map[string]ProviderData
 
-type StateVersionResources struct {
-	Name     string `jsonapi:"attr,name"`
-	Count    string `jsonapi:"attr,count"`
-	Type     int    `jsonapi:"attr,type"`
-	Module   string `jsonapi:"attr,module"`
-	Provider string `jsonapi:"attr,provider"`
-}
+// type ProviderData struct {
+// 	NullResource         int `json:"null-resource"`
+// 	TerraformRemoteState int `json:"data.terraform-remote-state"`
+// }
+
+// type StateVersionResources struct {
+// 	Name     string `jsonapi:"attr,name"`
+// 	Count    string `jsonapi:"attr,count"`
+// 	Type     int    `jsonapi:"attr,type"`
+// 	Module   string `jsonapi:"attr,module"`
+// 	Provider string `jsonapi:"attr,provider"`
+// }
 
 // List all the state versions for a given workspace.
 func (s *stateVersions) List(ctx context.Context, options *StateVersionListOptions) (*StateVersionList, error) {
