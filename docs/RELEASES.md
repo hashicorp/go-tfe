@@ -38,4 +38,3 @@ Ensure CHANGELOG.md is up to date with the next release version before proceedin
 
 6. Don't attach any binaries. The zip and tar.gz assets are automatically created and attached after you publish your release.
 7. Click "Publish release" to save and publish your release.
-
