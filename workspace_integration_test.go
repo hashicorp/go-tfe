@@ -432,6 +432,50 @@ func TestWorkspacesCreate(t *testing.T) {
 		require.NoError(t, err)
 		assert.Equal(t, options.TriggerPatterns, w.TriggerPatterns)
 	})
+
+	t.Run("when both speculative-enabled and pull-request-outputs-enabled are true (behind a feature flag)", func(t *testing.T) {
+		skipIfBeta(t)
+		options := WorkspaceCreateOptions{
+			Name:                      String("foobar"),
+			SpeculativeEnabled:        Bool(true),
+			PullRequestOutputsEnabled: Bool(true),
+		}
+		w, err := client.Workspaces.Create(ctx, orgTest.Name, options)
+		require.NoError(t, err)
+
+		// Get a refreshed view from the API.
+		refreshed, err := client.Workspaces.Read(ctx, orgTest.Name, *options.Name)
+		require.NoError(t, err)
+
+		for _, item := range []*Workspace{
+			w,
+			refreshed,
+		} {
+			assert.Equal(t, options.SpeculativeEnabled, item.SpeculativeEnabled)
+			assert.Equal(t, options.PullRequestOutputsEnabled, item.PullRequestOutputsEnabled)
+		}
+	})
+
+	t.Run("when speculative-enabled is falsy and pull-request-outputs-enabled is true", func(t *testing.T) {
+		optionsList := []WorkspaceCreateOptions{
+			WorkspaceCreateOptions{
+				Name:                      String("foobar"),
+				PullRequestOutputsEnabled: Bool(true),
+			},
+			WorkspaceCreateOptions{
+				Name:                      String("foobar"),
+				SpeculativeEnabled:        Bool(false),
+				PullRequestOutputsEnabled: Bool(true),
+			},
+		}
+
+		for _, options := range optionsList {
+			w, err := client.Workspaces.Create(ctx, "bar", options)
+
+			assert.Nil(t, w)
+			assert.EqualError(t, err, ErrUnsupportedPullRequestOutputsEnabled.Error())
+		}
+	})
 }
 
 func TestWorkspacesRead(t *testing.T) {
@@ -913,6 +957,50 @@ func TestWorkspacesUpdate(t *testing.T) {
 
 		assert.Nil(t, w)
 		assert.EqualError(t, err, ErrUnsupportedBothTagsRegexAndTriggerPatterns.Error())
+	})
+
+	t.Run("when both speculative-enabled and pull-request-outputs-enabled are true (behind a feature flag)", func(t *testing.T) {
+		skipIfBeta(t)
+		options := WorkspaceUpdateOptions{
+			Name:                      String("foobar"),
+			SpeculativeEnabled:        Bool(true),
+			PullRequestOutputsEnabled: Bool(true),
+		}
+		w, err := client.Workspaces.Update(ctx, orgTest.Name, wTest.Name, options)
+		require.NoError(t, err)
+
+		// Get a refreshed view from the API.
+		refreshed, err := client.Workspaces.Read(ctx, orgTest.Name, *options.Name)
+		require.NoError(t, err)
+
+		for _, item := range []*Workspace{
+			w,
+			refreshed,
+		} {
+			assert.Equal(t, options.SpeculativeEnabled, item.SpeculativeEnabled)
+			assert.Equal(t, options.PullRequestOutputsEnabled, item.PullRequestOutputsEnabled)
+		}
+	})
+
+	t.Run("when speculative-enabled is falsy and pull-request-outputs-enabled is true", func(t *testing.T) {
+		optionsList := []WorkspaceUpdateOptions{
+			WorkspaceUpdateOptions{
+				Name:                      String("foobar"),
+				PullRequestOutputsEnabled: Bool(true),
+			},
+			WorkspaceUpdateOptions{
+				Name:                      String("foobar"),
+				SpeculativeEnabled:        Bool(false),
+				PullRequestOutputsEnabled: Bool(true),
+			},
+		}
+
+		for _, options := range optionsList {
+			w, err := client.Workspaces.Update(ctx, orgTest.Name, wTest.Name, options)
+
+			assert.Nil(t, w)
+			assert.EqualError(t, err, ErrUnsupportedPullRequestOutputsEnabled.Error())
+		}
 	})
 }
 

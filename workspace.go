@@ -124,6 +124,7 @@ type Workspace struct {
 	Name                       string                `jsonapi:"attr,name"`
 	Operations                 bool                  `jsonapi:"attr,operations"`
 	Permissions                *WorkspacePermissions `jsonapi:"attr,permissions"`
+	PullRequestOutputsEnabled  bool                  `jsonapi:"attr,pull-request-outputs-enabled"`
 	QueueAllRuns               bool                  `jsonapi:"attr,queue-all-runs"`
 	SpeculativeEnabled         bool                  `jsonapi:"attr,speculative-enabled"`
 	SourceName                 string                `jsonapi:"attr,source-name"`
@@ -298,6 +299,9 @@ type WorkspaceCreateOptions struct {
 	// Use ExecutionMode instead.
 	Operations *bool `jsonapi:"attr,operations,omitempty"`
 
+	// Optional: Whether the workspace shows Terraform output in pull request comments.
+	PullRequestOutputsEnabled *bool `jsonapi:"attr,pull-request-outputs-enabled,omitempty"`
+
 	// Whether to queue all runs. Unless this is set to true, runs triggered by
 	// a webhook will not be queued until at least one run is manually queued.
 	QueueAllRuns *bool `jsonapi:"attr,queue-all-runs,omitempty"`
@@ -407,6 +411,9 @@ type WorkspaceUpdateOptions struct {
 	// DEPRECATED. Whether the workspace will use remote or local execution mode.
 	// Use ExecutionMode instead.
 	Operations *bool `jsonapi:"attr,operations,omitempty"`
+
+	// Optional: Whether the workspace shows Terraform output in pull request comments.
+	PullRequestOutputsEnabled *bool `jsonapi:"attr,pull-request-outputs-enabled,omitempty"`
 
 	// Optional: Whether to queue all runs. Unless this is set to true, runs triggered by
 	// a webhook will not be queued until at least one run is manually queued.
@@ -1084,6 +1091,10 @@ func (o WorkspaceCreateOptions) valid() error {
 		o.FileTriggersEnabled != nil && *o.FileTriggersEnabled {
 		return ErrUnsupportedBothTagsRegexAndFileTriggersEnabled
 	}
+	if o.PullRequestOutputsEnabled != nil && *o.PullRequestOutputsEnabled &&
+		(o.SpeculativeEnabled == nil || !*o.SpeculativeEnabled) {
+		return ErrUnsupportedPullRequestOutputsEnabled
+	}
 
 	return nil
 }
@@ -1114,6 +1125,10 @@ func (o WorkspaceUpdateOptions) valid() error {
 	if o.VCSRepo != nil && o.VCSRepo.TagsRegex != nil &&
 		o.FileTriggersEnabled != nil && *o.FileTriggersEnabled {
 		return ErrUnsupportedBothTagsRegexAndFileTriggersEnabled
+	}
+	if o.PullRequestOutputsEnabled != nil && *o.PullRequestOutputsEnabled &&
+		(o.SpeculativeEnabled == nil || !*o.SpeculativeEnabled) {
+		return ErrUnsupportedPullRequestOutputsEnabled
 	}
 
 	return nil
