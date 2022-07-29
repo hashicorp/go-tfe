@@ -434,9 +434,8 @@ func TestWorkspacesCreate(t *testing.T) {
 	})
 
 	t.Run("when both speculative-enabled and pull-request-outputs-enabled are true (behind a feature flag)", func(t *testing.T) {
-		skipIfBeta(t)
 		options := WorkspaceCreateOptions{
-			Name:                      String("foobar"),
+			Name:                      String("tst-foobar"),
 			SpeculativeEnabled:        Bool(true),
 			PullRequestOutputsEnabled: Bool(true),
 		}
@@ -459,11 +458,11 @@ func TestWorkspacesCreate(t *testing.T) {
 	t.Run("when speculative-enabled is falsy and pull-request-outputs-enabled is true", func(t *testing.T) {
 		optionsList := []WorkspaceCreateOptions{
 			WorkspaceCreateOptions{
-				Name:                      String("foobar"),
+				Name:                      String("tst-foobar"),
 				PullRequestOutputsEnabled: Bool(true),
 			},
 			WorkspaceCreateOptions{
-				Name:                      String("foobar"),
+				Name:                      String("tst-foobar"),
 				SpeculativeEnabled:        Bool(false),
 				PullRequestOutputsEnabled: Bool(true),
 			},
@@ -960,9 +959,8 @@ func TestWorkspacesUpdate(t *testing.T) {
 	})
 
 	t.Run("when both speculative-enabled and pull-request-outputs-enabled are true (behind a feature flag)", func(t *testing.T) {
-		skipIfBeta(t)
 		options := WorkspaceUpdateOptions{
-			Name:                      String("foobar"),
+			Name:                      String("tst-foobar"),
 			SpeculativeEnabled:        Bool(true),
 			PullRequestOutputsEnabled: Bool(true),
 		}
@@ -985,11 +983,11 @@ func TestWorkspacesUpdate(t *testing.T) {
 	t.Run("when speculative-enabled is falsy and pull-request-outputs-enabled is true", func(t *testing.T) {
 		optionsList := []WorkspaceUpdateOptions{
 			WorkspaceUpdateOptions{
-				Name:                      String("foobar"),
+				Name:                      String("tst-foobar"),
 				PullRequestOutputsEnabled: Bool(true),
 			},
 			WorkspaceUpdateOptions{
-				Name:                      String("foobar"),
+				Name:                      String("tst-foobar"),
 				SpeculativeEnabled:        Bool(false),
 				PullRequestOutputsEnabled: Bool(true),
 			},
