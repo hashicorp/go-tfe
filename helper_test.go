@@ -442,9 +442,9 @@ func createOAuthClient(t *testing.T, client *Client, org *Organization) (*OAuthC
 		org, orgCleanup = createOrganization(t, client)
 	}
 
-	githubToken := os.Getenv("GITHUB_TOKEN")
+	githubToken := os.Getenv("OAUTH_CLIENT_GITHUB_TOKEN")
 	if githubToken == "" {
-		t.Skip("Export a valid GITHUB_TOKEN before running this test!")
+		t.Skip("Export a valid OAUTH_CLIENT_GITHUB_TOKEN before running this test!")
 	}
 
 	options := OAuthClientCreateOptions{

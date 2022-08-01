@@ -15,5 +15,5 @@ echo ""
 
 read -p "Enter the namespace you want to use in envchain [go-tfe]: " namespace
 namespace=${namespace:-go-tfe}
-envchain --set ${namespace} TFE_ADDRESS TFE_TOKEN GITHUB_TOKEN GITHUB_POLICY_SET_IDENTIFIER
+envchain --set ${namespace} TFE_ADDRESS TFE_TOKEN OAUTH_CLIENT_GITHUB_TOKEN GITHUB_POLICY_SET_IDENTIFIER
 echo "Done! To see the values: envchain ${namespace} env"
