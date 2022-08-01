@@ -10,19 +10,13 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
-      - name: Restore go build cache #This action allows caching dependencies and build outputs to improve workflow execution time
-        uses: actions/cache@v2
+
+      - name: Set up Go
+        uses: actions/setup-go@v3
         with:
-          path: ~/.cache/go-build
-          key: ${{ runner.os }}-go-${{ hashFiles('**/go.mod') }}
-      - name: Set local Go version
-        run: |
-          VERSION=`cat .go-version| awk '{printf$1}'`
-          echo "go_version=$VERSION" >> $GITHUB_ENV
-      - name: Setup Go Environment #https://github.com/marketplace/actions/setup-go-environment
-        uses: actions/setup-go@v2
-        with:
-          go-version: "${{ env.go_version }}"
+          go-version-file: go.mod
+          cache: true
+
       - name: Install mockgen
         run: |
           set -eux -o pipefail
@@ -33,12 +27,16 @@ jobs:
           sudo chmod +x /usr/local/mockgen
           rm -f $MOCKGEN_ZIP
           echo /usr/local/ >> $GITHUB_PATH
+
       - name: Get dependencies
         run: go mod download
+
       - name: Generate mocks
         run:  ./generate_mocks.sh
+
       - name: verify go.mod and go.sum are consistent
         run : go mod tidy
+
       - name: Ensure nothing changed
         run: git diff --exit-code
   tests:
@@ -48,18 +46,27 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
-      - name: Setup Go environment
+
+     - name: Set up Go
         uses: actions/setup-go@v3
         with:
           go-version-file: go.mod
           cache: true
+
+      - name: Sync dependencies
+        run: |
+          go mod download
+          go mod tidy
+
       - name: Install gotestsum
         run: go install gotest.tools/gotestsum@latest
+
       - name: Fetch Outputs
         env:
           TFE_TOKEN: "${{ secrets.TF_WORKFLOW_TFLOCAL_CLOUD_TFC_TOKEN }}"
         run: |
           go run .github/scripts/fetch_outputs/main.go hashicorp-v2 tflocal-go-tfe
+
       - name: Run Tests
         env:
           TFE_TOKEN: "${{ env.TFE_TOKEN }}"
