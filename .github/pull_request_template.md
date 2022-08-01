@@ -3,7 +3,7 @@ Thank you for contributing to hashicorp/go-tfe! Please read docs/CONTRIBUTING.md
 
 Here's what to expect after the pull request is opened:
 
-The test suite contains many acceptance tests that are run against a test version of Terraform Cloud, and additional testing is done against Terraform Enterprise. You can read more about running the tests against your own Terraform Enterprise environment in TESTS.md. Our CI system (CircleCI) will not test your fork unless you are an authorized employee, so a HashiCorp maintainer will initiate the tests for you and report any missing tests or simple problems. In order to speed up this process, it's not uncommon for your commits to be incorporated into another PR that we can commit test changes to.
+The test suite contains many acceptance tests that are run against a test version of Terraform Cloud, and additional testing is done against Terraform Enterprise. You can read more about running the tests against your own Terraform Enterprise environment in TESTS.md. Our CI system (Github Actions) will not test your fork until a one-time approval takes place.
 
 Your change, depending on its impact, may be released in the following ways:
 
