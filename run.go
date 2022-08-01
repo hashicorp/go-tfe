@@ -51,8 +51,8 @@ type RunStatus string
 // List all available run statuses.
 const (
 	RunApplied            RunStatus = "applied"
-	RunApplyQueued        RunStatus = "apply_queued"
 	RunApplying           RunStatus = "applying"
+	RunApplyQueued        RunStatus = "apply_queued"
 	RunCanceled           RunStatus = "canceled"
 	RunConfirmed          RunStatus = "confirmed"
 	RunCostEstimated      RunStatus = "cost_estimated"
@@ -60,17 +60,21 @@ const (
 	RunDiscarded          RunStatus = "discarded"
 	RunErrored            RunStatus = "errored"
 	RunFetching           RunStatus = "fetching"
+	RunFetchingCompleted  RunStatus = "fetching_completed"
 	RunPending            RunStatus = "pending"
-	RunPlanQueued         RunStatus = "plan_queued"
 	RunPlanned            RunStatus = "planned"
 	RunPlannedAndFinished RunStatus = "planned_and_finished"
 	RunPlanning           RunStatus = "planning"
+	RunPlanQueued         RunStatus = "plan_queued"
 	RunPolicyChecked      RunStatus = "policy_checked"
 	RunPolicyChecking     RunStatus = "policy_checking"
 	RunPolicyOverride     RunStatus = "policy_override"
 	RunPolicySoftFailed   RunStatus = "policy_soft_failed"
-	RunPostPlanRunning    RunStatus = "post_plan_running"
 	RunPostPlanCompleted  RunStatus = "post_plan_completed"
+	RunPostPlanRunning    RunStatus = "post_plan_running"
+	RunPrePlanCompleted   RunStatus = "pre_plan_completed"
+	RunPrePlanRunning     RunStatus = "pre_plan_running"
+	RunQueuing            RunStatus = "queuing"
 )
 
 // RunSource represents a source type of a run.
@@ -157,8 +161,8 @@ type RunPermissions struct {
 // RunStatusTimestamps holds the timestamps for individual run statuses.
 type RunStatusTimestamps struct {
 	AppliedAt            time.Time `jsonapi:"attr,applied-at,rfc3339"`
-	ApplyQueuedAt        time.Time `jsonapi:"attr,apply-queued-at,rfc3339"`
 	ApplyingAt           time.Time `jsonapi:"attr,applying-at,rfc3339"`
+	ApplyQueuedAt        time.Time `jsonapi:"attr,apply-queued-at,rfc3339"`
 	CanceledAt           time.Time `jsonapi:"attr,canceled-at,rfc3339"`
 	ConfirmedAt          time.Time `jsonapi:"attr,confirmed-at,rfc3339"`
 	CostEstimatedAt      time.Time `jsonapi:"attr,cost-estimated-at,rfc3339"`
@@ -168,13 +172,18 @@ type RunStatusTimestamps struct {
 	FetchedAt            time.Time `jsonapi:"attr,fetched-at,rfc3339"`
 	FetchingAt           time.Time `jsonapi:"attr,fetching-at,rfc3339"`
 	ForceCanceledAt      time.Time `jsonapi:"attr,force-canceled-at,rfc3339"`
-	PlanQueueableAt      time.Time `jsonapi:"attr,plan-queueable-at,rfc3339"`
-	PlanQueuedAt         time.Time `jsonapi:"attr,plan-queued-at,rfc3339"`
 	PlannedAndFinishedAt time.Time `jsonapi:"attr,planned-and-finished-at,rfc3339"`
 	PlannedAt            time.Time `jsonapi:"attr,planned-at,rfc3339"`
 	PlanningAt           time.Time `jsonapi:"attr,planning-at,rfc3339"`
+	PlanQueueableAt      time.Time `jsonapi:"attr,plan-queueable-at,rfc3339"`
+	PlanQueuedAt         time.Time `jsonapi:"attr,plan-queued-at,rfc3339"`
 	PolicyCheckedAt      time.Time `jsonapi:"attr,policy-checked-at,rfc3339"`
 	PolicySoftFailedAt   time.Time `jsonapi:"attr,policy-soft-failed-at,rfc3339"`
+	PostPlanCompletedAt  time.Time `jsonapi:"attr,post-plan-completed-at,rfc3339"`
+	PostPlanRunningAt    time.Time `jsonapi:"attr,post-plan-running-at,rfc3339"`
+	PrePlanCompletedAt   time.Time `jsonapi:"attr,pre-plan-completed-at,rfc3339"`
+	PrePlanRunningAt     time.Time `jsonapi:"attr,pre-plan-running-at,rfc3339"`
+	QueuingAt            time.Time `jsonapi:"attr,queuing-at,rfc3339"`
 }
 
 // RunIncludeOpt represents the available options for include query params.
