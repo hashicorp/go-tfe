@@ -140,6 +140,26 @@ func TestRegistryModulesCreate(t *testing.T) {
 
 			assertRegistryModuleAttributes(t, rm)
 		})
+
+		t.Run("with no-code attribute", func(t *testing.T) {
+			options := RegistryModuleCreateOptions{
+				Name:         String("iam"),
+				Provider:     String("aws"),
+				NoCode:       true,
+				RegistryName: PublicRegistry,
+				Namespace:    "terraform-aws-modules",
+			}
+			rm, err := client.RegistryModules.Create(ctx, orgTest.Name, options)
+			require.NoError(t, err)
+			assert.NotEmpty(t, rm.ID)
+			assert.Equal(t, *options.Name, rm.Name)
+			assert.Equal(t, *options.Provider, rm.Provider)
+			assert.Equal(t, options.RegistryName, rm.RegistryName)
+			assert.Equal(t, options.Namespace, rm.Namespace)
+			assert.Equal(t, options.NoCode, rm.NoCode)
+
+			assertRegistryModuleAttributes(t, rm)
+		})
 	})
 
 	t.Run("with invalid options", func(t *testing.T) {
@@ -225,6 +245,57 @@ func TestRegistryModulesCreate(t *testing.T) {
 		assert.Nil(t, rm)
 		assert.EqualError(t, err, ErrInvalidOrg.Error())
 	})
+}
+
+func TestRegistryModuleUpdate(t *testing.T) {
+	client := testClient(t)
+	ctx := context.Background()
+
+	orgTest, orgTestCleanup := createOrganization(t, client)
+	defer orgTestCleanup()
+
+	{
+		options := RegistryModuleCreateOptions{
+			Name:         String("vpc"),
+			Provider:     String("aws"),
+			RegistryName: PublicRegistry,
+			Namespace:    "terraform-aws-modules",
+		}
+		rm, err := client.RegistryModules.Create(ctx, orgTest.Name, options)
+		require.NoError(t, err)
+		assert.NotEmpty(t, rm.ID)
+	}
+
+	t.Run("enable no-code", func(t *testing.T) {
+		options := RegistryModuleUpdateOptions{
+			NoCode: Bool(true),
+		}
+		rm, err := client.RegistryModules.Update(ctx, RegistryModuleID{
+			Organization: orgTest.Name,
+			Name:         "vpc",
+			Provider:     "aws",
+			Namespace:    "terraform-aws-modules",
+			RegistryName: PublicRegistry,
+		}, options)
+		require.NoError(t, err)
+		assert.True(t, rm.NoCode)
+	})
+
+	t.Run("disable no-code", func(t *testing.T) {
+		options := RegistryModuleUpdateOptions{
+			NoCode: Bool(false),
+		}
+		rm, err := client.RegistryModules.Update(ctx, RegistryModuleID{
+			Organization: orgTest.Name,
+			Name:         "vpc",
+			Provider:     "aws",
+			Namespace:    "terraform-aws-modules",
+			RegistryName: PublicRegistry,
+		}, options)
+		require.NoError(t, err)
+		assert.False(t, rm.NoCode)
+	})
+
 }
 
 func TestRegistryModulesCreateVersion(t *testing.T) {
