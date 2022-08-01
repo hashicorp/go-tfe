@@ -10,7 +10,7 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
-      - name: Restore go build cache #This action allows caching dependencies and build outputs to improve workflow execution time 
+      - name: Restore go build cache #This action allows caching dependencies and build outputs to improve workflow execution time
         uses: actions/cache@v2
         with:
           path: ~/.cache/go-build
@@ -18,7 +18,7 @@ jobs:
       - name: Set local Go version
         run: |
           VERSION=`cat .go-version| awk '{printf$1}'`
-          echo "go_version=$VERSION" >> $GITHUB_ENV      
+          echo "go_version=$VERSION" >> $GITHUB_ENV
       - name: Setup Go Environment #https://github.com/marketplace/actions/setup-go-environment
         uses: actions/setup-go@v2
         with:
@@ -41,3 +41,33 @@ jobs:
         run : go mod tidy
       - name: Ensure nothing changed
         run: git diff --exit-code
+  tests:
+    name: Integration Tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Setup Go environment
+        uses: actions/setup-go@v3
+        with:
+          go-version-file: go.mod
+          cache: true
+      - name: Install gotestsum
+        run: go install gotest.tools/gotestsum@latest
+      - name: Fetch Outputs
+        env:
+          TFE_TOKEN: "${{ secrets.TF_WORKFLOW_TFLOCAL_CLOUD_TFC_TOKEN }}"
+        run: |
+          go run .github/scripts/fetch_outputs/main.go hashicorp-v2 tflocal-go-tfe
+      - name: Run Tests
+        env:
+          TFE_TOKEN: "${{ env.TFE_TOKEN }}"
+          TFE_ADDRESS: "${{ env.TFE_ADDRESS }}"
+          TFC_RUN_TASK_URL: "https://httpstat.us/200"
+          GO111MODULE: "on"
+        run: |
+          gotestsum --format short-verbose -- -timeout=40m -tags=integration
+
+
+
