@@ -44,6 +44,9 @@ type RegistryModules interface {
 	// requires a path to the configuration files on disk, which will be packaged by
 	// hashicorp/go-slug before being uploaded.
 	Upload(ctx context.Context, rmv RegistryModuleVersion, path string) error
+
+	// Update a registry module
+	Update(ctx context.Context, moduleID RegistryModuleID, options RegistryModuleUpdateOptions) (*RegistryModule, error)
 }
 
 // registryModules implements RegistryModules.
@@ -104,6 +107,7 @@ type RegistryModule struct {
 	Provider        string                          `jsonapi:"attr,provider"`
 	RegistryName    RegistryName                    `jsonapi:"attr,registry-name"`
 	Namespace       string                          `jsonapi:"attr,namespace"`
+	NoCode          bool                            `jsonapi:"attr,no-code"`
 	Permissions     *RegistryModulePermissions      `jsonapi:"attr,permissions"`
 	Status          RegistryModuleStatus            `jsonapi:"attr,status"`
 	VCSRepo         *VCSRepo                        `jsonapi:"attr,vcs-repo"`
@@ -164,6 +168,19 @@ type RegistryModuleCreateOptions struct {
 	RegistryName RegistryName `jsonapi:"attr,registry-name,omitempty"`
 	// Optional: The namespace of this module. Required for public modules only.
 	Namespace string `jsonapi:"attr,namespace,omitempty"`
+	// Optional: true if the module is a no-code module.
+	NoCode bool `jsonapi:"attr,no-code,omitempty"`
+}
+
+// RegistryModuleUpdateOptions is used when updating a registry module
+type RegistryModuleUpdateOptions struct {
+	// Type is a public field utilized by JSON:API to
+	// set the resource type via the field tag.
+	// It is not a user-defined value and does not need to be set.
+	// https://jsonapi.org/format/#crud-updating
+	Type string `jsonapi:"primary,registry-modules"`
+	// Optional:
+	NoCode *bool `jsonapi:"attr,no-code,omitempty"`
 }
 
 // RegistryModuleCreateVersionOptions is used when creating a registry module version
@@ -252,6 +269,45 @@ func (r *registryModules) Create(ctx context.Context, organization string, optio
 		url.QueryEscape(organization),
 	)
 	req, err := r.client.NewRequest("POST", u, &options)
+	if err != nil {
+		return nil, err
+	}
+
+	rm := &RegistryModule{}
+	err = req.Do(ctx, rm)
+	if err != nil {
+		return nil, err
+	}
+
+	return rm, nil
+}
+
+// Update a registry module
+func (r *registryModules) Update(ctx context.Context, moduleID RegistryModuleID, options RegistryModuleUpdateOptions) (*RegistryModule, error) {
+	if err := moduleID.valid(); err != nil {
+		return nil, err
+	}
+
+	if moduleID.RegistryName == "" {
+		log.Println("[WARN] Support for using the RegistryModuleID without RegistryName is deprecated as of release 1.5.0 and may be removed in a future version. The preferred method is to include the RegistryName in RegistryModuleID.")
+		moduleID.RegistryName = PrivateRegistry
+	}
+
+	if moduleID.RegistryName == PrivateRegistry && strings.TrimSpace(moduleID.Namespace) == "" {
+		log.Println("[WARN] Support for using the RegistryModuleID without Namespace is deprecated as of release 1.5.0 and may be removed in a future version. The preferred method is to include the Namespace in RegistryModuleID.")
+		moduleID.Namespace = moduleID.Organization
+	}
+
+	u := fmt.Sprintf(
+		"organizations/%s/registry-modules/%s/%s/%s/%s",
+		url.QueryEscape(moduleID.Organization),
+		url.QueryEscape(string(moduleID.RegistryName)),
+		url.QueryEscape(moduleID.Namespace),
+		url.QueryEscape(moduleID.Name),
+		url.QueryEscape(moduleID.Provider),
+	)
+
+	req, err := r.client.NewRequest("PATCH", u, &options)
 	if err != nil {
 		return nil, err
 	}
