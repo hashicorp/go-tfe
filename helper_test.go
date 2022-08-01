@@ -1695,7 +1695,7 @@ func retryPatiently(f retryableFn) (interface{}, error) { //nolint
 }
 
 func retry(f retryableFn) (interface{}, error) { //nolint
-	return retryTimes(5, 2, f) // 6 attempts over 12 seconds
+	return retryTimes(9, 3, f) // 10 attempts over 30 seconds
 }
 
 func genSha(t *testing.T, secret, data string) string {
