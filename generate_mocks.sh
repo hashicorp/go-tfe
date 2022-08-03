@@ -17,7 +17,7 @@ mockgen -source=admin_workspace.go -destination=mocks/admin_workspace_mocks.go -
 mockgen -source=agent_pool.go -destination=mocks/agent_pool_mocks.go -package=mocks
 mockgen -source=agent_token.go -destination=mocks/agent_token_mocks.go -package=mocks
 mockgen -source=apply.go -destination=mocks/apply_mocks.go -package=mocks
-mockgen -source=audit_trail.go -destination=mocks/audit_trail.go -package=mocks
+mockgen -source=audit_trail.go -destination=mocks/audit_trail_mocks.go -package=mocks
 mockgen -source=configuration_version.go -destination=mocks/configuration_version_mocks.go -package=mocks
 mockgen -source=cost_estimate.go -destination=mocks/cost_estimate_mocks.go -package=mocks
 mockgen -source=gpg_key.go -destination=mocks/gpg_key_mocks.go -package=mocks
@@ -41,12 +41,14 @@ mockgen -source=registry_provider.go -destination=mocks/registry_provider_mocks.
 mockgen -source=registry_provider_platform.go -destination=mocks/registry_provider_platform_mocks.go -package=mocks
 mockgen -source=registry_provider_version.go -destination=mocks/registry_provider_version_mocks.go -package=mocks
 mockgen -source=run.go -destination=mocks/run_mocks.go -package=mocks
-mockgen -source=run_task.go -destination=mocks/run_tasks.go -package=mocks
+mockgen -source=run_task.go -destination=mocks/run_tasks_mocks.go -package=mocks
 mockgen -source=run_trigger.go -destination=mocks/run_trigger_mocks.go -package=mocks
 mockgen -source=ssh_key.go -destination=mocks/ssh_key_mocks.go -package=mocks
 mockgen -source=state_version.go -destination=mocks/state_version_mocks.go -package=mocks
 mockgen -source=state_version_output.go -destination=mocks/state_version_output_mocks.go -package=mocks
 mockgen -source=tag.go -destination=mocks/tag_mocks.go -package=mocks
+mockgen -source=task_result.go -destination=mocks/task_result_mocks.go -package=mocks
+mockgen -source=task_stages.go -destination=mocks/task_stages_mocks.go -package=mocks
 mockgen -source=team.go -destination=mocks/team_mocks.go -package=mocks
 mockgen -source=team_access.go -destination=mocks/team_access_mocks.go -package=mocks
 mockgen -source=team_member.go -destination=mocks/team_member_mocks.go -package=mocks
@@ -55,5 +57,6 @@ mockgen -source=user.go -destination=mocks/user_mocks.go -package=mocks
 mockgen -source=user_token.go -destination=mocks/user_token_mocks.go -package=mocks
 mockgen -source=variable.go -destination=mocks/variable_mocks.go -package=mocks
 mockgen -source=variable_set.go -destination=mocks/variable_set_mocks.go -package=mocks
+mockgen -source=variable_set_variable.go -destination=mocks/variable_set_variable_mocks.go -package=mocks
 mockgen -source=workspace.go -destination=mocks/workspace_mocks.go -package=mocks
-mockgen -source=workspace_run_task.go -destination=mocks/workspace_run_tasks.go -package=mocks
+mockgen -source=workspace_run_task.go -destination=mocks/workspace_run_tasks_mocks.go -package=mocks
