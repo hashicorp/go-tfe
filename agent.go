@@ -74,14 +74,14 @@ func (s *agents) Read(ctx context.Context, agentID string) (*Agent, error) {
 // Read a single agent by its ID with options.
 func (s *agents) ReadWithOptions(ctx context.Context, agentID string, options *AgentReadOptions) (*Agent, error) {
 	if !validStringID(&agentID) {
-		return nil, ErrInvalidAgentID //undeclared var name
+		return nil, ErrInvalidAgentID
 	}
 	if err := options.valid(); err != nil {
 		return nil, err
 	}
 
 	u := fmt.Sprintf("agents/%s", url.QueryEscape(agentID))
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest("GET", u, options)
 	if err != nil {
 		return nil, err
 	}
@@ -92,7 +92,7 @@ func (s *agents) ReadWithOptions(ctx context.Context, agentID string, options *A
 		return nil, err
 	}
 
-	return agent, nil //cannot use agent as *Agent value in return statement
+	return agent, nil
 }
 
 // List all the agents of the given organization.

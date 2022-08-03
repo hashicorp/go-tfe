@@ -18,7 +18,6 @@ func TestAgentsRead(t *testing.T) {
 	agent, _, agentCleanup := createAgent(t, client, nil, nil, nil)
 	defer agentCleanup()
 	t.Log("log agent: ", agent)
-	// t.Log("log pool: ", pool)
 
 	t.Run("when the agent exists", func(t *testing.T) {
 		k, err := client.Agents.Read(ctx, agent.ID)
