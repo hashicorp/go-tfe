@@ -14,8 +14,6 @@ import (
 	"math/rand"
 	"net/url"
 	"os"
-	"os/exec"
-	"sync"
 	"testing"
 	"time"
 
@@ -25,7 +23,6 @@ import (
 )
 
 const badIdentifier = "! / nope" //nolint
-const tickDuration = 2
 
 // Memoize test account details
 var _testAccountDetails *TestAccountDetails
@@ -87,85 +84,6 @@ func fetchTestAccountDetails(t *testing.T, client *Client) *TestAccountDetails {
 		_testAccountDetails = FetchTestAccountDetails(t, client)
 	}
 	return _testAccountDetails
-}
-
-func createAgent(t *testing.T, client *Client, org *Organization, agentPool *AgentPool, agentPoolToken *AgentToken) (*Agent, *AgentPool, func()) {
-	var orgCleanup func()
-	var agentPoolCleanup func()
-	var agentPoolTokenCleanup func()
-	var agent *Agent
-
-	if org == nil {
-		org, orgCleanup = createOrganization(t, client)
-	}
-
-	upgradeOrganizationSubscription(t, client, org)
-
-	if agentPool == nil {
-		agentPool, agentPoolCleanup = createAgentPool(t, client, org)
-		t.Log("create, log agentPool: ", agentPool)
-	}
-
-	if agentPoolToken == nil {
-		agentPoolToken, agentPoolTokenCleanup = createAgentToken(t, client, agentPool)
-	}
-
-	ctx := context.Background()
-	cmd := exec.Command("docker",
-		"run", "-d",
-		"--env", "TFC_AGENT_TOKEN="+agentPoolToken.Token,
-		"--env", "TFC_AGENT_NAME="+"this-is-a-test-agent",
-		"--env", "TFC_ADDRESS="+DefaultConfig().Address,
-		"docker.mirror.hashicorp.services/hashicorp/tfc-agent:latest")
-
-	go func() {
-		output, err := cmd.CombinedOutput()
-		if err != nil {
-			t.Logf("Could not run container: %s", err)
-		}
-
-		t.Log("Logging container output: ", (string)(output))
-	}()
-
-	defer func() {
-		t.Log("Cleaning up agent docker container: ")
-		cmd := exec.Command("docker", "rm", "-f")
-		_ = cmd.Run()
-	}()
-
-	i, err := retry(func() (interface{}, error) {
-
-		agentList, err := client.Agents.List(ctx, agentPool.ID, nil)
-		if err != nil {
-			return nil, err
-		}
-
-		if agentList != nil && len(agentList.Items) > 0 {
-			return agentList.Items[0], nil
-		}
-		return nil, errors.New("No agent found.")
-	})
-
-	if err != nil {
-		t.Fatalf("Could not return an agent %s", err)
-	}
-
-	agent = i.(*Agent)
-	t.Log("log agent, after type assertion: ", agent)
-
-	return agent, agentPool, func() {
-		if agentPoolTokenCleanup != nil {
-			agentPoolTokenCleanup()
-		}
-
-		if agentPoolCleanup != nil {
-			agentPoolCleanup()
-		}
-
-		if orgCleanup != nil {
-			orgCleanup()
-		}
-	}
 }
 
 func createAgentPool(t *testing.T, client *Client, org *Organization) (*AgentPool, func()) {
@@ -522,9 +440,9 @@ func createOAuthClient(t *testing.T, client *Client, org *Organization) (*OAuthC
 		org, orgCleanup = createOrganization(t, client)
 	}
 
-	githubToken := os.Getenv("GITHUB_TOKEN")
+	githubToken := os.Getenv("OAUTH_CLIENT_GITHUB_TOKEN")
 	if githubToken == "" {
-		t.Skip("Export a valid GITHUB_TOKEN before running this test!")
+		t.Skip("Export a valid OAUTH_CLIENT_GITHUB_TOKEN before running this test!")
 	}
 
 	options := OAuthClientCreateOptions{
@@ -1712,64 +1630,46 @@ func upgradeOrganizationSubscription(t *testing.T, client *Client, organization 
 
 func waitForSVOutputs(t *testing.T, client *Client, svID string) {
 	t.Helper()
-	wg := &sync.WaitGroup{}
-	wg.Add(1)
 
-	go func() {
-		_, err := retry(func() (interface{}, error) {
-			outputs, err := client.StateVersions.ListOutputs(context.Background(), svID, nil)
-			if err != nil {
-				return nil, err
-			}
-
-			if len(outputs.Items) == 0 {
-				return nil, errors.New("no state version outputs found")
-			}
-
-			return outputs, nil
-		})
+	_, err := retryPatiently(func() (interface{}, error) {
+		outputs, err := client.StateVersions.ListOutputs(context.Background(), svID, nil)
 		if err != nil {
-			t.Error(err)
+			return nil, err
 		}
 
-		wg.Done()
-	}()
+		if len(outputs.Items) == 0 {
+			return nil, errors.New("no state version outputs found")
+		}
 
-	wg.Wait()
+		return outputs, nil
+	})
+	if err != nil {
+		t.Error(err)
+	}
 }
 
 func waitForRunLock(t *testing.T, client *Client, workspaceID string) {
 	t.Helper()
-	wg := &sync.WaitGroup{}
-	wg.Add(1)
-
-	go func() {
-		_, err := retry(func() (interface{}, error) {
-			ws, err := client.Workspaces.ReadByID(context.Background(), workspaceID)
-			if err != nil {
-				return nil, err
-			}
-
-			if !ws.Locked {
-				return nil, errors.New("workspace is not locked by run")
-			}
-
-			return ws, nil
-		})
+	_, err := retry(func() (interface{}, error) {
+		ws, err := client.Workspaces.ReadByID(context.Background(), workspaceID)
 		if err != nil {
-			t.Error(err)
+			return nil, err
 		}
 
-		wg.Done()
-	}()
+		if !ws.Locked {
+			return nil, errors.New("workspace is not locked by run")
+		}
 
-	wg.Wait()
+		return ws, nil
+	})
+	if err != nil {
+		t.Error(err)
+	}
 }
 
-func retry(f retryableFn) (interface{}, error) { //nolint
-	tick := time.NewTicker(tickDuration * time.Second)
+func retryTimes(maxRetries, secondsBetween int, f retryableFn) (interface{}, error) {
+	tick := time.NewTicker(time.Duration(secondsBetween) * time.Second)
 	retries := 0
-	maxRetries := 5
 
 	defer tick.Stop()
 
@@ -1788,6 +1688,14 @@ func retry(f retryableFn) (interface{}, error) { //nolint
 			retries += 1
 		}
 	}
+}
+
+func retryPatiently(f retryableFn) (interface{}, error) { //nolint
+	return retryTimes(39, 3, f) // 40 attempts over 120 seconds
+}
+
+func retry(f retryableFn) (interface{}, error) { //nolint
+	return retryTimes(9, 3, f) // 10 attempts over 30 seconds
 }
 
 func genSha(t *testing.T, secret, data string) string {
