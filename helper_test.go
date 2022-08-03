@@ -89,11 +89,12 @@ func fetchTestAccountDetails(t *testing.T, client *Client) *TestAccountDetails {
 	return _testAccountDetails
 }
 
-func createAgent(t *testing.T, client *Client, org *Organization, agentPool *AgentPool, agentPoolToken *AgentToken) (*Agent, *AgentPool, func()) {
+func createAgent(t *testing.T, client *Client, org *Organization, agentPool *AgentPool) (*Agent, func()) {
 	var orgCleanup func()
 	var agentPoolCleanup func()
 	var agentPoolTokenCleanup func()
 	var agent *Agent
+	var agentPoolToken //ask Sebastian?
 
 	if org == nil {
 		org, orgCleanup = createOrganization(t, client)
@@ -149,7 +150,7 @@ func createAgent(t *testing.T, client *Client, org *Organization, agentPool *Age
 
 	agent = i.(*Agent)
 
-	return agent, agentPool, func() {
+	return agent, func() {
 		if agentPoolTokenCleanup != nil {
 			agentPoolTokenCleanup()
 		}

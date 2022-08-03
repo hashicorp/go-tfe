@@ -15,10 +15,9 @@ func TestAgentsRead(t *testing.T) {
 	client := testClient(t)
 	ctx := context.Background()
 
-	agent, _, agentCleanup := createAgent(t, client, nil, nil, nil)
-	defer agentCleanup()
-	t.Log("log agent: ", agent)
-
+	agent, agentCleanup := createAgent(t, client, nil, nil)
+	t.Cleanup(agentCleanup)
+	
 	t.Run("when the agent exists", func(t *testing.T) {
 		k, err := client.Agents.Read(ctx, agent.ID)
 		require.NoError(t, err)
@@ -42,10 +41,8 @@ func TestAgentsList(t *testing.T) {
 	client := testClient(t)
 	ctx := context.Background()
 
-	agent, agentPool, agentCleanup := createAgent(t, client, nil, nil, nil)
-	defer agentCleanup()
-	t.Log("log agent: ", agent)
-	t.Log("log agent pool: ", agentPool)
+	agent, agentCleanup := createAgent(t, client, nil, nil)
+	t.Cleanup(agentCleanup)
 
 	t.Run("expect an agent to exist", func(t *testing.T) {
 		agent, err := client.Agents.List(ctx, agentPool.ID, nil)
