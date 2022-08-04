@@ -29,6 +29,7 @@ type taskStages struct {
 type Stage string
 
 const (
+	PrePlan  Stage = "pre_plan"
 	PostPlan Stage = "post_plan"
 )
 

@@ -37,6 +37,7 @@ type workspaceRunTasks struct {
 type WorkspaceRunTask struct {
 	ID               string               `jsonapi:"primary,workspace-tasks"`
 	EnforcementLevel TaskEnforcementLevel `jsonapi:"attr,enforcement-level"`
+	Stage            Stage                `jsonapi:"attr,stage"`
 
 	RunTask   *RunTask   `jsonapi:"relation,task"`
 	Workspace *Workspace `jsonapi:"relation,workspace"`
@@ -60,12 +61,15 @@ type WorkspaceRunTaskCreateOptions struct {
 	EnforcementLevel TaskEnforcementLevel `jsonapi:"attr,enforcement-level"`
 	// Required: The run task to attach to the workspace
 	RunTask *RunTask `jsonapi:"relation,task"`
+	// Optional: The stage to run the task in. This is currently in BETA
+	Stage *Stage `jsonapi:"attr,stage,omitempty"`
 }
 
 // WorkspaceRunTaskUpdateOptions represent the set of options for updating a workspace run task.
 type WorkspaceRunTaskUpdateOptions struct {
 	Type             string               `jsonapi:"primary,workspace-tasks"`
 	EnforcementLevel TaskEnforcementLevel `jsonapi:"attr,enforcement-level,omitempty"`
+	Stage            *Stage               `jsonapi:"attr,stage,omitempty"` // The stage to run the task in. This is currently in BETA
 }
 
 // List all run tasks attached to a workspace
