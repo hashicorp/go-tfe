@@ -163,7 +163,9 @@ type StateVersionModuleRoot struct {
 	TerraformRemoteState int `jsonapi:"attr,data.terraform-remote-state"`
 }
 
-type StateVersionProviders map[string]ProviderData
+type StateVersionProviders struct {
+	Data ProviderData `jsonapi:"attr,provider[map]string"`
+}
 
 type ProviderData struct {
 	NullResource         int `json:"null-resource"`
