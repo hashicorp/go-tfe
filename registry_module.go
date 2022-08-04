@@ -94,6 +94,31 @@ type RegistryModuleID struct {
 	RegistryName RegistryName
 }
 
+// url returns the URL of the module in the registry, excluding the hostname.
+func (moduleID RegistryModuleID) url() string {
+	return fmt.Sprintf(
+		"organizations/%s/registry-modules/%s/%s/%s/%s",
+		url.QueryEscape(moduleID.Organization),
+		url.QueryEscape(string(moduleID.RegistryName)),
+		url.QueryEscape(moduleID.Namespace),
+		url.QueryEscape(moduleID.Name),
+		url.QueryEscape(moduleID.Provider),
+	)
+}
+
+// fallbackModuleID populates the fields `RegistryName` and `Namespace` if they are not set
+func (moduleID RegistryModuleID) fallbackModuleID() {
+	if moduleID.RegistryName == "" {
+		log.Println("[WARN] Support for using the RegistryModuleID without RegistryName is deprecated as of release 1.5.0 and may be removed in a future version. The preferred method is to include the RegistryName in RegistryModuleID.")
+		moduleID.RegistryName = PrivateRegistry
+	}
+
+	if moduleID.RegistryName == PrivateRegistry && strings.TrimSpace(moduleID.Namespace) == "" {
+		log.Println("[WARN] Support for using the RegistryModuleID without Namespace is deprecated as of release 1.5.0 and may be removed in a future version. The preferred method is to include the Namespace in RegistryModuleID.")
+		moduleID.Namespace = moduleID.Organization
+	}
+}
+
 // RegistryModuleList represents a list of registry modules.
 type RegistryModuleList struct {
 	*Pagination
@@ -169,6 +194,7 @@ type RegistryModuleCreateOptions struct {
 	// Optional: The namespace of this module. Required for public modules only.
 	Namespace string `jsonapi:"attr,namespace,omitempty"`
 	// Optional: true if the module is a no-code module.
+	// **Note: This field is still in BETA and subject to change.**
 	NoCode bool `jsonapi:"attr,no-code,omitempty"`
 }
 
@@ -288,26 +314,9 @@ func (r *registryModules) Update(ctx context.Context, moduleID RegistryModuleID,
 		return nil, err
 	}
 
-	if moduleID.RegistryName == "" {
-		log.Println("[WARN] Support for using the RegistryModuleID without RegistryName is deprecated as of release 1.5.0 and may be removed in a future version. The preferred method is to include the RegistryName in RegistryModuleID.")
-		moduleID.RegistryName = PrivateRegistry
-	}
+	moduleID.fallbackModuleID()
 
-	if moduleID.RegistryName == PrivateRegistry && strings.TrimSpace(moduleID.Namespace) == "" {
-		log.Println("[WARN] Support for using the RegistryModuleID without Namespace is deprecated as of release 1.5.0 and may be removed in a future version. The preferred method is to include the Namespace in RegistryModuleID.")
-		moduleID.Namespace = moduleID.Organization
-	}
-
-	u := fmt.Sprintf(
-		"organizations/%s/registry-modules/%s/%s/%s/%s",
-		url.QueryEscape(moduleID.Organization),
-		url.QueryEscape(string(moduleID.RegistryName)),
-		url.QueryEscape(moduleID.Namespace),
-		url.QueryEscape(moduleID.Name),
-		url.QueryEscape(moduleID.Provider),
-	)
-
-	req, err := r.client.NewRequest("PATCH", u, &options)
+	req, err := r.client.NewRequest("PATCH", moduleID.url(), &options)
 	if err != nil {
 		return nil, err
 	}
@@ -376,27 +385,9 @@ func (r *registryModules) Read(ctx context.Context, moduleID RegistryModuleID) (
 	if err := moduleID.valid(); err != nil {
 		return nil, err
 	}
+	moduleID.fallbackModuleID()
 
-	if moduleID.RegistryName == "" {
-		log.Println("[WARN] Support for using the RegistryModuleID without RegistryName is deprecated as of release 1.5.0 and may be removed in a future version. The preferred method is to include the RegistryName in RegistryModuleID.")
-		moduleID.RegistryName = PrivateRegistry
-	}
-
-	if moduleID.RegistryName == PrivateRegistry && strings.TrimSpace(moduleID.Namespace) == "" {
-		log.Println("[WARN] Support for using the RegistryModuleID without Namespace is deprecated as of release 1.5.0 and may be removed in a future version. The preferred method is to include the Namespace in RegistryModuleID.")
-		moduleID.Namespace = moduleID.Organization
-	}
-
-	u := fmt.Sprintf(
-		"organizations/%s/registry-modules/%s/%s/%s/%s",
-		url.QueryEscape(moduleID.Organization),
-		url.QueryEscape(string(moduleID.RegistryName)),
-		url.QueryEscape(moduleID.Namespace),
-		url.QueryEscape(moduleID.Name),
-		url.QueryEscape(moduleID.Provider),
-	)
-
-	req, err := r.client.NewRequest("GET", u, nil)
+	req, err := r.client.NewRequest("GET", moduleID.url(), nil)
 	if err != nil {
 		return nil, err
 	}

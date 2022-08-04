@@ -142,6 +142,7 @@ func TestRegistryModulesCreate(t *testing.T) {
 		})
 
 		t.Run("with no-code attribute", func(t *testing.T) {
+			skipIfBeta(t)
 			options := RegistryModuleCreateOptions{
 				Name:         String("iam"),
 				Provider:     String("aws"),
@@ -248,23 +249,22 @@ func TestRegistryModulesCreate(t *testing.T) {
 }
 
 func TestRegistryModuleUpdate(t *testing.T) {
+	skipIfBeta(t)
 	client := testClient(t)
 	ctx := context.Background()
 
 	orgTest, orgTestCleanup := createOrganization(t, client)
 	defer orgTestCleanup()
 
-	{
-		options := RegistryModuleCreateOptions{
-			Name:         String("vpc"),
-			Provider:     String("aws"),
-			RegistryName: PublicRegistry,
-			Namespace:    "terraform-aws-modules",
-		}
-		rm, err := client.RegistryModules.Create(ctx, orgTest.Name, options)
-		require.NoError(t, err)
-		assert.NotEmpty(t, rm.ID)
+	options := RegistryModuleCreateOptions{
+		Name:         String("vpc"),
+		Provider:     String("aws"),
+		RegistryName: PublicRegistry,
+		Namespace:    "terraform-aws-modules",
 	}
+	rm, err := client.RegistryModules.Create(ctx, orgTest.Name, options)
+	require.NoError(t, err)
+	assert.NotEmpty(t, rm.ID)
 
 	t.Run("enable no-code", func(t *testing.T) {
 		options := RegistryModuleUpdateOptions{
