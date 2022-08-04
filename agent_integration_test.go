@@ -12,12 +12,24 @@ import (
 )
 
 func TestAgentsRead(t *testing.T) {
+	skipIfFreeOnly(t)
+
 	client := testClient(t)
 	ctx := context.Background()
 
+	if org == nil {
+		org, orgCleanup = createOrganization(t, client)
+	}
+
+	upgradeOrganizationSubscription(t, client, org)
+
+	if agentPool == nil {
+		agentPool, agentPoolCleanup = createAgentPool(t, client, org)
+	}
+
 	agent, agentCleanup := createAgent(t, client, nil, nil)
 	t.Cleanup(agentCleanup)
-	
+
 	t.Run("when the agent exists", func(t *testing.T) {
 		k, err := client.Agents.Read(ctx, agent.ID)
 		require.NoError(t, err)
@@ -38,8 +50,20 @@ func TestAgentsRead(t *testing.T) {
 }
 
 func TestAgentsList(t *testing.T) {
+	skipIfFreeOnly(t)
+
 	client := testClient(t)
 	ctx := context.Background()
+
+	if org == nil {
+		org, orgCleanup = createOrganization(t, client)
+	}
+
+	upgradeOrganizationSubscription(t, client, org)
+
+	if agentPool == nil {
+		agentPool, agentPoolCleanup = createAgentPool(t, client, org)
+	}
 
 	agent, agentCleanup := createAgent(t, client, nil, nil)
 	t.Cleanup(agentCleanup)

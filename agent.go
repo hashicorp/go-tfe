@@ -16,9 +16,6 @@ type Agents interface {
 	// Read an agent by its ID.
 	Read(ctx context.Context, agentID string) (*Agent, error)
 
-	// Read an agent by its ID with the given options.
-	ReadWithOptions(ctx context.Context, agentID string, options *AgentReadOptions) (*Agent, error)
-
 	// List all the agents of the given pool.
 	List(ctx context.Context, agentPoolID string, options *AgentListOptions) (*AgentList, error)
 }
@@ -45,34 +42,8 @@ type Agent struct {
 	Workspaces   []*Workspace  `jsonapi:"relation,workspaces"`
 }
 
-// A list of relations to include
-// https://www.terraform.io/cloud-docs/api-docs/agents#available-related-resources
-type AgentIncludeOpt string
-
-const (
-	AgentWorkspaces AgentIncludeOpt = "workspaces"
-)
-
-// AgentReadOptions represents the options for reading an agent.
-type AgentReadOptions struct {
-	Include []AgentIncludeOpt `url:"include,omitempty"`
-}
-
-// AgentListOptions represents the options for listing agents.
-type AgentListOptions struct {
-	ListOptions
-	// Optional: A list of relations to include. See available resources
-	// https://www.terraform.io/cloud-docs/api-docs/agents#available-related-resources
-	Include []AgentIncludeOpt `url:"include,omitempty"`
-}
-
 // Read a single agent by its ID
 func (s *agents) Read(ctx context.Context, agentID string) (*Agent, error) {
-	return s.ReadWithOptions(ctx, agentID, nil)
-}
-
-// Read a single agent by its ID with options.
-func (s *agents) ReadWithOptions(ctx context.Context, agentID string, options *AgentReadOptions) (*Agent, error) {
 	if !validStringID(&agentID) {
 		return nil, ErrInvalidAgentID
 	}

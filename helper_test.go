@@ -94,7 +94,6 @@ func createAgent(t *testing.T, client *Client, org *Organization, agentPool *Age
 	var agentPoolCleanup func()
 	var agentPoolTokenCleanup func()
 	var agent *Agent
-	var agentPoolToken //ask Sebastian?
 
 	if org == nil {
 		org, orgCleanup = createOrganization(t, client)
@@ -106,9 +105,7 @@ func createAgent(t *testing.T, client *Client, org *Organization, agentPool *Age
 		agentPool, agentPoolCleanup = createAgentPool(t, client, org)
 	}
 
-	if agentPoolToken == nil {
-		agentPoolToken, agentPoolTokenCleanup = createAgentToken(t, client, agentPool)
-	}
+	agentPoolToken, agentPoolTokenCleanup := createAgentToken(t, client, agentPool)
 
 	ctx := context.Background()
 	cmd := exec.Command("docker",
@@ -151,9 +148,7 @@ func createAgent(t *testing.T, client *Client, org *Organization, agentPool *Age
 	agent = i.(*Agent)
 
 	return agent, func() {
-		if agentPoolTokenCleanup != nil {
-			agentPoolTokenCleanup()
-		}
+		agentPoolTokenCleanup()
 
 		if agentPoolCleanup != nil {
 			agentPoolCleanup()
