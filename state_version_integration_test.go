@@ -20,15 +20,15 @@ func TestStateVersionsList(t *testing.T) {
 	ctx := context.Background()
 
 	orgTest, orgTestCleanup := createOrganization(t, client)
-	defer orgTestCleanup()
+	t.Cleanup(orgTestCleanup)
 
 	wTest, wTestCleanup := createWorkspace(t, client, orgTest)
-	defer wTestCleanup()
+	t.Cleanup(wTestCleanup)
 
 	svTest1, svTestCleanup1 := createStateVersion(t, client, 0, wTest)
-	defer svTestCleanup1()
+	t.Cleanup(svTestCleanup1)
 	svTest2, svTestCleanup2 := createStateVersion(t, client, 1, wTest)
-	defer svTestCleanup2()
+	t.Cleanup(svTestCleanup2)
 
 	t.Run("without StateVersionListOptions", func(t *testing.T) {
 		svl, err := client.StateVersions.List(ctx, nil)
@@ -115,7 +115,7 @@ func TestStateVersionsCreate(t *testing.T) {
 	ctx := context.Background()
 
 	wTest, wTestCleanup := createWorkspace(t, client, nil)
-	defer wTestCleanup()
+	t.Cleanup(wTestCleanup)
 
 	state, err := ioutil.ReadFile("test-fixtures/state-version/terraform.tfstate")
 	if err != nil {
@@ -248,7 +248,7 @@ func TestStateVersionsCreate(t *testing.T) {
 		t.Skip("This can only be tested with the run specific token")
 
 		rTest, rTestCleanup := createRun(t, client, wTest)
-		defer rTestCleanup()
+		t.Cleanup(rTestCleanup)
 
 		ctx := context.Background()
 		sv, err := client.StateVersions.Create(ctx, wTest.ID, StateVersionCreateOptions{
@@ -316,7 +316,7 @@ func TestStateVersionsRead(t *testing.T) {
 	ctx := context.Background()
 
 	svTest, svTestCleanup := createStateVersion(t, client, 0, nil)
-	defer svTestCleanup()
+	t.Cleanup(svTestCleanup)
 
 	t.Run("when the state version exists", func(t *testing.T) {
 		sv, err := client.StateVersions.Read(ctx, svTest.ID)
@@ -353,7 +353,7 @@ func TestStateVersionsReadWithOptions(t *testing.T) {
 	ctx := context.Background()
 
 	svTest, svTestCleanup := createStateVersion(t, client, 0, nil)
-	defer svTestCleanup()
+	t.Cleanup(svTestCleanup)
 
 	// give TFC some time to process the statefile and extract the outputs.
 	waitForSVOutputs(t, client, svTest.ID)
@@ -375,13 +375,13 @@ func TestStateVersionsCurrent(t *testing.T) {
 	ctx := context.Background()
 
 	wTest1, wTest1Cleanup := createWorkspace(t, client, nil)
-	defer wTest1Cleanup()
+	t.Cleanup(wTest1Cleanup)
 
 	wTest2, wTest2Cleanup := createWorkspace(t, client, nil)
-	defer wTest2Cleanup()
+	t.Cleanup(wTest2Cleanup)
 
 	svTest, svTestCleanup := createStateVersion(t, client, 0, wTest1)
-	defer svTestCleanup()
+	t.Cleanup(svTestCleanup)
 
 	t.Run("when a state version exists", func(t *testing.T) {
 		sv, err := client.StateVersions.ReadCurrent(ctx, wTest1.ID)
@@ -418,10 +418,10 @@ func TestStateVersionsCurrentWithOptions(t *testing.T) {
 	ctx := context.Background()
 
 	wTest1, wTest1Cleanup := createWorkspace(t, client, nil)
-	defer wTest1Cleanup()
+	t.Cleanup(wTest1Cleanup)
 
 	svTest, svTestCleanup := createStateVersion(t, client, 0, wTest1)
-	defer svTestCleanup()
+	t.Cleanup(svTestCleanup)
 
 	// give TFC some time to process the statefile and extract the outputs.
 	waitForSVOutputs(t, client, svTest.ID)
@@ -443,7 +443,7 @@ func TestStateVersionsDownload(t *testing.T) {
 	ctx := context.Background()
 
 	svTest, svTestCleanup := createStateVersion(t, client, 0, nil)
-	defer svTestCleanup()
+	t.Cleanup(svTestCleanup)
 
 	stateTest, err := ioutil.ReadFile("test-fixtures/state-version/terraform.tfstate")
 	require.NoError(t, err)
@@ -475,10 +475,10 @@ func TestStateVersionOutputs(t *testing.T) {
 	ctx := context.Background()
 
 	wTest1, wTest1Cleanup := createWorkspace(t, client, nil)
-	defer wTest1Cleanup()
+	t.Cleanup(wTest1Cleanup)
 
 	sv, svTestCleanup := createStateVersion(t, client, 0, wTest1)
-	defer svTestCleanup()
+	t.Cleanup(svTestCleanup)
 
 	// give TFC some time to process the statefile and extract the outputs.
 	waitForSVOutputs(t, client, sv.ID)
