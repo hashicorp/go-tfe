@@ -12,22 +12,20 @@ import (
 )
 
 func TestAgentsRead(t *testing.T) {
-	skipIfFreeOnly(t)
+	//skipIfFreeOnly(t)
 
 	client := testClient(t)
 	ctx := context.Background()
 
-	if org == nil {
-		org, orgCleanup = createOrganization(t, client)
-	}
+	org, orgCleanup = createOrganization(t, client)
+	t.Cleanup(orgCleanup)
 
 	upgradeOrganizationSubscription(t, client, org)
 
-	if agentPool == nil {
-		agentPool, agentPoolCleanup = createAgentPool(t, client, org)
-	}
+	agentPool, agentPoolCleanup = createAgentPool(t, client, org)
+	t.Cleanup(agentPoolCleanup)
 
-	agent, agentCleanup := createAgent(t, client, nil, nil)
+	agent, agentCleanup := createAgent(t, client, org, agentPool)
 	t.Cleanup(agentCleanup)
 
 	t.Run("when the agent exists", func(t *testing.T) {
@@ -37,7 +35,7 @@ func TestAgentsRead(t *testing.T) {
 	})
 
 	t.Run("when the agent does not exist", func(t *testing.T) {
-		k, err := client.Agents.Read(ctx, "nonexisting")
+		k, err := client.Agents.Read(ctx, "nonexistent")
 		assert.Nil(t, k)
 		assert.Equal(t, err, ErrResourceNotFound)
 	})
@@ -50,22 +48,17 @@ func TestAgentsRead(t *testing.T) {
 }
 
 func TestAgentsList(t *testing.T) {
-	skipIfFreeOnly(t)
+	//skipIfFreeOnly(t)
 
 	client := testClient(t)
 	ctx := context.Background()
 
-	if org == nil {
-		org, orgCleanup = createOrganization(t, client)
-	}
-
+	org, orgCleanup = createOrganization(t, client)
 	upgradeOrganizationSubscription(t, client, org)
 
-	if agentPool == nil {
-		agentPool, agentPoolCleanup = createAgentPool(t, client, org)
-	}
+	agentPool, agentPoolCleanup = createAgentPool(t, client, org)
 
-	agent, agentCleanup := createAgent(t, client, nil, nil)
+	agent, agentCleanup := createAgent(t, client, org, agentPool)
 	t.Cleanup(agentCleanup)
 
 	t.Run("expect an agent to exist", func(t *testing.T) {
@@ -77,8 +70,8 @@ func TestAgentsList(t *testing.T) {
 	})
 
 	t.Run("without a valid agent pool ID", func(t *testing.T) {
-		agents, err := client.Agents.List(ctx, badIdentifier, nil)
-		assert.Nil(t, agents)
+		agent, err := client.Agents.List(ctx, badIdentifier, nil)
+		assert.Nil(t, agent)
 		assert.EqualError(t, err, ErrInvalidOrg.Error())
 	})
 }

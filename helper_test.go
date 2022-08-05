@@ -116,7 +116,7 @@ func createAgent(t *testing.T, client *Client, org *Organization, agentPool *Age
 		"docker.mirror.hashicorp.services/hashicorp/tfc-agent:latest")
 
 	go func() {
-		output, err := cmd.CombinedOutput()
+		_, err := cmd.CombinedOutput()
 		if err != nil {
 			t.Logf("Could not run container: %s", err)
 		}
@@ -138,7 +138,7 @@ func createAgent(t *testing.T, client *Client, org *Organization, agentPool *Age
 		if agentList != nil && len(agentList.Items) > 0 {
 			return agentList.Items[0], nil
 		}
-		return nil, errors.New("No agent found.")
+		return nil, errors.New("no agent found")
 	})
 
 	if err != nil {
