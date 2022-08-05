@@ -257,10 +257,10 @@ func TestRegistryModuleUpdate(t *testing.T) {
 	defer orgTestCleanup()
 
 	options := RegistryModuleCreateOptions{
-		Name:         String("vpc"),
+		Name:         String("vault"),
 		Provider:     String("aws"),
 		RegistryName: PublicRegistry,
-		Namespace:    "terraform-aws-modules",
+		Namespace:    "hashicorp",
 	}
 	rm, err := client.RegistryModules.Create(ctx, orgTest.Name, options)
 	require.NoError(t, err)
@@ -272,9 +272,9 @@ func TestRegistryModuleUpdate(t *testing.T) {
 		}
 		rm, err := client.RegistryModules.Update(ctx, RegistryModuleID{
 			Organization: orgTest.Name,
-			Name:         "vpc",
+			Name:         "vault",
 			Provider:     "aws",
-			Namespace:    "terraform-aws-modules",
+			Namespace:    "hashicorp",
 			RegistryName: PublicRegistry,
 		}, options)
 		require.NoError(t, err)
@@ -287,9 +287,9 @@ func TestRegistryModuleUpdate(t *testing.T) {
 		}
 		rm, err := client.RegistryModules.Update(ctx, RegistryModuleID{
 			Organization: orgTest.Name,
-			Name:         "vpc",
+			Name:         "vault",
 			Provider:     "aws",
-			Namespace:    "terraform-aws-modules",
+			Namespace:    "hashicorp",
 			RegistryName: PublicRegistry,
 		}, options)
 		require.NoError(t, err)
