@@ -152,6 +152,21 @@ func (mr *MockRegistryModulesMockRecorder) Read(ctx, moduleID interface{}) *gomo
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Read", reflect.TypeOf((*MockRegistryModules)(nil).Read), ctx, moduleID)
 }
 
+// Update mocks base method.
+func (m *MockRegistryModules) Update(ctx context.Context, moduleID tfe.RegistryModuleID, options tfe.RegistryModuleUpdateOptions) (*tfe.RegistryModule, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Update", ctx, moduleID, options)
+	ret0, _ := ret[0].(*tfe.RegistryModule)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// Update indicates an expected call of Update.
+func (mr *MockRegistryModulesMockRecorder) Update(ctx, moduleID, options interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Update", reflect.TypeOf((*MockRegistryModules)(nil).Update), ctx, moduleID, options)
+}
+
 // Upload mocks base method.
 func (m *MockRegistryModules) Upload(ctx context.Context, rmv tfe.RegistryModuleVersion, path string) error {
 	m.ctrl.T.Helper()
