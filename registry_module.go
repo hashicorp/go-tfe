@@ -107,7 +107,7 @@ func (moduleID RegistryModuleID) url() string {
 }
 
 // fallbackModuleID populates the fields `RegistryName` and `Namespace` if they are not set
-func (moduleID RegistryModuleID) fallbackModuleID() {
+func (moduleID *RegistryModuleID) fallbackModuleID() {
 	if moduleID.RegistryName == "" {
 		log.Println("[WARN] Support for using the RegistryModuleID without RegistryName is deprecated as of release 1.5.0 and may be removed in a future version. The preferred method is to include the RegistryName in RegistryModuleID.")
 		moduleID.RegistryName = PrivateRegistry
