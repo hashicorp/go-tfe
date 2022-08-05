@@ -333,6 +333,12 @@ func TestStateVersionsRead(t *testing.T) {
 		sv.Outputs = nil
 
 		assert.Equal(t, svTest, sv)
+		assert.NotEmpty(t, svTest, svTest.ResourcesProcessed)
+		assert.NotEmpty(t, svTest, svTest.StateVersion)
+		assert.NotEmpty(t, svTest, svTest.TerraformVersion)
+		assert.NotEmpty(t, svTest, svTest.Modules)
+		assert.NotEmpty(t, svTest, svTest.Providers)
+		assert.NotEmpty(t, svTest, svTest.Resources)
 	})
 
 	t.Run("when the state version does not exist", func(t *testing.T) {
