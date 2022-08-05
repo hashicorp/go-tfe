@@ -42,17 +42,18 @@ type Agent struct {
 	Workspaces   []*Workspace  `jsonapi:"relation,workspaces"`
 }
 
+type AgentListOptions struct {
+	ListOptions
+}
+
 // Read a single agent by its ID
 func (s *agents) Read(ctx context.Context, agentID string) (*Agent, error) {
 	if !validStringID(&agentID) {
 		return nil, ErrInvalidAgentID
 	}
-	if err := options.valid(); err != nil {
-		return nil, err
-	}
 
 	u := fmt.Sprintf("agents/%s", url.QueryEscape(agentID))
-	req, err := s.client.NewRequest("GET", u, options)
+	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -71,9 +72,6 @@ func (s *agents) List(ctx context.Context, agentPoolID string, options *AgentLis
 	if !validStringID(&agentPoolID) {
 		return nil, ErrInvalidOrg
 	}
-	if err := options.valid(); err != nil {
-		return nil, err
-	}
 
 	u := fmt.Sprintf("agent-pools/%s/agents", url.QueryEscape(agentPoolID))
 	req, err := s.client.NewRequest("GET", u, options)
@@ -88,39 +86,4 @@ func (s *agents) List(ctx context.Context, agentPoolID string, options *AgentLis
 	}
 
 	return agentList, nil
-}
-
-func (o *AgentReadOptions) valid() error {
-	if o == nil {
-		return nil // nothing to validate
-	}
-	if err := validateAgentIncludeParams(o.Include); err != nil {
-		return err
-	}
-
-	return nil
-}
-
-func (o *AgentListOptions) valid() error {
-	if o == nil {
-		return nil // nothing to validate
-	}
-	if err := validateAgentIncludeParams(o.Include); err != nil {
-		return err
-	}
-
-	return nil
-}
-
-func validateAgentIncludeParams(params []AgentIncludeOpt) error {
-	for _, p := range params {
-		switch p {
-		case AgentWorkspaces:
-			// do nothing
-		default:
-			return ErrInvalidIncludeValue
-		}
-	}
-
-	return nil
 }
