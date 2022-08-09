@@ -5,13 +5,8 @@
 * Adds new run creation attributes: `allow-empty-apply`, `terraform-version`, `plan-only` by @sebasslash [#482](https://github.com/hashicorp/go-tfe/pull/447)
 * Adds additional Task Stage and Run Statuses for Pre-plan run tasks by @glennsarti [#469](https://github.com/hashicorp/go-tfe/pull/469)
 * Adds `stage` field to the create and update methods for Workspace Run Tasks by @glennsarti [#469](https://github.com/hashicorp/go-tfe/pull/469)
-<<<<<<< HEAD
 * Adds `ResourcesProcessed`, `StateVersion`, `TerraformVersion`, `Modules`, `Providers`, and `Resources` fields to the State Version struct by @laurenolivia [#484](https://github.com/hashicorp/go-tfe/pull/484)
-
 * Add `Include` param field to `PolicySetListOptions` to allow policy list to include related resource data such as workspaces, policies, newest_version, or current_version by @Uk1288 [#471](https://github.com/hashicorp/go-tfe/pull/471)
-=======
-* Add `Include` param field to `PolicySetListOptions` to allow policy list to include related resource data such as workspaces, policies, newest_version, or current_version by @Uk1288 [#494](https://github.com/hashicorp/go-tfe/pull/494)
->>>>>>> 65d8fda (Update changelog)
 # v1.6.0
 
 ## Enhancements
