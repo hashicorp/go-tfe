@@ -17,12 +17,12 @@ func TestAgentsRead(t *testing.T) {
 	client := testClient(t)
 	ctx := context.Background()
 
-	org, orgCleanup = createOrganization(t, client)
+	org, orgCleanup := createOrganization(t, client)
 	t.Cleanup(orgCleanup)
 
 	upgradeOrganizationSubscription(t, client, org)
 
-	agentPool, agentPoolCleanup = createAgentPool(t, client, org)
+	agentPool, agentPoolCleanup := createAgentPool(t, client, org)
 	t.Cleanup(agentPoolCleanup)
 
 	agent, agentCleanup := createAgent(t, client, org, agentPool)
@@ -53,12 +53,14 @@ func TestAgentsList(t *testing.T) {
 	client := testClient(t)
 	ctx := context.Background()
 
-	org, orgCleanup = createOrganization(t, client)
+	org, orgCleanup := createOrganization(t, client)
+	t.Cleanup(orgCleanup)
 	upgradeOrganizationSubscription(t, client, org)
 
-	agentPool, agentPoolCleanup = createAgentPool(t, client, org)
+	agentPool, agentPoolCleanup := createAgentPool(t, client, org)
+	t.Cleanup(agentPoolCleanup)
 
-	agent, agentCleanup := createAgent(t, client, org, agentPool)
+	_, agentCleanup := createAgent(t, client, org, agentPool)
 	t.Cleanup(agentCleanup)
 
 	t.Run("expect an agent to exist", func(t *testing.T) {
