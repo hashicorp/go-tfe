@@ -33,17 +33,18 @@ type AgentList struct {
 
 // Agent represents a Terraform Cloud agent.
 type Agent struct {
-	ID   string `jsonapi:"primary,agents"`
-	Name string `jsonapi:"attr,name"`
-	IP   string `jsonapi:"attr,ip-address"`
-
-	// Relations
-	Organization *Organization `jsonapi:"relation,organization"`
-	Workspaces   []*Workspace  `jsonapi:"relation,workspaces"`
+	ID         string `jsonapi:"primary,agents"`
+	Name       string `jsonapi:"attr,name"`
+	IP         string `jsonapi:"attr,ip-address"`
+	Status     string `jsonapi:"attr,status"`
+	LastPingAt string `jsonapi:"attr,last-ping-at"`
 }
 
 type AgentListOptions struct {
 	ListOptions
+
+	//Optional:
+	Filter string `url:"filter[last-ping-since],omitempty"`
 }
 
 // Read a single agent by its ID
