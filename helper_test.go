@@ -95,7 +95,6 @@ func fetchTestAccountDetails(t *testing.T, client *Client) *TestAccountDetails {
 }
 
 func downloadFile(filepath string, url string) error {
-
 	// Get the data
 	resp, err := http.Get(url)
 	if err != nil {
