@@ -19,7 +19,6 @@ import (
 	"os/exec"
 	"path/filepath"
 	"strings"
-	"sync"
 	"testing"
 	"time"
 
@@ -203,9 +202,8 @@ func downloadTFCAgent(t *testing.T) (string, error) {
 	return fmt.Sprintf("%s/tfc-agent", tmpDir), nil
 }
 
-func createAgent(t *testing.T, client *Client, org *Organization, agentPool *AgentPool) (*Agent, func()) {
+func createAgent(t *testing.T, client *Client, org *Organization) (*Agent, *AgentPool, func()) {
 	var orgCleanup func()
-	var agentPoolCleanup func()
 	var agentPoolTokenCleanup func()
 	var agent *Agent
 
@@ -213,11 +211,9 @@ func createAgent(t *testing.T, client *Client, org *Organization, agentPool *Age
 		org, orgCleanup = createOrganization(t, client)
 	}
 
-	upgradeOrganizationSubscription(t, client, org)
+	agentPool, agentPoolCleanup := createAgentPool(t, client, org)
 
-	if agentPool == nil {
-		agentPool, agentPoolCleanup = createAgentPool(t, client, org)
-	}
+	upgradeOrganizationSubscription(t, client, org)
 
 	agentPoolToken, agentPoolTokenCleanup := createAgentToken(t, client, agentPool)
 
@@ -235,7 +231,7 @@ func createAgent(t *testing.T, client *Client, org *Organization, agentPool *Age
 
 	agentPath, err := downloadTFCAgent(t)
 	if err != nil {
-		return agent, cleanup
+		return agent, agentPool, cleanup
 	}
 
 	ctx := context.Background()
@@ -276,7 +272,7 @@ func createAgent(t *testing.T, client *Client, org *Organization, agentPool *Age
 
 	agent = i.(*Agent)
 
-	return agent, cleanup
+	return agent, agentPool, cleanup
 }
 
 func createAgentPool(t *testing.T, client *Client, org *Organization) (*AgentPool, func()) {
@@ -633,9 +629,9 @@ func createOAuthClient(t *testing.T, client *Client, org *Organization) (*OAuthC
 		org, orgCleanup = createOrganization(t, client)
 	}
 
-	githubToken := os.Getenv("GITHUB_TOKEN")
+	githubToken := os.Getenv("OAUTH_CLIENT_GITHUB_TOKEN")
 	if githubToken == "" {
-		t.Skip("Export a valid GITHUB_TOKEN before running this test!")
+		t.Skip("Export a valid OAUTH_CLIENT_GITHUB_TOKEN before running this test!")
 	}
 
 	options := OAuthClientCreateOptions{
@@ -1823,64 +1819,46 @@ func upgradeOrganizationSubscription(t *testing.T, client *Client, organization 
 
 func waitForSVOutputs(t *testing.T, client *Client, svID string) {
 	t.Helper()
-	wg := &sync.WaitGroup{}
-	wg.Add(1)
 
-	go func() {
-		_, err := retry(func() (interface{}, error) {
-			outputs, err := client.StateVersions.ListOutputs(context.Background(), svID, nil)
-			if err != nil {
-				return nil, err
-			}
-
-			if len(outputs.Items) == 0 {
-				return nil, errors.New("no state version outputs found")
-			}
-
-			return outputs, nil
-		})
+	_, err := retryPatiently(func() (interface{}, error) {
+		outputs, err := client.StateVersions.ListOutputs(context.Background(), svID, nil)
 		if err != nil {
-			t.Error(err)
+			return nil, err
 		}
 
-		wg.Done()
-	}()
+		if len(outputs.Items) == 0 {
+			return nil, errors.New("no state version outputs found")
+		}
 
-	wg.Wait()
+		return outputs, nil
+	})
+	if err != nil {
+		t.Error(err)
+	}
 }
 
 func waitForRunLock(t *testing.T, client *Client, workspaceID string) {
 	t.Helper()
-	wg := &sync.WaitGroup{}
-	wg.Add(1)
-
-	go func() {
-		_, err := retry(func() (interface{}, error) {
-			ws, err := client.Workspaces.ReadByID(context.Background(), workspaceID)
-			if err != nil {
-				return nil, err
-			}
-
-			if !ws.Locked {
-				return nil, errors.New("workspace is not locked by run")
-			}
-
-			return ws, nil
-		})
+	_, err := retry(func() (interface{}, error) {
+		ws, err := client.Workspaces.ReadByID(context.Background(), workspaceID)
 		if err != nil {
-			t.Error(err)
+			return nil, err
 		}
 
-		wg.Done()
-	}()
+		if !ws.Locked {
+			return nil, errors.New("workspace is not locked by run")
+		}
 
-	wg.Wait()
+		return ws, nil
+	})
+	if err != nil {
+		t.Error(err)
+	}
 }
 
-func retry(f retryableFn) (interface{}, error) { //nolint
-	tick := time.NewTicker(tickDuration * time.Second)
+func retryTimes(maxRetries, secondsBetween int, f retryableFn) (interface{}, error) {
+	tick := time.NewTicker(time.Duration(secondsBetween) * time.Second)
 	retries := 0
-	maxRetries := 5
 
 	defer tick.Stop()
 
@@ -1899,6 +1877,14 @@ func retry(f retryableFn) (interface{}, error) { //nolint
 			retries += 1
 		}
 	}
+}
+
+func retryPatiently(f retryableFn) (interface{}, error) { //nolint
+	return retryTimes(39, 3, f) // 40 attempts over 120 seconds
+}
+
+func retry(f retryableFn) (interface{}, error) { //nolint
+	return retryTimes(9, 3, f) // 10 attempts over 30 seconds
 }
 
 func genSha(t *testing.T, secret, data string) string {

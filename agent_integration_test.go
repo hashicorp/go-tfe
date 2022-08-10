@@ -21,10 +21,8 @@ func TestAgentsRead(t *testing.T) {
 
 	upgradeOrganizationSubscription(t, client, org)
 
-	agentPool, agentPoolCleanup := createAgentPool(t, client, org)
-	t.Cleanup(agentPoolCleanup)
+	agent, _, agentCleanup := createAgent(t, client, org)
 
-	agent, agentCleanup := createAgent(t, client, org, agentPool)
 	t.Cleanup(agentCleanup)
 
 	t.Run("when the agent exists", func(t *testing.T) {
@@ -58,7 +56,7 @@ func TestAgentsList(t *testing.T) {
 	agentPool, agentPoolCleanup := createAgentPool(t, client, org)
 	t.Cleanup(agentPoolCleanup)
 
-	_, agentCleanup := createAgent(t, client, org, agentPool)
+	_, agentPool, agentCleanup := createAgent(t, client, org)
 	t.Cleanup(agentCleanup)
 
 	t.Run("expect an agent to exist", func(t *testing.T) {
