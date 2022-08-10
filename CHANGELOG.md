@@ -1,12 +1,14 @@
 # Unreleased
 
+# v1.7.0
+
 ## Enhancements
 
 * Adds new run creation attributes: `allow-empty-apply`, `terraform-version`, `plan-only` by @sebasslash [#482](https://github.com/hashicorp/go-tfe/pull/447)
 * Adds additional Task Stage and Run Statuses for Pre-plan run tasks by @glennsarti [#469](https://github.com/hashicorp/go-tfe/pull/469)
 * Adds `stage` field to the create and update methods for Workspace Run Tasks by @glennsarti [#469](https://github.com/hashicorp/go-tfe/pull/469)
 * Adds `ResourcesProcessed`, `StateVersion`, `TerraformVersion`, `Modules`, `Providers`, and `Resources` fields to the State Version struct by @laurenolivia [#484](https://github.com/hashicorp/go-tfe/pull/484)
-* Add support for disabled file trigger runs when setting Git tags by @hashimoon [#468](https://github.com/hashicorp/go-tfe/pull/468)
+* Allow FileTriggersEnabled to be set to false when Git tags are present by @mjyocca @hashimoon  [#468] (https://github.com/hashicorp/go-tfe/pull/468)
 
 # v1.6.0
 
