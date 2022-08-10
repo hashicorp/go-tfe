@@ -55,12 +55,18 @@ type StateVersionList struct {
 
 // StateVersion represents a Terraform Enterprise state version.
 type StateVersion struct {
-	ID           string    `jsonapi:"primary,state-versions"`
-	CreatedAt    time.Time `jsonapi:"attr,created-at,iso8601"`
-	DownloadURL  string    `jsonapi:"attr,hosted-state-download-url"`
-	Serial       int64     `jsonapi:"attr,serial"`
-	VCSCommitSHA string    `jsonapi:"attr,vcs-commit-sha"`
-	VCSCommitURL string    `jsonapi:"attr,vcs-commit-url"`
+	ID                 string                   `jsonapi:"primary,state-versions"`
+	CreatedAt          time.Time                `jsonapi:"attr,created-at,iso8601"`
+	DownloadURL        string                   `jsonapi:"attr,hosted-state-download-url"`
+	Serial             int64                    `jsonapi:"attr,serial"`
+	VCSCommitSHA       string                   `jsonapi:"attr,vcs-commit-sha"`
+	VCSCommitURL       string                   `jsonapi:"attr,vcs-commit-url"`
+	ResourcesProcessed bool                     `jsonapi:"attr,resources-processed"`
+	StateVersion       int                      `jsonapi:"attr,state-version"`
+	TerraformVersion   string                   `jsonapi:"attr,terraform-version"`
+	Modules            *StateVersionModules     `jsonapi:"attr,modules"`
+	Providers          *StateVersionProviders   `jsonapi:"attr,providers"`
+	Resources          []*StateVersionResources `jsonapi:"attr,resources"`
 
 	// Relations
 	Run     *Run                  `jsonapi:"relation,run"`
@@ -139,13 +145,39 @@ type StateVersionCreateOptions struct {
 	// Optional: Specifies the run to associate the state with.
 	Run *Run `jsonapi:"relation,run,omitempty"`
 
-	// Optional: The external, json representation of state outputs, base64 encoded. Supplying this field 
+	// Optional: The external, json representation of state outputs, base64 encoded. Supplying this field
 	// will provide more detailed output type information to TFE.
 	// For more information on the contents of this field: https://www.terraform.io/internals/json-format#values-representation
 	// about the current terraform state.
 	//
 	// **Note**: This field is in BETA, subject to change and not widely available yet.
 	JSONStateOutputs *string `jsonapi:"attr,json-state-outputs,omitempty"`
+}
+
+type StateVersionModules struct {
+	Root StateVersionModuleRoot `jsonapi:"attr,root"`
+}
+
+type StateVersionModuleRoot struct {
+	NullResource         int `jsonapi:"attr,null-resource"`
+	TerraformRemoteState int `jsonapi:"attr,data.terraform-remote-state"`
+}
+
+type StateVersionProviders struct {
+	Data ProviderData `jsonapi:"attr,provider[map]string"`
+}
+
+type ProviderData struct {
+	NullResource         int `json:"null-resource"`
+	TerraformRemoteState int `json:"data.terraform-remote-state"`
+}
+
+type StateVersionResources struct {
+	Name     string `jsonapi:"attr,name"`
+	Count    string `jsonapi:"attr,count"`
+	Type     int    `jsonapi:"attr,type"`
+	Module   string `jsonapi:"attr,module"`
+	Provider string `jsonapi:"attr,provider"`
 }
 
 // List all the state versions for a given workspace.
