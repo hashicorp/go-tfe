@@ -18,6 +18,7 @@ import (
 	"os"
 	"os/exec"
 	"path/filepath"
+	"runtime"
 	"strings"
 	"testing"
 	"time"
@@ -1952,6 +1953,17 @@ func skipIfBeta(t *testing.T) {
 	if !betaFeaturesEnabled() {
 		t.Skip("Skipping test related to a Terraform Cloud beta feature. Set ENABLE_BETA=1 to run.")
 	}
+}
+
+// skips a test if the architecture is not linux_amd64
+func skipIfNotRuntime(t *testing.T) {
+	if !runtimeCompatible() {
+		t.Skip("Skipping test if architecture is not linux_amd64")
+	}
+}
+
+func runtimeCompatible() bool {
+	return runtime.GOOS == "linux" && runtime.GOARCH == "amd64"
 }
 
 // Checks to see if ENABLE_TFE is set to 1, thereby enabling enterprise tests.
