@@ -1,5 +1,7 @@
 # Unreleased Changes
 
+* Adds agent datasource to the client by @laurenolivia [#456](https://github.com/hashicorp/go-tfe/pull/456)
+
 # v1.7.0
 
 ## Enhancements
