@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"net/url"
+	"time"
 )
 
 // Compile-time proof of interface implementation.
@@ -44,7 +45,7 @@ type AgentListOptions struct {
 	ListOptions
 
 	//Optional:
-	Filter string `url:"filter[last-ping-since],omitempty"`
+	LastPingSince time.Time `url:"filter[last-ping-since],omitempty,iso8601"`
 }
 
 // Read a single agent by its ID
