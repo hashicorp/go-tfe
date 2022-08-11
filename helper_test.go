@@ -29,7 +29,6 @@ import (
 )
 
 const badIdentifier = "! / nope" //nolint
-const tickDuration = 2
 const agentVersion = "1.3.0"
 
 // Memoize test account details
