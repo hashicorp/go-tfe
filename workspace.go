@@ -1072,15 +1072,15 @@ func (o WorkspaceCreateOptions) valid() error {
 		o.TriggerPatterns != nil && len(o.TriggerPatterns) > 0 {
 		return ErrUnsupportedBothTriggerPatternsAndPrefixes
 	}
-	if o.VCSRepo != nil && o.VCSRepo.TagsRegex != nil &&
+	if tagRegexDefined(o.VCSRepo) &&
 		o.TriggerPatterns != nil && len(o.TriggerPatterns) > 0 {
 		return ErrUnsupportedBothTagsRegexAndTriggerPatterns
 	}
-	if o.VCSRepo != nil && o.VCSRepo.TagsRegex != nil &&
+	if tagRegexDefined(o.VCSRepo) &&
 		o.TriggerPrefixes != nil && len(o.TriggerPrefixes) > 0 {
 		return ErrUnsupportedBothTagsRegexAndTriggerPrefixes
 	}
-	if o.VCSRepo != nil && o.VCSRepo.TagsRegex != nil &&
+	if tagRegexDefined(o.VCSRepo) &&
 		o.FileTriggersEnabled != nil && *o.FileTriggersEnabled {
 		return ErrUnsupportedBothTagsRegexAndFileTriggersEnabled
 	}
@@ -1103,15 +1103,15 @@ func (o WorkspaceUpdateOptions) valid() error {
 		return ErrUnsupportedBothTriggerPatternsAndPrefixes
 	}
 
-	if o.VCSRepo != nil && o.VCSRepo.TagsRegex != nil &&
+	if tagRegexDefined(o.VCSRepo) &&
 		o.TriggerPatterns != nil && len(o.TriggerPatterns) > 0 {
 		return ErrUnsupportedBothTagsRegexAndTriggerPatterns
 	}
-	if o.VCSRepo != nil && o.VCSRepo.TagsRegex != nil &&
+	if tagRegexDefined(o.VCSRepo) &&
 		o.TriggerPrefixes != nil && len(o.TriggerPrefixes) > 0 {
 		return ErrUnsupportedBothTagsRegexAndTriggerPrefixes
 	}
-	if o.VCSRepo != nil && o.VCSRepo.TagsRegex != nil &&
+	if tagRegexDefined(o.VCSRepo) &&
 		o.FileTriggersEnabled != nil && *o.FileTriggersEnabled {
 		return ErrUnsupportedBothTagsRegexAndFileTriggersEnabled
 	}
@@ -1220,4 +1220,14 @@ func validateWorkspaceIncludeParams(params []WSIncludeOpt) error {
 	}
 
 	return nil
+}
+
+func tagRegexDefined(options *VCSRepoOptions) bool {
+	if options == nil {
+		return false
+	}
+	if options.TagsRegex != nil && *options.TagsRegex != "" {
+		return true
+	}
+	return false
 }
