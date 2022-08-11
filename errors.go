@@ -176,6 +176,8 @@ var (
 
 	ErrInvalidArch = errors.New("invalid value for arch")
 
+	ErrInvalidAgentID = errors.New("invalid value for Agent ID")
+
 	ErrInvalidRegistryName = errors.New(`invalid value for registry-name. It must be either "private" or "public"`)
 )
 

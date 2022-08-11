@@ -1,6 +1,7 @@
 package tfe
 
 import (
+	"archive/zip"
 	"context"
 	"crypto/hmac"
 	"crypto/md5"
@@ -12,8 +13,13 @@ import (
 	"io"
 	"io/ioutil"
 	"math/rand"
+	"net/http"
 	"net/url"
 	"os"
+	"os/exec"
+	"path/filepath"
+	"runtime"
+	"strings"
 	"testing"
 	"time"
 
@@ -23,6 +29,7 @@ import (
 )
 
 const badIdentifier = "! / nope" //nolint
+const agentVersion = "1.3.0"
 
 // Memoize test account details
 var _testAccountDetails *TestAccountDetails
@@ -84,6 +91,187 @@ func fetchTestAccountDetails(t *testing.T, client *Client) *TestAccountDetails {
 		_testAccountDetails = FetchTestAccountDetails(t, client)
 	}
 	return _testAccountDetails
+}
+
+func downloadFile(filepath string, url string) error {
+	// Get the data
+	resp, err := http.Get(url)
+	if err != nil {
+		return err
+	}
+	defer resp.Body.Close()
+
+	// Create the file
+	out, err := os.Create(filepath)
+	if err != nil {
+		return err
+	}
+	defer out.Close()
+
+	// Write the body to file
+	_, err = io.Copy(out, resp.Body)
+	return err
+}
+
+func unzip(src, dest string) error {
+	r, err := zip.OpenReader(src)
+	if err != nil {
+		return err
+	}
+	defer func() {
+		if err := r.Close(); err != nil {
+			panic(err)
+		}
+	}()
+
+	os.MkdirAll(dest, 0755)
+
+	// Closure to address file descriptors issue with all the deferred .Close() methods
+	extractAndWriteFile := func(f *zip.File) error {
+		rc, err := f.Open()
+		if err != nil {
+			return err
+		}
+		defer func() {
+			if err := rc.Close(); err != nil {
+				panic(err)
+			}
+		}()
+
+		path := filepath.Join(dest, f.Name)
+
+		// Check for ZipSlip (Directory traversal)
+		if !strings.HasPrefix(path, filepath.Clean(dest)+string(os.PathSeparator)) {
+			return fmt.Errorf("illegal file path: %s", path)
+		}
+
+		if f.FileInfo().IsDir() {
+			os.MkdirAll(path, f.Mode())
+		} else {
+			os.MkdirAll(filepath.Dir(path), f.Mode())
+			f, err := os.OpenFile(path, os.O_WRONLY|os.O_CREATE|os.O_TRUNC, f.Mode())
+			if err != nil {
+				return err
+			}
+			defer func() {
+				if err := f.Close(); err != nil {
+					panic(err)
+				}
+			}()
+
+			_, err = io.Copy(f, rc)
+			if err != nil {
+				return err
+			}
+		}
+		return nil
+	}
+
+	for _, f := range r.File {
+		err := extractAndWriteFile(f)
+		if err != nil {
+			return err
+		}
+	}
+
+	return nil
+}
+
+func downloadTFCAgent(t *testing.T) (string, error) {
+	t.Helper()
+
+	tmpDir, err := os.MkdirTemp("", "tfc-agent")
+	if err != nil {
+		return "", fmt.Errorf("cannot create temp dir: %w", err)
+	}
+	t.Cleanup(func() {
+		fmt.Printf("cleaning up %s \n", tmpDir)
+		os.RemoveAll(tmpDir)
+	})
+	agentPath := fmt.Sprintf("https://releases.hashicorp.com/tfc-agent/%s/tfc-agent_%s_linux_amd64.zip", agentVersion, agentVersion)
+	zipFile := fmt.Sprintf("%s/agent.zip", tmpDir)
+
+	if err = downloadFile(zipFile, agentPath); err != nil {
+		return "", fmt.Errorf("cannot download agent file: %w", err)
+	}
+
+	if err = unzip(zipFile, tmpDir); err != nil {
+		return "", fmt.Errorf("cannot unzip file: %w", err)
+	}
+	return fmt.Sprintf("%s/tfc-agent", tmpDir), nil
+}
+
+func createAgent(t *testing.T, client *Client, org *Organization) (*Agent, *AgentPool, func()) {
+	var orgCleanup func()
+	var agentPoolTokenCleanup func()
+	var agent *Agent
+
+	if org == nil {
+		org, orgCleanup = createOrganization(t, client)
+	}
+
+	agentPool, agentPoolCleanup := createAgentPool(t, client, org)
+
+	upgradeOrganizationSubscription(t, client, org)
+
+	agentPoolToken, agentPoolTokenCleanup := createAgentToken(t, client, agentPool)
+
+	cleanup := func() {
+		agentPoolTokenCleanup()
+
+		if agentPoolCleanup != nil {
+			agentPoolCleanup()
+		}
+
+		if orgCleanup != nil {
+			orgCleanup()
+		}
+	}
+
+	agentPath, err := downloadTFCAgent(t)
+	if err != nil {
+		return agent, agentPool, cleanup
+	}
+
+	ctx := context.Background()
+
+	cmd := exec.Command(agentPath)
+	cmd.Env = os.Environ()
+	cmd.Env = append(cmd.Env, "TFC_AGENT_TOKEN="+agentPoolToken.Token)
+	cmd.Env = append(cmd.Env, "TFC_AGENT_NAME="+"test-agent")
+	cmd.Env = append(cmd.Env, "TFC_ADDRESS="+DefaultConfig().Address)
+
+	go func() {
+		_, err := cmd.CombinedOutput()
+		if err != nil {
+			t.Logf("Could not run container: %s", err)
+		}
+	}()
+
+	t.Cleanup(func() {
+		cmd.Process.Kill()
+	})
+
+	i, err := retry(func() (interface{}, error) {
+
+		agentList, err := client.Agents.List(ctx, agentPool.ID, nil)
+		if err != nil {
+			return nil, err
+		}
+
+		if agentList != nil && len(agentList.Items) > 0 {
+			return agentList.Items[0], nil
+		}
+		return nil, errors.New("no agent found")
+	})
+
+	if err != nil {
+		t.Fatalf("Could not return an agent %s", err)
+	}
+
+	agent = i.(*Agent)
+
+	return agent, agentPool, cleanup
 }
 
 func createAgentPool(t *testing.T, client *Client, org *Organization) (*AgentPool, func()) {
@@ -1763,6 +1951,17 @@ func skipIfBeta(t *testing.T) {
 	if !betaFeaturesEnabled() {
 		t.Skip("Skipping test related to a Terraform Cloud beta feature. Set ENABLE_BETA=1 to run.")
 	}
+}
+
+// skips a test if the architecture is not linux_amd64
+func skipIfNotLinuxAmd64(t *testing.T) {
+	if !linuxAmd64() {
+		t.Skip("Skipping test if architecture is not linux_amd64")
+	}
+}
+
+func linuxAmd64() bool {
+	return runtime.GOOS == "linux" && runtime.GOARCH == "amd64"
 }
 
 // Checks to see if ENABLE_TFE is set to 1, thereby enabling enterprise tests.
