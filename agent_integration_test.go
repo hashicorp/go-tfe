@@ -12,7 +12,7 @@ import (
 )
 
 func TestAgentsRead(t *testing.T) {
-	skipIfNotRuntime(t)
+	skipIfNotLinuxAmd64(t)
 
 	client := testClient(t)
 	ctx := context.Background()
@@ -46,7 +46,7 @@ func TestAgentsRead(t *testing.T) {
 }
 
 func TestAgentsList(t *testing.T) {
-	skipIfNotRuntime(t)
+	skipIfNotLinuxAmd64(t)
 
 	client := testClient(t)
 	ctx := context.Background()
@@ -55,9 +55,6 @@ func TestAgentsList(t *testing.T) {
 	t.Cleanup(orgCleanup)
 
 	upgradeOrganizationSubscription(t, client, org)
-
-	agentPool, agentPoolCleanup := createAgentPool(t, client, org)
-	t.Cleanup(agentPoolCleanup)
 
 	_, agentPool, agentCleanup := createAgent(t, client, org)
 	t.Cleanup(agentCleanup)

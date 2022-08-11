@@ -1955,13 +1955,13 @@ func skipIfBeta(t *testing.T) {
 }
 
 // skips a test if the architecture is not linux_amd64
-func skipIfNotRuntime(t *testing.T) {
-	if !runtimeCompatible() {
+func skipIfNotLinuxAmd64(t *testing.T) {
+	if !linuxAmd64() {
 		t.Skip("Skipping test if architecture is not linux_amd64")
 	}
 }
 
-func runtimeCompatible() bool {
+func linuxAmd64() bool {
 	return runtime.GOOS == "linux" && runtime.GOARCH == "amd64"
 }
 
