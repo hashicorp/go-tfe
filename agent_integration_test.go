@@ -53,6 +53,7 @@ func TestAgentsList(t *testing.T) {
 
 	org, orgCleanup := createOrganization(t, client)
 	t.Cleanup(orgCleanup)
+
 	upgradeOrganizationSubscription(t, client, org)
 
 	agentPool, agentPoolCleanup := createAgentPool(t, client, org)
