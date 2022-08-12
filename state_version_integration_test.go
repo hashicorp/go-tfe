@@ -46,22 +46,20 @@ func TestStateVersionsList(t *testing.T) {
 		require.NoError(t, err)
 		require.NotEmpty(t, svl.Items)
 
-		// We need to strip the upload URL as that is a dynamic link.
-		svTest1.DownloadURL = ""
-		svTest2.DownloadURL = ""
-
-		// And for the retrieved configuration versions as well.
-		for _, sv := range svl.Items {
-			sv.DownloadURL = ""
-		}
-
-		// outputs are populated only once the state has been parsed by TFC
+		// outputs, providers are populated only once the state has been parsed by TFC
 		// which can cause the tests to fail if it doesn't happen fast enough.
+		// download url is ignored since it is a dynamic lin
 		for idx := range svl.Items {
+			svl.Items[idx].DownloadURL = ""
 			svl.Items[idx].Outputs = nil
+			svl.Items[idx].Providers = nil
 		}
-		svTest1.Outputs = nil
-		svTest2.Outputs = nil
+
+		for _, sv := range []*StateVersion{svTest1, svTest2} {
+			sv.DownloadURL = ""
+			sv.Outputs = nil
+			sv.Providers = nil
+		}
 
 		assert.Contains(t, svl.Items, svTest1)
 		assert.Contains(t, svl.Items, svTest2)
@@ -393,15 +391,17 @@ func TestStateVersionsCurrent(t *testing.T) {
 		sv, err := client.StateVersions.ReadCurrent(ctx, wTest1.ID)
 		require.NoError(t, err)
 
-		// Don't compare the DownloadURL because it will be generated twice
-		// in this test - once at creation of the configuration version, and
-		// again during the GET.
-		svTest.DownloadURL, sv.DownloadURL = "", ""
+		for _, stateVersion := range []*StateVersion{svTest, sv} {
+			// Don't compare the DownloadURL because it will be generated twice
+			// in this test - once at creation of the configuration version, and
+			// again during the GET.
+			stateVersion.DownloadURL = ""
 
-		// outputs are populated only once the state has been parsed by TFC
-		// which can cause the tests to fail if it doesn't happen fast enough.
-		svTest.Outputs = nil
-		sv.Outputs = nil
+			// outputs, providers are populated only once the state has been parsed by TFC
+			// which can cause the tests to fail if it doesn't happen fast enough.
+			stateVersion.Outputs = nil
+			stateVersion.Providers = nil
+		}
 
 		assert.Equal(t, svTest, sv)
 	})

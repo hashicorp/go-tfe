@@ -20,10 +20,10 @@ type AgentPools interface {
 	// Create a new agent pool with the given options.
 	Create(ctx context.Context, organization string, options AgentPoolCreateOptions) (*AgentPool, error)
 
-	// Read a agent pool by its ID.
+	// Read an agent pool by its ID.
 	Read(ctx context.Context, agentPoolID string) (*AgentPool, error)
 
-	// Read a agent pool by its ID with the given options.
+	// Read an agent pool by its ID with the given options.
 	ReadWithOptions(ctx context.Context, agentPoolID string, options *AgentPoolReadOptions) (*AgentPool, error)
 
 	// Update an agent pool by its ID.
