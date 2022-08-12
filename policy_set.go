@@ -104,6 +104,10 @@ type PolicySetListOptions struct {
 
 	// Optional: A search string (partial policy set name) used to filter the results.
 	Search string `url:"search[name],omitempty"`
+
+	// Optional: A list of relations to include. See available resources
+	// https://www.terraform.io/cloud-docs/api-docs/policy-sets#available-related-resources
+	Include []PolicySetIncludeOpt `url:"include,omitempty"`
 }
 
 // PolicySetReadOptions are read options.
