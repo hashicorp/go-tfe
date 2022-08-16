@@ -1,6 +1,9 @@
-# Unreleased Changes
+# v1.8.0
 
-* Adds agent datasource to the client by @laurenolivia [#456](https://github.com/hashicorp/go-tfe/pull/456)
+## Enhancements
+
+* Adds support for reading and listing Agents by @laurenolivia [#456](https://github.com/hashicorp/go-tfe/pull/456)
+* It was previously logged that we added an `Include` param field to `PolicySetListOptions` to allow policy list to include related resource data such as workspaces, policies, newest_version, or current_version by @Uk1288 [#497](https://github.com/hashicorp/go-tfe/pull/497) in 1.7.0, but this was a mistake and the field is added in v1.8.0
 
 # v1.7.0
 
