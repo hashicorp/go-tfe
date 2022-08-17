@@ -72,6 +72,7 @@ jobs:
           TFC_RUN_TASK_URL: "https://httpstat.us/200"
           GITHUB_POLICY_SET_IDENTIFIER: "hashicorp/test-policy-set"
           GITHUB_REGISTRY_MODULE_IDENTIFIER: "hashicorp/terraform-random-module"
+          OAUTH_CLIENT_GITHUB_TOKEN: "${{ secrets.OAUTH_CLIENT_GITHUB_TOKEN }}"
           GO111MODULE: "on"
         run: |
           source $HOME/.env
