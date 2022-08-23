@@ -141,7 +141,7 @@ func TestRunsListQueryParams(t *testing.T) {
 		},
 		{
 			description: "with name parameter",
-			options:     &RunListOptions{Name: currentUser.Username, Include: []RunIncludeOpt{RunWorkspace}},
+			options:     &RunListOptions{User: currentUser.Username, Include: []RunIncludeOpt{RunWorkspace}},
 			assertion: func(tc testCase, rl *RunList, err error) {
 				found := []string{}
 				for _, r := range rl.Items {
@@ -153,7 +153,7 @@ func TestRunsListQueryParams(t *testing.T) {
 		},
 		{
 			description: "with name & commit parameter",
-			options:     &RunListOptions{Name: randomString(t), Commit: randomString(t), Include: []RunIncludeOpt{RunWorkspace}},
+			options:     &RunListOptions{User: randomString(t), Commit: randomString(t), Include: []RunIncludeOpt{RunWorkspace}},
 			assertion: func(tc testCase, rl *RunList, err error) {
 				require.NoError(t, err)
 				assert.Equal(t, 0, len(rl.Items))
