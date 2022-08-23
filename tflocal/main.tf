@@ -3,7 +3,6 @@ module "tflocal" {
   version                      = "0.3.0"
   tflocal_cloud                = "true"
   tflocal_cloud_admin_password = var.tflocal_cloud_admin_password
-  tflocal_cloud_admin_token    = var.tflocal_cloud_admin_token
   git_branch                   = var.git_branch
   tfe_ref                      = var.tfe_ref
   ngrok_domain                 = var.ngrok_domain

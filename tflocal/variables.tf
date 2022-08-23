@@ -7,12 +7,6 @@ variable "tflocal_cloud_admin_password" {
   type        = string
 }
 
-variable "tflocal_cloud_admin_token" {
-  description = "The token for accessing this instance's API as admin"
-  type        = string
-  sensitive   = true
-}
-
 variable "env" {
   description = "Environment variables that will be present during startup. These may be propagated into services through the Docker Compose definitions"
   type        = map(string)
