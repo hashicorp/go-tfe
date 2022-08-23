@@ -69,13 +69,12 @@ jobs:
 
       - name: Run Tests
         env:
-          TFE_TOKEN: "${{ env.TFE_TOKEN }}"
-          TFE_ADDRESS: "${{ env.TFE_ADDRESS }}"
           TFC_RUN_TASK_URL: "https://httpstat.us/200"
           GITHUB_POLICY_SET_IDENTIFIER: "hashicorp/test-policy-set"
           GITHUB_REGISTRY_MODULE_IDENTIFIER: "hashicorp/terraform-random-module"
           GO111MODULE: "on"
         run: |
+          source $HOME/.env
           gotestsum --format short-verbose -- -timeout=40m -tags=integration
 
 
