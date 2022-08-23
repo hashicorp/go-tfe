@@ -212,7 +212,7 @@ type RunListOptions struct {
 	Commit string `url:"search[commit],omitempty"`
 
 	// Optional: Searches runs that matches the supplied VCS username, commit sha, run_id, and run message.
-	// The presence of search[commit] or search[user] takes priority over this parameter and will cause it to not be used.
+	// The presence of search[commit] or search[user] takes priority over this parameter and will be omitted.
 	Search string `url:"search[basic],omitempty"`
 
 	// Optional: Current status of the run.
