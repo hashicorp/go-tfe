@@ -2,6 +2,17 @@ variable "aws_region" {
   type = string
 }
 
+variable "artifactory_username" {
+  description = "Username for Artifactory repository access"
+  type = string
+}
+
+variable "artifactory_token" {
+  description = "Token for Artifactory repository access"
+  type = string
+  sensitive = true
+}
+
 variable "tflocal_cloud_admin_password" {
   description = "The password for logging into this tfe:local's TFC instance; stored in 1Password under Engineering Service's 'TFLOCAL_CLOUD tfe instance login and ngrok'"
   type        = string
