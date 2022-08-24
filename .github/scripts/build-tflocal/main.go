@@ -10,8 +10,11 @@ import (
 	tfe "github.com/hashicorp/go-tfe"
 )
 
-// replaceInstance contains the state target that will be forcibly replaced every run
-const replaceInstance = "module.tflocal.module.tfbox.aws_instance.tfbox"
+// instanceAddr contains the state target that will be forcibly replaced every run
+const instanceAddr = "module.tflocal.module.tfbox.aws_instance.tfbox"
+
+// tokenAddr contains the target token that will be forcibly replaced every run
+const tokenAddr = "module.tflocal.var.tflocal_cloud_admin_token"
 
 func main() {
 	ctx, cancel := signal.NotifyContext(context.Background(), os.Interrupt)
@@ -45,7 +48,7 @@ func triggerRun(ctx context.Context, organizationName, workspaceName string) err
 		IsDestroy:    tfe.Bool(false),
 		Message:      tfe.String("Queued nightly from tflocal-cloud GH Actions via go-tfe"),
 		Workspace:    wk,
-		ReplaceAddrs: []string{replaceInstance},
+		ReplaceAddrs: []string{instanceAddr, tokenAddr},
 	})
 	if err != nil {
 		return fmt.Errorf("failed to trigger run: %w", err)

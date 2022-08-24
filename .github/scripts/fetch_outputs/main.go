@@ -6,6 +6,7 @@ import (
 	"log"
 	"os"
 	"os/signal"
+	"path/filepath"
 	"strings"
 
 	tfe "github.com/hashicorp/go-tfe"
@@ -81,20 +82,20 @@ func newRunnerConfiguration(ctx context.Context, outputs []*tfe.StateVersionOutp
 
 // writeToEnv writes the WorkflowRunnerConfiguration to $GITHUB_ENV
 func writeToEnv(ctx context.Context, config WorkflowRunnerConfiguration) error {
-	env, ok := os.LookupEnv("GITHUB_ENV")
-	if !ok {
-		// most likely will never happen
-		return fmt.Errorf("github env file path is not set as GITHUB_ENV")
+	homeDir, err := os.UserHomeDir()
+	if err != nil {
+		return err
 	}
 
-	f, err := os.OpenFile(env, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
+	name := filepath.Join(homeDir, ".env")
+	f, err := os.OpenFile(name, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
 	if err != nil {
 		return err
 	}
 	defer f.Close()
 
 	for k := range config {
-		envVar := fmt.Sprintf("%s=%s\n", k, config[k])
+		envVar := fmt.Sprintf("export %s=%s\n", k, config[k])
 		if _, err := f.WriteString(envVar); err != nil {
 			return err
 		}
