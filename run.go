@@ -205,24 +205,26 @@ const (
 type RunListOptions struct {
 	ListOptions
 
-	// Optional: Username of user who created the run
-	// **Note: This API is still in BETA and is subject to change.**
-	Name string `url:"search[name],omitempty"`
+	// Optional: Searches runs that matches the supplied VCS username.
+	User string `url:"search[user],omitempty"`
 
-	// Optional: Commit SHA for runs triggered via a vcs event
-	// **Note: This API is still in BETA and is subject to change.**
+	// Optional: Searches runs that matches the supplied commit sha.
 	Commit string `url:"search[commit],omitempty"`
 
-	// Optional: Current status of the run
-	// **Note: This API is still in BETA and is subject to change.**
+	// Optional: Searches runs that matches the supplied VCS username, commit sha, run_id, and run message.
+	// The presence of search[commit] or search[user] takes priority over this parameter and will be omitted.
+	Search string `url:"search[basic],omitempty"`
+
+	// Optional: Current status of the run.
+	// Options are listed at https://www.terraform.io/cloud-docs/api-docs/run#run-states
 	Status string `url:"filter[status],omitempty"`
 
-	// Optional: Source that triggered the run
-	// **Note: This API is still in BETA and is subject to change.**
+	// Optional: Source that triggered the run.
+	// Options are listed at https://www.terraform.io/cloud-docs/api-docs/run#run-sources
 	Source string `url:"filter[source],omitempty"`
 
-	// Optional: Operation type for the run
-	// **Note: This API is still in BETA and is subject to change.**
+	// Optional: Operation type for the run.
+	// Options are listed at https://www.terraform.io/cloud-docs/api-docs/run#run-operations
 	Operation string `url:"filter[operation],omitempty"`
 
 	// Optional: A list of relations to include. See available resources:

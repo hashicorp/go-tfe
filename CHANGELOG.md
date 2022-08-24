@@ -1,3 +1,8 @@
+# Unreleased Changes
+
+## Enhancements
+* Beta removal for `RunListOptions`, in addition to a Field rename (Name -> User) by @mjyocca [#472](https://github.com/hashicorp/go-tfe/pull/472)
+
 # v1.8.0
 
 ## Enhancements

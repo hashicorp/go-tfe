@@ -109,9 +109,7 @@ func TestRunsListQueryParams(t *testing.T) {
 
 	workspaceTest, _ := createWorkspace(t, client, orgTest)
 	createPlannedRun(t, client, workspaceTest)
-	pendingRun, _ := createRun(t, client, workspaceTest)
-
-	currentUser, _ := client.Users.ReadCurrent(ctx)
+	createRun(t, client, workspaceTest)
 
 	testCases := []testCase{
 		{
@@ -140,20 +138,8 @@ func TestRunsListQueryParams(t *testing.T) {
 			},
 		},
 		{
-			description: "with name parameter",
-			options:     &RunListOptions{Name: currentUser.Username, Include: []RunIncludeOpt{RunWorkspace}},
-			assertion: func(tc testCase, rl *RunList, err error) {
-				found := []string{}
-				for _, r := range rl.Items {
-					found = append(found, r.ID)
-				}
-				assert.Equal(t, 2, len(rl.Items))
-				assert.Contains(t, found, pendingRun.ID)
-			},
-		},
-		{
-			description: "with name & commit parameter",
-			options:     &RunListOptions{Name: randomString(t), Commit: randomString(t), Include: []RunIncludeOpt{RunWorkspace}},
+			description: "with mismatch user & commit parameter",
+			options:     &RunListOptions{User: randomString(t), Commit: randomString(t), Include: []RunIncludeOpt{RunWorkspace}},
 			assertion: func(tc testCase, rl *RunList, err error) {
 				require.NoError(t, err)
 				assert.Equal(t, 0, len(rl.Items))
@@ -163,7 +149,6 @@ func TestRunsListQueryParams(t *testing.T) {
 
 	for _, testCase := range testCases {
 		t.Run(testCase.description, func(t *testing.T) {
-			skipIfBeta(t)
 			runs, err := client.Runs.List(ctx, workspaceTest.ID, testCase.options)
 			testCase.assertion(testCase, runs, err)
 		})
