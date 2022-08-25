@@ -48,6 +48,7 @@ func triggerRun(ctx context.Context, organizationName, workspaceName string) err
 		IsDestroy:    tfe.Bool(false),
 		Message:      tfe.String("Queued nightly from tflocal-cloud GH Actions via go-tfe"),
 		Workspace:    wk,
+		AutoApply:    tfe.Bool(true),
 		ReplaceAddrs: []string{instanceAddr, tokenAddr},
 	})
 	if err != nil {
