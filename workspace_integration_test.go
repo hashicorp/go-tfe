@@ -9,6 +9,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"os"
 	"sort"
 	"strings"
 	"testing"
@@ -260,7 +261,7 @@ func TestWorkspacesCreate(t *testing.T) {
 
 	t.Run("when options includes both an operations value and an enforcement mode value", func(t *testing.T) {
 		options := WorkspaceCreateOptions{
-			Name:          String("foo"),
+			Name:          String(fmt.Sprintf("foo-%s", randomString(t))),
 			ExecutionMode: String("remote"),
 			Operations:    Bool(true),
 		}
@@ -272,7 +273,7 @@ func TestWorkspacesCreate(t *testing.T) {
 
 	t.Run("when an agent pool ID is specified without 'agent' execution mode", func(t *testing.T) {
 		options := WorkspaceCreateOptions{
-			Name:        String("foo"),
+			Name:        String(fmt.Sprintf("foo-%s", randomString(t))),
 			AgentPoolID: String("apool-xxxxx"),
 		}
 
@@ -283,7 +284,7 @@ func TestWorkspacesCreate(t *testing.T) {
 
 	t.Run("when 'agent' execution mode is specified without an an agent pool ID", func(t *testing.T) {
 		options := WorkspaceCreateOptions{
-			Name:          String("foo"),
+			Name:          String(fmt.Sprintf("foo-%s", randomString(t))),
 			ExecutionMode: String("agent"),
 		}
 
@@ -294,7 +295,7 @@ func TestWorkspacesCreate(t *testing.T) {
 
 	t.Run("when an error is returned from the API", func(t *testing.T) {
 		w, err := client.Workspaces.Create(ctx, "bar", WorkspaceCreateOptions{
-			Name:             String("bar"),
+			Name:             String(fmt.Sprintf("bar-%s", randomString(t))),
 			TerraformVersion: String("nonexisting"),
 		})
 		assert.Nil(t, w)
@@ -333,7 +334,7 @@ func TestWorkspacesCreate(t *testing.T) {
 
 	t.Run("when options include both non-empty trigger-patterns and trigger-paths error is returned", func(t *testing.T) {
 		options := WorkspaceCreateOptions{
-			Name:                String("foobar"),
+			Name:                String(fmt.Sprintf("foobar-%s", randomString(t))),
 			FileTriggersEnabled: Bool(true),
 			TriggerPrefixes:     []string{"/module-1", "/module-2"},
 			TriggerPatterns:     []string{"/module-1/**/*", "/**/networking/*"},
@@ -377,7 +378,7 @@ func TestWorkspacesCreate(t *testing.T) {
 
 	t.Run("when options include both non-empty tags-regex and trigger-patterns error is returned", func(t *testing.T) {
 		options := WorkspaceCreateOptions{
-			Name:                String("foobar"),
+			Name:                String(fmt.Sprintf("foobar-%s", randomString(t))),
 			FileTriggersEnabled: Bool(false),
 			VCSRepo:             &VCSRepoOptions{TagsRegex: String("foobar")},
 			TriggerPatterns:     []string{"/module-1/**/*", "/**/networking/*"},
@@ -390,7 +391,7 @@ func TestWorkspacesCreate(t *testing.T) {
 
 	t.Run("when options include both non-empty tags-regex and trigger-prefixes error is returned", func(t *testing.T) {
 		options := WorkspaceCreateOptions{
-			Name:                String("foobar"),
+			Name:                String(fmt.Sprintf("foobar-%s", randomString(t))),
 			FileTriggersEnabled: Bool(false),
 			VCSRepo:             &VCSRepoOptions{TagsRegex: String("foobar")},
 			TriggerPrefixes:     []string{"/module-1", "/module-2"},
@@ -403,7 +404,7 @@ func TestWorkspacesCreate(t *testing.T) {
 
 	t.Run("when options include both non-empty tags-regex and file-triggers-enabled as true an error is returned", func(t *testing.T) {
 		options := WorkspaceCreateOptions{
-			Name:                String("foobar"),
+			Name:                String(fmt.Sprintf("foobar-%s", randomString(t))),
 			FileTriggersEnabled: Bool(true),
 			VCSRepo:             &VCSRepoOptions{TagsRegex: String("foobar")},
 		}
@@ -414,15 +415,27 @@ func TestWorkspacesCreate(t *testing.T) {
 	})
 
 	t.Run("when options include both non-empty tags-regex and file-triggers-enabled as false an error is not returned", func(t *testing.T) {
+		githubIdentifier := os.Getenv("GITHUB_POLICY_SET_IDENTIFIER")
+		if githubIdentifier == "" {
+			t.Fatal("Export a valid GITHUB_POLICY_SET_IDENTIFIER before running this test!")
+		}
+
+		oc, ocCleanup := createOAuthToken(t, client, orgTest)
+		t.Cleanup(ocCleanup)
+
 		options := WorkspaceCreateOptions{
-			Name:                String("foobar"),
+			Name:                String(fmt.Sprintf("foobar-%s", randomString(t))),
 			FileTriggersEnabled: Bool(false),
-			VCSRepo:             &VCSRepoOptions{TagsRegex: String("foobar")},
+			VCSRepo: &VCSRepoOptions{
+				Identifier:   &githubIdentifier,
+				OAuthTokenID: &oc.ID,
+				TagsRegex:    String("foobar"),
+			},
 		}
 		w, err := client.Workspaces.Create(ctx, orgTest.Name, options)
 
-		require.NotNil(t, w)
 		require.NoError(t, err)
+		require.NotNil(t, w)
 	})
 
 	t.Run("when options include trigger-patterns populated and empty trigger-paths workspace is created", func(t *testing.T) {
@@ -434,7 +447,7 @@ func TestWorkspacesCreate(t *testing.T) {
 		defer orgTestCleanup()
 
 		options := WorkspaceCreateOptions{
-			Name:                String("foobar"),
+			Name:                String(fmt.Sprintf("foobar-%s", randomString(t))),
 			FileTriggersEnabled: Bool(true),
 			TriggerPrefixes:     []string{},
 			TriggerPatterns:     []string{"/module-1/**/*", "/**/networking/*"},
