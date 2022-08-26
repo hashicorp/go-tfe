@@ -177,7 +177,7 @@ func TestStateVersionsCreate(t *testing.T) {
 			MD5:              String(fmt.Sprintf("%x", md5.Sum(state))),
 			Serial:           Int64(1),
 			State:            String(base64.StdEncoding.EncodeToString(state)),
-			JSONState:        String(base64.StdEncoding.EncodeToString(state)),
+			JSONState:        String(base64.StdEncoding.EncodeToString(jsonState)),
 			JSONStateOutputs: String(base64.StdEncoding.EncodeToString(jsonStateOutputs)),
 		})
 		require.NoError(t, err)
