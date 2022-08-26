@@ -120,6 +120,11 @@ func TestStateVersionsCreate(t *testing.T) {
 		t.Fatal(err)
 	}
 
+	jsonState, err := ioutil.ReadFile("test-fixtures/ext-state-version/state.json")
+	if err != nil {
+		t.Fatal(err)
+	}
+
 	jsonStateOutputs, err := ioutil.ReadFile("test-fixtures/json-state-outputs/everything.json")
 	if err != nil {
 		t.Fatal(err)
@@ -172,6 +177,7 @@ func TestStateVersionsCreate(t *testing.T) {
 			MD5:              String(fmt.Sprintf("%x", md5.Sum(state))),
 			Serial:           Int64(1),
 			State:            String(base64.StdEncoding.EncodeToString(state)),
+			JSONState:        String(base64.StdEncoding.EncodeToString(state)),
 			JSONStateOutputs: String(base64.StdEncoding.EncodeToString(jsonStateOutputs)),
 		})
 		require.NoError(t, err)
