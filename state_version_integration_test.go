@@ -15,6 +15,15 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
+func containsStateVersion(versions []*StateVersion, item *StateVersion) bool {
+	for _, sv := range versions {
+		if sv.ID == item.ID {
+			return true
+		}
+	}
+	return false
+}
+
 func TestStateVersionsList(t *testing.T) {
 	client := testClient(t)
 	ctx := context.Background()
@@ -46,23 +55,9 @@ func TestStateVersionsList(t *testing.T) {
 		require.NoError(t, err)
 		require.NotEmpty(t, svl.Items)
 
-		// outputs, providers are populated only once the state has been parsed by TFC
-		// which can cause the tests to fail if it doesn't happen fast enough.
-		// download url is ignored since it is a dynamic lin
-		for idx := range svl.Items {
-			svl.Items[idx].DownloadURL = ""
-			svl.Items[idx].Outputs = nil
-			svl.Items[idx].Providers = nil
-		}
+		assert.True(t, containsStateVersion(svl.Items, svTest1), fmt.Sprintf("State Versions did not contain %s", svTest1.ID))
+		assert.True(t, containsStateVersion(svl.Items, svTest2), fmt.Sprintf("State Versions did not contain %s", svTest2.ID))
 
-		for _, sv := range []*StateVersion{svTest1, svTest2} {
-			sv.DownloadURL = ""
-			sv.Outputs = nil
-			sv.Providers = nil
-		}
-
-		assert.Contains(t, svl.Items, svTest1)
-		assert.Contains(t, svl.Items, svTest2)
 		assert.Equal(t, 1, svl.CurrentPage)
 		assert.Equal(t, 2, svl.TotalCount)
 	})
@@ -120,6 +115,11 @@ func TestStateVersionsCreate(t *testing.T) {
 		t.Fatal(err)
 	}
 
+	jsonState, err := ioutil.ReadFile("test-fixtures/json-state/state.json")
+	if err != nil {
+		t.Fatal(err)
+	}
+
 	jsonStateOutputs, err := ioutil.ReadFile("test-fixtures/json-state-outputs/everything.json")
 	if err != nil {
 		t.Fatal(err)
@@ -172,6 +172,7 @@ func TestStateVersionsCreate(t *testing.T) {
 			MD5:              String(fmt.Sprintf("%x", md5.Sum(state))),
 			Serial:           Int64(1),
 			State:            String(base64.StdEncoding.EncodeToString(state)),
+			JSONState:        String(base64.StdEncoding.EncodeToString(jsonState)),
 			JSONStateOutputs: String(base64.StdEncoding.EncodeToString(jsonStateOutputs)),
 		})
 		require.NoError(t, err)
