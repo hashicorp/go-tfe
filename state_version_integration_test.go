@@ -120,7 +120,7 @@ func TestStateVersionsCreate(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	jsonState, err := ioutil.ReadFile("test-fixtures/ext-state-version/state.json")
+	jsonState, err := ioutil.ReadFile("test-fixtures/json-state/state.json")
 	if err != nil {
 		t.Fatal(err)
 	}
