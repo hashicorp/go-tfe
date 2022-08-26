@@ -1,7 +1,8 @@
-# Unreleased Changes
+# v1.9.0
 
 ## Enhancements
 * Beta removal for `RunListOptions`, in addition to a Field rename (Name -> User) by @mjyocca [#472](https://github.com/hashicorp/go-tfe/pull/472)
+* [Beta] Adds optional `JsonState` field to `StateVersionCreateOptions` by @megan07 [#514](https://github.com/hashicorp/go-tfe/pull/514
 
 # v1.8.0
 
