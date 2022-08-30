@@ -580,7 +580,7 @@ func (c *Client) configureLimiter(rawLimit string) {
 	c.limiter = rate.NewLimiter(limit, burst)
 }
 
-// encodeQueryParams encodes the values into “URL encoded” form
+// encodeQueryParams encodes the values into "URL encoded" form
 // ("bar=baz&foo=quux") sorted by key.
 func encodeQueryParams(v url.Values) string {
 	if v == nil {
