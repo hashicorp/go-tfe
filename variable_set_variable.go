@@ -49,7 +49,7 @@ type VariableSetVariable struct {
 	Sensitive   bool         `jsonapi:"attr,sensitive"`
 
 	// Relations
-	VariableSet *VariableSet `jsonapi:"relation,configurable"`
+	VariableSet *VariableSet `jsonapi:"relation,varset"`
 }
 
 type VariableSetVariableListOptions struct {
