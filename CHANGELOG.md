@@ -3,6 +3,9 @@
 ## Enhancements
 * Beta removal for `RunListOptions`, in addition to a Field rename (Name -> User) by @mjyocca [#472](https://github.com/hashicorp/go-tfe/pull/472)
 
+## Bug Fixes
+* Fixed invalid memory address error when using `TaskResults` field by @glennsarti [#517](https://github.com/hashicorp/go-tfe/pull/517)
+
 # v1.8.0
 
 ## Enhancements
