@@ -385,8 +385,8 @@ func NewClient(cfg *Config) (*Client, error) {
 	client.SSHKeys = &sshKeys{client: client}
 	client.StateVersionOutputs = &stateVersionOutputs{client: client}
 	client.StateVersions = &stateVersions{client: client}
-	client.TaskStages = &taskStages{client: client}
 	client.TaskResults = &taskResults{client: client}
+	client.TaskStages = &taskStages{client: client}
 	client.Teams = &teams{client: client}
 	client.TeamAccess = &teamAccesses{client: client}
 	client.TeamMembers = &teamMembers{client: client}
@@ -580,7 +580,7 @@ func (c *Client) configureLimiter(rawLimit string) {
 	c.limiter = rate.NewLimiter(limit, burst)
 }
 
-// encodeQueryParams encodes the values into ``URL encoded'' form
+// encodeQueryParams encodes the values into "URL encoded" form
 // ("bar=baz&foo=quux") sorted by key.
 func encodeQueryParams(v url.Values) string {
 	if v == nil {
