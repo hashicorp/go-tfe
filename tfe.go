@@ -386,6 +386,7 @@ func NewClient(cfg *Config) (*Client, error) {
 	client.StateVersionOutputs = &stateVersionOutputs{client: client}
 	client.StateVersions = &stateVersions{client: client}
 	client.TaskStages = &taskStages{client: client}
+	client.TaskResults = &taskResults{client: client}
 	client.Teams = &teams{client: client}
 	client.TeamAccess = &teamAccesses{client: client}
 	client.TeamMembers = &teamMembers{client: client}
