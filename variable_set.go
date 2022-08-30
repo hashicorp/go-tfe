@@ -17,6 +17,9 @@ type VariableSets interface {
 	// List all the variable sets within an organization.
 	List(ctx context.Context, organization string, options *VariableSetListOptions) (*VariableSetList, error)
 
+	// ListForWorkspace gets the associated variable sets for a workspace.
+	ListForWorkspace(ctx context.Context, workspaceID string, options *VariableSetListOptions) (*VariableSetList, error)
+
 	// Create is used to create a new variable set.
 	Create(ctx context.Context, organization string, options *VariableSetCreateOptions) (*VariableSet, error)
 
@@ -165,6 +168,32 @@ func (s *variableSets) List(ctx context.Context, organization string, options *V
 	}
 
 	u := fmt.Sprintf("organizations/%s/varsets", url.QueryEscape(organization))
+	req, err := s.client.NewRequest("GET", u, options)
+	if err != nil {
+		return nil, err
+	}
+
+	vl := &VariableSetList{}
+	err = req.Do(ctx, vl)
+	if err != nil {
+		return nil, err
+	}
+
+	return vl, nil
+}
+
+// ListForWorkspace gets the associated variable sets for a workspace.
+func (s *variableSets) ListForWorkspace(ctx context.Context, workspaceID string, options *VariableSetListOptions) (*VariableSetList, error) {
+	if !validStringID(&workspaceID) {
+		return nil, ErrInvalidWorkspaceID
+	}
+	if options != nil {
+		if err := options.valid(); err != nil {
+			return nil, err
+		}
+	}
+
+	u := fmt.Sprintf("workspaces/%s/varsets", url.QueryEscape(workspaceID))
 	req, err := s.client.NewRequest("GET", u, options)
 	if err != nil {
 		return nil, err
