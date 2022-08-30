@@ -49,8 +49,58 @@ func TestVariableSetsList(t *testing.T) {
 		assert.Equal(t, 2, vsl.TotalCount)
 	})
 
-	t.Run("when Organization name is invalid ID", func(t *testing.T) {
+	t.Run("when Organization name is an invalid ID", func(t *testing.T) {
 		vsl, err := client.VariableSets.List(ctx, badIdentifier, nil)
+		assert.Nil(t, vsl)
+		assert.EqualError(t, err, ErrInvalidOrg.Error())
+	})
+}
+
+func TestVariableSetsListForWorkspace(t *testing.T) {
+	client := testClient(t)
+	ctx := context.Background()
+
+	orgTest, orgTestCleanup := createOrganization(t, client)
+	defer orgTestCleanup()
+	workspaceTest, workspaceTestCleanup := createWorkspace(t, client, orgTest)
+	defer workspaceTestCleanup()
+
+	vsTest1, vsTestCleanup1 := createVariableSet(t, client, orgTest, VariableSetCreateOptions{})
+	defer vsTestCleanup1()
+	vsTest2, vsTestCleanup2 := createVariableSet(t, client, orgTest, VariableSetCreateOptions{})
+	defer vsTestCleanup2()
+
+	t.Run("without list options", func(t *testing.T) {
+		vsl, err := client.VariableSets.ListForWorkspace(ctx, workspaceTest.ID, nil)
+		require.NoError(t, err)
+		require.NotEmpty(t, vsl.Items)
+		assert.Contains(t, vsl.Items, vsTest1)
+		assert.Contains(t, vsl.Items, vsTest2)
+
+		t.Skip("paging not supported yet in API")
+		assert.Equal(t, 1, vsl.CurrentPage)
+		assert.Equal(t, 2, vsl.TotalCount)
+	})
+
+	t.Run("with list options", func(t *testing.T) {
+		t.Skip("paging not supported yet in API")
+		// Request a page number which is out of range. The result should
+		// be successful, but return no results if the paging options are
+		// properly passed along.
+		vsl, err := client.VariableSets.ListForWorkspace(ctx, workspaceTest.ID, &VariableSetListOptions{
+			ListOptions: ListOptions{
+				PageNumber: 999,
+				PageSize:   100,
+			},
+		})
+		require.NoError(t, err)
+		assert.Empty(t, vsl.Items)
+		assert.Equal(t, 999, vsl.CurrentPage)
+		assert.Equal(t, 2, vsl.TotalCount)
+	})
+
+	t.Run("when Workspace ID is an invalid ID", func(t *testing.T) {
+		vsl, err := client.VariableSets.ListForWorkspace(ctx, badIdentifier, nil)
 		assert.Nil(t, vsl)
 		assert.EqualError(t, err, ErrInvalidOrg.Error())
 	})
