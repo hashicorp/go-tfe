@@ -51,7 +51,7 @@ func TestVariableSetsList(t *testing.T) {
 		assert.Equal(t, 2, vsl.TotalCount)
 	})
 
-	t.Run("when Organization name is invalid ID", func(t *testing.T) {
+	t.Run("when Organization name is an invalid ID", func(t *testing.T) {
 		vsl, err := client.VariableSets.List(ctx, badIdentifier, nil)
 		assert.Nil(t, vsl)
 		assert.EqualError(t, err, ErrInvalidOrg.Error())

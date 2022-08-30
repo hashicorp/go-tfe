@@ -92,6 +92,9 @@ type Workspaces interface {
 
 	// RemoveTags removes tags from a workspace
 	RemoveTags(ctx context.Context, workspaceID string, options WorkspaceRemoveTagsOptions) error
+
+	// ListVariableSets reads the associated variable sets for a workspace.
+	ListVariableSets(ctx context.Context, workspaceID string, options *VariableSetListOptions) (*VariableSetList, error)
 }
 
 // workspaces implements Workspaces.
@@ -1061,6 +1064,32 @@ func (s *workspaces) RemoveTags(ctx context.Context, workspaceID string, options
 	}
 
 	return req.Do(ctx, nil)
+}
+
+// ListVariableSets reads the associated variable sets for a workspace
+func (s *workspaces) ListVariableSets(ctx context.Context, workspaceID string, options *VariableSetListOptions) (*VariableSetList, error) {
+	if !validStringID(&workspaceID) {
+		return nil, ErrInvalidOrg
+	}
+	if options != nil {
+		if err := options.valid(); err != nil {
+			return nil, err
+		}
+	}
+
+	u := fmt.Sprintf("workspaces/%s/varsets", url.QueryEscape(workspaceID))
+	req, err := s.client.NewRequest("GET", u, options)
+	if err != nil {
+		return nil, err
+	}
+
+	vl := &VariableSetList{}
+	err = req.Do(ctx, vl)
+	if err != nil {
+		return nil, err
+	}
+
+	return vl, nil
 }
 
 func (o WorkspaceCreateOptions) valid() error {

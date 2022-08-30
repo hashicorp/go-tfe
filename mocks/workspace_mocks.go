@@ -182,6 +182,21 @@ func (mr *MockWorkspacesMockRecorder) ListTags(ctx, workspaceID, options interfa
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListTags", reflect.TypeOf((*MockWorkspaces)(nil).ListTags), ctx, workspaceID, options)
 }
 
+// ListVariableSets mocks base method.
+func (m *MockWorkspaces) ListVariableSets(ctx context.Context, workspaceID string, options *tfe.VariableSetListOptions) (*tfe.VariableSetList, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "ListVariableSets", ctx, workspaceID, options)
+	ret0, _ := ret[0].(*tfe.VariableSetList)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// ListVariableSets indicates an expected call of ListVariableSets.
+func (mr *MockWorkspacesMockRecorder) ListVariableSets(ctx, workspaceID, options interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListVariableSets", reflect.TypeOf((*MockWorkspaces)(nil).ListVariableSets), ctx, workspaceID, options)
+}
+
 // Lock mocks base method.
 func (m *MockWorkspaces) Lock(ctx context.Context, workspaceID string, options tfe.WorkspaceLockOptions) (*tfe.Workspace, error) {
 	m.ctrl.T.Helper()

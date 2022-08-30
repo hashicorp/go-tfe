@@ -1848,6 +1848,60 @@ func TestWorkspaces_RemoveTags(t *testing.T) {
 	})
 }
 
+func TestWorkspacesListVariableSets(t *testing.T) {
+	skipIfNotCINode(t)
+
+	client := testClient(t)
+	ctx := context.Background()
+
+	orgTest, orgTestCleanup := createOrganization(t, client)
+	t.Cleanup(orgTestCleanup)
+
+	workspaceTest, workspaceTestCleanup := createWorkspace(t, client, orgTest)
+	t.Cleanup(workspaceTestCleanup)
+
+	vsTest1, vsTestCleanup1 := createVariableSet(t, client, orgTest, VariableSetCreateOptions{})
+	t.Cleanup(vsTestCleanup1)
+	vsTest2, vsTestCleanup2 := createVariableSet(t, client, orgTest, VariableSetCreateOptions{})
+	t.Cleanup(vsTestCleanup2)
+
+	applyVariableSetToWorkspace(t, client, vsTest1.ID, workspaceTest.ID)
+	applyVariableSetToWorkspace(t, client, vsTest2.ID, workspaceTest.ID)
+
+	t.Run("without list options", func(t *testing.T) {
+		vsl, err := client.Workspaces.ListVariableSets(ctx, workspaceTest.ID, nil)
+		require.NoError(t, err)
+		require.Len(t, vsl.Items, 2)
+
+		ids := []string{vsTest1.ID, vsTest2.ID}
+		assert.Contains(t, ids, vsl.Items[0].ID)
+		assert.Contains(t, ids, vsl.Items[1].ID)
+	})
+
+	t.Run("with list options", func(t *testing.T) {
+		t.Skip("paging not supported yet in API")
+		// Request a page number which is out of range. The result should
+		// be successful, but return no results if the paging options are
+		// properly passed along.
+		vsl, err := client.Workspaces.ListVariableSets(ctx, workspaceTest.ID, &VariableSetListOptions{
+			ListOptions: ListOptions{
+				PageNumber: 999,
+				PageSize:   100,
+			},
+		})
+		require.NoError(t, err)
+		assert.Empty(t, vsl.Items)
+		assert.Equal(t, 999, vsl.CurrentPage)
+		assert.Equal(t, 2, vsl.TotalCount)
+	})
+
+	t.Run("when Workspace ID is an invalid ID", func(t *testing.T) {
+		vsl, err := client.Workspaces.ListVariableSets(ctx, badIdentifier, nil)
+		assert.Nil(t, vsl)
+		assert.EqualError(t, err, ErrInvalidOrg.Error())
+	})
+}
+
 func TestWorkspace_Unmarshal(t *testing.T) {
 	skipIfNotCINode(t)
 
