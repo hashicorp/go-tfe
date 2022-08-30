@@ -1,3 +1,8 @@
+# Unreleased
+
+## Bug Fixes
+* Fixes null value returned in variable set relationship in `VariableSetVariable` by @sebasslash [#521](https://github.com/hashicorp/go-tfe/pull/521)
+
 # v1.9.0
 
 ## Enhancements
