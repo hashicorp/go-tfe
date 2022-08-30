@@ -1,8 +1,8 @@
 # v1.9.0
 
 ## Enhancements
-* Beta removal for `RunListOptions`, in addition to a Field rename (Name -> User) by @mjyocca [#472](https://github.com/hashicorp/go-tfe/pull/472)
-* [Beta] Adds optional `JsonState` field to `StateVersionCreateOptions` by @megan07 [#514](https://github.com/hashicorp/go-tfe/pull/514
+* `RunListOptions` is generally available, and rename field (Name -> User) by @mjyocca [#472](https://github.com/hashicorp/go-tfe/pull/472)
+* [Beta] Adds optional `JsonState` field to `StateVersionCreateOptions` by @megan07 [#514](https://github.com/hashicorp/go-tfe/pull/514)
 
 ## Bug Fixes
 * Fixed invalid memory address error when using `TaskResults` field by @glennsarti [#517](https://github.com/hashicorp/go-tfe/pull/517)
