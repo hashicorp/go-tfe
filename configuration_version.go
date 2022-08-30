@@ -3,14 +3,9 @@ package tfe
 import (
 	"bytes"
 	"context"
-	"errors"
 	"fmt"
-	"io/fs"
 	"net/url"
-	"os"
 	"time"
-
-	slug "github.com/hashicorp/go-slug"
 )
 
 // Compile-time proof of interface implementation.
@@ -257,28 +252,13 @@ func (s *configurationVersions) ReadWithOptions(ctx context.Context, cvID string
 // Upload packages and uploads Terraform configuration files. It requires the
 // upload URL from a configuration version and the path to the configuration
 // files on disk.
-func (s *configurationVersions) Upload(ctx context.Context, u, path string) error {
-	file, err := os.Stat(path)
-
-	if err != nil {
-		if errors.Is(err, fs.ErrNotExist) {
-			return fmt.Errorf(`failed to find terraform configuration files under the path "%v": %w`, path, err)
-		}
-		return fmt.Errorf(`unable to upload terraform configuration files from the path "%v": %w`, path, err)
-	}
-
-	if !file.Mode().IsDir() {
-		return ErrMissingDirectory
-	}
-
-	body := bytes.NewBuffer(nil)
-
-	_, err = slug.Pack(path, body, true)
+func (s *configurationVersions) Upload(ctx context.Context, url string, path string) error {
+	body, err := packContents(path)
 	if err != nil {
 		return err
 	}
 
-	req, err := s.client.NewRequest("PUT", u, body)
+	req, err := s.client.NewRequest("PUT", url, body)
 	if err != nil {
 		return err
 	}
