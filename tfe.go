@@ -352,8 +352,8 @@ func NewClient(cfg *Config) (*Client, error) {
 	}
 
 	// Create the services.
-	client.Agents = &agents{client: client}
 	client.AgentPools = &agentPools{client: client}
+	client.Agents = &agents{client: client}
 	client.AgentTokens = &agentTokens{client: client}
 	client.Applies = &applies{client: client}
 	client.AuditTrails = &auditTrails{client: client}
@@ -364,20 +364,20 @@ func NewClient(cfg *Config) (*Client, error) {
 	client.NotificationConfigurations = &notificationConfigurations{client: client}
 	client.OAuthClients = &oAuthClients{client: client}
 	client.OAuthTokens = &oAuthTokens{client: client}
-	client.Organizations = &organizations{client: client}
 	client.OrganizationMemberships = &organizationMemberships{client: client}
+	client.Organizations = &organizations{client: client}
 	client.OrganizationTags = &organizationTags{client: client}
 	client.OrganizationTokens = &organizationTokens{client: client}
-	client.Plans = &plans{client: client}
 	client.PlanExports = &planExports{client: client}
+	client.Plans = &plans{client: client}
 	client.Policies = &policies{client: client}
 	client.PolicyChecks = &policyChecks{client: client}
 	client.PolicySetParameters = &policySetParameters{client: client}
-	client.PolicySetVersions = &policySetVersions{client: client}
 	client.PolicySets = &policySets{client: client}
+	client.PolicySetVersions = &policySetVersions{client: client}
 	client.RegistryModules = &registryModules{client: client}
-	client.RegistryProviders = &registryProviders{client: client}
 	client.RegistryProviderPlatforms = &registryProviderPlatforms{client: client}
+	client.RegistryProviders = &registryProviders{client: client}
 	client.RegistryProviderVersions = &registryProviderVersions{client: client}
 	client.Runs = &runs{client: client}
 	client.RunTasks = &runTasks{client: client}
@@ -387,17 +387,17 @@ func NewClient(cfg *Config) (*Client, error) {
 	client.StateVersions = &stateVersions{client: client}
 	client.TaskResults = &taskResults{client: client}
 	client.TaskStages = &taskStages{client: client}
-	client.Teams = &teams{client: client}
 	client.TeamAccess = &teamAccesses{client: client}
 	client.TeamMembers = &teamMembers{client: client}
+	client.Teams = &teams{client: client}
 	client.TeamTokens = &teamTokens{client: client}
 	client.Users = &users{client: client}
 	client.UserTokens = &userTokens{client: client}
 	client.Variables = &variables{client: client}
 	client.VariableSets = &variableSets{client: client}
 	client.VariableSetVariables = &variableSetVariables{client: client}
-	client.Workspaces = &workspaces{client: client}
 	client.WorkspaceRunTasks = &workspaceRunTasks{client: client}
+	client.Workspaces = &workspaces{client: client}
 
 	client.Meta = Meta{
 		IPRanges: &ipRanges{client: client},
