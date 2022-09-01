@@ -30,6 +30,7 @@ type Stage string
 const (
 	PrePlan  Stage = "pre_plan"
 	PostPlan Stage = "post_plan"
+	PreApply Stage = "pre_apply"
 )
 
 // TaskStage represents a TFC/E run's stage where run tasks can occur
