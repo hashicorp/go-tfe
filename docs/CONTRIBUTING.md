@@ -19,7 +19,7 @@ There are instances where several new resources being added (i.e Workspace Run T
 ## Running the Linters Locally
 
 1. Ensure you have [installed golangci-lint](https://golangci-lint.run/usage/install/#local-installation)
-2. From the CLI, run `golangci-lint run`
+2. From the CLI, run `make lint`
 
 ## Writing Tests
 
@@ -36,6 +36,12 @@ You'll need to generate mocks if an existing endpoint method is modified or a ne
 
 ```
 mockgen -source=example_resource.go -destination=mocks/example_resource_mocks.go -package=mocks
+```
+
+Alternatively, you can use the Makefile target `mocks` to automate the steps:
+
+```
+FILENAME=example_resource.go make mocks
 ```
 
 ## Adding API changes that are not generally available
@@ -64,11 +70,35 @@ t.Run("with nested changes trigger", func (t *testing.T) {
 
 **Note**: After your PR has been merged, and the feature either reaches general availability, you should remove the `skipIfBeta()` flag.
 
-## Best Practices for Adding a New Endpoint
+## Adding New Endpoints
 
-Here you will find a scaffold to get you started when building a json:api RESTful endpoint. The comments are meant to guide you but should be replaced with endpoint-specific and type-specific documentation. Additionally, you'll need to add an integration test that covers each method of the main interface.
+### Scaffolding a Resource
 
-In general, an interface should cover one RESTful resource, which sometimes involves two or more endpoints. Add all new modules to the tfe package.
+When creating a new resource you can use the helper script `generate_resource` to quickly setup boilerplate code for adding a new set of endpoints related to that resource:
+
+#### Running the script directly
+```sh
+cd ./scripts/generate_resource
+go run . example_resource
+```
+
+#### Running the Makefile target `generate`
+```sh
+RESOURCE=example_resource make generate
+```
+
+### Guidelines for Adding New Endpoints
+
+* An interface should cover one RESTful resource, which sometimes involves two or more endpoints.
+* We require that each resource interface provides compile-time proof that it has been implemented.
+* You'll need to add an integration test that covers each method of the resource's interface.
+* Option structs serve as a proxy for either passing query params or request bodies:
+    - `ListOptions` and `ReadOptions` are values passed as query parameters.
+    - `CreateOptions` and `UpdateOptions` represent the request body.
+* URL parameters should be defined as method parameters.
+* Any resource specific errors must be defined in `errors.go`
+
+Here is a more comprehensive example of what a resource looks like when implemented. The helper script `generate_resource` generates a subset of this example, focusing only on the core details that are required across all resources in go-tfe.
 
 ```go
 package tfe

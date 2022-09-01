@@ -72,6 +72,11 @@ $ envchain YOUR_NAMESPACE_HERE go test -run TestNotificationConfiguration -v ./.
 $ TFE_TOKEN=xyz TFE_ADDRESS=xyz ENABLE_TFE=1 go test -run TestNotificationConfiguration -v ./... -tags=integration
 ```
 
+#### Using Makefile target `test`
+```sh
+TFE_TOKEN=xyz TFE_ADDRESS=xyz TESTARGS="-run TestNotificationConfiguration" make test
+```
+
 ### Running all tests
 It takes about 20 minutes to run all of the tests, so specify a larger timeout when you run the tests (_the default timeout is 10 minutes_):
 
