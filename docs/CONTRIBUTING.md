@@ -64,11 +64,28 @@ t.Run("with nested changes trigger", func (t *testing.T) {
 
 **Note**: After your PR has been merged, and the feature either reaches general availability, you should remove the `skipIfBeta()` flag.
 
-## Best Practices for Adding a New Endpoint
+## Adding New Endpoints
 
-Here you will find a scaffold to get you started when building a json:api RESTful endpoint. The comments are meant to guide you but should be replaced with endpoint-specific and type-specific documentation. Additionally, you'll need to add an integration test that covers each method of the main interface.
+### Scaffolding a Resource
 
-In general, an interface should cover one RESTful resource, which sometimes involves two or more endpoints. Add all new modules to the tfe package.
+When creating a new resource you can use the helper script `generate_resource.sh` to quickly setup boilerplate code for adding a new set of endpoints related to that resource:
+
+```sh
+./generate_resource.sh organization
+```
+
+### Guidelines for Adding New Endpoints
+
+* An interface should cover one RESTful resource, which sometimes involves two or more endpoints.
+* We require that each resource interface provides compile-time proof that it has been implemented.
+* You'll need to add an integration test that covers each method of the resource's interface.
+* Option structs serve as a proxy for either passing query params or request bodies:
+    - `ListOptions` and `ReadOptions` are values passed as query parameters.
+    - `CreateOptions` and `UpdateOptions` represent the request body.
+* URL parameters should be defined as method parameters.
+* Any resource specific errors must be defined in `errors.go`
+
+Here is a more comprehensive example of how a resource will look like when implemented. The helper script `generate_resource.sh` will generate a subset of this example, focusing only on the core details that are required across all resources in go-tfe.
 
 ```go
 package tfe
