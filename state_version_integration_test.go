@@ -318,26 +318,39 @@ func TestStateVersionsRead(t *testing.T) {
 	t.Cleanup(svTestCleanup)
 
 	t.Run("when the state version exists", func(t *testing.T) {
-		sv, err := client.StateVersions.Read(ctx, svTest.ID)
-		require.NoError(t, err)
+		if !svTest.ResourcesProcessed {
+			_, err := retry(func() (interface{}, error) {
+				svTest, err := client.StateVersions.Read(ctx, svTest.ID)
+				require.NoError(t, err)
 
-		// Don't compare the DownloadURL because it will be generated twice
-		// in this test - once at creation of the configuration version, and
-		// again during the GET.
-		svTest.DownloadURL, sv.DownloadURL = "", ""
+				if !svTest.ResourcesProcessed {
+					return nil, fmt.Errorf("resources not processed %s", err)
+				} else {
+					sv, err := client.StateVersions.Read(ctx, svTest.ID)
+					require.NoError(t, err)
+					// Don't compare the DownloadURL because it will be generated twice
+					// in this test - once at creation of the configuration version, and
+					// again during the GET.
+					svTest.DownloadURL, sv.DownloadURL = "", ""
+					// outputs are populated only once the state has been parsed by TFC
+					// which can cause the tests to fail if it doesn't happen fast enough.
+					svTest.Outputs = nil
+					sv.Outputs = nil
 
-		// outputs are populated only once the state has been parsed by TFC
-		// which can cause the tests to fail if it doesn't happen fast enough.
-		svTest.Outputs = nil
-		sv.Outputs = nil
-
-		assert.Equal(t, svTest, sv)
-		assert.NotEmpty(t, svTest, svTest.ResourcesProcessed)
-		assert.NotEmpty(t, svTest, svTest.StateVersion)
-		assert.NotEmpty(t, svTest, svTest.TerraformVersion)
-		assert.NotEmpty(t, svTest, svTest.Modules)
-		assert.NotEmpty(t, svTest, svTest.Providers)
-		assert.NotEmpty(t, svTest, svTest.Resources)
+					assert.Equal(t, svTest, sv)
+					assert.NotEmpty(t, svTest, svTest.ResourcesProcessed)
+					assert.NotEmpty(t, svTest, svTest.StateVersion)
+					assert.NotEmpty(t, svTest, svTest.TerraformVersion)
+					assert.NotEmpty(t, svTest, svTest.Modules)
+					assert.NotEmpty(t, svTest, svTest.Providers)
+					assert.NotEmpty(t, svTest, svTest.Resources)
+					return svTest, nil
+				}
+			})
+			if err != nil {
+				t.Fatalf("error retrying state version read, err=%s", err)
+			}
+		}
 	})
 
 	t.Run("when the state version does not exist", func(t *testing.T) {
