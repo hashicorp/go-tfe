@@ -478,6 +478,7 @@ func TestOrganization_Unmarshal(t *testing.T) {
 			"type": "organizations",
 			"id":   "org-name",
 			"attributes": map[string]interface{}{
+				"assessments-enforced":     true,
 				"collaborator-auth-policy": AuthPolicyPassword,
 				"cost-estimation-enabled":  true,
 				"created-at":               "2018-03-02T23:42:06.651Z",
@@ -500,6 +501,7 @@ func TestOrganization_Unmarshal(t *testing.T) {
 	parsedTime, err := time.Parse(iso8601TimeFormat, "2018-03-02T23:42:06.651Z")
 	require.NoError(t, err)
 	assert.Equal(t, org.Name, "org-name")
+	assert.Equal(t, org.AssessmentsEnforced, true)
 	assert.Equal(t, org.CreatedAt, parsedTime)
 	assert.Equal(t, org.CollaboratorAuthPolicy, AuthPolicyPassword)
 	assert.Equal(t, org.CostEstimationEnabled, true)

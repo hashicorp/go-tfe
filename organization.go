@@ -68,6 +68,7 @@ type Organization struct {
 	CostEstimationEnabled                             bool                     `jsonapi:"attr,cost-estimation-enabled"`
 	CreatedAt                                         time.Time                `jsonapi:"attr,created-at,iso8601"`
 	Email                                             string                   `jsonapi:"attr,email"`
+	AssessmentsEnforced                               bool                     `jsonapi:"attr,assessments-enforced"`
 	ExternalID                                        string                   `jsonapi:"attr,external-id"`
 	OwnersTeamSAMLRoleID                              string                   `jsonapi:"attr,owners-team-saml-role-id"`
 	Permissions                                       *OrganizationPermissions `jsonapi:"attr,permissions"`
@@ -162,6 +163,9 @@ type OrganizationCreateOptions struct {
 
 	// Optional: SendPassingStatusesForUntriggeredSpeculativePlans toggles behavior of untriggered speculative plans to send status updates to version control systems like GitHub.
 	SendPassingStatusesForUntriggeredSpeculativePlans *bool `jsonapi:"attr,send-passing-statuses-for-untriggered-speculative-plans,omitempty"`
+
+	// Optional: AssessmentsEnforced toggles whether health assessment enablement is enforced across all assessable workspaces or if the decission to enabled health assessments is delegated to the workspace setting AssessmentsEnabled.
+	AssessmentsEnforced *bool `jsonapi:"attr,assessments-enforced"`
 }
 
 // OrganizationUpdateOptions represents the options for updating an organization.
@@ -195,6 +199,9 @@ type OrganizationUpdateOptions struct {
 
 	// SendPassingStatusesForUntriggeredSpeculativePlans toggles behavior of untriggered speculative plans to send status updates to version control systems like GitHub.
 	SendPassingStatusesForUntriggeredSpeculativePlans *bool `jsonapi:"attr,send-passing-statuses-for-untriggered-speculative-plans,omitempty"`
+
+	// Optional: AssessmentsEnforced toggles whether health assessment enablement is enforced across all assessable workspaces or if the decission to enabled health assessments is delegated to the workspace setting AssessmentsEnabled.
+	AssessmentsEnforced *bool `jsonapi:"attr,assessments-enforced"`
 }
 
 // ReadRunQueueOptions represents the options for showing the queue.
