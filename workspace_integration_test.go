@@ -327,7 +327,7 @@ func TestWorkspacesCreate(t *testing.T) {
 			AllowDestroyPlan:           Bool(false),
 			AutoApply:                  Bool(true),
 			Description:                String("qux"),
-			DriftDetection:             Bool(false),
+			AssessmentsEnabled:         Bool(false),
 			FileTriggersEnabled:        Bool(true),
 			Operations:                 Bool(true),
 			QueueAllRuns:               Bool(true),
@@ -364,7 +364,7 @@ func TestWorkspacesCreate(t *testing.T) {
 			assert.Equal(t, *options.Description, item.Description)
 			assert.Equal(t, *options.AllowDestroyPlan, item.AllowDestroyPlan)
 			assert.Equal(t, *options.AutoApply, item.AutoApply)
-			assert.Equal(t, *options.DriftDetection, item.DriftDetection)
+			assert.Equal(t, *options.AssessmentsEnabled, item.AssessmentsEnabled)
 			assert.Equal(t, *options.FileTriggersEnabled, item.FileTriggersEnabled)
 			assert.Equal(t, *options.Operations, item.Operations)
 			assert.Equal(t, *options.QueueAllRuns, item.QueueAllRuns)
@@ -721,13 +721,13 @@ func TestWorkspacesUpdate(t *testing.T) {
 
 	t.Run("when updating a subset of values", func(t *testing.T) {
 		options := WorkspaceUpdateOptions{
-			Name:             String(wTest.Name),
-			AllowDestroyPlan: Bool(false),
-			AutoApply:        Bool(true),
-			Operations:       Bool(true),
-			QueueAllRuns:     Bool(true),
-			DriftDetection:   Bool(true),
-			TerraformVersion: String("0.15.4"),
+			Name:               String(wTest.Name),
+			AllowDestroyPlan:   Bool(false),
+			AutoApply:          Bool(true),
+			Operations:         Bool(true),
+			QueueAllRuns:       Bool(true),
+			AssessmentsEnabled: Bool(true),
+			TerraformVersion:   String("0.15.4"),
 		}
 
 		wAfter, err := client.Workspaces.Update(ctx, orgTest.Name, wTest.Name, options)
@@ -737,7 +737,7 @@ func TestWorkspacesUpdate(t *testing.T) {
 		assert.NotEqual(t, wTest.AllowDestroyPlan, wAfter.AllowDestroyPlan)
 		assert.NotEqual(t, wTest.AutoApply, wAfter.AutoApply)
 		assert.NotEqual(t, wTest.QueueAllRuns, wAfter.QueueAllRuns)
-		assert.NotEqual(t, wTest.DriftDetection, wAfter.DriftDetection)
+		assert.NotEqual(t, wTest.AssessmentsEnabled, wAfter.AssessmentsEnabled)
 		assert.NotEqual(t, wTest.TerraformVersion, wAfter.TerraformVersion)
 		assert.Equal(t, wTest.WorkingDirectory, wAfter.WorkingDirectory)
 	})

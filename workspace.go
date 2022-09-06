@@ -115,7 +115,7 @@ type Workspace struct {
 	CanQueueDestroyPlan        bool                  `jsonapi:"attr,can-queue-destroy-plan"`
 	CreatedAt                  time.Time             `jsonapi:"attr,created-at,iso8601"`
 	Description                string                `jsonapi:"attr,description"`
-	DriftDetection             bool                  `jsonapi:"attr,drift-detection"`
+	AssessmentsEnabled         bool                  `jsonapi:"attr,assessments-enabled"`
 	Environment                string                `jsonapi:"attr,environment"`
 	ExecutionMode              string                `jsonapi:"attr,execution-mode"`
 	FileTriggersEnabled        bool                  `jsonapi:"attr,file-triggers-enabled"`
@@ -271,10 +271,10 @@ type WorkspaceCreateOptions struct {
 	// Optional: A description for the workspace.
 	Description *string `jsonapi:"attr,description,omitempty"`
 
-	// Optional: Whether to enable drift detection for the workspace.
+	// Optional: Whether to enable health assessments (drift detection etc.) for the workspace.
 	// Reference: https://www.terraform.io/cloud-docs/api-docs/workspaces#create-a-workspace
 	// Requires remote execution mode, Terraform Cloud Business entitlement, and a valid agent pool to work
-	DriftDetection *bool `jsonapi:"attr,drift-detection,omitempty"`
+	AssessmentsEnabled *bool `jsonapi:"attr,assessments-enabled,omitempty"`
 
 	// Optional: Which execution mode to use. Valid values are remote, local, and agent.
 	// When set to local, the workspace will be used for state storage only.
@@ -395,10 +395,10 @@ type WorkspaceUpdateOptions struct {
 	// Optional: A description for the workspace.
 	Description *string `jsonapi:"attr,description,omitempty"`
 
-	// Optional: Whether to enable drift detection for the workspace.
+	// Optional: Whether to enable health assessments (drift detection etc.) for the workspace.
 	// Reference: https://www.terraform.io/cloud-docs/api-docs/workspaces#update-a-workspace
 	// Requires remote execution mode, Terraform Cloud Business entitlement, and a valid agent pool to work
-	DriftDetection *bool `jsonapi:"attr,drift-detection,omitempty"`
+	AssessmentsEnabled *bool `jsonapi:"attr,assessments-enabled,omitempty"`
 
 	// Optional: Which execution mode to use. Valid values are remote, local, and agent.
 	// When set to local, the workspace will be used for state storage only.
