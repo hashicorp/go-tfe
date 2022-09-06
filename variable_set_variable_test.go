@@ -34,12 +34,14 @@ func TestVariableSetVariablesList(t *testing.T) {
 	t.Run("without list options", func(t *testing.T) {
 		vl, err := client.VariableSetVariables.List(ctx, vsTest.ID, nil)
 		require.NoError(t, err)
+		require.NotEmpty(t, vl.Items)
 		assert.Contains(t, vl.Items, vTest1)
 		assert.Contains(t, vl.Items, vTest2)
 
-		t.Skip("paging not supported yet in API")
-		assert.Equal(t, 1, vl.CurrentPage)
-		assert.Equal(t, 2, vl.TotalCount)
+		t.Run("variable set relationship is deserialized", func(t *testing.T) {
+			require.NotNil(t, vl.Items[0].VariableSet)
+			assert.Equal(t, vsTest.ID, vl.Items[0].VariableSet.ID)
+		})
 	})
 
 	t.Run("with list options", func(t *testing.T) {
