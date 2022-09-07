@@ -290,7 +290,7 @@ func createAgentPool(t *testing.T, client *Client, org *Organization) (*AgentPoo
 	}
 
 	return pool, func() {
-		if err := client.AgentPools.Delete(ctx, pool.ID); err != nil {
+		if err := client.AgentPools.Delete(ctx, pool.ID); err != nil && err != ErrResourceNotFound {
 			t.Logf("Error destroying agent pool! WARNING: Dangling resources "+
 				"may exist! The full error is shown below.\n\n"+
 				"Agent pool ID: %s\nError: %s", pool.ID, err)
@@ -318,7 +318,7 @@ func createAgentToken(t *testing.T, client *Client, ap *AgentPool) (*AgentToken,
 	}
 
 	return at, func() {
-		if err := client.AgentTokens.Delete(ctx, at.ID); err != nil {
+		if err := client.AgentTokens.Delete(ctx, at.ID); err != nil && err != ErrResourceNotFound {
 			t.Errorf("Error destroying agent token! WARNING: Dangling resources\n"+
 				"may exist! The full error is shown below.\n\n"+
 				"AgentToken: %s\nError: %s", at.ID, err)
@@ -417,7 +417,7 @@ func createGPGKey(t *testing.T, client *Client, org *Organization, provider *Reg
 			RegistryName: PrivateRegistry,
 			Namespace:    provider.Organization.Name,
 			KeyID:        gpgKey.KeyID,
-		}); err != nil {
+		}); err != nil && err != ErrResourceNotFound {
 			t.Errorf("Error removing GPG key! WARNING: Dangling resources\n"+
 				"may exist! The full error is shown below.\n\n"+
 				"GPGKey: %s\nError: %s", gpgKey.KeyID, err)
@@ -462,7 +462,7 @@ func createNotificationConfiguration(t *testing.T, client *Client, w *Workspace,
 	}
 
 	return nc, func() {
-		if err := client.NotificationConfigurations.Delete(ctx, nc.ID); err != nil {
+		if err := client.NotificationConfigurations.Delete(ctx, nc.ID); err != nil && err != ErrResourceNotFound {
 			t.Errorf("Error destroying notification configuration! WARNING: Dangling\n"+
 				"resources may exist! The full error is shown below.\n\n"+
 				"NotificationConfiguration: %s\nError: %s", nc.ID, err)
@@ -492,7 +492,7 @@ func createPolicySetParameter(t *testing.T, client *Client, ps *PolicySet) (*Pol
 	}
 
 	return v, func() {
-		if err := client.PolicySetParameters.Delete(ctx, ps.ID, v.ID); err != nil {
+		if err := client.PolicySetParameters.Delete(ctx, ps.ID, v.ID); err != nil && err != ErrResourceNotFound {
 			t.Errorf("Error destroying variable! WARNING: Dangling resources\n"+
 				"may exist! The full error is shown below.\n\n"+
 				"Parameter: %s\nError: %s", v.Key, err)
@@ -522,7 +522,7 @@ func createPolicySet(t *testing.T, client *Client, org *Organization, policies [
 	}
 
 	return ps, func() {
-		if err := client.PolicySets.Delete(ctx, ps.ID); err != nil {
+		if err := client.PolicySets.Delete(ctx, ps.ID); err != nil && err != ErrResourceNotFound {
 			t.Errorf("Error destroying policy set! WARNING: Dangling resources\n"+
 				"may exist! The full error is shown below.\n\n"+
 				"PolicySet: %s\nError: %s", ps.ID, err)
@@ -580,7 +580,7 @@ func createPolicy(t *testing.T, client *Client, org *Organization) (*Policy, fun
 	}
 
 	return p, func() {
-		if err := client.Policies.Delete(ctx, p.ID); err != nil {
+		if err := client.Policies.Delete(ctx, p.ID); err != nil && err != ErrResourceNotFound {
 			t.Errorf("Error destroying policy! WARNING: Dangling resources\n"+
 				"may exist! The full error is shown below.\n\n"+
 				"Policy: %s\nError: %s", p.ID, err)
@@ -650,7 +650,7 @@ func createOAuthClient(t *testing.T, client *Client, org *Organization) (*OAuthC
 	// created. To get a token, the client needs to be connected through the UI
 	// first. So the test using this (TestOAuthTokensList) is currently disabled.
 	return oc, func() {
-		if err := client.OAuthClients.Delete(ctx, oc.ID); err != nil {
+		if err := client.OAuthClients.Delete(ctx, oc.ID); err != nil && err != ErrResourceNotFound {
 			t.Errorf("Error destroying OAuth client! WARNING: Dangling resources\n"+
 				"may exist! The full error is shown below.\n\n"+
 				"OAuthClient: %s\nError: %s", oc.ID, err)
@@ -685,7 +685,7 @@ func createOrganizationWithOptions(t *testing.T, client *Client, options Organiz
 	}
 
 	return org, func() {
-		if err := client.Organizations.Delete(ctx, org.Name); err != nil {
+		if err := client.Organizations.Delete(ctx, org.Name); err != nil && err != ErrResourceNotFound {
 			t.Errorf("Error destroying organization! WARNING: Dangling resources\n"+
 				"may exist! The full error is shown below.\n\n"+
 				"Organization: %s\nError: %s", org.Name, err)
@@ -709,7 +709,7 @@ func createOrganizationMembership(t *testing.T, client *Client, org *Organizatio
 	}
 
 	return mem, func() {
-		if err := client.OrganizationMemberships.Delete(ctx, mem.ID); err != nil {
+		if err := client.OrganizationMemberships.Delete(ctx, mem.ID); err != nil && err != ErrResourceNotFound {
 			t.Errorf("Error destroying membership! WARNING: Dangling resources\n"+
 				"may exist! The full error is shown below.\n\n"+
 				"Membership: %s\nError: %s", mem.ID, err)
@@ -735,7 +735,7 @@ func createOrganizationToken(t *testing.T, client *Client, org *Organization) (*
 	}
 
 	return tk, func() {
-		if err := client.OrganizationTokens.Delete(ctx, org.Name); err != nil {
+		if err := client.OrganizationTokens.Delete(ctx, org.Name); err != nil && err != ErrResourceNotFound {
 			t.Errorf("Error destroying organization token! WARNING: Dangling resources\n"+
 				"may exist! The full error is shown below.\n\n"+
 				"OrganizationToken: %s\nError: %s", tk.ID, err)
@@ -772,7 +772,7 @@ func createRunTrigger(t *testing.T, client *Client, w, sourceable *Workspace) (*
 	}
 
 	return rt, func() {
-		if err := client.RunTriggers.Delete(ctx, rt.ID); err != nil {
+		if err := client.RunTriggers.Delete(ctx, rt.ID); err != nil && err != ErrResourceNotFound {
 			t.Errorf("Error destroying run trigger! WARNING: Dangling\n"+
 				"resources may exist! The full error is shown below.\n\n"+
 				"RunTrigger: %s\nError: %s", rt.ID, err)
@@ -1089,7 +1089,7 @@ func createRegistryModule(t *testing.T, client *Client, org *Organization, regis
 	}
 
 	return rm, func() {
-		if err := client.RegistryModules.Delete(ctx, org.Name, rm.Name); err != nil {
+		if err := client.RegistryModules.Delete(ctx, org.Name, rm.Name); err != nil && err != ErrResourceNotFound {
 			t.Errorf("Error destroying registry module! WARNING: Dangling resources\n"+
 				"may exist! The full error is shown below.\n\n"+
 				"Registry Module: %s\nError: %s", rm.Name, err)
@@ -1138,7 +1138,7 @@ func createRegistryModuleWithVersion(t *testing.T, client *Client, org *Organiza
 	}
 
 	return rm, func() {
-		if err := client.RegistryModules.Delete(ctx, org.Name, rm.Name); err != nil {
+		if err := client.RegistryModules.Delete(ctx, org.Name, rm.Name); err != nil && err != ErrResourceNotFound {
 			t.Errorf("Error destroying registry module! WARNING: Dangling resources\n"+
 				"may exist! The full error is shown below.\n\n"+
 				"Registry Module: %s\nError: %s", rm.Name, err)
@@ -1175,7 +1175,7 @@ func createRunTask(t *testing.T, client *Client, org *Organization) (*RunTask, f
 	}
 
 	return r, func() {
-		if err := client.RunTasks.Delete(ctx, r.ID); err != nil {
+		if err := client.RunTasks.Delete(ctx, r.ID); err != nil && err != ErrResourceNotFound {
 			t.Errorf("Error removing Run Task! WARNING: Run task limit\n"+
 				"may be reached if not deleted! The full error is shown below.\n\n"+
 				"Run Task: %s\nError: %s", r.Name, err)
@@ -1227,7 +1227,7 @@ func createRegistryProvider(t *testing.T, client *Client, org *Organization, reg
 			Name:             prv.Name,
 		}
 
-		if err := client.RegistryProviders.Delete(ctx, id); err != nil {
+		if err := client.RegistryProviders.Delete(ctx, id); err != nil && err != ErrResourceNotFound {
 			t.Errorf("Error destroying registry provider! WARNING: Dangling resources\n"+
 				"may exist! The full error is shown below.\n\n"+
 				"Registry Provider: %s/%s\nError: %s", prv.Namespace, prv.Name, err)
@@ -1285,7 +1285,7 @@ func createRegistryProviderPlatform(t *testing.T, client *Client, provider *Regi
 			Arch:                      rpp.Arch,
 		}
 
-		if err := client.RegistryProviderPlatforms.Delete(ctx, platformID); err != nil {
+		if err := client.RegistryProviderPlatforms.Delete(ctx, platformID); err != nil && err != ErrResourceNotFound {
 			t.Errorf("Error destroying registry provider platform! WARNING: Dangling resources\n"+
 				"may exist! The full error is shown below.\n\n"+
 				"Registry Provider Version: %s/%s/%s/%s\nError: %s", rpp.RegistryProviderVersion.RegistryProvider.Namespace, rpp.RegistryProviderVersion.RegistryProvider.Name, rpp.OS, rpp.Arch, err)
@@ -1336,7 +1336,7 @@ func createRegistryProviderVersion(t *testing.T, client *Client, provider *Regis
 			RegistryProviderID: providerID,
 		}
 
-		if err := client.RegistryProviderVersions.Delete(ctx, id); err != nil {
+		if err := client.RegistryProviderVersions.Delete(ctx, id); err != nil && err != ErrResourceNotFound {
 			t.Errorf("Error destroying registry provider version! WARNING: Dangling resources\n"+
 				"may exist! The full error is shown below.\n\n"+
 				"Registry Provider Version: %s/%s/%s\nError: %s", prvv.RegistryProvider.Namespace, prvv.RegistryProvider.Name, prvv.Version, err)
@@ -1365,7 +1365,7 @@ func createSSHKey(t *testing.T, client *Client, org *Organization) (*SSHKey, fun
 	}
 
 	return key, func() {
-		if err := client.SSHKeys.Delete(ctx, key.ID); err != nil {
+		if err := client.SSHKeys.Delete(ctx, key.ID); err != nil && err != ErrResourceNotFound {
 			t.Errorf("Error destroying SSH key! WARNING: Dangling resources\n"+
 				"may exist! The full error is shown below.\n\n"+
 				"SSHKey: %s\nError: %s", key.Name, err)
@@ -1442,7 +1442,7 @@ func createTeam(t *testing.T, client *Client, org *Organization) (*Team, func())
 	}
 
 	return tm, func() {
-		if err := client.Teams.Delete(ctx, tm.ID); err != nil {
+		if err := client.Teams.Delete(ctx, tm.ID); err != nil && err != ErrResourceNotFound {
 			t.Errorf("Error destroying team! WARNING: Dangling resources\n"+
 				"may exist! The full error is shown below.\n\n"+
 				"Team: %s\nError: %s", tm.Name, err)
@@ -1480,7 +1480,7 @@ func createTeamAccess(t *testing.T, client *Client, tm *Team, w *Workspace, org 
 	}
 
 	return ta, func() {
-		if err := client.TeamAccess.Remove(ctx, ta.ID); err != nil {
+		if err := client.TeamAccess.Remove(ctx, ta.ID); err != nil && err != ErrResourceNotFound {
 			t.Errorf("Error removing team access! WARNING: Dangling resources\n"+
 				"may exist! The full error is shown below.\n\n"+
 				"TeamAccess: %s\nError: %s", ta.ID, err)
@@ -1514,7 +1514,7 @@ func createTeamToken(t *testing.T, client *Client, tm *Team) (*TeamToken, func()
 	}
 
 	return tt, func() {
-		if err := client.TeamTokens.Delete(ctx, tm.ID); err != nil {
+		if err := client.TeamTokens.Delete(ctx, tm.ID); err != nil && err != ErrResourceNotFound {
 			t.Errorf("Error destroying team token! WARNING: Dangling resources\n"+
 				"may exist! The full error is shown below.\n\n"+
 				"TeamToken: %s\nError: %s", tm.ID, err)
@@ -1545,7 +1545,7 @@ func createVariable(t *testing.T, client *Client, w *Workspace) (*Variable, func
 	}
 
 	return v, func() {
-		if err := client.Variables.Delete(ctx, w.ID, v.ID); err != nil {
+		if err := client.Variables.Delete(ctx, w.ID, v.ID); err != nil && err != ErrResourceNotFound {
 			t.Errorf("Error destroying variable! WARNING: Dangling resources\n"+
 				"may exist! The full error is shown below.\n\n"+
 				"Variable: %s\nError: %s", v.Key, err)
@@ -1577,7 +1577,7 @@ func createWorkspaceWithOptions(t *testing.T, client *Client, org *Organization,
 	}
 
 	return w, func() {
-		if err := client.Workspaces.Delete(ctx, org.Name, w.Name); err != nil {
+		if err := client.Workspaces.Delete(ctx, org.Name, w.Name); err != nil && err != ErrResourceNotFound {
 			t.Errorf("Error destroying workspace! WARNING: Dangling resources\n"+
 				"may exist! The full error is shown below.\n\n"+
 				"Workspace: %s\nError: %s", w.Name, err)
@@ -1625,7 +1625,7 @@ func createWorkspaceWithVCS(t *testing.T, client *Client, org *Organization, opt
 	}
 
 	return w, func() {
-		if err := client.Workspaces.Delete(ctx, org.Name, w.Name); err != nil {
+		if err := client.Workspaces.Delete(ctx, org.Name, w.Name); err != nil && err != ErrResourceNotFound {
 			t.Errorf("Error destroying workspace! WARNING: Dangling resources\n"+
 				"may exist! The full error is shown below.\n\n"+
 				"Workspace: %s\nError: %s", w.Name, err)
@@ -1666,7 +1666,7 @@ func createWorkspaceRunTask(t *testing.T, client *Client, workspace *Workspace, 
 	}
 
 	return wr, func() {
-		if err := client.WorkspaceRunTasks.Delete(ctx, workspace.ID, wr.ID); err != nil {
+		if err := client.WorkspaceRunTasks.Delete(ctx, workspace.ID, wr.ID); err != nil && err != ErrResourceNotFound {
 			t.Errorf("Error destroying workspace run task!\n"+
 				"Workspace: %s\n"+
 				"Workspace Run Task: %s\n"+
@@ -1709,7 +1709,7 @@ func createVariableSet(t *testing.T, client *Client, org *Organization, options 
 	}
 
 	return vs, func() {
-		if err := client.VariableSets.Delete(ctx, vs.ID); err != nil {
+		if err := client.VariableSets.Delete(ctx, vs.ID); err != nil && err != ErrResourceNotFound {
 			t.Errorf("Error destroying variable set! WARNING: Dangling resources\n"+
 				"may exist! The full error is shown below.\n\n"+
 				"VariableSet: %s\nError: %s", vs.Name, err)
@@ -1759,7 +1759,7 @@ func createVariableSetVariable(t *testing.T, client *Client, vs *VariableSet, op
 	}
 
 	return v, func() {
-		if err := client.VariableSetVariables.Delete(ctx, vs.ID, v.ID); err != nil {
+		if err := client.VariableSetVariables.Delete(ctx, vs.ID, v.ID); err != nil && err != ErrResourceNotFound {
 			t.Errorf("Error destroying variable! WARNING: Dangling resources\n"+
 				"may exist! The full error is shown below.\n\n"+
 				"Variable: %s\nError: %s", v.Key, err)
