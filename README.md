@@ -134,7 +134,7 @@ See [TESTS.md](docs/TESTS.md).
 
 ## Issues and Contributing
 
-See [CONTRIBUTING.md](docs/CONTRIBUTING.md)
+See [CONTRIBUTING.md](.github/CONTRIBUTING.md)
 
 ## Releases
 
