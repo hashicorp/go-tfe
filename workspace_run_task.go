@@ -10,7 +10,6 @@ import (
 var _ WorkspaceRunTasks = (*workspaceRunTasks)(nil)
 
 // WorkspaceRunTasks represent all the run task related methods in the context of a workspace that the Terraform Cloud/Enterprise API supports.
-// **Note: This API is still in BETA and subject to change.**
 type WorkspaceRunTasks interface {
 	// Add a run task to a workspace
 	Create(ctx context.Context, workspaceID string, options WorkspaceRunTaskCreateOptions) (*WorkspaceRunTask, error)

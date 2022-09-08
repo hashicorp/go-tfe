@@ -11,7 +11,6 @@ var _ TaskStages = (*taskStages)(nil)
 
 // TaskStages describes all the task stage related methods that the TFC/E API
 // supports.
-// **Note: This API is still in BETA and is subject to change.**
 type TaskStages interface {
 	// Read a task stage by ID
 	Read(ctx context.Context, taskStageID string, options *TaskStageReadOptions) (*TaskStage, error)
@@ -31,6 +30,7 @@ type Stage string
 const (
 	PrePlan  Stage = "pre_plan"
 	PostPlan Stage = "post_plan"
+	PreApply Stage = "pre_apply"
 )
 
 // TaskStage represents a TFC/E run's stage where run tasks can occur

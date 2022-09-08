@@ -10,7 +10,6 @@ import (
 var _ TaskResults = (*taskResults)(nil)
 
 // TaskResults describes all the task result related methods that the TFC/E API supports.
-// **Note**: This API is still in BETA and is subject to change
 type TaskResults interface {
 	// Read a task result by ID
 	Read(ctx context.Context, taskResultID string) (*TaskResult, error)
