@@ -125,6 +125,10 @@ type OrganizationPermissions struct {
 // OrganizationListOptions represents the options for listing organizations.
 type OrganizationListOptions struct {
 	ListOptions
+
+	// Optional: A query string used to filter organizations.
+	// Organizations with a name or email partially matching this value will be returned.
+	Query string `url:"q,omitempty"`
 }
 
 // OrganizationCreateOptions represents the options for creating an organization.
