@@ -1,6 +1,7 @@
 package tfe
 
 import (
+	"compress/gzip"
 	"errors"
 	"io/fs"
 	"log"
@@ -851,7 +852,11 @@ func packContents(path string) (*bytes.Buffer, error) {
 		return body, ErrMissingDirectory
 	}
 
-	_, errSlug := slug.Pack(path, body, true)
+	p, errSlug := slug.NewPacker(slug.CompressionLevel(gzip.BestSpeed), slug.DereferenceSymlinks())
+	if errSlug != nil {
+		return body, errSlug
+	}
+	_, errSlug = p.Pack(path, body)
 	if errSlug != nil {
 		return body, errSlug
 	}
