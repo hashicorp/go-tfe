@@ -164,7 +164,7 @@ type OrganizationCreateOptions struct {
 	// Optional: SendPassingStatusesForUntriggeredSpeculativePlans toggles behavior of untriggered speculative plans to send status updates to version control systems like GitHub.
 	SendPassingStatusesForUntriggeredSpeculativePlans *bool `jsonapi:"attr,send-passing-statuses-for-untriggered-speculative-plans,omitempty"`
 
-	// Optional: AssessmentsEnforced toggles whether health assessment enablement is enforced across all assessable workspaces or if the decission to enabled health assessments is delegated to the workspace setting AssessmentsEnabled.
+	// Optional: AssessmentsEnforced toggles whether health assessment enablement is enforced across all assessable workspaces (those with a minimum terraform versio of 0.15.4 and not running in local execution mode) or if the decision to enabled health assessments is delegated to the workspace setting AssessmentsEnabled.
 	AssessmentsEnforced *bool `jsonapi:"attr,assessments-enforced"`
 }
 
@@ -200,7 +200,7 @@ type OrganizationUpdateOptions struct {
 	// SendPassingStatusesForUntriggeredSpeculativePlans toggles behavior of untriggered speculative plans to send status updates to version control systems like GitHub.
 	SendPassingStatusesForUntriggeredSpeculativePlans *bool `jsonapi:"attr,send-passing-statuses-for-untriggered-speculative-plans,omitempty"`
 
-	// Optional: AssessmentsEnforced toggles whether health assessment enablement is enforced across all assessable workspaces or if the decission to enabled health assessments is delegated to the workspace setting AssessmentsEnabled.
+	// Optional: AssessmentsEnforced toggles whether health assessment enablement is enforced across all assessable workspaces (those with a minimum terraform versio of 0.15.4 and not running in local execution mode) or if the decision to enabled health assessments is delegated to the workspace setting AssessmentsEnabled.
 	AssessmentsEnforced *bool `jsonapi:"attr,assessments-enforced"`
 }
 
