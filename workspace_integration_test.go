@@ -717,6 +717,8 @@ func TestWorkspacesUpdate(t *testing.T) {
 	orgTest, orgTestCleanup := createOrganization(t, client)
 	defer orgTestCleanup()
 
+	upgradeOrganizationSubscription(t, client, orgTest)
+
 	wTest, _ := createWorkspace(t, client, orgTest)
 
 	t.Run("when updating a subset of values", func(t *testing.T) {
