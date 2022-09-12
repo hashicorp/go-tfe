@@ -1,6 +1,8 @@
 # Unreleased
 * Add `Query` param field to `OrganizationListOptions` to allow searching based on name or email by @laurenolivia [#529](https://github.com/hashicorp/go-tfe/pull/529)
 
+* Add support for managing workspace and organization health assessment (drift detection) setting [#462](https://github.com/hashicorp/go-tfe/pull/462)
+
 ## Bug Fixes
 * Fixes null value returned in variable set relationship in `VariableSetVariable` by @sebasslash [#521](https://github.com/hashicorp/go-tfe/pull/521)
 
@@ -47,7 +49,7 @@
 * [beta] Add support for triggering Workspace runs through matching Git tags [#434](https://github.com/hashicorp/go-tfe/pull/434)
 * Add `Query` param field to `AgentPoolListOptions` to allow searching based on agent pool name, by @JarrettSpiker [#417](https://github.com/hashicorp/go-tfe/pull/417)
 * Add organization scope and allowed workspaces field for scope agents by @Netra2104 [#453](https://github.com/hashicorp/go-tfe/pull/453)
-* Add support for managing workspace drift detection setting [#462](https://github.com/hashicorp/go-tfe/pull/462)
+* Adds `Namespace` and `RegistryName` fields to `RegistryModuleID` to allow reading of Public Registry Modules by @Uk1288 [#464](https://github.com/hashicorp/go-tfe/pull/464)
 
 ## Bug fixes
 * Fixed JSON mapping for Configuration Versions failing to properly set the `speculative` property [#459](https://github.com/hashicorp/go-tfe/pull/459)
