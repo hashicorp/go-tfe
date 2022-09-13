@@ -7,9 +7,11 @@ import (
 	"bytes"
 	"context"
 	"encoding/json"
+	"fmt"
 	"testing"
 	"time"
 
+	"github.com/hashicorp/go-retryablehttp"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
@@ -561,6 +563,7 @@ func TestRun_Unmarshal(t *testing.T) {
 					"plan-queued-at": "2020-03-16T23:15:59+00:00",
 					"errored-at":     "2019-03-16T23:23:59+00:00",
 				},
+				"variables": []map[string]string{{"key": "a-key", "value": "\"a-value\""}},
 			},
 		},
 	}
@@ -596,4 +599,41 @@ func TestRun_Unmarshal(t *testing.T) {
 	assert.Equal(t, run.Permissions.CanForceCancel, true)
 	assert.Equal(t, run.StatusTimestamps.PlanQueuedAt, planQueuedParsedTime)
 	assert.Equal(t, run.StatusTimestamps.ErroredAt, erroredParsedTime)
+
+	require.NotEmpty(t, run.Variables)
+	assert.Equal(t, run.Variables[0].Key, "a-key")
+	assert.Equal(t, run.Variables[0].Value, "\"a-value\"")
+}
+
+func TestRunCreateOptions_Marshal(t *testing.T) {
+	client := testClient(t)
+
+	wTest, wTestCleanup := createWorkspace(t, client, nil)
+	defer wTestCleanup()
+
+	opts := RunCreateOptions{
+		Workspace: wTest,
+		Variables: []*RunVariable{
+			{
+				Key:   "test_variable",
+				Value: "Hello, World!",
+			},
+			{
+				Key:   "test_foo",
+				Value: "Hello, Foo!",
+			},
+		},
+	}
+
+	reqBody, err := serializeRequestBody(&opts)
+	require.NoError(t, err)
+	req, err := retryablehttp.NewRequest("POST", "url", reqBody)
+	require.NoError(t, err)
+	bodyBytes, err := req.BodyBytes()
+	require.NoError(t, err)
+
+	expectedBody := fmt.Sprintf(`{"data":{"type":"runs","attributes":{"variables":[{"key":"test_variable","value":"Hello, World!"},{"key":"test_foo","value":"Hello, Foo!"}]},"relationships":{"configuration-version":{"data":null},"workspace":{"data":{"type":"workspaces","id":"%s"}}}}}
+`, wTest.ID)
+
+	assert.Equal(t, string(bodyBytes), expectedBody)
 }

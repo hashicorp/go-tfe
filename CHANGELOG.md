@@ -2,6 +2,7 @@
 
 ## Bug Fixes
 * Fixes null value returned in variable set relationship in `VariableSetVariable` by @sebasslash [#521](https://github.com/hashicorp/go-tfe/pull/521)
+* Fix marshalling of run variables in `RunCreateOptions`. The `Variables` field type in `Run` struct has changed from `[]*RunVariable` to `[]*RunVariableAttr` by @Uk1288 [#531](https://github.com/hashicorp/go-tfe/pull/531)
 
 # v1.9.0
 
