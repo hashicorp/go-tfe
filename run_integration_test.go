@@ -292,7 +292,7 @@ func TestRunsCreate(t *testing.T) {
 	})
 
 	t.Run("with variables", func(t *testing.T) {
-		vars := []*RunVariableOption{
+		vars := []*RunVariable{
 			{
 				Key:   "test_variable",
 				Value: "Hello, World!",
@@ -601,8 +601,8 @@ func TestRun_Unmarshal(t *testing.T) {
 	assert.Equal(t, run.StatusTimestamps.ErroredAt, erroredParsedTime)
 
 	require.NotEmpty(t, run.Variables)
-	assert.Equal(t, run.Variables[0].Key, "a-key")
-	assert.Equal(t, run.Variables[0].Value, "\"a-value\"")
+	assert.Equal(t, "a-key", run.Variables[0].Key)
+	assert.Equal(t, "\"a-value\"", run.Variables[0].Value)
 }
 
 func TestRunCreateOptions_Marshal(t *testing.T) {
@@ -613,7 +613,7 @@ func TestRunCreateOptions_Marshal(t *testing.T) {
 
 	opts := RunCreateOptions{
 		Workspace: wTest,
-		Variables: []*RunVariableOption{
+		Variables: []*RunVariable{
 			{
 				Key:   "test_variable",
 				Value: "Hello, World!",
