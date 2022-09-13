@@ -19,9 +19,9 @@ func TestOrganizationsList(t *testing.T) {
 	ctx := context.Background()
 
 	orgTest1, orgTest1Cleanup := createOrganization(t, client)
-	defer orgTest1Cleanup()
+	t.Cleanup(orgTest1Cleanup)
 	orgTest2, orgTest2Cleanup := createOrganization(t, client)
-	defer orgTest2Cleanup()
+	t.Cleanup(orgTest2Cleanup)
 
 	t.Run("with no list options", func(t *testing.T) {
 		orgl, err := client.Organizations.List(ctx, nil)
@@ -49,6 +49,54 @@ func TestOrganizationsList(t *testing.T) {
 		assert.Empty(t, orgl)
 		assert.Equal(t, 999, orgl.CurrentPage)
 		assert.Equal(t, 2, orgl.TotalCount)
+	})
+
+	t.Run("when querying on a valid org name", func(t *testing.T) {
+		org, orgTestCleanup := createOrganization(t, client)
+		t.Cleanup(orgTestCleanup)
+
+		orgList, err := client.Organizations.List(ctx, &OrganizationListOptions{
+			Query: org.Name,
+		})
+
+		require.NoError(t, err)
+		assert.Equal(t, true, orgItemsContainsName(orgList.Items, org.Name))
+	})
+
+	t.Run("when querying on a valid email", func(t *testing.T) {
+		org, orgTestCleanup := createOrganization(t, client)
+		t.Cleanup(orgTestCleanup)
+
+		orgList, err := client.Organizations.List(ctx, &OrganizationListOptions{
+			Query: org.Email,
+		})
+
+		require.NoError(t, err)
+		assert.Equal(t, true, orgItemsContainsEmail(orgList.Items, org.Email))
+	})
+
+	t.Run("with invalid query name", func(t *testing.T) {
+		org, orgTestCleanup := createOrganization(t, client)
+		t.Cleanup(orgTestCleanup)
+
+		orgList, err := client.Organizations.List(ctx, &OrganizationListOptions{
+			Query: org.Name,
+		})
+
+		require.NoError(t, err)
+		assert.NotEqual(t, orgList.Items, orgTest1.Name)
+	})
+
+	t.Run("with invalid query email", func(t *testing.T) {
+		org, orgTestCleanup := createOrganization(t, client)
+		t.Cleanup(orgTestCleanup)
+
+		orgList, err := client.Organizations.List(ctx, &OrganizationListOptions{
+			Query: org.Email,
+		})
+
+		require.NoError(t, err)
+		assert.NotEqual(t, orgList.Items, orgTest1.Email)
 	})
 }
 
@@ -106,7 +154,7 @@ func TestOrganizationsRead(t *testing.T) {
 	ctx := context.Background()
 
 	orgTest, orgTestCleanup := createOrganization(t, client)
-	defer orgTestCleanup()
+	t.Cleanup(orgTestCleanup)
 
 	t.Run("when the org exists", func(t *testing.T) {
 		org, err := client.Organizations.Read(ctx, orgTest.Name)
@@ -205,7 +253,7 @@ func TestOrganizationsUpdate(t *testing.T) {
 
 	t.Run("when only updating a subset of fields", func(t *testing.T) {
 		orgTest, orgTestCleanup := createOrganization(t, client)
-		defer orgTestCleanup()
+		t.Cleanup(orgTestCleanup)
 
 		org, err := client.Organizations.Update(ctx, orgTest.Name, OrganizationUpdateOptions{})
 		require.NoError(t, err)
@@ -241,16 +289,16 @@ func TestOrganizationsReadCapacity(t *testing.T) {
 	ctx := context.Background()
 
 	orgTest, orgTestCleanup := createOrganization(t, client)
-	defer orgTestCleanup()
+	t.Cleanup(orgTestCleanup)
 
 	wTest1, wTestCleanup1 := createWorkspace(t, client, orgTest)
-	defer wTestCleanup1()
+	t.Cleanup(wTestCleanup1)
 	wTest2, wTestCleanup2 := createWorkspace(t, client, orgTest)
-	defer wTestCleanup2()
+	t.Cleanup(wTestCleanup2)
 	wTest3, wTestCleanup3 := createWorkspace(t, client, orgTest)
-	defer wTestCleanup3()
+	t.Cleanup(wTestCleanup3)
 	wTest4, wTestCleanup4 := createWorkspace(t, client, orgTest)
-	defer wTestCleanup4()
+	t.Cleanup(wTestCleanup4)
 
 	t.Run("without queued runs", func(t *testing.T) {
 		c, err := client.Organizations.ReadCapacity(ctx, orgTest.Name)
@@ -263,13 +311,13 @@ func TestOrganizationsReadCapacity(t *testing.T) {
 	// limit of 2 concurrent runs per organization.
 	t.Run("with queued runs", func(t *testing.T) {
 		_, runCleanup1 := createRun(t, client, wTest1)
-		defer runCleanup1()
+		t.Cleanup(runCleanup1)
 		_, runCleanup2 := createRun(t, client, wTest2)
-		defer runCleanup2()
+		t.Cleanup(runCleanup2)
 		_, runCleanup3 := createRun(t, client, wTest3)
-		defer runCleanup3()
+		t.Cleanup(runCleanup3)
 		_, runCleanup4 := createRun(t, client, wTest4)
-		defer runCleanup4()
+		t.Cleanup(runCleanup4)
 
 		c, err := client.Organizations.ReadCapacity(ctx, orgTest.Name)
 		require.NoError(t, err)
@@ -297,7 +345,7 @@ func TestOrganizationsReadEntitlements(t *testing.T) {
 	ctx := context.Background()
 
 	orgTest, orgTestCleanup := createOrganization(t, client)
-	defer orgTestCleanup()
+	t.Cleanup(orgTestCleanup)
 
 	t.Run("when the org exists", func(t *testing.T) {
 		entitlements, err := client.Organizations.ReadEntitlements(ctx, orgTest.Name)
@@ -334,16 +382,16 @@ func TestOrganizationsReadRunQueue(t *testing.T) {
 	ctx := context.Background()
 
 	orgTest, orgTestCleanup := createOrganization(t, client)
-	defer orgTestCleanup()
+	t.Cleanup(orgTestCleanup)
 
 	wTest1, wTestCleanup1 := createWorkspace(t, client, orgTest)
-	defer wTestCleanup1()
+	t.Cleanup(wTestCleanup1)
 	wTest2, wTestCleanup2 := createWorkspace(t, client, orgTest)
-	defer wTestCleanup2()
+	t.Cleanup(wTestCleanup2)
 	wTest3, wTestCleanup3 := createWorkspace(t, client, orgTest)
-	defer wTestCleanup3()
+	t.Cleanup(wTestCleanup3)
 	wTest4, wTestCleanup4 := createWorkspace(t, client, orgTest)
-	defer wTestCleanup4()
+	t.Cleanup(wTestCleanup4)
 
 	t.Run("without queued runs", func(t *testing.T) {
 		rq, err := client.Organizations.ReadRunQueue(ctx, orgTest.Name, ReadRunQueueOptions{})
@@ -353,13 +401,13 @@ func TestOrganizationsReadRunQueue(t *testing.T) {
 
 	// Create a couple or runs to fill the queue.
 	rTest1, rTestCleanup1 := createRun(t, client, wTest1)
-	defer rTestCleanup1()
+	t.Cleanup(rTestCleanup1)
 	rTest2, rTestCleanup2 := createRun(t, client, wTest2)
-	defer rTestCleanup2()
+	t.Cleanup(rTestCleanup2)
 	rTest3, rTestCleanup3 := createRun(t, client, wTest3)
-	defer rTestCleanup3()
+	t.Cleanup(rTestCleanup3)
 	rTest4, rTestCleanup4 := createRun(t, client, wTest4)
-	defer rTestCleanup4()
+	t.Cleanup(rTestCleanup4)
 
 	// For this test FRQ should be enabled and have a
 	// limit of 2 concurrent runs per organization.
@@ -468,7 +516,7 @@ func TestOrganizationsReadRunTasksPermission(t *testing.T) {
 	ctx := context.Background()
 
 	orgTest, orgTestCleanup := createOrganization(t, client)
-	defer orgTestCleanup()
+	t.Cleanup(orgTestCleanup)
 
 	t.Run("when the org exists", func(t *testing.T) {
 		org, err := client.Organizations.Read(ctx, orgTest.Name)
@@ -491,7 +539,7 @@ func TestOrganizationsReadRunTasksEntitlement(t *testing.T) {
 	ctx := context.Background()
 
 	orgTest, orgTestCleanup := createOrganization(t, client)
-	defer orgTestCleanup()
+	t.Cleanup(orgTestCleanup)
 
 	t.Run("when the org exists", func(t *testing.T) {
 		entitlements, err := client.Organizations.ReadEntitlements(ctx, orgTest.Name)
@@ -500,4 +548,29 @@ func TestOrganizationsReadRunTasksEntitlement(t *testing.T) {
 		assert.NotEmpty(t, entitlements.ID)
 		assert.True(t, entitlements.RunTasks)
 	})
+
+}
+
+func orgItemsContainsName(items []*Organization, name string) bool {
+	hasName := false
+	for _, item := range items {
+		if item.Name == name {
+			hasName = true
+			break
+		}
+	}
+
+	return hasName
+}
+
+func orgItemsContainsEmail(items []*Organization, email string) bool {
+	hasEmail := false
+	for _, item := range items {
+		if item.Email == email {
+			hasEmail = true
+			break
+		}
+	}
+
+	return hasEmail
 }
