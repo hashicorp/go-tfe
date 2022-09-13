@@ -304,9 +304,9 @@ type RunCreateOptions struct {
 	// user confirmation. It defaults to the Workspace.AutoApply setting.
 	AutoApply *bool `jsonapi:"attr,auto-apply,omitempty"`
 
-	// RunVariables allows you to specify terraform input variables for
+	// Variables allows you to specify terraform input variables for
 	// a particular run, prioritized over variables defined on the workspace.
-	Variables []*RunVariable `jsonapi:"attr,variables,omitempty"`
+	Variables []*RunVariableOption `jsonapi:"attr,variables,omitempty"`
 }
 
 // RunApplyOptions represents the options for applying a run.
@@ -327,6 +327,11 @@ type RunCancelOptions struct {
 type RunVariable struct {
 	Key   string `jsonapi:"attr,key"`
 	Value string `jsonapi:"attr,value"`
+}
+
+type RunVariableOption struct {
+	Key   string `json:"key"`
+	Value string `json:"value"`
 }
 
 // RunForceCancelOptions represents the options for force-canceling a run.
