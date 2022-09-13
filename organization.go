@@ -64,11 +64,11 @@ type OrganizationList struct {
 // Organization represents a Terraform Enterprise organization.
 type Organization struct {
 	Name                                              string                   `jsonapi:"primary,organizations"`
+	AssessmentsEnforced                               bool                     `jsonapi:"attr,assessments-enforced"`
 	CollaboratorAuthPolicy                            AuthPolicyType           `jsonapi:"attr,collaborator-auth-policy"`
 	CostEstimationEnabled                             bool                     `jsonapi:"attr,cost-estimation-enabled"`
 	CreatedAt                                         time.Time                `jsonapi:"attr,created-at,iso8601"`
 	Email                                             string                   `jsonapi:"attr,email"`
-	AssessmentsEnforced                               bool                     `jsonapi:"attr,assessments-enforced"`
 	ExternalID                                        string                   `jsonapi:"attr,external-id"`
 	OwnersTeamSAMLRoleID                              string                   `jsonapi:"attr,owners-team-saml-role-id"`
 	Permissions                                       *OrganizationPermissions `jsonapi:"attr,permissions"`
@@ -143,6 +143,9 @@ type OrganizationCreateOptions struct {
 	// Required: Name of the organization.
 	Name *string `jsonapi:"attr,name"`
 
+	// Optional: AssessmentsEnforced toggles whether health assessment enablement is enforced across all assessable workspaces (those with a minimum terraform versio of 0.15.4 and not running in local execution mode) or if the decision to enabled health assessments is delegated to the workspace setting AssessmentsEnabled.
+	AssessmentsEnforced *bool `jsonapi:"attr,assessments-enforced"`
+
 	// Required: Admin email address.
 	Email *string `jsonapi:"attr,email"`
 
@@ -163,9 +166,6 @@ type OrganizationCreateOptions struct {
 
 	// Optional: SendPassingStatusesForUntriggeredSpeculativePlans toggles behavior of untriggered speculative plans to send status updates to version control systems like GitHub.
 	SendPassingStatusesForUntriggeredSpeculativePlans *bool `jsonapi:"attr,send-passing-statuses-for-untriggered-speculative-plans,omitempty"`
-
-	// Optional: AssessmentsEnforced toggles whether health assessment enablement is enforced across all assessable workspaces (those with a minimum terraform versio of 0.15.4 and not running in local execution mode) or if the decision to enabled health assessments is delegated to the workspace setting AssessmentsEnabled.
-	AssessmentsEnforced *bool `jsonapi:"attr,assessments-enforced"`
 }
 
 // OrganizationUpdateOptions represents the options for updating an organization.
@@ -178,6 +178,9 @@ type OrganizationUpdateOptions struct {
 
 	// New name for the organization.
 	Name *string `jsonapi:"attr,name,omitempty"`
+
+	// Optional: AssessmentsEnforced toggles whether health assessment enablement is enforced across all assessable workspaces (those with a minimum terraform versio of 0.15.4 and not running in local execution mode) or if the decision to enabled health assessments is delegated to the workspace setting AssessmentsEnabled.
+	AssessmentsEnforced *bool `jsonapi:"attr,assessments-enforced"`
 
 	// New admin email address.
 	Email *string `jsonapi:"attr,email,omitempty"`
@@ -199,9 +202,6 @@ type OrganizationUpdateOptions struct {
 
 	// SendPassingStatusesForUntriggeredSpeculativePlans toggles behavior of untriggered speculative plans to send status updates to version control systems like GitHub.
 	SendPassingStatusesForUntriggeredSpeculativePlans *bool `jsonapi:"attr,send-passing-statuses-for-untriggered-speculative-plans,omitempty"`
-
-	// Optional: AssessmentsEnforced toggles whether health assessment enablement is enforced across all assessable workspaces (those with a minimum terraform versio of 0.15.4 and not running in local execution mode) or if the decision to enabled health assessments is delegated to the workspace setting AssessmentsEnabled.
-	AssessmentsEnforced *bool `jsonapi:"attr,assessments-enforced"`
 }
 
 // ReadRunQueueOptions represents the options for showing the queue.
