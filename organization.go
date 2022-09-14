@@ -144,7 +144,7 @@ type OrganizationCreateOptions struct {
 	Name *string `jsonapi:"attr,name"`
 
 	// Optional: AssessmentsEnforced toggles whether health assessment enablement is enforced across all assessable workspaces (those with a minimum terraform versio of 0.15.4 and not running in local execution mode) or if the decision to enabled health assessments is delegated to the workspace setting AssessmentsEnabled.
-	AssessmentsEnforced *bool `jsonapi:"attr,assessments-enforced"`
+	AssessmentsEnforced *bool `jsonapi:"attr,assessments-enforced,omitempty"`
 
 	// Required: Admin email address.
 	Email *string `jsonapi:"attr,email"`
@@ -180,7 +180,7 @@ type OrganizationUpdateOptions struct {
 	Name *string `jsonapi:"attr,name,omitempty"`
 
 	// Optional: AssessmentsEnforced toggles whether health assessment enablement is enforced across all assessable workspaces (those with a minimum terraform versio of 0.15.4 and not running in local execution mode) or if the decision to enabled health assessments is delegated to the workspace setting AssessmentsEnabled.
-	AssessmentsEnforced *bool `jsonapi:"attr,assessments-enforced"`
+	AssessmentsEnforced *bool `jsonapi:"attr,assessments-enforced,omitempty"`
 
 	// New admin email address.
 	Email *string `jsonapi:"attr,email,omitempty"`
