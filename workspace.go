@@ -111,6 +111,7 @@ type Workspace struct {
 	Actions                    *WorkspaceActions     `jsonapi:"attr,actions"`
 	AgentPoolID                string                `jsonapi:"attr,agent-pool-id"`
 	AllowDestroyPlan           bool                  `jsonapi:"attr,allow-destroy-plan"`
+	AssessmentsEnabled         bool                  `jsonapi:"attr,assessments-enabled"`
 	AutoApply                  bool                  `jsonapi:"attr,auto-apply"`
 	CanQueueDestroyPlan        bool                  `jsonapi:"attr,can-queue-destroy-plan"`
 	CreatedAt                  time.Time             `jsonapi:"attr,created-at,iso8601"`
@@ -264,6 +265,11 @@ type WorkspaceCreateOptions struct {
 	// Optional: Whether destroy plans can be queued on the workspace.
 	AllowDestroyPlan *bool `jsonapi:"attr,allow-destroy-plan,omitempty"`
 
+	// Optional: Whether to enable health assessments (drift detection etc.) for the workspace.
+	// Reference: https://www.terraform.io/cloud-docs/api-docs/workspaces#create-a-workspace
+	// Requires remote execution mode, Terraform Cloud Business entitlement, and a valid agent pool to work
+	AssessmentsEnabled *bool `jsonapi:"attr,assessments-enabled,omitempty"`
+
 	// Optional: Whether to automatically apply changes when a Terraform plan is successful.
 	AutoApply *bool `jsonapi:"attr,auto-apply,omitempty"`
 
@@ -376,6 +382,11 @@ type WorkspaceUpdateOptions struct {
 
 	// Optional: Whether destroy plans can be queued on the workspace.
 	AllowDestroyPlan *bool `jsonapi:"attr,allow-destroy-plan,omitempty"`
+
+	// Optional: Whether to enable health assessments (drift detection etc.) for the workspace.
+	// Reference: https://www.terraform.io/cloud-docs/api-docs/workspaces#update-a-workspace
+	// Requires remote execution mode, Terraform Cloud Business entitlement, and a valid agent pool to work
+	AssessmentsEnabled *bool `jsonapi:"attr,assessments-enabled,omitempty"`
 
 	// Optional: Whether to automatically apply changes when a Terraform plan is successful.
 	AutoApply *bool `jsonapi:"attr,auto-apply,omitempty"`

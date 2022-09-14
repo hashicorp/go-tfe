@@ -1,6 +1,8 @@
 # Unreleased
 * Add `Query` param field to `OrganizationListOptions` to allow searching based on name or email by @laurenolivia [#529](https://github.com/hashicorp/go-tfe/pull/529)
 
+* Add support for managing workspace and organization health assessment (drift detection) setting [#462](https://github.com/hashicorp/go-tfe/pull/462)
+
 ## Bug Fixes
 * Fixes null value returned in variable set relationship in `VariableSetVariable` by @sebasslash [#521](https://github.com/hashicorp/go-tfe/pull/521)
 
