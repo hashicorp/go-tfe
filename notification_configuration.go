@@ -353,7 +353,9 @@ func validNotificationTriggerType(triggers []NotificationTriggerType) bool {
 			NotificationTriggerCompleted,
 			NotificationTriggerCreated,
 			NotificationTriggerErrored,
-			NotificationTriggerPlanning:
+			NotificationTriggerPlanning,
+			NotificationTriggerAssessmentDrifted,
+			NotificationTriggerAssessmentFailed:
 			continue
 		default:
 			return false
