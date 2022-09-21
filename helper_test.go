@@ -1935,10 +1935,16 @@ func checkTestNodeEnv(t *testing.T) {
 }
 
 func getTestIndex(x byte) string {
-	if x >= 'a' && x <= 'p' {
+	if x >= 'a' && x <= 'h' {
 		return "0"
 	}
-	return "1"
+	if x >= 'i' && x <= 'p' {
+		return "1"
+	}
+	if x >= 'q' && x <= 'u' {
+		return "2"
+	}
+	return "3"
 }
 
 // skips a test if the environment is for Terraform Cloud.
