@@ -1,7 +1,8 @@
 name: test
 on:
   pull_request:
-    branches: [ main ]
+    branches:
+      - main
 jobs:
   codegen:
     name: Codegen
@@ -42,6 +43,12 @@ jobs:
   tests:
     name: Integration Tests
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        ci_node_total: [2]
+        ci_node_index: [0, 1]
+
     timeout-minutes: 30
     steps:
       - name: Checkout code
@@ -74,6 +81,8 @@ jobs:
           GITHUB_REGISTRY_MODULE_IDENTIFIER: "hashicorp/terraform-random-module"
           OAUTH_CLIENT_GITHUB_TOKEN: "${{ secrets.OAUTH_CLIENT_GITHUB_TOKEN }}"
           GO111MODULE: "on"
+          CI_NODE_TOTAL: ${{ matrix.ci_node_total }}
+          CI_NODE_INDEX: ${{ matrix.ci_node_index }}
         run: |
           source $HOME/.env
           gotestsum --format short-verbose -- -timeout=40m -tags=integration
