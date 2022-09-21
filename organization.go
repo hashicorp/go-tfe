@@ -78,6 +78,7 @@ type Organization struct {
 	TrialExpiresAt                                    time.Time                `jsonapi:"attr,trial-expires-at,iso8601"`
 	TwoFactorConformant                               bool                     `jsonapi:"attr,two-factor-conformant"`
 	SendPassingStatusesForUntriggeredSpeculativePlans bool                     `jsonapi:"attr,send-passing-statuses-for-untriggered-speculative-plans"`
+	AllowForceDeleteWorkspaces                        bool                     `jsonapi:"attr,allow-force-delete-workspaces"`
 }
 
 // Capacity represents the current run capacity of an organization.
@@ -166,6 +167,9 @@ type OrganizationCreateOptions struct {
 
 	// Optional: SendPassingStatusesForUntriggeredSpeculativePlans toggles behavior of untriggered speculative plans to send status updates to version control systems like GitHub.
 	SendPassingStatusesForUntriggeredSpeculativePlans *bool `jsonapi:"attr,send-passing-statuses-for-untriggered-speculative-plans,omitempty"`
+
+	// Optional: AllowForceDeleteWorkspaces toggles behavior of allowing workspace admins to delete workspaces with resources under management.
+	AllowForceDeleteWorkspaces *bool `jsonapi:"attr,allow-force-delete-workspaces,omitempty"`
 }
 
 // OrganizationUpdateOptions represents the options for updating an organization.
@@ -202,6 +206,9 @@ type OrganizationUpdateOptions struct {
 
 	// SendPassingStatusesForUntriggeredSpeculativePlans toggles behavior of untriggered speculative plans to send status updates to version control systems like GitHub.
 	SendPassingStatusesForUntriggeredSpeculativePlans *bool `jsonapi:"attr,send-passing-statuses-for-untriggered-speculative-plans,omitempty"`
+
+	// Optional: AllowForceDeleteWorkspaces toggles behavior of allowing workspace admins to delete workspaces with resources under management.
+	AllowForceDeleteWorkspaces *bool `jsonapi:"attr,allow-force-delete-workspaces,omitempty"`
 }
 
 // ReadRunQueueOptions represents the options for showing the queue.

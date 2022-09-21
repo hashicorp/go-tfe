@@ -1211,6 +1211,126 @@ func TestWorkspacesDeleteByID(t *testing.T) {
 	})
 }
 
+func TestCanForceDeletePermission(t *testing.T) {
+	client := testClient(t)
+	ctx := context.Background()
+
+	orgTest, orgTestCleanup := createOrganization(t, client)
+	defer orgTestCleanup()
+
+	wTest, _ := createWorkspace(t, client, orgTest)
+
+	t.Run("workspace permission set includes can-force-delete", func(t *testing.T) {
+		w, err := client.Workspaces.ReadByID(ctx, wTest.ID)
+		require.NoError(t, err)
+		assert.Equal(t, wTest, w)
+		assert.Equal(t, wTest, w)
+		assert.NotNil(t, w.Permissions.CanForceDelete)
+		assert.True(t, *w.Permissions.CanForceDelete)
+	})
+}
+
+func TestWorkspacesSafeDelete(t *testing.T) {
+	client := testClient(t)
+	ctx := context.Background()
+
+	orgTest, orgTestCleanup := createOrganization(t, client)
+	defer orgTestCleanup()
+
+	wTest, _ := createWorkspace(t, client, orgTest)
+
+	t.Run("with valid options", func(t *testing.T) {
+		err := client.Workspaces.SafeDelete(ctx, orgTest.Name, wTest.Name)
+		require.NoError(t, err)
+
+		// Try loading the workspace - it should fail.
+		_, err = client.Workspaces.Read(ctx, orgTest.Name, wTest.Name)
+		assert.Equal(t, ErrResourceNotFound, err)
+	})
+
+	t.Run("when organization is invalid", func(t *testing.T) {
+		err := client.Workspaces.SafeDelete(ctx, badIdentifier, wTest.Name)
+		assert.EqualError(t, err, ErrInvalidOrg.Error())
+	})
+
+	t.Run("when workspace is invalid", func(t *testing.T) {
+		err := client.Workspaces.SafeDelete(ctx, orgTest.Name, badIdentifier)
+		assert.EqualError(t, err, ErrInvalidWorkspaceValue.Error())
+	})
+
+	t.Run("when workspace is locked", func(t *testing.T) {
+		wTest, workspaceCleanup := createWorkspace(t, client, orgTest)
+		defer workspaceCleanup()
+		w, err := client.Workspaces.Lock(ctx, wTest.ID, WorkspaceLockOptions{})
+		assert.NoError(t, err)
+		assert.True(t, w.Locked)
+
+		err = client.Workspaces.SafeDelete(ctx, orgTest.Name, wTest.Name)
+		assert.Contains(t, err.Error(), "conflict")
+		assert.Contains(t, err.Error(), "currently locked")
+	})
+
+	t.Run("when workspace has resources under management", func(t *testing.T) {
+		wTest, workspaceCleanup := createWorkspace(t, client, orgTest)
+		defer workspaceCleanup()
+		_, svTestCleanup := createStateVersion(t, client, 0, wTest)
+		t.Cleanup(svTestCleanup)
+
+		err := client.Workspaces.SafeDelete(ctx, orgTest.Name, wTest.Name)
+		// cant verify the exact error here because it is timing dependent on the backend
+		// based on whether the state version has been processed yet
+		assert.Contains(t, err.Error(), "conflict")
+	})
+}
+
+func TestWorkspacesSafeDeleteByID(t *testing.T) {
+	client := testClient(t)
+	ctx := context.Background()
+
+	orgTest, orgTestCleanup := createOrganization(t, client)
+	defer orgTestCleanup()
+
+	wTest, _ := createWorkspace(t, client, orgTest)
+
+	t.Run("with valid options", func(t *testing.T) {
+		err := client.Workspaces.SafeDeleteByID(ctx, wTest.ID)
+		require.NoError(t, err)
+
+		// Try loading the workspace - it should fail.
+		_, err = client.Workspaces.ReadByID(ctx, wTest.ID)
+		assert.Equal(t, ErrResourceNotFound, err)
+	})
+
+	t.Run("without a valid workspace ID", func(t *testing.T) {
+		err := client.Workspaces.SafeDeleteByID(ctx, badIdentifier)
+		assert.EqualError(t, err, ErrInvalidWorkspaceID.Error())
+	})
+
+	t.Run("when workspace is locked", func(t *testing.T) {
+		wTest, workspaceCleanup := createWorkspace(t, client, orgTest)
+		defer workspaceCleanup()
+		w, err := client.Workspaces.Lock(ctx, wTest.ID, WorkspaceLockOptions{})
+		assert.NoError(t, err)
+		assert.True(t, w.Locked)
+
+		err = client.Workspaces.SafeDeleteByID(ctx, wTest.ID)
+		assert.Contains(t, err.Error(), "conflict")
+		assert.Contains(t, err.Error(), "currently locked")
+	})
+
+	t.Run("when workspace has resources under management", func(t *testing.T) {
+		wTest, workspaceCleanup := createWorkspace(t, client, orgTest)
+		defer workspaceCleanup()
+		_, svTestCleanup := createStateVersion(t, client, 0, wTest)
+		t.Cleanup(svTestCleanup)
+
+		err := client.Workspaces.SafeDeleteByID(ctx, wTest.ID)
+		// cant verify the exact error here because it is timing dependent on the backend
+		// based on whether the state version has been processed yet
+		assert.Contains(t, err.Error(), "conflict")
+	})
+}
+
 func TestWorkspacesRemoveVCSConnection(t *testing.T) {
 	skipIfNotCINode(t)
 
