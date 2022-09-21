@@ -18,6 +18,8 @@ import (
 )
 
 func TestConfigurationVersionsList(t *testing.T) {
+	checkTestNodeEnv(t)
+
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -74,6 +76,8 @@ func TestConfigurationVersionsList(t *testing.T) {
 }
 
 func TestConfigurationVersionsCreate(t *testing.T) {
+	checkTestNodeEnv(t)
+
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -116,6 +120,8 @@ func TestConfigurationVersionsCreate(t *testing.T) {
 }
 
 func TestConfigurationVersionsRead(t *testing.T) {
+	checkTestNodeEnv(t)
+
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -148,6 +154,8 @@ func TestConfigurationVersionsRead(t *testing.T) {
 }
 
 func TestConfigurationVersionsReadWithOptions(t *testing.T) {
+	checkTestNodeEnv(t)
+
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -192,6 +200,8 @@ func TestConfigurationVersionsReadWithOptions(t *testing.T) {
 }
 
 func TestConfigurationVersionsUpload(t *testing.T) {
+	checkTestNodeEnv(t)
+
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -229,6 +239,8 @@ func TestConfigurationVersionsUpload(t *testing.T) {
 }
 
 func TestConfigurationVersionsArchive(t *testing.T) {
+	checkTestNodeEnv(t)
+
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -282,6 +294,8 @@ func TestConfigurationVersionsArchive(t *testing.T) {
 }
 
 func TestConfigurationVersionsDownload(t *testing.T) {
+	checkTestNodeEnv(t)
+
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -320,6 +334,8 @@ func TestConfigurationVersionsDownload(t *testing.T) {
 }
 
 func TestConfigurationVersions_Unmarshal(t *testing.T) {
+	checkTestNodeEnv(t)
+
 	data := map[string]interface{}{
 		"data": map[string]interface{}{
 			"type": "configuration-versions",

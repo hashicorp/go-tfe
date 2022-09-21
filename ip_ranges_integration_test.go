@@ -13,6 +13,7 @@ import (
 )
 
 func TestIPRangesRead(t *testing.T) {
+	checkTestNodeEnv(t)
 	skipIfEnterprise(t)
 
 	client := testClient(t)

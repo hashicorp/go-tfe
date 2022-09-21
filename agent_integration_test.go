@@ -12,6 +12,7 @@ import (
 )
 
 func TestAgentsRead(t *testing.T) {
+	checkTestNodeEnv(t)
 	skipIfNotLinuxAmd64(t)
 
 	client := testClient(t)
@@ -46,6 +47,7 @@ func TestAgentsRead(t *testing.T) {
 }
 
 func TestAgentsList(t *testing.T) {
+	checkTestNodeEnv(t)
 	skipIfNotLinuxAmd64(t)
 
 	client := testClient(t)

@@ -13,6 +13,7 @@ import (
 )
 
 func TestRunTasksCreate(t *testing.T) {
+	checkTestNodeEnv(t)
 	skipIfFreeOnly(t)
 
 	client := testClient(t)
@@ -52,6 +53,7 @@ func TestRunTasksCreate(t *testing.T) {
 }
 
 func TestRunTasksList(t *testing.T) {
+	checkTestNodeEnv(t)
 	skipIfFreeOnly(t)
 
 	client := testClient(t)
@@ -78,6 +80,7 @@ func TestRunTasksList(t *testing.T) {
 }
 
 func TestRunTasksRead(t *testing.T) {
+	checkTestNodeEnv(t)
 	skipIfFreeOnly(t)
 
 	client := testClient(t)
@@ -129,6 +132,7 @@ func TestRunTasksRead(t *testing.T) {
 }
 
 func TestRunTasksUpdate(t *testing.T) {
+	checkTestNodeEnv(t)
 	skipIfFreeOnly(t)
 
 	client := testClient(t)
@@ -181,6 +185,7 @@ func TestRunTasksUpdate(t *testing.T) {
 }
 
 func TestRunTasksDelete(t *testing.T) {
+	checkTestNodeEnv(t)
 	skipIfFreeOnly(t)
 
 	client := testClient(t)
@@ -211,6 +216,7 @@ func TestRunTasksDelete(t *testing.T) {
 }
 
 func TestRunTasksAttachToWorkspace(t *testing.T) {
+	checkTestNodeEnv(t)
 	skipIfFreeOnly(t)
 
 	client := testClient(t)

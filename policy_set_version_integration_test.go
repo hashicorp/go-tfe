@@ -15,6 +15,7 @@ import (
 const waitForPolicySetVersionUpload = 500 * time.Millisecond
 
 func TestPolicySetVersionsCreate(t *testing.T) {
+	checkTestNodeEnv(t)
 	skipIfFreeOnly(t)
 
 	client := testClient(t)
@@ -39,6 +40,7 @@ func TestPolicySetVersionsCreate(t *testing.T) {
 }
 
 func TestPolicySetVersionsRead(t *testing.T) {
+	checkTestNodeEnv(t)
 	skipIfFreeOnly(t)
 
 	client := testClient(t)
@@ -65,6 +67,7 @@ func TestPolicySetVersionsRead(t *testing.T) {
 }
 
 func TestPolicySetVersionsUpload(t *testing.T) {
+	checkTestNodeEnv(t)
 	skipIfFreeOnly(t)
 
 	client := testClient(t)
@@ -107,6 +110,8 @@ func TestPolicySetVersionsUpload(t *testing.T) {
 }
 
 func TestPolicySetVersionsUploadURL(t *testing.T) {
+	checkTestNodeEnv(t)
+
 	t.Run("successfully returns upload link", func(t *testing.T) {
 		links := map[string]interface{}{
 			"upload": "example.com",

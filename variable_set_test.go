@@ -9,6 +9,8 @@ import (
 )
 
 func TestVariableSetsList(t *testing.T) {
+	checkTestNodeEnv(t)
+
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -57,6 +59,8 @@ func TestVariableSetsList(t *testing.T) {
 }
 
 func TestVariableSetsCreate(t *testing.T) {
+	checkTestNodeEnv(t)
+
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -106,6 +110,8 @@ func TestVariableSetsCreate(t *testing.T) {
 }
 
 func TestVariableSetsRead(t *testing.T) {
+	checkTestNodeEnv(t)
+
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -129,6 +135,8 @@ func TestVariableSetsRead(t *testing.T) {
 }
 
 func TestVariableSetsUpdate(t *testing.T) {
+	checkTestNodeEnv(t)
+
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -168,6 +176,8 @@ func TestVariableSetsUpdate(t *testing.T) {
 }
 
 func TestVariableSetsDelete(t *testing.T) {
+	checkTestNodeEnv(t)
+
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -193,6 +203,8 @@ func TestVariableSetsDelete(t *testing.T) {
 }
 
 func TestVariableSetsApplyToAndRemoveFromWorkspaces(t *testing.T) {
+	checkTestNodeEnv(t)
+
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -293,6 +305,8 @@ func TestVariableSetsApplyToAndRemoveFromWorkspaces(t *testing.T) {
 }
 
 func TestVariableSetsUpdateWorkspaces(t *testing.T) {
+	checkTestNodeEnv(t)
+
 	client := testClient(t)
 	ctx := context.Background()
 

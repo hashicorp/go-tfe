@@ -12,6 +12,8 @@ import (
 )
 
 func TestCommentsList(t *testing.T) {
+	checkTestNodeEnv(t)
+
 	client := testClient(t)
 	ctx := context.Background()
 

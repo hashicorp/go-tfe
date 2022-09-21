@@ -15,6 +15,8 @@ import (
 )
 
 func TestPlanExportsCreate(t *testing.T) {
+	checkTestNodeEnv(t)
+
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -60,6 +62,8 @@ func TestPlanExportsCreate(t *testing.T) {
 }
 
 func TestPlanExportsRead(t *testing.T) {
+	checkTestNodeEnv(t)
+
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -83,6 +87,8 @@ func TestPlanExportsRead(t *testing.T) {
 }
 
 func TestPlanExportsDelete(t *testing.T) {
+	checkTestNodeEnv(t)
+
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -106,6 +112,8 @@ func TestPlanExportsDelete(t *testing.T) {
 }
 
 func TestPlanExportsDownload(t *testing.T) {
+	checkTestNodeEnv(t)
+
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -126,6 +134,8 @@ func TestPlanExportsDownload(t *testing.T) {
 }
 
 func TestPlanExport_Unmarshal(t *testing.T) {
+	checkTestNodeEnv(t)
+
 	data := map[string]interface{}{
 		"data": map[string]interface{}{
 			"type": "plan-exports",

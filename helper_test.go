@@ -1924,6 +1924,23 @@ func randomSemver(t *testing.T) string {
 	return fmt.Sprintf("%d.%d.%d", rand.Intn(99)+3, rand.Intn(99)+1, rand.Intn(99)+1)
 }
 
+func checkTestNodeEnv(t *testing.T) {
+	if nodeIndex, ok := os.LookupEnv("CI_NODE_INDEX"); ok {
+		testChar := strings.ToLower(t.Name())[4]
+		testIndex := getTestIndex(testChar)
+		if testIndex != nodeIndex {
+			t.Skip()
+		}
+	}
+}
+
+func getTestIndex(x byte) string {
+	if x >= 'a' && x <= 'p' {
+		return "0"
+	}
+	return "1"
+}
+
 // skips a test if the environment is for Terraform Cloud.
 func skipIfCloud(t *testing.T) {
 	if !enterpriseEnabled() {

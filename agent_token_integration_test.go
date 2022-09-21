@@ -12,6 +12,7 @@ import (
 )
 
 func TestAgentTokensList(t *testing.T) {
+	checkTestNodeEnv(t)
 	skipIfEnterprise(t)
 	skipIfFreeOnly(t)
 
@@ -52,6 +53,7 @@ func TestAgentTokensList(t *testing.T) {
 }
 
 func TestAgentTokensCreate(t *testing.T) {
+	checkTestNodeEnv(t)
 	skipIfEnterprise(t)
 	skipIfFreeOnly(t)
 
@@ -84,6 +86,7 @@ func TestAgentTokensCreate(t *testing.T) {
 	})
 }
 func TestAgentTokensRead(t *testing.T) {
+	checkTestNodeEnv(t)
 	skipIfEnterprise(t)
 	skipIfFreeOnly(t)
 
@@ -112,6 +115,7 @@ func TestAgentTokensRead(t *testing.T) {
 }
 
 func TestAgentTokensDelete(t *testing.T) {
+	checkTestNodeEnv(t)
 	skipIfEnterprise(t)
 	skipIfFreeOnly(t)
 

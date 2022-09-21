@@ -16,6 +16,8 @@ import (
 )
 
 func TestPlansRead(t *testing.T) {
+	checkTestNodeEnv(t)
+
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -46,6 +48,8 @@ func TestPlansRead(t *testing.T) {
 }
 
 func TestPlansLogs(t *testing.T) {
+	checkTestNodeEnv(t)
+
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -73,6 +77,8 @@ func TestPlansLogs(t *testing.T) {
 }
 
 func TestPlan_Unmarshal(t *testing.T) {
+	checkTestNodeEnv(t)
+
 	data := map[string]interface{}{
 		"data": map[string]interface{}{
 			"type": "plans",
@@ -117,6 +123,8 @@ func TestPlan_Unmarshal(t *testing.T) {
 }
 
 func TestPlansJSONOutput(t *testing.T) {
+	checkTestNodeEnv(t)
+
 	client := testClient(t)
 	ctx := context.Background()
 	rTest, rTestCleanup := createPlannedRun(t, client, nil)

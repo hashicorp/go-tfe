@@ -16,6 +16,7 @@ import (
 )
 
 func TestPolicyChecksList(t *testing.T) {
+	checkTestNodeEnv(t)
 	skipIfFreeOnly(t)
 
 	client := testClient(t)
@@ -82,6 +83,7 @@ func TestPolicyChecksList(t *testing.T) {
 }
 
 func TestPolicyChecksRead(t *testing.T) {
+	checkTestNodeEnv(t)
 	skipIfEnterprise(t)
 	skipIfFreeOnly(t)
 
@@ -125,6 +127,7 @@ func TestPolicyChecksRead(t *testing.T) {
 }
 
 func TestPolicyChecksOverride(t *testing.T) {
+	checkTestNodeEnv(t)
 	skipIfFreeOnly(t)
 
 	client := testClient(t)
@@ -185,6 +188,7 @@ func TestPolicyChecksOverride(t *testing.T) {
 }
 
 func TestPolicyChecksLogs(t *testing.T) {
+	checkTestNodeEnv(t)
 	skipIfFreeOnly(t)
 
 	client := testClient(t)
@@ -224,6 +228,8 @@ func TestPolicyChecksLogs(t *testing.T) {
 }
 
 func TestPolicyCheck_Unmarshal(t *testing.T) {
+	checkTestNodeEnv(t)
+
 	data := map[string]interface{}{
 		"data": map[string]interface{}{
 			"type": "policy-checks",

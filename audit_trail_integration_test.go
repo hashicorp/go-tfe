@@ -13,6 +13,7 @@ import (
 )
 
 func TestAuditTrailsList(t *testing.T) {
+	checkTestNodeEnv(t)
 	skipIfEnterprise(t)
 
 	userClient := testClient(t)

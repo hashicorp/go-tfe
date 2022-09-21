@@ -12,6 +12,7 @@ import (
 )
 
 func TestTaskStagesRead(t *testing.T) {
+	checkTestNodeEnv(t)
 	skipIfFreeOnly(t)
 
 	client := testClient(t)
@@ -78,6 +79,7 @@ func TestTaskStagesRead(t *testing.T) {
 }
 
 func TestTaskStagesList(t *testing.T) {
+	checkTestNodeEnv(t)
 	skipIfFreeOnly(t)
 
 	client := testClient(t)

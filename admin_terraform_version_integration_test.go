@@ -13,6 +13,7 @@ import (
 )
 
 func TestAdminTerraformVersions_List(t *testing.T) {
+	checkTestNodeEnv(t)
 	skipIfCloud(t)
 
 	client := testClient(t)
@@ -96,6 +97,7 @@ func TestAdminTerraformVersions_List(t *testing.T) {
 }
 
 func TestAdminTerraformVersions_CreateDelete(t *testing.T) {
+	checkTestNodeEnv(t)
 	skipIfCloud(t)
 
 	client := testClient(t)
@@ -163,6 +165,7 @@ func TestAdminTerraformVersions_CreateDelete(t *testing.T) {
 }
 
 func TestAdminTerraformVersions_ReadUpdate(t *testing.T) {
+	checkTestNodeEnv(t)
 	skipIfCloud(t)
 
 	client := testClient(t)

@@ -12,6 +12,7 @@ import (
 )
 
 func TestTeamTokensCreate(t *testing.T) {
+	checkTestNodeEnv(t)
 	skipIfFreeOnly(t)
 
 	client := testClient(t)
@@ -42,6 +43,7 @@ func TestTeamTokensCreate(t *testing.T) {
 	})
 }
 func TestTeamTokensRead(t *testing.T) {
+	checkTestNodeEnv(t)
 	skipIfFreeOnly(t)
 
 	client := testClient(t)
@@ -74,6 +76,7 @@ func TestTeamTokensRead(t *testing.T) {
 }
 
 func TestTeamTokensDelete(t *testing.T) {
+	checkTestNodeEnv(t)
 	skipIfFreeOnly(t)
 
 	client := testClient(t)

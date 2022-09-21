@@ -13,6 +13,8 @@ import (
 )
 
 func TestRegistryProviderVersionsIDValidation(t *testing.T) {
+	checkTestNodeEnv(t)
+
 	version := "1.0.0"
 	validRegistryProviderId := RegistryProviderID{
 		OrganizationName: "orgName",
@@ -86,6 +88,8 @@ func TestRegistryProviderVersionsIDValidation(t *testing.T) {
 }
 
 func TestRegistryProviderVersionsCreate(t *testing.T) {
+	checkTestNodeEnv(t)
+
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -198,6 +202,8 @@ func TestRegistryProviderVersionsCreate(t *testing.T) {
 }
 
 func TestRegistryProviderVersionsList(t *testing.T) {
+	checkTestNodeEnv(t)
+
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -302,6 +308,8 @@ func TestRegistryProviderVersionsList(t *testing.T) {
 }
 
 func TestRegistryProviderVersionsDelete(t *testing.T) {
+	checkTestNodeEnv(t)
+
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -342,6 +350,8 @@ func TestRegistryProviderVersionsDelete(t *testing.T) {
 }
 
 func TestRegistryProviderVersionsRead(t *testing.T) {
+	checkTestNodeEnv(t)
+
 	client := testClient(t)
 	ctx := context.Background()
 

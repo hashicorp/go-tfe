@@ -12,6 +12,8 @@ import (
 )
 
 func TestUsersReadCurrent(t *testing.T) {
+	checkTestNodeEnv(t)
+
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -28,6 +30,8 @@ func TestUsersReadCurrent(t *testing.T) {
 }
 
 func TestUsersUpdate(t *testing.T) {
+	checkTestNodeEnv(t)
+
 	client := testClient(t)
 	ctx := context.Background()
 
