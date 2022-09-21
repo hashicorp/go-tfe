@@ -12,6 +12,7 @@ import (
 )
 
 func TestTeamAccessesList(t *testing.T) {
+	skipIfNotCINode(t)
 	skipIfFreeOnly(t)
 
 	client := testClient(t)
@@ -90,6 +91,7 @@ func TestTeamAccessesList(t *testing.T) {
 }
 
 func TestTeamAccessesAdd(t *testing.T) {
+	skipIfNotCINode(t)
 	skipIfFreeOnly(t)
 
 	client := testClient(t)
@@ -222,6 +224,7 @@ func TestTeamAccessesAdd(t *testing.T) {
 }
 
 func TestTeamAccessesRead(t *testing.T) {
+	skipIfNotCINode(t)
 	skipIfFreeOnly(t)
 
 	client := testClient(t)
@@ -274,6 +277,7 @@ func TestTeamAccessesRead(t *testing.T) {
 }
 
 func TestTeamAccessesUpdate(t *testing.T) {
+	skipIfNotCINode(t)
 	skipIfFreeOnly(t)
 
 	client := testClient(t)
@@ -306,6 +310,7 @@ func TestTeamAccessesUpdate(t *testing.T) {
 }
 
 func TestTeamAccessesRemove(t *testing.T) {
+	skipIfNotCINode(t)
 	skipIfFreeOnly(t)
 
 	client := testClient(t)
@@ -340,6 +345,7 @@ func TestTeamAccessesRemove(t *testing.T) {
 }
 
 func TestTeamAccessesReadRunTasks(t *testing.T) {
+	skipIfNotCINode(t)
 	skipIfFreeOnly(t)
 	skipIfBeta(t)
 	skipIfEnterprise(t)
@@ -370,6 +376,7 @@ func TestTeamAccessesReadRunTasks(t *testing.T) {
 }
 
 func TestTeamAccessesUpdateRunTasks(t *testing.T) {
+	skipIfNotCINode(t)
 	skipIfFreeOnly(t)
 	skipIfBeta(t)
 

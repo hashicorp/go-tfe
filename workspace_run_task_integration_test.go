@@ -12,6 +12,7 @@ import (
 )
 
 func TestWorkspaceRunTasksCreate(t *testing.T) {
+	skipIfNotCINode(t)
 	skipIfFreeOnly(t)
 
 	client := testClient(t)
@@ -48,6 +49,7 @@ func TestWorkspaceRunTasksCreate(t *testing.T) {
 
 func TestWorkspaceRunTasksCreateBeta(t *testing.T) {
 	// Once Pre-Plan Tasks are generally available, this can replace the above TestWorkspaceRunTasksCreate
+	skipIfNotCINode(t)
 	skipIfBeta(t)
 	skipIfFreeOnly(t)
 
@@ -88,6 +90,7 @@ func TestWorkspaceRunTasksCreateBeta(t *testing.T) {
 }
 
 func TestWorkspaceRunTasksList(t *testing.T) {
+	skipIfNotCINode(t)
 	skipIfFreeOnly(t)
 
 	client := testClient(t)
@@ -122,6 +125,7 @@ func TestWorkspaceRunTasksList(t *testing.T) {
 }
 
 func TestWorkspaceRunTasksRead(t *testing.T) {
+	skipIfNotCINode(t)
 	skipIfFreeOnly(t)
 
 	client := testClient(t)
@@ -157,6 +161,7 @@ func TestWorkspaceRunTasksRead(t *testing.T) {
 }
 
 func TestWorkspaceRunTasksUpdate(t *testing.T) {
+	skipIfNotCINode(t)
 	skipIfFreeOnly(t)
 
 	client := testClient(t)
@@ -189,6 +194,7 @@ func TestWorkspaceRunTasksUpdate(t *testing.T) {
 
 func TestWorkspaceRunTasksUpdateBeta(t *testing.T) {
 	// Once Pre-Plan Tasks are generally available, this can replace the above TestWorkspaceRunTasksUpdate
+	skipIfNotCINode(t)
 	skipIfBeta(t)
 	skipIfFreeOnly(t)
 
@@ -224,6 +230,7 @@ func TestWorkspaceRunTasksUpdateBeta(t *testing.T) {
 }
 
 func TestWorkspaceRunTasksDelete(t *testing.T) {
+	skipIfNotCINode(t)
 	skipIfFreeOnly(t)
 
 	client := testClient(t)

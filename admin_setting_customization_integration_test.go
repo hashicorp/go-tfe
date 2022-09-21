@@ -12,6 +12,7 @@ import (
 )
 
 func TestAdminSettings_Customization_Read(t *testing.T) {
+	skipIfNotCINode(t)
 	skipIfCloud(t)
 
 	client := testClient(t)
@@ -29,6 +30,7 @@ func TestAdminSettings_Customization_Read(t *testing.T) {
 }
 
 func TestAdminSettings_Customization_Update(t *testing.T) {
+	skipIfNotCINode(t)
 	skipIfCloud(t)
 
 	client := testClient(t)

@@ -13,6 +13,7 @@ import (
 )
 
 func TestAuditTrailsList(t *testing.T) {
+	skipIfNotCINode(t)
 	skipIfEnterprise(t)
 
 	userClient := testClient(t)

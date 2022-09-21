@@ -25,6 +25,8 @@ func containsStateVersion(versions []*StateVersion, item *StateVersion) bool {
 }
 
 func TestStateVersionsList(t *testing.T) {
+	skipIfNotCINode(t)
+
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -104,6 +106,8 @@ func TestStateVersionsList(t *testing.T) {
 }
 
 func TestStateVersionsCreate(t *testing.T) {
+	skipIfNotCINode(t)
+
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -311,6 +315,8 @@ func TestStateVersionsCreate(t *testing.T) {
 }
 
 func TestStateVersionsRead(t *testing.T) {
+	skipIfNotCINode(t)
+
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -361,6 +367,8 @@ func TestStateVersionsRead(t *testing.T) {
 }
 
 func TestStateVersionsReadWithOptions(t *testing.T) {
+	skipIfNotCINode(t)
+
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -383,6 +391,8 @@ func TestStateVersionsReadWithOptions(t *testing.T) {
 }
 
 func TestStateVersionsCurrent(t *testing.T) {
+	skipIfNotCINode(t)
+
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -428,6 +438,8 @@ func TestStateVersionsCurrent(t *testing.T) {
 }
 
 func TestStateVersionsCurrentWithOptions(t *testing.T) {
+	skipIfNotCINode(t)
+
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -453,6 +465,8 @@ func TestStateVersionsCurrentWithOptions(t *testing.T) {
 }
 
 func TestStateVersionsDownload(t *testing.T) {
+	skipIfNotCINode(t)
+
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -468,15 +482,6 @@ func TestStateVersionsDownload(t *testing.T) {
 		assert.Equal(t, stateTest, state)
 	})
 
-	t.Run("when the state version does not exist", func(t *testing.T) {
-		state, err := client.StateVersions.Download(
-			ctx,
-			svTest.DownloadURL[:len(svTest.DownloadURL)-10]+"nonexisting",
-		)
-		assert.Nil(t, state)
-		assert.Error(t, err)
-	})
-
 	t.Run("with an invalid url", func(t *testing.T) {
 		state, err := client.StateVersions.Download(ctx, badIdentifier)
 		assert.Nil(t, state)
@@ -485,6 +490,8 @@ func TestStateVersionsDownload(t *testing.T) {
 }
 
 func TestStateVersionOutputs(t *testing.T) {
+	skipIfNotCINode(t)
+
 	client := testClient(t)
 	ctx := context.Background()
 

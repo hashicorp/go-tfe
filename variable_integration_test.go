@@ -12,6 +12,8 @@ import (
 )
 
 func TestVariablesList(t *testing.T) {
+	skipIfNotCINode(t)
+
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -62,6 +64,8 @@ func TestVariablesList(t *testing.T) {
 }
 
 func TestVariablesCreate(t *testing.T) {
+	skipIfNotCINode(t)
+
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -195,6 +199,8 @@ func TestVariablesCreate(t *testing.T) {
 }
 
 func TestVariablesRead(t *testing.T) {
+	skipIfNotCINode(t)
+
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -232,6 +238,8 @@ func TestVariablesRead(t *testing.T) {
 }
 
 func TestVariablesUpdate(t *testing.T) {
+	skipIfNotCINode(t)
+
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -312,6 +320,8 @@ func TestVariablesUpdate(t *testing.T) {
 }
 
 func TestVariablesDelete(t *testing.T) {
+	skipIfNotCINode(t)
+
 	client := testClient(t)
 	ctx := context.Background()
 

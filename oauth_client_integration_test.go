@@ -14,6 +14,8 @@ import (
 )
 
 func TestOAuthClientsList(t *testing.T) {
+	skipIfNotCINode(t)
+
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -87,6 +89,8 @@ func TestOAuthClientsList(t *testing.T) {
 }
 
 func TestOAuthClientsCreate(t *testing.T) {
+	skipIfNotCINode(t)
+
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -178,6 +182,8 @@ func TestOAuthClientsCreate(t *testing.T) {
 }
 
 func TestOAuthClientsCreate_rsaKeyPair(t *testing.T) {
+	skipIfNotCINode(t)
+
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -207,6 +213,8 @@ func TestOAuthClientsCreate_rsaKeyPair(t *testing.T) {
 }
 
 func TestOAuthClientsRead(t *testing.T) {
+	skipIfNotCINode(t)
+
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -240,6 +248,8 @@ func TestOAuthClientsRead(t *testing.T) {
 }
 
 func TestOAuthClientsDelete(t *testing.T) {
+	skipIfNotCINode(t)
+
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -275,6 +285,8 @@ func TestOAuthClientsDelete(t *testing.T) {
 }
 
 func TestOAuthClientsCreateOptionsValid(t *testing.T) {
+	skipIfNotCINode(t)
+
 	t.Run("with valid options", func(t *testing.T) {
 		options := OAuthClientCreateOptions{
 			APIURL:          String("https://api.github.com"),
@@ -396,6 +408,8 @@ MIIEpAIBAAKCAQEAoKizy4xbN6qZFAwIJV24liz/vYBSvR3SjEiUzhpp0uMAmICN
 `
 
 func TestOAuthClientsUpdate_rsaKeyPair(t *testing.T) {
+	skipIfNotCINode(t)
+
 	client := testClient(t)
 	ctx := context.Background()
 

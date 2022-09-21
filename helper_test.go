@@ -30,7 +30,6 @@ import (
 const badIdentifier = "! / nope" //nolint
 const agentVersion = "1.3.0"
 
-// Memoize test account details
 var _testAccountDetails *TestAccountDetails
 
 type featureSet struct {
@@ -85,10 +84,33 @@ func testAuditTrailClient(t *testing.T, userClient *Client, org *Organization) *
 	return client
 }
 
+// TestAccountDetails represents the basic account information
+// of a TFE/TFC user.
+//
+// See FetchTestAccountDetails for more information.
+type TestAccountDetails struct {
+	ID       string `jsonapi:"primary,users"`
+	Username string `jsonapi:"attr,username"`
+	Email    string `jsonapi:"attr,email"`
+}
+
 func fetchTestAccountDetails(t *testing.T, client *Client) *TestAccountDetails {
+	t.Helper()
+
 	if _testAccountDetails == nil {
-		_testAccountDetails = FetchTestAccountDetails(t, client)
+		_testAccountDetails = &TestAccountDetails{}
+		req, err := client.NewRequest("GET", "account/details", nil)
+		if err != nil {
+			t.Fatalf("could not create account details request: %v", err)
+		}
+
+		ctx := context.Background()
+		err = req.Do(ctx, _testAccountDetails)
+		if err != nil {
+			t.Fatalf("could not fetch test user details: %v", err)
+		}
 	}
+
 	return _testAccountDetails
 }
 
@@ -1921,6 +1943,23 @@ func randomString(t *testing.T) string {
 
 func randomSemver(t *testing.T) string {
 	return fmt.Sprintf("%d.%d.%d", rand.Intn(99)+3, rand.Intn(99)+1, rand.Intn(99)+1)
+}
+
+var ciSuite testSuiteCI = testSuiteCI{
+	testNames: nil,
+}
+
+func skipIfNotCINode(t *testing.T) {
+	t.Helper()
+
+	inNode, err := ciSuite.InCurrentNode(t.Name())
+	if err != nil {
+		t.Fatal(err.Error())
+	}
+
+	if !inNode {
+		t.Skip()
+	}
 }
 
 // skips a test if the environment is for Terraform Cloud.
