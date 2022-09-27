@@ -127,7 +127,7 @@ type Run struct {
 	StatusTimestamps       *RunStatusTimestamps `jsonapi:"attr,status-timestamps"`
 	TargetAddrs            []string             `jsonapi:"attr,target-addrs,omitempty"`
 	TerraformVersion       string               `jsonapi:"attr,terraform-version"`
-	Variables              []*RunVariable       `jsonapi:"attr,variables"`
+	Variables              []*RunVariableAttr   `jsonapi:"attr,variables"`
 
 	// Relations
 	Apply                *Apply                `jsonapi:"relation,apply"`
@@ -304,7 +304,7 @@ type RunCreateOptions struct {
 	// user confirmation. It defaults to the Workspace.AutoApply setting.
 	AutoApply *bool `jsonapi:"attr,auto-apply,omitempty"`
 
-	// RunVariables allows you to specify terraform input variables for
+	// Variables allows you to specify terraform input variables for
 	// a particular run, prioritized over variables defined on the workspace.
 	Variables []*RunVariable `jsonapi:"attr,variables,omitempty"`
 }
@@ -321,12 +321,17 @@ type RunCancelOptions struct {
 	Comment *string `json:"comment,omitempty"`
 }
 
-// RunVariable represents a variable that can be applied to a run. All values must be expressed as an HCL literal
+type RunVariableAttr struct {
+	Key   string `jsonapi:"attr,key"`
+	Value string `jsonapi:"attr,value"`
+}
+
+// RunVariableAttr represents a variable that can be applied to a run. All values must be expressed as an HCL literal
 // in the same syntax you would use when writing terraform code. See https://www.terraform.io/docs/language/expressions/types.html#types
 // for more details.
 type RunVariable struct {
-	Key   string `jsonapi:"attr,key"`
-	Value string `jsonapi:"attr,value"`
+	Key   string `json:"key"`
+	Value string `json:"value"`
 }
 
 // RunForceCancelOptions represents the options for force-canceling a run.
