@@ -411,7 +411,7 @@ func TestStateVersionsCurrent(t *testing.T) {
 			stateVersion.Providers = nil
 		}
 
-		assert.Equal(t, svTest, sv)
+		assert.Equal(t, svTest.ID, sv.ID)
 	})
 
 	t.Run("when a state version does not exist", func(t *testing.T) {
