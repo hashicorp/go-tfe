@@ -11,7 +11,6 @@ import (
 	"errors"
 	"fmt"
 	"io"
-	"io/ioutil"
 	"math/rand"
 	"net/http"
 	"net/url"
@@ -1384,7 +1383,7 @@ func createStateVersion(t *testing.T, client *Client, serial int64, w *Workspace
 		w, wCleanup = createWorkspace(t, client, nil)
 	}
 
-	state, err := ioutil.ReadFile("test-fixtures/state-version/terraform.tfstate")
+	state, err := os.ReadFile("test-fixtures/state-version/terraform.tfstate")
 	if err != nil {
 		t.Fatal(err)
 	}

@@ -8,7 +8,7 @@ import (
 	"crypto/md5"
 	"encoding/base64"
 	"fmt"
-	"io/ioutil"
+	"os"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -110,17 +110,17 @@ func TestStateVersionsCreate(t *testing.T) {
 	wTest, wTestCleanup := createWorkspace(t, client, nil)
 	t.Cleanup(wTestCleanup)
 
-	state, err := ioutil.ReadFile("test-fixtures/state-version/terraform.tfstate")
+	state, err := os.ReadFile("test-fixtures/state-version/terraform.tfstate")
 	if err != nil {
 		t.Fatal(err)
 	}
 
-	jsonState, err := ioutil.ReadFile("test-fixtures/json-state/state.json")
+	jsonState, err := os.ReadFile("test-fixtures/json-state/state.json")
 	if err != nil {
 		t.Fatal(err)
 	}
 
-	jsonStateOutputs, err := ioutil.ReadFile("test-fixtures/json-state-outputs/everything.json")
+	jsonStateOutputs, err := os.ReadFile("test-fixtures/json-state-outputs/everything.json")
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -459,7 +459,7 @@ func TestStateVersionsDownload(t *testing.T) {
 	svTest, svTestCleanup := createStateVersion(t, client, 0, nil)
 	t.Cleanup(svTestCleanup)
 
-	stateTest, err := ioutil.ReadFile("test-fixtures/state-version/terraform.tfstate")
+	stateTest, err := os.ReadFile("test-fixtures/state-version/terraform.tfstate")
 	require.NoError(t, err)
 
 	t.Run("when the state version exists", func(t *testing.T) {
