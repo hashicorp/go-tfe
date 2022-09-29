@@ -45,12 +45,14 @@ type notificationConfigurations struct {
 type NotificationTriggerType string
 
 const (
-	NotificationTriggerCreated        NotificationTriggerType = "run:created"
-	NotificationTriggerPlanning       NotificationTriggerType = "run:planning"
-	NotificationTriggerNeedsAttention NotificationTriggerType = "run:needs_attention"
-	NotificationTriggerApplying       NotificationTriggerType = "run:applying"
-	NotificationTriggerCompleted      NotificationTriggerType = "run:completed"
-	NotificationTriggerErrored        NotificationTriggerType = "run:errored"
+	NotificationTriggerCreated           NotificationTriggerType = "run:created"
+	NotificationTriggerPlanning          NotificationTriggerType = "run:planning"
+	NotificationTriggerNeedsAttention    NotificationTriggerType = "run:needs_attention"
+	NotificationTriggerApplying          NotificationTriggerType = "run:applying"
+	NotificationTriggerCompleted         NotificationTriggerType = "run:completed"
+	NotificationTriggerErrored           NotificationTriggerType = "run:errored"
+	NotificationTriggerAssessmentDrifted NotificationTriggerType = "assessment:drifted"
+	NotificationTriggerAssessmentFailed  NotificationTriggerType = "assessment:failed"
 )
 
 // NotificationDestinationType represents the destination type of the
@@ -351,7 +353,9 @@ func validNotificationTriggerType(triggers []NotificationTriggerType) bool {
 			NotificationTriggerCompleted,
 			NotificationTriggerCreated,
 			NotificationTriggerErrored,
-			NotificationTriggerPlanning:
+			NotificationTriggerPlanning,
+			NotificationTriggerAssessmentDrifted,
+			NotificationTriggerAssessmentFailed:
 			continue
 		default:
 			return false
