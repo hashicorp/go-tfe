@@ -1,6 +1,6 @@
 module github.com/hashicorp/go-tfe
 
-go 1.17
+go 1.19
 
 require (
 	github.com/golang/mock v1.6.0

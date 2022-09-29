@@ -482,15 +482,6 @@ func TestStateVersionsDownload(t *testing.T) {
 		assert.Equal(t, stateTest, state)
 	})
 
-	t.Run("when the state version does not exist", func(t *testing.T) {
-		state, err := client.StateVersions.Download(
-			ctx,
-			svTest.DownloadURL[:len(svTest.DownloadURL)-10]+"nonexisting",
-		)
-		assert.Nil(t, state)
-		assert.Error(t, err)
-	})
-
 	t.Run("with an invalid url", func(t *testing.T) {
 		state, err := client.StateVersions.Download(ctx, badIdentifier)
 		assert.Nil(t, state)

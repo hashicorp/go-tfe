@@ -1,36 +1,81 @@
 package tfe
 
 import (
-	"context"
-	"testing"
+	"fmt"
+	"os"
+	"os/exec"
+	"strconv"
+	"strings"
+	"sync"
 )
 
-// TestAccountDetails represents the basic account information
-// of a TFE/TFC user.
-//
-// See FetchTestAccountDetails for more information.
-type TestAccountDetails struct {
-	ID       string `jsonapi:"primary,users"`
-	Username string `jsonapi:"attr,username"`
-	Email    string `jsonapi:"attr,email"`
+func envLookupInteger(name string) (int, bool) {
+	raw, ok := os.LookupEnv(name)
+	if !ok {
+		return 0, false
+	}
+
+	result, err := strconv.Atoi(raw)
+	if err != nil {
+		return 0, false
+	}
+	return result, true
 }
 
-// FetchTestAccountDetails returns TestAccountDetails
-// of the user running the tests.
-//
-// Use this helper to fetch the username and email
-// address associated with the token used to run the tests.
-func FetchTestAccountDetails(t *testing.T, client *Client) *TestAccountDetails {
-	tad := &TestAccountDetails{}
-	req, err := client.NewRequest("GET", "account/details", nil)
+type testSuiteCI struct {
+	mu        sync.Mutex
+	testNames map[string]int
+}
+
+func (s *testSuiteCI) listTestsCI() (map[string]int, error) {
+	cmd := exec.Command("go", "test", "./...", "-list=.", "-tags=integration")
+	output, err := cmd.Output()
 	if err != nil {
-		t.Fatalf("could not create account details request: %v", err)
+		return nil, fmt.Errorf("failed to list all test files. Are you using go1.19+?: %w", err)
 	}
 
-	ctx := context.Background()
-	err = req.Do(ctx, tad)
-	if err != nil {
-		t.Fatalf("could not fetch test user details: %v", err)
+	result := make(map[string]int)
+	index := 0
+	for _, line := range strings.Split(string(output), "\n") {
+		if strings.HasPrefix(line, "Test") {
+			result[line] = index
+			index += 1
+		}
 	}
-	return tad
+	return result, nil
+}
+
+func (s *testSuiteCI) init() error {
+	s.mu.Lock()
+	defer s.mu.Unlock()
+	if s.testNames == nil {
+		var err error
+		s.testNames, err = s.listTestsCI()
+		if err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
+func (s *testSuiteCI) InCurrentNode(name string) (bool, error) {
+	if nodeIndex, ok := envLookupInteger("CI_NODE_INDEX"); ok {
+		if nodeTotal, ok := envLookupInteger("CI_NODE_TOTAL"); ok {
+			err := s.init()
+			if err != nil {
+				return false, err
+			}
+
+			testIndex, ok := s.testNames[name]
+			if !ok {
+				return false, fmt.Errorf("%s was not found in the list of tests", name)
+			}
+
+			if testIndex%nodeTotal != nodeIndex {
+				return false, nil
+			}
+		}
+	}
+
+	return true, nil
 }
