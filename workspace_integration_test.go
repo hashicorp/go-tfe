@@ -8,7 +8,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
+	"io"
 	"sort"
 	"strings"
 	"testing"
@@ -654,7 +654,7 @@ func TestWorkspacesReadReadme(t *testing.T) {
 		require.NoError(t, err)
 		require.NotNil(t, w)
 
-		readme, err := ioutil.ReadAll(w)
+		readme, err := io.ReadAll(w)
 		require.NoError(t, err)
 		require.True(
 			t,

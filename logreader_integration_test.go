@@ -6,7 +6,6 @@ package tfe
 import (
 	"context"
 	"io"
-	"io/ioutil"
 	"net/http"
 	"net/http/httptest"
 	"net/url"
@@ -71,7 +70,7 @@ func TestLogReader_withMarkersSingle(t *testing.T) {
 		return false, nil
 	}
 
-	logs, err := ioutil.ReadAll(lr)
+	logs, err := io.ReadAll(lr)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -112,7 +111,7 @@ func TestLogReader_withMarkersDouble(t *testing.T) {
 		return false, nil
 	}
 
-	logs, err := ioutil.ReadAll(lr)
+	logs, err := io.ReadAll(lr)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -159,7 +158,7 @@ func TestLogReader_withMarkersMulti(t *testing.T) {
 		return false, nil
 	}
 
-	logs, err := ioutil.ReadAll(lr)
+	logs, err := io.ReadAll(lr)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -202,7 +201,7 @@ func TestLogReader_withoutMarkers(t *testing.T) {
 		return false, nil
 	}
 
-	logs, err := ioutil.ReadAll(lr)
+	logs, err := io.ReadAll(lr)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -247,7 +246,7 @@ func TestLogReader_withoutEndOfTextMarker(t *testing.T) {
 		return false, nil
 	}
 
-	logs, err := ioutil.ReadAll(lr)
+	logs, err := io.ReadAll(lr)
 	if err != nil {
 		t.Fatal(err)
 	}

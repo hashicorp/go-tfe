@@ -7,7 +7,7 @@ import (
 	"bytes"
 	"context"
 	"encoding/json"
-	"io/ioutil"
+	"io"
 	"testing"
 	"time"
 
@@ -60,7 +60,7 @@ func TestAppliesLogs(t *testing.T) {
 		logReader, err := client.Applies.Logs(ctx, a.ID)
 		require.NoError(t, err)
 
-		logs, err := ioutil.ReadAll(logReader)
+		logs, err := io.ReadAll(logReader)
 		require.NoError(t, err)
 
 		assert.Contains(t, string(logs), "1 added, 0 changed, 0 destroyed")

@@ -3,7 +3,7 @@ package tfe
 import (
 	"context"
 	"encoding/json"
-	"io/ioutil"
+	"io"
 	"net/http"
 	"time"
 
@@ -128,7 +128,7 @@ func (s *auditTrails) List(ctx context.Context, options *AuditTrailListOptions) 
 		return nil, err
 	}
 
-	body, err := ioutil.ReadAll(resp.Body)
+	body, err := io.ReadAll(resp.Body)
 	if err != nil {
 		return nil, err
 	}

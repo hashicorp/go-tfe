@@ -7,7 +7,7 @@ import (
 	"bytes"
 	"context"
 	"encoding/json"
-	"io/ioutil"
+	"io"
 	"testing"
 	"time"
 
@@ -210,7 +210,7 @@ func TestPolicyChecksLogs(t *testing.T) {
 		logReader, err := client.PolicyChecks.Logs(ctx, pc.ID)
 		require.NoError(t, err)
 
-		logs, err := ioutil.ReadAll(logReader)
+		logs, err := io.ReadAll(logReader)
 		require.NoError(t, err)
 
 		assert.Contains(t, string(logs), "1 policies evaluated")
