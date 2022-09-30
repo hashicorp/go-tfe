@@ -14,6 +14,8 @@ import (
 
 // TestUserTokens_List tests listing user tokens
 func TestUserTokens_List(t *testing.T) {
+	skipIfNotCINode(t)
+
 	client := testClient(t)
 	ctx := context.Background()
 	user, err := client.Users.ReadCurrent(ctx)
@@ -43,6 +45,8 @@ func TestUserTokens_List(t *testing.T) {
 
 // TestUserTokens_Create tests basic creation of user tokens
 func TestUserTokens_Create(t *testing.T) {
+	skipIfNotCINode(t)
+
 	client := testClient(t)
 	ctx := context.Background()
 	user, err := client.Users.ReadCurrent(ctx)
@@ -82,6 +86,8 @@ func TestUserTokens_Create(t *testing.T) {
 
 // TestUserTokens_Read tests basic creation of user tokens
 func TestUserTokens_Read(t *testing.T) {
+	skipIfNotCINode(t)
+
 	client := testClient(t)
 	ctx := context.Background()
 	user, err := client.Users.ReadCurrent(ctx)

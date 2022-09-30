@@ -16,6 +16,7 @@ import (
 )
 
 func TestPoliciesList(t *testing.T) {
+	skipIfNotCINode(t)
 	skipIfFreeOnly(t)
 
 	client := testClient(t)
@@ -78,6 +79,7 @@ func TestPoliciesList(t *testing.T) {
 }
 
 func TestPoliciesCreate(t *testing.T) {
+	skipIfNotCINode(t)
 	skipIfFreeOnly(t)
 
 	client := testClient(t)
@@ -194,6 +196,7 @@ func TestPoliciesCreate(t *testing.T) {
 }
 
 func TestPoliciesRead(t *testing.T) {
+	skipIfNotCINode(t)
 	skipIfFreeOnly(t)
 
 	client := testClient(t)
@@ -247,6 +250,7 @@ func TestPoliciesRead(t *testing.T) {
 }
 
 func TestPoliciesUpdate(t *testing.T) {
+	skipIfNotCINode(t)
 	skipIfFreeOnly(t)
 
 	client := testClient(t)
@@ -331,6 +335,7 @@ func TestPoliciesUpdate(t *testing.T) {
 }
 
 func TestPoliciesDelete(t *testing.T) {
+	skipIfNotCINode(t)
 	skipIfFreeOnly(t)
 
 	client := testClient(t)
@@ -362,6 +367,7 @@ func TestPoliciesDelete(t *testing.T) {
 }
 
 func TestPoliciesUpload(t *testing.T) {
+	skipIfNotCINode(t)
 	skipIfFreeOnly(t)
 
 	client := testClient(t)
@@ -392,6 +398,7 @@ func TestPoliciesUpload(t *testing.T) {
 }
 
 func TestPoliciesDownload(t *testing.T) {
+	skipIfNotCINode(t)
 	skipIfFreeOnly(t)
 
 	client := testClient(t)
@@ -425,6 +432,8 @@ func TestPoliciesDownload(t *testing.T) {
 }
 
 func TestPolicy_Unmarshal(t *testing.T) {
+	skipIfNotCINode(t)
+
 	data := map[string]interface{}{
 		"data": map[string]interface{}{
 			"type": "policies",
@@ -465,6 +474,8 @@ func TestPolicy_Unmarshal(t *testing.T) {
 }
 
 func TestPolicyCreateOptions_Marshal(t *testing.T) {
+	skipIfNotCINode(t)
+
 	opts := PolicyCreateOptions{
 		Name:        String("my-policy"),
 		Description: String("details"),
@@ -493,6 +504,8 @@ func TestPolicyCreateOptions_Marshal(t *testing.T) {
 }
 
 func TestPolicyUpdateOptions_Marshal(t *testing.T) {
+	skipIfNotCINode(t)
+
 	opts := PolicyUpdateOptions{
 		Description: String("details"),
 		Enforce: []*EnforcementOptions{

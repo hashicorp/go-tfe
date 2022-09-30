@@ -15,6 +15,7 @@ import (
 )
 
 func TestTeamsList(t *testing.T) {
+	skipIfNotCINode(t)
 	skipIfFreeOnly(t)
 
 	client := testClient(t)
@@ -82,6 +83,7 @@ func TestTeamsList(t *testing.T) {
 }
 
 func TestTeamsCreate(t *testing.T) {
+	skipIfNotCINode(t)
 	skipIfFreeOnly(t)
 
 	client := testClient(t)
@@ -141,6 +143,7 @@ func TestTeamsCreate(t *testing.T) {
 }
 
 func TestTeamsRead(t *testing.T) {
+	skipIfNotCINode(t)
 	skipIfFreeOnly(t)
 
 	client := testClient(t)
@@ -203,6 +206,7 @@ func TestTeamsRead(t *testing.T) {
 }
 
 func TestTeamsUpdate(t *testing.T) {
+	skipIfNotCINode(t)
 	skipIfFreeOnly(t)
 
 	client := testClient(t)
@@ -281,6 +285,7 @@ func TestTeamsUpdate(t *testing.T) {
 }
 
 func TestTeamsDelete(t *testing.T) {
+	skipIfNotCINode(t)
 	skipIfFreeOnly(t)
 
 	client := testClient(t)
@@ -366,6 +371,7 @@ func TestTeamCreateOptions_Marshal(t *testing.T) {
 }
 
 func TestTeamsUpdateRunTasks(t *testing.T) {
+	skipIfNotCINode(t)
 	skipIfFreeOnly(t)
 	skipIfBeta(t)
 	skipIfEnterprise(t)
