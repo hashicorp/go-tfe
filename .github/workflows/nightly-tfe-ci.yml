@@ -9,19 +9,23 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - name: Set up Go
-        uses: actions/setup-go@v3
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v2
         with:
-          go-version-file: go.mod
-          check-latest: true
-          cache: true
+          terraform_version: 1.3.0
+          cli_config_credentials_token: ${{ secrets.TF_WORKFLOW_TFLOCAL_CLOUD_TFC_TOKEN }}
 
       - name: Build nightly TFE instance
         env:
           TFE_TOKEN: ${{ secrets.TF_WORKFLOW_TFLOCAL_CLOUD_TFC_TOKEN }}
+          TF_CLOUD_ORGANIZATION: "hashicorp-v2"
+          TF_CLOUD_HOSTNAME: "app.terraform.io"
+          TF_CLOUD_WORKSPACE: "tflocal-go-tfe-nightly"
         run: |
-          cd .github/scripts/build-tflocal
-          go run . -w tflocal-go-tfe-nightly
+          cd tflocal/
+          echo "terraform { cloud {} }" > backend.tf
+          terraform init
+          terraform apply -auto-approve -input=false
 
   codegen:
     name: Codegen
