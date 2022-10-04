@@ -88,11 +88,11 @@ This API client covers most of the existing Terraform Cloud API calls and is upd
 - [x] Policy Checks
 - [x] Policy Sets
 - [x] Policy Set Parameters
-- [ ] Private Registry
+- [x] Private Registry
 	- [x] Modules
 	- [x] Providers
 	- [x] Provider Provider Versions and Platforms
-	- [ ] GPG Keys
+	- [x] GPG Keys
 - [x] Runs
 - [x] Run Tasks
 - [ ] Run Tasks Integration
