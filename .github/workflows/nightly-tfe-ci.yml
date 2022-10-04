@@ -1,0 +1,130 @@
+name: Nightly TFE Tests
+on:
+  schedule:
+    - cron: 0 0 * * *
+
+jobs:
+  instance:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v2
+        with:
+          terraform_version: 1.3.0
+          cli_config_credentials_token: ${{ secrets.TF_WORKFLOW_TFLOCAL_CLOUD_TFC_TOKEN }}
+
+      - name: Build nightly TFE instance
+        env:
+          TFE_TOKEN: ${{ secrets.TF_WORKFLOW_TFLOCAL_CLOUD_TFC_TOKEN }}
+          TF_CLOUD_ORGANIZATION: "hashicorp-v2"
+          TF_CLOUD_HOSTNAME: "app.terraform.io"
+          TF_CLOUD_WORKSPACE: "tflocal-go-tfe-nightly"
+        run: |
+          cd tflocal/
+          echo "terraform { cloud {} }" > backend.tf
+          terraform init
+          terraform apply -auto-approve -input=false
+
+  codegen:
+    name: Codegen
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Go
+        uses: actions/setup-go@v3
+        with:
+          go-version-file: go.mod
+          cache: true
+
+      - name: Install mockgen
+        run: |
+          set -eux -o pipefail
+          MOCKGEN_VERSION=$(curl -Ls -o /dev/null -w %{url_effective}   https://github.com/golang/mock/releases/latest | awk -F'/v' '{printf$2}')
+          MOCKGEN_ZIP=mock_${MOCKGEN_VERSION}_linux_amd64.tar.gz
+          curl -OL https://github.com/golang/mock/releases/download/v$MOCKGEN_VERSION/$MOCKGEN_ZIP
+          sudo tar xvzf $MOCKGEN_ZIP --strip-components 1 -C /usr/local
+          sudo chmod +x /usr/local/mockgen
+          rm -f $MOCKGEN_ZIP
+          echo /usr/local/ >> $GITHUB_PATH
+
+      - name: Get dependencies
+        run: go mod download
+
+      - name: Generate mocks
+        run:  ./generate_mocks.sh
+
+      - name: verify go.mod and go.sum are consistent
+        run : go mod tidy
+
+      - name: Ensure nothing changed
+        run: git diff --exit-code
+
+  tests:
+    name: TFE Integration Tests
+    needs: instance
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Go
+        uses: actions/setup-go@v3
+        with:
+          go-version-file: go.mod
+          cache: true
+
+      - name: Sync dependencies
+        run: |
+          go mod download
+          go mod tidy
+
+      - name: Install gotestsum
+        run: go install gotest.tools/gotestsum@latest
+
+      - name: Fetch Outputs
+        env:
+          TFE_TOKEN: "${{ secrets.TF_WORKFLOW_TFLOCAL_CLOUD_TFC_TOKEN }}"
+        run: |
+          go run .github/scripts/fetch_outputs/main.go hashicorp-v2 tflocal-go-tfe-nightly
+
+      - name: Run Tests
+        env:
+          ENABLE_TFE: "1"
+          TFC_RUN_TASK_URL: "https://httpstat.us/200"
+          GITHUB_POLICY_SET_IDENTIFIER: "hashicorp/test-policy-set"
+          GITHUB_REGISTRY_MODULE_IDENTIFIER: "hashicorp/terraform-random-module"
+          OAUTH_CLIENT_GITHUB_TOKEN: "${{ secrets.OAUTH_CLIENT_GITHUB_TOKEN }}"
+          GO111MODULE: "on"
+        run: |
+          source $HOME/.env
+          gotestsum --format short-verbose -- -timeout=40m -tags=integration
+
+  cleanup:
+    runs-on: ubuntu-latest
+    needs: tests
+    if: "${{ always() }}"
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set up Go
+        uses: actions/setup-go@v3
+        with:
+          go-version-file: go.mod
+          check-latest: true
+          cache: true
+
+      - name: Destroy nightly TFE instance
+        env:
+          TFE_TOKEN: ${{ secrets.TF_WORKFLOW_TFLOCAL_CLOUD_TFC_TOKEN }}
+        run: |
+          cd .github/scripts/build-tflocal
+          go run . -w tflocal-go-tfe-nightly -d
+
+
+

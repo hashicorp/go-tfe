@@ -15,9 +15,9 @@ jobs:
           check-latest: true
           cache: true
 
-      - name: Rebuild tflocal
+      - name: Build tflocal instance
         env:
           TFE_TOKEN: ${{ secrets.TF_WORKFLOW_TFLOCAL_CLOUD_TFC_TOKEN }}
         run: |
           cd .github/scripts/build-tflocal
-          go run main.go hashicorp-v2 tflocal-go-tfe
+          go run .
