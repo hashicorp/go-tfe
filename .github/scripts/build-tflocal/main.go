@@ -7,7 +7,6 @@ import (
 	"log"
 	"os"
 	"os/signal"
-	"time"
 
 	tfe "github.com/hashicorp/go-tfe"
 )
@@ -45,9 +44,7 @@ func main() {
 		log.Fatal(err)
 	}
 
-	if err := waitForRun(ctx, client, runID); err != nil {
-		log.Fatal(err)
-	}
+	log.Printf("Created run with ID: %s", runID)
 }
 
 func createRun(ctx context.Context, client *tfe.Client) (string, error) {
@@ -74,36 +71,4 @@ func createRun(ctx context.Context, client *tfe.Client) (string, error) {
 
 	log.Printf("Created run: %s\n", run.ID)
 	return run.ID, nil
-}
-
-func waitForRun(ctx context.Context, client *tfe.Client, runID string) error {
-	ticker := time.NewTicker(20 * time.Second)
-	defer ticker.Stop()
-
-	start := time.Now()
-	for {
-		select {
-		case <-ctx.Done():
-			return ctx.Err()
-
-		case tick := <-ticker.C:
-			run, err := client.Runs.Read(ctx, runID)
-			if err != nil {
-				return err
-			}
-
-			duration := tick.Sub(start)
-
-			if run.Status == tfe.RunErrored || run.Status == tfe.RunCanceled {
-				return fmt.Errorf("run %s has errored or been canceled", runID)
-			}
-
-			if run.Status == tfe.RunApplied {
-				log.Printf("Run completed (%s elapsed)", duration.Round(time.Second))
-				return nil
-			}
-
-			log.Printf("Waiting run to complete (%s elapsed)", duration.Round(time.Second))
-		}
-	}
 }
