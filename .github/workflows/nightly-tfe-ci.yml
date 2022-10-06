@@ -23,12 +23,6 @@ jobs:
           TF_CLOUD_WORKSPACE: "tflocal-go-tfe-nightly"
         run: |
           cd tflocal/
-          cat <<EOT >> backend.tf
-          terraform {
-            cloud {}
-          }
-          EOT
-
           terraform init
           terraform apply -auto-approve -input=false
 
