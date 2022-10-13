@@ -230,6 +230,7 @@ type RegistryModuleCreateWithVCSConnectionOptions struct {
 
 	// Required: VCS repository information
 	VCSRepo *RegistryModuleVCSRepoOptions `jsonapi:"attr,vcs-repo"`
+	NoCode  bool                          `jsonapi:"attr,no-code,omitempty"`
 }
 
 type RegistryModuleVCSRepoOptions struct {
