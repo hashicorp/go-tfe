@@ -1,3 +1,8 @@
+# (Unreleased)
+
+## Enhancements
+* Adds `Query` and `Status` fields to `OrganizationMembershipListOptions` to allow filtering memberships by status or username by @sebasslash [#550](https://github.com/hashicorp/go-tfe/pull/550)
+
 # v1.10.0
 
 ## Enhancements
