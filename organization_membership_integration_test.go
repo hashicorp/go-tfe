@@ -103,6 +103,46 @@ func TestOrganizationMembershipsList(t *testing.T) {
 		})
 	})
 
+	t.Run("with status filter option", func(t *testing.T) {
+		_, memTest1Cleanup := createOrganizationMembership(t, client, orgTest)
+		t.Cleanup(memTest1Cleanup)
+		_, memTest2Cleanup := createOrganizationMembership(t, client, orgTest)
+		t.Cleanup(memTest2Cleanup)
+
+		ml, err := client.OrganizationMemberships.List(ctx, orgTest.Name, &OrganizationMembershipListOptions{
+			Status: OrganizationMembershipInvited,
+		})
+		require.NoError(t, err)
+
+		require.Len(t, ml.Items, 2)
+		for _, member := range ml.Items {
+			assert.Equal(t, member.Status, OrganizationMembershipInvited)
+		}
+	})
+
+	t.Run("with search query string", func(t *testing.T) {
+		memTest1, memTest1Cleanup := createOrganizationMembership(t, client, orgTest)
+		t.Cleanup(memTest1Cleanup)
+		_, memTest2Cleanup := createOrganizationMembership(t, client, orgTest)
+		t.Cleanup(memTest2Cleanup)
+		_, memTest3Cleanup := createOrganizationMembership(t, client, orgTest)
+		t.Cleanup(memTest3Cleanup)
+
+		t.Run("using an email", func(t *testing.T) {
+			ml, err := client.OrganizationMemberships.List(ctx, orgTest.Name, &OrganizationMembershipListOptions{
+				Query: memTest1.Email,
+			})
+			require.NoError(t, err)
+
+			require.Len(t, ml.Items, 1)
+			assert.Equal(t, ml.Items[0].Email, memTest1.Email)
+		})
+
+		t.Run("using a user name", func(t *testing.T) {
+			t.Skip("Skipping, missing Account API support in order to set usernames")
+		})
+	})
+
 	t.Run("without a valid organization", func(t *testing.T) {
 		ml, err := client.OrganizationMemberships.List(ctx, badIdentifier, nil)
 		assert.Nil(t, ml)
