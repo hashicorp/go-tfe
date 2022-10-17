@@ -1,3 +1,9 @@
+# Unreleased
+
+## Enhancements
+
+* Add `ListVariableSets` method to `Workspaces` interface to enable fetching variable sets associated with a workspace. [#551](https://github.com/hashicorp/go-tfe/pull/551)
+
 # v1.10.0
 
 ## Enhancements
