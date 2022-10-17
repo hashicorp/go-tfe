@@ -93,6 +93,21 @@ func (mr *MockVariableSetsMockRecorder) List(ctx, organization, options interfac
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "List", reflect.TypeOf((*MockVariableSets)(nil).List), ctx, organization, options)
 }
 
+// ListForWorkspace mocks base method.
+func (m *MockVariableSets) ListForWorkspace(ctx context.Context, workspaceID string, options *tfe.VariableSetListOptions) (*tfe.VariableSetList, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "ListForWorkspace", ctx, workspaceID, options)
+	ret0, _ := ret[0].(*tfe.VariableSetList)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// ListForWorkspace indicates an expected call of ListForWorkspace.
+func (mr *MockVariableSetsMockRecorder) ListForWorkspace(ctx, workspaceID, options interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListForWorkspace", reflect.TypeOf((*MockVariableSets)(nil).ListForWorkspace), ctx, workspaceID, options)
+}
+
 // Read mocks base method.
 func (m *MockVariableSets) Read(ctx context.Context, variableSetID string, options *tfe.VariableSetReadOptions) (*tfe.VariableSet, error) {
 	m.ctrl.T.Helper()
