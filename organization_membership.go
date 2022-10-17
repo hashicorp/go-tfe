@@ -80,6 +80,13 @@ type OrganizationMembershipListOptions struct {
 
 	// Optional: A list of organization member emails to filter by.
 	Emails []string `url:"filter[email],omitempty"`
+
+	// Optional: If specified, restricts results to those matching status value.
+	Status OrganizationMembershipStatus `url:"filter[status],omitempty"`
+
+	// Optional: A query string to search organization memberships by user name
+	// and email.
+	Query string `url:"q,omitempty"`
 }
 
 // OrganizationMembershipCreateOptions represents the options for creating an organization membership.
