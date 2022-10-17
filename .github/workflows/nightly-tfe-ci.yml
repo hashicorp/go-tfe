@@ -20,7 +20,7 @@ jobs:
           TFE_TOKEN: ${{ secrets.TF_WORKFLOW_TFLOCAL_CLOUD_TFC_TOKEN }}
           TF_CLOUD_ORGANIZATION: "hashicorp-v2"
           TF_CLOUD_HOSTNAME: "app.terraform.io"
-          TF_CLOUD_WORKSPACE: "tflocal-go-tfe-nightly"
+          TF_WORKSPACE: "tflocal-go-tfe-nightly"
         run: |
           cd tflocal/
           terraform init
