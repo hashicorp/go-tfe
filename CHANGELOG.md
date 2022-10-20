@@ -1,3 +1,14 @@
+# (Unreleased)
+
+## Enhancements
+
+* Add `Query` and `Status` fields to `OrganizationMembershipListOptions` to allow filtering memberships by status or username by @sebasslash [#550](https://github.com/hashicorp/go-tfe/pull/550)
+* Add `ListForWorkspace` method to `VariableSets` interface to enable fetching variable sets associated with a workspace by @tstapler [#552](https://github.com/hashicorp/go-tfe/pull/552)
+* Add `NotificationTriggerAssessmentDrifted` and `NotificationTriggerAssessmentFailed` notification trigger types by @lawliet89 [#542](https://github.com/hashicorp/go-tfe/pull/542)
+
+## Bug Fixes
+* Fix marshalling of run variables in `RunCreateOptions`. The `Variables` field type in `Run` struct has changed from `[]*RunVariable` to `[]*RunVariableAttr` by @Uk1288 [#531](https://github.com/hashicorp/go-tfe/pull/531)
+
 # v1.10.0
 
 ## Enhancements
@@ -7,7 +18,6 @@
 
 ## Bug Fixes
 * Fixes null value returned in variable set relationship in `VariableSetVariable` by @sebasslash [#521](https://github.com/hashicorp/go-tfe/pull/521)
-* Fix marshalling of run variables in `RunCreateOptions`. The `Variables` field type in `Run` struct has changed from `[]*RunVariable` to `[]*RunVariableAttr` by @Uk1288 [#531](https://github.com/hashicorp/go-tfe/pull/531)
 
 # v1.9.0
 
