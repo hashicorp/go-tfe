@@ -568,6 +568,8 @@ func TestOrganizationsReadRunTasksEntitlement(t *testing.T) {
 }
 
 func TestOrganizationsAllowForceDeleteSetting(t *testing.T) {
+	skipIfNotCINode(t)
+
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -579,12 +581,12 @@ func TestOrganizationsAllowForceDeleteSetting(t *testing.T) {
 		}
 
 		org, err := client.Organizations.Create(ctx, options)
-		assert.Nil(t, err)
+		require.NoError(t, err)
 
 		t.Cleanup(func() {
 			err := client.Organizations.Delete(ctx, org.Name)
 			if err != nil {
-				t.Logf("error deleting organization (%s): %s", org.Name, err)
+				t.Errorf("error deleting organization (%s): %s", org.Name, err)
 			}
 		})
 
@@ -593,11 +595,11 @@ func TestOrganizationsAllowForceDeleteSetting(t *testing.T) {
 		assert.True(t, org.AllowForceDeleteWorkspaces)
 
 		org, err = client.Organizations.Update(ctx, org.Name, OrganizationUpdateOptions{AllowForceDeleteWorkspaces: Bool(false)})
-		assert.Nil(t, err)
+		require.NoError(t, err)
 		assert.False(t, org.AllowForceDeleteWorkspaces)
 
 		org, err = client.Organizations.Read(ctx, org.Name)
-		assert.Nil(t, err)
+		require.NoError(t, err)
 		assert.False(t, org.AllowForceDeleteWorkspaces)
 	})
 }

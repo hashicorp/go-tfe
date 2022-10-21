@@ -1212,6 +1212,8 @@ func TestWorkspacesDeleteByID(t *testing.T) {
 }
 
 func TestCanForceDeletePermission(t *testing.T) {
+	skipIfNotCINode(t)
+
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -1230,6 +1232,8 @@ func TestCanForceDeletePermission(t *testing.T) {
 }
 
 func TestWorkspacesSafeDelete(t *testing.T) {
+	skipIfNotCINode(t)
+
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -1283,6 +1287,8 @@ func TestWorkspacesSafeDelete(t *testing.T) {
 }
 
 func TestWorkspacesSafeDeleteByID(t *testing.T) {
+	skipIfNotCINode(t)
+
 	client := testClient(t)
 	ctx := context.Background()
 
