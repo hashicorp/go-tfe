@@ -25,20 +25,10 @@ There are instances where several new resources being added (i.e Workspace Run T
 
 The test suite contains many acceptance tests that are run against the latest version of Terraform Enterprise. You can read more about running the tests against your own Terraform Enterprise environment in [TESTS.md](TESTS.md). Our CI system (Github Actions) will not test your fork until a one-time approval takes place.
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
 ## Test Splitting
 
 Our CI workflow makes use of multiple nodes to run our tests in a more efficient manner. To prevent your test from running across all nodes, you **must** add `skipIfNotCINode(t)` to your top level test before any other helper or test logic.
 
->>>>>>> e307d93 (rename from checktestnode to skipIfNotCINode)
-=======
-## Test Splitting
-
-Our CI workflow makes use of multiple nodes to run our tests in a more efficient manner. To prevent your test from running across all nodes, you **must** add `checkTestNodeEnv(t)` to your top level test before any other helper or test logic.
-
->>>>>>> d0e4157 (Update contributing docs to mention test splitting)
 ## Editor Settings
 
 We've included VSCode settings to assist with configuring the go extension. For other editors that integrate with the [Go Language Server](https://github.com/golang/tools/tree/master/gopls), the main thing to do is to add the `integration` build tags so that the test files are found by the language server. See `.vscode/settings.json` for more details.
@@ -412,3 +402,26 @@ func validateExampleIncludeParams(params []ExampleIncludeOpt) error {
 	return nil
 }
 ```
+
+## Rebasing a fork to trigger CI (Maintainers Only)
+
+Pull requests that originate from a fork will not have access to this repository's secrets, thus resulting in the inability to test against our CI instance. In order to trigger the CI action workflow, there is a handy script `./scripts/rebase-fork.sh` that automates the steps for you. It will:
+
+* Checkout the fork PR locally onto your machine and create a new branch prefixed as follows: `local/{name_of_fork_branch}`
+* Push your newly created branch to Github, appending an empty commit stating the original branch that was rebased.
+* Copy the contents of the fork's pull request (title and description) and create a new pull request, triggering the CI workflow.
+
+**Important**: This script does not handle subsequent commits to the original PR and would require you to rebase them manually. Therefore, it is important that authors include test results in their description and changes are approved before this script is executed.
+
+This script depends on `gh` and `jq`. It also requires you to `gh auth login`, providing a SSO-authorized personal access token with the following scopes enabled:
+
+- repo
+- read:org
+- read:discussion
+
+### Example Usage
+
+```sh
+./scripts/rebase-fork.sh 557
+```
+
