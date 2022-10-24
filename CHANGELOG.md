@@ -1,4 +1,10 @@
-# (Unreleased)
+# Unreleased
+
+## Enhancements
+
+* Add `NotificationTriggerAssessmentCheckFailed` notification trigger type by @rexredinger [#549](https://github.com/hashicorp/go-tfe/pull/549)
+
+# v1.11.0
 
 ## Enhancements
 
