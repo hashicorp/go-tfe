@@ -737,7 +737,8 @@ func TestWorkspacesUpdate(t *testing.T) {
 
 	upgradeOrganizationSubscription(t, client, orgTest)
 
-	wTest, _ := createWorkspace(t, client, orgTest)
+	wTest, wCleanup := createWorkspace(t, client, orgTest)
+	t.Cleanup(wCleanup)
 
 	t.Run("when updating a subset of values", func(t *testing.T) {
 		options := WorkspaceUpdateOptions{
@@ -853,10 +854,11 @@ func TestWorkspacesUpdate(t *testing.T) {
 		})
 		defer orgTestCleanup()
 
-		wTest, _ := createWorkspaceWithOptions(t, client, orgTest, WorkspaceCreateOptions{
+		wTest, wCleanup := createWorkspaceWithOptions(t, client, orgTest, WorkspaceCreateOptions{
 			Name:            String(randomString(t)),
 			TriggerPrefixes: []string{"/prefix-1/", "/prefix-2/"},
 		})
+		t.Cleanup(wCleanup)
 		assert.Equal(t, wTest.TriggerPrefixes, []string{"/prefix-1/", "/prefix-2/"}) // Sanity test
 
 		options := WorkspaceUpdateOptions{
@@ -901,10 +903,11 @@ func TestWorkspacesUpdate(t *testing.T) {
 		})
 		defer orgTestCleanup()
 
-		wTest, _ := createWorkspaceWithOptions(t, client, orgTest, WorkspaceCreateOptions{
+		wTest, wCleanup := createWorkspaceWithOptions(t, client, orgTest, WorkspaceCreateOptions{
 			Name:            String(randomString(t)),
 			TriggerPatterns: []string{"/pattern-1/**/*", "/pattern-2/**/*"},
 		})
+		t.Cleanup(wCleanup)
 		assert.Equal(t, wTest.TriggerPatterns, []string{"/pattern-1/**/*", "/pattern-2/**/*"}) // Sanity test
 
 		options := WorkspaceUpdateOptions{
@@ -939,7 +942,8 @@ func TestWorkspacesUpdateTableDriven(t *testing.T) {
 	orgTest, orgTestCleanup := createOrganization(t, client)
 	defer orgTestCleanup()
 
-	wTest, _ := createWorkspace(t, client, orgTest)
+	wTest, wCleanup := createWorkspace(t, client, orgTest)
+	t.Cleanup(wCleanup)
 
 	workspaceTableTests := []WorkspaceTableTest{
 		{
@@ -1076,7 +1080,8 @@ func TestWorkspacesUpdateByID(t *testing.T) {
 	orgTest, orgTestCleanup := createOrganization(t, client)
 	defer orgTestCleanup()
 
-	wTest, _ := createWorkspace(t, client, orgTest)
+	wTest, wCleanup := createWorkspace(t, client, orgTest)
+	t.Cleanup(wCleanup)
 
 	t.Run("when updating a subset of values", func(t *testing.T) {
 		options := WorkspaceUpdateOptions{
@@ -1163,7 +1168,8 @@ func TestWorkspacesDelete(t *testing.T) {
 	orgTest, orgTestCleanup := createOrganization(t, client)
 	defer orgTestCleanup()
 
-	wTest, _ := createWorkspace(t, client, orgTest)
+	wTest, wCleanup := createWorkspace(t, client, orgTest)
+	t.Cleanup(wCleanup)
 
 	t.Run("with valid options", func(t *testing.T) {
 		err := client.Workspaces.Delete(ctx, orgTest.Name, wTest.Name)
@@ -1194,7 +1200,8 @@ func TestWorkspacesDeleteByID(t *testing.T) {
 	orgTest, orgTestCleanup := createOrganization(t, client)
 	defer orgTestCleanup()
 
-	wTest, _ := createWorkspace(t, client, orgTest)
+	wTest, wCleanup := createWorkspace(t, client, orgTest)
+	t.Cleanup(wCleanup)
 
 	t.Run("with valid options", func(t *testing.T) {
 		err := client.Workspaces.DeleteByID(ctx, wTest.ID)
@@ -1218,9 +1225,10 @@ func TestCanForceDeletePermission(t *testing.T) {
 	ctx := context.Background()
 
 	orgTest, orgTestCleanup := createOrganization(t, client)
-	defer orgTestCleanup()
+	t.Cleanup(orgTestCleanup)
 
-	wTest, _ := createWorkspace(t, client, orgTest)
+	wTest, wCleanup := createWorkspace(t, client, orgTest)
+	t.Cleanup(wCleanup)
 
 	t.Run("workspace permission set includes can-force-delete", func(t *testing.T) {
 		w, err := client.Workspaces.ReadByID(ctx, wTest.ID)
@@ -1238,9 +1246,10 @@ func TestWorkspacesSafeDelete(t *testing.T) {
 	ctx := context.Background()
 
 	orgTest, orgTestCleanup := createOrganization(t, client)
-	defer orgTestCleanup()
+	t.Cleanup(orgTestCleanup)
 
-	wTest, _ := createWorkspace(t, client, orgTest)
+	wTest, wCleanup := createWorkspace(t, client, orgTest)
+	t.Cleanup(wCleanup)
 
 	t.Run("with valid options", func(t *testing.T) {
 		err := client.Workspaces.SafeDelete(ctx, orgTest.Name, wTest.Name)
@@ -1263,7 +1272,7 @@ func TestWorkspacesSafeDelete(t *testing.T) {
 
 	t.Run("when workspace is locked", func(t *testing.T) {
 		wTest, workspaceCleanup := createWorkspace(t, client, orgTest)
-		defer workspaceCleanup()
+		t.Cleanup(workspaceCleanup)
 		w, err := client.Workspaces.Lock(ctx, wTest.ID, WorkspaceLockOptions{})
 		assert.NoError(t, err)
 		assert.True(t, w.Locked)
@@ -1275,7 +1284,7 @@ func TestWorkspacesSafeDelete(t *testing.T) {
 
 	t.Run("when workspace has resources under management", func(t *testing.T) {
 		wTest, workspaceCleanup := createWorkspace(t, client, orgTest)
-		defer workspaceCleanup()
+		t.Cleanup(workspaceCleanup)
 		_, svTestCleanup := createStateVersion(t, client, 0, wTest)
 		t.Cleanup(svTestCleanup)
 
@@ -1293,9 +1302,10 @@ func TestWorkspacesSafeDeleteByID(t *testing.T) {
 	ctx := context.Background()
 
 	orgTest, orgTestCleanup := createOrganization(t, client)
-	defer orgTestCleanup()
+	t.Cleanup(orgTestCleanup)
 
-	wTest, _ := createWorkspace(t, client, orgTest)
+	wTest, wCleanup := createWorkspace(t, client, orgTest)
+	t.Cleanup(wCleanup)
 
 	t.Run("with valid options", func(t *testing.T) {
 		err := client.Workspaces.SafeDeleteByID(ctx, wTest.ID)
@@ -1313,7 +1323,7 @@ func TestWorkspacesSafeDeleteByID(t *testing.T) {
 
 	t.Run("when workspace is locked", func(t *testing.T) {
 		wTest, workspaceCleanup := createWorkspace(t, client, orgTest)
-		defer workspaceCleanup()
+		t.Cleanup(workspaceCleanup)
 		w, err := client.Workspaces.Lock(ctx, wTest.ID, WorkspaceLockOptions{})
 		assert.NoError(t, err)
 		assert.True(t, w.Locked)
@@ -1325,7 +1335,7 @@ func TestWorkspacesSafeDeleteByID(t *testing.T) {
 
 	t.Run("when workspace has resources under management", func(t *testing.T) {
 		wTest, workspaceCleanup := createWorkspace(t, client, orgTest)
-		defer workspaceCleanup()
+		t.Cleanup(workspaceCleanup)
 		_, svTestCleanup := createStateVersion(t, client, 0, wTest)
 		t.Cleanup(svTestCleanup)
 
