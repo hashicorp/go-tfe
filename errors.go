@@ -82,6 +82,8 @@ var (
 
 	ErrInvalidRunID = errors.New("invalid value for run ID")
 
+	ErrInvalidProjectID = errors.New("invalid value for project ID")
+
 	ErrInvalidRunTaskCategory = errors.New(`category must be "task"`)
 
 	ErrInvalidRunTaskID = errors.New("invalid value for run task ID")

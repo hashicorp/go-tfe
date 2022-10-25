@@ -1975,6 +1975,34 @@ func upgradeOrganizationSubscription(t *testing.T, client *Client, organization 
 	}
 }
 
+func createProject(t *testing.T, client *Client, org *Organization) (*Project, func()) {
+	var orgCleanup func()
+
+	if org == nil {
+		org, orgCleanup = createOrganization(t, client)
+	}
+
+	ctx := context.Background()
+	p, err := client.Projects.Create(ctx, org.Name, ProjectCreateOptions{
+		Name: String("test_project"),
+	})
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	return p, func() {
+		if err := client.Projects.Delete(ctx, p.ID); err != nil {
+			t.Logf("Error destroying project! WARNING: Dangling resources "+
+				"may exist! The full error is shown below.\n\n"+
+				"Project ID: %s\nError: %s", p.ID, err)
+		}
+
+		if orgCleanup != nil {
+			orgCleanup()
+		}
+	}
+}
+
 func waitForSVOutputs(t *testing.T, client *Client, svID string) {
 	t.Helper()
 
