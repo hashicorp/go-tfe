@@ -1234,6 +1234,7 @@ func TestCanForceDeletePermission(t *testing.T) {
 		w, err := client.Workspaces.ReadByID(ctx, wTest.ID)
 		require.NoError(t, err)
 		assert.Equal(t, wTest, w)
+		require.NotNil(t, w.Permissions)
 		assert.NotNil(t, w.Permissions.CanForceDelete)
 		assert.True(t, *w.Permissions.CanForceDelete)
 	})
