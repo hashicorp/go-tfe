@@ -40,6 +40,9 @@ type RegistryModules interface {
 	// Delete a specific registry module version
 	DeleteVersion(ctx context.Context, moduleID RegistryModuleID, version string) error
 
+	// Update properties of a registry module
+	Update(ctx context.Context, moduleID RegistryModuleID, options RegistryModuleUpdateOptions) (*RegistryModule, error)
+
 	// Upload Terraform configuration files for the provided registry module version. It
 	// requires a path to the configuration files on disk, which will be packaged by
 	// hashicorp/go-slug before being uploaded.
@@ -189,6 +192,18 @@ type RegistryModuleCreateWithVCSConnectionOptions struct {
 	VCSRepo *RegistryModuleVCSRepoOptions `jsonapi:"attr,vcs-repo"`
 }
 
+// RegistryModuleCreateVersionOptions is used when updating a registry module
+type RegistryModuleUpdateOptions struct {
+	// Type is a public field utilized by JSON:API to
+	// set the resource type via the field tag.
+	// It is not a user-defined value and does not need to be set.
+	// https://jsonapi.org/format/#crud-updating
+	Type string `jsonapi:"primary,registry-modules"`
+
+	// Optional: Flag to enable no-code provisioning for the whole module.
+	NoCode *bool `jsonapi:"attr,no-code,omitempty"`
+}
+
 type RegistryModuleVCSRepoOptions struct {
 	Identifier        *string `json:"identifier"`         // Required
 	OAuthTokenID      *string `json:"oauth-token-id"`     // Required
@@ -259,6 +274,41 @@ func (r *registryModules) Create(ctx context.Context, organization string, optio
 	rm := &RegistryModule{}
 	err = req.Do(ctx, rm)
 	if err != nil {
+		return nil, err
+	}
+
+	return rm, nil
+}
+
+func (r *registryModules) Update(ctx context.Context, moduleID RegistryModuleID, options RegistryModuleUpdateOptions) (*RegistryModule, error) {
+	if err := moduleID.valid(); err != nil {
+		return nil, err
+	}
+
+	if moduleID.RegistryName == "" {
+		log.Println("[WARN] Support for using the RegistryModuleID without RegistryName is deprecated as of release 1.5.0 and may be removed in a future version. The preferred method is to include the RegistryName in RegistryModuleID.")
+		moduleID.RegistryName = PrivateRegistry
+	}
+
+	if moduleID.RegistryName == PrivateRegistry && strings.TrimSpace(moduleID.Namespace) == "" {
+		log.Println("[WARN] Support for using the RegistryModuleID without Namespace is deprecated as of release 1.5.0 and may be removed in a future version. The preferred method is to include the Namespace in RegistryModuleID.")
+		moduleID.Namespace = moduleID.Organization
+	}
+
+	org := url.QueryEscape(moduleID.Organization)
+	registryName := url.QueryEscape(string(moduleID.RegistryName))
+	namespace := url.QueryEscape(moduleID.Namespace)
+	name := url.QueryEscape(moduleID.Name)
+	provider := url.QueryEscape(moduleID.Provider)
+	url := fmt.Sprintf("organizations/%s/registry-modules/%s/%s/%s/%s", org, registryName, namespace, name, provider)
+
+	req, err := r.client.NewRequest(http.MethodPatch, url, &options)
+	if err != nil {
+		return nil, err
+	}
+
+	rm := &RegistryModule{}
+	if err := req.Do(ctx, rm); err != nil {
 		return nil, err
 	}
 
