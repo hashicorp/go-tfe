@@ -144,6 +144,27 @@ func TestRegistryModulesCreate(t *testing.T) {
 
 			assertRegistryModuleAttributes(t, rm)
 		})
+
+		t.Run("with no-code attribute", func(t *testing.T) {
+			skipIfBeta(t)
+			options := RegistryModuleCreateOptions{
+				Name:         String("iam"),
+				Provider:     String("aws"),
+				NoCode:       true,
+				RegistryName: PrivateRegistry,
+				Namespace:    "terraform-aws-modules",
+			}
+			rm, err := client.RegistryModules.Create(ctx, orgTest.Name, options)
+			require.NoError(t, err)
+			assert.NotEmpty(t, rm.ID)
+			assert.Equal(t, *options.Name, rm.Name)
+			assert.Equal(t, *options.Provider, rm.Provider)
+			assert.Equal(t, options.RegistryName, rm.RegistryName)
+			assert.Equal(t, options.Namespace, rm.Namespace)
+			assert.Equal(t, options.NoCode, rm.NoCode)
+
+			assertRegistryModuleAttributes(t, rm)
+		})
 	})
 
 	t.Run("with invalid options", func(t *testing.T) {

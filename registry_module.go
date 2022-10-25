@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"log"
+	"net/http"
 	"net/url"
 	"strings"
 )
@@ -107,6 +108,7 @@ type RegistryModule struct {
 	Provider        string                          `jsonapi:"attr,provider"`
 	RegistryName    RegistryName                    `jsonapi:"attr,registry-name"`
 	Namespace       string                          `jsonapi:"attr,namespace"`
+	NoCode          bool                            `jsonapi:"attr,no-code"`
 	Permissions     *RegistryModulePermissions      `jsonapi:"attr,permissions"`
 	Status          RegistryModuleStatus            `jsonapi:"attr,status"`
 	VCSRepo         *VCSRepo                        `jsonapi:"attr,vcs-repo"`
@@ -167,6 +169,8 @@ type RegistryModuleCreateOptions struct {
 	RegistryName RegistryName `jsonapi:"attr,registry-name,omitempty"`
 	// Optional: The namespace of this module. Required for public modules only.
 	Namespace string `jsonapi:"attr,namespace,omitempty"`
+	// Optional: true if the module is enabled for no-code provisioning.
+	NoCode bool `jsonapi:"attr,no-code,omitempty"`
 }
 
 // RegistryModuleCreateVersionOptions is used when creating a registry module version
