@@ -170,6 +170,7 @@ type RegistryModuleCreateOptions struct {
 	// Optional: The namespace of this module. Required for public modules only.
 	Namespace string `jsonapi:"attr,namespace,omitempty"`
 	// Optional: true if the module is enabled for no-code provisioning.
+	// **Note: This field is still in BETA and subject to change.**
 	NoCode bool `jsonapi:"attr,no-code,omitempty"`
 }
 
@@ -205,6 +206,7 @@ type RegistryModuleUpdateOptions struct {
 	Type string `jsonapi:"primary,registry-modules"`
 
 	// Optional: Flag to enable no-code provisioning for the whole module.
+	// **Note: This field is still in BETA and subject to change.**
 	NoCode *bool `jsonapi:"attr,no-code,omitempty"`
 }
 
