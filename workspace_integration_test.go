@@ -1235,7 +1235,7 @@ func TestCanForceDeletePermission(t *testing.T) {
 		require.NoError(t, err)
 		assert.Equal(t, wTest, w)
 		require.NotNil(t, w.Permissions)
-		assert.NotNil(t, w.Permissions.CanForceDelete)
+		require.NotNil(t, w.Permissions.CanForceDelete)
 		assert.True(t, *w.Permissions.CanForceDelete)
 	})
 }
