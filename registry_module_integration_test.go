@@ -152,7 +152,6 @@ func TestRegistryModulesCreate(t *testing.T) {
 				Provider:     String("aws"),
 				NoCode:       true,
 				RegistryName: PrivateRegistry,
-				Namespace:    "terraform-aws-modules",
 			}
 			rm, err := client.RegistryModules.Create(ctx, orgTest.Name, options)
 			require.NoError(t, err)
@@ -160,7 +159,7 @@ func TestRegistryModulesCreate(t *testing.T) {
 			assert.Equal(t, *options.Name, rm.Name)
 			assert.Equal(t, *options.Provider, rm.Provider)
 			assert.Equal(t, options.RegistryName, rm.RegistryName)
-			assert.Equal(t, options.Namespace, rm.Namespace)
+			assert.Equal(t, orgTest.Name, rm.Namespace)
 			assert.Equal(t, options.NoCode, rm.NoCode)
 
 			assertRegistryModuleAttributes(t, rm)
