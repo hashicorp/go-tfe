@@ -39,12 +39,12 @@ func TestWorkspacesList(t *testing.T) {
 	ctx := context.Background()
 
 	orgTest, orgTestCleanup := createOrganization(t, client)
-	defer orgTestCleanup()
+	t.Cleanup(orgTestCleanup)
 
 	wTest1, wTest1Cleanup := createWorkspace(t, client, orgTest)
-	defer wTest1Cleanup()
+	t.Cleanup(wTest1Cleanup)
 	wTest2, wTest2Cleanup := createWorkspace(t, client, orgTest)
-	defer wTest2Cleanup()
+	t.Cleanup(wTest2Cleanup)
 
 	t.Run("without list options", func(t *testing.T) {
 		wl, err := client.Workspaces.List(ctx, orgTest.Name, nil)
@@ -193,7 +193,7 @@ func TestWorkspacesCreateTableDriven(t *testing.T) {
 	ctx := context.Background()
 
 	orgTest, orgTestCleanup := createOrganization(t, client)
-	defer orgTestCleanup()
+	t.Cleanup(orgTestCleanup)
 
 	workspaceTableTests := []WorkspaceTableTest{
 		{
@@ -216,8 +216,8 @@ func TestWorkspacesCreateTableDriven(t *testing.T) {
 				w, wTestCleanup := createWorkspaceWithVCS(t, client, orgTest, *options.createOptions)
 
 				return w, func() {
-					defer orgTestCleanup()
-					defer wTestCleanup()
+					t.Cleanup(orgTestCleanup)
+					t.Cleanup(wTestCleanup)
 				}
 			},
 			assertion: func(w *Workspace, options *WorkspaceTableOptions, err error) {
@@ -292,7 +292,7 @@ func TestWorkspacesCreateTableDriven(t *testing.T) {
 				w, wTestCleanup := createWorkspaceWithVCS(t, client, orgTest, *options.createOptions)
 
 				return w, func() {
-					defer wTestCleanup()
+					t.Cleanup(wTestCleanup)
 				}
 			},
 			assertion: func(w *Workspace, options *WorkspaceTableOptions, err error) {
@@ -325,7 +325,7 @@ func TestWorkspacesCreate(t *testing.T) {
 	ctx := context.Background()
 
 	orgTest, orgTestCleanup := createOrganization(t, client)
-	defer orgTestCleanup()
+	t.Cleanup(orgTestCleanup)
 
 	t.Run("with valid options", func(t *testing.T) {
 		options := WorkspaceCreateOptions{
@@ -457,7 +457,7 @@ func TestWorkspacesCreate(t *testing.T) {
 			Name:  String("tst-" + randomString(t)[0:20] + "-ff-on"),
 			Email: String(fmt.Sprintf("%s@tfe.local", randomString(t))),
 		})
-		defer orgTestCleanup()
+		t.Cleanup(orgTestCleanup)
 
 		options := WorkspaceCreateOptions{
 			Name:                String("foobar"),
@@ -500,7 +500,7 @@ func TestWorkspacesCreate(t *testing.T) {
 			Name:  String("tst-" + randomString(t)[0:20] + "-ff-on"),
 			Email: String(fmt.Sprintf("%s@tfe.local", randomString(t))),
 		})
-		defer orgTestCleanup()
+		t.Cleanup(orgTestCleanup)
 
 		options := WorkspaceCreateOptions{
 			Name:                String(fmt.Sprintf("foobar-%s", randomString(t))),
@@ -522,10 +522,10 @@ func TestWorkspacesRead(t *testing.T) {
 	ctx := context.Background()
 
 	orgTest, orgTestCleanup := createOrganization(t, client)
-	defer orgTestCleanup()
+	t.Cleanup(orgTestCleanup)
 
 	wTest, wTestCleanup := createWorkspace(t, client, orgTest)
-	defer wTestCleanup()
+	t.Cleanup(wTestCleanup)
 
 	t.Run("when the workspace exists", func(t *testing.T) {
 		w, err := client.Workspaces.Read(ctx, orgTest.Name, wTest.Name)
@@ -570,13 +570,13 @@ func TestWorkspacesReadWithOptions(t *testing.T) {
 	ctx := context.Background()
 
 	orgTest, orgTestCleanup := createOrganization(t, client)
-	defer orgTestCleanup()
+	t.Cleanup(orgTestCleanup)
 
 	wTest, wTestCleanup := createWorkspace(t, client, orgTest)
-	defer wTestCleanup()
+	t.Cleanup(wTestCleanup)
 
 	svTest, svTestCleanup := createStateVersion(t, client, 0, wTest)
-	defer svTestCleanup()
+	t.Cleanup(svTestCleanup)
 
 	// give TFC some time to process the statefile and extract the outputs.
 	waitForSVOutputs(t, client, svTest.ID)
@@ -620,13 +620,13 @@ func TestWorkspacesReadWithHistory(t *testing.T) {
 	client := testClient(t)
 
 	orgTest, orgTestCleanup := createOrganization(t, client)
-	defer orgTestCleanup()
+	t.Cleanup(orgTestCleanup)
 
 	wTest, wTestCleanup := createWorkspace(t, client, orgTest)
-	defer wTestCleanup()
+	t.Cleanup(wTestCleanup)
 
 	_, rCleanup := createRunApply(t, client, wTest)
-	defer rCleanup()
+	t.Cleanup(rCleanup)
 
 	_, err := retry(func() (interface{}, error) {
 		w, err := client.Workspaces.Read(context.Background(), orgTest.Name, wTest.Name)
@@ -655,13 +655,13 @@ func TestWorkspacesReadReadme(t *testing.T) {
 	ctx := context.Background()
 
 	orgTest, orgTestCleanup := createOrganization(t, client)
-	defer orgTestCleanup()
+	t.Cleanup(orgTestCleanup)
 
 	wTest, wTestCleanup := createWorkspaceWithVCS(t, client, orgTest, WorkspaceCreateOptions{})
-	defer wTestCleanup()
+	t.Cleanup(wTestCleanup)
 
 	_, rCleanup := createRunApply(t, client, wTest)
-	defer rCleanup()
+	t.Cleanup(rCleanup)
 
 	t.Run("when the readme exists", func(t *testing.T) {
 		w, err := client.Workspaces.Readme(ctx, wTest.ID)
@@ -697,10 +697,10 @@ func TestWorkspacesReadByID(t *testing.T) {
 	ctx := context.Background()
 
 	orgTest, orgTestCleanup := createOrganization(t, client)
-	defer orgTestCleanup()
+	t.Cleanup(orgTestCleanup)
 
 	wTest, wTestCleanup := createWorkspace(t, client, orgTest)
-	defer wTestCleanup()
+	t.Cleanup(wTestCleanup)
 
 	t.Run("when the workspace exists", func(t *testing.T) {
 		w, err := client.Workspaces.ReadByID(ctx, wTest.ID)
@@ -733,11 +733,12 @@ func TestWorkspacesUpdate(t *testing.T) {
 	ctx := context.Background()
 
 	orgTest, orgTestCleanup := createOrganization(t, client)
-	defer orgTestCleanup()
+	t.Cleanup(orgTestCleanup)
 
 	upgradeOrganizationSubscription(t, client, orgTest)
 
-	wTest, _ := createWorkspace(t, client, orgTest)
+	wTest, wCleanup := createWorkspace(t, client, orgTest)
+	t.Cleanup(wCleanup)
 
 	t.Run("when updating a subset of values", func(t *testing.T) {
 		options := WorkspaceUpdateOptions{
@@ -851,12 +852,13 @@ func TestWorkspacesUpdate(t *testing.T) {
 			Name:  String("tst-" + randomString(t)[0:20] + "-ff-on"),
 			Email: String(fmt.Sprintf("%s@tfe.local", randomString(t))),
 		})
-		defer orgTestCleanup()
+		t.Cleanup(orgTestCleanup)
 
-		wTest, _ := createWorkspaceWithOptions(t, client, orgTest, WorkspaceCreateOptions{
+		wTest, wCleanup := createWorkspaceWithOptions(t, client, orgTest, WorkspaceCreateOptions{
 			Name:            String(randomString(t)),
 			TriggerPrefixes: []string{"/prefix-1/", "/prefix-2/"},
 		})
+		t.Cleanup(wCleanup)
 		assert.Equal(t, wTest.TriggerPrefixes, []string{"/prefix-1/", "/prefix-2/"}) // Sanity test
 
 		options := WorkspaceUpdateOptions{
@@ -899,12 +901,13 @@ func TestWorkspacesUpdate(t *testing.T) {
 			Name:  String("tst-" + randomString(t)[0:20] + "-ff-on"),
 			Email: String(fmt.Sprintf("%s@tfe.local", randomString(t))),
 		})
-		defer orgTestCleanup()
+		t.Cleanup(orgTestCleanup)
 
-		wTest, _ := createWorkspaceWithOptions(t, client, orgTest, WorkspaceCreateOptions{
+		wTest, wCleanup := createWorkspaceWithOptions(t, client, orgTest, WorkspaceCreateOptions{
 			Name:            String(randomString(t)),
 			TriggerPatterns: []string{"/pattern-1/**/*", "/pattern-2/**/*"},
 		})
+		t.Cleanup(wCleanup)
 		assert.Equal(t, wTest.TriggerPatterns, []string{"/pattern-1/**/*", "/pattern-2/**/*"}) // Sanity test
 
 		options := WorkspaceUpdateOptions{
@@ -937,9 +940,10 @@ func TestWorkspacesUpdateTableDriven(t *testing.T) {
 	ctx := context.Background()
 
 	orgTest, orgTestCleanup := createOrganization(t, client)
-	defer orgTestCleanup()
+	t.Cleanup(orgTestCleanup)
 
-	wTest, _ := createWorkspace(t, client, orgTest)
+	wTest, wCleanup := createWorkspace(t, client, orgTest)
+	t.Cleanup(wCleanup)
 
 	workspaceTableTests := []WorkspaceTableTest{
 		{
@@ -965,8 +969,8 @@ func TestWorkspacesUpdateTableDriven(t *testing.T) {
 
 				wTest, wTestCleanup := createWorkspaceWithVCS(t, client, orgTest, *options.createOptions)
 				return wTest, func() {
-					defer orgTestCleanup()
-					defer wTestCleanup()
+					t.Cleanup(orgTestCleanup)
+					t.Cleanup(wTestCleanup)
 				}
 			},
 			assertion: func(workspace *Workspace, options *WorkspaceTableOptions, _ error) {
@@ -1074,9 +1078,10 @@ func TestWorkspacesUpdateByID(t *testing.T) {
 	ctx := context.Background()
 
 	orgTest, orgTestCleanup := createOrganization(t, client)
-	defer orgTestCleanup()
+	t.Cleanup(orgTestCleanup)
 
-	wTest, _ := createWorkspace(t, client, orgTest)
+	wTest, wCleanup := createWorkspace(t, client, orgTest)
+	t.Cleanup(wCleanup)
 
 	t.Run("when updating a subset of values", func(t *testing.T) {
 		options := WorkspaceUpdateOptions{
@@ -1161,8 +1166,9 @@ func TestWorkspacesDelete(t *testing.T) {
 	ctx := context.Background()
 
 	orgTest, orgTestCleanup := createOrganization(t, client)
-	defer orgTestCleanup()
+	t.Cleanup(orgTestCleanup)
 
+	// ignore workspace cleanup b/c it will be destroyed during tests
 	wTest, _ := createWorkspace(t, client, orgTest)
 
 	t.Run("with valid options", func(t *testing.T) {
@@ -1192,8 +1198,9 @@ func TestWorkspacesDeleteByID(t *testing.T) {
 	ctx := context.Background()
 
 	orgTest, orgTestCleanup := createOrganization(t, client)
-	defer orgTestCleanup()
+	t.Cleanup(orgTestCleanup)
 
+	// ignore workspace cleanup b/c it will be destroyed during tests
 	wTest, _ := createWorkspace(t, client, orgTest)
 
 	t.Run("with valid options", func(t *testing.T) {
@@ -1211,6 +1218,135 @@ func TestWorkspacesDeleteByID(t *testing.T) {
 	})
 }
 
+func TestCanForceDeletePermission(t *testing.T) {
+	skipIfNotCINode(t)
+
+	client := testClient(t)
+	ctx := context.Background()
+
+	orgTest, orgTestCleanup := createOrganization(t, client)
+	t.Cleanup(orgTestCleanup)
+
+	wTest, wCleanup := createWorkspace(t, client, orgTest)
+	t.Cleanup(wCleanup)
+
+	t.Run("workspace permission set includes can-force-delete", func(t *testing.T) {
+		w, err := client.Workspaces.ReadByID(ctx, wTest.ID)
+		require.NoError(t, err)
+		assert.Equal(t, wTest, w)
+		require.NotNil(t, w.Permissions)
+		require.NotNil(t, w.Permissions.CanForceDelete)
+		assert.True(t, *w.Permissions.CanForceDelete)
+	})
+}
+
+func TestWorkspacesSafeDelete(t *testing.T) {
+	skipIfNotCINode(t)
+
+	client := testClient(t)
+	ctx := context.Background()
+
+	orgTest, orgTestCleanup := createOrganization(t, client)
+	t.Cleanup(orgTestCleanup)
+
+	// ignore workspace cleanup b/c it will be destroyed during tests
+	wTest, _ := createWorkspace(t, client, orgTest)
+
+	t.Run("with valid options", func(t *testing.T) {
+		err := client.Workspaces.SafeDelete(ctx, orgTest.Name, wTest.Name)
+		require.NoError(t, err)
+
+		// Try loading the workspace - it should fail.
+		_, err = client.Workspaces.Read(ctx, orgTest.Name, wTest.Name)
+		assert.Equal(t, ErrResourceNotFound, err)
+	})
+
+	t.Run("when organization is invalid", func(t *testing.T) {
+		err := client.Workspaces.SafeDelete(ctx, badIdentifier, wTest.Name)
+		assert.EqualError(t, err, ErrInvalidOrg.Error())
+	})
+
+	t.Run("when workspace is invalid", func(t *testing.T) {
+		err := client.Workspaces.SafeDelete(ctx, orgTest.Name, badIdentifier)
+		assert.EqualError(t, err, ErrInvalidWorkspaceValue.Error())
+	})
+
+	t.Run("when workspace is locked", func(t *testing.T) {
+		wTest, workspaceCleanup := createWorkspace(t, client, orgTest)
+		t.Cleanup(workspaceCleanup)
+		w, err := client.Workspaces.Lock(ctx, wTest.ID, WorkspaceLockOptions{})
+		require.NoError(t, err)
+		require.True(t, w.Locked)
+
+		err = client.Workspaces.SafeDelete(ctx, orgTest.Name, wTest.Name)
+		assert.Contains(t, err.Error(), "conflict")
+		assert.Contains(t, err.Error(), "currently locked")
+	})
+
+	t.Run("when workspace has resources under management", func(t *testing.T) {
+		wTest, workspaceCleanup := createWorkspace(t, client, orgTest)
+		t.Cleanup(workspaceCleanup)
+		_, svTestCleanup := createStateVersion(t, client, 0, wTest)
+		t.Cleanup(svTestCleanup)
+
+		err := client.Workspaces.SafeDelete(ctx, orgTest.Name, wTest.Name)
+		// cant verify the exact error here because it is timing dependent on the backend
+		// based on whether the state version has been processed yet
+		assert.Contains(t, err.Error(), "conflict")
+	})
+}
+
+func TestWorkspacesSafeDeleteByID(t *testing.T) {
+	skipIfNotCINode(t)
+
+	client := testClient(t)
+	ctx := context.Background()
+
+	orgTest, orgTestCleanup := createOrganization(t, client)
+	t.Cleanup(orgTestCleanup)
+
+	// ignore workspace cleanup b/c it will be destroyed during tests
+	wTest, _ := createWorkspace(t, client, orgTest)
+
+	t.Run("with valid options", func(t *testing.T) {
+		err := client.Workspaces.SafeDeleteByID(ctx, wTest.ID)
+		require.NoError(t, err)
+
+		// Try loading the workspace - it should fail.
+		_, err = client.Workspaces.ReadByID(ctx, wTest.ID)
+		assert.Equal(t, ErrResourceNotFound, err)
+	})
+
+	t.Run("without a valid workspace ID", func(t *testing.T) {
+		err := client.Workspaces.SafeDeleteByID(ctx, badIdentifier)
+		assert.EqualError(t, err, ErrInvalidWorkspaceID.Error())
+	})
+
+	t.Run("when workspace is locked", func(t *testing.T) {
+		wTest, workspaceCleanup := createWorkspace(t, client, orgTest)
+		t.Cleanup(workspaceCleanup)
+		w, err := client.Workspaces.Lock(ctx, wTest.ID, WorkspaceLockOptions{})
+		require.NoError(t, err)
+		require.True(t, w.Locked)
+
+		err = client.Workspaces.SafeDeleteByID(ctx, wTest.ID)
+		assert.Contains(t, err.Error(), "conflict")
+		assert.Contains(t, err.Error(), "currently locked")
+	})
+
+	t.Run("when workspace has resources under management", func(t *testing.T) {
+		wTest, workspaceCleanup := createWorkspace(t, client, orgTest)
+		t.Cleanup(workspaceCleanup)
+		_, svTestCleanup := createStateVersion(t, client, 0, wTest)
+		t.Cleanup(svTestCleanup)
+
+		err := client.Workspaces.SafeDeleteByID(ctx, wTest.ID)
+		// cant verify the exact error here because it is timing dependent on the backend
+		// based on whether the state version has been processed yet
+		assert.Contains(t, err.Error(), "conflict")
+	})
+}
+
 func TestWorkspacesRemoveVCSConnection(t *testing.T) {
 	skipIfNotCINode(t)
 
@@ -1218,10 +1354,10 @@ func TestWorkspacesRemoveVCSConnection(t *testing.T) {
 	ctx := context.Background()
 
 	orgTest, orgTestCleanup := createOrganization(t, client)
-	defer orgTestCleanup()
+	t.Cleanup(orgTestCleanup)
 
 	wTest, wTestCleanup := createWorkspaceWithVCS(t, client, orgTest, WorkspaceCreateOptions{})
-	defer wTestCleanup()
+	t.Cleanup(wTestCleanup)
 
 	t.Run("remove vcs integration", func(t *testing.T) {
 		w, err := client.Workspaces.RemoveVCSConnection(ctx, orgTest.Name, wTest.Name)
@@ -1237,10 +1373,10 @@ func TestWorkspacesRemoveVCSConnectionByID(t *testing.T) {
 	ctx := context.Background()
 
 	orgTest, orgTestCleanup := createOrganization(t, client)
-	defer orgTestCleanup()
+	t.Cleanup(orgTestCleanup)
 
 	wTest, wTestCleanup := createWorkspaceWithVCS(t, client, orgTest, WorkspaceCreateOptions{})
-	defer wTestCleanup()
+	t.Cleanup(wTestCleanup)
 
 	t.Run("remove vcs integration", func(t *testing.T) {
 		w, err := client.Workspaces.RemoveVCSConnectionByID(ctx, wTest.ID)
@@ -1256,10 +1392,10 @@ func TestWorkspacesLock(t *testing.T) {
 	ctx := context.Background()
 
 	orgTest, orgTestCleanup := createOrganization(t, client)
-	defer orgTestCleanup()
+	t.Cleanup(orgTestCleanup)
 
 	wTest, wTestCleanup := createWorkspace(t, client, orgTest)
-	defer wTestCleanup()
+	t.Cleanup(wTestCleanup)
 
 	t.Run("with valid options", func(t *testing.T) {
 		w, err := client.Workspaces.Lock(ctx, wTest.ID, WorkspaceLockOptions{})
@@ -1286,10 +1422,10 @@ func TestWorkspacesUnlock(t *testing.T) {
 	ctx := context.Background()
 
 	orgTest, orgTestCleanup := createOrganization(t, client)
-	defer orgTestCleanup()
+	t.Cleanup(orgTestCleanup)
 
 	wTest, wTestCleanup := createWorkspace(t, client, orgTest)
-	defer wTestCleanup()
+	t.Cleanup(wTestCleanup)
 
 	w, err := client.Workspaces.Lock(ctx, wTest.ID, WorkspaceLockOptions{})
 	if err != nil {
@@ -1311,10 +1447,10 @@ func TestWorkspacesUnlock(t *testing.T) {
 
 	t.Run("when a workspace is locked by a run", func(t *testing.T) {
 		wTest2, wTest2Cleanup := createWorkspace(t, client, orgTest)
-		defer wTest2Cleanup()
+		t.Cleanup(wTest2Cleanup)
 
 		_, rTestCleanup := createRun(t, client, wTest2)
-		defer rTestCleanup()
+		t.Cleanup(rTestCleanup)
 
 		// Wait for wTest2 to be locked by a run
 		waitForRunLock(t, client, wTest2.ID)
@@ -1337,10 +1473,10 @@ func TestWorkspacesForceUnlock(t *testing.T) {
 	ctx := context.Background()
 
 	orgTest, orgTestCleanup := createOrganization(t, client)
-	defer orgTestCleanup()
+	t.Cleanup(orgTestCleanup)
 
 	wTest, wTestCleanup := createWorkspace(t, client, orgTest)
-	defer wTestCleanup()
+	t.Cleanup(wTestCleanup)
 
 	w, err := client.Workspaces.Lock(ctx, wTest.ID, WorkspaceLockOptions{})
 	if err != nil {
@@ -1374,13 +1510,13 @@ func TestWorkspacesAssignSSHKey(t *testing.T) {
 	ctx := context.Background()
 
 	orgTest, orgTestCleanup := createOrganization(t, client)
-	defer orgTestCleanup()
+	t.Cleanup(orgTestCleanup)
 
 	wTest, wTestCleanup := createWorkspace(t, client, orgTest)
-	defer wTestCleanup()
+	t.Cleanup(wTestCleanup)
 
 	sshKeyTest, sshKeyTestCleanup := createSSHKey(t, client, orgTest)
-	defer sshKeyTestCleanup()
+	t.Cleanup(sshKeyTestCleanup)
 
 	t.Run("with valid options", func(t *testing.T) {
 		w, err := client.Workspaces.AssignSSHKey(ctx, wTest.ID, WorkspaceAssignSSHKeyOptions{
@@ -1421,13 +1557,13 @@ func TestWorkspacesUnassignSSHKey(t *testing.T) {
 	ctx := context.Background()
 
 	orgTest, orgTestCleanup := createOrganization(t, client)
-	defer orgTestCleanup()
+	t.Cleanup(orgTestCleanup)
 
 	wTest, wTestCleanup := createWorkspace(t, client, orgTest)
-	defer wTestCleanup()
+	t.Cleanup(wTestCleanup)
 
 	sshKeyTest, sshKeyTestCleanup := createSSHKey(t, client, orgTest)
-	defer sshKeyTestCleanup()
+	t.Cleanup(sshKeyTestCleanup)
 
 	w, err := client.Workspaces.AssignSSHKey(ctx, wTest.ID, WorkspaceAssignSSHKeyOptions{
 		SSHKeyID: String(sshKeyTest.ID),
@@ -1459,10 +1595,10 @@ func TestWorkspaces_AddRemoteStateConsumers(t *testing.T) {
 	ctx := context.Background()
 
 	orgTest, orgTestCleanup := createOrganization(t, client)
-	defer orgTestCleanup()
+	t.Cleanup(orgTestCleanup)
 
 	wTest, wTestCleanup := createWorkspace(t, client, orgTest)
-	defer wTestCleanup()
+	t.Cleanup(wTestCleanup)
 
 	// Update workspace to not allow global remote state
 	options := WorkspaceUpdateOptions{
@@ -1473,9 +1609,9 @@ func TestWorkspaces_AddRemoteStateConsumers(t *testing.T) {
 
 	t.Run("successfully adds a remote state consumer", func(t *testing.T) {
 		wTestConsumer1, wTestCleanupConsumer1 := createWorkspace(t, client, orgTest)
-		defer wTestCleanupConsumer1()
+		t.Cleanup(wTestCleanupConsumer1)
 		wTestConsumer2, wTestCleanupConsumer2 := createWorkspace(t, client, orgTest)
-		defer wTestCleanupConsumer2()
+		t.Cleanup(wTestCleanupConsumer2)
 
 		err := client.Workspaces.AddRemoteStateConsumers(ctx, wTest.ID, WorkspaceAddRemoteStateConsumersOptions{
 			Workspaces: []*Workspace{wTestConsumer1, wTestConsumer2},
@@ -1518,10 +1654,10 @@ func TestWorkspaces_RemoveRemoteStateConsumers(t *testing.T) {
 	ctx := context.Background()
 
 	orgTest, orgTestCleanup := createOrganization(t, client)
-	defer orgTestCleanup()
+	t.Cleanup(orgTestCleanup)
 
 	wTest, wTestCleanup := createWorkspace(t, client, orgTest)
-	defer wTestCleanup()
+	t.Cleanup(wTestCleanup)
 
 	// Update workspace to not allow global remote state
 	options := WorkspaceUpdateOptions{
@@ -1532,9 +1668,9 @@ func TestWorkspaces_RemoveRemoteStateConsumers(t *testing.T) {
 
 	t.Run("successfully removes a remote state consumer", func(t *testing.T) {
 		wTestConsumer1, wTestCleanupConsumer1 := createWorkspace(t, client, orgTest)
-		defer wTestCleanupConsumer1()
+		t.Cleanup(wTestCleanupConsumer1)
 		wTestConsumer2, wTestCleanupConsumer2 := createWorkspace(t, client, orgTest)
-		defer wTestCleanupConsumer2()
+		t.Cleanup(wTestCleanupConsumer2)
 
 		err := client.Workspaces.AddRemoteStateConsumers(ctx, wTest.ID, WorkspaceAddRemoteStateConsumersOptions{
 			Workspaces: []*Workspace{wTestConsumer1, wTestConsumer2},
@@ -1596,10 +1732,10 @@ func TestWorkspaces_UpdateRemoteStateConsumers(t *testing.T) {
 	ctx := context.Background()
 
 	orgTest, orgTestCleanup := createOrganization(t, client)
-	defer orgTestCleanup()
+	t.Cleanup(orgTestCleanup)
 
 	wTest, wTestCleanup := createWorkspace(t, client, orgTest)
-	defer wTestCleanup()
+	t.Cleanup(wTestCleanup)
 
 	// Update workspace to not allow global remote state
 	options := WorkspaceUpdateOptions{
@@ -1610,9 +1746,9 @@ func TestWorkspaces_UpdateRemoteStateConsumers(t *testing.T) {
 
 	t.Run("successfully updates a remote state consumer", func(t *testing.T) {
 		wTestConsumer1, wTestCleanupConsumer1 := createWorkspace(t, client, orgTest)
-		defer wTestCleanupConsumer1()
+		t.Cleanup(wTestCleanupConsumer1)
 		wTestConsumer2, wTestCleanupConsumer2 := createWorkspace(t, client, orgTest)
-		defer wTestCleanupConsumer2()
+		t.Cleanup(wTestCleanupConsumer2)
 
 		err := client.Workspaces.AddRemoteStateConsumers(ctx, wTest.ID, WorkspaceAddRemoteStateConsumersOptions{
 			Workspaces: []*Workspace{wTestConsumer1},
@@ -1662,10 +1798,10 @@ func TestWorkspaces_AddTags(t *testing.T) {
 	ctx := context.Background()
 
 	orgTest, orgTestCleanup := createOrganization(t, client)
-	defer orgTestCleanup()
+	t.Cleanup(orgTestCleanup)
 
 	wTest, wTestCleanup := createWorkspace(t, client, orgTest)
-	defer wTestCleanup()
+	t.Cleanup(wTestCleanup)
 
 	options := WorkspaceAddTagsOptions{
 		Tags: []*Tag{
@@ -1713,7 +1849,7 @@ func TestWorkspaces_AddTags(t *testing.T) {
 
 	t.Run("successfully adds tags by id and name", func(t *testing.T) {
 		wTest2, wTest2Cleanup := createWorkspace(t, client, orgTest)
-		defer wTest2Cleanup()
+		t.Cleanup(wTest2Cleanup)
 
 		// add a tag to another workspace
 		err := client.Workspaces.AddTags(ctx, wTest2.ID, WorkspaceAddTagsOptions{
@@ -1776,10 +1912,10 @@ func TestWorkspaces_RemoveTags(t *testing.T) {
 	ctx := context.Background()
 
 	orgTest, orgTestCleanup := createOrganization(t, client)
-	defer orgTestCleanup()
+	t.Cleanup(orgTestCleanup)
 
 	wTest, wTestCleanup := createWorkspace(t, client, orgTest)
-	defer wTestCleanup()
+	t.Cleanup(wTestCleanup)
 
 	tags := []*Tag{
 		{
@@ -1949,10 +2085,10 @@ func TestWorkspacesRunTasksPermission(t *testing.T) {
 	ctx := context.Background()
 
 	orgTest, orgTestCleanup := createOrganization(t, client)
-	defer orgTestCleanup()
+	t.Cleanup(orgTestCleanup)
 
 	wTest, wTestCleanup := createWorkspace(t, client, orgTest)
-	defer wTestCleanup()
+	t.Cleanup(wTestCleanup)
 
 	t.Run("when the workspace exists", func(t *testing.T) {
 		w, err := client.Workspaces.Read(ctx, orgTest.Name, wTest.Name)

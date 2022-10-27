@@ -565,7 +565,43 @@ func TestOrganizationsReadRunTasksEntitlement(t *testing.T) {
 		assert.NotEmpty(t, entitlements.ID)
 		assert.True(t, entitlements.RunTasks)
 	})
+}
 
+func TestOrganizationsAllowForceDeleteSetting(t *testing.T) {
+	skipIfNotCINode(t)
+
+	client := testClient(t)
+	ctx := context.Background()
+
+	t.Run("creates and updates allow force delete", func(t *testing.T) {
+		options := OrganizationCreateOptions{
+			Name:                       String(randomString(t)),
+			Email:                      String(randomString(t) + "@tfe.local"),
+			AllowForceDeleteWorkspaces: Bool(true),
+		}
+
+		org, err := client.Organizations.Create(ctx, options)
+		require.NoError(t, err)
+
+		t.Cleanup(func() {
+			err := client.Organizations.Delete(ctx, org.Name)
+			if err != nil {
+				t.Errorf("error deleting organization (%s): %s", org.Name, err)
+			}
+		})
+
+		assert.Equal(t, *options.Name, org.Name)
+		assert.Equal(t, *options.Email, org.Email)
+		assert.True(t, org.AllowForceDeleteWorkspaces)
+
+		org, err = client.Organizations.Update(ctx, org.Name, OrganizationUpdateOptions{AllowForceDeleteWorkspaces: Bool(false)})
+		require.NoError(t, err)
+		assert.False(t, org.AllowForceDeleteWorkspaces)
+
+		org, err = client.Organizations.Read(ctx, org.Name)
+		require.NoError(t, err)
+		assert.False(t, org.AllowForceDeleteWorkspaces)
+	})
 }
 
 func orgItemsContainsName(items []*Organization, name string) bool {
