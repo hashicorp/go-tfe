@@ -157,6 +157,7 @@ type Workspace struct {
 	Organization        *Organization       `jsonapi:"relation,organization"`
 	SSHKey              *SSHKey             `jsonapi:"relation,ssh-key"`
 	Outputs             []*WorkspaceOutputs `jsonapi:"relation,outputs"`
+	Project             *Project            `jsonapi:"relation,project"`
 	Tags                []*Tag              `jsonapi:"relation,tags"`
 }
 

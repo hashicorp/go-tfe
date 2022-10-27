@@ -2066,3 +2066,37 @@ func TestWorkspacesRunTasksPermission(t *testing.T) {
 		assert.True(t, w.Permissions.CanManageRunTasks)
 	})
 }
+
+func TestWorkspacesProjects(t *testing.T) {
+	skipIfNotCINode(t)
+	skipIfBeta(t)
+	client := testClient(t)
+	ctx := context.Background()
+
+	orgTest, orgTestCleanup := createOrganization(t, client)
+	defer orgTestCleanup()
+
+	wTest, wTestCleanup := createWorkspace(t, client, orgTest)
+	defer wTestCleanup()
+
+	// TODO: Assert specific project ID once we can read the org default project
+
+	t.Run("created workspace includes project ID", func(t *testing.T) {
+		assert.NotNil(t, wTest.Project.ID)
+	})
+
+	t.Run("read workspace includes project ID", func(t *testing.T) {
+		workspace, err := client.Workspaces.ReadByID(ctx, wTest.ID)
+		assert.NoError(t, err)
+		assert.NotNil(t, workspace.Project.ID)
+	})
+
+	t.Run("list workspace includes project ID", func(t *testing.T) {
+		workspaces, err := client.Workspaces.List(ctx, orgTest.Name, &WorkspaceListOptions{})
+		assert.NoError(t, err)
+		for idx, item := range workspaces.Items {
+			assert.NotNil(t, item.Project.ID, "No project ID set on workspace %s at idx %d", item.ID, idx)
+		}
+	})
+
+}
