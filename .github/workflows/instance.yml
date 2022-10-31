@@ -1,4 +1,4 @@
-name: instance
+name: TFLocal Instance
 on:
   schedule:
     - cron: 0 0 * * *
