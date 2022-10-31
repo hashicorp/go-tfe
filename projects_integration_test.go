@@ -11,20 +11,52 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-//func TestProjectsList(t *testing.T) {
-//	skipIfNotCINode(t)
-//
-//	client := testClient(t)
-//	ctx := context.Background()
-//
-//	// Create your test helper resources here
-//	t.Run("test not yet implemented", func(t *testing.T) {
-//		require.NotNil(t, nil)
-//	})
-//}
+func TestProjectsList(t *testing.T) {
+	skipIfNotCINode(t)
+	skipIfBeta(t)
+
+	client := testClient(t)
+	ctx := context.Background()
+
+	orgTest, orgTestCleanup := createOrganization(t, client)
+	defer orgTestCleanup()
+
+	pTest1, pTestCleanup := createProject(t, client, orgTest)
+	defer pTestCleanup()
+
+	pTest2, pTestCleanup := createProject(t, client, orgTest)
+	defer pTestCleanup()
+
+	t.Run("with invalid options", func(t *testing.T) {
+		pl, err := client.Projects.List(ctx, orgTest.Name, nil)
+		assert.Nil(t, pl)
+		assert.EqualError(t, err, ErrInvalidPagination.Error())
+	})
+
+	t.Run("with list options", func(t *testing.T) {
+		pl, err := client.Projects.List(ctx, orgTest.Name, &ProjectListOptions{
+			ListOptions: ListOptions{
+				PageNumber: 1,
+				PageSize:   100,
+			},
+		})
+		require.NoError(t, err)
+		assert.Contains(t, pl.Items, pTest1)
+		assert.Contains(t, pl.Items, pTest2)
+		assert.Equal(t, true, containsProject(pl.Items, "Default Project"))
+		assert.Equal(t, 3, len(pl.Items))
+	})
+
+	t.Run("without a valid organization", func(t *testing.T) {
+		pl, err := client.Projects.List(ctx, badIdentifier, nil)
+		assert.Nil(t, pl)
+		assert.EqualError(t, err, ErrInvalidOrg.Error())
+	})
+}
 
 func TestProjectsRead(t *testing.T) {
 	skipIfNotCINode(t)
+	skipIfBeta(t)
 
 	client := testClient(t)
 	ctx := context.Background()
@@ -57,6 +89,7 @@ func TestProjectsRead(t *testing.T) {
 
 func TestProjectsCreate(t *testing.T) {
 	skipIfNotCINode(t)
+	skipIfBeta(t)
 
 	client := testClient(t)
 	ctx := context.Background()
@@ -64,7 +97,6 @@ func TestProjectsCreate(t *testing.T) {
 	orgTest, orgTestCleanup := createOrganization(t, client)
 	defer orgTestCleanup()
 
-	// Create your test helper resources here
 	t.Run("with valid options", func(t *testing.T) {
 		options := ProjectCreateOptions{
 			Name: String("foo"),
@@ -73,7 +105,6 @@ func TestProjectsCreate(t *testing.T) {
 		w, err := client.Projects.Create(ctx, orgTest.Name, options)
 		require.NoError(t, err)
 
-		// Get a refreshed view from the API.
 		refreshed, err := client.Projects.Read(ctx, w.ID)
 		require.NoError(t, err)
 
@@ -87,13 +118,13 @@ func TestProjectsCreate(t *testing.T) {
 	})
 
 	t.Run("when options is missing name", func(t *testing.T) {
-		w, err := client.Projects.Create(ctx, "foo", ProjectCreateOptions{})
+		w, err := client.Projects.Create(ctx, orgTest.Name, ProjectCreateOptions{})
 		assert.Nil(t, w)
 		assert.EqualError(t, err, ErrRequiredName.Error())
 	})
 
 	t.Run("when options has an invalid name", func(t *testing.T) {
-		w, err := client.Projects.Create(ctx, "foo", ProjectCreateOptions{
+		w, err := client.Projects.Create(ctx, orgTest.Name, ProjectCreateOptions{
 			Name: String(badIdentifier),
 		})
 		assert.Nil(t, w)
@@ -111,6 +142,7 @@ func TestProjectsCreate(t *testing.T) {
 
 func TestProjectsUpdate(t *testing.T) {
 	skipIfNotCINode(t)
+	skipIfBeta(t)
 
 	client := testClient(t)
 	ctx := context.Background()
@@ -145,6 +177,39 @@ func TestProjectsUpdate(t *testing.T) {
 	t.Run("without a valid projects ID", func(t *testing.T) {
 		w, err := client.Projects.Update(ctx, badIdentifier, ProjectUpdateOptions{})
 		assert.Nil(t, w)
+		assert.EqualError(t, err, ErrInvalidProjectID.Error())
+	})
+}
+
+func TestProjectsDelete(t *testing.T) {
+	skipIfNotCINode(t)
+	skipIfBeta(t)
+
+	client := testClient(t)
+	ctx := context.Background()
+
+	orgTest, orgTestCleanup := createOrganization(t, client)
+	defer orgTestCleanup()
+
+	pTest, pTestCleanup := createProject(t, client, orgTest)
+	defer pTestCleanup()
+
+	t.Run("with valid options", func(t *testing.T) {
+		err := client.Projects.Delete(ctx, pTest.ID)
+		require.NoError(t, err)
+
+		// Try loading the project - it should fail.
+		_, err = client.Projects.Read(ctx, pTest.ID)
+		assert.Equal(t, err, ErrResourceNotFound)
+	})
+
+	t.Run("when the project does not exist", func(t *testing.T) {
+		err := client.Projects.Delete(ctx, pTest.ID)
+		assert.Equal(t, err, ErrResourceNotFound)
+	})
+
+	t.Run("when the project ID is invalid", func(t *testing.T) {
+		err := client.Projects.Delete(ctx, badIdentifier)
 		assert.EqualError(t, err, ErrInvalidProjectID.Error())
 	})
 }

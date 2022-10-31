@@ -3,7 +3,6 @@ package tfe
 import (
 	"context"
 	"fmt"
-	"log"
 	"net/url"
 )
 
@@ -16,7 +15,7 @@ var _ Projects = (*projects)(nil)
 // TFE API docs: (TODO: ADD DOCS URL)
 type Projects interface {
 	// List all projects in the given organization
-	//List(ctx context.Context, organization string, options *ProjectListOptions) (*ProjectList, error)
+	List(ctx context.Context, organization string, options *ProjectListOptions) (*ProjectList, error)
 
 	// Create a new project.
 	Create(ctx context.Context, organization string, options ProjectCreateOptions) (*Project, error)
@@ -51,12 +50,10 @@ type Project struct {
 	Organization *Organization `jsonapi:"relation,organization"`
 }
 
-//// ProjectListOptions represents the options for listing projects
-//type ProjectListOptions struct {
-//	ListOptions
-//
-//	// Add more list options here
-//}
+// ProjectListOptions represents the options for listing projects
+type ProjectListOptions struct {
+	ListOptions
+}
 
 // ProjectCreateOptions represents the options for creating a project
 type ProjectCreateOptions struct {
@@ -83,9 +80,37 @@ type ProjectUpdateOptions struct {
 }
 
 // List all projects.
-//func List(ctx context.Context, options *ProjectListOptions) (*ProjectList, error) {
-//	panic("not yet implemented")
-//}
+func (s *projects) List(ctx context.Context, organization string, options *ProjectListOptions) (*ProjectList, error) {
+	if !validStringID(&organization) {
+		return nil, ErrInvalidOrg
+	}
+
+	if err := options.valid(); err != nil {
+		return nil, err
+	}
+
+	u := fmt.Sprintf("organizations/%s/projects", url.QueryEscape(organization))
+	req, err := s.client.NewRequest("GET", u, options)
+	if err != nil {
+		return nil, err
+	}
+
+	p := &ProjectList{}
+	err = req.Do(ctx, p)
+	if err != nil {
+		return nil, err
+	}
+
+	return p, nil
+}
+
+func (o *ProjectListOptions) valid() error {
+	if o == nil || o.PageNumber == 0 || o.PageSize == 0 {
+		return ErrInvalidPagination
+	}
+
+	return nil
+}
 
 // Create a project with the given options
 func (s *projects) Create(ctx context.Context, organization string, options ProjectCreateOptions) (*Project, error) {
@@ -105,8 +130,6 @@ func (s *projects) Create(ctx context.Context, organization string, options Proj
 
 	p := &Project{}
 	err = req.Do(ctx, p)
-	log.Println(ctx)
-	log.Println(p)
 	if err != nil {
 		return nil, err
 	}

@@ -93,6 +93,7 @@ This API client covers most of the existing Terraform Cloud API calls and is upd
 	- [x] Providers
 	- [x] Provider Provider Versions and Platforms
 	- [x] GPG Keys
+- [x] Projects
 - [x] Runs
 - [x] Run Tasks
 - [ ] Run Tasks Integration
