@@ -65,6 +65,17 @@ jobs:
           go mod download
           go mod tidy
 
+      # Check go fmt output because it does not report non-zero when there are fmt changes
+      - name: Run gofmt
+        run: |
+          go fmt ./...
+          files=$(go fmt ./...)
+            if [ -n "$files" ]; then
+              echo "The following file(s) do not conform to go fmt:"
+              echo "$files"
+              exit 1
+            fi
+
       - name: Install gotestsum
         run: go install gotest.tools/gotestsum@latest
 
