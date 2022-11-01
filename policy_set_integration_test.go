@@ -29,10 +29,12 @@ func TestPolicySetsList(t *testing.T) {
 	workspace, workspaceCleanup := createWorkspace(t, client, orgTest)
 	defer workspaceCleanup()
 
-	psTest1, psTestCleanup1 := createPolicySet(t, client, orgTest, nil, []*Workspace{workspace})
+	psTest1, psTestCleanup1 := createPolicySet(t, client, orgTest, nil, []*Workspace{workspace}, "")
 	defer psTestCleanup1()
-	psTest2, psTestCleanup2 := createPolicySet(t, client, orgTest, nil, []*Workspace{workspace})
+	psTest2, psTestCleanup2 := createPolicySet(t, client, orgTest, nil, []*Workspace{workspace}, "")
 	defer psTestCleanup2()
+	psTest3, psTestCleanup3 := createPolicySet(t, client, orgTest, nil, []*Workspace{workspace}, OPA)
+	defer psTestCleanup3()
 
 	t.Run("without list options", func(t *testing.T) {
 		psl, err := client.PolicySets.List(ctx, orgTest.Name, nil)
@@ -40,8 +42,9 @@ func TestPolicySetsList(t *testing.T) {
 
 		assert.Contains(t, psl.Items, psTest1)
 		assert.Contains(t, psl.Items, psTest2)
+		assert.Contains(t, psl.Items, psTest3)
 		assert.Equal(t, 1, psl.CurrentPage)
-		assert.Equal(t, 2, psl.TotalCount)
+		assert.Equal(t, 3, psl.TotalCount)
 	})
 
 	t.Run("with pagination", func(t *testing.T) {
@@ -58,7 +61,7 @@ func TestPolicySetsList(t *testing.T) {
 
 		assert.Empty(t, psl.Items)
 		assert.Equal(t, 999, psl.CurrentPage)
-		assert.Equal(t, 2, psl.TotalCount)
+		assert.Equal(t, 3, psl.TotalCount)
 	})
 
 	t.Run("with search", func(t *testing.T) {
@@ -81,7 +84,21 @@ func TestPolicySetsList(t *testing.T) {
 		})
 		require.NoError(t, err)
 
-		assert.Equal(t, 2, len(psl.Items))
+		assert.Equal(t, 3, len(psl.Items))
+
+		assert.NotNil(t, psl.Items[0].Workspaces)
+		assert.Equal(t, 1, len(psl.Items[0].Workspaces))
+		assert.Equal(t, workspace.ID, psl.Items[0].Workspaces[0].ID)
+	})
+
+	t.Run("filter by kind", func(t *testing.T) {
+		psl, err := client.PolicySets.List(ctx, orgTest.Name, &PolicySetListOptions{
+			Include: []PolicySetIncludeOpt{PolicySetWorkspaces},
+			Kind:    OPA,
+		})
+		require.NoError(t, err)
+
+		assert.Equal(t, 1, len(psl.Items))
 
 		assert.NotNil(t, psl.Items[0].Workspaces)
 		assert.Equal(t, 1, len(psl.Items[0].Workspaces))
@@ -120,7 +137,7 @@ func TestPolicySetsCreate(t *testing.T) {
 
 		assert.Equal(t, ps.Name, *options.Name)
 		assert.Equal(t, ps.Description, "")
-		assert.Equal(t, ps.Kind, "opa")
+		assert.Equal(t, ps.Kind, OPA)
 		assert.False(t, ps.Global)
 	})
 
@@ -134,11 +151,11 @@ func TestPolicySetsCreate(t *testing.T) {
 
 		assert.Equal(t, ps.Name, *options.Name)
 		assert.Equal(t, ps.Description, "")
-		assert.Equal(t, ps.Kind, "sentinel")
+		assert.Equal(t, ps.Kind, Sentinel)
 		assert.False(t, ps.Global)
 	})
 
-	t.Run("with all attributes provided", func(t *testing.T) {
+	t.Run("with all attributes provided - sentinel", func(t *testing.T) {
 		options := PolicySetCreateOptions{
 			Name:        String("global"),
 			Description: String("Policies in this set will be checked in ALL workspaces!"),
@@ -151,7 +168,44 @@ func TestPolicySetsCreate(t *testing.T) {
 
 		assert.Equal(t, ps.Name, *options.Name)
 		assert.Equal(t, ps.Description, *options.Description)
-		assert.Equal(t, ps.Kind, "sentinel")
+		assert.Equal(t, ps.Kind, Sentinel)
+		assert.True(t, ps.Global)
+	})
+
+	t.Run("with all attributes provided - OPA", func(t *testing.T) {
+		options := PolicySetCreateOptions{
+			Name:        String("global2"),
+			Description: String("Policies in this set will be checked in ALL workspaces!"),
+			Kind:        OPA,
+			Overridable: Bool(true),
+			Global:      Bool(true),
+		}
+
+		ps, err := client.PolicySets.Create(ctx, orgTest.Name, options)
+		require.NoError(t, err)
+
+		assert.Equal(t, ps.Name, *options.Name)
+		assert.Equal(t, ps.Description, *options.Description)
+		assert.Equal(t, ps.Overridable, *options.Overridable)
+		assert.Equal(t, ps.Kind, OPA)
+		assert.True(t, ps.Global)
+	})
+
+	t.Run("with missing overridable attribute", func(t *testing.T) {
+		options := PolicySetCreateOptions{
+			Name:        String("global3"),
+			Description: String("Policies in this set will be checked in ALL workspaces!"),
+			Kind:        OPA,
+			Global:      Bool(true),
+		}
+
+		ps, err := client.PolicySets.Create(ctx, orgTest.Name, options)
+		require.NoError(t, err)
+
+		assert.Equal(t, ps.Name, *options.Name)
+		assert.Equal(t, ps.Description, *options.Description)
+		assert.Equal(t, ps.Overridable, false)
+		assert.Equal(t, ps.Kind, OPA)
 		assert.True(t, ps.Global)
 	})
 
@@ -175,7 +229,7 @@ func TestPolicySetsCreate(t *testing.T) {
 		assert.Equal(t, ps.PolicyCount, 1)
 		assert.Equal(t, ps.Policies[0].ID, pTest.ID)
 		assert.Equal(t, ps.WorkspaceCount, 1)
-		assert.Equal(t, ps.Kind, "sentinel")
+		assert.Equal(t, ps.Kind, Sentinel)
 		assert.Equal(t, ps.Workspaces[0].ID, wTest.ID)
 	})
 
@@ -211,7 +265,7 @@ func TestPolicySetsCreate(t *testing.T) {
 		assert.False(t, ps.Global)
 		assert.Equal(t, ps.PoliciesPath, "/policy-sets/foo")
 		assert.Equal(t, ps.VCSRepo.Branch, "policies")
-		assert.Equal(t, ps.Kind, "sentinel")
+		assert.Equal(t, ps.Kind, Sentinel)
 		assert.Equal(t, ps.VCSRepo.DisplayIdentifier, githubIdentifier)
 		assert.Equal(t, ps.VCSRepo.Identifier, githubIdentifier)
 		assert.Equal(t, ps.VCSRepo.IngressSubmodules, true)
@@ -293,7 +347,7 @@ func TestPolicySetsRead(t *testing.T) {
 
 	upgradeOrganizationSubscription(t, client, orgTest)
 
-	psTest, psTestCleanup := createPolicySet(t, client, orgTest, nil, nil)
+	psTest, psTestCleanup := createPolicySet(t, client, orgTest, nil, nil, "")
 	defer psTestCleanup()
 
 	t.Run("with a valid ID", func(t *testing.T) {
@@ -362,7 +416,7 @@ func TestPolicySetsUpdate(t *testing.T) {
 
 	upgradeOrganizationSubscription(t, client, orgTest)
 
-	psTest, psTestCleanup := createPolicySet(t, client, orgTest, nil, nil)
+	psTest, psTestCleanup := createPolicySet(t, client, orgTest, nil, nil, "")
 	defer psTestCleanup()
 
 	t.Run("with valid attributes", func(t *testing.T) {
@@ -413,7 +467,7 @@ func TestPolicySetsAddPolicies(t *testing.T) {
 	defer pTestCleanup1()
 	pTest2, pTestCleanup2 := createPolicy(t, client, orgTest)
 	defer pTestCleanup2()
-	psTest, psTestCleanup := createPolicySet(t, client, orgTest, nil, nil)
+	psTest, psTestCleanup := createPolicySet(t, client, orgTest, nil, nil, "")
 	defer psTestCleanup()
 
 	t.Run("with policies provided", func(t *testing.T) {
@@ -471,7 +525,7 @@ func TestPolicySetsRemovePolicies(t *testing.T) {
 	defer pTestCleanup1()
 	pTest2, pTestCleanup2 := createPolicy(t, client, orgTest)
 	defer pTestCleanup2()
-	psTest, psTestCleanup := createPolicySet(t, client, orgTest, []*Policy{pTest1, pTest2}, nil)
+	psTest, psTestCleanup := createPolicySet(t, client, orgTest, []*Policy{pTest1, pTest2}, nil, "")
 	defer psTestCleanup()
 
 	t.Run("with policies provided", func(t *testing.T) {
@@ -523,7 +577,7 @@ func TestPolicySetsAddWorkspaces(t *testing.T) {
 	defer wTestCleanup1()
 	wTest2, wTestCleanup2 := createWorkspace(t, client, orgTest)
 	defer wTestCleanup2()
-	psTest, psTestCleanup := createPolicySet(t, client, orgTest, nil, nil)
+	psTest, psTestCleanup := createPolicySet(t, client, orgTest, nil, nil, "")
 	defer psTestCleanup()
 
 	t.Run("with workspaces provided", func(t *testing.T) {
@@ -595,7 +649,7 @@ func TestPolicySetsRemoveWorkspaces(t *testing.T) {
 	defer wTestCleanup1()
 	wTest2, wTestCleanup2 := createWorkspace(t, client, orgTest)
 	defer wTestCleanup2()
-	psTest, psTestCleanup := createPolicySet(t, client, orgTest, nil, []*Workspace{wTest1, wTest2})
+	psTest, psTestCleanup := createPolicySet(t, client, orgTest, nil, []*Workspace{wTest1, wTest2}, "")
 	defer psTestCleanup()
 
 	t.Run("with workspaces provided", func(t *testing.T) {
@@ -657,7 +711,7 @@ func TestPolicySetsDelete(t *testing.T) {
 
 	upgradeOrganizationSubscription(t, client, orgTest)
 
-	psTest, _ := createPolicySet(t, client, orgTest, nil, nil)
+	psTest, _ := createPolicySet(t, client, orgTest, nil, nil, "")
 
 	t.Run("with valid options", func(t *testing.T) {
 		err := client.PolicySets.Delete(ctx, psTest.ID)
