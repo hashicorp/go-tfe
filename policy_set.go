@@ -10,6 +10,15 @@ import (
 // Compile-time proof of interface implementation.
 var _ PolicySets = (*policySets)(nil)
 
+// PolicyKind is an indicator of the underlying technology that the policy or policy set supports.
+// There are two Policykinds documented in the enum.
+type PolicyKind string
+
+const (
+	OPA      PolicyKind = "opa"
+	Sentinel PolicyKind = "sentinel"
+)
+
 // PolicySets describes all the policy set related methods that the Terraform
 // Enterprise API supports.
 //
@@ -64,6 +73,7 @@ type PolicySet struct {
 	ID             string    `jsonapi:"primary,policy-sets"`
 	Name           string    `jsonapi:"attr,name"`
 	Description    string    `jsonapi:"attr,description"`
+	Kind           string    `jsonapi:"attr,kind"`
 	Global         bool      `jsonapi:"attr,global"`
 	PoliciesPath   string    `jsonapi:"attr,policies-path"`
 	PolicyCount    int       `jsonapi:"attr,policy-count"`
@@ -135,6 +145,9 @@ type PolicySetCreateOptions struct {
 
 	// Optional: Whether or not the policy set is global.
 	Global *bool `jsonapi:"attr,global,omitempty"`
+
+	// Optional: The underlying technology that the policy set supports
+	Kind PolicyKind `jsonapi:"attr,kind,omitempty"`
 
 	// Optional: The sub-path within the attached VCS repository to ingress. All
 	// files and directories outside of this sub-path will be ignored.

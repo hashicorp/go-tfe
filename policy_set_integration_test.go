@@ -112,6 +112,7 @@ func TestPolicySetsCreate(t *testing.T) {
 	t.Run("with valid attributes", func(t *testing.T) {
 		options := PolicySetCreateOptions{
 			Name: String("policy-set"),
+			Kind: OPA,
 		}
 
 		ps, err := client.PolicySets.Create(ctx, orgTest.Name, options)
@@ -119,6 +120,21 @@ func TestPolicySetsCreate(t *testing.T) {
 
 		assert.Equal(t, ps.Name, *options.Name)
 		assert.Equal(t, ps.Description, "")
+		assert.Equal(t, ps.Kind, "opa")
+		assert.False(t, ps.Global)
+	})
+
+	t.Run("with kind missing", func(t *testing.T) {
+		options := PolicySetCreateOptions{
+			Name: String("policy-set2"),
+		}
+
+		ps, err := client.PolicySets.Create(ctx, orgTest.Name, options)
+		require.NoError(t, err)
+
+		assert.Equal(t, ps.Name, *options.Name)
+		assert.Equal(t, ps.Description, "")
+		assert.Equal(t, ps.Kind, "sentinel")
 		assert.False(t, ps.Global)
 	})
 
@@ -126,6 +142,7 @@ func TestPolicySetsCreate(t *testing.T) {
 		options := PolicySetCreateOptions{
 			Name:        String("global"),
 			Description: String("Policies in this set will be checked in ALL workspaces!"),
+			Kind:        Sentinel,
 			Global:      Bool(true),
 		}
 
@@ -134,6 +151,7 @@ func TestPolicySetsCreate(t *testing.T) {
 
 		assert.Equal(t, ps.Name, *options.Name)
 		assert.Equal(t, ps.Description, *options.Description)
+		assert.Equal(t, ps.Kind, "sentinel")
 		assert.True(t, ps.Global)
 	})
 
@@ -146,6 +164,7 @@ func TestPolicySetsCreate(t *testing.T) {
 		options := PolicySetCreateOptions{
 			Name:       String("populated-policy-set"),
 			Policies:   []*Policy{pTest},
+			Kind:       Sentinel,
 			Workspaces: []*Workspace{wTest},
 		}
 
@@ -156,6 +175,7 @@ func TestPolicySetsCreate(t *testing.T) {
 		assert.Equal(t, ps.PolicyCount, 1)
 		assert.Equal(t, ps.Policies[0].ID, pTest.ID)
 		assert.Equal(t, ps.WorkspaceCount, 1)
+		assert.Equal(t, ps.Kind, "sentinel")
 		assert.Equal(t, ps.Workspaces[0].ID, wTest.ID)
 	})
 
@@ -170,6 +190,7 @@ func TestPolicySetsCreate(t *testing.T) {
 
 		options := PolicySetCreateOptions{
 			Name:         String("vcs-policy-set"),
+			Kind:         Sentinel,
 			PoliciesPath: String("/policy-sets/foo"),
 			VCSRepo: &VCSRepoOptions{
 				Branch:            String("policies"),
@@ -190,6 +211,7 @@ func TestPolicySetsCreate(t *testing.T) {
 		assert.False(t, ps.Global)
 		assert.Equal(t, ps.PoliciesPath, "/policy-sets/foo")
 		assert.Equal(t, ps.VCSRepo.Branch, "policies")
+		assert.Equal(t, ps.Kind, "sentinel")
 		assert.Equal(t, ps.VCSRepo.DisplayIdentifier, githubIdentifier)
 		assert.Equal(t, ps.VCSRepo.Identifier, githubIdentifier)
 		assert.Equal(t, ps.VCSRepo.IngressSubmodules, true)
