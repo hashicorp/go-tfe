@@ -25,6 +25,9 @@ type Organizations interface {
 	// Read an organization by its name.
 	Read(ctx context.Context, organization string) (*Organization, error)
 
+	// Read an organization by its name with options
+	ReadWithOptions(ctx context.Context, organization string, options OrganizationReadOptions) (*Organization, error)
+
 	// Update attributes of an existing organization.
 	Update(ctx context.Context, organization string, options OrganizationUpdateOptions) (*Organization, error)
 
@@ -81,6 +84,25 @@ type Organization struct {
 	// Note: This will be false for TFE versions older than v202211, where the setting was introduced.
 	// On those TFE versions, safe delete does not exist, so ALL deletes will be force deletes.
 	AllowForceDeleteWorkspaces bool `jsonapi:"attr,allow-force-delete-workspaces"`
+
+	// Relations
+	DefaultProject *Project `jsonapi:"relation,default-project"`
+}
+
+
+// OrganizationIncludeOpt represents the available options for include query params.
+// https://www.terraform.io/cloud-docs/api-docs/organizations#available-related-resources
+type OrganizationIncludeOpt string
+
+const (
+	OrganizationDefaultProject OrganizationIncludeOpt = "default-project"
+)
+
+// OrganizationReadOptions represents the options for reading organizations.
+type OrganizationReadOptions struct {
+	// Optional: A list of relations to include. See available resources
+	// https://www.terraform.io/cloud-docs/api-docs/organizations#available-related-resources
+	Include []OrganizationIncludeOpt `url:"include,omitempty"`
 }
 
 // Capacity represents the current run capacity of an organization.
@@ -256,12 +278,17 @@ func (s *organizations) Create(ctx context.Context, options OrganizationCreateOp
 
 // Read an organization by its name.
 func (s *organizations) Read(ctx context.Context, organization string) (*Organization, error) {
+	return s.ReadWithOptions(ctx, organization, OrganizationReadOptions{})
+}
+
+// Read an organization by its name with options
+func (s *organizations) ReadWithOptions(ctx context.Context, organization string, options OrganizationReadOptions) (*Organization, error) {
 	if !validStringID(&organization) {
 		return nil, ErrInvalidOrg
 	}
 
 	u := fmt.Sprintf("organizations/%s", url.QueryEscape(organization))
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest("GET", u, &options)
 	if err != nil {
 		return nil, err
 	}

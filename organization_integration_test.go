@@ -180,6 +180,17 @@ func TestOrganizationsRead(t *testing.T) {
 		_, err := client.Organizations.Read(ctx, randomString(t))
 		assert.Error(t, err)
 	})
+
+	t.Run("reads default project", func(t *testing.T) {
+		skipIfBeta(t)
+
+		org, err := client.Organizations.ReadWithOptions(ctx, orgTest.Name, OrganizationReadOptions{Include: []OrganizationIncludeOpt{OrganizationDefaultProject}})
+		require.NoError(t, err)
+		assert.Equal(t, orgTest.Name, org.Name)
+
+		assert.NotNil(t, org.DefaultProject)
+		assert.NotNil(t, org.DefaultProject.Name)
+	})
 }
 
 func TestOrganizationsUpdate(t *testing.T) {
