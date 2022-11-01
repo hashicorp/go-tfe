@@ -185,7 +185,7 @@ func TestPolicySetsCreate_Beta(t *testing.T) {
 
 		assert.Equal(t, ps.Name, *options.Name)
 		assert.Equal(t, ps.Description, *options.Description)
-		assert.Equal(t, ps.Overridable, *options.Overridable)
+		assert.Equal(t, ps.Overridable, options.Overridable)
 		assert.Equal(t, ps.Kind, OPA)
 		assert.True(t, ps.Global)
 	})
@@ -203,7 +203,7 @@ func TestPolicySetsCreate_Beta(t *testing.T) {
 
 		assert.Equal(t, ps.Name, *options.Name)
 		assert.Equal(t, ps.Description, *options.Description)
-		assert.Equal(t, ps.Overridable, false)
+		assert.Equal(t, ps.Overridable, Bool(false))
 		assert.Equal(t, ps.Kind, OPA)
 		assert.True(t, ps.Global)
 	})

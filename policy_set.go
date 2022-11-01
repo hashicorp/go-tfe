@@ -74,7 +74,7 @@ type PolicySet struct {
 	Name           string     `jsonapi:"attr,name"`
 	Description    string     `jsonapi:"attr,description"`
 	Kind           PolicyKind `jsonapi:"attr,kind"`
-	Overridable    bool       `jsonapi:"attr,overridable"`
+	Overridable    *bool      `jsonapi:"attr,overridable"`
 	Global         bool       `jsonapi:"attr,global"`
 	PoliciesPath   string     `jsonapi:"attr,policies-path"`
 	PolicyCount    int        `jsonapi:"attr,policy-count"`
