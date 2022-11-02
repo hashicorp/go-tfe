@@ -199,6 +199,8 @@ var (
 
 	ErrRequiredName = errors.New("name is required")
 
+	ErrRequiredQuery = errors.New("invalid attribute\n\nQuery can't be blank")
+
 	ErrRequiredEnabled = errors.New("enabled is required")
 
 	ErrRequiredEnforce = errors.New("enforce is required")

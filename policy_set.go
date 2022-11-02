@@ -10,6 +10,15 @@ import (
 // Compile-time proof of interface implementation.
 var _ PolicySets = (*policySets)(nil)
 
+// PolicyKind is an indicator of the underlying technology that the policy or policy set supports.
+// There are two Policykinds documented in the enum.
+type PolicyKind string
+
+const (
+	OPA      PolicyKind = "opa"
+	Sentinel PolicyKind = "sentinel"
+)
+
 // PolicySets describes all the policy set related methods that the Terraform
 // Enterprise API supports.
 //

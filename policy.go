@@ -48,9 +48,10 @@ type EnforcementLevel string
 
 // List the available enforcement types.
 const (
-	EnforcementAdvisory EnforcementLevel = "advisory"
-	EnforcementHard     EnforcementLevel = "hard-mandatory"
-	EnforcementSoft     EnforcementLevel = "soft-mandatory"
+	EnforcementAdvisory  EnforcementLevel = "advisory"
+	EnforcementHard      EnforcementLevel = "hard-mandatory"
+	EnforcementSoft      EnforcementLevel = "soft-mandatory"
+	EnforcementMandatory EnforcementLevel = "mandatory"
 )
 
 // PolicyList represents a list of policies..
@@ -63,6 +64,8 @@ type PolicyList struct {
 type Policy struct {
 	ID             string         `jsonapi:"primary,policies"`
 	Name           string         `jsonapi:"attr,name"`
+	Kind           PolicyKind     `jsonapi:"attr,kind"`
+	Query          *string        `jsonapi:"attr,query"`
 	Description    string         `jsonapi:"attr,description"`
 	Enforce        []*Enforcement `jsonapi:"attr,enforce"`
 	PolicySetCount int            `jsonapi:"attr,policy-set-count"`
@@ -90,6 +93,10 @@ type PolicyListOptions struct {
 
 	// Optional: A search string (partial policy name) used to filter the results.
 	Search string `url:"search[name],omitempty"`
+
+	// **Note: This field is still in BETA and subject to change.**
+	// Optional: A kind string used to filter the results by the policy kind.
+	Kind PolicyKind `url:"filter[kind],omitempty"`
 }
 
 // PolicyCreateOptions represents the options for creating a new policy.
@@ -102,6 +109,14 @@ type PolicyCreateOptions struct {
 
 	// Required: The name of the policy.
 	Name *string `jsonapi:"attr,name"`
+
+	// **Note: This field is still in BETA and subject to change.**
+	// Optional: The underlying technology that the policy supports.
+	Kind PolicyKind `jsonapi:"attr,kind,omitempty"`
+
+	// **Note: This field is still in BETA and subject to change.**
+	// Optional: The query passed to policy evaluation to determine the result of the policy. Only valid for OPA.
+	Query *string `jsonapi:"attr,query,omitempty"`
 
 	// Optional: A description of the policy's purpose.
 	Description *string `jsonapi:"attr,description,omitempty"`
@@ -120,6 +135,10 @@ type PolicyUpdateOptions struct {
 
 	// Optional: A description of the policy's purpose.
 	Description *string `jsonapi:"attr,description,omitempty"`
+
+	// **Note: This field is still in BETA and subject to change.**
+	// Optional: The query passed to policy evaluation to determine the result of the policy. Only valid for OPA.
+	Query *string `jsonapi:"attr,query,omitempty"`
 
 	// Optional: The enforcements of the policy.
 	Enforce []*EnforcementOptions `jsonapi:"attr,enforce,omitempty"`
