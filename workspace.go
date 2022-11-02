@@ -252,6 +252,9 @@ type WorkspaceListOptions struct {
 	// Optional: A search string (comma-separated tag names to exclude) used to filter the results.
 	ExcludeTags string `url:"search[exclude-tags],omitempty"`
 
+	// Optional: A search on substring matching to filter the results.
+	WildcardName string `url:"search[wildcard-name],omitempty"`
+
 	// Optional: A list of relations to include. See available resources https://www.terraform.io/docs/cloud/api/workspaces.html#available-related-resources
 	Include []WSIncludeOpt `url:"include,omitempty"`
 }

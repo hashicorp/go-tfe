@@ -526,6 +526,63 @@ func TestRunsForceCancel(t *testing.T) {
 	})
 }
 
+func TestRunsForceExecute(t *testing.T) {
+	skipIfNotCINode(t)
+
+	client := testClient(t)
+	ctx := context.Background()
+
+	wTest, wTestCleanup := createWorkspace(t, client, nil)
+	defer wTestCleanup()
+
+	// We need to create 2 runs here:
+	// - The first run will automatically be planned so that the second
+	//   run can't be executed.
+	// - The second run will be pending until the first run is confirmed or
+	//   discarded, so we will force execute this run.
+	rToCancel, _ := createPlannedRun(t, client, wTest)
+	rTest, _ := createRunWaitForStatus(t, client, wTest, RunPending)
+
+	t.Run("a successful force-execute", func(t *testing.T) {
+		// Verify the user has permission to force-execute the run
+		assert.True(t, rTest.Permissions.CanForceExecute)
+
+		err := client.Runs.ForceExecute(ctx, rTest.ID)
+		require.NoError(t, err)
+
+		timeout := 2 * time.Minute
+		ctxPollRunForceExecute, cancel := context.WithTimeout(ctx, timeout)
+		defer cancel()
+
+		// Verify the second run has a status that is an applyable status
+		rTest = pollRunStatus(t,
+			client,
+			ctxPollRunForceExecute,
+			rTest,
+			applyableStatuses(rTest))
+		if rTest.Status == RunErrored {
+			fatalDumpRunLog(t, client, ctx, rTest)
+		}
+
+		// Refresh the view of the first run
+		rToCancel, err = client.Runs.Read(ctx, rToCancel.ID)
+		require.NoError(t, err)
+
+		// Verify the first run was discarded
+		assert.Equal(t, RunDiscarded, rToCancel.Status)
+	})
+
+	t.Run("when the run does not exist", func(t *testing.T) {
+		err := client.Runs.ForceExecute(ctx, "nonexisting")
+		assert.Equal(t, err, ErrResourceNotFound)
+	})
+
+	t.Run("with invalid run ID", func(t *testing.T) {
+		err := client.Runs.ForceExecute(ctx, badIdentifier)
+		assert.EqualError(t, err, ErrInvalidRunID.Error())
+	})
+}
+
 func TestRunsDiscard(t *testing.T) {
 	skipIfNotCINode(t)
 

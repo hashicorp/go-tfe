@@ -36,6 +36,9 @@ type Runs interface {
 	// Force-cancel a run by its ID.
 	ForceCancel(ctx context.Context, runID string, options RunForceCancelOptions) error
 
+	// Force execute a run by its ID.
+	ForceExecute(ctx context.Context, runID string) error
+
 	// Discard a run by its ID.
 	Discard(ctx context.Context, runID string, options RunDiscardOptions) error
 }
@@ -457,6 +460,26 @@ func (s *runs) ForceCancel(ctx context.Context, runID string, options RunForceCa
 
 	u := fmt.Sprintf("runs/%s/actions/force-cancel", url.QueryEscape(runID))
 	req, err := s.client.NewRequest("POST", u, &options)
+	if err != nil {
+		return err
+	}
+
+	return req.Do(ctx, nil)
+}
+
+// ForceExecute is used to forcefully execute a run by its ID.
+//
+// Note: While useful at times, force-executing a run circumvents the typical
+// workflow of applying runs using Terraform Cloud. It is not intended for
+// regular use. If you find yourself using it frequently, please reach out to
+// HashiCorp Support for help in developing an alternative approach.
+func (s *runs) ForceExecute(ctx context.Context, runID string) error {
+	if !validStringID(&runID) {
+		return ErrInvalidRunID
+	}
+
+	u := fmt.Sprintf("runs/%s/actions/force-execute", url.QueryEscape(runID))
+	req, err := s.client.NewRequest("POST", u, nil)
 	if err != nil {
 		return err
 	}
