@@ -11,7 +11,7 @@ import (
 var _ PolicySets = (*policySets)(nil)
 
 // PolicyKind is an indicator of the underlying technology that the policy or policy set supports.
-// There are two Policykinds documented in the enum.
+// There are two kinds documented in the enum.
 type PolicyKind string
 
 const (

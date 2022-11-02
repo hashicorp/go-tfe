@@ -3,6 +3,7 @@
 ## Enhancements
 
 * Add `NotificationTriggerAssessmentCheckFailed` notification trigger type by @rexredinger [#549](https://github.com/hashicorp/go-tfe/pull/549)
+* Add OPA support to the Policy Set API's by @mrinalirao [#575](https://github.com/hashicorp/go-tfe/pull/575)
 
 # v1.11.0
 
