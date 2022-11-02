@@ -1,9 +1,8 @@
 # v1.12.0
 
-* Add `search[wildcard-name]` to `WorkspaceListOptions` by @laurenolivia [#569](https://github.com/hashicorp/go-tfe/pull/569)
-
 ## Enhancements
 
+* Add `search[wildcard-name]` to `WorkspaceListOptions` by @laurenolivia [#569](https://github.com/hashicorp/go-tfe/pull/569)
 * Add `NotificationTriggerAssessmentCheckFailed` notification trigger type by @rexredinger [#549](https://github.com/hashicorp/go-tfe/pull/549)
 * Add `RemoteTFEVersion()` to the `Client` interface, which exposes the `X-TFE-Version` header set by a remote TFE instance by @sebasslash [#563](https://github.com/hashicorp/go-tfe/pull/563)
 * Validate the module version as a version instead of an ID [#409](https://github.com/hashicorp/go-tfe/pull/409)
