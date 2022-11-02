@@ -1599,10 +1599,10 @@ func createWorkspaceWithOptions(t *testing.T, client *Client, org *Organization,
 	}
 
 	return w, func() {
-		if err := client.Workspaces.Delete(ctx, org.Name, w.Name); err != nil {
+		if err := client.Workspaces.DeleteByID(ctx, w.ID); err != nil {
 			t.Errorf("Error destroying workspace! WARNING: Dangling resources\n"+
 				"may exist! The full error is shown below.\n\n"+
-				"Workspace: %s\nError: %s", w.Name, err)
+				"Workspace: %s\nError: %s", w.ID, err)
 		}
 
 		if orgCleanup != nil {

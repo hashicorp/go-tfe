@@ -34,6 +34,7 @@ const (
 	_headerRateLimit   = "X-RateLimit-Limit"
 	_headerRateReset   = "X-RateLimit-Reset"
 	_headerAPIVersion  = "TFP-API-Version"
+	_headerTFEVersion  = "X-TFE-Version"
 	_includeQueryParam = "include"
 
 	DefaultAddress      = "https://app.terraform.io"
@@ -115,6 +116,7 @@ type Client struct {
 	retryLogHook      RetryLogHook
 	retryServerErrors bool
 	remoteAPIVersion  string
+	remoteTFEVersion  string
 
 	Admin                      Admin
 	Agents                     Agents
@@ -341,6 +343,9 @@ func NewClient(cfg *Config) (*Client, error) {
 	// method later.
 	client.remoteAPIVersion = meta.APIVersion
 
+	// Save the TFE version
+	client.remoteTFEVersion = meta.TFEVersion
+
 	// Create Admin
 	client.Admin = Admin{
 		Organizations:     &adminOrganizations{client: client},
@@ -436,6 +441,17 @@ func (c *Client) SetFakeRemoteAPIVersion(fakeAPIVersion string) {
 	c.remoteAPIVersion = fakeAPIVersion
 }
 
+// RemoteTFEVersion returns the server's declared TFE version string.
+//
+// A Terraform Enterprise API server includes its current version in an
+// HTTP header field in all responses. This value is saved by the client
+// during the initial setup request and RemoteTFEVersion returns that cached
+// value. This function returns an empty string for any Terraform Enterprise version
+// earlier than v202208-3 and for Terraform Cloud.
+func (c *Client) RemoteTFEVersion() string {
+	return c.remoteTFEVersion
+}
+
 // RetryServerErrors configures the retry HTTP check to also retry
 // unexpected errors or requests that failed with a server error.
 
@@ -515,6 +531,11 @@ type rawAPIMetadata struct {
 	// field was not included in the response.
 	APIVersion string
 
+	// TFEVersion is the raw TFE version string reported by the server in the
+	// X-TFE-Version response header, or an empty string if that header
+	// field was not included in the response.
+	TFEVersion string
+
 	// RateLimit is the raw API version string reported by the server in the
 	// X-RateLimit-Limit response header, or an empty string if that header
 	// field was not included in the response.
@@ -550,6 +571,7 @@ func (c *Client) getRawAPIMetadata() (rawAPIMetadata, error) {
 
 	meta.APIVersion = resp.Header.Get(_headerAPIVersion)
 	meta.RateLimit = resp.Header.Get(_headerRateLimit)
+	meta.TFEVersion = resp.Header.Get(_headerTFEVersion)
 
 	return meta, nil
 }

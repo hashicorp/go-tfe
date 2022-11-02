@@ -263,7 +263,8 @@ func TestConfigurationVersionsArchive(t *testing.T) {
 		// configuration version should not be archived, since it's the latest version
 		err = client.ConfigurationVersions.Archive(ctx, cv.ID)
 		assert.Error(t, err)
-		assert.EqualError(t, err, "transition not allowed")
+		assert.ErrorContains(t, err, "transition not allowed")
+		assert.ErrorContains(t, err, "configuration could not be archived because it is current")
 
 		// create subsequent version, since the latest configuration version cannot be archived
 		newCv, newCvCleanup := createConfigurationVersion(t, client, w)
