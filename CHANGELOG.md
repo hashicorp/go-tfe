@@ -1,5 +1,7 @@
 # Unreleased
 
+* Add `search[wildcard-name]` to `WorkspaceListOptions` by @laurenolivia [#569](https://github.com/hashicorp/go-tfe/pull/569)
+
 ## Enhancements
 
 * Add `NotificationTriggerAssessmentCheckFailed` notification trigger type by @rexredinger [#549](https://github.com/hashicorp/go-tfe/pull/549)

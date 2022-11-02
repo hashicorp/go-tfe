@@ -184,6 +184,40 @@ func TestWorkspacesList(t *testing.T) {
 
 		assert.True(t, foundWTest1)
 	})
+
+	t.Run("when searching a known substring", func(t *testing.T) {
+		wildcardSearch := "*-prod"
+		// should be successful, and return 1 result
+		wTest, wTestCleanup := createWorkspaceWithOptions(t, client, orgTest, WorkspaceCreateOptions{
+			Name: String("hashicorp-prod"),
+		})
+		t.Cleanup(wTestCleanup)
+
+		wl, err := client.Workspaces.List(ctx, orgTest.Name, &WorkspaceListOptions{
+			WildcardName: wildcardSearch,
+		})
+
+		require.NoError(t, err)
+		assert.NotEmpty(t, wTest.ID)
+		assert.Equal(t, 1, wl.TotalCount)
+	})
+
+	t.Run("when wildcard match does not exist", func(t *testing.T) {
+		wildcardSearch := "*-dev"
+		// should be successful, but return no results
+		wTest, wTestCleanup := createWorkspaceWithOptions(t, client, orgTest, WorkspaceCreateOptions{
+			Name: String("hashicorp-staging"),
+		})
+		t.Cleanup(wTestCleanup)
+
+		wl, err := client.Workspaces.List(ctx, orgTest.Name, &WorkspaceListOptions{
+			WildcardName: wildcardSearch,
+		})
+
+		require.NoError(t, err)
+		assert.NotEmpty(t, wTest.ID)
+		assert.Equal(t, 0, wl.TotalCount)
+	})
 }
 
 func TestWorkspacesCreateTableDriven(t *testing.T) {
@@ -816,7 +850,7 @@ func TestWorkspacesUpdate(t *testing.T) {
 		assert.Equal(t, err, ErrUnsupportedOperations)
 	})
 
-	t.Run("when 'agent' execution mode is specified without an an agent pool ID", func(t *testing.T) {
+	t.Run("when 'agent' execution mode is specified without an agent pool ID", func(t *testing.T) {
 		options := WorkspaceUpdateOptions{
 			ExecutionMode: String("agent"),
 		}
