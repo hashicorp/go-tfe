@@ -1,3 +1,9 @@
+# Unreleased
+
+## Enhancements
+
+* Add OPA support to the Policy Set API's by @mrinalirao [#575](https://github.com/hashicorp/go-tfe/pull/575)
+
 # v1.12.0
 
 ## Enhancements

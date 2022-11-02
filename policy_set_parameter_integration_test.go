@@ -21,7 +21,7 @@ func TestPolicySetParametersList(t *testing.T) {
 	orgTest, orgTestCleanup := createOrganization(t, client)
 	defer orgTestCleanup()
 
-	psTest, pTestCleanup := createPolicySet(t, client, orgTest, nil, nil)
+	psTest, pTestCleanup := createPolicySet(t, client, orgTest, nil, nil, "")
 	defer pTestCleanup()
 
 	pTest1, pTestCleanup1 := createPolicySetParameter(t, client, psTest)
@@ -71,7 +71,7 @@ func TestPolicySetParametersCreate(t *testing.T) {
 	client := testClient(t)
 	ctx := context.Background()
 
-	psTest, psTestCleanup := createPolicySet(t, client, nil, nil, nil)
+	psTest, psTestCleanup := createPolicySet(t, client, nil, nil, nil, "")
 	defer psTestCleanup()
 
 	t.Run("with valid options", func(t *testing.T) {
@@ -281,7 +281,7 @@ func TestPolicySetParametersDelete(t *testing.T) {
 	client := testClient(t)
 	ctx := context.Background()
 
-	psTest, psTestCleanup := createPolicySet(t, client, nil, nil, nil)
+	psTest, psTestCleanup := createPolicySet(t, client, nil, nil, nil, "")
 	defer psTestCleanup()
 
 	pTest, _ := createPolicySetParameter(t, client, psTest)
