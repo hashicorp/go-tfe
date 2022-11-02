@@ -614,7 +614,7 @@ func createPolicy(t *testing.T, client *Client, org *Organization) (*Policy, fun
 	}
 }
 
-func createPolicyWithOptions(t *testing.T, client *Client, org *Organization, opts *PolicyCreateOptions) (*Policy, func()) {
+func createPolicyWithOptions(t *testing.T, client *Client, org *Organization, opts PolicyCreateOptions) (*Policy, func()) {
 	var orgCleanup func()
 
 	if org == nil {
@@ -677,7 +677,7 @@ func createUploadedPolicy(t *testing.T, client *Client, pass bool, org *Organiza
 	}
 }
 
-func createUploadedPolicyWithOptions(t *testing.T, client *Client, pass bool, org *Organization, opts *PolicyCreateOptions) (*Policy, func()) {
+func createUploadedPolicyWithOptions(t *testing.T, client *Client, pass bool, org *Organization, opts PolicyCreateOptions) (*Policy, func()) {
 	var orgCleanup func()
 
 	if org == nil {

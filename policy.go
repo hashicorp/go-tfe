@@ -289,6 +289,9 @@ func (o PolicyCreateOptions) valid() error {
 	if !validStringID(o.Name) {
 		return ErrInvalidName
 	}
+	if o.Kind == OPA && !validString(o.Query) {
+		return ErrRequiredQuery
+	}
 	if o.Enforce == nil {
 		return ErrRequiredEnforce
 	}
