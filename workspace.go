@@ -50,6 +50,12 @@ type Workspaces interface {
 	// DeleteByID deletes a workspace by its ID.
 	DeleteByID(ctx context.Context, workspaceID string) error
 
+	// SafeDelete a workspace by its name.
+	SafeDelete(ctx context.Context, organization string, workspace string) error
+
+	// SafeDeleteByID deletes a workspace by its ID.
+	SafeDeleteByID(ctx context.Context, workspaceID string) error
+
 	// RemoveVCSConnection from a workspace.
 	RemoveVCSConnection(ctx context.Context, organization, workspace string) (*Workspace, error)
 
@@ -194,17 +200,18 @@ type WorkspaceActions struct {
 
 // WorkspacePermissions represents the workspace permissions.
 type WorkspacePermissions struct {
-	CanDestroy        bool `jsonapi:"attr,can-destroy"`
-	CanForceUnlock    bool `jsonapi:"attr,can-force-unlock"`
-	CanLock           bool `jsonapi:"attr,can-lock"`
-	CanManageRunTasks bool `jsonapi:"attr,can-manage-run-tasks"`
-	CanQueueApply     bool `jsonapi:"attr,can-queue-apply"`
-	CanQueueDestroy   bool `jsonapi:"attr,can-queue-destroy"`
-	CanQueueRun       bool `jsonapi:"attr,can-queue-run"`
-	CanReadSettings   bool `jsonapi:"attr,can-read-settings"`
-	CanUnlock         bool `jsonapi:"attr,can-unlock"`
-	CanUpdate         bool `jsonapi:"attr,can-update"`
-	CanUpdateVariable bool `jsonapi:"attr,can-update-variable"`
+	CanDestroy        bool  `jsonapi:"attr,can-destroy"`
+	CanForceUnlock    bool  `jsonapi:"attr,can-force-unlock"`
+	CanLock           bool  `jsonapi:"attr,can-lock"`
+	CanManageRunTasks bool  `jsonapi:"attr,can-manage-run-tasks"`
+	CanQueueApply     bool  `jsonapi:"attr,can-queue-apply"`
+	CanQueueDestroy   bool  `jsonapi:"attr,can-queue-destroy"`
+	CanQueueRun       bool  `jsonapi:"attr,can-queue-run"`
+	CanReadSettings   bool  `jsonapi:"attr,can-read-settings"`
+	CanUnlock         bool  `jsonapi:"attr,can-unlock"`
+	CanUpdate         bool  `jsonapi:"attr,can-update"`
+	CanUpdateVariable bool  `jsonapi:"attr,can-update-variable"`
+	CanForceDelete    *bool `jsonapi:"attr,can-force-delete"` // pointer b/c it will be useful to check if this property exists, as opposed to having it default to false
 }
 
 // WSIncludeOpt represents the available options for include query params.
@@ -244,6 +251,9 @@ type WorkspaceListOptions struct {
 
 	// Optional: A search string (comma-separated tag names to exclude) used to filter the results.
 	ExcludeTags string `url:"search[exclude-tags],omitempty"`
+
+	// Optional: A search on substring matching to filter the results.
+	WildcardName string `url:"search[wildcard-name],omitempty"`
 
 	// Optional: A list of relations to include. See available resources https://www.terraform.io/docs/cloud/api/workspaces.html#available-related-resources
 	Include []WSIncludeOpt `url:"include,omitempty"`
@@ -763,6 +773,43 @@ func (s *workspaces) DeleteByID(ctx context.Context, workspaceID string) error {
 
 	u := fmt.Sprintf("workspaces/%s", url.QueryEscape(workspaceID))
 	req, err := s.client.NewRequest("DELETE", u, nil)
+	if err != nil {
+		return err
+	}
+
+	return req.Do(ctx, nil)
+}
+
+// SafeDelete a workspace by its name.
+func (s *workspaces) SafeDelete(ctx context.Context, organization, workspace string) error {
+	if !validStringID(&organization) {
+		return ErrInvalidOrg
+	}
+	if !validStringID(&workspace) {
+		return ErrInvalidWorkspaceValue
+	}
+
+	u := fmt.Sprintf(
+		"organizations/%s/workspaces/%s/actions/safe-delete",
+		url.QueryEscape(organization),
+		url.QueryEscape(workspace),
+	)
+	req, err := s.client.NewRequest("POST", u, nil)
+	if err != nil {
+		return err
+	}
+
+	return req.Do(ctx, nil)
+}
+
+// SafeDeleteByID safely deletes a workspace by its ID.
+func (s *workspaces) SafeDeleteByID(ctx context.Context, workspaceID string) error {
+	if !validStringID(&workspaceID) {
+		return ErrInvalidWorkspaceID
+	}
+
+	u := fmt.Sprintf("workspaces/%s/actions/safe-delete", url.QueryEscape(workspaceID))
+	req, err := s.client.NewRequest("POST", u, nil)
 	if err != nil {
 		return err
 	}

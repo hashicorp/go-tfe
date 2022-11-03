@@ -330,6 +330,34 @@ func (mr *MockWorkspacesMockRecorder) RemoveVCSConnectionByID(ctx, workspaceID i
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "RemoveVCSConnectionByID", reflect.TypeOf((*MockWorkspaces)(nil).RemoveVCSConnectionByID), ctx, workspaceID)
 }
 
+// SafeDelete mocks base method.
+func (m *MockWorkspaces) SafeDelete(ctx context.Context, organization, workspace string) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "SafeDelete", ctx, organization, workspace)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// SafeDelete indicates an expected call of SafeDelete.
+func (mr *MockWorkspacesMockRecorder) SafeDelete(ctx, organization, workspace interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "SafeDelete", reflect.TypeOf((*MockWorkspaces)(nil).SafeDelete), ctx, organization, workspace)
+}
+
+// SafeDeleteByID mocks base method.
+func (m *MockWorkspaces) SafeDeleteByID(ctx context.Context, workspaceID string) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "SafeDeleteByID", ctx, workspaceID)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// SafeDeleteByID indicates an expected call of SafeDeleteByID.
+func (mr *MockWorkspacesMockRecorder) SafeDeleteByID(ctx, workspaceID interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "SafeDeleteByID", reflect.TypeOf((*MockWorkspaces)(nil).SafeDeleteByID), ctx, workspaceID)
+}
+
 // UnassignSSHKey mocks base method.
 func (m *MockWorkspaces) UnassignSSHKey(ctx context.Context, workspaceID string) (*tfe.Workspace, error) {
 	m.ctrl.T.Helper()

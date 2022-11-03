@@ -463,7 +463,7 @@ func (r *registryModules) DeleteVersion(ctx context.Context, moduleID RegistryMo
 	if !validString(&version) {
 		return ErrRequiredVersion
 	}
-	if !validStringID(&version) {
+	if !validVersion(version) {
 		return ErrInvalidVersion
 	}
 
@@ -555,7 +555,7 @@ func (o RegistryModuleCreateVersionOptions) valid() error {
 	if !validString(o.Version) {
 		return ErrRequiredVersion
 	}
-	if !validStringID(o.Version) {
+	if !validVersion(*o.Version) {
 		return ErrInvalidVersion
 	}
 	return nil

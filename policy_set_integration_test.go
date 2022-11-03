@@ -29,9 +29,9 @@ func TestPolicySetsList(t *testing.T) {
 	workspace, workspaceCleanup := createWorkspace(t, client, orgTest)
 	defer workspaceCleanup()
 
-	psTest1, psTestCleanup1 := createPolicySet(t, client, orgTest, nil, []*Workspace{workspace})
+	psTest1, psTestCleanup1 := createPolicySet(t, client, orgTest, nil, []*Workspace{workspace}, "")
 	defer psTestCleanup1()
-	psTest2, psTestCleanup2 := createPolicySet(t, client, orgTest, nil, []*Workspace{workspace})
+	psTest2, psTestCleanup2 := createPolicySet(t, client, orgTest, nil, []*Workspace{workspace}, "")
 	defer psTestCleanup2()
 
 	t.Run("without list options", func(t *testing.T) {
@@ -271,7 +271,7 @@ func TestPolicySetsRead(t *testing.T) {
 
 	upgradeOrganizationSubscription(t, client, orgTest)
 
-	psTest, psTestCleanup := createPolicySet(t, client, orgTest, nil, nil)
+	psTest, psTestCleanup := createPolicySet(t, client, orgTest, nil, nil, "")
 	defer psTestCleanup()
 
 	t.Run("with a valid ID", func(t *testing.T) {
@@ -340,7 +340,7 @@ func TestPolicySetsUpdate(t *testing.T) {
 
 	upgradeOrganizationSubscription(t, client, orgTest)
 
-	psTest, psTestCleanup := createPolicySet(t, client, orgTest, nil, nil)
+	psTest, psTestCleanup := createPolicySet(t, client, orgTest, nil, nil, "")
 	defer psTestCleanup()
 
 	t.Run("with valid attributes", func(t *testing.T) {
@@ -391,7 +391,7 @@ func TestPolicySetsAddPolicies(t *testing.T) {
 	defer pTestCleanup1()
 	pTest2, pTestCleanup2 := createPolicy(t, client, orgTest)
 	defer pTestCleanup2()
-	psTest, psTestCleanup := createPolicySet(t, client, orgTest, nil, nil)
+	psTest, psTestCleanup := createPolicySet(t, client, orgTest, nil, nil, "")
 	defer psTestCleanup()
 
 	t.Run("with policies provided", func(t *testing.T) {
@@ -449,7 +449,7 @@ func TestPolicySetsRemovePolicies(t *testing.T) {
 	defer pTestCleanup1()
 	pTest2, pTestCleanup2 := createPolicy(t, client, orgTest)
 	defer pTestCleanup2()
-	psTest, psTestCleanup := createPolicySet(t, client, orgTest, []*Policy{pTest1, pTest2}, nil)
+	psTest, psTestCleanup := createPolicySet(t, client, orgTest, []*Policy{pTest1, pTest2}, nil, "")
 	defer psTestCleanup()
 
 	t.Run("with policies provided", func(t *testing.T) {
@@ -501,7 +501,7 @@ func TestPolicySetsAddWorkspaces(t *testing.T) {
 	defer wTestCleanup1()
 	wTest2, wTestCleanup2 := createWorkspace(t, client, orgTest)
 	defer wTestCleanup2()
-	psTest, psTestCleanup := createPolicySet(t, client, orgTest, nil, nil)
+	psTest, psTestCleanup := createPolicySet(t, client, orgTest, nil, nil, "")
 	defer psTestCleanup()
 
 	t.Run("with workspaces provided", func(t *testing.T) {
@@ -573,7 +573,7 @@ func TestPolicySetsRemoveWorkspaces(t *testing.T) {
 	defer wTestCleanup1()
 	wTest2, wTestCleanup2 := createWorkspace(t, client, orgTest)
 	defer wTestCleanup2()
-	psTest, psTestCleanup := createPolicySet(t, client, orgTest, nil, []*Workspace{wTest1, wTest2})
+	psTest, psTestCleanup := createPolicySet(t, client, orgTest, nil, []*Workspace{wTest1, wTest2}, "")
 	defer psTestCleanup()
 
 	t.Run("with workspaces provided", func(t *testing.T) {
@@ -635,7 +635,7 @@ func TestPolicySetsDelete(t *testing.T) {
 
 	upgradeOrganizationSubscription(t, client, orgTest)
 
-	psTest, _ := createPolicySet(t, client, orgTest, nil, nil)
+	psTest, _ := createPolicySet(t, client, orgTest, nil, nil, "")
 
 	t.Run("with valid options", func(t *testing.T) {
 		err := client.PolicySets.Delete(ctx, psTest.ID)

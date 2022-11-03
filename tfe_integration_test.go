@@ -27,6 +27,7 @@ func TestClient_newClient(t *testing.T) {
 		w.Header().Set("Content-Type", "application/vnd.api+json")
 		w.Header().Set("X-RateLimit-Limit", "30")
 		w.Header().Set("TFP-API-Version", "34.21.9")
+		w.Header().Set("X-TFE-Version", "202205-1")
 		w.WriteHeader(204) // We query the configured ping URL which should return a 204.
 	}))
 	defer ts.Close()
@@ -82,6 +83,9 @@ func TestClient_newClient(t *testing.T) {
 		}
 		if want := "34.21.9"; client.RemoteAPIVersion() != want {
 			t.Errorf("unexpected remote API version %q; want %q", client.RemoteAPIVersion(), want)
+		}
+		if want := "202205-1"; client.RemoteTFEVersion() != want {
+			t.Errorf("unexpected remote TFE version %q; want %q", client.RemoteTFEVersion(), want)
 		}
 
 		client.SetFakeRemoteAPIVersion("1.0")
