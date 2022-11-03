@@ -169,7 +169,7 @@ type RegistryModuleCreateOptions struct {
 	RegistryName RegistryName `jsonapi:"attr,registry-name,omitempty"`
 	// Optional: The namespace of this module. Required for public modules only.
 	Namespace string `jsonapi:"attr,namespace,omitempty"`
-	// Optional: true if the module is enabled for no-code provisioning.
+	// Optional: If set to true the module is enabled for no-code provisioning.
 	// **Note: This field is still in BETA and subject to change.**
 	NoCode bool `jsonapi:"attr,no-code,omitempty"`
 }
