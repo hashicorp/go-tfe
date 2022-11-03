@@ -106,6 +106,7 @@ func TestRegistryModulesCreate(t *testing.T) {
 			assert.Equal(t, *options.Provider, rm.Provider)
 			assert.Equal(t, PrivateRegistry, rm.RegistryName)
 			assert.Equal(t, orgTest.Name, rm.Namespace)
+			assert.False(t, rm.NoCode, "no-code module attribute should be false by default")
 
 			assertRegistryModuleAttributes(t, rm)
 		})
@@ -123,6 +124,7 @@ func TestRegistryModulesCreate(t *testing.T) {
 			assert.Equal(t, *options.Provider, rm.Provider)
 			assert.Equal(t, options.RegistryName, rm.RegistryName)
 			assert.Equal(t, orgTest.Name, rm.Namespace)
+			assert.False(t, rm.NoCode, "no-code module attribute should be false by default")
 
 			assertRegistryModuleAttributes(t, rm)
 		})
@@ -141,6 +143,7 @@ func TestRegistryModulesCreate(t *testing.T) {
 			assert.Equal(t, *options.Provider, rm.Provider)
 			assert.Equal(t, options.RegistryName, rm.RegistryName)
 			assert.Equal(t, options.Namespace, rm.Namespace)
+			assert.False(t, rm.NoCode, "no-code module attribute should be false by default")
 
 			assertRegistryModuleAttributes(t, rm)
 		})
