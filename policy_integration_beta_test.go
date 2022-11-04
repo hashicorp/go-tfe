@@ -9,7 +9,6 @@ import (
 )
 
 func TestPoliciesCreate_Beta(t *testing.T) {
-	skipIfNotCINode(t)
 	skipIfFreeOnly(t)
 	skipIfBeta(t)
 
@@ -221,7 +220,6 @@ func TestPoliciesCreate_Beta(t *testing.T) {
 }
 
 func TestPoliciesList_Beta(t *testing.T) {
-	skipIfNotCINode(t)
 	skipIfFreeOnly(t)
 	skipIfBeta(t)
 
@@ -311,7 +309,6 @@ func TestPoliciesList_Beta(t *testing.T) {
 }
 
 func TestPoliciesUpdate_Beta(t *testing.T) {
-	skipIfNotCINode(t)
 	skipIfFreeOnly(t)
 	skipIfBeta(t)
 

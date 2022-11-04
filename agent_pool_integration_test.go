@@ -12,8 +12,6 @@ import (
 )
 
 func TestAgentPoolsList(t *testing.T) {
-	skipIfNotCINode(t)
-
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -90,8 +88,6 @@ func TestAgentPoolsList(t *testing.T) {
 }
 
 func TestAgentPoolsCreate(t *testing.T) {
-	skipIfNotCINode(t)
-
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -136,8 +132,6 @@ func TestAgentPoolsCreate(t *testing.T) {
 }
 
 func TestAgentPoolsRead(t *testing.T) {
-	skipIfNotCINode(t)
-
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -184,8 +178,6 @@ func TestAgentPoolsRead(t *testing.T) {
 }
 
 func TestAgentPoolsUpdate(t *testing.T) {
-	skipIfNotCINode(t)
-
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -263,8 +255,6 @@ func TestAgentPoolsUpdate(t *testing.T) {
 }
 
 func TestAgentPoolsDelete(t *testing.T) {
-	skipIfNotCINode(t)
-
 	client := testClient(t)
 	ctx := context.Background()
 

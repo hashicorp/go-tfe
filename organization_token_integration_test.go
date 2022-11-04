@@ -12,8 +12,6 @@ import (
 )
 
 func TestOrganizationTokensCreate(t *testing.T) {
-	skipIfNotCINode(t)
-
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -43,8 +41,6 @@ func TestOrganizationTokensCreate(t *testing.T) {
 }
 
 func TestOrganizationTokensRead(t *testing.T) {
-	skipIfNotCINode(t)
-
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -75,8 +71,6 @@ func TestOrganizationTokensRead(t *testing.T) {
 }
 
 func TestOrganizationTokensDelete(t *testing.T) {
-	skipIfNotCINode(t)
-
 	client := testClient(t)
 	ctx := context.Background()
 

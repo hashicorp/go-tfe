@@ -25,8 +25,6 @@ func containsStateVersion(versions []*StateVersion, item *StateVersion) bool {
 }
 
 func TestStateVersionsList(t *testing.T) {
-	skipIfNotCINode(t)
-
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -106,8 +104,6 @@ func TestStateVersionsList(t *testing.T) {
 }
 
 func TestStateVersionsCreate(t *testing.T) {
-	skipIfNotCINode(t)
-
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -315,8 +311,6 @@ func TestStateVersionsCreate(t *testing.T) {
 }
 
 func TestStateVersionsRead(t *testing.T) {
-	skipIfNotCINode(t)
-
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -367,8 +361,6 @@ func TestStateVersionsRead(t *testing.T) {
 }
 
 func TestStateVersionsReadWithOptions(t *testing.T) {
-	skipIfNotCINode(t)
-
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -391,8 +383,6 @@ func TestStateVersionsReadWithOptions(t *testing.T) {
 }
 
 func TestStateVersionsCurrent(t *testing.T) {
-	skipIfNotCINode(t)
-
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -438,8 +428,6 @@ func TestStateVersionsCurrent(t *testing.T) {
 }
 
 func TestStateVersionsCurrentWithOptions(t *testing.T) {
-	skipIfNotCINode(t)
-
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -465,8 +453,6 @@ func TestStateVersionsCurrentWithOptions(t *testing.T) {
 }
 
 func TestStateVersionsDownload(t *testing.T) {
-	skipIfNotCINode(t)
-
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -490,8 +476,6 @@ func TestStateVersionsDownload(t *testing.T) {
 }
 
 func TestStateVersionOutputs(t *testing.T) {
-	skipIfNotCINode(t)
-
 	client := testClient(t)
 	ctx := context.Background()
 

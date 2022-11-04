@@ -17,7 +17,6 @@ import (
 )
 
 func TestAdminRuns_List(t *testing.T) {
-	skipIfNotCINode(t)
 	skipIfCloud(t)
 
 	client := testClient(t)
@@ -150,7 +149,6 @@ func TestAdminRuns_List(t *testing.T) {
 }
 
 func TestAdminRuns_ForceCancel(t *testing.T) {
-	skipIfNotCINode(t)
 	skipIfCloud(t)
 
 	client := testClient(t)
@@ -230,7 +228,6 @@ func TestAdminRuns_ForceCancel(t *testing.T) {
 }
 
 func TestAdminRuns_AdminRunsListOptions_valid(t *testing.T) {
-	skipIfNotCINode(t)
 	skipIfCloud(t)
 
 	t.Run("has valid status", func(t *testing.T) {
@@ -272,8 +269,6 @@ func TestAdminRuns_AdminRunsListOptions_valid(t *testing.T) {
 }
 
 func TestAdminRun_ForceCancel_Marshal(t *testing.T) {
-	skipIfNotCINode(t)
-
 	opts := AdminRunForceCancelOptions{
 		Comment: String("cancel comment"),
 	}
@@ -290,8 +285,6 @@ func TestAdminRun_ForceCancel_Marshal(t *testing.T) {
 }
 
 func TestAdminRun_Unmarshal(t *testing.T) {
-	skipIfNotCINode(t)
-
 	data := map[string]interface{}{
 		"data": map[string]interface{}{
 			"type": "runs",

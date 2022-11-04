@@ -12,8 +12,6 @@ import (
 )
 
 func TestSSHKeysList(t *testing.T) {
-	skipIfNotCINode(t)
-
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -61,8 +59,6 @@ func TestSSHKeysList(t *testing.T) {
 }
 
 func TestSSHKeysCreate(t *testing.T) {
-	skipIfNotCINode(t)
-
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -117,8 +113,6 @@ func TestSSHKeysCreate(t *testing.T) {
 }
 
 func TestSSHKeysRead(t *testing.T) {
-	skipIfNotCINode(t)
-
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -148,8 +142,6 @@ func TestSSHKeysRead(t *testing.T) {
 }
 
 func TestSSHKeysUpdate(t *testing.T) {
-	skipIfNotCINode(t)
-
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -190,8 +182,6 @@ func TestSSHKeysUpdate(t *testing.T) {
 }
 
 func TestSSHKeysDelete(t *testing.T) {
-	skipIfNotCINode(t)
-
 	client := testClient(t)
 	ctx := context.Background()
 

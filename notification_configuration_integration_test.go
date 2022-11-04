@@ -12,8 +12,6 @@ import (
 )
 
 func TestNotificationConfigurationList(t *testing.T) {
-	skipIfNotCINode(t)
-
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -73,8 +71,6 @@ func TestNotificationConfigurationList(t *testing.T) {
 }
 
 func TestNotificationConfigurationCreate(t *testing.T) {
-	skipIfNotCINode(t)
-
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -204,8 +200,6 @@ func TestNotificationConfigurationCreate(t *testing.T) {
 }
 
 func TestNotificationConfigurationRead(t *testing.T) {
-	skipIfNotCINode(t)
-
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -230,8 +224,6 @@ func TestNotificationConfigurationRead(t *testing.T) {
 }
 
 func TestNotificationConfigurationUpdate(t *testing.T) {
-	skipIfNotCINode(t)
-
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -329,8 +321,6 @@ func TestNotificationConfigurationUpdate(t *testing.T) {
 }
 
 func TestNotificationConfigurationDelete(t *testing.T) {
-	skipIfNotCINode(t)
-
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -359,8 +349,6 @@ func TestNotificationConfigurationDelete(t *testing.T) {
 }
 
 func TestNotificationConfigurationVerify(t *testing.T) {
-	skipIfNotCINode(t)
-
 	client := testClient(t)
 	ctx := context.Background()
 

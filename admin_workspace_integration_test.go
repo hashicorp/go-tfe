@@ -15,7 +15,6 @@ import (
 )
 
 func TestAdminWorkspaces_List(t *testing.T) {
-	skipIfNotCINode(t)
 	skipIfCloud(t)
 
 	client := testClient(t)
@@ -122,7 +121,6 @@ func TestAdminWorkspaces_List(t *testing.T) {
 }
 
 func TestAdminWorkspaces_Read(t *testing.T) {
-	skipIfNotCINode(t)
 	skipIfCloud(t)
 
 	client := testClient(t)
@@ -160,7 +158,6 @@ func TestAdminWorkspaces_Read(t *testing.T) {
 }
 
 func TestAdminWorkspaces_Delete(t *testing.T) {
-	skipIfNotCINode(t)
 	skipIfCloud(t)
 
 	client := testClient(t)
@@ -213,8 +210,6 @@ func adminWorkspaceItemsContainsID(items []*AdminWorkspace, id string) bool {
 }
 
 func TestAdminWorkspace_Unmarshal(t *testing.T) {
-	skipIfNotCINode(t)
-
 	data := map[string]interface{}{
 		"data": map[string]interface{}{
 			"type": "workspaces",

@@ -13,8 +13,6 @@ import (
 )
 
 func TestOAuthTokensList(t *testing.T) {
-	skipIfNotCINode(t)
-
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -78,8 +76,6 @@ func TestOAuthTokensList(t *testing.T) {
 }
 
 func TestOAuthTokensRead(t *testing.T) {
-	skipIfNotCINode(t)
-
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -107,8 +103,6 @@ func TestOAuthTokensRead(t *testing.T) {
 }
 
 func TestOAuthTokensUpdate(t *testing.T) {
-	skipIfNotCINode(t)
-
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -167,8 +161,6 @@ dpIe8YOINN27XaojJvVpT5uBVCcZLF+G7kaMjSwCTlDx3Q==
 }
 
 func TestOAuthTokensDelete(t *testing.T) {
-	skipIfNotCINode(t)
-
 	client := testClient(t)
 	ctx := context.Background()
 
