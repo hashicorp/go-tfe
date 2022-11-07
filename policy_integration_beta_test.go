@@ -235,12 +235,12 @@ func TestPoliciesList_Beta(t *testing.T) {
 	defer pTestCleanup1()
 	pTest2, pTestCleanup2 := createPolicy(t, client, orgTest)
 	defer pTestCleanup2()
+
 	opaOptions := PolicyCreateOptions{
 		Kind:  OPA,
 		Query: String("terraform.policy1.deny"),
 		Enforce: []*EnforcementOptions{
 			{
-				Path: String(".rego"),
 				Mode: EnforcementMode(EnforcementMandatory),
 			},
 		},
@@ -325,10 +325,9 @@ func TestPoliciesUpdate_Beta(t *testing.T) {
 		options := PolicyCreateOptions{
 			Description: String("A sample policy"),
 			Kind:        OPA,
-			Query:       String("terraform.main"),
+			Query:       String("data.example.rule"),
 			Enforce: []*EnforcementOptions{
 				{
-					Path: String(".rego"),
 					Mode: EnforcementMode(EnforcementMandatory),
 				},
 			},

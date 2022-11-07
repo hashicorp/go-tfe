@@ -29,6 +29,7 @@ const (
 	TaskPending     TaskResultStatus = "pending"
 	TaskRunning     TaskResultStatus = "running"
 	TaskUnreachable TaskResultStatus = "unreachable"
+	TaskErrored     TaskResultStatus = "errored"
 )
 
 // TaskEnforcementLevel is an enum that describes the enforcement levels for a run task

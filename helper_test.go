@@ -532,12 +532,49 @@ func createPolicySet(t *testing.T, client *Client, org *Organization, policies [
 		org, orgCleanup = createOrganization(t, client)
 	}
 
+	var overridable bool
+	if kind == OPA {
+		overridable = true
+	}
 	ctx := context.Background()
 	ps, err := client.PolicySets.Create(ctx, org.Name, PolicySetCreateOptions{
-		Name:       String(randomString(t)),
-		Policies:   policies,
-		Workspaces: workspaces,
-		Kind:       kind,
+		Name:        String(randomString(t)),
+		Policies:    policies,
+		Workspaces:  workspaces,
+		Kind:        kind,
+		Overridable: Bool(overridable),
+	})
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	return ps, func() {
+		if err := client.PolicySets.Delete(ctx, ps.ID); err != nil {
+			t.Errorf("Error destroying policy set! WARNING: Dangling resources\n"+
+				"may exist! The full error is shown below.\n\n"+
+				"PolicySet: %s\nError: %s", ps.ID, err)
+		}
+
+		if orgCleanup != nil {
+			orgCleanup()
+		}
+	}
+}
+
+func createPolicySetWithOptions(t *testing.T, client *Client, org *Organization, policies []*Policy, workspaces []*Workspace, opts PolicySetCreateOptions) (*PolicySet, func()) {
+	var orgCleanup func()
+
+	if org == nil {
+		org, orgCleanup = createOrganization(t, client)
+	}
+
+	ctx := context.Background()
+	ps, err := client.PolicySets.Create(ctx, org.Name, PolicySetCreateOptions{
+		Name:        String(randomString(t)),
+		Policies:    policies,
+		Workspaces:  workspaces,
+		Kind:        opts.Kind,
+		Overridable: opts.Overridable,
 	})
 	if err != nil {
 		t.Fatal(err)
@@ -622,11 +659,19 @@ func createPolicyWithOptions(t *testing.T, client *Client, org *Organization, op
 	}
 
 	name := randomString(t)
+	path := name + ".sentinel"
+	if opts.Kind == OPA {
+		path = name + ".rego"
+	}
 	options := PolicyCreateOptions{
-		Name:    String(name),
-		Kind:    opts.Kind,
-		Query:   opts.Query,
-		Enforce: opts.Enforce,
+		Name:  String(name),
+		Kind:  opts.Kind,
+		Query: opts.Query,
+		Enforce: []*EnforcementOptions{
+			{
+				Path: String(path),
+				Mode: opts.Enforce[0].Mode},
+		},
 	}
 
 	ctx := context.Background()
@@ -687,7 +732,11 @@ func createUploadedPolicyWithOptions(t *testing.T, client *Client, pass bool, or
 	p, pCleanup := createPolicyWithOptions(t, client, org, opts)
 
 	ctx := context.Background()
-	err := client.Policies.Upload(ctx, p.ID, []byte(fmt.Sprintf("main = rule { %t }", pass)))
+	rego := `package example rule["not allowed"] { false }`
+	if !pass {
+		rego = `package example rule["not allowed"] { true }`
+	}
+	err := client.Policies.Upload(ctx, p.ID, []byte(rego))
 	if err != nil {
 		t.Fatal(err)
 	}
