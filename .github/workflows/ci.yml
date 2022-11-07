@@ -74,7 +74,6 @@ jobs:
         with:
           index: ${{ matrix.index }}
           total: ${{ matrix.parallel }}
-          flags: -tags=integration
 
       - name: Fetch outputs
         env:
@@ -91,7 +90,7 @@ jobs:
           GO111MODULE: "on"
         run: |
           source $HOME/.env
-          gotestsum --format short-verbose -- -timeout=29m -tags=integration -run "${{ steps.test_split.outputs.run }}"
+          gotestsum --format short-verbose -- -timeout=29m -run "${{ steps.test_split.outputs.run }}"
 
 
 
