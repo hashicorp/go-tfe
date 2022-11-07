@@ -12,7 +12,6 @@ import (
 )
 
 func TestAdminSettings_SMTP_Read(t *testing.T) {
-	skipIfNotCINode(t)
 	skipIfCloud(t)
 
 	client := testClient(t)
@@ -31,7 +30,6 @@ func TestAdminSettings_SMTP_Read(t *testing.T) {
 }
 
 func TestAdminSettings_SMTP_Update(t *testing.T) {
-	skipIfNotCINode(t)
 	skipIfCloud(t)
 
 	client := testClient(t)

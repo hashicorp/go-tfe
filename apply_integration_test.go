@@ -16,8 +16,6 @@ import (
 )
 
 func TestAppliesRead(t *testing.T) {
-	skipIfNotCINode(t)
-
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -49,8 +47,6 @@ func TestAppliesRead(t *testing.T) {
 }
 
 func TestAppliesLogs(t *testing.T) {
-	skipIfNotCINode(t)
-
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -78,8 +74,6 @@ func TestAppliesLogs(t *testing.T) {
 }
 
 func TestApplies_Unmarshal(t *testing.T) {
-	skipIfNotCINode(t)
-
 	data := map[string]interface{}{
 		"data": map[string]interface{}{
 			"type": "applies",

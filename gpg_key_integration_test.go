@@ -12,8 +12,6 @@ import (
 )
 
 func TestGPGKeyCreate(t *testing.T) {
-	skipIfNotCINode(t)
-
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -73,8 +71,6 @@ func TestGPGKeyCreate(t *testing.T) {
 }
 
 func TestGPGKeyRead(t *testing.T) {
-	skipIfNotCINode(t)
-
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -114,8 +110,6 @@ func TestGPGKeyRead(t *testing.T) {
 }
 
 func TestGPGKeyUpdate(t *testing.T) {
-	skipIfNotCINode(t)
-
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -179,8 +173,6 @@ func TestGPGKeyUpdate(t *testing.T) {
 }
 
 func TestGPGKeyDelete(t *testing.T) {
-	skipIfNotCINode(t)
-
 	client := testClient(t)
 	ctx := context.Background()
 

@@ -25,10 +25,6 @@ There are instances where several new resources being added (i.e Workspace Run T
 
 The test suite contains many acceptance tests that are run against the latest version of Terraform Enterprise. You can read more about running the tests against your own Terraform Enterprise environment in [TESTS.md](TESTS.md). Our CI system (Github Actions) will not test your fork until a one-time approval takes place.
 
-## Test Splitting
-
-Our CI workflow makes use of multiple nodes to run our tests in a more efficient manner. To prevent your test from running across all nodes, you **must** add `skipIfNotCINode(t)` to your top level test before any other helper or test logic.
-
 ## Editor Settings
 
 We've included VSCode settings to assist with configuring the go extension. For other editors that integrate with the [Go Language Server](https://github.com/golang/tools/tree/master/gopls), the main thing to do is to add the `integration` build tags so that the test files are found by the language server. See `.vscode/settings.json` for more details.
@@ -63,7 +59,6 @@ When adding test cases, you can temporarily use the skipIfBeta() test helper to 
 
 ```
 t.Run("with nested changes trigger", func (t *testing.T) {
-  skipIfNotCINode(t)
   skipIfBeta(t)
   options := WorkspaceCreateOptions {
      // rest of required fields here

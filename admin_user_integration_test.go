@@ -12,7 +12,6 @@ import (
 )
 
 func TestAdminUsers_List(t *testing.T) {
-	skipIfNotCINode(t)
 	skipIfCloud(t)
 
 	client := testClient(t)
@@ -103,7 +102,6 @@ func TestAdminUsers_List(t *testing.T) {
 }
 
 func TestAdminUsers_Delete(t *testing.T) {
-	skipIfNotCINode(t)
 	skipIfCloud(t)
 
 	client := testClient(t)
@@ -145,7 +143,6 @@ func TestAdminUsers_Delete(t *testing.T) {
 }
 
 func TestAdminUsers_Disable2FA(t *testing.T) {
-	skipIfNotCINode(t)
 	skipIfCloud(t)
 
 	client := testClient(t)
