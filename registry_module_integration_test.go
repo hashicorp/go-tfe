@@ -1,6 +1,3 @@
-//go:build integration
-// +build integration
-
 package tfe
 
 import (
@@ -19,8 +16,6 @@ import (
 )
 
 func TestRegistryModulesList(t *testing.T) {
-	skipIfNotCINode(t)
-
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -66,8 +61,6 @@ func TestRegistryModulesList(t *testing.T) {
 }
 
 func TestRegistryModulesCreate(t *testing.T) {
-	skipIfNotCINode(t)
-
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -305,8 +298,6 @@ func TestRegistryModuleUpdate(t *testing.T) {
 }
 
 func TestRegistryModulesCreateVersion(t *testing.T) {
-	skipIfNotCINode(t)
-
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -454,8 +445,6 @@ func TestRegistryModulesCreateVersion(t *testing.T) {
 }
 
 func TestRegistryModulesCreateWithVCSConnection(t *testing.T) {
-	skipIfNotCINode(t)
-
 	githubIdentifier := os.Getenv("GITHUB_REGISTRY_MODULE_IDENTIFIER")
 	if githubIdentifier == "" {
 		t.Skip("Export a valid GITHUB_REGISTRY_MODULE_IDENTIFIER before running this test")
@@ -562,8 +551,6 @@ func TestRegistryModulesCreateWithVCSConnection(t *testing.T) {
 }
 
 func TestRegistryModulesRead(t *testing.T) {
-	skipIfNotCINode(t)
-
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -732,8 +719,6 @@ func TestRegistryModulesRead(t *testing.T) {
 }
 
 func TestRegistryModulesDelete(t *testing.T) {
-	skipIfNotCINode(t)
-
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -778,8 +763,6 @@ func TestRegistryModulesDelete(t *testing.T) {
 }
 
 func TestRegistryModulesDeleteProvider(t *testing.T) {
-	skipIfNotCINode(t)
-
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -862,8 +845,6 @@ func TestRegistryModulesDeleteProvider(t *testing.T) {
 }
 
 func TestRegistryModulesDeleteVersion(t *testing.T) {
-	skipIfNotCINode(t)
-
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -1027,8 +1008,6 @@ func TestRegistryModulesDeleteVersion(t *testing.T) {
 }
 
 func TestRegistryModulesUpload(t *testing.T) {
-	skipIfNotCINode(t)
-
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -1071,8 +1050,6 @@ func TestRegistryModulesUpload(t *testing.T) {
 }
 
 func TestRegistryModule_Unmarshal(t *testing.T) {
-	skipIfNotCINode(t)
-
 	data := map[string]interface{}{
 		"data": map[string]interface{}{
 			"type": "registry-modules",
@@ -1140,8 +1117,6 @@ func TestRegistryModule_Unmarshal(t *testing.T) {
 }
 
 func TestRegistryCreateWithVCSOptions_Marshal(t *testing.T) {
-	skipIfNotCINode(t)
-
 	// https://www.terraform.io/docs/cloud/api/modules.html#sample-payload
 	opts := RegistryModuleCreateWithVCSConnectionOptions{
 		VCSRepo: &RegistryModuleVCSRepoOptions{

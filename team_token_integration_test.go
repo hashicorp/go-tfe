@@ -1,6 +1,3 @@
-//go:build integration
-// +build integration
-
 package tfe
 
 import (
@@ -12,7 +9,6 @@ import (
 )
 
 func TestTeamTokensCreate(t *testing.T) {
-	skipIfNotCINode(t)
 	skipIfFreeOnly(t)
 
 	client := testClient(t)
@@ -43,7 +39,6 @@ func TestTeamTokensCreate(t *testing.T) {
 	})
 }
 func TestTeamTokensRead(t *testing.T) {
-	skipIfNotCINode(t)
 	skipIfFreeOnly(t)
 
 	client := testClient(t)
@@ -76,7 +71,6 @@ func TestTeamTokensRead(t *testing.T) {
 }
 
 func TestTeamTokensDelete(t *testing.T) {
-	skipIfNotCINode(t)
 	skipIfFreeOnly(t)
 
 	client := testClient(t)

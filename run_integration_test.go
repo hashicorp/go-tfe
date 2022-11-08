@@ -1,6 +1,3 @@
-//go:build integration
-// +build integration
-
 package tfe
 
 import (
@@ -11,14 +8,12 @@ import (
 	"testing"
 	"time"
 
-	"github.com/hashicorp/go-retryablehttp"
+	retryablehttp "github.com/hashicorp/go-retryablehttp"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
 
 func TestRunsList(t *testing.T) {
-	skipIfNotCINode(t)
-
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -99,8 +94,6 @@ func TestRunsList(t *testing.T) {
 }
 
 func TestRunsListQueryParams(t *testing.T) {
-	skipIfNotCINode(t)
-
 	type testCase struct {
 		options     *RunListOptions
 		description string
@@ -162,8 +155,6 @@ func TestRunsListQueryParams(t *testing.T) {
 }
 
 func TestRunsCreate(t *testing.T) {
-	skipIfNotCINode(t)
-
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -333,7 +324,6 @@ func TestRunsCreate(t *testing.T) {
 }
 
 func TestRunsRead_CostEstimate(t *testing.T) {
-	skipIfNotCINode(t)
 	skipIfEnterprise(t)
 	skipIfFreeOnly(t)
 
@@ -363,8 +353,6 @@ func TestRunsRead_CostEstimate(t *testing.T) {
 }
 
 func TestRunsReadWithOptions(t *testing.T) {
-	skipIfNotCINode(t)
-
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -385,8 +373,6 @@ func TestRunsReadWithOptions(t *testing.T) {
 }
 
 func TestRunsApply(t *testing.T) {
-	skipIfNotCINode(t)
-
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -424,8 +410,6 @@ func TestRunsApply(t *testing.T) {
 }
 
 func TestRunsCancel(t *testing.T) {
-	skipIfNotCINode(t)
-
 	client := testClient(t)
 
 	ctx := context.Background()
@@ -457,8 +441,6 @@ func TestRunsCancel(t *testing.T) {
 }
 
 func TestRunsForceCancel(t *testing.T) {
-	skipIfNotCINode(t)
-
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -527,8 +509,6 @@ func TestRunsForceCancel(t *testing.T) {
 }
 
 func TestRunsForceExecute(t *testing.T) {
-	skipIfNotCINode(t)
-
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -584,8 +564,6 @@ func TestRunsForceExecute(t *testing.T) {
 }
 
 func TestRunsDiscard(t *testing.T) {
-	skipIfNotCINode(t)
-
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -611,8 +589,6 @@ func TestRunsDiscard(t *testing.T) {
 }
 
 func TestRun_Unmarshal(t *testing.T) {
-	skipIfNotCINode(t)
-
 	data := map[string]interface{}{
 		"data": map[string]interface{}{
 			"type": "runs",

@@ -1,6 +1,3 @@
-//go:build integration
-// +build integration
-
 package tfe
 
 import (
@@ -12,7 +9,6 @@ import (
 )
 
 func TestPolicySetParametersList(t *testing.T) {
-	skipIfNotCINode(t)
 	skipIfFreeOnly(t)
 
 	client := testClient(t)
@@ -65,7 +61,6 @@ func TestPolicySetParametersList(t *testing.T) {
 }
 
 func TestPolicySetParametersCreate(t *testing.T) {
-	skipIfNotCINode(t)
 	skipIfFreeOnly(t)
 
 	client := testClient(t)
@@ -168,7 +163,6 @@ func TestPolicySetParametersCreate(t *testing.T) {
 }
 
 func TestPolicySetParametersRead(t *testing.T) {
-	skipIfNotCINode(t)
 	skipIfFreeOnly(t)
 
 	client := testClient(t)
@@ -208,7 +202,6 @@ func TestPolicySetParametersRead(t *testing.T) {
 }
 
 func TestPolicySetParametersUpdate(t *testing.T) {
-	skipIfNotCINode(t)
 	skipIfFreeOnly(t)
 
 	client := testClient(t)
@@ -275,7 +268,6 @@ func TestPolicySetParametersUpdate(t *testing.T) {
 }
 
 func TestPolicySetParametersDelete(t *testing.T) {
-	skipIfNotCINode(t)
 	skipIfFreeOnly(t)
 
 	client := testClient(t)

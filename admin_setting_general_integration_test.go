@@ -1,6 +1,3 @@
-//go:build integration
-// +build integration
-
 package tfe
 
 import (
@@ -12,7 +9,6 @@ import (
 )
 
 func TestAdminSettings_General_Read(t *testing.T) {
-	skipIfNotCINode(t)
 	skipIfCloud(t)
 
 	client := testClient(t)
@@ -39,7 +35,6 @@ func TestAdminSettings_General_Read(t *testing.T) {
 }
 
 func TestAdminSettings_General_Update(t *testing.T) {
-	skipIfNotCINode(t)
 	skipIfCloud(t)
 
 	client := testClient(t)

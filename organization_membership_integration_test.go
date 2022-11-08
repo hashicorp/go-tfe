@@ -1,6 +1,3 @@
-//go:build integration
-// +build integration
-
 package tfe
 
 import (
@@ -13,8 +10,6 @@ import (
 )
 
 func TestOrganizationMembershipsList(t *testing.T) {
-	skipIfNotCINode(t)
-
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -151,8 +146,6 @@ func TestOrganizationMembershipsList(t *testing.T) {
 }
 
 func TestOrganizationMembershipsCreate(t *testing.T) {
-	skipIfNotCINode(t)
-
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -202,8 +195,6 @@ func TestOrganizationMembershipsCreate(t *testing.T) {
 }
 
 func TestOrganizationMembershipsRead(t *testing.T) {
-	skipIfNotCINode(t)
-
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -237,8 +228,6 @@ func TestOrganizationMembershipsRead(t *testing.T) {
 }
 
 func TestOrganizationMembershipsReadWithOptions(t *testing.T) {
-	skipIfNotCINode(t)
-
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -282,8 +271,6 @@ func TestOrganizationMembershipsReadWithOptions(t *testing.T) {
 }
 
 func TestOrganizationMembershipsDelete(t *testing.T) {
-	skipIfNotCINode(t)
-
 	client := testClient(t)
 	ctx := context.Background()
 

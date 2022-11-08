@@ -1,6 +1,3 @@
-//go:build integration
-// +build integration
-
 package tfe
 
 import (
@@ -13,8 +10,6 @@ import (
 )
 
 func TestRegistryProviderPlatformsCreate(t *testing.T) {
-	skipIfNotCINode(t)
-
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -168,8 +163,6 @@ func TestRegistryProviderPlatformsCreate(t *testing.T) {
 }
 
 func TestRegistryProviderPlatformsDelete(t *testing.T) {
-	skipIfNotCINode(t)
-
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -215,8 +208,6 @@ func TestRegistryProviderPlatformsDelete(t *testing.T) {
 }
 
 func TestRegistryProviderPlatformsRead(t *testing.T) {
-	skipIfNotCINode(t)
-
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -295,8 +286,6 @@ func TestRegistryProviderPlatformsRead(t *testing.T) {
 }
 
 func TestRegistryProviderPlatformsList(t *testing.T) {
-	skipIfNotCINode(t)
-
 	client := testClient(t)
 	ctx := context.Background()
 

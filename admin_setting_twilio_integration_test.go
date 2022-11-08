@@ -1,6 +1,3 @@
-//go:build integration
-// +build integration
-
 package tfe
 
 import (
@@ -12,7 +9,6 @@ import (
 )
 
 func TestAdminSettings_Twilio_Read(t *testing.T) {
-	skipIfNotCINode(t)
 	skipIfCloud(t)
 
 	client := testClient(t)
@@ -28,7 +24,6 @@ func TestAdminSettings_Twilio_Read(t *testing.T) {
 }
 
 func TestAdminSettings_Twilio_Update(t *testing.T) {
-	skipIfNotCINode(t)
 	skipIfCloud(t)
 
 	client := testClient(t)
@@ -43,7 +38,6 @@ func TestAdminSettings_Twilio_Update(t *testing.T) {
 }
 
 func TestAdminSettings_Twilio_Verify(t *testing.T) {
-	skipIfNotCINode(t)
 	skipIfCloud(t)
 
 	client := testClient(t)

@@ -1,6 +1,3 @@
-//go:build integration
-// +build integration
-
 package tfe
 
 import (
@@ -15,7 +12,6 @@ import (
 )
 
 func TestPolicySetsList(t *testing.T) {
-	skipIfNotCINode(t)
 	skipIfFreeOnly(t)
 
 	client := testClient(t)
@@ -96,7 +92,6 @@ func TestPolicySetsList(t *testing.T) {
 }
 
 func TestPolicySetsCreate(t *testing.T) {
-	skipIfNotCINode(t)
 	skipIfFreeOnly(t)
 
 	client := testClient(t)
@@ -260,7 +255,6 @@ func TestPolicySetsCreate(t *testing.T) {
 }
 
 func TestPolicySetsRead(t *testing.T) {
-	skipIfNotCINode(t)
 	skipIfFreeOnly(t)
 
 	client := testClient(t)
@@ -329,7 +323,6 @@ func TestPolicySetsRead(t *testing.T) {
 }
 
 func TestPolicySetsUpdate(t *testing.T) {
-	skipIfNotCINode(t)
 	skipIfFreeOnly(t)
 
 	client := testClient(t)
@@ -376,7 +369,6 @@ func TestPolicySetsUpdate(t *testing.T) {
 }
 
 func TestPolicySetsAddPolicies(t *testing.T) {
-	skipIfNotCINode(t)
 	skipIfFreeOnly(t)
 
 	client := testClient(t)
@@ -434,7 +426,6 @@ func TestPolicySetsAddPolicies(t *testing.T) {
 }
 
 func TestPolicySetsRemovePolicies(t *testing.T) {
-	skipIfNotCINode(t)
 	skipIfFreeOnly(t)
 
 	client := testClient(t)
@@ -486,7 +477,6 @@ func TestPolicySetsRemovePolicies(t *testing.T) {
 }
 
 func TestPolicySetsAddWorkspaces(t *testing.T) {
-	skipIfNotCINode(t)
 	skipIfFreeOnly(t)
 
 	client := testClient(t)
@@ -558,7 +548,6 @@ func TestPolicySetsAddWorkspaces(t *testing.T) {
 }
 
 func TestPolicySetsRemoveWorkspaces(t *testing.T) {
-	skipIfNotCINode(t)
 	skipIfFreeOnly(t)
 
 	client := testClient(t)
@@ -624,7 +613,6 @@ func TestPolicySetsRemoveWorkspaces(t *testing.T) {
 }
 
 func TestPolicySetsDelete(t *testing.T) {
-	skipIfNotCINode(t)
 	skipIfFreeOnly(t)
 
 	client := testClient(t)

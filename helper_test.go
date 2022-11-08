@@ -614,6 +614,40 @@ func createPolicy(t *testing.T, client *Client, org *Organization) (*Policy, fun
 	}
 }
 
+func createPolicyWithOptions(t *testing.T, client *Client, org *Organization, opts PolicyCreateOptions) (*Policy, func()) {
+	var orgCleanup func()
+
+	if org == nil {
+		org, orgCleanup = createOrganization(t, client)
+	}
+
+	name := randomString(t)
+	options := PolicyCreateOptions{
+		Name:    String(name),
+		Kind:    opts.Kind,
+		Query:   opts.Query,
+		Enforce: opts.Enforce,
+	}
+
+	ctx := context.Background()
+	p, err := client.Policies.Create(ctx, org.Name, options)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	return p, func() {
+		if err := client.Policies.Delete(ctx, p.ID); err != nil {
+			t.Errorf("Error destroying policy! WARNING: Dangling resources\n"+
+				"may exist! The full error is shown below.\n\n"+
+				"Policy: %s\nError: %s", p.ID, err)
+		}
+
+		if orgCleanup != nil {
+			orgCleanup()
+		}
+	}
+}
+
 func createUploadedPolicy(t *testing.T, client *Client, pass bool, org *Organization) (*Policy, func()) {
 	var orgCleanup func()
 
@@ -622,6 +656,35 @@ func createUploadedPolicy(t *testing.T, client *Client, pass bool, org *Organiza
 	}
 
 	p, pCleanup := createPolicy(t, client, org)
+
+	ctx := context.Background()
+	err := client.Policies.Upload(ctx, p.ID, []byte(fmt.Sprintf("main = rule { %t }", pass)))
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	p, err = client.Policies.Read(ctx, p.ID)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	return p, func() {
+		pCleanup()
+
+		if orgCleanup != nil {
+			orgCleanup()
+		}
+	}
+}
+
+func createUploadedPolicyWithOptions(t *testing.T, client *Client, pass bool, org *Organization, opts PolicyCreateOptions) (*Policy, func()) {
+	var orgCleanup func()
+
+	if org == nil {
+		org, orgCleanup = createOrganization(t, client)
+	}
+
+	p, pCleanup := createPolicyWithOptions(t, client, org, opts)
 
 	ctx := context.Background()
 	err := client.Policies.Upload(ctx, p.ID, []byte(fmt.Sprintf("main = rule { %t }", pass)))
@@ -1972,23 +2035,6 @@ func randomString(t *testing.T) string {
 
 func randomSemver(t *testing.T) string {
 	return fmt.Sprintf("%d.%d.%d", rand.Intn(99)+3, rand.Intn(99)+1, rand.Intn(99)+1)
-}
-
-var ciSuite testSuiteCI = testSuiteCI{
-	testNames: nil,
-}
-
-func skipIfNotCINode(t *testing.T) {
-	t.Helper()
-
-	inNode, err := ciSuite.InCurrentNode(t.Name())
-	if err != nil {
-		t.Fatal(err.Error())
-	}
-
-	if !inNode {
-		t.Skip()
-	}
 }
 
 // skips a test if the environment is for Terraform Cloud.

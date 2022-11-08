@@ -1,6 +1,3 @@
-//go:build integration
-// +build integration
-
 package tfe
 
 import (
@@ -13,7 +10,6 @@ import (
 )
 
 func TestAdminOrganizations_List(t *testing.T) {
-	skipIfNotCINode(t)
 	skipIfCloud(t)
 
 	client := testClient(t)
@@ -71,7 +67,6 @@ func TestAdminOrganizations_List(t *testing.T) {
 }
 
 func TestAdminOrganizations_Read(t *testing.T) {
-	skipIfNotCINode(t)
 	skipIfCloud(t)
 
 	client := testClient(t)
@@ -113,7 +108,6 @@ func TestAdminOrganizations_Read(t *testing.T) {
 }
 
 func TestAdminOrganizations_Delete(t *testing.T) {
-	skipIfNotCINode(t)
 	skipIfCloud(t)
 
 	client := testClient(t)
@@ -151,7 +145,6 @@ func TestAdminOrganizations_Delete(t *testing.T) {
 }
 
 func TestAdminOrganizations_ModuleConsumers(t *testing.T) {
-	skipIfNotCINode(t)
 	skipIfCloud(t)
 
 	client := testClient(t)
@@ -196,7 +189,6 @@ func TestAdminOrganizations_ModuleConsumers(t *testing.T) {
 }
 
 func TestAdminOrganizations_Update(t *testing.T) {
-	skipIfNotCINode(t)
 	skipIfCloud(t)
 
 	client := testClient(t)

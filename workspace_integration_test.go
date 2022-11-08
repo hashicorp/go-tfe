@@ -1,6 +1,3 @@
-//go:build integration
-// +build integration
-
 package tfe
 
 import (
@@ -14,8 +11,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/hashicorp/go-retryablehttp"
-
+	retryablehttp "github.com/hashicorp/go-retryablehttp"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
@@ -33,8 +29,6 @@ type WorkspaceTableTest struct {
 }
 
 func TestWorkspacesList(t *testing.T) {
-	skipIfNotCINode(t)
-
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -221,8 +215,6 @@ func TestWorkspacesList(t *testing.T) {
 }
 
 func TestWorkspacesCreateTableDriven(t *testing.T) {
-	skipIfNotCINode(t)
-
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -353,8 +345,6 @@ func TestWorkspacesCreateTableDriven(t *testing.T) {
 }
 
 func TestWorkspacesCreate(t *testing.T) {
-	skipIfNotCINode(t)
-
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -550,8 +540,6 @@ func TestWorkspacesCreate(t *testing.T) {
 }
 
 func TestWorkspacesRead(t *testing.T) {
-	skipIfNotCINode(t)
-
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -598,8 +586,6 @@ func TestWorkspacesRead(t *testing.T) {
 }
 
 func TestWorkspacesReadWithOptions(t *testing.T) {
-	skipIfNotCINode(t)
-
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -649,8 +635,6 @@ func TestWorkspacesReadWithOptions(t *testing.T) {
 }
 
 func TestWorkspacesReadWithHistory(t *testing.T) {
-	skipIfNotCINode(t)
-
 	client := testClient(t)
 
 	orgTest, orgTestCleanup := createOrganization(t, client)
@@ -683,8 +667,6 @@ func TestWorkspacesReadWithHistory(t *testing.T) {
 }
 
 func TestWorkspacesReadReadme(t *testing.T) {
-	skipIfNotCINode(t)
-
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -725,8 +707,6 @@ func TestWorkspacesReadReadme(t *testing.T) {
 }
 
 func TestWorkspacesReadByID(t *testing.T) {
-	skipIfNotCINode(t)
-
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -761,8 +741,6 @@ func TestWorkspacesReadByID(t *testing.T) {
 }
 
 func TestWorkspacesUpdate(t *testing.T) {
-	skipIfNotCINode(t)
-
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -968,8 +946,6 @@ func TestWorkspacesUpdate(t *testing.T) {
 }
 
 func TestWorkspacesUpdateTableDriven(t *testing.T) {
-	skipIfNotCINode(t)
-
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -1106,8 +1082,6 @@ func TestWorkspacesUpdateTableDriven(t *testing.T) {
 }
 
 func TestWorkspacesUpdateByID(t *testing.T) {
-	skipIfNotCINode(t)
-
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -1194,8 +1168,6 @@ func TestWorkspacesUpdateByID(t *testing.T) {
 }
 
 func TestWorkspacesDelete(t *testing.T) {
-	skipIfNotCINode(t)
-
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -1226,8 +1198,6 @@ func TestWorkspacesDelete(t *testing.T) {
 }
 
 func TestWorkspacesDeleteByID(t *testing.T) {
-	skipIfNotCINode(t)
-
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -1253,8 +1223,6 @@ func TestWorkspacesDeleteByID(t *testing.T) {
 }
 
 func TestCanForceDeletePermission(t *testing.T) {
-	skipIfNotCINode(t)
-
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -1275,8 +1243,6 @@ func TestCanForceDeletePermission(t *testing.T) {
 }
 
 func TestWorkspacesSafeDelete(t *testing.T) {
-	skipIfNotCINode(t)
-
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -1331,8 +1297,6 @@ func TestWorkspacesSafeDelete(t *testing.T) {
 }
 
 func TestWorkspacesSafeDeleteByID(t *testing.T) {
-	skipIfNotCINode(t)
-
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -1382,8 +1346,6 @@ func TestWorkspacesSafeDeleteByID(t *testing.T) {
 }
 
 func TestWorkspacesRemoveVCSConnection(t *testing.T) {
-	skipIfNotCINode(t)
-
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -1401,8 +1363,6 @@ func TestWorkspacesRemoveVCSConnection(t *testing.T) {
 }
 
 func TestWorkspacesRemoveVCSConnectionByID(t *testing.T) {
-	skipIfNotCINode(t)
-
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -1420,8 +1380,6 @@ func TestWorkspacesRemoveVCSConnectionByID(t *testing.T) {
 }
 
 func TestWorkspacesLock(t *testing.T) {
-	skipIfNotCINode(t)
-
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -1450,8 +1408,6 @@ func TestWorkspacesLock(t *testing.T) {
 }
 
 func TestWorkspacesUnlock(t *testing.T) {
-	skipIfNotCINode(t)
-
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -1501,8 +1457,6 @@ func TestWorkspacesUnlock(t *testing.T) {
 }
 
 func TestWorkspacesForceUnlock(t *testing.T) {
-	skipIfNotCINode(t)
-
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -1538,8 +1492,6 @@ func TestWorkspacesForceUnlock(t *testing.T) {
 }
 
 func TestWorkspacesAssignSSHKey(t *testing.T) {
-	skipIfNotCINode(t)
-
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -1585,8 +1537,6 @@ func TestWorkspacesAssignSSHKey(t *testing.T) {
 }
 
 func TestWorkspacesUnassignSSHKey(t *testing.T) {
-	skipIfNotCINode(t)
-
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -1623,8 +1573,6 @@ func TestWorkspacesUnassignSSHKey(t *testing.T) {
 }
 
 func TestWorkspaces_AddRemoteStateConsumers(t *testing.T) {
-	skipIfNotCINode(t)
-
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -1682,8 +1630,6 @@ func TestWorkspaces_AddRemoteStateConsumers(t *testing.T) {
 }
 
 func TestWorkspaces_RemoveRemoteStateConsumers(t *testing.T) {
-	skipIfNotCINode(t)
-
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -1760,8 +1706,6 @@ func TestWorkspaces_RemoveRemoteStateConsumers(t *testing.T) {
 }
 
 func TestWorkspaces_UpdateRemoteStateConsumers(t *testing.T) {
-	skipIfNotCINode(t)
-
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -1826,8 +1770,6 @@ func TestWorkspaces_UpdateRemoteStateConsumers(t *testing.T) {
 }
 
 func TestWorkspaces_AddTags(t *testing.T) {
-	skipIfNotCINode(t)
-
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -1940,8 +1882,6 @@ func TestWorkspaces_AddTags(t *testing.T) {
 }
 
 func TestWorkspaces_RemoveTags(t *testing.T) {
-	skipIfNotCINode(t)
-
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -2019,8 +1959,6 @@ func TestWorkspaces_RemoveTags(t *testing.T) {
 }
 
 func TestWorkspace_Unmarshal(t *testing.T) {
-	skipIfNotCINode(t)
-
 	data := map[string]interface{}{
 		"data": map[string]interface{}{
 			"type": "workspaces",
@@ -2085,8 +2023,6 @@ func TestWorkspace_Unmarshal(t *testing.T) {
 }
 
 func TestWorkspaceCreateOptions_Marshal(t *testing.T) {
-	skipIfNotCINode(t)
-
 	opts := WorkspaceCreateOptions{
 		AllowDestroyPlan: Bool(true),
 		Name:             String("my-workspace"),
@@ -2111,7 +2047,6 @@ func TestWorkspaceCreateOptions_Marshal(t *testing.T) {
 }
 
 func TestWorkspacesRunTasksPermission(t *testing.T) {
-	skipIfNotCINode(t)
 	skipIfFreeOnly(t)
 	skipIfBeta(t)
 

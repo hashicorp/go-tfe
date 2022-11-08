@@ -1,6 +1,3 @@
-//go:build integration
-// +build integration
-
 package tfe
 
 import (
@@ -13,7 +10,6 @@ import (
 )
 
 func TestAdminTerraformVersions_List(t *testing.T) {
-	skipIfNotCINode(t)
 	skipIfCloud(t)
 
 	client := testClient(t)
@@ -97,7 +93,6 @@ func TestAdminTerraformVersions_List(t *testing.T) {
 }
 
 func TestAdminTerraformVersions_CreateDelete(t *testing.T) {
-	skipIfNotCINode(t)
 	skipIfCloud(t)
 
 	client := testClient(t)
@@ -165,7 +160,6 @@ func TestAdminTerraformVersions_CreateDelete(t *testing.T) {
 }
 
 func TestAdminTerraformVersions_ReadUpdate(t *testing.T) {
-	skipIfNotCINode(t)
 	skipIfCloud(t)
 
 	client := testClient(t)

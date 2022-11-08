@@ -1,6 +1,3 @@
-//go:build integration
-// +build integration
-
 package tfe
 
 import (
@@ -18,7 +15,6 @@ func TestTeamMembersList(t *testing.T) {
 	// create team tokens, but they only have access to one team: the
 	// owners team. This test creates new teams, and that feature is
 	// unavaiable to paid accounts.
-	skipIfNotCINode(t)
 	skipIfFreeOnly(t)
 
 	client := testClient(t)
@@ -59,7 +55,6 @@ func TestTeamMembersList(t *testing.T) {
 }
 
 func TestTeamMembersAddWithInvalidOptions(t *testing.T) {
-	skipIfNotCINode(t)
 	skipIfFreeOnly(t)
 
 	client := testClient(t)
@@ -104,7 +99,6 @@ func TestTeamMembersAddWithInvalidOptions(t *testing.T) {
 }
 
 func TestTeamMembersAddByUsername(t *testing.T) {
-	skipIfNotCINode(t)
 	skipIfFreeOnly(t)
 
 	client := testClient(t)
@@ -139,7 +133,6 @@ func TestTeamMembersAddByUsername(t *testing.T) {
 }
 
 func TestTeamMembersAddByOrganizationMembers(t *testing.T) {
-	skipIfNotCINode(t)
 	skipIfFreeOnly(t)
 
 	client := testClient(t)
@@ -178,7 +171,6 @@ func TestTeamMembersAddByOrganizationMembers(t *testing.T) {
 }
 
 func TestTeamMembersRemoveWithInvalidOptions(t *testing.T) {
-	skipIfNotCINode(t)
 	skipIfFreeOnly(t)
 
 	client := testClient(t)
@@ -223,7 +215,6 @@ func TestTeamMembersRemoveWithInvalidOptions(t *testing.T) {
 }
 
 func TestTeamMembersRemoveByUsernames(t *testing.T) {
-	skipIfNotCINode(t)
 	skipIfFreeOnly(t)
 
 	client := testClient(t)
@@ -251,7 +242,6 @@ func TestTeamMembersRemoveByUsernames(t *testing.T) {
 }
 
 func TestTeamMembersRemoveByOrganizationMemberships(t *testing.T) {
-	skipIfNotCINode(t)
 	skipIfFreeOnly(t)
 
 	client := testClient(t)

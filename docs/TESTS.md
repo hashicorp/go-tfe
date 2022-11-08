@@ -1,5 +1,7 @@
 # Running tests
 
+go-tfe relies on acceptance tests against either the Terraform Cloud and Terraform Enterprise APIs. go-tfe is tested against Terraform Cloud by our CI environment, and against Terraform Enterprise prior to release or otherwise as needed.
+
 ## 1. (Optional) Create repositories for policy sets and registry modules
 
 If you are planning to run the full suite of tests or work on policy sets or registry modules, you'll need to set up repositories for them in GitHub.
@@ -64,12 +66,12 @@ Typically, you'll want to run specific tests. The commands below use notificatio
 
 #### With envchain:
 ```sh
-$ envchain YOUR_NAMESPACE_HERE go test -run TestNotificationConfiguration -v ./... -tags=integration
+$ envchain YOUR_NAMESPACE_HERE go test -run TestNotificationConfiguration -v ./...
 ```
 
 #### Without envchain:
 ```sh
-$ TFE_TOKEN=xyz TFE_ADDRESS=xyz ENABLE_TFE=1 go test -run TestNotificationConfiguration -v ./... -tags=integration
+$ TFE_TOKEN=xyz TFE_ADDRESS=xyz ENABLE_TFE=1 go test -run TestNotificationConfiguration -v ./...
 ```
 
 #### Using Makefile target `test`
@@ -82,12 +84,12 @@ It takes about 20 minutes to run all of the tests, so specify a larger timeout w
 
 #### With envchain:
 ```sh
-$ envchain YOUR_NAMESPACE_HERE go test ./... -timeout=30m -tags=integration
+$ envchain YOUR_NAMESPACE_HERE go test ./... -timeout=30m
 ```
 
 #### Without envchain:
 ```sh
-$ TFE_TOKEN=xyz TFE_ADDRESS=xyz ENABLE_TFE=1 go test ./... -timeout=30m -tags=integration
+$ TFE_TOKEN=xyz TFE_ADDRESS=xyz ENABLE_TFE=1 go test ./... -timeout=30m
 ```
 
 ### Running tests for TFC features that require paid plans (HashiCorp Employees)

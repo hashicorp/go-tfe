@@ -1,6 +1,3 @@
-//go:build integration
-// +build integration
-
 package tfe
 
 import (
@@ -21,8 +18,6 @@ func checkedWrite(t *testing.T, w io.Writer, message []byte) {
 }
 
 func testLogReader(t *testing.T, h http.HandlerFunc) (*httptest.Server, *LogReader) {
-	skipIfNotCINode(t)
-
 	ts := httptest.NewServer(h)
 
 	cfg := &Config{
@@ -51,7 +46,6 @@ func testLogReader(t *testing.T, h http.HandlerFunc) (*httptest.Server, *LogRead
 }
 
 func TestLogReader_withMarkersSingle(t *testing.T) {
-	skipIfNotCINode(t)
 	t.Parallel()
 
 	logReads := 0
@@ -91,7 +85,6 @@ func TestLogReader_withMarkersSingle(t *testing.T) {
 }
 
 func TestLogReader_withMarkersDouble(t *testing.T) {
-	skipIfNotCINode(t)
 	t.Parallel()
 
 	logReads := 0
@@ -133,7 +126,6 @@ func TestLogReader_withMarkersDouble(t *testing.T) {
 }
 
 func TestLogReader_withMarkersMulti(t *testing.T) {
-	skipIfNotCINode(t)
 	t.Parallel()
 
 	logReads := 0
@@ -181,7 +173,6 @@ func TestLogReader_withMarkersMulti(t *testing.T) {
 }
 
 func TestLogReader_withoutMarkers(t *testing.T) {
-	skipIfNotCINode(t)
 	t.Parallel()
 
 	logReads := 0
@@ -225,7 +216,6 @@ func TestLogReader_withoutMarkers(t *testing.T) {
 }
 
 func TestLogReader_withoutEndOfTextMarker(t *testing.T) {
-	skipIfNotCINode(t)
 	t.Parallel()
 
 	logReads := 0

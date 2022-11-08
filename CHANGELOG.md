@@ -2,7 +2,8 @@
 
 ## Enhancements
 
-* Add OPA support to the Policy Set API's by @mrinalirao [#575](https://github.com/hashicorp/go-tfe/pull/575)
+* Add OPA support to the Policy Set APIs by @mrinalirao [#575](https://github.com/hashicorp/go-tfe/pull/575)
+* Add OPA support to the Policy APIs by @mrinalirao [#579](https://github.com/hashicorp/go-tfe/pull/579)
 * Add support for enabling no-code provisioning in an existing or new `RegistryModule` by @miguelhrocha [#562](https://github.com/hashicorp/go-tfe/pull/562)
 
 # v1.12.0

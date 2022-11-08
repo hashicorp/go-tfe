@@ -18,7 +18,7 @@ lint:
 	golangci-lint run .
 
 test:
-	go test ./... $(TESTARGS) -tags=integration -timeout=30m
+	go test ./... $(TESTARGS) -timeout=30m
 
 # Make target to generate mocks for specified FILENAME
 mocks: check-filename

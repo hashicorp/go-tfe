@@ -1,6 +1,3 @@
-//go:build integration
-// +build integration
-
 package tfe
 
 import (
@@ -11,15 +8,13 @@ import (
 	"testing"
 	"time"
 
-	"github.com/hashicorp/go-slug"
+	slug "github.com/hashicorp/go-slug"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
 
 func TestConfigurationVersionsList(t *testing.T) {
-	skipIfNotCINode(t)
-
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -76,8 +71,6 @@ func TestConfigurationVersionsList(t *testing.T) {
 }
 
 func TestConfigurationVersionsCreate(t *testing.T) {
-	skipIfNotCINode(t)
-
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -120,8 +113,6 @@ func TestConfigurationVersionsCreate(t *testing.T) {
 }
 
 func TestConfigurationVersionsRead(t *testing.T) {
-	skipIfNotCINode(t)
-
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -154,8 +145,6 @@ func TestConfigurationVersionsRead(t *testing.T) {
 }
 
 func TestConfigurationVersionsReadWithOptions(t *testing.T) {
-	skipIfNotCINode(t)
-
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -200,8 +189,6 @@ func TestConfigurationVersionsReadWithOptions(t *testing.T) {
 }
 
 func TestConfigurationVersionsUpload(t *testing.T) {
-	skipIfNotCINode(t)
-
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -239,8 +226,6 @@ func TestConfigurationVersionsUpload(t *testing.T) {
 }
 
 func TestConfigurationVersionsArchive(t *testing.T) {
-	skipIfNotCINode(t)
-
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -295,8 +280,6 @@ func TestConfigurationVersionsArchive(t *testing.T) {
 }
 
 func TestConfigurationVersionsDownload(t *testing.T) {
-	skipIfNotCINode(t)
-
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -335,8 +318,6 @@ func TestConfigurationVersionsDownload(t *testing.T) {
 }
 
 func TestConfigurationVersions_Unmarshal(t *testing.T) {
-	skipIfNotCINode(t)
-
 	data := map[string]interface{}{
 		"data": map[string]interface{}{
 			"type": "configuration-versions",

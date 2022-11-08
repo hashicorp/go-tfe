@@ -1,6 +1,3 @@
-//go:build integration
-// +build integration
-
 package tfe
 
 import (
@@ -14,15 +11,13 @@ import (
 	"testing"
 	"time"
 
-	"github.com/hashicorp/go-retryablehttp"
+	retryablehttp "github.com/hashicorp/go-retryablehttp"
 	"github.com/hashicorp/jsonapi"
 	"github.com/stretchr/testify/assert"
 	"golang.org/x/time/rate"
 )
 
 func TestClient_newClient(t *testing.T) {
-	skipIfNotCINode(t)
-
 	ts := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "application/vnd.api+json")
 		w.Header().Set("X-RateLimit-Limit", "30")
@@ -97,8 +92,6 @@ func TestClient_newClient(t *testing.T) {
 }
 
 func TestClient_defaultConfig(t *testing.T) {
-	skipIfNotCINode(t)
-
 	t.Run("with no environment variables", func(t *testing.T) {
 		defer setupEnvVars("", "")()
 		os.Unsetenv("TFE_HOSTNAME")
@@ -131,8 +124,6 @@ func TestClient_defaultConfig(t *testing.T) {
 }
 
 func TestClient_headers(t *testing.T) {
-	skipIfNotCINode(t)
-
 	testedCalls := 0
 	ts := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		testedCalls++
@@ -196,8 +187,6 @@ func TestClient_headers(t *testing.T) {
 }
 
 func TestClient_userAgent(t *testing.T) {
-	skipIfNotCINode(t)
-
 	testedCalls := 0
 	ts := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		testedCalls++
@@ -258,8 +247,6 @@ type InvalidBody struct {
 }
 
 func TestClient_requestBodySerialization(t *testing.T) {
-	skipIfNotCINode(t)
-
 	t.Run("jsonapi request", func(t *testing.T) {
 		body := JSONAPIBody{StrAttr: "foo"}
 		_, requestBody, err := createRequest(&body)
@@ -405,8 +392,6 @@ func createRequest(v interface{}) (*retryablehttp.Request, []byte, error) {
 }
 
 func TestClient_configureLimiter(t *testing.T) {
-	skipIfNotCINode(t)
-
 	rateLimit := ""
 	ts := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "application/vnd.api+json")
@@ -468,8 +453,6 @@ func TestClient_configureLimiter(t *testing.T) {
 }
 
 func TestClient_retryHTTPCheck(t *testing.T) {
-	skipIfNotCINode(t)
-
 	ts := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "application/vnd.api+json")
 		w.Header().Set("X-RateLimit-Limit", "30")
@@ -552,8 +535,6 @@ func TestClient_retryHTTPCheck(t *testing.T) {
 }
 
 func TestClient_retryHTTPBackoff(t *testing.T) {
-	skipIfNotCINode(t)
-
 	ts := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "application/vnd.api+json")
 		w.Header().Set("X-RateLimit-Limit", "30")

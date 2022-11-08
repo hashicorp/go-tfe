@@ -1,6 +1,3 @@
-//go:build integration
-// +build integration
-
 package tfe
 
 import (
@@ -13,7 +10,6 @@ import (
 )
 
 func TestAuditTrailsList(t *testing.T) {
-	skipIfNotCINode(t)
 	skipIfEnterprise(t)
 
 	userClient := testClient(t)
