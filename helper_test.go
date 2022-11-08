@@ -2086,23 +2086,6 @@ func randomSemver(t *testing.T) string {
 	return fmt.Sprintf("%d.%d.%d", rand.Intn(99)+3, rand.Intn(99)+1, rand.Intn(99)+1)
 }
 
-var ciSuite testSuiteCI = testSuiteCI{
-	testNames: nil,
-}
-
-func skipIfNotCINode(t *testing.T) {
-	t.Helper()
-
-	inNode, err := ciSuite.InCurrentNode(t.Name())
-	if err != nil {
-		t.Fatal(err.Error())
-	}
-
-	if !inNode {
-		t.Skip()
-	}
-}
-
 // skips a test if the environment is for Terraform Cloud.
 func skipIfCloud(t *testing.T) {
 	if !enterpriseEnabled() {

@@ -12,7 +12,6 @@ import (
 )
 
 func TestAdminSettings_SAML_Read(t *testing.T) {
-	skipIfNotCINode(t)
 	skipIfCloud(t)
 
 	client := testClient(t)
@@ -41,7 +40,6 @@ func TestAdminSettings_SAML_Read(t *testing.T) {
 }
 
 func TestAdminSettings_SAML_Update(t *testing.T) {
-	skipIfNotCINode(t)
 	skipIfCloud(t)
 
 	client := testClient(t)
@@ -63,7 +61,6 @@ func TestAdminSettings_SAML_Update(t *testing.T) {
 }
 
 func TestAdminSettings_SAML_RevokeIdpCert(t *testing.T) {
-	skipIfNotCINode(t)
 	skipIfCloud(t)
 
 	client := testClient(t)

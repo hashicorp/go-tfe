@@ -13,8 +13,6 @@ import (
 )
 
 func TestRegistryProvidersList(t *testing.T) {
-	skipIfNotCINode(t)
-
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -159,8 +157,6 @@ func TestRegistryProvidersList(t *testing.T) {
 }
 
 func TestRegistryProvidersCreate(t *testing.T) {
-	skipIfNotCINode(t)
-
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -288,8 +284,6 @@ func TestRegistryProvidersCreate(t *testing.T) {
 }
 
 func TestRegistryProvidersRead(t *testing.T) {
-	skipIfNotCINode(t)
-
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -406,8 +400,6 @@ func TestRegistryProvidersRead(t *testing.T) {
 }
 
 func TestRegistryProvidersDelete(t *testing.T) {
-	skipIfNotCINode(t)
-
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -466,8 +458,6 @@ func TestRegistryProvidersDelete(t *testing.T) {
 }
 
 func TestRegistryProvidersIDValidation(t *testing.T) {
-	skipIfNotCINode(t)
-
 	orgName := "orgName"
 	registryName := PublicRegistry
 

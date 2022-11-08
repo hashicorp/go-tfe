@@ -15,7 +15,6 @@ import (
 )
 
 func TestCostEstimatesRead(t *testing.T) {
-	skipIfNotCINode(t)
 	skipIfEnterprise(t)
 	skipIfFreeOnly(t)
 
@@ -61,8 +60,6 @@ func TestCostEstimatesRead(t *testing.T) {
 }
 
 func TestCostEsimate_Unmarshal(t *testing.T) {
-	skipIfNotCINode(t)
-
 	data := map[string]interface{}{
 		"data": map[string]interface{}{
 			"type": "cost-estimates",

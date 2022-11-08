@@ -163,9 +163,7 @@ import (
 )
 
 func Test{{ .ResourceInterface }}List(t *testing.T) {
-  skipIfNotCINode(t)
-
-  client := testClient(t)
+   client := testClient(t)
   ctx := context.Background()
 
   // Create your test helper resources here
@@ -175,9 +173,7 @@ func Test{{ .ResourceInterface }}List(t *testing.T) {
 }
 
 func Test{{ .ResourceInterface }}Read(t *testing.T) {
-  skipIfNotCINode(t)
-
-  client := testClient(t)
+   client := testClient(t)
   ctx := context.Background()
 
   // Create your test helper resources here
@@ -187,9 +183,7 @@ func Test{{ .ResourceInterface }}Read(t *testing.T) {
 }
 
 func Test{{ .ResourceInterface }}Create(t *testing.T) {
-  skipIfNotCINode(t)
-
-  client := testClient(t)
+   client := testClient(t)
   ctx := context.Background()
 
   // Create your test helper resources here
@@ -199,9 +193,7 @@ func Test{{ .ResourceInterface }}Create(t *testing.T) {
 }
 
 func Test{{ .ResourceInterface }}Update(t *testing.T) {
-  skipIfNotCINode(t)
-
-  client := testClient(t)
+   client := testClient(t)
   ctx := context.Background()
 
   // Create your test helper resources here

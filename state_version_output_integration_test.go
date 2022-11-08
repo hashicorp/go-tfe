@@ -12,8 +12,6 @@ import (
 )
 
 func TestStateVersionOutputsRead(t *testing.T) {
-	skipIfNotCINode(t)
-
 	client := testClient(t)
 	ctx := context.Background()
 

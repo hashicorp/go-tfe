@@ -12,7 +12,6 @@ import (
 )
 
 func TestPolicySetsList_Beta(t *testing.T) {
-	skipIfNotCINode(t)
 	skipIfFreeOnly(t)
 	skipIfBeta(t)
 
@@ -111,7 +110,6 @@ func TestPolicySetsList_Beta(t *testing.T) {
 }
 
 func TestPolicySetsCreate_Beta(t *testing.T) {
-	skipIfNotCINode(t)
 	skipIfFreeOnly(t)
 	skipIfBeta(t)
 

@@ -111,7 +111,7 @@ type PolicyCreateOptions struct {
 	Name *string `jsonapi:"attr,name"`
 
 	// **Note: This field is still in BETA and subject to change.**
-	// Optional: The underlying technology that the policy supports.
+	// Optional: The underlying technology that the policy supports. Defaults to Sentinel if not specified for PolicyCreate.
 	Kind PolicyKind `jsonapi:"attr,kind,omitempty"`
 
 	// **Note: This field is still in BETA and subject to change.**

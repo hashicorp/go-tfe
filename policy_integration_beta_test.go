@@ -9,7 +9,6 @@ import (
 )
 
 func TestPoliciesCreate_Beta(t *testing.T) {
-	skipIfNotCINode(t)
 	skipIfFreeOnly(t)
 	skipIfBeta(t)
 
@@ -193,7 +192,7 @@ func TestPoliciesCreate_Beta(t *testing.T) {
 		assert.Equal(t, err, ErrRequiredEnforcementPath)
 	})
 
-	t.Run("when options is missing enforcement path", func(t *testing.T) {
+	t.Run("when options is missing enforcement mode", func(t *testing.T) {
 		name := randomString(t)
 		options := PolicyCreateOptions{
 			Name:  String(name),
@@ -221,7 +220,6 @@ func TestPoliciesCreate_Beta(t *testing.T) {
 }
 
 func TestPoliciesList_Beta(t *testing.T) {
-	skipIfNotCINode(t)
 	skipIfFreeOnly(t)
 	skipIfBeta(t)
 
@@ -235,7 +233,6 @@ func TestPoliciesList_Beta(t *testing.T) {
 	defer pTestCleanup1()
 	pTest2, pTestCleanup2 := createPolicy(t, client, orgTest)
 	defer pTestCleanup2()
-
 	opaOptions := PolicyCreateOptions{
 		Kind:  OPA,
 		Query: String("terraform.policy1.deny"),
@@ -311,7 +308,6 @@ func TestPoliciesList_Beta(t *testing.T) {
 }
 
 func TestPoliciesUpdate_Beta(t *testing.T) {
-	skipIfNotCINode(t)
 	skipIfFreeOnly(t)
 	skipIfBeta(t)
 
@@ -344,5 +340,20 @@ func TestPoliciesUpdate_Beta(t *testing.T) {
 		assert.Equal(t, pBefore.Enforce, pAfter.Enforce)
 		assert.NotEqual(t, *pBefore.Query, *pAfter.Query)
 		assert.Equal(t, "terraform.policy1.deny", *pAfter.Query)
+	})
+
+	t.Run("update query when kind is not OPA", func(t *testing.T) {
+		pBefore, pBeforeCleanup := createUploadedPolicy(t, client, true, orgTest)
+		defer pBeforeCleanup()
+
+		pAfter, err := client.Policies.Update(ctx, pBefore.ID, PolicyUpdateOptions{
+			Query: String("terraform.policy1.deny"),
+		})
+		require.NoError(t, err)
+
+		assert.Equal(t, pBefore.Name, pAfter.Name)
+		assert.Equal(t, pBefore.Enforce, pAfter.Enforce)
+		assert.Equal(t, Sentinel, pAfter.Kind)
+		assert.Nil(t, pAfter.Query)
 	})
 }

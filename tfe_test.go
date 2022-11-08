@@ -39,8 +39,6 @@ const (
 )
 
 func Test_unmarshalResponse(t *testing.T) {
-	skipIfNotCINode(t)
-
 	t.Run("unmarshal properly formatted json", func(t *testing.T) {
 		// This structure is intended to include multiple possible fields and
 		// formats that are valid for JSON:API
@@ -119,8 +117,6 @@ func Test_unmarshalResponse(t *testing.T) {
 }
 
 func Test_EncodeQueryParams(t *testing.T) {
-	skipIfNotCINode(t)
-
 	t.Run("with no listOptions and therefore no include field defined", func(t *testing.T) {
 		urlVals := map[string][]string{
 			"include": []string{},
@@ -138,8 +134,6 @@ func Test_EncodeQueryParams(t *testing.T) {
 }
 
 func Test_RegistryBasePath(t *testing.T) {
-	skipIfNotCINode(t)
-
 	client, err := NewClient(&Config{
 		Token: "foo",
 	})
