@@ -11,7 +11,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func TestTaskStagesRead(t *testing.T) {
+func TestTaskStagesRead_Beta(t *testing.T) {
 	skipIfNotCINode(t)
 	skipIfFreeOnly(t)
 	skipIfBeta(t)
@@ -111,7 +111,7 @@ func TestTaskStagesRead(t *testing.T) {
 	})
 }
 
-func TestTaskStagesList(t *testing.T) {
+func TestTaskStagesList_Beta(t *testing.T) {
 	skipIfNotCINode(t)
 	skipIfFreeOnly(t)
 	skipIfBeta(t)
@@ -176,7 +176,7 @@ func TestTaskStagesList(t *testing.T) {
 	})
 }
 
-func TestTaskStageOverride(t *testing.T) {
+func TestTaskStageOverride_Beta(t *testing.T) {
 	skipIfNotCINode(t)
 	skipIfFreeOnly(t)
 	skipIfBeta(t)
