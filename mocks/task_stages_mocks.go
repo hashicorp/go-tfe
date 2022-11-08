@@ -64,3 +64,4 @@ func (mr *MockTaskStagesMockRecorder) Read(ctx, taskStageID, options interface{}
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Read", reflect.TypeOf((*MockTaskStages)(nil).Read), ctx, taskStageID, options)
 }
+
