@@ -102,7 +102,7 @@ jobs:
           GO111MODULE: "on"
         run: |
           source $HOME/.env
-          gotestsum --format short-verbose -- -timeout=40m -tags=integration
+          gotestsum --format short-verbose -- -timeout=40m
 
   cleanup:
     runs-on: ubuntu-latest

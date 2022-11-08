@@ -45,7 +45,7 @@ Including output from tests may require access to a TFE instance. Ignore this se
 _Please run the tests locally for any files you changes and include the output here._
 -->
 ```
-$ TFE_ADDRESS="https://example" TFE_TOKEN="example" TF_ACC="1" go test ./... -v -tags=integration -run TestFunctionsAffectedByChange
+$ TFE_ADDRESS="https://example" TFE_TOKEN="example" go test ./... -v -run TestFunctionsAffectedByChange
 
 ...
 ```

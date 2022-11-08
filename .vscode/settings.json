@@ -1,9 +1,2 @@
 {
-  "go.buildFlags": [
-      "-tags=integration"
-  ],
-  "go.lintFlags": [
-    "-tags=integration"
-  ],
-  "go.testTags": "integration",
 }

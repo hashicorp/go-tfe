@@ -1,6 +1,3 @@
-//go:build integration
-// +build integration
-
 package tfe
 
 import (
@@ -11,7 +8,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/hashicorp/go-slug"
+	slug "github.com/hashicorp/go-slug"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"

@@ -149,10 +149,7 @@ func Delete(ctx context.Context, {{ .ResourceID }} string) error {
     panic("not yet implemented")
 }`
 
-const testTemplate = `//go:build integration
-// +build integration
-
-package tfe
+const testTemplate = `package tfe
 
 import (
   "context"
