@@ -391,6 +391,7 @@ func NewClient(cfg *Config) (*Client, error) {
 	client.PolicySetParameters = &policySetParameters{client: client}
 	client.PolicySets = &policySets{client: client}
 	client.PolicySetVersions = &policySetVersions{client: client}
+	client.Projects = &projects{client: client}
 	client.RegistryModules = &registryModules{client: client}
 	client.RegistryProviderPlatforms = &registryProviderPlatforms{client: client}
 	client.RegistryProviders = &registryProviders{client: client}
@@ -414,7 +415,6 @@ func NewClient(cfg *Config) (*Client, error) {
 	client.VariableSetVariables = &variableSetVariables{client: client}
 	client.WorkspaceRunTasks = &workspaceRunTasks{client: client}
 	client.Workspaces = &workspaces{client: client}
-	client.Projects = &projects{client: client}
 
 	client.Meta = Meta{
 		IPRanges: &ipRanges{client: client},

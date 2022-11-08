@@ -191,8 +191,7 @@ func TestProjectsDelete(t *testing.T) {
 	orgTest, orgTestCleanup := createOrganization(t, client)
 	defer orgTestCleanup()
 
-	pTest, pTestCleanup := createProject(t, client, orgTest)
-	defer pTestCleanup()
+	pTest, _ := createProject(t, client, orgTest)
 
 	t.Run("with valid options", func(t *testing.T) {
 		err := client.Projects.Delete(ctx, pTest.ID)

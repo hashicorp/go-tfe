@@ -351,6 +351,53 @@ func TestWorkspacesCreate(t *testing.T) {
 	orgTest, orgTestCleanup := createOrganization(t, client)
 	t.Cleanup(orgTestCleanup)
 
+	t.Run("with valid project option", func(t *testing.T) {
+		skipIfBeta(t)
+
+		options := WorkspaceCreateOptions{
+			Name:                       String(fmt.Sprintf("foo-%s", randomString(t))),
+			AllowDestroyPlan:           Bool(false),
+			AutoApply:                  Bool(true),
+			Description:                String("qux"),
+			AssessmentsEnabled:         Bool(false),
+			FileTriggersEnabled:        Bool(true),
+			Operations:                 Bool(true),
+			QueueAllRuns:               Bool(true),
+			SpeculativeEnabled:         Bool(true),
+			SourceName:                 String("my-app"),
+			SourceURL:                  String("http://my-app-hostname.io"),
+			StructuredRunOutputEnabled: Bool(true),
+			TerraformVersion:           String("0.11.0"),
+			TriggerPrefixes:            []string{"/modules", "/shared"},
+			WorkingDirectory:           String("bar/"),
+			Project:                    orgTest.DefaultProject,
+			Tags: []*Tag{
+				{
+					Name: "tag1",
+				},
+				{
+					Name: "tag2",
+				},
+			},
+		}
+
+		w, err := client.Workspaces.Create(ctx, orgTest.Name, options)
+		require.NoError(t, err)
+
+		// Get a refreshed view from the API.
+		refreshed, err := client.Workspaces.Read(ctx, orgTest.Name, *options.Name)
+		require.NoError(t, err)
+
+		for _, item := range []*Workspace{
+			w,
+			refreshed,
+		} {
+			assert.NotEmpty(t, item.ID)
+			assert.Equal(t, *options.Name, item.Name)
+			assert.Equal(t, options.Project.ID, item.Project.ID)
+		}
+	})
+
 	t.Run("with valid options", func(t *testing.T) {
 		options := WorkspaceCreateOptions{
 			Name:                       String("foo"),
@@ -773,6 +820,36 @@ func TestWorkspacesUpdate(t *testing.T) {
 		assert.NotEqual(t, wTest.AssessmentsEnabled, wAfter.AssessmentsEnabled)
 		assert.NotEqual(t, wTest.TerraformVersion, wAfter.TerraformVersion)
 		assert.Equal(t, wTest.WorkingDirectory, wAfter.WorkingDirectory)
+	})
+
+	t.Run("when updating project", func(t *testing.T) {
+		skipIfBeta(t)
+
+		kBefore, kTestCleanup := createProject(t, client, orgTest)
+		defer kTestCleanup()
+
+		wBefore, wBeforeCleanup := createWorkspaceWithOptions(t, client, orgTest, WorkspaceCreateOptions{
+			Name:    String(randomString(t)),
+			Project: kBefore,
+		})
+		defer wBeforeCleanup()
+
+		options := WorkspaceUpdateOptions{
+			Name:               String(wBefore.Name),
+			AllowDestroyPlan:   Bool(false),
+			AutoApply:          Bool(true),
+			Operations:         Bool(true),
+			QueueAllRuns:       Bool(true),
+			AssessmentsEnabled: Bool(true),
+			TerraformVersion:   String("0.15.4"),
+			Project:            orgTest.DefaultProject,
+		}
+
+		wAfter, err := client.Workspaces.Update(ctx, orgTest.Name, wBefore.Name, options)
+		require.NoError(t, err)
+
+		assert.Equal(t, wBefore.Name, wAfter.Name)
+		assert.Equal(t, wAfter.Project.ID, orgTest.DefaultProject.ID)
 	})
 
 	t.Run("with valid options", func(t *testing.T) {

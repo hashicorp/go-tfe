@@ -63,7 +63,7 @@ type ProjectCreateOptions struct {
 	// https://jsonapi.org/format/#crud-creating
 	Type string `jsonapi:"primary,projects"`
 
-	// Required: A name to identify the agent pool.
+	// Required: A name to identify the project.
 	Name *string `jsonapi:"attr,name"`
 }
 
