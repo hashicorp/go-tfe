@@ -1,21 +1,20 @@
 package tfe
 
 import (
-	"errors"
-	"io/fs"
-	"log"
-	"sort"
-
 	"bytes"
 	"context"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"io"
+	"io/fs"
+	"log"
 	"math/rand"
 	"net/http"
 	"net/url"
 	"os"
 	"reflect"
+	"sort"
 	"strconv"
 	"strings"
 	"time"
@@ -187,6 +186,10 @@ type Meta struct {
 }
 
 func (c *Client) NewRequest(method, path string, reqAttr interface{}) (*ClientRequest, error) {
+	return c.NewRequestWithAdditionalQueryParams(method, path, reqAttr, nil)
+}
+
+func (c *Client) NewRequestWithAdditionalQueryParams(method, path string, reqAttr interface{}, additionalQueryParams map[string][]string) (*ClientRequest, error) {
 	var u *url.URL
 	var err error
 	if strings.Contains(path, "/api/registry/") {
@@ -214,6 +217,9 @@ func (c *Client) NewRequest(method, path string, reqAttr interface{}) (*ClientRe
 			q, err := query.Values(reqAttr)
 			if err != nil {
 				return nil, err
+			}
+			for k, v := range additionalQueryParams {
+				q[k] = v
 			}
 			u.RawQuery = encodeQueryParams(q)
 		}

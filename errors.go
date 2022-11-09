@@ -114,6 +114,10 @@ var (
 
 	ErrInvalidPolicySetID = errors.New("invalid value for policy set ID")
 
+	ErrInvalidPolicyEvaluationID = errors.New("invalid value for policy evaluation ID")
+
+	ErrInvalidPolicySetOutcomeID = errors.New("invalid value for policy set outcome ID")
+
 	ErrInvalidPolicyCheckID = errors.New("invalid value for policy check ID")
 
 	ErrInvalidTag = errors.New("invalid tag id")

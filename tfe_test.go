@@ -131,6 +131,15 @@ func Test_EncodeQueryParams(t *testing.T) {
 		requestURLquery := encodeQueryParams(urlVals)
 		assert.Equal(t, requestURLquery, "include=workspace%2Ccost_estimate")
 	})
+	t.Run("with listOptions setting multiple filter options", func(t *testing.T) {
+		urlVals := map[string][]string{
+			"filter[0][status]":            []string{"errored"},
+			"filter[1][status]":            []string{"failed"},
+			"filter[1][enforcement_level]": []string{"mandatory"},
+		}
+		requestURLquery := encodeQueryParams(urlVals)
+		assert.Equal(t, requestURLquery, "filter%5B0%5D%5Bstatus%5D=errored&filter%5B1%5D%5Benforcement_level%5D=mandatory&filter%5B1%5D%5Bstatus%5D=failed")
+	})
 }
 
 func Test_RegistryBasePath(t *testing.T) {
