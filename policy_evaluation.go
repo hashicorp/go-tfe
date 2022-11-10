@@ -10,6 +10,20 @@ import (
 // Compile-time proof of interface implementation.
 var _ PolicyEvaluations = (*policyEvaluation)(nil)
 
+// PolicyEvaluationStatus is an enum that represents all possible statuses for a policy evaluation
+type PolicyEvaluationStatus string
+
+const (
+	PolicyEvaluationPassed      PolicyEvaluationStatus = "passed"
+	PolicyEvaluationFailed      PolicyEvaluationStatus = "failed"
+	PolicyEvaluationPending     PolicyEvaluationStatus = "pending"
+	PolicyEvaluationRunning     PolicyEvaluationStatus = "running"
+	PolicyEvaluationUnreachable PolicyEvaluationStatus = "unreachable"
+	PolicyEvaluationOverridden  PolicyEvaluationStatus = "overridden"
+	PolicyEvaluationCanceled    PolicyEvaluationStatus = "canceled"
+	PolicyEvaluationErrored     PolicyEvaluationStatus = "errored"
+)
+
 // PolicyResultCount represents the count of the policy results
 type PolicyResultCount struct {
 	AdvisoryFailed  int `jsonapi:"attr,advisory-failed"`
@@ -24,15 +38,24 @@ type PolicyAttachable struct {
 	Type string `jsonapi:"attr,type"`
 }
 
+// PolicyEvaluationStatusTimestamps represents the set of timestamps recorded for a policy evaluation
+type PolicyEvaluationStatusTimestamps struct {
+	ErroredAt  time.Time `jsonapi:"attr,errored-at,rfc3339"`
+	RunningAt  time.Time `jsonapi:"attr,running-at,rfc3339"`
+	CanceledAt time.Time `jsonapi:"attr,canceled-at,rfc3339"`
+	FailedAt   time.Time `jsonapi:"attr,failed-at,rfc3339"`
+	PassedAt   time.Time `jsonapi:"attr,passed-at,rfc3339"`
+}
+
 // PolicyEvaluation represents the policy evaluations that are part of the task stage.
 type PolicyEvaluation struct {
-	ID               string                     `jsonapi:"primary,policy-evaluations"`
-	Status           TaskResultStatus           `jsonapi:"attr,status"`
-	PolicyKind       PolicyKind                 `jsonapi:"attr,policy-kind"`
-	StatusTimestamps TaskResultStatusTimestamps `jsonapi:"attr,status-timestamps"`
-	ResultCount      *PolicyResultCount         `jsonapi:"attr,result-count"`
-	CreatedAt        time.Time                  `jsonapi:"attr,created-at,iso8601"`
-	UpdatedAt        time.Time                  `jsonapi:"attr,updated-at,iso8601"`
+	ID               string                           `jsonapi:"primary,policy-evaluations"`
+	Status           PolicyEvaluationStatus           `jsonapi:"attr,status"`
+	PolicyKind       PolicyKind                       `jsonapi:"attr,policy-kind"`
+	StatusTimestamps PolicyEvaluationStatusTimestamps `jsonapi:"attr,status-timestamps"`
+	ResultCount      *PolicyResultCount               `jsonapi:"attr,result-count"`
+	CreatedAt        time.Time                        `jsonapi:"attr,created-at,iso8601"`
+	UpdatedAt        time.Time                        `jsonapi:"attr,updated-at,iso8601"`
 
 	// The task stage this evaluation belongs to
 	TaskStage *PolicyAttachable `jsonapi:"relation,policy-attachable"`
