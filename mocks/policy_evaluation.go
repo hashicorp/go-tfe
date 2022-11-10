@@ -89,16 +89,16 @@ func (mr *MockPolicySetOutcomesMockRecorder) List(ctx, policyEvaluationID, optio
 }
 
 // Read mocks base method.
-func (m *MockPolicySetOutcomes) Read(ctx context.Context, policy_set_outcome_id string) (*tfe.PolicySetOutcome, error) {
+func (m *MockPolicySetOutcomes) Read(ctx context.Context, policySetOutcomeID string) (*tfe.PolicySetOutcome, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "Read", ctx, policy_set_outcome_id)
+	ret := m.ctrl.Call(m, "Read", ctx, policySetOutcomeID)
 	ret0, _ := ret[0].(*tfe.PolicySetOutcome)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
 
 // Read indicates an expected call of Read.
-func (mr *MockPolicySetOutcomesMockRecorder) Read(ctx, policy_set_outcome_id interface{}) *gomock.Call {
+func (mr *MockPolicySetOutcomesMockRecorder) Read(ctx, policySetOutcomeID interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Read", reflect.TypeOf((*MockPolicySetOutcomes)(nil).Read), ctx, policy_set_outcome_id)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Read", reflect.TypeOf((*MockPolicySetOutcomes)(nil).Read), ctx, policySetOutcomeID)
 }

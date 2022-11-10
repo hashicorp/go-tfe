@@ -663,7 +663,8 @@ func createPolicyWithOptions(t *testing.T, client *Client, org *Organization, op
 		Enforce: []*EnforcementOptions{
 			{
 				Path: String(path),
-				Mode: opts.Enforce[0].Mode},
+				Mode: opts.Enforce[0].Mode,
+			},
 		},
 	}
 
