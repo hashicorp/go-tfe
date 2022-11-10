@@ -124,7 +124,7 @@ type PolicySetOutcomes interface {
 
 	// **Note: This method is still in BETA and subject to change.**
 	// Read a policy set outcome by its ID. Only available for OPA policies.
-	Read(ctx context.Context, policy_set_outcome_id string) (*PolicySetOutcome, error)
+	Read(ctx context.Context, policySetOutcomeID string) (*PolicySetOutcome, error)
 }
 
 // policySetOutcome implements PolicySetOutcomes.
