@@ -47,7 +47,7 @@ func TestPolicyEvaluationList_Beta(t *testing.T) {
 
 		require.NotEmpty(t, taskStageList.Items)
 		assert.NotEmpty(t, taskStageList.Items[0].ID)
-		assert.Equal(t, 1, len(taskStageList.Items[0].PolicyEvaluation))
+		assert.Equal(t, 1, len(taskStageList.Items[0].PolicyEvaluations))
 
 		polEvaluation, err := client.PolicyEvaluations.List(ctx, taskStageList.Items[0].ID, nil)
 		require.NoError(t, err)
@@ -104,10 +104,10 @@ func TestPolicySetOutcomeList_Beta(t *testing.T) {
 
 		require.NotEmpty(t, taskStageList.Items)
 		assert.NotEmpty(t, taskStageList.Items[0].ID)
-		assert.Equal(t, 1, len(taskStageList.Items[0].PolicyEvaluation))
-		assert.NotEmpty(t, 1, len(taskStageList.Items[0].PolicyEvaluation[0].ID))
+		assert.Equal(t, 1, len(taskStageList.Items[0].PolicyEvaluations))
+		assert.NotEmpty(t, 1, len(taskStageList.Items[0].PolicyEvaluations[0].ID))
 
-		polEvaluationID := taskStageList.Items[0].PolicyEvaluation[0].ID
+		polEvaluationID := taskStageList.Items[0].PolicyEvaluations[0].ID
 
 		polSetOutcomesList, err := client.PolicySetOutcomes.List(ctx, polEvaluationID, nil)
 		require.NoError(t, err)
@@ -124,10 +124,10 @@ func TestPolicySetOutcomeList_Beta(t *testing.T) {
 
 		require.NotEmpty(t, taskStageList.Items)
 		assert.NotEmpty(t, taskStageList.Items[0].ID)
-		assert.Equal(t, 1, len(taskStageList.Items[0].PolicyEvaluation))
-		assert.NotEmpty(t, 1, len(taskStageList.Items[0].PolicyEvaluation[0].ID))
+		assert.Equal(t, 1, len(taskStageList.Items[0].PolicyEvaluations))
+		assert.NotEmpty(t, 1, len(taskStageList.Items[0].PolicyEvaluations[0].ID))
 
-		polEvaluationID := taskStageList.Items[0].PolicyEvaluation[0].ID
+		polEvaluationID := taskStageList.Items[0].PolicyEvaluations[0].ID
 
 		opts := &PolicySetOutcomeListOptions{
 			Filter: map[string]PolicySetOutcomeListFilter{
@@ -153,10 +153,10 @@ func TestPolicySetOutcomeList_Beta(t *testing.T) {
 
 		require.NotEmpty(t, taskStageList.Items)
 		assert.NotEmpty(t, taskStageList.Items[0].ID)
-		assert.Equal(t, 1, len(taskStageList.Items[0].PolicyEvaluation))
-		assert.NotEmpty(t, 1, len(taskStageList.Items[0].PolicyEvaluation[0].ID))
+		assert.Equal(t, 1, len(taskStageList.Items[0].PolicyEvaluations))
+		assert.NotEmpty(t, 1, len(taskStageList.Items[0].PolicyEvaluations[0].ID))
 
-		polEvaluationID := taskStageList.Items[0].PolicyEvaluation[0].ID
+		polEvaluationID := taskStageList.Items[0].PolicyEvaluations[0].ID
 
 		opts := &PolicySetOutcomeListOptions{
 			Filter: map[string]PolicySetOutcomeListFilter{
@@ -216,10 +216,10 @@ func TestPolicySetOutcomeRead_Beta(t *testing.T) {
 
 		require.NotEmpty(t, taskStageList.Items)
 		assert.NotEmpty(t, taskStageList.Items[0].ID)
-		assert.Equal(t, 1, len(taskStageList.Items[0].PolicyEvaluation))
-		assert.NotEmpty(t, 1, len(taskStageList.Items[0].PolicyEvaluation[0].ID))
+		assert.Equal(t, 1, len(taskStageList.Items[0].PolicyEvaluations))
+		assert.NotEmpty(t, 1, len(taskStageList.Items[0].PolicyEvaluations[0].ID))
 
-		polEvaluationID := taskStageList.Items[0].PolicyEvaluation[0].ID
+		polEvaluationID := taskStageList.Items[0].PolicyEvaluations[0].ID
 
 		polSetOutcomesList, err := client.PolicySetOutcomes.List(ctx, polEvaluationID, nil)
 		require.NoError(t, err)
