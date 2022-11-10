@@ -622,11 +622,20 @@ func createPolicyWithOptions(t *testing.T, client *Client, org *Organization, op
 	}
 
 	name := randomString(t)
+	path := name + ".sentinel"
+	if opts.Kind == OPA {
+		path = name + ".rego"
+	}
 	options := PolicyCreateOptions{
-		Name:    String(name),
-		Kind:    opts.Kind,
-		Query:   opts.Query,
-		Enforce: opts.Enforce,
+		Name:  String(name),
+		Kind:  opts.Kind,
+		Query: opts.Query,
+		Enforce: []*EnforcementOptions{
+			{
+				Path: String(path),
+				Mode: opts.Enforce[0].Mode,
+			},
+		},
 	}
 
 	ctx := context.Background()
@@ -687,7 +696,14 @@ func createUploadedPolicyWithOptions(t *testing.T, client *Client, pass bool, or
 	p, pCleanup := createPolicyWithOptions(t, client, org, opts)
 
 	ctx := context.Background()
-	err := client.Policies.Upload(ctx, p.ID, []byte(fmt.Sprintf("main = rule { %t }", pass)))
+	policy := fmt.Sprintf("main = rule { %t }", pass)
+	if opts.Kind == OPA {
+		policy = `package example rule["not allowed"] { false }`
+		if !pass {
+			policy = `package example rule["not allowed"] { true }`
+		}
+	}
+	err := client.Policies.Upload(ctx, p.ID, []byte(policy))
 	if err != nil {
 		t.Fatal(err)
 	}
