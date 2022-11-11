@@ -41,8 +41,9 @@ type TaskStage struct {
 	CreatedAt        time.Time                 `jsonapi:"attr,created-at,iso8601"`
 	UpdatedAt        time.Time                 `jsonapi:"attr,updated-at,iso8601"`
 
-	Run         *Run          `jsonapi:"relation,run"`
-	TaskResults []*TaskResult `jsonapi:"relation,task-results"`
+	Run               *Run                `jsonapi:"relation,run"`
+	TaskResults       []*TaskResult       `jsonapi:"relation,task-results"`
+	PolicyEvaluations []*PolicyEvaluation `jsonapi:"relation,policy-evaluations"`
 }
 
 // TaskStageList represents a list of task stages
