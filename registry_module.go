@@ -207,13 +207,7 @@ type RegistryModuleUpdateOptions struct {
 
 	// Optional: Flag to enable no-code provisioning for the whole module.
 	// **Note: This field is still in BETA and subject to change.**
-	
-	
-	
-	
-	
-	
-	*bool `jsonapi:"attr,no-code,omitempty"`
+	NoCode *bool `jsonapi:"attr,no-code,omitempty"`
 }
 
 type RegistryModuleVCSRepoOptions struct {
