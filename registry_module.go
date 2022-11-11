@@ -171,7 +171,7 @@ type RegistryModuleCreateOptions struct {
 	Namespace string `jsonapi:"attr,namespace,omitempty"`
 	// Optional: If set to true the module is enabled for no-code provisioning.
 	// **Note: This field is still in BETA and subject to change.**
-	NoCode bool `jsonapi:"attr,no-code,omitempty"`
+	NoCode bool `jsonapi:"attr,no-code"`
 }
 
 // RegistryModuleCreateVersionOptions is used when creating a registry module version
@@ -207,7 +207,13 @@ type RegistryModuleUpdateOptions struct {
 
 	// Optional: Flag to enable no-code provisioning for the whole module.
 	// **Note: This field is still in BETA and subject to change.**
-	NoCode *bool `jsonapi:"attr,no-code,omitempty"`
+	
+	
+	
+	
+	
+	
+	*bool `jsonapi:"attr,no-code,omitempty"`
 }
 
 type RegistryModuleVCSRepoOptions struct {
