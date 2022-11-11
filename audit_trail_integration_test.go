@@ -21,16 +21,59 @@ func TestAuditTrailsList(t *testing.T) {
 	auditTrailClient := testAuditTrailClient(t, userClient, org)
 
 	// First let's generate some audit events in this test organization
-	_, wkspace1Cleanup := createWorkspace(t, userClient, org)
+	ws, wkspace1Cleanup := createWorkspace(t, userClient, org)
 	t.Cleanup(wkspace1Cleanup)
 
-	_, wkspace2Cleanup := createWorkspace(t, userClient, org)
-	t.Cleanup(wkspace2Cleanup)
+	_, err := userClient.Workspaces.Lock(ctx, ws.ID, WorkspaceLockOptions{})
+	require.NoError(t, err)
+	_, err = userClient.Workspaces.Unlock(ctx, ws.ID)
+	require.NoError(t, err)
+
+	_, err = userClient.Workspaces.Lock(ctx, ws.ID, WorkspaceLockOptions{})
+	require.NoError(t, err)
+	_, err = userClient.Workspaces.Unlock(ctx, ws.ID)
+	require.NoError(t, err)
+
+	_, err = userClient.Workspaces.Lock(ctx, ws.ID, WorkspaceLockOptions{})
+	require.NoError(t, err)
+	_, err = userClient.Workspaces.Unlock(ctx, ws.ID)
+	require.NoError(t, err)
 
 	t.Run("with no specified timeframe", func(t *testing.T) {
 		atl, err := auditTrailClient.AuditTrails.List(ctx, nil)
 		require.NoError(t, err)
 		require.NotEmpty(t, atl.Items)
+
+		require.Equal(t, len(atl.Items), 8)
+
+		t.Run("pagination parameters", func(t *testing.T) {
+			page1, err := auditTrailClient.AuditTrails.List(ctx, &AuditTrailListOptions{
+				ListOptions: &ListOptions{
+					PageNumber: 1,
+					PageSize:   4,
+				},
+			})
+
+			require.NoError(t, err)
+
+			assert.NotEmpty(t, page1.Items)
+			assert.Equal(t, 1, page1.CurrentPage)
+			assert.Equal(t, 2, page1.TotalPages)
+			assert.Equal(t, 8, page1.TotalCount)
+
+			page2, err := auditTrailClient.AuditTrails.List(ctx, &AuditTrailListOptions{
+				ListOptions: &ListOptions{
+					PageNumber: 2,
+					PageSize:   4,
+				},
+			})
+
+			require.NoError(t, err)
+
+			assert.NotEmpty(t, page2.Items)
+			assert.Equal(t, 2, page2.CurrentPage)
+			assert.Equal(t, 0, page2.NextPage)
+		})
 
 		log := atl.Items[0]
 		assert.NotEmpty(t, log.ID)

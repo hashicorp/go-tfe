@@ -52,6 +52,14 @@ type AuditTrailResource struct {
 	Meta   map[string]interface{} `json:"meta"`
 }
 
+type AuditTrailPagination struct {
+	CurrentPage  int `json:"current_page"`
+	PreviousPage int `json:"prev_page"`
+	NextPage     int `json:"next_page"`
+	TotalPages   int `json:"total_pages"`
+	TotalCount   int `json:"total_count"`
+}
+
 // AuditTrail represents an event in the TFC audit log.
 type AuditTrail struct {
 	ID        string    `json:"id"`
@@ -66,9 +74,8 @@ type AuditTrail struct {
 
 // AuditTrailList represents a list of audit trails.
 type AuditTrailList struct {
-	*Pagination
-
-	Items []*AuditTrail `json:"data"`
+	*AuditTrailPagination `json:"pagination"`
+	Items                 []*AuditTrail `json:"data"`
 }
 
 // AuditTrailListOptions represents the options for listing audit trails.
