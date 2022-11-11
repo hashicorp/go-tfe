@@ -205,7 +205,7 @@ func TestTaskStageOverride_Beta(t *testing.T) {
 			Overridable: Bool(true),
 		}
 		createPolicySetWithOptions(t, client, orgTest, []*Policy{pTest}, []*Workspace{wTest}, opts)
-		rTest, tTestCleanup := createRunWaitForStatus(t, client, wTest, RunAwaitingDecision)
+		rTest, tTestCleanup := createRunWaitForStatus(t, client, wTest, RunPostPlanAwaitingDecision)
 		defer tTestCleanup()
 
 		taskStageList, err := client.TaskStages.List(ctx, rTest.ID, nil)
@@ -216,7 +216,49 @@ func TestTaskStageOverride_Beta(t *testing.T) {
 		assert.Equal(t, TaskStageAwaitingOverride, taskStageList.Items[0].Status)
 		assert.Equal(t, 1, len(taskStageList.Items[0].PolicyEvaluations))
 
-		_, err = client.TaskStages.Override(ctx, taskStageList.Items[0].ID)
+		_, err = client.TaskStages.Override(ctx, taskStageList.Items[0].ID, TaskStageOverrideOptions{})
+		require.NoError(t, err)
+	})
+
+	t.Run("when the policy failed with options", func(t *testing.T) {
+		orgTest, orgTestCleanup := createOrganization(t, client)
+		defer orgTestCleanup()
+
+		options := PolicyCreateOptions{
+			Description: String("A sample policy"),
+			Kind:        OPA,
+			Query:       String("data.example.rule"),
+			Enforce: []*EnforcementOptions{
+				{
+					Mode: EnforcementMode(EnforcementMandatory),
+				},
+			},
+		}
+		pTest, pTestCleanup := createUploadedPolicyWithOptions(t, client, false, orgTest, options)
+		defer pTestCleanup()
+
+		wTest, wTestCleanup := createWorkspace(t, client, orgTest)
+		defer wTestCleanup()
+		opts := PolicySetCreateOptions{
+			Kind:        OPA,
+			Overridable: Bool(true),
+		}
+		createPolicySetWithOptions(t, client, orgTest, []*Policy{pTest}, []*Workspace{wTest}, opts)
+		rTest, tTestCleanup := createRunWaitForStatus(t, client, wTest, RunPostPlanAwaitingDecision)
+		defer tTestCleanup()
+
+		taskStageList, err := client.TaskStages.List(ctx, rTest.ID, nil)
+		require.NoError(t, err)
+
+		require.NotEmpty(t, taskStageList.Items)
+		assert.NotEmpty(t, taskStageList.Items[0].ID)
+		assert.Equal(t, TaskStageAwaitingOverride, taskStageList.Items[0].Status)
+		assert.Equal(t, 1, len(taskStageList.Items[0].PolicyEvaluations))
+
+		taskStageOverrideOptions := TaskStageOverrideOptions{
+			Comment: String("test comment"),
+		}
+		ts, err := client.TaskStages.Override(ctx, taskStageList.Items[0].ID, taskStageOverrideOptions)
 		require.NoError(t, err)
 	})
 
@@ -254,7 +296,7 @@ func TestTaskStageOverride_Beta(t *testing.T) {
 		assert.Equal(t, TaskStagePassed, taskStageList.Items[0].Status)
 		assert.Equal(t, 1, len(taskStageList.Items[0].PolicyEvaluations))
 
-		_, err = client.TaskStages.Override(ctx, taskStageList.Items[0].ID)
+		_, err = client.TaskStages.Override(ctx, taskStageList.Items[0].ID, TaskStageOverrideOptions{})
 		assert.Errorf(t, err, "transition not allowed")
 	})
 }

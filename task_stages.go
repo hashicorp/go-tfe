@@ -20,7 +20,7 @@ type TaskStages interface {
 
 	// **Note: This function is still in BETA and subject to change.**
 	// Override a task stage for a given run
-	Override(ctx context.Context, taskStageID string) (*TaskStage, error)
+	Override(ctx context.Context, taskStageID string, options TaskStageOverrideOptions) (*TaskStage, error)
 }
 
 // taskStages implements TaskStages
@@ -74,6 +74,12 @@ type TaskStage struct {
 	Run               *Run                `jsonapi:"relation,run"`
 	TaskResults       []*TaskResult       `jsonapi:"relation,task-results"`
 	PolicyEvaluations []*PolicyEvaluation `jsonapi:"relation,policy-evaluations"`
+}
+
+// TaskStageOverrideOptions represents the options for overriding a TaskStage.
+type TaskStageOverrideOptions struct {
+	// An optional explanation for why the stage was overridden
+	Comment *string `json:"comment,omitempty"`
 }
 
 // TaskStageList represents a list of task stages
@@ -158,13 +164,13 @@ func (s *taskStages) List(ctx context.Context, runID string, options *TaskStageL
 
 // **Note: This function is still in BETA and subject to change.**
 // Override a task stages for a run
-func (s *taskStages) Override(ctx context.Context, taskStageID string) (*TaskStage, error) {
+func (s *taskStages) Override(ctx context.Context, taskStageID string, options TaskStageOverrideOptions) (*TaskStage, error) {
 	if !validStringID(&taskStageID) {
 		return nil, ErrInvalidTaskStageID
 	}
 
 	u := fmt.Sprintf("task-stages/%s/actions/override", taskStageID)
-	req, err := s.client.NewRequest("POST", u, nil)
+	req, err := s.client.NewRequest("POST", u, &options)
 	if err != nil {
 		return nil, err
 	}

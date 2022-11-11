@@ -51,18 +51,18 @@ func (mr *MockTaskStagesMockRecorder) List(ctx, runID, options interface{}) *gom
 }
 
 // Override mocks base method.
-func (m *MockTaskStages) Override(ctx context.Context, taskStageID string) (*tfe.TaskStage, error) {
+func (m *MockTaskStages) Override(ctx context.Context, taskStageID string, options tfe.TaskStageOverrideOptions) (*tfe.TaskStage, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "Override", ctx, taskStageID)
+	ret := m.ctrl.Call(m, "Override", ctx, taskStageID, options)
 	ret0, _ := ret[0].(*tfe.TaskStage)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
 
 // Override indicates an expected call of Override.
-func (mr *MockTaskStagesMockRecorder) Override(ctx, taskStageID interface{}) *gomock.Call {
+func (mr *MockTaskStagesMockRecorder) Override(ctx, taskStageID, options interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Override", reflect.TypeOf((*MockTaskStages)(nil).Override), ctx, taskStageID)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Override", reflect.TypeOf((*MockTaskStages)(nil).Override), ctx, taskStageID, options)
 }
 
 // Read mocks base method.
