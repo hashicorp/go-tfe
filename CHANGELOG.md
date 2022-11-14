@@ -1,5 +1,9 @@
 # Unreleased
 
+## Bug Fixes
+
+* Fixes `AuditTrail` pagination parameters (`CurrentPage`, `PreviousPage`, `NextPage`, `TotalPages`, `TotalCount`), which were not deserialized after reading from the List endpoint by @brandonc [#586](https://github.com/hashicorp/go-tfe/pull/586)
+
 ## Enhancements
 
 * Add OPA support to the Policy Set APIs by @mrinalirao [#575](https://github.com/hashicorp/go-tfe/pull/575)
