@@ -556,6 +556,36 @@ func createPolicySet(t *testing.T, client *Client, org *Organization, policies [
 	}
 }
 
+func createPolicySetWithOptions(t *testing.T, client *Client, org *Organization, policies []*Policy, workspaces []*Workspace, opts PolicySetCreateOptions) (*PolicySet, func()) {
+	var orgCleanup func()
+
+	if org == nil {
+		org, orgCleanup = createOrganization(t, client)
+	}
+
+	ctx := context.Background()
+	ps, err := client.PolicySets.Create(ctx, org.Name, PolicySetCreateOptions{
+		Name:        String(randomString(t)),
+		Policies:    policies,
+		Workspaces:  workspaces,
+		Kind:        opts.Kind,
+		Overridable: opts.Overridable,
+	})
+	if err != nil {
+		t.Fatal(err)
+	}
+	return ps, func() {
+		if err := client.PolicySets.Delete(ctx, ps.ID); err != nil {
+			t.Errorf("Error destroying policy set! WARNING: Dangling resources\n"+
+				"may exist! The full error is shown below.\n\n"+
+				"PolicySet: %s\nError: %s", ps.ID, err)
+		}
+		if orgCleanup != nil {
+			orgCleanup()
+		}
+	}
+}
+
 func createPolicySetVersion(t *testing.T, client *Client, ps *PolicySet) (*PolicySetVersion, func()) {
 	var psCleanup func()
 

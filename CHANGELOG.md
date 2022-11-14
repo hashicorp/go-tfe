@@ -9,6 +9,7 @@
 * Add OPA support to the Policy Set APIs by @mrinalirao [#575](https://github.com/hashicorp/go-tfe/pull/575)
 * Add OPA support to the Policy APIs by @mrinalirao [#579](https://github.com/hashicorp/go-tfe/pull/579)
 * Add Policy Evaluation and Policy Set Outcome APIs by @mrinalirao [#583](https://github.com/hashicorp/go-tfe/pull/583)
+* Add OPA support to Task Stage APIs by @mrinalirao [#584](https://github.com/hashicorp/go-tfe/pull/584)
 
 # v1.12.0
 
