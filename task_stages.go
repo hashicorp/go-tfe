@@ -57,7 +57,7 @@ type Permissions struct {
 
 // Actions represents a task stage actions
 type Actions struct {
-	IsOverridable *bool `jsonapi:"attr, overridable"`
+	IsOverridable *bool `jsonapi:"attr,is-overridable"`
 }
 
 // TaskStage represents a TFC/E run's stage where run tasks can occur

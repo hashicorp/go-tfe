@@ -73,12 +73,12 @@ const (
 	RunPolicyChecking           RunStatus = "policy_checking"
 	RunPolicyOverride           RunStatus = "policy_override"
 	RunPolicySoftFailed         RunStatus = "policy_soft_failed"
+	RunPostPlanAwaitingDecision RunStatus = "post_plan_awaiting_decision"
 	RunPostPlanCompleted        RunStatus = "post_plan_completed"
 	RunPostPlanRunning          RunStatus = "post_plan_running"
 	RunPrePlanCompleted         RunStatus = "pre_plan_completed"
 	RunPrePlanRunning           RunStatus = "pre_plan_running"
 	RunQueuing                  RunStatus = "queuing"
-	RunPostPlanAwaitingDecision RunStatus = "post_plan_awaiting_decision"
 )
 
 // RunSource represents a source type of a run.
