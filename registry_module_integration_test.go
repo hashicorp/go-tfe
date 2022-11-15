@@ -99,6 +99,7 @@ func TestRegistryModulesCreate(t *testing.T) {
 			assert.Equal(t, *options.Provider, rm.Provider)
 			assert.Equal(t, PrivateRegistry, rm.RegistryName)
 			assert.Equal(t, orgTest.Name, rm.Namespace)
+			assert.False(t, rm.NoCode, "no-code module attribute should be false by default")
 
 			assertRegistryModuleAttributes(t, rm)
 		})
@@ -116,6 +117,7 @@ func TestRegistryModulesCreate(t *testing.T) {
 			assert.Equal(t, *options.Provider, rm.Provider)
 			assert.Equal(t, options.RegistryName, rm.RegistryName)
 			assert.Equal(t, orgTest.Name, rm.Namespace)
+			assert.False(t, rm.NoCode, "no-code module attribute should be false by default")
 
 			assertRegistryModuleAttributes(t, rm)
 		})
@@ -134,6 +136,27 @@ func TestRegistryModulesCreate(t *testing.T) {
 			assert.Equal(t, *options.Provider, rm.Provider)
 			assert.Equal(t, options.RegistryName, rm.RegistryName)
 			assert.Equal(t, options.Namespace, rm.Namespace)
+			assert.False(t, rm.NoCode, "no-code module attribute should be false by default")
+
+			assertRegistryModuleAttributes(t, rm)
+		})
+
+		t.Run("with no-code attribute", func(t *testing.T) {
+			skipIfBeta(t)
+			options := RegistryModuleCreateOptions{
+				Name:         String("iam"),
+				Provider:     String("aws"),
+				NoCode:       true,
+				RegistryName: PrivateRegistry,
+			}
+			rm, err := client.RegistryModules.Create(ctx, orgTest.Name, options)
+			require.NoError(t, err)
+			assert.NotEmpty(t, rm.ID)
+			assert.Equal(t, *options.Name, rm.Name)
+			assert.Equal(t, *options.Provider, rm.Provider)
+			assert.Equal(t, options.RegistryName, rm.RegistryName)
+			assert.Equal(t, orgTest.Name, rm.Namespace)
+			assert.Equal(t, options.NoCode, rm.NoCode)
 
 			assertRegistryModuleAttributes(t, rm)
 		})
@@ -222,6 +245,56 @@ func TestRegistryModulesCreate(t *testing.T) {
 		assert.Nil(t, rm)
 		assert.EqualError(t, err, ErrInvalidOrg.Error())
 	})
+}
+
+func TestRegistryModuleUpdate(t *testing.T) {
+	skipIfBeta(t)
+	client := testClient(t)
+	ctx := context.Background()
+
+	orgTest, orgTestCleanup := createOrganization(t, client)
+	defer orgTestCleanup()
+
+	options := RegistryModuleCreateOptions{
+		Name:         String("vault"),
+		Provider:     String("aws"),
+		RegistryName: PublicRegistry,
+		Namespace:    "hashicorp",
+	}
+	rm, err := client.RegistryModules.Create(ctx, orgTest.Name, options)
+	require.NoError(t, err)
+	assert.NotEmpty(t, rm.ID)
+
+	t.Run("enable no-code", func(t *testing.T) {
+		options := RegistryModuleUpdateOptions{
+			NoCode: Bool(true),
+		}
+		rm, err := client.RegistryModules.Update(ctx, RegistryModuleID{
+			Organization: orgTest.Name,
+			Name:         "vault",
+			Provider:     "aws",
+			Namespace:    "hashicorp",
+			RegistryName: PublicRegistry,
+		}, options)
+		require.NoError(t, err)
+		assert.True(t, rm.NoCode)
+	})
+
+	t.Run("disable no-code", func(t *testing.T) {
+		options := RegistryModuleUpdateOptions{
+			NoCode: Bool(false),
+		}
+		rm, err := client.RegistryModules.Update(ctx, RegistryModuleID{
+			Organization: orgTest.Name,
+			Name:         "vault",
+			Provider:     "aws",
+			Namespace:    "hashicorp",
+			RegistryName: PublicRegistry,
+		}, options)
+		require.NoError(t, err)
+		assert.False(t, rm.NoCode)
+	})
+
 }
 
 func TestRegistryModulesCreateVersion(t *testing.T) {
