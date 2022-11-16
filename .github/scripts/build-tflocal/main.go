@@ -7,6 +7,7 @@ import (
 	"log"
 	"os"
 	"os/signal"
+	"time"
 
 	tfe "github.com/hashicorp/go-tfe"
 )
@@ -44,7 +45,14 @@ func main() {
 		log.Fatal(err)
 	}
 
-	log.Printf("Created run with ID: %s", runID)
+	// we should only wait if we are creating an instance
+	if !isDestroy {
+		if err = waitForRun(ctx, client, runID); err != nil {
+			log.Fatal(err)
+		}
+
+		log.Printf("Run with ID successfully applied: %s", runID)
+	}
 }
 
 func createRun(ctx context.Context, client *tfe.Client) (string, error) {
@@ -68,7 +76,38 @@ func createRun(ctx context.Context, client *tfe.Client) (string, error) {
 	if err != nil {
 		return "", fmt.Errorf("failed to trigger run: %w", err)
 	}
+	log.Printf("Run created: %s", run.ID)
 
-	log.Printf("Created run: %s\n", run.ID)
 	return run.ID, nil
+}
+
+func waitForRun(ctx context.Context, client *tfe.Client, runID string) error {
+	// The run should take about 5 minutes to complete;
+	// polling the status of the run every 20 seconds or so
+	// should be frequent enough. It's also long enough to ensure
+	// no ticks are dropped.
+	ticker := time.NewTicker(time.Second * 20)
+	defer ticker.Stop()
+
+	for {
+		select {
+		case <-ctx.Done():
+			return fmt.Errorf("Context canceled: %w", ctx.Err())
+		case <-ticker.C:
+			run, err := client.Runs.Read(ctx, runID)
+			if err != nil {
+				return err
+			}
+
+			switch run.Status {
+			case tfe.RunCanceled, tfe.RunErrored, tfe.RunDiscarded:
+				return fmt.Errorf("Could not complete run: %s", string(run.Status))
+			case tfe.RunApplied:
+				// run is complete
+				return nil
+			default:
+				log.Printf("Polling run %s, has status: %s", runID, string(run.Status))
+			}
+		}
+	}
 }
