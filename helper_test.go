@@ -1984,7 +1984,7 @@ func createProject(t *testing.T, client *Client, org *Organization) (*Project, f
 
 	ctx := context.Background()
 	p, err := client.Projects.Create(ctx, org.Name, ProjectCreateOptions{
-		Name: String(randomStringWithoutSpecialChar(t)),
+		Name: randomStringWithoutSpecialChar(t),
 	})
 	if err != nil {
 		t.Fatal(err)

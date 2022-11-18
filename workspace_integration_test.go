@@ -848,6 +848,9 @@ func TestWorkspacesUpdate(t *testing.T) {
 		wAfter, err := client.Workspaces.Update(ctx, orgTest.Name, wBefore.Name, options)
 		require.NoError(t, err)
 
+		require.NotNil(t, wAfter.Project)
+		require.NotNil(t, orgTest.DefaultProject)
+
 		assert.Equal(t, wBefore.Name, wAfter.Name)
 		assert.Equal(t, wAfter.Project.ID, orgTest.DefaultProject.ID)
 	})
@@ -2145,7 +2148,6 @@ func TestWorkspacesRunTasksPermission(t *testing.T) {
 }
 
 func TestWorkspacesProjects(t *testing.T) {
-	skipIfNotCINode(t)
 	skipIfBeta(t)
 	client := testClient(t)
 	ctx := context.Background()
@@ -2156,7 +2158,11 @@ func TestWorkspacesProjects(t *testing.T) {
 	wTest, wTestCleanup := createWorkspace(t, client, orgTest)
 	defer wTestCleanup()
 
-	// TODO: Assert specific project ID once we can read the org default project
+	t.Run("created workspace includes default organization project", func(t *testing.T) {
+		require.NotNil(t, orgTest.DefaultProject)
+		require.NotNil(t, wTest.Project)
+		assert.Equal(t, wTest.Project.ID, orgTest.DefaultProject.ID)
+	})
 
 	t.Run("created workspace includes project ID", func(t *testing.T) {
 		assert.NotNil(t, wTest.Project.ID)

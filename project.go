@@ -21,13 +21,13 @@ type Projects interface {
 	Create(ctx context.Context, organization string, options ProjectCreateOptions) (*Project, error)
 
 	// Read a project by its ID.
-	Read(ctx context.Context, ProjectID string) (*Project, error)
+	Read(ctx context.Context, projectID string) (*Project, error)
 
 	// Update a project.
-	Update(ctx context.Context, ProjectID string, options ProjectUpdateOptions) (*Project, error)
+	Update(ctx context.Context, projectID string, options ProjectUpdateOptions) (*Project, error)
 
 	//Delete a project.
-	Delete(ctx context.Context, ProjectID string) error
+	Delete(ctx context.Context, projectID string) error
 }
 
 // projects implements Projects
@@ -64,7 +64,7 @@ type ProjectCreateOptions struct {
 	Type string `jsonapi:"primary,projects"`
 
 	// Required: A name to identify the project.
-	Name *string `jsonapi:"attr,name"`
+	Name string `jsonapi:"attr,name"`
 }
 
 // ProjectUpdateOptions represents the options for updating a project
@@ -75,8 +75,8 @@ type ProjectUpdateOptions struct {
 	// https://jsonapi.org/format/#crud-creating
 	Type string `jsonapi:"primary,projects"`
 
-	// Required: A name to identify the agent pool.
-	Name *string `jsonapi:"attr,name"`
+	// Optional: A name to identify the agent pool.
+	Name *string `jsonapi:"attr,name,omitempty"`
 }
 
 // List all projects.
@@ -138,12 +138,12 @@ func (s *projects) Create(ctx context.Context, organization string, options Proj
 }
 
 // Read a single project by its ID.
-func (s *projects) Read(ctx context.Context, ProjectID string) (*Project, error) {
-	if !validStringID(&ProjectID) {
+func (s *projects) Read(ctx context.Context, projectID string) (*Project, error) {
+	if !validStringID(&projectID) {
 		return nil, ErrInvalidProjectID
 	}
 
-	u := fmt.Sprintf("projects/%s", url.QueryEscape(ProjectID))
+	u := fmt.Sprintf("projects/%s", url.QueryEscape(projectID))
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, err
@@ -159,8 +159,8 @@ func (s *projects) Read(ctx context.Context, ProjectID string) (*Project, error)
 }
 
 // Update a project by its ID
-func (s *projects) Update(ctx context.Context, ProjectID string, options ProjectUpdateOptions) (*Project, error) {
-	if !validStringID(&ProjectID) {
+func (s *projects) Update(ctx context.Context, projectID string, options ProjectUpdateOptions) (*Project, error) {
+	if !validStringID(&projectID) {
 		return nil, ErrInvalidProjectID
 	}
 
@@ -168,7 +168,7 @@ func (s *projects) Update(ctx context.Context, ProjectID string, options Project
 		return nil, err
 	}
 
-	u := fmt.Sprintf("projects/%s", url.QueryEscape(ProjectID))
+	u := fmt.Sprintf("projects/%s", url.QueryEscape(projectID))
 	req, err := s.client.NewRequest("PATCH", u, &options)
 	if err != nil {
 		return nil, err
@@ -184,12 +184,12 @@ func (s *projects) Update(ctx context.Context, ProjectID string, options Project
 }
 
 // Delete a project by its ID
-func (s *projects) Delete(ctx context.Context, ProjectID string) error {
-	if !validStringID(&ProjectID) {
+func (s *projects) Delete(ctx context.Context, projectID string) error {
+	if !validStringID(&projectID) {
 		return ErrInvalidProjectID
 	}
 
-	u := fmt.Sprintf("projects/%s", url.QueryEscape(ProjectID))
+	u := fmt.Sprintf("projects/%s", url.QueryEscape(projectID))
 	req, err := s.client.NewRequest("DELETE", u, nil)
 	if err != nil {
 		return err
@@ -199,10 +199,11 @@ func (s *projects) Delete(ctx context.Context, ProjectID string) error {
 }
 
 func (o ProjectCreateOptions) valid() error {
-	if !validString(o.Name) {
+	if !validString(&o.Name) {
 		return ErrRequiredName
 	}
-	if !validStringID(o.Name) {
+
+	if !validStringID(&o.Name) {
 		return ErrInvalidName
 	}
 	return nil

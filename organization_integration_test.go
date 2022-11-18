@@ -188,7 +188,7 @@ func TestOrganizationsRead(t *testing.T) {
 		require.NoError(t, err)
 		assert.Equal(t, orgTest.Name, org.Name)
 
-		assert.NotNil(t, org.DefaultProject)
+		require.NotNil(t, org.DefaultProject)
 		assert.NotNil(t, org.DefaultProject.Name)
 	})
 }

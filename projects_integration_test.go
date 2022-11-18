@@ -12,7 +12,6 @@ import (
 )
 
 func TestProjectsList(t *testing.T) {
-	skipIfNotCINode(t)
 	skipIfBeta(t)
 
 	client := testClient(t)
@@ -55,7 +54,6 @@ func TestProjectsList(t *testing.T) {
 }
 
 func TestProjectsRead(t *testing.T) {
-	skipIfNotCINode(t)
 	skipIfBeta(t)
 
 	client := testClient(t)
@@ -88,7 +86,6 @@ func TestProjectsRead(t *testing.T) {
 }
 
 func TestProjectsCreate(t *testing.T) {
-	skipIfNotCINode(t)
 	skipIfBeta(t)
 
 	client := testClient(t)
@@ -99,7 +96,7 @@ func TestProjectsCreate(t *testing.T) {
 
 	t.Run("with valid options", func(t *testing.T) {
 		options := ProjectCreateOptions{
-			Name: String("foo"),
+			Name: "foo",
 		}
 
 		w, err := client.Projects.Create(ctx, orgTest.Name, options)
@@ -113,7 +110,7 @@ func TestProjectsCreate(t *testing.T) {
 			refreshed,
 		} {
 			assert.NotEmpty(t, item.ID)
-			assert.Equal(t, *options.Name, item.Name)
+			assert.Equal(t, options.Name, item.Name)
 		}
 	})
 
@@ -125,7 +122,7 @@ func TestProjectsCreate(t *testing.T) {
 
 	t.Run("when options has an invalid name", func(t *testing.T) {
 		w, err := client.Projects.Create(ctx, orgTest.Name, ProjectCreateOptions{
-			Name: String(badIdentifier),
+			Name: badIdentifier,
 		})
 		assert.Nil(t, w)
 		assert.EqualError(t, err, ErrInvalidName.Error())
@@ -133,7 +130,7 @@ func TestProjectsCreate(t *testing.T) {
 
 	t.Run("when options has an invalid organization", func(t *testing.T) {
 		w, err := client.Projects.Create(ctx, badIdentifier, ProjectCreateOptions{
-			Name: String("foo"),
+			Name: "foo",
 		})
 		assert.Nil(t, w)
 		assert.EqualError(t, err, ErrInvalidOrg.Error())
@@ -141,7 +138,6 @@ func TestProjectsCreate(t *testing.T) {
 }
 
 func TestProjectsUpdate(t *testing.T) {
-	skipIfNotCINode(t)
 	skipIfBeta(t)
 
 	client := testClient(t)
@@ -182,7 +178,6 @@ func TestProjectsUpdate(t *testing.T) {
 }
 
 func TestProjectsDelete(t *testing.T) {
-	skipIfNotCINode(t)
 	skipIfBeta(t)
 
 	client := testClient(t)
