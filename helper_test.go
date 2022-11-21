@@ -1164,12 +1164,12 @@ func createPlanExport(t *testing.T, client *Client, r *Run) (*PlanExport, func()
 		t.Fatal(err)
 	}
 
-	timeout := 2 * time.Minute
+	timeout := 3 * time.Minute
 
 	ctxPollExportReady, cancelPollExportReady := context.WithTimeout(ctx, timeout)
 	t.Cleanup(cancelPollExportReady)
 
-	ticker := time.NewTicker(5 * time.Second)
+	ticker := time.NewTicker(3 * time.Second)
 	defer ticker.Stop()
 
 	for {
@@ -1190,6 +1190,10 @@ func createPlanExport(t *testing.T, client *Client, r *Run) (*PlanExport, func()
 						rCleanup()
 					}
 				}
+			} else if pe.Status == PlanExportErrored {
+				t.Fatal("Plan export failed")
+			} else {
+				t.Logf("Waiting for plan export finished but was %s", pe.Status)
 			}
 		}
 	}
