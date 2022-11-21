@@ -51,17 +51,17 @@ func (mr *MockProjectsMockRecorder) Create(ctx, organization, options interface{
 }
 
 // Delete mocks base method.
-func (m *MockProjects) Delete(ctx context.Context, ProjectID string) error {
+func (m *MockProjects) Delete(ctx context.Context, projectID string) error {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "Delete", ctx, ProjectID)
+	ret := m.ctrl.Call(m, "Delete", ctx, projectID)
 	ret0, _ := ret[0].(error)
 	return ret0
 }
 
 // Delete indicates an expected call of Delete.
-func (mr *MockProjectsMockRecorder) Delete(ctx, ProjectID interface{}) *gomock.Call {
+func (mr *MockProjectsMockRecorder) Delete(ctx, projectID interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Delete", reflect.TypeOf((*MockProjects)(nil).Delete), ctx, ProjectID)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Delete", reflect.TypeOf((*MockProjects)(nil).Delete), ctx, projectID)
 }
 
 // List mocks base method.
@@ -80,31 +80,31 @@ func (mr *MockProjectsMockRecorder) List(ctx, organization, options interface{})
 }
 
 // Read mocks base method.
-func (m *MockProjects) Read(ctx context.Context, ProjectID string) (*tfe.Project, error) {
+func (m *MockProjects) Read(ctx context.Context, projectID string) (*tfe.Project, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "Read", ctx, ProjectID)
+	ret := m.ctrl.Call(m, "Read", ctx, projectID)
 	ret0, _ := ret[0].(*tfe.Project)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
 
 // Read indicates an expected call of Read.
-func (mr *MockProjectsMockRecorder) Read(ctx, ProjectID interface{}) *gomock.Call {
+func (mr *MockProjectsMockRecorder) Read(ctx, projectID interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Read", reflect.TypeOf((*MockProjects)(nil).Read), ctx, ProjectID)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Read", reflect.TypeOf((*MockProjects)(nil).Read), ctx, projectID)
 }
 
 // Update mocks base method.
-func (m *MockProjects) Update(ctx context.Context, ProjectID string, options tfe.ProjectUpdateOptions) (*tfe.Project, error) {
+func (m *MockProjects) Update(ctx context.Context, projectID string, options tfe.ProjectUpdateOptions) (*tfe.Project, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "Update", ctx, ProjectID, options)
+	ret := m.ctrl.Call(m, "Update", ctx, projectID, options)
 	ret0, _ := ret[0].(*tfe.Project)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
 
 // Update indicates an expected call of Update.
-func (mr *MockProjectsMockRecorder) Update(ctx, ProjectID, options interface{}) *gomock.Call {
+func (mr *MockProjectsMockRecorder) Update(ctx, projectID, options interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Update", reflect.TypeOf((*MockProjects)(nil).Update), ctx, ProjectID, options)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Update", reflect.TypeOf((*MockProjects)(nil).Update), ctx, projectID, options)
 }
