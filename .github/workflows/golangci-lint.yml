@@ -8,13 +8,13 @@ jobs:
     name: lint
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Set local Go version
         run: |
           VERSION=`cat .go-version| awk '{printf$1}'`
-          echo "go_version=$VERSION" >> $GITHUB_ENV      
+          echo "go_version=$VERSION" >> $GITHUB_ENV
       - name: Setup Go Environment
-        uses: actions/setup-go@v2
+        uses: actions/setup-go@v3
         with:
           go-version: "${{ env.go_version }}"
       - name: golangci-lint
