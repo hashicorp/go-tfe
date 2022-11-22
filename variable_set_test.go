@@ -288,8 +288,10 @@ func TestVariableSetsApplyToAndRemoveFromWorkspaces(t *testing.T) {
 
 		// Variable set should be applied to [wTest1, wTest2]
 		assert.Equal(t, 2, len(vsAfter.Workspaces))
-		assert.Equal(t, wTest1.ID, vsAfter.Workspaces[0].ID)
-		assert.Equal(t, wTest2.ID, vsAfter.Workspaces[1].ID)
+		wsIDs := []string{vsAfter.Workspaces[0].ID, vsAfter.Workspaces[1].ID}
+
+		assert.Contains(t, wsIDs, wTest1.ID)
+		assert.Contains(t, wsIDs, wTest2.ID)
 	})
 
 	t.Run("with first workspace removed", func(t *testing.T) {
