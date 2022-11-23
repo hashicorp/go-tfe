@@ -361,6 +361,6 @@ func TestPolicySetsUpdate_Beta(t *testing.T) {
 		assert.Equal(t, ps.Name, *options.Name)
 		assert.Equal(t, ps.Description, *options.Description)
 		assert.True(t, ps.Global)
-		assert.True(t, ps.Global)
+		assert.True(t, *ps.Overridable)
 	})
 }
