@@ -1,3 +1,9 @@
+# Unreleased
+
+## Bug Fixes
+
+* Fixes `policy set` update api parameters (`Overridable`), which was not being set in the PolicySetUpdateOptions @mrinalirao [#594](https://github.com/hashicorp/go-tfe/pull/594)
+
 # v1.13.0
 
 ## Bug Fixes
