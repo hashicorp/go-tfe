@@ -3,7 +3,7 @@
 ## Bug Fixes
 
 ## Enhancements
-* Add `Projects` interface with `list`, `read`, `update`, `delete` methods and integration tests by @hs26gill and @mwudka [#564](https://github.com/hashicorp/go-tfe/pull/564)
+* Add Beta `Projects` interface with `list`, `read`, `update`, `delete` methods and integration tests @hs26gill [#564](https://github.com/hashicorp/go-tfe/pull/564)
 
 # v1.14.0
 

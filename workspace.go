@@ -157,8 +157,9 @@ type Workspace struct {
 	Organization        *Organization       `jsonapi:"relation,organization"`
 	SSHKey              *SSHKey             `jsonapi:"relation,ssh-key"`
 	Outputs             []*WorkspaceOutputs `jsonapi:"relation,outputs"`
-	Project             *Project            `jsonapi:"relation,project"`
-	Tags                []*Tag              `jsonapi:"relation,tags"`
+	// **Note: This field is still in BETA and subject to change.**
+	Project *Project `jsonapi:"relation,project"`
+	Tags    []*Tag   `jsonapi:"relation,tags"`
 }
 
 type WorkspaceOutputs struct {
@@ -369,6 +370,7 @@ type WorkspaceCreateOptions struct {
 
 	// Associated Project with the workspace. If not provided, default project
 	// of the organization will be assigned to the workspace
+	// **Note: This field is still in BETA and subject to change.**
 	Project *Project `jsonapi:"relation,project,omitempty"`
 }
 
@@ -476,6 +478,7 @@ type WorkspaceUpdateOptions struct {
 
 	// Associated Project with the workspace. If not provided, default project
 	// of the organization will be assigned to the workspace
+	// **Note: This field is still in BETA and subject to change.**
 	Project *Project `jsonapi:"relation,project,omitempty"`
 }
 

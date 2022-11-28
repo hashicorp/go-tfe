@@ -13,6 +13,7 @@ var _ Projects = (*projects)(nil)
 // Enterprise API supports
 //
 // TFE API docs: (TODO: ADD DOCS URL)
+// **Note: This functionality is still in BETA and subject to change.**
 type Projects interface {
 	// List all projects in the given organization
 	List(ctx context.Context, organization string, options *ProjectListOptions) (*ProjectList, error)

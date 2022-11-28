@@ -86,15 +86,16 @@ type Organization struct {
 	AllowForceDeleteWorkspaces bool `jsonapi:"attr,allow-force-delete-workspaces"`
 
 	// Relations
+	// **Note: This field is still in BETA and subject to change.**
 	DefaultProject *Project `jsonapi:"relation,default-project"`
 }
-
 
 // OrganizationIncludeOpt represents the available options for include query params.
 // https://www.terraform.io/cloud-docs/api-docs/organizations#available-related-resources
 type OrganizationIncludeOpt string
 
 const (
+	// **Note: This include option is still in BETA and subject to change.**
 	OrganizationDefaultProject OrganizationIncludeOpt = "default-project"
 )
 
