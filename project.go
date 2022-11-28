@@ -75,7 +75,7 @@ type ProjectUpdateOptions struct {
 	// https://jsonapi.org/format/#crud-creating
 	Type string `jsonapi:"primary,projects"`
 
-	// Optional: A name to identify the agent pool.
+	// Optional: A name to identify the project
 	Name *string `jsonapi:"attr,name,omitempty"`
 }
 
