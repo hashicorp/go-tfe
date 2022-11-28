@@ -1,8 +1,9 @@
 # Unreleased
 
-## Bug Fixes
+## Enhancements
 
-* Fixes `policy set` update api parameters (`Overridable`), which was not being set in the PolicySetUpdateOptions @mrinalirao [#594](https://github.com/hashicorp/go-tfe/pull/594)
+* Adds Beta parameter `Overridable` for OPA `policy set` update API (`PolicySetUpdateOptions`) @mrinalirao [#594](https://github.com/hashicorp/go-tfe/pull/594)
+* Adds new task stage status values representing `canceled`, `errored`, `unreachable` @mrinalirao [#594](https://github.com/hashicorp/go-tfe/pull/594)
 
 # v1.13.0
 
