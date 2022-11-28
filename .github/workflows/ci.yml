@@ -1,8 +1,8 @@
 name: CI Tests
 on:
+  push:
+    branches: [ main ]
   pull_request:
-    branches:
-      - main
 jobs:
   codegen:
     name: Codegen
@@ -10,7 +10,7 @@ jobs:
     timeout-minutes: 5
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Set up Go
         uses: actions/setup-go@v3
@@ -52,7 +52,7 @@ jobs:
     timeout-minutes: 30
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Set up Go
         uses: actions/setup-go@v3
@@ -91,6 +91,15 @@ jobs:
         run: |
           source $HOME/.env
           gotestsum --format short-verbose -- -timeout=29m -run "${{ steps.test_split.outputs.run }}"
-
-
-
+  tests-summarize:
+    name: Summarize Tests
+    needs: [tests]
+    runs-on: ubuntu-latest
+    if: ${{ always() }}
+    steps:
+      - name: Check tests Status
+        run: |
+          if [ "${{ needs.tests.result }}" = "success" ]; then
+            exit 0
+          fi
+          exit 1

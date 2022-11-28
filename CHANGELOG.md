@@ -1,8 +1,16 @@
 # Unreleased
 
+## Bug Fixes
+
+## Enhancements
+* Add `Projects` interface with `list`, `read`, `update`, `delete` methods and integration tests by @hs26gill and @mwudka [#564](https://github.com/hashicorp/go-tfe/pull/564)
+
+# v1.14.0
+
 ## Enhancements
 
-* Add `Projects` interface with `list`, `read`, `update`, `delete` methods and integration tests by @hs26gill and @mwudka [#564](https://github.com/hashicorp/go-tfe/pull/564)
+* Adds Beta parameter `Overridable` for OPA `policy set` update API (`PolicySetUpdateOptions`) @mrinalirao [#594](https://github.com/hashicorp/go-tfe/pull/594)
+* Adds new task stage status values representing `canceled`, `errored`, `unreachable` @mrinalirao [#594](https://github.com/hashicorp/go-tfe/pull/594)
 
 # v1.13.0
 
