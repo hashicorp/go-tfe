@@ -46,6 +46,9 @@ const (
 	TaskStagePassed           TaskStageStatus = "passed"
 	TaskStageFailed           TaskStageStatus = "failed"
 	TaskStageAwaitingOverride TaskStageStatus = "awaiting_override"
+	TaskStageCanceled         TaskStageStatus = "canceled"
+	TaskStageErrored          TaskStageStatus = "errored"
+	TaskStageUnreachable      TaskStageStatus = "unreachable"
 )
 
 // Permissions represents the permission types for overridding a task stage

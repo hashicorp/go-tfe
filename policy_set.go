@@ -195,6 +195,10 @@ type PolicySetUpdateOptions struct {
 	// Optional: Whether or not the policy set is global.
 	Global *bool `jsonapi:"attr,global,omitempty"`
 
+	// **Note: This field is still in BETA and subject to change.**
+	// Optional: Whether or not users can override this policy when it fails during a run. Only valid for OPA policies.
+	Overridable *bool `jsonapi:"attr,overridable,omitempty"`
+
 	// Optional: The sub-path within the attached VCS repository to ingress. All
 	// files and directories outside of this sub-path will be ignored.
 	// This option may only be specified when a VCS repo is present.
