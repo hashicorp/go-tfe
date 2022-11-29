@@ -139,6 +139,21 @@ func (mr *MockOrganizationsMockRecorder) ReadRunQueue(ctx, organization, options
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ReadRunQueue", reflect.TypeOf((*MockOrganizations)(nil).ReadRunQueue), ctx, organization, options)
 }
 
+// ReadWithOptions mocks base method.
+func (m *MockOrganizations) ReadWithOptions(ctx context.Context, organization string, options tfe.OrganizationReadOptions) (*tfe.Organization, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "ReadWithOptions", ctx, organization, options)
+	ret0, _ := ret[0].(*tfe.Organization)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// ReadWithOptions indicates an expected call of ReadWithOptions.
+func (mr *MockOrganizationsMockRecorder) ReadWithOptions(ctx, organization, options interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ReadWithOptions", reflect.TypeOf((*MockOrganizations)(nil).ReadWithOptions), ctx, organization, options)
+}
+
 // Update mocks base method.
 func (m *MockOrganizations) Update(ctx context.Context, organization string, options tfe.OrganizationUpdateOptions) (*tfe.Organization, error) {
 	m.ctrl.T.Helper()

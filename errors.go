@@ -82,6 +82,10 @@ var (
 
 	ErrInvalidRunID = errors.New("invalid value for run ID")
 
+	ErrInvalidProjectID = errors.New("invalid value for project ID")
+
+	ErrInvalidPagination = errors.New("invalid value for page size or number")
+
 	ErrInvalidRunTaskCategory = errors.New(`category must be "task"`)
 
 	ErrInvalidRunTaskID = errors.New("invalid value for run task ID")

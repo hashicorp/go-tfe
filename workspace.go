@@ -157,7 +157,9 @@ type Workspace struct {
 	Organization        *Organization       `jsonapi:"relation,organization"`
 	SSHKey              *SSHKey             `jsonapi:"relation,ssh-key"`
 	Outputs             []*WorkspaceOutputs `jsonapi:"relation,outputs"`
-	Tags                []*Tag              `jsonapi:"relation,tags"`
+	// **Note: This field is still in BETA and subject to change.**
+	Project *Project `jsonapi:"relation,project"`
+	Tags    []*Tag   `jsonapi:"relation,tags"`
 }
 
 type WorkspaceOutputs struct {
@@ -365,6 +367,11 @@ type WorkspaceCreateOptions struct {
 	// A list of tags to attach to the workspace. If the tag does not already
 	// exist, it is created and added to the workspace.
 	Tags []*Tag `jsonapi:"relation,tags,omitempty"`
+
+	// Associated Project with the workspace. If not provided, default project
+	// of the organization will be assigned to the workspace
+	// **Note: This field is still in BETA and subject to change.**
+	Project *Project `jsonapi:"relation,project,omitempty"`
 }
 
 // TODO: move this struct out. VCSRepoOptions is used by workspaces, policy sets, and registry modules
@@ -468,6 +475,11 @@ type WorkspaceUpdateOptions struct {
 	// the environment when multiple environments exist within the same
 	// repository.
 	WorkingDirectory *string `jsonapi:"attr,working-directory,omitempty"`
+
+	// Associated Project with the workspace. If not provided, default project
+	// of the organization will be assigned to the workspace
+	// **Note: This field is still in BETA and subject to change.**
+	Project *Project `jsonapi:"relation,project,omitempty"`
 }
 
 // WorkspaceLockOptions represents the options for locking a workspace.

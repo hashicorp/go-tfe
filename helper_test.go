@@ -1979,6 +1979,34 @@ func upgradeOrganizationSubscription(t *testing.T, client *Client, organization 
 	}
 }
 
+func createProject(t *testing.T, client *Client, org *Organization) (*Project, func()) {
+	var orgCleanup func()
+
+	if org == nil {
+		org, orgCleanup = createOrganization(t, client)
+	}
+
+	ctx := context.Background()
+	p, err := client.Projects.Create(ctx, org.Name, ProjectCreateOptions{
+		Name: randomStringWithoutSpecialChar(t),
+	})
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	return p, func() {
+		if err := client.Projects.Delete(ctx, p.ID); err != nil {
+			t.Logf("Error destroying project! WARNING: Dangling resources "+
+				"may exist! The full error is shown below.\n\n"+
+				"Project ID: %s\nError: %s", p.ID, err)
+		}
+
+		if orgCleanup != nil {
+			orgCleanup()
+		}
+	}
+}
+
 func waitForSVOutputs(t *testing.T, client *Client, svID string) {
 	t.Helper()
 
@@ -2081,6 +2109,24 @@ func randomString(t *testing.T) string {
 		t.Fatal(err)
 	}
 	return v
+}
+
+func randomStringWithoutSpecialChar(t *testing.T) string {
+	v, err := uuid.GenerateUUID()
+	if err != nil {
+		t.Fatal(err)
+	}
+	uuidWithoutHyphens := strings.Replace(v, "-", "", -1)
+	return uuidWithoutHyphens
+}
+
+func containsProject(pl []*Project, str string) bool {
+	for _, p := range pl {
+		if p.Name == str {
+			return true
+		}
+	}
+	return false
 }
 
 func randomSemver(t *testing.T) string {
