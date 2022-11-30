@@ -364,7 +364,7 @@ func TestTeamCreateOptions_Marshal(t *testing.T) {
 
 func TestTeamsUpdateRunTasks(t *testing.T) {
 	skipIfFreeOnly(t)
-	skipIfBeta(t)
+	skipUnlessBeta(t)
 	skipIfEnterprise(t)
 
 	client := testClient(t)

@@ -46,7 +46,7 @@ func TestWorkspaceRunTasksCreate(t *testing.T) {
 
 func TestWorkspaceRunTasksCreateBeta(t *testing.T) {
 	// Once Pre-Plan Tasks are generally available, this can replace the above TestWorkspaceRunTasksCreate
-	skipIfBeta(t)
+	skipUnlessBeta(t)
 	skipIfFreeOnly(t)
 
 	client := testClient(t)
@@ -188,7 +188,7 @@ func TestWorkspaceRunTasksUpdate(t *testing.T) {
 
 func TestWorkspaceRunTasksUpdateBeta(t *testing.T) {
 	// Once Pre-Plan Tasks are generally available, this can replace the above TestWorkspaceRunTasksUpdate
-	skipIfBeta(t)
+	skipUnlessBeta(t)
 	skipIfFreeOnly(t)
 
 	client := testClient(t)

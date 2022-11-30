@@ -2168,7 +2168,7 @@ func skipIfFreeOnly(t *testing.T) {
 }
 
 // skips a test if the test requires a beta feature
-func skipIfBeta(t *testing.T) {
+func skipUnlessBeta(t *testing.T) {
 	if !betaFeaturesEnabled() {
 		t.Skip("Skipping test related to a Terraform Cloud beta feature. Set ENABLE_BETA=1 to run.")
 	}

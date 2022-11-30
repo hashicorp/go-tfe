@@ -182,7 +182,7 @@ func TestOrganizationsRead(t *testing.T) {
 	})
 
 	t.Run("reads default project", func(t *testing.T) {
-		skipIfBeta(t)
+		skipUnlessBeta(t)
 
 		org, err := client.Organizations.ReadWithOptions(ctx, orgTest.Name, OrganizationReadOptions{Include: []OrganizationIncludeOpt{OrganizationDefaultProject}})
 		require.NoError(t, err)
@@ -520,7 +520,7 @@ func TestOrganization_Unmarshal(t *testing.T) {
 
 func TestOrganizationsReadRunTasksPermission(t *testing.T) {
 	skipIfFreeOnly(t)
-	skipIfBeta(t)
+	skipUnlessBeta(t)
 
 	client := testClient(t)
 	ctx := context.Background()
@@ -543,7 +543,7 @@ func TestOrganizationsReadRunTasksPermission(t *testing.T) {
 func TestOrganizationsReadRunTasksEntitlement(t *testing.T) {
 	skipIfEnterprise(t)
 	skipIfFreeOnly(t)
-	skipIfBeta(t)
+	skipUnlessBeta(t)
 
 	client := testClient(t)
 	ctx := context.Background()
