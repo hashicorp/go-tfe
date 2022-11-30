@@ -13,7 +13,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-var testWithoutValidWorkspaceID = "without a valid workspace ID"
+const testWithoutValidWorkspaceID = "without a valid workspace ID"
 
 func TestRunsList(t *testing.T) {
 	client := testClient(t)

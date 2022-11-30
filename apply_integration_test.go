@@ -12,7 +12,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-var testTimeMidnight = "2019-03-16T23:23:59+00:00"
+const testTimeMidnight = "2019-03-16T23:23:59+00:00"
 
 func TestAppliesRead(t *testing.T) {
 	client := testClient(t)
