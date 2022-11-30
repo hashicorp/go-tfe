@@ -166,14 +166,15 @@ func TestWorkspacesList(t *testing.T) {
 
 		foundWTest1 := false
 		for _, ws := range wl.Items {
-			if ws.ID == wTest1.ID {
-				foundWTest1 = true
-				require.NotNil(t, wl.Items[0].CurrentStateVersion)
-				assert.NotEmpty(t, wl.Items[0].CurrentStateVersion.DownloadURL)
-
-				require.NotNil(t, wl.Items[0].CurrentRun)
-				assert.NotEmpty(t, wl.Items[0].CurrentRun.Message)
+			if ws.ID != wTest1.ID {
+				continue
 			}
+			foundWTest1 = true
+			require.NotNil(t, wl.Items[0].CurrentStateVersion)
+			assert.NotEmpty(t, wl.Items[0].CurrentStateVersion.DownloadURL)
+
+			require.NotNil(t, wl.Items[0].CurrentRun)
+			assert.NotEmpty(t, wl.Items[0].CurrentRun.Message)
 		}
 
 		assert.True(t, foundWTest1)
@@ -1827,7 +1828,6 @@ func TestWorkspaces_UpdateRemoteStateConsumers(t *testing.T) {
 		require.NoError(t, err)
 		assert.Equal(t, 1, len(rsc.Items))
 		assert.Contains(t, rsc.Items, wTestConsumer2)
-
 	})
 
 	t.Run("with invalid options", func(t *testing.T) {
@@ -2080,7 +2080,8 @@ func TestWorkspace_Unmarshal(t *testing.T) {
 	require.NoError(t, err)
 
 	iso8601TimeFormat := "2006-01-02T15:04:05Z"
-	parsedTime, _ := time.Parse(iso8601TimeFormat, "2020-07-15T23:38:43.821Z")
+	parsedTime, err := time.Parse(iso8601TimeFormat, "2020-07-15T23:38:43.821Z")
+	assert.NoError(t, err)
 
 	assert.Equal(t, ws.ID, "ws-1234")
 	assert.Equal(t, ws.Name, "my-workspace")
@@ -2181,5 +2182,4 @@ func TestWorkspacesProjects(t *testing.T) {
 			assert.NotNil(t, item.Project.ID, "No project ID set on workspace %s at idx %d", item.ID, idx)
 		}
 	})
-
 }

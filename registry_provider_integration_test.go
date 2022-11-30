@@ -161,7 +161,6 @@ func TestRegistryProvidersCreate(t *testing.T) {
 	defer orgTestCleanup()
 
 	t.Run("with valid options", func(t *testing.T) {
-
 		publicProviderOptions := RegistryProviderCreateOptions{
 			Name:         "provider_name",
 			Namespace:    "public_namespace",

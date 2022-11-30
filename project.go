@@ -27,7 +27,7 @@ type Projects interface {
 	// Update a project.
 	Update(ctx context.Context, projectID string, options ProjectUpdateOptions) (*Project, error)
 
-	//Delete a project.
+	// Delete a project.
 	Delete(ctx context.Context, projectID string) error
 }
 

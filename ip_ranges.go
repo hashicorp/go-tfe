@@ -47,7 +47,7 @@ func (i *ipRanges) Read(ctx context.Context, modifiedSince string) (*IPRange, er
 	}
 
 	ir := &IPRange{}
-	err = req.doIpRanges(ctx, ir)
+	err = req.doIPRanges(ctx, ir)
 	if err != nil {
 		return nil, err
 	}

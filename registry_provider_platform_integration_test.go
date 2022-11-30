@@ -66,9 +66,9 @@ func TestRegistryProviderPlatformsCreate(t *testing.T) {
 				Filename: "filename",
 			}
 
-			sad_rpp, err := client.RegistryProviderPlatforms.Create(ctx, versionID, options)
+			sadRpp, err := client.RegistryProviderPlatforms.Create(ctx, versionID, options)
 
-			assert.Nil(t, sad_rpp)
+			assert.Nil(t, sadRpp)
 			assert.EqualError(t, err, ErrRequiredOS.Error())
 		})
 
@@ -80,9 +80,9 @@ func TestRegistryProviderPlatformsCreate(t *testing.T) {
 				Filename: "filename",
 			}
 
-			sad_rpp, err := client.RegistryProviderPlatforms.Create(ctx, versionID, options)
+			sadRpp, err := client.RegistryProviderPlatforms.Create(ctx, versionID, options)
 
-			assert.Nil(t, sad_rpp)
+			assert.Nil(t, sadRpp)
 			assert.EqualError(t, err, ErrRequiredArch.Error())
 		})
 
@@ -94,9 +94,9 @@ func TestRegistryProviderPlatformsCreate(t *testing.T) {
 				Filename: "filename",
 			}
 
-			sad_rpp, err := client.RegistryProviderPlatforms.Create(ctx, versionID, options)
+			sadRpp, err := client.RegistryProviderPlatforms.Create(ctx, versionID, options)
 
-			assert.Nil(t, sad_rpp)
+			assert.Nil(t, sadRpp)
 			assert.EqualError(t, err, ErrRequiredShasum.Error())
 		})
 
@@ -108,9 +108,9 @@ func TestRegistryProviderPlatformsCreate(t *testing.T) {
 				Filename: "",
 			}
 
-			sad_rpp, err := client.RegistryProviderPlatforms.Create(ctx, versionID, options)
+			sadRpp, err := client.RegistryProviderPlatforms.Create(ctx, versionID, options)
 
-			assert.Nil(t, sad_rpp)
+			assert.Nil(t, sadRpp)
 			assert.EqualError(t, err, ErrRequiredFilename.Error())
 		})
 
@@ -195,7 +195,7 @@ func TestRegistryProviderPlatformsDelete(t *testing.T) {
 		require.NoError(t, err)
 	})
 
-	t.Run("with a non-existant version", func(t *testing.T) {
+	t.Run("with a non-existent version", func(t *testing.T) {
 		platformID := RegistryProviderPlatformID{
 			RegistryProviderVersionID: versionID,
 			OS:                        "nope",
@@ -262,7 +262,7 @@ func TestRegistryProviderPlatformsRead(t *testing.T) {
 		})
 	})
 
-	t.Run("with non-existant os", func(t *testing.T) {
+	t.Run("with non-existent os", func(t *testing.T) {
 		platformID := RegistryProviderPlatformID{
 			RegistryProviderVersionID: versionID,
 			OS:                        "DoesNotExist",
@@ -273,7 +273,7 @@ func TestRegistryProviderPlatformsRead(t *testing.T) {
 		assert.Error(t, err)
 	})
 
-	t.Run("with non-existant arch", func(t *testing.T) {
+	t.Run("with non-existent arch", func(t *testing.T) {
 		platformID := RegistryProviderPlatformID{
 			RegistryProviderVersionID: versionID,
 			OS:                        platform.OS,

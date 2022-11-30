@@ -1,6 +1,3 @@
-//go:build integration
-// +build integration
-
 package tfe
 
 import (
@@ -106,7 +103,6 @@ func TestTaskStagesRead_Beta(t *testing.T) {
 			assert.NotEmpty(t, taskStage.PolicyEvaluations[0].UpdatedAt)
 			assert.NotNil(t, taskStage.PolicyEvaluations[0].ResultCount)
 		})
-
 	})
 }
 
@@ -258,7 +254,7 @@ func TestTaskStageOverride_Beta(t *testing.T) {
 		taskStageOverrideOptions := TaskStageOverrideOptions{
 			Comment: String("test comment"),
 		}
-		ts, err := client.TaskStages.Override(ctx, taskStageList.Items[0].ID, taskStageOverrideOptions)
+		_, err = client.TaskStages.Override(ctx, taskStageList.Items[0].ID, taskStageOverrideOptions)
 		require.NoError(t, err)
 	})
 

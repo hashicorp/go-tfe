@@ -31,7 +31,8 @@ func TestWorkspaceRunTasksCreate(t *testing.T) {
 
 		require.NoError(t, err)
 		defer func() {
-			client.WorkspaceRunTasks.Delete(ctx, wkspaceTest.ID, wr.ID)
+			err = client.WorkspaceRunTasks.Delete(ctx, wkspaceTest.ID, wr.ID)
+			require.NoError(t, err)
 		}()
 
 		assert.NotEmpty(t, wr.ID)
@@ -70,7 +71,8 @@ func TestWorkspaceRunTasksCreateBeta(t *testing.T) {
 
 		require.NoError(t, err)
 		defer func() {
-			client.WorkspaceRunTasks.Delete(ctx, wkspaceTest.ID, wr.ID)
+			err = client.WorkspaceRunTasks.Delete(ctx, wkspaceTest.ID, wr.ID)
+			require.NoError(t, err)
 		}()
 
 		assert.NotEmpty(t, wr.ID)

@@ -20,19 +20,27 @@ linters:
     - misspell #https://github.com/client9/misspell
 issues:
   exclude-rules:
+  - path: tfe_integration_test.go
+    linters:
+    - errcheck # Many calls in this test are known to return an error and not checked
+  - linters:
+      - stylecheck
+    text: "Ascii" # Permanently part of the public interface unless we break the API
   - path: _test\.go
     linters:
     - unused
     - deadcode
+    - unparam
 linters-settings:
   errcheck:
     # https://github.com/kisielk/errcheck#excluding-functions
     check-type-assertions: true
-    check-blank: true  
+    check-blank: true
   goconst:
-    min-len: 20 
-    min-occurrences: 5 
+    min-len: 20
+    min-occurrences: 5
     ignore-calls: false
+    ignore-tests: true
   gocritic:
     enabled-tags:
       - diagnostic
