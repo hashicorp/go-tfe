@@ -131,8 +131,8 @@ func TestPlanExport_Unmarshal(t *testing.T) {
 				"data-type": PlanExportSentinelMockBundleV0,
 				"status":    PlanExportCanceled,
 				"status-timestamps": map[string]string{
-					"queued-at":  "2020-03-16T23:15:59+00:00",
-					"errored-at": "2019-03-16T23:23:59+00:00",
+					"queued-at":  testQueuedAtTime,
+					"errored-at": testTimeMidnight,
 				},
 			},
 		},
@@ -146,9 +146,9 @@ func TestPlanExport_Unmarshal(t *testing.T) {
 	err = unmarshalResponse(responseBody, pe)
 	require.NoError(t, err)
 
-	queuedParsedTime, err := time.Parse(time.RFC3339, "2020-03-16T23:15:59+00:00")
+	queuedParsedTime, err := time.Parse(time.RFC3339, testQueuedAtTime)
 	require.NoError(t, err)
-	erroredParsedTime, err := time.Parse(time.RFC3339, "2019-03-16T23:23:59+00:00")
+	erroredParsedTime, err := time.Parse(time.RFC3339, testTimeMidnight)
 	require.NoError(t, err)
 
 	assert.Equal(t, pe.DataType, PlanExportSentinelMockBundleV0)

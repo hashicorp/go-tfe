@@ -32,7 +32,7 @@ func TestPolicyChecksList(t *testing.T) {
 	rTest, runCleanup := createPolicyCheckedRun(t, client, wTest)
 	defer runCleanup()
 
-	t.Run("without list options", func(t *testing.T) {
+	t.Run(testWithoutListOptions, func(t *testing.T) {
 		pcl, err := client.PolicyChecks.List(ctx, rTest.ID, nil)
 		require.NoError(t, err)
 		require.Equal(t, 1, len(pcl.Items))
@@ -44,7 +44,7 @@ func TestPolicyChecksList(t *testing.T) {
 	})
 
 	t.Run("with list options", func(t *testing.T) {
-		t.Skip("paging not supported yet in API")
+		t.Skip(testSkipPagingNotSupportedYet)
 		// Request a page number which is out of range. The result should
 		// be successful, but return no results if the paging options are
 		// properly passed along.
@@ -244,8 +244,8 @@ func TestPolicyCheck_Unmarshal(t *testing.T) {
 				"scope":  PolicyScopeOrganization,
 				"status": PolicyOverridden,
 				"status-timestamps": map[string]string{
-					"queued-at":  "2020-03-16T23:15:59+00:00",
-					"errored-at": "2019-03-16T23:23:59+00:00",
+					"queued-at":  testQueuedAtTime,
+					"errored-at": testTimeMidnight,
 				},
 			},
 		},
@@ -259,9 +259,9 @@ func TestPolicyCheck_Unmarshal(t *testing.T) {
 	err = unmarshalResponse(responseBody, pc)
 	require.NoError(t, err)
 
-	queuedParsedTime, err := time.Parse(time.RFC3339, "2020-03-16T23:15:59+00:00")
+	queuedParsedTime, err := time.Parse(time.RFC3339, testQueuedAtTime)
 	require.NoError(t, err)
-	erroredParsedTime, err := time.Parse(time.RFC3339, "2019-03-16T23:23:59+00:00")
+	erroredParsedTime, err := time.Parse(time.RFC3339, testTimeMidnight)
 	require.NoError(t, err)
 
 	assert.Equal(t, pc.ID, "1")

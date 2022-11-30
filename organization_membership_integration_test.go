@@ -9,6 +9,8 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
+const testWhenErrorFromAPI = "when an error is returned from the api"
+
 func TestOrganizationMembershipsList(t *testing.T) {
 	client := testClient(t)
 	ctx := context.Background()
@@ -16,7 +18,7 @@ func TestOrganizationMembershipsList(t *testing.T) {
 	orgTest, orgTestCleanup := createOrganization(t, client)
 	defer orgTestCleanup()
 
-	t.Run("without list options", func(t *testing.T) {
+	t.Run(testWithoutListOptions, func(t *testing.T) {
 		memTest1, memTest1Cleanup := createOrganizationMembership(t, client, orgTest)
 		defer memTest1Cleanup()
 		memTest2, memTest2Cleanup := createOrganizationMembership(t, client, orgTest)
@@ -50,7 +52,7 @@ func TestOrganizationMembershipsList(t *testing.T) {
 		assert.Empty(t, ml.Items)
 		assert.Equal(t, 999, ml.CurrentPage)
 
-		// Three because the creator of the organizaiton is a member, in addition to the two we added to setup the test.
+		// Three because the creator of the organization is a member, in addition to the two we added to setup the test.
 		assert.Equal(t, 3, ml.TotalCount)
 	})
 
@@ -138,7 +140,7 @@ func TestOrganizationMembershipsList(t *testing.T) {
 		})
 	})
 
-	t.Run("without a valid organization", func(t *testing.T) {
+	t.Run(testWithoutValidOrganization, func(t *testing.T) {
 		ml, err := client.OrganizationMemberships.List(ctx, badIdentifier, nil)
 		assert.Nil(t, ml)
 		assert.EqualError(t, err, ErrInvalidOrg.Error())
@@ -184,7 +186,7 @@ func TestOrganizationMembershipsCreate(t *testing.T) {
 		assert.EqualError(t, err, ErrInvalidOrg.Error())
 	})
 
-	t.Run("when an error is returned from the api", func(t *testing.T) {
+	t.Run(testWhenErrorFromAPI, func(t *testing.T) {
 		mem, err := client.OrganizationMemberships.Create(ctx, orgTest.Name, OrganizationMembershipCreateOptions{
 			Email: String("not-an-email-address"),
 		})
@@ -295,7 +297,7 @@ func TestOrganizationMembershipsDelete(t *testing.T) {
 		assert.Equal(t, err, ErrInvalidMembership)
 	})
 
-	t.Run("when an error is returned from the api", func(t *testing.T) {
+	t.Run(testWhenErrorFromAPI, func(t *testing.T) {
 		err := client.OrganizationMemberships.Delete(ctx, "not-an-identifier")
 
 		assert.Error(t, err)

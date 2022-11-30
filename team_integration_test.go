@@ -27,19 +27,19 @@ func TestTeamsList(t *testing.T) {
 	tmTest3, tmTest3Cleanup := createTeam(t, client, orgTest)
 	defer tmTest3Cleanup()
 
-	t.Run("without list options", func(t *testing.T) {
+	t.Run(testWithoutListOptions, func(t *testing.T) {
 		tl, err := client.Teams.List(ctx, orgTest.Name, nil)
 		require.NoError(t, err)
 		assert.Contains(t, tl.Items, tmTest1)
 		assert.Contains(t, tl.Items, tmTest2)
 
-		t.Skip("paging not supported yet in API")
+		t.Skip(testSkipPagingNotSupportedYet)
 		assert.Equal(t, 1, tl.CurrentPage)
 		assert.Equal(t, 2, tl.TotalCount)
 	})
 
 	t.Run("with list options", func(t *testing.T) {
-		t.Skip("paging not supported yet in API")
+		t.Skip(testSkipPagingNotSupportedYet)
 		// Request a page number which is out of range. The result should
 		// be successful, but return no results if the paging options are
 		// properly passed along.
@@ -71,7 +71,7 @@ func TestTeamsList(t *testing.T) {
 		})
 	})
 
-	t.Run("without a valid organization", func(t *testing.T) {
+	t.Run(testWithoutValidOrganization, func(t *testing.T) {
 		tl, err := client.Teams.List(ctx, badIdentifier, nil)
 		assert.Nil(t, tl)
 		assert.EqualError(t, err, ErrInvalidOrg.Error())
@@ -122,13 +122,13 @@ func TestTeamsCreate(t *testing.T) {
 		assert.Equal(t, *options.SSOTeamID, team.SSOTeamID)
 	})
 
-	t.Run("when options is missing name", func(t *testing.T) {
+	t.Run(testWhenOptionsMissingName, func(t *testing.T) {
 		tm, err := client.Teams.Create(ctx, "foo", TeamCreateOptions{})
 		assert.Nil(t, tm)
 		assert.EqualError(t, err, ErrRequiredName.Error())
 	})
 
-	t.Run("when options has an invalid organization", func(t *testing.T) {
+	t.Run(testWhenOptionsHasInvalidOrganization, func(t *testing.T) {
 		tm, err := client.Teams.Create(ctx, badIdentifier, TeamCreateOptions{
 			Name: String("foo"),
 		})
@@ -172,7 +172,7 @@ func TestTeamsRead(t *testing.T) {
 			assert.Equal(t, "secret", tm.Visibility)
 		})
 
-		t.Run("permissions are properly decoded", func(t *testing.T) {
+		t.Run(testPermissionsProperlyDecoded, func(t *testing.T) {
 			assert.True(t, tm.Permissions.CanDestroy)
 		})
 

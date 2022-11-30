@@ -38,13 +38,13 @@ func TestTeamAccessesList(t *testing.T) {
 		assert.Contains(t, tal.Items, taTest1)
 		assert.Contains(t, tal.Items, taTest2)
 
-		t.Skip("paging not supported yet in API")
+		t.Skip(testSkipPagingNotSupportedYet)
 		assert.Equal(t, 1, tal.CurrentPage)
 		assert.Equal(t, 2, tal.TotalCount)
 	})
 
 	t.Run("with list options", func(t *testing.T) {
-		t.Skip("paging not supported yet in API")
+		t.Skip(testSkipPagingNotSupportedYet)
 		// Request a page number which is out of range. The result should
 		// be successful, but return no results if the paging options are
 		// properly passed along.
@@ -288,7 +288,7 @@ func TestTeamAccessesUpdate(t *testing.T) {
 	taTest, taTestCleanup := createTeamAccess(t, client, tmTest, wTest, orgTest)
 	defer taTestCleanup()
 
-	t.Run("with valid attributes", func(t *testing.T) {
+	t.Run(testWithValidAttributes, func(t *testing.T) {
 		options := TeamAccessUpdateOptions{
 			Access: Access(AccessCustom),
 			Runs:   RunsPermission(RunsPermissionPlan),
@@ -385,7 +385,7 @@ func TestTeamAccessesUpdateRunTasks(t *testing.T) {
 	taTest, taTestCleanup := createTeamAccess(t, client, tmTest, wTest, orgTest)
 	defer taTestCleanup()
 
-	t.Run("with valid attributes", func(t *testing.T) {
+	t.Run(testWithValidAttributes, func(t *testing.T) {
 		newAccess := !taTest.RunTasks
 		options := TeamAccessUpdateOptions{
 			Access:   Access(AccessCustom),

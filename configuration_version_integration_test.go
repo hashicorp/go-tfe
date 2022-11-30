@@ -14,6 +14,8 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
+const testConfigVersionPath = "test-fixtures/config-version"
+
 func TestConfigurationVersionsList(t *testing.T) {
 	client := testClient(t)
 	ctx := context.Background()
@@ -26,7 +28,7 @@ func TestConfigurationVersionsList(t *testing.T) {
 	cvTest2, cvTest2Cleanup := createConfigurationVersion(t, client, wTest)
 	defer cvTest2Cleanup()
 
-	t.Run("without list options", func(t *testing.T) {
+	t.Run(testWithoutListOptions, func(t *testing.T) {
 		cvl, err := client.ConfigurationVersions.List(ctx, wTest.ID, nil)
 		require.NoError(t, err)
 
@@ -63,7 +65,7 @@ func TestConfigurationVersionsList(t *testing.T) {
 		assert.Equal(t, 2, cvl.TotalCount)
 	})
 
-	t.Run("without a valid organization", func(t *testing.T) {
+	t.Run(testWithoutValidOrganization, func(t *testing.T) {
 		cvl, err := client.ConfigurationVersions.List(ctx, badIdentifier, nil)
 		assert.Nil(t, cvl)
 		assert.EqualError(t, err, ErrInvalidWorkspaceID.Error())
@@ -199,7 +201,7 @@ func TestConfigurationVersionsUpload(t *testing.T) {
 		err := client.ConfigurationVersions.Upload(
 			ctx,
 			cv.UploadURL,
-			"test-fixtures/config-version",
+			testConfigVersionPath,
 		)
 		require.NoError(t, err)
 
@@ -210,7 +212,7 @@ func TestConfigurationVersionsUpload(t *testing.T) {
 		err := client.ConfigurationVersions.Upload(
 			ctx,
 			cv.UploadURL[:len(cv.UploadURL)-10]+"nonexisting",
-			"test-fixtures/config-version",
+			testConfigVersionPath,
 		)
 		assert.Error(t, err)
 	})
@@ -239,7 +241,7 @@ func TestConfigurationVersionsArchive(t *testing.T) {
 		err := client.ConfigurationVersions.Upload(
 			ctx,
 			cv.UploadURL,
-			"test-fixtures/config-version",
+			testConfigVersionPath,
 		)
 		require.NoError(t, err)
 
@@ -256,7 +258,7 @@ func TestConfigurationVersionsArchive(t *testing.T) {
 		err = client.ConfigurationVersions.Upload(
 			ctx,
 			newCv.UploadURL,
-			"test-fixtures/config-version",
+			testConfigVersionPath,
 		)
 		require.NoError(t, err)
 		defer newCvCleanup()
@@ -288,7 +290,7 @@ func TestConfigurationVersionsDownload(t *testing.T) {
 		defer uploadedCvCleanup()
 
 		expectedCvFile := bytes.NewBuffer(nil)
-		_, expectedCvFileErr := slug.Pack("test-fixtures/config-version", expectedCvFile, true)
+		_, expectedCvFileErr := slug.Pack(testConfigVersionPath, expectedCvFile, true)
 		if expectedCvFileErr != nil {
 			t.Fatal(expectedCvFileErr)
 		}
@@ -329,8 +331,8 @@ func TestConfigurationVersions_Unmarshal(t *testing.T) {
 				"source":          ConfigurationSourceTerraform,
 				"status":          ConfigurationUploaded,
 				"status-timestamps": map[string]string{
-					"finished-at": "2020-03-16T23:15:59+00:00",
-					"started-at":  "2019-03-16T23:23:59+00:00",
+					"finished-at": testQueuedAtTime,
+					"started-at":  testTimeMidnight,
 				},
 			},
 		},
@@ -343,9 +345,9 @@ func TestConfigurationVersions_Unmarshal(t *testing.T) {
 	err = unmarshalResponse(responseBody, cv)
 	require.NoError(t, err)
 
-	finishedParsedTime, err := time.Parse(time.RFC3339, "2020-03-16T23:15:59+00:00")
+	finishedParsedTime, err := time.Parse(time.RFC3339, testQueuedAtTime)
 	require.NoError(t, err)
-	startedParsedTime, err := time.Parse(time.RFC3339, "2019-03-16T23:23:59+00:00")
+	startedParsedTime, err := time.Parse(time.RFC3339, testTimeMidnight)
 	require.NoError(t, err)
 
 	assert.Equal(t, cv.ID, "cv-ntv3HbhJqvFzamy7")

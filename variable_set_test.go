@@ -20,20 +20,20 @@ func TestVariableSetsList(t *testing.T) {
 	vsTest2, vsTestCleanup2 := createVariableSet(t, client, orgTest, VariableSetCreateOptions{})
 	defer vsTestCleanup2()
 
-	t.Run("without list options", func(t *testing.T) {
+	t.Run(testWithoutListOptions, func(t *testing.T) {
 		vsl, err := client.VariableSets.List(ctx, orgTest.Name, nil)
 		require.NoError(t, err)
 		require.NotEmpty(t, vsl.Items)
 		assert.Contains(t, vsl.Items, vsTest1)
 		assert.Contains(t, vsl.Items, vsTest2)
 
-		t.Skip("paging not supported yet in API")
+		t.Skip(testSkipPagingNotSupportedYet)
 		assert.Equal(t, 1, vsl.CurrentPage)
 		assert.Equal(t, 2, vsl.TotalCount)
 	})
 
 	t.Run("with list options", func(t *testing.T) {
-		t.Skip("paging not supported yet in API")
+		t.Skip(testSkipPagingNotSupportedYet)
 		// Request a page number which is out of range. The result should
 		// be successful, but return no results if the paging options are
 		// properly passed along.
@@ -73,7 +73,7 @@ func TestVariableSetsListForWorkspace(t *testing.T) {
 	applyVariableSetToWorkspace(t, client, vsTest1.ID, workspaceTest.ID)
 	applyVariableSetToWorkspace(t, client, vsTest2.ID, workspaceTest.ID)
 
-	t.Run("without list options", func(t *testing.T) {
+	t.Run(testWithoutListOptions, func(t *testing.T) {
 		vsl, err := client.VariableSets.ListForWorkspace(ctx, workspaceTest.ID, nil)
 		require.NoError(t, err)
 		require.Len(t, vsl.Items, 2)
@@ -85,7 +85,7 @@ func TestVariableSetsListForWorkspace(t *testing.T) {
 	})
 
 	t.Run("with list options", func(t *testing.T) {
-		t.Skip("paging not supported yet in API")
+		t.Skip(testSkipPagingNotSupportedYet)
 		// Request a page number which is out of range. The result should
 		// be successful, but return no results if the paging options are
 		// properly passed along.
@@ -140,7 +140,7 @@ func TestVariableSetsCreate(t *testing.T) {
 		}
 	})
 
-	t.Run("when options is missing name", func(t *testing.T) {
+	t.Run(testWhenOptionsMissingName, func(t *testing.T) {
 		vs, err := client.VariableSets.Create(ctx, "foo", &VariableSetCreateOptions{
 			Global: Bool(true),
 		})
@@ -193,7 +193,7 @@ func TestVariableSetsUpdate(t *testing.T) {
 		Global:      Bool(false),
 	})
 
-	t.Run("when updating a subset of values", func(t *testing.T) {
+	t.Run(testWhenUpdatingSubsetOfValues, func(t *testing.T) {
 		options := VariableSetUpdateOptions{
 			Name:        String("UpdatedName"),
 			Description: String("Updated Description"),

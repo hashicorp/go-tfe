@@ -48,7 +48,7 @@ func TestTeamTokensRead(t *testing.T) {
 	defer tmTestCleanup()
 
 	t.Run("with valid options", func(t *testing.T) {
-		_, ttTestCleanup := createTeamToken(t, client, tmTest)
+		ttTestCleanup := createTeamToken(t, client, tmTest)
 
 		tt, err := client.TeamTokens.Read(ctx, tmTest.ID)
 		require.NoError(t, err)

@@ -22,7 +22,7 @@ func TestOAuthClientsList(t *testing.T) {
 	ocTest2, ocTestCleanup2 := createOAuthClient(t, client, orgTest)
 	defer ocTestCleanup2()
 
-	t.Run("without list options", func(t *testing.T) {
+	t.Run(testWithoutListOptions, func(t *testing.T) {
 		ocl, err := client.OAuthClients.List(ctx, orgTest.Name, nil)
 		require.NoError(t, err)
 
@@ -41,13 +41,13 @@ func TestOAuthClientsList(t *testing.T) {
 		assert.Contains(t, ocl.Items, ocTest1)
 		assert.Contains(t, ocl.Items, ocTest2)
 
-		t.Skip("paging not supported yet in API")
+		t.Skip(testSkipPagingNotSupportedYet)
 		assert.Equal(t, 1, ocl.CurrentPage)
 		assert.Equal(t, 2, ocl.TotalCount)
 	})
 
 	t.Run("with list options", func(t *testing.T) {
-		t.Skip("paging not supported yet in API")
+		t.Skip(testSkipPagingNotSupportedYet)
 		// Request a page number which is out of range. The result should
 		// be successful, but return no results if the paging options are
 		// properly passed along.
@@ -76,7 +76,7 @@ func TestOAuthClientsList(t *testing.T) {
 		assert.NotEmpty(t, ocl.Items[0].OAuthTokens[0].ID)
 	})
 
-	t.Run("without a valid organization", func(t *testing.T) {
+	t.Run(testWithoutValidOrganization, func(t *testing.T) {
 		ocl, err := client.OAuthClients.List(ctx, badIdentifier, nil)
 		assert.Nil(t, ocl)
 		assert.EqualError(t, err, ErrInvalidOrg.Error())
@@ -97,8 +97,8 @@ func TestOAuthClientsCreate(t *testing.T) {
 
 	t.Run("with valid options", func(t *testing.T) {
 		options := OAuthClientCreateOptions{
-			APIURL:          String("https://api.github.com"),
-			HTTPURL:         String("https://github.com"),
+			APIURL:          String(githubAPIURL),
+			HTTPURL:         String(githubURL),
 			OAuthToken:      String(githubToken),
 			ServiceProvider: ServiceProvider(ServiceProviderGithub),
 		}
@@ -107,8 +107,8 @@ func TestOAuthClientsCreate(t *testing.T) {
 		require.NoError(t, err)
 		assert.NotEmpty(t, oc.ID)
 		assert.Nil(t, oc.Name)
-		assert.Equal(t, "https://api.github.com", oc.APIURL)
-		assert.Equal(t, "https://github.com", oc.HTTPURL)
+		assert.Equal(t, githubAPIURL, oc.APIURL)
+		assert.Equal(t, githubURL, oc.HTTPURL)
 		assert.Equal(t, 1, len(oc.OAuthTokens))
 		assert.Equal(t, ServiceProviderGithub, oc.ServiceProvider)
 
@@ -119,8 +119,8 @@ func TestOAuthClientsCreate(t *testing.T) {
 
 	t.Run("without an valid organization", func(t *testing.T) {
 		options := OAuthClientCreateOptions{
-			APIURL:          String("https://api.github.com"),
-			HTTPURL:         String("https://github.com"),
+			APIURL:          String(githubAPIURL),
+			HTTPURL:         String(githubURL),
 			OAuthToken:      String(githubToken),
 			ServiceProvider: ServiceProvider(ServiceProviderGithub),
 		}
@@ -131,7 +131,7 @@ func TestOAuthClientsCreate(t *testing.T) {
 
 	t.Run("without an API URL", func(t *testing.T) {
 		options := OAuthClientCreateOptions{
-			HTTPURL:         String("https://github.com"),
+			HTTPURL:         String(githubURL),
 			OAuthToken:      String(githubToken),
 			ServiceProvider: ServiceProvider(ServiceProviderGithub),
 		}
@@ -142,7 +142,7 @@ func TestOAuthClientsCreate(t *testing.T) {
 
 	t.Run("without a HTTP URL", func(t *testing.T) {
 		options := OAuthClientCreateOptions{
-			APIURL:          String("https://api.github.com"),
+			APIURL:          String(githubAPIURL),
 			OAuthToken:      String(githubToken),
 			ServiceProvider: ServiceProvider(ServiceProviderGithub),
 		}
@@ -153,8 +153,8 @@ func TestOAuthClientsCreate(t *testing.T) {
 
 	t.Run("without an OAuth token", func(t *testing.T) {
 		options := OAuthClientCreateOptions{
-			APIURL:          String("https://api.github.com"),
-			HTTPURL:         String("https://github.com"),
+			APIURL:          String(githubAPIURL),
+			HTTPURL:         String(githubURL),
 			ServiceProvider: ServiceProvider(ServiceProviderGithub),
 		}
 
@@ -164,8 +164,8 @@ func TestOAuthClientsCreate(t *testing.T) {
 
 	t.Run("without a service provider", func(t *testing.T) {
 		options := OAuthClientCreateOptions{
-			APIURL:     String("https://api.github.com"),
-			HTTPURL:    String("https://github.com"),
+			APIURL:     String(githubAPIURL),
+			HTTPURL:    String(githubURL),
 			OAuthToken: String(githubToken),
 		}
 
@@ -274,8 +274,8 @@ func TestOAuthClientsDelete(t *testing.T) {
 func TestOAuthClientsCreateOptionsValid(t *testing.T) {
 	t.Run("with valid options", func(t *testing.T) {
 		options := OAuthClientCreateOptions{
-			APIURL:          String("https://api.github.com"),
-			HTTPURL:         String("https://github.com"),
+			APIURL:          String(githubAPIURL),
+			HTTPURL:         String(githubURL),
 			OAuthToken:      String("NOTHING"),
 			ServiceProvider: ServiceProvider(ServiceProviderGithub),
 		}
@@ -286,7 +286,7 @@ func TestOAuthClientsCreateOptionsValid(t *testing.T) {
 
 	t.Run("without an API URL", func(t *testing.T) {
 		options := OAuthClientCreateOptions{
-			HTTPURL:         String("https://github.com"),
+			HTTPURL:         String(githubURL),
 			OAuthToken:      String("NOTHING"),
 			ServiceProvider: ServiceProvider(ServiceProviderGithub),
 		}
@@ -297,7 +297,7 @@ func TestOAuthClientsCreateOptionsValid(t *testing.T) {
 
 	t.Run("without a HTTP URL", func(t *testing.T) {
 		options := OAuthClientCreateOptions{
-			APIURL:          String("https://api.github.com"),
+			APIURL:          String(githubAPIURL),
 			OAuthToken:      String("NOTHING"),
 			ServiceProvider: ServiceProvider(ServiceProviderGithub),
 		}
@@ -308,8 +308,8 @@ func TestOAuthClientsCreateOptionsValid(t *testing.T) {
 
 	t.Run("without an OAuth token", func(t *testing.T) {
 		options := OAuthClientCreateOptions{
-			APIURL:          String("https://api.github.com"),
-			HTTPURL:         String("https://github.com"),
+			APIURL:          String(githubAPIURL),
+			HTTPURL:         String(githubURL),
 			ServiceProvider: ServiceProvider(ServiceProviderGithub),
 		}
 
@@ -319,8 +319,8 @@ func TestOAuthClientsCreateOptionsValid(t *testing.T) {
 
 	t.Run("without a service provider", func(t *testing.T) {
 		options := OAuthClientCreateOptions{
-			APIURL:     String("https://api.github.com"),
-			HTTPURL:    String("https://github.com"),
+			APIURL:     String(githubAPIURL),
+			HTTPURL:    String(githubURL),
 			OAuthToken: String("NOTHING"),
 		}
 
@@ -330,8 +330,8 @@ func TestOAuthClientsCreateOptionsValid(t *testing.T) {
 
 	t.Run("without private key and not ado_server options", func(t *testing.T) {
 		options := OAuthClientCreateOptions{
-			APIURL:          String("https://api.github.com"),
-			HTTPURL:         String("https://github.com"),
+			APIURL:          String(githubAPIURL),
+			HTTPURL:         String(githubURL),
 			OAuthToken:      String("NOTHING"),
 			ServiceProvider: ServiceProvider(ServiceProviderGitlabEE),
 		}
@@ -342,8 +342,8 @@ func TestOAuthClientsCreateOptionsValid(t *testing.T) {
 
 	t.Run("with empty private key and not ado_server options", func(t *testing.T) {
 		options := OAuthClientCreateOptions{
-			APIURL:          String("https://api.github.com"),
-			HTTPURL:         String("https://github.com"),
+			APIURL:          String(githubAPIURL),
+			HTTPURL:         String(githubURL),
 			OAuthToken:      String("NOTHING"),
 			ServiceProvider: ServiceProvider(ServiceProviderGitlabEE),
 			PrivateKey:      String(""),
@@ -355,8 +355,8 @@ func TestOAuthClientsCreateOptionsValid(t *testing.T) {
 
 	t.Run("with private key and not ado_server options", func(t *testing.T) {
 		options := OAuthClientCreateOptions{
-			APIURL:          String("https://api.github.com"),
-			HTTPURL:         String("https://github.com"),
+			APIURL:          String(githubAPIURL),
+			HTTPURL:         String(githubURL),
 			OAuthToken:      String("NOTHING"),
 			ServiceProvider: ServiceProvider(ServiceProviderGithub),
 			PrivateKey:      String("NOTHING"),

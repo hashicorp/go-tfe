@@ -161,7 +161,6 @@ func TestRegistryProvidersCreate(t *testing.T) {
 	defer orgTestCleanup()
 
 	t.Run("with valid options", func(t *testing.T) {
-
 		publicProviderOptions := RegistryProviderCreateOptions{
 			Name:         "provider_name",
 			Namespace:    "public_namespace",
@@ -185,15 +184,15 @@ func TestRegistryProvidersCreate(t *testing.T) {
 				assert.Equal(t, options.Namespace, prv.Namespace)
 				assert.Equal(t, options.RegistryName, prv.RegistryName)
 
-				t.Run("permissions are properly decoded", func(t *testing.T) {
+				t.Run(testPermissionsProperlyDecoded, func(t *testing.T) {
 					assert.True(t, prv.Permissions.CanDelete)
 				})
 
-				t.Run("relationships are properly decoded", func(t *testing.T) {
+				t.Run(testRelationshipsProperlyDecoded, func(t *testing.T) {
 					assert.Equal(t, orgTest.Name, prv.Organization.Name)
 				})
 
-				t.Run("timestamps are properly decoded", func(t *testing.T) {
+				t.Run(testTimestampsProperlyDecoded, func(t *testing.T) {
 					assert.NotEmpty(t, prv.CreatedAt)
 					assert.NotEmpty(t, prv.UpdatedAt)
 				})
@@ -201,7 +200,7 @@ func TestRegistryProvidersCreate(t *testing.T) {
 		}
 	})
 
-	t.Run("with invalid options", func(t *testing.T) {
+	t.Run(testWithInvalidOptions, func(t *testing.T) {
 		t.Run("without a name", func(t *testing.T) {
 			options := RegistryProviderCreateOptions{
 				Namespace:    "namespace",
@@ -212,7 +211,7 @@ func TestRegistryProvidersCreate(t *testing.T) {
 			assert.EqualError(t, err, ErrInvalidName.Error())
 		})
 
-		t.Run("with an invalid name", func(t *testing.T) {
+		t.Run(testWithInvalidName, func(t *testing.T) {
 			options := RegistryProviderCreateOptions{
 				Name:         "invalid name",
 				Namespace:    "namespace",
@@ -268,7 +267,7 @@ func TestRegistryProvidersCreate(t *testing.T) {
 		})
 	})
 
-	t.Run("without a valid organization", func(t *testing.T) {
+	t.Run(testWithoutValidOrganization, func(t *testing.T) {
 		options := RegistryProviderCreateOptions{
 			Name:         "name",
 			Namespace:    "namespace",
@@ -322,15 +321,15 @@ func TestRegistryProvidersRead(t *testing.T) {
 				assert.Equal(t, registryProviderTest.Namespace, prv.Namespace)
 				assert.Equal(t, registryProviderTest.RegistryName, prv.RegistryName)
 
-				t.Run("permissions are properly decoded", func(t *testing.T) {
+				t.Run(testPermissionsProperlyDecoded, func(t *testing.T) {
 					assert.True(t, prv.Permissions.CanDelete)
 				})
 
-				t.Run("relationships are properly decoded", func(t *testing.T) {
+				t.Run(testRelationshipsProperlyDecoded, func(t *testing.T) {
 					assert.Equal(t, orgTest.Name, prv.Organization.Name)
 				})
 
-				t.Run("timestamps are properly decoded", func(t *testing.T) {
+				t.Run(testTimestampsProperlyDecoded, func(t *testing.T) {
 					assert.NotEmpty(t, prv.CreatedAt)
 					assert.NotEmpty(t, prv.UpdatedAt)
 				})
@@ -478,7 +477,7 @@ func TestRegistryProvidersIDValidation(t *testing.T) {
 		assert.EqualError(t, id.valid(), ErrInvalidName.Error())
 	})
 
-	t.Run("with an invalid name", func(t *testing.T) {
+	t.Run(testWithInvalidName, func(t *testing.T) {
 		id := RegistryProviderID{
 			OrganizationName: orgName,
 			RegistryName:     registryName,
@@ -518,7 +517,7 @@ func TestRegistryProvidersIDValidation(t *testing.T) {
 		assert.EqualError(t, id.valid(), ErrInvalidRegistryName.Error())
 	})
 
-	t.Run("without a valid organization", func(t *testing.T) {
+	t.Run(testWithoutValidOrganization, func(t *testing.T) {
 		id := RegistryProviderID{
 			OrganizationName: badIdentifier,
 			RegistryName:     registryName,

@@ -11,19 +11,19 @@ import (
 
 func TestRegistryProviderVersionsIDValidation(t *testing.T) {
 	version := "1.0.0"
-	validRegistryProviderId := RegistryProviderID{
+	validRegistryProviderID := RegistryProviderID{
 		OrganizationName: "orgName",
 		RegistryName:     PrivateRegistry,
 		Namespace:        "namespace",
 		Name:             "name",
 	}
-	invalidRegistryProviderId := RegistryProviderID{
+	invalidRegistryProviderID := RegistryProviderID{
 		OrganizationName: badIdentifier,
 		RegistryName:     PrivateRegistry,
 		Namespace:        "namespace",
 		Name:             "name",
 	}
-	publicRegistryProviderId := RegistryProviderID{
+	publicRegistryProviderID := RegistryProviderID{
 		OrganizationName: "orgName",
 		RegistryName:     PublicRegistry,
 		Namespace:        "namespace",
@@ -33,7 +33,7 @@ func TestRegistryProviderVersionsIDValidation(t *testing.T) {
 	t.Run("valid", func(t *testing.T) {
 		id := RegistryProviderVersionID{
 			Version:            version,
-			RegistryProviderID: validRegistryProviderId,
+			RegistryProviderID: validRegistryProviderID,
 		}
 		require.NoError(t, id.valid())
 	})
@@ -41,7 +41,7 @@ func TestRegistryProviderVersionsIDValidation(t *testing.T) {
 	t.Run("without a version", func(t *testing.T) {
 		id := RegistryProviderVersionID{
 			Version:            "",
-			RegistryProviderID: validRegistryProviderId,
+			RegistryProviderID: validRegistryProviderID,
 		}
 		assert.EqualError(t, id.valid(), ErrInvalidVersion.Error())
 	})
@@ -49,7 +49,7 @@ func TestRegistryProviderVersionsIDValidation(t *testing.T) {
 	t.Run("without a key-id", func(t *testing.T) {
 		id := RegistryProviderVersionID{
 			Version:            "",
-			RegistryProviderID: validRegistryProviderId,
+			RegistryProviderID: validRegistryProviderID,
 		}
 		assert.EqualError(t, id.valid(), ErrInvalidVersion.Error())
 	})
@@ -58,7 +58,7 @@ func TestRegistryProviderVersionsIDValidation(t *testing.T) {
 		t.Skip("This is skipped as we don't actually validate version is a valid semver - the registry does this validation")
 		id := RegistryProviderVersionID{
 			Version:            "foo",
-			RegistryProviderID: validRegistryProviderId,
+			RegistryProviderID: validRegistryProviderID,
 		}
 		assert.EqualError(t, id.valid(), ErrInvalidVersion.Error())
 	})
@@ -66,7 +66,7 @@ func TestRegistryProviderVersionsIDValidation(t *testing.T) {
 	t.Run("invalid registry for parent provider", func(t *testing.T) {
 		id := RegistryProviderVersionID{
 			Version:            version,
-			RegistryProviderID: publicRegistryProviderId,
+			RegistryProviderID: publicRegistryProviderID,
 		}
 		assert.EqualError(t, id.valid(), ErrRequiredPrivateRegistry.Error())
 	})
@@ -76,7 +76,7 @@ func TestRegistryProviderVersionsIDValidation(t *testing.T) {
 		// it is assumed that validity of the registry provider id is delegated to its own valid method
 		id := RegistryProviderVersionID{
 			Version:            version,
-			RegistryProviderID: invalidRegistryProviderId,
+			RegistryProviderID: invalidRegistryProviderID,
 		}
 		assert.EqualError(t, id.valid(), ErrInvalidOrg.Error())
 	})
@@ -89,7 +89,7 @@ func TestRegistryProviderVersionsCreate(t *testing.T) {
 	providerTest, providerTestCleanup := createRegistryProvider(t, client, nil, PrivateRegistry)
 	defer providerTestCleanup()
 
-	providerId := RegistryProviderID{
+	providerID := RegistryProviderID{
 		OrganizationName: providerTest.Organization.Name,
 		RegistryName:     providerTest.RegistryName,
 		Namespace:        providerTest.Namespace,
@@ -101,17 +101,17 @@ func TestRegistryProviderVersionsCreate(t *testing.T) {
 			Version: "1.0.0",
 			KeyID:   "abcdefg",
 		}
-		prvv, err := client.RegistryProviderVersions.Create(ctx, providerId, options)
+		prvv, err := client.RegistryProviderVersions.Create(ctx, providerID, options)
 		require.NoError(t, err)
 		assert.NotEmpty(t, prvv.ID)
 		assert.Equal(t, options.Version, prvv.Version)
 		assert.Equal(t, options.KeyID, prvv.KeyID)
 
-		t.Run("relationships are properly decoded", func(t *testing.T) {
+		t.Run(testRelationshipsProperlyDecoded, func(t *testing.T) {
 			assert.Equal(t, providerTest.ID, prvv.RegistryProvider.ID)
 		})
 
-		t.Run("timestamps are properly decoded", func(t *testing.T) {
+		t.Run(testTimestampsProperlyDecoded, func(t *testing.T) {
 			assert.NotEmpty(t, prvv.CreatedAt)
 			assert.NotEmpty(t, prvv.UpdatedAt)
 		})
@@ -139,13 +139,13 @@ func TestRegistryProviderVersionsCreate(t *testing.T) {
 		})
 	})
 
-	t.Run("with invalid options", func(t *testing.T) {
+	t.Run(testWithInvalidOptions, func(t *testing.T) {
 		t.Run("without a version", func(t *testing.T) {
 			options := RegistryProviderVersionCreateOptions{
 				Version: "",
 				KeyID:   "abcdefg",
 			}
-			rm, err := client.RegistryProviderVersions.Create(ctx, providerId, options)
+			rm, err := client.RegistryProviderVersions.Create(ctx, providerID, options)
 			assert.Nil(t, rm)
 			assert.EqualError(t, err, ErrInvalidVersion.Error())
 		})
@@ -155,7 +155,7 @@ func TestRegistryProviderVersionsCreate(t *testing.T) {
 				Version: "1.0.0",
 				KeyID:   "",
 			}
-			rm, err := client.RegistryProviderVersions.Create(ctx, providerId, options)
+			rm, err := client.RegistryProviderVersions.Create(ctx, providerID, options)
 			assert.Nil(t, rm)
 			assert.EqualError(t, err, ErrInvalidKeyID.Error())
 		})
@@ -165,13 +165,13 @@ func TestRegistryProviderVersionsCreate(t *testing.T) {
 				Version: "1.0.0",
 				KeyID:   "abcdefg",
 			}
-			providerId := RegistryProviderID{
+			providerID := RegistryProviderID{
 				OrganizationName: providerTest.Organization.Name,
 				RegistryName:     PublicRegistry,
 				Namespace:        providerTest.Namespace,
 				Name:             providerTest.Name,
 			}
-			rm, err := client.RegistryProviderVersions.Create(ctx, providerId, options)
+			rm, err := client.RegistryProviderVersions.Create(ctx, providerID, options)
 			assert.Nil(t, rm)
 			assert.EqualError(t, err, ErrRequiredPrivateRegistry.Error())
 		})
@@ -181,13 +181,13 @@ func TestRegistryProviderVersionsCreate(t *testing.T) {
 				Version: "1.0.0",
 				KeyID:   "abcdefg",
 			}
-			providerId := RegistryProviderID{
+			providerID := RegistryProviderID{
 				OrganizationName: badIdentifier,
 				RegistryName:     providerTest.RegistryName,
 				Namespace:        providerTest.Namespace,
 				Name:             providerTest.Name,
 			}
-			rm, err := client.RegistryProviderVersions.Create(ctx, providerId, options)
+			rm, err := client.RegistryProviderVersions.Create(ctx, providerID, options)
 			assert.Nil(t, rm)
 			assert.EqualError(t, err, ErrInvalidOrg.Error())
 		})
@@ -293,7 +293,7 @@ func TestRegistryProviderVersionsList(t *testing.T) {
 		assert.Equal(t, 0, versions.TotalPages)
 	})
 
-	// TODO
+	// TODO: complete with include provider platforms
 	t.Run("with include provider platforms", func(t *testing.T) {
 	})
 }
@@ -362,11 +362,11 @@ func TestRegistryProviderVersionsRead(t *testing.T) {
 		assert.Equal(t, version.Version, readVersion.Version)
 		assert.Equal(t, version.KeyID, readVersion.KeyID)
 
-		t.Run("relationships are properly decoded", func(t *testing.T) {
+		t.Run(testRelationshipsProperlyDecoded, func(t *testing.T) {
 			assert.Equal(t, version.RegistryProvider.ID, readVersion.RegistryProvider.ID)
 		})
 
-		t.Run("timestamps are properly decoded", func(t *testing.T) {
+		t.Run(testTimestampsProperlyDecoded, func(t *testing.T) {
 			assert.NotEmpty(t, readVersion.CreatedAt)
 			assert.NotEmpty(t, readVersion.UpdatedAt)
 		})
@@ -400,5 +400,4 @@ func TestRegistryProviderVersionsRead(t *testing.T) {
 		_, err := client.RegistryProviderVersions.Read(ctx, versionID)
 		assert.Error(t, err)
 	})
-
 }

@@ -323,10 +323,7 @@ func (o NotificationConfigurationCreateOptions) valid() error {
 		return ErrInvalidNotificationTrigger
 	}
 
-	if *o.DestinationType == NotificationDestinationTypeGeneric ||
-		*o.DestinationType == NotificationDestinationTypeSlack ||
-		*o.DestinationType == NotificationDestinationTypeMicrosoftTeams {
-
+	if *o.DestinationType == NotificationDestinationTypeGeneric || *o.DestinationType == NotificationDestinationTypeSlack || *o.DestinationType == NotificationDestinationTypeMicrosoftTeams {
 		if o.URL == nil {
 			return ErrRequiredURL
 		}

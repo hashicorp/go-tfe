@@ -8,6 +8,9 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
+const testWhenOptionsMissingName = "when options is missing name"
+const testWithoutValidOrganization = "without a valid organization"
+
 func TestAgentPoolsList(t *testing.T) {
 	client := testClient(t)
 	ctx := context.Background()
@@ -20,7 +23,7 @@ func TestAgentPoolsList(t *testing.T) {
 	agentPool, agentPoolCleanup := createAgentPool(t, client, orgTest)
 	defer agentPoolCleanup()
 
-	t.Run("without list options", func(t *testing.T) {
+	t.Run(testWithoutListOptions, func(t *testing.T) {
 		pools, err := client.AgentPools.List(ctx, orgTest.Name, nil)
 		require.NoError(t, err)
 		assert.Contains(t, pools.Items, agentPool)
@@ -62,14 +65,13 @@ func TestAgentPoolsList(t *testing.T) {
 		assert.Equal(t, 1, pools.TotalCount)
 	})
 
-	t.Run("without a valid organization", func(t *testing.T) {
+	t.Run(testWithoutValidOrganization, func(t *testing.T) {
 		pools, err := client.AgentPools.List(ctx, badIdentifier, nil)
 		assert.Nil(t, pools)
 		assert.EqualError(t, err, ErrInvalidOrg.Error())
 	})
 
 	t.Run("with query options", func(t *testing.T) {
-
 		pools, err := client.AgentPools.List(ctx, orgTest.Name, &AgentPoolListOptions{
 			Query: agentPool.Name,
 		})
@@ -113,7 +115,7 @@ func TestAgentPoolsCreate(t *testing.T) {
 		}
 	})
 
-	t.Run("when options is missing name", func(t *testing.T) {
+	t.Run(testWhenOptionsMissingName, func(t *testing.T) {
 		k, err := client.AgentPools.Create(ctx, "foo", AgentPoolCreateOptions{})
 		assert.Nil(t, k)
 		assert.EqualError(t, err, ErrRequiredName.Error())

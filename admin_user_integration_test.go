@@ -20,7 +20,7 @@ func TestAdminUsers_List(t *testing.T) {
 	org, orgCleanup := createOrganization(t, client)
 	defer orgCleanup()
 
-	t.Run("without list options", func(t *testing.T) {
+	t.Run(testWithoutListOptions, func(t *testing.T) {
 		ul, err := client.Admin.Users.List(ctx, nil)
 		require.NoError(t, err)
 
@@ -130,7 +130,6 @@ func TestAdminUsers_Delete(t *testing.T) {
 		assert.Empty(t, ul.Items)
 		assert.Equal(t, 1, ul.CurrentPage)
 		assert.Equal(t, 0, ul.TotalCount)
-
 	})
 
 	t.Run("an non-existing user", func(t *testing.T) {

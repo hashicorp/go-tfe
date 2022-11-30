@@ -63,7 +63,7 @@ func Test_unmarshalResponse(t *testing.T) {
 						},
 					},
 					"status-timestamps": map[string]string{
-						"queued-at": "2020-03-16T23:15:59+00:00",
+						"queued-at": testQueuedAtTime,
 					},
 				},
 			},
@@ -75,7 +75,7 @@ func Test_unmarshalResponse(t *testing.T) {
 		unmarshalledRequestBody := tfeAPI{}
 		err := unmarshalResponse(responseBody, &unmarshalledRequestBody)
 		require.NoError(t, err)
-		queuedParsedTime, err := time.Parse(time.RFC3339, "2020-03-16T23:15:59+00:00")
+		queuedParsedTime, err := time.Parse(time.RFC3339, testQueuedAtTime)
 		require.NoError(t, err)
 
 		assert.Equal(t, unmarshalledRequestBody.ID, "1")

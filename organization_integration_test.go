@@ -11,6 +11,8 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
+const testPermissionsProperlyDecoded = "permissions are properly decoded"
+
 func TestOrganizationsList(t *testing.T) {
 	client := testClient(t)
 	ctx := context.Background()
@@ -26,13 +28,13 @@ func TestOrganizationsList(t *testing.T) {
 		assert.Contains(t, orgl.Items, orgTest1)
 		assert.Contains(t, orgl.Items, orgTest2)
 
-		t.Skip("paging not supported yet in API")
+		t.Skip(testSkipPagingNotSupportedYet)
 		assert.Equal(t, 1, orgl.CurrentPage)
 		assert.Equal(t, 2, orgl.TotalCount)
 	})
 
 	t.Run("with list options", func(t *testing.T) {
-		t.Skip("paging not supported yet in API")
+		t.Skip(testSkipPagingNotSupportedYet)
 		// Request a page number which is out of range. The result should
 		// be successful, but return no results if the paging options are
 		// properly passed along.
@@ -159,7 +161,7 @@ func TestOrganizationsRead(t *testing.T) {
 		assert.Equal(t, orgTest, org)
 		assert.NotEmpty(t, org.Permissions)
 
-		t.Run("permissions are properly decoded", func(t *testing.T) {
+		t.Run(testPermissionsProperlyDecoded, func(t *testing.T) {
 			assert.True(t, org.Permissions.CanDestroy)
 		})
 
@@ -523,7 +525,7 @@ func TestOrganizationsReadRunTasksPermission(t *testing.T) {
 		assert.Equal(t, orgTest, org)
 		assert.NotEmpty(t, org.Permissions)
 
-		t.Run("permissions are properly decoded", func(t *testing.T) {
+		t.Run(testPermissionsProperlyDecoded, func(t *testing.T) {
 			assert.True(t, org.Permissions.CanManageRunTasks)
 		})
 	})

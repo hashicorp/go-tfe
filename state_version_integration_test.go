@@ -12,6 +12,8 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
+const testWhenStateVersionExists = "when the state version exists"
+
 func containsStateVersion(versions []*StateVersion, item *StateVersion) bool {
 	for _, sv := range versions {
 		if sv.ID == item.ID {
@@ -42,7 +44,7 @@ func TestStateVersionsList(t *testing.T) {
 		assert.Equal(t, err, ErrRequiredStateVerListOps)
 	})
 
-	t.Run("without list options", func(t *testing.T) {
+	t.Run(testWithoutListOptions, func(t *testing.T) {
 		options := &StateVersionListOptions{
 			Organization: orgTest.Name,
 			Workspace:    wTest.Name,
@@ -314,8 +316,9 @@ func TestStateVersionsRead(t *testing.T) {
 	svTest, svTestCleanup := createStateVersion(t, client, 0, nil)
 	t.Cleanup(svTestCleanup)
 
-	t.Run("when the state version exists", func(t *testing.T) {
+	t.Run(testWhenStateVersionExists, func(t *testing.T) {
 		var sv *StateVersion
+		var ok bool
 		sv, err := client.StateVersions.Read(ctx, svTest.ID)
 		require.NoError(t, err)
 
@@ -335,7 +338,10 @@ func TestStateVersionsRead(t *testing.T) {
 				t.Fatalf("error retrying state version read, err=%s", err)
 			}
 
-			sv = svRetry.(*StateVersion)
+			sv, ok = svRetry.(*StateVersion)
+			if !ok {
+				t.Fatal("could not retrieve state version")
+			}
 		}
 
 		assert.NotEmpty(t, sv.DownloadURL)
@@ -367,7 +373,7 @@ func TestStateVersionsReadWithOptions(t *testing.T) {
 	// give TFC some time to process the statefile and extract the outputs.
 	waitForSVOutputs(t, client, svTest.ID)
 
-	t.Run("when the state version exists", func(t *testing.T) {
+	t.Run(testWhenStateVersionExists, func(t *testing.T) {
 		curOpts := &StateVersionReadOptions{
 			Include: []StateVersionIncludeOpt{SVoutputs},
 		}
@@ -437,7 +443,7 @@ func TestStateVersionsCurrentWithOptions(t *testing.T) {
 	// give TFC some time to process the statefile and extract the outputs.
 	waitForSVOutputs(t, client, svTest.ID)
 
-	t.Run("when the state version exists", func(t *testing.T) {
+	t.Run(testWhenStateVersionExists, func(t *testing.T) {
 		curOpts := &StateVersionCurrentOptions{
 			Include: []StateVersionIncludeOpt{SVoutputs},
 		}
@@ -459,7 +465,7 @@ func TestStateVersionsDownload(t *testing.T) {
 	stateTest, err := os.ReadFile("test-fixtures/state-version/terraform.tfstate")
 	require.NoError(t, err)
 
-	t.Run("when the state version exists", func(t *testing.T) {
+	t.Run(testWhenStateVersionExists, func(t *testing.T) {
 		state, err := client.StateVersions.Download(ctx, svTest.DownloadURL)
 		require.NoError(t, err)
 		assert.Equal(t, stateTest, state)
@@ -485,7 +491,7 @@ func TestStateVersionOutputs(t *testing.T) {
 	// give TFC some time to process the statefile and extract the outputs.
 	waitForSVOutputs(t, client, sv.ID)
 
-	t.Run("when the state version exists", func(t *testing.T) {
+	t.Run(testWhenStateVersionExists, func(t *testing.T) {
 		outputs, err := client.StateVersions.ListOutputs(ctx, sv.ID, nil)
 		require.NoError(t, err)
 
@@ -528,5 +534,4 @@ func TestStateVersionOutputs(t *testing.T) {
 		assert.Nil(t, outputs)
 		assert.Error(t, err)
 	})
-
 }

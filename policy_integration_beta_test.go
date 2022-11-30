@@ -210,7 +210,7 @@ func TestPoliciesCreate_Beta(t *testing.T) {
 		assert.Equal(t, err, ErrRequiredEnforcementMode)
 	})
 
-	t.Run("when options has an invalid organization", func(t *testing.T) {
+	t.Run(testWhenOptionsHasInvalidOrganization, func(t *testing.T) {
 		p, err := client.Policies.Create(ctx, badIdentifier, PolicyCreateOptions{
 			Name: String("foo"),
 		})
@@ -245,7 +245,7 @@ func TestPoliciesList_Beta(t *testing.T) {
 	pTest3, pTestCleanup3 := createPolicyWithOptions(t, client, orgTest, opaOptions)
 	defer pTestCleanup3()
 
-	t.Run("without list options", func(t *testing.T) {
+	t.Run(testWithoutListOptions, func(t *testing.T) {
 		pl, err := client.Policies.List(ctx, orgTest.Name, nil)
 		require.NoError(t, err)
 		assert.Contains(t, pl.Items, pTest1)
@@ -300,7 +300,7 @@ func TestPoliciesList_Beta(t *testing.T) {
 		assert.Equal(t, 1, pl.TotalCount)
 	})
 
-	t.Run("without a valid organization", func(t *testing.T) {
+	t.Run(testWithoutValidOrganization, func(t *testing.T) {
 		ps, err := client.Policies.List(ctx, badIdentifier, nil)
 		assert.Nil(t, ps)
 		assert.EqualError(t, err, ErrInvalidOrg.Error())
@@ -328,7 +328,7 @@ func TestPoliciesUpdate_Beta(t *testing.T) {
 				},
 			},
 		}
-		pBefore, pBeforeCleanup := createUploadedPolicyWithOptions(t, client, true, orgTest, options)
+		pBefore, pBeforeCleanup := createUploadedPolicyWithOptions(t, client, orgTest, options)
 		defer pBeforeCleanup()
 
 		pAfter, err := client.Policies.Update(ctx, pBefore.ID, PolicyUpdateOptions{

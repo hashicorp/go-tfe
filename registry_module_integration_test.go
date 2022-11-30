@@ -15,6 +15,11 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
+const testWithInvalidProvider = "with an invalid provider"
+const testRelationshipsProperlyDecoded = "relationships are properly decoded"
+const testWithInvalidName = "with an invalid name"
+const testTimestampsProperlyDecoded = "timestamps are properly decoded"
+
 func TestRegistryModulesList(t *testing.T) {
 	client := testClient(t)
 	ctx := context.Background()
@@ -69,19 +74,19 @@ func TestRegistryModulesCreate(t *testing.T) {
 
 	t.Run("with valid options", func(t *testing.T) {
 		assertRegistryModuleAttributes := func(t *testing.T, registryModule *RegistryModule) {
-			t.Run("permissions are properly decoded", func(t *testing.T) {
+			t.Run(testPermissionsProperlyDecoded, func(t *testing.T) {
 				require.NotEmpty(t, registryModule.Permissions)
 				assert.True(t, registryModule.Permissions.CanDelete)
 				assert.True(t, registryModule.Permissions.CanResync)
 				assert.True(t, registryModule.Permissions.CanRetry)
 			})
 
-			t.Run("relationships are properly decoded", func(t *testing.T) {
+			t.Run(testRelationshipsProperlyDecoded, func(t *testing.T) {
 				require.NotEmpty(t, registryModule.Organization)
 				assert.Equal(t, orgTest.Name, registryModule.Organization.Name)
 			})
 
-			t.Run("timestamps are properly decoded", func(t *testing.T) {
+			t.Run(testTimestampsProperlyDecoded, func(t *testing.T) {
 				assert.NotEmpty(t, registryModule.CreatedAt)
 				assert.NotEmpty(t, registryModule.UpdatedAt)
 			})
@@ -162,7 +167,7 @@ func TestRegistryModulesCreate(t *testing.T) {
 		})
 	})
 
-	t.Run("with invalid options", func(t *testing.T) {
+	t.Run(testWithInvalidOptions, func(t *testing.T) {
 		t.Run("without a name", func(t *testing.T) {
 			options := RegistryModuleCreateOptions{
 				Provider: String("provider"),
@@ -172,7 +177,7 @@ func TestRegistryModulesCreate(t *testing.T) {
 			assert.EqualError(t, err, ErrRequiredName.Error())
 		})
 
-		t.Run("with an invalid name", func(t *testing.T) {
+		t.Run(testWithInvalidName, func(t *testing.T) {
 			options := RegistryModuleCreateOptions{
 				Name:     String("invalid name"),
 				Provider: String("provider"),
@@ -191,7 +196,7 @@ func TestRegistryModulesCreate(t *testing.T) {
 			assert.Equal(t, err, ErrRequiredProvider)
 		})
 
-		t.Run("with an invalid provider", func(t *testing.T) {
+		t.Run(testWithInvalidProvider, func(t *testing.T) {
 			options := RegistryModuleCreateOptions{
 				Name:     String("name"),
 				Provider: String("invalid provider"),
@@ -236,7 +241,7 @@ func TestRegistryModulesCreate(t *testing.T) {
 		})
 	})
 
-	t.Run("without a valid organization", func(t *testing.T) {
+	t.Run(testWithoutValidOrganization, func(t *testing.T) {
 		options := RegistryModuleCreateOptions{
 			Name:     String("name"),
 			Provider: String("provider"),
@@ -294,7 +299,6 @@ func TestRegistryModuleUpdate(t *testing.T) {
 		require.NoError(t, err)
 		assert.False(t, rm.NoCode)
 	})
-
 }
 
 func TestRegistryModulesCreateVersion(t *testing.T) {
@@ -321,11 +325,11 @@ func TestRegistryModulesCreateVersion(t *testing.T) {
 		assert.NotEmpty(t, rmv.ID)
 		assert.Equal(t, *options.Version, rmv.Version)
 
-		t.Run("relationships are properly decoded", func(t *testing.T) {
+		t.Run(testRelationshipsProperlyDecoded, func(t *testing.T) {
 			assert.Equal(t, registryModuleTest.ID, rmv.RegistryModule.ID)
 		})
 
-		t.Run("timestamps are properly decoded", func(t *testing.T) {
+		t.Run(testTimestampsProperlyDecoded, func(t *testing.T) {
 			assert.NotEmpty(t, rmv.CreatedAt)
 			assert.NotEmpty(t, rmv.UpdatedAt)
 		})
@@ -351,7 +355,7 @@ func TestRegistryModulesCreateVersion(t *testing.T) {
 		assert.Equal(t, *options.Version, rmv.Version)
 	})
 
-	t.Run("with invalid options", func(t *testing.T) {
+	t.Run(testWithInvalidOptions, func(t *testing.T) {
 		t.Run("without version", func(t *testing.T) {
 			options := RegistryModuleCreateVersionOptions{}
 			rmv, err := client.RegistryModules.CreateVersion(ctx, RegistryModuleID{
@@ -390,7 +394,7 @@ func TestRegistryModulesCreateVersion(t *testing.T) {
 		assert.EqualError(t, err, ErrRequiredName.Error())
 	})
 
-	t.Run("with an invalid name", func(t *testing.T) {
+	t.Run(testWithInvalidName, func(t *testing.T) {
 		options := RegistryModuleCreateVersionOptions{
 			Version: String("1.2.3"),
 		}
@@ -416,7 +420,7 @@ func TestRegistryModulesCreateVersion(t *testing.T) {
 		assert.Equal(t, err, ErrRequiredProvider)
 	})
 
-	t.Run("with an invalid provider", func(t *testing.T) {
+	t.Run(testWithInvalidProvider, func(t *testing.T) {
 		options := RegistryModuleCreateVersionOptions{
 			Version: String("1.2.3"),
 		}
@@ -429,7 +433,7 @@ func TestRegistryModulesCreateVersion(t *testing.T) {
 		assert.Equal(t, err, ErrInvalidProvider)
 	})
 
-	t.Run("without a valid organization", func(t *testing.T) {
+	t.Run(testWithoutValidOrganization, func(t *testing.T) {
 		options := RegistryModuleCreateVersionOptions{
 			Version: String("1.2.3"),
 		}
@@ -441,7 +445,6 @@ func TestRegistryModulesCreateVersion(t *testing.T) {
 		assert.Nil(t, rmv)
 		assert.EqualError(t, err, ErrInvalidOrg.Error())
 	})
-
 }
 
 func TestRegistryModulesCreateWithVCSConnection(t *testing.T) {
@@ -480,27 +483,27 @@ func TestRegistryModulesCreateWithVCSConnection(t *testing.T) {
 		assert.Equal(t, rm.VCSRepo.Identifier, githubIdentifier)
 		assert.Equal(t, rm.VCSRepo.IngressSubmodules, true)
 		assert.Equal(t, rm.VCSRepo.OAuthTokenID, oauthTokenTest.ID)
-		assert.Equal(t, rm.VCSRepo.RepositoryHTTPURL, fmt.Sprintf("https://github.com/%s", githubIdentifier))
+		assert.Equal(t, rm.VCSRepo.RepositoryHTTPURL, fmt.Sprintf(githubFmt, githubIdentifier))
 		assert.Equal(t, rm.VCSRepo.ServiceProvider, string(ServiceProviderGithub))
-		assert.Regexp(t, fmt.Sprintf("^%s/webhooks/vcs/[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$", regexp.QuoteMeta(DefaultConfig().Address)), rm.VCSRepo.WebhookURL)
+		assert.Regexp(t, fmt.Sprintf(testWebhookVscRegex, regexp.QuoteMeta(DefaultConfig().Address)), rm.VCSRepo.WebhookURL)
 
-		t.Run("permissions are properly decoded", func(t *testing.T) {
+		t.Run(testPermissionsProperlyDecoded, func(t *testing.T) {
 			assert.True(t, rm.Permissions.CanDelete)
 			assert.True(t, rm.Permissions.CanResync)
 			assert.True(t, rm.Permissions.CanRetry)
 		})
 
-		t.Run("relationships are properly decoded", func(t *testing.T) {
+		t.Run(testRelationshipsProperlyDecoded, func(t *testing.T) {
 			assert.Equal(t, orgTest.Name, rm.Organization.Name)
 		})
 
-		t.Run("timestamps are properly decoded", func(t *testing.T) {
+		t.Run(testTimestampsProperlyDecoded, func(t *testing.T) {
 			assert.NotEmpty(t, rm.CreatedAt)
 			assert.NotEmpty(t, rm.UpdatedAt)
 		})
 	})
 
-	t.Run("with invalid options", func(t *testing.T) {
+	t.Run(testWithInvalidOptions, func(t *testing.T) {
 		t.Run("without an identifier", func(t *testing.T) {
 			options := RegistryModuleCreateWithVCSConnectionOptions{
 				VCSRepo: &RegistryModuleVCSRepoOptions{
@@ -547,7 +550,6 @@ func TestRegistryModulesCreateWithVCSConnection(t *testing.T) {
 		assert.Nil(t, rm)
 		assert.Equal(t, err, ErrRequiredVCSRepo)
 	})
-
 }
 
 func TestRegistryModulesRead(t *testing.T) {
@@ -572,13 +574,13 @@ func TestRegistryModulesRead(t *testing.T) {
 		require.NoError(t, err)
 		assert.Equal(t, registryModuleTest.ID, rm.ID)
 
-		t.Run("permissions are properly decoded", func(t *testing.T) {
+		t.Run(testPermissionsProperlyDecoded, func(t *testing.T) {
 			assert.True(t, rm.Permissions.CanDelete)
 			assert.True(t, rm.Permissions.CanResync)
 			assert.True(t, rm.Permissions.CanRetry)
 		})
 
-		t.Run("timestamps are properly decoded", func(t *testing.T) {
+		t.Run(testTimestampsProperlyDecoded, func(t *testing.T) {
 			assert.NotEmpty(t, rm.CreatedAt)
 			assert.NotEmpty(t, rm.UpdatedAt)
 		})
@@ -596,14 +598,14 @@ func TestRegistryModulesRead(t *testing.T) {
 		require.NotEmpty(t, rm)
 		assert.Equal(t, registryModuleTest.ID, rm.ID)
 
-		t.Run("permissions are properly decoded", func(t *testing.T) {
+		t.Run(testPermissionsProperlyDecoded, func(t *testing.T) {
 			require.NotEmpty(t, rm.Permissions)
 			assert.True(t, rm.Permissions.CanDelete)
 			assert.True(t, rm.Permissions.CanResync)
 			assert.True(t, rm.Permissions.CanRetry)
 		})
 
-		t.Run("timestamps are properly decoded", func(t *testing.T) {
+		t.Run(testTimestampsProperlyDecoded, func(t *testing.T) {
 			assert.NotEmpty(t, rm.CreatedAt)
 			assert.NotEmpty(t, rm.UpdatedAt)
 		})
@@ -621,14 +623,14 @@ func TestRegistryModulesRead(t *testing.T) {
 		require.NotEmpty(t, rm)
 		assert.Equal(t, publicRegistryModuleTest.ID, rm.ID)
 
-		t.Run("permissions are properly decoded", func(t *testing.T) {
+		t.Run(testPermissionsProperlyDecoded, func(t *testing.T) {
 			require.NotEmpty(t, rm.Permissions)
 			assert.True(t, rm.Permissions.CanDelete)
 			assert.True(t, rm.Permissions.CanResync)
 			assert.True(t, rm.Permissions.CanRetry)
 		})
 
-		t.Run("timestamps are properly decoded", func(t *testing.T) {
+		t.Run(testTimestampsProperlyDecoded, func(t *testing.T) {
 			assert.NotEmpty(t, rm.CreatedAt)
 			assert.NotEmpty(t, rm.UpdatedAt)
 		})
@@ -644,7 +646,7 @@ func TestRegistryModulesRead(t *testing.T) {
 		assert.EqualError(t, err, ErrRequiredName.Error())
 	})
 
-	t.Run("with an invalid name", func(t *testing.T) {
+	t.Run(testWithInvalidName, func(t *testing.T) {
 		rm, err := client.RegistryModules.Read(ctx, RegistryModuleID{
 			Organization: orgTest.Name,
 			Name:         badIdentifier,
@@ -664,7 +666,7 @@ func TestRegistryModulesRead(t *testing.T) {
 		assert.Equal(t, err, ErrRequiredProvider)
 	})
 
-	t.Run("with an invalid provider", func(t *testing.T) {
+	t.Run(testWithInvalidProvider, func(t *testing.T) {
 		rm, err := client.RegistryModules.Read(ctx, RegistryModuleID{
 			Organization: orgTest.Name,
 			Name:         registryModuleTest.Name,
@@ -686,7 +688,7 @@ func TestRegistryModulesRead(t *testing.T) {
 		assert.Equal(t, err, ErrInvalidRegistryName)
 	})
 
-	t.Run("without a valid organization", func(t *testing.T) {
+	t.Run(testWithoutValidOrganization, func(t *testing.T) {
 		rm, err := client.RegistryModules.Read(ctx, RegistryModuleID{
 			Organization: badIdentifier,
 			Name:         registryModuleTest.Name,
@@ -745,12 +747,12 @@ func TestRegistryModulesDelete(t *testing.T) {
 		assert.EqualError(t, err, ErrRequiredName.Error())
 	})
 
-	t.Run("with an invalid name", func(t *testing.T) {
+	t.Run(testWithInvalidName, func(t *testing.T) {
 		err := client.RegistryModules.Delete(ctx, orgTest.Name, badIdentifier)
 		assert.EqualError(t, err, ErrInvalidName.Error())
 	})
 
-	t.Run("without a valid organization", func(t *testing.T) {
+	t.Run(testWithoutValidOrganization, func(t *testing.T) {
 		err := client.RegistryModules.Delete(ctx, badIdentifier, registryModuleTest.Name)
 		assert.EqualError(t, err, ErrInvalidOrg.Error())
 	})
@@ -797,7 +799,7 @@ func TestRegistryModulesDeleteProvider(t *testing.T) {
 		assert.EqualError(t, err, ErrRequiredName.Error())
 	})
 
-	t.Run("with an invalid name", func(t *testing.T) {
+	t.Run(testWithInvalidName, func(t *testing.T) {
 		err := client.RegistryModules.DeleteProvider(ctx, RegistryModuleID{
 			Organization: orgTest.Name,
 			Name:         badIdentifier,
@@ -815,7 +817,7 @@ func TestRegistryModulesDeleteProvider(t *testing.T) {
 		assert.Equal(t, err, ErrRequiredProvider)
 	})
 
-	t.Run("with an invalid provider", func(t *testing.T) {
+	t.Run(testWithInvalidProvider, func(t *testing.T) {
 		err := client.RegistryModules.DeleteProvider(ctx, RegistryModuleID{
 			Organization: orgTest.Name,
 			Name:         registryModuleTest.Name,
@@ -824,7 +826,7 @@ func TestRegistryModulesDeleteProvider(t *testing.T) {
 		assert.Equal(t, err, ErrInvalidProvider)
 	})
 
-	t.Run("without a valid organization", func(t *testing.T) {
+	t.Run(testWithoutValidOrganization, func(t *testing.T) {
 		err := client.RegistryModules.DeleteProvider(ctx, RegistryModuleID{
 			Organization: badIdentifier,
 			Name:         registryModuleTest.Name,
@@ -943,7 +945,7 @@ func TestRegistryModulesDeleteVersion(t *testing.T) {
 		assert.EqualError(t, err, ErrRequiredName.Error())
 	})
 
-	t.Run("with an invalid name", func(t *testing.T) {
+	t.Run(testWithInvalidName, func(t *testing.T) {
 		err := client.RegistryModules.DeleteVersion(ctx, RegistryModuleID{
 			Organization: orgTest.Name,
 			Name:         badIdentifier,
@@ -961,7 +963,7 @@ func TestRegistryModulesDeleteVersion(t *testing.T) {
 		assert.Equal(t, err, ErrRequiredProvider)
 	})
 
-	t.Run("with an invalid provider", func(t *testing.T) {
+	t.Run(testWithInvalidProvider, func(t *testing.T) {
 		err := client.RegistryModules.DeleteVersion(ctx, RegistryModuleID{
 			Organization: orgTest.Name,
 			Name:         registryModuleTest.Name,
@@ -988,7 +990,7 @@ func TestRegistryModulesDeleteVersion(t *testing.T) {
 		assert.Equal(t, err, ErrInvalidVersion)
 	})
 
-	t.Run("without a valid organization", func(t *testing.T) {
+	t.Run(testWithoutValidOrganization, func(t *testing.T) {
 		err := client.RegistryModules.DeleteVersion(ctx, RegistryModuleID{
 			Organization: badIdentifier,
 			Name:         registryModuleTest.Name,
@@ -1032,7 +1034,7 @@ func TestRegistryModulesUpload(t *testing.T) {
 		err = client.RegistryModules.Upload(
 			ctx,
 			*rmv,
-			"test-fixtures/config-version",
+			testConfigVersionPath,
 		)
 		require.NoError(t, err)
 	})
@@ -1043,7 +1045,7 @@ func TestRegistryModulesUpload(t *testing.T) {
 		err = client.RegistryModules.Upload(
 			ctx,
 			*rmv,
-			"test-fixtures/config-version",
+			testConfigVersionPath,
 		)
 		assert.EqualError(t, err, "provided RegistryModuleVersion does not contain an upload link")
 	})

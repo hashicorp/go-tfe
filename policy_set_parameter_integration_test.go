@@ -8,6 +8,8 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
+const testWhenUpdatingSubsetOfValues = "when updating a subset of values"
+
 func TestPolicySetParametersList(t *testing.T) {
 	skipIfFreeOnly(t)
 
@@ -25,19 +27,19 @@ func TestPolicySetParametersList(t *testing.T) {
 	pTest2, pTestCleanup2 := createPolicySetParameter(t, client, psTest)
 	defer pTestCleanup2()
 
-	t.Run("without list options", func(t *testing.T) {
+	t.Run(testWithoutListOptions, func(t *testing.T) {
 		pl, err := client.PolicySetParameters.List(ctx, psTest.ID, nil)
 		require.NoError(t, err)
 		assert.Contains(t, pl.Items, pTest1)
 		assert.Contains(t, pl.Items, pTest2)
 
-		t.Skip("paging not supported yet in API")
+		t.Skip(testSkipPagingNotSupportedYet)
 		assert.Equal(t, 1, pl.CurrentPage)
 		assert.Equal(t, 2, pl.TotalCount)
 	})
 
 	t.Run("with list options", func(t *testing.T) {
-		t.Skip("paging not supported yet in API")
+		t.Skip(testSkipPagingNotSupportedYet)
 		// Request a page number which is out of range. The result should
 		// be successful, but return no results if the paging options are
 		// properly passed along.
@@ -223,7 +225,7 @@ func TestPolicySetParametersUpdate(t *testing.T) {
 		assert.Equal(t, *options.Value, p.Value)
 	})
 
-	t.Run("when updating a subset of values", func(t *testing.T) {
+	t.Run(testWhenUpdatingSubsetOfValues, func(t *testing.T) {
 		options := PolicySetParameterUpdateOptions{
 			Key: String("someothername"),
 		}

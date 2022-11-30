@@ -11,15 +11,17 @@ import (
 	"testing"
 	"time"
 
-	retryablehttp "github.com/hashicorp/go-retryablehttp"
 	"github.com/hashicorp/jsonapi"
 	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 	"golang.org/x/time/rate"
 )
 
+const testUnexpectedErrorFmt = "unexpected error: %v"
+
 func TestClient_newClient(t *testing.T) {
 	ts := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		w.Header().Set("Content-Type", "application/vnd.api+json")
+		w.Header().Set("Content-Type", ContentTypeVndJSON)
 		w.Header().Set("X-RateLimit-Limit", "30")
 		w.Header().Set("TFP-API-Version", "34.21.9")
 		w.Header().Set("X-TFE-Version", "202205-1")
@@ -51,7 +53,7 @@ func TestClient_newClient(t *testing.T) {
 
 		_, err := NewClient(cfg)
 		if err == nil || err.Error() != "missing API token" {
-			t.Fatalf("unexpected error: %v", err)
+			t.Fatalf(testUnexpectedErrorFmt, err)
 		}
 	})
 
@@ -129,13 +131,13 @@ func TestClient_headers(t *testing.T) {
 		testedCalls++
 
 		if testedCalls == 1 {
-			w.Header().Set("Content-Type", "application/vnd.api+json")
+			w.Header().Set("Content-Type", ContentTypeVndJSON)
 			w.Header().Set("X-RateLimit-Limit", "30")
 			w.WriteHeader(204) // We query the configured ping URL which should return a 204.
 			return
 		}
 
-		if r.Header.Get("Accept") != "application/vnd.api+json" {
+		if r.Header.Get("Accept") != ContentTypeVndJSON {
 			t.Fatalf("unexpected accept header: %q", r.Header.Get("Accept"))
 		}
 		if r.Header.Get("Authorization") != "Bearer dummy-token" {
@@ -175,11 +177,16 @@ func TestClient_headers(t *testing.T) {
 	ctx := context.Background()
 
 	// Make a few calls so we can check they all send the expected headers.
-	_, _ = client.Organizations.List(ctx, nil)
-	_, _ = client.Plans.Logs(ctx, "plan-123456789")
-	_ = client.Runs.Apply(ctx, "run-123456789", RunApplyOptions{})
-	_, _ = client.Workspaces.Lock(ctx, "ws-123456789", WorkspaceLockOptions{})
-	_, _ = client.Workspaces.Read(ctx, "organization", "workspace")
+	_, err = client.Organizations.List(ctx, nil)
+	require.NoError(t, err)
+	_, err = client.Plans.Logs(ctx, "plan-123456789")
+	require.NoError(t, err)
+	err = client.Runs.Apply(ctx, "run-123456789", RunApplyOptions{})
+	require.NoError(t, err)
+	_, err = client.Workspaces.Lock(ctx, "ws-123456789", WorkspaceLockOptions{})
+	require.NoError(t, err)
+	_, err = client.Workspaces.Read(ctx, "organization", "workspace")
+	require.NoError(t, err)
 
 	if testedCalls != 6 {
 		t.Fatalf("expected 6 tested calls, got: %d", testedCalls)
@@ -192,7 +199,7 @@ func TestClient_userAgent(t *testing.T) {
 		testedCalls++
 
 		if testedCalls == 1 {
-			w.Header().Set("Content-Type", "application/vnd.api+json")
+			w.Header().Set("Content-Type", ContentTypeVndJSON)
 			w.Header().Set("X-RateLimit-Limit", "30")
 			w.WriteHeader(204) // We query the configured ping URL which should return a 204.
 			return
@@ -222,11 +229,16 @@ func TestClient_userAgent(t *testing.T) {
 	ctx := context.Background()
 
 	// Make a few calls so we can check they all send the expected headers.
-	_, _ = client.Organizations.List(ctx, nil)
-	_, _ = client.Plans.Logs(ctx, "plan-123456789")
-	_ = client.Runs.Apply(ctx, "run-123456789", RunApplyOptions{})
-	_, _ = client.Workspaces.Lock(ctx, "ws-123456789", WorkspaceLockOptions{})
-	_, _ = client.Workspaces.Read(ctx, "organization", "workspace")
+	_, err = client.Organizations.List(ctx, nil)
+	require.NoError(t, err)
+	_, err = client.Plans.Logs(ctx, "plan-123456789")
+	require.NoError(t, err)
+	err = client.Runs.Apply(ctx, "run-123456789", RunApplyOptions{})
+	require.NoError(t, err)
+	_, err = client.Workspaces.Lock(ctx, "ws-123456789", WorkspaceLockOptions{})
+	require.NoError(t, err)
+	_, err = client.Workspaces.Read(ctx, "organization", "workspace")
+	require.NoError(t, err)
 
 	if testedCalls != 6 {
 		t.Fatalf("expected 6 tested calls, got: %d", testedCalls)
@@ -249,7 +261,7 @@ type InvalidBody struct {
 func TestClient_requestBodySerialization(t *testing.T) {
 	t.Run("jsonapi request", func(t *testing.T) {
 		body := JSONAPIBody{StrAttr: "foo"}
-		_, requestBody, err := createRequest(&body)
+		requestBody, err := createRequest(&body)
 		if err != nil {
 			t.Fatal(err)
 		}
@@ -267,7 +279,7 @@ func TestClient_requestBodySerialization(t *testing.T) {
 	t.Run("jsonapi slice of pointers request", func(t *testing.T) {
 		var body []*JSONAPIBody
 		body = append(body, &JSONAPIBody{StrAttr: "foo"})
-		_, requestBody, err := createRequest(body)
+		requestBody, err := createRequest(body)
 		if err != nil {
 			t.Fatal(err)
 		}
@@ -288,7 +300,7 @@ func TestClient_requestBodySerialization(t *testing.T) {
 
 	t.Run("plain json request", func(t *testing.T) {
 		body := JSONPlainBody{StrAttr: "foo"}
-		_, requestBody, err := createRequest(&body)
+		requestBody, err := createRequest(&body)
 		if err != nil {
 			t.Fatal(err)
 		}
@@ -306,7 +318,7 @@ func TestClient_requestBodySerialization(t *testing.T) {
 	t.Run("plain json slice of pointers request", func(t *testing.T) {
 		var body []*JSONPlainBody
 		body = append(body, &JSONPlainBody{StrAttr: "foo"})
-		_, requestBody, err := createRequest(body)
+		requestBody, err := createRequest(body)
 		if err != nil {
 			t.Fatal(err)
 		}
@@ -322,7 +334,7 @@ func TestClient_requestBodySerialization(t *testing.T) {
 	})
 
 	t.Run("nil request", func(t *testing.T) {
-		_, requestBody, err := createRequest(nil)
+		requestBody, err := createRequest(nil)
 		if err != nil {
 			t.Fatal(err)
 		}
@@ -333,68 +345,68 @@ func TestClient_requestBodySerialization(t *testing.T) {
 
 	t.Run("invalid struct request", func(t *testing.T) {
 		body := InvalidBody{}
-		_, _, err := createRequest(&body)
+		_, err := createRequest(&body)
 		if err == nil || err != ErrInvalidStructFormat {
-			t.Fatalf("unexpected error: %v", err)
+			t.Fatalf(testUnexpectedErrorFmt, err)
 		}
 	})
 
 	t.Run("non-pointer request", func(t *testing.T) {
 		body := InvalidBody{}
-		_, _, err := createRequest(body)
-		if err == nil || err.Error() != "go-tfe bug: DELETE/PATCH/POST body must be nil, ptr, or ptr slice" {
-			t.Fatalf("unexpected error: %v", err)
+		_, err := createRequest(body)
+		if err == nil || err != ErrInvalidRequestBody {
+			t.Fatalf(testUnexpectedErrorFmt, err)
 		}
 	})
 
 	t.Run("slice of non-pointer request", func(t *testing.T) {
 		body := []InvalidBody{{}}
-		_, _, err := createRequest(body)
-		if err == nil || err.Error() != "go-tfe bug: DELETE/PATCH/POST body must be nil, ptr, or ptr slice" {
-			t.Fatalf("unexpected error: %v", err)
+		_, err := createRequest(body)
+		if err == nil || err != ErrInvalidRequestBody {
+			t.Fatalf(testUnexpectedErrorFmt, err)
 		}
 	})
 
 	t.Run("map request", func(t *testing.T) {
 		body := make(map[string]string)
-		_, _, err := createRequest(body)
-		if err == nil || err.Error() != "go-tfe bug: DELETE/PATCH/POST body must be nil, ptr, or ptr slice" {
-			t.Fatalf("unexpected error: %v", err)
+		_, err := createRequest(body)
+		if err == nil || err != ErrInvalidRequestBody {
+			t.Fatalf(testUnexpectedErrorFmt, err)
 		}
 	})
 
 	t.Run("string request", func(t *testing.T) {
 		body := "foo"
-		_, _, err := createRequest(body)
-		if err == nil || err.Error() != "go-tfe bug: DELETE/PATCH/POST body must be nil, ptr, or ptr slice" {
-			t.Fatalf("unexpected error: %v", err)
+		_, err := createRequest(body)
+		if err == nil || err != ErrInvalidRequestBody {
+			t.Fatalf(testUnexpectedErrorFmt, err)
 		}
 	})
 }
 
-func createRequest(v interface{}) (*retryablehttp.Request, []byte, error) {
+func createRequest(v interface{}) ([]byte, error) {
 	config := DefaultConfig()
 	config.Token = "dummy"
 	client, err := NewClient(config)
 	if err != nil {
-		return nil, nil, err
+		return nil, err
 	}
 
 	request, err := client.NewRequest("POST", "/bar", v)
 	if err != nil {
-		return nil, nil, err
+		return nil, err
 	}
 	body, err := request.retryableRequest.BodyBytes()
 	if err != nil {
-		return request.retryableRequest, nil, err
+		return nil, err
 	}
-	return request.retryableRequest, body, nil
+	return body, nil
 }
 
 func TestClient_configureLimiter(t *testing.T) {
 	rateLimit := ""
 	ts := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		w.Header().Set("Content-Type", "application/vnd.api+json")
+		w.Header().Set("Content-Type", ContentTypeVndJSON)
 		w.Header().Set("X-RateLimit-Limit", rateLimit)
 		w.WriteHeader(204) // We query the configured ping URL which should return a 204.
 	}))
@@ -454,7 +466,7 @@ func TestClient_configureLimiter(t *testing.T) {
 
 func TestClient_retryHTTPCheck(t *testing.T) {
 	ts := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		w.Header().Set("Content-Type", "application/vnd.api+json")
+		w.Header().Set("Content-Type", ContentTypeVndJSON)
 		w.Header().Set("X-RateLimit-Limit", "30")
 		w.WriteHeader(204) // We query the configured ping URL which should return a 204.
 	}))
@@ -536,7 +548,7 @@ func TestClient_retryHTTPCheck(t *testing.T) {
 
 func TestClient_retryHTTPBackoff(t *testing.T) {
 	ts := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		w.Header().Set("Content-Type", "application/vnd.api+json")
+		w.Header().Set("Content-Type", ContentTypeVndJSON)
 		w.Header().Set("X-RateLimit-Limit", "30")
 		w.WriteHeader(204) // We query the configured ping URL which should return a 204.
 	}))

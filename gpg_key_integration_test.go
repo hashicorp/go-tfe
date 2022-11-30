@@ -8,6 +8,8 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
+const testWithInvalidOptions = "with invalid options"
+
 func TestGPGKeyCreate(t *testing.T) {
 	client := testClient(t)
 	ctx := context.Background()
@@ -23,14 +25,14 @@ func TestGPGKeyCreate(t *testing.T) {
 	t.Run("with valid options", func(t *testing.T) {
 		opts := GPGKeyCreateOptions{
 			Namespace:  provider.Organization.Name,
-			AsciiArmor: testGpgArmor,
+			ASCIIArmor: testGpgArmor,
 		}
 
 		gpgKey, err := client.GPGKeys.Create(ctx, PrivateRegistry, opts)
 		require.NoError(t, err)
 
 		assert.NotEmpty(t, gpgKey.ID)
-		assert.Equal(t, gpgKey.AsciiArmor, opts.AsciiArmor)
+		assert.Equal(t, gpgKey.ASCIIArmor, opts.ASCIIArmor)
 		assert.Equal(t, gpgKey.Namespace, opts.Namespace)
 		assert.NotEmpty(t, gpgKey.CreatedAt)
 		assert.NotEmpty(t, gpgKey.UpdatedAt)
@@ -43,27 +45,27 @@ func TestGPGKeyCreate(t *testing.T) {
 	t.Run("with invalid registry name", func(t *testing.T) {
 		opts := GPGKeyCreateOptions{
 			Namespace:  provider.Organization.Name,
-			AsciiArmor: testGpgArmor,
+			ASCIIArmor: testGpgArmor,
 		}
 
 		_, err := client.GPGKeys.Create(ctx, "foobar", opts)
 		assert.ErrorIs(t, err, ErrInvalidRegistryName)
 	})
 
-	t.Run("with invalid options", func(t *testing.T) {
+	t.Run(testWithInvalidOptions, func(t *testing.T) {
 		missingNamespaceOpts := GPGKeyCreateOptions{
 			Namespace:  "",
-			AsciiArmor: testGpgArmor,
+			ASCIIArmor: testGpgArmor,
 		}
 		_, err := client.GPGKeys.Create(ctx, PrivateRegistry, missingNamespaceOpts)
 		assert.ErrorIs(t, err, ErrInvalidNamespace)
 
-		missingAsciiArmorOpts := GPGKeyCreateOptions{
+		missingASCIIArmorOpts := GPGKeyCreateOptions{
 			Namespace:  provider.Organization.Name,
-			AsciiArmor: "",
+			ASCIIArmor: "",
 		}
-		_, err = client.GPGKeys.Create(ctx, PrivateRegistry, missingAsciiArmorOpts)
-		assert.ErrorIs(t, err, ErrInvalidAsciiArmor)
+		_, err = client.GPGKeys.Create(ctx, PrivateRegistry, missingASCIIArmorOpts)
+		assert.ErrorIs(t, err, ErrInvalidASCIIArmor)
 	})
 }
 
@@ -92,7 +94,7 @@ func TestGPGKeyRead(t *testing.T) {
 
 		assert.NotEmpty(t, gpgKey.ID)
 		assert.NotEmpty(t, gpgKey.KeyID)
-		assert.Greater(t, len(gpgKey.AsciiArmor), 0)
+		assert.Greater(t, len(gpgKey.ASCIIArmor), 0)
 		assert.Equal(t, fetched.Namespace, provider.Organization.Name)
 	})
 

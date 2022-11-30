@@ -36,7 +36,7 @@ type gpgKeys struct {
 // GPGKey represents a signed GPG key for a TFC/E private provider.
 type GPGKey struct {
 	ID             string    `jsonapi:"primary,gpg-keys"`
-	AsciiArmor     string    `jsonapi:"attr,ascii-armor"`
+	ASCIIArmor     string    `jsonapi:"attr,ascii-armor"`
 	CreatedAt      time.Time `jsonapi:"attr,created-at,iso8601"`
 	KeyID          string    `jsonapi:"attr,key-id"`
 	Namespace      string    `jsonapi:"attr,namespace"`
@@ -57,7 +57,7 @@ type GPGKeyID struct {
 type GPGKeyCreateOptions struct {
 	Type       string `jsonapi:"primary,gpg-keys"`
 	Namespace  string `jsonapi:"attr,namespace"`
-	AsciiArmor string `jsonapi:"attr,ascii-armor"`
+	ASCIIArmor string `jsonapi:"attr,ascii-armor"`
 }
 
 // GPGKeyCreateOptions represents all the available options used to update a GPG key.
@@ -184,8 +184,8 @@ func (o GPGKeyCreateOptions) valid() error {
 		return ErrInvalidNamespace
 	}
 
-	if !validString(&o.AsciiArmor) {
-		return ErrInvalidAsciiArmor
+	if !validString(&o.ASCIIArmor) {
+		return ErrInvalidASCIIArmor
 	}
 
 	return nil

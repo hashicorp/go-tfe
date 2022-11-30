@@ -26,7 +26,7 @@ func TestAdminWorkspaces_List(t *testing.T) {
 	wTest2, wTest2Cleanup := createWorkspace(t, client, org)
 	defer wTest2Cleanup()
 
-	t.Run("without list options", func(t *testing.T) {
+	t.Run(testWithoutListOptions, func(t *testing.T) {
 		wl, err := client.Admin.Workspaces.List(ctx, nil)
 		require.NoError(t, err)
 
@@ -130,7 +130,7 @@ func TestAdminWorkspaces_Read(t *testing.T) {
 		assert.Nil(t, workspace)
 	})
 
-	t.Run("it fails to read a workspace that is non existant", func(t *testing.T) {
+	t.Run("it fails to read a workspace that is non existent", func(t *testing.T) {
 		workspaceID := fmt.Sprintf("non-existent-%s", randomString(t))
 		adminWorkspace, err := client.Admin.Workspaces.Read(ctx, workspaceID)
 		require.Error(t, err)
@@ -138,7 +138,7 @@ func TestAdminWorkspaces_Read(t *testing.T) {
 		assert.Nil(t, adminWorkspace)
 	})
 
-	t.Run("it reads a worksapce successfully", func(t *testing.T) {
+	t.Run("it reads a workspace successfully", func(t *testing.T) {
 		org, orgCleanup := createOrganization(t, client)
 		defer orgCleanup()
 

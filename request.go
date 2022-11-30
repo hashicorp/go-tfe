@@ -66,7 +66,7 @@ func (r ClientRequest) Do(ctx context.Context, model interface{}) error {
 
 // doIpRanges is similar to Do except that The IP ranges API is not returning jsonapi
 // like every other endpoint which means we need to handle it differently.
-func (r *ClientRequest) doIpRanges(ctx context.Context, ir *IPRange) error {
+func (r *ClientRequest) doIPRanges(ctx context.Context, ir *IPRange) error {
 	// Wait will block until the limiter can obtain a new token
 	// or returns an error if the given context is canceled.
 	if err := r.limiter.Wait(ctx); err != nil {

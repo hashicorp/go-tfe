@@ -31,7 +31,7 @@ func TestVariableSetVariablesList(t *testing.T) {
 	})
 	defer vTestCleanup2()
 
-	t.Run("without list options", func(t *testing.T) {
+	t.Run(testWithoutListOptions, func(t *testing.T) {
 		vl, err := client.VariableSetVariables.List(ctx, vsTest.ID, nil)
 		require.NoError(t, err)
 		require.NotEmpty(t, vl.Items)
@@ -45,7 +45,7 @@ func TestVariableSetVariablesList(t *testing.T) {
 	})
 
 	t.Run("with list options", func(t *testing.T) {
-		t.Skip("paging not supported yet in API")
+		t.Skip(testSkipPagingNotSupportedYet)
 		// Request a page number which is out of range. The result should
 		// be successful, but return no results if the paging options are
 		// properly passed along.
@@ -272,7 +272,7 @@ func TestVariableSetVariablesUpdate(t *testing.T) {
 		assert.Equal(t, *options.Value, v.Value)
 	})
 
-	t.Run("when updating a subset of values", func(t *testing.T) {
+	t.Run(testWhenUpdatingSubsetOfValues, func(t *testing.T) {
 		options := VariableSetVariableUpdateOptions{
 			Key: String("someothername"),
 			HCL: Bool(false),
@@ -315,12 +315,12 @@ func TestVariableSetVariablesUpdate(t *testing.T) {
 		assert.Equal(t, vTest, v)
 	})
 
-	t.Run("with invalid variable ID", func(t *testing.T) {
+	t.Run(testWithInvalidVariableID, func(t *testing.T) {
 		_, err := client.VariableSetVariables.Update(ctx, badIdentifier, vTest.ID, nil)
 		assert.EqualError(t, err, ErrInvalidVariableSetID.Error())
 	})
 
-	t.Run("with invalid variable ID", func(t *testing.T) {
+	t.Run(testWithInvalidVariableID, func(t *testing.T) {
 		_, err := client.VariableSetVariables.Update(ctx, vsTest.ID, badIdentifier, nil)
 		assert.EqualError(t, err, ErrInvalidVariableID.Error())
 	})
@@ -350,7 +350,7 @@ func TestVariableSetVariablesDelete(t *testing.T) {
 		assert.EqualError(t, err, ErrInvalidVariableSetID.Error())
 	})
 
-	t.Run("with invalid variable ID", func(t *testing.T) {
+	t.Run(testWithInvalidVariableID, func(t *testing.T) {
 		err := client.VariableSetVariables.Delete(ctx, vsTest.ID, badIdentifier)
 		assert.EqualError(t, err, ErrInvalidVariableID.Error())
 	})

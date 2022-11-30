@@ -31,7 +31,7 @@ func TestPolicyEvaluationList_Beta(t *testing.T) {
 			},
 		},
 	}
-	policyTest, policyTestCleanup := createUploadedPolicyWithOptions(t, client, true, orgTest, options)
+	policyTest, policyTestCleanup := createUploadedPolicyWithOptions(t, client, orgTest, options)
 	defer policyTestCleanup()
 
 	policySet := []*Policy{policyTest}
@@ -57,7 +57,6 @@ func TestPolicyEvaluationList_Beta(t *testing.T) {
 	})
 
 	t.Run("with a invalid policy evaluation ID", func(t *testing.T) {
-
 		policyEvaluationeID := "invalid ID"
 
 		_, err := client.PolicyEvaluations.List(ctx, policyEvaluationeID, nil)
@@ -88,7 +87,7 @@ func TestPolicySetOutcomeList_Beta(t *testing.T) {
 			},
 		},
 	}
-	policyTest, policyTestCleanup := createUploadedPolicyWithOptions(t, client, true, orgTest, options)
+	policyTest, policyTestCleanup := createUploadedPolicyWithOptions(t, client, orgTest, options)
 	defer policyTestCleanup()
 
 	policySet := []*Policy{policyTest}
@@ -200,7 +199,7 @@ func TestPolicySetOutcomeRead_Beta(t *testing.T) {
 			},
 		},
 	}
-	policyTest, policyTestCleanup := createUploadedPolicyWithOptions(t, client, true, orgTest, options)
+	policyTest, policyTestCleanup := createUploadedPolicyWithOptions(t, client, orgTest, options)
 	defer policyTestCleanup()
 
 	policySet := []*Policy{policyTest}
@@ -239,7 +238,6 @@ func TestPolicySetOutcomeRead_Beta(t *testing.T) {
 	})
 
 	t.Run("with a invalid policy set outcome ID", func(t *testing.T) {
-
 		policySetOutcomeID := "invalid ID"
 
 		_, err := client.PolicySetOutcomes.Read(ctx, policySetOutcomeID)

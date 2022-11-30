@@ -8,6 +8,8 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
+const testWithInvalidVariableID = "with invalid variable ID"
+
 func TestVariablesList(t *testing.T) {
 	client := testClient(t)
 	ctx := context.Background()
@@ -23,19 +25,19 @@ func TestVariablesList(t *testing.T) {
 	vTest2, vTestCleanup2 := createVariable(t, client, wTest)
 	defer vTestCleanup2()
 
-	t.Run("without list options", func(t *testing.T) {
+	t.Run(testWithoutListOptions, func(t *testing.T) {
 		vl, err := client.Variables.List(ctx, wTest.ID, nil)
 		require.NoError(t, err)
 		assert.Contains(t, vl.Items, vTest1)
 		assert.Contains(t, vl.Items, vTest2)
 
-		t.Skip("paging not supported yet in API")
+		t.Skip(testSkipPagingNotSupportedYet)
 		assert.Equal(t, 1, vl.CurrentPage)
 		assert.Equal(t, 2, vl.TotalCount)
 	})
 
 	t.Run("with list options", func(t *testing.T) {
-		t.Skip("paging not supported yet in API")
+		t.Skip(testSkipPagingNotSupportedYet)
 		// Request a page number which is out of range. The result should
 		// be successful, but return no results if the paging options are
 		// properly passed along.
@@ -215,7 +217,7 @@ func TestVariablesRead(t *testing.T) {
 		assert.Equal(t, ErrResourceNotFound, err)
 	})
 
-	t.Run("without a valid workspace ID", func(t *testing.T) {
+	t.Run(testWithoutValidWorkspaceID, func(t *testing.T) {
 		v, err := client.Variables.Read(ctx, badIdentifier, vTest.ID)
 		assert.Nil(t, v)
 		assert.EqualError(t, err, ErrInvalidWorkspaceID.Error())
@@ -250,7 +252,7 @@ func TestVariablesUpdate(t *testing.T) {
 		assert.Equal(t, *options.Value, v.Value)
 	})
 
-	t.Run("when updating a subset of values", func(t *testing.T) {
+	t.Run(testWhenUpdatingSubsetOfValues, func(t *testing.T) {
 		options := VariableUpdateOptions{
 			Key: String("someothername"),
 			HCL: Bool(false),
@@ -297,12 +299,12 @@ func TestVariablesUpdate(t *testing.T) {
 		assert.Equal(t, vTest, v)
 	})
 
-	t.Run("with invalid variable ID", func(t *testing.T) {
+	t.Run(testWithInvalidVariableID, func(t *testing.T) {
 		_, err := client.Variables.Update(ctx, badIdentifier, vTest.ID, VariableUpdateOptions{})
 		assert.EqualError(t, err, ErrInvalidWorkspaceID.Error())
 	})
 
-	t.Run("with invalid variable ID", func(t *testing.T) {
+	t.Run(testWithInvalidVariableID, func(t *testing.T) {
 		_, err := client.Variables.Update(ctx, vTest.Workspace.ID, badIdentifier, VariableUpdateOptions{})
 		assert.Equal(t, err, ErrInvalidVariableID)
 	})
@@ -332,7 +334,7 @@ func TestVariablesDelete(t *testing.T) {
 		assert.EqualError(t, err, ErrInvalidWorkspaceID.Error())
 	})
 
-	t.Run("with invalid variable ID", func(t *testing.T) {
+	t.Run(testWithInvalidVariableID, func(t *testing.T) {
 		err := client.Variables.Delete(ctx, wTest.ID, badIdentifier)
 		assert.Equal(t, err, ErrInvalidVariableID)
 	})

@@ -13,6 +13,10 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
+const testWhenRunDoesNotExist = "when the run does not exist"
+const testQueuedAtTime = "2020-03-16T23:15:59+00:00"
+const testWithoutListOptions = "without list options"
+
 func TestAdminRuns_List(t *testing.T) {
 	skipIfCloud(t)
 
@@ -30,7 +34,7 @@ func TestAdminRuns_List(t *testing.T) {
 	rTest2, rTestCleanup2 := createRun(t, client, wTest)
 	defer rTestCleanup2()
 
-	t.Run("without list options", func(t *testing.T) {
+	t.Run(testWithoutListOptions, func(t *testing.T) {
 		rl, err := client.Admin.Runs.List(ctx, nil)
 		require.NoError(t, err)
 
@@ -173,7 +177,7 @@ func TestAdminRuns_ForceCancel(t *testing.T) {
 	assert.Equal(t, true, rTest2.Actions.IsCancelable)
 	assert.Equal(t, true, rTest2.Permissions.CanForceCancel)
 
-	t.Run("when the run does not exist", func(t *testing.T) {
+	t.Run(testWhenRunDoesNotExist, func(t *testing.T) {
 		err := client.Admin.Runs.ForceCancel(ctx, "nonexisting", AdminRunForceCancelOptions{})
 		assert.Equal(t, err, ErrResourceNotFound)
 	})
@@ -291,7 +295,7 @@ func TestAdminRun_Unmarshal(t *testing.T) {
 				"has-changes": true,
 				"status":      RunApplied,
 				"status-timestamps": map[string]string{
-					"plan-queued-at": "2020-03-16T23:15:59+00:00",
+					"plan-queued-at": testQueuedAtTime,
 				},
 			},
 		},
@@ -301,7 +305,7 @@ func TestAdminRun_Unmarshal(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	planQueuedParsedTime, err := time.Parse(time.RFC3339, "2020-03-16T23:15:59+00:00")
+	planQueuedParsedTime, err := time.Parse(time.RFC3339, testQueuedAtTime)
 	require.NoError(t, err)
 
 	adminRun := &AdminRun{}

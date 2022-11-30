@@ -65,7 +65,7 @@ func TestRunTriggerList(t *testing.T) {
 		assert.Equal(t, 2, rtl.TotalCount)
 	})
 
-	t.Run("without a valid workspace", func(t *testing.T) {
+	t.Run(testWithoutValidWorkspace, func(t *testing.T) {
 		rtl, err := client.RunTriggers.List(
 			ctx,
 			badIdentifier,
@@ -172,13 +172,13 @@ func TestRunTriggerCreate(t *testing.T) {
 		assert.Equal(t, err, ErrRequiredSourceable)
 	})
 
-	t.Run("without a valid workspace", func(t *testing.T) {
+	t.Run(testWithoutValidWorkspace, func(t *testing.T) {
 		rt, err := client.RunTriggers.Create(ctx, badIdentifier, RunTriggerCreateOptions{})
 		assert.Nil(t, rt)
 		assert.EqualError(t, err, ErrInvalidWorkspaceID.Error())
 	})
 
-	t.Run("when an error is returned from the api", func(t *testing.T) {
+	t.Run(testWhenErrorFromAPI, func(t *testing.T) {
 		// There are many cases that would cause the server to return an error
 		// on run trigger creation. This tests one of them: setting workspace
 		// and sourceable to the same workspace

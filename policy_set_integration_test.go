@@ -30,7 +30,7 @@ func TestPolicySetsList(t *testing.T) {
 	psTest2, psTestCleanup2 := createPolicySet(t, client, orgTest, nil, []*Workspace{workspace}, "")
 	defer psTestCleanup2()
 
-	t.Run("without list options", func(t *testing.T) {
+	t.Run(testWithoutListOptions, func(t *testing.T) {
 		psl, err := client.PolicySets.List(ctx, orgTest.Name, nil)
 		require.NoError(t, err)
 
@@ -84,7 +84,7 @@ func TestPolicySetsList(t *testing.T) {
 		assert.Equal(t, workspace.ID, psl.Items[0].Workspaces[0].ID)
 	})
 
-	t.Run("without a valid organization", func(t *testing.T) {
+	t.Run(testWithoutValidOrganization, func(t *testing.T) {
 		ps, err := client.PolicySets.List(ctx, badIdentifier, nil)
 		assert.Nil(t, ps)
 		assert.EqualError(t, err, ErrInvalidOrg.Error())
@@ -104,7 +104,7 @@ func TestPolicySetsCreate(t *testing.T) {
 
 	var vcsPolicyID string
 
-	t.Run("with valid attributes", func(t *testing.T) {
+	t.Run(testWithValidAttributes, func(t *testing.T) {
 		options := PolicySetCreateOptions{
 			Name: String("policy-set"),
 		}
@@ -120,7 +120,7 @@ func TestPolicySetsCreate(t *testing.T) {
 	t.Run("with all attributes provided", func(t *testing.T) {
 		options := PolicySetCreateOptions{
 			Name:        String("global"),
-			Description: String("Policies in this set will be checked in ALL workspaces!"),
+			Description: String(testPolicySetDescription),
 			Global:      Bool(true),
 		}
 
@@ -155,9 +155,9 @@ func TestPolicySetsCreate(t *testing.T) {
 	})
 
 	t.Run("with vcs policy set", func(t *testing.T) {
-		githubIdentifier := os.Getenv("GITHUB_POLICY_SET_IDENTIFIER")
+		githubIdentifier := os.Getenv(envGithubPolicySetIdentifier)
 		if githubIdentifier == "" {
-			t.Skip("Export a valid GITHUB_POLICY_SET_IDENTIFIER before running this test")
+			t.Skipf("Export a valid %s before running this test", envGithubPolicySetIdentifier)
 		}
 
 		oc, ocTestCleanup := createOAuthToken(t, client, orgTest)
@@ -189,15 +189,15 @@ func TestPolicySetsCreate(t *testing.T) {
 		assert.Equal(t, ps.VCSRepo.Identifier, githubIdentifier)
 		assert.Equal(t, ps.VCSRepo.IngressSubmodules, true)
 		assert.Equal(t, ps.VCSRepo.OAuthTokenID, oc.ID)
-		assert.Equal(t, ps.VCSRepo.RepositoryHTTPURL, fmt.Sprintf("https://github.com/%s", githubIdentifier))
+		assert.Equal(t, ps.VCSRepo.RepositoryHTTPURL, fmt.Sprintf(githubFmt, githubIdentifier))
 		assert.Equal(t, ps.VCSRepo.ServiceProvider, string(ServiceProviderGithub))
-		assert.Regexp(t, fmt.Sprintf("^%s/webhooks/vcs/[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$", regexp.QuoteMeta(DefaultConfig().Address)), ps.VCSRepo.WebhookURL)
+		assert.Regexp(t, fmt.Sprintf(testWebhookVscRegex, regexp.QuoteMeta(DefaultConfig().Address)), ps.VCSRepo.WebhookURL)
 	})
 
 	t.Run("with vcs policy updated", func(t *testing.T) {
-		githubIdentifier := os.Getenv("GITHUB_POLICY_SET_IDENTIFIER")
+		githubIdentifier := os.Getenv(envGithubPolicySetIdentifier)
 		if githubIdentifier == "" {
-			t.Skip("Export a valid GITHUB_POLICY_SET_IDENTIFIER before running this test")
+			t.Skipf("Export a valid %s before running this test", envGithubPolicySetIdentifier)
 		}
 
 		oc, ocTestCleanup := createOAuthToken(t, client, orgTest)
@@ -226,9 +226,9 @@ func TestPolicySetsCreate(t *testing.T) {
 		assert.Equal(t, ps.VCSRepo.Identifier, githubIdentifier)
 		assert.Equal(t, ps.VCSRepo.IngressSubmodules, false)
 		assert.Equal(t, ps.VCSRepo.OAuthTokenID, oc.ID)
-		assert.Equal(t, ps.VCSRepo.RepositoryHTTPURL, fmt.Sprintf("https://github.com/%s", githubIdentifier))
+		assert.Equal(t, ps.VCSRepo.RepositoryHTTPURL, fmt.Sprintf(githubFmt, githubIdentifier))
 		assert.Equal(t, ps.VCSRepo.ServiceProvider, string(ServiceProviderGithub))
-		assert.Regexp(t, fmt.Sprintf("^%s/webhooks/vcs/[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$", regexp.QuoteMeta(DefaultConfig().Address)), ps.VCSRepo.WebhookURL)
+		assert.Regexp(t, fmt.Sprintf(testWebhookVscRegex, regexp.QuoteMeta(DefaultConfig().Address)), ps.VCSRepo.WebhookURL)
 	})
 
 	t.Run("without a name provided", func(t *testing.T) {
@@ -245,7 +245,7 @@ func TestPolicySetsCreate(t *testing.T) {
 		assert.EqualError(t, err, ErrInvalidName.Error())
 	})
 
-	t.Run("without a valid organization", func(t *testing.T) {
+	t.Run(testWithoutValidOrganization, func(t *testing.T) {
 		ps, err := client.PolicySets.Create(ctx, badIdentifier, PolicySetCreateOptions{
 			Name: String("policy-set"),
 		})
@@ -336,10 +336,10 @@ func TestPolicySetsUpdate(t *testing.T) {
 	psTest, psTestCleanup := createPolicySet(t, client, orgTest, nil, nil, "")
 	defer psTestCleanup()
 
-	t.Run("with valid attributes", func(t *testing.T) {
+	t.Run(testWithValidAttributes, func(t *testing.T) {
 		options := PolicySetUpdateOptions{
 			Name:        String("global"),
-			Description: String("Policies in this set will be checked in ALL workspaces!"),
+			Description: String(testPolicySetDescription),
 			Global:      Bool(true),
 		}
 

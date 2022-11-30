@@ -9,6 +9,8 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
+var testWithoutValidPolicyID = "without a valid policy ID"
+
 func TestOAuthTokensList(t *testing.T) {
 	client := testClient(t)
 	ctx := context.Background()
@@ -21,7 +23,7 @@ func TestOAuthTokensList(t *testing.T) {
 	otTest2, otTest2Cleanup := createOAuthToken(t, client, orgTest)
 	defer otTest2Cleanup()
 
-	t.Run("without list options", func(t *testing.T) {
+	t.Run(testWithoutListOptions, func(t *testing.T) {
 		otl, err := client.OAuthTokens.List(ctx, orgTest.Name, nil)
 		require.NoError(t, err)
 
@@ -41,13 +43,13 @@ func TestOAuthTokensList(t *testing.T) {
 		assert.Contains(t, otl.Items, otTest1)
 		assert.Contains(t, otl.Items, otTest2)
 
-		t.Skip("paging not supported yet in API")
+		t.Skip(testSkipPagingNotSupportedYet)
 		assert.Equal(t, 1, otl.CurrentPage)
 		assert.Equal(t, 2, otl.TotalCount)
 	})
 
 	t.Run("with list options", func(t *testing.T) {
-		t.Skip("paging not supported yet in API")
+		t.Skip(testSkipPagingNotSupportedYet)
 		// Request a page number which is out of range. The result should
 		// be successful, but return no results if the paging options are
 		// properly passed along.
@@ -65,7 +67,7 @@ func TestOAuthTokensList(t *testing.T) {
 		assert.Equal(t, 2, otl.TotalCount)
 	})
 
-	t.Run("without a valid organization", func(t *testing.T) {
+	t.Run(testWithoutValidOrganization, func(t *testing.T) {
 		otl, err := client.OAuthTokens.List(ctx, badIdentifier, nil)
 		assert.Nil(t, otl)
 		assert.EqualError(t, err, ErrInvalidOrg.Error())
@@ -150,7 +152,7 @@ dpIe8YOINN27XaojJvVpT5uBVCcZLF+G7kaMjSwCTlDx3Q==
 		assert.Contains(t, err.Error(), "Ssh key is invalid")
 	})
 
-	t.Run("without a valid policy ID", func(t *testing.T) {
+	t.Run(testWithoutValidPolicyID, func(t *testing.T) {
 		ot, err := client.OAuthTokens.Update(ctx, badIdentifier, OAuthTokenUpdateOptions{})
 		assert.Nil(t, ot)
 		assert.Equal(t, err, ErrInvalidOauthTokenID)

@@ -13,6 +13,8 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
+var testWithoutValidWorkspaceID = "without a valid workspace ID"
+
 func TestRunsList(t *testing.T) {
 	client := testClient(t)
 	ctx := context.Background()
@@ -24,7 +26,7 @@ func TestRunsList(t *testing.T) {
 	rTest1, _ := createRun(t, client, wTest)
 	rTest2, _ := createRun(t, client, wTest)
 
-	t.Run("without list options", func(t *testing.T) {
+	t.Run(testWithoutListOptions, func(t *testing.T) {
 		rl, err := client.Runs.List(ctx, wTest.ID, nil)
 		require.NoError(t, err)
 
@@ -58,7 +60,7 @@ func TestRunsList(t *testing.T) {
 	})
 
 	t.Run("with list options", func(t *testing.T) {
-		t.Skip("paging not supported yet in API")
+		t.Skip(testSkipPagingNotSupportedYet)
 
 		// Request a page number which is out of range. The result should
 		// be successful, but return no results if the paging options are
@@ -86,7 +88,7 @@ func TestRunsList(t *testing.T) {
 		assert.NotEmpty(t, rl.Items[0].Workspace.Name)
 	})
 
-	t.Run("without a valid workspace ID", func(t *testing.T) {
+	t.Run(testWithoutValidWorkspaceID, func(t *testing.T) {
 		rl, err := client.Runs.List(ctx, badIdentifier, nil)
 		assert.Nil(t, rl)
 		assert.EqualError(t, err, ErrInvalidWorkspaceID.Error())
@@ -339,7 +341,7 @@ func TestRunsRead_CostEstimate(t *testing.T) {
 		assert.Equal(t, rTest, r)
 	})
 
-	t.Run("when the run does not exist", func(t *testing.T) {
+	t.Run(testWhenRunDoesNotExist, func(t *testing.T) {
 		r, err := client.Runs.Read(ctx, "nonexisting")
 		assert.Nil(t, r)
 		assert.Equal(t, err, ErrResourceNotFound)
@@ -398,7 +400,7 @@ func TestRunsApply(t *testing.T) {
 		assert.Equal(t, "Hello, Earl", c.Body)
 	})
 
-	t.Run("when the run does not exist", func(t *testing.T) {
+	t.Run(testWhenRunDoesNotExist, func(t *testing.T) {
 		err := client.Runs.Apply(ctx, "nonexisting", RunApplyOptions{})
 		assert.Equal(t, err, ErrResourceNotFound)
 	})
@@ -429,7 +431,7 @@ func TestRunsCancel(t *testing.T) {
 		require.NoError(t, err)
 	})
 
-	t.Run("when the run does not exist", func(t *testing.T) {
+	t.Run(testWhenRunDoesNotExist, func(t *testing.T) {
 		err := client.Runs.Cancel(ctx, "nonexisting", RunCancelOptions{})
 		assert.Equal(t, err, ErrResourceNotFound)
 	})
@@ -497,7 +499,7 @@ func TestRunsForceCancel(t *testing.T) {
 		// https://www.terraform.io/docs/cloud/api/run.html#forcefully-cancel-a-run).
 	})
 
-	t.Run("when the run does not exist", func(t *testing.T) {
+	t.Run(testWhenRunDoesNotExist, func(t *testing.T) {
 		err := client.Runs.ForceCancel(ctx, "nonexisting", RunForceCancelOptions{})
 		assert.Equal(t, err, ErrResourceNotFound)
 	})
@@ -552,7 +554,7 @@ func TestRunsForceExecute(t *testing.T) {
 		assert.Equal(t, RunDiscarded, rToCancel.Status)
 	})
 
-	t.Run("when the run does not exist", func(t *testing.T) {
+	t.Run(testWhenRunDoesNotExist, func(t *testing.T) {
 		err := client.Runs.ForceExecute(ctx, "nonexisting")
 		assert.Equal(t, err, ErrResourceNotFound)
 	})
@@ -577,7 +579,7 @@ func TestRunsDiscard(t *testing.T) {
 		require.NoError(t, err)
 	})
 
-	t.Run("when the run does not exist", func(t *testing.T) {
+	t.Run(testWhenRunDoesNotExist, func(t *testing.T) {
 		err := client.Runs.Discard(ctx, "nonexisting", RunDiscardOptions{})
 		assert.Equal(t, err, ErrResourceNotFound)
 	})
@@ -612,8 +614,8 @@ func TestRun_Unmarshal(t *testing.T) {
 					"can-force-execute": true,
 				},
 				"status-timestamps": map[string]string{
-					"plan-queued-at": "2020-03-16T23:15:59+00:00",
-					"errored-at":     "2019-03-16T23:23:59+00:00",
+					"plan-queued-at": testQueuedAtTime,
+					"errored-at":     testTimeMidnight,
 				},
 				"variables": []map[string]string{{"key": "a-key", "value": "\"a-value\""}},
 			},
@@ -627,9 +629,9 @@ func TestRun_Unmarshal(t *testing.T) {
 	err = unmarshalResponse(responseBody, run)
 	require.NoError(t, err)
 
-	planQueuedParsedTime, err := time.Parse(time.RFC3339, "2020-03-16T23:15:59+00:00")
+	planQueuedParsedTime, err := time.Parse(time.RFC3339, testQueuedAtTime)
 	require.NoError(t, err)
-	erroredParsedTime, err := time.Parse(time.RFC3339, "2019-03-16T23:23:59+00:00")
+	erroredParsedTime, err := time.Parse(time.RFC3339, testTimeMidnight)
 	require.NoError(t, err)
 
 	iso8601TimeFormat := "2006-01-02T15:04:05Z"

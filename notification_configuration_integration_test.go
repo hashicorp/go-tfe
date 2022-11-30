@@ -8,6 +8,9 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
+const testSkipPagingNotSupportedYet = "paging not supported yet in API"
+const testWithoutValidWorkspace = "without a valid workspace"
+
 func TestNotificationConfigurationList(t *testing.T) {
 	client := testClient(t)
 	ctx := context.Background()
@@ -30,13 +33,13 @@ func TestNotificationConfigurationList(t *testing.T) {
 		assert.Contains(t, ncl.Items, ncTest1)
 		assert.Contains(t, ncl.Items, ncTest2)
 
-		t.Skip("paging not supported yet in API")
+		t.Skip(testSkipPagingNotSupportedYet)
 		assert.Equal(t, 1, ncl.CurrentPage)
 		assert.Equal(t, 2, ncl.TotalCount)
 	})
 
 	t.Run("with list options", func(t *testing.T) {
-		t.Skip("paging not supported yet in API")
+		t.Skip(testSkipPagingNotSupportedYet)
 		// Request a page number which is out of range. The result should
 		// be successful, but return no results if the paging options are
 		// properly passed along.
@@ -56,7 +59,7 @@ func TestNotificationConfigurationList(t *testing.T) {
 		assert.Equal(t, 2, ncl.TotalCount)
 	})
 
-	t.Run("without a valid workspace", func(t *testing.T) {
+	t.Run(testWithoutValidWorkspace, func(t *testing.T) {
 		ncl, err := client.NotificationConfigurations.List(
 			ctx,
 			badIdentifier,
@@ -151,7 +154,7 @@ func TestNotificationConfigurationCreate(t *testing.T) {
 		assert.Equal(t, err, ErrRequiredURL)
 	})
 
-	t.Run("without a valid workspace", func(t *testing.T) {
+	t.Run(testWithoutValidWorkspace, func(t *testing.T) {
 		nc, err := client.NotificationConfigurations.Create(ctx, badIdentifier, NotificationConfigurationCreateOptions{})
 		assert.Nil(t, nc)
 		assert.EqualError(t, err, ErrInvalidWorkspaceID.Error())

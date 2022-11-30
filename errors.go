@@ -309,7 +309,7 @@ var (
 
 	ErrRequiredFilename = errors.New("filename is required")
 
-	ErrInvalidAsciiArmor = errors.New("ascii armor is invalid")
+	ErrInvalidASCIIArmor = errors.New("ascii armor is invalid")
 
 	ErrRequiredNamespace = errors.New("namespace is required for public registry")
 

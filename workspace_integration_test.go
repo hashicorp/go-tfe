@@ -40,7 +40,7 @@ func TestWorkspacesList(t *testing.T) {
 	wTest2, wTest2Cleanup := createWorkspace(t, client, orgTest)
 	t.Cleanup(wTest2Cleanup)
 
-	t.Run("without list options", func(t *testing.T) {
+	t.Run(testWithoutListOptions, func(t *testing.T) {
 		wl, err := client.Workspaces.List(ctx, orgTest.Name, nil)
 		require.NoError(t, err)
 		assert.Contains(t, wl.Items, wTest1)
@@ -136,7 +136,7 @@ func TestWorkspacesList(t *testing.T) {
 		assert.Equal(t, 0, wl.TotalCount)
 	})
 
-	t.Run("without a valid organization", func(t *testing.T) {
+	t.Run(testWithoutValidOrganization, func(t *testing.T) {
 		wl, err := client.Workspaces.List(ctx, badIdentifier, nil)
 		assert.Nil(t, wl)
 		assert.EqualError(t, err, ErrInvalidOrg.Error())
@@ -166,14 +166,15 @@ func TestWorkspacesList(t *testing.T) {
 
 		foundWTest1 := false
 		for _, ws := range wl.Items {
-			if ws.ID == wTest1.ID {
-				foundWTest1 = true
-				require.NotNil(t, wl.Items[0].CurrentStateVersion)
-				assert.NotEmpty(t, wl.Items[0].CurrentStateVersion.DownloadURL)
-
-				require.NotNil(t, wl.Items[0].CurrentRun)
-				assert.NotEmpty(t, wl.Items[0].CurrentRun.Message)
+			if ws.ID != wTest1.ID {
+				continue
 			}
+			foundWTest1 = true
+			require.NotNil(t, wl.Items[0].CurrentStateVersion)
+			assert.NotEmpty(t, wl.Items[0].CurrentStateVersion.DownloadURL)
+
+			require.NotNil(t, wl.Items[0].CurrentRun)
+			assert.NotEmpty(t, wl.Items[0].CurrentRun.Message)
 		}
 
 		assert.True(t, foundWTest1)
@@ -410,7 +411,7 @@ func TestWorkspacesCreate(t *testing.T) {
 		}
 	})
 
-	t.Run("when options is missing name", func(t *testing.T) {
+	t.Run(testWhenOptionsMissingName, func(t *testing.T) {
 		w, err := client.Workspaces.Create(ctx, "foo", WorkspaceCreateOptions{})
 		assert.Nil(t, w)
 		assert.EqualError(t, err, ErrRequiredName.Error())
@@ -424,7 +425,7 @@ func TestWorkspacesCreate(t *testing.T) {
 		assert.EqualError(t, err, ErrInvalidName.Error())
 	})
 
-	t.Run("when options has an invalid organization", func(t *testing.T) {
+	t.Run(testWhenOptionsHasInvalidOrganization, func(t *testing.T) {
 		w, err := client.Workspaces.Create(ctx, badIdentifier, WorkspaceCreateOptions{
 			Name: String("foo"),
 		})
@@ -466,7 +467,7 @@ func TestWorkspacesCreate(t *testing.T) {
 		assert.Equal(t, err, ErrRequiredAgentPoolID)
 	})
 
-	t.Run("when an error is returned from the API", func(t *testing.T) {
+	t.Run(testWhenErrorFromAPI, func(t *testing.T) {
 		w, err := client.Workspaces.Create(ctx, "bar", WorkspaceCreateOptions{
 			Name:             String(fmt.Sprintf("bar-%s", randomString(t))),
 			TerraformVersion: String("nonexisting"),
@@ -572,13 +573,13 @@ func TestWorkspacesRead(t *testing.T) {
 		assert.Error(t, err)
 	})
 
-	t.Run("without a valid organization", func(t *testing.T) {
+	t.Run(testWithoutValidOrganization, func(t *testing.T) {
 		w, err := client.Workspaces.Read(ctx, badIdentifier, wTest.Name)
 		assert.Nil(t, w)
 		assert.EqualError(t, err, ErrInvalidOrg.Error())
 	})
 
-	t.Run("without a valid workspace", func(t *testing.T) {
+	t.Run(testWithoutValidWorkspace, func(t *testing.T) {
 		w, err := client.Workspaces.Read(ctx, orgTest.Name, badIdentifier)
 		assert.Nil(t, w)
 		assert.EqualError(t, err, ErrInvalidWorkspaceValue.Error())
@@ -699,7 +700,7 @@ func TestWorkspacesReadReadme(t *testing.T) {
 		assert.Error(t, err)
 	})
 
-	t.Run("without a valid workspace ID", func(t *testing.T) {
+	t.Run(testWithoutValidWorkspaceID, func(t *testing.T) {
 		w, err := client.Workspaces.Readme(ctx, badIdentifier)
 		assert.Nil(t, w)
 		assert.EqualError(t, err, ErrInvalidWorkspaceID.Error())
@@ -733,7 +734,7 @@ func TestWorkspacesReadByID(t *testing.T) {
 		assert.Error(t, err)
 	})
 
-	t.Run("without a valid workspace ID", func(t *testing.T) {
+	t.Run(testWithoutValidWorkspaceID, func(t *testing.T) {
 		w, err := client.Workspaces.ReadByID(ctx, badIdentifier)
 		assert.Nil(t, w)
 		assert.EqualError(t, err, ErrInvalidWorkspaceID.Error())
@@ -752,7 +753,7 @@ func TestWorkspacesUpdate(t *testing.T) {
 	wTest, wCleanup := createWorkspace(t, client, orgTest)
 	t.Cleanup(wCleanup)
 
-	t.Run("when updating a subset of values", func(t *testing.T) {
+	t.Run(testWhenUpdatingSubsetOfValues, func(t *testing.T) {
 		options := WorkspaceUpdateOptions{
 			Name:               String(wTest.Name),
 			AllowDestroyPlan:   Bool(false),
@@ -838,7 +839,7 @@ func TestWorkspacesUpdate(t *testing.T) {
 		assert.Equal(t, err, ErrRequiredAgentPoolID)
 	})
 
-	t.Run("when an error is returned from the api", func(t *testing.T) {
+	t.Run(testWhenErrorFromAPI, func(t *testing.T) {
 		w, err := client.Workspaces.Update(ctx, orgTest.Name, wTest.Name, WorkspaceUpdateOptions{
 			TerraformVersion: String("nonexisting"),
 		})
@@ -852,7 +853,7 @@ func TestWorkspacesUpdate(t *testing.T) {
 		assert.EqualError(t, err, ErrInvalidWorkspaceValue.Error())
 	})
 
-	t.Run("when options has an invalid organization", func(t *testing.T) {
+	t.Run(testWhenOptionsHasInvalidOrganization, func(t *testing.T) {
 		w, err := client.Workspaces.Update(ctx, badIdentifier, wTest.Name, WorkspaceUpdateOptions{})
 		assert.Nil(t, w)
 		assert.EqualError(t, err, ErrInvalidOrg.Error())
@@ -1091,7 +1092,7 @@ func TestWorkspacesUpdateByID(t *testing.T) {
 	wTest, wCleanup := createWorkspace(t, client, orgTest)
 	t.Cleanup(wCleanup)
 
-	t.Run("when updating a subset of values", func(t *testing.T) {
+	t.Run(testWhenUpdatingSubsetOfValues, func(t *testing.T) {
 		options := WorkspaceUpdateOptions{
 			Name:             String(wTest.Name),
 			AllowDestroyPlan: Bool(false),
@@ -1152,7 +1153,7 @@ func TestWorkspacesUpdateByID(t *testing.T) {
 		}
 	})
 
-	t.Run("when an error is returned from the api", func(t *testing.T) {
+	t.Run(testWhenErrorFromAPI, func(t *testing.T) {
 		w, err := client.Workspaces.UpdateByID(ctx, wTest.ID, WorkspaceUpdateOptions{
 			TerraformVersion: String("nonexisting"),
 		})
@@ -1160,7 +1161,7 @@ func TestWorkspacesUpdateByID(t *testing.T) {
 		assert.Error(t, err)
 	})
 
-	t.Run("without a valid workspace ID", func(t *testing.T) {
+	t.Run(testWithoutValidWorkspaceID, func(t *testing.T) {
 		w, err := client.Workspaces.UpdateByID(ctx, badIdentifier, WorkspaceUpdateOptions{})
 		assert.Nil(t, w)
 		assert.EqualError(t, err, ErrInvalidWorkspaceID.Error())
@@ -1216,7 +1217,7 @@ func TestWorkspacesDeleteByID(t *testing.T) {
 		assert.Equal(t, ErrResourceNotFound, err)
 	})
 
-	t.Run("without a valid workspace ID", func(t *testing.T) {
+	t.Run(testWithoutValidWorkspaceID, func(t *testing.T) {
 		err := client.Workspaces.DeleteByID(ctx, badIdentifier)
 		assert.EqualError(t, err, ErrInvalidWorkspaceID.Error())
 	})
@@ -1315,7 +1316,7 @@ func TestWorkspacesSafeDeleteByID(t *testing.T) {
 		assert.Equal(t, ErrResourceNotFound, err)
 	})
 
-	t.Run("without a valid workspace ID", func(t *testing.T) {
+	t.Run(testWithoutValidWorkspaceID, func(t *testing.T) {
 		err := client.Workspaces.SafeDeleteByID(ctx, badIdentifier)
 		assert.EqualError(t, err, ErrInvalidWorkspaceID.Error())
 	})
@@ -1400,7 +1401,7 @@ func TestWorkspacesLock(t *testing.T) {
 		assert.Equal(t, ErrWorkspaceLocked, err)
 	})
 
-	t.Run("without a valid workspace ID", func(t *testing.T) {
+	t.Run(testWithoutValidWorkspaceID, func(t *testing.T) {
 		w, err := client.Workspaces.Lock(ctx, badIdentifier, WorkspaceLockOptions{})
 		assert.Nil(t, w)
 		assert.EqualError(t, err, ErrInvalidWorkspaceID.Error())
@@ -1449,7 +1450,7 @@ func TestWorkspacesUnlock(t *testing.T) {
 		assert.Equal(t, ErrWorkspaceLockedByRun, err)
 	})
 
-	t.Run("without a valid workspace ID", func(t *testing.T) {
+	t.Run(testWithoutValidWorkspaceID, func(t *testing.T) {
 		w, err := client.Workspaces.Unlock(ctx, badIdentifier)
 		assert.Nil(t, w)
 		assert.EqualError(t, err, ErrInvalidWorkspaceID.Error())
@@ -1484,7 +1485,7 @@ func TestWorkspacesForceUnlock(t *testing.T) {
 		assert.Equal(t, ErrWorkspaceNotLocked, err)
 	})
 
-	t.Run("without a valid workspace ID", func(t *testing.T) {
+	t.Run(testWithoutValidWorkspaceID, func(t *testing.T) {
 		w, err := client.Workspaces.ForceUnlock(ctx, badIdentifier)
 		assert.Nil(t, w)
 		assert.EqualError(t, err, ErrInvalidWorkspaceID.Error())
@@ -1527,7 +1528,7 @@ func TestWorkspacesAssignSSHKey(t *testing.T) {
 		assert.Equal(t, err, ErrInvalidSHHKeyID)
 	})
 
-	t.Run("without a valid workspace ID", func(t *testing.T) {
+	t.Run(testWithoutValidWorkspaceID, func(t *testing.T) {
 		w, err := client.Workspaces.AssignSSHKey(ctx, badIdentifier, WorkspaceAssignSSHKeyOptions{
 			SSHKeyID: String(sshKeyTest.ID),
 		})
@@ -1565,7 +1566,7 @@ func TestWorkspacesUnassignSSHKey(t *testing.T) {
 		assert.Nil(t, w.SSHKey)
 	})
 
-	t.Run("without a valid workspace ID", func(t *testing.T) {
+	t.Run(testWithoutValidWorkspaceID, func(t *testing.T) {
 		w, err := client.Workspaces.UnassignSSHKey(ctx, badIdentifier)
 		assert.Nil(t, w)
 		assert.EqualError(t, err, ErrInvalidWorkspaceID.Error())
@@ -1610,7 +1611,7 @@ func TestWorkspaces_AddRemoteStateConsumers(t *testing.T) {
 		assert.Contains(t, rsc.Items, wTestConsumer2)
 	})
 
-	t.Run("with invalid options", func(t *testing.T) {
+	t.Run(testWithInvalidOptions, func(t *testing.T) {
 		err := client.Workspaces.AddRemoteStateConsumers(ctx, wTest.ID, WorkspaceAddRemoteStateConsumersOptions{})
 		require.Error(t, err)
 		assert.EqualError(t, err, ErrWorkspacesRequired.Error())
@@ -1622,7 +1623,7 @@ func TestWorkspaces_AddRemoteStateConsumers(t *testing.T) {
 		assert.EqualError(t, err, ErrWorkspaceMinLimit.Error())
 	})
 
-	t.Run("without a valid workspace ID", func(t *testing.T) {
+	t.Run(testWithoutValidWorkspaceID, func(t *testing.T) {
 		err := client.Workspaces.AddRemoteStateConsumers(ctx, badIdentifier, WorkspaceAddRemoteStateConsumersOptions{})
 		require.Error(t, err)
 		assert.EqualError(t, err, ErrInvalidWorkspaceID.Error())
@@ -1686,7 +1687,7 @@ func TestWorkspaces_RemoveRemoteStateConsumers(t *testing.T) {
 		assert.Empty(t, len(rsc.Items))
 	})
 
-	t.Run("with invalid options", func(t *testing.T) {
+	t.Run(testWithInvalidOptions, func(t *testing.T) {
 		err := client.Workspaces.RemoveRemoteStateConsumers(ctx, wTest.ID, WorkspaceRemoveRemoteStateConsumersOptions{})
 		require.Error(t, err)
 		assert.EqualError(t, err, ErrWorkspacesRequired.Error())
@@ -1698,7 +1699,7 @@ func TestWorkspaces_RemoveRemoteStateConsumers(t *testing.T) {
 		assert.EqualError(t, err, ErrWorkspaceMinLimit.Error())
 	})
 
-	t.Run("without a valid workspace ID", func(t *testing.T) {
+	t.Run(testWithoutValidWorkspaceID, func(t *testing.T) {
 		err := client.Workspaces.RemoveRemoteStateConsumers(ctx, badIdentifier, WorkspaceRemoveRemoteStateConsumersOptions{})
 		require.Error(t, err)
 		assert.EqualError(t, err, ErrInvalidWorkspaceID.Error())
@@ -1747,10 +1748,9 @@ func TestWorkspaces_UpdateRemoteStateConsumers(t *testing.T) {
 		require.NoError(t, err)
 		assert.Equal(t, 1, len(rsc.Items))
 		assert.Contains(t, rsc.Items, wTestConsumer2)
-
 	})
 
-	t.Run("with invalid options", func(t *testing.T) {
+	t.Run(testWithInvalidOptions, func(t *testing.T) {
 		err := client.Workspaces.UpdateRemoteStateConsumers(ctx, wTest.ID, WorkspaceUpdateRemoteStateConsumersOptions{})
 		require.Error(t, err)
 		assert.EqualError(t, err, ErrWorkspacesRequired.Error())
@@ -1762,7 +1762,7 @@ func TestWorkspaces_UpdateRemoteStateConsumers(t *testing.T) {
 		assert.EqualError(t, err, ErrWorkspaceMinLimit.Error())
 	})
 
-	t.Run("without a valid workspace ID", func(t *testing.T) {
+	t.Run(testWithoutValidWorkspaceID, func(t *testing.T) {
 		err := client.Workspaces.UpdateRemoteStateConsumers(ctx, badIdentifier, WorkspaceUpdateRemoteStateConsumersOptions{})
 		require.Error(t, err)
 		assert.EqualError(t, err, ErrInvalidWorkspaceID.Error())
@@ -1866,7 +1866,7 @@ func TestWorkspaces_AddTags(t *testing.T) {
 		assert.Equal(t, wt.Items[4].Name, "tagbyid")
 	})
 
-	t.Run("with invalid options", func(t *testing.T) {
+	t.Run(testWithInvalidOptions, func(t *testing.T) {
 		err := client.Workspaces.AddTags(ctx, wTest.ID, WorkspaceAddTagsOptions{
 			Tags: []*Tag{},
 		})
@@ -1874,7 +1874,7 @@ func TestWorkspaces_AddTags(t *testing.T) {
 		assert.EqualError(t, err, ErrMissingTagIdentifier.Error())
 	})
 
-	t.Run("without a valid workspace ID", func(t *testing.T) {
+	t.Run(testWithoutValidWorkspaceID, func(t *testing.T) {
 		err := client.Workspaces.AddTags(ctx, badIdentifier, WorkspaceAddTagsOptions{})
 		require.Error(t, err)
 		assert.EqualError(t, err, ErrInvalidWorkspaceID.Error())
@@ -1943,7 +1943,7 @@ func TestWorkspaces_RemoveTags(t *testing.T) {
 		require.NoError(t, err)
 	})
 
-	t.Run("with invalid options", func(t *testing.T) {
+	t.Run(testWithInvalidOptions, func(t *testing.T) {
 		err := client.Workspaces.RemoveTags(ctx, wTest.ID, WorkspaceRemoveTagsOptions{
 			Tags: []*Tag{},
 		})
@@ -1951,7 +1951,7 @@ func TestWorkspaces_RemoveTags(t *testing.T) {
 		assert.EqualError(t, err, ErrMissingTagIdentifier.Error())
 	})
 
-	t.Run("without a valid workspace ID", func(t *testing.T) {
+	t.Run(testWithoutValidWorkspaceID, func(t *testing.T) {
 		err := client.Workspaces.RemoveTags(ctx, badIdentifier, WorkspaceRemoveTagsOptions{})
 		require.Error(t, err)
 		assert.EqualError(t, err, ErrInvalidWorkspaceID.Error())
@@ -2000,7 +2000,10 @@ func TestWorkspace_Unmarshal(t *testing.T) {
 	require.NoError(t, err)
 
 	iso8601TimeFormat := "2006-01-02T15:04:05Z"
-	parsedTime, _ := time.Parse(iso8601TimeFormat, "2020-07-15T23:38:43.821Z")
+	parsedTime, err := time.Parse(iso8601TimeFormat, "2020-07-15T23:38:43.821Z")
+	if err != nil {
+		t.Error(err)
+	}
 
 	assert.Equal(t, ws.ID, "ws-1234")
 	assert.Equal(t, ws.Name, "my-workspace")

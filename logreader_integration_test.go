@@ -9,6 +9,9 @@ import (
 	"testing"
 )
 
+const testExpectedGotFmt = "expected %s, got: %s"
+const testLogReaderExpected = "Terraform run started - logs - Terraform run finished"
+
 // checkedWrite writes message to w and fails the test if there's an error.
 func checkedWrite(t *testing.T, w io.Writer, message []byte) {
 	_, err := w.Write(message)
@@ -72,9 +75,8 @@ func TestLogReader_withMarkersSingle(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	expected := "Terraform run started - logs - Terraform run finished"
-	if string(logs) != expected {
-		t.Fatalf("expected %s, got: %s", expected, string(logs))
+	if string(logs) != testLogReaderExpected {
+		t.Fatalf(testExpectedGotFmt, testLogReaderExpected, string(logs))
 	}
 	if doneReads != 1 {
 		t.Fatalf("expected 1 done reads, got %d reads", doneReads)
@@ -113,9 +115,8 @@ func TestLogReader_withMarkersDouble(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	expected := "Terraform run started - logs - Terraform run finished"
-	if string(logs) != expected {
-		t.Fatalf("expected %s, got: %s", expected, string(logs))
+	if string(logs) != testLogReaderExpected {
+		t.Fatalf(testExpectedGotFmt, testLogReaderExpected, string(logs))
 	}
 	if doneReads != 1 {
 		t.Fatalf("expected 1 done reads, got %d reads", doneReads)
@@ -160,9 +161,8 @@ func TestLogReader_withMarkersMulti(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	expected := "Terraform run started - logs - Terraform run finished"
-	if string(logs) != expected {
-		t.Fatalf("expected %s, got: %s", expected, string(logs))
+	if string(logs) != testLogReaderExpected {
+		t.Fatalf(testExpectedGotFmt, testLogReaderExpected, string(logs))
 	}
 	if doneReads != 3 {
 		t.Fatalf("expected 3 done reads, got %d reads", doneReads)
@@ -203,9 +203,8 @@ func TestLogReader_withoutMarkers(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	expected := "Terraform run started - logs - Terraform run finished"
-	if string(logs) != expected {
-		t.Fatalf("expected %s, got: %s", expected, string(logs))
+	if string(logs) != testLogReaderExpected {
+		t.Fatalf(testExpectedGotFmt, testLogReaderExpected, string(logs))
 	}
 	if doneReads != 25 {
 		t.Fatalf("expected 14 done reads, got %d reads", doneReads)
@@ -248,9 +247,8 @@ func TestLogReader_withoutEndOfTextMarker(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	expected := "Terraform run started - logs - Terraform run finished"
-	if string(logs) != expected {
-		t.Fatalf("expected %s, got: %s", expected, string(logs))
+	if string(logs) != testLogReaderExpected {
+		t.Fatalf(testExpectedGotFmt, testLogReaderExpected, string(logs))
 	}
 	if doneReads != 3 {
 		t.Fatalf("expected 3 done reads, got %d reads", doneReads)
