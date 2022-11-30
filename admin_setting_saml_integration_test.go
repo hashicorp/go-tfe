@@ -42,13 +42,13 @@ func TestAdminSettings_SAML_Update(t *testing.T) {
 	client := testClient(t)
 	ctx := context.Background()
 
-	samlSettings, err := client.Admin.Settings.SAML.Read(ctx)
+	_, err := client.Admin.Settings.SAML.Read(ctx)
 	require.NoError(t, err)
 
 	enabled := false
 	debug := false
 
-	samlSettings, err = client.Admin.Settings.SAML.Update(ctx, AdminSAMLSettingsUpdateOptions{
+	samlSettings, err := client.Admin.Settings.SAML.Update(ctx, AdminSAMLSettingsUpdateOptions{
 		Enabled: Bool(enabled),
 		Debug:   Bool(debug),
 	})

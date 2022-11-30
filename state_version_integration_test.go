@@ -316,6 +316,7 @@ func TestStateVersionsRead(t *testing.T) {
 
 	t.Run("when the state version exists", func(t *testing.T) {
 		var sv *StateVersion
+		var ok bool
 		sv, err := client.StateVersions.Read(ctx, svTest.ID)
 		require.NoError(t, err)
 
@@ -335,7 +336,10 @@ func TestStateVersionsRead(t *testing.T) {
 				t.Fatalf("error retrying state version read, err=%s", err)
 			}
 
-			sv = svRetry.(*StateVersion)
+			sv, ok = svRetry.(*StateVersion)
+			if !ok {
+				t.Fatalf("Expected sv to be type *StateVersion, got %T", sv)
+			}
 		}
 
 		assert.NotEmpty(t, sv.DownloadURL)
@@ -528,5 +532,4 @@ func TestStateVersionOutputs(t *testing.T) {
 		assert.Nil(t, outputs)
 		assert.Error(t, err)
 	})
-
 }

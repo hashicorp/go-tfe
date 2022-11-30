@@ -40,7 +40,8 @@ const (
 	DefaultBasePath     = "/api/v2/"
 	DefaultRegistryPath = "/api/registry/"
 	// PingEndpoint is a no-op API endpoint used to configure the rate limiter
-	PingEndpoint = "ping"
+	PingEndpoint       = "ping"
+	ContentTypeJSONAPI = "application/vnd.api+json"
 )
 
 // RetryLogHook allows a function to run before each retry.
@@ -214,7 +215,7 @@ func (c *Client) NewRequestWithAdditionalQueryParams(method, path string, reqAtt
 	var body interface{}
 	switch method {
 	case "GET":
-		reqHeaders.Set("Accept", "application/vnd.api+json")
+		reqHeaders.Set("Accept", ContentTypeJSONAPI)
 
 		if reqAttr != nil {
 			q, err := query.Values(reqAttr)
@@ -227,8 +228,8 @@ func (c *Client) NewRequestWithAdditionalQueryParams(method, path string, reqAtt
 			u.RawQuery = encodeQueryParams(q)
 		}
 	case "DELETE", "PATCH", "POST":
-		reqHeaders.Set("Accept", "application/vnd.api+json")
-		reqHeaders.Set("Content-Type", "application/vnd.api+json")
+		reqHeaders.Set("Accept", ContentTypeJSONAPI)
+		reqHeaders.Set("Content-Type", ContentTypeJSONAPI)
 
 		if reqAttr != nil {
 			if body, err = serializeRequestBody(reqAttr); err != nil {
@@ -571,7 +572,7 @@ func (c *Client) getRawAPIMetadata() (rawAPIMetadata, error) {
 	for k, v := range c.headers {
 		req.Header[k] = v
 	}
-	req.Header.Set("Accept", "application/vnd.api+json")
+	req.Header.Set("Accept", ContentTypeJSONAPI)
 	req.Header.Set("Authorization", "Bearer "+c.token)
 
 	// Make a single request to retrieve the rate limit headers.

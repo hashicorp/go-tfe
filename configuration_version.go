@@ -252,13 +252,13 @@ func (s *configurationVersions) ReadWithOptions(ctx context.Context, cvID string
 // Upload packages and uploads Terraform configuration files. It requires the
 // upload URL from a configuration version and the path to the configuration
 // files on disk.
-func (s *configurationVersions) Upload(ctx context.Context, url string, path string) error {
+func (s *configurationVersions) Upload(ctx context.Context, uploadURL, path string) error {
 	body, err := packContents(path)
 	if err != nil {
 		return err
 	}
 
-	req, err := s.client.NewRequest("PUT", url, body)
+	req, err := s.client.NewRequest("PUT", uploadURL, body)
 	if err != nil {
 		return err
 	}

@@ -130,7 +130,6 @@ func TestAdminUsers_Delete(t *testing.T) {
 		assert.Empty(t, ul.Items)
 		assert.Equal(t, 1, ul.CurrentPage)
 		assert.Equal(t, 0, ul.TotalCount)
-
 	})
 
 	t.Run("an non-existing user", func(t *testing.T) {

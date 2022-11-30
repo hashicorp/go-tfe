@@ -294,7 +294,6 @@ func TestRegistryModuleUpdate(t *testing.T) {
 		require.NoError(t, err)
 		assert.False(t, rm.NoCode)
 	})
-
 }
 
 func TestRegistryModulesCreateVersion(t *testing.T) {
@@ -441,7 +440,6 @@ func TestRegistryModulesCreateVersion(t *testing.T) {
 		assert.Nil(t, rmv)
 		assert.EqualError(t, err, ErrInvalidOrg.Error())
 	})
-
 }
 
 func TestRegistryModulesCreateWithVCSConnection(t *testing.T) {
@@ -547,7 +545,6 @@ func TestRegistryModulesCreateWithVCSConnection(t *testing.T) {
 		assert.Nil(t, rm)
 		assert.Equal(t, err, ErrRequiredVCSRepo)
 	})
-
 }
 
 func TestRegistryModulesRead(t *testing.T) {
