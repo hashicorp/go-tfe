@@ -2175,7 +2175,7 @@ func skipUnlessBeta(t *testing.T) {
 }
 
 // skips a test if the architecture is not linux_amd64
-func skipIfNotLinuxAmd64(t *testing.T) {
+func skipUnlessLinuxAMD64(t *testing.T) {
 	if !linuxAmd64() {
 		t.Skip("Skipping test if architecture is not linux_amd64")
 	}
