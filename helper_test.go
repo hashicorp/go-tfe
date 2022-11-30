@@ -1653,6 +1653,52 @@ func createTeamAccess(t *testing.T, client *Client, tm *Team, w *Workspace, org 
 	}
 }
 
+func createTeamProjectAccess(t *testing.T, client *Client, tm *Team, p *Project, org *Organization) (*TeamProjectAccess, func()) {
+	var orgCleanup, tmCleanup, pCleanup func()
+
+	if org == nil {
+		org, orgCleanup = createOrganization(t, client)
+	}
+
+	if tm == nil {
+		tm, tmCleanup = createTeam(t, client, org)
+	}
+
+	if p == nil {
+		p, pCleanup = createProject(t, client, org)
+	}
+
+	ctx := context.Background()
+	tpa, err := client.TeamProjectAccess.Add(ctx, TeamProjectAccessAddOptions{
+		Access:  ProjectAccess(TeamProjectAccessAdmin),
+		Team:    tm,
+		Project: p,
+	})
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	return tpa, func() {
+		if err := client.TeamProjectAccess.Remove(ctx, tpa.ID); err != nil {
+			t.Errorf("Error removing team access! WARNING: Dangling resources\n"+
+				"may exist! The full error is shown below.\n\n"+
+				"TeamAccess: %s\nError: %s", tpa.ID, err)
+		}
+
+		if tmCleanup != nil {
+			tmCleanup()
+		}
+
+		if orgCleanup != nil {
+			orgCleanup()
+		}
+
+		if pCleanup != nil {
+			pCleanup()
+		}
+	}
+}
+
 func createTeamToken(t *testing.T, client *Client, tm *Team) (*TeamToken, func()) {
 	var tmCleanup func()
 

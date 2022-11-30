@@ -5,6 +5,11 @@ func Access(v AccessType) *AccessType {
 	return &v
 }
 
+// ProjectAccess returns a pointer to the given team access project type.
+func ProjectAccess(v TeamProjectAccessType) *TeamProjectAccessType {
+	return &v
+}
+
 // RunsPermission returns a pointer to the given team runs permission type.
 func RunsPermission(v RunsPermissionType) *RunsPermissionType {
 	return &v
