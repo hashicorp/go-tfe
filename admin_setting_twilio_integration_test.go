@@ -9,7 +9,7 @@ import (
 )
 
 func TestAdminSettings_Twilio_Read(t *testing.T) {
-	skipIfCloud(t)
+	skipUnlessEnterprise(t)
 
 	client := testClient(t)
 	ctx := context.Background()
@@ -24,7 +24,7 @@ func TestAdminSettings_Twilio_Read(t *testing.T) {
 }
 
 func TestAdminSettings_Twilio_Update(t *testing.T) {
-	skipIfCloud(t)
+	skipUnlessEnterprise(t)
 
 	client := testClient(t)
 	ctx := context.Background()
@@ -38,7 +38,7 @@ func TestAdminSettings_Twilio_Update(t *testing.T) {
 }
 
 func TestAdminSettings_Twilio_Verify(t *testing.T) {
-	skipIfCloud(t)
+	skipUnlessEnterprise(t)
 
 	client := testClient(t)
 	ctx := context.Background()

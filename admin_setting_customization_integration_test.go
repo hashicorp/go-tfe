@@ -9,7 +9,7 @@ import (
 )
 
 func TestAdminSettings_Customization_Read(t *testing.T) {
-	skipIfCloud(t)
+	skipUnlessEnterprise(t)
 
 	client := testClient(t)
 	ctx := context.Background()
@@ -26,7 +26,7 @@ func TestAdminSettings_Customization_Read(t *testing.T) {
 }
 
 func TestAdminSettings_Customization_Update(t *testing.T) {
-	skipIfCloud(t)
+	skipUnlessEnterprise(t)
 
 	client := testClient(t)
 	ctx := context.Background()

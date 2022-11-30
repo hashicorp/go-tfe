@@ -12,7 +12,7 @@ import (
 )
 
 func TestAdminWorkspaces_List(t *testing.T) {
-	skipIfCloud(t)
+	skipUnlessEnterprise(t)
 
 	client := testClient(t)
 	ctx := context.Background()
@@ -118,7 +118,7 @@ func TestAdminWorkspaces_List(t *testing.T) {
 }
 
 func TestAdminWorkspaces_Read(t *testing.T) {
-	skipIfCloud(t)
+	skipUnlessEnterprise(t)
 
 	client := testClient(t)
 	ctx := context.Background()
@@ -155,7 +155,7 @@ func TestAdminWorkspaces_Read(t *testing.T) {
 }
 
 func TestAdminWorkspaces_Delete(t *testing.T) {
-	skipIfCloud(t)
+	skipUnlessEnterprise(t)
 
 	client := testClient(t)
 	ctx := context.Background()

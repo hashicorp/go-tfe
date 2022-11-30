@@ -9,7 +9,7 @@ import (
 )
 
 func TestAdminUsers_List(t *testing.T) {
-	skipIfCloud(t)
+	skipUnlessEnterprise(t)
 
 	client := testClient(t)
 	ctx := context.Background()
@@ -99,7 +99,7 @@ func TestAdminUsers_List(t *testing.T) {
 }
 
 func TestAdminUsers_Delete(t *testing.T) {
-	skipIfCloud(t)
+	skipUnlessEnterprise(t)
 
 	client := testClient(t)
 	ctx := context.Background()
@@ -139,7 +139,7 @@ func TestAdminUsers_Delete(t *testing.T) {
 }
 
 func TestAdminUsers_Disable2FA(t *testing.T) {
-	skipIfCloud(t)
+	skipUnlessEnterprise(t)
 
 	client := testClient(t)
 	ctx := context.Background()

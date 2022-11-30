@@ -10,7 +10,7 @@ import (
 )
 
 func TestAdminOrganizations_List(t *testing.T) {
-	skipIfCloud(t)
+	skipUnlessEnterprise(t)
 
 	client := testClient(t)
 	ctx := context.Background()
@@ -67,7 +67,7 @@ func TestAdminOrganizations_List(t *testing.T) {
 }
 
 func TestAdminOrganizations_Read(t *testing.T) {
-	skipIfCloud(t)
+	skipUnlessEnterprise(t)
 
 	client := testClient(t)
 	ctx := context.Background()
@@ -108,7 +108,7 @@ func TestAdminOrganizations_Read(t *testing.T) {
 }
 
 func TestAdminOrganizations_Delete(t *testing.T) {
-	skipIfCloud(t)
+	skipUnlessEnterprise(t)
 
 	client := testClient(t)
 	ctx := context.Background()
@@ -145,7 +145,7 @@ func TestAdminOrganizations_Delete(t *testing.T) {
 }
 
 func TestAdminOrganizations_ModuleConsumers(t *testing.T) {
-	skipIfCloud(t)
+	skipUnlessEnterprise(t)
 
 	client := testClient(t)
 	ctx := context.Background()
@@ -189,7 +189,7 @@ func TestAdminOrganizations_ModuleConsumers(t *testing.T) {
 }
 
 func TestAdminOrganizations_Update(t *testing.T) {
-	skipIfCloud(t)
+	skipUnlessEnterprise(t)
 
 	client := testClient(t)
 	ctx := context.Background()
