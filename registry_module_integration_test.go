@@ -142,7 +142,7 @@ func TestRegistryModulesCreate(t *testing.T) {
 		})
 
 		t.Run("with no-code attribute", func(t *testing.T) {
-			skipIfBeta(t)
+			skipUnlessBeta(t)
 			options := RegistryModuleCreateOptions{
 				Name:         String("iam"),
 				Provider:     String("aws"),
@@ -248,7 +248,7 @@ func TestRegistryModulesCreate(t *testing.T) {
 }
 
 func TestRegistryModuleUpdate(t *testing.T) {
-	skipIfBeta(t)
+	skipUnlessBeta(t)
 	client := testClient(t)
 	ctx := context.Background()
 

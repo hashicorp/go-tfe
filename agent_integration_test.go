@@ -9,7 +9,7 @@ import (
 )
 
 func TestAgentsRead(t *testing.T) {
-	skipIfNotLinuxAmd64(t)
+	skipUnlessLinuxAMD64(t)
 
 	client := testClient(t)
 	ctx := context.Background()
@@ -43,7 +43,7 @@ func TestAgentsRead(t *testing.T) {
 }
 
 func TestAgentsList(t *testing.T) {
-	skipIfNotLinuxAmd64(t)
+	skipUnlessLinuxAMD64(t)
 
 	client := testClient(t)
 	ctx := context.Background()

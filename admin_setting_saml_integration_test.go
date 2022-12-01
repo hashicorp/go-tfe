@@ -9,7 +9,7 @@ import (
 )
 
 func TestAdminSettings_SAML_Read(t *testing.T) {
-	skipIfCloud(t)
+	skipUnlessEnterprise(t)
 
 	client := testClient(t)
 	ctx := context.Background()
@@ -37,7 +37,7 @@ func TestAdminSettings_SAML_Read(t *testing.T) {
 }
 
 func TestAdminSettings_SAML_Update(t *testing.T) {
-	skipIfCloud(t)
+	skipUnlessEnterprise(t)
 
 	client := testClient(t)
 	ctx := context.Background()
@@ -58,7 +58,7 @@ func TestAdminSettings_SAML_Update(t *testing.T) {
 }
 
 func TestAdminSettings_SAML_RevokeIdpCert(t *testing.T) {
-	skipIfCloud(t)
+	skipUnlessEnterprise(t)
 
 	client := testClient(t)
 	ctx := context.Background()

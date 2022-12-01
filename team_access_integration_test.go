@@ -338,7 +338,7 @@ func TestTeamAccessesRemove(t *testing.T) {
 
 func TestTeamAccessesReadRunTasks(t *testing.T) {
 	skipIfFreeOnly(t)
-	skipIfBeta(t)
+	skipUnlessBeta(t)
 	skipIfEnterprise(t)
 
 	client := testClient(t)
@@ -368,7 +368,7 @@ func TestTeamAccessesReadRunTasks(t *testing.T) {
 
 func TestTeamAccessesUpdateRunTasks(t *testing.T) {
 	skipIfFreeOnly(t)
-	skipIfBeta(t)
+	skipUnlessBeta(t)
 
 	client := testClient(t)
 	ctx := context.Background()

@@ -2146,7 +2146,7 @@ func randomSemver(t *testing.T) string {
 }
 
 // skips a test if the environment is for Terraform Cloud.
-func skipIfCloud(t *testing.T) {
+func skipUnlessEnterprise(t *testing.T) {
 	if !enterpriseEnabled() {
 		t.Skip("Skipping test related to Terraform Cloud. Set ENABLE_TFE=1 to run.")
 	}
@@ -2167,15 +2167,21 @@ func skipIfFreeOnly(t *testing.T) {
 	}
 }
 
-// skips a test if the test requires a beta feature
-func skipIfBeta(t *testing.T) {
+// skips a test if the underlying beta feature is not available.
+// **Note: ENABLE_BETA is always disabled in CI, so ensure you:
+//
+//  1. Run tests locally and paste the test output in the resulting pull request
+//  2. Remove the beta requirements of your feature from go-tfe once the feature is generally available.
+//
+// See CONTRIBUTING.md for details
+func skipUnlessBeta(t *testing.T) {
 	if !betaFeaturesEnabled() {
 		t.Skip("Skipping test related to a Terraform Cloud beta feature. Set ENABLE_BETA=1 to run.")
 	}
 }
 
 // skips a test if the architecture is not linux_amd64
-func skipIfNotLinuxAmd64(t *testing.T) {
+func skipUnlessLinuxAMD64(t *testing.T) {
 	if !linuxAmd64() {
 		t.Skip("Skipping test if architecture is not linux_amd64")
 	}

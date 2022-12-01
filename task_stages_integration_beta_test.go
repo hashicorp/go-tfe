@@ -10,7 +10,7 @@ import (
 
 func TestTaskStagesRead_Beta(t *testing.T) {
 	skipIfFreeOnly(t)
-	skipIfBeta(t)
+	skipUnlessBeta(t)
 
 	client := testClient(t)
 	ctx := context.Background()
@@ -108,7 +108,7 @@ func TestTaskStagesRead_Beta(t *testing.T) {
 
 func TestTaskStagesList_Beta(t *testing.T) {
 	skipIfFreeOnly(t)
-	skipIfBeta(t)
+	skipUnlessBeta(t)
 
 	client := testClient(t)
 	ctx := context.Background()
@@ -172,7 +172,7 @@ func TestTaskStagesList_Beta(t *testing.T) {
 
 func TestTaskStageOverride_Beta(t *testing.T) {
 	skipIfFreeOnly(t)
-	skipIfBeta(t)
+	skipUnlessBeta(t)
 
 	client := testClient(t)
 	ctx := context.Background()

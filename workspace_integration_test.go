@@ -353,7 +353,7 @@ func TestWorkspacesCreate(t *testing.T) {
 	t.Cleanup(orgTestCleanup)
 
 	t.Run("with valid project option", func(t *testing.T) {
-		skipIfBeta(t)
+		skipUnlessBeta(t)
 
 		options := WorkspaceCreateOptions{
 			Name:                       String(fmt.Sprintf("foo-%s", randomString(t))),
@@ -824,7 +824,7 @@ func TestWorkspacesUpdate(t *testing.T) {
 	})
 
 	t.Run("when updating project", func(t *testing.T) {
-		skipIfBeta(t)
+		skipUnlessBeta(t)
 
 		kBefore, kTestCleanup := createProject(t, client, orgTest)
 		defer kTestCleanup()
@@ -2129,7 +2129,7 @@ func TestWorkspaceCreateOptions_Marshal(t *testing.T) {
 
 func TestWorkspacesRunTasksPermission(t *testing.T) {
 	skipIfFreeOnly(t)
-	skipIfBeta(t)
+	skipUnlessBeta(t)
 
 	client := testClient(t)
 	ctx := context.Background()
@@ -2149,7 +2149,7 @@ func TestWorkspacesRunTasksPermission(t *testing.T) {
 }
 
 func TestWorkspacesProjects(t *testing.T) {
-	skipIfBeta(t)
+	skipUnlessBeta(t)
 	client := testClient(t)
 	ctx := context.Background()
 

@@ -57,11 +57,11 @@ Beta features, if released, should be clearly commented:
 ExampleNewField *bool `jsonapi:"attr,example-new-field,omitempty"`
 ```
 
-When adding test cases, you can temporarily use the skipIfBeta() test helper to omit beta features from running in CI.
+When adding test cases, you can temporarily use the skipUnlessBeta() test helper to omit beta features from running in CI.
 
 ```
 t.Run("with nested changes trigger", func (t *testing.T) {
-  skipIfBeta(t)
+  skipUnlessBeta(t)
   options := WorkspaceCreateOptions {
      // rest of required fields here
      ExampleNewField: Bool(true),
@@ -70,7 +70,7 @@ t.Run("with nested changes trigger", func (t *testing.T) {
 })
 ```
 
-**Note**: After your PR has been merged, and the feature either reaches general availability, you should remove the `skipIfBeta()` flag.
+**Note**: After your PR has been merged, and the feature either reaches general availability, you should remove the `skipUnlessBeta()` flag.
 
 ## Adding New Endpoints
 
