@@ -13,6 +13,7 @@ var _ TeamProjectAccesses = (*teamProjectAccesses)(nil)
 // Enterprise API supports
 //
 // TFE API docs: (TODO: ADD DOCS URL)
+// **Note: This functionality is still in BETA and subject to change.**
 type TeamProjectAccesses interface {
 	// List all project accesses for a given project.
 	List(ctx context.Context, options *TeamProjectAccessListOptions) (*TeamProjectAccessList, error)
@@ -77,7 +78,6 @@ type TeamProjectAccessAddOptions struct {
 
 	// The team to add to the project
 	Team *Team `jsonapi:"relation,team"`
-
 	// The project to which the team is to be added.
 	Project *Project `jsonapi:"relation,project"`
 }
@@ -88,8 +88,7 @@ type TeamProjectAccessUpdateOptions struct {
 	// set the resource type via the field tag.
 	// It is not a user-defined value and does not need to be set.
 	// https://jsonapi.org/format/#crud-creating
-	ID string `jsonapi:"primary,team-projects"`
-
+	Type string `jsonapi:"primary,team-projects"`
 	// The type of access to grant.
 	Access *TeamProjectAccessType `jsonapi:"attr,access,omitempty"`
 }

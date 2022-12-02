@@ -1,3 +1,10 @@
+# Unreleased
+
+## Bug Fixes
+
+## Enhancements
+* Add Beta `TeamProjectAccesses` interface with `list`, `add`, `read`, `update`, `remove` methods and integration tests @hs26gill [#599](https://github.com/hashicorp/go-tfe/pull/599)
+
 # v1.16.0
 
 ## Bug Fixes
