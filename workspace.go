@@ -187,6 +187,7 @@ type VCSRepo struct {
 	Identifier        string `jsonapi:"attr,identifier"`
 	IngressSubmodules bool   `jsonapi:"attr,ingress-submodules"`
 	OAuthTokenID      string `jsonapi:"attr,oauth-token-id"`
+	GHAInstallationID string `jsonapi:"attr,github-app-installation-id"`
 	RepositoryHTTPURL string `jsonapi:"attr,repository-http-url"`
 	ServiceProvider   string `jsonapi:"attr,service-provider"`
 	TagsRegex         string `jsonapi:"attr,tags-regex"`
@@ -375,6 +376,7 @@ type VCSRepoOptions struct {
 	IngressSubmodules *bool   `json:"ingress-submodules,omitempty"`
 	OAuthTokenID      *string `json:"oauth-token-id,omitempty"`
 	TagsRegex         *string `json:"tags-regex,omitempty"`
+	GHAInstallationID *string `json:"attr,github-app-installation-id,omitempty"`
 }
 
 // WorkspaceUpdateOptions represents the options for updating a workspace.
