@@ -10,6 +10,8 @@ Your policy set repository will need the following:
 1. A policy set stored in a subdirectory `policy-sets/foo`
 1. A branch other than `main` named `policies`
 
+Alternatively, you can start with this [example repository for policy sets](https://github.com/hashicorp/test-policy-set) by forking the repository to your GitHub account, then setting `GITHUB_POLICY_SET_IDENTIFIER` to the forked repository identifier `your-github-handle/test-policy-set`. 
+
 Your registry module repository will need to be a [valid module](https://www.terraform.io/docs/cloud/registry/publish.html#preparing-a-module-repository).
 It will need the following:
 1. To be named `terraform-<PROVIDER>-<NAME>`
