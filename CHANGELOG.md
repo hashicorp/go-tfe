@@ -1,9 +1,8 @@
-# Unreleased
-
-## Bug Fixes
+# v1.15.0
 
 ## Enhancements
-* Add Beta `Projects` interface with `list`, `read`, `update`, `delete` methods and integration tests @hs26gill [#564](https://github.com/hashicorp/go-tfe/pull/564)
+
+* Add Beta `Projects` endpoint. The API is in not yet available to all users @hs26gill [#564](https://github.com/hashicorp/go-tfe/pull/564)
 
 # v1.14.0
 
