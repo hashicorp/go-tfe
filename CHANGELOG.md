@@ -4,6 +4,7 @@
 
 ## Enhancements
 * Adds `List()` method to `GPGKeys` interface by @sebasslash [#]()
+* Adds `ProviderBinaryUploaded` field to `RegistryPlatforms` struct by @sebasslash [#]()
 
 # v1.15.0
 

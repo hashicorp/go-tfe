@@ -43,6 +43,7 @@ func TestRegistryProviderPlatformsCreate(t *testing.T) {
 		assert.Equal(t, options.Arch, rpp.Arch)
 		assert.Equal(t, options.Shasum, rpp.Shasum)
 		assert.Equal(t, options.Filename, rpp.Filename)
+		assert.False(t, rpp.ProviderBinaryUploaded)
 
 		t.Run("relationships are properly decoded", func(t *testing.T) {
 			assert.Equal(t, version.ID, rpp.RegistryProviderVersion.ID)
@@ -245,6 +246,7 @@ func TestRegistryProviderPlatformsRead(t *testing.T) {
 		assert.Equal(t, platformID.Arch, readPlatform.Arch)
 		assert.Equal(t, platform.Filename, readPlatform.Filename)
 		assert.Equal(t, platform.Shasum, readPlatform.Shasum)
+		assert.Equal(t, platform.ProviderBinaryUploaded, readPlatform.ProviderBinaryUploaded)
 
 		t.Run("relationships are properly decoded", func(t *testing.T) {
 			assert.Equal(t, platform.RegistryProviderVersion.ID, readPlatform.RegistryProviderVersion.ID)
