@@ -8,6 +8,91 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
+func TestGPGKeyList(t *testing.T) {
+	client := testClient(t)
+	ctx := context.Background()
+
+	org1, org1Cleanup := createOrganization(t, client)
+	t.Cleanup(org1Cleanup)
+
+	org2, org2Cleanup := createOrganization(t, client)
+	t.Cleanup(org2Cleanup)
+
+	upgradeOrganizationSubscription(t, client, org1)
+	upgradeOrganizationSubscription(t, client, org2)
+
+	provider1, provider1Cleanup := createRegistryProvider(t, client, org1, PrivateRegistry)
+	t.Cleanup(provider1Cleanup)
+
+	provider2, provider2Cleanup := createRegistryProvider(t, client, org2, PrivateRegistry)
+	t.Cleanup(provider2Cleanup)
+
+	gpgKey1, gpgKey1Cleanup := createGPGKey(t, client, org1, provider1)
+	t.Cleanup(gpgKey1Cleanup)
+
+	gpgKey2, gpgKey2Cleanup := createGPGKey(t, client, org2, provider2)
+	t.Cleanup(gpgKey2Cleanup)
+
+	t.Run("with single namespace", func(t *testing.T) {
+		opts := GPGKeyListOptions{
+			Namespaces: []string{org1.Name},
+		}
+
+		keyl, err := client.GPGKeys.ListPrivate(ctx, opts)
+		require.NoError(t, err)
+
+		require.Len(t, keyl.Items, 1)
+		assert.Equal(t, gpgKey1.ID, keyl.Items[0].ID)
+		assert.Equal(t, gpgKey1.KeyID, keyl.Items[0].KeyID)
+	})
+
+	t.Run("with multiple namespaces", func(t *testing.T) {
+		t.Skip("Skipping due to GPG Key API not returning keys for multiple namespaces")
+
+		opts := GPGKeyListOptions{
+			Namespaces: []string{org1.Name, org2.Name},
+		}
+
+		keyl, err := client.GPGKeys.ListPrivate(ctx, opts)
+		require.NoError(t, err)
+
+		require.Len(t, keyl.Items, 2)
+		for i, key := range []*GPGKey{
+			gpgKey1,
+			gpgKey2,
+		} {
+			assert.Equal(t, key.ID, keyl.Items[i].ID)
+			assert.Equal(t, key.KeyID, keyl.Items[i].KeyID)
+		}
+	})
+
+	t.Run("with list options", func(t *testing.T) {
+		opts := GPGKeyListOptions{
+			Namespaces: []string{org1.Name},
+			ListOptions: ListOptions{
+				PageNumber: 999,
+				PageSize:   100,
+			},
+		}
+
+		keyl, err := client.GPGKeys.ListPrivate(ctx, opts)
+		require.NoError(t, err)
+		require.Empty(t, keyl.Items)
+		assert.Equal(t, 999, keyl.CurrentPage)
+		assert.Equal(t, 1, keyl.TotalCount)
+	})
+
+	t.Run("with invalid options", func(t *testing.T) {
+		t.Run("invalid namespace", func(t *testing.T) {
+			opts := GPGKeyListOptions{
+				Namespaces: []string{},
+			}
+			_, err := client.GPGKeys.ListPrivate(ctx, opts)
+			require.EqualError(t, err, ErrInvalidNamespace.Error())
+		})
+	})
+}
+
 func TestGPGKeyCreate(t *testing.T) {
 	client := testClient(t)
 	ctx := context.Background()

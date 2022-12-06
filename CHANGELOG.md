@@ -3,6 +3,7 @@
 ## Bug Fixes
 
 ## Enhancements
+* Adds `List()` method to `GPGKeys` interface by @sebasslash [#]()
 
 # v1.15.0
 
