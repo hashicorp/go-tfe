@@ -119,14 +119,14 @@ func Test_unmarshalResponse(t *testing.T) {
 func Test_EncodeQueryParams(t *testing.T) {
 	t.Run("with no listOptions and therefore no include field defined", func(t *testing.T) {
 		urlVals := map[string][]string{
-			"include": []string{},
+			"include": {},
 		}
 		requestURLquery := encodeQueryParams(urlVals)
 		assert.Equal(t, requestURLquery, "")
 	})
 	t.Run("with listOptions setting multiple include options", func(t *testing.T) {
 		urlVals := map[string][]string{
-			"include": []string{"workspace", "cost_estimate"},
+			"include": {"workspace", "cost_estimate"},
 		}
 		requestURLquery := encodeQueryParams(urlVals)
 		assert.Equal(t, requestURLquery, "include=workspace%2Ccost_estimate")
