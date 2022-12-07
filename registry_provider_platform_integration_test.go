@@ -31,8 +31,8 @@ func TestRegistryProviderPlatformsCreate(t *testing.T) {
 
 	t.Run("with valid options", func(t *testing.T) {
 		options := RegistryProviderPlatformCreateOptions{
-			OS:       "foo",
-			Arch:     "scrimbles",
+			OS:       "linux",
+			Arch:     "arm",
 			Shasum:   "shasum",
 			Filename: "filename",
 		}
@@ -184,6 +184,8 @@ func TestRegistryProviderPlatformsDelete(t *testing.T) {
 
 	t.Run("with a valid version", func(t *testing.T) {
 		platform, _ := createRegistryProviderPlatform(t, client, provider, version)
+
+		fmt.Println("my platform.OS:", platform.OS, platform.Arch)
 
 		platformID := RegistryProviderPlatformID{
 			RegistryProviderVersionID: versionID,

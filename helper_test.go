@@ -1411,8 +1411,8 @@ func createRegistryProviderPlatform(t *testing.T, client *Client, provider *Regi
 	ctx := context.Background()
 
 	options := RegistryProviderPlatformCreateOptions{
-		OS:       randomString(t),
-		Arch:     randomString(t),
+		OS:       "linux",
+		Arch:     "arm",
 		Shasum:   genSha(t),
 		Filename: randomString(t),
 	}
