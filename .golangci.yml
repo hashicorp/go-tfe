@@ -11,6 +11,7 @@ linters:
     - exportloopref #https://github.com/kyoh86/exportloopref
     - bodyclose #https://github.com/timakin/bodyclose
     - goconst #https://github.com/jgautheron/goconst
+    - gofmt
     - errcheck #https://github.com/kisielk/errcheck
     - stylecheck #https://github.com/dominikh/go-tools/tree/master/stylecheck
     - revive #golint is deprecated and golangci-lint recommends to use revive instead https://github.com/mgechev/revive

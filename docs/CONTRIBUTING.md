@@ -18,7 +18,7 @@ There are instances where several new resources being added (i.e Workspace Run T
 
 ## Linting
 
-Linting is not necessarily required for a change to be merged, but it helps smooth the review process and catch common mistakes early. If you'd like to run the linters manually, follow these steps:
+Linting is not necessarily required for a change to be merged, but it helps smooth the review process and catch common mistakes early. One important linter checks that `go fmt` has been run. Use `make fmt` to automatically format your source files before committing. If you'd like to run the linters manually, follow these steps:
 
 1. Ensure you have [installed golangci-lint](https://golangci-lint.run/usage/install/#local-installation)
 2. From the CLI, run `make lint`
