@@ -376,7 +376,7 @@ type VCSRepoOptions struct {
 	IngressSubmodules *bool   `json:"ingress-submodules,omitempty"`
 	OAuthTokenID      *string `json:"oauth-token-id,omitempty"`
 	TagsRegex         *string `json:"tags-regex,omitempty"`
-	GHAInstallationID *string `json:"attr,github-app-installation-id,omitempty"`
+	GHAInstallationID *string `json:"github-app-installation-id,omitempty"`
 }
 
 // WorkspaceUpdateOptions represents the options for updating a workspace.
