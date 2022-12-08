@@ -123,7 +123,7 @@ func TestProjectsCreate(t *testing.T) {
 			Name: badIdentifier,
 		})
 		assert.Nil(t, w)
-		assert.EqualError(t, err, ErrInvalidName.Error())
+		assert.Contains(t, err.Error(), "invalid attribute\n\nName may only contain")
 	})
 
 	t.Run("when options has an invalid organization", func(t *testing.T) {
@@ -149,7 +149,7 @@ func TestProjectsUpdate(t *testing.T) {
 		defer kTestCleanup()
 
 		kAfter, err := client.Projects.Update(ctx, kBefore.ID, ProjectUpdateOptions{
-			Name: String("new_project_name"),
+			Name: String("new project name!"),
 		})
 		require.NoError(t, err)
 
@@ -165,7 +165,7 @@ func TestProjectsUpdate(t *testing.T) {
 			Name: String(badIdentifier),
 		})
 		assert.Nil(t, kAfter)
-		assert.EqualError(t, err, ErrInvalidName.Error())
+		assert.Contains(t, err.Error(), "invalid attribute\n\nName may only contain")
 	})
 
 	t.Run("without a valid projects ID", func(t *testing.T) {

@@ -1,6 +1,8 @@
-# Unreleased
+# v1.15.1
 
 ## Bug Fixes
+
+* Project names were being incorrectly validated as ID's @brandonc [#608](https://github.com/hashicorp/go-tfe/pull/608)
 
 ## Enhancements
 
