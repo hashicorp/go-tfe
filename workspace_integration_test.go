@@ -326,6 +326,46 @@ func TestWorkspacesCreateTableDriven(t *testing.T) {
 				require.NoError(t, err)
 			},
 		},
+		{
+			scenario: "when github app installation id is passes in place of oauth token id",
+			options: &WorkspaceTableOptions{
+				createOptions: &WorkspaceCreateOptions{
+					Name:                String("foobar"),
+					FileTriggersEnabled: Bool(false),
+					VCSRepo: &VCSRepoOptions{
+						TagsRegex:         String("barfoo"),
+						GHAInstallationID: String("gha_installation_id_value")},
+				},
+			},
+			setup: func(options *WorkspaceTableOptions) (w *Workspace, cleanup func()) {
+				// Remove the below organization creation and use the one from the outer scope once the feature flag is removed
+				orgTest, orgTestCleanup := createOrganizationWithOptions(t, client, OrganizationCreateOptions{
+					Name:  String("tst-" + randomString(t)[0:20]),
+					Email: String(fmt.Sprintf("%s@tfe.local", randomString(t))),
+				})
+
+				w, wTestCleanup := createWorkspaceWithVCSNoOauth(t, client, orgTest, *options.createOptions)
+
+				return w, func() {
+					t.Cleanup(orgTestCleanup)
+					t.Cleanup(wTestCleanup)
+				}
+			},
+			assertion: func(w *Workspace, options *WorkspaceTableOptions, err error) {
+				assert.Equal(t, *options.createOptions.VCSRepo.TagsRegex, w.VCSRepo.TagsRegex)
+
+				// Get a refreshed view from the API.
+				refreshed, readErr := client.Workspaces.Read(ctx, w.Organization.Name, *options.createOptions.Name)
+				require.NoError(t, readErr)
+
+				for _, item := range []*Workspace{
+					w,
+					refreshed,
+				} {
+					assert.Equal(t, *options.createOptions.VCSRepo.TagsRegex, item.VCSRepo.TagsRegex)
+				}
+			},
+		},
 	}
 
 	for _, tableTest := range workspaceTableTests {

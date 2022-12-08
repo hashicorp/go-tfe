@@ -1776,6 +1776,49 @@ func createWorkspaceWithVCS(t *testing.T, client *Client, org *Organization, opt
 	}
 }
 
+// This function is added to test setting up workspace's VCS connection via Github App Installation in place of
+// Oauth token. For now the value of GHAInstallationID has to manually set to the correct value by the user.
+func createWorkspaceWithVCSNoOauth(t *testing.T, client *Client, org *Organization, options WorkspaceCreateOptions) (*Workspace, func()) {
+	var orgCleanup func()
+
+	if org == nil {
+		org, orgCleanup = createOrganization(t, client)
+	}
+
+	githubIdentifier := os.Getenv("GITHUB_POLICY_SET_IDENTIFIER")
+	if githubIdentifier == "" {
+		t.Fatal("Export a valid GITHUB_POLICY_SET_IDENTIFIER before running this test!")
+	}
+
+	if options.Name == nil {
+		options.Name = String(randomString(t))
+	}
+
+	if options.VCSRepo == nil {
+		options.VCSRepo = &VCSRepoOptions{}
+	}
+
+	options.VCSRepo.Identifier = String(githubIdentifier)
+
+	ctx := context.Background()
+	w, err := client.Workspaces.Create(ctx, org.Name, options)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	return w, func() {
+		if err := client.Workspaces.Delete(ctx, org.Name, w.Name); err != nil {
+			t.Errorf("Error destroying workspace! WARNING: Dangling resources\n"+
+				"may exist! The full error is shown below.\n\n"+
+				"Workspace: %s\nError: %s", w.Name, err)
+		}
+
+		if orgCleanup != nil {
+			orgCleanup()
+		}
+	}
+}
+
 func createWorkspaceRunTask(t *testing.T, client *Client, workspace *Workspace, runTask *RunTask) (*WorkspaceRunTask, func()) {
 	var organization *Organization
 	var runTaskCleanup func()
