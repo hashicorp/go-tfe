@@ -5,6 +5,8 @@
 * Project names were being incorrectly validated as ID's @brandonc [#608](https://github.com/hashicorp/go-tfe/pull/608)
 
 ## Enhancements
+* Adds `List()` method to `GPGKeys` interface by @sebasslash [#602](https://github.com/hashicorp/go-tfe/pull/602)
+* Adds `ProviderBinaryUploaded` field to `RegistryPlatforms` struct by @sebasslash [#602](https://github.com/hashicorp/go-tfe/pull/602)
 
 # v1.15.0
 
