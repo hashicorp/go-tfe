@@ -203,16 +203,9 @@ func (o ProjectCreateOptions) valid() error {
 	if !validString(&o.Name) {
 		return ErrRequiredName
 	}
-
-	if !validStringID(&o.Name) {
-		return ErrInvalidName
-	}
 	return nil
 }
 
 func (o ProjectUpdateOptions) valid() error {
-	if o.Name != nil && !validStringID(o.Name) {
-		return ErrInvalidName
-	}
 	return nil
 }
