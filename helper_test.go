@@ -1384,7 +1384,7 @@ func createRegistryProvider(t *testing.T, client *Client, org *Organization, reg
 	}
 }
 
-func createRegistryProviderPlatform(t *testing.T, client *Client, provider *RegistryProvider, version *RegistryProviderVersion) (*RegistryProviderPlatform, func()) {
+func createRegistryProviderPlatform(t *testing.T, client *Client, provider *RegistryProvider, version *RegistryProviderVersion, targetOS, arch string) (*RegistryProviderPlatform, func()) {
 	var providerCleanup func()
 	var versionCleanup func()
 
@@ -1411,10 +1411,18 @@ func createRegistryProviderPlatform(t *testing.T, client *Client, provider *Regi
 	ctx := context.Background()
 
 	options := RegistryProviderPlatformCreateOptions{
-		OS:       randomString(t),
-		Arch:     randomString(t),
+		OS:       targetOS,
+		Arch:     arch,
 		Shasum:   genSha(t),
 		Filename: randomString(t),
+	}
+
+	if targetOS == "" {
+		options.OS = "linux"
+	}
+
+	if arch == "" {
+		options.Arch = "amd64"
 	}
 
 	rpp, err := client.RegistryProviderPlatforms.Create(ctx, versionID, options)
