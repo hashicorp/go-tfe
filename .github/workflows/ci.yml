@@ -113,7 +113,7 @@ jobs:
         with:
           payload: |
             {
-              "text": ":x::moon::sob: Tests *FAILED*",
+              "text": ":x::moon::sob: @tf-cli-hero Nightly TFE tests *FAILED*",
               "attachments": [
                 {
                   "color": "#C41E3A",
