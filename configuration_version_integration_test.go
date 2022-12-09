@@ -66,7 +66,7 @@ func TestConfigurationVersionsList(t *testing.T) {
 	t.Run("without a valid organization", func(t *testing.T) {
 		cvl, err := client.ConfigurationVersions.List(ctx, badIdentifier, nil)
 		assert.Nil(t, cvl)
-		assert.EqualError(t, err, ErrInvalidWorkspaceID.Error())
+		assert.EqualError(t, err, ErrInvalidTerraformVersionType.Error())
 	})
 }
 
