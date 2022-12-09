@@ -112,7 +112,7 @@ func TestAdminRuns_List(t *testing.T) {
 		assert.Equal(t, r1.Status, RunPlanning)
 		assert.Equal(t, adminRunItemsContainsID(rl.Items, r1.ID), false)
 		assert.Equal(t, r2.Status, RunPending)
-		assert.Equal(t, adminRunItemsContainsID(rl.Items, r2.ID), true)
+		assert.Equal(t, adminRunItemsContainsID(rl.Items, r2.ID), false)
 	})
 
 	t.Run("with RunStatus.applied filter", func(t *testing.T) {
