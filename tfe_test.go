@@ -16,7 +16,7 @@ type tfeAPI struct {
 	ID                string                   `jsonapi:"primary,tfe"`
 	Name              string                   `jsonapi:"attr,name"`
 	CreatedAt         time.Time                `jsonapi:"attr,created-at,iso8601"`
-	Enalbed           bool                     `jsonapi:"attr,enalbed"`
+	Enabled           bool                     `jsonapi:"attr,enabled"`
 	Emails            []string                 `jsonapi:"attr,emails"`
 	Status            tfeAPIStatus             `jsonapi:"attr,status"`
 	StatusTimestamps  tfeAPITimestamps         `jsonapi:"attr,status-timestamps"`
