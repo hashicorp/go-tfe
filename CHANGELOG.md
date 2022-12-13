@@ -24,7 +24,7 @@
 ## Enhancements
 * Adds `List()` method to `GPGKeys` interface by @sebasslash [#602](https://github.com/hashicorp/go-tfe/pull/602)
 * Adds `ProviderBinaryUploaded` field to `RegistryPlatforms` struct by @sebasslash [#602](https://github.com/hashicorp/go-tfe/pull/602)
-* Adds `ReadWorkspaces` and `ReadProjects` APIs to `Organizations` by @JuliannaTetreault [#]()
+* Adds `ReadWorkspaces` and `ReadProjects` permissions to `Organizations` by @JuliannaTetreault [#614](https://github.com/hashicorp/go-tfe/pull/614)
 
 # v1.15.0
 
