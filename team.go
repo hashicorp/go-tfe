@@ -151,13 +151,10 @@ type OrganizationAccessOptions struct {
 	ManageProviders       *bool `json:"manage-providers,omitempty"`
 	ManageModules         *bool `json:"manage-modules,omitempty"`
 	ManageRunTasks        *bool `json:"manage-run-tasks,omitempty"`
-<<<<<<< HEAD
 	// **Note: This field is still in BETA and subject to change.**
-	ManageProjects *bool `json:"manage-projects,omitempty"`
-=======
-	ReadWorkspaces        *bool `jsonapi:"read-workspaces,omitempty"`
-	ReadProjects          *bool `jsonapi:"read-projects,omitempty"`
->>>>>>> 816d125 (Add ReadWorkspaces and ReadProjects to Orgs)
+	ManageProjects        *bool `json:"manage-projects,omitempty"`
+	ReadWorkspaces        *bool `json:"read-workspaces,omitempty"`
+	ReadProjects          *bool `json:"read-projects,omitempty"`
 }
 
 // List all the teams of the given organization.
