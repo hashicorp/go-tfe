@@ -70,6 +70,8 @@ type OrganizationAccess struct {
 	ManageRunTasks        bool `jsonapi:"attr,manage-run-tasks"`
 	// **Note: This field is still in BETA and subject to change.**
 	ManageProjects bool `jsonapi:"attr,manage-projects"`
+	ReadWorkspaces        bool `jsonapi:"attr,read-workspaces"`
+	ReadProjects          bool `jsonapi:"attr,read-projects"`
 }
 
 // TeamPermissions represents the current user's permissions on the team.
@@ -149,8 +151,13 @@ type OrganizationAccessOptions struct {
 	ManageProviders       *bool `json:"manage-providers,omitempty"`
 	ManageModules         *bool `json:"manage-modules,omitempty"`
 	ManageRunTasks        *bool `json:"manage-run-tasks,omitempty"`
+<<<<<<< HEAD
 	// **Note: This field is still in BETA and subject to change.**
 	ManageProjects *bool `json:"manage-projects,omitempty"`
+=======
+	ReadWorkspaces        *bool `jsonapi:"read-workspaces,omitempty"`
+	ReadProjects          *bool `jsonapi:"read-projects,omitempty"`
+>>>>>>> 816d125 (Add ReadWorkspaces and ReadProjects to Orgs)
 }
 
 // List all the teams of the given organization.

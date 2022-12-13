@@ -318,6 +318,8 @@ func TestTeam_Unmarshal(t *testing.T) {
 					"manage-workspaces":   true,
 					"manage-vcs-settings": true,
 					"manage-projects":     true,
+					"read-workspaces":     true,
+					"read-projects":       true,
 				},
 				"permissions": map[string]interface{}{
 					"can-destroy":           true,
@@ -340,7 +342,12 @@ func TestTeam_Unmarshal(t *testing.T) {
 	assert.Equal(t, team.OrganizationAccess.ManageWorkspaces, true)
 	assert.Equal(t, team.OrganizationAccess.ManageVCSSettings, true)
 	assert.Equal(t, team.OrganizationAccess.ManagePolicies, true)
+<<<<<<< HEAD
 	assert.Equal(t, team.OrganizationAccess.ManageProjects, true)
+=======
+	assert.Equal(t, team.OrganizationAccess.ReadWorkspaces, true)
+	assert.Equal(t, team.OrganizationAccess.ReadProjects, true)
+>>>>>>> 816d125 (Add ReadWorkspaces and ReadProjects to Orgs)
 	assert.Equal(t, team.Permissions.CanDestroy, true)
 	assert.Equal(t, team.Permissions.CanUpdateMembership, true)
 }
