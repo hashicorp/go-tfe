@@ -8,6 +8,8 @@
 * Adds `List()` method to `GPGKeys` interface by @sebasslash [#602](https://github.com/hashicorp/go-tfe/pull/602)
 * Adds `ProviderBinaryUploaded` field to `RegistryPlatforms` struct by @sebasslash [#602](https://github.com/hashicorp/go-tfe/pull/602)
 
+* Adds agent-count to `AgentPools` endpoint. @evilensky [#611](https://github.com/hashicorp/go-tfe/pull/611)
+
 # v1.15.0
 
 ## Enhancements
