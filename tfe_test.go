@@ -16,7 +16,7 @@ type tfeAPI struct {
 	ID                string                   `jsonapi:"primary,tfe"`
 	Name              string                   `jsonapi:"attr,name"`
 	CreatedAt         time.Time                `jsonapi:"attr,created-at,iso8601"`
-	Enalbed           bool                     `jsonapi:"attr,enalbed"`
+	Enabled           bool                     `jsonapi:"attr,enabled"`
 	Emails            []string                 `jsonapi:"attr,emails"`
 	Status            tfeAPIStatus             `jsonapi:"attr,status"`
 	StatusTimestamps  tfeAPITimestamps         `jsonapi:"attr,status-timestamps"`
@@ -49,7 +49,7 @@ func Test_unmarshalResponse(t *testing.T) {
 				"attributes": map[string]interface{}{
 					"name":       "terraform",
 					"created-at": "2016-08-17T08:27:12Z",
-					"enabled":    "true",
+					"enabled":    true,
 					"status":     tfeAPIStatusNormal,
 					"emails":     []string{"test@hashicorp.com"},
 					"delivery-responses": []interface{}{
@@ -90,6 +90,7 @@ func Test_unmarshalResponse(t *testing.T) {
 		assert.Equal(t, unmarshalledRequestBody.DeliveryResponses[0].Code, 200)
 		assert.Equal(t, unmarshalledRequestBody.DeliveryResponses[1].Body, "<body>")
 		assert.Equal(t, unmarshalledRequestBody.DeliveryResponses[1].Code, 300)
+		assert.Equal(t, unmarshalledRequestBody.Enabled, true)
 	})
 
 	t.Run("can only unmarshal Items that are slices", func(t *testing.T) {
