@@ -12,11 +12,11 @@ var _ TeamProjectAccesses = (*teamProjectAccesses)(nil)
 // TeamProjectAccesses describes all the team project access related methods that the Terraform
 // Enterprise API supports
 //
-// TFE API docs: (TODO: ADD DOCS URL)
+// TFE API docs: Documentation will be linked once this feature is available
 // **Note: This functionality is still in BETA and subject to change.**
 type TeamProjectAccesses interface {
 	// List all project accesses for a given project.
-	List(ctx context.Context, options *TeamProjectAccessListOptions) (*TeamProjectAccessList, error)
+	List(ctx context.Context, options TeamProjectAccessListOptions) (*TeamProjectAccessList, error)
 
 	// Add team access for a project.
 	Add(ctx context.Context, options TeamProjectAccessAddOptions) (*TeamProjectAccess, error)
@@ -74,7 +74,7 @@ type TeamProjectAccessAddOptions struct {
 	// https://jsonapi.org/format/#crud-creating
 	Type string `jsonapi:"primary,team-projects"`
 	// The type of access to grant.
-	Access *TeamProjectAccessType `jsonapi:"attr,access"`
+	Access TeamProjectAccessType `jsonapi:"attr,access"`
 
 	// The team to add to the project
 	Team *Team `jsonapi:"relation,team"`
@@ -94,12 +94,12 @@ type TeamProjectAccessUpdateOptions struct {
 }
 
 // List all team accesses for a given project.
-func (s *teamProjectAccesses) List(ctx context.Context, options *TeamProjectAccessListOptions) (*TeamProjectAccessList, error) {
+func (s *teamProjectAccesses) List(ctx context.Context, options TeamProjectAccessListOptions) (*TeamProjectAccessList, error) {
 	if err := options.valid(); err != nil {
 		return nil, err
 	}
 
-	req, err := s.client.NewRequest("GET", "team-projects", options)
+	req, err := s.client.NewRequest("GET", "team-projects", &options)
 	if err != nil {
 		return nil, err
 	}
@@ -116,6 +116,10 @@ func (s *teamProjectAccesses) List(ctx context.Context, options *TeamProjectAcce
 // Add team access for a project.
 func (s *teamProjectAccesses) Add(ctx context.Context, options TeamProjectAccessAddOptions) (*TeamProjectAccess, error) {
 	if err := options.valid(); err != nil {
+		return nil, err
+	}
+
+	if err := validateTeamProjectAccessType(options.Access); err != nil {
 		return nil, err
 	}
 
@@ -160,6 +164,9 @@ func (s *teamProjectAccesses) Update(ctx context.Context, teamProjectAccessID st
 		return nil, ErrInvalidTeamProjectAccessID
 	}
 
+	if err := validateTeamProjectAccessType(*options.Access); err != nil {
+		return nil, err
+	}
 	u := fmt.Sprintf("team-projects/%s", url.QueryEscape(teamProjectAccessID))
 	req, err := s.client.NewRequest("PATCH", u, &options)
 	if err != nil {
@@ -191,12 +198,6 @@ func (s *teamProjectAccesses) Remove(ctx context.Context, teamProjectAccessID st
 }
 
 func (o *TeamProjectAccessListOptions) valid() error {
-	if o == nil {
-		return ErrRequiredTeamProjectAccessListOps
-	}
-	if !validString(&o.ProjectID) {
-		return ErrRequiredProjectID
-	}
 	if !validStringID(&o.ProjectID) {
 		return ErrInvalidProjectID
 	}
@@ -204,15 +205,26 @@ func (o *TeamProjectAccessListOptions) valid() error {
 	return nil
 }
 
-func (o TeamProjectAccessAddOptions) valid() error {
-	if o.Access == nil {
-		return ErrRequiredAccess
+func (o *TeamProjectAccessAddOptions) valid() error {
+	if err := validateTeamProjectAccessType(o.Access); err != nil {
+		return err
 	}
 	if o.Team == nil {
 		return ErrRequiredTeam
 	}
 	if o.Project == nil {
 		return ErrRequiredProject
+	}
+
+	return nil
+}
+
+func validateTeamProjectAccessType(t TeamProjectAccessType) error {
+	switch t {
+	case TeamProjectAccessAdmin, TeamProjectAccessRead:
+		// do nothing
+	default:
+		return ErrInvalidTeamProjectAccessType
 	}
 	return nil
 }

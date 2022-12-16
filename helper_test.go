@@ -1670,7 +1670,7 @@ func createTeamProjectAccess(t *testing.T, client *Client, tm *Team, p *Project,
 
 	ctx := context.Background()
 	tpa, err := client.TeamProjectAccess.Add(ctx, TeamProjectAccessAddOptions{
-		Access:  ProjectAccess(TeamProjectAccessAdmin),
+		Access:  *ProjectAccess(TeamProjectAccessAdmin),
 		Team:    tm,
 		Project: p,
 	})

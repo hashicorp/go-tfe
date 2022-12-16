@@ -31,7 +31,7 @@ func TestTeamProjectAccessesList(t *testing.T) {
 	defer tpaTest2Cleanup()
 
 	t.Run("with valid options", func(t *testing.T) {
-		tpal, err := client.TeamProjectAccess.List(ctx, &TeamProjectAccessListOptions{
+		tpal, err := client.TeamProjectAccess.List(ctx, TeamProjectAccessListOptions{
 			ProjectID: pTest.ID,
 		})
 		require.NoError(t, err)
@@ -43,7 +43,7 @@ func TestTeamProjectAccessesList(t *testing.T) {
 		// Request a page number which is out of range. The result should
 		// be successful, but return no results if the paging options are
 		// properly passed along.
-		tpal, err := client.TeamProjectAccess.List(ctx, &TeamProjectAccessListOptions{
+		tpal, err := client.TeamProjectAccess.List(ctx, TeamProjectAccessListOptions{
 			ProjectID: pTest.ID,
 			ListOptions: ListOptions{
 				PageNumber: 999,
@@ -56,25 +56,19 @@ func TestTeamProjectAccessesList(t *testing.T) {
 		assert.Equal(t, 2, tpal.TotalCount)
 	})
 
-	t.Run("without TeamProjectAccessListOptions", func(t *testing.T) {
-		tpal, err := client.TeamProjectAccess.List(ctx, nil)
-		assert.Nil(t, tpal)
-		assert.Equal(t, err, ErrRequiredTeamProjectAccessListOps)
-	})
-
 	t.Run("without projectID options", func(t *testing.T) {
-		tpal, err := client.TeamProjectAccess.List(ctx, &TeamProjectAccessListOptions{
+		tpal, err := client.TeamProjectAccess.List(ctx, TeamProjectAccessListOptions{
 			ListOptions: ListOptions{
 				PageNumber: 2,
 				PageSize:   25,
 			},
 		})
 		assert.Nil(t, tpal)
-		assert.Equal(t, err, ErrRequiredProjectID)
+		assert.Equal(t, err, ErrInvalidProjectID)
 	})
 
 	t.Run("without a valid projectID", func(t *testing.T) {
-		tpal, err := client.TeamProjectAccess.List(ctx, &TeamProjectAccessListOptions{
+		tpal, err := client.TeamProjectAccess.List(ctx, TeamProjectAccessListOptions{
 			ProjectID: badIdentifier,
 		})
 		assert.Nil(t, tpal)
@@ -145,7 +139,7 @@ func TestTeamProjectAccessesAdd(t *testing.T) {
 
 	t.Run("with valid options", func(t *testing.T) {
 		options := TeamProjectAccessAddOptions{
-			Access:  ProjectAccess(TeamProjectAccessAdmin),
+			Access:  *ProjectAccess(TeamProjectAccessAdmin),
 			Team:    tmTest,
 			Project: pTest,
 		}
@@ -169,7 +163,7 @@ func TestTeamProjectAccessesAdd(t *testing.T) {
 			refreshed,
 		} {
 			assert.NotEmpty(t, item.ID)
-			assert.Equal(t, *options.Access, item.Access)
+			assert.Equal(t, options.Access, item.Access)
 		}
 	})
 
@@ -178,7 +172,7 @@ func TestTeamProjectAccessesAdd(t *testing.T) {
 		defer tpaTestCleanup()
 
 		options := TeamProjectAccessAddOptions{
-			Access:  ProjectAccess(TeamProjectAccessAdmin),
+			Access:  *ProjectAccess(TeamProjectAccessAdmin),
 			Team:    tmTest,
 			Project: pTest,
 		}
@@ -193,12 +187,12 @@ func TestTeamProjectAccessesAdd(t *testing.T) {
 			Project: pTest,
 		})
 		assert.Nil(t, tpa)
-		assert.Equal(t, err, ErrRequiredAccess)
+		assert.Equal(t, err, ErrInvalidTeamProjectAccessType)
 	})
 
 	t.Run("when options is missing team", func(t *testing.T) {
 		tpa, err := client.TeamProjectAccess.Add(ctx, TeamProjectAccessAddOptions{
-			Access:  ProjectAccess(TeamProjectAccessAdmin),
+			Access:  *ProjectAccess(TeamProjectAccessAdmin),
 			Project: pTest,
 		})
 		assert.Nil(t, tpa)
@@ -207,11 +201,21 @@ func TestTeamProjectAccessesAdd(t *testing.T) {
 
 	t.Run("when options is missing project", func(t *testing.T) {
 		tpa, err := client.TeamProjectAccess.Add(ctx, TeamProjectAccessAddOptions{
-			Access: ProjectAccess(TeamProjectAccessAdmin),
+			Access: *ProjectAccess(TeamProjectAccessAdmin),
 			Team:   tmTest,
 		})
 		assert.Nil(t, tpa)
 		assert.Equal(t, err, ErrRequiredProject)
+	})
+
+	t.Run("when invalid access is provided in options", func(t *testing.T) {
+		tpa, err := client.TeamProjectAccess.Add(ctx, TeamProjectAccessAddOptions{
+			Access:  badIdentifier,
+			Team:    tmTest,
+			Project: pTest,
+		})
+		assert.Nil(t, tpa)
+		assert.Equal(t, err, ErrInvalidTeamProjectAccessType)
 	})
 }
 

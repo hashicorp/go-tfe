@@ -154,6 +154,8 @@ var (
 
 	ErrInvalidTeamProjectAccessID = errors.New("invalid value for team project access ID")
 
+	ErrInvalidTeamProjectAccessType = errors.New("invalid type for team project access")
+
 	ErrInvalidTeamID = errors.New("invalid value for team ID")
 
 	ErrInvalidUsernames = errors.New("invalid value for usernames")
