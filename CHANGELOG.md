@@ -1,3 +1,28 @@
+# v1.16.0
+
+## Bug Fixes
+
+* Project names were being incorrectly validated as ID's @brandonc [#608](https://github.com/hashicorp/go-tfe/pull/608)
+
+## Enhancements
+* Adds `List()` method to `GPGKeys` interface by @sebasslash [#602](https://github.com/hashicorp/go-tfe/pull/602)
+* Adds `ProviderBinaryUploaded` field to `RegistryPlatforms` struct by @sebasslash [#602](https://github.com/hashicorp/go-tfe/pull/602)
+
+* Adds agent-count to `AgentPools` endpoint. @evilensky [#611](https://github.com/hashicorp/go-tfe/pull/611)
+
+# v1.15.0
+
+## Enhancements
+
+* Add Beta `Projects` endpoint. The API is in not yet available to all users @hs26gill [#564](https://github.com/hashicorp/go-tfe/pull/564)
+
+# v1.14.0
+
+## Enhancements
+
+* Adds Beta parameter `Overridable` for OPA `policy set` update API (`PolicySetUpdateOptions`) @mrinalirao [#594](https://github.com/hashicorp/go-tfe/pull/594)
+* Adds new task stage status values representing `canceled`, `errored`, `unreachable` @mrinalirao [#594](https://github.com/hashicorp/go-tfe/pull/594)
+
 # v1.13.0
 
 ## Bug Fixes

@@ -9,7 +9,7 @@ import (
 )
 
 func TestAdminSettings_SMTP_Read(t *testing.T) {
-	skipIfCloud(t)
+	skipUnlessEnterprise(t)
 
 	client := testClient(t)
 	ctx := context.Background()
@@ -27,7 +27,7 @@ func TestAdminSettings_SMTP_Read(t *testing.T) {
 }
 
 func TestAdminSettings_SMTP_Update(t *testing.T) {
-	skipIfCloud(t)
+	skipUnlessEnterprise(t)
 
 	client := testClient(t)
 	ctx := context.Background()

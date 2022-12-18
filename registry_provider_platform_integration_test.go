@@ -2,7 +2,6 @@ package tfe
 
 import (
 	"context"
-	"fmt"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -31,8 +30,8 @@ func TestRegistryProviderPlatformsCreate(t *testing.T) {
 
 	t.Run("with valid options", func(t *testing.T) {
 		options := RegistryProviderPlatformCreateOptions{
-			OS:       "foo",
-			Arch:     "scrimbles",
+			OS:       "linux",
+			Arch:     "amd64",
 			Shasum:   "shasum",
 			Filename: "filename",
 		}
@@ -44,6 +43,7 @@ func TestRegistryProviderPlatformsCreate(t *testing.T) {
 		assert.Equal(t, options.Arch, rpp.Arch)
 		assert.Equal(t, options.Shasum, rpp.Shasum)
 		assert.Equal(t, options.Filename, rpp.Filename)
+		assert.False(t, rpp.ProviderBinaryUploaded)
 
 		t.Run("relationships are properly decoded", func(t *testing.T) {
 			assert.Equal(t, version.ID, rpp.RegistryProviderVersion.ID)
@@ -61,14 +61,14 @@ func TestRegistryProviderPlatformsCreate(t *testing.T) {
 		t.Run("without an OS", func(t *testing.T) {
 			options := RegistryProviderPlatformCreateOptions{
 				OS:       "",
-				Arch:     "scrimbles",
+				Arch:     "amd64",
 				Shasum:   "shasum",
 				Filename: "filename",
 			}
 
-			sad_rpp, err := client.RegistryProviderPlatforms.Create(ctx, versionID, options)
+			sadRpp, err := client.RegistryProviderPlatforms.Create(ctx, versionID, options)
 
-			assert.Nil(t, sad_rpp)
+			assert.Nil(t, sadRpp)
 			assert.EqualError(t, err, ErrRequiredOS.Error())
 		})
 
@@ -80,44 +80,44 @@ func TestRegistryProviderPlatformsCreate(t *testing.T) {
 				Filename: "filename",
 			}
 
-			sad_rpp, err := client.RegistryProviderPlatforms.Create(ctx, versionID, options)
+			sadRpp, err := client.RegistryProviderPlatforms.Create(ctx, versionID, options)
 
-			assert.Nil(t, sad_rpp)
+			assert.Nil(t, sadRpp)
 			assert.EqualError(t, err, ErrRequiredArch.Error())
 		})
 
 		t.Run("without a shasum", func(t *testing.T) {
 			options := RegistryProviderPlatformCreateOptions{
-				OS:       "os",
-				Arch:     "scrimbles",
+				OS:       "linux",
+				Arch:     "amd64",
 				Shasum:   "",
 				Filename: "filename",
 			}
 
-			sad_rpp, err := client.RegistryProviderPlatforms.Create(ctx, versionID, options)
+			sadRpp, err := client.RegistryProviderPlatforms.Create(ctx, versionID, options)
 
-			assert.Nil(t, sad_rpp)
+			assert.Nil(t, sadRpp)
 			assert.EqualError(t, err, ErrRequiredShasum.Error())
 		})
 
 		t.Run("without a filename", func(t *testing.T) {
 			options := RegistryProviderPlatformCreateOptions{
-				OS:       "os",
-				Arch:     "scrimbles",
+				OS:       "linux",
+				Arch:     "amd64",
 				Shasum:   "shasum",
 				Filename: "",
 			}
 
-			sad_rpp, err := client.RegistryProviderPlatforms.Create(ctx, versionID, options)
+			sadRpp, err := client.RegistryProviderPlatforms.Create(ctx, versionID, options)
 
-			assert.Nil(t, sad_rpp)
+			assert.Nil(t, sadRpp)
 			assert.EqualError(t, err, ErrRequiredFilename.Error())
 		})
 
 		t.Run("with a public provider", func(t *testing.T) {
 			options := RegistryProviderPlatformCreateOptions{
-				OS:       "os",
-				Arch:     "scrimbles",
+				OS:       "linux",
+				Arch:     "amd64",
 				Shasum:   "shasum",
 				Filename: "filename",
 			}
@@ -139,8 +139,8 @@ func TestRegistryProviderPlatformsCreate(t *testing.T) {
 
 		t.Run("without a valid registry provider version id", func(t *testing.T) {
 			options := RegistryProviderPlatformCreateOptions{
-				OS:       "os",
-				Arch:     "scrimbles",
+				OS:       "linux",
+				Arch:     "amd64",
 				Shasum:   "shasum",
 				Filename: "filename",
 			}
@@ -183,7 +183,7 @@ func TestRegistryProviderPlatformsDelete(t *testing.T) {
 	}
 
 	t.Run("with a valid version", func(t *testing.T) {
-		platform, _ := createRegistryProviderPlatform(t, client, provider, version)
+		platform, _ := createRegistryProviderPlatform(t, client, provider, version, "", "")
 
 		platformID := RegistryProviderPlatformID{
 			RegistryProviderVersionID: versionID,
@@ -195,11 +195,11 @@ func TestRegistryProviderPlatformsDelete(t *testing.T) {
 		require.NoError(t, err)
 	})
 
-	t.Run("with a non-existant version", func(t *testing.T) {
+	t.Run("with a non-existent version", func(t *testing.T) {
 		platformID := RegistryProviderPlatformID{
 			RegistryProviderVersionID: versionID,
-			OS:                        "nope",
-			Arch:                      "no",
+			OS:                        "linux",
+			Arch:                      "amd64",
 		}
 
 		err := client.RegistryProviderPlatforms.Delete(ctx, platformID)
@@ -229,7 +229,7 @@ func TestRegistryProviderPlatformsRead(t *testing.T) {
 		Version:            version.Version,
 	}
 
-	platform, platformCleanup := createRegistryProviderPlatform(t, client, provider, version)
+	platform, platformCleanup := createRegistryProviderPlatform(t, client, provider, version, "", "")
 	defer platformCleanup()
 
 	t.Run("with valid platform", func(t *testing.T) {
@@ -246,6 +246,7 @@ func TestRegistryProviderPlatformsRead(t *testing.T) {
 		assert.Equal(t, platformID.Arch, readPlatform.Arch)
 		assert.Equal(t, platform.Filename, readPlatform.Filename)
 		assert.Equal(t, platform.Shasum, readPlatform.Shasum)
+		assert.Equal(t, platform.ProviderBinaryUploaded, readPlatform.ProviderBinaryUploaded)
 
 		t.Run("relationships are properly decoded", func(t *testing.T) {
 			assert.Equal(t, platform.RegistryProviderVersion.ID, readPlatform.RegistryProviderVersion.ID)
@@ -262,7 +263,7 @@ func TestRegistryProviderPlatformsRead(t *testing.T) {
 		})
 	})
 
-	t.Run("with non-existant os", func(t *testing.T) {
+	t.Run("with non-existent os", func(t *testing.T) {
 		platformID := RegistryProviderPlatformID{
 			RegistryProviderVersionID: versionID,
 			OS:                        "DoesNotExist",
@@ -273,7 +274,7 @@ func TestRegistryProviderPlatformsRead(t *testing.T) {
 		assert.Error(t, err)
 	})
 
-	t.Run("with non-existant arch", func(t *testing.T) {
+	t.Run("with non-existent arch", func(t *testing.T) {
 		platformID := RegistryProviderPlatformID{
 			RegistryProviderVersionID: versionID,
 			OS:                        platform.OS,
@@ -296,10 +297,12 @@ func TestRegistryProviderPlatformsList(t *testing.T) {
 		version, versionCleanup := createRegistryProviderVersion(t, client, provider)
 		defer versionCleanup()
 
-		numToCreate := 10
+		osl := []string{"linux", "darwin", "windows"}
+		archl := []string{"amd64", "arm64", "amd64"}
+
 		platforms := make([]*RegistryProviderPlatform, 0)
-		for i := 0; i < numToCreate; i++ {
-			platform, _ := createRegistryProviderPlatform(t, client, provider, version)
+		for i, os := range osl {
+			platform, _ := createRegistryProviderPlatform(t, client, provider, version, os, archl[i])
 			platforms = append(platforms, platform)
 		}
 		numPlatforms := len(platforms)
@@ -315,16 +318,11 @@ func TestRegistryProviderPlatformsList(t *testing.T) {
 			Version:            version.Version,
 		}
 
-		t.Run("returns all platforms", func(t *testing.T) {
-			returnedPlatforms, err := client.RegistryProviderPlatforms.List(ctx, versionID, &RegistryProviderPlatformListOptions{
-				ListOptions: ListOptions{
-					PageNumber: 0,
-					PageSize:   numPlatforms,
-				},
-			})
+		t.Run("with no list options", func(t *testing.T) {
+			returnedPlatforms, err := client.RegistryProviderPlatforms.List(ctx, versionID, nil)
 			require.NoError(t, err)
-			assert.NotEmpty(t, returnedPlatforms.Items)
-			assert.Equal(t, numPlatforms, returnedPlatforms.TotalCount)
+
+			require.Len(t, returnedPlatforms.Items, numPlatforms)
 			assert.Equal(t, 1, returnedPlatforms.TotalPages)
 			for _, rp := range returnedPlatforms.Items {
 				foundPlatform := false
@@ -338,36 +336,18 @@ func TestRegistryProviderPlatformsList(t *testing.T) {
 			}
 		})
 
-		t.Run("returns pages of platforms", func(t *testing.T) {
-			numPages := 2
-			pageSize := numPlatforms / numPages
+		t.Run("with list options", func(t *testing.T) {
+			returnedPlatforms, err := client.RegistryProviderPlatforms.List(ctx, versionID, &RegistryProviderPlatformListOptions{
+				ListOptions: ListOptions{
+					PageNumber: 999,
+					PageSize:   100,
+				},
+			})
+			require.NoError(t, err)
 
-			for page := 0; page < numPages; page++ {
-				testName := fmt.Sprintf("returns page %d of platforms", page)
-				t.Run(testName, func(t *testing.T) {
-					returnedPlatforms, err := client.RegistryProviderPlatforms.List(ctx, versionID, &RegistryProviderPlatformListOptions{
-						ListOptions: ListOptions{
-							PageNumber: page,
-							PageSize:   pageSize,
-						},
-					})
-					require.NoError(t, err)
-					assert.NotEmpty(t, returnedPlatforms.Items)
-					assert.Equal(t, numPlatforms, returnedPlatforms.TotalCount)
-					assert.Equal(t, numPages, returnedPlatforms.TotalPages)
-					assert.Equal(t, pageSize, len(returnedPlatforms.Items))
-					for _, rp := range returnedPlatforms.Items {
-						foundPlatform := false
-						for _, p := range platforms {
-							if rp.ID == p.ID {
-								foundPlatform = true
-								break
-							}
-						}
-						assert.True(t, foundPlatform, "Expected to find platform %s but did not:\nexpected:\n%v\nreturned\n%v", rp.ID, platforms, returnedPlatforms)
-					}
-				})
-			}
+			require.Len(t, returnedPlatforms.Items, 0)
+			assert.Equal(t, 999, returnedPlatforms.CurrentPage)
+			assert.Equal(t, numPlatforms, returnedPlatforms.TotalCount)
 		})
 	})
 

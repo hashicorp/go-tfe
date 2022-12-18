@@ -62,3 +62,4 @@ mockgen -source=workspace.go -destination=mocks/workspace_mocks.go -package=mock
 mockgen -source=workspace_run_task.go -destination=mocks/workspace_run_tasks_mocks.go -package=mocks
 mockgen -source=agent.go -destination=mocks/agents.go -package=mocks
 mockgen -source=policy_evaluation.go -destination=mocks/policy_evaluation.go -package=mocks
+mockgen -source=project.go -destination=mocks/project_mocks.go -package=mocks

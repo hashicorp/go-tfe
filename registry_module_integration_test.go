@@ -142,7 +142,7 @@ func TestRegistryModulesCreate(t *testing.T) {
 		})
 
 		t.Run("with no-code attribute", func(t *testing.T) {
-			skipIfBeta(t)
+			skipUnlessBeta(t)
 			options := RegistryModuleCreateOptions{
 				Name:         String("iam"),
 				Provider:     String("aws"),
@@ -248,7 +248,7 @@ func TestRegistryModulesCreate(t *testing.T) {
 }
 
 func TestRegistryModuleUpdate(t *testing.T) {
-	skipIfBeta(t)
+	skipUnlessBeta(t)
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -294,7 +294,6 @@ func TestRegistryModuleUpdate(t *testing.T) {
 		require.NoError(t, err)
 		assert.False(t, rm.NoCode)
 	})
-
 }
 
 func TestRegistryModulesCreateVersion(t *testing.T) {
@@ -441,7 +440,6 @@ func TestRegistryModulesCreateVersion(t *testing.T) {
 		assert.Nil(t, rmv)
 		assert.EqualError(t, err, ErrInvalidOrg.Error())
 	})
-
 }
 
 func TestRegistryModulesCreateWithVCSConnection(t *testing.T) {
@@ -547,7 +545,6 @@ func TestRegistryModulesCreateWithVCSConnection(t *testing.T) {
 		assert.Nil(t, rm)
 		assert.Equal(t, err, ErrRequiredVCSRepo)
 	})
-
 }
 
 func TestRegistryModulesRead(t *testing.T) {

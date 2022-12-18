@@ -9,7 +9,7 @@ import (
 )
 
 func TestAdminSettings_CostEstimation_Read(t *testing.T) {
-	skipIfCloud(t)
+	skipUnlessEnterprise(t)
 
 	client := testClient(t)
 	ctx := context.Background()
@@ -21,16 +21,16 @@ func TestAdminSettings_CostEstimation_Read(t *testing.T) {
 }
 
 func TestAdminSettings_CostEstimation_Update(t *testing.T) {
-	skipIfCloud(t)
+	skipUnlessEnterprise(t)
 
 	client := testClient(t)
 	ctx := context.Background()
 
-	costEstimationSettings, err := client.Admin.Settings.CostEstimation.Read(ctx)
+	_, err := client.Admin.Settings.CostEstimation.Read(ctx)
 	require.NoError(t, err)
 
 	costEnabled := false
-	costEstimationSettings, err = client.Admin.Settings.CostEstimation.Update(ctx, AdminCostEstimationSettingOptions{
+	costEstimationSettings, err := client.Admin.Settings.CostEstimation.Update(ctx, AdminCostEstimationSettingOptions{
 		Enabled: Bool(costEnabled),
 	})
 	require.NoError(t, err)

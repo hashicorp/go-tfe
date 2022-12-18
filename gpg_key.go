@@ -15,6 +15,9 @@ var _ GPGKeys = (*gpgKeys)(nil)
 //
 // TFE API Docs: https://www.terraform.io/cloud-docs/api-docs/private-registry/gpg-keys
 type GPGKeys interface {
+	// Lists GPG keys in a private registry.
+	ListPrivate(ctx context.Context, options GPGKeyListOptions) (*GPGKeyList, error)
+
 	// Uploads a GPG Key to a private registry scoped with a namespace.
 	Create(ctx context.Context, registryName RegistryName, options GPGKeyCreateOptions) (*GPGKey, error)
 
@@ -31,6 +34,12 @@ type GPGKeys interface {
 // gpgKeys implements GPGKeys
 type gpgKeys struct {
 	client *Client
+}
+
+// GPGKeyList represents a list of GPG keys.
+type GPGKeyList struct {
+	*Pagination
+	Items []*GPGKey
 }
 
 // GPGKey represents a signed GPG key for a TFC/E private provider.
@@ -53,6 +62,14 @@ type GPGKeyID struct {
 	KeyID        string
 }
 
+// GPGKeyListOptions represents all the available options to list keys in a registry.
+type GPGKeyListOptions struct {
+	ListOptions
+
+	// Required: A list of one or more namespaces. Must be authorized TFC/E organization names.
+	Namespaces []string `url:"filter[namespace]"`
+}
+
 // GPGKeyCreateOptions represents all the available options used to create a GPG key.
 type GPGKeyCreateOptions struct {
 	Type       string `jsonapi:"primary,gpg-keys"`
@@ -64,6 +81,27 @@ type GPGKeyCreateOptions struct {
 type GPGKeyUpdateOptions struct {
 	Type      string `jsonapi:"primary,gpg-keys"`
 	Namespace string `jsonapi:"attr,namespace"`
+}
+
+// ListPrivate lists the private registry GPG keys for specified namespaces.
+func (s *gpgKeys) ListPrivate(ctx context.Context, options GPGKeyListOptions) (*GPGKeyList, error) {
+	if err := options.valid(); err != nil {
+		return nil, err
+	}
+
+	u := fmt.Sprintf("/api/registry/%s/v2/gpg-keys", url.QueryEscape(string(PrivateRegistry)))
+	req, err := s.client.NewRequest("GET", u, &options)
+	if err != nil {
+		return nil, err
+	}
+
+	keyl := &GPGKeyList{}
+	err = req.Do(ctx, keyl)
+	if err != nil {
+		return nil, err
+	}
+
+	return keyl, nil
 }
 
 func (s *gpgKeys) Create(ctx context.Context, registryName RegistryName, options GPGKeyCreateOptions) (*GPGKey, error) {
@@ -174,6 +212,20 @@ func (o GPGKeyID) valid() error {
 
 	if !validString(&o.KeyID) {
 		return ErrInvalidKeyID
+	}
+
+	return nil
+}
+
+func (o *GPGKeyListOptions) valid() error {
+	if len(o.Namespaces) == 0 {
+		return ErrInvalidNamespace
+	}
+
+	for _, namespace := range o.Namespaces {
+		if namespace == "" || !validString(&namespace) {
+			return ErrInvalidNamespace
+		}
 	}
 
 	return nil

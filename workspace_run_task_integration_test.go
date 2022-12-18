@@ -31,7 +31,8 @@ func TestWorkspaceRunTasksCreate(t *testing.T) {
 
 		require.NoError(t, err)
 		defer func() {
-			client.WorkspaceRunTasks.Delete(ctx, wkspaceTest.ID, wr.ID)
+			err = client.WorkspaceRunTasks.Delete(ctx, wkspaceTest.ID, wr.ID)
+			require.NoError(t, err)
 		}()
 
 		assert.NotEmpty(t, wr.ID)
@@ -45,7 +46,7 @@ func TestWorkspaceRunTasksCreate(t *testing.T) {
 
 func TestWorkspaceRunTasksCreateBeta(t *testing.T) {
 	// Once Pre-Plan Tasks are generally available, this can replace the above TestWorkspaceRunTasksCreate
-	skipIfBeta(t)
+	skipUnlessBeta(t)
 	skipIfFreeOnly(t)
 
 	client := testClient(t)
@@ -70,7 +71,8 @@ func TestWorkspaceRunTasksCreateBeta(t *testing.T) {
 
 		require.NoError(t, err)
 		defer func() {
-			client.WorkspaceRunTasks.Delete(ctx, wkspaceTest.ID, wr.ID)
+			err = client.WorkspaceRunTasks.Delete(ctx, wkspaceTest.ID, wr.ID)
+			require.NoError(t, err)
 		}()
 
 		assert.NotEmpty(t, wr.ID)
@@ -186,7 +188,7 @@ func TestWorkspaceRunTasksUpdate(t *testing.T) {
 
 func TestWorkspaceRunTasksUpdateBeta(t *testing.T) {
 	// Once Pre-Plan Tasks are generally available, this can replace the above TestWorkspaceRunTasksUpdate
-	skipIfBeta(t)
+	skipUnlessBeta(t)
 	skipIfFreeOnly(t)
 
 	client := testClient(t)

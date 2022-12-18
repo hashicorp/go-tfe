@@ -166,14 +166,15 @@ func TestWorkspacesList(t *testing.T) {
 
 		foundWTest1 := false
 		for _, ws := range wl.Items {
-			if ws.ID == wTest1.ID {
-				foundWTest1 = true
-				require.NotNil(t, wl.Items[0].CurrentStateVersion)
-				assert.NotEmpty(t, wl.Items[0].CurrentStateVersion.DownloadURL)
-
-				require.NotNil(t, wl.Items[0].CurrentRun)
-				assert.NotEmpty(t, wl.Items[0].CurrentRun.Message)
+			if ws.ID != wTest1.ID {
+				continue
 			}
+			foundWTest1 = true
+			require.NotNil(t, wl.Items[0].CurrentStateVersion)
+			assert.NotEmpty(t, wl.Items[0].CurrentStateVersion.DownloadURL)
+
+			require.NotNil(t, wl.Items[0].CurrentRun)
+			assert.NotEmpty(t, wl.Items[0].CurrentRun.Message)
 		}
 
 		assert.True(t, foundWTest1)
@@ -390,6 +391,53 @@ func TestWorkspacesCreate(t *testing.T) {
 
 	orgTest, orgTestCleanup := createOrganization(t, client)
 	t.Cleanup(orgTestCleanup)
+
+	t.Run("with valid project option", func(t *testing.T) {
+		skipUnlessBeta(t)
+
+		options := WorkspaceCreateOptions{
+			Name:                       String(fmt.Sprintf("foo-%s", randomString(t))),
+			AllowDestroyPlan:           Bool(false),
+			AutoApply:                  Bool(true),
+			Description:                String("qux"),
+			AssessmentsEnabled:         Bool(false),
+			FileTriggersEnabled:        Bool(true),
+			Operations:                 Bool(true),
+			QueueAllRuns:               Bool(true),
+			SpeculativeEnabled:         Bool(true),
+			SourceName:                 String("my-app"),
+			SourceURL:                  String("http://my-app-hostname.io"),
+			StructuredRunOutputEnabled: Bool(true),
+			TerraformVersion:           String("0.11.0"),
+			TriggerPrefixes:            []string{"/modules", "/shared"},
+			WorkingDirectory:           String("bar/"),
+			Project:                    orgTest.DefaultProject,
+			Tags: []*Tag{
+				{
+					Name: "tag1",
+				},
+				{
+					Name: "tag2",
+				},
+			},
+		}
+
+		w, err := client.Workspaces.Create(ctx, orgTest.Name, options)
+		require.NoError(t, err)
+
+		// Get a refreshed view from the API.
+		refreshed, err := client.Workspaces.Read(ctx, orgTest.Name, *options.Name)
+		require.NoError(t, err)
+
+		for _, item := range []*Workspace{
+			w,
+			refreshed,
+		} {
+			assert.NotEmpty(t, item.ID)
+			assert.Equal(t, *options.Name, item.Name)
+			assert.Equal(t, options.Project.ID, item.Project.ID)
+		}
+	})
 
 	t.Run("with valid options", func(t *testing.T) {
 		options := WorkspaceCreateOptions{
@@ -813,6 +861,39 @@ func TestWorkspacesUpdate(t *testing.T) {
 		assert.NotEqual(t, wTest.AssessmentsEnabled, wAfter.AssessmentsEnabled)
 		assert.NotEqual(t, wTest.TerraformVersion, wAfter.TerraformVersion)
 		assert.Equal(t, wTest.WorkingDirectory, wAfter.WorkingDirectory)
+	})
+
+	t.Run("when updating project", func(t *testing.T) {
+		skipUnlessBeta(t)
+
+		kBefore, kTestCleanup := createProject(t, client, orgTest)
+		defer kTestCleanup()
+
+		wBefore, wBeforeCleanup := createWorkspaceWithOptions(t, client, orgTest, WorkspaceCreateOptions{
+			Name:    String(randomString(t)),
+			Project: kBefore,
+		})
+		defer wBeforeCleanup()
+
+		options := WorkspaceUpdateOptions{
+			Name:               String(wBefore.Name),
+			AllowDestroyPlan:   Bool(false),
+			AutoApply:          Bool(true),
+			Operations:         Bool(true),
+			QueueAllRuns:       Bool(true),
+			AssessmentsEnabled: Bool(true),
+			TerraformVersion:   String("0.15.4"),
+			Project:            orgTest.DefaultProject,
+		}
+
+		wAfter, err := client.Workspaces.Update(ctx, orgTest.Name, wBefore.Name, options)
+		require.NoError(t, err)
+
+		require.NotNil(t, wAfter.Project)
+		require.NotNil(t, orgTest.DefaultProject)
+
+		assert.Equal(t, wBefore.Name, wAfter.Name)
+		assert.Equal(t, wAfter.Project.ID, orgTest.DefaultProject.ID)
 	})
 
 	t.Run("with valid options", func(t *testing.T) {
@@ -1787,7 +1868,6 @@ func TestWorkspaces_UpdateRemoteStateConsumers(t *testing.T) {
 		require.NoError(t, err)
 		assert.Equal(t, 1, len(rsc.Items))
 		assert.Contains(t, rsc.Items, wTestConsumer2)
-
 	})
 
 	t.Run("with invalid options", func(t *testing.T) {
@@ -2040,7 +2120,8 @@ func TestWorkspace_Unmarshal(t *testing.T) {
 	require.NoError(t, err)
 
 	iso8601TimeFormat := "2006-01-02T15:04:05Z"
-	parsedTime, _ := time.Parse(iso8601TimeFormat, "2020-07-15T23:38:43.821Z")
+	parsedTime, err := time.Parse(iso8601TimeFormat, "2020-07-15T23:38:43.821Z")
+	assert.NoError(t, err)
 
 	assert.Equal(t, ws.ID, "ws-1234")
 	assert.Equal(t, ws.Name, "my-workspace")
@@ -2088,7 +2169,7 @@ func TestWorkspaceCreateOptions_Marshal(t *testing.T) {
 
 func TestWorkspacesRunTasksPermission(t *testing.T) {
 	skipIfFreeOnly(t)
-	skipIfBeta(t)
+	skipUnlessBeta(t)
 
 	client := testClient(t)
 	ctx := context.Background()
@@ -2104,5 +2185,41 @@ func TestWorkspacesRunTasksPermission(t *testing.T) {
 		require.NoError(t, err)
 		assert.Equal(t, wTest, w)
 		assert.True(t, w.Permissions.CanManageRunTasks)
+	})
+}
+
+func TestWorkspacesProjects(t *testing.T) {
+	skipUnlessBeta(t)
+	client := testClient(t)
+	ctx := context.Background()
+
+	orgTest, orgTestCleanup := createOrganization(t, client)
+	defer orgTestCleanup()
+
+	wTest, wTestCleanup := createWorkspace(t, client, orgTest)
+	defer wTestCleanup()
+
+	t.Run("created workspace includes default organization project", func(t *testing.T) {
+		require.NotNil(t, orgTest.DefaultProject)
+		require.NotNil(t, wTest.Project)
+		assert.Equal(t, wTest.Project.ID, orgTest.DefaultProject.ID)
+	})
+
+	t.Run("created workspace includes project ID", func(t *testing.T) {
+		assert.NotNil(t, wTest.Project.ID)
+	})
+
+	t.Run("read workspace includes project ID", func(t *testing.T) {
+		workspace, err := client.Workspaces.ReadByID(ctx, wTest.ID)
+		assert.NoError(t, err)
+		assert.NotNil(t, workspace.Project.ID)
+	})
+
+	t.Run("list workspace includes project ID", func(t *testing.T) {
+		workspaces, err := client.Workspaces.List(ctx, orgTest.Name, &WorkspaceListOptions{})
+		assert.NoError(t, err)
+		for idx, item := range workspaces.Items {
+			assert.NotNil(t, item.Project.ID, "No project ID set on workspace %s at idx %d", item.ID, idx)
+		}
 	})
 }

@@ -9,7 +9,7 @@ import (
 )
 
 func TestAdminSettings_SAML_Read(t *testing.T) {
-	skipIfCloud(t)
+	skipUnlessEnterprise(t)
 
 	client := testClient(t)
 	ctx := context.Background()
@@ -37,18 +37,18 @@ func TestAdminSettings_SAML_Read(t *testing.T) {
 }
 
 func TestAdminSettings_SAML_Update(t *testing.T) {
-	skipIfCloud(t)
+	skipUnlessEnterprise(t)
 
 	client := testClient(t)
 	ctx := context.Background()
 
-	samlSettings, err := client.Admin.Settings.SAML.Read(ctx)
+	_, err := client.Admin.Settings.SAML.Read(ctx)
 	require.NoError(t, err)
 
 	enabled := false
 	debug := false
 
-	samlSettings, err = client.Admin.Settings.SAML.Update(ctx, AdminSAMLSettingsUpdateOptions{
+	samlSettings, err := client.Admin.Settings.SAML.Update(ctx, AdminSAMLSettingsUpdateOptions{
 		Enabled: Bool(enabled),
 		Debug:   Bool(debug),
 	})
@@ -58,7 +58,7 @@ func TestAdminSettings_SAML_Update(t *testing.T) {
 }
 
 func TestAdminSettings_SAML_RevokeIdpCert(t *testing.T) {
-	skipIfCloud(t)
+	skipUnlessEnterprise(t)
 
 	client := testClient(t)
 	ctx := context.Background()

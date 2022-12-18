@@ -114,16 +114,16 @@ func fetchTestAccountDetails(t *testing.T, client *Client) *TestAccountDetails {
 	return _testAccountDetails
 }
 
-func downloadFile(filepath string, url string) error {
+func downloadFile(filePath, fileURL string) error {
 	// Get the data
-	resp, err := http.Get(url)
+	resp, err := http.Get(fileURL)
 	if err != nil {
 		return err
 	}
 	defer resp.Body.Close()
 
 	// Create the file
-	out, err := os.Create(filepath)
+	out, err := os.Create(filePath)
 	if err != nil {
 		return err
 	}
@@ -145,11 +145,13 @@ func unzip(src, dest string) error {
 		}
 	}()
 
-	os.MkdirAll(dest, 0755)
+	if err := os.MkdirAll(dest, 0o755); err != nil {
+		return err
+	}
 
 	// Closure to address file descriptors issue with all the deferred .Close() methods
-	extractAndWriteFile := func(f *zip.File) error {
-		rc, err := f.Open()
+	extractAndWriteFile := func(zf *zip.File) error {
+		rc, err := zf.Open()
 		if err != nil {
 			return err
 		}
@@ -159,32 +161,34 @@ func unzip(src, dest string) error {
 			}
 		}()
 
-		path := filepath.Join(dest, f.Name)
+		path := filepath.Join(dest, zf.Name)
 
 		// Check for ZipSlip (Directory traversal)
 		if !strings.HasPrefix(path, filepath.Clean(dest)+string(os.PathSeparator)) {
 			return fmt.Errorf("illegal file path: %s", path)
 		}
 
-		if f.FileInfo().IsDir() {
-			os.MkdirAll(path, f.Mode())
-		} else {
-			os.MkdirAll(filepath.Dir(path), f.Mode())
-			f, err := os.OpenFile(path, os.O_WRONLY|os.O_CREATE|os.O_TRUNC, f.Mode())
-			if err != nil {
-				return err
-			}
-			defer func() {
-				if err := f.Close(); err != nil {
-					panic(err)
-				}
-			}()
-
-			_, err = io.Copy(f, rc)
-			if err != nil {
-				return err
-			}
+		if zf.FileInfo().IsDir() {
+			return os.MkdirAll(path, zf.Mode())
 		}
+		if err := os.MkdirAll(filepath.Dir(path), zf.Mode()); err != nil {
+			return err
+		}
+		f, err := os.OpenFile(path, os.O_WRONLY|os.O_CREATE|os.O_TRUNC, zf.Mode())
+		if err != nil {
+			return err
+		}
+		defer func() {
+			if err := f.Close(); err != nil {
+				panic(err)
+			}
+		}()
+
+		_, err = io.Copy(f, rc)
+		if err != nil {
+			return err
+		}
+
 		return nil
 	}
 
@@ -226,6 +230,7 @@ func createAgent(t *testing.T, client *Client, org *Organization) (*Agent, *Agen
 	var orgCleanup func()
 	var agentPoolTokenCleanup func()
 	var agent *Agent
+	var ok bool
 
 	if org == nil {
 		org, orgCleanup = createOrganization(t, client)
@@ -258,9 +263,11 @@ func createAgent(t *testing.T, client *Client, org *Organization) (*Agent, *Agen
 
 	cmd := exec.Command(agentPath)
 	cmd.Env = os.Environ()
-	cmd.Env = append(cmd.Env, "TFC_AGENT_TOKEN="+agentPoolToken.Token)
-	cmd.Env = append(cmd.Env, "TFC_AGENT_NAME="+"test-agent")
-	cmd.Env = append(cmd.Env, "TFC_ADDRESS="+DefaultConfig().Address)
+	cmd.Env = append(cmd.Env,
+		"TFC_AGENT_TOKEN="+agentPoolToken.Token,
+		"TFC_AGENT_NAME="+"test-agent",
+		"TFC_ADDRESS="+DefaultConfig().Address,
+	)
 
 	go func() {
 		_, err := cmd.CombinedOutput()
@@ -270,11 +277,12 @@ func createAgent(t *testing.T, client *Client, org *Organization) (*Agent, *Agen
 	}()
 
 	t.Cleanup(func() {
-		cmd.Process.Kill()
+		if err := cmd.Process.Kill(); err != nil {
+			t.Error(err)
+		}
 	})
 
 	i, err := retry(func() (interface{}, error) {
-
 		agentList, err := client.Agents.List(ctx, agentPool.ID, nil)
 		if err != nil {
 			return nil, err
@@ -290,7 +298,10 @@ func createAgent(t *testing.T, client *Client, org *Organization) (*Agent, *Agen
 		t.Fatalf("Could not return an agent %s", err)
 	}
 
-	agent = i.(*Agent)
+	agent, ok = i.(*Agent)
+	if !ok {
+		t.Fatalf("Expected type to be *Agent but got %T", agent)
+	}
 
 	return agent, agentPool, cleanup
 }
@@ -926,9 +937,8 @@ func createPolicyCheckedRun(t *testing.T, client *Client, w *Workspace) (*Run, f
 func createPlannedRun(t *testing.T, client *Client, w *Workspace) (*Run, func()) {
 	if paidFeaturesDisabled() {
 		return createRunWaitForStatus(t, client, w, RunPlanned)
-	} else {
-		return createRunWaitForStatus(t, client, w, RunCostEstimated)
 	}
+	return createRunWaitForStatus(t, client, w, RunCostEstimated)
 }
 
 func createCostEstimatedRun(t *testing.T, client *Client, w *Workspace) (*Run, func()) {
@@ -1374,7 +1384,7 @@ func createRegistryProvider(t *testing.T, client *Client, org *Organization, reg
 	}
 }
 
-func createRegistryProviderPlatform(t *testing.T, client *Client, provider *RegistryProvider, version *RegistryProviderVersion) (*RegistryProviderPlatform, func()) {
+func createRegistryProviderPlatform(t *testing.T, client *Client, provider *RegistryProvider, version *RegistryProviderVersion, targetOS, arch string) (*RegistryProviderPlatform, func()) {
 	var providerCleanup func()
 	var versionCleanup func()
 
@@ -1401,10 +1411,18 @@ func createRegistryProviderPlatform(t *testing.T, client *Client, provider *Regi
 	ctx := context.Background()
 
 	options := RegistryProviderPlatformCreateOptions{
-		OS:       randomString(t),
-		Arch:     randomString(t),
-		Shasum:   genSha(t, "secret", "data"),
+		OS:       targetOS,
+		Arch:     arch,
+		Shasum:   genSha(t),
 		Filename: randomString(t),
+	}
+
+	if targetOS == "" {
+		options.OS = "linux"
+	}
+
+	if arch == "" {
+		options.Arch = "amd64"
 	}
 
 	rpp, err := client.RegistryProviderPlatforms.Create(ctx, versionID, options)
@@ -1899,7 +1917,7 @@ func createVariableSet(t *testing.T, client *Client, org *Organization, options 
 	}
 }
 
-func applyVariableSetToWorkspace(t *testing.T, client *Client, vsID string, wsID string) {
+func applyVariableSetToWorkspace(t *testing.T, client *Client, vsID, wsID string) {
 	if vsID == "" {
 		t.Fatal("variable set ID must not be empty")
 	}
@@ -2022,6 +2040,34 @@ func upgradeOrganizationSubscription(t *testing.T, client *Client, organization 
 	}
 }
 
+func createProject(t *testing.T, client *Client, org *Organization) (*Project, func()) {
+	var orgCleanup func()
+
+	if org == nil {
+		org, orgCleanup = createOrganization(t, client)
+	}
+
+	ctx := context.Background()
+	p, err := client.Projects.Create(ctx, org.Name, ProjectCreateOptions{
+		Name: randomStringWithoutSpecialChar(t),
+	})
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	return p, func() {
+		if err := client.Projects.Delete(ctx, p.ID); err != nil {
+			t.Logf("Error destroying project! WARNING: Dangling resources "+
+				"may exist! The full error is shown below.\n\n"+
+				"Project ID: %s\nError: %s", p.ID, err)
+		}
+
+		if orgCleanup != nil {
+			orgCleanup()
+		}
+	}
+}
+
 func waitForSVOutputs(t *testing.T, client *Client, svID string) {
 	t.Helper()
 
@@ -2092,9 +2138,10 @@ func retry(f retryableFn) (interface{}, error) { //nolint
 	return retryTimes(9, 3, f) // 10 attempts over 30 seconds
 }
 
-func genSha(t *testing.T, secret, data string) string {
-	h := hmac.New(sha256.New, []byte(secret))
-	_, err := h.Write([]byte(data))
+func genSha(t *testing.T) string {
+	t.Helper()
+	h := hmac.New(sha256.New, []byte("secret"))
+	_, err := h.Write([]byte("data"))
 	if err != nil {
 		t.Fatalf("error writing hmac: %s", err)
 	}
@@ -2126,12 +2173,31 @@ func randomString(t *testing.T) string {
 	return v
 }
 
+func randomStringWithoutSpecialChar(t *testing.T) string {
+	v, err := uuid.GenerateUUID()
+	if err != nil {
+		t.Fatal(err)
+	}
+	uuidWithoutHyphens := strings.ReplaceAll(v, "-", "")
+	return uuidWithoutHyphens
+}
+
+func containsProject(pl []*Project, str string) bool {
+	for _, p := range pl {
+		if p.Name == str {
+			return true
+		}
+	}
+	return false
+}
+
 func randomSemver(t *testing.T) string {
+	t.Helper()
 	return fmt.Sprintf("%d.%d.%d", rand.Intn(99)+3, rand.Intn(99)+1, rand.Intn(99)+1)
 }
 
 // skips a test if the environment is for Terraform Cloud.
-func skipIfCloud(t *testing.T) {
+func skipUnlessEnterprise(t *testing.T) {
 	if !enterpriseEnabled() {
 		t.Skip("Skipping test related to Terraform Cloud. Set ENABLE_TFE=1 to run.")
 	}
@@ -2152,15 +2218,21 @@ func skipIfFreeOnly(t *testing.T) {
 	}
 }
 
-// skips a test if the test requires a beta feature
-func skipIfBeta(t *testing.T) {
+// skips a test if the underlying beta feature is not available.
+// **Note: ENABLE_BETA is always disabled in CI, so ensure you:
+//
+//  1. Run tests locally and paste the test output in the resulting pull request
+//  2. Remove the beta requirements of your feature from go-tfe once the feature is generally available.
+//
+// See CONTRIBUTING.md for details
+func skipUnlessBeta(t *testing.T) {
 	if !betaFeaturesEnabled() {
 		t.Skip("Skipping test related to a Terraform Cloud beta feature. Set ENABLE_BETA=1 to run.")
 	}
 }
 
 // skips a test if the architecture is not linux_amd64
-func skipIfNotLinuxAmd64(t *testing.T) {
+func skipUnlessLinuxAMD64(t *testing.T) {
 	if !linuxAmd64() {
 		t.Skip("Skipping test if architecture is not linux_amd64")
 	}

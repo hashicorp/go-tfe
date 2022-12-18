@@ -6,13 +6,11 @@ generate: check-resource
 	go mod tidy; \
 	go run . $(RESOURCE) ;
 
-fmt:
-
 vet:
 	go vet
 
 fmt:
-	go fmt ./...
+	gofmt -s -l -w .
 
 lint:
 	golangci-lint run .

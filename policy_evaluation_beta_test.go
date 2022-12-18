@@ -10,7 +10,7 @@ import (
 
 func TestPolicyEvaluationList_Beta(t *testing.T) {
 	skipIfFreeOnly(t)
-	skipIfBeta(t)
+	skipUnlessBeta(t)
 
 	client := testClient(t)
 	ctx := context.Background()
@@ -57,7 +57,6 @@ func TestPolicyEvaluationList_Beta(t *testing.T) {
 	})
 
 	t.Run("with a invalid policy evaluation ID", func(t *testing.T) {
-
 		policyEvaluationeID := "invalid ID"
 
 		_, err := client.PolicyEvaluations.List(ctx, policyEvaluationeID, nil)
@@ -67,7 +66,7 @@ func TestPolicyEvaluationList_Beta(t *testing.T) {
 
 func TestPolicySetOutcomeList_Beta(t *testing.T) {
 	skipIfFreeOnly(t)
-	skipIfBeta(t)
+	skipUnlessBeta(t)
 
 	client := testClient(t)
 	ctx := context.Background()
@@ -179,7 +178,7 @@ func TestPolicySetOutcomeList_Beta(t *testing.T) {
 
 func TestPolicySetOutcomeRead_Beta(t *testing.T) {
 	skipIfFreeOnly(t)
-	skipIfBeta(t)
+	skipUnlessBeta(t)
 
 	client := testClient(t)
 	ctx := context.Background()
@@ -239,7 +238,6 @@ func TestPolicySetOutcomeRead_Beta(t *testing.T) {
 	})
 
 	t.Run("with a invalid policy set outcome ID", func(t *testing.T) {
-
 		policySetOutcomeID := "invalid ID"
 
 		_, err := client.PolicySetOutcomes.Read(ctx, policySetOutcomeID)

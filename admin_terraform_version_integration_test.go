@@ -10,7 +10,7 @@ import (
 )
 
 func TestAdminTerraformVersions_List(t *testing.T) {
-	skipIfCloud(t)
+	skipUnlessEnterprise(t)
 
 	client := testClient(t)
 	ctx := context.Background()
@@ -93,7 +93,7 @@ func TestAdminTerraformVersions_List(t *testing.T) {
 }
 
 func TestAdminTerraformVersions_CreateDelete(t *testing.T) {
-	skipIfCloud(t)
+	skipUnlessEnterprise(t)
 
 	client := testClient(t)
 	ctx := context.Background()
@@ -103,7 +103,7 @@ func TestAdminTerraformVersions_CreateDelete(t *testing.T) {
 		opts := AdminTerraformVersionCreateOptions{
 			Version:          String(version),
 			URL:              String("https://www.hashicorp.com"),
-			Sha:              String(genSha(t, "secret", "data")),
+			Sha:              String(genSha(t)),
 			Deprecated:       Bool(true),
 			DeprecatedReason: String("Test Reason"),
 			Official:         Bool(false),
@@ -133,7 +133,7 @@ func TestAdminTerraformVersions_CreateDelete(t *testing.T) {
 		opts := AdminTerraformVersionCreateOptions{
 			Version: String(version),
 			URL:     String("https://www.hashicorp.com"),
-			Sha:     String(genSha(t, "secret", "data")),
+			Sha:     String(genSha(t)),
 		}
 		tfv, err := client.Admin.TerraformVersions.Create(ctx, opts)
 		require.NoError(t, err)
@@ -160,7 +160,7 @@ func TestAdminTerraformVersions_CreateDelete(t *testing.T) {
 }
 
 func TestAdminTerraformVersions_ReadUpdate(t *testing.T) {
-	skipIfCloud(t)
+	skipUnlessEnterprise(t)
 
 	client := testClient(t)
 	ctx := context.Background()
@@ -170,7 +170,7 @@ func TestAdminTerraformVersions_ReadUpdate(t *testing.T) {
 		opts := AdminTerraformVersionCreateOptions{
 			Version:          String(version),
 			URL:              String("https://www.hashicorp.com"),
-			Sha:              String(genSha(t, "secret", "data")),
+			Sha:              String(genSha(t)),
 			Official:         Bool(false),
 			Deprecated:       Bool(true),
 			DeprecatedReason: String("Test Reason"),

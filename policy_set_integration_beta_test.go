@@ -13,7 +13,7 @@ import (
 
 func TestPolicySetsList_Beta(t *testing.T) {
 	skipIfFreeOnly(t)
-	skipIfBeta(t)
+	skipUnlessBeta(t)
 
 	client := testClient(t)
 	ctx := context.Background()
@@ -111,7 +111,7 @@ func TestPolicySetsList_Beta(t *testing.T) {
 
 func TestPolicySetsCreate_Beta(t *testing.T) {
 	skipIfFreeOnly(t)
-	skipIfBeta(t)
+	skipUnlessBeta(t)
 
 	client := testClient(t)
 	ctx := context.Background()
@@ -329,5 +329,38 @@ func TestPolicySetsCreate_Beta(t *testing.T) {
 		})
 		assert.Nil(t, ps)
 		assert.EqualError(t, err, ErrInvalidOrg.Error())
+	})
+}
+
+func TestPolicySetsUpdate_Beta(t *testing.T) {
+	skipIfFreeOnly(t)
+	skipUnlessBeta(t)
+
+	client := testClient(t)
+	ctx := context.Background()
+
+	orgTest, orgTestCleanup := createOrganization(t, client)
+	defer orgTestCleanup()
+
+	upgradeOrganizationSubscription(t, client, orgTest)
+
+	psTest, psTestCleanup := createPolicySet(t, client, orgTest, nil, nil, "opa")
+	defer psTestCleanup()
+
+	t.Run("with valid attributes", func(t *testing.T) {
+		options := PolicySetUpdateOptions{
+			Name:        String("global"),
+			Description: String("Policies in this set will be checked in ALL workspaces!"),
+			Global:      Bool(true),
+			Overridable: Bool(true),
+		}
+
+		ps, err := client.PolicySets.Update(ctx, psTest.ID, options)
+		require.NoError(t, err)
+
+		assert.Equal(t, ps.Name, *options.Name)
+		assert.Equal(t, ps.Description, *options.Description)
+		assert.True(t, ps.Global)
+		assert.True(t, *ps.Overridable)
 	})
 }

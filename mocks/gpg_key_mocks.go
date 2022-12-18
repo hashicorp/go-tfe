@@ -64,6 +64,21 @@ func (mr *MockGPGKeysMockRecorder) Delete(ctx, keyID interface{}) *gomock.Call {
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Delete", reflect.TypeOf((*MockGPGKeys)(nil).Delete), ctx, keyID)
 }
 
+// ListPrivate mocks base method.
+func (m *MockGPGKeys) ListPrivate(ctx context.Context, options tfe.GPGKeyListOptions) (*tfe.GPGKeyList, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "ListPrivate", ctx, options)
+	ret0, _ := ret[0].(*tfe.GPGKeyList)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// ListPrivate indicates an expected call of ListPrivate.
+func (mr *MockGPGKeysMockRecorder) ListPrivate(ctx, options interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListPrivate", reflect.TypeOf((*MockGPGKeys)(nil).ListPrivate), ctx, options)
+}
+
 // Read mocks base method.
 func (m *MockGPGKeys) Read(ctx context.Context, keyID tfe.GPGKeyID) (*tfe.GPGKey, error) {
 	m.ctrl.T.Helper()

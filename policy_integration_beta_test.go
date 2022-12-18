@@ -10,7 +10,7 @@ import (
 
 func TestPoliciesCreate_Beta(t *testing.T) {
 	skipIfFreeOnly(t)
-	skipIfBeta(t)
+	skipUnlessBeta(t)
 
 	client := testClient(t)
 	ctx := context.Background()
@@ -221,7 +221,7 @@ func TestPoliciesCreate_Beta(t *testing.T) {
 
 func TestPoliciesList_Beta(t *testing.T) {
 	skipIfFreeOnly(t)
-	skipIfBeta(t)
+	skipUnlessBeta(t)
 
 	client := testClient(t)
 	ctx := context.Background()
@@ -309,7 +309,7 @@ func TestPoliciesList_Beta(t *testing.T) {
 
 func TestPoliciesUpdate_Beta(t *testing.T) {
 	skipIfFreeOnly(t)
-	skipIfBeta(t)
+	skipUnlessBeta(t)
 
 	client := testClient(t)
 	ctx := context.Background()

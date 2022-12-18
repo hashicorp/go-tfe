@@ -50,7 +50,7 @@ func TestOrganizationMembershipsList(t *testing.T) {
 		assert.Empty(t, ml.Items)
 		assert.Equal(t, 999, ml.CurrentPage)
 
-		// Three because the creator of the organizaiton is a member, in addition to the two we added to setup the test.
+		// Three because the creator of the organization is a member, in addition to the two we added to setup the test.
 		assert.Equal(t, 3, ml.TotalCount)
 	})
 

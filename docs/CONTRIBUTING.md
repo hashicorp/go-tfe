@@ -16,10 +16,13 @@ There are instances where several new resources being added (i.e Workspace Run T
 
 **Note HashiCorp Employees Only:** When submitting a new set of endpoints please ensure that one of your respective team members approves the changes as well before merging.
 
-## Running the Linters Locally
+## Linting
+
+After opening a PR, our CI system will perform a series of code checks, one of which is linting. Linting is not strictly required for a change to be merged, but it helps smooth the review process and catch common mistakes early. If you'd like to run the linters manually, follow these steps:
 
 1. Ensure you have [installed golangci-lint](https://golangci-lint.run/usage/install/#local-installation)
-2. From the CLI, run `make lint`
+2. Format your code by running `make fmt`
+3. Run lint checks using `make lint`
 
 ## Writing Tests
 
@@ -55,11 +58,11 @@ Beta features, if released, should be clearly commented:
 ExampleNewField *bool `jsonapi:"attr,example-new-field,omitempty"`
 ```
 
-When adding test cases, you can temporarily use the skipIfBeta() test helper to omit beta features from running in CI.
+When adding test cases, you can temporarily use the skipUnlessBeta() test helper to omit beta features from running in CI.
 
 ```
 t.Run("with nested changes trigger", func (t *testing.T) {
-  skipIfBeta(t)
+  skipUnlessBeta(t)
   options := WorkspaceCreateOptions {
      // rest of required fields here
      ExampleNewField: Bool(true),
@@ -68,7 +71,7 @@ t.Run("with nested changes trigger", func (t *testing.T) {
 })
 ```
 
-**Note**: After your PR has been merged, and the feature either reaches general availability, you should remove the `skipIfBeta()` flag.
+**Note**: After your PR has been merged, and the feature either reaches general availability, you should remove the `skipUnlessBeta()` flag.
 
 ## Adding New Endpoints
 

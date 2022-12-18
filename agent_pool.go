@@ -48,6 +48,7 @@ type AgentPoolList struct {
 type AgentPool struct {
 	ID                 string `jsonapi:"primary,agent-pools"`
 	Name               string `jsonapi:"attr,name"`
+	AgentCount         int    `jsonapi:"attr,agent-count"`
 	OrganizationScoped bool   `jsonapi:"attr,organization-scoped"`
 
 	// Relations

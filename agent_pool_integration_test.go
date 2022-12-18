@@ -69,7 +69,6 @@ func TestAgentPoolsList(t *testing.T) {
 	})
 
 	t.Run("with query options", func(t *testing.T) {
-
 		pools, err := client.AgentPools.List(ctx, orgTest.Name, &AgentPoolListOptions{
 			Query: agentPool.Name,
 		})

@@ -14,7 +14,7 @@ import (
 )
 
 func TestAdminRuns_List(t *testing.T) {
-	skipIfCloud(t)
+	skipUnlessEnterprise(t)
 
 	client := testClient(t)
 	ctx := context.Background()
@@ -146,7 +146,7 @@ func TestAdminRuns_List(t *testing.T) {
 }
 
 func TestAdminRuns_ForceCancel(t *testing.T) {
-	skipIfCloud(t)
+	skipUnlessEnterprise(t)
 
 	client := testClient(t)
 	ctx := context.Background()
@@ -225,7 +225,7 @@ func TestAdminRuns_ForceCancel(t *testing.T) {
 }
 
 func TestAdminRuns_AdminRunsListOptions_valid(t *testing.T) {
-	skipIfCloud(t)
+	skipUnlessEnterprise(t)
 
 	t.Run("has valid status", func(t *testing.T) {
 		opts := AdminRunsListOptions{

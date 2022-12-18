@@ -33,11 +33,12 @@ type registryProviderPlatforms struct {
 
 // RegistryProviderPlatform represents a registry provider platform
 type RegistryProviderPlatform struct {
-	ID       string `jsonapi:"primary,registry-provider-platforms"`
-	OS       string `jsonapi:"attr,os"`
-	Arch     string `jsonapi:"attr,arch"`
-	Filename string `jsonapi:"attr,filename"`
-	Shasum   string `jsonapi:"attr,shasum"`
+	ID                     string `jsonapi:"primary,registry-provider-platforms"`
+	OS                     string `jsonapi:"attr,os"`
+	Arch                   string `jsonapi:"attr,arch"`
+	Filename               string `jsonapi:"attr,filename"`
+	Shasum                 string `jsonapi:"attr,shasum"`
+	ProviderBinaryUploaded bool   `jsonapi:"attr,provider-binary-uploaded"`
 
 	// Relations
 	RegistryProviderVersion *RegistryProviderVersion `jsonapi:"relation,registry-provider-version"`

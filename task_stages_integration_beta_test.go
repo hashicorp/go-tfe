@@ -1,6 +1,3 @@
-//go:build integration
-// +build integration
-
 package tfe
 
 import (
@@ -13,7 +10,7 @@ import (
 
 func TestTaskStagesRead_Beta(t *testing.T) {
 	skipIfFreeOnly(t)
-	skipIfBeta(t)
+	skipUnlessBeta(t)
 
 	client := testClient(t)
 	ctx := context.Background()
@@ -106,13 +103,12 @@ func TestTaskStagesRead_Beta(t *testing.T) {
 			assert.NotEmpty(t, taskStage.PolicyEvaluations[0].UpdatedAt)
 			assert.NotNil(t, taskStage.PolicyEvaluations[0].ResultCount)
 		})
-
 	})
 }
 
 func TestTaskStagesList_Beta(t *testing.T) {
 	skipIfFreeOnly(t)
-	skipIfBeta(t)
+	skipUnlessBeta(t)
 
 	client := testClient(t)
 	ctx := context.Background()
@@ -176,7 +172,7 @@ func TestTaskStagesList_Beta(t *testing.T) {
 
 func TestTaskStageOverride_Beta(t *testing.T) {
 	skipIfFreeOnly(t)
-	skipIfBeta(t)
+	skipUnlessBeta(t)
 
 	client := testClient(t)
 	ctx := context.Background()
@@ -258,7 +254,7 @@ func TestTaskStageOverride_Beta(t *testing.T) {
 		taskStageOverrideOptions := TaskStageOverrideOptions{
 			Comment: String("test comment"),
 		}
-		ts, err := client.TaskStages.Override(ctx, taskStageList.Items[0].ID, taskStageOverrideOptions)
+		_, err = client.TaskStages.Override(ctx, taskStageList.Items[0].ID, taskStageOverrideOptions)
 		require.NoError(t, err)
 	})
 

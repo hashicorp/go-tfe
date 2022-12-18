@@ -9,7 +9,7 @@ import (
 )
 
 func TestAdminUsers_List(t *testing.T) {
-	skipIfCloud(t)
+	skipUnlessEnterprise(t)
 
 	client := testClient(t)
 	ctx := context.Background()
@@ -99,7 +99,7 @@ func TestAdminUsers_List(t *testing.T) {
 }
 
 func TestAdminUsers_Delete(t *testing.T) {
-	skipIfCloud(t)
+	skipUnlessEnterprise(t)
 
 	client := testClient(t)
 	ctx := context.Background()
@@ -130,7 +130,6 @@ func TestAdminUsers_Delete(t *testing.T) {
 		assert.Empty(t, ul.Items)
 		assert.Equal(t, 1, ul.CurrentPage)
 		assert.Equal(t, 0, ul.TotalCount)
-
 	})
 
 	t.Run("an non-existing user", func(t *testing.T) {
@@ -140,7 +139,7 @@ func TestAdminUsers_Delete(t *testing.T) {
 }
 
 func TestAdminUsers_Disable2FA(t *testing.T) {
-	skipIfCloud(t)
+	skipUnlessEnterprise(t)
 
 	client := testClient(t)
 	ctx := context.Background()
@@ -152,7 +151,7 @@ func TestAdminUsers_Disable2FA(t *testing.T) {
 	defer memberCleanup()
 
 	if !member.User.TwoFactor.Enabled {
-		t.Skip("User does not have 2FA enalbed. Skiping")
+		t.Skip("User does not have 2FA enabled. Skipping")
 	}
 	user, err := client.Admin.Users.Disable2FA(ctx, member.User.ID)
 	require.NoError(t, err)

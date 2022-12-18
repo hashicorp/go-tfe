@@ -217,13 +217,13 @@ type RegistryModuleVCSRepoOptions struct {
 }
 
 // List all the registory modules within an organization.
-func (s *registryModules) List(ctx context.Context, organization string, options *RegistryModuleListOptions) (*RegistryModuleList, error) {
+func (r *registryModules) List(ctx context.Context, organization string, options *RegistryModuleListOptions) (*RegistryModuleList, error) {
 	if !validStringID(&organization) {
 		return nil, ErrInvalidOrg
 	}
 
 	u := fmt.Sprintf("organizations/%s/registry-modules", url.QueryEscape(organization))
-	req, err := s.client.NewRequest("GET", u, options)
+	req, err := r.client.NewRequest("GET", u, options)
 	if err != nil {
 		return nil, err
 	}
@@ -306,9 +306,9 @@ func (r *registryModules) Update(ctx context.Context, moduleID RegistryModuleID,
 	namespace := url.QueryEscape(moduleID.Namespace)
 	name := url.QueryEscape(moduleID.Name)
 	provider := url.QueryEscape(moduleID.Provider)
-	url := fmt.Sprintf("organizations/%s/registry-modules/%s/%s/%s/%s", org, registryName, namespace, name, provider)
+	registryModuleURL := fmt.Sprintf("organizations/%s/registry-modules/%s/%s/%s/%s", org, registryName, namespace, name, provider)
 
-	req, err := r.client.NewRequest(http.MethodPatch, url, &options)
+	req, err := r.client.NewRequest(http.MethodPatch, registryModuleURL, &options)
 	if err != nil {
 		return nil, err
 	}

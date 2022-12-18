@@ -82,6 +82,10 @@ var (
 
 	ErrInvalidRunID = errors.New("invalid value for run ID")
 
+	ErrInvalidProjectID = errors.New("invalid value for project ID")
+
+	ErrInvalidPagination = errors.New("invalid value for page size or number")
+
 	ErrInvalidRunTaskCategory = errors.New(`category must be "task"`)
 
 	ErrInvalidRunTaskID = errors.New("invalid value for run task ID")
@@ -309,7 +313,7 @@ var (
 
 	ErrRequiredFilename = errors.New("filename is required")
 
-	ErrInvalidAsciiArmor = errors.New("ascii armor is invalid")
+	ErrInvalidAsciiArmor = errors.New("ASCII Armor is invalid")
 
 	ErrRequiredNamespace = errors.New("namespace is required for public registry")
 
