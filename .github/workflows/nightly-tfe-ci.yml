@@ -92,6 +92,7 @@ jobs:
         env:
           TFE_TOKEN: "${{ secrets.TF_WORKFLOW_TFLOCAL_CLOUD_TFC_TOKEN }}"
         run: |
+          set -euo pipefail
           go run .github/scripts/fetch_outputs/main.go hashicorp-v2 tflocal-go-tfe-nightly
 
       - name: Run Tests
