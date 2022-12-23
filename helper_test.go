@@ -1,7 +1,9 @@
 package tfe
 
 import (
+	"archive/tar"
 	"archive/zip"
+	"compress/gzip"
 	"context"
 	"crypto/hmac"
 	"crypto/md5"
@@ -2069,6 +2071,62 @@ func createProject(t *testing.T, client *Client, org *Organization) (*Project, f
 			orgCleanup()
 		}
 	}
+}
+
+func createTarGzipArchive(t *testing.T, files []string, outputPath string) {
+	if len(files) == 0 {
+		t.Fatal("files to archive are empty")
+	}
+
+	out, err := os.Create(outputPath)
+	if err != nil {
+		t.Fatal(err)
+	}
+	defer out.Close()
+
+	gw := gzip.NewWriter(out)
+	defer gw.Close()
+
+	tw := tar.NewWriter(gw)
+	defer tw.Close()
+
+	for _, filename := range files {
+		func() {
+			file, err := os.Open(filename)
+			if err != nil {
+				t.Fatal(err)
+			}
+			defer file.Close()
+
+			info, err := file.Stat()
+			if err != nil {
+				t.Fatal(err)
+			}
+
+			header, err := tar.FileInfoHeader(info, info.Name())
+			if err != nil {
+				t.Fatal(err)
+			}
+
+			header.Name = filename
+			err = tw.WriteHeader(header)
+			if err != nil {
+				t.Fatal(err)
+			}
+
+			_, err = io.Copy(tw, file)
+			if err != nil {
+				t.Fatal(err)
+			}
+		}()
+	}
+
+	t.Cleanup(func() {
+		err := os.Remove(outputPath)
+		if err != nil {
+			t.Fatal("failed to delete archive: %w", err)
+		}
+	})
 }
 
 func waitForSVOutputs(t *testing.T, client *Client, svID string) {
