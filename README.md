@@ -20,25 +20,20 @@ the other, if applicable (rare).
 
 Almost always, minor version changes will indicate backwards-compatible features and enhancements. Occasionally, function signature changes that reflect a bug fix may appear as a minor version change. Patch version changes will be used for bug fixes, performance improvements, and otherwise unimpactful changes.
 
-## Installation
-
-Installation can be done with a normal `go get`:
-
-```
-go get -u github.com/hashicorp/go-tfe
-```
-
-## Usage
-
-```go
-import tfe "github.com/hashicorp/go-tfe"
-```
+## Example Usage
 
 Construct a new TFE client, then use the various endpoints on the client to
 access different parts of the Terraform Enterprise API. For example, to list
 all organizations:
 
 ```go
+import (
+  "context"
+  "log"
+
+  "github.com/hashicorp/go-tfe"
+)
+
 config := &tfe.Config{
 	Token: "insert-your-token-here",
 }
