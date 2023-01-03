@@ -71,14 +71,19 @@ Typically, you'll want to run specific tests. The commands below use notificatio
 $ envchain YOUR_NAMESPACE_HERE go test -run TestNotificationConfiguration -v ./...
 ```
 
-#### Without envchain:
+#### Without envchain (Using TFE_ADDRESS):
 ```sh
-$ TFE_TOKEN=xyz TFE_ADDRESS=xyz ENABLE_TFE=1 go test -run TestNotificationConfiguration -v ./...
+$ TFE_TOKEN=xyz TFE_ADDRESS=https://tfe.local ENABLE_TFE=1 go test -run TestNotificationConfiguration -v ./...
+```
+
+#### Without envchain (Using TFE_HOSTNAME):
+```sh
+$ TFE_TOKEN=xyz TFE_HOSTNAME=tfe.local ENABLE_TFE=1 go test -run TestNotificationConfiguration -v ./...
 ```
 
 #### Using Makefile target `test`
 ```sh
-TFE_TOKEN=xyz TFE_ADDRESS=xyz TESTARGS="-run TestNotificationConfiguration" make test
+TFE_TOKEN=xyz TFE_ADDRESS=https://tfe.local TESTARGS="-run TestNotificationConfiguration" make test
 ```
 
 ### Running all tests
@@ -89,10 +94,16 @@ It takes about 20 minutes to run all of the tests, so specify a larger timeout w
 $ envchain YOUR_NAMESPACE_HERE go test ./... -timeout=30m
 ```
 
-#### Without envchain:
+#### Without envchain  (Using TFE_ADDRESS):
 ```sh
-$ TFE_TOKEN=xyz TFE_ADDRESS=xyz ENABLE_TFE=1 go test ./... -timeout=30m
+$ TFE_TOKEN=xyz TFE_ADDRESS=https://tfe.local ENABLE_TFE=1 go test ./... -timeout=30m
 ```
+
+#### Without envchain  (Using TFE_HOSTNAME):
+```sh
+$ TFE_TOKEN=xyz TFE_HOSTNAME=tfe.local ENABLE_TFE=1 go test ./... -timeout=30m
+```
+
 
 ### Running tests for TFC features that require paid plans (HashiCorp Employees)
 
