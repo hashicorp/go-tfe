@@ -52,31 +52,6 @@ func newRunnerConfiguration(ctx context.Context, outputs []*tfe.StateVersionOutp
 		return nil, fmt.Errorf("tfe_address output variable is not set")
 	}
 
-	tfeCfg := &tfe.Config{
-		Address:           config["TFE_ADDRESS"],
-		Token:             config["TFE_TOKEN"],
-		RetryServerErrors: true,
-	}
-
-	// We need to create a new tfe client that will talk to the tflocal instance
-	// since we need to fetch TFE_USER1 and TFE_USER2
-	client, err := tfe.NewClient(tfeCfg)
-	if err != nil {
-		return nil, fmt.Errorf("could not initialize the client: %w", err)
-	}
-
-	oml, err := client.OrganizationMemberships.List(ctx, "hashicorp", &tfe.OrganizationMembershipListOptions{
-		Include: []tfe.OrgMembershipIncludeOpt{tfe.OrgMembershipUser},
-	})
-	if err != nil {
-		return nil, fmt.Errorf("could not fetch the organization membership list: %w", err)
-	}
-
-	for i, orgMember := range oml.Items {
-		key := fmt.Sprintf("TFE_USER%d", i+1)
-		config[key] = orgMember.User.Username
-	}
-
 	return config, nil
 }
 

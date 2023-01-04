@@ -4,3 +4,4 @@
 .out
 .vscode/*.log
 .idea/
+.envrc
