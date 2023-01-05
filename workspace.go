@@ -160,6 +160,9 @@ type Workspace struct {
 	// **Note: This field is still in BETA and subject to change.**
 	Project *Project `jsonapi:"relation,project"`
 	Tags    []*Tag   `jsonapi:"relation,tags"`
+
+	// Links
+	Links map[string]interface{} `jsonapi:"links,omitempty"`
 }
 
 type WorkspaceOutputs struct {
