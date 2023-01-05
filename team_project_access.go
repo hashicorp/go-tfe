@@ -197,7 +197,7 @@ func (s *teamProjectAccesses) Remove(ctx context.Context, teamProjectAccessID st
 	return req.Do(ctx, nil)
 }
 
-func (o *TeamProjectAccessListOptions) valid() error {
+func (o TeamProjectAccessListOptions) valid() error {
 	if !validStringID(&o.ProjectID) {
 		return ErrInvalidProjectID
 	}
