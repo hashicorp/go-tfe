@@ -152,6 +152,10 @@ var (
 
 	ErrInvalidAccessTeamID = errors.New("invalid value for team access ID")
 
+	ErrInvalidTeamProjectAccessID = errors.New("invalid value for team project access ID")
+
+	ErrInvalidTeamProjectAccessType = errors.New("invalid type for team project access")
+
 	ErrInvalidTeamID = errors.New("invalid value for team ID")
 
 	ErrInvalidUsernames = errors.New("invalid value for usernames")
@@ -247,7 +251,11 @@ var (
 
 	ErrRequiredWorkspace = errors.New("workspace is required")
 
+	ErrRequiredProject = errors.New("project is required")
+
 	ErrRequiredWorkspaceID = errors.New("workspace ID is required")
+
+	ErrRequiredProjectID = errors.New("project ID is required")
 
 	ErrWorkspacesRequired = errors.New("workspaces is required")
 
@@ -278,6 +286,8 @@ var (
 	ErrRequiredStateVerListOps = errors.New("StateVersionListOptions is required")
 
 	ErrRequiredTeamAccessListOps = errors.New("TeamAccessListOptions is required")
+
+	ErrRequiredTeamProjectAccessListOps = errors.New("TeamProjectAccessListOptions is required")
 
 	ErrRequiredRunTriggerListOps = errors.New("RunTriggerListOptions is required")
 

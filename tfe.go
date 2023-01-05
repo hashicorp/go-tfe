@@ -159,6 +159,7 @@ type Client struct {
 	Teams                      Teams
 	TeamAccess                 TeamAccesses
 	TeamMembers                TeamMembers
+	TeamProjectAccess          TeamProjectAccesses
 	TeamTokens                 TeamTokens
 	Users                      Users
 	UserTokens                 UserTokens
@@ -407,6 +408,7 @@ func NewClient(cfg *Config) (*Client, error) {
 	client.TaskStages = &taskStages{client: client}
 	client.TeamAccess = &teamAccesses{client: client}
 	client.TeamMembers = &teamMembers{client: client}
+	client.TeamProjectAccess = &teamProjectAccesses{client: client}
 	client.Teams = &teams{client: client}
 	client.TeamTokens = &teamTokens{client: client}
 	client.Users = &users{client: client}
