@@ -205,7 +205,7 @@ func (o TeamProjectAccessListOptions) valid() error {
 	return nil
 }
 
-func (o *TeamProjectAccessAddOptions) valid() error {
+func (o TeamProjectAccessAddOptions) valid() error {
 	if err := validateTeamProjectAccessType(o.Access); err != nil {
 		return err
 	}
