@@ -93,7 +93,7 @@ func TestAdminRuns_List(t *testing.T) {
 			Include: []AdminRunIncludeOpt{"workpsace"},
 		})
 
-		assert.Equal(t, err, ErrInvalidIncludeValue)
+		assert.Equal(t, ErrInvalidIncludeValue, err)
 	})
 
 	t.Run("with RunStatus.pending filter", func(t *testing.T) {
@@ -175,7 +175,7 @@ func TestAdminRuns_ForceCancel(t *testing.T) {
 
 	t.Run("when the run does not exist", func(t *testing.T) {
 		err := client.Admin.Runs.ForceCancel(ctx, "nonexisting", AdminRunForceCancelOptions{})
-		assert.Equal(t, err, ErrResourceNotFound)
+		assert.Equal(t, ErrResourceNotFound, err)
 	})
 
 	t.Run("with invalid run ID", func(t *testing.T) {
