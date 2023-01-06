@@ -12,7 +12,7 @@ var _ RegistryProviders = (*registryProviders)(nil)
 // RegistryProviders describes all the registry provider-related methods that the Terraform
 // Enterprise API supports.
 //
-// TFE API docs: https://www.terraform.io/docs/cloud/api/providers.html
+// TFE API docs: https://developer.hashicorp.com/terraform/cloud-docs/api-docs/private-registry/providers
 type RegistryProviders interface {
 	// List all the providers within an organization.
 	List(ctx context.Context, organization string, options *RegistryProviderListOptions) (*RegistryProviderList, error)

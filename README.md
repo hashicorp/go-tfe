@@ -9,7 +9,7 @@ Terraform Cloud/Enterprise Go Client
 
 The official Go API client for [Terraform Cloud/Enterprise](https://www.hashicorp.com/products/terraform).
 
-This client supports the [Terraform Cloud V2 API](https://www.terraform.io/docs/cloud/api/index.html).
+This client supports the [Terraform Cloud V2 API](https://developer.hashicorp.com/terraform/cloud-docs/api-docs).
 As Terraform Enterprise is a self-hosted distribution of Terraform Cloud, this
 client supports both Cloud and Enterprise use cases. In all package
 documentation and API, the platform will always be stated as 'Terraform

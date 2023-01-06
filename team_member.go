@@ -13,7 +13,7 @@ var _ TeamMembers = (*teamMembers)(nil)
 // Terraform Enterprise API supports.
 //
 // TFE API docs:
-// https://www.terraform.io/docs/cloud/api/team-members.html
+// https://developer.hashicorp.com/terraform/cloud-docs/api-docs/team-members
 type TeamMembers interface {
 	// List returns all Users of a team calling ListUsers
 	// See ListOrganizationMemberships for fetching memberships

@@ -12,7 +12,7 @@ var _ RegistryProviderVersions = (*registryProviderVersions)(nil)
 // RegistryProviderVersions describes the registry provider version methods that
 // the Terraform Enterprise API supports.
 //
-// TFE API docs: https://www.terraform.io/cloud-docs/api-docs/private-registry/provider-versions-platforms
+// TFE API docs: https://developer.hashicorp.com/terraform/cloud-docs/api-docs/private-registry/provider-versions-platforms
 type RegistryProviderVersions interface {
 	// List all versions for a single provider.
 	List(ctx context.Context, providerID RegistryProviderID, options *RegistryProviderVersionListOptions) (*RegistryProviderVersionList, error)

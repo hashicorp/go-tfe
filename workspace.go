@@ -15,7 +15,7 @@ var _ Workspaces = (*workspaces)(nil)
 // Workspaces describes all the workspace related methods that the Terraform
 // Enterprise API supports.
 //
-// TFE API docs: https://www.terraform.io/docs/cloud/api/workspaces.html
+// TFE API docs: https://developer.hashicorp.com/terraform/cloud-docs/api-docs/workspaces
 type Workspaces interface {
 	// List all the workspaces within an organization.
 	List(ctx context.Context, organization string, options *WorkspaceListOptions) (*WorkspaceList, error)
@@ -220,7 +220,7 @@ type WorkspacePermissions struct {
 }
 
 // WSIncludeOpt represents the available options for include query params.
-// https://www.terraform.io/docs/cloud/api/workspaces.html#available-related-resources
+// https://developer.hashicorp.com/terraform/cloud-docs/api-docs/workspaces#available-related-resources
 type WSIncludeOpt string
 
 const (
@@ -240,7 +240,7 @@ const (
 // WorkspaceReadOptions represents the options for reading a workspace.
 type WorkspaceReadOptions struct {
 	// Optional: A list of relations to include.
-	// https://www.terraform.io/docs/cloud/api/workspaces.html#available-related-resources
+	// https://developer.hashicorp.com/terraform/cloud-docs/api-docs/workspaces#available-related-resources
 	Include []WSIncludeOpt `url:"include,omitempty"`
 }
 
@@ -260,7 +260,7 @@ type WorkspaceListOptions struct {
 	// Optional: A search on substring matching to filter the results.
 	WildcardName string `url:"search[wildcard-name],omitempty"`
 
-	// Optional: A list of relations to include. See available resources https://www.terraform.io/docs/cloud/api/workspaces.html#available-related-resources
+	// Optional: A list of relations to include. See available resources https://developer.hashicorp.com/terraform/cloud-docs/api-docs/workspaces#available-related-resources
 	Include []WSIncludeOpt `url:"include,omitempty"`
 }
 
@@ -281,7 +281,7 @@ type WorkspaceCreateOptions struct {
 	AllowDestroyPlan *bool `jsonapi:"attr,allow-destroy-plan,omitempty"`
 
 	// Optional: Whether to enable health assessments (drift detection etc.) for the workspace.
-	// Reference: https://www.terraform.io/cloud-docs/api-docs/workspaces#create-a-workspace
+	// Reference: https://developer.hashicorp.com/terraform/cloud-docs/api-docs/workspaces#create-a-workspace
 	// Requires remote execution mode, Terraform Cloud Business entitlement, and a valid agent pool to work
 	AssessmentsEnabled *bool `jsonapi:"attr,assessments-enabled,omitempty"`
 
@@ -404,7 +404,7 @@ type WorkspaceUpdateOptions struct {
 	AllowDestroyPlan *bool `jsonapi:"attr,allow-destroy-plan,omitempty"`
 
 	// Optional: Whether to enable health assessments (drift detection etc.) for the workspace.
-	// Reference: https://www.terraform.io/cloud-docs/api-docs/workspaces#update-a-workspace
+	// Reference: https://developer.hashicorp.com/terraform/cloud-docs/api-docs/workspaces#update-a-workspace
 	// Requires remote execution mode, Terraform Cloud Business entitlement, and a valid agent pool to work
 	AssessmentsEnabled *bool `jsonapi:"attr,assessments-enabled,omitempty"`
 

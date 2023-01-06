@@ -11,7 +11,7 @@ var _ RunTasks = (*runTasks)(nil)
 
 // RunTasks represents all the run task related methods in the context of an organization
 // that the Terraform Cloud/Enterprise API supports.
-// https://www.terraform.io/cloud-docs/api-docs/run-tasks/run-tasks#run-tasks-api
+// https://developer.hashicorp.com/terraform/cloud-docs/api-docs/run-tasks/run-tasks#run-tasks-api
 type RunTasks interface {
 	// Create a run task for an organization
 	Create(ctx context.Context, organization string, options RunTaskCreateOptions) (*RunTask, error)
@@ -61,7 +61,7 @@ type RunTaskList struct {
 }
 
 // RunTaskIncludeOpt represents the available options for include query params.
-// https://www.terraform.io/cloud-docs/api-docs/run-tasks/run-tasks#list-run-tasks
+// https://developer.hashicorp.com/terraform/cloud-docs/api-docs/run-tasks/run-tasks#list-run-tasks
 type RunTaskIncludeOpt string
 
 const (
@@ -73,14 +73,14 @@ const (
 type RunTaskListOptions struct {
 	ListOptions
 	// Optional: A list of relations to include with a run task. See available resources:
-	// https://www.terraform.io/cloud-docs/api-docs/run-tasks/run-tasks#list-run-tasks
+	// https://developer.hashicorp.com/terraform/cloud-docs/api-docs/run-tasks/run-tasks#list-run-tasks
 	Include []RunTaskIncludeOpt `url:"include,omitempty"`
 }
 
 // RunTaskReadOptions represents the set of options for reading a run task
 type RunTaskReadOptions struct {
 	// Optional: A list of relations to include with a run task. See available resources:
-	// https://www.terraform.io/cloud-docs/api-docs/run-tasks/run-tasks#list-run-tasks
+	// https://developer.hashicorp.com/terraform/cloud-docs/api-docs/run-tasks/run-tasks#list-run-tasks
 	Include []RunTaskIncludeOpt `url:"include,omitempty"`
 }
 

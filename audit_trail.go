@@ -19,7 +19,7 @@ var _ AuditTrails = (*auditTrails)(nil)
 // **Note:** These methods require the client to be configured with an organization token for
 // an organization in the Business tier. Furthermore, these methods are only available in Terraform Cloud.
 //
-// TFC API Docs: https://www.terraform.io/cloud-docs/api-docs/audit-trails
+// TFC API Docs: https://developer.hashicorp.com/terraform/cloud-docs/api-docs/audit-trails
 type AuditTrails interface {
 	// Read all the audit events in an organization.
 	List(ctx context.Context, options *AuditTrailListOptions) (*AuditTrailList, error)

@@ -13,7 +13,7 @@ var _ OrganizationMemberships = (*organizationMemberships)(nil)
 // the Terraform Enterprise API supports.
 //
 // TFE API docs:
-// https://www.terraform.io/docs/cloud/api/organization-memberships.html
+// https://developer.hashicorp.com/terraform/cloud-docs/api-docs/organization-memberships
 type OrganizationMemberships interface {
 	// List all the organization memberships of the given organization.
 	List(ctx context.Context, organization string, options *OrganizationMembershipListOptions) (*OrganizationMembershipList, error)
@@ -63,7 +63,7 @@ type OrganizationMembership struct {
 }
 
 // OrgMembershipIncludeOpt represents the available options for include query params.
-// https://www.terraform.io/cloud-docs/api-docs/organization-memberships#available-related-resources
+// https://developer.hashicorp.com/terraform/cloud-docs/api-docs/organization-memberships#available-related-resources
 type OrgMembershipIncludeOpt string
 
 const (
@@ -75,7 +75,7 @@ const (
 type OrganizationMembershipListOptions struct {
 	ListOptions
 	// Optional: A list of relations to include. See available resources
-	// https://www.terraform.io/cloud-docs/api-docs/organization-memberships#available-related-resources
+	// https://developer.hashicorp.com/terraform/cloud-docs/api-docs/organization-memberships#available-related-resources
 	Include []OrgMembershipIncludeOpt `url:"include,omitempty"`
 
 	// Optional: A list of organization member emails to filter by.
@@ -104,7 +104,7 @@ type OrganizationMembershipCreateOptions struct {
 // OrganizationMembershipReadOptions represents the options for reading organization memberships.
 type OrganizationMembershipReadOptions struct {
 	// Optional: A list of relations to include. See available resources
-	// https://www.terraform.io/cloud-docs/api-docs/organization-memberships#available-related-resources
+	// https://developer.hashicorp.com/terraform/cloud-docs/api-docs/organization-memberships#available-related-resources
 	Include []OrgMembershipIncludeOpt `url:"include,omitempty"`
 }
 

@@ -15,7 +15,7 @@ var _ StateVersions = (*stateVersions)(nil)
 // the Terraform Enterprise API supports.
 //
 // TFE API docs:
-// https://www.terraform.io/docs/cloud/api/state-versions.html
+// https://developer.hashicorp.com/terraform/cloud-docs/api-docs/state-versions
 type StateVersions interface {
 	// List all the state versions for a given workspace.
 	List(ctx context.Context, options *StateVersionListOptions) (*StateVersionList, error)
@@ -96,7 +96,7 @@ type StateVersionListOptions struct {
 }
 
 // StateVersionIncludeOpt represents the available options for include query params.
-// https://www.terraform.io/cloud-docs/api-docs/state-versions#available-related-resources
+// https://developer.hashicorp.com/terraform/cloud-docs/api-docs/state-versions#available-related-resources
 type StateVersionIncludeOpt string
 
 const (
@@ -110,7 +110,7 @@ const (
 // StateVersionReadOptions represents the options for reading state version.
 type StateVersionReadOptions struct {
 	// Optional: A list of relations to include. See available resources:
-	// https://www.terraform.io/cloud-docs/api-docs/state-versions#available-related-resources
+	// https://developer.hashicorp.com/terraform/cloud-docs/api-docs/state-versions#available-related-resources
 	Include []StateVersionIncludeOpt `url:"include,omitempty"`
 }
 
@@ -123,7 +123,7 @@ type StateVersionOutputsListOptions struct {
 // StateVersionCurrentOptions represents the options for reading the current state version.
 type StateVersionCurrentOptions struct {
 	// Optional: A list of relations to include. See available resources:
-	// https://www.terraform.io/cloud-docs/api-docs/state-versions#available-related-resources
+	// https://developer.hashicorp.com/terraform/cloud-docs/api-docs/state-versions#available-related-resources
 	Include []StateVersionIncludeOpt `url:"include,omitempty"`
 }
 
@@ -155,7 +155,7 @@ type StateVersionCreateOptions struct {
 	Run *Run `jsonapi:"relation,run,omitempty"`
 
 	// Optional: The external, json representation of state data, base64 encoded.
-	// https://www.terraform.io/internals/json-format#state-representation
+	// https://developer.hashicorp.com/terraform/internals/json-format#state-representation
 	// Supplying this state representation can provide more details to the platform
 	// about the current terraform state.
 	//
@@ -163,7 +163,7 @@ type StateVersionCreateOptions struct {
 	JSONState *string `jsonapi:"attr,json-state,omitempty"`
 	// Optional: The external, json representation of state outputs, base64 encoded. Supplying this field
 	// will provide more detailed output type information to TFE.
-	// For more information on the contents of this field: https://www.terraform.io/internals/json-format#values-representation
+	// For more information on the contents of this field: https://developer.hashicorp.com/terraform/internals/json-format#values-representation
 	// about the current terraform state.
 	//
 	// **Note**: This field is in BETA, subject to change and not widely available yet.

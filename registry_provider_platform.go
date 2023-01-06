@@ -11,7 +11,7 @@ var _ RegistryProviderPlatforms = (*registryProviderPlatforms)(nil)
 
 // RegistryProviderPlatforms describes the registry provider platform methods supported by the Terraform Enterprise API.
 //
-// TFE API docs: https://www.terraform.io/cloud-docs/api-docs/private-registry/provider-versions-platforms#private-provider-versions-and-platforms-api
+// TFE API docs: https://developer.hashicorp.com/terraform/cloud-docs/api-docs/private-registry/provider-versions-platforms#private-provider-versions-and-platforms-api
 type RegistryProviderPlatforms interface {
 	// Create a provider platform for an organization
 	Create(ctx context.Context, versionID RegistryProviderVersionID, options RegistryProviderPlatformCreateOptions) (*RegistryProviderPlatform, error)

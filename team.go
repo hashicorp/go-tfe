@@ -12,7 +12,7 @@ var _ Teams = (*teams)(nil)
 // Teams describes all the team related methods that the Terraform
 // Enterprise API supports.
 //
-// TFE API docs: https://www.terraform.io/docs/cloud/api/teams.html
+// TFE API docs: https://developer.hashicorp.com/terraform/cloud-docs/api-docs/teams
 type Teams interface {
 	// List all the teams of the given organization.
 	List(ctx context.Context, organization string, options *TeamListOptions) (*TeamList, error)
@@ -74,7 +74,7 @@ type TeamPermissions struct {
 }
 
 // TeamIncludeOpt represents the available options for include query params.
-// https://www.terraform.io/docs/cloud/api/teams.html#available-related-resources
+// https://developer.hashicorp.com/terraform/cloud-docs/api-docs/teams#available-related-resources
 type TeamIncludeOpt string
 
 const (
@@ -86,7 +86,7 @@ const (
 type TeamListOptions struct {
 	ListOptions
 	// Optional: A list of relations to include.
-	// https://www.terraform.io/docs/cloud/api/teams.html#available-related-resources
+	// https://developer.hashicorp.com/terraform/cloud-docs/api-docs/teams#available-related-resources
 	Include []TeamIncludeOpt `url:"include,omitempty"`
 
 	// Optional: A list of team names to filter by.

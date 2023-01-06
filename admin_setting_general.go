@@ -8,7 +8,7 @@ import (
 var _ GeneralSettings = (*adminGeneralSettings)(nil)
 
 // GeneralSettings describes the general admin settings for the Admin Setting API.
-// https://www.terraform.io/cloud-docs/api-docs/admin/settings
+// https://developer.hashicorp.com/terraform/enterprise/api-docs/admin/settings
 type GeneralSettings interface {
 	// Read returns the general settings
 	Read(ctx context.Context) (*AdminGeneralSetting, error)
@@ -42,7 +42,7 @@ type AdminGeneralSetting struct {
 
 // AdminGeneralSettingsUpdateOptions represents the admin options for updating
 // general settings.
-// https://www.terraform.io/docs/cloud/api/admin/settings.html#request-body
+// https://developer.hashicorp.com/terraform/enterprise/api-docs/admin/settings#request-body
 type AdminGeneralSettingsUpdateOptions struct {
 	LimitUserOrgCreation              *bool `jsonapi:"attr,limit-user-organization-creation,omitempty"`
 	APIRateLimitingEnabled            *bool `jsonapi:"attr,api-rate-limiting-enabled,omitempty"`

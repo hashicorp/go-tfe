@@ -175,7 +175,7 @@ type ExampleCreateOptions struct {
 }
 
 // ExampleIncludeOpt represents the available options for include query params.
-// https://www.terraform.io/cloud-docs/api-docs/examples#list-examples (replace this URL with the actual documentation URL)
+// https://developer.hashicorp.com/terraform/cloud-docs/api-docs/examples#list-examples (replace this URL with the actual documentation URL)
 type ExampleIncludeOpt string
 
 const (
@@ -188,7 +188,7 @@ type ExampleListOptions struct {
 	ListOptions
 
 	// Optional: A list of relations to include with an example. See available resources:
-	// https://www.terraform.io/cloud-docs/api-docs/examples#list-examples (replace this URL with the actual documentation URL)
+	// https://developer.hashicorp.com/terraform/cloud-docs/api-docs/examples#list-examples (replace this URL with the actual documentation URL)
 	Include []ExampleIncludeOpt `url:"include,omitempty"`
 }
 
@@ -201,7 +201,7 @@ type ExampleList struct {
 // ExampleReadOptions represents the set of options for reading an example
 type ExampleReadOptions struct {
 	// Optional: A list of relations to include with an example. See available resources:
-	// https://www.terraform.io/cloud-docs/api-docs/examples#list-examples (replace this URL with the actual documentation URL)
+	// https://developer.hashicorp.com/terraform/cloud-docs/api-docs/examples#list-examples (replace this URL with the actual documentation URL)
 	Include []RunTaskIncludeOpt `url:"include,omitempty"`
 }
 

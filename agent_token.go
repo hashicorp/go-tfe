@@ -14,7 +14,7 @@ var _ AgentTokens = (*agentTokens)(nil)
 // Terraform Cloud API supports.
 //
 // TFE API docs:
-// https://www.terraform.io/docs/cloud/api/agent-tokens.html
+// https://developer.hashicorp.com/terraform/cloud-docs/api-docs/agent-tokens
 type AgentTokens interface {
 	// List all the agent tokens of the given agent pool.
 	List(ctx context.Context, agentPoolID string) (*AgentTokenList, error)

@@ -14,7 +14,7 @@ var _ AdminTerraformVersions = (*adminTerraformVersions)(nil)
 // the Terraform Enterprise API supports.
 // Note that admin terraform versions are only available in Terraform Enterprise.
 //
-// TFE API docs: https://www.terraform.io/docs/cloud/api/admin/terraform-versions.html
+// TFE API docs: https://developer.hashicorp.com/terraform/enterprise/api-docs/admin/terraform-versions
 type AdminTerraformVersions interface {
 	// List all the terraform versions.
 	List(ctx context.Context, options *AdminTerraformVersionsListOptions) (*AdminTerraformVersionsList, error)
@@ -65,7 +65,7 @@ type AdminTerraformVersionsListOptions struct {
 }
 
 // AdminTerraformVersionCreateOptions for creating a terraform version.
-// https://www.terraform.io/docs/cloud/api/admin/terraform-versions.html#request-body
+// https://developer.hashicorp.com/terraform/enterprise/api-docs/admin/terraform-versions#request-body
 type AdminTerraformVersionCreateOptions struct {
 	Type             string  `jsonapi:"primary,terraform-versions"`
 	Version          *string `jsonapi:"attr,version"` // Required
@@ -79,7 +79,7 @@ type AdminTerraformVersionCreateOptions struct {
 }
 
 // AdminTerraformVersionUpdateOptions for updating terraform version.
-// https://www.terraform.io/docs/cloud/api/admin/terraform-versions.html#request-body
+// https://developer.hashicorp.com/terraform/enterprise/api-docs/admin/terraform-versions#request-body
 type AdminTerraformVersionUpdateOptions struct {
 	Type             string  `jsonapi:"primary,terraform-versions"`
 	Version          *string `jsonapi:"attr,version,omitempty"`
