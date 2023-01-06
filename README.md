@@ -23,8 +23,39 @@ Almost always, minor version changes will indicate backwards-compatible features
 ## Example Usage
 
 Construct a new TFE client, then use the various endpoints on the client to
-access different parts of the Terraform Enterprise API. For example, to list
-all organizations:
+access different parts of the Terraform Enterprise API. The following example list
+all organizations.
+
+### Using the default config with env vars
+The default configuration makes use of the `TFE_ADDRESS` and `TFE_TOKEN` environment variables.
+
+1. `TFE_ADDRESS` - URL of a Terraform Cloud or Terraform Enterprise instance. Example: `https://tfe.local`
+1. `TFE_TOKEN` - An [API token](https://developer.hashicorp.com/terraform/cloud-docs/users-teams-organizations/api-tokens) for the Terraform Cloud or Terraform Enterprise instance.
+
+**Note:** Alternatively, you can set `TFE_HOSTNAME` which serves as a fallback for `TFE_ADDRESS`. It will only be used if `TFE_ADDRESS` is not set and will resolve the host to an `https` scheme. Example: `tfe.local` => resolves to `https://tfe.local`
+
+Set up the environment variables and use the default config like so:
+
+```go
+import (
+  "context"
+  "log"
+
+  "github.com/hashicorp/go-tfe"
+)
+
+client, err := tfe.NewClient(tfe.DefaultConfig())
+if err != nil {
+	log.Fatal(err)
+}
+
+orgs, err := client.Organizations.List(context.Background(), nil)
+if err != nil {
+	log.Fatal(err)
+}
+```
+
+### Using custom config to provide configuration details to the API client
 
 ```go
 import (
@@ -35,6 +66,7 @@ import (
 )
 
 config := &tfe.Config{
+	Address: "https://tfe.local",
 	Token: "insert-your-token-here",
 }
 
