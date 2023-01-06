@@ -39,7 +39,7 @@ You'll need to have environment variables setup in your environment to run the t
 Tests are run against an actual backend so they require a valid backend address and token:
 
 1. `TFE_ADDRESS` - URL of a Terraform Cloud or Terraform Enterprise instance to be used for testing, including scheme. Example: `https://tfe.local`
-1. `TFE_TOKEN` - A [user API token](https://developer.hashicorp.com/terraform/cloud-docs/users-teams-organizations/users#api-tokens) for the Terraform Cloud or Terraform Enterprise instance being used for testing.
+1. `TFE_TOKEN` - A [user API token](https://developer.hashicorp.com/terraform/cloud-docs/users-teams-organizations/users#tokens) for the Terraform Cloud or Terraform Enterprise instance being used for testing.
 
 **Note:** Alternatively, you can set `TFE_HOSTNAME` which serves as a fallback for `TFE_ADDRESS`. It will only be used if `TFE_ADDRESS` is not set and will resolve the host to an `https` scheme. Example: `tfe.local` => resolves to `https://tfe.local`
 
