@@ -12,7 +12,7 @@ var _ AdminOrganizations = (*adminOrganizations)(nil)
 // AdminOrganizations describes all of the admin organization related methods that the Terraform
 // Enterprise API supports. Note that admin settings are only available in Terraform Enterprise.
 //
-// TFE API docs: https://www.terraform.io/docs/cloud/api/admin/organizations.html
+// TFE API docs: https://developer.hashicorp.com/terraform/enterprise/api-docs/admin/organizations
 type AdminOrganizations interface {
 	// List all the organizations visible to the current user.
 	List(ctx context.Context, options *AdminOrganizationListOptions) (*AdminOrganizationList, error)
@@ -57,7 +57,7 @@ type AdminOrganization struct {
 }
 
 // AdminOrganizationUpdateOptions represents the admin options for updating an organization.
-// https://www.terraform.io/docs/cloud/api/admin/organizations.html#request-body
+// https://developer.hashicorp.com/terraform/enterprise/api-docs/admin/organizations#request-body
 type AdminOrganizationUpdateOptions struct {
 	AccessBetaTools                  *bool   `jsonapi:"attr,access-beta-tools,omitempty"`
 	GlobalModuleSharing              *bool   `jsonapi:"attr,global-module-sharing,omitempty"`
@@ -75,7 +75,7 @@ type AdminOrganizationList struct {
 }
 
 // AdminOrgIncludeOpt represents the available options for include query params.
-// https://www.terraform.io/docs/cloud/api/admin/organizations.html#available-related-resources
+// https://developer.hashicorp.com/terraform/enterprise/api-docs/admin/organizations#available-related-resources
 type AdminOrgIncludeOpt string
 
 const AdminOrgOwners AdminOrgIncludeOpt = "owners"
@@ -88,7 +88,7 @@ type AdminOrganizationListOptions struct {
 	// Any organizations with a name or notification email partially matching this value will be returned.
 	Query string `url:"q,omitempty"`
 	// Optional: A list of relations to include. See available resources
-	// https://www.terraform.io/docs/cloud/api/admin/organizations.html#available-related-resources
+	// https://developer.hashicorp.com/terraform/enterprise/api-docs/admin/organizations#available-related-resources
 	Include []AdminOrgIncludeOpt `url:"include,omitempty"`
 }
 

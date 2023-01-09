@@ -12,7 +12,7 @@ var _ OrganizationTags = (*organizationTags)(nil)
 // OrganizationMemberships describes all the list of tags used with all resources across the organization.
 //
 // TFE API docs:
-// https://www.terraform.io/cloud-docs/api-docs/organization-tags
+// https://developer.hashicorp.com/terraform/cloud-docs/api-docs/organization-tags
 type OrganizationTags interface {
 	// List all tags within an organization
 	List(ctx context.Context, organization string, options *OrganizationTagsListOptions) (*OrganizationTagsList, error)

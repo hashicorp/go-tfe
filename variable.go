@@ -12,7 +12,7 @@ var _ Variables = (*variables)(nil)
 // Variables describes all the variable related methods that the Terraform
 // Enterprise API supports.
 //
-// TFE API docs: https://www.terraform.io/docs/cloud/api/workspace-variables.html
+// TFE API docs: https://developer.hashicorp.com/terraform/cloud-docs/api-docs/workspace-variables
 type Variables interface {
 	// List all the variables associated with the given workspace.
 	List(ctx context.Context, workspaceID string, options *VariableListOptions) (*VariableList, error)

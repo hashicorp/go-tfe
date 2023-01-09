@@ -14,7 +14,7 @@ var _ OAuthTokens = (*oAuthTokens)(nil)
 // Terraform Enterprise API supports.
 //
 // TFE API docs:
-// https://www.terraform.io/docs/cloud/api/oauth-tokens.html
+// https://developer.hashicorp.com/terraform/cloud-docs/api-docs/oauth-tokens
 type OAuthTokens interface {
 	// List all the OAuth tokens for a given organization.
 	List(ctx context.Context, organization string, options *OAuthTokenListOptions) (*OAuthTokenList, error)

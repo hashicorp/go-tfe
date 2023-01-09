@@ -15,7 +15,7 @@ var _ ConfigurationVersions = (*configurationVersions)(nil)
 // methods that the Terraform Enterprise API supports.
 //
 // TFE API docs:
-// https://www.terraform.io/docs/enterprise/api/configuration-versions.html
+// https://developer.hashicorp.com/terraform/cloud-docs/api-docs/configuration-versions
 type ConfigurationVersions interface {
 	// List returns all configuration versions of a workspace.
 	List(ctx context.Context, workspaceID string, options *ConfigurationVersionListOptions) (*ConfigurationVersionList, error)
@@ -108,7 +108,7 @@ type CVStatusTimestamps struct {
 }
 
 // ConfigVerIncludeOpt represents the available options for include query params.
-// https://www.terraform.io/docs/cloud/api/configuration-versions.html#available-related-resources
+// https://developer.hashicorp.com/terraform/cloud-docs/api-docs/configuration-versions#available-related-resources
 type ConfigVerIncludeOpt string
 
 const (
@@ -119,7 +119,7 @@ const (
 // ConfigurationVersionReadOptions represents the options for reading a configuration version.
 type ConfigurationVersionReadOptions struct {
 	// Optional: A list of relations to include. See available resources:
-	// https://www.terraform.io/docs/cloud/api/configuration-versions.html#available-related-resources
+	// https://developer.hashicorp.com/terraform/cloud-docs/api-docs/configuration-versions#available-related-resources
 	Include []ConfigVerIncludeOpt `url:"include,omitempty"`
 }
 
@@ -128,7 +128,7 @@ type ConfigurationVersionReadOptions struct {
 type ConfigurationVersionListOptions struct {
 	ListOptions
 	// Optional: A list of relations to include. See available resources:
-	// https://www.terraform.io/docs/cloud/api/configuration-versions.html#available-related-resources
+	// https://developer.hashicorp.com/terraform/cloud-docs/api-docs/configuration-versions#available-related-resources
 	Include []ConfigVerIncludeOpt `url:"include,omitempty"`
 }
 

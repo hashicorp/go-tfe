@@ -16,7 +16,7 @@ var _ PolicyChecks = (*policyChecks)(nil)
 // Terraform Enterprise API supports.
 //
 // TFE API docs:
-// https://www.terraform.io/docs/cloud/api/policy-checks.html
+// https://developer.hashicorp.com/terraform/cloud-docs/api-docs/policy-checks
 type PolicyChecks interface {
 	// List all policy checks of the given run.
 	List(ctx context.Context, runID string, options *PolicyCheckListOptions) (*PolicyCheckList, error)
@@ -111,7 +111,7 @@ type PolicyStatusTimestamps struct {
 }
 
 // A list of relations to include
-// https://www.terraform.io/cloud-docs/api-docs/policy-checks#available-related-resources
+// https://developer.hashicorp.com/terraform/cloud-docs/api-docs/policy-checks#available-related-resources
 type PolicyCheckIncludeOpt string
 
 const (
@@ -124,7 +124,7 @@ type PolicyCheckListOptions struct {
 	ListOptions
 
 	// Optional: A list of relations to include. See available resources
-	// https://www.terraform.io/cloud-docs/api-docs/policy-checks#available-related-resources
+	// https://developer.hashicorp.com/terraform/cloud-docs/api-docs/policy-checks#available-related-resources
 	Include []PolicyCheckIncludeOpt `url:"include,omitempty"`
 }
 

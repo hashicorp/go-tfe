@@ -65,7 +65,7 @@ type PolicyEvaluation struct {
 // Terraform Enterprise API supports.
 //
 // TFE API docs:
-// https://www.terraform.io/docs/cloud/api/policy-checks.html
+// https://developer.hashicorp.com/terraform/cloud-docs/api-docs/policy-checks
 type PolicyEvaluations interface {
 	// **Note: This method is still in BETA and subject to change.**
 	// List all policy evaluations in the task stage. Only available for OPA policies.
@@ -116,7 +116,7 @@ var _ PolicySetOutcomes = (*policySetOutcome)(nil)
 // Terraform Enterprise API supports.
 //
 // TFE API docs:
-// https://www.terraform.io/docs/cloud/api/policy-checks.html
+// https://developer.hashicorp.com/terraform/cloud-docs/api-docs/policy-checks
 type PolicySetOutcomes interface {
 	// **Note: This method is still in BETA and subject to change.**
 	// List all policy set outcomes in the policy evaluation. Only available for OPA policies.

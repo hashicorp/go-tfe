@@ -8,7 +8,7 @@ import (
 var _ CostEstimationSettings = (*adminCostEstimationSettings)(nil)
 
 // CostEstimationSettings describes all the cost estimation admin settings for the Admin Setting API.
-// https://www.terraform.io/cloud-docs/api-docs/admin/settings
+// https://developer.hashicorp.com/terraform/enterprise/api-docs/admin/settings
 type CostEstimationSettings interface {
 	// Read returns the cost estimation settings.
 	Read(ctx context.Context) (*AdminCostEstimationSetting, error)
@@ -40,7 +40,7 @@ type AdminCostEstimationSetting struct {
 
 // AdminCostEstimationSettingOptions represents the admin options for updating
 // the cost estimation settings.
-// https://www.terraform.io/docs/cloud/api/admin/settings.html#request-body-1
+// https://developer.hashicorp.com/terraform/enterprise/api-docs/admin/settings#request-body-1
 type AdminCostEstimationSettingOptions struct {
 	Enabled             *bool   `jsonapi:"attr,enabled,omitempty"`
 	AWSAccessKeyID      *string `jsonapi:"attr,aws-access-key-id,omitempty"`

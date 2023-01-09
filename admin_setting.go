@@ -3,7 +3,7 @@ package tfe
 // AdminSettings describes all the admin settings related methods that the Terraform Enterprise API supports.
 // Note that admin settings are only available in Terraform Enterprise.
 //
-// TFE API docs: https://www.terraform.io/docs/cloud/api/admin/settings.html
+// TFE API docs: https://developer.hashicorp.com/terraform/enterprise/api-docs/admin/settings
 type AdminSettings struct {
 	General        GeneralSettings
 	SAML           SAMLSettings

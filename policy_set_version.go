@@ -13,7 +13,7 @@ var _ PolicySetVersions = (*policySetVersions)(nil)
 // PolicySetVersions describes all the Policy Set Version related methods that the Terraform
 // Enterprise API supports.
 //
-// TFE API docs: https://www.terraform.io/docs/cloud/api/policy-sets.html#create-a-policy-set-version
+// TFE API docs: https://developer.hashicorp.com/terraform/cloud-docs/api-docs/policy-sets#create-a-policy-set-version
 type PolicySetVersions interface {
 	// Create is used to create a new Policy Set Version.
 	Create(ctx context.Context, policySetID string) (*PolicySetVersion, error)

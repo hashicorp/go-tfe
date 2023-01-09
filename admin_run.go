@@ -15,7 +15,7 @@ var _ AdminRuns = (*adminRuns)(nil)
 // Enterprise  API supports.
 // It contains endpoints to help site administrators manage their runs.
 //
-// TFE API docs: https://www.terraform.io/docs/cloud/api/admin/runs.html
+// TFE API docs: https://developer.hashicorp.com/terraform/enterprise/api-docs/admin/runs
 type AdminRuns interface {
 	// List all the runs of the given installation.
 	List(ctx context.Context, options *AdminRunsListOptions) (*AdminRunsList, error)
@@ -44,7 +44,7 @@ type AdminRunsList struct {
 }
 
 // AdminRunIncludeOpt represents the available options for include query params.
-// https://www.terraform.io/cloud-docs/api-docs/admin/runs#available-related-resources
+// https://developer.hashicorp.com/terraform/enterprise/api-docs/admin/runs#available-related-resources
 type AdminRunIncludeOpt string
 
 const (
@@ -54,14 +54,14 @@ const (
 )
 
 // AdminRunsListOptions represents the options for listing runs.
-// https://www.terraform.io/docs/cloud/api/admin/runs.html#query-parameters
+// https://developer.hashicorp.com/terraform/enterprise/api-docs/admin/runs#query-parameters
 type AdminRunsListOptions struct {
 	ListOptions
 
 	RunStatus string `url:"filter[status],omitempty"`
 	Query     string `url:"q,omitempty"`
 	// Optional: A list of relations to include. See available resources
-	// https://www.terraform.io/cloud-docs/api-docs/admin/runs#available-related-resources
+	// https://developer.hashicorp.com/terraform/enterprise/api-docs/admin/runs#available-related-resources
 	Include []AdminRunIncludeOpt `url:"include,omitempty"`
 }
 
@@ -71,7 +71,7 @@ type adminRuns struct {
 }
 
 // List all the runs of the terraform enterprise installation.
-// https://www.terraform.io/docs/cloud/api/admin/runs.html#list-all-runs
+// https://developer.hashicorp.com/terraform/enterprise/api-docs/admin/runs#list-all-runs
 func (s *adminRuns) List(ctx context.Context, options *AdminRunsListOptions) (*AdminRunsList, error) {
 	if err := options.valid(); err != nil {
 		return nil, err
@@ -95,12 +95,12 @@ func (s *adminRuns) List(ctx context.Context, options *AdminRunsListOptions) (*A
 // AdminRunForceCancelOptions represents the options for force-canceling a run.
 type AdminRunForceCancelOptions struct {
 	// An optional comment explaining the reason for the force-cancel.
-	// https://www.terraform.io/docs/cloud/api/admin/runs.html#request-body
+	// https://developer.hashicorp.com/terraform/enterprise/api-docs/admin/runs#request-body
 	Comment *string `json:"comment,omitempty"`
 }
 
 // ForceCancel is used to forcefully cancel a run by its ID.
-// https://www.terraform.io/docs/cloud/api/admin/runs.html#force-a-run-into-the-quot-cancelled-quot-state
+// https://developer.hashicorp.com/terraform/enterprise/api-docs/admin/runs#force-a-run-into-the-quot-cancelled-quot-state
 func (s *adminRuns) ForceCancel(ctx context.Context, runID string, options AdminRunForceCancelOptions) error {
 	if !validStringID(&runID) {
 		return ErrInvalidRunID

@@ -15,7 +15,7 @@ var _ RegistryModules = (*registryModules)(nil)
 // RegistryModules describes all the registry module related methods that the Terraform
 // Enterprise API supports.
 //
-// TFE API docs: https://www.terraform.io/docs/cloud/api/modules.html
+// TFE API docs: https://developer.hashicorp.com/terraform/cloud-docs/api-docs/private-registry/modules
 type RegistryModules interface {
 	// List all the registory modules within an organization
 	List(ctx context.Context, organization string, options *RegistryModuleListOptions) (*RegistryModuleList, error)

@@ -1114,7 +1114,7 @@ func TestRegistryModule_Unmarshal(t *testing.T) {
 }
 
 func TestRegistryCreateWithVCSOptions_Marshal(t *testing.T) {
-	// https://www.terraform.io/docs/cloud/api/modules.html#sample-payload
+	// https://developer.hashicorp.com/terraform/cloud-docs/api-docs/private-registry/modules#sample-payload
 	opts := RegistryModuleCreateWithVCSConnectionOptions{
 		VCSRepo: &RegistryModuleVCSRepoOptions{
 			Identifier:        String("id"),
