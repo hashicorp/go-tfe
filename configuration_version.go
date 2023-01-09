@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"context"
 	"fmt"
+	"io"
 	"net/url"
 	"time"
 )
@@ -34,6 +35,9 @@ type ConfigurationVersions interface {
 	// the upload URL from a configuration version and the full path to the
 	// configuration files on disk.
 	Upload(ctx context.Context, url string, path string) error
+
+	// Upload a tar gzip archive to the specified configuration version upload URL.
+	UploadTarGzip(ctx context.Context, url string, archive io.Reader) error
 
 	// Archive a configuration version. This can only be done on configuration versions that
 	// were created with the API or CLI, are in an uploaded state, and have no runs in progress.
@@ -258,7 +262,17 @@ func (s *configurationVersions) Upload(ctx context.Context, uploadURL, path stri
 		return err
 	}
 
-	req, err := s.client.NewRequest("PUT", uploadURL, body)
+	return s.UploadTarGzip(ctx, uploadURL, body)
+}
+
+// UploadTarGzip is used to upload Terraform configuration files contained a tar gzip archive.
+// Any stream implementing io.Reader can be passed into this method. This method is also
+// particularly useful for tar streams created by non-default go-slug configurations.
+//
+// **Note**: This method does not validate the content being uploaded and is therefore the caller's
+// responsibility to ensure the raw content is a valid Terraform configuration.
+func (s *configurationVersions) UploadTarGzip(ctx context.Context, uploadURL string, archive io.Reader) error {
+	req, err := s.client.NewRequest("PUT", uploadURL, archive)
 	if err != nil {
 		return err
 	}

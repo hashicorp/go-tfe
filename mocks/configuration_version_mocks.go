@@ -6,6 +6,7 @@ package mocks
 
 import (
 	context "context"
+	io "io"
 	reflect "reflect"
 
 	gomock "github.com/golang/mock/gomock"
@@ -136,4 +137,18 @@ func (m *MockConfigurationVersions) Upload(ctx context.Context, url, path string
 func (mr *MockConfigurationVersionsMockRecorder) Upload(ctx, url, path interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Upload", reflect.TypeOf((*MockConfigurationVersions)(nil).Upload), ctx, url, path)
+}
+
+// UploadTarGzip mocks base method.
+func (m *MockConfigurationVersions) UploadTarGzip(ctx context.Context, url string, archive io.Reader) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "UploadTarGzip", ctx, url, archive)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// UploadTarGzip indicates an expected call of UploadTarGzip.
+func (mr *MockConfigurationVersionsMockRecorder) UploadTarGzip(ctx, url, archive interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UploadTarGzip", reflect.TypeOf((*MockConfigurationVersions)(nil).UploadTarGzip), ctx, url, archive)
 }
