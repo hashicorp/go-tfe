@@ -9,7 +9,8 @@ import (
 
 func main() {
 	config := &tfe.Config{
-		Token: "insert-your-token-here",
+		Token:             "insert-your-token-here",
+		RetryServerErrors: true,
 	}
 
 	client, err := tfe.NewClient(config)

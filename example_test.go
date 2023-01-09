@@ -8,9 +8,75 @@ import (
 	slug "github.com/hashicorp/go-slug"
 )
 
+func ExampleOrganizations() {
+	config := &Config{
+		Token:             "insert-your-token-here",
+		RetryServerErrors: true,
+	}
+
+	client, err := NewClient(config)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	// Create a context
+	ctx := context.Background()
+
+	// Create a new organization
+	options := OrganizationCreateOptions{
+		Name:  String("example"),
+		Email: String("info@example.com"),
+	}
+
+	org, err := client.Organizations.Create(ctx, options)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	// Delete an organization
+	err = client.Organizations.Delete(ctx, org.Name)
+	if err != nil {
+		log.Fatal(err)
+	}
+}
+
+func ExampleWorkspaces() {
+	config := &Config{
+		Token:             "insert-your-token-here",
+		RetryServerErrors: true,
+	}
+
+	client, err := NewClient(config)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	// Create a context
+	ctx := context.Background()
+
+	// Create a new workspace
+	w, err := client.Workspaces.Create(ctx, "org-name", WorkspaceCreateOptions{
+		Name: String("my-app-tst"),
+	})
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	// Update the workspace
+	w, err = client.Workspaces.Update(ctx, "org-name", w.Name, WorkspaceUpdateOptions{
+		AutoApply:        Bool(false),
+		TerraformVersion: String("0.11.1"),
+		WorkingDirectory: String("my-app/infra"),
+	})
+	if err != nil {
+		log.Fatal(err)
+	}
+}
+
 func ExampleConfigurationVersions_UploadTarGzip() {
 	ctx := context.Background()
 	client, err := NewClient(&Config{
+		Token:             "insert-your-token-here",
 		RetryServerErrors: true,
 	})
 	if err != nil {
@@ -51,6 +117,7 @@ func ExampleConfigurationVersions_UploadTarGzip() {
 func ExampleRegistryModules_UploadTarGzip() {
 	ctx := context.Background()
 	client, err := NewClient(&Config{
+		Token:             "insert-your-token-here",
 		RetryServerErrors: true,
 	})
 	if err != nil {
