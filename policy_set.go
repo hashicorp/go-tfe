@@ -119,7 +119,6 @@ type PolicySetListOptions struct {
 	// Optional: A search string (partial policy set name) used to filter the results.
 	Search string `url:"search[name],omitempty"`
 
-	// **Note: This field is still in BETA and subject to change.**
 	// Optional: A kind string used to filter the results by the policy set kind.
 	Kind PolicyKind `url:"filter[kind],omitempty"`
 
@@ -154,11 +153,9 @@ type PolicySetCreateOptions struct {
 	// Optional: Whether or not the policy set is global.
 	Global *bool `jsonapi:"attr,global,omitempty"`
 
-	// **Note: This field is still in BETA and subject to change.**
 	// Optional: The underlying technology that the policy set supports
 	Kind PolicyKind `jsonapi:"attr,kind,omitempty"`
 
-	// **Note: This field is still in BETA and subject to change.**
 	// Optional: Whether or not users can override this policy when it fails during a run. Only valid for OPA policies.
 	Overridable *bool `jsonapi:"attr,overridable,omitempty"`
 
@@ -198,7 +195,6 @@ type PolicySetUpdateOptions struct {
 	// Optional: Whether or not the policy set is global.
 	Global *bool `jsonapi:"attr,global,omitempty"`
 
-	// **Note: This field is still in BETA and subject to change.**
 	// Optional: Whether or not users can override this policy when it fails during a run. Only valid for OPA policies.
 	Overridable *bool `jsonapi:"attr,overridable,omitempty"`
 

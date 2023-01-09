@@ -21,7 +21,6 @@ type TaskStages interface {
 	// List all task stages for a given run
 	List(ctx context.Context, runID string, options *TaskStageListOptions) (*TaskStageList, error)
 
-	// **Note: This function is still in BETA and subject to change.**
 	// Override a task stage for a given run
 	Override(ctx context.Context, taskStageID string, options TaskStageOverrideOptions) (*TaskStage, error)
 }
@@ -108,7 +107,6 @@ type TaskStageIncludeOpt string
 
 const TaskStageTaskResults TaskStageIncludeOpt = "task_results"
 
-// **Note: This field is still in BETA and subject to change.**
 const PolicyEvaluationsTaskResults TaskStageIncludeOpt = "policy_evaluations"
 
 // TaskStageReadOptions represents the set of options when reading a task stage
@@ -168,7 +166,6 @@ func (s *taskStages) List(ctx context.Context, runID string, options *TaskStageL
 	return tlist, nil
 }
 
-// **Note: This function is still in BETA and subject to change.**
 // Override a task stages for a run
 func (s *taskStages) Override(ctx context.Context, taskStageID string, options TaskStageOverrideOptions) (*TaskStage, error) {
 	if !validStringID(&taskStageID) {

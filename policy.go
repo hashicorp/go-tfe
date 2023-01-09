@@ -97,7 +97,6 @@ type PolicyListOptions struct {
 	// Optional: A search string (partial policy name) used to filter the results.
 	Search string `url:"search[name],omitempty"`
 
-	// **Note: This field is still in BETA and subject to change.**
 	// Optional: A kind string used to filter the results by the policy kind.
 	Kind PolicyKind `url:"filter[kind],omitempty"`
 }
@@ -113,11 +112,9 @@ type PolicyCreateOptions struct {
 	// Required: The name of the policy.
 	Name *string `jsonapi:"attr,name"`
 
-	// **Note: This field is still in BETA and subject to change.**
 	// Optional: The underlying technology that the policy supports. Defaults to Sentinel if not specified for PolicyCreate.
 	Kind PolicyKind `jsonapi:"attr,kind,omitempty"`
 
-	// **Note: This field is still in BETA and subject to change.**
 	// Optional: The query passed to policy evaluation to determine the result of the policy. Only valid for OPA.
 	Query *string `jsonapi:"attr,query,omitempty"`
 
@@ -139,7 +136,6 @@ type PolicyUpdateOptions struct {
 	// Optional: A description of the policy's purpose.
 	Description *string `jsonapi:"attr,description,omitempty"`
 
-	// **Note: This field is still in BETA and subject to change.**
 	// Optional: The query passed to policy evaluation to determine the result of the policy. Only valid for OPA.
 	Query *string `jsonapi:"attr,query,omitempty"`
 

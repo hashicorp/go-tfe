@@ -70,7 +70,6 @@ type PolicyEvaluation struct {
 // TFE API docs:
 // https://developer.hashicorp.com/terraform/cloud-docs/api-docs/policy-checks
 type PolicyEvaluations interface {
-	// **Note: This method is still in BETA and subject to change.**
 	// List all policy evaluations in the task stage. Only available for OPA policies.
 	List(ctx context.Context, taskStageID string, options *PolicyEvaluationListOptions) (*PolicyEvaluationList, error)
 }
@@ -121,11 +120,9 @@ var _ PolicySetOutcomes = (*policySetOutcome)(nil)
 // TFE API docs:
 // https://developer.hashicorp.com/terraform/cloud-docs/api-docs/policy-checks
 type PolicySetOutcomes interface {
-	// **Note: This method is still in BETA and subject to change.**
 	// List all policy set outcomes in the policy evaluation. Only available for OPA policies.
 	List(ctx context.Context, policyEvaluationID string, options *PolicySetOutcomeListOptions) (*PolicySetOutcomeList, error)
 
-	// **Note: This method is still in BETA and subject to change.**
 	// Read a policy set outcome by its ID. Only available for OPA policies.
 	Read(ctx context.Context, policySetOutcomeID string) (*PolicySetOutcome, error)
 }
