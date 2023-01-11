@@ -47,6 +47,11 @@ func newRunnerConfiguration(ctx context.Context, outputs []*tfe.StateVersionOutp
 	if _, ok := config["TFE_TOKEN"]; !ok {
 		return nil, fmt.Errorf("tfe_token output variable is not set")
 	}
+	// temporary debugging lines to troubleshoot for an issue around tfe_token
+	tk := config["TFE_TOKEN"]
+	fmt.Println(len(tk))
+	lastfive := tk[len(tk)-5:]
+ 	fmt.Println(lastfive)
 
 	if _, ok := config["TFE_ADDRESS"]; !ok {
 		return nil, fmt.Errorf("tfe_address output variable is not set")
