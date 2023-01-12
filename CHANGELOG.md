@@ -5,6 +5,7 @@
 * Updates api doc links from terraform.io to developer.hashicorp domain by @uk1288 [#629](https://github.com/hashicorp/go-tfe/pull/629)
 * Adds `UploadTarGzip()` method to `RegistryModules` and `ConfigurationVersions` interface by @sebasslash [#623](https://github.com/hashicorp/go-tfe/pull/623)
 * Adds `ManageProjects` field to `OrganizationAccess` struct by @hs26gill [#633](https://github.com/hashicorp/go-tfe/pull/633)
+* Update README.md and TESTS.md to show usage of `TFE_ADDRESS`, `TFE_HOSTNAME` and `TFE_TOKEN` environment variables by @uk1288 [#626](https://github.com/hashicorp/go-tfe/pull/626)
 
 # v1.16.0
 

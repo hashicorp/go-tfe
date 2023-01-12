@@ -23,8 +23,10 @@ Almost always, minor version changes will indicate backwards-compatible features
 ## Example Usage
 
 Construct a new TFE client, then use the various endpoints on the client to
-access different parts of the Terraform Enterprise API. For example, to list
-all organizations:
+access different parts of the Terraform Enterprise API. The following example lists
+all organizations.
+
+### (Recommended Approach) Using custom config to provide configuration details to the API client
 
 ```go
 import (
@@ -35,7 +37,65 @@ import (
 )
 
 config := &tfe.Config{
+	Address: "https://tfe.local",
 	Token: "insert-your-token-here",
+  RetryServerErrors: true,
+}
+
+client, err := tfe.NewClient(config)
+if err != nil {
+	log.Fatal(err)
+}
+
+orgs, err := client.Organizations.List(context.Background(), nil)
+if err != nil {
+	log.Fatal(err)
+}
+```
+
+### Using the default config with env vars
+The default configuration makes use of the `TFE_ADDRESS` and `TFE_TOKEN` environment variables.
+
+1. `TFE_ADDRESS` - URL of a Terraform Cloud or Terraform Enterprise instance. Example: `https://tfe.local`
+1. `TFE_TOKEN` - An [API token](https://developer.hashicorp.com/terraform/cloud-docs/users-teams-organizations/api-tokens) for the Terraform Cloud or Terraform Enterprise instance.
+
+**Note:** Alternatively, you can set `TFE_HOSTNAME` which serves as a fallback for `TFE_ADDRESS`. It will only be used if `TFE_ADDRESS` is not set and will resolve the host to an `https` scheme. Example: `tfe.local` => resolves to `https://tfe.local`
+
+The environment variables are used as a fallback to configure TFE client if the Address or Token values are not provided as in the cases below:
+
+#### Using the default configuration
+```go
+import (
+  "context"
+  "log"
+
+  "github.com/hashicorp/go-tfe"
+)
+
+// Passing nil to tfe.NewClient method will also use the default configuration
+client, err := tfe.NewClient(tfe.DefaultConfig())
+if err != nil {
+	log.Fatal(err)
+}
+
+orgs, err := client.Organizations.List(context.Background(), nil)
+if err != nil {
+	log.Fatal(err)
+}
+```
+
+#### When Address or Token has no value
+```go
+import (
+  "context"
+  "log"
+
+  "github.com/hashicorp/go-tfe"
+)
+
+config := &tfe.Config{
+	Address: "",
+	Token: "",
 }
 
 client, err := tfe.NewClient(config)
