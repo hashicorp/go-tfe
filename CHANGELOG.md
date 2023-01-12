@@ -5,7 +5,8 @@
 * Updates api doc links from terraform.io to developer.hashicorp domain by @uk1288 [#629](https://github.com/hashicorp/go-tfe/pull/629)
 * Adds `UploadTarGzip()` method to `RegistryModules` and `ConfigurationVersions` interface by @sebasslash [#623](https://github.com/hashicorp/go-tfe/pull/623)
 * Adds `ManageProjects` field to `OrganizationAccess` struct by @hs26gill [#633](https://github.com/hashicorp/go-tfe/pull/633)
-* Update README.md and TESTS.md to show usage of `TFE_ADDRESS`, `TFE_HOSTNAME` and `TFE_TOKEN` environment variables by @uk1288 [#626](https://github.com/hashicorp/go-tfe/pull/626)
+* Adds agent-count to `AgentPools` endpoint. @evilensky [#611](https://github.com/hashicorp/go-tfe/pull/611)
+* Adds `Links` to `Workspace`, (currently contains "self" and "self-html" paths) @brandonc [#622](https://github.com/hashicorp/go-tfe/pull/622)
 
 # v1.16.0
 
@@ -16,8 +17,6 @@
 ## Enhancements
 * Adds `List()` method to `GPGKeys` interface by @sebasslash [#602](https://github.com/hashicorp/go-tfe/pull/602)
 * Adds `ProviderBinaryUploaded` field to `RegistryPlatforms` struct by @sebasslash [#602](https://github.com/hashicorp/go-tfe/pull/602)
-* Adds agent-count to `AgentPools` endpoint. @evilensky [#611](https://github.com/hashicorp/go-tfe/pull/611)
-* Adds `Links` to `Workspace`, (currently contains "self" and "self-html" paths) @brandonc [#622](https://github.com/hashicorp/go-tfe/pull/622)
 
 # v1.15.0
 
