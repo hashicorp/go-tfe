@@ -1,4 +1,4 @@
-# Unreleased
+# v1.17.0
 
 ## Enhancements
 * Add Beta endpoint `TeamProjectAccesses` to manage Project Access for Teams by @hs26gill [#599](https://github.com/hashicorp/go-tfe/pull/599)
