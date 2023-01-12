@@ -4,6 +4,7 @@
 * Add Beta endpoint `TeamProjectAccesses` to manage Project Access for Teams by @hs26gill [#599](https://github.com/hashicorp/go-tfe/pull/599)
 * Updates api doc links from terraform.io to developer.hashicorp domain by @uk1288 [#629](https://github.com/hashicorp/go-tfe/pull/629)
 * Adds `UploadTarGzip()` method to `RegistryModules` and `ConfigurationVersions` interface by @sebasslash [#623](https://github.com/hashicorp/go-tfe/pull/623)
+* Adds `ManageProjects` field to `OrganizationAccess` struct by @hs26gill [#633](https://github.com/hashicorp/go-tfe/pull/633)
 
 # v1.16.0
 

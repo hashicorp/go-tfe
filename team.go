@@ -65,6 +65,8 @@ type OrganizationAccess struct {
 	ManageProviders       bool `jsonapi:"attr,manage-providers"`
 	ManageModules         bool `jsonapi:"attr,manage-modules"`
 	ManageRunTasks        bool `jsonapi:"attr,manage-run-tasks"`
+	// **Note: This field is still in BETA and subject to change.**
+	ManageProjects bool `jsonapi:"attr,manage-projects"`
 }
 
 // TeamPermissions represents the current user's permissions on the team.
@@ -144,6 +146,8 @@ type OrganizationAccessOptions struct {
 	ManageProviders       *bool `json:"manage-providers,omitempty"`
 	ManageModules         *bool `json:"manage-modules,omitempty"`
 	ManageRunTasks        *bool `json:"manage-run-tasks,omitempty"`
+	// **Note: This field is still in BETA and subject to change.**
+	ManageProjects *bool `json:"manage-projects,omitempty"`
 }
 
 // List all the teams of the given organization.
