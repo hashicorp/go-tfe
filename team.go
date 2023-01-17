@@ -68,8 +68,8 @@ type OrganizationAccess struct {
 	ManageProviders       bool `jsonapi:"attr,manage-providers"`
 	ManageModules         bool `jsonapi:"attr,manage-modules"`
 	ManageRunTasks        bool `jsonapi:"attr,manage-run-tasks"`
-	// **Note: This field is still in BETA and subject to change.**
 	ManageProjects bool `jsonapi:"attr,manage-projects"`
+	// **Note: This field is still in BETA and subject to change.**
 	ReadWorkspaces bool `jsonapi:"attr,read-workspaces"`
 	ReadProjects   bool `jsonapi:"attr,read-projects"`
 }
@@ -151,8 +151,8 @@ type OrganizationAccessOptions struct {
 	ManageProviders       *bool `json:"manage-providers,omitempty"`
 	ManageModules         *bool `json:"manage-modules,omitempty"`
 	ManageRunTasks        *bool `json:"manage-run-tasks,omitempty"`
-	// **Note: This field is still in BETA and subject to change.**
 	ManageProjects *bool `json:"manage-projects,omitempty"`
+	// **Note: This field is still in BETA and subject to change.**
 	ReadWorkspaces *bool `json:"read-workspaces,omitempty"`
 	ReadProjects   *bool `json:"read-projects,omitempty"`
 }

@@ -89,7 +89,6 @@ type Organization struct {
 	AllowForceDeleteWorkspaces bool `jsonapi:"attr,allow-force-delete-workspaces"`
 
 	// Relations
-	// **Note: This field is still in BETA and subject to change.**
 	DefaultProject *Project `jsonapi:"relation,default-project"`
 }
 
