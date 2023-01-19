@@ -1,6 +1,7 @@
 # Unreleased
 
 ## Enhancements
+* Adds `BaseURL` and `BaseRegistryURL` methods to `Client` to more interrogate its configuration by @brandonc [#638](https://github.com/hashicorp/go-tfe/pull/638)
 
 ## Bug Fixes
 
