@@ -442,8 +442,18 @@ func NewClient(cfg *Config) (*Client, error) {
 // APIs as a later addition, so older servers will not return version
 // information. In that case, this function returns an empty string as the
 // version.
-func (c *Client) RemoteAPIVersion() string {
+func (c Client) RemoteAPIVersion() string {
 	return c.remoteAPIVersion
+}
+
+// BaseURL returns the base URL as configured in the client
+func (c Client) BaseURL() url.URL {
+	return *c.baseURL
+}
+
+// BaseRegistryURL returns the registry base URL as configured in the client
+func (c Client) BaseRegistryURL() url.URL {
+	return *c.registryBaseURL
 }
 
 // SetFakeRemoteAPIVersion allows setting a given string as the client's remoteAPIVersion,
@@ -451,7 +461,6 @@ func (c *Client) RemoteAPIVersion() string {
 //
 // This is intended for use in tests, when you may want to configure your TFE client to
 // return something different than the actual API version in order to test error handling.
-
 func (c *Client) SetFakeRemoteAPIVersion(fakeAPIVersion string) {
 	c.remoteAPIVersion = fakeAPIVersion
 }
@@ -463,20 +472,18 @@ func (c *Client) SetFakeRemoteAPIVersion(fakeAPIVersion string) {
 // during the initial setup request and RemoteTFEVersion returns that cached
 // value. This function returns an empty string for any Terraform Enterprise version
 // earlier than v202208-3 and for Terraform Cloud.
-func (c *Client) RemoteTFEVersion() string {
+func (c Client) RemoteTFEVersion() string {
 	return c.remoteTFEVersion
 }
 
 // RetryServerErrors configures the retry HTTP check to also retry
 // unexpected errors or requests that failed with a server error.
-
 func (c *Client) RetryServerErrors(retry bool) {
 	c.retryServerErrors = retry
 }
 
 // retryHTTPCheck provides a callback for Client.CheckRetry which
 // will retry both rate limit (429) and server (>= 500) errors.
-
 func (c *Client) retryHTTPCheck(ctx context.Context, resp *http.Response, err error) (bool, error) {
 	if ctx.Err() != nil {
 		return false, ctx.Err()
@@ -492,7 +499,6 @@ func (c *Client) retryHTTPCheck(ctx context.Context, resp *http.Response, err er
 
 // retryHTTPBackoff provides a generic callback for Client.Backoff which
 // will pass through all calls based on the status code of the response.
-
 func (c *Client) retryHTTPBackoff(min, max time.Duration, attemptNum int, resp *http.Response) time.Duration {
 	if c.retryLogHook != nil {
 		c.retryLogHook(attemptNum, resp)
@@ -517,7 +523,6 @@ func (c *Client) retryHTTPBackoff(min, max time.Duration, attemptNum int, resp *
 // min and max are mainly used for bounding the jitter that will be added to
 // the reset time retrieved from the headers. But if the final wait time is
 // less then min, min will be used instead.
-
 func rateLimitBackoff(min, max time.Duration, resp *http.Response) time.Duration {
 	// rnd is used to generate pseudo-random numbers.
 	rnd := rand.New(rand.NewSource(time.Now().UnixNano()))
@@ -592,7 +597,6 @@ func (c *Client) getRawAPIMetadata() (rawAPIMetadata, error) {
 }
 
 // configureLimiter configures the rate limiter.
-
 func (c *Client) configureLimiter(rawLimit string) {
 	// Set default values for when rate limiting is disabled.
 	limit := rate.Inf
