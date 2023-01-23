@@ -66,9 +66,18 @@ type AdminWorkspaceListOptions struct {
 	// A query string (partial workspace name) used to filter the results.
 	// https://developer.hashicorp.com/terraform/enterprise/api-docs/admin/workspaces#query-parameters
 	Query string `url:"q,omitempty"`
+
 	// Optional: A list of relations to include. See available resources
 	// https://developer.hashicorp.com/terraform/enterprise/api-docs/admin/workspaces#available-related-resources
 	Include []AdminWorkspaceIncludeOpt `url:"include,omitempty"`
+
+	// Optional: A comma-separated list of Run statuses to restrict results. See available resources
+	// https://developer.hashicorp.com/terraform/enterprise/api-docs/admin/workspaces#query-parameters
+	Filter string `url:"filter[current_run][status],omitempty"`
+
+	// Optional: May sort on "name" (the default) and "current-run.created-at" (which sorts by the time of the current run)
+	// Prepending a hyphen to the sort parameter will reverse the order (e.g. "-name" to reverse the default order)
+	Sort string `url:"sort,omitempty"`
 }
 
 // AdminWorkspaceList represents a list of workspaces.
