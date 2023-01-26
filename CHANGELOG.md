@@ -1,6 +1,7 @@
 # Unreleased
 
 ## Enhancements
+* Update team project access to include additional project roles by @joekarl [#642](https://github.com/hashicorp/go-tfe/pull/642)
 
 ## Bug Fixes
 

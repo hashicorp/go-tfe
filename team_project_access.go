@@ -43,8 +43,10 @@ type teamProjectAccesses struct {
 type TeamProjectAccessType string
 
 const (
-	TeamProjectAccessAdmin TeamProjectAccessType = "admin"
-	TeamProjectAccessRead  TeamProjectAccessType = "read"
+	TeamProjectAccessAdmin    TeamProjectAccessType = "admin"
+	TeamProjectAccessMaintain TeamProjectAccessType = "maintain"
+	TeamProjectAccessWrite    TeamProjectAccessType = "write"
+	TeamProjectAccessRead     TeamProjectAccessType = "read"
 )
 
 // TeamProjectAccessList represents a list of team project accesses
@@ -224,7 +226,10 @@ func (o TeamProjectAccessAddOptions) valid() error {
 
 func validateTeamProjectAccessType(t TeamProjectAccessType) error {
 	switch t {
-	case TeamProjectAccessAdmin, TeamProjectAccessRead:
+	case TeamProjectAccessAdmin,
+		TeamProjectAccessMaintain,
+		TeamProjectAccessWrite,
+		TeamProjectAccessRead:
 		// do nothing
 	default:
 		return ErrInvalidTeamProjectAccessType
