@@ -1,4 +1,7 @@
 #!/usr/bin/env bash -e
+# Copyright (c) HashiCorp, Inc.
+# SPDX-License-Identifier: MPL-2.0
+
 
 # setup-test-envvars.sh
 #

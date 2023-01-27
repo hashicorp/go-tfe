@@ -1,0 +1,28 @@
+name: Copywrite
+
+on:
+  push:
+    tags:
+      - v*
+    branches:
+      - main
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  copywrite:
+    name: Run Header Copyright
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@93ea575cb5d8a053eaa0ac8fa3b40d7e05a33cc8 # v3.1.0
+
+      - name: Install Copywrite
+        id: install
+        uses: hashicorp/setup-copywrite@v1.0.0
+
+      - name: Output Installed Copywrite Version
+        run: echo "Installed Copywrite CLI ${{steps.install.outputs.version}}"
+
+      - name: Run Copywrite Header Compliance
+        run: copywrite headers --plan
