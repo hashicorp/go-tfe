@@ -69,7 +69,7 @@ type OrganizationAccess struct {
 	ManageModules         bool `jsonapi:"attr,manage-modules"`
 	ManageRunTasks        bool `jsonapi:"attr,manage-run-tasks"`
 	// **Note: This field is still in BETA and subject to change.**
-	ManageProjects bool `jsonapi:"attr,manage-projects"`
+	ManageProjects        bool `jsonapi:"attr,manage-projects"`
 	ReadWorkspaces        bool `jsonapi:"attr,read-workspaces"`
 	ReadProjects          bool `jsonapi:"attr,read-projects"`
 }
