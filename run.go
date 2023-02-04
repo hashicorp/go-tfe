@@ -222,16 +222,19 @@ type RunListOptions struct {
 	// The presence of search[commit] or search[user] takes priority over this parameter and will be omitted.
 	Search string `url:"search[basic],omitempty"`
 
-	// Optional: Current status of the run.
-	// Options are listed at https://developer.hashicorp.com/terraform/cloud-docs/api-docs/run#run-states
+	// Optional: Comma-separated list of acceptable run statuses.
+	// Options are listed at https://developer.hashicorp.com/terraform/cloud-docs/api-docs/run#run-states,
+	// or as constants with the RunStatus string type.
 	Status string `url:"filter[status],omitempty"`
 
-	// Optional: Source that triggered the run.
-	// Options are listed at https://developer.hashicorp.com/terraform/cloud-docs/api-docs/run#run-sources
+	// Optional: Comma-separated list of acceptable run sources.
+	// Options are listed at https://developer.hashicorp.com/terraform/cloud-docs/api-docs/run#run-sources,
+	// or as constants with the RunSource string type.
 	Source string `url:"filter[source],omitempty"`
 
-	// Optional: Operation type for the run.
-	// Options are listed at https://developer.hashicorp.com/terraform/cloud-docs/api-docs/run#run-operations
+	// Optional: Comma-separated list of acceptable run operation types.
+	// Options are listed at https://developer.hashicorp.com/terraform/cloud-docs/api-docs/run#run-operations,
+	// or as constants with the RunOperation string type.
 	Operation string `url:"filter[operation],omitempty"`
 
 	// Optional: A list of relations to include. See available resources:
