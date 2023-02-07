@@ -318,6 +318,8 @@ func TestTeam_Unmarshal(t *testing.T) {
 					"manage-workspaces":   true,
 					"manage-vcs-settings": true,
 					"manage-projects":     true,
+					"read-workspaces":     true,
+					"read-projects":       true,
 				},
 				"permissions": map[string]interface{}{
 					"can-destroy":           true,
@@ -341,6 +343,8 @@ func TestTeam_Unmarshal(t *testing.T) {
 	assert.Equal(t, team.OrganizationAccess.ManageVCSSettings, true)
 	assert.Equal(t, team.OrganizationAccess.ManagePolicies, true)
 	assert.Equal(t, team.OrganizationAccess.ManageProjects, true)
+	assert.Equal(t, team.OrganizationAccess.ReadWorkspaces, true)
+	assert.Equal(t, team.OrganizationAccess.ReadProjects, true)
 	assert.Equal(t, team.Permissions.CanDestroy, true)
 	assert.Equal(t, team.Permissions.CanUpdateMembership, true)
 }

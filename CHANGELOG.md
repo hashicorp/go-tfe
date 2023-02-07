@@ -2,6 +2,7 @@
 
 ## Enhancements
 * Adds `BaseURL` and `BaseRegistryURL` methods to `Client` to expose its configuration by @brandonc [#638](https://github.com/hashicorp/go-tfe/pull/638)
+* Adds `ReadWorkspaces` and `ReadProjects` permissions to `Organizations` by @JuliannaTetreault [#614](https://github.com/hashicorp/go-tfe/pull/614)
 
 ## Bug Fixes
 
