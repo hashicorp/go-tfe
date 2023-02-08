@@ -414,7 +414,6 @@ func TestTeamsUpdateRunTasks(t *testing.T) {
 
 func TestTeamsUpdateManageProjects(t *testing.T) {
 	skipIfFreeOnly(t)
-	skipIfEnterprise(t)
 
 	client := testClient(t)
 	ctx := context.Background()
