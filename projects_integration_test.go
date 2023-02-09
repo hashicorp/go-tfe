@@ -13,8 +13,6 @@ import (
 )
 
 func TestProjectsList(t *testing.T) {
-	skipUnlessBeta(t)
-
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -55,8 +53,6 @@ func TestProjectsList(t *testing.T) {
 }
 
 func TestProjectsRead(t *testing.T) {
-	skipUnlessBeta(t)
-
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -87,8 +83,6 @@ func TestProjectsRead(t *testing.T) {
 }
 
 func TestProjectsCreate(t *testing.T) {
-	skipUnlessBeta(t)
-
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -139,8 +133,6 @@ func TestProjectsCreate(t *testing.T) {
 }
 
 func TestProjectsUpdate(t *testing.T) {
-	skipUnlessBeta(t)
-
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -152,7 +144,7 @@ func TestProjectsUpdate(t *testing.T) {
 		defer kTestCleanup()
 
 		kAfter, err := client.Projects.Update(ctx, kBefore.ID, ProjectUpdateOptions{
-			Name: String("new project name!"),
+			Name: String("new project name"),
 		})
 		require.NoError(t, err)
 
@@ -179,8 +171,6 @@ func TestProjectsUpdate(t *testing.T) {
 }
 
 func TestProjectsDelete(t *testing.T) {
-	skipUnlessBeta(t)
-
 	client := testClient(t)
 	ctx := context.Background()
 

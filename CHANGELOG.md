@@ -1,6 +1,7 @@
 # Unreleased
 
 ## Enhancements
+* Removed Beta tags from `Project` features by @hs26gill [#637](https://github.com/hashicorp/go-tfe/pull/637)
 
 ## Bug Fixes
 
