@@ -12,8 +12,6 @@ import (
 )
 
 func TestWorkspaceRunTasksCreate(t *testing.T) {
-	skipIfFreeOnly(t)
-
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -50,8 +48,6 @@ func TestWorkspaceRunTasksCreate(t *testing.T) {
 func TestWorkspaceRunTasksCreateBeta(t *testing.T) {
 	// Once Pre-Plan Tasks are generally available, this can replace the above TestWorkspaceRunTasksCreate
 	skipUnlessBeta(t)
-	skipIfFreeOnly(t)
-
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -90,8 +86,6 @@ func TestWorkspaceRunTasksCreateBeta(t *testing.T) {
 }
 
 func TestWorkspaceRunTasksList(t *testing.T) {
-	skipIfFreeOnly(t)
-
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -124,8 +118,6 @@ func TestWorkspaceRunTasksList(t *testing.T) {
 }
 
 func TestWorkspaceRunTasksRead(t *testing.T) {
-	skipIfFreeOnly(t)
-
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -159,8 +151,6 @@ func TestWorkspaceRunTasksRead(t *testing.T) {
 }
 
 func TestWorkspaceRunTasksUpdate(t *testing.T) {
-	skipIfFreeOnly(t)
-
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -192,8 +182,6 @@ func TestWorkspaceRunTasksUpdate(t *testing.T) {
 func TestWorkspaceRunTasksUpdateBeta(t *testing.T) {
 	// Once Pre-Plan Tasks are generally available, this can replace the above TestWorkspaceRunTasksUpdate
 	skipUnlessBeta(t)
-	skipIfFreeOnly(t)
-
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -226,8 +214,6 @@ func TestWorkspaceRunTasksUpdateBeta(t *testing.T) {
 }
 
 func TestWorkspaceRunTasksDelete(t *testing.T) {
-	skipIfFreeOnly(t)
-
 	client := testClient(t)
 	ctx := context.Background()
 

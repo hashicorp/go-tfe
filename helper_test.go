@@ -940,9 +940,6 @@ func createPolicyCheckedRun(t *testing.T, client *Client, w *Workspace) (*Run, f
 }
 
 func createPlannedRun(t *testing.T, client *Client, w *Workspace) (*Run, func()) {
-	if paidFeaturesDisabled() {
-		return createRunWaitForStatus(t, client, w, RunPlanned)
-	}
 	return createRunWaitForStatus(t, client, w, RunCostEstimated)
 }
 
@@ -2274,14 +2271,6 @@ func skipIfEnterprise(t *testing.T) {
 	}
 }
 
-// skips a test if the test requires a paid feature, and this flag
-// SKIP_PAID is set.
-func skipIfFreeOnly(t *testing.T) {
-	if paidFeaturesDisabled() {
-		t.Skip("Skipping test that requires a paid feature. Remove 'SKIP_PAID=1' if you want to run this test")
-	}
-}
-
 // skips a test if the underlying beta feature is not available.
 // **Note: ENABLE_BETA is always disabled in CI, so ensure you:
 //
@@ -2309,10 +2298,6 @@ func linuxAmd64() bool {
 // Checks to see if ENABLE_TFE is set to 1, thereby enabling enterprise tests.
 func enterpriseEnabled() bool {
 	return os.Getenv("ENABLE_TFE") == "1"
-}
-
-func paidFeaturesDisabled() bool {
-	return os.Getenv("SKIP_PAID") == "1"
 }
 
 // Checks to see if ENABLE_BETA is set to 1, thereby enabling tests for beta features.

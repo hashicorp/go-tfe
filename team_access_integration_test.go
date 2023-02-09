@@ -12,8 +12,6 @@ import (
 )
 
 func TestTeamAccessesList(t *testing.T) {
-	skipIfFreeOnly(t)
-
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -90,8 +88,6 @@ func TestTeamAccessesList(t *testing.T) {
 }
 
 func TestTeamAccessesAdd(t *testing.T) {
-	skipIfFreeOnly(t)
-
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -222,8 +218,6 @@ func TestTeamAccessesAdd(t *testing.T) {
 }
 
 func TestTeamAccessesRead(t *testing.T) {
-	skipIfFreeOnly(t)
-
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -274,8 +268,6 @@ func TestTeamAccessesRead(t *testing.T) {
 }
 
 func TestTeamAccessesUpdate(t *testing.T) {
-	skipIfFreeOnly(t)
-
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -306,8 +298,6 @@ func TestTeamAccessesUpdate(t *testing.T) {
 }
 
 func TestTeamAccessesRemove(t *testing.T) {
-	skipIfFreeOnly(t)
-
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -340,7 +330,6 @@ func TestTeamAccessesRemove(t *testing.T) {
 }
 
 func TestTeamAccessesReadRunTasks(t *testing.T) {
-	skipIfFreeOnly(t)
 	skipUnlessBeta(t)
 	skipIfEnterprise(t)
 
@@ -370,7 +359,6 @@ func TestTeamAccessesReadRunTasks(t *testing.T) {
 }
 
 func TestTeamAccessesUpdateRunTasks(t *testing.T) {
-	skipIfFreeOnly(t)
 	skipUnlessBeta(t)
 
 	client := testClient(t)

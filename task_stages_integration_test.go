@@ -12,8 +12,6 @@ import (
 )
 
 func TestTaskStagesRead(t *testing.T) {
-	skipIfFreeOnly(t)
-
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -78,8 +76,6 @@ func TestTaskStagesRead(t *testing.T) {
 }
 
 func TestTaskStagesList(t *testing.T) {
-	skipIfFreeOnly(t)
-
 	client := testClient(t)
 	ctx := context.Background()
 
