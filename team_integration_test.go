@@ -15,8 +15,6 @@ import (
 )
 
 func TestTeamsList(t *testing.T) {
-	skipIfFreeOnly(t)
-
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -82,8 +80,6 @@ func TestTeamsList(t *testing.T) {
 }
 
 func TestTeamsCreate(t *testing.T) {
-	skipIfFreeOnly(t)
-
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -141,8 +137,6 @@ func TestTeamsCreate(t *testing.T) {
 }
 
 func TestTeamsRead(t *testing.T) {
-	skipIfFreeOnly(t)
-
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -203,8 +197,6 @@ func TestTeamsRead(t *testing.T) {
 }
 
 func TestTeamsUpdate(t *testing.T) {
-	skipIfFreeOnly(t)
-
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -281,8 +273,6 @@ func TestTeamsUpdate(t *testing.T) {
 }
 
 func TestTeamsDelete(t *testing.T) {
-	skipIfFreeOnly(t)
-
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -371,7 +361,6 @@ func TestTeamCreateOptions_Marshal(t *testing.T) {
 }
 
 func TestTeamsUpdateRunTasks(t *testing.T) {
-	skipIfFreeOnly(t)
 	skipUnlessBeta(t)
 	skipIfEnterprise(t)
 
@@ -413,8 +402,6 @@ func TestTeamsUpdateRunTasks(t *testing.T) {
 }
 
 func TestTeamsUpdateManageProjects(t *testing.T) {
-	skipIfFreeOnly(t)
-
 	client := testClient(t)
 	ctx := context.Background()
 

@@ -2142,7 +2142,6 @@ func TestWorkspaceCreateOptions_Marshal(t *testing.T) {
 }
 
 func TestWorkspacesRunTasksPermission(t *testing.T) {
-	skipIfFreeOnly(t)
 	skipUnlessBeta(t)
 
 	client := testClient(t)
