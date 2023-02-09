@@ -122,7 +122,6 @@ func TestPolicyChecksRead(t *testing.T) {
 }
 
 func TestPolicyChecksOverride(t *testing.T) {
-
 	client := testClient(t)
 	ctx := context.Background()
 
