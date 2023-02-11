@@ -127,6 +127,7 @@ type Client struct {
 	Comments                   Comments
 	ConfigurationVersions      ConfigurationVersions
 	CostEstimates              CostEstimates
+	GHAInstallations           GHAInstallations
 	GPGKeys                    GPGKeys
 	NotificationConfigurations NotificationConfigurations
 	OAuthClients               OAuthClients
