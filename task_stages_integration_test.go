@@ -12,6 +12,7 @@ import (
 )
 
 func TestTaskStagesRead(t *testing.T) {
+	skipIfFreeOnly(t)
 	client := testClient(t)
 	ctx := context.Background()
 
