@@ -327,7 +327,7 @@ func TestWorkspacesCreateTableDriven(t *testing.T) {
 				require.NoError(t, err)
 			},
 		},
-		{
+		/*{
 			scenario: "when github app installation id is passes in place of oauth token id",
 			options: &WorkspaceTableOptions{
 				createOptions: &WorkspaceCreateOptions{
@@ -345,7 +345,7 @@ func TestWorkspacesCreateTableDriven(t *testing.T) {
 					Email: String(fmt.Sprintf("%s@tfe.local", randomString(t))),
 				})
 
-				w, wTestCleanup := createWorkspaceWithVCSNoOauth(t, client, orgTest, *options.createOptions)
+				w, wTestCleanup := createWorkspaceWithVCS(t, client, orgTest, *options.createOptions)
 
 				return w, func() {
 					t.Cleanup(orgTestCleanup)
@@ -366,7 +366,7 @@ func TestWorkspacesCreateTableDriven(t *testing.T) {
 					assert.Equal(t, *options.createOptions.VCSRepo.TagsRegex, item.VCSRepo.TagsRegex)
 				}
 			},
-		},
+		},*/
 	}
 
 	for _, tableTest := range workspaceTableTests {
@@ -379,6 +379,80 @@ func TestWorkspacesCreateTableDriven(t *testing.T) {
 				defer cleanup()
 			} else {
 				workspace, err = client.Workspaces.Create(ctx, orgTest.Name, *tableTest.options.createOptions)
+			}
+			tableTest.assertion(workspace, tableTest.options, err)
+		})
+	}
+}
+
+func TestWorkspacesCreateTableDrivenWithGithubApp(t *testing.T) {
+	client := testClient(t)
+	ctx := context.Background()
+
+	orgTest1, orgTestCleanup := createOrganization(t, client)
+	//testOrg, _ := client.Organizations.Read(ctx, "hashicorp")
+
+	t.Cleanup(orgTestCleanup)
+
+	workspaceTableTests := []WorkspaceTableTest{
+		{
+			scenario: "when options include tags-regex",
+			options: &WorkspaceTableOptions{
+				createOptions: &WorkspaceCreateOptions{
+					Name:                String("foobar"),
+					FileTriggersEnabled: Bool(false),
+					VCSRepo: &VCSRepoOptions{
+						TagsRegex: String("barfoo")},
+				},
+			},
+			setup: func(options *WorkspaceTableOptions) (w *Workspace, cleanup func()) {
+				// Remove the below organization creation and use the one from the outer scope once the feature flag is removed
+				orgTest, orgTestCleanup := createOrganizationWithOptions(t, client, OrganizationCreateOptions{
+					Name:  String("tst-" + randomString(t)[0:20]),
+					Email: String(fmt.Sprintf("%s@tfe.local", randomString(t))),
+				})
+
+				w, wTestCleanup := createWorkspaceWithVCSGHA(t, client, orgTest, *options.createOptions)
+
+				return w, func() {
+					t.Cleanup(orgTestCleanup)
+					t.Cleanup(wTestCleanup)
+				}
+
+				// Remove the below organization creation and use the one from the outer scope once the feature flag is removed
+				/*
+					w, wTestCleanup := createWorkspaceWithVCSGHA(t, client, testOrg, *options.createOptions)
+
+					return w, func() {
+						t.Cleanup(wTestCleanup)
+					}*/
+			},
+			assertion: func(w *Workspace, options *WorkspaceTableOptions, err error) {
+				assert.Equal(t, *options.createOptions.VCSRepo.TagsRegex, w.VCSRepo.TagsRegex)
+
+				// Get a refreshed view from the API.
+				refreshed, readErr := client.Workspaces.Read(ctx, w.Organization.Name, *options.createOptions.Name)
+				require.NoError(t, readErr)
+
+				for _, item := range []*Workspace{
+					w,
+					refreshed,
+				} {
+					assert.Equal(t, *options.createOptions.VCSRepo.TagsRegex, item.VCSRepo.TagsRegex)
+				}
+			},
+		},
+	}
+	for _, tableTest := range workspaceTableTests {
+		t.Run(tableTest.scenario, func(t *testing.T) {
+			var workspace *Workspace
+			var cleanup func()
+			var err error
+			if tableTest.setup != nil {
+				workspace, cleanup = tableTest.setup(tableTest.options)
+				defer cleanup()
+			} else {
+				workspace, err = client.Workspaces.Create(ctx, orgTest1.Name, *tableTest.options.createOptions)
 			}
 			tableTest.assertion(workspace, tableTest.options, err)
 		})

@@ -3,7 +3,6 @@ package tfe
 import (
 	"context"
 	"fmt"
-	"time"
 )
 
 // Compile-time proof of interface implementation.
@@ -32,10 +31,10 @@ type GHAInstallationList struct {
 
 // GHAInstallation represents a github app installation
 type GHAInstallation struct {
-	InstallationID       string    `jsonapi:"primary,installation-id"`
-	GithubInstallationID int       `jsonapi:"attr,github-installation-id"`
-	CreatedAt            time.Time `jsonapi:"attr,created-at,iso8601"`
-	Name                 string    `jsonapi:"attr,name"`
+	ID             string `jsonapi:"primary,github-app-installations"`
+	InstallationId int32  `jsonapi:"attr,installation-id"`
+	IconUrl        string `jsonapi:"attr,icon-url"`
+	Name           string `jsonapi:"attr,name"`
 }
 
 // GHAInstallationListOptions represents the options for listing.
@@ -45,17 +44,27 @@ type GHAInstallationListOptions struct {
 
 // List all the github app installations.
 func (s *gHAInstallations) List(ctx context.Context, options *GHAInstallationListOptions) (*GHAInstallationList, error) {
-	u := fmt.Sprintf("github-app-installations/installations")
+	if err := options.valid(); err != nil {
+		return nil, err
+	}
+
+	u := fmt.Sprintf("github-app-installations")
 	req, err := s.client.NewRequest("GET", u, options)
 	if err != nil {
 		return nil, err
 	}
 
 	otl := &GHAInstallationList{}
+
 	err = req.Do(ctx, otl)
+	fmt.Println(otl.Items[0])
 	if err != nil {
 		return nil, err
 	}
 
 	return otl, nil
+}
+
+func (o *GHAInstallationListOptions) valid() error {
+	return nil
 }
