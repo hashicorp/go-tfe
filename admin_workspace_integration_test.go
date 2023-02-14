@@ -40,8 +40,8 @@ func TestAdminWorkspaces_ListWithFilter(t *testing.T) {
 
 		require.NoError(t, err)
 		require.NotEmpty(t, wl.Items)
-		assert.GreaterOrEqual(t, len(wl.Items), 1)
 		assert.Equal(t, wl.Items[0].CurrentRun.Status, RunApplied)
+		assert.NotContains(t, wl.Items, wTest2)
 	})
 }
 
