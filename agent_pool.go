@@ -1,3 +1,6 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
+
 package tfe
 
 import (
@@ -12,7 +15,7 @@ var _ AgentPools = (*agentPools)(nil)
 // AgentPools describes all the agent pool related methods that the Terraform
 // Cloud API supports. Note that agents are not available in Terraform Enterprise.
 //
-// TFE API docs: https://www.terraform.io/docs/cloud/api/agents.html
+// TFE API docs: https://developer.hashicorp.com/terraform/cloud-docs/api-docs/agents
 type AgentPools interface {
 	// List all the agent pools of the given organization.
 	List(ctx context.Context, organization string, options *AgentPoolListOptions) (*AgentPoolList, error)
@@ -58,7 +61,7 @@ type AgentPool struct {
 }
 
 // A list of relations to include
-// https://www.terraform.io/cloud-docs/api-docs/agents#available-related-resources
+// https://developer.hashicorp.com/terraform/cloud-docs/api-docs/agents#available-related-resources
 type AgentPoolIncludeOpt string
 
 const AgentPoolWorkspaces AgentPoolIncludeOpt = "workspaces"
@@ -71,7 +74,7 @@ type AgentPoolReadOptions struct {
 type AgentPoolListOptions struct {
 	ListOptions
 	// Optional: A list of relations to include. See available resources
-	// https://www.terraform.io/cloud-docs/api-docs/agents#available-related-resources
+	// https://developer.hashicorp.com/terraform/cloud-docs/api-docs/agents#available-related-resources
 	Include []AgentPoolIncludeOpt `url:"include,omitempty"`
 
 	// Optional: A search query string used to filter agent pool. Agent pools are searchable by name

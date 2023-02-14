@@ -1,0 +1,10 @@
+name: Jira PR Transition
+
+on:
+  pull_request:
+    types: [opened, closed, reopened, converted_to_draft, ready_for_review]
+
+jobs:
+  call-workflow:
+    uses: hashicorp/terraform-provider-tfe/.github/workflows/jira-pr-transition.yml@main
+    secrets: inherit

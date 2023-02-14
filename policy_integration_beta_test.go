@@ -1,3 +1,6 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
+
 package tfe
 
 import (
@@ -9,7 +12,6 @@ import (
 )
 
 func TestPoliciesCreate_Beta(t *testing.T) {
-	skipIfFreeOnly(t)
 	skipUnlessBeta(t)
 
 	client := testClient(t)
@@ -220,7 +222,6 @@ func TestPoliciesCreate_Beta(t *testing.T) {
 }
 
 func TestPoliciesList_Beta(t *testing.T) {
-	skipIfFreeOnly(t)
 	skipUnlessBeta(t)
 
 	client := testClient(t)
@@ -308,7 +309,6 @@ func TestPoliciesList_Beta(t *testing.T) {
 }
 
 func TestPoliciesUpdate_Beta(t *testing.T) {
-	skipIfFreeOnly(t)
 	skipUnlessBeta(t)
 
 	client := testClient(t)

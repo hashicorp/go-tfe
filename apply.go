@@ -1,3 +1,6 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
+
 package tfe
 
 import (
@@ -14,7 +17,7 @@ var _ Applies = (*applies)(nil)
 // Applies describes all the apply related methods that the Terraform
 // Enterprise API supports.
 //
-// TFE API docs: https://www.terraform.io/docs/cloud/api/applies.html
+// TFE API docs: https://developer.hashicorp.com/terraform/cloud-docs/api-docs/applies
 type Applies interface {
 	// Read an apply by its ID.
 	Read(ctx context.Context, applyID string) (*Apply, error)

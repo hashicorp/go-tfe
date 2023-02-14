@@ -1,3 +1,6 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
+
 package tfe
 
 import (
@@ -14,7 +17,7 @@ var _ OAuthClients = (*oAuthClients)(nil)
 // Terraform Enterprise API supports.
 //
 // TFE API docs:
-// https://www.terraform.io/docs/enterprise/api/oauth-clients.html
+// https://developer.hashicorp.com/terraform/cloud-docs/api-docs/oauth-clients
 type OAuthClients interface {
 	// List all the OAuth clients for a given organization.
 	List(ctx context.Context, organization string, options *OAuthClientListOptions) (*OAuthClientList, error)

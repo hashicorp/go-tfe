@@ -1,3 +1,6 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
+
 package tfe
 
 import (
@@ -14,7 +17,7 @@ var _ PlanExports = (*planExports)(nil)
 // PlanExports describes all the plan export related methods that the Terraform
 // Enterprise API supports.
 //
-// TFE API docs: https://www.terraform.io/docs/cloud/api/plan-exports.html
+// TFE API docs: https://developer.hashicorp.com/terraform/cloud-docs/api-docs/plan-exports
 type PlanExports interface {
 	// Export a plan by its ID with the given options.
 	Create(ctx context.Context, options PlanExportCreateOptions) (*PlanExport, error)

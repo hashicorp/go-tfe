@@ -1,7 +1,12 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
+
 package tfe
 
 import (
+	"archive/tar"
 	"archive/zip"
+	"compress/gzip"
 	"context"
 	"crypto/hmac"
 	"crypto/md5"
@@ -935,9 +940,6 @@ func createPolicyCheckedRun(t *testing.T, client *Client, w *Workspace) (*Run, f
 }
 
 func createPlannedRun(t *testing.T, client *Client, w *Workspace) (*Run, func()) {
-	if paidFeaturesDisabled() {
-		return createRunWaitForStatus(t, client, w, RunPlanned)
-	}
 	return createRunWaitForStatus(t, client, w, RunCostEstimated)
 }
 
@@ -1653,6 +1655,52 @@ func createTeamAccess(t *testing.T, client *Client, tm *Team, w *Workspace, org 
 	}
 }
 
+func createTeamProjectAccess(t *testing.T, client *Client, tm *Team, p *Project, org *Organization) (*TeamProjectAccess, func()) {
+	var orgCleanup, tmCleanup, pCleanup func()
+
+	if org == nil {
+		org, orgCleanup = createOrganization(t, client)
+	}
+
+	if tm == nil {
+		tm, tmCleanup = createTeam(t, client, org)
+	}
+
+	if p == nil {
+		p, pCleanup = createProject(t, client, org)
+	}
+
+	ctx := context.Background()
+	tpa, err := client.TeamProjectAccess.Add(ctx, TeamProjectAccessAddOptions{
+		Access:  *ProjectAccess(TeamProjectAccessAdmin),
+		Team:    tm,
+		Project: p,
+	})
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	return tpa, func() {
+		if err := client.TeamProjectAccess.Remove(ctx, tpa.ID); err != nil {
+			t.Errorf("Error removing team access! WARNING: Dangling resources\n"+
+				"may exist! The full error is shown below.\n\n"+
+				"TeamAccess: %s\nError: %s", tpa.ID, err)
+		}
+
+		if tmCleanup != nil {
+			tmCleanup()
+		}
+
+		if orgCleanup != nil {
+			orgCleanup()
+		}
+
+		if pCleanup != nil {
+			pCleanup()
+		}
+	}
+}
+
 func createTeamToken(t *testing.T, client *Client, tm *Team) (*TeamToken, func()) {
 	var tmCleanup func()
 
@@ -2076,6 +2124,62 @@ func createProject(t *testing.T, client *Client, org *Organization) (*Project, f
 	}
 }
 
+func createTarGzipArchive(t *testing.T, files []string, outputPath string) {
+	if len(files) == 0 {
+		t.Fatal("files to archive are empty")
+	}
+
+	out, err := os.Create(outputPath)
+	if err != nil {
+		t.Fatal(err)
+	}
+	defer out.Close()
+
+	gw := gzip.NewWriter(out)
+	defer gw.Close()
+
+	tw := tar.NewWriter(gw)
+	defer tw.Close()
+
+	for _, filename := range files {
+		func() {
+			file, err := os.Open(filename)
+			if err != nil {
+				t.Fatal(err)
+			}
+			defer file.Close()
+
+			info, err := file.Stat()
+			if err != nil {
+				t.Fatal(err)
+			}
+
+			header, err := tar.FileInfoHeader(info, info.Name())
+			if err != nil {
+				t.Fatal(err)
+			}
+
+			header.Name = filename
+			err = tw.WriteHeader(header)
+			if err != nil {
+				t.Fatal(err)
+			}
+
+			_, err = io.Copy(tw, file)
+			if err != nil {
+				t.Fatal(err)
+			}
+		}()
+	}
+
+	t.Cleanup(func() {
+		err := os.Remove(outputPath)
+		if err != nil {
+			t.Fatal("failed to delete archive: %w", err)
+		}
+	})
+}
+
 func waitForSVOutputs(t *testing.T, client *Client, svID string) {
 	t.Helper()
 
@@ -2218,14 +2322,6 @@ func skipIfEnterprise(t *testing.T) {
 	}
 }
 
-// skips a test if the test requires a paid feature, and this flag
-// SKIP_PAID is set.
-func skipIfFreeOnly(t *testing.T) {
-	if paidFeaturesDisabled() {
-		t.Skip("Skipping test that requires a paid feature. Remove 'SKIP_PAID=1' if you want to run this test")
-	}
-}
-
 // skips a test if the underlying beta feature is not available.
 // **Note: ENABLE_BETA is always disabled in CI, so ensure you:
 //
@@ -2253,10 +2349,6 @@ func linuxAmd64() bool {
 // Checks to see if ENABLE_TFE is set to 1, thereby enabling enterprise tests.
 func enterpriseEnabled() bool {
 	return os.Getenv("ENABLE_TFE") == "1"
-}
-
-func paidFeaturesDisabled() bool {
-	return os.Getenv("SKIP_PAID") == "1"
 }
 
 // Checks to see if ENABLE_BETA is set to 1, thereby enabling tests for beta features.

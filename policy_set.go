@@ -1,3 +1,6 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
+
 package tfe
 
 import (
@@ -22,7 +25,7 @@ const (
 // PolicySets describes all the policy set related methods that the Terraform
 // Enterprise API supports.
 //
-// TFE API docs: https://www.terraform.io/docs/cloud/api/policy-sets.html
+// TFE API docs: https://developer.hashicorp.com/terraform/cloud-docs/api-docs/policy-sets
 type PolicySets interface {
 	// List all the policy sets for a given organization.
 	List(ctx context.Context, organization string, options *PolicySetListOptions) (*PolicySetList, error)
@@ -99,7 +102,7 @@ type PolicySet struct {
 }
 
 // PolicySetIncludeOpt represents the available options for include query params.
-// https://www.terraform.io/cloud-docs/api-docs/policy-sets#available-related-resources
+// https://developer.hashicorp.com/terraform/cloud-docs/api-docs/policy-sets#available-related-resources
 type PolicySetIncludeOpt string
 
 const (
@@ -121,16 +124,16 @@ type PolicySetListOptions struct {
 	Kind PolicyKind `url:"filter[kind],omitempty"`
 
 	// Optional: A list of relations to include. See available resources
-	// https://www.terraform.io/cloud-docs/api-docs/policy-sets#available-related-resources
+	// https://developer.hashicorp.com/terraform/cloud-docs/api-docs/policy-sets#available-related-resources
 	Include []PolicySetIncludeOpt `url:"include,omitempty"`
 }
 
 // PolicySetReadOptions are read options.
 // For a full list of relations, please see:
-// https://www.terraform.io/docs/cloud/api/policy-sets.html#relationships
+// https://developer.hashicorp.com/terraform/cloud-docs/api-docs/policy-sets#relationships
 type PolicySetReadOptions struct {
 	// Optional: A list of relations to include. See available resources
-	// https://www.terraform.io/cloud-docs/api-docs/policy-sets#available-related-resources
+	// https://developer.hashicorp.com/terraform/cloud-docs/api-docs/policy-sets#available-related-resources
 	Include []PolicySetIncludeOpt `url:"include,omitempty"`
 }
 

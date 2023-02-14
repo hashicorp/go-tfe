@@ -1,3 +1,6 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
+
 package tfe
 
 import (
@@ -9,7 +12,7 @@ var _ IPRanges = (*ipRanges)(nil)
 
 // IP Ranges provides a list of Terraform Cloud and Enterprise's IP ranges.
 //
-// TFE API docs: https://www.terraform.io/docs/cloud/api/ip-ranges.html
+// TFE API docs: https://developer.hashicorp.com/terraform/cloud-docs/api-docs/ip-ranges
 type IPRanges interface {
 	// Retrieve TFC IP ranges. If `modifiedSince` is not an empty string
 	// then it will only return the IP ranges changes since that date.

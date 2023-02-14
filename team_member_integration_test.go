@@ -1,3 +1,6 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
+
 package tfe
 
 import (
@@ -15,8 +18,6 @@ func TestTeamMembersList(t *testing.T) {
 	// create team tokens, but they only have access to one team: the
 	// owners team. This test creates new teams, and that feature is
 	// unavaiable to paid accounts.
-	skipIfFreeOnly(t)
-
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -55,8 +56,6 @@ func TestTeamMembersList(t *testing.T) {
 }
 
 func TestTeamMembersAddWithInvalidOptions(t *testing.T) {
-	skipIfFreeOnly(t)
-
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -99,8 +98,6 @@ func TestTeamMembersAddWithInvalidOptions(t *testing.T) {
 }
 
 func TestTeamMembersAddByUsername(t *testing.T) {
-	skipIfFreeOnly(t)
-
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -133,8 +130,6 @@ func TestTeamMembersAddByUsername(t *testing.T) {
 }
 
 func TestTeamMembersAddByOrganizationMembers(t *testing.T) {
-	skipIfFreeOnly(t)
-
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -171,8 +166,6 @@ func TestTeamMembersAddByOrganizationMembers(t *testing.T) {
 }
 
 func TestTeamMembersRemoveWithInvalidOptions(t *testing.T) {
-	skipIfFreeOnly(t)
-
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -215,8 +208,6 @@ func TestTeamMembersRemoveWithInvalidOptions(t *testing.T) {
 }
 
 func TestTeamMembersRemoveByUsernames(t *testing.T) {
-	skipIfFreeOnly(t)
-
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -242,8 +233,6 @@ func TestTeamMembersRemoveByUsernames(t *testing.T) {
 }
 
 func TestTeamMembersRemoveByOrganizationMemberships(t *testing.T) {
-	skipIfFreeOnly(t)
-
 	client := testClient(t)
 	ctx := context.Background()
 

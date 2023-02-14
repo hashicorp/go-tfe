@@ -1,3 +1,6 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
+
 package tfe
 
 import (
@@ -14,7 +17,7 @@ var _ NotificationConfigurations = (*notificationConfigurations)(nil)
 // related methods that the Terraform Enterprise API supports.
 //
 // TFE API docs:
-// https://www.terraform.io/docs/cloud/api/notification-configurations.html
+// https://developer.hashicorp.com/terraform/cloud-docs/api-docs/notification-configurations
 type NotificationConfigurations interface {
 	// List all the notification configurations within a workspace.
 	List(ctx context.Context, workspaceID string, options *NotificationConfigurationListOptions) (*NotificationConfigurationList, error)

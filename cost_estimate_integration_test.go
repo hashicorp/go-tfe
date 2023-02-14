@@ -1,3 +1,6 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
+
 package tfe
 
 import (
@@ -13,7 +16,6 @@ import (
 
 func TestCostEstimatesRead(t *testing.T) {
 	skipIfEnterprise(t)
-	skipIfFreeOnly(t)
 
 	client := testClient(t)
 	ctx := context.Background()

@@ -1,3 +1,6 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
+
 package tfe
 
 import (
@@ -13,7 +16,7 @@ var _ Runs = (*runs)(nil)
 // Runs describes all the run related methods that the Terraform Enterprise
 // API supports.
 //
-// TFE API docs: https://www.terraform.io/docs/cloud/api/run.html
+// TFE API docs: https://developer.hashicorp.com/terraform/cloud-docs/api-docs/run
 type Runs interface {
 	// List all the runs of the given workspace.
 	List(ctx context.Context, workspaceID string, options *RunListOptions) (*RunList, error)
@@ -191,7 +194,7 @@ type RunStatusTimestamps struct {
 }
 
 // RunIncludeOpt represents the available options for include query params.
-// https://www.terraform.io/docs/cloud/api/run.html#available-related-resources
+// https://developer.hashicorp.com/terraform/cloud-docs/api-docs/run#available-related-resources
 type RunIncludeOpt string
 
 const (
@@ -219,27 +222,30 @@ type RunListOptions struct {
 	// The presence of search[commit] or search[user] takes priority over this parameter and will be omitted.
 	Search string `url:"search[basic],omitempty"`
 
-	// Optional: Current status of the run.
-	// Options are listed at https://www.terraform.io/cloud-docs/api-docs/run#run-states
+	// Optional: Comma-separated list of acceptable run statuses.
+	// Options are listed at https://developer.hashicorp.com/terraform/cloud-docs/api-docs/run#run-states,
+	// or as constants with the RunStatus string type.
 	Status string `url:"filter[status],omitempty"`
 
-	// Optional: Source that triggered the run.
-	// Options are listed at https://www.terraform.io/cloud-docs/api-docs/run#run-sources
+	// Optional: Comma-separated list of acceptable run sources.
+	// Options are listed at https://developer.hashicorp.com/terraform/cloud-docs/api-docs/run#run-sources,
+	// or as constants with the RunSource string type.
 	Source string `url:"filter[source],omitempty"`
 
-	// Optional: Operation type for the run.
-	// Options are listed at https://www.terraform.io/cloud-docs/api-docs/run#run-operations
+	// Optional: Comma-separated list of acceptable run operation types.
+	// Options are listed at https://developer.hashicorp.com/terraform/cloud-docs/api-docs/run#run-operations,
+	// or as constants with the RunOperation string type.
 	Operation string `url:"filter[operation],omitempty"`
 
 	// Optional: A list of relations to include. See available resources:
-	// https://www.terraform.io/docs/cloud/api/run.html#available-related-resources
+	// https://developer.hashicorp.com/terraform/cloud-docs/api-docs/run#available-related-resources
 	Include []RunIncludeOpt `url:"include,omitempty"`
 }
 
 // RunReadOptions represents the options for reading a run.
 type RunReadOptions struct {
 	// Optional: A list of relations to include. See available resources:
-	// https://www.terraform.io/docs/cloud/api/run.html#available-related-resources
+	// https://developer.hashicorp.com/terraform/cloud-docs/api-docs/run#available-related-resources
 	Include []RunIncludeOpt `url:"include,omitempty"`
 }
 
@@ -331,7 +337,7 @@ type RunVariableAttr struct {
 }
 
 // RunVariableAttr represents a variable that can be applied to a run. All values must be expressed as an HCL literal
-// in the same syntax you would use when writing terraform code. See https://www.terraform.io/docs/language/expressions/types.html#types
+// in the same syntax you would use when writing terraform code. See https://developer.hashicorp.com/terraform/language/expressions/types#types
 // for more details.
 type RunVariable struct {
 	Key   string `json:"key"`

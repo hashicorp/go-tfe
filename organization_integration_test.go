@@ -1,3 +1,6 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
+
 package tfe
 
 import (
@@ -347,7 +350,6 @@ func TestOrganizationsReadCapacity(t *testing.T) {
 
 func TestOrganizationsReadEntitlements(t *testing.T) {
 	skipIfEnterprise(t)
-	skipIfFreeOnly(t)
 
 	client := testClient(t)
 	ctx := context.Background()
@@ -519,7 +521,6 @@ func TestOrganization_Unmarshal(t *testing.T) {
 }
 
 func TestOrganizationsReadRunTasksPermission(t *testing.T) {
-	skipIfFreeOnly(t)
 	skipUnlessBeta(t)
 
 	client := testClient(t)
@@ -542,7 +543,6 @@ func TestOrganizationsReadRunTasksPermission(t *testing.T) {
 
 func TestOrganizationsReadRunTasksEntitlement(t *testing.T) {
 	skipIfEnterprise(t)
-	skipIfFreeOnly(t)
 	skipUnlessBeta(t)
 
 	client := testClient(t)

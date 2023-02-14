@@ -1,3 +1,6 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
+
 package tfe
 
 import (
@@ -10,8 +13,6 @@ import (
 )
 
 func TestRunTasksCreate(t *testing.T) {
-	skipIfFreeOnly(t)
-
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -49,8 +50,6 @@ func TestRunTasksCreate(t *testing.T) {
 }
 
 func TestRunTasksList(t *testing.T) {
-	skipIfFreeOnly(t)
-
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -75,8 +74,6 @@ func TestRunTasksList(t *testing.T) {
 }
 
 func TestRunTasksRead(t *testing.T) {
-	skipIfFreeOnly(t)
-
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -126,8 +123,6 @@ func TestRunTasksRead(t *testing.T) {
 }
 
 func TestRunTasksUpdate(t *testing.T) {
-	skipIfFreeOnly(t)
-
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -178,8 +173,6 @@ func TestRunTasksUpdate(t *testing.T) {
 }
 
 func TestRunTasksDelete(t *testing.T) {
-	skipIfFreeOnly(t)
-
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -208,8 +201,6 @@ func TestRunTasksDelete(t *testing.T) {
 }
 
 func TestRunTasksAttachToWorkspace(t *testing.T) {
-	skipIfFreeOnly(t)
-
 	client := testClient(t)
 	ctx := context.Background()
 

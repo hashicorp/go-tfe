@@ -10,9 +10,9 @@ Your policy set repository will need the following:
 1. A policy set stored in a subdirectory `policy-sets/foo`
 1. A branch other than `main` named `policies`
 
-Alternatively, you can start with this [example repository for policy sets](https://github.com/hashicorp/test-policy-set) by forking the repository to your GitHub account, then setting `GITHUB_POLICY_SET_IDENTIFIER` to the forked repository identifier `your-github-handle/test-policy-set`. 
+Alternatively, you can start with this [example repository for policy sets](https://github.com/hashicorp/test-policy-set) by forking the repository to your GitHub account, then setting `GITHUB_POLICY_SET_IDENTIFIER` to the forked repository identifier `your-github-handle/test-policy-set`.
 
-Your registry module repository will need to be a [valid module](https://www.terraform.io/docs/cloud/registry/publish.html#preparing-a-module-repository).
+Your registry module repository will need to be a [valid module](https://developer.hashicorp.com/terraform/cloud-docs/registry/publish-modules#preparing-a-module-repository).
 It will need the following:
 1. To be named `terraform-<PROVIDER>-<NAME>`
 1. At least one valid SemVer tag in the format `x.y.z`
@@ -39,7 +39,7 @@ You'll need to have environment variables setup in your environment to run the t
 Tests are run against an actual backend so they require a valid backend address and token:
 
 1. `TFE_ADDRESS` - URL of a Terraform Cloud or Terraform Enterprise instance to be used for testing, including scheme. Example: `https://tfe.local`
-1. `TFE_TOKEN` - A [user API token](https://www.terraform.io/docs/cloud/users-teams-organizations/users.html#api-tokens) for the Terraform Cloud or Terraform Enterprise instance being used for testing.
+1. `TFE_TOKEN` - A [user API token](https://developer.hashicorp.com/terraform/cloud-docs/users-teams-organizations/users#tokens) for the Terraform Cloud or Terraform Enterprise instance being used for testing.
 
 **Note:** Alternatively, you can set `TFE_HOSTNAME` which serves as a fallback for `TFE_ADDRESS`. It will only be used if `TFE_ADDRESS` is not set and will resolve the host to an `https` scheme. Example: `tfe.local` => resolves to `https://tfe.local`
 
@@ -49,9 +49,8 @@ Tests are run against an actual backend so they require a valid backend address 
 1. `GITHUB_POLICY_SET_IDENTIFIER` - GitHub policy set repository identifier in the format `username/repository`. Required for running policy set tests.
 1. `GITHUB_REGISTRY_MODULE_IDENTIFIER` - GitHub registry module repository identifier in the format `username/repository`. Required for running registry module tests.
 1. `ENABLE_TFE` - Some tests are only applicable to Terraform Enterprise or Terraform Cloud. By setting `ENABLE_TFE=1` you will enable enterprise only tests and disable cloud only tests. In CI `ENABLE_TFE` is not set so if you are writing enterprise only features you should manually test with `ENABLE_TFE=1` against a Terraform Enterprise instance.
-1. `SKIP_PAID` - Some tests depend on paid only features. By setting `SKIP_PAID=1`, you will skip tests that access paid features.
 1. `ENABLE_BETA` - Some tests require access to beta features. By setting `ENABLE_BETA=1` you will enable tests that require access to beta features. IN CI `ENABLE_BETA` is not set so if you are writing beta only features you should manually test with `ENABLE_BETA=1` against a Terraform Enterprise instance with those features enabled.
-1. `TFC_RUN_TASK_URL` - Run task integration tests require a URL to use when creating run tasks. To learn more about the Run Task API, [read here](https://www.terraform.io/cloud-docs/api-docs/run-tasks)
+1. `TFC_RUN_TASK_URL` - Run task integration tests require a URL to use when creating run tasks. To learn more about the Run Task API, [read here](https://developer.hashicorp.com/terraform/cloud-docs/api-docs/run-tasks/run-tasks)
 
 ## 3. Make sure run queue settings are correct
 
@@ -71,14 +70,19 @@ Typically, you'll want to run specific tests. The commands below use notificatio
 $ envchain YOUR_NAMESPACE_HERE go test -run TestNotificationConfiguration -v ./...
 ```
 
-#### Without envchain:
+#### Without envchain (Using TFE_ADDRESS):
 ```sh
-$ TFE_TOKEN=xyz TFE_ADDRESS=xyz ENABLE_TFE=1 go test -run TestNotificationConfiguration -v ./...
+$ TFE_TOKEN=xyz TFE_ADDRESS=https://tfe.local ENABLE_TFE=1 go test -run TestNotificationConfiguration -v ./...
+```
+
+#### Without envchain (Using TFE_HOSTNAME):
+```sh
+$ TFE_TOKEN=xyz TFE_HOSTNAME=tfe.local ENABLE_TFE=1 go test -run TestNotificationConfiguration -v ./...
 ```
 
 #### Using Makefile target `test`
 ```sh
-TFE_TOKEN=xyz TFE_ADDRESS=xyz TESTARGS="-run TestNotificationConfiguration" make test
+TFE_TOKEN=xyz TFE_ADDRESS=https://tfe.local TESTARGS="-run TestNotificationConfiguration" make test
 ```
 
 ### Running all tests
@@ -89,10 +93,16 @@ It takes about 20 minutes to run all of the tests, so specify a larger timeout w
 $ envchain YOUR_NAMESPACE_HERE go test ./... -timeout=30m
 ```
 
-#### Without envchain:
+#### Without envchain  (Using TFE_ADDRESS):
 ```sh
-$ TFE_TOKEN=xyz TFE_ADDRESS=xyz ENABLE_TFE=1 go test ./... -timeout=30m
+$ TFE_TOKEN=xyz TFE_ADDRESS=https://tfe.local ENABLE_TFE=1 go test ./... -timeout=30m
 ```
+
+#### Without envchain  (Using TFE_HOSTNAME):
+```sh
+$ TFE_TOKEN=xyz TFE_HOSTNAME=tfe.local ENABLE_TFE=1 go test ./... -timeout=30m
+```
+
 
 ### Running tests for TFC features that require paid plans (HashiCorp Employees)
 

@@ -1,3 +1,6 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
+
 package tfe
 
 import (
@@ -12,7 +15,7 @@ var _ VariableSets = (*variableSets)(nil)
 // VariableSets describes all the Variable Set related methods that the
 // Terraform Enterprise API supports.
 //
-// TFE API docs: https://www.terraform.io/cloud-docs/api-docs/variable-sets
+// TFE API docs: https://developer.hashicorp.com/terraform/cloud-docs/api-docs/variable-sets
 type VariableSets interface {
 	// List all the variable sets within an organization.
 	List(ctx context.Context, organization string, options *VariableSetListOptions) (*VariableSetList, error)
@@ -67,7 +70,7 @@ type VariableSet struct {
 }
 
 // A list of relations to include. See available resources
-// https://www.terraform.io/docs/cloud/api/admin/organizations.html#available-related-resources
+// https://developer.hashicorp.com/terraform/enterprise/api-docs/admin/organizations#available-related-resources
 type VariableSetIncludeOpt string
 
 const (
@@ -91,7 +94,7 @@ type VariableSetCreateOptions struct {
 
 	// The name of the variable set.
 	// Affects variable precedence when there are conflicts between Variable Sets
-	// https://www.terraform.io/cloud-docs/api-docs/variable-sets#apply-variable-set-to-workspaces
+	// https://developer.hashicorp.com/terraform/cloud-docs/api-docs/variable-sets#apply-variable-set-to-workspaces
 	Name *string `jsonapi:"attr,name"`
 
 	// A description to provide context for the variable set.
@@ -116,7 +119,7 @@ type VariableSetUpdateOptions struct {
 
 	// The name of the variable set.
 	// Affects variable precedence when there are conflicts between Variable Sets
-	// https://www.terraform.io/cloud-docs/api-docs/variable-sets#apply-variable-set-to-workspaces
+	// https://developer.hashicorp.com/terraform/cloud-docs/api-docs/variable-sets#apply-variable-set-to-workspaces
 	Name *string `jsonapi:"attr,name,omitempty"`
 
 	// A description to provide context for the variable set.

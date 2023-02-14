@@ -1,9 +1,13 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
+
 package tfe
 
 import (
 	"bytes"
 	"context"
 	"fmt"
+	"io"
 	"net/url"
 	"time"
 )
@@ -15,7 +19,7 @@ var _ ConfigurationVersions = (*configurationVersions)(nil)
 // methods that the Terraform Enterprise API supports.
 //
 // TFE API docs:
-// https://www.terraform.io/docs/enterprise/api/configuration-versions.html
+// https://developer.hashicorp.com/terraform/cloud-docs/api-docs/configuration-versions
 type ConfigurationVersions interface {
 	// List returns all configuration versions of a workspace.
 	List(ctx context.Context, workspaceID string, options *ConfigurationVersionListOptions) (*ConfigurationVersionList, error)
@@ -34,6 +38,9 @@ type ConfigurationVersions interface {
 	// the upload URL from a configuration version and the full path to the
 	// configuration files on disk.
 	Upload(ctx context.Context, url string, path string) error
+
+	// Upload a tar gzip archive to the specified configuration version upload URL.
+	UploadTarGzip(ctx context.Context, url string, archive io.Reader) error
 
 	// Archive a configuration version. This can only be done on configuration versions that
 	// were created with the API or CLI, are in an uploaded state, and have no runs in progress.
@@ -108,7 +115,7 @@ type CVStatusTimestamps struct {
 }
 
 // ConfigVerIncludeOpt represents the available options for include query params.
-// https://www.terraform.io/docs/cloud/api/configuration-versions.html#available-related-resources
+// https://developer.hashicorp.com/terraform/cloud-docs/api-docs/configuration-versions#available-related-resources
 type ConfigVerIncludeOpt string
 
 const (
@@ -119,7 +126,7 @@ const (
 // ConfigurationVersionReadOptions represents the options for reading a configuration version.
 type ConfigurationVersionReadOptions struct {
 	// Optional: A list of relations to include. See available resources:
-	// https://www.terraform.io/docs/cloud/api/configuration-versions.html#available-related-resources
+	// https://developer.hashicorp.com/terraform/cloud-docs/api-docs/configuration-versions#available-related-resources
 	Include []ConfigVerIncludeOpt `url:"include,omitempty"`
 }
 
@@ -128,7 +135,7 @@ type ConfigurationVersionReadOptions struct {
 type ConfigurationVersionListOptions struct {
 	ListOptions
 	// Optional: A list of relations to include. See available resources:
-	// https://www.terraform.io/docs/cloud/api/configuration-versions.html#available-related-resources
+	// https://developer.hashicorp.com/terraform/cloud-docs/api-docs/configuration-versions#available-related-resources
 	Include []ConfigVerIncludeOpt `url:"include,omitempty"`
 }
 
@@ -258,7 +265,17 @@ func (s *configurationVersions) Upload(ctx context.Context, uploadURL, path stri
 		return err
 	}
 
-	req, err := s.client.NewRequest("PUT", uploadURL, body)
+	return s.UploadTarGzip(ctx, uploadURL, body)
+}
+
+// UploadTarGzip is used to upload Terraform configuration files contained a tar gzip archive.
+// Any stream implementing io.Reader can be passed into this method. This method is also
+// particularly useful for tar streams created by non-default go-slug configurations.
+//
+// **Note**: This method does not validate the content being uploaded and is therefore the caller's
+// responsibility to ensure the raw content is a valid Terraform configuration.
+func (s *configurationVersions) UploadTarGzip(ctx context.Context, uploadURL string, archive io.Reader) error {
+	req, err := s.client.NewRequest("PUT", uploadURL, archive)
 	if err != nil {
 		return err
 	}

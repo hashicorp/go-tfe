@@ -1,3 +1,6 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
+
 package tfe
 
 import (
@@ -12,7 +15,7 @@ var _ Agents = (*agents)(nil)
 
 // Agents describes all the agent-related methods that the
 // Terraform Cloud API supports.
-// TFE API docs: https://www.terraform.io/docs/cloud/api/agents.html
+// TFE API docs: https://developer.hashicorp.com/terraform/cloud-docs/api-docs/agents
 type Agents interface {
 	// Read an agent by its ID.
 	Read(ctx context.Context, agentID string) (*Agent, error)

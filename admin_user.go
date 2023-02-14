@@ -1,3 +1,6 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
+
 package tfe
 
 import (
@@ -13,7 +16,7 @@ var _ AdminUsers = (*adminUsers)(nil)
 // Enterprise  API supports.
 // It contains endpoints to help site administrators manage their users.
 //
-// TFE API docs: https://www.terraform.io/docs/cloud/api/admin/users.html
+// TFE API docs: https://developer.hashicorp.com/terraform/enterprise/api-docs/admin/users
 type AdminUsers interface {
 	// List all the users of the given installation.
 	List(ctx context.Context, options *AdminUserListOptions) (*AdminUserList, error)
@@ -65,13 +68,13 @@ type AdminUserList struct {
 }
 
 // AdminUserIncludeOpt represents the available options for include query params.
-// https://www.terraform.io/docs/cloud/api/admin/users.html#available-related-resources
+// https://developer.hashicorp.com/terraform/enterprise/api-docs/admin/users#available-related-resources
 type AdminUserIncludeOpt string
 
 const AdminUserOrgs AdminUserIncludeOpt = "organizations"
 
 // AdminUserListOptions represents the options for listing users.
-// https://www.terraform.io/docs/cloud/api/admin/users.html#query-parameters
+// https://developer.hashicorp.com/terraform/enterprise/api-docs/admin/users#query-parameters
 type AdminUserListOptions struct {
 	ListOptions
 
@@ -85,7 +88,7 @@ type AdminUserListOptions struct {
 	SuspendedUsers string `url:"filter[suspended],omitempty"`
 
 	// Optional: A list of relations to include. See available resources
-	// https://www.terraform.io/docs/cloud/api/admin/users.html#available-related-resources
+	// https://developer.hashicorp.com/terraform/enterprise/api-docs/admin/users#available-related-resources
 	Include []AdminUserIncludeOpt `url:"include,omitempty"`
 }
 

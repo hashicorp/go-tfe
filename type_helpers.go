@@ -1,7 +1,15 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
+
 package tfe
 
 // Access returns a pointer to the given team access type.
 func Access(v AccessType) *AccessType {
+	return &v
+}
+
+// ProjectAccess returns a pointer to the given team access project type.
+func ProjectAccess(v TeamProjectAccessType) *TeamProjectAccessType {
 	return &v
 }
 

@@ -1,3 +1,6 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
+
 package tfe
 
 import (
@@ -15,7 +18,7 @@ var _ StateVersions = (*stateVersions)(nil)
 // the Terraform Enterprise API supports.
 //
 // TFE API docs:
-// https://www.terraform.io/docs/cloud/api/state-versions.html
+// https://developer.hashicorp.com/terraform/cloud-docs/api-docs/state-versions
 type StateVersions interface {
 	// List all the state versions for a given workspace.
 	List(ctx context.Context, options *StateVersionListOptions) (*StateVersionList, error)
@@ -38,7 +41,9 @@ type StateVersions interface {
 	// Download retrieves the actual stored state of a state version
 	Download(ctx context.Context, url string) ([]byte, error)
 
-	// ListOutputs retrieves all the outputs of a state version by its ID.
+	// ListOutputs retrieves all the outputs of a state version by its ID. IMPORTANT: Terraform Cloud might
+	// process outputs asynchronously. When consuming outputs or other async StateVersion fields, be sure to
+	// wait for ResourcesProcessed to become `true` before assuming they are empty.
 	ListOutputs(ctx context.Context, svID string, options *StateVersionOutputsListOptions) (*StateVersionOutputsList, error)
 }
 
@@ -55,18 +60,25 @@ type StateVersionList struct {
 
 // StateVersion represents a Terraform Enterprise state version.
 type StateVersion struct {
-	ID                 string                   `jsonapi:"primary,state-versions"`
-	CreatedAt          time.Time                `jsonapi:"attr,created-at,iso8601"`
-	DownloadURL        string                   `jsonapi:"attr,hosted-state-download-url"`
-	Serial             int64                    `jsonapi:"attr,serial"`
-	VCSCommitSHA       string                   `jsonapi:"attr,vcs-commit-sha"`
-	VCSCommitURL       string                   `jsonapi:"attr,vcs-commit-url"`
-	ResourcesProcessed bool                     `jsonapi:"attr,resources-processed"`
-	StateVersion       int                      `jsonapi:"attr,state-version"`
-	TerraformVersion   string                   `jsonapi:"attr,terraform-version"`
-	Modules            *StateVersionModules     `jsonapi:"attr,modules"`
-	Providers          *StateVersionProviders   `jsonapi:"attr,providers"`
-	Resources          []*StateVersionResources `jsonapi:"attr,resources"`
+	ID           string    `jsonapi:"primary,state-versions"`
+	CreatedAt    time.Time `jsonapi:"attr,created-at,iso8601"`
+	DownloadURL  string    `jsonapi:"attr,hosted-state-download-url"`
+	Serial       int64     `jsonapi:"attr,serial"`
+	VCSCommitSHA string    `jsonapi:"attr,vcs-commit-sha"`
+	VCSCommitURL string    `jsonapi:"attr,vcs-commit-url"`
+	// Whether Terraform Cloud has finished populating any StateVersion fields that required async processing.
+	// If `false`, some fields may appear empty even if they should actually contain data; see comments on
+	// individual fields for details.
+	ResourcesProcessed bool `jsonapi:"attr,resources-processed"`
+	StateVersion       int  `jsonapi:"attr,state-version"`
+	// Populated asynchronously.
+	TerraformVersion string `jsonapi:"attr,terraform-version"`
+	// Populated asynchronously.
+	Modules *StateVersionModules `jsonapi:"attr,modules"`
+	// Populated asynchronously.
+	Providers *StateVersionProviders `jsonapi:"attr,providers"`
+	// Populated asynchronously.
+	Resources []*StateVersionResources `jsonapi:"attr,resources"`
 
 	// Relations
 	Run     *Run                  `jsonapi:"relation,run"`
@@ -87,7 +99,7 @@ type StateVersionListOptions struct {
 }
 
 // StateVersionIncludeOpt represents the available options for include query params.
-// https://www.terraform.io/cloud-docs/api-docs/state-versions#available-related-resources
+// https://developer.hashicorp.com/terraform/cloud-docs/api-docs/state-versions#available-related-resources
 type StateVersionIncludeOpt string
 
 const (
@@ -101,7 +113,7 @@ const (
 // StateVersionReadOptions represents the options for reading state version.
 type StateVersionReadOptions struct {
 	// Optional: A list of relations to include. See available resources:
-	// https://www.terraform.io/cloud-docs/api-docs/state-versions#available-related-resources
+	// https://developer.hashicorp.com/terraform/cloud-docs/api-docs/state-versions#available-related-resources
 	Include []StateVersionIncludeOpt `url:"include,omitempty"`
 }
 
@@ -114,7 +126,7 @@ type StateVersionOutputsListOptions struct {
 // StateVersionCurrentOptions represents the options for reading the current state version.
 type StateVersionCurrentOptions struct {
 	// Optional: A list of relations to include. See available resources:
-	// https://www.terraform.io/cloud-docs/api-docs/state-versions#available-related-resources
+	// https://developer.hashicorp.com/terraform/cloud-docs/api-docs/state-versions#available-related-resources
 	Include []StateVersionIncludeOpt `url:"include,omitempty"`
 }
 
@@ -146,7 +158,7 @@ type StateVersionCreateOptions struct {
 	Run *Run `jsonapi:"relation,run,omitempty"`
 
 	// Optional: The external, json representation of state data, base64 encoded.
-	// https://www.terraform.io/internals/json-format#state-representation
+	// https://developer.hashicorp.com/terraform/internals/json-format#state-representation
 	// Supplying this state representation can provide more details to the platform
 	// about the current terraform state.
 	//
@@ -154,7 +166,7 @@ type StateVersionCreateOptions struct {
 	JSONState *string `jsonapi:"attr,json-state,omitempty"`
 	// Optional: The external, json representation of state outputs, base64 encoded. Supplying this field
 	// will provide more detailed output type information to TFE.
-	// For more information on the contents of this field: https://www.terraform.io/internals/json-format#values-representation
+	// For more information on the contents of this field: https://developer.hashicorp.com/terraform/internals/json-format#values-representation
 	// about the current terraform state.
 	//
 	// **Note**: This field is in BETA, subject to change and not widely available yet.
@@ -306,7 +318,9 @@ func (s *stateVersions) Download(ctx context.Context, u string) ([]byte, error) 
 	return buf.Bytes(), nil
 }
 
-// ListOutputs retrieves all the outputs of a state version by its ID.
+// ListOutputs retrieves all the outputs of a state version by its ID. IMPORTANT: Terraform Cloud might
+// process outputs asynchronously. When consuming outputs or other async StateVersion fields, be sure to
+// wait for ResourcesProcessed to become `true` before assuming they are empty.
 func (s *stateVersions) ListOutputs(ctx context.Context, svID string, options *StateVersionOutputsListOptions) (*StateVersionOutputsList, error) {
 	if !validStringID(&svID) {
 		return nil, ErrInvalidStateVerID

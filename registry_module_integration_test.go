@@ -1,3 +1,6 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
+
 package tfe
 
 import (
@@ -11,6 +14,7 @@ import (
 	"testing"
 
 	retryablehttp "github.com/hashicorp/go-retryablehttp"
+	slug "github.com/hashicorp/go-slug"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
@@ -1046,6 +1050,59 @@ func TestRegistryModulesUpload(t *testing.T) {
 	})
 }
 
+func TestRegistryModulesUploadTarGzip(t *testing.T) {
+	client := testClient(t)
+	ctx := context.Background()
+
+	orgTest, orgTestCleanup := createOrganization(t, client)
+	t.Cleanup(orgTestCleanup)
+
+	rm, rmCleanup := createRegistryModule(t, client, orgTest, PrivateRegistry)
+	t.Cleanup(rmCleanup)
+
+	optionsModuleVersion := RegistryModuleCreateVersionOptions{
+		Version: String("1.0.0"),
+	}
+
+	rmv, err := client.RegistryModules.CreateVersion(ctx, RegistryModuleID{
+		Organization: orgTest.Name,
+		Name:         rm.Name,
+		Provider:     rm.Provider,
+	}, optionsModuleVersion)
+	require.NoError(t, err)
+
+	uploadURL, ok := rmv.Links["upload"].(string)
+	require.True(t, ok)
+
+	t.Run("with custom go-slug", func(t *testing.T) {
+		packer, err := slug.NewPacker(
+			slug.DereferenceSymlinks(),
+			slug.ApplyTerraformIgnore(),
+			slug.AllowSymlinkTarget("/target/symlink/path/foo"),
+		)
+		require.NoError(t, err)
+
+		body := bytes.NewBuffer(nil)
+		_, err = packer.Pack("test-fixtures/config-version", body)
+		require.NoError(t, err)
+
+		err = client.RegistryModules.UploadTarGzip(ctx, uploadURL, body)
+		require.NoError(t, err)
+	})
+
+	t.Run("with custom tar archive", func(t *testing.T) {
+		archivePath := "test-fixtures/registry-module-archive.tar.gz"
+		createTarGzipArchive(t, []string{"test-fixtures/config-version/main.tf"}, archivePath)
+
+		archive, err := os.Open(archivePath)
+		require.NoError(t, err)
+		defer archive.Close()
+
+		err = client.RegistryModules.UploadTarGzip(ctx, uploadURL, archive)
+		require.NoError(t, err)
+	})
+}
+
 func TestRegistryModule_Unmarshal(t *testing.T) {
 	data := map[string]interface{}{
 		"data": map[string]interface{}{
@@ -1114,7 +1171,7 @@ func TestRegistryModule_Unmarshal(t *testing.T) {
 }
 
 func TestRegistryCreateWithVCSOptions_Marshal(t *testing.T) {
-	// https://www.terraform.io/docs/cloud/api/modules.html#sample-payload
+	// https://developer.hashicorp.com/terraform/cloud-docs/api-docs/private-registry/modules#sample-payload
 	opts := RegistryModuleCreateWithVCSConnectionOptions{
 		VCSRepo: &RegistryModuleVCSRepoOptions{
 			Identifier:        String("id"),

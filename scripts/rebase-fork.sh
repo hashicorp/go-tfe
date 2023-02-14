@@ -1,4 +1,7 @@
 #!/usr/bin/env bash
+# Copyright (c) HashiCorp, Inc.
+# SPDX-License-Identifier: MPL-2.0
+
 
 if [[ -z $1 ]]; then
     echo "Please specify the pull request number you want to rebase to a local branch."

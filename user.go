@@ -1,3 +1,6 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
+
 package tfe
 
 import (
@@ -10,7 +13,7 @@ var _ Users = (*users)(nil)
 // Users describes all the user related methods that the Terraform
 // Enterprise API supports.
 //
-// TFE API docs: https://www.terraform.io/docs/cloud/api/account.html
+// TFE API docs: https://developer.hashicorp.com/terraform/cloud-docs/api-docs/account
 type Users interface {
 	// ReadCurrent reads the details of the currently authenticated user.
 	ReadCurrent(ctx context.Context) (*User, error)

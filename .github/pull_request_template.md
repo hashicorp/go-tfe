@@ -33,7 +33,7 @@ Please fill out the remaining template to assist code reviewers and testers with
 <!--
 _Include any links here that might be helpful for people reviewing your PR. If there are none, feel free to delete this section._
 
-- [API documentation](https://www.terraform.io/docs/cloud/api/xxxx.html)
+- [API documentation](https://developer.hashicorp.com/terraform/cloud-docs/api-docs/xxxx)
 - [Related PR](https://github.com/terraform-providers/terraform-provider-tfe/pull/xxxx)
 
 -->

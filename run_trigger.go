@@ -1,3 +1,6 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
+
 package tfe
 
 import (
@@ -14,7 +17,7 @@ var _ RunTriggers = (*runTriggers)(nil)
 // related methods that the Terraform Cloud API supports.
 //
 // TFE API docs:
-// https://www.terraform.io/docs/cloud/api/run-triggers.html
+// https://developer.hashicorp.com/terraform/cloud-docs/api-docs/run-triggers
 type RunTriggers interface {
 	// List all the run triggers within a workspace.
 	List(ctx context.Context, workspaceID string, options *RunTriggerListOptions) (*RunTriggerList, error)
@@ -53,7 +56,7 @@ type RunTrigger struct {
 	Workspace  *Workspace `jsonapi:"relation,workspace"`
 }
 
-// https://www.terraform.io/cloud-docs/api-docs/run-triggers#query-parameters
+// https://developer.hashicorp.com/terraform/cloud-docs/api-docs/run-triggers#query-parameters
 type RunTriggerFilterOp string
 
 const (
@@ -62,7 +65,7 @@ const (
 )
 
 // A list of relations to include
-// https://www.terraform.io/cloud-docs/api-docs/run-triggers#available-related-resources
+// https://developer.hashicorp.com/terraform/cloud-docs/api-docs/run-triggers#available-related-resources
 type RunTriggerIncludeOpt string
 
 const (

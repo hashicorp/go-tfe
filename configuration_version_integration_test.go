@@ -1,3 +1,6 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
+
 package tfe
 
 import (
@@ -5,6 +8,7 @@ import (
 	"context"
 	"encoding/json"
 	"errors"
+	"os"
 	"testing"
 	"time"
 
@@ -222,6 +226,42 @@ func TestConfigurationVersionsUpload(t *testing.T) {
 			"nonexisting",
 		)
 		assert.Error(t, err)
+	})
+}
+
+func TestConfigurationVersionsUploadTarGzip(t *testing.T) {
+	client := testClient(t)
+	ctx := context.Background()
+
+	cv, cvCleanup := createConfigurationVersion(t, client, nil)
+	t.Cleanup(cvCleanup)
+
+	t.Run("with custom go-slug", func(t *testing.T) {
+		packer, err := slug.NewPacker(
+			slug.DereferenceSymlinks(),
+			slug.ApplyTerraformIgnore(),
+			slug.AllowSymlinkTarget("/target/symlink/path/foo"),
+		)
+		require.NoError(t, err)
+
+		body := bytes.NewBuffer(nil)
+		_, err = packer.Pack("test-fixtures/config-version", body)
+		require.NoError(t, err)
+
+		err = client.ConfigurationVersions.UploadTarGzip(ctx, cv.UploadURL, body)
+		require.NoError(t, err)
+	})
+
+	t.Run("with custom tar archive", func(t *testing.T) {
+		archivePath := "test-fixtures/config-archive.tar.gz"
+		createTarGzipArchive(t, []string{"test-fixtures/config-version/main.tf"}, archivePath)
+
+		archive, err := os.Open(archivePath)
+		require.NoError(t, err)
+		defer archive.Close()
+
+		err = client.ConfigurationVersions.UploadTarGzip(ctx, cv.UploadURL, archive)
+		require.NoError(t, err)
 	})
 }
 

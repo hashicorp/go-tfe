@@ -1,3 +1,6 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
+
 package tfe
 
 import (
@@ -13,7 +16,7 @@ var _ GPGKeys = (*gpgKeys)(nil)
 
 // GPGKeys describes all the GPG key related methods that the Terraform Private Registry API supports.
 //
-// TFE API Docs: https://www.terraform.io/cloud-docs/api-docs/private-registry/gpg-keys
+// TFE API Docs: https://developer.hashicorp.com/terraform/cloud-docs/api-docs/private-registry/gpg-keys
 type GPGKeys interface {
 	// Lists GPG keys in a private registry.
 	ListPrivate(ctx context.Context, options GPGKeyListOptions) (*GPGKeyList, error)

@@ -1,3 +1,6 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
+
 package main
 
 import (
@@ -9,7 +12,8 @@ import (
 
 func main() {
 	config := &tfe.Config{
-		Token: "insert-your-token-here",
+		Token:             "insert-your-token-here",
+		RetryServerErrors: true,
 	}
 
 	client, err := tfe.NewClient(config)

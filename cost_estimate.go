@@ -1,3 +1,6 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
+
 package tfe
 
 import (
@@ -15,7 +18,7 @@ var _ CostEstimates = (*costEstimates)(nil)
 // CostEstimates describes all the costEstimate related methods that
 // the Terraform Enterprise API supports.
 //
-// TFE API docs: https://www.terraform.io/docs/cloud/api/cost-estimates.html
+// TFE API docs: https://developer.hashicorp.com/terraform/cloud-docs/api-docs/cost-estimates
 type CostEstimates interface {
 	// Read a costEstimate by its ID.
 	Read(ctx context.Context, costEstimateID string) (*CostEstimate, error)

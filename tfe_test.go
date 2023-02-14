@@ -1,3 +1,6 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
+
 package tfe
 
 import (
@@ -115,6 +118,52 @@ func Test_unmarshalResponse(t *testing.T) {
 		assert.Error(t, err)
 		assert.EqualError(t, err, fmt.Sprintf("%v must be a struct or an io.Writer", notStruct))
 	})
+}
+
+func Test_BaseURL(t *testing.T) {
+	client, err := NewClient(&Config{
+		Address:  "https://example.com",
+		BasePath: "api/v99",
+	})
+
+	require.NoError(t, err)
+
+	url := client.BaseURL()
+	assert.Equal(t, "https://example.com/api/v99/", url.String())
+}
+
+func Test_DefaultBaseURL(t *testing.T) {
+	client, err := NewClient(&Config{
+		Address: "https://example.com",
+	})
+
+	require.NoError(t, err)
+
+	url := client.BaseURL()
+	assert.Equal(t, "https://example.com/api/v2/", url.String())
+}
+
+func Test_DefaultRegistryBaseURL(t *testing.T) {
+	client, err := NewClient(&Config{
+		Address: "https://example.com",
+	})
+
+	require.NoError(t, err)
+
+	url := client.BaseRegistryURL()
+	assert.Equal(t, "https://example.com/api/registry/", url.String())
+}
+
+func Test_RegistryBaseURL(t *testing.T) {
+	client, err := NewClient(&Config{
+		Address:          "https://example.com",
+		RegistryBasePath: "/api/registry99",
+	})
+
+	require.NoError(t, err)
+
+	url := client.BaseRegistryURL()
+	assert.Equal(t, "https://example.com/api/registry99/", url.String())
 }
 
 func Test_EncodeQueryParams(t *testing.T) {

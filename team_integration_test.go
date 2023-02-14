@@ -1,3 +1,6 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
+
 package tfe
 
 import (
@@ -12,8 +15,6 @@ import (
 )
 
 func TestTeamsList(t *testing.T) {
-	skipIfFreeOnly(t)
-
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -79,8 +80,6 @@ func TestTeamsList(t *testing.T) {
 }
 
 func TestTeamsCreate(t *testing.T) {
-	skipIfFreeOnly(t)
-
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -138,8 +137,6 @@ func TestTeamsCreate(t *testing.T) {
 }
 
 func TestTeamsRead(t *testing.T) {
-	skipIfFreeOnly(t)
-
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -200,8 +197,6 @@ func TestTeamsRead(t *testing.T) {
 }
 
 func TestTeamsUpdate(t *testing.T) {
-	skipIfFreeOnly(t)
-
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -278,8 +273,6 @@ func TestTeamsUpdate(t *testing.T) {
 }
 
 func TestTeamsDelete(t *testing.T) {
-	skipIfFreeOnly(t)
-
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -314,6 +307,9 @@ func TestTeam_Unmarshal(t *testing.T) {
 					"manage-policies":     true,
 					"manage-workspaces":   true,
 					"manage-vcs-settings": true,
+					"manage-projects":     true,
+					"read-workspaces":     true,
+					"read-projects":       true,
 				},
 				"permissions": map[string]interface{}{
 					"can-destroy":           true,
@@ -330,13 +326,15 @@ func TestTeam_Unmarshal(t *testing.T) {
 	err = unmarshalResponse(responseBody, team)
 	require.NoError(t, err)
 
-	require.NoError(t, err)
 	assert.Equal(t, team.ID, "1")
 	assert.Equal(t, team.Name, "team hashi")
 	assert.Empty(t, team.SSOTeamID)
 	assert.Equal(t, team.OrganizationAccess.ManageWorkspaces, true)
 	assert.Equal(t, team.OrganizationAccess.ManageVCSSettings, true)
 	assert.Equal(t, team.OrganizationAccess.ManagePolicies, true)
+	assert.Equal(t, team.OrganizationAccess.ManageProjects, true)
+	assert.Equal(t, team.OrganizationAccess.ReadWorkspaces, true)
+	assert.Equal(t, team.OrganizationAccess.ReadProjects, true)
 	assert.Equal(t, team.Permissions.CanDestroy, true)
 	assert.Equal(t, team.Permissions.CanUpdateMembership, true)
 }
@@ -363,7 +361,6 @@ func TestTeamCreateOptions_Marshal(t *testing.T) {
 }
 
 func TestTeamsUpdateRunTasks(t *testing.T) {
-	skipIfFreeOnly(t)
 	skipUnlessBeta(t)
 	skipIfEnterprise(t)
 
@@ -399,6 +396,46 @@ func TestTeamsUpdateRunTasks(t *testing.T) {
 			assert.Equal(t,
 				*options.OrganizationAccess.ManageRunTasks,
 				item.OrganizationAccess.ManageRunTasks,
+			)
+		}
+	})
+}
+
+func TestTeamsUpdateManageProjects(t *testing.T) {
+	client := testClient(t)
+	ctx := context.Background()
+
+	orgTest, orgTestCleanup := createOrganization(t, client)
+	defer orgTestCleanup()
+
+	tmTest, tmTestCleanup := createTeam(t, client, orgTest)
+	defer tmTestCleanup()
+
+	t.Run("with valid options", func(t *testing.T) {
+		options := TeamUpdateOptions{
+			Name: String("foo bar"),
+			OrganizationAccess: &OrganizationAccessOptions{
+				// **Note: ManageProjects requires ManageWorkspaces field to be set and subject to change later.**
+				ManageWorkspaces: Bool(true),
+				ManageProjects:   Bool(true),
+			},
+			Visibility: String("organization"),
+		}
+
+		tm, err := client.Teams.Update(ctx, tmTest.ID, options)
+		require.NoError(t, err)
+
+		refreshed, err := client.Teams.Read(ctx, tmTest.ID)
+		require.NoError(t, err)
+
+		for _, item := range []*Team{
+			tm,
+			refreshed,
+		} {
+			assert.Equal(t, *options.Name, item.Name)
+			assert.Equal(t,
+				*options.OrganizationAccess.ManageProjects,
+				item.OrganizationAccess.ManageProjects,
 			)
 		}
 	})

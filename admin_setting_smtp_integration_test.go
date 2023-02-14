@@ -1,3 +1,6 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
+
 package tfe
 
 import (
@@ -46,7 +49,10 @@ func TestAdminSettings_SMTP_Update(t *testing.T) {
 	})
 	t.Run("with no Auth option", func(t *testing.T) {
 		smtpSettings, err := client.Admin.Settings.SMTP.Update(ctx, AdminSMTPSettingsUpdateOptions{
-			Enabled: Bool(enabled),
+			Enabled:          Bool(enabled),
+			TestEmailAddress: String("test@example.com"),
+			Host:             String("123"),
+			Port:             Int(123),
 		})
 
 		require.NoError(t, err)

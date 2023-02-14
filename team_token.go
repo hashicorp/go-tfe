@@ -1,3 +1,6 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
+
 package tfe
 
 import (
@@ -14,7 +17,7 @@ var _ TeamTokens = (*teamTokens)(nil)
 // Terraform Enterprise API supports.
 //
 // TFE API docs:
-// https://www.terraform.io/docs/cloud/api/team-tokens.html
+// https://developer.hashicorp.com/terraform/cloud-docs/api-docs/team-tokens
 type TeamTokens interface {
 	// Create a new team token, replacing any existing token.
 	Create(ctx context.Context, teamID string) (*TeamToken, error)

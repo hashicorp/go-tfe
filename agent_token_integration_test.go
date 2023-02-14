@@ -1,3 +1,6 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
+
 package tfe
 
 import (
@@ -10,7 +13,6 @@ import (
 
 func TestAgentTokensList(t *testing.T) {
 	skipIfEnterprise(t)
-	skipIfFreeOnly(t)
 
 	client := testClient(t)
 	ctx := context.Background()
@@ -50,7 +52,6 @@ func TestAgentTokensList(t *testing.T) {
 
 func TestAgentTokensCreate(t *testing.T) {
 	skipIfEnterprise(t)
-	skipIfFreeOnly(t)
 
 	client := testClient(t)
 	ctx := context.Background()
@@ -82,7 +83,6 @@ func TestAgentTokensCreate(t *testing.T) {
 }
 func TestAgentTokensRead(t *testing.T) {
 	skipIfEnterprise(t)
-	skipIfFreeOnly(t)
 
 	client := testClient(t)
 	ctx := context.Background()
@@ -110,7 +110,6 @@ func TestAgentTokensRead(t *testing.T) {
 
 func TestAgentTokensDelete(t *testing.T) {
 	skipIfEnterprise(t)
-	skipIfFreeOnly(t)
 
 	client := testClient(t)
 	ctx := context.Background()

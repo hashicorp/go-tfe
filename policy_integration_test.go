@@ -1,3 +1,6 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
+
 package tfe
 
 import (
@@ -13,8 +16,6 @@ import (
 )
 
 func TestPoliciesList(t *testing.T) {
-	skipIfFreeOnly(t)
-
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -75,8 +76,6 @@ func TestPoliciesList(t *testing.T) {
 }
 
 func TestPoliciesCreate(t *testing.T) {
-	skipIfFreeOnly(t)
-
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -191,8 +190,6 @@ func TestPoliciesCreate(t *testing.T) {
 }
 
 func TestPoliciesRead(t *testing.T) {
-	skipIfFreeOnly(t)
-
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -244,8 +241,6 @@ func TestPoliciesRead(t *testing.T) {
 }
 
 func TestPoliciesUpdate(t *testing.T) {
-	skipIfFreeOnly(t)
-
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -328,8 +323,6 @@ func TestPoliciesUpdate(t *testing.T) {
 }
 
 func TestPoliciesDelete(t *testing.T) {
-	skipIfFreeOnly(t)
-
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -359,8 +352,6 @@ func TestPoliciesDelete(t *testing.T) {
 }
 
 func TestPoliciesUpload(t *testing.T) {
-	skipIfFreeOnly(t)
-
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -389,8 +380,6 @@ func TestPoliciesUpload(t *testing.T) {
 }
 
 func TestPoliciesDownload(t *testing.T) {
-	skipIfFreeOnly(t)
-
 	client := testClient(t)
 	ctx := context.Background()
 

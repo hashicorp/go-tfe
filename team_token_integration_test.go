@@ -1,3 +1,6 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
+
 package tfe
 
 import (
@@ -9,8 +12,6 @@ import (
 )
 
 func TestTeamTokensCreate(t *testing.T) {
-	skipIfFreeOnly(t)
-
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -39,8 +40,6 @@ func TestTeamTokensCreate(t *testing.T) {
 	})
 }
 func TestTeamTokensRead(t *testing.T) {
-	skipIfFreeOnly(t)
-
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -71,8 +70,6 @@ func TestTeamTokensRead(t *testing.T) {
 }
 
 func TestTeamTokensDelete(t *testing.T) {
-	skipIfFreeOnly(t)
-
 	client := testClient(t)
 	ctx := context.Background()
 

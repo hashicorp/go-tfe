@@ -1,3 +1,6 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
+
 package tfe
 
 import (
@@ -12,8 +15,6 @@ import (
 const waitForPolicySetVersionUpload = 500 * time.Millisecond
 
 func TestPolicySetVersionsCreate(t *testing.T) {
-	skipIfFreeOnly(t)
-
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -36,8 +37,6 @@ func TestPolicySetVersionsCreate(t *testing.T) {
 }
 
 func TestPolicySetVersionsRead(t *testing.T) {
-	skipIfFreeOnly(t)
-
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -62,8 +61,6 @@ func TestPolicySetVersionsRead(t *testing.T) {
 }
 
 func TestPolicySetVersionsUpload(t *testing.T) {
-	skipIfFreeOnly(t)
-
 	client := testClient(t)
 	ctx := context.Background()
 

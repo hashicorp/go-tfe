@@ -1,3 +1,6 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
+
 package tfe
 
 import (
@@ -12,7 +15,7 @@ var _ Teams = (*teams)(nil)
 // Teams describes all the team related methods that the Terraform
 // Enterprise API supports.
 //
-// TFE API docs: https://www.terraform.io/docs/cloud/api/teams.html
+// TFE API docs: https://developer.hashicorp.com/terraform/cloud-docs/api-docs/teams
 type Teams interface {
 	// List all the teams of the given organization.
 	List(ctx context.Context, organization string, options *TeamListOptions) (*TeamList, error)
@@ -65,6 +68,9 @@ type OrganizationAccess struct {
 	ManageProviders       bool `jsonapi:"attr,manage-providers"`
 	ManageModules         bool `jsonapi:"attr,manage-modules"`
 	ManageRunTasks        bool `jsonapi:"attr,manage-run-tasks"`
+	ManageProjects        bool `jsonapi:"attr,manage-projects"`
+	ReadWorkspaces        bool `jsonapi:"attr,read-workspaces"`
+	ReadProjects          bool `jsonapi:"attr,read-projects"`
 }
 
 // TeamPermissions represents the current user's permissions on the team.
@@ -74,7 +80,7 @@ type TeamPermissions struct {
 }
 
 // TeamIncludeOpt represents the available options for include query params.
-// https://www.terraform.io/docs/cloud/api/teams.html#available-related-resources
+// https://developer.hashicorp.com/terraform/cloud-docs/api-docs/teams#available-related-resources
 type TeamIncludeOpt string
 
 const (
@@ -86,7 +92,7 @@ const (
 type TeamListOptions struct {
 	ListOptions
 	// Optional: A list of relations to include.
-	// https://www.terraform.io/docs/cloud/api/teams.html#available-related-resources
+	// https://developer.hashicorp.com/terraform/cloud-docs/api-docs/teams#available-related-resources
 	Include []TeamIncludeOpt `url:"include,omitempty"`
 
 	// Optional: A list of team names to filter by.
@@ -144,6 +150,9 @@ type OrganizationAccessOptions struct {
 	ManageProviders       *bool `json:"manage-providers,omitempty"`
 	ManageModules         *bool `json:"manage-modules,omitempty"`
 	ManageRunTasks        *bool `json:"manage-run-tasks,omitempty"`
+	ManageProjects        *bool `json:"manage-projects,omitempty"`
+	ReadWorkspaces        *bool `json:"read-workspaces,omitempty"`
+	ReadProjects          *bool `json:"read-projects,omitempty"`
 }
 
 // List all the teams of the given organization.

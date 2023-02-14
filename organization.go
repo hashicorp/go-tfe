@@ -1,3 +1,6 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
+
 package tfe
 
 import (
@@ -14,7 +17,7 @@ var _ Organizations = (*organizations)(nil)
 // Terraform Enterprise API supports.
 //
 // TFE API docs:
-// https://www.terraform.io/docs/cloud/api/organizations.html
+// https://developer.hashicorp.com/terraform/cloud-docs/api-docs/organizations
 type Organizations interface {
 	// List all the organizations visible to the current user.
 	List(ctx context.Context, options *OrganizationListOptions) (*OrganizationList, error)
@@ -86,12 +89,11 @@ type Organization struct {
 	AllowForceDeleteWorkspaces bool `jsonapi:"attr,allow-force-delete-workspaces"`
 
 	// Relations
-	// **Note: This field is still in BETA and subject to change.**
 	DefaultProject *Project `jsonapi:"relation,default-project"`
 }
 
 // OrganizationIncludeOpt represents the available options for include query params.
-// https://www.terraform.io/cloud-docs/api-docs/organizations#available-related-resources
+// https://developer.hashicorp.com/terraform/cloud-docs/api-docs/organizations#available-related-resources
 type OrganizationIncludeOpt string
 
 const (
@@ -102,7 +104,7 @@ const (
 // OrganizationReadOptions represents the options for reading organizations.
 type OrganizationReadOptions struct {
 	// Optional: A list of relations to include. See available resources
-	// https://www.terraform.io/cloud-docs/api-docs/organizations#available-related-resources
+	// https://developer.hashicorp.com/terraform/cloud-docs/api-docs/organizations#available-related-resources
 	Include []OrganizationIncludeOpt `url:"include,omitempty"`
 }
 

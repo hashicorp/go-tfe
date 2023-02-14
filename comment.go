@@ -1,3 +1,6 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
+
 package tfe
 
 import (
@@ -13,7 +16,7 @@ var _ Comments = (*comments)(nil)
 // Terraform Enterprise API supports.
 //
 // TFE API docs:
-// https://www.terraform.io/docs/cloud/api/comments.html
+// https://developer.hashicorp.com/terraform/cloud-docs/api-docs/comments
 type Comments interface {
 	// List all comments of the given run.
 	List(ctx context.Context, runID string) (*CommentList, error)

@@ -1,3 +1,6 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
+
 package tfe
 
 import (
@@ -12,7 +15,7 @@ var _ VariableSetVariables = (*variableSetVariables)(nil)
 // VariableSetVariables describes all variable variable related methods within the scope of
 // Variable Sets that the Terraform Enterprise API supports
 //
-// TFE API docs: https://www.terraform.io/cloud-docs/api-docs/variable-sets#variable-relationships
+// TFE API docs: https://developer.hashicorp.com/terraform/cloud-docs/api-docs/variable-sets#variable-relationships
 type VariableSetVariables interface {
 	// List all variables in the variable set.
 	List(ctx context.Context, variableSetID string, options *VariableSetVariableListOptions) (*VariableSetVariableList, error)

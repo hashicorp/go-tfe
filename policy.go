@@ -1,3 +1,6 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
+
 package tfe
 
 import (
@@ -14,7 +17,7 @@ var _ Policies = (*policies)(nil)
 // Policies describes all the policy related methods that the Terraform
 // Enterprise API supports.
 //
-// TFE API docs: https://www.terraform.io/docs/cloud/api/policies.html
+// TFE API docs: https://developer.hashicorp.com/terraform/cloud-docs/api-docs/policies
 type Policies interface {
 	// List all the policies for a given organization
 	List(ctx context.Context, organization string, options *PolicyListOptions) (*PolicyList, error)

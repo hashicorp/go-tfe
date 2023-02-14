@@ -1,3 +1,6 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
+
 package tfe
 
 import (
@@ -7,7 +10,7 @@ import (
 // Compile-time proof of interface implementation.
 var _ SMTPSettings = (*adminSMTPSettings)(nil)
 
-// SMTPSettings describes all the SMTP admin settings for the Admin Setting API https://www.terraform.io/cloud-docs/api-docs/admin/settings.
+// SMTPSettings describes all the SMTP admin settings for the Admin Setting API https://developer.hashicorp.com/terraform/enterprise/api-docs/admin/settings
 type SMTPSettings interface {
 	// Read returns the SMTP settings.
 	Read(ctx context.Context) (*AdminSMTPSetting, error)
@@ -59,7 +62,7 @@ func (a *adminSMTPSettings) Read(ctx context.Context) (*AdminSMTPSetting, error)
 
 // AdminSMTPSettingsUpdateOptions represents the admin options for updating
 // SMTP settings.
-// https://www.terraform.io/docs/cloud/api/admin/settings.html#request-body-3
+// https://developer.hashicorp.com/terraform/enterprise/api-docs/admin/settings#request-body-3
 type AdminSMTPSettingsUpdateOptions struct {
 	Enabled          *bool         `jsonapi:"attr,enabled,omitempty"`
 	Host             *string       `jsonapi:"attr,host,omitempty"`

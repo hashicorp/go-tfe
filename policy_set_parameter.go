@@ -1,3 +1,6 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
+
 package tfe
 
 import (
@@ -12,7 +15,7 @@ var _ PolicySetParameters = (*policySetParameters)(nil)
 // PolicySetParameters describes all the parameter related methods that the Terraform
 // Enterprise API supports.
 //
-// TFE API docs: https://www.terraform.io/docs/cloud/api/policy-set-params.html
+// TFE API docs: https://developer.hashicorp.com/terraform/cloud-docs/api-docs/policy-set-params
 type PolicySetParameters interface {
 	// List all the parameters associated with the given policy-set.
 	List(ctx context.Context, policySetID string, options *PolicySetParameterListOptions) (*PolicySetParameterList, error)

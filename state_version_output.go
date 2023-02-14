@@ -1,3 +1,6 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
+
 package tfe
 
 import (
@@ -13,7 +16,7 @@ var _ StateVersionOutputs = (*stateVersionOutputs)(nil)
 // They include the name and value of the output, as well as a sensitive boolean
 // if the value should be hidden by default in UIs.
 //
-// TFE API docs: https://www.terraform.io/docs/cloud/api/state-version-outputs.html
+// TFE API docs: https://developer.hashicorp.com/terraform/cloud-docs/api-docs/state-version-outputs
 type StateVersionOutputs interface {
 	Read(ctx context.Context, outputID string) (*StateVersionOutput, error)
 	ReadCurrent(ctx context.Context, workspaceID string) (*StateVersionOutputsList, error)

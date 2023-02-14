@@ -1,8 +1,12 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
+
 package tfe
 
 import (
 	"context"
 	"fmt"
+	"io"
 	"log"
 	"net/http"
 	"net/url"
@@ -15,7 +19,7 @@ var _ RegistryModules = (*registryModules)(nil)
 // RegistryModules describes all the registry module related methods that the Terraform
 // Enterprise API supports.
 //
-// TFE API docs: https://www.terraform.io/docs/cloud/api/modules.html
+// TFE API docs: https://developer.hashicorp.com/terraform/cloud-docs/api-docs/private-registry/modules
 type RegistryModules interface {
 	// List all the registory modules within an organization
 	List(ctx context.Context, organization string, options *RegistryModuleListOptions) (*RegistryModuleList, error)
@@ -48,6 +52,9 @@ type RegistryModules interface {
 	// requires a path to the configuration files on disk, which will be packaged by
 	// hashicorp/go-slug before being uploaded.
 	Upload(ctx context.Context, rmv RegistryModuleVersion, path string) error
+
+	// Upload a tar gzip archive to the specified configuration version upload URL.
+	UploadTarGzip(ctx context.Context, url string, r io.Reader) error
 }
 
 // registryModules implements RegistryModules.
@@ -251,7 +258,17 @@ func (r *registryModules) Upload(ctx context.Context, rmv RegistryModuleVersion,
 		return err
 	}
 
-	req, err := r.client.NewRequest("PUT", uploadURL, body)
+	return r.UploadTarGzip(ctx, uploadURL, body)
+}
+
+// UploadTarGzip is used to upload Terraform configuration files contained a tar gzip archive.
+// Any stream implementing io.Reader can be passed into this method. This method is also
+// particularly useful for tar streams created by non-default go-slug configurations.
+//
+// **Note**: This method does not validate the content being uploaded and is therefore the caller's
+// responsibility to ensure the raw content is a valid Terraform configuration.
+func (r *registryModules) UploadTarGzip(ctx context.Context, uploadURL string, archive io.Reader) error {
+	req, err := r.client.NewRequest("PUT", uploadURL, archive)
 	if err != nil {
 		return err
 	}

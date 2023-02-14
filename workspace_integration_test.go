@@ -1,3 +1,6 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
+
 package tfe
 
 import (
@@ -678,6 +681,17 @@ func TestWorkspacesRead(t *testing.T) {
 		assert.NotEmpty(t, w.Actions)
 		assert.Equal(t, orgTest.Name, w.Organization.Name)
 		assert.NotEmpty(t, w.CreatedAt)
+	})
+
+	t.Run("links are properly decoded", func(t *testing.T) {
+		w, err := client.Workspaces.Read(ctx, orgTest.Name, wTest.Name)
+		require.NoError(t, err)
+
+		assert.NotEmpty(t, w.Links["self-html"])
+		assert.Contains(t, w.Links["self-html"], fmt.Sprintf("/app/%s/workspaces/%s", orgTest.Name, wTest.Name))
+
+		assert.NotEmpty(t, w.Links["self"])
+		assert.Contains(t, w.Links["self"], fmt.Sprintf("/api/v2/organizations/%s/workspaces/%s", orgTest.Name, wTest.Name))
 	})
 
 	t.Run("when the workspace does not exist", func(t *testing.T) {
@@ -2200,7 +2214,6 @@ func TestWorkspaceCreateOptions_Marshal(t *testing.T) {
 }
 
 func TestWorkspacesRunTasksPermission(t *testing.T) {
-	skipIfFreeOnly(t)
 	skipUnlessBeta(t)
 
 	client := testClient(t)

@@ -1,3 +1,6 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
+
 package tfe
 
 import (
@@ -8,7 +11,7 @@ import (
 var _ SAMLSettings = (*adminSAMLSettings)(nil)
 
 // SAMLSettings describes all the SAML admin settings for the Admin Setting API.
-// https://www.terraform.io/cloud-docs/api-docs/admin/settings
+// https://developer.hashicorp.com/terraform/enterprise/api-docs/admin/settings
 type SAMLSettings interface {
 	// Read returns the SAML settings.
 	Read(ctx context.Context) (*AdminSAMLSetting, error)
@@ -66,7 +69,7 @@ func (a *adminSAMLSettings) Read(ctx context.Context) (*AdminSAMLSetting, error)
 
 // AdminSAMLSettingsUpdateOptions represents the admin options for updating
 // SAML settings.
-// https://www.terraform.io/docs/cloud/api/admin/settings.html#request-body-2
+// https://developer.hashicorp.com/terraform/enterprise/api-docs/admin/settings#request-body-2
 type AdminSAMLSettingsUpdateOptions struct {
 	Enabled                   *bool   `jsonapi:"attr,enabled,omitempty"`
 	Debug                     *bool   `jsonapi:"attr,debug,omitempty"`

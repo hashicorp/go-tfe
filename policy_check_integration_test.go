@@ -1,3 +1,6 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
+
 package tfe
 
 import (
@@ -13,8 +16,6 @@ import (
 )
 
 func TestPolicyChecksList(t *testing.T) {
-	skipIfFreeOnly(t)
-
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -80,7 +81,6 @@ func TestPolicyChecksList(t *testing.T) {
 
 func TestPolicyChecksRead(t *testing.T) {
 	skipIfEnterprise(t)
-	skipIfFreeOnly(t)
 
 	client := testClient(t)
 	ctx := context.Background()
@@ -122,8 +122,6 @@ func TestPolicyChecksRead(t *testing.T) {
 }
 
 func TestPolicyChecksOverride(t *testing.T) {
-	skipIfFreeOnly(t)
-
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -182,8 +180,6 @@ func TestPolicyChecksOverride(t *testing.T) {
 }
 
 func TestPolicyChecksLogs(t *testing.T) {
-	skipIfFreeOnly(t)
-
 	client := testClient(t)
 	ctx := context.Background()
 

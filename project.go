@@ -1,3 +1,6 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
+
 package tfe
 
 import (
@@ -12,8 +15,7 @@ var _ Projects = (*projects)(nil)
 // Projects describes all the project related methods that the Terraform
 // Enterprise API supports
 //
-// TFE API docs: (TODO: ADD DOCS URL)
-// **Note: This functionality is still in BETA and subject to change.**
+// TFE API docs: https://developer.hashicorp.com/terraform/cloud-docs/api-docs/projects
 type Projects interface {
 	// List all projects in the given organization
 	List(ctx context.Context, organization string, options *ProjectListOptions) (*ProjectList, error)
