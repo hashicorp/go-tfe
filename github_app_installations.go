@@ -33,7 +33,6 @@ type GHAInstallationList struct {
 type GHAInstallation struct {
 	ID             string `jsonapi:"primary,github-app-installations"`
 	InstallationId int32  `jsonapi:"attr,installation-id"`
-	IconUrl        string `jsonapi:"attr,icon-url"`
 	Name           string `jsonapi:"attr,name"`
 }
 
@@ -57,7 +56,6 @@ func (s *gHAInstallations) List(ctx context.Context, options *GHAInstallationLis
 	otl := &GHAInstallationList{}
 
 	err = req.Do(ctx, otl)
-	fmt.Println(otl.Items[0])
 	if err != nil {
 		return nil, err
 	}

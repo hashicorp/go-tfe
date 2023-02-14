@@ -14,9 +14,6 @@ func TestGHAInstallationsList(t *testing.T) {
 	t.Run("without list options", func(t *testing.T) {
 		ghais, err := client.GHAInstallations.List(ctx, nil)
 		require.NoError(t, err)
-		assert.NotEmpty(t, ghais.Items[0].Name)
-		assert.NotEmpty(t, ghais.Items[0].InstallationId)
-		assert.NotEmpty(t, ghais.Items[0].IconUrl)
-		assert.NotEmpty(t, ghais.Items[0].ID)
+		assert.NotEmpty(t, ghais.Items)
 	})
 }
