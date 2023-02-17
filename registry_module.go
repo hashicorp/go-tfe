@@ -218,9 +218,10 @@ type RegistryModuleUpdateOptions struct {
 }
 
 type RegistryModuleVCSRepoOptions struct {
-	Identifier        *string `json:"identifier"`         // Required
-	OAuthTokenID      *string `json:"oauth-token-id"`     // Required
-	DisplayIdentifier *string `json:"display-identifier"` // Required
+	Identifier        *string `json:"identifier"`                   // Required
+	OAuthTokenID      *string `json:"oauth-token-id"`               // Required
+	DisplayIdentifier *string `json:"display-identifier,omitempty"` // Required
+	GHAInstallationID *string `json:"github-app-installation-id,omitempty"`
 }
 
 // List all the registory modules within an organization.
@@ -589,8 +590,13 @@ func (o RegistryModuleVCSRepoOptions) valid() error {
 	if !validString(o.Identifier) {
 		return ErrRequiredIdentifier
 	}
-	if !validString(o.OAuthTokenID) {
-		return ErrRequiredOauthTokenID
+	if !validString(o.OAuthTokenID) || !validString(o.GHAInstallationID) {
+		if !validString(o.OAuthTokenID) {
+			return ErrRequiredOauthTokenID
+		}
+		if !validString(o.GHAInstallationID) {
+			return ErrRequiredGithubAppInstallationID
+		}
 	}
 	if !validString(o.DisplayIdentifier) {
 		return ErrRequiredDisplayIdentifier

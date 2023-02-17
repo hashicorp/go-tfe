@@ -242,6 +242,8 @@ var (
 
 	ErrRequiredOauthTokenID = errors.New("oauth token ID is required")
 
+	ErrRequiredGithubAppInstallationID = errors.New("github app installation ID is required")
+
 	ErrRequiredTestNumber = errors.New("TestNumber is required")
 
 	ErrMissingTagIdentifier = errors.New("must specify at least one tag by ID or name")

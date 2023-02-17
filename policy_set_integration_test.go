@@ -253,6 +253,55 @@ func TestPolicySetsCreate(t *testing.T) {
 	})
 }
 
+func TestPolicySetsCreateWithGHA(t *testing.T) {
+	gHAInstallationId := os.Getenv("GITHUB_APP_INSTALLATION_ID")
+	if gHAInstallationId == "" {
+		t.Skip("Export a valid GITHUB_APP_INSTALLATION_ID before running this test!")
+	}
+
+	client := testClient(t)
+	ctx := context.Background()
+
+	orgTest, orgTestCleanup := createOrganization(t, client)
+	defer orgTestCleanup()
+
+	upgradeOrganizationSubscription(t, client, orgTest)
+
+	t.Run("with vcs policy set", func(t *testing.T) {
+		githubIdentifier := os.Getenv("GITHUB_POLICY_SET_IDENTIFIER")
+		if githubIdentifier == "" {
+			t.Skip("Export a valid GITHUB_POLICY_SET_IDENTIFIER before running this test")
+		}
+
+		options := PolicySetCreateOptions{
+			Name:         String("vcs-policy-set"),
+			PoliciesPath: String("/policy-sets/foo"),
+			VCSRepo: &VCSRepoOptions{
+				Branch:            String("policies"),
+				Identifier:        String(githubIdentifier),
+				GHAInstallationID: String(gHAInstallationId),
+				IngressSubmodules: Bool(true),
+			},
+		}
+
+		ps, err := client.PolicySets.Create(ctx, orgTest.Name, options)
+		require.NoError(t, err)
+
+		assert.Equal(t, ps.Name, *options.Name)
+		assert.Equal(t, ps.Description, "")
+		assert.False(t, ps.Global)
+		assert.Equal(t, ps.PoliciesPath, "/policy-sets/foo")
+		assert.Equal(t, ps.VCSRepo.Branch, "policies")
+		assert.Equal(t, ps.VCSRepo.DisplayIdentifier, githubIdentifier)
+		assert.Equal(t, ps.VCSRepo.Identifier, githubIdentifier)
+		assert.Equal(t, ps.VCSRepo.IngressSubmodules, true)
+		assert.Equal(t, ps.VCSRepo.GHAInstallationID, gHAInstallationId)
+		assert.Equal(t, ps.VCSRepo.RepositoryHTTPURL, fmt.Sprintf("https://github.com/%s", githubIdentifier))
+		assert.Regexp(t, fmt.Sprintf("^%s/webhooks/vcs/[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$", regexp.QuoteMeta(DefaultConfig().Address)), ps.VCSRepo.WebhookURL)
+	})
+
+}
+
 func TestPolicySetsRead(t *testing.T) {
 	client := testClient(t)
 	ctx := context.Background()

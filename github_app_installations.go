@@ -47,8 +47,9 @@ func (s *gHAInstallations) List(ctx context.Context, options *GHAInstallationLis
 		return nil, err
 	}
 
-	u := fmt.Sprintf("github-app-installations")
+	u := fmt.Sprintf("github-app/installations")
 	req, err := s.client.NewRequest("GET", u, options)
+	fmt.Println(u)
 	if err != nil {
 		return nil, err
 	}
@@ -60,6 +61,7 @@ func (s *gHAInstallations) List(ctx context.Context, options *GHAInstallationLis
 		return nil, err
 	}
 
+	fmt.Println(otl.Items[0])
 	return otl, nil
 }
 

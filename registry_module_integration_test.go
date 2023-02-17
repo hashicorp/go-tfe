@@ -551,6 +551,93 @@ func TestRegistryModulesCreateWithVCSConnection(t *testing.T) {
 	})
 }
 
+func TestRegistryModulesCreateWithVCSConnectionWithGHA(t *testing.T) {
+	githubIdentifier := os.Getenv("GITHUB_REGISTRY_MODULE_IDENTIFIER")
+	if githubIdentifier == "" {
+		t.Skip("Export a valid GITHUB_REGISTRY_MODULE_IDENTIFIER before running this test")
+	}
+
+	gHAInstallationId := os.Getenv("GITHUB_APP_INSTALLATION_ID")
+
+	if gHAInstallationId == "" {
+		t.Skip("Export a valid GITHUB_APP_INSTALLATION_ID before running this test!")
+	}
+
+	repositoryName := strings.Split(githubIdentifier, "/")[1]
+	registryModuleProvider := strings.SplitN(repositoryName, "-", 3)[1]
+	registryModuleName := strings.SplitN(repositoryName, "-", 3)[2]
+
+	client := testClient(t)
+	ctx := context.Background()
+
+	orgTest, orgTestCleanup := createOrganization(t, client)
+	defer orgTestCleanup()
+
+	oauthTokenTest, oauthTokenTestCleanup := createOAuthToken(t, client, orgTest)
+	defer oauthTokenTestCleanup()
+
+	t.Run("with valid options", func(t *testing.T) {
+		options := RegistryModuleCreateWithVCSConnectionOptions{
+			VCSRepo: &RegistryModuleVCSRepoOptions{
+				Identifier:        String(githubIdentifier),
+				DisplayIdentifier: String(githubIdentifier),
+				GHAInstallationID: String(gHAInstallationId),
+			},
+		}
+		rm, err := client.RegistryModules.CreateWithVCSConnection(ctx, options)
+		require.NoError(t, err)
+		assert.NotEmpty(t, rm.ID)
+		assert.Equal(t, registryModuleName, rm.Name)
+		assert.Equal(t, registryModuleProvider, rm.Provider)
+		assert.Equal(t, rm.VCSRepo.Branch, "")
+		assert.Equal(t, rm.VCSRepo.DisplayIdentifier, githubIdentifier)
+		assert.Equal(t, rm.VCSRepo.Identifier, githubIdentifier)
+		assert.Equal(t, rm.VCSRepo.IngressSubmodules, true)
+		assert.Equal(t, rm.VCSRepo.OAuthTokenID, oauthTokenTest.ID)
+		assert.Equal(t, rm.VCSRepo.RepositoryHTTPURL, fmt.Sprintf("https://github.com/%s", githubIdentifier))
+		assert.Equal(t, rm.VCSRepo.ServiceProvider, string(ServiceProviderGithub))
+		assert.Regexp(t, fmt.Sprintf("^%s/webhooks/vcs/[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$", regexp.QuoteMeta(DefaultConfig().Address)), rm.VCSRepo.WebhookURL)
+
+		t.Run("permissions are properly decoded", func(t *testing.T) {
+			assert.True(t, rm.Permissions.CanDelete)
+			assert.True(t, rm.Permissions.CanResync)
+			assert.True(t, rm.Permissions.CanRetry)
+		})
+
+		t.Run("relationships are properly decoded", func(t *testing.T) {
+			assert.Equal(t, orgTest.Name, rm.Organization.Name)
+		})
+
+		t.Run("timestamps are properly decoded", func(t *testing.T) {
+			assert.NotEmpty(t, rm.CreatedAt)
+			assert.NotEmpty(t, rm.UpdatedAt)
+		})
+	})
+
+	t.Run("with invalid options", func(t *testing.T) {
+
+		t.Run("without an github app ID", func(t *testing.T) {
+			options := RegistryModuleCreateWithVCSConnectionOptions{
+				VCSRepo: &RegistryModuleVCSRepoOptions{
+					Identifier:        String(githubIdentifier),
+					GHAInstallationID: String(""),
+					DisplayIdentifier: String(githubIdentifier),
+				},
+			}
+			rm, err := client.RegistryModules.CreateWithVCSConnection(ctx, options)
+			assert.Nil(t, rm)
+			assert.Equal(t, err, ErrRequiredGithubAppInstallationID)
+		})
+	})
+
+	t.Run("without options", func(t *testing.T) {
+		options := RegistryModuleCreateWithVCSConnectionOptions{}
+		rm, err := client.RegistryModules.CreateWithVCSConnection(ctx, options)
+		assert.Nil(t, rm)
+		assert.Equal(t, err, ErrRequiredVCSRepo)
+	})
+}
+
 func TestRegistryModulesRead(t *testing.T) {
 	client := testClient(t)
 	ctx := context.Background()
