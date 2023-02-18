@@ -5,22 +5,7 @@ on:
   pull_request:
 jobs:
   lint:
-    name: Lint
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - uses: hashicorp/setup-copywrite@v1.0.0
-      - uses: actions/setup-go@v3
-        with:
-          go-version-file: 'go.mod'
-      - uses: golangci/golangci-lint-action@v3
-        with:
-          version: v1.50.1
-      - name: copywrite headers check
-        run: copywrite headers --plan
-
-  codegen:
-    name: Codegen
+    name: Lint and Codegen
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
@@ -32,6 +17,10 @@ jobs:
         with:
           go-version-file: go.mod
           cache: true
+
+      - uses: golangci/golangci-lint-action@v3
+        with:
+          version: v1.50.1
 
       - name: Install mockgen
         run: |
@@ -62,8 +51,10 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        parallel: [3]
-        index: [0, 1, 2]
+        # If you adjust these parameters, also adjust the jrm input files on the "Merge reports" step below
+        parallel: [4]
+        index: [0, 1, 2, 3]
+
     timeout-minutes: 30
     steps:
       - name: Checkout code
@@ -83,16 +74,26 @@ jobs:
       - name: Install gotestsum
         run: go install gotest.tools/gotestsum@latest
 
+      - name: Download artifact
+        id: download-artifact
+        uses: dawidd6/action-download-artifact@v2
+        with:
+          workflow_conclusion: success
+          name: junit-test-summary
+          if_no_artifact_found: warn
+          branch: main
+
       - name: Split integration tests
         id: test_split
-        uses: hashicorp-forge/go-test-split-action@v1
+        uses: hashicorp-forge/go-test-split-action@brandonc/junit_summary_strategy
         with:
           index: ${{ matrix.index }}
           total: ${{ matrix.parallel }}
+          junit-summary: ./ci-summary.xml
 
       - name: terraform-cloud-outputs
         id: tflocal
-        uses: brandonc/terraform-cloud-outputs-action@v1
+        uses: hashicorp-forge/terraform-cloud-outputs-action@v1
         with:
           token: ${{ secrets.TF_WORKFLOW_TFLOCAL_CLOUD_TFC_TOKEN }}
           organization: hashicorp-v2
@@ -108,7 +109,38 @@ jobs:
           OAUTH_CLIENT_GITHUB_TOKEN: "${{ secrets.OAUTH_CLIENT_GITHUB_TOKEN }}"
           GO111MODULE: "on"
         run: |
-          gotestsum --format short-verbose -- -timeout=29m -run "${{ steps.test_split.outputs.run }}"
+          gotestsum --junitfile summary.xml --format short-verbose -- -timeout=29m -run "${{ steps.test_split.outputs.run }}"
+
+      - name: Upload test artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: junit-test-summary-${{ matrix.index }}
+          path: summary.xml
+          retention-days: 1
+
+  tests-combine-summaries:
+    name: Combine Test Reports
+    needs: [tests]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 16
+
+      - name: Download artifacts
+        uses: actions/download-artifact@v3
+
+      - name: Install junit-report-merger
+        run: npm install -g junit-report-merger
+
+      - name: Merge reports
+        run: jrm ./ci-summary.xml "junit-test-summary-0/*.xml" "junit-test-summary-1/*.xml" "junit-test-summary-2/*.xml" "junit-test-summary-3/*.xml"
+
+      - name: Upload test artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: junit-test-summary
+          path: ./ci-summary.xml
 
   tests-summarize:
     name: Summarize Tests
