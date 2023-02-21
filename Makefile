@@ -12,6 +12,9 @@ vet:
 fmt:
 	gofmt -s -l -w .
 
+fmtcheck:
+	./scripts/gofmtcheck.sh
+
 lint:
 	golangci-lint run .
 

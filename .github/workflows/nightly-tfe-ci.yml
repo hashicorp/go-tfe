@@ -46,7 +46,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: terraform-cloud-run
-        uses: brandonc/terraform-cloud-run-action@v1
+        uses: hashicorp-forge/terraform-cloud-run-action@v1
         with:
           organization: hashicorp-v2
           workspace: tflocal-go-tfe-nightly
@@ -60,8 +60,8 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        parallel: [3]
-        index: [0, 1, 2]
+        parallel: [4]
+        index: [0, 1, 2, 3]
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -80,9 +80,18 @@ jobs:
       - name: Install gotestsum
         run: go install gotest.tools/gotestsum@latest
 
+      - name: Download artifact
+        id: download-artifact
+        uses: dawidd6/action-download-artifact@v2
+        with:
+          workflow_conclusion: success
+          name: junit-test-summary
+          if_no_artifact_found: warn
+          branch: main
+
       - name: terraform-cloud-outputs
         id: tflocal
-        uses: brandonc/terraform-cloud-outputs-action@v1
+        uses: hashicorp-forge/terraform-cloud-outputs-action@v1
         with:
           token: ${{ secrets.TF_WORKFLOW_TFLOCAL_CLOUD_TFC_TOKEN }}
           organization: hashicorp-v2
@@ -90,10 +99,11 @@ jobs:
 
       - name: Split acceptance tests
         id: test_split
-        uses: brandonc/go-test-split-action@v1
+        uses: hashicorp-forge/go-test-split-action@v1
         with:
           index: ${{ matrix.index }}
           total: ${{ matrix.parallel }}
+          junit-summary: ./ci-summary.xml
 
       - name: Run Tests
         env:
@@ -106,7 +116,7 @@ jobs:
           OAUTH_CLIENT_GITHUB_TOKEN: "${{ secrets.OAUTH_CLIENT_GITHUB_TOKEN }}"
           GO111MODULE: "on"
         run: |
-          gotestsum --format short-verbose -- -timeout=40m -run "${{ steps.test_split.outputs.run }}"
+          gotestsum --junitfile summary.xml --format short-verbose -- -timeout=40m -run "${{ steps.test_split.outputs.run }}"
 
   tests-summarize:
     needs: [tests]
@@ -158,7 +168,7 @@ jobs:
     if: "${{ always() }}"
     steps:
       - name: Destroy nightly TFE instance
-        uses: brandonc/terraform-cloud-run-action@v1
+        uses: hashicorp-forge/terraform-cloud-run-action@v1
         with:
           token: ${{ secrets.TF_WORKFLOW_TFLOCAL_CLOUD_TFC_TOKEN }}
           organization: hashicorp-v2
