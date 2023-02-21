@@ -18,6 +18,7 @@ jobs:
           version: v1.50.1
       - name: copywrite headers check
         run: copywrite headers --plan
+
   codegen:
     name: Codegen
     runs-on: ubuntu-latest
@@ -54,6 +55,7 @@ jobs:
 
       - name: Ensure nothing changed
         run: git diff --exit-code
+
   tests:
     name: Test
     runs-on: ubuntu-latest
@@ -62,7 +64,6 @@ jobs:
       matrix:
         parallel: [3]
         index: [0, 1, 2]
-
     timeout-minutes: 30
     steps:
       - name: Checkout code
@@ -89,22 +90,26 @@ jobs:
           index: ${{ matrix.index }}
           total: ${{ matrix.parallel }}
 
-      - name: Fetch outputs
-        env:
-          TFE_TOKEN: "${{ secrets.TF_WORKFLOW_TFLOCAL_CLOUD_TFC_TOKEN }}"
-        run: |
-          go run .github/scripts/fetch_outputs/main.go hashicorp-v2 tflocal-go-tfe
+      - name: terraform-cloud-outputs
+        id: tflocal
+        uses: brandonc/terraform-cloud-outputs-action@v1
+        with:
+          token: ${{ secrets.TF_WORKFLOW_TFLOCAL_CLOUD_TFC_TOKEN }}
+          organization: hashicorp-v2
+          workspace: tflocal-go-tfe
 
       - name: Run integration tests
         env:
+          TFE_ADDRESS: ${{fromJSON(steps.tflocal.outputs.workspace-outputs-json).tfe_address}}
+          TFE_TOKEN: ${{fromJSON(steps.tflocal.outputs.workspace-outputs-json).tfe_token}}
           TFC_RUN_TASK_URL: "https://httpstat.us/200"
           GITHUB_POLICY_SET_IDENTIFIER: "hashicorp/test-policy-set"
           GITHUB_REGISTRY_MODULE_IDENTIFIER: "hashicorp/terraform-random-module"
           OAUTH_CLIENT_GITHUB_TOKEN: "${{ secrets.OAUTH_CLIENT_GITHUB_TOKEN }}"
           GO111MODULE: "on"
         run: |
-          source $HOME/.env
           gotestsum --format short-verbose -- -timeout=29m -run "${{ steps.test_split.outputs.run }}"
+
   tests-summarize:
     name: Summarize Tests
     needs: [tests]
