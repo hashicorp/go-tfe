@@ -18,11 +18,11 @@ jobs:
           go-version-file: go.mod
           cache: true
 
+      - run: make fmtcheck
+
       - uses: golangci/golangci-lint-action@v3
         with:
           version: v1.50.1
-
-      - run: make fmtcheck
 
       - name: Install mockgen
         run: |
