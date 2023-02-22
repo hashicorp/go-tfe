@@ -38,9 +38,9 @@ type GHAInstallationList struct {
 
 // GHAInstallation represents a github app installation
 type GHAInstallation struct {
-	ID             string  `jsonapi:"primary,github-app-installations"`
-	InstallationId int32   `jsonapi:"attr,installation-id"`
-	Name           *string `jsonapi:"attr,name"`
+	ID               string `jsonapi:"primary,github-app-installations"`
+	GHInstallationId int32  `jsonapi:"attr,installation-id"`
+	Name             string `jsonapi:"attr,name"`
 }
 
 // GHAInstallationListOptions represents the options for listing.
@@ -61,38 +61,40 @@ func (s *gHAInstallations) List(ctx context.Context, options *GHAInstallationLis
 		return nil, err
 	}
 
-	otl := &GHAInstallationList{}
+	ghil := &GHAInstallationList{}
 
-	err = req.Do(ctx, otl)
+	err = req.Do(ctx, ghil)
 	if err != nil {
 		return nil, err
 	}
 
-	fmt.Println(otl.Items[0])
-	return otl, nil
+	return ghil, nil
 }
 
 // Read an OAuth client by its ID.
-func (s *gHAInstallations) Read(ctx context.Context, GHAInstallationID string) (*GHAInstallation, error) {
-	if !validStringID(&GHAInstallationID) {
+func (s *gHAInstallations) Read(ctx context.Context, ID string) (*GHAInstallation, error) {
+	if !validStringID(&ID) {
 		return nil, ErrInvalidOauthClientID
 	}
 
-	u := fmt.Sprintf("github-app/installations/%s", url.QueryEscape(GHAInstallationID))
+	u := fmt.Sprintf("github-app/installation/%s", url.QueryEscape(ID))
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, err
 	}
 
-	oc := &GHAInstallation{}
-	err = req.Do(ctx, oc)
+	ghi := &GHAInstallation{}
+	err = req.Do(ctx, ghi)
 	if err != nil {
 		return nil, err
 	}
 
-	return oc, err
+	return ghi, err
 }
 
 func (o *GHAInstallationListOptions) valid() error {
+	if o == nil {
+		return nil // nothing to validate
+	}
 	return nil
 }
