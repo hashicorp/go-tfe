@@ -87,7 +87,7 @@ jobs:
 
       - name: Split integration tests
         id: test_split
-        uses: hashicorp-forge/go-test-split-action@brandonc/junit_summary_strategy
+        uses: hashicorp-forge/go-test-split-action@v1
         with:
           index: ${{ matrix.index }}
           total: ${{ matrix.parallel }}
