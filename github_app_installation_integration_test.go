@@ -7,7 +7,7 @@ import (
 	"testing"
 )
 
-func TestGHAInstallationsList(t *testing.T) {
+func TestGHAInstallationList(t *testing.T) {
 	client := testClient(t)
 	ctx := context.Background()
 

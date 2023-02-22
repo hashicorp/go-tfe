@@ -1,8 +1,12 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
+
 package tfe
 
 import (
 	"context"
 	"fmt"
+	"net/url"
 )
 
 // Compile-time proof of interface implementation.
@@ -14,8 +18,11 @@ var _ GHAInstallations = (*gHAInstallations)(nil)
 // TFE API docs:
 // https://www.terraform.io/docs/cloud/api/gha-installations.html
 type GHAInstallations interface {
-	// List all the Github App for the user.
+	// List all the GitHub App Installations for the user.
 	List(ctx context.Context, options *GHAInstallationListOptions) (*GHAInstallationList, error)
+
+	// Read a GitHub App Installations by its external id.
+	Read(ctx context.Context, GHAInstallationID string) (*GHAInstallation, error)
 }
 
 // gHAInstallations implements GHAInstallations.
@@ -31,9 +38,9 @@ type GHAInstallationList struct {
 
 // GHAInstallation represents a github app installation
 type GHAInstallation struct {
-	ID             string `jsonapi:"primary,github-app-installations"`
-	InstallationId int32  `jsonapi:"attr,installation-id"`
-	Name           string `jsonapi:"attr,name"`
+	ID             string  `jsonapi:"primary,github-app-installations"`
+	InstallationId int32   `jsonapi:"attr,installation-id"`
+	Name           *string `jsonapi:"attr,name"`
 }
 
 // GHAInstallationListOptions represents the options for listing.
@@ -63,6 +70,27 @@ func (s *gHAInstallations) List(ctx context.Context, options *GHAInstallationLis
 
 	fmt.Println(otl.Items[0])
 	return otl, nil
+}
+
+// Read an OAuth client by its ID.
+func (s *gHAInstallations) Read(ctx context.Context, GHAInstallationID string) (*GHAInstallation, error) {
+	if !validStringID(&GHAInstallationID) {
+		return nil, ErrInvalidOauthClientID
+	}
+
+	u := fmt.Sprintf("github-app/installations/%s", url.QueryEscape(GHAInstallationID))
+	req, err := s.client.NewRequest("GET", u, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	oc := &GHAInstallation{}
+	err = req.Do(ctx, oc)
+	if err != nil {
+		return nil, err
+	}
+
+	return oc, err
 }
 
 func (o *GHAInstallationListOptions) valid() error {
