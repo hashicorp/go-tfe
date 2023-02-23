@@ -1,0 +1,45 @@
+name: Lint
+description: Lints go-tfe
+runs:
+  using: composite
+  steps:
+    - name: Set up Go
+      uses: actions/setup-go@v3
+      with:
+        go-version-file: go.mod
+        cache: true
+
+    - run: make fmtcheck
+      shell: bash
+
+    - uses: golangci/golangci-lint-action@v3
+      with:
+        version: v1.50.1
+
+    - name: Install mockgen
+      shell: bash
+      run: |
+        set -eux -o pipefail
+        MOCKGEN_VERSION=$(curl -Ls -o /dev/null -w %{url_effective}   https://github.com/golang/mock/releases/latest | awk -F'/v' '{printf$2}')
+        MOCKGEN_ZIP=mock_${MOCKGEN_VERSION}_linux_amd64.tar.gz
+        curl -OL https://github.com/golang/mock/releases/download/v$MOCKGEN_VERSION/$MOCKGEN_ZIP
+        sudo tar xvzf $MOCKGEN_ZIP --strip-components 1 -C /usr/local
+        sudo chmod +x /usr/local/mockgen
+        rm -f $MOCKGEN_ZIP
+        echo /usr/local/ >> $GITHUB_PATH
+
+    - name: Get dependencies
+      shell: bash
+      run: go mod download
+
+    - name: Generate mocks
+      shell: bash
+      run:  ./generate_mocks.sh
+
+    - name: verify go.mod and go.sum are consistent
+      shell: bash
+      run : go mod tidy
+
+    - name: Ensure mocks are generated
+      shell: bash
+      run: git diff --exit-code
