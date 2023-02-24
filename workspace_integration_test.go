@@ -359,7 +359,6 @@ func TestWorkspacesCreateTableDrivenWithGithubApp(t *testing.T) {
 	ctx := context.Background()
 
 	orgTest1, orgTestCleanup := createOrganization(t, client)
-	//testOrg, _ := client.Organizations.Read(ctx, "hashicorp")
 
 	t.Cleanup(orgTestCleanup)
 

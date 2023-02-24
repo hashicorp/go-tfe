@@ -558,7 +558,6 @@ func TestRegistryModulesCreateWithVCSConnectionWithGHA(t *testing.T) {
 	}
 
 	gHAInstallationID := os.Getenv("GITHUB_APP_INSTALLATION_ID")
-
 	if gHAInstallationID == "" {
 		t.Skip("Export a valid GITHUB_APP_INSTALLATION_ID before running this test!")
 	}
@@ -566,7 +565,6 @@ func TestRegistryModulesCreateWithVCSConnectionWithGHA(t *testing.T) {
 	repositoryName := strings.Split(githubIdentifier, "/")[1]
 	registryModuleProvider := strings.SplitN(repositoryName, "-", 3)[1]
 	registryModuleName := strings.SplitN(repositoryName, "-", 3)[2]
-
 	client := testClient(t)
 	ctx := context.Background()
 
