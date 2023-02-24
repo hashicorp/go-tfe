@@ -526,7 +526,7 @@ func TestRegistryModulesCreateWithVCSConnection(t *testing.T) {
 			}
 			rm, err := client.RegistryModules.CreateWithVCSConnection(ctx, options)
 			assert.Nil(t, rm)
-			assert.Equal(t, err, ErrRequiredOauthTokenID)
+			assert.Equal(t, err, ErrRequiredOauthTokenOrGithubAppInstallationID)
 		})
 
 		t.Run("without a display identifier", func(t *testing.T) {
@@ -557,9 +557,9 @@ func TestRegistryModulesCreateWithVCSConnectionWithGHA(t *testing.T) {
 		t.Skip("Export a valid GITHUB_REGISTRY_MODULE_IDENTIFIER before running this test")
 	}
 
-	gHAInstallationId := os.Getenv("GITHUB_APP_INSTALLATION_ID")
+	gHAInstallationID := os.Getenv("GITHUB_APP_INSTALLATION_ID")
 
-	if gHAInstallationId == "" {
+	if gHAInstallationID == "" {
 		t.Skip("Export a valid GITHUB_APP_INSTALLATION_ID before running this test!")
 	}
 
@@ -581,7 +581,7 @@ func TestRegistryModulesCreateWithVCSConnectionWithGHA(t *testing.T) {
 			VCSRepo: &RegistryModuleVCSRepoOptions{
 				Identifier:        String(githubIdentifier),
 				DisplayIdentifier: String(githubIdentifier),
-				GHAInstallationID: String(gHAInstallationId),
+				GHAInstallationID: String(gHAInstallationID),
 			},
 		}
 		rm, err := client.RegistryModules.CreateWithVCSConnection(ctx, options)
@@ -626,7 +626,7 @@ func TestRegistryModulesCreateWithVCSConnectionWithGHA(t *testing.T) {
 			}
 			rm, err := client.RegistryModules.CreateWithVCSConnection(ctx, options)
 			assert.Nil(t, rm)
-			assert.Equal(t, err, ErrRequiredGithubAppInstallationID)
+			assert.Equal(t, err, ErrRequiredOauthTokenOrGithubAppInstallationID)
 		})
 	})
 

@@ -350,9 +350,9 @@ func TestWorkspacesCreateTableDriven(t *testing.T) {
 }
 
 func TestWorkspacesCreateTableDrivenWithGithubApp(t *testing.T) {
-	gHAInstallationId := os.Getenv("GITHUB_APP_INSTALLATION_ID")
+	gHAInstallationID := os.Getenv("GITHUB_APP_INSTALLATION_ID")
 
-	if gHAInstallationId == "" {
+	if gHAInstallationID == "" {
 		t.Skip("Export a valid GITHUB_APP_INSTALLATION_ID before running this test!")
 	}
 	client := testClient(t)
@@ -1249,9 +1249,9 @@ func TestWorkspacesUpdateTableDriven(t *testing.T) {
 }
 
 func TestWorkspacesUpdateTableDrivenWithGithubApp(t *testing.T) {
-	gHAInstallationId := os.Getenv("GITHUB_APP_INSTALLATION_ID")
+	gHAInstallationID := os.Getenv("GITHUB_APP_INSTALLATION_ID")
 
-	if gHAInstallationId == "" {
+	if gHAInstallationID == "" {
 		t.Skip("Export a valid GITHUB_APP_INSTALLATION_ID before running this test!")
 	}
 	client := testClient(t)
@@ -1278,7 +1278,7 @@ func TestWorkspacesUpdateTableDrivenWithGithubApp(t *testing.T) {
 					FileTriggersEnabled: Bool(false),
 					VCSRepo: &VCSRepoOptions{
 						TagsRegex:         String("foobar"),
-						GHAInstallationID: String(gHAInstallationId),
+						GHAInstallationID: String(gHAInstallationID),
 					},
 				},
 			},
@@ -1298,12 +1298,12 @@ func TestWorkspacesUpdateTableDrivenWithGithubApp(t *testing.T) {
 				assert.Equal(t, *options.createOptions.VCSRepo.TagsRegex, workspace.VCSRepo.TagsRegex)
 				assert.Equal(t, workspace.VCSRepo.TagsRegex, *String("barfoo")) // Sanity test
 
-				assert.NotEqual(t, workspace.VCSRepo.GHAInstallationID, *String(gHAInstallationId)) // Sanity test
+				assert.NotEqual(t, workspace.VCSRepo.GHAInstallationID, *String(gHAInstallationID)) // Sanity test
 
 				w, err := client.Workspaces.Update(ctx, workspace.Organization.Name, workspace.Name, *options.updateOptions)
 				require.NoError(t, err)
 
-				assert.Equal(t, w.VCSRepo.GHAInstallationID, *String(gHAInstallationId)) // Sanity test
+				assert.Equal(t, w.VCSRepo.GHAInstallationID, *String(gHAInstallationID)) // Sanity test
 			},
 		},
 	}

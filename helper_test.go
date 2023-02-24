@@ -1851,13 +1851,13 @@ func createWorkspaceWithVCSGHA(t *testing.T, client *Client, org *Organization, 
 		org, orgCleanup = createOrganization(t, client)
 	}
 
-	installationId := os.Getenv("GITHUB_APP_INSTALLATION_ID")
+	gHAInstallationID := os.Getenv("GITHUB_APP_INSTALLATION_ID")
 
-	if installationId == "" {
+	if gHAInstallationID == "" {
 		t.Skip("Export a valid GITHUB_APP_INSTALLATION_ID before running this test!")
 	}
 
-	options.VCSRepo.GHAInstallationID = String(installationId)
+	options.VCSRepo.GHAInstallationID = String(gHAInstallationID)
 
 	githubIdentifier := os.Getenv("GITHUB_POLICY_SET_IDENTIFIER")
 	if githubIdentifier == "" {

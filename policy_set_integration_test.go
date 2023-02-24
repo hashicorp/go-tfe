@@ -254,8 +254,8 @@ func TestPolicySetsCreate(t *testing.T) {
 }
 
 func TestPolicySetsCreateWithGHA(t *testing.T) {
-	gHAInstallationId := os.Getenv("GITHUB_APP_INSTALLATION_ID")
-	if gHAInstallationId == "" {
+	gHAInstallationID := os.Getenv("GITHUB_APP_INSTALLATION_ID")
+	if gHAInstallationID == "" {
 		t.Skip("Export a valid GITHUB_APP_INSTALLATION_ID before running this test!")
 	}
 
@@ -279,7 +279,7 @@ func TestPolicySetsCreateWithGHA(t *testing.T) {
 			VCSRepo: &VCSRepoOptions{
 				Branch:            String("policies"),
 				Identifier:        String(githubIdentifier),
-				GHAInstallationID: String(gHAInstallationId),
+				GHAInstallationID: String(gHAInstallationID),
 				IngressSubmodules: Bool(true),
 			},
 		}
@@ -295,7 +295,7 @@ func TestPolicySetsCreateWithGHA(t *testing.T) {
 		assert.Equal(t, ps.VCSRepo.DisplayIdentifier, githubIdentifier)
 		assert.Equal(t, ps.VCSRepo.Identifier, githubIdentifier)
 		assert.Equal(t, ps.VCSRepo.IngressSubmodules, true)
-		assert.Equal(t, ps.VCSRepo.GHAInstallationID, gHAInstallationId)
+		assert.Equal(t, ps.VCSRepo.GHAInstallationID, gHAInstallationID)
 		assert.Equal(t, ps.VCSRepo.RepositoryHTTPURL, fmt.Sprintf("https://github.com/%s", githubIdentifier))
 		assert.Regexp(t, fmt.Sprintf("^%s/webhooks/vcs/[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$", regexp.QuoteMeta(DefaultConfig().Address)), ps.VCSRepo.WebhookURL)
 	})

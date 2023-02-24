@@ -9,6 +9,12 @@ import (
 )
 
 func TestGHAInstallationList(t *testing.T) {
+	ID := os.Getenv("GITHUB_APP_INSTALLATION_ID")
+
+	if ID == "" {
+		t.Skip("Export a valid GITHUB_APP_INSTALLATION_ID before running this test!")
+	}
+
 	client := testClient(t)
 	ctx := context.Background()
 

@@ -242,7 +242,7 @@ var (
 
 	ErrRequiredOauthTokenID = errors.New("oauth token ID is required")
 
-	ErrRequiredGithubAppInstallationID = errors.New("github app installation ID is required")
+	ErrRequiredOauthTokenOrGithubAppInstallationID = errors.New("either oauth token ID or github app installation ID is required")
 
 	ErrRequiredTestNumber = errors.New("TestNumber is required")
 
