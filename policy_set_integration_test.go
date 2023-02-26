@@ -335,12 +335,10 @@ func TestPolicySetsCreateWithGHA(t *testing.T) {
 		assert.Equal(t, ps.VCSRepo.RepositoryHTTPURL, fmt.Sprintf("https://github.com/%s", githubIdentifier))
 		assert.Equal(t, ps.VCSRepo.ServiceProvider, string("github_app"))
 	})
-
 }
 func TestPolicySetsRead(t *testing.T) {
 	client := testClient(t)
 	ctx := context.Background()
-
 	orgTest, orgTestCleanup := createOrganization(t, client)
 	defer orgTestCleanup()
 

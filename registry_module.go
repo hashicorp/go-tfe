@@ -384,7 +384,6 @@ func (r *registryModules) CreateWithVCSConnection(ctx context.Context, options R
 	}
 
 	rm := &RegistryModule{}
-	fmt.Println(req)
 	err = req.Do(ctx, rm)
 	if err != nil {
 		return nil, err

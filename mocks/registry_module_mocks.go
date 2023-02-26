@@ -66,6 +66,21 @@ func (mr *MockRegistryModulesMockRecorder) CreateVersion(ctx, moduleID, options 
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateVersion", reflect.TypeOf((*MockRegistryModules)(nil).CreateVersion), ctx, moduleID, options)
 }
 
+// CreateWithGithubAppVCSConnection mocks base method.
+func (m *MockRegistryModules) CreateWithGithubAppVCSConnection(ctx context.Context, organization string, options tfe.RegistryModuleCreateWithVCSConnectionOptions) (*tfe.RegistryModule, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "CreateWithGithubAppVCSConnection", ctx, organization, options)
+	ret0, _ := ret[0].(*tfe.RegistryModule)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// CreateWithGithubAppVCSConnection indicates an expected call of CreateWithGithubAppVCSConnection.
+func (mr *MockRegistryModulesMockRecorder) CreateWithGithubAppVCSConnection(ctx, organization, options interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateWithGithubAppVCSConnection", reflect.TypeOf((*MockRegistryModules)(nil).CreateWithGithubAppVCSConnection), ctx, organization, options)
+}
+
 // CreateWithVCSConnection mocks base method.
 func (m *MockRegistryModules) CreateWithVCSConnection(ctx context.Context, options tfe.RegistryModuleCreateWithVCSConnectionOptions) (*tfe.RegistryModule, error) {
 	m.ctrl.T.Helper()
