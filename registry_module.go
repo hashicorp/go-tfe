@@ -33,6 +33,9 @@ type RegistryModules interface {
 	// Create and publish a registry module with a VCS repo
 	CreateWithVCSConnection(ctx context.Context, options RegistryModuleCreateWithVCSConnectionOptions) (*RegistryModule, error)
 
+	// Create and publish a registry module with a VCS repo
+	CreateWithGithubAppVCSConnection(ctx context.Context, organization string, options RegistryModuleCreateWithVCSConnectionOptions) (*RegistryModule, error)
+
 	// Read a registry module
 	Read(ctx context.Context, moduleID RegistryModuleID) (*RegistryModule, error)
 
@@ -376,6 +379,35 @@ func (r *registryModules) CreateWithVCSConnection(ctx context.Context, options R
 	}
 
 	req, err := r.client.NewRequest("POST", "registry-modules", &options)
+	if err != nil {
+		return nil, err
+	}
+
+	rm := &RegistryModule{}
+	fmt.Println(req)
+	err = req.Do(ctx, rm)
+	if err != nil {
+		return nil, err
+	}
+
+	return rm, nil
+}
+
+// CreateWithGithubAppVCSConnection is used to create and publish a new registry module with a Github App VCS repo
+func (r *registryModules) CreateWithGithubAppVCSConnection(ctx context.Context, organization string, options RegistryModuleCreateWithVCSConnectionOptions) (*RegistryModule, error) {
+	if !validStringID(&organization) {
+		return nil, ErrInvalidOrg
+	}
+
+	if err := options.valid(); err != nil {
+		return nil, err
+	}
+
+	u := fmt.Sprintf(
+		"organizations/%s/registry-modules/vcs",
+		url.QueryEscape(organization),
+	)
+	req, err := r.client.NewRequest("POST", u, &options)
 	if err != nil {
 		return nil, err
 	}

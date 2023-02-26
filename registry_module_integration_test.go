@@ -571,9 +571,6 @@ func TestRegistryModulesCreateWithVCSConnectionWithGHA(t *testing.T) {
 	orgTest, orgTestCleanup := createOrganization(t, client)
 	defer orgTestCleanup()
 
-	oauthTokenTest, oauthTokenTestCleanup := createOAuthToken(t, client, orgTest)
-	defer oauthTokenTestCleanup()
-
 	t.Run("with valid options", func(t *testing.T) {
 		options := RegistryModuleCreateWithVCSConnectionOptions{
 			VCSRepo: &RegistryModuleVCSRepoOptions{
@@ -582,7 +579,7 @@ func TestRegistryModulesCreateWithVCSConnectionWithGHA(t *testing.T) {
 				GHAInstallationID: String(gHAInstallationID),
 			},
 		}
-		rm, err := client.RegistryModules.CreateWithVCSConnection(ctx, options)
+		rm, err := client.RegistryModules.CreateWithGithubAppVCSConnection(ctx, orgTest.Name, options)
 		require.NoError(t, err)
 		assert.NotEmpty(t, rm.ID)
 		assert.Equal(t, registryModuleName, rm.Name)
@@ -591,10 +588,9 @@ func TestRegistryModulesCreateWithVCSConnectionWithGHA(t *testing.T) {
 		assert.Equal(t, rm.VCSRepo.DisplayIdentifier, githubIdentifier)
 		assert.Equal(t, rm.VCSRepo.Identifier, githubIdentifier)
 		assert.Equal(t, rm.VCSRepo.IngressSubmodules, true)
-		assert.Equal(t, rm.VCSRepo.OAuthTokenID, oauthTokenTest.ID)
+		assert.Equal(t, rm.VCSRepo.GHAInstallationID, gHAInstallationID)
 		assert.Equal(t, rm.VCSRepo.RepositoryHTTPURL, fmt.Sprintf("https://github.com/%s", githubIdentifier))
-		assert.Equal(t, rm.VCSRepo.ServiceProvider, string(ServiceProviderGithub))
-		assert.Regexp(t, fmt.Sprintf("^%s/webhooks/vcs/[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$", regexp.QuoteMeta(DefaultConfig().Address)), rm.VCSRepo.WebhookURL)
+		assert.Equal(t, rm.VCSRepo.ServiceProvider, string("github_app"))
 
 		t.Run("permissions are properly decoded", func(t *testing.T) {
 			assert.True(t, rm.Permissions.CanDelete)
