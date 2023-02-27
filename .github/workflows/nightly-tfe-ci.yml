@@ -2,7 +2,7 @@ name: Nightly TFE Tests
 on:
   workflow_dispatch:
   schedule:
-    - cron: 0 0 * * *
+    - cron: 25 6 * * *
 
 jobs:
   instance:
@@ -59,37 +59,37 @@ jobs:
           fi
           exit 1
 
-#   slack-notify:
-#     needs: tests
-#     if: always() && (needs.tests.result == 'failure')
-#     runs-on: ubuntu-latest
-#     steps:
-#       - name: Send slack notification on failure
-#         uses: slackapi/slack-github-action@v1.23.0
-#         with:
-#           payload: |
-#             {
-#               "text": ":x::moon::sob: Nightly TFE tests *FAILED*",
-#               "attachments": [
-#                 {
-#                   "color": "#C41E3A",
-#                   "blocks": [
-#                     {
-#                       "type": "section",
-#                       "fields": [
-#                         {
-#                           "type": "mrkdwn",
-#                           "text": "*Workflow:*\n${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
-#                         }
-#                       ]
-#                     }
-#                   ]
-#                 }
-#               ]
-#             }
-#         env:
-#           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
-#           SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
+  slack-notify:
+    needs: [ tests ]
+    if: ${{ needs.tests.result == 'failure' }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Send slack notification on failure
+        uses: slackapi/slack-github-action@v1.23.0
+        with:
+          payload: |
+            {
+              "text": ":x::moon::sob: Nightly TFE tests *FAILED*",
+              "attachments": [
+                {
+                  "color": "#C41E3A",
+                  "blocks": [
+                    {
+                      "type": "section",
+                      "fields": [
+                        {
+                          "type": "mrkdwn",
+                          "text": "*Workflow:*\n${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+          SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
 
   cleanup:
     runs-on: ubuntu-latest
