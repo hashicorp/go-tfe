@@ -28,7 +28,7 @@ jobs:
     steps:
       - name: terraform-cloud-outputs
         id: tflocal
-        uses: hashicorp-forge/terraform-cloud-outputs-action@v1
+        uses: hashicorp-forge/terraform-cloud-action/outputs@v1
         with:
           token: ${{ secrets.TF_WORKFLOW_TFLOCAL_CLOUD_TFC_TOKEN }}
           organization: hashicorp-v2

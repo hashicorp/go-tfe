@@ -8,8 +8,8 @@ jobs:
   instance:
     runs-on: ubuntu-latest
     steps:
-      - name: terraform-cloud-run
-        uses: hashicorp-forge/terraform-cloud-run-action@v1
+      - name: terraform-cloud/run
+        uses: hashicorp-forge/terraform-cloud-action/run@v1
         with:
           organization: hashicorp-v2
           workspace: tflocal-go-tfe-nightly
@@ -27,9 +27,9 @@ jobs:
         index: [ 0, 1, 2, 3 ]
 
     steps:
-      - name: terraform-cloud-outputs
+      - name: terraform-cloud/outputs
         id: tflocal
-        uses: hashicorp-forge/terraform-cloud-outputs-action@v1
+        uses: hashicorp-forge/terraform-cloud-action/outputs@v1
         with:
           token: ${{ secrets.TF_WORKFLOW_TFLOCAL_CLOUD_TFC_TOKEN }}
           organization: hashicorp-v2
@@ -96,14 +96,9 @@ jobs:
     needs: ["tests-summarize"]
     if: "${{ always() }}"
     steps:
-      - name: Destroy nightly TFE instance
-        uses: hashicorp-forge/terraform-cloud-run-action@v1
+      - name: terraform-cloud/destroy
+        uses: hashicorp-forge/terraform-cloud-action/destroy@v1
         with:
           token: ${{ secrets.TF_WORKFLOW_TFLOCAL_CLOUD_TFC_TOKEN }}
           organization: hashicorp-v2
           workspace: tflocal-go-tfe-nightly
-          is-destroy: true
-          wait: true
-
-
-
