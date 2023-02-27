@@ -1844,7 +1844,7 @@ func createWorkspaceWithVCS(t *testing.T, client *Client, org *Organization, opt
 
 // This function is added to test setting up workspace's VCS connection via Github App Installation in place of
 // Oauth token. For now the value of GHAInstallationID has to manually set to the correct value by the user.
-func createWorkspaceWithVCSGHA(t *testing.T, client *Client, org *Organization, options WorkspaceCreateOptions) (*Workspace, func()) {
+func createWorkspaceWithGithubApp(t *testing.T, client *Client, org *Organization, options WorkspaceCreateOptions) (*Workspace, func()) {
 	var orgCleanup func()
 
 	if org == nil {

@@ -380,7 +380,7 @@ func TestWorkspacesCreateTableDrivenWithGithubApp(t *testing.T) {
 					Email: String(fmt.Sprintf("%s@tfe.local", randomString(t))),
 				})
 
-				w, wTestCleanup := createWorkspaceWithVCSGHA(t, client, orgTest, *options.createOptions)
+				w, wTestCleanup := createWorkspaceWithGithubApp(t, client, orgTest, *options.createOptions)
 
 				return w, func() {
 					t.Cleanup(orgTestCleanup)
@@ -1286,7 +1286,7 @@ func TestWorkspacesUpdateTableDrivenWithGithubApp(t *testing.T) {
 					Email: String(fmt.Sprintf("%s@tfe.local", randomString(t))),
 				})
 
-				wTest, wTestCleanup := createWorkspaceWithVCSGHA(t, client, orgTest, *options.createOptions)
+				wTest, wTestCleanup := createWorkspaceWithGithubApp(t, client, orgTest, *options.createOptions)
 				return wTest, func() {
 					t.Cleanup(orgTestCleanup)
 					t.Cleanup(wTestCleanup)

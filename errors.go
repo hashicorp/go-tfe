@@ -196,7 +196,6 @@ var (
 	ErrInvalidRegistryName = errors.New(`invalid value for registry-name. It must be either "private" or "public"`)
 )
 
-// Missing values for required field/option
 var (
 	ErrRequiredAccess = errors.New("access is required")
 
@@ -239,8 +238,6 @@ var (
 	ErrRequiredProvider = errors.New("provider is required")
 
 	ErrRequiredOauthToken = errors.New("OAuth token is required")
-
-	ErrRequiredOauthTokenID = errors.New("oauth token ID is required")
 
 	ErrRequiredOauthTokenOrGithubAppInstallationID = errors.New("either oauth token ID or github app installation ID is required")
 
