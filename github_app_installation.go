@@ -38,9 +38,9 @@ type GHAInstallationList struct {
 
 // GHAInstallation represents a github app installation
 type GHAInstallation struct {
-	ID               string `jsonapi:"primary,github-app-installations"`
-	GHInstallationID int    `jsonapi:"attr,installation-id"`
-	Name             string `jsonapi:"attr,name"`
+	ID             *string `jsonapi:"primary,github-app-installations"`
+	InstallationID *int    `jsonapi:"attr,installation-id"`
+	Name           *string `jsonapi:"attr,name"`
 }
 
 // GHAInstallationListOptions represents the options for listing.
@@ -50,8 +50,7 @@ type GHAInstallationListOptions struct {
 
 // List all the github app installations.
 func (s *gHAInstallations) List(ctx context.Context, options *GHAInstallationListOptions) (*GHAInstallationList, error) {
-
-	u := fmt.Sprintf("github-app/installations")
+	u := "github-app/installations"
 	req, err := s.client.NewRequest("GET", u, options)
 	fmt.Println(u)
 	if err != nil {

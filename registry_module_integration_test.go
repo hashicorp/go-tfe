@@ -551,7 +551,7 @@ func TestRegistryModulesCreateWithVCSConnection(t *testing.T) {
 	})
 }
 
-func TestRegistryModulesCreateWithVCSConnectionWithGHA(t *testing.T) {
+func TestRegistryModulesCreateWithGithubApp(t *testing.T) {
 	githubIdentifier := os.Getenv("GITHUB_REGISTRY_MODULE_IDENTIFIER")
 	if githubIdentifier == "" {
 		t.Skip("Export a valid GITHUB_REGISTRY_MODULE_IDENTIFIER before running this test")
@@ -579,7 +579,7 @@ func TestRegistryModulesCreateWithVCSConnectionWithGHA(t *testing.T) {
 				GHAInstallationID: String(gHAInstallationID),
 			},
 		}
-		rm, err := client.RegistryModules.CreateWithGithubAppVCSConnection(ctx, orgTest.Name, options)
+		rm, err := client.RegistryModules.CreateWithGithubApp(ctx, orgTest.Name, options)
 		require.NoError(t, err)
 		assert.NotEmpty(t, rm.ID)
 		assert.Equal(t, registryModuleName, rm.Name)

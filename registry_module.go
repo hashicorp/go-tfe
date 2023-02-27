@@ -34,7 +34,7 @@ type RegistryModules interface {
 	CreateWithVCSConnection(ctx context.Context, options RegistryModuleCreateWithVCSConnectionOptions) (*RegistryModule, error)
 
 	// Create and publish a registry module with a VCS repo
-	CreateWithGithubAppVCSConnection(ctx context.Context, organization string, options RegistryModuleCreateWithVCSConnectionOptions) (*RegistryModule, error)
+	CreateWithGithubApp(ctx context.Context, organization string, options RegistryModuleCreateWithVCSConnectionOptions) (*RegistryModule, error)
 
 	// Read a registry module
 	Read(ctx context.Context, moduleID RegistryModuleID) (*RegistryModule, error)
@@ -393,7 +393,7 @@ func (r *registryModules) CreateWithVCSConnection(ctx context.Context, options R
 }
 
 // CreateWithGithubAppVCSConnection is used to create and publish a new registry module with a Github App VCS repo
-func (r *registryModules) CreateWithGithubAppVCSConnection(ctx context.Context, organization string, options RegistryModuleCreateWithVCSConnectionOptions) (*RegistryModule, error) {
+func (r *registryModules) CreateWithGithubApp(ctx context.Context, organization string, options RegistryModuleCreateWithVCSConnectionOptions) (*RegistryModule, error) {
 	if !validStringID(&organization) {
 		return nil, ErrInvalidOrg
 	}

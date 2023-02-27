@@ -253,7 +253,7 @@ func TestPolicySetsCreate(t *testing.T) {
 	})
 }
 
-func TestPolicySetsCreateWithGHA(t *testing.T) {
+func TestPolicySetsCreateWithGithubApp(t *testing.T) {
 	gHAInstallationID := os.Getenv("GITHUB_APP_INSTALLATION_ID")
 	if gHAInstallationID == "" {
 		t.Skip("Export a valid GITHUB_APP_INSTALLATION_ID before running this test!")

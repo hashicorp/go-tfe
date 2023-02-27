@@ -1276,8 +1276,7 @@ func TestWorkspacesUpdateTableDrivenWithGithubApp(t *testing.T) {
 					Name:                String("foobar"),
 					FileTriggersEnabled: Bool(false),
 					VCSRepo: &VCSRepoOptions{
-						TagsRegex:         String("foobar"),
-						GHAInstallationID: String(gHAInstallationID),
+						TagsRegex: String("foobar"),
 					},
 				},
 			},
@@ -1287,7 +1286,7 @@ func TestWorkspacesUpdateTableDrivenWithGithubApp(t *testing.T) {
 					Email: String(fmt.Sprintf("%s@tfe.local", randomString(t))),
 				})
 
-				wTest, wTestCleanup := createWorkspaceWithVCS(t, client, orgTest, *options.createOptions)
+				wTest, wTestCleanup := createWorkspaceWithVCSGHA(t, client, orgTest, *options.createOptions)
 				return wTest, func() {
 					t.Cleanup(orgTestCleanup)
 					t.Cleanup(wTestCleanup)
@@ -1297,12 +1296,9 @@ func TestWorkspacesUpdateTableDrivenWithGithubApp(t *testing.T) {
 				assert.Equal(t, *options.createOptions.VCSRepo.TagsRegex, workspace.VCSRepo.TagsRegex)
 				assert.Equal(t, workspace.VCSRepo.TagsRegex, *String("barfoo")) // Sanity test
 
-				assert.NotEqual(t, workspace.VCSRepo.GHAInstallationID, *String(gHAInstallationID)) // Sanity test
-
 				w, err := client.Workspaces.Update(ctx, workspace.Organization.Name, workspace.Name, *options.updateOptions)
 				require.NoError(t, err)
-
-				assert.Equal(t, w.VCSRepo.GHAInstallationID, *String(gHAInstallationID)) // Sanity test
+				assert.Equal(t, w.VCSRepo.TagsRegex, *String("foobar")) // Sanity test
 			},
 		},
 	}
