@@ -8,8 +8,8 @@ jobs:
   instance:
     runs-on: ubuntu-latest
     steps:
-      - name: terraform-cloud/run
-        uses: hashicorp-forge/terraform-cloud-action/run@v1
+      - name: terraform-cloud/apply
+        uses: hashicorp-forge/terraform-cloud-action/apply@v1
         with:
           organization: hashicorp-v2
           workspace: tflocal-go-tfe-nightly
