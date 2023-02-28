@@ -12,11 +12,8 @@ import (
 // Compile-time proof of interface implementation.
 var _ GHAInstallations = (*gHAInstallations)(nil)
 
-// GHAInstallations describes all the Github App Installations related methods that the
+// GHAInstallations describes all the GitHub App Installation related methods that the
 // Terraform Enterprise API supports.
-//
-// TFE API docs:
-// https://www.terraform.io/docs/cloud/api/gha-installations.html
 type GHAInstallations interface {
 	// List all the GitHub App Installations for the user.
 	List(ctx context.Context, options *GHAInstallationListOptions) (*GHAInstallationList, error)

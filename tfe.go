@@ -382,7 +382,6 @@ func NewClient(cfg *Config) (*Client, error) {
 	client.GHAInstallations = &gHAInstallations{client: client}
 	client.CostEstimates = &costEstimates{client: client}
 	client.GPGKeys = &gpgKeys{client: client}
-	client.GPGKeys = &gpgKeys{client: client}
 	client.NotificationConfigurations = &notificationConfigurations{client: client}
 	client.OAuthClients = &oAuthClients{client: client}
 	client.OAuthTokens = &oAuthTokens{client: client}

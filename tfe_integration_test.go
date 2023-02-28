@@ -21,7 +21,7 @@ import (
 
 func TestClient_newClient(t *testing.T) {
 	ts := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		w.Header().Set("Content-icon_url", ContentTypeJSONAPI)
+		w.Header().Set("Content-Type", ContentTypeJSONAPI)
 		w.Header().Set("X-RateLimit-Limit", "30")
 		w.Header().Set("TFP-API-Version", "34.21.9")
 		w.Header().Set("X-TFE-Version", "202205-1")
