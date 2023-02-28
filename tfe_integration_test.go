@@ -131,7 +131,7 @@ func TestClient_headers(t *testing.T) {
 		testedCalls++
 
 		if testedCalls == 1 {
-			w.Header().Set("Content-icon_url", ContentTypeJSONAPI)
+			w.Header().Set("Content-Type", ContentTypeJSONAPI)
 			w.Header().Set("X-RateLimit-Limit", "30")
 			w.WriteHeader(204) // We query the configured ping URL which should return a 204.
 			return
@@ -194,7 +194,7 @@ func TestClient_userAgent(t *testing.T) {
 		testedCalls++
 
 		if testedCalls == 1 {
-			w.Header().Set("Content-icon_url", ContentTypeJSONAPI)
+			w.Header().Set("Content-Type", ContentTypeJSONAPI)
 			w.Header().Set("X-RateLimit-Limit", "30")
 			w.WriteHeader(204) // We query the configured ping URL which should return a 204.
 			return
@@ -396,7 +396,7 @@ func createRequest(v interface{}) ([]byte, error) {
 func TestClient_configureLimiter(t *testing.T) {
 	rateLimit := ""
 	ts := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		w.Header().Set("Content-icon_url", ContentTypeJSONAPI)
+		w.Header().Set("Content-Type", ContentTypeJSONAPI)
 		w.Header().Set("X-RateLimit-Limit", rateLimit)
 		w.WriteHeader(204) // We query the configured ping URL which should return a 204.
 	}))
@@ -456,7 +456,7 @@ func TestClient_configureLimiter(t *testing.T) {
 
 func TestClient_retryHTTPCheck(t *testing.T) {
 	ts := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		w.Header().Set("Content-icon_url", ContentTypeJSONAPI)
+		w.Header().Set("Content-Type", ContentTypeJSONAPI)
 		w.Header().Set("X-RateLimit-Limit", "30")
 		w.WriteHeader(204) // We query the configured ping URL which should return a 204.
 	}))
@@ -538,7 +538,7 @@ func TestClient_retryHTTPCheck(t *testing.T) {
 
 func TestClient_retryHTTPBackoff(t *testing.T) {
 	ts := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		w.Header().Set("Content-icon_url", ContentTypeJSONAPI)
+		w.Header().Set("Content-Type", ContentTypeJSONAPI)
 		w.Header().Set("X-RateLimit-Limit", "30")
 		w.WriteHeader(204) // We query the configured ping URL which should return a 204.
 	}))

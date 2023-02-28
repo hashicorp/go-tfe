@@ -609,7 +609,6 @@ func TestRegistryModulesCreateWithGithubApp(t *testing.T) {
 	})
 
 	t.Run("with invalid options", func(t *testing.T) {
-
 		t.Run("without an github app ID", func(t *testing.T) {
 			options := RegistryModuleCreateWithVCSConnectionOptions{
 				VCSRepo: &RegistryModuleVCSRepoOptions{
