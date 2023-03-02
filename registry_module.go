@@ -33,9 +33,6 @@ type RegistryModules interface {
 	// Create and publish a registry module with a VCS repo
 	CreateWithVCSConnection(ctx context.Context, options RegistryModuleCreateWithVCSConnectionOptions) (*RegistryModule, error)
 
-	// Create and publish a registry module with a VCS repo
-	CreateWithGithubApp(ctx context.Context, organization string, options RegistryModuleCreateWithVCSConnectionOptions) (*RegistryModule, error)
-
 	// Read a registry module
 	Read(ctx context.Context, moduleID RegistryModuleID) (*RegistryModule, error)
 
@@ -205,6 +202,8 @@ type RegistryModuleCreateWithVCSConnectionOptions struct {
 
 	// Required: VCS repository information
 	VCSRepo *RegistryModuleVCSRepoOptions `jsonapi:"attr,vcs-repo"`
+
+	OrganizationName string `jsonapi:"attr,organization-name,omitempty"`
 }
 
 // RegistryModuleCreateVersionOptions is used when updating a registry module
@@ -377,35 +376,19 @@ func (r *registryModules) CreateWithVCSConnection(ctx context.Context, options R
 	if err := options.valid(); err != nil {
 		return nil, err
 	}
-
-	req, err := r.client.NewRequest("POST", "registry-modules", &options)
-	if err != nil {
-		return nil, err
+	orgName := options.OrganizationName
+	var u string
+	if orgName != "" {
+		if !validStringID(&orgName) {
+			return nil, ErrInvalidOrg
+		}
+		u = fmt.Sprintf(
+			"organizations/%s/registry-modules/vcs",
+			url.QueryEscape(orgName),
+		)
+	} else {
+		u = "registry-modules"
 	}
-
-	rm := &RegistryModule{}
-	err = req.Do(ctx, rm)
-	if err != nil {
-		return nil, err
-	}
-
-	return rm, nil
-}
-
-// CreateWithGithubAppVCSConnection is used to create and publish a new registry module with a Github App VCS repo
-func (r *registryModules) CreateWithGithubApp(ctx context.Context, organization string, options RegistryModuleCreateWithVCSConnectionOptions) (*RegistryModule, error) {
-	if !validStringID(&organization) {
-		return nil, ErrInvalidOrg
-	}
-
-	if err := options.valid(); err != nil {
-		return nil, err
-	}
-
-	u := fmt.Sprintf(
-		"organizations/%s/registry-modules/vcs",
-		url.QueryEscape(organization),
-	)
 	req, err := r.client.NewRequest("POST", u, &options)
 	if err != nil {
 		return nil, err

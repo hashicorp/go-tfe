@@ -9,14 +9,17 @@ import (
 )
 
 func TestGHAInstallationList(t *testing.T) {
+	gHAInstallationID := os.Getenv("GITHUB_APP_INSTALLATION_ID")
+
+	if gHAInstallationID == "" {
+		t.Skip("Export a valid GITHUB_APP_INSTALLATION_ID before running this test!")
+	}
 	client := testClient(t)
 	ctx := context.Background()
 
 	t.Run("without list options", func(t *testing.T) {
 		_, err := client.GHAInstallations.List(ctx, nil)
-		// The API will not error when the github api installation exists.
-		// assert.NoError(t, err)
-		assert.ErrorContains(t, err, "no github app oauth token for user")
+		assert.NoError(t, err)
 	})
 }
 func TestGHAInstallationRead(t *testing.T) {
@@ -36,5 +39,6 @@ func TestGHAInstallationRead(t *testing.T) {
 		assert.NotEmpty(t, ghais.InstallationID)
 		assert.NotEmpty(t, ghais.ID)
 		assert.NotEmpty(t, ghais.Name)
+		assert.Equal(t, *ghais.ID, gHAInstallationID)
 	})
 }

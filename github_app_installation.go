@@ -13,7 +13,9 @@ import (
 var _ GHAInstallations = (*gHAInstallations)(nil)
 
 // GHAInstallations describes all the GitHub App Installation related methods that the
-// Terraform Enterprise API supports.
+// Terraform Enterprise API supports. The APIs require the user token for the user who
+// already has the GitHub App Installation set up via the UI.
+// (https://developer.hashicorp.com/terraform/enterprise/admin/application/github-app-integration)
 type GHAInstallations interface {
 	// List all the GitHub App Installations for the user.
 	List(ctx context.Context, options *GHAInstallationListOptions) (*GHAInstallationList, error)

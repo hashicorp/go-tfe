@@ -51,25 +51,10 @@ Tests are run against an actual backend so they require a valid backend address 
 4. `ENABLE_TFE` - Some tests are only applicable to Terraform Enterprise or Terraform Cloud. By setting `ENABLE_TFE=1` you will enable enterprise only tests and disable cloud only tests. In CI `ENABLE_TFE` is not set so if you are writing enterprise only features you should manually test with `ENABLE_TFE=1` against a Terraform Enterprise instance.
 5. `ENABLE_BETA` - Some tests require access to beta features. By setting `ENABLE_BETA=1` you will enable tests that require access to beta features. IN CI `ENABLE_BETA` is not set so if you are writing beta only features you should manually test with `ENABLE_BETA=1` against a Terraform Enterprise instance with those features enabled.
 6. `TFC_RUN_TASK_URL` - Run task integration tests require a URL to use when creating run tasks. To learn more about the Run Task API, [read here](https://developer.hashicorp.com/terraform/cloud-docs/api-docs/run-tasks/run-tasks)
-7. `GITHUB_APP_INSTALLATION_ID` - Required for running any tests that use GitHub App as the VCS provider (workspace, policy sets, registry module). These tests are skipped in the automated CI pipeline because in order to use this variable, the user has to have a GitHub App Installation setup done using [TFC UI](https://developer.hashicorp.com/terraform/cloud-docs/vcs/github-app). And then the value can be fetched either from the UI or from the `GET /github-app/installations` API. The test commands are listed below.
-      ```sh
-      $ TFE_ADDRESS=https://tfe.local TFE_TOKEN=xyz go test -run TestGHAInstallationList -v ./...`
-      ```
-      ```sh
-      $ GITHUB_APP_INSTALLATION_ID=ghain-xxxx TFE_ADDRESS= https://tfe.local TFE_TOKEN=xxx go test -run TestGHAInstallationRead -v ./...
-      ```
-      ```sh
-      $ GITHUB_APP_INSTALLATION_ID=ghain-xxxx TFE_ADDRESS= https://tfe.local TFE_TOKEN=xxx GITHUB_POLICY_SET_IDENTIFIER=username/repository go test -run TestWorkspacesCreateTableDrivenWithGithubApp -v ./...
-      ```
-      ```sh
-      $ GITHUB_APP_INSTALLATION_ID=ghain-xxxx TFE_ADDRESS= https://tfe.local TFE_TOKEN=xxx GITHUB_POLICY_SET_IDENTIFIER=username/repository go test -run TestWorkspacesUpdateTableDrivenWithGithubApp -v ./...
-      ```
-      ```sh
-      $ GITHUB_APP_INSTALLATION_ID=ghain-xxxx TFE_ADDRESS= https://tfe.local TFE_TOKEN=xxx GITHUB_POLICY_SET_IDENTIFIER=username/repository GITHUB_REGISTRY_MODULE_IDENTIFIER=username/repository go test -run TestRegistryModulesCreateWithGithubApp -v ./...
-      ```
-      ```sh
-      $ GITHUB_APP_INSTALLATION_ID=ghain-xxxx TFE_ADDRESS= https://tfe.local TFE_TOKEN=xxx GITHUB_POLICY_SET_IDENTIFIER=username/repository ENABLE_TFE=0 -run TestPolicySetsCreateWithGithubApp -v ./...
-      ```
+7. `GITHUB_APP_INSTALLATION_ID` - Required for running any tests that use GitHub App as the VCS provider (workspace, policy sets, registry module). These tests are skipped in the automated CI pipeline because in order to use this variable, the user has to have a GitHub App Installation setup done using the [TFC UI](https://developer.hashicorp.com/terraform/enterprise/admin/application/github-app-integration). And then the value can be fetched either from the UI or from the `GET /github-app/installations` API. The test command is listed below.
+    ```sh
+      $ GITHUB_APP_INSTALLATION_ID=ghain-xxxx TFE_ADDRESS= https://tfe.local TFE_TOKEN=xxx GITHUB_POLICY_SET_IDENTIFIER=username/repository GITHUB_REGISTRY_MODULE_IDENTIFIER=username/repository go test -run "(GHA|GithubApp)" -v ./...
+    ```
 
 ## 3. Make sure run queue settings are correct
 

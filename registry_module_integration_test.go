@@ -573,13 +573,14 @@ func TestRegistryModulesCreateWithGithubApp(t *testing.T) {
 
 	t.Run("with valid options", func(t *testing.T) {
 		options := RegistryModuleCreateWithVCSConnectionOptions{
+			OrganizationName: orgTest.Name,
 			VCSRepo: &RegistryModuleVCSRepoOptions{
 				Identifier:        String(githubIdentifier),
 				DisplayIdentifier: String(githubIdentifier),
 				GHAInstallationID: String(gHAInstallationID),
 			},
 		}
-		rm, err := client.RegistryModules.CreateWithGithubApp(ctx, orgTest.Name, options)
+		rm, err := client.RegistryModules.CreateWithVCSConnection(ctx, options)
 		require.NoError(t, err)
 		assert.NotEmpty(t, rm.ID)
 		assert.Equal(t, registryModuleName, rm.Name)
