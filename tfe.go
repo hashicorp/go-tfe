@@ -130,6 +130,7 @@ type Client struct {
 	Comments                   Comments
 	ConfigurationVersions      ConfigurationVersions
 	CostEstimates              CostEstimates
+	GHAInstallations           GHAInstallations
 	GPGKeys                    GPGKeys
 	NotificationConfigurations NotificationConfigurations
 	OAuthClients               OAuthClients
@@ -378,6 +379,7 @@ func NewClient(cfg *Config) (*Client, error) {
 	client.AuditTrails = &auditTrails{client: client}
 	client.Comments = &comments{client: client}
 	client.ConfigurationVersions = &configurationVersions{client: client}
+	client.GHAInstallations = &gHAInstallations{client: client}
 	client.CostEstimates = &costEstimates{client: client}
 	client.GPGKeys = &gpgKeys{client: client}
 	client.NotificationConfigurations = &notificationConfigurations{client: client}
