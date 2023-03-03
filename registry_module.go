@@ -222,7 +222,7 @@ type RegistryModuleVCSRepoOptions struct {
 	OAuthTokenID      *string `json:"oauth-token-id,omitempty"`
 	DisplayIdentifier *string `json:"display-identifier,omitempty"` // Required
 	GHAInstallationID *string `json:"github-app-installation-id,omitempty"`
-	OrganizationName  *string `jsonapi:"attr,organization-name,omitempty"`
+	OrganizationName  *string `json:"organization-name,omitempty"`
 }
 
 // List all the registory modules within an organization.
