@@ -202,8 +202,6 @@ type RegistryModuleCreateWithVCSConnectionOptions struct {
 
 	// Required: VCS repository information
 	VCSRepo *RegistryModuleVCSRepoOptions `jsonapi:"attr,vcs-repo"`
-
-	OrganizationName string `jsonapi:"attr,organization-name,omitempty"`
 }
 
 // RegistryModuleCreateVersionOptions is used when updating a registry module
@@ -224,6 +222,7 @@ type RegistryModuleVCSRepoOptions struct {
 	OAuthTokenID      *string `json:"oauth-token-id,omitempty"`
 	DisplayIdentifier *string `json:"display-identifier,omitempty"` // Required
 	GHAInstallationID *string `json:"github-app-installation-id,omitempty"`
+	OrganizationName  *string `jsonapi:"attr,organization-name,omitempty"`
 }
 
 // List all the registory modules within an organization.
@@ -376,18 +375,14 @@ func (r *registryModules) CreateWithVCSConnection(ctx context.Context, options R
 	if err := options.valid(); err != nil {
 		return nil, err
 	}
-	orgName := options.OrganizationName
 	var u string
-	if orgName != "" {
-		if !validStringID(&orgName) {
-			return nil, ErrInvalidOrg
-		}
+	if options.VCSRepo.OAuthTokenID != nil {
+		u = "registry-modules"
+	} else {
 		u = fmt.Sprintf(
 			"organizations/%s/registry-modules/vcs",
-			url.QueryEscape(orgName),
+			url.QueryEscape(*options.VCSRepo.OrganizationName),
 		)
-	} else {
-		u = "registry-modules"
 	}
 	req, err := r.client.NewRequest("POST", u, &options)
 	if err != nil {
@@ -606,6 +601,11 @@ func (o RegistryModuleVCSRepoOptions) valid() error {
 	}
 	if !validString(o.OAuthTokenID) && !validString(o.GHAInstallationID) {
 		return ErrRequiredOauthTokenOrGithubAppInstallationID
+	}
+	if !validString(o.OAuthTokenID) && validString(o.GHAInstallationID) {
+		if !validString(o.OrganizationName) {
+			return ErrInvalidOrg
+		}
 	}
 	if !validString(o.DisplayIdentifier) {
 		return ErrRequiredDisplayIdentifier

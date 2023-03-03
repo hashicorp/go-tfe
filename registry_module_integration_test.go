@@ -573,11 +573,11 @@ func TestRegistryModulesCreateWithGithubApp(t *testing.T) {
 
 	t.Run("with valid options", func(t *testing.T) {
 		options := RegistryModuleCreateWithVCSConnectionOptions{
-			OrganizationName: orgTest.Name,
 			VCSRepo: &RegistryModuleVCSRepoOptions{
 				Identifier:        String(githubIdentifier),
 				DisplayIdentifier: String(githubIdentifier),
 				GHAInstallationID: String(gHAInstallationID),
+				OrganizationName:  String(orgTest.Name),
 			},
 		}
 		rm, err := client.RegistryModules.CreateWithVCSConnection(ctx, options)
@@ -610,17 +610,28 @@ func TestRegistryModulesCreateWithGithubApp(t *testing.T) {
 	})
 
 	t.Run("with invalid options", func(t *testing.T) {
-		t.Run("without an github app ID", func(t *testing.T) {
+		t.Run("without an github app installation ID", func(t *testing.T) {
 			options := RegistryModuleCreateWithVCSConnectionOptions{
 				VCSRepo: &RegistryModuleVCSRepoOptions{
 					Identifier:        String(githubIdentifier),
-					GHAInstallationID: String(""),
 					DisplayIdentifier: String(githubIdentifier),
+					OrganizationName:  String(orgTest.Name),
 				},
 			}
 			rm, err := client.RegistryModules.CreateWithVCSConnection(ctx, options)
 			assert.Nil(t, rm)
 			assert.Equal(t, err, ErrRequiredOauthTokenOrGithubAppInstallationID)
+		})
+		t.Run("without an org name", func(t *testing.T) {
+			options := RegistryModuleCreateWithVCSConnectionOptions{
+				VCSRepo: &RegistryModuleVCSRepoOptions{
+					Identifier:        String(githubIdentifier),
+					GHAInstallationID: String(gHAInstallationID),
+				},
+			}
+			rm, err := client.RegistryModules.CreateWithVCSConnection(ctx, options)
+			assert.Nil(t, rm)
+			assert.Equal(t, err, ErrInvalidOrg)
 		})
 	})
 
