@@ -1,9 +1,10 @@
-# Unreleased
+# v1.19.0
 
 ## Enhancements
 * Removed Beta tags from `Project` features by @hs26gill [#637](https://github.com/hashicorp/go-tfe/pull/637)
-
-## Bug Fixes
+* Add `Filter` and `Sort` fields to `AdminWorkspaceListOptions` to allow filtering and sorting of workspaces by @laurenolivia [#641](https://github.com/hashicorp/go-tfe/pull/641)
+* Add support for `List` and `Read` Github app installation APIs by @roleesinhaHC [#655](https://github.com/hashicorp/go-tfe/pull/655)
+* Add `GHAInstallationID` field to `VCSRepoOptions` and `VCSRepo` structs by @roleesinhaHC [#655](https://github.com/hashicorp/go-tfe/pull/655)
 
 # v1.18.0
 
