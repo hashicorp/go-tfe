@@ -218,9 +218,11 @@ type RegistryModuleUpdateOptions struct {
 }
 
 type RegistryModuleVCSRepoOptions struct {
-	Identifier        *string `json:"identifier"`         // Required
-	OAuthTokenID      *string `json:"oauth-token-id"`     // Required
-	DisplayIdentifier *string `json:"display-identifier"` // Required
+	Identifier        *string `json:"identifier"` // Required
+	OAuthTokenID      *string `json:"oauth-token-id,omitempty"`
+	DisplayIdentifier *string `json:"display-identifier,omitempty"` // Required
+	GHAInstallationID *string `json:"github-app-installation-id,omitempty"`
+	OrganizationName  *string `json:"organization-name,omitempty"`
 }
 
 // List all the registory modules within an organization.
@@ -373,8 +375,16 @@ func (r *registryModules) CreateWithVCSConnection(ctx context.Context, options R
 	if err := options.valid(); err != nil {
 		return nil, err
 	}
-
-	req, err := r.client.NewRequest("POST", "registry-modules", &options)
+	var u string
+	if options.VCSRepo.OAuthTokenID != nil {
+		u = "registry-modules"
+	} else {
+		u = fmt.Sprintf(
+			"organizations/%s/registry-modules/vcs",
+			url.QueryEscape(*options.VCSRepo.OrganizationName),
+		)
+	}
+	req, err := r.client.NewRequest("POST", u, &options)
 	if err != nil {
 		return nil, err
 	}
@@ -589,8 +599,13 @@ func (o RegistryModuleVCSRepoOptions) valid() error {
 	if !validString(o.Identifier) {
 		return ErrRequiredIdentifier
 	}
-	if !validString(o.OAuthTokenID) {
-		return ErrRequiredOauthTokenID
+	if !validString(o.OAuthTokenID) && !validString(o.GHAInstallationID) {
+		return ErrRequiredOauthTokenOrGithubAppInstallationID
+	}
+	if !validString(o.OAuthTokenID) && validString(o.GHAInstallationID) {
+		if !validString(o.OrganizationName) {
+			return ErrInvalidOrg
+		}
 	}
 	if !validString(o.DisplayIdentifier) {
 		return ErrRequiredDisplayIdentifier

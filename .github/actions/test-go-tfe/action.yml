@@ -1,0 +1,81 @@
+# Copyright (c) HashiCorp, Inc.
+# SPDX-License-Identifier: MPL-2.0
+
+name: Test
+description: Tests go-tfe within a matrix
+inputs:
+  matrix_index:
+    description: Index of the matrix strategy runner
+    required: true
+  matrix_total:
+    description: Total number of matrix strategy runners
+    required: true
+  address:
+    description: Address of the Terraform Cloud instance to test against
+    required: true
+  token:
+    description: Terraform Cloud token
+    required: true
+  oauth-client-github-token:
+    description: The GitHub token used for testing OAuth scenarios for VCS workspaces
+    required: false
+  enterprise:
+    description: Test enterprise features (`address` must be running in ON_PREM mode)
+    required: false
+
+runs:
+  using: composite
+  steps:
+    - name: Set up Go
+      uses: actions/setup-go@v3
+      with:
+        go-version-file: go.mod
+        cache: true
+
+    - name: Sync dependencies
+      shell: bash
+      run: |
+        go mod download
+        go mod tidy
+
+    - name: Install gotestsum
+      shell: bash
+      run: go install gotest.tools/gotestsum@latest
+
+    - name: Download artifact
+      id: download-artifact
+      uses: dawidd6/action-download-artifact@v2
+      with:
+        workflow_conclusion: success
+        name: junit-test-summary
+        if_no_artifact_found: warn
+        branch: main
+
+    - name: Split integration tests
+      id: test_split
+      uses: hashicorp-forge/go-test-split-action@v1
+      with:
+        index: ${{ inputs.matrix_index }}
+        total: ${{ inputs.matrix_total }}
+        junit-summary: ./ci-summary.xml
+
+    - name: Run integration tests
+      shell: bash
+      env:
+        TFE_ADDRESS: ${{ inputs.address }}
+        TFE_TOKEN: ${{ inputs.token }}
+        TFC_RUN_TASK_URL: "https://httpstat.us/200"
+        GITHUB_POLICY_SET_IDENTIFIER: "hashicorp/test-policy-set"
+        GITHUB_REGISTRY_MODULE_IDENTIFIER: "hashicorp/terraform-random-module"
+        OAUTH_CLIENT_GITHUB_TOKEN: "${{ inputs.oauth-client-github-token }}"
+        GO111MODULE: "on"
+        ENABLE_TFE: ${{ inputs.enterprise }}
+      run: |
+        gotestsum --junitfile summary.xml --format short-verbose -- -timeout=29m -run "${{ steps.test_split.outputs.run }}"
+
+    - name: Upload test artifacts
+      uses: actions/upload-artifact@v3
+      with:
+        name: junit-test-summary-${{ matrix.index }}
+        path: summary.xml
+        retention-days: 1

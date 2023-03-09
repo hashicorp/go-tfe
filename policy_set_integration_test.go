@@ -416,10 +416,92 @@ func TestPolicySetsCreate(t *testing.T) {
 	})
 }
 
-func TestPolicySetsRead(t *testing.T) {
+func TestPolicySetsCreateWithGithubApp(t *testing.T) {
+	gHAInstallationID := os.Getenv("GITHUB_APP_INSTALLATION_ID")
+	if gHAInstallationID == "" {
+		t.Skip("Export a valid GITHUB_APP_INSTALLATION_ID before running this test!")
+	}
+
 	client := testClient(t)
 	ctx := context.Background()
 
+	orgTest, orgTestCleanup := createOrganization(t, client)
+	defer orgTestCleanup()
+
+	upgradeOrganizationSubscription(t, client, orgTest)
+
+	var vcsPolicyID string
+	t.Run("with vcs policy set", func(t *testing.T) {
+		githubIdentifier := os.Getenv("GITHUB_POLICY_SET_IDENTIFIER")
+		if githubIdentifier == "" {
+			t.Skip("Export a valid GITHUB_POLICY_SET_IDENTIFIER before running this test")
+		}
+
+		options := PolicySetCreateOptions{
+			Name:         String("vcs-policy-set"),
+			PoliciesPath: String("/policy-sets/foo"),
+			VCSRepo: &VCSRepoOptions{
+				Branch:            String("policies"),
+				Identifier:        String(githubIdentifier),
+				GHAInstallationID: String(gHAInstallationID),
+				IngressSubmodules: Bool(true),
+			},
+		}
+
+		ps, err := client.PolicySets.Create(ctx, orgTest.Name, options)
+		require.NoError(t, err)
+
+		// Save policy ID to be used by update func
+		vcsPolicyID = ps.ID
+
+		assert.Equal(t, ps.Name, *options.Name)
+		assert.Equal(t, ps.Description, "")
+		assert.False(t, ps.Global)
+		assert.Equal(t, ps.PoliciesPath, "/policy-sets/foo")
+		assert.Equal(t, ps.VCSRepo.Branch, "policies")
+		assert.Equal(t, ps.VCSRepo.DisplayIdentifier, githubIdentifier)
+		assert.Equal(t, ps.VCSRepo.Identifier, githubIdentifier)
+		assert.Equal(t, ps.VCSRepo.IngressSubmodules, true)
+		assert.Equal(t, ps.VCSRepo.GHAInstallationID, gHAInstallationID)
+		assert.Equal(t, ps.VCSRepo.RepositoryHTTPURL, fmt.Sprintf("https://github.com/%s", githubIdentifier))
+	})
+
+	t.Run("with vcs policy updated", func(t *testing.T) {
+		githubIdentifier := os.Getenv("GITHUB_POLICY_SET_IDENTIFIER")
+		if githubIdentifier == "" {
+			t.Skip("Export a valid GITHUB_POLICY_SET_IDENTIFIER before running this test")
+		}
+
+		options := PolicySetUpdateOptions{
+			Name:         String("vcs-policy-set"),
+			PoliciesPath: String("/policy-sets/bar"),
+			VCSRepo: &VCSRepoOptions{
+				Branch:            String("policies"),
+				Identifier:        String(githubIdentifier),
+				GHAInstallationID: String(gHAInstallationID),
+				IngressSubmodules: Bool(false),
+			},
+		}
+
+		ps, err := client.PolicySets.Update(ctx, vcsPolicyID, options)
+		require.NoError(t, err)
+
+		assert.Equal(t, ps.Name, *options.Name)
+		assert.Equal(t, ps.Description, "")
+		assert.False(t, ps.Global)
+		assert.Equal(t, ps.PoliciesPath, "/policy-sets/bar")
+		assert.Equal(t, ps.VCSRepo.Branch, "policies")
+		assert.Equal(t, ps.VCSRepo.DisplayIdentifier, githubIdentifier)
+		assert.Equal(t, ps.VCSRepo.Identifier, githubIdentifier)
+		assert.Equal(t, ps.VCSRepo.IngressSubmodules, false)
+		assert.Equal(t, ps.VCSRepo.GHAInstallationID, gHAInstallationID)
+		assert.Equal(t, ps.VCSRepo.RepositoryHTTPURL, fmt.Sprintf("https://github.com/%s", githubIdentifier))
+		assert.Equal(t, ps.VCSRepo.ServiceProvider, string("github_app"))
+	})
+}
+func TestPolicySetsRead(t *testing.T) {
+	client := testClient(t)
+	ctx := context.Background()
 	orgTest, orgTestCleanup := createOrganization(t, client)
 	defer orgTestCleanup()
 

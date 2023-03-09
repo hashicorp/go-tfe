@@ -14,6 +14,76 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
+func TestAdminWorkspaces_ListWithFilter(t *testing.T) {
+	client := testClient(t)
+	ctx := context.Background()
+
+	org, orgCleanup := createOrganization(t, client)
+	defer orgCleanup()
+
+	wTest1, wTest1Cleanup := createWorkspace(t, client, org)
+	defer wTest1Cleanup()
+
+	wTest2, wTest2Cleanup := createWorkspace(t, client, org)
+	defer wTest2Cleanup()
+
+	t.Run("when filtering workspaces on a current run status", func(t *testing.T) {
+		_, appliedCleanup := createRunApply(t, client, wTest1)
+		t.Cleanup(appliedCleanup)
+
+		_, unAppliedCleanup := createRunUnapplied(t, client, wTest2)
+		t.Cleanup(unAppliedCleanup)
+
+		wl, err := client.Admin.Workspaces.List(ctx, &AdminWorkspaceListOptions{
+			Filter: string(RunApplied), Include: []AdminWorkspaceIncludeOpt{AdminWorkspaceCurrentRun},
+		})
+
+		require.NoError(t, err)
+		require.NotEmpty(t, wl.Items)
+		assert.Equal(t, wl.Items[0].CurrentRun.Status, RunApplied)
+		assert.NotContains(t, wl.Items, wTest2)
+	})
+}
+
+func TestAdminWorkspaces_ListWithSort(t *testing.T) {
+	client := testClient(t)
+	ctx := context.Background()
+
+	org, orgCleanup := createOrganization(t, client)
+	defer orgCleanup()
+
+	wTest1, wTest1Cleanup := createWorkspace(t, client, org)
+	defer wTest1Cleanup()
+
+	wTest2, wTest2Cleanup := createWorkspace(t, client, org)
+	defer wTest2Cleanup()
+
+	t.Run("when sorting by workspace names", func(t *testing.T) {
+		wl, err := client.Admin.Workspaces.List(ctx, &AdminWorkspaceListOptions{
+			Sort: "name",
+		})
+		require.NoError(t, err)
+		require.NotEmpty(t, wl.Items)
+		assert.Equal(t, adminWorkspaceItemsContainsID(wl.Items, wTest1.ID), true)
+	})
+
+	t.Run("when sorting workspaces on current-run.created-at", func(t *testing.T) {
+		_, unappliedCleanup1 := createRunUnapplied(t, client, wTest1)
+		t.Cleanup(unappliedCleanup1)
+
+		_, unappliedCleanup2 := createRunUnapplied(t, client, wTest2)
+		t.Cleanup(unappliedCleanup2)
+
+		wl, err := client.Admin.Workspaces.List(ctx, &AdminWorkspaceListOptions{
+			Sort: "current-run.created-at",
+		})
+
+		require.NoError(t, err)
+		require.NotEmpty(t, wl.Items)
+		require.GreaterOrEqual(t, len(wl.Items), 2)
+	})
+}
+
 func TestAdminWorkspaces_List(t *testing.T) {
 	skipUnlessEnterprise(t)
 
@@ -97,6 +167,8 @@ func TestAdminWorkspaces_List(t *testing.T) {
 		assert.NotEmpty(t, wl.Items[0].Organization.Name)
 	})
 
+	// This sub-test should remain last because it creates a run that does not apply
+	// Any subsequent runs will be queued until a timeout is triggered
 	t.Run("with current_run included", func(t *testing.T) {
 		cvTest, cvCleanup := createUploadedConfigurationVersion(t, client, wTest1)
 		defer cvCleanup()

@@ -9,6 +9,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
+	"os"
 	"sort"
 	"strings"
 	"testing"
@@ -342,6 +343,76 @@ func TestWorkspacesCreateTableDriven(t *testing.T) {
 				defer cleanup()
 			} else {
 				workspace, err = client.Workspaces.Create(ctx, orgTest.Name, *tableTest.options.createOptions)
+			}
+			tableTest.assertion(workspace, tableTest.options, err)
+		})
+	}
+}
+
+func TestWorkspacesCreateTableDrivenWithGithubApp(t *testing.T) {
+	gHAInstallationID := os.Getenv("GITHUB_APP_INSTALLATION_ID")
+
+	if gHAInstallationID == "" {
+		t.Skip("Export a valid GITHUB_APP_INSTALLATION_ID before running this test!")
+	}
+	client := testClient(t)
+	ctx := context.Background()
+
+	orgTest1, orgTestCleanup := createOrganization(t, client)
+
+	t.Cleanup(orgTestCleanup)
+
+	workspaceTableTests := []WorkspaceTableTest{
+		{
+			scenario: "when options include tags-regex",
+			options: &WorkspaceTableOptions{
+				createOptions: &WorkspaceCreateOptions{
+					Name:                String("foobar"),
+					FileTriggersEnabled: Bool(false),
+					VCSRepo: &VCSRepoOptions{
+						TagsRegex: String("barfoo")},
+				},
+			},
+			setup: func(options *WorkspaceTableOptions) (w *Workspace, cleanup func()) {
+				// Remove the below organization creation and use the one from the outer scope once the feature flag is removed
+				orgTest, orgTestCleanup := createOrganizationWithOptions(t, client, OrganizationCreateOptions{
+					Name:  String("tst-" + randomString(t)[0:20]),
+					Email: String(fmt.Sprintf("%s@tfe.local", randomString(t))),
+				})
+
+				w, wTestCleanup := createWorkspaceWithGithubApp(t, client, orgTest, *options.createOptions)
+
+				return w, func() {
+					t.Cleanup(orgTestCleanup)
+					t.Cleanup(wTestCleanup)
+				}
+			},
+			assertion: func(w *Workspace, options *WorkspaceTableOptions, err error) {
+				assert.Equal(t, *options.createOptions.VCSRepo.TagsRegex, w.VCSRepo.TagsRegex)
+
+				// Get a refreshed view from the API.
+				refreshed, readErr := client.Workspaces.Read(ctx, w.Organization.Name, *options.createOptions.Name)
+				require.NoError(t, readErr)
+
+				for _, item := range []*Workspace{
+					w,
+					refreshed,
+				} {
+					assert.Equal(t, *options.createOptions.VCSRepo.TagsRegex, item.VCSRepo.TagsRegex)
+				}
+			},
+		},
+	}
+	for _, tableTest := range workspaceTableTests {
+		t.Run(tableTest.scenario, func(t *testing.T) {
+			var workspace *Workspace
+			var cleanup func()
+			var err error
+			if tableTest.setup != nil {
+				workspace, cleanup = tableTest.setup(tableTest.options)
+				defer cleanup()
+			} else {
+				workspace, err = client.Workspaces.Create(ctx, orgTest1.Name, *tableTest.options.createOptions)
 			}
 			tableTest.assertion(workspace, tableTest.options, err)
 		})
@@ -1156,6 +1227,78 @@ func TestWorkspacesUpdateTableDriven(t *testing.T) {
 			assertion: func(w *Workspace, options *WorkspaceTableOptions, err error) {
 				assert.Nil(t, w)
 				assert.EqualError(t, err, ErrUnsupportedBothTagsRegexAndTriggerPatterns.Error())
+			},
+		},
+	}
+
+	for _, tableTest := range workspaceTableTests {
+		t.Run(tableTest.scenario, func(t *testing.T) {
+			var workspace *Workspace
+			var cleanup func()
+			var err error
+			if tableTest.setup != nil {
+				workspace, cleanup = tableTest.setup(tableTest.options)
+				defer cleanup()
+			} else {
+				workspace, err = client.Workspaces.Update(ctx, orgTest.Name, wTest.Name, *tableTest.options.updateOptions)
+			}
+			tableTest.assertion(workspace, tableTest.options, err)
+		})
+	}
+}
+
+func TestWorkspacesUpdateTableDrivenWithGithubApp(t *testing.T) {
+	gHAInstallationID := os.Getenv("GITHUB_APP_INSTALLATION_ID")
+
+	if gHAInstallationID == "" {
+		t.Skip("Export a valid GITHUB_APP_INSTALLATION_ID before running this test!")
+	}
+	client := testClient(t)
+	ctx := context.Background()
+
+	orgTest, orgTestCleanup := createOrganization(t, client)
+	t.Cleanup(orgTestCleanup)
+
+	wTest, wCleanup := createWorkspace(t, client, orgTest)
+	t.Cleanup(wCleanup)
+
+	workspaceTableTests := []WorkspaceTableTest{
+		{
+			scenario: "when options include VCSRepo tags-regex",
+			options: &WorkspaceTableOptions{
+				createOptions: &WorkspaceCreateOptions{
+					Name:                String("foobar"),
+					FileTriggersEnabled: Bool(false),
+					VCSRepo: &VCSRepoOptions{
+						TagsRegex: String("barfoo")},
+				},
+				updateOptions: &WorkspaceUpdateOptions{
+					Name:                String("foobar"),
+					FileTriggersEnabled: Bool(false),
+					VCSRepo: &VCSRepoOptions{
+						TagsRegex: String("foobar"),
+					},
+				},
+			},
+			setup: func(options *WorkspaceTableOptions) (w *Workspace, cleanup func()) {
+				orgTest, orgTestCleanup := createOrganizationWithOptions(t, client, OrganizationCreateOptions{
+					Name:  String("tst-" + randomString(t)[0:20]),
+					Email: String(fmt.Sprintf("%s@tfe.local", randomString(t))),
+				})
+
+				wTest, wTestCleanup := createWorkspaceWithGithubApp(t, client, orgTest, *options.createOptions)
+				return wTest, func() {
+					t.Cleanup(orgTestCleanup)
+					t.Cleanup(wTestCleanup)
+				}
+			},
+			assertion: func(workspace *Workspace, options *WorkspaceTableOptions, _ error) {
+				assert.Equal(t, *options.createOptions.VCSRepo.TagsRegex, workspace.VCSRepo.TagsRegex)
+				assert.Equal(t, workspace.VCSRepo.TagsRegex, *String("barfoo")) // Sanity test
+
+				w, err := client.Workspaces.Update(ctx, workspace.Organization.Name, workspace.Name, *options.updateOptions)
+				require.NoError(t, err)
+				assert.Equal(t, w.VCSRepo.TagsRegex, *String("foobar")) // Sanity test
 			},
 		},
 	}
