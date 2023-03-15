@@ -14,6 +14,7 @@ type AdminSettings struct {
 	SMTP           SMTPSettings
 	Twilio         TwilioSettings
 	Customization  CustomizationSettings
+	OIDC           OIDCSettings
 }
 
 func newAdminSettings(client *Client) *AdminSettings {
@@ -24,5 +25,6 @@ func newAdminSettings(client *Client) *AdminSettings {
 		SMTP:           &adminSMTPSettings{client: client},
 		Twilio:         &adminTwilioSettings{client: client},
 		Customization:  &adminCustomizationSettings{client: client},
+		OIDC:           &adminOIDCSettings{client: client},
 	}
 }
