@@ -23,7 +23,7 @@ test:
 
 # Make target to generate mocks for specified FILENAME
 mocks: check-filename
-	@echo "mockgen -source=$(FILENAME) -destination=mocks/$(FILENAME) -package=mocks" >> generate_mocks.sh
+	@echo "mockgen -source=$(FILENAME) -destination=mocks/$(subst .go,_mocks.go,$(FILENAME)) -package=mocks" >> generate_mocks.sh
 	./generate_mocks.sh
 
 envvars:
