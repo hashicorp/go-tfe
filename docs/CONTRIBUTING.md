@@ -35,13 +35,15 @@ We've included VSCode settings to assist with configuring the go extension. For 
 ## Generating Mocks
 Ensure you have installed the [mockgen](https://github.com/golang/mock) tool.
 
-You'll need to generate mocks if an existing endpoint method is modified or a new method is added. To generate mocks, simply run `./generate_mocks.sh` If you're adding a new API resource to go-tfe, you'll need to add the command to `generate_mocks.sh`. For example if someone creates `example_resource.go`, you'll add:
+You'll need to generate mocks if an existing endpoint method is modified or a new method is added. To generate mocks, simply run `./generate_mocks.sh`.
+
+If you're adding a new API resource to go-tfe, you'll need to add a new command to `generate_mocks.sh`. For example if someone creates `example_resource.go`, you'll add:
 
 ```
 mockgen -source=example_resource.go -destination=mocks/example_resource_mocks.go -package=mocks
 ```
 
-Alternatively, you can use the Makefile target `mocks` to automate the steps:
+You can also use the Makefile target `mocks` to add the new command:
 
 ```
 FILENAME=example_resource.go make mocks
