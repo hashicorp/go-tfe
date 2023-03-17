@@ -19,6 +19,10 @@ runs:
       with:
         version: v1.50.1
 
+    - name: Ensure generate_mocks.sh ends in a newline
+      run: test "" = "$(tail -c1 "generate_mocks.sh")"
+      shell: bash
+
     - name: Install mockgen
       shell: bash
       run: |
