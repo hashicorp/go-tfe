@@ -440,3 +440,38 @@ func TestTeamsUpdateManageProjects(t *testing.T) {
 		}
 	})
 }
+
+func TestTeamsUpdateManageManageMembership(t *testing.T) {
+	client := testClient(t)
+	ctx := context.Background()
+
+	orgTest, orgTestCleanup := createOrganization(t, client)
+	defer orgTestCleanup()
+
+	tmTest, tmTestCleanup := createTeam(t, client, orgTest)
+	defer tmTestCleanup()
+
+	teamRead, err := client.Teams.Read(ctx, tmTest.ID)
+	require.NoError(t, err)
+	assert.False(t, teamRead.OrganizationAccess.ManageMembership, "manage membership is false by default")
+
+	originalTeamAccess := teamRead.OrganizationAccess
+
+	options := TeamUpdateOptions{
+		OrganizationAccess: &OrganizationAccessOptions{
+			ManageMembership: Bool(true),
+		},
+	}
+
+	tm, err := client.Teams.Update(ctx, tmTest.ID, options)
+	require.NoError(t, err)
+	assert.True(t, tm.OrganizationAccess.ManageMembership)
+
+	refreshed, err := client.Teams.Read(ctx, tmTest.ID)
+	require.NoError(t, err)
+	assert.True(t, refreshed.OrganizationAccess.ManageMembership)
+
+	// Check that other org access fields are not updated
+	originalTeamAccess.ManageMembership = true
+	assert.Equal(t, originalTeamAccess, refreshed.OrganizationAccess)
+}

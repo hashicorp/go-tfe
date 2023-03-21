@@ -71,6 +71,7 @@ type OrganizationAccess struct {
 	ManageProjects        bool `jsonapi:"attr,manage-projects"`
 	ReadWorkspaces        bool `jsonapi:"attr,read-workspaces"`
 	ReadProjects          bool `jsonapi:"attr,read-projects"`
+	ManageMembership      bool `jsonapi:"attr,manage-membership"`
 }
 
 // TeamPermissions represents the current user's permissions on the team.
@@ -153,6 +154,7 @@ type OrganizationAccessOptions struct {
 	ManageProjects        *bool `json:"manage-projects,omitempty"`
 	ReadWorkspaces        *bool `json:"read-workspaces,omitempty"`
 	ReadProjects          *bool `json:"read-projects,omitempty"`
+	ManageMembership      *bool `json:"manage-membership,omitempty"`
 }
 
 // List all the teams of the given organization.

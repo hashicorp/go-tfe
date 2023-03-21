@@ -1,6 +1,7 @@
 # Unreleased
 
 ## Enhancements
+* Adds `ManageMembership` permission to team `OrganizationAccess` by @JarrettSpiker [#652](https://github.com/hashicorp/go-tfe/pull/652)
 
 # v1.20.0
 
