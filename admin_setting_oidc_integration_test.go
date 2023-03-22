@@ -6,6 +6,7 @@ package tfe
 import (
 	"context"
 	"encoding/json"
+	"fmt"
 	"net/http"
 	"net/url"
 	"testing"
@@ -120,6 +121,10 @@ func getJwks(client http.Client, baseURL *url.URL, token string) (*wellKnownJwks
 
 	if res.Body != nil {
 		defer res.Body.Close()
+	}
+
+	if res.StatusCode != 200 {
+		return nil, fmt.Errorf("unexpected status code: %d. Expected a 200 response", res.StatusCode)
 	}
 
 	var result wellKnownJwks
