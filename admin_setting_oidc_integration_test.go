@@ -15,12 +15,10 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-type Jwks struct {
-	Keys []Key `json:"keys"`
-}
-
-type Key struct {
-	Kid string `json:"kid"`
+type wellKnownJwks struct {
+	Keys []struct {
+		Kid string `json:"kid"`
+	} `json:"keys"`
 }
 
 func TestAdminSettings_Oidc_RotateKey(t *testing.T) {
@@ -101,7 +99,7 @@ func TestAdminSettings_Oidc_TrimKey(t *testing.T) {
 	assert.NotContains(t, originalKids, jwks.Keys[0].Kid)
 }
 
-func getJwks(client http.Client, baseURL *url.URL, token string) (*Jwks, error) {
+func getJwks(client http.Client, baseURL *url.URL, token string) (*wellKnownJwks, error) {
 	jwksEndpoint, err := baseURL.Parse("/.well-known/jwks")
 	if err != nil {
 		return nil, err
@@ -124,7 +122,7 @@ func getJwks(client http.Client, baseURL *url.URL, token string) (*Jwks, error) 
 		defer res.Body.Close()
 	}
 
-	var result Jwks
+	var result wellKnownJwks
 	jsonErr := json.NewDecoder(res.Body).Decode(&result)
 	if jsonErr != nil {
 		return nil, jsonErr
