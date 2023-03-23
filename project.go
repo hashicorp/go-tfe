@@ -58,6 +58,8 @@ type ProjectListOptions struct {
 	ListOptions
 
 	// Optional: String (partial project name) used to filter the results.
+	// If multiple, comma separated values are specified, projects matching
+	// any of the names are returned.
 	Name string `url:"filter[names],omitempty"`
 }
 
