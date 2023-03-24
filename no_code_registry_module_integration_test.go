@@ -12,18 +12,17 @@ import (
 )
 
 func TestNoCodeRegistryModulesCreate(t *testing.T) {
-	skipUnlessBeta(t)
 	client := testClient(t)
 	ctx := context.Background()
 
 	orgTest, orgTestCleanup := createOrganization(t, client)
 	defer orgTestCleanup()
 
-	registryModuleTest, registryModuleTestCleanup := createRegistryModule(t, client, orgTest, PrivateRegistry)
-	defer registryModuleTestCleanup()
-
 	t.Run("with valid options", func(t *testing.T) {
 		t.Run("with follow-latest-version and enabled", func(t *testing.T) {
+			registryModuleTest, registryModuleTestCleanup := createRegistryModule(t, client, orgTest, PrivateRegistry)
+			defer registryModuleTestCleanup()
+
 			options := RegistryNoCodeModuleCreateOptions{
 				FollowLatestVersion: Bool(true),
 				Enabled:             Bool(true),
@@ -43,6 +42,9 @@ func TestNoCodeRegistryModulesCreate(t *testing.T) {
 	})
 
 	t.Run("with invalid options", func(t *testing.T) {
+		registryModuleTest, registryModuleTestCleanup := createRegistryModule(t, client, orgTest, PrivateRegistry)
+		defer registryModuleTestCleanup()
+
 		t.Run("with enabled not present", func(t *testing.T) {
 			options := RegistryNoCodeModuleCreateOptions{
 				FollowLatestVersion: Bool(true),
@@ -88,6 +90,9 @@ func TestNoCodeRegistryModulesCreate(t *testing.T) {
 	})
 
 	t.Run("with variable options", func(t *testing.T) {
+		registryModuleTest, registryModuleTestCleanup := createRegistryModule(t, client, orgTest, PrivateRegistry)
+		defer registryModuleTestCleanup()
+
 		options := RegistryNoCodeModuleCreateOptions{
 			FollowLatestVersion: Bool(true),
 			Enabled:             Bool(true),
@@ -120,7 +125,6 @@ func TestNoCodeRegistryModulesCreate(t *testing.T) {
 }
 
 func TestNoCodeRegistryModulesRead(t *testing.T) {
-	skipUnlessBeta(t)
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -134,9 +138,7 @@ func TestNoCodeRegistryModulesRead(t *testing.T) {
 		noCodeModule, noCodeModuleCleanup := createNoCodeRegistryModule(t, client, orgTest.Name, registryModuleTest, nil)
 		defer noCodeModuleCleanup()
 
-		ncm, err := client.NoCodeRegistryModules.Read(ctx, RegistryNoCodeModuleReadOptions{
-			ID: noCodeModule.ID,
-		})
+		ncm, err := client.NoCodeRegistryModules.Read(ctx, noCodeModule.ID, nil)
 		require.NoError(t, err)
 		assert.Equal(t, noCodeModule.ID, ncm.ID)
 		assert.Equal(t, noCodeModule.FollowLatestVersion, ncm.FollowLatestVersion)
@@ -161,9 +163,8 @@ func TestNoCodeRegistryModulesRead(t *testing.T) {
 		noCodeModule, noCodeModuleCleanup := createNoCodeRegistryModule(t, client, orgTest.Name, registryModuleTest, varOpts)
 		defer noCodeModuleCleanup()
 
-		ncm, err := client.NoCodeRegistryModules.Read(ctx, RegistryNoCodeModuleReadOptions{
-			ID:      noCodeModule.ID,
-			Include: []NoCodeReadIncludeOpt{NoCodeIncludeVariableOptions},
+		ncm, err := client.NoCodeRegistryModules.Read(ctx, noCodeModule.ID, &RegistryNoCodeModuleReadOptions{
+			Include: []NoCodeModuleIncludeOpt{NoCodeIncludeVariableOptions},
 		})
 		require.NoError(t, err)
 		assert.Equal(t, noCodeModule.ID, ncm.ID)
@@ -181,11 +182,41 @@ func TestNoCodeRegistryModulesRead(t *testing.T) {
 	})
 
 	t.Run("when the id does not exist", func(t *testing.T) {
-		ncm, err := client.NoCodeRegistryModules.Read(ctx, RegistryNoCodeModuleReadOptions{
-			ID: "non-existing",
-		})
+		ncm, err := client.NoCodeRegistryModules.Read(ctx, "non-existing", nil)
 		assert.Nil(t, ncm)
 		assert.Equal(t, err, ErrResourceNotFound)
+	})
+}
+
+func TestNoCodeRegistryModulesDelete(t *testing.T) {
+	client := testClient(t)
+	ctx := context.Background()
+
+	orgTest, orgTestCleanup := createOrganization(t, client)
+	defer orgTestCleanup()
+
+	registryModuleTest, registryModuleTestCleanup := createRegistryModule(t, client, orgTest, PrivateRegistry)
+	defer registryModuleTestCleanup()
+
+	t.Run("with valid ID", func(t *testing.T) {
+		noCodeModule, _ := createNoCodeRegistryModule(t, client, orgTest.Name, registryModuleTest, nil)
+
+		err := client.NoCodeRegistryModules.Delete(ctx, noCodeModule.ID)
+		require.NoError(t, err)
+
+		rm, err := client.NoCodeRegistryModules.Read(ctx, noCodeModule.ID, nil)
+		assert.Nil(t, rm)
+		assert.Error(t, err)
+	})
+
+	t.Run("without an ID", func(t *testing.T) {
+		err := client.NoCodeRegistryModules.Delete(ctx, "")
+		assert.EqualError(t, err, ErrInvalidModuleID.Error())
+	})
+
+	t.Run("with an invalid ID", func(t *testing.T) {
+		err := client.NoCodeRegistryModules.Delete(ctx, "invalid")
+		assert.EqualError(t, err, ErrResourceNotFound.Error())
 	})
 }
 
@@ -203,6 +234,10 @@ func createNoCodeRegistryModule(t *testing.T, client *Client, orgName string, rm
 	require.NoError(t, err)
 	require.NotEmpty(t, ncm)
 	return ncm, func() {
-		//TODO
+		if err := client.NoCodeRegistryModules.Delete(ctx, ncm.ID); err != nil {
+			t.Errorf("Error destroying no-code registry module! WARNING: Dangling resources\n"+
+				"may exist! The full error is shown below.\n\n"+
+				"NoCode Module: %s\nError: %s", ncm.ID, err)
+		}
 	}
 }
