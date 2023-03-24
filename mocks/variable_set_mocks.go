@@ -35,6 +35,20 @@ func (m *MockVariableSets) EXPECT() *MockVariableSetsMockRecorder {
 	return m.recorder
 }
 
+// ApplyToProjects mocks base method.
+func (m *MockVariableSets) ApplyToProjects(ctx context.Context, variableSetID string, options tfe.VariableSetApplyToProjectsOptions) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "ApplyToProjects", ctx, variableSetID, options)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// ApplyToProjects indicates an expected call of ApplyToProjects.
+func (mr *MockVariableSetsMockRecorder) ApplyToProjects(ctx, variableSetID, options interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ApplyToProjects", reflect.TypeOf((*MockVariableSets)(nil).ApplyToProjects), ctx, variableSetID, options)
+}
+
 // ApplyToWorkspaces mocks base method.
 func (m *MockVariableSets) ApplyToWorkspaces(ctx context.Context, variableSetID string, options *tfe.VariableSetApplyToWorkspacesOptions) error {
 	m.ctrl.T.Helper()
@@ -93,6 +107,21 @@ func (mr *MockVariableSetsMockRecorder) List(ctx, organization, options interfac
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "List", reflect.TypeOf((*MockVariableSets)(nil).List), ctx, organization, options)
 }
 
+// ListForProject mocks base method.
+func (m *MockVariableSets) ListForProject(ctx context.Context, projectID string, options *tfe.VariableSetListOptions) (*tfe.VariableSetList, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "ListForProject", ctx, projectID, options)
+	ret0, _ := ret[0].(*tfe.VariableSetList)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// ListForProject indicates an expected call of ListForProject.
+func (mr *MockVariableSetsMockRecorder) ListForProject(ctx, projectID, options interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListForProject", reflect.TypeOf((*MockVariableSets)(nil).ListForProject), ctx, projectID, options)
+}
+
 // ListForWorkspace mocks base method.
 func (m *MockVariableSets) ListForWorkspace(ctx context.Context, workspaceID string, options *tfe.VariableSetListOptions) (*tfe.VariableSetList, error) {
 	m.ctrl.T.Helper()
@@ -121,6 +150,20 @@ func (m *MockVariableSets) Read(ctx context.Context, variableSetID string, optio
 func (mr *MockVariableSetsMockRecorder) Read(ctx, variableSetID, options interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Read", reflect.TypeOf((*MockVariableSets)(nil).Read), ctx, variableSetID, options)
+}
+
+// RemoveFromProjects mocks base method.
+func (m *MockVariableSets) RemoveFromProjects(ctx context.Context, variableSetID string, options tfe.VariableSetRemoveFromProjectsOptions) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "RemoveFromProjects", ctx, variableSetID, options)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// RemoveFromProjects indicates an expected call of RemoveFromProjects.
+func (mr *MockVariableSetsMockRecorder) RemoveFromProjects(ctx, variableSetID, options interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "RemoveFromProjects", reflect.TypeOf((*MockVariableSets)(nil).RemoveFromProjects), ctx, variableSetID, options)
 }
 
 // RemoveFromWorkspaces mocks base method.

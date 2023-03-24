@@ -7,7 +7,7 @@ import (
 	"context"
 )
 
-// Compile-time proof of interface implementation.
+// Compile-time proof of interface implementations.
 var _ Users = (*users)(nil)
 
 // Users describes all the user related methods that the Terraform
