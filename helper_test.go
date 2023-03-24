@@ -2001,6 +2001,35 @@ func applyVariableSetToWorkspace(t *testing.T, client *Client, vsID, wsID string
 	})
 }
 
+func applyVariableSetToProject(t *testing.T, client *Client, vsID, prjID string) {
+	t.Helper()
+	if vsID == "" {
+		t.Fatal("variable set ID must not be empty")
+	}
+
+	if prjID == "" {
+		t.Fatal("project ID must not be empty")
+	}
+
+	opts := VariableSetApplyToProjectsOptions{}
+	opts.Projects = append(opts.Projects, &Project{ID: prjID})
+
+	ctx := context.Background()
+	if err := client.VariableSets.ApplyToProjects(ctx, vsID, opts); err != nil {
+		t.Fatalf("Error applying variable set %s to project %s: %v", vsID, prjID, err)
+	}
+
+	t.Cleanup(func() {
+		removeOpts := VariableSetRemoveFromProjectsOptions{}
+		removeOpts.Projects = append(removeOpts.Projects, &Project{ID: prjID})
+		if err := client.VariableSets.RemoveFromProjects(ctx, vsID, removeOpts); err != nil {
+			t.Errorf("Error removing variable set from project! WARNING: Dangling resources\n"+
+				"may exist! The full error is shown below.\n\n"+
+				"VariableSet ID: %s\nError: %s", vsID, err)
+		}
+	})
+}
+
 func createVariableSetVariable(t *testing.T, client *Client, vs *VariableSet, options VariableSetVariableCreateOptions) (*VariableSetVariable, func()) {
 	var vsCleanup func()
 
