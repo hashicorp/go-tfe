@@ -39,6 +39,37 @@ func TestNoCodeRegistryModulesCreate(t *testing.T) {
 			assert.Equal(t, orgTest.Name, noCodeModule.Organization.Name)
 			assert.Equal(t, noCodeModule.RegistryModule.ID, noCodeModule.RegistryModule.ID)
 		})
+		t.Run("with version pin and enabled", func(t *testing.T) {
+			registryModuleTest, _ := createRegistryModule(t, client, orgTest, PrivateRegistry)
+
+			options := RegistryModuleCreateVersionOptions{
+				Version: String("1.2.3"),
+			}
+			rmv, err := client.RegistryModules.CreateVersion(ctx, RegistryModuleID{
+				Organization: orgTest.Name,
+				Name:         registryModuleTest.Name,
+				Provider:     registryModuleTest.Provider,
+			}, options)
+			require.NoError(t, err)
+			require.NotEmpty(t, rmv.Version)
+
+			ncOptions := RegistryNoCodeModuleCreateOptions{
+				VersionPin:     String("1.2.3"),
+				Enabled:        Bool(true),
+				RegistryModule: registryModuleTest,
+			}
+
+			noCodeModule, err := client.NoCodeRegistryModules.Create(ctx, orgTest.Name, ncOptions)
+			require.NoError(t, err)
+			assert.NotEmpty(t, noCodeModule.ID)
+			require.NotEmpty(t, noCodeModule.Organization)
+			require.NotEmpty(t, noCodeModule.RegistryModule)
+			assert.Equal(t, false, noCodeModule.FollowLatestVersion)
+			assert.Equal(t, *ncOptions.Enabled, noCodeModule.Enabled)
+			assert.Equal(t, *ncOptions.VersionPin, noCodeModule.VersionPin)
+			assert.Equal(t, orgTest.Name, noCodeModule.Organization.Name)
+			assert.Equal(t, noCodeModule.RegistryModule.ID, noCodeModule.RegistryModule.ID)
+		})
 	})
 
 	t.Run("with invalid options", func(t *testing.T) {
@@ -59,6 +90,18 @@ func TestNoCodeRegistryModulesCreate(t *testing.T) {
 			options := RegistryNoCodeModuleCreateOptions{
 				Enabled:        Bool(true),
 				RegistryModule: registryModuleTest,
+			}
+
+			noCodeModule, err := client.NoCodeRegistryModules.Create(ctx, orgTest.Name, options)
+			require.Error(t, err)
+			require.Nil(t, noCodeModule)
+		})
+		t.Run("with version_pin and follow_latest_version present", func(t *testing.T) {
+			options := RegistryNoCodeModuleCreateOptions{
+				Enabled:             Bool(true),
+				FollowLatestVersion: Bool(true),
+				VersionPin:          String("1.2.3"),
+				RegistryModule:      registryModuleTest,
 			}
 
 			noCodeModule, err := client.NoCodeRegistryModules.Create(ctx, orgTest.Name, options)
@@ -185,6 +228,31 @@ func TestNoCodeRegistryModulesRead(t *testing.T) {
 		ncm, err := client.NoCodeRegistryModules.Read(ctx, "non-existing", nil)
 		assert.Nil(t, ncm)
 		assert.Equal(t, err, ErrResourceNotFound)
+	})
+}
+
+func TestNoCodeRegistryModulesUpdate(t *testing.T) {
+	client := testClient(t)
+	ctx := context.Background()
+
+	orgTest, orgTestCleanup := createOrganization(t, client)
+	defer orgTestCleanup()
+
+	registryModuleTest, registryModuleTestCleanup := createRegistryModule(t, client, orgTest, PrivateRegistry)
+	defer registryModuleTestCleanup()
+
+	t.Run("update no-code registry module", func(t *testing.T) {
+		noCodeModule, noCodeModuleCleanup := createNoCodeRegistryModule(t, client, orgTest.Name, registryModuleTest, nil)
+		defer noCodeModuleCleanup()
+
+		assert.True(t, noCodeModule.FollowLatestVersion)
+
+		options := RegistryNoCodeModuleUpdateOptions{
+			FollowLatestVersion: Bool(false),
+		}
+		updated, err := client.NoCodeRegistryModules.Update(ctx, noCodeModule.ID, options)
+		require.NoError(t, err)
+		assert.False(t, updated.FollowLatestVersion)
 	})
 }
 

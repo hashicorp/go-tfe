@@ -60,7 +60,9 @@ type RegistryNoCodeModuleCreateOptions struct {
 	// Enabled indicates whether no-code is enabled for the module
 	Enabled *bool `jsonapi:"attr,enabled"`
 
-	// Optional: Variable options for the module
+	VersionPin *string `jsonapi:"attr,version-pin,omitempty"`
+
+	// VariableOptions are the variable options for the module
 	VariableOptions []*NoCodeVariableOption `jsonapi:"relation,variable-options,omitempty"`
 
 	RegistryModule *RegistryModule `jsonapi:"relation,registry-module"`
@@ -89,8 +91,17 @@ type RegistryNoCodeModuleUpdateOptions struct {
 	// https://jsonapi.org/format/#crud-updating
 	Type string `jsonapi:"primary,no-code-modules"`
 
-	// Optional:
-	Version *string `jsonapi:"attr,version,omitempty"`
+	// FollowLatestVersion indicates whether the module should follow the latest version
+	FollowLatestVersion *bool `jsonapi:"attr,follow-latest-version,omitempty"`
+
+	// Enabled indicates whether no-code is enabled for the module
+	Enabled *bool `jsonapi:"attr,enabled,omitempty"`
+
+	// VersionPin is the version pin for the module
+	VersionPin *string `jsonapi:"attr,version-pin,omitempty"`
+
+	// VariableOptions are the variable options for the module
+	VariableOptions []*NoCodeVariableOption `jsonapi:"relation,variable-options,omitempty"`
 }
 
 var (
@@ -202,8 +213,12 @@ func (o RegistryNoCodeModuleCreateOptions) valid() error {
 		return fmt.Errorf("registry module is required")
 	}
 
-	if o.FollowLatestVersion == nil {
-		return fmt.Errorf("follow_latest_version field is required")
+	if o.FollowLatestVersion == nil && o.VersionPin == nil {
+		return fmt.Errorf("one of follow_latest_version or version_pin is required")
+	}
+
+	if o.FollowLatestVersion != nil && o.VersionPin != nil {
+		return fmt.Errorf("only one of follow_latest_version or version_pin is allowed")
 	}
 
 	if o.Enabled == nil {
