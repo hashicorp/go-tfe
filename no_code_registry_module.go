@@ -54,23 +54,30 @@ type RegistryNoCodeModuleCreateOptions struct {
 	// https://jsonapi.org/format/#crud-creating
 	Type string `jsonapi:"primary,no-code-modules"`
 
-	// FollowLatestVersion indicates whether the module should follow the latest version
+	// Required: whether the no-code module should follow the latest registry module version
 	FollowLatestVersion *bool `jsonapi:"attr,follow-latest-version"`
 
-	// Enabled indicates whether no-code is enabled for the module
+	// Required whether no-code is enabled for the registry module
 	Enabled *bool `jsonapi:"attr,enabled"`
 
+	// Optional: the registry module version pin for the no-code module
 	VersionPin *string `jsonapi:"attr,version-pin,omitempty"`
 
-	// VariableOptions are the variable options for the module
+	// Optional: the variable options for the registry module
 	VariableOptions []*NoCodeVariableOption `jsonapi:"relation,variable-options,omitempty"`
 
+	// Required: the registry module ID
 	RegistryModule *RegistryModule `jsonapi:"relation,registry-module"`
 }
 
 // NoCodeModuleIncludeOpt represents the available options for include query params.
 // https://developer.hashicorp.com/terraform/enterprise/api-docs/admin/organizations#available-related-resources
 type NoCodeModuleIncludeOpt string
+
+var (
+	// NoCodeIncludeVariableOptions is used to include variable options in the response
+	NoCodeIncludeVariableOptions NoCodeModuleIncludeOpt = "variable-options"
+)
 
 // RegistryNoCodeModuleReadOptions is used when reading a no-code registry module
 type RegistryNoCodeModuleReadOptions struct {
@@ -80,6 +87,7 @@ type RegistryNoCodeModuleReadOptions struct {
 	// https://jsonapi.org/format/#crud-updating
 	Type string `jsonapi:"primary,no-code-modules"`
 
+	// Optional: Include is used to specify the related resources to include in the response.
 	Include []NoCodeModuleIncludeOpt `url:"include,omitempty"`
 }
 
@@ -91,23 +99,18 @@ type RegistryNoCodeModuleUpdateOptions struct {
 	// https://jsonapi.org/format/#crud-updating
 	Type string `jsonapi:"primary,no-code-modules"`
 
-	// FollowLatestVersion indicates whether the module should follow the latest version
+	// Optional: indicates whether the module should follow the latest version
 	FollowLatestVersion *bool `jsonapi:"attr,follow-latest-version,omitempty"`
 
-	// Enabled indicates whether no-code is enabled for the module
+	// Optional: indicates whether no-code is enabled for the module
 	Enabled *bool `jsonapi:"attr,enabled,omitempty"`
 
-	// VersionPin is the version pin for the module
+	// Optional: is the version pin for the module
 	VersionPin *string `jsonapi:"attr,version-pin,omitempty"`
 
-	// VariableOptions are the variable options for the module
+	// Optional: are the variable options for the module
 	VariableOptions []*NoCodeVariableOption `jsonapi:"relation,variable-options,omitempty"`
 }
-
-var (
-	// NoCodeIncludeVariableOptions is used to include variable options in the response
-	NoCodeIncludeVariableOptions NoCodeModuleIncludeOpt = "variable-options"
-)
 
 // Create a new no-code registry module
 func (r *noCodeRegistryModules) Create(ctx context.Context, organization string, options RegistryNoCodeModuleCreateOptions) (*RegistryNoCodeModule, error) {

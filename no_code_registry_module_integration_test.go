@@ -254,6 +254,15 @@ func TestNoCodeRegistryModulesUpdate(t *testing.T) {
 		require.NoError(t, err)
 		assert.False(t, updated.FollowLatestVersion)
 	})
+	t.Run("no changes when no options are set", func(t *testing.T) {
+		noCodeModule, noCodeModuleCleanup := createNoCodeRegistryModule(t, client, orgTest.Name, registryModuleTest, nil)
+		defer noCodeModuleCleanup()
+
+		options := RegistryNoCodeModuleUpdateOptions{}
+		updated, err := client.NoCodeRegistryModules.Update(ctx, noCodeModule.ID, options)
+		require.NoError(t, err)
+		assert.Equal(t, *noCodeModule, *updated)
+	})
 }
 
 func TestNoCodeRegistryModulesDelete(t *testing.T) {
