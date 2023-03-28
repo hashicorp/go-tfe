@@ -249,6 +249,7 @@ func TestNoCodeRegistryModulesUpdate(t *testing.T) {
 
 		options := RegistryNoCodeModuleUpdateOptions{
 			FollowLatestVersion: Bool(false),
+			RegistryModule:      &RegistryModule{ID: registryModuleTest.ID},
 		}
 		updated, err := client.NoCodeRegistryModules.Update(ctx, noCodeModule.ID, options)
 		require.NoError(t, err)
@@ -258,7 +259,9 @@ func TestNoCodeRegistryModulesUpdate(t *testing.T) {
 		noCodeModule, noCodeModuleCleanup := createNoCodeRegistryModule(t, client, orgTest.Name, registryModuleTest, nil)
 		defer noCodeModuleCleanup()
 
-		options := RegistryNoCodeModuleUpdateOptions{}
+		options := RegistryNoCodeModuleUpdateOptions{
+			RegistryModule: &RegistryModule{ID: registryModuleTest.ID},
+		}
 		updated, err := client.NoCodeRegistryModules.Update(ctx, noCodeModule.ID, options)
 		require.NoError(t, err)
 		assert.Equal(t, *noCodeModule, *updated)

@@ -110,6 +110,9 @@ type RegistryNoCodeModuleUpdateOptions struct {
 
 	// Optional: are the variable options for the module
 	VariableOptions []*NoCodeVariableOption `jsonapi:"relation,variable-options,omitempty"`
+
+	// Required: the registry module ID
+	RegistryModule *RegistryModule `jsonapi:"relation,registry-module"`
 }
 
 // Create a new no-code registry module
