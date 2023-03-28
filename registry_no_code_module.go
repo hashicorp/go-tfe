@@ -32,7 +32,7 @@ type RegistryNoCodeModules interface {
 	Delete(ctx context.Context, ID string) error
 }
 
-// registryNoCodeModules implements NoCodeRegistryModules.
+// registryNoCodeModules implements RegistryNoCodeModules.
 type registryNoCodeModules struct {
 	client *Client
 }
@@ -48,6 +48,23 @@ type RegistryNoCodeModule struct {
 	Organization    *Organization           `jsonapi:"relation,organization"`
 	RegistryModule  *RegistryModule         `jsonapi:"relation,registry-module"`
 	VariableOptions []*NoCodeVariableOption `jsonapi:"relation,variable-options"`
+}
+
+// NoCodeVariableOption represents a registry no-code module variable and its
+// options.
+type NoCodeVariableOption struct {
+	// Type is a public field utilized by JSON:API to
+	// set the resource type via the field tag.
+	Type string `jsonapi:"primary,variable-options"`
+
+	// Required: The variable name
+	VariableName string `jsonapi:"attr,variable-name"`
+
+	// Required: The variable type
+	VariableType string `jsonapi:"attr,variable-type"`
+
+	// Optional: The options for the variable
+	Options []string `jsonapi:"attr,options"`
 }
 
 // RegistryNoCodeModuleCreateOptions is used when creating a registry no-code module
