@@ -333,5 +333,7 @@ var (
 
 	ErrRequiredNamespace = errors.New("namespace is required for public registry")
 
+	ErrRequiredRegistryModule = errors.New("registry module is required")
+
 	ErrTerraformVersionValidForPlanOnly = errors.New("setting terraform-version is only valid when plan-only is set to true")
 )

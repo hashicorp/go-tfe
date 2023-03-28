@@ -180,6 +180,10 @@ func (r *noCodeRegistryModules) Update(ctx context.Context, noCodeModuleID strin
 		return nil, ErrInvalidModuleID
 	}
 
+	if err := options.valid(); err != nil {
+		return nil, err
+	}
+
 	u := fmt.Sprintf(
 		"no-code-modules/%s",
 		url.QueryEscape(noCodeModuleID),
@@ -216,7 +220,7 @@ func (r *noCodeRegistryModules) Delete(ctx context.Context, noCodeModuleID strin
 
 func (o RegistryNoCodeModuleCreateOptions) valid() error {
 	if o.RegistryModule == nil {
-		return fmt.Errorf("registry module is required")
+		return ErrRequiredRegistryModule
 	}
 
 	if o.FollowLatestVersion == nil && o.VersionPin == nil {
@@ -230,6 +234,18 @@ func (o RegistryNoCodeModuleCreateOptions) valid() error {
 	if o.Enabled == nil {
 		return fmt.Errorf("enabled field is required")
 	}
+	return nil
+}
+
+func (o *RegistryNoCodeModuleUpdateOptions) valid() error {
+	if o == nil {
+		return nil // nothing to validate
+	}
+
+	if o.RegistryModule == nil || o.RegistryModule.ID == "" {
+		return ErrRequiredRegistryModule
+	}
+
 	return nil
 }
 
