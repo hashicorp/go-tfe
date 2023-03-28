@@ -25,10 +25,13 @@ func TestProjectsList(t *testing.T) {
 	pTest2, pTestCleanup := createProject(t, client, orgTest)
 	defer pTestCleanup()
 
-	t.Run("with invalid options", func(t *testing.T) {
+	t.Run("without list options", func(t *testing.T) {
 		pl, err := client.Projects.List(ctx, orgTest.Name, nil)
-		assert.Nil(t, pl)
-		assert.EqualError(t, err, ErrInvalidPagination.Error())
+		require.NoError(t, err)
+		assert.Contains(t, pl.Items, pTest1)
+
+		assert.Equal(t, 1, pl.CurrentPage)
+		assert.Equal(t, 3, pl.TotalCount)
 	})
 
 	t.Run("with list options", func(t *testing.T) {

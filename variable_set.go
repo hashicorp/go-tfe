@@ -23,6 +23,9 @@ type VariableSets interface {
 	// ListForWorkspace gets the associated variable sets for a workspace.
 	ListForWorkspace(ctx context.Context, workspaceID string, options *VariableSetListOptions) (*VariableSetList, error)
 
+	// ListForProject gets the associated variable sets for a project.
+	ListForProject(ctx context.Context, projectID string, options *VariableSetListOptions) (*VariableSetList, error)
+
 	// Create is used to create a new variable set.
 	Create(ctx context.Context, organization string, options *VariableSetCreateOptions) (*VariableSet, error)
 
@@ -40,6 +43,12 @@ type VariableSets interface {
 
 	// Remove variable set from workspaces in the supplied list.
 	RemoveFromWorkspaces(ctx context.Context, variableSetID string, options *VariableSetRemoveFromWorkspacesOptions) error
+
+	// Apply variable set to projects in the supplied list.
+	ApplyToProjects(ctx context.Context, variableSetID string, options VariableSetApplyToProjectsOptions) error
+
+	// Remove variable set from projects in the supplied list.
+	RemoveFromProjects(ctx context.Context, variableSetID string, options VariableSetRemoveFromProjectsOptions) error
 
 	// Update list of workspaces to which the variable set is applied to match the supplied list.
 	UpdateWorkspaces(ctx context.Context, variableSetID string, options *VariableSetUpdateWorkspacesOptions) (*VariableSet, error)
@@ -66,6 +75,7 @@ type VariableSet struct {
 	// Relations
 	Organization *Organization          `jsonapi:"relation,organization"`
 	Workspaces   []*Workspace           `jsonapi:"relation,workspaces,omitempty"`
+	Projects     []*Project             `jsonapi:"relation,projects,omitempty"`
 	Variables    []*VariableSetVariable `jsonapi:"relation,vars,omitempty"`
 }
 
@@ -75,6 +85,7 @@ type VariableSetIncludeOpt string
 
 const (
 	VariableSetWorkspaces VariableSetIncludeOpt = "workspaces"
+	VariableSetProjects   VariableSetIncludeOpt = "projects"
 	VariableSetVars       VariableSetIncludeOpt = "vars"
 )
 
@@ -141,6 +152,18 @@ type VariableSetRemoveFromWorkspacesOptions struct {
 	Workspaces []*Workspace
 }
 
+// VariableSetApplyToProjectsOptions represents the options for applying variable sets to projects.
+type VariableSetApplyToProjectsOptions struct {
+	// The projects to apply the variable set to (additive).
+	Projects []*Project
+}
+
+// VariableSetRemoveFromProjectsOptions represents the options for removing variable sets from projects.
+type VariableSetRemoveFromProjectsOptions struct {
+	// The projects to remove the variable set from.
+	Projects []*Project
+}
+
 // VariableSetUpdateWorkspacesOptions represents a subset of update options specifically for applying variable sets to workspaces
 type VariableSetUpdateWorkspacesOptions struct {
 	// Type is a public field utilized by JSON:API to
@@ -197,6 +220,32 @@ func (s *variableSets) ListForWorkspace(ctx context.Context, workspaceID string,
 	}
 
 	u := fmt.Sprintf("workspaces/%s/varsets", url.QueryEscape(workspaceID))
+	req, err := s.client.NewRequest("GET", u, options)
+	if err != nil {
+		return nil, err
+	}
+
+	vl := &VariableSetList{}
+	err = req.Do(ctx, vl)
+	if err != nil {
+		return nil, err
+	}
+
+	return vl, nil
+}
+
+// ListForProject gets the associated variable sets for a project.
+func (s *variableSets) ListForProject(ctx context.Context, projectID string, options *VariableSetListOptions) (*VariableSetList, error) {
+	if !validStringID(&projectID) {
+		return nil, ErrInvalidProjectID
+	}
+	if options != nil {
+		if err := options.valid(); err != nil {
+			return nil, err
+		}
+	}
+
+	u := fmt.Sprintf("projects/%s/varsets", url.QueryEscape(projectID))
 	req, err := s.client.NewRequest("GET", u, options)
 	if err != nil {
 		return nil, err
@@ -330,6 +379,46 @@ func (s *variableSets) RemoveFromWorkspaces(ctx context.Context, variableSetID s
 	return req.Do(ctx, nil)
 }
 
+// ApplyToProjects applies the variable set to projects in the supplied list.
+// This method will return an error if the variable set has global = true.
+// **Note: This feature is still in BETA and subject to change.**
+func (s variableSets) ApplyToProjects(ctx context.Context, variableSetID string, options VariableSetApplyToProjectsOptions) error {
+	if !validStringID(&variableSetID) {
+		return ErrInvalidVariableSetID
+	}
+	if err := options.valid(); err != nil {
+		return err
+	}
+
+	u := fmt.Sprintf("varsets/%s/relationships/projects", url.QueryEscape(variableSetID))
+	req, err := s.client.NewRequest("POST", u, options.Projects)
+	if err != nil {
+		return err
+	}
+
+	return req.Do(ctx, nil)
+}
+
+// RemoveFromProjects removes the variable set from projects in the supplied list.
+// This method will return an error if the variable set has global = true.
+// **Note: This feature is still in BETA and subject to change.**
+func (s variableSets) RemoveFromProjects(ctx context.Context, variableSetID string, options VariableSetRemoveFromProjectsOptions) error {
+	if !validStringID(&variableSetID) {
+		return ErrInvalidVariableSetID
+	}
+	if err := options.valid(); err != nil {
+		return err
+	}
+
+	u := fmt.Sprintf("varsets/%s/relationships/projects", url.QueryEscape(variableSetID))
+	req, err := s.client.NewRequest("DELETE", u, options.Projects)
+	if err != nil {
+		return err
+	}
+
+	return req.Do(ctx, nil)
+}
+
 // Update variable set to be applied to only the workspaces in the supplied list.
 func (s *variableSets) UpdateWorkspaces(ctx context.Context, variableSetID string, options *VariableSetUpdateWorkspacesOptions) (*VariableSet, error) {
 	if err := options.valid(); err != nil {
@@ -388,6 +477,24 @@ func (o *VariableSetRemoveFromWorkspacesOptions) valid() error {
 	for _, s := range o.Workspaces {
 		if !validStringID(&s.ID) {
 			return ErrRequiredWorkspaceID
+		}
+	}
+	return nil
+}
+
+func (o *VariableSetApplyToProjectsOptions) valid() error {
+	for _, s := range o.Projects {
+		if !validStringID(&s.ID) {
+			return ErrRequiredProjectID
+		}
+	}
+	return nil
+}
+
+func (o VariableSetRemoveFromProjectsOptions) valid() error {
+	for _, s := range o.Projects {
+		if !validStringID(&s.ID) {
+			return ErrRequiredProjectID
 		}
 	}
 	return nil

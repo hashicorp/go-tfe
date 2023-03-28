@@ -56,6 +56,11 @@ type Project struct {
 // ProjectListOptions represents the options for listing projects
 type ProjectListOptions struct {
 	ListOptions
+
+	// Optional: String (partial project name) used to filter the results.
+	// If multiple, comma separated values are specified, projects matching
+	// any of the names are returned.
+	Name string `url:"filter[names],omitempty"`
 }
 
 // ProjectCreateOptions represents the options for creating a project
@@ -88,10 +93,6 @@ func (s *projects) List(ctx context.Context, organization string, options *Proje
 		return nil, ErrInvalidOrg
 	}
 
-	if err := options.valid(); err != nil {
-		return nil, err
-	}
-
 	u := fmt.Sprintf("organizations/%s/projects", url.QueryEscape(organization))
 	req, err := s.client.NewRequest("GET", u, options)
 	if err != nil {
@@ -105,14 +106,6 @@ func (s *projects) List(ctx context.Context, organization string, options *Proje
 	}
 
 	return p, nil
-}
-
-func (o *ProjectListOptions) valid() error {
-	if o == nil || o.PageNumber == 0 || o.PageSize == 0 {
-		return ErrInvalidPagination
-	}
-
-	return nil
 }
 
 // Create a project with the given options

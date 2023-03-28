@@ -16,12 +16,12 @@ func TestVariableSetsList(t *testing.T) {
 	ctx := context.Background()
 
 	orgTest, orgTestCleanup := createOrganization(t, client)
-	defer orgTestCleanup()
+	t.Cleanup(orgTestCleanup)
 
 	vsTest1, vsTestCleanup1 := createVariableSet(t, client, orgTest, VariableSetCreateOptions{})
-	defer vsTestCleanup1()
+	t.Cleanup(vsTestCleanup1)
 	vsTest2, vsTestCleanup2 := createVariableSet(t, client, orgTest, VariableSetCreateOptions{})
-	defer vsTestCleanup2()
+	t.Cleanup(vsTestCleanup2)
 
 	t.Run("without list options", func(t *testing.T) {
 		vsl, err := client.VariableSets.List(ctx, orgTest.Name, nil)
@@ -111,12 +111,61 @@ func TestVariableSetsListForWorkspace(t *testing.T) {
 	})
 }
 
+func TestVariableSetsListForProject(t *testing.T) {
+	skipUnlessBeta(t)
+	client := testClient(t)
+	ctx := context.Background()
+
+	orgTest, orgTestCleanup := createOrganization(t, client)
+	t.Cleanup(orgTestCleanup)
+	projectTest, projectTestCleanup := createProject(t, client, orgTest)
+	t.Cleanup(projectTestCleanup)
+
+	vsTest1, vsTestCleanup1 := createVariableSet(t, client, orgTest, VariableSetCreateOptions{})
+	t.Cleanup(vsTestCleanup1)
+	vsTest2, vsTestCleanup2 := createVariableSet(t, client, orgTest, VariableSetCreateOptions{})
+	t.Cleanup(vsTestCleanup2)
+
+	applyVariableSetToProject(t, client, vsTest1.ID, projectTest.ID)
+	applyVariableSetToProject(t, client, vsTest2.ID, projectTest.ID)
+
+	t.Run("without list options", func(t *testing.T) {
+		vsl, err := client.VariableSets.ListForProject(ctx, projectTest.ID, nil)
+		require.NoError(t, err)
+		require.Len(t, vsl.Items, 2)
+
+		ids := []string{vsTest1.ID, vsTest2.ID}
+		for _, varset := range vsl.Items {
+			assert.Contains(t, ids, varset.ID)
+		}
+	})
+
+	t.Run("with list options", func(t *testing.T) {
+		vsl, err := client.VariableSets.ListForProject(ctx, projectTest.ID, &VariableSetListOptions{
+			ListOptions: ListOptions{
+				PageNumber: 999,
+				PageSize:   100,
+			},
+		})
+		require.NoError(t, err)
+		assert.Empty(t, vsl.Items)
+		assert.Equal(t, 999, vsl.CurrentPage)
+		assert.Equal(t, 2, vsl.TotalCount)
+	})
+
+	t.Run("when Project ID is an invalid ID", func(t *testing.T) {
+		vsl, err := client.VariableSets.ListForProject(ctx, badIdentifier, nil)
+		assert.Nil(t, vsl)
+		assert.EqualError(t, err, ErrInvalidProjectID.Error())
+	})
+}
+
 func TestVariableSetsCreate(t *testing.T) {
 	client := testClient(t)
 	ctx := context.Background()
 
 	orgTest, orgTestCleanup := createOrganization(t, client)
-	defer orgTestCleanup()
+	t.Cleanup(orgTestCleanup)
 
 	t.Run("with valid options", func(t *testing.T) {
 		options := VariableSetCreateOptions{
@@ -165,10 +214,10 @@ func TestVariableSetsRead(t *testing.T) {
 	ctx := context.Background()
 
 	orgTest, orgTestCleanup := createOrganization(t, client)
-	defer orgTestCleanup()
+	t.Cleanup(orgTestCleanup)
 
 	vsTest, vsTestCleanup := createVariableSet(t, client, orgTest, VariableSetCreateOptions{})
-	defer vsTestCleanup()
+	t.Cleanup(vsTestCleanup)
 
 	t.Run("when the variable set exists", func(t *testing.T) {
 		vs, err := client.VariableSets.Read(ctx, vsTest.ID, nil)
@@ -188,7 +237,7 @@ func TestVariableSetsUpdate(t *testing.T) {
 	ctx := context.Background()
 
 	orgTest, orgTestCleanup := createOrganization(t, client)
-	defer orgTestCleanup()
+	t.Cleanup(orgTestCleanup)
 
 	vsTest, _ := createVariableSet(t, client, orgTest, VariableSetCreateOptions{
 		Name:        String("OriginalName"),
@@ -227,7 +276,7 @@ func TestVariableSetsDelete(t *testing.T) {
 	ctx := context.Background()
 
 	orgTest, orgTestCleanup := createOrganization(t, client)
-	defer orgTestCleanup()
+	t.Cleanup(orgTestCleanup)
 
 	// Do not defer cleanup since the next step in this test is to delete it
 	vsTest, _ := createVariableSet(t, client, orgTest, VariableSetCreateOptions{})
@@ -252,10 +301,10 @@ func TestVariableSetsApplyToAndRemoveFromWorkspaces(t *testing.T) {
 	ctx := context.Background()
 
 	orgTest, orgTestCleanup := createOrganization(t, client)
-	defer orgTestCleanup()
+	t.Cleanup(orgTestCleanup)
 
 	vsTest, vsTestCleanup := createVariableSet(t, client, orgTest, VariableSetCreateOptions{})
-	defer vsTestCleanup()
+	t.Cleanup(vsTestCleanup)
 
 	wTest1, wTest1Cleanup := createWorkspace(t, client, orgTest)
 	defer wTest1Cleanup()
@@ -349,18 +398,121 @@ func TestVariableSetsApplyToAndRemoveFromWorkspaces(t *testing.T) {
 	})
 }
 
+func TestVariableSetsApplyToAndRemoveFromProjects(t *testing.T) {
+	// TO DO: Remove when TFE GA
+	skipUnlessBeta(t)
+	client := testClient(t)
+	ctx := context.Background()
+
+	orgTest, orgTestCleanup := createOrganization(t, client)
+	t.Cleanup(orgTestCleanup)
+
+	vsTest, vsTestCleanup := createVariableSet(t, client, orgTest, VariableSetCreateOptions{})
+	t.Cleanup(vsTestCleanup)
+
+	prjTest1, prjTest1Cleanup := createProject(t, client, orgTest)
+	defer prjTest1Cleanup()
+	prjTest2, prjTest2Cleanup := createProject(t, client, orgTest)
+	defer prjTest2Cleanup()
+	t.Run("with first project added", func(t *testing.T) {
+		options := VariableSetApplyToProjectsOptions{
+			Projects: []*Project{prjTest1},
+		}
+
+		err := client.VariableSets.ApplyToProjects(ctx, vsTest.ID, options)
+		require.NoError(t, err)
+
+		vsAfter, err := client.VariableSets.Read(ctx, vsTest.ID, nil)
+		require.NoError(t, err)
+
+		// Variable set should be applied to [prjTest1]
+		assert.Equal(t, 1, len(vsAfter.Projects))
+		assert.Equal(t, prjTest1.ID, vsAfter.Projects[0].ID)
+	})
+
+	t.Run("with second project added", func(t *testing.T) {
+		options := VariableSetApplyToProjectsOptions{
+			Projects: []*Project{prjTest2},
+		}
+
+		err := client.VariableSets.ApplyToProjects(ctx, vsTest.ID, options)
+		require.NoError(t, err)
+
+		vsAfter, err := client.VariableSets.Read(ctx, vsTest.ID, nil)
+		require.NoError(t, err)
+
+		// Variable set should be applied to [prjTest1, prjTest2]
+		assert.Equal(t, 2, len(vsAfter.Projects))
+		prjIDs := []string{vsAfter.Projects[0].ID, vsAfter.Projects[1].ID}
+
+		assert.Contains(t, prjIDs, prjTest1.ID)
+		assert.Contains(t, prjIDs, prjTest2.ID)
+	})
+
+	t.Run("with first project removed", func(t *testing.T) {
+		options := VariableSetRemoveFromProjectsOptions{
+			Projects: []*Project{prjTest1},
+		}
+
+		err := client.VariableSets.RemoveFromProjects(ctx, vsTest.ID, options)
+		require.NoError(t, err)
+
+		vsAfter, err := client.VariableSets.Read(ctx, vsTest.ID, nil)
+		require.NoError(t, err)
+
+		// Variable set should be applied to [wTest2]
+		assert.Equal(t, 1, len(vsAfter.Projects))
+		assert.Equal(t, prjTest2.ID, vsAfter.Projects[0].ID)
+	})
+
+	t.Run("when variable set ID is invalid", func(t *testing.T) {
+		applyOptions := VariableSetApplyToProjectsOptions{
+			Projects: []*Project{prjTest1},
+		}
+
+		err := client.VariableSets.ApplyToProjects(ctx, badIdentifier, applyOptions)
+		assert.EqualError(t, err, ErrInvalidVariableSetID.Error())
+
+		removeOptions := VariableSetRemoveFromProjectsOptions{
+			Projects: []*Project{prjTest1},
+		}
+		err = client.VariableSets.RemoveFromProjects(ctx, badIdentifier, removeOptions)
+		assert.EqualError(t, err, ErrInvalidVariableSetID.Error())
+	})
+
+	t.Run("when project ID is invalid", func(t *testing.T) {
+		badProject := &Project{
+			ID: badIdentifier,
+		}
+
+		applyOptions := VariableSetApplyToProjectsOptions{
+			Projects: []*Project{badProject},
+		}
+
+		err := client.VariableSets.ApplyToProjects(ctx, vsTest.ID, applyOptions)
+		assert.EqualError(t, err, ErrRequiredProjectID.Error())
+
+		removeOptions := VariableSetRemoveFromProjectsOptions{
+			Projects: []*Project{badProject},
+		}
+
+		err = client.VariableSets.RemoveFromProjects(ctx, vsTest.ID, removeOptions)
+		assert.EqualError(t, err, ErrRequiredProjectID.Error())
+	})
+}
+
 func TestVariableSetsUpdateWorkspaces(t *testing.T) {
 	client := testClient(t)
 	ctx := context.Background()
 
 	orgTest, orgTestCleanup := createOrganization(t, client)
-	defer orgTestCleanup()
+	t.Cleanup(orgTestCleanup)
 
 	vsTest, vsTestCleanup := createVariableSet(t, client, orgTest, VariableSetCreateOptions{})
-	defer vsTestCleanup()
+	t.Cleanup(vsTestCleanup)
 
 	wTest, wTestCleanup := createWorkspace(t, client, orgTest)
-	defer wTestCleanup()
+	t.Cleanup(wTestCleanup)
 
 	t.Run("with valid workspaces", func(t *testing.T) {
 		options := VariableSetUpdateWorkspacesOptions{

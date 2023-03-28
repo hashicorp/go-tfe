@@ -1,6 +1,18 @@
 # Unreleased
 
+FEATURES:
+* Add beta endpoints `ApplyToProjects`  and `RemoveFromProjects` to `VariableSets`.  Applying a variable set to a project will apply that variable set to all current and future workspaces in that project. 
+* Add beta endpoint `ListForProject` to `VariableSets` to list all variable sets applied to a project.
+
 ## Enhancements
+* Adds `Name` filter to allow filtering of projects by @hs26gill [#668](https://github.com/hashicorp/go-tfe/pull/668/files)
+* Adds `ManageMembership` permission to team `OrganizationAccess` by @JarrettSpiker [#652](https://github.com/hashicorp/go-tfe/pull/652)
+* Adds `RotateKey` and `TrimKey` Admin endpoints by @mpminardi [#666](https://github.com/hashicorp/go-tfe/pull/666)
+
+# v1.20.0
+
+## Enhancements
+* Update team project access to include additional project roles by @joekarl [#642](https://github.com/hashicorp/go-tfe/pull/642)
 
 ## Bug Fixes
 
