@@ -134,7 +134,6 @@ type Client struct {
 	CostEstimates              CostEstimates
 	GHAInstallations           GHAInstallations
 	GPGKeys                    GPGKeys
-	NoCodeRegistryModules      NoCodeRegistryModules
 	NotificationConfigurations NotificationConfigurations
 	OAuthClients               OAuthClients
 	OAuthTokens                OAuthTokens
@@ -152,6 +151,7 @@ type Client struct {
 	PolicySetVersions          PolicySetVersions
 	PolicySets                 PolicySets
 	RegistryModules            RegistryModules
+	RegistryNoCodeModules      RegistryNoCodeModules
 	RegistryProviders          RegistryProviders
 	RegistryProviderPlatforms  RegistryProviderPlatforms
 	RegistryProviderVersions   RegistryProviderVersions
@@ -389,7 +389,7 @@ func NewClient(cfg *Config) (*Client, error) {
 	client.GHAInstallations = &gHAInstallations{client: client}
 	client.CostEstimates = &costEstimates{client: client}
 	client.GPGKeys = &gpgKeys{client: client}
-	client.NoCodeRegistryModules = &noCodeRegistryModules{client: client}
+	client.RegistryNoCodeModules = &registryNoCodeModules{client: client}
 	client.NotificationConfigurations = &notificationConfigurations{client: client}
 	client.OAuthClients = &oAuthClients{client: client}
 	client.OAuthTokens = &oAuthTokens{client: client}

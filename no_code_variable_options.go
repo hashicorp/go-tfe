@@ -7,11 +7,12 @@ type NoCodeVariableOption struct {
 	// set the resource type via the field tag.
 	Type string `jsonapi:"primary,variable-options"`
 
-	// Required: The name of the variable
+	// Required: The variable name
 	VariableName string `jsonapi:"attr,variable-name"`
 
-	// Required: The type of the variable
+	// Required: The variable type
 	VariableType string `jsonapi:"attr,variable-type"`
 
+	// Optional: The options for the variable
 	Options []string `jsonapi:"attr,options"`
 }
