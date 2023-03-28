@@ -16,15 +16,19 @@ var _ RegistryNoCodeModules = (*registryNoCodeModules)(nil)
 type RegistryNoCodeModules interface {
 
 	// Create a registry no-code module
+	// **Note: This API is still in BETA and subject to change.**
 	Create(ctx context.Context, organization string, options RegistryNoCodeModuleCreateOptions) (*RegistryNoCodeModule, error)
 
 	// Read a registryno-code  module
+	// **Note: This API is still in BETA and subject to change.**
 	Read(ctx context.Context, noCodeModuleID string, options *RegistryNoCodeModuleReadOptions) (*RegistryNoCodeModule, error)
 
 	// Update a registry no-code module
+	// **Note: This API is still in BETA and subject to change.**
 	Update(ctx context.Context, noCodeModuleID string, options RegistryNoCodeModuleUpdateOptions) (*RegistryNoCodeModule, error)
 
 	// Delete a registry no-code module
+	// **Note: This API is still in BETA and subject to change.**
 	Delete(ctx context.Context, ID string) error
 }
 
