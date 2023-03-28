@@ -12,6 +12,7 @@ import (
 )
 
 func TestNoCodeRegistryModulesCreate(t *testing.T) {
+	skipUnlessBeta(t)
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -168,6 +169,7 @@ func TestNoCodeRegistryModulesCreate(t *testing.T) {
 }
 
 func TestNoCodeRegistryModulesRead(t *testing.T) {
+	skipUnlessBeta(t)
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -232,6 +234,7 @@ func TestNoCodeRegistryModulesRead(t *testing.T) {
 }
 
 func TestNoCodeRegistryModulesUpdate(t *testing.T) {
+	skipUnlessBeta(t)
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -269,6 +272,7 @@ func TestNoCodeRegistryModulesUpdate(t *testing.T) {
 }
 
 func TestNoCodeRegistryModulesDelete(t *testing.T) {
+	skipUnlessBeta(t)
 	client := testClient(t)
 	ctx := context.Background()
 
