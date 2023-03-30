@@ -14,6 +14,13 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
+// BEWARE: The admin workspaces API can view all of the workspaces created by
+// EVERY test organization in EVERY concurrent test run (or other usage) for the
+// current TFC instance. It's generally not safe to assume that the workspaces
+// you create in a given test will be within the first page of list results, so
+// you might have to get creative and/or settle for less when testing the
+// behavior of these endpoints.
+
 func TestAdminWorkspaces_ListWithFilter(t *testing.T) {
 	client := testClient(t)
 	ctx := context.Background()
@@ -64,7 +71,8 @@ func TestAdminWorkspaces_ListWithSort(t *testing.T) {
 		})
 		require.NoError(t, err)
 		require.NotEmpty(t, wl.Items)
-		assert.Equal(t, adminWorkspaceItemsContainsID(wl.Items, wTest1.ID), true)
+		require.GreaterOrEqual(t, len(wl.Items), 2)
+		assert.Equal(t, wl.Items[0].Name < wl.Items[1].Name, true)
 	})
 
 	t.Run("when sorting workspaces on current-run.created-at", func(t *testing.T) {
@@ -103,8 +111,7 @@ func TestAdminWorkspaces_List(t *testing.T) {
 		wl, err := client.Admin.Workspaces.List(ctx, nil)
 		require.NoError(t, err)
 
-		assert.Equal(t, adminWorkspaceItemsContainsID(wl.Items, wTest1.ID), true)
-		assert.Equal(t, adminWorkspaceItemsContainsID(wl.Items, wTest2.ID), true)
+		require.GreaterOrEqual(t, len(wl.Items), 2)
 	})
 
 	t.Run("with list options", func(t *testing.T) {
