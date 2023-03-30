@@ -50,12 +50,14 @@ type UserToken struct {
 	Description string    `jsonapi:"attr,description"`
 	LastUsedAt  time.Time `jsonapi:"attr,last-used-at,iso8601"`
 	Token       string    `jsonapi:"attr,token"`
+	ExpiredAt   time.Time `jsonapi:"attr,expired-at,iso8601"`
 }
 
 // UserTokenCreateOptions the options for creating a user token.
 type UserTokenCreateOptions struct {
-	// Optional: Description of the token
-	Description string `jsonapi:"attr,description,omitempty"`
+	// Optional: Description of the token and its expiration date
+	Description string    `jsonapi:"attr,description,omitempty"`
+	ExpiredAt   time.Time `jsonapi:"attr,expired-at,iso8601,omitempty"`
 }
 
 // Create a new user token

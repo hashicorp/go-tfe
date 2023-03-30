@@ -41,6 +41,7 @@ type TeamToken struct {
 	Description string    `jsonapi:"attr,description"`
 	LastUsedAt  time.Time `jsonapi:"attr,last-used-at,iso8601"`
 	Token       string    `jsonapi:"attr,token"`
+	ExpiredAt   time.Time `jsonapi:"attr,expired-at,iso8601"`
 }
 
 // Create a new team token, replacing any existing token.

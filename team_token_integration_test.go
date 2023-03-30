@@ -38,6 +38,13 @@ func TestTeamTokensCreate(t *testing.T) {
 		assert.Nil(t, tt)
 		assert.Equal(t, err, ErrInvalidTeamID)
 	})
+
+	t.Run("without an expiration date", func(t *testing.T) {
+		tt, err := client.TeamTokens.Create(ctx, tmTest.ID)
+		require.NoError(t, err)
+		require.NotEmpty(t, tt.Token)
+		tmToken = tt.Token
+	})
 }
 func TestTeamTokensRead(t *testing.T) {
 	client := testClient(t)

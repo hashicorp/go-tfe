@@ -41,6 +41,7 @@ type OrganizationToken struct {
 	Description string    `jsonapi:"attr,description"`
 	LastUsedAt  time.Time `jsonapi:"attr,last-used-at,iso8601"`
 	Token       string    `jsonapi:"attr,token"`
+	ExpiredAt   time.Time `jsonapi:"attr,expired-at,iso8601"`
 }
 
 // Create a new organization token, replacing any existing token.

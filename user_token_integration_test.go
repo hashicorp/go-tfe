@@ -7,6 +7,7 @@ import (
 	"context"
 	"fmt"
 	"testing"
+	"time"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
@@ -72,6 +73,24 @@ func TestUserTokens_Create(t *testing.T) {
 	t.Run("create token with description", func(t *testing.T) {
 		token, err := client.UserTokens.Create(ctx, user.ID, UserTokenCreateOptions{
 			Description: fmt.Sprintf("go-tfe-user-token-test-%s", randomString(t)),
+		})
+		tokens = append(tokens, token.ID)
+		if err != nil {
+			t.Fatal(err)
+		}
+	})
+
+	t.Run("create token without an expiration date", func(t *testing.T) {
+		token, err := client.UserTokens.Create(ctx, user.ID, UserTokenCreateOptions{})
+		tokens = append(tokens, token.ID)
+		if err != nil {
+			t.Fatal(err)
+		}
+	})
+
+	t.Run("create token with an expiration date", func(t *testing.T) {
+		token, err := client.UserTokens.Create(ctx, user.ID, UserTokenCreateOptions{
+			ExpiredAt: time.Now().Add(48 * time.Hour),
 		})
 		tokens = append(tokens, token.ID)
 		if err != nil {

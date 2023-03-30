@@ -38,6 +38,13 @@ func TestOrganizationTokensCreate(t *testing.T) {
 		assert.Nil(t, ot)
 		assert.EqualError(t, err, ErrInvalidOrg.Error())
 	})
+
+	t.Run("without an expiration date", func(t *testing.T) {
+		ot, err := client.OrganizationTokens.Create(ctx, orgTest.Name)
+		require.NoError(t, err)
+		require.NotEmpty(t, ot.Token)
+		tkToken = ot.Token
+	})
 }
 
 func TestOrganizationTokensRead(t *testing.T) {
