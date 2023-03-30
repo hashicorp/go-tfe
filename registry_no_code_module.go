@@ -19,7 +19,7 @@ type RegistryNoCodeModules interface {
 	// **Note: This API is still in BETA and subject to change.**
 	Create(ctx context.Context, organization string, options RegistryNoCodeModuleCreateOptions) (*RegistryNoCodeModule, error)
 
-	// Read a registryno-code  module
+	// Read a registry no-code  module
 	// **Note: This API is still in BETA and subject to change.**
 	Read(ctx context.Context, noCodeModuleID string, options *RegistryNoCodeModuleReadOptions) (*RegistryNoCodeModule, error)
 
@@ -78,10 +78,10 @@ type RegistryNoCodeModuleCreateOptions struct {
 	// Required: whether the no-code module should follow the latest registry module version
 	FollowLatestVersion *bool `jsonapi:"attr,follow-latest-version"`
 
-	// Required whether no-code is enabled for the registry module
+	// Required: whether no-code is enabled for the registry module
 	Enabled *bool `jsonapi:"attr,enabled"`
 
-	// Required: the registry module ID
+	// Required: the registry module to use for the no-code module
 	RegistryModule *RegistryModule `jsonapi:"relation,registry-module"`
 
 	// Optional: the registry module version pin for the no-code module
@@ -119,7 +119,7 @@ type RegistryNoCodeModuleUpdateOptions struct {
 	// https://jsonapi.org/format/#crud-updating
 	Type string `jsonapi:"primary,no-code-modules"`
 
-	// Required: the registry module ID
+	// Required: the registry module to use for the no-code module
 	RegistryModule *RegistryModule `jsonapi:"relation,registry-module"`
 
 	// Optional: indicates whether the module should follow the latest version

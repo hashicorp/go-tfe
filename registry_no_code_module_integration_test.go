@@ -38,7 +38,7 @@ func TestRegistryNoCodeModulesCreate(t *testing.T) {
 			assert.Equal(t, *options.FollowLatestVersion, noCodeModule.FollowLatestVersion)
 			assert.Equal(t, *options.Enabled, noCodeModule.Enabled)
 			assert.Equal(t, orgTest.Name, noCodeModule.Organization.Name)
-			assert.Equal(t, noCodeModule.RegistryModule.ID, noCodeModule.RegistryModule.ID)
+		assert.Equal(t, registryModuleTest.ID, noCodeModule.RegistryModule.ID)
 		})
 		t.Run("with version pin and enabled", func(t *testing.T) {
 			registryModuleTest, _ := createRegistryModule(t, client, orgTest, PrivateRegistry)
@@ -69,7 +69,7 @@ func TestRegistryNoCodeModulesCreate(t *testing.T) {
 			assert.Equal(t, *ncOptions.Enabled, noCodeModule.Enabled)
 			assert.Equal(t, *ncOptions.VersionPin, noCodeModule.VersionPin)
 			assert.Equal(t, orgTest.Name, noCodeModule.Organization.Name)
-			assert.Equal(t, noCodeModule.RegistryModule.ID, noCodeModule.RegistryModule.ID)
+		assert.Equal(t, registryModuleTest.ID, noCodeModule.RegistryModule.ID)
 		})
 	})
 
@@ -163,7 +163,7 @@ func TestRegistryNoCodeModulesCreate(t *testing.T) {
 		assert.Equal(t, *options.FollowLatestVersion, noCodeModule.FollowLatestVersion)
 		assert.Equal(t, *options.Enabled, noCodeModule.Enabled)
 		assert.Equal(t, orgTest.Name, noCodeModule.Organization.Name)
-		assert.Equal(t, noCodeModule.RegistryModule.ID, noCodeModule.RegistryModule.ID)
+		assert.Equal(t, registryModuleTest.ID, noCodeModule.RegistryModule.ID)
 		assert.Equal(t, len(options.VariableOptions), len(noCodeModule.VariableOptions))
 	})
 }
