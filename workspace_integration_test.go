@@ -217,6 +217,26 @@ func TestWorkspacesList(t *testing.T) {
 		assert.NotEmpty(t, wTest.ID)
 		assert.Equal(t, 0, wl.TotalCount)
 	})
+
+	t.Run("when filtering using project id", func(t *testing.T) {
+		p, pTestCleanup := createProject(t, client, orgTest)
+		defer pTestCleanup()
+
+		// create a workspace with project
+		w, wTestCleanup := createWorkspaceWithOptions(t, client, orgTest, WorkspaceCreateOptions{
+			Name:    String(randomString(t)),
+			Project: p,
+		})
+		defer wTestCleanup()
+		// Request a page number which is out of range. The result should
+		// be successful, but return no results if the paging options are
+		// properly passed along.
+		wl, err := client.Workspaces.List(ctx, orgTest.Name, &WorkspaceListOptions{
+			ProjectID: p.ID,
+		})
+		require.NoError(t, err)
+		assert.Contains(t, wl.Items, w)
+	})
 }
 
 func TestWorkspacesCreateTableDriven(t *testing.T) {
