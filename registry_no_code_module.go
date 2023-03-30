@@ -81,7 +81,7 @@ type RegistryNoCodeModuleCreateOptions struct {
 	// Required: whether no-code is enabled for the registry module
 	Enabled *bool `jsonapi:"attr,enabled"`
 
-	// Required: the registry module to use for the no-code module
+	// Required: the registry module to use for the no-code module (only the ID is used)
 	RegistryModule *RegistryModule `jsonapi:"relation,registry-module"`
 
 	// Optional: the registry module version pin for the no-code module
@@ -119,7 +119,7 @@ type RegistryNoCodeModuleUpdateOptions struct {
 	// https://jsonapi.org/format/#crud-updating
 	Type string `jsonapi:"primary,no-code-modules"`
 
-	// Required: the registry module to use for the no-code module
+	// Required: the registry module to use for the no-code module (only the ID is used)
 	RegistryModule *RegistryModule `jsonapi:"relation,registry-module"`
 
 	// Optional: indicates whether the module should follow the latest version
