@@ -21,10 +21,13 @@ func TestUsersReadCurrent(t *testing.T) {
 	assert.NotEmpty(t, u.ID)
 	assert.NotEmpty(t, u.AvatarURL)
 	assert.NotEmpty(t, u.Username)
-	assert.NotEmpty(t, u.Permissions)
 
 	t.Run("two factor options are decoded", func(t *testing.T) {
 		assert.NotNil(t, u.TwoFactor)
+	})
+
+	t.Run("permissions are decoded", func(t *testing.T) {
+		assert.NotNil(t, u.Permissions)
 	})
 }
 
