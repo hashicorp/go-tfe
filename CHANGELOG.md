@@ -8,6 +8,7 @@ FEATURES:
 * Adds `Name` filter to allow filtering of projects by @hs26gill [#668](https://github.com/hashicorp/go-tfe/pull/668/files)
 * Adds `ManageMembership` permission to team `OrganizationAccess` by @JarrettSpiker [#652](https://github.com/hashicorp/go-tfe/pull/652)
 * Adds `RotateKey` and `TrimKey` Admin endpoints by @mpminardi [#666](https://github.com/hashicorp/go-tfe/pull/666)
+* Adds `Permissions` to `User` by @jeevanragula [#674](https://github.com/hashicorp/go-tfe/pull/674)
 
 # v1.20.0
 
