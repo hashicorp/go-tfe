@@ -178,7 +178,7 @@ type RegistryModuleCreateOptions struct {
 	Namespace string `jsonapi:"attr,namespace,omitempty"`
 	// Optional: If set to true the module is enabled for no-code provisioning.
 	// **Note: This field is still in BETA and subject to change.**
-	NoCode bool `jsonapi:"attr,no-code"`
+	NoCode *bool `jsonapi:"attr,no-code,omitempty"`
 }
 
 // RegistryModuleCreateVersionOptions is used when creating a registry module version
@@ -287,6 +287,11 @@ func (r *registryModules) Create(ctx context.Context, organization string, optio
 		return nil, err
 	}
 
+	if options.NoCode != nil {
+		// TODO: update the deprecation message with the version that will remove this.
+		log.Println("[WARN] Support for using the NoCode field is deprecated as of release 1.21.0 and may be removed in a future version. The preferred way to create a no-code module is with the registryNoCodeModules.Create method.")
+	}
+
 	u := fmt.Sprintf(
 		"organizations/%s/registry-modules",
 		url.QueryEscape(organization),
@@ -318,6 +323,11 @@ func (r *registryModules) Update(ctx context.Context, moduleID RegistryModuleID,
 	if moduleID.RegistryName == PrivateRegistry && strings.TrimSpace(moduleID.Namespace) == "" {
 		log.Println("[WARN] Support for using the RegistryModuleID without Namespace is deprecated as of release 1.5.0 and may be removed in a future version. The preferred method is to include the Namespace in RegistryModuleID.")
 		moduleID.Namespace = moduleID.Organization
+	}
+
+	if options.NoCode != nil {
+		// TODO: update the deprecation message with the version that will remove this.
+		log.Println("[WARN] Support for using the NoCode field is deprecated as of release 1.21.0 and may be removed in a future version. The preferred way to update a no-code module is with the registryNoCodeModules.Update method.")
 	}
 
 	org := url.QueryEscape(moduleID.Organization)
