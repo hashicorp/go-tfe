@@ -18,7 +18,7 @@ type Users interface {
 	// ReadCurrent reads the details of the currently authenticated user.
 	ReadCurrent(ctx context.Context) (*User, error)
 
-	// Update attributes of the currently authenticated user.
+	// UpdateCurrent Update attributes of the currently authenticated user.
 	UpdateCurrent(ctx context.Context, options UserUpdateOptions) (*User, error)
 }
 
@@ -29,17 +29,30 @@ type users struct {
 
 // User represents a Terraform Enterprise user.
 type User struct {
-	ID               string     `jsonapi:"primary,users"`
-	AvatarURL        string     `jsonapi:"attr,avatar-url"`
-	Email            string     `jsonapi:"attr,email"`
-	IsServiceAccount bool       `jsonapi:"attr,is-service-account"`
-	TwoFactor        *TwoFactor `jsonapi:"attr,two-factor"`
-	UnconfirmedEmail string     `jsonapi:"attr,unconfirmed-email"`
-	Username         string     `jsonapi:"attr,username"`
-	V2Only           bool       `jsonapi:"attr,v2-only"`
+	ID               string           `jsonapi:"primary,users"`
+	AvatarURL        string           `jsonapi:"attr,avatar-url"`
+	Email            string           `jsonapi:"attr,email"`
+	IsServiceAccount bool             `jsonapi:"attr,is-service-account"`
+	TwoFactor        *TwoFactor       `jsonapi:"attr,two-factor"`
+	UnconfirmedEmail string           `jsonapi:"attr,unconfirmed-email"`
+	Username         string           `jsonapi:"attr,username"`
+	V2Only           bool             `jsonapi:"attr,v2-only"`
+	IsSiteAdmin      bool             `jsonapi:"attr,is-site-admin"`
+	IsSsoLogin       bool             `jsonapi:"attr,is-sso-login"`
+	Permissions      *UserPermissions `jsonapi:"attr,permissions"`
 
 	// Relations
 	// AuthenticationTokens *AuthenticationTokens `jsonapi:"relation,authentication-tokens"`
+}
+
+// UserPermissions represents the user permissions.
+type UserPermissions struct {
+	CanCreateOrganizations bool `jsonapi:"attr,can-create-organizations"`
+	CanChangeEmail         bool `jsonapi:"attr,can-change-email"`
+	CanChangeUsername      bool `jsonapi:"attr,can-change-username"`
+	CanManageUserTokens    bool `jsonapi:"attr,can-manage-user-tokens"`
+	CanView2FaSettings     bool `jsonapi:"attr,can-view2fa-settings"`
+	CanManageHcpAccount    bool `jsonapi:"attr,can-manage-hcp-account"`
 }
 
 // TwoFactor represents the organization permissions.
