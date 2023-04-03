@@ -217,6 +217,38 @@ func TestWorkspacesList(t *testing.T) {
 		assert.NotEmpty(t, wTest.ID)
 		assert.Equal(t, 0, wl.TotalCount)
 	})
+
+	t.Run("when using project id filter and project contains workspaces", func(t *testing.T) {
+		// create a project in the orgTest
+		p, pTestCleanup := createProject(t, client, orgTest)
+		defer pTestCleanup()
+		// create a workspace with project
+		w, wTestCleanup := createWorkspaceWithOptions(t, client, orgTest, WorkspaceCreateOptions{
+			Name:    String(randomString(t)),
+			Project: p,
+		})
+		defer wTestCleanup()
+
+		// List all the workspaces under the given ProjectID
+		wl, err := client.Workspaces.List(ctx, orgTest.Name, &WorkspaceListOptions{
+			ProjectID: p.ID,
+		})
+		require.NoError(t, err)
+		assert.Contains(t, wl.Items, w)
+	})
+
+	t.Run("when using project id filter but project contains no workspaces", func(t *testing.T) {
+		// create a project in the orgTest
+		p, pTestCleanup := createProject(t, client, orgTest)
+		defer pTestCleanup()
+
+		// List all the workspaces under the given ProjectID
+		wl, err := client.Workspaces.List(ctx, orgTest.Name, &WorkspaceListOptions{
+			ProjectID: p.ID,
+		})
+		require.NoError(t, err)
+		assert.Empty(t, wl.Items)
+	})
 }
 
 func TestWorkspacesCreateTableDriven(t *testing.T) {
