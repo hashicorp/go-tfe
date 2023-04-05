@@ -6,6 +6,7 @@ package tfe
 import (
 	"context"
 	"testing"
+	"time"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
@@ -20,27 +21,37 @@ func TestTeamTokensCreate(t *testing.T) {
 
 	var tmToken string
 	t.Run("with valid options", func(t *testing.T) {
-		tt, err := client.TeamTokens.Create(ctx, tmTest.ID)
+		tt, err := client.TeamTokens.Create(ctx, tmTest.ID, TeamTokenCreateOptions{})
 		require.NoError(t, err)
 		require.NotEmpty(t, tt.Token)
 		tmToken = tt.Token
 	})
 
 	t.Run("when a token already exists", func(t *testing.T) {
-		tt, err := client.TeamTokens.Create(ctx, tmTest.ID)
+		tt, err := client.TeamTokens.Create(ctx, tmTest.ID, TeamTokenCreateOptions{})
 		require.NoError(t, err)
 		require.NotEmpty(t, tt.Token)
 		assert.NotEqual(t, tmToken, tt.Token)
 	})
 
 	t.Run("without valid team ID", func(t *testing.T) {
-		tt, err := client.TeamTokens.Create(ctx, badIdentifier)
+		tt, err := client.TeamTokens.Create(ctx, badIdentifier, TeamTokenCreateOptions{})
 		assert.Nil(t, tt)
 		assert.Equal(t, err, ErrInvalidTeamID)
 	})
 
 	t.Run("without an expiration date", func(t *testing.T) {
-		tt, err := client.TeamTokens.Create(ctx, tmTest.ID)
+		tt, err := client.TeamTokens.Create(ctx, tmTest.ID, TeamTokenCreateOptions{})
+		require.NoError(t, err)
+		require.NotEmpty(t, tt.Token)
+		tmToken = tt.Token
+	})
+
+	t.Run("with an expiration date", func(t *testing.T) {
+		start := time.Date(2024, 01, 15, 22, 03, 04, 0, time.UTC)
+		tt, err := client.TeamTokens.Create(ctx, tmTest.ID, TeamTokenCreateOptions{
+			ExpiredAt: &start,
+		})
 		require.NoError(t, err)
 		require.NotEmpty(t, tt.Token)
 		tmToken = tt.Token

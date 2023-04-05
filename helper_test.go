@@ -902,7 +902,7 @@ func createOrganizationToken(t *testing.T, client *Client, org *Organization) (*
 	}
 
 	ctx := context.Background()
-	tk, err := client.OrganizationTokens.Create(ctx, org.Name)
+	tk, err := client.OrganizationTokens.Create(ctx, org.Name, OrganizationTokenCreateOptions{})
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -1735,7 +1735,7 @@ func createTeamToken(t *testing.T, client *Client, tm *Team) (*TeamToken, func()
 	}
 
 	ctx := context.Background()
-	tt, err := client.TeamTokens.Create(ctx, tm.ID)
+	tt, err := client.TeamTokens.Create(ctx, tm.ID, TeamTokenCreateOptions{})
 	if err != nil {
 		t.Fatal(err)
 	}

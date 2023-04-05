@@ -20,7 +20,7 @@ var _ OrganizationTokens = (*organizationTokens)(nil)
 // https://developer.hashicorp.com/terraform/cloud-docs/api-docs/organization-tokens
 type OrganizationTokens interface {
 	// Create a new organization token, replacing any existing token.
-	Create(ctx context.Context, organization string) (*OrganizationToken, error)
+	Create(ctx context.Context, organization string, options OrganizationTokenCreateOptions) (*OrganizationToken, error)
 
 	// Read an organization token.
 	Read(ctx context.Context, organization string) (*OrganizationToken, error)
@@ -44,8 +44,14 @@ type OrganizationToken struct {
 	ExpiredAt   time.Time `jsonapi:"attr,expired-at,iso8601"`
 }
 
+// OrganizationTokenCreateOptions contains the options for creating an organization token.
+type OrganizationTokenCreateOptions struct {
+	// Optional: The token's expiration date
+	ExpiredAt *time.Time `jsonapi:"attr,expired-at,iso8601,omitempty"`
+}
+
 // Create a new organization token, replacing any existing token.
-func (s *organizationTokens) Create(ctx context.Context, organization string) (*OrganizationToken, error) {
+func (s *organizationTokens) Create(ctx context.Context, organization string, options OrganizationTokenCreateOptions) (*OrganizationToken, error) {
 	if !validStringID(&organization) {
 		return nil, ErrInvalidOrg
 	}

@@ -6,6 +6,7 @@ package tfe
 import (
 	"context"
 	"testing"
+	"time"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
@@ -20,27 +21,37 @@ func TestOrganizationTokensCreate(t *testing.T) {
 
 	var tkToken string
 	t.Run("with valid options", func(t *testing.T) {
-		ot, err := client.OrganizationTokens.Create(ctx, orgTest.Name)
+		ot, err := client.OrganizationTokens.Create(ctx, orgTest.Name, OrganizationTokenCreateOptions{})
 		require.NoError(t, err)
 		require.NotEmpty(t, ot.Token)
 		tkToken = ot.Token
 	})
 
 	t.Run("when a token already exists", func(t *testing.T) {
-		ot, err := client.OrganizationTokens.Create(ctx, orgTest.Name)
+		ot, err := client.OrganizationTokens.Create(ctx, orgTest.Name, OrganizationTokenCreateOptions{})
 		require.NoError(t, err)
 		require.NotEmpty(t, ot.Token)
 		assert.NotEqual(t, tkToken, ot.Token)
 	})
 
 	t.Run("without valid organization", func(t *testing.T) {
-		ot, err := client.OrganizationTokens.Create(ctx, badIdentifier)
+		ot, err := client.OrganizationTokens.Create(ctx, badIdentifier, OrganizationTokenCreateOptions{})
 		assert.Nil(t, ot)
 		assert.EqualError(t, err, ErrInvalidOrg.Error())
 	})
 
 	t.Run("without an expiration date", func(t *testing.T) {
-		ot, err := client.OrganizationTokens.Create(ctx, orgTest.Name)
+		ot, err := client.OrganizationTokens.Create(ctx, orgTest.Name, OrganizationTokenCreateOptions{})
+		require.NoError(t, err)
+		require.NotEmpty(t, ot.Token)
+		tkToken = ot.Token
+	})
+
+	t.Run("with an expiration date", func(t *testing.T) {
+		start := time.Date(2024, 01, 15, 22, 03, 04, 0, time.UTC)
+		ot, err := client.OrganizationTokens.Create(ctx, orgTest.Name, OrganizationTokenCreateOptions{
+			ExpiredAt: &start,
+		})
 		require.NoError(t, err)
 		require.NotEmpty(t, ot.Token)
 		tkToken = ot.Token

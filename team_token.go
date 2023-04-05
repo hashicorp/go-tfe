@@ -20,7 +20,7 @@ var _ TeamTokens = (*teamTokens)(nil)
 // https://developer.hashicorp.com/terraform/cloud-docs/api-docs/team-tokens
 type TeamTokens interface {
 	// Create a new team token, replacing any existing token.
-	Create(ctx context.Context, teamID string) (*TeamToken, error)
+	Create(ctx context.Context, teamID string, options TeamTokenCreateOptions) (*TeamToken, error)
 
 	// Read a team token by its ID.
 	Read(ctx context.Context, teamID string) (*TeamToken, error)
@@ -44,8 +44,14 @@ type TeamToken struct {
 	ExpiredAt   time.Time `jsonapi:"attr,expired-at,iso8601"`
 }
 
+// TeamTokenCreateOptions contains the options for creating a team token.
+type TeamTokenCreateOptions struct {
+	// Optional: The token's expiration date
+	ExpiredAt *time.Time `jsonapi:"attr,expired-at,iso8601,omitempty"`
+}
+
 // Create a new team token, replacing any existing token.
-func (s *teamTokens) Create(ctx context.Context, teamID string) (*TeamToken, error) {
+func (s *teamTokens) Create(ctx context.Context, teamID string, options TeamTokenCreateOptions) (*TeamToken, error) {
 	if !validStringID(&teamID) {
 		return nil, ErrInvalidTeamID
 	}
