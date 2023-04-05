@@ -25,6 +25,10 @@ func TestUsersReadCurrent(t *testing.T) {
 	t.Run("two factor options are decoded", func(t *testing.T) {
 		assert.NotNil(t, u.TwoFactor)
 	})
+
+	t.Run("permissions are decoded", func(t *testing.T) {
+		assert.NotNil(t, u.Permissions)
+	})
 }
 
 func TestUsersUpdate(t *testing.T) {
