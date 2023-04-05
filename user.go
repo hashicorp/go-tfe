@@ -18,7 +18,7 @@ type Users interface {
 	// ReadCurrent reads the details of the currently authenticated user.
 	ReadCurrent(ctx context.Context) (*User, error)
 
-	// UpdateCurrent Update attributes of the currently authenticated user.
+	// UpdateCurrent updates attributes of the currently authenticated user.
 	UpdateCurrent(ctx context.Context, options UserUpdateOptions) (*User, error)
 }
 
