@@ -39,10 +39,9 @@ type registryNoCodeModules struct {
 
 // RegistryNoCodeModule represents a registry no-code module
 type RegistryNoCodeModule struct {
-	ID                  string `jsonapi:"primary,no-code-modules"`
-	Enabled             bool   `jsonapi:"attr,enabled"`
-	FollowLatestVersion bool   `jsonapi:"attr,follow-latest-version"`
-	VersionPin          string `jsonapi:"attr,version-pin,omitempty"`
+	ID         string `jsonapi:"primary,no-code-modules"`
+	VersionPin string `jsonapi:"attr,version-pin,omitempty"`
+	Enabled    bool   `jsonapi:"attr,enabled,omitempty"`
 
 	// Relations
 	Organization    *Organization           `jsonapi:"relation,organization"`
@@ -75,17 +74,11 @@ type RegistryNoCodeModuleCreateOptions struct {
 	// https://jsonapi.org/format/#crud-creating
 	Type string `jsonapi:"primary,no-code-modules"`
 
-	// Required: whether the no-code module should follow the latest registry module version
-	FollowLatestVersion *bool `jsonapi:"attr,follow-latest-version"`
-
-	// Required: whether no-code is enabled for the registry module
-	Enabled *bool `jsonapi:"attr,enabled"`
-
 	// Required: the registry module to use for the no-code module (only the ID is used)
 	RegistryModule *RegistryModule `jsonapi:"relation,registry-module"`
 
-	// Optional: the registry module version pin for the no-code module
-	VersionPin *string `jsonapi:"attr,version-pin,omitempty"`
+	// Optional: the version pin for the module. valid values are "latest" or a semver string
+	VersionPin string `jsonapi:"attr,version-pin,omitempty"`
 
 	// Optional: the variable options for the registry module
 	VariableOptions []*NoCodeVariableOption `jsonapi:"relation,variable-options,omitempty"`
@@ -122,14 +115,11 @@ type RegistryNoCodeModuleUpdateOptions struct {
 	// Required: the registry module to use for the no-code module (only the ID is used)
 	RegistryModule *RegistryModule `jsonapi:"relation,registry-module"`
 
-	// Optional: indicates whether the module should follow the latest version
-	FollowLatestVersion *bool `jsonapi:"attr,follow-latest-version,omitempty"`
+	// Optional: the version pin for the module. valid values are "latest" or a semver string
+	VersionPin string `jsonapi:"attr,version-pin,omitempty"`
 
-	// Optional: indicates whether no-code is enabled for the module
+	// Optional: whether no-code is enabled for the module
 	Enabled *bool `jsonapi:"attr,enabled,omitempty"`
-
-	// Optional: is the version pin for the module
-	VersionPin *string `jsonapi:"attr,version-pin,omitempty"`
 
 	// Optional: are the variable options for the module
 	VariableOptions []*NoCodeVariableOption `jsonapi:"relation,variable-options,omitempty"`
@@ -228,21 +218,10 @@ func (r *registryNoCodeModules) Delete(ctx context.Context, noCodeModuleID strin
 }
 
 func (o RegistryNoCodeModuleCreateOptions) valid() error {
-	if o.RegistryModule == nil {
+	if o.RegistryModule == nil || o.RegistryModule.ID == "" {
 		return ErrRequiredRegistryModule
 	}
 
-	if o.FollowLatestVersion == nil && o.VersionPin == nil {
-		return fmt.Errorf("one of follow_latest_version or version_pin is required")
-	}
-
-	if o.FollowLatestVersion != nil && o.VersionPin != nil {
-		return fmt.Errorf("only one of follow_latest_version or version_pin is allowed")
-	}
-
-	if o.Enabled == nil {
-		return fmt.Errorf("enabled field is required")
-	}
 	return nil
 }
 
