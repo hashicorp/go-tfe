@@ -54,6 +54,7 @@ func TestOrganizationTokensCreate(t *testing.T) {
 		})
 		require.NoError(t, err)
 		require.NotEmpty(t, ot.Token)
+		assert.Equal(t, ot.ExpiredAt, &start)
 		tkToken = ot.Token
 	})
 }

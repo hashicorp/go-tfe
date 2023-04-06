@@ -57,7 +57,7 @@ func (s *teamTokens) Create(ctx context.Context, teamID string, options TeamToke
 	}
 
 	u := fmt.Sprintf("teams/%s/authentication-token", url.QueryEscape(teamID))
-	req, err := s.client.NewRequest("POST", u, nil)
+	req, err := s.client.NewRequest("POST", u, &options)
 	if err != nil {
 		return nil, err
 	}

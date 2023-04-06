@@ -57,7 +57,7 @@ func (s *organizationTokens) Create(ctx context.Context, organization string, op
 	}
 
 	u := fmt.Sprintf("organizations/%s/authentication-token", url.QueryEscape(organization))
-	req, err := s.client.NewRequest("POST", u, nil)
+	req, err := s.client.NewRequest("POST", u, &options)
 	if err != nil {
 		return nil, err
 	}

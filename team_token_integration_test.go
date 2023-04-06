@@ -54,6 +54,7 @@ func TestTeamTokensCreate(t *testing.T) {
 		})
 		require.NoError(t, err)
 		require.NotEmpty(t, tt.Token)
+		assert.Equal(t, tt.ExpiredAt, &start)
 		tmToken = tt.Token
 	})
 }
