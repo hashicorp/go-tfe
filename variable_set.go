@@ -117,7 +117,7 @@ type VariableSetCreateOptions struct {
 
 // VariableSetReadOptions represents the options for reading variable sets.
 type VariableSetReadOptions struct {
-	Include *[]VariableSetIncludeOpt `url:"include:omitempty"`
+	Include *[]VariableSetIncludeOpt `url:"include,omitempty"`
 }
 
 // VariableSetUpdateOptions represents the options for updating a variable set.
