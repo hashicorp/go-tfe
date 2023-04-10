@@ -1,8 +1,14 @@
-# Unreleased
+# v1.21.0
 
-## Enhancements
+## Features
 * Add beta endpoints `ApplyToProjects`  and `RemoveFromProjects` to `VariableSets`.  Applying a variable set to a project will apply that variable set to all current and future workspaces in that project.
 * Add beta endpoint `ListForProject` to `VariableSets` to list all variable sets applied to a project.
+* Add endpoint `RunEvents` which lists events for a specific run by @glennsarti [#680](https://github.com/hashicorp/go-tfe/pull/680)
+
+## Bug Fixes
+* VariableSets.Read did not honor the Include values due to a syntax error in the struct tag of VariableSetReadOptions by @sgap [#678](https://github.com/hashicorp/go-tfe/pull/678)
+
+## Enhancements
 * Adds `ProjectID` filter to allow filtering of workspaces of a given project in an organization by @hs26gill [#671](https://github.com/hashicorp/go-tfe/pull/671)
 * Adds `Name` filter to allow filtering of projects by @hs26gill [#668](https://github.com/hashicorp/go-tfe/pull/668/files)
 * Adds `ManageMembership` permission to team `OrganizationAccess` by @JarrettSpiker [#652](https://github.com/hashicorp/go-tfe/pull/652)
@@ -14,8 +20,6 @@
 
 ## Enhancements
 * Update team project access to include additional project roles by @joekarl [#642](https://github.com/hashicorp/go-tfe/pull/642)
-
-## Bug Fixes
 
 # v1.19.0
 
