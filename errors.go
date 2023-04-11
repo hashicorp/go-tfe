@@ -85,6 +85,8 @@ var (
 
 	ErrInvalidRunID = errors.New("invalid value for run ID")
 
+	ErrInvalidRunEventID = errors.New("invalid value for run event ID")
+
 	ErrInvalidProjectID = errors.New("invalid value for project ID")
 
 	ErrInvalidPagination = errors.New("invalid value for page size or number")

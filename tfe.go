@@ -153,6 +153,7 @@ type Client struct {
 	RegistryProviderPlatforms  RegistryProviderPlatforms
 	RegistryProviderVersions   RegistryProviderVersions
 	Runs                       Runs
+	RunEvents                  RunEvents
 	RunTasks                   RunTasks
 	RunTriggers                RunTriggers
 	SSHKeys                    SSHKeys
@@ -404,6 +405,7 @@ func NewClient(cfg *Config) (*Client, error) {
 	client.RegistryProviders = &registryProviders{client: client}
 	client.RegistryProviderVersions = &registryProviderVersions{client: client}
 	client.Runs = &runs{client: client}
+	client.RunEvents = &runEvents{client: client}
 	client.RunTasks = &runTasks{client: client}
 	client.RunTriggers = &runTriggers{client: client}
 	client.SSHKeys = &sshKeys{client: client}
