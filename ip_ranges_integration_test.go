@@ -13,6 +13,7 @@ import (
 )
 
 func TestIPRangesRead(t *testing.T) {
+	skipUnlessAfterDate(t, time.Date(2023, 5, 1, 0, 0, 0, 0, time.Local))
 	skipIfEnterprise(t)
 
 	client := testClient(t)

@@ -6,12 +6,15 @@ package tfe
 import (
 	"context"
 	"testing"
+	"time"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
 
 func TestGPGKeyList(t *testing.T) {
+	skipUnlessAfterDate(t, time.Date(2023, 5, 1, 0, 0, 0, 0, time.Local))
+
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -97,6 +100,8 @@ func TestGPGKeyList(t *testing.T) {
 }
 
 func TestGPGKeyCreate(t *testing.T) {
+	skipUnlessAfterDate(t, time.Date(2023, 5, 1, 0, 0, 0, 0, time.Local))
+
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -156,6 +161,8 @@ func TestGPGKeyCreate(t *testing.T) {
 }
 
 func TestGPGKeyRead(t *testing.T) {
+	skipUnlessAfterDate(t, time.Date(2023, 5, 1, 0, 0, 0, 0, time.Local))
+
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -195,6 +202,8 @@ func TestGPGKeyRead(t *testing.T) {
 }
 
 func TestGPGKeyUpdate(t *testing.T) {
+	skipUnlessAfterDate(t, time.Date(2023, 5, 1, 0, 0, 0, 0, time.Local))
+
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -258,6 +267,8 @@ func TestGPGKeyUpdate(t *testing.T) {
 }
 
 func TestGPGKeyDelete(t *testing.T) {
+	skipUnlessAfterDate(t, time.Date(2023, 5, 1, 0, 0, 0, 0, time.Local))
+
 	client := testClient(t)
 	ctx := context.Background()
 

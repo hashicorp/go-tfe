@@ -2371,6 +2371,18 @@ func skipUnlessLinuxAMD64(t *testing.T) {
 	}
 }
 
+// Temporarily skip a test that may be experiencing API errors. This method
+// purposefully errors after the set date to remind contributors to remove this check
+// and verify that the API errors are no longer occurring.
+func skipUnlessAfterDate(t *testing.T, d time.Time) {
+	today := time.Now()
+	if today.After(d) {
+		t.Fatalf("This test was temporarily skipped and has now expired. Remove this check to run this test.")
+	} else {
+		t.Skipf("Temporarily skipping test due to external issues: %s", t.Name())
+	}
+}
+
 func linuxAmd64() bool {
 	return runtime.GOOS == "linux" && runtime.GOARCH == "amd64"
 }
