@@ -77,24 +77,12 @@ func TestRegistryNoCodeModulesCreate(t *testing.T) {
 			assert.Equal(t, orgTest.Name, noCodeModule.Organization.Name)
 			assert.Equal(t, registryModuleTest.ID, noCodeModule.RegistryModule.ID)
 		})
-		t.Run("with version pin set to latest", func(t *testing.T) {
-			t.Skip("This test is failing because the version pin is not being set to latest. This is a bug that needs to be fixed in the API.")
-			registryModuleTest, _ := createRegistryModule(t, client, orgTest, PrivateRegistry)
-
-			options := RegistryModuleCreateVersionOptions{
-				Version: String("1.2.3"),
-			}
-			rmv, err := client.RegistryModules.CreateVersion(ctx, RegistryModuleID{
-				Organization: orgTest.Name,
-				Name:         registryModuleTest.Name,
-				Provider:     registryModuleTest.Provider,
-			}, options)
-			require.NoError(t, err)
-			require.NotEmpty(t, rmv.Version)
+		t.Run("with enabled set to false", func(t *testing.T) {
+			registryModuleTest, _ := createRegistryModuleWithVersion(t, client, orgTest)
 
 			ncOptions := RegistryNoCodeModuleCreateOptions{
-				VersionPin:     "latest",
 				RegistryModule: registryModuleTest,
+				Enabled:        Bool(false),
 			}
 
 			noCodeModule, err := client.RegistryNoCodeModules.Create(ctx, orgTest.Name, ncOptions)
@@ -102,7 +90,7 @@ func TestRegistryNoCodeModulesCreate(t *testing.T) {
 			assert.NotEmpty(t, noCodeModule.ID)
 			require.NotEmpty(t, noCodeModule.Organization)
 			require.NotEmpty(t, noCodeModule.RegistryModule)
-			assert.True(t, noCodeModule.Enabled)
+			assert.False(t, noCodeModule.Enabled)
 			assert.Equal(t, ncOptions.VersionPin, noCodeModule.VersionPin)
 			assert.Equal(t, orgTest.Name, noCodeModule.Organization.Name)
 			assert.Equal(t, registryModuleTest.ID, noCodeModule.RegistryModule.ID)

@@ -77,6 +77,9 @@ type RegistryNoCodeModuleCreateOptions struct {
 	// Required: the registry module to use for the no-code module (only the ID is used)
 	RegistryModule *RegistryModule `jsonapi:"relation,registry-module"`
 
+	// Optional: whether no-code is enabled for the module
+	Enabled *bool `jsonapi:"attr,enabled,omitempty"`
+
 	// Optional: the version pin for the module. valid values are "latest" or a semver string
 	VersionPin string `jsonapi:"attr,version-pin,omitempty"`
 
