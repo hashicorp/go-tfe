@@ -150,6 +150,7 @@ This API client covers most of the existing Terraform Cloud API calls and is upd
 	- [x] GPG Keys
 - [x] Projects
 - [x] Runs
+- [x] Run Events
 - [x] Run Tasks
 - [ ] Run Tasks Integration
 - [x] Run Triggers
