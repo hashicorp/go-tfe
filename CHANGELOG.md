@@ -6,7 +6,7 @@
 * Add endpoint `RunEvents` which lists events for a specific run by @glennsarti [#680](https://github.com/hashicorp/go-tfe/pull/680)
 
 ## Bug Fixes
-* VariableSets.Read did not honor the Include values due to a syntax error in the struct tag of VariableSetReadOptions by @sgap [#678](https://github.com/hashicorp/go-tfe/pull/678)
+* `VariableSets.Read` did not honor the Include values due to a syntax error in the struct tag of `VariableSetReadOptions` by @sgap [#678](https://github.com/hashicorp/go-tfe/pull/678)
 
 ## Enhancements
 * Adds `ProjectID` filter to allow filtering of workspaces of a given project in an organization by @hs26gill [#671](https://github.com/hashicorp/go-tfe/pull/671)
