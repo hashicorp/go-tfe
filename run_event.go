@@ -66,7 +66,7 @@ type RunEventListOptions struct {
 	Include []RunEventIncludeOpt `url:"include,omitempty"`
 }
 
-// RunReadOptions represents the options for reading a run.
+// RunEventReadOptions represents the options for reading a run event.
 type RunEventReadOptions struct {
 	// Optional: A list of relations to include. See available resources:
 	Include []RunEventIncludeOpt `url:"include,omitempty"`
