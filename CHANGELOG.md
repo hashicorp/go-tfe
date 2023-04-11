@@ -1,15 +1,14 @@
 # Unreleased
 
-FEATURES:
-* Add beta endpoints `ApplyToProjects`  and `RemoveFromProjects` to `VariableSets`.  Applying a variable set to a project will apply that variable set to all current and future workspaces in that project. 
-* Add beta endpoint `ListForProject` to `VariableSets` to list all variable sets applied to a project.
-
 ## Enhancements
+* Add beta endpoints `ApplyToProjects`  and `RemoveFromProjects` to `VariableSets`.  Applying a variable set to a project will apply that variable set to all current and future workspaces in that project.
+* Add beta endpoint `ListForProject` to `VariableSets` to list all variable sets applied to a project.
 * Adds `ProjectID` filter to allow filtering of workspaces of a given project in an organization by @hs26gill [#671](https://github.com/hashicorp/go-tfe/pull/671)
 * Adds `Name` filter to allow filtering of projects by @hs26gill [#668](https://github.com/hashicorp/go-tfe/pull/668/files)
 * Adds `ManageMembership` permission to team `OrganizationAccess` by @JarrettSpiker [#652](https://github.com/hashicorp/go-tfe/pull/652)
 * Adds `RotateKey` and `TrimKey` Admin endpoints by @mpminardi [#666](https://github.com/hashicorp/go-tfe/pull/666)
 * Adds `Permissions` to `User` by @jeevanragula [#674](https://github.com/hashicorp/go-tfe/pull/674)
+* Adds `IsEnterprise` and `IsCloud` boolean methods to the client by @sebasslash [#675](https://github.com/hashicorp/go-tfe/pull/675)
 
 # v1.20.0
 
