@@ -40,7 +40,7 @@ type RunEventList struct {
 	Items []*RunEvent
 }
 
-// Run represents a Terraform Enterprise run.
+// RunEvent represents a Terraform Enterprise run event.
 type RunEvent struct {
 	ID          string    `jsonapi:"primary,run-events"`
 	Action      string    `jsonapi:"attr,action"`
@@ -60,7 +60,7 @@ const (
 	RunEventActor   RunEventIncludeOpt = "actor"
 )
 
-// RunListOptions represents the options for listing runs.
+// RunEventListOptions represents the options for listing run events.
 type RunEventListOptions struct {
 	// Optional: A list of relations to include. See available resources:
 	Include []RunEventIncludeOpt `url:"include,omitempty"`
@@ -72,7 +72,7 @@ type RunEventReadOptions struct {
 	Include []RunEventIncludeOpt `url:"include,omitempty"`
 }
 
-// List all the runs of the given workspace.
+// List all the run events of the given run.
 func (s *runEvents) List(ctx context.Context, runID string, options *RunEventListOptions) (*RunEventList, error) {
 	if !validStringID(&runID) {
 		return nil, ErrInvalidRunID
@@ -102,7 +102,7 @@ func (s *runEvents) Read(ctx context.Context, runEventID string) (*RunEvent, err
 	return s.ReadWithOptions(ctx, runEventID, nil)
 }
 
-// Read a run by its ID with the given options.
+// ReadWithOptions reads a run by its ID with the given options.
 func (s *runEvents) ReadWithOptions(ctx context.Context, runEventID string, options *RunEventReadOptions) (*RunEvent, error) {
 	if !validStringID(&runEventID) {
 		return nil, ErrInvalidRunEventID
