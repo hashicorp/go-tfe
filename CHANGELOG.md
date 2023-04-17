@@ -1,7 +1,7 @@
 # v1.22.0
 
 ## Beta API Changes
-* The beta `no_code` field in `RegistryModuleCreateOptions` has been changed from `bool` to `\*bool` and will be removed in a future version because a new, preferred method for managing no-code registry modules has been added in this release.
+* The beta `no_code` field in `RegistryModuleCreateOptions` has been changed from `bool` to `*bool` and will be removed in a future version because a new, preferred method for managing no-code registry modules has been added in this release.
 
 ## Features
 * Add beta endpoints `Create`, `Read`, `Update`, and `Delete` to manage no-code provisioning for a `RegistryModule`. This allows users to enable no-code provisioning for a registry module, and to configure the provisioning settings for that module version. This also allows users to disable no-code provisioning for a module version. @dsa0x [#669](https://github.com/hashicorp/go-tfe/pull/669)
