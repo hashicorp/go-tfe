@@ -40,8 +40,8 @@ type registryNoCodeModules struct {
 // RegistryNoCodeModule represents a registry no-code module
 type RegistryNoCodeModule struct {
 	ID         string `jsonapi:"primary,no-code-modules"`
-	VersionPin string `jsonapi:"attr,version-pin,omitempty"`
-	Enabled    bool   `jsonapi:"attr,enabled,omitempty"`
+	VersionPin string `jsonapi:"attr,version-pin"`
+	Enabled    bool   `jsonapi:"attr,enabled"`
 
 	// Relations
 	Organization    *Organization           `jsonapi:"relation,organization"`
