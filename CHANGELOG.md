@@ -4,6 +4,12 @@
 * `ApplyToProjects` and `RemoveFromProjects` to `VariableSets` endpoints now generally available.
 * `ListForProject` to `VariableSets` endpoints now generally available.
 
+## Enhancements
+* Adds `OrganizationScoped` and `AllowedWorkspaces` fields for creating workspace scoped agent pools and adds `AllowedWorkspacesName` for filtering agents pools associated with a given workspace by @hs26gill [#682](https://github.com/hashicorp/go-tfe/pull/682/files)
+
+## Bug Fixes
+
+
 # v1.22.0
 
 ## Beta API Changes
