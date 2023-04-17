@@ -195,6 +195,8 @@ var (
 
 	ErrInvalidAgentID = errors.New("invalid value for Agent ID")
 
+	ErrInvalidModuleID = errors.New("invalid value for module ID")
+
 	ErrInvalidRegistryName = errors.New(`invalid value for registry-name. It must be either "private" or "public"`)
 )
 
@@ -330,6 +332,8 @@ var (
 	ErrInvalidAsciiArmor = errors.New("ASCII Armor is invalid")
 
 	ErrRequiredNamespace = errors.New("namespace is required for public registry")
+
+	ErrRequiredRegistryModule = errors.New("registry module is required")
 
 	ErrTerraformVersionValidForPlanOnly = errors.New("setting terraform-version is only valid when plan-only is set to true")
 )
