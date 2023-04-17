@@ -288,8 +288,7 @@ func (r *registryModules) Create(ctx context.Context, organization string, optio
 	}
 
 	if options.NoCode != nil {
-		// TODO: update the deprecation message with the version that will remove this.
-		log.Println("[WARN] Support for using the NoCode field is deprecated as of release 1.21.0 and may be removed in a future version. The preferred way to create a no-code module is with the registryNoCodeModules.Create method.")
+		log.Println("[WARN] Support for using the NoCode field is deprecated as of release 1.22.0 and may be removed in a future version. The preferred way to create a no-code module is with the registryNoCodeModules.Create method.")
 	}
 
 	u := fmt.Sprintf(
@@ -326,8 +325,7 @@ func (r *registryModules) Update(ctx context.Context, moduleID RegistryModuleID,
 	}
 
 	if options.NoCode != nil {
-		// TODO: update the deprecation message with the version that will remove this.
-		log.Println("[WARN] Support for using the NoCode field is deprecated as of release 1.21.0 and may be removed in a future version. The preferred way to update a no-code module is with the registryNoCodeModules.Update method.")
+		log.Println("[WARN] Support for using the NoCode field is deprecated as of release 1.22.0 and may be removed in a future version. The preferred way to update a no-code module is with the registryNoCodeModules.Update method.")
 	}
 
 	org := url.QueryEscape(moduleID.Organization)

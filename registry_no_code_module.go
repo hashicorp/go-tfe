@@ -12,7 +12,7 @@ var _ RegistryNoCodeModules = (*registryNoCodeModules)(nil)
 // RegistryNoCodeModules describes all the registry no-code module related methods that the Terraform
 // Enterprise API supports.
 //
-// TFE API docs: https://www.terraform.io/docs/cloud/api/modules.html (TODO: update this link)
+// TFE API docs: (TODO: Add link to API docs)
 type RegistryNoCodeModules interface {
 
 	// Create a registry no-code module
