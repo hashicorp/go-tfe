@@ -20,7 +20,10 @@ var _ OrganizationTokens = (*organizationTokens)(nil)
 // https://developer.hashicorp.com/terraform/cloud-docs/api-docs/organization-tokens
 type OrganizationTokens interface {
 	// Create a new organization token, replacing any existing token.
-	Create(ctx context.Context, organization string, options OrganizationTokenCreateOptions) (*OrganizationToken, error)
+	Create(ctx context.Context, organization string) (*OrganizationToken, error)
+
+	// CreateWithOptions a new organization token with options, replacing any existing token.
+	CreateWithOptions(ctx context.Context, organization string, options OrganizationTokenCreateOptions) (*OrganizationToken, error)
 
 	// Read an organization token.
 	Read(ctx context.Context, organization string) (*OrganizationToken, error)
@@ -51,7 +54,28 @@ type OrganizationTokenCreateOptions struct {
 }
 
 // Create a new organization token, replacing any existing token.
-func (s *organizationTokens) Create(ctx context.Context, organization string, options OrganizationTokenCreateOptions) (*OrganizationToken, error) {
+func (s *organizationTokens) Create(ctx context.Context, organization string) (*OrganizationToken, error) {
+	if !validStringID(&organization) {
+		return nil, ErrInvalidOrg
+	}
+
+	u := fmt.Sprintf("organizations/%s/authentication-token", url.QueryEscape(organization))
+	req, err := s.client.NewRequest("POST", u, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	ot := &OrganizationToken{}
+	err = req.Do(ctx, ot)
+	if err != nil {
+		return nil, err
+	}
+
+	return ot, err
+}
+
+// CreateWithOptions a new organization token with options, replacing any existing token.
+func (s *organizationTokens) CreateWithOptions(ctx context.Context, organization string, options OrganizationTokenCreateOptions) (*OrganizationToken, error) {
 	if !validStringID(&organization) {
 		return nil, ErrInvalidOrg
 	}

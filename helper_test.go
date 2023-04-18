@@ -902,7 +902,33 @@ func createOrganizationToken(t *testing.T, client *Client, org *Organization) (*
 	}
 
 	ctx := context.Background()
-	tk, err := client.OrganizationTokens.Create(ctx, org.Name, OrganizationTokenCreateOptions{})
+	tk, err := client.OrganizationTokens.Create(ctx, org.Name)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	return tk, func() {
+		if err := client.OrganizationTokens.Delete(ctx, org.Name); err != nil {
+			t.Errorf("Error destroying organization token! WARNING: Dangling resources\n"+
+				"may exist! The full error is shown below.\n\n"+
+				"OrganizationToken: %s\nError: %s", tk.ID, err)
+		}
+
+		if orgCleanup != nil {
+			orgCleanup()
+		}
+	}
+}
+
+func createOrganizationTokenWithOptions(t *testing.T, client *Client, org *Organization) (*OrganizationToken, func()) {
+	var orgCleanup func()
+
+	if org == nil {
+		org, orgCleanup = createOrganization(t, client)
+	}
+
+	ctx := context.Background()
+	tk, err := client.OrganizationTokens.CreateWithOptions(ctx, org.Name, OrganizationTokenCreateOptions{})
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -1735,7 +1761,33 @@ func createTeamToken(t *testing.T, client *Client, tm *Team) (*TeamToken, func()
 	}
 
 	ctx := context.Background()
-	tt, err := client.TeamTokens.Create(ctx, tm.ID, TeamTokenCreateOptions{})
+	tt, err := client.TeamTokens.Create(ctx, tm.ID)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	return tt, func() {
+		if err := client.TeamTokens.Delete(ctx, tm.ID); err != nil {
+			t.Errorf("Error destroying team token! WARNING: Dangling resources\n"+
+				"may exist! The full error is shown below.\n\n"+
+				"TeamToken: %s\nError: %s", tm.ID, err)
+		}
+
+		if tmCleanup != nil {
+			tmCleanup()
+		}
+	}
+}
+
+func createTeamTokenWithOptions(t *testing.T, client *Client, tm *Team) (*TeamToken, func()) {
+	var tmCleanup func()
+
+	if tm == nil {
+		tm, tmCleanup = createTeam(t, client, nil)
+	}
+
+	ctx := context.Background()
+	tt, err := client.TeamTokens.CreateWithOptions(ctx, tm.ID, TeamTokenCreateOptions{})
 	if err != nil {
 		t.Fatal(err)
 	}

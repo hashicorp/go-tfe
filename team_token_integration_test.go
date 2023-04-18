@@ -21,27 +21,56 @@ func TestTeamTokensCreate(t *testing.T) {
 
 	var tmToken string
 	t.Run("with valid options", func(t *testing.T) {
-		tt, err := client.TeamTokens.Create(ctx, tmTest.ID, TeamTokenCreateOptions{})
+		tt, err := client.TeamTokens.Create(ctx, tmTest.ID)
 		require.NoError(t, err)
 		require.NotEmpty(t, tt.Token)
 		tmToken = tt.Token
 	})
 
 	t.Run("when a token already exists", func(t *testing.T) {
-		tt, err := client.TeamTokens.Create(ctx, tmTest.ID, TeamTokenCreateOptions{})
+		tt, err := client.TeamTokens.Create(ctx, tmTest.ID)
 		require.NoError(t, err)
 		require.NotEmpty(t, tt.Token)
 		assert.NotEqual(t, tmToken, tt.Token)
 	})
 
 	t.Run("without valid team ID", func(t *testing.T) {
-		tt, err := client.TeamTokens.Create(ctx, badIdentifier, TeamTokenCreateOptions{})
+		tt, err := client.TeamTokens.Create(ctx, badIdentifier)
+		assert.Nil(t, tt)
+		assert.Equal(t, err, ErrInvalidTeamID)
+	})
+}
+
+func TestTeamTokens_CreateWithOptions(t *testing.T) {
+	client := testClient(t)
+	ctx := context.Background()
+
+	tmTest, tmTestCleanup := createTeam(t, client, nil)
+	defer tmTestCleanup()
+
+	var tmToken string
+	t.Run("with valid options", func(t *testing.T) {
+		tt, err := client.TeamTokens.CreateWithOptions(ctx, tmTest.ID, TeamTokenCreateOptions{})
+		require.NoError(t, err)
+		require.NotEmpty(t, tt.Token)
+		tmToken = tt.Token
+	})
+
+	t.Run("when a token already exists", func(t *testing.T) {
+		tt, err := client.TeamTokens.CreateWithOptions(ctx, tmTest.ID, TeamTokenCreateOptions{})
+		require.NoError(t, err)
+		require.NotEmpty(t, tt.Token)
+		assert.NotEqual(t, tmToken, tt.Token)
+	})
+
+	t.Run("without valid team ID", func(t *testing.T) {
+		tt, err := client.TeamTokens.CreateWithOptions(ctx, badIdentifier, TeamTokenCreateOptions{})
 		assert.Nil(t, tt)
 		assert.Equal(t, err, ErrInvalidTeamID)
 	})
 
 	t.Run("without an expiration date", func(t *testing.T) {
-		tt, err := client.TeamTokens.Create(ctx, tmTest.ID, TeamTokenCreateOptions{})
+		tt, err := client.TeamTokens.CreateWithOptions(ctx, tmTest.ID, TeamTokenCreateOptions{})
 		require.NoError(t, err)
 		require.NotEmpty(t, tt.Token)
 		tmToken = tt.Token
@@ -49,7 +78,7 @@ func TestTeamTokensCreate(t *testing.T) {
 
 	t.Run("with an expiration date", func(t *testing.T) {
 		start := time.Date(2024, 01, 15, 22, 03, 04, 0, time.UTC)
-		tt, err := client.TeamTokens.Create(ctx, tmTest.ID, TeamTokenCreateOptions{
+		tt, err := client.TeamTokens.CreateWithOptions(ctx, tmTest.ID, TeamTokenCreateOptions{
 			ExpiredAt: &start,
 		})
 		require.NoError(t, err)
@@ -58,6 +87,7 @@ func TestTeamTokensCreate(t *testing.T) {
 		tmToken = tt.Token
 	})
 }
+
 func TestTeamTokensRead(t *testing.T) {
 	client := testClient(t)
 	ctx := context.Background()
@@ -67,6 +97,16 @@ func TestTeamTokensRead(t *testing.T) {
 
 	t.Run("with valid options", func(t *testing.T) {
 		_, ttTestCleanup := createTeamToken(t, client, tmTest)
+
+		tt, err := client.TeamTokens.Read(ctx, tmTest.ID)
+		require.NoError(t, err)
+		assert.NotEmpty(t, tt)
+
+		ttTestCleanup()
+	})
+
+	t.Run("with an expiration date passed as a valid option", func(t *testing.T) {
+		_, ttTestCleanup := createTeamTokenWithOptions(t, client, tmTest)
 
 		tt, err := client.TeamTokens.Read(ctx, tmTest.ID)
 		require.NoError(t, err)

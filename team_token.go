@@ -20,7 +20,10 @@ var _ TeamTokens = (*teamTokens)(nil)
 // https://developer.hashicorp.com/terraform/cloud-docs/api-docs/team-tokens
 type TeamTokens interface {
 	// Create a new team token, replacing any existing token.
-	Create(ctx context.Context, teamID string, options TeamTokenCreateOptions) (*TeamToken, error)
+	Create(ctx context.Context, teamID string) (*TeamToken, error)
+
+	// CreateWithOptions a new team token, with options, replacing any existing token.
+	CreateWithOptions(ctx context.Context, teamID string, options TeamTokenCreateOptions) (*TeamToken, error)
 
 	// Read a team token by its ID.
 	Read(ctx context.Context, teamID string) (*TeamToken, error)
@@ -51,7 +54,28 @@ type TeamTokenCreateOptions struct {
 }
 
 // Create a new team token, replacing any existing token.
-func (s *teamTokens) Create(ctx context.Context, teamID string, options TeamTokenCreateOptions) (*TeamToken, error) {
+func (s *teamTokens) Create(ctx context.Context, teamID string) (*TeamToken, error) {
+	if !validStringID(&teamID) {
+		return nil, ErrInvalidTeamID
+	}
+
+	u := fmt.Sprintf("teams/%s/authentication-token", url.QueryEscape(teamID))
+	req, err := s.client.NewRequest("POST", u, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	tt := &TeamToken{}
+	err = req.Do(ctx, tt)
+	if err != nil {
+		return nil, err
+	}
+
+	return tt, err
+}
+
+// CreateWithOptions a new team token, with options, replacing any existing token.
+func (s *teamTokens) CreateWithOptions(ctx context.Context, teamID string, options TeamTokenCreateOptions) (*TeamToken, error) {
 	if !validStringID(&teamID) {
 		return nil, ErrInvalidTeamID
 	}

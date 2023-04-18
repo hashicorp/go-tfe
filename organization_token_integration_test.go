@@ -21,27 +21,56 @@ func TestOrganizationTokensCreate(t *testing.T) {
 
 	var tkToken string
 	t.Run("with valid options", func(t *testing.T) {
-		ot, err := client.OrganizationTokens.Create(ctx, orgTest.Name, OrganizationTokenCreateOptions{})
+		ot, err := client.OrganizationTokens.Create(ctx, orgTest.Name)
 		require.NoError(t, err)
 		require.NotEmpty(t, ot.Token)
 		tkToken = ot.Token
 	})
 
 	t.Run("when a token already exists", func(t *testing.T) {
-		ot, err := client.OrganizationTokens.Create(ctx, orgTest.Name, OrganizationTokenCreateOptions{})
+		ot, err := client.OrganizationTokens.Create(ctx, orgTest.Name)
 		require.NoError(t, err)
 		require.NotEmpty(t, ot.Token)
 		assert.NotEqual(t, tkToken, ot.Token)
 	})
 
 	t.Run("without valid organization", func(t *testing.T) {
-		ot, err := client.OrganizationTokens.Create(ctx, badIdentifier, OrganizationTokenCreateOptions{})
+		ot, err := client.OrganizationTokens.Create(ctx, badIdentifier)
+		assert.Nil(t, ot)
+		assert.EqualError(t, err, ErrInvalidOrg.Error())
+	})
+}
+
+func TestOrganizationTokens_CreateWithOptions(t *testing.T) {
+	client := testClient(t)
+	ctx := context.Background()
+
+	orgTest, orgTestCleanup := createOrganization(t, client)
+	defer orgTestCleanup()
+
+	var tkToken string
+	t.Run("with valid options", func(t *testing.T) {
+		ot, err := client.OrganizationTokens.CreateWithOptions(ctx, orgTest.Name, OrganizationTokenCreateOptions{})
+		require.NoError(t, err)
+		require.NotEmpty(t, ot.Token)
+		tkToken = ot.Token
+	})
+
+	t.Run("when a token already exists", func(t *testing.T) {
+		ot, err := client.OrganizationTokens.CreateWithOptions(ctx, orgTest.Name, OrganizationTokenCreateOptions{})
+		require.NoError(t, err)
+		require.NotEmpty(t, ot.Token)
+		assert.NotEqual(t, tkToken, ot.Token)
+	})
+
+	t.Run("without valid organization", func(t *testing.T) {
+		ot, err := client.OrganizationTokens.CreateWithOptions(ctx, badIdentifier, OrganizationTokenCreateOptions{})
 		assert.Nil(t, ot)
 		assert.EqualError(t, err, ErrInvalidOrg.Error())
 	})
 
 	t.Run("without an expiration date", func(t *testing.T) {
-		ot, err := client.OrganizationTokens.Create(ctx, orgTest.Name, OrganizationTokenCreateOptions{})
+		ot, err := client.OrganizationTokens.CreateWithOptions(ctx, orgTest.Name, OrganizationTokenCreateOptions{})
 		require.NoError(t, err)
 		require.NotEmpty(t, ot.Token)
 		tkToken = ot.Token
@@ -49,7 +78,7 @@ func TestOrganizationTokensCreate(t *testing.T) {
 
 	t.Run("with an expiration date", func(t *testing.T) {
 		start := time.Date(2024, 01, 15, 22, 03, 04, 0, time.UTC)
-		ot, err := client.OrganizationTokens.Create(ctx, orgTest.Name, OrganizationTokenCreateOptions{
+		ot, err := client.OrganizationTokens.CreateWithOptions(ctx, orgTest.Name, OrganizationTokenCreateOptions{
 			ExpiredAt: &start,
 		})
 		require.NoError(t, err)
@@ -68,6 +97,16 @@ func TestOrganizationTokensRead(t *testing.T) {
 
 	t.Run("with valid options", func(t *testing.T) {
 		_, otTestCleanup := createOrganizationToken(t, client, orgTest)
+
+		ot, err := client.OrganizationTokens.Read(ctx, orgTest.Name)
+		require.NoError(t, err)
+		assert.NotEmpty(t, ot)
+
+		otTestCleanup()
+	})
+
+	t.Run("with an expiration date passed as a valid option", func(t *testing.T) {
+		_, otTestCleanup := createOrganizationTokenWithOptions(t, client, orgTest)
 
 		ot, err := client.OrganizationTokens.Read(ctx, orgTest.Name)
 		require.NoError(t, err)
