@@ -96,7 +96,7 @@ func TestUserTokens_Create(t *testing.T) {
 		if err != nil {
 			t.Fatal(err)
 		}
-		assert.Equal(t, token.ExpiredAt, &start)
+		assert.Equal(t, token.ExpiredAt, start)
 	})
 }
 
