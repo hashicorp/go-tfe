@@ -55,23 +55,7 @@ type OrganizationTokenCreateOptions struct {
 
 // Create a new organization token, replacing any existing token.
 func (s *organizationTokens) Create(ctx context.Context, organization string) (*OrganizationToken, error) {
-	if !validStringID(&organization) {
-		return nil, ErrInvalidOrg
-	}
-
-	u := fmt.Sprintf("organizations/%s/authentication-token", url.QueryEscape(organization))
-	req, err := s.client.NewRequest("POST", u, nil)
-	if err != nil {
-		return nil, err
-	}
-
-	ot := &OrganizationToken{}
-	err = req.Do(ctx, ot)
-	if err != nil {
-		return nil, err
-	}
-
-	return ot, err
+	return s.CreateWithOptions(ctx, organization, OrganizationTokenCreateOptions{})
 }
 
 // CreateWithOptions a new organization token with options, replacing any existing token.

@@ -83,7 +83,7 @@ func TestTeamTokens_CreateWithOptions(t *testing.T) {
 		})
 		require.NoError(t, err)
 		require.NotEmpty(t, tt.Token)
-		assert.Equal(t, tt.ExpiredAt, &start)
+		assert.Equal(t, tt.ExpiredAt, start)
 		tmToken = tt.Token
 	})
 }
@@ -106,11 +106,14 @@ func TestTeamTokensRead(t *testing.T) {
 	})
 
 	t.Run("with an expiration date passed as a valid option", func(t *testing.T) {
-		_, ttTestCleanup := createTeamTokenWithOptions(t, client, tmTest)
+		start := time.Date(2024, 01, 15, 22, 03, 04, 0, time.UTC)
+
+		_, ttTestCleanup := createTeamTokenWithOptions(t, client, tmTest, TeamTokenCreateOptions{ExpiredAt: &start})
 
 		tt, err := client.TeamTokens.Read(ctx, tmTest.ID)
 		require.NoError(t, err)
 		assert.NotEmpty(t, tt)
+		assert.Equal(t, tt.ExpiredAt, start)
 
 		ttTestCleanup()
 	})

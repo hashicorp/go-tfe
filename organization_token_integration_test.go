@@ -83,7 +83,7 @@ func TestOrganizationTokens_CreateWithOptions(t *testing.T) {
 		})
 		require.NoError(t, err)
 		require.NotEmpty(t, ot.Token)
-		assert.Equal(t, ot.ExpiredAt, &start)
+		assert.Equal(t, ot.ExpiredAt, start)
 		tkToken = ot.Token
 	})
 }
@@ -106,11 +106,14 @@ func TestOrganizationTokensRead(t *testing.T) {
 	})
 
 	t.Run("with an expiration date passed as a valid option", func(t *testing.T) {
-		_, otTestCleanup := createOrganizationTokenWithOptions(t, client, orgTest)
+		start := time.Date(2024, 01, 15, 22, 03, 04, 0, time.UTC)
+
+		_, otTestCleanup := createOrganizationTokenWithOptions(t, client, orgTest, OrganizationTokenCreateOptions{ExpiredAt: &start})
 
 		ot, err := client.OrganizationTokens.Read(ctx, orgTest.Name)
 		require.NoError(t, err)
 		assert.NotEmpty(t, ot)
+		assert.Equal(t, ot.ExpiredAt, start)
 
 		otTestCleanup()
 	})

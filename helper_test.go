@@ -920,7 +920,7 @@ func createOrganizationToken(t *testing.T, client *Client, org *Organization) (*
 	}
 }
 
-func createOrganizationTokenWithOptions(t *testing.T, client *Client, org *Organization) (*OrganizationToken, func()) {
+func createOrganizationTokenWithOptions(t *testing.T, client *Client, org *Organization, options OrganizationTokenCreateOptions) (*OrganizationToken, func()) {
 	var orgCleanup func()
 
 	if org == nil {
@@ -928,7 +928,7 @@ func createOrganizationTokenWithOptions(t *testing.T, client *Client, org *Organ
 	}
 
 	ctx := context.Background()
-	tk, err := client.OrganizationTokens.CreateWithOptions(ctx, org.Name, OrganizationTokenCreateOptions{})
+	tk, err := client.OrganizationTokens.CreateWithOptions(ctx, org.Name, options)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -1779,7 +1779,7 @@ func createTeamToken(t *testing.T, client *Client, tm *Team) (*TeamToken, func()
 	}
 }
 
-func createTeamTokenWithOptions(t *testing.T, client *Client, tm *Team) (*TeamToken, func()) {
+func createTeamTokenWithOptions(t *testing.T, client *Client, tm *Team, options TeamTokenCreateOptions) (*TeamToken, func()) {
 	var tmCleanup func()
 
 	if tm == nil {
@@ -1787,7 +1787,7 @@ func createTeamTokenWithOptions(t *testing.T, client *Client, tm *Team) (*TeamTo
 	}
 
 	ctx := context.Background()
-	tt, err := client.TeamTokens.CreateWithOptions(ctx, tm.ID, TeamTokenCreateOptions{})
+	tt, err := client.TeamTokens.CreateWithOptions(ctx, tm.ID, options)
 	if err != nil {
 		t.Fatal(err)
 	}

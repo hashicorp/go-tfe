@@ -55,23 +55,7 @@ type TeamTokenCreateOptions struct {
 
 // Create a new team token, replacing any existing token.
 func (s *teamTokens) Create(ctx context.Context, teamID string) (*TeamToken, error) {
-	if !validStringID(&teamID) {
-		return nil, ErrInvalidTeamID
-	}
-
-	u := fmt.Sprintf("teams/%s/authentication-token", url.QueryEscape(teamID))
-	req, err := s.client.NewRequest("POST", u, nil)
-	if err != nil {
-		return nil, err
-	}
-
-	tt := &TeamToken{}
-	err = req.Do(ctx, tt)
-	if err != nil {
-		return nil, err
-	}
-
-	return tt, err
+	return s.CreateWithOptions(ctx, teamID, TeamTokenCreateOptions{})
 }
 
 // CreateWithOptions a new team token, with options, replacing any existing token.
