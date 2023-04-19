@@ -73,6 +73,7 @@ func TestOrganizationTokens_CreateWithOptions(t *testing.T) {
 		ot, err := client.OrganizationTokens.CreateWithOptions(ctx, orgTest.Name, OrganizationTokenCreateOptions{})
 		require.NoError(t, err)
 		require.NotEmpty(t, ot.Token)
+		assert.Empty(t, ot.ExpiredAt)
 		tkToken = ot.Token
 	})
 

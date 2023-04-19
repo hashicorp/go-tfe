@@ -73,6 +73,7 @@ func TestTeamTokens_CreateWithOptions(t *testing.T) {
 		tt, err := client.TeamTokens.CreateWithOptions(ctx, tmTest.ID, TeamTokenCreateOptions{})
 		require.NoError(t, err)
 		require.NotEmpty(t, tt.Token)
+		assert.Empty(t, tt.ExpiredAt)
 		tmToken = tt.Token
 	})
 

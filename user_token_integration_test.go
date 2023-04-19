@@ -85,6 +85,7 @@ func TestUserTokens_Create(t *testing.T) {
 		if err != nil {
 			t.Fatal(err)
 		}
+		assert.Empty(t, token.ExpiredAt)
 	})
 
 	t.Run("create token with an expiration date", func(t *testing.T) {
