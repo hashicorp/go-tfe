@@ -9,7 +9,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: terraform-cloud/apply
-        uses: hashicorp-forge/terraform-cloud-action/apply@v1
+        uses: hashicorp-forge/terraform-cloud-action/apply@v1 # TSCCR: no entry for repository "hashicorp-forge/terraform-cloud-action"
         with:
           organization: hashicorp-v2
           workspace: tflocal-go-tfe-nightly
@@ -29,14 +29,14 @@ jobs:
     steps:
       - name: terraform-cloud/outputs
         id: tflocal
-        uses: hashicorp-forge/terraform-cloud-action/outputs@v1
+        uses: hashicorp-forge/terraform-cloud-action/outputs@v1 # TSCCR: no entry for repository "hashicorp-forge/terraform-cloud-action"
         with:
           token: ${{ secrets.TF_WORKFLOW_TFLOCAL_CLOUD_TFC_TOKEN }}
           organization: hashicorp-v2
           workspace: tflocal-go-tfe-nightly
 
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@8e5e7e5ab8b370d6c329ec480221332ada57f0ab # v3.5.2
 
       - uses: ./.github/actions/test-go-tfe
         with:
@@ -65,7 +65,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Send slack notification on failure
-        uses: slackapi/slack-github-action@v1.23.0
+        uses: slackapi/slack-github-action@007b2c3c751a190b6f0f040e47ed024deaa72844 # v1.23.0
         with:
           payload: |
             {
@@ -97,7 +97,7 @@ jobs:
     if: "${{ always() }}"
     steps:
       - name: terraform-cloud/destroy
-        uses: hashicorp-forge/terraform-cloud-action/destroy@v1
+        uses: hashicorp-forge/terraform-cloud-action/destroy@v1 # TSCCR: no entry for repository "hashicorp-forge/terraform-cloud-action"
         with:
           token: ${{ secrets.TF_WORKFLOW_TFLOCAL_CLOUD_TFC_TOKEN }}
           organization: hashicorp-v2
