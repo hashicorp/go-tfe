@@ -2339,6 +2339,7 @@ func randomSemver(t *testing.T) string {
 
 // skips a test if the environment is for Terraform Cloud.
 func skipUnlessEnterprise(t *testing.T) {
+	t.Helper()
 	if !enterpriseEnabled() {
 		t.Skip("Skipping test related to Terraform Cloud. Set ENABLE_TFE=1 to run.")
 	}
@@ -2346,6 +2347,7 @@ func skipUnlessEnterprise(t *testing.T) {
 
 // skips a test if the environment is for Terraform Enterprise
 func skipIfEnterprise(t *testing.T) {
+	t.Helper()
 	if enterpriseEnabled() {
 		t.Skip("Skipping test related to Terraform Enterprise. Set ENABLE_TFE=0 to run.")
 	}
@@ -2359,6 +2361,7 @@ func skipIfEnterprise(t *testing.T) {
 //
 // See CONTRIBUTING.md for details
 func skipUnlessBeta(t *testing.T) {
+	t.Helper()
 	if !betaFeaturesEnabled() {
 		t.Skip("Skipping test related to a Terraform Cloud beta feature. Set ENABLE_BETA=1 to run.")
 	}
@@ -2366,6 +2369,7 @@ func skipUnlessBeta(t *testing.T) {
 
 // skips a test if the architecture is not linux_amd64
 func skipUnlessLinuxAMD64(t *testing.T) {
+	t.Helper()
 	if !linuxAmd64() {
 		t.Skip("Skipping test if architecture is not linux_amd64")
 	}

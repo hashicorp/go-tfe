@@ -15,9 +15,14 @@ runs:
     - run: make fmtcheck
       shell: bash
 
-    - uses: golangci/golangci-lint-action@v3
-      with:
-        version: v1.50.1
+    - name: Install golangci-lint
+      run: curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b $(go env GOPATH)/bin $GOLANGCILINT_VERSION
+      shell: bash
+      env:
+        GOLANGCILINT_VERSION: v1.52.2
+
+    - run: make lint
+      shell: bash
 
     - name: Ensure generate_mocks.sh ends in a newline
       run: test "" = "$(tail -c1 "generate_mocks.sh")"
