@@ -1,3 +1,9 @@
+# v1.23.0 (Unreleased)
+
+## Features
+* `ApplyToProjects` and `RemoveFromProjects` to `VariableSets` endpoints now generally available.
+* `ListForProject` to `VariableSets` endpoints now generally available.
+
 # v1.22.0
 
 ## Beta API Changes

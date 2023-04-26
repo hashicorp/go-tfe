@@ -112,7 +112,6 @@ func TestVariableSetsListForWorkspace(t *testing.T) {
 }
 
 func TestVariableSetsListForProject(t *testing.T) {
-	skipUnlessBeta(t)
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -399,8 +398,6 @@ func TestVariableSetsApplyToAndRemoveFromWorkspaces(t *testing.T) {
 }
 
 func TestVariableSetsApplyToAndRemoveFromProjects(t *testing.T) {
-	// TO DO: Remove when TFE GA
-	skipUnlessBeta(t)
 	client := testClient(t)
 	ctx := context.Background()
 
