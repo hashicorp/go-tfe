@@ -79,6 +79,9 @@ type AgentPoolListOptions struct {
 
 	// Optional: A search query string used to filter agent pool. Agent pools are searchable by name
 	Query string `url:"q,omitempty"`
+
+	// Optional: String (workspace name) used to filter the results.
+	AllowedWorkspacesName string `url:"filter[allowed_workspaces][name],omitempty"`
 }
 
 // AgentPoolCreateOptions represents the options for creating an agent pool.
@@ -91,6 +94,12 @@ type AgentPoolCreateOptions struct {
 
 	// Required: A name to identify the agent pool.
 	Name *string `jsonapi:"attr,name"`
+
+	// True if the agent pool is organization scoped, false otherwise.
+	OrganizationScoped *bool `jsonapi:"attr,organization-scoped,omitempty"`
+
+	// List of workspaces that are associated with an agent pool.
+	AllowedWorkspaces []*Workspace `jsonapi:"relation,allowed-workspaces,omitempty"`
 }
 
 // List all the agent pools of the given organization.
@@ -186,7 +195,7 @@ type AgentPoolUpdateOptions struct {
 	OrganizationScoped *bool `jsonapi:"attr,organization-scoped,omitempty"`
 
 	// A new list of workspaces that are associated with an agent pool.
-	AllowedWorkspaces []*Workspace `jsonapi:"relation,allowed-workspaces"`
+	AllowedWorkspaces []*Workspace `jsonapi:"relation,allowed-workspaces,omitempty"`
 }
 
 // Update an agent pool by its ID.
