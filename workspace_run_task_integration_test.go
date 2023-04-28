@@ -12,6 +12,7 @@ import (
 )
 
 func TestWorkspaceRunTasksCreate(t *testing.T) {
+	t.Skip("skipping run task integration tests until service migration is complete.")
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -46,6 +47,7 @@ func TestWorkspaceRunTasksCreate(t *testing.T) {
 }
 
 func TestWorkspaceRunTasksCreateBeta(t *testing.T) {
+	t.Skip("skipping run task integration tests until service migration is complete.")
 	// Once Pre-Plan Tasks are generally available, this can replace the above TestWorkspaceRunTasksCreate
 	skipUnlessBeta(t)
 	client := testClient(t)
@@ -86,6 +88,7 @@ func TestWorkspaceRunTasksCreateBeta(t *testing.T) {
 }
 
 func TestWorkspaceRunTasksList(t *testing.T) {
+	t.Skip("skipping run task integration tests until service migration is complete.")
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -118,6 +121,7 @@ func TestWorkspaceRunTasksList(t *testing.T) {
 }
 
 func TestWorkspaceRunTasksRead(t *testing.T) {
+	t.Skip("skipping run task integration tests until service migration is complete.")
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -151,6 +155,7 @@ func TestWorkspaceRunTasksRead(t *testing.T) {
 }
 
 func TestWorkspaceRunTasksUpdate(t *testing.T) {
+	t.Skip("skipping run task integration tests until service migration is complete.")
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -180,6 +185,7 @@ func TestWorkspaceRunTasksUpdate(t *testing.T) {
 }
 
 func TestWorkspaceRunTasksUpdateBeta(t *testing.T) {
+	t.Skip("skipping run task integration tests until service migration is complete.")
 	// Once Pre-Plan Tasks are generally available, this can replace the above TestWorkspaceRunTasksUpdate
 	skipUnlessBeta(t)
 	client := testClient(t)
@@ -214,6 +220,7 @@ func TestWorkspaceRunTasksUpdateBeta(t *testing.T) {
 }
 
 func TestWorkspaceRunTasksDelete(t *testing.T) {
+	t.Skip("skipping run task integration tests until service migration is complete.")
 	client := testClient(t)
 	ctx := context.Background()
 

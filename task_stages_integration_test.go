@@ -12,6 +12,7 @@ import (
 )
 
 func TestTaskStagesRead(t *testing.T) {
+	t.Skip("skipping run task integration tests until service migration is complete.")
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -76,6 +77,7 @@ func TestTaskStagesRead(t *testing.T) {
 }
 
 func TestTaskStagesList(t *testing.T) {
+	t.Skip("skipping run task integration tests until service migration is complete.")
 	client := testClient(t)
 	ctx := context.Background()
 

@@ -339,6 +339,32 @@ func createAgentPool(t *testing.T, client *Client, org *Organization) (*AgentPoo
 	}
 }
 
+func createAgentPoolWithOptions(t *testing.T, client *Client, org *Organization, opts AgentPoolCreateOptions) (*AgentPool, func()) {
+	var orgCleanup func()
+
+	if org == nil {
+		org, orgCleanup = createOrganization(t, client)
+	}
+
+	ctx := context.Background()
+	pool, err := client.AgentPools.Create(ctx, org.Name, opts)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	return pool, func() {
+		if err := client.AgentPools.Delete(ctx, pool.ID); err != nil {
+			t.Logf("Error destroying agent pool! WARNING: Dangling resources "+
+				"may exist! The full error is shown below.\n\n"+
+				"Agent pool ID: %s\nError: %s", pool.ID, err)
+		}
+
+		if orgCleanup != nil {
+			orgCleanup()
+		}
+	}
+}
+
 func createAgentToken(t *testing.T, client *Client, ap *AgentPool) (*AgentToken, func()) {
 	var apCleanup func()
 
