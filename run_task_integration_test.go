@@ -52,12 +52,13 @@ func TestRunTasksCreate(t *testing.T) {
 }
 
 func TestRunTasksList(t *testing.T) {
-	t.Skip("skipping run task integration tests until service migration is complete.")
 	client := testClient(t)
 	ctx := context.Background()
 
 	orgTest, orgTestCleanup := createOrganization(t, client)
 	defer orgTestCleanup()
+
+	upgradeOrganizationSubscription(t, client, orgTest)
 
 	_, runTaskTest1Cleanup := createRunTask(t, client, orgTest)
 	defer runTaskTest1Cleanup()
@@ -77,12 +78,13 @@ func TestRunTasksList(t *testing.T) {
 }
 
 func TestRunTasksRead(t *testing.T) {
-	t.Skip("skipping run task integration tests until service migration is complete.")
 	client := testClient(t)
 	ctx := context.Background()
 
 	orgTest, orgTestCleanup := createOrganization(t, client)
 	defer orgTestCleanup()
+
+	upgradeOrganizationSubscription(t, client, orgTest)
 
 	runTaskTest, runTaskTestCleanup := createRunTask(t, client, orgTest)
 	defer runTaskTestCleanup()
@@ -127,12 +129,13 @@ func TestRunTasksRead(t *testing.T) {
 }
 
 func TestRunTasksUpdate(t *testing.T) {
-	t.Skip("skipping run task integration tests until service migration is complete.")
 	client := testClient(t)
 	ctx := context.Background()
 
 	orgTest, orgTestCleanup := createOrganization(t, client)
 	defer orgTestCleanup()
+
+	upgradeOrganizationSubscription(t, client, orgTest)
 
 	runTaskTest, runTaskTestCleanup := createRunTask(t, client, orgTest)
 	defer runTaskTestCleanup()
@@ -178,12 +181,13 @@ func TestRunTasksUpdate(t *testing.T) {
 }
 
 func TestRunTasksDelete(t *testing.T) {
-	t.Skip("skipping run task integration tests until service migration is complete.")
 	client := testClient(t)
 	ctx := context.Background()
 
 	orgTest, orgTestCleanup := createOrganization(t, client)
 	defer orgTestCleanup()
+
+	upgradeOrganizationSubscription(t, client, orgTest)
 
 	runTaskTest, _ := createRunTask(t, client, orgTest)
 
@@ -212,6 +216,8 @@ func TestRunTasksAttachToWorkspace(t *testing.T) {
 
 	orgTest, orgTestCleanup := createOrganization(t, client)
 	defer orgTestCleanup()
+
+	upgradeOrganizationSubscription(t, client, orgTest)
 
 	runTaskTest, runTaskTestCleanup := createRunTask(t, client, orgTest)
 	defer runTaskTestCleanup()
