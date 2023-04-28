@@ -13,12 +13,14 @@ import (
 )
 
 func TestRunTasksCreate(t *testing.T) {
-	t.Skip("skipping run task integration tests until service migration is complete.")
+	// t.Skip("skipping run task integration tests until service migration is complete.")
 	client := testClient(t)
 	ctx := context.Background()
 
 	orgTest, orgTestCleanup := createOrganization(t, client)
 	defer orgTestCleanup()
+
+	upgradeOrganizationSubscription(t, client, orgTest)
 
 	runTaskServerURL := os.Getenv("TFC_RUN_TASK_URL")
 	if runTaskServerURL == "" {
