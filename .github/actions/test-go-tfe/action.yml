@@ -64,7 +64,7 @@ runs:
       env:
         TFE_ADDRESS: ${{ inputs.address }}
         TFE_TOKEN: ${{ inputs.token }}
-        TFC_RUN_TASK_URL: "https://httpstat.us/200"
+        TFC_RUN_TASK_URL: "http://testing-mocks.tfe:22180/runtasks/pass"
         GITHUB_POLICY_SET_IDENTIFIER: "hashicorp/test-policy-set"
         GITHUB_REGISTRY_MODULE_IDENTIFIER: "hashicorp/terraform-random-module"
         OAUTH_CLIENT_GITHUB_TOKEN: "${{ inputs.oauth-client-github-token }}"
