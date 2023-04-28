@@ -13,7 +13,6 @@ import (
 )
 
 func TestRunTasksCreate(t *testing.T) {
-	// t.Skip("skipping run task integration tests until service migration is complete.")
 	client := testClient(t)
 	ctx := context.Background()
 
