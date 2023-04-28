@@ -84,6 +84,47 @@ func TestAgentPoolsList(t *testing.T) {
 		require.NoError(t, err)
 		assert.Empty(t, pools.Items)
 	})
+
+	t.Run("with allowed workspace name filter", func(t *testing.T) {
+		ws1, ws1TestCleanup := createWorkspace(t, client, orgTest)
+		defer ws1TestCleanup()
+
+		ws2, ws2TestCleanup := createWorkspace(t, client, orgTest)
+		defer ws2TestCleanup()
+
+		organizationScoped := false
+		ap, apCleanup := createAgentPoolWithOptions(t, client, orgTest, AgentPoolCreateOptions{
+			Name:               String("a-pool"),
+			OrganizationScoped: &organizationScoped,
+			AllowedWorkspaces:  []*Workspace{ws1},
+		})
+		defer apCleanup()
+
+		ap2, ap2Cleanup := createAgentPoolWithOptions(t, client, orgTest, AgentPoolCreateOptions{
+			Name:               String("b-pool"),
+			OrganizationScoped: &organizationScoped,
+			AllowedWorkspaces:  []*Workspace{ws2},
+		})
+		defer ap2Cleanup()
+
+		pools, err := client.AgentPools.List(ctx, orgTest.Name, &AgentPoolListOptions{
+			AllowedWorkspacesName: ws1.Name,
+		})
+		require.NoError(t, err)
+		assert.NotEmpty(t, pools.Items)
+		assert.Contains(t, pools.Items, ap)
+		assert.Contains(t, pools.Items, agentPool)
+		assert.Equal(t, 2, pools.TotalCount)
+
+		pools, err = client.AgentPools.List(ctx, orgTest.Name, &AgentPoolListOptions{
+			AllowedWorkspacesName: ws2.Name,
+		})
+		require.NoError(t, err)
+		assert.NotEmpty(t, pools.Items)
+		assert.Contains(t, pools.Items, agentPool)
+		assert.Contains(t, pools.Items, ap2)
+		assert.Equal(t, 2, pools.TotalCount)
+	})
 }
 
 func TestAgentPoolsCreate(t *testing.T) {
@@ -127,6 +168,37 @@ func TestAgentPoolsCreate(t *testing.T) {
 		})
 		assert.Nil(t, pool)
 		assert.EqualError(t, err, ErrInvalidOrg.Error())
+	})
+
+	t.Run("with allowed-workspaces options", func(t *testing.T) {
+		workspaceTest, workspaceTestCleanup := createWorkspace(t, client, orgTest)
+		defer workspaceTestCleanup()
+
+		organizationScoped := false
+		options := AgentPoolCreateOptions{
+			Name:               String("a-pool"),
+			OrganizationScoped: &organizationScoped,
+			AllowedWorkspaces: []*Workspace{
+				workspaceTest,
+			},
+		}
+
+		pool, err := client.AgentPools.Create(ctx, orgTest.Name, options)
+		require.NoError(t, err)
+
+		assert.Equal(t, 1, len(pool.AllowedWorkspaces))
+		assert.Equal(t, workspaceTest.ID, pool.AllowedWorkspaces[0].ID)
+
+		// Get a refreshed view from the API.
+		refreshed, err := client.AgentPools.Read(ctx, pool.ID)
+		require.NoError(t, err)
+
+		for _, item := range []*AgentPool{
+			pool,
+			refreshed,
+		} {
+			assert.NotEmpty(t, item.ID)
+		}
 	})
 }
 

@@ -381,7 +381,6 @@ func (s *variableSets) RemoveFromWorkspaces(ctx context.Context, variableSetID s
 
 // ApplyToProjects applies the variable set to projects in the supplied list.
 // This method will return an error if the variable set has global = true.
-// **Note: This feature is still in BETA and subject to change.**
 func (s variableSets) ApplyToProjects(ctx context.Context, variableSetID string, options VariableSetApplyToProjectsOptions) error {
 	if !validStringID(&variableSetID) {
 		return ErrInvalidVariableSetID
@@ -401,7 +400,6 @@ func (s variableSets) ApplyToProjects(ctx context.Context, variableSetID string,
 
 // RemoveFromProjects removes the variable set from projects in the supplied list.
 // This method will return an error if the variable set has global = true.
-// **Note: This feature is still in BETA and subject to change.**
 func (s variableSets) RemoveFromProjects(ctx context.Context, variableSetID string, options VariableSetRemoveFromProjectsOptions) error {
 	if !validStringID(&variableSetID) {
 		return ErrInvalidVariableSetID

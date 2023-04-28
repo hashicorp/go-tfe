@@ -339,6 +339,32 @@ func createAgentPool(t *testing.T, client *Client, org *Organization) (*AgentPoo
 	}
 }
 
+func createAgentPoolWithOptions(t *testing.T, client *Client, org *Organization, opts AgentPoolCreateOptions) (*AgentPool, func()) {
+	var orgCleanup func()
+
+	if org == nil {
+		org, orgCleanup = createOrganization(t, client)
+	}
+
+	ctx := context.Background()
+	pool, err := client.AgentPools.Create(ctx, org.Name, opts)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	return pool, func() {
+		if err := client.AgentPools.Delete(ctx, pool.ID); err != nil {
+			t.Logf("Error destroying agent pool! WARNING: Dangling resources "+
+				"may exist! The full error is shown below.\n\n"+
+				"Agent pool ID: %s\nError: %s", pool.ID, err)
+		}
+
+		if orgCleanup != nil {
+			orgCleanup()
+		}
+	}
+}
+
 func createAgentToken(t *testing.T, client *Client, ap *AgentPool) (*AgentToken, func()) {
 	var apCleanup func()
 
@@ -2339,6 +2365,7 @@ func randomSemver(t *testing.T) string {
 
 // skips a test if the environment is for Terraform Cloud.
 func skipUnlessEnterprise(t *testing.T) {
+	t.Helper()
 	if !enterpriseEnabled() {
 		t.Skip("Skipping test related to Terraform Cloud. Set ENABLE_TFE=1 to run.")
 	}
@@ -2346,6 +2373,7 @@ func skipUnlessEnterprise(t *testing.T) {
 
 // skips a test if the environment is for Terraform Enterprise
 func skipIfEnterprise(t *testing.T) {
+	t.Helper()
 	if enterpriseEnabled() {
 		t.Skip("Skipping test related to Terraform Enterprise. Set ENABLE_TFE=0 to run.")
 	}
@@ -2359,6 +2387,7 @@ func skipIfEnterprise(t *testing.T) {
 //
 // See CONTRIBUTING.md for details
 func skipUnlessBeta(t *testing.T) {
+	t.Helper()
 	if !betaFeaturesEnabled() {
 		t.Skip("Skipping test related to a Terraform Cloud beta feature. Set ENABLE_BETA=1 to run.")
 	}
@@ -2366,6 +2395,7 @@ func skipUnlessBeta(t *testing.T) {
 
 // skips a test if the architecture is not linux_amd64
 func skipUnlessLinuxAMD64(t *testing.T) {
+	t.Helper()
 	if !linuxAmd64() {
 		t.Skip("Skipping test if architecture is not linux_amd64")
 	}
