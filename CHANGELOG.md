@@ -1,4 +1,6 @@
-# v1.23.0 (Unreleased)
+## Unreleased
+
+# v1.23.0
 
 ## Features
 * `ApplyToProjects` and `RemoveFromProjects` to `VariableSets` endpoints now generally available.
