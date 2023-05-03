@@ -10,7 +10,12 @@ Start by comparing the main branch with the last release in order to fully under
 2. Does the public package API follow all endpoint conventions, such as naming, pointer usage, and options availability? Once these are released, they are permanent in the current major release version.
 3. Are new features generally available in the Terraform Cloud API? Or is there another considered reason to release them?
 
-Ensure CHANGELOG.md is up to date with the next release version before proceeding.
+Steps to prepare the changelog for a new release:
+
+1. Replace `# Unreleased` with the version you are releasing.
+2. Ensure there is a line with `# Unreleased` at the top of the changelog for future changes. Ideally we don't ask authors to add this line; this will make it clear where they should add their changelog entry.
+3. Ensure that each existing changelog entry for the new release has the author(s) attributed and a pull request linked, i.e `- Some new feature/bugfix by @some-github-user (#3)[link-to-pull-request]`
+4. Open a pull request with these changes titled `vX.XX.XX Changelog`. Once approved and merged, you can go ahead and create the release.
 
 ### Creating a release
 
@@ -29,11 +34,11 @@ Ensure CHANGELOG.md is up to date with the next release version before proceedin
 
    ```markdown
    ENHANCEMENTS
-   * Add description of new small feature (#3)[link-to-pull-request]
+   * Add description of new small feature by @some-github-user (#3)[link-to-pull-request]
 
    BUG FIXES
-   * Fix description of a bug (#2)[link-to-pull-request]
-   * Fix description of another bug (#1)[link-to-pull-request]
+   * Fix description of a bug by @some-github-user (#2)[link-to-pull-request]
+   * Fix description of another bug by @some-github-user (#1)[link-to-pull-request]
    ```
 
 6. Don't attach any binaries. The zip and tar.gz assets are automatically created and attached after you publish your release.
