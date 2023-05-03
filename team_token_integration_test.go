@@ -78,7 +78,7 @@ func TestTeamTokens_CreateWithOptions(t *testing.T) {
 	})
 
 	t.Run("with an expiration date", func(t *testing.T) {
-		start := time.Date(2024, 01, 15, 22, 03, 04, 0, time.UTC)
+		start := time.Date(2024, 1, 15, 22, 3, 4, 0, time.UTC)
 		tt, err := client.TeamTokens.CreateWithOptions(ctx, tmTest.ID, TeamTokenCreateOptions{
 			ExpiredAt: &start,
 		})
@@ -107,7 +107,7 @@ func TestTeamTokensRead(t *testing.T) {
 	})
 
 	t.Run("with an expiration date passed as a valid option", func(t *testing.T) {
-		start := time.Date(2024, 01, 15, 22, 03, 04, 0, time.UTC)
+		start := time.Date(2024, 1, 15, 22, 3, 4, 0, time.UTC)
 
 		_, ttTestCleanup := createTeamTokenWithOptions(t, client, tmTest, TeamTokenCreateOptions{ExpiredAt: &start})
 

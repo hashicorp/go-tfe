@@ -78,7 +78,7 @@ func TestOrganizationTokens_CreateWithOptions(t *testing.T) {
 	})
 
 	t.Run("with an expiration date", func(t *testing.T) {
-		start := time.Date(2024, 01, 15, 22, 03, 04, 0, time.UTC)
+		start := time.Date(2024, 1, 15, 22, 3, 4, 0, time.UTC)
 		ot, err := client.OrganizationTokens.CreateWithOptions(ctx, orgTest.Name, OrganizationTokenCreateOptions{
 			ExpiredAt: &start,
 		})
@@ -107,7 +107,7 @@ func TestOrganizationTokensRead(t *testing.T) {
 	})
 
 	t.Run("with an expiration date passed as a valid option", func(t *testing.T) {
-		start := time.Date(2024, 01, 15, 22, 03, 04, 0, time.UTC)
+		start := time.Date(2024, 1, 15, 22, 3, 4, 0, time.UTC)
 
 		_, otTestCleanup := createOrganizationTokenWithOptions(t, client, orgTest, OrganizationTokenCreateOptions{ExpiredAt: &start})
 

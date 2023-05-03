@@ -89,7 +89,7 @@ func TestUserTokens_Create(t *testing.T) {
 	})
 
 	t.Run("create token with an expiration date", func(t *testing.T) {
-		start := time.Date(2024, 01, 15, 22, 03, 04, 0, time.UTC)
+		start := time.Date(2024, 1, 15, 22, 3, 4, 0, time.UTC)
 		token, err := client.UserTokens.Create(ctx, user.ID, UserTokenCreateOptions{
 			ExpiredAt: &start,
 		})
