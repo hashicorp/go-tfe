@@ -35,6 +35,10 @@ type WorkspaceTableTest struct {
 
 func TestWorkspacesList(t *testing.T) {
 	client := testClient(t)
+
+	fmt.Println("host: " + client.baseURL.Host)
+	fmt.Println("token: " + client.token)
+
 	ctx := context.Background()
 
 	orgTest, orgTestCleanup := createOrganization(t, client)
@@ -832,6 +836,9 @@ func TestWorkspacesReadWithHistory(t *testing.T) {
 	}
 }
 
+// If you've set your own GITHUB_POLICY_SET_IDENTIFIER, make sure the readme
+// starts with the string: This is a simple test
+// Otherwise the test will not pass
 func TestWorkspacesReadReadme(t *testing.T) {
 	client := testClient(t)
 	ctx := context.Background()
