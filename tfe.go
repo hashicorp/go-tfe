@@ -35,6 +35,7 @@ const (
 	_userAgent         = "go-tfe"
 	_headerRateLimit   = "X-RateLimit-Limit"
 	_headerRateReset   = "X-RateLimit-Reset"
+	_headerAppName     = "TFP-AppName"
 	_headerAPIVersion  = "TFP-API-Version"
 	_headerTFEVersion  = "X-TFE-Version"
 	_includeQueryParam = "include"
@@ -120,6 +121,7 @@ type Client struct {
 	retryServerErrors bool
 	remoteAPIVersion  string
 	remoteTFEVersion  string
+	appName           string
 
 	Admin                      Admin
 	Agents                     Agents
@@ -149,10 +151,12 @@ type Client struct {
 	PolicySetVersions          PolicySetVersions
 	PolicySets                 PolicySets
 	RegistryModules            RegistryModules
+	RegistryNoCodeModules      RegistryNoCodeModules
 	RegistryProviders          RegistryProviders
 	RegistryProviderPlatforms  RegistryProviderPlatforms
 	RegistryProviderVersions   RegistryProviderVersions
 	Runs                       Runs
+	RunEvents                  RunEvents
 	RunTasks                   RunTasks
 	RunTriggers                RunTriggers
 	SSHKeys                    SSHKeys
@@ -361,6 +365,9 @@ func NewClient(cfg *Config) (*Client, error) {
 	// Save the TFE version
 	client.remoteTFEVersion = meta.TFEVersion
 
+	// Save the app name
+	client.appName = meta.AppName
+
 	// Create Admin
 	client.Admin = Admin{
 		Organizations:     &adminOrganizations{client: client},
@@ -382,6 +389,7 @@ func NewClient(cfg *Config) (*Client, error) {
 	client.GHAInstallations = &gHAInstallations{client: client}
 	client.CostEstimates = &costEstimates{client: client}
 	client.GPGKeys = &gpgKeys{client: client}
+	client.RegistryNoCodeModules = &registryNoCodeModules{client: client}
 	client.NotificationConfigurations = &notificationConfigurations{client: client}
 	client.OAuthClients = &oAuthClients{client: client}
 	client.OAuthTokens = &oAuthTokens{client: client}
@@ -404,6 +412,7 @@ func NewClient(cfg *Config) (*Client, error) {
 	client.RegistryProviders = &registryProviders{client: client}
 	client.RegistryProviderVersions = &registryProviderVersions{client: client}
 	client.Runs = &runs{client: client}
+	client.RunEvents = &runEvents{client: client}
 	client.RunTasks = &runTasks{client: client}
 	client.RunTriggers = &runTriggers{client: client}
 	client.SSHKeys = &sshKeys{client: client}
@@ -429,6 +438,23 @@ func NewClient(cfg *Config) (*Client, error) {
 	}
 
 	return client, nil
+}
+
+// IsCloud returns true if the client is configured against a Terraform Cloud
+// instance.
+//
+// Whether an instance is TFC or TFE is derived from the TFP-AppName header.
+func (c Client) IsCloud() bool {
+	return c.appName == "Terraform Cloud"
+}
+
+// IsEnterprise returns true if the client is configured against a Terraform
+// Enterprise instance.
+//
+// Whether an instance is TFC or TFE is derived from the TFP-AppName header. Note:
+// not all TFE releases include this header in API responses.
+func (c Client) IsEnterprise() bool {
+	return !c.IsCloud()
 }
 
 // RemoteAPIVersion returns the server's declared API version string.
@@ -565,6 +591,9 @@ type rawAPIMetadata struct {
 	// X-RateLimit-Limit response header, or an empty string if that header
 	// field was not included in the response.
 	RateLimit string
+
+	// AppName is either 'Terraform Cloud' or 'Terraform Enterprise'
+	AppName string
 }
 
 func (c *Client) getRawAPIMetadata() (rawAPIMetadata, error) {
@@ -597,6 +626,7 @@ func (c *Client) getRawAPIMetadata() (rawAPIMetadata, error) {
 	meta.APIVersion = resp.Header.Get(_headerAPIVersion)
 	meta.RateLimit = resp.Header.Get(_headerRateLimit)
 	meta.TFEVersion = resp.Header.Get(_headerTFEVersion)
+	meta.AppName = resp.Header.Get(_headerAppName)
 
 	return meta, nil
 }

@@ -150,7 +150,7 @@ func TestRegistryModulesCreate(t *testing.T) {
 			options := RegistryModuleCreateOptions{
 				Name:         String("iam"),
 				Provider:     String("aws"),
-				NoCode:       true,
+				NoCode:       Bool(true),
 				RegistryName: PrivateRegistry,
 			}
 			rm, err := client.RegistryModules.Create(ctx, orgTest.Name, options)

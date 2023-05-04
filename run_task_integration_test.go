@@ -19,6 +19,8 @@ func TestRunTasksCreate(t *testing.T) {
 	orgTest, orgTestCleanup := createOrganization(t, client)
 	defer orgTestCleanup()
 
+	upgradeOrganizationSubscription(t, client, orgTest)
+
 	runTaskServerURL := os.Getenv("TFC_RUN_TASK_URL")
 	if runTaskServerURL == "" {
 		t.Error("Cannot create a run task with an empty URL. You must set TFC_RUN_TASK_URL for run task related tests.")
@@ -56,6 +58,8 @@ func TestRunTasksList(t *testing.T) {
 	orgTest, orgTestCleanup := createOrganization(t, client)
 	defer orgTestCleanup()
 
+	upgradeOrganizationSubscription(t, client, orgTest)
+
 	_, runTaskTest1Cleanup := createRunTask(t, client, orgTest)
 	defer runTaskTest1Cleanup()
 
@@ -79,6 +83,8 @@ func TestRunTasksRead(t *testing.T) {
 
 	orgTest, orgTestCleanup := createOrganization(t, client)
 	defer orgTestCleanup()
+
+	upgradeOrganizationSubscription(t, client, orgTest)
 
 	runTaskTest, runTaskTestCleanup := createRunTask(t, client, orgTest)
 	defer runTaskTestCleanup()
@@ -128,6 +134,8 @@ func TestRunTasksUpdate(t *testing.T) {
 
 	orgTest, orgTestCleanup := createOrganization(t, client)
 	defer orgTestCleanup()
+
+	upgradeOrganizationSubscription(t, client, orgTest)
 
 	runTaskTest, runTaskTestCleanup := createRunTask(t, client, orgTest)
 	defer runTaskTestCleanup()
@@ -179,6 +187,8 @@ func TestRunTasksDelete(t *testing.T) {
 	orgTest, orgTestCleanup := createOrganization(t, client)
 	defer orgTestCleanup()
 
+	upgradeOrganizationSubscription(t, client, orgTest)
+
 	runTaskTest, _ := createRunTask(t, client, orgTest)
 
 	t.Run("with valid options", func(t *testing.T) {
@@ -206,6 +216,8 @@ func TestRunTasksAttachToWorkspace(t *testing.T) {
 
 	orgTest, orgTestCleanup := createOrganization(t, client)
 	defer orgTestCleanup()
+
+	upgradeOrganizationSubscription(t, client, orgTest)
 
 	runTaskTest, runTaskTestCleanup := createRunTask(t, client, orgTest)
 	defer runTaskTestCleanup()

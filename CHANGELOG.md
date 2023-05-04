@@ -1,20 +1,47 @@
-# Unreleased
+## Unreleased
 
-FEATURES:
-* Add beta endpoints `ApplyToProjects`  and `RemoveFromProjects` to `VariableSets`.  Applying a variable set to a project will apply that variable set to all current and future workspaces in that project. 
-* Add beta endpoint `ListForProject` to `VariableSets` to list all variable sets applied to a project.
+# v1.23.0
+
+## Features
+* `ApplyToProjects` and `RemoveFromProjects` to `VariableSets` endpoints now generally available.
+* `ListForProject` to `VariableSets` endpoints now generally available.
 
 ## Enhancements
+* Adds `OrganizationScoped` and `AllowedWorkspaces` fields for creating workspace scoped agent pools and adds `AllowedWorkspacesName` for filtering agents pools associated with a given workspace by @hs26gill [#682](https://github.com/hashicorp/go-tfe/pull/682/files)
+
+## Bug Fixes
+
+
+# v1.22.0
+
+## Beta API Changes
+* The beta `no_code` field in `RegistryModuleCreateOptions` has been changed from `bool` to `*bool` and will be removed in a future version because a new, preferred method for managing no-code registry modules has been added in this release.
+
+## Features
+* Add beta endpoints `Create`, `Read`, `Update`, and `Delete` to manage no-code provisioning for a `RegistryModule`. This allows users to enable no-code provisioning for a registry module, and to configure the provisioning settings for that module version. This also allows users to disable no-code provisioning for a module version. @dsa0x [#669](https://github.com/hashicorp/go-tfe/pull/669)
+
+# v1.21.0
+
+## Features
+* Add beta endpoints `ApplyToProjects`  and `RemoveFromProjects` to `VariableSets`.  Applying a variable set to a project will apply that variable set to all current and future workspaces in that project.
+* Add beta endpoint `ListForProject` to `VariableSets` to list all variable sets applied to a project.
+* Add endpoint `RunEvents` which lists events for a specific run by @glennsarti [#680](https://github.com/hashicorp/go-tfe/pull/680)
+
+## Bug Fixes
+* `VariableSets.Read` did not honor the Include values due to a syntax error in the struct tag of `VariableSetReadOptions` by @sgap [#678](https://github.com/hashicorp/go-tfe/pull/678)
+
+## Enhancements
+* Adds `ProjectID` filter to allow filtering of workspaces of a given project in an organization by @hs26gill [#671](https://github.com/hashicorp/go-tfe/pull/671)
 * Adds `Name` filter to allow filtering of projects by @hs26gill [#668](https://github.com/hashicorp/go-tfe/pull/668/files)
 * Adds `ManageMembership` permission to team `OrganizationAccess` by @JarrettSpiker [#652](https://github.com/hashicorp/go-tfe/pull/652)
 * Adds `RotateKey` and `TrimKey` Admin endpoints by @mpminardi [#666](https://github.com/hashicorp/go-tfe/pull/666)
+* Adds `Permissions` to `User` by @jeevanragula [#674](https://github.com/hashicorp/go-tfe/pull/674)
+* Adds `IsEnterprise` and `IsCloud` boolean methods to the client by @sebasslash [#675](https://github.com/hashicorp/go-tfe/pull/675)
 
 # v1.20.0
 
 ## Enhancements
 * Update team project access to include additional project roles by @joekarl [#642](https://github.com/hashicorp/go-tfe/pull/642)
-
-## Bug Fixes
 
 # v1.19.0
 

@@ -25,6 +25,11 @@ func TestClient_newClient(t *testing.T) {
 		w.Header().Set("X-RateLimit-Limit", "30")
 		w.Header().Set("TFP-API-Version", "34.21.9")
 		w.Header().Set("X-TFE-Version", "202205-1")
+		if enterpriseEnabled() {
+			w.Header().Set("TFP-AppName", "Terraform Enterprise")
+		} else {
+			w.Header().Set("TFP-AppName", "Terraform Cloud")
+		}
 		w.WriteHeader(204) // We query the configured ping URL which should return a 204.
 	}))
 	defer ts.Close()
@@ -83,6 +88,12 @@ func TestClient_newClient(t *testing.T) {
 		}
 		if want := "202205-1"; client.RemoteTFEVersion() != want {
 			t.Errorf("unexpected remote TFE version %q; want %q", client.RemoteTFEVersion(), want)
+		}
+
+		if enterpriseEnabled() {
+			assert.True(t, client.IsEnterprise())
+		} else {
+			assert.True(t, client.IsCloud())
 		}
 
 		client.SetFakeRemoteAPIVersion("1.0")
