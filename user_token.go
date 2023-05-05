@@ -55,7 +55,8 @@ type UserToken struct {
 
 // UserTokenCreateOptions contains the options for creating a user token.
 type UserTokenCreateOptions struct {
-	// Optional: Description of the token and its expiration date
+	// Optional: The token's expiration date.
+	// This feature is available in TFE release v202305-1 and later
 	Description string     `jsonapi:"attr,description,omitempty"`
 	ExpiredAt   *time.Time `jsonapi:"attr,expired-at,iso8601,omitempty"`
 }

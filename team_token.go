@@ -49,7 +49,8 @@ type TeamToken struct {
 
 // TeamTokenCreateOptions contains the options for creating a team token.
 type TeamTokenCreateOptions struct {
-	// Optional: The token's expiration date
+	// Optional: The token's expiration date.
+	// This feature is available in TFE release v202305-1 and later
 	ExpiredAt *time.Time `jsonapi:"attr,expired-at,iso8601,omitempty"`
 }
 
