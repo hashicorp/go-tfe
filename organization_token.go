@@ -50,7 +50,7 @@ type OrganizationToken struct {
 // OrganizationTokenCreateOptions contains the options for creating an organization token.
 type OrganizationTokenCreateOptions struct {
 	// Optional: The token's expiration date.
-	// Heads up: This feature will remain in beta until the next TFE release, v202304-1
+	// Heads up: This feature will be available in TFE release, v202304-1
 	ExpiredAt *time.Time `jsonapi:"attr,expired-at,iso8601,omitempty"`
 }
 

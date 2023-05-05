@@ -50,6 +50,21 @@ func (mr *MockTeamTokensMockRecorder) Create(ctx, teamID interface{}) *gomock.Ca
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Create", reflect.TypeOf((*MockTeamTokens)(nil).Create), ctx, teamID)
 }
 
+// CreateWithOptions mocks base method.
+func (m *MockTeamTokens) CreateWithOptions(ctx context.Context, teamID string, options tfe.TeamTokenCreateOptions) (*tfe.TeamToken, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "CreateWithOptions", ctx, teamID, options)
+	ret0, _ := ret[0].(*tfe.TeamToken)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// CreateWithOptions indicates an expected call of CreateWithOptions.
+func (mr *MockTeamTokensMockRecorder) CreateWithOptions(ctx, teamID, options interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateWithOptions", reflect.TypeOf((*MockTeamTokens)(nil).CreateWithOptions), ctx, teamID, options)
+}
+
 // Delete mocks base method.
 func (m *MockTeamTokens) Delete(ctx context.Context, teamID string) error {
 	m.ctrl.T.Helper()

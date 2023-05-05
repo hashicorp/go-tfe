@@ -50,6 +50,21 @@ func (mr *MockOrganizationTokensMockRecorder) Create(ctx, organization interface
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Create", reflect.TypeOf((*MockOrganizationTokens)(nil).Create), ctx, organization)
 }
 
+// CreateWithOptions mocks base method.
+func (m *MockOrganizationTokens) CreateWithOptions(ctx context.Context, organization string, options tfe.OrganizationTokenCreateOptions) (*tfe.OrganizationToken, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "CreateWithOptions", ctx, organization, options)
+	ret0, _ := ret[0].(*tfe.OrganizationToken)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// CreateWithOptions indicates an expected call of CreateWithOptions.
+func (mr *MockOrganizationTokensMockRecorder) CreateWithOptions(ctx, organization, options interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateWithOptions", reflect.TypeOf((*MockOrganizationTokens)(nil).CreateWithOptions), ctx, organization, options)
+}
+
 // Delete mocks base method.
 func (m *MockOrganizationTokens) Delete(ctx context.Context, organization string) error {
 	m.ctrl.T.Helper()
