@@ -2,6 +2,7 @@
 
 ## Enhancements
 * Adds support for a new variable field `version-id` by @arybolovlev [#697](https://github.com/hashicorp/go-tfe/pull/697)
+* Adds `ExpiredAt` field to `OrganizationToken`, `TeamToken`, and `UserToken`. This feature will be available in TFE release, v202305-1. @JuliannaTetreault [#672](https://github.com/hashicorp/go-tfe/pull/672)
 
 # v1.23.0
 
