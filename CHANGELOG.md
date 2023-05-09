@@ -1,4 +1,7 @@
-## Unreleased
+# Unreleased
+
+## Enhancements
+* Adds support for a new variable field `version-id` by @arybolovlev [#697](https://github.com/hashicorp/go-tfe/pull/697)
 
 # v1.23.0
 

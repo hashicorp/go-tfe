@@ -63,6 +63,7 @@ type Variable struct {
 	Category    CategoryType `jsonapi:"attr,category"`
 	HCL         bool         `jsonapi:"attr,hcl"`
 	Sensitive   bool         `jsonapi:"attr,sensitive"`
+	VersionID   string       `jsonapi:"attr,version-id"`
 
 	// Relations
 	Workspace *Workspace `jsonapi:"relation,configurable"`

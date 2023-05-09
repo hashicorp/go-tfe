@@ -99,6 +99,7 @@ func TestVariableSetVariablesCreate(t *testing.T) {
 		assert.Equal(t, *options.Value, v.Value)
 		assert.Equal(t, *options.Description, v.Description)
 		assert.Equal(t, *options.Category, v.Category)
+		assert.NotEmpty(t, v.VersionID)
 	})
 
 	t.Run("when options has an empty string value", func(t *testing.T) {
@@ -117,6 +118,7 @@ func TestVariableSetVariablesCreate(t *testing.T) {
 		assert.Equal(t, *options.Value, v.Value)
 		assert.Equal(t, *options.Description, v.Description)
 		assert.Equal(t, *options.Category, v.Category)
+		assert.NotEmpty(t, v.VersionID)
 	})
 
 	t.Run("when options has an empty string description", func(t *testing.T) {
@@ -135,6 +137,7 @@ func TestVariableSetVariablesCreate(t *testing.T) {
 		assert.Equal(t, *options.Value, v.Value)
 		assert.Equal(t, *options.Description, v.Description)
 		assert.Equal(t, *options.Category, v.Category)
+		assert.NotEmpty(t, v.VersionID)
 	})
 
 	t.Run("when options has a too-long description", func(t *testing.T) {
@@ -162,6 +165,7 @@ func TestVariableSetVariablesCreate(t *testing.T) {
 		assert.Equal(t, *options.Key, v.Key)
 		assert.Equal(t, "", v.Value)
 		assert.Equal(t, *options.Category, v.Category)
+		assert.NotEmpty(t, v.VersionID)
 	})
 
 	t.Run("when options is missing key", func(t *testing.T) {
@@ -229,6 +233,7 @@ func TestVariableSetVariablesRead(t *testing.T) {
 		assert.Equal(t, vTest.Key, v.Key)
 		assert.Equal(t, vTest.Sensitive, v.Sensitive)
 		assert.Equal(t, vTest.Value, v.Value)
+		assert.Equal(t, vTest.VersionID, v.VersionID)
 	})
 
 	t.Run("when the variable does not exist", func(t *testing.T) {
@@ -273,6 +278,7 @@ func TestVariableSetVariablesUpdate(t *testing.T) {
 		assert.Equal(t, *options.Key, v.Key)
 		assert.Equal(t, *options.HCL, v.HCL)
 		assert.Equal(t, *options.Value, v.Value)
+		assert.NotEqual(t, vTest.VersionID, v.VersionID)
 	})
 
 	t.Run("when updating a subset of values", func(t *testing.T) {
@@ -286,6 +292,7 @@ func TestVariableSetVariablesUpdate(t *testing.T) {
 
 		assert.Equal(t, *options.Key, v.Key)
 		assert.Equal(t, *options.HCL, v.HCL)
+		assert.NotEqual(t, vTest.VersionID, v.VersionID)
 	})
 
 	t.Run("with sensitive set", func(t *testing.T) {
@@ -298,6 +305,7 @@ func TestVariableSetVariablesUpdate(t *testing.T) {
 
 		assert.Equal(t, *options.Sensitive, v.Sensitive)
 		assert.Empty(t, v.Value) // Because its now sensitive
+		assert.NotEqual(t, vTest.VersionID, v.VersionID)
 	})
 
 	t.Run("without any changes", func(t *testing.T) {
@@ -315,7 +323,14 @@ func TestVariableSetVariablesUpdate(t *testing.T) {
 		v, err := client.VariableSetVariables.Update(ctx, vsTest.ID, vTest.ID, &options)
 		require.NoError(t, err)
 
-		assert.Equal(t, vTest, v)
+		assert.Equal(t, vTest.ID, v.ID)
+		assert.Equal(t, vTest.Key, v.Key)
+		assert.Equal(t, vTest.Value, v.Value)
+		assert.Equal(t, vTest.Description, v.Description)
+		assert.Equal(t, vTest.Category, v.Category)
+		assert.Equal(t, vTest.HCL, v.HCL)
+		assert.Equal(t, vTest.Sensitive, v.Sensitive)
+		assert.NotEqual(t, vTest.VersionID, v.VersionID)
 	})
 
 	t.Run("with invalid variable ID", func(t *testing.T) {
