@@ -11,6 +11,7 @@
 
 ## Enhancements
 * Adds `OrganizationScoped` and `AllowedWorkspaces` fields for creating workspace scoped agent pools and adds `AllowedWorkspacesName` for filtering agents pools associated with a given workspace by @hs26gill [#682](https://github.com/hashicorp/go-tfe/pull/682/files)
+* Adds `ExpiredAt` field to `OrganizationToken`, `TeamToken`, and `UserToken`. This feature will be available in TFE release, v202305-1. @JuliannaTetreault [#672](https://github.com/hashicorp/go-tfe/pull/672)
 
 ## Bug Fixes
 
@@ -22,9 +23,6 @@
 
 ## Features
 * Add beta endpoints `Create`, `Read`, `Update`, and `Delete` to manage no-code provisioning for a `RegistryModule`. This allows users to enable no-code provisioning for a registry module, and to configure the provisioning settings for that module version. This also allows users to disable no-code provisioning for a module version. @dsa0x [#669](https://github.com/hashicorp/go-tfe/pull/669)
-
-## Enhancements
-* Adds `ExpiredAt` field to `OrganizationToken`, `TeamToken`, and `UserToken`. This feature will be available in TFE release, v202305-1. @JuliannaTetreault [#672](https://github.com/hashicorp/go-tfe/pull/672)
 
 # v1.21.0
 
