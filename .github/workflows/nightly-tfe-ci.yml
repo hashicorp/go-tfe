@@ -9,7 +9,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: terraform-cloud/apply
-        uses: hashicorp-forge/terraform-cloud-action/apply@v1 # TSCCR: no entry for repository "hashicorp-forge/terraform-cloud-action"
+        uses: hashicorp-forge/terraform-cloud-action/apply@v1  # TSCCR: no entry for repository "hashicorp-forge/terraform-cloud-action"
         with:
           organization: hashicorp-v2
           workspace: tflocal-go-tfe-nightly
@@ -29,7 +29,7 @@ jobs:
     steps:
       - name: terraform-cloud/outputs
         id: tflocal
-        uses: hashicorp-forge/terraform-cloud-action/outputs@v1 # TSCCR: no entry for repository "hashicorp-forge/terraform-cloud-action"
+        uses: hashicorp-forge/terraform-cloud-action/outputs@v1  # TSCCR: no entry for repository "hashicorp-forge/terraform-cloud-action"
         with:
           token: ${{ secrets.TF_WORKFLOW_TFLOCAL_CLOUD_TFC_TOKEN }}
           organization: hashicorp-v2
@@ -97,7 +97,7 @@ jobs:
     if: "${{ always() }}"
     steps:
       - name: terraform-cloud/destroy
-        uses: hashicorp-forge/terraform-cloud-action/destroy@v1 # TSCCR: no entry for repository "hashicorp-forge/terraform-cloud-action"
+        uses: hashicorp-forge/terraform-cloud-action/destroy@v1  # TSCCR: no entry for repository "hashicorp-forge/terraform-cloud-action"
         with:
           token: ${{ secrets.TF_WORKFLOW_TFLOCAL_CLOUD_TFC_TOKEN }}
           organization: hashicorp-v2
