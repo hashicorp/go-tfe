@@ -1559,7 +1559,7 @@ func TestWorkspacesSafeDelete(t *testing.T) {
 		_, svTestCleanup := createStateVersion(t, client, 0, wTest)
 		t.Cleanup(svTestCleanup)
 
-		retry(func() (interface{}, error) {
+		_, err := retry(func() (interface{}, error) {
 			err := client.Workspaces.SafeDelete(ctx, orgTest.Name, wTest.Name)
 			if errors.Is(err, ErrWorkspaceStillProcessing) {
 				return nil, err
@@ -1568,7 +1568,11 @@ func TestWorkspacesSafeDelete(t *testing.T) {
 			return nil, nil
 		})
 
-		err := client.Workspaces.SafeDelete(ctx, orgTest.Name, wTest.Name)
+		if err != nil {
+			t.Fatalf("Workspace still processing after retrying: %s", err)
+		}
+
+		err = client.Workspaces.SafeDelete(ctx, orgTest.Name, wTest.Name)
 		assert.True(t, errors.Is(err, ErrWorkspaceNotSafeToDelete))
 	})
 }
@@ -1614,7 +1618,7 @@ func TestWorkspacesSafeDeleteByID(t *testing.T) {
 		_, svTestCleanup := createStateVersion(t, client, 0, wTest)
 		t.Cleanup(svTestCleanup)
 
-		retry(func() (interface{}, error) {
+		_, err := retry(func() (interface{}, error) {
 			err := client.Workspaces.SafeDeleteByID(ctx, wTest.ID)
 			if errors.Is(err, ErrWorkspaceStillProcessing) {
 				return nil, err
@@ -1623,7 +1627,11 @@ func TestWorkspacesSafeDeleteByID(t *testing.T) {
 			return nil, nil
 		})
 
-		err := client.Workspaces.SafeDeleteByID(ctx, wTest.ID)
+		if err != nil {
+			t.Fatalf("Workspace still processing after retrying: %s", err)
+		}
+
+		err = client.Workspaces.SafeDeleteByID(ctx, wTest.ID)
 		assert.True(t, errors.Is(err, ErrWorkspaceNotSafeToDelete))
 	})
 }
