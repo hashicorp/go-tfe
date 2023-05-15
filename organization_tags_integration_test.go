@@ -86,7 +86,7 @@ func TestOrganizationTagsList(t *testing.T) {
 		}
 	})
 
-	t.Run("with query param", func(t *testing.T) {
+	t.Run("with query param Query", func(t *testing.T) {
 		tags, err := client.OrganizationTags.List(ctx, orgTest.Name, &OrganizationTagsListOptions{
 			ListOptions: ListOptions{
 				PageNumber: 1,
