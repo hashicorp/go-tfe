@@ -41,6 +41,9 @@ func TestOrganizationTagsList(t *testing.T) {
 	// this is a tag id we'll use in the filter param of the second test
 	var testTagID string
 
+	// this is the tag Name we'll use with the query parameter in the third test
+	var testTagName string
+
 	t.Run("with no query params", func(t *testing.T) {
 		tags, err := client.OrganizationTags.List(ctx, orgTest.Name, nil)
 		require.NoError(t, err)
@@ -48,6 +51,7 @@ func TestOrganizationTagsList(t *testing.T) {
 		assert.Equal(t, 10, len(tags.Items))
 
 		testTagID = tags.Items[0].ID
+		testTagName = tags.Items[0].Name
 
 		for _, tag := range tags.Items {
 			assert.NotNil(t, tag.ID)
@@ -60,7 +64,7 @@ func TestOrganizationTagsList(t *testing.T) {
 		}
 	})
 
-	t.Run("with query params", func(t *testing.T) {
+	t.Run("with query param Filter", func(t *testing.T) {
 		tags, err := client.OrganizationTags.List(ctx, orgTest.Name, &OrganizationTagsListOptions{
 			ListOptions: ListOptions{
 				PageNumber: 1,
@@ -75,6 +79,27 @@ func TestOrganizationTagsList(t *testing.T) {
 		for _, tag := range tags.Items {
 			// ensure tag specified in filter param was omitted from results
 			assert.NotNil(t, tag.ID, testTagID)
+
+			t.Run("ensure org relation is properly decoded", func(t *testing.T) {
+				assert.NotNil(t, tag.Organization)
+			})
+		}
+	})
+
+	t.Run("with query param", func(t *testing.T) {
+		tags, err := client.OrganizationTags.List(ctx, orgTest.Name, &OrganizationTagsListOptions{
+			ListOptions: ListOptions{
+				PageNumber: 1,
+				PageSize:   5,
+			},
+			Query: testTagName,
+		})
+		require.NoError(t, err)
+
+		assert.Equal(t, 1, len(tags.Items))
+
+		for _, tag := range tags.Items {
+			assert.Equal(t, tag.Name, testTagName)
 
 			t.Run("ensure org relation is properly decoded", func(t *testing.T) {
 				assert.NotNil(t, tag.Organization)

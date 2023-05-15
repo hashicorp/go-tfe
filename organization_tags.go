@@ -56,6 +56,9 @@ type OrganizationTagsListOptions struct {
 	ListOptions
 	// Optional:
 	Filter string `url:"filter[exclude][taggable][id],omitempty"`
+
+	// Optional: A search query string. Organization tags are searchable by name likeness.
+	Query string `url:"q,omitempty"`
 }
 
 // OrganizationTagsDeleteOptions represents the request body for deleting a tag in an organization
