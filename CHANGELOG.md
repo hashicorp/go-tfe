@@ -1,4 +1,4 @@
-# Unreleased
+# v1.25.0
 
 ## Enhancements
 * Workspace safe delete 409 conflict errors associated with resources still being managed or being processed (indicating that you should try again later) are now the named errors  `ErrWorkspaceStillProcessing` and `ErrWorkspaceNotSafeToDelete` by @brandonc [#703](https://github.com/hashicorp/go-tfe/pull/703)
