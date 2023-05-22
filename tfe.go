@@ -871,6 +871,19 @@ func checkResponseCode(r *http.Response) error {
 			return ErrWorkspaceNotLocked
 		case strings.HasSuffix(r.Request.URL.Path, "actions/force-unlock"):
 			return ErrWorkspaceNotLocked
+		case strings.HasSuffix(r.Request.URL.Path, "actions/safe-delete"):
+			errs, err = decodeErrorPayload(r)
+			if err != nil {
+				return err
+			}
+			if errorPayloadContains(errs, "locked") {
+				return ErrWorkspaceLocked
+			}
+			if errorPayloadContains(errs, "being processed") {
+				return ErrWorkspaceStillProcessing
+			}
+
+			return ErrWorkspaceNotSafeToDelete
 		}
 	}
 
