@@ -73,6 +73,11 @@ var (
 	// preserve go-tfe version compatibility with the error constructed at runtime before it was
 	// defined here.
 	ErrWorkspaceNotSafeToDelete = errors.New("conflict\nworkspace cannot be safely deleted because it is still managing resources")
+
+	// ErrWorkspaceLockedCannotDelete is returned when a workspace cannot be safely deleted when
+	// it is locked. "conflict" followed by newline is used to preserve go-tfe version
+	// compatibility with the error constructed at runtime before it was defined here.
+	ErrWorkspaceLockedCannotDelete = errors.New("conflict\nWorkspace is currently locked. Workspace must be unlocked before it can be safely deleted")
 )
 
 // Invalid values for resources/struct fields
