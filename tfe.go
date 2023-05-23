@@ -877,7 +877,7 @@ func checkResponseCode(r *http.Response) error {
 				return err
 			}
 			if errorPayloadContains(errs, "locked") {
-				return ErrWorkspaceLocked
+				return ErrWorkspaceLockedCannotDelete
 			}
 			if errorPayloadContains(errs, "being processed") {
 				return ErrWorkspaceStillProcessing

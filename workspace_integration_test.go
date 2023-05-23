@@ -1550,7 +1550,7 @@ func TestWorkspacesSafeDelete(t *testing.T) {
 		require.True(t, w.Locked)
 
 		err = client.Workspaces.SafeDelete(ctx, orgTest.Name, wTest.Name)
-		assert.True(t, errors.Is(err, ErrWorkspaceLocked))
+		assert.True(t, errors.Is(err, ErrWorkspaceLockedCannotDelete))
 	})
 
 	t.Run("when workspace has resources under management", func(t *testing.T) {
@@ -1609,7 +1609,7 @@ func TestWorkspacesSafeDeleteByID(t *testing.T) {
 		require.True(t, w.Locked)
 
 		err = client.Workspaces.SafeDeleteByID(ctx, wTest.ID)
-		assert.True(t, errors.Is(err, ErrWorkspaceLocked))
+		assert.True(t, errors.Is(err, ErrWorkspaceLockedCannotDelete))
 	})
 
 	t.Run("when workspace has resources under management", func(t *testing.T) {
