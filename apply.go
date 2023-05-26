@@ -54,6 +54,7 @@ type Apply struct {
 	ResourceAdditions    int                    `jsonapi:"attr,resource-additions"`
 	ResourceChanges      int                    `jsonapi:"attr,resource-changes"`
 	ResourceDestructions int                    `jsonapi:"attr,resource-destructions"`
+	ResourceImports      int                    `jsonapi:"attr,resource-imports"`
 	Status               ApplyStatus            `jsonapi:"attr,status"`
 	StatusTimestamps     *ApplyStatusTimestamps `jsonapi:"attr,status-timestamps"`
 }

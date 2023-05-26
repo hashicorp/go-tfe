@@ -53,14 +53,16 @@ const (
 
 // Plan represents a Terraform Enterprise plan.
 type Plan struct {
-	ID                   string                `jsonapi:"primary,plans"`
-	HasChanges           bool                  `jsonapi:"attr,has-changes"`
-	LogReadURL           string                `jsonapi:"attr,log-read-url"`
-	ResourceAdditions    int                   `jsonapi:"attr,resource-additions"`
-	ResourceChanges      int                   `jsonapi:"attr,resource-changes"`
-	ResourceDestructions int                   `jsonapi:"attr,resource-destructions"`
-	Status               PlanStatus            `jsonapi:"attr,status"`
-	StatusTimestamps     *PlanStatusTimestamps `jsonapi:"attr,status-timestamps"`
+	ID                     string                `jsonapi:"primary,plans"`
+	HasChanges             bool                  `jsonapi:"attr,has-changes"`
+	GeneratedConfiguration bool                  `jsonapi:"attr,generated-configuration"`
+	LogReadURL             string                `jsonapi:"attr,log-read-url"`
+	ResourceAdditions      int                   `jsonapi:"attr,resource-additions"`
+	ResourceChanges        int                   `jsonapi:"attr,resource-changes"`
+	ResourceDestructions   int                   `jsonapi:"attr,resource-destructions"`
+	ResourceImports        int                   `jsonapi:"attr,resource-imports"`
+	Status                 PlanStatus            `jsonapi:"attr,status"`
+	StatusTimestamps       *PlanStatusTimestamps `jsonapi:"attr,status-timestamps"`
 
 	// Relations
 	Exports []*PlanExport `jsonapi:"relation,exports"`
