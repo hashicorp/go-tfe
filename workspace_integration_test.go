@@ -35,10 +35,6 @@ type WorkspaceTableTest struct {
 
 func TestWorkspacesList(t *testing.T) {
 	client := testClient(t)
-
-	fmt.Println("host: " + client.baseURL.Host)
-	fmt.Println("token: " + client.token)
-
 	ctx := context.Background()
 
 	orgTest, orgTestCleanup := createOrganization(t, client)

@@ -5,7 +5,6 @@ package tfe
 
 import (
 	"context"
-	"fmt"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -38,9 +37,6 @@ func TestAdminUsers_List(t *testing.T) {
 				PageSize:   100,
 			},
 		})
-
-		fmt.Printf("%v+", ul.Items)
-
 		require.NoError(t, err)
 		// Out of range page number, so the items should be empty
 		assert.Empty(t, ul.Items)
