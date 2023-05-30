@@ -1,3 +1,9 @@
+# v1.26.0
+
+## Enhancements
+
+* Adds BETA fields `ResourceImports` count to both `Plan` and `Apply` types as well as `AllowConfigGeneration` to the `Run` struct type. These fields are not generally available and are subject to change in a future release.
+
 # v1.25.1
 
 ## Bug Fixes
