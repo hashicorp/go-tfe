@@ -1,3 +1,8 @@
+# v1.26.0
+
+## Enhancements
+* Add beta attributes `Run.AllowConfigGeneration`, `Plan.ResourceImports`, `Plan.GeneratedConfiguration`, and `Apply.ResourceImports` in support of the upcoming configuration-driven import features in Terraform 1.5.
+
 # v1.25.1
 
 ## Bug Fixes
