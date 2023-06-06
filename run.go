@@ -79,9 +79,11 @@ const (
 	RunPostPlanAwaitingDecision RunStatus = "post_plan_awaiting_decision"
 	RunPostPlanCompleted        RunStatus = "post_plan_completed"
 	RunPostPlanRunning          RunStatus = "post_plan_running"
+	RunPreApplyRunning          RunStatus = "pre_apply_running"
 	RunPrePlanCompleted         RunStatus = "pre_plan_completed"
 	RunPrePlanRunning           RunStatus = "pre_plan_running"
 	RunQueuing                  RunStatus = "queuing"
+	RunQueuingApply             RunStatus = "queuing_apply"
 )
 
 // RunSource represents a source type of a run.
