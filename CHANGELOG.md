@@ -1,3 +1,8 @@
+# UNRELEASED
+
+## Bug Fixes
+* AgentPool `Update` was previously not able to remove all allowed workspaces from an agent pool. `AllowedWorkspaces` has been removed from `AgentPoolUpdateOptions` and are now handled by a separate `UpdateAllowedWorkspaces` method using `AgentPoolAllowedWorkspacesUpdateOptions`.
+
 # v1.26.0
 
 ## Enhancements
@@ -22,11 +27,6 @@ to the original message using the error `ErrWorkspaceLockedCannotDelete` instead
 * Adds support for a new variable field `version-id` by @arybolovlev [#697](https://github.com/hashicorp/go-tfe/pull/697)
 * Adds `ExpiredAt` field to `OrganizationToken`, `TeamToken`, and `UserToken`. This enhancement will be available in TFE release, v202305-1. @JuliannaTetreault [#672](https://github.com/hashicorp/go-tfe/pull/672)
 * Adds `ContextWithResponseHeaderHook` context for use with the ClientRequest Do method that allows callers to define a callback which receives raw http Response headers.  @apparentlymart [#689](https://github.com/hashicorp/go-tfe/pull/689)
-
-# UNRELEASED
-
-## Bug Fixes
-* AgentPool `Update` was previously not able to remove all allowed workspaces from an agent pool. `AllowedWorkspaces` has been removed from `AgentPoolUpdateOptions` and are now handled by a separate `UpdateAllowedWorkspaces` method using `AgentPoolAllowedWorkspacesUpdateOptions`.
 
 
 # v1.23.0
