@@ -1,3 +1,17 @@
+# UNRELEASED
+
+## Enhancements
+* Adds `RunPreApplyRunning` and `RunQueuingApply` run statuses by @uk1288 [#712](https://github.com/hashicorp/go-tfe/pull/712)
+
+## Bug Fixes
+* AgentPool `Update` was previously not able to remove all allowed workspaces from an agent pool. `AllowedWorkspaces` has been removed from `AgentPoolUpdateOptions` and are now handled by a separate `UpdateAllowedWorkspaces` method using `AgentPoolAllowedWorkspacesUpdateOptions`.
+
+# v1.26.0
+
+## Enhancements
+
+* Adds BETA fields `ResourceImports` count to both `Plan` and `Apply` types as well as `AllowConfigGeneration` to the `Run` struct type. These fields are not generally available and are subject to change in a future release.
+
 # v1.25.1
 
 ## Bug Fixes
@@ -16,6 +30,7 @@ to the original message using the error `ErrWorkspaceLockedCannotDelete` instead
 * Adds support for a new variable field `version-id` by @arybolovlev [#697](https://github.com/hashicorp/go-tfe/pull/697)
 * Adds `ExpiredAt` field to `OrganizationToken`, `TeamToken`, and `UserToken`. This enhancement will be available in TFE release, v202305-1. @JuliannaTetreault [#672](https://github.com/hashicorp/go-tfe/pull/672)
 * Adds `ContextWithResponseHeaderHook` context for use with the ClientRequest Do method that allows callers to define a callback which receives raw http Response headers.  @apparentlymart [#689](https://github.com/hashicorp/go-tfe/pull/689)
+
 
 # v1.23.0
 
