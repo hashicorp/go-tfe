@@ -8,11 +8,24 @@ import (
 	"context"
 	"fmt"
 	"net/url"
+	"strings"
 	"time"
+
+	"golang.org/x/sync/errgroup"
 )
 
 // Compile-time proof of interface implementation.
 var _ StateVersions = (*stateVersions)(nil)
+
+// StateVersionStatus are available state version status values
+type StateVersionStatus string
+
+// Available state version statuses.
+const (
+	StateVersionPending   StateVersionStatus = "pending"
+	StateVersionFinalized StateVersionStatus = "finalized"
+	StateVersionDiscarded StateVersionStatus = "discarded"
+)
 
 // StateVersions describes all the state version related methods that
 // the Terraform Enterprise API supports.
@@ -25,6 +38,12 @@ type StateVersions interface {
 
 	// Create a new state version for the given workspace.
 	Create(ctx context.Context, workspaceID string, options StateVersionCreateOptions) (*StateVersion, error)
+
+	// Upload creates a new state version but uploads the state content directly to the object store.
+	// This is a more resilient form of Create and is the recommended approach to creating state versions.
+	//
+	// **Note: This method is still in BETA and subject to change.**
+	Upload(ctx context.Context, workspaceID string, options StateVersionUploadOptions) (*StateVersion, error)
 
 	// Read a state version by its ID.
 	Read(ctx context.Context, svID string) (*StateVersion, error)
@@ -60,12 +79,16 @@ type StateVersionList struct {
 
 // StateVersion represents a Terraform Enterprise state version.
 type StateVersion struct {
-	ID           string    `jsonapi:"primary,state-versions"`
-	CreatedAt    time.Time `jsonapi:"attr,created-at,iso8601"`
-	DownloadURL  string    `jsonapi:"attr,hosted-state-download-url"`
-	Serial       int64     `jsonapi:"attr,serial"`
-	VCSCommitSHA string    `jsonapi:"attr,vcs-commit-sha"`
-	VCSCommitURL string    `jsonapi:"attr,vcs-commit-url"`
+	ID              string             `jsonapi:"primary,state-versions"`
+	CreatedAt       time.Time          `jsonapi:"attr,created-at,iso8601"`
+	DownloadURL     string             `jsonapi:"attr,hosted-state-download-url"`
+	UploadURL       string             `jsonapi:"attr,hosted-state-upload-url"`
+	Status          StateVersionStatus `jsonapi:"attr,status"`
+	JSONUploadURL   string             `jsonapi:"attr,hosted-json-state-upload-url"`
+	JSONDownloadURL string             `jsonapi:"attr,hosted-json-state-download-url"`
+	Serial          int64              `jsonapi:"attr,serial"`
+	VCSCommitSHA    string             `jsonapi:"attr,vcs-commit-sha"`
+	VCSCommitURL    string             `jsonapi:"attr,vcs-commit-url"`
 	// Whether Terraform Cloud has finished populating any StateVersion fields that required async processing.
 	// If `false`, some fields may appear empty even if they should actually contain data; see comments on
 	// individual fields for details.
@@ -147,8 +170,8 @@ type StateVersionCreateOptions struct {
 	// Required: The serial of the state.
 	Serial *int64 `jsonapi:"attr,serial"`
 
-	// Required: The base64 encoded state.
-	State *string `jsonapi:"attr,state"`
+	// Optional: The base64 encoded state.
+	State *string `jsonapi:"attr,state,omitempty"`
 
 	// Optional: Force can be set to skip certain validations. Wrong use
 	// of this flag can cause data loss, so USE WITH CAUTION!
@@ -171,6 +194,13 @@ type StateVersionCreateOptions struct {
 	//
 	// **Note**: This field is in BETA, subject to change and not widely available yet.
 	JSONStateOutputs *string `jsonapi:"attr,json-state-outputs,omitempty"`
+}
+
+type StateVersionUploadOptions struct {
+	StateVersionCreateOptions
+
+	RawState     []byte
+	RawJSONState []byte
 }
 
 type StateVersionModules struct {
@@ -241,6 +271,40 @@ func (s *stateVersions) Create(ctx context.Context, workspaceID string, options 
 	}
 
 	return sv, nil
+}
+
+// Upload creates a new state version but uploads the state content directly to the object store.
+// This is a more resilient form of Create and is the recommended approach to creating state versions.
+//
+// **Note: This method is still in BETA and subject to change.**
+func (s *stateVersions) Upload(ctx context.Context, workspaceID string, options StateVersionUploadOptions) (*StateVersion, error) {
+	if err := options.valid(); err != nil {
+		return nil, err
+	}
+
+	sv, err := s.Create(ctx, workspaceID, options.StateVersionCreateOptions)
+	if err != nil {
+		if strings.Contains(err.Error(), "param is missing or the value is empty: state") {
+			return nil, ErrStateVersionUploadNotSupported
+		}
+	}
+
+	g, _ := errgroup.WithContext(ctx)
+	g.Go(func() error {
+		return s.client.doForeignPUTRequest(ctx, sv.UploadURL, bytes.NewReader(options.RawState))
+	})
+	if options.RawJSONState != nil {
+		g.Go(func() error {
+			return s.client.doForeignPUTRequest(ctx, sv.JSONUploadURL, bytes.NewReader(options.RawJSONState))
+		})
+	}
+
+	if err := g.Wait(); err != nil {
+		return nil, err
+	}
+
+	// Re-read the state version to get the updated status, if available
+	return s.Read(ctx, sv.ID)
 }
 
 // Read a state version by its ID.
@@ -362,8 +426,18 @@ func (o StateVersionCreateOptions) valid() error {
 	if o.Serial == nil {
 		return ErrRequiredSerial
 	}
-	if !validString(o.State) {
-		return ErrRequiredState
+	return nil
+}
+
+func (o StateVersionUploadOptions) valid() error {
+	if err := o.StateVersionCreateOptions.valid(); err != nil {
+		return err
+	}
+	if o.State != nil || o.JSONState != nil {
+		return ErrStateMustBeOmitted
+	}
+	if o.RawState == nil {
+		return ErrRequiredRawState
 	}
 	return nil
 }

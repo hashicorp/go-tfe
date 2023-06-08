@@ -27,8 +27,10 @@ type ClientRequest struct {
 func (r ClientRequest) Do(ctx context.Context, model interface{}) error {
 	// Wait will block until the limiter can obtain a new token
 	// or returns an error if the given context is canceled.
-	if err := r.limiter.Wait(ctx); err != nil {
-		return err
+	if r.limiter != nil {
+		if err := r.limiter.Wait(ctx); err != nil {
+			return err
+		}
 	}
 
 	// If the caller provided a response header hook then we'll call it
@@ -81,8 +83,10 @@ func (r ClientRequest) Do(ctx context.Context, model interface{}) error {
 func (r *ClientRequest) doIPRanges(ctx context.Context, ir *IPRange) error {
 	// Wait will block until the limiter can obtain a new token
 	// or returns an error if the given context is canceled.
-	if err := r.limiter.Wait(ctx); err != nil {
-		return err
+	if r.limiter != nil {
+		if err := r.limiter.Wait(ctx); err != nil {
+			return err
+		}
 	}
 
 	// Add the context to the request.

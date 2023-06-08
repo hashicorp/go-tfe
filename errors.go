@@ -353,4 +353,10 @@ var (
 	ErrRequiredRegistryModule = errors.New("registry module is required")
 
 	ErrTerraformVersionValidForPlanOnly = errors.New("setting terraform-version is only valid when plan-only is set to true")
+
+	ErrStateMustBeOmitted = errors.New("when uploading state, the State and JSONState strings must be omitted from options")
+
+	ErrRequiredRawState = errors.New("RawState is required")
+
+	ErrStateVersionUploadNotSupported = errors.New("upload not supported by this version of Terraform Enterprise")
 )
