@@ -6,7 +6,7 @@
 * Adds `RunPreApplyRunning` and `RunQueuingApply` run statuses by @uk1288 [#712](https://github.com/hashicorp/go-tfe/pull/712)
 
 ## Bug Fixes
-* AgentPool `Update` was previously not able to remove all allowed workspaces from an agent pool. `AllowedWorkspaces` has been removed from `AgentPoolUpdateOptions` and are now handled by a separate `UpdateAllowedWorkspaces` method using `AgentPoolAllowedWorkspacesUpdateOptions` by @hs26gill [#701](https://github.com/hashicorp/go-tfe/pull/701)
+* AgentPool `Update` is not able to remove all allowed workspaces from an agent pool. That operation is now handled by a separate `UpdateAllowedWorkspaces` method using `AgentPoolAllowedWorkspacesUpdateOptions` by @hs26gill [#701](https://github.com/hashicorp/go-tfe/pull/701)
 
 # v1.26.0
 
