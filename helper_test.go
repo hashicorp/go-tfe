@@ -73,6 +73,58 @@ func testClient(t *testing.T) *Client {
 	return client
 }
 
+type adminRoleType string
+
+const (
+	siteAdmin                adminRoleType = "site-admin"
+	configurationAdmin       adminRoleType = "configuration"
+	provisionLicensesAdmin   adminRoleType = "provision-licenses"
+	subscriptionAdmin        adminRoleType = "subscription"
+	supportAdmin             adminRoleType = "support"
+	securityMaintenanceAdmin adminRoleType = "security-maintenance"
+	versionMaintenanceAdmin  adminRoleType = "version-maintenance"
+)
+
+func getTokenForAdminRole(adminRole adminRoleType) string {
+	token := ""
+
+	switch adminRole {
+	case siteAdmin:
+		token = os.Getenv("TFE_ADMIN_SITE_ADMIN_TOKEN")
+	case configurationAdmin:
+		token = os.Getenv("TFE_ADMIN_CONFIGURATION_TOKEN")
+	case provisionLicensesAdmin:
+		token = os.Getenv("TFE_ADMIN_PROVISION_LICENSES_TOKEN")
+	case subscriptionAdmin:
+		token = os.Getenv("TFE_ADMIN_SUBSCRIPTION_TOKEN")
+	case supportAdmin:
+		token = os.Getenv("TFE_ADMIN_SUPPORT_TOKEN")
+	case securityMaintenanceAdmin:
+		token = os.Getenv("TFE_ADMIN_SECURITY_MAINTENANCE_TOKEN")
+	case versionMaintenanceAdmin:
+		token = os.Getenv("TFE_ADMIN_VERSION_MAINTENANCE_TOKEN")
+	}
+
+	return token
+}
+
+func testAdminClient(t *testing.T, adminRole adminRoleType) *Client {
+	token := getTokenForAdminRole(adminRole)
+	if token == "" {
+		t.Fatal("missing API token for admin role " + adminRole)
+	}
+
+	client, err := NewClient(&Config{
+		Token:             token,
+		RetryServerErrors: true,
+	})
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	return client
+}
+
 func testAuditTrailClient(t *testing.T, userClient *Client, org *Organization) *Client {
 	upgradeOrganizationSubscription(t, userClient, org)
 
@@ -2161,10 +2213,11 @@ func createVariableSetVariable(t *testing.T, client *Client, vs *VariableSet, op
 // Attempts to upgrade an organization to the business plan. Requires a user token with admin access.
 func upgradeOrganizationSubscription(t *testing.T, client *Client, organization *Organization) {
 	if enterpriseEnabled() {
-		t.Skip("Can not upgrade an organization's subscription when enterprise is enabled. Set ENABLE_TFE=0 to run.")
+		t.Skip("Cannot upgrade an organization's subscription when enterprise is enabled. Set ENABLE_TFE=0 to run.")
 	}
 
-	req, err := client.NewRequest("GET", "admin/feature-sets", featureSetListOptions{
+	adminClient := testAdminClient(t, provisionLicensesAdmin)
+	req, err := adminClient.NewRequest("GET", "admin/feature-sets", featureSetListOptions{
 		Q: "Business",
 	})
 	if err != nil {
@@ -2191,7 +2244,7 @@ func upgradeOrganizationSubscription(t *testing.T, client *Client, organization 
 	}
 
 	u := fmt.Sprintf("admin/organizations/%s/subscription", url.QueryEscape(organization.Name))
-	req, err = client.NewRequest("POST", u, &opts)
+	req, err = adminClient.NewRequest("POST", u, &opts)
 	if err != nil {
 		t.Fatalf("Failed to create request: %v", err)
 		return

@@ -196,6 +196,9 @@ type AgentPoolUpdateOptions struct {
 
 	// True if the agent pool is organization scoped, false otherwise.
 	OrganizationScoped *bool `jsonapi:"attr,organization-scoped,omitempty"`
+
+	// A new list of workspaces that are associated with an agent pool.
+	AllowedWorkspaces []*Workspace `jsonapi:"relation,allowed-workspaces,omitempty"`
 }
 
 // AgentPoolUpdateAllowedWorkspacesOptions represents the options for updating the allowed workspace on an agent pool
@@ -211,6 +214,7 @@ type AgentPoolAllowedWorkspacesUpdateOptions struct {
 }
 
 // Update an agent pool by its ID.
+// **Note:** This method cannot be used to clear the allowed workspaces field, instead use UpdateAllowedWorkspaces
 func (s *agentPools) Update(ctx context.Context, agentPoolID string, options AgentPoolUpdateOptions) (*AgentPool, error) {
 	if !validStringID(&agentPoolID) {
 		return nil, ErrInvalidAgentPoolID
