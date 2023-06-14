@@ -6,6 +6,7 @@
 * Adds `RunPreApplyRunning` and `RunQueuingApply` run statuses by @uk1288 [#712](https://github.com/hashicorp/go-tfe/pull/712)
 * Update `Workspaces` to include associated `project` resource by @glennsarti [#714](https://github.com/hashicorp/go-tfe/pull/714)
 * Adds BETA method `Upload` method to `StateVersions` and support for pending state versions by @brandonc [#717](https://github.com/hashicorp/go-tfe/pull/717)
+* Added ContextWithResponseHeaderHook support to `IPRanges` by @brandonc [#717](https://github.com/hashicorp/go-tfe/pull/717)
 
 ## Bug Fixes
 * AgentPool `Update` is not able to remove all allowed workspaces from an agent pool. That operation is now handled by a separate `UpdateAllowedWorkspaces` method using `AgentPoolAllowedWorkspacesUpdateOptions` by @hs26gill [#701](https://github.com/hashicorp/go-tfe/pull/701)

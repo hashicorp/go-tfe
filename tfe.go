@@ -198,14 +198,17 @@ type Meta struct {
 	IPRanges IPRanges
 }
 
-func (c *Client) doForeignPUTRequest(ctx context.Context, foreignUrl string, data io.Reader) error {
-	u, err := url.Parse(foreignUrl)
+// doForeignPUTRequest performs a PUT request using the specific data body. The Content-Type
+// header is set to application/octet-stream but no Authentication header is sent. No response
+// body is decoded.
+func (c *Client) doForeignPUTRequest(ctx context.Context, foreignURL string, data io.Reader) error {
+	u, err := url.Parse(foreignURL)
 	if err != nil {
 		return fmt.Errorf("specified URL was not valid: %w", err)
 	}
 
 	reqHeaders := make(http.Header)
-	reqHeaders.Set("Accept", "application/json")
+	reqHeaders.Set("Accept", "application/json, */*")
 	reqHeaders.Set("Content-Type", "application/octet-stream")
 
 	req, err := retryablehttp.NewRequest("PUT", u.String(), data)
@@ -229,7 +232,7 @@ func (c *Client) doForeignPUTRequest(ctx context.Context, foreignUrl string, dat
 		Header:           req.Header,
 	}
 
-	return request.Do(ctx, nil)
+	return request.DoJSON(ctx, nil)
 }
 
 func (c *Client) NewRequest(method, path string, reqAttr any) (*ClientRequest, error) {

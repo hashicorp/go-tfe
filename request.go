@@ -78,9 +78,9 @@ func (r ClientRequest) Do(ctx context.Context, model interface{}) error {
 	return unmarshalResponse(resp.Body, model)
 }
 
-// doIPRanges is similar to Do except that The IP ranges API is not returning jsonapi
-// like every other endpoint which means we need to handle it differently.
-func (r *ClientRequest) doIPRanges(ctx context.Context, ir *IPRange) error {
+// DoJSON is similar to Do except that it should be used when a plain JSON response is expected
+// as opposed to json-api.
+func (r *ClientRequest) DoJSON(ctx context.Context, model any) error {
 	// Wait will block until the limiter can obtain a new token
 	// or returns an error if the given context is canceled.
 	if r.limiter != nil {
@@ -92,8 +92,18 @@ func (r *ClientRequest) doIPRanges(ctx context.Context, ir *IPRange) error {
 	// Add the context to the request.
 	contextReq := r.retryableRequest.WithContext(ctx)
 
+	// If the caller provided a response header hook then we'll call it
+	// once we have a response.
+	respHeaderHook := contextResponseHeaderHook(ctx)
+
 	// Execute the request and check the response.
 	resp, err := r.http.Do(contextReq)
+	if resp != nil {
+		// We call the callback whenever there's any sort of response,
+		// even if it's returned in conjunction with an error.
+		respHeaderHook(resp.StatusCode, resp.Header)
+	}
+	defer resp.Body.Close()
 	if err != nil {
 		// If we got an error, and the context has been canceled,
 		// the context's error is probably more useful.
@@ -104,17 +114,27 @@ func (r *ClientRequest) doIPRanges(ctx context.Context, ir *IPRange) error {
 			return err
 		}
 	}
-	defer resp.Body.Close()
 
-	if resp.StatusCode < 200 && resp.StatusCode >= 400 {
-		return fmt.Errorf("error HTTP response while retrieving IP ranges: %d", resp.StatusCode)
+	if resp.StatusCode < 200 || resp.StatusCode >= 400 {
+		return fmt.Errorf("error HTTP response: %d", resp.StatusCode)
 	} else if resp.StatusCode == 304 {
+		// Got a "Not Modified" response, but we can't return a model because there is no response body.
+		// This is necessary to support the IPRanges endpoint, which has the peculiar behavior
+		// of not returning content but allowing a 304 response by optionally sending an
+		// If-Modified-Since header.
 		return nil
 	}
 
-	err = json.NewDecoder(resp.Body).Decode(ir)
-	if err != nil {
+	// Return here if decoding the response isn't needed.
+	if model == nil {
+		return nil
+	}
+
+	// If v implements io.Writer, write the raw response body.
+	if w, ok := model.(io.Writer); ok {
+		_, err := io.Copy(w, resp.Body)
 		return err
 	}
-	return nil
+
+	return json.NewDecoder(resp.Body).Decode(model)
 }
