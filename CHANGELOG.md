@@ -1,8 +1,38 @@
-# Unreleased
+# UNRELEASED
+
+# v1.27.0
+
+## Enhancements
+* Adds `RunPreApplyRunning` and `RunQueuingApply` run statuses by @uk1288 [#712](https://github.com/hashicorp/go-tfe/pull/712)
+
+## Bug Fixes
+* AgentPool `Update` is not able to remove all allowed workspaces from an agent pool. That operation is now handled by a separate `UpdateAllowedWorkspaces` method using `AgentPoolAllowedWorkspacesUpdateOptions` by @hs26gill [#701](https://github.com/hashicorp/go-tfe/pull/701)
+
+# v1.26.0
+
+## Enhancements
+
+* Adds BETA fields `ResourceImports` count to both `Plan` and `Apply` types as well as `AllowConfigGeneration` to the `Run` struct type. These fields are not generally available and are subject to change in a future release.
+
+# v1.25.1
+
+## Bug Fixes
+* Workspace safe delete conflict error when workspace is locked has been restored
+to the original message using the error `ErrWorkspaceLockedCannotDelete` instead of
+`ErrWorkspaceLocked`
+
+# v1.25.0
+
+## Enhancements
+* Workspace safe delete 409 conflict errors associated with resources still being managed or being processed (indicating that you should try again later) are now the named errors  `ErrWorkspaceStillProcessing` and `ErrWorkspaceNotSafeToDelete` by @brandonc [#703](https://github.com/hashicorp/go-tfe/pull/703)
+
+# v1.24.0
 
 ## Enhancements
 * Adds support for a new variable field `version-id` by @arybolovlev [#697](https://github.com/hashicorp/go-tfe/pull/697)
-* Adds `ExpiredAt` field to `OrganizationToken`, `TeamToken`, and `UserToken`. This feature will be available in TFE release, v202305-1. @JuliannaTetreault [#672](https://github.com/hashicorp/go-tfe/pull/672)
+* Adds `ExpiredAt` field to `OrganizationToken`, `TeamToken`, and `UserToken`. This enhancement will be available in TFE release, v202305-1. @JuliannaTetreault [#672](https://github.com/hashicorp/go-tfe/pull/672)
+* Adds `ContextWithResponseHeaderHook` context for use with the ClientRequest Do method that allows callers to define a callback which receives raw http Response headers.  @apparentlymart [#689](https://github.com/hashicorp/go-tfe/pull/689)
+
 
 # v1.23.0
 

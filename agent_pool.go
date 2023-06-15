@@ -32,6 +32,9 @@ type AgentPools interface {
 	// Update an agent pool by its ID.
 	Update(ctx context.Context, agentPool string, options AgentPoolUpdateOptions) (*AgentPool, error)
 
+	// UpdateAllowedWorkspaces updates the list of allowed workspaces associated with an agent pool.
+	UpdateAllowedWorkspaces(ctx context.Context, agentPool string, options AgentPoolAllowedWorkspacesUpdateOptions) (*AgentPool, error)
+
 	// Delete an agent pool by its ID.
 	Delete(ctx context.Context, agentPoolID string) error
 }
@@ -189,7 +192,7 @@ type AgentPoolUpdateOptions struct {
 	Type string `jsonapi:"primary,agent-pools"`
 
 	// A new name to identify the agent pool.
-	Name *string `jsonapi:"attr,name"`
+	Name *string `jsonapi:"attr,name,omitempty"`
 
 	// True if the agent pool is organization scoped, false otherwise.
 	OrganizationScoped *bool `jsonapi:"attr,organization-scoped,omitempty"`
@@ -198,7 +201,20 @@ type AgentPoolUpdateOptions struct {
 	AllowedWorkspaces []*Workspace `jsonapi:"relation,allowed-workspaces,omitempty"`
 }
 
+// AgentPoolUpdateAllowedWorkspacesOptions represents the options for updating the allowed workspace on an agent pool
+type AgentPoolAllowedWorkspacesUpdateOptions struct {
+	// Type is a public field utilized by JSON:API to
+	// set the resource type via the field tag.
+	// It is not a user-defined value and does not need to be set.
+	// https://jsonapi.org/format/#crud-creating
+	Type string `jsonapi:"primary,agent-pools"`
+
+	// A new list of workspaces that are associated with an agent pool.
+	AllowedWorkspaces []*Workspace `jsonapi:"relation,allowed-workspaces"`
+}
+
 // Update an agent pool by its ID.
+// **Note:** This method cannot be used to clear the allowed workspaces field, instead use UpdateAllowedWorkspaces
 func (s *agentPools) Update(ctx context.Context, agentPoolID string, options AgentPoolUpdateOptions) (*AgentPool, error) {
 	if !validStringID(&agentPoolID) {
 		return nil, ErrInvalidAgentPoolID
@@ -206,6 +222,26 @@ func (s *agentPools) Update(ctx context.Context, agentPoolID string, options Age
 
 	if err := options.valid(); err != nil {
 		return nil, err
+	}
+
+	u := fmt.Sprintf("agent-pools/%s", url.QueryEscape(agentPoolID))
+	req, err := s.client.NewRequest("PATCH", u, &options)
+	if err != nil {
+		return nil, err
+	}
+
+	k := &AgentPool{}
+	err = req.Do(ctx, k)
+	if err != nil {
+		return nil, err
+	}
+
+	return k, nil
+}
+
+func (s *agentPools) UpdateAllowedWorkspaces(ctx context.Context, agentPoolID string, options AgentPoolAllowedWorkspacesUpdateOptions) (*AgentPool, error) {
+	if !validStringID(&agentPoolID) {
+		return nil, ErrInvalidAgentPoolID
 	}
 
 	u := fmt.Sprintf("agent-pools/%s", url.QueryEscape(agentPoolID))

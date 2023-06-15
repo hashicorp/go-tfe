@@ -123,3 +123,18 @@ func (mr *MockAgentPoolsMockRecorder) Update(ctx, agentPool, options interface{}
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Update", reflect.TypeOf((*MockAgentPools)(nil).Update), ctx, agentPool, options)
 }
+
+// UpdateAllowedWorkspaces mocks base method.
+func (m *MockAgentPools) UpdateAllowedWorkspaces(ctx context.Context, agentPool string, options tfe.AgentPoolAllowedWorkspacesUpdateOptions) (*tfe.AgentPool, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "UpdateAllowedWorkspaces", ctx, agentPool, options)
+	ret0, _ := ret[0].(*tfe.AgentPool)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// UpdateAllowedWorkspaces indicates an expected call of UpdateAllowedWorkspaces.
+func (mr *MockAgentPoolsMockRecorder) UpdateAllowedWorkspaces(ctx, agentPool, options interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdateAllowedWorkspaces", reflect.TypeOf((*MockAgentPools)(nil).UpdateAllowedWorkspaces), ctx, agentPool, options)
+}

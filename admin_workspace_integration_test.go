@@ -22,6 +22,8 @@ import (
 // behavior of these endpoints.
 
 func TestAdminWorkspaces_ListWithFilter(t *testing.T) {
+	skipUnlessEnterprise(t)
+
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -53,6 +55,8 @@ func TestAdminWorkspaces_ListWithFilter(t *testing.T) {
 }
 
 func TestAdminWorkspaces_ListWithSort(t *testing.T) {
+	skipUnlessEnterprise(t)
+
 	client := testClient(t)
 	ctx := context.Background()
 
