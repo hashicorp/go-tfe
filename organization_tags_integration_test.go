@@ -96,15 +96,10 @@ func TestOrganizationTagsList(t *testing.T) {
 		})
 		require.NoError(t, err)
 
-		assert.Equal(t, 1, len(tags.Items))
+		require.Len(t, tags.Items, 1)
 
-		for _, tag := range tags.Items {
-			assert.Equal(t, tag.Name, testTagName)
-
-			t.Run("ensure org relation is properly decoded", func(t *testing.T) {
-				assert.NotNil(t, tag.Organization)
-			})
-		}
+		assert.Equal(t, tags.Items[0].Name, testTagName)
+		assert.NotNil(t, tags.Items[0].Organization)
 	})
 }
 
