@@ -154,10 +154,5 @@ func (p *policySetVersions) Upload(ctx context.Context, psv PolicySetVersion, pa
 		return err
 	}
 
-	req, err := p.client.NewRequest("PUT", uploadURL, body)
-	if err != nil {
-		return err
-	}
-
-	return req.Do(ctx, nil)
+	return p.client.doForeignPUTRequest(ctx, uploadURL, body)
 }

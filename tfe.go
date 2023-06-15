@@ -198,11 +198,48 @@ type Meta struct {
 	IPRanges IPRanges
 }
 
-func (c *Client) NewRequest(method, path string, reqAttr interface{}) (*ClientRequest, error) {
+// doForeignPUTRequest performs a PUT request using the specific data body. The Content-Type
+// header is set to application/octet-stream but no Authentication header is sent. No response
+// body is decoded.
+func (c *Client) doForeignPUTRequest(ctx context.Context, foreignURL string, data io.Reader) error {
+	u, err := url.Parse(foreignURL)
+	if err != nil {
+		return fmt.Errorf("specified URL was not valid: %w", err)
+	}
+
+	reqHeaders := make(http.Header)
+	reqHeaders.Set("Accept", "application/json, */*")
+	reqHeaders.Set("Content-Type", "application/octet-stream")
+
+	req, err := retryablehttp.NewRequest("PUT", u.String(), data)
+	if err != nil {
+		return err
+	}
+
+	// Set the default headers.
+	for k, v := range c.headers {
+		req.Header[k] = v
+	}
+
+	// Set the request specific headers.
+	for k, v := range reqHeaders {
+		req.Header[k] = v
+	}
+
+	request := &ClientRequest{
+		retryableRequest: req,
+		http:             c.http,
+		Header:           req.Header,
+	}
+
+	return request.DoJSON(ctx, nil)
+}
+
+func (c *Client) NewRequest(method, path string, reqAttr any) (*ClientRequest, error) {
 	return c.NewRequestWithAdditionalQueryParams(method, path, reqAttr, nil)
 }
 
-func (c *Client) NewRequestWithAdditionalQueryParams(method, path string, reqAttr interface{}, additionalQueryParams map[string][]string) (*ClientRequest, error) {
+func (c *Client) NewRequestWithAdditionalQueryParams(method, path string, reqAttr any, additionalQueryParams map[string][]string) (*ClientRequest, error) {
 	var u *url.URL
 	var err error
 	if strings.Contains(path, "/api/registry/") {
@@ -221,7 +258,7 @@ func (c *Client) NewRequestWithAdditionalQueryParams(method, path string, reqAtt
 	reqHeaders := make(http.Header)
 	reqHeaders.Set("Authorization", "Bearer "+c.token)
 
-	var body interface{}
+	var body any
 	switch method {
 	case "GET":
 		reqHeaders.Set("Accept", ContentTypeJSONAPI)

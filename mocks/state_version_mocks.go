@@ -154,3 +154,18 @@ func (mr *MockStateVersionsMockRecorder) ReadWithOptions(ctx, svID, options inte
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ReadWithOptions", reflect.TypeOf((*MockStateVersions)(nil).ReadWithOptions), ctx, svID, options)
 }
+
+// Upload mocks base method.
+func (m *MockStateVersions) Upload(ctx context.Context, workspaceID string, options tfe.StateVersionUploadOptions) (*tfe.StateVersion, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Upload", ctx, workspaceID, options)
+	ret0, _ := ret[0].(*tfe.StateVersion)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// Upload indicates an expected call of Upload.
+func (mr *MockStateVersionsMockRecorder) Upload(ctx, workspaceID, options interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Upload", reflect.TypeOf((*MockStateVersions)(nil).Upload), ctx, workspaceID, options)
+}

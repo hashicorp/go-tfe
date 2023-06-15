@@ -103,6 +103,84 @@ func TestStateVersionsList(t *testing.T) {
 	})
 }
 
+func TestStateVersionsUpload(t *testing.T) {
+	skipUnlessBeta(t)
+
+	client := testClient(t)
+
+	wTest, wTestCleanup := createWorkspace(t, client, nil)
+	t.Cleanup(wTestCleanup)
+
+	state, err := os.ReadFile("test-fixtures/state-version/terraform.tfstate")
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	jsonState, err := os.ReadFile("test-fixtures/json-state/state.json")
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	jsonStateOutputs, err := os.ReadFile("test-fixtures/json-state-outputs/everything.json")
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	t.Run("can create finalized state versions", func(t *testing.T) {
+		ctx := context.Background()
+		_, err := client.Workspaces.Lock(ctx, wTest.ID, WorkspaceLockOptions{})
+		require.NoError(t, err)
+
+		sv, err := client.StateVersions.Upload(ctx, wTest.ID, StateVersionUploadOptions{
+			StateVersionCreateOptions: StateVersionCreateOptions{
+				Lineage:          String("741c4949-60b9-5bb1-5bf8-b14f4bb14af3"),
+				MD5:              String(fmt.Sprintf("%x", md5.Sum(state))),
+				Serial:           Int64(1),
+				JSONStateOutputs: String(base64.StdEncoding.EncodeToString(jsonStateOutputs)),
+			},
+			RawState:     state,
+			RawJSONState: jsonState,
+		})
+		require.NoError(t, err)
+
+		_, err = client.Workspaces.Unlock(ctx, wTest.ID)
+		require.NoError(t, err)
+
+		assert.NotEmpty(t, sv.DownloadURL)
+		assert.Equal(t, sv.Status, StateVersionFinalized)
+	})
+
+	t.Run("cannot provide base64 state parameter when uploading", func(t *testing.T) {
+		ctx := context.Background()
+		_, err = client.StateVersions.Upload(ctx, wTest.ID, StateVersionUploadOptions{
+			StateVersionCreateOptions: StateVersionCreateOptions{
+				Lineage:          String("741c4949-60b9-5bb1-5bf8-b14f4bb14af3"),
+				MD5:              String(fmt.Sprintf("%x", md5.Sum(state))),
+				Serial:           Int64(1),
+				State:            String(base64.StdEncoding.EncodeToString(state)),
+				JSONStateOutputs: String(base64.StdEncoding.EncodeToString(jsonStateOutputs)),
+			},
+			RawState:     state,
+			RawJSONState: jsonState,
+		})
+		require.ErrorIs(t, err, ErrStateMustBeOmitted)
+	})
+
+	t.Run("RawState parameter is required when uploading", func(t *testing.T) {
+		ctx := context.Background()
+		_, err = client.StateVersions.Upload(ctx, wTest.ID, StateVersionUploadOptions{
+			StateVersionCreateOptions: StateVersionCreateOptions{
+				Lineage:          String("741c4949-60b9-5bb1-5bf8-b14f4bb14af3"),
+				MD5:              String(fmt.Sprintf("%x", md5.Sum(state))),
+				Serial:           Int64(1),
+				JSONStateOutputs: String(base64.StdEncoding.EncodeToString(jsonStateOutputs)),
+			},
+			RawJSONState: jsonState,
+		})
+		require.ErrorIs(t, err, ErrRequiredRawState)
+	})
+}
+
 func TestStateVersionsCreate(t *testing.T) {
 	client := testClient(t)
 	ctx := context.Background()
@@ -124,6 +202,29 @@ func TestStateVersionsCreate(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
+
+	t.Run("can create pending state versions", func(t *testing.T) {
+		skipUnlessBeta(t)
+
+		ctx := context.Background()
+		_, err := client.Workspaces.Lock(ctx, wTest.ID, WorkspaceLockOptions{})
+		if err != nil {
+			t.Fatal(err)
+		}
+
+		_, err = client.StateVersions.Create(ctx, wTest.ID, StateVersionCreateOptions{
+			Lineage: String("741c4949-60b9-5bb1-5bf8-b14f4bb14af3"),
+			MD5:     String(fmt.Sprintf("%x", md5.Sum(state))),
+			Serial:  Int64(1),
+		})
+		require.NoError(t, err)
+
+		// Workspaces must be force-unlocked when there is a pending state version
+		_, err = client.Workspaces.ForceUnlock(ctx, wTest.ID)
+		if err != nil {
+			t.Fatal(err)
+		}
+	})
 
 	t.Run("with valid options", func(t *testing.T) {
 		ctx := context.Background()
@@ -285,22 +386,13 @@ func TestStateVersionsCreate(t *testing.T) {
 		assert.Equal(t, err, ErrRequiredM5)
 	})
 
-	t.Run("withous serial", func(t *testing.T) {
+	t.Run("without serial", func(t *testing.T) {
 		sv, err := client.StateVersions.Create(ctx, wTest.ID, StateVersionCreateOptions{
 			MD5:   String(fmt.Sprintf("%x", md5.Sum(state))),
 			State: String(base64.StdEncoding.EncodeToString(state)),
 		})
 		assert.Nil(t, sv)
 		assert.Equal(t, err, ErrRequiredSerial)
-	})
-
-	t.Run("without state", func(t *testing.T) {
-		sv, err := client.StateVersions.Create(ctx, wTest.ID, StateVersionCreateOptions{
-			MD5:    String(fmt.Sprintf("%x", md5.Sum(state))),
-			Serial: Int64(0),
-		})
-		assert.Nil(t, sv)
-		assert.Equal(t, err, ErrRequiredState)
 	})
 
 	t.Run("with invalid workspace id", func(t *testing.T) {

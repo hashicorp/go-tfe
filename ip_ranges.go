@@ -50,7 +50,7 @@ func (i *ipRanges) Read(ctx context.Context, modifiedSince string) (*IPRange, er
 	}
 
 	ir := &IPRange{}
-	err = req.doIPRanges(ctx, ir)
+	err = req.DoJSON(ctx, ir)
 	if err != nil {
 		return nil, err
 	}

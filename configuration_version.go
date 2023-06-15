@@ -275,12 +275,7 @@ func (s *configurationVersions) Upload(ctx context.Context, uploadURL, path stri
 // **Note**: This method does not validate the content being uploaded and is therefore the caller's
 // responsibility to ensure the raw content is a valid Terraform configuration.
 func (s *configurationVersions) UploadTarGzip(ctx context.Context, uploadURL string, archive io.Reader) error {
-	req, err := s.client.NewRequest("PUT", uploadURL, archive)
-	if err != nil {
-		return err
-	}
-
-	return req.Do(ctx, nil)
+	return s.client.doForeignPUTRequest(ctx, uploadURL, archive)
 }
 
 // Archive a configuration version. This can only be done on configuration versions that

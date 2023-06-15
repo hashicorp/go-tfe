@@ -270,12 +270,7 @@ func (r *registryModules) Upload(ctx context.Context, rmv RegistryModuleVersion,
 // **Note**: This method does not validate the content being uploaded and is therefore the caller's
 // responsibility to ensure the raw content is a valid Terraform configuration.
 func (r *registryModules) UploadTarGzip(ctx context.Context, uploadURL string, archive io.Reader) error {
-	req, err := r.client.NewRequest("PUT", uploadURL, archive)
-	if err != nil {
-		return err
-	}
-
-	return req.Do(ctx, nil)
+	return r.client.doForeignPUTRequest(ctx, uploadURL, archive)
 }
 
 // Create a new registry module without a VCS repo
