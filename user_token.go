@@ -50,12 +50,15 @@ type UserToken struct {
 	Description string    `jsonapi:"attr,description"`
 	LastUsedAt  time.Time `jsonapi:"attr,last-used-at,iso8601"`
 	Token       string    `jsonapi:"attr,token"`
+	ExpiredAt   time.Time `jsonapi:"attr,expired-at,iso8601"`
 }
 
-// UserTokenCreateOptions the options for creating a user token.
+// UserTokenCreateOptions contains the options for creating a user token.
 type UserTokenCreateOptions struct {
-	// Optional: Description of the token
 	Description string `jsonapi:"attr,description,omitempty"`
+	// Optional: The token's expiration date.
+	// This feature is available in TFE release v202305-1 and later
+	ExpiredAt *time.Time `jsonapi:"attr,expired-at,iso8601,omitempty"`
 }
 
 // Create a new user token

@@ -79,9 +79,11 @@ const (
 	RunPostPlanAwaitingDecision RunStatus = "post_plan_awaiting_decision"
 	RunPostPlanCompleted        RunStatus = "post_plan_completed"
 	RunPostPlanRunning          RunStatus = "post_plan_running"
+	RunPreApplyRunning          RunStatus = "pre_apply_running"
 	RunPrePlanCompleted         RunStatus = "pre_plan_completed"
 	RunPrePlanRunning           RunStatus = "pre_plan_running"
 	RunQueuing                  RunStatus = "queuing"
+	RunQueuingApply             RunStatus = "queuing_apply"
 )
 
 // RunSource represents a source type of a run.
@@ -117,6 +119,7 @@ type Run struct {
 	ID                     string               `jsonapi:"primary,runs"`
 	Actions                *RunActions          `jsonapi:"attr,actions"`
 	AutoApply              bool                 `jsonapi:"attr,auto-apply,omitempty"`
+	AllowConfigGeneration  *bool                `jsonapi:"attr,allow-config-generation,omitempty"`
 	AllowEmptyApply        bool                 `jsonapi:"attr,allow-empty-apply"`
 	CreatedAt              time.Time            `jsonapi:"attr,created-at,iso8601"`
 	ForceCancelAvailableAt time.Time            `jsonapi:"attr,force-cancel-available-at,iso8601"`
@@ -256,6 +259,11 @@ type RunCreateOptions struct {
 	// It is not a user-defined value and does not need to be set.
 	// https://jsonapi.org/format/#crud-creating
 	Type string `jsonapi:"primary,runs"`
+
+	// AllowConfigGeneration specifies whether generated resource configuration may be created as a side
+	// effect of an import block in this run. Setting this does not mean that configuration _will_ be generated,
+	// only that it can be.
+	AllowConfigGeneration *bool `jsonapi:"attr,allow-config-generation,omitempty"`
 
 	// AllowEmptyApply specifies whether Terraform can apply the run even when the plan contains no changes.
 	// Often used to upgrade state after upgrading a workspace to a new terraform version.

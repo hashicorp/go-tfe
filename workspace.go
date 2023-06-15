@@ -238,6 +238,7 @@ const (
 	WSReadme                     WSIncludeOpt = "readme"
 	WSOutputs                    WSIncludeOpt = "outputs"
 	WSCurrentStateVer            WSIncludeOpt = "current-state-version"
+	WSProject                    WSIncludeOpt = "project"
 )
 
 // WorkspaceReadOptions represents the options for reading a workspace.

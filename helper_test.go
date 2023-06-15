@@ -73,6 +73,58 @@ func testClient(t *testing.T) *Client {
 	return client
 }
 
+type adminRoleType string
+
+const (
+	siteAdmin                adminRoleType = "site-admin"
+	configurationAdmin       adminRoleType = "configuration"
+	provisionLicensesAdmin   adminRoleType = "provision-licenses"
+	subscriptionAdmin        adminRoleType = "subscription"
+	supportAdmin             adminRoleType = "support"
+	securityMaintenanceAdmin adminRoleType = "security-maintenance"
+	versionMaintenanceAdmin  adminRoleType = "version-maintenance"
+)
+
+func getTokenForAdminRole(adminRole adminRoleType) string {
+	token := ""
+
+	switch adminRole {
+	case siteAdmin:
+		token = os.Getenv("TFE_ADMIN_SITE_ADMIN_TOKEN")
+	case configurationAdmin:
+		token = os.Getenv("TFE_ADMIN_CONFIGURATION_TOKEN")
+	case provisionLicensesAdmin:
+		token = os.Getenv("TFE_ADMIN_PROVISION_LICENSES_TOKEN")
+	case subscriptionAdmin:
+		token = os.Getenv("TFE_ADMIN_SUBSCRIPTION_TOKEN")
+	case supportAdmin:
+		token = os.Getenv("TFE_ADMIN_SUPPORT_TOKEN")
+	case securityMaintenanceAdmin:
+		token = os.Getenv("TFE_ADMIN_SECURITY_MAINTENANCE_TOKEN")
+	case versionMaintenanceAdmin:
+		token = os.Getenv("TFE_ADMIN_VERSION_MAINTENANCE_TOKEN")
+	}
+
+	return token
+}
+
+func testAdminClient(t *testing.T, adminRole adminRoleType) *Client {
+	token := getTokenForAdminRole(adminRole)
+	if token == "" {
+		t.Fatal("missing API token for admin role " + adminRole)
+	}
+
+	client, err := NewClient(&Config{
+		Token:             token,
+		RetryServerErrors: true,
+	})
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	return client
+}
+
 func testAuditTrailClient(t *testing.T, userClient *Client, org *Organization) *Client {
 	upgradeOrganizationSubscription(t, userClient, org)
 
@@ -322,6 +374,32 @@ func createAgentPool(t *testing.T, client *Client, org *Organization) (*AgentPoo
 	pool, err := client.AgentPools.Create(ctx, org.Name, AgentPoolCreateOptions{
 		Name: String(randomString(t)),
 	})
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	return pool, func() {
+		if err := client.AgentPools.Delete(ctx, pool.ID); err != nil {
+			t.Logf("Error destroying agent pool! WARNING: Dangling resources "+
+				"may exist! The full error is shown below.\n\n"+
+				"Agent pool ID: %s\nError: %s", pool.ID, err)
+		}
+
+		if orgCleanup != nil {
+			orgCleanup()
+		}
+	}
+}
+
+func createAgentPoolWithOptions(t *testing.T, client *Client, org *Organization, opts AgentPoolCreateOptions) (*AgentPool, func()) {
+	var orgCleanup func()
+
+	if org == nil {
+		org, orgCleanup = createOrganization(t, client)
+	}
+
+	ctx := context.Background()
+	pool, err := client.AgentPools.Create(ctx, org.Name, opts)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -877,6 +955,32 @@ func createOrganizationToken(t *testing.T, client *Client, org *Organization) (*
 
 	ctx := context.Background()
 	tk, err := client.OrganizationTokens.Create(ctx, org.Name)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	return tk, func() {
+		if err := client.OrganizationTokens.Delete(ctx, org.Name); err != nil {
+			t.Errorf("Error destroying organization token! WARNING: Dangling resources\n"+
+				"may exist! The full error is shown below.\n\n"+
+				"OrganizationToken: %s\nError: %s", tk.ID, err)
+		}
+
+		if orgCleanup != nil {
+			orgCleanup()
+		}
+	}
+}
+
+func createOrganizationTokenWithOptions(t *testing.T, client *Client, org *Organization, options OrganizationTokenCreateOptions) (*OrganizationToken, func()) {
+	var orgCleanup func()
+
+	if org == nil {
+		org, orgCleanup = createOrganization(t, client)
+	}
+
+	ctx := context.Background()
+	tk, err := client.OrganizationTokens.CreateWithOptions(ctx, org.Name, options)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -1727,6 +1831,32 @@ func createTeamToken(t *testing.T, client *Client, tm *Team) (*TeamToken, func()
 	}
 }
 
+func createTeamTokenWithOptions(t *testing.T, client *Client, tm *Team, options TeamTokenCreateOptions) (*TeamToken, func()) {
+	var tmCleanup func()
+
+	if tm == nil {
+		tm, tmCleanup = createTeam(t, client, nil)
+	}
+
+	ctx := context.Background()
+	tt, err := client.TeamTokens.CreateWithOptions(ctx, tm.ID, options)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	return tt, func() {
+		if err := client.TeamTokens.Delete(ctx, tm.ID); err != nil {
+			t.Errorf("Error destroying team token! WARNING: Dangling resources\n"+
+				"may exist! The full error is shown below.\n\n"+
+				"TeamToken: %s\nError: %s", tm.ID, err)
+		}
+
+		if tmCleanup != nil {
+			tmCleanup()
+		}
+	}
+}
+
 func createVariable(t *testing.T, client *Client, w *Workspace) (*Variable, func()) {
 	var wCleanup func()
 
@@ -2083,10 +2213,11 @@ func createVariableSetVariable(t *testing.T, client *Client, vs *VariableSet, op
 // Attempts to upgrade an organization to the business plan. Requires a user token with admin access.
 func upgradeOrganizationSubscription(t *testing.T, client *Client, organization *Organization) {
 	if enterpriseEnabled() {
-		t.Skip("Can not upgrade an organization's subscription when enterprise is enabled. Set ENABLE_TFE=0 to run.")
+		t.Skip("Cannot upgrade an organization's subscription when enterprise is enabled. Set ENABLE_TFE=0 to run.")
 	}
 
-	req, err := client.NewRequest("GET", "admin/feature-sets", featureSetListOptions{
+	adminClient := testAdminClient(t, provisionLicensesAdmin)
+	req, err := adminClient.NewRequest("GET", "admin/feature-sets", featureSetListOptions{
 		Q: "Business",
 	})
 	if err != nil {
@@ -2113,7 +2244,7 @@ func upgradeOrganizationSubscription(t *testing.T, client *Client, organization 
 	}
 
 	u := fmt.Sprintf("admin/organizations/%s/subscription", url.QueryEscape(organization.Name))
-	req, err = client.NewRequest("POST", u, &opts)
+	req, err = adminClient.NewRequest("POST", u, &opts)
 	if err != nil {
 		t.Fatalf("Failed to create request: %v", err)
 		return
@@ -2339,6 +2470,7 @@ func randomSemver(t *testing.T) string {
 
 // skips a test if the environment is for Terraform Cloud.
 func skipUnlessEnterprise(t *testing.T) {
+	t.Helper()
 	if !enterpriseEnabled() {
 		t.Skip("Skipping test related to Terraform Cloud. Set ENABLE_TFE=1 to run.")
 	}
@@ -2346,6 +2478,7 @@ func skipUnlessEnterprise(t *testing.T) {
 
 // skips a test if the environment is for Terraform Enterprise
 func skipIfEnterprise(t *testing.T) {
+	t.Helper()
 	if enterpriseEnabled() {
 		t.Skip("Skipping test related to Terraform Enterprise. Set ENABLE_TFE=0 to run.")
 	}
@@ -2359,6 +2492,7 @@ func skipIfEnterprise(t *testing.T) {
 //
 // See CONTRIBUTING.md for details
 func skipUnlessBeta(t *testing.T) {
+	t.Helper()
 	if !betaFeaturesEnabled() {
 		t.Skip("Skipping test related to a Terraform Cloud beta feature. Set ENABLE_BETA=1 to run.")
 	}
@@ -2366,6 +2500,7 @@ func skipUnlessBeta(t *testing.T) {
 
 // skips a test if the architecture is not linux_amd64
 func skipUnlessLinuxAMD64(t *testing.T) {
+	t.Helper()
 	if !linuxAmd64() {
 		t.Skip("Skipping test if architecture is not linux_amd64")
 	}

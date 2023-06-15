@@ -31,11 +31,20 @@ func (r ClientRequest) Do(ctx context.Context, model interface{}) error {
 		return err
 	}
 
+	// If the caller provided a response header hook then we'll call it
+	// once we have a response.
+	respHeaderHook := contextResponseHeaderHook(ctx)
+
 	// Add the context to the request.
 	reqWithCxt := r.retryableRequest.WithContext(ctx)
 
 	// Execute the request and check the response.
 	resp, err := r.http.Do(reqWithCxt)
+	if resp != nil {
+		// We call the callback whenever there's any sort of response,
+		// even if it's returned in conjunction with an error.
+		respHeaderHook(resp.StatusCode, resp.Header)
+	}
 	if err != nil {
 		// If we got an error, and the context has been canceled,
 		// the context's error is probably more useful.

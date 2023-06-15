@@ -6,10 +6,10 @@ package tfe
 import (
 	"context"
 	"fmt"
-	"testing"
-
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
+	"testing"
+	"time"
 )
 
 // TestUserTokens_List tests listing user tokens
@@ -77,6 +77,27 @@ func TestUserTokens_Create(t *testing.T) {
 		if err != nil {
 			t.Fatal(err)
 		}
+	})
+
+	t.Run("create token without an expiration date", func(t *testing.T) {
+		token, err := client.UserTokens.Create(ctx, user.ID, UserTokenCreateOptions{})
+		tokens = append(tokens, token.ID)
+		if err != nil {
+			t.Fatal(err)
+		}
+		assert.Empty(t, token.ExpiredAt)
+	})
+
+	t.Run("create token with an expiration date", func(t *testing.T) {
+		start := time.Date(2024, 1, 15, 22, 3, 4, 0, time.UTC)
+		token, err := client.UserTokens.Create(ctx, user.ID, UserTokenCreateOptions{
+			ExpiredAt: &start,
+		})
+		tokens = append(tokens, token.ID)
+		if err != nil {
+			t.Fatal(err)
+		}
+		assert.Equal(t, token.ExpiredAt, start)
 	})
 }
 

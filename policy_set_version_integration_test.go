@@ -79,8 +79,8 @@ func TestPolicySetVersionsUpload(t *testing.T) {
 		)
 		require.NoError(t, err)
 
-		// give TFC soe time to process uploading the
-		// policy set version before reaeding..
+		// give TFC some time to process uploading the
+		// policy set version before reading.
 		time.Sleep(waitForPolicySetVersionUpload)
 
 		psv, err = client.PolicySetVersions.Read(ctx, psv.ID)

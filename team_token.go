@@ -22,6 +22,9 @@ type TeamTokens interface {
 	// Create a new team token, replacing any existing token.
 	Create(ctx context.Context, teamID string) (*TeamToken, error)
 
+	// CreateWithOptions a new team token, with options, replacing any existing token.
+	CreateWithOptions(ctx context.Context, teamID string, options TeamTokenCreateOptions) (*TeamToken, error)
+
 	// Read a team token by its ID.
 	Read(ctx context.Context, teamID string) (*TeamToken, error)
 
@@ -41,16 +44,29 @@ type TeamToken struct {
 	Description string    `jsonapi:"attr,description"`
 	LastUsedAt  time.Time `jsonapi:"attr,last-used-at,iso8601"`
 	Token       string    `jsonapi:"attr,token"`
+	ExpiredAt   time.Time `jsonapi:"attr,expired-at,iso8601"`
+}
+
+// TeamTokenCreateOptions contains the options for creating a team token.
+type TeamTokenCreateOptions struct {
+	// Optional: The token's expiration date.
+	// This feature is available in TFE release v202305-1 and later
+	ExpiredAt *time.Time `jsonapi:"attr,expired-at,iso8601,omitempty"`
 }
 
 // Create a new team token, replacing any existing token.
 func (s *teamTokens) Create(ctx context.Context, teamID string) (*TeamToken, error) {
+	return s.CreateWithOptions(ctx, teamID, TeamTokenCreateOptions{})
+}
+
+// CreateWithOptions a new team token, with options, replacing any existing token.
+func (s *teamTokens) CreateWithOptions(ctx context.Context, teamID string, options TeamTokenCreateOptions) (*TeamToken, error) {
 	if !validStringID(&teamID) {
 		return nil, ErrInvalidTeamID
 	}
 
 	u := fmt.Sprintf("teams/%s/authentication-token", url.QueryEscape(teamID))
-	req, err := s.client.NewRequest("POST", u, nil)
+	req, err := s.client.NewRequest("POST", u, &options)
 	if err != nil {
 		return nil, err
 	}

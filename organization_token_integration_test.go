@@ -6,6 +6,7 @@ package tfe
 import (
 	"context"
 	"testing"
+	"time"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
@@ -40,6 +41,54 @@ func TestOrganizationTokensCreate(t *testing.T) {
 	})
 }
 
+func TestOrganizationTokens_CreateWithOptions(t *testing.T) {
+	client := testClient(t)
+	ctx := context.Background()
+
+	orgTest, orgTestCleanup := createOrganization(t, client)
+	defer orgTestCleanup()
+
+	var tkToken string
+	t.Run("with valid options", func(t *testing.T) {
+		ot, err := client.OrganizationTokens.CreateWithOptions(ctx, orgTest.Name, OrganizationTokenCreateOptions{})
+		require.NoError(t, err)
+		require.NotEmpty(t, ot.Token)
+		tkToken = ot.Token
+	})
+
+	t.Run("when a token already exists", func(t *testing.T) {
+		ot, err := client.OrganizationTokens.CreateWithOptions(ctx, orgTest.Name, OrganizationTokenCreateOptions{})
+		require.NoError(t, err)
+		require.NotEmpty(t, ot.Token)
+		assert.NotEqual(t, tkToken, ot.Token)
+	})
+
+	t.Run("without valid organization", func(t *testing.T) {
+		ot, err := client.OrganizationTokens.CreateWithOptions(ctx, badIdentifier, OrganizationTokenCreateOptions{})
+		assert.Nil(t, ot)
+		assert.EqualError(t, err, ErrInvalidOrg.Error())
+	})
+
+	t.Run("without an expiration date", func(t *testing.T) {
+		ot, err := client.OrganizationTokens.CreateWithOptions(ctx, orgTest.Name, OrganizationTokenCreateOptions{})
+		require.NoError(t, err)
+		require.NotEmpty(t, ot.Token)
+		assert.Empty(t, ot.ExpiredAt)
+		tkToken = ot.Token
+	})
+
+	t.Run("with an expiration date", func(t *testing.T) {
+		start := time.Date(2024, 1, 15, 22, 3, 4, 0, time.UTC)
+		ot, err := client.OrganizationTokens.CreateWithOptions(ctx, orgTest.Name, OrganizationTokenCreateOptions{
+			ExpiredAt: &start,
+		})
+		require.NoError(t, err)
+		require.NotEmpty(t, ot.Token)
+		assert.Equal(t, ot.ExpiredAt, start)
+		tkToken = ot.Token
+	})
+}
+
 func TestOrganizationTokensRead(t *testing.T) {
 	client := testClient(t)
 	ctx := context.Background()
@@ -53,6 +102,19 @@ func TestOrganizationTokensRead(t *testing.T) {
 		ot, err := client.OrganizationTokens.Read(ctx, orgTest.Name)
 		require.NoError(t, err)
 		assert.NotEmpty(t, ot)
+
+		otTestCleanup()
+	})
+
+	t.Run("with an expiration date passed as a valid option", func(t *testing.T) {
+		start := time.Date(2024, 1, 15, 22, 3, 4, 0, time.UTC)
+
+		_, otTestCleanup := createOrganizationTokenWithOptions(t, client, orgTest, OrganizationTokenCreateOptions{ExpiredAt: &start})
+
+		ot, err := client.OrganizationTokens.Read(ctx, orgTest.Name)
+		require.NoError(t, err)
+		assert.NotEmpty(t, ot)
+		assert.Equal(t, ot.ExpiredAt, start)
 
 		otTestCleanup()
 	})

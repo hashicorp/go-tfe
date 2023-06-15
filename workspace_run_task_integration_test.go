@@ -18,6 +18,8 @@ func TestWorkspaceRunTasksCreate(t *testing.T) {
 	orgTest, orgTestCleanup := createOrganization(t, client)
 	defer orgTestCleanup()
 
+	upgradeOrganizationSubscription(t, client, orgTest)
+
 	runTaskTest, runTaskTestCleanup := createRunTask(t, client, orgTest)
 	defer runTaskTestCleanup()
 
@@ -53,6 +55,8 @@ func TestWorkspaceRunTasksCreateBeta(t *testing.T) {
 
 	orgTest, orgTestCleanup := createOrganization(t, client)
 	defer orgTestCleanup()
+
+	upgradeOrganizationSubscription(t, client, orgTest)
 
 	runTaskTest, runTaskTestCleanup := createRunTask(t, client, orgTest)
 	defer runTaskTestCleanup()
@@ -92,6 +96,8 @@ func TestWorkspaceRunTasksList(t *testing.T) {
 	orgTest, orgTestCleanup := createOrganization(t, client)
 	defer orgTestCleanup()
 
+	upgradeOrganizationSubscription(t, client, orgTest)
+
 	wkspaceTest, wkspaceTestCleanup := createWorkspace(t, client, orgTest)
 	defer wkspaceTestCleanup()
 
@@ -123,6 +129,8 @@ func TestWorkspaceRunTasksRead(t *testing.T) {
 
 	orgTest, orgTestCleanup := createOrganization(t, client)
 	defer orgTestCleanup()
+
+	upgradeOrganizationSubscription(t, client, orgTest)
 
 	wkspaceTest, wkspaceTestCleanup := createWorkspace(t, client, orgTest)
 	defer wkspaceTestCleanup()
@@ -157,6 +165,8 @@ func TestWorkspaceRunTasksUpdate(t *testing.T) {
 	orgTest, orgTestCleanup := createOrganization(t, client)
 	defer orgTestCleanup()
 
+	upgradeOrganizationSubscription(t, client, orgTest)
+
 	wkspaceTest, wkspaceTestCleanup := createWorkspace(t, client, orgTest)
 	defer wkspaceTestCleanup()
 
@@ -187,6 +197,8 @@ func TestWorkspaceRunTasksUpdateBeta(t *testing.T) {
 
 	orgTest, orgTestCleanup := createOrganization(t, client)
 	defer orgTestCleanup()
+
+	upgradeOrganizationSubscription(t, client, orgTest)
 
 	wkspaceTest, wkspaceTestCleanup := createWorkspace(t, client, orgTest)
 	defer wkspaceTestCleanup()
@@ -219,6 +231,8 @@ func TestWorkspaceRunTasksDelete(t *testing.T) {
 
 	orgTest, orgTestCleanup := createOrganization(t, client)
 	defer orgTestCleanup()
+
+	upgradeOrganizationSubscription(t, client, orgTest)
 
 	wkspaceTest, wkspaceTestCleanup := createWorkspace(t, client, orgTest)
 	defer wkspaceTestCleanup()

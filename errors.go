@@ -53,14 +53,31 @@ var (
 
 // Resource Errors
 var (
-	ErrWorkspaceLocked = errors.New("workspace already locked") // ErrWorkspaceLocked is returned when trying to lock a
-	// locked workspace.
+	// ErrWorkspaceLocked is returned when trying to lock a locked workspace.
+	ErrWorkspaceLocked = errors.New("workspace already locked")
 
-	ErrWorkspaceNotLocked = errors.New("workspace already unlocked") // ErrWorkspaceNotLocked is returned when trying to unlock
-	// a unlocked workspace.
+	// ErrWorkspaceNotLocked is returned when trying to unlock a unlocked workspace.
+	ErrWorkspaceNotLocked = errors.New("workspace already unlocked")
 
-	ErrWorkspaceLockedByRun = errors.New("unable to unlock workspace locked by run") // ErrWorkspaceLockedByRun is returned when trying to unlock a
-	// workspace locked by a run
+	// ErrWorkspaceLockedByRun is returned when trying to unlock a workspace locked by a run.
+	ErrWorkspaceLockedByRun = errors.New("unable to unlock workspace locked by run")
+
+	// ErrWorkspaceStillProcessing is returned when a workspace is still processing state
+	// to determine if it is safe to delete. "conflict" followed by newline is used to
+	// preserve go-tfe version compatibility with the error constructed at runtime before it was
+	// defined here.
+	ErrWorkspaceStillProcessing = errors.New("conflict\nworkspace is still being processed to discover resources")
+
+	// ErrWorkspaceNotSafeToDelete is returned when a workspace has processed state and
+	// is determined to still have resources present. "conflict" followed by newline is used to
+	// preserve go-tfe version compatibility with the error constructed at runtime before it was
+	// defined here.
+	ErrWorkspaceNotSafeToDelete = errors.New("conflict\nworkspace cannot be safely deleted because it is still managing resources")
+
+	// ErrWorkspaceLockedCannotDelete is returned when a workspace cannot be safely deleted when
+	// it is locked. "conflict" followed by newline is used to preserve go-tfe version
+	// compatibility with the error constructed at runtime before it was defined here.
+	ErrWorkspaceLockedCannotDelete = errors.New("conflict\nWorkspace is currently locked. Workspace must be unlocked before it can be safely deleted")
 )
 
 // Invalid values for resources/struct fields

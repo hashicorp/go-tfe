@@ -9,6 +9,7 @@ import (
 	"os"
 	"regexp"
 	"testing"
+	"time"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
@@ -380,6 +381,10 @@ func TestPolicySetsRead(t *testing.T) {
 			"test-fixtures/policy-set-version",
 		)
 		require.NoError(t, err)
+
+		// give TFC some time to process uploading the
+		// policy set version before reading.
+		time.Sleep(waitForPolicySetVersionUpload)
 
 		opts := &PolicySetReadOptions{
 			Include: []PolicySetIncludeOpt{PolicySetCurrentVersion, PolicySetNewestVersion},

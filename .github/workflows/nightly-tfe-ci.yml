@@ -2,14 +2,19 @@ name: Nightly TFE Tests
 on:
   workflow_dispatch:
   schedule:
-    - cron: 25 6 * * *
+    # Monday-Friday at 7:30AM UTC (90 minutes after infrastructure rebuild)
+    - cron: '30 7 * * 1-5'
 
 jobs:
   instance:
     runs-on: ubuntu-latest
     steps:
       - name: terraform-cloud/apply
+<<<<<<< HEAD
         uses: hashicorp-forge/terraform-cloud-action/apply@v1  # TSCCR: no entry for repository "hashicorp-forge/terraform-cloud-action"
+=======
+        uses: hashicorp-forge/terraform-cloud-action/apply@4adbe7eea886138ac10a4c09e63c5c568aaa6672
+>>>>>>> main
         with:
           organization: hashicorp-v2
           workspace: tflocal-go-tfe-nightly
@@ -29,7 +34,11 @@ jobs:
     steps:
       - name: terraform-cloud/outputs
         id: tflocal
+<<<<<<< HEAD
         uses: hashicorp-forge/terraform-cloud-action/outputs@v1  # TSCCR: no entry for repository "hashicorp-forge/terraform-cloud-action"
+=======
+        uses: hashicorp-forge/terraform-cloud-action/outputs@4adbe7eea886138ac10a4c09e63c5c568aaa6672
+>>>>>>> main
         with:
           token: ${{ secrets.TF_WORKFLOW_TFLOCAL_CLOUD_TFC_TOKEN }}
           organization: hashicorp-v2
@@ -97,7 +106,11 @@ jobs:
     if: "${{ always() }}"
     steps:
       - name: terraform-cloud/destroy
+<<<<<<< HEAD
         uses: hashicorp-forge/terraform-cloud-action/destroy@v1  # TSCCR: no entry for repository "hashicorp-forge/terraform-cloud-action"
+=======
+        uses: hashicorp-forge/terraform-cloud-action/destroy@4adbe7eea886138ac10a4c09e63c5c568aaa6672
+>>>>>>> main
         with:
           token: ${{ secrets.TF_WORKFLOW_TFLOCAL_CLOUD_TFC_TOKEN }}
           organization: hashicorp-v2

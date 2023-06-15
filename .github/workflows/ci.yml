@@ -28,7 +28,11 @@ jobs:
     steps:
       - name: terraform-cloud-outputs
         id: tflocal
+<<<<<<< HEAD
         uses: hashicorp-forge/terraform-cloud-action/outputs@v1  # TSCCR: no entry for repository "hashicorp-forge/terraform-cloud-action"
+=======
+        uses: hashicorp-forge/terraform-cloud-action/outputs@4adbe7eea886138ac10a4c09e63c5c568aaa6672
+>>>>>>> main
         with:
           token: ${{ secrets.TF_WORKFLOW_TFLOCAL_CLOUD_TFC_TOKEN }}
           organization: hashicorp-v2
@@ -43,6 +47,13 @@ jobs:
           matrix_total: ${{ matrix.total }}
           address: ${{ fromJSON(steps.tflocal.outputs.workspace-outputs-json).tfe_address }}
           token: ${{ fromJSON(steps.tflocal.outputs.workspace-outputs-json).tfe_token }}
+          admin_configuration_token: ${{ fromJSON(steps.tflocal.outputs.workspace-outputs-json).tfe_admin_token_by_role.configuration }}
+          admin_provision_licenses_token: ${{ fromJSON(steps.tflocal.outputs.workspace-outputs-json).tfe_admin_token_by_role.provision-licenses }}
+          admin_security_maintenance_token: ${{ fromJSON(steps.tflocal.outputs.workspace-outputs-json).tfe_admin_token_by_role.security-maintenance }}
+          admin_site_admin_token: ${{ fromJSON(steps.tflocal.outputs.workspace-outputs-json).tfe_admin_token_by_role.site-admin }}
+          admin_subscription_token: ${{ fromJSON(steps.tflocal.outputs.workspace-outputs-json).tfe_admin_token_by_role.subscription }}
+          admin_support_token: ${{ fromJSON(steps.tflocal.outputs.workspace-outputs-json).tfe_admin_token_by_role.support }}
+          admin_version_maintenance_token: ${{ fromJSON(steps.tflocal.outputs.workspace-outputs-json).tfe_admin_token_by_role.version-maintenance }}
           oauth-client-github-token: ${{ secrets.OAUTH_CLIENT_GITHUB_TOKEN }}
 
   tests-combine-summaries:
