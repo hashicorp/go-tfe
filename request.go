@@ -103,7 +103,6 @@ func (r *ClientRequest) DoJSON(ctx context.Context, model any) error {
 		// even if it's returned in conjunction with an error.
 		respHeaderHook(resp.StatusCode, resp.Header)
 	}
-	defer resp.Body.Close()
 	if err != nil {
 		// If we got an error, and the context has been canceled,
 		// the context's error is probably more useful.
@@ -114,6 +113,7 @@ func (r *ClientRequest) DoJSON(ctx context.Context, model any) error {
 			return err
 		}
 	}
+	defer resp.Body.Close()
 
 	if resp.StatusCode < 200 || resp.StatusCode >= 400 {
 		return fmt.Errorf("error HTTP response: %d", resp.StatusCode)
