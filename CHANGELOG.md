@@ -1,16 +1,23 @@
 # UNRELEASED
 
+# v1.28.0
+
+## Enhancements
+* Update `Workspaces` to include associated `project` resource by @glennsarti [#714](https://github.com/hashicorp/go-tfe/pull/714)
+* Adds BETA method `Upload` method to `StateVersions` and support for pending state versions by @brandonc [#717](https://github.com/hashicorp/go-tfe/pull/717)
+* Adds support for the query parameter `q` to search `Organization Tags` by name by @sharathrnair87 [#720](https://github.com/hashicorp/go-tfe/pull/720)
+* Added ContextWithResponseHeaderHook support to `IPRanges` by @brandonc [#717](https://github.com/hashicorp/go-tfe/pull/717)
+
+## Bug Fixes
+* `ConfigurationVersions`, `PolicySetVersions`, and `RegistryModules` `Upload` methods were sending API credentials to the specified upload URL, which was unnecessary by @brandonc [#717](https://github.com/hashicorp/go-tfe/pull/717)
+
 # v1.27.0
 
 ## Enhancements
 * Adds `RunPreApplyRunning` and `RunQueuingApply` run statuses by @uk1288 [#712](https://github.com/hashicorp/go-tfe/pull/712)
-* Update `Workspaces` to include associated `project` resource by @glennsarti [#714](https://github.com/hashicorp/go-tfe/pull/714)
-* Adds BETA method `Upload` method to `StateVersions` and support for pending state versions by @brandonc [#717](https://github.com/hashicorp/go-tfe/pull/717)
-* Added ContextWithResponseHeaderHook support to `IPRanges` by @brandonc [#717](https://github.com/hashicorp/go-tfe/pull/717)
 
 ## Bug Fixes
 * AgentPool `Update` is not able to remove all allowed workspaces from an agent pool. That operation is now handled by a separate `UpdateAllowedWorkspaces` method using `AgentPoolAllowedWorkspacesUpdateOptions` by @hs26gill [#701](https://github.com/hashicorp/go-tfe/pull/701)
-* `ConfigurationVersions`, `PolicySetVersions`, and `RegistryModules` `Upload` methods were sending API credentials to the specified upload URL, which was unnecessary by @brandonc [#717](https://github.com/hashicorp/go-tfe/pull/717)
 
 # v1.26.0
 
