@@ -140,6 +140,14 @@ func TestRunsListQueryParams(t *testing.T) {
 			},
 		},
 		{
+			description: "with operation of save_plan parameter",
+			options:     &RunListOptions{Operation: string(RunOperationSavePlan), Include: []RunIncludeOpt{RunWorkspace}},
+			assertion: func(tc testCase, rl *RunList, err error) {
+				require.NoError(t, err)
+				assert.Equal(t, 0, len(rl.Items))
+			},
+		},
+		{
 			description: "with mismatch user & commit parameter",
 			options:     &RunListOptions{User: randomString(t), Commit: randomString(t), Include: []RunIncludeOpt{RunWorkspace}},
 			assertion: func(tc testCase, rl *RunList, err error) {
@@ -201,6 +209,17 @@ func TestRunsCreate(t *testing.T) {
 		r, err := client.Runs.Create(ctx, options)
 		require.NoError(t, err)
 		assert.Equal(t, true, r.AllowEmptyApply)
+	})
+
+	t.Run("with save-plan", func(t *testing.T) {
+		options := RunCreateOptions{
+			Workspace: wTest,
+			SavePlan:  Bool(true),
+		}
+
+		r, err := client.Runs.Create(ctx, options)
+		require.NoError(t, err)
+		assert.Equal(t, true, r.SavePlan)
 	})
 
 	t.Run("with terraform version and plan only", func(t *testing.T) {
