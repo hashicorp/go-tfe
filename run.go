@@ -107,6 +107,7 @@ const (
 	RunOperationRefreshOnly RunOperation = "refresh_only"
 	RunOperationDestroy     RunOperation = "destroy"
 	RunOperationEmptyApply  RunOperation = "empty_apply"
+	RunOperationSavePlan    RunOperation = "save_plan"
 )
 
 // RunList represents a list of runs.
@@ -133,6 +134,7 @@ type Run struct {
 	Refresh                bool                 `jsonapi:"attr,refresh"`
 	RefreshOnly            bool                 `jsonapi:"attr,refresh-only"`
 	ReplaceAddrs           []string             `jsonapi:"attr,replace-addrs,omitempty"`
+	SavePlan               bool                 `jsonapi:"attr,save-plan,omitempty"`
 	Source                 RunSource            `jsonapi:"attr,source"`
 	Status                 RunStatus            `jsonapi:"attr,status"`
 	StatusTimestamps       *RunStatusTimestamps `jsonapi:"attr,status-timestamps"`
@@ -289,6 +291,11 @@ type RunCreateOptions struct {
 	// RefreshOnly determines whether the run should ignore config changes
 	// and refresh the state only
 	RefreshOnly *bool `jsonapi:"attr,refresh-only,omitempty"`
+
+	// SavePlan determines whether this should be a saved-plan run. Saved-plan
+	// runs perform their plan and checks immediately, but won't lock the
+	// workspace and become its current run until they are confirmed for apply.
+	SavePlan *bool `jsonapi:"attr,save-plan,omitempty"`
 
 	// Specifies the message to be associated with this run.
 	Message *string `jsonapi:"attr,message,omitempty"`
