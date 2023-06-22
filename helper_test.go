@@ -897,8 +897,9 @@ func createOAuthToken(t *testing.T, client *Client, org *Organization) (*OAuthTo
 // Don't change this prefix unless we refactor the code!
 func createOrganization(t *testing.T, client *Client) (*Organization, func()) {
 	return createOrganizationWithOptions(t, client, OrganizationCreateOptions{
-		Name:  String("tst-" + randomString(t)),
-		Email: String(fmt.Sprintf("%s@tfe.local", randomString(t))),
+		Name:                  String("tst-" + randomString(t)),
+		Email:                 String(fmt.Sprintf("%s@tfe.local", randomString(t))),
+		CostEstimationEnabled: Bool(true),
 	})
 }
 
