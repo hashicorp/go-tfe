@@ -140,14 +140,6 @@ func TestRunsListQueryParams(t *testing.T) {
 			},
 		},
 		{
-			description: "with operation of save_plan parameter",
-			options:     &RunListOptions{Operation: string(RunOperationSavePlan), Include: []RunIncludeOpt{RunWorkspace}},
-			assertion: func(tc testCase, rl *RunList, err error) {
-				require.NoError(t, err)
-				assert.Equal(t, 0, len(rl.Items))
-			},
-		},
-		{
 			description: "with mismatch user & commit parameter",
 			options:     &RunListOptions{User: randomString(t), Commit: randomString(t), Include: []RunIncludeOpt{RunWorkspace}},
 			assertion: func(tc testCase, rl *RunList, err error) {
@@ -157,8 +149,27 @@ func TestRunsListQueryParams(t *testing.T) {
 		},
 	}
 
+	betaTestCases := []testCase{
+		{
+			description: "with operation of save_plan parameter",
+			options:     &RunListOptions{Operation: string(RunOperationSavePlan), Include: []RunIncludeOpt{RunWorkspace}},
+			assertion: func(tc testCase, rl *RunList, err error) {
+				require.NoError(t, err)
+				assert.Equal(t, 0, len(rl.Items))
+			},
+		},
+	}
+
 	for _, testCase := range testCases {
 		t.Run(testCase.description, func(t *testing.T) {
+			runs, err := client.Runs.List(ctx, workspaceTest.ID, testCase.options)
+			testCase.assertion(testCase, runs, err)
+		})
+	}
+
+	for _, testCase := range betaTestCases {
+		t.Run(testCase.description, func(t *testing.T) {
+			skipUnlessBeta(t)
 			runs, err := client.Runs.List(ctx, workspaceTest.ID, testCase.options)
 			testCase.assertion(testCase, runs, err)
 		})
@@ -212,6 +223,7 @@ func TestRunsCreate(t *testing.T) {
 	})
 
 	t.Run("with save-plan", func(t *testing.T) {
+		skipUnlessBeta(t)
 		options := RunCreateOptions{
 			Workspace: wTest,
 			SavePlan:  Bool(true),
