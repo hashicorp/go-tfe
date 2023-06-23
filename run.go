@@ -107,7 +107,8 @@ const (
 	RunOperationRefreshOnly RunOperation = "refresh_only"
 	RunOperationDestroy     RunOperation = "destroy"
 	RunOperationEmptyApply  RunOperation = "empty_apply"
-	RunOperationSavePlan    RunOperation = "save_plan"
+	// **Note: This operation type is still in BETA and subject to change.**
+	RunOperationSavePlan RunOperation = "save_plan"
 )
 
 // RunList represents a list of runs.
@@ -118,29 +119,30 @@ type RunList struct {
 
 // Run represents a Terraform Enterprise run.
 type Run struct {
-	ID                     string               `jsonapi:"primary,runs"`
-	Actions                *RunActions          `jsonapi:"attr,actions"`
-	AutoApply              bool                 `jsonapi:"attr,auto-apply,omitempty"`
-	AllowConfigGeneration  *bool                `jsonapi:"attr,allow-config-generation,omitempty"`
-	AllowEmptyApply        bool                 `jsonapi:"attr,allow-empty-apply"`
-	CreatedAt              time.Time            `jsonapi:"attr,created-at,iso8601"`
-	ForceCancelAvailableAt time.Time            `jsonapi:"attr,force-cancel-available-at,iso8601"`
-	HasChanges             bool                 `jsonapi:"attr,has-changes"`
-	IsDestroy              bool                 `jsonapi:"attr,is-destroy"`
-	Message                string               `jsonapi:"attr,message"`
-	Permissions            *RunPermissions      `jsonapi:"attr,permissions"`
-	PositionInQueue        int                  `jsonapi:"attr,position-in-queue"`
-	PlanOnly               bool                 `jsonapi:"attr,plan-only"`
-	Refresh                bool                 `jsonapi:"attr,refresh"`
-	RefreshOnly            bool                 `jsonapi:"attr,refresh-only"`
-	ReplaceAddrs           []string             `jsonapi:"attr,replace-addrs,omitempty"`
-	SavePlan               bool                 `jsonapi:"attr,save-plan,omitempty"`
-	Source                 RunSource            `jsonapi:"attr,source"`
-	Status                 RunStatus            `jsonapi:"attr,status"`
-	StatusTimestamps       *RunStatusTimestamps `jsonapi:"attr,status-timestamps"`
-	TargetAddrs            []string             `jsonapi:"attr,target-addrs,omitempty"`
-	TerraformVersion       string               `jsonapi:"attr,terraform-version"`
-	Variables              []*RunVariableAttr   `jsonapi:"attr,variables"`
+	ID                     string          `jsonapi:"primary,runs"`
+	Actions                *RunActions     `jsonapi:"attr,actions"`
+	AutoApply              bool            `jsonapi:"attr,auto-apply,omitempty"`
+	AllowConfigGeneration  *bool           `jsonapi:"attr,allow-config-generation,omitempty"`
+	AllowEmptyApply        bool            `jsonapi:"attr,allow-empty-apply"`
+	CreatedAt              time.Time       `jsonapi:"attr,created-at,iso8601"`
+	ForceCancelAvailableAt time.Time       `jsonapi:"attr,force-cancel-available-at,iso8601"`
+	HasChanges             bool            `jsonapi:"attr,has-changes"`
+	IsDestroy              bool            `jsonapi:"attr,is-destroy"`
+	Message                string          `jsonapi:"attr,message"`
+	Permissions            *RunPermissions `jsonapi:"attr,permissions"`
+	PositionInQueue        int             `jsonapi:"attr,position-in-queue"`
+	PlanOnly               bool            `jsonapi:"attr,plan-only"`
+	Refresh                bool            `jsonapi:"attr,refresh"`
+	RefreshOnly            bool            `jsonapi:"attr,refresh-only"`
+	ReplaceAddrs           []string        `jsonapi:"attr,replace-addrs,omitempty"`
+	// **Note: This field is still in BETA and subject to change.**
+	SavePlan         bool                 `jsonapi:"attr,save-plan,omitempty"`
+	Source           RunSource            `jsonapi:"attr,source"`
+	Status           RunStatus            `jsonapi:"attr,status"`
+	StatusTimestamps *RunStatusTimestamps `jsonapi:"attr,status-timestamps"`
+	TargetAddrs      []string             `jsonapi:"attr,target-addrs,omitempty"`
+	TerraformVersion string               `jsonapi:"attr,terraform-version"`
+	Variables        []*RunVariableAttr   `jsonapi:"attr,variables"`
 
 	// Relations
 	Apply                *Apply                `jsonapi:"relation,apply"`
@@ -295,6 +297,7 @@ type RunCreateOptions struct {
 	// SavePlan determines whether this should be a saved-plan run. Saved-plan
 	// runs perform their plan and checks immediately, but won't lock the
 	// workspace and become its current run until they are confirmed for apply.
+	// **Note: This field is still in BETA and subject to change.**
 	SavePlan *bool `jsonapi:"attr,save-plan,omitempty"`
 
 	// Specifies the message to be associated with this run.
