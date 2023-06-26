@@ -70,6 +70,7 @@ const (
 	RunPending                  RunStatus = "pending"
 	RunPlanned                  RunStatus = "planned"
 	RunPlannedAndFinished       RunStatus = "planned_and_finished"
+	RunPlannedAndSaved          RunStatus = "planned_and_saved" // Note: This status is in BETA.
 	RunPlanning                 RunStatus = "planning"
 	RunPlanQueued               RunStatus = "plan_queued"
 	RunPolicyChecked            RunStatus = "policy_checked"
