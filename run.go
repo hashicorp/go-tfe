@@ -80,6 +80,7 @@ const (
 	RunPostPlanCompleted        RunStatus = "post_plan_completed"
 	RunPostPlanRunning          RunStatus = "post_plan_running"
 	RunPreApplyRunning          RunStatus = "pre_apply_running"
+	RunPreApplyCompleted        RunStatus = "pre_apply_completed"
 	RunPrePlanCompleted         RunStatus = "pre_plan_completed"
 	RunPrePlanRunning           RunStatus = "pre_plan_running"
 	RunQueuing                  RunStatus = "queuing"
