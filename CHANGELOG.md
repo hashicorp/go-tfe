@@ -1,5 +1,8 @@
 # UNRELEASED
 
+## Enhancements
+* Adds `RunPreApplyCompleted` run status by @uk1288 [#727](https://github.com/hashicorp/go-tfe/pull/727)
+
 # v1.28.0
 
 ## Enhancements
