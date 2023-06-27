@@ -189,17 +189,19 @@ type RunStatusTimestamps struct {
 	FetchingAt           time.Time `jsonapi:"attr,fetching-at,rfc3339"`
 	ForceCanceledAt      time.Time `jsonapi:"attr,force-canceled-at,rfc3339"`
 	PlannedAndFinishedAt time.Time `jsonapi:"attr,planned-and-finished-at,rfc3339"`
-	PlannedAt            time.Time `jsonapi:"attr,planned-at,rfc3339"`
-	PlanningAt           time.Time `jsonapi:"attr,planning-at,rfc3339"`
-	PlanQueueableAt      time.Time `jsonapi:"attr,plan-queueable-at,rfc3339"`
-	PlanQueuedAt         time.Time `jsonapi:"attr,plan-queued-at,rfc3339"`
-	PolicyCheckedAt      time.Time `jsonapi:"attr,policy-checked-at,rfc3339"`
-	PolicySoftFailedAt   time.Time `jsonapi:"attr,policy-soft-failed-at,rfc3339"`
-	PostPlanCompletedAt  time.Time `jsonapi:"attr,post-plan-completed-at,rfc3339"`
-	PostPlanRunningAt    time.Time `jsonapi:"attr,post-plan-running-at,rfc3339"`
-	PrePlanCompletedAt   time.Time `jsonapi:"attr,pre-plan-completed-at,rfc3339"`
-	PrePlanRunningAt     time.Time `jsonapi:"attr,pre-plan-running-at,rfc3339"`
-	QueuingAt            time.Time `jsonapi:"attr,queuing-at,rfc3339"`
+	// **Note: This field is still in BETA and subject to change.**
+	PlannedAndSavedAt   time.Time `jsonapi:"attr,planned-and-saved-at,rfc3339"`
+	PlannedAt           time.Time `jsonapi:"attr,planned-at,rfc3339"`
+	PlanningAt          time.Time `jsonapi:"attr,planning-at,rfc3339"`
+	PlanQueueableAt     time.Time `jsonapi:"attr,plan-queueable-at,rfc3339"`
+	PlanQueuedAt        time.Time `jsonapi:"attr,plan-queued-at,rfc3339"`
+	PolicyCheckedAt     time.Time `jsonapi:"attr,policy-checked-at,rfc3339"`
+	PolicySoftFailedAt  time.Time `jsonapi:"attr,policy-soft-failed-at,rfc3339"`
+	PostPlanCompletedAt time.Time `jsonapi:"attr,post-plan-completed-at,rfc3339"`
+	PostPlanRunningAt   time.Time `jsonapi:"attr,post-plan-running-at,rfc3339"`
+	PrePlanCompletedAt  time.Time `jsonapi:"attr,pre-plan-completed-at,rfc3339"`
+	PrePlanRunningAt    time.Time `jsonapi:"attr,pre-plan-running-at,rfc3339"`
+	QueuingAt           time.Time `jsonapi:"attr,queuing-at,rfc3339"`
 }
 
 // RunIncludeOpt represents the available options for include query params.
