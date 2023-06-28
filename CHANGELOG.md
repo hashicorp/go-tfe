@@ -1,5 +1,7 @@
 # UNRELEASED
 
+# v1.29.0
+
 ## Enhancements
 * Adds `RunPreApplyCompleted` run status by @uk1288 [#727](https://github.com/hashicorp/go-tfe/pull/727)
 * Added BETA support for saved plan runs, by @nfagerlund [#724](https://github.com/hashicorp/go-tfe/pull/724)
