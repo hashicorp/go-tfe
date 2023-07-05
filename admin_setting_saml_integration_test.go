@@ -60,6 +60,48 @@ func TestAdminSettings_SAML_Update(t *testing.T) {
 	require.NoError(t, err)
 	assert.Equal(t, enabled, samlSettings.Enabled)
 	assert.Equal(t, debug, samlSettings.Debug)
+	assert.Empty(t, samlSettings.PrivateKey)
+
+	t.Run("with certificate defined", func(t *testing.T) {
+		cert := "testCert"
+		pKey := "testPrivateKey"
+		signatureSigningMethod := "SHA1"
+		signatureDigestMethod := "SHA1"
+		samlSettingsUpd, err := client.Admin.Settings.SAML.Update(ctx, AdminSAMLSettingsUpdateOptions{
+			Certificate:            String(cert),
+			PrivateKey:             String(pKey),
+			SignatureSigningMethod: String(signatureSigningMethod),
+			SignatureDigestMethod:  String(signatureDigestMethod),
+		})
+		require.NoError(t, err)
+		assert.Equal(t, cert, samlSettingsUpd.Certificate)
+		assert.NotNil(t, samlSettingsUpd.PrivateKey)
+		assert.Equal(t, signatureSigningMethod, samlSettingsUpd.SignatureSigningMethod)
+		assert.Equal(t, signatureDigestMethod, samlSettingsUpd.SignatureDigestMethod)
+	})
+
+	t.Run("with team management enabled", func(t *testing.T) {
+		samlSettingsUpd, err := client.Admin.Settings.SAML.Update(ctx, AdminSAMLSettingsUpdateOptions{
+			Enabled:               Bool(true),
+			TeamManagementEnabled: Bool(true),
+		})
+		require.NoError(t, err)
+		assert.True(t, samlSettingsUpd.TeamManagementEnabled)
+	})
+
+	t.Run("with invalid signature digest method", func(t *testing.T) {
+		_, err := client.Admin.Settings.SAML.Update(ctx, AdminSAMLSettingsUpdateOptions{
+			SignatureDigestMethod: String("SHA1234"),
+		})
+		require.Error(t, err)
+	})
+
+	t.Run("with invalid signature signing method", func(t *testing.T) {
+		_, err := client.Admin.Settings.SAML.Update(ctx, AdminSAMLSettingsUpdateOptions{
+			SignatureSigningMethod: String("SHA1234"),
+		})
+		require.Error(t, err)
+	})
 }
 
 func TestAdminSettings_SAML_RevokeIdpCert(t *testing.T) {
