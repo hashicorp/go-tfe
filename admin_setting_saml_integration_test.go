@@ -37,6 +37,8 @@ func TestAdminSettings_SAML_Read(t *testing.T) {
 	assert.NotNil(t, samlSettings.AuthnRequestsSigned)
 	assert.NotNil(t, samlSettings.WantAssertionsSigned)
 	assert.NotNil(t, samlSettings.PrivateKey)
+	assert.NotNil(t, samlSettings.SignatureSigningMethod)
+	assert.NotNil(t, samlSettings.SignatureDigestMethod)
 }
 
 func TestAdminSettings_SAML_Update(t *testing.T) {

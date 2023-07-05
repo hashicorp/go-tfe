@@ -49,6 +49,8 @@ type AdminSAMLSetting struct {
 	AuthnRequestsSigned       bool   `jsonapi:"attr,authn-requests-signed"`
 	WantAssertionsSigned      bool   `jsonapi:"attr,want-assertions-signed"`
 	PrivateKey                string `jsonapi:"attr,private-key"`
+	SignatureSigningMethod    string `jsonapi:"attr,signature-signing-method"`
+	SignatureDigestMethod     string `jsonapi:"attr,signature-digest-method"`
 }
 
 // Read returns the SAML settings.

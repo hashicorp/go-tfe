@@ -1,5 +1,8 @@
 # UNRELEASED
 
+## Enhancements
+* Adds `SignatureSigningMethod` and `SignatureDigestMethod` fields in `AdminSAMLSetting` struct by @karvounis-form3
+
 # v1.29.0
 
 ## Enhancements
