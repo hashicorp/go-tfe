@@ -1,7 +1,7 @@
 # UNRELEASED
 
 ## Enhancements
-* Adds `SignatureSigningMethod` and `SignatureDigestMethod` fields in `AdminSAMLSetting` struct by @karvounis-form3
+* Adds `SignatureSigningMethod` and `SignatureDigestMethod` fields in `AdminSAMLSetting` struct by @karvounis-form3 [#731](https://github.com/hashicorp/go-tfe/pull/731)
 
 # v1.29.0
 
