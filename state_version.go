@@ -223,8 +223,8 @@ type ProviderData struct {
 
 type StateVersionResources struct {
 	Name     string `jsonapi:"attr,name"`
-	Count    string `jsonapi:"attr,count"`
-	Type     int    `jsonapi:"attr,type"`
+	Count    int    `jsonapi:"attr,count"`
+	Type     string `jsonapi:"attr,type"`
 	Module   string `jsonapi:"attr,module"`
 	Provider string `jsonapi:"attr,provider"`
 }
