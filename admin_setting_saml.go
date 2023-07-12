@@ -33,6 +33,9 @@ type AdminSAMLSetting struct {
 	ID                        string `jsonapi:"primary,saml-settings"`
 	Enabled                   bool   `jsonapi:"attr,enabled"`
 	Debug                     bool   `jsonapi:"attr,debug"`
+	AuthnRequestsSigned       bool   `jsonapi:"attr,authn-requests-signed"`
+	WantAssertionsSigned      bool   `jsonapi:"attr,want-assertions-signed"`
+	TeamManagementEnabled     bool   `jsonapi:"attr,team-management-enabled"`
 	OldIDPCert                string `jsonapi:"attr,old-idp-cert"`
 	IDPCert                   string `jsonapi:"attr,idp-cert"`
 	SLOEndpointURL            string `jsonapi:"attr,slo-endpoint-url"`
@@ -44,11 +47,10 @@ type AdminSAMLSetting struct {
 	SSOAPITokenSessionTimeout int    `jsonapi:"attr,sso-api-token-session-timeout"`
 	ACSConsumerURL            string `jsonapi:"attr,acs-consumer-url"`
 	MetadataURL               string `jsonapi:"attr,metadata-url"`
-	TeamManagementEnabled     bool   `jsonapi:"attr,team-management-enabled"`
 	Certificate               string `jsonapi:"attr,certificate"`
-	AuthnRequestsSigned       bool   `jsonapi:"attr,authn-requests-signed"`
-	WantAssertionsSigned      bool   `jsonapi:"attr,want-assertions-signed"`
 	PrivateKey                string `jsonapi:"attr,private-key"`
+	SignatureSigningMethod    string `jsonapi:"attr,signature-signing-method"`
+	SignatureDigestMethod     string `jsonapi:"attr,signature-digest-method"`
 }
 
 // Read returns the SAML settings.
@@ -74,6 +76,8 @@ type AdminSAMLSettingsUpdateOptions struct {
 	Enabled                   *bool   `jsonapi:"attr,enabled,omitempty"`
 	Debug                     *bool   `jsonapi:"attr,debug,omitempty"`
 	IDPCert                   *string `jsonapi:"attr,idp-cert,omitempty"`
+	Certificate               *string `jsonapi:"attr,certificate,omitempty"`
+	PrivateKey                *string `jsonapi:"attr,private-key,omitempty"`
 	SLOEndpointURL            *string `jsonapi:"attr,slo-endpoint-url,omitempty"`
 	SSOEndpointURL            *string `jsonapi:"attr,sso-endpoint-url,omitempty"`
 	AttrUsername              *string `jsonapi:"attr,attr-username,omitempty"`
@@ -81,6 +85,11 @@ type AdminSAMLSettingsUpdateOptions struct {
 	AttrSiteAdmin             *string `jsonapi:"attr,attr-site-admin,omitempty"`
 	SiteAdminRole             *string `jsonapi:"attr,site-admin-role,omitempty"`
 	SSOAPITokenSessionTimeout *int    `jsonapi:"attr,sso-api-token-session-timeout,omitempty"`
+	TeamManagementEnabled     *bool   `jsonapi:"attr,team-management-enabled,omitempty"`
+	AuthnRequestsSigned       *bool   `jsonapi:"attr,authn-requests-signed,omitempty"`
+	WantAssertionsSigned      *bool   `jsonapi:"attr,want-assertions-signed,omitempty"`
+	SignatureSigningMethod    *string `jsonapi:"attr,signature-signing-method,omitempty"`
+	SignatureDigestMethod     *string `jsonapi:"attr,signature-digest-method,omitempty"`
 }
 
 // Update updates the SAML settings.
