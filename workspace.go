@@ -138,6 +138,7 @@ type Workspace struct {
 	SpeculativeEnabled         bool                  `jsonapi:"attr,speculative-enabled"`
 	SourceName                 string                `jsonapi:"attr,source-name"`
 	SourceURL                  string                `jsonapi:"attr,source-url"`
+	SourceModuleID             string                `jsonapi:"attr,source-module-id"`
 	StructuredRunOutputEnabled bool                  `jsonapi:"attr,structured-run-output-enabled"`
 	TerraformVersion           string                `jsonapi:"attr,terraform-version"`
 	TriggerPrefixes            []string              `jsonapi:"attr,trigger-prefixes"`
@@ -345,6 +346,9 @@ type WorkspaceCreateOptions struct {
 	// can be the URL of a related resource in another app, or a link to
 	// documentation or other info about the client.
 	SourceURL *string `jsonapi:"attr,source-url,omitempty"`
+
+	// The SourceModuleID : {MODULE_NAMESPACE}/{TFCLOUD_ORGANIZATION}/{MODULE_NAME}/{MODULE_VERSION}
+	SourceModuleID *string `jsonapi:"attr,source-module-id,omitempty"`
 
 	// BETA. Enable the experimental advanced run user interface.
 	// This only applies to runs using Terraform version 0.15.2 or newer,

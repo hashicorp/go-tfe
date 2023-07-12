@@ -565,6 +565,63 @@ func TestWorkspacesCreate(t *testing.T) {
 		}
 	})
 
+	t.Run("with options including non-empty SourceModuleID", func(t *testing.T) {
+		options := WorkspaceCreateOptions{
+			Name:                       String("foo"),
+			AllowDestroyPlan:           Bool(false),
+			AutoApply:                  Bool(true),
+			Description:                String("qux"),
+			AssessmentsEnabled:         Bool(false),
+			FileTriggersEnabled:        Bool(true),
+			Operations:                 Bool(true),
+			QueueAllRuns:               Bool(true),
+			SpeculativeEnabled:         Bool(true),
+			SourceModuleID:             String("public/terraform-google-modules/vpc-service-controls/google/5.1.0"),
+			StructuredRunOutputEnabled: Bool(true),
+			TerraformVersion:           String("0.11.0"),
+			TriggerPrefixes:            []string{"/modules", "/shared"},
+			WorkingDirectory:           String("bar/"),
+			Tags: []*Tag{
+				{
+					Name: "tag1",
+				},
+				{
+					Name: "tag2",
+				},
+			},
+		}
+
+		w, err := client.Workspaces.Create(ctx, orgTest.Name, options)
+		require.NoError(t, err)
+
+		// Get a refreshed view from the API.
+		refreshed, err := client.Workspaces.Read(ctx, orgTest.Name, *options.Name)
+		require.NoError(t, err)
+
+		for _, item := range []*Workspace{
+			w,
+			refreshed,
+		} {
+			assert.NotEmpty(t, item.ID)
+			assert.Equal(t, *options.Name, item.Name)
+			assert.Equal(t, *options.Description, item.Description)
+			assert.Equal(t, *options.AllowDestroyPlan, item.AllowDestroyPlan)
+			assert.Equal(t, *options.AutoApply, item.AutoApply)
+			assert.Equal(t, *options.AssessmentsEnabled, item.AssessmentsEnabled)
+			assert.Equal(t, *options.FileTriggersEnabled, item.FileTriggersEnabled)
+			assert.Equal(t, *options.Operations, item.Operations)
+			assert.Equal(t, *options.QueueAllRuns, item.QueueAllRuns)
+			assert.Equal(t, *options.SpeculativeEnabled, item.SpeculativeEnabled)
+			assert.Equal(t, *options.SourceModuleID, item.SourceModuleID)
+			assert.Equal(t, *options.StructuredRunOutputEnabled, item.StructuredRunOutputEnabled)
+			assert.Equal(t, options.Tags[0].Name, item.TagNames[0])
+			assert.Equal(t, options.Tags[1].Name, item.TagNames[1])
+			assert.Equal(t, *options.TerraformVersion, item.TerraformVersion)
+			assert.Equal(t, options.TriggerPrefixes, item.TriggerPrefixes)
+			assert.Equal(t, *options.WorkingDirectory, item.WorkingDirectory)
+		}
+	})
+
 	t.Run("when options is missing name", func(t *testing.T) {
 		w, err := client.Workspaces.Create(ctx, "foo", WorkspaceCreateOptions{})
 		assert.Nil(t, w)
