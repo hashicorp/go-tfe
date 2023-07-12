@@ -28,11 +28,11 @@ func TestPolicySetsList_Beta(t *testing.T) {
 	workspace, workspaceCleanup := createWorkspace(t, client, orgTest)
 	defer workspaceCleanup()
 
-	psTest1, psTestCleanup1 := createPolicySet(t, client, orgTest, nil, []*Workspace{workspace}, "")
+	psTest1, psTestCleanup1 := createPolicySet(t, client, orgTest, nil, []*Workspace{workspace}, nil, "")
 	defer psTestCleanup1()
-	psTest2, psTestCleanup2 := createPolicySet(t, client, orgTest, nil, []*Workspace{workspace}, "")
+	psTest2, psTestCleanup2 := createPolicySet(t, client, orgTest, nil, []*Workspace{workspace}, nil, "")
 	defer psTestCleanup2()
-	psTest3, psTestCleanup3 := createPolicySet(t, client, orgTest, nil, []*Workspace{workspace}, OPA)
+	psTest3, psTestCleanup3 := createPolicySet(t, client, orgTest, nil, []*Workspace{workspace}, nil, OPA)
 	defer psTestCleanup3()
 
 	t.Run("without list options", func(t *testing.T) {
@@ -344,7 +344,7 @@ func TestPolicySetsUpdate_Beta(t *testing.T) {
 
 	upgradeOrganizationSubscription(t, client, orgTest)
 
-	psTest, psTestCleanup := createPolicySet(t, client, orgTest, nil, nil, "opa")
+	psTest, psTestCleanup := createPolicySet(t, client, orgTest, nil, nil, nil, "opa")
 	defer psTestCleanup()
 
 	t.Run("with valid attributes", func(t *testing.T) {

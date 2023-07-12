@@ -593,7 +593,7 @@ func createPolicySetParameter(t *testing.T, client *Client, ps *PolicySet) (*Pol
 	var psCleanup func()
 
 	if ps == nil {
-		ps, psCleanup = createPolicySet(t, client, nil, nil, nil, "")
+		ps, psCleanup = createPolicySet(t, client, nil, nil, nil, nil, "")
 	}
 
 	ctx := context.Background()
@@ -685,7 +685,7 @@ func createPolicySetVersion(t *testing.T, client *Client, ps *PolicySet) (*Polic
 	var psCleanup func()
 
 	if ps == nil {
-		ps, psCleanup = createPolicySet(t, client, nil, nil, nil, "")
+		ps, psCleanup = createPolicySet(t, client, nil, nil, nil, nil, "")
 	}
 
 	ctx := context.Background()
