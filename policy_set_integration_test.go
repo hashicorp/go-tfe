@@ -715,6 +715,7 @@ func TestPolicySetsRemoveWorkspaces(t *testing.T) {
 }
 
 func TestPolicySetsAddProjects(t *testing.T) {
+    skipUnlessBeta(t)
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -784,6 +785,7 @@ func TestPolicySetsAddProjects(t *testing.T) {
 }
 
 func TestPolicySetsRemoveProjects(t *testing.T) {
+    skipUnlessBeta(t)
 	client := testClient(t)
 	ctx := context.Background()
 
