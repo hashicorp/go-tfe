@@ -56,6 +56,12 @@ type PolicySets interface {
 	// Remove workspaces from a policy set.
 	RemoveWorkspaces(ctx context.Context, policySetID string, options PolicySetRemoveWorkspacesOptions) error
 
+	// Add projects to a policy set.
+	AddProjects(ctx context.Context, policySetID string, options PolicySetAddProjectsOptions) error
+
+	// Remove projects from a policy set.
+	RemoveProjects(ctx context.Context, policySetID string, options PolicySetRemoveProjectsOptions) error
+
 	// Delete a policy set by its ID.
 	Delete(ctx context.Context, policyID string) error
 }
@@ -255,6 +261,20 @@ type PolicySetRemoveWorkspacesOptions struct {
 	Workspaces []*Workspace
 }
 
+// PolicySetAddProjectsOptions represents the options for adding projects
+// to a policy set.
+type PolicySetAddProjectsOptions struct {
+	// The projects to add to the policy set.
+	Projects []*Project
+}
+
+// PolicySetRemoveProjectsOptions represents the options for removing
+// projects from a policy set.
+type PolicySetRemoveProjectsOptions struct {
+	// The projects to remove from the policy set.
+	Projects []*Project
+}
+
 // List all the policies for a given organization.
 func (s *policySets) List(ctx context.Context, organization string, options *PolicySetListOptions) (*PolicySetList, error) {
 	if !validStringID(&organization) {
@@ -425,6 +445,42 @@ func (s *policySets) RemoveWorkspaces(ctx context.Context, policySetID string, o
 	return req.Do(ctx, nil)
 }
 
+// AddProjects adds projects to a policy set.
+func (s *policySets) AddProjects(ctx context.Context, policySetID string, options PolicySetAddProjectsOptions) error {
+	if !validStringID(&policySetID) {
+		return ErrInvalidPolicySetID
+	}
+	if err := options.valid(); err != nil {
+		return err
+	}
+
+	u := fmt.Sprintf("policy-sets/%s/relationships/projects", url.QueryEscape(policySetID))
+	req, err := s.client.NewRequest("POST", u, options.Projects)
+	if err != nil {
+		return err
+	}
+
+	return req.Do(ctx, nil)
+}
+
+// RemoveProjects removes projects from a policy set.
+func (s *policySets) RemoveProjects(ctx context.Context, policySetID string, options PolicySetRemoveProjectsOptions) error {
+	if !validStringID(&policySetID) {
+		return ErrInvalidPolicySetID
+	}
+	if err := options.valid(); err != nil {
+		return err
+	}
+
+	u := fmt.Sprintf("policy-sets/%s/relationships/projects", url.QueryEscape(policySetID))
+	req, err := s.client.NewRequest("DELETE", u, options.Projects)
+	if err != nil {
+		return err
+	}
+
+	return req.Do(ctx, nil)
+}
+
 // Delete a policy set by its ID.
 func (s *policySets) Delete(ctx context.Context, policySetID string) error {
 	if !validStringID(&policySetID) {
@@ -456,6 +512,16 @@ func (o PolicySetRemoveWorkspacesOptions) valid() error {
 	}
 	if len(o.Workspaces) == 0 {
 		return ErrWorkspaceMinLimit
+	}
+	return nil
+}
+
+func (o PolicySetRemoveProjectsOptions) valid() error {
+	if o.Projects == nil {
+		return ErrRequiredProject
+	}
+	if len(o.Projects) == 0 {
+		return ErrProjectMinLimit
 	}
 	return nil
 }
@@ -493,6 +559,16 @@ func (o PolicySetAddWorkspacesOptions) valid() error {
 	}
 	if len(o.Workspaces) == 0 {
 		return ErrWorkspaceMinLimit
+	}
+	return nil
+}
+
+func (o PolicySetAddProjectsOptions) valid() error {
+	if o.Projects == nil {
+		return ErrRequiredProject
+	}
+	if len(o.Projects) == 0 {
+		return ErrProjectMinLimit
 	}
 	return nil
 }

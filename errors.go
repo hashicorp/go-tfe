@@ -284,6 +284,8 @@ var (
 
 	ErrWorkspaceMinLimit = errors.New("must provide at least one workspace")
 
+	ErrProjectMinLimit = errors.New("must provide at least one project")
+
 	ErrRequiredPlan = errors.New("plan is required")
 
 	ErrRequiredPolicies = errors.New("policies is required")

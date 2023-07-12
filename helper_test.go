@@ -619,7 +619,7 @@ func createPolicySetParameter(t *testing.T, client *Client, ps *PolicySet) (*Pol
 	}
 }
 
-func createPolicySet(t *testing.T, client *Client, org *Organization, policies []*Policy, workspaces []*Workspace, kind PolicyKind) (*PolicySet, func()) {
+func createPolicySet(t *testing.T, client *Client, org *Organization, policies []*Policy, workspaces []*Workspace, projects []*Project, kind PolicyKind) (*PolicySet, func()) {
 	var orgCleanup func()
 
 	if org == nil {
@@ -631,6 +631,7 @@ func createPolicySet(t *testing.T, client *Client, org *Organization, policies [
 		Name:       String(randomString(t)),
 		Policies:   policies,
 		Workspaces: workspaces,
+		Projects:   projects,
 		Kind:       kind,
 	})
 	if err != nil {
