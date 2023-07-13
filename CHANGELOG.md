@@ -1,5 +1,7 @@
 # UNRELEASED
 
+# v1.30.0
+
 ## Enhancements
 * Adds `SignatureSigningMethod` and `SignatureDigestMethod` fields in `AdminSAMLSetting` struct by @karvounis-form3 [#731](https://github.com/hashicorp/go-tfe/pull/731)
 * Adds `Certificate`, `PrivateKey`, `TeamManagementEnabled`, `AuthnRequestsSigned`, `WantAssertionsSigned`, `SignatureSigningMethod`, `SignatureDigestMethod` fields in `AdminSAMLSettingsUpdateOptions` struct by @karvounis-form3 [#731](https://github.com/hashicorp/go-tfe/pull/731)
