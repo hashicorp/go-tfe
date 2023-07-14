@@ -18,6 +18,7 @@
     * New `RunPlannedAndSaved` `RunStatus` value
     * New `PlannedAndSavedAt` field in `RunStatusTimestamps`
     * New `RunOperationSavePlan` constant for run list filters
+* Added BETA support for including `projects` relationship and `projects-count` attribute to policy_set on create by @hs26gill [#737](https://github.com/hashicorp/go-tfe/pull/737)
 
 # v1.28.0
 
