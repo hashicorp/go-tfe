@@ -49,6 +49,20 @@ func (mr *MockPolicySetsMockRecorder) AddPolicies(ctx, policySetID, options inte
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "AddPolicies", reflect.TypeOf((*MockPolicySets)(nil).AddPolicies), ctx, policySetID, options)
 }
 
+// AddProjects mocks base method.
+func (m *MockPolicySets) AddProjects(ctx context.Context, policySetID string, options tfe.PolicySetAddProjectsOptions) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "AddProjects", ctx, policySetID, options)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// AddProjects indicates an expected call of AddProjects.
+func (mr *MockPolicySetsMockRecorder) AddProjects(ctx, policySetID, options interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "AddProjects", reflect.TypeOf((*MockPolicySets)(nil).AddProjects), ctx, policySetID, options)
+}
+
 // AddWorkspaces mocks base method.
 func (m *MockPolicySets) AddWorkspaces(ctx context.Context, policySetID string, options tfe.PolicySetAddWorkspacesOptions) error {
 	m.ctrl.T.Helper()
@@ -149,6 +163,20 @@ func (m *MockPolicySets) RemovePolicies(ctx context.Context, policySetID string,
 func (mr *MockPolicySetsMockRecorder) RemovePolicies(ctx, policySetID, options interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "RemovePolicies", reflect.TypeOf((*MockPolicySets)(nil).RemovePolicies), ctx, policySetID, options)
+}
+
+// RemoveProjects mocks base method.
+func (m *MockPolicySets) RemoveProjects(ctx context.Context, policySetID string, options tfe.PolicySetRemoveProjectsOptions) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "RemoveProjects", ctx, policySetID, options)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// RemoveProjects indicates an expected call of RemoveProjects.
+func (mr *MockPolicySetsMockRecorder) RemoveProjects(ctx, policySetID, options interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "RemoveProjects", reflect.TypeOf((*MockPolicySets)(nil).RemoveProjects), ctx, policySetID, options)
 }
 
 // RemoveWorkspaces mocks base method.
