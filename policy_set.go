@@ -445,7 +445,7 @@ func (s *policySets) RemoveWorkspaces(ctx context.Context, policySetID string, o
 	return req.Do(ctx, nil)
 }
 
-// AddProjects adds projects to a policy set.
+// AddProjects adds projects to a given policy set.
 func (s *policySets) AddProjects(ctx context.Context, policySetID string, options PolicySetAddProjectsOptions) error {
 	if !validStringID(&policySetID) {
 		return ErrInvalidPolicySetID
