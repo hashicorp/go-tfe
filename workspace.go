@@ -153,6 +153,8 @@ type Workspace struct {
 	RunsCount                  int                   `jsonapi:"attr,workspace-kpis-runs-count"`
 	TagNames                   []string              `jsonapi:"attr,tag-names"`
 
+	SettingOverrides *WorkspaceSettingOverrides `jsonapi:"attr,setting-overrides"`
+
 	// Relations
 	AgentPool           *AgentPool          `jsonapi:"relation,agent-pool"`
 	CurrentRun          *Run                `jsonapi:"relation,current-run"`
@@ -220,6 +222,11 @@ type WorkspacePermissions struct {
 	CanUpdate         bool  `jsonapi:"attr,can-update"`
 	CanUpdateVariable bool  `jsonapi:"attr,can-update-variable"`
 	CanForceDelete    *bool `jsonapi:"attr,can-force-delete"` // pointer b/c it will be useful to check if this property exists, as opposed to having it default to false
+}
+
+type WorkspaceSettingOverrides struct {
+	ExecutionMode *bool `jsonapi:"attr,execution-mode,omitempty"`
+	AgentPool     *bool `jsonapi:"attr,agent-pool,omitempty"`
 }
 
 // WSIncludeOpt represents the available options for include query params.
@@ -381,6 +388,8 @@ type WorkspaceCreateOptions struct {
 	// Associated Project with the workspace. If not provided, default project
 	// of the organization will be assigned to the workspace
 	Project *Project `jsonapi:"relation,project,omitempty"`
+
+	SettingOverrides *WorkspaceSettingOverrides `jsonapi:"attr,setting-overrides,omitempty"`
 }
 
 // TODO: move this struct out. VCSRepoOptions is used by workspaces, policy sets, and registry modules
@@ -489,6 +498,8 @@ type WorkspaceUpdateOptions struct {
 	// Associated Project with the workspace. If not provided, default project
 	// of the organization will be assigned to the workspace
 	Project *Project `jsonapi:"relation,project,omitempty"`
+
+	SettingOverrides *WorkspaceSettingOverrides `jsonapi:"attr,setting-overrides,omitempty"`
 }
 
 // WorkspaceLockOptions represents the options for locking a workspace.
