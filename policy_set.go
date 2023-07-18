@@ -73,18 +73,20 @@ type PolicySetList struct {
 
 // PolicySet represents a Terraform Enterprise policy set.
 type PolicySet struct {
-	ID             string     `jsonapi:"primary,policy-sets"`
-	Name           string     `jsonapi:"attr,name"`
-	Description    string     `jsonapi:"attr,description"`
-	Kind           PolicyKind `jsonapi:"attr,kind"`
-	Overridable    *bool      `jsonapi:"attr,overridable"`
-	Global         bool       `jsonapi:"attr,global"`
-	PoliciesPath   string     `jsonapi:"attr,policies-path"`
-	PolicyCount    int        `jsonapi:"attr,policy-count"`
-	VCSRepo        *VCSRepo   `jsonapi:"attr,vcs-repo"`
-	WorkspaceCount int        `jsonapi:"attr,workspace-count"`
-	CreatedAt      time.Time  `jsonapi:"attr,created-at,iso8601"`
-	UpdatedAt      time.Time  `jsonapi:"attr,updated-at,iso8601"`
+	ID           string     `jsonapi:"primary,policy-sets"`
+	Name         string     `jsonapi:"attr,name"`
+	Description  string     `jsonapi:"attr,description"`
+	Kind         PolicyKind `jsonapi:"attr,kind"`
+	Overridable  *bool      `jsonapi:"attr,overridable"`
+	Global       bool       `jsonapi:"attr,global"`
+	PoliciesPath string     `jsonapi:"attr,policies-path"`
+	// **Note: This field is still in BETA and subject to change.**
+	PolicyCount    int       `jsonapi:"attr,policy-count"`
+	VCSRepo        *VCSRepo  `jsonapi:"attr,vcs-repo"`
+	WorkspaceCount int       `jsonapi:"attr,workspace-count"`
+	ProjectCount   int       `jsonapi:"attr,project-count"`
+	CreatedAt      time.Time `jsonapi:"attr,created-at,iso8601"`
+	UpdatedAt      time.Time `jsonapi:"attr,updated-at,iso8601"`
 
 	// Relations
 	// The organization to which the policy set belongs to.
@@ -99,6 +101,9 @@ type PolicySet struct {
 	NewestVersion *PolicySetVersion `jsonapi:"relation,newest-version"`
 	// The most recent successful policy set version.
 	CurrentVersion *PolicySetVersion `jsonapi:"relation,current-version"`
+	// **Note: This field is still in BETA and subject to change.**
+	// The projects to which the policy set applies.
+	Projects []*Project `jsonapi:"relation,projects"`
 }
 
 // PolicySetIncludeOpt represents the available options for include query params.
@@ -110,6 +115,8 @@ const (
 	PolicySetWorkspaces     PolicySetIncludeOpt = "workspaces"
 	PolicySetCurrentVersion PolicySetIncludeOpt = "current_version"
 	PolicySetNewestVersion  PolicySetIncludeOpt = "newest_version"
+	// **Note: This field is still in BETA and subject to change.**
+	PolicySetProjects PolicySetIncludeOpt = "projects"
 )
 
 // PolicySetListOptions represents the options for listing policy sets.
@@ -179,6 +186,10 @@ type PolicySetCreateOptions struct {
 
 	// Optional: The initial list of workspaces for which the policy set should be enforced.
 	Workspaces []*Workspace `jsonapi:"relation,workspaces,omitempty"`
+
+	// **Note: This field is still in BETA and subject to change.**
+	// Optional: The initial list of projects for which the policy set should be enforced.
+	Projects []*Project `jsonapi:"relation,projects,omitempty"`
 }
 
 // PolicySetUpdateOptions represents the options for updating a policy set.
@@ -501,7 +512,7 @@ func (o *PolicySetReadOptions) valid() error {
 func validatePolicySetIncludeParams(params []PolicySetIncludeOpt) error {
 	for _, p := range params {
 		switch p {
-		case PolicySetPolicies, PolicySetWorkspaces, PolicySetCurrentVersion, PolicySetNewestVersion:
+		case PolicySetPolicies, PolicySetWorkspaces, PolicySetCurrentVersion, PolicySetNewestVersion, PolicySetProjects:
 			// do nothing
 		default:
 			return ErrInvalidIncludeValue
