@@ -69,4 +69,3 @@ mockgen -source=agent.go -destination=mocks/agents.go -package=mocks
 mockgen -source=policy_evaluation.go -destination=mocks/policy_evaluation.go -package=mocks
 mockgen -source=project.go -destination=mocks/project_mocks.go -package=mocks
 mockgen -source=registry_no_code_module.go -destination=mocks/registry_no_code_module_mocks.go -package=mocks
-mockgen -source=policy_set.go -destination=mocks/policy_set_mocks.go -package=mocks
