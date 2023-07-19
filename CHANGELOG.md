@@ -2,7 +2,8 @@
 
 ## Enhancements
 * Added BETA support for including `projects` relationship and `projects-count` attribute to policy_set on create by @hs26gill [#737](https://github.com/hashicorp/go-tfe/pull/737)
-
+* Added BETA method `AddProjects` and `RemoveProjects` for attaching/detaching policy set to projects by Netra2104 [#735](https://github.com/hashicorp/go-tfe/pull/735)
+  
 # v1.30.0
 
 ## Enhancements

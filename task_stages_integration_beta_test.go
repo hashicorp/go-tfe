@@ -41,7 +41,7 @@ func TestTaskStagesRead_Beta(t *testing.T) {
 	defer policyTestCleanup()
 
 	policySet := []*Policy{policyTest}
-	_, psTestCleanup1 := createPolicySet(t, client, orgTest, policySet, []*Workspace{wkspaceTest}, OPA)
+	_, psTestCleanup1 := createPolicySet(t, client, orgTest, policySet, []*Workspace{wkspaceTest}, nil, OPA)
 	defer psTestCleanup1()
 
 	wrTaskTest, wrTaskTestCleanup := createWorkspaceRunTask(t, client, wkspaceTest, runTaskTest)
@@ -144,11 +144,11 @@ func TestTaskStagesList_Beta(t *testing.T) {
 	defer policyTestCleanup2()
 
 	policySet := []*Policy{policyTest, policyTest2}
-	_, psTestCleanup1 := createPolicySet(t, client, orgTest, policySet, []*Workspace{wkspaceTest}, OPA)
+	_, psTestCleanup1 := createPolicySet(t, client, orgTest, policySet, []*Workspace{wkspaceTest}, nil, OPA)
 	defer psTestCleanup1()
 
 	policySet2 := []*Policy{policyTest2}
-	_, psTestCleanup2 := createPolicySet(t, client, orgTest, policySet2, []*Workspace{wkspaceTest}, OPA)
+	_, psTestCleanup2 := createPolicySet(t, client, orgTest, policySet2, []*Workspace{wkspaceTest}, nil, OPA)
 	defer psTestCleanup2()
 
 	_, wrTaskTestCleanup := createWorkspaceRunTask(t, client, wkspaceTest, runTaskTest)
