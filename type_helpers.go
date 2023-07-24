@@ -13,6 +13,36 @@ func ProjectAccess(v TeamProjectAccessType) *TeamProjectAccessType {
 	return &v
 }
 
+// ProjectSettingsPermission returns a pointer to the given team access project type.
+func ProjectSettingsPermission(v ProjectSettingsPermissionType) *ProjectSettingsPermissionType {
+	return &v
+}
+
+// ProjectTeamsPermission returns a pointer to the given team access project type.
+func ProjectTeamsPermission(v ProjectTeamsPermissionType) *ProjectTeamsPermissionType {
+	return &v
+}
+
+// WorkspaceRunsPermission returns a pointer to the given team access project type.
+func WorkspaceRunsPermission(v WorkspaceRunsPermissionType) *WorkspaceRunsPermissionType {
+	return &v
+}
+
+// WorkspaceSentinelMocksPermission returns a pointer to the given team access project type.
+func WorkspaceSentinelMocksPermission(v WorkspaceSentinelMocksPermissionType) *WorkspaceSentinelMocksPermissionType {
+	return &v
+}
+
+// WorkspaceStateVersionsPermission returns a pointer to the given team access project type.
+func WorkspaceStateVersionsPermission(v WorkspaceStateVersionsPermissionType) *WorkspaceStateVersionsPermissionType {
+	return &v
+}
+
+// WorkspaceStateVersionsPermission returns a pointer to the given team access project type.
+func WorkspaceVariablesPermission(v WorkspaceVariablesPermissionType) *WorkspaceVariablesPermissionType {
+	return &v
+}
+
 // RunsPermission returns a pointer to the given team runs permission type.
 func RunsPermission(v RunsPermissionType) *RunsPermissionType {
 	return &v
