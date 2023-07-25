@@ -12,5 +12,6 @@ jobs:
     with:
       project: TF
       issue-extra-fields: |
-        { "customfield_10091": ["TF-CLI"] }
+        { "customfield_10091": ["TF-CLI"],
+          "components": [{ "name": "Go-TFE" }] }
     secrets: inherit
