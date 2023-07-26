@@ -154,14 +154,15 @@ type Workspace struct {
 	TagNames                   []string              `jsonapi:"attr,tag-names"`
 
 	// Relations
-	AgentPool           *AgentPool          `jsonapi:"relation,agent-pool"`
-	CurrentRun          *Run                `jsonapi:"relation,current-run"`
-	CurrentStateVersion *StateVersion       `jsonapi:"relation,current-state-version"`
-	Organization        *Organization       `jsonapi:"relation,organization"`
-	SSHKey              *SSHKey             `jsonapi:"relation,ssh-key"`
-	Outputs             []*WorkspaceOutputs `jsonapi:"relation,outputs"`
-	Project             *Project            `jsonapi:"relation,project"`
-	Tags                []*Tag              `jsonapi:"relation,tags"`
+	AgentPool                   *AgentPool            `jsonapi:"relation,agent-pool"`
+	CurrentRun                  *Run                  `jsonapi:"relation,current-run"`
+	CurrentStateVersion         *StateVersion         `jsonapi:"relation,current-state-version"`
+	Organization                *Organization         `jsonapi:"relation,organization"`
+	SSHKey                      *SSHKey               `jsonapi:"relation,ssh-key"`
+	Outputs                     []*WorkspaceOutputs   `jsonapi:"relation,outputs"`
+	Project                     *Project              `jsonapi:"relation,project"`
+	Tags                        []*Tag                `jsonapi:"relation,tags"`
+	CurrentConfigurationVersion *ConfigurationVersion `jsonapi:"relation,current-configuration-version,omitempty"`
 
 	// Links
 	Links map[string]interface{} `jsonapi:"links,omitempty"`
@@ -379,7 +380,7 @@ type WorkspaceCreateOptions struct {
 	Tags []*Tag `jsonapi:"relation,tags,omitempty"`
 
 	// Associated Project with the workspace. If not provided, default project
-	// of the organization will be assigned to the workspace
+	// of the organization will be assigned to the workspace.
 	Project *Project `jsonapi:"relation,project,omitempty"`
 }
 
