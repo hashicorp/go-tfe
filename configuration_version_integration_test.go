@@ -114,6 +114,29 @@ func TestConfigurationVersionsCreate(t *testing.T) {
 		assert.Nil(t, cv)
 		assert.EqualError(t, err, ErrInvalidWorkspaceID.Error())
 	})
+
+	t.Run("provisional", func(t *testing.T) {
+		skipUnlessBeta(t)
+
+		cv, err := client.ConfigurationVersions.Create(ctx,
+			wTest.ID,
+			ConfigurationVersionCreateOptions{
+				Provisional: Bool(true),
+			},
+		)
+
+		require.NoError(t, err)
+		assert.True(t, cv.Provisional)
+
+		ws, err := client.Workspaces.ReadByID(ctx, wTest.ID)
+		require.NoError(t, err)
+
+		// Depends on "with valid options"
+		require.NotNil(t, ws.CurrentConfigurationVersion)
+
+		// Provisional configuration version is not the current one
+		assert.NotEqual(t, ws.CurrentConfigurationVersion.ID, cv.ID)
+	})
 }
 
 func TestConfigurationVersionsRead(t *testing.T) {
@@ -372,6 +395,8 @@ func TestConfigurationVersions_Unmarshal(t *testing.T) {
 					"finished-at": "2020-03-16T23:15:59+00:00",
 					"started-at":  "2019-03-16T23:23:59+00:00",
 				},
+				"speculative": true,
+				"provisional": true,
 			},
 		},
 	}
@@ -396,4 +421,6 @@ func TestConfigurationVersions_Unmarshal(t *testing.T) {
 	assert.Equal(t, cv.Status, ConfigurationUploaded)
 	assert.Equal(t, cv.StatusTimestamps.FinishedAt, finishedParsedTime)
 	assert.Equal(t, cv.StatusTimestamps.StartedAt, startedParsedTime)
+	assert.Equal(t, cv.Provisional, true)
+	assert.Equal(t, cv.Speculative, true)
 }
