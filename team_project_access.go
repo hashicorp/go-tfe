@@ -74,7 +74,7 @@ type TeamProjectAccessProjectPermissions struct {
 	ProjectTeamsPermission    ProjectTeamsPermissionType    `jsonapi:"attr,teams"`
 }
 
-// Workspacepermissions represents the team's permission on all workspaces in its project
+// WorkspacePermissions represents the team's permission on all workspaces in its project
 type TeamProjectAccessWorkspacePermissions struct {
 	WorkspaceRunsPermission          WorkspaceRunsPermissionType          `jsonapi:"attr,runs"`
 	WorkspaceSentinelMocksPermission WorkspaceSentinelMocksPermissionType `jsonapi:"attr,sentinel-mocks"`
