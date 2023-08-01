@@ -47,6 +47,7 @@ const (
 	TeamProjectAccessMaintain TeamProjectAccessType = "maintain"
 	TeamProjectAccessWrite    TeamProjectAccessType = "write"
 	TeamProjectAccessRead     TeamProjectAccessType = "read"
+	TeamProjectAccessCustom   TeamProjectAccessType = "custom"
 )
 
 // TeamProjectAccessList represents a list of team project accesses
@@ -57,12 +58,104 @@ type TeamProjectAccessList struct {
 
 // TeamProjectAccess represents a project access for a team
 type TeamProjectAccess struct {
-	ID     string                `jsonapi:"primary,team-projects"`
-	Access TeamProjectAccessType `jsonapi:"attr,access"`
+	ID              string                                 `jsonapi:"primary,team-projects"`
+	Access          TeamProjectAccessType                  `jsonapi:"attr,access"`
+	ProjectAccess   *TeamProjectAccessProjectPermissions   `jsonapi:"attr,project-access"`
+	WorkspaceAccess *TeamProjectAccessWorkspacePermissions `jsonapi:"attr,workspace-access"`
 
 	// Relations
 	Team    *Team    `jsonapi:"relation,team"`
 	Project *Project `jsonapi:"relation,project"`
+}
+
+// ProjectPermissions represents the team's permissions on its project
+type TeamProjectAccessProjectPermissions struct {
+	ProjectSettingsPermission ProjectSettingsPermissionType `jsonapi:"attr,settings"`
+	ProjectTeamsPermission    ProjectTeamsPermissionType    `jsonapi:"attr,teams"`
+}
+
+// WorkspacePermissions represents the team's permission on all workspaces in its project
+type TeamProjectAccessWorkspacePermissions struct {
+	WorkspaceRunsPermission          WorkspaceRunsPermissionType          `jsonapi:"attr,runs"`
+	WorkspaceSentinelMocksPermission WorkspaceSentinelMocksPermissionType `jsonapi:"attr,sentinel-mocks"`
+	WorkspaceStateVersionsPermission WorkspaceStateVersionsPermissionType `jsonapi:"attr,state-versions"`
+	WorkspaceVariablesPermission     WorkspaceVariablesPermissionType     `jsonapi:"attr,variables"`
+	WorkspaceCreatePermission        bool                                 `jsonapi:"attr,create"`
+	WorkspaceLockingPermission       bool                                 `jsonapi:"attr,locking"`
+	WorkspaceMovePermission          bool                                 `jsonapi:"attr,move"`
+	WorkspaceDeletePermission        bool                                 `jsonapi:"attr,delete"`
+	WorkspaceRunTasksPermission      bool                                 `jsonapi:"attr,run-tasks"`
+}
+
+// ProjectSettingsPermissionType represents the permissiontype to a project's settings
+type ProjectSettingsPermissionType string
+
+const (
+	ProjectSettingsPermissionRead   ProjectSettingsPermissionType = "read"
+	ProjectSettingsPermissionUpdate ProjectSettingsPermissionType = "update"
+	ProjectSettingsPermissionDelete ProjectSettingsPermissionType = "delete"
+)
+
+// ProjectTeamsPermissionType represents the permissiontype to a project's teams
+type ProjectTeamsPermissionType string
+
+const (
+	ProjectTeamsPermissionNone   ProjectTeamsPermissionType = "none"
+	ProjectTeamsPermissionRead   ProjectTeamsPermissionType = "read"
+	ProjectTeamsPermissionManage ProjectTeamsPermissionType = "manage"
+)
+
+// WorkspaceRunsPermissionType represents the permissiontype to project workspaces' runs
+type WorkspaceRunsPermissionType string
+
+const (
+	WorkspaceRunsPermissionRead  WorkspaceRunsPermissionType = "read"
+	WorkspaceRunsPermissionPlan  WorkspaceRunsPermissionType = "plan"
+	WorkspaceRunsPermissionApply WorkspaceRunsPermissionType = "apply"
+)
+
+// WorkspaceSentinelMocksPermissionType represents the permissiontype to project workspaces' sentinel-mocks
+type WorkspaceSentinelMocksPermissionType string
+
+const (
+	WorkspaceSentinelMocksPermissionNone WorkspaceSentinelMocksPermissionType = "none"
+	WorkspaceSentinelMocksPermissionRead WorkspaceSentinelMocksPermissionType = "read"
+)
+
+// WorkspaceStateVersionsPermissionType represents the permissiontype to project workspaces' state-versions
+type WorkspaceStateVersionsPermissionType string
+
+const (
+	WorkspaceStateVersionsPermissionNone        WorkspaceStateVersionsPermissionType = "none"
+	WorkspaceStateVersionsPermissionReadOutputs WorkspaceStateVersionsPermissionType = "read-outputs"
+	WorkspaceStateVersionsPermissionRead        WorkspaceStateVersionsPermissionType = "read"
+	WorkspaceStateVersionsPermissionWrite       WorkspaceStateVersionsPermissionType = "write"
+)
+
+// WorkspaceVariablesPermissionType represents the permissiontype to project workspaces' variables
+type WorkspaceVariablesPermissionType string
+
+const (
+	WorkspaceVariablesPermissionNone  WorkspaceVariablesPermissionType = "none"
+	WorkspaceVariablesPermissionRead  WorkspaceVariablesPermissionType = "read"
+	WorkspaceVariablesPermissionWrite WorkspaceVariablesPermissionType = "write"
+)
+
+type TeamProjectAccessProjectPermissionsOptions struct {
+	Settings *ProjectSettingsPermissionType `json:"settings,omitempty"`
+	Teams    *ProjectTeamsPermissionType    `json:"teams,omitempty"`
+}
+
+type TeamProjectAccessWorkspacePermissionsOptions struct {
+	Runs          *WorkspaceRunsPermissionType          `json:"runs,omitempty"`
+	SentinelMocks *WorkspaceSentinelMocksPermissionType `json:"sentinel-mocks,omitempty"`
+	StateVersions *WorkspaceStateVersionsPermissionType `json:"state-versions,omitempty"`
+	Variables     *WorkspaceVariablesPermissionType     `json:"variables,omitempty"`
+	Create        *bool                                 `json:"create,omitempty"`
+	Locking       *bool                                 `json:"locking,omitempty"`
+	Move          *bool                                 `json:"move,omitempty"`
+	Delete        *bool                                 `json:"delete,omitempty"`
+	RunTasks      *bool                                 `json:"run-tasks,omitempty"`
 }
 
 // TeamProjectAccessListOptions represents the options for listing team project accesses
@@ -80,6 +173,9 @@ type TeamProjectAccessAddOptions struct {
 	Type string `jsonapi:"primary,team-projects"`
 	// The type of access to grant.
 	Access TeamProjectAccessType `jsonapi:"attr,access"`
+	// The levels that project and workspace permissions grant
+	ProjectAccess   *TeamProjectAccessProjectPermissionsOptions   `jsonapi:"attr,project-access,omitempty"`
+	WorkspaceAccess *TeamProjectAccessWorkspacePermissionsOptions `jsonapi:"attr,workspace-access,omitempty"`
 
 	// The team to add to the project
 	Team *Team `jsonapi:"relation,team"`
@@ -95,7 +191,9 @@ type TeamProjectAccessUpdateOptions struct {
 	// https://jsonapi.org/format/#crud-creating
 	Type string `jsonapi:"primary,team-projects"`
 	// The type of access to grant.
-	Access *TeamProjectAccessType `jsonapi:"attr,access,omitempty"`
+	Access          *TeamProjectAccessType                        `jsonapi:"attr,access,omitempty"`
+	ProjectAccess   *TeamProjectAccessProjectPermissionsOptions   `jsonapi:"attr,project-access,omitempty"`
+	WorkspaceAccess *TeamProjectAccessWorkspacePermissionsOptions `jsonapi:"attr,workspace-access,omitempty"`
 }
 
 // List all team accesses for a given project.
@@ -229,7 +327,8 @@ func validateTeamProjectAccessType(t TeamProjectAccessType) error {
 	case TeamProjectAccessAdmin,
 		TeamProjectAccessMaintain,
 		TeamProjectAccessWrite,
-		TeamProjectAccessRead:
+		TeamProjectAccessRead,
+		TeamProjectAccessCustom:
 		// do nothing
 	default:
 		return ErrInvalidTeamProjectAccessType
