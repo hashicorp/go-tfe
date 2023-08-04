@@ -7,6 +7,7 @@
 * Added BETA method `AddProjects` and `RemoveProjects` for attaching/detaching policy set to projects by @Netra2104 [#735](https://github.com/hashicorp/go-tfe/pull/735)
 * Added BETA support for adding and updating custom permissions to `TeamProjectAccesses`. A `TeamProjectAccessType` of `"custom"` can set various permissions applied at
 the project level to the project itself (`TeamProjectAccessProjectPermissionsOptions`) and all of the workspaces in a project (`TeamProjectAccessWorkspacePermissionsOptions`) by @rberecka [#745](https://github.com/hashicorp/go-tfe/pull/745)
+* Added BETA field `Provisional` to `ConfigurationVersions` by @brandonc [#746](https://github.com/hashicorp/go-tfe/pull/746)
 
 # v1.30.0
 

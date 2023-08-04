@@ -96,6 +96,7 @@ type ConfigurationVersion struct {
 	ErrorMessage     string              `jsonapi:"attr,error-message"`
 	Source           ConfigurationSource `jsonapi:"attr,source"`
 	Speculative      bool                `jsonapi:"attr,speculative"`
+	Provisional      bool                `jsonapi:"attr,provisional"`
 	Status           ConfigurationStatus `jsonapi:"attr,status"`
 	StatusTimestamps *CVStatusTimestamps `jsonapi:"attr,status-timestamps"`
 	UploadURL        string              `jsonapi:"attr,upload-url"`
@@ -154,6 +155,10 @@ type ConfigurationVersionCreateOptions struct {
 
 	// Optional: When true, this configuration version can only be used for planning.
 	Speculative *bool `jsonapi:"attr,speculative,omitempty"`
+
+	// Optional: When true, does not become the workspace's current configuration until
+	// a run referencing it is ultimately applied.
+	Provisional *bool `jsonapi:"attr,provisional,omitempty"`
 }
 
 // IngressAttributes include commit information associated with configuration versions sourced from VCS.
