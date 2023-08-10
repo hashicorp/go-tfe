@@ -3,6 +3,7 @@
 # v1.43.0
 
 ## Features
+* Adds `AgentsCeilingOverride` and `RunsCeilingOverride` fields in `AdminOrganization` and `AdminOrganizationUpdateOptions` structs
 * Adds `AggregatedCommitStatusEnabled` field to `Organization` by @mjyocca [#829](https://github.com/hashicorp/go-tfe/pull/829)
 
 ## Enhancements

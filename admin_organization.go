@@ -55,7 +55,8 @@ type AdminOrganization struct {
 	TerraformBuildWorkerPlanTimeout  string `jsonapi:"attr,terraform-build-worker-plan-timeout"`
 	TerraformWorkerSudoEnabled       bool   `jsonapi:"attr,terraform-worker-sudo-enabled"`
 	WorkspaceLimit                   *int   `jsonapi:"attr,workspace-limit"`
-
+	AgentsCeilingOverride            *int   `jsonapi:"attr,agents-ceiling-override,omitempty"`
+	RunsCeilingOverride              *int   `jsonapi:"attr,runs-ceiling-override,omitempty"`
 	// Relations
 	Owners []*User `jsonapi:"relation,owners"`
 }
@@ -71,6 +72,8 @@ type AdminOrganizationUpdateOptions struct {
 	TerraformBuildWorkerPlanTimeout  *string `jsonapi:"attr,terraform-build-worker-plan-timeout,omitempty"`
 	TerraformWorkerSudoEnabled       bool    `jsonapi:"attr,terraform-worker-sudo-enabled,omitempty"`
 	WorkspaceLimit                   *int    `jsonapi:"attr,workspace-limit,omitempty"`
+	AgentsCeilingOverride            *int    `jsonapi:"attr,agents-ceiling-override,omitempty"`
+	RunsCeilingOverride              *int    `jsonapi:"attr,runs-ceiling-override,omitempty"`
 }
 
 // AdminOrganizationList represents a list of organizations via Admin API.
