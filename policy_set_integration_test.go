@@ -33,6 +33,8 @@ func TestPolicySetsList(t *testing.T) {
 	defer psTestCleanup1()
 	psTest2, psTestCleanup2 := createPolicySet(t, client, orgTest, nil, []*Workspace{workspace}, []*Workspace{excludedWorkspace}, nil, "")
 	defer psTestCleanup2()
+	psTest3, psTestCleanup3 := createPolicySet(t, client, orgTest, nil, []*Workspace{workspace}, nil, OPA)
+	defer psTestCleanup3()
 
 	t.Run("without list options", func(t *testing.T) {
 		psl, err := client.PolicySets.List(ctx, orgTest.Name, nil)
@@ -40,8 +42,9 @@ func TestPolicySetsList(t *testing.T) {
 
 		assert.Contains(t, psl.Items, psTest1)
 		assert.Contains(t, psl.Items, psTest2)
+		assert.Contains(t, psl.Items, psTest3)
 		assert.Equal(t, 1, psl.CurrentPage)
-		assert.Equal(t, 2, psl.TotalCount)
+		assert.Equal(t, 3, psl.TotalCount)
 	})
 
 	t.Run("with pagination", func(t *testing.T) {
@@ -58,7 +61,7 @@ func TestPolicySetsList(t *testing.T) {
 
 		assert.Empty(t, psl.Items)
 		assert.Equal(t, 999, psl.CurrentPage)
-		assert.Equal(t, 2, psl.TotalCount)
+		assert.Equal(t, 3, psl.TotalCount)
 	})
 
 	t.Run("with search", func(t *testing.T) {
@@ -81,7 +84,7 @@ func TestPolicySetsList(t *testing.T) {
 		})
 		require.NoError(t, err)
 
-		assert.Equal(t, 2, len(psl.Items))
+		assert.Equal(t, 3, len(psl.Items))
 
 		assert.NotNil(t, psl.Items[0].Workspaces)
 		assert.Equal(t, 1, len(psl.Items[0].Workspaces))
@@ -133,10 +136,40 @@ func TestPolicySetsCreate(t *testing.T) {
 		assert.False(t, ps.Global)
 	})
 
-	t.Run("with all attributes provided", func(t *testing.T) {
+	t.Run("OPA policy set with valid attributes", func(t *testing.T) {
+		options := PolicySetCreateOptions{
+			Name: String("opa-policy-set"),
+			Kind: OPA,
+		}
+
+		ps, err := client.PolicySets.Create(ctx, orgTest.Name, options)
+		require.NoError(t, err)
+
+		assert.Equal(t, ps.Name, *options.Name)
+		assert.Equal(t, ps.Description, "")
+		assert.Equal(t, ps.Kind, OPA)
+		assert.False(t, ps.Global)
+	})
+
+	t.Run("with kind missing", func(t *testing.T) {
+		options := PolicySetCreateOptions{
+			Name: String("policy-set1"),
+		}
+
+		ps, err := client.PolicySets.Create(ctx, orgTest.Name, options)
+		require.NoError(t, err)
+
+		assert.Equal(t, ps.Name, *options.Name)
+		assert.Equal(t, ps.Description, "")
+		assert.Equal(t, ps.Kind, Sentinel)
+		assert.False(t, ps.Global)
+	})
+
+	t.Run("with all attributes provided - sentinel", func(t *testing.T) {
 		options := PolicySetCreateOptions{
 			Name:        String("global"),
 			Description: String("Policies in this set will be checked in ALL workspaces!"),
+			Kind:        Sentinel,
 			Global:      Bool(true),
 		}
 
@@ -145,6 +178,44 @@ func TestPolicySetsCreate(t *testing.T) {
 
 		assert.Equal(t, ps.Name, *options.Name)
 		assert.Equal(t, ps.Description, *options.Description)
+		assert.Equal(t, ps.Kind, Sentinel)
+		assert.True(t, ps.Global)
+	})
+
+	t.Run("with all attributes provided - OPA", func(t *testing.T) {
+		options := PolicySetCreateOptions{
+			Name:        String("global1"),
+			Description: String("Policies in this set will be checked in ALL workspaces!"),
+			Kind:        OPA,
+			Overridable: Bool(true),
+			Global:      Bool(true),
+		}
+
+		ps, err := client.PolicySets.Create(ctx, orgTest.Name, options)
+		require.NoError(t, err)
+
+		assert.Equal(t, ps.Name, *options.Name)
+		assert.Equal(t, ps.Description, *options.Description)
+		assert.Equal(t, ps.Overridable, options.Overridable)
+		assert.Equal(t, ps.Kind, OPA)
+		assert.True(t, ps.Global)
+	})
+
+	t.Run("with missing overridable attribute", func(t *testing.T) {
+		options := PolicySetCreateOptions{
+			Name:        String("global2"),
+			Description: String("Policies in this set will be checked in ALL workspaces!"),
+			Kind:        OPA,
+			Global:      Bool(true),
+		}
+
+		ps, err := client.PolicySets.Create(ctx, orgTest.Name, options)
+		require.NoError(t, err)
+
+		assert.Equal(t, ps.Name, *options.Name)
+		assert.Equal(t, ps.Description, *options.Description)
+		assert.Equal(t, ps.Overridable, Bool(false))
+		assert.Equal(t, ps.Kind, OPA)
 		assert.True(t, ps.Global)
 	})
 
@@ -157,6 +228,7 @@ func TestPolicySetsCreate(t *testing.T) {
 		options := PolicySetCreateOptions{
 			Name:       String("populated-policy-set"),
 			Policies:   []*Policy{pTest},
+			Kind:       Sentinel,
 			Workspaces: []*Workspace{wTest},
 		}
 
@@ -167,6 +239,7 @@ func TestPolicySetsCreate(t *testing.T) {
 		assert.Equal(t, ps.PolicyCount, 1)
 		assert.Equal(t, ps.Policies[0].ID, pTest.ID)
 		assert.Equal(t, ps.WorkspaceCount, 1)
+		assert.Equal(t, ps.Kind, Sentinel)
 		assert.Equal(t, ps.Workspaces[0].ID, wTest.ID)
 	})
 
@@ -235,6 +308,7 @@ func TestPolicySetsCreate(t *testing.T) {
 
 		options := PolicySetCreateOptions{
 			Name:         String("vcs-policy-set"),
+			Kind:         Sentinel,
 			PoliciesPath: String("/policy-sets/foo"),
 			VCSRepo: &VCSRepoOptions{
 				Branch:            String("policies"),
@@ -253,6 +327,7 @@ func TestPolicySetsCreate(t *testing.T) {
 		assert.Equal(t, ps.Name, *options.Name)
 		assert.Equal(t, ps.Description, "")
 		assert.False(t, ps.Global)
+		assert.Equal(t, ps.Kind, Sentinel)
 		assert.Equal(t, ps.PoliciesPath, "/policy-sets/foo")
 		assert.Equal(t, ps.VCSRepo.Branch, "policies")
 		assert.Equal(t, ps.VCSRepo.DisplayIdentifier, githubIdentifier)
@@ -492,6 +567,8 @@ func TestPolicySetsUpdate(t *testing.T) {
 
 	psTest, psTestCleanup := createPolicySet(t, client, orgTest, nil, nil, nil, nil, "")
 	defer psTestCleanup()
+	psTest2, psTestCleanup2 := createPolicySet(t, client, orgTest, nil, nil, nil, "opa")
+	defer psTestCleanup2()
 
 	t.Run("with valid attributes", func(t *testing.T) {
 		options := PolicySetUpdateOptions{
@@ -506,6 +583,23 @@ func TestPolicySetsUpdate(t *testing.T) {
 		assert.Equal(t, ps.Name, *options.Name)
 		assert.Equal(t, ps.Description, *options.Description)
 		assert.True(t, ps.Global)
+	})
+
+	t.Run("with valid attributes-OPA", func(t *testing.T) {
+		options := PolicySetUpdateOptions{
+			Name:        String("global2"),
+			Description: String("Policies in this set will be checked in ALL workspaces!"),
+			Global:      Bool(true),
+			Overridable: Bool(true),
+		}
+
+		ps, err := client.PolicySets.Update(ctx, psTest2.ID, options)
+		require.NoError(t, err)
+
+		assert.Equal(t, ps.Name, *options.Name)
+		assert.Equal(t, ps.Description, *options.Description)
+		assert.True(t, ps.Global)
+		assert.True(t, *ps.Overridable)
 	})
 
 	t.Run("with invalid attributes", func(t *testing.T) {
