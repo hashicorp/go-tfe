@@ -514,6 +514,7 @@ func TestRegistryModulesShowVersion(t *testing.T) {
 		rmvRead, errRead := client.RegistryModules.ReadVersion(ctx, registryModuleIDTest, *invalidVersion)
 
 		require.Error(t, errRead)
+		assert.Equal(t, ErrResourceNotFound, err)
 		assert.Empty(t, rmvRead)
 	})
 }
@@ -594,6 +595,7 @@ func TestRegistryModulesListCommit(t *testing.T) {
 
 			assert.Empty(t, cm)
 			require.Error(t, errCm)
+			assert.Equal(t, ErrResourceNotFound, errCm)
 		})
 	})
 }
