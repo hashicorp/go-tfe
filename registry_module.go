@@ -25,6 +25,8 @@ type RegistryModules interface {
 	List(ctx context.Context, organization string, options *RegistryModuleListOptions) (*RegistryModuleList, error)
 
 	// ListCommits List the commits for the registry module
+	// This returns the latest 20 commits for the connected VCS repo.
+	// Pagination is not applicable due to inconsistent support from the VCS providers.
 	ListCommits(ctx context.Context, moduleID RegistryModuleID) (*CommitList, error)
 
 	// Create a registry module without a VCS repo
