@@ -493,7 +493,7 @@ func TestRegistryModulesShowVersion(t *testing.T) {
 		})
 	})
 
-	t.Run("when the version does not exist", func(t *testing.T) {
+	t.Run("when reading a version that does not exist", func(t *testing.T) {
 		options := RegistryModuleCreateVersionOptions{
 			Version: String("1.2.3"),
 		}
