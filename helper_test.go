@@ -706,11 +706,13 @@ func createPolicySetWithOptions(t *testing.T, client *Client, org *Organization,
 
 	ctx := context.Background()
 	ps, err := client.PolicySets.Create(ctx, org.Name, PolicySetCreateOptions{
-		Name:        String(randomString(t)),
-		Policies:    policies,
-		Workspaces:  workspaces,
-		Kind:        opts.Kind,
-		Overridable: opts.Overridable,
+		Name:              String(randomString(t)),
+		Policies:          policies,
+		Workspaces:        workspaces,
+		Kind:              opts.Kind,
+		Overridable:       opts.Overridable,
+		AgentEnabled:      opts.AgentEnabled,
+		PolicyToolVersion: opts.PolicyToolVersion,
 	})
 	if err != nil {
 		t.Fatal(err)
