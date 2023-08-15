@@ -24,6 +24,11 @@ type RegistryModules interface {
 	// List all the registory modules within an organization
 	List(ctx context.Context, organization string, options *RegistryModuleListOptions) (*RegistryModuleList, error)
 
+	// ListCommits List the commits for the registry module
+	// This returns the latest 20 commits for the connected VCS repo.
+	// Pagination is not applicable due to inconsistent support from the VCS providers.
+	ListCommits(ctx context.Context, moduleID RegistryModuleID) (*CommitList, error)
+
 	// Create a registry module without a VCS repo
 	Create(ctx context.Context, organization string, options RegistryModuleCreateOptions) (*RegistryModule, error)
 
@@ -35,6 +40,9 @@ type RegistryModules interface {
 
 	// Read a registry module
 	Read(ctx context.Context, moduleID RegistryModuleID) (*RegistryModule, error)
+
+	// ReadVersion Read a registry module version
+	ReadVersion(ctx context.Context, moduleID RegistryModuleID, version string) (*RegistryModuleVersion, error)
 
 	// Delete a registry module
 	Delete(ctx context.Context, organization string, name string) error
@@ -108,6 +116,12 @@ type RegistryModuleList struct {
 	Items []*RegistryModule
 }
 
+// CommitList represents a list of the latest commits from the registry module
+type CommitList struct {
+	*Pagination
+	Items []*Commit
+}
+
 // RegistryModule represents a registry module
 type RegistryModule struct {
 	ID              string                          `jsonapi:"primary,registry-modules"`
@@ -125,6 +139,18 @@ type RegistryModule struct {
 
 	// Relations
 	Organization *Organization `jsonapi:"relation,organization"`
+}
+
+// Commit represents a commit
+type Commit struct {
+	ID              string `jsonapi:"primary,commit"`
+	Sha             string `jsonapi:"attr,sha"`
+	Date            string `jsonapi:"attr,date"`
+	URL             string `jsonapi:"attr,url"`
+	Author          string `jsonapi:"attr,author"`
+	AuthorAvatarURL string `jsonapi:"attr,author-avatar-url"`
+	AuthorHTMLURL   string `jsonapi:"attr,author-html-url"`
+	Message         string `jsonapi:"attr,message"`
 }
 
 // RegistryModuleVersion represents a registry module version
@@ -190,6 +216,8 @@ type RegistryModuleCreateVersionOptions struct {
 	Type string `jsonapi:"primary,registry-module-versions"`
 
 	Version *string `jsonapi:"attr,version"`
+
+	CommitSHA *string `jsonapi:"attr,commit-sha"`
 }
 
 // RegistryModuleCreateWithVCSConnectionOptions is used when creating a registry module with a VCS repo
@@ -244,6 +272,33 @@ func (r *registryModules) List(ctx context.Context, organization string, options
 	}
 
 	return ml, nil
+}
+
+// List the last 20 commits for the registry modules within an organization.
+func (r *registryModules) ListCommits(ctx context.Context, moduleID RegistryModuleID) (*CommitList, error) {
+	if !validStringID(&moduleID.Organization) {
+		return nil, ErrInvalidOrg
+	}
+
+	u := fmt.Sprintf(
+		"organizations/%s/registry-modules/private/%s/%s/%s/commits",
+		url.QueryEscape(moduleID.Organization),
+		url.QueryEscape(moduleID.Organization),
+		url.QueryEscape(moduleID.Name),
+		url.QueryEscape(moduleID.Provider),
+	)
+	req, err := r.client.NewRequest("GET", u, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	cl := &CommitList{}
+	err = req.Do(ctx, cl)
+	if err != nil {
+		return nil, err
+	}
+
+	return cl, nil
 }
 
 // Upload uploads Terraform configuration files for the provided registry module version. It
@@ -438,6 +493,37 @@ func (r *registryModules) Read(ctx context.Context, moduleID RegistryModuleID) (
 	}
 
 	return rm, nil
+}
+func (r *registryModules) ReadVersion(ctx context.Context, moduleID RegistryModuleID, version string) (*RegistryModuleVersion, error) {
+	if err := moduleID.valid(); err != nil {
+		return nil, err
+	}
+	if !validString(&version) {
+		return nil, ErrRequiredVersion
+	}
+	if !validStringID(&version) {
+		return nil, ErrInvalidVersion
+	}
+	u := fmt.Sprintf(
+		"organizations/%s/registry-modules/private/%s/%s/%s/version?module_version=%s",
+		url.QueryEscape(moduleID.Organization),
+		url.QueryEscape(moduleID.Organization),
+		url.QueryEscape(moduleID.Name),
+		url.QueryEscape(moduleID.Provider),
+		url.QueryEscape(version),
+	)
+	req, err := r.client.NewRequest("GET", u, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	rmv := &RegistryModuleVersion{}
+	err = req.Do(ctx, rmv)
+	if err != nil {
+		return nil, err
+	}
+
+	return rmv, nil
 }
 
 // Delete is used to delete the entire registry module

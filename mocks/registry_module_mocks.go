@@ -138,6 +138,21 @@ func (mr *MockRegistryModulesMockRecorder) List(ctx, organization, options inter
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "List", reflect.TypeOf((*MockRegistryModules)(nil).List), ctx, organization, options)
 }
 
+// ListCommits mocks base method.
+func (m *MockRegistryModules) ListCommits(ctx context.Context, moduleID tfe.RegistryModuleID) (*tfe.CommitList, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "ListCommits", ctx, moduleID)
+	ret0, _ := ret[0].(*tfe.CommitList)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// ListCommits indicates an expected call of ListCommits.
+func (mr *MockRegistryModulesMockRecorder) ListCommits(ctx, moduleID interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListCommits", reflect.TypeOf((*MockRegistryModules)(nil).ListCommits), ctx, moduleID)
+}
+
 // Read mocks base method.
 func (m *MockRegistryModules) Read(ctx context.Context, moduleID tfe.RegistryModuleID) (*tfe.RegistryModule, error) {
 	m.ctrl.T.Helper()
@@ -151,6 +166,21 @@ func (m *MockRegistryModules) Read(ctx context.Context, moduleID tfe.RegistryMod
 func (mr *MockRegistryModulesMockRecorder) Read(ctx, moduleID interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Read", reflect.TypeOf((*MockRegistryModules)(nil).Read), ctx, moduleID)
+}
+
+// ReadVersion mocks base method.
+func (m *MockRegistryModules) ReadVersion(ctx context.Context, moduleID tfe.RegistryModuleID, version string) (*tfe.RegistryModuleVersion, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "ReadVersion", ctx, moduleID, version)
+	ret0, _ := ret[0].(*tfe.RegistryModuleVersion)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// ReadVersion indicates an expected call of ReadVersion.
+func (mr *MockRegistryModulesMockRecorder) ReadVersion(ctx, moduleID, version interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ReadVersion", reflect.TypeOf((*MockRegistryModules)(nil).ReadVersion), ctx, moduleID, version)
 }
 
 // Update mocks base method.

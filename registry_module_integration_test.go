@@ -446,6 +446,160 @@ func TestRegistryModulesCreateVersion(t *testing.T) {
 	})
 }
 
+func TestRegistryModulesShowVersion(t *testing.T) {
+	skipUnlessBeta(t)
+	client := testClient(t)
+	ctx := context.Background()
+
+	orgTest, orgTestCleanup := createOrganization(t, client)
+	defer orgTestCleanup()
+
+	registryModuleTest, registryModuleTestCleanup := createRegistryModule(t, client, orgTest, PrivateRegistry)
+	defer registryModuleTestCleanup()
+
+	t.Run("when the version exists", func(t *testing.T) {
+		options := RegistryModuleCreateVersionOptions{
+			Version: String("1.2.7"),
+		}
+
+		registryModuleIDTest := RegistryModuleID{
+			Organization: orgTest.Name,
+			Name:         registryModuleTest.Name,
+			Provider:     registryModuleTest.Provider,
+		}
+
+		rmv, err := client.RegistryModules.CreateVersion(ctx, registryModuleIDTest, options)
+		require.NoError(t, err)
+		assert.NotEmpty(t, rmv.ID)
+		assert.Equal(t, *options.Version, rmv.Version)
+
+		rmvRead, errRead := client.RegistryModules.ReadVersion(ctx, registryModuleIDTest, *options.Version)
+
+		require.NoError(t, errRead)
+		assert.NotEmpty(t, rmvRead.ID)
+
+		t.Run("relationships are properly decoded", func(t *testing.T) {
+			assert.Equal(t, registryModuleTest.ID, rmvRead.RegistryModule.ID)
+		})
+
+		t.Run("timestamps are properly decoded", func(t *testing.T) {
+			assert.NotEmpty(t, rmvRead.CreatedAt)
+			assert.NotEmpty(t, rmvRead.UpdatedAt)
+		})
+
+		t.Run("links are properly decoded", func(t *testing.T) {
+			assert.NotEmpty(t, rmvRead.Links["upload"])
+			assert.Contains(t, rmvRead.Links["upload"], "/object/")
+		})
+	})
+
+	t.Run("when reading a version that does not exist", func(t *testing.T) {
+		options := RegistryModuleCreateVersionOptions{
+			Version: String("1.2.3"),
+		}
+
+		registryModuleIDTest := RegistryModuleID{
+			Organization: orgTest.Name,
+			Name:         registryModuleTest.Name,
+			Provider:     registryModuleTest.Provider,
+		}
+
+		rmv, err := client.RegistryModules.CreateVersion(ctx, registryModuleIDTest, options)
+		require.NoError(t, err)
+		assert.NotEmpty(t, rmv.ID)
+		assert.Equal(t, *options.Version, rmv.Version)
+
+		invalidVersion := String("1.5.5")
+
+		rmvRead, errRead := client.RegistryModules.ReadVersion(ctx, registryModuleIDTest, *invalidVersion)
+
+		require.Error(t, errRead)
+		assert.Equal(t, ErrResourceNotFound, err)
+		assert.Empty(t, rmvRead)
+	})
+}
+
+func TestRegistryModulesListCommit(t *testing.T) {
+	skipUnlessBeta(t)
+	githubIdentifier := os.Getenv("GITHUB_REGISTRY_MODULE_IDENTIFIER")
+	if githubIdentifier == "" {
+		t.Skip("Export a valid GITHUB_REGISTRY_MODULE_IDENTIFIER before running this test")
+	}
+	repositoryName := strings.Split(githubIdentifier, "/")[1]
+	registryModuleProvider := strings.SplitN(repositoryName, "-", 3)[1]
+	registryModuleName := strings.SplitN(repositoryName, "-", 3)[2]
+
+	client := testClient(t)
+	ctx := context.Background()
+
+	orgTest, orgTestCleanup := createOrganization(t, client)
+	defer orgTestCleanup()
+
+	oauthTokenTest, oauthTokenTestCleanup := createOAuthToken(t, client, orgTest)
+	defer oauthTokenTestCleanup()
+
+	t.Run("with valid options", func(t *testing.T) {
+		options := RegistryModuleCreateWithVCSConnectionOptions{
+			VCSRepo: &RegistryModuleVCSRepoOptions{
+				Identifier:        String(githubIdentifier),
+				OAuthTokenID:      String(oauthTokenTest.ID),
+				DisplayIdentifier: String(githubIdentifier),
+			},
+		}
+		rm, err := client.RegistryModules.CreateWithVCSConnection(ctx, options)
+		require.NoError(t, err)
+		assert.NotEmpty(t, rm.ID)
+		assert.Equal(t, registryModuleName, rm.Name)
+		assert.Equal(t, registryModuleProvider, rm.Provider)
+		assert.Equal(t, rm.VCSRepo.Branch, "")
+		assert.Equal(t, rm.VCSRepo.DisplayIdentifier, githubIdentifier)
+		assert.Equal(t, rm.VCSRepo.Identifier, githubIdentifier)
+		assert.Equal(t, rm.VCSRepo.IngressSubmodules, true)
+		assert.Equal(t, rm.VCSRepo.OAuthTokenID, oauthTokenTest.ID)
+		assert.Equal(t, rm.VCSRepo.RepositoryHTTPURL, fmt.Sprintf("https://github.com/%s", githubIdentifier))
+		assert.Equal(t, rm.VCSRepo.ServiceProvider, string(ServiceProviderGithub))
+		assert.Regexp(t, fmt.Sprintf("^%s/webhooks/vcs/[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$", regexp.QuoteMeta(DefaultConfig().Address)), rm.VCSRepo.WebhookURL)
+
+		t.Run("permissions are properly decoded", func(t *testing.T) {
+			assert.True(t, rm.Permissions.CanDelete)
+			assert.True(t, rm.Permissions.CanResync)
+			assert.True(t, rm.Permissions.CanRetry)
+		})
+
+		t.Run("listing commits", func(t *testing.T) {
+			cm, errCm := client.RegistryModules.ListCommits(ctx, RegistryModuleID{
+				Organization: orgTest.Name,
+				Provider:     registryModuleProvider,
+				Name:         registryModuleName,
+			})
+
+			assert.NotEmpty(t, cm)
+			assert.NotEmpty(t, cm.Items[0])
+			assert.NotEmpty(t, cm.Items[0].ID)
+			assert.NotEmpty(t, cm.Items[0].Sha)
+			assert.NotEmpty(t, cm.Items[0].Message)
+			assert.NotEmpty(t, cm.Items[0].Date)
+			require.NoError(t, errCm)
+		})
+	})
+	t.Run("when a VCS connection is not present", func(t *testing.T) {
+		registryModuleTest, registryModuleTestCleanup := createRegistryModule(t, client, orgTest, PrivateRegistry)
+		defer registryModuleTestCleanup()
+
+		t.Run("listing commits", func(t *testing.T) {
+			cm, errCm := client.RegistryModules.ListCommits(ctx, RegistryModuleID{
+				Organization: orgTest.Name,
+				Provider:     registryModuleTest.Provider,
+				Name:         registryModuleTest.Name,
+			})
+
+			assert.Empty(t, cm)
+			require.Error(t, errCm)
+			assert.Equal(t, ErrResourceNotFound, errCm)
+		})
+	})
+}
+
 func TestRegistryModulesCreateWithVCSConnection(t *testing.T) {
 	githubIdentifier := os.Getenv("GITHUB_REGISTRY_MODULE_IDENTIFIER")
 	if githubIdentifier == "" {
