@@ -182,6 +182,36 @@ func TestPolicySetsCreate(t *testing.T) {
 		assert.Equal(t, ps.Projects[0].ID, prjTest.ID)
 	})
 
+	t.Run("with policies, workspaces, excluded workspaces and projects provided", func(t *testing.T) {
+		pTest, pTestCleanup := createPolicy(t, client, orgTest)
+		defer pTestCleanup()
+		wTest, wTestCleanup := createWorkspace(t, client, orgTest)
+		defer wTestCleanup()
+		prjTest, prjTestCleanup := createProject(t, client, orgTest)
+		defer prjTestCleanup()
+
+		options := PolicySetCreateOptions{
+			Name:               String("project-policy-set"),
+			Policies:           []*Policy{pTest},
+			Workspaces:         []*Workspace{wTest},
+			ExcludedWorkspaces: []*Workspace{wTest},
+			Projects:           []*Project{prjTest},
+		}
+
+		ps, err := client.PolicySets.Create(ctx, orgTest.Name, options)
+		require.NoError(t, err)
+
+		assert.Equal(t, ps.Name, *options.Name)
+		assert.Equal(t, ps.PolicyCount, 1)
+		assert.Equal(t, ps.Policies[0].ID, pTest.ID)
+		assert.Equal(t, ps.WorkspaceCount, 1)
+		assert.Equal(t, ps.Workspaces[0].ID, wTest.ID)
+		assert.Equal(t, ps.ExcludedWorkspaceCount, 1)
+		assert.Equal(t, ps.ExcludedWorkspaces[0].ID, wTest.ID)
+		assert.Equal(t, ps.ProjectCount, 1)
+		assert.Equal(t, ps.Projects[0].ID, prjTest.ID)
+	})
+
 	t.Run("with vcs policy set", func(t *testing.T) {
 		githubIdentifier := os.Getenv("GITHUB_POLICY_SET_IDENTIFIER")
 		if githubIdentifier == "" {

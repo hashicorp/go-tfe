@@ -109,11 +109,11 @@ type PolicySet struct {
 	// The most recent successful policy set version.
 	CurrentVersion *PolicySetVersion `jsonapi:"relation,current-version"`
 	// **Note: This field is still in BETA and subject to change.**
+	// The excluded workspaces to which the policy set applies.
+	ExcludedWorkspaces []*Workspace `jsonapi:"relation,excluded-workspaces"`
+	// **Note: This field is still in BETA and subject to change.**
 	// The projects to which the policy set applies.
 	Projects []*Project `jsonapi:"relation,projects"`
-	// **Note: This field is still in BETA and subject to change.**
-	// The excluded workspaces to which the policy set applies.
-	ExcludedWorkspace []*Workspace `jsonapi:"relation,excluded-workspaces"`
 }
 
 // PolicySetIncludeOpt represents the available options for include query params.
@@ -126,8 +126,8 @@ const (
 	PolicySetCurrentVersion PolicySetIncludeOpt = "current_version"
 	PolicySetNewestVersion  PolicySetIncludeOpt = "newest_version"
 	// **Note: This field is still in BETA and subject to change.**
-	PolicySetProjects           PolicySetIncludeOpt = "projects"
 	PolicySetExcludedWorkspaces PolicySetIncludeOpt = "excluded_workspaces"
+	PolicySetProjects           PolicySetIncludeOpt = "projects"
 )
 
 // PolicySetListOptions represents the options for listing policy sets.
@@ -199,12 +199,12 @@ type PolicySetCreateOptions struct {
 	Workspaces []*Workspace `jsonapi:"relation,workspaces,omitempty"`
 
 	// **Note: This field is still in BETA and subject to change.**
-	// Optional: The initial list of projects for which the policy set should be enforced.
-	Projects []*Project `jsonapi:"relation,projects,omitempty"`
-
-	// **Note: This field is still in BETA and subject to change.**
 	// Optional: The initial list of excluded workspaces for which the policy set should be enforced.
 	ExcludedWorkspaces []*Workspace `jsonapi:"relation,excluded-workspaces,omitempty"`
+
+	// **Note: This field is still in BETA and subject to change.**
+	// Optional: The initial list of projects for which the policy set should be enforced.
+	Projects []*Project `jsonapi:"relation,projects,omitempty"`
 }
 
 // PolicySetUpdateOptions represents the options for updating a policy set.
@@ -597,7 +597,7 @@ func (o *PolicySetReadOptions) valid() error {
 func validatePolicySetIncludeParams(params []PolicySetIncludeOpt) error {
 	for _, p := range params {
 		switch p {
-		case PolicySetPolicies, PolicySetWorkspaces, PolicySetCurrentVersion, PolicySetNewestVersion, PolicySetProjects, PolicySetExcludedWorkspaces:
+		case PolicySetPolicies, PolicySetWorkspaces, PolicySetCurrentVersion, PolicySetNewestVersion, PolicySetExcludedWorkspaces, PolicySetProjects:
 			// do nothing
 		default:
 			return ErrInvalidIncludeValue
