@@ -1,6 +1,7 @@
-# UNRELEASED
-<!-- Add CHANGELOG entry to this section for any PR awaiting the next release -->
+# v1.32.1
 
+## Dependency Update
+* Updated go-slug dependency to v0.12.1
 
 # v1.32.0
 
