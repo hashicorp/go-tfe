@@ -90,6 +90,10 @@ var (
 
 	ErrInvalidTerraformVersionType = errors.New("invalid type for terraform version. Please use 'terraform-version'")
 
+	ErrInvalidOpaVersionID = errors.New("invalid value for OPA version ID")
+
+	ErrInvalidSentinelVersionID = errors.New("invalid value for Sentinel version ID")
+
 	ErrInvalidConfigVersionID = errors.New("invalid value for configuration version ID")
 
 	ErrInvalidCostEstimateID = errors.New("invalid value for cost estimate ID")
@@ -318,6 +322,10 @@ var (
 	ErrRequiredRunTriggerListOps = errors.New("RunTriggerListOptions is required")
 
 	ErrRequiredTFVerCreateOps = errors.New("version, URL and sha is required for AdminTerraformVersionCreateOptions")
+
+	ErrRequiredOpaVerCreateOps = errors.New("version, URL and sha is required for AdminOpaVersionCreateOptions")
+
+	ErrRequiredSentinelVerCreateOps = errors.New("version, URL and sha is required for AdminSentinelVersionCreateOptions")
 
 	ErrRequiredSerial = errors.New("serial is required")
 

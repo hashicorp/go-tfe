@@ -2748,6 +2748,13 @@ func genSafeRandomTerraformVersion() string {
 	return fmt.Sprintf("1.0.%d", rInt)
 }
 
+// genSafeRandomPolicyVersion returns a random version number of the form
+// `0.0.<RANDOM>`
+func genSafeRandomPolicyVersion() string {
+	rInt := rand.New(rand.NewSource(time.Now().UnixNano())).Int()
+	return fmt.Sprintf("0.0.%d", rInt)
+}
+
 func randomString(t *testing.T) string {
 	v, err := uuid.GenerateUUID()
 	if err != nil {
