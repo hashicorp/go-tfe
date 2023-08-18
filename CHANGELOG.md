@@ -3,6 +3,9 @@
 ## Deprecations
 * The `Sourceable` field has been deprecated on `RunTrigger`. Instead, use `SourceableChoice` to locate the non-empty field representing the actual sourceable value by @brandonc [#816](https://github.com/hashicorp/go-tfe/pull/816)
 
+## Features
+* Add `OpaVersion` and `SentinelVersion` admin endpoints by @mrinalirao [#758](https://github.com/hashicorp/go-tfe/pull/758)
+
 ## Enhancements
 * Adds `LockedBy` relationship field to `Workspace` by @brandonc [#816](https://github.com/hashicorp/go-tfe/pull/816)
 * Adds `CreatedBy` relationship field to `TeamToken`, `UserToken`, and `OrganizationToken` by @brandonc [#816](https://github.com/hashicorp/go-tfe/pull/816)
