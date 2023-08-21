@@ -1,6 +1,6 @@
 # UNRELEASED
 <!-- Add CHANGELOG entry to this section for any PR awaiting the next release -->
-
+* Removed beta tags for TeamProjectAccess by @rberecka [#756](https://github.com/hashicorp/go-tfe/pull/756)
 
 # v1.32.0
 
