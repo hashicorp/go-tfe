@@ -65,9 +65,9 @@ type AdminSentinelVersionsListOptions struct {
 // AdminSentinelVersionCreateOptions for creating an Sentinel version.
 type AdminSentinelVersionCreateOptions struct {
 	Type             string  `jsonapi:"primary,sentinel-versions"`
-	Version          *string `jsonapi:"attr,version"` // Required
-	URL              *string `jsonapi:"attr,url"`     // Required
-	Sha              *string `jsonapi:"attr,sha"`     // Required
+	Version          string  `jsonapi:"attr,version"` // Required
+	URL              string  `jsonapi:"attr,url"`     // Required
+	Sha              string  `jsonapi:"attr,sha"`     // Required
 	Official         *bool   `jsonapi:"attr,official,omitempty"`
 	Deprecated       *bool   `jsonapi:"attr,deprecated,omitempty"`
 	DeprecatedReason *string `jsonapi:"attr,deprecated-reason,omitempty"`
@@ -190,13 +190,13 @@ func (o AdminSentinelVersionCreateOptions) valid() error {
 	if (o == AdminSentinelVersionCreateOptions{}) {
 		return ErrRequiredSentinelVerCreateOps
 	}
-	if !validString(o.Version) {
+	if o.Version == "" {
 		return ErrRequiredVersion
 	}
-	if !validString(o.URL) {
+	if o.URL == "" {
 		return ErrRequiredURL
 	}
-	if !validString(o.Sha) {
+	if o.Sha == "" {
 		return ErrRequiredSha
 	}
 

@@ -47,9 +47,9 @@ func TestAdminOpaVersions_List(t *testing.T) {
 		assert.Equal(t, 1, oList.CurrentPage)
 		for _, item := range oList.Items {
 			assert.NotNil(t, item.ID)
-			assert.NotNil(t, item.Version)
-			assert.NotNil(t, item.URL)
-			assert.NotNil(t, item.Sha)
+			assert.NotEmpty(t, item.Version)
+			assert.NotEmpty(t, item.URL)
+			assert.NotEmpty(t, item.Sha)
 			assert.NotNil(t, item.Official)
 			assert.NotNil(t, item.Deprecated)
 			if item.Deprecated {
@@ -100,13 +100,13 @@ func TestAdminOpaVersions_CreateDelete(t *testing.T) {
 
 	client := testClient(t)
 	ctx := context.Background()
-	version := genSafeRandomPolicyVersion()
+	version := createAdminOpaVersion()
 
 	t.Run("with valid options", func(t *testing.T) {
 		opts := AdminOpaVersionCreateOptions{
-			Version:          String(version),
-			URL:              String("https://www.hashicorp.com"),
-			Sha:              String(genSha(t)),
+			Version:          version,
+			URL:              "https://www.hashicorp.com",
+			Sha:              genSha(t),
 			Deprecated:       Bool(true),
 			DeprecatedReason: String("Test Reason"),
 			Official:         Bool(false),
@@ -121,9 +121,9 @@ func TestAdminOpaVersions_CreateDelete(t *testing.T) {
 			require.NoError(t, deleteErr)
 		}()
 
-		assert.Equal(t, *opts.Version, ov.Version)
-		assert.Equal(t, *opts.URL, ov.URL)
-		assert.Equal(t, *opts.Sha, ov.Sha)
+		assert.Equal(t, opts.Version, ov.Version)
+		assert.Equal(t, opts.URL, ov.URL)
+		assert.Equal(t, opts.Sha, ov.Sha)
 		assert.Equal(t, *opts.Official, ov.Official)
 		assert.Equal(t, *opts.Deprecated, ov.Deprecated)
 		assert.Equal(t, *opts.DeprecatedReason, *ov.DeprecatedReason)
@@ -132,11 +132,11 @@ func TestAdminOpaVersions_CreateDelete(t *testing.T) {
 	})
 
 	t.Run("with only required options", func(t *testing.T) {
-		version := genSafeRandomPolicyVersion()
+		version := createAdminOpaVersion()
 		opts := AdminOpaVersionCreateOptions{
-			Version: String(version),
-			URL:     String("https://www.hashicorp.com"),
-			Sha:     String(genSha(t)),
+			Version: version,
+			URL:     "https://www.hashicorp.com",
+			Sha:     genSha(t),
 		}
 		ov, err := client.Admin.OpaVersions.Create(ctx, opts)
 		require.NoError(t, err)
@@ -146,9 +146,9 @@ func TestAdminOpaVersions_CreateDelete(t *testing.T) {
 			require.NoError(t, deleteErr)
 		}()
 
-		assert.Equal(t, *opts.Version, ov.Version)
-		assert.Equal(t, *opts.URL, ov.URL)
-		assert.Equal(t, *opts.Sha, ov.Sha)
+		assert.Equal(t, opts.Version, ov.Version)
+		assert.Equal(t, opts.URL, ov.URL)
+		assert.Equal(t, opts.Sha, ov.Sha)
 		assert.Equal(t, false, ov.Official)
 		assert.Equal(t, false, ov.Deprecated)
 		assert.Nil(t, ov.DeprecatedReason)
@@ -169,11 +169,11 @@ func TestAdminOpaVersions_ReadUpdate(t *testing.T) {
 	ctx := context.Background()
 
 	t.Run("reads and updates", func(t *testing.T) {
-		version := genSafeRandomPolicyVersion()
+		version := createAdminOpaVersion()
 		opts := AdminOpaVersionCreateOptions{
-			Version:          String(version),
-			URL:              String("https://www.hashicorp.com"),
-			Sha:              String(genSha(t)),
+			Version:          version,
+			URL:              "https://www.hashicorp.com",
+			Sha:              genSha(t),
 			Official:         Bool(false),
 			Deprecated:       Bool(true),
 			DeprecatedReason: String("Test Reason"),
@@ -192,16 +192,16 @@ func TestAdminOpaVersions_ReadUpdate(t *testing.T) {
 		ov, err = client.Admin.OpaVersions.Read(ctx, id)
 		require.NoError(t, err)
 
-		assert.Equal(t, *opts.Version, ov.Version)
-		assert.Equal(t, *opts.URL, ov.URL)
-		assert.Equal(t, *opts.Sha, ov.Sha)
+		assert.Equal(t, opts.Version, ov.Version)
+		assert.Equal(t, opts.URL, ov.URL)
+		assert.Equal(t, opts.Sha, ov.Sha)
 		assert.Equal(t, *opts.Official, ov.Official)
 		assert.Equal(t, *opts.Deprecated, ov.Deprecated)
 		assert.Equal(t, *opts.DeprecatedReason, *ov.DeprecatedReason)
 		assert.Equal(t, *opts.Enabled, ov.Enabled)
 		assert.Equal(t, *opts.Beta, ov.Beta)
 
-		updateVersion := genSafeRandomPolicyVersion()
+		updateVersion := createAdminOpaVersion()
 		updateURL := "https://app.terraform.io/"
 		updateOpts := AdminOpaVersionUpdateOptions{
 			Version:    String(updateVersion),
@@ -214,7 +214,7 @@ func TestAdminOpaVersions_ReadUpdate(t *testing.T) {
 
 		assert.Equal(t, updateVersion, ov.Version)
 		assert.Equal(t, updateURL, ov.URL)
-		assert.Equal(t, *opts.Sha, ov.Sha)
+		assert.Equal(t, opts.Sha, ov.Sha)
 		assert.Equal(t, *opts.Official, ov.Official)
 		assert.Equal(t, *updateOpts.Deprecated, ov.Deprecated)
 		assert.Equal(t, *opts.Enabled, ov.Enabled)

@@ -2748,9 +2748,16 @@ func genSafeRandomTerraformVersion() string {
 	return fmt.Sprintf("1.0.%d", rInt)
 }
 
-// genSafeRandomPolicyVersion returns a random version number of the form
+// createAdminSentinelVersion returns a random version number of the form
 // `0.0.<RANDOM>`
-func genSafeRandomPolicyVersion() string {
+func createAdminSentinelVersion() string {
+	rInt := rand.New(rand.NewSource(time.Now().UnixNano())).Int()
+	return fmt.Sprintf("0.0.%d", rInt)
+}
+
+// createAdminOpaVersion returns a random OPA version number of the form
+// `0.0.<RANDOM>`
+func createAdminOpaVersion() string {
 	rInt := rand.New(rand.NewSource(time.Now().UnixNano())).Int()
 	return fmt.Sprintf("0.0.%d", rInt)
 }
