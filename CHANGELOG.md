@@ -2,6 +2,9 @@
 <!-- Add CHANGELOG entry to this section for any PR awaiting the next release -->
 * Removed beta tags for TeamProjectAccess by @rberecka [#756](https://github.com/hashicorp/go-tfe/pull/756)
 
+## Enhancements
+* Added BETA support for including `exclusions` relationship to policy_set on create by @Netra2104 [#757](https://github.com/hashicorp/go-tfe/pull/757)
+
 # v1.32.1
 
 ## Dependency Update

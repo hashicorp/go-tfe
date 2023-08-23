@@ -191,11 +191,11 @@ func TestPolicySetsCreate(t *testing.T) {
 		defer prjTestCleanup()
 
 		options := PolicySetCreateOptions{
-			Name:               String("project-policy-set"),
-			Policies:           []*Policy{pTest},
-			Workspaces:         []*Workspace{wTest},
-			ExcludedWorkspaces: []*Workspace{wTest},
-			Projects:           []*Project{prjTest},
+			Name:       String("project-policy-set"),
+			Policies:   []*Policy{pTest},
+			Workspaces: []*Workspace{wTest},
+			Exclusions: []*Workspace{wTest},
+			Projects:   []*Project{prjTest},
 		}
 
 		ps, err := client.PolicySets.Create(ctx, orgTest.Name, options)
@@ -206,8 +206,7 @@ func TestPolicySetsCreate(t *testing.T) {
 		assert.Equal(t, ps.Policies[0].ID, pTest.ID)
 		assert.Equal(t, ps.WorkspaceCount, 1)
 		assert.Equal(t, ps.Workspaces[0].ID, wTest.ID)
-		assert.Equal(t, ps.ExcludedWorkspaceCount, 1)
-		assert.Equal(t, ps.ExcludedWorkspaces[0].ID, wTest.ID)
+		assert.Equal(t, ps.Exclusions[0].ID, wTest.ID)
 		assert.Equal(t, ps.ProjectCount, 1)
 		assert.Equal(t, ps.Projects[0].ID, prjTest.ID)
 	})
