@@ -191,7 +191,7 @@ func TestPolicySetsCreate(t *testing.T) {
 		defer prjTestCleanup()
 
 		options := PolicySetCreateOptions{
-			Name:       String("project-policy-set"),
+			Name:       String("exclusion-policy-set"),
 			Policies:   []*Policy{pTest},
 			Workspaces: []*Workspace{wTest},
 			Exclusions: []*Workspace{wTest},
