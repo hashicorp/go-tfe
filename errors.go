@@ -354,6 +354,10 @@ var (
 
 	ErrRequiredRegistryModule = errors.New("registry module is required")
 
+	ErrInvalidRegistryModuleID = errors.New("invalid value for registry module ID")
+
+	ErrInvalidTestRunID = errors.New("invalid value for test run id")
+
 	ErrTerraformVersionValidForPlanOnly = errors.New("setting terraform-version is only valid when plan-only is set to true")
 
 	ErrStateMustBeOmitted = errors.New("when uploading state, the State and JSONState strings must be omitted from options")

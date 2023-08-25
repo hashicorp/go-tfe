@@ -28,6 +28,11 @@ type ConfigurationVersions interface {
 	// configuration version will be usable once data is uploaded to it.
 	Create(ctx context.Context, workspaceID string, options ConfigurationVersionCreateOptions) (*ConfigurationVersion, error)
 
+	// CreateForRegistryModule is used to create a new configuration version
+	// keyed to a registry module instead of a workspace. The created
+	// configuration version will be usable once data is uploaded to it.
+	CreateForRegistryModule(ctx context.Context, moduleID RegistryModuleID) (*ConfigurationVersion, error)
+
 	// Read a configuration version by its ID.
 	Read(ctx context.Context, cvID string) (*ConfigurationVersion, error)
 
@@ -219,6 +224,26 @@ func (s *configurationVersions) Create(ctx context.Context, workspaceID string, 
 
 	u := fmt.Sprintf("workspaces/%s/configuration-versions", url.QueryEscape(workspaceID))
 	req, err := s.client.NewRequest("POST", u, &options)
+	if err != nil {
+		return nil, err
+	}
+
+	cv := &ConfigurationVersion{}
+	err = req.Do(ctx, cv)
+	if err != nil {
+		return nil, err
+	}
+
+	return cv, nil
+}
+
+func (s *configurationVersions) CreateForRegistryModule(ctx context.Context, moduleID RegistryModuleID) (*ConfigurationVersion, error) {
+	if err := moduleID.valid(); err != nil {
+		return nil, err
+	}
+
+	u := fmt.Sprintf("%s/configuration-versions", testRunsPath(moduleID))
+	req, err := s.client.NewRequest("POST", u, nil)
 	if err != nil {
 		return nil, err
 	}

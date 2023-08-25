@@ -484,6 +484,49 @@ func createUploadedConfigurationVersion(t *testing.T, client *Client, w *Workspa
 	return cv, cvCleanup
 }
 
+func createTestConfigurationVersion(t *testing.T, client *Client, rm *RegistryModule) (*ConfigurationVersion, func()) {
+	var rmCleanup func()
+
+	if rm == nil {
+		rm, rmCleanup = createRegistryModuleWithVersion(t, client, nil)
+	}
+
+	ctx := context.Background()
+	cv, err := client.ConfigurationVersions.CreateForRegistryModule(
+		ctx,
+		RegistryModuleID{
+			Organization: rm.Organization.Name,
+			Name:         rm.Name,
+			Provider:     rm.Provider,
+			Namespace:    rm.Namespace,
+			RegistryName: rm.RegistryName,
+		})
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	return cv, func() {
+		if rmCleanup != nil {
+			rmCleanup()
+		}
+	}
+}
+
+func createUploadedTestConfigurationVersion(t *testing.T, client *Client, rm *RegistryModule) (*ConfigurationVersion, func()) {
+	cv, cvCleanup := createTestConfigurationVersion(t, client, rm)
+
+	ctx := context.Background()
+	err := client.ConfigurationVersions.Upload(ctx, cv.UploadURL, "test-fixtures/config-version-with-test")
+	if err != nil {
+		cvCleanup()
+		t.Fatal(err)
+	}
+
+	WaitUntilStatus(t, client, cv, ConfigurationUploaded, 15)
+
+	return cv, cvCleanup
+}
+
 // helper to wait until a configuration version has reached a certain status
 func WaitUntilStatus(t *testing.T, client *Client, cv *ConfigurationVersion, desiredStatus ConfigurationStatus, timeoutSeconds int) {
 	ctx := context.Background()
@@ -1268,6 +1311,34 @@ func createRun(t *testing.T, client *Client, w *Workspace) (*Run, func()) {
 	}
 }
 
+func createTestRun(t *testing.T, client *Client, rm *RegistryModule, variables ...*RunVariable) (*TestRun, func()) {
+	var rmCleanup func()
+
+	if rm == nil {
+		rm, rmCleanup = createBranchBasedRegistryModule(t, client, nil)
+	}
+
+	cv, cvCleanup := createUploadedTestConfigurationVersion(t, client, rm)
+
+	ctx := context.Background()
+	tr, err := client.TestRuns.Create(ctx, TestRunCreateOptions{
+		Variables:            variables,
+		ConfigurationVersion: cv,
+		RegistryModule:       rm,
+	})
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	return tr, func() {
+		cvCleanup()
+
+		if rmCleanup != nil {
+			rmCleanup()
+		}
+	}
+}
+
 func createPlanExport(t *testing.T, client *Client, r *Run) (*PlanExport, func()) {
 	var rCleanup func()
 
@@ -1315,6 +1386,62 @@ func createPlanExport(t *testing.T, client *Client, r *Run) (*PlanExport, func()
 			} else {
 				t.Logf("Waiting for plan export finished or queued but was %s", pe.Status)
 			}
+		}
+	}
+}
+
+func createBranchBasedRegistryModule(t *testing.T, client *Client, org *Organization) (*RegistryModule, func()) {
+	githubIdentifier := os.Getenv("GITHUB_REGISTRY_MODULE_IDENTIFIER")
+	if githubIdentifier == "" {
+		t.Skip("Export a valid GITHUB_REGISTRY_MODULE_IDENTIFIER before running this test")
+	}
+
+	githubBranch := os.Getenv("GITHUB_REGISTRY_MODULE_BRANCH")
+	if githubBranch == "" {
+		githubBranch = "main"
+	}
+
+	var orgCleanup func()
+	if org == nil {
+		org, orgCleanup = createOrganization(t, client)
+	}
+
+	oauthTokenTest, oauthTokenTestCleanup := createOAuthToken(t, client, org)
+
+	ctx := context.Background()
+
+	rm, err := client.RegistryModules.CreateWithVCSConnection(ctx, RegistryModuleCreateWithVCSConnectionOptions{
+		VCSRepo: &RegistryModuleVCSRepoOptions{
+			OrganizationName:  String(org.Name),
+			Identifier:        String(githubIdentifier),
+			OAuthTokenID:      String(oauthTokenTest.ID),
+			DisplayIdentifier: String(githubIdentifier),
+			Branch:            String(githubBranch),
+		},
+		InitialVersion: String("1.0.0"),
+	})
+	if err != nil {
+
+		oauthTokenTestCleanup()
+
+		if orgCleanup != nil {
+			orgCleanup()
+		}
+
+		t.Fatal(err)
+	}
+
+	return rm, func() {
+		if err := client.RegistryModules.Delete(ctx, org.Name, rm.Name); err != nil {
+			t.Errorf("Error destroying registry module! WARNING: Dangling resources\n"+
+				"may exist! The full error is shown below.\n\n"+
+				"Registry Module: %s\nError: %s", rm.Name, err)
+		}
+
+		oauthTokenTestCleanup()
+
+		if orgCleanup != nil {
+			orgCleanup()
 		}
 	}
 }

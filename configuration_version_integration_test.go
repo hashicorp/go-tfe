@@ -139,6 +139,56 @@ func TestConfigurationVersionsCreate(t *testing.T) {
 	})
 }
 
+func TestConfigurationVersionsCreateForRegistryModule(t *testing.T) {
+	skipUnlessBeta(t)
+	client := testClient(t)
+	ctx := context.Background()
+
+	orgTest, orgTestCleanup := createOrganization(t, client)
+	defer orgTestCleanup()
+
+	rmTest, rmTestCleanup := createRegistryModule(t, client, orgTest, PrivateRegistry)
+	defer rmTestCleanup()
+
+	id := RegistryModuleID{
+		Organization: rmTest.Organization.Name,
+		Name:         rmTest.Name,
+		Provider:     rmTest.Provider,
+		Namespace:    rmTest.Namespace,
+		RegistryName: rmTest.RegistryName,
+	}
+
+	t.Run("with valid options", func(t *testing.T) {
+		cv, err := client.ConfigurationVersions.CreateForRegistryModule(ctx, id)
+		assert.NotEmpty(t, cv.UploadURL)
+		require.NoError(t, err)
+
+		// Get a refreshed view of the configuration version.
+		refreshed, err := client.ConfigurationVersions.Read(ctx, cv.ID)
+		require.NoError(t, err)
+		assert.Empty(t, refreshed.UploadURL)
+
+		for _, item := range []*ConfigurationVersion{
+			cv,
+			refreshed,
+		} {
+			assert.NotEmpty(t, item.ID)
+			assert.Empty(t, item.Error)
+			assert.Equal(t, item.Source, ConfigurationSourceAPI)
+			assert.Equal(t, item.Status, ConfigurationPending)
+		}
+	})
+
+	t.Run("with invalid workspace id", func(t *testing.T) {
+		cv, err := client.ConfigurationVersions.CreateForRegistryModule(
+			ctx,
+			RegistryModuleID{},
+		)
+		assert.Nil(t, cv)
+		assert.Equal(t, ErrRequiredName, err)
+	})
+}
+
 func TestConfigurationVersionsRead(t *testing.T) {
 	client := testClient(t)
 	ctx := context.Background()

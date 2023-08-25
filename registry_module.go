@@ -230,6 +230,13 @@ type RegistryModuleCreateWithVCSConnectionOptions struct {
 
 	// Required: VCS repository information
 	VCSRepo *RegistryModuleVCSRepoOptions `jsonapi:"attr,vcs-repo"`
+
+	// Optional: If Branch is set within VCSRepo then InitialVersion sets the
+	// initial version of the newly created branch-based registry module. If
+	// Branch is not set within VCSRepo then InitialVersion is ignored.
+	//
+	// Defaults to "0.0.0".
+	InitialVersion *string `jsonapi:"attr,initial-version,omitempty"`
 }
 
 // RegistryModuleCreateVersionOptions is used when updating a registry module
@@ -251,6 +258,10 @@ type RegistryModuleVCSRepoOptions struct {
 	DisplayIdentifier *string `json:"display-identifier,omitempty"` // Required
 	GHAInstallationID *string `json:"github-app-installation-id,omitempty"`
 	OrganizationName  *string `json:"organization-name,omitempty"`
+
+	// Optional: If set, the newly created registry module will be branch-based
+	// with the starting branch set to Branch.
+	Branch *string `json:"branch,omitempty"`
 }
 
 // List all the registory modules within an organization.
@@ -434,7 +445,7 @@ func (r *registryModules) CreateWithVCSConnection(ctx context.Context, options R
 		return nil, err
 	}
 	var u string
-	if options.VCSRepo.OAuthTokenID != nil {
+	if options.VCSRepo.OAuthTokenID != nil && options.VCSRepo.Branch == nil {
 		u = "registry-modules"
 	} else {
 		u = fmt.Sprintf(
