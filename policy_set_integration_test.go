@@ -183,6 +183,7 @@ func TestPolicySetsCreate(t *testing.T) {
 	})
 
 	t.Run("with policies, workspaces, excluded workspaces and projects provided", func(t *testing.T) {
+		skipUnlessBeta(t)
 		pTest, pTestCleanup := createPolicy(t, client, orgTest)
 		defer pTestCleanup()
 		wTest, wTestCleanup := createWorkspace(t, client, orgTest)
