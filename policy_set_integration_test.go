@@ -182,21 +182,18 @@ func TestPolicySetsCreate(t *testing.T) {
 		assert.Equal(t, ps.Projects[0].ID, prjTest.ID)
 	})
 
-	t.Run("with policies, workspaces, excluded workspaces and projects provided", func(t *testing.T) {
+	t.Run("with policies and excluded workspaces provided", func(t *testing.T) {
 		skipUnlessBeta(t)
 		pTest, pTestCleanup := createPolicy(t, client, orgTest)
 		defer pTestCleanup()
 		wTest, wTestCleanup := createWorkspace(t, client, orgTest)
 		defer wTestCleanup()
-		prjTest, prjTestCleanup := createProject(t, client, orgTest)
-		defer prjTestCleanup()
+		eTest, _ := createWorkspaceExclusion(wTest)
 
 		options := PolicySetCreateOptions{
 			Name:       String("exclusion-policy-set"),
 			Policies:   []*Policy{pTest},
-			Workspaces: []*Workspace{wTest},
-			Exclusions: []*Workspace{wTest},
-			Projects:   []*Project{prjTest},
+			Exclusions: []*Exclusion{eTest},
 		}
 
 		ps, err := client.PolicySets.Create(ctx, orgTest.Name, options)
@@ -205,12 +202,8 @@ func TestPolicySetsCreate(t *testing.T) {
 		assert.Equal(t, ps.Name, *options.Name)
 		assert.Equal(t, ps.PolicyCount, 1)
 		assert.Equal(t, ps.Policies[0].ID, pTest.ID)
-		assert.Equal(t, ps.WorkspaceCount, 1)
-		assert.Equal(t, ps.Workspaces[0].ID, wTest.ID)
 		assert.Equal(t, ps.Exclusions[0].ID, wTest.ID)
 		assert.Equal(t, len(ps.Exclusions), 1)
-		assert.Equal(t, ps.ProjectCount, 1)
-		assert.Equal(t, ps.Projects[0].ID, prjTest.ID)
 	})
 
 	t.Run("with vcs policy set", func(t *testing.T) {
