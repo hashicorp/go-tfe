@@ -188,12 +188,11 @@ func TestPolicySetsCreate(t *testing.T) {
 		defer pTestCleanup()
 		wTest, wTestCleanup := createWorkspace(t, client, orgTest)
 		defer wTestCleanup()
-		eTest, _ := createWorkspaceExclusion(wTest)
 
 		options := PolicySetCreateOptions{
-			Name:       String("exclusion-policy-set"),
-			Policies:   []*Policy{pTest},
-			Exclusions: []*Exclusion{eTest},
+			Name:                String("exclusion-policy-set"),
+			Policies:            []*Policy{pTest},
+			WorkspaceExclusions: []*Workspace{wTest},
 		}
 
 		ps, err := client.PolicySets.Create(ctx, orgTest.Name, options)
@@ -202,8 +201,8 @@ func TestPolicySetsCreate(t *testing.T) {
 		assert.Equal(t, ps.Name, *options.Name)
 		assert.Equal(t, ps.PolicyCount, 1)
 		assert.Equal(t, ps.Policies[0].ID, pTest.ID)
-		assert.Equal(t, ps.Exclusions[0].ID, wTest.ID)
-		assert.Equal(t, len(ps.Exclusions), 1)
+		assert.Equal(t, ps.WorkspaceExclusions[0].ID, wTest.ID)
+		assert.Equal(t, len(ps.WorkspaceExclusions), 1)
 	})
 
 	t.Run("with vcs policy set", func(t *testing.T) {
