@@ -1896,14 +1896,6 @@ func createWorkspace(t *testing.T, client *Client, org *Organization) (*Workspac
 	})
 }
 
-func createWorkspaceExclusion(workspace *Workspace) (*Exclusion, func()) {
-	exclusion := Exclusion{
-		ID:   workspace.ID,
-		Type: "workspaces",
-	}
-	return &exclusion, nil
-}
-
 func createWorkspaceWithOptions(t *testing.T, client *Client, org *Organization, options WorkspaceCreateOptions) (*Workspace, func()) {
 	var orgCleanup func()
 
