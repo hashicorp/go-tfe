@@ -18,7 +18,7 @@ func TestPolicySetVersionsCreate(t *testing.T) {
 	client := testClient(t)
 	ctx := context.Background()
 
-	psTest, psTestCleanup := createPolicySet(t, client, nil, nil, nil, nil, "")
+	psTest, psTestCleanup := createPolicySet(t, client, nil, nil, nil, nil, nil, "")
 	defer psTestCleanup()
 
 	t.Run("with valid identifier", func(t *testing.T) {
@@ -40,7 +40,7 @@ func TestPolicySetVersionsRead(t *testing.T) {
 	client := testClient(t)
 	ctx := context.Background()
 
-	psTest, psTestCleanup := createPolicySet(t, client, nil, nil, nil, nil, "")
+	psTest, psTestCleanup := createPolicySet(t, client, nil, nil, nil, nil, nil, "")
 	defer psTestCleanup()
 
 	origPSV, err := client.PolicySetVersions.Create(ctx, psTest.ID)

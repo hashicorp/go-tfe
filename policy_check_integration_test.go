@@ -28,7 +28,7 @@ func TestPolicyChecksList(t *testing.T) {
 	defer policyCleanup2()
 	wTest, wsCleanup := createWorkspace(t, client, orgTest)
 	defer wsCleanup()
-	createPolicySet(t, client, orgTest, []*Policy{pTest1, pTest2}, []*Workspace{wTest}, nil, "")
+	createPolicySet(t, client, orgTest, []*Policy{pTest1, pTest2}, []*Workspace{wTest}, nil, nil, "")
 
 	rTest, runCleanup := createPolicyCheckedRun(t, client, wTest)
 	defer runCleanup()
@@ -90,7 +90,7 @@ func TestPolicyChecksRead(t *testing.T) {
 
 	pTest, _ := createUploadedPolicy(t, client, true, orgTest)
 	wTest, _ := createWorkspace(t, client, orgTest)
-	createPolicySet(t, client, orgTest, []*Policy{pTest}, []*Workspace{wTest}, nil, "")
+	createPolicySet(t, client, orgTest, []*Policy{pTest}, []*Workspace{wTest}, nil, nil, "")
 
 	rTest, _ := createPolicyCheckedRun(t, client, wTest)
 	require.Equal(t, 1, len(rTest.PolicyChecks))
@@ -134,7 +134,7 @@ func TestPolicyChecksOverride(t *testing.T) {
 
 		wTest, wTestCleanup := createWorkspace(t, client, orgTest)
 		defer wTestCleanup()
-		createPolicySet(t, client, orgTest, []*Policy{pTest}, []*Workspace{wTest}, nil, "")
+		createPolicySet(t, client, orgTest, []*Policy{pTest}, []*Workspace{wTest}, nil, nil, "")
 		rTest, tTestCleanup := createPolicyCheckedRun(t, client, wTest)
 		defer tTestCleanup()
 
@@ -159,7 +159,7 @@ func TestPolicyChecksOverride(t *testing.T) {
 
 		wTest, wTestCleanup := createWorkspace(t, client, orgTest)
 		defer wTestCleanup()
-		createPolicySet(t, client, orgTest, []*Policy{pTest}, []*Workspace{wTest}, nil, "")
+		createPolicySet(t, client, orgTest, []*Policy{pTest}, []*Workspace{wTest}, nil, nil, "")
 		rTest, rTestCleanup := createPolicyCheckedRun(t, client, wTest)
 		defer rTestCleanup()
 
@@ -190,7 +190,7 @@ func TestPolicyChecksLogs(t *testing.T) {
 	defer pTestCleanup()
 	wTest, wTestCleanup := createWorkspace(t, client, orgTest)
 	defer wTestCleanup()
-	createPolicySet(t, client, orgTest, []*Policy{pTest}, []*Workspace{wTest}, nil, "")
+	createPolicySet(t, client, orgTest, []*Policy{pTest}, []*Workspace{wTest}, nil, nil, "")
 
 	rTest, rTestCleanup := createPolicyCheckedRun(t, client, wTest)
 	defer rTestCleanup()

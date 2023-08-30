@@ -37,7 +37,7 @@ func TestPolicyEvaluationList_Beta(t *testing.T) {
 	defer policyTestCleanup()
 
 	policySet := []*Policy{policyTest}
-	_, psTestCleanup1 := createPolicySet(t, client, orgTest, policySet, []*Workspace{wkspaceTest}, nil, OPA)
+	_, psTestCleanup1 := createPolicySet(t, client, orgTest, policySet, []*Workspace{wkspaceTest}, nil, nil, OPA)
 	defer psTestCleanup1()
 
 	rTest, rTestCleanup := createRun(t, client, wkspaceTest)
@@ -92,7 +92,7 @@ func TestPolicySetOutcomeList_Beta(t *testing.T) {
 	defer policyTestCleanup()
 
 	policySet := []*Policy{policyTest}
-	_, psTestCleanup1 := createPolicySet(t, client, orgTest, policySet, []*Workspace{wkspaceTest}, nil, OPA)
+	_, psTestCleanup1 := createPolicySet(t, client, orgTest, policySet, []*Workspace{wkspaceTest}, nil, nil, OPA)
 	defer psTestCleanup1()
 
 	rTest, rTestCleanup := createPlannedRun(t, client, wkspaceTest)
@@ -203,7 +203,7 @@ func TestPolicySetOutcomeRead_Beta(t *testing.T) {
 	defer policyTestCleanup()
 
 	policySet := []*Policy{policyTest}
-	_, psTestCleanup1 := createPolicySet(t, client, orgTest, policySet, []*Workspace{wkspaceTest}, nil, OPA)
+	_, psTestCleanup1 := createPolicySet(t, client, orgTest, policySet, []*Workspace{wkspaceTest}, nil, nil, OPA)
 	defer psTestCleanup1()
 
 	rTest, rTestCleanup := createPlannedRun(t, client, wkspaceTest)
