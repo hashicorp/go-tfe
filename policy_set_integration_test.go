@@ -99,6 +99,8 @@ func TestPolicySetsList(t *testing.T) {
 		assert.NotNil(t, psl.Items[0].WorkspaceExclusions)
 		assert.Equal(t, 1, len(psl.Items[0].WorkspaceExclusions))
 		assert.Equal(t, excludedWorkspace.ID, psl.Items[0].WorkspaceExclusions[0].ID)
+		assert.Equal(t, excludedWorkspace.Name, psl.Items[0].WorkspaceExclusions[0].Name)
+		assert.Equal(t, excludedWorkspace.CreatedAt, psl.Items[0].WorkspaceExclusions[0].CreatedAt)
 	})
 
 	t.Run("without a valid organization", func(t *testing.T) {
