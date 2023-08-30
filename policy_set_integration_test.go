@@ -86,6 +86,14 @@ func TestPolicySetsList(t *testing.T) {
 		assert.Equal(t, workspace.ID, psl.Items[0].Workspaces[0].ID)
 	})
 
+	t.Run("with workspace exclusion include param", func(t *testing.T) {
+		psl, err := client.PolicySets.List(ctx, orgTest.Name, &PolicySetListOptions{
+			Include: []PolicySetIncludeOpt{PolicySetWorkspaceExclusions},
+		})
+		require.NoError(t, err)
+		assert.Equal(t, 2, len(psl.Items))
+	})
+
 	t.Run("without a valid organization", func(t *testing.T) {
 		ps, err := client.PolicySets.List(ctx, badIdentifier, nil)
 		assert.Nil(t, ps)
