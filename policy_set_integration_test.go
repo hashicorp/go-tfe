@@ -87,6 +87,7 @@ func TestPolicySetsList(t *testing.T) {
 	})
 
 	t.Run("with workspace exclusion include param", func(t *testing.T) {
+		skipUnlessBeta(t)
 		psl, err := client.PolicySets.List(ctx, orgTest.Name, &PolicySetListOptions{
 			Include: []PolicySetIncludeOpt{PolicySetWorkspaceExclusions},
 		})
