@@ -108,6 +108,9 @@ type PolicySet struct {
 	// The most recent successful policy set version.
 	CurrentVersion *PolicySetVersion `jsonapi:"relation,current-version"`
 	// **Note: This field is still in BETA and subject to change.**
+	// The workspace exclusions to which the policy set applies.
+	WorkspaceExclusions []*Workspace `jsonapi:"relation,workspace-exclusions"`
+	// **Note: This field is still in BETA and subject to change.**
 	// The projects to which the policy set applies.
 	Projects []*Project `jsonapi:"relation,projects"`
 }
@@ -122,7 +125,8 @@ const (
 	PolicySetCurrentVersion PolicySetIncludeOpt = "current_version"
 	PolicySetNewestVersion  PolicySetIncludeOpt = "newest_version"
 	// **Note: This field is still in BETA and subject to change.**
-	PolicySetProjects PolicySetIncludeOpt = "projects"
+	PolicySetWorkspaceExclusions PolicySetIncludeOpt = "workspace_exclusions"
+	PolicySetProjects            PolicySetIncludeOpt = "projects"
 )
 
 // PolicySetListOptions represents the options for listing policy sets.
@@ -192,6 +196,10 @@ type PolicySetCreateOptions struct {
 
 	// Optional: The initial list of workspaces for which the policy set should be enforced.
 	Workspaces []*Workspace `jsonapi:"relation,workspaces,omitempty"`
+
+	// **Note: This field is still in BETA and subject to change.**
+	// Optional: The initial list of workspace exclusions for which the policy set should be enforced.
+	WorkspaceExclusions []*Workspace `jsonapi:"relation,workspace-exclusions,omitempty"`
 
 	// **Note: This field is still in BETA and subject to change.**
 	// Optional: The initial list of projects for which the policy set should be enforced.
@@ -588,7 +596,7 @@ func (o *PolicySetReadOptions) valid() error {
 func validatePolicySetIncludeParams(params []PolicySetIncludeOpt) error {
 	for _, p := range params {
 		switch p {
-		case PolicySetPolicies, PolicySetWorkspaces, PolicySetCurrentVersion, PolicySetNewestVersion, PolicySetProjects:
+		case PolicySetPolicies, PolicySetWorkspaces, PolicySetCurrentVersion, PolicySetNewestVersion, PolicySetWorkspaceExclusions, PolicySetProjects:
 			// do nothing
 		default:
 			return ErrInvalidIncludeValue

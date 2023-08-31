@@ -593,7 +593,7 @@ func createPolicySetParameter(t *testing.T, client *Client, ps *PolicySet) (*Pol
 	var psCleanup func()
 
 	if ps == nil {
-		ps, psCleanup = createPolicySet(t, client, nil, nil, nil, nil, "")
+		ps, psCleanup = createPolicySet(t, client, nil, nil, nil, nil, nil, "")
 	}
 
 	ctx := context.Background()
@@ -619,7 +619,8 @@ func createPolicySetParameter(t *testing.T, client *Client, ps *PolicySet) (*Pol
 	}
 }
 
-func createPolicySet(t *testing.T, client *Client, org *Organization, policies []*Policy, workspaces []*Workspace, projects []*Project, kind PolicyKind) (*PolicySet, func()) {
+func createPolicySet(t *testing.T, client *Client, org *Organization, policies []*Policy, workspaces []*Workspace,
+	excludedWorkspace []*Workspace, projects []*Project, kind PolicyKind) (*PolicySet, func()) {
 	var orgCleanup func()
 
 	if org == nil {
@@ -628,11 +629,12 @@ func createPolicySet(t *testing.T, client *Client, org *Organization, policies [
 
 	ctx := context.Background()
 	ps, err := client.PolicySets.Create(ctx, org.Name, PolicySetCreateOptions{
-		Name:       String(randomString(t)),
-		Policies:   policies,
-		Workspaces: workspaces,
-		Projects:   projects,
-		Kind:       kind,
+		Name:                String(randomString(t)),
+		Policies:            policies,
+		Workspaces:          workspaces,
+		WorkspaceExclusions: excludedWorkspace,
+		Projects:            projects,
+		Kind:                kind,
 	})
 	if err != nil {
 		t.Fatal(err)
@@ -685,7 +687,7 @@ func createPolicySetVersion(t *testing.T, client *Client, ps *PolicySet) (*Polic
 	var psCleanup func()
 
 	if ps == nil {
-		ps, psCleanup = createPolicySet(t, client, nil, nil, nil, nil, "")
+		ps, psCleanup = createPolicySet(t, client, nil, nil, nil, nil, nil, "")
 	}
 
 	ctx := context.Background()
