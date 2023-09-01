@@ -1420,8 +1420,8 @@ func createBranchBasedRegistryModule(t *testing.T, client *Client, org *Organiza
 		},
 		InitialVersion: String("1.0.0"),
 	})
-	if err != nil {
 
+	if err != nil {
 		oauthTokenTestCleanup()
 
 		if orgCleanup != nil {
