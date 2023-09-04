@@ -31,6 +31,8 @@ type ConfigurationVersions interface {
 	// CreateForRegistryModule is used to create a new configuration version
 	// keyed to a registry module instead of a workspace. The created
 	// configuration version will be usable once data is uploaded to it.
+	//
+	// **Note: This function is still in BETA and subject to change.**
 	CreateForRegistryModule(ctx context.Context, moduleID RegistryModuleID) (*ConfigurationVersion, error)
 
 	// Read a configuration version by its ID.
