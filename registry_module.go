@@ -236,6 +236,8 @@ type RegistryModuleCreateWithVCSConnectionOptions struct {
 	// Branch is not set within VCSRepo then InitialVersion is ignored.
 	//
 	// Defaults to "0.0.0".
+	//
+	// **Note: This field is still in BETA and subject to change.**
 	InitialVersion *string `jsonapi:"attr,initial-version,omitempty"`
 }
 
@@ -261,6 +263,8 @@ type RegistryModuleVCSRepoOptions struct {
 
 	// Optional: If set, the newly created registry module will be branch-based
 	// with the starting branch set to Branch.
+	//
+	// **Note: This field is still in BETA and subject to change.**
 	Branch *string `json:"branch,omitempty"`
 }
 
@@ -692,6 +696,7 @@ func (o RegistryModuleCreateWithVCSConnectionOptions) valid() error {
 	if o.VCSRepo == nil {
 		return ErrRequiredVCSRepo
 	}
+
 	return o.VCSRepo.valid()
 }
 
@@ -702,7 +707,7 @@ func (o RegistryModuleVCSRepoOptions) valid() error {
 	if !validString(o.OAuthTokenID) && !validString(o.GHAInstallationID) {
 		return ErrRequiredOauthTokenOrGithubAppInstallationID
 	}
-	if !validString(o.OAuthTokenID) && validString(o.GHAInstallationID) {
+	if (!validString(o.OAuthTokenID) && validString(o.GHAInstallationID)) || validString(o.Branch) {
 		if !validString(o.OrganizationName) {
 			return ErrInvalidOrg
 		}

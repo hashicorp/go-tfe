@@ -17,8 +17,7 @@ var _ TestRuns = (*testRuns)(nil)
 // TestRuns describes all the test run related methods that the Terraform
 // Enterprise API supports.
 //
-// TODO: Finalise docs link.
-// TFE API docs: https://developer.hashicorp.com/terraform/cloud-docs/api-docs/test-runs
+// **Note: These methods are still in BETA and subject to change.**
 type TestRuns interface {
 	// List all the test runs for a given private registry module.
 	List(ctx context.Context, moduleID RegistryModuleID, options *TestRunListOptions) (*TestRunList, error)
@@ -189,6 +188,10 @@ func (s *testRuns) Read(ctx context.Context, moduleID RegistryModuleID, testRunI
 
 // Create a new test run with the given options.
 func (s *testRuns) Create(ctx context.Context, options TestRunCreateOptions) (*TestRun, error) {
+	if err := options.valid(); err != nil {
+		return nil, err
+	}
+
 	moduleID := RegistryModuleID{
 		Organization: options.RegistryModule.Organization.Name,
 		Name:         options.RegistryModule.Name,
@@ -276,7 +279,7 @@ func (s *testRuns) Cancel(ctx context.Context, moduleID RegistryModuleID, testRu
 	}
 
 	u := fmt.Sprintf("%s/%s/cancel", testRunsPath(moduleID), url.QueryEscape(testRunID))
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest("POST", u, nil)
 	if err != nil {
 		return err
 	}
@@ -295,7 +298,7 @@ func (s *testRuns) ForceCancel(ctx context.Context, moduleID RegistryModuleID, t
 	}
 
 	u := fmt.Sprintf("%s/%s/force-cancel", testRunsPath(moduleID), url.QueryEscape(testRunID))
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest("POST", u, nil)
 	if err != nil {
 		return err
 	}

@@ -733,6 +733,7 @@ func TestRegistryModulesCreateBranchBasedWithVCSConnection(t *testing.T) {
 	t.Run("with valid options", func(t *testing.T) {
 		options := RegistryModuleCreateWithVCSConnectionOptions{
 			VCSRepo: &RegistryModuleVCSRepoOptions{
+				OrganizationName:  String(orgTest.Name),
 				Identifier:        String(githubIdentifier),
 				OAuthTokenID:      String(oauthTokenTest.ID),
 				DisplayIdentifier: String(githubIdentifier),
@@ -745,6 +746,19 @@ func TestRegistryModulesCreateBranchBasedWithVCSConnection(t *testing.T) {
 		assert.Equal(t, registryModuleName, rm.Name)
 		assert.Equal(t, registryModuleProvider, rm.Provider)
 		assert.Equal(t, githubBranch, rm.VCSRepo.Branch)
+	})
+
+	t.Run("with invalid options", func(t *testing.T) {
+		options := RegistryModuleCreateWithVCSConnectionOptions{
+			VCSRepo: &RegistryModuleVCSRepoOptions{
+				Identifier:        String(githubIdentifier),
+				OAuthTokenID:      String(oauthTokenTest.ID),
+				DisplayIdentifier: String(githubIdentifier),
+				Branch:            String(githubBranch),
+			},
+		}
+		_, err := client.RegistryModules.CreateWithVCSConnection(ctx, options)
+		require.Equal(t, err, ErrInvalidOrg)
 	})
 }
 

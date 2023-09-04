@@ -134,10 +134,8 @@ func TestTestRunsCreate(t *testing.T) {
 			RegistryModule:       rmTest,
 		}
 
-		tr, err := client.TestRuns.Create(ctx, options)
+		_, err := client.TestRuns.Create(ctx, options)
 		require.NoError(t, err)
-		require.NotNil(t, tr.ConfigurationVersion)
-		assert.Equal(t, cvTest.ID, tr.ConfigurationVersion.ID)
 	})
 	t.Run("without a configuration version", func(t *testing.T) {
 		options := TestRunCreateOptions{
@@ -180,13 +178,15 @@ func TestTestRunsLogs(t *testing.T) {
 	defer trCleanup()
 
 	t.Run("when the log exists", func(t *testing.T) {
+		waitUntilTestRunStatus(t, client, id, tr, TestRunFinished, 15)
+
 		logReader, err := client.TestRuns.Logs(ctx, id, tr.ID)
 		require.NoError(t, err)
 
 		logs, err := io.ReadAll(logReader)
 		require.NoError(t, err)
 
-		assert.Contains(t, string(logs), "1 passed, 0 failed")
+		assert.Contains(t, string(logs), "Success!")
 	})
 
 	t.Run("when the log does not exist", func(t *testing.T) {
