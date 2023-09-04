@@ -1339,7 +1339,7 @@ func createTestRun(t *testing.T, client *Client, rm *RegistryModule, variables .
 	}
 }
 
-// helper to wait until a configuration version has reached a certain status
+// helper to wait until a test run has reached a certain status
 func waitUntilTestRunStatus(t *testing.T, client *Client, rm RegistryModuleID, tr *TestRun, desiredStatus TestRunStatus, timeoutSeconds int) {
 	ctx := context.Background()
 

@@ -696,7 +696,6 @@ func (o RegistryModuleCreateWithVCSConnectionOptions) valid() error {
 	if o.VCSRepo == nil {
 		return ErrRequiredVCSRepo
 	}
-
 	return o.VCSRepo.valid()
 }
 
