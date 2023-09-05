@@ -754,6 +754,140 @@ func TestPolicySetsRemoveWorkspaces(t *testing.T) {
 	})
 }
 
+func TestPolicySetsAddWorkspaceExclusions(t *testing.T) {
+	skipUnlessBeta(t)
+	client := testClient(t)
+	ctx := context.Background()
+
+	orgTest, orgTestCleanup := createOrganization(t, client)
+	defer orgTestCleanup()
+
+	upgradeOrganizationSubscription(t, client, orgTest)
+
+	wTest1, wTestCleanup1 := createWorkspace(t, client, orgTest)
+	defer wTestCleanup1()
+	wTest2, wTestCleanup2 := createWorkspace(t, client, orgTest)
+	defer wTestCleanup2()
+	psTest, psTestCleanup := createPolicySet(t, client, orgTest, nil, nil, nil, nil, "")
+	defer psTestCleanup()
+
+	t.Run("with workspace exclusions provided", func(t *testing.T) {
+		err := client.PolicySets.AddWorkspaceExclusions(
+			ctx,
+			psTest.ID,
+			PolicySetAddWorkspaceExclusionsOptions{
+				WorkspaceExclusions: []*Workspace{wTest1, wTest2},
+			},
+		)
+		require.NoError(t, err)
+
+		ps, err := client.PolicySets.Read(ctx, psTest.ID)
+		require.NoError(t, err)
+		assert.Equal(t, 2, len(ps.WorkspaceExclusions))
+
+		ids := []string{}
+		for _, ws := range ps.WorkspaceExclusions {
+			ids = append(ids, ws.ID)
+		}
+
+		assert.Contains(t, ids, wTest1.ID)
+		assert.Contains(t, ids, wTest2.ID)
+	})
+
+	t.Run("without workspace exclusions provided", func(t *testing.T) {
+		err := client.PolicySets.AddWorkspaceExclusions(
+			ctx,
+			psTest.ID,
+			PolicySetAddWorkspaceExclusionsOptions{},
+		)
+		assert.Equal(t, err, ErrWorkspacesRequired)
+	})
+
+	t.Run("with empty workspace exclusions slice", func(t *testing.T) {
+		err := client.PolicySets.AddWorkspaceExclusions(
+			ctx,
+			psTest.ID,
+			PolicySetAddWorkspaceExclusionsOptions{WorkspaceExclusions: []*Workspace{}},
+		)
+		assert.Equal(t, err, ErrWorkspaceMinLimit)
+	})
+
+	t.Run("without a valid ID", func(t *testing.T) {
+		err := client.PolicySets.AddWorkspaceExclusions(
+			ctx,
+			badIdentifier,
+			PolicySetAddWorkspaceExclusionsOptions{
+				WorkspaceExclusions: []*Workspace{wTest1, wTest2},
+			},
+		)
+		assert.Equal(t, err, ErrInvalidPolicySetID)
+	})
+}
+
+func TestPolicySetsRemoveWorkspaceExclusions(t *testing.T) {
+	skipUnlessBeta(t)
+	client := testClient(t)
+	ctx := context.Background()
+
+	orgTest, orgTestCleanup := createOrganization(t, client)
+	defer orgTestCleanup()
+
+	upgradeOrganizationSubscription(t, client, orgTest)
+
+	wTest1, wTestCleanup1 := createWorkspace(t, client, orgTest)
+	defer wTestCleanup1()
+	wTest2, wTestCleanup2 := createWorkspace(t, client, orgTest)
+	defer wTestCleanup2()
+	psTest, psTestCleanup := createPolicySet(t, client, orgTest, nil, nil, []*Workspace{wTest1, wTest2}, nil, "")
+	defer psTestCleanup()
+
+	t.Run("with workspace exclusions provided", func(t *testing.T) {
+		err := client.PolicySets.RemoveWorkspaceExclusions(
+			ctx,
+			psTest.ID,
+			PolicySetRemoveWorkspaceExclusionsOptions{
+				WorkspaceExclusions: []*Workspace{wTest1, wTest2},
+			},
+		)
+		require.NoError(t, err)
+
+		ps, err := client.PolicySets.Read(ctx, psTest.ID)
+		require.NoError(t, err)
+
+		assert.Equal(t, 0, len(ps.WorkspaceExclusions))
+		assert.Empty(t, ps.WorkspaceExclusions)
+	})
+
+	t.Run("without workspaces provided", func(t *testing.T) {
+		err := client.PolicySets.RemoveWorkspaceExclusions(
+			ctx,
+			psTest.ID,
+			PolicySetRemoveWorkspaceExclusionsOptions{},
+		)
+		assert.Equal(t, err, ErrWorkspacesRequired)
+	})
+
+	t.Run("with empty workspaces slice", func(t *testing.T) {
+		err := client.PolicySets.RemoveWorkspaceExclusions(
+			ctx,
+			psTest.ID,
+			PolicySetRemoveWorkspaceExclusionsOptions{WorkspaceExclusions: []*Workspace{}},
+		)
+		assert.Equal(t, err, ErrWorkspaceMinLimit)
+	})
+
+	t.Run("without a valid ID", func(t *testing.T) {
+		err := client.PolicySets.RemoveWorkspaceExclusions(
+			ctx,
+			badIdentifier,
+			PolicySetRemoveWorkspaceExclusionsOptions{
+				WorkspaceExclusions: []*Workspace{wTest1, wTest2},
+			},
+		)
+		assert.Equal(t, err, ErrInvalidPolicySetID)
+	})
+}
+
 func TestPolicySetsAddProjects(t *testing.T) {
 	skipUnlessBeta(t)
 	client := testClient(t)
