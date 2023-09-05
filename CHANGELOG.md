@@ -1,10 +1,14 @@
 # UNRELEASED
 <!-- Add CHANGELOG entry to this section for any PR awaiting the next release -->
-* Removed beta tags for TeamProjectAccess by @rberecka [#756](https://github.com/hashicorp/go-tfe/pull/756)
+<!-- Please also include if this is a Bug Fix, Enhancement, or Feature -->
+
+# v1.33.0
 
 ## Enhancements
+* Removed beta tags for TeamProjectAccess by @rberecka [#756](https://github.com/hashicorp/go-tfe/pull/756)
 * Added BETA support for including `workspaceExclusions` relationship to policy_set on create by @Netra2104 [#757](https://github.com/hashicorp/go-tfe/pull/757)
 * Added BETA method `AddWorkspaceExclusions` and `RemoveWorkspaceExclusions` for attaching/detaching workspace-exclusions to a policy-set by @hs26gill [#761](https://github.com/hashicorp/go-tfe/pull/761)
+
 # v1.32.1
 
 ## Dependency Update
