@@ -63,6 +63,20 @@ func (mr *MockPolicySetsMockRecorder) AddProjects(ctx, policySetID, options inte
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "AddProjects", reflect.TypeOf((*MockPolicySets)(nil).AddProjects), ctx, policySetID, options)
 }
 
+// AddWorkspaceExclusions mocks base method.
+func (m *MockPolicySets) AddWorkspaceExclusions(ctx context.Context, policySetID string, options tfe.PolicySetAddWorkspaceExclusionsOptions) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "AddWorkspaceExclusions", ctx, policySetID, options)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// AddWorkspaceExclusions indicates an expected call of AddWorkspaceExclusions.
+func (mr *MockPolicySetsMockRecorder) AddWorkspaceExclusions(ctx, policySetID, options interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "AddWorkspaceExclusions", reflect.TypeOf((*MockPolicySets)(nil).AddWorkspaceExclusions), ctx, policySetID, options)
+}
+
 // AddWorkspaces mocks base method.
 func (m *MockPolicySets) AddWorkspaces(ctx context.Context, policySetID string, options tfe.PolicySetAddWorkspacesOptions) error {
 	m.ctrl.T.Helper()
@@ -177,6 +191,20 @@ func (m *MockPolicySets) RemoveProjects(ctx context.Context, policySetID string,
 func (mr *MockPolicySetsMockRecorder) RemoveProjects(ctx, policySetID, options interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "RemoveProjects", reflect.TypeOf((*MockPolicySets)(nil).RemoveProjects), ctx, policySetID, options)
+}
+
+// RemoveWorkspaceExclusions mocks base method.
+func (m *MockPolicySets) RemoveWorkspaceExclusions(ctx context.Context, policySetID string, options tfe.PolicySetRemoveWorkspaceExclusionsOptions) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "RemoveWorkspaceExclusions", ctx, policySetID, options)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// RemoveWorkspaceExclusions indicates an expected call of RemoveWorkspaceExclusions.
+func (mr *MockPolicySetsMockRecorder) RemoveWorkspaceExclusions(ctx, policySetID, options interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "RemoveWorkspaceExclusions", reflect.TypeOf((*MockPolicySets)(nil).RemoveWorkspaceExclusions), ctx, policySetID, options)
 }
 
 // RemoveWorkspaces mocks base method.
