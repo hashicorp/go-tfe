@@ -544,36 +544,9 @@ func (o RunCreateOptions) valid() error {
 }
 
 func (o *RunReadOptions) valid() error {
-	if o == nil {
-		return nil // nothing to validate
-	}
-
-	if err := validateRunIncludeParam(o.Include); err != nil {
-		return err
-	}
 	return nil
 }
 
 func (o *RunListOptions) valid() error {
-	if o == nil {
-		return nil // nothing to validate
-	}
-
-	if err := validateRunIncludeParam(o.Include); err != nil {
-		return err
-	}
-	return nil
-}
-
-func validateRunIncludeParam(params []RunIncludeOpt) error {
-	for _, p := range params {
-		switch p {
-		case RunPlan, RunApply, RunCreatedBy, RunCostEstimate, RunConfigVer, RunConfigVerIngress, RunWorkspace, RunTaskStages:
-			// do nothing
-		default:
-			return ErrInvalidIncludeValue
-		}
-	}
-
 	return nil
 }

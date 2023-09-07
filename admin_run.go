@@ -127,10 +127,6 @@ func (o *AdminRunsListOptions) valid() error {
 		return err
 	}
 
-	if err := validateAdminRunIncludeParams(o.Include); err != nil {
-		return err
-	}
-
 	return nil
 }
 
@@ -165,19 +161,6 @@ func validateAdminRunFilterParams(runStatus string) error {
 			default:
 				return fmt.Errorf(`invalid value "%s" for run status`, status)
 			}
-		}
-	}
-
-	return nil
-}
-
-func validateAdminRunIncludeParams(params []AdminRunIncludeOpt) error {
-	for _, p := range params {
-		switch p {
-		case AdminRunWorkspace, AdminRunWorkspaceOrg, AdminRunWorkspaceOrgOwners:
-			// do nothing
-		default:
-			return ErrInvalidIncludeValue
 		}
 	}
 

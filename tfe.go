@@ -887,6 +887,16 @@ func checkResponseCode(r *http.Response) error {
 	var err error
 
 	switch r.StatusCode {
+	case 400:
+		errs, err = decodeErrorPayload(r)
+		if err != nil {
+			return err
+		}
+
+		if errorPayloadContains(errs, "Invalid include parameter") {
+			return ErrInvalidIncludeValue
+		}
+		return errors.New(strings.Join(errs, "\n"))
 	case 401:
 		return ErrUnauthorized
 	case 404:

@@ -286,26 +286,5 @@ func (o OAuthClientCreateOptions) valid() error {
 }
 
 func (o *OAuthClientListOptions) valid() error {
-	if o == nil {
-		return nil // nothing to validate
-	}
-
-	if err := validateOauthClientIncludeParams(o.Include); err != nil {
-		return err
-	}
-
-	return nil
-}
-
-func validateOauthClientIncludeParams(params []OAuthClientIncludeOpt) error {
-	for _, p := range params {
-		switch p {
-		case OauthClientOauthTokens:
-			// do nothing
-		default:
-			return ErrInvalidIncludeValue
-		}
-	}
-
 	return nil
 }

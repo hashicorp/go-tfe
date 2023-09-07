@@ -255,9 +255,6 @@ func (s *example) List(ctx context.Context, organization string, options *Exampl
 	if !validStringID(&organization) {
 		return nil, ErrInvalidOrg
 	}
-	if err := options.valid(); err != nil {
-		return nil, err
-	}
 
 	u := fmt.Sprintf("organizations/%s/examples", url.QueryEscape(organization))
 	req, err := s.client.NewRequest("GET", u, options)
@@ -283,9 +280,6 @@ func (s *example) Read(ctx context.Context, exampleID string) (*Example, error) 
 func (s *example) ReadWithOptions(ctx context.Context, exampleID string, options *ExampleReadOptions) (*Example, error) {
 	if !validStringID(&exampleID) {
 		return nil, ErrInvalidExampleID
-	}
-	if err := options.valid(); err != nil {
-		return nil, err
 	}
 
 	u := fmt.Sprintf("examples/%s", url.QueryEscape(exampleID))
@@ -362,41 +356,6 @@ func (o *ExampleCreateOptions) valid() error {
 
 	if !validString(&o.URL) {
 		return ErrInvalidRunTaskURL
-	}
-
-	return nil
-}
-
-func (o *ExampleListOptions) valid() error {
-	if o == nil {
-		return nil // nothing to validate
-	}
-	if err := validateExampleIncludeParams(o.Include); err != nil {
-		return err
-	}
-
-	return nil
-}
-
-func (o *ExampleReadOptions) valid() error {
-	if o == nil {
-		return nil // nothing to validate
-	}
-	if err := validateExampleIncludeParams(o.Include); err != nil {
-		return err
-	}
-
-	return nil
-}
-
-func validateExampleIncludeParams(params []ExampleIncludeOpt) error {
-	for _, p := range params {
-		switch p {
-		case ExampleOrganization, ExampleRun:
-			// do nothing
-		default:
-			return ErrInvalidIncludeValue
-		}
 	}
 
 	return nil

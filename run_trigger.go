@@ -194,10 +194,6 @@ func (o *RunTriggerListOptions) valid() error {
 		return err
 	}
 
-	if err := validateRunTriggerIncludeParams(o.Include); err != nil {
-		return err
-	}
-
 	return nil
 }
 
@@ -212,19 +208,6 @@ func validateRunTriggerFilterParam(filterParam RunTriggerFilterOp, includeParams
 	if len(includeParams) > 0 {
 		if filterParam != RunTriggerInbound {
 			return ErrUnsupportedRunTriggerType // if user passes RunTriggerOutbound the platform will not return any "include" data
-		}
-	}
-
-	return nil
-}
-
-func validateRunTriggerIncludeParams(params []RunTriggerIncludeOpt) error {
-	for _, p := range params {
-		switch p {
-		case RunTriggerWorkspace, RunTriggerSourceable:
-			// Do nothing
-		default:
-			return ErrInvalidIncludeValue
 		}
 	}
 

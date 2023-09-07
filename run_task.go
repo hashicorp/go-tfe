@@ -300,38 +300,9 @@ func (o *RunTaskUpdateOptions) valid() error {
 }
 
 func (o *RunTaskListOptions) valid() error {
-	if o == nil {
-		return nil // nothing to validate
-	}
-
-	if err := validateRunTaskIncludeParams(o.Include); err != nil {
-		return err
-	}
-
 	return nil
 }
 
 func (o *RunTaskReadOptions) valid() error {
-	if o == nil {
-		return nil // nothing to validate
-	}
-
-	if err := validateRunTaskIncludeParams(o.Include); err != nil {
-		return err
-	}
-
-	return nil
-}
-
-func validateRunTaskIncludeParams(params []RunTaskIncludeOpt) error {
-	for _, p := range params {
-		switch p {
-		case RunTaskWorkspaceTasks, RunTaskWorkspace:
-			// do nothing
-		default:
-			return ErrInvalidIncludeValue
-		}
-	}
-
 	return nil
 }

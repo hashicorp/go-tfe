@@ -244,26 +244,5 @@ func (o *RegistryNoCodeModuleUpdateOptions) valid() error {
 }
 
 func (o *RegistryNoCodeModuleReadOptions) valid() error {
-	if o == nil {
-		return nil // nothing to validate
-	}
-
-	if err := validateNoCodeIncludeParams(o.Include); err != nil {
-		return err
-	}
-
-	return nil
-}
-
-func validateNoCodeIncludeParams(params []RegistryNoCodeModuleIncludeOpt) error {
-	for _, p := range params {
-		switch p {
-		case RegistryNoCodeIncludeVariableOptions:
-			// do nothing
-		default:
-			return ErrInvalidIncludeValue
-		}
-	}
-
 	return nil
 }
