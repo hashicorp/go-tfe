@@ -1266,39 +1266,10 @@ func (o WorkspaceRemoveTagsOptions) valid() error {
 }
 
 func (o *WorkspaceListOptions) valid() error {
-	if o == nil {
-		return nil // nothing to validate
-	}
-
-	if err := validateWorkspaceIncludeParams(o.Include); err != nil {
-		return err
-	}
-
 	return nil
 }
 
 func (o *WorkspaceReadOptions) valid() error {
-	if o == nil {
-		return nil // nothing to validate
-	}
-
-	if err := validateWorkspaceIncludeParams(o.Include); err != nil {
-		return err
-	}
-
-	return nil
-}
-
-func validateWorkspaceIncludeParams(params []WSIncludeOpt) error {
-	for _, p := range params {
-		switch p {
-		case WSOrganization, WSCurrentConfigVer, WSCurrentConfigVerIngress, WSCurrentRun, WSCurrentRunPlan, WSCurrentRunConfigVer, WSCurrentrunConfigVerIngress, WSLockedBy, WSReadme, WSOutputs, WSCurrentStateVer:
-			// do nothing
-		default:
-			return ErrInvalidIncludeValue
-		}
-	}
-
 	return nil
 }
 

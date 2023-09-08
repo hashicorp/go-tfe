@@ -443,35 +443,8 @@ func (o StateVersionUploadOptions) valid() error {
 }
 
 func (o *StateVersionReadOptions) valid() error {
-	if o == nil {
-		return nil // nothing to validate
-	}
-
-	if err := validateStateVerIncludeParams(o.Include); err != nil {
-		return err
-	}
 	return nil
 }
 func (o *StateVersionCurrentOptions) valid() error {
-	if o == nil {
-		return nil // nothing to validate
-	}
-
-	if err := validateStateVerIncludeParams(o.Include); err != nil {
-		return err
-	}
-	return nil
-}
-
-func validateStateVerIncludeParams(params []StateVersionIncludeOpt) error {
-	for _, p := range params {
-		switch p {
-		case SVcreatedby, SVrun, SVrunCreatedBy, SVrunConfigurationVersion, SVoutputs:
-			// do nothing
-		default:
-			return ErrInvalidIncludeValue
-		}
-	}
-
 	return nil
 }

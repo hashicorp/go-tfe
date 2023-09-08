@@ -191,28 +191,5 @@ func (s *taskStages) Override(ctx context.Context, taskStageID string, options T
 }
 
 func (o *TaskStageReadOptions) valid() error {
-	if o == nil {
-		return nil // nothing to validate
-	}
-
-	if err := validateTaskStageIncludeParams(o.Include); err != nil {
-		return err
-	}
-
-	return nil
-}
-
-func validateTaskStageIncludeParams(params []TaskStageIncludeOpt) error {
-	for _, p := range params {
-		switch p {
-		case TaskStageTaskResults:
-			// do nothing
-		case PolicyEvaluationsTaskResults:
-			// do nothing
-		default:
-			return ErrInvalidIncludeValue
-		}
-	}
-
 	return nil
 }

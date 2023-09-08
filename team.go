@@ -273,25 +273,8 @@ func (o *TeamListOptions) valid() error {
 		return nil // nothing to validate
 	}
 
-	if err := validateTeamIncludeParams(o.Include); err != nil {
-		return err
-	}
-
 	if err := validateTeamNames(o.Names); err != nil {
 		return err
-	}
-
-	return nil
-}
-
-func validateTeamIncludeParams(params []TeamIncludeOpt) error {
-	for _, p := range params {
-		switch p {
-		case TeamUsers, TeamOrganizationMemberships:
-			// do nothing
-		default:
-			return ErrInvalidIncludeValue
-		}
 	}
 
 	return nil

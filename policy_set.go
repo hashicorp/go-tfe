@@ -658,26 +658,5 @@ func (o PolicySetAddProjectsOptions) valid() error {
 }
 
 func (o *PolicySetReadOptions) valid() error {
-	if o == nil {
-		return nil // nothing to validate
-	}
-
-	if err := validatePolicySetIncludeParams(o.Include); err != nil {
-		return err
-	}
-
-	return nil
-}
-
-func validatePolicySetIncludeParams(params []PolicySetIncludeOpt) error {
-	for _, p := range params {
-		switch p {
-		case PolicySetPolicies, PolicySetWorkspaces, PolicySetCurrentVersion, PolicySetNewestVersion, PolicySetWorkspaceExclusions, PolicySetProjects:
-			// do nothing
-		default:
-			return ErrInvalidIncludeValue
-		}
-	}
-
 	return nil
 }

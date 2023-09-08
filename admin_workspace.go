@@ -144,26 +144,5 @@ func (s *adminWorkspaces) Delete(ctx context.Context, workspaceID string) error 
 }
 
 func (o *AdminWorkspaceListOptions) valid() error {
-	if o == nil {
-		return nil // nothing to validate
-	}
-
-	if err := validateAdminWSIncludeParams(o.Include); err != nil {
-		return err
-	}
-
-	return nil
-}
-
-func validateAdminWSIncludeParams(params []AdminWorkspaceIncludeOpt) error {
-	for _, p := range params {
-		switch p {
-		case AdminWorkspaceOrg, AdminWorkspaceCurrentRun, AdminWorkspaceOrgOwners:
-			// do nothing
-		default:
-			return ErrInvalidIncludeValue
-		}
-	}
-
 	return nil
 }

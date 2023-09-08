@@ -302,39 +302,10 @@ func (s *configurationVersions) Archive(ctx context.Context, cvID string) error 
 }
 
 func (o *ConfigurationVersionReadOptions) valid() error {
-	if o == nil {
-		return nil // nothing to validate
-	}
-
-	if err := validateConfigVerIncludeParams(o.Include); err != nil {
-		return err
-	}
-
 	return nil
 }
 
 func (o *ConfigurationVersionListOptions) valid() error {
-	if o == nil {
-		return nil // nothing to validate
-	}
-
-	if err := validateConfigVerIncludeParams(o.Include); err != nil {
-		return err
-	}
-
-	return nil
-}
-
-func validateConfigVerIncludeParams(params []ConfigVerIncludeOpt) error {
-	for _, p := range params {
-		switch p {
-		case ConfigVerIngressAttributes, ConfigVerRun:
-			// do nothing
-		default:
-			return ErrInvalidIncludeValue
-		}
-	}
-
 	return nil
 }
 

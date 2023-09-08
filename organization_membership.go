@@ -215,10 +215,6 @@ func (o *OrganizationMembershipListOptions) valid() error {
 		return nil
 	}
 
-	if err := validateOrgMembershipIncludeParams(o.Include); err != nil {
-		return err
-	}
-
 	if err := validateOrgMembershipEmailParams(o.Emails); err != nil {
 		return err
 	}
@@ -227,23 +223,6 @@ func (o *OrganizationMembershipListOptions) valid() error {
 }
 
 func (o OrganizationMembershipReadOptions) valid() error {
-	if err := validateOrgMembershipIncludeParams(o.Include); err != nil {
-		return err
-	}
-
-	return nil
-}
-
-func validateOrgMembershipIncludeParams(params []OrgMembershipIncludeOpt) error {
-	for _, p := range params {
-		switch p {
-		case OrgMembershipUser, OrgMembershipTeam:
-			// do nothing
-		default:
-			return ErrInvalidIncludeValue
-		}
-	}
-
 	return nil
 }
 

@@ -239,26 +239,5 @@ func (s *policyChecks) Logs(ctx context.Context, policyCheckID string) (io.Reade
 }
 
 func (o *PolicyCheckListOptions) valid() error {
-	if o == nil {
-		return nil // nothing to validate
-	}
-
-	if err := validatePolicyCheckIncludeParams(o.Include); err != nil {
-		return err
-	}
-
-	return nil
-}
-
-func validatePolicyCheckIncludeParams(params []PolicyCheckIncludeOpt) error {
-	for _, p := range params {
-		switch p {
-		case PolicyCheckRunWorkspace, PolicyCheckRun:
-			// do nothing
-		default:
-			return ErrInvalidIncludeValue
-		}
-	}
-
 	return nil
 }
