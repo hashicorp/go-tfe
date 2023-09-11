@@ -2,8 +2,14 @@
 <!-- Add CHANGELOG entry to this section for any PR awaiting the next release -->
 <!-- Please also include if this is a Bug Fix, Enhancement, or Feature -->
 
+
+# v1.34.0
+## Features
+* Added support for the new Terraform Test Runs API by @liamcervante [#755](https://github.com/hashicorp/go-tfe/pull/755)
+
 ## Bug Fixes
 * "project" was being rejected as an invalid `Include` option when listing workspaces by @brandonc [#765](https://github.com/hashicorp/go-tfe/pull/765)
+
 
 # v1.33.0
 
