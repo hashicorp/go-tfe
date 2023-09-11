@@ -164,6 +164,7 @@ This API client covers most of the existing Terraform Cloud API calls and is upd
 - [x] Team Membership
 - [x] Team Tokens
 - [x] Teams
+- [x] Test Runs
 - [x] User Tokens
 - [x] Users
 - [x] Variable Sets

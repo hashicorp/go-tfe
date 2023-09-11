@@ -705,6 +705,63 @@ func TestRegistryModulesCreateWithVCSConnection(t *testing.T) {
 	})
 }
 
+func TestRegistryModulesCreateBranchBasedWithVCSConnection(t *testing.T) {
+	skipUnlessBeta(t)
+
+	githubIdentifier := os.Getenv("GITHUB_REGISTRY_MODULE_IDENTIFIER")
+	if githubIdentifier == "" {
+		t.Skip("Export a valid GITHUB_REGISTRY_MODULE_IDENTIFIER before running this test")
+	}
+	repositoryName := strings.Split(githubIdentifier, "/")[1]
+	registryModuleProvider := strings.SplitN(repositoryName, "-", 3)[1]
+	registryModuleName := strings.SplitN(repositoryName, "-", 3)[2]
+
+	githubBranch := os.Getenv("GITHUB_REGISTRY_MODULE_BRANCH")
+	if githubBranch == "" {
+		githubBranch = "main"
+	}
+
+	client := testClient(t)
+	ctx := context.Background()
+
+	orgTest, orgTestCleanup := createOrganization(t, client)
+	defer orgTestCleanup()
+
+	oauthTokenTest, oauthTokenTestCleanup := createOAuthToken(t, client, orgTest)
+	defer oauthTokenTestCleanup()
+
+	t.Run("with valid options", func(t *testing.T) {
+		options := RegistryModuleCreateWithVCSConnectionOptions{
+			VCSRepo: &RegistryModuleVCSRepoOptions{
+				OrganizationName:  String(orgTest.Name),
+				Identifier:        String(githubIdentifier),
+				OAuthTokenID:      String(oauthTokenTest.ID),
+				DisplayIdentifier: String(githubIdentifier),
+				Branch:            String(githubBranch),
+			},
+		}
+		rm, err := client.RegistryModules.CreateWithVCSConnection(ctx, options)
+		require.NoError(t, err)
+		assert.NotEmpty(t, rm.ID)
+		assert.Equal(t, registryModuleName, rm.Name)
+		assert.Equal(t, registryModuleProvider, rm.Provider)
+		assert.Equal(t, githubBranch, rm.VCSRepo.Branch)
+	})
+
+	t.Run("with invalid options", func(t *testing.T) {
+		options := RegistryModuleCreateWithVCSConnectionOptions{
+			VCSRepo: &RegistryModuleVCSRepoOptions{
+				Identifier:        String(githubIdentifier),
+				OAuthTokenID:      String(oauthTokenTest.ID),
+				DisplayIdentifier: String(githubIdentifier),
+				Branch:            String(githubBranch),
+			},
+		}
+		_, err := client.RegistryModules.CreateWithVCSConnection(ctx, options)
+		require.Equal(t, err, ErrInvalidOrg)
+	})
+}
+
 func TestRegistryModulesCreateWithGithubApp(t *testing.T) {
 	githubIdentifier := os.Getenv("GITHUB_REGISTRY_MODULE_IDENTIFIER")
 	if githubIdentifier == "" {

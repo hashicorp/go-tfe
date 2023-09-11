@@ -65,6 +65,21 @@ func (mr *MockConfigurationVersionsMockRecorder) Create(ctx, workspaceID, option
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Create", reflect.TypeOf((*MockConfigurationVersions)(nil).Create), ctx, workspaceID, options)
 }
 
+// CreateForRegistryModule mocks base method.
+func (m *MockConfigurationVersions) CreateForRegistryModule(ctx context.Context, moduleID tfe.RegistryModuleID) (*tfe.ConfigurationVersion, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "CreateForRegistryModule", ctx, moduleID)
+	ret0, _ := ret[0].(*tfe.ConfigurationVersion)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// CreateForRegistryModule indicates an expected call of CreateForRegistryModule.
+func (mr *MockConfigurationVersionsMockRecorder) CreateForRegistryModule(ctx, moduleID interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateForRegistryModule", reflect.TypeOf((*MockConfigurationVersions)(nil).CreateForRegistryModule), ctx, moduleID)
+}
+
 // Download mocks base method.
 func (m *MockConfigurationVersions) Download(ctx context.Context, cvID string) ([]byte, error) {
 	m.ctrl.T.Helper()
