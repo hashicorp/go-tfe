@@ -484,7 +484,7 @@ func createUploadedConfigurationVersion(t *testing.T, client *Client, w *Workspa
 	return cv, cvCleanup
 }
 
-func createTestConfigurationVersion(t *testing.T, client *Client, rm *RegistryModule) (*ConfigurationVersion, func()) {
+func createTestRunConfigurationVersion(t *testing.T, client *Client, rm *RegistryModule) (*ConfigurationVersion, func()) {
 	var rmCleanup func()
 
 	if rm == nil {
@@ -512,7 +512,7 @@ func createTestConfigurationVersion(t *testing.T, client *Client, rm *RegistryMo
 	}
 }
 
-func createUploadedTestConfigurationVersion(t *testing.T, client *Client, rm *RegistryModule) (*ConfigurationVersion, func()) {
+func createUploadedTestRunConfigurationVersion(t *testing.T, client *Client, rm *RegistryModule) (*ConfigurationVersion, func()) {
 	cv, cvCleanup := createTestConfigurationVersion(t, client, rm)
 
 	ctx := context.Background()
