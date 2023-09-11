@@ -107,7 +107,7 @@ type TestRunCreateOptions struct {
 
 	// If non-empty, requests that only a subset of testing files within the
 	// ConfigurationVersion should be executed.
-	Filter []string `jsonapi:"attr,filter,omitempty"`
+	Filters []string `jsonapi:"attr,filters,omitempty"`
 
 	// Specifies the directory within the ConfigurationVersion that test files
 	// should be loaded from. Defaults to "tests" if empty.
@@ -313,6 +313,10 @@ func (o TestRunCreateOptions) valid() error {
 
 	if o.RegistryModule == nil {
 		return ErrRequiredRegistryModule
+	}
+
+	if o.RegistryModule.Organization == nil {
+		return ErrRequiredOrg
 	}
 
 	return nil

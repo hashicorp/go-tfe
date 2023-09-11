@@ -513,7 +513,7 @@ func createTestRunConfigurationVersion(t *testing.T, client *Client, rm *Registr
 }
 
 func createUploadedTestRunConfigurationVersion(t *testing.T, client *Client, rm *RegistryModule) (*ConfigurationVersion, func()) {
-	cv, cvCleanup := createTestConfigurationVersion(t, client, rm)
+	cv, cvCleanup := createTestRunConfigurationVersion(t, client, rm)
 
 	ctx := context.Background()
 	err := client.ConfigurationVersions.Upload(ctx, cv.UploadURL, "test-fixtures/config-version-with-test")
@@ -1318,7 +1318,7 @@ func createTestRun(t *testing.T, client *Client, rm *RegistryModule, variables .
 		rm, rmCleanup = createBranchBasedRegistryModule(t, client, nil)
 	}
 
-	cv, cvCleanup := createUploadedTestConfigurationVersion(t, client, rm)
+	cv, cvCleanup := createUploadedTestRunConfigurationVersion(t, client, rm)
 
 	ctx := context.Background()
 	tr, err := client.TestRuns.Create(ctx, TestRunCreateOptions{

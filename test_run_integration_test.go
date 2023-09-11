@@ -125,7 +125,7 @@ func TestTestRunsCreate(t *testing.T) {
 	rmTest, rmTestCleanup := createBranchBasedRegistryModule(t, client, orgTest)
 	defer rmTestCleanup()
 
-	cvTest, cvTestCleanup := createUploadedTestConfigurationVersion(t, client, rmTest)
+	cvTest, cvTestCleanup := createUploadedTestRunConfigurationVersion(t, client, rmTest)
 	defer cvTestCleanup()
 
 	t.Run("with a configuration version", func(t *testing.T) {
@@ -152,6 +152,32 @@ func TestTestRunsCreate(t *testing.T) {
 
 		_, err := client.TestRuns.Create(ctx, options)
 		require.Equal(t, ErrRequiredRegistryModule, err)
+	})
+	t.Run("without an organisation module", func(t *testing.T) {
+
+		rm := &RegistryModule{
+			ID:              rmTest.ID,
+			Name:            rmTest.Name,
+			Provider:        rmTest.Provider,
+			RegistryName:    rmTest.RegistryName,
+			Namespace:       rmTest.Namespace,
+			NoCode:          rmTest.NoCode,
+			Permissions:     rmTest.Permissions,
+			Status:          rmTest.Status,
+			VCSRepo:         rmTest.VCSRepo,
+			VersionStatuses: rmTest.VersionStatuses,
+			CreatedAt:       rmTest.CreatedAt,
+			UpdatedAt:       rmTest.UpdatedAt,
+			Organization:    nil, // Leave this as nil.
+		}
+
+		options := TestRunCreateOptions{
+			ConfigurationVersion: cvTest,
+			RegistryModule:       rm,
+		}
+
+		_, err := client.TestRuns.Create(ctx, options)
+		require.Equal(t, ErrRequiredOrg, err)
 	})
 }
 
