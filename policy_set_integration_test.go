@@ -89,7 +89,6 @@ func TestPolicySetsList(t *testing.T) {
 	})
 
 	t.Run("with workspace exclusion include param", func(t *testing.T) {
-		skipUnlessBeta(t)
 		psl, err := client.PolicySets.List(ctx, orgTest.Name, &PolicySetListOptions{
 			Include: []PolicySetIncludeOpt{PolicySetWorkspaceExclusions},
 		})
@@ -172,7 +171,6 @@ func TestPolicySetsCreate(t *testing.T) {
 	})
 
 	t.Run("with policies, workspaces and projects provided", func(t *testing.T) {
-		skipUnlessBeta(t)
 		pTest, pTestCleanup := createPolicy(t, client, orgTest)
 		defer pTestCleanup()
 		wTest, wTestCleanup := createWorkspace(t, client, orgTest)
@@ -200,7 +198,6 @@ func TestPolicySetsCreate(t *testing.T) {
 	})
 
 	t.Run("with policies and excluded workspaces provided", func(t *testing.T) {
-		skipUnlessBeta(t)
 		pTest, pTestCleanup := createPolicy(t, client, orgTest)
 		defer pTestCleanup()
 		wTest, wTestCleanup := createWorkspace(t, client, orgTest)
@@ -755,7 +752,6 @@ func TestPolicySetsRemoveWorkspaces(t *testing.T) {
 }
 
 func TestPolicySetsAddWorkspaceExclusions(t *testing.T) {
-	skipUnlessBeta(t)
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -825,7 +821,6 @@ func TestPolicySetsAddWorkspaceExclusions(t *testing.T) {
 }
 
 func TestPolicySetsRemoveWorkspaceExclusions(t *testing.T) {
-	skipUnlessBeta(t)
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -889,7 +884,6 @@ func TestPolicySetsRemoveWorkspaceExclusions(t *testing.T) {
 }
 
 func TestPolicySetsAddProjects(t *testing.T) {
-	skipUnlessBeta(t)
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -959,7 +953,6 @@ func TestPolicySetsAddProjects(t *testing.T) {
 }
 
 func TestPolicySetsRemoveProjects(t *testing.T) {
-	skipUnlessBeta(t)
 	client := testClient(t)
 	ctx := context.Background()
 
