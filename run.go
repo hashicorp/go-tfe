@@ -353,12 +353,15 @@ type RunCancelOptions struct {
 	Comment *string `json:"comment,omitempty"`
 }
 
+// RunVariableAttr represents a variable that can be applied to a run. All values must be expressed as an HCL literal
+// in the same syntax you would use when writing terraform code. See https://developer.hashicorp.com/terraform/language/expressions/types#types
+// for more details.
 type RunVariableAttr struct {
 	Key   string `jsonapi:"attr,key"`
 	Value string `jsonapi:"attr,value"`
 }
 
-// RunVariableAttr represents a variable that can be applied to a run. All values must be expressed as an HCL literal
+// RunVariable represents a variable that can be applied to a run. All values must be expressed as an HCL literal
 // in the same syntax you would use when writing terraform code. See https://developer.hashicorp.com/terraform/language/expressions/types#types
 // for more details.
 type RunVariable struct {
