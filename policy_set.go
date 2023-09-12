@@ -118,7 +118,6 @@ type PolicySet struct {
 	// **Note: This field is still in BETA and subject to change.**
 	// The workspace exclusions to which the policy set applies.
 	WorkspaceExclusions []*Workspace `jsonapi:"relation,workspace-exclusions"`
-	// **Note: This field is still in BETA and subject to change.**
 	// The projects to which the policy set applies.
 	Projects []*Project `jsonapi:"relation,projects"`
 }
@@ -132,9 +131,9 @@ const (
 	PolicySetWorkspaces     PolicySetIncludeOpt = "workspaces"
 	PolicySetCurrentVersion PolicySetIncludeOpt = "current_version"
 	PolicySetNewestVersion  PolicySetIncludeOpt = "newest_version"
+	PolicySetProjects       PolicySetIncludeOpt = "projects"
 	// **Note: This field is still in BETA and subject to change.**
 	PolicySetWorkspaceExclusions PolicySetIncludeOpt = "workspace_exclusions"
-	PolicySetProjects            PolicySetIncludeOpt = "projects"
 )
 
 // PolicySetListOptions represents the options for listing policy sets.
@@ -209,7 +208,6 @@ type PolicySetCreateOptions struct {
 	// Optional: The initial list of workspace exclusions for which the policy set should be enforced.
 	WorkspaceExclusions []*Workspace `jsonapi:"relation,workspace-exclusions,omitempty"`
 
-	// **Note: This field is still in BETA and subject to change.**
 	// Optional: The initial list of projects for which the policy set should be enforced.
 	Projects []*Project `jsonapi:"relation,projects,omitempty"`
 }

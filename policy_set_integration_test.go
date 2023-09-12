@@ -172,7 +172,6 @@ func TestPolicySetsCreate(t *testing.T) {
 	})
 
 	t.Run("with policies, workspaces and projects provided", func(t *testing.T) {
-		skipUnlessBeta(t)
 		pTest, pTestCleanup := createPolicy(t, client, orgTest)
 		defer pTestCleanup()
 		wTest, wTestCleanup := createWorkspace(t, client, orgTest)
@@ -889,7 +888,6 @@ func TestPolicySetsRemoveWorkspaceExclusions(t *testing.T) {
 }
 
 func TestPolicySetsAddProjects(t *testing.T) {
-	skipUnlessBeta(t)
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -959,7 +957,6 @@ func TestPolicySetsAddProjects(t *testing.T) {
 }
 
 func TestPolicySetsRemoveProjects(t *testing.T) {
-	skipUnlessBeta(t)
 	client := testClient(t)
 	ctx := context.Background()
 
