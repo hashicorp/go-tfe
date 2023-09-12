@@ -57,11 +57,9 @@ type PolicySets interface {
 	RemoveWorkspaces(ctx context.Context, policySetID string, options PolicySetRemoveWorkspacesOptions) error
 
 	// Add workspace exclusions to a policy set.
-	// **Note: This function is still in BETA and subject to change.**
 	AddWorkspaceExclusions(ctx context.Context, policySetID string, options PolicySetAddWorkspaceExclusionsOptions) error
 
 	// Remove workspace exclusions from a policy set.
-	// **Note: This function is still in BETA and subject to change.**
 	RemoveWorkspaceExclusions(ctx context.Context, policySetID string, options PolicySetRemoveWorkspaceExclusionsOptions) error
 
 	// Add projects to a policy set.
@@ -115,7 +113,6 @@ type PolicySet struct {
 	NewestVersion *PolicySetVersion `jsonapi:"relation,newest-version"`
 	// The most recent successful policy set version.
 	CurrentVersion *PolicySetVersion `jsonapi:"relation,current-version"`
-	// **Note: This field is still in BETA and subject to change.**
 	// The workspace exclusions to which the policy set applies.
 	WorkspaceExclusions []*Workspace `jsonapi:"relation,workspace-exclusions"`
 	// The projects to which the policy set applies.
@@ -127,12 +124,11 @@ type PolicySet struct {
 type PolicySetIncludeOpt string
 
 const (
-	PolicySetPolicies       PolicySetIncludeOpt = "policies"
-	PolicySetWorkspaces     PolicySetIncludeOpt = "workspaces"
-	PolicySetCurrentVersion PolicySetIncludeOpt = "current_version"
-	PolicySetNewestVersion  PolicySetIncludeOpt = "newest_version"
-	PolicySetProjects       PolicySetIncludeOpt = "projects"
-	// **Note: This field is still in BETA and subject to change.**
+	PolicySetPolicies            PolicySetIncludeOpt = "policies"
+	PolicySetWorkspaces          PolicySetIncludeOpt = "workspaces"
+	PolicySetCurrentVersion      PolicySetIncludeOpt = "current_version"
+	PolicySetNewestVersion       PolicySetIncludeOpt = "newest_version"
+	PolicySetProjects            PolicySetIncludeOpt = "projects"
 	PolicySetWorkspaceExclusions PolicySetIncludeOpt = "workspace_exclusions"
 )
 
@@ -204,7 +200,6 @@ type PolicySetCreateOptions struct {
 	// Optional: The initial list of workspaces for which the policy set should be enforced.
 	Workspaces []*Workspace `jsonapi:"relation,workspaces,omitempty"`
 
-	// **Note: This field is still in BETA and subject to change.**
 	// Optional: The initial list of workspace exclusions for which the policy set should be enforced.
 	WorkspaceExclusions []*Workspace `jsonapi:"relation,workspace-exclusions,omitempty"`
 
