@@ -13,5 +13,7 @@ jobs:
       project: TF
       issue-extra-fields: |
         { "customfield_10091": ["TF-CLI"],
-          "components": [{ "name": "Go-TFE" }] }
+          "components": [{ "name": "Go-TFE" }],
+          "customfield_10008": "${{ contains(github.event.issue.labels.*.name, 'bug') && 'TF-9179' || 'TF-7490' }}"
+        }
     secrets: inherit
