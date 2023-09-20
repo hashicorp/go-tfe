@@ -206,6 +206,49 @@ func TestOAuthClientsCreate_rsaKeyPair(t *testing.T) {
 	})
 }
 
+func TestOAuthClientsCreate_agentPool(t *testing.T) {
+	client := testClient(t)
+	ctx := context.Background()
+
+	githubToken := os.Getenv("OAUTH_CLIENT_GITHUB_TOKEN")
+	if githubToken == "" {
+		t.Skip("Export a valid OAUTH_CLIENT_GITHUB_TOKEN before running this test!")
+	}
+
+	orgTest, orgTestCleanup := createOrganization(t, client)
+	defer orgTestCleanup()
+
+	agentPool, agentPoolCleanup := createAgentPool(t, client, orgTest)
+	defer agentPoolCleanup()
+
+	t.Run("with valid agent pool external id", func(t *testing.T) {
+		options := OAuthClientCreateOptions{
+			APIURL:          String("https://api.github.com"),
+			HTTPURL:         String("https://github.com"),
+			OAuthToken:      String(githubToken),
+			ServiceProvider: ServiceProvider(ServiceProviderGithub),
+			AgentPoolID:     String(agentPool.ID),
+		}
+
+		ocTest, errCreate := client.OAuthClients.Create(ctx, orgTest.Name, options)
+		require.NoError(t, errCreate)
+		errDelete := client.OAuthClients.Delete(ctx, ocTest.ID)
+		require.NoError(t, errDelete)
+	})
+
+	t.Run("with invalid agent pool external id", func(t *testing.T) {
+		options := OAuthClientCreateOptions{
+			APIURL:          String("https://api.github.com"),
+			HTTPURL:         String("https://github.com"),
+			OAuthToken:      String(githubToken),
+			ServiceProvider: ServiceProvider(ServiceProviderGithub),
+			AgentPoolID:     String(randomString(t)),
+		}
+		_, err := client.OAuthClients.Create(ctx, orgTest.Name, options)
+		assert.EqualError(t, err, "unprocessable entity\n\nAgent Pool is missing")
+	})
+}
+
 func TestOAuthClientsRead(t *testing.T) {
 	client := testClient(t)
 	ctx := context.Background()

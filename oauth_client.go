@@ -80,6 +80,7 @@ type OAuthClient struct {
 	Secret              string              `jsonapi:"attr,secret"`
 	ServiceProvider     ServiceProviderType `jsonapi:"attr,service-provider"`
 	ServiceProviderName string              `jsonapi:"attr,service-provider-display-name"`
+	AgentPoolID         string              `jsonapi:"attr,agent-pool-id"`
 
 	// Relations
 	Organization *Organization `jsonapi:"relation,organization"`
@@ -134,6 +135,9 @@ type OAuthClientCreateOptions struct {
 
 	// Required: The VCS provider being connected with.
 	ServiceProvider *ServiceProviderType `jsonapi:"attr,service-provider"`
+
+	// Optional: AgentPoolID to associate the VCS Provider with, for PrivateVCS support
+	AgentPoolID *string `jsonapi:"attr,agent-pool-id,omitempty"`
 }
 
 // OAuthClientUpdateOptions represents the options for updating an OAuth client.
