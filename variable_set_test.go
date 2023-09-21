@@ -160,6 +160,7 @@ func TestVariableSetsListForProject(t *testing.T) {
 }
 
 func TestVariableSetsCreate(t *testing.T) {
+	skipUnlessBeta(t)
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -234,6 +235,7 @@ func TestVariableSetsRead(t *testing.T) {
 }
 
 func TestVariableSetsUpdate(t *testing.T) {
+	skipUnlessBeta(t)
 	client := testClient(t)
 	ctx := context.Background()
 
