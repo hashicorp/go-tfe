@@ -72,7 +72,7 @@ type VariableSet struct {
 	Description string `jsonapi:"attr,description"`
 	Global      bool   `jsonapi:"attr,global"`
 	// **Note: This field is still in BETA and subject to change.**
-	Enforced bool `jsonapi:"attr,enforced"`
+	Priority bool `jsonapi:"attr,priority"`
 
 	// Relations
 	Organization *Organization          `jsonapi:"relation,organization"`
@@ -118,7 +118,7 @@ type VariableSetCreateOptions struct {
 
 	// **Note: This field is still in BETA and subject to change.**
 	// If true the variables in the set cannot be overwritten and take precedence.
-	Enforced *bool `jsonapi:"attr,enforced,omitempty"`
+	Priority *bool `jsonapi:"attr,priority,omitempty"`
 }
 
 // VariableSetReadOptions represents the options for reading variable sets.
@@ -147,7 +147,7 @@ type VariableSetUpdateOptions struct {
 
 	// **Note: This field is still in BETA and subject to change.**
 	// If true the variables in the set cannot be overwritten and take precedence.
-	Enforced *bool `jsonapi:"attr,enforced,omitempty"`
+	Priority *bool `jsonapi:"attr,priority,omitempty"`
 }
 
 // VariableSetApplyToWorkspacesOptions represents the options for applying variable sets to workspaces.
