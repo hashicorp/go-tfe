@@ -8,8 +8,8 @@ import (
 	context "context"
 	reflect "reflect"
 
-	gomock "github.com/golang/mock/gomock"
 	tfe "github.com/hashicorp/go-tfe"
+	gomock "go.uber.org/mock/gomock"
 )
 
 // MockVariableSets is a mock of VariableSets interface.
