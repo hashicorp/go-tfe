@@ -124,18 +124,20 @@ type CommitList struct {
 
 // RegistryModule represents a registry module
 type RegistryModule struct {
-	ID              string                          `jsonapi:"primary,registry-modules"`
-	Name            string                          `jsonapi:"attr,name"`
-	Provider        string                          `jsonapi:"attr,provider"`
-	RegistryName    RegistryName                    `jsonapi:"attr,registry-name"`
-	Namespace       string                          `jsonapi:"attr,namespace"`
-	NoCode          bool                            `jsonapi:"attr,no-code"`
-	Permissions     *RegistryModulePermissions      `jsonapi:"attr,permissions"`
-	Status          RegistryModuleStatus            `jsonapi:"attr,status"`
-	VCSRepo         *VCSRepo                        `jsonapi:"attr,vcs-repo"`
-	VersionStatuses []RegistryModuleVersionStatuses `jsonapi:"attr,version-statuses"`
-	CreatedAt       string                          `jsonapi:"attr,created-at"`
-	UpdatedAt       string                          `jsonapi:"attr,updated-at"`
+	ID                  string                          `jsonapi:"primary,registry-modules"`
+	Name                string                          `jsonapi:"attr,name"`
+	Provider            string                          `jsonapi:"attr,provider"`
+	RegistryName        RegistryName                    `jsonapi:"attr,registry-name"`
+	Namespace           string                          `jsonapi:"attr,namespace"`
+	NoCode              bool                            `jsonapi:"attr,no-code"`
+	Permissions         *RegistryModulePermissions      `jsonapi:"attr,permissions"`
+	PublishingMechanism string                          `jsonapi:"attr,publishing-mechanism"`
+	Status              RegistryModuleStatus            `jsonapi:"attr,status"`
+	TestConfig          *TestConfig                     `jsonapi:"attr,test-config"`
+	VCSRepo             *VCSRepo                        `jsonapi:"attr,vcs-repo"`
+	VersionStatuses     []RegistryModuleVersionStatuses `jsonapi:"attr,version-statuses"`
+	CreatedAt           string                          `jsonapi:"attr,created-at"`
+	UpdatedAt           string                          `jsonapi:"attr,updated-at"`
 
 	// Relations
 	Organization *Organization `jsonapi:"relation,organization"`
@@ -239,6 +241,10 @@ type RegistryModuleCreateWithVCSConnectionOptions struct {
 	//
 	// **Note: This field is still in BETA and subject to change.**
 	InitialVersion *string `jsonapi:"attr,initial-version,omitempty"`
+
+	// Optional: Flag to enable tests for the module
+	// **Note: This field is still in BETA and subject to change.**
+	TestConfig *RegistryModuleTestConfigOptions `jsonapi:"attr,test-config,omitempty"`
 }
 
 // RegistryModuleCreateVersionOptions is used when updating a registry module
@@ -252,6 +258,17 @@ type RegistryModuleUpdateOptions struct {
 	// Optional: Flag to enable no-code provisioning for the whole module.
 	// **Note: This field is still in BETA and subject to change.**
 	NoCode *bool `jsonapi:"attr,no-code,omitempty"`
+
+	// Optional: Flag to enable tests for the module
+	// **Note: This field is still in BETA and subject to change.**
+	TestConfig *RegistryModuleTestConfigOptions `jsonapi:"attr,test-config,omitempty"`
+
+	Branch string `jsonapi:"attr,branch,omitempty"`
+	Tags   string `jsonapi:"attr,tags,omitempty"`
+}
+
+type RegistryModuleTestConfigOptions struct {
+	TestsEnabled *bool `jsonapi:"attr,tests-enabled,omitempty"`
 }
 
 type RegistryModuleVCSRepoOptions struct {
@@ -696,6 +713,15 @@ func (o RegistryModuleCreateWithVCSConnectionOptions) valid() error {
 	if o.VCSRepo == nil {
 		return ErrRequiredVCSRepo
 	}
+
+	if o.TestConfig != nil {
+		if *o.TestConfig.TestsEnabled {
+			if !validString(o.VCSRepo.Branch) {
+				return ErrRequiredBranchWhenTestsEnabled
+			}
+		}
+	}
+
 	return o.VCSRepo.valid()
 }
 
