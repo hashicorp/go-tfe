@@ -117,7 +117,8 @@ type VariableSetCreateOptions struct {
 	Global *bool `jsonapi:"attr,global,omitempty"`
 
 	// **Note: This field is still in BETA and subject to change.**
-	// If true the variables in the set cannot be overwritten and take precedence.
+	// If true the variables in the set override any other variable values set
+	// in a more specific scope including values set on the command line.
 	Priority *bool `jsonapi:"attr,priority,omitempty"`
 }
 
@@ -146,7 +147,8 @@ type VariableSetUpdateOptions struct {
 	Global *bool `jsonapi:"attr,global,omitempty"`
 
 	// **Note: This field is still in BETA and subject to change.**
-	// If true the variables in the set cannot be overwritten and take precedence.
+	// If true the variables in the set override any other variable values set
+	// in a more specific scope including values set on the command line.
 	Priority *bool `jsonapi:"attr,priority,omitempty"`
 }
 
