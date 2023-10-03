@@ -95,6 +95,13 @@ const (
 	RegistryModuleVersionStatusOk                  RegistryModuleVersionStatus = "ok"
 )
 
+type PublishingMechanism string
+
+const (
+	PublishingMechanismBranch PublishingMechanism = "branch"
+	PublishingMechanismTag    PublishingMechanism = "git_tag"
+)
+
 // RegistryModuleID represents the set of IDs that identify a RegistryModule
 type RegistryModuleID struct {
 	// The organization the module belongs to, see RegistryModule.Organization.Name
@@ -131,7 +138,7 @@ type RegistryModule struct {
 	Namespace           string                          `jsonapi:"attr,namespace"`
 	NoCode              bool                            `jsonapi:"attr,no-code"`
 	Permissions         *RegistryModulePermissions      `jsonapi:"attr,permissions"`
-	PublishingMechanism string                          `jsonapi:"attr,publishing-mechanism"`
+	PublishingMechanism PublishingMechanism             `jsonapi:"attr,publishing-mechanism"`
 	Status              RegistryModuleStatus            `jsonapi:"attr,status"`
 	TestConfig          *TestConfig                     `jsonapi:"attr,test-config"`
 	VCSRepo             *VCSRepo                        `jsonapi:"attr,vcs-repo"`
