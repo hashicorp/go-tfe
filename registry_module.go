@@ -726,7 +726,7 @@ func (o RegistryModuleCreateWithVCSConnectionOptions) valid() error {
 		return ErrRequiredVCSRepo
 	}
 
-	if o.TestConfig != nil {
+	if o.TestConfig != nil && o.TestConfig.TestsEnabled != nil {
 		if *o.TestConfig.TestsEnabled {
 			if !validString(o.VCSRepo.Branch) {
 				return ErrRequiredBranchWhenTestsEnabled
