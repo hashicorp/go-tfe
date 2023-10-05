@@ -367,7 +367,9 @@ func TestRegistryModuleUpdateWithVCSConnection(t *testing.T) {
 		assert.Equal(t, "git_tag", rm.PublishingMechanism)
 
 		options := RegistryModuleUpdateOptions{
-			Branch: githubBranch,
+			VCSRepo: &RegistryModuleVCSRepoUpdateOptions{
+				Branch: String(githubBranch),
+			},
 		}
 		rm, err := client.RegistryModules.Update(ctx, RegistryModuleID{
 			Organization: orgTest.Name,
@@ -380,7 +382,9 @@ func TestRegistryModuleUpdateWithVCSConnection(t *testing.T) {
 		assert.Equal(t, "branch", rm.PublishingMechanism)
 
 		options = RegistryModuleUpdateOptions{
-			Tags: "1.0.0",
+			VCSRepo: &RegistryModuleVCSRepoUpdateOptions{
+				Tags: String("1.0.0"),
+			},
 		}
 		rm, err = client.RegistryModules.Update(ctx, RegistryModuleID{
 			Organization: orgTest.Name,
@@ -394,7 +398,9 @@ func TestRegistryModuleUpdateWithVCSConnection(t *testing.T) {
 		assert.Equal(t, "git_tag", rm.PublishingMechanism)
 
 		options = RegistryModuleUpdateOptions{
-			Branch: githubBranch,
+			VCSRepo: &RegistryModuleVCSRepoUpdateOptions{
+				Branch: String(githubBranch),
+			},
 		}
 		rm, err = client.RegistryModules.Update(ctx, RegistryModuleID{
 			Organization: orgTest.Name,

@@ -270,13 +270,7 @@ type RegistryModuleUpdateOptions struct {
 	// **Note: This field is still in BETA and subject to change.**
 	TestConfig *RegistryModuleTestConfigOptions `jsonapi:"attr,test-config,omitempty"`
 
-	// The Branch and Tag fields are used to determine
-	// the PublishingMechanism for a RegistryModule that has a VCS a connection.
-	// When a value for Branch is provided, the Tags field is removed on the server
-	// When a value for Tags is provided, the Branch field is removed on the server
-	// **Note: This field is still in BETA and subject to change.**
-	Branch string `jsonapi:"attr,branch,omitempty"`
-	Tags   string `jsonapi:"attr,tags,omitempty"`
+	VCSRepo *RegistryModuleVCSRepoUpdateOptions `jsonapi:"attr-vcs-repo,omitempty"`
 }
 
 type RegistryModuleTestConfigOptions struct {
@@ -295,6 +289,16 @@ type RegistryModuleVCSRepoOptions struct {
 	//
 	// **Note: This field is still in BETA and subject to change.**
 	Branch *string `json:"branch,omitempty"`
+}
+
+type RegistryModuleVCSRepoUpdateOptions struct {
+	// The Branch and Tag fields are used to determine
+	// the PublishingMechanism for a RegistryModule that has a VCS a connection.
+	// When a value for Branch is provided, the Tags field is removed on the server
+	// When a value for Tags is provided, the Branch field is removed on the server
+	// **Note: This field is still in BETA and subject to change.**
+	Branch *string `json:"branch,omitempty"`
+	Tags   *string `json:"tags,omitempty"`
 }
 
 // List all the registory modules within an organization.
