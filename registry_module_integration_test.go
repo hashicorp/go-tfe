@@ -364,7 +364,7 @@ func TestRegistryModuleUpdateWithVCSConnection(t *testing.T) {
 	})
 
 	t.Run("toggle between git tag-based and branch-based publishing", func(t *testing.T) {
-		assert.Equal(t, "git_tag", rm.PublishingMechanism)
+		assert.Equal(t, rm.PublishingMechanism, PublishingMechanismTag)
 
 		options := RegistryModuleUpdateOptions{
 			VCSRepo: &RegistryModuleVCSRepoUpdateOptions{
@@ -379,7 +379,7 @@ func TestRegistryModuleUpdateWithVCSConnection(t *testing.T) {
 			RegistryName: rm.RegistryName,
 		}, options)
 		require.NoError(t, err)
-		assert.Equal(t, "branch", rm.PublishingMechanism)
+		assert.Equal(t, rm.PublishingMechanism, PublishingMechanismBranch)
 
 		options = RegistryModuleUpdateOptions{
 			VCSRepo: &RegistryModuleVCSRepoUpdateOptions{
@@ -395,7 +395,7 @@ func TestRegistryModuleUpdateWithVCSConnection(t *testing.T) {
 		}, options)
 		require.NoError(t, err)
 
-		assert.Equal(t, "git_tag", rm.PublishingMechanism)
+		assert.Equal(t, rm.PublishingMechanism, PublishingMechanismTag)
 
 		options = RegistryModuleUpdateOptions{
 			VCSRepo: &RegistryModuleVCSRepoUpdateOptions{
@@ -410,7 +410,7 @@ func TestRegistryModuleUpdateWithVCSConnection(t *testing.T) {
 			RegistryName: rm.RegistryName,
 		}, options)
 		require.NoError(t, err)
-		assert.Equal(t, "branch", rm.PublishingMechanism)
+		assert.Equal(t, rm.PublishingMechanism, PublishingMechanismBranch)
 	})
 }
 

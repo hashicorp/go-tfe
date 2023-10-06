@@ -270,7 +270,7 @@ type RegistryModuleUpdateOptions struct {
 	// **Note: This field is still in BETA and subject to change.**
 	TestConfig *RegistryModuleTestConfigOptions `jsonapi:"attr,test-config,omitempty"`
 
-	VCSRepo *RegistryModuleVCSRepoUpdateOptions `jsonapi:"attr-vcs-repo,omitempty"`
+	VCSRepo *RegistryModuleVCSRepoUpdateOptions `jsonapi:"attr,vcs-repo,omitempty"`
 }
 
 type RegistryModuleTestConfigOptions struct {
