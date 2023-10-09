@@ -221,6 +221,7 @@ func TestTestVariablesCreate(t *testing.T) {
 }
 
 func TestTestVariablesUpdate(t *testing.T) {
+	skipUnlessBeta(t)
 
 	client := testClient(t)
 	ctx := context.Background()
@@ -310,6 +311,8 @@ func TestTestVariablesUpdate(t *testing.T) {
 }
 
 func TestTestVariablesDelete(t *testing.T) {
+	skipUnlessBeta(t)
+
 	client := testClient(t)
 	ctx := context.Background()
 
