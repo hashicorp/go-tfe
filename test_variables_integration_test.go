@@ -11,7 +11,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func TestTestConfigVarsList(t *testing.T) {
+func TestTestVariablesList(t *testing.T) {
 	skipUnlessBeta(t)
 
 	client := testClient(t)
@@ -105,7 +105,7 @@ func TestTestVariablesCreate(t *testing.T) {
 
 	t.Run("with valid options", func(t *testing.T) {
 		options := VariableCreateOptions{
-			Key:         String(randomStringWithoutSpecialChar(t)),
+			Key:         String(randomKeyValue(t)),
 			Value:       String(randomStringWithoutSpecialChar(t)),
 			Category:    Category(CategoryEnv),
 			Description: String("testing"),
@@ -124,7 +124,7 @@ func TestTestVariablesCreate(t *testing.T) {
 
 	t.Run("when options has an empty string value", func(t *testing.T) {
 		options := VariableCreateOptions{
-			Key:         String(randomStringWithoutSpecialChar(t)),
+			Key:         String(randomKeyValue(t)),
 			Value:       String(""),
 			Description: String("testing"),
 			Category:    Category(CategoryEnv),
@@ -143,7 +143,7 @@ func TestTestVariablesCreate(t *testing.T) {
 
 	t.Run("when options has an empty string description", func(t *testing.T) {
 		options := VariableCreateOptions{
-			Key:         String(randomStringWithoutSpecialChar(t)),
+			Key:         String(randomKeyValue(t)),
 			Value:       String(randomStringWithoutSpecialChar(t)),
 			Description: String(""),
 			Category:    Category(CategoryEnv),
@@ -162,7 +162,7 @@ func TestTestVariablesCreate(t *testing.T) {
 
 	t.Run("when options has a too-long description", func(t *testing.T) {
 		options := VariableCreateOptions{
-			Key:         String(randomStringWithoutSpecialChar(t)),
+			Key:         String(randomKeyValue(t)),
 			Value:       String(randomStringWithoutSpecialChar(t)),
 			Description: String("tortor aliquam nulla go lint is fussy about spelling cras fermentum odio eu feugiat pretium nibh ipsum consequat nisl vel pretium lectus quam id leo in vitae turpis massa sed elementum tempus egestas sed sed risus pretium quam vulputate dignissim suspendisse in est ante in nibh mauris cursus mattis molestie a iaculis at erat pellentesque adipiscing commodo elit at imperdiet dui accumsan sit amet nulla redacted morbi tempus iaculis urna id volutpat lacus laoreet non curabitur gravida arcu ac tortor dignissim convallis aenean et tortor"),
 			Category:    Category(CategoryEnv),
@@ -174,7 +174,7 @@ func TestTestVariablesCreate(t *testing.T) {
 
 	t.Run("when options is missing value", func(t *testing.T) {
 		options := VariableCreateOptions{
-			Key:      String(randomStringWithoutSpecialChar(t)),
+			Key:      String(randomKeyValue(t)),
 			Category: Category(CategoryEnv),
 		}
 
@@ -211,7 +211,7 @@ func TestTestVariablesCreate(t *testing.T) {
 
 	t.Run("when options is missing category", func(t *testing.T) {
 		options := VariableCreateOptions{
-			Key:   String(randomStringWithoutSpecialChar(t)),
+			Key:   String(randomKeyValue(t)),
 			Value: String(randomStringWithoutSpecialChar(t)),
 		}
 

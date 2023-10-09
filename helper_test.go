@@ -1355,10 +1355,10 @@ func createTestVariable(t *testing.T, client *Client, rm *RegistryModule) (*Vari
 
 	ctx := context.Background()
 	v, err := client.TestVariables.Create(ctx, rmId, VariableCreateOptions{
-		Key:         String(randomStringWithoutSpecialChar(t)),
+		Key:         String(randomKeyValue(t)),
 		Value:       String(randomStringWithoutSpecialChar(t)),
 		Category:    Category(CategoryEnv),
-		Description: String(randomString(t)),
+		Description: String(randomStringWithoutSpecialChar(t)),
 	})
 	if err != nil {
 		t.Fatal(err)
@@ -2641,6 +2641,15 @@ func randomStringWithoutSpecialChar(t *testing.T) string {
 	}
 	uuidWithoutHyphens := strings.ReplaceAll(v, "-", "")
 	return uuidWithoutHyphens
+}
+
+func randomKeyValue(t *testing.T) string {
+	v, err := uuid.GenerateUUID()
+	if err != nil {
+		t.Fatal(err)
+	}
+	uuidWithoutHyphens := strings.ReplaceAll(v, "-", "")
+	return "t" + uuidWithoutHyphens
 }
 
 func containsProject(pl []*Project, str string) bool {
