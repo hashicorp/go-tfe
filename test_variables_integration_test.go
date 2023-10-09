@@ -108,7 +108,7 @@ func TestTestVariablesCreate(t *testing.T) {
 			Key:         String(randomStringWithoutSpecialChar(t)),
 			Value:       String(randomStringWithoutSpecialChar(t)),
 			Category:    Category(CategoryEnv),
-			Description: String(randomString(t)),
+			Description: String("testing"),
 		}
 
 		v, err := client.TestVariables.Create(ctx, id, options)
@@ -126,7 +126,7 @@ func TestTestVariablesCreate(t *testing.T) {
 		options := VariableCreateOptions{
 			Key:         String(randomStringWithoutSpecialChar(t)),
 			Value:       String(""),
-			Description: String(randomString(t)),
+			Description: String("testing"),
 			Category:    Category(CategoryEnv),
 		}
 
@@ -217,5 +217,130 @@ func TestTestVariablesCreate(t *testing.T) {
 
 		_, err := client.TestVariables.Create(ctx, id, options)
 		assert.Equal(t, err, ErrRequiredCategory)
+	})
+}
+
+func TestTestVariablesUpdate(t *testing.T) {
+
+	client := testClient(t)
+	ctx := context.Background()
+
+	orgTest, orgTestCleanup := createOrganization(t, client)
+	defer orgTestCleanup()
+
+	rmTest, registryModuleTestCleanup := createBranchBasedRegistryModule(t, client, orgTest)
+	defer registryModuleTestCleanup()
+
+	id := RegistryModuleID{
+		Organization: orgTest.Name,
+		Name:         rmTest.Name,
+		Provider:     rmTest.Provider,
+		Namespace:    rmTest.Namespace,
+		RegistryName: rmTest.RegistryName,
+	}
+
+	vTest, tvCleanup1 := createTestVariable(t, client, rmTest)
+
+	defer tvCleanup1()
+
+	t.Run("with valid options", func(t *testing.T) {
+		options := VariableUpdateOptions{
+			Key:   String("newname"),
+			Value: String("newvalue"),
+			HCL:   Bool(true),
+		}
+
+		v, err := client.TestVariables.Update(ctx, id, vTest.ID, options)
+		require.NoError(t, err)
+
+		assert.Equal(t, *options.Key, v.Key)
+		assert.Equal(t, *options.HCL, v.HCL)
+		assert.Equal(t, *options.Value, v.Value)
+		assert.NotEqual(t, vTest.VersionID, v.VersionID)
+	})
+
+	t.Run("when updating a subset of values", func(t *testing.T) {
+		options := VariableUpdateOptions{
+			Key: String("someothername"),
+			HCL: Bool(false),
+		}
+
+		v, err := client.TestVariables.Update(ctx, id, vTest.ID, options)
+		require.NoError(t, err)
+
+		assert.Equal(t, *options.Key, v.Key)
+		assert.Equal(t, *options.HCL, v.HCL)
+		assert.NotEqual(t, vTest.VersionID, v.VersionID)
+	})
+
+	t.Run("with sensitive set", func(t *testing.T) {
+		options := VariableUpdateOptions{
+			Sensitive: Bool(true),
+		}
+
+		v, err := client.TestVariables.Update(ctx, id, vTest.ID, options)
+		require.NoError(t, err)
+
+		assert.Equal(t, *options.Sensitive, v.Sensitive)
+		assert.Empty(t, v.Value) // Because its now sensitive
+		assert.NotEqual(t, vTest.VersionID, v.VersionID)
+	})
+
+	t.Run("without any changes", func(t *testing.T) {
+		vTest, vTestCleanup := createVariable(t, client, nil)
+		defer vTestCleanup()
+
+		v, err := client.TestVariables.Update(ctx, id, vTest.ID, VariableUpdateOptions{})
+		require.NoError(t, err)
+
+		assert.Equal(t, vTest.ID, v.ID)
+		assert.Equal(t, vTest.Key, v.Key)
+		assert.Equal(t, vTest.Value, v.Value)
+		assert.Equal(t, vTest.Description, v.Description)
+		assert.Equal(t, vTest.Category, v.Category)
+		assert.Equal(t, vTest.HCL, v.HCL)
+		assert.Equal(t, vTest.Sensitive, v.Sensitive)
+		assert.NotEqual(t, vTest.VersionID, v.VersionID)
+	})
+
+	t.Run("with invalid variable ID", func(t *testing.T) {
+		_, err := client.TestVariables.Update(ctx, id, badIdentifier, VariableUpdateOptions{})
+		assert.Equal(t, err, ErrInvalidVariableID)
+	})
+}
+
+func TestTestVariablesDelete(t *testing.T) {
+	client := testClient(t)
+	ctx := context.Background()
+
+	orgTest, orgTestCleanup := createOrganization(t, client)
+	defer orgTestCleanup()
+
+	rmTest, registryModuleTestCleanup := createBranchBasedRegistryModule(t, client, orgTest)
+	defer registryModuleTestCleanup()
+
+	id := RegistryModuleID{
+		Organization: orgTest.Name,
+		Name:         rmTest.Name,
+		Provider:     rmTest.Provider,
+		Namespace:    rmTest.Namespace,
+		RegistryName: rmTest.RegistryName,
+	}
+
+	vTest, _ := createTestVariable(t, client, rmTest)
+
+	t.Run("with valid options", func(t *testing.T) {
+		err := client.TestVariables.Delete(ctx, id, vTest.ID)
+		require.NoError(t, err)
+	})
+
+	t.Run("with non existing variable ID", func(t *testing.T) {
+		err := client.TestVariables.Delete(ctx, id, "nonexisting")
+		assert.Equal(t, err, ErrResourceNotFound)
+	})
+
+	t.Run("with invalid variable ID", func(t *testing.T) {
+		err := client.TestVariables.Delete(ctx, id, badIdentifier)
+		assert.Equal(t, err, ErrInvalidVariableID)
 	})
 }
