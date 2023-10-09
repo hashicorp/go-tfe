@@ -2,6 +2,9 @@
 <!-- Add CHANGELOG entry to this section for any PR awaiting the next release -->
 <!-- Please also include if this is a Bug Fix, Enhancement, or Feature -->
 
+## Enhancements
+* Updates `Workspaces` to include an `AutoDestroyAt` attribute on create and update by @notchairmk [#786](https://github.com/hashicorp/go-tfe/pull/786)
+
 # v.1.35.0
 ## Features
 * Added BETA support for private module registry tests by @hashimoon [#781](https://github.com/hashicorp/go-tfe/pull/781)

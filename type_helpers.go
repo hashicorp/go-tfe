@@ -3,6 +3,8 @@
 
 package tfe
 
+import "time"
+
 // Access returns a pointer to the given team access type.
 func Access(v AccessType) *AccessType {
 	return &v
@@ -75,6 +77,11 @@ func Bool(v bool) *bool {
 
 // Category returns a pointer to the given category type.
 func Category(v CategoryType) *CategoryType {
+	return &v
+}
+
+// Time returns a pointer to the given time
+func Time(v time.Time) *time.Time {
 	return &v
 }
 

@@ -509,8 +509,9 @@ func TestWorkspacesCreate(t *testing.T) {
 	t.Run("with valid options", func(t *testing.T) {
 		options := WorkspaceCreateOptions{
 			Name:                       String("foo"),
-			AllowDestroyPlan:           Bool(false),
+			AllowDestroyPlan:           Bool(true),
 			AutoApply:                  Bool(true),
+			AutoDestroyAt:              Time(time.Date(2024, 1, 15, 22, 3, 4, 0, time.UTC)),
 			Description:                String("qux"),
 			AssessmentsEnabled:         Bool(false),
 			FileTriggersEnabled:        Bool(true),
@@ -549,6 +550,7 @@ func TestWorkspacesCreate(t *testing.T) {
 			assert.Equal(t, *options.Description, item.Description)
 			assert.Equal(t, *options.AllowDestroyPlan, item.AllowDestroyPlan)
 			assert.Equal(t, *options.AutoApply, item.AutoApply)
+			assert.Equal(t, options.AutoDestroyAt, item.AutoDestroyAt)
 			assert.Equal(t, *options.AssessmentsEnabled, item.AssessmentsEnabled)
 			assert.Equal(t, *options.FileTriggersEnabled, item.FileTriggersEnabled)
 			assert.Equal(t, *options.Operations, item.Operations)
@@ -982,6 +984,7 @@ func TestWorkspacesUpdate(t *testing.T) {
 			Name:                       String(randomString(t)),
 			AllowDestroyPlan:           Bool(true),
 			AutoApply:                  Bool(false),
+			AutoDestroyAt:              Time(time.Date(2024, 1, 15, 22, 3, 4, 0, time.UTC)),
 			FileTriggersEnabled:        Bool(true),
 			Operations:                 Bool(false),
 			QueueAllRuns:               Bool(false),
@@ -1007,6 +1010,7 @@ func TestWorkspacesUpdate(t *testing.T) {
 			assert.Equal(t, *options.Name, item.Name)
 			assert.Equal(t, *options.AllowDestroyPlan, item.AllowDestroyPlan)
 			assert.Equal(t, *options.AutoApply, item.AutoApply)
+			assert.Equal(t, options.AutoDestroyAt, item.AutoDestroyAt)
 			assert.Equal(t, *options.FileTriggersEnabled, item.FileTriggersEnabled)
 			assert.Equal(t, *options.Description, item.Description)
 			assert.Equal(t, *options.Operations, item.Operations)
@@ -1097,6 +1101,11 @@ func TestWorkspacesUpdate(t *testing.T) {
 	})
 
 	t.Run("when options include both trigger-patterns and trigger-paths error is returned", func(t *testing.T) {
+		wTest, wCleanup := createWorkspaceWithOptions(t, client, orgTest, WorkspaceCreateOptions{
+			Name: String(randomString(t)),
+		})
+		t.Cleanup(wCleanup)
+
 		options := WorkspaceUpdateOptions{
 			Name:                String("foobar"),
 			FileTriggersEnabled: Bool(true),
@@ -1144,6 +1153,24 @@ func TestWorkspacesUpdate(t *testing.T) {
 			assert.Empty(t, options.TriggerPrefixes)
 			assert.Equal(t, options.TriggerPatterns, item.TriggerPatterns)
 		}
+	})
+
+	t.Run("when auto destroy is set and unset", func(t *testing.T) {
+		autoDestroyAt := Time(time.Date(2025, 1, 1, 0, 0, 0, 0, time.UTC))
+		wTest, wCleanup := createWorkspaceWithOptions(t, client, orgTest, WorkspaceCreateOptions{
+			Name:          String(randomString(t)),
+			AutoDestroyAt: autoDestroyAt,
+		})
+		t.Cleanup(wCleanup)
+
+		assert.Equal(t, wTest.AutoDestroyAt, autoDestroyAt)
+
+		w, err := client.Workspaces.Update(ctx, orgTest.Name, wTest.Name, WorkspaceUpdateOptions{
+			AutoDestroyAt: nil,
+		})
+
+		require.NoError(t, err)
+		assert.Nil(t, w.AutoDestroyAt)
 	})
 }
 
@@ -2335,7 +2362,7 @@ func TestWorkspaceCreateOptions_Marshal(t *testing.T) {
 	bodyBytes, err := req.BodyBytes()
 	require.NoError(t, err)
 
-	expectedBody := `{"data":{"type":"workspaces","attributes":{"allow-destroy-plan":true,"name":"my-workspace","trigger-patterns":["pattern1/**/*","pattern2/**/*"],"trigger-prefixes":["prefix-"],"vcs-repo":{"identifier":"id","oauth-token-id":"token"}}}}
+	expectedBody := `{"data":{"type":"workspaces","attributes":{"allow-destroy-plan":true,"auto-destroy-at":null,"name":"my-workspace","trigger-patterns":["pattern1/**/*","pattern2/**/*"],"trigger-prefixes":["prefix-"],"vcs-repo":{"identifier":"id","oauth-token-id":"token"}}}}
 `
 	assert.Equal(t, expectedBody, string(bodyBytes))
 }
