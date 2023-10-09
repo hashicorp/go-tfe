@@ -15,9 +15,9 @@ var _ TestVariables = (*testVariables)(nil)
 // Variables describes all the variable related methods that the Terraform
 // Enterprise API supports.
 //
-// TFE API docs: https://developer.hashicorp.com/terraform/cloud-docs/api-docs/workspace-variables
+// TFE API docs: https://developer.hashicorp.com/terraform/cloud-docs/api-docs/private-registry/tests
 type TestVariables interface {
-	// List all the variables associated with the given workspace.
+	// List all the test variables associated with the given module.
 	List(ctx context.Context, moduleID RegistryModuleID, options *VariableListOptions) (*VariableList, error)
 
 	// Create is used to create a new variable.
@@ -35,7 +35,7 @@ type testVariables struct {
 	client *Client
 }
 
-// List all the variables associated with the given workspace.
+// List all the variables associated with the given module.
 func (s *testVariables) List(ctx context.Context, moduleID RegistryModuleID, options *VariableListOptions) (*VariableList, error) {
 	if err := moduleID.valid(); err != nil {
 		return nil, err
