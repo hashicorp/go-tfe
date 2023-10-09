@@ -1339,6 +1339,44 @@ func createTestRun(t *testing.T, client *Client, rm *RegistryModule, variables .
 	}
 }
 
+func createTestVariable(t *testing.T, client *Client, rm *RegistryModule) (*Variable, func()) {
+	var rmCleanup func()
+
+	if rm == nil {
+		rm, rmCleanup = createBranchBasedRegistryModule(t, client, nil)
+	}
+	rmId := RegistryModuleID{
+		Organization: rm.Organization.Name,
+		Name:         rm.Name,
+		Provider:     rm.Provider,
+		Namespace:    rm.Namespace,
+		RegistryName: rm.RegistryName,
+	}
+
+	ctx := context.Background()
+	v, err := client.TestVariables.Create(ctx, rmId, VariableCreateOptions{
+		Key:         String(randomStringWithoutSpecialChar(t)),
+		Value:       String(randomStringWithoutSpecialChar(t)),
+		Category:    Category(CategoryEnv),
+		Description: String(randomString(t)),
+	})
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	return v, func() {
+		if err := client.TestVariables.Delete(ctx, rmId, v.ID); err != nil {
+			t.Errorf("Error destroying variable! WARNING: Dangling resources\n"+
+				"may exist! The full error is shown below.\n\n"+
+				"Variable: %s\nError: %s", v.Key, err)
+		}
+
+		if rmCleanup != nil {
+			rmCleanup()
+		}
+	}
+}
+
 // helper to wait until a test run has reached a certain status
 func waitUntilTestRunStatus(t *testing.T, client *Client, rm RegistryModuleID, tr *TestRun, desiredStatus TestRunStatus, timeoutSeconds int) {
 	ctx := context.Background()
