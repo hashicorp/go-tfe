@@ -82,3 +82,140 @@ func TestTestConfigVarsList(t *testing.T) {
 		assert.Equal(t, 2, tvl.TotalCount)
 	})
 }
+
+func TestTestVariablesCreate(t *testing.T) {
+	skipUnlessBeta(t)
+
+	client := testClient(t)
+	ctx := context.Background()
+
+	orgTest, orgTestCleanup := createOrganization(t, client)
+	defer orgTestCleanup()
+
+	rmTest, registryModuleTestCleanup := createBranchBasedRegistryModule(t, client, orgTest)
+	defer registryModuleTestCleanup()
+
+	id := RegistryModuleID{
+		Organization: orgTest.Name,
+		Name:         rmTest.Name,
+		Provider:     rmTest.Provider,
+		Namespace:    rmTest.Namespace,
+		RegistryName: rmTest.RegistryName,
+	}
+
+	t.Run("with valid options", func(t *testing.T) {
+		options := VariableCreateOptions{
+			Key:         String(randomStringWithoutSpecialChar(t)),
+			Value:       String(randomStringWithoutSpecialChar(t)),
+			Category:    Category(CategoryEnv),
+			Description: String(randomString(t)),
+		}
+
+		v, err := client.TestVariables.Create(ctx, id, options)
+		require.NoError(t, err)
+
+		assert.NotEmpty(t, v.ID)
+		assert.Equal(t, *options.Key, v.Key)
+		assert.Equal(t, *options.Value, v.Value)
+		assert.Equal(t, *options.Description, v.Description)
+		assert.Equal(t, *options.Category, v.Category)
+		assert.NotEmpty(t, v.VersionID)
+	})
+
+	t.Run("when options has an empty string value", func(t *testing.T) {
+		options := VariableCreateOptions{
+			Key:         String(randomStringWithoutSpecialChar(t)),
+			Value:       String(""),
+			Description: String(randomString(t)),
+			Category:    Category(CategoryEnv),
+		}
+
+		v, err := client.TestVariables.Create(ctx, id, options)
+		require.NoError(t, err)
+
+		assert.NotEmpty(t, v.ID)
+		assert.Equal(t, *options.Key, v.Key)
+		assert.Equal(t, *options.Value, v.Value)
+		assert.Equal(t, *options.Description, v.Description)
+		assert.Equal(t, *options.Category, v.Category)
+		assert.NotEmpty(t, v.VersionID)
+	})
+
+	t.Run("when options has an empty string description", func(t *testing.T) {
+		options := VariableCreateOptions{
+			Key:         String(randomStringWithoutSpecialChar(t)),
+			Value:       String(randomStringWithoutSpecialChar(t)),
+			Description: String(""),
+			Category:    Category(CategoryEnv),
+		}
+
+		v, err := client.TestVariables.Create(ctx, id, options)
+		require.NoError(t, err)
+
+		assert.NotEmpty(t, v.ID)
+		assert.Equal(t, *options.Key, v.Key)
+		assert.Equal(t, *options.Value, v.Value)
+		assert.Equal(t, *options.Description, v.Description)
+		assert.Equal(t, *options.Category, v.Category)
+		assert.NotEmpty(t, v.VersionID)
+	})
+
+	t.Run("when options has a too-long description", func(t *testing.T) {
+		options := VariableCreateOptions{
+			Key:         String(randomStringWithoutSpecialChar(t)),
+			Value:       String(randomStringWithoutSpecialChar(t)),
+			Description: String("tortor aliquam nulla go lint is fussy about spelling cras fermentum odio eu feugiat pretium nibh ipsum consequat nisl vel pretium lectus quam id leo in vitae turpis massa sed elementum tempus egestas sed sed risus pretium quam vulputate dignissim suspendisse in est ante in nibh mauris cursus mattis molestie a iaculis at erat pellentesque adipiscing commodo elit at imperdiet dui accumsan sit amet nulla redacted morbi tempus iaculis urna id volutpat lacus laoreet non curabitur gravida arcu ac tortor dignissim convallis aenean et tortor"),
+			Category:    Category(CategoryEnv),
+		}
+
+		_, err := client.TestVariables.Create(ctx, id, options)
+		assert.Error(t, err)
+	})
+
+	t.Run("when options is missing value", func(t *testing.T) {
+		options := VariableCreateOptions{
+			Key:      String(randomStringWithoutSpecialChar(t)),
+			Category: Category(CategoryEnv),
+		}
+
+		v, err := client.TestVariables.Create(ctx, id, options)
+		require.NoError(t, err)
+
+		assert.NotEmpty(t, v.ID)
+		assert.Equal(t, *options.Key, v.Key)
+		assert.Equal(t, "", v.Value)
+		assert.Equal(t, *options.Category, v.Category)
+		assert.NotEmpty(t, v.VersionID)
+	})
+
+	t.Run("when options is missing key", func(t *testing.T) {
+		options := VariableCreateOptions{
+			Value:    String(randomStringWithoutSpecialChar(t)),
+			Category: Category(CategoryEnv),
+		}
+
+		_, err := client.TestVariables.Create(ctx, id, options)
+		assert.Equal(t, err, ErrRequiredKey)
+	})
+
+	t.Run("when options has an empty key", func(t *testing.T) {
+		options := VariableCreateOptions{
+			Key:      String(""),
+			Value:    String(randomStringWithoutSpecialChar(t)),
+			Category: Category(CategoryEnv),
+		}
+
+		_, err := client.TestVariables.Create(ctx, id, options)
+		assert.Equal(t, err, ErrRequiredKey)
+	})
+
+	t.Run("when options is missing category", func(t *testing.T) {
+		options := VariableCreateOptions{
+			Key:   String(randomStringWithoutSpecialChar(t)),
+			Value: String(randomStringWithoutSpecialChar(t)),
+		}
+
+		_, err := client.TestVariables.Create(ctx, id, options)
+		assert.Equal(t, err, ErrRequiredCategory)
+	})
+}
