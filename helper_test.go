@@ -1345,7 +1345,7 @@ func createTestVariable(t *testing.T, client *Client, rm *RegistryModule) (*Vari
 	if rm == nil {
 		rm, rmCleanup = createBranchBasedRegistryModule(t, client, nil)
 	}
-	rmId := RegistryModuleID{
+	rmID := RegistryModuleID{
 		Organization: rm.Organization.Name,
 		Name:         rm.Name,
 		Provider:     rm.Provider,
@@ -1354,7 +1354,7 @@ func createTestVariable(t *testing.T, client *Client, rm *RegistryModule) (*Vari
 	}
 
 	ctx := context.Background()
-	v, err := client.TestVariables.Create(ctx, rmId, VariableCreateOptions{
+	v, err := client.TestVariables.Create(ctx, rmID, VariableCreateOptions{
 		Key:         String(randomKeyValue(t)),
 		Value:       String(randomStringWithoutSpecialChar(t)),
 		Category:    Category(CategoryEnv),
@@ -1365,7 +1365,7 @@ func createTestVariable(t *testing.T, client *Client, rm *RegistryModule) (*Vari
 	}
 
 	return v, func() {
-		if err := client.TestVariables.Delete(ctx, rmId, v.ID); err != nil {
+		if err := client.TestVariables.Delete(ctx, rmID, v.ID); err != nil {
 			t.Errorf("Error destroying variable! WARNING: Dangling resources\n"+
 				"may exist! The full error is shown below.\n\n"+
 				"Variable: %s\nError: %s", v.Key, err)
