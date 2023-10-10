@@ -1243,11 +1243,6 @@ func TestWorkspacesUpdate(t *testing.T) {
 	})
 
 	t.Run("when options include both trigger-patterns and trigger-paths error is returned", func(t *testing.T) {
-		wTest, wCleanup := createWorkspaceWithOptions(t, client, orgTest, WorkspaceCreateOptions{
-			Name: String(randomString(t)),
-		})
-		t.Cleanup(wCleanup)
-
 		options := WorkspaceUpdateOptions{
 			Name:                String("foobar"),
 			FileTriggersEnabled: Bool(true),
