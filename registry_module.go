@@ -298,7 +298,7 @@ type RegistryModuleVCSRepoUpdateOptions struct {
 	// When a value for Tags is provided, the Branch field is removed on the server
 	// **Note: This field is still in BETA and subject to change.**
 	Branch *string `json:"branch,omitempty"`
-	Tags   *string `json:"tags,omitempty"`
+	Tags   *bool   `json:"tags,omitempty"`
 }
 
 // List all the registory modules within an organization.
