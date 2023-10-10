@@ -4,6 +4,10 @@
 
 # v.1.35.0
 ## Features
+* Added BETA support for private module registry test variables by @aaabdelgany [#787](https://github.com/hashicorp/go-tfe/pull/787)
+
+# v.1.35.0
+## Features
 * Added BETA support for private module registry tests by @hashimoon [#781](https://github.com/hashicorp/go-tfe/pull/781)
 
 ## Enhancements
