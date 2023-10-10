@@ -301,6 +301,21 @@ func (mr *MockWorkspacesMockRecorder) Readme(ctx, workspaceID interface{}) *gomo
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Readme", reflect.TypeOf((*MockWorkspaces)(nil).Readme), ctx, workspaceID)
 }
 
+// RemoveAutoDestroyAt mocks base method.
+func (m *MockWorkspaces) RemoveAutoDestroyAt(ctx context.Context, organization, workspace string) (*tfe.Workspace, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "RemoveAutoDestroyAt", ctx, organization, workspace)
+	ret0, _ := ret[0].(*tfe.Workspace)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// RemoveAutoDestroyAt indicates an expected call of RemoveAutoDestroyAt.
+func (mr *MockWorkspacesMockRecorder) RemoveAutoDestroyAt(ctx, organization, workspace interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "RemoveAutoDestroyAt", reflect.TypeOf((*MockWorkspaces)(nil).RemoveAutoDestroyAt), ctx, organization, workspace)
+}
+
 // RemoveRemoteStateConsumers mocks base method.
 func (m *MockWorkspaces) RemoveRemoteStateConsumers(ctx context.Context, workspaceID string, options tfe.WorkspaceRemoveRemoteStateConsumersOptions) error {
 	m.ctrl.T.Helper()

@@ -59,6 +59,9 @@ type Workspaces interface {
 	// SafeDeleteByID deletes a workspace by its ID.
 	SafeDeleteByID(ctx context.Context, workspaceID string) error
 
+	// RemoveAutoDestroyAt removes auto destroy from a workspace.
+	RemoveAutoDestroyAt(ctx context.Context, organization, workspace string) (*Workspace, error)
+
 	// RemoveVCSConnection from a workspace.
 	RemoveVCSConnection(ctx context.Context, organization, workspace string) (*Workspace, error)
 
@@ -336,7 +339,7 @@ type WorkspaceCreateOptions struct {
 	AutoApplyRunTrigger *bool `jsonapi:"attr,auto-apply-run-trigger,omitempty"`
 
 	// Optional: The time after which an automatic destroy run will be queued
-	AutoDestroyAt *time.Time `jsonapi:"attr,auto-destroy-at,iso8601"`
+	AutoDestroyAt *time.Time `jsonapi:"attr,auto-destroy-at,iso8601,omitempty"`
 
 	// Optional: A description for the workspace.
 	Description *string `jsonapi:"attr,description,omitempty"`
@@ -486,7 +489,7 @@ type WorkspaceUpdateOptions struct {
 	AutoApplyRunTrigger *bool `jsonapi:"attr,auto-apply-run-trigger,omitempty"`
 
 	// Optional: The time after which an automatic destroy run will be queued
-	AutoDestroyAt *time.Time `jsonapi:"attr,auto-destroy-at,iso8601"`
+	AutoDestroyAt *time.Time `jsonapi:"attr,auto-destroy-at,iso8601,omitempty"`
 
 	// Optional: A new name for the workspace, which can only include letters, numbers, -,
 	// and _. This will be used as an identifier and must be unique in the
@@ -578,6 +581,12 @@ type WorkspaceUpdateOptions struct {
 type WorkspaceLockOptions struct {
 	// Specifies the reason for locking the workspace.
 	Reason *string `jsonapi:"attr,reason,omitempty"`
+}
+
+// workspaceRemoveAutoDestroyAtOptions
+type workspaceRemoveAutoDestroyAtOptions struct {
+	// Matches the create/update options without omitempty
+	AutoDestroyAt *time.Time `jsonapi:"attr,auto-destroy-at,iso8601"`
 }
 
 // workspaceRemoveVCSConnectionOptions
@@ -919,6 +928,35 @@ func (s *workspaces) SafeDeleteByID(ctx context.Context, workspaceID string) err
 	}
 
 	return req.Do(ctx, nil)
+}
+
+// RemoveAutoDestroyAt removes auto destroy from a workspace.
+func (s *workspaces) RemoveAutoDestroyAt(ctx context.Context, organization, workspace string) (*Workspace, error) {
+	if !validStringID(&organization) {
+		return nil, ErrInvalidOrg
+	}
+	if !validStringID(&workspace) {
+		return nil, ErrInvalidWorkspaceValue
+	}
+
+	u := fmt.Sprintf(
+		"organizations/%s/workspaces/%s",
+		url.QueryEscape(organization),
+		url.QueryEscape(workspace),
+	)
+
+	req, err := s.client.NewRequest("PATCH", u, &workspaceRemoveAutoDestroyAtOptions{})
+	if err != nil {
+		return nil, err
+	}
+
+	w := &Workspace{}
+	err = req.Do(ctx, w)
+	if err != nil {
+		return nil, err
+	}
+
+	return w, nil
 }
 
 // RemoveVCSConnection from a workspace.
