@@ -511,7 +511,7 @@ func TestWorkspacesCreate(t *testing.T) {
 			Name:                       String("foo"),
 			AllowDestroyPlan:           Bool(true),
 			AutoApply:                  Bool(true),
-			AutoDestroyAt:              Time(time.Date(2024, 1, 15, 22, 3, 4, 0, time.UTC)),
+			AutoDestroyAt:              Time(time.Date(2025, 1, 1, 0, 0, 0, 0, time.UTC)),
 			Description:                String("qux"),
 			AssessmentsEnabled:         Bool(false),
 			FileTriggersEnabled:        Bool(true),
@@ -984,7 +984,7 @@ func TestWorkspacesUpdate(t *testing.T) {
 			Name:                       String(randomString(t)),
 			AllowDestroyPlan:           Bool(true),
 			AutoApply:                  Bool(false),
-			AutoDestroyAt:              Time(time.Date(2024, 1, 15, 22, 3, 4, 0, time.UTC)),
+			AutoDestroyAt:              Time(time.Date(2025, 1, 1, 0, 0, 0, 0, time.UTC)),
 			FileTriggersEnabled:        Bool(true),
 			Operations:                 Bool(false),
 			QueueAllRuns:               Bool(false),
@@ -1153,24 +1153,6 @@ func TestWorkspacesUpdate(t *testing.T) {
 			assert.Empty(t, options.TriggerPrefixes)
 			assert.Equal(t, options.TriggerPatterns, item.TriggerPatterns)
 		}
-	})
-
-	t.Run("when auto destroy is set and unset", func(t *testing.T) {
-		autoDestroyAt := Time(time.Date(2025, 1, 1, 0, 0, 0, 0, time.UTC))
-		wTest, wCleanup := createWorkspaceWithOptions(t, client, orgTest, WorkspaceCreateOptions{
-			Name:          String(randomString(t)),
-			AutoDestroyAt: autoDestroyAt,
-		})
-		t.Cleanup(wCleanup)
-
-		assert.Equal(t, wTest.AutoDestroyAt, autoDestroyAt)
-
-		w, err := client.Workspaces.Update(ctx, orgTest.Name, wTest.Name, WorkspaceUpdateOptions{
-			AutoDestroyAt: nil,
-		})
-
-		require.NoError(t, err)
-		assert.Nil(t, w.AutoDestroyAt)
 	})
 }
 
@@ -2362,7 +2344,7 @@ func TestWorkspaceCreateOptions_Marshal(t *testing.T) {
 	bodyBytes, err := req.BodyBytes()
 	require.NoError(t, err)
 
-	expectedBody := `{"data":{"type":"workspaces","attributes":{"allow-destroy-plan":true,"auto-destroy-at":null,"name":"my-workspace","trigger-patterns":["pattern1/**/*","pattern2/**/*"],"trigger-prefixes":["prefix-"],"vcs-repo":{"identifier":"id","oauth-token-id":"token"}}}}
+	expectedBody := `{"data":{"type":"workspaces","attributes":{"allow-destroy-plan":true,"name":"my-workspace","trigger-patterns":["pattern1/**/*","pattern2/**/*"],"trigger-prefixes":["prefix-"],"vcs-repo":{"identifier":"id","oauth-token-id":"token"}}}}
 `
 	assert.Equal(t, expectedBody, string(bodyBytes))
 }
@@ -2421,4 +2403,37 @@ func TestWorkspacesProjects(t *testing.T) {
 			assert.NotNil(t, item.Project.ID, "No project ID set on workspace %s at idx %d", item.ID, idx)
 		}
 	})
+}
+
+func TestWorkspacesRemoveAutoDestroyAt(t *testing.T) {
+	client := testClient(t)
+	ctx := context.Background()
+
+	orgTest, orgTestCleanup := createOrganization(t, client)
+	t.Cleanup(orgTestCleanup)
+
+	upgradeOrganizationSubscription(t, client, orgTest)
+
+	autoDestroyAt := Time(time.Date(2025, 1, 1, 0, 0, 0, 0, time.UTC))
+	wTest, wCleanup := createWorkspaceWithOptions(t, client, orgTest, WorkspaceCreateOptions{
+		Name:          String(randomString(t)),
+		AutoDestroyAt: autoDestroyAt,
+	})
+	t.Cleanup(wCleanup)
+
+	assert.Equal(t, wTest.AutoDestroyAt, autoDestroyAt)
+
+	// respect default omitempty
+	w, err := client.Workspaces.Update(ctx, orgTest.Name, wTest.Name, WorkspaceUpdateOptions{
+		AutoDestroyAt: nil,
+	})
+
+	require.NoError(t, err)
+	assert.NotNil(t, w.AutoDestroyAt)
+
+	// explicitly remove auto destroy
+	w, err = client.Workspaces.RemoveAutoDestroyAt(ctx, orgTest.Name, wTest.Name)
+
+	require.NoError(t, err)
+	assert.Nil(t, w.AutoDestroyAt)
 }
