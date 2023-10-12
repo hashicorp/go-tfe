@@ -287,6 +287,7 @@ func (s *stateVersions) Upload(ctx context.Context, workspaceID string, options 
 		if strings.Contains(err.Error(), "param is missing or the value is empty: state") {
 			return nil, ErrStateVersionUploadNotSupported
 		}
+		return nil, err
 	}
 
 	g, _ := errgroup.WithContext(ctx)
