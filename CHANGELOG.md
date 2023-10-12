@@ -1,3 +1,8 @@
+# UNRELEASED
+
+## Features
+* Add the tags attribute to VCSRepo to be used with registry modules by @hashimoon [#793](https://github.com/hashicorp/go-tfe/pull/793)
+
 # v.1.36.0
 
 ## Features
