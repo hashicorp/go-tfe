@@ -383,7 +383,7 @@ func TestRegistryModuleUpdateWithVCSConnection(t *testing.T) {
 
 		options = RegistryModuleUpdateOptions{
 			VCSRepo: &RegistryModuleVCSRepoUpdateOptions{
-				Tags: String("1.0.0"),
+				Tags: Bool(true),
 			},
 		}
 		rm, err = client.RegistryModules.Update(ctx, RegistryModuleID{
