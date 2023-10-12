@@ -2,6 +2,9 @@
 <!-- Add CHANGELOG entry to this section for any PR awaiting the next release -->
 <!-- Please also include if this is a Bug Fix, Enhancement, or Feature -->
 
+## Features
+* Added BETA support for private module registry test variables by @aaabdelgany [#787](https://github.com/hashicorp/go-tfe/pull/787)
+
 ## Bug Fixes
 * Fix incorrect attribute type for `RegistryModule.VCSRepo.Tags` by @hashimoon [#789](https://github.com/hashicorp/go-tfe/pull/789)
 
