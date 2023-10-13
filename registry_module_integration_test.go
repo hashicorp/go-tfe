@@ -380,6 +380,8 @@ func TestRegistryModuleUpdateWithVCSConnection(t *testing.T) {
 		}, options)
 		require.NoError(t, err)
 		assert.Equal(t, rm.PublishingMechanism, PublishingMechanismBranch)
+		assert.Equal(t, false, rm.VCSRepo.Tags)
+		assert.Equal(t, githubBranch, rm.VCSRepo.Branch)
 
 		options = RegistryModuleUpdateOptions{
 			VCSRepo: &RegistryModuleVCSRepoUpdateOptions{
@@ -396,6 +398,8 @@ func TestRegistryModuleUpdateWithVCSConnection(t *testing.T) {
 		require.NoError(t, err)
 
 		assert.Equal(t, rm.PublishingMechanism, PublishingMechanismTag)
+		assert.Equal(t, true, rm.VCSRepo.Tags)
+		assert.Equal(t, "", rm.VCSRepo.Branch)
 
 		options = RegistryModuleUpdateOptions{
 			VCSRepo: &RegistryModuleVCSRepoUpdateOptions{
@@ -411,6 +415,8 @@ func TestRegistryModuleUpdateWithVCSConnection(t *testing.T) {
 		}, options)
 		require.NoError(t, err)
 		assert.Equal(t, rm.PublishingMechanism, PublishingMechanismBranch)
+		assert.Equal(t, false, rm.VCSRepo.Tags)
+		assert.Equal(t, githubBranch, rm.VCSRepo.Branch)
 	})
 }
 
@@ -860,8 +866,8 @@ func TestRegistryModulesCreateBranchBasedWithVCSConnection(t *testing.T) {
 		assert.Equal(t, registryModuleName, rm.Name)
 		assert.Equal(t, registryModuleProvider, rm.Provider)
 		assert.Equal(t, githubBranch, rm.VCSRepo.Branch)
+		assert.Equal(t, false, rm.VCSRepo.Tags)
 	})
-
 	t.Run("with invalid options", func(t *testing.T) {
 		options := RegistryModuleCreateWithVCSConnectionOptions{
 			VCSRepo: &RegistryModuleVCSRepoOptions{
@@ -920,6 +926,7 @@ func TestRegistryModulesCreateBranchBasedWithVCSConnectionWithTesting(t *testing
 		assert.Equal(t, registryModuleName, rm.Name)
 		assert.Equal(t, registryModuleProvider, rm.Provider)
 		assert.Equal(t, githubBranch, rm.VCSRepo.Branch)
+		assert.Equal(t, false, rm.VCSRepo.Tags)
 
 		t.Run("tests are enabled", func(t *testing.T) {
 			assert.NotEmpty(t, rm.TestConfig)
