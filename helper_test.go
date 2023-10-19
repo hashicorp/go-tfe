@@ -1504,6 +1504,65 @@ func createBranchBasedRegistryModule(t *testing.T, client *Client, org *Organiza
 	}
 }
 
+func createBranchBasedRegistryModuleWithTests(t *testing.T, client *Client, org *Organization) (*RegistryModule, func()) {
+	githubIdentifier := os.Getenv("GITHUB_REGISTRY_MODULE_IDENTIFIER")
+	if githubIdentifier == "" {
+		t.Skip("Export a valid GITHUB_REGISTRY_MODULE_IDENTIFIER before running this test")
+	}
+
+	githubBranch := os.Getenv("GITHUB_REGISTRY_MODULE_BRANCH")
+	if githubBranch == "" {
+		githubBranch = "main"
+	}
+
+	var orgCleanup func()
+	if org == nil {
+		org, orgCleanup = createOrganization(t, client)
+	}
+
+	oauthTokenTest, oauthTokenTestCleanup := createOAuthToken(t, client, org)
+
+	ctx := context.Background()
+
+	rm, err := client.RegistryModules.CreateWithVCSConnection(ctx, RegistryModuleCreateWithVCSConnectionOptions{
+		VCSRepo: &RegistryModuleVCSRepoOptions{
+			OrganizationName:  String(org.Name),
+			Identifier:        String(githubIdentifier),
+			OAuthTokenID:      String(oauthTokenTest.ID),
+			DisplayIdentifier: String(githubIdentifier),
+			Branch:            String(githubBranch),
+		},
+		InitialVersion: String("1.0.0"),
+		TestConfig: &RegistryModuleTestConfigOptions{
+			TestsEnabled: Bool(true),
+		},
+	})
+
+	if err != nil {
+		oauthTokenTestCleanup()
+
+		if orgCleanup != nil {
+			orgCleanup()
+		}
+
+		t.Fatal(err)
+	}
+
+	return rm, func() {
+		if err := client.RegistryModules.Delete(ctx, org.Name, rm.Name); err != nil {
+			t.Errorf("Error destroying registry module! WARNING: Dangling resources\n"+
+				"may exist! The full error is shown below.\n\n"+
+				"Registry Module: %s\nError: %s", rm.Name, err)
+		}
+
+		oauthTokenTestCleanup()
+
+		if orgCleanup != nil {
+			orgCleanup()
+		}
+	}
+}
+
 func createRegistryModule(t *testing.T, client *Client, org *Organization, registryName RegistryName) (*RegistryModule, func()) {
 	var orgCleanup func()
 
