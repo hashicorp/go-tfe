@@ -5,6 +5,9 @@
 ## Features
 * Add the tags attribute to VCSRepo to be used with registry modules by @hashimoon [#793](https://github.com/hashicorp/go-tfe/pull/793)
 
+## Bug Fixes
+* Fixed test run test suite by enabling tests on the branch based module helper function.
+
 # v.1.36.0
 
 ## Features
