@@ -1,5 +1,7 @@
 # UNRELEASED
 
+# v.1.37.0
+
 ## Features
 * Add the tags attribute to VCSRepo to be used with registry modules by @hashimoon [#793](https://github.com/hashicorp/go-tfe/pull/793)
 
@@ -13,6 +15,7 @@
 * Fix nil dereference panic within `StateVersions` `upload` after not handling certain state version create errors by @brandonc [#792](https://github.com/hashicorp/go-tfe/pull/792)
 
 # v.1.35.0
+
 ## Features
 * Added BETA support for private module registry tests by @hashimoon [#781](https://github.com/hashicorp/go-tfe/pull/781)
 
@@ -21,6 +24,7 @@
 * Removed beta flags for `PolicySetProjects` and `PolicySetWorkspaceExclusions` by @Netra2104 [#770](https://github.com/hashicorp/go-tfe/pull/770)
 
 # v1.34.0
+
 ## Features
 * Added support for the new Terraform Test Runs API by @liamcervante [#755](https://github.com/hashicorp/go-tfe/pull/755)
 
