@@ -198,6 +198,7 @@ type VCSRepo struct {
 	GHAInstallationID string `jsonapi:"attr,github-app-installation-id"`
 	RepositoryHTTPURL string `jsonapi:"attr,repository-http-url"`
 	ServiceProvider   string `jsonapi:"attr,service-provider"`
+	Tags              bool   `jsonapi:"attr,tags"`
 	TagsRegex         string `jsonapi:"attr,tags-regex"`
 	WebhookURL        string `jsonapi:"attr,webhook-url"`
 }

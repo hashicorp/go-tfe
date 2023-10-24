@@ -170,6 +170,7 @@ func TestOrganizationsRead(t *testing.T) {
 			assert.NotEmpty(t, org.CreatedAt)
 			// By default accounts are in the free tier and are not in a trial
 			assert.Empty(t, org.TrialExpiresAt)
+			assert.Equal(t, org.RemainingTestableCount, 5)
 		})
 	})
 

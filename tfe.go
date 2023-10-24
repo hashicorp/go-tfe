@@ -170,6 +170,7 @@ type Client struct {
 	TeamProjectAccess          TeamProjectAccesses
 	TeamTokens                 TeamTokens
 	TestRuns                   TestRuns
+	TestVariables              TestVariables
 	Users                      Users
 	UserTokens                 UserTokens
 	Variables                  Variables
@@ -464,6 +465,7 @@ func NewClient(cfg *Config) (*Client, error) {
 	client.Teams = &teams{client: client}
 	client.TeamTokens = &teamTokens{client: client}
 	client.TestRuns = &testRuns{client: client}
+	client.TestVariables = &testVariables{client: client}
 	client.Users = &users{client: client}
 	client.UserTokens = &userTokens{client: client}
 	client.Variables = &variables{client: client}
