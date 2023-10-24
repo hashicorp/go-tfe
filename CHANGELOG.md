@@ -1,4 +1,5 @@
 # UNRELEASED
+## Features
 * Added BETA support for including `priority` attribute to variable_set on create and update by @Netra2104 [#778](https://github.com/hashicorp/go-tfe/pull/778)
 
 # v.1.37.0
