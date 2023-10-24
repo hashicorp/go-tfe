@@ -1,4 +1,6 @@
 # UNRELEASED
+## Features
+* Added BETA support for including `priority` attribute to variable_set on create and update by @Netra2104 [#778](https://github.com/hashicorp/go-tfe/pull/778)
 
 # v.1.37.0
 
@@ -20,7 +22,6 @@
 * Added BETA support for private module registry tests by @hashimoon [#781](https://github.com/hashicorp/go-tfe/pull/781)
 
 ## Enhancements
-* Added BETA support for including `enforced` attribute to variable_set on create and update by @Netra2104 [#778](https://github.com/hashicorp/go-tfe/pull/778)
 * Removed beta flags for `PolicySetProjects` and `PolicySetWorkspaceExclusions` by @Netra2104 [#770](https://github.com/hashicorp/go-tfe/pull/770)
 
 # v1.34.0
