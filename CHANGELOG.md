@@ -1,10 +1,10 @@
 # UNRELEASED
+* Added BETA support for including `priority` attribute to variable_set on create and update by @Netra2104 [#778](https://github.com/hashicorp/go-tfe/pull/778)
 
 # v.1.37.0
 
 ## Features
 * Add the tags attribute to VCSRepo to be used with registry modules by @hashimoon [#793](https://github.com/hashicorp/go-tfe/pull/793)
-* Added BETA support for including `priority` attribute to variable_set on create and update by @Netra2104 [#778](https://github.com/hashicorp/go-tfe/pull/778)
 
 # v.1.36.0
 
