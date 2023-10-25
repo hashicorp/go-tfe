@@ -71,8 +71,7 @@ type VariableSet struct {
 	Name        string `jsonapi:"attr,name"`
 	Description string `jsonapi:"attr,description"`
 	Global      bool   `jsonapi:"attr,global"`
-	// **Note: This field is still in BETA and subject to change.**
-	Priority bool `jsonapi:"attr,priority"`
+	Priority    bool   `jsonapi:"attr,priority"`
 
 	// Relations
 	Organization *Organization          `jsonapi:"relation,organization"`
@@ -116,7 +115,6 @@ type VariableSetCreateOptions struct {
 	// If true the variable set is considered in all runs in the organization.
 	Global *bool `jsonapi:"attr,global,omitempty"`
 
-	// **Note: This field is still in BETA and subject to change.**
 	// If true the variables in the set override any other variable values set
 	// in a more specific scope including values set on the command line.
 	Priority *bool `jsonapi:"attr,priority,omitempty"`
@@ -146,7 +144,6 @@ type VariableSetUpdateOptions struct {
 	// If true the variable set is considered in all runs in the organization.
 	Global *bool `jsonapi:"attr,global,omitempty"`
 
-	// **Note: This field is still in BETA and subject to change.**
 	// If true the variables in the set override any other variable values set
 	// in a more specific scope including values set on the command line.
 	Priority *bool `jsonapi:"attr,priority,omitempty"`

@@ -171,56 +171,6 @@ func TestVariableSetsCreate(t *testing.T) {
 			Name:        String("varset"),
 			Description: String("a variable set"),
 			Global:      Bool(false),
-		}
-
-		vs, err := client.VariableSets.Create(ctx, orgTest.Name, &options)
-		require.NoError(t, err)
-
-		// Get refreshed view from the API
-		refreshed, err := client.VariableSets.Read(ctx, vs.ID, nil)
-		require.NoError(t, err)
-
-		for _, item := range []*VariableSet{
-			vs,
-			refreshed,
-		} {
-			assert.NotEmpty(t, item.ID)
-			assert.Equal(t, *options.Name, item.Name)
-			assert.Equal(t, *options.Description, item.Description)
-			assert.Equal(t, *options.Global, item.Global)
-		}
-	})
-
-	t.Run("when options is missing name", func(t *testing.T) {
-		vs, err := client.VariableSets.Create(ctx, "foo", &VariableSetCreateOptions{
-			Global: Bool(true),
-		})
-		assert.Nil(t, vs)
-		assert.EqualError(t, err, ErrRequiredName.Error())
-	})
-
-	t.Run("when options is missing global flag", func(t *testing.T) {
-		vs, err := client.VariableSets.Create(ctx, "foo", &VariableSetCreateOptions{
-			Name: String("foo"),
-		})
-		assert.Nil(t, vs)
-		assert.EqualError(t, err, ErrRequiredGlobalFlag.Error())
-	})
-}
-
-func TestVariableSetsWithPriorityCreate(t *testing.T) {
-	skipUnlessBeta(t)
-	client := testClient(t)
-	ctx := context.Background()
-
-	orgTest, orgTestCleanup := createOrganization(t, client)
-	t.Cleanup(orgTestCleanup)
-
-	t.Run("with valid options", func(t *testing.T) {
-		options := VariableSetCreateOptions{
-			Name:        String("varset"),
-			Description: String("a variable set"),
-			Global:      Bool(false),
 			Priority:    Bool(false),
 		}
 
@@ -284,46 +234,6 @@ func TestVariableSetsRead(t *testing.T) {
 }
 
 func TestVariableSetsUpdate(t *testing.T) {
-	client := testClient(t)
-	ctx := context.Background()
-
-	orgTest, orgTestCleanup := createOrganization(t, client)
-	t.Cleanup(orgTestCleanup)
-
-	vsTest, _ := createVariableSet(t, client, orgTest, VariableSetCreateOptions{
-		Name:        String("OriginalName"),
-		Description: String("Original Description"),
-		Global:      Bool(false),
-	})
-
-	t.Run("when updating a subset of values", func(t *testing.T) {
-		options := VariableSetUpdateOptions{
-			Name:        String("UpdatedName"),
-			Description: String("Updated Description"),
-			Global:      Bool(true),
-		}
-
-		vsAfter, err := client.VariableSets.Update(ctx, vsTest.ID, &options)
-		require.NoError(t, err)
-
-		assert.Equal(t, *options.Name, vsAfter.Name)
-		assert.Equal(t, *options.Description, vsAfter.Description)
-		assert.Equal(t, *options.Global, vsAfter.Global)
-	})
-
-	t.Run("when options has an invalid variable set ID", func(t *testing.T) {
-		vsAfter, err := client.VariableSets.Update(ctx, badIdentifier, &VariableSetUpdateOptions{
-			Name:        String("UpdatedName"),
-			Description: String("Updated Description"),
-			Global:      Bool(true),
-		})
-		assert.Nil(t, vsAfter)
-		assert.EqualError(t, err, ErrInvalidVariableSetID.Error())
-	})
-}
-
-func TestVariableSetsUpdateWithPriority(t *testing.T) {
-	skipUnlessBeta(t)
 	client := testClient(t)
 	ctx := context.Background()
 
