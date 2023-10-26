@@ -3,8 +3,8 @@
 <!-- Please also include if this is a Bug Fix, Enhancement, or Feature -->
 
 ## Features
-* Added support for assigning agent pools at the organization level via a `default` agent pool by @SwiftEngineer [#762](https://github.com/hashicorp/go-tfe/pull/762)
 * Added BETA support for including `priority` attribute to variable_set on create and update by @Netra2104 [#778](https://github.com/hashicorp/go-tfe/pull/778)
+* Added support for assigning agent pools at the organization level via a `default` agent pool by @SwiftEngineer [#762](https://github.com/hashicorp/go-tfe/pull/762)
 
 # v.1.37.0
 
