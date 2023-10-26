@@ -484,6 +484,49 @@ func createUploadedConfigurationVersion(t *testing.T, client *Client, w *Workspa
 	return cv, cvCleanup
 }
 
+func createTestRunConfigurationVersion(t *testing.T, client *Client, rm *RegistryModule) (*ConfigurationVersion, func()) {
+	var rmCleanup func()
+
+	if rm == nil {
+		rm, rmCleanup = createRegistryModuleWithVersion(t, client, nil)
+	}
+
+	ctx := context.Background()
+	cv, err := client.ConfigurationVersions.CreateForRegistryModule(
+		ctx,
+		RegistryModuleID{
+			Organization: rm.Organization.Name,
+			Name:         rm.Name,
+			Provider:     rm.Provider,
+			Namespace:    rm.Namespace,
+			RegistryName: rm.RegistryName,
+		})
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	return cv, func() {
+		if rmCleanup != nil {
+			rmCleanup()
+		}
+	}
+}
+
+func createUploadedTestRunConfigurationVersion(t *testing.T, client *Client, rm *RegistryModule) (*ConfigurationVersion, func()) {
+	cv, cvCleanup := createTestRunConfigurationVersion(t, client, rm)
+
+	ctx := context.Background()
+	err := client.ConfigurationVersions.Upload(ctx, cv.UploadURL, "test-fixtures/config-version-with-test")
+	if err != nil {
+		cvCleanup()
+		t.Fatal(err)
+	}
+
+	WaitUntilStatus(t, client, cv, ConfigurationUploaded, 15)
+
+	return cv, cvCleanup
+}
+
 // helper to wait until a configuration version has reached a certain status
 func WaitUntilStatus(t *testing.T, client *Client, cv *ConfigurationVersion, desiredStatus ConfigurationStatus, timeoutSeconds int) {
 	ctx := context.Background()
@@ -593,7 +636,7 @@ func createPolicySetParameter(t *testing.T, client *Client, ps *PolicySet) (*Pol
 	var psCleanup func()
 
 	if ps == nil {
-		ps, psCleanup = createPolicySet(t, client, nil, nil, nil, nil, "")
+		ps, psCleanup = createPolicySet(t, client, nil, nil, nil, nil, nil, "")
 	}
 
 	ctx := context.Background()
@@ -619,7 +662,8 @@ func createPolicySetParameter(t *testing.T, client *Client, ps *PolicySet) (*Pol
 	}
 }
 
-func createPolicySet(t *testing.T, client *Client, org *Organization, policies []*Policy, workspaces []*Workspace, projects []*Project, kind PolicyKind) (*PolicySet, func()) {
+func createPolicySet(t *testing.T, client *Client, org *Organization, policies []*Policy, workspaces []*Workspace,
+	excludedWorkspace []*Workspace, projects []*Project, kind PolicyKind) (*PolicySet, func()) {
 	var orgCleanup func()
 
 	if org == nil {
@@ -628,11 +672,12 @@ func createPolicySet(t *testing.T, client *Client, org *Organization, policies [
 
 	ctx := context.Background()
 	ps, err := client.PolicySets.Create(ctx, org.Name, PolicySetCreateOptions{
-		Name:       String(randomString(t)),
-		Policies:   policies,
-		Workspaces: workspaces,
-		Projects:   projects,
-		Kind:       kind,
+		Name:                String(randomString(t)),
+		Policies:            policies,
+		Workspaces:          workspaces,
+		WorkspaceExclusions: excludedWorkspace,
+		Projects:            projects,
+		Kind:                kind,
 	})
 	if err != nil {
 		t.Fatal(err)
@@ -685,7 +730,7 @@ func createPolicySetVersion(t *testing.T, client *Client, ps *PolicySet) (*Polic
 	var psCleanup func()
 
 	if ps == nil {
-		ps, psCleanup = createPolicySet(t, client, nil, nil, nil, nil, "")
+		ps, psCleanup = createPolicySet(t, client, nil, nil, nil, nil, nil, "")
 	}
 
 	ctx := context.Background()
@@ -920,6 +965,30 @@ func createOrganizationWithOptions(t *testing.T, client *Client, options Organiz
 	}
 }
 
+func createOrganizationWithDefaultAgentPool(t *testing.T, client *Client) (*Organization, func()) {
+	ctx := context.Background()
+	org, orgCleanup := createOrganizationWithOptions(t, client, OrganizationCreateOptions{
+		Name:                  String("tst-" + randomString(t)),
+		Email:                 String(fmt.Sprintf("%s@tfe.local", randomString(t))),
+		CostEstimationEnabled: Bool(true),
+	})
+
+	agentPool, _ := createAgentPool(t, client, org)
+
+	org, err := client.Organizations.Update(ctx, org.Name, OrganizationUpdateOptions{
+		DefaultExecutionMode: String("agent"),
+		DefaultAgentPool:     agentPool,
+	})
+
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	return org, func() {
+		// delete the org
+		orgCleanup()
+	}
+}
 func createOrganizationMembership(t *testing.T, client *Client, org *Organization) (*OrganizationMembership, func()) {
 	var orgCleanup func()
 
@@ -1266,6 +1335,92 @@ func createRun(t *testing.T, client *Client, w *Workspace) (*Run, func()) {
 	}
 }
 
+func createTestRun(t *testing.T, client *Client, rm *RegistryModule, variables ...*RunVariable) (*TestRun, func()) {
+	var rmCleanup func()
+
+	if rm == nil {
+		rm, rmCleanup = createBranchBasedRegistryModule(t, client, nil)
+	}
+
+	cv, cvCleanup := createUploadedTestRunConfigurationVersion(t, client, rm)
+
+	ctx := context.Background()
+	tr, err := client.TestRuns.Create(ctx, TestRunCreateOptions{
+		Variables:            variables,
+		ConfigurationVersion: cv,
+		RegistryModule:       rm,
+	})
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	return tr, func() {
+		cvCleanup()
+
+		if rmCleanup != nil {
+			rmCleanup()
+		}
+	}
+}
+
+func createTestVariable(t *testing.T, client *Client, rm *RegistryModule) (*Variable, func()) {
+	var rmCleanup func()
+
+	if rm == nil {
+		rm, rmCleanup = createBranchBasedRegistryModule(t, client, nil)
+	}
+	rmID := RegistryModuleID{
+		Organization: rm.Organization.Name,
+		Name:         rm.Name,
+		Provider:     rm.Provider,
+		Namespace:    rm.Namespace,
+		RegistryName: rm.RegistryName,
+	}
+
+	ctx := context.Background()
+	v, err := client.TestVariables.Create(ctx, rmID, VariableCreateOptions{
+		Key:         String(randomKeyValue(t)),
+		Value:       String(randomStringWithoutSpecialChar(t)),
+		Category:    Category(CategoryEnv),
+		Description: String(randomStringWithoutSpecialChar(t)),
+	})
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	return v, func() {
+		if err := client.TestVariables.Delete(ctx, rmID, v.ID); err != nil {
+			t.Errorf("Error destroying variable! WARNING: Dangling resources\n"+
+				"may exist! The full error is shown below.\n\n"+
+				"Variable: %s\nError: %s", v.Key, err)
+		}
+
+		if rmCleanup != nil {
+			rmCleanup()
+		}
+	}
+}
+
+// helper to wait until a test run has reached a certain status
+func waitUntilTestRunStatus(t *testing.T, client *Client, rm RegistryModuleID, tr *TestRun, desiredStatus TestRunStatus, timeoutSeconds int) {
+	ctx := context.Background()
+
+	for i := 0; ; i++ {
+		refreshed, err := client.TestRuns.Read(ctx, rm, tr.ID)
+		require.NoError(t, err)
+
+		if refreshed.Status == desiredStatus {
+			break
+		}
+
+		if i > timeoutSeconds {
+			t.Fatalf("Timeout waiting for the test run status %s", string(desiredStatus))
+		}
+
+		time.Sleep(1 * time.Second)
+	}
+}
+
 func createPlanExport(t *testing.T, client *Client, r *Run) (*PlanExport, func()) {
 	var rCleanup func()
 
@@ -1313,6 +1468,62 @@ func createPlanExport(t *testing.T, client *Client, r *Run) (*PlanExport, func()
 			} else {
 				t.Logf("Waiting for plan export finished or queued but was %s", pe.Status)
 			}
+		}
+	}
+}
+
+func createBranchBasedRegistryModule(t *testing.T, client *Client, org *Organization) (*RegistryModule, func()) {
+	githubIdentifier := os.Getenv("GITHUB_REGISTRY_MODULE_IDENTIFIER")
+	if githubIdentifier == "" {
+		t.Skip("Export a valid GITHUB_REGISTRY_MODULE_IDENTIFIER before running this test")
+	}
+
+	githubBranch := os.Getenv("GITHUB_REGISTRY_MODULE_BRANCH")
+	if githubBranch == "" {
+		githubBranch = "main"
+	}
+
+	var orgCleanup func()
+	if org == nil {
+		org, orgCleanup = createOrganization(t, client)
+	}
+
+	oauthTokenTest, oauthTokenTestCleanup := createOAuthToken(t, client, org)
+
+	ctx := context.Background()
+
+	rm, err := client.RegistryModules.CreateWithVCSConnection(ctx, RegistryModuleCreateWithVCSConnectionOptions{
+		VCSRepo: &RegistryModuleVCSRepoOptions{
+			OrganizationName:  String(org.Name),
+			Identifier:        String(githubIdentifier),
+			OAuthTokenID:      String(oauthTokenTest.ID),
+			DisplayIdentifier: String(githubIdentifier),
+			Branch:            String(githubBranch),
+		},
+		InitialVersion: String("1.0.0"),
+	})
+
+	if err != nil {
+		oauthTokenTestCleanup()
+
+		if orgCleanup != nil {
+			orgCleanup()
+		}
+
+		t.Fatal(err)
+	}
+
+	return rm, func() {
+		if err := client.RegistryModules.Delete(ctx, org.Name, rm.Name); err != nil {
+			t.Errorf("Error destroying registry module! WARNING: Dangling resources\n"+
+				"may exist! The full error is shown below.\n\n"+
+				"Registry Module: %s\nError: %s", rm.Name, err)
+		}
+
+		oauthTokenTestCleanup()
+
+		if orgCleanup != nil {
+			orgCleanup()
 		}
 	}
 }
@@ -2454,6 +2665,15 @@ func randomStringWithoutSpecialChar(t *testing.T) string {
 	}
 	uuidWithoutHyphens := strings.ReplaceAll(v, "-", "")
 	return uuidWithoutHyphens
+}
+
+func randomKeyValue(t *testing.T) string {
+	v, err := uuid.GenerateUUID()
+	if err != nil {
+		t.Fatal(err)
+	}
+	uuidWithoutHyphens := strings.ReplaceAll(v, "-", "")
+	return "t" + uuidWithoutHyphens
 }
 
 func containsProject(pl []*Project, str string) bool {

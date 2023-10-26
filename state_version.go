@@ -287,6 +287,7 @@ func (s *stateVersions) Upload(ctx context.Context, workspaceID string, options 
 		if strings.Contains(err.Error(), "param is missing or the value is empty: state") {
 			return nil, ErrStateVersionUploadNotSupported
 		}
+		return nil, err
 	}
 
 	g, _ := errgroup.WithContext(ctx)
@@ -443,35 +444,8 @@ func (o StateVersionUploadOptions) valid() error {
 }
 
 func (o *StateVersionReadOptions) valid() error {
-	if o == nil {
-		return nil // nothing to validate
-	}
-
-	if err := validateStateVerIncludeParams(o.Include); err != nil {
-		return err
-	}
 	return nil
 }
 func (o *StateVersionCurrentOptions) valid() error {
-	if o == nil {
-		return nil // nothing to validate
-	}
-
-	if err := validateStateVerIncludeParams(o.Include); err != nil {
-		return err
-	}
-	return nil
-}
-
-func validateStateVerIncludeParams(params []StateVersionIncludeOpt) error {
-	for _, p := range params {
-		switch p {
-		case SVcreatedby, SVrun, SVrunCreatedBy, SVrunConfigurationVersion, SVoutputs:
-			// do nothing
-		default:
-			return ErrInvalidIncludeValue
-		}
-	}
-
 	return nil
 }

@@ -127,36 +127,9 @@ func (s *runEvents) ReadWithOptions(ctx context.Context, runEventID string, opti
 }
 
 func (o *RunEventReadOptions) valid() error {
-	if o == nil {
-		return nil // nothing to validate
-	}
-
-	if err := validateRunEventIncludeParam(o.Include); err != nil {
-		return err
-	}
 	return nil
 }
 
 func (o *RunEventListOptions) valid() error {
-	if o == nil {
-		return nil // nothing to validate
-	}
-
-	if err := validateRunEventIncludeParam(o.Include); err != nil {
-		return err
-	}
-	return nil
-}
-
-func validateRunEventIncludeParam(params []RunEventIncludeOpt) error {
-	for _, p := range params {
-		switch p {
-		case RunEventActor, RunEventComment:
-			// do nothing
-		default:
-			return ErrInvalidIncludeValue
-		}
-	}
-
 	return nil
 }

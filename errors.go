@@ -222,9 +222,9 @@ var (
 
 	ErrRequiredAgentPoolID = errors.New("'agent' execution mode requires an agent pool ID to be specified")
 
-	ErrRequiredAgentMode = errors.New("specifying an agent pool ID requires 'agent' execution mode")
-
-	ErrRequiredCategory = errors.New("category is required")
+	ErrRequiredAgentMode              = errors.New("specifying an agent pool ID requires 'agent' execution mode")
+	ErrRequiredBranchWhenTestsEnabled = errors.New("VCS branch is required when enabling tests")
+	ErrRequiredCategory               = errors.New("category is required")
 
 	ErrRequiredDestinationType = errors.New("destination type is required")
 
@@ -353,6 +353,8 @@ var (
 	ErrRequiredNamespace = errors.New("namespace is required for public registry")
 
 	ErrRequiredRegistryModule = errors.New("registry module is required")
+
+	ErrInvalidTestRunID = errors.New("invalid value for test run id")
 
 	ErrTerraformVersionValidForPlanOnly = errors.New("setting terraform-version is only valid when plan-only is set to true")
 

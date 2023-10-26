@@ -122,6 +122,8 @@ func TestOrganizationsCreate(t *testing.T) {
 
 		assert.Equal(t, *options.Name, org.Name)
 		assert.Equal(t, *options.Email, org.Email)
+		assert.Equal(t, "remote", org.DefaultExecutionMode)
+		assert.Nil(t, org.DefaultAgentPool)
 	})
 
 	t.Run("when no email is provided", func(t *testing.T) {
@@ -170,6 +172,7 @@ func TestOrganizationsRead(t *testing.T) {
 			assert.NotEmpty(t, org.CreatedAt)
 			// By default accounts are in the free tier and are not in a trial
 			assert.Empty(t, org.TrialExpiresAt)
+			assert.Equal(t, org.RemainingTestableCount, 5)
 		})
 	})
 
@@ -193,6 +196,20 @@ func TestOrganizationsRead(t *testing.T) {
 
 		require.NotNil(t, org.DefaultProject)
 		assert.NotNil(t, org.DefaultProject.Name)
+	})
+
+	t.Run("with default execution mode of 'agent'", func(t *testing.T) {
+		orgAgentTest, orgAgentTestCleanup := createOrganizationWithDefaultAgentPool(t, client)
+		org, err := client.Organizations.Read(ctx, orgAgentTest.Name)
+
+		t.Cleanup(orgAgentTestCleanup)
+		require.NoError(t, err)
+
+		t.Run("execution mode and agent pool are properly decoded", func(t *testing.T) {
+			assert.Equal(t, "agent", org.DefaultExecutionMode)
+			assert.NotNil(t, org.DefaultAgentPool)
+			assert.Equal(t, org.DefaultAgentPool.ID, orgAgentTest.DefaultAgentPool.ID)
+		})
 	})
 }
 
@@ -220,10 +237,11 @@ func TestOrganizationsUpdate(t *testing.T) {
 		orgTest, orgTestCleanup := createOrganization(t, client)
 
 		options := OrganizationUpdateOptions{
-			Name:            String(randomString(t)),
-			Email:           String(randomString(t) + "@tfe.local"),
-			SessionTimeout:  Int(3600),
-			SessionRemember: Int(3600),
+			Name:                 String(randomString(t)),
+			Email:                String(randomString(t) + "@tfe.local"),
+			SessionTimeout:       Int(3600),
+			SessionRemember:      Int(3600),
+			DefaultExecutionMode: String("local"),
 		}
 
 		org, err := client.Organizations.Update(ctx, orgTest.Name, options)
@@ -253,6 +271,7 @@ func TestOrganizationsUpdate(t *testing.T) {
 			assert.Equal(t, *options.Email, item.Email)
 			assert.Equal(t, *options.SessionTimeout, item.SessionTimeout)
 			assert.Equal(t, *options.SessionRemember, item.SessionRemember)
+			assert.Equal(t, *options.DefaultExecutionMode, item.DefaultExecutionMode)
 		}
 	})
 
@@ -260,6 +279,20 @@ func TestOrganizationsUpdate(t *testing.T) {
 		org, err := client.Organizations.Update(ctx, badIdentifier, OrganizationUpdateOptions{})
 		assert.Nil(t, org)
 		assert.EqualError(t, err, ErrInvalidOrg.Error())
+	})
+
+	t.Run("with agent pool provided, but remote execution mode", func(t *testing.T) {
+		orgTest, orgTestCleanup := createOrganization(t, client)
+		t.Cleanup(orgTestCleanup)
+
+		pool, agentPoolCleanup := createAgentPool(t, client, orgTest)
+		t.Cleanup(agentPoolCleanup)
+
+		org, err := client.Organizations.Update(ctx, orgTest.Name, OrganizationUpdateOptions{
+			DefaultAgentPool: pool,
+		})
+		assert.Nil(t, org)
+		assert.ErrorContains(t, err, "Default agent pool must not be specified unless using 'agent' execution mode")
 	})
 
 	t.Run("when only updating a subset of fields", func(t *testing.T) {
@@ -270,6 +303,32 @@ func TestOrganizationsUpdate(t *testing.T) {
 		require.NoError(t, err)
 		assert.Equal(t, orgTest.Name, org.Name)
 		assert.Equal(t, orgTest.Email, org.Email)
+	})
+
+	t.Run("with different default execution modes", func(t *testing.T) {
+		// this helper creates an organization and then updates it to use a default agent pool, so it implicitly asserts
+		// that the organization's execution mode can be updated from 'remote' -> 'agent'
+		org, orgAgentTestCleanup := createOrganizationWithDefaultAgentPool(t, client)
+		assert.Equal(t, "agent", org.DefaultExecutionMode)
+		assert.NotNil(t, org.DefaultAgentPool)
+
+		// assert that organization's execution mode can be updated from 'agent' -> 'remote'
+		org, err := client.Organizations.Update(ctx, org.Name, OrganizationUpdateOptions{
+			DefaultExecutionMode: String("remote"),
+		})
+		require.NoError(t, err)
+		assert.Equal(t, "remote", org.DefaultExecutionMode)
+		assert.Nil(t, org.DefaultAgentPool)
+
+		// assert that organization's execution mode can be updated from 'remote' -> 'local'
+		org, err = client.Organizations.Update(ctx, org.Name, OrganizationUpdateOptions{
+			DefaultExecutionMode: String("local"),
+		})
+		require.NoError(t, err)
+		assert.Equal(t, "local", org.DefaultExecutionMode)
+		assert.Nil(t, org.DefaultAgentPool)
+
+		t.Cleanup(orgAgentTestCleanup)
 	})
 }
 

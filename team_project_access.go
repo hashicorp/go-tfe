@@ -15,8 +15,7 @@ var _ TeamProjectAccesses = (*teamProjectAccesses)(nil)
 // TeamProjectAccesses describes all the team project access related methods that the Terraform
 // Enterprise API supports
 //
-// TFE API docs: Documentation will be linked once this feature is available
-// **Note: This functionality is still in BETA and subject to change.**
+// TFE API docs: https://developer.hashicorp.com/terraform/cloud-docs/api-docs/project-team-access
 type TeamProjectAccesses interface {
 	// List all project accesses for a given project.
 	List(ctx context.Context, options TeamProjectAccessListOptions) (*TeamProjectAccessList, error)

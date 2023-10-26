@@ -28,6 +28,13 @@ type ConfigurationVersions interface {
 	// configuration version will be usable once data is uploaded to it.
 	Create(ctx context.Context, workspaceID string, options ConfigurationVersionCreateOptions) (*ConfigurationVersion, error)
 
+	// CreateForRegistryModule is used to create a new configuration version
+	// keyed to a registry module instead of a workspace. The created
+	// configuration version will be usable once data is uploaded to it.
+	//
+	// **Note: This function is still in BETA and subject to change.**
+	CreateForRegistryModule(ctx context.Context, moduleID RegistryModuleID) (*ConfigurationVersion, error)
+
 	// Read a configuration version by its ID.
 	Read(ctx context.Context, cvID string) (*ConfigurationVersion, error)
 
@@ -232,6 +239,26 @@ func (s *configurationVersions) Create(ctx context.Context, workspaceID string, 
 	return cv, nil
 }
 
+func (s *configurationVersions) CreateForRegistryModule(ctx context.Context, moduleID RegistryModuleID) (*ConfigurationVersion, error) {
+	if err := moduleID.valid(); err != nil {
+		return nil, err
+	}
+
+	u := fmt.Sprintf("%s/configuration-versions", testRunsPath(moduleID))
+	req, err := s.client.NewRequest("POST", u, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	cv := &ConfigurationVersion{}
+	err = req.Do(ctx, cv)
+	if err != nil {
+		return nil, err
+	}
+
+	return cv, nil
+}
+
 // Read a configuration version by its ID.
 func (s *configurationVersions) Read(ctx context.Context, cvID string) (*ConfigurationVersion, error) {
 	return s.ReadWithOptions(ctx, cvID, nil)
@@ -302,39 +329,10 @@ func (s *configurationVersions) Archive(ctx context.Context, cvID string) error 
 }
 
 func (o *ConfigurationVersionReadOptions) valid() error {
-	if o == nil {
-		return nil // nothing to validate
-	}
-
-	if err := validateConfigVerIncludeParams(o.Include); err != nil {
-		return err
-	}
-
 	return nil
 }
 
 func (o *ConfigurationVersionListOptions) valid() error {
-	if o == nil {
-		return nil // nothing to validate
-	}
-
-	if err := validateConfigVerIncludeParams(o.Include); err != nil {
-		return err
-	}
-
-	return nil
-}
-
-func validateConfigVerIncludeParams(params []ConfigVerIncludeOpt) error {
-	for _, p := range params {
-		switch p {
-		case ConfigVerIngressAttributes, ConfigVerRun:
-			// do nothing
-		default:
-			return ErrInvalidIncludeValue
-		}
-	}
-
 	return nil
 }
 

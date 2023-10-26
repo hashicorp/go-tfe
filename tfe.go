@@ -169,6 +169,8 @@ type Client struct {
 	TeamMembers                TeamMembers
 	TeamProjectAccess          TeamProjectAccesses
 	TeamTokens                 TeamTokens
+	TestRuns                   TestRuns
+	TestVariables              TestVariables
 	Users                      Users
 	UserTokens                 UserTokens
 	Variables                  Variables
@@ -462,6 +464,8 @@ func NewClient(cfg *Config) (*Client, error) {
 	client.TeamProjectAccess = &teamProjectAccesses{client: client}
 	client.Teams = &teams{client: client}
 	client.TeamTokens = &teamTokens{client: client}
+	client.TestRuns = &testRuns{client: client}
+	client.TestVariables = &testVariables{client: client}
 	client.Users = &users{client: client}
 	client.UserTokens = &userTokens{client: client}
 	client.Variables = &variables{client: client}
@@ -887,6 +891,16 @@ func checkResponseCode(r *http.Response) error {
 	var err error
 
 	switch r.StatusCode {
+	case 400:
+		errs, err = decodeErrorPayload(r)
+		if err != nil {
+			return err
+		}
+
+		if errorPayloadContains(errs, "Invalid include parameter") {
+			return ErrInvalidIncludeValue
+		}
+		return errors.New(strings.Join(errs, "\n"))
 	case 401:
 		return ErrUnauthorized
 	case 404:

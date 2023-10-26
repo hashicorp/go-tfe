@@ -235,25 +235,5 @@ func (a *adminUsers) Disable2FA(ctx context.Context, userID string) (*AdminUser,
 }
 
 func (o *AdminUserListOptions) valid() error {
-	if o == nil {
-		return nil // nothing to validate
-	}
-
-	if err := validateAdminUserIncludeParams(o.Include); err != nil {
-		return err
-	}
-
-	return nil
-}
-
-func validateAdminUserIncludeParams(params []AdminUserIncludeOpt) error {
-	for _, p := range params {
-		switch p {
-		case AdminUserOrgs:
-			// do nothing
-		default:
-			return ErrInvalidIncludeValue
-		}
-	}
 	return nil
 }

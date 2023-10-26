@@ -166,7 +166,6 @@ func TestTeamProjectAccessesAdd(t *testing.T) {
 	})
 
 	t.Run("with valid options for all custom TeamProject permissions", func(t *testing.T) {
-		skipUnlessBeta(t)
 		options := TeamProjectAccessAddOptions{
 			Access:  *ProjectAccess(TeamProjectAccessCustom),
 			Team:    tmTest,
@@ -223,7 +222,6 @@ func TestTeamProjectAccessesAdd(t *testing.T) {
 	})
 
 	t.Run("with valid options for some custom TeamProject permissions", func(t *testing.T) {
-		skipUnlessBeta(t)
 		options := TeamProjectAccessAddOptions{
 			Access:  *ProjectAccess(TeamProjectAccessCustom),
 			Team:    tmTest,
@@ -303,7 +301,6 @@ func TestTeamProjectAccessesAdd(t *testing.T) {
 	})
 
 	t.Run("when invalid custom project permission is provided in options", func(t *testing.T) {
-		skipUnlessBeta(t)
 		tpa, err := client.TeamProjectAccess.Add(ctx, TeamProjectAccessAddOptions{
 			Access:  *ProjectAccess(TeamProjectAccessCustom),
 			Team:    tmTest,
@@ -355,7 +352,6 @@ func TestTeamProjectAccessesUpdate(t *testing.T) {
 	})
 
 	t.Run("with valid custom permissions attributes for all permissions", func(t *testing.T) {
-		skipUnlessBeta(t)
 		options := TeamProjectAccessUpdateOptions{
 			Access: ProjectAccess(TeamProjectAccessCustom),
 			ProjectAccess: &TeamProjectAccessProjectPermissionsOptions{
@@ -394,7 +390,6 @@ func TestTeamProjectAccessesUpdate(t *testing.T) {
 	})
 
 	t.Run("with valid custom permissions attributes for some permissions", func(t *testing.T) {
-		skipUnlessBeta(t)
 		// create tpaCustomTest to verify unupdated attributes stay the same for custom permissions
 		// because going from admin to read to custom changes the values of all custom permissions
 		tm2Test, tm2TestCleanup := createTeam(t, client, orgTest)
@@ -435,7 +430,6 @@ func TestTeamProjectAccessesUpdate(t *testing.T) {
 		assert.Equal(t, tpaCustomTest.WorkspaceAccess.WorkspaceStateVersionsPermission, tpa.WorkspaceAccess.WorkspaceStateVersionsPermission)
 	})
 	t.Run("with invalid custom permissions attributes", func(t *testing.T) {
-		skipUnlessBeta(t)
 		options := TeamProjectAccessUpdateOptions{
 			Access: ProjectAccess(TeamProjectAccessCustom),
 			ProjectAccess: &TeamProjectAccessProjectPermissionsOptions{

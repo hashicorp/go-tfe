@@ -253,7 +253,7 @@ func TestOrganizationMembershipsReadWithOptions(t *testing.T) {
 		require.NoError(t, err)
 	})
 
-	t.Run("without invalid include option", func(t *testing.T) {
+	t.Run("with invalid include option", func(t *testing.T) {
 		_, err := client.OrganizationMemberships.ReadWithOptions(ctx, memTest.ID, OrganizationMembershipReadOptions{
 			Include: []OrgMembershipIncludeOpt{"users"},
 		})

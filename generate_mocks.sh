@@ -58,6 +58,7 @@ mockgen -source=team_access.go -destination=mocks/team_access_mocks.go -package=
 mockgen -source=team_member.go -destination=mocks/team_member_mocks.go -package=mocks
 mockgen -source=team_project_access.go -destination=mocks/team_project_access_mocks.go -package=mocks
 mockgen -source=team_token.go -destination=mocks/team_token_mocks.go -package=mocks
+mockgen -source=test_run.go -destination=mocks/test_run_mocks.go -package=mocks
 mockgen -source=user.go -destination=mocks/user_mocks.go -package=mocks
 mockgen -source=user_token.go -destination=mocks/user_token_mocks.go -package=mocks
 mockgen -source=variable.go -destination=mocks/variable_mocks.go -package=mocks

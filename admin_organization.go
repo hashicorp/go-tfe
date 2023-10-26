@@ -233,26 +233,5 @@ func (s *adminOrganizations) Delete(ctx context.Context, organization string) er
 }
 
 func (o *AdminOrganizationListOptions) valid() error {
-	if o == nil {
-		return nil // nothing to validate
-	}
-
-	if err := validateAdminOrgIncludeParams(o.Include); err != nil {
-		return err
-	}
-
-	return nil
-}
-
-func validateAdminOrgIncludeParams(params []AdminOrgIncludeOpt) error {
-	for _, p := range params {
-		switch p {
-		case AdminOrgOwners:
-			// do nothing
-		default:
-			return ErrInvalidIncludeValue
-		}
-	}
-
 	return nil
 }

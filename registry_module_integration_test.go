@@ -300,6 +300,126 @@ func TestRegistryModuleUpdate(t *testing.T) {
 	})
 }
 
+func TestRegistryModuleUpdateWithVCSConnection(t *testing.T) {
+	skipUnlessBeta(t)
+	githubBranch := os.Getenv("GITHUB_REGISTRY_MODULE_BRANCH")
+	if githubBranch == "" {
+		githubBranch = "main"
+	}
+
+	githubIdentifier := os.Getenv("GITHUB_REGISTRY_MODULE_IDENTIFIER")
+	if githubIdentifier == "" {
+		t.Skip("Export a valid GITHUB_REGISTRY_MODULE_IDENTIFIER before running this test")
+	}
+
+	client := testClient(t)
+	ctx := context.Background()
+
+	orgTest, orgTestCleanup := createOrganization(t, client)
+	defer orgTestCleanup()
+
+	oauthTokenTest, oauthTokenTestCleanup := createOAuthToken(t, client, orgTest)
+	defer oauthTokenTestCleanup()
+
+	options := RegistryModuleCreateWithVCSConnectionOptions{
+		VCSRepo: &RegistryModuleVCSRepoOptions{
+			OrganizationName:  String(orgTest.Name),
+			Identifier:        String(githubIdentifier),
+			OAuthTokenID:      String(oauthTokenTest.ID),
+			DisplayIdentifier: String(githubIdentifier),
+		},
+	}
+	rm, err := client.RegistryModules.CreateWithVCSConnection(ctx, options)
+	require.NoError(t, err)
+	assert.NotEmpty(t, rm.ID)
+
+	t.Run("enable no-code", func(t *testing.T) {
+		options := RegistryModuleUpdateOptions{
+			NoCode: Bool(true),
+		}
+		rm, err := client.RegistryModules.Update(ctx, RegistryModuleID{
+			Organization: orgTest.Name,
+			Name:         rm.Name,
+			Provider:     rm.Provider,
+			Namespace:    rm.Namespace,
+			RegistryName: rm.RegistryName,
+		}, options)
+		require.NoError(t, err)
+		assert.True(t, rm.NoCode)
+	})
+
+	t.Run("disable no-code", func(t *testing.T) {
+		options := RegistryModuleUpdateOptions{
+			NoCode: Bool(false),
+		}
+		rm, err := client.RegistryModules.Update(ctx, RegistryModuleID{
+			Organization: orgTest.Name,
+			Name:         rm.Name,
+			Provider:     rm.Provider,
+			Namespace:    rm.Namespace,
+			RegistryName: rm.RegistryName,
+		}, options)
+		require.NoError(t, err)
+		assert.False(t, rm.NoCode)
+	})
+
+	t.Run("toggle between git tag-based and branch-based publishing", func(t *testing.T) {
+		assert.Equal(t, rm.PublishingMechanism, PublishingMechanismTag)
+
+		options := RegistryModuleUpdateOptions{
+			VCSRepo: &RegistryModuleVCSRepoUpdateOptions{
+				Branch: String(githubBranch),
+			},
+		}
+		rm, err := client.RegistryModules.Update(ctx, RegistryModuleID{
+			Organization: orgTest.Name,
+			Name:         rm.Name,
+			Provider:     rm.Provider,
+			Namespace:    rm.Namespace,
+			RegistryName: rm.RegistryName,
+		}, options)
+		require.NoError(t, err)
+		assert.Equal(t, rm.PublishingMechanism, PublishingMechanismBranch)
+		assert.Equal(t, false, rm.VCSRepo.Tags)
+		assert.Equal(t, githubBranch, rm.VCSRepo.Branch)
+
+		options = RegistryModuleUpdateOptions{
+			VCSRepo: &RegistryModuleVCSRepoUpdateOptions{
+				Tags: Bool(true),
+			},
+		}
+		rm, err = client.RegistryModules.Update(ctx, RegistryModuleID{
+			Organization: orgTest.Name,
+			Name:         rm.Name,
+			Provider:     rm.Provider,
+			Namespace:    rm.Namespace,
+			RegistryName: rm.RegistryName,
+		}, options)
+		require.NoError(t, err)
+
+		assert.Equal(t, rm.PublishingMechanism, PublishingMechanismTag)
+		assert.Equal(t, true, rm.VCSRepo.Tags)
+		assert.Equal(t, "", rm.VCSRepo.Branch)
+
+		options = RegistryModuleUpdateOptions{
+			VCSRepo: &RegistryModuleVCSRepoUpdateOptions{
+				Branch: String(githubBranch),
+			},
+		}
+		rm, err = client.RegistryModules.Update(ctx, RegistryModuleID{
+			Organization: orgTest.Name,
+			Name:         rm.Name,
+			Provider:     rm.Provider,
+			Namespace:    rm.Namespace,
+			RegistryName: rm.RegistryName,
+		}, options)
+		require.NoError(t, err)
+		assert.Equal(t, rm.PublishingMechanism, PublishingMechanismBranch)
+		assert.Equal(t, false, rm.VCSRepo.Tags)
+		assert.Equal(t, githubBranch, rm.VCSRepo.Branch)
+	})
+}
+
 func TestRegistryModulesCreateVersion(t *testing.T) {
 	client := testClient(t)
 	ctx := context.Background()
@@ -702,6 +822,144 @@ func TestRegistryModulesCreateWithVCSConnection(t *testing.T) {
 		rm, err := client.RegistryModules.CreateWithVCSConnection(ctx, options)
 		assert.Nil(t, rm)
 		assert.Equal(t, err, ErrRequiredVCSRepo)
+	})
+}
+
+func TestRegistryModulesCreateBranchBasedWithVCSConnection(t *testing.T) {
+	skipUnlessBeta(t)
+
+	githubIdentifier := os.Getenv("GITHUB_REGISTRY_MODULE_IDENTIFIER")
+	if githubIdentifier == "" {
+		t.Skip("Export a valid GITHUB_REGISTRY_MODULE_IDENTIFIER before running this test")
+	}
+	repositoryName := strings.Split(githubIdentifier, "/")[1]
+	registryModuleProvider := strings.SplitN(repositoryName, "-", 3)[1]
+	registryModuleName := strings.SplitN(repositoryName, "-", 3)[2]
+
+	githubBranch := os.Getenv("GITHUB_REGISTRY_MODULE_BRANCH")
+	if githubBranch == "" {
+		githubBranch = "main"
+	}
+
+	client := testClient(t)
+	ctx := context.Background()
+
+	orgTest, orgTestCleanup := createOrganization(t, client)
+	defer orgTestCleanup()
+
+	oauthTokenTest, oauthTokenTestCleanup := createOAuthToken(t, client, orgTest)
+	defer oauthTokenTestCleanup()
+
+	t.Run("with valid options", func(t *testing.T) {
+		options := RegistryModuleCreateWithVCSConnectionOptions{
+			VCSRepo: &RegistryModuleVCSRepoOptions{
+				OrganizationName:  String(orgTest.Name),
+				Identifier:        String(githubIdentifier),
+				OAuthTokenID:      String(oauthTokenTest.ID),
+				DisplayIdentifier: String(githubIdentifier),
+				Branch:            String(githubBranch),
+			},
+		}
+		rm, err := client.RegistryModules.CreateWithVCSConnection(ctx, options)
+		require.NoError(t, err)
+		assert.NotEmpty(t, rm.ID)
+		assert.Equal(t, registryModuleName, rm.Name)
+		assert.Equal(t, registryModuleProvider, rm.Provider)
+		assert.Equal(t, githubBranch, rm.VCSRepo.Branch)
+		assert.Equal(t, false, rm.VCSRepo.Tags)
+	})
+	t.Run("with invalid options", func(t *testing.T) {
+		options := RegistryModuleCreateWithVCSConnectionOptions{
+			VCSRepo: &RegistryModuleVCSRepoOptions{
+				Identifier:        String(githubIdentifier),
+				OAuthTokenID:      String(oauthTokenTest.ID),
+				DisplayIdentifier: String(githubIdentifier),
+				Branch:            String(githubBranch),
+			},
+		}
+		_, err := client.RegistryModules.CreateWithVCSConnection(ctx, options)
+		require.Equal(t, err, ErrInvalidOrg)
+	})
+}
+
+func TestRegistryModulesCreateBranchBasedWithVCSConnectionWithTesting(t *testing.T) {
+	skipUnlessBeta(t)
+
+	githubIdentifier := os.Getenv("GITHUB_REGISTRY_MODULE_IDENTIFIER")
+	if githubIdentifier == "" {
+		t.Skip("Export a valid GITHUB_REGISTRY_MODULE_IDENTIFIER before running this test")
+	}
+	repositoryName := strings.Split(githubIdentifier, "/")[1]
+	registryModuleProvider := strings.SplitN(repositoryName, "-", 3)[1]
+	registryModuleName := strings.SplitN(repositoryName, "-", 3)[2]
+
+	githubBranch := os.Getenv("GITHUB_REGISTRY_MODULE_BRANCH")
+	if githubBranch == "" {
+		githubBranch = "main"
+	}
+
+	client := testClient(t)
+	ctx := context.Background()
+
+	orgTest, orgTestCleanup := createOrganization(t, client)
+	defer orgTestCleanup()
+
+	oauthTokenTest, oauthTokenTestCleanup := createOAuthToken(t, client, orgTest)
+	defer oauthTokenTestCleanup()
+
+	t.Run("with valid options", func(t *testing.T) {
+		options := RegistryModuleCreateWithVCSConnectionOptions{
+			VCSRepo: &RegistryModuleVCSRepoOptions{
+				OrganizationName:  String(orgTest.Name),
+				Identifier:        String(githubIdentifier),
+				OAuthTokenID:      String(oauthTokenTest.ID),
+				DisplayIdentifier: String(githubIdentifier),
+				Branch:            String(githubBranch),
+			},
+			TestConfig: &RegistryModuleTestConfigOptions{
+				TestsEnabled: Bool(true),
+			},
+		}
+		rm, err := client.RegistryModules.CreateWithVCSConnection(ctx, options)
+		require.NoError(t, err)
+		assert.NotEmpty(t, rm.ID)
+		assert.Equal(t, registryModuleName, rm.Name)
+		assert.Equal(t, registryModuleProvider, rm.Provider)
+		assert.Equal(t, githubBranch, rm.VCSRepo.Branch)
+		assert.Equal(t, false, rm.VCSRepo.Tags)
+
+		t.Run("tests are enabled", func(t *testing.T) {
+			assert.NotEmpty(t, rm.TestConfig)
+			assert.True(t, rm.TestConfig.TestsEnabled)
+		})
+	})
+
+	t.Run("with invalid options", func(t *testing.T) {
+		options := RegistryModuleCreateWithVCSConnectionOptions{
+			VCSRepo: &RegistryModuleVCSRepoOptions{
+				Identifier:        String(githubIdentifier),
+				OAuthTokenID:      String(oauthTokenTest.ID),
+				DisplayIdentifier: String(githubIdentifier),
+				Branch:            String(githubBranch),
+			},
+		}
+		_, err := client.RegistryModules.CreateWithVCSConnection(ctx, options)
+		require.Equal(t, err, ErrInvalidOrg)
+
+		t.Run("when the the module is not branch based and test are enabled", func(t *testing.T) {
+			options := RegistryModuleCreateWithVCSConnectionOptions{
+				VCSRepo: &RegistryModuleVCSRepoOptions{
+					Identifier:        String(githubIdentifier),
+					OAuthTokenID:      String(oauthTokenTest.ID),
+					DisplayIdentifier: String(githubIdentifier),
+				},
+				TestConfig: &RegistryModuleTestConfigOptions{
+					TestsEnabled: Bool(true),
+				},
+			}
+			_, err := client.RegistryModules.CreateWithVCSConnection(ctx, options)
+			require.Equal(t, err, ErrRequiredBranchWhenTestsEnabled)
+		})
 	})
 }
 

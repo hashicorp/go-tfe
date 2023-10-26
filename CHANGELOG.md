@@ -1,3 +1,49 @@
+# UNRELEASED
+<!-- Add CHANGELOG entry to this section for any PR awaiting the next release -->
+<!-- Please also include if this is a Bug Fix, Enhancement, or Feature -->
+
+## Features
+* Added support for assigning agent pools at the organization level via a `default` agent pool by @SwiftEngineer [#762](https://github.com/hashicorp/go-tfe/pull/762)
+* Added BETA support for including `priority` attribute to variable_set on create and update by @Netra2104 [#778](https://github.com/hashicorp/go-tfe/pull/778)
+
+# v.1.37.0
+
+## Features
+* Add the tags attribute to VCSRepo to be used with registry modules by @hashimoon [#793](https://github.com/hashicorp/go-tfe/pull/793)
+
+# v.1.36.0
+
+## Features
+* Added BETA support for private module registry test variables by @aaabdelgany [#787](https://github.com/hashicorp/go-tfe/pull/787)
+
+## Bug Fixes
+* Fix incorrect attribute type for `RegistryModule.VCSRepo.Tags` by @hashimoon [#789](https://github.com/hashicorp/go-tfe/pull/789)
+* Fix nil dereference panic within `StateVersions` `upload` after not handling certain state version create errors by @brandonc [#792](https://github.com/hashicorp/go-tfe/pull/792)
+
+# v.1.35.0
+
+## Features
+* Added BETA support for private module registry tests by @hashimoon [#781](https://github.com/hashicorp/go-tfe/pull/781)
+
+## Enhancements
+* Removed beta flags for `PolicySetProjects` and `PolicySetWorkspaceExclusions` by @Netra2104 [#770](https://github.com/hashicorp/go-tfe/pull/770)
+
+# v1.34.0
+
+## Features
+* Added support for the new Terraform Test Runs API by @liamcervante [#755](https://github.com/hashicorp/go-tfe/pull/755)
+
+## Bug Fixes
+* "project" was being rejected as an invalid `Include` option when listing workspaces by @brandonc [#765](https://github.com/hashicorp/go-tfe/pull/765)
+
+
+# v1.33.0
+
+## Enhancements
+* Removed beta tags for TeamProjectAccess by @rberecka [#756](https://github.com/hashicorp/go-tfe/pull/756)
+* Added BETA support for including `workspaceExclusions` relationship to policy_set on create by @Netra2104 [#757](https://github.com/hashicorp/go-tfe/pull/757)
+* Added BETA method `AddWorkspaceExclusions` and `RemoveWorkspaceExclusions` for attaching/detaching workspace-exclusions to a policy-set by @hs26gill [#761](https://github.com/hashicorp/go-tfe/pull/761)
+
 # v1.32.1
 
 ## Dependency Update

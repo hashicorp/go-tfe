@@ -292,36 +292,9 @@ func (o AgentPoolUpdateOptions) valid() error {
 }
 
 func (o *AgentPoolReadOptions) valid() error {
-	if o == nil {
-		return nil // nothing to validate
-	}
-	if err := validateAgentPoolIncludeParams(o.Include); err != nil {
-		return err
-	}
-
 	return nil
 }
 
 func (o *AgentPoolListOptions) valid() error {
-	if o == nil {
-		return nil // nothing to validate
-	}
-	if err := validateAgentPoolIncludeParams(o.Include); err != nil {
-		return err
-	}
-
-	return nil
-}
-
-func validateAgentPoolIncludeParams(params []AgentPoolIncludeOpt) error {
-	for _, p := range params {
-		switch p {
-		case AgentPoolWorkspaces:
-			// do nothing
-		default:
-			return ErrInvalidIncludeValue
-		}
-	}
-
 	return nil
 }
