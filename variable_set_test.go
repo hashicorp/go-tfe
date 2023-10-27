@@ -242,18 +242,21 @@ func TestVariableSetsUpdate(t *testing.T) {
 		Name:        String("OriginalName"),
 		Description: String("Original Description"),
 		Global:      Bool(false),
+		Priority:    Bool(false),
 	})
 	t.Run("when updating a subset of values", func(t *testing.T) {
 		options := VariableSetUpdateOptions{
 			Name:        String("UpdatedName"),
 			Description: String("Updated Description"),
 			Global:      Bool(true),
+			Priority:    Bool(true),
 		}
 		vsAfter, err := client.VariableSets.Update(ctx, vsTest.ID, &options)
 		require.NoError(t, err)
 		assert.Equal(t, *options.Name, vsAfter.Name)
 		assert.Equal(t, *options.Description, vsAfter.Description)
 		assert.Equal(t, *options.Global, vsAfter.Global)
+		assert.Equal(t, *options.Priority, vsAfter.Priority)
 	})
 	t.Run("when options has an invalid variable set ID", func(t *testing.T) {
 		vsAfter, err := client.VariableSets.Update(ctx, badIdentifier, &VariableSetUpdateOptions{
