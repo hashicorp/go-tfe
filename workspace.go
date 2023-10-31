@@ -122,6 +122,7 @@ type Workspace struct {
 	AllowDestroyPlan           bool                        `jsonapi:"attr,allow-destroy-plan"`
 	AssessmentsEnabled         bool                        `jsonapi:"attr,assessments-enabled"`
 	AutoApply                  bool                        `jsonapi:"attr,auto-apply"`
+	AutoApplyRunTrigger        bool                        `jsonapi:"attr,auto-apply-run-trigger"`
 	CanQueueDestroyPlan        bool                        `jsonapi:"attr,can-queue-destroy-plan"`
 	CreatedAt                  time.Time                   `jsonapi:"attr,created-at,iso8601"`
 	Description                string                      `jsonapi:"attr,description"`
@@ -305,6 +306,10 @@ type WorkspaceCreateOptions struct {
 	// Optional: Whether to automatically apply changes when a Terraform plan is successful.
 	AutoApply *bool `jsonapi:"attr,auto-apply,omitempty"`
 
+	// Optional: Whether to automatically apply changes for runs that are created by run triggers
+	// from another workspace.
+	AutoApplyRunTrigger *bool `jsonapi:"attr,auto-apply-run-trigger,omitempty"`
+
 	// Optional: A description for the workspace.
 	Description *string `jsonapi:"attr,description,omitempty"`
 
@@ -447,6 +452,10 @@ type WorkspaceUpdateOptions struct {
 
 	// Optional: Whether to automatically apply changes when a Terraform plan is successful.
 	AutoApply *bool `jsonapi:"attr,auto-apply,omitempty"`
+
+	// Optional: Whether to automatically apply changes for runs that are created by run triggers
+	// from another workspace.
+	AutoApplyRunTrigger *bool `jsonapi:"attr,auto-apply-run-trigger,omitempty"`
 
 	// Optional: A new name for the workspace, which can only include letters, numbers, -,
 	// and _. This will be used as an identifier and must be unique in the

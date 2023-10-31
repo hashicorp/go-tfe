@@ -506,6 +506,34 @@ func TestWorkspacesCreate(t *testing.T) {
 		}
 	})
 
+	t.Run("with valid auto-apply-run-trigger option", func(t *testing.T) {
+		skipIfEnterprise(t)
+		// FEATURE FLAG: auto-apply-run-trigger
+		// Once un-flagged, delete this test and add an AutoApplyRunTrigger field
+		// to the basic "with valid options" test below.
+
+		options := WorkspaceCreateOptions{
+			Name:                String("foo"),
+			AutoApplyRunTrigger: Bool(true),
+		}
+
+		w, err := client.Workspaces.Create(ctx, orgTest.Name, options)
+		require.NoError(t, err)
+
+		// Get a refreshed view from the API.
+		refreshed, err := client.Workspaces.Read(ctx, orgTest.Name, *options.Name)
+		require.NoError(t, err)
+
+		for _, item := range []*Workspace{
+			w,
+			refreshed,
+		} {
+			assert.NotEmpty(t, item.ID)
+			assert.Equal(t, *options.Name, item.Name)
+			assert.Equal(t, *options.AutoApplyRunTrigger, item.AutoApplyRunTrigger)
+		}
+	})
+
 	t.Run("with valid options", func(t *testing.T) {
 		options := WorkspaceCreateOptions{
 			Name:                       String("foo"),
@@ -1041,6 +1069,21 @@ func TestWorkspacesUpdate(t *testing.T) {
 		assert.NotEqual(t, wTest.AssessmentsEnabled, wAfter.AssessmentsEnabled)
 		assert.NotEqual(t, wTest.TerraformVersion, wAfter.TerraformVersion)
 		assert.Equal(t, wTest.WorkingDirectory, wAfter.WorkingDirectory)
+	})
+
+	t.Run("when updating auto-apply-run-trigger", func(t *testing.T) {
+		skipIfEnterprise(t)
+		// Feature flag: auto-apply-run-trigger. Once flag is removed, delete
+		// this test and add the attribute to one generic update test.
+		options := WorkspaceUpdateOptions{
+			AutoApplyRunTrigger: Bool(true),
+		}
+
+		wAfter, err := client.Workspaces.Update(ctx, orgTest.Name, wTest.Name, options)
+		require.NoError(t, err)
+
+		assert.Equal(t, wTest.Name, wAfter.Name)
+		assert.NotEqual(t, wTest.AutoApplyRunTrigger, wAfter.AutoApplyRunTrigger)
 	})
 
 	t.Run("when updating project", func(t *testing.T) {
