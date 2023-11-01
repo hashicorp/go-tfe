@@ -10,6 +10,7 @@ import (
 	"fmt"
 	"os"
 	"testing"
+	"time"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
@@ -143,6 +144,15 @@ func TestStateVersionsUpload(t *testing.T) {
 
 		_, err = client.Workspaces.Unlock(ctx, wTest.ID)
 		require.NoError(t, err)
+
+		// TFC does some async processing on state versions, so we must await it
+		// lest we flake. Shouldn't take a whole minute tho.
+		timeout := 1 * time.Minute
+
+		ctxPollSVReady, cancelPollSVReady := context.WithTimeout(ctx, timeout)
+		defer cancelPollSVReady()
+
+		pollStateVersionStatus(t, client, ctxPollSVReady, sv, []StateVersionStatus{StateVersionFinalized})
 
 		assert.NotEmpty(t, sv.DownloadURL)
 		assert.Equal(t, sv.Status, StateVersionFinalized)

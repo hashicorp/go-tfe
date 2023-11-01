@@ -1223,6 +1223,43 @@ func pollRunStatus(t *testing.T, client *Client, ctx context.Context, r *Run, rs
 	return r
 }
 
+// pollStateVersionStatus will poll the given state version until its status
+// matches one of the given statuses or the given context times out.
+func pollStateVersionStatus(t *testing.T, client *Client, ctx context.Context, sv *StateVersion, statuses []StateVersionStatus) *StateVersion {
+	deadline, ok := ctx.Deadline()
+	if !ok {
+		t.Logf("No deadline was set to poll state version %q which could result in an infinite loop", sv.ID)
+	}
+
+	t.Logf("Polling state version %q for status included in %q with deadline of %s", sv.ID, statuses, deadline)
+
+	ticker := time.NewTicker(2 * time.Second)
+	defer ticker.Stop()
+	var err error
+
+	for finished := false; !finished; {
+		t.Log("...")
+		select {
+		case <-ctx.Done():
+			t.Fatalf("State version %q had status %q at deadline", sv.ID, sv.Status)
+		case <-ticker.C:
+			sv, err = client.StateVersions.Read(ctx, sv.ID)
+			if err != nil {
+				t.Fatalf("Could not read state version %q: %s", sv.ID, err)
+			}
+			t.Logf("State version %q had status %q", sv.ID, sv.Status)
+			for _, svst := range statuses {
+				if svst == sv.Status {
+					finished = true
+					break
+				}
+			}
+		}
+	}
+
+	return sv
+}
+
 // readRun will re-read the given run.
 func readRun(t *testing.T, client *Client, ctx context.Context, r *Run) *Run {
 	t.Logf("Reading run %q", r.ID)
