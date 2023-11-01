@@ -116,8 +116,6 @@ func TestConfigurationVersionsCreate(t *testing.T) {
 	})
 
 	t.Run("provisional", func(t *testing.T) {
-		skipUnlessBeta(t)
-
 		cv, err := client.ConfigurationVersions.Create(ctx,
 			wTest.ID,
 			ConfigurationVersionCreateOptions{

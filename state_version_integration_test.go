@@ -202,8 +202,6 @@ func TestStateVersionsCreate(t *testing.T) {
 	}
 
 	t.Run("can create pending state versions", func(t *testing.T) {
-		skipUnlessBeta(t)
-
 		ctx := context.Background()
 		_, err := client.Workspaces.Lock(ctx, wTest.ID, WorkspaceLockOptions{})
 		if err != nil {

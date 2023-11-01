@@ -41,8 +41,6 @@ type StateVersions interface {
 
 	// Upload creates a new state version but uploads the state content directly to the object store.
 	// This is a more resilient form of Create and is the recommended approach to creating state versions.
-	//
-	// **Note: This method is still in BETA and subject to change.**
 	Upload(ctx context.Context, workspaceID string, options StateVersionUploadOptions) (*StateVersion, error)
 
 	// Read a state version by its ID.
@@ -184,15 +182,11 @@ type StateVersionCreateOptions struct {
 	// https://developer.hashicorp.com/terraform/internals/json-format#state-representation
 	// Supplying this state representation can provide more details to the platform
 	// about the current terraform state.
-	//
-	// **Note**: This field is in BETA, subject to change and not widely available yet.
 	JSONState *string `jsonapi:"attr,json-state,omitempty"`
 	// Optional: The external, json representation of state outputs, base64 encoded. Supplying this field
 	// will provide more detailed output type information to TFE.
 	// For more information on the contents of this field: https://developer.hashicorp.com/terraform/internals/json-format#values-representation
 	// about the current terraform state.
-	//
-	// **Note**: This field is in BETA, subject to change and not widely available yet.
 	JSONStateOutputs *string `jsonapi:"attr,json-state-outputs,omitempty"`
 }
 

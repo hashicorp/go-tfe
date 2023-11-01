@@ -70,7 +70,7 @@ const (
 	RunPending                  RunStatus = "pending"
 	RunPlanned                  RunStatus = "planned"
 	RunPlannedAndFinished       RunStatus = "planned_and_finished"
-	RunPlannedAndSaved          RunStatus = "planned_and_saved" // Note: This status is in BETA.
+	RunPlannedAndSaved          RunStatus = "planned_and_saved"
 	RunPlanning                 RunStatus = "planning"
 	RunPlanQueued               RunStatus = "plan_queued"
 	RunPolicyChecked            RunStatus = "policy_checked"
@@ -108,8 +108,7 @@ const (
 	RunOperationRefreshOnly RunOperation = "refresh_only"
 	RunOperationDestroy     RunOperation = "destroy"
 	RunOperationEmptyApply  RunOperation = "empty_apply"
-	// **Note: This operation type is still in BETA and subject to change.**
-	RunOperationSavePlan RunOperation = "save_plan"
+	RunOperationSavePlan    RunOperation = "save_plan"
 )
 
 // RunList represents a list of runs.
@@ -120,30 +119,29 @@ type RunList struct {
 
 // Run represents a Terraform Enterprise run.
 type Run struct {
-	ID                     string          `jsonapi:"primary,runs"`
-	Actions                *RunActions     `jsonapi:"attr,actions"`
-	AutoApply              bool            `jsonapi:"attr,auto-apply,omitempty"`
-	AllowConfigGeneration  *bool           `jsonapi:"attr,allow-config-generation,omitempty"`
-	AllowEmptyApply        bool            `jsonapi:"attr,allow-empty-apply"`
-	CreatedAt              time.Time       `jsonapi:"attr,created-at,iso8601"`
-	ForceCancelAvailableAt time.Time       `jsonapi:"attr,force-cancel-available-at,iso8601"`
-	HasChanges             bool            `jsonapi:"attr,has-changes"`
-	IsDestroy              bool            `jsonapi:"attr,is-destroy"`
-	Message                string          `jsonapi:"attr,message"`
-	Permissions            *RunPermissions `jsonapi:"attr,permissions"`
-	PositionInQueue        int             `jsonapi:"attr,position-in-queue"`
-	PlanOnly               bool            `jsonapi:"attr,plan-only"`
-	Refresh                bool            `jsonapi:"attr,refresh"`
-	RefreshOnly            bool            `jsonapi:"attr,refresh-only"`
-	ReplaceAddrs           []string        `jsonapi:"attr,replace-addrs,omitempty"`
-	// **Note: This field is still in BETA and subject to change.**
-	SavePlan         bool                 `jsonapi:"attr,save-plan,omitempty"`
-	Source           RunSource            `jsonapi:"attr,source"`
-	Status           RunStatus            `jsonapi:"attr,status"`
-	StatusTimestamps *RunStatusTimestamps `jsonapi:"attr,status-timestamps"`
-	TargetAddrs      []string             `jsonapi:"attr,target-addrs,omitempty"`
-	TerraformVersion string               `jsonapi:"attr,terraform-version"`
-	Variables        []*RunVariableAttr   `jsonapi:"attr,variables"`
+	ID                     string               `jsonapi:"primary,runs"`
+	Actions                *RunActions          `jsonapi:"attr,actions"`
+	AutoApply              bool                 `jsonapi:"attr,auto-apply,omitempty"`
+	AllowConfigGeneration  *bool                `jsonapi:"attr,allow-config-generation,omitempty"`
+	AllowEmptyApply        bool                 `jsonapi:"attr,allow-empty-apply"`
+	CreatedAt              time.Time            `jsonapi:"attr,created-at,iso8601"`
+	ForceCancelAvailableAt time.Time            `jsonapi:"attr,force-cancel-available-at,iso8601"`
+	HasChanges             bool                 `jsonapi:"attr,has-changes"`
+	IsDestroy              bool                 `jsonapi:"attr,is-destroy"`
+	Message                string               `jsonapi:"attr,message"`
+	Permissions            *RunPermissions      `jsonapi:"attr,permissions"`
+	PositionInQueue        int                  `jsonapi:"attr,position-in-queue"`
+	PlanOnly               bool                 `jsonapi:"attr,plan-only"`
+	Refresh                bool                 `jsonapi:"attr,refresh"`
+	RefreshOnly            bool                 `jsonapi:"attr,refresh-only"`
+	ReplaceAddrs           []string             `jsonapi:"attr,replace-addrs,omitempty"`
+	SavePlan               bool                 `jsonapi:"attr,save-plan,omitempty"`
+	Source                 RunSource            `jsonapi:"attr,source"`
+	Status                 RunStatus            `jsonapi:"attr,status"`
+	StatusTimestamps       *RunStatusTimestamps `jsonapi:"attr,status-timestamps"`
+	TargetAddrs            []string             `jsonapi:"attr,target-addrs,omitempty"`
+	TerraformVersion       string               `jsonapi:"attr,terraform-version"`
+	Variables              []*RunVariableAttr   `jsonapi:"attr,variables"`
 
 	// Relations
 	Apply                *Apply                `jsonapi:"relation,apply"`
@@ -189,19 +187,18 @@ type RunStatusTimestamps struct {
 	FetchingAt           time.Time `jsonapi:"attr,fetching-at,rfc3339"`
 	ForceCanceledAt      time.Time `jsonapi:"attr,force-canceled-at,rfc3339"`
 	PlannedAndFinishedAt time.Time `jsonapi:"attr,planned-and-finished-at,rfc3339"`
-	// **Note: This field is still in BETA and subject to change.**
-	PlannedAndSavedAt   time.Time `jsonapi:"attr,planned-and-saved-at,rfc3339"`
-	PlannedAt           time.Time `jsonapi:"attr,planned-at,rfc3339"`
-	PlanningAt          time.Time `jsonapi:"attr,planning-at,rfc3339"`
-	PlanQueueableAt     time.Time `jsonapi:"attr,plan-queueable-at,rfc3339"`
-	PlanQueuedAt        time.Time `jsonapi:"attr,plan-queued-at,rfc3339"`
-	PolicyCheckedAt     time.Time `jsonapi:"attr,policy-checked-at,rfc3339"`
-	PolicySoftFailedAt  time.Time `jsonapi:"attr,policy-soft-failed-at,rfc3339"`
-	PostPlanCompletedAt time.Time `jsonapi:"attr,post-plan-completed-at,rfc3339"`
-	PostPlanRunningAt   time.Time `jsonapi:"attr,post-plan-running-at,rfc3339"`
-	PrePlanCompletedAt  time.Time `jsonapi:"attr,pre-plan-completed-at,rfc3339"`
-	PrePlanRunningAt    time.Time `jsonapi:"attr,pre-plan-running-at,rfc3339"`
-	QueuingAt           time.Time `jsonapi:"attr,queuing-at,rfc3339"`
+	PlannedAndSavedAt    time.Time `jsonapi:"attr,planned-and-saved-at,rfc3339"`
+	PlannedAt            time.Time `jsonapi:"attr,planned-at,rfc3339"`
+	PlanningAt           time.Time `jsonapi:"attr,planning-at,rfc3339"`
+	PlanQueueableAt      time.Time `jsonapi:"attr,plan-queueable-at,rfc3339"`
+	PlanQueuedAt         time.Time `jsonapi:"attr,plan-queued-at,rfc3339"`
+	PolicyCheckedAt      time.Time `jsonapi:"attr,policy-checked-at,rfc3339"`
+	PolicySoftFailedAt   time.Time `jsonapi:"attr,policy-soft-failed-at,rfc3339"`
+	PostPlanCompletedAt  time.Time `jsonapi:"attr,post-plan-completed-at,rfc3339"`
+	PostPlanRunningAt    time.Time `jsonapi:"attr,post-plan-running-at,rfc3339"`
+	PrePlanCompletedAt   time.Time `jsonapi:"attr,pre-plan-completed-at,rfc3339"`
+	PrePlanRunningAt     time.Time `jsonapi:"attr,pre-plan-running-at,rfc3339"`
+	QueuingAt            time.Time `jsonapi:"attr,queuing-at,rfc3339"`
 }
 
 // RunIncludeOpt represents the available options for include query params.
@@ -300,7 +297,6 @@ type RunCreateOptions struct {
 	// SavePlan determines whether this should be a saved-plan run. Saved-plan
 	// runs perform their plan and checks immediately, but won't lock the
 	// workspace and become its current run until they are confirmed for apply.
-	// **Note: This field is still in BETA and subject to change.**
 	SavePlan *bool `jsonapi:"attr,save-plan,omitempty"`
 
 	// Specifies the message to be associated with this run.

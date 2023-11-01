@@ -1,7 +1,7 @@
 # UNRELEASED
 
 ## Features
-* Removed BETA labels for StateVersion Upload method by @brandonc
+* Removed BETA labels for StateVersion Upload method, ConfigurationVersion `provisional` field, and `save-plan` runs by @brandonc [#800](https://github.com/hashicorp/go-tfe/pull/800)
 
 # v.1.38.0
 
