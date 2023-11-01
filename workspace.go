@@ -396,7 +396,7 @@ type WorkspaceCreateOptions struct {
 	// struct; if you provide a literal value for a setting, Terraform Cloud will
 	// automatically update its overwrites field to `true`. If you do choose to
 	// manually mark a setting as overwritten, you must provide a value for that
-	// setting at the same time. 
+	// setting at the same time.
 	SettingOverwrites *WorkspaceSettingOverwritesOptions `jsonapi:"attr,setting-overwrites,omitempty"`
 
 	// Associated Project with the workspace. If not provided, default project
@@ -523,7 +523,7 @@ type WorkspaceUpdateOptions struct {
 	// struct; if you provide a literal value for a setting, Terraform Cloud will
 	// automatically update its overwrites field to `true`. If you do choose to
 	// manually mark a setting as overwritten, you must provide a value for that
-	// setting at the same time. 
+	// setting at the same time.
 	SettingOverwrites *WorkspaceSettingOverwritesOptions `jsonapi:"attr,setting-overwrites,omitempty"`
 
 	// Associated Project with the workspace. If not provided, default project
