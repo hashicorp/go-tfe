@@ -146,16 +146,16 @@ func TestStateVersionsUpload(t *testing.T) {
 		require.NoError(t, err)
 
 		// TFC does some async processing on state versions, so we must await it
-		// lest we flake. Shouldn't take a whole minute tho.
-		timeout := 1 * time.Minute
+		// lest we flake. Should take well less than a minute tho.
+		timeout := time.Minute / 2
 
 		ctxPollSVReady, cancelPollSVReady := context.WithTimeout(ctx, timeout)
 		defer cancelPollSVReady()
 
-		pollStateVersionStatus(t, client, ctxPollSVReady, sv, []StateVersionStatus{StateVersionFinalized})
+		sv = pollStateVersionStatus(t, client, ctxPollSVReady, sv, []StateVersionStatus{StateVersionFinalized})
 
 		assert.NotEmpty(t, sv.DownloadURL)
-		assert.Equal(t, sv.Status, StateVersionFinalized)
+		assert.Equal(t, StateVersionFinalized, sv.Status)
 	})
 
 	t.Run("cannot provide base64 state parameter when uploading", func(t *testing.T) {
