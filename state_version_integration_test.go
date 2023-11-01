@@ -104,8 +104,6 @@ func TestStateVersionsList(t *testing.T) {
 }
 
 func TestStateVersionsUpload(t *testing.T) {
-	skipUnlessBeta(t)
-
 	client := testClient(t)
 
 	wTest, wTestCleanup := createWorkspace(t, client, nil)

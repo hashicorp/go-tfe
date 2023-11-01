@@ -1,5 +1,8 @@
 # UNRELEASED
 
+## Features
+* Removed BETA labels for StateVersion Upload method by @brandonc
+
 # v.1.38.0
 
 ## Features

@@ -275,8 +275,6 @@ func (s *stateVersions) Create(ctx context.Context, workspaceID string, options 
 
 // Upload creates a new state version but uploads the state content directly to the object store.
 // This is a more resilient form of Create and is the recommended approach to creating state versions.
-//
-// **Note: This method is still in BETA and subject to change.**
 func (s *stateVersions) Upload(ctx context.Context, workspaceID string, options StateVersionUploadOptions) (*StateVersion, error) {
 	if err := options.valid(); err != nil {
 		return nil, err
