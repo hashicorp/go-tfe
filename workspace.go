@@ -205,8 +205,8 @@ type VCSRepo struct {
 }
 
 type WorkspaceSettingOverwrites struct {
-	ExecutionMode *bool `jsonapi:"attr,execution-mode,omitempty"`
-	AgentPool     *bool `jsonapi:"attr,agent-pool,omitempty"`
+	ExecutionMode *bool `jsonapi:"attr,execution-mode"`
+	AgentPool     *bool `jsonapi:"attr,agent-pool"`
 }
 
 // WorkspaceActions represents the workspace actions.
@@ -513,13 +513,17 @@ type WorkspaceUpdateOptions struct {
 	// repository.
 	WorkingDirectory *string `jsonapi:"attr,working-directory,omitempty"`
 
-	// Struct containing boolean values that indicate whether the resolved value of
-	// a setting should be decided by something other than the workspace (i.e. a related
-	// organization or project).
+	// Optional: Struct of booleans, which indicate whether the workspace
+	// specifies its own values for various settings. If you mark a setting as
+	// `false` in this struct, it will clear the workspace's existing value for
+	// that setting and defer to the default value that its project or
+	// organization provides.
 	//
-	// For example: When setting the execution-mode of a workspace to "default", the
-	// `setting-overwrites.execution-mode` field should be set to false, because the execution-mode
-	// will be overwritten by either the organization or project.
+	// In general, it's not necessary to mark a setting as `true` in this
+	// struct; if you provide a literal value for a setting, Terraform Cloud will
+	// automatically update its overwrites field to `true`. If you do choose to
+	// manually mark a setting as overwritten, you must provide a value for that
+	// setting at the same time. 
 	SettingOverwrites *WorkspaceSettingOverwritesOptions `jsonapi:"attr,setting-overwrites,omitempty"`
 
 	// Associated Project with the workspace. If not provided, default project
