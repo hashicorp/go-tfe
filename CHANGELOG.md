@@ -3,7 +3,8 @@
 <!-- Please also include if this is a Bug Fix, Enhancement, or Feature -->
 
 ## Features
-* Added support for assigning agent pools at the organization level via a `default` agent pool by @SwiftEngineer [#762](https://github.com/hashicorp/go-tfe/pull/762)
+* New WorkspaceSettingOverwritesOptions field for allowing workspaces to defer some settings to a default from their organization or project by @SwiftEngineer [#762](https://github.com/hashicorp/go-tfe/pull/762)
+* Added support for setting a default execution mode and agent pool at the organization level by @SwiftEngineer [#762](https://github.com/hashicorp/go-tfe/pull/762)
 
 # v.1.38.0
 
