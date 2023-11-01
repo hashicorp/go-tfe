@@ -10,6 +10,7 @@ import (
 	"fmt"
 	"os"
 	"testing"
+	"time"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
@@ -144,8 +145,17 @@ func TestStateVersionsUpload(t *testing.T) {
 		_, err = client.Workspaces.Unlock(ctx, wTest.ID)
 		require.NoError(t, err)
 
+		// TFC does some async processing on state versions, so we must await it
+		// lest we flake. Should take well less than a minute tho.
+		timeout := time.Minute / 2
+
+		ctxPollSVReady, cancelPollSVReady := context.WithTimeout(ctx, timeout)
+		defer cancelPollSVReady()
+
+		sv = pollStateVersionStatus(t, client, ctxPollSVReady, sv, []StateVersionStatus{StateVersionFinalized})
+
 		assert.NotEmpty(t, sv.DownloadURL)
-		assert.Equal(t, sv.Status, StateVersionFinalized)
+		assert.Equal(t, StateVersionFinalized, sv.Status)
 	})
 
 	t.Run("cannot provide base64 state parameter when uploading", func(t *testing.T) {
