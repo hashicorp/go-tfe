@@ -147,9 +147,6 @@ func TestRunsListQueryParams(t *testing.T) {
 				assert.Equal(t, 0, len(rl.Items))
 			},
 		},
-	}
-
-	betaTestCases := []testCase{
 		{
 			description: "with operation of save_plan parameter",
 			options:     &RunListOptions{Operation: string(RunOperationSavePlan), Include: []RunIncludeOpt{RunWorkspace}},
@@ -159,6 +156,8 @@ func TestRunsListQueryParams(t *testing.T) {
 			},
 		},
 	}
+
+	betaTestCases := []testCase{}
 
 	for _, testCase := range testCases {
 		t.Run(testCase.description, func(t *testing.T) {
@@ -223,7 +222,6 @@ func TestRunsCreate(t *testing.T) {
 	})
 
 	t.Run("with save-plan", func(t *testing.T) {
-		skipUnlessBeta(t)
 		options := RunCreateOptions{
 			Workspace: wTest,
 			SavePlan:  Bool(true),
