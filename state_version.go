@@ -62,6 +62,18 @@ type StateVersions interface {
 	// process outputs asynchronously. When consuming outputs or other async StateVersion fields, be sure to
 	// wait for ResourcesProcessed to become `true` before assuming they are empty.
 	ListOutputs(ctx context.Context, svID string, options *StateVersionOutputsListOptions) (*StateVersionOutputsList, error)
+
+	// SoftDeleteBackingData soft deletes the state version's backing data
+	// **Note: This functionality is only available in Terraform Enterprise.**
+	SoftDeleteBackingData(ctx context.Context, svID string) error
+
+	// RestoreBackingData restores a soft deleted state version's backing data
+	// **Note: This functionality is only available in Terraform Enterprise.**
+	RestoreBackingData(ctx context.Context, svID string) error
+
+	// PermanentlyDeleteBackingData permanently deletes a soft deleted state version's backing data
+	// **Note: This functionality is only available in Terraform Enterprise.**
+	PermanentlyDeleteBackingData(ctx context.Context, svID string) error
 }
 
 // stateVersions implements StateVersions.
@@ -396,6 +408,32 @@ func (s *stateVersions) ListOutputs(ctx context.Context, svID string, options *S
 	}
 
 	return sv, nil
+}
+
+func (s *stateVersions) SoftDeleteBackingData(ctx context.Context, svID string) error {
+	return s.manageBackingData(ctx, svID, "soft_delete_backing_data")
+}
+
+func (s *stateVersions) RestoreBackingData(ctx context.Context, svID string) error {
+	return s.manageBackingData(ctx, svID, "restore_backing_data")
+}
+
+func (s *stateVersions) PermanentlyDeleteBackingData(ctx context.Context, svID string) error {
+	return s.manageBackingData(ctx, svID, "permanently_delete_backing_data")
+}
+
+func (s *stateVersions) manageBackingData(ctx context.Context, svID, action string) error {
+	if !validStringID(&svID) {
+		return ErrInvalidStateVerID
+	}
+
+	u := fmt.Sprintf("state-versions/%s/actions/%s", svID, action)
+	req, err := s.client.NewRequest("POST", u, nil)
+	if err != nil {
+		return err
+	}
+
+	return req.Do(ctx, nil)
 }
 
 // check that StateVersionListOptions fields had valid values

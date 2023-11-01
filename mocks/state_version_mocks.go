@@ -95,6 +95,20 @@ func (mr *MockStateVersionsMockRecorder) ListOutputs(ctx, svID, options interfac
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListOutputs", reflect.TypeOf((*MockStateVersions)(nil).ListOutputs), ctx, svID, options)
 }
 
+// PermanentlyDeleteBackingData mocks base method.
+func (m *MockStateVersions) PermanentlyDeleteBackingData(ctx context.Context, svID string) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "PermanentlyDeleteBackingData", ctx, svID)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// PermanentlyDeleteBackingData indicates an expected call of PermanentlyDeleteBackingData.
+func (mr *MockStateVersionsMockRecorder) PermanentlyDeleteBackingData(ctx, svID interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "PermanentlyDeleteBackingData", reflect.TypeOf((*MockStateVersions)(nil).PermanentlyDeleteBackingData), ctx, svID)
+}
+
 // Read mocks base method.
 func (m *MockStateVersions) Read(ctx context.Context, svID string) (*tfe.StateVersion, error) {
 	m.ctrl.T.Helper()
@@ -153,6 +167,34 @@ func (m *MockStateVersions) ReadWithOptions(ctx context.Context, svID string, op
 func (mr *MockStateVersionsMockRecorder) ReadWithOptions(ctx, svID, options interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ReadWithOptions", reflect.TypeOf((*MockStateVersions)(nil).ReadWithOptions), ctx, svID, options)
+}
+
+// RestoreBackingData mocks base method.
+func (m *MockStateVersions) RestoreBackingData(ctx context.Context, svID string) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "RestoreBackingData", ctx, svID)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// RestoreBackingData indicates an expected call of RestoreBackingData.
+func (mr *MockStateVersionsMockRecorder) RestoreBackingData(ctx, svID interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "RestoreBackingData", reflect.TypeOf((*MockStateVersions)(nil).RestoreBackingData), ctx, svID)
+}
+
+// SoftDeleteBackingData mocks base method.
+func (m *MockStateVersions) SoftDeleteBackingData(ctx context.Context, svID string) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "SoftDeleteBackingData", ctx, svID)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// SoftDeleteBackingData indicates an expected call of SoftDeleteBackingData.
+func (mr *MockStateVersionsMockRecorder) SoftDeleteBackingData(ctx, svID interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "SoftDeleteBackingData", reflect.TypeOf((*MockStateVersions)(nil).SoftDeleteBackingData), ctx, svID)
 }
 
 // Upload mocks base method.
