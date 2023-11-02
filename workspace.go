@@ -416,9 +416,10 @@ type VCSRepoOptions struct {
 }
 
 type WorkspaceSettingOverwritesOptions struct {
-	// using `json` rather than `json-api` so that nil values are truly omitted. in `jsonapi` the json key will still be present
+	// If false, the workspace will defer to its organization or project's DefaultExecutionMode value.
 	ExecutionMode *bool `json:"execution-mode,omitempty"`
-	AgentPool     *bool `json:"agent-pool,omitempty"`
+	// If false, the workspace will defer to its organization or project's DefaultAgentPool value.
+	AgentPool *bool `json:"agent-pool,omitempty"`
 }
 
 // WorkspaceUpdateOptions represents the options for updating a workspace.
