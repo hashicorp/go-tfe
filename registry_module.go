@@ -289,6 +289,7 @@ type RegistryModuleVCSRepoOptions struct {
 	//
 	// **Note: This field is still in BETA and subject to change.**
 	Branch *string `json:"branch,omitempty"`
+	Tags   *bool   `json:"tags,omitempty"`
 }
 
 type RegistryModuleVCSRepoUpdateOptions struct {
@@ -424,6 +425,12 @@ func (r *registryModules) Update(ctx context.Context, moduleID RegistryModuleID,
 
 	if options.NoCode != nil {
 		log.Println("[WARN] Support for using the NoCode field is deprecated as of release 1.22.0 and may be removed in a future version. The preferred way to update a no-code module is with the registryNoCodeModules.Update method.")
+	}
+
+	if options.VCSRepo != nil {
+		if options.VCSRepo.Tags != nil && *options.VCSRepo.Tags && validString(options.VCSRepo.Branch) {
+			return nil, ErrBranchMustBeEmptyWhenTagsEnabled
+		}
 	}
 
 	org := url.QueryEscape(moduleID.Organization)
@@ -735,6 +742,12 @@ func (o RegistryModuleCreateWithVCSConnectionOptions) valid() error {
 			if !validString(o.VCSRepo.Branch) {
 				return ErrRequiredBranchWhenTestsEnabled
 			}
+		}
+	}
+
+	if o.VCSRepo.Tags != nil && *o.VCSRepo.Tags {
+		if validString(o.VCSRepo.Branch) {
+			return ErrBranchMustBeEmptyWhenTagsEnabled
 		}
 	}
 
