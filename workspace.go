@@ -204,6 +204,8 @@ type VCSRepo struct {
 	WebhookURL        string `jsonapi:"attr,webhook-url"`
 }
 
+// Note: the fields of this struct are bool pointers instead of bool values, in order to simplify support for
+// future TFE versions that support *some but not all* of the inherited defaults that go-tfe knows about.
 type WorkspaceSettingOverwrites struct {
 	ExecutionMode *bool `jsonapi:"attr,execution-mode"`
 	AgentPool     *bool `jsonapi:"attr,agent-pool"`
