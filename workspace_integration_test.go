@@ -513,7 +513,7 @@ func TestWorkspacesCreate(t *testing.T) {
 		// to the basic "with valid options" test below.
 
 		options := WorkspaceCreateOptions{
-			Name:                String("foo"),
+			Name:                String(fmt.Sprintf("foo-%s", randomString(t))),
 			AutoApplyRunTrigger: Bool(true),
 		}
 
@@ -536,7 +536,7 @@ func TestWorkspacesCreate(t *testing.T) {
 
 	t.Run("with valid options", func(t *testing.T) {
 		options := WorkspaceCreateOptions{
-			Name:                       String("foo"),
+			Name:                       String(fmt.Sprintf("foo-%s", randomString(t))),
 			AllowDestroyPlan:           Bool(false),
 			AutoApply:                  Bool(true),
 			Description:                String("qux"),
@@ -609,7 +609,7 @@ func TestWorkspacesCreate(t *testing.T) {
 
 	t.Run("when options has an invalid organization", func(t *testing.T) {
 		w, err := client.Workspaces.Create(ctx, badIdentifier, WorkspaceCreateOptions{
-			Name: String("foo"),
+			Name: String(fmt.Sprintf("foo-%s", randomString(t))),
 		})
 		assert.Nil(t, w)
 		assert.EqualError(t, err, ErrInvalidOrg.Error())
