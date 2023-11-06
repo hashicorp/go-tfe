@@ -74,6 +74,7 @@ type Organization struct {
 	CollaboratorAuthPolicy                            AuthPolicyType           `jsonapi:"attr,collaborator-auth-policy"`
 	CostEstimationEnabled                             bool                     `jsonapi:"attr,cost-estimation-enabled"`
 	CreatedAt                                         time.Time                `jsonapi:"attr,created-at,iso8601"`
+	DefaultExecutionMode                              string                   `jsonapi:"attr,default-execution-mode"`
 	Email                                             string                   `jsonapi:"attr,email"`
 	ExternalID                                        string                   `jsonapi:"attr,external-id"`
 	OwnersTeamSAMLRoleID                              string                   `jsonapi:"attr,owners-team-saml-role-id"`
@@ -90,7 +91,8 @@ type Organization struct {
 	AllowForceDeleteWorkspaces bool `jsonapi:"attr,allow-force-delete-workspaces"`
 
 	// Relations
-	DefaultProject *Project `jsonapi:"relation,default-project"`
+	DefaultProject   *Project   `jsonapi:"relation,default-project"`
+	DefaultAgentPool *AgentPool `jsonapi:"relation,default-agent-pool"`
 }
 
 // OrganizationIncludeOpt represents the available options for include query params.
@@ -198,6 +200,9 @@ type OrganizationCreateOptions struct {
 
 	// Optional: AllowForceDeleteWorkspaces toggles behavior of allowing workspace admins to delete workspaces with resources under management.
 	AllowForceDeleteWorkspaces *bool `jsonapi:"attr,allow-force-delete-workspaces,omitempty"`
+
+	// Optional: DefaultExecutionMode the default execution mode for workspaces
+	DefaultExecutionMode *string `jsonapi:"attr,default-execution-mode,omitempty"`
 }
 
 // OrganizationUpdateOptions represents the options for updating an organization.
@@ -237,6 +242,12 @@ type OrganizationUpdateOptions struct {
 
 	// Optional: AllowForceDeleteWorkspaces toggles behavior of allowing workspace admins to delete workspaces with resources under management.
 	AllowForceDeleteWorkspaces *bool `jsonapi:"attr,allow-force-delete-workspaces,omitempty"`
+
+	// Optional: DefaultExecutionMode the default execution mode for workspaces
+	DefaultExecutionMode *string `jsonapi:"attr,default-execution-mode,omitempty"`
+
+	// Optional: DefaultAgentPoolId default agent pool for workspaces, requires DefaultExecutionMode to be set to `agent`
+	DefaultAgentPool *AgentPool `jsonapi:"relation,default-agent-pool,omitempty"`
 }
 
 // ReadRunQueueOptions represents the options for showing the queue.

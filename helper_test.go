@@ -965,6 +965,30 @@ func createOrganizationWithOptions(t *testing.T, client *Client, options Organiz
 	}
 }
 
+func createOrganizationWithDefaultAgentPool(t *testing.T, client *Client) (*Organization, func()) {
+	ctx := context.Background()
+	org, orgCleanup := createOrganizationWithOptions(t, client, OrganizationCreateOptions{
+		Name:                  String("tst-" + randomString(t)),
+		Email:                 String(fmt.Sprintf("%s@tfe.local", randomString(t))),
+		CostEstimationEnabled: Bool(true),
+	})
+
+	agentPool, _ := createAgentPool(t, client, org)
+
+	org, err := client.Organizations.Update(ctx, org.Name, OrganizationUpdateOptions{
+		DefaultExecutionMode: String("agent"),
+		DefaultAgentPool:     agentPool,
+	})
+
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	return org, func() {
+		// delete the org
+		orgCleanup()
+	}
+}
 func createOrganizationMembership(t *testing.T, client *Client, org *Organization) (*OrganizationMembership, func()) {
 	var orgCleanup func()
 

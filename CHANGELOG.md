@@ -1,4 +1,10 @@
 # UNRELEASED
+<!-- Add CHANGELOG entry to this section for any PR awaiting the next release -->
+<!-- Please also include if this is a Bug Fix, Enhancement, or Feature -->
+
+## Features
+* New WorkspaceSettingOverwritesOptions field for allowing workspaces to defer some settings to a default from their organization or project by @SwiftEngineer [#762](https://github.com/hashicorp/go-tfe/pull/762)
+* Added support for setting a default execution mode and agent pool at the organization level by @SwiftEngineer [#762](https://github.com/hashicorp/go-tfe/pull/762)
 
 ## Features
 * Removed BETA labels for StateVersion Upload method, ConfigurationVersion `provisional` field, and `save-plan` runs by @brandonc [#800](https://github.com/hashicorp/go-tfe/pull/800)
