@@ -160,7 +160,7 @@ func TestRegistryModulesCreate(t *testing.T) {
 			assert.Equal(t, *options.Provider, rm.Provider)
 			assert.Equal(t, options.RegistryName, rm.RegistryName)
 			assert.Equal(t, orgTest.Name, rm.Namespace)
-			assert.Equal(t, options.NoCode, rm.NoCode)
+			assert.Equal(t, options.NoCode, Bool(rm.NoCode))
 
 			assertRegistryModuleAttributes(t, rm)
 		})
@@ -363,6 +363,43 @@ func TestRegistryModuleUpdateWithVCSConnection(t *testing.T) {
 		assert.False(t, rm.NoCode)
 	})
 
+	t.Run("prevents setting the branch when using tag based publishing", func(t *testing.T) {
+		options := RegistryModuleUpdateOptions{
+			VCSRepo: &RegistryModuleVCSRepoUpdateOptions{
+				Branch: String("main"),
+				Tags:   Bool(true),
+			},
+		}
+
+		_, err = client.RegistryModules.Update(ctx, RegistryModuleID{
+			Organization: orgTest.Name,
+			Name:         rm.Name,
+			Provider:     rm.Provider,
+			Namespace:    rm.Namespace,
+			RegistryName: rm.RegistryName,
+		}, options)
+
+		assert.Error(t, err)
+		assert.EqualError(t, err, ErrBranchMustBeEmptyWhenTagsEnabled.Error())
+
+		options = RegistryModuleUpdateOptions{
+			VCSRepo: &RegistryModuleVCSRepoUpdateOptions{
+				Branch: String(""),
+				Tags:   Bool(true),
+			},
+		}
+
+		rm, err = client.RegistryModules.Update(ctx, RegistryModuleID{
+			Organization: orgTest.Name,
+			Name:         rm.Name,
+			Provider:     rm.Provider,
+			Namespace:    rm.Namespace,
+			RegistryName: rm.RegistryName,
+		}, options)
+
+		assert.NoError(t, err)
+	})
+
 	t.Run("toggle between git tag-based and branch-based publishing", func(t *testing.T) {
 		assert.Equal(t, rm.PublishingMechanism, PublishingMechanismTag)
 
@@ -385,7 +422,8 @@ func TestRegistryModuleUpdateWithVCSConnection(t *testing.T) {
 
 		options = RegistryModuleUpdateOptions{
 			VCSRepo: &RegistryModuleVCSRepoUpdateOptions{
-				Tags: Bool(true),
+				Branch: String(""),
+				Tags:   Bool(true),
 			},
 		}
 		rm, err = client.RegistryModules.Update(ctx, RegistryModuleID{
@@ -634,7 +672,7 @@ func TestRegistryModulesShowVersion(t *testing.T) {
 		rmvRead, errRead := client.RegistryModules.ReadVersion(ctx, registryModuleIDTest, *invalidVersion)
 
 		require.Error(t, errRead)
-		assert.Equal(t, ErrResourceNotFound, err)
+		assert.Equal(t, ErrResourceNotFound, errRead)
 		assert.Empty(t, rmvRead)
 	})
 }
@@ -814,6 +852,22 @@ func TestRegistryModulesCreateWithVCSConnection(t *testing.T) {
 			rm, err := client.RegistryModules.CreateWithVCSConnection(ctx, options)
 			assert.Nil(t, rm)
 			assert.Equal(t, err, ErrRequiredDisplayIdentifier)
+		})
+
+		t.Run("when tags are enabled and a branch is provided", func(t *testing.T) {
+			options := RegistryModuleCreateWithVCSConnectionOptions{
+				VCSRepo: &RegistryModuleVCSRepoOptions{
+					Identifier:        String(githubIdentifier),
+					OAuthTokenID:      String(oauthTokenTest.ID),
+					DisplayIdentifier: String(githubIdentifier),
+					Tags:              Bool(true),
+					Branch:            String("main"),
+				},
+			}
+
+			rm, err := client.RegistryModules.CreateWithVCSConnection(ctx, options)
+			assert.Nil(t, rm)
+			assert.Equal(t, err, ErrBranchMustBeEmptyWhenTagsEnabled)
 		})
 	})
 

@@ -222,9 +222,10 @@ var (
 
 	ErrRequiredAgentPoolID = errors.New("'agent' execution mode requires an agent pool ID to be specified")
 
-	ErrRequiredAgentMode              = errors.New("specifying an agent pool ID requires 'agent' execution mode")
-	ErrRequiredBranchWhenTestsEnabled = errors.New("VCS branch is required when enabling tests")
-	ErrRequiredCategory               = errors.New("category is required")
+	ErrRequiredAgentMode                = errors.New("specifying an agent pool ID requires 'agent' execution mode")
+	ErrRequiredBranchWhenTestsEnabled   = errors.New("VCS branch is required when enabling tests")
+	ErrBranchMustBeEmptyWhenTagsEnabled = errors.New("VCS branch must be empty to enable tags")
+	ErrRequiredCategory                 = errors.New("category is required")
 
 	ErrRequiredDestinationType = errors.New("destination type is required")
 
