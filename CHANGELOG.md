@@ -8,6 +8,7 @@
 
 ## Features
 * Removed BETA labels for StateVersion Upload method, ConfigurationVersion `provisional` field, and `save-plan` runs by @brandonc [#800](https://github.com/hashicorp/go-tfe/pull/800)
+* Allow soft deleting, restoring, and permanently deleting StateVersion and ConfigurationVersion backing data by @mwudka [#801](https://github.com/hashicorp/go-tfe/pull/801)
 
 # v.1.38.0
 

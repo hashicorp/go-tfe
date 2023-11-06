@@ -634,3 +634,49 @@ func TestStateVersionOutputs(t *testing.T) {
 		assert.Error(t, err)
 	})
 }
+
+func TestStateVersions_ManageBackingData(t *testing.T) {
+	skipUnlessEnterprise(t)
+
+	client := testClient(t)
+	ctx := context.Background()
+
+	workspace, workspaceCleanup := createWorkspace(t, client, nil)
+	t.Cleanup(workspaceCleanup)
+
+	nonCurrentStateVersion, svTestCleanup := createStateVersion(t, client, 0, workspace)
+	t.Cleanup(svTestCleanup)
+
+	_, svTestCleanup = createStateVersion(t, client, 0, workspace)
+	t.Cleanup(svTestCleanup)
+
+	t.Run("soft delete backing data", func(t *testing.T) {
+		err := client.StateVersions.SoftDeleteBackingData(ctx, nonCurrentStateVersion.ID)
+		require.NoError(t, err)
+
+		_, err = client.StateVersions.Download(ctx, nonCurrentStateVersion.DownloadURL)
+		assert.Equal(t, ErrResourceNotFound, err)
+	})
+
+	t.Run("restore backing data", func(t *testing.T) {
+		err := client.StateVersions.RestoreBackingData(ctx, nonCurrentStateVersion.ID)
+		require.NoError(t, err)
+
+		_, err = client.StateVersions.Download(ctx, nonCurrentStateVersion.DownloadURL)
+		require.NoError(t, err)
+	})
+
+	t.Run("permanently delete backing data", func(t *testing.T) {
+		err := client.StateVersions.SoftDeleteBackingData(ctx, nonCurrentStateVersion.ID)
+		require.NoError(t, err)
+
+		err = client.StateVersions.PermanentlyDeleteBackingData(ctx, nonCurrentStateVersion.ID)
+		require.NoError(t, err)
+
+		err = client.StateVersions.RestoreBackingData(ctx, nonCurrentStateVersion.ID)
+		require.ErrorContainsf(t, err, "transition not allowed", "Restore backing data should fail")
+
+		_, err = client.StateVersions.Download(ctx, nonCurrentStateVersion.DownloadURL)
+		assert.Equal(t, ErrResourceNotFound, err)
+	})
+}

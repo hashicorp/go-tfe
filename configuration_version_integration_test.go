@@ -472,3 +472,49 @@ func TestConfigurationVersions_Unmarshal(t *testing.T) {
 	assert.Equal(t, cv.Provisional, true)
 	assert.Equal(t, cv.Speculative, true)
 }
+
+func TestConfigurationVersions_ManageBackingData(t *testing.T) {
+	skipUnlessEnterprise(t)
+
+	client := testClient(t)
+	ctx := context.Background()
+
+	workspace, workspaceCleanup := createWorkspace(t, client, nil)
+	t.Cleanup(workspaceCleanup)
+
+	nonCurrentCv, uploadedCvCleanup := createUploadedConfigurationVersion(t, client, workspace)
+	defer uploadedCvCleanup()
+
+	_, uploadedCvCleanup = createUploadedConfigurationVersion(t, client, workspace)
+	defer uploadedCvCleanup()
+
+	t.Run("soft delete backing data", func(t *testing.T) {
+		err := client.ConfigurationVersions.SoftDeleteBackingData(ctx, nonCurrentCv.ID)
+		require.NoError(t, err)
+
+		_, err = client.ConfigurationVersions.Download(ctx, nonCurrentCv.ID)
+		assert.Equal(t, ErrResourceNotFound, err)
+	})
+
+	t.Run("restore backing data", func(t *testing.T) {
+		err := client.ConfigurationVersions.RestoreBackingData(ctx, nonCurrentCv.ID)
+		require.NoError(t, err)
+
+		_, err = client.ConfigurationVersions.Download(ctx, nonCurrentCv.ID)
+		require.NoError(t, err)
+	})
+
+	t.Run("permanently delete backing data", func(t *testing.T) {
+		err := client.ConfigurationVersions.SoftDeleteBackingData(ctx, nonCurrentCv.ID)
+		require.NoError(t, err)
+
+		err = client.ConfigurationVersions.PermanentlyDeleteBackingData(ctx, nonCurrentCv.ID)
+		require.NoError(t, err)
+
+		err = client.ConfigurationVersions.RestoreBackingData(ctx, nonCurrentCv.ID)
+		require.ErrorContainsf(t, err, "transition not allowed", "Restore backing data should fail")
+
+		_, err = client.ConfigurationVersions.Download(ctx, nonCurrentCv.ID)
+		assert.Equal(t, ErrResourceNotFound, err)
+	})
+}
