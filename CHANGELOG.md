@@ -7,9 +7,11 @@
 ## Features
 * New WorkspaceSettingOverwritesOptions field for allowing workspaces to defer some settings to a default from their organization or project by @SwiftEngineer [#762](https://github.com/hashicorp/go-tfe/pull/762)
 * Added support for setting a default execution mode and agent pool at the organization level by @SwiftEngineer [#762](https://github.com/hashicorp/go-tfe/pull/762)
+* Added validation when configuring registry module publishing by @hashimoon [#804](https://github.com/hashicorp/go-tfe/pull/804)
 * Removed BETA labels for StateVersion Upload method, ConfigurationVersion `provisional` field, and `save-plan` runs by @brandonc [#800](https://github.com/hashicorp/go-tfe/pull/800)
 * Allow soft deleting, restoring, and permanently deleting StateVersion and ConfigurationVersion backing data by @mwudka [#801](https://github.com/hashicorp/go-tfe/pull/801)
 * Added the `AutoApplyRunTrigger` attribute to Workspaces by @nfagerlund [#798](https://github.com/hashicorp/go-tfe/pull/798)
+* Removed BETA labels for `priority` attribute in variable sets by @Netra2104 [#796](https://github.com/hashicorp/go-tfe/pull/796)
 
 # v1.38.0
 
