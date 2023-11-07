@@ -2,24 +2,28 @@
 <!-- Add CHANGELOG entry to this section for any PR awaiting the next release -->
 <!-- Please also include if this is a Bug Fix, Enhancement, or Feature -->
 
+# v1.39.0
+
 ## Features
 * New WorkspaceSettingOverwritesOptions field for allowing workspaces to defer some settings to a default from their organization or project by @SwiftEngineer [#762](https://github.com/hashicorp/go-tfe/pull/762)
 * Added support for setting a default execution mode and agent pool at the organization level by @SwiftEngineer [#762](https://github.com/hashicorp/go-tfe/pull/762)
+* Added validation when configuring registry module publishing by @hashimoon [#804](https://github.com/hashicorp/go-tfe/pull/804)
 * Removed BETA labels for StateVersion Upload method, ConfigurationVersion `provisional` field, and `save-plan` runs by @brandonc [#800](https://github.com/hashicorp/go-tfe/pull/800)
 * Allow soft deleting, restoring, and permanently deleting StateVersion and ConfigurationVersion backing data by @mwudka [#801](https://github.com/hashicorp/go-tfe/pull/801)
 * Added the `AutoApplyRunTrigger` attribute to Workspaces by @nfagerlund [#798](https://github.com/hashicorp/go-tfe/pull/798)
+* Removed BETA labels for `priority` attribute in variable sets by @Netra2104 [#796](https://github.com/hashicorp/go-tfe/pull/796)
 
-# v.1.38.0
+# v1.38.0
 
 ## Features
 * Added BETA support for including `priority` attribute to variable_set on create and update by @Netra2104 [#778](https://github.com/hashicorp/go-tfe/pull/778)
 
-# v.1.37.0
+# v1.37.0
 
 ## Features
 * Add the tags attribute to VCSRepo to be used with registry modules by @hashimoon [#793](https://github.com/hashicorp/go-tfe/pull/793)
 
-# v.1.36.0
+# v1.36.0
 
 ## Features
 * Added BETA support for private module registry test variables by @aaabdelgany [#787](https://github.com/hashicorp/go-tfe/pull/787)
@@ -28,7 +32,7 @@
 * Fix incorrect attribute type for `RegistryModule.VCSRepo.Tags` by @hashimoon [#789](https://github.com/hashicorp/go-tfe/pull/789)
 * Fix nil dereference panic within `StateVersions` `upload` after not handling certain state version create errors by @brandonc [#792](https://github.com/hashicorp/go-tfe/pull/792)
 
-# v.1.35.0
+# v1.35.0
 
 ## Features
 * Added BETA support for private module registry tests by @hashimoon [#781](https://github.com/hashicorp/go-tfe/pull/781)
