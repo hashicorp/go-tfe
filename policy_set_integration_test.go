@@ -225,8 +225,13 @@ func TestPolicySetsCreate(t *testing.T) {
 			t.Skip("Export a valid GITHUB_POLICY_SET_IDENTIFIER before running this test")
 		}
 
-		oc, ocTestCleanup := createOAuthToken(t, client, orgTest)
-		defer ocTestCleanup()
+		// We are deliberately ignoring the cleanup func here, because there's a potential race condition
+		// against the subsequent subtest -- TFC performs some async cleanup on VCS repos when deleting an
+		// OAuthClient, and we've seen evidence that it will zero out the next test's NEW VCSRepo values if
+		// they manage to slip in before the async stuff completes, even though the new values link it to a
+		// new OAuthToken. Anyway, there's a deferred cleanup for orgTest in the outer scope, so the org's
+		// dependent: destroy clause on OAuthClients will clean this up when the test as a whole ends.
+		oc, _ := createOAuthToken(t, client, orgTest)
 
 		options := PolicySetCreateOptions{
 			Name:         String("vcs-policy-set"),
@@ -265,8 +270,13 @@ func TestPolicySetsCreate(t *testing.T) {
 			t.Skip("Export a valid GITHUB_POLICY_SET_IDENTIFIER before running this test")
 		}
 
-		oc, ocTestCleanup := createOAuthToken(t, client, orgTest)
-		defer ocTestCleanup()
+		// We are deliberately ignoring the cleanup func here, because it's not really necessary: there's a
+		// deferred cleanup for orgTest in the outer scope, so the org's dependent: destroy clause on
+		// OAuthClients will clean this up when the test as a whole ends. Unlike the one in the previous
+		// subtest, there's no known race condition here because there aren't any later subtests that modify
+		// this same policy set. But I'm being consistent with the prior case just to reduce risks from future
+		// copypasta code.
+		oc, _ := createOAuthToken(t, client, orgTest)
 
 		options := PolicySetUpdateOptions{
 			Name:         String("vcs-policy-set"),
