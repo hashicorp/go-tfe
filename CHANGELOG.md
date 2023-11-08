@@ -2,6 +2,11 @@
 <!-- Add CHANGELOG entry to this section for any PR awaiting the next release -->
 <!-- Please also include if this is a Bug Fix, Enhancement, or Feature -->
 
+# v1.39.1
+
+## Bug Fixes
+* Fixes an issue where the request body is not preserved during certain retry scenarios by @sebasslash [#813](https://github.com/hashicorp/go-tfe/pull/813)
+
 # v1.39.0
 
 ## Features
