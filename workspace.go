@@ -118,7 +118,6 @@ type WorkspaceList struct {
 type Workspace struct {
 	ID                         string                      `jsonapi:"primary,workspaces"`
 	Actions                    *WorkspaceActions           `jsonapi:"attr,actions"`
-	AgentPoolID                string                      `jsonapi:"attr,agent-pool-id"`
 	AllowDestroyPlan           bool                        `jsonapi:"attr,allow-destroy-plan"`
 	AssessmentsEnabled         bool                        `jsonapi:"attr,assessments-enabled"`
 	AutoApply                  bool                        `jsonapi:"attr,auto-apply"`

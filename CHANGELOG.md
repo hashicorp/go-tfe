@@ -1,6 +1,10 @@
 # UNRELEASED
-<!-- Add CHANGELOG entry to this section for any PR awaiting the next release -->
-<!-- Please also include if this is a Bug Fix, Enhancement, or Feature -->
+
+## Bug Fixes
+* Removed unused field `AgentPoolID` from the Workspace model. (Callers should be using the `AgentPool` relation instead) by @brandonc [#815](https://github.com/hashicorp/go-tfe/pull/815)
+
+## Enhancements
+* Add organization scope field for oauth clients by @Netra2104 [#812](https://github.com/hashicorp/go-tfe/pull/812)
 
 # v1.39.1
 

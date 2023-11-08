@@ -80,6 +80,8 @@ type OAuthClient struct {
 	Secret              string              `jsonapi:"attr,secret"`
 	ServiceProvider     ServiceProviderType `jsonapi:"attr,service-provider"`
 	ServiceProviderName string              `jsonapi:"attr,service-provider-display-name"`
+	// **Note: This field is still in BETA and subject to change.**
+	OrganizationScoped bool `jsonapi:"attr,organization-scoped"`
 
 	// Relations
 	Organization *Organization `jsonapi:"relation,organization"`
@@ -134,6 +136,11 @@ type OAuthClientCreateOptions struct {
 
 	// Required: The VCS provider being connected with.
 	ServiceProvider *ServiceProviderType `jsonapi:"attr,service-provider"`
+
+	// **Note: This field is still in BETA and subject to change.**
+	// Optional: Whether the OAuthClient is available to all workspaces in the organization.
+	// True if the oauth client is organization scoped, false otherwise.
+	OrganizationScoped *bool `jsonapi:"attr,organization-scoped,omitempty"`
 }
 
 // OAuthClientUpdateOptions represents the options for updating an OAuth client.
@@ -159,6 +166,11 @@ type OAuthClientUpdateOptions struct {
 
 	// Optional: The token string you were given by your VCS provider.
 	OAuthToken *string `jsonapi:"attr,oauth-token-string,omitempty"`
+
+	// **Note: This field is still in BETA and subject to change.**
+	// Optional: Whether the OAuthClient is available to all workspaces in the organization.
+	// True if the oauth client is organization scoped, false otherwise.
+	OrganizationScoped *bool `jsonapi:"attr,organization-scoped,omitempty"`
 }
 
 // List all the OAuth clients for a given organization.
