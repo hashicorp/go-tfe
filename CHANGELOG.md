@@ -2,6 +2,11 @@
 <!-- Add CHANGELOG entry to this section for any PR awaiting the next release -->
 <!-- Please also include if this is a Bug Fix, Enhancement, or Feature -->
 
+# v1.39.2
+
+## Bug Fixes
+* Fixes a dependency build failure for 32 bit linux architectures by @brandonc [#814](https://github.com/hashicorp/go-tfe/pull/814)
+
 # v1.39.1
 
 ## Bug Fixes
