@@ -10,7 +10,7 @@ require (
 	github.com/hashicorp/go-slug v0.13.2
 	github.com/hashicorp/go-uuid v1.0.3
 	github.com/hashicorp/go-version v1.6.0
-	github.com/hashicorp/jsonapi v0.0.0-20210826224640-ee7dae0fb22d
+	github.com/hashicorp/jsonapi v1.2.0
 	github.com/stretchr/testify v1.8.4
 	golang.org/x/sync v0.5.0
 	golang.org/x/time v0.4.0

@@ -129,7 +129,9 @@ func TestRunTriggerList(t *testing.T) {
 		require.NoError(t, err)
 		require.NotEmpty(t, rtl.Items)
 		require.NotNil(t, rtl.Items[0].Sourceable)
-		assert.NotEmpty(t, rtl.Items[0].Sourceable.Name)
+		assert.NotEmpty(t, rtl.Items[0].Sourceable)
+		assert.NotNil(t, rtl.Items[0].SourceableChoice.Workspace)
+		assert.NotEmpty(t, rtl.Items[0].SourceableChoice.Workspace)
 	})
 
 	t.Run("with a RunTriggerType that does not return included data", func(t *testing.T) {

@@ -114,6 +114,15 @@ type WorkspaceList struct {
 	Items []*Workspace
 }
 
+// LockedByChoice is a choice type struct that represents the possible values
+// within a polymorphic relation. If a value is available, exactly one field
+// will be non-nil.
+type LockedByChoice struct {
+	Run  *Run
+	User *User
+	Team *Team
+}
+
 // Workspace represents a Terraform Enterprise workspace.
 type Workspace struct {
 	ID                         string                      `jsonapi:"primary,workspaces"`
@@ -164,6 +173,7 @@ type Workspace struct {
 	Project                     *Project              `jsonapi:"relation,project"`
 	Tags                        []*Tag                `jsonapi:"relation,tags"`
 	CurrentConfigurationVersion *ConfigurationVersion `jsonapi:"relation,current-configuration-version,omitempty"`
+	LockedBy                    *LockedByChoice       `jsonapi:"polyrelation,locked-by"`
 
 	// Links
 	Links map[string]interface{} `jsonapi:"links,omitempty"`

@@ -24,6 +24,7 @@ func TestOrganizationTokensCreate(t *testing.T) {
 		ot, err := client.OrganizationTokens.Create(ctx, orgTest.Name)
 		require.NoError(t, err)
 		require.NotEmpty(t, ot.Token)
+		requireExactlyOneNotEmpty(t, ot.CreatedBy.Organization, ot.CreatedBy.Team, ot.CreatedBy.User)
 		tkToken = ot.Token
 	})
 
