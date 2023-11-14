@@ -654,6 +654,59 @@ func TestOrganizationsAllowForceDeleteSetting(t *testing.T) {
 	})
 }
 
+func TestOrganization_DataRetentionPolicy(t *testing.T) {
+	skipUnlessEnterprise(t)
+
+	client := testClient(t)
+	ctx := context.Background()
+
+	orgTest, orgTestCleanup := createOrganization(t, client)
+	t.Cleanup(orgTestCleanup)
+
+	dataRetentionPolicy, err := client.Organizations.ReadDataRetentionPolicy(ctx, orgTest.Name)
+	assert.Equal(t, ErrResourceNotFound, err)
+	require.Nil(t, dataRetentionPolicy)
+
+	organization, err := client.Organizations.Read(ctx, orgTest.Name)
+	require.NoError(t, err)
+	require.Nil(t, organization.DataRetentionPolicy)
+
+	t.Run("set data retention policy", func(t *testing.T) {
+		createdDataRetentionPolicy, err := client.Organizations.SetDataRetentionPolicy(ctx, orgTest.Name, DataRetentionPolicySetOptions{DeleteOlderThanNDays: 33})
+		require.NoError(t, err)
+		require.Equal(t, 33, createdDataRetentionPolicy.DeleteOlderThanNDays)
+		require.Contains(t, createdDataRetentionPolicy.ID, "drp-")
+
+		dataRetentionPolicy, err = client.Organizations.ReadDataRetentionPolicy(ctx, orgTest.Name)
+		require.NoError(t, err)
+		require.Equal(t, 33, dataRetentionPolicy.DeleteOlderThanNDays)
+		require.Equal(t, createdDataRetentionPolicy.ID, dataRetentionPolicy.ID)
+		require.Contains(t, dataRetentionPolicy.ID, "drp-")
+
+		organization, err := client.Organizations.Read(ctx, orgTest.Name)
+		require.NoError(t, err)
+		require.Equal(t, dataRetentionPolicy.ID, organization.DataRetentionPolicy.ID)
+	})
+
+	t.Run("update data retention policy", func(t *testing.T) {
+		_, err = client.Organizations.SetDataRetentionPolicy(ctx, orgTest.Name, DataRetentionPolicySetOptions{DeleteOlderThanNDays: 45})
+		require.NoError(t, err)
+
+		dataRetentionPolicy, err = client.Organizations.ReadDataRetentionPolicy(ctx, orgTest.Name)
+		require.NoError(t, err)
+		require.Equal(t, 45, dataRetentionPolicy.DeleteOlderThanNDays)
+	})
+
+	t.Run("delete data retention policy", func(t *testing.T) {
+		err = client.Organizations.DeleteDataRetentionPolicy(ctx, orgTest.Name)
+		require.NoError(t, err)
+
+		dataRetentionPolicy, err = client.Organizations.ReadDataRetentionPolicy(ctx, orgTest.Name)
+		assert.Equal(t, ErrResourceNotFound, err)
+		require.Nil(t, dataRetentionPolicy)
+	})
+}
+
 func orgItemsContainsName(items []*Organization, name string) bool {
 	hasName := false
 	for _, item := range items {
