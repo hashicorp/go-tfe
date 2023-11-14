@@ -8,6 +8,9 @@
 ## Bug Fixes
 * Fixes a dependency build failure for 32 bit linux architectures by @brandonc [#814](https://github.com/hashicorp/go-tfe/pull/814)
 
+## Enhancements
+* Add organization scope field for oauth clients by @Netra2104 [#812](https://github.com/hashicorp/go-tfe/pull/812)
+
 # v1.39.1
 
 ## Bug Fixes

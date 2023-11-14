@@ -115,7 +115,7 @@ func TestOAuthClientsCreate(t *testing.T) {
 		assert.Equal(t, 1, len(oc.OAuthTokens))
 		assert.Equal(t, ServiceProviderGithub, oc.ServiceProvider)
 
-		t.Run("the organization relationship is decoded correcly", func(t *testing.T) {
+		t.Run("the organization relationship is decoded correctly", func(t *testing.T) {
 			assert.NotEmpty(t, oc.Organization)
 		})
 	})
@@ -224,6 +224,7 @@ func TestOAuthClientsRead(t *testing.T) {
 		assert.Equal(t, ocTest.ServiceProvider, oc.ServiceProvider)
 		assert.Equal(t, ocTest.ServiceProviderName, oc.ServiceProviderName)
 		assert.Equal(t, ocTest.OAuthTokens, oc.OAuthTokens)
+		assert.Equal(t, ocTest.OrganizationScoped, oc.OrganizationScoped)
 	})
 
 	t.Run("when the OAuth client does not exist", func(t *testing.T) {
@@ -380,6 +381,38 @@ func TestOAuthClientsCreateOptionsValid(t *testing.T) {
 
 		err := options.valid()
 		assert.Nil(t, err)
+	})
+}
+
+func TestOAuthClientsUpdate(t *testing.T) {
+	skipUnlessBeta(t)
+	client := testClient(t)
+	ctx := context.Background()
+
+	orgTest, orgTestCleanup := createOrganization(t, client)
+	defer orgTestCleanup()
+
+	t.Run("updates organization scoped", func(t *testing.T) {
+		organizationScoped := false
+		organizationScopedTrue := true
+		options := OAuthClientCreateOptions{
+			APIURL:             String("https://bbs.com"),
+			HTTPURL:            String("https://bbs.com"),
+			ServiceProvider:    ServiceProvider(ServiceProviderBitbucketServer),
+			OrganizationScoped: &organizationScopedTrue,
+		}
+
+		origOC, err := client.OAuthClients.Create(ctx, orgTest.Name, options)
+		require.NoError(t, err)
+		assert.NotEmpty(t, origOC.ID)
+
+		updateOpts := OAuthClientUpdateOptions{
+			OrganizationScoped: &organizationScoped,
+		}
+		oc, err := client.OAuthClients.Update(ctx, origOC.ID, updateOpts)
+		require.NoError(t, err)
+		assert.NotEmpty(t, oc.ID)
+		assert.NotEqual(t, origOC.OrganizationScoped, oc.OrganizationScoped)
 	})
 }
 
