@@ -1,4 +1,5 @@
 # UNRELEASED
+* Allow managing workspace and organization data retention policies by @mwudka [#801](https://github.com/hashicorp/go-tfe/pull/817)
 
 ## Bug Fixes
 * Removed unused field `AgentPoolID` from the Workspace model. (Callers should be using the `AgentPool` relation instead) by @brandonc [#815](https://github.com/hashicorp/go-tfe/pull/815)
