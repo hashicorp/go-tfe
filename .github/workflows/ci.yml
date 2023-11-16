@@ -49,6 +49,7 @@ jobs:
           address: ${{ fromJSON(steps.tflocal.outputs.workspace-outputs-json).tfe_address }}
           token: ${{ fromJSON(steps.tflocal.outputs.workspace-outputs-json).tfe_token }}
           admin_configuration_token: ${{ fromJSON(steps.tflocal.outputs.workspace-outputs-json).tfe_admin_token_by_role.configuration }}
+          admin_internal_billing_auditor_token: ${{ fromJSON(steps.tflocal.outputs.workspace-outputs-json).tfe_admin_token_by_role.internal-billing-auditor }}
           admin_provision_licenses_token: ${{ fromJSON(steps.tflocal.outputs.workspace-outputs-json).tfe_admin_token_by_role.provision-licenses }}
           admin_security_maintenance_token: ${{ fromJSON(steps.tflocal.outputs.workspace-outputs-json).tfe_admin_token_by_role.security-maintenance }}
           admin_site_admin_token: ${{ fromJSON(steps.tflocal.outputs.workspace-outputs-json).tfe_admin_token_by_role.site-admin }}

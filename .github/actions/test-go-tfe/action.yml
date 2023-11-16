@@ -16,6 +16,8 @@ inputs:
   admin_configuration_token:
     description: TFC Admin API Configuration role token
     required: true
+  admin_internal_billing_auditor_token:
+    description: TFC Admin API Internal Billing Auditor role token
   admin_provision_licenses_token:
     description: TFC Admin API Provision Licenses role token
     required: true
@@ -86,6 +88,7 @@ runs:
         TFE_ADDRESS: ${{ inputs.address }}
         TFE_TOKEN: ${{ inputs.token }}
         TFE_ADMIN_CONFIGURATION_TOKEN: ${{ inputs.admin_configuration_token }}
+        TFE_ADMIN_INTERNAL_BILLING_AUDITOR_TOKEN: ${{ inputs.internal_billing_auditor_token }}
         TFE_ADMIN_PROVISION_LICENSES_TOKEN: ${{ inputs.admin_provision_licenses_token }}
         TFE_ADMIN_SECURITY_MAINTENANCE_TOKEN: ${{ inputs.admin_security_maintenance_token }}
         TFE_ADMIN_SITE_ADMIN_TOKEN: ${{ inputs.admin_site_admin_token }}

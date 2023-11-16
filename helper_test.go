@@ -76,13 +76,14 @@ func testClient(t *testing.T) *Client {
 type adminRoleType string
 
 const (
-	siteAdmin                adminRoleType = "site-admin"
-	configurationAdmin       adminRoleType = "configuration"
-	provisionLicensesAdmin   adminRoleType = "provision-licenses"
-	subscriptionAdmin        adminRoleType = "subscription"
-	supportAdmin             adminRoleType = "support"
-	securityMaintenanceAdmin adminRoleType = "security-maintenance"
-	versionMaintenanceAdmin  adminRoleType = "version-maintenance"
+	siteAdmin                   adminRoleType = "site-admin"
+	configurationAdmin          adminRoleType = "configuration"
+	internalBillingAuditorAdmin adminRoleType = "internal-billing-auditor"
+	provisionLicensesAdmin      adminRoleType = "provision-licenses"
+	subscriptionAdmin           adminRoleType = "subscription"
+	supportAdmin                adminRoleType = "support"
+	securityMaintenanceAdmin    adminRoleType = "security-maintenance"
+	versionMaintenanceAdmin     adminRoleType = "version-maintenance"
 )
 
 func getTokenForAdminRole(adminRole adminRoleType) string {
@@ -93,6 +94,8 @@ func getTokenForAdminRole(adminRole adminRoleType) string {
 		token = os.Getenv("TFE_ADMIN_SITE_ADMIN_TOKEN")
 	case configurationAdmin:
 		token = os.Getenv("TFE_ADMIN_CONFIGURATION_TOKEN")
+	case internalBillingAuditorAdmin:
+		token = os.Getenv("TFE_ADMIN_INTERNAL_BILLING_AUDITOR_TOKEN")
 	case provisionLicensesAdmin:
 		token = os.Getenv("TFE_ADMIN_PROVISION_LICENSES_TOKEN")
 	case subscriptionAdmin:
