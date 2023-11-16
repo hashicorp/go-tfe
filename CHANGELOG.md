@@ -16,6 +16,10 @@
 ## Bug Fixes
 * Fixes an issue where the request body is not preserved during certain retry scenarios by @sebasslash [#813](https://github.com/hashicorp/go-tfe/pull/813)
 
+## Enhancements
+* Added BETA support for including `projects` relationship to oauth_client on create by @Netra2104 [#806](https://github.com/hashicorp/go-tfe/pull/806)
+* Added BETA method `AddProjects` and `RemoveProjects` for attaching/detaching oauth_client to projects by Netra2104 [#806](https://github.com/hashicorp/go-tfe/pull/806)
+
 # v1.39.0
 
 ## Features

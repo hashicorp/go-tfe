@@ -892,7 +892,7 @@ func createUploadedPolicyWithOptions(t *testing.T, client *Client, pass bool, or
 	}
 }
 
-func createOAuthClient(t *testing.T, client *Client, org *Organization) (*OAuthClient, func()) {
+func createOAuthClient(t *testing.T, client *Client, org *Organization, projects []*Project) (*OAuthClient, func()) {
 	var orgCleanup func()
 
 	if org == nil {
@@ -909,6 +909,7 @@ func createOAuthClient(t *testing.T, client *Client, org *Organization) (*OAuthC
 		HTTPURL:         String("https://github.com"),
 		OAuthToken:      String(githubToken),
 		ServiceProvider: ServiceProvider(ServiceProviderGithub),
+		Projects:        projects,
 	}
 
 	ctx := context.Background()
@@ -934,7 +935,7 @@ func createOAuthClient(t *testing.T, client *Client, org *Organization) (*OAuthC
 }
 
 func createOAuthToken(t *testing.T, client *Client, org *Organization) (*OAuthToken, func()) {
-	ocTest, ocTestCleanup := createOAuthClient(t, client, org)
+	ocTest, ocTestCleanup := createOAuthClient(t, client, org, nil)
 	return ocTest.OAuthTokens[0], ocTestCleanup
 }
 

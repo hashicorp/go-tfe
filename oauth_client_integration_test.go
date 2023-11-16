@@ -20,9 +20,9 @@ func TestOAuthClientsList(t *testing.T) {
 	orgTest, orgTestCleanup := createOrganization(t, client)
 	defer orgTestCleanup()
 
-	ocTest1, ocTestCleanup1 := createOAuthClient(t, client, orgTest)
+	ocTest1, ocTestCleanup1 := createOAuthClient(t, client, orgTest, nil)
 	defer ocTestCleanup1()
-	ocTest2, ocTestCleanup2 := createOAuthClient(t, client, orgTest)
+	ocTest2, ocTestCleanup2 := createOAuthClient(t, client, orgTest, nil)
 	defer ocTestCleanup2()
 
 	t.Run("without list options", func(t *testing.T) {
@@ -175,6 +175,24 @@ func TestOAuthClientsCreate(t *testing.T) {
 		_, err := client.OAuthClients.Create(ctx, orgTest.Name, options)
 		assert.Equal(t, err, ErrRequiredServiceProvider)
 	})
+
+	t.Run("with projects provided", func(t *testing.T) {
+		skipUnlessBeta(t)
+		prjTest, prjTestCleanup := createProject(t, client, orgTest)
+		defer prjTestCleanup()
+
+		options := OAuthClientCreateOptions{
+			Name:     String("project-oauth-client"),
+			Projects: []*Project{prjTest},
+		}
+
+		ps, err := client.OAuthClients.Create(ctx, orgTest.Name, options)
+		require.NoError(t, err)
+
+		assert.Equal(t, ps.Name, *options.Name)
+		assert.Equal(t, len(ps.Projects), 1)
+		assert.Equal(t, ps.Projects[0].ID, prjTest.ID)
+	})
 }
 
 func TestOAuthClientsCreate_rsaKeyPair(t *testing.T) {
@@ -210,7 +228,7 @@ func TestOAuthClientsRead(t *testing.T) {
 	client := testClient(t)
 	ctx := context.Background()
 
-	ocTest, ocTestCleanup := createOAuthClient(t, client, nil)
+	ocTest, ocTestCleanup := createOAuthClient(t, client, nil, nil)
 	defer ocTestCleanup()
 
 	t.Run("when the OAuth client exists", func(t *testing.T) {
@@ -240,6 +258,31 @@ func TestOAuthClientsRead(t *testing.T) {
 	})
 }
 
+func TestOAuthClientsReadWithOptions(t *testing.T) {
+	skipUnlessBeta(t)
+	client := testClient(t)
+	ctx := context.Background()
+
+	orgTest, orgTestCleanup := createOrganization(t, client)
+	defer orgTestCleanup()
+
+	pj, pjCleanup := createProject(t, client, orgTest)
+	defer pjCleanup()
+
+	ocTest, ocTestCleanup := createOAuthClient(t, client, nil, []*Project{pj})
+	defer ocTestCleanup()
+
+	opts := &OAuthClientReadOptions{
+		Include: []OAuthClientIncludeOpt{OauthClientProjects},
+	}
+	t.Run("when the OAuth client exists", func(t *testing.T) {
+		ocWithOptions, err := client.OAuthClients.ReadWithOptions(ctx, ocTest.ID, opts)
+		require.NoError(t, err)
+
+		assert.Equal(t, ocTest.Projects, ocWithOptions.Projects)
+	})
+}
+
 func TestOAuthClientsDelete(t *testing.T) {
 	client := testClient(t)
 	ctx := context.Background()
@@ -247,7 +290,7 @@ func TestOAuthClientsDelete(t *testing.T) {
 	orgTest, orgTestCleanup := createOrganization(t, client)
 	defer orgTestCleanup()
 
-	ocTest, _ := createOAuthClient(t, client, orgTest)
+	ocTest, _ := createOAuthClient(t, client, orgTest, nil)
 
 	t.Run("with valid options", func(t *testing.T) {
 		err := client.OAuthClients.Delete(ctx, ocTest.ID)
@@ -381,6 +424,140 @@ func TestOAuthClientsCreateOptionsValid(t *testing.T) {
 
 		err := options.valid()
 		assert.Nil(t, err)
+	})
+}
+
+func TestOAuthClientsAddProjects(t *testing.T) {
+	skipUnlessBeta(t)
+	client := testClient(t)
+	ctx := context.Background()
+
+	orgTest, orgTestCleanup := createOrganization(t, client)
+	defer orgTestCleanup()
+
+	upgradeOrganizationSubscription(t, client, orgTest)
+
+	pTest1, pTestCleanup1 := createProject(t, client, orgTest)
+	defer pTestCleanup1()
+	pTest2, pTestCleanup2 := createProject(t, client, orgTest)
+	defer pTestCleanup2()
+	psTest, psTestCleanup := createOAuthClient(t, client, orgTest, nil)
+	defer psTestCleanup()
+
+	t.Run("with projects provided", func(t *testing.T) {
+		err := client.OAuthClients.AddProjects(
+			ctx,
+			psTest.ID,
+			OAuthClientAddProjectsOptions{
+				Projects: []*Project{pTest1, pTest2},
+			},
+		)
+		require.NoError(t, err)
+
+		ps, err := client.OAuthClients.Read(ctx, psTest.ID)
+		require.NoError(t, err)
+		assert.Equal(t, 2, len(ps.Projects))
+
+		var ids []string
+		for _, pj := range ps.Projects {
+			ids = append(ids, pj.ID)
+		}
+
+		assert.Contains(t, ids, pTest1.ID)
+		assert.Contains(t, ids, pTest2.ID)
+	})
+
+	t.Run("without projects provided", func(t *testing.T) {
+		err := client.OAuthClients.AddProjects(
+			ctx,
+			psTest.ID,
+			OAuthClientAddProjectsOptions{},
+		)
+		assert.Equal(t, err, ErrRequiredProject)
+	})
+
+	t.Run("with empty projects slice", func(t *testing.T) {
+		err := client.OAuthClients.AddProjects(
+			ctx,
+			psTest.ID,
+			OAuthClientAddProjectsOptions{Projects: []*Project{}},
+		)
+		assert.Equal(t, err, ErrProjectMinLimit)
+	})
+
+	t.Run("without a valid ID", func(t *testing.T) {
+		err := client.OAuthClients.AddProjects(
+			ctx,
+			badIdentifier,
+			OAuthClientAddProjectsOptions{
+				Projects: []*Project{pTest1, pTest2},
+			},
+		)
+		assert.Equal(t, err, ErrInvalidOauthClientID)
+	})
+}
+
+func TestOAuthClientsRemoveProjects(t *testing.T) {
+	skipUnlessBeta(t)
+	client := testClient(t)
+	ctx := context.Background()
+
+	orgTest, orgTestCleanup := createOrganization(t, client)
+	defer orgTestCleanup()
+
+	upgradeOrganizationSubscription(t, client, orgTest)
+
+	pTest1, pTestCleanup1 := createProject(t, client, orgTest)
+	defer pTestCleanup1()
+	pTest2, pTestCleanup2 := createProject(t, client, orgTest)
+	defer pTestCleanup2()
+	psTest, psTestCleanup := createOAuthClient(t, client, orgTest, []*Project{pTest1, pTest2})
+	defer psTestCleanup()
+
+	t.Run("with projects provided", func(t *testing.T) {
+		err := client.OAuthClients.RemoveProjects(
+			ctx,
+			psTest.ID,
+			OAuthClientRemoveProjectsOptions{
+				Projects: []*Project{pTest1, pTest2},
+			},
+		)
+		require.NoError(t, err)
+
+		ps, err := client.OAuthClients.Read(ctx, psTest.ID)
+		require.NoError(t, err)
+
+		assert.Equal(t, 0, len(ps.Projects))
+		assert.Empty(t, ps.Projects)
+	})
+
+	t.Run("without projects provided", func(t *testing.T) {
+		err := client.OAuthClients.RemoveProjects(
+			ctx,
+			psTest.ID,
+			OAuthClientRemoveProjectsOptions{},
+		)
+		assert.Equal(t, err, ErrRequiredProject)
+	})
+
+	t.Run("with empty projects slice", func(t *testing.T) {
+		err := client.OAuthClients.RemoveProjects(
+			ctx,
+			psTest.ID,
+			OAuthClientRemoveProjectsOptions{Projects: []*Project{}},
+		)
+		assert.Equal(t, err, ErrProjectMinLimit)
+	})
+
+	t.Run("without a valid ID", func(t *testing.T) {
+		err := client.OAuthClients.RemoveProjects(
+			ctx,
+			badIdentifier,
+			OAuthClientRemoveProjectsOptions{
+				Projects: []*Project{pTest1, pTest2},
+			},
+		)
+		assert.Equal(t, err, ErrInvalidOauthClientID)
 	})
 }
 

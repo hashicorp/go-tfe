@@ -28,11 +28,20 @@ type OAuthClients interface {
 	// Read an OAuth client by its ID.
 	Read(ctx context.Context, oAuthClientID string) (*OAuthClient, error)
 
+	// ReadWithOptions reads an oauth client by its ID using the options supplied.
+	ReadWithOptions(ctx context.Context, oAuthClientID string, options *OAuthClientReadOptions) (*OAuthClient, error)
+
 	// Update an existing OAuth client by its ID.
 	Update(ctx context.Context, oAuthClientID string, options OAuthClientUpdateOptions) (*OAuthClient, error)
 
 	// Delete an OAuth client by its ID.
 	Delete(ctx context.Context, oAuthClientID string) error
+
+	// AddProjects add projects to an oauth client.
+	AddProjects(ctx context.Context, oAuthClientID string, options OAuthClientAddProjectsOptions) error
+
+	// RemoveProjects remove projects from an oauth client.
+	RemoveProjects(ctx context.Context, oAuthClientID string, options OAuthClientRemoveProjectsOptions) error
 }
 
 // oAuthClients implements OAuthClients.
@@ -86,18 +95,33 @@ type OAuthClient struct {
 	// Relations
 	Organization *Organization `jsonapi:"relation,organization"`
 	OAuthTokens  []*OAuthToken `jsonapi:"relation,oauth-tokens"`
+	// **Note: This field is still in BETA and subject to change.**
+	// The projects to which the oauth client applies.
+	Projects []*Project `jsonapi:"relation,projects"`
 }
 
 // A list of relations to include
 type OAuthClientIncludeOpt string
 
-const OauthClientOauthTokens OAuthClientIncludeOpt = "oauth_tokens"
+const (
+	OauthClientOauthTokens OAuthClientIncludeOpt = "oauth_tokens"
+	OauthClientProjects    OAuthClientIncludeOpt = "projects"
+)
 
 // OAuthClientListOptions represents the options for listing
 // OAuth clients.
 type OAuthClientListOptions struct {
 	ListOptions
 
+	Include []OAuthClientIncludeOpt `url:"include,omitempty"`
+}
+
+// OAuthClientReadOptions are read options.
+// For a full list of relations, please see:
+// https://developer.hashicorp.com/terraform/cloud-docs/api-docs/oauth-clients#relationships
+type OAuthClientReadOptions struct {
+	// Optional: A list of relations to include. See available resources
+	// https://developer.hashicorp.com/terraform/cloud-docs/api-docs/oauth-clients#available-related-resources
 	Include []OAuthClientIncludeOpt `url:"include,omitempty"`
 }
 
@@ -123,6 +147,10 @@ type OAuthClientCreateOptions struct {
 
 	// Optional: The token string you were given by your VCS provider.
 	OAuthToken *string `jsonapi:"attr,oauth-token-string,omitempty"`
+
+	// **Note: This field is still in BETA and subject to change.**
+	// Optional: The initial list of projects for which the oauth client should be associated with.
+	Projects []*Project `jsonapi:"relation,projects,omitempty"`
 
 	// Optional: Private key associated with this vcs provider - only available for ado_server
 	PrivateKey *string `jsonapi:"attr,private-key,omitempty"`
@@ -171,6 +199,20 @@ type OAuthClientUpdateOptions struct {
 	// Optional: Whether the OAuthClient is available to all workspaces in the organization.
 	// True if the oauth client is organization scoped, false otherwise.
 	OrganizationScoped *bool `jsonapi:"attr,organization-scoped,omitempty"`
+}
+
+// OAuthClientAddProjectsOptions represents the options for adding projects
+// to an oauth client.
+type OAuthClientAddProjectsOptions struct {
+	// The projects to add to an oauth client.
+	Projects []*Project
+}
+
+// OAuthClientRemoveProjectsOptions represents the options for removing
+// projects from an oauth client.
+type OAuthClientRemoveProjectsOptions struct {
+	// The projects to remove from an oauth client.
+	Projects []*Project
 }
 
 // List all the OAuth clients for a given organization.
@@ -223,12 +265,19 @@ func (s *oAuthClients) Create(ctx context.Context, organization string, options 
 
 // Read an OAuth client by its ID.
 func (s *oAuthClients) Read(ctx context.Context, oAuthClientID string) (*OAuthClient, error) {
+	return s.ReadWithOptions(ctx, oAuthClientID, nil)
+}
+
+func (s *oAuthClients) ReadWithOptions(ctx context.Context, oAuthClientID string, options *OAuthClientReadOptions) (*OAuthClient, error) {
 	if !validStringID(&oAuthClientID) {
 		return nil, ErrInvalidOauthClientID
 	}
+	if err := options.valid(); err != nil {
+		return nil, err
+	}
 
 	u := fmt.Sprintf("oauth-clients/%s", url.QueryEscape(oAuthClientID))
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest("GET", u, options)
 	if err != nil {
 		return nil, err
 	}
@@ -298,5 +347,65 @@ func (o OAuthClientCreateOptions) valid() error {
 }
 
 func (o *OAuthClientListOptions) valid() error {
+	return nil
+}
+
+// AddProjects adds projects to a given oauth client.
+func (s *oAuthClients) AddProjects(ctx context.Context, oAuthClientID string, options OAuthClientAddProjectsOptions) error {
+	if !validStringID(&oAuthClientID) {
+		return ErrInvalidOauthClientID
+	}
+	if err := options.valid(); err != nil {
+		return err
+	}
+
+	u := fmt.Sprintf("oauth-clients/%s/relationships/projects", url.QueryEscape(oAuthClientID))
+	req, err := s.client.NewRequest("POST", u, options.Projects)
+	if err != nil {
+		return err
+	}
+
+	return req.Do(ctx, nil)
+}
+
+// RemoveProjects removes projects from an oauth client.
+func (s *oAuthClients) RemoveProjects(ctx context.Context, oAuthClientID string, options OAuthClientRemoveProjectsOptions) error {
+	if !validStringID(&oAuthClientID) {
+		return ErrInvalidOauthClientID
+	}
+	if err := options.valid(); err != nil {
+		return err
+	}
+
+	u := fmt.Sprintf("oauth-clients/%s/relationships/projects", url.QueryEscape(oAuthClientID))
+	req, err := s.client.NewRequest("DELETE", u, options.Projects)
+	if err != nil {
+		return err
+	}
+
+	return req.Do(ctx, nil)
+}
+
+func (o OAuthClientAddProjectsOptions) valid() error {
+	if o.Projects == nil {
+		return ErrRequiredProject
+	}
+	if len(o.Projects) == 0 {
+		return ErrProjectMinLimit
+	}
+	return nil
+}
+
+func (o OAuthClientRemoveProjectsOptions) valid() error {
+	if o.Projects == nil {
+		return ErrRequiredProject
+	}
+	if len(o.Projects) == 0 {
+		return ErrProjectMinLimit
+	}
+	return nil
+}
+
+func (o *OAuthClientReadOptions) valid() error {
 	return nil
 }
