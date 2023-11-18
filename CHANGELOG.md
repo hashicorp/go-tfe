@@ -1,5 +1,8 @@
 # UNRELEASED
 
+## Enhancements
+* Adds a missing interface `WorkspaceResources` and the `List` method by @stefan-kiss [Issue#754](https://github.com/hashicorp/go-tfe/issues/754) 
+ 
 ## Bug Fixes
 * Removed unused field `AgentPoolID` from the Workspace model. (Callers should be using the `AgentPool` relation instead) by @brandonc [#815](https://github.com/hashicorp/go-tfe/pull/815)
 
