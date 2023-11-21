@@ -3,22 +3,20 @@
 ## Bug Fixes
 * Removed unused field `AgentPoolID` from the Workspace model. (Callers should be using the `AgentPool` relation instead) by @brandonc [#815](https://github.com/hashicorp/go-tfe/pull/815)
 
+## Enhancements
+* Add organization scope field for oauth clients by @Netra2104 [#812](https://github.com/hashicorp/go-tfe/pull/812)
+* Added BETA support for including `projects` relationship to oauth_client on create by @Netra2104 [#806](https://github.com/hashicorp/go-tfe/pull/806)
+* Added BETA method `AddProjects` and `RemoveProjects` for attaching/detaching oauth_client to projects by Netra2104 [#806](https://github.com/hashicorp/go-tfe/pull/806)
+
 # v1.39.2
 
 ## Bug Fixes
 * Fixes a dependency build failure for 32 bit linux architectures by @brandonc [#814](https://github.com/hashicorp/go-tfe/pull/814)
 
-## Enhancements
-* Add organization scope field for oauth clients by @Netra2104 [#812](https://github.com/hashicorp/go-tfe/pull/812)
-
 # v1.39.1
 
 ## Bug Fixes
 * Fixes an issue where the request body is not preserved during certain retry scenarios by @sebasslash [#813](https://github.com/hashicorp/go-tfe/pull/813)
-
-## Enhancements
-* Added BETA support for including `projects` relationship to oauth_client on create by @Netra2104 [#806](https://github.com/hashicorp/go-tfe/pull/806)
-* Added BETA method `AddProjects` and `RemoveProjects` for attaching/detaching oauth_client to projects by Netra2104 [#806](https://github.com/hashicorp/go-tfe/pull/806)
 
 # v1.39.0
 
