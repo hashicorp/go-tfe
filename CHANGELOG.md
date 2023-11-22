@@ -1,4 +1,4 @@
-# UNRELEASED
+# v1.40.0
 
 ## Bug Fixes
 * Removed unused field `AgentPoolID` from the Workspace model. (Callers should be using the `AgentPool` relation instead) by @brandonc [#815](https://github.com/hashicorp/go-tfe/pull/815)
