@@ -72,3 +72,4 @@ mockgen -source=project.go -destination=mocks/project_mocks.go -package=mocks
 mockgen -source=registry_no_code_module.go -destination=mocks/registry_no_code_module_mocks.go -package=mocks
 mockgen -source=registry_module.go -destination=mocks/registry_module_mocks.go -package=mocks
 mockgen -source=registry_module.go -destination=mocks/registry_module_mocks.go -package=mocks
+mockgen -source=workspace_resources.go -destination=mocks/workspace_resources.go -package=mocks
