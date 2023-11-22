@@ -34,16 +34,16 @@ type WorkspaceResourcesList struct {
 
 // WorkspaceResource represents a Terraform Enterprise workspace resource.
 type WorkspaceResource struct {
-	ID                       string `jsonapi:"primary,resources"`
-	Address                  string `jsonapi:"attr,address"`
-	Name                     string `jsonapi:"attr,name"`
-	CreatedAt                string `jsonapi:"attr,created-at"`
-	UpdatedAt                string `jsonapi:"attr,updated-at"`
-	Module                   string `jsonapi:"attr,module"`
-	Provider                 string `jsonapi:"attr,provider"`
-	ProviderType             string `jsonapi:"attr,provider-type"`
-	ModifiedByStateVersionID string `jsonapi:"attr,modified-by-state-version-id"`
-	NameIndex                string `jsonapi:"attr,name-index"`
+	ID                       string  `jsonapi:"primary,resources"`
+	Address                  string  `jsonapi:"attr,address"`
+	Name                     string  `jsonapi:"attr,name"`
+	CreatedAt                string  `jsonapi:"attr,created-at"`
+	UpdatedAt                string  `jsonapi:"attr,updated-at"`
+	Module                   string  `jsonapi:"attr,module"`
+	Provider                 string  `jsonapi:"attr,provider"`
+	ProviderType             string  `jsonapi:"attr,provider-type"`
+	ModifiedByStateVersionID string  `jsonapi:"attr,modified-by-state-version-id"`
+	NameIndex                *string `jsonapi:"attr,name-index"`
 }
 
 // WorkspaceResourceListOptions represents the options for listing workspace resources.
