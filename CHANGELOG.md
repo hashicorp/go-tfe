@@ -1,5 +1,8 @@
 # UNRELEASED
 
+## Bug Fixes
+* Added a missing field in `PolicyResult` structure by @stefan-kiss. fixes [Issue#790](https://github.com/hashicorp/go-tfe/issues/790)
+
 # v1.40.0
 
 ## Bug Fixes
