@@ -106,6 +106,7 @@ func TestPolicyChecksRead(t *testing.T) {
 		assert.NotEmpty(t, pc.StatusTimestamps)
 		assert.Equal(t, 1, pc.Result.Passed)
 		assert.NotEmpty(t, pc.Run)
+		assert.NotEmpty(t, pc.Result.Sentinel)
 	})
 
 	t.Run("when the policy check does not exist", func(t *testing.T) {
