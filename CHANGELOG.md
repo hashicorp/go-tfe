@@ -1,4 +1,5 @@
 # UNRELEASED
+* Allow managing workspace and organization data retention policies by @mwudka [#801](https://github.com/hashicorp/go-tfe/pull/817)
 
 # v1.40.0
 

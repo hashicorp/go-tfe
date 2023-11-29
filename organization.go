@@ -45,6 +45,18 @@ type Organizations interface {
 
 	// ReadRunQueue shows the current run queue of an organization.
 	ReadRunQueue(ctx context.Context, organization string, options ReadRunQueueOptions) (*RunQueue, error)
+
+	// ReadDataRetentionPolicy reads an organization's data retention policy
+	// **Note: This functionality is only available in Terraform Enterprise.**
+	ReadDataRetentionPolicy(ctx context.Context, organization string) (*DataRetentionPolicy, error)
+
+	// SetDataRetentionPolicy sets an organization's data retention policy
+	// **Note: This functionality is only available in Terraform Enterprise.**
+	SetDataRetentionPolicy(ctx context.Context, organization string, options DataRetentionPolicySetOptions) (*DataRetentionPolicy, error)
+
+	// DeleteDataRetentionPolicy deletes an organization's data retention policy
+	// **Note: This functionality is only available in Terraform Enterprise.**
+	DeleteDataRetentionPolicy(ctx context.Context, organization string) error
 }
 
 // organizations implements Organizations.
@@ -93,6 +105,9 @@ type Organization struct {
 	// Relations
 	DefaultProject   *Project   `jsonapi:"relation,default-project"`
 	DefaultAgentPool *AgentPool `jsonapi:"relation,default-agent-pool"`
+
+	// **Note: This functionality is only available in Terraform Enterprise.**
+	DataRetentionPolicy *DataRetentionPolicy `jsonapi:"relation,data-retention-policy"`
 }
 
 // OrganizationIncludeOpt represents the available options for include query params.
@@ -414,6 +429,62 @@ func (s *organizations) ReadRunQueue(ctx context.Context, organization string, o
 	}
 
 	return rq, nil
+}
+
+func (s *organizations) ReadDataRetentionPolicy(ctx context.Context, organization string) (*DataRetentionPolicy, error) {
+	if !validStringID(&organization) {
+		return nil, ErrInvalidOrg
+	}
+
+	u := fmt.Sprintf("organizations/%s/relationships/data-retention-policy", url.QueryEscape(organization))
+	req, err := s.client.NewRequest("GET", u, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	dataRetentionPolicy := &DataRetentionPolicy{}
+	err = req.Do(ctx, dataRetentionPolicy)
+
+	if err != nil {
+		return nil, err
+	}
+
+	return dataRetentionPolicy, nil
+}
+
+func (s *organizations) SetDataRetentionPolicy(ctx context.Context, organization string, options DataRetentionPolicySetOptions) (*DataRetentionPolicy, error) {
+	if !validStringID(&organization) {
+		return nil, ErrInvalidOrg
+	}
+
+	u := fmt.Sprintf("organizations/%s/relationships/data-retention-policy", url.QueryEscape(organization))
+	req, err := s.client.NewRequest("PATCH", u, &options)
+	if err != nil {
+		return nil, err
+	}
+
+	dataRetentionPolicy := &DataRetentionPolicy{}
+	err = req.Do(ctx, dataRetentionPolicy)
+
+	if err != nil {
+		return nil, err
+	}
+
+	return dataRetentionPolicy, nil
+}
+
+func (s *organizations) DeleteDataRetentionPolicy(ctx context.Context, organization string) error {
+	if !validStringID(&organization) {
+		return ErrInvalidOrg
+	}
+
+	u := fmt.Sprintf("organizations/%s/relationships/data-retention-policy", url.QueryEscape(organization))
+	req, err := s.client.NewRequest("DELETE", u, nil)
+	if err != nil {
+		return err
+	}
+
+	return req.Do(ctx, nil)
 }
 
 func (o OrganizationCreateOptions) valid() error {

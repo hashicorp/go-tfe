@@ -2585,3 +2585,56 @@ func TestWorkspacesProjects(t *testing.T) {
 		}
 	})
 }
+
+func TestWorkspace_DataRetentionPolicy(t *testing.T) {
+	skipUnlessEnterprise(t)
+
+	client := testClient(t)
+	ctx := context.Background()
+
+	wTest, wTestCleanup := createWorkspace(t, client, nil)
+	defer wTestCleanup()
+
+	dataRetentionPolicy, err := client.Workspaces.ReadDataRetentionPolicy(ctx, wTest.ID)
+	assert.Equal(t, ErrResourceNotFound, err)
+	require.Nil(t, dataRetentionPolicy)
+
+	workspace, err := client.Workspaces.ReadByID(ctx, wTest.ID)
+	require.NoError(t, err)
+	require.Nil(t, workspace.DataRetentionPolicy)
+
+	t.Run("set data retention policy", func(t *testing.T) {
+		createdDataRetentionPolicy, err := client.Workspaces.SetDataRetentionPolicy(ctx, wTest.ID, DataRetentionPolicySetOptions{DeleteOlderThanNDays: 33})
+		require.NoError(t, err)
+		require.Equal(t, 33, createdDataRetentionPolicy.DeleteOlderThanNDays)
+		require.Contains(t, createdDataRetentionPolicy.ID, "drp-")
+
+		dataRetentionPolicy, err = client.Workspaces.ReadDataRetentionPolicy(ctx, wTest.ID)
+		require.NoError(t, err)
+		require.Equal(t, 33, dataRetentionPolicy.DeleteOlderThanNDays)
+		require.Equal(t, createdDataRetentionPolicy.ID, dataRetentionPolicy.ID)
+		require.Contains(t, dataRetentionPolicy.ID, "drp-")
+
+		workspace, err := client.Workspaces.ReadByID(ctx, wTest.ID)
+		require.NoError(t, err)
+		require.Equal(t, dataRetentionPolicy.ID, workspace.DataRetentionPolicy.ID)
+	})
+
+	t.Run("update data retention policy", func(t *testing.T) {
+		_, err = client.Workspaces.SetDataRetentionPolicy(ctx, wTest.ID, DataRetentionPolicySetOptions{DeleteOlderThanNDays: 45})
+		require.NoError(t, err)
+
+		dataRetentionPolicy, err = client.Workspaces.ReadDataRetentionPolicy(ctx, wTest.ID)
+		require.NoError(t, err)
+		require.Equal(t, 45, dataRetentionPolicy.DeleteOlderThanNDays)
+	})
+
+	t.Run("delete data retention policy", func(t *testing.T) {
+		err = client.Workspaces.DeleteDataRetentionPolicy(ctx, wTest.ID)
+		require.NoError(t, err)
+
+		dataRetentionPolicy, err = client.Workspaces.ReadDataRetentionPolicy(ctx, wTest.ID)
+		assert.Equal(t, ErrResourceNotFound, err)
+		require.Nil(t, dataRetentionPolicy)
+	})
+}

@@ -101,6 +101,18 @@ type Workspaces interface {
 
 	// RemoveTags removes tags from a workspace
 	RemoveTags(ctx context.Context, workspaceID string, options WorkspaceRemoveTagsOptions) error
+
+	// ReadDataRetentionPolicy reads a workspace's data retention policy
+	// **Note: This functionality is only available in Terraform Enterprise.**
+	ReadDataRetentionPolicy(ctx context.Context, workspaceID string) (*DataRetentionPolicy, error)
+
+	// SetDataRetentionPolicy sets a workspace's data retention policy
+	// **Note: This functionality is only available in Terraform Enterprise.**
+	SetDataRetentionPolicy(ctx context.Context, workspaceID string, options DataRetentionPolicySetOptions) (*DataRetentionPolicy, error)
+
+	// DeleteDataRetentionPolicy deletes a workspace's data retention policy
+	// **Note: This functionality is only available in Terraform Enterprise.**
+	DeleteDataRetentionPolicy(ctx context.Context, workspaceID string) error
 }
 
 // workspaces implements Workspaces.
@@ -164,6 +176,9 @@ type Workspace struct {
 	Project                     *Project              `jsonapi:"relation,project"`
 	Tags                        []*Tag                `jsonapi:"relation,tags"`
 	CurrentConfigurationVersion *ConfigurationVersion `jsonapi:"relation,current-configuration-version,omitempty"`
+
+	// **Note: This functionality is only available in Terraform Enterprise.**
+	DataRetentionPolicy *DataRetentionPolicy `jsonapi:"relation,data-retention-policy"`
 
 	// Links
 	Links map[string]interface{} `jsonapi:"links,omitempty"`
@@ -1175,6 +1190,62 @@ func (s *workspaces) RemoveTags(ctx context.Context, workspaceID string, options
 
 	u := fmt.Sprintf("workspaces/%s/relationships/tags", url.QueryEscape(workspaceID))
 	req, err := s.client.NewRequest("DELETE", u, options.Tags)
+	if err != nil {
+		return err
+	}
+
+	return req.Do(ctx, nil)
+}
+
+func (s *workspaces) ReadDataRetentionPolicy(ctx context.Context, workspaceID string) (*DataRetentionPolicy, error) {
+	if !validStringID(&workspaceID) {
+		return nil, ErrInvalidWorkspaceID
+	}
+
+	u := fmt.Sprintf("workspaces/%s/relationships/data-retention-policy", url.QueryEscape(workspaceID))
+	req, err := s.client.NewRequest("GET", u, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	dataRetentionPolicy := &DataRetentionPolicy{}
+	err = req.Do(ctx, dataRetentionPolicy)
+
+	if err != nil {
+		return nil, err
+	}
+
+	return dataRetentionPolicy, nil
+}
+
+func (s *workspaces) SetDataRetentionPolicy(ctx context.Context, workspaceID string, options DataRetentionPolicySetOptions) (*DataRetentionPolicy, error) {
+	if !validStringID(&workspaceID) {
+		return nil, ErrInvalidWorkspaceID
+	}
+
+	u := fmt.Sprintf("workspaces/%s/relationships/data-retention-policy", url.QueryEscape(workspaceID))
+	req, err := s.client.NewRequest("PATCH", u, &options)
+	if err != nil {
+		return nil, err
+	}
+
+	dataRetentionPolicy := &DataRetentionPolicy{}
+	err = req.Do(ctx, dataRetentionPolicy)
+
+	if err != nil {
+		return nil, err
+	}
+
+	return dataRetentionPolicy, nil
+}
+
+func (s *workspaces) DeleteDataRetentionPolicy(ctx context.Context, workspaceID string) error {
+	if !validStringID(&workspaceID) {
+		return ErrInvalidWorkspaceID
+	}
+
+	u := fmt.Sprintf("workspaces/%s/relationships/data-retention-policy", url.QueryEscape(workspaceID))
+	req, err := s.client.NewRequest("DELETE", u, nil)
 	if err != nil {
 		return err
 	}

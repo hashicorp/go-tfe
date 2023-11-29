@@ -122,6 +122,20 @@ func (mr *MockWorkspacesMockRecorder) DeleteByID(ctx, workspaceID interface{}) *
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteByID", reflect.TypeOf((*MockWorkspaces)(nil).DeleteByID), ctx, workspaceID)
 }
 
+// DeleteDataRetentionPolicy mocks base method.
+func (m *MockWorkspaces) DeleteDataRetentionPolicy(ctx context.Context, workspaceID string) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "DeleteDataRetentionPolicy", ctx, workspaceID)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// DeleteDataRetentionPolicy indicates an expected call of DeleteDataRetentionPolicy.
+func (mr *MockWorkspacesMockRecorder) DeleteDataRetentionPolicy(ctx, workspaceID interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteDataRetentionPolicy", reflect.TypeOf((*MockWorkspaces)(nil).DeleteDataRetentionPolicy), ctx, workspaceID)
+}
+
 // ForceUnlock mocks base method.
 func (m *MockWorkspaces) ForceUnlock(ctx context.Context, workspaceID string) (*tfe.Workspace, error) {
 	m.ctrl.T.Helper()
@@ -242,6 +256,21 @@ func (mr *MockWorkspacesMockRecorder) ReadByIDWithOptions(ctx, workspaceID, opti
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ReadByIDWithOptions", reflect.TypeOf((*MockWorkspaces)(nil).ReadByIDWithOptions), ctx, workspaceID, options)
 }
 
+// ReadDataRetentionPolicy mocks base method.
+func (m *MockWorkspaces) ReadDataRetentionPolicy(ctx context.Context, workspaceID string) (*tfe.DataRetentionPolicy, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "ReadDataRetentionPolicy", ctx, workspaceID)
+	ret0, _ := ret[0].(*tfe.DataRetentionPolicy)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// ReadDataRetentionPolicy indicates an expected call of ReadDataRetentionPolicy.
+func (mr *MockWorkspacesMockRecorder) ReadDataRetentionPolicy(ctx, workspaceID interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ReadDataRetentionPolicy", reflect.TypeOf((*MockWorkspaces)(nil).ReadDataRetentionPolicy), ctx, workspaceID)
+}
+
 // ReadWithOptions mocks base method.
 func (m *MockWorkspaces) ReadWithOptions(ctx context.Context, organization, workspace string, options *tfe.WorkspaceReadOptions) (*tfe.Workspace, error) {
 	m.ctrl.T.Helper()
@@ -356,6 +385,21 @@ func (m *MockWorkspaces) SafeDeleteByID(ctx context.Context, workspaceID string)
 func (mr *MockWorkspacesMockRecorder) SafeDeleteByID(ctx, workspaceID interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "SafeDeleteByID", reflect.TypeOf((*MockWorkspaces)(nil).SafeDeleteByID), ctx, workspaceID)
+}
+
+// SetDataRetentionPolicy mocks base method.
+func (m *MockWorkspaces) SetDataRetentionPolicy(ctx context.Context, workspaceID string, options tfe.DataRetentionPolicySetOptions) (*tfe.DataRetentionPolicy, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "SetDataRetentionPolicy", ctx, workspaceID, options)
+	ret0, _ := ret[0].(*tfe.DataRetentionPolicy)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// SetDataRetentionPolicy indicates an expected call of SetDataRetentionPolicy.
+func (mr *MockWorkspacesMockRecorder) SetDataRetentionPolicy(ctx, workspaceID, options interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "SetDataRetentionPolicy", reflect.TypeOf((*MockWorkspaces)(nil).SetDataRetentionPolicy), ctx, workspaceID, options)
 }
 
 // UnassignSSHKey mocks base method.
