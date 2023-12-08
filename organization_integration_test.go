@@ -233,6 +233,24 @@ func TestOrganizationsUpdate(t *testing.T) {
 		assert.Equal(t, false, org.SendPassingStatusesForUntriggeredSpeculativePlans)
 	})
 
+	t.Run("with new AggregatedCommitStatusEnabled option", func(t *testing.T) {
+		skipIfEnterprise(t)
+
+		for _, testCase := range []bool{true, false} {
+			orgTest, orgTestCleanup := createOrganization(t, client)
+			t.Cleanup(orgTestCleanup)
+
+			options := OrganizationUpdateOptions{
+				AggregatedCommitStatusEnabled: Bool(testCase),
+			}
+
+			org, err := client.Organizations.Update(ctx, orgTest.Name, options)
+			require.NoError(t, err)
+
+			assert.Equal(t, testCase, org.AggregatedCommitStatusEnabled)
+		}
+	})
+
 	t.Run("with valid options", func(t *testing.T) {
 		orgTest, orgTestCleanup := createOrganization(t, client)
 
