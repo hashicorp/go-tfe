@@ -43,17 +43,23 @@ type RunTriggerList struct {
 	Items []*RunTrigger
 }
 
+// SourceableChoice is a choice type struct that represents the possible values
+// within a polymorphic relation. If a value is available, exactly one field
+// will be non-nil.
+type SourceableChoice struct {
+	Workspace *Workspace
+}
+
 // RunTrigger represents a run trigger.
 type RunTrigger struct {
 	ID             string    `jsonapi:"primary,run-triggers"`
 	CreatedAt      time.Time `jsonapi:"attr,created-at,iso8601"`
 	SourceableName string    `jsonapi:"attr,sourceable-name"`
 	WorkspaceName  string    `jsonapi:"attr,workspace-name"`
-
-	// Relations
-	// TODO: this will eventually need to be polymorphic
-	Sourceable *Workspace `jsonapi:"relation,sourceable"`
-	Workspace  *Workspace `jsonapi:"relation,workspace"`
+	// DEPRECATED. The sourceable field is polymorphic. Use SourceableChoice instead.
+	Sourceable       *Workspace        `jsonapi:"relation,sourceable"`
+	SourceableChoice *SourceableChoice `jsonapi:"polyrelation,sourceable"`
+	Workspace        *Workspace        `jsonapi:"relation,workspace"`
 }
 
 // https://developer.hashicorp.com/terraform/cloud-docs/api-docs/run-triggers#query-parameters

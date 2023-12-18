@@ -4,6 +4,13 @@
 
 * Allow managing workspace and organization data retention policies by @mwudka [#801](https://github.com/hashicorp/go-tfe/pull/817)
 
+## Deprecations
+* The `Sourceable` field has been deprecated on `RunTrigger`. Instead, use `SourceableChoice` to locate the non-empty field representing the actual sourceable value by @brandonc [#816](https://github.com/hashicorp/go-tfe/pull/816)
+
+## Features
+* Adds `LockedBy` relationship field to `Workspace` by @brandonc [#816](https://github.com/hashicorp/go-tfe/pull/816)
+* Adds `CreatedBy` relationship field to `TeamToken`, `UserToken`, and `OrganizationToken` by @brandonc [#816](https://github.com/hashicorp/go-tfe/pull/816)
+
 # v1.40.0
 
 ## Bug Fixes
@@ -13,7 +20,7 @@
 * Add organization scope field for oauth clients by @Netra2104 [#812](https://github.com/hashicorp/go-tfe/pull/812)
 * Added BETA support for including `projects` relationship to oauth_client on create by @Netra2104 [#806](https://github.com/hashicorp/go-tfe/pull/806)
 * Added BETA method `AddProjects` and `RemoveProjects` for attaching/detaching oauth_client to projects by Netra2104 [#806](https://github.com/hashicorp/go-tfe/pull/806)
-* Adds a missing interface `WorkspaceResources` and the `List` method by @stefan-kiss [Issue#754](https://github.com/hashicorp/go-tfe/issues/754) 
+* Adds a missing interface `WorkspaceResources` and the `List` method by @stefan-kiss [Issue#754](https://github.com/hashicorp/go-tfe/issues/754)
 
 # v1.39.2
 

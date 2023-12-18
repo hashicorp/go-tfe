@@ -1874,9 +1874,15 @@ func TestWorkspacesLock(t *testing.T) {
 	t.Cleanup(wTestCleanup)
 
 	t.Run("with valid options", func(t *testing.T) {
+		require.Empty(t, wTest.LockedBy)
+
 		w, err := client.Workspaces.Lock(ctx, wTest.ID, WorkspaceLockOptions{})
 		require.NoError(t, err)
 		assert.True(t, w.Locked)
+
+		require.NoError(t, err)
+		require.NotEmpty(t, w.LockedBy)
+		requireExactlyOneNotEmpty(t, w.LockedBy.Run, w.LockedBy.Team, w.LockedBy.User)
 	})
 
 	t.Run("when workspace is already locked", func(t *testing.T) {

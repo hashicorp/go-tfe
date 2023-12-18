@@ -6,10 +6,11 @@ package tfe
 import (
 	"context"
 	"fmt"
-	"github.com/stretchr/testify/assert"
-	"github.com/stretchr/testify/require"
 	"testing"
 	"time"
+
+	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 )
 
 // TestUserTokens_List tests listing user tokens
@@ -122,6 +123,8 @@ func TestUserTokens_Read(t *testing.T) {
 		// object. Empty that out for comparison
 		token.Token = ""
 		assert.Equal(t, token, to)
+
+		requireExactlyOneNotEmpty(t, token.CreatedBy.Organization, token.CreatedBy.Team, token.CreatedBy.User)
 	})
 }
 
