@@ -1,8 +1,4 @@
-# v1.41.0
-
-## Enhancements
-
-* Allow managing workspace and organization data retention policies by @mwudka [#801](https://github.com/hashicorp/go-tfe/pull/817)
+# v1.42.0
 
 ## Deprecations
 * The `Sourceable` field has been deprecated on `RunTrigger`. Instead, use `SourceableChoice` to locate the non-empty field representing the actual sourceable value by @brandonc [#816](https://github.com/hashicorp/go-tfe/pull/816)
@@ -10,6 +6,12 @@
 ## Features
 * Adds `LockedBy` relationship field to `Workspace` by @brandonc [#816](https://github.com/hashicorp/go-tfe/pull/816)
 * Adds `CreatedBy` relationship field to `TeamToken`, `UserToken`, and `OrganizationToken` by @brandonc [#816](https://github.com/hashicorp/go-tfe/pull/816)
+
+# v1.41.0
+
+## Enhancements
+
+* Allow managing workspace and organization data retention policies by @mwudka [#801](https://github.com/hashicorp/go-tfe/pull/817)
 
 # v1.40.0
 
