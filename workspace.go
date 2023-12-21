@@ -59,9 +59,6 @@ type Workspaces interface {
 	// SafeDeleteByID deletes a workspace by its ID.
 	SafeDeleteByID(ctx context.Context, workspaceID string) error
 
-	// RemoveAutoDestroyAt removes auto destroy from a workspace.
-	RemoveAutoDestroyAt(ctx context.Context, organization, workspace string) (*Workspace, error)
-
 	// RemoveVCSConnection from a workspace.
 	RemoveVCSConnection(ctx context.Context, organization, workspace string) (*Workspace, error)
 
@@ -500,18 +497,14 @@ type WorkspaceUpdateOptions struct {
 	// Associated Project with the workspace. If not provided, default project
 	// of the organization will be assigned to the workspace
 	Project *Project `jsonapi:"relation,project,omitempty"`
+
+	NullFields []string
 }
 
 // WorkspaceLockOptions represents the options for locking a workspace.
 type WorkspaceLockOptions struct {
 	// Specifies the reason for locking the workspace.
 	Reason *string `jsonapi:"attr,reason,omitempty"`
-}
-
-// workspaceRemoveAutoDestroyAtOptions
-type workspaceRemoveAutoDestroyAtOptions struct {
-	// Matches the create/update options without omitempty
-	AutoDestroyAt *time.Time `jsonapi:"attr,auto-destroy-at,iso8601"`
 }
 
 // workspaceRemoveVCSConnectionOptions
@@ -853,35 +846,6 @@ func (s *workspaces) SafeDeleteByID(ctx context.Context, workspaceID string) err
 	}
 
 	return req.Do(ctx, nil)
-}
-
-// RemoveAutoDestroyAt removes auto destroy from a workspace.
-func (s *workspaces) RemoveAutoDestroyAt(ctx context.Context, organization, workspace string) (*Workspace, error) {
-	if !validStringID(&organization) {
-		return nil, ErrInvalidOrg
-	}
-	if !validStringID(&workspace) {
-		return nil, ErrInvalidWorkspaceValue
-	}
-
-	u := fmt.Sprintf(
-		"organizations/%s/workspaces/%s",
-		url.QueryEscape(organization),
-		url.QueryEscape(workspace),
-	)
-
-	req, err := s.client.NewRequest("PATCH", u, &workspaceRemoveAutoDestroyAtOptions{})
-	if err != nil {
-		return nil, err
-	}
-
-	w := &Workspace{}
-	err = req.Do(ctx, w)
-	if err != nil {
-		return nil, err
-	}
-
-	return w, nil
 }
 
 // RemoveVCSConnection from a workspace.
