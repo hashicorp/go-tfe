@@ -13,6 +13,8 @@ var _ AdminSentinelVersions = (*adminSentinelVersions)(nil)
 // AdminSentinelVersions describes all the admin Sentinel versions related methods that
 // the Terraform Enterprise API supports.
 // Note that admin Sentinel versions are only available in Terraform Enterprise.
+//
+// TFE API docs: https://developer.hashicorp.com/terraform/enterprise/api-docs/admin/sentinel-versions
 type AdminSentinelVersions interface {
 	// List all the Sentinel versions.
 	List(ctx context.Context, options *AdminSentinelVersionsListOptions) (*AdminSentinelVersionsList, error)

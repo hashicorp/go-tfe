@@ -13,6 +13,8 @@ var _ AdminOpaVersions = (*adminOpaVersions)(nil)
 // AdminOpaVersions describes all the admin OPA versions related methods that
 // the Terraform Enterprise API supports.
 // Note that admin OPA versions are only available in Terraform Enterprise.
+//
+// TFE API docs: https://developer.hashicorp.com/terraform/enterprise/api-docs/admin/opa-versions
 type AdminOpaVersions interface {
 	// List all the OPA versions.
 	List(ctx context.Context, options *AdminOpaVersionsListOptions) (*AdminOpaVersionsList, error)
