@@ -90,7 +90,7 @@ var (
 
 	ErrInvalidTerraformVersionType = errors.New("invalid type for terraform version. Please use 'terraform-version'")
 
-	ErrInvalidOpaVersionID = errors.New("invalid value for OPA version ID")
+	ErrInvalidOPAVersionID = errors.New("invalid value for OPA version ID")
 
 	ErrInvalidSentinelVersionID = errors.New("invalid value for Sentinel version ID")
 
@@ -323,7 +323,7 @@ var (
 
 	ErrRequiredTFVerCreateOps = errors.New("version, URL and sha is required for AdminTerraformVersionCreateOptions")
 
-	ErrRequiredOpaVerCreateOps = errors.New("version, URL and sha is required for AdminOpaVersionCreateOptions")
+	ErrRequiredOPAVerCreateOps = errors.New("version, URL and sha is required for AdminOPAVersionCreateOptions")
 
 	ErrRequiredSentinelVerCreateOps = errors.New("version, URL and sha is required for AdminSentinelVersionCreateOptions")
 

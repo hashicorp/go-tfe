@@ -192,7 +192,7 @@ type Admin struct {
 	Workspaces        AdminWorkspaces
 	Runs              AdminRuns
 	TerraformVersions AdminTerraformVersions
-	OpaVersions       AdminOpaVersions
+	OPAVersions       AdminOPAVersions
 	SentinelVersions  AdminSentinelVersions
 	Users             AdminUsers
 	Settings          *AdminSettings
@@ -417,7 +417,7 @@ func NewClient(cfg *Config) (*Client, error) {
 		Runs:              &adminRuns{client: client},
 		Settings:          newAdminSettings(client),
 		TerraformVersions: &adminTerraformVersions{client: client},
-		OpaVersions:       &adminOpaVersions{client: client},
+		OPAVersions:       &adminOPAVersions{client: client},
 		SentinelVersions:  &adminSentinelVersions{client: client},
 		Users:             &adminUsers{client: client},
 	}

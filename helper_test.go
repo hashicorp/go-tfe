@@ -2755,9 +2755,9 @@ func createAdminSentinelVersion() string {
 	return fmt.Sprintf("0.0.%d", rInt)
 }
 
-// createAdminOpaVersion returns a random OPA version number of the form
+// createAdminOPAVersion returns a random OPA version number of the form
 // `0.0.<RANDOM>`
-func createAdminOpaVersion() string {
+func createAdminOPAVersion() string {
 	rInt := rand.New(rand.NewSource(time.Now().UnixNano())).Int()
 	return fmt.Sprintf("0.0.%d", rInt)
 }

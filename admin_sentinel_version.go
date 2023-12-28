@@ -42,7 +42,7 @@ type AdminSentinelVersion struct {
 	ID               string    `jsonapi:"primary,sentinel-versions"`
 	Version          string    `jsonapi:"attr,version"`
 	URL              string    `jsonapi:"attr,url"`
-	Sha              string    `jsonapi:"attr,sha"`
+	SHA              string    `jsonapi:"attr,sha"`
 	Deprecated       bool      `jsonapi:"attr,deprecated"`
 	DeprecatedReason *string   `jsonapi:"attr,deprecated-reason,omitempty"`
 	Official         bool      `jsonapi:"attr,official"`
@@ -69,7 +69,7 @@ type AdminSentinelVersionCreateOptions struct {
 	Type             string  `jsonapi:"primary,sentinel-versions"`
 	Version          string  `jsonapi:"attr,version"` // Required
 	URL              string  `jsonapi:"attr,url"`     // Required
-	Sha              string  `jsonapi:"attr,sha"`     // Required
+	SHA              string  `jsonapi:"attr,sha"`     // Required
 	Official         *bool   `jsonapi:"attr,official,omitempty"`
 	Deprecated       *bool   `jsonapi:"attr,deprecated,omitempty"`
 	DeprecatedReason *string `jsonapi:"attr,deprecated-reason,omitempty"`
@@ -82,7 +82,7 @@ type AdminSentinelVersionUpdateOptions struct {
 	Type             string  `jsonapi:"primary,sentinel-versions"`
 	Version          *string `jsonapi:"attr,version,omitempty"`
 	URL              *string `jsonapi:"attr,url,omitempty"`
-	Sha              *string `jsonapi:"attr,sha,omitempty"`
+	SHA              *string `jsonapi:"attr,sha,omitempty"`
 	Official         *bool   `jsonapi:"attr,official,omitempty"`
 	Deprecated       *bool   `jsonapi:"attr,deprecated,omitempty"`
 	DeprecatedReason *string `jsonapi:"attr,deprecated-reason,omitempty"`
@@ -198,7 +198,7 @@ func (o AdminSentinelVersionCreateOptions) valid() error {
 	if o.URL == "" {
 		return ErrRequiredURL
 	}
-	if o.Sha == "" {
+	if o.SHA == "" {
 		return ErrRequiredSha
 	}
 

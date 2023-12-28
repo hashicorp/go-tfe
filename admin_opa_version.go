@@ -8,41 +8,41 @@ import (
 )
 
 // Compile-time proof of interface implementation.
-var _ AdminOpaVersions = (*adminOpaVersions)(nil)
+var _ AdminOPAVersions = (*adminOPAVersions)(nil)
 
-// AdminOpaVersions describes all the admin OPA versions related methods that
+// AdminOPAVersions describes all the admin OPA versions related methods that
 // the Terraform Enterprise API supports.
 // Note that admin OPA versions are only available in Terraform Enterprise.
 //
 // TFE API docs: https://developer.hashicorp.com/terraform/enterprise/api-docs/admin/opa-versions
-type AdminOpaVersions interface {
+type AdminOPAVersions interface {
 	// List all the OPA versions.
-	List(ctx context.Context, options *AdminOpaVersionsListOptions) (*AdminOpaVersionsList, error)
+	List(ctx context.Context, options *AdminOPAVersionsListOptions) (*AdminOPAVersionsList, error)
 
 	// Read a OPA version by its ID.
-	Read(ctx context.Context, id string) (*AdminOpaVersion, error)
+	Read(ctx context.Context, id string) (*AdminOPAVersion, error)
 
 	// Create a OPA version.
-	Create(ctx context.Context, options AdminOpaVersionCreateOptions) (*AdminOpaVersion, error)
+	Create(ctx context.Context, options AdminOPAVersionCreateOptions) (*AdminOPAVersion, error)
 
 	// Update a OPA version.
-	Update(ctx context.Context, id string, options AdminOpaVersionUpdateOptions) (*AdminOpaVersion, error)
+	Update(ctx context.Context, id string, options AdminOPAVersionUpdateOptions) (*AdminOPAVersion, error)
 
 	// Delete a OPA version
 	Delete(ctx context.Context, id string) error
 }
 
-// adminOpaVersions implements AdminOpaVersions.
-type adminOpaVersions struct {
+// adminOPAVersions implements AdminOPAVersions.
+type adminOPAVersions struct {
 	client *Client
 }
 
-// AdminOpaVersion represents a OPA Version
-type AdminOpaVersion struct {
+// AdminOPAVersion represents a OPA Version
+type AdminOPAVersion struct {
 	ID               string    `jsonapi:"primary,opa-versions"`
 	Version          string    `jsonapi:"attr,version"`
 	URL              string    `jsonapi:"attr,url"`
-	Sha              string    `jsonapi:"attr,sha"`
+	SHA              string    `jsonapi:"attr,sha"`
 	Deprecated       bool      `jsonapi:"attr,deprecated"`
 	DeprecatedReason *string   `jsonapi:"attr,deprecated-reason,omitempty"`
 	Official         bool      `jsonapi:"attr,official"`
@@ -52,9 +52,9 @@ type AdminOpaVersion struct {
 	CreatedAt        time.Time `jsonapi:"attr,created-at,iso8601"`
 }
 
-// AdminOpaVersionsListOptions represents the options for listing
+// AdminOPAVersionsListOptions represents the options for listing
 // OPA versions.
-type AdminOpaVersionsListOptions struct {
+type AdminOPAVersionsListOptions struct {
 	ListOptions
 
 	// Optional: A query string to find an exact version
@@ -64,12 +64,12 @@ type AdminOpaVersionsListOptions struct {
 	Search string `url:"search[version],omitempty"`
 }
 
-// AdminOpaVersionCreateOptions for creating an OPA version.
-type AdminOpaVersionCreateOptions struct {
+// AdminOPAVersionCreateOptions for creating an OPA version.
+type AdminOPAVersionCreateOptions struct {
 	Type             string  `jsonapi:"primary,opa-versions"`
 	Version          string  `jsonapi:"attr,version"` // Required
 	URL              string  `jsonapi:"attr,url"`     // Required
-	Sha              string  `jsonapi:"attr,sha"`     // Required
+	SHA              string  `jsonapi:"attr,sha"`     // Required
 	Official         *bool   `jsonapi:"attr,official,omitempty"`
 	Deprecated       *bool   `jsonapi:"attr,deprecated,omitempty"`
 	DeprecatedReason *string `jsonapi:"attr,deprecated-reason,omitempty"`
@@ -77,12 +77,12 @@ type AdminOpaVersionCreateOptions struct {
 	Beta             *bool   `jsonapi:"attr,beta,omitempty"`
 }
 
-// AdminOpaVersionUpdateOptions for updating OPA version.
-type AdminOpaVersionUpdateOptions struct {
+// AdminOPAVersionUpdateOptions for updating OPA version.
+type AdminOPAVersionUpdateOptions struct {
 	Type             string  `jsonapi:"primary,opa-versions"`
 	Version          *string `jsonapi:"attr,version,omitempty"`
 	URL              *string `jsonapi:"attr,url,omitempty"`
-	Sha              *string `jsonapi:"attr,sha,omitempty"`
+	SHA              *string `jsonapi:"attr,sha,omitempty"`
 	Official         *bool   `jsonapi:"attr,official,omitempty"`
 	Deprecated       *bool   `jsonapi:"attr,deprecated,omitempty"`
 	DeprecatedReason *string `jsonapi:"attr,deprecated-reason,omitempty"`
@@ -90,20 +90,20 @@ type AdminOpaVersionUpdateOptions struct {
 	Beta             *bool   `jsonapi:"attr,beta,omitempty"`
 }
 
-// AdminOpaVersionsList represents a list of OPA versions.
-type AdminOpaVersionsList struct {
+// AdminOPAVersionsList represents a list of OPA versions.
+type AdminOPAVersionsList struct {
 	*Pagination
-	Items []*AdminOpaVersion
+	Items []*AdminOPAVersion
 }
 
 // List all the OPA versions.
-func (a *adminOpaVersions) List(ctx context.Context, options *AdminOpaVersionsListOptions) (*AdminOpaVersionsList, error) {
+func (a *adminOPAVersions) List(ctx context.Context, options *AdminOPAVersionsListOptions) (*AdminOPAVersionsList, error) {
 	req, err := a.client.NewRequest("GET", "admin/opa-versions", options)
 	if err != nil {
 		return nil, err
 	}
 
-	ol := &AdminOpaVersionsList{}
+	ol := &AdminOPAVersionsList{}
 	err = req.Do(ctx, ol)
 	if err != nil {
 		return nil, err
@@ -113,9 +113,9 @@ func (a *adminOpaVersions) List(ctx context.Context, options *AdminOpaVersionsLi
 }
 
 // Read a OPA version by its ID.
-func (a *adminOpaVersions) Read(ctx context.Context, id string) (*AdminOpaVersion, error) {
+func (a *adminOPAVersions) Read(ctx context.Context, id string) (*AdminOPAVersion, error) {
 	if !validStringID(&id) {
-		return nil, ErrInvalidOpaVersionID
+		return nil, ErrInvalidOPAVersionID
 	}
 
 	u := fmt.Sprintf("admin/opa-versions/%s", url.QueryEscape(id))
@@ -124,7 +124,7 @@ func (a *adminOpaVersions) Read(ctx context.Context, id string) (*AdminOpaVersio
 		return nil, err
 	}
 
-	ov := &AdminOpaVersion{}
+	ov := &AdminOPAVersion{}
 	err = req.Do(ctx, ov)
 	if err != nil {
 		return nil, err
@@ -134,7 +134,7 @@ func (a *adminOpaVersions) Read(ctx context.Context, id string) (*AdminOpaVersio
 }
 
 // Create a new OPA version.
-func (a *adminOpaVersions) Create(ctx context.Context, options AdminOpaVersionCreateOptions) (*AdminOpaVersion, error) {
+func (a *adminOPAVersions) Create(ctx context.Context, options AdminOPAVersionCreateOptions) (*AdminOPAVersion, error) {
 	if err := options.valid(); err != nil {
 		return nil, err
 	}
@@ -143,7 +143,7 @@ func (a *adminOpaVersions) Create(ctx context.Context, options AdminOpaVersionCr
 		return nil, err
 	}
 
-	ov := &AdminOpaVersion{}
+	ov := &AdminOPAVersion{}
 	err = req.Do(ctx, ov)
 	if err != nil {
 		return nil, err
@@ -153,9 +153,9 @@ func (a *adminOpaVersions) Create(ctx context.Context, options AdminOpaVersionCr
 }
 
 // Update an existing OPA version.
-func (a *adminOpaVersions) Update(ctx context.Context, id string, options AdminOpaVersionUpdateOptions) (*AdminOpaVersion, error) {
+func (a *adminOPAVersions) Update(ctx context.Context, id string, options AdminOPAVersionUpdateOptions) (*AdminOPAVersion, error) {
 	if !validStringID(&id) {
-		return nil, ErrInvalidOpaVersionID
+		return nil, ErrInvalidOPAVersionID
 	}
 
 	u := fmt.Sprintf("admin/opa-versions/%s", url.QueryEscape(id))
@@ -164,7 +164,7 @@ func (a *adminOpaVersions) Update(ctx context.Context, id string, options AdminO
 		return nil, err
 	}
 
-	ov := &AdminOpaVersion{}
+	ov := &AdminOPAVersion{}
 	err = req.Do(ctx, ov)
 	if err != nil {
 		return nil, err
@@ -174,9 +174,9 @@ func (a *adminOpaVersions) Update(ctx context.Context, id string, options AdminO
 }
 
 // Delete a OPA version.
-func (a *adminOpaVersions) Delete(ctx context.Context, id string) error {
+func (a *adminOPAVersions) Delete(ctx context.Context, id string) error {
 	if !validStringID(&id) {
-		return ErrInvalidOpaVersionID
+		return ErrInvalidOPAVersionID
 	}
 
 	u := fmt.Sprintf("admin/opa-versions/%s", url.QueryEscape(id))
@@ -188,9 +188,9 @@ func (a *adminOpaVersions) Delete(ctx context.Context, id string) error {
 	return req.Do(ctx, nil)
 }
 
-func (o AdminOpaVersionCreateOptions) valid() error {
-	if (o == AdminOpaVersionCreateOptions{}) {
-		return ErrRequiredOpaVerCreateOps
+func (o AdminOPAVersionCreateOptions) valid() error {
+	if (o == AdminOPAVersionCreateOptions{}) {
+		return ErrRequiredOPAVerCreateOps
 	}
 	if o.Version == "" {
 		return ErrRequiredVersion
@@ -198,7 +198,7 @@ func (o AdminOpaVersionCreateOptions) valid() error {
 	if o.URL == "" {
 		return ErrRequiredURL
 	}
-	if o.Sha == "" {
+	if o.SHA == "" {
 		return ErrRequiredSha
 	}
 

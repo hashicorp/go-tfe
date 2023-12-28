@@ -49,7 +49,7 @@ func TestAdminSentinelVersions_List(t *testing.T) {
 			assert.NotNil(t, item.ID)
 			assert.NotEmpty(t, item.Version)
 			assert.NotEmpty(t, item.URL)
-			assert.NotEmpty(t, item.Sha)
+			assert.NotEmpty(t, item.SHA)
 			assert.NotNil(t, item.Official)
 			assert.NotNil(t, item.Deprecated)
 			if item.Deprecated {
@@ -106,7 +106,7 @@ func TestAdminSentinelVersions_CreateDelete(t *testing.T) {
 		opts := AdminSentinelVersionCreateOptions{
 			Version:          version,
 			URL:              "https://www.hashicorp.com",
-			Sha:              genSha(t),
+			SHA:              genSha(t),
 			Deprecated:       Bool(true),
 			DeprecatedReason: String("Test Reason"),
 			Official:         Bool(false),
@@ -123,7 +123,7 @@ func TestAdminSentinelVersions_CreateDelete(t *testing.T) {
 
 		assert.Equal(t, opts.Version, sv.Version)
 		assert.Equal(t, opts.URL, sv.URL)
-		assert.Equal(t, opts.Sha, sv.Sha)
+		assert.Equal(t, opts.SHA, sv.SHA)
 		assert.Equal(t, *opts.Official, sv.Official)
 		assert.Equal(t, *opts.Deprecated, sv.Deprecated)
 		assert.Equal(t, *opts.DeprecatedReason, *sv.DeprecatedReason)
@@ -136,7 +136,7 @@ func TestAdminSentinelVersions_CreateDelete(t *testing.T) {
 		opts := AdminSentinelVersionCreateOptions{
 			Version: version,
 			URL:     "https://www.hashicorp.com",
-			Sha:     genSha(t),
+			SHA:     genSha(t),
 		}
 		sv, err := client.Admin.SentinelVersions.Create(ctx, opts)
 		require.NoError(t, err)
@@ -148,7 +148,7 @@ func TestAdminSentinelVersions_CreateDelete(t *testing.T) {
 
 		assert.Equal(t, opts.Version, sv.Version)
 		assert.Equal(t, opts.URL, sv.URL)
-		assert.Equal(t, opts.Sha, sv.Sha)
+		assert.Equal(t, opts.SHA, sv.SHA)
 		assert.Equal(t, false, sv.Official)
 		assert.Equal(t, false, sv.Deprecated)
 		assert.Nil(t, sv.DeprecatedReason)
@@ -173,7 +173,7 @@ func TestAdminSentinelVersions_ReadUpdate(t *testing.T) {
 		opts := AdminSentinelVersionCreateOptions{
 			Version:          version,
 			URL:              "https://www.hashicorp.com",
-			Sha:              genSha(t),
+			SHA:              genSha(t),
 			Official:         Bool(false),
 			Deprecated:       Bool(true),
 			DeprecatedReason: String("Test Reason"),
@@ -194,7 +194,7 @@ func TestAdminSentinelVersions_ReadUpdate(t *testing.T) {
 
 		assert.Equal(t, opts.Version, sv.Version)
 		assert.Equal(t, opts.URL, sv.URL)
-		assert.Equal(t, opts.Sha, sv.Sha)
+		assert.Equal(t, opts.SHA, sv.SHA)
 		assert.Equal(t, *opts.Official, sv.Official)
 		assert.Equal(t, *opts.Deprecated, sv.Deprecated)
 		assert.Equal(t, *opts.DeprecatedReason, *sv.DeprecatedReason)
@@ -214,7 +214,7 @@ func TestAdminSentinelVersions_ReadUpdate(t *testing.T) {
 
 		assert.Equal(t, updateVersion, sv.Version)
 		assert.Equal(t, updateURL, sv.URL)
-		assert.Equal(t, opts.Sha, sv.Sha)
+		assert.Equal(t, opts.SHA, sv.SHA)
 		assert.Equal(t, *opts.Official, sv.Official)
 		assert.Equal(t, *updateOpts.Deprecated, sv.Deprecated)
 		assert.Equal(t, *opts.Enabled, sv.Enabled)

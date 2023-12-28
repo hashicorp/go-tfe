@@ -12,21 +12,21 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func TestAdminOpaVersions_List(t *testing.T) {
+func TestAdminOPAVersions_List(t *testing.T) {
 	skipUnlessEnterprise(t)
 
 	client := testClient(t)
 	ctx := context.Background()
 
 	t.Run("without list options", func(t *testing.T) {
-		oList, err := client.Admin.OpaVersions.List(ctx, nil)
+		oList, err := client.Admin.OPAVersions.List(ctx, nil)
 		require.NoError(t, err)
 
 		assert.NotEmpty(t, oList.Items)
 	})
 
 	t.Run("with list options", func(t *testing.T) {
-		oList, err := client.Admin.OpaVersions.List(ctx, &AdminOpaVersionsListOptions{
+		oList, err := client.Admin.OPAVersions.List(ctx, &AdminOPAVersionsListOptions{
 			ListOptions: ListOptions{
 				PageNumber: 999,
 				PageSize:   100,
@@ -37,7 +37,7 @@ func TestAdminOpaVersions_List(t *testing.T) {
 		assert.Empty(t, oList.Items)
 		assert.Equal(t, 999, oList.CurrentPage)
 
-		oList, err = client.Admin.OpaVersions.List(ctx, &AdminOpaVersionsListOptions{
+		oList, err = client.Admin.OPAVersions.List(ctx, &AdminOPAVersionsListOptions{
 			ListOptions: ListOptions{
 				PageNumber: 1,
 				PageSize:   100,
@@ -49,7 +49,7 @@ func TestAdminOpaVersions_List(t *testing.T) {
 			assert.NotNil(t, item.ID)
 			assert.NotEmpty(t, item.Version)
 			assert.NotEmpty(t, item.URL)
-			assert.NotEmpty(t, item.Sha)
+			assert.NotEmpty(t, item.SHA)
 			assert.NotNil(t, item.Official)
 			assert.NotNil(t, item.Deprecated)
 			if item.Deprecated {
@@ -65,14 +65,14 @@ func TestAdminOpaVersions_List(t *testing.T) {
 	})
 
 	t.Run("with filter query string", func(t *testing.T) {
-		oList, err := client.Admin.OpaVersions.List(ctx, &AdminOpaVersionsListOptions{
+		oList, err := client.Admin.OPAVersions.List(ctx, &AdminOPAVersionsListOptions{
 			Filter: "0.46.1",
 		})
 		require.NoError(t, err)
 		assert.Equal(t, 1, len(oList.Items))
 
 		// Query for a OPA version that does not exist
-		oList, err = client.Admin.OpaVersions.List(ctx, &AdminOpaVersionsListOptions{
+		oList, err = client.Admin.OPAVersions.List(ctx, &AdminOPAVersionsListOptions{
 			Filter: "1000.1000.42",
 		})
 		require.NoError(t, err)
@@ -81,7 +81,7 @@ func TestAdminOpaVersions_List(t *testing.T) {
 
 	t.Run("with search version query string", func(t *testing.T) {
 		searchVersion := "0.46.1"
-		oList, err := client.Admin.OpaVersions.List(ctx, &AdminOpaVersionsListOptions{
+		oList, err := client.Admin.OPAVersions.List(ctx, &AdminOPAVersionsListOptions{
 			Search: searchVersion,
 		})
 		require.NoError(t, err)
@@ -95,35 +95,35 @@ func TestAdminOpaVersions_List(t *testing.T) {
 	})
 }
 
-func TestAdminOpaVersions_CreateDelete(t *testing.T) {
+func TestAdminOPAVersions_CreateDelete(t *testing.T) {
 	skipUnlessEnterprise(t)
 
 	client := testClient(t)
 	ctx := context.Background()
-	version := createAdminOpaVersion()
+	version := createAdminOPAVersion()
 
 	t.Run("with valid options", func(t *testing.T) {
-		opts := AdminOpaVersionCreateOptions{
+		opts := AdminOPAVersionCreateOptions{
 			Version:          version,
 			URL:              "https://www.hashicorp.com",
-			Sha:              genSha(t),
+			SHA:              genSha(t),
 			Deprecated:       Bool(true),
 			DeprecatedReason: String("Test Reason"),
 			Official:         Bool(false),
 			Enabled:          Bool(false),
 			Beta:             Bool(false),
 		}
-		ov, err := client.Admin.OpaVersions.Create(ctx, opts)
+		ov, err := client.Admin.OPAVersions.Create(ctx, opts)
 		require.NoError(t, err)
 
 		defer func() {
-			deleteErr := client.Admin.OpaVersions.Delete(ctx, ov.ID)
+			deleteErr := client.Admin.OPAVersions.Delete(ctx, ov.ID)
 			require.NoError(t, deleteErr)
 		}()
 
 		assert.Equal(t, opts.Version, ov.Version)
 		assert.Equal(t, opts.URL, ov.URL)
-		assert.Equal(t, opts.Sha, ov.Sha)
+		assert.Equal(t, opts.SHA, ov.SHA)
 		assert.Equal(t, *opts.Official, ov.Official)
 		assert.Equal(t, *opts.Deprecated, ov.Deprecated)
 		assert.Equal(t, *opts.DeprecatedReason, *ov.DeprecatedReason)
@@ -132,23 +132,23 @@ func TestAdminOpaVersions_CreateDelete(t *testing.T) {
 	})
 
 	t.Run("with only required options", func(t *testing.T) {
-		version := createAdminOpaVersion()
-		opts := AdminOpaVersionCreateOptions{
+		version := createAdminOPAVersion()
+		opts := AdminOPAVersionCreateOptions{
 			Version: version,
 			URL:     "https://www.hashicorp.com",
-			Sha:     genSha(t),
+			SHA:     genSha(t),
 		}
-		ov, err := client.Admin.OpaVersions.Create(ctx, opts)
+		ov, err := client.Admin.OPAVersions.Create(ctx, opts)
 		require.NoError(t, err)
 
 		defer func() {
-			deleteErr := client.Admin.OpaVersions.Delete(ctx, ov.ID)
+			deleteErr := client.Admin.OPAVersions.Delete(ctx, ov.ID)
 			require.NoError(t, deleteErr)
 		}()
 
 		assert.Equal(t, opts.Version, ov.Version)
 		assert.Equal(t, opts.URL, ov.URL)
-		assert.Equal(t, opts.Sha, ov.Sha)
+		assert.Equal(t, opts.SHA, ov.SHA)
 		assert.Equal(t, false, ov.Official)
 		assert.Equal(t, false, ov.Deprecated)
 		assert.Nil(t, ov.DeprecatedReason)
@@ -157,64 +157,64 @@ func TestAdminOpaVersions_CreateDelete(t *testing.T) {
 	})
 
 	t.Run("with empty options", func(t *testing.T) {
-		_, err := client.Admin.OpaVersions.Create(ctx, AdminOpaVersionCreateOptions{})
-		require.Equal(t, err, ErrRequiredOpaVerCreateOps)
+		_, err := client.Admin.OPAVersions.Create(ctx, AdminOPAVersionCreateOptions{})
+		require.Equal(t, err, ErrRequiredOPAVerCreateOps)
 	})
 }
 
-func TestAdminOpaVersions_ReadUpdate(t *testing.T) {
+func TestAdminOPAVersions_ReadUpdate(t *testing.T) {
 	skipUnlessEnterprise(t)
 
 	client := testClient(t)
 	ctx := context.Background()
 
 	t.Run("reads and updates", func(t *testing.T) {
-		version := createAdminOpaVersion()
-		opts := AdminOpaVersionCreateOptions{
+		version := createAdminOPAVersion()
+		opts := AdminOPAVersionCreateOptions{
 			Version:          version,
 			URL:              "https://www.hashicorp.com",
-			Sha:              genSha(t),
+			SHA:              genSha(t),
 			Official:         Bool(false),
 			Deprecated:       Bool(true),
 			DeprecatedReason: String("Test Reason"),
 			Enabled:          Bool(false),
 			Beta:             Bool(false),
 		}
-		ov, err := client.Admin.OpaVersions.Create(ctx, opts)
+		ov, err := client.Admin.OPAVersions.Create(ctx, opts)
 		require.NoError(t, err)
 		id := ov.ID
 
 		defer func() {
-			deleteErr := client.Admin.OpaVersions.Delete(ctx, id)
+			deleteErr := client.Admin.OPAVersions.Delete(ctx, id)
 			require.NoError(t, deleteErr)
 		}()
 
-		ov, err = client.Admin.OpaVersions.Read(ctx, id)
+		ov, err = client.Admin.OPAVersions.Read(ctx, id)
 		require.NoError(t, err)
 
 		assert.Equal(t, opts.Version, ov.Version)
 		assert.Equal(t, opts.URL, ov.URL)
-		assert.Equal(t, opts.Sha, ov.Sha)
+		assert.Equal(t, opts.SHA, ov.SHA)
 		assert.Equal(t, *opts.Official, ov.Official)
 		assert.Equal(t, *opts.Deprecated, ov.Deprecated)
 		assert.Equal(t, *opts.DeprecatedReason, *ov.DeprecatedReason)
 		assert.Equal(t, *opts.Enabled, ov.Enabled)
 		assert.Equal(t, *opts.Beta, ov.Beta)
 
-		updateVersion := createAdminOpaVersion()
+		updateVersion := createAdminOPAVersion()
 		updateURL := "https://app.terraform.io/"
-		updateOpts := AdminOpaVersionUpdateOptions{
+		updateOpts := AdminOPAVersionUpdateOptions{
 			Version:    String(updateVersion),
 			URL:        String(updateURL),
 			Deprecated: Bool(false),
 		}
 
-		ov, err = client.Admin.OpaVersions.Update(ctx, id, updateOpts)
+		ov, err = client.Admin.OPAVersions.Update(ctx, id, updateOpts)
 		require.NoError(t, err)
 
 		assert.Equal(t, updateVersion, ov.Version)
 		assert.Equal(t, updateURL, ov.URL)
-		assert.Equal(t, opts.Sha, ov.Sha)
+		assert.Equal(t, opts.SHA, ov.SHA)
 		assert.Equal(t, *opts.Official, ov.Official)
 		assert.Equal(t, *updateOpts.Deprecated, ov.Deprecated)
 		assert.Equal(t, *opts.Enabled, ov.Enabled)
@@ -223,7 +223,7 @@ func TestAdminOpaVersions_ReadUpdate(t *testing.T) {
 
 	t.Run("with non-existent OPA version", func(t *testing.T) {
 		randomID := "random-id"
-		_, err := client.Admin.OpaVersions.Read(ctx, randomID)
+		_, err := client.Admin.OPAVersions.Read(ctx, randomID)
 		require.Error(t, err)
 	})
 }
