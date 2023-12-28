@@ -697,7 +697,7 @@ func createPolicySet(t *testing.T, client *Client, org *Organization, policies [
 	}
 }
 
-func createPolicySetWithOptions(t *testing.T, client *Client, org *Organization, policies []*Policy, workspaces []*Workspace, opts PolicySetCreateOptions) (*PolicySet, func()) {
+func createPolicySetWithOptions(t *testing.T, client *Client, org *Organization, policies []*Policy, workspaces, excludedWorkspace []*Workspace, projects []*Project, opts PolicySetCreateOptions) (*PolicySet, func()) {
 	var orgCleanup func()
 
 	if org == nil {
@@ -706,13 +706,15 @@ func createPolicySetWithOptions(t *testing.T, client *Client, org *Organization,
 
 	ctx := context.Background()
 	ps, err := client.PolicySets.Create(ctx, org.Name, PolicySetCreateOptions{
-		Name:              String(randomString(t)),
-		Policies:          policies,
-		Workspaces:        workspaces,
-		Kind:              opts.Kind,
-		Overridable:       opts.Overridable,
-		AgentEnabled:      opts.AgentEnabled,
-		PolicyToolVersion: opts.PolicyToolVersion,
+		Name:                String(randomString(t)),
+		Policies:            policies,
+		Workspaces:          workspaces,
+		WorkspaceExclusions: excludedWorkspace,
+		Projects:            projects,
+		Kind:                opts.Kind,
+		Overridable:         opts.Overridable,
+		AgentEnabled:        opts.AgentEnabled,
+		PolicyToolVersion:   opts.PolicyToolVersion,
 	})
 	if err != nil {
 		t.Fatal(err)

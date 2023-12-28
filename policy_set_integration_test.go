@@ -36,11 +36,11 @@ func TestPolicySetsList(t *testing.T) {
 		Overridable:       Bool(true),
 	}
 
-	psTest1, psTestCleanup1 := createPolicySetWithOptions(t, client, orgTest, nil, []*Workspace{workspace}, []*Workspace{excludedWorkspace}, options)
+	psTest1, psTestCleanup1 := createPolicySetWithOptions(t, client, orgTest, nil, []*Workspace{workspace}, []*Workspace{excludedWorkspace}, nil, options)
 	defer psTestCleanup1()
-	psTest2, psTestCleanup2 := createPolicySetWithOptions(t, client, orgTest, nil, []*Workspace{workspace}, []*Workspace{excludedWorkspace}, options)
+	psTest2, psTestCleanup2 := createPolicySetWithOptions(t, client, orgTest, nil, []*Workspace{workspace}, []*Workspace{excludedWorkspace}, nil, options)
 	defer psTestCleanup2()
-	psTest3, psTestCleanup3 := createPolicySet(t, client, orgTest, nil, []*Workspace{workspace}, nil, OPA)
+	psTest3, psTestCleanup3 := createPolicySet(t, client, orgTest, nil, []*Workspace{workspace}, []*Workspace{excludedWorkspace}, nil, OPA)
 	defer psTestCleanup3()
 
 	t.Run("without list options", func(t *testing.T) {
@@ -105,7 +105,7 @@ func TestPolicySetsList(t *testing.T) {
 			Include: []PolicySetIncludeOpt{PolicySetWorkspaceExclusions},
 		})
 		require.NoError(t, err)
-		assert.Equal(t, 2, len(psl.Items))
+		assert.Equal(t, 3, len(psl.Items))
 
 		assert.NotNil(t, psl.Items[0].WorkspaceExclusions)
 		assert.Equal(t, 1, len(psl.Items[0].WorkspaceExclusions))
@@ -634,9 +634,9 @@ func TestPolicySetsUpdate(t *testing.T) {
 		Overridable:       Bool(true),
 	}
 
-	psTest, psTestCleanup := createPolicySetWithOptions(t, client, orgTest, nil, nil, options)
+	psTest, psTestCleanup := createPolicySetWithOptions(t, client, orgTest, nil, nil, nil, nil, options)
 	defer psTestCleanup()
-	psTest2, psTestCleanup2 := createPolicySet(t, client, orgTest, nil, nil, nil, "opa")
+	psTest2, psTestCleanup2 := createPolicySet(t, client, orgTest, nil, nil, nil, nil, "opa")
 	defer psTestCleanup2()
 
 	t.Run("with valid attributes", func(t *testing.T) {
