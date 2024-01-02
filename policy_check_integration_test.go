@@ -8,6 +8,7 @@ import (
 	"context"
 	"encoding/json"
 	"io"
+	"reflect"
 	"testing"
 	"time"
 
@@ -80,8 +81,6 @@ func TestPolicyChecksList(t *testing.T) {
 }
 
 func TestPolicyChecksRead(t *testing.T) {
-	skipIfEnterprise(t)
-
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -107,6 +106,10 @@ func TestPolicyChecksRead(t *testing.T) {
 		assert.Equal(t, 1, pc.Result.Passed)
 		assert.NotEmpty(t, pc.Run)
 		assert.NotEmpty(t, pc.Result.Sentinel)
+
+		if reflect.TypeOf(pc.Result.Sentinel) != reflect.TypeOf(map[string]interface{}{}) {
+			assert.Fail(t, "Sentinel is not a map[string]interface{}")
+		}
 	})
 
 	t.Run("when the policy check does not exist", func(t *testing.T) {
