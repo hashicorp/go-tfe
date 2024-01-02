@@ -101,6 +101,7 @@ type PolicyResult struct {
 	Result         bool `jsonapi:"attr,result"`
 	SoftFailed     int  `jsonapi:"attr,soft-failed"`
 	TotalFailed    int  `jsonapi:"attr,total-failed"`
+	Sentinel       any  `jsonapi:"attr,sentinel"`
 }
 
 // PolicyStatusTimestamps holds the timestamps for individual policy check

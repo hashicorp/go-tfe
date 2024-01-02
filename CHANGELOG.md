@@ -1,3 +1,9 @@
+# Unreleased
+
+## Enhancements
+
+* Added `Sentinel` field to `PolicyResult` by @stefan-kiss. [Issue#790](https://github.com/hashicorp/go-tfe/issues/790)
+
 # v1.41.0
 
 ## Enhancements
