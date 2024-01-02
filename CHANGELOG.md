@@ -1,5 +1,7 @@
 # Unreleased
 
+# v1.42.0
+
 ## Deprecations
 * The `Sourceable` field has been deprecated on `RunTrigger`. Instead, use `SourceableChoice` to locate the non-empty field representing the actual sourceable value by @brandonc [#816](https://github.com/hashicorp/go-tfe/pull/816)
 
