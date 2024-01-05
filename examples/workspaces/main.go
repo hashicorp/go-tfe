@@ -6,6 +6,7 @@ package main
 import (
 	"context"
 	"log"
+	"time"
 
 	tfe "github.com/hashicorp/go-tfe"
 )
@@ -26,7 +27,8 @@ func main() {
 
 	// Create a new workspace
 	w, err := client.Workspaces.Create(ctx, "org-name", tfe.WorkspaceCreateOptions{
-		Name: tfe.String("my-app-tst"),
+		Name:          tfe.String("my-app-tst"),
+		AutoDestroyAt: tfe.Time(time.Date(2025, 1, 1, 0, 0, 0, 0, time.UTC)),
 	})
 	if err != nil {
 		log.Fatal(err)
@@ -37,6 +39,15 @@ func main() {
 		AutoApply:        tfe.Bool(false),
 		TerraformVersion: tfe.String("0.11.1"),
 		WorkingDirectory: tfe.String("my-app/infra"),
+		AutoDestroyAt:    tfe.UnsettableTime(time.Date(2025, 1, 1, 0, 0, 0, 0, time.UTC)),
+	})
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	// Disable auto destroy
+	w, err = client.Workspaces.Update(ctx, "org-name", w.Name, tfe.WorkspaceUpdateOptions{
+		AutoDestroyAt: tfe.NullTime(),
 	})
 	if err != nil {
 		log.Fatal(err)

@@ -129,14 +129,18 @@ func String(v string) *string {
 	return &v
 }
 
-// Unsettable is a wrapper that can be used for attributes with significant nil
-// values that still maintains `omitempty` behavior.
+// Unsettable is a wrapper that can be used for marshaling attributes which use
+// significant nil values, but still require `omitempty` behavior.
 //
 // This is generally useful for PATCH requests, where attributes with zero
 // values are intentionally not marshaled into the request payload.
 //
-// example
-// note about asymmetry
+// Helper functions are provided to help avoid pointer wrangling.
+//
+// NOTE: This type is only for use with outbound requests. It will cause errors
+// if used to unmarshal API responses, since the jsonapi module does not yet
+// support custom unmarshaling.
+
 type Unsettable[T any] struct {
 	Value *T
 }
