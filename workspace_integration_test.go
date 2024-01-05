@@ -1152,7 +1152,7 @@ func TestWorkspacesUpdate(t *testing.T) {
 			assert.Equal(t, *options.Name, item.Name)
 			assert.Equal(t, *options.AllowDestroyPlan, item.AllowDestroyPlan)
 			assert.Equal(t, *options.AutoApply, item.AutoApply)
-			assert.Equal(t, options.AutoDestroyAt, item.AutoDestroyAt)
+			assert.Equal(t, options.AutoDestroyAt.Value, item.AutoDestroyAt)
 			assert.Equal(t, *options.FileTriggersEnabled, item.FileTriggersEnabled)
 			assert.Equal(t, *options.Description, item.Description)
 			assert.Equal(t, *options.Operations, item.Operations)
