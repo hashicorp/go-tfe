@@ -1126,7 +1126,7 @@ func TestWorkspacesUpdate(t *testing.T) {
 			Name:                       String(randomString(t)),
 			AllowDestroyPlan:           Bool(true),
 			AutoApply:                  Bool(false),
-			AutoDestroyAt:              Time(time.Date(2025, 1, 1, 0, 0, 0, 0, time.UTC)),
+			AutoDestroyAt:              UnsettableTime(time.Date(2025, 1, 1, 0, 0, 0, 0, time.UTC)),
 			FileTriggersEnabled:        Bool(true),
 			Operations:                 Bool(false),
 			QueueAllRuns:               Bool(false),
@@ -2649,7 +2649,7 @@ func TestWorkspace_DataRetentionPolicy(t *testing.T) {
 	})
 }
 
-func TestWorkspacesRemoveAutoDestroyAt(t *testing.T) {
+func TestWorkspacesAutoDestroy(t *testing.T) {
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -2675,8 +2675,19 @@ func TestWorkspacesRemoveAutoDestroyAt(t *testing.T) {
 	require.NoError(t, err)
 	assert.NotNil(t, w.AutoDestroyAt)
 
-	// explicitly remove auto destroy
-	w, err = client.Workspaces.RemoveAutoDestroyAt(ctx, orgTest.Name, wTest.Name)
+	// explicitly update the value of auto_destroy_at
+	w, err = client.Workspaces.Update(ctx, orgTest.Name, wTest.Name, WorkspaceUpdateOptions{
+		AutoDestroyAt: UnsettableTime(time.Date(2025, 1, 2, 0, 0, 0, 0, time.UTC)),
+	})
+
+	require.NoError(t, err)
+	assert.NotNil(t, w.AutoDestroyAt)
+	assert.NotEqual(t, w.AutoDestroyAt, autoDestroyAt)
+
+	// disable auto destroy
+	w, err = client.Workspaces.Update(ctx, orgTest.Name, wTest.Name, WorkspaceUpdateOptions{
+		AutoDestroyAt: NullTime(),
+	})
 
 	require.NoError(t, err)
 	assert.Nil(t, w.AutoDestroyAt)

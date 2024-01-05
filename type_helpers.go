@@ -3,7 +3,11 @@
 
 package tfe
 
-import "time"
+import (
+	"encoding/json"
+	"reflect"
+	"time"
+)
 
 // Access returns a pointer to the given team access type.
 func Access(v AccessType) *AccessType {
@@ -123,4 +127,67 @@ func SMTPAuthValue(v SMTPAuthType) *SMTPAuthType {
 // String returns a pointer to the given string.
 func String(v string) *string {
 	return &v
+}
+
+// Unsettable is a wrapper that can be used for attributes with significant nil
+// values that still maintains `omitempty` behavior.
+//
+// This is generally useful for PATCH requests, where attributes with zero
+// values are intentionally not marshaled into the request payload.
+//
+// example
+// note about asymmetry
+type Unsettable[T any] struct {
+	Value *T
+}
+
+func UnsettableString(v string) *Unsettable[string] {
+	return &Unsettable[string]{&v}
+}
+
+func NullString() *Unsettable[string] {
+	return &Unsettable[string]{}
+}
+
+func UnsettableInt(v int) *Unsettable[int] {
+	return &Unsettable[int]{&v}
+}
+
+func NullInt() *Unsettable[string] {
+	return &Unsettable[string]{}
+}
+
+func UnsettableBool(v bool) *Unsettable[bool] {
+	return &Unsettable[bool]{&v}
+}
+
+func NullBool() *Unsettable[bool] {
+	return &Unsettable[bool]{}
+}
+
+var iso8601TimeFormat = "2006-01-02T15:04:05Z"
+
+func UnsettableTime(v time.Time) *Unsettable[time.Time] {
+	return &Unsettable[time.Time]{&v}
+}
+
+func NullTime() *Unsettable[time.Time] {
+	return &Unsettable[time.Time]{}
+}
+
+func (t *Unsettable[T]) MarshalJSON() ([]byte, error) {
+	if t == nil || t.Value == nil {
+		return json.RawMessage(`null`), nil
+	}
+
+	var b []byte
+	var err error
+
+	val := reflect.ValueOf(t.Value)
+	if val.Type().Kind() == reflect.Ptr && val.Elem().Type() == reflect.TypeOf(time.Time{}) {
+		return json.Marshal(val.Elem().Interface().(time.Time).Format(iso8601TimeFormat))
+	}
+
+	b, err = json.Marshal(t.Value)
+	return b, err
 }
