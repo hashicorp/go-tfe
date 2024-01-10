@@ -39,7 +39,7 @@ func main() {
 		AutoApply:        tfe.Bool(false),
 		TerraformVersion: tfe.String("0.11.1"),
 		WorkingDirectory: tfe.String("my-app/infra"),
-		AutoDestroyAt:    tfe.UnsettableTime(time.Date(2025, 1, 1, 0, 0, 0, 0, time.UTC)),
+		AutoDestroyAt:    tfe.NullableTime(time.Date(2025, 1, 1, 0, 0, 0, 0, time.UTC)),
 	})
 	if err != nil {
 		log.Fatal(err)

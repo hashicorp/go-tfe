@@ -1126,7 +1126,7 @@ func TestWorkspacesUpdate(t *testing.T) {
 			Name:                       String(randomString(t)),
 			AllowDestroyPlan:           Bool(true),
 			AutoApply:                  Bool(false),
-			AutoDestroyAt:              UnsettableTime(time.Date(2025, 1, 1, 0, 0, 0, 0, time.UTC)),
+			AutoDestroyAt:              NullableTime(time.Date(2025, 1, 1, 0, 0, 0, 0, time.UTC)),
 			FileTriggersEnabled:        Bool(true),
 			Operations:                 Bool(false),
 			QueueAllRuns:               Bool(false),
@@ -1152,7 +1152,7 @@ func TestWorkspacesUpdate(t *testing.T) {
 			assert.Equal(t, *options.Name, item.Name)
 			assert.Equal(t, *options.AllowDestroyPlan, item.AllowDestroyPlan)
 			assert.Equal(t, *options.AutoApply, item.AutoApply)
-			assert.Equal(t, options.AutoDestroyAt.Value, item.AutoDestroyAt)
+			assert.Equal(t, options.AutoDestroyAt[true], item.AutoDestroyAt)
 			assert.Equal(t, *options.FileTriggersEnabled, item.FileTriggersEnabled)
 			assert.Equal(t, *options.Description, item.Description)
 			assert.Equal(t, *options.Operations, item.Operations)
@@ -2677,7 +2677,7 @@ func TestWorkspacesAutoDestroy(t *testing.T) {
 
 	// explicitly update the value of auto_destroy_at
 	w, err = client.Workspaces.Update(ctx, orgTest.Name, wTest.Name, WorkspaceUpdateOptions{
-		AutoDestroyAt: UnsettableTime(time.Date(2025, 1, 2, 0, 0, 0, 0, time.UTC)),
+		AutoDestroyAt: NullableTime(time.Date(2025, 1, 2, 0, 0, 0, 0, time.UTC)),
 	})
 
 	require.NoError(t, err)

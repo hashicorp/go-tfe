@@ -486,7 +486,7 @@ type WorkspaceUpdateOptions struct {
 	AutoApplyRunTrigger *bool `jsonapi:"attr,auto-apply-run-trigger,omitempty"`
 
 	// Optional: The time after which an automatic destroy run will be queued
-	AutoDestroyAt *Unsettable[time.Time] `jsonapi:"attr,auto_destroy_at,omitempty"`
+	AutoDestroyAt Nullable[time.Time] `jsonapi:"attr,auto_destroy_at,omitempty"`
 
 	// Optional: A new name for the workspace, which can only include letters, numbers, -,
 	// and _. This will be used as an identifier and must be unique in the
