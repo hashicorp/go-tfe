@@ -10,6 +10,8 @@ import (
 	"net/url"
 	"strings"
 	"time"
+
+	"github.com/hashicorp/jsonapi"
 )
 
 // Compile-time proof of interface implementation.
@@ -143,7 +145,7 @@ type Workspace struct {
 	AssessmentsEnabled         bool                        `jsonapi:"attr,assessments-enabled"`
 	AutoApply                  bool                        `jsonapi:"attr,auto-apply"`
 	AutoApplyRunTrigger        bool                        `jsonapi:"attr,auto-apply-run-trigger"`
-	AutoDestroyAt              *time.Time                  `jsonapi:"attr,auto-destroy-at,iso8601"`
+	AutoDestroyAt              jsonapi.Nullable[time.Time] `jsonapi:"attr,auto-destroy-at,iso8601,omitempty"`
 	CanQueueDestroyPlan        bool                        `jsonapi:"attr,can-queue-destroy-plan"`
 	CreatedAt                  time.Time                   `jsonapi:"attr,created-at,iso8601"`
 	Description                string                      `jsonapi:"attr,description"`
@@ -336,7 +338,7 @@ type WorkspaceCreateOptions struct {
 	AutoApplyRunTrigger *bool `jsonapi:"attr,auto-apply-run-trigger,omitempty"`
 
 	// Optional: The time after which an automatic destroy run will be queued
-	AutoDestroyAt *time.Time `jsonapi:"attr,auto-destroy-at,iso8601,omitempty"`
+	AutoDestroyAt jsonapi.Nullable[time.Time] `jsonapi:"attr,auto-destroy-at,iso8601,omitempty"`
 
 	// Optional: A description for the workspace.
 	Description *string `jsonapi:"attr,description,omitempty"`
@@ -486,7 +488,7 @@ type WorkspaceUpdateOptions struct {
 	AutoApplyRunTrigger *bool `jsonapi:"attr,auto-apply-run-trigger,omitempty"`
 
 	// Optional: The time after which an automatic destroy run will be queued
-	AutoDestroyAt Nullable[time.Time] `jsonapi:"attr,auto_destroy_at,omitempty"`
+	AutoDestroyAt jsonapi.Nullable[time.Time] `jsonapi:"attr,auto-destroy-at,iso8601,omitempty"`
 
 	// Optional: A new name for the workspace, which can only include letters, numbers, -,
 	// and _. This will be used as an identifier and must be unique in the
