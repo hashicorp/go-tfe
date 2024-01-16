@@ -220,6 +220,7 @@ func TestAdminOrganizations_Update(t *testing.T) {
 
 		accessBetaTools := true
 		globalModuleSharing := false
+		globalProviderSharing := false
 		isDisabled := false
 		terraformBuildWorkerApplyTimeout := "24h"
 		terraformBuildWorkerPlanTimeout := "24h"
@@ -228,6 +229,7 @@ func TestAdminOrganizations_Update(t *testing.T) {
 		opts := AdminOrganizationUpdateOptions{
 			AccessBetaTools:                  &accessBetaTools,
 			GlobalModuleSharing:              &globalModuleSharing,
+			GlobalProviderSharing:            &globalProviderSharing,
 			IsDisabled:                       &isDisabled,
 			TerraformBuildWorkerApplyTimeout: &terraformBuildWorkerApplyTimeout,
 			TerraformBuildWorkerPlanTimeout:  &terraformBuildWorkerPlanTimeout,
@@ -240,6 +242,7 @@ func TestAdminOrganizations_Update(t *testing.T) {
 
 		assert.Equal(t, accessBetaTools, adminOrg.AccessBetaTools)
 		assert.Equal(t, adminOrg.GlobalModuleSharing, &globalModuleSharing)
+		assert.Equal(t, adminOrg.GlobalProviderSharing, &globalProviderSharing)
 		assert.Equal(t, isDisabled, adminOrg.IsDisabled)
 		assert.Equal(t, terraformBuildWorkerApplyTimeout, adminOrg.TerraformBuildWorkerApplyTimeout)
 		assert.Equal(t, terraformBuildWorkerPlanTimeout, adminOrg.TerraformBuildWorkerPlanTimeout)
@@ -248,11 +251,13 @@ func TestAdminOrganizations_Update(t *testing.T) {
 
 		isDisabled = true
 		globalModuleSharing = true
+		globalProviderSharing = true
 		workspaceLimit := 42
 		opts = AdminOrganizationUpdateOptions{
-			GlobalModuleSharing: &globalModuleSharing,
-			IsDisabled:          &isDisabled,
-			WorkspaceLimit:      &workspaceLimit,
+			GlobalModuleSharing:   &globalModuleSharing,
+			GlobalProviderSharing: &globalProviderSharing,
+			IsDisabled:            &isDisabled,
+			WorkspaceLimit:        &workspaceLimit,
 		}
 
 		adminOrg, err = client.Admin.Organizations.Update(ctx, org.Name, opts)
@@ -260,16 +265,19 @@ func TestAdminOrganizations_Update(t *testing.T) {
 		require.NotNilf(t, adminOrg, "Org returned as nil when it shouldn't be.")
 
 		assert.Equal(t, adminOrg.GlobalModuleSharing, &globalModuleSharing)
+		assert.Equal(t, adminOrg.GlobalProviderSharing, &globalProviderSharing)
 		assert.Equal(t, adminOrg.IsDisabled, isDisabled)
 		assert.Equal(t, &workspaceLimit, adminOrg.WorkspaceLimit)
 
 		globalModuleSharing = false
+		globalProviderSharing = false
 		isDisabled = false
 		workspaceLimit = 0
 		opts = AdminOrganizationUpdateOptions{
-			GlobalModuleSharing: &globalModuleSharing,
-			IsDisabled:          &isDisabled,
-			WorkspaceLimit:      &workspaceLimit,
+			GlobalModuleSharing:   &globalModuleSharing,
+			GlobalProviderSharing: &globalProviderSharing,
+			IsDisabled:            &isDisabled,
+			WorkspaceLimit:        &workspaceLimit,
 		}
 
 		adminOrg, err = client.Admin.Organizations.Update(ctx, org.Name, opts)
@@ -277,6 +285,7 @@ func TestAdminOrganizations_Update(t *testing.T) {
 		require.NotNilf(t, adminOrg, "Org returned as nil when it shouldn't be.")
 
 		assert.Equal(t, &globalModuleSharing, adminOrg.GlobalModuleSharing)
+		assert.Equal(t, &globalProviderSharing, adminOrg.GlobalProviderSharing)
 		assert.Equal(t, adminOrg.IsDisabled, isDisabled)
 
 		assert.Equal(t, &workspaceLimit, adminOrg.WorkspaceLimit)

@@ -47,6 +47,7 @@ type AdminOrganization struct {
 	AccessBetaTools                  bool   `jsonapi:"attr,access-beta-tools"`
 	ExternalID                       string `jsonapi:"attr,external-id"`
 	GlobalModuleSharing              *bool  `jsonapi:"attr,global-module-sharing"`
+	GlobalProviderSharing            *bool  `jsonapi:"attr,global-provider-sharing"`
 	IsDisabled                       bool   `jsonapi:"attr,is-disabled"`
 	NotificationEmail                string `jsonapi:"attr,notification-email"`
 	SsoEnabled                       bool   `jsonapi:"attr,sso-enabled"`
@@ -64,6 +65,7 @@ type AdminOrganization struct {
 type AdminOrganizationUpdateOptions struct {
 	AccessBetaTools                  *bool   `jsonapi:"attr,access-beta-tools,omitempty"`
 	GlobalModuleSharing              *bool   `jsonapi:"attr,global-module-sharing,omitempty"`
+	GlobalProviderSharing            *bool   `jsonapi:"attr,global-provider-sharing,omitempty"`
 	IsDisabled                       *bool   `jsonapi:"attr,is-disabled,omitempty"`
 	TerraformBuildWorkerApplyTimeout *string `jsonapi:"attr,terraform-build-worker-apply-timeout,omitempty"`
 	TerraformBuildWorkerPlanTimeout  *string `jsonapi:"attr,terraform-build-worker-plan-timeout,omitempty"`
