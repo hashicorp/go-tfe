@@ -236,6 +236,7 @@ func TestOrganizationsUpdate(t *testing.T) {
 	t.Run("with new AggregatedCommitStatusEnabled option", func(t *testing.T) {
 		skipIfEnterprise(t)
 
+		// verify both test cases
 		for _, testCase := range []bool{true, false} {
 			orgTest, orgTestCleanup := createOrganization(t, client)
 			t.Cleanup(orgTestCleanup)
