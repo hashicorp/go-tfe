@@ -99,7 +99,7 @@ type Organization struct {
 	SendPassingStatusesForUntriggeredSpeculativePlans bool                     `jsonapi:"attr,send-passing-statuses-for-untriggered-speculative-plans"`
 	RemainingTestableCount                            int                      `jsonapi:"attr,remaining-testable-count"`
 	// Optional: If enabled, SendPassingStatusesForUntriggeredSpeculativePlans needs to be false.
-	AggregatedCommitStatusEnabled bool `jsonapi:"attr,aggregated-commit-status-enabled,omitempty"`
+	AggregatedCommitStatusEnabled bool `jsonapi:"attr,aggregated-commit-status-enabled"`
 	// Note: This will be false for TFE versions older than v202211, where the setting was introduced.
 	// On those TFE versions, safe delete does not exist, so ALL deletes will be force deletes.
 	AllowForceDeleteWorkspaces bool `jsonapi:"attr,allow-force-delete-workspaces"`
@@ -216,7 +216,7 @@ type OrganizationCreateOptions struct {
 	SendPassingStatusesForUntriggeredSpeculativePlans *bool `jsonapi:"attr,send-passing-statuses-for-untriggered-speculative-plans,omitempty"`
 
 	// Optional: If enabled, SendPassingStatusesForUntriggeredSpeculativePlans needs to be false.
-	AggregatedCommitStatusEnabled *bool `jsonapi:"attr,aggregated-commit-status-enabled,omitempty"`
+	AggregatedCommitStatusEnabled *bool `jsonapi:"attr,aggregated-commit-status-enabled"`
 
 	// Optional: AllowForceDeleteWorkspaces toggles behavior of allowing workspace admins to delete workspaces with resources under management.
 	AllowForceDeleteWorkspaces *bool `jsonapi:"attr,allow-force-delete-workspaces,omitempty"`
@@ -261,7 +261,7 @@ type OrganizationUpdateOptions struct {
 	SendPassingStatusesForUntriggeredSpeculativePlans *bool `jsonapi:"attr,send-passing-statuses-for-untriggered-speculative-plans,omitempty"`
 
 	// Optional: If enabled, SendPassingStatusesForUntriggeredSpeculativePlans needs to be false.
-	AggregatedCommitStatusEnabled *bool `jsonapi:"attr,aggregated-commit-status-enabled,omitempty"`
+	AggregatedCommitStatusEnabled *bool `jsonapi:"attr,aggregated-commit-status-enabled"`
 
 	// Optional: AllowForceDeleteWorkspaces toggles behavior of allowing workspace admins to delete workspaces with resources under management.
 	AllowForceDeleteWorkspaces *bool `jsonapi:"attr,allow-force-delete-workspaces,omitempty"`
