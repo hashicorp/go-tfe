@@ -1,5 +1,8 @@
 # Unreleased
 
+## Features
+* Adds `AggregatedCommitStatusEnabled` field to `Organization` by @mjyocca [#829](https://github.com/hashicorp/go-tfe/pull/829)
+
 # v1.42.0
 
 ## Deprecations
