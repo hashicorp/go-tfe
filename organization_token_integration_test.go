@@ -79,13 +79,14 @@ func TestOrganizationTokens_CreateWithOptions(t *testing.T) {
 	})
 
 	t.Run("with an expiration date", func(t *testing.T) {
-		start := time.Date(2024, 1, 15, 22, 3, 4, 0, time.UTC)
+		currentTime := time.Now().UTC().Truncate(time.Second)
+		oneDayLater := currentTime.Add(24 * time.Hour)
 		ot, err := client.OrganizationTokens.CreateWithOptions(ctx, orgTest.Name, OrganizationTokenCreateOptions{
-			ExpiredAt: &start,
+			ExpiredAt: &oneDayLater,
 		})
 		require.NoError(t, err)
 		require.NotEmpty(t, ot.Token)
-		assert.Equal(t, ot.ExpiredAt, start)
+		assert.Equal(t, ot.ExpiredAt, oneDayLater)
 		tkToken = ot.Token
 	})
 }
