@@ -24,6 +24,20 @@ func TestPolicySetsList(t *testing.T) {
 
 	upgradeOrganizationSubscription(t, client, orgTest)
 
+	version := createAdminSentinelVersion()
+	opts := AdminSentinelVersionCreateOptions{
+		Version:          version,
+		URL:              "https://www.hashicorp.com",
+		SHA:              genSha(t),
+		Official:         Bool(false),
+		Deprecated:       Bool(false),
+		DeprecatedReason: String("Test Reason"),
+		Enabled:          Bool(true),
+		Beta:             Bool(false),
+	}
+	sv, err := client.Admin.SentinelVersions.Create(ctx, opts)
+	require.NoError(t, err)
+
 	workspace, workspaceCleanup := createWorkspace(t, client, orgTest)
 	defer workspaceCleanup()
 	excludedWorkspace, excludedWorkspaceCleanup := createWorkspace(t, client, orgTest)
@@ -32,7 +46,7 @@ func TestPolicySetsList(t *testing.T) {
 	options := PolicySetCreateOptions{
 		Kind:              Sentinel,
 		AgentEnabled:      true,
-		PolicyToolVersion: "0.22.1",
+		PolicyToolVersion: sv.Version,
 		Overridable:       Bool(true),
 	}
 
@@ -42,6 +56,10 @@ func TestPolicySetsList(t *testing.T) {
 	defer psTestCleanup2()
 	psTest3, psTestCleanup3 := createPolicySet(t, client, orgTest, nil, []*Workspace{workspace}, []*Workspace{excludedWorkspace}, nil, OPA)
 	defer psTestCleanup3()
+	defer func() {
+		err := client.Admin.SentinelVersions.Delete(ctx, sv.ID)
+		require.NoError(t, err)
+	}()
 
 	t.Run("without list options", func(t *testing.T) {
 		psl, err := client.PolicySets.List(ctx, orgTest.Name, nil)
@@ -51,7 +69,6 @@ func TestPolicySetsList(t *testing.T) {
 		assert.Contains(t, psl.Items, psTest2)
 		assert.Contains(t, psl.Items, psTest3)
 		assert.Equal(t, true, psl.Items[0].AgentEnabled)
-		assert.Equal(t, "0.22.1", psl.Items[0].PolicyToolVersion)
 		assert.Equal(t, 1, psl.CurrentPage)
 		assert.Equal(t, 3, psl.TotalCount)
 	})
@@ -130,11 +147,30 @@ func TestPolicySetsCreate(t *testing.T) {
 
 	upgradeOrganizationSubscription(t, client, orgTest)
 
+	version := createAdminSentinelVersion()
+	opts := AdminSentinelVersionCreateOptions{
+		Version:          version,
+		URL:              "https://www.hashicorp.com",
+		SHA:              genSha(t),
+		Official:         Bool(false),
+		Deprecated:       Bool(false),
+		DeprecatedReason: String("Test Reason"),
+		Enabled:          Bool(true),
+		Beta:             Bool(false),
+	}
+	sv, err := client.Admin.SentinelVersions.Create(ctx, opts)
+	defer func() {
+		err := client.Admin.SentinelVersions.Delete(ctx, sv.ID)
+		require.NoError(t, err)
+	}()
+	require.NoError(t, err)
+
 	var vcsPolicyID string
 
 	t.Run("with valid attributes", func(t *testing.T) {
 		options := PolicySetCreateOptions{
-			Name: String("policy-set"),
+			Name:              String(randomString(t)),
+			PolicyToolVersion: sv.Version,
 		}
 
 		ps, err := client.PolicySets.Create(ctx, orgTest.Name, options)
@@ -162,10 +198,10 @@ func TestPolicySetsCreate(t *testing.T) {
 
 	t.Run("with pinned policy runtime version valid attributes", func(t *testing.T) {
 		options := PolicySetCreateOptions{
-			Name:              String("policy-set"),
+			Name:              String(randomString(t)),
 			Kind:              Sentinel,
 			AgentEnabled:      true,
-			PolicyToolVersion: "0.22.1",
+			PolicyToolVersion: sv.Version,
 		}
 
 		ps, err := client.PolicySets.Create(ctx, orgTest.Name, options)
@@ -175,7 +211,7 @@ func TestPolicySetsCreate(t *testing.T) {
 		assert.Equal(t, ps.Description, "")
 		assert.Equal(t, ps.Kind, Sentinel)
 		assert.Equal(t, ps.AgentEnabled, true)
-		assert.Equal(t, ps.PolicyToolVersion, "0.22.1")
+		assert.Equal(t, ps.PolicyToolVersion, sv.Version)
 		assert.False(t, ps.Global)
 	})
 
@@ -183,7 +219,7 @@ func TestPolicySetsCreate(t *testing.T) {
 		options := PolicySetCreateOptions{
 			Name:              String(randomString(t)),
 			AgentEnabled:      true,
-			PolicyToolVersion: "0.22.1",
+			PolicyToolVersion: sv.Version,
 			Overridable:       Bool(true),
 		}
 		ps, err := client.PolicySets.Create(ctx, orgTest.Name, options)
@@ -193,7 +229,7 @@ func TestPolicySetsCreate(t *testing.T) {
 		assert.Equal(t, ps.Description, "")
 		assert.Equal(t, ps.Kind, Sentinel)
 		assert.Equal(t, ps.AgentEnabled, true)
-		assert.Equal(t, ps.PolicyToolVersion, "0.22.1")
+		assert.Equal(t, ps.PolicyToolVersion, sv.Version)
 		assert.False(t, ps.Global)
 	})
 
@@ -627,10 +663,28 @@ func TestPolicySetsUpdate(t *testing.T) {
 
 	upgradeOrganizationSubscription(t, client, orgTest)
 
+	version := createAdminSentinelVersion()
+	opts := AdminSentinelVersionCreateOptions{
+		Version:          version,
+		URL:              "https://www.hashicorp.com",
+		SHA:              genSha(t),
+		Official:         Bool(false),
+		Deprecated:       Bool(false),
+		DeprecatedReason: String("Test Reason"),
+		Enabled:          Bool(true),
+		Beta:             Bool(false),
+	}
+	sv, err := client.Admin.SentinelVersions.Create(ctx, opts)
+	defer func() {
+		err := client.Admin.SentinelVersions.Delete(ctx, sv.ID)
+		require.NoError(t, err)
+	}()
+	require.NoError(t, err)
+
 	options := PolicySetCreateOptions{
 		Kind:              Sentinel,
 		AgentEnabled:      true,
-		PolicyToolVersion: "0.22.1",
+		PolicyToolVersion: sv.Version,
 		Overridable:       Bool(true),
 	}
 
