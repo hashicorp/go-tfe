@@ -183,10 +183,10 @@ type PolicySetCreateOptions struct {
 	Overridable *bool `jsonapi:"attr,overridable,omitempty"`
 
 	// Optional: Whether or not the policy is run as an evaluation inside the agent.
-	AgentEnabled bool `jsonapi:"attr,agent-enabled"`
+	AgentEnabled *bool `jsonapi:"attr,agent-enabled,omitempty"`
 
 	// Optional: The policy tool version to run the evaluation against.
-	PolicyToolVersion string `jsonapi:"attr,policy-tool-version,omitempty"`
+	PolicyToolVersion *string `jsonapi:"attr,policy-tool-version,omitempty"`
 
 	// Optional: The sub-path within the attached VCS repository to ingress. All
 	// files and directories outside of this sub-path will be ignored.
@@ -234,10 +234,10 @@ type PolicySetUpdateOptions struct {
 	Overridable *bool `jsonapi:"attr,overridable,omitempty"`
 
 	// Optional: Whether or not the policy is run as an evaluation inside the agent.
-	AgentEnabled bool `jsonapi:"attr,agent-enabled"`
+	AgentEnabled *bool `jsonapi:"attr,agent-enabled,omitempty"`
 
 	// Optional: The policy tool version to run the evaluation against.
-	PolicyToolVersion string `jsonapi:"attr,policy-tool-version"`
+	PolicyToolVersion *string `jsonapi:"attr,policy-tool-version"`
 
 	// Optional: The sub-path within the attached VCS repository to ingress. All
 	// files and directories outside of this sub-path will be ignored.

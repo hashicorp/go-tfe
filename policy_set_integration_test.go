@@ -45,8 +45,8 @@ func TestPolicySetsList(t *testing.T) {
 
 	options := PolicySetCreateOptions{
 		Kind:              Sentinel,
-		AgentEnabled:      true,
-		PolicyToolVersion: sv.Version,
+		AgentEnabled:      Bool(true),
+		PolicyToolVersion: String(sv.Version),
 		Overridable:       Bool(true),
 	}
 
@@ -170,7 +170,7 @@ func TestPolicySetsCreate(t *testing.T) {
 	t.Run("with valid attributes", func(t *testing.T) {
 		options := PolicySetCreateOptions{
 			Name:              String(randomString(t)),
-			PolicyToolVersion: sv.Version,
+			PolicyToolVersion: String(sv.Version),
 		}
 
 		ps, err := client.PolicySets.Create(ctx, orgTest.Name, options)
@@ -200,8 +200,8 @@ func TestPolicySetsCreate(t *testing.T) {
 		options := PolicySetCreateOptions{
 			Name:              String(randomString(t)),
 			Kind:              Sentinel,
-			AgentEnabled:      true,
-			PolicyToolVersion: sv.Version,
+			AgentEnabled:      Bool(true),
+			PolicyToolVersion: String(sv.Version),
 		}
 
 		ps, err := client.PolicySets.Create(ctx, orgTest.Name, options)
@@ -218,8 +218,8 @@ func TestPolicySetsCreate(t *testing.T) {
 	t.Run("with pinned policy runtime version and missing kind", func(t *testing.T) {
 		options := PolicySetCreateOptions{
 			Name:              String(randomString(t)),
-			AgentEnabled:      true,
-			PolicyToolVersion: sv.Version,
+			AgentEnabled:      Bool(true),
+			PolicyToolVersion: String(sv.Version),
 			Overridable:       Bool(true),
 		}
 		ps, err := client.PolicySets.Create(ctx, orgTest.Name, options)
@@ -683,8 +683,8 @@ func TestPolicySetsUpdate(t *testing.T) {
 
 	options := PolicySetCreateOptions{
 		Kind:              Sentinel,
-		AgentEnabled:      true,
-		PolicyToolVersion: sv.Version,
+		AgentEnabled:      Bool(true),
+		PolicyToolVersion: String(sv.Version),
 		Overridable:       Bool(true),
 	}
 
@@ -695,7 +695,7 @@ func TestPolicySetsUpdate(t *testing.T) {
 
 	t.Run("with valid attributes", func(t *testing.T) {
 		options := PolicySetUpdateOptions{
-			AgentEnabled: false,
+			AgentEnabled: Bool(false),
 			Name:         String("global"),
 			Description:  String("Policies in this set will be checked in ALL workspaces!"),
 			Global:       Bool(true),
