@@ -1,7 +1,12 @@
 # Unreleased
 
+# v1.43.0
+
 ## Features
 * Adds `AggregatedCommitStatusEnabled` field to `Organization` by @mjyocca [#829](https://github.com/hashicorp/go-tfe/pull/829)
+
+## Enhancements
+* Adds `GlobalProviderSharing` field to `AdminOrganization` by @alex-ikse [#837](https://github.com/hashicorp/go-tfe/pull/837)
 
 # v1.42.0
 
