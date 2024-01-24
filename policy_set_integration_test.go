@@ -26,14 +26,13 @@ func TestPolicySetsList(t *testing.T) {
 
 	version := createAdminSentinelVersion()
 	opts := AdminSentinelVersionCreateOptions{
-		Version:          version,
-		URL:              "https://www.hashicorp.com",
-		SHA:              genSha(t),
-		Official:         Bool(false),
-		Deprecated:       Bool(false),
-		DeprecatedReason: String("Test Reason"),
-		Enabled:          Bool(true),
-		Beta:             Bool(false),
+		Version:    version,
+		URL:        "https://www.hashicorp.com",
+		SHA:        genSha(t),
+		Official:   Bool(false),
+		Deprecated: Bool(false),
+		Enabled:    Bool(true),
+		Beta:       Bool(false),
 	}
 	sv, err := client.Admin.SentinelVersions.Create(ctx, opts)
 	require.NoError(t, err)
@@ -149,14 +148,13 @@ func TestPolicySetsCreate(t *testing.T) {
 
 	version := createAdminSentinelVersion()
 	opts := AdminSentinelVersionCreateOptions{
-		Version:          version,
-		URL:              "https://www.hashicorp.com",
-		SHA:              genSha(t),
-		Official:         Bool(false),
-		Deprecated:       Bool(false),
-		DeprecatedReason: String("Test Reason"),
-		Enabled:          Bool(true),
-		Beta:             Bool(false),
+		Version:    version,
+		URL:        "https://www.hashicorp.com",
+		SHA:        genSha(t),
+		Official:   Bool(false),
+		Deprecated: Bool(false),
+		Enabled:    Bool(true),
+		Beta:       Bool(false),
 	}
 	sv, err := client.Admin.SentinelVersions.Create(ctx, opts)
 	defer func() {
@@ -665,14 +663,13 @@ func TestPolicySetsUpdate(t *testing.T) {
 
 	version := createAdminSentinelVersion()
 	opts := AdminSentinelVersionCreateOptions{
-		Version:          version,
-		URL:              "https://www.hashicorp.com",
-		SHA:              genSha(t),
-		Official:         Bool(false),
-		Deprecated:       Bool(false),
-		DeprecatedReason: String("Test Reason"),
-		Enabled:          Bool(true),
-		Beta:             Bool(false),
+		Version:    version,
+		URL:        "https://www.hashicorp.com",
+		SHA:        genSha(t),
+		Official:   Bool(false),
+		Deprecated: Bool(false),
+		Enabled:    Bool(true),
+		Beta:       Bool(false),
 	}
 	sv, err := client.Admin.SentinelVersions.Create(ctx, opts)
 	defer func() {

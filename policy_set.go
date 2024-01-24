@@ -178,8 +178,8 @@ type PolicySetCreateOptions struct {
 	// Optional: The underlying technology that the policy set supports
 	Kind PolicyKind `jsonapi:"attr,kind,omitempty"`
 
-	// **Note: This field is still in BETA and subject to change.**
 	// Optional: Whether or not users can override this policy when it fails during a run. Only valid for policy evaluations.
+	// https://developer.hashicorp.com/terraform/cloud-docs/policy-enforcement/manage-policy-sets#policy-checks-versus-policy-evaluations
 	Overridable *bool `jsonapi:"attr,overridable,omitempty"`
 
 	// Optional: Whether or not the policy is run as an evaluation inside the agent.
@@ -231,13 +231,14 @@ type PolicySetUpdateOptions struct {
 	Global *bool `jsonapi:"attr,global,omitempty"`
 
 	// Optional: Whether or not users can override this policy when it fails during a run. Only valid for policy evaluations.
+	// https://developer.hashicorp.com/terraform/cloud-docs/policy-enforcement/manage-policy-sets#policy-checks-versus-policy-evaluations
 	Overridable *bool `jsonapi:"attr,overridable,omitempty"`
 
 	// Optional: Whether or not the policy is run as an evaluation inside the agent.
 	AgentEnabled *bool `jsonapi:"attr,agent-enabled,omitempty"`
 
 	// Optional: The policy tool version to run the evaluation against.
-	PolicyToolVersion *string `jsonapi:"attr,policy-tool-version"`
+	PolicyToolVersion *string `jsonapi:"attr,policy-tool-version,omitempty"`
 
 	// Optional: The sub-path within the attached VCS repository to ingress. All
 	// files and directories outside of this sub-path will be ignored.
