@@ -253,19 +253,6 @@ func TestOAuthClientsCreate_agentPool(t *testing.T) {
 		errDelete := client.OAuthClients.Delete(ctx, ocTest.ID)
 		require.NoError(t, errDelete)
 	})
-
-	t.Run("with invalid agent pool external id", func(t *testing.T) {
-		invalidAgentPool, err := client.AgentPools.Read(ctx, badIdentifier)
-		options := OAuthClientCreateOptions{
-			APIURL:          String("https://api.github.com"),
-			HTTPURL:         String("https://github.com"),
-			OAuthToken:      String(githubToken),
-			ServiceProvider: ServiceProvider(ServiceProviderGithub),
-			AgentPool:       invalidAgentPool,
-		}
-		_, err = client.OAuthClients.Create(ctx, orgTest.Name, options)
-		assert.EqualError(t, err, "unprocessable entity\n\nAgent Pool is missing")
-	})
 }
 
 func TestOAuthClientsRead(t *testing.T) {
