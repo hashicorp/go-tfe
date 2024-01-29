@@ -95,11 +95,11 @@ type OAuthClient struct {
 	// Relations
 	Organization *Organization `jsonapi:"relation,organization"`
 	OAuthTokens  []*OAuthToken `jsonapi:"relation,oauth-tokens"`
-  AgentPool    *AgentPool    `jsonapi:"relation,agent-pool"`
+	AgentPool    *AgentPool    `jsonapi:"relation,agent-pool"`
 
 	// **Note: This field is still in BETA and subject to change.**
 	// The projects to which the oauth client applies.
-	Projects []*Project `jsonapi:"relation,projects"`  
+	Projects []*Project `jsonapi:"relation,projects"`
 }
 
 // A list of relations to include
@@ -170,7 +170,7 @@ type OAuthClientCreateOptions struct {
 	// Optional: AgentPool to associate the VCS Provider with, for PrivateVCS support
 	AgentPool *AgentPool `jsonapi:"relation,agent-pool-id,omitempty"`
 
-  // **Note: This field is still in BETA and subject to change.**
+	// **Note: This field is still in BETA and subject to change.**
 	// Optional: Whether the OAuthClient is available to all workspaces in the organization.
 	// True if the oauth client is organization scoped, false otherwise.
 	OrganizationScoped *bool `jsonapi:"attr,organization-scoped,omitempty"`
