@@ -55,6 +55,18 @@ type ConfigurationVersions interface {
 
 	// Download a configuration version.  Only configuration versions in the uploaded state may be downloaded.
 	Download(ctx context.Context, cvID string) ([]byte, error)
+
+	// SoftDeleteBackingData soft deletes the configuration version's backing data
+	// **Note: This functionality is only available in Terraform Enterprise.**
+	SoftDeleteBackingData(ctx context.Context, svID string) error
+
+	// RestoreBackingData restores a soft deleted configuration version's backing data
+	// **Note: This functionality is only available in Terraform Enterprise.**
+	RestoreBackingData(ctx context.Context, svID string) error
+
+	// PermanentlyDeleteBackingData permanently deletes a soft deleted configuration version's backing data
+	// **Note: This functionality is only available in Terraform Enterprise.**
+	PermanentlyDeleteBackingData(ctx context.Context, svID string) error
 }
 
 // configurationVersions implements ConfigurationVersions.
@@ -355,4 +367,30 @@ func (s *configurationVersions) Download(ctx context.Context, cvID string) ([]by
 	}
 
 	return buf.Bytes(), nil
+}
+
+func (s *configurationVersions) SoftDeleteBackingData(ctx context.Context, cvID string) error {
+	return s.manageBackingData(ctx, cvID, "soft_delete_backing_data")
+}
+
+func (s *configurationVersions) RestoreBackingData(ctx context.Context, cvID string) error {
+	return s.manageBackingData(ctx, cvID, "restore_backing_data")
+}
+
+func (s *configurationVersions) PermanentlyDeleteBackingData(ctx context.Context, cvID string) error {
+	return s.manageBackingData(ctx, cvID, "permanently_delete_backing_data")
+}
+
+func (s *configurationVersions) manageBackingData(ctx context.Context, cvID, action string) error {
+	if !validStringID(&cvID) {
+		return ErrInvalidConfigVersionID
+	}
+
+	u := fmt.Sprintf("configuration-versions/%s/actions/%s", cvID, action)
+	req, err := s.client.NewRequest("POST", u, nil)
+	if err != nil {
+		return err
+	}
+
+	return req.Do(ctx, nil)
 }

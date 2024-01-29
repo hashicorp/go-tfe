@@ -95,6 +95,13 @@ const (
 	RegistryModuleVersionStatusOk                  RegistryModuleVersionStatus = "ok"
 )
 
+type PublishingMechanism string
+
+const (
+	PublishingMechanismBranch PublishingMechanism = "branch"
+	PublishingMechanismTag    PublishingMechanism = "git_tag"
+)
+
 // RegistryModuleID represents the set of IDs that identify a RegistryModule
 type RegistryModuleID struct {
 	// The organization the module belongs to, see RegistryModule.Organization.Name
@@ -124,18 +131,20 @@ type CommitList struct {
 
 // RegistryModule represents a registry module
 type RegistryModule struct {
-	ID              string                          `jsonapi:"primary,registry-modules"`
-	Name            string                          `jsonapi:"attr,name"`
-	Provider        string                          `jsonapi:"attr,provider"`
-	RegistryName    RegistryName                    `jsonapi:"attr,registry-name"`
-	Namespace       string                          `jsonapi:"attr,namespace"`
-	NoCode          bool                            `jsonapi:"attr,no-code"`
-	Permissions     *RegistryModulePermissions      `jsonapi:"attr,permissions"`
-	Status          RegistryModuleStatus            `jsonapi:"attr,status"`
-	VCSRepo         *VCSRepo                        `jsonapi:"attr,vcs-repo"`
-	VersionStatuses []RegistryModuleVersionStatuses `jsonapi:"attr,version-statuses"`
-	CreatedAt       string                          `jsonapi:"attr,created-at"`
-	UpdatedAt       string                          `jsonapi:"attr,updated-at"`
+	ID                  string                          `jsonapi:"primary,registry-modules"`
+	Name                string                          `jsonapi:"attr,name"`
+	Provider            string                          `jsonapi:"attr,provider"`
+	RegistryName        RegistryName                    `jsonapi:"attr,registry-name"`
+	Namespace           string                          `jsonapi:"attr,namespace"`
+	NoCode              bool                            `jsonapi:"attr,no-code"`
+	Permissions         *RegistryModulePermissions      `jsonapi:"attr,permissions"`
+	PublishingMechanism PublishingMechanism             `jsonapi:"attr,publishing-mechanism"`
+	Status              RegistryModuleStatus            `jsonapi:"attr,status"`
+	TestConfig          *TestConfig                     `jsonapi:"attr,test-config"`
+	VCSRepo             *VCSRepo                        `jsonapi:"attr,vcs-repo"`
+	VersionStatuses     []RegistryModuleVersionStatuses `jsonapi:"attr,version-statuses"`
+	CreatedAt           string                          `jsonapi:"attr,created-at"`
+	UpdatedAt           string                          `jsonapi:"attr,updated-at"`
 
 	// Relations
 	Organization *Organization `jsonapi:"relation,organization"`
@@ -239,6 +248,10 @@ type RegistryModuleCreateWithVCSConnectionOptions struct {
 	//
 	// **Note: This field is still in BETA and subject to change.**
 	InitialVersion *string `jsonapi:"attr,initial-version,omitempty"`
+
+	// Optional: Flag to enable tests for the module
+	// **Note: This field is still in BETA and subject to change.**
+	TestConfig *RegistryModuleTestConfigOptions `jsonapi:"attr,test-config,omitempty"`
 }
 
 // RegistryModuleCreateVersionOptions is used when updating a registry module
@@ -252,6 +265,16 @@ type RegistryModuleUpdateOptions struct {
 	// Optional: Flag to enable no-code provisioning for the whole module.
 	// **Note: This field is still in BETA and subject to change.**
 	NoCode *bool `jsonapi:"attr,no-code,omitempty"`
+
+	// Optional: Flag to enable tests for the module
+	// **Note: This field is still in BETA and subject to change.**
+	TestConfig *RegistryModuleTestConfigOptions `jsonapi:"attr,test-config,omitempty"`
+
+	VCSRepo *RegistryModuleVCSRepoUpdateOptions `jsonapi:"attr,vcs-repo,omitempty"`
+}
+
+type RegistryModuleTestConfigOptions struct {
+	TestsEnabled *bool `jsonapi:"attr,tests-enabled,omitempty"`
 }
 
 type RegistryModuleVCSRepoOptions struct {
@@ -266,6 +289,17 @@ type RegistryModuleVCSRepoOptions struct {
 	//
 	// **Note: This field is still in BETA and subject to change.**
 	Branch *string `json:"branch,omitempty"`
+	Tags   *bool   `json:"tags,omitempty"`
+}
+
+type RegistryModuleVCSRepoUpdateOptions struct {
+	// The Branch and Tag fields are used to determine
+	// the PublishingMechanism for a RegistryModule that has a VCS a connection.
+	// When a value for Branch is provided, the Tags field is removed on the server
+	// When a value for Tags is provided, the Branch field is removed on the server
+	// **Note: This field is still in BETA and subject to change.**
+	Branch *string `json:"branch,omitempty"`
+	Tags   *bool   `json:"tags,omitempty"`
 }
 
 // List all the registory modules within an organization.
@@ -391,6 +425,12 @@ func (r *registryModules) Update(ctx context.Context, moduleID RegistryModuleID,
 
 	if options.NoCode != nil {
 		log.Println("[WARN] Support for using the NoCode field is deprecated as of release 1.22.0 and may be removed in a future version. The preferred way to update a no-code module is with the registryNoCodeModules.Update method.")
+	}
+
+	if options.VCSRepo != nil {
+		if options.VCSRepo.Tags != nil && *options.VCSRepo.Tags && validString(options.VCSRepo.Branch) {
+			return nil, ErrBranchMustBeEmptyWhenTagsEnabled
+		}
 	}
 
 	org := url.QueryEscape(moduleID.Organization)
@@ -696,6 +736,21 @@ func (o RegistryModuleCreateWithVCSConnectionOptions) valid() error {
 	if o.VCSRepo == nil {
 		return ErrRequiredVCSRepo
 	}
+
+	if o.TestConfig != nil && o.TestConfig.TestsEnabled != nil {
+		if *o.TestConfig.TestsEnabled {
+			if !validString(o.VCSRepo.Branch) {
+				return ErrRequiredBranchWhenTestsEnabled
+			}
+		}
+	}
+
+	if o.VCSRepo.Tags != nil && *o.VCSRepo.Tags {
+		if validString(o.VCSRepo.Branch) {
+			return ErrBranchMustBeEmptyWhenTagsEnabled
+		}
+	}
+
 	return o.VCSRepo.valid()
 }
 

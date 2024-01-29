@@ -179,6 +179,8 @@ This API client covers most of the existing Terraform Cloud API calls and is upd
   - [x] Runs
   - [x] Settings
   - [x] Terraform Versions
+  - [x] OPA Versions
+  - [x] Sentinel Versions
   - [x] Users
   - [x] Workspaces
 

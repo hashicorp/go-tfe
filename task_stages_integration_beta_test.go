@@ -200,7 +200,7 @@ func TestTaskStageOverride_Beta(t *testing.T) {
 			Kind:        OPA,
 			Overridable: Bool(true),
 		}
-		createPolicySetWithOptions(t, client, orgTest, []*Policy{pTest}, []*Workspace{wTest}, opts)
+		createPolicySetWithOptions(t, client, orgTest, []*Policy{pTest}, []*Workspace{wTest}, nil, nil, opts)
 		rTest, tTestCleanup := createRunWaitForStatus(t, client, wTest, RunPostPlanAwaitingDecision)
 		defer tTestCleanup()
 
@@ -239,7 +239,7 @@ func TestTaskStageOverride_Beta(t *testing.T) {
 			Kind:        OPA,
 			Overridable: Bool(true),
 		}
-		createPolicySetWithOptions(t, client, orgTest, []*Policy{pTest}, []*Workspace{wTest}, opts)
+		createPolicySetWithOptions(t, client, orgTest, []*Policy{pTest}, []*Workspace{wTest}, nil, nil, opts)
 		rTest, tTestCleanup := createRunWaitForStatus(t, client, wTest, RunPostPlanAwaitingDecision)
 		defer tTestCleanup()
 
@@ -280,7 +280,7 @@ func TestTaskStageOverride_Beta(t *testing.T) {
 			Kind:        OPA,
 			Overridable: Bool(true),
 		}
-		createPolicySetWithOptions(t, client, orgTest, []*Policy{pTest}, []*Workspace{wTest}, opts)
+		createPolicySetWithOptions(t, client, orgTest, []*Policy{pTest}, []*Workspace{wTest}, nil, nil, opts)
 		rTest, tTestCleanup := createPlannedRun(t, client, wTest)
 		defer tTestCleanup()
 

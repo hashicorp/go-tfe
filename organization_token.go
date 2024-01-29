@@ -39,12 +39,13 @@ type organizationTokens struct {
 
 // OrganizationToken represents a Terraform Enterprise organization token.
 type OrganizationToken struct {
-	ID          string    `jsonapi:"primary,authentication-tokens"`
-	CreatedAt   time.Time `jsonapi:"attr,created-at,iso8601"`
-	Description string    `jsonapi:"attr,description"`
-	LastUsedAt  time.Time `jsonapi:"attr,last-used-at,iso8601"`
-	Token       string    `jsonapi:"attr,token"`
-	ExpiredAt   time.Time `jsonapi:"attr,expired-at,iso8601"`
+	ID          string           `jsonapi:"primary,authentication-tokens"`
+	CreatedAt   time.Time        `jsonapi:"attr,created-at,iso8601"`
+	Description string           `jsonapi:"attr,description"`
+	LastUsedAt  time.Time        `jsonapi:"attr,last-used-at,iso8601"`
+	Token       string           `jsonapi:"attr,token"`
+	ExpiredAt   time.Time        `jsonapi:"attr,expired-at,iso8601"`
+	CreatedBy   *CreatedByChoice `jsonapi:"polyrelation,created-by"`
 }
 
 // OrganizationTokenCreateOptions contains the options for creating an organization token.

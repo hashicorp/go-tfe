@@ -90,6 +90,10 @@ var (
 
 	ErrInvalidTerraformVersionType = errors.New("invalid type for terraform version. Please use 'terraform-version'")
 
+	ErrInvalidOPAVersionID = errors.New("invalid value for OPA version ID")
+
+	ErrInvalidSentinelVersionID = errors.New("invalid value for Sentinel version ID")
+
 	ErrInvalidConfigVersionID = errors.New("invalid value for configuration version ID")
 
 	ErrInvalidCostEstimateID = errors.New("invalid value for cost estimate ID")
@@ -222,9 +226,10 @@ var (
 
 	ErrRequiredAgentPoolID = errors.New("'agent' execution mode requires an agent pool ID to be specified")
 
-	ErrRequiredAgentMode = errors.New("specifying an agent pool ID requires 'agent' execution mode")
-
-	ErrRequiredCategory = errors.New("category is required")
+	ErrRequiredAgentMode                = errors.New("specifying an agent pool ID requires 'agent' execution mode")
+	ErrRequiredBranchWhenTestsEnabled   = errors.New("VCS branch is required when enabling tests")
+	ErrBranchMustBeEmptyWhenTagsEnabled = errors.New("VCS branch must be empty to enable tags")
+	ErrRequiredCategory                 = errors.New("category is required")
 
 	ErrRequiredDestinationType = errors.New("destination type is required")
 
@@ -317,6 +322,10 @@ var (
 	ErrRequiredRunTriggerListOps = errors.New("RunTriggerListOptions is required")
 
 	ErrRequiredTFVerCreateOps = errors.New("version, URL and sha is required for AdminTerraformVersionCreateOptions")
+
+	ErrRequiredOPAVerCreateOps = errors.New("version, URL and sha is required for AdminOPAVersionCreateOptions")
+
+	ErrRequiredSentinelVerCreateOps = errors.New("version, URL and sha is required for AdminSentinelVersionCreateOptions")
 
 	ErrRequiredSerial = errors.New("serial is required")
 

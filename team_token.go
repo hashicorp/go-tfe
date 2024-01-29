@@ -39,12 +39,13 @@ type teamTokens struct {
 
 // TeamToken represents a Terraform Enterprise team token.
 type TeamToken struct {
-	ID          string    `jsonapi:"primary,authentication-tokens"`
-	CreatedAt   time.Time `jsonapi:"attr,created-at,iso8601"`
-	Description string    `jsonapi:"attr,description"`
-	LastUsedAt  time.Time `jsonapi:"attr,last-used-at,iso8601"`
-	Token       string    `jsonapi:"attr,token"`
-	ExpiredAt   time.Time `jsonapi:"attr,expired-at,iso8601"`
+	ID          string           `jsonapi:"primary,authentication-tokens"`
+	CreatedAt   time.Time        `jsonapi:"attr,created-at,iso8601"`
+	Description string           `jsonapi:"attr,description"`
+	LastUsedAt  time.Time        `jsonapi:"attr,last-used-at,iso8601"`
+	Token       string           `jsonapi:"attr,token"`
+	ExpiredAt   time.Time        `jsonapi:"attr,expired-at,iso8601"`
+	CreatedBy   *CreatedByChoice `jsonapi:"polyrelation,created-by"`
 }
 
 // TeamTokenCreateOptions contains the options for creating a team token.

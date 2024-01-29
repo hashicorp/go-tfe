@@ -43,14 +43,24 @@ type UserTokenList struct {
 	Items []*UserToken
 }
 
+// CreatedByChoice is a choice type struct that represents the possible values
+// within a polymorphic relation. If a value is available, exactly one field
+// will be non-nil.
+type CreatedByChoice struct {
+	Organization *Organization
+	Team         *Team
+	User         *User
+}
+
 // UserToken represents a Terraform Enterprise user token.
 type UserToken struct {
-	ID          string    `jsonapi:"primary,authentication-tokens"`
-	CreatedAt   time.Time `jsonapi:"attr,created-at,iso8601"`
-	Description string    `jsonapi:"attr,description"`
-	LastUsedAt  time.Time `jsonapi:"attr,last-used-at,iso8601"`
-	Token       string    `jsonapi:"attr,token"`
-	ExpiredAt   time.Time `jsonapi:"attr,expired-at,iso8601"`
+	ID          string           `jsonapi:"primary,authentication-tokens"`
+	CreatedAt   time.Time        `jsonapi:"attr,created-at,iso8601"`
+	Description string           `jsonapi:"attr,description"`
+	LastUsedAt  time.Time        `jsonapi:"attr,last-used-at,iso8601"`
+	Token       string           `jsonapi:"attr,token"`
+	ExpiredAt   time.Time        `jsonapi:"attr,expired-at,iso8601"`
+	CreatedBy   *CreatedByChoice `jsonapi:"polyrelation,created-by"`
 }
 
 // UserTokenCreateOptions contains the options for creating a user token.

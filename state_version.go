@@ -41,8 +41,6 @@ type StateVersions interface {
 
 	// Upload creates a new state version but uploads the state content directly to the object store.
 	// This is a more resilient form of Create and is the recommended approach to creating state versions.
-	//
-	// **Note: This method is still in BETA and subject to change.**
 	Upload(ctx context.Context, workspaceID string, options StateVersionUploadOptions) (*StateVersion, error)
 
 	// Read a state version by its ID.
@@ -64,6 +62,18 @@ type StateVersions interface {
 	// process outputs asynchronously. When consuming outputs or other async StateVersion fields, be sure to
 	// wait for ResourcesProcessed to become `true` before assuming they are empty.
 	ListOutputs(ctx context.Context, svID string, options *StateVersionOutputsListOptions) (*StateVersionOutputsList, error)
+
+	// SoftDeleteBackingData soft deletes the state version's backing data
+	// **Note: This functionality is only available in Terraform Enterprise.**
+	SoftDeleteBackingData(ctx context.Context, svID string) error
+
+	// RestoreBackingData restores a soft deleted state version's backing data
+	// **Note: This functionality is only available in Terraform Enterprise.**
+	RestoreBackingData(ctx context.Context, svID string) error
+
+	// PermanentlyDeleteBackingData permanently deletes a soft deleted state version's backing data
+	// **Note: This functionality is only available in Terraform Enterprise.**
+	PermanentlyDeleteBackingData(ctx context.Context, svID string) error
 }
 
 // stateVersions implements StateVersions.
@@ -184,15 +194,11 @@ type StateVersionCreateOptions struct {
 	// https://developer.hashicorp.com/terraform/internals/json-format#state-representation
 	// Supplying this state representation can provide more details to the platform
 	// about the current terraform state.
-	//
-	// **Note**: This field is in BETA, subject to change and not widely available yet.
 	JSONState *string `jsonapi:"attr,json-state,omitempty"`
 	// Optional: The external, json representation of state outputs, base64 encoded. Supplying this field
 	// will provide more detailed output type information to TFE.
 	// For more information on the contents of this field: https://developer.hashicorp.com/terraform/internals/json-format#values-representation
 	// about the current terraform state.
-	//
-	// **Note**: This field is in BETA, subject to change and not widely available yet.
 	JSONStateOutputs *string `jsonapi:"attr,json-state-outputs,omitempty"`
 }
 
@@ -275,8 +281,6 @@ func (s *stateVersions) Create(ctx context.Context, workspaceID string, options 
 
 // Upload creates a new state version but uploads the state content directly to the object store.
 // This is a more resilient form of Create and is the recommended approach to creating state versions.
-//
-// **Note: This method is still in BETA and subject to change.**
 func (s *stateVersions) Upload(ctx context.Context, workspaceID string, options StateVersionUploadOptions) (*StateVersion, error) {
 	if err := options.valid(); err != nil {
 		return nil, err
@@ -287,6 +291,7 @@ func (s *stateVersions) Upload(ctx context.Context, workspaceID string, options 
 		if strings.Contains(err.Error(), "param is missing or the value is empty: state") {
 			return nil, ErrStateVersionUploadNotSupported
 		}
+		return nil, err
 	}
 
 	g, _ := errgroup.WithContext(ctx)
@@ -403,6 +408,32 @@ func (s *stateVersions) ListOutputs(ctx context.Context, svID string, options *S
 	}
 
 	return sv, nil
+}
+
+func (s *stateVersions) SoftDeleteBackingData(ctx context.Context, svID string) error {
+	return s.manageBackingData(ctx, svID, "soft_delete_backing_data")
+}
+
+func (s *stateVersions) RestoreBackingData(ctx context.Context, svID string) error {
+	return s.manageBackingData(ctx, svID, "restore_backing_data")
+}
+
+func (s *stateVersions) PermanentlyDeleteBackingData(ctx context.Context, svID string) error {
+	return s.manageBackingData(ctx, svID, "permanently_delete_backing_data")
+}
+
+func (s *stateVersions) manageBackingData(ctx context.Context, svID, action string) error {
+	if !validStringID(&svID) {
+		return ErrInvalidStateVerID
+	}
+
+	u := fmt.Sprintf("state-versions/%s/actions/%s", svID, action)
+	req, err := s.client.NewRequest("POST", u, nil)
+	if err != nil {
+		return err
+	}
+
+	return req.Do(ctx, nil)
 }
 
 // check that StateVersionListOptions fields had valid values

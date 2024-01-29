@@ -24,6 +24,8 @@ func TestTeamTokensCreate(t *testing.T) {
 		tt, err := client.TeamTokens.Create(ctx, tmTest.ID)
 		require.NoError(t, err)
 		require.NotEmpty(t, tt.Token)
+		require.NotEmpty(t, tt.CreatedBy)
+		requireExactlyOneNotEmpty(t, tt.CreatedBy.Organization, tt.CreatedBy.Team, tt.CreatedBy.User)
 		tmToken = tt.Token
 	})
 
@@ -78,13 +80,14 @@ func TestTeamTokens_CreateWithOptions(t *testing.T) {
 	})
 
 	t.Run("with an expiration date", func(t *testing.T) {
-		start := time.Date(2024, 1, 15, 22, 3, 4, 0, time.UTC)
+		currentTime := time.Now().UTC().Truncate(time.Second)
+		oneDayLater := currentTime.Add(24 * time.Hour)
 		tt, err := client.TeamTokens.CreateWithOptions(ctx, tmTest.ID, TeamTokenCreateOptions{
-			ExpiredAt: &start,
+			ExpiredAt: &oneDayLater,
 		})
 		require.NoError(t, err)
 		require.NotEmpty(t, tt.Token)
-		assert.Equal(t, tt.ExpiredAt, start)
+		assert.Equal(t, tt.ExpiredAt, oneDayLater)
 		tmToken = tt.Token
 	})
 }
@@ -107,14 +110,15 @@ func TestTeamTokensRead(t *testing.T) {
 	})
 
 	t.Run("with an expiration date passed as a valid option", func(t *testing.T) {
-		start := time.Date(2024, 1, 15, 22, 3, 4, 0, time.UTC)
+		currentTime := time.Now().UTC().Truncate(time.Second)
+		oneDayLater := currentTime.Add(24 * time.Hour)
 
-		_, ttTestCleanup := createTeamTokenWithOptions(t, client, tmTest, TeamTokenCreateOptions{ExpiredAt: &start})
+		_, ttTestCleanup := createTeamTokenWithOptions(t, client, tmTest, TeamTokenCreateOptions{ExpiredAt: &oneDayLater})
 
 		tt, err := client.TeamTokens.Read(ctx, tmTest.ID)
 		require.NoError(t, err)
 		assert.NotEmpty(t, tt)
-		assert.Equal(t, tt.ExpiredAt, start)
+		assert.Equal(t, tt.ExpiredAt, oneDayLater)
 
 		ttTestCleanup()
 	})

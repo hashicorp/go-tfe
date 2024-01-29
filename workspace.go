@@ -101,6 +101,18 @@ type Workspaces interface {
 
 	// RemoveTags removes tags from a workspace
 	RemoveTags(ctx context.Context, workspaceID string, options WorkspaceRemoveTagsOptions) error
+
+	// ReadDataRetentionPolicy reads a workspace's data retention policy
+	// **Note: This functionality is only available in Terraform Enterprise.**
+	ReadDataRetentionPolicy(ctx context.Context, workspaceID string) (*DataRetentionPolicy, error)
+
+	// SetDataRetentionPolicy sets a workspace's data retention policy
+	// **Note: This functionality is only available in Terraform Enterprise.**
+	SetDataRetentionPolicy(ctx context.Context, workspaceID string, options DataRetentionPolicySetOptions) (*DataRetentionPolicy, error)
+
+	// DeleteDataRetentionPolicy deletes a workspace's data retention policy
+	// **Note: This functionality is only available in Terraform Enterprise.**
+	DeleteDataRetentionPolicy(ctx context.Context, workspaceID string) error
 }
 
 // workspaces implements Workspaces.
@@ -114,44 +126,54 @@ type WorkspaceList struct {
 	Items []*Workspace
 }
 
+// LockedByChoice is a choice type struct that represents the possible values
+// within a polymorphic relation. If a value is available, exactly one field
+// will be non-nil.
+type LockedByChoice struct {
+	Run  *Run
+	User *User
+	Team *Team
+}
+
 // Workspace represents a Terraform Enterprise workspace.
 type Workspace struct {
-	ID                         string                `jsonapi:"primary,workspaces"`
-	Actions                    *WorkspaceActions     `jsonapi:"attr,actions"`
-	AgentPoolID                string                `jsonapi:"attr,agent-pool-id"`
-	AllowDestroyPlan           bool                  `jsonapi:"attr,allow-destroy-plan"`
-	AssessmentsEnabled         bool                  `jsonapi:"attr,assessments-enabled"`
-	AutoApply                  bool                  `jsonapi:"attr,auto-apply"`
-	CanQueueDestroyPlan        bool                  `jsonapi:"attr,can-queue-destroy-plan"`
-	CreatedAt                  time.Time             `jsonapi:"attr,created-at,iso8601"`
-	Description                string                `jsonapi:"attr,description"`
-	Environment                string                `jsonapi:"attr,environment"`
-	ExecutionMode              string                `jsonapi:"attr,execution-mode"`
-	FileTriggersEnabled        bool                  `jsonapi:"attr,file-triggers-enabled"`
-	GlobalRemoteState          bool                  `jsonapi:"attr,global-remote-state"`
-	Locked                     bool                  `jsonapi:"attr,locked"`
-	MigrationEnvironment       string                `jsonapi:"attr,migration-environment"`
-	Name                       string                `jsonapi:"attr,name"`
-	Operations                 bool                  `jsonapi:"attr,operations"`
-	Permissions                *WorkspacePermissions `jsonapi:"attr,permissions"`
-	QueueAllRuns               bool                  `jsonapi:"attr,queue-all-runs"`
-	SpeculativeEnabled         bool                  `jsonapi:"attr,speculative-enabled"`
-	SourceName                 string                `jsonapi:"attr,source-name"`
-	SourceURL                  string                `jsonapi:"attr,source-url"`
-	StructuredRunOutputEnabled bool                  `jsonapi:"attr,structured-run-output-enabled"`
-	TerraformVersion           string                `jsonapi:"attr,terraform-version"`
-	TriggerPrefixes            []string              `jsonapi:"attr,trigger-prefixes"`
-	TriggerPatterns            []string              `jsonapi:"attr,trigger-patterns"`
-	VCSRepo                    *VCSRepo              `jsonapi:"attr,vcs-repo"`
-	WorkingDirectory           string                `jsonapi:"attr,working-directory"`
-	UpdatedAt                  time.Time             `jsonapi:"attr,updated-at,iso8601"`
-	ResourceCount              int                   `jsonapi:"attr,resource-count"`
-	ApplyDurationAverage       time.Duration         `jsonapi:"attr,apply-duration-average"`
-	PlanDurationAverage        time.Duration         `jsonapi:"attr,plan-duration-average"`
-	PolicyCheckFailures        int                   `jsonapi:"attr,policy-check-failures"`
-	RunFailures                int                   `jsonapi:"attr,run-failures"`
-	RunsCount                  int                   `jsonapi:"attr,workspace-kpis-runs-count"`
-	TagNames                   []string              `jsonapi:"attr,tag-names"`
+	ID                         string                      `jsonapi:"primary,workspaces"`
+	Actions                    *WorkspaceActions           `jsonapi:"attr,actions"`
+	AllowDestroyPlan           bool                        `jsonapi:"attr,allow-destroy-plan"`
+	AssessmentsEnabled         bool                        `jsonapi:"attr,assessments-enabled"`
+	AutoApply                  bool                        `jsonapi:"attr,auto-apply"`
+	AutoApplyRunTrigger        bool                        `jsonapi:"attr,auto-apply-run-trigger"`
+	CanQueueDestroyPlan        bool                        `jsonapi:"attr,can-queue-destroy-plan"`
+	CreatedAt                  time.Time                   `jsonapi:"attr,created-at,iso8601"`
+	Description                string                      `jsonapi:"attr,description"`
+	Environment                string                      `jsonapi:"attr,environment"`
+	ExecutionMode              string                      `jsonapi:"attr,execution-mode"`
+	FileTriggersEnabled        bool                        `jsonapi:"attr,file-triggers-enabled"`
+	GlobalRemoteState          bool                        `jsonapi:"attr,global-remote-state"`
+	Locked                     bool                        `jsonapi:"attr,locked"`
+	MigrationEnvironment       string                      `jsonapi:"attr,migration-environment"`
+	Name                       string                      `jsonapi:"attr,name"`
+	Operations                 bool                        `jsonapi:"attr,operations"`
+	Permissions                *WorkspacePermissions       `jsonapi:"attr,permissions"`
+	QueueAllRuns               bool                        `jsonapi:"attr,queue-all-runs"`
+	SpeculativeEnabled         bool                        `jsonapi:"attr,speculative-enabled"`
+	SourceName                 string                      `jsonapi:"attr,source-name"`
+	SourceURL                  string                      `jsonapi:"attr,source-url"`
+	StructuredRunOutputEnabled bool                        `jsonapi:"attr,structured-run-output-enabled"`
+	TerraformVersion           string                      `jsonapi:"attr,terraform-version"`
+	TriggerPrefixes            []string                    `jsonapi:"attr,trigger-prefixes"`
+	TriggerPatterns            []string                    `jsonapi:"attr,trigger-patterns"`
+	VCSRepo                    *VCSRepo                    `jsonapi:"attr,vcs-repo"`
+	WorkingDirectory           string                      `jsonapi:"attr,working-directory"`
+	UpdatedAt                  time.Time                   `jsonapi:"attr,updated-at,iso8601"`
+	ResourceCount              int                         `jsonapi:"attr,resource-count"`
+	ApplyDurationAverage       time.Duration               `jsonapi:"attr,apply-duration-average"`
+	PlanDurationAverage        time.Duration               `jsonapi:"attr,plan-duration-average"`
+	PolicyCheckFailures        int                         `jsonapi:"attr,policy-check-failures"`
+	RunFailures                int                         `jsonapi:"attr,run-failures"`
+	RunsCount                  int                         `jsonapi:"attr,workspace-kpis-runs-count"`
+	TagNames                   []string                    `jsonapi:"attr,tag-names"`
+	SettingOverwrites          *WorkspaceSettingOverwrites `jsonapi:"attr,setting-overwrites"`
 
 	// Relations
 	AgentPool                   *AgentPool            `jsonapi:"relation,agent-pool"`
@@ -163,6 +185,10 @@ type Workspace struct {
 	Project                     *Project              `jsonapi:"relation,project"`
 	Tags                        []*Tag                `jsonapi:"relation,tags"`
 	CurrentConfigurationVersion *ConfigurationVersion `jsonapi:"relation,current-configuration-version,omitempty"`
+	LockedBy                    *LockedByChoice       `jsonapi:"polyrelation,locked-by"`
+
+	// **Note: This functionality is only available in Terraform Enterprise.**
+	DataRetentionPolicy *DataRetentionPolicy `jsonapi:"relation,data-retention-policy"`
 
 	// Links
 	Links map[string]interface{} `jsonapi:"links,omitempty"`
@@ -198,8 +224,16 @@ type VCSRepo struct {
 	GHAInstallationID string `jsonapi:"attr,github-app-installation-id"`
 	RepositoryHTTPURL string `jsonapi:"attr,repository-http-url"`
 	ServiceProvider   string `jsonapi:"attr,service-provider"`
+	Tags              bool   `jsonapi:"attr,tags"`
 	TagsRegex         string `jsonapi:"attr,tags-regex"`
 	WebhookURL        string `jsonapi:"attr,webhook-url"`
+}
+
+// Note: the fields of this struct are bool pointers instead of bool values, in order to simplify support for
+// future TFE versions that support *some but not all* of the inherited defaults that go-tfe knows about.
+type WorkspaceSettingOverwrites struct {
+	ExecutionMode *bool `jsonapi:"attr,execution-mode"`
+	AgentPool     *bool `jsonapi:"attr,agent-pool"`
 }
 
 // WorkspaceActions represents the workspace actions.
@@ -296,6 +330,10 @@ type WorkspaceCreateOptions struct {
 	// Optional: Whether to automatically apply changes when a Terraform plan is successful.
 	AutoApply *bool `jsonapi:"attr,auto-apply,omitempty"`
 
+	// Optional: Whether to automatically apply changes for runs that are created by run triggers
+	// from another workspace.
+	AutoApplyRunTrigger *bool `jsonapi:"attr,auto-apply-run-trigger,omitempty"`
+
 	// Optional: A description for the workspace.
 	Description *string `jsonapi:"attr,description,omitempty"`
 
@@ -379,6 +417,19 @@ type WorkspaceCreateOptions struct {
 	// exist, it is created and added to the workspace.
 	Tags []*Tag `jsonapi:"relation,tags,omitempty"`
 
+	// Optional: Struct of booleans, which indicate whether the workspace
+	// specifies its own values for various settings. If you mark a setting as
+	// `false` in this struct, it will clear the workspace's existing value for
+	// that setting and defer to the default value that its project or
+	// organization provides.
+	//
+	// In general, it's not necessary to mark a setting as `true` in this
+	// struct; if you provide a literal value for a setting, Terraform Cloud will
+	// automatically update its overwrites field to `true`. If you do choose to
+	// manually mark a setting as overwritten, you must provide a value for that
+	// setting at the same time.
+	SettingOverwrites *WorkspaceSettingOverwritesOptions `jsonapi:"attr,setting-overwrites,omitempty"`
+
 	// Associated Project with the workspace. If not provided, default project
 	// of the organization will be assigned to the workspace.
 	Project *Project `jsonapi:"relation,project,omitempty"`
@@ -393,6 +444,13 @@ type VCSRepoOptions struct {
 	OAuthTokenID      *string `json:"oauth-token-id,omitempty"`
 	TagsRegex         *string `json:"tags-regex,omitempty"`
 	GHAInstallationID *string `json:"github-app-installation-id,omitempty"`
+}
+
+type WorkspaceSettingOverwritesOptions struct {
+	// If false, the workspace will defer to its organization or project's DefaultExecutionMode value.
+	ExecutionMode *bool `json:"execution-mode,omitempty"`
+	// If false, the workspace will defer to its organization or project's DefaultAgentPool value.
+	AgentPool *bool `json:"agent-pool,omitempty"`
 }
 
 // WorkspaceUpdateOptions represents the options for updating a workspace.
@@ -418,6 +476,10 @@ type WorkspaceUpdateOptions struct {
 
 	// Optional: Whether to automatically apply changes when a Terraform plan is successful.
 	AutoApply *bool `jsonapi:"attr,auto-apply,omitempty"`
+
+	// Optional: Whether to automatically apply changes for runs that are created by run triggers
+	// from another workspace.
+	AutoApplyRunTrigger *bool `jsonapi:"attr,auto-apply-run-trigger,omitempty"`
 
 	// Optional: A new name for the workspace, which can only include letters, numbers, -,
 	// and _. This will be used as an identifier and must be unique in the
@@ -486,6 +548,19 @@ type WorkspaceUpdateOptions struct {
 	// the environment when multiple environments exist within the same
 	// repository.
 	WorkingDirectory *string `jsonapi:"attr,working-directory,omitempty"`
+
+	// Optional: Struct of booleans, which indicate whether the workspace
+	// specifies its own values for various settings. If you mark a setting as
+	// `false` in this struct, it will clear the workspace's existing value for
+	// that setting and defer to the default value that its project or
+	// organization provides.
+	//
+	// In general, it's not necessary to mark a setting as `true` in this
+	// struct; if you provide a literal value for a setting, Terraform Cloud will
+	// automatically update its overwrites field to `true`. If you do choose to
+	// manually mark a setting as overwritten, you must provide a value for that
+	// setting at the same time.
+	SettingOverwrites *WorkspaceSettingOverwritesOptions `jsonapi:"attr,setting-overwrites,omitempty"`
 
 	// Associated Project with the workspace. If not provided, default project
 	// of the organization will be assigned to the workspace
@@ -1125,6 +1200,62 @@ func (s *workspaces) RemoveTags(ctx context.Context, workspaceID string, options
 
 	u := fmt.Sprintf("workspaces/%s/relationships/tags", url.QueryEscape(workspaceID))
 	req, err := s.client.NewRequest("DELETE", u, options.Tags)
+	if err != nil {
+		return err
+	}
+
+	return req.Do(ctx, nil)
+}
+
+func (s *workspaces) ReadDataRetentionPolicy(ctx context.Context, workspaceID string) (*DataRetentionPolicy, error) {
+	if !validStringID(&workspaceID) {
+		return nil, ErrInvalidWorkspaceID
+	}
+
+	u := fmt.Sprintf("workspaces/%s/relationships/data-retention-policy", url.QueryEscape(workspaceID))
+	req, err := s.client.NewRequest("GET", u, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	dataRetentionPolicy := &DataRetentionPolicy{}
+	err = req.Do(ctx, dataRetentionPolicy)
+
+	if err != nil {
+		return nil, err
+	}
+
+	return dataRetentionPolicy, nil
+}
+
+func (s *workspaces) SetDataRetentionPolicy(ctx context.Context, workspaceID string, options DataRetentionPolicySetOptions) (*DataRetentionPolicy, error) {
+	if !validStringID(&workspaceID) {
+		return nil, ErrInvalidWorkspaceID
+	}
+
+	u := fmt.Sprintf("workspaces/%s/relationships/data-retention-policy", url.QueryEscape(workspaceID))
+	req, err := s.client.NewRequest("PATCH", u, &options)
+	if err != nil {
+		return nil, err
+	}
+
+	dataRetentionPolicy := &DataRetentionPolicy{}
+	err = req.Do(ctx, dataRetentionPolicy)
+
+	if err != nil {
+		return nil, err
+	}
+
+	return dataRetentionPolicy, nil
+}
+
+func (s *workspaces) DeleteDataRetentionPolicy(ctx context.Context, workspaceID string) error {
+	if !validStringID(&workspaceID) {
+		return ErrInvalidWorkspaceID
+	}
+
+	u := fmt.Sprintf("workspaces/%s/relationships/data-retention-policy", url.QueryEscape(workspaceID))
+	req, err := s.client.NewRequest("DELETE", u, nil)
 	if err != nil {
 		return err
 	}

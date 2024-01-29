@@ -1,9 +1,93 @@
-# UNRELEASED
-<!-- Add CHANGELOG entry to this section for any PR awaiting the next release -->
-<!-- Please also include if this is a Bug Fix, Enhancement, or Feature -->
+# Unreleased
 
+# v1.43.0
+
+## Features
+* Adds `AggregatedCommitStatusEnabled` field to `Organization` by @mjyocca [#829](https://github.com/hashicorp/go-tfe/pull/829)
+
+## Enhancements
+* Adds `GlobalProviderSharing` field to `AdminOrganization` by @alex-ikse [#837](https://github.com/hashicorp/go-tfe/pull/837)
+
+# v1.42.0
+
+## Deprecations
+* The `Sourceable` field has been deprecated on `RunTrigger`. Instead, use `SourceableChoice` to locate the non-empty field representing the actual sourceable value by @brandonc [#816](https://github.com/hashicorp/go-tfe/pull/816)
+
+## Features
+* Added `AdminOPAVersion` and `AdminSentinelVersion` Terraform Enterprise admin endpoints by @mrinalirao [#758](https://github.com/hashicorp/go-tfe/pull/758)
+
+## Enhancements
+* Adds `LockedBy` relationship field to `Workspace` by @brandonc [#816](https://github.com/hashicorp/go-tfe/pull/816)
+* Adds `CreatedBy` relationship field to `TeamToken`, `UserToken`, and `OrganizationToken` by @brandonc [#816](https://github.com/hashicorp/go-tfe/pull/816)
+* Added `Sentinel` field to `PolicyResult` by @stefan-kiss. [Issue#790](https://github.com/hashicorp/go-tfe/issues/790)
+
+# v1.41.0
+
+## Enhancements
+
+* Allow managing workspace and organization data retention policies by @mwudka [#801](https://github.com/hashicorp/go-tfe/pull/817)
+
+# v1.40.0
+
+## Bug Fixes
+* Removed unused field `AgentPoolID` from the Workspace model. (Callers should be using the `AgentPool` relation instead) by @brandonc [#815](https://github.com/hashicorp/go-tfe/pull/815)
+
+## Enhancements
+* Add organization scope field for oauth clients by @Netra2104 [#812](https://github.com/hashicorp/go-tfe/pull/812)
+* Added BETA support for including `projects` relationship to oauth_client on create by @Netra2104 [#806](https://github.com/hashicorp/go-tfe/pull/806)
+* Added BETA method `AddProjects` and `RemoveProjects` for attaching/detaching oauth_client to projects by Netra2104 [#806](https://github.com/hashicorp/go-tfe/pull/806)
+* Adds a missing interface `WorkspaceResources` and the `List` method by @stefan-kiss [Issue#754](https://github.com/hashicorp/go-tfe/issues/754)
+
+# v1.39.2
+
+## Bug Fixes
+* Fixes a dependency build failure for 32 bit linux architectures by @brandonc [#814](https://github.com/hashicorp/go-tfe/pull/814)
+
+# v1.39.1
+
+## Bug Fixes
+* Fixes an issue where the request body is not preserved during certain retry scenarios by @sebasslash [#813](https://github.com/hashicorp/go-tfe/pull/813)
+
+# v1.39.0
+
+## Features
+* New WorkspaceSettingOverwritesOptions field for allowing workspaces to defer some settings to a default from their organization or project by @SwiftEngineer [#762](https://github.com/hashicorp/go-tfe/pull/762)
+* Added support for setting a default execution mode and agent pool at the organization level by @SwiftEngineer [#762](https://github.com/hashicorp/go-tfe/pull/762)
+* Added validation when configuring registry module publishing by @hashimoon [#804](https://github.com/hashicorp/go-tfe/pull/804)
+* Removed BETA labels for StateVersion Upload method, ConfigurationVersion `provisional` field, and `save-plan` runs by @brandonc [#800](https://github.com/hashicorp/go-tfe/pull/800)
+* Allow soft deleting, restoring, and permanently deleting StateVersion and ConfigurationVersion backing data by @mwudka [#801](https://github.com/hashicorp/go-tfe/pull/801)
+* Added the `AutoApplyRunTrigger` attribute to Workspaces by @nfagerlund [#798](https://github.com/hashicorp/go-tfe/pull/798)
+* Removed BETA labels for `priority` attribute in variable sets by @Netra2104 [#796](https://github.com/hashicorp/go-tfe/pull/796)
+
+# v1.38.0
+
+## Features
+* Added BETA support for including `priority` attribute to variable_set on create and update by @Netra2104 [#778](https://github.com/hashicorp/go-tfe/pull/778)
+
+# v1.37.0
+
+## Features
+* Add the tags attribute to VCSRepo to be used with registry modules by @hashimoon [#793](https://github.com/hashicorp/go-tfe/pull/793)
+
+# v1.36.0
+
+## Features
+* Added BETA support for private module registry test variables by @aaabdelgany [#787](https://github.com/hashicorp/go-tfe/pull/787)
+
+## Bug Fixes
+* Fix incorrect attribute type for `RegistryModule.VCSRepo.Tags` by @hashimoon [#789](https://github.com/hashicorp/go-tfe/pull/789)
+* Fix nil dereference panic within `StateVersions` `upload` after not handling certain state version create errors by @brandonc [#792](https://github.com/hashicorp/go-tfe/pull/792)
+
+# v1.35.0
+
+## Features
+* Added BETA support for private module registry tests by @hashimoon [#781](https://github.com/hashicorp/go-tfe/pull/781)
+
+## Enhancements
+* Removed beta flags for `PolicySetProjects` and `PolicySetWorkspaceExclusions` by @Netra2104 [#770](https://github.com/hashicorp/go-tfe/pull/770)
 
 # v1.34.0
+
 ## Features
 * Added support for the new Terraform Test Runs API by @liamcervante [#755](https://github.com/hashicorp/go-tfe/pull/755)
 

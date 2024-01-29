@@ -45,6 +45,18 @@ type Organizations interface {
 
 	// ReadRunQueue shows the current run queue of an organization.
 	ReadRunQueue(ctx context.Context, organization string, options ReadRunQueueOptions) (*RunQueue, error)
+
+	// ReadDataRetentionPolicy reads an organization's data retention policy
+	// **Note: This functionality is only available in Terraform Enterprise.**
+	ReadDataRetentionPolicy(ctx context.Context, organization string) (*DataRetentionPolicy, error)
+
+	// SetDataRetentionPolicy sets an organization's data retention policy
+	// **Note: This functionality is only available in Terraform Enterprise.**
+	SetDataRetentionPolicy(ctx context.Context, organization string, options DataRetentionPolicySetOptions) (*DataRetentionPolicy, error)
+
+	// DeleteDataRetentionPolicy deletes an organization's data retention policy
+	// **Note: This functionality is only available in Terraform Enterprise.**
+	DeleteDataRetentionPolicy(ctx context.Context, organization string) error
 }
 
 // organizations implements Organizations.
@@ -74,6 +86,7 @@ type Organization struct {
 	CollaboratorAuthPolicy                            AuthPolicyType           `jsonapi:"attr,collaborator-auth-policy"`
 	CostEstimationEnabled                             bool                     `jsonapi:"attr,cost-estimation-enabled"`
 	CreatedAt                                         time.Time                `jsonapi:"attr,created-at,iso8601"`
+	DefaultExecutionMode                              string                   `jsonapi:"attr,default-execution-mode"`
 	Email                                             string                   `jsonapi:"attr,email"`
 	ExternalID                                        string                   `jsonapi:"attr,external-id"`
 	OwnersTeamSAMLRoleID                              string                   `jsonapi:"attr,owners-team-saml-role-id"`
@@ -84,12 +97,19 @@ type Organization struct {
 	TrialExpiresAt                                    time.Time                `jsonapi:"attr,trial-expires-at,iso8601"`
 	TwoFactorConformant                               bool                     `jsonapi:"attr,two-factor-conformant"`
 	SendPassingStatusesForUntriggeredSpeculativePlans bool                     `jsonapi:"attr,send-passing-statuses-for-untriggered-speculative-plans"`
+	RemainingTestableCount                            int                      `jsonapi:"attr,remaining-testable-count"`
+	// Optional: If enabled, SendPassingStatusesForUntriggeredSpeculativePlans needs to be false.
+	AggregatedCommitStatusEnabled bool `jsonapi:"attr,aggregated-commit-status-enabled,omitempty"`
 	// Note: This will be false for TFE versions older than v202211, where the setting was introduced.
 	// On those TFE versions, safe delete does not exist, so ALL deletes will be force deletes.
 	AllowForceDeleteWorkspaces bool `jsonapi:"attr,allow-force-delete-workspaces"`
 
 	// Relations
-	DefaultProject *Project `jsonapi:"relation,default-project"`
+	DefaultProject   *Project   `jsonapi:"relation,default-project"`
+	DefaultAgentPool *AgentPool `jsonapi:"relation,default-agent-pool"`
+
+	// **Note: This functionality is only available in Terraform Enterprise.**
+	DataRetentionPolicy *DataRetentionPolicy `jsonapi:"relation,data-retention-policy"`
 }
 
 // OrganizationIncludeOpt represents the available options for include query params.
@@ -195,8 +215,14 @@ type OrganizationCreateOptions struct {
 	// Optional: SendPassingStatusesForUntriggeredSpeculativePlans toggles behavior of untriggered speculative plans to send status updates to version control systems like GitHub.
 	SendPassingStatusesForUntriggeredSpeculativePlans *bool `jsonapi:"attr,send-passing-statuses-for-untriggered-speculative-plans,omitempty"`
 
+	// Optional: If enabled, SendPassingStatusesForUntriggeredSpeculativePlans needs to be false.
+	AggregatedCommitStatusEnabled *bool `jsonapi:"attr,aggregated-commit-status-enabled,omitempty"`
+
 	// Optional: AllowForceDeleteWorkspaces toggles behavior of allowing workspace admins to delete workspaces with resources under management.
 	AllowForceDeleteWorkspaces *bool `jsonapi:"attr,allow-force-delete-workspaces,omitempty"`
+
+	// Optional: DefaultExecutionMode the default execution mode for workspaces
+	DefaultExecutionMode *string `jsonapi:"attr,default-execution-mode,omitempty"`
 }
 
 // OrganizationUpdateOptions represents the options for updating an organization.
@@ -234,8 +260,17 @@ type OrganizationUpdateOptions struct {
 	// SendPassingStatusesForUntriggeredSpeculativePlans toggles behavior of untriggered speculative plans to send status updates to version control systems like GitHub.
 	SendPassingStatusesForUntriggeredSpeculativePlans *bool `jsonapi:"attr,send-passing-statuses-for-untriggered-speculative-plans,omitempty"`
 
+	// Optional: If enabled, SendPassingStatusesForUntriggeredSpeculativePlans needs to be false.
+	AggregatedCommitStatusEnabled *bool `jsonapi:"attr,aggregated-commit-status-enabled,omitempty"`
+
 	// Optional: AllowForceDeleteWorkspaces toggles behavior of allowing workspace admins to delete workspaces with resources under management.
 	AllowForceDeleteWorkspaces *bool `jsonapi:"attr,allow-force-delete-workspaces,omitempty"`
+
+	// Optional: DefaultExecutionMode the default execution mode for workspaces
+	DefaultExecutionMode *string `jsonapi:"attr,default-execution-mode,omitempty"`
+
+	// Optional: DefaultAgentPoolId default agent pool for workspaces, requires DefaultExecutionMode to be set to `agent`
+	DefaultAgentPool *AgentPool `jsonapi:"relation,default-agent-pool,omitempty"`
 }
 
 // ReadRunQueueOptions represents the options for showing the queue.
@@ -402,6 +437,62 @@ func (s *organizations) ReadRunQueue(ctx context.Context, organization string, o
 	}
 
 	return rq, nil
+}
+
+func (s *organizations) ReadDataRetentionPolicy(ctx context.Context, organization string) (*DataRetentionPolicy, error) {
+	if !validStringID(&organization) {
+		return nil, ErrInvalidOrg
+	}
+
+	u := fmt.Sprintf("organizations/%s/relationships/data-retention-policy", url.QueryEscape(organization))
+	req, err := s.client.NewRequest("GET", u, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	dataRetentionPolicy := &DataRetentionPolicy{}
+	err = req.Do(ctx, dataRetentionPolicy)
+
+	if err != nil {
+		return nil, err
+	}
+
+	return dataRetentionPolicy, nil
+}
+
+func (s *organizations) SetDataRetentionPolicy(ctx context.Context, organization string, options DataRetentionPolicySetOptions) (*DataRetentionPolicy, error) {
+	if !validStringID(&organization) {
+		return nil, ErrInvalidOrg
+	}
+
+	u := fmt.Sprintf("organizations/%s/relationships/data-retention-policy", url.QueryEscape(organization))
+	req, err := s.client.NewRequest("PATCH", u, &options)
+	if err != nil {
+		return nil, err
+	}
+
+	dataRetentionPolicy := &DataRetentionPolicy{}
+	err = req.Do(ctx, dataRetentionPolicy)
+
+	if err != nil {
+		return nil, err
+	}
+
+	return dataRetentionPolicy, nil
+}
+
+func (s *organizations) DeleteDataRetentionPolicy(ctx context.Context, organization string) error {
+	if !validStringID(&organization) {
+		return ErrInvalidOrg
+	}
+
+	u := fmt.Sprintf("organizations/%s/relationships/data-retention-policy", url.QueryEscape(organization))
+	req, err := s.client.NewRequest("DELETE", u, nil)
+	if err != nil {
+		return err
+	}
+
+	return req.Do(ctx, nil)
 }
 
 func (o OrganizationCreateOptions) valid() error {

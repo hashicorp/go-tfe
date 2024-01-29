@@ -170,12 +170,14 @@ type Client struct {
 	TeamProjectAccess          TeamProjectAccesses
 	TeamTokens                 TeamTokens
 	TestRuns                   TestRuns
+	TestVariables              TestVariables
 	Users                      Users
 	UserTokens                 UserTokens
 	Variables                  Variables
 	VariableSets               VariableSets
 	VariableSetVariables       VariableSetVariables
 	Workspaces                 Workspaces
+	WorkspaceResources         WorkspaceResources
 	WorkspaceRunTasks          WorkspaceRunTasks
 	Projects                   Projects
 
@@ -190,6 +192,8 @@ type Admin struct {
 	Workspaces        AdminWorkspaces
 	Runs              AdminRuns
 	TerraformVersions AdminTerraformVersions
+	OPAVersions       AdminOPAVersions
+	SentinelVersions  AdminSentinelVersions
 	Users             AdminUsers
 	Settings          *AdminSettings
 }
@@ -413,6 +417,8 @@ func NewClient(cfg *Config) (*Client, error) {
 		Runs:              &adminRuns{client: client},
 		Settings:          newAdminSettings(client),
 		TerraformVersions: &adminTerraformVersions{client: client},
+		OPAVersions:       &adminOPAVersions{client: client},
+		SentinelVersions:  &adminSentinelVersions{client: client},
 		Users:             &adminUsers{client: client},
 	}
 
@@ -464,6 +470,7 @@ func NewClient(cfg *Config) (*Client, error) {
 	client.Teams = &teams{client: client}
 	client.TeamTokens = &teamTokens{client: client}
 	client.TestRuns = &testRuns{client: client}
+	client.TestVariables = &testVariables{client: client}
 	client.Users = &users{client: client}
 	client.UserTokens = &userTokens{client: client}
 	client.Variables = &variables{client: client}
@@ -471,6 +478,7 @@ func NewClient(cfg *Config) (*Client, error) {
 	client.VariableSetVariables = &variableSetVariables{client: client}
 	client.WorkspaceRunTasks = &workspaceRunTasks{client: client}
 	client.Workspaces = &workspaces{client: client}
+	client.WorkspaceResources = &workspaceResources{client: client}
 
 	client.Meta = Meta{
 		IPRanges: &ipRanges{client: client},

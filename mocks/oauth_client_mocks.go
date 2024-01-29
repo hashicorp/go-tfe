@@ -35,6 +35,20 @@ func (m *MockOAuthClients) EXPECT() *MockOAuthClientsMockRecorder {
 	return m.recorder
 }
 
+// AddProjects mocks base method.
+func (m *MockOAuthClients) AddProjects(ctx context.Context, oAuthClientID string, options tfe.OAuthClientAddProjectsOptions) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "AddProjects", ctx, oAuthClientID, options)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// AddProjects indicates an expected call of AddProjects.
+func (mr *MockOAuthClientsMockRecorder) AddProjects(ctx, oAuthClientID, options interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "AddProjects", reflect.TypeOf((*MockOAuthClients)(nil).AddProjects), ctx, oAuthClientID, options)
+}
+
 // Create mocks base method.
 func (m *MockOAuthClients) Create(ctx context.Context, organization string, options tfe.OAuthClientCreateOptions) (*tfe.OAuthClient, error) {
 	m.ctrl.T.Helper()
@@ -92,6 +106,35 @@ func (m *MockOAuthClients) Read(ctx context.Context, oAuthClientID string) (*tfe
 func (mr *MockOAuthClientsMockRecorder) Read(ctx, oAuthClientID interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Read", reflect.TypeOf((*MockOAuthClients)(nil).Read), ctx, oAuthClientID)
+}
+
+// ReadWithOptions mocks base method.
+func (m *MockOAuthClients) ReadWithOptions(ctx context.Context, oAuthClientID string, options *tfe.OAuthClientReadOptions) (*tfe.OAuthClient, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "ReadWithOptions", ctx, oAuthClientID, options)
+	ret0, _ := ret[0].(*tfe.OAuthClient)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// ReadWithOptions indicates an expected call of ReadWithOptions.
+func (mr *MockOAuthClientsMockRecorder) ReadWithOptions(ctx, oAuthClientID, options interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ReadWithOptions", reflect.TypeOf((*MockOAuthClients)(nil).ReadWithOptions), ctx, oAuthClientID, options)
+}
+
+// RemoveProjects mocks base method.
+func (m *MockOAuthClients) RemoveProjects(ctx context.Context, oAuthClientID string, options tfe.OAuthClientRemoveProjectsOptions) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "RemoveProjects", ctx, oAuthClientID, options)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// RemoveProjects indicates an expected call of RemoveProjects.
+func (mr *MockOAuthClientsMockRecorder) RemoveProjects(ctx, oAuthClientID, options interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "RemoveProjects", reflect.TypeOf((*MockOAuthClients)(nil).RemoveProjects), ctx, oAuthClientID, options)
 }
 
 // Update mocks base method.

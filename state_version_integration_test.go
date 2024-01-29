@@ -10,6 +10,7 @@ import (
 	"fmt"
 	"os"
 	"testing"
+	"time"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
@@ -104,8 +105,6 @@ func TestStateVersionsList(t *testing.T) {
 }
 
 func TestStateVersionsUpload(t *testing.T) {
-	skipUnlessBeta(t)
-
 	client := testClient(t)
 
 	wTest, wTestCleanup := createWorkspace(t, client, nil)
@@ -146,8 +145,17 @@ func TestStateVersionsUpload(t *testing.T) {
 		_, err = client.Workspaces.Unlock(ctx, wTest.ID)
 		require.NoError(t, err)
 
+		// TFC does some async processing on state versions, so we must await it
+		// lest we flake. Should take well less than a minute tho.
+		timeout := time.Minute / 2
+
+		ctxPollSVReady, cancelPollSVReady := context.WithTimeout(ctx, timeout)
+		defer cancelPollSVReady()
+
+		sv = pollStateVersionStatus(t, client, ctxPollSVReady, sv, []StateVersionStatus{StateVersionFinalized})
+
 		assert.NotEmpty(t, sv.DownloadURL)
-		assert.Equal(t, sv.Status, StateVersionFinalized)
+		assert.Equal(t, StateVersionFinalized, sv.Status)
 	})
 
 	t.Run("cannot provide base64 state parameter when uploading", func(t *testing.T) {
@@ -204,8 +212,6 @@ func TestStateVersionsCreate(t *testing.T) {
 	}
 
 	t.Run("can create pending state versions", func(t *testing.T) {
-		skipUnlessBeta(t)
-
 		ctx := context.Background()
 		_, err := client.Workspaces.Lock(ctx, wTest.ID, WorkspaceLockOptions{})
 		if err != nil {
@@ -626,5 +632,51 @@ func TestStateVersionOutputs(t *testing.T) {
 		outputs, err := client.StateVersions.ListOutputs(ctx, "sv-999999999", nil)
 		assert.Nil(t, outputs)
 		assert.Error(t, err)
+	})
+}
+
+func TestStateVersions_ManageBackingData(t *testing.T) {
+	skipUnlessEnterprise(t)
+
+	client := testClient(t)
+	ctx := context.Background()
+
+	workspace, workspaceCleanup := createWorkspace(t, client, nil)
+	t.Cleanup(workspaceCleanup)
+
+	nonCurrentStateVersion, svTestCleanup := createStateVersion(t, client, 0, workspace)
+	t.Cleanup(svTestCleanup)
+
+	_, svTestCleanup = createStateVersion(t, client, 0, workspace)
+	t.Cleanup(svTestCleanup)
+
+	t.Run("soft delete backing data", func(t *testing.T) {
+		err := client.StateVersions.SoftDeleteBackingData(ctx, nonCurrentStateVersion.ID)
+		require.NoError(t, err)
+
+		_, err = client.StateVersions.Download(ctx, nonCurrentStateVersion.DownloadURL)
+		assert.Equal(t, ErrResourceNotFound, err)
+	})
+
+	t.Run("restore backing data", func(t *testing.T) {
+		err := client.StateVersions.RestoreBackingData(ctx, nonCurrentStateVersion.ID)
+		require.NoError(t, err)
+
+		_, err = client.StateVersions.Download(ctx, nonCurrentStateVersion.DownloadURL)
+		require.NoError(t, err)
+	})
+
+	t.Run("permanently delete backing data", func(t *testing.T) {
+		err := client.StateVersions.SoftDeleteBackingData(ctx, nonCurrentStateVersion.ID)
+		require.NoError(t, err)
+
+		err = client.StateVersions.PermanentlyDeleteBackingData(ctx, nonCurrentStateVersion.ID)
+		require.NoError(t, err)
+
+		err = client.StateVersions.RestoreBackingData(ctx, nonCurrentStateVersion.ID)
+		require.ErrorContainsf(t, err, "transition not allowed", "Restore backing data should fail")
+
+		_, err = client.StateVersions.Download(ctx, nonCurrentStateVersion.DownloadURL)
+		assert.Equal(t, ErrResourceNotFound, err)
 	})
 }

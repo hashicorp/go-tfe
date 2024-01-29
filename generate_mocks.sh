@@ -15,6 +15,8 @@ mockgen -source=admin_setting_saml.go -destination=mocks/admin_setting_saml_mock
 mockgen -source=admin_setting_smtp.go -destination=mocks/admin_setting_smtp_mocks.go -package=mocks
 mockgen -source=admin_setting_twilio.go -destination=mocks/admin_setting_twilio_mocks.go -package=mocks
 mockgen -source=admin_terraform_version.go -destination=mocks/admin_terraform_version_mocks.go -package=mocks
+mockgen -source=admin_opa_version.go -destination=mocks/admin_opa_version_mocks.go -package=mocks
+mockgen -source=admin_sentinel_version.go -destination=mocks/admin_sentinel_version_mocks.go -package=mocks
 mockgen -source=admin_user.go -destination=mocks/admin_user_mocks.go -package=mocks
 mockgen -source=admin_workspace.go -destination=mocks/admin_workspace_mocks.go -package=mocks
 mockgen -source=agent_pool.go -destination=mocks/agent_pool_mocks.go -package=mocks
@@ -72,3 +74,4 @@ mockgen -source=project.go -destination=mocks/project_mocks.go -package=mocks
 mockgen -source=registry_no_code_module.go -destination=mocks/registry_no_code_module_mocks.go -package=mocks
 mockgen -source=registry_module.go -destination=mocks/registry_module_mocks.go -package=mocks
 mockgen -source=registry_module.go -destination=mocks/registry_module_mocks.go -package=mocks
+mockgen -source=workspace_resources.go -destination=mocks/workspace_resources.go -package=mocks

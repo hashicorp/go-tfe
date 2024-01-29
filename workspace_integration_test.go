@@ -506,9 +506,37 @@ func TestWorkspacesCreate(t *testing.T) {
 		}
 	})
 
+	t.Run("with valid auto-apply-run-trigger option", func(t *testing.T) {
+		skipIfEnterprise(t)
+		// FEATURE FLAG: auto-apply-run-trigger
+		// Once un-flagged, delete this test and add an AutoApplyRunTrigger field
+		// to the basic "with valid options" test below.
+
+		options := WorkspaceCreateOptions{
+			Name:                String(fmt.Sprintf("foo-%s", randomString(t))),
+			AutoApplyRunTrigger: Bool(true),
+		}
+
+		w, err := client.Workspaces.Create(ctx, orgTest.Name, options)
+		require.NoError(t, err)
+
+		// Get a refreshed view from the API.
+		refreshed, err := client.Workspaces.Read(ctx, orgTest.Name, *options.Name)
+		require.NoError(t, err)
+
+		for _, item := range []*Workspace{
+			w,
+			refreshed,
+		} {
+			assert.NotEmpty(t, item.ID)
+			assert.Equal(t, *options.Name, item.Name)
+			assert.Equal(t, *options.AutoApplyRunTrigger, item.AutoApplyRunTrigger)
+		}
+	})
+
 	t.Run("with valid options", func(t *testing.T) {
 		options := WorkspaceCreateOptions{
-			Name:                       String("foo"),
+			Name:                       String(fmt.Sprintf("foo-%s", randomString(t))),
 			AllowDestroyPlan:           Bool(false),
 			AutoApply:                  Bool(true),
 			Description:                String("qux"),
@@ -581,7 +609,7 @@ func TestWorkspacesCreate(t *testing.T) {
 
 	t.Run("when options has an invalid organization", func(t *testing.T) {
 		w, err := client.Workspaces.Create(ctx, badIdentifier, WorkspaceCreateOptions{
-			Name: String("foo"),
+			Name: String(fmt.Sprintf("foo-%s", randomString(t))),
 		})
 		assert.Nil(t, w)
 		assert.EqualError(t, err, ErrInvalidOrg.Error())
@@ -619,6 +647,32 @@ func TestWorkspacesCreate(t *testing.T) {
 		w, err := client.Workspaces.Create(ctx, orgTest.Name, options)
 		assert.Nil(t, w)
 		assert.Equal(t, err, ErrRequiredAgentPoolID)
+	})
+
+	t.Run("when no execution mode is specified, in an organization with local as default execution mode", func(t *testing.T) {
+		// Remove the below organization creation and use the one from the outer scope once the feature flag is removed
+		orgTest, orgTestCleanup := createOrganizationWithOptions(t, client, OrganizationCreateOptions{
+			Name:                 String("tst-" + randomString(t)[0:20] + "-ff-on"),
+			Email:                String(fmt.Sprintf("%s@tfe.local", randomString(t))),
+			DefaultExecutionMode: String("local"),
+		})
+		t.Cleanup(orgTestCleanup)
+
+		options := WorkspaceCreateOptions{
+			Name: String(fmt.Sprintf("foo-%s", randomString(t))),
+			SettingOverwrites: &WorkspaceSettingOverwritesOptions{
+				ExecutionMode: Bool(false),
+			},
+		}
+
+		_, err := client.Workspaces.Create(ctx, orgTest.Name, options)
+		require.NoError(t, err)
+
+		// Get a refreshed view from the API.
+		refreshed, err := client.Workspaces.Read(ctx, orgTest.Name, *options.Name)
+		require.NoError(t, err)
+
+		assert.Equal(t, "local", refreshed.ExecutionMode)
 	})
 
 	t.Run("when an error is returned from the API", func(t *testing.T) {
@@ -692,6 +746,51 @@ func TestWorkspacesCreate(t *testing.T) {
 		require.NoError(t, err)
 		assert.Equal(t, options.TriggerPatterns, w.TriggerPatterns)
 	})
+
+	t.Run("when organization has a default execution mode", func(t *testing.T) {
+		defaultExecutionOrgTest, defaultExecutionOrgTestCleanup := createOrganizationWithDefaultAgentPool(t, client)
+		t.Cleanup(defaultExecutionOrgTestCleanup)
+
+		t.Run("with setting overwrites set to false, workspace inherits the default execution mode", func(t *testing.T) {
+			options := WorkspaceCreateOptions{
+				Name: String(fmt.Sprintf("tst-agent-cody-banks-%s", randomString(t))),
+				SettingOverwrites: &WorkspaceSettingOverwritesOptions{
+					ExecutionMode: Bool(false),
+					AgentPool:     Bool(false),
+				},
+			}
+			w, err := client.Workspaces.Create(ctx, defaultExecutionOrgTest.Name, options)
+
+			require.NoError(t, err)
+			assert.Equal(t, "agent", w.ExecutionMode)
+		})
+
+		t.Run("with setting overwrites set to true, workspace ignores the default execution mode", func(t *testing.T) {
+			options := WorkspaceCreateOptions{
+				Name:          String(fmt.Sprintf("tst-agent-tony-tanks-%s", randomString(t))),
+				ExecutionMode: String("local"),
+				SettingOverwrites: &WorkspaceSettingOverwritesOptions{
+					ExecutionMode: Bool(true),
+					AgentPool:     Bool(true),
+				},
+			}
+			w, err := client.Workspaces.Create(ctx, defaultExecutionOrgTest.Name, options)
+
+			require.NoError(t, err)
+			assert.Equal(t, "local", w.ExecutionMode)
+		})
+
+		t.Run("when explicitly setting execution mode, workspace ignores the default execution mode", func(t *testing.T) {
+			options := WorkspaceCreateOptions{
+				Name:          String(fmt.Sprintf("tst-remotely-interesting-workspace-%s", randomString(t))),
+				ExecutionMode: String("remote"),
+			}
+			w, err := client.Workspaces.Create(ctx, defaultExecutionOrgTest.Name, options)
+
+			require.NoError(t, err)
+			assert.Equal(t, "remote", w.ExecutionMode)
+		})
+	})
 }
 
 func TestWorkspacesRead(t *testing.T) {
@@ -713,6 +812,7 @@ func TestWorkspacesRead(t *testing.T) {
 		assert.NotEmpty(t, w.Actions)
 		assert.Equal(t, orgTest.Name, w.Organization.Name)
 		assert.NotEmpty(t, w.CreatedAt)
+		assert.NotEmpty(t, wTest.SettingOverwrites)
 	})
 
 	t.Run("links are properly decoded", func(t *testing.T) {
@@ -748,6 +848,33 @@ func TestWorkspacesRead(t *testing.T) {
 		w, err := client.Workspaces.Read(ctx, orgTest.Name, badIdentifier)
 		assert.Nil(t, w)
 		assert.EqualError(t, err, ErrInvalidWorkspaceValue.Error())
+	})
+
+	t.Run("when workspace is inheriting the default execution mode", func(t *testing.T) {
+		defaultExecutionOrgTest, defaultExecutionOrgTestCleanup := createOrganizationWithDefaultAgentPool(t, client)
+		t.Cleanup(defaultExecutionOrgTestCleanup)
+
+		options := WorkspaceCreateOptions{
+			Name: String(fmt.Sprintf("tst-agent-cody-banks-%s", randomString(t))),
+			SettingOverwrites: &WorkspaceSettingOverwritesOptions{
+				ExecutionMode: Bool(false),
+				AgentPool:     Bool(false),
+			},
+		}
+
+		wDefaultTest, wDefaultTestCleanup := createWorkspaceWithOptions(t, client, defaultExecutionOrgTest, options)
+		t.Cleanup(wDefaultTestCleanup)
+
+		t.Run("and workspace execution mode is default", func(t *testing.T) {
+			w, err := client.Workspaces.Read(ctx, defaultExecutionOrgTest.Name, wDefaultTest.Name)
+			assert.NoError(t, err)
+			assert.NotEmpty(t, w)
+
+			assert.Equal(t, defaultExecutionOrgTest.DefaultExecutionMode, w.ExecutionMode)
+			assert.NotEmpty(t, w.SettingOverwrites)
+			assert.Equal(t, false, *w.SettingOverwrites.ExecutionMode)
+			assert.Equal(t, false, *w.SettingOverwrites.ExecutionMode)
+		})
 	})
 }
 
@@ -942,6 +1069,21 @@ func TestWorkspacesUpdate(t *testing.T) {
 		assert.NotEqual(t, wTest.AssessmentsEnabled, wAfter.AssessmentsEnabled)
 		assert.NotEqual(t, wTest.TerraformVersion, wAfter.TerraformVersion)
 		assert.Equal(t, wTest.WorkingDirectory, wAfter.WorkingDirectory)
+	})
+
+	t.Run("when updating auto-apply-run-trigger", func(t *testing.T) {
+		skipIfEnterprise(t)
+		// Feature flag: auto-apply-run-trigger. Once flag is removed, delete
+		// this test and add the attribute to one generic update test.
+		options := WorkspaceUpdateOptions{
+			AutoApplyRunTrigger: Bool(true),
+		}
+
+		wAfter, err := client.Workspaces.Update(ctx, orgTest.Name, wTest.Name, options)
+		require.NoError(t, err)
+
+		assert.Equal(t, wTest.Name, wAfter.Name)
+		assert.NotEqual(t, wTest.AutoApplyRunTrigger, wAfter.AutoApplyRunTrigger)
 	})
 
 	t.Run("when updating project", func(t *testing.T) {
@@ -1441,6 +1583,54 @@ func TestWorkspacesUpdateByID(t *testing.T) {
 	})
 }
 
+func TestWorkspacesUpdateWithDefaultExecutionMode(t *testing.T) {
+	client := testClient(t)
+	ctx := context.Background()
+
+	defaultExecutionOrgTest, defaultExecutionOrgTestCleanup := createOrganizationWithDefaultAgentPool(t, client)
+	t.Cleanup(defaultExecutionOrgTestCleanup)
+
+	wTest, wCleanup := createWorkspace(t, client, defaultExecutionOrgTest)
+	t.Cleanup(wCleanup)
+
+	t.Run("when explicitly setting execution mode, workspace ignores the default execution mode", func(t *testing.T) {
+		options := WorkspaceUpdateOptions{
+			ExecutionMode: String("remote"),
+		}
+		w, err := client.Workspaces.Update(ctx, defaultExecutionOrgTest.Name, wTest.Name, options)
+
+		require.NoError(t, err)
+		assert.Equal(t, "remote", w.ExecutionMode)
+	})
+
+	t.Run("with setting overwrites set to true, workspace ignores the default execution mode", func(t *testing.T) {
+		options := WorkspaceUpdateOptions{
+			ExecutionMode: String("local"),
+			SettingOverwrites: &WorkspaceSettingOverwritesOptions{
+				ExecutionMode: Bool(true),
+				AgentPool:     Bool(true),
+			},
+		}
+		w, err := client.Workspaces.Update(ctx, defaultExecutionOrgTest.Name, wTest.Name, options)
+
+		require.NoError(t, err)
+		assert.Equal(t, "local", w.ExecutionMode)
+	})
+
+	t.Run("with setting overwrites set to false, workspace inherits the default execution mode", func(t *testing.T) {
+		options := WorkspaceUpdateOptions{
+			SettingOverwrites: &WorkspaceSettingOverwritesOptions{
+				ExecutionMode: Bool(false),
+				AgentPool:     Bool(false),
+			},
+		}
+		w, err := client.Workspaces.Update(ctx, defaultExecutionOrgTest.Name, wTest.Name, options)
+
+		require.NoError(t, err)
+		assert.Equal(t, "agent", w.ExecutionMode)
+	})
+}
+
 func TestWorkspacesDelete(t *testing.T) {
 	client := testClient(t)
 	ctx := context.Background()
@@ -1684,9 +1874,15 @@ func TestWorkspacesLock(t *testing.T) {
 	t.Cleanup(wTestCleanup)
 
 	t.Run("with valid options", func(t *testing.T) {
+		require.Empty(t, wTest.LockedBy)
+
 		w, err := client.Workspaces.Lock(ctx, wTest.ID, WorkspaceLockOptions{})
 		require.NoError(t, err)
 		assert.True(t, w.Locked)
+
+		require.NoError(t, err)
+		require.NotEmpty(t, w.LockedBy)
+		requireExactlyOneNotEmpty(t, w.LockedBy.Run, w.LockedBy.Team, w.LockedBy.User)
 	})
 
 	t.Run("when workspace is already locked", func(t *testing.T) {
@@ -2393,5 +2589,58 @@ func TestWorkspacesProjects(t *testing.T) {
 		for idx, item := range workspaces.Items {
 			assert.NotNil(t, item.Project.ID, "No project ID set on workspace %s at idx %d", item.ID, idx)
 		}
+	})
+}
+
+func TestWorkspace_DataRetentionPolicy(t *testing.T) {
+	skipUnlessEnterprise(t)
+
+	client := testClient(t)
+	ctx := context.Background()
+
+	wTest, wTestCleanup := createWorkspace(t, client, nil)
+	defer wTestCleanup()
+
+	dataRetentionPolicy, err := client.Workspaces.ReadDataRetentionPolicy(ctx, wTest.ID)
+	assert.Equal(t, ErrResourceNotFound, err)
+	require.Nil(t, dataRetentionPolicy)
+
+	workspace, err := client.Workspaces.ReadByID(ctx, wTest.ID)
+	require.NoError(t, err)
+	require.Nil(t, workspace.DataRetentionPolicy)
+
+	t.Run("set data retention policy", func(t *testing.T) {
+		createdDataRetentionPolicy, err := client.Workspaces.SetDataRetentionPolicy(ctx, wTest.ID, DataRetentionPolicySetOptions{DeleteOlderThanNDays: 33})
+		require.NoError(t, err)
+		require.Equal(t, 33, createdDataRetentionPolicy.DeleteOlderThanNDays)
+		require.Contains(t, createdDataRetentionPolicy.ID, "drp-")
+
+		dataRetentionPolicy, err = client.Workspaces.ReadDataRetentionPolicy(ctx, wTest.ID)
+		require.NoError(t, err)
+		require.Equal(t, 33, dataRetentionPolicy.DeleteOlderThanNDays)
+		require.Equal(t, createdDataRetentionPolicy.ID, dataRetentionPolicy.ID)
+		require.Contains(t, dataRetentionPolicy.ID, "drp-")
+
+		workspace, err := client.Workspaces.ReadByID(ctx, wTest.ID)
+		require.NoError(t, err)
+		require.Equal(t, dataRetentionPolicy.ID, workspace.DataRetentionPolicy.ID)
+	})
+
+	t.Run("update data retention policy", func(t *testing.T) {
+		_, err = client.Workspaces.SetDataRetentionPolicy(ctx, wTest.ID, DataRetentionPolicySetOptions{DeleteOlderThanNDays: 45})
+		require.NoError(t, err)
+
+		dataRetentionPolicy, err = client.Workspaces.ReadDataRetentionPolicy(ctx, wTest.ID)
+		require.NoError(t, err)
+		require.Equal(t, 45, dataRetentionPolicy.DeleteOlderThanNDays)
+	})
+
+	t.Run("delete data retention policy", func(t *testing.T) {
+		err = client.Workspaces.DeleteDataRetentionPolicy(ctx, wTest.ID)
+		require.NoError(t, err)
+
+		dataRetentionPolicy, err = client.Workspaces.ReadDataRetentionPolicy(ctx, wTest.ID)
+		assert.Equal(t, ErrResourceNotFound, err)
+		require.Nil(t, dataRetentionPolicy)
 	})
 }

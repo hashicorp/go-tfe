@@ -20,7 +20,7 @@ func TestTestRunsList(t *testing.T) {
 	orgTest, orgTestCleanup := createOrganization(t, client)
 	defer orgTestCleanup()
 
-	rmTest, registryModuleTestCleanup := createBranchBasedRegistryModule(t, client, orgTest)
+	rmTest, registryModuleTestCleanup := createBranchBasedRegistryModuleWithTests(t, client, orgTest)
 	defer registryModuleTestCleanup()
 
 	id := RegistryModuleID{
@@ -91,7 +91,7 @@ func TestTestRunsRead(t *testing.T) {
 	orgTest, orgTestCleanup := createOrganization(t, client)
 	defer orgTestCleanup()
 
-	rmTest, registryModuleTestCleanup := createBranchBasedRegistryModule(t, client, orgTest)
+	rmTest, registryModuleTestCleanup := createBranchBasedRegistryModuleWithTests(t, client, orgTest)
 	defer registryModuleTestCleanup()
 
 	id := RegistryModuleID{
@@ -125,7 +125,7 @@ func TestTestRunsCreate(t *testing.T) {
 	orgTest, orgTestCleanup := createOrganization(t, client)
 	defer orgTestCleanup()
 
-	rmTest, rmTestCleanup := createBranchBasedRegistryModule(t, client, orgTest)
+	rmTest, rmTestCleanup := createBranchBasedRegistryModuleWithTests(t, client, orgTest)
 	defer rmTestCleanup()
 
 	cvTest, cvTestCleanup := createUploadedTestRunConfigurationVersion(t, client, rmTest)
@@ -191,7 +191,7 @@ func TestTestRunsLogs(t *testing.T) {
 	orgTest, orgTestCleanup := createOrganization(t, client)
 	defer orgTestCleanup()
 
-	rmTest, rmTestCleanup := createBranchBasedRegistryModule(t, client, orgTest)
+	rmTest, rmTestCleanup := createBranchBasedRegistryModuleWithTests(t, client, orgTest)
 	defer rmTestCleanup()
 
 	id := RegistryModuleID{
@@ -232,7 +232,7 @@ func TestTestRunsCancel(t *testing.T) {
 	orgTest, orgTestCleanup := createOrganization(t, client)
 	defer orgTestCleanup()
 
-	rmTest, rmTestCleanup := createBranchBasedRegistryModule(t, client, orgTest)
+	rmTest, rmTestCleanup := createBranchBasedRegistryModuleWithTests(t, client, orgTest)
 	defer rmTestCleanup()
 
 	id := RegistryModuleID{
