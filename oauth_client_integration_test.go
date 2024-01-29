@@ -218,7 +218,7 @@ func TestOAuthClientsCreate_agentPool(t *testing.T) {
 	orgTest, orgTestCleanup := createOrganization(t, client)
 	defer orgTestCleanup()
 
-	agentPool, agentPoolCleanup := createAgentPool(t, client, orgTest)
+	agentPoolTest, agentPoolCleanup := createAgentPool(t, client, orgTest)
 	defer agentPoolCleanup()
 
 	t.Run("with valid agent pool external id", func(t *testing.T) {
@@ -227,7 +227,7 @@ func TestOAuthClientsCreate_agentPool(t *testing.T) {
 			HTTPURL:         String("https://github.com"),
 			OAuthToken:      String(githubToken),
 			ServiceProvider: ServiceProvider(ServiceProviderGithub),
-			AgentPoolID:     String(agentPool.ID),
+			AgentPool:       agentPoolTest,
 		}
 
 		ocTest, errCreate := client.OAuthClients.Create(ctx, orgTest.Name, options)
@@ -237,14 +237,15 @@ func TestOAuthClientsCreate_agentPool(t *testing.T) {
 	})
 
 	t.Run("with invalid agent pool external id", func(t *testing.T) {
+		invalidAgentPool, err := client.AgentPools.Read(ctx, badIdentifier)
 		options := OAuthClientCreateOptions{
 			APIURL:          String("https://api.github.com"),
 			HTTPURL:         String("https://github.com"),
 			OAuthToken:      String(githubToken),
 			ServiceProvider: ServiceProvider(ServiceProviderGithub),
-			AgentPoolID:     String(randomString(t)),
+			AgentPool:       invalidAgentPool,
 		}
-		_, err := client.OAuthClients.Create(ctx, orgTest.Name, options)
+		_, err = client.OAuthClients.Create(ctx, orgTest.Name, options)
 		assert.EqualError(t, err, "unprocessable entity\n\nAgent Pool is missing")
 	})
 }

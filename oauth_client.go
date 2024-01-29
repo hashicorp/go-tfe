@@ -137,7 +137,7 @@ type OAuthClientCreateOptions struct {
 	ServiceProvider *ServiceProviderType `jsonapi:"attr,service-provider"`
 
 	// Optional: AgentPoolID to associate the VCS Provider with, for PrivateVCS support
-	AgentPoolID *string `jsonapi:"attr,agent-pool-id,omitempty"`
+	AgentPool *AgentPool `jsonapi:"relation,agent-pool-id,omitempty"`
 }
 
 // OAuthClientUpdateOptions represents the options for updating an OAuth client.
