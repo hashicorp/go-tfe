@@ -17,7 +17,6 @@ import (
 	"time"
 
 	retryablehttp "github.com/hashicorp/go-retryablehttp"
-	"github.com/hashicorp/jsonapi"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
@@ -540,7 +539,7 @@ func TestWorkspacesCreate(t *testing.T) {
 			Name:                       String(fmt.Sprintf("foo-%s", randomString(t))),
 			AllowDestroyPlan:           Bool(true),
 			AutoApply:                  Bool(true),
-			AutoDestroyAt:              jsonapi.NullableTime(time.Date(2025, 1, 1, 0, 0, 0, 0, time.UTC)),
+			AutoDestroyAt:              NullableTime(time.Date(2025, 1, 1, 0, 0, 0, 0, time.UTC)),
 			Description:                String("qux"),
 			AssessmentsEnabled:         Bool(false),
 			FileTriggersEnabled:        Bool(true),
@@ -1127,7 +1126,7 @@ func TestWorkspacesUpdate(t *testing.T) {
 			Name:                       String(randomString(t)),
 			AllowDestroyPlan:           Bool(true),
 			AutoApply:                  Bool(false),
-			AutoDestroyAt:              jsonapi.NullableTime(time.Date(2025, 1, 1, 0, 0, 0, 0, time.UTC)),
+			AutoDestroyAt:              NullableTime(time.Date(2025, 1, 1, 0, 0, 0, 0, time.UTC)),
 			FileTriggersEnabled:        Bool(true),
 			Operations:                 Bool(false),
 			QueueAllRuns:               Bool(false),
@@ -2659,7 +2658,7 @@ func TestWorkspacesAutoDestroy(t *testing.T) {
 
 	upgradeOrganizationSubscription(t, client, orgTest)
 
-	autoDestroyAt := jsonapi.NullableTime(time.Date(2025, 1, 1, 0, 0, 0, 0, time.UTC))
+	autoDestroyAt := NullableTime(time.Date(2025, 1, 1, 0, 0, 0, 0, time.UTC))
 	wTest, wCleanup := createWorkspaceWithOptions(t, client, orgTest, WorkspaceCreateOptions{
 		Name:          String(randomString(t)),
 		AutoDestroyAt: autoDestroyAt,
@@ -2678,7 +2677,7 @@ func TestWorkspacesAutoDestroy(t *testing.T) {
 
 	// explicitly update the value of auto_destroy_at
 	w, err = client.Workspaces.Update(ctx, orgTest.Name, wTest.Name, WorkspaceUpdateOptions{
-		AutoDestroyAt: jsonapi.NullableTime(time.Date(2025, 1, 2, 0, 0, 0, 0, time.UTC)),
+		AutoDestroyAt: NullableTime(time.Date(2025, 1, 2, 0, 0, 0, 0, time.UTC)),
 	})
 
 	require.NoError(t, err)
@@ -2687,7 +2686,7 @@ func TestWorkspacesAutoDestroy(t *testing.T) {
 
 	// disable auto destroy
 	w, err = client.Workspaces.Update(ctx, orgTest.Name, wTest.Name, WorkspaceUpdateOptions{
-		AutoDestroyAt: jsonapi.NullTime(),
+		AutoDestroyAt: NullTime(),
 	})
 
 	require.NoError(t, err)
