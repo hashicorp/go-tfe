@@ -2666,7 +2666,7 @@ func TestWorkspacesAutoDestroy(t *testing.T) {
 	})
 	t.Cleanup(wCleanup)
 
-	assert.Equal(t, wTest.AutoDestroyAt, autoDestroyAt)
+	require.Equal(t, wTest.AutoDestroyAt, autoDestroyAt)
 
 	// respect default omitempty
 	w, err := client.Workspaces.Update(ctx, orgTest.Name, wTest.Name, WorkspaceUpdateOptions{
@@ -2674,7 +2674,7 @@ func TestWorkspacesAutoDestroy(t *testing.T) {
 	})
 
 	require.NoError(t, err)
-	assert.NotNil(t, w.AutoDestroyAt)
+	require.NotNil(t, w.AutoDestroyAt)
 
 	// explicitly update the value of auto_destroy_at
 	w, err = client.Workspaces.Update(ctx, orgTest.Name, wTest.Name, WorkspaceUpdateOptions{
@@ -2682,8 +2682,8 @@ func TestWorkspacesAutoDestroy(t *testing.T) {
 	})
 
 	require.NoError(t, err)
-	assert.NotNil(t, w.AutoDestroyAt)
-	assert.NotEqual(t, w.AutoDestroyAt, autoDestroyAt)
+	require.NotNil(t, w.AutoDestroyAt)
+	require.NotEqual(t, w.AutoDestroyAt, autoDestroyAt)
 
 	// disable auto destroy
 	w, err = client.Workspaces.Update(ctx, orgTest.Name, wTest.Name, WorkspaceUpdateOptions{
@@ -2691,5 +2691,5 @@ func TestWorkspacesAutoDestroy(t *testing.T) {
 	})
 
 	require.NoError(t, err)
-	assert.Nil(t, w.AutoDestroyAt)
+	require.Nil(t, w.AutoDestroyAt)
 }
