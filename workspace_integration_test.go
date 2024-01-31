@@ -2636,37 +2636,79 @@ func TestWorkspace_DataRetentionPolicy(t *testing.T) {
 	defer wTestCleanup()
 
 	dataRetentionPolicy, err := client.Workspaces.ReadDataRetentionPolicy(ctx, wTest.ID)
-	assert.Equal(t, ErrResourceNotFound, err)
+	assert.Nil(t, err)
 	require.Nil(t, dataRetentionPolicy)
 
 	workspace, err := client.Workspaces.ReadByID(ctx, wTest.ID)
 	require.NoError(t, err)
 	require.Nil(t, workspace.DataRetentionPolicy)
 
-	t.Run("set data retention policy", func(t *testing.T) {
-		createdDataRetentionPolicy, err := client.Workspaces.SetDataRetentionPolicy(ctx, wTest.ID, DataRetentionPolicySetOptions{DeleteOlderThanNDays: 33})
+	t.Run("set and update data retention policy to delete older", func(t *testing.T) {
+		createdDataRetentionPolicy, err := client.Workspaces.SetDataRetentionPolicyDeleteOlder(ctx, wTest.ID, DataRetentionPolicyDeleteOlderSetOptions{DeleteOlderThanNDays: 33})
 		require.NoError(t, err)
 		require.Equal(t, 33, createdDataRetentionPolicy.DeleteOlderThanNDays)
 		require.Contains(t, createdDataRetentionPolicy.ID, "drp-")
 
 		dataRetentionPolicy, err = client.Workspaces.ReadDataRetentionPolicy(ctx, wTest.ID)
 		require.NoError(t, err)
-		require.Equal(t, 33, dataRetentionPolicy.DeleteOlderThanNDays)
-		require.Equal(t, createdDataRetentionPolicy.ID, dataRetentionPolicy.ID)
-		require.Contains(t, dataRetentionPolicy.ID, "drp-")
+		require.NotNil(t, dataRetentionPolicy.DataRetentionPolicyDeleteOlder)
+
+		require.Equal(t, 33, dataRetentionPolicy.DataRetentionPolicyDeleteOlder.DeleteOlderThanNDays)
+		require.Equal(t, createdDataRetentionPolicy.ID, dataRetentionPolicy.DataRetentionPolicyDeleteOlder.ID)
+		require.Contains(t, dataRetentionPolicy.DataRetentionPolicyDeleteOlder.ID, "drp-")
 
 		workspace, err := client.Workspaces.ReadByID(ctx, wTest.ID)
 		require.NoError(t, err)
-		require.Equal(t, dataRetentionPolicy.ID, workspace.DataRetentionPolicy.ID)
+		require.Equal(t, dataRetentionPolicy.DataRetentionPolicyDeleteOlder.ID, workspace.DataRetentionPolicy.DataRetentionPolicyDeleteOlder.ID)
+
+		// try updating the number of days
+		createdDataRetentionPolicy, err = client.Workspaces.SetDataRetentionPolicyDeleteOlder(ctx, wTest.ID, DataRetentionPolicyDeleteOlderSetOptions{DeleteOlderThanNDays: 1})
+		require.NoError(t, err)
+		require.Equal(t, 1, createdDataRetentionPolicy.DeleteOlderThanNDays)
+
+		dataRetentionPolicy, err = client.Workspaces.ReadDataRetentionPolicy(ctx, wTest.ID)
+		require.NoError(t, err)
+		require.NotNil(t, dataRetentionPolicy.DataRetentionPolicyDeleteOlder)
+		require.Equal(t, 1, dataRetentionPolicy.DataRetentionPolicyDeleteOlder.DeleteOlderThanNDays)
+		require.Equal(t, createdDataRetentionPolicy.ID, dataRetentionPolicy.DataRetentionPolicyDeleteOlder.ID)
 	})
 
-	t.Run("update data retention policy", func(t *testing.T) {
-		_, err = client.Workspaces.SetDataRetentionPolicy(ctx, wTest.ID, DataRetentionPolicySetOptions{DeleteOlderThanNDays: 45})
+	t.Run("set data retention policy to not delete", func(t *testing.T) {
+		createdDataRetentionPolicy, err := client.Workspaces.SetDataRetentionPolicyDontDelete(ctx, wTest.ID, DataRetentionPolicyDontDeleteSetOptions{})
+		require.NoError(t, err)
+		require.Contains(t, createdDataRetentionPolicy.ID, "drp-")
+
+		dataRetentionPolicy, err = client.Workspaces.ReadDataRetentionPolicy(ctx, wTest.ID)
+		require.NoError(t, err)
+		require.NotNil(t, dataRetentionPolicy.DataRetentionPolicyDontDelete)
+		require.Equal(t, createdDataRetentionPolicy.ID, dataRetentionPolicy.DataRetentionPolicyDontDelete.ID)
+	})
+
+	t.Run("change data retention policy type", func(t *testing.T) {
+		_, err = client.Workspaces.SetDataRetentionPolicyDeleteOlder(ctx, wTest.ID, DataRetentionPolicyDeleteOlderSetOptions{DeleteOlderThanNDays: 45})
 		require.NoError(t, err)
 
 		dataRetentionPolicy, err = client.Workspaces.ReadDataRetentionPolicy(ctx, wTest.ID)
 		require.NoError(t, err)
-		require.Equal(t, 45, dataRetentionPolicy.DeleteOlderThanNDays)
+		require.NotNil(t, dataRetentionPolicy.DataRetentionPolicyDeleteOlder)
+		require.Equal(t, 45, dataRetentionPolicy.DataRetentionPolicyDeleteOlder.DeleteOlderThanNDays)
+		require.Nil(t, dataRetentionPolicy.DataRetentionPolicyDontDelete)
+
+		_, err = client.Workspaces.SetDataRetentionPolicyDontDelete(ctx, wTest.ID, DataRetentionPolicyDontDeleteSetOptions{})
+		require.NoError(t, err)
+		dataRetentionPolicy, err = client.Workspaces.ReadDataRetentionPolicy(ctx, wTest.ID)
+		require.NoError(t, err)
+		require.Nil(t, dataRetentionPolicy.DataRetentionPolicyDeleteOlder)
+		require.NotNil(t, dataRetentionPolicy.DataRetentionPolicyDontDelete)
+
+		_, err = client.Workspaces.SetDataRetentionPolicyDeleteOlder(ctx, wTest.ID, DataRetentionPolicyDeleteOlderSetOptions{DeleteOlderThanNDays: 20})
+		require.NoError(t, err)
+
+		dataRetentionPolicy, err = client.Workspaces.ReadDataRetentionPolicy(ctx, wTest.ID)
+		require.NoError(t, err)
+		require.NotNil(t, dataRetentionPolicy.DataRetentionPolicyDeleteOlder)
+		require.Equal(t, 20, dataRetentionPolicy.DataRetentionPolicyDeleteOlder.DeleteOlderThanNDays)
+		require.Nil(t, dataRetentionPolicy.DataRetentionPolicyDontDelete)
 	})
 
 	t.Run("delete data retention policy", func(t *testing.T) {
@@ -2674,7 +2716,7 @@ func TestWorkspace_DataRetentionPolicy(t *testing.T) {
 		require.NoError(t, err)
 
 		dataRetentionPolicy, err = client.Workspaces.ReadDataRetentionPolicy(ctx, wTest.ID)
-		assert.Equal(t, ErrResourceNotFound, err)
+		assert.Nil(t, err)
 		require.Nil(t, dataRetentionPolicy)
 	})
 }

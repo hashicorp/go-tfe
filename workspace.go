@@ -106,11 +106,19 @@ type Workspaces interface {
 
 	// ReadDataRetentionPolicy reads a workspace's data retention policy
 	// **Note: This functionality is only available in Terraform Enterprise.**
-	ReadDataRetentionPolicy(ctx context.Context, workspaceID string) (*DataRetentionPolicy, error)
+	ReadDataRetentionPolicy(ctx context.Context, workspaceID string) (*DataRetentionPolicyChoice, error)
 
-	// SetDataRetentionPolicy sets a workspace's data retention policy
-	// **Note: This functionality is only available in Terraform Enterprise.**
+	// DEPRECATED: Use SetDataRetentionPolicyDeleteOlder instead
+	// **Note: This functionality is only available in Terraform Enterprise versions v202311-1 and v202312-1.**
 	SetDataRetentionPolicy(ctx context.Context, workspaceID string, options DataRetentionPolicySetOptions) (*DataRetentionPolicy, error)
+
+	// SetDataRetentionPolicyDeleteOlder sets a workspace's data retention policy to delete data older than a certain number of days
+	// **Note: This functionality is only available in Terraform Enterprise.**
+	SetDataRetentionPolicyDeleteOlder(ctx context.Context, workspaceID string, options DataRetentionPolicyDeleteOlderSetOptions) (*DataRetentionPolicyDeleteOlder, error)
+
+	// SetDataRetentionPolicyDontDelete sets a workspace's data retention policy to explicitly not delete data
+	// **Note: This functionality is only available in Terraform Enterprise.**
+	SetDataRetentionPolicyDontDelete(ctx context.Context, workspaceID string, options DataRetentionPolicyDontDeleteSetOptions) (*DataRetentionPolicyDontDelete, error)
 
 	// DeleteDataRetentionPolicy deletes a workspace's data retention policy
 	// **Note: This functionality is only available in Terraform Enterprise.**
@@ -191,7 +199,7 @@ type Workspace struct {
 	LockedBy                    *LockedByChoice       `jsonapi:"polyrelation,locked-by"`
 
 	// **Note: This functionality is only available in Terraform Enterprise.**
-	DataRetentionPolicy *DataRetentionPolicy `jsonapi:"relation,data-retention-policy"`
+	DataRetentionPolicy *DataRetentionPolicyChoice `jsonapi:"polyrelation,data-retention-policy"`
 
 	// Links
 	Links map[string]interface{} `jsonapi:"links,omitempty"`
@@ -1220,9 +1228,27 @@ func (s *workspaces) RemoveTags(ctx context.Context, workspaceID string, options
 	return req.Do(ctx, nil)
 }
 
-func (s *workspaces) ReadDataRetentionPolicy(ctx context.Context, workspaceID string) (*DataRetentionPolicy, error) {
+func (s *workspaces) ReadDataRetentionPolicy(ctx context.Context, workspaceID string) (*DataRetentionPolicyChoice, error) {
 	if !validStringID(&workspaceID) {
 		return nil, ErrInvalidWorkspaceID
+	}
+
+	// The API to read the drp is workspaces/<id>/relationships/data-retention-policy
+	// However, this API can return multiple "types" (e.g. data-retention-policy-delete-olders, or data-retention-policy-don-deletes)
+	// Ideally we would deserialize this directly into the choice type (DataRetentionPolicyChoice)...however, there isn't a way to
+	// tell the current jsonapi implementation that the direct result of an endpoint could be different types. Relationships can be polymorphic,
+	// but the direct result of an endpoint can't be (as far as the jsonapi implementation is concerned)
+
+	// Instead, we need to figure out the type of the data retention policy first, and deserialize it into the matching model. We
+	// can then create a choice type manually
+	ws, err := s.ReadByID(ctx, workspaceID)
+	if err != nil {
+		return nil, err
+	}
+
+	// there is no drp (of a known type)
+	if ws.DataRetentionPolicy == nil || !ws.DataRetentionPolicy.IsPopulated() {
+		return ws.DataRetentionPolicy, nil
 	}
 
 	u := fmt.Sprintf("workspaces/%s/relationships/data-retention-policy", url.QueryEscape(workspaceID))
@@ -1231,8 +1257,24 @@ func (s *workspaces) ReadDataRetentionPolicy(ctx context.Context, workspaceID st
 		return nil, err
 	}
 
-	dataRetentionPolicy := &DataRetentionPolicy{}
-	err = req.Do(ctx, dataRetentionPolicy)
+	dataRetentionPolicy := &DataRetentionPolicyChoice{}
+	// if reading the workspace told us it was a "delete older policy" deserialize into the DeleteOlder portion of the choice model
+	if ws.DataRetentionPolicy.DataRetentionPolicyDeleteOlder != nil {
+		deleteOlder := &DataRetentionPolicyDeleteOlder{}
+		err = req.Do(ctx, deleteOlder)
+		dataRetentionPolicy.DataRetentionPolicyDeleteOlder = deleteOlder
+
+		// if reading the workspace told us it was a "delete older policy" deserialize into the DeleteOlder portion of the choice model
+	} else if ws.DataRetentionPolicy.DataRetentionPolicyDontDelete != nil {
+		dontDelete := &DataRetentionPolicyDontDelete{}
+		err = req.Do(ctx, dontDelete)
+		dataRetentionPolicy.DataRetentionPolicyDontDelete = dontDelete
+
+	} else if ws.DataRetentionPolicy != nil {
+		legacyDrp := &DataRetentionPolicy{}
+		err = req.Do(ctx, legacyDrp)
+		dataRetentionPolicy.DataRetentionPolicy = legacyDrp
+	}
 
 	if err != nil {
 		return nil, err
@@ -1253,6 +1295,48 @@ func (s *workspaces) SetDataRetentionPolicy(ctx context.Context, workspaceID str
 	}
 
 	dataRetentionPolicy := &DataRetentionPolicy{}
+	err = req.Do(ctx, dataRetentionPolicy)
+
+	if err != nil {
+		return nil, err
+	}
+
+	return dataRetentionPolicy, nil
+}
+
+func (s *workspaces) SetDataRetentionPolicyDeleteOlder(ctx context.Context, workspaceID string, options DataRetentionPolicyDeleteOlderSetOptions) (*DataRetentionPolicyDeleteOlder, error) {
+	if !validStringID(&workspaceID) {
+		return nil, ErrInvalidWorkspaceID
+	}
+
+	u := fmt.Sprintf("workspaces/%s/relationships/data-retention-policy", url.QueryEscape(workspaceID))
+	req, err := s.client.NewRequest("PATCH", u, &options)
+	if err != nil {
+		return nil, err
+	}
+
+	dataRetentionPolicy := &DataRetentionPolicyDeleteOlder{}
+	err = req.Do(ctx, dataRetentionPolicy)
+
+	if err != nil {
+		return nil, err
+	}
+
+	return dataRetentionPolicy, nil
+}
+
+func (s *workspaces) SetDataRetentionPolicyDontDelete(ctx context.Context, workspaceID string, options DataRetentionPolicyDontDeleteSetOptions) (*DataRetentionPolicyDontDelete, error) {
+	if !validStringID(&workspaceID) {
+		return nil, ErrInvalidWorkspaceID
+	}
+
+	u := fmt.Sprintf("workspaces/%s/relationships/data-retention-policy", url.QueryEscape(workspaceID))
+	req, err := s.client.NewRequest("PATCH", u, &options)
+	if err != nil {
+		return nil, err
+	}
+
+	dataRetentionPolicy := &DataRetentionPolicyDontDelete{}
 	err = req.Do(ctx, dataRetentionPolicy)
 
 	if err != nil {
