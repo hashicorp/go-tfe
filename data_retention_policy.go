@@ -19,14 +19,14 @@ func (d DataRetentionPolicyChoice) IsPopulated() bool {
 		d.DataRetentionPolicyDontDelete != nil
 }
 
-// DEPRECATED: Use DataRetentionPolicyDeleteOlder instead. This is the original representation of a
+// Deprecated: Use DataRetentionPolicyDeleteOlder instead. This is the original representation of a
 // data retention policy, only present in TFE v202311-1 and v202312-1
 type DataRetentionPolicy struct {
 	ID                   string `jsonapi:"primary,data-retention-policies"`
 	DeleteOlderThanNDays int    `jsonapi:"attr,delete-older-than-n-days"`
 }
 
-// DEPRECATED: Use DataRetentionPolicyDeleteOlder variations instead
+// Deprecated: Use DataRetentionPolicyDeleteOlder variations instead
 type DataRetentionPolicySetOptions struct {
 	// Type is a public field utilized by JSON:API to
 	// set the resource type via the field tag.

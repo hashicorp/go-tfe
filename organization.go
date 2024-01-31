@@ -50,7 +50,7 @@ type Organizations interface {
 	// **Note: This functionality is only available in Terraform Enterprise.**
 	ReadDataRetentionPolicy(ctx context.Context, organization string) (*DataRetentionPolicyChoice, error)
 
-	// DEPRECATED: Use SetDataRetentionPolicyDeleteOlder instead
+	// Deprecated: Use SetDataRetentionPolicyDeleteOlder instead
 	// **Note: This functionality is only available in Terraform Enterprise versions v202311-1 and v202312-1.**
 	SetDataRetentionPolicy(ctx context.Context, organization string, options DataRetentionPolicySetOptions) (*DataRetentionPolicy, error)
 
@@ -470,7 +470,7 @@ func (s *organizations) ReadDataRetentionPolicy(ctx context.Context, organizatio
 		return org.DataRetentionPolicy, nil
 	}
 
-	u := fmt.Sprintf("organizations/%s/relationships/data-retention-policy", url.QueryEscape(organization))
+	u := s.dataRetentionPolicyLink(organization)
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, err
@@ -488,7 +488,6 @@ func (s *organizations) ReadDataRetentionPolicy(ctx context.Context, organizatio
 		dontDelete := &DataRetentionPolicyDontDelete{}
 		err = req.Do(ctx, dontDelete)
 		dataRetentionPolicy.DataRetentionPolicyDontDelete = dontDelete
-
 	} else if org.DataRetentionPolicy != nil {
 		legacyDrp := &DataRetentionPolicy{}
 		err = req.Do(ctx, legacyDrp)
@@ -502,14 +501,14 @@ func (s *organizations) ReadDataRetentionPolicy(ctx context.Context, organizatio
 	return dataRetentionPolicy, nil
 }
 
-// DEPRECATED: Use SetDataRetentionPolicyDeleteOlder instead
+// Deprecated: Use SetDataRetentionPolicyDeleteOlder instead
 // **Note: This functionality is only available in Terraform Enterprise versions v202311-1 and v202312-1.**
 func (s *organizations) SetDataRetentionPolicy(ctx context.Context, organization string, options DataRetentionPolicySetOptions) (*DataRetentionPolicy, error) {
 	if !validStringID(&organization) {
 		return nil, ErrInvalidOrg
 	}
 
-	u := fmt.Sprintf("organizations/%s/relationships/data-retention-policy", url.QueryEscape(organization))
+	u := s.dataRetentionPolicyLink(organization)
 	req, err := s.client.NewRequest("PATCH", u, &options)
 	if err != nil {
 		return nil, err
@@ -530,7 +529,7 @@ func (s *organizations) SetDataRetentionPolicyDeleteOlder(ctx context.Context, o
 		return nil, ErrInvalidOrg
 	}
 
-	u := fmt.Sprintf("organizations/%s/relationships/data-retention-policy", url.QueryEscape(organization))
+	u := s.dataRetentionPolicyLink(organization)
 	req, err := s.client.NewRequest("PATCH", u, &options)
 	if err != nil {
 		return nil, err
@@ -551,7 +550,7 @@ func (s *organizations) SetDataRetentionPolicyDontDelete(ctx context.Context, or
 		return nil, ErrInvalidOrg
 	}
 
-	u := fmt.Sprintf("organizations/%s/relationships/data-retention-policy", url.QueryEscape(organization))
+	u := s.dataRetentionPolicyLink(organization)
 	req, err := s.client.NewRequest("PATCH", u, &options)
 	if err != nil {
 		return nil, err
@@ -572,7 +571,7 @@ func (s *organizations) DeleteDataRetentionPolicy(ctx context.Context, organizat
 		return ErrInvalidOrg
 	}
 
-	u := fmt.Sprintf("organizations/%s/relationships/data-retention-policy", url.QueryEscape(organization))
+	u := s.dataRetentionPolicyLink(organization)
 	req, err := s.client.NewRequest("DELETE", u, nil)
 	if err != nil {
 		return err
@@ -592,4 +591,8 @@ func (o OrganizationCreateOptions) valid() error {
 		return ErrRequiredEmail
 	}
 	return nil
+}
+
+func (s *organizations) dataRetentionPolicyLink(name string) string {
+	return fmt.Sprintf("organizations/%s/relationships/data-retention-policy", url.QueryEscape(name))
 }

@@ -108,7 +108,7 @@ type Workspaces interface {
 	// **Note: This functionality is only available in Terraform Enterprise.**
 	ReadDataRetentionPolicy(ctx context.Context, workspaceID string) (*DataRetentionPolicyChoice, error)
 
-	// DEPRECATED: Use SetDataRetentionPolicyDeleteOlder instead
+	// Deprecated: Use SetDataRetentionPolicyDeleteOlder instead
 	// **Note: This functionality is only available in Terraform Enterprise versions v202311-1 and v202312-1.**
 	SetDataRetentionPolicy(ctx context.Context, workspaceID string, options DataRetentionPolicySetOptions) (*DataRetentionPolicy, error)
 
@@ -1251,7 +1251,7 @@ func (s *workspaces) ReadDataRetentionPolicy(ctx context.Context, workspaceID st
 		return ws.DataRetentionPolicy, nil
 	}
 
-	u := fmt.Sprintf("workspaces/%s/relationships/data-retention-policy", url.QueryEscape(workspaceID))
+	u := s.dataRetentionPolicyLink(workspaceID)
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, err
@@ -1269,7 +1269,6 @@ func (s *workspaces) ReadDataRetentionPolicy(ctx context.Context, workspaceID st
 		dontDelete := &DataRetentionPolicyDontDelete{}
 		err = req.Do(ctx, dontDelete)
 		dataRetentionPolicy.DataRetentionPolicyDontDelete = dontDelete
-
 	} else if ws.DataRetentionPolicy != nil {
 		legacyDrp := &DataRetentionPolicy{}
 		err = req.Do(ctx, legacyDrp)
@@ -1288,7 +1287,7 @@ func (s *workspaces) SetDataRetentionPolicy(ctx context.Context, workspaceID str
 		return nil, ErrInvalidWorkspaceID
 	}
 
-	u := fmt.Sprintf("workspaces/%s/relationships/data-retention-policy", url.QueryEscape(workspaceID))
+	u := s.dataRetentionPolicyLink(workspaceID)
 	req, err := s.client.NewRequest("PATCH", u, &options)
 	if err != nil {
 		return nil, err
@@ -1309,7 +1308,7 @@ func (s *workspaces) SetDataRetentionPolicyDeleteOlder(ctx context.Context, work
 		return nil, ErrInvalidWorkspaceID
 	}
 
-	u := fmt.Sprintf("workspaces/%s/relationships/data-retention-policy", url.QueryEscape(workspaceID))
+	u := s.dataRetentionPolicyLink(workspaceID)
 	req, err := s.client.NewRequest("PATCH", u, &options)
 	if err != nil {
 		return nil, err
@@ -1330,7 +1329,7 @@ func (s *workspaces) SetDataRetentionPolicyDontDelete(ctx context.Context, works
 		return nil, ErrInvalidWorkspaceID
 	}
 
-	u := fmt.Sprintf("workspaces/%s/relationships/data-retention-policy", url.QueryEscape(workspaceID))
+	u := s.dataRetentionPolicyLink(workspaceID)
 	req, err := s.client.NewRequest("PATCH", u, &options)
 	if err != nil {
 		return nil, err
@@ -1351,7 +1350,7 @@ func (s *workspaces) DeleteDataRetentionPolicy(ctx context.Context, workspaceID 
 		return ErrInvalidWorkspaceID
 	}
 
-	u := fmt.Sprintf("workspaces/%s/relationships/data-retention-policy", url.QueryEscape(workspaceID))
+	u := s.dataRetentionPolicyLink(workspaceID)
 	req, err := s.client.NewRequest("DELETE", u, nil)
 	if err != nil {
 		return err
@@ -1509,4 +1508,8 @@ func tagRegexDefined(options *VCSRepoOptions) bool {
 		return true
 	}
 	return false
+}
+
+func (s *workspaces) dataRetentionPolicyLink(wsID string) string {
+	return fmt.Sprintf("workspaces/%s/relationships/data-retention-policy", url.QueryEscape(wsID))
 }
