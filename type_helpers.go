@@ -3,6 +3,12 @@
 
 package tfe
 
+import (
+	"time"
+
+	"github.com/hashicorp/jsonapi"
+)
+
 // Access returns a pointer to the given team access type.
 func Access(v AccessType) *AccessType {
 	return &v
@@ -116,4 +122,20 @@ func SMTPAuthValue(v SMTPAuthType) *SMTPAuthType {
 // String returns a pointer to the given string.
 func String(v string) *string {
 	return &v
+}
+
+func NullableBool(v bool) jsonapi.NullableAttr[bool] {
+	return jsonapi.NewNullableAttrWithValue[bool](v)
+}
+
+func NullBool() jsonapi.NullableAttr[bool] {
+	return jsonapi.NewNullNullableAttr[bool]()
+}
+
+func NullableTime(v time.Time) jsonapi.NullableAttr[time.Time] {
+	return jsonapi.NewNullableAttrWithValue[time.Time](v)
+}
+
+func NullTime() jsonapi.NullableAttr[time.Time] {
+	return jsonapi.NewNullNullableAttr[time.Time]()
 }

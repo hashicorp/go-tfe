@@ -537,8 +537,9 @@ func TestWorkspacesCreate(t *testing.T) {
 	t.Run("with valid options", func(t *testing.T) {
 		options := WorkspaceCreateOptions{
 			Name:                       String(fmt.Sprintf("foo-%s", randomString(t))),
-			AllowDestroyPlan:           Bool(false),
+			AllowDestroyPlan:           Bool(true),
 			AutoApply:                  Bool(true),
+			AutoDestroyAt:              NullableTime(time.Date(2025, 1, 1, 0, 0, 0, 0, time.UTC)),
 			Description:                String("qux"),
 			AssessmentsEnabled:         Bool(false),
 			FileTriggersEnabled:        Bool(true),
@@ -577,6 +578,7 @@ func TestWorkspacesCreate(t *testing.T) {
 			assert.Equal(t, *options.Description, item.Description)
 			assert.Equal(t, *options.AllowDestroyPlan, item.AllowDestroyPlan)
 			assert.Equal(t, *options.AutoApply, item.AutoApply)
+			assert.Equal(t, options.AutoDestroyAt, item.AutoDestroyAt)
 			assert.Equal(t, *options.AssessmentsEnabled, item.AssessmentsEnabled)
 			assert.Equal(t, *options.FileTriggersEnabled, item.FileTriggersEnabled)
 			assert.Equal(t, *options.Operations, item.Operations)
@@ -1124,6 +1126,7 @@ func TestWorkspacesUpdate(t *testing.T) {
 			Name:                       String(randomString(t)),
 			AllowDestroyPlan:           Bool(true),
 			AutoApply:                  Bool(false),
+			AutoDestroyAt:              NullableTime(time.Date(2025, 1, 1, 0, 0, 0, 0, time.UTC)),
 			FileTriggersEnabled:        Bool(true),
 			Operations:                 Bool(false),
 			QueueAllRuns:               Bool(false),
@@ -1149,6 +1152,7 @@ func TestWorkspacesUpdate(t *testing.T) {
 			assert.Equal(t, *options.Name, item.Name)
 			assert.Equal(t, *options.AllowDestroyPlan, item.AllowDestroyPlan)
 			assert.Equal(t, *options.AutoApply, item.AutoApply)
+			assert.Equal(t, options.AutoDestroyAt, item.AutoDestroyAt)
 			assert.Equal(t, *options.FileTriggersEnabled, item.FileTriggersEnabled)
 			assert.Equal(t, *options.Description, item.Description)
 			assert.Equal(t, *options.Operations, item.Operations)
@@ -2643,4 +2647,48 @@ func TestWorkspace_DataRetentionPolicy(t *testing.T) {
 		assert.Equal(t, ErrResourceNotFound, err)
 		require.Nil(t, dataRetentionPolicy)
 	})
+}
+
+func TestWorkspacesAutoDestroy(t *testing.T) {
+	client := testClient(t)
+	ctx := context.Background()
+
+	orgTest, orgTestCleanup := createOrganization(t, client)
+	t.Cleanup(orgTestCleanup)
+
+	upgradeOrganizationSubscription(t, client, orgTest)
+
+	autoDestroyAt := NullableTime(time.Date(2025, 1, 1, 0, 0, 0, 0, time.UTC))
+	wTest, wCleanup := createWorkspaceWithOptions(t, client, orgTest, WorkspaceCreateOptions{
+		Name:          String(randomString(t)),
+		AutoDestroyAt: autoDestroyAt,
+	})
+	t.Cleanup(wCleanup)
+
+	require.Equal(t, wTest.AutoDestroyAt, autoDestroyAt)
+
+	// respect default omitempty
+	w, err := client.Workspaces.Update(ctx, orgTest.Name, wTest.Name, WorkspaceUpdateOptions{
+		AutoDestroyAt: nil,
+	})
+
+	require.NoError(t, err)
+	require.NotNil(t, w.AutoDestroyAt)
+
+	// explicitly update the value of auto_destroy_at
+	w, err = client.Workspaces.Update(ctx, orgTest.Name, wTest.Name, WorkspaceUpdateOptions{
+		AutoDestroyAt: NullableTime(time.Date(2025, 1, 2, 0, 0, 0, 0, time.UTC)),
+	})
+
+	require.NoError(t, err)
+	require.NotNil(t, w.AutoDestroyAt)
+	require.NotEqual(t, w.AutoDestroyAt, autoDestroyAt)
+
+	// disable auto destroy
+	w, err = client.Workspaces.Update(ctx, orgTest.Name, wTest.Name, WorkspaceUpdateOptions{
+		AutoDestroyAt: NullTime(),
+	})
+
+	require.NoError(t, err)
+	require.Nil(t, w.AutoDestroyAt)
 }
