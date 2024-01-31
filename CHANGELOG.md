@@ -1,7 +1,10 @@
 # Unreleased
 
+# v1.44.0
+
 ## Enhancements
-* Updates `Workspaces` to include an `AutoDestroyAt` attribute on create and update by @notchairmk [#786](https://github.com/hashicorp/go-tfe/pull/786)
+* Updates `Workspaces` to include an `AutoDestroyAt` attribute on create and update by @notchairmk and @ctrombley [#786](https://github.com/hashicorp/go-tfe/pull/786)
+* Adds `AgentsEnabled` and `PolicyToolVersion` attributes to `PolicySet` by @mrinalirao [#752](https://github.com/hashicorp/go-tfe/pull/752)
 
 # v1.43.0
 
