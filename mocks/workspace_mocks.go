@@ -257,10 +257,10 @@ func (mr *MockWorkspacesMockRecorder) ReadByIDWithOptions(ctx, workspaceID, opti
 }
 
 // ReadDataRetentionPolicy mocks base method.
-func (m *MockWorkspaces) ReadDataRetentionPolicy(ctx context.Context, workspaceID string) (*tfe.DataRetentionPolicy, error) {
+func (m *MockWorkspaces) ReadDataRetentionPolicy(ctx context.Context, workspaceID string) (*tfe.DataRetentionPolicyChoice, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "ReadDataRetentionPolicy", ctx, workspaceID)
-	ret0, _ := ret[0].(*tfe.DataRetentionPolicy)
+	ret0, _ := ret[0].(*tfe.DataRetentionPolicyChoice)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -400,6 +400,36 @@ func (m *MockWorkspaces) SetDataRetentionPolicy(ctx context.Context, workspaceID
 func (mr *MockWorkspacesMockRecorder) SetDataRetentionPolicy(ctx, workspaceID, options interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "SetDataRetentionPolicy", reflect.TypeOf((*MockWorkspaces)(nil).SetDataRetentionPolicy), ctx, workspaceID, options)
+}
+
+// SetDataRetentionPolicyDeleteOlder mocks base method.
+func (m *MockWorkspaces) SetDataRetentionPolicyDeleteOlder(ctx context.Context, workspaceID string, options tfe.DataRetentionPolicyDeleteOlderSetOptions) (*tfe.DataRetentionPolicyDeleteOlder, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "SetDataRetentionPolicyDeleteOlder", ctx, workspaceID, options)
+	ret0, _ := ret[0].(*tfe.DataRetentionPolicyDeleteOlder)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// SetDataRetentionPolicyDeleteOlder indicates an expected call of SetDataRetentionPolicyDeleteOlder.
+func (mr *MockWorkspacesMockRecorder) SetDataRetentionPolicyDeleteOlder(ctx, workspaceID, options interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "SetDataRetentionPolicyDeleteOlder", reflect.TypeOf((*MockWorkspaces)(nil).SetDataRetentionPolicyDeleteOlder), ctx, workspaceID, options)
+}
+
+// SetDataRetentionPolicyDontDelete mocks base method.
+func (m *MockWorkspaces) SetDataRetentionPolicyDontDelete(ctx context.Context, workspaceID string, options tfe.DataRetentionPolicyDontDeleteSetOptions) (*tfe.DataRetentionPolicyDontDelete, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "SetDataRetentionPolicyDontDelete", ctx, workspaceID, options)
+	ret0, _ := ret[0].(*tfe.DataRetentionPolicyDontDelete)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// SetDataRetentionPolicyDontDelete indicates an expected call of SetDataRetentionPolicyDontDelete.
+func (mr *MockWorkspacesMockRecorder) SetDataRetentionPolicyDontDelete(ctx, workspaceID, options interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "SetDataRetentionPolicyDontDelete", reflect.TypeOf((*MockWorkspaces)(nil).SetDataRetentionPolicyDontDelete), ctx, workspaceID, options)
 }
 
 // UnassignSSHKey mocks base method.
