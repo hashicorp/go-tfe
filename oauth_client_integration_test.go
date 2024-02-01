@@ -240,8 +240,10 @@ func TestOAuthClientsCreate_agentPool(t *testing.T) {
 
 	t.Run("with valid agent pool external id", func(t *testing.T) {
 		t.Skip()
-		orgTest, _ := client.Organizations.Read(ctx, "xxxxx")
-		agentPoolTest, _ := client.AgentPools.Read(ctx, "xxxxx")
+		orgTest, errOrg := client.Organizations.Read(ctx, "xxxxx")
+		require.NoError(t, errOrg)
+		agentPoolTest, errAgentPool := client.AgentPools.Read(ctx, "xxxxx")
+		require.NoError(t, errAgentPool)
 		options := OAuthClientCreateOptions{
 			APIURL:          String("https://api.github.com"),
 			HTTPURL:         String("https://github.com"),
@@ -250,7 +252,6 @@ func TestOAuthClientsCreate_agentPool(t *testing.T) {
 			AgentPool:       agentPoolTest,
 		}
 		oc, errCreate := client.OAuthClients.Create(ctx, orgTest.Name, options)
-		fmt.Print(oc.AgentPool)
 		require.NoError(t, errCreate)
 		assert.NotEmpty(t, oc.ID)
 		assert.Nil(t, oc.Name)
