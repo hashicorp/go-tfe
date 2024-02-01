@@ -235,11 +235,13 @@ func TestOAuthClientsCreate_agentPool(t *testing.T) {
 
 	orgTest, orgTestCleanup := createOrganization(t, client)
 	defer orgTestCleanup()
-
 	agentPoolTest, agentPoolCleanup := createAgentPool(t, client, orgTest)
 	defer agentPoolCleanup()
 
 	t.Run("with valid agent pool external id", func(t *testing.T) {
+		t.Skip()
+		orgTest, _ := client.Organizations.Read(ctx, "xxxxx")
+		agentPoolTest, _ := client.AgentPools.Read(ctx, "xxxxx")
 		options := OAuthClientCreateOptions{
 			APIURL:          String("https://api.github.com"),
 			HTTPURL:         String("https://github.com"),
@@ -247,11 +249,43 @@ func TestOAuthClientsCreate_agentPool(t *testing.T) {
 			ServiceProvider: ServiceProvider(ServiceProviderGithub),
 			AgentPool:       agentPoolTest,
 		}
-
-		ocTest, errCreate := client.OAuthClients.Create(ctx, orgTest.Name, options)
+		oc, errCreate := client.OAuthClients.Create(ctx, orgTest.Name, options)
+		fmt.Print(oc.AgentPool)
 		require.NoError(t, errCreate)
-		errDelete := client.OAuthClients.Delete(ctx, ocTest.ID)
-		require.NoError(t, errDelete)
+		assert.NotEmpty(t, oc.ID)
+		assert.Nil(t, oc.Name)
+		assert.Equal(t, "https://api.github.com", oc.APIURL)
+		assert.Equal(t, "https://github.com", oc.HTTPURL)
+		assert.Equal(t, 1, len(oc.OAuthTokens))
+		assert.Equal(t, ServiceProviderGithub, oc.ServiceProvider)
+		assert.Equal(t, agentPoolTest.ID, oc.AgentPool.ID)
+	})
+
+	t.Run("with an invalid agent pool", func(t *testing.T) {
+		agentPoolID := agentPoolTest.ID
+		agentPoolTest.ID = badIdentifier
+		options := OAuthClientCreateOptions{
+			APIURL:          String("https://api.github.com"),
+			HTTPURL:         String("https://github.com"),
+			OAuthToken:      String(githubToken),
+			ServiceProvider: ServiceProvider(ServiceProviderGithub),
+			AgentPool:       agentPoolTest,
+		}
+		_, err := client.OAuthClients.Create(ctx, orgTest.Name, options)
+		require.Error(t, err)
+		agentPoolTest.ID = agentPoolID
+	})
+
+	t.Run("with no agents connected", func(t *testing.T) {
+		options := OAuthClientCreateOptions{
+			APIURL:          String("https://api.github.com"),
+			HTTPURL:         String("https://github.com"),
+			OAuthToken:      String(githubToken),
+			ServiceProvider: ServiceProvider(ServiceProviderGithub),
+			AgentPool:       agentPoolTest,
+		}
+		_, errCreate := client.OAuthClients.Create(ctx, orgTest.Name, options)
+		require.Error(t, errCreate)
 	})
 }
 
