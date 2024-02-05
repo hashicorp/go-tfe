@@ -95,6 +95,20 @@ func (mr *MockRegistryModulesMockRecorder) Delete(ctx, organization, name interf
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Delete", reflect.TypeOf((*MockRegistryModules)(nil).Delete), ctx, organization, name)
 }
 
+// DeleteByName mocks base method.
+func (m *MockRegistryModules) DeleteByName(ctx context.Context, module tfe.RegistryModuleID) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "DeleteByName", ctx, module)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// DeleteByName indicates an expected call of DeleteByName.
+func (mr *MockRegistryModulesMockRecorder) DeleteByName(ctx, module interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteByName", reflect.TypeOf((*MockRegistryModules)(nil).DeleteByName), ctx, module)
+}
+
 // DeleteProvider mocks base method.
 func (m *MockRegistryModules) DeleteProvider(ctx context.Context, moduleID tfe.RegistryModuleID) error {
 	m.ctrl.T.Helper()
