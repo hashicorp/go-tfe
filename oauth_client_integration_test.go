@@ -272,8 +272,9 @@ func TestOAuthClientsCreate_agentPool(t *testing.T) {
 			ServiceProvider: ServiceProvider(ServiceProviderGithub),
 			AgentPool:       agentPoolTest,
 		}
-		_, err := client.OAuthClients.Create(ctx, orgTest.Name, options)
-		require.Error(t, err)
+		_, errCreate := client.OAuthClients.Create(ctx, orgTest.Name, options)
+		require.Error(t, errCreate)
+		assert.Contains(t, errCreate.Error(), ErrAgentPoolUnavailable.Error())
 		agentPoolTest.ID = agentPoolID
 	})
 
@@ -286,6 +287,7 @@ func TestOAuthClientsCreate_agentPool(t *testing.T) {
 			AgentPool:       agentPoolTest,
 		}
 		_, errCreate := client.OAuthClients.Create(ctx, orgTest.Name, options)
+		assert.Contains(t, errCreate.Error(), ErrPrivateVCSDisabled.Error())
 		require.Error(t, errCreate)
 	})
 }

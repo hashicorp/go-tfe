@@ -372,4 +372,8 @@ var (
 	ErrRequiredRawState = errors.New("RawState is required")
 
 	ErrStateVersionUploadNotSupported = errors.New("upload not supported by this version of Terraform Enterprise")
+
+	ErrPrivateVCSDisabled = errors.New("the organization does not have private VCS enabled")
+
+	ErrAgentPoolUnavailable = errors.New("the provided agent pool does not exist or you are not authorized to use it")
 )
