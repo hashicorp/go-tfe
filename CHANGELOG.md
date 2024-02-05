@@ -1,5 +1,8 @@
 # Unreleased
 
+## Enhancements
+* Updates go-tfe client to export the instance name using `AppName()`
+
 # v1.44.0
 
 ## Enhancements
