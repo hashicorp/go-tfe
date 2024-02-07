@@ -1,5 +1,8 @@
 # Unreleased
 
+## Enhancements
+* Adds `Query` field to `Project` and `Team` list options, to allow projects and teams to be searched by name by @JarrettSpiker [#849](https://github.com/hashicorp/go-tfe/pull/849)
+
 # v1.45.0
 
 ## Enhancements
