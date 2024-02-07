@@ -34,7 +34,7 @@ func TestProjectsList(t *testing.T) {
 		assert.Equal(t, 3, pl.TotalCount)
 	})
 
-	t.Run("with list options", func(t *testing.T) {
+	t.Run("with pagination list options", func(t *testing.T) {
 		pl, err := client.Projects.List(ctx, orgTest.Name, &ProjectListOptions{
 			ListOptions: ListOptions{
 				PageNumber: 1,
@@ -46,6 +46,15 @@ func TestProjectsList(t *testing.T) {
 		assert.Contains(t, pl.Items, pTest2)
 		assert.Equal(t, true, containsProject(pl.Items, "Default Project"))
 		assert.Equal(t, 3, len(pl.Items))
+	})
+
+	t.Run("with query list option", func(t *testing.T) {
+		pl, err := client.Projects.List(ctx, orgTest.Name, &ProjectListOptions{
+			Query: "Default",
+		})
+		require.NoError(t, err)
+		assert.Equal(t, true, containsProject(pl.Items, "Default Project"))
+		assert.Equal(t, 1, len(pl.Items))
 	})
 
 	t.Run("without a valid organization", func(t *testing.T) {

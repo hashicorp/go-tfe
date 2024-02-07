@@ -57,10 +57,13 @@ type Project struct {
 type ProjectListOptions struct {
 	ListOptions
 
-	// Optional: String (partial project name) used to filter the results.
+	// Optional: String (complete project name) used to filter the results.
 	// If multiple, comma separated values are specified, projects matching
 	// any of the names are returned.
 	Name string `url:"filter[names],omitempty"`
+
+	// Optional: A query string to search projects by names.
+	Query string `url:"q,omitempty"`
 }
 
 // ProjectCreateOptions represents the options for creating a project
