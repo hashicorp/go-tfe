@@ -193,6 +193,16 @@ type RegistryModuleVersionStatuses struct {
 // RegistryModuleListOptions represents the options for listing registry modules.
 type RegistryModuleListOptions struct {
 	ListOptions
+
+	// Optional: A search query string. Modules are searchable by name, namespace, provider fields.
+	Search string `url:"q,omitempty"`
+
+	// Optional: If specified, restricts results to those with the matching field name value. Valid values are registry_name, provider, and organization_name.
+	RegistryName RegistryName `url:"filter[registry_name],omitempty"`
+
+	Provider string `url:"filter[provider],omitempty"`
+
+	OrganizationName string `url:"filter[organization_name],omitempty"`
 }
 
 // RegistryModuleCreateOptions is used when creating a registry module without a VCS repo
