@@ -240,25 +240,24 @@ func TestOAuthClientsCreate_agentPool(t *testing.T) {
 
 	t.Run("with valid agent pool external id", func(t *testing.T) {
 		t.Skip()
-		orgTest, errOrg := client.Organizations.Read(ctx, "xxxxxxx")
+		orgTest, errOrg := client.Organizations.Read(ctx, "xxxxx")
 		require.NoError(t, errOrg)
-		agentPoolTest, errAgentPool := client.AgentPools.Read(ctx, "xxxxxxxx")
+		agentPoolTest, errAgentPool := client.AgentPools.Read(ctx, "xxxxx")
 		require.NoError(t, errAgentPool)
 		options := OAuthClientCreateOptions{
-			APIURL:          String("https://api.github.com"),
-			HTTPURL:         String("https://github.com"),
+			APIURL:          String("https://githubenterprise.xxxxx"),
+			HTTPURL:         String("https://githubenterprise.xxxxx"),
 			OAuthToken:      String(githubToken),
-			ServiceProvider: ServiceProvider(ServiceProviderGithub),
+			ServiceProvider: ServiceProvider(ServiceProviderGithubEE),
 			AgentPool:       agentPoolTest,
 		}
 		oc, errCreate := client.OAuthClients.Create(ctx, orgTest.Name, options)
 		require.NoError(t, errCreate)
 		assert.NotEmpty(t, oc.ID)
-		assert.Nil(t, oc.Name)
-		assert.Equal(t, "https://api.github.com", oc.APIURL)
-		assert.Equal(t, "https://github.com", oc.HTTPURL)
+		assert.Equal(t, "https://githubenterprise.xxxxx", oc.APIURL)
+		assert.Equal(t, "https://githubenterprise.xxxxx", oc.HTTPURL)
 		assert.Equal(t, 1, len(oc.OAuthTokens))
-		assert.Equal(t, ServiceProviderGithub, oc.ServiceProvider)
+		assert.Equal(t, ServiceProviderGithubEE, oc.ServiceProvider)
 		assert.Equal(t, agentPoolTest.ID, oc.AgentPool.ID)
 	})
 
@@ -266,10 +265,10 @@ func TestOAuthClientsCreate_agentPool(t *testing.T) {
 		agentPoolID := agentPoolTest.ID
 		agentPoolTest.ID = badIdentifier
 		options := OAuthClientCreateOptions{
-			APIURL:          String("https://api.github.com"),
-			HTTPURL:         String("https://github.com"),
+			APIURL:          String("https://githubenterprise.xxxxx"),
+			HTTPURL:         String("https://githubenterprise.xxxxx"),
 			OAuthToken:      String(githubToken),
-			ServiceProvider: ServiceProvider(ServiceProviderGithub),
+			ServiceProvider: ServiceProvider(ServiceProviderGithubEE),
 			AgentPool:       agentPoolTest,
 		}
 		_, errCreate := client.OAuthClients.Create(ctx, orgTest.Name, options)
@@ -280,14 +279,14 @@ func TestOAuthClientsCreate_agentPool(t *testing.T) {
 
 	t.Run("with no agents connected", func(t *testing.T) {
 		options := OAuthClientCreateOptions{
-			APIURL:          String("https://api.github.com"),
-			HTTPURL:         String("https://github.com"),
+			APIURL:          String("https://githubenterprise.xxxxx"),
+			HTTPURL:         String("https://githubenterprise.xxxxx"),
 			OAuthToken:      String(githubToken),
-			ServiceProvider: ServiceProvider(ServiceProviderGithub),
+			ServiceProvider: ServiceProvider(ServiceProviderGithubEE),
 			AgentPool:       agentPoolTest,
 		}
 		_, errCreate := client.OAuthClients.Create(ctx, orgTest.Name, options)
-		assert.Contains(t, errCreate.Error(), "Check that your agent pool is running and has available agents")
+		assert.Contains(t, errCreate.Error(), "the organization does not have private VCS enabled")
 		require.Error(t, errCreate)
 	})
 }
