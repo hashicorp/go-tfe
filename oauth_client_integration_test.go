@@ -240,9 +240,9 @@ func TestOAuthClientsCreate_agentPool(t *testing.T) {
 
 	t.Run("with valid agent pool external id", func(t *testing.T) {
 		t.Skip()
-		orgTest, errOrg := client.Organizations.Read(ctx, "xxxxx")
+		orgTest, errOrg := client.Organizations.Read(ctx, "xxxxxxx")
 		require.NoError(t, errOrg)
-		agentPoolTest, errAgentPool := client.AgentPools.Read(ctx, "xxxxx")
+		agentPoolTest, errAgentPool := client.AgentPools.Read(ctx, "xxxxxxxx")
 		require.NoError(t, errAgentPool)
 		options := OAuthClientCreateOptions{
 			APIURL:          String("https://api.github.com"),
@@ -274,7 +274,7 @@ func TestOAuthClientsCreate_agentPool(t *testing.T) {
 		}
 		_, errCreate := client.OAuthClients.Create(ctx, orgTest.Name, options)
 		require.Error(t, errCreate)
-		assert.Contains(t, errCreate.Error(), ErrAgentPoolUnavailable.Error())
+		assert.Contains(t, errCreate.Error(), "the provided agent pool does not exist or you are not authorized to use it")
 		agentPoolTest.ID = agentPoolID
 	})
 
@@ -287,7 +287,7 @@ func TestOAuthClientsCreate_agentPool(t *testing.T) {
 			AgentPool:       agentPoolTest,
 		}
 		_, errCreate := client.OAuthClients.Create(ctx, orgTest.Name, options)
-		assert.Contains(t, errCreate.Error(), ErrPrivateVCSDisabled.Error())
+		assert.Contains(t, errCreate.Error(), "Check that your agent pool is running and has available agents")
 		require.Error(t, errCreate)
 	})
 }
