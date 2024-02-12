@@ -233,35 +233,34 @@ func TestOAuthClientsCreate_agentPool(t *testing.T) {
 		t.Skip("Export a valid OAUTH_CLIENT_GITHUB_TOKEN before running this test!")
 	}
 
-	orgTest, orgTestCleanup := createOrganization(t, client)
-	defer orgTestCleanup()
-	agentPoolTest, agentPoolCleanup := createAgentPool(t, client, orgTest)
-	defer agentPoolCleanup()
-
 	t.Run("with valid agent pool external id", func(t *testing.T) {
 		t.Skip()
-		orgTest, errOrg := client.Organizations.Read(ctx, "xxxxx")
+		orgTestRead, errOrg := client.Organizations.Read(ctx, "xxxxx")
 		require.NoError(t, errOrg)
-		agentPoolTest, errAgentPool := client.AgentPools.Read(ctx, "xxxxx")
+		agentPoolTestRead, errAgentPool := client.AgentPools.Read(ctx, "xxxxx")
 		require.NoError(t, errAgentPool)
 		options := OAuthClientCreateOptions{
 			APIURL:          String("https://githubenterprise.xxxxx"),
 			HTTPURL:         String("https://githubenterprise.xxxxx"),
 			OAuthToken:      String(githubToken),
 			ServiceProvider: ServiceProvider(ServiceProviderGithubEE),
-			AgentPool:       agentPoolTest,
+			AgentPool:       agentPoolTestRead,
 		}
-		oc, errCreate := client.OAuthClients.Create(ctx, orgTest.Name, options)
+		oc, errCreate := client.OAuthClients.Create(ctx, orgTestRead.Name, options)
 		require.NoError(t, errCreate)
 		assert.NotEmpty(t, oc.ID)
 		assert.Equal(t, "https://githubenterprise.xxxxx", oc.APIURL)
 		assert.Equal(t, "https://githubenterprise.xxxxx", oc.HTTPURL)
 		assert.Equal(t, 1, len(oc.OAuthTokens))
 		assert.Equal(t, ServiceProviderGithubEE, oc.ServiceProvider)
-		assert.Equal(t, agentPoolTest.ID, oc.AgentPool.ID)
+		assert.Equal(t, agentPoolTestRead.ID, oc.AgentPool.ID)
 	})
 
 	t.Run("with an invalid agent pool", func(t *testing.T) {
+		orgTest, orgTestCleanup := createOrganization(t, client)
+		defer orgTestCleanup()
+		agentPoolTest, agentPoolCleanup := createAgentPool(t, client, orgTest)
+		defer agentPoolCleanup()
 		agentPoolID := agentPoolTest.ID
 		agentPoolTest.ID = badIdentifier
 		options := OAuthClientCreateOptions{
@@ -278,6 +277,10 @@ func TestOAuthClientsCreate_agentPool(t *testing.T) {
 	})
 
 	t.Run("with no agents connected", func(t *testing.T) {
+		orgTest, orgTestCleanup := createOrganization(t, client)
+		defer orgTestCleanup()
+		agentPoolTest, agentPoolCleanup := createAgentPool(t, client, orgTest)
+		defer agentPoolCleanup()
 		options := OAuthClientCreateOptions{
 			APIURL:          String("https://githubenterprise.xxxxx"),
 			HTTPURL:         String("https://githubenterprise.xxxxx"),
