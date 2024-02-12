@@ -487,6 +487,11 @@ func NewClient(cfg *Config) (*Client, error) {
 	return client, nil
 }
 
+// AppName returns the name of the instance.
+func (c Client) AppName() string {
+	return c.appName
+}
+
 // IsCloud returns true if the client is configured against a Terraform Cloud
 // instance.
 //
