@@ -93,12 +93,14 @@ type PolicySet struct {
 	Global       bool       `jsonapi:"attr,global"`
 	PoliciesPath string     `jsonapi:"attr,policies-path"`
 	// **Note: This field is still in BETA and subject to change.**
-	PolicyCount    int       `jsonapi:"attr,policy-count"`
-	VCSRepo        *VCSRepo  `jsonapi:"attr,vcs-repo"`
-	WorkspaceCount int       `jsonapi:"attr,workspace-count"`
-	ProjectCount   int       `jsonapi:"attr,project-count"`
-	CreatedAt      time.Time `jsonapi:"attr,created-at,iso8601"`
-	UpdatedAt      time.Time `jsonapi:"attr,updated-at,iso8601"`
+	PolicyCount       int       `jsonapi:"attr,policy-count"`
+	VCSRepo           *VCSRepo  `jsonapi:"attr,vcs-repo"`
+	WorkspaceCount    int       `jsonapi:"attr,workspace-count"`
+	ProjectCount      int       `jsonapi:"attr,project-count"`
+	CreatedAt         time.Time `jsonapi:"attr,created-at,iso8601"`
+	UpdatedAt         time.Time `jsonapi:"attr,updated-at,iso8601"`
+	AgentEnabled      bool      `jsonapi:"attr,agent-enabled"`
+	PolicyToolVersion string    `jsonapi:"attr,policy-tool-version"`
 
 	// Relations
 	// The organization to which the policy set belongs to.
@@ -139,7 +141,6 @@ type PolicySetListOptions struct {
 	// Optional: A search string (partial policy set name) used to filter the results.
 	Search string `url:"search[name],omitempty"`
 
-	// **Note: This field is still in BETA and subject to change.**
 	// Optional: A kind string used to filter the results by the policy set kind.
 	Kind PolicyKind `url:"filter[kind],omitempty"`
 
@@ -174,13 +175,18 @@ type PolicySetCreateOptions struct {
 	// Optional: Whether or not the policy set is global.
 	Global *bool `jsonapi:"attr,global,omitempty"`
 
-	// **Note: This field is still in BETA and subject to change.**
 	// Optional: The underlying technology that the policy set supports
 	Kind PolicyKind `jsonapi:"attr,kind,omitempty"`
 
-	// **Note: This field is still in BETA and subject to change.**
-	// Optional: Whether or not users can override this policy when it fails during a run. Only valid for OPA policies.
+	// Optional: Whether or not users can override this policy when it fails during a run. Only valid for policy evaluations.
+	// https://developer.hashicorp.com/terraform/cloud-docs/policy-enforcement/manage-policy-sets#policy-checks-versus-policy-evaluations
 	Overridable *bool `jsonapi:"attr,overridable,omitempty"`
+
+	// Optional: Whether or not the policy is run as an evaluation inside the agent.
+	AgentEnabled *bool `jsonapi:"attr,agent-enabled,omitempty"`
+
+	// Optional: The policy tool version to run the evaluation against.
+	PolicyToolVersion *string `jsonapi:"attr,policy-tool-version,omitempty"`
 
 	// Optional: The sub-path within the attached VCS repository to ingress. All
 	// files and directories outside of this sub-path will be ignored.
@@ -224,9 +230,15 @@ type PolicySetUpdateOptions struct {
 	// Optional: Whether or not the policy set is global.
 	Global *bool `jsonapi:"attr,global,omitempty"`
 
-	// **Note: This field is still in BETA and subject to change.**
-	// Optional: Whether or not users can override this policy when it fails during a run. Only valid for OPA policies.
+	// Optional: Whether or not users can override this policy when it fails during a run. Only valid for policy evaluations.
+	// https://developer.hashicorp.com/terraform/cloud-docs/policy-enforcement/manage-policy-sets#policy-checks-versus-policy-evaluations
 	Overridable *bool `jsonapi:"attr,overridable,omitempty"`
+
+	// Optional: Whether or not the policy is run as an evaluation inside the agent.
+	AgentEnabled *bool `jsonapi:"attr,agent-enabled,omitempty"`
+
+	// Optional: The policy tool version to run the evaluation against.
+	PolicyToolVersion *string `jsonapi:"attr,policy-tool-version,omitempty"`
 
 	// Optional: The sub-path within the attached VCS repository to ingress. All
 	// files and directories outside of this sub-path will be ignored.

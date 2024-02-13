@@ -24,15 +24,41 @@ func TestPolicySetsList(t *testing.T) {
 
 	upgradeOrganizationSubscription(t, client, orgTest)
 
+	version := createAdminSentinelVersion()
+	opts := AdminSentinelVersionCreateOptions{
+		Version:    version,
+		URL:        "https://www.hashicorp.com",
+		SHA:        genSha(t),
+		Official:   Bool(false),
+		Deprecated: Bool(false),
+		Enabled:    Bool(true),
+		Beta:       Bool(false),
+	}
+	sv, err := client.Admin.SentinelVersions.Create(ctx, opts)
+	require.NoError(t, err)
+
 	workspace, workspaceCleanup := createWorkspace(t, client, orgTest)
 	defer workspaceCleanup()
 	excludedWorkspace, excludedWorkspaceCleanup := createWorkspace(t, client, orgTest)
 	defer excludedWorkspaceCleanup()
 
-	psTest1, psTestCleanup1 := createPolicySet(t, client, orgTest, nil, []*Workspace{workspace}, []*Workspace{excludedWorkspace}, nil, "")
+	options := PolicySetCreateOptions{
+		Kind:              Sentinel,
+		AgentEnabled:      Bool(true),
+		PolicyToolVersion: String(sv.Version),
+		Overridable:       Bool(true),
+	}
+
+	psTest1, psTestCleanup1 := createPolicySetWithOptions(t, client, orgTest, nil, []*Workspace{workspace}, []*Workspace{excludedWorkspace}, nil, options)
 	defer psTestCleanup1()
-	psTest2, psTestCleanup2 := createPolicySet(t, client, orgTest, nil, []*Workspace{workspace}, []*Workspace{excludedWorkspace}, nil, "")
+	psTest2, psTestCleanup2 := createPolicySetWithOptions(t, client, orgTest, nil, []*Workspace{workspace}, []*Workspace{excludedWorkspace}, nil, options)
 	defer psTestCleanup2()
+	psTest3, psTestCleanup3 := createPolicySet(t, client, orgTest, nil, []*Workspace{workspace}, []*Workspace{excludedWorkspace}, nil, OPA)
+	defer psTestCleanup3()
+	defer func() {
+		err := client.Admin.SentinelVersions.Delete(ctx, sv.ID)
+		require.NoError(t, err)
+	}()
 
 	t.Run("without list options", func(t *testing.T) {
 		psl, err := client.PolicySets.List(ctx, orgTest.Name, nil)
@@ -40,8 +66,10 @@ func TestPolicySetsList(t *testing.T) {
 
 		assert.Contains(t, psl.Items, psTest1)
 		assert.Contains(t, psl.Items, psTest2)
+		assert.Contains(t, psl.Items, psTest3)
+		assert.Equal(t, true, psl.Items[0].AgentEnabled)
 		assert.Equal(t, 1, psl.CurrentPage)
-		assert.Equal(t, 2, psl.TotalCount)
+		assert.Equal(t, 3, psl.TotalCount)
 	})
 
 	t.Run("with pagination", func(t *testing.T) {
@@ -58,7 +86,7 @@ func TestPolicySetsList(t *testing.T) {
 
 		assert.Empty(t, psl.Items)
 		assert.Equal(t, 999, psl.CurrentPage)
-		assert.Equal(t, 2, psl.TotalCount)
+		assert.Equal(t, 3, psl.TotalCount)
 	})
 
 	t.Run("with search", func(t *testing.T) {
@@ -81,7 +109,7 @@ func TestPolicySetsList(t *testing.T) {
 		})
 		require.NoError(t, err)
 
-		assert.Equal(t, 2, len(psl.Items))
+		assert.Equal(t, 3, len(psl.Items))
 
 		assert.NotNil(t, psl.Items[0].Workspaces)
 		assert.Equal(t, 1, len(psl.Items[0].Workspaces))
@@ -93,7 +121,7 @@ func TestPolicySetsList(t *testing.T) {
 			Include: []PolicySetIncludeOpt{PolicySetWorkspaceExclusions},
 		})
 		require.NoError(t, err)
-		assert.Equal(t, 2, len(psl.Items))
+		assert.Equal(t, 3, len(psl.Items))
 
 		assert.NotNil(t, psl.Items[0].WorkspaceExclusions)
 		assert.Equal(t, 1, len(psl.Items[0].WorkspaceExclusions))
@@ -118,11 +146,29 @@ func TestPolicySetsCreate(t *testing.T) {
 
 	upgradeOrganizationSubscription(t, client, orgTest)
 
+	version := createAdminSentinelVersion()
+	opts := AdminSentinelVersionCreateOptions{
+		Version:    version,
+		URL:        "https://www.hashicorp.com",
+		SHA:        genSha(t),
+		Official:   Bool(false),
+		Deprecated: Bool(false),
+		Enabled:    Bool(true),
+		Beta:       Bool(false),
+	}
+	sv, err := client.Admin.SentinelVersions.Create(ctx, opts)
+	defer func() {
+		err := client.Admin.SentinelVersions.Delete(ctx, sv.ID)
+		require.NoError(t, err)
+	}()
+	require.NoError(t, err)
+
 	var vcsPolicyID string
 
 	t.Run("with valid attributes", func(t *testing.T) {
 		options := PolicySetCreateOptions{
-			Name: String("policy-set"),
+			Name:              String(randomString(t)),
+			PolicyToolVersion: String(sv.Version),
 		}
 
 		ps, err := client.PolicySets.Create(ctx, orgTest.Name, options)
@@ -133,10 +179,93 @@ func TestPolicySetsCreate(t *testing.T) {
 		assert.False(t, ps.Global)
 	})
 
-	t.Run("with all attributes provided", func(t *testing.T) {
+	t.Run("OPA policy set with valid attributes", func(t *testing.T) {
+		options := PolicySetCreateOptions{
+			Name: String("opa-policy-set"),
+			Kind: OPA,
+		}
+
+		ps, err := client.PolicySets.Create(ctx, orgTest.Name, options)
+		require.NoError(t, err)
+
+		assert.Equal(t, ps.Name, *options.Name)
+		assert.Equal(t, ps.Description, "")
+		assert.Equal(t, ps.Kind, OPA)
+		assert.False(t, ps.Global)
+	})
+
+	t.Run("with pinned policy runtime version valid attributes", func(t *testing.T) {
+		options := PolicySetCreateOptions{
+			Name:              String(randomString(t)),
+			Kind:              Sentinel,
+			AgentEnabled:      Bool(true),
+			PolicyToolVersion: String(sv.Version),
+		}
+
+		ps, err := client.PolicySets.Create(ctx, orgTest.Name, options)
+		require.NoError(t, err)
+
+		assert.Equal(t, ps.Name, *options.Name)
+		assert.Equal(t, ps.Description, "")
+		assert.Equal(t, ps.Kind, Sentinel)
+		assert.Equal(t, ps.AgentEnabled, true)
+		assert.Equal(t, ps.PolicyToolVersion, sv.Version)
+		assert.False(t, ps.Global)
+	})
+
+	t.Run("with pinned policy runtime version and missing kind", func(t *testing.T) {
+		options := PolicySetCreateOptions{
+			Name:              String(randomString(t)),
+			AgentEnabled:      Bool(true),
+			PolicyToolVersion: String(sv.Version),
+			Overridable:       Bool(true),
+		}
+		ps, err := client.PolicySets.Create(ctx, orgTest.Name, options)
+		require.NoError(t, err)
+
+		assert.Equal(t, ps.Name, *options.Name)
+		assert.Equal(t, ps.Description, "")
+		assert.Equal(t, ps.Kind, Sentinel)
+		assert.Equal(t, ps.AgentEnabled, true)
+		assert.Equal(t, ps.PolicyToolVersion, sv.Version)
+		assert.False(t, ps.Global)
+	})
+
+	t.Run("with kind missing", func(t *testing.T) {
+		options := PolicySetCreateOptions{
+			Name: String("policy-set1"),
+		}
+
+		ps, err := client.PolicySets.Create(ctx, orgTest.Name, options)
+		require.NoError(t, err)
+
+		assert.Equal(t, ps.Name, *options.Name)
+		assert.Equal(t, ps.Description, "")
+		assert.Equal(t, ps.Kind, Sentinel)
+		assert.False(t, ps.Global)
+	})
+
+	t.Run("with agent enabled missing", func(t *testing.T) {
+		options := PolicySetCreateOptions{
+			Name: String(randomString(t)),
+			Kind: Sentinel,
+		}
+
+		ps, err := client.PolicySets.Create(ctx, orgTest.Name, options)
+		require.NoError(t, err)
+
+		assert.Equal(t, ps.Name, *options.Name)
+		assert.Equal(t, ps.Description, "")
+		assert.Equal(t, ps.Kind, Sentinel)
+		assert.Equal(t, ps.AgentEnabled, false)
+		assert.False(t, ps.Global)
+	})
+
+	t.Run("with all attributes provided - sentinel", func(t *testing.T) {
 		options := PolicySetCreateOptions{
 			Name:        String("global"),
 			Description: String("Policies in this set will be checked in ALL workspaces!"),
+			Kind:        Sentinel,
 			Global:      Bool(true),
 		}
 
@@ -145,6 +274,44 @@ func TestPolicySetsCreate(t *testing.T) {
 
 		assert.Equal(t, ps.Name, *options.Name)
 		assert.Equal(t, ps.Description, *options.Description)
+		assert.Equal(t, ps.Kind, Sentinel)
+		assert.True(t, ps.Global)
+	})
+
+	t.Run("with all attributes provided - OPA", func(t *testing.T) {
+		options := PolicySetCreateOptions{
+			Name:        String("global1"),
+			Description: String("Policies in this set will be checked in ALL workspaces!"),
+			Kind:        OPA,
+			Overridable: Bool(true),
+			Global:      Bool(true),
+		}
+
+		ps, err := client.PolicySets.Create(ctx, orgTest.Name, options)
+		require.NoError(t, err)
+
+		assert.Equal(t, ps.Name, *options.Name)
+		assert.Equal(t, ps.Description, *options.Description)
+		assert.Equal(t, ps.Overridable, options.Overridable)
+		assert.Equal(t, ps.Kind, OPA)
+		assert.True(t, ps.Global)
+	})
+
+	t.Run("with missing overridable attribute", func(t *testing.T) {
+		options := PolicySetCreateOptions{
+			Name:        String("global2"),
+			Description: String("Policies in this set will be checked in ALL workspaces!"),
+			Kind:        OPA,
+			Global:      Bool(true),
+		}
+
+		ps, err := client.PolicySets.Create(ctx, orgTest.Name, options)
+		require.NoError(t, err)
+
+		assert.Equal(t, ps.Name, *options.Name)
+		assert.Equal(t, ps.Description, *options.Description)
+		assert.Equal(t, ps.Overridable, Bool(false))
+		assert.Equal(t, ps.Kind, OPA)
 		assert.True(t, ps.Global)
 	})
 
@@ -157,6 +324,7 @@ func TestPolicySetsCreate(t *testing.T) {
 		options := PolicySetCreateOptions{
 			Name:       String("populated-policy-set"),
 			Policies:   []*Policy{pTest},
+			Kind:       Sentinel,
 			Workspaces: []*Workspace{wTest},
 		}
 
@@ -167,6 +335,7 @@ func TestPolicySetsCreate(t *testing.T) {
 		assert.Equal(t, ps.PolicyCount, 1)
 		assert.Equal(t, ps.Policies[0].ID, pTest.ID)
 		assert.Equal(t, ps.WorkspaceCount, 1)
+		assert.Equal(t, ps.Kind, Sentinel)
 		assert.Equal(t, ps.Workspaces[0].ID, wTest.ID)
 	})
 
@@ -235,6 +404,7 @@ func TestPolicySetsCreate(t *testing.T) {
 
 		options := PolicySetCreateOptions{
 			Name:         String("vcs-policy-set"),
+			Kind:         Sentinel,
 			PoliciesPath: String("/policy-sets/foo"),
 			VCSRepo: &VCSRepoOptions{
 				Branch:            String("policies"),
@@ -253,6 +423,7 @@ func TestPolicySetsCreate(t *testing.T) {
 		assert.Equal(t, ps.Name, *options.Name)
 		assert.Equal(t, ps.Description, "")
 		assert.False(t, ps.Global)
+		assert.Equal(t, ps.Kind, Sentinel)
 		assert.Equal(t, ps.PoliciesPath, "/policy-sets/foo")
 		assert.Equal(t, ps.VCSRepo.Branch, "policies")
 		assert.Equal(t, ps.VCSRepo.DisplayIdentifier, githubIdentifier)
@@ -490,22 +661,69 @@ func TestPolicySetsUpdate(t *testing.T) {
 
 	upgradeOrganizationSubscription(t, client, orgTest)
 
-	psTest, psTestCleanup := createPolicySet(t, client, orgTest, nil, nil, nil, nil, "")
+	version := createAdminSentinelVersion()
+	opts := AdminSentinelVersionCreateOptions{
+		Version:    version,
+		URL:        "https://www.hashicorp.com",
+		SHA:        genSha(t),
+		Official:   Bool(false),
+		Deprecated: Bool(false),
+		Enabled:    Bool(true),
+		Beta:       Bool(false),
+	}
+	sv, err := client.Admin.SentinelVersions.Create(ctx, opts)
+	defer func() {
+		err := client.Admin.SentinelVersions.Delete(ctx, sv.ID)
+		require.NoError(t, err)
+	}()
+	require.NoError(t, err)
+
+	options := PolicySetCreateOptions{
+		Kind:              Sentinel,
+		AgentEnabled:      Bool(true),
+		PolicyToolVersion: String(sv.Version),
+		Overridable:       Bool(true),
+	}
+
+	psTest, psTestCleanup := createPolicySetWithOptions(t, client, orgTest, nil, nil, nil, nil, options)
 	defer psTestCleanup()
+	psTest2, psTestCleanup2 := createPolicySet(t, client, orgTest, nil, nil, nil, nil, "opa")
+	defer psTestCleanup2()
 
 	t.Run("with valid attributes", func(t *testing.T) {
 		options := PolicySetUpdateOptions{
-			Name:        String("global"),
-			Description: String("Policies in this set will be checked in ALL workspaces!"),
-			Global:      Bool(true),
+			AgentEnabled: Bool(false),
+			Name:         String("global"),
+			Description:  String("Policies in this set will be checked in ALL workspaces!"),
+			Global:       Bool(true),
 		}
 
 		ps, err := client.PolicySets.Update(ctx, psTest.ID, options)
 		require.NoError(t, err)
 
+		assert.Equal(t, ps.AgentEnabled, false)
+		assert.Equal(t, ps.PolicyToolVersion, "")
+		assert.Nil(t, ps.Overridable)
 		assert.Equal(t, ps.Name, *options.Name)
 		assert.Equal(t, ps.Description, *options.Description)
 		assert.True(t, ps.Global)
+	})
+
+	t.Run("with valid attributes-OPA", func(t *testing.T) {
+		options := PolicySetUpdateOptions{
+			Name:        String("global2"),
+			Description: String("Policies in this set will be checked in ALL workspaces!"),
+			Global:      Bool(true),
+			Overridable: Bool(true),
+		}
+
+		ps, err := client.PolicySets.Update(ctx, psTest2.ID, options)
+		require.NoError(t, err)
+
+		assert.Equal(t, ps.Name, *options.Name)
+		assert.Equal(t, ps.Description, *options.Description)
+		assert.True(t, ps.Global)
+		assert.True(t, *ps.Overridable)
 	})
 
 	t.Run("with invalid attributes", func(t *testing.T) {
