@@ -6,6 +6,7 @@ package tfe
 import (
 	"bytes"
 	"context"
+	"encoding/json"
 	"fmt"
 	"io"
 	"net/url"
@@ -22,6 +23,9 @@ var _ Plans = (*plans)(nil)
 type Plans interface {
 	// Read a plan by its ID.
 	Read(ctx context.Context, planID string) (*Plan, error)
+
+	// ReadResourceChanges fetch plan changed resources
+	ReadResourceChanges(ctx context.Context, planID string) (*PlanResourceChanges, error)
 
 	// Logs retrieves the logs of a plan.
 	Logs(ctx context.Context, planID string) (io.Reader, error)
@@ -76,6 +80,32 @@ type PlanStatusTimestamps struct {
 	ForceCanceledAt time.Time `jsonapi:"attr,force-canceled-at,rfc3339"`
 	QueuedAt        time.Time `jsonapi:"attr,queued-at,rfc3339"`
 	StartedAt       time.Time `jsonapi:"attr,started-at,rfc3339"`
+}
+
+// ResourceChange details changes made to a specific resource within a plan.
+type ResourceChange struct {
+	Address      string      `json:"address"`
+	Change       Change      `json:"change"`
+	Index        interface{} `json:"index"`
+	Mode         string      `json:"mode"`
+	Name         string      `json:"name"`
+	ProviderName string      `json:"provider_name"`
+	Type         string      `json:"type"`
+}
+
+// Change captures the before and after states of a resource, including actions taken.
+type Change struct {
+	Actions         []string    `json:"actions"`
+	After           interface{} `json:"after"`
+	AfterSensitive  interface{} `json:"after_sensitive"`
+	AfterUnknown    interface{} `json:"after_unknown"`
+	Before          interface{} `json:"before"`
+	BeforeSensitive interface{} `json:"before_sensitive"`
+}
+
+// PlanResourceChanges encapsulates all resource changes within a plan.
+type PlanResourceChanges struct {
+	ResourceChanges []ResourceChange `json:"resource_changes"`
 }
 
 // Read a plan by its ID.
@@ -162,4 +192,30 @@ func (s *plans) ReadJSONOutput(ctx context.Context, planID string) ([]byte, erro
 	}
 
 	return buf.Bytes(), nil
+}
+
+// ReadResourceChanges fetch plan resource changes.
+func (s *plans) ReadResourceChanges(ctx context.Context, planID string) (*PlanResourceChanges, error) {
+	if !validStringID(&planID) {
+		return nil, ErrInvalidPlanID
+	}
+
+	u := fmt.Sprintf("plans/%s/json-output-redacted", url.QueryEscape(planID))
+	req, err := s.client.NewRequest("GET", u, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	var buf bytes.Buffer
+	err = req.Do(ctx, &buf)
+	if err != nil {
+		return nil, err
+	}
+
+	var resourceChanges PlanResourceChanges
+	if err := json.Unmarshal(buf.Bytes(), &resourceChanges); err != nil {
+		return nil, err
+	}
+
+	return &resourceChanges, nil
 }

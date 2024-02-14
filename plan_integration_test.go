@@ -138,3 +138,22 @@ func TestPlansJSONOutput(t *testing.T) {
 		assert.Error(t, err)
 	})
 }
+
+func TestPlansReadResourceChanges(t *testing.T) {
+	client := testClient(t)
+	ctx := context.Background()
+	rTest, rTestCleanup := createPlannedRun(t, client, nil)
+	defer rTestCleanup()
+
+	t.Run("when resource changes exist for the plan", func(t *testing.T) {
+		resourceChanges, err := client.Plans.ReadResourceChanges(ctx, rTest.Plan.ID)
+		require.NoError(t, err)
+		assert.NotEmpty(t, resourceChanges.ResourceChanges)
+	})
+
+	t.Run("when the plan does not exist", func(t *testing.T) {
+		resourceChanges, err := client.Plans.ReadResourceChanges(ctx, "nonexisting")
+		assert.Nil(t, resourceChanges)
+		assert.Error(t, err)
+	})
+}
