@@ -84,8 +84,6 @@ func TestTestVariablesList(t *testing.T) {
 }
 
 func TestTestVariablesRead(t *testing.T) {
-	skipUnlessBeta(t)
-
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -129,7 +127,7 @@ func TestTestVariablesRead(t *testing.T) {
 	t.Run("without a valid module ID", func(t *testing.T) {
 		v, err := client.TestVariables.Read(ctx, RegistryModuleID{}, tv.ID)
 		assert.Nil(t, v)
-		assert.EqualError(t, err, ErrInvalidWorkspaceID.Error())
+		assert.EqualError(t, err, ErrInvalidOrg.Error())
 	})
 }
 
