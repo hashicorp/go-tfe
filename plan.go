@@ -6,6 +6,7 @@ package tfe
 import (
 	"bytes"
 	"context"
+	"encoding/json"
 	"fmt"
 	"io"
 	"net/url"
@@ -28,6 +29,9 @@ type Plans interface {
 
 	// Retrieve the JSON execution plan
 	ReadJSONOutput(ctx context.Context, planID string) ([]byte, error)
+
+	// ReadResourceChanges fetch plan changed resources
+	ReadResourceChanges(ctx context.Context, planID string) (*PlanResourceChanges, error)
 }
 
 // plans implements Plans.
@@ -76,6 +80,32 @@ type PlanStatusTimestamps struct {
 	ForceCanceledAt time.Time `jsonapi:"attr,force-canceled-at,rfc3339"`
 	QueuedAt        time.Time `jsonapi:"attr,queued-at,rfc3339"`
 	StartedAt       time.Time `jsonapi:"attr,started-at,rfc3339"`
+}
+
+// ResourceChange details changes made to a specific resource within a plan.
+type ResourceChange struct {
+	Address      string      `json:"address"`       // Resource address in the configuration
+	Change       Change      `json:"change"`        // Describes the change applied to the resource
+	Index        interface{} `json:"index"`         // Resource index, can be a string or number
+	Mode         string      `json:"mode"`          // Resource management mode (managed or data)
+	Name         string      `json:"name"`          // Resource name
+	ProviderName string      `json:"provider_name"` // Name of the provider managing the resource
+	Type         string      `json:"type"`          // Type of the resource
+}
+
+// Change captures the before and after states of a resource, including actions taken.
+type Change struct {
+	Actions         []string    `json:"actions"`          // Actions performed on the resource
+	After           interface{} `json:"after"`            // State of the resource after the change
+	AfterSensitive  interface{} `json:"after_sensitive"`  // Indicates if the "after" state includes sensitive values
+	AfterUnknown    interface{} `json:"after_unknown"`    // Parts of the "after" state that are unknown
+	Before          interface{} `json:"before"`           // State of the resource before the change
+	BeforeSensitive interface{} `json:"before_sensitive"` // Indicates if the "before" state includes sensitive values
+}
+
+// PlanResourceChanges encapsulates all resource changes within a plan.
+type PlanResourceChanges struct {
+	ResourceChanges []ResourceChange `json:"resource_changes"` // Collection of resource changes
 }
 
 // Read a plan by its ID.
@@ -162,4 +192,30 @@ func (s *plans) ReadJSONOutput(ctx context.Context, planID string) ([]byte, erro
 	}
 
 	return buf.Bytes(), nil
+}
+
+// ReadResourceChanges fetch plan changed resources
+func (s *plans) ReadResourceChanges(ctx context.Context, planID string) (*PlanResourceChanges, error) {
+	if !validStringID(&planID) {
+		return nil, ErrInvalidPlanID
+	}
+
+	u := fmt.Sprintf("plans/%s/json-output-redacted", url.QueryEscape(planID))
+	req, err := s.client.NewRequest("GET", u, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	var buf bytes.Buffer
+	err = req.Do(ctx, &buf)
+	if err != nil {
+		return nil, err
+	}
+
+	var resourceChanges PlanResourceChanges
+	if err := json.Unmarshal(buf.Bytes(), &resourceChanges); err != nil {
+		return nil, err
+	}
+
+	return &resourceChanges, nil
 }
