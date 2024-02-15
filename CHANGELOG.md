@@ -3,7 +3,7 @@
 ## Enhancements
 * Updates go-tfe client to export the instance name using `AppName()` @sebasslash [#848](https://github.com/hashicorp/go-tfe/pull/848)
 * Add `DeleteByName` API endpoint to `RegistryModule` @laurenolivia [#847](https://github.com/hashicorp/go-tfe/pull/847)
-* Update deprecated `DeleteProvider` and `DeleteVersion` endpoints with new API calls @laurenolivia [#847](https://github.com/hashicorp/go-tfe/pull/847)
+* Update deprecated `RegistryModule` endpoints `DeleteProvider` and `DeleteVersion` with new API calls @laurenolivia [#847](https://github.com/hashicorp/go-tfe/pull/847)
 
 # v1.44.0
 
