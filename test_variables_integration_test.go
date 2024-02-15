@@ -282,9 +282,6 @@ func TestTestVariablesUpdate(t *testing.T) {
 	})
 
 	t.Run("without any changes", func(t *testing.T) {
-		vTest, vTestCleanup := createVariable(t, client, nil)
-		defer vTestCleanup()
-
 		v, err := client.TestVariables.Update(ctx, id, vTest.ID, VariableUpdateOptions{})
 		require.NoError(t, err)
 
