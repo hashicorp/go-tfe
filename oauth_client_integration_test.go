@@ -233,8 +233,8 @@ func TestOAuthClientsCreate_agentPool(t *testing.T) {
 		t.Skip("Export a valid OAUTH_CLIENT_GITHUB_TOKEN before running this test!")
 	}
 
-	//this test requires access to Private VCS feature and tfc-agent running locally
 	t.Run("with valid agent pool external id", func(t *testing.T) {
+		// This requires access to Private VCS feature and tfc-agent running locally
 		t.Skip()
 		orgTestRead, errOrg := client.Organizations.Read(ctx, "xxxxx")
 		require.NoError(t, errOrg)
