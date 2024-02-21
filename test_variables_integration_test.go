@@ -12,8 +12,6 @@ import (
 )
 
 func TestTestVariablesList(t *testing.T) {
-	skipUnlessBeta(t)
-
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -84,8 +82,6 @@ func TestTestVariablesList(t *testing.T) {
 }
 
 func TestTestVariablesCreate(t *testing.T) {
-	skipUnlessBeta(t)
-
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -221,8 +217,6 @@ func TestTestVariablesCreate(t *testing.T) {
 }
 
 func TestTestVariablesUpdate(t *testing.T) {
-	skipUnlessBeta(t)
-
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -243,6 +237,20 @@ func TestTestVariablesUpdate(t *testing.T) {
 	vTest, tvCleanup1 := createTestVariable(t, client, rmTest)
 
 	defer tvCleanup1()
+
+	t.Run("without any changes", func(t *testing.T) {
+		v, err := client.TestVariables.Update(ctx, id, vTest.ID, VariableUpdateOptions{})
+		require.NoError(t, err)
+
+		assert.Equal(t, vTest.ID, v.ID)
+		assert.Equal(t, vTest.Key, v.Key)
+		assert.Equal(t, vTest.Value, v.Value)
+		assert.Equal(t, vTest.Description, v.Description)
+		assert.Equal(t, vTest.Category, v.Category)
+		assert.Equal(t, vTest.HCL, v.HCL)
+		assert.Equal(t, vTest.Sensitive, v.Sensitive)
+		assert.NotEqual(t, vTest.VersionID, v.VersionID)
+	})
 
 	t.Run("with valid options", func(t *testing.T) {
 		options := VariableUpdateOptions{
@@ -287,23 +295,6 @@ func TestTestVariablesUpdate(t *testing.T) {
 		assert.NotEqual(t, vTest.VersionID, v.VersionID)
 	})
 
-	t.Run("without any changes", func(t *testing.T) {
-		vTest, vTestCleanup := createVariable(t, client, nil)
-		defer vTestCleanup()
-
-		v, err := client.TestVariables.Update(ctx, id, vTest.ID, VariableUpdateOptions{})
-		require.NoError(t, err)
-
-		assert.Equal(t, vTest.ID, v.ID)
-		assert.Equal(t, vTest.Key, v.Key)
-		assert.Equal(t, vTest.Value, v.Value)
-		assert.Equal(t, vTest.Description, v.Description)
-		assert.Equal(t, vTest.Category, v.Category)
-		assert.Equal(t, vTest.HCL, v.HCL)
-		assert.Equal(t, vTest.Sensitive, v.Sensitive)
-		assert.NotEqual(t, vTest.VersionID, v.VersionID)
-	})
-
 	t.Run("with invalid variable ID", func(t *testing.T) {
 		_, err := client.TestVariables.Update(ctx, id, badIdentifier, VariableUpdateOptions{})
 		assert.Equal(t, err, ErrInvalidVariableID)
@@ -311,8 +302,6 @@ func TestTestVariablesUpdate(t *testing.T) {
 }
 
 func TestTestVariablesDelete(t *testing.T) {
-	skipUnlessBeta(t)
-
 	client := testClient(t)
 	ctx := context.Background()
 
