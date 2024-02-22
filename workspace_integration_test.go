@@ -70,6 +70,33 @@ func TestWorkspacesList(t *testing.T) {
 		assert.Equal(t, 2, wl.TotalCount)
 	})
 
+	t.Run("when sorting by workspace names", func(t *testing.T) {
+		wl, err := client.Workspaces.List(ctx, orgTest.Name, &WorkspaceListOptions{
+			Sort: "name",
+		})
+		require.NoError(t, err)
+		require.NotEmpty(t, wl.Items)
+		require.GreaterOrEqual(t, len(wl.Items), 2)
+		assert.Equal(t, wl.Items[0].Name < wl.Items[1].Name, true)
+	})
+
+	t.Run("when sorting workspaces on current-run.created-at", func(t *testing.T) {
+		_, unappliedCleanup1 := createRunUnapplied(t, client, wTest1)
+		t.Cleanup(unappliedCleanup1)
+
+		_, unappliedCleanup2 := createRunUnapplied(t, client, wTest2)
+		t.Cleanup(unappliedCleanup2)
+
+		wl, err := client.Workspaces.List(ctx, orgTest.Name, &WorkspaceListOptions{
+			Sort: "current-run.created-at",
+		})
+
+		require.NoError(t, err)
+		require.NotEmpty(t, wl.Items)
+		require.GreaterOrEqual(t, len(wl.Items), 2)
+		require.Equal(t, wl.Items[1].CreatedAt.After(wl.Items[0].CreatedAt), true)
+	})
+
 	t.Run("when searching a known workspace", func(t *testing.T) {
 		// Use a known workspace prefix as search attribute. The result
 		// should be successful and only contain the matching workspace.
