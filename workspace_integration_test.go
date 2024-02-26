@@ -44,6 +44,8 @@ func TestWorkspacesList(t *testing.T) {
 	t.Cleanup(wTest1Cleanup)
 	wTest2, wTest2Cleanup := createWorkspace(t, client, orgTest)
 	t.Cleanup(wTest2Cleanup)
+	wTest3, wTest3Cleanup := createWorkspace(t, client, orgTest)
+	t.Cleanup(wTest3Cleanup)
 
 	t.Run("without list options", func(t *testing.T) {
 		wl, err := client.Workspaces.List(ctx, orgTest.Name, nil)
@@ -51,7 +53,7 @@ func TestWorkspacesList(t *testing.T) {
 		assert.Contains(t, wl.Items, wTest1)
 		assert.Contains(t, wl.Items, wTest2)
 		assert.Equal(t, 1, wl.CurrentPage)
-		assert.Equal(t, 2, wl.TotalCount)
+		assert.Equal(t, 3, wl.TotalCount)
 	})
 
 	t.Run("with list options", func(t *testing.T) {
@@ -67,7 +69,7 @@ func TestWorkspacesList(t *testing.T) {
 		require.NoError(t, err)
 		assert.Empty(t, wl.Items)
 		assert.Equal(t, 999, wl.CurrentPage)
-		assert.Equal(t, 2, wl.TotalCount)
+		assert.Equal(t, 3, wl.TotalCount)
 	})
 
 	t.Run("when sorting by workspace names", func(t *testing.T) {
@@ -81,10 +83,10 @@ func TestWorkspacesList(t *testing.T) {
 	})
 
 	t.Run("when sorting workspaces on current-run.created-at", func(t *testing.T) {
-		_, unappliedCleanup1 := createRunUnapplied(t, client, wTest1)
+		_, unappliedCleanup1 := createRunUnapplied(t, client, wTest2)
 		t.Cleanup(unappliedCleanup1)
 
-		_, unappliedCleanup2 := createRunUnapplied(t, client, wTest2)
+		_, unappliedCleanup2 := createRunUnapplied(t, client, wTest3)
 		t.Cleanup(unappliedCleanup2)
 
 		wl, err := client.Workspaces.List(ctx, orgTest.Name, &WorkspaceListOptions{
@@ -94,7 +96,7 @@ func TestWorkspacesList(t *testing.T) {
 		require.NoError(t, err)
 		require.NotEmpty(t, wl.Items)
 		require.GreaterOrEqual(t, len(wl.Items), 2)
-		require.Equal(t, wl.Items[1].CreatedAt.After(wl.Items[0].CreatedAt), true)
+		assert.True(t, wl.Items[1].CreatedAt.After(wl.Items[0].CreatedAt))
 	})
 
 	t.Run("when searching a known workspace", func(t *testing.T) {
@@ -135,7 +137,7 @@ func TestWorkspacesList(t *testing.T) {
 	})
 
 	t.Run("when searching using exclude-tags", func(t *testing.T) {
-		for wsID, tag := range map[string]string{wTest1.ID: "foo", wTest2.ID: "bar"} {
+		for wsID, tag := range map[string]string{wTest1.ID: "foo", wTest2.ID: "bar", wTest3.ID: "foo"} {
 			err := client.Workspaces.AddTags(ctx, wsID, WorkspaceAddTagsOptions{
 				Tags: []*Tag{
 					{

@@ -93,7 +93,7 @@ func TestAdminWorkspaces_ListWithSort(t *testing.T) {
 		require.NoError(t, err)
 		require.NotEmpty(t, wl.Items)
 		require.GreaterOrEqual(t, len(wl.Items), 2)
-		require.Equal(t, wl.Items[1].CurrentRun.CreatedAt.After(wl.Items[0].CurrentRun.CreatedAt), true)
+		assert.True(t, wl.Items[1].CurrentRun.CreatedAt.After(wl.Items[0].CurrentRun.CreatedAt))
 	})
 }
 
