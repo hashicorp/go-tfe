@@ -90,13 +90,14 @@ func TestWorkspacesList(t *testing.T) {
 		t.Cleanup(unappliedCleanup2)
 
 		wl, err := client.Workspaces.List(ctx, orgTest.Name, &WorkspaceListOptions{
-			Sort: "current-run.created-at",
+			Include: []WSIncludeOpt{WSCurrentRun},
+			Sort:    "current-run.created-at",
 		})
 
 		require.NoError(t, err)
 		require.NotEmpty(t, wl.Items)
 		require.GreaterOrEqual(t, len(wl.Items), 2)
-		assert.True(t, wl.Items[1].CreatedAt.After(wl.Items[0].CreatedAt))
+		assert.True(t, wl.Items[1].CurrentRun.CreatedAt.After(wl.Items[0].CurrentRun.CreatedAt))
 	})
 
 	t.Run("when searching a known workspace", func(t *testing.T) {
