@@ -307,6 +307,10 @@ type WorkspaceListOptions struct {
 
 	// Optional: A list of relations to include. See available resources https://developer.hashicorp.com/terraform/cloud-docs/api-docs/workspaces#available-related-resources
 	Include []WSIncludeOpt `url:"include,omitempty"`
+
+	// Optional: May sort on "name" (the default) and "current-run.created-at" (which sorts by the time of the current run)
+	// Prepending a hyphen to the sort parameter will reverse the order (e.g. "-name" to reverse the default order)
+	Sort string `url:"sort,omitempty"`
 }
 
 // WorkspaceCreateOptions represents the options for creating a new workspace.
