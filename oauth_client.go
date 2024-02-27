@@ -95,6 +95,8 @@ type OAuthClient struct {
 	// Relations
 	Organization *Organization `jsonapi:"relation,organization"`
 	OAuthTokens  []*OAuthToken `jsonapi:"relation,oauth-tokens"`
+	AgentPool    *AgentPool    `jsonapi:"relation,agent-pool"`
+
 	// **Note: This field is still in BETA and subject to change.**
 	// The projects to which the oauth client applies.
 	Projects []*Project `jsonapi:"relation,projects"`
@@ -164,6 +166,9 @@ type OAuthClientCreateOptions struct {
 
 	// Required: The VCS provider being connected with.
 	ServiceProvider *ServiceProviderType `jsonapi:"attr,service-provider"`
+
+	// Optional: AgentPool to associate the VCS Provider with, for PrivateVCS support
+	AgentPool *AgentPool `jsonapi:"relation,agent-pool,omitempty"`
 
 	// **Note: This field is still in BETA and subject to change.**
 	// Optional: Whether the OAuthClient is available to all workspaces in the organization.
