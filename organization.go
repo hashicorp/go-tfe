@@ -46,9 +46,13 @@ type Organizations interface {
 	// ReadRunQueue shows the current run queue of an organization.
 	ReadRunQueue(ctx context.Context, organization string, options ReadRunQueueOptions) (*RunQueue, error)
 
-	// ReadDataRetentionPolicy reads an organization's data retention policy
+	// Deprecated: Use ReadDataRetentionPolicyV2 instead.
+	// **Note: This functionality is only available in Terraform Enterprise versions v202311-1 and v202312-1.**
+	ReadDataRetentionPolicy(ctx context.Context, organization string) (*DataRetentionPolicy, error)
+
+	// ReadDataRetentionPolicyV2 reads an organization's data retention policy
 	// **Note: This functionality is only available in Terraform Enterprise.**
-	ReadDataRetentionPolicy(ctx context.Context, organization string) (*DataRetentionPolicyChoice, error)
+	ReadDataRetentionPolicyV2(ctx context.Context, organization string) (*DataRetentionPolicyChoice, error)
 
 	// Deprecated: Use SetDataRetentionPolicyDeleteOlder instead
 	// **Note: This functionality is only available in Terraform Enterprise versions v202311-1 and v202312-1.**
@@ -447,7 +451,33 @@ func (s *organizations) ReadRunQueue(ctx context.Context, organization string, o
 	return rq, nil
 }
 
-func (s *organizations) ReadDataRetentionPolicy(ctx context.Context, organization string) (*DataRetentionPolicyChoice, error) {
+func (s *organizations) ReadDataRetentionPolicy(ctx context.Context, organization string) (*DataRetentionPolicy, error) {
+	if !validStringID(&organization) {
+		return nil, ErrInvalidOrg
+	}
+
+	u := fmt.Sprintf("organizations/%s/relationships/data-retention-policy", url.QueryEscape(organization))
+	req, err := s.client.NewRequest("GET", u, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	dataRetentionPolicy := &DataRetentionPolicy{}
+	err = req.Do(ctx, dataRetentionPolicy)
+
+	if err != nil {
+		// try to detect known issue where this function is used with TFE >= 202401,
+		// and direct user towards the V2 function
+		if drpUnmarshalEr.MatchString(err.Error()) {
+			return nil, fmt.Errorf("error reading deprecated DataRetentionPolicy, use ReadDataRetentionPolicyV2 instead")
+		}
+		return nil, err
+	}
+
+	return dataRetentionPolicy, nil
+}
+
+func (s *organizations) ReadDataRetentionPolicyV2(ctx context.Context, organization string) (*DataRetentionPolicyChoice, error) {
 	if !validStringID(&organization) {
 		return nil, ErrInvalidOrg
 	}

@@ -3,6 +3,8 @@
 
 package tfe
 
+import "regexp"
+
 // DataRetentionPolicyChoice is a choice type struct that represents the possible types
 // of a drp returned by a polymorphic relationship. If a value is available, exactly one field
 // will be non-nil.
@@ -63,3 +65,6 @@ type DataRetentionPolicyDontDeleteSetOptions struct {
 	// https://jsonapi.org/format/#crud-creating
 	Type string `jsonapi:"primary,data-retention-policy-dont-deletes"`
 }
+
+// error we get when trying to unmarshal a data retention policy from TFE v202401+ into the deprecated DataRetentionPolicy struct
+var drpUnmarshalEr = regexp.MustCompile(`Trying to Unmarshal an object of type \".+\", but \"data-retention-policies\" does not match`)

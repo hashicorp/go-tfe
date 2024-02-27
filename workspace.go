@@ -104,9 +104,13 @@ type Workspaces interface {
 	// RemoveTags removes tags from a workspace
 	RemoveTags(ctx context.Context, workspaceID string, options WorkspaceRemoveTagsOptions) error
 
-	// ReadDataRetentionPolicy reads a workspace's data retention policy
+	// Deprecated: Use ReadDataRetentionPolicyV2 instead.
+	// **Note: This functionality is only available in Terraform Enterprise versions v202311-1 and v202312-1.**
+	ReadDataRetentionPolicy(ctx context.Context, workspaceID string) (*DataRetentionPolicy, error)
+
+	// ReadDataRetentionPolicyV2 reads a workspace's data retention policy
 	// **Note: This functionality is only available in Terraform Enterprise.**
-	ReadDataRetentionPolicy(ctx context.Context, workspaceID string) (*DataRetentionPolicyChoice, error)
+	ReadDataRetentionPolicyV2(ctx context.Context, workspaceID string) (*DataRetentionPolicyChoice, error)
 
 	// Deprecated: Use SetDataRetentionPolicyDeleteOlder instead
 	// **Note: This functionality is only available in Terraform Enterprise versions v202311-1 and v202312-1.**
@@ -1228,7 +1232,33 @@ func (s *workspaces) RemoveTags(ctx context.Context, workspaceID string, options
 	return req.Do(ctx, nil)
 }
 
-func (s *workspaces) ReadDataRetentionPolicy(ctx context.Context, workspaceID string) (*DataRetentionPolicyChoice, error) {
+func (s *workspaces) ReadDataRetentionPolicy(ctx context.Context, workspaceID string) (*DataRetentionPolicy, error) {
+	if !validStringID(&workspaceID) {
+		return nil, ErrInvalidWorkspaceID
+	}
+
+	u := fmt.Sprintf("workspaces/%s/relationships/data-retention-policy", url.QueryEscape(workspaceID))
+	req, err := s.client.NewRequest("GET", u, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	dataRetentionPolicy := &DataRetentionPolicy{}
+	err = req.Do(ctx, dataRetentionPolicy)
+
+	if err != nil {
+		// try to detect known issue where this function is used with TFE >= 202401,
+		// and direct user towards the V2 function
+		if drpUnmarshalEr.MatchString(err.Error()) {
+			return nil, fmt.Errorf("error reading deprecated DataRetentionPolicy, use ReadDataRetentionPolicyV2 instead")
+		}
+		return nil, err
+	}
+
+	return dataRetentionPolicy, nil
+}
+
+func (s *workspaces) ReadDataRetentionPolicyV2(ctx context.Context, workspaceID string) (*DataRetentionPolicyChoice, error) {
 	if !validStringID(&workspaceID) {
 		return nil, ErrInvalidWorkspaceID
 	}

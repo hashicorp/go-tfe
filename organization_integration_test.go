@@ -685,7 +685,7 @@ func TestOrganization_DataRetentionPolicy(t *testing.T) {
 	require.NoError(t, err)
 	require.Nil(t, organization.DataRetentionPolicy)
 
-	dataRetentionPolicy, err := client.Organizations.ReadDataRetentionPolicy(ctx, orgTest.Name)
+	dataRetentionPolicy, err := client.Organizations.ReadDataRetentionPolicyV2(ctx, orgTest.Name)
 	require.NoError(t, err)
 	require.Nil(t, dataRetentionPolicy)
 
@@ -695,7 +695,7 @@ func TestOrganization_DataRetentionPolicy(t *testing.T) {
 		require.Equal(t, 33, createdDataRetentionPolicy.DeleteOlderThanNDays)
 		require.Contains(t, createdDataRetentionPolicy.ID, "drp-")
 
-		dataRetentionPolicy, err = client.Organizations.ReadDataRetentionPolicy(ctx, orgTest.Name)
+		dataRetentionPolicy, err = client.Organizations.ReadDataRetentionPolicyV2(ctx, orgTest.Name)
 		require.NoError(t, err)
 		require.NotNil(t, dataRetentionPolicy.DataRetentionPolicyDeleteOlder)
 
@@ -712,7 +712,7 @@ func TestOrganization_DataRetentionPolicy(t *testing.T) {
 		require.NoError(t, err)
 		require.Equal(t, 1, createdDataRetentionPolicy.DeleteOlderThanNDays)
 
-		dataRetentionPolicy, err = client.Organizations.ReadDataRetentionPolicy(ctx, orgTest.Name)
+		dataRetentionPolicy, err = client.Organizations.ReadDataRetentionPolicyV2(ctx, orgTest.Name)
 		require.NoError(t, err)
 		require.NotNil(t, dataRetentionPolicy.DataRetentionPolicyDeleteOlder)
 		require.Equal(t, 1, dataRetentionPolicy.DataRetentionPolicyDeleteOlder.DeleteOlderThanNDays)
@@ -724,7 +724,7 @@ func TestOrganization_DataRetentionPolicy(t *testing.T) {
 		require.NoError(t, err)
 		require.Contains(t, createdDataRetentionPolicy.ID, "drp-")
 
-		dataRetentionPolicy, err = client.Organizations.ReadDataRetentionPolicy(ctx, orgTest.Name)
+		dataRetentionPolicy, err = client.Organizations.ReadDataRetentionPolicyV2(ctx, orgTest.Name)
 		require.NoError(t, err)
 		require.NotNil(t, dataRetentionPolicy.DataRetentionPolicyDontDelete)
 		require.Equal(t, createdDataRetentionPolicy.ID, dataRetentionPolicy.DataRetentionPolicyDontDelete.ID)
@@ -734,7 +734,7 @@ func TestOrganization_DataRetentionPolicy(t *testing.T) {
 		_, err = client.Organizations.SetDataRetentionPolicyDeleteOlder(ctx, orgTest.Name, DataRetentionPolicyDeleteOlderSetOptions{DeleteOlderThanNDays: 45})
 		require.NoError(t, err)
 
-		dataRetentionPolicy, err = client.Organizations.ReadDataRetentionPolicy(ctx, orgTest.Name)
+		dataRetentionPolicy, err = client.Organizations.ReadDataRetentionPolicyV2(ctx, orgTest.Name)
 		require.NoError(t, err)
 		require.NotNil(t, dataRetentionPolicy.DataRetentionPolicyDeleteOlder)
 		require.Equal(t, 45, dataRetentionPolicy.DataRetentionPolicyDeleteOlder.DeleteOlderThanNDays)
@@ -742,7 +742,7 @@ func TestOrganization_DataRetentionPolicy(t *testing.T) {
 
 		_, err = client.Organizations.SetDataRetentionPolicyDontDelete(ctx, orgTest.Name, DataRetentionPolicyDontDeleteSetOptions{})
 		require.NoError(t, err)
-		dataRetentionPolicy, err = client.Organizations.ReadDataRetentionPolicy(ctx, orgTest.Name)
+		dataRetentionPolicy, err = client.Organizations.ReadDataRetentionPolicyV2(ctx, orgTest.Name)
 		require.NoError(t, err)
 		require.Nil(t, dataRetentionPolicy.DataRetentionPolicyDeleteOlder)
 		require.NotNil(t, dataRetentionPolicy.DataRetentionPolicyDontDelete)
@@ -750,7 +750,7 @@ func TestOrganization_DataRetentionPolicy(t *testing.T) {
 		_, err = client.Organizations.SetDataRetentionPolicyDeleteOlder(ctx, orgTest.Name, DataRetentionPolicyDeleteOlderSetOptions{DeleteOlderThanNDays: 20})
 		require.NoError(t, err)
 
-		dataRetentionPolicy, err = client.Organizations.ReadDataRetentionPolicy(ctx, orgTest.Name)
+		dataRetentionPolicy, err = client.Organizations.ReadDataRetentionPolicyV2(ctx, orgTest.Name)
 		require.NoError(t, err)
 		require.NotNil(t, dataRetentionPolicy.DataRetentionPolicyDeleteOlder)
 		require.Equal(t, 20, dataRetentionPolicy.DataRetentionPolicyDeleteOlder.DeleteOlderThanNDays)
@@ -761,7 +761,7 @@ func TestOrganization_DataRetentionPolicy(t *testing.T) {
 		err = client.Organizations.DeleteDataRetentionPolicy(ctx, orgTest.Name)
 		require.NoError(t, err)
 
-		dataRetentionPolicy, err = client.Organizations.ReadDataRetentionPolicy(ctx, orgTest.Name)
+		dataRetentionPolicy, err = client.Organizations.ReadDataRetentionPolicyV2(ctx, orgTest.Name)
 		assert.Nil(t, err)
 		require.Nil(t, dataRetentionPolicy)
 	})
