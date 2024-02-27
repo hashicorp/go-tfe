@@ -98,6 +98,9 @@ type TeamListOptions struct {
 
 	// Optional: A list of team names to filter by.
 	Names []string `url:"filter[names],omitempty"`
+
+	// Optional: A query string to search teams by names.
+	Query string `url:"q,omitempty"`
 }
 
 // TeamCreateOptions represents the options for creating a team.
