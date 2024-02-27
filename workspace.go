@@ -1234,7 +1234,7 @@ func (s *workspaces) ReadDataRetentionPolicy(ctx context.Context, workspaceID st
 	}
 
 	// The API to read the drp is workspaces/<id>/relationships/data-retention-policy
-	// However, this API can return multiple "types" (e.g. data-retention-policy-delete-olders, or data-retention-policy-don-deletes)
+	// However, this API can return multiple "types" (e.g. data-retention-policy-delete-olders, or data-retention-policy-dont-deletes)
 	// Ideally we would deserialize this directly into the choice type (DataRetentionPolicyChoice)...however, there isn't a way to
 	// tell the current jsonapi implementation that the direct result of an endpoint could be different types. Relationships can be polymorphic,
 	// but the direct result of an endpoint can't be (as far as the jsonapi implementation is concerned)
@@ -1309,7 +1309,7 @@ func (s *workspaces) SetDataRetentionPolicyDeleteOlder(ctx context.Context, work
 	}
 
 	u := s.dataRetentionPolicyLink(workspaceID)
-	req, err := s.client.NewRequest("PATCH", u, &options)
+	req, err := s.client.NewRequest("POST", u, &options)
 	if err != nil {
 		return nil, err
 	}
@@ -1330,7 +1330,7 @@ func (s *workspaces) SetDataRetentionPolicyDontDelete(ctx context.Context, works
 	}
 
 	u := s.dataRetentionPolicyLink(workspaceID)
-	req, err := s.client.NewRequest("PATCH", u, &options)
+	req, err := s.client.NewRequest("POST", u, &options)
 	if err != nil {
 		return nil, err
 	}

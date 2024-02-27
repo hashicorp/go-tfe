@@ -3,6 +3,13 @@
 ## Enhancements
 * Adds `Query` field to `Project` and `Team` list options, to allow projects and teams to be searched by name by @JarrettSpiker [#849](https://github.com/hashicorp/go-tfe/pull/849)
 
+## Features
+* Updates the data retention policy endpoints on `Organization` and `Workspace` to reflect that [data retention policies are polymorphic](https://developer.hashicorp.com/terraform/enterprise/api-docs/data-retention-policies#data-retention-policy-types). Organizations and workspaces may be related to a `DataRetentionPolicyDeleteOlder` or `DataRetentionPolicyDontDelete` through a `DataRetentionPolicyChoice` struct. Data retention policies can be set or updated, including changing their type, using `SetDataRetentionPolicyDeleteOlder` or `SetDataRetentionPolicyDontDelete`. These endpoints continue to be TFE-only. @JarrettSpiker [#652](https://github.com/hashicorp/go-tfe/pull/844)
+
+## Deprecations
+* The `DataRetentionPolicy` type has been deprecated in favour of `DataRetentionPolicyDeleteOlder`, and will only be populated when communicating with TFE versions v202311 and v202312. Data retention policies (DRPs) are now [polymorphic](https://developer.hashicorp.com/terraform/enterprise/api-docs/data-retention-policies#data-retention-policy-types), and are represented using the `DataRetentionPolicyChoice` type, either when reading the DRP using `ReadDataRetentionPolicy`, or as the `DataRetentionPolicy` relationship on `Organization` and `Workspace`. The `DataRetentionPolicyChoice` type contains a `DataRetentionPolicy`, which will only be populated for TFE versions v202311 and v202312. @JarrettSpiker [#652](https://github.com/hashicorp/go-tfe/pull/844)
+* The `SetDataRetentionPolicy` function on `Organizations` and `Workspaces` is now deprecated in favour of `SetDataRetentionPolicyDeleteOlder` or `SetDataRetentionPolicyDontDelete`. `SetDataRetentionPolicy` will only update the data retention policy when communicating with TFE versions v202311 and v202312. @JarrettSpiker [#652](https://github.com/hashicorp/go-tfe/pull/844)
+
 # v1.45.0
 
 ## Enhancements
