@@ -46,8 +46,9 @@ type ProjectList struct {
 
 // Project represents a Terraform Enterprise project
 type Project struct {
-	ID   string `jsonapi:"primary,projects"`
-	Name string `jsonapi:"attr,name"`
+	ID          string `jsonapi:"primary,projects"`
+	Name        string `jsonapi:"attr,name"`
+	Description string `jsonapi:"attr,description"`
 
 	// Relations
 	Organization *Organization `jsonapi:"relation,organization"`
@@ -76,6 +77,9 @@ type ProjectCreateOptions struct {
 
 	// Required: A name to identify the project.
 	Name string `jsonapi:"attr,name"`
+
+	// Optional: A description for the project.
+	Description *string `jsonapi:"attr,description,omitempty"`
 }
 
 // ProjectUpdateOptions represents the options for updating a project
@@ -88,6 +92,9 @@ type ProjectUpdateOptions struct {
 
 	// Optional: A name to identify the project
 	Name *string `jsonapi:"attr,name,omitempty"`
+
+	// Optional: A description for the project.
+	Description *string `jsonapi:"attr,description,omitempty"`
 }
 
 // List all projects.
