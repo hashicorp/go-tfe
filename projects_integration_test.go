@@ -102,6 +102,7 @@ func TestProjectsCreate(t *testing.T) {
 	defer orgTestCleanup()
 
 	t.Run("with valid options", func(t *testing.T) {
+		skipUnlessBeta(t)
 		options := ProjectCreateOptions{
 			Name:        "foo",
 			Description: String("qux"),
@@ -154,6 +155,7 @@ func TestProjectsUpdate(t *testing.T) {
 	defer orgTestCleanup()
 
 	t.Run("with valid options", func(t *testing.T) {
+		skipUnlessBeta(t)
 		kBefore, kTestCleanup := createProject(t, client, orgTest)
 		defer kTestCleanup()
 
