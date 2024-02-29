@@ -102,8 +102,10 @@ func TestProjectsCreate(t *testing.T) {
 	defer orgTestCleanup()
 
 	t.Run("with valid options", func(t *testing.T) {
+		skipUnlessBeta(t)
 		options := ProjectCreateOptions{
-			Name: "foo",
+			Name:        "foo",
+			Description: String("qux"),
 		}
 
 		w, err := client.Projects.Create(ctx, orgTest.Name, options)
@@ -118,6 +120,7 @@ func TestProjectsCreate(t *testing.T) {
 		} {
 			assert.NotEmpty(t, item.ID)
 			assert.Equal(t, options.Name, item.Name)
+			assert.Equal(t, *options.Description, item.Description)
 		}
 	})
 
@@ -152,16 +155,19 @@ func TestProjectsUpdate(t *testing.T) {
 	defer orgTestCleanup()
 
 	t.Run("with valid options", func(t *testing.T) {
+		skipUnlessBeta(t)
 		kBefore, kTestCleanup := createProject(t, client, orgTest)
 		defer kTestCleanup()
 
 		kAfter, err := client.Projects.Update(ctx, kBefore.ID, ProjectUpdateOptions{
-			Name: String("new project name"),
+			Name:        String("new project name"),
+			Description: String("updated description"),
 		})
 		require.NoError(t, err)
 
 		assert.Equal(t, kBefore.ID, kAfter.ID)
 		assert.NotEqual(t, kBefore.Name, kAfter.Name)
+		assert.NotEqual(t, kBefore.Description, kAfter.Description)
 	})
 
 	t.Run("when updating with invalid name", func(t *testing.T) {

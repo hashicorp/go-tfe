@@ -1,5 +1,8 @@
 # Unreleased
 
+## Enhancements
+* Adds `description` attribute to `Project` by @netramali [861](https://github.com/hashicorp/go-tfe/pull/861)
+
 # v1.46.0
 
 ## Enhancements
