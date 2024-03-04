@@ -120,8 +120,10 @@ type Organization struct {
 	DefaultProject   *Project   `jsonapi:"relation,default-project"`
 	DefaultAgentPool *AgentPool `jsonapi:"relation,default-agent-pool"`
 
+	DataRetentionPolicy *DataRetentionPolicy // this gets populated from DataRetentionPolicyChoice manually by go-tfe during read
+
 	// **Note: This functionality is only available in Terraform Enterprise.**
-	DataRetentionPolicy *DataRetentionPolicyChoice `jsonapi:"polyrelation,data-retention-policy"`
+	DataRetentionPolicyChoice *DataRetentionPolicyChoice `jsonapi:"polyrelation,data-retention-policy"`
 }
 
 // OrganizationIncludeOpt represents the available options for include query params.
