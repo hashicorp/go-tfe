@@ -120,7 +120,8 @@ type Organization struct {
 	DefaultProject   *Project   `jsonapi:"relation,default-project"`
 	DefaultAgentPool *AgentPool `jsonapi:"relation,default-agent-pool"`
 
-	DataRetentionPolicy *DataRetentionPolicy // this gets populated from DataRetentionPolicyChoice manually by go-tfe during read
+	// DEPRECATED
+	DataRetentionPolicy *DataRetentionPolicy // this gets populated manually on read, for backward compatibility
 
 	// **Note: This functionality is only available in Terraform Enterprise.**
 	DataRetentionPolicyChoice *DataRetentionPolicyChoice `jsonapi:"polyrelation,data-retention-policy"`
@@ -349,6 +350,14 @@ func (s *organizations) ReadWithOptions(ctx context.Context, organization string
 	err = req.Do(ctx, org)
 	if err != nil {
 		return nil, err
+	}
+
+	if org.DataRetentionPolicyChoice.DataRetentionPolicy != nil {
+		org.DataRetentionPolicy = org.DataRetentionPolicyChoice.DataRetentionPolicy
+	} else if org.DataRetentionPolicyChoice.DataRetentionPolicyDeleteOlder != nil {
+		org.DataRetentionPolicy = &DataRetentionPolicy{
+			DeleteOlderThanNDays: org.DataRetentionPolicyChoice.DataRetentionPolicyDeleteOlder.DeleteOlderThanNDays,
+		}
 	}
 
 	return org, nil
