@@ -202,7 +202,7 @@ type Workspace struct {
 	CurrentConfigurationVersion *ConfigurationVersion `jsonapi:"relation,current-configuration-version,omitempty"`
 	LockedBy                    *LockedByChoice       `jsonapi:"polyrelation,locked-by"`
 
-	// DEPRECATED: Use DataRetentionPolicyChoice instead.
+	// Deprecated: Use DataRetentionPolicyChoice instead.
 	DataRetentionPolicy *DataRetentionPolicy
 	// **Note: This functionality is only available in Terraform Enterprise.**
 	DataRetentionPolicyChoice *DataRetentionPolicyChoice `jsonapi:"polyrelation,data-retention-policy"`

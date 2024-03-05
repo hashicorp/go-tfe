@@ -120,7 +120,7 @@ type Organization struct {
 	DefaultProject   *Project   `jsonapi:"relation,default-project"`
 	DefaultAgentPool *AgentPool `jsonapi:"relation,default-agent-pool"`
 
-	// DEPRECATED: Use DataRetentionPolicyChoice instead.
+	// Deprecated: Use DataRetentionPolicyChoice instead.
 	DataRetentionPolicy *DataRetentionPolicy
 
 	// **Note: This functionality is only available in Terraform Enterprise.**
