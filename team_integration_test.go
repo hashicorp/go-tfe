@@ -33,14 +33,13 @@ func TestTeamsList(t *testing.T) {
 		require.NoError(t, err)
 		assert.Contains(t, tl.Items, tmTest1)
 		assert.Contains(t, tl.Items, tmTest2)
+		assert.Contains(t, tl.Items, tmTest3)
 
-		t.Skip("paging not supported yet in API")
 		assert.Equal(t, 1, tl.CurrentPage)
-		assert.Equal(t, 2, tl.TotalCount)
+		assert.Equal(t, 4, tl.TotalCount)
 	})
 
 	t.Run("with list options", func(t *testing.T) {
-		t.Skip("paging not supported yet in API")
 		// Request a page number which is out of range. The result should
 		// be successful, but return no results if the paging options are
 		// properly passed along.
@@ -53,15 +52,23 @@ func TestTeamsList(t *testing.T) {
 		require.NoError(t, err)
 		assert.Empty(t, tl.Items)
 		assert.Equal(t, 999, tl.CurrentPage)
-		assert.Equal(t, 2, tl.TotalCount)
+		assert.Equal(t, 4, tl.TotalCount)
 
 		tl, err = client.Teams.List(ctx, orgTest.Name, &TeamListOptions{
 			Names: []string{tmTest2.Name, tmTest3.Name},
 		})
-
-		assert.Equal(t, tl.Items, 2)
+		require.NoError(t, err)
+		assert.Equal(t, len(tl.Items), 2)
 		assert.Contains(t, tl.Items, tmTest2)
 		assert.Contains(t, tl.Items, tmTest3)
+
+		tl, err = client.Teams.List(ctx, orgTest.Name, &TeamListOptions{
+			Query: tmTest1.Name[:len(tmTest1.Name)-2],
+		})
+		require.NoError(t, err)
+		assert.Equal(t, len(tl.Items), 1)
+		assert.Equal(t, 1, tl.TotalCount)
+		assert.Contains(t, tl.Items, tmTest1)
 
 		t.Run("with invalid names query param", func(t *testing.T) {
 			// should return an error because we've included an empty string

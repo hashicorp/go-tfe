@@ -87,12 +87,14 @@ func TestAdminWorkspaces_ListWithSort(t *testing.T) {
 		t.Cleanup(unappliedCleanup2)
 
 		wl, err := client.Admin.Workspaces.List(ctx, &AdminWorkspaceListOptions{
-			Sort: "current-run.created-at",
+			Include: []AdminWorkspaceIncludeOpt{AdminWorkspaceCurrentRun},
+			Sort:    "current-run.created-at",
 		})
 
 		require.NoError(t, err)
 		require.NotEmpty(t, wl.Items)
 		require.GreaterOrEqual(t, len(wl.Items), 2)
+		assert.True(t, wl.Items[1].CurrentRun.CreatedAt.After(wl.Items[0].CurrentRun.CreatedAt))
 	})
 }
 
