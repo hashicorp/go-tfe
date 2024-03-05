@@ -5,12 +5,24 @@ package tfe
 
 import (
 	"context"
+	"errors"
 	"os"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
+
+func hasGlobalRunTasks(client *Client, organizationName string) (bool, error) {
+	ctx := context.Background()
+	if orgEntitlements, err := client.Organizations.ReadEntitlements(ctx, organizationName); err != nil {
+		return false, err
+	} else if orgEntitlements == nil {
+		return false, errors.New("The organization entitlements are empty.")
+	} else {
+		return orgEntitlements.GlobalRunTasks, nil
+	}
+}
 
 func TestRunTasksCreate(t *testing.T) {
 	client := testClient(t)
@@ -19,7 +31,14 @@ func TestRunTasksCreate(t *testing.T) {
 	orgTest, orgTestCleanup := createOrganization(t, client)
 	defer orgTestCleanup()
 
-	upgradeOrganizationSubscription(t, client, orgTest)
+	newSubscriptionUpdater(orgTest).WithBusinessPlan().Update(t)
+
+	if v, err := hasGlobalRunTasks(client, orgTest.Name); err != nil {
+		t.Fatalf("Could not retrieve the entitlements for the test organization.: %s", err)
+	} else if !v {
+		t.Fatal("The test organization requires the global-run-tasks entitlement but is not entitled.")
+		return
+	}
 
 	runTaskServerURL := os.Getenv("TFC_RUN_TASK_URL")
 	if runTaskServerURL == "" {
@@ -28,6 +47,12 @@ func TestRunTasksCreate(t *testing.T) {
 
 	runTaskName := "tst-runtask-" + randomString(t)
 	runTaskDescription := "A Run Task Description"
+	globalEnabled := true
+	globalStages := []Stage{
+		PostPlan,
+		PrePlan,
+	}
+	globalEnforce := Mandatory
 
 	t.Run("add run task to organization", func(t *testing.T) {
 		r, err := client.RunTasks.Create(ctx, orgTest.Name, RunTaskCreateOptions{
@@ -36,6 +61,11 @@ func TestRunTasksCreate(t *testing.T) {
 			Description: &runTaskDescription,
 			Category:    "task",
 			Enabled:     Bool(true),
+			Global: &GlobalRunTaskOptions{
+				Enabled:          &globalEnabled,
+				Stages:           &globalStages,
+				EnforcementLevel: &globalEnforce,
+			},
 		})
 		require.NoError(t, err)
 
@@ -44,10 +74,64 @@ func TestRunTasksCreate(t *testing.T) {
 		assert.Equal(t, r.URL, runTaskServerURL)
 		assert.Equal(t, r.Category, "task")
 		assert.Equal(t, r.Description, runTaskDescription)
+		assert.NotNil(t, r.Global)
+		assert.Equal(t, globalEnabled, r.Global.Enabled)
+		assert.Equal(t, globalEnforce, r.Global.EnforcementLevel)
+		assert.Equal(t, globalStages, r.Global.Stages)
 
 		t.Run("ensure org is deserialized properly", func(t *testing.T) {
 			assert.Equal(t, r.Organization.Name, orgTest.Name)
 		})
+	})
+}
+
+func TestRunTasksCreateWithoutGlobalEntitlement(t *testing.T) {
+	client := testClient(t)
+	ctx := context.Background()
+
+	orgTest, orgTestCleanup := createOrganization(t, client)
+	defer orgTestCleanup()
+
+	newSubscriptionUpdater(orgTest).WithTrialPlan().Update(t)
+
+	if v, err := hasGlobalRunTasks(client, orgTest.Name); err != nil {
+		t.Fatalf("Could not retrieve the entitlements for the test organization.: %s", err)
+	} else if v {
+		t.Fatal("The test organization should not have the global-run-tasks entitlement but it does.")
+		return
+	}
+
+	runTaskServerURL := os.Getenv("TFC_RUN_TASK_URL")
+	if runTaskServerURL == "" {
+		t.Error("Cannot create a run task with an empty URL. You must set TFC_RUN_TASK_URL for run task related tests.")
+	}
+
+	runTaskName := "tst-runtask-" + randomString(t)
+	runTaskDescription := "A Run Task Description"
+	globalStages := []Stage{
+		PostPlan,
+		PrePlan,
+	}
+	globalEnforce := Mandatory
+
+	t.Run("add run task to organization", func(t *testing.T) {
+		r, err := client.RunTasks.Create(ctx, orgTest.Name, RunTaskCreateOptions{
+			Name:        runTaskName,
+			URL:         runTaskServerURL,
+			Description: &runTaskDescription,
+			Category:    "task",
+			// Even though we pass in these global parameters,
+			// they should be ignored and not throw an API error
+			Global: &GlobalRunTaskOptions{
+				Enabled:          Bool(true),
+				Stages:           &globalStages,
+				EnforcementLevel: &globalEnforce,
+			},
+		})
+		require.NoError(t, err)
+
+		assert.NotEmpty(t, r.ID)
+		assert.Nil(t, r.Global)
 	})
 }
 
