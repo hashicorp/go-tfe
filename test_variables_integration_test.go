@@ -81,6 +81,54 @@ func TestTestVariablesList(t *testing.T) {
 	})
 }
 
+func TestTestVariablesRead(t *testing.T) {
+	client := testClient(t)
+	ctx := context.Background()
+
+	orgTest, orgTestCleanup := createOrganization(t, client)
+	defer orgTestCleanup()
+
+	rmTest, registryModuleTestCleanup := createBranchBasedRegistryModule(t, client, orgTest)
+	defer registryModuleTestCleanup()
+
+	id := RegistryModuleID{
+		Organization: orgTest.Name,
+		Name:         rmTest.Name,
+		Provider:     rmTest.Provider,
+		Namespace:    rmTest.Namespace,
+		RegistryName: rmTest.RegistryName,
+	}
+
+	tv, tvCleanup := createTestVariable(t, client, rmTest)
+
+	defer tvCleanup()
+
+	t.Run("when the variable exists", func(t *testing.T) {
+		v, err := client.TestVariables.Read(ctx, id, tv.ID)
+
+		require.NoError(t, err)
+		assert.Equal(t, tv.ID, v.ID)
+		assert.Equal(t, tv.Category, v.Category)
+		assert.Equal(t, tv.HCL, v.HCL)
+		assert.Equal(t, tv.Key, v.Key)
+		assert.Equal(t, tv.Sensitive, v.Sensitive)
+		assert.Equal(t, tv.Value, v.Value)
+		assert.Equal(t, tv.VersionID, v.VersionID)
+	})
+
+	t.Run("when the variable does not exist", func(t *testing.T) {
+		v, err := client.TestVariables.Read(ctx, id, "nonexisting")
+		assert.Nil(t, v)
+		assert.Equal(t, ErrResourceNotFound, err)
+	})
+
+	t.Run("without a valid module ID", func(t *testing.T) {
+		v, err := client.TestVariables.Read(ctx, RegistryModuleID{}, tv.ID)
+		assert.Nil(t, v)
+		assert.EqualError(t, err, ErrInvalidOrg.Error())
+	})
+}
+
 func TestTestVariablesCreate(t *testing.T) {
 	client := testClient(t)
 	ctx := context.Background()
