@@ -3,6 +3,14 @@
 ## Bug fixes
 * Change the error message for `ErrWorkspaceStillProcessing` to be the same error message returned by the API by @uturunku1 [#864](https://github.com/hashicorp/go-tfe/pull/864)
 
+## Features
+* Updates the data retention policy endpoints on `Organization` and `Workspace` to reflect that [data retention policies are polymorphic](https://developer.hashicorp.com/terraform/enterprise/api-docs/data-retention-policies#data-retention-policy-types). Organizations and workspaces may be related to a `DataRetentionPolicyDeleteOlder` or `DataRetentionPolicyDontDelete` through a `DataRetentionPolicyChoice` struct. Data retention policies can be read using `ReadDataRetentionPolicyV2`, and set or updated (including changing their type) using `SetDataRetentionPolicyDeleteOlder` or `SetDataRetentionPolicyDontDelete`. These endpoints continue to be TFE-only. @JarrettSpiker [#652](https://github.com/hashicorp/go-tfe/pull/844)
+
+## Deprecations
+* The `DataRetentionPolicy` type, and the `DataRetentionPolicy` relationship on `Organization` and `Workspace`s have been deprecated. The `DataRetentionPolicy` type is equivalent to the new `DataRetentionPolicyDeleteOlder`. The Data retention policy relationships on `Organization` and `Workspace`s are now [polymorphic](https://developer.hashicorp.com/terraform/enterprise/api-docs/data-retention-policies#data-retention-policy-types), and are represented by the `DataRetentionPolicyChoice` relationship. The existing `DataRetentionPolicy` relationship will continue to be populated when reading an `Organization` or `Workspace`, but it may be removed in a future release. @JarrettSpiker [#652](https://github.com/hashicorp/go-tfe/pull/844)
+* The `SetDataRetentionPolicy` function on `Organizations` and `Workspaces` is now deprecated in favour of `SetDataRetentionPolicyDeleteOlder` or `SetDataRetentionPolicyDontDelete`. `SetDataRetentionPolicy` will only update the data retention policy when communicating with TFE versions v202311 and v202312. @JarrettSpiker [#652](https://github.com/hashicorp/go-tfe/pull/844)
+* The `ReadDataRetentionPolicy` function on `Organizations` and `Workspaces` is now deprecated in favour of `ReadDataRetentionPolicyV2`. `ReadDataRetentionPolicyV2` may return the different multiple data retention policy types added in TFE 202401-1. `SetDataRetentionPolicy` will only update the data retention policy when communicating with TFE versions v202311 and v202312. @JarrettSpiker [#652](https://github.com/hashicorp/go-tfe/pull/844)
+
 # v1.47.0
 
 ## Enhancements
@@ -15,13 +23,6 @@
 * Adds `Query` field to `Project` and `Team` list options, to allow projects and teams to be searched by name by @JarrettSpiker [#849](https://github.com/hashicorp/go-tfe/pull/849)
 * Adds `AgenPool` relation to `OAuthClient` create options to support for Private VCS by enabling creation of OAuth Client when AgentPoolID is set (as an optional param) @roleesinhaHC [#841](https://github.com/hashicorp/go-tfe/pull/841)
 * Add `Sort` field to workspace list options @Maed223 [#859](https://github.com/hashicorp/go-tfe/pull/859)
-
-## Features
-* Updates the data retention policy endpoints on `Organization` and `Workspace` to reflect that [data retention policies are polymorphic](https://developer.hashicorp.com/terraform/enterprise/api-docs/data-retention-policies#data-retention-policy-types). Organizations and workspaces may be related to a `DataRetentionPolicyDeleteOlder` or `DataRetentionPolicyDontDelete` through a `DataRetentionPolicyChoice` struct. Data retention policies can be set or updated, including changing their type, using `SetDataRetentionPolicyDeleteOlder` or `SetDataRetentionPolicyDontDelete`. These endpoints continue to be TFE-only. @JarrettSpiker [#652](https://github.com/hashicorp/go-tfe/pull/844)
-
-## Deprecations
-* The `DataRetentionPolicy` type has been deprecated in favour of `DataRetentionPolicyDeleteOlder`, and will only be populated when communicating with TFE versions v202311 and v202312. Data retention policies (DRPs) are now [polymorphic](https://developer.hashicorp.com/terraform/enterprise/api-docs/data-retention-policies#data-retention-policy-types), and are represented using the `DataRetentionPolicyChoice` type, either when reading the DRP using `ReadDataRetentionPolicy`, or as the `DataRetentionPolicy` relationship on `Organization` and `Workspace`. The `DataRetentionPolicyChoice` type contains a `DataRetentionPolicy`, which will only be populated for TFE versions v202311 and v202312. @JarrettSpiker [#652](https://github.com/hashicorp/go-tfe/pull/844)
-* The `SetDataRetentionPolicy` function on `Organizations` and `Workspaces` is now deprecated in favour of `SetDataRetentionPolicyDeleteOlder` or `SetDataRetentionPolicyDontDelete`. `SetDataRetentionPolicy` will only update the data retention policy when communicating with TFE versions v202311 and v202312. @JarrettSpiker [#652](https://github.com/hashicorp/go-tfe/pull/844)
 
 # v1.45.0
 
