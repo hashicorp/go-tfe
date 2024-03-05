@@ -1,8 +1,10 @@
 # Unreleased
 
+# v1.47.0
+
 ## Enhancements
-* Adds `description` attribute to `Project` by @netramali [861](https://github.com/hashicorp/go-tfe/pull/861)
-* Adds `Read` method to `TestVariables` @aaabdelgany [#851](https://github.com/hashicorp/go-tfe/pull/851)
+* Adds BETA `description` attribute to `Project` by @netramali [#861](https://github.com/hashicorp/go-tfe/pull/861)
+* Adds `Read` method to `TestVariables` by @aaabdelgany [#851](https://github.com/hashicorp/go-tfe/pull/851)
 
 # v1.46.0
 
