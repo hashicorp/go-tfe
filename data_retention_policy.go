@@ -36,6 +36,7 @@ func (d *DataRetentionPolicyChoice) ConvertToLegacyStruct() *DataRetentionPolicy
 	return nil
 }
 
+// DataRetentionPolicy describes the retention policy of deleting records older than the specified number of days.
 // Deprecated: Use DataRetentionPolicyDeleteOlder instead. This is the original representation of a
 // data retention policy, only present in TFE v202311-1 and v202312-1
 type DataRetentionPolicy struct {
