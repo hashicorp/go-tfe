@@ -21,8 +21,12 @@ func (d DataRetentionPolicyChoice) IsPopulated() bool {
 		d.DataRetentionPolicyDontDelete != nil
 }
 
-// convert to legacy DataRetentionPolicy struct
+// Convert the DataRetentionPolicyChoice to the legacy DataRetentionPolicy struct
+// Returns nil if the policy cannot be represented by a legacy DataRetentionPolicy
 func (d *DataRetentionPolicyChoice) ConvertToLegacyStruct() *DataRetentionPolicy {
+	if d == nil {
+		return nil
+	}
 	if d.DataRetentionPolicy != nil {
 		// TFE v202311-1 and v202312-1 will return a deprecated DataRetentionPolicy in the DataRetentionPolicyChoice struct
 		return d.DataRetentionPolicy
@@ -37,6 +41,7 @@ func (d *DataRetentionPolicyChoice) ConvertToLegacyStruct() *DataRetentionPolicy
 }
 
 // DataRetentionPolicy describes the retention policy of deleting records older than the specified number of days.
+//
 // Deprecated: Use DataRetentionPolicyDeleteOlder instead. This is the original representation of a
 // data retention policy, only present in TFE v202311-1 and v202312-1
 type DataRetentionPolicy struct {
@@ -44,6 +49,8 @@ type DataRetentionPolicy struct {
 	DeleteOlderThanNDays int    `jsonapi:"attr,delete-older-than-n-days"`
 }
 
+// DataRetentionPolicySetOptions is the options for a creating a DataRetentionPolicy.
+//
 // Deprecated: Use DataRetentionPolicyDeleteOlder variations instead
 type DataRetentionPolicySetOptions struct {
 	// Type is a public field utilized by JSON:API to
@@ -52,18 +59,24 @@ type DataRetentionPolicySetOptions struct {
 	// https://jsonapi.org/format/#crud-creating
 	Type string `jsonapi:"primary,data-retention-policies"`
 
+	// DeleteOlderThanNDays is the number of days to retain records for.
 	DeleteOlderThanNDays int `jsonapi:"attr,delete-older-than-n-days"`
 }
 
+// DataRetentionPolicyDeleteOlder describes the retention policy of deleting records older than the specified number of days.
 type DataRetentionPolicyDeleteOlder struct {
-	ID                   string `jsonapi:"primary,data-retention-policy-delete-olders"`
-	DeleteOlderThanNDays int    `jsonapi:"attr,delete-older-than-n-days"`
+	ID string `jsonapi:"primary,data-retention-policy-delete-olders"`
+
+	// DeleteOlderThanNDays is the number of days to retain records for.
+	DeleteOlderThanNDays int `jsonapi:"attr,delete-older-than-n-days"`
 }
 
+// DataRetentionPolicyDontDelete describes the retention policy of never deleting records.
 type DataRetentionPolicyDontDelete struct {
 	ID string `jsonapi:"primary,data-retention-policy-dont-deletes"`
 }
 
+// DataRetentionPolicyDeleteOlderSetOptions describes the options for a creating a DataRetentionPolicyDeleteOlder.
 type DataRetentionPolicyDeleteOlderSetOptions struct {
 	// Type is a public field utilized by JSON:API to
 	// set the resource type via the field tag.
@@ -71,9 +84,11 @@ type DataRetentionPolicyDeleteOlderSetOptions struct {
 	// https://jsonapi.org/format/#crud-creating
 	Type string `jsonapi:"primary,data-retention-policy-delete-olders"`
 
+	// DeleteOlderThanNDays is the number of days records will be retained for after their creation.
 	DeleteOlderThanNDays int `jsonapi:"attr,delete-older-than-n-days"`
 }
 
+// DataRetentionPolicyDontDeleteSetOptions describes the options for a creating a DataRetentionPolicyDontDelete.
 type DataRetentionPolicyDontDeleteSetOptions struct {
 	// Type is a public field utilized by JSON:API to
 	// set the resource type via the field tag.

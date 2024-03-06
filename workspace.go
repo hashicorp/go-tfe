@@ -104,6 +104,8 @@ type Workspaces interface {
 	// RemoveTags removes tags from a workspace
 	RemoveTags(ctx context.Context, workspaceID string, options WorkspaceRemoveTagsOptions) error
 
+	// ReadDataRetentionPolicy reads a workspace's data retention policy
+	//
 	// Deprecated: Use ReadDataRetentionPolicyV2 instead.
 	// **Note: This functionality is only available in Terraform Enterprise versions v202311-1 and v202312-1.**
 	ReadDataRetentionPolicy(ctx context.Context, workspaceID string) (*DataRetentionPolicy, error)
@@ -112,6 +114,8 @@ type Workspaces interface {
 	// **Note: This functionality is only available in Terraform Enterprise.**
 	ReadDataRetentionPolicyV2(ctx context.Context, workspaceID string) (*DataRetentionPolicyChoice, error)
 
+	// SetDataRetentionPolicy sets a workspace's data retention policy to delete data older than a certain number of days
+	//
 	// Deprecated: Use SetDataRetentionPolicyDeleteOlder instead
 	// **Note: This functionality is only available in Terraform Enterprise versions v202311-1 and v202312-1.**
 	SetDataRetentionPolicy(ctx context.Context, workspaceID string, options DataRetentionPolicySetOptions) (*DataRetentionPolicy, error)
@@ -755,9 +759,7 @@ func (s *workspaces) ReadWithOptions(ctx context.Context, organization, workspac
 	}
 
 	// Manually populate the deprecated DataRetentionPolicy field
-	if w.DataRetentionPolicyChoice != nil {
-		w.DataRetentionPolicy = w.DataRetentionPolicyChoice.ConvertToLegacyStruct()
-	}
+	w.DataRetentionPolicy = w.DataRetentionPolicyChoice.ConvertToLegacyStruct()
 
 	// durations come over in ms
 	w.ApplyDurationAverage *= time.Millisecond

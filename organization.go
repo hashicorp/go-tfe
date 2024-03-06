@@ -46,16 +46,20 @@ type Organizations interface {
 	// ReadRunQueue shows the current run queue of an organization.
 	ReadRunQueue(ctx context.Context, organization string, options ReadRunQueueOptions) (*RunQueue, error)
 
-	// Deprecated: Use ReadDataRetentionPolicyV2 instead.
+	// ReadDataRetentionPolicy reads an organization's data retention policy
 	// **Note: This functionality is only available in Terraform Enterprise versions v202311-1 and v202312-1.**
+	//
+	// Deprecated: Use ReadDataRetentionPolicyV2 instead.
 	ReadDataRetentionPolicy(ctx context.Context, organization string) (*DataRetentionPolicy, error)
 
 	// ReadDataRetentionPolicyV2 reads an organization's data retention policy
 	// **Note: This functionality is only available in Terraform Enterprise.**
 	ReadDataRetentionPolicyV2(ctx context.Context, organization string) (*DataRetentionPolicyChoice, error)
 
-	// Deprecated: Use SetDataRetentionPolicyDeleteOlder instead
+	// SetDataRetentionPolicy sets an organization's data retention policy
 	// **Note: This functionality is only available in Terraform Enterprise versions v202311-1 and v202312-1.**
+	//
+	// Deprecated: Use SetDataRetentionPolicyDeleteOlder instead
 	SetDataRetentionPolicy(ctx context.Context, organization string, options DataRetentionPolicySetOptions) (*DataRetentionPolicy, error)
 
 	// SetDataRetentionPolicyDeleteOlder sets an organization's data retention policy to delete data older than a certain number of days
@@ -353,9 +357,7 @@ func (s *organizations) ReadWithOptions(ctx context.Context, organization string
 	}
 
 	// Manually populate the deprecated DataRetentionPolicy field
-	if org.DataRetentionPolicyChoice != nil {
-		org.DataRetentionPolicy = org.DataRetentionPolicyChoice.ConvertToLegacyStruct()
-	}
+	org.DataRetentionPolicy = org.DataRetentionPolicyChoice.ConvertToLegacyStruct()
 
 	return org, nil
 }
