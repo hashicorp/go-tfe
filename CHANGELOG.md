@@ -1,5 +1,8 @@
 # Unreleased
 
+## Bug fixes
+* Change the error message for `ErrWorkspaceStillProcessing` to be the same error message returned by the API by @uturunku1 [#864](https://github.com/hashicorp/go-tfe/pull/864)
+
 # v1.47.0
 
 ## Enhancements
