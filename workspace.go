@@ -106,13 +106,13 @@ type Workspaces interface {
 
 	// ReadDataRetentionPolicy reads a workspace's data retention policy
 	//
-	// Deprecated: Use ReadDataRetentionPolicyV2 instead.
+	// Deprecated: Use ReadDataRetentionPolicyChoice instead.
 	// **Note: This functionality is only available in Terraform Enterprise versions v202311-1 and v202312-1.**
 	ReadDataRetentionPolicy(ctx context.Context, workspaceID string) (*DataRetentionPolicy, error)
 
-	// ReadDataRetentionPolicyV2 reads a workspace's data retention policy
+	// ReadDataRetentionPolicyChoice reads a workspace's data retention policy
 	// **Note: This functionality is only available in Terraform Enterprise.**
-	ReadDataRetentionPolicyV2(ctx context.Context, workspaceID string) (*DataRetentionPolicyChoice, error)
+	ReadDataRetentionPolicyChoice(ctx context.Context, workspaceID string) (*DataRetentionPolicyChoice, error)
 
 	// SetDataRetentionPolicy sets a workspace's data retention policy to delete data older than a certain number of days
 	//
@@ -1264,7 +1264,7 @@ func (s *workspaces) ReadDataRetentionPolicy(ctx context.Context, workspaceID st
 		// try to detect known issue where this function is used with TFE >= 202401,
 		// and direct user towards the V2 function
 		if drpUnmarshalEr.MatchString(err.Error()) {
-			return nil, fmt.Errorf("error reading deprecated DataRetentionPolicy, use ReadDataRetentionPolicyV2 instead")
+			return nil, fmt.Errorf("error reading deprecated DataRetentionPolicy, use ReadDataRetentionPolicyChoice instead")
 		}
 		return nil, err
 	}
@@ -1272,7 +1272,7 @@ func (s *workspaces) ReadDataRetentionPolicy(ctx context.Context, workspaceID st
 	return dataRetentionPolicy, nil
 }
 
-func (s *workspaces) ReadDataRetentionPolicyV2(ctx context.Context, workspaceID string) (*DataRetentionPolicyChoice, error) {
+func (s *workspaces) ReadDataRetentionPolicyChoice(ctx context.Context, workspaceID string) (*DataRetentionPolicyChoice, error) {
 	if !validStringID(&workspaceID) {
 		return nil, ErrInvalidWorkspaceID
 	}

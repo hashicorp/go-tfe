@@ -2635,7 +2635,7 @@ func TestWorkspace_DataRetentionPolicy(t *testing.T) {
 	wTest, wTestCleanup := createWorkspace(t, client, nil)
 	defer wTestCleanup()
 
-	dataRetentionPolicy, err := client.Workspaces.ReadDataRetentionPolicyV2(ctx, wTest.ID)
+	dataRetentionPolicy, err := client.Workspaces.ReadDataRetentionPolicyChoice(ctx, wTest.ID)
 	assert.Nil(t, err)
 	require.Nil(t, dataRetentionPolicy)
 
@@ -2650,7 +2650,7 @@ func TestWorkspace_DataRetentionPolicy(t *testing.T) {
 		require.Equal(t, 33, createdDataRetentionPolicy.DeleteOlderThanNDays)
 		require.Contains(t, createdDataRetentionPolicy.ID, "drp-")
 
-		dataRetentionPolicy, err = client.Workspaces.ReadDataRetentionPolicyV2(ctx, wTest.ID)
+		dataRetentionPolicy, err = client.Workspaces.ReadDataRetentionPolicyChoice(ctx, wTest.ID)
 		require.NoError(t, err)
 		require.NotNil(t, dataRetentionPolicy.DataRetentionPolicyDeleteOlder)
 
@@ -2671,7 +2671,7 @@ func TestWorkspace_DataRetentionPolicy(t *testing.T) {
 		require.NoError(t, err)
 		require.Equal(t, 1, createdDataRetentionPolicy.DeleteOlderThanNDays)
 
-		dataRetentionPolicy, err = client.Workspaces.ReadDataRetentionPolicyV2(ctx, wTest.ID)
+		dataRetentionPolicy, err = client.Workspaces.ReadDataRetentionPolicyChoice(ctx, wTest.ID)
 		require.NoError(t, err)
 		require.NotNil(t, dataRetentionPolicy.DataRetentionPolicyDeleteOlder)
 		require.Equal(t, 1, dataRetentionPolicy.DataRetentionPolicyDeleteOlder.DeleteOlderThanNDays)
@@ -2683,7 +2683,7 @@ func TestWorkspace_DataRetentionPolicy(t *testing.T) {
 		require.NoError(t, err)
 		require.Contains(t, createdDataRetentionPolicy.ID, "drp-")
 
-		dataRetentionPolicy, err = client.Workspaces.ReadDataRetentionPolicyV2(ctx, wTest.ID)
+		dataRetentionPolicy, err = client.Workspaces.ReadDataRetentionPolicyChoice(ctx, wTest.ID)
 		require.NoError(t, err)
 		require.NotNil(t, dataRetentionPolicy.DataRetentionPolicyDontDelete)
 		require.Equal(t, createdDataRetentionPolicy.ID, dataRetentionPolicy.DataRetentionPolicyDontDelete.ID)
@@ -2698,7 +2698,7 @@ func TestWorkspace_DataRetentionPolicy(t *testing.T) {
 		_, err = client.Workspaces.SetDataRetentionPolicyDeleteOlder(ctx, wTest.ID, DataRetentionPolicyDeleteOlderSetOptions{DeleteOlderThanNDays: 45})
 		require.NoError(t, err)
 
-		dataRetentionPolicy, err = client.Workspaces.ReadDataRetentionPolicyV2(ctx, wTest.ID)
+		dataRetentionPolicy, err = client.Workspaces.ReadDataRetentionPolicyChoice(ctx, wTest.ID)
 		require.NoError(t, err)
 		require.NotNil(t, dataRetentionPolicy.DataRetentionPolicyDeleteOlder)
 		require.Equal(t, 45, dataRetentionPolicy.DataRetentionPolicyDeleteOlder.DeleteOlderThanNDays)
@@ -2706,7 +2706,7 @@ func TestWorkspace_DataRetentionPolicy(t *testing.T) {
 
 		_, err = client.Workspaces.SetDataRetentionPolicyDontDelete(ctx, wTest.ID, DataRetentionPolicyDontDeleteSetOptions{})
 		require.NoError(t, err)
-		dataRetentionPolicy, err = client.Workspaces.ReadDataRetentionPolicyV2(ctx, wTest.ID)
+		dataRetentionPolicy, err = client.Workspaces.ReadDataRetentionPolicyChoice(ctx, wTest.ID)
 		require.NoError(t, err)
 		require.Nil(t, dataRetentionPolicy.DataRetentionPolicyDeleteOlder)
 		require.NotNil(t, dataRetentionPolicy.DataRetentionPolicyDontDelete)
@@ -2714,7 +2714,7 @@ func TestWorkspace_DataRetentionPolicy(t *testing.T) {
 		_, err = client.Workspaces.SetDataRetentionPolicyDeleteOlder(ctx, wTest.ID, DataRetentionPolicyDeleteOlderSetOptions{DeleteOlderThanNDays: 20})
 		require.NoError(t, err)
 
-		dataRetentionPolicy, err = client.Workspaces.ReadDataRetentionPolicyV2(ctx, wTest.ID)
+		dataRetentionPolicy, err = client.Workspaces.ReadDataRetentionPolicyChoice(ctx, wTest.ID)
 		require.NoError(t, err)
 		require.NotNil(t, dataRetentionPolicy.DataRetentionPolicyDeleteOlder)
 		require.Equal(t, 20, dataRetentionPolicy.DataRetentionPolicyDeleteOlder.DeleteOlderThanNDays)
@@ -2725,7 +2725,7 @@ func TestWorkspace_DataRetentionPolicy(t *testing.T) {
 		err = client.Workspaces.DeleteDataRetentionPolicy(ctx, wTest.ID)
 		require.NoError(t, err)
 
-		dataRetentionPolicy, err = client.Workspaces.ReadDataRetentionPolicyV2(ctx, wTest.ID)
+		dataRetentionPolicy, err = client.Workspaces.ReadDataRetentionPolicyChoice(ctx, wTest.ID)
 		assert.Nil(t, err)
 		require.Nil(t, dataRetentionPolicy)
 	})

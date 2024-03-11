@@ -49,12 +49,12 @@ type Organizations interface {
 	// ReadDataRetentionPolicy reads an organization's data retention policy
 	// **Note: This functionality is only available in Terraform Enterprise versions v202311-1 and v202312-1.**
 	//
-	// Deprecated: Use ReadDataRetentionPolicyV2 instead.
+	// Deprecated: Use ReadDataRetentionPolicyChoice instead.
 	ReadDataRetentionPolicy(ctx context.Context, organization string) (*DataRetentionPolicy, error)
 
-	// ReadDataRetentionPolicyV2 reads an organization's data retention policy
+	// ReadDataRetentionPolicyChoice reads an organization's data retention policy
 	// **Note: This functionality is only available in Terraform Enterprise.**
-	ReadDataRetentionPolicyV2(ctx context.Context, organization string) (*DataRetentionPolicyChoice, error)
+	ReadDataRetentionPolicyChoice(ctx context.Context, organization string) (*DataRetentionPolicyChoice, error)
 
 	// SetDataRetentionPolicy sets an organization's data retention policy
 	// **Note: This functionality is only available in Terraform Enterprise versions v202311-1 and v202312-1.**
@@ -479,7 +479,7 @@ func (s *organizations) ReadDataRetentionPolicy(ctx context.Context, organizatio
 		// try to detect known issue where this function is used with TFE >= 202401,
 		// and direct user towards the V2 function
 		if drpUnmarshalEr.MatchString(err.Error()) {
-			return nil, fmt.Errorf("error reading deprecated DataRetentionPolicy, use ReadDataRetentionPolicyV2 instead")
+			return nil, fmt.Errorf("error reading deprecated DataRetentionPolicy, use ReadDataRetentionPolicyChoice instead")
 		}
 		return nil, err
 	}
@@ -487,7 +487,7 @@ func (s *organizations) ReadDataRetentionPolicy(ctx context.Context, organizatio
 	return dataRetentionPolicy, nil
 }
 
-func (s *organizations) ReadDataRetentionPolicyV2(ctx context.Context, organization string) (*DataRetentionPolicyChoice, error) {
+func (s *organizations) ReadDataRetentionPolicyChoice(ctx context.Context, organization string) (*DataRetentionPolicyChoice, error) {
 	if !validStringID(&organization) {
 		return nil, ErrInvalidOrg
 	}

@@ -271,19 +271,19 @@ func (mr *MockWorkspacesMockRecorder) ReadDataRetentionPolicy(ctx, workspaceID i
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ReadDataRetentionPolicy", reflect.TypeOf((*MockWorkspaces)(nil).ReadDataRetentionPolicy), ctx, workspaceID)
 }
 
-// ReadDataRetentionPolicyV2 mocks base method.
-func (m *MockWorkspaces) ReadDataRetentionPolicyV2(ctx context.Context, workspaceID string) (*tfe.DataRetentionPolicyChoice, error) {
+// ReadDataRetentionPolicyChoice mocks base method.
+func (m *MockWorkspaces) ReadDataRetentionPolicyChoice(ctx context.Context, workspaceID string) (*tfe.DataRetentionPolicyChoice, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "ReadDataRetentionPolicyV2", ctx, workspaceID)
+	ret := m.ctrl.Call(m, "ReadDataRetentionPolicyChoice", ctx, workspaceID)
 	ret0, _ := ret[0].(*tfe.DataRetentionPolicyChoice)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
 
-// ReadDataRetentionPolicyV2 indicates an expected call of ReadDataRetentionPolicyV2.
-func (mr *MockWorkspacesMockRecorder) ReadDataRetentionPolicyV2(ctx, workspaceID interface{}) *gomock.Call {
+// ReadDataRetentionPolicyChoice indicates an expected call of ReadDataRetentionPolicyChoice.
+func (mr *MockWorkspacesMockRecorder) ReadDataRetentionPolicyChoice(ctx, workspaceID interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ReadDataRetentionPolicyV2", reflect.TypeOf((*MockWorkspaces)(nil).ReadDataRetentionPolicyV2), ctx, workspaceID)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ReadDataRetentionPolicyChoice", reflect.TypeOf((*MockWorkspaces)(nil).ReadDataRetentionPolicyChoice), ctx, workspaceID)
 }
 
 // ReadWithOptions mocks base method.
