@@ -379,11 +379,11 @@ var (
 
 type DecodeHTTPError struct {
 	Msg string
-	r   *http.Response
+	Res *http.Response
 }
 
 func (d *DecodeHTTPError) Error() string {
-	info, err := decodeErrorPayload(d.r)
+	info, err := decodeErrorPayload(d.Res)
 	if err != nil {
 		log.Fatal(err)
 	}
