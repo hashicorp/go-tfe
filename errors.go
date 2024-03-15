@@ -378,8 +378,9 @@ var (
 )
 
 type DecodeHTTPError struct {
-	Msg string
-	Res *http.Response
+	Msg  string
+	Res  *http.Response
+	Info []string
 }
 
 func (d *DecodeHTTPError) Error() string {
@@ -387,5 +388,9 @@ func (d *DecodeHTTPError) Error() string {
 	if err != nil {
 		log.Fatal(err)
 	}
-	return strings.Join(info, "\n")
+
+	i := &DecodeHTTPError{
+		Info: info,
+	}
+	return strings.Join(i.Info, "\n")
 }
