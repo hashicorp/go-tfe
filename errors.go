@@ -389,8 +389,7 @@ func (d *DecodeHTTPError) Error() string {
 		log.Fatal(err)
 	}
 
-	i := &DecodeHTTPError{
-		Info: info,
-	}
-	return strings.Join(i.Info, "\n")
+	d.Info = info
+
+	return strings.Join(d.Info, "\n")
 }
