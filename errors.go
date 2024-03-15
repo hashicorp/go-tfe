@@ -389,7 +389,11 @@ func (d *DecodeHTTPError) Error() string {
 		log.Fatal(err)
 	}
 
-	d.Info = info
+	// The decode needs to happen early
+	// After resp.Body.Close(), we can no longer read info
+	i := &DecodeHTTPError{
+		Info: info,
+	}
 
-	return strings.Join(d.Info, "\n")
+	return strings.Join(i.Info, "\n")
 }
