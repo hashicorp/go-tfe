@@ -964,7 +964,6 @@ func checkResponseCode(r *http.Response) error {
 			} else {
 				res.Base = ErrWorkspaceNotSafeToDelete
 			}
-
 		}
 	}
 
