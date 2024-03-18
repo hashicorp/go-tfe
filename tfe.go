@@ -923,10 +923,10 @@ func checkResponseCode(r *http.Response) error {
 		return nil
 	}
 
-	// A check for if err != nil is removed here
-	// To prevent an early exit
-	// And return custom error
-	errs, _ := decodeErrorPayload(r)
+	errs, err := decodeErrorPayload(r)
+	if err != nil {
+		return err
+	}
 
 	res := &ResponseError{
 		StatusCode: r.StatusCode,
