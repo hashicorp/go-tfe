@@ -891,6 +891,31 @@ func parsePagination(body io.Reader) (*Pagination, error) {
 	return &raw.Meta.Pagination, nil
 }
 
+// Decode response error
+// And return more details about the error via Info field
+type ResponseError struct {
+	Base       error
+	StatusCode int
+	Info       []string
+}
+
+func (r *ResponseError) Error() string {
+	if len(r.Info) == 0 {
+		return fmt.Sprintf("Err:%s \n StatusCode:%d",
+			r.Base.Error(),
+			r.StatusCode)
+	}
+
+	return fmt.Sprintf("Err:%s \n StatusCode:%d \n Info:%s",
+		r.Base.Error(),
+		r.StatusCode,
+		r.Info)
+}
+
+func (r *ResponseError) Unwrap() error {
+	return r.Base
+}
+
 // checkResponseCode can be used to check the status code of an HTTP request.
 
 func checkResponseCode(r *http.Response) error {
@@ -898,63 +923,52 @@ func checkResponseCode(r *http.Response) error {
 		return nil
 	}
 
-	var errs []string
-	var err error
+	// A check for if err != nil is removed here
+	// To prevent an early exit
+	// And return custom error
+	errs, _ := decodeErrorPayload(r)
+
+	res := &ResponseError{
+		StatusCode: r.StatusCode,
+		Info:       errs,
+	}
 
 	switch r.StatusCode {
 	case 400:
-		errs, err = decodeErrorPayload(r)
-		if err != nil {
-			return err
-		}
-
 		if errorPayloadContains(errs, "Invalid include parameter") {
-			return ErrInvalidIncludeValue
+			res.Base = ErrInvalidIncludeValue
 		}
-		return errors.New(strings.Join(errs, "\n"))
+		res.Base = ErrResourceNotFound
 	case 401:
-		return ErrUnauthorized
+		res.Base = ErrUnauthorized
 	case 404:
-		return ErrResourceNotFound
+		res.Base = ErrResourceNotFound
 	case 409:
 		switch {
 		case strings.HasSuffix(r.Request.URL.Path, "actions/lock"):
-			return ErrWorkspaceLocked
+			res.Base = ErrWorkspaceLocked
 		case strings.HasSuffix(r.Request.URL.Path, "actions/unlock"):
-			errs, err = decodeErrorPayload(r)
-			if err != nil {
-				return err
-			}
-
 			if errorPayloadContains(errs, "is locked by Run") {
-				return ErrWorkspaceLockedByRun
+				res.Base = ErrWorkspaceLockedByRun
+			} else {
+				res.Base = ErrWorkspaceNotLocked
 			}
-
-			return ErrWorkspaceNotLocked
 		case strings.HasSuffix(r.Request.URL.Path, "actions/force-unlock"):
-			return ErrWorkspaceNotLocked
+			res.Base = ErrWorkspaceNotLocked
 		case strings.HasSuffix(r.Request.URL.Path, "actions/safe-delete"):
-			errs, err = decodeErrorPayload(r)
-			if err != nil {
-				return err
-			}
 			if errorPayloadContains(errs, "locked") {
-				return ErrWorkspaceLockedCannotDelete
+				res.Base = ErrWorkspaceLockedCannotDelete
 			}
 			if errorPayloadContains(errs, "being processed") {
-				return ErrWorkspaceStillProcessing
+				res.Base = ErrWorkspaceStillProcessing
+			} else {
+				res.Base = ErrWorkspaceNotSafeToDelete
 			}
 
-			return ErrWorkspaceNotSafeToDelete
 		}
 	}
 
-	errs, err = decodeErrorPayload(r)
-	if err != nil {
-		return err
-	}
-
-	return errors.New(strings.Join(errs, "\n"))
+	return res
 }
 
 func decodeErrorPayload(r *http.Response) ([]string, error) {
