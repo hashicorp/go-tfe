@@ -60,7 +60,7 @@ func TestProjectsList(t *testing.T) {
 	t.Run("without a valid organization", func(t *testing.T) {
 		pl, err := client.Projects.List(ctx, badIdentifier, nil)
 		assert.Nil(t, pl)
-		assert.EqualError(t, err, ErrInvalidOrg.Error())
+		assert.ErrorIs(t, err, ErrInvalidOrg)
 	})
 }
 
@@ -90,7 +90,7 @@ func TestProjectsRead(t *testing.T) {
 	t.Run("without a valid project ID", func(t *testing.T) {
 		w, err := client.Projects.Read(ctx, badIdentifier)
 		assert.Nil(t, w)
-		assert.EqualError(t, err, ErrInvalidProjectID.Error())
+		assert.ErrorIs(t, err, ErrInvalidProjectID)
 	})
 }
 
@@ -127,7 +127,7 @@ func TestProjectsCreate(t *testing.T) {
 	t.Run("when options is missing name", func(t *testing.T) {
 		w, err := client.Projects.Create(ctx, orgTest.Name, ProjectCreateOptions{})
 		assert.Nil(t, w)
-		assert.EqualError(t, err, ErrRequiredName.Error())
+		assert.ErrorIs(t, err, ErrRequiredName)
 	})
 
 	t.Run("when options has an invalid name", func(t *testing.T) {
@@ -143,7 +143,7 @@ func TestProjectsCreate(t *testing.T) {
 			Name: "foo",
 		})
 		assert.Nil(t, w)
-		assert.EqualError(t, err, ErrInvalidOrg.Error())
+		assert.ErrorIs(t, err, ErrInvalidOrg)
 	})
 }
 
@@ -184,7 +184,7 @@ func TestProjectsUpdate(t *testing.T) {
 	t.Run("without a valid projects ID", func(t *testing.T) {
 		w, err := client.Projects.Update(ctx, badIdentifier, ProjectUpdateOptions{})
 		assert.Nil(t, w)
-		assert.EqualError(t, err, ErrInvalidProjectID.Error())
+		assert.ErrorIs(t, err, ErrInvalidProjectID)
 	})
 }
 
@@ -203,16 +203,16 @@ func TestProjectsDelete(t *testing.T) {
 
 		// Try loading the project - it should fail.
 		_, err = client.Projects.Read(ctx, pTest.ID)
-		assert.Equal(t, err, ErrResourceNotFound)
+		assert.ErrorIs(t, err, ErrResourceNotFound)
 	})
 
 	t.Run("when the project does not exist", func(t *testing.T) {
 		err := client.Projects.Delete(ctx, pTest.ID)
-		assert.Equal(t, err, ErrResourceNotFound)
+		assert.ErrorIs(t, err, ErrResourceNotFound)
 	})
 
 	t.Run("when the project ID is invalid", func(t *testing.T) {
 		err := client.Projects.Delete(ctx, badIdentifier)
-		assert.EqualError(t, err, ErrInvalidProjectID.Error())
+		assert.ErrorIs(t, err, ErrInvalidProjectID)
 	})
 }

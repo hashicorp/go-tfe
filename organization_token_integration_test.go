@@ -38,7 +38,7 @@ func TestOrganizationTokensCreate(t *testing.T) {
 	t.Run("without valid organization", func(t *testing.T) {
 		ot, err := client.OrganizationTokens.Create(ctx, badIdentifier)
 		assert.Nil(t, ot)
-		assert.EqualError(t, err, ErrInvalidOrg.Error())
+		assert.ErrorIs(t, err, ErrInvalidOrg)
 	})
 }
 
@@ -67,7 +67,7 @@ func TestOrganizationTokens_CreateWithOptions(t *testing.T) {
 	t.Run("without valid organization", func(t *testing.T) {
 		ot, err := client.OrganizationTokens.CreateWithOptions(ctx, badIdentifier, OrganizationTokenCreateOptions{})
 		assert.Nil(t, ot)
-		assert.EqualError(t, err, ErrInvalidOrg.Error())
+		assert.ErrorIs(t, err, ErrInvalidOrg)
 	})
 
 	t.Run("without an expiration date", func(t *testing.T) {
@@ -124,14 +124,14 @@ func TestOrganizationTokensRead(t *testing.T) {
 
 	t.Run("when a token doesn't exists", func(t *testing.T) {
 		ot, err := client.OrganizationTokens.Read(ctx, orgTest.Name)
-		assert.Equal(t, ErrResourceNotFound, err)
+		assert.ErrorIs(t, err, ErrResourceNotFound)
 		assert.Nil(t, ot)
 	})
 
 	t.Run("without valid organization", func(t *testing.T) {
 		ot, err := client.OrganizationTokens.Read(ctx, badIdentifier)
 		assert.Nil(t, ot)
-		assert.EqualError(t, err, ErrInvalidOrg.Error())
+		assert.ErrorIs(t, err, ErrInvalidOrg)
 	})
 }
 
@@ -151,11 +151,11 @@ func TestOrganizationTokensDelete(t *testing.T) {
 
 	t.Run("when a token does not exist", func(t *testing.T) {
 		err := client.OrganizationTokens.Delete(ctx, orgTest.Name)
-		assert.Equal(t, err, ErrResourceNotFound)
+		assert.ErrorIs(t, err, ErrResourceNotFound)
 	})
 
 	t.Run("without valid organization", func(t *testing.T) {
 		err := client.OrganizationTokens.Delete(ctx, badIdentifier)
-		assert.EqualError(t, err, ErrInvalidOrg.Error())
+		assert.ErrorIs(t, err, ErrInvalidOrg)
 	})
 }

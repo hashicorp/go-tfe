@@ -136,7 +136,7 @@ func TestPolicySetParametersCreate(t *testing.T) {
 		}
 
 		_, err := client.PolicySetParameters.Create(ctx, psTest.ID, options)
-		assert.Equal(t, err, ErrRequiredKey)
+		assert.ErrorIs(t, err, ErrRequiredKey)
 	})
 
 	t.Run("when options is missing category", func(t *testing.T) {
@@ -146,7 +146,7 @@ func TestPolicySetParametersCreate(t *testing.T) {
 		}
 
 		_, err := client.PolicySetParameters.Create(ctx, psTest.ID, options)
-		assert.Equal(t, err, ErrRequiredCategory)
+		assert.ErrorIs(t, err, ErrRequiredCategory)
 	})
 
 	t.Run("when policy set ID is invalid", func(t *testing.T) {
@@ -157,7 +157,7 @@ func TestPolicySetParametersCreate(t *testing.T) {
 		}
 
 		_, err := client.PolicySetParameters.Create(ctx, badIdentifier, options)
-		assert.Equal(t, err, ErrInvalidPolicySetID)
+		assert.ErrorIs(t, err, ErrInvalidPolicySetID)
 	})
 }
 
@@ -182,19 +182,19 @@ func TestPolicySetParametersRead(t *testing.T) {
 	t.Run("when the parameter does not exist", func(t *testing.T) {
 		p, err := client.PolicySetParameters.Read(ctx, pTest.PolicySet.ID, "nonexisting")
 		assert.Nil(t, p)
-		assert.Equal(t, ErrResourceNotFound, err)
+		assert.ErrorIs(t, err, ErrResourceNotFound)
 	})
 
 	t.Run("without a valid policy set ID", func(t *testing.T) {
 		p, err := client.PolicySetParameters.Read(ctx, badIdentifier, pTest.ID)
 		assert.Nil(t, p)
-		assert.Equal(t, err, ErrInvalidPolicySetID)
+		assert.ErrorIs(t, err, ErrInvalidPolicySetID)
 	})
 
 	t.Run("without a valid parameter ID", func(t *testing.T) {
 		p, err := client.PolicySetParameters.Read(ctx, pTest.PolicySet.ID, badIdentifier)
 		assert.Nil(t, p)
-		assert.Equal(t, err, ErrInvalidParamID)
+		assert.ErrorIs(t, err, ErrInvalidParamID)
 	})
 }
 
@@ -253,12 +253,12 @@ func TestPolicySetParametersUpdate(t *testing.T) {
 
 	t.Run("with invalid parameter ID", func(t *testing.T) {
 		_, err := client.PolicySetParameters.Update(ctx, badIdentifier, pTest.ID, PolicySetParameterUpdateOptions{})
-		assert.Equal(t, err, ErrInvalidPolicySetID)
+		assert.ErrorIs(t, err, ErrInvalidPolicySetID)
 	})
 
 	t.Run("with invalid parameter ID", func(t *testing.T) {
 		_, err := client.PolicySetParameters.Update(ctx, pTest.PolicySet.ID, badIdentifier, PolicySetParameterUpdateOptions{})
-		assert.Equal(t, err, ErrInvalidParamID)
+		assert.ErrorIs(t, err, ErrInvalidParamID)
 	})
 }
 
@@ -278,16 +278,16 @@ func TestPolicySetParametersDelete(t *testing.T) {
 
 	t.Run("with non existing parameter ID", func(t *testing.T) {
 		err := client.PolicySetParameters.Delete(ctx, psTest.ID, "nonexisting")
-		assert.Equal(t, err, ErrResourceNotFound)
+		assert.ErrorIs(t, err, ErrResourceNotFound)
 	})
 
 	t.Run("with invalid policy set ID", func(t *testing.T) {
 		err := client.PolicySetParameters.Delete(ctx, badIdentifier, pTest.ID)
-		assert.Equal(t, err, ErrInvalidPolicySetID)
+		assert.ErrorIs(t, err, ErrInvalidPolicySetID)
 	})
 
 	t.Run("with invalid parameter ID", func(t *testing.T) {
 		err := client.PolicySetParameters.Delete(ctx, psTest.ID, badIdentifier)
-		assert.Equal(t, err, ErrInvalidParamID)
+		assert.ErrorIs(t, err, ErrInvalidParamID)
 	})
 }

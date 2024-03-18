@@ -319,13 +319,13 @@ func TestOAuthClientsRead(t *testing.T) {
 	t.Run("when the OAuth client does not exist", func(t *testing.T) {
 		oc, err := client.OAuthClients.Read(ctx, "nonexisting")
 		assert.Nil(t, oc)
-		assert.Equal(t, ErrResourceNotFound, err)
+		assert.ErrorIs(t, err, ErrResourceNotFound)
 	})
 
 	t.Run("without a valid OAuth client ID", func(t *testing.T) {
 		oc, err := client.OAuthClients.Read(ctx, badIdentifier)
 		assert.Nil(t, oc)
-		assert.Equal(t, err, ErrInvalidOauthClientID)
+		assert.ErrorIs(t, err, ErrInvalidOauthClientID)
 	})
 }
 
@@ -380,12 +380,12 @@ func TestOAuthClientsDelete(t *testing.T) {
 
 	t.Run("when the OAuth client does not exist", func(t *testing.T) {
 		err := client.OAuthClients.Delete(ctx, ocTest.ID)
-		assert.Equal(t, err, ErrResourceNotFound)
+		assert.ErrorIs(t, err, ErrResourceNotFound)
 	})
 
 	t.Run("when the OAuth client ID is invalid", func(t *testing.T) {
 		err := client.OAuthClients.Delete(ctx, badIdentifier)
-		assert.Equal(t, err, ErrInvalidOauthClientID)
+		assert.ErrorIs(t, err, ErrInvalidOauthClientID)
 	})
 }
 

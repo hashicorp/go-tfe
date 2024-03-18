@@ -98,7 +98,7 @@ func TestPoliciesList(t *testing.T) {
 	t.Run("without a valid organization", func(t *testing.T) {
 		ps, err := client.Policies.List(ctx, badIdentifier, nil)
 		assert.Nil(t, ps)
-		assert.EqualError(t, err, ErrInvalidOrg.Error())
+		assert.ErrorIs(t, err, ErrInvalidOrg)
 	})
 }
 
@@ -218,7 +218,7 @@ func TestPoliciesCreate(t *testing.T) {
 			},
 		})
 		assert.Nil(t, p)
-		assert.EqualError(t, err, ErrInvalidName.Error())
+		assert.ErrorIs(t, err, ErrInvalidName)
 	})
 
 	t.Run("when options has an invalid name - OPA", func(t *testing.T) {
@@ -234,7 +234,7 @@ func TestPoliciesCreate(t *testing.T) {
 			},
 		})
 		assert.Nil(t, p)
-		assert.EqualError(t, err, ErrInvalidName.Error())
+		assert.ErrorIs(t, err, ErrInvalidName)
 	})
 
 	t.Run("when options is missing name", func(t *testing.T) {
@@ -247,7 +247,7 @@ func TestPoliciesCreate(t *testing.T) {
 			},
 		})
 		assert.Nil(t, p)
-		assert.EqualError(t, err, ErrRequiredName.Error())
+		assert.ErrorIs(t, err, ErrRequiredName)
 	})
 
 	t.Run("when options is missing name - OPA", func(t *testing.T) {
@@ -262,7 +262,7 @@ func TestPoliciesCreate(t *testing.T) {
 			},
 		})
 		assert.Nil(t, p)
-		assert.EqualError(t, err, ErrRequiredName.Error())
+		assert.ErrorIs(t, err, ErrRequiredName)
 	})
 
 	t.Run("when options is missing query - OPA", func(t *testing.T) {
@@ -278,7 +278,7 @@ func TestPoliciesCreate(t *testing.T) {
 			},
 		})
 		assert.Nil(t, p)
-		assert.Equal(t, err, ErrRequiredQuery)
+		assert.ErrorIs(t, err, ErrRequiredQuery)
 	})
 
 	t.Run("when options is missing an enforcement-OPA", func(t *testing.T) {
@@ -290,7 +290,7 @@ func TestPoliciesCreate(t *testing.T) {
 
 		p, err := client.Policies.Create(ctx, orgTest.Name, options)
 		assert.Nil(t, p)
-		assert.Equal(t, err, ErrRequiredEnforce)
+		assert.ErrorIs(t, err, ErrRequiredEnforce)
 	})
 
 	t.Run("when options is missing an enforcement-Sentinel", func(t *testing.T) {
@@ -300,7 +300,7 @@ func TestPoliciesCreate(t *testing.T) {
 
 		p, err := client.Policies.Create(ctx, orgTest.Name, options)
 		assert.Nil(t, p)
-		assert.Equal(t, err, ErrRequiredEnforce)
+		assert.ErrorIs(t, err, ErrRequiredEnforce)
 	})
 
 	t.Run("when options is missing enforcement path-Sentinel", func(t *testing.T) {
@@ -315,7 +315,7 @@ func TestPoliciesCreate(t *testing.T) {
 
 		p, err := client.Policies.Create(ctx, orgTest.Name, options)
 		assert.Nil(t, p)
-		assert.Equal(t, err, ErrRequiredEnforcementPath)
+		assert.ErrorIs(t, err, ErrRequiredEnforcementPath)
 	})
 
 	t.Run("when options is missing enforcement path-OPA", func(t *testing.T) {
@@ -348,7 +348,7 @@ func TestPoliciesCreate(t *testing.T) {
 
 		p, err := client.Policies.Create(ctx, orgTest.Name, options)
 		assert.Nil(t, p)
-		assert.Equal(t, err, ErrRequiredEnforcementMode)
+		assert.ErrorIs(t, err, ErrRequiredEnforcementMode)
 	})
 
 	t.Run("when options is missing enforcement mode-OPA", func(t *testing.T) {
@@ -366,7 +366,7 @@ func TestPoliciesCreate(t *testing.T) {
 
 		p, err := client.Policies.Create(ctx, orgTest.Name, options)
 		assert.Nil(t, p)
-		assert.Equal(t, err, ErrRequiredEnforcementMode)
+		assert.ErrorIs(t, err, ErrRequiredEnforcementMode)
 	})
 
 	t.Run("when options has an invalid organization", func(t *testing.T) {
@@ -374,7 +374,7 @@ func TestPoliciesCreate(t *testing.T) {
 			Name: String("foo"),
 		})
 		assert.Nil(t, p)
-		assert.EqualError(t, err, ErrInvalidOrg.Error())
+		assert.ErrorIs(t, err, ErrInvalidOrg)
 	})
 }
 
@@ -425,7 +425,7 @@ func TestPoliciesRead(t *testing.T) {
 	t.Run("without a valid policy ID", func(t *testing.T) {
 		p, err := client.Policies.Read(ctx, badIdentifier)
 		assert.Nil(t, p)
-		assert.Equal(t, err, ErrInvalidPolicyID)
+		assert.ErrorIs(t, err, ErrInvalidPolicyID)
 	})
 }
 
@@ -547,7 +547,7 @@ func TestPoliciesUpdate(t *testing.T) {
 	t.Run("without a valid policy ID", func(t *testing.T) {
 		p, err := client.Policies.Update(ctx, badIdentifier, PolicyUpdateOptions{})
 		assert.Nil(t, p)
-		assert.Equal(t, err, ErrInvalidPolicyID)
+		assert.ErrorIs(t, err, ErrInvalidPolicyID)
 	})
 }
 
@@ -566,17 +566,17 @@ func TestPoliciesDelete(t *testing.T) {
 
 		// Try loading the policy - it should fail.
 		_, err = client.Policies.Read(ctx, pTest.ID)
-		assert.Equal(t, err, ErrResourceNotFound)
+		assert.ErrorIs(t, err, ErrResourceNotFound)
 	})
 
 	t.Run("when the policy does not exist", func(t *testing.T) {
 		err := client.Policies.Delete(ctx, pTest.ID)
-		assert.Equal(t, err, ErrResourceNotFound)
+		assert.ErrorIs(t, err, ErrResourceNotFound)
 	})
 
 	t.Run("when the policy ID is invalid", func(t *testing.T) {
 		err := client.Policies.Delete(ctx, badIdentifier)
-		assert.Equal(t, err, ErrInvalidPolicyID)
+		assert.ErrorIs(t, err, ErrInvalidPolicyID)
 	})
 }
 
@@ -619,7 +619,7 @@ func TestPoliciesDownload(t *testing.T) {
 
 	t.Run("without existing content", func(t *testing.T) {
 		content, err := client.Policies.Download(ctx, pTest.ID)
-		assert.Equal(t, ErrResourceNotFound, err)
+		assert.ErrorIs(t, err, ErrResourceNotFound)
 		assert.Nil(t, content)
 	})
 
@@ -634,7 +634,7 @@ func TestPoliciesDownload(t *testing.T) {
 
 	t.Run("without a valid policy ID", func(t *testing.T) {
 		content, err := client.Policies.Download(ctx, badIdentifier)
-		assert.Equal(t, err, ErrInvalidPolicyID)
+		assert.ErrorIs(t, err, ErrInvalidPolicyID)
 		assert.Nil(t, content)
 	})
 }
