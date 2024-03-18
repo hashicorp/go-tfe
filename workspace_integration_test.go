@@ -2635,13 +2635,8 @@ func TestWorkspace_DataRetentionPolicy(t *testing.T) {
 	wTest, wTestCleanup := createWorkspace(t, client, nil)
 	defer wTestCleanup()
 
-<<<<<<< HEAD
 	dataRetentionPolicy, err := client.Workspaces.ReadDataRetentionPolicyChoice(ctx, wTest.ID)
 	assert.Nil(t, err)
-=======
-	dataRetentionPolicy, err := client.Workspaces.ReadDataRetentionPolicy(ctx, wTest.ID)
-	assert.ErrorIs(t, err, ErrResourceNotFound)
->>>>>>> 0ec5a3e (fix tests to use assert.ErrorIs() - group 1)
 	require.Nil(t, dataRetentionPolicy)
 
 	workspace, err := client.Workspaces.ReadByID(ctx, wTest.ID)

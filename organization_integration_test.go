@@ -771,13 +771,8 @@ func TestOrganization_DataRetentionPolicy(t *testing.T) {
 		err = client.Organizations.DeleteDataRetentionPolicy(ctx, orgTest.Name)
 		require.NoError(t, err)
 
-<<<<<<< HEAD
 		dataRetentionPolicy, err = client.Organizations.ReadDataRetentionPolicyChoice(ctx, orgTest.Name)
 		assert.Nil(t, err)
-=======
-		dataRetentionPolicy, err = client.Organizations.ReadDataRetentionPolicy(ctx, orgTest.Name)
-		assert.ErrorIs(t, ErrResourceNotFound, err)
->>>>>>> 0ec5a3e (fix tests to use assert.ErrorIs() - group 1)
 		require.Nil(t, dataRetentionPolicy)
 	})
 }
