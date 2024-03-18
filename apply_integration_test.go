@@ -36,7 +36,7 @@ func TestAppliesRead(t *testing.T) {
 	t.Run("when the apply does not exist", func(t *testing.T) {
 		a, err := client.Applies.Read(ctx, "nonexisting")
 		assert.Nil(t, a)
-		assert.Equal(t, err, ErrResourceNotFound)
+		assert.ErrorIs(t, err, ErrResourceNotFound)
 	})
 
 	t.Run("with invalid apply ID", func(t *testing.T) {

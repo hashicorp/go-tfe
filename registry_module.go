@@ -362,7 +362,7 @@ func (r *registryModules) ListCommits(ctx context.Context, moduleID RegistryModu
 func (r *registryModules) Upload(ctx context.Context, rmv RegistryModuleVersion, path string) error {
 	uploadURL, ok := rmv.Links["upload"].(string)
 	if !ok {
-		return fmt.Errorf("provided RegistryModuleVersion does not contain an upload link")
+		return fmt.Errorf("%s", ErrRegistryModuleMissingUploadLink)
 	}
 
 	body, err := packContents(path)

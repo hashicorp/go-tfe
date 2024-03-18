@@ -1301,23 +1301,23 @@ func TestRegistryModulesDelete(t *testing.T) {
 
 	t.Run("without a name", func(t *testing.T) {
 		err := client.RegistryModules.Delete(ctx, orgTest.Name, "")
-		assert.EqualError(t, err, ErrRequiredName.Error())
+		assert.ErrorIs(t, err, ErrRequiredName)
 	})
 
 	t.Run("with an invalid name", func(t *testing.T) {
 		err := client.RegistryModules.Delete(ctx, orgTest.Name, badIdentifier)
-		assert.EqualError(t, err, ErrInvalidName.Error())
+		assert.ErrorIs(t, err, ErrInvalidName)
 	})
 
 	t.Run("without a valid organization", func(t *testing.T) {
 		err := client.RegistryModules.Delete(ctx, badIdentifier, registryModuleTest.Name)
-		assert.EqualError(t, err, ErrInvalidOrg.Error())
+		assert.ErrorIs(t, err, ErrInvalidOrg)
 	})
 
 	t.Run("when the registry module does not exist", func(t *testing.T) {
 		err := client.RegistryModules.Delete(ctx, orgTest.Name, "nonexisting")
 		assert.Error(t, err)
-		assert.Equal(t, ErrResourceNotFound, err)
+		assert.ErrorIs(t, err, ErrResourceNotFound)
 	})
 }
 
@@ -1351,7 +1351,7 @@ func TestRegistryModulesDeleteByName(t *testing.T) {
 			Name:         "",
 		})
 		assert.Error(t, err)
-		assert.Equal(t, err, ErrRequiredName)
+		assert.ErrorIs(t, err, ErrRequiredName)
 	})
 
 	t.Run("with invalid org", func(t *testing.T) {
@@ -1361,7 +1361,7 @@ func TestRegistryModulesDeleteByName(t *testing.T) {
 			Namespace:    registryModuleTest.Namespace,
 			Name:         registryModuleTest.Name,
 		})
-		assert.EqualError(t, err, ErrInvalidOrg.Error())
+		assert.ErrorIs(t, err, ErrInvalidOrg)
 	})
 
 	t.Run("with invalid registry name", func(t *testing.T) {
@@ -1406,7 +1406,7 @@ func TestRegistryModulesDeleteProvider(t *testing.T) {
 			Namespace:    registryModuleTest.Namespace,
 			Provider:     "",
 		})
-		assert.Equal(t, err, ErrRequiredProvider)
+		assert.ErrorIs(t, err, ErrRequiredProvider)
 	})
 
 	t.Run("with an invalid provider", func(t *testing.T) {
@@ -1417,7 +1417,7 @@ func TestRegistryModulesDeleteProvider(t *testing.T) {
 			Namespace:    registryModuleTest.Namespace,
 			Provider:     badIdentifier,
 		})
-		assert.Equal(t, err, ErrInvalidProvider)
+		assert.ErrorIs(t, err, ErrInvalidProvider)
 	})
 
 	t.Run("without a name", func(t *testing.T) {
@@ -1428,7 +1428,7 @@ func TestRegistryModulesDeleteProvider(t *testing.T) {
 			Name:         "",
 			Provider:     registryModuleTest.Provider,
 		})
-		assert.EqualError(t, err, ErrRequiredName.Error())
+		assert.ErrorIs(t, err, ErrRequiredName)
 	})
 
 	t.Run("with an invalid name", func(t *testing.T) {
@@ -1439,7 +1439,7 @@ func TestRegistryModulesDeleteProvider(t *testing.T) {
 			Namespace:    registryModuleTest.Namespace,
 			Provider:     registryModuleTest.Provider,
 		})
-		assert.EqualError(t, err, ErrInvalidName.Error())
+		assert.ErrorIs(t, err, ErrInvalidName)
 	})
 
 	t.Run("with invalid org", func(t *testing.T) {
@@ -1450,7 +1450,7 @@ func TestRegistryModulesDeleteProvider(t *testing.T) {
 			Name:         registryModuleTest.Name,
 			Provider:     registryModuleTest.Provider,
 		})
-		assert.EqualError(t, err, ErrInvalidOrg.Error())
+		assert.ErrorIs(t, err, ErrInvalidOrg)
 	})
 
 	t.Run("without registry name", func(t *testing.T) {
@@ -1461,7 +1461,7 @@ func TestRegistryModulesDeleteProvider(t *testing.T) {
 			Name:         registryModuleTest.Name,
 			Provider:     registryModuleTest.Provider,
 		})
-		assert.Equal(t, ErrInvalidRegistryName, err)
+		assert.ErrorIs(t, err, ErrInvalidRegistryName)
 	})
 
 	t.Run("with invalid registry name", func(t *testing.T) {
@@ -1531,7 +1531,7 @@ func TestRegistryModulesDeleteVersion(t *testing.T) {
 			Name:         registryModuleTest.Name,
 			Provider:     registryModuleTest.Provider,
 		}, registryModuleTest.VersionStatuses[0].Version)
-		assert.Equal(t, ErrInvalidRegistryName, err)
+		assert.ErrorIs(t, err, ErrInvalidRegistryName)
 	})
 
 	t.Run("with invalid registry name", func(t *testing.T) {
@@ -1553,7 +1553,7 @@ func TestRegistryModulesDeleteVersion(t *testing.T) {
 			Name:         "",
 			Provider:     registryModuleTest.Provider,
 		}, registryModuleTest.VersionStatuses[0].Version)
-		assert.EqualError(t, err, ErrRequiredName.Error())
+		assert.ErrorIs(t, err, ErrRequiredName)
 	})
 
 	t.Run("with an invalid name", func(t *testing.T) {
@@ -1564,7 +1564,7 @@ func TestRegistryModulesDeleteVersion(t *testing.T) {
 			Namespace:    registryModuleTest.Namespace,
 			Provider:     registryModuleTest.Provider,
 		}, registryModuleTest.VersionStatuses[0].Version)
-		assert.EqualError(t, err, ErrInvalidName.Error())
+		assert.ErrorIs(t, err, ErrInvalidName)
 	})
 
 	t.Run("without a provider", func(t *testing.T) {
@@ -1575,7 +1575,7 @@ func TestRegistryModulesDeleteVersion(t *testing.T) {
 			Namespace:    registryModuleTest.Namespace,
 			Provider:     "",
 		}, registryModuleTest.VersionStatuses[0].Version)
-		assert.Equal(t, err, ErrRequiredProvider)
+		assert.ErrorIs(t, err, ErrRequiredProvider)
 	})
 
 	t.Run("with an invalid provider", func(t *testing.T) {
@@ -1586,7 +1586,7 @@ func TestRegistryModulesDeleteVersion(t *testing.T) {
 			Namespace:    registryModuleTest.Namespace,
 			Provider:     badIdentifier,
 		}, registryModuleTest.VersionStatuses[0].Version)
-		assert.Equal(t, err, ErrInvalidProvider)
+		assert.ErrorIs(t, err, ErrInvalidProvider)
 	})
 
 	t.Run("without a version", func(t *testing.T) {
@@ -1597,7 +1597,7 @@ func TestRegistryModulesDeleteVersion(t *testing.T) {
 			Namespace:    registryModuleTest.Namespace,
 			Provider:     registryModuleTest.Provider,
 		}, "")
-		assert.Equal(t, err, ErrRequiredVersion)
+		assert.ErrorIs(t, err, ErrRequiredVersion)
 	})
 
 	t.Run("with an invalid version", func(t *testing.T) {
@@ -1608,7 +1608,7 @@ func TestRegistryModulesDeleteVersion(t *testing.T) {
 			Namespace:    registryModuleTest.Namespace,
 			Provider:     registryModuleTest.Provider,
 		}, badIdentifier)
-		assert.Equal(t, err, ErrInvalidVersion)
+		assert.ErrorIs(t, err, ErrInvalidVersion)
 	})
 
 	t.Run("without a valid organization", func(t *testing.T) {
@@ -1619,7 +1619,7 @@ func TestRegistryModulesDeleteVersion(t *testing.T) {
 			Namespace:    registryModuleTest.Namespace,
 			Provider:     registryModuleTest.Provider,
 		}, registryModuleTest.VersionStatuses[0].Version)
-		assert.EqualError(t, err, ErrInvalidOrg.Error())
+		assert.ErrorIs(t, err, ErrInvalidOrg)
 	})
 
 	t.Run("with prerelease and metadata version", func(t *testing.T) {
@@ -1685,7 +1685,7 @@ func TestRegistryModulesUpload(t *testing.T) {
 			*rmv,
 			"test-fixtures/config-version",
 		)
-		assert.EqualError(t, err, "provided RegistryModuleVersion does not contain an upload link")
+		assert.ErrorIs(t, err, ErrRegistryModuleMissingUploadLink)
 	})
 }
 

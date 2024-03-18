@@ -140,7 +140,7 @@ func TestOAuthClientsCreate(t *testing.T) {
 		}
 
 		_, err := client.OAuthClients.Create(ctx, orgTest.Name, options)
-		assert.Equal(t, err, ErrRequiredAPIURL)
+		assert.ErrorIs(t, err, ErrRequiredAPIURL)
 	})
 
 	t.Run("without a HTTP URL", func(t *testing.T) {
@@ -151,7 +151,7 @@ func TestOAuthClientsCreate(t *testing.T) {
 		}
 
 		_, err := client.OAuthClients.Create(ctx, orgTest.Name, options)
-		assert.Equal(t, err, ErrRequiredHTTPURL)
+		assert.ErrorIs(t, err, ErrRequiredHTTPURL)
 	})
 
 	t.Run("without an OAuth token", func(t *testing.T) {
@@ -162,7 +162,7 @@ func TestOAuthClientsCreate(t *testing.T) {
 		}
 
 		_, err := client.OAuthClients.Create(ctx, orgTest.Name, options)
-		assert.Equal(t, err, ErrRequiredOauthToken)
+		assert.ErrorIs(t, err, ErrRequiredOauthToken)
 	})
 
 	t.Run("without a service provider", func(t *testing.T) {
@@ -173,7 +173,7 @@ func TestOAuthClientsCreate(t *testing.T) {
 		}
 
 		_, err := client.OAuthClients.Create(ctx, orgTest.Name, options)
-		assert.Equal(t, err, ErrRequiredServiceProvider)
+		assert.ErrorIs(t, err, ErrRequiredServiceProvider)
 	})
 
 	t.Run("with projects provided", func(t *testing.T) {
@@ -375,7 +375,7 @@ func TestOAuthClientsDelete(t *testing.T) {
 			return c, err
 		})
 
-		assert.Equal(t, err, ErrResourceNotFound)
+		assert.ErrorIs(t, err, ErrResourceNotFound)
 	})
 
 	t.Run("when the OAuth client does not exist", func(t *testing.T) {
@@ -410,7 +410,7 @@ func TestOAuthClientsCreateOptionsValid(t *testing.T) {
 		}
 
 		err := options.valid()
-		assert.Equal(t, err, ErrRequiredAPIURL)
+		assert.ErrorIs(t, err, ErrRequiredAPIURL)
 	})
 
 	t.Run("without a HTTP URL", func(t *testing.T) {
@@ -421,7 +421,7 @@ func TestOAuthClientsCreateOptionsValid(t *testing.T) {
 		}
 
 		err := options.valid()
-		assert.Equal(t, err, ErrRequiredHTTPURL)
+		assert.ErrorIs(t, err, ErrRequiredHTTPURL)
 	})
 
 	t.Run("without an OAuth token", func(t *testing.T) {
@@ -432,7 +432,7 @@ func TestOAuthClientsCreateOptionsValid(t *testing.T) {
 		}
 
 		err := options.valid()
-		assert.Equal(t, err, ErrRequiredOauthToken)
+		assert.ErrorIs(t, err, ErrRequiredOauthToken)
 	})
 
 	t.Run("without a service provider", func(t *testing.T) {
@@ -443,7 +443,7 @@ func TestOAuthClientsCreateOptionsValid(t *testing.T) {
 		}
 
 		err := options.valid()
-		assert.Equal(t, err, ErrRequiredServiceProvider)
+		assert.ErrorIs(t, err, ErrRequiredServiceProvider)
 	})
 
 	t.Run("without private key and not ado_server options", func(t *testing.T) {
@@ -481,7 +481,7 @@ func TestOAuthClientsCreateOptionsValid(t *testing.T) {
 		}
 
 		err := options.valid()
-		assert.Equal(t, err, ErrUnsupportedPrivateKey)
+		assert.ErrorIs(t, err, ErrUnsupportedPrivateKey)
 	})
 
 	t.Run("with valid options including private key", func(t *testing.T) {
@@ -544,7 +544,7 @@ func TestOAuthClientsAddProjects(t *testing.T) {
 			psTest.ID,
 			OAuthClientAddProjectsOptions{},
 		)
-		assert.Equal(t, err, ErrRequiredProject)
+		assert.ErrorIs(t, err, ErrRequiredProject)
 	})
 
 	t.Run("with empty projects slice", func(t *testing.T) {
@@ -553,7 +553,7 @@ func TestOAuthClientsAddProjects(t *testing.T) {
 			psTest.ID,
 			OAuthClientAddProjectsOptions{Projects: []*Project{}},
 		)
-		assert.Equal(t, err, ErrProjectMinLimit)
+		assert.ErrorIs(t, err, ErrProjectMinLimit)
 	})
 
 	t.Run("without a valid ID", func(t *testing.T) {
@@ -564,7 +564,7 @@ func TestOAuthClientsAddProjects(t *testing.T) {
 				Projects: []*Project{pTest1, pTest2},
 			},
 		)
-		assert.Equal(t, err, ErrInvalidOauthClientID)
+		assert.ErrorIs(t, err, ErrInvalidOauthClientID)
 	})
 }
 
@@ -608,7 +608,7 @@ func TestOAuthClientsRemoveProjects(t *testing.T) {
 			psTest.ID,
 			OAuthClientRemoveProjectsOptions{},
 		)
-		assert.Equal(t, err, ErrRequiredProject)
+		assert.ErrorIs(t, err, ErrRequiredProject)
 	})
 
 	t.Run("with empty projects slice", func(t *testing.T) {
@@ -617,7 +617,7 @@ func TestOAuthClientsRemoveProjects(t *testing.T) {
 			psTest.ID,
 			OAuthClientRemoveProjectsOptions{Projects: []*Project{}},
 		)
-		assert.Equal(t, err, ErrProjectMinLimit)
+		assert.ErrorIs(t, err, ErrProjectMinLimit)
 	})
 
 	t.Run("without a valid ID", func(t *testing.T) {
@@ -628,7 +628,7 @@ func TestOAuthClientsRemoveProjects(t *testing.T) {
 				Projects: []*Project{pTest1, pTest2},
 			},
 		)
-		assert.Equal(t, err, ErrInvalidOauthClientID)
+		assert.ErrorIs(t, err, ErrInvalidOauthClientID)
 	})
 }
 

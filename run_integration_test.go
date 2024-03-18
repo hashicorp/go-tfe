@@ -373,13 +373,13 @@ func TestRunsRead_CostEstimate(t *testing.T) {
 	t.Run("when the run does not exist", func(t *testing.T) {
 		r, err := client.Runs.Read(ctx, "nonexisting")
 		assert.Nil(t, r)
-		assert.Equal(t, err, ErrResourceNotFound)
+		assert.ErrorIs(t, err, ErrResourceNotFound)
 	})
 
 	t.Run("with invalid run ID", func(t *testing.T) {
 		r, err := client.Runs.Read(ctx, badIdentifier)
 		assert.Nil(t, r)
-		assert.EqualError(t, err, ErrInvalidRunID.Error())
+		assert.ErrorIs(t, err, ErrInvalidRunID)
 	})
 }
 
@@ -431,12 +431,12 @@ func TestRunsApply(t *testing.T) {
 
 	t.Run("when the run does not exist", func(t *testing.T) {
 		err := client.Runs.Apply(ctx, "nonexisting", RunApplyOptions{})
-		assert.Equal(t, err, ErrResourceNotFound)
+		assert.ErrorIs(t, err, ErrResourceNotFound)
 	})
 
 	t.Run("with invalid run ID", func(t *testing.T) {
 		err := client.Runs.Apply(ctx, badIdentifier, RunApplyOptions{})
-		assert.EqualError(t, err, ErrInvalidRunID.Error())
+		assert.ErrorIs(t, err, ErrInvalidRunID)
 	})
 }
 
@@ -462,12 +462,12 @@ func TestRunsCancel(t *testing.T) {
 
 	t.Run("when the run does not exist", func(t *testing.T) {
 		err := client.Runs.Cancel(ctx, "nonexisting", RunCancelOptions{})
-		assert.Equal(t, err, ErrResourceNotFound)
+		assert.ErrorIs(t, err, ErrResourceNotFound)
 	})
 
 	t.Run("with invalid run ID", func(t *testing.T) {
 		err := client.Runs.Cancel(ctx, badIdentifier, RunCancelOptions{})
-		assert.EqualError(t, err, ErrInvalidRunID.Error())
+		assert.ErrorIs(t, err, ErrInvalidRunID)
 	})
 }
 
@@ -530,12 +530,12 @@ func TestRunsForceCancel(t *testing.T) {
 
 	t.Run("when the run does not exist", func(t *testing.T) {
 		err := client.Runs.ForceCancel(ctx, "nonexisting", RunForceCancelOptions{})
-		assert.Equal(t, err, ErrResourceNotFound)
+		assert.ErrorIs(t, err, ErrResourceNotFound)
 	})
 
 	t.Run("with invalid run ID", func(t *testing.T) {
 		err := client.Runs.ForceCancel(ctx, badIdentifier, RunForceCancelOptions{})
-		assert.EqualError(t, err, ErrInvalidRunID.Error())
+		assert.ErrorIs(t, err, ErrInvalidRunID)
 	})
 }
 
@@ -585,12 +585,12 @@ func TestRunsForceExecute(t *testing.T) {
 
 	t.Run("when the run does not exist", func(t *testing.T) {
 		err := client.Runs.ForceExecute(ctx, "nonexisting")
-		assert.Equal(t, err, ErrResourceNotFound)
+		assert.ErrorIs(t, err, ErrResourceNotFound)
 	})
 
 	t.Run("with invalid run ID", func(t *testing.T) {
 		err := client.Runs.ForceExecute(ctx, badIdentifier)
-		assert.EqualError(t, err, ErrInvalidRunID.Error())
+		assert.ErrorIs(t, err, ErrInvalidRunID)
 	})
 }
 
@@ -610,12 +610,12 @@ func TestRunsDiscard(t *testing.T) {
 
 	t.Run("when the run does not exist", func(t *testing.T) {
 		err := client.Runs.Discard(ctx, "nonexisting", RunDiscardOptions{})
-		assert.Equal(t, err, ErrResourceNotFound)
+		assert.ErrorIs(t, err, ErrResourceNotFound)
 	})
 
 	t.Run("with invalid run ID", func(t *testing.T) {
 		err := client.Runs.Discard(ctx, badIdentifier, RunDiscardOptions{})
-		assert.EqualError(t, err, ErrInvalidRunID.Error())
+		assert.ErrorIs(t, err, ErrInvalidRunID)
 	})
 }
 

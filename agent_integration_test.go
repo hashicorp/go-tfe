@@ -35,7 +35,7 @@ func TestAgentsRead(t *testing.T) {
 	t.Run("when the agent does not exist", func(t *testing.T) {
 		k, err := client.Agents.Read(ctx, "nonexistent")
 		assert.Nil(t, k)
-		assert.Equal(t, err, ErrResourceNotFound)
+		assert.ErrorIs(t, err, ErrResourceNotFound)
 	})
 
 	t.Run("without a valid agent ID", func(t *testing.T) {

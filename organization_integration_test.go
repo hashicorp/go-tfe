@@ -131,7 +131,7 @@ func TestOrganizationsCreate(t *testing.T) {
 			Name: String("foo"),
 		})
 		assert.Nil(t, org)
-		assert.Equal(t, err, ErrRequiredEmail)
+		assert.ErrorIs(t, err, ErrRequiredEmail)
 	})
 
 	t.Run("when no name is provided", func(t *testing.T) {
@@ -362,7 +362,7 @@ func TestOrganizationsDelete(t *testing.T) {
 
 		// Try fetching the org again - it should error.
 		_, err = client.Organizations.Read(ctx, orgTest.Name)
-		assert.Equal(t, err, ErrResourceNotFound)
+		assert.ErrorIs(t, err, ErrResourceNotFound)
 	})
 
 	t.Run("with invalid name", func(t *testing.T) {
@@ -459,7 +459,7 @@ func TestOrganizationsReadEntitlements(t *testing.T) {
 
 	t.Run("when the org does not exist", func(t *testing.T) {
 		_, err := client.Organizations.ReadEntitlements(ctx, randomString(t))
-		assert.Equal(t, ErrResourceNotFound, err)
+		assert.ErrorIs(t, ErrResourceNotFound, err)
 	})
 }
 
@@ -771,8 +771,13 @@ func TestOrganization_DataRetentionPolicy(t *testing.T) {
 		err = client.Organizations.DeleteDataRetentionPolicy(ctx, orgTest.Name)
 		require.NoError(t, err)
 
+<<<<<<< HEAD
 		dataRetentionPolicy, err = client.Organizations.ReadDataRetentionPolicyChoice(ctx, orgTest.Name)
 		assert.Nil(t, err)
+=======
+		dataRetentionPolicy, err = client.Organizations.ReadDataRetentionPolicy(ctx, orgTest.Name)
+		assert.ErrorIs(t, ErrResourceNotFound, err)
+>>>>>>> 0ec5a3e (fix tests to use assert.ErrorIs() - group 1)
 		require.Nil(t, dataRetentionPolicy)
 	})
 }

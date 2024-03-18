@@ -125,7 +125,7 @@ func TestNotificationConfigurationCreate(t *testing.T) {
 
 		nc, err := client.NotificationConfigurations.Create(ctx, wTest.ID, options)
 		assert.Nil(t, nc)
-		assert.Equal(t, err, ErrRequiredURL)
+		assert.ErrorIs(t, err, ErrRequiredURL)
 	})
 
 	t.Run("without a required value URL when destination type is slack", func(t *testing.T) {
@@ -138,7 +138,7 @@ func TestNotificationConfigurationCreate(t *testing.T) {
 
 		nc, err := client.NotificationConfigurations.Create(ctx, wTest.ID, options)
 		assert.Nil(t, nc)
-		assert.Equal(t, err, ErrRequiredURL)
+		assert.ErrorIs(t, err, ErrRequiredURL)
 	})
 
 	t.Run("without a required value URL when destination type is MS Teams", func(t *testing.T) {
@@ -151,7 +151,7 @@ func TestNotificationConfigurationCreate(t *testing.T) {
 
 		nc, err := client.NotificationConfigurations.Create(ctx, wTest.ID, options)
 		assert.Nil(t, nc)
-		assert.Equal(t, err, ErrRequiredURL)
+		assert.ErrorIs(t, err, ErrRequiredURL)
 	})
 
 	t.Run("without a valid workspace", func(t *testing.T) {
@@ -214,12 +214,12 @@ func TestNotificationConfigurationRead(t *testing.T) {
 
 	t.Run("when the notification configuration does not exist", func(t *testing.T) {
 		_, err := client.NotificationConfigurations.Read(ctx, "nonexisting")
-		assert.Equal(t, err, ErrResourceNotFound)
+		assert.ErrorIs(t, err, ErrResourceNotFound)
 	})
 
 	t.Run("when the notification configuration ID is invalid", func(t *testing.T) {
 		_, err := client.NotificationConfigurations.Read(ctx, badIdentifier)
-		assert.Equal(t, err, ErrInvalidNotificationConfigID)
+		assert.ErrorIs(t, err, ErrInvalidNotificationConfigID)
 	})
 }
 
@@ -311,12 +311,12 @@ func TestNotificationConfigurationUpdate(t *testing.T) {
 
 	t.Run("when the notification configuration does not exist", func(t *testing.T) {
 		_, err := client.NotificationConfigurations.Update(ctx, "nonexisting", NotificationConfigurationUpdateOptions{})
-		assert.Equal(t, err, ErrResourceNotFound)
+		assert.ErrorIs(t, err, ErrResourceNotFound)
 	})
 
 	t.Run("when the notification configuration ID is invalid", func(t *testing.T) {
 		_, err := client.NotificationConfigurations.Update(ctx, badIdentifier, NotificationConfigurationUpdateOptions{})
-		assert.Equal(t, err, ErrInvalidNotificationConfigID)
+		assert.ErrorIs(t, err, ErrInvalidNotificationConfigID)
 	})
 }
 
@@ -362,11 +362,11 @@ func TestNotificationConfigurationVerify(t *testing.T) {
 
 	t.Run("when the notification configuration does not exists", func(t *testing.T) {
 		_, err := client.NotificationConfigurations.Verify(ctx, "nonexisting")
-		assert.Equal(t, err, ErrResourceNotFound)
+		assert.ErrorIs(t, err, ErrResourceNotFound)
 	})
 
 	t.Run("when the notification configuration ID is invalid", func(t *testing.T) {
 		_, err := client.NotificationConfigurations.Verify(ctx, badIdentifier)
-		assert.Equal(t, err, ErrInvalidNotificationConfigID)
+		assert.ErrorIs(t, err, ErrInvalidNotificationConfigID)
 	})
 }

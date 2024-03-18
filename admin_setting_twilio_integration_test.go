@@ -48,5 +48,5 @@ func TestAdminSettings_Twilio_Verify(t *testing.T) {
 
 	err := client.Admin.Settings.Twilio.Verify(ctx, AdminTwilioSettingsVerifyOptions{})
 
-	assert.Equal(t, err, ErrRequiredTestNumber)
+	assert.ErrorIs(t, err, ErrRequiredTestNumber)
 }

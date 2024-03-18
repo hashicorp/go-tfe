@@ -92,13 +92,13 @@ func TestOAuthTokensRead(t *testing.T) {
 	t.Run("when the OAuth token does not exist", func(t *testing.T) {
 		ot, err := client.OAuthTokens.Read(ctx, "nonexisting")
 		assert.Nil(t, ot)
-		assert.Equal(t, ErrResourceNotFound, err)
+		assert.ErrorIs(t, ErrResourceNotFound, err)
 	})
 
 	t.Run("without a valid OAuth token ID", func(t *testing.T) {
 		ot, err := client.OAuthTokens.Read(ctx, badIdentifier)
 		assert.Nil(t, ot)
-		assert.Equal(t, err, ErrInvalidOauthTokenID)
+		assert.ErrorIs(t, err, ErrInvalidOauthTokenID)
 	})
 }
 
@@ -156,7 +156,7 @@ dpIe8YOINN27XaojJvVpT5uBVCcZLF+G7kaMjSwCTlDx3Q==
 	t.Run("without a valid policy ID", func(t *testing.T) {
 		ot, err := client.OAuthTokens.Update(ctx, badIdentifier, OAuthTokenUpdateOptions{})
 		assert.Nil(t, ot)
-		assert.Equal(t, err, ErrInvalidOauthTokenID)
+		assert.ErrorIs(t, err, ErrInvalidOauthTokenID)
 	})
 }
 
@@ -176,16 +176,16 @@ func TestOAuthTokensDelete(t *testing.T) {
 
 		// Try loading the OAuth token - it should fail.
 		_, err = client.OAuthTokens.Read(ctx, otTest.ID)
-		assert.Equal(t, err, ErrResourceNotFound)
+		assert.ErrorIs(t, err, ErrResourceNotFound)
 	})
 
 	t.Run("when the OAuth token does not exist", func(t *testing.T) {
 		err := client.OAuthTokens.Delete(ctx, otTest.ID)
-		assert.Equal(t, err, ErrResourceNotFound)
+		assert.ErrorIs(t, err, ErrResourceNotFound)
 	})
 
 	t.Run("when the OAuth token ID is invalid", func(t *testing.T) {
 		err := client.OAuthTokens.Delete(ctx, badIdentifier)
-		assert.Equal(t, err, ErrInvalidOauthTokenID)
+		assert.ErrorIs(t, err, ErrInvalidOauthTokenID)
 	})
 }

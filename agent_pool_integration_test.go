@@ -223,7 +223,7 @@ func TestAgentPoolsRead(t *testing.T) {
 	t.Run("when the agent pool does not exist", func(t *testing.T) {
 		k, err := client.AgentPools.Read(ctx, "nonexisting")
 		assert.Nil(t, k)
-		assert.Equal(t, err, ErrResourceNotFound)
+		assert.ErrorIs(t, err, ErrResourceNotFound)
 	})
 
 	t.Run("without a valid agent pool ID", func(t *testing.T) {
@@ -411,12 +411,12 @@ func TestAgentPoolsDelete(t *testing.T) {
 
 		// Try loading the agent pool - it should fail.
 		_, err = client.AgentPools.Read(ctx, agentPool.ID)
-		assert.Equal(t, err, ErrResourceNotFound)
+		assert.ErrorIs(t, err, ErrResourceNotFound)
 	})
 
 	t.Run("when the agent pool does not exist", func(t *testing.T) {
 		err := client.AgentPools.Delete(ctx, agentPool.ID)
-		assert.Equal(t, err, ErrResourceNotFound)
+		assert.ErrorIs(t, err, ErrResourceNotFound)
 	})
 
 	t.Run("when the agent pool ID is invalid", func(t *testing.T) {

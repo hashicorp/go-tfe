@@ -221,12 +221,12 @@ func TestRunTriggerRead(t *testing.T) {
 
 	t.Run("when the run trigger does not exist", func(t *testing.T) {
 		_, err := client.RunTriggers.Read(ctx, "nonexisting")
-		assert.Equal(t, err, ErrResourceNotFound)
+		assert.ErrorIs(t, err, ErrResourceNotFound)
 	})
 
 	t.Run("when the run trigger ID is invalid", func(t *testing.T) {
 		_, err := client.RunTriggers.Read(ctx, badIdentifier)
-		assert.Equal(t, err, ErrInvalidRunTriggerID)
+		assert.ErrorIs(t, err, ErrInvalidRunTriggerID)
 	})
 }
 
@@ -251,16 +251,16 @@ func TestRunTriggerDelete(t *testing.T) {
 		require.NoError(t, err)
 
 		_, err = client.RunTriggers.Read(ctx, rtTest.ID)
-		assert.Equal(t, err, ErrResourceNotFound)
+		assert.ErrorIs(t, err, ErrResourceNotFound)
 	})
 
 	t.Run("when the run trigger does not exist", func(t *testing.T) {
 		err := client.RunTriggers.Delete(ctx, "nonexisting")
-		assert.Equal(t, err, ErrResourceNotFound)
+		assert.ErrorIs(t, err, ErrResourceNotFound)
 	})
 
 	t.Run("when the run trigger ID is invalid", func(t *testing.T) {
 		err := client.RunTriggers.Delete(ctx, badIdentifier)
-		assert.Equal(t, err, ErrInvalidRunTriggerID)
+		assert.ErrorIs(t, err, ErrInvalidRunTriggerID)
 	})
 }

@@ -174,7 +174,7 @@ func TestWorkspacesList(t *testing.T) {
 	t.Run("without a valid organization", func(t *testing.T) {
 		wl, err := client.Workspaces.List(ctx, badIdentifier, nil)
 		assert.Nil(t, wl)
-		assert.EqualError(t, err, ErrInvalidOrg.Error())
+		assert.ErrorIs(t, err, ErrInvalidOrg)
 	})
 
 	t.Run("with organization included", func(t *testing.T) {
@@ -341,7 +341,7 @@ func TestWorkspacesCreateTableDriven(t *testing.T) {
 			},
 			assertion: func(w *Workspace, options *WorkspaceTableOptions, err error) {
 				assert.Nil(t, w)
-				assert.EqualError(t, err, ErrUnsupportedBothTagsRegexAndTriggerPatterns.Error())
+				assert.ErrorIs(t, err, ErrUnsupportedBothTagsRegexAndTriggerPatterns)
 			},
 		},
 		{
@@ -356,7 +356,7 @@ func TestWorkspacesCreateTableDriven(t *testing.T) {
 			},
 			assertion: func(w *Workspace, options *WorkspaceTableOptions, err error) {
 				assert.Nil(t, w)
-				assert.EqualError(t, err, ErrUnsupportedBothTagsRegexAndTriggerPrefixes.Error())
+				assert.ErrorIs(t, err, ErrUnsupportedBothTagsRegexAndTriggerPrefixes)
 			},
 		},
 		{
@@ -370,7 +370,7 @@ func TestWorkspacesCreateTableDriven(t *testing.T) {
 			},
 			assertion: func(w *Workspace, options *WorkspaceTableOptions, err error) {
 				assert.Nil(t, w)
-				assert.EqualError(t, err, ErrUnsupportedBothTagsRegexAndFileTriggersEnabled.Error())
+				assert.ErrorIs(t, err, ErrUnsupportedBothTagsRegexAndFileTriggersEnabled)
 			},
 		},
 		{
@@ -628,7 +628,7 @@ func TestWorkspacesCreate(t *testing.T) {
 	t.Run("when options is missing name", func(t *testing.T) {
 		w, err := client.Workspaces.Create(ctx, "foo", WorkspaceCreateOptions{})
 		assert.Nil(t, w)
-		assert.EqualError(t, err, ErrRequiredName.Error())
+		assert.ErrorIs(t, err, ErrRequiredName)
 	})
 
 	t.Run("when options has an invalid name", func(t *testing.T) {
@@ -636,7 +636,7 @@ func TestWorkspacesCreate(t *testing.T) {
 			Name: String(badIdentifier),
 		})
 		assert.Nil(t, w)
-		assert.EqualError(t, err, ErrInvalidName.Error())
+		assert.ErrorIs(t, err, ErrInvalidName)
 	})
 
 	t.Run("when options has an invalid organization", func(t *testing.T) {
@@ -644,7 +644,7 @@ func TestWorkspacesCreate(t *testing.T) {
 			Name: String(fmt.Sprintf("foo-%s", randomString(t))),
 		})
 		assert.Nil(t, w)
-		assert.EqualError(t, err, ErrInvalidOrg.Error())
+		assert.ErrorIs(t, err, ErrInvalidOrg)
 	})
 
 	t.Run("when options includes both an operations value and an enforcement mode value", func(t *testing.T) {
@@ -656,7 +656,7 @@ func TestWorkspacesCreate(t *testing.T) {
 
 		w, err := client.Workspaces.Create(ctx, orgTest.Name, options)
 		assert.Nil(t, w)
-		assert.Equal(t, err, ErrUnsupportedOperations)
+		assert.ErrorIs(t, err, ErrUnsupportedOperations)
 	})
 
 	t.Run("when an agent pool ID is specified without 'agent' execution mode", func(t *testing.T) {
@@ -667,7 +667,7 @@ func TestWorkspacesCreate(t *testing.T) {
 
 		w, err := client.Workspaces.Create(ctx, orgTest.Name, options)
 		assert.Nil(t, w)
-		assert.Equal(t, err, ErrRequiredAgentMode)
+		assert.ErrorIs(t, err, ErrRequiredAgentMode)
 	})
 
 	t.Run("when 'agent' execution mode is specified without an an agent pool ID", func(t *testing.T) {
@@ -678,7 +678,7 @@ func TestWorkspacesCreate(t *testing.T) {
 
 		w, err := client.Workspaces.Create(ctx, orgTest.Name, options)
 		assert.Nil(t, w)
-		assert.Equal(t, err, ErrRequiredAgentPoolID)
+		assert.ErrorIs(t, err, ErrRequiredAgentPoolID)
 	})
 
 	t.Run("when no execution mode is specified, in an organization with local as default execution mode", func(t *testing.T) {
@@ -756,7 +756,7 @@ func TestWorkspacesCreate(t *testing.T) {
 		w, err := client.Workspaces.Create(ctx, orgTest.Name, options)
 
 		assert.Nil(t, w)
-		assert.EqualError(t, err, ErrUnsupportedBothTriggerPatternsAndPrefixes.Error())
+		assert.ErrorIs(t, err, ErrUnsupportedBothTriggerPatternsAndPrefixes)
 	})
 
 	t.Run("when options include trigger-patterns populated and empty trigger-paths workspace is created", func(t *testing.T) {
@@ -873,13 +873,13 @@ func TestWorkspacesRead(t *testing.T) {
 	t.Run("without a valid organization", func(t *testing.T) {
 		w, err := client.Workspaces.Read(ctx, badIdentifier, wTest.Name)
 		assert.Nil(t, w)
-		assert.EqualError(t, err, ErrInvalidOrg.Error())
+		assert.ErrorIs(t, err, ErrInvalidOrg)
 	})
 
 	t.Run("without a valid workspace", func(t *testing.T) {
 		w, err := client.Workspaces.Read(ctx, orgTest.Name, badIdentifier)
 		assert.Nil(t, w)
-		assert.EqualError(t, err, ErrInvalidWorkspaceValue.Error())
+		assert.ErrorIs(t, err, ErrInvalidWorkspaceValue)
 	})
 
 	t.Run("when workspace is inheriting the default execution mode", func(t *testing.T) {
@@ -1030,7 +1030,7 @@ func TestWorkspacesReadReadme(t *testing.T) {
 	t.Run("without a valid workspace ID", func(t *testing.T) {
 		w, err := client.Workspaces.Readme(ctx, badIdentifier)
 		assert.Nil(t, w)
-		assert.EqualError(t, err, ErrInvalidWorkspaceID.Error())
+		assert.ErrorIs(t, err, ErrInvalidWorkspaceID)
 	})
 }
 
@@ -1064,7 +1064,7 @@ func TestWorkspacesReadByID(t *testing.T) {
 	t.Run("without a valid workspace ID", func(t *testing.T) {
 		w, err := client.Workspaces.ReadByID(ctx, badIdentifier)
 		assert.Nil(t, w)
-		assert.EqualError(t, err, ErrInvalidWorkspaceID.Error())
+		assert.ErrorIs(t, err, ErrInvalidWorkspaceID)
 	})
 }
 
@@ -1203,7 +1203,7 @@ func TestWorkspacesUpdate(t *testing.T) {
 
 		wAfter, err := client.Workspaces.Update(ctx, orgTest.Name, wTest.Name, options)
 		assert.Nil(t, wAfter)
-		assert.Equal(t, err, ErrUnsupportedOperations)
+		assert.ErrorIs(t, err, ErrUnsupportedOperations)
 	})
 
 	t.Run("when 'agent' execution mode is specified without an agent pool ID", func(t *testing.T) {
@@ -1213,7 +1213,7 @@ func TestWorkspacesUpdate(t *testing.T) {
 
 		wAfter, err := client.Workspaces.Update(ctx, orgTest.Name, wTest.Name, options)
 		assert.Nil(t, wAfter)
-		assert.Equal(t, err, ErrRequiredAgentPoolID)
+		assert.ErrorIs(t, err, ErrRequiredAgentPoolID)
 	})
 
 	t.Run("when an error is returned from the api", func(t *testing.T) {
@@ -1227,13 +1227,13 @@ func TestWorkspacesUpdate(t *testing.T) {
 	t.Run("when options has an invalid name", func(t *testing.T) {
 		w, err := client.Workspaces.Update(ctx, orgTest.Name, badIdentifier, WorkspaceUpdateOptions{})
 		assert.Nil(t, w)
-		assert.EqualError(t, err, ErrInvalidWorkspaceValue.Error())
+		assert.ErrorIs(t, err, ErrInvalidWorkspaceValue)
 	})
 
 	t.Run("when options has an invalid organization", func(t *testing.T) {
 		w, err := client.Workspaces.Update(ctx, badIdentifier, wTest.Name, WorkspaceUpdateOptions{})
 		assert.Nil(t, w)
-		assert.EqualError(t, err, ErrInvalidOrg.Error())
+		assert.ErrorIs(t, err, ErrInvalidOrg)
 	})
 
 	t.Run("when options include trigger-patterns (behind a feature flag)", func(t *testing.T) {
@@ -1282,7 +1282,7 @@ func TestWorkspacesUpdate(t *testing.T) {
 		w, err := client.Workspaces.Update(ctx, orgTest.Name, wTest.Name, options)
 
 		assert.Nil(t, w)
-		assert.EqualError(t, err, ErrUnsupportedBothTriggerPatternsAndPrefixes.Error())
+		assert.ErrorIs(t, err, ErrUnsupportedBothTriggerPatternsAndPrefixes)
 	})
 
 	t.Run("when options include trigger-patterns populated and empty trigger-paths workspace is updated", func(t *testing.T) {
@@ -1394,7 +1394,7 @@ func TestWorkspacesUpdateTableDriven(t *testing.T) {
 			},
 			assertion: func(w *Workspace, options *WorkspaceTableOptions, err error) {
 				assert.Nil(t, w)
-				assert.EqualError(t, err, ErrUnsupportedBothTagsRegexAndFileTriggersEnabled.Error())
+				assert.ErrorIs(t, err, ErrUnsupportedBothTagsRegexAndFileTriggersEnabled)
 			},
 		},
 		{
@@ -1408,7 +1408,7 @@ func TestWorkspacesUpdateTableDriven(t *testing.T) {
 			},
 			assertion: func(w *Workspace, options *WorkspaceTableOptions, err error) {
 				assert.Nil(t, w)
-				assert.EqualError(t, err, ErrUnsupportedBothTagsRegexAndFileTriggersEnabled.Error())
+				assert.ErrorIs(t, err, ErrUnsupportedBothTagsRegexAndFileTriggersEnabled)
 			},
 		},
 		{
@@ -1423,7 +1423,7 @@ func TestWorkspacesUpdateTableDriven(t *testing.T) {
 			},
 			assertion: func(w *Workspace, options *WorkspaceTableOptions, err error) {
 				assert.Nil(t, w)
-				assert.EqualError(t, err, ErrUnsupportedBothTagsRegexAndTriggerPrefixes.Error())
+				assert.ErrorIs(t, err, ErrUnsupportedBothTagsRegexAndTriggerPrefixes)
 			},
 		},
 		{
@@ -1438,7 +1438,7 @@ func TestWorkspacesUpdateTableDriven(t *testing.T) {
 			},
 			assertion: func(w *Workspace, options *WorkspaceTableOptions, err error) {
 				assert.Nil(t, w)
-				assert.EqualError(t, err, ErrUnsupportedBothTagsRegexAndTriggerPatterns.Error())
+				assert.ErrorIs(t, err, ErrUnsupportedBothTagsRegexAndTriggerPatterns)
 			},
 		},
 	}
@@ -1613,7 +1613,7 @@ func TestWorkspacesUpdateByID(t *testing.T) {
 	t.Run("without a valid workspace ID", func(t *testing.T) {
 		w, err := client.Workspaces.UpdateByID(ctx, badIdentifier, WorkspaceUpdateOptions{})
 		assert.Nil(t, w)
-		assert.EqualError(t, err, ErrInvalidWorkspaceID.Error())
+		assert.ErrorIs(t, err, ErrInvalidWorkspaceID)
 	})
 }
 
@@ -1681,17 +1681,17 @@ func TestWorkspacesDelete(t *testing.T) {
 
 		// Try loading the workspace - it should fail.
 		_, err = client.Workspaces.Read(ctx, orgTest.Name, wTest.Name)
-		assert.Equal(t, ErrResourceNotFound, err)
+		assert.ErrorIs(t, err, ErrResourceNotFound)
 	})
 
 	t.Run("when organization is invalid", func(t *testing.T) {
 		err := client.Workspaces.Delete(ctx, badIdentifier, wTest.Name)
-		assert.EqualError(t, err, ErrInvalidOrg.Error())
+		assert.ErrorIs(t, err, ErrInvalidOrg)
 	})
 
 	t.Run("when workspace is invalid", func(t *testing.T) {
 		err := client.Workspaces.Delete(ctx, orgTest.Name, badIdentifier)
-		assert.EqualError(t, err, ErrInvalidWorkspaceValue.Error())
+		assert.ErrorIs(t, err, ErrInvalidWorkspaceValue)
 	})
 }
 
@@ -1711,12 +1711,12 @@ func TestWorkspacesDeleteByID(t *testing.T) {
 
 		// Try loading the workspace - it should fail.
 		_, err = client.Workspaces.ReadByID(ctx, wTest.ID)
-		assert.Equal(t, ErrResourceNotFound, err)
+		assert.ErrorIs(t, err, ErrResourceNotFound)
 	})
 
 	t.Run("without a valid workspace ID", func(t *testing.T) {
 		err := client.Workspaces.DeleteByID(ctx, badIdentifier)
-		assert.EqualError(t, err, ErrInvalidWorkspaceID.Error())
+		assert.ErrorIs(t, err, ErrInvalidWorkspaceID)
 	})
 }
 
@@ -1756,17 +1756,17 @@ func TestWorkspacesSafeDelete(t *testing.T) {
 
 		// Try loading the workspace - it should fail.
 		_, err = client.Workspaces.Read(ctx, orgTest.Name, wTest.Name)
-		assert.Equal(t, ErrResourceNotFound, err)
+		assert.ErrorIs(t, err, ErrResourceNotFound)
 	})
 
 	t.Run("when organization is invalid", func(t *testing.T) {
 		err := client.Workspaces.SafeDelete(ctx, badIdentifier, wTest.Name)
-		assert.EqualError(t, err, ErrInvalidOrg.Error())
+		assert.ErrorIs(t, err, ErrInvalidOrg)
 	})
 
 	t.Run("when workspace is invalid", func(t *testing.T) {
 		err := client.Workspaces.SafeDelete(ctx, orgTest.Name, badIdentifier)
-		assert.EqualError(t, err, ErrInvalidWorkspaceValue.Error())
+		assert.ErrorIs(t, err, ErrInvalidWorkspaceValue)
 	})
 
 	t.Run("when workspace is locked", func(t *testing.T) {
@@ -1820,12 +1820,12 @@ func TestWorkspacesSafeDeleteByID(t *testing.T) {
 
 		// Try loading the workspace - it should fail.
 		_, err = client.Workspaces.ReadByID(ctx, wTest.ID)
-		assert.Equal(t, ErrResourceNotFound, err)
+		assert.ErrorIs(t, err, ErrResourceNotFound)
 	})
 
 	t.Run("without a valid workspace ID", func(t *testing.T) {
 		err := client.Workspaces.SafeDeleteByID(ctx, badIdentifier)
-		assert.EqualError(t, err, ErrInvalidWorkspaceID.Error())
+		assert.ErrorIs(t, err, ErrInvalidWorkspaceID)
 	})
 
 	t.Run("when workspace is locked", func(t *testing.T) {
@@ -1921,13 +1921,13 @@ func TestWorkspacesLock(t *testing.T) {
 
 	t.Run("when workspace is already locked", func(t *testing.T) {
 		_, err := client.Workspaces.Lock(ctx, wTest.ID, WorkspaceLockOptions{})
-		assert.Equal(t, ErrWorkspaceLocked, err)
+		assert.ErrorIs(t, err, ErrWorkspaceLocked)
 	})
 
 	t.Run("without a valid workspace ID", func(t *testing.T) {
 		w, err := client.Workspaces.Lock(ctx, badIdentifier, WorkspaceLockOptions{})
 		assert.Nil(t, w)
-		assert.EqualError(t, err, ErrInvalidWorkspaceID.Error())
+		assert.ErrorIs(t, err, ErrInvalidWorkspaceID)
 	})
 }
 
@@ -1956,7 +1956,7 @@ func TestWorkspacesUnlock(t *testing.T) {
 
 	t.Run("when workspace is already unlocked", func(t *testing.T) {
 		_, err := client.Workspaces.Unlock(ctx, wTest.ID)
-		assert.Equal(t, ErrWorkspaceNotLocked, err)
+		assert.ErrorIs(t, err, ErrWorkspaceNotLocked)
 	})
 
 	t.Run("when a workspace is locked by a run", func(t *testing.T) {
@@ -1970,13 +1970,13 @@ func TestWorkspacesUnlock(t *testing.T) {
 		waitForRunLock(t, client, wTest2.ID)
 
 		_, err = client.Workspaces.Unlock(ctx, wTest2.ID)
-		assert.Equal(t, ErrWorkspaceLockedByRun, err)
+		assert.ErrorIs(t, err, ErrWorkspaceLockedByRun)
 	})
 
 	t.Run("without a valid workspace ID", func(t *testing.T) {
 		w, err := client.Workspaces.Unlock(ctx, badIdentifier)
 		assert.Nil(t, w)
-		assert.EqualError(t, err, ErrInvalidWorkspaceID.Error())
+		assert.ErrorIs(t, err, ErrInvalidWorkspaceID)
 	})
 }
 
@@ -2005,13 +2005,13 @@ func TestWorkspacesForceUnlock(t *testing.T) {
 
 	t.Run("when workspace is already unlocked", func(t *testing.T) {
 		_, err := client.Workspaces.ForceUnlock(ctx, wTest.ID)
-		assert.Equal(t, ErrWorkspaceNotLocked, err)
+		assert.ErrorIs(t, err, ErrWorkspaceNotLocked)
 	})
 
 	t.Run("without a valid workspace ID", func(t *testing.T) {
 		w, err := client.Workspaces.ForceUnlock(ctx, badIdentifier)
 		assert.Nil(t, w)
-		assert.EqualError(t, err, ErrInvalidWorkspaceID.Error())
+		assert.ErrorIs(t, err, ErrInvalidWorkspaceID)
 	})
 }
 
@@ -2040,7 +2040,7 @@ func TestWorkspacesAssignSSHKey(t *testing.T) {
 	t.Run("without an SSH key ID", func(t *testing.T) {
 		w, err := client.Workspaces.AssignSSHKey(ctx, wTest.ID, WorkspaceAssignSSHKeyOptions{})
 		assert.Nil(t, w)
-		assert.Equal(t, err, ErrRequiredSHHKeyID)
+		assert.ErrorIs(t, err, ErrRequiredSHHKeyID)
 	})
 
 	t.Run("without a valid SSH key ID", func(t *testing.T) {
@@ -2048,7 +2048,7 @@ func TestWorkspacesAssignSSHKey(t *testing.T) {
 			SSHKeyID: String(badIdentifier),
 		})
 		assert.Nil(t, w)
-		assert.Equal(t, err, ErrInvalidSHHKeyID)
+		assert.ErrorIs(t, err, ErrInvalidSHHKeyID)
 	})
 
 	t.Run("without a valid workspace ID", func(t *testing.T) {
@@ -2056,7 +2056,7 @@ func TestWorkspacesAssignSSHKey(t *testing.T) {
 			SSHKeyID: String(sshKeyTest.ID),
 		})
 		assert.Nil(t, w)
-		assert.EqualError(t, err, ErrInvalidWorkspaceID.Error())
+		assert.ErrorIs(t, err, ErrInvalidWorkspaceID)
 	})
 }
 
@@ -2092,7 +2092,7 @@ func TestWorkspacesUnassignSSHKey(t *testing.T) {
 	t.Run("without a valid workspace ID", func(t *testing.T) {
 		w, err := client.Workspaces.UnassignSSHKey(ctx, badIdentifier)
 		assert.Nil(t, w)
-		assert.EqualError(t, err, ErrInvalidWorkspaceID.Error())
+		assert.ErrorIs(t, err, ErrInvalidWorkspaceID)
 	})
 }
 
@@ -2137,19 +2137,19 @@ func TestWorkspaces_AddRemoteStateConsumers(t *testing.T) {
 	t.Run("with invalid options", func(t *testing.T) {
 		err := client.Workspaces.AddRemoteStateConsumers(ctx, wTest.ID, WorkspaceAddRemoteStateConsumersOptions{})
 		require.Error(t, err)
-		assert.EqualError(t, err, ErrWorkspacesRequired.Error())
+		assert.ErrorIs(t, err, ErrWorkspacesRequired)
 
 		err = client.Workspaces.AddRemoteStateConsumers(ctx, wTest.ID, WorkspaceAddRemoteStateConsumersOptions{
 			Workspaces: []*Workspace{},
 		})
 		require.Error(t, err)
-		assert.EqualError(t, err, ErrWorkspaceMinLimit.Error())
+		assert.ErrorIs(t, err, ErrWorkspaceMinLimit)
 	})
 
 	t.Run("without a valid workspace ID", func(t *testing.T) {
 		err := client.Workspaces.AddRemoteStateConsumers(ctx, badIdentifier, WorkspaceAddRemoteStateConsumersOptions{})
 		require.Error(t, err)
-		assert.EqualError(t, err, ErrInvalidWorkspaceID.Error())
+		assert.ErrorIs(t, err, ErrInvalidWorkspaceID)
 	})
 }
 
@@ -2213,19 +2213,19 @@ func TestWorkspaces_RemoveRemoteStateConsumers(t *testing.T) {
 	t.Run("with invalid options", func(t *testing.T) {
 		err := client.Workspaces.RemoveRemoteStateConsumers(ctx, wTest.ID, WorkspaceRemoveRemoteStateConsumersOptions{})
 		require.Error(t, err)
-		assert.EqualError(t, err, ErrWorkspacesRequired.Error())
+		assert.ErrorIs(t, err, ErrWorkspacesRequired)
 
 		err = client.Workspaces.RemoveRemoteStateConsumers(ctx, wTest.ID, WorkspaceRemoveRemoteStateConsumersOptions{
 			Workspaces: []*Workspace{},
 		})
 		require.Error(t, err)
-		assert.EqualError(t, err, ErrWorkspaceMinLimit.Error())
+		assert.ErrorIs(t, err, ErrWorkspaceMinLimit)
 	})
 
 	t.Run("without a valid workspace ID", func(t *testing.T) {
 		err := client.Workspaces.RemoveRemoteStateConsumers(ctx, badIdentifier, WorkspaceRemoveRemoteStateConsumersOptions{})
 		require.Error(t, err)
-		assert.EqualError(t, err, ErrInvalidWorkspaceID.Error())
+		assert.ErrorIs(t, err, ErrInvalidWorkspaceID)
 	})
 }
 
@@ -2276,19 +2276,19 @@ func TestWorkspaces_UpdateRemoteStateConsumers(t *testing.T) {
 	t.Run("with invalid options", func(t *testing.T) {
 		err := client.Workspaces.UpdateRemoteStateConsumers(ctx, wTest.ID, WorkspaceUpdateRemoteStateConsumersOptions{})
 		require.Error(t, err)
-		assert.EqualError(t, err, ErrWorkspacesRequired.Error())
+		assert.ErrorIs(t, err, ErrWorkspacesRequired)
 
 		err = client.Workspaces.UpdateRemoteStateConsumers(ctx, wTest.ID, WorkspaceUpdateRemoteStateConsumersOptions{
 			Workspaces: []*Workspace{},
 		})
 		require.Error(t, err)
-		assert.EqualError(t, err, ErrWorkspaceMinLimit.Error())
+		assert.ErrorIs(t, err, ErrWorkspaceMinLimit)
 	})
 
 	t.Run("without a valid workspace ID", func(t *testing.T) {
 		err := client.Workspaces.UpdateRemoteStateConsumers(ctx, badIdentifier, WorkspaceUpdateRemoteStateConsumersOptions{})
 		require.Error(t, err)
-		assert.EqualError(t, err, ErrInvalidWorkspaceID.Error())
+		assert.ErrorIs(t, err, ErrInvalidWorkspaceID)
 	})
 }
 
@@ -2394,13 +2394,13 @@ func TestWorkspaces_AddTags(t *testing.T) {
 			Tags: []*Tag{},
 		})
 		require.Error(t, err)
-		assert.EqualError(t, err, ErrMissingTagIdentifier.Error())
+		assert.ErrorIs(t, err, ErrMissingTagIdentifier)
 	})
 
 	t.Run("without a valid workspace ID", func(t *testing.T) {
 		err := client.Workspaces.AddTags(ctx, badIdentifier, WorkspaceAddTagsOptions{})
 		require.Error(t, err)
-		assert.EqualError(t, err, ErrInvalidWorkspaceID.Error())
+		assert.ErrorIs(t, err, ErrInvalidWorkspaceID)
 	})
 }
 
@@ -2471,13 +2471,13 @@ func TestWorkspaces_RemoveTags(t *testing.T) {
 			Tags: []*Tag{},
 		})
 		require.Error(t, err)
-		assert.EqualError(t, err, ErrMissingTagIdentifier.Error())
+		assert.Error(t, err, ErrMissingTagIdentifier)
 	})
 
 	t.Run("without a valid workspace ID", func(t *testing.T) {
 		err := client.Workspaces.RemoveTags(ctx, badIdentifier, WorkspaceRemoveTagsOptions{})
 		require.Error(t, err)
-		assert.EqualError(t, err, ErrInvalidWorkspaceID.Error())
+		assert.Error(t, err, ErrInvalidWorkspaceID)
 	})
 }
 
@@ -2635,8 +2635,13 @@ func TestWorkspace_DataRetentionPolicy(t *testing.T) {
 	wTest, wTestCleanup := createWorkspace(t, client, nil)
 	defer wTestCleanup()
 
+<<<<<<< HEAD
 	dataRetentionPolicy, err := client.Workspaces.ReadDataRetentionPolicyChoice(ctx, wTest.ID)
 	assert.Nil(t, err)
+=======
+	dataRetentionPolicy, err := client.Workspaces.ReadDataRetentionPolicy(ctx, wTest.ID)
+	assert.ErrorIs(t, err, ErrResourceNotFound)
+>>>>>>> 0ec5a3e (fix tests to use assert.ErrorIs() - group 1)
 	require.Nil(t, dataRetentionPolicy)
 
 	workspace, err := client.Workspaces.ReadByID(ctx, wTest.ID)

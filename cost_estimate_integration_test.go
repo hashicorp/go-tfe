@@ -48,7 +48,7 @@ func TestCostEstimatesRead(t *testing.T) {
 	t.Run("when the costEstimate does not exist", func(t *testing.T) {
 		ce, err := client.CostEstimates.Read(ctx, "nonexisting")
 		assert.Nil(t, ce)
-		assert.Equal(t, ErrResourceNotFound, err)
+		assert.ErrorIs(t, ErrResourceNotFound, err)
 	})
 
 	t.Run("with invalid costEstimate ID", func(t *testing.T) {

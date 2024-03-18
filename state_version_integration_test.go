@@ -43,7 +43,7 @@ func TestStateVersionsList(t *testing.T) {
 	t.Run("without StateVersionListOptions", func(t *testing.T) {
 		svl, err := client.StateVersions.List(ctx, nil)
 		assert.Nil(t, svl)
-		assert.Equal(t, err, ErrRequiredStateVerListOps)
+		assert.ErrorIs(t, err, ErrRequiredStateVerListOps)
 	})
 
 	t.Run("without list options", func(t *testing.T) {
@@ -90,7 +90,7 @@ func TestStateVersionsList(t *testing.T) {
 
 		svl, err := client.StateVersions.List(ctx, options)
 		assert.Nil(t, svl)
-		assert.Equal(t, err, ErrRequiredOrg)
+		assert.ErrorIs(t, err, ErrRequiredOrg)
 	})
 
 	t.Run("without a workspace", func(t *testing.T) {
@@ -100,7 +100,7 @@ func TestStateVersionsList(t *testing.T) {
 
 		svl, err := client.StateVersions.List(ctx, options)
 		assert.Nil(t, svl)
-		assert.Equal(t, err, ErrRequiredWorkspace)
+		assert.ErrorIs(t, err, ErrRequiredWorkspace)
 	})
 }
 
@@ -389,7 +389,7 @@ func TestStateVersionsCreate(t *testing.T) {
 			State:  String(base64.StdEncoding.EncodeToString(state)),
 		})
 		assert.Nil(t, sv)
-		assert.Equal(t, err, ErrRequiredM5)
+		assert.ErrorIs(t, err, ErrRequiredM5)
 	})
 
 	t.Run("without serial", func(t *testing.T) {
@@ -398,13 +398,13 @@ func TestStateVersionsCreate(t *testing.T) {
 			State: String(base64.StdEncoding.EncodeToString(state)),
 		})
 		assert.Nil(t, sv)
-		assert.Equal(t, err, ErrRequiredSerial)
+		assert.ErrorIs(t, err, ErrRequiredSerial)
 	})
 
 	t.Run("with invalid workspace id", func(t *testing.T) {
 		sv, err := client.StateVersions.Create(ctx, badIdentifier, StateVersionCreateOptions{})
 		assert.Nil(t, sv)
-		assert.EqualError(t, err, ErrInvalidWorkspaceID.Error())
+		assert.ErrorIs(t, err, ErrInvalidWorkspaceID)
 	})
 }
 
@@ -452,13 +452,13 @@ func TestStateVersionsRead(t *testing.T) {
 	t.Run("when the state version does not exist", func(t *testing.T) {
 		sv, err := client.StateVersions.Read(ctx, "nonexisting")
 		assert.Nil(t, sv)
-		assert.Equal(t, ErrResourceNotFound, err)
+		assert.ErrorIs(t, err, ErrResourceNotFound)
 	})
 
 	t.Run("with invalid state version id", func(t *testing.T) {
 		sv, err := client.StateVersions.Read(ctx, badIdentifier)
 		assert.Nil(t, sv)
-		assert.Equal(t, err, ErrInvalidStateVerID)
+		assert.ErrorIs(t, err, ErrInvalidStateVerID)
 	})
 }
 
@@ -519,13 +519,13 @@ func TestStateVersionsCurrent(t *testing.T) {
 	t.Run("when a state version does not exist", func(t *testing.T) {
 		sv, err := client.StateVersions.ReadCurrent(ctx, wTest2.ID)
 		assert.Nil(t, sv)
-		assert.Equal(t, ErrResourceNotFound, err)
+		assert.ErrorIs(t, err, ErrResourceNotFound)
 	})
 
 	t.Run("with invalid workspace id", func(t *testing.T) {
 		sv, err := client.StateVersions.ReadCurrent(ctx, badIdentifier)
 		assert.Nil(t, sv)
-		assert.EqualError(t, err, ErrInvalidWorkspaceID.Error())
+		assert.ErrorIs(t, err, ErrInvalidWorkspaceID)
 	})
 }
 
@@ -573,7 +573,7 @@ func TestStateVersionsDownload(t *testing.T) {
 	t.Run("with an invalid url", func(t *testing.T) {
 		state, err := client.StateVersions.Download(ctx, badIdentifier)
 		assert.Nil(t, state)
-		assert.Equal(t, ErrResourceNotFound, err)
+		assert.ErrorIs(t, err, ErrResourceNotFound)
 	})
 }
 
@@ -655,7 +655,7 @@ func TestStateVersions_ManageBackingData(t *testing.T) {
 		require.NoError(t, err)
 
 		_, err = client.StateVersions.Download(ctx, nonCurrentStateVersion.DownloadURL)
-		assert.Equal(t, ErrResourceNotFound, err)
+		assert.ErrorIs(t, err, ErrResourceNotFound)
 	})
 
 	t.Run("restore backing data", func(t *testing.T) {
@@ -677,6 +677,6 @@ func TestStateVersions_ManageBackingData(t *testing.T) {
 		require.ErrorContainsf(t, err, "transition not allowed", "Restore backing data should fail")
 
 		_, err = client.StateVersions.Download(ctx, nonCurrentStateVersion.DownloadURL)
-		assert.Equal(t, ErrResourceNotFound, err)
+		assert.ErrorIs(t, err, ErrResourceNotFound)
 	})
 }

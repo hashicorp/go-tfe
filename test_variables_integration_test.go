@@ -119,13 +119,13 @@ func TestTestVariablesRead(t *testing.T) {
 	t.Run("when the variable does not exist", func(t *testing.T) {
 		v, err := client.TestVariables.Read(ctx, id, "nonexisting")
 		assert.Nil(t, v)
-		assert.Equal(t, ErrResourceNotFound, err)
+		assert.ErrorIs(t, err, ErrResourceNotFound)
 	})
 
 	t.Run("without a valid module ID", func(t *testing.T) {
 		v, err := client.TestVariables.Read(ctx, RegistryModuleID{}, tv.ID)
 		assert.Nil(t, v)
-		assert.EqualError(t, err, ErrInvalidOrg.Error())
+		assert.ErrorIs(t, err, ErrInvalidOrg)
 	})
 }
 
@@ -239,7 +239,7 @@ func TestTestVariablesCreate(t *testing.T) {
 		}
 
 		_, err := client.TestVariables.Create(ctx, id, options)
-		assert.Equal(t, err, ErrRequiredKey)
+		assert.ErrorIs(t, err, ErrRequiredKey)
 	})
 
 	t.Run("when options has an empty key", func(t *testing.T) {
@@ -250,7 +250,7 @@ func TestTestVariablesCreate(t *testing.T) {
 		}
 
 		_, err := client.TestVariables.Create(ctx, id, options)
-		assert.Equal(t, err, ErrRequiredKey)
+		assert.ErrorIs(t, err, ErrRequiredKey)
 	})
 
 	t.Run("when options is missing category", func(t *testing.T) {
@@ -260,7 +260,7 @@ func TestTestVariablesCreate(t *testing.T) {
 		}
 
 		_, err := client.TestVariables.Create(ctx, id, options)
-		assert.Equal(t, err, ErrRequiredCategory)
+		assert.ErrorIs(t, err, ErrRequiredCategory)
 	})
 }
 
@@ -345,7 +345,7 @@ func TestTestVariablesUpdate(t *testing.T) {
 
 	t.Run("with invalid variable ID", func(t *testing.T) {
 		_, err := client.TestVariables.Update(ctx, id, badIdentifier, VariableUpdateOptions{})
-		assert.Equal(t, err, ErrInvalidVariableID)
+		assert.ErrorIs(t, err, ErrInvalidVariableID)
 	})
 }
 
@@ -376,11 +376,11 @@ func TestTestVariablesDelete(t *testing.T) {
 
 	t.Run("with non existing variable ID", func(t *testing.T) {
 		err := client.TestVariables.Delete(ctx, id, "nonexisting")
-		assert.Equal(t, err, ErrResourceNotFound)
+		assert.ErrorIs(t, err, ErrResourceNotFound)
 	})
 
 	t.Run("with invalid variable ID", func(t *testing.T) {
 		err := client.TestVariables.Delete(ctx, id, badIdentifier)
-		assert.Equal(t, err, ErrInvalidVariableID)
+		assert.ErrorIs(t, err, ErrInvalidVariableID)
 	})
 }

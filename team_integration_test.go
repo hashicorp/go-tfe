@@ -75,14 +75,14 @@ func TestTeamsList(t *testing.T) {
 			tl, err = client.Teams.List(ctx, orgTest.Name, &TeamListOptions{
 				Names: []string{tmTest2.Name, ""},
 			})
-			assert.Equal(t, err, ErrEmptyTeamName)
+			assert.ErrorIs(t, err, ErrEmptyTeamName)
 		})
 	})
 
 	t.Run("without a valid organization", func(t *testing.T) {
 		tl, err := client.Teams.List(ctx, badIdentifier, nil)
 		assert.Nil(t, tl)
-		assert.EqualError(t, err, ErrInvalidOrg.Error())
+		assert.ErrorIs(t, err, ErrInvalidOrg)
 	})
 }
 
@@ -131,7 +131,7 @@ func TestTeamsCreate(t *testing.T) {
 	t.Run("when options is missing name", func(t *testing.T) {
 		tm, err := client.Teams.Create(ctx, "foo", TeamCreateOptions{})
 		assert.Nil(t, tm)
-		assert.EqualError(t, err, ErrRequiredName.Error())
+		assert.ErrorIs(t, err, ErrRequiredName)
 	})
 
 	t.Run("when options has an invalid organization", func(t *testing.T) {
@@ -139,7 +139,7 @@ func TestTeamsCreate(t *testing.T) {
 			Name: String("foo"),
 		})
 		assert.Nil(t, tm)
-		assert.EqualError(t, err, ErrInvalidOrg.Error())
+		assert.ErrorIs(t, err, ErrInvalidOrg)
 	})
 }
 
@@ -193,13 +193,13 @@ func TestTeamsRead(t *testing.T) {
 	t.Run("when the team does not exist", func(t *testing.T) {
 		tm, err := client.Teams.Read(ctx, "nonexisting")
 		assert.Nil(t, tm)
-		assert.Equal(t, err, ErrResourceNotFound)
+		assert.ErrorIs(t, err, ErrResourceNotFound)
 	})
 
 	t.Run("without a valid team ID", func(t *testing.T) {
 		tm, err := client.Teams.Read(ctx, badIdentifier)
 		assert.Nil(t, tm)
-		assert.Equal(t, err, ErrInvalidTeamID)
+		assert.ErrorIs(t, err, ErrInvalidTeamID)
 	})
 }
 
@@ -269,13 +269,13 @@ func TestTeamsUpdate(t *testing.T) {
 			Name: String("foo bar"),
 		})
 		assert.Nil(t, tm)
-		assert.Equal(t, err, ErrResourceNotFound)
+		assert.ErrorIs(t, err, ErrResourceNotFound)
 	})
 
 	t.Run("without a valid team ID", func(t *testing.T) {
 		tm, err := client.Teams.Update(ctx, badIdentifier, TeamUpdateOptions{})
 		assert.Nil(t, tm)
-		assert.Equal(t, err, ErrInvalidTeamID)
+		assert.ErrorIs(t, err, ErrInvalidTeamID)
 	})
 }
 
@@ -294,12 +294,12 @@ func TestTeamsDelete(t *testing.T) {
 
 		// Try loading the workspace - it should fail.
 		_, err = client.Teams.Read(ctx, tmTest.ID)
-		assert.Equal(t, err, ErrResourceNotFound)
+		assert.ErrorIs(t, err, ErrResourceNotFound)
 	})
 
 	t.Run("without valid team ID", func(t *testing.T) {
 		err := client.Teams.Delete(ctx, badIdentifier)
-		assert.Equal(t, err, ErrInvalidTeamID)
+		assert.ErrorIs(t, err, ErrInvalidTeamID)
 	})
 }
 

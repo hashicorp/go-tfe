@@ -183,7 +183,7 @@ func TestConfigurationVersionsCreateForRegistryModule(t *testing.T) {
 			RegistryModuleID{},
 		)
 		assert.Nil(t, cv)
-		assert.Equal(t, ErrRequiredName, err)
+		assert.ErrorIs(t, ErrRequiredName, err)
 	})
 }
 
@@ -209,7 +209,7 @@ func TestConfigurationVersionsRead(t *testing.T) {
 	t.Run("when the configuration version does not exist", func(t *testing.T) {
 		cv, err := client.ConfigurationVersions.Read(ctx, "nonexisting")
 		assert.Nil(t, cv)
-		assert.Equal(t, err, ErrResourceNotFound)
+		assert.ErrorIs(t, err, ErrResourceNotFound)
 	})
 
 	t.Run("with invalid configuration version id", func(t *testing.T) {
@@ -381,7 +381,7 @@ func TestConfigurationVersionsArchive(t *testing.T) {
 
 	t.Run("when the configuration version does not exist", func(t *testing.T) {
 		err := client.ConfigurationVersions.Archive(ctx, "nonexisting")
-		assert.Equal(t, err, ErrResourceNotFound)
+		assert.ErrorIs(t, err, ErrResourceNotFound)
 	})
 
 	t.Run("with invalid configuration version id", func(t *testing.T) {
@@ -493,7 +493,7 @@ func TestConfigurationVersions_ManageBackingData(t *testing.T) {
 		require.NoError(t, err)
 
 		_, err = client.ConfigurationVersions.Download(ctx, nonCurrentCv.ID)
-		assert.Equal(t, ErrResourceNotFound, err)
+		assert.ErrorIs(t, ErrResourceNotFound, err)
 	})
 
 	t.Run("restore backing data", func(t *testing.T) {
@@ -515,6 +515,6 @@ func TestConfigurationVersions_ManageBackingData(t *testing.T) {
 		require.ErrorContainsf(t, err, "transition not allowed", "Restore backing data should fail")
 
 		_, err = client.ConfigurationVersions.Download(ctx, nonCurrentCv.ID)
-		assert.Equal(t, ErrResourceNotFound, err)
+		assert.ErrorIs(t, ErrResourceNotFound, err)
 	})
 }

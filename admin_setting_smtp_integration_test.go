@@ -66,6 +66,6 @@ func TestAdminSettings_SMTP_Update(t *testing.T) {
 			Auth:    &SMTPAuthPlained,
 		})
 
-		assert.Equal(t, err, ErrInvalidSMTPAuth)
+		assert.ErrorIs(t, err, ErrInvalidSMTPAuth)
 	})
 }

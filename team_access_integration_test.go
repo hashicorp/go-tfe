@@ -64,7 +64,7 @@ func TestTeamAccessesList(t *testing.T) {
 	t.Run("without TeamAccessListOptions", func(t *testing.T) {
 		tal, err := client.TeamAccess.List(ctx, nil)
 		assert.Nil(t, tal)
-		assert.Equal(t, err, ErrRequiredTeamAccessListOps)
+		assert.ErrorIs(t, err, ErrRequiredTeamAccessListOps)
 	})
 
 	t.Run("without WorkspaceID options", func(t *testing.T) {
@@ -75,7 +75,7 @@ func TestTeamAccessesList(t *testing.T) {
 			},
 		})
 		assert.Nil(t, tal)
-		assert.Equal(t, err, ErrRequiredWorkspaceID)
+		assert.ErrorIs(t, err, ErrRequiredWorkspaceID)
 	})
 
 	t.Run("without a valid workspaceID", func(t *testing.T) {
@@ -83,7 +83,7 @@ func TestTeamAccessesList(t *testing.T) {
 			WorkspaceID: badIdentifier,
 		})
 		assert.Nil(t, tal)
-		assert.EqualError(t, err, ErrInvalidWorkspaceID.Error())
+		assert.ErrorIs(t, err, ErrInvalidWorkspaceID)
 	})
 }
 
@@ -195,7 +195,7 @@ func TestTeamAccessesAdd(t *testing.T) {
 			Workspace: wTest,
 		})
 		assert.Nil(t, ta)
-		assert.Equal(t, err, ErrRequiredAccess)
+		assert.ErrorIs(t, err, ErrRequiredAccess)
 	})
 
 	t.Run("when options is missing team", func(t *testing.T) {
@@ -204,7 +204,7 @@ func TestTeamAccessesAdd(t *testing.T) {
 			Workspace: wTest,
 		})
 		assert.Nil(t, ta)
-		assert.Equal(t, err, ErrRequiredTeam)
+		assert.ErrorIs(t, err, ErrRequiredTeam)
 	})
 
 	t.Run("when options is missing workspace", func(t *testing.T) {
@@ -213,7 +213,7 @@ func TestTeamAccessesAdd(t *testing.T) {
 			Team:   tmTest,
 		})
 		assert.Nil(t, ta)
-		assert.Equal(t, err, ErrRequiredWorkspace)
+		assert.ErrorIs(t, err, ErrRequiredWorkspace)
 	})
 }
 
@@ -257,13 +257,13 @@ func TestTeamAccessesRead(t *testing.T) {
 	t.Run("when the team access does not exist", func(t *testing.T) {
 		ta, err := client.TeamAccess.Read(ctx, "nonexisting")
 		assert.Nil(t, ta)
-		assert.Equal(t, err, ErrResourceNotFound)
+		assert.ErrorIs(t, err, ErrResourceNotFound)
 	})
 
 	t.Run("without a valid team access ID", func(t *testing.T) {
 		ta, err := client.TeamAccess.Read(ctx, badIdentifier)
 		assert.Nil(t, ta)
-		assert.Equal(t, err, ErrInvalidAccessTeamID)
+		assert.ErrorIs(t, err, ErrInvalidAccessTeamID)
 	})
 }
 
@@ -315,17 +315,17 @@ func TestTeamAccessesRemove(t *testing.T) {
 
 		// Try loading the workspace - it should fail.
 		_, err = client.TeamAccess.Read(ctx, taTest.ID)
-		assert.Equal(t, err, ErrResourceNotFound)
+		assert.ErrorIs(t, err, ErrResourceNotFound)
 	})
 
 	t.Run("when the team access does not exist", func(t *testing.T) {
 		err := client.TeamAccess.Remove(ctx, taTest.ID)
-		assert.Equal(t, err, ErrResourceNotFound)
+		assert.ErrorIs(t, err, ErrResourceNotFound)
 	})
 
 	t.Run("when the team access ID is invalid", func(t *testing.T) {
 		err := client.TeamAccess.Remove(ctx, badIdentifier)
-		assert.Equal(t, err, ErrInvalidAccessTeamID)
+		assert.ErrorIs(t, err, ErrInvalidAccessTeamID)
 	})
 }
 

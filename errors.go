@@ -363,6 +363,8 @@ var (
 
 	ErrRequiredRegistryModule = errors.New("registry module is required")
 
+	ErrRegistryModuleMissingUploadLink = errors.New("provided RegistryModuleVersion does not contain an upload link")
+
 	ErrInvalidTestRunID = errors.New("invalid value for test run id")
 
 	ErrTerraformVersionValidForPlanOnly = errors.New("setting terraform-version is only valid when plan-only is set to true")
