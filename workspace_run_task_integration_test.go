@@ -247,12 +247,12 @@ func TestWorkspaceRunTasksDelete(t *testing.T) {
 		require.NoError(t, err)
 
 		_, err = client.WorkspaceRunTasks.Read(ctx, wkspaceTest.ID, wrTaskTest.ID)
-		assert.Equal(t, err, ErrResourceNotFound)
+		assert.ErrorIs(t, err, ErrResourceNotFound)
 	})
 
 	t.Run("when the workspace run task does not exist", func(t *testing.T) {
 		err := client.WorkspaceRunTasks.Delete(ctx, wkspaceTest.ID, wrTaskTest.ID)
-		assert.Equal(t, err, ErrResourceNotFound)
+		assert.ErrorIs(t, err, ErrResourceNotFound)
 	})
 
 	t.Run("when the workspace does not exist", func(t *testing.T) {

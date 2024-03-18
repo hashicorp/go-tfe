@@ -66,7 +66,7 @@ func TestTeamProjectAccessesList(t *testing.T) {
 			},
 		})
 		assert.Nil(t, tpal)
-		assert.Equal(t, err, ErrInvalidProjectID)
+		assert.ErrorIs(t, err, ErrInvalidProjectID)
 	})
 
 	t.Run("without a valid projectID", func(t *testing.T) {
@@ -112,13 +112,13 @@ func TestTeamProjectAccessesRead(t *testing.T) {
 	t.Run("when the team access does not exist", func(t *testing.T) {
 		tpa, err := client.TeamProjectAccess.Read(ctx, "nonexisting")
 		assert.Nil(t, tpa)
-		assert.Equal(t, err, ErrResourceNotFound)
+		assert.ErrorIs(t, err, ErrResourceNotFound)
 	})
 
 	t.Run("without a valid team access ID", func(t *testing.T) {
 		tpa, err := client.TeamProjectAccess.Read(ctx, badIdentifier)
 		assert.Nil(t, tpa)
-		assert.Equal(t, err, ErrInvalidTeamProjectAccessID)
+		assert.ErrorIs(t, err, ErrInvalidTeamProjectAccessID)
 	})
 }
 
@@ -279,7 +279,7 @@ func TestTeamProjectAccessesAdd(t *testing.T) {
 			Project: pTest,
 		})
 		assert.Nil(t, tpa)
-		assert.Equal(t, err, ErrInvalidTeamProjectAccessType)
+		assert.ErrorIs(t, err, ErrInvalidTeamProjectAccessType)
 	})
 
 	t.Run("when options is missing team", func(t *testing.T) {
@@ -288,7 +288,7 @@ func TestTeamProjectAccessesAdd(t *testing.T) {
 			Project: pTest,
 		})
 		assert.Nil(t, tpa)
-		assert.Equal(t, err, ErrRequiredTeam)
+		assert.ErrorIs(t, err, ErrRequiredTeam)
 	})
 
 	t.Run("when options is missing project", func(t *testing.T) {
@@ -297,7 +297,7 @@ func TestTeamProjectAccessesAdd(t *testing.T) {
 			Team:   tmTest,
 		})
 		assert.Nil(t, tpa)
-		assert.Equal(t, err, ErrRequiredProject)
+		assert.ErrorIs(t, err, ErrRequiredProject)
 	})
 
 	t.Run("when invalid custom project permission is provided in options", func(t *testing.T) {
@@ -320,7 +320,7 @@ func TestTeamProjectAccessesAdd(t *testing.T) {
 			Project: pTest,
 		})
 		assert.Nil(t, tpa)
-		assert.Equal(t, err, ErrInvalidTeamProjectAccessType)
+		assert.ErrorIs(t, err, ErrInvalidTeamProjectAccessType)
 	})
 }
 
@@ -465,16 +465,16 @@ func TestTeamProjectAccessesRemove(t *testing.T) {
 
 		// Try loading the project - it should fail.
 		_, err = client.TeamProjectAccess.Read(ctx, tpaTest.ID)
-		assert.Equal(t, err, ErrResourceNotFound)
+		assert.ErrorIs(t, err, ErrResourceNotFound)
 	})
 
 	t.Run("when the team access does not exist", func(t *testing.T) {
 		err := client.TeamProjectAccess.Remove(ctx, tpaTest.ID)
-		assert.Equal(t, err, ErrResourceNotFound)
+		assert.ErrorIs(t, err, ErrResourceNotFound)
 	})
 
 	t.Run("when the team access ID is invalid", func(t *testing.T) {
 		err := client.TeamProjectAccess.Remove(ctx, badIdentifier)
-		assert.Equal(t, err, ErrInvalidTeamProjectAccessID)
+		assert.ErrorIs(t, err, ErrInvalidTeamProjectAccessID)
 	})
 }

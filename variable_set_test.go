@@ -285,7 +285,7 @@ func TestVariableSetsDelete(t *testing.T) {
 
 		// Try loading the variable set - it should fail.
 		_, err = client.VariableSets.Read(ctx, vsTest.ID, nil)
-		assert.Equal(t, ErrResourceNotFound, err)
+		assert.ErrorIs(t, ErrResourceNotFound, err)
 	})
 
 	t.Run("when ID is invalid", func(t *testing.T) {

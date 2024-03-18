@@ -35,13 +35,13 @@ func TestPlansRead(t *testing.T) {
 	t.Run("when the plan does not exist", func(t *testing.T) {
 		p, err := client.Plans.Read(ctx, "nonexisting")
 		assert.Nil(t, p)
-		assert.Equal(t, err, ErrResourceNotFound)
+		assert.ErrorIs(t, err, ErrResourceNotFound)
 	})
 
 	t.Run("with invalid plan ID", func(t *testing.T) {
 		p, err := client.Plans.Read(ctx, badIdentifier)
 		assert.Nil(t, p)
-		assert.Equal(t, err, ErrInvalidPlanID)
+		assert.ErrorIs(t, err, ErrInvalidPlanID)
 	})
 }
 

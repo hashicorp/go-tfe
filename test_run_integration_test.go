@@ -276,6 +276,6 @@ func TestTestRunsCancel(t *testing.T) {
 
 	t.Run("when the run does not exist", func(t *testing.T) {
 		err := client.TestRuns.Cancel(ctx, id, "notreal")
-		assert.Equal(t, err, ErrResourceNotFound)
+		assert.ErrorIs(t, err, ErrResourceNotFound)
 	})
 }

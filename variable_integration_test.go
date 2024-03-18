@@ -162,7 +162,7 @@ func TestVariablesCreate(t *testing.T) {
 		}
 
 		_, err := client.Variables.Create(ctx, wTest.ID, options)
-		assert.Equal(t, err, ErrRequiredKey)
+		assert.ErrorIs(t, err, ErrRequiredKey)
 	})
 
 	t.Run("when options has an empty key", func(t *testing.T) {
@@ -173,7 +173,7 @@ func TestVariablesCreate(t *testing.T) {
 		}
 
 		_, err := client.Variables.Create(ctx, wTest.ID, options)
-		assert.Equal(t, err, ErrRequiredKey)
+		assert.ErrorIs(t, err, ErrRequiredKey)
 	})
 
 	t.Run("when options is missing category", func(t *testing.T) {
@@ -183,7 +183,7 @@ func TestVariablesCreate(t *testing.T) {
 		}
 
 		_, err := client.Variables.Create(ctx, wTest.ID, options)
-		assert.Equal(t, err, ErrRequiredCategory)
+		assert.ErrorIs(t, err, ErrRequiredCategory)
 	})
 
 	t.Run("when workspace ID is invalid", func(t *testing.T) {
@@ -220,7 +220,7 @@ func TestVariablesRead(t *testing.T) {
 	t.Run("when the variable does not exist", func(t *testing.T) {
 		v, err := client.Variables.Read(ctx, vTest.Workspace.ID, "nonexisting")
 		assert.Nil(t, v)
-		assert.Equal(t, ErrResourceNotFound, err)
+		assert.ErrorIs(t, ErrResourceNotFound, err)
 	})
 
 	t.Run("without a valid workspace ID", func(t *testing.T) {
@@ -232,7 +232,7 @@ func TestVariablesRead(t *testing.T) {
 	t.Run("without a valid variable ID", func(t *testing.T) {
 		v, err := client.Variables.Read(ctx, vTest.Workspace.ID, badIdentifier)
 		assert.Nil(t, v)
-		assert.Equal(t, err, ErrInvalidVariableID)
+		assert.ErrorIs(t, err, ErrInvalidVariableID)
 	})
 }
 
@@ -323,7 +323,7 @@ func TestVariablesUpdate(t *testing.T) {
 
 	t.Run("with invalid variable ID", func(t *testing.T) {
 		_, err := client.Variables.Update(ctx, vTest.Workspace.ID, badIdentifier, VariableUpdateOptions{})
-		assert.Equal(t, err, ErrInvalidVariableID)
+		assert.ErrorIs(t, err, ErrInvalidVariableID)
 	})
 }
 
@@ -343,7 +343,7 @@ func TestVariablesDelete(t *testing.T) {
 
 	t.Run("with non existing variable ID", func(t *testing.T) {
 		err := client.Variables.Delete(ctx, wTest.ID, "nonexisting")
-		assert.Equal(t, err, ErrResourceNotFound)
+		assert.ErrorIs(t, err, ErrResourceNotFound)
 	})
 
 	t.Run("with invalid workspace ID", func(t *testing.T) {
@@ -353,6 +353,6 @@ func TestVariablesDelete(t *testing.T) {
 
 	t.Run("with invalid variable ID", func(t *testing.T) {
 		err := client.Variables.Delete(ctx, wTest.ID, badIdentifier)
-		assert.Equal(t, err, ErrInvalidVariableID)
+		assert.ErrorIs(t, err, ErrInvalidVariableID)
 	})
 }

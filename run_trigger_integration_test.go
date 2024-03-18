@@ -87,7 +87,7 @@ func TestRunTriggerList(t *testing.T) {
 			nil,
 		)
 		assert.Nil(t, rtl)
-		assert.Equal(t, err, ErrRequiredRunTriggerListOps)
+		assert.ErrorIs(t, err, ErrRequiredRunTriggerListOps)
 	})
 
 	t.Run("without defining RunTriggerFilterOp as a filter param", func(t *testing.T) {
@@ -102,7 +102,7 @@ func TestRunTriggerList(t *testing.T) {
 			},
 		)
 		assert.Nil(t, rtl)
-		assert.Equal(t, err, ErrInvalidRunTriggerType)
+		assert.ErrorIs(t, err, ErrInvalidRunTriggerType)
 	})
 
 	t.Run("with invalid option for runTriggerType", func(t *testing.T) {
@@ -114,7 +114,7 @@ func TestRunTriggerList(t *testing.T) {
 			},
 		)
 		assert.Nil(t, rtl)
-		assert.Equal(t, err, ErrInvalidRunTriggerType)
+		assert.ErrorIs(t, err, ErrInvalidRunTriggerType)
 	})
 
 	t.Run("with sourceable include option", func(t *testing.T) {
@@ -143,7 +143,7 @@ func TestRunTriggerList(t *testing.T) {
 				Include:        []RunTriggerIncludeOpt{RunTriggerSourceable},
 			},
 		)
-		assert.Equal(t, err, ErrUnsupportedRunTriggerType)
+		assert.ErrorIs(t, err, ErrUnsupportedRunTriggerType)
 	})
 }
 
@@ -174,7 +174,7 @@ func TestRunTriggerCreate(t *testing.T) {
 
 		rt, err := client.RunTriggers.Create(ctx, wTest.ID, options)
 		assert.Nil(t, rt)
-		assert.Equal(t, err, ErrRequiredSourceable)
+		assert.ErrorIs(t, err, ErrRequiredSourceable)
 	})
 
 	t.Run("without a valid workspace", func(t *testing.T) {

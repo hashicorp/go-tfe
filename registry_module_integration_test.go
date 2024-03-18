@@ -192,7 +192,7 @@ func TestRegistryModulesCreate(t *testing.T) {
 			}
 			rm, err := client.RegistryModules.Create(ctx, orgTest.Name, options)
 			assert.Nil(t, rm)
-			assert.Equal(t, err, ErrRequiredProvider)
+			assert.ErrorIs(t, err, ErrRequiredProvider)
 		})
 
 		t.Run("with an invalid provider", func(t *testing.T) {
@@ -202,7 +202,7 @@ func TestRegistryModulesCreate(t *testing.T) {
 			}
 			rm, err := client.RegistryModules.Create(ctx, orgTest.Name, options)
 			assert.Nil(t, rm)
-			assert.Equal(t, err, ErrInvalidProvider)
+			assert.ErrorIs(t, err, ErrInvalidProvider)
 		})
 
 		t.Run("with an invalid registry name", func(t *testing.T) {
@@ -213,7 +213,7 @@ func TestRegistryModulesCreate(t *testing.T) {
 			}
 			rm, err := client.RegistryModules.Create(ctx, orgTest.Name, options)
 			assert.Nil(t, rm)
-			assert.Equal(t, err, ErrInvalidRegistryName)
+			assert.ErrorIs(t, err, ErrInvalidRegistryName)
 		})
 
 		t.Run("without a namespace for public registry name", func(t *testing.T) {
@@ -224,7 +224,7 @@ func TestRegistryModulesCreate(t *testing.T) {
 			}
 			rm, err := client.RegistryModules.Create(ctx, orgTest.Name, options)
 			assert.Nil(t, rm)
-			assert.Equal(t, err, ErrRequiredNamespace)
+			assert.ErrorIs(t, err, ErrRequiredNamespace)
 		})
 
 		t.Run("with a namespace for private registry name", func(t *testing.T) {
@@ -236,7 +236,7 @@ func TestRegistryModulesCreate(t *testing.T) {
 			}
 			rm, err := client.RegistryModules.Create(ctx, orgTest.Name, options)
 			assert.Nil(t, rm)
-			assert.Equal(t, err, ErrUnsupportedBothNamespaceAndPrivateRegistryName)
+			assert.ErrorIs(t, err, ErrUnsupportedBothNamespaceAndPrivateRegistryName)
 		})
 	})
 
@@ -521,7 +521,7 @@ func TestRegistryModulesCreateVersion(t *testing.T) {
 				Provider:     registryModuleTest.Provider,
 			}, options)
 			assert.Nil(t, rmv)
-			assert.Equal(t, err, ErrRequiredVersion)
+			assert.ErrorIs(t, err, ErrRequiredVersion)
 		})
 
 		t.Run("with invalid version", func(t *testing.T) {
@@ -534,7 +534,7 @@ func TestRegistryModulesCreateVersion(t *testing.T) {
 				Provider:     registryModuleTest.Provider,
 			}, options)
 			assert.Nil(t, rmv)
-			assert.Equal(t, err, ErrInvalidVersion)
+			assert.ErrorIs(t, err, ErrInvalidVersion)
 		})
 	})
 
@@ -574,7 +574,7 @@ func TestRegistryModulesCreateVersion(t *testing.T) {
 			Provider:     "",
 		}, options)
 		assert.Nil(t, rmv)
-		assert.Equal(t, err, ErrRequiredProvider)
+		assert.ErrorIs(t, err, ErrRequiredProvider)
 	})
 
 	t.Run("with an invalid provider", func(t *testing.T) {
@@ -587,7 +587,7 @@ func TestRegistryModulesCreateVersion(t *testing.T) {
 			Provider:     badIdentifier,
 		}, options)
 		assert.Nil(t, rmv)
-		assert.Equal(t, err, ErrInvalidProvider)
+		assert.ErrorIs(t, err, ErrInvalidProvider)
 	})
 
 	t.Run("without a valid organization", func(t *testing.T) {
@@ -672,7 +672,7 @@ func TestRegistryModulesShowVersion(t *testing.T) {
 		rmvRead, errRead := client.RegistryModules.ReadVersion(ctx, registryModuleIDTest, *invalidVersion)
 
 		require.Error(t, errRead)
-		assert.Equal(t, ErrResourceNotFound, errRead)
+		assert.ErrorIs(t, ErrResourceNotFound, errRead)
 		assert.Empty(t, rmvRead)
 	})
 }
@@ -753,7 +753,7 @@ func TestRegistryModulesListCommit(t *testing.T) {
 
 			assert.Empty(t, cm)
 			require.Error(t, errCm)
-			assert.Equal(t, ErrResourceNotFound, errCm)
+			assert.ErrorIs(t, ErrResourceNotFound, errCm)
 		})
 	})
 }
@@ -825,7 +825,7 @@ func TestRegistryModulesCreateWithVCSConnection(t *testing.T) {
 			}
 			rm, err := client.RegistryModules.CreateWithVCSConnection(ctx, options)
 			assert.Nil(t, rm)
-			assert.Equal(t, err, ErrRequiredIdentifier)
+			assert.ErrorIs(t, err, ErrRequiredIdentifier)
 		})
 
 		t.Run("without an oauth token ID", func(t *testing.T) {
@@ -838,7 +838,7 @@ func TestRegistryModulesCreateWithVCSConnection(t *testing.T) {
 			}
 			rm, err := client.RegistryModules.CreateWithVCSConnection(ctx, options)
 			assert.Nil(t, rm)
-			assert.Equal(t, err, ErrRequiredOauthTokenOrGithubAppInstallationID)
+			assert.ErrorIs(t, err, ErrRequiredOauthTokenOrGithubAppInstallationID)
 		})
 
 		t.Run("without a display identifier", func(t *testing.T) {
@@ -851,7 +851,7 @@ func TestRegistryModulesCreateWithVCSConnection(t *testing.T) {
 			}
 			rm, err := client.RegistryModules.CreateWithVCSConnection(ctx, options)
 			assert.Nil(t, rm)
-			assert.Equal(t, err, ErrRequiredDisplayIdentifier)
+			assert.ErrorIs(t, err, ErrRequiredDisplayIdentifier)
 		})
 
 		t.Run("when tags are enabled and a branch is provided", func(t *testing.T) {
@@ -867,7 +867,7 @@ func TestRegistryModulesCreateWithVCSConnection(t *testing.T) {
 
 			rm, err := client.RegistryModules.CreateWithVCSConnection(ctx, options)
 			assert.Nil(t, rm)
-			assert.Equal(t, err, ErrBranchMustBeEmptyWhenTagsEnabled)
+			assert.ErrorIs(t, err, ErrBranchMustBeEmptyWhenTagsEnabled)
 		})
 	})
 
@@ -875,7 +875,7 @@ func TestRegistryModulesCreateWithVCSConnection(t *testing.T) {
 		options := RegistryModuleCreateWithVCSConnectionOptions{}
 		rm, err := client.RegistryModules.CreateWithVCSConnection(ctx, options)
 		assert.Nil(t, rm)
-		assert.Equal(t, err, ErrRequiredVCSRepo)
+		assert.ErrorIs(t, err, ErrRequiredVCSRepo)
 	})
 }
 
@@ -1086,7 +1086,7 @@ func TestRegistryModulesCreateWithGithubApp(t *testing.T) {
 			}
 			rm, err := client.RegistryModules.CreateWithVCSConnection(ctx, options)
 			assert.Nil(t, rm)
-			assert.Equal(t, err, ErrRequiredOauthTokenOrGithubAppInstallationID)
+			assert.ErrorIs(t, err, ErrRequiredOauthTokenOrGithubAppInstallationID)
 		})
 		t.Run("without an org name", func(t *testing.T) {
 			options := RegistryModuleCreateWithVCSConnectionOptions{
@@ -1097,7 +1097,7 @@ func TestRegistryModulesCreateWithGithubApp(t *testing.T) {
 			}
 			rm, err := client.RegistryModules.CreateWithVCSConnection(ctx, options)
 			assert.Nil(t, rm)
-			assert.Equal(t, err, ErrInvalidOrg)
+			assert.ErrorIs(t, err, ErrInvalidOrg)
 		})
 	})
 
@@ -1105,7 +1105,7 @@ func TestRegistryModulesCreateWithGithubApp(t *testing.T) {
 		options := RegistryModuleCreateWithVCSConnectionOptions{}
 		rm, err := client.RegistryModules.CreateWithVCSConnection(ctx, options)
 		assert.Nil(t, rm)
-		assert.Equal(t, err, ErrRequiredVCSRepo)
+		assert.ErrorIs(t, err, ErrRequiredVCSRepo)
 	})
 }
 
@@ -1220,7 +1220,7 @@ func TestRegistryModulesRead(t *testing.T) {
 			Provider:     "",
 		})
 		assert.Nil(t, rm)
-		assert.Equal(t, err, ErrRequiredProvider)
+		assert.ErrorIs(t, err, ErrRequiredProvider)
 	})
 
 	t.Run("with an invalid provider", func(t *testing.T) {
@@ -1230,7 +1230,7 @@ func TestRegistryModulesRead(t *testing.T) {
 			Provider:     badIdentifier,
 		})
 		assert.Nil(t, rm)
-		assert.Equal(t, err, ErrInvalidProvider)
+		assert.ErrorIs(t, err, ErrInvalidProvider)
 	})
 
 	t.Run("with an invalid registry name", func(t *testing.T) {
@@ -1242,7 +1242,7 @@ func TestRegistryModulesRead(t *testing.T) {
 			RegistryName: "PRIVATE",
 		})
 		assert.Nil(t, rm)
-		assert.Equal(t, err, ErrInvalidRegistryName)
+		assert.ErrorIs(t, err, ErrInvalidRegistryName)
 	})
 
 	t.Run("without a valid organization", func(t *testing.T) {

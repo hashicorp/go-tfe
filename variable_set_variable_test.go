@@ -239,7 +239,7 @@ func TestVariableSetVariablesRead(t *testing.T) {
 	t.Run("when the variable does not exist", func(t *testing.T) {
 		v, err := client.VariableSetVariables.Read(ctx, vsTest.ID, "nonexisting")
 		assert.Nil(t, v)
-		assert.Equal(t, ErrResourceNotFound, err)
+		assert.ErrorIs(t, ErrResourceNotFound, err)
 	})
 
 	t.Run("without a valid variable set ID", func(t *testing.T) {

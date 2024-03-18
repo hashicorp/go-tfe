@@ -604,7 +604,7 @@ func TestPolicySetsRead(t *testing.T) {
 	t.Run("without a valid ID", func(t *testing.T) {
 		ps, err := client.PolicySets.Read(ctx, badIdentifier)
 		assert.Nil(t, ps)
-		assert.Equal(t, err, ErrInvalidPolicySetID)
+		assert.ErrorIs(t, err, ErrInvalidPolicySetID)
 	})
 
 	t.Run("with policy set version", func(t *testing.T) {
@@ -739,7 +739,7 @@ func TestPolicySetsUpdate(t *testing.T) {
 			Name: String("policy-set"),
 		})
 		assert.Nil(t, ps)
-		assert.Equal(t, err, ErrInvalidPolicySetID)
+		assert.ErrorIs(t, err, ErrInvalidPolicySetID)
 	})
 }
 
@@ -780,21 +780,21 @@ func TestPolicySetsAddPolicies(t *testing.T) {
 
 	t.Run("without policies provided", func(t *testing.T) {
 		err := client.PolicySets.AddPolicies(ctx, psTest.ID, PolicySetAddPoliciesOptions{})
-		assert.Equal(t, err, ErrRequiredPolicies)
+		assert.ErrorIs(t, err, ErrRequiredPolicies)
 	})
 
 	t.Run("with empty policies slice", func(t *testing.T) {
 		err := client.PolicySets.AddPolicies(ctx, psTest.ID, PolicySetAddPoliciesOptions{
 			Policies: []*Policy{},
 		})
-		assert.Equal(t, err, ErrInvalidPolicies)
+		assert.ErrorIs(t, err, ErrInvalidPolicies)
 	})
 
 	t.Run("without a valid ID", func(t *testing.T) {
 		err := client.PolicySets.AddPolicies(ctx, badIdentifier, PolicySetAddPoliciesOptions{
 			Policies: []*Policy{pTest1, pTest2},
 		})
-		assert.Equal(t, err, ErrInvalidPolicySetID)
+		assert.ErrorIs(t, err, ErrInvalidPolicySetID)
 	})
 }
 
@@ -829,21 +829,21 @@ func TestPolicySetsRemovePolicies(t *testing.T) {
 
 	t.Run("without policies provided", func(t *testing.T) {
 		err := client.PolicySets.RemovePolicies(ctx, psTest.ID, PolicySetRemovePoliciesOptions{})
-		assert.Equal(t, err, ErrRequiredPolicies)
+		assert.ErrorIs(t, err, ErrRequiredPolicies)
 	})
 
 	t.Run("with empty policies slice", func(t *testing.T) {
 		err := client.PolicySets.RemovePolicies(ctx, psTest.ID, PolicySetRemovePoliciesOptions{
 			Policies: []*Policy{},
 		})
-		assert.Equal(t, err, ErrInvalidPolicies)
+		assert.ErrorIs(t, err, ErrInvalidPolicies)
 	})
 
 	t.Run("without a valid ID", func(t *testing.T) {
 		err := client.PolicySets.RemovePolicies(ctx, badIdentifier, PolicySetRemovePoliciesOptions{
 			Policies: []*Policy{pTest1, pTest2},
 		})
-		assert.Equal(t, err, ErrInvalidPolicySetID)
+		assert.ErrorIs(t, err, ErrInvalidPolicySetID)
 	})
 }
 
@@ -892,7 +892,7 @@ func TestPolicySetsAddWorkspaces(t *testing.T) {
 			psTest.ID,
 			PolicySetAddWorkspacesOptions{},
 		)
-		assert.Equal(t, err, ErrWorkspacesRequired)
+		assert.ErrorIs(t, err, ErrWorkspacesRequired)
 	})
 
 	t.Run("with empty workspaces slice", func(t *testing.T) {
@@ -901,7 +901,7 @@ func TestPolicySetsAddWorkspaces(t *testing.T) {
 			psTest.ID,
 			PolicySetAddWorkspacesOptions{Workspaces: []*Workspace{}},
 		)
-		assert.Equal(t, err, ErrWorkspaceMinLimit)
+		assert.ErrorIs(t, err, ErrWorkspaceMinLimit)
 	})
 
 	t.Run("without a valid ID", func(t *testing.T) {
@@ -912,7 +912,7 @@ func TestPolicySetsAddWorkspaces(t *testing.T) {
 				Workspaces: []*Workspace{wTest1, wTest2},
 			},
 		)
-		assert.Equal(t, err, ErrInvalidPolicySetID)
+		assert.ErrorIs(t, err, ErrInvalidPolicySetID)
 	})
 }
 
@@ -955,7 +955,7 @@ func TestPolicySetsRemoveWorkspaces(t *testing.T) {
 			psTest.ID,
 			PolicySetRemoveWorkspacesOptions{},
 		)
-		assert.Equal(t, err, ErrWorkspacesRequired)
+		assert.ErrorIs(t, err, ErrWorkspacesRequired)
 	})
 
 	t.Run("with empty workspaces slice", func(t *testing.T) {
@@ -964,7 +964,7 @@ func TestPolicySetsRemoveWorkspaces(t *testing.T) {
 			psTest.ID,
 			PolicySetRemoveWorkspacesOptions{Workspaces: []*Workspace{}},
 		)
-		assert.Equal(t, err, ErrWorkspaceMinLimit)
+		assert.ErrorIs(t, err, ErrWorkspaceMinLimit)
 	})
 
 	t.Run("without a valid ID", func(t *testing.T) {
@@ -975,7 +975,7 @@ func TestPolicySetsRemoveWorkspaces(t *testing.T) {
 				Workspaces: []*Workspace{wTest1, wTest2},
 			},
 		)
-		assert.Equal(t, err, ErrInvalidPolicySetID)
+		assert.ErrorIs(t, err, ErrInvalidPolicySetID)
 	})
 }
 
@@ -1024,7 +1024,7 @@ func TestPolicySetsAddWorkspaceExclusions(t *testing.T) {
 			psTest.ID,
 			PolicySetAddWorkspaceExclusionsOptions{},
 		)
-		assert.Equal(t, err, ErrWorkspacesRequired)
+		assert.ErrorIs(t, err, ErrWorkspacesRequired)
 	})
 
 	t.Run("with empty workspace exclusions slice", func(t *testing.T) {
@@ -1033,7 +1033,7 @@ func TestPolicySetsAddWorkspaceExclusions(t *testing.T) {
 			psTest.ID,
 			PolicySetAddWorkspaceExclusionsOptions{WorkspaceExclusions: []*Workspace{}},
 		)
-		assert.Equal(t, err, ErrWorkspaceMinLimit)
+		assert.ErrorIs(t, err, ErrWorkspaceMinLimit)
 	})
 
 	t.Run("without a valid ID", func(t *testing.T) {
@@ -1044,7 +1044,7 @@ func TestPolicySetsAddWorkspaceExclusions(t *testing.T) {
 				WorkspaceExclusions: []*Workspace{wTest1, wTest2},
 			},
 		)
-		assert.Equal(t, err, ErrInvalidPolicySetID)
+		assert.ErrorIs(t, err, ErrInvalidPolicySetID)
 	})
 }
 
@@ -1087,7 +1087,7 @@ func TestPolicySetsRemoveWorkspaceExclusions(t *testing.T) {
 			psTest.ID,
 			PolicySetRemoveWorkspaceExclusionsOptions{},
 		)
-		assert.Equal(t, err, ErrWorkspacesRequired)
+		assert.ErrorIs(t, err, ErrWorkspacesRequired)
 	})
 
 	t.Run("with empty workspaces slice", func(t *testing.T) {
@@ -1096,7 +1096,7 @@ func TestPolicySetsRemoveWorkspaceExclusions(t *testing.T) {
 			psTest.ID,
 			PolicySetRemoveWorkspaceExclusionsOptions{WorkspaceExclusions: []*Workspace{}},
 		)
-		assert.Equal(t, err, ErrWorkspaceMinLimit)
+		assert.ErrorIs(t, err, ErrWorkspaceMinLimit)
 	})
 
 	t.Run("without a valid ID", func(t *testing.T) {
@@ -1107,7 +1107,7 @@ func TestPolicySetsRemoveWorkspaceExclusions(t *testing.T) {
 				WorkspaceExclusions: []*Workspace{wTest1, wTest2},
 			},
 		)
-		assert.Equal(t, err, ErrInvalidPolicySetID)
+		assert.ErrorIs(t, err, ErrInvalidPolicySetID)
 	})
 }
 
@@ -1156,7 +1156,7 @@ func TestPolicySetsAddProjects(t *testing.T) {
 			psTest.ID,
 			PolicySetAddProjectsOptions{},
 		)
-		assert.Equal(t, err, ErrRequiredProject)
+		assert.ErrorIs(t, err, ErrRequiredProject)
 	})
 
 	t.Run("with empty projects slice", func(t *testing.T) {
@@ -1165,7 +1165,7 @@ func TestPolicySetsAddProjects(t *testing.T) {
 			psTest.ID,
 			PolicySetAddProjectsOptions{Projects: []*Project{}},
 		)
-		assert.Equal(t, err, ErrProjectMinLimit)
+		assert.ErrorIs(t, err, ErrProjectMinLimit)
 	})
 
 	t.Run("without a valid ID", func(t *testing.T) {
@@ -1176,7 +1176,7 @@ func TestPolicySetsAddProjects(t *testing.T) {
 				Projects: []*Project{pTest1, pTest2},
 			},
 		)
-		assert.Equal(t, err, ErrInvalidPolicySetID)
+		assert.ErrorIs(t, err, ErrInvalidPolicySetID)
 	})
 }
 
@@ -1219,7 +1219,7 @@ func TestPolicySetsRemoveProjects(t *testing.T) {
 			psTest.ID,
 			PolicySetRemoveProjectsOptions{},
 		)
-		assert.Equal(t, err, ErrRequiredProject)
+		assert.ErrorIs(t, err, ErrRequiredProject)
 	})
 
 	t.Run("with empty projects slice", func(t *testing.T) {
@@ -1228,7 +1228,7 @@ func TestPolicySetsRemoveProjects(t *testing.T) {
 			psTest.ID,
 			PolicySetRemoveProjectsOptions{Projects: []*Project{}},
 		)
-		assert.Equal(t, err, ErrProjectMinLimit)
+		assert.ErrorIs(t, err, ErrProjectMinLimit)
 	})
 
 	t.Run("without a valid ID", func(t *testing.T) {
@@ -1239,7 +1239,7 @@ func TestPolicySetsRemoveProjects(t *testing.T) {
 				Projects: []*Project{pTest1, pTest2},
 			},
 		)
-		assert.Equal(t, err, ErrInvalidPolicySetID)
+		assert.ErrorIs(t, err, ErrInvalidPolicySetID)
 	})
 }
 
@@ -1260,16 +1260,16 @@ func TestPolicySetsDelete(t *testing.T) {
 
 		// Try loading the policy - it should fail.
 		_, err = client.PolicySets.Read(ctx, psTest.ID)
-		assert.Equal(t, err, ErrResourceNotFound)
+		assert.ErrorIs(t, err, ErrResourceNotFound)
 	})
 
 	t.Run("when the policy does not exist", func(t *testing.T) {
 		err := client.PolicySets.Delete(ctx, psTest.ID)
-		assert.Equal(t, err, ErrResourceNotFound)
+		assert.ErrorIs(t, err, ErrResourceNotFound)
 	})
 
 	t.Run("when the policy ID is invalid", func(t *testing.T) {
 		err := client.PolicySets.Delete(ctx, badIdentifier)
-		assert.Equal(t, err, ErrInvalidPolicySetID)
+		assert.ErrorIs(t, err, ErrInvalidPolicySetID)
 	})
 }

@@ -196,12 +196,12 @@ func TestRunTasksDelete(t *testing.T) {
 		require.NoError(t, err)
 
 		_, err = client.RunTasks.Read(ctx, runTaskTest.ID)
-		assert.Equal(t, err, ErrResourceNotFound)
+		assert.ErrorIs(t, err, ErrResourceNotFound)
 	})
 
 	t.Run("when the run task does not exist", func(t *testing.T) {
 		err := client.RunTasks.Delete(ctx, runTaskTest.ID)
-		assert.Equal(t, err, ErrResourceNotFound)
+		assert.ErrorIs(t, err, ErrResourceNotFound)
 	})
 
 	t.Run("when the run task ID is invalid", func(t *testing.T) {

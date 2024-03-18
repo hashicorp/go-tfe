@@ -115,13 +115,13 @@ func TestPolicyChecksRead(t *testing.T) {
 	t.Run("when the policy check does not exist", func(t *testing.T) {
 		pc, err := client.PolicyChecks.Read(ctx, "nonexisting")
 		assert.Nil(t, pc)
-		assert.Equal(t, ErrResourceNotFound, err)
+		assert.ErrorIs(t, ErrResourceNotFound, err)
 	})
 
 	t.Run("without a valid policy check ID", func(t *testing.T) {
 		pc, err := client.PolicyChecks.Read(ctx, badIdentifier)
 		assert.Nil(t, pc)
-		assert.Equal(t, err, ErrInvalidPolicyCheckID)
+		assert.ErrorIs(t, err, ErrInvalidPolicyCheckID)
 	})
 }
 
@@ -179,7 +179,7 @@ func TestPolicyChecksOverride(t *testing.T) {
 	t.Run("without a valid policy check ID", func(t *testing.T) {
 		p, err := client.PolicyChecks.Override(ctx, badIdentifier)
 		assert.Nil(t, p)
-		assert.Equal(t, err, ErrInvalidPolicyCheckID)
+		assert.ErrorIs(t, err, ErrInvalidPolicyCheckID)
 	})
 }
 

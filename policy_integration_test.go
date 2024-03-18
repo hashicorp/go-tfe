@@ -332,7 +332,7 @@ func TestPoliciesCreate(t *testing.T) {
 
 		p, err := client.Policies.Create(ctx, orgTest.Name, options)
 		assert.Nil(t, p)
-		assert.Equal(t, err, ErrRequiredEnforcementPath)
+		assert.ErrorIs(t, err, ErrRequiredEnforcementPath)
 	})
 
 	t.Run("when options is missing enforcement path", func(t *testing.T) {
@@ -419,7 +419,7 @@ func TestPoliciesRead(t *testing.T) {
 	t.Run("when the policy does not exist", func(t *testing.T) {
 		p, err := client.Policies.Read(ctx, "nonexisting")
 		assert.Nil(t, p)
-		assert.Equal(t, ErrResourceNotFound, err)
+		assert.ErrorIs(t, ErrResourceNotFound, err)
 	})
 
 	t.Run("without a valid policy ID", func(t *testing.T) {
@@ -604,7 +604,7 @@ func TestPoliciesUpload(t *testing.T) {
 
 	t.Run("without a valid policy ID", func(t *testing.T) {
 		err := client.Policies.Upload(ctx, badIdentifier, []byte(`main = rule { true }`))
-		assert.Equal(t, err, ErrInvalidPolicyID)
+		assert.ErrorIs(t, err, ErrInvalidPolicyID)
 	})
 }
 

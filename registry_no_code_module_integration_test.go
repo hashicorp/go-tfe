@@ -204,7 +204,7 @@ func TestRegistryNoCodeModulesRead(t *testing.T) {
 	t.Run("when the id does not exist", func(t *testing.T) {
 		ncm, err := client.RegistryNoCodeModules.Read(ctx, "non-existing", nil)
 		assert.Nil(t, ncm)
-		assert.Equal(t, err, ErrResourceNotFound)
+		assert.ErrorIs(t, err, ErrResourceNotFound)
 	})
 }
 

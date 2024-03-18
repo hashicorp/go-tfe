@@ -39,7 +39,7 @@ func TestTeamTokensCreate(t *testing.T) {
 	t.Run("without valid team ID", func(t *testing.T) {
 		tt, err := client.TeamTokens.Create(ctx, badIdentifier)
 		assert.Nil(t, tt)
-		assert.Equal(t, err, ErrInvalidTeamID)
+		assert.ErrorIs(t, err, ErrInvalidTeamID)
 	})
 }
 
@@ -68,7 +68,7 @@ func TestTeamTokens_CreateWithOptions(t *testing.T) {
 	t.Run("without valid team ID", func(t *testing.T) {
 		tt, err := client.TeamTokens.CreateWithOptions(ctx, badIdentifier, TeamTokenCreateOptions{})
 		assert.Nil(t, tt)
-		assert.Equal(t, err, ErrInvalidTeamID)
+		assert.ErrorIs(t, err, ErrInvalidTeamID)
 	})
 
 	t.Run("without an expiration date", func(t *testing.T) {
@@ -125,7 +125,7 @@ func TestTeamTokensRead(t *testing.T) {
 
 	t.Run("when a token doesn't exists", func(t *testing.T) {
 		tt, err := client.TeamTokens.Read(ctx, tmTest.ID)
-		assert.Equal(t, ErrResourceNotFound, err)
+		assert.ErrorIs(t, ErrResourceNotFound, err)
 		assert.Nil(t, tt)
 	})
 
@@ -152,11 +152,11 @@ func TestTeamTokensDelete(t *testing.T) {
 
 	t.Run("when a token does not exist", func(t *testing.T) {
 		err := client.TeamTokens.Delete(ctx, tmTest.ID)
-		assert.Equal(t, err, ErrResourceNotFound)
+		assert.ErrorIs(t, err, ErrResourceNotFound)
 	})
 
 	t.Run("without valid team ID", func(t *testing.T) {
 		err := client.TeamTokens.Delete(ctx, badIdentifier)
-		assert.Equal(t, err, ErrInvalidTeamID)
+		assert.ErrorIs(t, err, ErrInvalidTeamID)
 	})
 }

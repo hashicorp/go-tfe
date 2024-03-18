@@ -97,7 +97,7 @@ func TestOrganizationMembershipsList(t *testing.T) {
 			ml, err = client.OrganizationMemberships.List(ctx, orgTest.Name, &OrganizationMembershipListOptions{
 				Emails: []string{"foobar"},
 			})
-			assert.Equal(t, err, ErrInvalidEmail)
+			assert.ErrorIs(t, err, ErrInvalidEmail)
 		})
 	})
 
@@ -175,7 +175,7 @@ func TestOrganizationMembershipsCreate(t *testing.T) {
 		mem, err := client.OrganizationMemberships.Create(ctx, orgTest.Name, OrganizationMembershipCreateOptions{})
 
 		assert.Nil(t, mem)
-		assert.Equal(t, err, ErrRequiredEmail)
+		assert.ErrorIs(t, err, ErrRequiredEmail)
 	})
 
 	t.Run("with an invalid organization", func(t *testing.T) {
@@ -184,7 +184,7 @@ func TestOrganizationMembershipsCreate(t *testing.T) {
 		})
 
 		assert.Nil(t, mem)
-		assert.EqualError(t, err, ErrInvalidOrg.Error())
+		assert.ErrorIs(t, err, ErrInvalidOrg)
 	})
 
 	t.Run("when an error is returned from the api", func(t *testing.T) {
@@ -220,13 +220,13 @@ func TestOrganizationMembershipsRead(t *testing.T) {
 	t.Run("when the membership does not exist", func(t *testing.T) {
 		mem, err := client.OrganizationMemberships.Read(ctx, "nonexisting")
 		assert.Nil(t, mem)
-		assert.Equal(t, err, ErrResourceNotFound)
+		assert.ErrorIs(t, err, ErrResourceNotFound)
 	})
 
 	t.Run("with invalid membership id", func(t *testing.T) {
 		mem, err := client.OrganizationMemberships.Read(ctx, badIdentifier)
 		assert.Nil(t, mem)
-		assert.Equal(t, err, ErrInvalidMembership)
+		assert.ErrorIs(t, err, ErrInvalidMembership)
 	})
 }
 
@@ -257,19 +257,19 @@ func TestOrganizationMembershipsReadWithOptions(t *testing.T) {
 		_, err := client.OrganizationMemberships.ReadWithOptions(ctx, memTest.ID, OrganizationMembershipReadOptions{
 			Include: []OrgMembershipIncludeOpt{"users"},
 		})
-		assert.Equal(t, err, ErrInvalidIncludeValue)
+		assert.ErrorIs(t, err, ErrInvalidIncludeValue)
 	})
 
 	t.Run("when the membership does not exist", func(t *testing.T) {
 		mem, err := client.OrganizationMemberships.ReadWithOptions(ctx, "nonexisting", options)
 		assert.Nil(t, mem)
-		assert.Equal(t, err, ErrResourceNotFound)
+		assert.ErrorIs(t, err, ErrResourceNotFound)
 	})
 
 	t.Run("with invalid membership id", func(t *testing.T) {
 		mem, err := client.OrganizationMemberships.ReadWithOptions(ctx, badIdentifier, options)
 		assert.Nil(t, mem)
-		assert.Equal(t, err, ErrInvalidMembership)
+		assert.ErrorIs(t, err, ErrInvalidMembership)
 	})
 }
 
@@ -295,7 +295,7 @@ func TestOrganizationMembershipsDelete(t *testing.T) {
 	t.Run("when membership is invalid", func(t *testing.T) {
 		err := client.OrganizationMemberships.Delete(ctx, badIdentifier)
 
-		assert.Equal(t, err, ErrInvalidMembership)
+		assert.ErrorIs(t, err, ErrInvalidMembership)
 	})
 
 	t.Run("when an error is returned from the api", func(t *testing.T) {

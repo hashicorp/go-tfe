@@ -349,7 +349,7 @@ func TestRegistryProvidersRead(t *testing.T) {
 				assert.Error(t, err)
 				// Local TFC/E will return a forbidden here when TFC/E is in development mode
 				// In non development mode this returns a 404
-				assert.Equal(t, ErrResourceNotFound, err)
+				assert.ErrorIs(t, ErrResourceNotFound, err)
 			})
 		})
 	}
@@ -450,7 +450,7 @@ func TestRegistryProvidersDelete(t *testing.T) {
 				assert.Error(t, err)
 				// Local TFC/E will return a forbidden here when TFC/E is in development mode
 				// In non development mode this returns a 404
-				assert.Equal(t, ErrResourceNotFound, err)
+				assert.ErrorIs(t, ErrResourceNotFound, err)
 			})
 		})
 	}

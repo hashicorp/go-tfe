@@ -106,7 +106,7 @@ func Test_unmarshalResponse(t *testing.T) {
 		}
 		err := unmarshalResponse(responseBody, &malformattedItemStruct)
 		require.Error(t, err)
-		assert.Equal(t, err, ErrItemsMustBeSlice)
+		assert.ErrorIs(t, err, ErrItemsMustBeSlice)
 	})
 
 	t.Run("can only unmarshal a struct", func(t *testing.T) {

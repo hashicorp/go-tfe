@@ -51,7 +51,7 @@ func TestStateVersionOutputsRead(t *testing.T) {
 		t.Run("when a state output does not exist", func(t *testing.T) {
 			so, err := client.StateVersionOutputs.Read(ctx, "wsout-J2zM24JPAAAAAAAA")
 			assert.Nil(t, so)
-			assert.Equal(t, ErrResourceNotFound, err)
+			assert.ErrorIs(t, ErrResourceNotFound, err)
 		})
 	})
 

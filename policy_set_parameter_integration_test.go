@@ -57,7 +57,7 @@ func TestPolicySetParametersList(t *testing.T) {
 	t.Run("when policy set ID is invalid ID", func(t *testing.T) {
 		pl, err := client.PolicySetParameters.List(ctx, badIdentifier, nil)
 		assert.Nil(t, pl)
-		assert.Equal(t, err, ErrInvalidPolicySetID)
+		assert.ErrorIs(t, err, ErrInvalidPolicySetID)
 	})
 }
 
@@ -125,7 +125,7 @@ func TestPolicySetParametersCreate(t *testing.T) {
 		}
 
 		_, err := client.PolicySetParameters.Create(ctx, psTest.ID, options)
-		assert.Equal(t, err, ErrRequiredKey)
+		assert.ErrorIs(t, err, ErrRequiredKey)
 	})
 
 	t.Run("when options has an empty key", func(t *testing.T) {

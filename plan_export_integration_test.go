@@ -44,7 +44,7 @@ func TestPlanExportsCreate(t *testing.T) {
 
 		pe, err := client.PlanExports.Create(ctx, options)
 		assert.Nil(t, pe)
-		assert.Equal(t, err, ErrRequiredPlan)
+		assert.ErrorIs(t, err, ErrRequiredPlan)
 	})
 
 	t.Run("without a data type", func(t *testing.T) {
@@ -55,7 +55,7 @@ func TestPlanExportsCreate(t *testing.T) {
 
 		pe, err := client.PlanExports.Create(ctx, options)
 		assert.Nil(t, pe)
-		assert.Equal(t, err, ErrRequiredDataType)
+		assert.ErrorIs(t, err, ErrRequiredDataType)
 	})
 }
 
@@ -78,7 +78,7 @@ func TestPlanExportsRead(t *testing.T) {
 	t.Run("without a valid ID", func(t *testing.T) {
 		pe, err := client.PlanExports.Read(ctx, badIdentifier)
 		assert.Nil(t, pe)
-		assert.Equal(t, err, ErrInvalidPlanExportID)
+		assert.ErrorIs(t, err, ErrInvalidPlanExportID)
 	})
 }
 
@@ -96,12 +96,12 @@ func TestPlanExportsDelete(t *testing.T) {
 
 	t.Run("when the export does not exist", func(t *testing.T) {
 		err := client.Policies.Delete(ctx, "pe-doesntexist")
-		assert.Equal(t, err, ErrResourceNotFound)
+		assert.ErrorIs(t, err, ErrResourceNotFound)
 	})
 
 	t.Run("without a valid ID", func(t *testing.T) {
 		err := client.PlanExports.Delete(ctx, badIdentifier)
-		assert.Equal(t, err, ErrInvalidPlanExportID)
+		assert.ErrorIs(t, err, ErrInvalidPlanExportID)
 	})
 }
 
@@ -121,7 +121,7 @@ func TestPlanExportsDownload(t *testing.T) {
 	t.Run("without a valid ID", func(t *testing.T) {
 		pe, err := client.PlanExports.Download(ctx, badIdentifier)
 		assert.Nil(t, pe)
-		assert.Equal(t, err, ErrInvalidPlanExportID)
+		assert.ErrorIs(t, err, ErrInvalidPlanExportID)
 	})
 }
 

@@ -50,7 +50,7 @@ func TestTeamMembersList(t *testing.T) {
 
 	t.Run("when the team ID is invalid", func(t *testing.T) {
 		users, err := client.TeamMembers.List(ctx, badIdentifier)
-		assert.Equal(t, err, ErrInvalidTeamID)
+		assert.ErrorIs(t, err, ErrInvalidTeamID)
 		assert.Nil(t, users)
 	})
 }
@@ -64,7 +64,7 @@ func TestTeamMembersAddWithInvalidOptions(t *testing.T) {
 
 	t.Run("when options is missing usernames and organization membership ids", func(t *testing.T) {
 		err := client.TeamMembers.Add(ctx, tmTest.ID, TeamMemberAddOptions{})
-		assert.Equal(t, err, ErrRequiredUsernameOrMembershipIds)
+		assert.ErrorIs(t, err, ErrRequiredUsernameOrMembershipIds)
 	})
 
 	t.Run("when options has both usernames and organization membership ids", func(t *testing.T) {
@@ -72,28 +72,28 @@ func TestTeamMembersAddWithInvalidOptions(t *testing.T) {
 			Usernames:                 []string{},
 			OrganizationMembershipIDs: []string{},
 		})
-		assert.Equal(t, err, ErrRequiredOnlyOneField)
+		assert.ErrorIs(t, err, ErrRequiredOnlyOneField)
 	})
 
 	t.Run("when usernames is empty", func(t *testing.T) {
 		err := client.TeamMembers.Add(ctx, tmTest.ID, TeamMemberAddOptions{
 			Usernames: []string{},
 		})
-		assert.Equal(t, err, ErrInvalidUsernames)
+		assert.ErrorIs(t, err, ErrInvalidUsernames)
 	})
 
 	t.Run("when organization membership ids is empty", func(t *testing.T) {
 		err := client.TeamMembers.Add(ctx, tmTest.ID, TeamMemberAddOptions{
 			OrganizationMembershipIDs: []string{},
 		})
-		assert.Equal(t, err, ErrInvalidMembershipIDs)
+		assert.ErrorIs(t, err, ErrInvalidMembershipIDs)
 	})
 
 	t.Run("when the team ID is invalid", func(t *testing.T) {
 		err := client.TeamMembers.Add(ctx, badIdentifier, TeamMemberAddOptions{
 			Usernames: []string{"user1"},
 		})
-		assert.Equal(t, err, ErrInvalidTeamID)
+		assert.ErrorIs(t, err, ErrInvalidTeamID)
 	})
 }
 
@@ -174,7 +174,7 @@ func TestTeamMembersRemoveWithInvalidOptions(t *testing.T) {
 
 	t.Run("when options is missing usernames and organization membership ids", func(t *testing.T) {
 		err := client.TeamMembers.Remove(ctx, tmTest.ID, TeamMemberRemoveOptions{})
-		assert.Equal(t, err, ErrRequiredUsernameOrMembershipIds)
+		assert.ErrorIs(t, err, ErrRequiredUsernameOrMembershipIds)
 	})
 
 	t.Run("when options has both usernames and organization membership ids", func(t *testing.T) {
@@ -182,28 +182,28 @@ func TestTeamMembersRemoveWithInvalidOptions(t *testing.T) {
 			Usernames:                 []string{},
 			OrganizationMembershipIDs: []string{},
 		})
-		assert.Equal(t, err, ErrRequiredOnlyOneField)
+		assert.ErrorIs(t, err, ErrRequiredOnlyOneField)
 	})
 
 	t.Run("when usernames is empty", func(t *testing.T) {
 		err := client.TeamMembers.Remove(ctx, tmTest.ID, TeamMemberRemoveOptions{
 			Usernames: []string{},
 		})
-		assert.Equal(t, err, ErrInvalidUsernames)
+		assert.ErrorIs(t, err, ErrInvalidUsernames)
 	})
 
 	t.Run("when organization membership ids is empty", func(t *testing.T) {
 		err := client.TeamMembers.Remove(ctx, tmTest.ID, TeamMemberRemoveOptions{
 			OrganizationMembershipIDs: []string{},
 		})
-		assert.Equal(t, err, ErrInvalidMembershipIDs)
+		assert.ErrorIs(t, err, ErrInvalidMembershipIDs)
 	})
 
 	t.Run("when the team ID is invalid", func(t *testing.T) {
 		err := client.TeamMembers.Remove(ctx, badIdentifier, TeamMemberRemoveOptions{
 			Usernames: []string{"user1"},
 		})
-		assert.Equal(t, err, ErrInvalidTeamID)
+		assert.ErrorIs(t, err, ErrInvalidTeamID)
 	})
 }
 
