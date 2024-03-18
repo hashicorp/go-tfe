@@ -5,9 +5,6 @@ package tfe
 
 import (
 	"errors"
-	"log"
-	"net/http"
-	"strings"
 )
 
 // Generic errors applicable to all resources.
@@ -376,24 +373,3 @@ var (
 
 	ErrStateVersionUploadNotSupported = errors.New("upload not supported by this version of Terraform Enterprise")
 )
-
-type DecodeHTTPError struct {
-	Msg  string
-	Res  *http.Response
-	Info []string
-}
-
-func (d *DecodeHTTPError) Error() string {
-	info, err := decodeErrorPayload(d.Res)
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	// The decode needs to happen early
-	// After resp.Body.Close(), we can no longer read info
-	i := &DecodeHTTPError{
-		Info: info,
-	}
-
-	return strings.Join(i.Info, "\n")
-}
