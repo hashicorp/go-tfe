@@ -334,17 +334,17 @@ func TestNotificationConfigurationDelete(t *testing.T) {
 		require.NoError(t, err)
 
 		_, err = client.NotificationConfigurations.Read(ctx, ncTest.ID)
-		assert.Equal(t, err, ErrResourceNotFound)
+		assert.ErrorIs(t, err, ErrResourceNotFound)
 	})
 
 	t.Run("when the notification configuration does not exist", func(t *testing.T) {
 		err := client.NotificationConfigurations.Delete(ctx, "nonexisting")
-		assert.Equal(t, err, ErrResourceNotFound)
+		assert.ErrorIs(t, err, ErrResourceNotFound)
 	})
 
 	t.Run("when the notification configuration ID is invalid", func(t *testing.T) {
 		err := client.NotificationConfigurations.Delete(ctx, badIdentifier)
-		assert.Equal(t, err, ErrInvalidNotificationConfigID)
+		assert.ErrorIs(t, err, ErrInvalidNotificationConfigID)
 	})
 }
 
