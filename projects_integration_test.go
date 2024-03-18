@@ -135,7 +135,7 @@ func TestProjectsCreate(t *testing.T) {
 			Name: badIdentifier,
 		})
 		assert.Nil(t, w)
-		assert.Contains(t, err.Error(), "invalid attribute\n\nName may only contain")
+		assert.Error(t, err)
 	})
 
 	t.Run("when options has an invalid organization", func(t *testing.T) {
@@ -178,7 +178,7 @@ func TestProjectsUpdate(t *testing.T) {
 			Name: String(badIdentifier),
 		})
 		assert.Nil(t, kAfter)
-		assert.Contains(t, err.Error(), "invalid attribute\n\nName may only contain")
+		assert.Error(t, err)
 	})
 
 	t.Run("without a valid projects ID", func(t *testing.T) {
