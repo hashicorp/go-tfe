@@ -138,6 +138,21 @@ func (mr *MockOrganizationsMockRecorder) ReadDataRetentionPolicy(ctx, organizati
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ReadDataRetentionPolicy", reflect.TypeOf((*MockOrganizations)(nil).ReadDataRetentionPolicy), ctx, organization)
 }
 
+// ReadDataRetentionPolicyChoice mocks base method.
+func (m *MockOrganizations) ReadDataRetentionPolicyChoice(ctx context.Context, organization string) (*tfe.DataRetentionPolicyChoice, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "ReadDataRetentionPolicyChoice", ctx, organization)
+	ret0, _ := ret[0].(*tfe.DataRetentionPolicyChoice)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// ReadDataRetentionPolicyChoice indicates an expected call of ReadDataRetentionPolicyChoice.
+func (mr *MockOrganizationsMockRecorder) ReadDataRetentionPolicyChoice(ctx, organization interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ReadDataRetentionPolicyChoice", reflect.TypeOf((*MockOrganizations)(nil).ReadDataRetentionPolicyChoice), ctx, organization)
+}
+
 // ReadEntitlements mocks base method.
 func (m *MockOrganizations) ReadEntitlements(ctx context.Context, organization string) (*tfe.Entitlements, error) {
 	m.ctrl.T.Helper()
@@ -196,6 +211,36 @@ func (m *MockOrganizations) SetDataRetentionPolicy(ctx context.Context, organiza
 func (mr *MockOrganizationsMockRecorder) SetDataRetentionPolicy(ctx, organization, options interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "SetDataRetentionPolicy", reflect.TypeOf((*MockOrganizations)(nil).SetDataRetentionPolicy), ctx, organization, options)
+}
+
+// SetDataRetentionPolicyDeleteOlder mocks base method.
+func (m *MockOrganizations) SetDataRetentionPolicyDeleteOlder(ctx context.Context, organization string, options tfe.DataRetentionPolicyDeleteOlderSetOptions) (*tfe.DataRetentionPolicyDeleteOlder, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "SetDataRetentionPolicyDeleteOlder", ctx, organization, options)
+	ret0, _ := ret[0].(*tfe.DataRetentionPolicyDeleteOlder)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// SetDataRetentionPolicyDeleteOlder indicates an expected call of SetDataRetentionPolicyDeleteOlder.
+func (mr *MockOrganizationsMockRecorder) SetDataRetentionPolicyDeleteOlder(ctx, organization, options interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "SetDataRetentionPolicyDeleteOlder", reflect.TypeOf((*MockOrganizations)(nil).SetDataRetentionPolicyDeleteOlder), ctx, organization, options)
+}
+
+// SetDataRetentionPolicyDontDelete mocks base method.
+func (m *MockOrganizations) SetDataRetentionPolicyDontDelete(ctx context.Context, organization string, options tfe.DataRetentionPolicyDontDeleteSetOptions) (*tfe.DataRetentionPolicyDontDelete, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "SetDataRetentionPolicyDontDelete", ctx, organization, options)
+	ret0, _ := ret[0].(*tfe.DataRetentionPolicyDontDelete)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// SetDataRetentionPolicyDontDelete indicates an expected call of SetDataRetentionPolicyDontDelete.
+func (mr *MockOrganizationsMockRecorder) SetDataRetentionPolicyDontDelete(ctx, organization, options interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "SetDataRetentionPolicyDontDelete", reflect.TypeOf((*MockOrganizations)(nil).SetDataRetentionPolicyDontDelete), ctx, organization, options)
 }
 
 // Update mocks base method.
