@@ -1716,6 +1716,37 @@ func createRegistryModuleWithVersion(t *testing.T, client *Client, org *Organiza
 	}
 }
 
+func createRegistryModuleWithProvider(t *testing.T, client *Client, org *Organization) (*RegistryModule, func()) {
+	var orgCleanup func()
+
+	if org == nil {
+		org, orgCleanup = createOrganization(t, client)
+	}
+
+	ctx := context.Background()
+
+	options := RegistryModuleCreateOptions{
+		Name:     String("name"),
+		Provider: String("testprovider"),
+	}
+	rm, err := client.RegistryModules.Create(ctx, org.Name, options)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	return rm, func() {
+		if err := client.RegistryModules.Delete(ctx, org.Name, rm.Name); err != nil {
+			t.Errorf("Error destroying registry module! WARNING: Dangling resources\n"+
+				"may exist! The full error is shown below.\n\n"+
+				"Registry Module: %s\nError: %s", rm.Name, err)
+		}
+
+		if orgCleanup != nil {
+			orgCleanup()
+		}
+	}
+}
+
 func createRunTask(t *testing.T, client *Client, org *Organization) (*RunTask, func()) {
 	var orgCleanup func()
 
