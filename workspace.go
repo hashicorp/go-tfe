@@ -205,6 +205,7 @@ type Workspace struct {
 	Tags                        []*Tag                `jsonapi:"relation,tags"`
 	CurrentConfigurationVersion *ConfigurationVersion `jsonapi:"relation,current-configuration-version,omitempty"`
 	LockedBy                    *LockedByChoice       `jsonapi:"polyrelation,locked-by"`
+	Variables                   []*Variable           `jsonapi:"relation,vars"`
 
 	// Deprecated: Use DataRetentionPolicyChoice instead.
 	DataRetentionPolicy *DataRetentionPolicy
