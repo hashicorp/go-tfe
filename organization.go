@@ -160,6 +160,7 @@ type Entitlements struct {
 	Agents                bool   `jsonapi:"attr,agents"`
 	AuditLogging          bool   `jsonapi:"attr,audit-logging"`
 	CostEstimation        bool   `jsonapi:"attr,cost-estimation"`
+	GlobalRunTasks        bool   `jsonapi:"attr,global-run-tasks"`
 	Operations            bool   `jsonapi:"attr,operations"`
 	PrivateModuleRegistry bool   `jsonapi:"attr,private-module-registry"`
 	RunTasks              bool   `jsonapi:"attr,run-tasks"`
