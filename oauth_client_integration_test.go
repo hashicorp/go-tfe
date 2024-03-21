@@ -177,7 +177,6 @@ func TestOAuthClientsCreate(t *testing.T) {
 	})
 
 	t.Run("with projects provided", func(t *testing.T) {
-		skipUnlessBeta(t)
 		prjTest, prjTestCleanup := createProject(t, client, orgTest)
 		defer prjTestCleanup()
 
@@ -330,7 +329,6 @@ func TestOAuthClientsRead(t *testing.T) {
 }
 
 func TestOAuthClientsReadWithOptions(t *testing.T) {
-	skipUnlessBeta(t)
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -499,7 +497,6 @@ func TestOAuthClientsCreateOptionsValid(t *testing.T) {
 }
 
 func TestOAuthClientsAddProjects(t *testing.T) {
-	skipUnlessBeta(t)
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -569,7 +566,6 @@ func TestOAuthClientsAddProjects(t *testing.T) {
 }
 
 func TestOAuthClientsRemoveProjects(t *testing.T) {
-	skipUnlessBeta(t)
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -633,7 +629,6 @@ func TestOAuthClientsRemoveProjects(t *testing.T) {
 }
 
 func TestOAuthClientsUpdate(t *testing.T) {
-	skipUnlessBeta(t)
 	client := testClient(t)
 	ctx := context.Background()
 
