@@ -1,5 +1,9 @@
 # Unreleased
 
+## Enhancements
+
+* Adds `Variables` relationship field to `Workspace` by @arybolovlev [#872](https://github.com/hashicorp/go-tfe/pull/872)
+
 # v1.47.1
 
 ## Bug fixes
