@@ -17,6 +17,9 @@
 * The `SetDataRetentionPolicy` function on `Organizations` and `Workspaces` is now deprecated in favour of `SetDataRetentionPolicyDeleteOlder` or `SetDataRetentionPolicyDontDelete`. `SetDataRetentionPolicy` will only update the data retention policy when communicating with TFE versions v202311 and v202312. @JarrettSpiker [#652](https://github.com/hashicorp/go-tfe/pull/844)
 * The `ReadDataRetentionPolicy` function on `Organizations` and `Workspaces` is now deprecated in favour of `ReadDataRetentionPolicyChoice`. `ReadDataRetentionPolicyChoice` may return the different multiple data retention policy types added in TFE 202401-1. `SetDataRetentionPolicy` will only update the data retention policy when communicating with TFE versions v202311 and v202312. @JarrettSpiker [#652](https://github.com/hashicorp/go-tfe/pull/844)
 
+## Enhancements
+* Adds `ManageTeams`, `ManageOrganizationAccess`, and `AccessSecretTeams` permissions to team `OrganizationAccess` by @juliannatetreault []()
+
 # v1.47.0
 
 ## Enhancements
