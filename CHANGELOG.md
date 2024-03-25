@@ -3,6 +3,7 @@
 ## Enhancements
 
 * Adds `Variables` relationship field to `Workspace` by @arybolovlev [#872](https://github.com/hashicorp/go-tfe/pull/872)
+* Adds `ManageTeams`, `ManageOrganizationAccess`, and `AccessSecretTeams` permissions to team `OrganizationAccess` by @juliannatetreault [#874](https://github.com/hashicorp/go-tfe/pull/874)
 
 # v1.47.1
 
