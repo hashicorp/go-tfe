@@ -30,13 +30,11 @@ func TestVariableSetsList(t *testing.T) {
 		assert.Contains(t, vsl.Items, vsTest1)
 		assert.Contains(t, vsl.Items, vsTest2)
 
-		t.Skip("paging not supported yet in API")
 		assert.Equal(t, 1, vsl.CurrentPage)
 		assert.Equal(t, 2, vsl.TotalCount)
 	})
 
 	t.Run("with list options", func(t *testing.T) {
-		t.Skip("paging not supported yet in API")
 		// Request a page number which is out of range. The result should
 		// be successful, but return no results if the paging options are
 		// properly passed along.
@@ -56,6 +54,15 @@ func TestVariableSetsList(t *testing.T) {
 		vsl, err := client.VariableSets.List(ctx, badIdentifier, nil)
 		assert.Nil(t, vsl)
 		assert.EqualError(t, err, ErrInvalidOrg.Error())
+	})
+
+	t.Run("with query parameter", func(t *testing.T) {
+		vsl, err := client.VariableSets.List(ctx, orgTest.Name, &VariableSetListOptions{
+			Query: vsTest2.Name,
+		})
+		require.NoError(t, err)
+		assert.Len(t, vsl.Items, 1)
+		assert.Equal(t, vsTest2.ID, vsl.Items[0].ID)
 	})
 }
 
@@ -88,7 +95,6 @@ func TestVariableSetsListForWorkspace(t *testing.T) {
 	})
 
 	t.Run("with list options", func(t *testing.T) {
-		t.Skip("paging not supported yet in API")
 		// Request a page number which is out of range. The result should
 		// be successful, but return no results if the paging options are
 		// properly passed along.
@@ -108,6 +114,15 @@ func TestVariableSetsListForWorkspace(t *testing.T) {
 		vsl, err := client.VariableSets.ListForWorkspace(ctx, badIdentifier, nil)
 		assert.Nil(t, vsl)
 		assert.EqualError(t, err, ErrInvalidWorkspaceID.Error())
+	})
+
+	t.Run("with query parameter", func(t *testing.T) {
+		vsl, err := client.VariableSets.List(ctx, orgTest.Name, &VariableSetListOptions{
+			Query: vsTest2.Name,
+		})
+		require.NoError(t, err)
+		assert.Len(t, vsl.Items, 1)
+		assert.Equal(t, vsTest2.ID, vsl.Items[0].ID)
 	})
 }
 
@@ -156,6 +171,15 @@ func TestVariableSetsListForProject(t *testing.T) {
 		vsl, err := client.VariableSets.ListForProject(ctx, badIdentifier, nil)
 		assert.Nil(t, vsl)
 		assert.EqualError(t, err, ErrInvalidProjectID.Error())
+	})
+
+	t.Run("with query parameter", func(t *testing.T) {
+		vsl, err := client.VariableSets.List(ctx, orgTest.Name, &VariableSetListOptions{
+			Query: vsTest2.Name,
+		})
+		require.NoError(t, err)
+		assert.Len(t, vsl.Items, 1)
+		assert.Equal(t, vsTest2.ID, vsl.Items[0].ID)
 	})
 }
 
