@@ -94,6 +94,10 @@ const (
 type VariableSetListOptions struct {
 	ListOptions
 	Include string `url:"include"`
+
+	// Optional: A query string used to filter variable sets.
+	// Any variable sets with a name partially matching this value will be returned.
+	Query string `url:"q,omitempty"`
 }
 
 // VariableSetCreateOptions represents the options for creating a new variable set within in a organization.
