@@ -1,5 +1,8 @@
 # Unreleased
 
+## Enhancements
+* Adds `post_apply` to list of possible `stages` for Run Tasks by @glennsarti [#878](https://github.com/hashicorp/go-tfe/pull/878)
+
 # v1.48.0
 
 ## Features
