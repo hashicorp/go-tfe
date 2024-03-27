@@ -27,8 +27,10 @@ func TestWorkspaceRunTasksCreate(t *testing.T) {
 	defer wkspaceTestCleanup()
 
 	t.Run("attach run task to workspace", func(t *testing.T) {
+		s := []Stage{PrePlan, PostPlan}
 		wr, err := client.WorkspaceRunTasks.Create(ctx, wkspaceTest.ID, WorkspaceRunTaskCreateOptions{
 			EnforcementLevel: Mandatory,
+			Stages:           &s,
 			RunTask:          runTaskTest,
 		})
 
@@ -39,17 +41,19 @@ func TestWorkspaceRunTasksCreate(t *testing.T) {
 		}()
 
 		assert.NotEmpty(t, wr.ID)
-		assert.Equal(t, wr.EnforcementLevel, Mandatory)
+		assert.Equal(t, Mandatory, wr.EnforcementLevel)
+		assert.Equal(t, s[0], wr.Stage)
+		assert.Equal(t, s, wr.Stages)
 
 		t.Run("ensure run task is deserialized properly", func(t *testing.T) {
+			assert.NotNil(t, wr.RunTask)
 			assert.NotEmpty(t, wr.RunTask.ID)
 		})
 	})
 }
 
-func TestWorkspaceRunTasksCreateBeta(t *testing.T) {
-	// Once Pre-Plan Tasks are generally available, this can replace the above TestWorkspaceRunTasksCreate
-	skipUnlessBeta(t)
+func TestWorkspaceRunTasksCreateDeprecated(t *testing.T) {
+	// This test uses the deprecate `stage` attribute
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -176,22 +180,24 @@ func TestWorkspaceRunTasksUpdate(t *testing.T) {
 	wrTaskTest, wrTaskTestCleanup := createWorkspaceRunTask(t, client, wkspaceTest, runTaskTest)
 	defer wrTaskTestCleanup()
 
-	t.Run("rename task", func(t *testing.T) {
+	t.Run("update task", func(t *testing.T) {
+		stages := []Stage{PrePlan, PostPlan}
 		wr, err := client.WorkspaceRunTasks.Update(ctx, wkspaceTest.ID, wrTaskTest.ID, WorkspaceRunTaskUpdateOptions{
 			EnforcementLevel: Mandatory,
+			Stages:           &stages,
 		})
 		require.NoError(t, err)
 
 		wr, err = client.WorkspaceRunTasks.Read(ctx, wkspaceTest.ID, wr.ID)
 		require.NoError(t, err)
 
-		assert.Equal(t, wr.EnforcementLevel, Mandatory)
+		assert.Equal(t, Mandatory, wr.EnforcementLevel)
+		assert.Equal(t, stages, wr.Stages)
+		assert.Equal(t, PrePlan, wr.Stage)
 	})
 }
 
-func TestWorkspaceRunTasksUpdateBeta(t *testing.T) {
-	// Once Pre-Plan Tasks are generally available, this can replace the above TestWorkspaceRunTasksUpdate
-	skipUnlessBeta(t)
+func TestWorkspaceRunTasksUpdateDeprecated(t *testing.T) {
 	client := testClient(t)
 	ctx := context.Background()
 

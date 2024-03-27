@@ -39,7 +39,9 @@ type workspaceRunTasks struct {
 type WorkspaceRunTask struct {
 	ID               string               `jsonapi:"primary,workspace-tasks"`
 	EnforcementLevel TaskEnforcementLevel `jsonapi:"attr,enforcement-level"`
-	Stage            Stage                `jsonapi:"attr,stage"`
+	// Deprecated: Use Stages property instead.
+	Stage  Stage   `jsonapi:"attr,stage"`
+	Stages []Stage `jsonapi:"attr,stages"`
 
 	RunTask   *RunTask   `jsonapi:"relation,task"`
 	Workspace *Workspace `jsonapi:"relation,workspace"`
@@ -63,15 +65,20 @@ type WorkspaceRunTaskCreateOptions struct {
 	EnforcementLevel TaskEnforcementLevel `jsonapi:"attr,enforcement-level"`
 	// Required: The run task to attach to the workspace
 	RunTask *RunTask `jsonapi:"relation,task"`
-	// Optional: The stage to run the task in
+	// Deprecated: Use Stages property instead.
 	Stage *Stage `jsonapi:"attr,stage,omitempty"`
+	// Optional: The stage to run the task in
+	Stages *[]Stage `jsonapi:"attr,stages,omitempty"`
 }
 
 // WorkspaceRunTaskUpdateOptions represent the set of options for updating a workspace run task.
 type WorkspaceRunTaskUpdateOptions struct {
 	Type             string               `jsonapi:"primary,workspace-tasks"`
 	EnforcementLevel TaskEnforcementLevel `jsonapi:"attr,enforcement-level,omitempty"`
-	Stage            *Stage               `jsonapi:"attr,stage,omitempty"` // The stage to run the task in
+	// Deprecated: Use Stages property instead.
+	Stage *Stage `jsonapi:"attr,stage,omitempty"`
+	// Optional: The stage to run the task in
+	Stages *[]Stage `jsonapi:"attr,stages,omitempty"`
 }
 
 // List all run tasks attached to a workspace
@@ -86,13 +93,13 @@ func (s *workspaceRunTasks) List(ctx context.Context, workspaceID string, option
 		return nil, err
 	}
 
-	rl := &WorkspaceRunTaskList{}
+	rl := &internalWorkspaceRunTaskList{}
 	err = req.Do(ctx, rl)
 	if err != nil {
 		return nil, err
 	}
 
-	return rl, nil
+	return rl.ToWorkspaceRunTaskList(), nil
 }
 
 // Read a workspace run task by ID
@@ -115,13 +122,13 @@ func (s *workspaceRunTasks) Read(ctx context.Context, workspaceID, workspaceTask
 		return nil, err
 	}
 
-	wr := &WorkspaceRunTask{}
+	wr := &internalWorkspaceRunTask{}
 	err = req.Do(ctx, wr)
 	if err != nil {
 		return nil, err
 	}
 
-	return wr, nil
+	return wr.ToWorkspaceRunTask(), nil
 }
 
 // Create is used to attach a run task to a workspace, or in other words: create a workspace run task. The run task must exist in the workspace's organization.
@@ -140,13 +147,13 @@ func (s *workspaceRunTasks) Create(ctx context.Context, workspaceID string, opti
 		return nil, err
 	}
 
-	wr := &WorkspaceRunTask{}
+	wr := &internalWorkspaceRunTask{}
 	err = req.Do(ctx, wr)
 	if err != nil {
 		return nil, err
 	}
 
-	return wr, nil
+	return wr.ToWorkspaceRunTask(), nil
 }
 
 // Update an existing workspace run task by ID
@@ -169,13 +176,13 @@ func (s *workspaceRunTasks) Update(ctx context.Context, workspaceID, workspaceTa
 		return nil, err
 	}
 
-	wr := &WorkspaceRunTask{}
+	wr := &internalWorkspaceRunTask{}
 	err = req.Do(ctx, wr)
 	if err != nil {
 		return nil, err
 	}
 
-	return wr, nil
+	return wr.ToWorkspaceRunTask(), nil
 }
 
 // Delete a workspace run task by ID
