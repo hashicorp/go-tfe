@@ -5,6 +5,7 @@ package tfe
 
 import (
 	"errors"
+	"fmt"
 )
 
 // Generic errors applicable to all resources.
@@ -219,6 +220,14 @@ var (
 	ErrInvalidModuleID = errors.New("invalid value for module ID")
 
 	ErrInvalidRegistryName = errors.New(`invalid value for registry-name. It must be either "private" or "public"`)
+
+	ErrInvalidCallbackURL = errors.New("invalid value for callback URL")
+
+	ErrInvalidAccessToken = errors.New("invalid value for access token")
+
+	ErrInvalidTaskResultsCallbackType = errors.New("invalid value for task result type")
+
+	ErrInvalidTaskResultsCallbackStatus = errors.New(fmt.Sprintf("invalid value for task result status. Must be either `%s`, `%s`, or `%s`", TaskFailed, TaskPassed, TaskRunning))
 )
 
 var (
@@ -372,4 +381,8 @@ var (
 	ErrRequiredRawState = errors.New("RawState is required")
 
 	ErrStateVersionUploadNotSupported = errors.New("upload not supported by this version of Terraform Enterprise")
+
+	ErrRequiredCallbackData = errors.New("data object is required for TFE run task callback")
+
+	ErrRequiredCallbackDataAttributes = errors.New("data attributes object is required for TFE run task callback")
 )

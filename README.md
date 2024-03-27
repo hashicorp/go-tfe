@@ -153,7 +153,7 @@ This API client covers most of the existing Terraform Cloud API calls and is upd
 - [x] Runs
 - [x] Run Events
 - [x] Run Tasks
-- [ ] Run Tasks Integration
+- [x] Run Tasks Integration
 - [x] Run Triggers
 - [x] SSH Keys
 - [x] Stability Policy
