@@ -344,8 +344,8 @@ func (o OAuthClientCreateOptions) valid() error {
 		return ErrRequiredServiceProvider
 	}
 	if !validString(o.OAuthToken) &&
-		*o.ServiceProvider != *ServiceProvider(ServiceProviderBitbucketServer) &&
-		*o.ServiceProvider != *ServiceProvider(ServiceProviderBitbucketDataCenter) {
+		(*o.ServiceProvider != *ServiceProvider(ServiceProviderBitbucketServer) ||
+			*o.ServiceProvider != *ServiceProvider(ServiceProviderBitbucketDataCenter)) {
 		return ErrRequiredOauthToken
 	}
 	if validString(o.PrivateKey) && *o.ServiceProvider != *ServiceProvider(ServiceProviderAzureDevOpsServer) {
