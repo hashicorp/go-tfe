@@ -35,9 +35,10 @@ type taskStages struct {
 type Stage string
 
 const (
-	PrePlan  Stage = "pre_plan"
-	PostPlan Stage = "post_plan"
-	PreApply Stage = "pre_apply"
+	PrePlan   Stage = "pre_plan"
+	PostPlan  Stage = "post_plan"
+	PreApply  Stage = "pre_apply"
+	PostApply Stage = "post_apply"
 )
 
 // TaskStageStatus is an enum that represents all possible statuses for a task stage
