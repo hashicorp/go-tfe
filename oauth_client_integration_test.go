@@ -205,9 +205,9 @@ func TestOAuthClientsCreate_rsaKeyPair(t *testing.T) {
 	t.Run("with key, rsa public/private key options", func(t *testing.T) {
 		key := randomString(t)
 		options := OAuthClientCreateOptions{
-			APIURL:          String("https://bbs.com"),
-			HTTPURL:         String("https://bbs.com"),
-			ServiceProvider: ServiceProvider(ServiceProviderBitbucketServer),
+			APIURL:          String("https://bbdc.com"),
+			HTTPURL:         String("https://bbdc.com"),
+			ServiceProvider: ServiceProvider(ServiceProviderBitbucketDataCenter),
 			Key:             String(key),
 			Secret:          String(privateKey),
 			RSAPublicKey:    String(publicKey),
@@ -216,9 +216,9 @@ func TestOAuthClientsCreate_rsaKeyPair(t *testing.T) {
 		oc, err := client.OAuthClients.Create(ctx, orgTest.Name, options)
 		require.NoError(t, err)
 		assert.NotEmpty(t, oc.ID)
-		assert.Equal(t, "https://bbs.com", oc.APIURL)
-		assert.Equal(t, "https://bbs.com", oc.HTTPURL)
-		assert.Equal(t, ServiceProviderBitbucketServer, oc.ServiceProvider)
+		assert.Equal(t, "https://bbdc.com", oc.APIURL)
+		assert.Equal(t, "https://bbdc.com", oc.HTTPURL)
+		assert.Equal(t, ServiceProviderBitbucketDataCenter, oc.ServiceProvider)
 		assert.Equal(t, publicKey, oc.RSAPublicKey)
 		assert.Equal(t, key, oc.Key)
 	})
@@ -644,9 +644,9 @@ func TestOAuthClientsUpdate(t *testing.T) {
 		organizationScoped := false
 		organizationScopedTrue := true
 		options := OAuthClientCreateOptions{
-			APIURL:             String("https://bbs.com"),
-			HTTPURL:            String("https://bbs.com"),
-			ServiceProvider:    ServiceProvider(ServiceProviderBitbucketServer),
+			APIURL:             String("https://bbdc.com"),
+			HTTPURL:            String("https://bbdc.com"),
+			ServiceProvider:    ServiceProvider(ServiceProviderBitbucketDataCenter),
 			OrganizationScoped: &organizationScopedTrue,
 		}
 
@@ -686,9 +686,9 @@ func TestOAuthClientsUpdate_rsaKeyPair(t *testing.T) {
 	t.Run("updates a new key", func(t *testing.T) {
 		originalKey := randomString(t)
 		options := OAuthClientCreateOptions{
-			APIURL:          String("https://bbs.com"),
-			HTTPURL:         String("https://bbs.com"),
-			ServiceProvider: ServiceProvider(ServiceProviderBitbucketServer),
+			APIURL:          String("https://bbdc.com"),
+			HTTPURL:         String("https://bbdc.com"),
+			ServiceProvider: ServiceProvider(ServiceProviderBitbucketDataCenter),
 			Key:             String(originalKey),
 			Secret:          String(privateKey),
 			RSAPublicKey:    String(publicKey),
@@ -705,7 +705,7 @@ func TestOAuthClientsUpdate_rsaKeyPair(t *testing.T) {
 		oc, err := client.OAuthClients.Update(ctx, origOC.ID, updateOpts)
 		require.NoError(t, err)
 		assert.NotEmpty(t, oc.ID)
-		assert.Equal(t, ServiceProviderBitbucketServer, oc.ServiceProvider)
+		assert.Equal(t, ServiceProviderBitbucketDataCenter, oc.ServiceProvider)
 		assert.Equal(t, oc.RSAPublicKey, origOC.RSAPublicKey)
 		assert.Equal(t, newKey, oc.Key)
 	})
@@ -713,9 +713,9 @@ func TestOAuthClientsUpdate_rsaKeyPair(t *testing.T) {
 	t.Run("errors when missing key", func(t *testing.T) {
 		originalKey := randomString(t)
 		options := OAuthClientCreateOptions{
-			APIURL:          String("https://bbs.com"),
-			HTTPURL:         String("https://bbs.com"),
-			ServiceProvider: ServiceProvider(ServiceProviderBitbucketServer),
+			APIURL:          String("https://bbdc.com"),
+			HTTPURL:         String("https://bbdc.com"),
+			ServiceProvider: ServiceProvider(ServiceProviderBitbucketDataCenter),
 			Key:             String(originalKey),
 			Secret:          String(privateKey),
 			RSAPublicKey:    String(publicKey),
@@ -729,6 +729,6 @@ func TestOAuthClientsUpdate_rsaKeyPair(t *testing.T) {
 			Key: String(""),
 		}
 		_, err = client.OAuthClients.Update(ctx, origOC.ID, updateOpts)
-		assert.Error(t, err, "The Consumer Key for BitBucket Server must be present. Please add a value for `key`.")
+		assert.Error(t, err, "The Consumer Key for Bitbucket Data Center must be present. Please add a value for `key`.")
 	})
 }
