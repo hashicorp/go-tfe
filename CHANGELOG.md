@@ -1,3 +1,8 @@
+# Unreleased
+
+## Enhancements
+* Adds Bitbucket Data Center as a new `ServiceProviderType` and ensures similar validation as Bitbucket Server by @zainq11 [#879](https://github.com/hashicorp/go-tfe/pull/879)
+
 # v1.49.0
 
 ## Enhancements
