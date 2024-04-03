@@ -1,4 +1,4 @@
-# Unreleased
+# v1.49.0
 
 ## Enhancements
 * Adds `post_apply` to list of possible `stages` for Run Tasks by @glennsarti [#878](https://github.com/hashicorp/go-tfe/pull/878)
@@ -6,7 +6,7 @@
 # v1.48.0
 
 ## Features
-*For Terraform Enterprise users who have data retention policies defined on Organizations or Workspaces: A new DataRetentionPolicyChoice relation has been added to reflect that [data retention policies are polymorphic](https://developer.hashicorp.com/terraform/enterprise/api-docs/data-retention-policies#data-retention-policy-types). Organizations and workspaces may be related to a `DataRetentionPolicyDeleteOlder` or `DataRetentionPolicyDontDelete` record through the `DataRetentionPolicyChoice` struct. Data retention policies can be read using `ReadDataRetentionPolicyChoice`, and set or updated (including changing their type) using `SetDataRetentionPolicyDeleteOlder` or `SetDataRetentionPolicyDontDelete` by  @JarrettSpiker [#652](https://github.com/hashicorp/go-tfe/pull/844)
+* For Terraform Enterprise users who have data retention policies defined on Organizations or Workspaces: A new DataRetentionPolicyChoice relation has been added to reflect that [data retention policies are polymorphic](https://developer.hashicorp.com/terraform/enterprise/api-docs/data-retention-policies#data-retention-policy-types). Organizations and workspaces may be related to a `DataRetentionPolicyDeleteOlder` or `DataRetentionPolicyDontDelete` record through the `DataRetentionPolicyChoice` struct. Data retention policies can be read using `ReadDataRetentionPolicyChoice`, and set or updated (including changing their type) using `SetDataRetentionPolicyDeleteOlder` or `SetDataRetentionPolicyDontDelete` by  @JarrettSpiker [#652](https://github.com/hashicorp/go-tfe/pull/844)
 
 ## Deprecations
 * The `DataRetentionPolicy` type, and the `DataRetentionPolicy` relationship on `Organization` and `Workspace`s have been deprecated. The `DataRetentionPolicy` type is equivalent to the new `DataRetentionPolicyDeleteOlder`. The Data retention policy relationships on `Organization` and `Workspace`s are now [polymorphic](https://developer.hashicorp.com/terraform/enterprise/api-docs/data-retention-policies#data-retention-policy-types), and are represented by the `DataRetentionPolicyChoice` relationship. The existing `DataRetentionPolicy` relationship will continue to be populated when reading an `Organization` or `Workspace`, but it may be removed in a future release. @JarrettSpiker [#652](https://github.com/hashicorp/go-tfe/pull/844)
