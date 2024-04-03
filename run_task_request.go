@@ -8,8 +8,8 @@ import (
 )
 
 const (
-	// RunTaskRegistrationRunId is the string that TFC/E sends when it just wants to register the Run Task.
-	RunTaskRegistrationRunId = "run-xxxxxxxxxxxxxxxx"
+	// VerificationToken is a nonsense Terraform Cloud API token that should NEVER be valid.
+	VerificationToken = "test-token"
 )
 
 // RunTaskRequest is the payload object that TFC/E sends to the Run Task's URL.
@@ -48,6 +48,7 @@ type RunTaskRequestCapabilitites struct {
 }
 
 // IsEndpointValidation returns true if this is a Request from TFC/E to validate and register this API endpoint.
+// Function copied from: https://github.com/hashicorp/terraform-run-task-scaffolding-go/blob/d7ed63b7d8eacf0897ab687d35d353386e4bd0ac/internal/sdk/api/structs.go#L55-L60
 func (r RunTaskRequest) IsEndpointValidation() bool {
-	return r.RunID == RunTaskRegistrationRunId
+	return r.AccessToken == VerificationToken
 }
