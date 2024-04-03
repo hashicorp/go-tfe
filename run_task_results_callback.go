@@ -13,8 +13,8 @@ var _ RunTasksCallback = (*taskResultsCallback)(nil)
 // TFE API docs:
 // https://developer.hashicorp.com/terraform/enterprise/api-docs/run-tasks/run-tasks-integration
 type RunTasksCallback interface {
-	// Update sends updates to TFC/E Run Task Callback URL..
-	Update(ctx context.Context, callbackURL string, accessToken string, options TaskResultsCallbackOptions) error
+	// Update sends updates to TFC/E Run Task Callback URL
+	Update(ctx context.Context, callbackURL string, accessToken string, options TaskResultCallbackRequestOptions) error
 }
 
 // taskResultsCallback implements RunTasksCallback.
@@ -27,7 +27,7 @@ const (
 )
 
 // Update sends updates to TFC/E Run Task Callback URL
-func (s *taskResultsCallback) Update(ctx context.Context, callbackURL string, accessToken string, options TaskResultsCallbackOptions) error {
+func (s *taskResultsCallback) Update(ctx context.Context, callbackURL string, accessToken string, options TaskResultCallbackRequestOptions) error {
 	if !validString(&callbackURL) {
 		return ErrInvalidCallbackURL
 	}
@@ -44,70 +44,39 @@ func (s *taskResultsCallback) Update(ctx context.Context, callbackURL string, ac
 	return req.Do(ctx, nil)
 }
 
-// TaskResultsCallbackOptions represents the options for a TFE Task result callback request
+// TaskResultCallbackRequestOptions represents the TFC/E Task result callback request
 // https://developer.hashicorp.com/terraform/enterprise/api-docs/run-tasks/run-tasks-integration#request-body-1
-type TaskResultsCallbackOptions struct {
-	Data *TaskResultsCallbackData `json:"data"`
+type TaskResultCallbackRequestOptions struct {
+	Type     string               `jsonapi:"primary,task-results"`
+	Status   TaskResultStatus     `jsonapi:"attr,status"`
+	Message  string               `jsonapi:"attr,message,omitempty"`
+	URL      string               `jsonapi:"attr,url,omitempty"`
+	Outcomes []*TaskResultOutcome `jsonapi:"relation,outcomes,omitempty"`
 }
 
-type TaskResultsCallbackData struct {
-	// Required: Must be set to `task-results`
-	Type *string `json:"type"`
-	// Required: Attributes of the Task Results Callback Response
-	Attributes    *TaskResultsCallbackDataAttributes `json:"attributes"`
-	Relationships *TaskResultsCallbackRelationships  `json:"relationships,omitempty"`
+// TaskResultOutcome represents a detailed TFC/E run task outcome, which improves result visibility and content in the TFC/E UI.
+// https://developer.hashicorp.com/terraform/enterprise/api-docs/run-tasks/run-tasks-integration#outcomes-payload-body
+type TaskResultOutcome struct {
+	Type        string                      `jsonapi:"primary,task-result-outcomes"`
+	OutcomeID   string                      `jsonapi:"attr,outcome-id,omitempty"`
+	Description string                      `jsonapi:"attr,description,omitempty"`
+	Body        string                      `jsonapi:"attr,body,omitempty"`
+	URL         string                      `jsonapi:"attr,url,omitempty"`
+	Tags        map[string][]*TaskResultTag `jsonapi:"attr,tags,omitempty"`
 }
 
-type TaskResultsCallbackDataAttributes struct {
-	// Status Must be one of TaskFailed, TaskPassed or TaskRunning
-	Status TaskResultStatus `json:"status"`
-	// Message A short message describing the status of the task.
-	Message string `json:"message,omitempty"`
-	// URL that the user can use to get more information from the external service
-	URL string `json:"url,omitempty"`
-}
-
-type TaskResultsCallbackRelationships struct {
-	// Outcomes A run task result may optionally contain one or more detailed outcomes, which improves result visibility and content in the Terraform Cloud user interface.
-	// https://developer.hashicorp.com/terraform/enterprise/api-docs/run-tasks/run-tasks-integration#outcomes-payload-body
-	Outcomes *TaskResultsCallbackRelationshipsOutcomes `json:"outcomes"`
-}
-
-type TaskResultsCallbackRelationshipsOutcomes struct {
-	Data []*TaskResultsCallbackRelationshipsOutcomesData `json:"data"`
-}
-
-type TaskResultsCallbackRelationshipsOutcomesData struct {
-	Type       string                                                  `json:"type"`
-	Attributes *TaskResultsCallbackRelationshipsOutcomesDataAttributes `json:"attributes"`
-}
-
-type TaskResultsCallbackRelationshipsOutcomesDataAttributes struct {
-	OutcomeID   string                                                                   `json:"outcome-id"`
-	Description string                                                                   `json:"description"`
-	Body        string                                                                   `json:"body,omitempty"`
-	URL         string                                                                   `json:"url,omitempty"`
-	Tags        map[string][]*TaskResultsCallbackRelationshipsOutcomesDataTagsAttributes `json:"tags,omitempty"`
-}
-
-// TaskResultsCallbackRelationshipsOutcomesDataTagsAttributes can be used to enrich outcomes display list in TFC/E.
+// TaskResultTag can be used to enrich outcomes display list in TFC/E.
 // https://developer.hashicorp.com/terraform/enterprise/api-docs/run-tasks/run-tasks-integration#severity-and-status-tags
-type TaskResultsCallbackRelationshipsOutcomesDataTagsAttributes struct {
-	Label string `json:"label"`
-	Level string `json:"level,omitempty"`
+type TaskResultTag struct {
+	Label string  `json:"label"`
+	Level *string `json:"level,omitempty"`
 }
 
-func (o *TaskResultsCallbackOptions) valid() error {
-	if o.Data == nil {
-		return ErrRequiredCallbackData
-	}
-	if validStringID(o.Data.Type) && o.Data.Type != String(TaskResultsCallbackType) {
+func (o *TaskResultCallbackRequestOptions) valid() error {
+	if !validStringID(&o.Type) || o.Type != TaskResultsCallbackType {
 		return ErrInvalidTaskResultsCallbackType
 	}
-	if o.Data.Attributes == nil {
-		return ErrRequiredCallbackDataAttributes
-	}
-	if o.Data.Attributes.Status != TaskFailed || o.Data.Attributes.Status != TaskPassed || o.Data.Attributes.Status != TaskRunning {
+	if !validStringID(String(string(o.Status))) || (o.Status != TaskFailed && o.Status != TaskPassed && o.Status != TaskRunning) {
 		return ErrInvalidTaskResultsCallbackStatus
 	}
 	return nil

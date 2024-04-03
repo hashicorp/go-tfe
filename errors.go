@@ -381,8 +381,4 @@ var (
 	ErrRequiredRawState = errors.New("RawState is required")
 
 	ErrStateVersionUploadNotSupported = errors.New("upload not supported by this version of Terraform Enterprise")
-
-	ErrRequiredCallbackData = errors.New("data object is required for TFE run task callback")
-
-	ErrRequiredCallbackDataAttributes = errors.New("data attributes object is required for TFE run task callback")
 )
