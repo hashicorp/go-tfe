@@ -22,10 +22,6 @@ type taskResultsCallback struct {
 	client *Client
 }
 
-const (
-	TaskResultsCallbackType = "task-results"
-)
-
 // Update sends updates to TFC/E Run Task Callback URL
 func (s *taskResultsCallback) Update(ctx context.Context, callbackURL string, accessToken string, options TaskResultCallbackRequestOptions) error {
 	if !validString(&callbackURL) {
@@ -33,6 +29,9 @@ func (s *taskResultsCallback) Update(ctx context.Context, callbackURL string, ac
 	}
 	if !validString(&accessToken) {
 		return ErrInvalidAccessToken
+	}
+	if err := options.valid(); err != nil {
+		return err
 	}
 	req, err := s.client.NewRequest(http.MethodPatch, callbackURL, &options)
 	if err != nil {
@@ -73,9 +72,6 @@ type TaskResultTag struct {
 }
 
 func (o *TaskResultCallbackRequestOptions) valid() error {
-	if !validStringID(&o.Type) || o.Type != TaskResultsCallbackType {
-		return ErrInvalidTaskResultsCallbackType
-	}
 	if !validStringID(String(string(o.Status))) || (o.Status != TaskFailed && o.Status != TaskPassed && o.Status != TaskRunning) {
 		return ErrInvalidTaskResultsCallbackStatus
 	}
