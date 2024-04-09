@@ -179,15 +179,17 @@ func TestOAuthClientsCreate(t *testing.T) {
 	t.Run("with projects provided", func(t *testing.T) {
 		prjTest, prjTestCleanup := createProject(t, client, orgTest)
 		defer prjTestCleanup()
-
 		options := OAuthClientCreateOptions{
-			Name:     String("project-oauth-client"),
-			Projects: []*Project{prjTest},
+			Name:            String("project-oauth-client"),
+			Projects:        []*Project{prjTest},
+			APIURL:          String("https://api.github.com"),
+			HTTPURL:         String("https://github.com"),
+			OAuthToken:      String(githubToken),
+			ServiceProvider: ServiceProvider(ServiceProviderGithub),
 		}
 
 		ps, err := client.OAuthClients.Create(ctx, orgTest.Name, options)
 		require.NoError(t, err)
-
 		assert.Equal(t, ps.Name, *options.Name)
 		assert.Equal(t, len(ps.Projects), 1)
 		assert.Equal(t, ps.Projects[0].ID, prjTest.ID)
