@@ -190,7 +190,7 @@ func TestOAuthClientsCreate(t *testing.T) {
 
 		ps, err := client.OAuthClients.Create(ctx, orgTest.Name, options)
 		require.NoError(t, err)
-		assert.Equal(t, ps.Projects[0], prjTest.Name)
+		assert.Equal(t, ps.Projects[0].Name, prjTest.Name)
 		assert.Equal(t, ps.Projects[0].ID, prjTest.ID)
 	})
 }
