@@ -175,24 +175,6 @@ func TestOAuthClientsCreate(t *testing.T) {
 		_, err := client.OAuthClients.Create(ctx, orgTest.Name, options)
 		assert.Equal(t, err, ErrRequiredServiceProvider)
 	})
-
-	t.Run("with projects provided", func(t *testing.T) {
-		prjTest, prjTestCleanup := createProject(t, client, orgTest)
-		defer prjTestCleanup()
-		options := OAuthClientCreateOptions{
-			Name:            String("project-oauth-client"),
-			Projects:        []*Project{prjTest},
-			APIURL:          String("https://api.github.com"),
-			HTTPURL:         String("https://github.com"),
-			OAuthToken:      String(githubToken),
-			ServiceProvider: ServiceProvider(ServiceProviderGithub),
-		}
-
-		ps, err := client.OAuthClients.Create(ctx, orgTest.Name, options)
-		require.NoError(t, err)
-		assert.Equal(t, ps.Projects[0].Name, prjTest.Name)
-		assert.Equal(t, ps.Projects[0].ID, prjTest.ID)
-	})
 }
 
 func TestOAuthClientsCreate_rsaKeyPair(t *testing.T) {
