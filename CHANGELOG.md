@@ -2,10 +2,15 @@
 
 ## Enhancements
 * Adds Bitbucket Data Center as a new `ServiceProviderType` and ensures similar validation as Bitbucket Server by @zainq11 [#879](https://github.com/hashicorp/go-tfe/pull/879)
+* Add `GlobalRunTasks` field to `Entitlements`. by @glennsarti [#865](https://github.com/hashicorp/go-tfe/pull/865)
+* Add `Global` field to `RunTask`. by @glennsarti [#865](https://github.com/hashicorp/go-tfe/pull/865)
+* Add `Stages` field to `WorkspaceRunTask`. by @glennsarti [#865](https://github.com/hashicorp/go-tfe/pull/865)
 * Changing BETA `OrganizationScoped` attribute of `OAuthClient` to be a pointer for bug fix by @netramali [884](https://github.com/hashicorp/go-tfe/pull/884)
 
-# v1.49.0
+## Deprecations
+* The `Stage` field has been deprecated on `WorkspaceRunTask`. Instead, use `Stages`. by @glennsarti [#865](https://github.com/hashicorp/go-tfe/pull/865)
 
+# v1.49.0
 ## Enhancements
 * Adds `post_apply` to list of possible `stages` for Run Tasks by @glennsarti [#878](https://github.com/hashicorp/go-tfe/pull/878)
 
