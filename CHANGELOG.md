@@ -1,7 +1,20 @@
 # Unreleased
 
 ## Enhancements
+* Adds `Teams` field to `OrganizationMembershipCreateOptions` to allow users to be added to teams at the same time they are invited to an organization. @JarrettSpiker [#886](https://github.com/hashicorp/go-tfe/pull/886)
+
+# v1.50.0
+
+## Enhancements
 * Adds Bitbucket Data Center as a new `ServiceProviderType` and ensures similar validation as Bitbucket Server by @zainq11 [#879](https://github.com/hashicorp/go-tfe/pull/879)
+* Add `GlobalRunTasks` field to `Entitlements`. by @glennsarti [#865](https://github.com/hashicorp/go-tfe/pull/865)
+* Add `Global` field to `RunTask`. by @glennsarti [#865](https://github.com/hashicorp/go-tfe/pull/865)
+* Add `Stages` field to `WorkspaceRunTask`. by @glennsarti [#865](https://github.com/hashicorp/go-tfe/pull/865)
+* Changing BETA `OrganizationScoped` attribute of `OAuthClient` to be a pointer for bug fix by @netramali [884](https://github.com/hashicorp/go-tfe/pull/884)
+* Adds `Query` parameter to `VariableSetListOptions` to allow searching variable sets by name, by @JarrettSpiker[#877](https://github.com/hashicorp/go-tfe/pull/877)
+
+## Deprecations
+* The `Stage` field has been deprecated on `WorkspaceRunTask`. Instead, use `Stages`. by @glennsarti [#865](https://github.com/hashicorp/go-tfe/pull/865)
 
 # v1.49.0
 

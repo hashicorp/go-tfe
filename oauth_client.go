@@ -90,7 +90,7 @@ type OAuthClient struct {
 	Secret              string              `jsonapi:"attr,secret"`
 	ServiceProvider     ServiceProviderType `jsonapi:"attr,service-provider"`
 	ServiceProviderName string              `jsonapi:"attr,service-provider-display-name"`
-	OrganizationScoped  bool                `jsonapi:"attr,organization-scoped"`
+	OrganizationScoped  *bool               `jsonapi:"attr,organization-scoped"`
 
 	// Relations
 	Organization *Organization `jsonapi:"relation,organization"`
