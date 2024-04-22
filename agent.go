@@ -14,7 +14,7 @@ import (
 var _ Agents = (*agents)(nil)
 
 // Agents describes all the agent-related methods that the
-// Terraform Cloud API supports.
+// HCP Terraform API supports.
 // TFE API docs: https://developer.hashicorp.com/terraform/cloud-docs/api-docs/agents
 type Agents interface {
 	// Read an agent by its ID.
@@ -35,7 +35,7 @@ type AgentList struct {
 	Items []*Agent
 }
 
-// Agent represents a Terraform Cloud agent.
+// Agent represents a HCP Terraform agent.
 type Agent struct {
 	ID         string `jsonapi:"primary,agents"`
 	Name       string `jsonapi:"attr,name"`

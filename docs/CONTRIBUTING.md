@@ -4,7 +4,7 @@ If you find an issue with this package, please create an issue in GitHub. If you
 
 ## Adding new functionality or fixing relevant bugs
 
-If you are adding a new endpoint, make sure to update the [coverage list in README.md](../README.md#API-Coverage) where we keep a list of the TFC APIs that this SDK supports.
+If you are adding a new endpoint, make sure to update the [coverage list in README.md](../README.md#API-Coverage) where we keep a list of the HCP Terraform APIs that this SDK supports.
 
 If you are making relevant changes that is worth communicating to our users, please include a note about it in our CHANGELOG.md. You can include it as part of the PR where you are submitting your changes.
 
@@ -121,7 +121,7 @@ var ErrInvalidExampleID = errors.New("invalid value for example ID") // move thi
 var _ ExampleResource = (*example)(nil)
 
 // Example represents all the example methods in the context of an organization
-// that the Terraform Cloud/Enterprise API supports.
+// that the HCP Terraform and Terraform Enterprise API supports.
 // If this API is in beta or pre-release state, include that warning here.
 type ExampleResource interface {
 	// Create an example for an organization
@@ -148,7 +148,7 @@ type example struct {
 	client *Client
 }
 
-// Example represents a TFC/E example resource
+// Example represents a HCP Terraform and Terraform Enterprise example resource
 type Example struct {
 	ID            string  `jsonapi:"primary,examples"`
 	Name          string  `jsonapi:"attr,name"`

@@ -11,31 +11,31 @@ inputs:
     description: Total number of matrix strategy runners
     required: true
   address:
-    description: Address of the Terraform Cloud instance to test against
+    description: Address of the HCP Terraform instance to test against
     required: true
   admin_configuration_token:
-    description: TFC Admin API Configuration role token
+    description: HCP Terraform Admin API Configuration role token
     required: true
   admin_provision_licenses_token:
-    description: TFC Admin API Provision Licenses role token
+    description: HCP Terraform Admin API Provision Licenses role token
     required: true
   admin_security_maintenance_token:
-    description: TFC Admin API Security Maintenance role token
+    description: HCP Terraform Admin API Security Maintenance role token
     required: true
   admin_site_admin_token:
-    description: TFC Admin API Site Admin role token
+    description: HCP Terraform Admin API Site Admin role token
     required: true
   admin_subscription_token:
-    description: TFC Admin API Subscription role token
+    description: HCP Terraform Admin API Subscription role token
     required: true
   admin_support_token:
-    description: TFC Admin API Support role token
+    description: HCP Terraform Admin API Support role token
     required: true
   admin_version_maintenance_token:
-    description: TFC Admin API Version Maintenance role token
+    description: HCP Terraform Admin API Version Maintenance role token
     required: true
   token:
-    description: Terraform Cloud token
+    description: HCP Terraform token
     required: true
   oauth-client-github-token:
     description: The GitHub token used for testing OAuth scenarios for VCS workspaces

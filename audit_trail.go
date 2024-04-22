@@ -17,12 +17,12 @@ import (
 // Compile-time proof of interface implementation
 var _ AuditTrails = (*auditTrails)(nil)
 
-// AuditTrails describes all the audit event related methods that the Terraform
-// Cloud API supports.
+// AuditTrails describes all the audit event related methods that the HCP Terraform
+// API supports.
 // **Note:** These methods require the client to be configured with an organization token for
-// an organization in the Business tier. Furthermore, these methods are only available in Terraform Cloud.
+// an organization in the Business tier. Furthermore, these methods are only available in HCP Terraform.
 //
-// TFC API Docs: https://developer.hashicorp.com/terraform/cloud-docs/api-docs/audit-trails
+// HCP Terraform API Docs: https://developer.hashicorp.com/terraform/cloud-docs/api-docs/audit-trails
 type AuditTrails interface {
 	// Read all the audit events in an organization.
 	List(ctx context.Context, options *AuditTrailListOptions) (*AuditTrailList, error)
@@ -63,7 +63,7 @@ type AuditTrailPagination struct {
 	TotalCount   int `json:"total_count"`
 }
 
-// AuditTrail represents an event in the TFC audit log.
+// AuditTrail represents an event in the HCP Terraform audit log.
 type AuditTrail struct {
 	ID        string    `json:"id"`
 	Version   string    `json:"version"`

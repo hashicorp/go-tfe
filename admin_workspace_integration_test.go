@@ -16,7 +16,7 @@ import (
 
 // BEWARE: The admin workspaces API can view all of the workspaces created by
 // EVERY test organization in EVERY concurrent test run (or other usage) for the
-// current TFC instance. It's generally not safe to assume that the workspaces
+// current HCP Terraform instance. It's generally not safe to assume that the workspaces
 // you create in a given test will be within the first page of list results, so
 // you might have to get creative and/or settle for less when testing the
 // behavior of these endpoints.
