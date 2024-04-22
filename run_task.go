@@ -38,23 +38,31 @@ type RunTasks interface {
 	AttachToWorkspace(ctx context.Context, workspaceID string, runTaskID string, enforcementLevel TaskEnforcementLevel) (*WorkspaceRunTask, error)
 }
 
-// runTasks implements  RunTasks
+// runTasks implements RunTasks
 type runTasks struct {
 	client *Client
 }
 
 // RunTask represents a TFC/E run task
 type RunTask struct {
-	ID          string  `jsonapi:"primary,tasks"`
-	Name        string  `jsonapi:"attr,name"`
-	URL         string  `jsonapi:"attr,url"`
-	Description string  `jsonapi:"attr,description"`
-	Category    string  `jsonapi:"attr,category"`
-	HMACKey     *string `jsonapi:"attr,hmac-key,omitempty"`
-	Enabled     bool    `jsonapi:"attr,enabled"`
+	ID          string         `jsonapi:"primary,tasks"`
+	Name        string         `jsonapi:"attr,name"`
+	URL         string         `jsonapi:"attr,url"`
+	Description string         `jsonapi:"attr,description"`
+	Category    string         `jsonapi:"attr,category"`
+	HMACKey     *string        `jsonapi:"attr,hmac-key,omitempty"`
+	Enabled     bool           `jsonapi:"attr,enabled"`
+	Global      *GlobalRunTask `jsonapi:"attr,global-configuration,omitempty"`
 
 	Organization      *Organization       `jsonapi:"relation,organization"`
 	WorkspaceRunTasks []*WorkspaceRunTask `jsonapi:"relation,workspace-tasks"`
+}
+
+// GlobalRunTask represents the global configuration of a TFC/E run task
+type GlobalRunTask struct {
+	Enabled          bool                 `jsonapi:"attr,enabled"`
+	Stages           []Stage              `jsonapi:"attr,stages"`
+	EnforcementLevel TaskEnforcementLevel `jsonapi:"attr,enforcement-level"`
 }
 
 // RunTaskList represents a list of run tasks
@@ -87,6 +95,13 @@ type RunTaskReadOptions struct {
 	Include []RunTaskIncludeOpt `url:"include,omitempty"`
 }
 
+// GlobalRunTask represents the optional global configuration of a TFC/E run task
+type GlobalRunTaskOptions struct {
+	Enabled          *bool                 `jsonapi:"attr,enabled,omitempty"`
+	Stages           *[]Stage              `jsonapi:"attr,stages,omitempty"`
+	EnforcementLevel *TaskEnforcementLevel `jsonapi:"attr,enforcement-level,omitempty"`
+}
+
 // RunTaskCreateOptions represents the set of options for creating a run task
 type RunTaskCreateOptions struct {
 	// Type is a public field utilized by JSON:API to
@@ -112,6 +127,9 @@ type RunTaskCreateOptions struct {
 
 	// Optional: Whether the task should be enabled
 	Enabled *bool `jsonapi:"attr,enabled,omitempty"`
+
+	// Optional: Whether the task contains global configuration
+	Global *GlobalRunTaskOptions `jsonapi:"attr,global-configuration,omitempty"`
 }
 
 // RunTaskUpdateOptions represents the set of options for updating an organization's run task
@@ -139,6 +157,9 @@ type RunTaskUpdateOptions struct {
 
 	// Optional: Whether the task should be enabled
 	Enabled *bool `jsonapi:"attr,enabled,omitempty"`
+
+	// Optional: Whether the task contains global configuration
+	Global *GlobalRunTaskOptions `jsonapi:"attr,global-configuration,omitempty"`
 }
 
 // Create is used to create a new run task for an organization
@@ -157,13 +178,13 @@ func (s *runTasks) Create(ctx context.Context, organization string, options RunT
 		return nil, err
 	}
 
-	r := &RunTask{}
+	r := &internalRunTask{}
 	err = req.Do(ctx, r)
 	if err != nil {
 		return nil, err
 	}
 
-	return r, nil
+	return r.ToRunTask(), nil
 }
 
 // List all the run tasks for an organization
@@ -181,13 +202,13 @@ func (s *runTasks) List(ctx context.Context, organization string, options *RunTa
 		return nil, err
 	}
 
-	rl := &RunTaskList{}
+	rl := &internalRunTaskList{}
 	err = req.Do(ctx, rl)
 	if err != nil {
 		return nil, err
 	}
 
-	return rl, nil
+	return rl.ToRunTaskList(), nil
 }
 
 // Read is used to read an organization's run task by ID
@@ -210,13 +231,13 @@ func (s *runTasks) ReadWithOptions(ctx context.Context, runTaskID string, option
 		return nil, err
 	}
 
-	r := &RunTask{}
+	r := &internalRunTask{}
 	err = req.Do(ctx, r)
 	if err != nil {
 		return nil, err
 	}
 
-	return r, nil
+	return r.ToRunTask(), nil
 }
 
 // Update an existing run task for an organization by ID
@@ -235,13 +256,13 @@ func (s *runTasks) Update(ctx context.Context, runTaskID string, options RunTask
 		return nil, err
 	}
 
-	r := &RunTask{}
+	r := &internalRunTask{}
 	err = req.Do(ctx, r)
 	if err != nil {
 		return nil, err
 	}
 
-	return r, nil
+	return r.ToRunTask(), nil
 }
 
 // Delete an existing run task for an organization by ID
