@@ -117,7 +117,7 @@ func testAuditTrailClient(t *testing.T, userClient *Client, org *Organization) *
 }
 
 // TestAccountDetails represents the basic account information
-// of a TFE/TFC user.
+// of a Terraform Enterprise or HCP Terraform user.
 //
 // See FetchTestAccountDetails for more information.
 type TestAccountDetails struct {
@@ -2671,8 +2671,8 @@ func genSha(t *testing.T) string {
 }
 
 // genSafeRandomTerraformVersion returns a random version number of the form
-// `1.0.<RANDOM>`, which TFC won't ever select as the latest available
-// Terraform. (At the time of writing, a fresh TFC instance will include
+// `1.0.<RANDOM>`, which HCP Terraform won't ever select as the latest available
+// Terraform. (At the time of writing, a fresh HCP Terraform instance will include
 // official Terraforms 1.2 and higher.) This is necessary because newly created
 // workspaces default to the latest available version, and there's nothing
 // preventing unrelated processes from creating workspaces during these tests.
@@ -2740,11 +2740,11 @@ func randomSemver(t *testing.T) string {
 	return fmt.Sprintf("%d.%d.%d", rand.Intn(99)+3, rand.Intn(99)+1, rand.Intn(99)+1)
 }
 
-// skips a test if the environment is for Terraform Cloud.
+// skips a test if the environment is for HCP Terraform.
 func skipUnlessEnterprise(t *testing.T) {
 	t.Helper()
 	if !enterpriseEnabled() {
-		t.Skip("Skipping test related to Terraform Cloud. Set ENABLE_TFE=1 to run.")
+		t.Skip("Skipping test related to HCP Terraform. Set ENABLE_TFE=1 to run.")
 	}
 }
 
@@ -2766,7 +2766,7 @@ func skipIfEnterprise(t *testing.T) {
 func skipUnlessBeta(t *testing.T) {
 	t.Helper()
 	if !betaFeaturesEnabled() {
-		t.Skip("Skipping test related to a Terraform Cloud beta feature. Set ENABLE_BETA=1 to run.")
+		t.Skip("Skipping test related to a HCP Terraform beta feature. Set ENABLE_BETA=1 to run.")
 	}
 }
 

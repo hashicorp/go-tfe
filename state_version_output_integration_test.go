@@ -21,7 +21,7 @@ func TestStateVersionOutputsRead(t *testing.T) {
 	svTest, svTestCleanup := createStateVersion(t, client, 0, wTest1)
 	defer svTestCleanup()
 
-	// give TFC some time to process the statefile and extract the outputs.
+	// give HCP Terraform some time to process the statefile and extract the outputs.
 	waitForSVOutputs(t, client, svTest.ID)
 
 	curOpts := &StateVersionCurrentOptions{

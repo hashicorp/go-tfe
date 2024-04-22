@@ -45,7 +45,7 @@ type GPGKeyList struct {
 	Items []*GPGKey
 }
 
-// GPGKey represents a signed GPG key for a TFC/E private provider.
+// GPGKey represents a signed GPG key for a HCP Terraform or Terraform Enterprise private provider.
 type GPGKey struct {
 	ID             string    `jsonapi:"primary,gpg-keys"`
 	AsciiArmor     string    `jsonapi:"attr,ascii-armor"`
@@ -69,7 +69,7 @@ type GPGKeyID struct {
 type GPGKeyListOptions struct {
 	ListOptions
 
-	// Required: A list of one or more namespaces. Must be authorized TFC/E organization names.
+	// Required: A list of one or more namespaces. Must be authorized HCP Terraform or Terraform Enterprise organization names.
 	Namespaces []string `url:"filter[namespace]"`
 }
 

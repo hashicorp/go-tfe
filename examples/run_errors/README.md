@@ -1,6 +1,6 @@
 ## Example: Parsing Run Errors
 
-In this example, you'll use terraform to create a run with errors on Terraform Cloud, then
+In this example, you'll use terraform to create a run with errors on HCP Terraform, then
 execute the command to read the plan log and filter it for errors. It's important to use
 Terraform to create the run, otherwise you will not get the structured log that this code
 example requires.

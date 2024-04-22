@@ -10,11 +10,11 @@ import (
 // Compile-time proof of interface implementation.
 var _ IPRanges = (*ipRanges)(nil)
 
-// IP Ranges provides a list of Terraform Cloud and Enterprise's IP ranges.
+// IP Ranges provides a list of HCP Terraform or Terraform Enterprise's IP ranges.
 //
 // TFE API docs: https://developer.hashicorp.com/terraform/cloud-docs/api-docs/ip-ranges
 type IPRanges interface {
-	// Retrieve TFC IP ranges. If `modifiedSince` is not an empty string
+	// Retrieve HCP Terraform IP ranges. If `modifiedSince` is not an empty string
 	// then it will only return the IP ranges changes since that date.
 	// The format for `modifiedSince` can be found here:
 	// https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/If-Modified-Since
@@ -26,9 +26,9 @@ type ipRanges struct {
 	client *Client
 }
 
-// IPRange represents a list of Terraform Cloud's IP ranges
+// IPRange represents a list of HCP Terraform's IP ranges
 type IPRange struct {
-	// List of IP ranges in CIDR notation used for connections from user site to Terraform Cloud APIs
+	// List of IP ranges in CIDR notation used for connections from user site to HCP Terraform APIs
 	API []string `json:"api"`
 	// List of IP ranges in CIDR notation used for notifications
 	Notifications []string `json:"notifications"`

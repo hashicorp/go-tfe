@@ -12,8 +12,8 @@ import (
 // Compile-time proof of interface implementation.
 var _ AgentPools = (*agentPools)(nil)
 
-// AgentPools describes all the agent pool related methods that the Terraform
-// Cloud API supports. Note that agents are not available in Terraform Enterprise.
+// AgentPools describes all the agent pool related methods that the HCP Terraform
+// API supports. Note that agents are not available in Terraform Enterprise.
 //
 // TFE API docs: https://developer.hashicorp.com/terraform/cloud-docs/api-docs/agents
 type AgentPools interface {
@@ -50,7 +50,7 @@ type AgentPoolList struct {
 	Items []*AgentPool
 }
 
-// AgentPool represents a Terraform Cloud agent pool.
+// AgentPool represents a HCP Terraform agent pool.
 type AgentPool struct {
 	ID                 string `jsonapi:"primary,agent-pools"`
 	Name               string `jsonapi:"attr,name"`

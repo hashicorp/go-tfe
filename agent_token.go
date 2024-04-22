@@ -14,7 +14,7 @@ import (
 var _ AgentTokens = (*agentTokens)(nil)
 
 // AgentTokens describes all the agent token related methods that the
-// Terraform Cloud API supports.
+// HCP Terraform API supports.
 //
 // TFE API docs:
 // https://developer.hashicorp.com/terraform/cloud-docs/api-docs/agent-tokens
@@ -37,7 +37,7 @@ type agentTokens struct {
 	client *Client
 }
 
-// AgentToken represents a Terraform Cloud agent token.
+// AgentToken represents a HCP Terraform agent token.
 type AgentToken struct {
 	ID          string    `jsonapi:"primary,authentication-tokens"`
 	CreatedAt   time.Time `jsonapi:"attr,created-at,iso8601"`

@@ -350,7 +350,7 @@ type WorkspaceCreateOptions struct {
 
 	// Optional: Whether to enable health assessments (drift detection etc.) for the workspace.
 	// Reference: https://developer.hashicorp.com/terraform/cloud-docs/api-docs/workspaces#create-a-workspace
-	// Requires remote execution mode, Terraform Cloud Business entitlement, and a valid agent pool to work
+	// Requires remote execution mode, HCP Terraform Business entitlement, and a valid agent pool to work
 	AssessmentsEnabled *bool `jsonapi:"attr,assessments-enabled,omitempty"`
 
 	// Optional: Whether to automatically apply changes when a Terraform plan is successful.
@@ -399,7 +399,7 @@ type WorkspaceCreateOptions struct {
 	QueueAllRuns *bool `jsonapi:"attr,queue-all-runs,omitempty"`
 
 	// Whether this workspace allows speculative plans. Setting this to false
-	// prevents Terraform Cloud or the Terraform Enterprise instance from
+	// prevents HCP Terraform or the Terraform Enterprise instance from
 	// running plans on pull requests, which can improve security if the VCS
 	// repository is public or includes untrusted contributors.
 	SpeculativeEnabled *bool `jsonapi:"attr,speculative-enabled,omitempty"`
@@ -453,7 +453,7 @@ type WorkspaceCreateOptions struct {
 	// organization provides.
 	//
 	// In general, it's not necessary to mark a setting as `true` in this
-	// struct; if you provide a literal value for a setting, Terraform Cloud will
+	// struct; if you provide a literal value for a setting, HCP Terraform will
 	// automatically update its overwrites field to `true`. If you do choose to
 	// manually mark a setting as overwritten, you must provide a value for that
 	// setting at the same time.
@@ -500,7 +500,7 @@ type WorkspaceUpdateOptions struct {
 
 	// Optional: Whether to enable health assessments (drift detection etc.) for the workspace.
 	// Reference: https://developer.hashicorp.com/terraform/cloud-docs/api-docs/workspaces#update-a-workspace
-	// Requires remote execution mode, Terraform Cloud Business entitlement, and a valid agent pool to work
+	// Requires remote execution mode, HCP Terraform Business entitlement, and a valid agent pool to work
 	AssessmentsEnabled *bool `jsonapi:"attr,assessments-enabled,omitempty"`
 
 	// Optional: Whether to automatically apply changes when a Terraform plan is successful.
@@ -546,7 +546,7 @@ type WorkspaceUpdateOptions struct {
 	QueueAllRuns *bool `jsonapi:"attr,queue-all-runs,omitempty"`
 
 	// Optional: Whether this workspace allows speculative plans. Setting this to false
-	// prevents Terraform Cloud or the Terraform Enterprise instance from
+	// prevents HCP Terraform or the Terraform Enterprise instance from
 	// running plans on pull requests, which can improve security if the VCS
 	// repository is public or includes untrusted contributors.
 	SpeculativeEnabled *bool `jsonapi:"attr,speculative-enabled,omitempty"`
@@ -588,7 +588,7 @@ type WorkspaceUpdateOptions struct {
 	// organization provides.
 	//
 	// In general, it's not necessary to mark a setting as `true` in this
-	// struct; if you provide a literal value for a setting, Terraform Cloud will
+	// struct; if you provide a literal value for a setting, HCP Terraform will
 	// automatically update its overwrites field to `true`. If you do choose to
 	// manually mark a setting as overwritten, you must provide a value for that
 	// setting at the same time.
