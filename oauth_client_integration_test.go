@@ -175,24 +175,6 @@ func TestOAuthClientsCreate(t *testing.T) {
 		_, err := client.OAuthClients.Create(ctx, orgTest.Name, options)
 		assert.Equal(t, err, ErrRequiredServiceProvider)
 	})
-
-	t.Run("with projects provided", func(t *testing.T) {
-		skipUnlessBeta(t)
-		prjTest, prjTestCleanup := createProject(t, client, orgTest)
-		defer prjTestCleanup()
-
-		options := OAuthClientCreateOptions{
-			Name:     String("project-oauth-client"),
-			Projects: []*Project{prjTest},
-		}
-
-		ps, err := client.OAuthClients.Create(ctx, orgTest.Name, options)
-		require.NoError(t, err)
-
-		assert.Equal(t, ps.Name, *options.Name)
-		assert.Equal(t, len(ps.Projects), 1)
-		assert.Equal(t, ps.Projects[0].ID, prjTest.ID)
-	})
 }
 
 func TestOAuthClientsCreate_rsaKeyPair(t *testing.T) {
@@ -330,7 +312,6 @@ func TestOAuthClientsRead(t *testing.T) {
 }
 
 func TestOAuthClientsReadWithOptions(t *testing.T) {
-	skipUnlessBeta(t)
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -499,7 +480,6 @@ func TestOAuthClientsCreateOptionsValid(t *testing.T) {
 }
 
 func TestOAuthClientsAddProjects(t *testing.T) {
-	skipUnlessBeta(t)
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -569,7 +549,6 @@ func TestOAuthClientsAddProjects(t *testing.T) {
 }
 
 func TestOAuthClientsRemoveProjects(t *testing.T) {
-	skipUnlessBeta(t)
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -633,7 +612,6 @@ func TestOAuthClientsRemoveProjects(t *testing.T) {
 }
 
 func TestOAuthClientsUpdate(t *testing.T) {
-	skipUnlessBeta(t)
 	client := testClient(t)
 	ctx := context.Background()
 
