@@ -1,7 +1,11 @@
 # Unreleased
 
+# v1.51.0
+
 ## Enhancements
-* Adds `Teams` field to `OrganizationMembershipCreateOptions` to allow users to be added to teams at the same time they are invited to an organization. @JarrettSpiker [#886](https://github.com/hashicorp/go-tfe/pull/886)
+* Adds `Teams` field to `OrganizationMembershipCreateOptions` to allow users to be added to teams at the same time they are invited to an organization. by @JarrettSpiker [#886](https://github.com/hashicorp/go-tfe/pull/886)
+* `IsCloud()` returns true when TFP-AppName is "HCP Terraform" by @sebasslash [#891](https://github.com/hashicorp/go-tfe/pull/891)
+* `OrganizationScoped` attribute for `OAuthClient` is now generally available by @netramali [#873](https://github.com/hashicorp/go-tfe/pull/873)
 
 # v1.50.0
 
