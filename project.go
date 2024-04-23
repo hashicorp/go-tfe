@@ -49,7 +49,6 @@ type Project struct {
 	ID   string `jsonapi:"primary,projects"`
 	Name string `jsonapi:"attr,name"`
 
-	// **Note: This field is still in BETA and subject to change.**
 	Description string `jsonapi:"attr,description"`
 
 	// Relations
@@ -81,7 +80,6 @@ type ProjectCreateOptions struct {
 	Name string `jsonapi:"attr,name"`
 
 	// Optional: A description for the project.
-	// **Note: This field is still in BETA and subject to change.**
 	Description *string `jsonapi:"attr,description,omitempty"`
 }
 
@@ -97,7 +95,6 @@ type ProjectUpdateOptions struct {
 	Name *string `jsonapi:"attr,name,omitempty"`
 
 	// Optional: A description for the project.
-	// **Note: This field is still in BETA and subject to change.**
 	Description *string `jsonapi:"attr,description,omitempty"`
 }
 
