@@ -161,9 +161,9 @@ type OrganizationAccessOptions struct {
 	ReadWorkspaces           *bool `json:"read-workspaces,omitempty"`
 	ReadProjects             *bool `json:"read-projects,omitempty"`
 	ManageMembership         *bool `json:"manage-membership,omitempty"`
-	ManageTeams              *bool `jsonapi:"attr,manage-teams,omitempty"`
-	ManageOrganizationAccess *bool `jsonapi:"attr,manage-organization-access,omitempty"`
-	AccessSecretTeams        *bool `jsonapi:"attr,access-secret-teams,omitempty"`
+	ManageTeams              *bool `json:"manage-teams,omitempty"`
+	ManageOrganizationAccess *bool `json:"manage-organization-access,omitempty"`
+	AccessSecretTeams        *bool `json:"access-secret-teams,omitempty"`
 }
 
 // List all the teams of the given organization.
