@@ -771,20 +771,24 @@ func createPolicyWithOptions(t *testing.T, client *Client, org *Organization, op
 	}
 
 	name := randomString(t)
-	path := name + ".sentinel"
-	if opts.Kind == OPA {
-		path = name + ".rego"
-	}
 	options := PolicyCreateOptions{
-		Name:  String(name),
-		Kind:  opts.Kind,
-		Query: opts.Query,
-		Enforce: []*EnforcementOptions{
+		Name:             String(name),
+		Kind:             opts.Kind,
+		Query:            opts.Query,
+		EnforcementLevel: opts.EnforcementLevel,
+	}
+
+	if len(opts.Enforce) > 0 {
+		path := name + ".sentinel"
+		if opts.Kind == OPA {
+			path = name + ".rego"
+		}
+		options.Enforce = []*EnforcementOptions{
 			{
 				Path: String(path),
 				Mode: opts.Enforce[0].Mode,
 			},
-		},
+		}
 	}
 
 	ctx := context.Background()

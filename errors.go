@@ -243,7 +243,9 @@ var (
 
 	ErrRequiredEnabled = errors.New("enabled is required")
 
-	ErrRequiredEnforce = errors.New("enforce is required")
+	ErrRequiredEnforce = errors.New("enforce or enforcement-level is required")
+
+	ErrConflictingEnforceEnforcementLevel = errors.New("enforce and enforcement-level may not both be specified together")
 
 	ErrRequiredEnforcementPath = errors.New("enforcement path is required")
 
