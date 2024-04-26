@@ -596,7 +596,6 @@ func TestPoliciesUpdate(t *testing.T) {
 		assert.Equal(t, pBefore.Name, pAfter.Name)
 		assert.Equal(t, pBefore.EnforcementLevel, EnforcementMandatory)
 		assert.Equal(t, pAfter.EnforcementLevel, EnforcementAdvisory)
-
 	})
 
 	t.Run("update query when kind is not OPA", func(t *testing.T) {
