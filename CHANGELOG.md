@@ -1,4 +1,5 @@
 # Unreleased
+* Adds `ManageTeams`, `ManageOrganizationAccess`, and `AccessSecretTeams` permissions to team `OrganizationAccess` by @juliannatetreault [#874](https://github.com/hashicorp/go-tfe/pull/874)
 
 # v1.52.0
 
