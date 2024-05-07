@@ -33,7 +33,7 @@ The test suite contains many acceptance tests that are run against the latest ve
 We've included VSCode settings to assist with configuring the go extension. For other editors that integrate with the [Go Language Server](https://github.com/golang/tools/tree/master/gopls), the main thing to do is to add the `integration` build tags so that the test files are found by the language server. See `.vscode/settings.json` for more details.
 
 ## Generating Mocks
-Ensure you have installed the [mockgen](https://github.com/golang/mock) tool.
+Ensure you have installed the [mockgen](https://github.com/uber-go/mock) tool.
 
 You'll need to generate mocks if an existing endpoint method is modified or a new method is added. To generate mocks, simply run `./generate_mocks.sh`.
 
