@@ -8,6 +8,10 @@
 ## Deprecations
 * The `IsSiteAdmin` field on User has been deprecated. Use the `IsAdmin` field instead [#900](https://github.com/hashicorp/go-tfe/pull/900)
 
+## Enhancements
+
+* Adds the `CurrentRunStatus` filter to allow filtering workspaces by their current run status by @arybolovlev [#899](https://github.com/hashicorp/go-tfe/pull/899)
+
 # v1.53.0
 
 ## Enhancements
