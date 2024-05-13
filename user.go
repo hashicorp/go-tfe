@@ -37,7 +37,7 @@ type User struct {
 	UnconfirmedEmail string           `jsonapi:"attr,unconfirmed-email"`
 	Username         string           `jsonapi:"attr,username"`
 	V2Only           bool             `jsonapi:"attr,v2-only"`
-	IsSiteAdmin      *bool            `jsonapi:"attr,is-site-admin"`
+	IsAdmin          *bool            `jsonapi:"attr,is-admin"`
 	IsSsoLogin       *bool            `jsonapi:"attr,is-sso-login"`
 	Permissions      *UserPermissions `jsonapi:"attr,permissions"`
 
