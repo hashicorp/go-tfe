@@ -281,6 +281,33 @@ func TestWorkspacesList(t *testing.T) {
 		require.NoError(t, err)
 		assert.Empty(t, wl.Items)
 	})
+
+	t.Run("when filter workspaces by current run status", func(t *testing.T) {
+		wTest, wTestCleanup := createWorkspace(t, client, orgTest)
+		t.Cleanup(wTestCleanup)
+
+		rn, unappliedCleanup := createRunUnapplied(t, client, wTest)
+		t.Cleanup(unappliedCleanup)
+
+		wl, err := client.Workspaces.List(ctx, orgTest.Name, &WorkspaceListOptions{
+			CurrentRunStatus: string(RunPlanned),
+		})
+
+		require.NoError(t, err)
+		require.NotEmpty(t, wl.Items)
+		require.GreaterOrEqual(t, len(wl.Items), 1)
+
+		found := false
+		for _, ws := range wl.Items {
+			if ws.ID != wTest.ID {
+				continue
+			}
+			assert.Equal(t, ws.CurrentRun.ID, rn.ID)
+			found = true
+		}
+
+		assert.True(t, found)
+	})
 }
 
 func TestWorkspacesCreateTableDriven(t *testing.T) {
