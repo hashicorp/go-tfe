@@ -611,3 +611,38 @@ func TestTeamsUpdateAccessSecretTeams(t *testing.T) {
 	originalTeamAccess.AccessSecretTeams = true
 	assert.Equal(t, originalTeamAccess, refreshed.OrganizationAccess)
 }
+
+func TestTeamsUpdateManageAgentPools(t *testing.T) {
+	client := testClient(t)
+	ctx := context.Background()
+
+	orgTest, orgTestCleanup := createOrganization(t, client)
+	defer orgTestCleanup()
+
+	tmTest, tmTestCleanup := createTeam(t, client, orgTest)
+	defer tmTestCleanup()
+
+	teamRead, err := client.Teams.Read(ctx, tmTest.ID)
+	require.NoError(t, err)
+	assert.False(t, teamRead.OrganizationAccess.ManageAgentPools, "manage agent pools is false by default")
+
+	originalTeamAccess := teamRead.OrganizationAccess
+
+	options := TeamUpdateOptions{
+		OrganizationAccess: &OrganizationAccessOptions{
+			ManageAgentPools: Bool(true),
+		},
+	}
+
+	tm, err := client.Teams.Update(ctx, tmTest.ID, options)
+	require.NoError(t, err)
+	assert.True(t, tm.OrganizationAccess.ManageAgentPools)
+
+	refreshed, err := client.Teams.Read(ctx, tmTest.ID)
+	require.NoError(t, err)
+	assert.True(t, refreshed.OrganizationAccess.ManageAgentPools)
+
+	// Check that other org access fields are not updated
+	originalTeamAccess.ManageAgentPools = true
+	assert.Equal(t, originalTeamAccess, refreshed.OrganizationAccess)
+}
