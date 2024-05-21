@@ -1,4 +1,7 @@
 # Unreleased
+
+# v1.54.0
+
 ## Enhancements
 * Adds the `AutoDestroyActivityDuration` field to `Workspace` by @notchairmk [#902](https://github.com/hashicorp/go-tfe/pull/902)
 
