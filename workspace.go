@@ -155,44 +155,45 @@ type LockedByChoice struct {
 
 // Workspace represents a Terraform Enterprise workspace.
 type Workspace struct {
-	ID                         string                          `jsonapi:"primary,workspaces"`
-	Actions                    *WorkspaceActions               `jsonapi:"attr,actions"`
-	AllowDestroyPlan           bool                            `jsonapi:"attr,allow-destroy-plan"`
-	AssessmentsEnabled         bool                            `jsonapi:"attr,assessments-enabled"`
-	AutoApply                  bool                            `jsonapi:"attr,auto-apply"`
-	AutoApplyRunTrigger        bool                            `jsonapi:"attr,auto-apply-run-trigger"`
-	AutoDestroyAt              jsonapi.NullableAttr[time.Time] `jsonapi:"attr,auto-destroy-at,iso8601,omitempty"`
-	CanQueueDestroyPlan        bool                            `jsonapi:"attr,can-queue-destroy-plan"`
-	CreatedAt                  time.Time                       `jsonapi:"attr,created-at,iso8601"`
-	Description                string                          `jsonapi:"attr,description"`
-	Environment                string                          `jsonapi:"attr,environment"`
-	ExecutionMode              string                          `jsonapi:"attr,execution-mode"`
-	FileTriggersEnabled        bool                            `jsonapi:"attr,file-triggers-enabled"`
-	GlobalRemoteState          bool                            `jsonapi:"attr,global-remote-state"`
-	Locked                     bool                            `jsonapi:"attr,locked"`
-	MigrationEnvironment       string                          `jsonapi:"attr,migration-environment"`
-	Name                       string                          `jsonapi:"attr,name"`
-	Operations                 bool                            `jsonapi:"attr,operations"`
-	Permissions                *WorkspacePermissions           `jsonapi:"attr,permissions"`
-	QueueAllRuns               bool                            `jsonapi:"attr,queue-all-runs"`
-	SpeculativeEnabled         bool                            `jsonapi:"attr,speculative-enabled"`
-	SourceName                 string                          `jsonapi:"attr,source-name"`
-	SourceURL                  string                          `jsonapi:"attr,source-url"`
-	StructuredRunOutputEnabled bool                            `jsonapi:"attr,structured-run-output-enabled"`
-	TerraformVersion           string                          `jsonapi:"attr,terraform-version"`
-	TriggerPrefixes            []string                        `jsonapi:"attr,trigger-prefixes"`
-	TriggerPatterns            []string                        `jsonapi:"attr,trigger-patterns"`
-	VCSRepo                    *VCSRepo                        `jsonapi:"attr,vcs-repo"`
-	WorkingDirectory           string                          `jsonapi:"attr,working-directory"`
-	UpdatedAt                  time.Time                       `jsonapi:"attr,updated-at,iso8601"`
-	ResourceCount              int                             `jsonapi:"attr,resource-count"`
-	ApplyDurationAverage       time.Duration                   `jsonapi:"attr,apply-duration-average"`
-	PlanDurationAverage        time.Duration                   `jsonapi:"attr,plan-duration-average"`
-	PolicyCheckFailures        int                             `jsonapi:"attr,policy-check-failures"`
-	RunFailures                int                             `jsonapi:"attr,run-failures"`
-	RunsCount                  int                             `jsonapi:"attr,workspace-kpis-runs-count"`
-	TagNames                   []string                        `jsonapi:"attr,tag-names"`
-	SettingOverwrites          *WorkspaceSettingOverwrites     `jsonapi:"attr,setting-overwrites"`
+	ID                          string                          `jsonapi:"primary,workspaces"`
+	Actions                     *WorkspaceActions               `jsonapi:"attr,actions"`
+	AllowDestroyPlan            bool                            `jsonapi:"attr,allow-destroy-plan"`
+	AssessmentsEnabled          bool                            `jsonapi:"attr,assessments-enabled"`
+	AutoApply                   bool                            `jsonapi:"attr,auto-apply"`
+	AutoApplyRunTrigger         bool                            `jsonapi:"attr,auto-apply-run-trigger"`
+	AutoDestroyAt               jsonapi.NullableAttr[time.Time] `jsonapi:"attr,auto-destroy-at,iso8601,omitempty"`
+	AutoDestroyActivityDuration jsonapi.NullableAttr[string]    `jsonapi:"attr,auto-destroy-activity-duration,omitempty"`
+	CanQueueDestroyPlan         bool                            `jsonapi:"attr,can-queue-destroy-plan"`
+	CreatedAt                   time.Time                       `jsonapi:"attr,created-at,iso8601"`
+	Description                 string                          `jsonapi:"attr,description"`
+	Environment                 string                          `jsonapi:"attr,environment"`
+	ExecutionMode               string                          `jsonapi:"attr,execution-mode"`
+	FileTriggersEnabled         bool                            `jsonapi:"attr,file-triggers-enabled"`
+	GlobalRemoteState           bool                            `jsonapi:"attr,global-remote-state"`
+	Locked                      bool                            `jsonapi:"attr,locked"`
+	MigrationEnvironment        string                          `jsonapi:"attr,migration-environment"`
+	Name                        string                          `jsonapi:"attr,name"`
+	Operations                  bool                            `jsonapi:"attr,operations"`
+	Permissions                 *WorkspacePermissions           `jsonapi:"attr,permissions"`
+	QueueAllRuns                bool                            `jsonapi:"attr,queue-all-runs"`
+	SpeculativeEnabled          bool                            `jsonapi:"attr,speculative-enabled"`
+	SourceName                  string                          `jsonapi:"attr,source-name"`
+	SourceURL                   string                          `jsonapi:"attr,source-url"`
+	StructuredRunOutputEnabled  bool                            `jsonapi:"attr,structured-run-output-enabled"`
+	TerraformVersion            string                          `jsonapi:"attr,terraform-version"`
+	TriggerPrefixes             []string                        `jsonapi:"attr,trigger-prefixes"`
+	TriggerPatterns             []string                        `jsonapi:"attr,trigger-patterns"`
+	VCSRepo                     *VCSRepo                        `jsonapi:"attr,vcs-repo"`
+	WorkingDirectory            string                          `jsonapi:"attr,working-directory"`
+	UpdatedAt                   time.Time                       `jsonapi:"attr,updated-at,iso8601"`
+	ResourceCount               int                             `jsonapi:"attr,resource-count"`
+	ApplyDurationAverage        time.Duration                   `jsonapi:"attr,apply-duration-average"`
+	PlanDurationAverage         time.Duration                   `jsonapi:"attr,plan-duration-average"`
+	PolicyCheckFailures         int                             `jsonapi:"attr,policy-check-failures"`
+	RunFailures                 int                             `jsonapi:"attr,run-failures"`
+	RunsCount                   int                             `jsonapi:"attr,workspace-kpis-runs-count"`
+	TagNames                    []string                        `jsonapi:"attr,tag-names"`
+	SettingOverwrites           *WorkspaceSettingOverwrites     `jsonapi:"attr,setting-overwrites"`
 
 	// Relations
 	AgentPool                   *AgentPool            `jsonapi:"relation,agent-pool"`
@@ -363,6 +364,10 @@ type WorkspaceCreateOptions struct {
 	// Optional: The time after which an automatic destroy run will be queued
 	AutoDestroyAt jsonapi.NullableAttr[time.Time] `jsonapi:"attr,auto-destroy-at,iso8601,omitempty"`
 
+	// Optional: The period of time to wait after workspace activity to trigger a destroy run. The format
+	// should roughly match a Go duration string limited to days and hours, e.g. "24h" or "1d".
+	AutoDestroyActivityDuration jsonapi.NullableAttr[string] `jsonapi:"attr,auto-destroy-activity-duration,omitempty"`
+
 	// Optional: A description for the workspace.
 	Description *string `jsonapi:"attr,description,omitempty"`
 
@@ -512,6 +517,10 @@ type WorkspaceUpdateOptions struct {
 
 	// Optional: The time after which an automatic destroy run will be queued
 	AutoDestroyAt jsonapi.NullableAttr[time.Time] `jsonapi:"attr,auto-destroy-at,iso8601,omitempty"`
+
+	// Optional: The period of time to wait after workspace activity to trigger a destroy run. The format
+	// should roughly match a Go duration string limited to days and hours, e.g. "24h" or "1d".
+	AutoDestroyActivityDuration jsonapi.NullableAttr[string] `jsonapi:"attr,auto-destroy-activity-duration,omitempty"`
 
 	// Optional: A new name for the workspace, which can only include letters, numbers, -,
 	// and _. This will be used as an identifier and must be unique in the
