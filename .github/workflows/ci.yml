@@ -29,7 +29,7 @@ jobs:
         total: [ 1 ]
         index: [ 0 ]
 
-    timeout-minutes: 30
+    timeout-minutes: 120
     steps:
       - name: terraform-cloud-outputs
         id: tflocal
