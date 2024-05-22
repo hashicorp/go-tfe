@@ -17,6 +17,7 @@ import (
 	"time"
 
 	retryablehttp "github.com/hashicorp/go-retryablehttp"
+	"github.com/hashicorp/jsonapi"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
@@ -2747,7 +2748,7 @@ func TestWorkspacesAutoDestroy(t *testing.T) {
 	})
 	t.Cleanup(wCleanup)
 
-	require.Equal(t, wTest.AutoDestroyAt, autoDestroyAt)
+	require.Equal(t, autoDestroyAt, wTest.AutoDestroyAt)
 
 	// respect default omitempty
 	w, err := client.Workspaces.Update(ctx, orgTest.Name, wTest.Name, WorkspaceUpdateOptions{
@@ -2764,7 +2765,7 @@ func TestWorkspacesAutoDestroy(t *testing.T) {
 
 	require.NoError(t, err)
 	require.NotNil(t, w.AutoDestroyAt)
-	require.NotEqual(t, w.AutoDestroyAt, autoDestroyAt)
+	require.NotEqual(t, autoDestroyAt, w.AutoDestroyAt)
 
 	// disable auto destroy
 	w, err = client.Workspaces.Update(ctx, orgTest.Name, wTest.Name, WorkspaceUpdateOptions{
@@ -2773,4 +2774,34 @@ func TestWorkspacesAutoDestroy(t *testing.T) {
 
 	require.NoError(t, err)
 	require.Nil(t, w.AutoDestroyAt)
+}
+
+func TestWorkspacesAutoDestroyDuration(t *testing.T) {
+	client := testClient(t)
+	ctx := context.Background()
+
+	orgTest, orgTestCleanup := createOrganization(t, client)
+	t.Cleanup(orgTestCleanup)
+
+	upgradeOrganizationSubscription(t, client, orgTest)
+
+	duration := jsonapi.NewNullableAttrWithValue("14d")
+	nilDuration := jsonapi.NewNullNullableAttr[string]()
+	nilAutoDestroy := jsonapi.NewNullNullableAttr[time.Time]()
+	wTest, wCleanup := createWorkspaceWithOptions(t, client, orgTest, WorkspaceCreateOptions{
+		Name:                        String(randomString(t)),
+		AutoDestroyActivityDuration: duration,
+	})
+	t.Cleanup(wCleanup)
+
+	require.Equal(t, duration, wTest.AutoDestroyActivityDuration)
+	require.NotEqual(t, nilAutoDestroy, wTest.AutoDestroyAt)
+
+	w, err := client.Workspaces.Update(ctx, orgTest.Name, wTest.Name, WorkspaceUpdateOptions{
+		AutoDestroyActivityDuration: nilDuration,
+	})
+
+	require.NoError(t, err)
+	require.False(t, w.AutoDestroyActivityDuration.IsSpecified())
+	require.False(t, w.AutoDestroyAt.IsSpecified())
 }
