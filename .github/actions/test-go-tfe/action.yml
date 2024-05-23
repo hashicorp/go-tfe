@@ -75,6 +75,9 @@ runs:
     - name: Split integration tests
       id: test_split
       uses: hashicorp-forge/go-test-split-action@796beedbdb3d1bea14cad2d3057bab5c5cf15fe5 # v1.0.2
+      env:
+        TFE_ADDRESS: ${{ inputs.address }}
+        TFE_TOKEN: ${{ inputs.token }}
       with:
         index: ${{ inputs.matrix_index }}
         total: ${{ inputs.matrix_total }}
