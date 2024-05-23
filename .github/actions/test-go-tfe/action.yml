@@ -99,7 +99,7 @@ runs:
         GO111MODULE: "on"
         ENABLE_TFE: ${{ inputs.enterprise }}
       run: |
-        gotestsum --junitfile summary.xml --format short-verbose -- -parallel=1 -timeout=29m -run "${{ steps.test_split.outputs.run }}"
+        gotestsum --junitfile summary.xml --format short-verbose -- -timeout=29m -run "${{ steps.test_split.outputs.run }}"
 
     - name: Upload test artifacts
       uses: actions/upload-artifact@0b7f8abb1508181956e8e162db84b466c27e18ce # v3.1.2
