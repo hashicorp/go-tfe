@@ -25,6 +25,8 @@ func TestAdminWorkspaces_ListWithFilter(t *testing.T) {
 	skipUnlessEnterprise(t)
 
 	client := testClient(t)
+	acquireRunMutex(t, client)
+
 	ctx := context.Background()
 
 	org, orgCleanup := createOrganization(t, client)
@@ -58,6 +60,8 @@ func TestAdminWorkspaces_ListWithSort(t *testing.T) {
 	skipUnlessEnterprise(t)
 
 	client := testClient(t)
+	acquireRunMutex(t, client)
+
 	ctx := context.Background()
 
 	org, orgCleanup := createOrganization(t, client)

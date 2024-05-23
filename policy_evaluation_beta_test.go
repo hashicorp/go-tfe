@@ -70,6 +70,8 @@ func TestPolicySetOutcomeList_Beta(t *testing.T) {
 	skipUnlessBeta(t)
 
 	client := testClient(t)
+	acquireRunMutex(t, client)
+
 	ctx := context.Background()
 
 	orgTest, orgTestCleanup := createOrganization(t, client)
@@ -181,6 +183,8 @@ func TestPolicySetOutcomeRead_Beta(t *testing.T) {
 	skipUnlessBeta(t)
 
 	client := testClient(t)
+	acquireRunMutex(t, client)
+
 	ctx := context.Background()
 
 	orgTest, orgTestCleanup := createOrganization(t, client)

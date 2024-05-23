@@ -18,6 +18,8 @@ import (
 
 func TestPolicyChecksList(t *testing.T) {
 	client := testClient(t)
+	acquireRunMutex(t, client)
+
 	ctx := context.Background()
 
 	orgTest, orgTestCleanup := createOrganization(t, client)
@@ -82,6 +84,8 @@ func TestPolicyChecksList(t *testing.T) {
 
 func TestPolicyChecksRead(t *testing.T) {
 	client := testClient(t)
+	acquireRunMutex(t, client)
+
 	ctx := context.Background()
 
 	orgTest, orgTestCleanup := createOrganization(t, client)
@@ -127,6 +131,8 @@ func TestPolicyChecksRead(t *testing.T) {
 
 func TestPolicyChecksOverride(t *testing.T) {
 	client := testClient(t)
+	acquireRunMutex(t, client)
+
 	ctx := context.Background()
 
 	t.Run("when the policy failed", func(t *testing.T) {

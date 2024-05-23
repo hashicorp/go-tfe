@@ -17,6 +17,8 @@ import (
 
 func TestPlansRead(t *testing.T) {
 	client := testClient(t)
+	acquireRunMutex(t, client)
+
 	ctx := context.Background()
 
 	rTest, rTestCleanup := createPlannedRun(t, client, nil)
@@ -47,6 +49,8 @@ func TestPlansRead(t *testing.T) {
 
 func TestPlansLogs(t *testing.T) {
 	client := testClient(t)
+	acquireRunMutex(t, client)
+
 	ctx := context.Background()
 
 	rTest, rTestCleanup := createPlannedRun(t, client, nil)
@@ -118,6 +122,8 @@ func TestPlan_Unmarshal(t *testing.T) {
 
 func TestPlansJSONOutput(t *testing.T) {
 	client := testClient(t)
+	acquireRunMutex(t, client)
+
 	ctx := context.Background()
 	rTest, rTestCleanup := createPlannedRun(t, client, nil)
 	defer rTestCleanup()

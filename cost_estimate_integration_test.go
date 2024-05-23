@@ -18,6 +18,8 @@ func TestCostEstimatesRead(t *testing.T) {
 	skipIfEnterprise(t)
 
 	client := testClient(t)
+	acquireRunMutex(t, client)
+
 	ctx := context.Background()
 
 	orgTest, orgTestCleanup := createOrganization(t, client)

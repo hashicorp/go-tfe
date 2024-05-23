@@ -36,6 +36,8 @@ type WorkspaceTableTest struct {
 
 func TestWorkspacesList(t *testing.T) {
 	client := testClient(t)
+	acquireRunMutex(t, client)
+
 	ctx := context.Background()
 
 	orgTest, orgTestCleanup := createOrganization(t, client)
@@ -962,6 +964,7 @@ func TestWorkspacesReadWithOptions(t *testing.T) {
 
 func TestWorkspacesReadWithHistory(t *testing.T) {
 	client := testClient(t)
+	acquireRunMutex(t, client)
 
 	orgTest, orgTestCleanup := createOrganization(t, client)
 	t.Cleanup(orgTestCleanup)
@@ -997,6 +1000,8 @@ func TestWorkspacesReadWithHistory(t *testing.T) {
 // Otherwise the test will not pass
 func TestWorkspacesReadReadme(t *testing.T) {
 	client := testClient(t)
+	acquireRunMutex(t, client)
+
 	ctx := context.Background()
 
 	orgTest, orgTestCleanup := createOrganization(t, client)

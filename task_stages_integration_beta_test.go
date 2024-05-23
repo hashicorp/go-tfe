@@ -175,6 +175,8 @@ func TestTaskStageOverride_Beta(t *testing.T) {
 	skipUnlessBeta(t)
 
 	client := testClient(t)
+	acquireRunMutex(t, client)
+
 	ctx := context.Background()
 
 	t.Run("when the policy failed", func(t *testing.T) {

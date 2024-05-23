@@ -16,6 +16,8 @@ import (
 
 func TestPlanExportsCreate(t *testing.T) {
 	client := testClient(t)
+	acquireRunMutex(t, client)
+
 	ctx := context.Background()
 
 	rTest, rTestCleanup := createPlannedRun(t, client, nil)
@@ -61,6 +63,8 @@ func TestPlanExportsCreate(t *testing.T) {
 
 func TestPlanExportsRead(t *testing.T) {
 	client := testClient(t)
+	acquireRunMutex(t, client)
+
 	ctx := context.Background()
 
 	peTest, peTestCleanup := createPlanExport(t, client, nil)
@@ -84,6 +88,8 @@ func TestPlanExportsRead(t *testing.T) {
 
 func TestPlanExportsDelete(t *testing.T) {
 	client := testClient(t)
+	acquireRunMutex(t, client)
+
 	ctx := context.Background()
 
 	peTest, peTestCleanup := createPlanExport(t, client, nil)
@@ -107,6 +113,8 @@ func TestPlanExportsDelete(t *testing.T) {
 
 func TestPlanExportsDownload(t *testing.T) {
 	client := testClient(t)
+	acquireRunMutex(t, client)
+
 	ctx := context.Background()
 
 	peTest, peCleanup := createPlanExport(t, client, nil)

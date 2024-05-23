@@ -104,6 +104,8 @@ func TestRunsListQueryParams(t *testing.T) {
 	}
 
 	client := testClient(t)
+	acquireRunMutex(t, client)
+
 	ctx := context.Background()
 
 	orgTest, orgTestCleanup := createOrganization(t, client)
@@ -359,6 +361,8 @@ func TestRunsRead_CostEstimate(t *testing.T) {
 	skipIfEnterprise(t)
 
 	client := testClient(t)
+	acquireRunMutex(t, client)
+
 	ctx := context.Background()
 
 	rTest, rTestCleanup := createCostEstimatedRun(t, client, nil)
@@ -405,6 +409,8 @@ func TestRunsReadWithOptions(t *testing.T) {
 
 func TestRunsApply(t *testing.T) {
 	client := testClient(t)
+	acquireRunMutex(t, client)
+
 	ctx := context.Background()
 
 	orgTest, orgTestCleanup := createOrganization(t, client)
@@ -442,6 +448,7 @@ func TestRunsApply(t *testing.T) {
 
 func TestRunsCancel(t *testing.T) {
 	client := testClient(t)
+	acquireRunMutex(t, client)
 
 	ctx := context.Background()
 
@@ -473,6 +480,8 @@ func TestRunsCancel(t *testing.T) {
 
 func TestRunsForceCancel(t *testing.T) {
 	client := testClient(t)
+	acquireRunMutex(t, client)
+
 	ctx := context.Background()
 
 	wTest, wTestCleanup := createWorkspace(t, client, nil)
@@ -541,6 +550,8 @@ func TestRunsForceCancel(t *testing.T) {
 
 func TestRunsForceExecute(t *testing.T) {
 	client := testClient(t)
+	acquireRunMutex(t, client)
+
 	ctx := context.Background()
 
 	wTest, wTestCleanup := createWorkspace(t, client, nil)
@@ -596,6 +607,8 @@ func TestRunsForceExecute(t *testing.T) {
 
 func TestRunsDiscard(t *testing.T) {
 	client := testClient(t)
+	acquireRunMutex(t, client)
+
 	ctx := context.Background()
 
 	wTest, wTestCleanup := createWorkspace(t, client, nil)

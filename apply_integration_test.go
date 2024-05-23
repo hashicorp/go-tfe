@@ -17,6 +17,8 @@ import (
 
 func TestAppliesRead(t *testing.T) {
 	client := testClient(t)
+	acquireRunMutex(t, client)
+
 	ctx := context.Background()
 
 	wTest, wTestCleanup := createWorkspace(t, client, nil)
@@ -48,6 +50,8 @@ func TestAppliesRead(t *testing.T) {
 
 func TestAppliesLogs(t *testing.T) {
 	client := testClient(t)
+	acquireRunMutex(t, client)
+
 	ctx := context.Background()
 
 	rTest, rTestCleanup := createRunApply(t, client, nil)

@@ -38,6 +38,8 @@ const agentVersion = "1.3.0"
 var _testAccountDetails *TestAccountDetails
 
 func testClient(t *testing.T) *Client {
+	t.Helper()
+
 	client, err := NewClient(&Config{
 		RetryServerErrors: true,
 	})
