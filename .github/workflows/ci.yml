@@ -56,6 +56,7 @@ jobs:
           admin_support_token: ${{ fromJSON(steps.tflocal.outputs.workspace-outputs-json).tfe_admin_token_by_role.support }}
           admin_version_maintenance_token: ${{ fromJSON(steps.tflocal.outputs.workspace-outputs-json).tfe_admin_token_by_role.version-maintenance }}
           oauth-client-github-token: ${{ secrets.OAUTH_CLIENT_GITHUB_TOKEN }}
+          enterprise: true
 
   tests-combine-summaries:
     name: Combine Test Reports
