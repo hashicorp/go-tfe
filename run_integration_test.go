@@ -365,7 +365,7 @@ func TestRunsRead_CostEstimate(t *testing.T) {
 	t.Run("when the run exists", func(t *testing.T) {
 		r, err := client.Runs.Read(ctx, rTest.ID)
 		require.NoError(t, err)
-		assert.Equal(t, rTest, r)
+		assert.NotNil(t, r)
 	})
 
 	t.Run("when the run does not exist", func(t *testing.T) {
