@@ -11,7 +11,7 @@ jobs:
     timeout-minutes: 20
     steps:
       - name: terraform-cloud/apply
-        uses: hashicorp-forge/terraform-cloud-action/apply@4adbe7eea886138ac10a4c09e63c5c568aaa6672
+        uses: hashicorp-forge/terraform-cloud-action/apply@5583d5f554d268ac91b3c37fd0a5e9da2c78c017 # v1.1.0
         with:
           organization: hashicorp-v2
           workspace: tflocal-go-tfe-nightly
@@ -31,14 +31,14 @@ jobs:
     steps:
       - name: terraform-cloud/outputs
         id: tflocal
-        uses: hashicorp-forge/terraform-cloud-action/outputs@4adbe7eea886138ac10a4c09e63c5c568aaa6672
+        uses: hashicorp-forge/terraform-cloud-action/outputs@5583d5f554d268ac91b3c37fd0a5e9da2c78c017 # v1.1.0
         with:
           token: ${{ secrets.TF_WORKFLOW_TFLOCAL_CLOUD_TFC_TOKEN }}
           organization: hashicorp-v2
           workspace: tflocal-go-tfe-nightly
 
       - name: Checkout code
-        uses: actions/checkout@8e5e7e5ab8b370d6c329ec480221332ada57f0ab # v3.5.2
+        uses: actions/checkout@a5ac7e51b41094c92402da3b24376905380afc29 # v4.1.6
 
       - uses: ./.github/actions/test-go-tfe
         with:
@@ -99,7 +99,7 @@ jobs:
     if: "${{ always() }}"
     steps:
       - name: terraform-cloud/destroy
-        uses: hashicorp-forge/terraform-cloud-action/destroy@4adbe7eea886138ac10a4c09e63c5c568aaa6672
+        uses: hashicorp-forge/terraform-cloud-action/destroy@5583d5f554d268ac91b3c37fd0a5e9da2c78c017 # v1.1.0
         with:
           token: ${{ secrets.TF_WORKFLOW_TFLOCAL_CLOUD_TFC_TOKEN }}
           organization: hashicorp-v2
