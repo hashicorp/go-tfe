@@ -13,6 +13,8 @@ import (
 
 func TestCommentsList(t *testing.T) {
 	client := testClient(t)
+	acquireRunMutex(t, client)
+
 	ctx := context.Background()
 
 	orgTest, orgTestCleanup := createOrganization(t, client)
@@ -21,7 +23,7 @@ func TestCommentsList(t *testing.T) {
 	wTest1, wTest1Cleanup := createWorkspace(t, client, orgTest)
 	defer wTest1Cleanup()
 
-	rTest, rTest1Cleanup := createRun(t, client, wTest1)
+	rTest, rTest1Cleanup := createRunApply(t, client, wTest1)
 	defer rTest1Cleanup()
 	commentBody1 := "1st comment test"
 	commentBody2 := "2nd comment test"

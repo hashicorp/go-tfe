@@ -1162,12 +1162,21 @@ func createRunWaitForStatus(t *testing.T, client *Client, w *Workspace, status R
 
 func createRunWaitForAnyStatuses(t *testing.T, client *Client, w *Workspace, statuses []RunStatus) (*Run, func()) {
 	var rCleanup func()
-	ctx := context.Background()
-	r, rCleanup := createRun(t, client, w)
+	run, rCleanup := createRun(t, client, w)
 
+	waitForAnyStatuses(t, client, run, statuses)
+
+	return run, func() {
+		rCleanup()
+	}
+}
+
+func waitForAnyStatuses(t *testing.T, client *Client, r *Run, statuses []RunStatus) {
+	ctx := context.Background()
 	timeout := 2 * time.Minute
 
 	ctxPollRunReady, cancelPollRunReady := context.WithTimeout(ctx, timeout)
+	defer cancelPollRunReady()
 
 	run := pollRunStatus(
 		t,
@@ -1179,11 +1188,6 @@ func createRunWaitForAnyStatuses(t *testing.T, client *Client, w *Workspace, sta
 
 	if run.Status == RunErrored {
 		fatalDumpRunLog(t, client, ctx, run)
-	}
-
-	return run, func() {
-		rCleanup()
-		cancelPollRunReady()
 	}
 }
 
@@ -1329,6 +1333,23 @@ func fatalDumpRunLog(t *testing.T, client *Client, ctx context.Context, run *Run
 	t.Logf("---Start of logs---\n%s\n---End of logs---", l)
 
 	t.Fatalf("Run %q unexpectedly errored", run.ID)
+}
+
+func createRunCanceled(t *testing.T, client *Client, w *Workspace) (*Run, func()) {
+	run, cleanup := createRun(t, client, w)
+
+	cancelRun(t, client, run)
+
+	return run, cleanup
+}
+
+func cancelRun(t *testing.T, client *Client, run *Run) {
+	err := client.Runs.Cancel(context.Background(), run.ID, RunCancelOptions{})
+	if err != nil {
+		t.Fatalf("Failed to cancel run %q: %s", run.ID, err)
+	}
+
+	waitForAnyStatuses(t, client, run, []RunStatus{RunCanceled})
 }
 
 func createRun(t *testing.T, client *Client, w *Workspace) (*Run, func()) {

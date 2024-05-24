@@ -13,13 +13,15 @@ import (
 
 func TestRunEventsList(t *testing.T) {
 	client := testClient(t)
+	acquireRunMutex(t, client)
+
 	ctx := context.Background()
 
 	orgTest, orgTestCleanup := createOrganization(t, client)
 	defer orgTestCleanup()
 
 	wTest, _ := createWorkspace(t, client, orgTest)
-	rTest, _ := createRun(t, client, wTest)
+	rTest, _ := createRunCanceled(t, client, wTest)
 	commentText := "Test comment"
 	_, err := client.Comments.Create(ctx, rTest.ID, CommentCreateOptions{
 		Body: commentText,
@@ -75,13 +77,15 @@ func TestRunEventsList(t *testing.T) {
 
 func TestRunEventsRead(t *testing.T) {
 	client := testClient(t)
+	acquireRunMutex(t, client)
+
 	ctx := context.Background()
 
 	orgTest, orgTestCleanup := createOrganization(t, client)
 	defer orgTestCleanup()
 
 	wTest, _ := createWorkspace(t, client, orgTest)
-	rTest, _ := createRun(t, client, wTest)
+	rTest, _ := createRunCanceled(t, client, wTest)
 	commentText := "Test comment"
 	_, err := client.Comments.Create(ctx, rTest.ID, CommentCreateOptions{
 		Body: commentText,

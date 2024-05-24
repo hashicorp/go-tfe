@@ -18,6 +18,8 @@ import (
 
 func TestRunsList(t *testing.T) {
 	client := testClient(t)
+	acquireRunMutex(t, client)
+
 	ctx := context.Background()
 
 	orgTest, orgTestCleanup := createOrganization(t, client)
@@ -159,18 +161,8 @@ func TestRunsListQueryParams(t *testing.T) {
 		},
 	}
 
-	betaTestCases := []testCase{}
-
 	for _, testCase := range testCases {
 		t.Run(testCase.description, func(t *testing.T) {
-			runs, err := client.Runs.List(ctx, workspaceTest.ID, testCase.options)
-			testCase.assertion(testCase, runs, err)
-		})
-	}
-
-	for _, testCase := range betaTestCases {
-		t.Run(testCase.description, func(t *testing.T) {
-			skipUnlessBeta(t)
 			runs, err := client.Runs.List(ctx, workspaceTest.ID, testCase.options)
 			testCase.assertion(testCase, runs, err)
 		})
@@ -179,6 +171,8 @@ func TestRunsListQueryParams(t *testing.T) {
 
 func TestRunsCreate(t *testing.T) {
 	client := testClient(t)
+	acquireRunMutex(t, client)
+
 	ctx := context.Background()
 
 	wTest, wTestCleanup := createWorkspace(t, client, nil)
@@ -389,6 +383,8 @@ func TestRunsRead_CostEstimate(t *testing.T) {
 
 func TestRunsReadWithOptions(t *testing.T) {
 	client := testClient(t)
+	acquireRunMutex(t, client)
+
 	ctx := context.Background()
 
 	rTest, rTestCleanup := createRun(t, client, nil)
