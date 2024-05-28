@@ -29,17 +29,19 @@ type users struct {
 
 // User represents a Terraform Enterprise user.
 type User struct {
-	ID               string           `jsonapi:"primary,users"`
-	AvatarURL        string           `jsonapi:"attr,avatar-url"`
-	Email            string           `jsonapi:"attr,email"`
-	IsServiceAccount bool             `jsonapi:"attr,is-service-account"`
-	TwoFactor        *TwoFactor       `jsonapi:"attr,two-factor"`
-	UnconfirmedEmail string           `jsonapi:"attr,unconfirmed-email"`
-	Username         string           `jsonapi:"attr,username"`
-	V2Only           bool             `jsonapi:"attr,v2-only"`
-	IsSiteAdmin      *bool            `jsonapi:"attr,is-site-admin"`
-	IsSsoLogin       *bool            `jsonapi:"attr,is-sso-login"`
-	Permissions      *UserPermissions `jsonapi:"attr,permissions"`
+	ID               string     `jsonapi:"primary,users"`
+	AvatarURL        string     `jsonapi:"attr,avatar-url"`
+	Email            string     `jsonapi:"attr,email"`
+	IsServiceAccount bool       `jsonapi:"attr,is-service-account"`
+	TwoFactor        *TwoFactor `jsonapi:"attr,two-factor"`
+	UnconfirmedEmail string     `jsonapi:"attr,unconfirmed-email"`
+	Username         string     `jsonapi:"attr,username"`
+	V2Only           bool       `jsonapi:"attr,v2-only"`
+	// Deprecated: IsSiteAdmin was deprecated in v202406 and will be removed in a future version of Terraform Enterprise
+	IsSiteAdmin *bool            `jsonapi:"attr,is-site-admin"`
+	IsAdmin     *bool            `jsonapi:"attr,is-admin"`
+	IsSsoLogin  *bool            `jsonapi:"attr,is-sso-login"`
+	Permissions *UserPermissions `jsonapi:"attr,permissions"`
 
 	// Relations
 	// AuthenticationTokens *AuthenticationTokens `jsonapi:"relation,authentication-tokens"`
