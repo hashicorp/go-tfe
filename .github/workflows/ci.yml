@@ -6,7 +6,6 @@ on:
 
 concurrency:
   group: "one"
-  cancel-in-progress: true
 
 jobs:
   lint:
