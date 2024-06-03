@@ -286,11 +286,11 @@ func TestWorkspacesList(t *testing.T) {
 		wTest, wTestCleanup := createWorkspace(t, client, orgTest)
 		t.Cleanup(wTestCleanup)
 
-		rn, unappliedCleanup := createRunUnapplied(t, client, wTest)
-		t.Cleanup(unappliedCleanup)
+		rn, appliedCleanup := createRunApply(t, client, wTest)
+		t.Cleanup(appliedCleanup)
 
 		wl, err := client.Workspaces.List(ctx, orgTest.Name, &WorkspaceListOptions{
-			CurrentRunStatus: string(RunPlanned),
+			CurrentRunStatus: string(RunApplied),
 		})
 
 		require.NoError(t, err)
