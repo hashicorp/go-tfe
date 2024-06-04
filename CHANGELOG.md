@@ -1,5 +1,8 @@
 # Unreleased
 
+## Enhancements
+* Adds the `CurrentRunStatus` filter to allow filtering workspaces by their current run status by @arybolovlev [#899](https://github.com/hashicorp/go-tfe/pull/899)
+
 # v1.54.0
 
 ## Enhancements
