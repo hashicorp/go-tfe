@@ -325,6 +325,9 @@ type WorkspaceListOptions struct {
 	// Optional: A filter string to list all the workspaces linked to a given project id in the organization.
 	ProjectID string `url:"filter[project][id],omitempty"`
 
+	// Optional: A filter string to list all the workspaces filtered by current run status.
+	CurrentRunStatus string `url:"filter[current-run][status],omitempty"`
+
 	// Optional: A list of relations to include. See available resources https://developer.hashicorp.com/terraform/cloud-docs/api-docs/workspaces#available-related-resources
 	Include []WSIncludeOpt `url:"include,omitempty"`
 
