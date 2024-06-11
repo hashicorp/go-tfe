@@ -1,4 +1,5 @@
 # UNRELEASED
+* Adds `ManageAgentPools` permission to team `OrganizationAccess` by @emlanctot [#901](https://github.com/hashicorp/go-tfe/pull/901)
 
 ## Enhancements
 

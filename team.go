@@ -75,6 +75,7 @@ type OrganizationAccess struct {
 	ManageTeams              bool `jsonapi:"attr,manage-teams"`
 	ManageOrganizationAccess bool `jsonapi:"attr,manage-organization-access"`
 	AccessSecretTeams        bool `jsonapi:"attr,access-secret-teams"`
+	ManageAgentPools         bool `jsonapi:"attr,manage-agent-pools"`
 }
 
 // TeamPermissions represents the current user's permissions on the team.
@@ -164,6 +165,7 @@ type OrganizationAccessOptions struct {
 	ManageTeams              *bool `json:"manage-teams,omitempty"`
 	ManageOrganizationAccess *bool `json:"manage-organization-access,omitempty"`
 	AccessSecretTeams        *bool `json:"access-secret-teams,omitempty"`
+	ManageAgentPools         *bool `json:"manage-agent-pools,omitempty"`
 }
 
 // List all the teams of the given organization.
