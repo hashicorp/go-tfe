@@ -46,8 +46,9 @@ type ProjectList struct {
 
 // Project represents a Terraform Enterprise project
 type Project struct {
-	ID   string `jsonapi:"primary,projects"`
-	Name string `jsonapi:"attr,name"`
+	ID        string `jsonapi:"primary,projects"`
+	IsUnified bool   `jsonapi:"attr,is-unified"`
+	Name      string `jsonapi:"attr,name"`
 
 	Description string `jsonapi:"attr,description"`
 
