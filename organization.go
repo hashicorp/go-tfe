@@ -105,6 +105,7 @@ type Organization struct {
 	DefaultExecutionMode                              string                   `jsonapi:"attr,default-execution-mode"`
 	Email                                             string                   `jsonapi:"attr,email"`
 	ExternalID                                        string                   `jsonapi:"attr,external-id"`
+	IsUnified                                         bool                     `jsonapi:"attr,is-unified"`
 	OwnersTeamSAMLRoleID                              string                   `jsonapi:"attr,owners-team-saml-role-id"`
 	Permissions                                       *OrganizationPermissions `jsonapi:"attr,permissions"`
 	SAMLEnabled                                       bool                     `jsonapi:"attr,saml-enabled"`

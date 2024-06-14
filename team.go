@@ -47,6 +47,7 @@ type TeamList struct {
 // Team represents a Terraform Enterprise team.
 type Team struct {
 	ID                 string              `jsonapi:"primary,teams"`
+	IsUnified          bool                `jsonapi:"attr,is-unified"`
 	Name               string              `jsonapi:"attr,name"`
 	OrganizationAccess *OrganizationAccess `jsonapi:"attr,organization-access"`
 	Visibility         string              `jsonapi:"attr,visibility"`
