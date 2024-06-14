@@ -3,7 +3,7 @@
 ## Enhancements
 
 * Adds the `IsUnified` field to `Project`, `Organization` and `Team` by @roncodingenthusiast [#915](https://github.com/hashicorp/go-tfe/pull/915)
-* Add `NotificationTriggerWorkspaceAutoDestroyReminder` and `NotificationTriggerWorkspaceAutoDestroyRunResults` notification trigger types by @sawyerward [#549](https://github.com/hashicorp/go-tfe/pull/919)
+* Add `NotificationTriggerWorkspaceAutoDestroyReminder` and `NotificationTriggerWorkspaceAutoDestroyRunResults` notification trigger types by @sawyerward [#919](https://github.com/hashicorp/go-tfe/pull/919)
 
 # v1.56.0
 
