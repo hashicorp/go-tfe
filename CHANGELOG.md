@@ -1,15 +1,63 @@
-# Unreleased
+# UNRELEASED
+
+## Enhancements
+
+* Adds the `IsUnified` field to `Project`, `Organization` and `Team` by @roncodingenthusiast [#915](https://github.com/hashicorp/go-tfe/pull/915)
+
+# v1.56.0
+
+## Enhancements
+* Adds `ManageAgentPools` permission to team `OrganizationAccess` by @emlanctot [#901](https://github.com/hashicorp/go-tfe/pull/901)
+
+# v1.55.0
+
+## Enhancements
+* Adds the `CurrentRunStatus` filter to allow filtering workspaces by their current run status by @arybolovlev [#899](https://github.com/hashicorp/go-tfe/pull/899)
+
+# v1.54.0
+
+## Enhancements
+* Adds the `AutoDestroyActivityDuration` field to `Workspace` by @notchairmk [#902](https://github.com/hashicorp/go-tfe/pull/902)
+
+## Deprecations
+* The `IsSiteAdmin` field on User has been deprecated. Use the `IsAdmin` field instead [#900](https://github.com/hashicorp/go-tfe/pull/900)
+
+# v1.53.0
+
+## Enhancements
+* Adds `ManageTeams`, `ManageOrganizationAccess`, and `AccessSecretTeams` permissions to team `OrganizationAccess` by @juliannatetreault [#874](https://github.com/hashicorp/go-tfe/pull/874)
+* Mocks are now generated using the go.uber.org/mock package [#897](https://github.com/hashicorp/go-tfe/pull/897)
+
+# v1.52.0
+
+## Enhancements
+* Add `EnforcementLevel` to `Policy` create and update options. This will replace the deprecated `[]Enforce` method for specifying enforcement level. @JarrettSpiker [#895](https://github.com/hashicorp/go-tfe/pull/895)
+
+## Deprecations
+* The `Enforce` fields on `Policy`, `PolicyCreateOptions`, and `PolicyUpdateOptions` have been deprecated. Use the `EnforcementLevel` instead. @JarrettSpiker [#895](https://github.com/hashicorp/go-tfe/pull/895)
+
+# v1.51.0
+
+## Enhancements
+* Adds `Teams` field to `OrganizationMembershipCreateOptions` to allow users to be added to teams at the same time they are invited to an organization. by @JarrettSpiker [#886](https://github.com/hashicorp/go-tfe/pull/886)
+* `IsCloud()` returns true when TFP-AppName is "HCP Terraform" by @sebasslash [#891](https://github.com/hashicorp/go-tfe/pull/891)
+* `OrganizationScoped` attribute for `OAuthClient` is now generally available by @netramali [#873](https://github.com/hashicorp/go-tfe/pull/873)
+
+# v1.50.0
 
 ## Enhancements
 * Adds Bitbucket Data Center as a new `ServiceProviderType` and ensures similar validation as Bitbucket Server by @zainq11 [#879](https://github.com/hashicorp/go-tfe/pull/879)
 * Add `GlobalRunTasks` field to `Entitlements`. by @glennsarti [#865](https://github.com/hashicorp/go-tfe/pull/865)
 * Add `Global` field to `RunTask`. by @glennsarti [#865](https://github.com/hashicorp/go-tfe/pull/865)
 * Add `Stages` field to `WorkspaceRunTask`. by @glennsarti [#865](https://github.com/hashicorp/go-tfe/pull/865)
+* Changing BETA `OrganizationScoped` attribute of `OAuthClient` to be a pointer for bug fix by @netramali [884](https://github.com/hashicorp/go-tfe/pull/884)
+* Adds `Query` parameter to `VariableSetListOptions` to allow searching variable sets by name, by @JarrettSpiker[#877](https://github.com/hashicorp/go-tfe/pull/877)
 
 ## Deprecations
 * The `Stage` field has been deprecated on `WorkspaceRunTask`. Instead, use `Stages`. by @glennsarti [#865](https://github.com/hashicorp/go-tfe/pull/865)
 
 # v1.49.0
+
 ## Enhancements
 * Adds `post_apply` to list of possible `stages` for Run Tasks by @glennsarti [#878](https://github.com/hashicorp/go-tfe/pull/878)
 

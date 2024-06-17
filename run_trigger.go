@@ -14,7 +14,7 @@ import (
 var _ RunTriggers = (*runTriggers)(nil)
 
 // RunTriggers describes all the Run Trigger
-// related methods that the Terraform Cloud API supports.
+// related methods that the HCP Terraform API supports.
 //
 // TFE API docs:
 // https://developer.hashicorp.com/terraform/cloud-docs/api-docs/run-triggers

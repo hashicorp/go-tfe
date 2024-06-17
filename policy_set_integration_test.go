@@ -395,7 +395,7 @@ func TestPolicySetsCreate(t *testing.T) {
 		}
 
 		// We are deliberately ignoring the cleanup func here, because there's a potential race condition
-		// against the subsequent subtest -- TFC performs some async cleanup on VCS repos when deleting an
+		// against the subsequent subtest -- HCP Terraform performs some async cleanup on VCS repos when deleting an
 		// OAuthClient, and we've seen evidence that it will zero out the next test's NEW VCSRepo values if
 		// they manage to slip in before the async stuff completes, even though the new values link it to a
 		// new OAuthToken. Anyway, there's a deferred cleanup for orgTest in the outer scope, so the org's
@@ -628,7 +628,7 @@ func TestPolicySetsRead(t *testing.T) {
 		)
 		require.NoError(t, err)
 
-		// give TFC some time to process uploading the
+		// give HCP Terraform some time to process uploading the
 		// policy set version before reading.
 		time.Sleep(waitForPolicySetVersionUpload)
 

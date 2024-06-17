@@ -482,3 +482,167 @@ func TestTeamsUpdateManageManageMembership(t *testing.T) {
 	originalTeamAccess.ManageMembership = true
 	assert.Equal(t, originalTeamAccess, refreshed.OrganizationAccess)
 }
+
+func TestTeamsUpdateManageTeams(t *testing.T) {
+	client := testClient(t)
+	ctx := context.Background()
+
+	orgTest, orgTestCleanup := createOrganization(t, client)
+	defer orgTestCleanup()
+
+	tmTest, tmTestCleanup := createTeam(t, client, orgTest)
+	defer tmTestCleanup()
+
+	teamRead, err := client.Teams.Read(ctx, tmTest.ID)
+	require.NoError(t, err)
+	assert.False(t, teamRead.OrganizationAccess.ManageTeams, "manage teams is false by default")
+
+	originalTeamAccess := teamRead.OrganizationAccess
+
+	options := TeamUpdateOptions{
+		OrganizationAccess: &OrganizationAccessOptions{
+			// **Note: ManageTeams requires ManageMembership.**
+			ManageMembership: Bool(true),
+			ManageTeams:      Bool(true),
+		},
+	}
+
+	tm, err := client.Teams.Update(ctx, tmTest.ID, options)
+	require.NoError(t, err)
+	assert.True(t, tm.OrganizationAccess.ManageMembership)
+	assert.True(t, tm.OrganizationAccess.ManageTeams)
+
+	refreshed, err := client.Teams.Read(ctx, tmTest.ID)
+	require.NoError(t, err)
+	assert.True(t, refreshed.OrganizationAccess.ManageMembership)
+	assert.True(t, refreshed.OrganizationAccess.ManageTeams)
+
+	// Check that other org access fields are not updated
+	originalTeamAccess.ManageMembership = true
+	originalTeamAccess.ManageTeams = true
+	assert.Equal(t, originalTeamAccess, refreshed.OrganizationAccess)
+}
+
+func TestTeamsUpdateManageOrganizationAccess(t *testing.T) {
+	client := testClient(t)
+	ctx := context.Background()
+
+	orgTest, orgTestCleanup := createOrganization(t, client)
+	defer orgTestCleanup()
+
+	tmTest, tmTestCleanup := createTeam(t, client, orgTest)
+	defer tmTestCleanup()
+
+	teamRead, err := client.Teams.Read(ctx, tmTest.ID)
+	require.NoError(t, err)
+	assert.False(t, teamRead.OrganizationAccess.ManageOrganizationAccess, "manage organization access is false by default")
+
+	originalTeamAccess := teamRead.OrganizationAccess
+
+	options := TeamUpdateOptions{
+		OrganizationAccess: &OrganizationAccessOptions{
+			// **Note: ManageOrganizationAccess requires ManageMembership and ManageTeams.**
+			ManageMembership:         Bool(true),
+			ManageTeams:              Bool(true),
+			ManageOrganizationAccess: Bool(true),
+		},
+	}
+
+	tm, err := client.Teams.Update(ctx, tmTest.ID, options)
+	require.NoError(t, err)
+	assert.True(t, tm.OrganizationAccess.ManageMembership)
+	assert.True(t, tm.OrganizationAccess.ManageTeams)
+	assert.True(t, tm.OrganizationAccess.ManageOrganizationAccess)
+
+	refreshed, err := client.Teams.Read(ctx, tmTest.ID)
+	require.NoError(t, err)
+	assert.True(t, refreshed.OrganizationAccess.ManageMembership)
+	assert.True(t, refreshed.OrganizationAccess.ManageTeams)
+	assert.True(t, refreshed.OrganizationAccess.ManageOrganizationAccess)
+
+	// Check that other org access fields are not updated
+	originalTeamAccess.ManageMembership = true
+	originalTeamAccess.ManageTeams = true
+	originalTeamAccess.ManageOrganizationAccess = true
+	assert.Equal(t, originalTeamAccess, refreshed.OrganizationAccess)
+}
+
+func TestTeamsUpdateAccessSecretTeams(t *testing.T) {
+	client := testClient(t)
+	ctx := context.Background()
+
+	orgTest, orgTestCleanup := createOrganization(t, client)
+	defer orgTestCleanup()
+
+	tmTest, tmTestCleanup := createTeam(t, client, orgTest)
+	defer tmTestCleanup()
+
+	teamRead, err := client.Teams.Read(ctx, tmTest.ID)
+	require.NoError(t, err)
+	assert.False(t, teamRead.OrganizationAccess.AccessSecretTeams, "access secret teams is false by default")
+
+	originalTeamAccess := teamRead.OrganizationAccess
+
+	options := TeamUpdateOptions{
+		OrganizationAccess: &OrganizationAccessOptions{
+			// **Note: AccessSecretTeams requires at least one granular permission to be set
+			// for it to be set, and ManageTeams requires ManageMembership.**
+			ManageMembership:  Bool(true),
+			ManageTeams:       Bool(true),
+			AccessSecretTeams: Bool(true),
+		},
+	}
+
+	tm, err := client.Teams.Update(ctx, tmTest.ID, options)
+	require.NoError(t, err)
+	assert.True(t, tm.OrganizationAccess.ManageMembership)
+	assert.True(t, tm.OrganizationAccess.ManageTeams)
+	assert.True(t, tm.OrganizationAccess.AccessSecretTeams)
+
+	refreshed, err := client.Teams.Read(ctx, tmTest.ID)
+	require.NoError(t, err)
+	assert.True(t, refreshed.OrganizationAccess.ManageMembership)
+	assert.True(t, refreshed.OrganizationAccess.ManageTeams)
+	assert.True(t, refreshed.OrganizationAccess.AccessSecretTeams)
+
+	// Check that other org access fields are not updated
+	originalTeamAccess.ManageMembership = true
+	originalTeamAccess.ManageTeams = true
+	originalTeamAccess.AccessSecretTeams = true
+	assert.Equal(t, originalTeamAccess, refreshed.OrganizationAccess)
+}
+
+func TestTeamsUpdateManageAgentPools(t *testing.T) {
+	client := testClient(t)
+	ctx := context.Background()
+
+	orgTest, orgTestCleanup := createOrganization(t, client)
+	defer orgTestCleanup()
+
+	tmTest, tmTestCleanup := createTeam(t, client, orgTest)
+	defer tmTestCleanup()
+
+	teamRead, err := client.Teams.Read(ctx, tmTest.ID)
+	require.NoError(t, err)
+	assert.False(t, teamRead.OrganizationAccess.ManageAgentPools, "manage agent pools is false by default")
+
+	originalTeamAccess := teamRead.OrganizationAccess
+
+	options := TeamUpdateOptions{
+		OrganizationAccess: &OrganizationAccessOptions{
+			ManageAgentPools: Bool(true),
+		},
+	}
+
+	tm, err := client.Teams.Update(ctx, tmTest.ID, options)
+	require.NoError(t, err)
+	assert.True(t, tm.OrganizationAccess.ManageAgentPools)
+
+	refreshed, err := client.Teams.Read(ctx, tmTest.ID)
+	require.NoError(t, err)
+	assert.True(t, refreshed.OrganizationAccess.ManageAgentPools)
+
+	// Check that other org access fields are not updated
+	originalTeamAccess.ManageAgentPools = true
+	assert.Equal(t, originalTeamAccess, refreshed.OrganizationAccess)
+}

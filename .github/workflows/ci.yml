@@ -5,8 +5,7 @@ on:
   pull_request:
 
 concurrency:
-  group: ${{ github.head_ref || github.ref }}
-  cancel-in-progress: true
+  group: "one"
 
 jobs:
   lint:
@@ -15,7 +14,7 @@ jobs:
     timeout-minutes: 5
     steps:
       - name: Checkout code
-        uses: actions/checkout@8e5e7e5ab8b370d6c329ec480221332ada57f0ab # v3.5.2
+        uses: actions/checkout@a5ac7e51b41094c92402da3b24376905380afc29 # v4.1.6
 
       - uses: ./.github/actions/lint-go-tfe
 
@@ -26,21 +25,20 @@ jobs:
       fail-fast: false
       matrix:
         # If you adjust these parameters, also adjust the jrm input files on the "Merge reports" step below
-        total: [ 4 ]
-        index: [ 0, 1, 2, 3 ]
+        total: [ 1 ]
+        index: [ 0 ]
 
-    timeout-minutes: 30
     steps:
       - name: terraform-cloud-outputs
         id: tflocal
-        uses: hashicorp-forge/terraform-cloud-action/outputs@4adbe7eea886138ac10a4c09e63c5c568aaa6672
+        uses: hashicorp-forge/terraform-cloud-action/outputs@5583d5f554d268ac91b3c37fd0a5e9da2c78c017 # v1.1.0
         with:
           token: ${{ secrets.TF_WORKFLOW_TFLOCAL_CLOUD_TFC_TOKEN }}
           organization: hashicorp-v2
           workspace: tflocal-go-tfe
 
       - name: Checkout code
-        uses: actions/checkout@8e5e7e5ab8b370d6c329ec480221332ada57f0ab # v3.5.2
+        uses: actions/checkout@a5ac7e51b41094c92402da3b24376905380afc29 # v4.1.6
 
       - uses: ./.github/actions/test-go-tfe
         with:
@@ -73,7 +71,7 @@ jobs:
         run: npm install -g junit-report-merger
 
       - name: Merge reports
-        run: jrm ./ci-summary.xml "junit-test-summary-0/*.xml" "junit-test-summary-1/*.xml" "junit-test-summary-2/*.xml" "junit-test-summary-3/*.xml"
+        run: jrm ./ci-summary.xml "junit-test-summary-0/*.xml"
 
       - name: Upload test artifacts
         uses: actions/upload-artifact@0b7f8abb1508181956e8e162db84b466c27e18ce # v3.1.2

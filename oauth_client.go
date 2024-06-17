@@ -90,15 +90,12 @@ type OAuthClient struct {
 	Secret              string              `jsonapi:"attr,secret"`
 	ServiceProvider     ServiceProviderType `jsonapi:"attr,service-provider"`
 	ServiceProviderName string              `jsonapi:"attr,service-provider-display-name"`
-	// **Note: This field is still in BETA and subject to change.**
-	OrganizationScoped bool `jsonapi:"attr,organization-scoped"`
+	OrganizationScoped  *bool               `jsonapi:"attr,organization-scoped"`
 
 	// Relations
 	Organization *Organization `jsonapi:"relation,organization"`
 	OAuthTokens  []*OAuthToken `jsonapi:"relation,oauth-tokens"`
 	AgentPool    *AgentPool    `jsonapi:"relation,agent-pool"`
-
-	// **Note: This field is still in BETA and subject to change.**
 	// The projects to which the oauth client applies.
 	Projects []*Project `jsonapi:"relation,projects"`
 }
@@ -151,7 +148,6 @@ type OAuthClientCreateOptions struct {
 	// Optional: The token string you were given by your VCS provider.
 	OAuthToken *string `jsonapi:"attr,oauth-token-string,omitempty"`
 
-	// **Note: This field is still in BETA and subject to change.**
 	// Optional: The initial list of projects for which the oauth client should be associated with.
 	Projects []*Project `jsonapi:"relation,projects,omitempty"`
 
@@ -171,7 +167,6 @@ type OAuthClientCreateOptions struct {
 	// Optional: AgentPool to associate the VCS Provider with, for PrivateVCS support
 	AgentPool *AgentPool `jsonapi:"relation,agent-pool,omitempty"`
 
-	// **Note: This field is still in BETA and subject to change.**
 	// Optional: Whether the OAuthClient is available to all workspaces in the organization.
 	// True if the oauth client is organization scoped, false otherwise.
 	OrganizationScoped *bool `jsonapi:"attr,organization-scoped,omitempty"`
@@ -201,7 +196,6 @@ type OAuthClientUpdateOptions struct {
 	// Optional: The token string you were given by your VCS provider.
 	OAuthToken *string `jsonapi:"attr,oauth-token-string,omitempty"`
 
-	// **Note: This field is still in BETA and subject to change.**
 	// Optional: Whether the OAuthClient is available to all workspaces in the organization.
 	// True if the oauth client is organization scoped, false otherwise.
 	OrganizationScoped *bool `jsonapi:"attr,organization-scoped,omitempty"`

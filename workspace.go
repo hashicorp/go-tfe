@@ -155,44 +155,45 @@ type LockedByChoice struct {
 
 // Workspace represents a Terraform Enterprise workspace.
 type Workspace struct {
-	ID                         string                          `jsonapi:"primary,workspaces"`
-	Actions                    *WorkspaceActions               `jsonapi:"attr,actions"`
-	AllowDestroyPlan           bool                            `jsonapi:"attr,allow-destroy-plan"`
-	AssessmentsEnabled         bool                            `jsonapi:"attr,assessments-enabled"`
-	AutoApply                  bool                            `jsonapi:"attr,auto-apply"`
-	AutoApplyRunTrigger        bool                            `jsonapi:"attr,auto-apply-run-trigger"`
-	AutoDestroyAt              jsonapi.NullableAttr[time.Time] `jsonapi:"attr,auto-destroy-at,iso8601,omitempty"`
-	CanQueueDestroyPlan        bool                            `jsonapi:"attr,can-queue-destroy-plan"`
-	CreatedAt                  time.Time                       `jsonapi:"attr,created-at,iso8601"`
-	Description                string                          `jsonapi:"attr,description"`
-	Environment                string                          `jsonapi:"attr,environment"`
-	ExecutionMode              string                          `jsonapi:"attr,execution-mode"`
-	FileTriggersEnabled        bool                            `jsonapi:"attr,file-triggers-enabled"`
-	GlobalRemoteState          bool                            `jsonapi:"attr,global-remote-state"`
-	Locked                     bool                            `jsonapi:"attr,locked"`
-	MigrationEnvironment       string                          `jsonapi:"attr,migration-environment"`
-	Name                       string                          `jsonapi:"attr,name"`
-	Operations                 bool                            `jsonapi:"attr,operations"`
-	Permissions                *WorkspacePermissions           `jsonapi:"attr,permissions"`
-	QueueAllRuns               bool                            `jsonapi:"attr,queue-all-runs"`
-	SpeculativeEnabled         bool                            `jsonapi:"attr,speculative-enabled"`
-	SourceName                 string                          `jsonapi:"attr,source-name"`
-	SourceURL                  string                          `jsonapi:"attr,source-url"`
-	StructuredRunOutputEnabled bool                            `jsonapi:"attr,structured-run-output-enabled"`
-	TerraformVersion           string                          `jsonapi:"attr,terraform-version"`
-	TriggerPrefixes            []string                        `jsonapi:"attr,trigger-prefixes"`
-	TriggerPatterns            []string                        `jsonapi:"attr,trigger-patterns"`
-	VCSRepo                    *VCSRepo                        `jsonapi:"attr,vcs-repo"`
-	WorkingDirectory           string                          `jsonapi:"attr,working-directory"`
-	UpdatedAt                  time.Time                       `jsonapi:"attr,updated-at,iso8601"`
-	ResourceCount              int                             `jsonapi:"attr,resource-count"`
-	ApplyDurationAverage       time.Duration                   `jsonapi:"attr,apply-duration-average"`
-	PlanDurationAverage        time.Duration                   `jsonapi:"attr,plan-duration-average"`
-	PolicyCheckFailures        int                             `jsonapi:"attr,policy-check-failures"`
-	RunFailures                int                             `jsonapi:"attr,run-failures"`
-	RunsCount                  int                             `jsonapi:"attr,workspace-kpis-runs-count"`
-	TagNames                   []string                        `jsonapi:"attr,tag-names"`
-	SettingOverwrites          *WorkspaceSettingOverwrites     `jsonapi:"attr,setting-overwrites"`
+	ID                          string                          `jsonapi:"primary,workspaces"`
+	Actions                     *WorkspaceActions               `jsonapi:"attr,actions"`
+	AllowDestroyPlan            bool                            `jsonapi:"attr,allow-destroy-plan"`
+	AssessmentsEnabled          bool                            `jsonapi:"attr,assessments-enabled"`
+	AutoApply                   bool                            `jsonapi:"attr,auto-apply"`
+	AutoApplyRunTrigger         bool                            `jsonapi:"attr,auto-apply-run-trigger"`
+	AutoDestroyAt               jsonapi.NullableAttr[time.Time] `jsonapi:"attr,auto-destroy-at,iso8601,omitempty"`
+	AutoDestroyActivityDuration jsonapi.NullableAttr[string]    `jsonapi:"attr,auto-destroy-activity-duration,omitempty"`
+	CanQueueDestroyPlan         bool                            `jsonapi:"attr,can-queue-destroy-plan"`
+	CreatedAt                   time.Time                       `jsonapi:"attr,created-at,iso8601"`
+	Description                 string                          `jsonapi:"attr,description"`
+	Environment                 string                          `jsonapi:"attr,environment"`
+	ExecutionMode               string                          `jsonapi:"attr,execution-mode"`
+	FileTriggersEnabled         bool                            `jsonapi:"attr,file-triggers-enabled"`
+	GlobalRemoteState           bool                            `jsonapi:"attr,global-remote-state"`
+	Locked                      bool                            `jsonapi:"attr,locked"`
+	MigrationEnvironment        string                          `jsonapi:"attr,migration-environment"`
+	Name                        string                          `jsonapi:"attr,name"`
+	Operations                  bool                            `jsonapi:"attr,operations"`
+	Permissions                 *WorkspacePermissions           `jsonapi:"attr,permissions"`
+	QueueAllRuns                bool                            `jsonapi:"attr,queue-all-runs"`
+	SpeculativeEnabled          bool                            `jsonapi:"attr,speculative-enabled"`
+	SourceName                  string                          `jsonapi:"attr,source-name"`
+	SourceURL                   string                          `jsonapi:"attr,source-url"`
+	StructuredRunOutputEnabled  bool                            `jsonapi:"attr,structured-run-output-enabled"`
+	TerraformVersion            string                          `jsonapi:"attr,terraform-version"`
+	TriggerPrefixes             []string                        `jsonapi:"attr,trigger-prefixes"`
+	TriggerPatterns             []string                        `jsonapi:"attr,trigger-patterns"`
+	VCSRepo                     *VCSRepo                        `jsonapi:"attr,vcs-repo"`
+	WorkingDirectory            string                          `jsonapi:"attr,working-directory"`
+	UpdatedAt                   time.Time                       `jsonapi:"attr,updated-at,iso8601"`
+	ResourceCount               int                             `jsonapi:"attr,resource-count"`
+	ApplyDurationAverage        time.Duration                   `jsonapi:"attr,apply-duration-average"`
+	PlanDurationAverage         time.Duration                   `jsonapi:"attr,plan-duration-average"`
+	PolicyCheckFailures         int                             `jsonapi:"attr,policy-check-failures"`
+	RunFailures                 int                             `jsonapi:"attr,run-failures"`
+	RunsCount                   int                             `jsonapi:"attr,workspace-kpis-runs-count"`
+	TagNames                    []string                        `jsonapi:"attr,tag-names"`
+	SettingOverwrites           *WorkspaceSettingOverwrites     `jsonapi:"attr,setting-overwrites"`
 
 	// Relations
 	AgentPool                   *AgentPool            `jsonapi:"relation,agent-pool"`
@@ -324,6 +325,9 @@ type WorkspaceListOptions struct {
 	// Optional: A filter string to list all the workspaces linked to a given project id in the organization.
 	ProjectID string `url:"filter[project][id],omitempty"`
 
+	// Optional: A filter string to list all the workspaces filtered by current run status.
+	CurrentRunStatus string `url:"filter[current-run][status],omitempty"`
+
 	// Optional: A list of relations to include. See available resources https://developer.hashicorp.com/terraform/cloud-docs/api-docs/workspaces#available-related-resources
 	Include []WSIncludeOpt `url:"include,omitempty"`
 
@@ -350,7 +354,7 @@ type WorkspaceCreateOptions struct {
 
 	// Optional: Whether to enable health assessments (drift detection etc.) for the workspace.
 	// Reference: https://developer.hashicorp.com/terraform/cloud-docs/api-docs/workspaces#create-a-workspace
-	// Requires remote execution mode, Terraform Cloud Business entitlement, and a valid agent pool to work
+	// Requires remote execution mode, HCP Terraform Business entitlement, and a valid agent pool to work
 	AssessmentsEnabled *bool `jsonapi:"attr,assessments-enabled,omitempty"`
 
 	// Optional: Whether to automatically apply changes when a Terraform plan is successful.
@@ -362,6 +366,10 @@ type WorkspaceCreateOptions struct {
 
 	// Optional: The time after which an automatic destroy run will be queued
 	AutoDestroyAt jsonapi.NullableAttr[time.Time] `jsonapi:"attr,auto-destroy-at,iso8601,omitempty"`
+
+	// Optional: The period of time to wait after workspace activity to trigger a destroy run. The format
+	// should roughly match a Go duration string limited to days and hours, e.g. "24h" or "1d".
+	AutoDestroyActivityDuration jsonapi.NullableAttr[string] `jsonapi:"attr,auto-destroy-activity-duration,omitempty"`
 
 	// Optional: A description for the workspace.
 	Description *string `jsonapi:"attr,description,omitempty"`
@@ -399,7 +407,7 @@ type WorkspaceCreateOptions struct {
 	QueueAllRuns *bool `jsonapi:"attr,queue-all-runs,omitempty"`
 
 	// Whether this workspace allows speculative plans. Setting this to false
-	// prevents Terraform Cloud or the Terraform Enterprise instance from
+	// prevents HCP Terraform or the Terraform Enterprise instance from
 	// running plans on pull requests, which can improve security if the VCS
 	// repository is public or includes untrusted contributors.
 	SpeculativeEnabled *bool `jsonapi:"attr,speculative-enabled,omitempty"`
@@ -453,7 +461,7 @@ type WorkspaceCreateOptions struct {
 	// organization provides.
 	//
 	// In general, it's not necessary to mark a setting as `true` in this
-	// struct; if you provide a literal value for a setting, Terraform Cloud will
+	// struct; if you provide a literal value for a setting, HCP Terraform will
 	// automatically update its overwrites field to `true`. If you do choose to
 	// manually mark a setting as overwritten, you must provide a value for that
 	// setting at the same time.
@@ -500,7 +508,7 @@ type WorkspaceUpdateOptions struct {
 
 	// Optional: Whether to enable health assessments (drift detection etc.) for the workspace.
 	// Reference: https://developer.hashicorp.com/terraform/cloud-docs/api-docs/workspaces#update-a-workspace
-	// Requires remote execution mode, Terraform Cloud Business entitlement, and a valid agent pool to work
+	// Requires remote execution mode, HCP Terraform Business entitlement, and a valid agent pool to work
 	AssessmentsEnabled *bool `jsonapi:"attr,assessments-enabled,omitempty"`
 
 	// Optional: Whether to automatically apply changes when a Terraform plan is successful.
@@ -512,6 +520,10 @@ type WorkspaceUpdateOptions struct {
 
 	// Optional: The time after which an automatic destroy run will be queued
 	AutoDestroyAt jsonapi.NullableAttr[time.Time] `jsonapi:"attr,auto-destroy-at,iso8601,omitempty"`
+
+	// Optional: The period of time to wait after workspace activity to trigger a destroy run. The format
+	// should roughly match a Go duration string limited to days and hours, e.g. "24h" or "1d".
+	AutoDestroyActivityDuration jsonapi.NullableAttr[string] `jsonapi:"attr,auto-destroy-activity-duration,omitempty"`
 
 	// Optional: A new name for the workspace, which can only include letters, numbers, -,
 	// and _. This will be used as an identifier and must be unique in the
@@ -546,7 +558,7 @@ type WorkspaceUpdateOptions struct {
 	QueueAllRuns *bool `jsonapi:"attr,queue-all-runs,omitempty"`
 
 	// Optional: Whether this workspace allows speculative plans. Setting this to false
-	// prevents Terraform Cloud or the Terraform Enterprise instance from
+	// prevents HCP Terraform or the Terraform Enterprise instance from
 	// running plans on pull requests, which can improve security if the VCS
 	// repository is public or includes untrusted contributors.
 	SpeculativeEnabled *bool `jsonapi:"attr,speculative-enabled,omitempty"`
@@ -588,7 +600,7 @@ type WorkspaceUpdateOptions struct {
 	// organization provides.
 	//
 	// In general, it's not necessary to mark a setting as `true` in this
-	// struct; if you provide a literal value for a setting, Terraform Cloud will
+	// struct; if you provide a literal value for a setting, HCP Terraform will
 	// automatically update its overwrites field to `true`. If you do choose to
 	// manually mark a setting as overwritten, you must provide a value for that
 	// setting at the same time.

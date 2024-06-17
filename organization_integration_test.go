@@ -217,7 +217,7 @@ func TestOrganizationsUpdate(t *testing.T) {
 	client := testClient(t)
 	ctx := context.Background()
 
-	t.Run("with TFC-only options", func(t *testing.T) {
+	t.Run("with HCP Terraform-only options", func(t *testing.T) {
 		skipIfEnterprise(t)
 
 		orgTest, orgTestCleanup := createOrganization(t, client)

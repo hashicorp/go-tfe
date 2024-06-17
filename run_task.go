@@ -13,7 +13,7 @@ import (
 var _ RunTasks = (*runTasks)(nil)
 
 // RunTasks represents all the run task related methods in the context of an organization
-// that the Terraform Cloud/Enterprise API supports.
+// that the HCP Terraform and Terraform Enterprise API supports.
 // https://developer.hashicorp.com/terraform/cloud-docs/api-docs/run-tasks/run-tasks#run-tasks-api
 type RunTasks interface {
 	// Create a run task for an organization
@@ -43,7 +43,7 @@ type runTasks struct {
 	client *Client
 }
 
-// RunTask represents a TFC/E run task
+// RunTask represents a HCP Terraform or Terraform Enterprise run task
 type RunTask struct {
 	ID          string         `jsonapi:"primary,tasks"`
 	Name        string         `jsonapi:"attr,name"`
@@ -58,7 +58,7 @@ type RunTask struct {
 	WorkspaceRunTasks []*WorkspaceRunTask `jsonapi:"relation,workspace-tasks"`
 }
 
-// GlobalRunTask represents the global configuration of a TFC/E run task
+// GlobalRunTask represents the global configuration of a HCP Terraform or Terraform Enterprise run task
 type GlobalRunTask struct {
 	Enabled          bool                 `jsonapi:"attr,enabled"`
 	Stages           []Stage              `jsonapi:"attr,stages"`
@@ -95,7 +95,7 @@ type RunTaskReadOptions struct {
 	Include []RunTaskIncludeOpt `url:"include,omitempty"`
 }
 
-// GlobalRunTask represents the optional global configuration of a TFC/E run task
+// GlobalRunTask represents the optional global configuration of a HCP Terraform or Terraform Enterprise run task
 type GlobalRunTaskOptions struct {
 	Enabled          *bool                 `jsonapi:"attr,enabled,omitempty"`
 	Stages           *[]Stage              `jsonapi:"attr,stages,omitempty"`

@@ -91,7 +91,7 @@ type NotificationConfiguration struct {
 	UpdatedAt         time.Time                   `jsonapi:"attr,updated-at,iso8601"`
 	URL               string                      `jsonapi:"attr,url"`
 
-	// EmailAddresses is only available for TFE users. It is not available in TFC.
+	// EmailAddresses is only available for TFE users. It is not available in HCP Terraform.
 	EmailAddresses []string `jsonapi:"attr,email-addresses"`
 
 	// Relations
@@ -143,7 +143,7 @@ type NotificationConfigurationCreateOptions struct {
 	URL *string `jsonapi:"attr,url,omitempty"`
 
 	// Optional: The list of email addresses that will receive notification emails.
-	// EmailAddresses is only available for TFE users. It is not available in TFC.
+	// EmailAddresses is only available for TFE users. It is not available in HCP Terraform.
 	EmailAddresses []string `jsonapi:"attr,email-addresses,omitempty"`
 
 	// Optional: The list of users belonging to the organization that will receive notification emails.
@@ -175,7 +175,7 @@ type NotificationConfigurationUpdateOptions struct {
 	URL *string `jsonapi:"attr,url,omitempty"`
 
 	// Optional: The list of email addresses that will receive notification emails.
-	// EmailAddresses is only available for TFE users. It is not available in TFC.
+	// EmailAddresses is only available for TFE users. It is not available in HCP Terraform.
 	EmailAddresses []string `jsonapi:"attr,email-addresses,omitempty"`
 
 	// Optional: The list of users belonging to the organization that will receive notification emails.

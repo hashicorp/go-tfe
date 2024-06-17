@@ -1,4 +1,4 @@
-Terraform Cloud/Enterprise Go Client
+HCP Terraform and Terraform Enterprise Go Client
 ==============================
 
 [![Tests](https://github.com/hashicorp/go-tfe/actions/workflows/ci.yml/badge.svg)](https://github.com/hashicorp/go-tfe/actions/workflows/ci.yml)
@@ -7,11 +7,11 @@ Terraform Cloud/Enterprise Go Client
 [![Go Report Card](https://goreportcard.com/badge/github.com/hashicorp/go-tfe)](https://goreportcard.com/report/github.com/hashicorp/go-tfe)
 [![GitHub issues](https://img.shields.io/github/issues/hashicorp/go-tfe.svg)](https://github.com/hashicorp/go-tfe/issues)
 
-The official Go API client for [Terraform Cloud/Enterprise](https://www.hashicorp.com/products/terraform).
+The official Go API client for [HCP Terraform and Terraform Enterprise](https://www.hashicorp.com/products/terraform).
 
-This client supports the [Terraform Cloud V2 API](https://developer.hashicorp.com/terraform/cloud-docs/api-docs).
-As Terraform Enterprise is a self-hosted distribution of Terraform Cloud, this
-client supports both Cloud and Enterprise use cases. In all package
+This client supports the [HCP Terraform V2 API](https://developer.hashicorp.com/terraform/cloud-docs/api-docs).
+As Terraform Enterprise is a self-hosted distribution of HCP Terraform, this
+client supports both HCP Terraform and Terraform Enterprise use cases. In all package
 documentation and API, the platform will always be stated as 'Terraform
 Enterprise' - but a feature will be explicitly noted as only supported in one or
 the other, if applicable (rare).
@@ -56,8 +56,8 @@ if err != nil {
 ### Using the default config with env vars
 The default configuration makes use of the `TFE_ADDRESS` and `TFE_TOKEN` environment variables.
 
-1. `TFE_ADDRESS` - URL of a Terraform Cloud or Terraform Enterprise instance. Example: `https://tfe.local`
-1. `TFE_TOKEN` - An [API token](https://developer.hashicorp.com/terraform/cloud-docs/users-teams-organizations/api-tokens) for the Terraform Cloud or Terraform Enterprise instance.
+1. `TFE_ADDRESS` - URL of a HCP Terraform or Terraform Enterprise instance. Example: `https://tfe.local`
+1. `TFE_TOKEN` - An [API token](https://developer.hashicorp.com/terraform/cloud-docs/users-teams-organizations/api-tokens) for the HCP Terraform or Terraform Enterprise instance.
 
 **Note:** Alternatively, you can set `TFE_HOSTNAME` which serves as a fallback for `TFE_ADDRESS`. It will only be used if `TFE_ADDRESS` is not set and will resolve the host to an `https` scheme. Example: `tfe.local` => resolves to `https://tfe.local`
 
@@ -115,7 +115,7 @@ For complete usage of the API client, see the [full package docs](https://pkg.go
 
 ## API Coverage
 
-This API client covers most of the existing Terraform Cloud API calls and is updated regularly to add new or missing endpoints.
+This API client covers most of the existing HCP Terraform API calls and is updated regularly to add new or missing endpoints.
 
 - [x] Account
 - [x] Agents

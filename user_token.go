@@ -14,7 +14,7 @@ import (
 var _ UserTokens = (*userTokens)(nil)
 
 // UserTokens describes all the user token related methods that the
-// Terraform Cloud/Enterprise API supports.
+// HCP Terraform and Terraform Enterprise API supports.
 //
 // TFE API docs:
 // https://developer.hashicorp.com/terraform/cloud-docs/api-docs/user-tokens

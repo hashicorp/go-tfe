@@ -102,6 +102,9 @@ type OrganizationMembershipCreateOptions struct {
 
 	// Required: User's email address.
 	Email *string `jsonapi:"attr,email"`
+
+	// Optional: A list of teams in the organization to add the user to
+	Teams []*Team `jsonapi:"relation,teams,omitempty"`
 }
 
 // OrganizationMembershipReadOptions represents the options for reading organization memberships.

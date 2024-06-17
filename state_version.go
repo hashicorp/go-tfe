@@ -58,7 +58,7 @@ type StateVersions interface {
 	// Download retrieves the actual stored state of a state version
 	Download(ctx context.Context, url string) ([]byte, error)
 
-	// ListOutputs retrieves all the outputs of a state version by its ID. IMPORTANT: Terraform Cloud might
+	// ListOutputs retrieves all the outputs of a state version by its ID. IMPORTANT: HCP Terraform might
 	// process outputs asynchronously. When consuming outputs or other async StateVersion fields, be sure to
 	// wait for ResourcesProcessed to become `true` before assuming they are empty.
 	ListOutputs(ctx context.Context, svID string, options *StateVersionOutputsListOptions) (*StateVersionOutputsList, error)
@@ -99,7 +99,7 @@ type StateVersion struct {
 	Serial          int64              `jsonapi:"attr,serial"`
 	VCSCommitSHA    string             `jsonapi:"attr,vcs-commit-sha"`
 	VCSCommitURL    string             `jsonapi:"attr,vcs-commit-url"`
-	// Whether Terraform Cloud has finished populating any StateVersion fields that required async processing.
+	// Whether HCP Terraform has finished populating any StateVersion fields that required async processing.
 	// If `false`, some fields may appear empty even if they should actually contain data; see comments on
 	// individual fields for details.
 	ResourcesProcessed bool `jsonapi:"attr,resources-processed"`
@@ -387,7 +387,7 @@ func (s *stateVersions) Download(ctx context.Context, u string) ([]byte, error) 
 	return buf.Bytes(), nil
 }
 
-// ListOutputs retrieves all the outputs of a state version by its ID. IMPORTANT: Terraform Cloud might
+// ListOutputs retrieves all the outputs of a state version by its ID. IMPORTANT: HCP Terraform might
 // process outputs asynchronously. When consuming outputs or other async StateVersion fields, be sure to
 // wait for ResourcesProcessed to become `true` before assuming they are empty.
 func (s *stateVersions) ListOutputs(ctx context.Context, svID string, options *StateVersionOutputsListOptions) (*StateVersionOutputsList, error) {

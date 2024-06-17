@@ -17,6 +17,7 @@ import (
 	"time"
 
 	retryablehttp "github.com/hashicorp/go-retryablehttp"
+	"github.com/hashicorp/jsonapi"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
@@ -29,8 +30,8 @@ type WorkspaceTableOptions struct {
 type WorkspaceTableTest struct {
 	scenario  string
 	options   *WorkspaceTableOptions
-	setup     func(options *WorkspaceTableOptions) (w *Workspace, cleanup func())
-	assertion func(w *Workspace, options *WorkspaceTableOptions, err error)
+	setup     func(t *testing.T, options *WorkspaceTableOptions) (w *Workspace, cleanup func())
+	assertion func(t *testing.T, w *Workspace, options *WorkspaceTableOptions, err error)
 }
 
 func TestWorkspacesList(t *testing.T) {
@@ -280,6 +281,33 @@ func TestWorkspacesList(t *testing.T) {
 		require.NoError(t, err)
 		assert.Empty(t, wl.Items)
 	})
+
+	t.Run("when filter workspaces by current run status", func(t *testing.T) {
+		wTest, wTestCleanup := createWorkspace(t, client, orgTest)
+		t.Cleanup(wTestCleanup)
+
+		rn, appliedCleanup := createRunApply(t, client, wTest)
+		t.Cleanup(appliedCleanup)
+
+		wl, err := client.Workspaces.List(ctx, orgTest.Name, &WorkspaceListOptions{
+			CurrentRunStatus: string(RunApplied),
+		})
+
+		require.NoError(t, err)
+		require.NotEmpty(t, wl.Items)
+		require.GreaterOrEqual(t, len(wl.Items), 1)
+
+		found := false
+		for _, ws := range wl.Items {
+			if ws.ID != wTest.ID {
+				continue
+			}
+			assert.Equal(t, ws.CurrentRun.ID, rn.ID)
+			found = true
+		}
+
+		assert.True(t, found)
+	})
 }
 
 func TestWorkspacesCreateTableDriven(t *testing.T) {
@@ -300,7 +328,7 @@ func TestWorkspacesCreateTableDriven(t *testing.T) {
 						TagsRegex: String("barfoo")},
 				},
 			},
-			setup: func(options *WorkspaceTableOptions) (w *Workspace, cleanup func()) {
+			setup: func(t *testing.T, options *WorkspaceTableOptions) (w *Workspace, cleanup func()) {
 				// Remove the below organization creation and use the one from the outer scope once the feature flag is removed
 				orgTest, orgTestCleanup := createOrganizationWithOptions(t, client, OrganizationCreateOptions{
 					Name:  String("tst-" + randomString(t)[0:20]),
@@ -314,7 +342,7 @@ func TestWorkspacesCreateTableDriven(t *testing.T) {
 					t.Cleanup(wTestCleanup)
 				}
 			},
-			assertion: func(w *Workspace, options *WorkspaceTableOptions, err error) {
+			assertion: func(t *testing.T, w *Workspace, options *WorkspaceTableOptions, err error) {
 				assert.Equal(t, *options.createOptions.VCSRepo.TagsRegex, w.VCSRepo.TagsRegex)
 
 				// Get a refreshed view from the API.
@@ -339,7 +367,7 @@ func TestWorkspacesCreateTableDriven(t *testing.T) {
 					TriggerPatterns:     []string{"/module-1/**/*", "/**/networking/*"},
 				},
 			},
-			assertion: func(w *Workspace, options *WorkspaceTableOptions, err error) {
+			assertion: func(t *testing.T, w *Workspace, options *WorkspaceTableOptions, err error) {
 				assert.Nil(t, w)
 				assert.EqualError(t, err, ErrUnsupportedBothTagsRegexAndTriggerPatterns.Error())
 			},
@@ -354,7 +382,7 @@ func TestWorkspacesCreateTableDriven(t *testing.T) {
 					TriggerPrefixes:     []string{"/module-1", "/module-2"},
 				},
 			},
-			assertion: func(w *Workspace, options *WorkspaceTableOptions, err error) {
+			assertion: func(t *testing.T, w *Workspace, options *WorkspaceTableOptions, err error) {
 				assert.Nil(t, w)
 				assert.EqualError(t, err, ErrUnsupportedBothTagsRegexAndTriggerPrefixes.Error())
 			},
@@ -368,7 +396,7 @@ func TestWorkspacesCreateTableDriven(t *testing.T) {
 					VCSRepo:             &VCSRepoOptions{TagsRegex: String("foobar")},
 				},
 			},
-			assertion: func(w *Workspace, options *WorkspaceTableOptions, err error) {
+			assertion: func(t *testing.T, w *Workspace, options *WorkspaceTableOptions, err error) {
 				assert.Nil(t, w)
 				assert.EqualError(t, err, ErrUnsupportedBothTagsRegexAndFileTriggersEnabled.Error())
 			},
@@ -382,14 +410,14 @@ func TestWorkspacesCreateTableDriven(t *testing.T) {
 					VCSRepo:             &VCSRepoOptions{TagsRegex: String("foobar")},
 				},
 			},
-			setup: func(options *WorkspaceTableOptions) (w *Workspace, cleanup func()) {
+			setup: func(t *testing.T, options *WorkspaceTableOptions) (w *Workspace, cleanup func()) {
 				w, wTestCleanup := createWorkspaceWithVCS(t, client, orgTest, *options.createOptions)
 
 				return w, func() {
 					t.Cleanup(wTestCleanup)
 				}
 			},
-			assertion: func(w *Workspace, options *WorkspaceTableOptions, err error) {
+			assertion: func(t *testing.T, w *Workspace, options *WorkspaceTableOptions, err error) {
 				require.NotNil(t, w)
 				require.NoError(t, err)
 			},
@@ -402,12 +430,12 @@ func TestWorkspacesCreateTableDriven(t *testing.T) {
 			var cleanup func()
 			var err error
 			if tableTest.setup != nil {
-				workspace, cleanup = tableTest.setup(tableTest.options)
+				workspace, cleanup = tableTest.setup(t, tableTest.options)
 				defer cleanup()
 			} else {
 				workspace, err = client.Workspaces.Create(ctx, orgTest.Name, *tableTest.options.createOptions)
 			}
-			tableTest.assertion(workspace, tableTest.options, err)
+			tableTest.assertion(t, workspace, tableTest.options, err)
 		})
 	}
 }
@@ -436,7 +464,7 @@ func TestWorkspacesCreateTableDrivenWithGithubApp(t *testing.T) {
 						TagsRegex: String("barfoo")},
 				},
 			},
-			setup: func(options *WorkspaceTableOptions) (w *Workspace, cleanup func()) {
+			setup: func(t *testing.T, options *WorkspaceTableOptions) (w *Workspace, cleanup func()) {
 				// Remove the below organization creation and use the one from the outer scope once the feature flag is removed
 				orgTest, orgTestCleanup := createOrganizationWithOptions(t, client, OrganizationCreateOptions{
 					Name:  String("tst-" + randomString(t)[0:20]),
@@ -450,7 +478,7 @@ func TestWorkspacesCreateTableDrivenWithGithubApp(t *testing.T) {
 					t.Cleanup(wTestCleanup)
 				}
 			},
-			assertion: func(w *Workspace, options *WorkspaceTableOptions, err error) {
+			assertion: func(t *testing.T, w *Workspace, options *WorkspaceTableOptions, err error) {
 				assert.Equal(t, *options.createOptions.VCSRepo.TagsRegex, w.VCSRepo.TagsRegex)
 
 				// Get a refreshed view from the API.
@@ -472,12 +500,12 @@ func TestWorkspacesCreateTableDrivenWithGithubApp(t *testing.T) {
 			var cleanup func()
 			var err error
 			if tableTest.setup != nil {
-				workspace, cleanup = tableTest.setup(tableTest.options)
+				workspace, cleanup = tableTest.setup(t, tableTest.options)
 				defer cleanup()
 			} else {
 				workspace, err = client.Workspaces.Create(ctx, orgTest1.Name, *tableTest.options.createOptions)
 			}
-			tableTest.assertion(workspace, tableTest.options, err)
+			tableTest.assertion(t, workspace, tableTest.options, err)
 		})
 	}
 }
@@ -923,7 +951,7 @@ func TestWorkspacesReadWithOptions(t *testing.T) {
 	svTest, svTestCleanup := createStateVersion(t, client, 0, wTest)
 	t.Cleanup(svTestCleanup)
 
-	// give TFC some time to process the statefile and extract the outputs.
+	// give HCP Terraform some time to process the statefile and extract the outputs.
 	waitForSVOutputs(t, client, svTest.ID)
 
 	t.Run("when options to include resource", func(t *testing.T) {
@@ -1349,7 +1377,7 @@ func TestWorkspacesUpdateTableDriven(t *testing.T) {
 					VCSRepo:             &VCSRepoOptions{TagsRegex: String("foobar")},
 				},
 			},
-			setup: func(options *WorkspaceTableOptions) (w *Workspace, cleanup func()) {
+			setup: func(t *testing.T, options *WorkspaceTableOptions) (w *Workspace, cleanup func()) {
 				orgTest, orgTestCleanup := createOrganizationWithOptions(t, client, OrganizationCreateOptions{
 					Name:  String("tst-" + randomString(t)[0:20]),
 					Email: String(fmt.Sprintf("%s@tfe.local", randomString(t))),
@@ -1361,7 +1389,7 @@ func TestWorkspacesUpdateTableDriven(t *testing.T) {
 					t.Cleanup(wTestCleanup)
 				}
 			},
-			assertion: func(workspace *Workspace, options *WorkspaceTableOptions, _ error) {
+			assertion: func(t *testing.T, workspace *Workspace, options *WorkspaceTableOptions, _ error) {
 				assert.Equal(t, *options.createOptions.VCSRepo.TagsRegex, workspace.VCSRepo.TagsRegex)
 				assert.Equal(t, workspace.VCSRepo.TagsRegex, *String("barfoo")) // Sanity test
 
@@ -1392,7 +1420,7 @@ func TestWorkspacesUpdateTableDriven(t *testing.T) {
 					VCSRepo:             &VCSRepoOptions{TagsRegex: String("foobar")},
 				},
 			},
-			assertion: func(w *Workspace, options *WorkspaceTableOptions, err error) {
+			assertion: func(t *testing.T, w *Workspace, options *WorkspaceTableOptions, err error) {
 				assert.Nil(t, w)
 				assert.EqualError(t, err, ErrUnsupportedBothTagsRegexAndFileTriggersEnabled.Error())
 			},
@@ -1406,7 +1434,7 @@ func TestWorkspacesUpdateTableDriven(t *testing.T) {
 					VCSRepo:             &VCSRepoOptions{TagsRegex: String("foobar")},
 				},
 			},
-			assertion: func(w *Workspace, options *WorkspaceTableOptions, err error) {
+			assertion: func(t *testing.T, w *Workspace, options *WorkspaceTableOptions, err error) {
 				assert.Nil(t, w)
 				assert.EqualError(t, err, ErrUnsupportedBothTagsRegexAndFileTriggersEnabled.Error())
 			},
@@ -1421,7 +1449,7 @@ func TestWorkspacesUpdateTableDriven(t *testing.T) {
 					VCSRepo:             &VCSRepoOptions{TagsRegex: String("foobar")},
 				},
 			},
-			assertion: func(w *Workspace, options *WorkspaceTableOptions, err error) {
+			assertion: func(t *testing.T, w *Workspace, options *WorkspaceTableOptions, err error) {
 				assert.Nil(t, w)
 				assert.EqualError(t, err, ErrUnsupportedBothTagsRegexAndTriggerPrefixes.Error())
 			},
@@ -1436,7 +1464,7 @@ func TestWorkspacesUpdateTableDriven(t *testing.T) {
 					VCSRepo:             &VCSRepoOptions{TagsRegex: String("foobar")},
 				},
 			},
-			assertion: func(w *Workspace, options *WorkspaceTableOptions, err error) {
+			assertion: func(t *testing.T, w *Workspace, options *WorkspaceTableOptions, err error) {
 				assert.Nil(t, w)
 				assert.EqualError(t, err, ErrUnsupportedBothTagsRegexAndTriggerPatterns.Error())
 			},
@@ -1449,12 +1477,12 @@ func TestWorkspacesUpdateTableDriven(t *testing.T) {
 			var cleanup func()
 			var err error
 			if tableTest.setup != nil {
-				workspace, cleanup = tableTest.setup(tableTest.options)
+				workspace, cleanup = tableTest.setup(t, tableTest.options)
 				defer cleanup()
 			} else {
 				workspace, err = client.Workspaces.Update(ctx, orgTest.Name, wTest.Name, *tableTest.options.updateOptions)
 			}
-			tableTest.assertion(workspace, tableTest.options, err)
+			tableTest.assertion(t, workspace, tableTest.options, err)
 		})
 	}
 }
@@ -1492,7 +1520,7 @@ func TestWorkspacesUpdateTableDrivenWithGithubApp(t *testing.T) {
 					},
 				},
 			},
-			setup: func(options *WorkspaceTableOptions) (w *Workspace, cleanup func()) {
+			setup: func(t *testing.T, options *WorkspaceTableOptions) (w *Workspace, cleanup func()) {
 				orgTest, orgTestCleanup := createOrganizationWithOptions(t, client, OrganizationCreateOptions{
 					Name:  String("tst-" + randomString(t)[0:20]),
 					Email: String(fmt.Sprintf("%s@tfe.local", randomString(t))),
@@ -1504,7 +1532,7 @@ func TestWorkspacesUpdateTableDrivenWithGithubApp(t *testing.T) {
 					t.Cleanup(wTestCleanup)
 				}
 			},
-			assertion: func(workspace *Workspace, options *WorkspaceTableOptions, _ error) {
+			assertion: func(t *testing.T, workspace *Workspace, options *WorkspaceTableOptions, _ error) {
 				assert.Equal(t, *options.createOptions.VCSRepo.TagsRegex, workspace.VCSRepo.TagsRegex)
 				assert.Equal(t, workspace.VCSRepo.TagsRegex, *String("barfoo")) // Sanity test
 
@@ -1521,12 +1549,12 @@ func TestWorkspacesUpdateTableDrivenWithGithubApp(t *testing.T) {
 			var cleanup func()
 			var err error
 			if tableTest.setup != nil {
-				workspace, cleanup = tableTest.setup(tableTest.options)
+				workspace, cleanup = tableTest.setup(t, tableTest.options)
 				defer cleanup()
 			} else {
 				workspace, err = client.Workspaces.Update(ctx, orgTest.Name, wTest.Name, *tableTest.options.updateOptions)
 			}
-			tableTest.assertion(workspace, tableTest.options, err)
+			tableTest.assertion(t, workspace, tableTest.options, err)
 		})
 	}
 }
@@ -2747,7 +2775,7 @@ func TestWorkspacesAutoDestroy(t *testing.T) {
 	})
 	t.Cleanup(wCleanup)
 
-	require.Equal(t, wTest.AutoDestroyAt, autoDestroyAt)
+	require.Equal(t, autoDestroyAt, wTest.AutoDestroyAt)
 
 	// respect default omitempty
 	w, err := client.Workspaces.Update(ctx, orgTest.Name, wTest.Name, WorkspaceUpdateOptions{
@@ -2764,7 +2792,7 @@ func TestWorkspacesAutoDestroy(t *testing.T) {
 
 	require.NoError(t, err)
 	require.NotNil(t, w.AutoDestroyAt)
-	require.NotEqual(t, w.AutoDestroyAt, autoDestroyAt)
+	require.NotEqual(t, autoDestroyAt, w.AutoDestroyAt)
 
 	// disable auto destroy
 	w, err = client.Workspaces.Update(ctx, orgTest.Name, wTest.Name, WorkspaceUpdateOptions{
@@ -2773,4 +2801,34 @@ func TestWorkspacesAutoDestroy(t *testing.T) {
 
 	require.NoError(t, err)
 	require.Nil(t, w.AutoDestroyAt)
+}
+
+func TestWorkspacesAutoDestroyDuration(t *testing.T) {
+	client := testClient(t)
+	ctx := context.Background()
+
+	orgTest, orgTestCleanup := createOrganization(t, client)
+	t.Cleanup(orgTestCleanup)
+
+	upgradeOrganizationSubscription(t, client, orgTest)
+
+	duration := jsonapi.NewNullableAttrWithValue("14d")
+	nilDuration := jsonapi.NewNullNullableAttr[string]()
+	nilAutoDestroy := jsonapi.NewNullNullableAttr[time.Time]()
+	wTest, wCleanup := createWorkspaceWithOptions(t, client, orgTest, WorkspaceCreateOptions{
+		Name:                        String(randomString(t)),
+		AutoDestroyActivityDuration: duration,
+	})
+	t.Cleanup(wCleanup)
+
+	require.Equal(t, duration, wTest.AutoDestroyActivityDuration)
+	require.NotEqual(t, nilAutoDestroy, wTest.AutoDestroyAt)
+
+	w, err := client.Workspaces.Update(ctx, orgTest.Name, wTest.Name, WorkspaceUpdateOptions{
+		AutoDestroyActivityDuration: nilDuration,
+	})
+
+	require.NoError(t, err)
+	require.False(t, w.AutoDestroyActivityDuration.IsSpecified())
+	require.False(t, w.AutoDestroyAt.IsSpecified())
 }

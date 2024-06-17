@@ -12,7 +12,7 @@ import (
 // Compile-time proof of interface implementation
 var _ WorkspaceRunTasks = (*workspaceRunTasks)(nil)
 
-// WorkspaceRunTasks represent all the run task related methods in the context of a workspace that the Terraform Cloud/Enterprise API supports.
+// WorkspaceRunTasks represent all the run task related methods in the context of a workspace that the HCP Terraform and Terraform Enterprise API supports.
 type WorkspaceRunTasks interface {
 	// Add a run task to a workspace
 	Create(ctx context.Context, workspaceID string, options WorkspaceRunTaskCreateOptions) (*WorkspaceRunTask, error)
@@ -35,7 +35,7 @@ type workspaceRunTasks struct {
 	client *Client
 }
 
-// WorkspaceRunTask represents a TFC/E run task that belongs to a workspace
+// WorkspaceRunTask represents a HCP Terraform or Terraform Enterprise run task that belongs to a workspace
 type WorkspaceRunTask struct {
 	ID               string               `jsonapi:"primary,workspace-tasks"`
 	EnforcementLevel TaskEnforcementLevel `jsonapi:"attr,enforcement-level"`

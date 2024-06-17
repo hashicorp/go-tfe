@@ -79,7 +79,7 @@ func TestPolicySetVersionsUpload(t *testing.T) {
 		)
 		require.NoError(t, err)
 
-		// give TFC some time to process uploading the
+		// give HCP Terraform some time to process uploading the
 		// policy set version before reading.
 		time.Sleep(waitForPolicySetVersionUpload)
 

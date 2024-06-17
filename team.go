@@ -47,6 +47,7 @@ type TeamList struct {
 // Team represents a Terraform Enterprise team.
 type Team struct {
 	ID                 string              `jsonapi:"primary,teams"`
+	IsUnified          bool                `jsonapi:"attr,is-unified"`
 	Name               string              `jsonapi:"attr,name"`
 	OrganizationAccess *OrganizationAccess `jsonapi:"attr,organization-access"`
 	Visibility         string              `jsonapi:"attr,visibility"`
@@ -61,17 +62,21 @@ type Team struct {
 
 // OrganizationAccess represents the team's permissions on its organization
 type OrganizationAccess struct {
-	ManagePolicies        bool `jsonapi:"attr,manage-policies"`
-	ManagePolicyOverrides bool `jsonapi:"attr,manage-policy-overrides"`
-	ManageWorkspaces      bool `jsonapi:"attr,manage-workspaces"`
-	ManageVCSSettings     bool `jsonapi:"attr,manage-vcs-settings"`
-	ManageProviders       bool `jsonapi:"attr,manage-providers"`
-	ManageModules         bool `jsonapi:"attr,manage-modules"`
-	ManageRunTasks        bool `jsonapi:"attr,manage-run-tasks"`
-	ManageProjects        bool `jsonapi:"attr,manage-projects"`
-	ReadWorkspaces        bool `jsonapi:"attr,read-workspaces"`
-	ReadProjects          bool `jsonapi:"attr,read-projects"`
-	ManageMembership      bool `jsonapi:"attr,manage-membership"`
+	ManagePolicies           bool `jsonapi:"attr,manage-policies"`
+	ManagePolicyOverrides    bool `jsonapi:"attr,manage-policy-overrides"`
+	ManageWorkspaces         bool `jsonapi:"attr,manage-workspaces"`
+	ManageVCSSettings        bool `jsonapi:"attr,manage-vcs-settings"`
+	ManageProviders          bool `jsonapi:"attr,manage-providers"`
+	ManageModules            bool `jsonapi:"attr,manage-modules"`
+	ManageRunTasks           bool `jsonapi:"attr,manage-run-tasks"`
+	ManageProjects           bool `jsonapi:"attr,manage-projects"`
+	ReadWorkspaces           bool `jsonapi:"attr,read-workspaces"`
+	ReadProjects             bool `jsonapi:"attr,read-projects"`
+	ManageMembership         bool `jsonapi:"attr,manage-membership"`
+	ManageTeams              bool `jsonapi:"attr,manage-teams"`
+	ManageOrganizationAccess bool `jsonapi:"attr,manage-organization-access"`
+	AccessSecretTeams        bool `jsonapi:"attr,access-secret-teams"`
+	ManageAgentPools         bool `jsonapi:"attr,manage-agent-pools"`
 }
 
 // TeamPermissions represents the current user's permissions on the team.
@@ -147,17 +152,21 @@ type TeamUpdateOptions struct {
 
 // OrganizationAccessOptions represents the organization access options of a team.
 type OrganizationAccessOptions struct {
-	ManagePolicies        *bool `json:"manage-policies,omitempty"`
-	ManagePolicyOverrides *bool `json:"manage-policy-overrides,omitempty"`
-	ManageWorkspaces      *bool `json:"manage-workspaces,omitempty"`
-	ManageVCSSettings     *bool `json:"manage-vcs-settings,omitempty"`
-	ManageProviders       *bool `json:"manage-providers,omitempty"`
-	ManageModules         *bool `json:"manage-modules,omitempty"`
-	ManageRunTasks        *bool `json:"manage-run-tasks,omitempty"`
-	ManageProjects        *bool `json:"manage-projects,omitempty"`
-	ReadWorkspaces        *bool `json:"read-workspaces,omitempty"`
-	ReadProjects          *bool `json:"read-projects,omitempty"`
-	ManageMembership      *bool `json:"manage-membership,omitempty"`
+	ManagePolicies           *bool `json:"manage-policies,omitempty"`
+	ManagePolicyOverrides    *bool `json:"manage-policy-overrides,omitempty"`
+	ManageWorkspaces         *bool `json:"manage-workspaces,omitempty"`
+	ManageVCSSettings        *bool `json:"manage-vcs-settings,omitempty"`
+	ManageProviders          *bool `json:"manage-providers,omitempty"`
+	ManageModules            *bool `json:"manage-modules,omitempty"`
+	ManageRunTasks           *bool `json:"manage-run-tasks,omitempty"`
+	ManageProjects           *bool `json:"manage-projects,omitempty"`
+	ReadWorkspaces           *bool `json:"read-workspaces,omitempty"`
+	ReadProjects             *bool `json:"read-projects,omitempty"`
+	ManageMembership         *bool `json:"manage-membership,omitempty"`
+	ManageTeams              *bool `json:"manage-teams,omitempty"`
+	ManageOrganizationAccess *bool `json:"manage-organization-access,omitempty"`
+	AccessSecretTeams        *bool `json:"access-secret-teams,omitempty"`
+	ManageAgentPools         *bool `json:"manage-agent-pools,omitempty"`
 }
 
 // List all the teams of the given organization.
