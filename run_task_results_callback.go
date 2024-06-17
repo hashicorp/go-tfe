@@ -22,27 +22,6 @@ type taskResultsCallback struct {
 	client *Client
 }
 
-// Update sends updates to TFC/E Run Task Callback URL
-func (s *taskResultsCallback) Update(ctx context.Context, callbackURL string, accessToken string, options TaskResultCallbackRequestOptions) error {
-	if !validString(&callbackURL) {
-		return ErrInvalidCallbackURL
-	}
-	if !validString(&accessToken) {
-		return ErrInvalidAccessToken
-	}
-	if err := options.valid(); err != nil {
-		return err
-	}
-	req, err := s.client.NewRequest(http.MethodPatch, callbackURL, &options)
-	if err != nil {
-		return err
-	}
-	// The PATCH request must use the token supplied in the originating request (access_token) for authentication.
-	// https://developer.hashicorp.com/terraform/enterprise/api-docs/run-tasks/run-tasks-integration#request-headers-1
-	req.Header.Set("Authorization", "Bearer "+accessToken)
-	return req.Do(ctx, nil)
-}
-
 // TaskResultCallbackRequestOptions represents the TFC/E Task result callback request
 // https://developer.hashicorp.com/terraform/enterprise/api-docs/run-tasks/run-tasks-integration#request-body-1
 type TaskResultCallbackRequestOptions struct {
@@ -69,6 +48,27 @@ type TaskResultOutcome struct {
 type TaskResultTag struct {
 	Label string  `json:"label"`
 	Level *string `json:"level,omitempty"`
+}
+
+// Update sends updates to TFC/E Run Task Callback URL
+func (s *taskResultsCallback) Update(ctx context.Context, callbackURL string, accessToken string, options TaskResultCallbackRequestOptions) error {
+	if !validString(&callbackURL) {
+		return ErrInvalidCallbackURL
+	}
+	if !validString(&accessToken) {
+		return ErrInvalidAccessToken
+	}
+	if err := options.valid(); err != nil {
+		return err
+	}
+	req, err := s.client.NewRequest(http.MethodPatch, callbackURL, &options)
+	if err != nil {
+		return err
+	}
+	// The PATCH request must use the token supplied in the originating request (access_token) for authentication.
+	// https://developer.hashicorp.com/terraform/enterprise/api-docs/run-tasks/run-tasks-integration#request-headers-1
+	req.Header.Set("Authorization", "Bearer "+accessToken)
+	return req.Do(ctx, nil)
 }
 
 func (o *TaskResultCallbackRequestOptions) valid() error {
