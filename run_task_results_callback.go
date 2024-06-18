@@ -46,8 +46,8 @@ type TaskResultOutcome struct {
 // TaskResultTag can be used to enrich outcomes display list in TFC/E.
 // https://developer.hashicorp.com/terraform/enterprise/api-docs/run-tasks/run-tasks-integration#severity-and-status-tags
 type TaskResultTag struct {
-	Label string  `json:"label"`
-	Level *string `json:"level,omitempty"`
+	Label string `json:"label"`
+	Level string `json:"level,omitempty"`
 }
 
 // Update sends updates to TFC/E Run Task Callback URL

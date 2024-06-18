@@ -225,8 +225,6 @@ var (
 
 	ErrInvalidAccessToken = errors.New("invalid value for access token")
 
-	ErrInvalidTaskResultsCallbackType = errors.New("invalid value for task result type")
-
 	ErrInvalidTaskResultsCallbackStatus = errors.New(fmt.Sprintf("invalid value for task result status. Must be either `%s`, `%s`, or `%s`", TaskFailed, TaskPassed, TaskRunning))
 )
 
