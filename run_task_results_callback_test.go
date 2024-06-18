@@ -63,7 +63,7 @@ func TestTaskResultsCallbackRequestOptions_Marshal(t *testing.T) {
 	assert.Equal(t, reqBody.(*bytes.Buffer).String(), expectedBody)
 }
 
-func TestTaskResultsCallbackUpdate(t *testing.T) {
+func TestTaskResultsCallbackUpdate_Validate(t *testing.T) {
 	t.Run("with invalid callbackURL", func(t *testing.T) {
 		trc := taskResultsCallback{client: nil}
 		err := trc.Update(context.Background(), "", "", TaskResultCallbackRequestOptions{})
@@ -74,4 +74,25 @@ func TestTaskResultsCallbackUpdate(t *testing.T) {
 		err := trc.Update(context.Background(), "https://app.terraform.io/foo", "", TaskResultCallbackRequestOptions{})
 		assert.EqualError(t, err, ErrInvalidAccessToken.Error())
 	})
+}
+
+func TestTaskResultsCallbackUpdate(t *testing.T) {
+	ts := runTaskCallbackMockServer(t)
+	defer ts.Close()
+
+	client, err := NewClient(&Config{
+		RetryServerErrors: true,
+		Token:             testInitialClientToken,
+		Address:           ts.URL,
+	})
+	require.NoError(t, err)
+	trc := taskResultsCallback{
+		client: client,
+	}
+	req := RunTaskRequest{
+		AccessToken:           testTaskResultCallbackToken,
+		TaskResultCallbackURL: ts.URL,
+	}
+	err = trc.Update(context.Background(), req.TaskResultCallbackURL, req.AccessToken, TaskResultCallbackRequestOptions{Status: TaskPassed})
+	require.NoError(t, err)
 }
