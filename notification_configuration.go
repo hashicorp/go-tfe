@@ -48,15 +48,17 @@ type notificationConfigurations struct {
 type NotificationTriggerType string
 
 const (
-	NotificationTriggerCreated               NotificationTriggerType = "run:created"
-	NotificationTriggerPlanning              NotificationTriggerType = "run:planning"
-	NotificationTriggerNeedsAttention        NotificationTriggerType = "run:needs_attention"
-	NotificationTriggerApplying              NotificationTriggerType = "run:applying"
-	NotificationTriggerCompleted             NotificationTriggerType = "run:completed"
-	NotificationTriggerErrored               NotificationTriggerType = "run:errored"
-	NotificationTriggerAssessmentDrifted     NotificationTriggerType = "assessment:drifted"
-	NotificationTriggerAssessmentFailed      NotificationTriggerType = "assessment:failed"
-	NotificationTriggerAssessmentCheckFailed NotificationTriggerType = "assessment:check_failure"
+	NotificationTriggerCreated                        NotificationTriggerType = "run:created"
+	NotificationTriggerPlanning                       NotificationTriggerType = "run:planning"
+	NotificationTriggerNeedsAttention                 NotificationTriggerType = "run:needs_attention"
+	NotificationTriggerApplying                       NotificationTriggerType = "run:applying"
+	NotificationTriggerCompleted                      NotificationTriggerType = "run:completed"
+	NotificationTriggerErrored                        NotificationTriggerType = "run:errored"
+	NotificationTriggerAssessmentDrifted              NotificationTriggerType = "assessment:drifted"
+	NotificationTriggerAssessmentFailed               NotificationTriggerType = "assessment:failed"
+	NotificationTriggerAssessmentCheckFailed          NotificationTriggerType = "assessment:check_failure"
+	NotificationTriggerWorkspaceAutoDestroyReminder   NotificationTriggerType = "workspace:auto_destroy_reminder"
+	NotificationTriggerWorkspaceAutoDestroyRunResults NotificationTriggerType = "workspace:auto_destroy_run_results"
 )
 
 // NotificationDestinationType represents the destination type of the
@@ -359,6 +361,8 @@ func validNotificationTriggerType(triggers []NotificationTriggerType) bool {
 			NotificationTriggerPlanning,
 			NotificationTriggerAssessmentDrifted,
 			NotificationTriggerAssessmentFailed,
+			NotificationTriggerWorkspaceAutoDestroyReminder,
+			NotificationTriggerWorkspaceAutoDestroyRunResults,
 			NotificationTriggerAssessmentCheckFailed:
 			continue
 		default:

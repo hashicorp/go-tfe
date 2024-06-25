@@ -3,6 +3,8 @@
 ## Enhancements
 
 * Adds the `IsUnified` field to `Project`, `Organization` and `Team` by @roncodingenthusiast [#915](https://github.com/hashicorp/go-tfe/pull/915)
+* Adds Workspace auto-destroy notification types to `NotificationTriggerType` by @notchairmk [#918](https://github.com/hashicorp/go-tfe/pull/918)
+* Adds `CreatedAfter` and `CreatedBefore` Date Time filters to `AdminRunsListOptions` by @maed223 [#916](https://github.com/hashicorp/go-tfe/pull/916)
 
 # v1.56.0
 

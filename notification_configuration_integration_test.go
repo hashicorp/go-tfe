@@ -5,6 +5,7 @@ package tfe
 
 import (
 	"context"
+	"fmt"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -197,6 +198,61 @@ func TestNotificationConfigurationCreate(t *testing.T) {
 		_, err := client.NotificationConfigurations.Create(ctx, wTest.ID, options)
 		require.NoError(t, err)
 	})
+}
+
+func TestNotificationConfigurationsCreate_byType(t *testing.T) {
+	t.Parallel()
+
+	client := testClient(t)
+	ctx := context.Background()
+
+	orgTest, orgTestCleanup := createOrganization(t, client)
+	t.Cleanup(orgTestCleanup)
+
+	upgradeOrganizationSubscription(t, client, orgTest)
+
+	wTest, wTestCleanup := createWorkspace(t, client, orgTest)
+	t.Cleanup(wTestCleanup)
+
+	// Create user to use when testing email destination type
+	orgMemberTest, orgMemberTestCleanup := createOrganizationMembership(t, client, orgTest)
+	t.Cleanup(orgMemberTestCleanup)
+
+	orgMemberTest.User = &User{ID: orgMemberTest.User.ID}
+
+	testCases := []NotificationTriggerType{
+		NotificationTriggerCreated,
+		NotificationTriggerPlanning,
+		NotificationTriggerNeedsAttention,
+		NotificationTriggerApplying,
+		NotificationTriggerCompleted,
+		NotificationTriggerErrored,
+		NotificationTriggerAssessmentDrifted,
+		NotificationTriggerAssessmentFailed,
+		NotificationTriggerAssessmentCheckFailed,
+		NotificationTriggerWorkspaceAutoDestroyReminder,
+		NotificationTriggerWorkspaceAutoDestroyRunResults,
+	}
+
+	for _, trigger := range testCases {
+		trigger := trigger
+		message := fmt.Sprintf("with trigger %s and all required values", trigger)
+
+		t.Run(message, func(t *testing.T) {
+			t.Parallel()
+			options := NotificationConfigurationCreateOptions{
+				DestinationType: NotificationDestination(NotificationDestinationTypeGeneric),
+				Enabled:         Bool(false),
+				Name:            String(randomString(t)),
+				Token:           String(randomString(t)),
+				URL:             String("http://example.com"),
+				Triggers:        []NotificationTriggerType{trigger},
+			}
+
+			_, err := client.NotificationConfigurations.Create(ctx, wTest.ID, options)
+			require.NoError(t, err)
+		})
+	}
 }
 
 func TestNotificationConfigurationRead(t *testing.T) {
