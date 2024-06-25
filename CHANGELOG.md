@@ -1,4 +1,5 @@
 # UNRELEASED
+* Adds `AllowMemberTokenManagement` permission to `Team` by @juliannatetreault []()
 
 # v1.57.0
 
