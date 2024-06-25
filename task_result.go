@@ -12,7 +12,7 @@ import (
 // Compile-time proof of interface implementation
 var _ TaskResults = (*taskResults)(nil)
 
-// TaskResults describes all the task result related methods that the TFC/E API supports.
+// TaskResults describes all the task result related methods that the HCP Terraform or Terraform Enterprise API supports.
 type TaskResults interface {
 	// Read a task result by ID
 	Read(ctx context.Context, taskResultID string) (*TaskResult, error)
@@ -52,7 +52,7 @@ type TaskResultStatusTimestamps struct {
 	PassedAt   time.Time `jsonapi:"attr,passed-at,rfc3339"`
 }
 
-// TaskResult represents the result of a TFC/E run task
+// TaskResult represents the result of a HCP Terraform or Terraform Enterprise run task
 type TaskResult struct {
 	ID                            string                     `jsonapi:"primary,task-results"`
 	Status                        TaskResultStatus           `jsonapi:"attr,status"`

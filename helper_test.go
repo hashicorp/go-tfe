@@ -18,7 +18,6 @@ import (
 	"io"
 	"math/rand"
 	"net/http"
-	"net/url"
 	"os"
 	"os/exec"
 	"path/filepath"
@@ -37,31 +36,6 @@ const badIdentifier = "! / nope" //nolint
 const agentVersion = "1.3.0"
 
 var _testAccountDetails *TestAccountDetails
-
-type featureSet struct {
-	ID string `jsonapi:"primary,feature-sets"`
-}
-
-type featureSetList struct {
-	Items []*featureSet
-	*Pagination
-}
-
-type featureSetListOptions struct {
-	Q string `url:"q,omitempty"`
-}
-
-type retryableFn func() (interface{}, error)
-
-type updateFeatureSetOptions struct {
-	Type               string    `jsonapi:"primary,subscription"`
-	RunsCeiling        int       `jsonapi:"attr,runs-ceiling"`
-	ContractStartAt    time.Time `jsonapi:"attr,contract-start-at,iso8601"`
-	ContractUserLimit  int       `jsonapi:"attr,contract-user-limit"`
-	ContractApplyLimit int       `jsonapi:"attr,contract-apply-limit"`
-
-	FeatureSet *featureSet `jsonapi:"relation,feature-set"`
-}
 
 func testClient(t *testing.T) *Client {
 	client, err := NewClient(&Config{
@@ -143,7 +117,7 @@ func testAuditTrailClient(t *testing.T, userClient *Client, org *Organization) *
 }
 
 // TestAccountDetails represents the basic account information
-// of a TFE/TFC user.
+// of a Terraform Enterprise or HCP Terraform user.
 //
 // See FetchTestAccountDetails for more information.
 type TestAccountDetails struct {
@@ -797,20 +771,24 @@ func createPolicyWithOptions(t *testing.T, client *Client, org *Organization, op
 	}
 
 	name := randomString(t)
-	path := name + ".sentinel"
-	if opts.Kind == OPA {
-		path = name + ".rego"
-	}
 	options := PolicyCreateOptions{
-		Name:  String(name),
-		Kind:  opts.Kind,
-		Query: opts.Query,
-		Enforce: []*EnforcementOptions{
+		Name:             String(name),
+		Kind:             opts.Kind,
+		Query:            opts.Query,
+		EnforcementLevel: opts.EnforcementLevel,
+	}
+
+	if len(opts.Enforce) > 0 {
+		path := name + ".sentinel"
+		if opts.Kind == OPA {
+			path = name + ".rego"
+		}
+		options.Enforce = []*EnforcementOptions{
 			{
 				Path: String(path),
 				Mode: opts.Enforce[0].Mode,
 			},
-		},
+		}
 	}
 
 	ctx := context.Background()
@@ -959,7 +937,7 @@ func createOrganizationWithOptions(t *testing.T, client *Client, options Organiz
 	ctx := context.Background()
 	org, err := client.Organizations.Create(ctx, options)
 	if err != nil {
-		t.Fatal(err)
+		t.Fatalf("Failed to create organization: %s", err)
 	}
 
 	return org, func() {
@@ -2557,49 +2535,9 @@ func createVariableSetVariable(t *testing.T, client *Client, vs *VariableSet, op
 }
 
 // Attempts to upgrade an organization to the business plan. Requires a user token with admin access.
-func upgradeOrganizationSubscription(t *testing.T, client *Client, organization *Organization) {
-	if enterpriseEnabled() {
-		t.Skip("Cannot upgrade an organization's subscription when enterprise is enabled. Set ENABLE_TFE=0 to run.")
-	}
-
-	adminClient := testAdminClient(t, provisionLicensesAdmin)
-	req, err := adminClient.NewRequest("GET", "admin/feature-sets", featureSetListOptions{
-		Q: "Business",
-	})
-	if err != nil {
-		t.Fatal(err)
-		return
-	}
-
-	fsl := &featureSetList{}
-	err = req.Do(context.Background(), fsl)
-	if err != nil {
-		t.Fatalf("failed to enumerate feature sets: %v", err)
-		return
-	} else if len(fsl.Items) == 0 {
-		t.Fatalf("feature set response was empty")
-		return
-	}
-
-	opts := updateFeatureSetOptions{
-		RunsCeiling:        10,
-		ContractStartAt:    time.Now(),
-		ContractUserLimit:  1000,
-		ContractApplyLimit: 5000,
-		FeatureSet:         fsl.Items[0],
-	}
-
-	u := fmt.Sprintf("admin/organizations/%s/subscription", url.QueryEscape(organization.Name))
-	req, err = adminClient.NewRequest("POST", u, &opts)
-	if err != nil {
-		t.Fatalf("Failed to create request: %v", err)
-		return
-	}
-
-	err = req.Do(context.Background(), nil)
-	if err != nil {
-		t.Fatalf("Failed to upgrade subscription: %v", err)
-	}
+// DEPRECATED : Please use the newSubscriptionUpdater instead.
+func upgradeOrganizationSubscription(t *testing.T, _ *Client, organization *Organization) {
+	newSubscriptionUpdater(organization).WithBusinessPlan().Update(t)
 }
 
 func createProject(t *testing.T, client *Client, org *Organization) (*Project, func()) {
@@ -2768,8 +2706,8 @@ func genSha(t *testing.T) string {
 }
 
 // genSafeRandomTerraformVersion returns a random version number of the form
-// `1.0.<RANDOM>`, which TFC won't ever select as the latest available
-// Terraform. (At the time of writing, a fresh TFC instance will include
+// `1.0.<RANDOM>`, which HCP Terraform won't ever select as the latest available
+// Terraform. (At the time of writing, a fresh HCP Terraform instance will include
 // official Terraforms 1.2 and higher.) This is necessary because newly created
 // workspaces default to the latest available version, and there's nothing
 // preventing unrelated processes from creating workspaces during these tests.
@@ -2837,11 +2775,11 @@ func randomSemver(t *testing.T) string {
 	return fmt.Sprintf("%d.%d.%d", rand.Intn(99)+3, rand.Intn(99)+1, rand.Intn(99)+1)
 }
 
-// skips a test if the environment is for Terraform Cloud.
+// skips a test if the environment is for HCP Terraform.
 func skipUnlessEnterprise(t *testing.T) {
 	t.Helper()
 	if !enterpriseEnabled() {
-		t.Skip("Skipping test related to Terraform Cloud. Set ENABLE_TFE=1 to run.")
+		t.Skip("Skipping test related to HCP Terraform. Set ENABLE_TFE=1 to run.")
 	}
 }
 
@@ -2863,7 +2801,7 @@ func skipIfEnterprise(t *testing.T) {
 func skipUnlessBeta(t *testing.T) {
 	t.Helper()
 	if !betaFeaturesEnabled() {
-		t.Skip("Skipping test related to a Terraform Cloud beta feature. Set ENABLE_BETA=1 to run.")
+		t.Skip("Skipping test related to a HCP Terraform beta feature. Set ENABLE_BETA=1 to run.")
 	}
 }
 

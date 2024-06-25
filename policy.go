@@ -65,14 +65,16 @@ type PolicyList struct {
 
 // Policy represents a Terraform Enterprise policy.
 type Policy struct {
-	ID             string         `jsonapi:"primary,policies"`
-	Name           string         `jsonapi:"attr,name"`
-	Kind           PolicyKind     `jsonapi:"attr,kind"`
-	Query          *string        `jsonapi:"attr,query"`
-	Description    string         `jsonapi:"attr,description"`
-	Enforce        []*Enforcement `jsonapi:"attr,enforce"`
-	PolicySetCount int            `jsonapi:"attr,policy-set-count"`
-	UpdatedAt      time.Time      `jsonapi:"attr,updated-at,iso8601"`
+	ID          string     `jsonapi:"primary,policies"`
+	Name        string     `jsonapi:"attr,name"`
+	Kind        PolicyKind `jsonapi:"attr,kind"`
+	Query       *string    `jsonapi:"attr,query"`
+	Description string     `jsonapi:"attr,description"`
+	// Deprecated: Use EnforcementLevel instead.
+	Enforce          []*Enforcement   `jsonapi:"attr,enforce"`
+	EnforcementLevel EnforcementLevel `jsonapi:"attr,enforcement-level"`
+	PolicySetCount   int              `jsonapi:"attr,policy-set-count"`
+	UpdatedAt        time.Time        `jsonapi:"attr,updated-at,iso8601"`
 
 	// Relations
 	Organization *Organization `jsonapi:"relation,organization"`
@@ -121,8 +123,14 @@ type PolicyCreateOptions struct {
 	// Optional: A description of the policy's purpose.
 	Description *string `jsonapi:"attr,description,omitempty"`
 
-	// Required: The enforcements of the policy.
-	Enforce []*EnforcementOptions `jsonapi:"attr,enforce"`
+	// The enforcements of the policy.
+	//
+	// Deprecated: Use EnforcementLevel instead.
+	Enforce []*EnforcementOptions `jsonapi:"attr,enforce,omitempty"`
+
+	// Required: The enforcement level of the policy.
+	// Either EnforcementLevel or Enforce must be set.
+	EnforcementLevel *EnforcementLevel `jsonapi:"attr,enforcement-level,omitempty"`
 }
 
 // PolicyUpdateOptions represents the options for updating a policy.
@@ -140,7 +148,12 @@ type PolicyUpdateOptions struct {
 	Query *string `jsonapi:"attr,query,omitempty"`
 
 	// Optional: The enforcements of the policy.
+	//
+	// Deprecated: Use EnforcementLevel instead.
 	Enforce []*EnforcementOptions `jsonapi:"attr,enforce,omitempty"`
+
+	// Optional: The enforcement level of the policy.
+	EnforcementLevel *EnforcementLevel `jsonapi:"attr,enforcement-level,omitempty"`
 }
 
 // List all the policies for a given organization
@@ -291,15 +304,20 @@ func (o PolicyCreateOptions) valid() error {
 	if o.Kind == OPA && !validString(o.Query) {
 		return ErrRequiredQuery
 	}
-	if o.Enforce == nil {
+	if o.Enforce == nil && o.EnforcementLevel == nil {
 		return ErrRequiredEnforce
 	}
-	for _, e := range o.Enforce {
-		if !validString(e.Path) {
-			return ErrRequiredEnforcementPath
-		}
-		if e.Mode == nil {
-			return ErrRequiredEnforcementMode
+	if o.Enforce != nil && o.EnforcementLevel != nil {
+		return ErrConflictingEnforceEnforcementLevel
+	}
+	if o.Enforce != nil {
+		for _, e := range o.Enforce {
+			if !validString(e.Path) {
+				return ErrRequiredEnforcementPath
+			}
+			if e.Mode == nil {
+				return ErrRequiredEnforcementMode
+			}
 		}
 	}
 	return nil

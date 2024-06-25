@@ -495,7 +495,7 @@ func (s *runs) ForceCancel(ctx context.Context, runID string, options RunForceCa
 // ForceExecute is used to forcefully execute a run by its ID.
 //
 // Note: While useful at times, force-executing a run circumvents the typical
-// workflow of applying runs using Terraform Cloud. It is not intended for
+// workflow of applying runs using HCP Terraform. It is not intended for
 // regular use. If you find yourself using it frequently, please reach out to
 // HashiCorp Support for help in developing an alternative approach.
 func (s *runs) ForceExecute(ctx context.Context, runID string) error {

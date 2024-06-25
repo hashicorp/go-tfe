@@ -28,7 +28,7 @@ func TestClient_newClient(t *testing.T) {
 		if enterpriseEnabled() {
 			w.Header().Set("TFP-AppName", "Terraform Enterprise")
 		} else {
-			w.Header().Set("TFP-AppName", "Terraform Cloud")
+			w.Header().Set("TFP-AppName", "HCP Terraform")
 		}
 		w.WriteHeader(204) // We query the configured ping URL which should return a 204.
 	}))

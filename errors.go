@@ -66,7 +66,7 @@ var (
 	// to determine if it is safe to delete. "conflict" followed by newline is used to
 	// preserve go-tfe version compatibility with the error constructed at runtime before it was
 	// defined here.
-	ErrWorkspaceStillProcessing = errors.New("conflict\nworkspace is still being processed to discover resources")
+	ErrWorkspaceStillProcessing = errors.New("conflict\nLatest workspace state is being processed to discover resources, please try again later")
 
 	// ErrWorkspaceNotSafeToDelete is returned when a workspace has processed state and
 	// is determined to still have resources present. "conflict" followed by newline is used to
@@ -243,7 +243,9 @@ var (
 
 	ErrRequiredEnabled = errors.New("enabled is required")
 
-	ErrRequiredEnforce = errors.New("enforce is required")
+	ErrRequiredEnforce = errors.New("enforce or enforcement-level is required")
+
+	ErrConflictingEnforceEnforcementLevel = errors.New("enforce and enforcement-level may not both be specified together")
 
 	ErrRequiredEnforcementPath = errors.New("enforcement path is required")
 

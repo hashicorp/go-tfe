@@ -347,7 +347,7 @@ func TestRegistryProvidersRead(t *testing.T) {
 				}
 				_, err := client.RegistryProviders.Read(ctx, id, nil)
 				assert.Error(t, err)
-				// Local TFC/E will return a forbidden here when TFC/E is in development mode
+				// Local HCP Terraform or Terraform Enterprise will return a forbidden here when HCP Terraform or Terraform Enterprise is in development mode
 				// In non development mode this returns a 404
 				assert.Equal(t, ErrResourceNotFound, err)
 			})
@@ -448,7 +448,7 @@ func TestRegistryProvidersDelete(t *testing.T) {
 				}
 				err := client.RegistryProviders.Delete(ctx, id)
 				assert.Error(t, err)
-				// Local TFC/E will return a forbidden here when TFC/E is in development mode
+				// Local HCP Terraform or Terraform Enterprise will return a forbidden here when HCP Terraform or Terraform Enterprise is in development mode
 				// In non development mode this returns a 404
 				assert.Equal(t, ErrResourceNotFound, err)
 			})

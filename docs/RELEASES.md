@@ -8,7 +8,7 @@ Start by comparing the main branch with the last release in order to fully under
 
 1. Is the change added to CHANGELOG.md?
 2. Does the public package API follow all endpoint conventions, such as naming, pointer usage, and options availability? Once these are released, they are permanent in the current major release version.
-3. Are new features generally available in the Terraform Cloud API? Or is there another considered reason to release them?
+3. Are new features generally available in the HCP Terraform API? Or is there another considered reason to release them?
 
 Steps to prepare the changelog for a new release:
 

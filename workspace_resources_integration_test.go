@@ -5,9 +5,10 @@ package tfe
 
 import (
 	"context"
+	"testing"
+
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
-	"testing"
 )
 
 func TestWorkspaceResourcesList(t *testing.T) {
@@ -23,7 +24,7 @@ func TestWorkspaceResourcesList(t *testing.T) {
 	svTest, svTestCleanup := createStateVersion(t, client, 0, wTest)
 	t.Cleanup(svTestCleanup)
 
-	// give TFC some time to process the statefile and extract the outputs.
+	// give HCP Terraform some time to process the statefile and extract the outputs.
 	waitForSVOutputs(t, client, svTest.ID)
 
 	t.Run("without list options", func(t *testing.T) {

@@ -105,12 +105,28 @@ type Workspaces interface {
 	RemoveTags(ctx context.Context, workspaceID string, options WorkspaceRemoveTagsOptions) error
 
 	// ReadDataRetentionPolicy reads a workspace's data retention policy
-	// **Note: This functionality is only available in Terraform Enterprise.**
+	//
+	// Deprecated: Use ReadDataRetentionPolicyChoice instead.
+	// **Note: This functionality is only available in Terraform Enterprise versions v202311-1 and v202312-1.**
 	ReadDataRetentionPolicy(ctx context.Context, workspaceID string) (*DataRetentionPolicy, error)
 
-	// SetDataRetentionPolicy sets a workspace's data retention policy
+	// ReadDataRetentionPolicyChoice reads a workspace's data retention policy
 	// **Note: This functionality is only available in Terraform Enterprise.**
+	ReadDataRetentionPolicyChoice(ctx context.Context, workspaceID string) (*DataRetentionPolicyChoice, error)
+
+	// SetDataRetentionPolicy sets a workspace's data retention policy to delete data older than a certain number of days
+	//
+	// Deprecated: Use SetDataRetentionPolicyDeleteOlder instead
+	// **Note: This functionality is only available in Terraform Enterprise versions v202311-1 and v202312-1.**
 	SetDataRetentionPolicy(ctx context.Context, workspaceID string, options DataRetentionPolicySetOptions) (*DataRetentionPolicy, error)
+
+	// SetDataRetentionPolicyDeleteOlder sets a workspace's data retention policy to delete data older than a certain number of days
+	// **Note: This functionality is only available in Terraform Enterprise.**
+	SetDataRetentionPolicyDeleteOlder(ctx context.Context, workspaceID string, options DataRetentionPolicyDeleteOlderSetOptions) (*DataRetentionPolicyDeleteOlder, error)
+
+	// SetDataRetentionPolicyDontDelete sets a workspace's data retention policy to explicitly not delete data
+	// **Note: This functionality is only available in Terraform Enterprise.**
+	SetDataRetentionPolicyDontDelete(ctx context.Context, workspaceID string, options DataRetentionPolicyDontDeleteSetOptions) (*DataRetentionPolicyDontDelete, error)
 
 	// DeleteDataRetentionPolicy deletes a workspace's data retention policy
 	// **Note: This functionality is only available in Terraform Enterprise.**
@@ -139,44 +155,45 @@ type LockedByChoice struct {
 
 // Workspace represents a Terraform Enterprise workspace.
 type Workspace struct {
-	ID                         string                          `jsonapi:"primary,workspaces"`
-	Actions                    *WorkspaceActions               `jsonapi:"attr,actions"`
-	AllowDestroyPlan           bool                            `jsonapi:"attr,allow-destroy-plan"`
-	AssessmentsEnabled         bool                            `jsonapi:"attr,assessments-enabled"`
-	AutoApply                  bool                            `jsonapi:"attr,auto-apply"`
-	AutoApplyRunTrigger        bool                            `jsonapi:"attr,auto-apply-run-trigger"`
-	AutoDestroyAt              jsonapi.NullableAttr[time.Time] `jsonapi:"attr,auto-destroy-at,iso8601,omitempty"`
-	CanQueueDestroyPlan        bool                            `jsonapi:"attr,can-queue-destroy-plan"`
-	CreatedAt                  time.Time                       `jsonapi:"attr,created-at,iso8601"`
-	Description                string                          `jsonapi:"attr,description"`
-	Environment                string                          `jsonapi:"attr,environment"`
-	ExecutionMode              string                          `jsonapi:"attr,execution-mode"`
-	FileTriggersEnabled        bool                            `jsonapi:"attr,file-triggers-enabled"`
-	GlobalRemoteState          bool                            `jsonapi:"attr,global-remote-state"`
-	Locked                     bool                            `jsonapi:"attr,locked"`
-	MigrationEnvironment       string                          `jsonapi:"attr,migration-environment"`
-	Name                       string                          `jsonapi:"attr,name"`
-	Operations                 bool                            `jsonapi:"attr,operations"`
-	Permissions                *WorkspacePermissions           `jsonapi:"attr,permissions"`
-	QueueAllRuns               bool                            `jsonapi:"attr,queue-all-runs"`
-	SpeculativeEnabled         bool                            `jsonapi:"attr,speculative-enabled"`
-	SourceName                 string                          `jsonapi:"attr,source-name"`
-	SourceURL                  string                          `jsonapi:"attr,source-url"`
-	StructuredRunOutputEnabled bool                            `jsonapi:"attr,structured-run-output-enabled"`
-	TerraformVersion           string                          `jsonapi:"attr,terraform-version"`
-	TriggerPrefixes            []string                        `jsonapi:"attr,trigger-prefixes"`
-	TriggerPatterns            []string                        `jsonapi:"attr,trigger-patterns"`
-	VCSRepo                    *VCSRepo                        `jsonapi:"attr,vcs-repo"`
-	WorkingDirectory           string                          `jsonapi:"attr,working-directory"`
-	UpdatedAt                  time.Time                       `jsonapi:"attr,updated-at,iso8601"`
-	ResourceCount              int                             `jsonapi:"attr,resource-count"`
-	ApplyDurationAverage       time.Duration                   `jsonapi:"attr,apply-duration-average"`
-	PlanDurationAverage        time.Duration                   `jsonapi:"attr,plan-duration-average"`
-	PolicyCheckFailures        int                             `jsonapi:"attr,policy-check-failures"`
-	RunFailures                int                             `jsonapi:"attr,run-failures"`
-	RunsCount                  int                             `jsonapi:"attr,workspace-kpis-runs-count"`
-	TagNames                   []string                        `jsonapi:"attr,tag-names"`
-	SettingOverwrites          *WorkspaceSettingOverwrites     `jsonapi:"attr,setting-overwrites"`
+	ID                          string                          `jsonapi:"primary,workspaces"`
+	Actions                     *WorkspaceActions               `jsonapi:"attr,actions"`
+	AllowDestroyPlan            bool                            `jsonapi:"attr,allow-destroy-plan"`
+	AssessmentsEnabled          bool                            `jsonapi:"attr,assessments-enabled"`
+	AutoApply                   bool                            `jsonapi:"attr,auto-apply"`
+	AutoApplyRunTrigger         bool                            `jsonapi:"attr,auto-apply-run-trigger"`
+	AutoDestroyAt               jsonapi.NullableAttr[time.Time] `jsonapi:"attr,auto-destroy-at,iso8601,omitempty"`
+	AutoDestroyActivityDuration jsonapi.NullableAttr[string]    `jsonapi:"attr,auto-destroy-activity-duration,omitempty"`
+	CanQueueDestroyPlan         bool                            `jsonapi:"attr,can-queue-destroy-plan"`
+	CreatedAt                   time.Time                       `jsonapi:"attr,created-at,iso8601"`
+	Description                 string                          `jsonapi:"attr,description"`
+	Environment                 string                          `jsonapi:"attr,environment"`
+	ExecutionMode               string                          `jsonapi:"attr,execution-mode"`
+	FileTriggersEnabled         bool                            `jsonapi:"attr,file-triggers-enabled"`
+	GlobalRemoteState           bool                            `jsonapi:"attr,global-remote-state"`
+	Locked                      bool                            `jsonapi:"attr,locked"`
+	MigrationEnvironment        string                          `jsonapi:"attr,migration-environment"`
+	Name                        string                          `jsonapi:"attr,name"`
+	Operations                  bool                            `jsonapi:"attr,operations"`
+	Permissions                 *WorkspacePermissions           `jsonapi:"attr,permissions"`
+	QueueAllRuns                bool                            `jsonapi:"attr,queue-all-runs"`
+	SpeculativeEnabled          bool                            `jsonapi:"attr,speculative-enabled"`
+	SourceName                  string                          `jsonapi:"attr,source-name"`
+	SourceURL                   string                          `jsonapi:"attr,source-url"`
+	StructuredRunOutputEnabled  bool                            `jsonapi:"attr,structured-run-output-enabled"`
+	TerraformVersion            string                          `jsonapi:"attr,terraform-version"`
+	TriggerPrefixes             []string                        `jsonapi:"attr,trigger-prefixes"`
+	TriggerPatterns             []string                        `jsonapi:"attr,trigger-patterns"`
+	VCSRepo                     *VCSRepo                        `jsonapi:"attr,vcs-repo"`
+	WorkingDirectory            string                          `jsonapi:"attr,working-directory"`
+	UpdatedAt                   time.Time                       `jsonapi:"attr,updated-at,iso8601"`
+	ResourceCount               int                             `jsonapi:"attr,resource-count"`
+	ApplyDurationAverage        time.Duration                   `jsonapi:"attr,apply-duration-average"`
+	PlanDurationAverage         time.Duration                   `jsonapi:"attr,plan-duration-average"`
+	PolicyCheckFailures         int                             `jsonapi:"attr,policy-check-failures"`
+	RunFailures                 int                             `jsonapi:"attr,run-failures"`
+	RunsCount                   int                             `jsonapi:"attr,workspace-kpis-runs-count"`
+	TagNames                    []string                        `jsonapi:"attr,tag-names"`
+	SettingOverwrites           *WorkspaceSettingOverwrites     `jsonapi:"attr,setting-overwrites"`
 
 	// Relations
 	AgentPool                   *AgentPool            `jsonapi:"relation,agent-pool"`
@@ -189,9 +206,12 @@ type Workspace struct {
 	Tags                        []*Tag                `jsonapi:"relation,tags"`
 	CurrentConfigurationVersion *ConfigurationVersion `jsonapi:"relation,current-configuration-version,omitempty"`
 	LockedBy                    *LockedByChoice       `jsonapi:"polyrelation,locked-by"`
+	Variables                   []*Variable           `jsonapi:"relation,vars"`
 
+	// Deprecated: Use DataRetentionPolicyChoice instead.
+	DataRetentionPolicy *DataRetentionPolicy
 	// **Note: This functionality is only available in Terraform Enterprise.**
-	DataRetentionPolicy *DataRetentionPolicy `jsonapi:"relation,data-retention-policy"`
+	DataRetentionPolicyChoice *DataRetentionPolicyChoice `jsonapi:"polyrelation,data-retention-policy"`
 
 	// Links
 	Links map[string]interface{} `jsonapi:"links,omitempty"`
@@ -305,8 +325,15 @@ type WorkspaceListOptions struct {
 	// Optional: A filter string to list all the workspaces linked to a given project id in the organization.
 	ProjectID string `url:"filter[project][id],omitempty"`
 
+	// Optional: A filter string to list all the workspaces filtered by current run status.
+	CurrentRunStatus string `url:"filter[current-run][status],omitempty"`
+
 	// Optional: A list of relations to include. See available resources https://developer.hashicorp.com/terraform/cloud-docs/api-docs/workspaces#available-related-resources
 	Include []WSIncludeOpt `url:"include,omitempty"`
+
+	// Optional: May sort on "name" (the default) and "current-run.created-at" (which sorts by the time of the current run)
+	// Prepending a hyphen to the sort parameter will reverse the order (e.g. "-name" to reverse the default order)
+	Sort string `url:"sort,omitempty"`
 }
 
 // WorkspaceCreateOptions represents the options for creating a new workspace.
@@ -327,7 +354,7 @@ type WorkspaceCreateOptions struct {
 
 	// Optional: Whether to enable health assessments (drift detection etc.) for the workspace.
 	// Reference: https://developer.hashicorp.com/terraform/cloud-docs/api-docs/workspaces#create-a-workspace
-	// Requires remote execution mode, Terraform Cloud Business entitlement, and a valid agent pool to work
+	// Requires remote execution mode, HCP Terraform Business entitlement, and a valid agent pool to work
 	AssessmentsEnabled *bool `jsonapi:"attr,assessments-enabled,omitempty"`
 
 	// Optional: Whether to automatically apply changes when a Terraform plan is successful.
@@ -339,6 +366,10 @@ type WorkspaceCreateOptions struct {
 
 	// Optional: The time after which an automatic destroy run will be queued
 	AutoDestroyAt jsonapi.NullableAttr[time.Time] `jsonapi:"attr,auto-destroy-at,iso8601,omitempty"`
+
+	// Optional: The period of time to wait after workspace activity to trigger a destroy run. The format
+	// should roughly match a Go duration string limited to days and hours, e.g. "24h" or "1d".
+	AutoDestroyActivityDuration jsonapi.NullableAttr[string] `jsonapi:"attr,auto-destroy-activity-duration,omitempty"`
 
 	// Optional: A description for the workspace.
 	Description *string `jsonapi:"attr,description,omitempty"`
@@ -376,7 +407,7 @@ type WorkspaceCreateOptions struct {
 	QueueAllRuns *bool `jsonapi:"attr,queue-all-runs,omitempty"`
 
 	// Whether this workspace allows speculative plans. Setting this to false
-	// prevents Terraform Cloud or the Terraform Enterprise instance from
+	// prevents HCP Terraform or the Terraform Enterprise instance from
 	// running plans on pull requests, which can improve security if the VCS
 	// repository is public or includes untrusted contributors.
 	SpeculativeEnabled *bool `jsonapi:"attr,speculative-enabled,omitempty"`
@@ -430,7 +461,7 @@ type WorkspaceCreateOptions struct {
 	// organization provides.
 	//
 	// In general, it's not necessary to mark a setting as `true` in this
-	// struct; if you provide a literal value for a setting, Terraform Cloud will
+	// struct; if you provide a literal value for a setting, HCP Terraform will
 	// automatically update its overwrites field to `true`. If you do choose to
 	// manually mark a setting as overwritten, you must provide a value for that
 	// setting at the same time.
@@ -477,7 +508,7 @@ type WorkspaceUpdateOptions struct {
 
 	// Optional: Whether to enable health assessments (drift detection etc.) for the workspace.
 	// Reference: https://developer.hashicorp.com/terraform/cloud-docs/api-docs/workspaces#update-a-workspace
-	// Requires remote execution mode, Terraform Cloud Business entitlement, and a valid agent pool to work
+	// Requires remote execution mode, HCP Terraform Business entitlement, and a valid agent pool to work
 	AssessmentsEnabled *bool `jsonapi:"attr,assessments-enabled,omitempty"`
 
 	// Optional: Whether to automatically apply changes when a Terraform plan is successful.
@@ -489,6 +520,10 @@ type WorkspaceUpdateOptions struct {
 
 	// Optional: The time after which an automatic destroy run will be queued
 	AutoDestroyAt jsonapi.NullableAttr[time.Time] `jsonapi:"attr,auto-destroy-at,iso8601,omitempty"`
+
+	// Optional: The period of time to wait after workspace activity to trigger a destroy run. The format
+	// should roughly match a Go duration string limited to days and hours, e.g. "24h" or "1d".
+	AutoDestroyActivityDuration jsonapi.NullableAttr[string] `jsonapi:"attr,auto-destroy-activity-duration,omitempty"`
 
 	// Optional: A new name for the workspace, which can only include letters, numbers, -,
 	// and _. This will be used as an identifier and must be unique in the
@@ -523,7 +558,7 @@ type WorkspaceUpdateOptions struct {
 	QueueAllRuns *bool `jsonapi:"attr,queue-all-runs,omitempty"`
 
 	// Optional: Whether this workspace allows speculative plans. Setting this to false
-	// prevents Terraform Cloud or the Terraform Enterprise instance from
+	// prevents HCP Terraform or the Terraform Enterprise instance from
 	// running plans on pull requests, which can improve security if the VCS
 	// repository is public or includes untrusted contributors.
 	SpeculativeEnabled *bool `jsonapi:"attr,speculative-enabled,omitempty"`
@@ -565,7 +600,7 @@ type WorkspaceUpdateOptions struct {
 	// organization provides.
 	//
 	// In general, it's not necessary to mark a setting as `true` in this
-	// struct; if you provide a literal value for a setting, Terraform Cloud will
+	// struct; if you provide a literal value for a setting, HCP Terraform will
 	// automatically update its overwrites field to `true`. If you do choose to
 	// manually mark a setting as overwritten, you must provide a value for that
 	// setting at the same time.
@@ -736,6 +771,9 @@ func (s *workspaces) ReadWithOptions(ctx context.Context, organization, workspac
 		return nil, err
 	}
 
+	// Manually populate the deprecated DataRetentionPolicy field
+	w.DataRetentionPolicy = w.DataRetentionPolicyChoice.ConvertToLegacyStruct()
+
 	// durations come over in ms
 	w.ApplyDurationAverage *= time.Millisecond
 	w.PlanDurationAverage *= time.Millisecond
@@ -764,6 +802,11 @@ func (s *workspaces) ReadByIDWithOptions(ctx context.Context, workspaceID string
 	err = req.Do(ctx, w)
 	if err != nil {
 		return nil, err
+	}
+
+	// Manually populate the deprecated DataRetentionPolicy field
+	if w.DataRetentionPolicyChoice != nil {
+		w.DataRetentionPolicy = w.DataRetentionPolicyChoice.ConvertToLegacyStruct()
 	}
 
 	// durations come over in ms
@@ -1231,6 +1274,65 @@ func (s *workspaces) ReadDataRetentionPolicy(ctx context.Context, workspaceID st
 	err = req.Do(ctx, dataRetentionPolicy)
 
 	if err != nil {
+		// try to detect known issue where this function is used with TFE >= 202401,
+		// and direct user towards the V2 function
+		if drpUnmarshalEr.MatchString(err.Error()) {
+			return nil, fmt.Errorf("error reading deprecated DataRetentionPolicy, use ReadDataRetentionPolicyChoice instead")
+		}
+		return nil, err
+	}
+
+	return dataRetentionPolicy, nil
+}
+
+func (s *workspaces) ReadDataRetentionPolicyChoice(ctx context.Context, workspaceID string) (*DataRetentionPolicyChoice, error) {
+	if !validStringID(&workspaceID) {
+		return nil, ErrInvalidWorkspaceID
+	}
+
+	// The API to read the drp is workspaces/<id>/relationships/data-retention-policy
+	// However, this API can return multiple "types" (e.g. data-retention-policy-delete-olders, or data-retention-policy-dont-deletes)
+	// Ideally we would deserialize this directly into the choice type (DataRetentionPolicyChoice)...however, there isn't a way to
+	// tell the current jsonapi implementation that the direct result of an endpoint could be different types. Relationships can be polymorphic,
+	// but the direct result of an endpoint can't be (as far as the jsonapi implementation is concerned)
+
+	// Instead, we need to figure out the type of the data retention policy first, and deserialize it into the matching model. We
+	// can then create a choice type manually
+	ws, err := s.ReadByID(ctx, workspaceID)
+	if err != nil {
+		return nil, err
+	}
+
+	// there is no drp (of a known type)
+	if ws.DataRetentionPolicyChoice == nil || !ws.DataRetentionPolicyChoice.IsPopulated() {
+		return ws.DataRetentionPolicyChoice, nil
+	}
+
+	u := s.dataRetentionPolicyLink(workspaceID)
+	req, err := s.client.NewRequest("GET", u, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	dataRetentionPolicy := &DataRetentionPolicyChoice{}
+	// if reading the workspace told us it was a "delete older policy" deserialize into the DeleteOlder portion of the choice model
+	if ws.DataRetentionPolicyChoice.DataRetentionPolicyDeleteOlder != nil {
+		deleteOlder := &DataRetentionPolicyDeleteOlder{}
+		err = req.Do(ctx, deleteOlder)
+		dataRetentionPolicy.DataRetentionPolicyDeleteOlder = deleteOlder
+
+		// if reading the workspace told us it was a "delete older policy" deserialize into the DeleteOlder portion of the choice model
+	} else if ws.DataRetentionPolicyChoice.DataRetentionPolicyDontDelete != nil {
+		dontDelete := &DataRetentionPolicyDontDelete{}
+		err = req.Do(ctx, dontDelete)
+		dataRetentionPolicy.DataRetentionPolicyDontDelete = dontDelete
+	} else if ws.DataRetentionPolicyChoice != nil {
+		legacyDrp := &DataRetentionPolicy{}
+		err = req.Do(ctx, legacyDrp)
+		dataRetentionPolicy.DataRetentionPolicy = legacyDrp
+	}
+
+	if err != nil {
 		return nil, err
 	}
 
@@ -1242,7 +1344,7 @@ func (s *workspaces) SetDataRetentionPolicy(ctx context.Context, workspaceID str
 		return nil, ErrInvalidWorkspaceID
 	}
 
-	u := fmt.Sprintf("workspaces/%s/relationships/data-retention-policy", url.QueryEscape(workspaceID))
+	u := s.dataRetentionPolicyLink(workspaceID)
 	req, err := s.client.NewRequest("PATCH", u, &options)
 	if err != nil {
 		return nil, err
@@ -1258,12 +1360,54 @@ func (s *workspaces) SetDataRetentionPolicy(ctx context.Context, workspaceID str
 	return dataRetentionPolicy, nil
 }
 
+func (s *workspaces) SetDataRetentionPolicyDeleteOlder(ctx context.Context, workspaceID string, options DataRetentionPolicyDeleteOlderSetOptions) (*DataRetentionPolicyDeleteOlder, error) {
+	if !validStringID(&workspaceID) {
+		return nil, ErrInvalidWorkspaceID
+	}
+
+	u := s.dataRetentionPolicyLink(workspaceID)
+	req, err := s.client.NewRequest("POST", u, &options)
+	if err != nil {
+		return nil, err
+	}
+
+	dataRetentionPolicy := &DataRetentionPolicyDeleteOlder{}
+	err = req.Do(ctx, dataRetentionPolicy)
+
+	if err != nil {
+		return nil, err
+	}
+
+	return dataRetentionPolicy, nil
+}
+
+func (s *workspaces) SetDataRetentionPolicyDontDelete(ctx context.Context, workspaceID string, options DataRetentionPolicyDontDeleteSetOptions) (*DataRetentionPolicyDontDelete, error) {
+	if !validStringID(&workspaceID) {
+		return nil, ErrInvalidWorkspaceID
+	}
+
+	u := s.dataRetentionPolicyLink(workspaceID)
+	req, err := s.client.NewRequest("POST", u, &options)
+	if err != nil {
+		return nil, err
+	}
+
+	dataRetentionPolicy := &DataRetentionPolicyDontDelete{}
+	err = req.Do(ctx, dataRetentionPolicy)
+
+	if err != nil {
+		return nil, err
+	}
+
+	return dataRetentionPolicy, nil
+}
+
 func (s *workspaces) DeleteDataRetentionPolicy(ctx context.Context, workspaceID string) error {
 	if !validStringID(&workspaceID) {
 		return ErrInvalidWorkspaceID
 	}
 
-	u := fmt.Sprintf("workspaces/%s/relationships/data-retention-policy", url.QueryEscape(workspaceID))
+	u := s.dataRetentionPolicyLink(workspaceID)
 	req, err := s.client.NewRequest("DELETE", u, nil)
 	if err != nil {
 		return err
@@ -1421,4 +1565,8 @@ func tagRegexDefined(options *VCSRepoOptions) bool {
 		return true
 	}
 	return false
+}
+
+func (s *workspaces) dataRetentionPolicyLink(wsID string) string {
+	return fmt.Sprintf("workspaces/%s/relationships/data-retention-policy", url.QueryEscape(wsID))
 }

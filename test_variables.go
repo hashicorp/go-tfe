@@ -20,6 +20,9 @@ type TestVariables interface {
 	// List all the test variables associated with the given module.
 	List(ctx context.Context, moduleID RegistryModuleID, options *VariableListOptions) (*VariableList, error)
 
+	// Read a test variable by its ID.
+	Read(ctx context.Context, moduleID RegistryModuleID, variableID string) (*Variable, error)
+
 	// Create is used to create a new variable.
 	Create(ctx context.Context, moduleID RegistryModuleID, options VariableCreateOptions) (*Variable, error)
 
@@ -53,6 +56,32 @@ func (s *testVariables) List(ctx context.Context, moduleID RegistryModuleID, opt
 	}
 
 	return vl, nil
+}
+
+// Read a variable by its ID.
+func (s *testVariables) Read(ctx context.Context, moduleID RegistryModuleID, variableID string) (*Variable, error) {
+	if err := moduleID.valid(); err != nil {
+		return nil, err
+	}
+
+	if !validStringID(&variableID) {
+		return nil, ErrInvalidVariableID
+	}
+
+	u := fmt.Sprintf("%s/%s", testVarsPath(moduleID), url.QueryEscape(variableID))
+
+	req, err := s.client.NewRequest("GET", u, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	v := &Variable{}
+	err = req.Do(ctx, v)
+	if err != nil {
+		return nil, err
+	}
+
+	return v, err
 }
 
 // Create is used to create a new variable.

@@ -48,15 +48,17 @@ type notificationConfigurations struct {
 type NotificationTriggerType string
 
 const (
-	NotificationTriggerCreated               NotificationTriggerType = "run:created"
-	NotificationTriggerPlanning              NotificationTriggerType = "run:planning"
-	NotificationTriggerNeedsAttention        NotificationTriggerType = "run:needs_attention"
-	NotificationTriggerApplying              NotificationTriggerType = "run:applying"
-	NotificationTriggerCompleted             NotificationTriggerType = "run:completed"
-	NotificationTriggerErrored               NotificationTriggerType = "run:errored"
-	NotificationTriggerAssessmentDrifted     NotificationTriggerType = "assessment:drifted"
-	NotificationTriggerAssessmentFailed      NotificationTriggerType = "assessment:failed"
-	NotificationTriggerAssessmentCheckFailed NotificationTriggerType = "assessment:check_failure"
+	NotificationTriggerCreated                        NotificationTriggerType = "run:created"
+	NotificationTriggerPlanning                       NotificationTriggerType = "run:planning"
+	NotificationTriggerNeedsAttention                 NotificationTriggerType = "run:needs_attention"
+	NotificationTriggerApplying                       NotificationTriggerType = "run:applying"
+	NotificationTriggerCompleted                      NotificationTriggerType = "run:completed"
+	NotificationTriggerErrored                        NotificationTriggerType = "run:errored"
+	NotificationTriggerAssessmentDrifted              NotificationTriggerType = "assessment:drifted"
+	NotificationTriggerAssessmentFailed               NotificationTriggerType = "assessment:failed"
+	NotificationTriggerAssessmentCheckFailed          NotificationTriggerType = "assessment:check_failure"
+	NotificationTriggerWorkspaceAutoDestroyReminder   NotificationTriggerType = "workspace:auto_destroy_reminder"
+	NotificationTriggerWorkspaceAutoDestroyRunResults NotificationTriggerType = "workspace:auto_destroy_run_results"
 )
 
 // NotificationDestinationType represents the destination type of the
@@ -91,7 +93,7 @@ type NotificationConfiguration struct {
 	UpdatedAt         time.Time                   `jsonapi:"attr,updated-at,iso8601"`
 	URL               string                      `jsonapi:"attr,url"`
 
-	// EmailAddresses is only available for TFE users. It is not available in TFC.
+	// EmailAddresses is only available for TFE users. It is not available in HCP Terraform.
 	EmailAddresses []string `jsonapi:"attr,email-addresses"`
 
 	// Relations
@@ -143,7 +145,7 @@ type NotificationConfigurationCreateOptions struct {
 	URL *string `jsonapi:"attr,url,omitempty"`
 
 	// Optional: The list of email addresses that will receive notification emails.
-	// EmailAddresses is only available for TFE users. It is not available in TFC.
+	// EmailAddresses is only available for TFE users. It is not available in HCP Terraform.
 	EmailAddresses []string `jsonapi:"attr,email-addresses,omitempty"`
 
 	// Optional: The list of users belonging to the organization that will receive notification emails.
@@ -175,7 +177,7 @@ type NotificationConfigurationUpdateOptions struct {
 	URL *string `jsonapi:"attr,url,omitempty"`
 
 	// Optional: The list of email addresses that will receive notification emails.
-	// EmailAddresses is only available for TFE users. It is not available in TFC.
+	// EmailAddresses is only available for TFE users. It is not available in HCP Terraform.
 	EmailAddresses []string `jsonapi:"attr,email-addresses,omitempty"`
 
 	// Optional: The list of users belonging to the organization that will receive notification emails.
@@ -359,6 +361,8 @@ func validNotificationTriggerType(triggers []NotificationTriggerType) bool {
 			NotificationTriggerPlanning,
 			NotificationTriggerAssessmentDrifted,
 			NotificationTriggerAssessmentFailed,
+			NotificationTriggerWorkspaceAutoDestroyReminder,
+			NotificationTriggerWorkspaceAutoDestroyRunResults,
 			NotificationTriggerAssessmentCheckFailed:
 			continue
 		default:

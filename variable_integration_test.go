@@ -79,6 +79,10 @@ func TestVariablesCreate(t *testing.T) {
 		v, err := client.Variables.Create(ctx, wTest.ID, options)
 		require.NoError(t, err)
 
+		// Refresh workspace once the variable is created.
+		reWorkspace, err := client.Workspaces.ReadByID(ctx, wTest.ID)
+		require.NoError(t, err)
+
 		assert.NotEmpty(t, v.ID)
 		assert.Equal(t, *options.Key, v.Key)
 		assert.Equal(t, *options.Value, v.Value)
@@ -87,6 +91,9 @@ func TestVariablesCreate(t *testing.T) {
 		// The workspace isn't returned correcly by the API.
 		// assert.Equal(t, *options.Workspace, v.Workspace)
 		assert.NotEmpty(t, v.VersionID)
+		// Validate that the same Variable is now listed in Workspace relations.
+		assert.NotEmpty(t, reWorkspace.Variables)
+		assert.Equal(t, reWorkspace.Variables[0].ID, v.ID)
 	})
 
 	t.Run("when options has an empty string value", func(t *testing.T) {

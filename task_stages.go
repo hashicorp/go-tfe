@@ -12,7 +12,7 @@ import (
 // Compile-time proof of interface  implementation
 var _ TaskStages = (*taskStages)(nil)
 
-// TaskStages describes all the task stage related methods that the TFC/E API
+// TaskStages describes all the task stage related methods that the HCP Terraform and Terraform Enterprise API
 // supports.
 type TaskStages interface {
 	// Read a task stage by ID
@@ -35,9 +35,10 @@ type taskStages struct {
 type Stage string
 
 const (
-	PrePlan  Stage = "pre_plan"
-	PostPlan Stage = "post_plan"
-	PreApply Stage = "pre_apply"
+	PrePlan   Stage = "pre_plan"
+	PostPlan  Stage = "post_plan"
+	PreApply  Stage = "pre_apply"
+	PostApply Stage = "post_apply"
 )
 
 // TaskStageStatus is an enum that represents all possible statuses for a task stage
@@ -66,7 +67,7 @@ type Actions struct {
 	IsOverridable *bool `jsonapi:"attr,is-overridable"`
 }
 
-// TaskStage represents a TFC/E run's stage where run tasks can occur
+// TaskStage represents a HCP Terraform or Terraform Enterprise run's stage where run tasks can occur
 type TaskStage struct {
 	ID               string                    `jsonapi:"primary,task-stages"`
 	Stage            Stage                     `jsonapi:"attr,stage"`

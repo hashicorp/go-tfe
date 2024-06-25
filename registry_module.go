@@ -5,6 +5,7 @@ package tfe
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"io"
 	"log"
@@ -45,12 +46,16 @@ type RegistryModules interface {
 	ReadVersion(ctx context.Context, moduleID RegistryModuleID, version string) (*RegistryModuleVersion, error)
 
 	// Delete a registry module
+	// Warning: This method is deprecated and will be removed from a future version of go-tfe. Use DeleteByName instead.
 	Delete(ctx context.Context, organization string, name string) error
 
-	// Delete a specific registry module provider
+	// Delete a registry module by name
+	DeleteByName(ctx context.Context, module RegistryModuleID) error
+
+	// Delete a specified provider for the given module along with all its versions
 	DeleteProvider(ctx context.Context, moduleID RegistryModuleID) error
 
-	// Delete a specific registry module version
+	// Delete a specified version for the given provider of the module
 	DeleteVersion(ctx context.Context, moduleID RegistryModuleID, version string) error
 
 	// Update properties of a registry module
@@ -103,6 +108,7 @@ const (
 )
 
 // RegistryModuleID represents the set of IDs that identify a RegistryModule
+// Use NewPublicRegistryModuleID or NewPrivateRegistryModuleID to build one
 type RegistryModuleID struct {
 	// The organization the module belongs to, see RegistryModule.Organization.Name
 	Organization string
@@ -592,6 +598,8 @@ func (r *registryModules) ReadVersion(ctx context.Context, moduleID RegistryModu
 }
 
 // Delete is used to delete the entire registry module
+// Warning: This method is deprecated and will be removed from a future version of go-tfe. Use DeleteByName instead.
+// See API Docs: https://developer.hashicorp.com/terraform/cloud-docs/api-docs/private-registry/modules#delete-a-module
 func (r *registryModules) Delete(ctx context.Context, organization, name string) error {
 	if !validStringID(&organization) {
 		return ErrInvalidOrg
@@ -616,27 +624,53 @@ func (r *registryModules) Delete(ctx context.Context, organization, name string)
 	return req.Do(ctx, nil)
 }
 
-// DeleteProvider is used to delete the specific registry module provider
-func (r *registryModules) DeleteProvider(ctx context.Context, moduleID RegistryModuleID) error {
-	if err := moduleID.valid(); err != nil {
+// DeleteByName is used to delete the entire registry module
+func (r *registryModules) DeleteByName(ctx context.Context, module RegistryModuleID) error {
+	if err := module.validWhenDeleteByName(); err != nil {
 		return err
 	}
 
 	u := fmt.Sprintf(
-		"registry-modules/actions/delete/%s/%s/%s",
-		url.QueryEscape(moduleID.Organization),
-		url.QueryEscape(moduleID.Name),
-		url.QueryEscape(moduleID.Provider),
+		"organizations/%s/registry-modules/%s/%s/%s",
+		url.QueryEscape(module.Organization),
+		url.QueryEscape(string(module.RegistryName)),
+		url.QueryEscape(module.Namespace),
+		url.QueryEscape(module.Name),
 	)
-	req, err := r.client.NewRequest("POST", u, nil)
-	if err != nil {
-		return err
+
+	req, err := r.client.NewRequest("DELETE", u, nil)
+	if err != nil && errors.Is(err, ErrResourceNotFound) {
+		return r.Delete(ctx, module.Organization, module.Name)
 	}
 
 	return req.Do(ctx, nil)
 }
 
-// DeleteVersion is used to delete the specific registry module version
+// Delete a specified provider for the given module along with all its versions
+func (r *registryModules) DeleteProvider(ctx context.Context, moduleID RegistryModuleID) error {
+	if err := moduleID.validWhenDeleteByProvider(); err != nil {
+		return err
+	}
+
+	u := fmt.Sprintf(
+		"organizations/%s/registry-modules/%s/%s/%s/%s",
+		url.QueryEscape(moduleID.Organization),
+		url.QueryEscape(string(moduleID.RegistryName)),
+		url.QueryEscape(moduleID.Namespace),
+		url.QueryEscape(moduleID.Name),
+		url.QueryEscape(moduleID.Provider),
+	)
+
+	req, err := r.client.NewRequest("DELETE", u, nil)
+
+	if err != nil && errors.Is(err, ErrResourceNotFound) {
+		return r.deprecatedDeleteProvider(ctx, moduleID)
+	}
+
+	return req.Do(ctx, nil)
+}
+
+// Delete a specified version for the given provider of the module
 func (r *registryModules) DeleteVersion(ctx context.Context, moduleID RegistryModuleID, version string) error {
 	if err := moduleID.valid(); err != nil {
 		return err
@@ -649,15 +683,17 @@ func (r *registryModules) DeleteVersion(ctx context.Context, moduleID RegistryMo
 	}
 
 	u := fmt.Sprintf(
-		"registry-modules/actions/delete/%s/%s/%s/%s",
+		"organizations/%s/registry-modules/%s/%s/%s/%s/%s",
 		url.QueryEscape(moduleID.Organization),
+		url.QueryEscape(string(moduleID.RegistryName)),
+		url.QueryEscape(moduleID.Namespace),
 		url.QueryEscape(moduleID.Name),
 		url.QueryEscape(moduleID.Provider),
 		url.QueryEscape(version),
 	)
-	req, err := r.client.NewRequest("POST", u, nil)
-	if err != nil {
-		return err
+	req, err := r.client.NewRequest("DELETE", u, nil)
+	if err != nil && errors.Is(err, ErrResourceNotFound) {
+		return r.deprecatedDeleteVersion(ctx, moduleID, version)
 	}
 
 	return req.Do(ctx, nil)
@@ -693,6 +729,71 @@ func (o RegistryModuleID) valid() error {
 	case "":
 		// no-op:  RegistryName is optional
 	// for all other string
+	default:
+		return ErrInvalidRegistryName
+	}
+
+	return nil
+}
+
+func (o RegistryModuleID) validWhenDeleteByProvider() error {
+	if !validStringID(&o.Organization) {
+		return ErrInvalidOrg
+	}
+
+	if !validString(&o.Name) {
+		return ErrRequiredName
+	}
+
+	if !validStringID(&o.Name) {
+		return ErrInvalidName
+	}
+
+	if !validString(&o.Provider) {
+		return ErrRequiredProvider
+	}
+
+	if !validStringID(&o.Provider) {
+		return ErrInvalidProvider
+	}
+	// RegistryName is required in this DELETE call
+	switch o.RegistryName {
+	case PublicRegistry:
+		if !validString(&o.Namespace) {
+			return ErrRequiredNamespace
+		}
+	case PrivateRegistry:
+	case "":
+		return ErrInvalidRegistryName
+	default:
+		return ErrInvalidRegistryName
+	}
+
+	return nil
+}
+
+func (o RegistryModuleID) validWhenDeleteByName() error {
+	if !validStringID(&o.Organization) {
+		return ErrInvalidOrg
+	}
+
+	if !validString(&o.Name) {
+		return ErrRequiredName
+	}
+
+	if !validStringID(&o.Name) {
+		return ErrInvalidName
+	}
+
+	// RegistryName is required in this DELETE call
+	switch o.RegistryName {
+	case PublicRegistry:
+		if !validString(&o.Namespace) {
+			return ErrRequiredNamespace
+		}
+	case PrivateRegistry:
+	case "":
+		return ErrInvalidRegistryName
 	default:
 		return ErrInvalidRegistryName
 	}
@@ -780,4 +881,69 @@ func (o RegistryModuleVCSRepoOptions) valid() error {
 		return ErrRequiredDisplayIdentifier
 	}
 	return nil
+}
+
+func (r *registryModules) deprecatedDeleteProvider(ctx context.Context, moduleID RegistryModuleID) error {
+	if err := moduleID.valid(); err != nil {
+		return err
+	}
+
+	u := fmt.Sprintf(
+		"registry-modules/actions/delete/%s/%s/%s",
+		url.QueryEscape(moduleID.Organization),
+		url.QueryEscape(moduleID.Name),
+		url.QueryEscape(moduleID.Provider),
+	)
+	req, err := r.client.NewRequest("POST", u, nil)
+	if err != nil {
+		return err
+	}
+
+	return req.Do(ctx, nil)
+}
+
+func (r *registryModules) deprecatedDeleteVersion(ctx context.Context, moduleID RegistryModuleID, version string) error {
+	if err := moduleID.valid(); err != nil {
+		return err
+	}
+	if !validString(&version) {
+		return ErrRequiredVersion
+	}
+	if !validVersion(version) {
+		return ErrInvalidVersion
+	}
+
+	u := fmt.Sprintf(
+		"registry-modules/actions/delete/%s/%s/%s/%s",
+		url.QueryEscape(moduleID.Organization),
+		url.QueryEscape(moduleID.Name),
+		url.QueryEscape(moduleID.Provider),
+		url.QueryEscape(version),
+	)
+	req, err := r.client.NewRequest("POST", u, nil)
+	if err != nil {
+		return err
+	}
+
+	return req.Do(ctx, nil)
+}
+
+func NewPublicRegistryModuleID(organization, namespace, name, provider string) RegistryModuleID {
+	return RegistryModuleID{
+		Organization: organization,
+		Namespace:    namespace,
+		Name:         name,
+		RegistryName: PublicRegistry,
+		Provider:     provider,
+	}
+}
+
+func NewPrivateRegistryModuleID(organization, name, provider string) RegistryModuleID {
+	return RegistryModuleID{
+		Organization: organization,
+		Namespace:    organization,
+		Name:         name,
+		RegistryName: PrivateRegistry,
+		Provider:     provider,
+	}
 }

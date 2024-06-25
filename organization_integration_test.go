@@ -217,7 +217,7 @@ func TestOrganizationsUpdate(t *testing.T) {
 	client := testClient(t)
 	ctx := context.Background()
 
-	t.Run("with TFC-only options", func(t *testing.T) {
+	t.Run("with HCP Terraform-only options", func(t *testing.T) {
 		skipIfEnterprise(t)
 
 		orgTest, orgTestCleanup := createOrganization(t, client)
@@ -681,46 +681,98 @@ func TestOrganization_DataRetentionPolicy(t *testing.T) {
 	orgTest, orgTestCleanup := createOrganization(t, client)
 	t.Cleanup(orgTestCleanup)
 
-	dataRetentionPolicy, err := client.Organizations.ReadDataRetentionPolicy(ctx, orgTest.Name)
-	assert.Equal(t, ErrResourceNotFound, err)
-	require.Nil(t, dataRetentionPolicy)
-
 	organization, err := client.Organizations.Read(ctx, orgTest.Name)
 	require.NoError(t, err)
 	require.Nil(t, organization.DataRetentionPolicy)
+	require.Nil(t, organization.DataRetentionPolicyChoice)
 
-	t.Run("set data retention policy", func(t *testing.T) {
-		createdDataRetentionPolicy, err := client.Organizations.SetDataRetentionPolicy(ctx, orgTest.Name, DataRetentionPolicySetOptions{DeleteOlderThanNDays: 33})
+	dataRetentionPolicy, err := client.Organizations.ReadDataRetentionPolicyChoice(ctx, orgTest.Name)
+	require.NoError(t, err)
+	require.Nil(t, dataRetentionPolicy)
+
+	t.Run("set and update data retention policy to delete older", func(t *testing.T) {
+		createdDataRetentionPolicy, err := client.Organizations.SetDataRetentionPolicyDeleteOlder(ctx, orgTest.Name, DataRetentionPolicyDeleteOlderSetOptions{DeleteOlderThanNDays: 33})
 		require.NoError(t, err)
 		require.Equal(t, 33, createdDataRetentionPolicy.DeleteOlderThanNDays)
 		require.Contains(t, createdDataRetentionPolicy.ID, "drp-")
 
-		dataRetentionPolicy, err = client.Organizations.ReadDataRetentionPolicy(ctx, orgTest.Name)
+		dataRetentionPolicy, err = client.Organizations.ReadDataRetentionPolicyChoice(ctx, orgTest.Name)
 		require.NoError(t, err)
-		require.Equal(t, 33, dataRetentionPolicy.DeleteOlderThanNDays)
-		require.Equal(t, createdDataRetentionPolicy.ID, dataRetentionPolicy.ID)
-		require.Contains(t, dataRetentionPolicy.ID, "drp-")
+		require.NotNil(t, dataRetentionPolicy.DataRetentionPolicyDeleteOlder)
+
+		require.Equal(t, 33, dataRetentionPolicy.DataRetentionPolicyDeleteOlder.DeleteOlderThanNDays)
+		require.Equal(t, createdDataRetentionPolicy.ID, dataRetentionPolicy.DataRetentionPolicyDeleteOlder.ID)
+		require.Contains(t, dataRetentionPolicy.DataRetentionPolicyDeleteOlder.ID, "drp-")
 
 		organization, err := client.Organizations.Read(ctx, orgTest.Name)
 		require.NoError(t, err)
-		require.Equal(t, dataRetentionPolicy.ID, organization.DataRetentionPolicy.ID)
+		require.Equal(t, dataRetentionPolicy.DataRetentionPolicyDeleteOlder.ID, organization.DataRetentionPolicyChoice.DataRetentionPolicyDeleteOlder.ID)
+
+		// deprecated DataRetentionPolicy field should also have been populated
+		require.NotNil(t, organization.DataRetentionPolicy)
+		require.Equal(t, organization.DataRetentionPolicy.ID, dataRetentionPolicy.DataRetentionPolicyDeleteOlder.ID)
+
+		// try updating the number of days
+		createdDataRetentionPolicy, err = client.Organizations.SetDataRetentionPolicyDeleteOlder(ctx, orgTest.Name, DataRetentionPolicyDeleteOlderSetOptions{DeleteOlderThanNDays: 1})
+		require.NoError(t, err)
+		require.Equal(t, 1, createdDataRetentionPolicy.DeleteOlderThanNDays)
+
+		dataRetentionPolicy, err = client.Organizations.ReadDataRetentionPolicyChoice(ctx, orgTest.Name)
+		require.NoError(t, err)
+		require.NotNil(t, dataRetentionPolicy.DataRetentionPolicyDeleteOlder)
+		require.Equal(t, 1, dataRetentionPolicy.DataRetentionPolicyDeleteOlder.DeleteOlderThanNDays)
+		require.Equal(t, createdDataRetentionPolicy.ID, dataRetentionPolicy.DataRetentionPolicyDeleteOlder.ID)
 	})
 
-	t.Run("update data retention policy", func(t *testing.T) {
-		_, err = client.Organizations.SetDataRetentionPolicy(ctx, orgTest.Name, DataRetentionPolicySetOptions{DeleteOlderThanNDays: 45})
+	t.Run("set data retention policy to not delete", func(t *testing.T) {
+		createdDataRetentionPolicy, err := client.Organizations.SetDataRetentionPolicyDontDelete(ctx, orgTest.Name, DataRetentionPolicyDontDeleteSetOptions{})
+		require.NoError(t, err)
+		require.Contains(t, createdDataRetentionPolicy.ID, "drp-")
+
+		dataRetentionPolicy, err = client.Organizations.ReadDataRetentionPolicyChoice(ctx, orgTest.Name)
+		require.NoError(t, err)
+		require.NotNil(t, dataRetentionPolicy.DataRetentionPolicyDontDelete)
+		require.Equal(t, createdDataRetentionPolicy.ID, dataRetentionPolicy.DataRetentionPolicyDontDelete.ID)
+
+		// dont delete policies should leave the legacy DataRetentionPolicy field on organizations empty
+		organization, err := client.Organizations.Read(ctx, orgTest.Name)
+		require.NoError(t, err)
+		require.Nil(t, organization.DataRetentionPolicy)
+	})
+
+	t.Run("change data retention policy type", func(t *testing.T) {
+		_, err = client.Organizations.SetDataRetentionPolicyDeleteOlder(ctx, orgTest.Name, DataRetentionPolicyDeleteOlderSetOptions{DeleteOlderThanNDays: 45})
 		require.NoError(t, err)
 
-		dataRetentionPolicy, err = client.Organizations.ReadDataRetentionPolicy(ctx, orgTest.Name)
+		dataRetentionPolicy, err = client.Organizations.ReadDataRetentionPolicyChoice(ctx, orgTest.Name)
 		require.NoError(t, err)
-		require.Equal(t, 45, dataRetentionPolicy.DeleteOlderThanNDays)
+		require.NotNil(t, dataRetentionPolicy.DataRetentionPolicyDeleteOlder)
+		require.Equal(t, 45, dataRetentionPolicy.DataRetentionPolicyDeleteOlder.DeleteOlderThanNDays)
+		require.Nil(t, dataRetentionPolicy.DataRetentionPolicyDontDelete)
+
+		_, err = client.Organizations.SetDataRetentionPolicyDontDelete(ctx, orgTest.Name, DataRetentionPolicyDontDeleteSetOptions{})
+		require.NoError(t, err)
+		dataRetentionPolicy, err = client.Organizations.ReadDataRetentionPolicyChoice(ctx, orgTest.Name)
+		require.NoError(t, err)
+		require.Nil(t, dataRetentionPolicy.DataRetentionPolicyDeleteOlder)
+		require.NotNil(t, dataRetentionPolicy.DataRetentionPolicyDontDelete)
+
+		_, err = client.Organizations.SetDataRetentionPolicyDeleteOlder(ctx, orgTest.Name, DataRetentionPolicyDeleteOlderSetOptions{DeleteOlderThanNDays: 20})
+		require.NoError(t, err)
+
+		dataRetentionPolicy, err = client.Organizations.ReadDataRetentionPolicyChoice(ctx, orgTest.Name)
+		require.NoError(t, err)
+		require.NotNil(t, dataRetentionPolicy.DataRetentionPolicyDeleteOlder)
+		require.Equal(t, 20, dataRetentionPolicy.DataRetentionPolicyDeleteOlder.DeleteOlderThanNDays)
+		require.Nil(t, dataRetentionPolicy.DataRetentionPolicyDontDelete)
 	})
 
 	t.Run("delete data retention policy", func(t *testing.T) {
 		err = client.Organizations.DeleteDataRetentionPolicy(ctx, orgTest.Name)
 		require.NoError(t, err)
 
-		dataRetentionPolicy, err = client.Organizations.ReadDataRetentionPolicy(ctx, orgTest.Name)
-		assert.Equal(t, ErrResourceNotFound, err)
+		dataRetentionPolicy, err = client.Organizations.ReadDataRetentionPolicyChoice(ctx, orgTest.Name)
+		assert.Nil(t, err)
 		require.Nil(t, dataRetentionPolicy)
 	})
 }
