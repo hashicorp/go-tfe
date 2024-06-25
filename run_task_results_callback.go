@@ -14,7 +14,7 @@ var _ RunTasksCallback = (*taskResultsCallback)(nil)
 // https://developer.hashicorp.com/terraform/enterprise/api-docs/run-tasks/run-tasks-integration
 type RunTasksCallback interface {
 	// Update sends updates to TFC/E Run Task Callback URL
-	Update(ctx context.Context, callbackURL string, accessToken string, options TaskResultCallbackRequestOptions) error
+	Update(ctx context.Context, callbackURL, accessToken string, options TaskResultCallbackRequestOptions) error
 }
 
 // taskResultsCallback implements RunTasksCallback.
@@ -51,7 +51,7 @@ type TaskResultTag struct {
 }
 
 // Update sends updates to TFC/E Run Task Callback URL
-func (s *taskResultsCallback) Update(ctx context.Context, callbackURL string, accessToken string, options TaskResultCallbackRequestOptions) error {
+func (s *taskResultsCallback) Update(ctx context.Context, callbackURL, accessToken string, options TaskResultCallbackRequestOptions) error {
 	if !validString(&callbackURL) {
 		return ErrInvalidCallbackURL
 	}
