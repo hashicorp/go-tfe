@@ -107,7 +107,7 @@ type AgentPoolCreateOptions struct {
 
 // List all the agent pools of the given organization.
 func (s *agentPools) List(ctx context.Context, organization string, options *AgentPoolListOptions) (*AgentPoolList, error) {
-	if !validStringID(&organization) {
+	if !validUnifiedID(&organization) {
 		return nil, ErrInvalidOrg
 	}
 	if err := options.valid(); err != nil {
@@ -131,7 +131,7 @@ func (s *agentPools) List(ctx context.Context, organization string, options *Age
 
 // Create a new agent pool with the given options.
 func (s *agentPools) Create(ctx context.Context, organization string, options AgentPoolCreateOptions) (*AgentPool, error) {
-	if !validStringID(&organization) {
+	if !validUnifiedID(&organization) {
 		return nil, ErrInvalidOrg
 	}
 

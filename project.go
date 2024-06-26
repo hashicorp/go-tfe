@@ -101,7 +101,7 @@ type ProjectUpdateOptions struct {
 
 // List all projects.
 func (s *projects) List(ctx context.Context, organization string, options *ProjectListOptions) (*ProjectList, error) {
-	if !validStringID(&organization) {
+	if !validUnifiedID(&organization) {
 		return nil, ErrInvalidOrg
 	}
 
@@ -122,7 +122,7 @@ func (s *projects) List(ctx context.Context, organization string, options *Proje
 
 // Create a project with the given options
 func (s *projects) Create(ctx context.Context, organization string, options ProjectCreateOptions) (*Project, error) {
-	if !validStringID(&organization) {
+	if !validUnifiedID(&organization) {
 		return nil, ErrInvalidOrg
 	}
 
@@ -147,7 +147,7 @@ func (s *projects) Create(ctx context.Context, organization string, options Proj
 
 // Read a single project by its ID.
 func (s *projects) Read(ctx context.Context, projectID string) (*Project, error) {
-	if !validStringID(&projectID) {
+	if !validUnifiedID(&projectID) {
 		return nil, ErrInvalidProjectID
 	}
 
@@ -168,7 +168,7 @@ func (s *projects) Read(ctx context.Context, projectID string) (*Project, error)
 
 // Update a project by its ID
 func (s *projects) Update(ctx context.Context, projectID string, options ProjectUpdateOptions) (*Project, error) {
-	if !validStringID(&projectID) {
+	if !validUnifiedID(&projectID) {
 		return nil, ErrInvalidProjectID
 	}
 
@@ -193,7 +193,7 @@ func (s *projects) Update(ctx context.Context, projectID string, options Project
 
 // Delete a project by its ID
 func (s *projects) Delete(ctx context.Context, projectID string) error {
-	if !validStringID(&projectID) {
+	if !validUnifiedID(&projectID) {
 		return ErrInvalidProjectID
 	}
 

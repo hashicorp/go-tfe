@@ -300,7 +300,7 @@ func (s *teamProjectAccesses) Remove(ctx context.Context, teamProjectAccessID st
 }
 
 func (o TeamProjectAccessListOptions) valid() error {
-	if !validStringID(&o.ProjectID) {
+	if !validUnifiedID(&o.ProjectID) {
 		return ErrInvalidProjectID
 	}
 

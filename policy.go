@@ -158,7 +158,7 @@ type PolicyUpdateOptions struct {
 
 // List all the policies for a given organization
 func (s *policies) List(ctx context.Context, organization string, options *PolicyListOptions) (*PolicyList, error) {
-	if !validStringID(&organization) {
+	if !validUnifiedID(&organization) {
 		return nil, ErrInvalidOrg
 	}
 
@@ -179,7 +179,7 @@ func (s *policies) List(ctx context.Context, organization string, options *Polic
 
 // Create a policy and associate it with an organization.
 func (s *policies) Create(ctx context.Context, organization string, options PolicyCreateOptions) (*Policy, error) {
-	if !validStringID(&organization) {
+	if !validUnifiedID(&organization) {
 		return nil, ErrInvalidOrg
 	}
 	if err := options.valid(); err != nil {

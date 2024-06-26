@@ -376,7 +376,7 @@ type RunDiscardOptions struct {
 
 // List all the runs of the given workspace.
 func (s *runs) List(ctx context.Context, workspaceID string, options *RunListOptions) (*RunList, error) {
-	if !validStringID(&workspaceID) {
+	if !validUnifiedID(&workspaceID) {
 		return nil, ErrInvalidWorkspaceID
 	}
 	if err := options.valid(); err != nil {

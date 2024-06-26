@@ -692,7 +692,7 @@ type WorkspaceRemoveTagsOptions struct {
 
 // List all the workspaces within an organization.
 func (s *workspaces) List(ctx context.Context, organization string, options *WorkspaceListOptions) (*WorkspaceList, error) {
-	if !validStringID(&organization) {
+	if !validUnifiedID(&organization) {
 		return nil, ErrInvalidOrg
 	}
 	if err := options.valid(); err != nil {
@@ -716,7 +716,7 @@ func (s *workspaces) List(ctx context.Context, organization string, options *Wor
 
 // Create is used to create a new workspace.
 func (s *workspaces) Create(ctx context.Context, organization string, options WorkspaceCreateOptions) (*Workspace, error) {
-	if !validStringID(&organization) {
+	if !validUnifiedID(&organization) {
 		return nil, ErrInvalidOrg
 	}
 	if err := options.valid(); err != nil {
@@ -745,7 +745,7 @@ func (s *workspaces) Read(ctx context.Context, organization, workspace string) (
 
 // ReadWithOptions reads a workspace by name and organization name with given options.
 func (s *workspaces) ReadWithOptions(ctx context.Context, organization, workspace string, options *WorkspaceReadOptions) (*Workspace, error) {
-	if !validStringID(&organization) {
+	if !validUnifiedID(&organization) {
 		return nil, ErrInvalidOrg
 	}
 	if !validStringID(&workspace) {
@@ -788,7 +788,7 @@ func (s *workspaces) ReadByID(ctx context.Context, workspaceID string) (*Workspa
 
 // ReadByIDWithOptions reads a workspace by its ID with the given options.
 func (s *workspaces) ReadByIDWithOptions(ctx context.Context, workspaceID string, options *WorkspaceReadOptions) (*Workspace, error) {
-	if !validStringID(&workspaceID) {
+	if !validUnifiedID(&workspaceID) {
 		return nil, ErrInvalidWorkspaceID
 	}
 
@@ -818,7 +818,7 @@ func (s *workspaces) ReadByIDWithOptions(ctx context.Context, workspaceID string
 
 // Readme gets the readme of a workspace by its ID.
 func (s *workspaces) Readme(ctx context.Context, workspaceID string) (io.Reader, error) {
-	if !validStringID(&workspaceID) {
+	if !validUnifiedID(&workspaceID) {
 		return nil, ErrInvalidWorkspaceID
 	}
 
@@ -842,7 +842,7 @@ func (s *workspaces) Readme(ctx context.Context, workspaceID string) (io.Reader,
 
 // Update settings of an existing workspace.
 func (s *workspaces) Update(ctx context.Context, organization, workspace string, options WorkspaceUpdateOptions) (*Workspace, error) {
-	if !validStringID(&organization) {
+	if !validUnifiedID(&organization) {
 		return nil, ErrInvalidOrg
 	}
 	if !validStringID(&workspace) {
@@ -873,7 +873,7 @@ func (s *workspaces) Update(ctx context.Context, organization, workspace string,
 
 // UpdateByID updates the settings of an existing workspace.
 func (s *workspaces) UpdateByID(ctx context.Context, workspaceID string, options WorkspaceUpdateOptions) (*Workspace, error) {
-	if !validStringID(&workspaceID) {
+	if !validUnifiedID(&workspaceID) {
 		return nil, ErrInvalidWorkspaceID
 	}
 
@@ -894,7 +894,7 @@ func (s *workspaces) UpdateByID(ctx context.Context, workspaceID string, options
 
 // Delete a workspace by its name.
 func (s *workspaces) Delete(ctx context.Context, organization, workspace string) error {
-	if !validStringID(&organization) {
+	if !validUnifiedID(&organization) {
 		return ErrInvalidOrg
 	}
 	if !validStringID(&workspace) {
@@ -916,7 +916,7 @@ func (s *workspaces) Delete(ctx context.Context, organization, workspace string)
 
 // DeleteByID deletes a workspace by its ID.
 func (s *workspaces) DeleteByID(ctx context.Context, workspaceID string) error {
-	if !validStringID(&workspaceID) {
+	if !validUnifiedID(&workspaceID) {
 		return ErrInvalidWorkspaceID
 	}
 
@@ -931,7 +931,7 @@ func (s *workspaces) DeleteByID(ctx context.Context, workspaceID string) error {
 
 // SafeDelete a workspace by its name.
 func (s *workspaces) SafeDelete(ctx context.Context, organization, workspace string) error {
-	if !validStringID(&organization) {
+	if !validUnifiedID(&organization) {
 		return ErrInvalidOrg
 	}
 	if !validStringID(&workspace) {
@@ -953,7 +953,7 @@ func (s *workspaces) SafeDelete(ctx context.Context, organization, workspace str
 
 // SafeDeleteByID safely deletes a workspace by its ID.
 func (s *workspaces) SafeDeleteByID(ctx context.Context, workspaceID string) error {
-	if !validStringID(&workspaceID) {
+	if !validUnifiedID(&workspaceID) {
 		return ErrInvalidWorkspaceID
 	}
 
@@ -968,7 +968,7 @@ func (s *workspaces) SafeDeleteByID(ctx context.Context, workspaceID string) err
 
 // RemoveVCSConnection from a workspace.
 func (s *workspaces) RemoveVCSConnection(ctx context.Context, organization, workspace string) (*Workspace, error) {
-	if !validStringID(&organization) {
+	if !validUnifiedID(&organization) {
 		return nil, ErrInvalidOrg
 	}
 	if !validStringID(&workspace) {
@@ -997,7 +997,7 @@ func (s *workspaces) RemoveVCSConnection(ctx context.Context, organization, work
 
 // RemoveVCSConnectionByID removes a VCS connection from a workspace.
 func (s *workspaces) RemoveVCSConnectionByID(ctx context.Context, workspaceID string) (*Workspace, error) {
-	if !validStringID(&workspaceID) {
+	if !validUnifiedID(&workspaceID) {
 		return nil, ErrInvalidWorkspaceID
 	}
 
@@ -1019,7 +1019,7 @@ func (s *workspaces) RemoveVCSConnectionByID(ctx context.Context, workspaceID st
 
 // Lock a workspace by its ID.
 func (s *workspaces) Lock(ctx context.Context, workspaceID string, options WorkspaceLockOptions) (*Workspace, error) {
-	if !validStringID(&workspaceID) {
+	if !validUnifiedID(&workspaceID) {
 		return nil, ErrInvalidWorkspaceID
 	}
 
@@ -1040,7 +1040,7 @@ func (s *workspaces) Lock(ctx context.Context, workspaceID string, options Works
 
 // Unlock a workspace by its ID.
 func (s *workspaces) Unlock(ctx context.Context, workspaceID string) (*Workspace, error) {
-	if !validStringID(&workspaceID) {
+	if !validUnifiedID(&workspaceID) {
 		return nil, ErrInvalidWorkspaceID
 	}
 
@@ -1061,7 +1061,7 @@ func (s *workspaces) Unlock(ctx context.Context, workspaceID string) (*Workspace
 
 // ForceUnlock a workspace by its ID.
 func (s *workspaces) ForceUnlock(ctx context.Context, workspaceID string) (*Workspace, error) {
-	if !validStringID(&workspaceID) {
+	if !validUnifiedID(&workspaceID) {
 		return nil, ErrInvalidWorkspaceID
 	}
 
@@ -1082,7 +1082,7 @@ func (s *workspaces) ForceUnlock(ctx context.Context, workspaceID string) (*Work
 
 // AssignSSHKey to a workspace.
 func (s *workspaces) AssignSSHKey(ctx context.Context, workspaceID string, options WorkspaceAssignSSHKeyOptions) (*Workspace, error) {
-	if !validStringID(&workspaceID) {
+	if !validUnifiedID(&workspaceID) {
 		return nil, ErrInvalidWorkspaceID
 	}
 	if err := options.valid(); err != nil {
@@ -1106,7 +1106,7 @@ func (s *workspaces) AssignSSHKey(ctx context.Context, workspaceID string, optio
 
 // UnassignSSHKey from a workspace.
 func (s *workspaces) UnassignSSHKey(ctx context.Context, workspaceID string) (*Workspace, error) {
-	if !validStringID(&workspaceID) {
+	if !validUnifiedID(&workspaceID) {
 		return nil, ErrInvalidWorkspaceID
 	}
 
@@ -1127,7 +1127,7 @@ func (s *workspaces) UnassignSSHKey(ctx context.Context, workspaceID string) (*W
 
 // RemoteStateConsumers returns the remote state consumers for a given workspace.
 func (s *workspaces) ListRemoteStateConsumers(ctx context.Context, workspaceID string, options *RemoteStateConsumersListOptions) (*WorkspaceList, error) {
-	if !validStringID(&workspaceID) {
+	if !validUnifiedID(&workspaceID) {
 		return nil, ErrInvalidWorkspaceID
 	}
 
@@ -1149,7 +1149,7 @@ func (s *workspaces) ListRemoteStateConsumers(ctx context.Context, workspaceID s
 
 // AddRemoteStateConsumere adds the remote state consumers to a given workspace.
 func (s *workspaces) AddRemoteStateConsumers(ctx context.Context, workspaceID string, options WorkspaceAddRemoteStateConsumersOptions) error {
-	if !validStringID(&workspaceID) {
+	if !validUnifiedID(&workspaceID) {
 		return ErrInvalidWorkspaceID
 	}
 	if err := options.valid(); err != nil {
@@ -1167,7 +1167,7 @@ func (s *workspaces) AddRemoteStateConsumers(ctx context.Context, workspaceID st
 
 // RemoveRemoteStateConsumers removes the remote state consumers for a given workspace.
 func (s *workspaces) RemoveRemoteStateConsumers(ctx context.Context, workspaceID string, options WorkspaceRemoveRemoteStateConsumersOptions) error {
-	if !validStringID(&workspaceID) {
+	if !validUnifiedID(&workspaceID) {
 		return ErrInvalidWorkspaceID
 	}
 	if err := options.valid(); err != nil {
@@ -1185,7 +1185,7 @@ func (s *workspaces) RemoveRemoteStateConsumers(ctx context.Context, workspaceID
 
 // UpdateRemoteStateConsumers removes the remote state consumers for a given workspace.
 func (s *workspaces) UpdateRemoteStateConsumers(ctx context.Context, workspaceID string, options WorkspaceUpdateRemoteStateConsumersOptions) error {
-	if !validStringID(&workspaceID) {
+	if !validUnifiedID(&workspaceID) {
 		return ErrInvalidWorkspaceID
 	}
 	if err := options.valid(); err != nil {
@@ -1203,7 +1203,7 @@ func (s *workspaces) UpdateRemoteStateConsumers(ctx context.Context, workspaceID
 
 // ListTags returns the tags for a given workspace.
 func (s *workspaces) ListTags(ctx context.Context, workspaceID string, options *WorkspaceTagListOptions) (*TagList, error) {
-	if !validStringID(&workspaceID) {
+	if !validUnifiedID(&workspaceID) {
 		return nil, ErrInvalidWorkspaceID
 	}
 
@@ -1225,7 +1225,7 @@ func (s *workspaces) ListTags(ctx context.Context, workspaceID string, options *
 
 // AddTags adds a list of tags to a workspace.
 func (s *workspaces) AddTags(ctx context.Context, workspaceID string, options WorkspaceAddTagsOptions) error {
-	if !validStringID(&workspaceID) {
+	if !validUnifiedID(&workspaceID) {
 		return ErrInvalidWorkspaceID
 	}
 	if err := options.valid(); err != nil {
@@ -1243,7 +1243,7 @@ func (s *workspaces) AddTags(ctx context.Context, workspaceID string, options Wo
 
 // RemoveTags removes a list of tags from a workspace.
 func (s *workspaces) RemoveTags(ctx context.Context, workspaceID string, options WorkspaceRemoveTagsOptions) error {
-	if !validStringID(&workspaceID) {
+	if !validUnifiedID(&workspaceID) {
 		return ErrInvalidWorkspaceID
 	}
 	if err := options.valid(); err != nil {
@@ -1260,7 +1260,7 @@ func (s *workspaces) RemoveTags(ctx context.Context, workspaceID string, options
 }
 
 func (s *workspaces) ReadDataRetentionPolicy(ctx context.Context, workspaceID string) (*DataRetentionPolicy, error) {
-	if !validStringID(&workspaceID) {
+	if !validUnifiedID(&workspaceID) {
 		return nil, ErrInvalidWorkspaceID
 	}
 
@@ -1286,7 +1286,7 @@ func (s *workspaces) ReadDataRetentionPolicy(ctx context.Context, workspaceID st
 }
 
 func (s *workspaces) ReadDataRetentionPolicyChoice(ctx context.Context, workspaceID string) (*DataRetentionPolicyChoice, error) {
-	if !validStringID(&workspaceID) {
+	if !validUnifiedID(&workspaceID) {
 		return nil, ErrInvalidWorkspaceID
 	}
 
@@ -1340,7 +1340,7 @@ func (s *workspaces) ReadDataRetentionPolicyChoice(ctx context.Context, workspac
 }
 
 func (s *workspaces) SetDataRetentionPolicy(ctx context.Context, workspaceID string, options DataRetentionPolicySetOptions) (*DataRetentionPolicy, error) {
-	if !validStringID(&workspaceID) {
+	if !validUnifiedID(&workspaceID) {
 		return nil, ErrInvalidWorkspaceID
 	}
 
@@ -1361,7 +1361,7 @@ func (s *workspaces) SetDataRetentionPolicy(ctx context.Context, workspaceID str
 }
 
 func (s *workspaces) SetDataRetentionPolicyDeleteOlder(ctx context.Context, workspaceID string, options DataRetentionPolicyDeleteOlderSetOptions) (*DataRetentionPolicyDeleteOlder, error) {
-	if !validStringID(&workspaceID) {
+	if !validUnifiedID(&workspaceID) {
 		return nil, ErrInvalidWorkspaceID
 	}
 
@@ -1382,7 +1382,7 @@ func (s *workspaces) SetDataRetentionPolicyDeleteOlder(ctx context.Context, work
 }
 
 func (s *workspaces) SetDataRetentionPolicyDontDelete(ctx context.Context, workspaceID string, options DataRetentionPolicyDontDeleteSetOptions) (*DataRetentionPolicyDontDelete, error) {
-	if !validStringID(&workspaceID) {
+	if !validUnifiedID(&workspaceID) {
 		return nil, ErrInvalidWorkspaceID
 	}
 
@@ -1403,7 +1403,7 @@ func (s *workspaces) SetDataRetentionPolicyDontDelete(ctx context.Context, works
 }
 
 func (s *workspaces) DeleteDataRetentionPolicy(ctx context.Context, workspaceID string) error {
-	if !validStringID(&workspaceID) {
+	if !validUnifiedID(&workspaceID) {
 		return ErrInvalidWorkspaceID
 	}
 

@@ -342,7 +342,7 @@ func (s *organizations) Read(ctx context.Context, organization string) (*Organiz
 
 // Read an organization by its name with options
 func (s *organizations) ReadWithOptions(ctx context.Context, organization string, options OrganizationReadOptions) (*Organization, error) {
-	if !validStringID(&organization) {
+	if !validUnifiedID(&organization) {
 		return nil, ErrInvalidOrg
 	}
 
@@ -366,7 +366,7 @@ func (s *organizations) ReadWithOptions(ctx context.Context, organization string
 
 // Update attributes of an existing organization.
 func (s *organizations) Update(ctx context.Context, organization string, options OrganizationUpdateOptions) (*Organization, error) {
-	if !validStringID(&organization) {
+	if !validUnifiedID(&organization) {
 		return nil, ErrInvalidOrg
 	}
 
@@ -387,7 +387,7 @@ func (s *organizations) Update(ctx context.Context, organization string, options
 
 // Delete an organization by its name.
 func (s *organizations) Delete(ctx context.Context, organization string) error {
-	if !validStringID(&organization) {
+	if !validUnifiedID(&organization) {
 		return ErrInvalidOrg
 	}
 
@@ -402,7 +402,7 @@ func (s *organizations) Delete(ctx context.Context, organization string) error {
 
 // ReadCapacity shows the currently used capacity of an organization.
 func (s *organizations) ReadCapacity(ctx context.Context, organization string) (*Capacity, error) {
-	if !validStringID(&organization) {
+	if !validUnifiedID(&organization) {
 		return nil, ErrInvalidOrg
 	}
 
@@ -423,7 +423,7 @@ func (s *organizations) ReadCapacity(ctx context.Context, organization string) (
 
 // ReadEntitlements shows the entitlements of an organization.
 func (s *organizations) ReadEntitlements(ctx context.Context, organization string) (*Entitlements, error) {
-	if !validStringID(&organization) {
+	if !validUnifiedID(&organization) {
 		return nil, ErrInvalidOrg
 	}
 
@@ -444,7 +444,7 @@ func (s *organizations) ReadEntitlements(ctx context.Context, organization strin
 
 // ReadRunQueue shows the current run queue of an organization.
 func (s *organizations) ReadRunQueue(ctx context.Context, organization string, options ReadRunQueueOptions) (*RunQueue, error) {
-	if !validStringID(&organization) {
+	if !validUnifiedID(&organization) {
 		return nil, ErrInvalidOrg
 	}
 
@@ -464,7 +464,7 @@ func (s *organizations) ReadRunQueue(ctx context.Context, organization string, o
 }
 
 func (s *organizations) ReadDataRetentionPolicy(ctx context.Context, organization string) (*DataRetentionPolicy, error) {
-	if !validStringID(&organization) {
+	if !validUnifiedID(&organization) {
 		return nil, ErrInvalidOrg
 	}
 
@@ -490,7 +490,7 @@ func (s *organizations) ReadDataRetentionPolicy(ctx context.Context, organizatio
 }
 
 func (s *organizations) ReadDataRetentionPolicyChoice(ctx context.Context, organization string) (*DataRetentionPolicyChoice, error) {
-	if !validStringID(&organization) {
+	if !validUnifiedID(&organization) {
 		return nil, ErrInvalidOrg
 	}
 
@@ -546,7 +546,7 @@ func (s *organizations) ReadDataRetentionPolicyChoice(ctx context.Context, organ
 // Deprecated: Use SetDataRetentionPolicyDeleteOlder instead
 // **Note: This functionality is only available in Terraform Enterprise versions v202311-1 and v202312-1.**
 func (s *organizations) SetDataRetentionPolicy(ctx context.Context, organization string, options DataRetentionPolicySetOptions) (*DataRetentionPolicy, error) {
-	if !validStringID(&organization) {
+	if !validUnifiedID(&organization) {
 		return nil, ErrInvalidOrg
 	}
 
@@ -567,7 +567,7 @@ func (s *organizations) SetDataRetentionPolicy(ctx context.Context, organization
 }
 
 func (s *organizations) SetDataRetentionPolicyDeleteOlder(ctx context.Context, organization string, options DataRetentionPolicyDeleteOlderSetOptions) (*DataRetentionPolicyDeleteOlder, error) {
-	if !validStringID(&organization) {
+	if !validUnifiedID(&organization) {
 		return nil, ErrInvalidOrg
 	}
 
@@ -588,7 +588,7 @@ func (s *organizations) SetDataRetentionPolicyDeleteOlder(ctx context.Context, o
 }
 
 func (s *organizations) SetDataRetentionPolicyDontDelete(ctx context.Context, organization string, options DataRetentionPolicyDontDeleteSetOptions) (*DataRetentionPolicyDontDelete, error) {
-	if !validStringID(&organization) {
+	if !validUnifiedID(&organization) {
 		return nil, ErrInvalidOrg
 	}
 
@@ -609,7 +609,7 @@ func (s *organizations) SetDataRetentionPolicyDontDelete(ctx context.Context, or
 }
 
 func (s *organizations) DeleteDataRetentionPolicy(ctx context.Context, organization string) error {
-	if !validStringID(&organization) {
+	if !validUnifiedID(&organization) {
 		return ErrInvalidOrg
 	}
 

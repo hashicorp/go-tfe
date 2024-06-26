@@ -82,7 +82,7 @@ type SSHKeyUpdateOptions struct {
 
 // List all the SSH keys for a given organization
 func (s *sshKeys) List(ctx context.Context, organization string, options *SSHKeyListOptions) (*SSHKeyList, error) {
-	if !validStringID(&organization) {
+	if !validUnifiedID(&organization) {
 		return nil, ErrInvalidOrg
 	}
 
@@ -103,7 +103,7 @@ func (s *sshKeys) List(ctx context.Context, organization string, options *SSHKey
 
 // Create an SSH key and associate it with an organization.
 func (s *sshKeys) Create(ctx context.Context, organization string, options SSHKeyCreateOptions) (*SSHKey, error) {
-	if !validStringID(&organization) {
+	if !validUnifiedID(&organization) {
 		return nil, ErrInvalidOrg
 	}
 

@@ -70,7 +70,7 @@ func (s *teamMembers) List(ctx context.Context, teamID string) ([]*User, error) 
 
 // ListUsers returns the Users of this team.
 func (s *teamMembers) ListUsers(ctx context.Context, teamID string) ([]*User, error) {
-	if !validStringID(&teamID) {
+	if !validUnifiedID(&teamID) {
 		return nil, ErrInvalidTeamID
 	}
 
@@ -97,7 +97,7 @@ func (s *teamMembers) ListUsers(ctx context.Context, teamID string) ([]*User, er
 
 // ListOrganizationMemberships returns the OrganizationMemberships of this team.
 func (s *teamMembers) ListOrganizationMemberships(ctx context.Context, teamID string) ([]*OrganizationMembership, error) {
-	if !validStringID(&teamID) {
+	if !validUnifiedID(&teamID) {
 		return nil, ErrInvalidTeamID
 	}
 
@@ -124,7 +124,7 @@ func (s *teamMembers) ListOrganizationMemberships(ctx context.Context, teamID st
 
 // Add multiple users to a team.
 func (s *teamMembers) Add(ctx context.Context, teamID string, options TeamMemberAddOptions) error {
-	if !validStringID(&teamID) {
+	if !validUnifiedID(&teamID) {
 		return ErrInvalidTeamID
 	}
 	if err := options.valid(); err != nil {
@@ -163,7 +163,7 @@ func (s *teamMembers) Add(ctx context.Context, teamID string, options TeamMember
 
 // Remove multiple users from a team.
 func (s *teamMembers) Remove(ctx context.Context, teamID string, options TeamMemberRemoveOptions) error {
-	if !validStringID(&teamID) {
+	if !validUnifiedID(&teamID) {
 		return ErrInvalidTeamID
 	}
 	if err := options.valid(); err != nil {

@@ -62,7 +62,7 @@ func (s *teamTokens) Create(ctx context.Context, teamID string) (*TeamToken, err
 
 // CreateWithOptions a new team token, with options, replacing any existing token.
 func (s *teamTokens) CreateWithOptions(ctx context.Context, teamID string, options TeamTokenCreateOptions) (*TeamToken, error) {
-	if !validStringID(&teamID) {
+	if !validUnifiedID(&teamID) {
 		return nil, ErrInvalidTeamID
 	}
 
@@ -83,7 +83,7 @@ func (s *teamTokens) CreateWithOptions(ctx context.Context, teamID string, optio
 
 // Read a team token by its ID.
 func (s *teamTokens) Read(ctx context.Context, teamID string) (*TeamToken, error) {
-	if !validStringID(&teamID) {
+	if !validUnifiedID(&teamID) {
 		return nil, ErrInvalidTeamID
 	}
 
@@ -104,7 +104,7 @@ func (s *teamTokens) Read(ctx context.Context, teamID string) (*TeamToken, error
 
 // Delete a team token by its ID.
 func (s *teamTokens) Delete(ctx context.Context, teamID string) error {
-	if !validStringID(&teamID) {
+	if !validUnifiedID(&teamID) {
 		return ErrInvalidTeamID
 	}
 

@@ -310,7 +310,7 @@ type PolicySetRemoveProjectsOptions struct {
 
 // List all the policies for a given organization.
 func (s *policySets) List(ctx context.Context, organization string, options *PolicySetListOptions) (*PolicySetList, error) {
-	if !validStringID(&organization) {
+	if !validUnifiedID(&organization) {
 		return nil, ErrInvalidOrg
 	}
 
@@ -331,7 +331,7 @@ func (s *policySets) List(ctx context.Context, organization string, options *Pol
 
 // Create a policy set and associate it with an organization.
 func (s *policySets) Create(ctx context.Context, organization string, options PolicySetCreateOptions) (*PolicySet, error) {
-	if !validStringID(&organization) {
+	if !validUnifiedID(&organization) {
 		return nil, ErrInvalidOrg
 	}
 	if err := options.valid(); err != nil {

@@ -109,7 +109,7 @@ func (s *adminWorkspaces) List(ctx context.Context, options *AdminWorkspaceListO
 
 // Read a workspace by its ID.
 func (s *adminWorkspaces) Read(ctx context.Context, workspaceID string) (*AdminWorkspace, error) {
-	if !validStringID(&workspaceID) {
+	if !validUnifiedID(&workspaceID) {
 		return nil, ErrInvalidWorkspaceValue
 	}
 
@@ -130,7 +130,7 @@ func (s *adminWorkspaces) Read(ctx context.Context, workspaceID string) (*AdminW
 
 // Delete a workspace by its ID.
 func (s *adminWorkspaces) Delete(ctx context.Context, workspaceID string) error {
-	if !validStringID(&workspaceID) {
+	if !validUnifiedID(&workspaceID) {
 		return ErrInvalidWorkspaceValue
 	}
 

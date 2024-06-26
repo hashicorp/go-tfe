@@ -116,7 +116,7 @@ type OrganizationMembershipReadOptions struct {
 
 // List all the organization memberships of the given organization.
 func (s *organizationMemberships) List(ctx context.Context, organization string, options *OrganizationMembershipListOptions) (*OrganizationMembershipList, error) {
-	if !validStringID(&organization) {
+	if !validUnifiedID(&organization) {
 		return nil, ErrInvalidOrg
 	}
 	if err := options.valid(); err != nil {
@@ -140,7 +140,7 @@ func (s *organizationMemberships) List(ctx context.Context, organization string,
 
 // Create an organization membership with the given options.
 func (s *organizationMemberships) Create(ctx context.Context, organization string, options OrganizationMembershipCreateOptions) (*OrganizationMembership, error) {
-	if !validStringID(&organization) {
+	if !validUnifiedID(&organization) {
 		return nil, ErrInvalidOrg
 	}
 	if err := options.valid(); err != nil {

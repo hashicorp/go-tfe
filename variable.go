@@ -130,7 +130,7 @@ type VariableUpdateOptions struct {
 
 // List all the variables associated with the given workspace.
 func (s *variables) List(ctx context.Context, workspaceID string, options *VariableListOptions) (*VariableList, error) {
-	if !validStringID(&workspaceID) {
+	if !validUnifiedID(&workspaceID) {
 		return nil, ErrInvalidWorkspaceID
 	}
 
@@ -151,7 +151,7 @@ func (s *variables) List(ctx context.Context, workspaceID string, options *Varia
 
 // Create is used to create a new variable.
 func (s *variables) Create(ctx context.Context, workspaceID string, options VariableCreateOptions) (*Variable, error) {
-	if !validStringID(&workspaceID) {
+	if !validUnifiedID(&workspaceID) {
 		return nil, ErrInvalidWorkspaceID
 	}
 	if err := options.valid(); err != nil {
@@ -175,7 +175,7 @@ func (s *variables) Create(ctx context.Context, workspaceID string, options Vari
 
 // Read a variable by its ID.
 func (s *variables) Read(ctx context.Context, workspaceID, variableID string) (*Variable, error) {
-	if !validStringID(&workspaceID) {
+	if !validUnifiedID(&workspaceID) {
 		return nil, ErrInvalidWorkspaceID
 	}
 	if !validStringID(&variableID) {
@@ -199,7 +199,7 @@ func (s *variables) Read(ctx context.Context, workspaceID, variableID string) (*
 
 // Update values of an existing variable.
 func (s *variables) Update(ctx context.Context, workspaceID, variableID string, options VariableUpdateOptions) (*Variable, error) {
-	if !validStringID(&workspaceID) {
+	if !validUnifiedID(&workspaceID) {
 		return nil, ErrInvalidWorkspaceID
 	}
 	if !validStringID(&variableID) {
@@ -223,7 +223,7 @@ func (s *variables) Update(ctx context.Context, workspaceID, variableID string, 
 
 // Delete a variable by its ID.
 func (s *variables) Delete(ctx context.Context, workspaceID, variableID string) error {
-	if !validStringID(&workspaceID) {
+	if !validUnifiedID(&workspaceID) {
 		return ErrInvalidWorkspaceID
 	}
 	if !validStringID(&variableID) {

@@ -102,7 +102,7 @@ type RunTriggerCreateOptions struct {
 
 // List all the run triggers associated with a workspace.
 func (s *runTriggers) List(ctx context.Context, workspaceID string, options *RunTriggerListOptions) (*RunTriggerList, error) {
-	if !validStringID(&workspaceID) {
+	if !validUnifiedID(&workspaceID) {
 		return nil, ErrInvalidWorkspaceID
 	}
 	if err := options.valid(); err != nil {
@@ -126,7 +126,7 @@ func (s *runTriggers) List(ctx context.Context, workspaceID string, options *Run
 
 // Create a run trigger with the given options.
 func (s *runTriggers) Create(ctx context.Context, workspaceID string, options RunTriggerCreateOptions) (*RunTrigger, error) {
-	if !validStringID(&workspaceID) {
+	if !validUnifiedID(&workspaceID) {
 		return nil, ErrInvalidWorkspaceID
 	}
 	if err := options.valid(); err != nil {

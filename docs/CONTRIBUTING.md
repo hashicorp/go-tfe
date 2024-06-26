@@ -227,7 +227,7 @@ type ExampleUpdateOptions struct {
 
 // Create is used to create a new example for an organization
 func (s *example) Create(ctx context.Context, organization string, options ExampleCreateOptions) (*Example, error) {
-	if !validStringID(&organization) {
+	if !validUnifiedID(&organization){
 		return nil, ErrInvalidOrg
 	}
 
@@ -252,7 +252,7 @@ func (s *example) Create(ctx context.Context, organization string, options Examp
 
 // List all the examples for an organization
 func (s *example) List(ctx context.Context, organization string, options *ExampleListOptions) (*ExampleList, error) {
-	if !validStringID(&organization) {
+	if !validUnifiedID(&organization){
 		return nil, ErrInvalidOrg
 	}
 

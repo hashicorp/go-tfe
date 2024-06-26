@@ -257,7 +257,7 @@ func (s *stateVersions) List(ctx context.Context, options *StateVersionListOptio
 
 // Create a new state version for the given workspace.
 func (s *stateVersions) Create(ctx context.Context, workspaceID string, options StateVersionCreateOptions) (*StateVersion, error) {
-	if !validStringID(&workspaceID) {
+	if !validUnifiedID(&workspaceID) {
 		return nil, ErrInvalidWorkspaceID
 	}
 	if err := options.valid(); err != nil {
@@ -343,7 +343,7 @@ func (s *stateVersions) Read(ctx context.Context, svID string) (*StateVersion, e
 
 // ReadCurrentWithOptions reads the latest available state from the given workspace using the options supplied.
 func (s *stateVersions) ReadCurrentWithOptions(ctx context.Context, workspaceID string, options *StateVersionCurrentOptions) (*StateVersion, error) {
-	if !validStringID(&workspaceID) {
+	if !validUnifiedID(&workspaceID) {
 		return nil, ErrInvalidWorkspaceID
 	}
 	if err := options.valid(); err != nil {

@@ -197,7 +197,7 @@ type privateVariableSetUpdateWorkspacesOptions struct {
 
 // List all Variable Sets in the organization
 func (s *variableSets) List(ctx context.Context, organization string, options *VariableSetListOptions) (*VariableSetList, error) {
-	if !validStringID(&organization) {
+	if !validUnifiedID(&organization) {
 		return nil, ErrInvalidOrg
 	}
 	if options != nil {
@@ -223,7 +223,7 @@ func (s *variableSets) List(ctx context.Context, organization string, options *V
 
 // ListForWorkspace gets the associated variable sets for a workspace.
 func (s *variableSets) ListForWorkspace(ctx context.Context, workspaceID string, options *VariableSetListOptions) (*VariableSetList, error) {
-	if !validStringID(&workspaceID) {
+	if !validUnifiedID(&workspaceID) {
 		return nil, ErrInvalidWorkspaceID
 	}
 	if options != nil {
@@ -249,7 +249,7 @@ func (s *variableSets) ListForWorkspace(ctx context.Context, workspaceID string,
 
 // ListForProject gets the associated variable sets for a project.
 func (s *variableSets) ListForProject(ctx context.Context, projectID string, options *VariableSetListOptions) (*VariableSetList, error) {
-	if !validStringID(&projectID) {
+	if !validUnifiedID(&projectID) {
 		return nil, ErrInvalidProjectID
 	}
 	if options != nil {
@@ -275,7 +275,7 @@ func (s *variableSets) ListForProject(ctx context.Context, projectID string, opt
 
 // Create is used to create a new variable set.
 func (s *variableSets) Create(ctx context.Context, organization string, options *VariableSetCreateOptions) (*VariableSet, error) {
-	if !validStringID(&organization) {
+	if !validUnifiedID(&organization) {
 		return nil, ErrInvalidOrg
 	}
 	if err := options.valid(); err != nil {

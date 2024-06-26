@@ -75,7 +75,7 @@ type OAuthTokenUpdateOptions struct {
 
 // List all the OAuth tokens for a given organization.
 func (s *oAuthTokens) List(ctx context.Context, organization string, options *OAuthTokenListOptions) (*OAuthTokenList, error) {
-	if !validStringID(&organization) {
+	if !validUnifiedID(&organization) {
 		return nil, ErrInvalidOrg
 	}
 

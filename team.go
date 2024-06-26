@@ -171,7 +171,7 @@ type OrganizationAccessOptions struct {
 
 // List all the teams of the given organization.
 func (s *teams) List(ctx context.Context, organization string, options *TeamListOptions) (*TeamList, error) {
-	if !validStringID(&organization) {
+	if !validUnifiedID(&organization) {
 		return nil, ErrInvalidOrg
 	}
 	if err := options.valid(); err != nil {
@@ -194,7 +194,7 @@ func (s *teams) List(ctx context.Context, organization string, options *TeamList
 
 // Create a new team with the given options.
 func (s *teams) Create(ctx context.Context, organization string, options TeamCreateOptions) (*Team, error) {
-	if !validStringID(&organization) {
+	if !validUnifiedID(&organization) {
 		return nil, ErrInvalidOrg
 	}
 	if err := options.valid(); err != nil {
@@ -218,7 +218,7 @@ func (s *teams) Create(ctx context.Context, organization string, options TeamCre
 
 // Read a single team by its ID.
 func (s *teams) Read(ctx context.Context, teamID string) (*Team, error) {
-	if !validStringID(&teamID) {
+	if !validUnifiedID(&teamID) {
 		return nil, ErrInvalidTeamID
 	}
 
@@ -239,7 +239,7 @@ func (s *teams) Read(ctx context.Context, teamID string) (*Team, error) {
 
 // Update a team by its ID.
 func (s *teams) Update(ctx context.Context, teamID string, options TeamUpdateOptions) (*Team, error) {
-	if !validStringID(&teamID) {
+	if !validUnifiedID(&teamID) {
 		return nil, ErrInvalidTeamID
 	}
 
@@ -260,7 +260,7 @@ func (s *teams) Update(ctx context.Context, teamID string, options TeamUpdateOpt
 
 // Delete a team by its ID.
 func (s *teams) Delete(ctx context.Context, teamID string) error {
-	if !validStringID(&teamID) {
+	if !validUnifiedID(&teamID) {
 		return ErrInvalidTeamID
 	}
 

@@ -40,7 +40,7 @@ type StateVersionOutput struct {
 
 // ReadCurrent reads the current state version outputs for the specified workspace
 func (s *stateVersionOutputs) ReadCurrent(ctx context.Context, workspaceID string) (*StateVersionOutputsList, error) {
-	if !validStringID(&workspaceID) {
+	if !validUnifiedID(&workspaceID) {
 		return nil, ErrInvalidWorkspaceID
 	}
 

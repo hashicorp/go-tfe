@@ -217,7 +217,7 @@ type OAuthClientRemoveProjectsOptions struct {
 
 // List all the OAuth clients for a given organization.
 func (s *oAuthClients) List(ctx context.Context, organization string, options *OAuthClientListOptions) (*OAuthClientList, error) {
-	if !validStringID(&organization) {
+	if !validUnifiedID(&organization) {
 		return nil, ErrInvalidOrg
 	}
 	if err := options.valid(); err != nil {
@@ -241,7 +241,7 @@ func (s *oAuthClients) List(ctx context.Context, organization string, options *O
 
 // Create an OAuth client to connect an organization and a VCS provider.
 func (s *oAuthClients) Create(ctx context.Context, organization string, options OAuthClientCreateOptions) (*OAuthClient, error) {
-	if !validStringID(&organization) {
+	if !validUnifiedID(&organization) {
 		return nil, ErrInvalidOrg
 	}
 	if err := options.valid(); err != nil {

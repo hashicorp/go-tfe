@@ -83,7 +83,7 @@ type workspaceID struct {
 
 // List all the tags in an organization. You can provide query params through OrganizationTagsListOptions
 func (s *organizationTags) List(ctx context.Context, organization string, options *OrganizationTagsListOptions) (*OrganizationTagsList, error) {
-	if !validStringID(&organization) {
+	if !validUnifiedID(&organization) {
 		return nil, ErrInvalidOrg
 	}
 
@@ -104,7 +104,7 @@ func (s *organizationTags) List(ctx context.Context, organization string, option
 
 // Delete tags from a Terraform Enterprise organization
 func (s *organizationTags) Delete(ctx context.Context, organization string, options OrganizationTagsDeleteOptions) error {
-	if !validStringID(&organization) {
+	if !validUnifiedID(&organization) {
 		return ErrInvalidOrg
 	}
 

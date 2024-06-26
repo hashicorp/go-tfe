@@ -207,7 +207,7 @@ type IngressAttributes struct {
 
 // List returns all configuration versions of a workspace.
 func (s *configurationVersions) List(ctx context.Context, workspaceID string, options *ConfigurationVersionListOptions) (*ConfigurationVersionList, error) {
-	if !validStringID(&workspaceID) {
+	if !validUnifiedID(&workspaceID) {
 		return nil, ErrInvalidWorkspaceID
 	}
 	if err := options.valid(); err != nil {
@@ -232,7 +232,7 @@ func (s *configurationVersions) List(ctx context.Context, workspaceID string, op
 // Create is used to create a new configuration version. The created
 // configuration version will be usable once data is uploaded to it.
 func (s *configurationVersions) Create(ctx context.Context, workspaceID string, options ConfigurationVersionCreateOptions) (*ConfigurationVersion, error) {
-	if !validStringID(&workspaceID) {
+	if !validUnifiedID(&workspaceID) {
 		return nil, ErrInvalidWorkspaceID
 	}
 

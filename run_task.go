@@ -164,7 +164,7 @@ type RunTaskUpdateOptions struct {
 
 // Create is used to create a new run task for an organization
 func (s *runTasks) Create(ctx context.Context, organization string, options RunTaskCreateOptions) (*RunTask, error) {
-	if !validStringID(&organization) {
+	if !validUnifiedID(&organization) {
 		return nil, ErrInvalidOrg
 	}
 
@@ -189,7 +189,7 @@ func (s *runTasks) Create(ctx context.Context, organization string, options RunT
 
 // List all the run tasks for an organization
 func (s *runTasks) List(ctx context.Context, organization string, options *RunTaskListOptions) (*RunTaskList, error) {
-	if !validStringID(&organization) {
+	if !validUnifiedID(&organization) {
 		return nil, ErrInvalidOrg
 	}
 	if err := options.valid(); err != nil {

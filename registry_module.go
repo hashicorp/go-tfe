@@ -310,7 +310,7 @@ type RegistryModuleVCSRepoUpdateOptions struct {
 
 // List all the registory modules within an organization.
 func (r *registryModules) List(ctx context.Context, organization string, options *RegistryModuleListOptions) (*RegistryModuleList, error) {
-	if !validStringID(&organization) {
+	if !validUnifiedID(&organization) {
 		return nil, ErrInvalidOrg
 	}
 
@@ -385,7 +385,7 @@ func (r *registryModules) UploadTarGzip(ctx context.Context, uploadURL string, a
 
 // Create a new registry module without a VCS repo
 func (r *registryModules) Create(ctx context.Context, organization string, options RegistryModuleCreateOptions) (*RegistryModule, error) {
-	if !validStringID(&organization) {
+	if !validUnifiedID(&organization) {
 		return nil, ErrInvalidOrg
 	}
 	if err := options.valid(); err != nil {
@@ -591,7 +591,7 @@ func (r *registryModules) ReadVersion(ctx context.Context, moduleID RegistryModu
 // Warning: This method is deprecated and will be removed from a future version of go-tfe. Use DeleteByName instead.
 // See API Docs: https://developer.hashicorp.com/terraform/cloud-docs/api-docs/private-registry/modules#delete-a-module
 func (r *registryModules) Delete(ctx context.Context, organization, name string) error {
-	if !validStringID(&organization) {
+	if !validUnifiedID(&organization) {
 		return ErrInvalidOrg
 	}
 	if !validString(&name) {

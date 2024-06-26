@@ -53,7 +53,7 @@ type WorkspaceResourceListOptions struct {
 
 // List all the workspaces resources within a workspace
 func (s *workspaceResources) List(ctx context.Context, workspaceID string, options *WorkspaceResourceListOptions) (*WorkspaceResourcesList, error) {
-	if !validStringID(&workspaceID) {
+	if !validUnifiedID(&workspaceID) {
 		return nil, ErrInvalidWorkspaceID
 	}
 	if err := options.valid(); err != nil {

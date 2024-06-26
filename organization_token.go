@@ -62,7 +62,7 @@ func (s *organizationTokens) Create(ctx context.Context, organization string) (*
 
 // CreateWithOptions a new organization token with options, replacing any existing token.
 func (s *organizationTokens) CreateWithOptions(ctx context.Context, organization string, options OrganizationTokenCreateOptions) (*OrganizationToken, error) {
-	if !validStringID(&organization) {
+	if !validUnifiedID(&organization) {
 		return nil, ErrInvalidOrg
 	}
 
@@ -83,7 +83,7 @@ func (s *organizationTokens) CreateWithOptions(ctx context.Context, organization
 
 // Read an organization token.
 func (s *organizationTokens) Read(ctx context.Context, organization string) (*OrganizationToken, error) {
-	if !validStringID(&organization) {
+	if !validUnifiedID(&organization) {
 		return nil, ErrInvalidOrg
 	}
 
@@ -104,7 +104,7 @@ func (s *organizationTokens) Read(ctx context.Context, organization string) (*Or
 
 // Delete an organization token.
 func (s *organizationTokens) Delete(ctx context.Context, organization string) error {
-	if !validStringID(&organization) {
+	if !validUnifiedID(&organization) {
 		return ErrInvalidOrg
 	}
 

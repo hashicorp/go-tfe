@@ -83,7 +83,7 @@ type WorkspaceRunTaskUpdateOptions struct {
 
 // List all run tasks attached to a workspace
 func (s *workspaceRunTasks) List(ctx context.Context, workspaceID string, options *WorkspaceRunTaskListOptions) (*WorkspaceRunTaskList, error) {
-	if !validStringID(&workspaceID) {
+	if !validUnifiedID(&workspaceID) {
 		return nil, ErrInvalidWorkspaceID
 	}
 
@@ -104,7 +104,7 @@ func (s *workspaceRunTasks) List(ctx context.Context, workspaceID string, option
 
 // Read a workspace run task by ID
 func (s *workspaceRunTasks) Read(ctx context.Context, workspaceID, workspaceTaskID string) (*WorkspaceRunTask, error) {
-	if !validStringID(&workspaceID) {
+	if !validUnifiedID(&workspaceID) {
 		return nil, ErrInvalidWorkspaceID
 	}
 
@@ -133,7 +133,7 @@ func (s *workspaceRunTasks) Read(ctx context.Context, workspaceID, workspaceTask
 
 // Create is used to attach a run task to a workspace, or in other words: create a workspace run task. The run task must exist in the workspace's organization.
 func (s *workspaceRunTasks) Create(ctx context.Context, workspaceID string, options WorkspaceRunTaskCreateOptions) (*WorkspaceRunTask, error) {
-	if !validStringID(&workspaceID) {
+	if !validUnifiedID(&workspaceID) {
 		return nil, ErrInvalidWorkspaceID
 	}
 
@@ -158,7 +158,7 @@ func (s *workspaceRunTasks) Create(ctx context.Context, workspaceID string, opti
 
 // Update an existing workspace run task by ID
 func (s *workspaceRunTasks) Update(ctx context.Context, workspaceID, workspaceTaskID string, options WorkspaceRunTaskUpdateOptions) (*WorkspaceRunTask, error) {
-	if !validStringID(&workspaceID) {
+	if !validUnifiedID(&workspaceID) {
 		return nil, ErrInvalidWorkspaceID
 	}
 
@@ -187,7 +187,7 @@ func (s *workspaceRunTasks) Update(ctx context.Context, workspaceID, workspaceTa
 
 // Delete a workspace run task by ID
 func (s *workspaceRunTasks) Delete(ctx context.Context, workspaceID, workspaceTaskID string) error {
-	if !validStringID(&workspaceID) {
+	if !validUnifiedID(&workspaceID) {
 		return ErrInvalidWorkspaceID
 	}
 

@@ -128,7 +128,7 @@ func (s *adminOrganizations) List(ctx context.Context, options *AdminOrganizatio
 
 // ListModuleConsumers lists specific organizations in the Terraform Enterprise installation that have permission to use an organization's modules.
 func (s *adminOrganizations) ListModuleConsumers(ctx context.Context, organization string, options *AdminOrganizationListModuleConsumersOptions) (*AdminOrganizationList, error) {
-	if !validStringID(&organization) {
+	if !validUnifiedID(&organization) {
 		return nil, ErrInvalidOrg
 	}
 
@@ -150,7 +150,7 @@ func (s *adminOrganizations) ListModuleConsumers(ctx context.Context, organizati
 
 // Read an organization by its name.
 func (s *adminOrganizations) Read(ctx context.Context, organization string) (*AdminOrganization, error) {
-	if !validStringID(&organization) {
+	if !validUnifiedID(&organization) {
 		return nil, ErrInvalidOrg
 	}
 
@@ -171,7 +171,7 @@ func (s *adminOrganizations) Read(ctx context.Context, organization string) (*Ad
 
 // Update an organization by its name.
 func (s *adminOrganizations) Update(ctx context.Context, organization string, options AdminOrganizationUpdateOptions) (*AdminOrganization, error) {
-	if !validStringID(&organization) {
+	if !validUnifiedID(&organization) {
 		return nil, ErrInvalidOrg
 	}
 
@@ -192,7 +192,7 @@ func (s *adminOrganizations) Update(ctx context.Context, organization string, op
 
 // UpdateModuleConsumers updates an organization to specify a list of organizations that can use modules from the sharing organization's private registry.
 func (s *adminOrganizations) UpdateModuleConsumers(ctx context.Context, organization string, consumerOrganizationIDs []string) error {
-	if !validStringID(&organization) {
+	if !validUnifiedID(&organization) {
 		return ErrInvalidOrg
 	}
 
@@ -200,7 +200,7 @@ func (s *adminOrganizations) UpdateModuleConsumers(ctx context.Context, organiza
 
 	var organizations []*AdminOrganizationID
 	for _, id := range consumerOrganizationIDs {
-		if !validStringID(&id) {
+		if !validUnifiedID(&id) {
 			return ErrInvalidOrg
 		}
 		organizations = append(organizations, &AdminOrganizationID{ID: id})
@@ -221,7 +221,7 @@ func (s *adminOrganizations) UpdateModuleConsumers(ctx context.Context, organiza
 
 // Delete an organization by its name.
 func (s *adminOrganizations) Delete(ctx context.Context, organization string) error {
-	if !validStringID(&organization) {
+	if !validUnifiedID(&organization) {
 		return ErrInvalidOrg
 	}
 
