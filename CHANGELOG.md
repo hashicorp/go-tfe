@@ -1,5 +1,7 @@
 # UNRELEASED
 
+# v1.57.0
+
 ## Enhancements
 
 * Adds the `IsUnified` field to `Project`, `Organization` and `Team` by @roncodingenthusiast [#915](https://github.com/hashicorp/go-tfe/pull/915)
