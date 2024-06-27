@@ -1,5 +1,5 @@
 # UNRELEASED
-* Adds `AllowMemberTokenManagement` permission to `Team` by @juliannatetreault []()
+* Adds `AllowMemberTokenManagement` permission to `Team` by @juliannatetreault [#922](https://github.com/hashicorp/go-tfe/pull/922)
 
 ## Enhancements
 
