@@ -485,7 +485,7 @@ func TestPolicySetsCreate(t *testing.T) {
 
 	t.Run("with an invalid name provided", func(t *testing.T) {
 		ps, err := client.PolicySets.Create(ctx, orgTest.Name, PolicySetCreateOptions{
-			Name: String("nope!"),
+			Name: String("nope/nope!"),
 		})
 		assert.Nil(t, ps)
 		assert.EqualError(t, err, ErrInvalidName.Error())
@@ -728,7 +728,7 @@ func TestPolicySetsUpdate(t *testing.T) {
 
 	t.Run("with invalid attributes", func(t *testing.T) {
 		ps, err := client.PolicySets.Update(ctx, psTest.ID, PolicySetUpdateOptions{
-			Name: String("nope!"),
+			Name: String("nope/nope!"),
 		})
 		assert.Nil(t, ps)
 		assert.EqualError(t, err, ErrInvalidName.Error())
