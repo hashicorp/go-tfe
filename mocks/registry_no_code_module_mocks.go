@@ -55,6 +55,21 @@ func (mr *MockRegistryNoCodeModulesMockRecorder) Create(ctx, organization, optio
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Create", reflect.TypeOf((*MockRegistryNoCodeModules)(nil).Create), ctx, organization, options)
 }
 
+// CreateWorkspace mocks base method.
+func (m *MockRegistryNoCodeModules) CreateWorkspace(ctx context.Context, noCodeModuleID string, options *tfe.RegistryNoCodeModuleCreateWorkspaceOptions) (*tfe.RegistryNoCodeModuleWorkspace, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "CreateWorkspace", ctx, noCodeModuleID, options)
+	ret0, _ := ret[0].(*tfe.RegistryNoCodeModuleWorkspace)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// CreateWorkspace indicates an expected call of CreateWorkspace.
+func (mr *MockRegistryNoCodeModulesMockRecorder) CreateWorkspace(ctx, noCodeModuleID, options any) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateWorkspace", reflect.TypeOf((*MockRegistryNoCodeModules)(nil).CreateWorkspace), ctx, noCodeModuleID, options)
+}
+
 // Delete mocks base method.
 func (m *MockRegistryNoCodeModules) Delete(ctx context.Context, ID string) error {
 	m.ctrl.T.Helper()
