@@ -159,6 +159,7 @@ func TestTeamsRead(t *testing.T) {
 		OrganizationAccess: &OrganizationAccessOptions{
 			ManagePolicies: Bool(true),
 		},
+		AllowMemberTokenManagement: Bool(true),
 	}
 	ssoTeam, err := client.Teams.Create(ctx, orgTest.Name, opts)
 	require.NoError(t, err)
@@ -188,6 +189,10 @@ func TestTeamsRead(t *testing.T) {
 			assert.NotNil(t, ssoTeam.SSOTeamID)
 			assert.Equal(t, *opts.SSOTeamID, ssoTeam.SSOTeamID)
 		})
+
+        t.Run("allow member token management is returned", func(t *testing.T) {
+                assert.Equal(t, *opts.AllowMemberTokenManagement, tm.AllowMemberTokenManagement)
+            })
 	})
 
 	t.Run("when the team does not exist", func(t *testing.T) {
@@ -224,6 +229,7 @@ func TestTeamsUpdate(t *testing.T) {
 				ManageModules:         Bool(false),
 			},
 			Visibility: String("organization"),
+			AllowMemberTokenManagement: Bool(true),
 		}
 
 		tm, err := client.Teams.Update(ctx, tmTest.ID, options)
@@ -241,6 +247,10 @@ func TestTeamsUpdate(t *testing.T) {
 				*options.Visibility,
 				item.Visibility,
 			)
+            assert.Equal(t,
+                *options.AllowMemberTokenManagement,
+                item.AllowMemberTokenManagement,
+            )
 			assert.Equal(t,
 				*options.OrganizationAccess.ManagePolicies,
 				item.OrganizationAccess.ManagePolicies,
@@ -344,12 +354,14 @@ func TestTeam_Unmarshal(t *testing.T) {
 	assert.Equal(t, team.OrganizationAccess.ReadProjects, true)
 	assert.Equal(t, team.Permissions.CanDestroy, true)
 	assert.Equal(t, team.Permissions.CanUpdateMembership, true)
+	assert.Equal(t, team.AllowMemberTokenManagement, true)
 }
 
 func TestTeamCreateOptions_Marshal(t *testing.T) {
 	opts := TeamCreateOptions{
 		Name:       String("team name"),
 		Visibility: String("organization"),
+		AllowMemberTokenManagement: Bool(true),
 		OrganizationAccess: &OrganizationAccessOptions{
 			ManagePolicies: Bool(true),
 		},
@@ -362,7 +374,7 @@ func TestTeamCreateOptions_Marshal(t *testing.T) {
 	bodyBytes, err := req.BodyBytes()
 	require.NoError(t, err)
 
-	expectedBody := `{"data":{"type":"teams","attributes":{"name":"team name","organization-access":{"manage-policies":true},"visibility":"organization"}}}
+	expectedBody := `{"data":{"type":"teams","attributes":{"name":"team name","organization-access":{"manage-policies":true},"visibility":"organization","allow-member-token-management":true}}}
 `
 	assert.Equal(t, expectedBody, string(bodyBytes))
 }

@@ -54,6 +54,8 @@ type Team struct {
 	Permissions        *TeamPermissions    `jsonapi:"attr,permissions"`
 	UserCount          int                 `jsonapi:"attr,users-count"`
 	SSOTeamID          string              `jsonapi:"attr,sso-team-id"`
+	// AllowMemberTokenManagement is false for TFE versions older than v202408
+	AllowMemberTokenManagement bool `jsonapi:"attr,allow-member-token-management"`
 
 	// Relations
 	Users                   []*User                   `jsonapi:"relation,users"`
@@ -127,6 +129,9 @@ type TeamCreateOptions struct {
 
 	// The team's visibility ("secret", "organization")
 	Visibility *string `jsonapi:"attr,visibility,omitempty"`
+
+	// Optional: Used by Owners and users with "Manage Teams" permissions to control whether team members can manage team tokens
+	AllowMemberTokenManagement *bool `jsonapi:"attr,allow-member-token-management,omitempty"`
 }
 
 // TeamUpdateOptions represents the options for updating a team.
@@ -148,6 +153,9 @@ type TeamUpdateOptions struct {
 
 	// Optional: The team's visibility ("secret", "organization")
 	Visibility *string `jsonapi:"attr,visibility,omitempty"`
+
+	// Optional: Used by Owners and users with "Manage Teams" permissions to control whether team members can manage team tokens
+	AllowMemberTokenManagement *bool `jsonapi:"attr,allow-member-token-management,omitempty"`
 }
 
 // OrganizationAccessOptions represents the organization access options of a team.
