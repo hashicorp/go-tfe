@@ -18,6 +18,7 @@ import (
 	"io"
 	"math/rand"
 	"net/http"
+	"net/http/httptest"
 	"os"
 	"os/exec"
 	"path/filepath"
@@ -34,6 +35,8 @@ import (
 
 const badIdentifier = "! / nope" //nolint
 const agentVersion = "1.3.0"
+const testInitialClientToken = "insert-your-token-here"
+const testTaskResultCallbackToken = "this-is-task-result-callback-token"
 
 var _testAccountDetails *TestAccountDetails
 
@@ -2853,6 +2856,26 @@ func requireExactlyOneNotEmpty(t *testing.T, v ...any) {
 	if empty != len(v)-1 {
 		t.Fatalf("Expected exactly one value to not be empty, but found %d empty values", empty)
 	}
+}
+
+func runTaskCallbackMockServer(t *testing.T) *httptest.Server {
+	return httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		if r.Method == http.MethodGet {
+			return
+		}
+		if r.Header.Get("Accept") != ContentTypeJSONAPI {
+			t.Fatalf("unexpected accept header: %q", r.Header.Get("Accept"))
+		}
+		if r.Header.Get("Authorization") != fmt.Sprintf("Bearer %s", testTaskResultCallbackToken) {
+			t.Fatalf("unexpected authorization header: %q", r.Header.Get("Authorization"))
+		}
+		if r.Header.Get("Authorization") == fmt.Sprintf("Bearer %s", testInitialClientToken) {
+			t.Fatalf("authorization header is still the initial one: %q", r.Header.Get("Authorization"))
+		}
+		if r.Header.Get("User-Agent") != "go-tfe" {
+			t.Fatalf("unexpected user agent header: %q", r.Header.Get("User-Agent"))
+		}
+	}))
 }
 
 // Useless key but enough to pass validation in the API

@@ -5,6 +5,7 @@ package tfe
 
 import (
 	"errors"
+	"fmt"
 )
 
 // Generic errors applicable to all resources.
@@ -219,6 +220,12 @@ var (
 	ErrInvalidModuleID = errors.New("invalid value for module ID")
 
 	ErrInvalidRegistryName = errors.New(`invalid value for registry-name. It must be either "private" or "public"`)
+
+	ErrInvalidCallbackURL = errors.New("invalid value for callback URL")
+
+	ErrInvalidAccessToken = errors.New("invalid value for access token")
+
+	ErrInvalidTaskResultsCallbackStatus = fmt.Errorf("invalid value for task result status. Must be either `%s`, `%s`, or `%s`", TaskFailed, TaskPassed, TaskRunning)
 )
 
 var (
