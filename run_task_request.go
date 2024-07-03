@@ -7,11 +7,6 @@ import (
 	"time"
 )
 
-const (
-	// VerificationToken is a nonsense Terraform Cloud API token that should NEVER be valid.
-	VerificationToken = "test-token"
-)
-
 // RunTaskRequest is the payload object that TFC/E sends to the Run Task's URL.
 // https://developer.hashicorp.com/terraform/enterprise/api-docs/run-tasks/run-tasks-integration#common-properties
 type RunTaskRequest struct {
@@ -45,10 +40,4 @@ type RunTaskRequest struct {
 // RunTaskRequestCapabilitites defines the capabilities that the caller supports.
 type RunTaskRequestCapabilitites struct {
 	Outcomes bool `json:"outcomes"`
-}
-
-// IsEndpointValidation returns true if this is a Request from TFC/E to validate and register this API endpoint.
-// Function copied from: https://github.com/hashicorp/terraform-run-task-scaffolding-go/blob/d7ed63b7d8eacf0897ab687d35d353386e4bd0ac/internal/sdk/api/structs.go#L55-L60
-func (r RunTaskRequest) IsEndpointValidation() bool {
-	return r.AccessToken == VerificationToken
 }
