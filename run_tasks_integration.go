@@ -6,19 +6,19 @@ import (
 )
 
 // Compile-time proof of interface implementation.
-var _ RunTasksCallback = (*taskResultsCallback)(nil)
+var _ RunTasksIntegration = (*runTaskIntegration)(nil)
 
-// RunTasksCallback describes all the Run Tasks Integration Callback API methods.
+// RunTasksIntegration describes all the Run Tasks Integration Callback API methods.
 //
 // TFE API docs:
 // https://developer.hashicorp.com/terraform/enterprise/api-docs/run-tasks/run-tasks-integration
-type RunTasksCallback interface {
+type RunTasksIntegration interface {
 	// Update sends updates to TFC/E Run Task Callback URL
-	Update(ctx context.Context, callbackURL, accessToken string, options TaskResultCallbackRequestOptions) error
+	Callback(ctx context.Context, callbackURL string, accessToken string, options TaskResultCallbackRequestOptions) error
 }
 
-// taskResultsCallback implements RunTasksCallback.
-type taskResultsCallback struct {
+// taskResultsCallback implements RunTasksIntegration.
+type runTaskIntegration struct {
 	client *Client
 }
 
@@ -51,7 +51,7 @@ type TaskResultTag struct {
 }
 
 // Update sends updates to TFC/E Run Task Callback URL
-func (s *taskResultsCallback) Update(ctx context.Context, callbackURL, accessToken string, options TaskResultCallbackRequestOptions) error {
+func (s *runTaskIntegration) Callback(ctx context.Context, callbackURL, accessToken string, options TaskResultCallbackRequestOptions) error {
 	if !validString(&callbackURL) {
 		return ErrInvalidCallbackURL
 	}
@@ -72,7 +72,7 @@ func (s *taskResultsCallback) Update(ctx context.Context, callbackURL, accessTok
 }
 
 func (o *TaskResultCallbackRequestOptions) valid() error {
-	if !validStringID(String(string(o.Status))) || (o.Status != TaskFailed && o.Status != TaskPassed && o.Status != TaskRunning) {
+	if o.Status != TaskFailed && o.Status != TaskPassed && o.Status != TaskRunning {
 		return ErrInvalidTaskResultsCallbackStatus
 	}
 	return nil

@@ -3,13 +3,14 @@ package tfe
 import (
 	"bytes"
 	"context"
+	"testing"
+
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
-	"testing"
 )
 
-// TestTaskResultsCallbackRequestOptions_Validate runs a series of tests that test whether various TaskResultCallbackRequestOptions objects can be considered valid or not
-func TestTaskResultsCallbackRequestOptions_Validate(t *testing.T) {
+// TestRunTasksIntegration_Validate runs a series of tests that test whether various TaskResultCallbackRequestOptions objects can be considered valid or not
+func TestRunTasksIntegration_Validate(t *testing.T) {
 	t.Run("with an empty status", func(t *testing.T) {
 		opts := TaskResultCallbackRequestOptions{Status: ""}
 		err := opts.valid()
@@ -63,20 +64,20 @@ func TestTaskResultsCallbackRequestOptions_Marshal(t *testing.T) {
 	assert.Equal(t, reqBody.(*bytes.Buffer).String(), expectedBody)
 }
 
-func TestTaskResultsCallbackUpdate_Validate(t *testing.T) {
+func TestRunTasksIntegration_ValidateCallback(t *testing.T) {
 	t.Run("with invalid callbackURL", func(t *testing.T) {
-		trc := taskResultsCallback{client: nil}
-		err := trc.Update(context.Background(), "", "", TaskResultCallbackRequestOptions{})
+		trc := runTaskIntegration{client: nil}
+		err := trc.Callback(context.Background(), "", "", TaskResultCallbackRequestOptions{})
 		assert.EqualError(t, err, ErrInvalidCallbackURL.Error())
 	})
 	t.Run("with invalid accessToken", func(t *testing.T) {
-		trc := taskResultsCallback{client: nil}
-		err := trc.Update(context.Background(), "https://app.terraform.io/foo", "", TaskResultCallbackRequestOptions{})
+		trc := runTaskIntegration{client: nil}
+		err := trc.Callback(context.Background(), "https://app.terraform.io/foo", "", TaskResultCallbackRequestOptions{})
 		assert.EqualError(t, err, ErrInvalidAccessToken.Error())
 	})
 }
 
-func TestTaskResultsCallbackUpdate(t *testing.T) {
+func TestRunTasksIntegration_Callback(t *testing.T) {
 	ts := runTaskCallbackMockServer(t)
 	defer ts.Close()
 
@@ -86,13 +87,13 @@ func TestTaskResultsCallbackUpdate(t *testing.T) {
 		Address:           ts.URL,
 	})
 	require.NoError(t, err)
-	trc := taskResultsCallback{
+	trc := runTaskIntegration{
 		client: client,
 	}
 	req := RunTaskRequest{
 		AccessToken:           testTaskResultCallbackToken,
 		TaskResultCallbackURL: ts.URL,
 	}
-	err = trc.Update(context.Background(), req.TaskResultCallbackURL, req.AccessToken, TaskResultCallbackRequestOptions{Status: TaskPassed})
+	err = trc.Callback(context.Background(), req.TaskResultCallbackURL, req.AccessToken, TaskResultCallbackRequestOptions{Status: TaskPassed})
 	require.NoError(t, err)
 }

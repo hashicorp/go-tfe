@@ -158,7 +158,7 @@ type Client struct {
 	Runs                       Runs
 	RunEvents                  RunEvents
 	RunTasks                   RunTasks
-	RunTasksCallback           RunTasksCallback
+	RunTasksIntegration        RunTasksIntegration
 	RunTriggers                RunTriggers
 	SSHKeys                    SSHKeys
 	Stacks                     Stacks
@@ -460,7 +460,7 @@ func NewClient(cfg *Config) (*Client, error) {
 	client.Runs = &runs{client: client}
 	client.RunEvents = &runEvents{client: client}
 	client.RunTasks = &runTasks{client: client}
-	client.RunTasksCallback = &taskResultsCallback{client: client}
+	client.RunTasksIntegration = &runTaskIntegration{client: client}
 	client.RunTriggers = &runTriggers{client: client}
 	client.SSHKeys = &sshKeys{client: client}
 	client.Stacks = &stacks{client: client}
