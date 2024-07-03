@@ -13,7 +13,7 @@ import (
 	"os"
 	"time"
 
-	tfe "github.com/hashicorp/go-tfe"
+	tfe "github.com/optable/go-tfe"
 )
 
 var (
@@ -49,7 +49,7 @@ type DiagnosticRange struct {
 	End      Pos    `json:"end"`
 }
 
-// For full decoding, see https://github.com/hashicorp/terraform/blob/main/internal/command/jsonformat/renderer.go
+// For full decoding, see https://github.com/optable/terraform/blob/main/internal/command/jsonformat/renderer.go
 type JSONLog struct {
 	Message    string      `json:"@message"`
 	Level      string      `json:"@level"`

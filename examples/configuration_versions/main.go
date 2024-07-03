@@ -9,7 +9,7 @@ import (
 	"log"
 
 	"github.com/hashicorp/go-slug"
-	tfe "github.com/hashicorp/go-tfe"
+	tfe "github.com/optable/go-tfe"
 )
 
 func main() {

@@ -13,7 +13,7 @@ import (
 	context "context"
 	reflect "reflect"
 
-	tfe "github.com/hashicorp/go-tfe"
+	tfe "github.com/optable/go-tfe"
 	gomock "go.uber.org/mock/gomock"
 )
 

@@ -7,9 +7,10 @@ import (
 	"context"
 	"flag"
 	"fmt"
-	tfe "github.com/hashicorp/go-tfe"
 	"log"
 	"strings"
+
+	tfe "github.com/optable/go-tfe"
 )
 
 func main() {
