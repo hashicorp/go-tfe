@@ -1,5 +1,7 @@
 # UNRELEASED
 
+# v1.59.0
+
 ## Features
 
 * Adds support for the Run Tasks Integration API by @karvounis-form3 [#929](https://github.com/hashicorp/go-tfe/pull/929)
