@@ -173,6 +173,7 @@ type Workspace struct {
 	Locked                      bool                            `jsonapi:"attr,locked"`
 	MigrationEnvironment        string                          `jsonapi:"attr,migration-environment"`
 	Name                        string                          `jsonapi:"attr,name"`
+	NoCodeUpgradeAvailable      bool                            `jsonapi:"attr,no-code-upgrade-available"`
 	Operations                  bool                            `jsonapi:"attr,operations"`
 	Permissions                 *WorkspacePermissions           `jsonapi:"attr,permissions"`
 	QueueAllRuns                bool                            `jsonapi:"attr,queue-all-runs"`
