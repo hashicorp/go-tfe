@@ -162,6 +162,9 @@ type Client struct {
 	RunTriggers                RunTriggers
 	SSHKeys                    SSHKeys
 	Stacks                     Stacks
+	StackConfigurations        StackConfigurations
+	StackDeployments           StackDeployments
+	StackPlans                 StackPlans
 	StateVersionOutputs        StateVersionOutputs
 	StateVersions              StateVersions
 	TaskResults                TaskResults
@@ -464,6 +467,9 @@ func NewClient(cfg *Config) (*Client, error) {
 	client.RunTriggers = &runTriggers{client: client}
 	client.SSHKeys = &sshKeys{client: client}
 	client.Stacks = &stacks{client: client}
+	client.StackConfigurations = &stackConfigurations{client: client}
+	client.StackDeployments = &stackDeployments{client: client}
+	client.StackPlans = &stackPlans{client: client}
 	client.StateVersionOutputs = &stateVersionOutputs{client: client}
 	client.StateVersions = &stateVersions{client: client}
 	client.TaskResults = &taskResults{client: client}

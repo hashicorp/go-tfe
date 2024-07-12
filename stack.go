@@ -28,6 +28,9 @@ type Stacks interface {
 
 	// Delete deletes a stack.
 	Delete(ctx context.Context, stackID string) error
+
+	// UpdateConfiguration updates the configuration of a stack, triggering stack preparation.
+	UpdateConfiguration(ctx context.Context, stackID string) (*Stack, error)
 }
 
 // stacks implements Stacks.
@@ -61,6 +64,14 @@ type StackList struct {
 	Items []*Stack
 }
 
+type StackDiagnosticsList struct {
+	*Pagination
+	Items []*StackDiagnostics
+}
+
+type StackDiagnostics struct {
+}
+
 // StackVCSRepo represents the version control system repository for a stack.
 type StackVCSRepo struct {
 	Identifier        string `jsonapi:"attr,identifier"`
@@ -82,7 +93,56 @@ type Stack struct {
 	UpdatedAt       time.Time     `jsonapi:"attr,updated-at,iso8601"`
 
 	// Relationships
-	Project *Project `jsonapi:"relation,project"`
+	Project                  *Project            `jsonapi:"relation,project"`
+	LatestStackConfiguration *StackConfiguration `jsonapi:"relation,latest-stack-configuration"`
+	StackDiagnostics         *StackDiagnostics   `jsonapi:"relation,stack-diagnostics"`
+}
+
+type StackConfigurationStatusTimestamps struct {
+	QueuedAt     *time.Time `jsonapi:"attr,queued-at,omitempty,rfc3339"`
+	CompletedAt  *time.Time `jsonapi:"attr,completed-at,omitempty,rfc3339"`
+	PreparingAt  *time.Time `jsonapi:"attr,preparing-at,omitempty,rfc3339"`
+	EnqueueingAt *time.Time `jsonapi:"attr,enqueueing-at,omitempty,rfc3339"`
+	CanceledAt   *time.Time `jsonapi:"attr,canceled-at,omitempty,rfc3339"`
+	ErroredAt    *time.Time `jsonapi:"attr,errored-at,omitempty,rfc3339"`
+}
+
+type StackComponent struct {
+	Name       string `json:"name"`
+	Correlator string `json:"correlator"`
+	Expanded   bool   `json:"expanded"`
+}
+
+type StackConfiguration struct {
+	// Attributes
+	ID                   string                              `jsonapi:"primary,stack-configurations"`
+	Status               string                              `jsonapi:"attr,status"`
+	StatusTimestamps     *StackConfigurationStatusTimestamps `jsonapi:"attr,status-timestamps"`
+	SequenceNumber       int                                 `jsonapi:"attr,sequence-number"`
+	DeploymentNames      []string                            `jsonapi:"attr,deployment-names"`
+	ConvergedDeployments []string                            `jsonapi:"attr,converged-deployments"`
+	Components           []*StackComponent                   `jsonapi:"attr,components"`
+	ErrorMessage         *string                             `jsonapi:"attr,error-message"`
+	EventStreamURL       string                              `jsonapi:"attr,event-stream-url"`
+}
+
+type StackDeployment struct {
+	// Attributes
+	ID            string    `jsonapi:"primary,stack-deployments"`
+	Name          string    `jsonapi:"attr,name"`
+	Status        string    `jsonapi:"attr,status"`
+	DeployedAt    time.Time `jsonapi:"attr,deployed-at,iso8601"`
+	ErrorsCount   int       `jsonapi:"attr,errors-count"`
+	WarningsCount int       `jsonapi:"attr,warnings-count"`
+	PausedCount   int       `jsonapi:"attr,paused-count"`
+
+	// Relationships
+	CurrentStackState *StackState `jsonapi:"relation,current-stack-state"`
+}
+
+type StackState struct {
+	// Attributes
+	ID string `jsonapi:"primary,stack-states"`
 }
 
 // StackListOptions represents the options for listing stacks.
@@ -108,6 +168,21 @@ type StackUpdateOptions struct {
 	Name        *string       `jsonapi:"attr,name,omitempty"`
 	Description *string       `jsonapi:"attr,description,omitempty"`
 	VCSRepo     *StackVCSRepo `jsonapi:"attr,vcs-repo,omitempty"`
+}
+
+func (s stacks) UpdateConfiguration(ctx context.Context, stackID string) (*Stack, error) {
+	req, err := s.client.NewRequest("POST", fmt.Sprintf("stacks/%s/actions/update-configuration", url.PathEscape(stackID)), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	stack := &Stack{}
+	err = req.Do(ctx, stack)
+	if err != nil {
+		return nil, err
+	}
+
+	return stack, nil
 }
 
 func (s stacks) List(ctx context.Context, organization string, options *StackListOptions) (*StackList, error) {
