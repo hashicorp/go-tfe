@@ -6,6 +6,10 @@ import (
 	"net/url"
 )
 
+// StackConfigurations describes all the stacks configurations-related methods that the
+// HCP Terraform API supports.
+// NOTE WELL: This is a beta feature and is subject to change until noted otherwise in the
+// release notes.
 type StackConfigurations interface {
 	// ReadConfiguration returns a stack configuration by its ID.
 	Read(ctx context.Context, ID string) (*StackConfiguration, error)

@@ -6,6 +6,10 @@ import (
 	"net/url"
 )
 
+// StackDeployments describes all the stacks deployments-related methods that the
+// HCP Terraform API supports.
+// NOTE WELL: This is a beta feature and is subject to change until noted otherwise in the
+// release notes.
 type StackDeployments interface {
 	// Read returns a stack deployment by its name.
 	Read(ctx context.Context, stackID, deployment string) (*StackDeployment, error)
