@@ -16,6 +16,15 @@ type StackPlans interface {
 
 	// ListByConfiguration returns a list of stack plans for a given stack configuration.
 	ListByConfiguration(ctx context.Context, stackConfigurationID string, options *StackPlansListOptions) (*StackPlanList, error)
+
+	// Approve approves a stack plan.
+	Approve(ctx context.Context, stackPlanID string) error
+
+	// Cancel cancels a stack plan.
+	Cancel(ctx context.Context, stackPlanID string) error
+
+	// Discard discards a stack plan.
+	Discard(ctx context.Context, stackPlanID string) error
 }
 
 type StackPlansStatusFilter string
@@ -111,4 +120,31 @@ func (s stackPlans) ListByConfiguration(ctx context.Context, stackConfigurationI
 	}
 
 	return sl, nil
+}
+
+func (s stackPlans) Approve(ctx context.Context, stackPlanID string) error {
+	req, err := s.client.NewRequest("POST", fmt.Sprintf("stack-plans/%s/approve", url.PathEscape(stackPlanID)), nil)
+	if err != nil {
+		return err
+	}
+
+	return req.Do(ctx, nil)
+}
+
+func (s stackPlans) Discard(ctx context.Context, stackPlanID string) error {
+	req, err := s.client.NewRequest("POST", fmt.Sprintf("stack-plans/%s/discard", url.PathEscape(stackPlanID)), nil)
+	if err != nil {
+		return err
+	}
+
+	return req.Do(ctx, nil)
+}
+
+func (s stackPlans) Cancel(ctx context.Context, stackPlanID string) error {
+	req, err := s.client.NewRequest("POST", fmt.Sprintf("stack-plans/%s/cancel", url.PathEscape(stackPlanID)), nil)
+	if err != nil {
+		return err
+	}
+
+	return req.Do(ctx, nil)
 }
