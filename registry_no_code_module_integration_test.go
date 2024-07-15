@@ -5,7 +5,10 @@ package tfe
 
 import (
 	"context"
+	"fmt"
+	"os"
 	"testing"
+	"time"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
@@ -297,4 +300,82 @@ func createNoCodeRegistryModule(t *testing.T, client *Client, orgName string, rm
 				"NoCode Module: %s\nError: %s", ncm.ID, err)
 		}
 	}
+}
+
+func TestRegistryNoCodeModulesCreateWorkspace(t *testing.T) {
+	skipUnlessBeta(t)
+	client := testClient(t)
+	ctx := context.Background()
+	r := require.New(t)
+
+	// create an org that will be deleted later. the wskp will live here
+	orgTest, orgTestCleanup := createOrganization(t, client)
+	defer orgTestCleanup()
+
+	org, err := client.Organizations.Read(ctx, orgTest.Name)
+	r.NoError(err)
+	r.NotNil(org)
+
+	githubIdentifier := os.Getenv("GITHUB_REGISTRY_NO_CODE_MODULE_IDENTIFIER")
+	if githubIdentifier == "" {
+		t.Skip("Export a valid GITHUB_REGISTRY_NO_CODE_MODULE_IDENTIFIER before running this test")
+	}
+
+	token, cleanupToken := createOAuthToken(t, client, org)
+	defer cleanupToken()
+
+	rmOpts := RegistryModuleCreateWithVCSConnectionOptions{
+		VCSRepo: &RegistryModuleVCSRepoOptions{
+			OrganizationName:  String(org.Name),
+			Identifier:        String(githubIdentifier),
+			Tags:              Bool(true),
+			OAuthTokenID:      String(token.ID),
+			DisplayIdentifier: String(githubIdentifier),
+		},
+	}
+
+	rm, err := client.RegistryModules.CreateWithVCSConnection(ctx, rmOpts)
+	r.NoError(err)
+
+	// 1. create the registry module
+	// 2. create the no-code module, with the registry module
+	// 3. use the ID to create the workspace
+	ncm, err := client.RegistryNoCodeModules.Create(ctx, org.Name, RegistryNoCodeModuleCreateOptions{
+		RegistryModule:  rm,
+		Enabled:         Bool(true),
+		VariableOptions: nil,
+	})
+	r.NoError(err)
+	r.NotNil(ncm)
+
+	// We sleep for 10 seconds to let the module finish getting ready
+	time.Sleep(time.Second * 10)
+
+	t.Run("test creating a workspace via a no-code module", func(t *testing.T) {
+		wn := fmt.Sprintf("foo-%s", randomString(t))
+		_, err = client.RegistryNoCodeModules.CreateWorkspace(
+			ctx,
+			ncm.ID,
+			&RegistryNoCodeModuleCreateWorkspaceOptions{
+				Name: String(wn),
+			},
+		)
+		r.NoError(err)
+
+		w, err := client.Workspaces.Read(ctx, org.Name, wn)
+		r.NoError(err)
+		r.Equal(wn, w.Name)
+	})
+
+	t.Run("fail to create a workspace with a bad module ID", func(t *testing.T) {
+		wn := fmt.Sprintf("foo-%s", randomString(t))
+		_, err = client.RegistryNoCodeModules.CreateWorkspace(
+			ctx,
+			"codeno-abc123XYZ",
+			&RegistryNoCodeModuleCreateWorkspaceOptions{
+				Name: String(wn),
+			},
+		)
+		r.Error(err)
+	})
 }

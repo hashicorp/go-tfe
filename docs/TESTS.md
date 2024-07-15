@@ -55,6 +55,7 @@ Tests are run against an actual backend so they require a valid backend address 
     ```sh
       $ GITHUB_APP_INSTALLATION_ID=ghain-xxxx TFE_ADDRESS= https://tfe.local TFE_TOKEN=xxx GITHUB_POLICY_SET_IDENTIFIER=username/repository GITHUB_REGISTRY_MODULE_IDENTIFIER=username/repository go test -run "(GHA|GithubApp)" -v ./...
     ```
+8. `GITHUB_REGISTRY_NO_CODE_MODULE_IDENTIFIER` - Required for running tests for workspaces using no-code modules.
 
 ## 3. Make sure run queue settings are correct
 
