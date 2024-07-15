@@ -12,7 +12,7 @@ import (
 // release notes.
 type StackConfigurations interface {
 	// ReadConfiguration returns a stack configuration by its ID.
-	Read(ctx context.Context, ID string) (*StackConfiguration, error)
+	Read(ctx context.Context, id string) (*StackConfiguration, error)
 }
 
 type stackConfigurations struct {
@@ -21,8 +21,8 @@ type stackConfigurations struct {
 
 var _ StackConfigurations = &stackConfigurations{}
 
-func (s stackConfigurations) Read(ctx context.Context, ID string) (*StackConfiguration, error) {
-	req, err := s.client.NewRequest("GET", fmt.Sprintf("stack-configurations/%s", url.PathEscape(ID)), nil)
+func (s stackConfigurations) Read(ctx context.Context, id string) (*StackConfiguration, error) {
+	req, err := s.client.NewRequest("GET", fmt.Sprintf("stack-configurations/%s", url.PathEscape(id)), nil)
 	if err != nil {
 		return nil, err
 	}
