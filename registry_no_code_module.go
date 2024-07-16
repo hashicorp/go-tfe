@@ -45,7 +45,7 @@ type RegistryNoCodeModuleCreateWorkspaceOptions struct {
 	// Name is the name of the workspace, which can only include letters,
 	// numbers, and _. This will be used as an identifier and must be unique in
 	// the organization.
-	Name *string `jsonapi:"attr,name,omitempty"`
+	Name string `jsonapi:"attr,name"`
 
 	// Description is a description for the workspace.
 	Description *string `jsonapi:"attr,description,omitempty"`
@@ -61,10 +61,10 @@ type RegistryNoCodeModuleCreateWorkspaceOptions struct {
 	Variables []*Variable `jsonapi:"relation,vars,omitempty"`
 
 	// SourceName is the name of the source of the workspace.
-	SourceName *string `jsonapi:"attr,source-name"`
+	SourceName *string `jsonapi:"attr,source-name,omitempty"`
 
 	// SourceUrl is the URL of the source of the workspace.
-	SourceURL *string `jsonapi:"attr,source-url"`
+	SourceURL *string `jsonapi:"attr,source-url,omitempty"`
 }
 
 type RegistryNoCodeModuleWorkspace struct {
@@ -309,11 +309,8 @@ func (o *RegistryNoCodeModuleReadOptions) valid() error {
 }
 
 func (o *RegistryNoCodeModuleCreateWorkspaceOptions) valid() error {
-	if !validString(o.Name) {
+	if !validString(&o.Name) {
 		return ErrRequiredName
-	}
-	if !validStringID(o.Name) {
-		return ErrInvalidName
 	}
 
 	return nil

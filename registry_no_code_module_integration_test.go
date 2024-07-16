@@ -359,7 +359,7 @@ func TestRegistryNoCodeModulesCreateWorkspace(t *testing.T) {
 			ctx,
 			ncm.ID,
 			&RegistryNoCodeModuleCreateWorkspaceOptions{
-				Name:       String(wn),
+				Name:       wn,
 				SourceName: String(sn),
 				SourceURL:  String(su),
 			},
@@ -379,7 +379,7 @@ func TestRegistryNoCodeModulesCreateWorkspace(t *testing.T) {
 			ctx,
 			"codeno-abc123XYZ",
 			&RegistryNoCodeModuleCreateWorkspaceOptions{
-				Name: String(wn),
+				Name: wn,
 			},
 		)
 		r.Error(err)
