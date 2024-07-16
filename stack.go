@@ -28,6 +28,9 @@ type Stacks interface {
 
 	// Delete deletes a stack.
 	Delete(ctx context.Context, stackID string) error
+
+	// CreateUncontrolled creates a new uncontrolled source
+	CreateUncontrolledConfiguration(ctx context.Context, stackID string, options *CreateUncontrolledConfigurationOptions) (*StacksUncontrolledConfiguration, error)
 }
 
 // stacks implements Stacks.
@@ -110,6 +113,16 @@ type StackUpdateOptions struct {
 	VCSRepo     *StackVCSRepo `jsonapi:"attr,vcs-repo,omitempty"`
 }
 
+type CreateUncontrolledConfigurationOptions struct {
+	StackID string `jsonapi:"attr,stack-id"`
+}
+
+type StacksUncontrolledConfiguration struct {
+	ID            string `jsonapi:"primary,stack-uncontrolled-configuration-sources"`
+	SourceAddress string `jsonapi:"attr,source-address"`
+	Stack         *Stack `jsonapi:"relation,stack"`
+}
+
 func (s stacks) List(ctx context.Context, organization string, options *StackListOptions) (*StackList, error) {
 	if err := options.valid(); err != nil {
 		return nil, err
@@ -185,6 +198,22 @@ func (s stacks) Delete(ctx context.Context, stackID string) error {
 	}
 
 	return req.Do(ctx, nil)
+}
+
+func (s stacks) CreateUncontrolledConfiguration(ctx context.Context, stackID string, options *CreateUncontrolledConfigurationOptions) (*StacksUncontrolledConfiguration, error) {
+	req, err := s.client.NewRequest("POST", fmt.Sprintf("stacks/%s/actions/uncontrolled-configuration", url.PathEscape(stackID)), nil)
+	if err != nil {
+		return nil, err
+	}
+	fmt.Println(req)
+
+	ucs := &StacksUncontrolledConfiguration{}
+	err = req.Do(ctx, ucs)
+	if err != nil {
+		return nil, err
+	}
+
+	return ucs, nil
 }
 
 func (s *StackListOptions) valid() error {
