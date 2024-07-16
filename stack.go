@@ -64,14 +64,6 @@ type StackList struct {
 	Items []*Stack
 }
 
-type StackDiagnosticsList struct {
-	*Pagination
-	Items []*StackDiagnostics
-}
-
-type StackDiagnostics struct {
-}
-
 // StackVCSRepo represents the version control system repository for a stack.
 type StackVCSRepo struct {
 	Identifier        string `jsonapi:"attr,identifier"`
@@ -95,7 +87,6 @@ type Stack struct {
 	// Relationships
 	Project                  *Project            `jsonapi:"relation,project"`
 	LatestStackConfiguration *StackConfiguration `jsonapi:"relation,latest-stack-configuration"`
-	StackDiagnostics         *StackDiagnostics   `jsonapi:"relation,stack-diagnostics"`
 }
 
 type StackConfigurationStatusTimestamps struct {
