@@ -59,6 +59,12 @@ type RegistryNoCodeModuleCreateWorkspaceOptions struct {
 	// Variables is the slice of variables to be configured for the no-code
 	// workspace.
 	Variables []*Variable `jsonapi:"relation,vars,omitempty"`
+
+	// SourceName is the name of the source of the workspace.
+	SourceName *string `jsonapi:"attr,source-name"`
+
+	// SourceUrl is the URL of the source of the workspace.
+	SourceURL *string `jsonapi:"attr,source-url"`
 }
 
 type RegistryNoCodeModuleWorkspace struct {

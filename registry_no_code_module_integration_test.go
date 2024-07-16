@@ -353,11 +353,15 @@ func TestRegistryNoCodeModulesCreateWorkspace(t *testing.T) {
 
 	t.Run("test creating a workspace via a no-code module", func(t *testing.T) {
 		wn := fmt.Sprintf("foo-%s", randomString(t))
+		sn := "my-app"
+		su := "http://my-app.com"
 		_, err = client.RegistryNoCodeModules.CreateWorkspace(
 			ctx,
 			ncm.ID,
 			&RegistryNoCodeModuleCreateWorkspaceOptions{
-				Name: String(wn),
+				Name:       String(wn),
+				SourceName: String(sn),
+				SourceURL:  String(su),
 			},
 		)
 		r.NoError(err)
@@ -365,6 +369,8 @@ func TestRegistryNoCodeModulesCreateWorkspace(t *testing.T) {
 		w, err := client.Workspaces.Read(ctx, org.Name, wn)
 		r.NoError(err)
 		r.Equal(wn, w.Name)
+		r.Equal(sn, w.SourceName)
+		r.Equal(su, w.SourceURL)
 	})
 
 	t.Run("fail to create a workspace with a bad module ID", func(t *testing.T) {
