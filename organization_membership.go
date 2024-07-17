@@ -70,6 +70,7 @@ type OrganizationMembership struct {
 type OrgMembershipIncludeOpt string
 
 const (
+	OrgMembershipOrganization OrgMembershipIncludeOpt = "organization"
 	OrgMembershipUser OrgMembershipIncludeOpt = "user"
 	OrgMembershipTeam OrgMembershipIncludeOpt = "teams"
 )
