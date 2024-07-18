@@ -234,7 +234,7 @@ func pollStackDeploymentStatus(t *testing.T, ctx context.Context, client *Client
 			var err error
 			deployment, err := client.StackDeployments.Read(ctx, stackID, deploymentName)
 			if err != nil {
-				t.Fatalf("Failed to read stack %q: %s", stackID, err)
+				t.Fatalf("Failed to read stack deployment %s/%s: %s", stackID, deploymentName, err)
 			}
 
 			t.Logf("Stack deployment %s/%s had status %q", stackID, deploymentName, deployment.Status)
