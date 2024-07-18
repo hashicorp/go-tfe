@@ -385,3 +385,5 @@ func TestRegistryNoCodeModulesCreateWorkspace(t *testing.T) {
 		r.Error(err)
 	})
 }
+
+// TODO: Add workspace upgrade test

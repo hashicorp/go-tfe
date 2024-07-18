@@ -36,6 +36,9 @@ type RegistryNoCodeModules interface {
 
 	// CreateWorkspace creates a workspace using a no-code module.
 	CreateWorkspace(ctx context.Context, noCodeModuleID string, options *RegistryNoCodeModuleCreateWorkspaceOptions) (*RegistryNoCodeModuleWorkspace, error)
+
+	// UpgradeWorkspace initiates an upgrade of an existing no-code module workspace.
+	UpgradeWorkspace(ctx context.Context, noCodeModuleID string, workspaceID string, options *RegistryNoCodeModuleUpgradeWorkspaceOptions) (*RegistryNoCodeModuleWorkspace, error)
 }
 
 type RegistryNoCodeModuleCreateWorkspaceOptions struct {
@@ -65,6 +68,14 @@ type RegistryNoCodeModuleCreateWorkspaceOptions struct {
 
 	// SourceUrl is the URL of the source of the workspace.
 	SourceURL *string `jsonapi:"attr,source-url,omitempty"`
+}
+
+type RegistryNoCodeModuleUpgradeWorkspaceOptions struct {
+	Type string `jsonapi:"primary,no-code-module-workspace"`
+
+	// Variables is the slice of variables to be configured for the no-code
+	// workspace.
+	Variables []*Variable `jsonapi:"relation,vars,omitempty"`
 }
 
 type RegistryNoCodeModuleWorkspace struct {
@@ -284,6 +295,34 @@ func (r *registryNoCodeModules) CreateWorkspace(
 	return w, nil
 }
 
+func (r *registryNoCodeModules) UpgradeWorkspace(
+	ctx context.Context,
+	noCodeModuleID string,
+	workspaceID string,
+	options *RegistryNoCodeModuleUpgradeWorkspaceOptions,
+) (*RegistryNoCodeModuleWorkspace, error) {
+	if err := options.valid(); err != nil {
+		return nil, err
+	}
+
+	u := fmt.Sprintf("no-code-modules/%s/workspaces/%s/upgrade",
+		url.QueryEscape(noCodeModuleID),
+		workspaceID,
+	)
+	req, err := r.client.NewRequest("POST", u, options)
+	if err != nil {
+		return nil, err
+	}
+
+	w := &RegistryNoCodeModuleWorkspace{}
+	err = req.Do(ctx, w)
+	if err != nil {
+		return nil, err
+	}
+
+	return w, nil
+}
+
 func (o RegistryNoCodeModuleCreateOptions) valid() error {
 	if o.RegistryModule == nil || o.RegistryModule.ID == "" {
 		return ErrRequiredRegistryModule
@@ -313,5 +352,9 @@ func (o *RegistryNoCodeModuleCreateWorkspaceOptions) valid() error {
 		return ErrRequiredName
 	}
 
+	return nil
+}
+
+func (o *RegistryNoCodeModuleUpgradeWorkspaceOptions) valid() error {
 	return nil
 }
