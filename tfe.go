@@ -123,65 +123,66 @@ type Client struct {
 	remoteTFEVersion  string
 	appName           string
 
-	Admin                      Admin
-	Agents                     Agents
-	AgentPools                 AgentPools
-	AgentTokens                AgentTokens
-	Applies                    Applies
-	AuditTrails                AuditTrails
-	Comments                   Comments
-	ConfigurationVersions      ConfigurationVersions
-	CostEstimates              CostEstimates
-	GHAInstallations           GHAInstallations
-	GPGKeys                    GPGKeys
-	NotificationConfigurations NotificationConfigurations
-	OAuthClients               OAuthClients
-	OAuthTokens                OAuthTokens
-	Organizations              Organizations
-	OrganizationMemberships    OrganizationMemberships
-	OrganizationTags           OrganizationTags
-	OrganizationTokens         OrganizationTokens
-	Plans                      Plans
-	PlanExports                PlanExports
-	Policies                   Policies
-	PolicyChecks               PolicyChecks
-	PolicyEvaluations          PolicyEvaluations
-	PolicySetOutcomes          PolicySetOutcomes
-	PolicySetParameters        PolicySetParameters
-	PolicySetVersions          PolicySetVersions
-	PolicySets                 PolicySets
-	RegistryModules            RegistryModules
-	RegistryNoCodeModules      RegistryNoCodeModules
-	RegistryProviders          RegistryProviders
-	RegistryProviderPlatforms  RegistryProviderPlatforms
-	RegistryProviderVersions   RegistryProviderVersions
-	Runs                       Runs
-	RunEvents                  RunEvents
-	RunTasks                   RunTasks
-	RunTasksIntegration        RunTasksIntegration
-	RunTriggers                RunTriggers
-	SSHKeys                    SSHKeys
-	Stacks                     Stacks
-	StateVersionOutputs        StateVersionOutputs
-	StateVersions              StateVersions
-	TaskResults                TaskResults
-	TaskStages                 TaskStages
-	Teams                      Teams
-	TeamAccess                 TeamAccesses
-	TeamMembers                TeamMembers
-	TeamProjectAccess          TeamProjectAccesses
-	TeamTokens                 TeamTokens
-	TestRuns                   TestRuns
-	TestVariables              TestVariables
-	Users                      Users
-	UserTokens                 UserTokens
-	Variables                  Variables
-	VariableSets               VariableSets
-	VariableSetVariables       VariableSetVariables
-	Workspaces                 Workspaces
-	WorkspaceResources         WorkspaceResources
-	WorkspaceRunTasks          WorkspaceRunTasks
-	Projects                   Projects
+	Admin                          Admin
+	Agents                         Agents
+	AgentPools                     AgentPools
+	AgentTokens                    AgentTokens
+	Applies                        Applies
+	AuditTrails                    AuditTrails
+	Comments                       Comments
+	ConfigurationVersions          ConfigurationVersions
+	CostEstimates                  CostEstimates
+	GHAInstallations               GHAInstallations
+	GPGKeys                        GPGKeys
+	NotificationConfigurations     NotificationConfigurations
+	OAuthClients                   OAuthClients
+	OAuthTokens                    OAuthTokens
+	Organizations                  Organizations
+	OrganizationMemberships        OrganizationMemberships
+	OrganizationTags               OrganizationTags
+	OrganizationTokens             OrganizationTokens
+	Plans                          Plans
+	PlanExports                    PlanExports
+	Policies                       Policies
+	PolicyChecks                   PolicyChecks
+	PolicyEvaluations              PolicyEvaluations
+	PolicySetOutcomes              PolicySetOutcomes
+	PolicySetParameters            PolicySetParameters
+	PolicySetVersions              PolicySetVersions
+	PolicySets                     PolicySets
+	RegistryModules                RegistryModules
+	RegistryNoCodeModules          RegistryNoCodeModules
+	RegistryProviders              RegistryProviders
+	RegistryProviderPlatforms      RegistryProviderPlatforms
+	RegistryProviderVersions       RegistryProviderVersions
+	Runs                           Runs
+	RunEvents                      RunEvents
+	RunTasks                       RunTasks
+	RunTasksIntegration            RunTasksIntegration
+	RunTriggers                    RunTriggers
+	SSHKeys                        SSHKeys
+	Stacks                         Stacks
+	StackUncontrolledConfigSources StackUncontrolledConfigSources
+	StateVersionOutputs            StateVersionOutputs
+	StateVersions                  StateVersions
+	TaskResults                    TaskResults
+	TaskStages                     TaskStages
+	Teams                          Teams
+	TeamAccess                     TeamAccesses
+	TeamMembers                    TeamMembers
+	TeamProjectAccess              TeamProjectAccesses
+	TeamTokens                     TeamTokens
+	TestRuns                       TestRuns
+	TestVariables                  TestVariables
+	Users                          Users
+	UserTokens                     UserTokens
+	Variables                      Variables
+	VariableSets                   VariableSets
+	VariableSetVariables           VariableSetVariables
+	Workspaces                     Workspaces
+	WorkspaceResources             WorkspaceResources
+	WorkspaceRunTasks              WorkspaceRunTasks
+	Projects                       Projects
 
 	Meta Meta
 }
@@ -464,6 +465,7 @@ func NewClient(cfg *Config) (*Client, error) {
 	client.RunTriggers = &runTriggers{client: client}
 	client.SSHKeys = &sshKeys{client: client}
 	client.Stacks = &stacks{client: client}
+	client.StackUncontrolledConfigSources = &stackUncontrolledConfigSources{client: client}
 	client.StateVersionOutputs = &stateVersionOutputs{client: client}
 	client.StateVersions = &stateVersions{client: client}
 	client.TaskResults = &taskResults{client: client}
