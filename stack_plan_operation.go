@@ -52,19 +52,13 @@ func (s stackPlanOperations) Read(ctx context.Context, stackPlanOperationId stri
 	return ucs, nil
 }
 
-func (s stackPlanOperations) DownloadEventStream(ctx context.Context, stackPlanOperationId string) ([]byte, error) {
-	stackPlanOperation, err := s.Read(ctx, stackPlanOperationId)
-
+func (s stackPlanOperations) DownloadEventStream(ctx context.Context, eventStreamUrl string) ([]byte, error) {
+	req, err := s.client.NewRequest("GET", eventStreamUrl, nil)
 	if err != nil {
 		return nil, err
 	}
 
-	u := stackPlanOperation.EventStreamUrl
-
-	req, err := s.client.NewRequest("GET", u, nil)
-	if err != nil {
-		return nil, err
-	}
+	req.Header.Set("Accept", "application/json")
 
 	var buf bytes.Buffer
 	err = req.Do(ctx, &buf)

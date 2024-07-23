@@ -4,8 +4,8 @@
 package tfe
 
 import (
+	"bytes"
 	"context"
-	"encoding/json"
 	"fmt"
 	"net/url"
 )
@@ -16,7 +16,7 @@ type StackConfigurations interface {
 	// Read returns a uncontrolled configuration source by its ID.
 	Read(ctx context.Context, stackConfigurationId string) (*StackConfiguration, error)
 
-	JsonSchemas(ctx context.Context, stackConfigurationId string) (json.RawMessage, error)
+	JsonSchemas(ctx context.Context, stackConfigurationId string) ([]byte, error)
 
 	StackPlans(ctx context.Context, stackConfigurationId string, options *StackPlansOptions) (*StackPlansList, error)
 }
@@ -66,19 +66,21 @@ func (s stackConfigurations) Read(ctx context.Context, stackConfigurationId stri
 	return ucs, nil
 }
 
-func (s stackConfigurations) JsonSchemas(ctx context.Context, stackConfigurationId string) (json.RawMessage, error) {
+func (s stackConfigurations) JsonSchemas(ctx context.Context, stackConfigurationId string) ([]byte, error) {
 	req, err := s.client.NewRequest("GET", fmt.Sprintf("stack-configurations/%s/json-schemas", url.PathEscape(stackConfigurationId)), nil)
 	if err != nil {
 		return nil, err
 	}
 
-	var raw json.RawMessage
+	req.Header.Set("Accept", "application/json")
+
+	var raw bytes.Buffer
 	err = req.Do(ctx, &raw)
 	if err != nil {
 		return nil, err
 	}
 
-	return raw, nil
+	return raw.Bytes(), nil
 }
 
 func (s stackConfigurations) StackPlans(ctx context.Context, stackConfigurationId string, options *StackPlansOptions) (*StackPlansList, error) {
