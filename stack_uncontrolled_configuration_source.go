@@ -47,15 +47,6 @@ type StacksUncontrolledConfigSource struct {
 	StackConfiguration *StackConfiguration `jsonapi:"relation,stack-configuration"`
 }
 
-type StackConfiguration struct {
-	ID                        string `jsonapi:"primary,stack-configurations"`
-	Status                    string `jsonapi:"attr,status"`
-	SequenceNumber            int    `jsonapi:"attr,sequence-number"`
-	StackConfigSourceAddress  string `jsonapi:"attr,stack-config-source-address"`
-	TerraformCliVerion        string `jsonapi:"attr,terraform-cli-version"`
-	TerraformCliConfigVersion string `jsonapi:"attr,terraform-cli-config-version"`
-}
-
 func (s stackUncontrolledConfigSources) Read(ctx context.Context, stackUncontrolledConfigSourceId string) (*StacksUncontrolledConfigSource, error) {
 	req, err := s.client.NewRequest("GET", fmt.Sprintf("stack-uncontrolled-config-sources/%s", url.PathEscape(stackUncontrolledConfigSourceId)), nil)
 	if err != nil {
