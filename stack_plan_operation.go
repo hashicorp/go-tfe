@@ -4,9 +4,10 @@
 package tfe
 
 import (
-	"bytes"
 	"context"
 	"fmt"
+	"io"
+	"net/http"
 	"net/url"
 )
 
@@ -53,18 +54,36 @@ func (s stackPlanOperations) Read(ctx context.Context, stackPlanOperationId stri
 }
 
 func (s stackPlanOperations) DownloadEventStream(ctx context.Context, eventStreamUrl string) ([]byte, error) {
-	req, err := s.client.NewRequest("GET", eventStreamUrl, nil)
+
+	// Create a new request.
+	req, err := http.NewRequest("GET", eventStreamUrl, nil)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+
+	// Attach the default headers.
+	for k, v := range s.client.headers {
+		req.Header[k] = v
+	}
+
+	// Retrieve the next chunk.
+	resp, err := s.client.http.HTTPClient.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+
+	// Basic response checking.
+	if err := checkResponseCode(resp); err != nil {
+		return nil, err
+	}
+
+	// Read the retrieved chunk.
+	b, err := io.ReadAll(resp.Body)
 	if err != nil {
 		return nil, err
 	}
 
-	req.Header.Set("Accept", "application/json")
-
-	var buf bytes.Buffer
-	err = req.Do(ctx, &buf)
-	if err != nil {
-		return nil, err
-	}
-
-	return buf.Bytes(), nil
+	return b, nil
 }
