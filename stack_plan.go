@@ -6,6 +6,8 @@ package tfe
 import (
 	"context"
 	"fmt"
+	"io"
+	"net/http"
 	"net/url"
 )
 
@@ -14,6 +16,7 @@ import (
 type StackPlans interface {
 	// Read returns a stack plan by its ID.
 	Read(ctx context.Context, stackPlanId string) (*StackPlan, error)
+	DownloadPlanDescription(ctx context.Context, stackPlanId string) ([]byte, error)
 
 	// Get Stack Plans from Configuration Version
 
@@ -52,4 +55,54 @@ func (s stackPlans) Read(ctx context.Context, stackPlanId string) (*StackPlan, e
 	}
 
 	return ucs, nil
+}
+
+// TODO: Maybe parse the plan description here?
+func (s stackPlans) DownloadPlanDescription(ctx context.Context, stackPlanId string) ([]byte, error) {
+	// Create a new request.
+	baseUrl := s.client.BaseURL()
+	href := fmt.Sprintf("stack-plans/%s/plan-description", url.PathEscape(stackPlanId))
+	url, err := baseUrl.Parse(href)
+	if err != nil {
+
+		return nil, err
+	}
+
+	req, err := http.NewRequest("GET", url.String(), nil)
+	if err != nil {
+
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+
+	// Attach the default headers.
+	for k, v := range s.client.headers {
+		req.Header[k] = v
+	}
+
+	req.Header.Set("Authorization", "Bearer "+s.client.token)
+
+	// Retrieve the next chunk.
+	resp, err := s.client.http.HTTPClient.Do(req)
+
+	if err != nil {
+
+		return nil, err
+	}
+	defer resp.Body.Close()
+
+	// Basic response checking.
+	if err := checkResponseCode(resp); err != nil {
+
+		return nil, err
+	}
+
+	// Read the retrieved chunk.
+	b, err := io.ReadAll(resp.Body)
+	if err != nil {
+
+		return nil, err
+	}
+
+	return b, nil
 }
