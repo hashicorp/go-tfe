@@ -18,7 +18,7 @@ type StackUncontrolledConfigSources interface {
 	Read(ctx context.Context, stackUncontrolledConfigSourceId string) (*StacksUncontrolledConfigSource, error)
 
 	// CreateUncontrolled creates a new uncontrolled source
-	Create(ctx context.Context, stackID string) (*StacksUncontrolledConfigSource, error)
+	Create(ctx context.Context, stackID string, options CreateStackUncontrolledConfigSourcesOptions) (*StacksUncontrolledConfigSource, error)
 
 	// Upload packages and uploads Terraform configuration files. It requires
 	// the upload URL from an uncontrolled configuration and the full path to the
@@ -47,6 +47,10 @@ type StacksUncontrolledConfigSource struct {
 	StackConfiguration *StackConfiguration `jsonapi:"relation,stack-configuration"`
 }
 
+type CreateStackUncontrolledConfigSourcesOptions struct {
+	TargetDeployments []string `jsonapi:"attr,target-deployments,omitempty"`
+}
+
 func (s stackUncontrolledConfigSources) Read(ctx context.Context, stackUncontrolledConfigSourceId string) (*StacksUncontrolledConfigSource, error) {
 	req, err := s.client.NewRequest("GET", fmt.Sprintf("stack-uncontrolled-config-sources/%s", url.PathEscape(stackUncontrolledConfigSourceId)), nil)
 	if err != nil {
@@ -62,8 +66,12 @@ func (s stackUncontrolledConfigSources) Read(ctx context.Context, stackUncontrol
 	return ucs, nil
 }
 
-func (s stackUncontrolledConfigSources) Create(ctx context.Context, stackID string) (*StacksUncontrolledConfigSource, error) {
-	req, err := s.client.NewRequest("POST", fmt.Sprintf("stacks/%s/uncontrolled-config-sources", url.PathEscape(stackID)), nil)
+func (s stackUncontrolledConfigSources) Create(ctx context.Context, stackID string, options CreateStackUncontrolledConfigSourcesOptions) (*StacksUncontrolledConfigSource, error) {
+	if err := options.valid(); err != nil {
+		return nil, err
+	}
+
+	req, err := s.client.NewRequest("POST", fmt.Sprintf("stacks/%s/uncontrolled-config-sources", url.PathEscape(stackID)), &options)
 	if err != nil {
 		return nil, err
 	}
@@ -97,4 +105,8 @@ func (s stackUncontrolledConfigSources) Upload(ctx context.Context, uploadURL, p
 // responsibility to ensure the raw content is a valid Terraform configuration.
 func (s stackUncontrolledConfigSources) UploadTarGzip(ctx context.Context, uploadURL string, archive io.Reader) error {
 	return s.client.doForeignPUTRequest(ctx, uploadURL, archive)
+}
+
+func (o CreateStackUncontrolledConfigSourcesOptions) valid() error {
+	return nil
 }
