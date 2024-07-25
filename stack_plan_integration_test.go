@@ -58,4 +58,8 @@ func TestStackPlanList(t *testing.T) {
 	planDesc, err := client.StackPlans.PlanDescription(ctx, planList.Items[0].ID)
 	require.NoError(t, err)
 	require.NotNil(t, planDesc)
+
+	spo, err := client.StackPlanOperations.Read(ctx, stackUpdated.LatestStackConfiguration.ID)
+	require.NoError(t, err)
+	require.NotNil(t, spo)
 }
