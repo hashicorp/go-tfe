@@ -2,6 +2,7 @@ package tfe
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
 	"net/url"
 	"time"
@@ -25,6 +26,9 @@ type StackPlans interface {
 
 	// Discard discards a stack plan.
 	Discard(ctx context.Context, stackPlanID string) error
+
+	// Discard returns the plan description for a stack plan.
+	PlanDescription(ctx context.Context, stackPlanID string) (*JSONChangeDesc, error)
 }
 
 type StackPlansStatusFilter string
@@ -92,6 +96,67 @@ type StackPlan struct {
 	Stack              *Stack              `jsonapi:"relation,stack"`
 }
 
+// JSONChangeDesc represents a change description of a stack plan / apply operation.
+type JSONChangeDesc struct {
+	FormatVersion             uint64                         `json:"terraform_stack_change_description"`
+	Interim                   bool                           `json:"interim,omitempty"`
+	Applyable                 bool                           `json:"applyable"`
+	PlanMode                  string                         `json:"plan_mode"`
+	Components                []JSONComponent                `json:"components"`
+	ResourceInstances         []JSONResourceInstance         `json:"resource_instances"`
+	DeferredResourceInstances []JSONResourceInstanceDeferral `json:"deferred_resource_instances"`
+	Outputs                   map[string]JSONOutput          `json:"outputs"`
+}
+
+type JSONComponent struct {
+	// FIXME: UI seems to want a "name" that is something more compact
+	// than the full address, but not sure exactly what that ought to
+	// be once we consider the possibility of embedded stacks and
+	// components with for_each set. For now we just return the
+	// full address pending further discussion.
+	Address             string         `json:"address"`
+	ComponentAddress    string         `json:"component_address"`
+	InstanceCorrelator  string         `json:"instance_correlator"`
+	ComponentCorrelator string         `json:"component_correlator"`
+	Actions             []ChangeAction `json:"actions"`
+	Complete            bool           `json:"complete"`
+}
+
+type ChangeAction string
+
+type JSONResourceInstance struct {
+	ComponentInstanceCorrelator      string `json:"component_instance_correlator"`
+	ComponentInstanceAddress         string `json:"component_instance_address"`
+	Address                          string `json:"address"`
+	PreviousComponentInstanceAddress string `json:"previous_component_instance_address,omitempty"`
+	PreviousAddress                  string `json:"previous_address,omitempty"`
+	DeposedKey                       string `json:"deposed,omitempty"`
+	ResourceMode                     string `json:"mode,omitempty"`
+	ResourceType                     string `json:"type"`
+	ProviderAddr                     string `json:"provider_name"`
+	Change                           Change `json:"change"`
+}
+
+type JSONResourceInstanceDeferral struct {
+	ResourceInstance JSONResourceInstance `json:"resource_instance"`
+	Deferred         JSONDeferred         `json:"deferred"`
+}
+
+type JSONDeferred struct {
+	Reason string `json:"reason"`
+}
+
+type JSONOutput struct {
+	Change json.RawMessage `json:"change"`
+}
+
+type Change struct {
+	Actions []ChangeAction  `json:"actions"`
+	After   json.RawMessage `json:"after"`
+	Before  json.RawMessage `json:"before"`
+	// TODO: Add after_sensitive, after_unknown, before_sensitive
+}
+
 func (s stackPlans) Read(ctx context.Context, stackPlanID string) (*StackPlan, error) {
 	req, err := s.client.NewRequest("GET", fmt.Sprintf("stack-plans/%s", url.PathEscape(stackPlanID)), nil)
 	if err != nil {
@@ -147,4 +212,19 @@ func (s stackPlans) Cancel(ctx context.Context, stackPlanID string) error {
 	}
 
 	return req.Do(ctx, nil)
+}
+
+func (s stackPlans) PlanDescription(ctx context.Context, stackPlanID string) (*JSONChangeDesc, error) {
+	req, err := s.client.NewRequest("GET", fmt.Sprintf("stack-plans/%s/plan-description", url.PathEscape(stackPlanID)), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	jd := &JSONChangeDesc{}
+	err = req.Do(ctx, jd)
+	if err != nil {
+		return nil, err
+	}
+
+	return jd, nil
 }

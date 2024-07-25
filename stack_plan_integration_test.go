@@ -54,4 +54,8 @@ func TestStackPlanList(t *testing.T) {
 	jsonSchema, err := client.StackConfigurations.JSONSchemas(ctx, stackUpdated.LatestStackConfiguration.ID)
 	require.NoError(t, err)
 	require.NotNil(t, jsonSchema)
+
+	planDesc, err := client.StackPlans.PlanDescription(ctx, planList.Items[0].ID)
+	require.NoError(t, err)
+	require.NotNil(t, planDesc)
 }
