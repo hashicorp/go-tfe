@@ -1,5 +1,11 @@
 # UNRELEASED
 
+# v1.61.0
+
+## Enhancements
+
+* Adds support for creating no-code workspaces by @paladin-devops [#927](https://github.com/hashicorp/go-tfe/pull/927)
+
 # v1.60.0
 
 ## Enhancements
