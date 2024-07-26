@@ -95,6 +95,7 @@ runs:
         TFC_RUN_TASK_URL: "http://testing-mocks.tfe:22180/runtasks/pass"
         GITHUB_POLICY_SET_IDENTIFIER: "hashicorp/test-policy-set"
         GITHUB_REGISTRY_MODULE_IDENTIFIER: "hashicorp/terraform-random-module"
+        GITHUB_REGISTRY_NO_CODE_MODULE_IDENTIFIER: "hashicorp/terraform-random-no-code-module"
         OAUTH_CLIENT_GITHUB_TOKEN: "${{ inputs.oauth-client-github-token }}"
         GO111MODULE: "on"
         ENABLE_TFE: ${{ inputs.enterprise }}

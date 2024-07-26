@@ -20,7 +20,7 @@ There are instances where several new resources being added (i.e Workspace Run T
 
 After opening a PR, our CI system will perform a series of code checks, one of which is linting. Linting is not strictly required for a change to be merged, but it helps smooth the review process and catch common mistakes early. If you'd like to run the linters manually, follow these steps:
 
-1. Ensure you have [installed golangci-lint](https://golangci-lint.run/usage/install/#local-installation)
+1. Ensure you have [installed golangci-lint](https://golangci-lint.run/welcome/install/#local-installation)
 2. Format your code by running `make fmt`
 3. Run lint checks using `make lint`
 
