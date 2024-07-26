@@ -295,6 +295,7 @@ func (r *registryNoCodeModules) CreateWorkspace(
 	return w, nil
 }
 
+// UpgradeWorkspace initiates an upgrade of an existing no-code module workspace.
 func (r *registryNoCodeModules) UpgradeWorkspace(
 	ctx context.Context,
 	noCodeModuleID string,
