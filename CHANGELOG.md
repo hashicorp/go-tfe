@@ -1,5 +1,15 @@
 # UNRELEASED
 
+# v1.61.0
+
+## Enhancements
+
+* Adds support for creating no-code workspaces by @paladin-devops [#927](https://github.com/hashicorp/go-tfe/pull/927)
+
+# v1.60.0
+
+## Enhancements
+
 * Adds more BETA support for `Stacks` resources, which is EXPERIMENTAL, SUBJECT TO CHANGE, and may not be available to all users by @brandonc. [#934](https://github.com/hashicorp/go-tfe/pull/934)
 
 # v1.59.0
