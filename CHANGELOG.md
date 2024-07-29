@@ -3,6 +3,7 @@
 ## Enhancements
 
 * Adds support for creating no-code workspaces by @paladin-devops [#927](https://github.com/hashicorp/go-tfe/pull/927)
+* Adds support for upgrading no-code workspaces by @paladin-devops [#935](https://github.com/hashicorp/go-tfe/pull/935)
 
 # v1.60.0
 
