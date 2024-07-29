@@ -359,9 +359,10 @@ func TestRegistryNoCodeModulesCreateWorkspace(t *testing.T) {
 			ctx,
 			ncm.ID,
 			&RegistryNoCodeModuleCreateWorkspaceOptions{
-				Name:       wn,
-				SourceName: String(sn),
-				SourceURL:  String(su),
+				Name:          wn,
+				SourceName:    String(sn),
+				SourceURL:     String(su),
+				ExecutionMode: String("remote"),
 			},
 		)
 		r.NoError(err)
@@ -371,6 +372,7 @@ func TestRegistryNoCodeModulesCreateWorkspace(t *testing.T) {
 		r.Equal(wn, w.Name)
 		r.Equal(sn, w.SourceName)
 		r.Equal(su, w.SourceURL)
+		r.Equal("remote", w.ExecutionMode)
 	})
 
 	t.Run("fail to create a workspace with a bad module ID", func(t *testing.T) {
