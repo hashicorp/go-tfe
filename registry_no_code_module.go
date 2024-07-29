@@ -70,6 +70,11 @@ type RegistryNoCodeModuleCreateWorkspaceOptions struct {
 
 	// ExecutionMode is the execution mode of the workspace.
 	ExecutionMode *string `jsonapi:"attr,execution-mode,omitempty"`
+
+	// AgentPoolId is the ID of the agent pool to use for the workspace.
+	// This is required when execution mode is set to "agent".
+	// This must not be specified when execution mode is set to "remote".
+	AgentPoolID *string `jsonapi:"attr,agent-pool-id,omitempty"`
 }
 
 type RegistryNoCodeModuleUpgradeWorkspaceOptions struct {
