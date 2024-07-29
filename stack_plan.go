@@ -27,7 +27,7 @@ type StackPlans interface {
 	// Discard discards a stack plan.
 	Discard(ctx context.Context, stackPlanID string) error
 
-	// Discard returns the plan description for a stack plan.
+	// PlanDescription returns the plan description for a stack plan.
 	PlanDescription(ctx context.Context, stackPlanID string) (*JSONChangeDesc, error)
 }
 
