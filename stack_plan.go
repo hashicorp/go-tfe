@@ -65,6 +65,7 @@ type stackPlans struct {
 
 var _ StackPlans = &stackPlans{}
 
+// StackPlanStatusTimestamps are the timestamps of the status changes for a stack
 type StackPlanStatusTimestamps struct {
 	CreatedAt  time.Time `jsonapi:"attr,created-at,rfc3339"`
 	RunningAt  time.Time `jsonapi:"attr,running-at,rfc3339"`
@@ -72,6 +73,7 @@ type StackPlanStatusTimestamps struct {
 	FinishedAt time.Time `jsonapi:"attr,finished-at,rfc3339"`
 }
 
+// PlanChanges is the summary of the planned changes
 type PlanChanges struct {
 	Add    int `jsonapi:"attr,add"`
 	Total  int `jsonapi:"attr,total"`
@@ -108,12 +110,8 @@ type JSONChangeDesc struct {
 	Outputs                   map[string]JSONOutput          `json:"outputs"`
 }
 
+// JSONComponent represents a change description of a single component in a plan.
 type JSONComponent struct {
-	// FIXME: UI seems to want a "name" that is something more compact
-	// than the full address, but not sure exactly what that ought to
-	// be once we consider the possibility of embedded stacks and
-	// components with for_each set. For now we just return the
-	// full address pending further discussion.
 	Address             string         `json:"address"`
 	ComponentAddress    string         `json:"component_address"`
 	InstanceCorrelator  string         `json:"instance_correlator"`
@@ -122,8 +120,10 @@ type JSONComponent struct {
 	Complete            bool           `json:"complete"`
 }
 
+// ChangeAction are the actions a change can have: no-op, create, read, update, delte, forget.
 type ChangeAction string
 
+// JSONResourceInstance is the change description of a single resource instance in a plan.
 type JSONResourceInstance struct {
 	ComponentInstanceCorrelator      string `json:"component_instance_correlator"`
 	ComponentInstanceAddress         string `json:"component_instance_address"`
@@ -137,24 +137,27 @@ type JSONResourceInstance struct {
 	Change                           Change `json:"change"`
 }
 
+// JSONResourceInstanceDeferral is the change description of a single resource instance that is deferred.
 type JSONResourceInstanceDeferral struct {
 	ResourceInstance JSONResourceInstance `json:"resource_instance"`
 	Deferred         JSONDeferred         `json:"deferred"`
 }
 
+// JSONDeferred contains the reason why a resource instance is deferred: instance_count_unknown, resource_config_unknown, provider_config_unknown, provider_config_unknown, or deferred_prereq.
 type JSONDeferred struct {
 	Reason string `json:"reason"`
 }
 
+// JSONOutput is the value of a single output in a plan.
 type JSONOutput struct {
 	Change json.RawMessage `json:"change"`
 }
 
+// Change represents the change of a resource instance in a plan.
 type Change struct {
 	Actions []ChangeAction  `json:"actions"`
 	After   json.RawMessage `json:"after"`
 	Before  json.RawMessage `json:"before"`
-	// TODO: Add after_sensitive, after_unknown, before_sensitive
 }
 
 func (s stackPlans) Read(ctx context.Context, stackPlanID string) (*StackPlan, error) {
