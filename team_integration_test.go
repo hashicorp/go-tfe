@@ -190,9 +190,9 @@ func TestTeamsRead(t *testing.T) {
 			assert.Equal(t, *opts.SSOTeamID, ssoTeam.SSOTeamID)
 		})
 
-        t.Run("allow member token management is returned", func(t *testing.T) {
-                assert.Equal(t, *opts.AllowMemberTokenManagement, tm.AllowMemberTokenManagement)
-            })
+		t.Run("allow member token management is returned", func(t *testing.T) {
+			assert.Equal(t, *opts.AllowMemberTokenManagement, tm.AllowMemberTokenManagement)
+		})
 	})
 
 	t.Run("when the team does not exist", func(t *testing.T) {
@@ -228,7 +228,7 @@ func TestTeamsUpdate(t *testing.T) {
 				ManageProviders:       Bool(true),
 				ManageModules:         Bool(false),
 			},
-			Visibility: String("organization"),
+			Visibility:                 String("organization"),
 			AllowMemberTokenManagement: Bool(true),
 		}
 
@@ -247,10 +247,10 @@ func TestTeamsUpdate(t *testing.T) {
 				*options.Visibility,
 				item.Visibility,
 			)
-            assert.Equal(t,
-                *options.AllowMemberTokenManagement,
-                item.AllowMemberTokenManagement,
-            )
+			assert.Equal(t,
+				*options.AllowMemberTokenManagement,
+				item.AllowMemberTokenManagement,
+			)
 			assert.Equal(t,
 				*options.OrganizationAccess.ManagePolicies,
 				item.OrganizationAccess.ManagePolicies,
@@ -359,8 +359,8 @@ func TestTeam_Unmarshal(t *testing.T) {
 
 func TestTeamCreateOptions_Marshal(t *testing.T) {
 	opts := TeamCreateOptions{
-		Name:       String("team name"),
-		Visibility: String("organization"),
+		Name:                       String("team name"),
+		Visibility:                 String("organization"),
 		AllowMemberTokenManagement: Bool(true),
 		OrganizationAccess: &OrganizationAccessOptions{
 			ManagePolicies: Bool(true),
