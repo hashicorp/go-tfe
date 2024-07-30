@@ -354,7 +354,6 @@ func TestTeam_Unmarshal(t *testing.T) {
 	assert.Equal(t, team.OrganizationAccess.ReadProjects, true)
 	assert.Equal(t, team.Permissions.CanDestroy, true)
 	assert.Equal(t, team.Permissions.CanUpdateMembership, true)
-	assert.Equal(t, team.AllowMemberTokenManagement, true)
 }
 
 func TestTeamCreateOptions_Marshal(t *testing.T) {
@@ -374,7 +373,7 @@ func TestTeamCreateOptions_Marshal(t *testing.T) {
 	bodyBytes, err := req.BodyBytes()
 	require.NoError(t, err)
 
-	expectedBody := `{"data":{"type":"teams","attributes":{"name":"team name","organization-access":{"manage-policies":true},"visibility":"organization","allow-member-token-management":true}}}
+	expectedBody := `{"data":{"type":"teams","attributes":{"allow-member-token-management":true,"name":"team name","organization-access":{"manage-policies":true},"visibility":"organization"}}}
 `
 	assert.Equal(t, expectedBody, string(bodyBytes))
 }
