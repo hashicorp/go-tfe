@@ -84,6 +84,20 @@ func (mr *MockOrganizationTokensMockRecorder) Delete(ctx, organization any) *gom
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Delete", reflect.TypeOf((*MockOrganizationTokens)(nil).Delete), ctx, organization)
 }
 
+// DeleteWithOptions mocks base method.
+func (m *MockOrganizationTokens) DeleteWithOptions(ctx context.Context, organization string, options tfe.OrganizationTokenDeleteOptions) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "DeleteWithOptions", ctx, organization, options)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// DeleteWithOptions indicates an expected call of DeleteWithOptions.
+func (mr *MockOrganizationTokensMockRecorder) DeleteWithOptions(ctx, organization, options any) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteWithOptions", reflect.TypeOf((*MockOrganizationTokens)(nil).DeleteWithOptions), ctx, organization, options)
+}
+
 // Read mocks base method.
 func (m *MockOrganizationTokens) Read(ctx context.Context, organization string) (*tfe.OrganizationToken, error) {
 	m.ctrl.T.Helper()
@@ -97,4 +111,19 @@ func (m *MockOrganizationTokens) Read(ctx context.Context, organization string) 
 func (mr *MockOrganizationTokensMockRecorder) Read(ctx, organization any) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Read", reflect.TypeOf((*MockOrganizationTokens)(nil).Read), ctx, organization)
+}
+
+// ReadWithOptions mocks base method.
+func (m *MockOrganizationTokens) ReadWithOptions(ctx context.Context, organization string, options tfe.OrganizationTokenReadOptions) (*tfe.OrganizationToken, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "ReadWithOptions", ctx, organization, options)
+	ret0, _ := ret[0].(*tfe.OrganizationToken)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// ReadWithOptions indicates an expected call of ReadWithOptions.
+func (mr *MockOrganizationTokensMockRecorder) ReadWithOptions(ctx, organization, options any) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ReadWithOptions", reflect.TypeOf((*MockOrganizationTokens)(nil).ReadWithOptions), ctx, organization, options)
 }
