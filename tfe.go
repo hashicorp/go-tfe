@@ -165,6 +165,7 @@ type Client struct {
 	StackConfigurations        StackConfigurations
 	StackDeployments           StackDeployments
 	StackPlans                 StackPlans
+	StackPlanOperations        StackPlanOperations
 	StateVersionOutputs        StateVersionOutputs
 	StateVersions              StateVersions
 	TaskResults                TaskResults
@@ -470,6 +471,7 @@ func NewClient(cfg *Config) (*Client, error) {
 	client.StackConfigurations = &stackConfigurations{client: client}
 	client.StackDeployments = &stackDeployments{client: client}
 	client.StackPlans = &stackPlans{client: client}
+	client.StackPlanOperations = &stackPlanOperations{client: client}
 	client.StateVersionOutputs = &stateVersionOutputs{client: client}
 	client.StateVersions = &stateVersions{client: client}
 	client.TaskResults = &taskResults{client: client}

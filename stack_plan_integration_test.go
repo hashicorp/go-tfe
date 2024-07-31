@@ -53,4 +53,16 @@ func TestStackPlanList(t *testing.T) {
 	plan, err := client.StackPlans.Read(ctx, planList.Items[0].ID)
 	require.NoError(t, err)
 	require.NotNil(t, plan)
+
+	jsonSchema, err := client.StackConfigurations.JSONSchemas(ctx, stackUpdated.LatestStackConfiguration.ID)
+	require.NoError(t, err)
+	require.NotNil(t, jsonSchema)
+
+	planDesc, err := client.StackPlans.PlanDescription(ctx, planList.Items[0].ID)
+	require.NoError(t, err)
+	require.NotNil(t, planDesc)
+
+	spo, err := client.StackPlanOperations.Read(ctx, stackUpdated.LatestStackConfiguration.ID)
+	require.NoError(t, err)
+	require.NotNil(t, spo)
 }
