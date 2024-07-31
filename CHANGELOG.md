@@ -1,5 +1,9 @@
 # UNRELEASED
+
+## Enhancements
+
 * Adds `AllowMemberTokenManagement` permission to `Team` by @juliannatetreault [#922](https://github.com/hashicorp/go-tfe/pull/922)
+* Adds support for creating different organization token types by @glennsarti [#943](https://github.com/hashicorp/go-tfe/pull/943)
 
 # v1.61.0
 
