@@ -236,7 +236,7 @@ func (s stackPlans) PlanDescription(ctx context.Context, stackPlanID string) (*J
 	}
 
 	jd := &JSONChangeDesc{}
-	err = req.Do(ctx, jd)
+	err = req.DoJSON(ctx, jd)
 	if err != nil {
 		return nil, err
 	}
