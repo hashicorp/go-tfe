@@ -46,6 +46,12 @@ const (
 	StackPlansStatusFilterCanceled  StackPlansStatusFilter = "canceled"
 )
 
+type StackPlansIncludeOpt string
+
+const (
+	StackPlansIncludeOperations StackPlansIncludeOpt = "stack_plan_operations"
+)
+
 type StackPlansListOptions struct {
 	ListOptions
 
@@ -54,6 +60,8 @@ type StackPlansListOptions struct {
 
 	// Optional: A query string to filter plans by deployment.
 	Deployment string `url:"filter[deployment],omitempty"`
+
+	Include []StackPlansIncludeOpt `url:"include,omitempty"`
 }
 
 type StackPlanList struct {
