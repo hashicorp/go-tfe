@@ -66,6 +66,7 @@ type TaskResult struct {
 	TaskURL                       string                     `jsonapi:"attr,task-url"`
 	WorkspaceTaskID               string                     `jsonapi:"attr,workspace-task-id"`
 	WorkspaceTaskEnforcementLevel TaskEnforcementLevel       `jsonapi:"attr,workspace-task-enforcement-level"`
+	AgentPoolID                   *string                    `jsonapi:"attr,agent-pool-id,omitempty"`
 
 	// The task stage this result belongs to
 	TaskStage *TaskStage `jsonapi:"relation,task_stage"`
