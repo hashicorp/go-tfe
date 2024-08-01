@@ -97,8 +97,9 @@ type StackPlan struct {
 	Deployment       string                     `jsonapi:"attr,deployment"`
 
 	// Relationships
-	StackConfiguration *StackConfiguration `jsonapi:"relation,stack-configuration"`
-	Stack              *Stack              `jsonapi:"relation,stack"`
+	StackConfiguration  *StackConfiguration   `jsonapi:"relation,stack-configuration"`
+	Stack               *Stack                `jsonapi:"relation,stack"`
+	StackPlanOperations []*StackPlanOperation `jsonapi:"relation,stack-plan-operations"`
 }
 
 // JSONChangeDesc represents a change description of a stack plan / apply operation.
