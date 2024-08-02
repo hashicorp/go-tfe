@@ -137,16 +137,21 @@ type ChangeAction string
 
 // JSONResourceInstance is the change description of a single resource instance in a plan.
 type JSONResourceInstance struct {
-	ComponentInstanceCorrelator      string `json:"component_instance_correlator"`
-	ComponentInstanceAddress         string `json:"component_instance_address"`
-	Address                          string `json:"address"`
-	PreviousComponentInstanceAddress string `json:"previous_component_instance_address,omitempty"`
-	PreviousAddress                  string `json:"previous_address,omitempty"`
-	DeposedKey                       string `json:"deposed,omitempty"`
-	ResourceMode                     string `json:"mode,omitempty"`
-	ResourceType                     string `json:"type"`
-	ProviderAddr                     string `json:"provider_name"`
-	Change                           Change `json:"change"`
+	ComponentInstanceCorrelator      string          `json:"component_instance_correlator"`
+	ComponentInstanceAddress         string          `json:"component_instance_address"`
+	Address                          string          `json:"address"`
+	PreviousComponentInstanceAddress string          `json:"previous_component_instance_address,omitempty"`
+	PreviousAddress                  string          `json:"previous_address,omitempty"`
+	DeposedKey                       string          `json:"deposed,omitempty"`
+	ResourceMode                     string          `json:"mode,omitempty"`
+	ResourceType                     string          `json:"type"`
+	ProviderAddr                     string          `json:"provider_name"`
+	Change                           Change          `json:"change"`
+	ResourceName                     string          `json:"resource_name"`
+	Index                            json.RawMessage `json:"index"`
+	IndexUnknown                     bool            `json:"index_unknown"`
+	ModuleAddr                       string          `json:"module_address"`
+	ActionReason                     string          `json:"action_reason,omitempty"`
 }
 
 // JSONResourceInstanceDeferral is the change description of a single resource instance that is deferred.
@@ -167,9 +172,22 @@ type JSONOutput struct {
 
 // Change represents the change of a resource instance in a plan.
 type Change struct {
-	Actions []ChangeAction  `json:"actions"`
-	After   json.RawMessage `json:"after"`
-	Before  json.RawMessage `json:"before"`
+	Actions         []ChangeAction  `json:"actions"`
+	After           json.RawMessage `json:"after"`
+	Before          json.RawMessage `json:"before"`
+	AfterUnknown    json.RawMessage `json:"after_unknown"`
+	BeforeSensitive json.RawMessage `json:"before_sensitive"`
+	AfterSensitive  json.RawMessage `json:"after_sensitive"`
+	Importing       *JsonImporting  `json:"importing,omitempty"`
+	ReplacePaths    json.RawMessage `json:"replace_paths,omitempty"`
+}
+
+// JsonImporting represents the import status of a resource instance in a plan.
+type JsonImporting struct {
+	// True within a deferred instance
+	Unknown         bool   `json:"unknown"`
+	ID              string `json:"id"`
+	GeneratedConfig string `json:"generated_config"`
 }
 
 func (s stackPlans) Read(ctx context.Context, stackPlanID string) (*StackPlan, error) {
