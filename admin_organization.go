@@ -53,6 +53,8 @@ type AdminOrganization struct {
 	SsoEnabled                       bool   `jsonapi:"attr,sso-enabled"`
 	TerraformBuildWorkerApplyTimeout string `jsonapi:"attr,terraform-build-worker-apply-timeout"`
 	TerraformBuildWorkerPlanTimeout  string `jsonapi:"attr,terraform-build-worker-plan-timeout"`
+	ApplyTimeout                     string `jsonapi:"attr,apply-timeout"`
+	PlanTimeout                      string `jsonapi:"attr,plan-timeout"`
 	TerraformWorkerSudoEnabled       bool   `jsonapi:"attr,terraform-worker-sudo-enabled"`
 	WorkspaceLimit                   *int   `jsonapi:"attr,workspace-limit"`
 
@@ -69,6 +71,8 @@ type AdminOrganizationUpdateOptions struct {
 	IsDisabled                       *bool   `jsonapi:"attr,is-disabled,omitempty"`
 	TerraformBuildWorkerApplyTimeout *string `jsonapi:"attr,terraform-build-worker-apply-timeout,omitempty"`
 	TerraformBuildWorkerPlanTimeout  *string `jsonapi:"attr,terraform-build-worker-plan-timeout,omitempty"`
+	ApplyTimeout                     *string `jsonapi:"attr,apply-timeout,omitempty"`
+	PlanTimeout                      *string `jsonapi:"attr,plan-timeout,omitempty"`
 	TerraformWorkerSudoEnabled       bool    `jsonapi:"attr,terraform-worker-sudo-enabled,omitempty"`
 	WorkspaceLimit                   *int    `jsonapi:"attr,workspace-limit,omitempty"`
 }
