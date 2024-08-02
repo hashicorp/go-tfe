@@ -40,6 +40,8 @@ type AdminGeneralSetting struct {
 	DefaultWorkspacesPerOrgCeiling   int    `jsonapi:"attr,default-workspaces-per-organization-ceiling"`
 	TerraformBuildWorkerApplyTimeout string `jsonapi:"attr,terraform-build-worker-apply-timeout"`
 	TerraformBuildWorkerPlanTimeout  string `jsonapi:"attr,terraform-build-worker-plan-timeout"`
+	ApplyTimeout                     string `jsonapi:"attr,apply-timeout"`
+	PlanTimeout                      string `jsonapi:"attr,plan-timeout"`
 	DefaultRemoteStateAccess         bool   `jsonapi:"attr,default-remote-state-access"`
 }
 
@@ -47,12 +49,14 @@ type AdminGeneralSetting struct {
 // general settings.
 // https://developer.hashicorp.com/terraform/enterprise/api-docs/admin/settings#request-body
 type AdminGeneralSettingsUpdateOptions struct {
-	LimitUserOrgCreation              *bool `jsonapi:"attr,limit-user-organization-creation,omitempty"`
-	APIRateLimitingEnabled            *bool `jsonapi:"attr,api-rate-limiting-enabled,omitempty"`
-	APIRateLimit                      *int  `jsonapi:"attr,api-rate-limit,omitempty"`
-	SendPassingStatusUntriggeredPlans *bool `jsonapi:"attr,send-passing-statuses-for-untriggered-speculative-plans,omitempty"`
-	AllowSpeculativePlansOnPR         *bool `jsonapi:"attr,allow-speculative-plans-on-pull-requests-from-forks,omitempty"`
-	DefaultRemoteStateAccess          *bool `jsonapi:"attr,default-remote-state-access,omitempty"`
+	LimitUserOrgCreation              *bool   `jsonapi:"attr,limit-user-organization-creation,omitempty"`
+	APIRateLimitingEnabled            *bool   `jsonapi:"attr,api-rate-limiting-enabled,omitempty"`
+	APIRateLimit                      *int    `jsonapi:"attr,api-rate-limit,omitempty"`
+	SendPassingStatusUntriggeredPlans *bool   `jsonapi:"attr,send-passing-statuses-for-untriggered-speculative-plans,omitempty"`
+	AllowSpeculativePlansOnPR         *bool   `jsonapi:"attr,allow-speculative-plans-on-pull-requests-from-forks,omitempty"`
+	DefaultRemoteStateAccess          *bool   `jsonapi:"attr,default-remote-state-access,omitempty"`
+	ApplyTimeout                      *string `jsonapi:"attr,apply-timeout"`
+	PlanTimeout                       *string `jsonapi:"attr,plan-timeout"`
 }
 
 // Read returns the general settings.
