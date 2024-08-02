@@ -178,12 +178,12 @@ type Change struct {
 	AfterUnknown    json.RawMessage `json:"after_unknown"`
 	BeforeSensitive json.RawMessage `json:"before_sensitive"`
 	AfterSensitive  json.RawMessage `json:"after_sensitive"`
-	Importing       *JsonImporting  `json:"importing,omitempty"`
+	Importing       *JSONImporting  `json:"importing,omitempty"`
 	ReplacePaths    json.RawMessage `json:"replace_paths,omitempty"`
 }
 
-// JsonImporting represents the import status of a resource instance in a plan.
-type JsonImporting struct {
+// JSONImporting represents the import status of a resource instance in a plan.
+type JSONImporting struct {
 	// True within a deferred instance
 	Unknown         bool   `json:"unknown"`
 	ID              string `json:"id"`
