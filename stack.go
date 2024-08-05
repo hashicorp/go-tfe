@@ -66,10 +66,10 @@ type StackList struct {
 
 // StackVCSRepo represents the version control system repository for a stack.
 type StackVCSRepo struct {
-	Identifier        string `jsonapi:"attr,identifier"`
-	Branch            string `jsonapi:"attr,branch"`
-	GHAInstallationID string `jsonapi:"attr,github-app-installation-id"`
-	OAuthTokenID      string `jsonapi:"attr,oauth-token-id"`
+	Identifier        string `json:"identifier"`
+	Branch            string `json:"branch,omitempty"`
+	GHAInstallationID string `json:"github-app-installation-id,omitempty"`
+	OAuthTokenID      string `json:"oauth-token-id,omitempty"`
 }
 
 // Stack represents a stack.
