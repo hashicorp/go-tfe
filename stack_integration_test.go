@@ -1,8 +1,12 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
+
 package tfe
 
 import (
 	"context"
 	"testing"
+	"time"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
@@ -163,10 +167,156 @@ func TestStackReadUpdateDelete(t *testing.T) {
 	require.NoError(t, err)
 	require.Equal(t, "updated description", stackUpdated.Description)
 
+	stackUpdatedConfig, err := client.Stacks.UpdateConfiguration(ctx, stack.ID)
+	require.NoError(t, err)
+	require.Equal(t, stack.Name, stackUpdatedConfig.Name)
+
 	err = client.Stacks.Delete(ctx, stack.ID)
 	require.NoError(t, err)
 
 	stackReadAfterDelete, err := client.Stacks.Read(ctx, stack.ID)
 	require.ErrorIs(t, err, ErrResourceNotFound)
 	require.Nil(t, stackReadAfterDelete)
+}
+
+func pollStackDeployments(t *testing.T, ctx context.Context, client *Client, stackID string) (stack *Stack) {
+	t.Helper()
+
+	// pollStackDeployments will poll the given stack until it has deployments or the deadline is reached.
+	ctx, cancel := context.WithDeadline(ctx, time.Now().Add(5*time.Minute))
+	defer cancel()
+
+	deadline, _ := ctx.Deadline()
+	t.Logf("Polling stack %q for deployments with deadline of %s", stackID, deadline)
+
+	ticker := time.NewTicker(2 * time.Second)
+	defer ticker.Stop()
+
+	for finished := false; !finished; {
+		t.Log("...")
+		select {
+		case <-ctx.Done():
+			t.Fatalf("Stack %q had no deployments at deadline", stackID)
+		case <-ticker.C:
+			var err error
+			stack, err = client.Stacks.Read(ctx, stackID)
+			if err != nil {
+				t.Fatalf("Failed to read stack %q: %s", stackID, err)
+			}
+
+			t.Logf("Stack %q had %d deployments", stack.ID, len(stack.DeploymentNames))
+			if len(stack.DeploymentNames) > 0 {
+				finished = true
+			}
+		}
+	}
+
+	return
+}
+
+func pollStackDeploymentStatus(t *testing.T, ctx context.Context, client *Client, stackID, deploymentName, status string) {
+	// pollStackDeployments will poll the given stack until it has deployments or the deadline is reached.
+	ctx, cancel := context.WithDeadline(ctx, time.Now().Add(5*time.Minute))
+	defer cancel()
+
+	deadline, _ := ctx.Deadline()
+	t.Logf("Polling stack %q for deployments with deadline of %s", stackID, deadline)
+
+	ticker := time.NewTicker(2 * time.Second)
+	defer ticker.Stop()
+
+	for finished := false; !finished; {
+		t.Log("...")
+		select {
+		case <-ctx.Done():
+			t.Fatalf("Stack deployment %s/%s did not have status %q at deadline", stackID, deploymentName, status)
+		case <-ticker.C:
+			var err error
+			deployment, err := client.StackDeployments.Read(ctx, stackID, deploymentName)
+			if err != nil {
+				t.Fatalf("Failed to read stack deployment %s/%s: %s", stackID, deploymentName, err)
+			}
+
+			t.Logf("Stack deployment %s/%s had status %q", stackID, deploymentName, deployment.Status)
+			if deployment.Status == status {
+				finished = true
+			}
+		}
+	}
+}
+
+func pollStackConfigurationStatus(t *testing.T, ctx context.Context, client *Client, stackConfigID, status string) (stackConfig *StackConfiguration) {
+	// pollStackDeployments will poll the given stack until it has deployments or the deadline is reached.
+	ctx, cancel := context.WithDeadline(ctx, time.Now().Add(5*time.Minute))
+	defer cancel()
+
+	deadline, _ := ctx.Deadline()
+	t.Logf("Polling stack configuration %q for status %q with deadline of %s", stackConfigID, status, deadline)
+
+	ticker := time.NewTicker(2 * time.Second)
+	defer ticker.Stop()
+
+	var err error
+	for finished := false; !finished; {
+		t.Log("...")
+		select {
+		case <-ctx.Done():
+			t.Fatalf("Stack configuration %q did not have status %q at deadline", stackConfigID, status)
+		case <-ticker.C:
+			stackConfig, err = client.StackConfigurations.Read(ctx, stackConfigID)
+			if err != nil {
+				t.Fatalf("Failed to read stack configuration %q: %s", stackConfigID, err)
+			}
+
+			t.Logf("Stack configuration %q had status %q", stackConfigID, stackConfig.Status)
+			if stackConfig.Status == status {
+				finished = true
+			}
+		}
+	}
+
+	return
+}
+
+func TestStackConverged(t *testing.T) {
+	skipUnlessBeta(t)
+
+	client := testClient(t)
+	ctx := context.Background()
+
+	orgTest, orgTestCleanup := createOrganization(t, client)
+	t.Cleanup(orgTestCleanup)
+
+	oauthClient, cleanup := createOAuthClient(t, client, orgTest, nil)
+	t.Cleanup(cleanup)
+
+	stack, err := client.Stacks.Create(ctx, StackCreateOptions{
+		Name: "test-stack",
+		VCSRepo: &StackVCSRepo{
+			Identifier:   "brandonc/pet-nulls-stack",
+			OAuthTokenID: oauthClient.OAuthTokens[0].ID,
+		},
+		Project: &Project{
+			ID: orgTest.DefaultProject.ID,
+		},
+	})
+
+	require.NoError(t, err)
+	require.NotNil(t, stack)
+
+	stackUpdated, err := client.Stacks.UpdateConfiguration(ctx, stack.ID)
+	require.NoError(t, err)
+	require.NotNil(t, stackUpdated)
+
+	deployments := []string{"production", "staging"}
+
+	stack = pollStackDeployments(t, ctx, client, stackUpdated.ID)
+	require.ElementsMatch(t, deployments, stack.DeploymentNames)
+	require.NotNil(t, stack.LatestStackConfiguration)
+
+	for _, deployment := range deployments {
+		pollStackDeploymentStatus(t, ctx, client, stack.ID, deployment, "paused")
+	}
+
+	pollStackConfigurationStatus(t, ctx, client, stack.LatestStackConfiguration.ID, "converged")
 }

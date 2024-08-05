@@ -222,8 +222,8 @@ func TestAdminOrganizations_Update(t *testing.T) {
 		globalModuleSharing := false
 		globalProviderSharing := false
 		isDisabled := false
-		terraformBuildWorkerApplyTimeout := "24h"
-		terraformBuildWorkerPlanTimeout := "24h"
+		applyTimeout := "24h"
+		planTimeout := "24h"
 		terraformWorkerSudoEnabled := true
 
 		opts := AdminOrganizationUpdateOptions{
@@ -231,8 +231,10 @@ func TestAdminOrganizations_Update(t *testing.T) {
 			GlobalModuleSharing:              &globalModuleSharing,
 			GlobalProviderSharing:            &globalProviderSharing,
 			IsDisabled:                       &isDisabled,
-			TerraformBuildWorkerApplyTimeout: &terraformBuildWorkerApplyTimeout,
-			TerraformBuildWorkerPlanTimeout:  &terraformBuildWorkerPlanTimeout,
+			TerraformBuildWorkerApplyTimeout: &applyTimeout,
+			TerraformBuildWorkerPlanTimeout:  &planTimeout,
+			ApplyTimeout:                     &applyTimeout,
+			PlanTimeout:                      &planTimeout,
 			TerraformWorkerSudoEnabled:       terraformWorkerSudoEnabled,
 		}
 
@@ -244,8 +246,10 @@ func TestAdminOrganizations_Update(t *testing.T) {
 		assert.Equal(t, adminOrg.GlobalModuleSharing, &globalModuleSharing)
 		assert.Equal(t, adminOrg.GlobalProviderSharing, &globalProviderSharing)
 		assert.Equal(t, isDisabled, adminOrg.IsDisabled)
-		assert.Equal(t, terraformBuildWorkerApplyTimeout, adminOrg.TerraformBuildWorkerApplyTimeout)
-		assert.Equal(t, terraformBuildWorkerPlanTimeout, adminOrg.TerraformBuildWorkerPlanTimeout)
+		assert.Equal(t, applyTimeout, adminOrg.TerraformBuildWorkerApplyTimeout)
+		assert.Equal(t, planTimeout, adminOrg.TerraformBuildWorkerPlanTimeout)
+		assert.Equal(t, applyTimeout, adminOrg.ApplyTimeout)
+		assert.Equal(t, planTimeout, adminOrg.PlanTimeout)
 		assert.Equal(t, terraformWorkerSudoEnabled, adminOrg.TerraformWorkerSudoEnabled)
 		assert.Nil(t, adminOrg.WorkspaceLimit, "default workspace limit should be nil")
 

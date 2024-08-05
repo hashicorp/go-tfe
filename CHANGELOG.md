@@ -1,8 +1,30 @@
 # UNRELEASED
+* Adds `AllowMemberTokenManagement` permission to `Team` by @juliannatetreault [#922](https://github.com/hashicorp/go-tfe/pull/922)
+
+# v1.61.0
 
 ## Enhancements
 
-* Adds BETA support for `Stacks` resources, which is EXPERIMENTAL, SUBJECT TO CHANGE, and may not be available to all users. [#920](https://github.com/hashicorp/go-tfe/pull/920)
+* Adds support for creating no-code workspaces by @paladin-devops [#927](https://github.com/hashicorp/go-tfe/pull/927)
+* Adds support for upgrading no-code workspaces by @paladin-devops [#935](https://github.com/hashicorp/go-tfe/pull/935)
+
+# v1.60.0
+
+## Enhancements
+
+* Adds more BETA support for `Stacks` resources, which is EXPERIMENTAL, SUBJECT TO CHANGE, and may not be available to all users by @brandonc. [#934](https://github.com/hashicorp/go-tfe/pull/934)
+
+# v1.59.0
+
+## Features
+
+* Adds support for the Run Tasks Integration API by @karvounis-form3 [#929](https://github.com/hashicorp/go-tfe/pull/929)
+
+# v1.58.0
+
+## Enhancements
+
+* Adds BETA support for `Stacks` resources, which is EXPERIMENTAL, SUBJECT TO CHANGE, and may not be available to all users by @brandonc. [#920](https://github.com/hashicorp/go-tfe/pull/920)
 
 # v1.57.0
 

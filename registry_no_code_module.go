@@ -33,6 +33,60 @@ type RegistryNoCodeModules interface {
 	// Delete a registry no-code module
 	// **Note: This API is still in BETA and subject to change.**
 	Delete(ctx context.Context, ID string) error
+
+	// CreateWorkspace creates a workspace using a no-code module.
+	CreateWorkspace(ctx context.Context, noCodeModuleID string, options *RegistryNoCodeModuleCreateWorkspaceOptions) (*RegistryNoCodeModuleWorkspace, error)
+
+	// UpgradeWorkspace initiates an upgrade of an existing no-code module workspace.
+	UpgradeWorkspace(ctx context.Context, noCodeModuleID string, workspaceID string, options *RegistryNoCodeModuleUpgradeWorkspaceOptions) (*RegistryNoCodeModuleWorkspace, error)
+}
+
+type RegistryNoCodeModuleCreateWorkspaceOptions struct {
+	Type string `jsonapi:"primary,no-code-module-workspace"`
+
+	// Name is the name of the workspace, which can only include letters,
+	// numbers, and _. This will be used as an identifier and must be unique in
+	// the organization.
+	Name string `jsonapi:"attr,name"`
+
+	// Description is a description for the workspace.
+	Description *string `jsonapi:"attr,description,omitempty"`
+
+	AutoApply *bool `jsonapi:"attr,auto-apply,omitempty"`
+
+	// Project is the associated project with the workspace. If not provided,
+	// default project of the organization will be assigned to the workspace.
+	Project *Project `jsonapi:"relation,project,omitempty"`
+
+	// Variables is the slice of variables to be configured for the no-code
+	// workspace.
+	Variables []*Variable `jsonapi:"relation,vars,omitempty"`
+
+	// SourceName is the name of the source of the workspace.
+	SourceName *string `jsonapi:"attr,source-name,omitempty"`
+
+	// SourceUrl is the URL of the source of the workspace.
+	SourceURL *string `jsonapi:"attr,source-url,omitempty"`
+
+	// ExecutionMode is the execution mode of the workspace.
+	ExecutionMode *string `jsonapi:"attr,execution-mode,omitempty"`
+
+	// AgentPoolId is the ID of the agent pool to use for the workspace.
+	// This is required when execution mode is set to "agent".
+	// This must not be specified when execution mode is set to "remote".
+	AgentPoolID *string `jsonapi:"attr,agent-pool-id,omitempty"`
+}
+
+type RegistryNoCodeModuleUpgradeWorkspaceOptions struct {
+	Type string `jsonapi:"primary,no-code-module-workspace"`
+
+	// Variables is the slice of variables to be configured for the no-code
+	// workspace.
+	Variables []*Variable `jsonapi:"relation,vars,omitempty"`
+}
+
+type RegistryNoCodeModuleWorkspace struct {
+	Workspace
 }
 
 // registryNoCodeModules implements RegistryNoCodeModules.
@@ -223,6 +277,60 @@ func (r *registryNoCodeModules) Delete(ctx context.Context, noCodeModuleID strin
 	return req.Do(ctx, nil)
 }
 
+// CreateWorkspace creates a no-code workspace using a no-code module.
+func (r *registryNoCodeModules) CreateWorkspace(
+	ctx context.Context,
+	noCodeModuleID string,
+	options *RegistryNoCodeModuleCreateWorkspaceOptions,
+) (*RegistryNoCodeModuleWorkspace, error) {
+	if err := options.valid(); err != nil {
+		return nil, err
+	}
+
+	u := fmt.Sprintf("no-code-modules/%s/workspaces", url.QueryEscape(noCodeModuleID))
+	req, err := r.client.NewRequest("POST", u, options)
+	if err != nil {
+		return nil, err
+	}
+
+	w := &RegistryNoCodeModuleWorkspace{}
+	err = req.Do(ctx, w)
+	if err != nil {
+		return nil, err
+	}
+
+	return w, nil
+}
+
+// UpgradeWorkspace initiates an upgrade of an existing no-code module workspace.
+func (r *registryNoCodeModules) UpgradeWorkspace(
+	ctx context.Context,
+	noCodeModuleID string,
+	workspaceID string,
+	options *RegistryNoCodeModuleUpgradeWorkspaceOptions,
+) (*RegistryNoCodeModuleWorkspace, error) {
+	if err := options.valid(); err != nil {
+		return nil, err
+	}
+
+	u := fmt.Sprintf("no-code-modules/%s/workspaces/%s/upgrade",
+		url.QueryEscape(noCodeModuleID),
+		workspaceID,
+	)
+	req, err := r.client.NewRequest("POST", u, options)
+	if err != nil {
+		return nil, err
+	}
+
+	w := &RegistryNoCodeModuleWorkspace{}
+	err = req.Do(ctx, w)
+	if err != nil {
+		return nil, err
+	}
+
+	return w, nil
+}
+
 func (o RegistryNoCodeModuleCreateOptions) valid() error {
 	if o.RegistryModule == nil || o.RegistryModule.ID == "" {
 		return ErrRequiredRegistryModule
@@ -244,5 +352,17 @@ func (o *RegistryNoCodeModuleUpdateOptions) valid() error {
 }
 
 func (o *RegistryNoCodeModuleReadOptions) valid() error {
+	return nil
+}
+
+func (o *RegistryNoCodeModuleCreateWorkspaceOptions) valid() error {
+	if !validString(&o.Name) {
+		return ErrRequiredName
+	}
+
+	return nil
+}
+
+func (o *RegistryNoCodeModuleUpgradeWorkspaceOptions) valid() error {
 	return nil
 }

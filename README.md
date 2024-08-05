@@ -153,7 +153,7 @@ This API client covers most of the existing HCP Terraform API calls and is updat
 - [x] Runs
 - [x] Run Events
 - [x] Run Tasks
-- [ ] Run Tasks Integration
+- [x] Run Tasks Integration
 - [x] Run Triggers
 - [x] SSH Keys
 - [x] Stability Policy
