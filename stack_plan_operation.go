@@ -39,7 +39,7 @@ type StackPlanOperation struct {
 }
 
 func (s stackPlanOperations) Read(ctx context.Context, stackPlanOperationID string) (*StackPlanOperation, error) {
-	req, err := s.client.NewRequest("GET", fmt.Sprintf("stack-plans-operations/%s", url.PathEscape(stackPlanOperationID)), nil)
+	req, err := s.client.NewRequest("GET", fmt.Sprintf("stack-plan-operations/%s", url.PathEscape(stackPlanOperationID)), nil)
 	if err != nil {
 		return nil, err
 	}
