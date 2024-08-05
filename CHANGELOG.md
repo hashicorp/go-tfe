@@ -1,5 +1,10 @@
 # UNRELEASED
+
+## Enhancements
+
 * Adds `AllowMemberTokenManagement` permission to `Team` by @juliannatetreault [#922](https://github.com/hashicorp/go-tfe/pull/922)
+* Adds `PrivateRunTasks` field to Entitlements by @glennsarti [#944](https://github.com/hashicorp/go-tfe/pull/944)
+* Adds `AgentPool` relationship to options when creating and updating Run Tasks by @glennsarti [#944](https://github.com/hashicorp/go-tfe/pull/944)
 
 # v1.61.0
 
