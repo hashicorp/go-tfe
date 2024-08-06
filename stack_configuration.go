@@ -20,6 +20,16 @@ type StackConfigurations interface {
 
 	// JSONSchemas returns a byte slice of the JSON schema for the stack configuration.
 	JSONSchemas(ctx context.Context, stackConfigurationID string) ([]byte, error)
+
+	// AwaitPrepared generates a channel that will receive the status of the
+	// stack configuration as it progresses, until that status is "converged",
+	// "converging", "errored", "canceled".
+	AwaitPrepared(ctx context.Context, stackConfigurationID string) <-chan WaitForStatusResult
+
+	// AwaitConverged generates a channel that will receive the status of the
+	// stack configuration as it progresses, until that status is "converged",
+	// "canceled", or "errored".
+	AwaitConverged(ctx context.Context, stackConfigurationID string) <-chan WaitForStatusResult
 }
 
 type stackConfigurations struct {
@@ -63,4 +73,34 @@ func (s stackConfigurations) JSONSchemas(ctx context.Context, stackConfiguration
 	}
 
 	return raw.Bytes(), nil
+}
+
+// AwaitPrepared generates a channel that will receive the status of the stack configuration as it progresses.
+// The channel will be closed when the stack configuration reaches a status indicating that or an error occurs. The
+// read will be retried dependending on the configuration of the client. When the channel is closed,
+// the last value will either be a terminal status or an error.
+func (s stackConfigurations) AwaitPrepared(ctx context.Context, stackConfigurationID string) <-chan WaitForStatusResult {
+	return awaitPoll(ctx, stackConfigurationID, func(ctx context.Context) (string, error) {
+		stackConfiguration, err := s.Read(ctx, stackConfigurationID)
+		if err != nil {
+			return "", err
+		}
+
+		return stackConfiguration.Status, nil
+	}, []string{"converged", "converging", "errored", "canceled"})
+}
+
+// AwaitConverged generates a channel that will receive the status of the stack configuration as it progresses.
+// The channel will be closed when the stack configuration reaches a status indicating that or an error occurs. The
+// read will be retried dependending on the configuration of the client. When the channel is closed,
+// the last value will either be a terminal status or an error.
+func (s stackConfigurations) AwaitConverged(ctx context.Context, stackConfigurationID string) <-chan WaitForStatusResult {
+	return awaitPoll(ctx, stackConfigurationID, func(ctx context.Context) (string, error) {
+		stackConfiguration, err := s.Read(ctx, stackConfigurationID)
+		if err != nil {
+			return "", err
+		}
+
+		return stackConfiguration.Status, nil
+	}, []string{"converged", "errored", "canceled"})
 }
