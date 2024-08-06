@@ -168,6 +168,22 @@ type StackUpdateOptions struct {
 	VCSRepo     *StackVCSRepo `jsonapi:"attr,vcs-repo,omitempty"`
 }
 
+// WaitForStatusResult is the data structure that is sent over the channel
+// returned by various status polling functions. For each result, either the
+// Error or the Status will be set, but not both. If the Quit field is set,
+// the channel will be closed. If the Quit field is set and the Error is
+// nil, the Status field will be set to a specified quit status.
+type WaitForStatusResult struct {
+	ID           string
+	Status       string
+	ReadAttempts int
+	Error        error
+	Quit         bool
+}
+
+const minimumPollingIntervalMs = 3000
+const maximumPollingIntervalMs = 5000
+
 // UpdateConfiguration updates the configuration of a stack, triggering stack operations
 func (s *stacks) UpdateConfiguration(ctx context.Context, stackID string) (*Stack, error) {
 	req, err := s.client.NewRequest("POST", fmt.Sprintf("stacks/%s/actions/update-configuration", url.PathEscape(stackID)), nil)
@@ -288,4 +304,59 @@ func (s StackVCSRepo) valid() error {
 	}
 
 	return nil
+}
+
+// awaitPoll is a helper function that uses a callback to read a status, then
+// waits for a terminal status or an error. The callback should return the
+// current status, or an error. For each time the status changes, the channel
+// emits a new result. The id parameter should be the ID of the resource being
+// polled, which is used in the result to help identify the resource being polled.
+func awaitPoll(ctx context.Context, id string, reader func(ctx context.Context) (string, error), quitStatus []string) <-chan WaitForStatusResult {
+	resultCh := make(chan WaitForStatusResult)
+
+	mapStatus := make(map[string]struct{}, len(quitStatus))
+	for _, status := range quitStatus {
+		mapStatus[status] = struct{}{}
+	}
+
+	go func() {
+		defer close(resultCh)
+
+		reads := 0
+		lastStatus := ""
+		for {
+			select {
+			case <-ctx.Done():
+				resultCh <- WaitForStatusResult{ID: id, Error: fmt.Errorf("context canceled: %w", ctx.Err())}
+				return
+			case <-time.After(backoff(minimumPollingIntervalMs, maximumPollingIntervalMs, reads)):
+				status, err := reader(ctx)
+				if err != nil {
+					resultCh <- WaitForStatusResult{ID: id, Error: err, Quit: true}
+					return
+				}
+
+				_, terminal := mapStatus[status]
+
+				if status != lastStatus {
+					resultCh <- WaitForStatusResult{
+						ID:           id,
+						Status:       status,
+						ReadAttempts: reads + 1,
+						Quit:         terminal,
+					}
+				}
+
+				lastStatus = status
+
+				if terminal {
+					return
+				}
+
+				reads += 1
+			}
+		}
+	}()
+
+	return resultCh
 }

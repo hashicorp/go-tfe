@@ -32,6 +32,14 @@ type StackPlans interface {
 
 	// PlanDescription returns the plan description for a stack plan.
 	PlanDescription(ctx context.Context, stackPlanID string) (*JSONChangeDesc, error)
+
+	// AwaitTerminalState generates a channel that will receive the status of the stack plan as it progresses.
+	// See WaitForStatusResult for more information.
+	AwaitTerminalState(ctx context.Context, stackPlanID string) <-chan WaitForStatusResult
+
+	// AwaitRunning generates a channel that will receive the status of the stack plan as it progresses.
+	// See WaitForStatusResult for more information.
+	AwaitRunning(ctx context.Context, stackPlanID string) <-chan WaitForStatusResult
 }
 
 type StackPlansStatusFilter string
@@ -46,7 +54,28 @@ const (
 	StackPlansStatusFilterCanceled  StackPlansStatusFilter = "canceled"
 )
 
+type StackPlanStatus string
+
+const (
+	StackPlanStatusCreated           StackPlanStatus = "created"
+	StackPlanStatusRunning           StackPlanStatus = "running"
+	StackPlanStatusRunningQueued     StackPlanStatus = "running_queued"
+	StackPlanStatusRunningPlanning   StackPlanStatus = "running_planning"
+	StackPlanStatusRunningApplying   StackPlanStatus = "running_applying"
+	StackPlanStatusFinished          StackPlanStatus = "finished"
+	StackPlanStatusFinishedNoChanges StackPlanStatus = "finished_no_changes"
+	StackPlanStatusFinishedPlanned   StackPlanStatus = "finished_planned"
+	StackPlanStatusFinishedApplied   StackPlanStatus = "finished_applied"
+	StackPlanStatusDiscarded         StackPlanStatus = "discarded"
+	StackPlanStatusErrored           StackPlanStatus = "errored"
+	StackPlanStatusCanceled          StackPlanStatus = "canceled"
+)
+
 type StackPlansIncludeOpt string
+
+func (s StackPlanStatus) String() string {
+	return string(s)
+}
 
 const (
 	StackPlansIncludeOperations StackPlansIncludeOpt = "stack_plan_operations"
@@ -98,7 +127,7 @@ type StackPlan struct {
 	ID               string                     `jsonapi:"primary,stack-plans"`
 	PlanMode         string                     `jsonapi:"attr,plan-mode"`
 	PlanNumber       string                     `jsonapi:"attr,plan-number"`
-	Status           string                     `jsonapi:"attr,status"`
+	Status           StackPlanStatus            `jsonapi:"attr,status"`
 	StatusTimestamps *StackPlanStatusTimestamps `jsonapi:"attr,status-timestamps"`
 	IsPlanned        bool                       `jsonapi:"attr,is-planned"`
 	Changes          *PlanChanges               `jsonapi:"attr,changes"`
@@ -260,4 +289,57 @@ func (s stackPlans) PlanDescription(ctx context.Context, stackPlanID string) (*J
 	}
 
 	return jd, nil
+}
+
+// AwaitTerminalState generates a channel that will receive the status of the stack plan as it progresses.
+// The channel will be closed when the stack plan reaches a final status or an error occurs. The
+// read will be retried dependending on the configuration of the client. When the channel is closed,
+// the last value will either be a terminal status (finished, finished_no_changes, finished_applied,
+// finished_planned, discarded, canceled, errorer), or an error. The status check will continue even
+// if the stack plan is waiting for approval. Check the status within the the channel to determine
+// if the stack plan needs approval.
+func (s stackPlans) AwaitTerminalState(ctx context.Context, stackPlanID string) <-chan WaitForStatusResult {
+	return awaitPoll(ctx, stackPlanID, func(ctx context.Context) (string, error) {
+		stackPlan, err := s.Read(ctx, stackPlanID)
+		if err != nil {
+			return "", err
+		}
+
+		return stackPlan.Status.String(), nil
+	}, []string{
+		StackPlanStatusFinished.String(),
+		StackPlanStatusFinishedNoChanges.String(),
+		StackPlanStatusFinishedApplied.String(),
+		StackPlanStatusFinishedPlanned.String(),
+		StackPlanStatusDiscarded.String(),
+		StackPlanStatusErrored.String(),
+		StackPlanStatusCanceled.String(),
+	})
+}
+
+// AwaitRunning generates a channel that will receive the status of the stack plan as it progresses.
+// The channel will be closed when the stack plan reaches a running status (running, running_queued,
+// running_planning, running_applying), a terminal status (finished, finished_no_changes, finished_applied,
+// finished_planned, discarded, canceled, errorer), or an error occurs. The read will be retried
+// dependending on the configuration of the client.
+func (s stackPlans) AwaitRunning(ctx context.Context, stackPlanID string) <-chan WaitForStatusResult {
+	return awaitPoll(ctx, stackPlanID, func(ctx context.Context) (string, error) {
+		stackPlan, err := s.Read(ctx, stackPlanID)
+		if err != nil {
+			return "", err
+		}
+
+		return stackPlan.Status.String(), nil
+	}, []string{
+		StackPlanStatusRunning.String(),
+		StackPlanStatusRunningPlanning.String(),
+		StackPlanStatusRunningApplying.String(),
+		StackPlanStatusFinished.String(),
+		StackPlanStatusFinishedNoChanges.String(),
+		StackPlanStatusFinishedApplied.String(),
+		StackPlanStatusFinishedPlanned.String(),
+		StackPlanStatusDiscarded.String(),
+		StackPlanStatusErrored.String(),
+		StackPlanStatusCanceled.String(),
+	})
 }
