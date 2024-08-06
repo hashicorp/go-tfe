@@ -16,7 +16,7 @@ import (
 // release notes.
 type StackPlanOperations interface {
 	// Read returns a stack plan operation by its ID.
-	Read(ctx context.Context, stackPlanOperationID string) (*StackPlanOperation, error)
+	Read(ctx context.Context, stackPlanOperationID string) (*JSONStackPlanOperation, error)
 
 	// Get Stack Plans from Configuration Version
 	DownloadEventStream(ctx context.Context, stackPlanOperationID string) ([]byte, error)
@@ -29,14 +29,29 @@ type stackPlanOperations struct {
 var _ StackPlanOperations = &stackPlanOperations{}
 
 type StackPlanOperation struct {
-	ID             string          `jsonapi:"primary,stack-plan-operations"`
-	Type           string          `jsonapi:"attr,operation-type"`
-	Status         string          `jsonapi:"attr,status"`
-	EventStreamURL string          `jsonapi:"attr,event-stream-url"`
-	Diagnostics    json.RawMessage `jsonapi:"attr,diags"`
+	ID             string `jsonapi:"primary,stack-plan-operations"`
+	Type           string `jsonapi:"attr,operation-type"`
+	Status         string `jsonapi:"attr,status"`
+	EventStreamURL string `jsonapi:"attr,event-stream-url"`
 
 	// Relations
 	StackPlan *StackPlan `jsonapi:"relation,stack-plan"`
+}
+
+type JSONStackPlanOperation struct {
+	Data StackPlanOperationData `json:"data"`
+}
+
+type StackPlanOperationData struct {
+	ID         string                       `json:"id"`
+	Attributes StackPlanOperationAttributes `json:"attributes"`
+}
+
+type StackPlanOperationAttributes struct {
+	Type           string            `json:"operation-type"`
+	Status         string            `json:"status"`
+	EventStreamURL string            `json:"event-stream-url"`
+	Diagnostics    []StackDiagnostic `json:"diags"`
 }
 
 // StackDiagnostic represents any sourcebundle.Diagnostic value. The simplest form has
@@ -83,32 +98,45 @@ type DiagnosticRange struct {
 	End      DiagnosticPos `json:"end"`
 }
 
-func (s stackPlanOperations) Read(ctx context.Context, stackPlanOperationID string) (*StackPlanOperation, error) {
-	req, err := s.client.NewRequest("GET", fmt.Sprintf("stack-plan-operations/%s", url.PathEscape(stackPlanOperationID)), nil)
+func (s stackPlanOperations) Read(ctx context.Context, stackPlanOperationID string) (*JSONStackPlanOperation, error) {
+	baseUrl := s.client.BaseURL()
+	req, err := http.NewRequest("GET", fmt.Sprintf("%s/stack-plan-operations/%s", baseUrl.String(), url.PathEscape(stackPlanOperationID)), nil)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+
+	// Attach the default headers.
+	for k, v := range s.client.headers {
+		req.Header[k] = v
+	}
+	req.Header.Set("Authorization", "Bearer "+s.client.token)
+
+	// Retrieve the next chunk.
+	resp, err := s.client.http.HTTPClient.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+
+	// Basic response checking.
+	if err := checkResponseCode(resp); err != nil {
+		return nil, err
+	}
+
+	// Read the retrieved chunk.
+	b, err := io.ReadAll(resp.Body)
 	if err != nil {
 		return nil, err
 	}
 
-	ucs := &StackPlanOperation{}
-	err = req.Do(ctx, ucs)
+	var spo *JSONStackPlanOperation
+	err = json.Unmarshal(b, &spo)
 	if err != nil {
 		return nil, err
 	}
 
-	return ucs, nil
-}
-
-func (s *StackPlanOperation) ParseDiagnostics() ([]StackDiagnostic, error) {
-	var diagnostics []StackDiagnostic
-	if string(s.Diagnostics) == "" {
-		return diagnostics, nil
-	}
-
-	if err := json.Unmarshal(s.Diagnostics, &diagnostics); err != nil {
-		return nil, err
-	}
-
-	return diagnostics, nil
+	return spo, nil
 }
 
 func (s stackPlanOperations) DownloadEventStream(ctx context.Context, eventStreamURL string) ([]byte, error) {
