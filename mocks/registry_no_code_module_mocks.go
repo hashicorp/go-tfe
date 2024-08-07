@@ -115,10 +115,10 @@ func (mr *MockRegistryNoCodeModulesMockRecorder) Update(ctx, noCodeModuleID, opt
 }
 
 // UpgradeWorkspace mocks base method.
-func (m *MockRegistryNoCodeModules) UpgradeWorkspace(ctx context.Context, noCodeModuleID, workspaceID string, options *tfe.RegistryNoCodeModuleUpgradeWorkspaceOptions) (*tfe.Workspace, error) {
+func (m *MockRegistryNoCodeModules) UpgradeWorkspace(ctx context.Context, noCodeModuleID, workspaceID string, options *tfe.RegistryNoCodeModuleUpgradeWorkspaceOptions) (*tfe.WorkspaceUpgrade, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "UpgradeWorkspace", ctx, noCodeModuleID, workspaceID, options)
-	ret0, _ := ret[0].(*tfe.Workspace)
+	ret0, _ := ret[0].(*tfe.WorkspaceUpgrade)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
