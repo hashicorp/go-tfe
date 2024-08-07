@@ -1,6 +1,9 @@
 # UNRELEASED
 * Adds `AllowMemberTokenManagement` permission to `Team` by @juliannatetreault [#922](https://github.com/hashicorp/go-tfe/pull/922)
 
+## Bug Fixes
+* Fix returned workspace for no-code workspace creation & upgrade by @paladin-devops [#954](https://github.com/hashicorp/go-tfe/pull/954)
+
 # v1.61.0
 
 ## Enhancements
