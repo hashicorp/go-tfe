@@ -38,7 +38,7 @@ type RegistryNoCodeModules interface {
 	CreateWorkspace(ctx context.Context, noCodeModuleID string, options *RegistryNoCodeModuleCreateWorkspaceOptions) (*Workspace, error)
 
 	// UpgradeWorkspace initiates an upgrade of an existing no-code module workspace.
-	UpgradeWorkspace(ctx context.Context, noCodeModuleID string, workspaceID string, options *RegistryNoCodeModuleUpgradeWorkspaceOptions) (*Workspace, error)
+	UpgradeWorkspace(ctx context.Context, noCodeModuleID string, workspaceID string, options *RegistryNoCodeModuleUpgradeWorkspaceOptions) (*WorkspaceUpgrade, error)
 }
 
 type RegistryNoCodeModuleCreateWorkspaceOptions struct {
@@ -181,6 +181,12 @@ type RegistryNoCodeModuleUpdateOptions struct {
 	VariableOptions []*NoCodeVariableOption `jsonapi:"relation,variable-options,omitempty"`
 }
 
+type WorkspaceUpgrade struct {
+	Status string `jsonapi:"attr,status"`
+
+	PlanURL string `jsonapi:"attr,plan-url"`
+}
+
 // Create a new registry no-code module
 func (r *registryNoCodeModules) Create(ctx context.Context, organization string, options RegistryNoCodeModuleCreateOptions) (*RegistryNoCodeModule, error) {
 	if !validStringID(&organization) {
@@ -304,7 +310,7 @@ func (r *registryNoCodeModules) UpgradeWorkspace(
 	noCodeModuleID string,
 	workspaceID string,
 	options *RegistryNoCodeModuleUpgradeWorkspaceOptions,
-) (*Workspace, error) {
+) (*WorkspaceUpgrade, error) {
 	if err := options.valid(); err != nil {
 		return nil, err
 	}
@@ -318,7 +324,7 @@ func (r *registryNoCodeModules) UpgradeWorkspace(
 		return nil, err
 	}
 
-	w := &Workspace{}
+	w := &WorkspaceUpgrade{}
 	err = req.Do(ctx, w)
 	if err != nil {
 		return nil, err
