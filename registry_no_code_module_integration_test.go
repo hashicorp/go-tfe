@@ -478,6 +478,8 @@ func TestRegistryNoCodeModuleWorkspaceUpgrade(t *testing.T) {
 		)
 		r.NoError(err)
 		r.NotNil(wu)
+		r.NotEmpty(wu.Status)
+		r.NotEmpty(wu.PlanURL)
 	})
 
 	t.Run("fail to upgrade workspace with invalid no-code module", func(t *testing.T) {
