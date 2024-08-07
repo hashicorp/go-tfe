@@ -355,7 +355,7 @@ func TestRegistryNoCodeModulesCreateWorkspace(t *testing.T) {
 		wn := fmt.Sprintf("foo-%s", randomString(t))
 		sn := "my-app"
 		su := "http://my-app.com"
-		_, err = client.RegistryNoCodeModules.CreateWorkspace(
+		w, err := client.RegistryNoCodeModules.CreateWorkspace(
 			ctx,
 			ncm.ID,
 			&RegistryNoCodeModuleCreateWorkspaceOptions{
@@ -365,9 +365,6 @@ func TestRegistryNoCodeModulesCreateWorkspace(t *testing.T) {
 				ExecutionMode: String("remote"),
 			},
 		)
-		r.NoError(err)
-
-		w, err := client.Workspaces.Read(ctx, org.Name, wn)
 		r.NoError(err)
 		r.Equal(wn, w.Name)
 		r.Equal(sn, w.SourceName)
@@ -473,13 +470,15 @@ func TestRegistryNoCodeModuleWorkspaceUpgrade(t *testing.T) {
 	r.NotNil(uncm)
 
 	t.Run("test upgrading a workspace via a no-code module", func(t *testing.T) {
-		_, err = client.RegistryNoCodeModules.UpgradeWorkspace(
+		ws, err := client.RegistryNoCodeModules.UpgradeWorkspace(
 			ctx,
 			ncm.ID,
 			w.ID,
 			&RegistryNoCodeModuleUpgradeWorkspaceOptions{},
 		)
 		r.NoError(err)
+		r.NotNil(ws)
+		r.Equal(w.ID, ws.ID)
 	})
 
 	t.Run("fail to upgrade workspace with invalid no-code module", func(t *testing.T) {
