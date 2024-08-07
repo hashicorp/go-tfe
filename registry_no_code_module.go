@@ -35,10 +35,10 @@ type RegistryNoCodeModules interface {
 	Delete(ctx context.Context, ID string) error
 
 	// CreateWorkspace creates a workspace using a no-code module.
-	CreateWorkspace(ctx context.Context, noCodeModuleID string, options *RegistryNoCodeModuleCreateWorkspaceOptions) (*RegistryNoCodeModuleWorkspace, error)
+	CreateWorkspace(ctx context.Context, noCodeModuleID string, options *RegistryNoCodeModuleCreateWorkspaceOptions) (*Workspace, error)
 
 	// UpgradeWorkspace initiates an upgrade of an existing no-code module workspace.
-	UpgradeWorkspace(ctx context.Context, noCodeModuleID string, workspaceID string, options *RegistryNoCodeModuleUpgradeWorkspaceOptions) (*RegistryNoCodeModuleWorkspace, error)
+	UpgradeWorkspace(ctx context.Context, noCodeModuleID string, workspaceID string, options *RegistryNoCodeModuleUpgradeWorkspaceOptions) (*Workspace, error)
 }
 
 type RegistryNoCodeModuleCreateWorkspaceOptions struct {
@@ -83,10 +83,6 @@ type RegistryNoCodeModuleUpgradeWorkspaceOptions struct {
 	// Variables is the slice of variables to be configured for the no-code
 	// workspace.
 	Variables []*Variable `jsonapi:"relation,vars,omitempty"`
-}
-
-type RegistryNoCodeModuleWorkspace struct {
-	Workspace
 }
 
 // registryNoCodeModules implements RegistryNoCodeModules.
@@ -282,7 +278,7 @@ func (r *registryNoCodeModules) CreateWorkspace(
 	ctx context.Context,
 	noCodeModuleID string,
 	options *RegistryNoCodeModuleCreateWorkspaceOptions,
-) (*RegistryNoCodeModuleWorkspace, error) {
+) (*Workspace, error) {
 	if err := options.valid(); err != nil {
 		return nil, err
 	}
@@ -293,7 +289,7 @@ func (r *registryNoCodeModules) CreateWorkspace(
 		return nil, err
 	}
 
-	w := &RegistryNoCodeModuleWorkspace{}
+	w := &Workspace{}
 	err = req.Do(ctx, w)
 	if err != nil {
 		return nil, err
@@ -308,7 +304,7 @@ func (r *registryNoCodeModules) UpgradeWorkspace(
 	noCodeModuleID string,
 	workspaceID string,
 	options *RegistryNoCodeModuleUpgradeWorkspaceOptions,
-) (*RegistryNoCodeModuleWorkspace, error) {
+) (*Workspace, error) {
 	if err := options.valid(); err != nil {
 		return nil, err
 	}
@@ -322,7 +318,7 @@ func (r *registryNoCodeModules) UpgradeWorkspace(
 		return nil, err
 	}
 
-	w := &RegistryNoCodeModuleWorkspace{}
+	w := &Workspace{}
 	err = req.Do(ctx, w)
 	if err != nil {
 		return nil, err

@@ -56,10 +56,10 @@ func (mr *MockRegistryNoCodeModulesMockRecorder) Create(ctx, organization, optio
 }
 
 // CreateWorkspace mocks base method.
-func (m *MockRegistryNoCodeModules) CreateWorkspace(ctx context.Context, noCodeModuleID string, options *tfe.RegistryNoCodeModuleCreateWorkspaceOptions) (*tfe.RegistryNoCodeModuleWorkspace, error) {
+func (m *MockRegistryNoCodeModules) CreateWorkspace(ctx context.Context, noCodeModuleID string, options *tfe.RegistryNoCodeModuleCreateWorkspaceOptions) (*tfe.Workspace, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "CreateWorkspace", ctx, noCodeModuleID, options)
-	ret0, _ := ret[0].(*tfe.RegistryNoCodeModuleWorkspace)
+	ret0, _ := ret[0].(*tfe.Workspace)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -115,10 +115,10 @@ func (mr *MockRegistryNoCodeModulesMockRecorder) Update(ctx, noCodeModuleID, opt
 }
 
 // UpgradeWorkspace mocks base method.
-func (m *MockRegistryNoCodeModules) UpgradeWorkspace(ctx context.Context, noCodeModuleID, workspaceID string, options *tfe.RegistryNoCodeModuleUpgradeWorkspaceOptions) (*tfe.RegistryNoCodeModuleWorkspace, error) {
+func (m *MockRegistryNoCodeModules) UpgradeWorkspace(ctx context.Context, noCodeModuleID, workspaceID string, options *tfe.RegistryNoCodeModuleUpgradeWorkspaceOptions) (*tfe.Workspace, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "UpgradeWorkspace", ctx, noCodeModuleID, workspaceID, options)
-	ret0, _ := ret[0].(*tfe.RegistryNoCodeModuleWorkspace)
+	ret0, _ := ret[0].(*tfe.Workspace)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
