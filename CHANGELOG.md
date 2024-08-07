@@ -1,5 +1,9 @@
 # UNRELEASED
+
+## Enhancements
+
 * Adds `AllowMemberTokenManagement` permission to `Team` by @juliannatetreault [#922](https://github.com/hashicorp/go-tfe/pull/922)
+* Adds support for creating different organization token types by @glennsarti [#943](https://github.com/hashicorp/go-tfe/pull/943)
 
 ## Bug Fixes
 * Fix returned workspace for no-code workspace creation & upgrade by @paladin-devops [#954](https://github.com/hashicorp/go-tfe/pull/954)
