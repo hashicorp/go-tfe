@@ -181,9 +181,13 @@ type RegistryNoCodeModuleUpdateOptions struct {
 	VariableOptions []*NoCodeVariableOption `jsonapi:"relation,variable-options,omitempty"`
 }
 
+// WorkspaceUpgrade contains the data returned by the no-code workspace upgrade
+// API endpoint.
 type WorkspaceUpgrade struct {
+	// Status is the status of the run of the upgrade
 	Status string `jsonapi:"attr,status"`
 
+	// PlanURL is the URL to the plan of the upgrade
 	PlanURL string `jsonapi:"attr,plan-url"`
 }
 

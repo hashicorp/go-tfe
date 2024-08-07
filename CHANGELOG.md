@@ -1,3 +1,9 @@
+# UNRELEASED
+
+## Bug Fixes
+
+* Fixed `RegistryNoCodeModules` method `UpgradeWorkspace` to return a `WorkspaceUpgrade` type. This resulted in a BREAKING CHANGE, yet the previous type was not properly decoded nor reflective of the actual API result by @paladin-devops [#955](https://github.com/hashicorp/go-tfe/pull/955)
+
 # v1.64.1
 
 # Bug Fixes
