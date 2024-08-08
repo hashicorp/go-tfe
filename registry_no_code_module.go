@@ -358,7 +358,7 @@ func (r *registryNoCodeModules) UpgradeWorkspace(
 		return nil, fmt.Errorf("workspace not upgraded: %s", wuf.Message)
 	}
 
-	return nil, fmt.Errorf("failed to unmarshal response into known structures: %q", string(raw.Bytes()))
+	return nil, fmt.Errorf("failed to unmarshal response into known structures: %q", raw.String())
 }
 
 func (o RegistryNoCodeModuleCreateOptions) valid() error {
