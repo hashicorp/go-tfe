@@ -4,8 +4,11 @@
 package tfe
 
 import (
+	"bytes"
 	"context"
+	"encoding/json"
 	"fmt"
+	"github.com/hashicorp/jsonapi"
 	"net/url"
 )
 
@@ -38,7 +41,7 @@ type RegistryNoCodeModules interface {
 	CreateWorkspace(ctx context.Context, noCodeModuleID string, options *RegistryNoCodeModuleCreateWorkspaceOptions) (*Workspace, error)
 
 	// UpgradeWorkspace initiates an upgrade of an existing no-code module workspace.
-	UpgradeWorkspace(ctx context.Context, noCodeModuleID string, workspaceID string, options *RegistryNoCodeModuleUpgradeWorkspaceOptions) (*Workspace, error)
+	UpgradeWorkspace(ctx context.Context, noCodeModuleID string, workspaceID string, options *RegistryNoCodeModuleUpgradeWorkspaceOptions) (*WorkspaceUpgrade, error)
 }
 
 type RegistryNoCodeModuleCreateWorkspaceOptions struct {
@@ -181,6 +184,23 @@ type RegistryNoCodeModuleUpdateOptions struct {
 	VariableOptions []*NoCodeVariableOption `jsonapi:"relation,variable-options,omitempty"`
 }
 
+// WorkspaceUpgrade contains the data returned by the no-code workspace upgrade
+// API endpoint.
+type WorkspaceUpgrade struct {
+	// Status is the status of the run of the upgrade
+	Status string `jsonapi:"attr,status"`
+
+	// PlanURL is the URL to the plan of the upgrade
+	PlanURL string `jsonapi:"attr,plan-url"`
+}
+
+// WorkspaceUpgradeNoUpgradeAvailable is a struct used to unmarshal the response
+// when a workspace upgrade is not available, but the request was successful.
+type WorkspaceUpgradeNoUpgradeAvailable struct {
+	// Message is the message returned by the API when an upgrade is not available.
+	Message string `jsonapi:"attr,message"`
+}
+
 // Create a new registry no-code module
 func (r *registryNoCodeModules) Create(ctx context.Context, organization string, options RegistryNoCodeModuleCreateOptions) (*RegistryNoCodeModule, error) {
 	if !validStringID(&organization) {
@@ -304,7 +324,7 @@ func (r *registryNoCodeModules) UpgradeWorkspace(
 	noCodeModuleID string,
 	workspaceID string,
 	options *RegistryNoCodeModuleUpgradeWorkspaceOptions,
-) (*Workspace, error) {
+) (*WorkspaceUpgrade, error) {
 	if err := options.valid(); err != nil {
 		return nil, err
 	}
@@ -318,13 +338,27 @@ func (r *registryNoCodeModules) UpgradeWorkspace(
 		return nil, err
 	}
 
-	w := &Workspace{}
-	err = req.Do(ctx, w)
+	var raw bytes.Buffer
+	err = req.Do(ctx, &raw)
 	if err != nil {
 		return nil, err
 	}
 
-	return w, nil
+	// first attempt to unmarshal to the "happy path" - if an upgrade is
+	// available and was started
+	wu := WorkspaceUpgrade{}
+	if err := jsonapi.UnmarshalPayload(&raw, &wu); err == nil && wu.Status != "" && wu.PlanURL != "" {
+		return &wu, nil
+	}
+
+	// if the response is not the happy path, check if the workspace was not
+	// upgraded because an upgrade is not available
+	wuf := WorkspaceUpgradeNoUpgradeAvailable{}
+	if err := json.Unmarshal(raw.Bytes(), &wuf); err == nil && wuf.Message != "" {
+		return nil, fmt.Errorf("workspace not upgraded: %s", wuf.Message)
+	}
+
+	return nil, fmt.Errorf("failed to unmarshal response into known structures: %q", raw.String())
 }
 
 func (o RegistryNoCodeModuleCreateOptions) valid() error {
