@@ -8,6 +8,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"github.com/hashicorp/jsonapi"
 	"net/url"
 )
 
@@ -346,7 +347,7 @@ func (r *registryNoCodeModules) UpgradeWorkspace(
 	// first attempt to unmarshal to the "happy path" - if an upgrade is
 	// available and was started
 	wu := WorkspaceUpgrade{}
-	if err := json.Unmarshal(raw.Bytes(), &wu); err == nil && wu.Status != "" && wu.PlanURL != "" {
+	if err := jsonapi.UnmarshalPayload(&raw, &wu); err == nil && wu.Status != "" && wu.PlanURL != "" {
 		return &wu, nil
 	}
 
@@ -357,7 +358,7 @@ func (r *registryNoCodeModules) UpgradeWorkspace(
 		return nil, fmt.Errorf("workspace not upgraded: %s", wuf.Message)
 	}
 
-	return nil, fmt.Errorf("failed to unmarshal response into known structures")
+	return nil, fmt.Errorf("failed to unmarshal response into known structures: %q", string(raw.Bytes()))
 }
 
 func (o RegistryNoCodeModuleCreateOptions) valid() error {
