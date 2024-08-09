@@ -933,6 +933,7 @@ func createOrganization(t *testing.T, client *Client) (*Organization, func()) {
 		Name:                  String("tst-" + randomString(t)),
 		Email:                 String(fmt.Sprintf("%s@tfe.local", randomString(t))),
 		CostEstimationEnabled: Bool(true),
+		StacksEnabled:         Bool(true),
 	})
 }
 
