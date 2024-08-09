@@ -1,3 +1,9 @@
+# Unreleased
+
+## Enhancements
+
+* Adds more BETA support for `Stacks` resources, which is is EXPERIMENTAL, SUBJECT TO CHANGE, and may not be available to all users by @brandonc
+
 # v1.62.0
 
 ## Bug Fixes
