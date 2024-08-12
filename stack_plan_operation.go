@@ -28,11 +28,11 @@ type stackPlanOperations struct {
 var _ StackPlanOperations = &stackPlanOperations{}
 
 type StackPlanOperation struct {
-	ID             string `jsonapi:"primary,stack-plan-operations"`
-	Type           string `jsonapi:"attr,operation-type"`
-	Status         string `jsonapi:"attr,status"`
-	EventStreamURL string `jsonapi:"attr,event-stream-url"`
-	Diagnostics    string `jsonapi:"attr,diags"`
+	ID             string             `jsonapi:"primary,stack-plan-operations"`
+	Type           string             `jsonapi:"attr,operation-type"`
+	Status         string             `jsonapi:"attr,status"`
+	EventStreamURL string             `jsonapi:"attr,event-stream-url"`
+	Diagnostics    []*StackDiagnostic `jsonapi:"attr,diags"`
 
 	// Relations
 	StackPlan *StackPlan `jsonapi:"relation,stack-plan"`
@@ -44,13 +44,13 @@ func (s stackPlanOperations) Read(ctx context.Context, stackPlanOperationID stri
 		return nil, err
 	}
 
-	ucs := &StackPlanOperation{}
-	err = req.Do(ctx, ucs)
+	spo := &StackPlanOperation{}
+	err = req.Do(ctx, spo)
 	if err != nil {
 		return nil, err
 	}
 
-	return ucs, nil
+	return spo, nil
 }
 
 func (s stackPlanOperations) DownloadEventStream(ctx context.Context, eventStreamURL string) ([]byte, error) {
