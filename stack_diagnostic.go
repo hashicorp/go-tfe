@@ -1,3 +1,6 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
+
 package tfe
 
 // StackDiagnostic represents any sourcebundle.Diagnostic value. The simplest form has
