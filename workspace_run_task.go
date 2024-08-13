@@ -87,7 +87,7 @@ func (s *workspaceRunTasks) List(ctx context.Context, workspaceID string, option
 		return nil, ErrInvalidWorkspaceID
 	}
 
-	u := fmt.Sprintf("workspaces/%s/tasks", url.QueryEscape(workspaceID))
+	u := fmt.Sprintf("workspaces/%s/tasks", url.PathEscape(workspaceID))
 	req, err := s.client.NewRequest("GET", u, options)
 	if err != nil {
 		return nil, err
@@ -114,8 +114,8 @@ func (s *workspaceRunTasks) Read(ctx context.Context, workspaceID, workspaceTask
 
 	u := fmt.Sprintf(
 		"workspaces/%s/tasks/%s",
-		url.QueryEscape(workspaceID),
-		url.QueryEscape(workspaceTaskID),
+		url.PathEscape(workspaceID),
+		url.PathEscape(workspaceTaskID),
 	)
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
@@ -168,8 +168,8 @@ func (s *workspaceRunTasks) Update(ctx context.Context, workspaceID, workspaceTa
 
 	u := fmt.Sprintf(
 		"workspaces/%s/tasks/%s",
-		url.QueryEscape(workspaceID),
-		url.QueryEscape(workspaceTaskID),
+		url.PathEscape(workspaceID),
+		url.PathEscape(workspaceTaskID),
 	)
 	req, err := s.client.NewRequest("PATCH", u, &options)
 	if err != nil {
@@ -197,8 +197,8 @@ func (s *workspaceRunTasks) Delete(ctx context.Context, workspaceID, workspaceTa
 
 	u := fmt.Sprintf(
 		"workspaces/%s/tasks/%s",
-		url.QueryEscape(workspaceID),
-		url.QueryEscape(workspaceTaskID),
+		url.PathEscape(workspaceID),
+		url.PathEscape(workspaceTaskID),
 	)
 	req, err := s.client.NewRequest("DELETE", u, nil)
 	if err != nil {

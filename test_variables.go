@@ -68,7 +68,7 @@ func (s *testVariables) Read(ctx context.Context, moduleID RegistryModuleID, var
 		return nil, ErrInvalidVariableID
 	}
 
-	u := fmt.Sprintf("%s/%s", testVarsPath(moduleID), url.QueryEscape(variableID))
+	u := fmt.Sprintf("%s/%s", testVarsPath(moduleID), url.PathEscape(variableID))
 
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
@@ -116,7 +116,7 @@ func (s *testVariables) Update(ctx context.Context, moduleID RegistryModuleID, v
 		return nil, ErrInvalidVariableID
 	}
 
-	u := fmt.Sprintf("%s/%s", testVarsPath(moduleID), url.QueryEscape(variableID))
+	u := fmt.Sprintf("%s/%s", testVarsPath(moduleID), url.PathEscape(variableID))
 	req, err := s.client.NewRequest("PATCH", u, &options)
 	if err != nil {
 		return nil, err
@@ -140,7 +140,7 @@ func (s *testVariables) Delete(ctx context.Context, moduleID RegistryModuleID, v
 		return ErrInvalidVariableID
 	}
 
-	u := fmt.Sprintf("%s/%s", testVarsPath(moduleID), url.QueryEscape(variableID))
+	u := fmt.Sprintf("%s/%s", testVarsPath(moduleID), url.PathEscape(variableID))
 	req, err := s.client.NewRequest("DELETE", u, nil)
 	if err != nil {
 		return err
@@ -151,9 +151,9 @@ func (s *testVariables) Delete(ctx context.Context, moduleID RegistryModuleID, v
 
 func testVarsPath(moduleID RegistryModuleID) string {
 	return fmt.Sprintf("organizations/%s/tests/registry-modules/%s/%s/%s/%s/vars",
-		url.QueryEscape(moduleID.Organization),
-		url.QueryEscape(string(moduleID.RegistryName)),
-		url.QueryEscape(moduleID.Namespace),
-		url.QueryEscape(moduleID.Name),
-		url.QueryEscape(moduleID.Provider))
+		url.PathEscape(moduleID.Organization),
+		url.PathEscape(string(moduleID.RegistryName)),
+		url.PathEscape(moduleID.Namespace),
+		url.PathEscape(moduleID.Name),
+		url.PathEscape(moduleID.Provider))
 }

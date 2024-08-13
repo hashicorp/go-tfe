@@ -97,7 +97,7 @@ func (s *policyEvaluation) List(ctx context.Context, taskStageID string, options
 		return nil, ErrInvalidTaskStageID
 	}
 
-	u := fmt.Sprintf("task-stages/%s/policy-evaluations", url.QueryEscape(taskStageID))
+	u := fmt.Sprintf("task-stages/%s/policy-evaluations", url.PathEscape(taskStageID))
 	req, err := s.client.NewRequest("GET", u, options)
 	if err != nil {
 		return nil, err
@@ -240,7 +240,7 @@ func (s *policySetOutcome) Read(ctx context.Context, policySetOutcomeID string) 
 		return nil, ErrInvalidPolicySetOutcomeID
 	}
 
-	u := fmt.Sprintf("policy-set-outcomes/%s", url.QueryEscape(policySetOutcomeID))
+	u := fmt.Sprintf("policy-set-outcomes/%s", url.PathEscape(policySetOutcomeID))
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, err

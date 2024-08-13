@@ -314,7 +314,7 @@ func (s *policySets) List(ctx context.Context, organization string, options *Pol
 		return nil, ErrInvalidOrg
 	}
 
-	u := fmt.Sprintf("organizations/%s/policy-sets", url.QueryEscape(organization))
+	u := fmt.Sprintf("organizations/%s/policy-sets", url.PathEscape(organization))
 	req, err := s.client.NewRequest("GET", u, options)
 	if err != nil {
 		return nil, err
@@ -338,7 +338,7 @@ func (s *policySets) Create(ctx context.Context, organization string, options Po
 		return nil, err
 	}
 
-	u := fmt.Sprintf("organizations/%s/policy-sets", url.QueryEscape(organization))
+	u := fmt.Sprintf("organizations/%s/policy-sets", url.PathEscape(organization))
 	req, err := s.client.NewRequest("POST", u, &options)
 	if err != nil {
 		return nil, err
@@ -367,7 +367,7 @@ func (s *policySets) ReadWithOptions(ctx context.Context, policySetID string, op
 		return nil, err
 	}
 
-	u := fmt.Sprintf("policy-sets/%s", url.QueryEscape(policySetID))
+	u := fmt.Sprintf("policy-sets/%s", url.PathEscape(policySetID))
 	req, err := s.client.NewRequest("GET", u, options)
 	if err != nil {
 		return nil, err
@@ -391,7 +391,7 @@ func (s *policySets) Update(ctx context.Context, policySetID string, options Pol
 		return nil, err
 	}
 
-	u := fmt.Sprintf("policy-sets/%s", url.QueryEscape(policySetID))
+	u := fmt.Sprintf("policy-sets/%s", url.PathEscape(policySetID))
 	req, err := s.client.NewRequest("PATCH", u, &options)
 	if err != nil {
 		return nil, err
@@ -415,7 +415,7 @@ func (s *policySets) AddPolicies(ctx context.Context, policySetID string, option
 		return err
 	}
 
-	u := fmt.Sprintf("policy-sets/%s/relationships/policies", url.QueryEscape(policySetID))
+	u := fmt.Sprintf("policy-sets/%s/relationships/policies", url.PathEscape(policySetID))
 	req, err := s.client.NewRequest("POST", u, options.Policies)
 	if err != nil {
 		return err
@@ -433,7 +433,7 @@ func (s *policySets) RemovePolicies(ctx context.Context, policySetID string, opt
 		return err
 	}
 
-	u := fmt.Sprintf("policy-sets/%s/relationships/policies", url.QueryEscape(policySetID))
+	u := fmt.Sprintf("policy-sets/%s/relationships/policies", url.PathEscape(policySetID))
 	req, err := s.client.NewRequest("DELETE", u, options.Policies)
 	if err != nil {
 		return err
@@ -451,7 +451,7 @@ func (s *policySets) AddWorkspaces(ctx context.Context, policySetID string, opti
 		return err
 	}
 
-	u := fmt.Sprintf("policy-sets/%s/relationships/workspaces", url.QueryEscape(policySetID))
+	u := fmt.Sprintf("policy-sets/%s/relationships/workspaces", url.PathEscape(policySetID))
 	req, err := s.client.NewRequest("POST", u, options.Workspaces)
 	if err != nil {
 		return err
@@ -469,7 +469,7 @@ func (s *policySets) RemoveWorkspaces(ctx context.Context, policySetID string, o
 		return err
 	}
 
-	u := fmt.Sprintf("policy-sets/%s/relationships/workspaces", url.QueryEscape(policySetID))
+	u := fmt.Sprintf("policy-sets/%s/relationships/workspaces", url.PathEscape(policySetID))
 	req, err := s.client.NewRequest("DELETE", u, options.Workspaces)
 	if err != nil {
 		return err
@@ -487,7 +487,7 @@ func (s *policySets) AddWorkspaceExclusions(ctx context.Context, policySetID str
 		return err
 	}
 
-	u := fmt.Sprintf("policy-sets/%s/relationships/workspace-exclusions", url.QueryEscape(policySetID))
+	u := fmt.Sprintf("policy-sets/%s/relationships/workspace-exclusions", url.PathEscape(policySetID))
 	req, err := s.client.NewRequest("POST", u, options.WorkspaceExclusions)
 	if err != nil {
 		return err
@@ -505,7 +505,7 @@ func (s *policySets) RemoveWorkspaceExclusions(ctx context.Context, policySetID 
 		return err
 	}
 
-	u := fmt.Sprintf("policy-sets/%s/relationships/workspace-exclusions", url.QueryEscape(policySetID))
+	u := fmt.Sprintf("policy-sets/%s/relationships/workspace-exclusions", url.PathEscape(policySetID))
 	req, err := s.client.NewRequest("DELETE", u, options.WorkspaceExclusions)
 	if err != nil {
 		return err
@@ -523,7 +523,7 @@ func (s *policySets) AddProjects(ctx context.Context, policySetID string, option
 		return err
 	}
 
-	u := fmt.Sprintf("policy-sets/%s/relationships/projects", url.QueryEscape(policySetID))
+	u := fmt.Sprintf("policy-sets/%s/relationships/projects", url.PathEscape(policySetID))
 	req, err := s.client.NewRequest("POST", u, options.Projects)
 	if err != nil {
 		return err
@@ -541,7 +541,7 @@ func (s *policySets) RemoveProjects(ctx context.Context, policySetID string, opt
 		return err
 	}
 
-	u := fmt.Sprintf("policy-sets/%s/relationships/projects", url.QueryEscape(policySetID))
+	u := fmt.Sprintf("policy-sets/%s/relationships/projects", url.PathEscape(policySetID))
 	req, err := s.client.NewRequest("DELETE", u, options.Projects)
 	if err != nil {
 		return err
@@ -556,7 +556,7 @@ func (s *policySets) Delete(ctx context.Context, policySetID string) error {
 		return ErrInvalidPolicySetID
 	}
 
-	u := fmt.Sprintf("policy-sets/%s", url.QueryEscape(policySetID))
+	u := fmt.Sprintf("policy-sets/%s", url.PathEscape(policySetID))
 	req, err := s.client.NewRequest("DELETE", u, nil)
 	if err != nil {
 		return err

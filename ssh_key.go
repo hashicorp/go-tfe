@@ -86,7 +86,7 @@ func (s *sshKeys) List(ctx context.Context, organization string, options *SSHKey
 		return nil, ErrInvalidOrg
 	}
 
-	u := fmt.Sprintf("organizations/%s/ssh-keys", url.QueryEscape(organization))
+	u := fmt.Sprintf("organizations/%s/ssh-keys", url.PathEscape(organization))
 	req, err := s.client.NewRequest("GET", u, options)
 	if err != nil {
 		return nil, err
@@ -111,7 +111,7 @@ func (s *sshKeys) Create(ctx context.Context, organization string, options SSHKe
 		return nil, err
 	}
 
-	u := fmt.Sprintf("organizations/%s/ssh-keys", url.QueryEscape(organization))
+	u := fmt.Sprintf("organizations/%s/ssh-keys", url.PathEscape(organization))
 	req, err := s.client.NewRequest("POST", u, &options)
 	if err != nil {
 		return nil, err
@@ -132,7 +132,7 @@ func (s *sshKeys) Read(ctx context.Context, sshKeyID string) (*SSHKey, error) {
 		return nil, ErrInvalidSHHKeyID
 	}
 
-	u := fmt.Sprintf("ssh-keys/%s", url.QueryEscape(sshKeyID))
+	u := fmt.Sprintf("ssh-keys/%s", url.PathEscape(sshKeyID))
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, err
@@ -153,7 +153,7 @@ func (s *sshKeys) Update(ctx context.Context, sshKeyID string, options SSHKeyUpd
 		return nil, ErrInvalidSHHKeyID
 	}
 
-	u := fmt.Sprintf("ssh-keys/%s", url.QueryEscape(sshKeyID))
+	u := fmt.Sprintf("ssh-keys/%s", url.PathEscape(sshKeyID))
 	req, err := s.client.NewRequest("PATCH", u, &options)
 	if err != nil {
 		return nil, err
@@ -174,7 +174,7 @@ func (s *sshKeys) Delete(ctx context.Context, sshKeyID string) error {
 		return ErrInvalidSHHKeyID
 	}
 
-	u := fmt.Sprintf("ssh-keys/%s", url.QueryEscape(sshKeyID))
+	u := fmt.Sprintf("ssh-keys/%s", url.PathEscape(sshKeyID))
 	req, err := s.client.NewRequest("DELETE", u, nil)
 	if err != nil {
 		return err

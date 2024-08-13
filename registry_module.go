@@ -314,7 +314,7 @@ func (r *registryModules) List(ctx context.Context, organization string, options
 		return nil, ErrInvalidOrg
 	}
 
-	u := fmt.Sprintf("organizations/%s/registry-modules", url.QueryEscape(organization))
+	u := fmt.Sprintf("organizations/%s/registry-modules", url.PathEscape(organization))
 	req, err := r.client.NewRequest("GET", u, options)
 	if err != nil {
 		return nil, err
@@ -337,10 +337,10 @@ func (r *registryModules) ListCommits(ctx context.Context, moduleID RegistryModu
 
 	u := fmt.Sprintf(
 		"organizations/%s/registry-modules/private/%s/%s/%s/commits",
-		url.QueryEscape(moduleID.Organization),
-		url.QueryEscape(moduleID.Organization),
-		url.QueryEscape(moduleID.Name),
-		url.QueryEscape(moduleID.Provider),
+		url.PathEscape(moduleID.Organization),
+		url.PathEscape(moduleID.Organization),
+		url.PathEscape(moduleID.Name),
+		url.PathEscape(moduleID.Provider),
 	)
 	req, err := r.client.NewRequest("GET", u, nil)
 	if err != nil {
@@ -398,7 +398,7 @@ func (r *registryModules) Create(ctx context.Context, organization string, optio
 
 	u := fmt.Sprintf(
 		"organizations/%s/registry-modules",
-		url.QueryEscape(organization),
+		url.PathEscape(organization),
 	)
 	req, err := r.client.NewRequest("POST", u, &options)
 	if err != nil {
@@ -439,11 +439,11 @@ func (r *registryModules) Update(ctx context.Context, moduleID RegistryModuleID,
 		}
 	}
 
-	org := url.QueryEscape(moduleID.Organization)
-	registryName := url.QueryEscape(string(moduleID.RegistryName))
-	namespace := url.QueryEscape(moduleID.Namespace)
-	name := url.QueryEscape(moduleID.Name)
-	provider := url.QueryEscape(moduleID.Provider)
+	org := url.PathEscape(moduleID.Organization)
+	registryName := url.PathEscape(string(moduleID.RegistryName))
+	namespace := url.PathEscape(moduleID.Namespace)
+	name := url.PathEscape(moduleID.Name)
+	provider := url.PathEscape(moduleID.Provider)
 	registryModuleURL := fmt.Sprintf("organizations/%s/registry-modules/%s/%s/%s/%s", org, registryName, namespace, name, provider)
 
 	req, err := r.client.NewRequest(http.MethodPatch, registryModuleURL, &options)
@@ -471,9 +471,9 @@ func (r *registryModules) CreateVersion(ctx context.Context, moduleID RegistryMo
 
 	u := fmt.Sprintf(
 		"registry-modules/%s/%s/%s/versions",
-		url.QueryEscape(moduleID.Organization),
-		url.QueryEscape(moduleID.Name),
-		url.QueryEscape(moduleID.Provider),
+		url.PathEscape(moduleID.Organization),
+		url.PathEscape(moduleID.Name),
+		url.PathEscape(moduleID.Provider),
 	)
 	req, err := r.client.NewRequest("POST", u, &options)
 	if err != nil {
@@ -500,7 +500,7 @@ func (r *registryModules) CreateWithVCSConnection(ctx context.Context, options R
 	} else {
 		u = fmt.Sprintf(
 			"organizations/%s/registry-modules/vcs",
-			url.QueryEscape(*options.VCSRepo.OrganizationName),
+			url.PathEscape(*options.VCSRepo.OrganizationName),
 		)
 	}
 	req, err := r.client.NewRequest("POST", u, &options)
@@ -535,11 +535,11 @@ func (r *registryModules) Read(ctx context.Context, moduleID RegistryModuleID) (
 
 	u := fmt.Sprintf(
 		"organizations/%s/registry-modules/%s/%s/%s/%s",
-		url.QueryEscape(moduleID.Organization),
-		url.QueryEscape(string(moduleID.RegistryName)),
-		url.QueryEscape(moduleID.Namespace),
-		url.QueryEscape(moduleID.Name),
-		url.QueryEscape(moduleID.Provider),
+		url.PathEscape(moduleID.Organization),
+		url.PathEscape(string(moduleID.RegistryName)),
+		url.PathEscape(moduleID.Namespace),
+		url.PathEscape(moduleID.Name),
+		url.PathEscape(moduleID.Provider),
 	)
 
 	req, err := r.client.NewRequest("GET", u, nil)
@@ -567,11 +567,11 @@ func (r *registryModules) ReadVersion(ctx context.Context, moduleID RegistryModu
 	}
 	u := fmt.Sprintf(
 		"organizations/%s/registry-modules/private/%s/%s/%s/version?module_version=%s",
-		url.QueryEscape(moduleID.Organization),
-		url.QueryEscape(moduleID.Organization),
-		url.QueryEscape(moduleID.Name),
-		url.QueryEscape(moduleID.Provider),
-		url.QueryEscape(version),
+		url.PathEscape(moduleID.Organization),
+		url.PathEscape(moduleID.Organization),
+		url.PathEscape(moduleID.Name),
+		url.PathEscape(moduleID.Provider),
+		url.PathEscape(version),
 	)
 	req, err := r.client.NewRequest("GET", u, nil)
 	if err != nil {
@@ -603,8 +603,8 @@ func (r *registryModules) Delete(ctx context.Context, organization, name string)
 
 	u := fmt.Sprintf(
 		"registry-modules/actions/delete/%s/%s",
-		url.QueryEscape(organization),
-		url.QueryEscape(name),
+		url.PathEscape(organization),
+		url.PathEscape(name),
 	)
 	req, err := r.client.NewRequest("POST", u, nil)
 	if err != nil {
@@ -622,10 +622,10 @@ func (r *registryModules) DeleteByName(ctx context.Context, module RegistryModul
 
 	u := fmt.Sprintf(
 		"organizations/%s/registry-modules/%s/%s/%s",
-		url.QueryEscape(module.Organization),
-		url.QueryEscape(string(module.RegistryName)),
-		url.QueryEscape(module.Namespace),
-		url.QueryEscape(module.Name),
+		url.PathEscape(module.Organization),
+		url.PathEscape(string(module.RegistryName)),
+		url.PathEscape(module.Namespace),
+		url.PathEscape(module.Name),
 	)
 
 	req, err := r.client.NewRequest("DELETE", u, nil)
@@ -644,11 +644,11 @@ func (r *registryModules) DeleteProvider(ctx context.Context, moduleID RegistryM
 
 	u := fmt.Sprintf(
 		"organizations/%s/registry-modules/%s/%s/%s/%s",
-		url.QueryEscape(moduleID.Organization),
-		url.QueryEscape(string(moduleID.RegistryName)),
-		url.QueryEscape(moduleID.Namespace),
-		url.QueryEscape(moduleID.Name),
-		url.QueryEscape(moduleID.Provider),
+		url.PathEscape(moduleID.Organization),
+		url.PathEscape(string(moduleID.RegistryName)),
+		url.PathEscape(moduleID.Namespace),
+		url.PathEscape(moduleID.Name),
+		url.PathEscape(moduleID.Provider),
 	)
 
 	req, err := r.client.NewRequest("DELETE", u, nil)
@@ -674,12 +674,12 @@ func (r *registryModules) DeleteVersion(ctx context.Context, moduleID RegistryMo
 
 	u := fmt.Sprintf(
 		"organizations/%s/registry-modules/%s/%s/%s/%s/%s",
-		url.QueryEscape(moduleID.Organization),
-		url.QueryEscape(string(moduleID.RegistryName)),
-		url.QueryEscape(moduleID.Namespace),
-		url.QueryEscape(moduleID.Name),
-		url.QueryEscape(moduleID.Provider),
-		url.QueryEscape(version),
+		url.PathEscape(moduleID.Organization),
+		url.PathEscape(string(moduleID.RegistryName)),
+		url.PathEscape(moduleID.Namespace),
+		url.PathEscape(moduleID.Name),
+		url.PathEscape(moduleID.Provider),
+		url.PathEscape(version),
 	)
 	req, err := r.client.NewRequest("DELETE", u, nil)
 	if err != nil && errors.Is(err, ErrResourceNotFound) {
@@ -880,9 +880,9 @@ func (r *registryModules) deprecatedDeleteProvider(ctx context.Context, moduleID
 
 	u := fmt.Sprintf(
 		"registry-modules/actions/delete/%s/%s/%s",
-		url.QueryEscape(moduleID.Organization),
-		url.QueryEscape(moduleID.Name),
-		url.QueryEscape(moduleID.Provider),
+		url.PathEscape(moduleID.Organization),
+		url.PathEscape(moduleID.Name),
+		url.PathEscape(moduleID.Provider),
 	)
 	req, err := r.client.NewRequest("POST", u, nil)
 	if err != nil {
@@ -905,10 +905,10 @@ func (r *registryModules) deprecatedDeleteVersion(ctx context.Context, moduleID 
 
 	u := fmt.Sprintf(
 		"registry-modules/actions/delete/%s/%s/%s/%s",
-		url.QueryEscape(moduleID.Organization),
-		url.QueryEscape(moduleID.Name),
-		url.QueryEscape(moduleID.Provider),
-		url.QueryEscape(version),
+		url.PathEscape(moduleID.Organization),
+		url.PathEscape(moduleID.Name),
+		url.PathEscape(moduleID.Provider),
+		url.PathEscape(version),
 	)
 	req, err := r.client.NewRequest("POST", u, nil)
 	if err != nil {

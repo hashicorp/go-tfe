@@ -103,7 +103,7 @@ func (b *organizationSubscriptionUpdater) Update(t *testing.T) {
 
 	b.updateOpts.FeatureSet = fsl.Items[0]
 
-	u := fmt.Sprintf("admin/organizations/%s/subscription", url.QueryEscape(b.organization.Name))
+	u := fmt.Sprintf("admin/organizations/%s/subscription", url.PathEscape(b.organization.Name))
 	req, err = adminClient.NewRequest("POST", u, &b.updateOpts)
 	if err != nil {
 		t.Fatalf("Failed to create request: %v", err)

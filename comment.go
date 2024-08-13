@@ -62,7 +62,7 @@ func (s *comments) List(ctx context.Context, runID string) (*CommentList, error)
 		return nil, ErrInvalidRunID
 	}
 
-	u := fmt.Sprintf("runs/%s/comments", url.QueryEscape(runID))
+	u := fmt.Sprintf("runs/%s/comments", url.PathEscape(runID))
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, err
@@ -87,7 +87,7 @@ func (s *comments) Create(ctx context.Context, runID string, options CommentCrea
 		return nil, ErrInvalidRunID
 	}
 
-	u := fmt.Sprintf("runs/%s/comments", url.QueryEscape(runID))
+	u := fmt.Sprintf("runs/%s/comments", url.PathEscape(runID))
 	req, err := s.client.NewRequest("POST", u, &options)
 	if err != nil {
 		return nil, err
@@ -108,7 +108,7 @@ func (s *comments) Read(ctx context.Context, commentID string) (*Comment, error)
 		return nil, ErrInvalidCommentID
 	}
 
-	u := fmt.Sprintf("comments/%s", url.QueryEscape(commentID))
+	u := fmt.Sprintf("comments/%s", url.PathEscape(commentID))
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, err

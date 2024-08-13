@@ -130,7 +130,7 @@ func (s *policySetParameters) Create(ctx context.Context, policySetID string, op
 		return nil, err
 	}
 
-	u := fmt.Sprintf("policy-sets/%s/parameters", url.QueryEscape(policySetID))
+	u := fmt.Sprintf("policy-sets/%s/parameters", url.PathEscape(policySetID))
 	req, err := s.client.NewRequest("POST", u, &options)
 	if err != nil {
 		return nil, err
@@ -154,7 +154,7 @@ func (s *policySetParameters) Read(ctx context.Context, policySetID, parameterID
 		return nil, ErrInvalidParamID
 	}
 
-	u := fmt.Sprintf("policy-sets/%s/parameters/%s", url.QueryEscape(policySetID), url.QueryEscape(parameterID))
+	u := fmt.Sprintf("policy-sets/%s/parameters/%s", url.PathEscape(policySetID), url.PathEscape(parameterID))
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, err
@@ -178,7 +178,7 @@ func (s *policySetParameters) Update(ctx context.Context, policySetID, parameter
 		return nil, ErrInvalidParamID
 	}
 
-	u := fmt.Sprintf("policy-sets/%s/parameters/%s", url.QueryEscape(policySetID), url.QueryEscape(parameterID))
+	u := fmt.Sprintf("policy-sets/%s/parameters/%s", url.PathEscape(policySetID), url.PathEscape(parameterID))
 	req, err := s.client.NewRequest("PATCH", u, &options)
 	if err != nil {
 		return nil, err
@@ -202,7 +202,7 @@ func (s *policySetParameters) Delete(ctx context.Context, policySetID, parameter
 		return ErrInvalidParamID
 	}
 
-	u := fmt.Sprintf("policy-sets/%s/parameters/%s", url.QueryEscape(policySetID), url.QueryEscape(parameterID))
+	u := fmt.Sprintf("policy-sets/%s/parameters/%s", url.PathEscape(policySetID), url.PathEscape(parameterID))
 	req, err := s.client.NewRequest("DELETE", u, nil)
 	if err != nil {
 		return err

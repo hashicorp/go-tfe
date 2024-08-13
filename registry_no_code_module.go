@@ -190,7 +190,7 @@ func (r *registryNoCodeModules) Create(ctx context.Context, organization string,
 		return nil, err
 	}
 
-	u := fmt.Sprintf("organizations/%s/no-code-modules", url.QueryEscape(organization))
+	u := fmt.Sprintf("organizations/%s/no-code-modules", url.PathEscape(organization))
 	req, err := r.client.NewRequest("POST", u, &options)
 	if err != nil {
 		return nil, err
@@ -215,7 +215,7 @@ func (r *registryNoCodeModules) Read(ctx context.Context, noCodeModuleID string,
 		return nil, err
 	}
 
-	u := fmt.Sprintf("no-code-modules/%s", url.QueryEscape(noCodeModuleID))
+	u := fmt.Sprintf("no-code-modules/%s", url.PathEscape(noCodeModuleID))
 	req, err := r.client.NewRequest("GET", u, options)
 	if err != nil {
 		return nil, err
@@ -243,7 +243,7 @@ func (r *registryNoCodeModules) Update(ctx context.Context, noCodeModuleID strin
 		return nil, err
 	}
 
-	u := fmt.Sprintf("no-code-modules/%s", url.QueryEscape(noCodeModuleID))
+	u := fmt.Sprintf("no-code-modules/%s", url.PathEscape(noCodeModuleID))
 	req, err := r.client.NewRequest("PATCH", u, &options)
 	if err != nil {
 		return nil, err
@@ -264,7 +264,7 @@ func (r *registryNoCodeModules) Delete(ctx context.Context, noCodeModuleID strin
 		return ErrInvalidModuleID
 	}
 
-	u := fmt.Sprintf("no-code-modules/%s", url.QueryEscape(noCodeModuleID))
+	u := fmt.Sprintf("no-code-modules/%s", url.PathEscape(noCodeModuleID))
 	req, err := r.client.NewRequest("DELETE", u, nil)
 	if err != nil {
 		return err
@@ -283,7 +283,7 @@ func (r *registryNoCodeModules) CreateWorkspace(
 		return nil, err
 	}
 
-	u := fmt.Sprintf("no-code-modules/%s/workspaces", url.QueryEscape(noCodeModuleID))
+	u := fmt.Sprintf("no-code-modules/%s/workspaces", url.PathEscape(noCodeModuleID))
 	req, err := r.client.NewRequest("POST", u, options)
 	if err != nil {
 		return nil, err
@@ -310,7 +310,7 @@ func (r *registryNoCodeModules) UpgradeWorkspace(
 	}
 
 	u := fmt.Sprintf("no-code-modules/%s/workspaces/%s/upgrade",
-		url.QueryEscape(noCodeModuleID),
+		url.PathEscape(noCodeModuleID),
 		workspaceID,
 	)
 	req, err := r.client.NewRequest("POST", u, options)

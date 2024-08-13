@@ -92,7 +92,7 @@ func (s *gpgKeys) ListPrivate(ctx context.Context, options GPGKeyListOptions) (*
 		return nil, err
 	}
 
-	u := fmt.Sprintf("/api/registry/%s/v2/gpg-keys", url.QueryEscape(string(PrivateRegistry)))
+	u := fmt.Sprintf("/api/registry/%s/v2/gpg-keys", url.PathEscape(string(PrivateRegistry)))
 	req, err := s.client.NewRequest("GET", u, &options)
 	if err != nil {
 		return nil, err
@@ -116,7 +116,7 @@ func (s *gpgKeys) Create(ctx context.Context, registryName RegistryName, options
 		return nil, ErrInvalidRegistryName
 	}
 
-	u := fmt.Sprintf("/api/registry/%s/v2/gpg-keys", url.QueryEscape(string(registryName)))
+	u := fmt.Sprintf("/api/registry/%s/v2/gpg-keys", url.PathEscape(string(registryName)))
 	req, err := s.client.NewRequest("POST", u, &options)
 	if err != nil {
 		return nil, err
@@ -137,9 +137,9 @@ func (s *gpgKeys) Read(ctx context.Context, keyID GPGKeyID) (*GPGKey, error) {
 	}
 
 	u := fmt.Sprintf("/api/registry/%s/v2/gpg-keys/%s/%s",
-		url.QueryEscape(string(keyID.RegistryName)),
-		url.QueryEscape(keyID.Namespace),
-		url.QueryEscape(keyID.KeyID),
+		url.PathEscape(string(keyID.RegistryName)),
+		url.PathEscape(keyID.Namespace),
+		url.PathEscape(keyID.KeyID),
 	)
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
@@ -165,9 +165,9 @@ func (s *gpgKeys) Update(ctx context.Context, keyID GPGKeyID, options GPGKeyUpda
 	}
 
 	u := fmt.Sprintf("/api/registry/%s/v2/gpg-keys/%s/%s",
-		url.QueryEscape(string(keyID.RegistryName)),
-		url.QueryEscape(keyID.Namespace),
-		url.QueryEscape(keyID.KeyID),
+		url.PathEscape(string(keyID.RegistryName)),
+		url.PathEscape(keyID.Namespace),
+		url.PathEscape(keyID.KeyID),
 	)
 	req, err := s.client.NewRequest("PATCH", u, &options)
 	if err != nil {
@@ -192,9 +192,9 @@ func (s *gpgKeys) Delete(ctx context.Context, keyID GPGKeyID) error {
 	}
 
 	u := fmt.Sprintf("/api/registry/%s/v2/gpg-keys/%s/%s",
-		url.QueryEscape(string(keyID.RegistryName)),
-		url.QueryEscape(keyID.Namespace),
-		url.QueryEscape(keyID.KeyID),
+		url.PathEscape(string(keyID.RegistryName)),
+		url.PathEscape(keyID.Namespace),
+		url.PathEscape(keyID.KeyID),
 	)
 	req, err := s.client.NewRequest("DELETE", u, nil)
 	if err != nil {

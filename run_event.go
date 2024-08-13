@@ -81,7 +81,7 @@ func (s *runEvents) List(ctx context.Context, runID string, options *RunEventLis
 		return nil, err
 	}
 
-	u := fmt.Sprintf("runs/%s/run-events", url.QueryEscape(runID))
+	u := fmt.Sprintf("runs/%s/run-events", url.PathEscape(runID))
 
 	req, err := s.client.NewRequest("GET", u, options)
 	if err != nil {
@@ -111,7 +111,7 @@ func (s *runEvents) ReadWithOptions(ctx context.Context, runEventID string, opti
 		return nil, err
 	}
 
-	u := fmt.Sprintf("run-events/%s", url.QueryEscape(runEventID))
+	u := fmt.Sprintf("run-events/%s", url.PathEscape(runEventID))
 	req, err := s.client.NewRequest("GET", u, options)
 	if err != nil {
 		return nil, err

@@ -141,7 +141,7 @@ func (s *policyChecks) List(ctx context.Context, runID string, options *PolicyCh
 		return nil, err
 	}
 
-	u := fmt.Sprintf("runs/%s/policy-checks", url.QueryEscape(runID))
+	u := fmt.Sprintf("runs/%s/policy-checks", url.PathEscape(runID))
 	req, err := s.client.NewRequest("GET", u, options)
 	if err != nil {
 		return nil, err
@@ -162,7 +162,7 @@ func (s *policyChecks) Read(ctx context.Context, policyCheckID string) (*PolicyC
 		return nil, ErrInvalidPolicyCheckID
 	}
 
-	u := fmt.Sprintf("policy-checks/%s", url.QueryEscape(policyCheckID))
+	u := fmt.Sprintf("policy-checks/%s", url.PathEscape(policyCheckID))
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, err
@@ -183,7 +183,7 @@ func (s *policyChecks) Override(ctx context.Context, policyCheckID string) (*Pol
 		return nil, ErrInvalidPolicyCheckID
 	}
 
-	u := fmt.Sprintf("policy-checks/%s/actions/override", url.QueryEscape(policyCheckID))
+	u := fmt.Sprintf("policy-checks/%s/actions/override", url.PathEscape(policyCheckID))
 	req, err := s.client.NewRequest("POST", u, nil)
 	if err != nil {
 		return nil, err
@@ -223,7 +223,7 @@ func (s *policyChecks) Logs(ctx context.Context, policyCheckID string) (io.Reade
 			}
 		}
 
-		u := fmt.Sprintf("policy-checks/%s/output", url.QueryEscape(policyCheckID))
+		u := fmt.Sprintf("policy-checks/%s/output", url.PathEscape(policyCheckID))
 		req, err := s.client.NewRequest("GET", u, nil)
 		if err != nil {
 			return nil, err

@@ -123,7 +123,7 @@ func (s *organizationMemberships) List(ctx context.Context, organization string,
 		return nil, err
 	}
 
-	u := fmt.Sprintf("organizations/%s/organization-memberships", url.QueryEscape(organization))
+	u := fmt.Sprintf("organizations/%s/organization-memberships", url.PathEscape(organization))
 	req, err := s.client.NewRequest("GET", u, options)
 	if err != nil {
 		return nil, err
@@ -147,7 +147,7 @@ func (s *organizationMemberships) Create(ctx context.Context, organization strin
 		return nil, err
 	}
 
-	u := fmt.Sprintf("organizations/%s/organization-memberships", url.QueryEscape(organization))
+	u := fmt.Sprintf("organizations/%s/organization-memberships", url.PathEscape(organization))
 	req, err := s.client.NewRequest("POST", u, &options)
 	if err != nil {
 		return nil, err
@@ -176,7 +176,7 @@ func (s *organizationMemberships) ReadWithOptions(ctx context.Context, organizat
 		return nil, err
 	}
 
-	u := fmt.Sprintf("organization-memberships/%s", url.QueryEscape(organizationMembershipID))
+	u := fmt.Sprintf("organization-memberships/%s", url.PathEscape(organizationMembershipID))
 	req, err := s.client.NewRequest("GET", u, &options)
 	if err != nil {
 		return nil, err
@@ -197,7 +197,7 @@ func (s *organizationMemberships) Delete(ctx context.Context, organizationMember
 		return ErrInvalidMembership
 	}
 
-	u := fmt.Sprintf("organization-memberships/%s", url.QueryEscape(organizationMembershipID))
+	u := fmt.Sprintf("organization-memberships/%s", url.PathEscape(organizationMembershipID))
 	req, err := s.client.NewRequest("DELETE", u, nil)
 	if err != nil {
 		return err

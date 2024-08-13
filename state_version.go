@@ -264,7 +264,7 @@ func (s *stateVersions) Create(ctx context.Context, workspaceID string, options 
 		return nil, err
 	}
 
-	u := fmt.Sprintf("workspaces/%s/state-versions", url.QueryEscape(workspaceID))
+	u := fmt.Sprintf("workspaces/%s/state-versions", url.PathEscape(workspaceID))
 	req, err := s.client.NewRequest("POST", u, &options)
 	if err != nil {
 		return nil, err
@@ -321,7 +321,7 @@ func (s *stateVersions) ReadWithOptions(ctx context.Context, svID string, option
 		return nil, err
 	}
 
-	u := fmt.Sprintf("state-versions/%s", url.QueryEscape(svID))
+	u := fmt.Sprintf("state-versions/%s", url.PathEscape(svID))
 	req, err := s.client.NewRequest("GET", u, options)
 	if err != nil {
 		return nil, err
@@ -350,7 +350,7 @@ func (s *stateVersions) ReadCurrentWithOptions(ctx context.Context, workspaceID 
 		return nil, err
 	}
 
-	u := fmt.Sprintf("workspaces/%s/current-state-version", url.QueryEscape(workspaceID))
+	u := fmt.Sprintf("workspaces/%s/current-state-version", url.PathEscape(workspaceID))
 	req, err := s.client.NewRequest("GET", u, options)
 	if err != nil {
 		return nil, err
@@ -395,7 +395,7 @@ func (s *stateVersions) ListOutputs(ctx context.Context, svID string, options *S
 		return nil, ErrInvalidStateVerID
 	}
 
-	u := fmt.Sprintf("state-versions/%s/outputs", url.QueryEscape(svID))
+	u := fmt.Sprintf("state-versions/%s/outputs", url.PathEscape(svID))
 	req, err := s.client.NewRequest("GET", u, options)
 	if err != nil {
 		return nil, err

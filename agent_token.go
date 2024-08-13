@@ -70,7 +70,7 @@ func (s *agentTokens) List(ctx context.Context, agentPoolID string) (*AgentToken
 		return nil, ErrInvalidAgentPoolID
 	}
 
-	u := fmt.Sprintf("agent-pools/%s/authentication-tokens", url.QueryEscape(agentPoolID))
+	u := fmt.Sprintf("agent-pools/%s/authentication-tokens", url.PathEscape(agentPoolID))
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, err
@@ -95,7 +95,7 @@ func (s *agentTokens) Create(ctx context.Context, agentPoolID string, options Ag
 		return nil, ErrAgentTokenDescription
 	}
 
-	u := fmt.Sprintf("agent-pools/%s/authentication-tokens", url.QueryEscape(agentPoolID))
+	u := fmt.Sprintf("agent-pools/%s/authentication-tokens", url.PathEscape(agentPoolID))
 	req, err := s.client.NewRequest("POST", u, &options)
 	if err != nil {
 		return nil, err
@@ -116,7 +116,7 @@ func (s *agentTokens) Read(ctx context.Context, agentTokenID string) (*AgentToke
 		return nil, ErrInvalidAgentTokenID
 	}
 
-	u := fmt.Sprintf("authentication-tokens/%s", url.QueryEscape(agentTokenID))
+	u := fmt.Sprintf("authentication-tokens/%s", url.PathEscape(agentTokenID))
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, err
@@ -137,7 +137,7 @@ func (s *agentTokens) Delete(ctx context.Context, agentTokenID string) error {
 		return ErrInvalidAgentTokenID
 	}
 
-	u := fmt.Sprintf("authentication-tokens/%s", url.QueryEscape(agentTokenID))
+	u := fmt.Sprintf("authentication-tokens/%s", url.PathEscape(agentTokenID))
 	req, err := s.client.NewRequest("DELETE", u, nil)
 	if err != nil {
 		return err
