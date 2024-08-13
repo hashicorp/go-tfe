@@ -5,8 +5,11 @@ package tfe
 
 import (
 	"bytes"
+	"context"
 	"encoding/json"
 	"fmt"
+	"net/http"
+	"net/http/httptest"
 	"os"
 	"testing"
 	"time"
@@ -196,5 +199,108 @@ func Test_RegistryBasePath(t *testing.T) {
 
 		expected := os.Getenv("TFE_ADDRESS") + path
 		assert.Equal(t, req.retryableRequest.URL.String(), expected)
+	})
+}
+
+func Test_NewRequestWithAdditionalQueryParams(t *testing.T) {
+	testServer := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		switch r.URL.Path {
+		case "/get_request_include":
+			val := r.URL.Query().Get("include")
+			if val != "workspace,cost_estimate" {
+				t.Fatalf("unexpected include value: %q", val)
+			}
+			w.WriteHeader(http.StatusOK)
+			return
+		case "/get_request_include_extra":
+			val := r.URL.Query().Get("include")
+			if val != "workspace,cost_estimate" {
+				t.Fatalf("unexpected include value: expected %q, got %q", "extra,workspace,cost_estimate", val)
+			}
+			extra := r.URL.Query().Get("extra")
+			if extra != "value" {
+				t.Fatalf("unexpected extra value: expected %q, got %q", "value", extra)
+			}
+			w.WriteHeader(http.StatusOK)
+			return
+		case "/get_request_include_raw":
+			extra := r.URL.Query().Get("Name")
+			if extra != "yes" {
+				t.Fatalf("unexpected query: %s", r.URL.RawQuery)
+			}
+			w.WriteHeader(http.StatusOK)
+			return
+		case "/delete_with_query":
+			extra := r.URL.Query().Get("extra")
+			if extra != "value" {
+				t.Fatalf("unexpected query: expected %q, got %q", "value", extra)
+			}
+			w.WriteHeader(http.StatusOK)
+			return
+		case "/api/v2/ping":
+			w.WriteHeader(http.StatusOK)
+			return
+		default:
+			t.Fatalf("unexpected request: %s", r.URL.String())
+		}
+	}))
+	t.Cleanup(func() {
+		testServer.Close()
+	})
+
+	client, err := NewClient(&Config{
+		Address: testServer.URL,
+	})
+	require.NoError(t, err)
+
+	t.Run("with additional query parameters", func(t *testing.T) {
+		request, err := client.NewRequestWithAdditionalQueryParams("GET", "/get_request_include", nil, map[string][]string{
+			"include": {"workspace", "cost_estimate"},
+		})
+		require.NoError(t, err)
+
+		ctx := context.Background()
+		err = request.DoJSON(ctx, nil)
+		require.NoError(t, err)
+	})
+
+	type extra struct {
+		Extra string `url:"extra"`
+	}
+
+	// json-encoded structs use the field name as the query parameter name
+	type raw struct {
+		Name string `json:"extra"`
+	}
+
+	t.Run("GET request with req attr and additional request attributes", func(t *testing.T) {
+		request, err := client.NewRequestWithAdditionalQueryParams("GET", "/get_request_include_extra", &extra{Extra: "value"}, map[string][]string{
+			"include": {"workspace", "cost_estimate"},
+		})
+		require.NoError(t, err)
+
+		ctx := context.Background()
+		err = request.DoJSON(ctx, nil)
+		require.NoError(t, err)
+	})
+
+	t.Run("DELETE request with additional request attributes", func(t *testing.T) {
+		request, err := client.NewRequestWithAdditionalQueryParams("DELETE", "/delete_with_query", nil, map[string][]string{
+			"extra": {"value"},
+		})
+		require.NoError(t, err)
+
+		ctx := context.Background()
+		err = request.DoJSON(ctx, nil)
+		require.NoError(t, err)
+	})
+
+	t.Run("GET request with other kinds of annotations", func(t *testing.T) {
+		request, err := client.NewRequestWithAdditionalQueryParams("GET", "/get_request_include_raw", &raw{Name: "yes"}, nil)
+		require.NoError(t, err)
+
+		ctx := context.Background()
+		err = request.DoJSON(ctx, nil)
+		require.NoError(t, err)
 	})
 }
