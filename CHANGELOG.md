@@ -1,8 +1,10 @@
 # Unreleased
 
+# v1.63.0
+
 ## Enhancements
 
-* Adds more BETA support for `Stacks` resources, which is is EXPERIMENTAL, SUBJECT TO CHANGE, and may not be available to all users by @brandonc
+* Adds more BETA support for `Stacks` resources, which is is EXPERIMENTAL, SUBJECT TO CHANGE, and may not be available to all users by @brandonc [#957](https://github.com/hashicorp/go-tfe/pull/957) and @DanielMSchmidt [#960](https://github.com/hashicorp/go-tfe/pull/960)
 
 # v1.62.0
 
