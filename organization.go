@@ -244,6 +244,10 @@ type OrganizationCreateOptions struct {
 
 	// Optional: DefaultExecutionMode the default execution mode for workspaces
 	DefaultExecutionMode *string `jsonapi:"attr,default-execution-mode,omitempty"`
+
+	// Optional: StacksEnabled toggles whether stacks are enabled for the organization. This setting
+	// is considered BETA, SUBJECT TO CHANGE, and likely unavailable to most users.
+	StacksEnabled *bool `jsonapi:"attr,stacks-enabled,omitempty"`
 }
 
 // OrganizationUpdateOptions represents the options for updating an organization.
