@@ -172,7 +172,7 @@ func (s *runTasks) Create(ctx context.Context, organization string, options RunT
 		return nil, err
 	}
 
-	u := fmt.Sprintf("organizations/%s/tasks", url.QueryEscape(organization))
+	u := fmt.Sprintf("organizations/%s/tasks", url.PathEscape(organization))
 	req, err := s.client.NewRequest("POST", u, &options)
 	if err != nil {
 		return nil, err
@@ -196,7 +196,7 @@ func (s *runTasks) List(ctx context.Context, organization string, options *RunTa
 		return nil, err
 	}
 
-	u := fmt.Sprintf("organizations/%s/tasks", url.QueryEscape(organization))
+	u := fmt.Sprintf("organizations/%s/tasks", url.PathEscape(organization))
 	req, err := s.client.NewRequest("GET", u, options)
 	if err != nil {
 		return nil, err
@@ -225,7 +225,7 @@ func (s *runTasks) ReadWithOptions(ctx context.Context, runTaskID string, option
 		return nil, err
 	}
 
-	u := fmt.Sprintf("tasks/%s", url.QueryEscape(runTaskID))
+	u := fmt.Sprintf("tasks/%s", url.PathEscape(runTaskID))
 	req, err := s.client.NewRequest("GET", u, options)
 	if err != nil {
 		return nil, err
@@ -250,7 +250,7 @@ func (s *runTasks) Update(ctx context.Context, runTaskID string, options RunTask
 		return nil, err
 	}
 
-	u := fmt.Sprintf("tasks/%s", url.QueryEscape(runTaskID))
+	u := fmt.Sprintf("tasks/%s", url.PathEscape(runTaskID))
 	req, err := s.client.NewRequest("PATCH", u, &options)
 	if err != nil {
 		return nil, err

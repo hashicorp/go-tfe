@@ -383,7 +383,7 @@ func (s *runs) List(ctx context.Context, workspaceID string, options *RunListOpt
 		return nil, err
 	}
 
-	u := fmt.Sprintf("workspaces/%s/runs", url.QueryEscape(workspaceID))
+	u := fmt.Sprintf("workspaces/%s/runs", url.PathEscape(workspaceID))
 	req, err := s.client.NewRequest("GET", u, options)
 	if err != nil {
 		return nil, err
@@ -432,7 +432,7 @@ func (s *runs) ReadWithOptions(ctx context.Context, runID string, options *RunRe
 		return nil, err
 	}
 
-	u := fmt.Sprintf("runs/%s", url.QueryEscape(runID))
+	u := fmt.Sprintf("runs/%s", url.PathEscape(runID))
 	req, err := s.client.NewRequest("GET", u, options)
 	if err != nil {
 		return nil, err
@@ -453,7 +453,7 @@ func (s *runs) Apply(ctx context.Context, runID string, options RunApplyOptions)
 		return ErrInvalidRunID
 	}
 
-	u := fmt.Sprintf("runs/%s/actions/apply", url.QueryEscape(runID))
+	u := fmt.Sprintf("runs/%s/actions/apply", url.PathEscape(runID))
 	req, err := s.client.NewRequest("POST", u, &options)
 	if err != nil {
 		return err
@@ -468,7 +468,7 @@ func (s *runs) Cancel(ctx context.Context, runID string, options RunCancelOption
 		return ErrInvalidRunID
 	}
 
-	u := fmt.Sprintf("runs/%s/actions/cancel", url.QueryEscape(runID))
+	u := fmt.Sprintf("runs/%s/actions/cancel", url.PathEscape(runID))
 	req, err := s.client.NewRequest("POST", u, &options)
 	if err != nil {
 		return err
@@ -483,7 +483,7 @@ func (s *runs) ForceCancel(ctx context.Context, runID string, options RunForceCa
 		return ErrInvalidRunID
 	}
 
-	u := fmt.Sprintf("runs/%s/actions/force-cancel", url.QueryEscape(runID))
+	u := fmt.Sprintf("runs/%s/actions/force-cancel", url.PathEscape(runID))
 	req, err := s.client.NewRequest("POST", u, &options)
 	if err != nil {
 		return err
@@ -503,7 +503,7 @@ func (s *runs) ForceExecute(ctx context.Context, runID string) error {
 		return ErrInvalidRunID
 	}
 
-	u := fmt.Sprintf("runs/%s/actions/force-execute", url.QueryEscape(runID))
+	u := fmt.Sprintf("runs/%s/actions/force-execute", url.PathEscape(runID))
 	req, err := s.client.NewRequest("POST", u, nil)
 	if err != nil {
 		return err
@@ -518,7 +518,7 @@ func (s *runs) Discard(ctx context.Context, runID string, options RunDiscardOpti
 		return ErrInvalidRunID
 	}
 
-	u := fmt.Sprintf("runs/%s/actions/discard", url.QueryEscape(runID))
+	u := fmt.Sprintf("runs/%s/actions/discard", url.PathEscape(runID))
 	req, err := s.client.NewRequest("POST", u, &options)
 	if err != nil {
 		return err

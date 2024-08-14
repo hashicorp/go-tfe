@@ -80,7 +80,7 @@ func (s *teamMembers) ListUsers(ctx context.Context, teamID string) ([]*User, er
 		Include: []TeamIncludeOpt{TeamUsers},
 	}
 
-	u := fmt.Sprintf("teams/%s", url.QueryEscape(teamID))
+	u := fmt.Sprintf("teams/%s", url.PathEscape(teamID))
 	req, err := s.client.NewRequest("GET", u, options)
 	if err != nil {
 		return nil, err
@@ -107,7 +107,7 @@ func (s *teamMembers) ListOrganizationMemberships(ctx context.Context, teamID st
 		Include: []TeamIncludeOpt{TeamOrganizationMemberships},
 	}
 
-	u := fmt.Sprintf("teams/%s", url.QueryEscape(teamID))
+	u := fmt.Sprintf("teams/%s", url.PathEscape(teamID))
 	req, err := s.client.NewRequest("GET", u, options)
 	if err != nil {
 		return nil, err
@@ -132,7 +132,7 @@ func (s *teamMembers) Add(ctx context.Context, teamID string, options TeamMember
 	}
 
 	usersOrMemberships := options.kind()
-	u := fmt.Sprintf("teams/%s/relationships/%s", url.QueryEscape(teamID), usersOrMemberships)
+	u := fmt.Sprintf("teams/%s/relationships/%s", url.PathEscape(teamID), usersOrMemberships)
 
 	var req *ClientRequest
 
@@ -171,7 +171,7 @@ func (s *teamMembers) Remove(ctx context.Context, teamID string, options TeamMem
 	}
 
 	usersOrMemberships := options.kind()
-	u := fmt.Sprintf("teams/%s/relationships/%s", url.QueryEscape(teamID), usersOrMemberships)
+	u := fmt.Sprintf("teams/%s/relationships/%s", url.PathEscape(teamID), usersOrMemberships)
 
 	var req *ClientRequest
 

@@ -84,7 +84,7 @@ func (s *plans) Read(ctx context.Context, planID string) (*Plan, error) {
 		return nil, ErrInvalidPlanID
 	}
 
-	u := fmt.Sprintf("plans/%s", url.QueryEscape(planID))
+	u := fmt.Sprintf("plans/%s", url.PathEscape(planID))
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, err
@@ -149,7 +149,7 @@ func (s *plans) ReadJSONOutput(ctx context.Context, planID string) ([]byte, erro
 		return nil, ErrInvalidPlanID
 	}
 
-	u := fmt.Sprintf("plans/%s/json-output", url.QueryEscape(planID))
+	u := fmt.Sprintf("plans/%s/json-output", url.PathEscape(planID))
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, err

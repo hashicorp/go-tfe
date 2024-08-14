@@ -208,7 +208,7 @@ func (s *teamAccesses) Read(ctx context.Context, teamAccessID string) (*TeamAcce
 		return nil, ErrInvalidAccessTeamID
 	}
 
-	u := fmt.Sprintf("team-workspaces/%s", url.QueryEscape(teamAccessID))
+	u := fmt.Sprintf("team-workspaces/%s", url.PathEscape(teamAccessID))
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, err
@@ -229,7 +229,7 @@ func (s *teamAccesses) Update(ctx context.Context, teamAccessID string, options 
 		return nil, ErrInvalidAccessTeamID
 	}
 
-	u := fmt.Sprintf("team-workspaces/%s", url.QueryEscape(teamAccessID))
+	u := fmt.Sprintf("team-workspaces/%s", url.PathEscape(teamAccessID))
 	req, err := s.client.NewRequest("PATCH", u, &options)
 	if err != nil {
 		return nil, err
@@ -250,7 +250,7 @@ func (s *teamAccesses) Remove(ctx context.Context, teamAccessID string) error {
 		return ErrInvalidAccessTeamID
 	}
 
-	u := fmt.Sprintf("team-workspaces/%s", url.QueryEscape(teamAccessID))
+	u := fmt.Sprintf("team-workspaces/%s", url.PathEscape(teamAccessID))
 	req, err := s.client.NewRequest("DELETE", u, nil)
 	if err != nil {
 		return err

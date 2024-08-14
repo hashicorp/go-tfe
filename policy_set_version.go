@@ -104,7 +104,7 @@ func (p *policySetVersions) Create(ctx context.Context, policySetID string) (*Po
 		return nil, ErrInvalidPolicySetID
 	}
 
-	u := fmt.Sprintf("policy-sets/%s/versions", url.QueryEscape(policySetID))
+	u := fmt.Sprintf("policy-sets/%s/versions", url.PathEscape(policySetID))
 	req, err := p.client.NewRequest("POST", u, nil)
 	if err != nil {
 		return nil, err
@@ -125,7 +125,7 @@ func (p *policySetVersions) Read(ctx context.Context, policySetVersionID string)
 		return nil, ErrInvalidPolicySetID
 	}
 
-	u := fmt.Sprintf("policy-set-versions/%s", url.QueryEscape(policySetVersionID))
+	u := fmt.Sprintf("policy-set-versions/%s", url.PathEscape(policySetVersionID))
 	req, err := p.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, err

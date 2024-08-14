@@ -116,7 +116,7 @@ func (s *planExports) Read(ctx context.Context, planExportID string) (*PlanExpor
 		return nil, ErrInvalidPlanExportID
 	}
 
-	u := fmt.Sprintf("plan-exports/%s", url.QueryEscape(planExportID))
+	u := fmt.Sprintf("plan-exports/%s", url.PathEscape(planExportID))
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, err
@@ -137,7 +137,7 @@ func (s *planExports) Delete(ctx context.Context, planExportID string) error {
 		return ErrInvalidPlanExportID
 	}
 
-	u := fmt.Sprintf("plan-exports/%s", url.QueryEscape(planExportID))
+	u := fmt.Sprintf("plan-exports/%s", url.PathEscape(planExportID))
 	req, err := s.client.NewRequest("DELETE", u, nil)
 	if err != nil {
 		return err
@@ -152,7 +152,7 @@ func (s *planExports) Download(ctx context.Context, planExportID string) ([]byte
 		return nil, ErrInvalidPlanExportID
 	}
 
-	u := fmt.Sprintf("plan-exports/%s/download", url.QueryEscape(planExportID))
+	u := fmt.Sprintf("plan-exports/%s/download", url.PathEscape(planExportID))
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, err

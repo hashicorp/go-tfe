@@ -121,7 +121,7 @@ func (a *adminSentinelVersions) Read(ctx context.Context, id string) (*AdminSent
 		return nil, ErrInvalidSentinelVersionID
 	}
 
-	u := fmt.Sprintf("admin/sentinel-versions/%s", url.QueryEscape(id))
+	u := fmt.Sprintf("admin/sentinel-versions/%s", url.PathEscape(id))
 	req, err := a.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, err
@@ -161,7 +161,7 @@ func (a *adminSentinelVersions) Update(ctx context.Context, id string, options A
 		return nil, ErrInvalidSentinelVersionID
 	}
 
-	u := fmt.Sprintf("admin/sentinel-versions/%s", url.QueryEscape(id))
+	u := fmt.Sprintf("admin/sentinel-versions/%s", url.PathEscape(id))
 	req, err := a.client.NewRequest("PATCH", u, &options)
 	if err != nil {
 		return nil, err
@@ -182,7 +182,7 @@ func (a *adminSentinelVersions) Delete(ctx context.Context, id string) error {
 		return ErrInvalidSentinelVersionID
 	}
 
-	u := fmt.Sprintf("admin/sentinel-versions/%s", url.QueryEscape(id))
+	u := fmt.Sprintf("admin/sentinel-versions/%s", url.PathEscape(id))
 	req, err := a.client.NewRequest("DELETE", u, nil)
 	if err != nil {
 		return err

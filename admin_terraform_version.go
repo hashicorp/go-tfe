@@ -123,7 +123,7 @@ func (a *adminTerraformVersions) Read(ctx context.Context, id string) (*AdminTer
 		return nil, ErrInvalidTerraformVersionID
 	}
 
-	u := fmt.Sprintf("admin/terraform-versions/%s", url.QueryEscape(id))
+	u := fmt.Sprintf("admin/terraform-versions/%s", url.PathEscape(id))
 	req, err := a.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, err
@@ -163,7 +163,7 @@ func (a *adminTerraformVersions) Update(ctx context.Context, id string, options 
 		return nil, ErrInvalidTerraformVersionID
 	}
 
-	u := fmt.Sprintf("admin/terraform-versions/%s", url.QueryEscape(id))
+	u := fmt.Sprintf("admin/terraform-versions/%s", url.PathEscape(id))
 	req, err := a.client.NewRequest("PATCH", u, &options)
 	if err != nil {
 		return nil, err
@@ -184,7 +184,7 @@ func (a *adminTerraformVersions) Delete(ctx context.Context, id string) error {
 		return ErrInvalidTerraformVersionID
 	}
 
-	u := fmt.Sprintf("admin/terraform-versions/%s", url.QueryEscape(id))
+	u := fmt.Sprintf("admin/terraform-versions/%s", url.PathEscape(id))
 	req, err := a.client.NewRequest("DELETE", u, nil)
 	if err != nil {
 		return err

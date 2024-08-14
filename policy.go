@@ -162,7 +162,7 @@ func (s *policies) List(ctx context.Context, organization string, options *Polic
 		return nil, ErrInvalidOrg
 	}
 
-	u := fmt.Sprintf("organizations/%s/policies", url.QueryEscape(organization))
+	u := fmt.Sprintf("organizations/%s/policies", url.PathEscape(organization))
 	req, err := s.client.NewRequest("GET", u, options)
 	if err != nil {
 		return nil, err
@@ -186,7 +186,7 @@ func (s *policies) Create(ctx context.Context, organization string, options Poli
 		return nil, err
 	}
 
-	u := fmt.Sprintf("organizations/%s/policies", url.QueryEscape(organization))
+	u := fmt.Sprintf("organizations/%s/policies", url.PathEscape(organization))
 	req, err := s.client.NewRequest("POST", u, &options)
 	if err != nil {
 		return nil, err
@@ -207,7 +207,7 @@ func (s *policies) Read(ctx context.Context, policyID string) (*Policy, error) {
 		return nil, ErrInvalidPolicyID
 	}
 
-	u := fmt.Sprintf("policies/%s", url.QueryEscape(policyID))
+	u := fmt.Sprintf("policies/%s", url.PathEscape(policyID))
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, err
@@ -228,7 +228,7 @@ func (s *policies) Update(ctx context.Context, policyID string, options PolicyUp
 		return nil, ErrInvalidPolicyID
 	}
 
-	u := fmt.Sprintf("policies/%s", url.QueryEscape(policyID))
+	u := fmt.Sprintf("policies/%s", url.PathEscape(policyID))
 	req, err := s.client.NewRequest("PATCH", u, &options)
 	if err != nil {
 		return nil, err
@@ -249,7 +249,7 @@ func (s *policies) Delete(ctx context.Context, policyID string) error {
 		return ErrInvalidPolicyID
 	}
 
-	u := fmt.Sprintf("policies/%s", url.QueryEscape(policyID))
+	u := fmt.Sprintf("policies/%s", url.PathEscape(policyID))
 	req, err := s.client.NewRequest("DELETE", u, nil)
 	if err != nil {
 		return err
@@ -264,7 +264,7 @@ func (s *policies) Upload(ctx context.Context, policyID string, content []byte) 
 		return ErrInvalidPolicyID
 	}
 
-	u := fmt.Sprintf("policies/%s/upload", url.QueryEscape(policyID))
+	u := fmt.Sprintf("policies/%s/upload", url.PathEscape(policyID))
 	req, err := s.client.NewRequest("PUT", u, content)
 	if err != nil {
 		return err
@@ -279,7 +279,7 @@ func (s *policies) Download(ctx context.Context, policyID string) ([]byte, error
 		return nil, ErrInvalidPolicyID
 	}
 
-	u := fmt.Sprintf("policies/%s/download", url.QueryEscape(policyID))
+	u := fmt.Sprintf("policies/%s/download", url.PathEscape(policyID))
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, err

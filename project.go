@@ -105,7 +105,7 @@ func (s *projects) List(ctx context.Context, organization string, options *Proje
 		return nil, ErrInvalidOrg
 	}
 
-	u := fmt.Sprintf("organizations/%s/projects", url.QueryEscape(organization))
+	u := fmt.Sprintf("organizations/%s/projects", url.PathEscape(organization))
 	req, err := s.client.NewRequest("GET", u, options)
 	if err != nil {
 		return nil, err
@@ -130,7 +130,7 @@ func (s *projects) Create(ctx context.Context, organization string, options Proj
 		return nil, err
 	}
 
-	u := fmt.Sprintf("organizations/%s/projects", url.QueryEscape(organization))
+	u := fmt.Sprintf("organizations/%s/projects", url.PathEscape(organization))
 	req, err := s.client.NewRequest("POST", u, &options)
 	if err != nil {
 		return nil, err
@@ -151,7 +151,7 @@ func (s *projects) Read(ctx context.Context, projectID string) (*Project, error)
 		return nil, ErrInvalidProjectID
 	}
 
-	u := fmt.Sprintf("projects/%s", url.QueryEscape(projectID))
+	u := fmt.Sprintf("projects/%s", url.PathEscape(projectID))
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, err
@@ -176,7 +176,7 @@ func (s *projects) Update(ctx context.Context, projectID string, options Project
 		return nil, err
 	}
 
-	u := fmt.Sprintf("projects/%s", url.QueryEscape(projectID))
+	u := fmt.Sprintf("projects/%s", url.PathEscape(projectID))
 	req, err := s.client.NewRequest("PATCH", u, &options)
 	if err != nil {
 		return nil, err
@@ -197,7 +197,7 @@ func (s *projects) Delete(ctx context.Context, projectID string) error {
 		return ErrInvalidProjectID
 	}
 
-	u := fmt.Sprintf("projects/%s", url.QueryEscape(projectID))
+	u := fmt.Sprintf("projects/%s", url.PathEscape(projectID))
 	req, err := s.client.NewRequest("DELETE", u, nil)
 	if err != nil {
 		return err

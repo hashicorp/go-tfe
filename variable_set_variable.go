@@ -75,7 +75,7 @@ func (s *variableSetVariables) List(ctx context.Context, variableSetID string, o
 		}
 	}
 
-	u := fmt.Sprintf("varsets/%s/relationships/vars", url.QueryEscape(variableSetID))
+	u := fmt.Sprintf("varsets/%s/relationships/vars", url.PathEscape(variableSetID))
 	req, err := s.client.NewRequest("GET", u, options)
 	if err != nil {
 		return nil, err
@@ -138,7 +138,7 @@ func (s *variableSetVariables) Create(ctx context.Context, variableSetID string,
 		}
 	}
 
-	u := fmt.Sprintf("varsets/%s/relationships/vars", url.QueryEscape(variableSetID))
+	u := fmt.Sprintf("varsets/%s/relationships/vars", url.PathEscape(variableSetID))
 	req, err := s.client.NewRequest("POST", u, options)
 	if err != nil {
 		return nil, err
@@ -162,7 +162,7 @@ func (s *variableSetVariables) Read(ctx context.Context, variableSetID, variable
 		return nil, ErrInvalidVariableID
 	}
 
-	u := fmt.Sprintf("varsets/%s/relationships/vars/%s", url.QueryEscape(variableSetID), url.QueryEscape(variableID))
+	u := fmt.Sprintf("varsets/%s/relationships/vars/%s", url.PathEscape(variableSetID), url.PathEscape(variableID))
 	req, err := s.client.NewRequest("GET", u, nil)
 
 	if err != nil {
@@ -211,7 +211,7 @@ func (s *variableSetVariables) Update(ctx context.Context, variableSetID, variab
 		return nil, ErrInvalidVariableID
 	}
 
-	u := fmt.Sprintf("varsets/%s/relationships/vars/%s", url.QueryEscape(variableSetID), url.QueryEscape(variableID))
+	u := fmt.Sprintf("varsets/%s/relationships/vars/%s", url.PathEscape(variableSetID), url.PathEscape(variableID))
 	req, err := s.client.NewRequest("PATCH", u, options)
 	if err != nil {
 		return nil, err
@@ -235,7 +235,7 @@ func (s *variableSetVariables) Delete(ctx context.Context, variableSetID, variab
 		return ErrInvalidVariableID
 	}
 
-	u := fmt.Sprintf("varsets/%s/relationships/vars/%s", url.QueryEscape(variableSetID), url.QueryEscape(variableID))
+	u := fmt.Sprintf("varsets/%s/relationships/vars/%s", url.PathEscape(variableSetID), url.PathEscape(variableID))
 	req, err := s.client.NewRequest("DELETE", u, nil)
 	if err != nil {
 		return err

@@ -171,7 +171,7 @@ func (s *testRuns) Read(ctx context.Context, moduleID RegistryModuleID, testRunI
 		return nil, ErrInvalidTestRunID
 	}
 
-	u := fmt.Sprintf("%s/%s", testRunsPath(moduleID), url.QueryEscape(testRunID))
+	u := fmt.Sprintf("%s/%s", testRunsPath(moduleID), url.PathEscape(testRunID))
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, err
@@ -278,7 +278,7 @@ func (s *testRuns) Cancel(ctx context.Context, moduleID RegistryModuleID, testRu
 		return ErrInvalidTestRunID
 	}
 
-	u := fmt.Sprintf("%s/%s/cancel", testRunsPath(moduleID), url.QueryEscape(testRunID))
+	u := fmt.Sprintf("%s/%s/cancel", testRunsPath(moduleID), url.PathEscape(testRunID))
 	req, err := s.client.NewRequest("POST", u, nil)
 	if err != nil {
 		return err
@@ -297,7 +297,7 @@ func (s *testRuns) ForceCancel(ctx context.Context, moduleID RegistryModuleID, t
 		return ErrInvalidTestRunID
 	}
 
-	u := fmt.Sprintf("%s/%s/force-cancel", testRunsPath(moduleID), url.QueryEscape(testRunID))
+	u := fmt.Sprintf("%s/%s/force-cancel", testRunsPath(moduleID), url.PathEscape(testRunID))
 	req, err := s.client.NewRequest("POST", u, nil)
 	if err != nil {
 		return err
@@ -324,9 +324,9 @@ func (o TestRunCreateOptions) valid() error {
 
 func testRunsPath(moduleID RegistryModuleID) string {
 	return fmt.Sprintf("organizations/%s/tests/registry-modules/%s/%s/%s/%s/test-runs",
-		url.QueryEscape(moduleID.Organization),
-		url.QueryEscape(string(moduleID.RegistryName)),
-		url.QueryEscape(moduleID.Namespace),
-		url.QueryEscape(moduleID.Name),
-		url.QueryEscape(moduleID.Provider))
+		url.PathEscape(moduleID.Organization),
+		url.PathEscape(string(moduleID.RegistryName)),
+		url.PathEscape(moduleID.Namespace),
+		url.PathEscape(moduleID.Name),
+		url.PathEscape(moduleID.Provider))
 }

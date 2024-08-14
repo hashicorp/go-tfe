@@ -245,7 +245,7 @@ func (s *teamProjectAccesses) Read(ctx context.Context, teamProjectAccessID stri
 		return nil, ErrInvalidTeamProjectAccessID
 	}
 
-	u := fmt.Sprintf("team-projects/%s", url.QueryEscape(teamProjectAccessID))
+	u := fmt.Sprintf("team-projects/%s", url.PathEscape(teamProjectAccessID))
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, err
@@ -269,7 +269,7 @@ func (s *teamProjectAccesses) Update(ctx context.Context, teamProjectAccessID st
 	if err := validateTeamProjectAccessType(*options.Access); err != nil {
 		return nil, err
 	}
-	u := fmt.Sprintf("team-projects/%s", url.QueryEscape(teamProjectAccessID))
+	u := fmt.Sprintf("team-projects/%s", url.PathEscape(teamProjectAccessID))
 	req, err := s.client.NewRequest("PATCH", u, &options)
 	if err != nil {
 		return nil, err
@@ -290,7 +290,7 @@ func (s *teamProjectAccesses) Remove(ctx context.Context, teamProjectAccessID st
 		return ErrInvalidTeamProjectAccessID
 	}
 
-	u := fmt.Sprintf("team-projects/%s", url.QueryEscape(teamProjectAccessID))
+	u := fmt.Sprintf("team-projects/%s", url.PathEscape(teamProjectAccessID))
 	req, err := s.client.NewRequest("DELETE", u, nil)
 	if err != nil {
 		return err

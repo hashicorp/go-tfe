@@ -66,7 +66,7 @@ func (s *teamTokens) CreateWithOptions(ctx context.Context, teamID string, optio
 		return nil, ErrInvalidTeamID
 	}
 
-	u := fmt.Sprintf("teams/%s/authentication-token", url.QueryEscape(teamID))
+	u := fmt.Sprintf("teams/%s/authentication-token", url.PathEscape(teamID))
 	req, err := s.client.NewRequest("POST", u, &options)
 	if err != nil {
 		return nil, err
@@ -87,7 +87,7 @@ func (s *teamTokens) Read(ctx context.Context, teamID string) (*TeamToken, error
 		return nil, ErrInvalidTeamID
 	}
 
-	u := fmt.Sprintf("teams/%s/authentication-token", url.QueryEscape(teamID))
+	u := fmt.Sprintf("teams/%s/authentication-token", url.PathEscape(teamID))
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, err
@@ -108,7 +108,7 @@ func (s *teamTokens) Delete(ctx context.Context, teamID string) error {
 		return ErrInvalidTeamID
 	}
 
-	u := fmt.Sprintf("teams/%s/authentication-token", url.QueryEscape(teamID))
+	u := fmt.Sprintf("teams/%s/authentication-token", url.PathEscape(teamID))
 	req, err := s.client.NewRequest("DELETE", u, nil)
 	if err != nil {
 		return err

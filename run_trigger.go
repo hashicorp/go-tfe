@@ -109,7 +109,7 @@ func (s *runTriggers) List(ctx context.Context, workspaceID string, options *Run
 		return nil, err
 	}
 
-	u := fmt.Sprintf("workspaces/%s/run-triggers", url.QueryEscape(workspaceID))
+	u := fmt.Sprintf("workspaces/%s/run-triggers", url.PathEscape(workspaceID))
 	req, err := s.client.NewRequest("GET", u, options)
 	if err != nil {
 		return nil, err
@@ -133,7 +133,7 @@ func (s *runTriggers) Create(ctx context.Context, workspaceID string, options Ru
 		return nil, err
 	}
 
-	u := fmt.Sprintf("workspaces/%s/run-triggers", url.QueryEscape(workspaceID))
+	u := fmt.Sprintf("workspaces/%s/run-triggers", url.PathEscape(workspaceID))
 	req, err := s.client.NewRequest("POST", u, &options)
 	if err != nil {
 		return nil, err
@@ -154,7 +154,7 @@ func (s *runTriggers) Read(ctx context.Context, runTriggerID string) (*RunTrigge
 		return nil, ErrInvalidRunTriggerID
 	}
 
-	u := fmt.Sprintf("run-triggers/%s", url.QueryEscape(runTriggerID))
+	u := fmt.Sprintf("run-triggers/%s", url.PathEscape(runTriggerID))
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, err
@@ -175,7 +175,7 @@ func (s *runTriggers) Delete(ctx context.Context, runTriggerID string) error {
 		return ErrInvalidRunTriggerID
 	}
 
-	u := fmt.Sprintf("run-triggers/%s", url.QueryEscape(runTriggerID))
+	u := fmt.Sprintf("run-triggers/%s", url.PathEscape(runTriggerID))
 	req, err := s.client.NewRequest("DELETE", u, nil)
 	if err != nil {
 		return err

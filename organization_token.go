@@ -66,7 +66,7 @@ func (s *organizationTokens) CreateWithOptions(ctx context.Context, organization
 		return nil, ErrInvalidOrg
 	}
 
-	u := fmt.Sprintf("organizations/%s/authentication-token", url.QueryEscape(organization))
+	u := fmt.Sprintf("organizations/%s/authentication-token", url.PathEscape(organization))
 	req, err := s.client.NewRequest("POST", u, &options)
 	if err != nil {
 		return nil, err
@@ -87,7 +87,7 @@ func (s *organizationTokens) Read(ctx context.Context, organization string) (*Or
 		return nil, ErrInvalidOrg
 	}
 
-	u := fmt.Sprintf("organizations/%s/authentication-token", url.QueryEscape(organization))
+	u := fmt.Sprintf("organizations/%s/authentication-token", url.PathEscape(organization))
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, err
@@ -108,7 +108,7 @@ func (s *organizationTokens) Delete(ctx context.Context, organization string) er
 		return ErrInvalidOrg
 	}
 
-	u := fmt.Sprintf("organizations/%s/authentication-token", url.QueryEscape(organization))
+	u := fmt.Sprintf("organizations/%s/authentication-token", url.PathEscape(organization))
 	req, err := s.client.NewRequest("DELETE", u, nil)
 	if err != nil {
 		return err

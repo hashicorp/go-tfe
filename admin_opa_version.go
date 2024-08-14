@@ -121,7 +121,7 @@ func (a *adminOPAVersions) Read(ctx context.Context, id string) (*AdminOPAVersio
 		return nil, ErrInvalidOPAVersionID
 	}
 
-	u := fmt.Sprintf("admin/opa-versions/%s", url.QueryEscape(id))
+	u := fmt.Sprintf("admin/opa-versions/%s", url.PathEscape(id))
 	req, err := a.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, err
@@ -161,7 +161,7 @@ func (a *adminOPAVersions) Update(ctx context.Context, id string, options AdminO
 		return nil, ErrInvalidOPAVersionID
 	}
 
-	u := fmt.Sprintf("admin/opa-versions/%s", url.QueryEscape(id))
+	u := fmt.Sprintf("admin/opa-versions/%s", url.PathEscape(id))
 	req, err := a.client.NewRequest("PATCH", u, &options)
 	if err != nil {
 		return nil, err
@@ -182,7 +182,7 @@ func (a *adminOPAVersions) Delete(ctx context.Context, id string) error {
 		return ErrInvalidOPAVersionID
 	}
 
-	u := fmt.Sprintf("admin/opa-versions/%s", url.QueryEscape(id))
+	u := fmt.Sprintf("admin/opa-versions/%s", url.PathEscape(id))
 	req, err := a.client.NewRequest("DELETE", u, nil)
 	if err != nil {
 		return err

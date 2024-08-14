@@ -235,7 +235,7 @@ func (s *example) Create(ctx context.Context, organization string, options Examp
 		return nil, err
 	}
 
-	u := fmt.Sprintf("organizations/%s/tasks", url.QueryEscape(organization))
+	u := fmt.Sprintf("organizations/%s/tasks", url.PathEscape(organization))
 	req, err := s.client.NewRequest("POST", u, &options)
 	if err != nil {
 		return nil, err
@@ -256,7 +256,7 @@ func (s *example) List(ctx context.Context, organization string, options *Exampl
 		return nil, ErrInvalidOrg
 	}
 
-	u := fmt.Sprintf("organizations/%s/examples", url.QueryEscape(organization))
+	u := fmt.Sprintf("organizations/%s/examples", url.PathEscape(organization))
 	req, err := s.client.NewRequest("GET", u, options)
 	if err != nil {
 		return nil, err
@@ -282,7 +282,7 @@ func (s *example) ReadWithOptions(ctx context.Context, exampleID string, options
 		return nil, ErrInvalidExampleID
 	}
 
-	u := fmt.Sprintf("examples/%s", url.QueryEscape(exampleID))
+	u := fmt.Sprintf("examples/%s", url.PathEscape(exampleID))
 	req, err := s.client.NewRequest("GET", u, options)
 	if err != nil {
 		return nil, err
@@ -307,7 +307,7 @@ func (s *example) Update(ctx context.Context, exampleID string, options ExampleU
 		return nil, err
 	}
 
-	u := fmt.Sprintf("examples/%s", url.QueryEscape(exampleID))
+	u := fmt.Sprintf("examples/%s", url.PathEscape(exampleID))
 	req, err := s.client.NewRequest("PATCH", u, &options)
 	if err != nil {
 		return nil, err
@@ -383,4 +383,3 @@ This script depends on `gh` and `jq`. It also requires you to `gh auth login`, p
 ```sh
 ./scripts/rebase-fork.sh 557
 ```
-

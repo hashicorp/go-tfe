@@ -224,7 +224,7 @@ func (s *oAuthClients) List(ctx context.Context, organization string, options *O
 		return nil, err
 	}
 
-	u := fmt.Sprintf("organizations/%s/oauth-clients", url.QueryEscape(organization))
+	u := fmt.Sprintf("organizations/%s/oauth-clients", url.PathEscape(organization))
 	req, err := s.client.NewRequest("GET", u, options)
 	if err != nil {
 		return nil, err
@@ -248,7 +248,7 @@ func (s *oAuthClients) Create(ctx context.Context, organization string, options 
 		return nil, err
 	}
 
-	u := fmt.Sprintf("organizations/%s/oauth-clients", url.QueryEscape(organization))
+	u := fmt.Sprintf("organizations/%s/oauth-clients", url.PathEscape(organization))
 	req, err := s.client.NewRequest("POST", u, &options)
 	if err != nil {
 		return nil, err
@@ -276,7 +276,7 @@ func (s *oAuthClients) ReadWithOptions(ctx context.Context, oAuthClientID string
 		return nil, err
 	}
 
-	u := fmt.Sprintf("oauth-clients/%s", url.QueryEscape(oAuthClientID))
+	u := fmt.Sprintf("oauth-clients/%s", url.PathEscape(oAuthClientID))
 	req, err := s.client.NewRequest("GET", u, options)
 	if err != nil {
 		return nil, err
@@ -297,7 +297,7 @@ func (s *oAuthClients) Update(ctx context.Context, oAuthClientID string, options
 		return nil, ErrInvalidOauthClientID
 	}
 
-	u := fmt.Sprintf("oauth-clients/%s", url.QueryEscape(oAuthClientID))
+	u := fmt.Sprintf("oauth-clients/%s", url.PathEscape(oAuthClientID))
 	req, err := s.client.NewRequest("PATCH", u, &options)
 	if err != nil {
 		return nil, err
@@ -318,7 +318,7 @@ func (s *oAuthClients) Delete(ctx context.Context, oAuthClientID string) error {
 		return ErrInvalidOauthClientID
 	}
 
-	u := fmt.Sprintf("oauth-clients/%s", url.QueryEscape(oAuthClientID))
+	u := fmt.Sprintf("oauth-clients/%s", url.PathEscape(oAuthClientID))
 	req, err := s.client.NewRequest("DELETE", u, nil)
 	if err != nil {
 		return err
@@ -361,7 +361,7 @@ func (s *oAuthClients) AddProjects(ctx context.Context, oAuthClientID string, op
 		return err
 	}
 
-	u := fmt.Sprintf("oauth-clients/%s/relationships/projects", url.QueryEscape(oAuthClientID))
+	u := fmt.Sprintf("oauth-clients/%s/relationships/projects", url.PathEscape(oAuthClientID))
 	req, err := s.client.NewRequest("POST", u, options.Projects)
 	if err != nil {
 		return err
@@ -379,7 +379,7 @@ func (s *oAuthClients) RemoveProjects(ctx context.Context, oAuthClientID string,
 		return err
 	}
 
-	u := fmt.Sprintf("oauth-clients/%s/relationships/projects", url.QueryEscape(oAuthClientID))
+	u := fmt.Sprintf("oauth-clients/%s/relationships/projects", url.PathEscape(oAuthClientID))
 	req, err := s.client.NewRequest("DELETE", u, options.Projects)
 	if err != nil {
 		return err

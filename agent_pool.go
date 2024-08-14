@@ -114,7 +114,7 @@ func (s *agentPools) List(ctx context.Context, organization string, options *Age
 		return nil, err
 	}
 
-	u := fmt.Sprintf("organizations/%s/agent-pools", url.QueryEscape(organization))
+	u := fmt.Sprintf("organizations/%s/agent-pools", url.PathEscape(organization))
 	req, err := s.client.NewRequest("GET", u, options)
 	if err != nil {
 		return nil, err
@@ -139,7 +139,7 @@ func (s *agentPools) Create(ctx context.Context, organization string, options Ag
 		return nil, err
 	}
 
-	u := fmt.Sprintf("organizations/%s/agent-pools", url.QueryEscape(organization))
+	u := fmt.Sprintf("organizations/%s/agent-pools", url.PathEscape(organization))
 	req, err := s.client.NewRequest("POST", u, &options)
 	if err != nil {
 		return nil, err
@@ -168,7 +168,7 @@ func (s *agentPools) ReadWithOptions(ctx context.Context, agentpoolID string, op
 		return nil, err
 	}
 
-	u := fmt.Sprintf("agent-pools/%s", url.QueryEscape(agentpoolID))
+	u := fmt.Sprintf("agent-pools/%s", url.PathEscape(agentpoolID))
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, err
@@ -224,7 +224,7 @@ func (s *agentPools) Update(ctx context.Context, agentPoolID string, options Age
 		return nil, err
 	}
 
-	u := fmt.Sprintf("agent-pools/%s", url.QueryEscape(agentPoolID))
+	u := fmt.Sprintf("agent-pools/%s", url.PathEscape(agentPoolID))
 	req, err := s.client.NewRequest("PATCH", u, &options)
 	if err != nil {
 		return nil, err
@@ -244,7 +244,7 @@ func (s *agentPools) UpdateAllowedWorkspaces(ctx context.Context, agentPoolID st
 		return nil, ErrInvalidAgentPoolID
 	}
 
-	u := fmt.Sprintf("agent-pools/%s", url.QueryEscape(agentPoolID))
+	u := fmt.Sprintf("agent-pools/%s", url.PathEscape(agentPoolID))
 	req, err := s.client.NewRequest("PATCH", u, &options)
 	if err != nil {
 		return nil, err
@@ -265,7 +265,7 @@ func (s *agentPools) Delete(ctx context.Context, agentPoolID string) error {
 		return ErrInvalidAgentPoolID
 	}
 
-	u := fmt.Sprintf("agent-pools/%s", url.QueryEscape(agentPoolID))
+	u := fmt.Sprintf("agent-pools/%s", url.PathEscape(agentPoolID))
 	req, err := s.client.NewRequest("DELETE", u, nil)
 	if err != nil {
 		return err

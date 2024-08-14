@@ -111,7 +111,7 @@ func (s *adminRuns) ForceCancel(ctx context.Context, runID string, options Admin
 		return ErrInvalidRunID
 	}
 
-	u := fmt.Sprintf("admin/runs/%s/actions/force-cancel", url.QueryEscape(runID))
+	u := fmt.Sprintf("admin/runs/%s/actions/force-cancel", url.PathEscape(runID))
 	req, err := s.client.NewRequest("POST", u, &options)
 	if err != nil {
 		return err

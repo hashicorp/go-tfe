@@ -119,7 +119,7 @@ func (a *adminUsers) Delete(ctx context.Context, userID string) error {
 		return ErrInvalidUserValue
 	}
 
-	u := fmt.Sprintf("admin/users/%s", url.QueryEscape(userID))
+	u := fmt.Sprintf("admin/users/%s", url.PathEscape(userID))
 	req, err := a.client.NewRequest("DELETE", u, nil)
 	if err != nil {
 		return err
@@ -134,7 +134,7 @@ func (a *adminUsers) Suspend(ctx context.Context, userID string) (*AdminUser, er
 		return nil, ErrInvalidUserValue
 	}
 
-	u := fmt.Sprintf("admin/users/%s/actions/suspend", url.QueryEscape(userID))
+	u := fmt.Sprintf("admin/users/%s/actions/suspend", url.PathEscape(userID))
 	req, err := a.client.NewRequest("POST", u, nil)
 	if err != nil {
 		return nil, err
@@ -155,7 +155,7 @@ func (a *adminUsers) Unsuspend(ctx context.Context, userID string) (*AdminUser, 
 		return nil, ErrInvalidUserValue
 	}
 
-	u := fmt.Sprintf("admin/users/%s/actions/unsuspend", url.QueryEscape(userID))
+	u := fmt.Sprintf("admin/users/%s/actions/unsuspend", url.PathEscape(userID))
 	req, err := a.client.NewRequest("POST", u, nil)
 	if err != nil {
 		return nil, err
@@ -176,7 +176,7 @@ func (a *adminUsers) GrantAdmin(ctx context.Context, userID string) (*AdminUser,
 		return nil, ErrInvalidUserValue
 	}
 
-	u := fmt.Sprintf("admin/users/%s/actions/grant_admin", url.QueryEscape(userID))
+	u := fmt.Sprintf("admin/users/%s/actions/grant_admin", url.PathEscape(userID))
 	req, err := a.client.NewRequest("POST", u, nil)
 	if err != nil {
 		return nil, err
@@ -197,7 +197,7 @@ func (a *adminUsers) RevokeAdmin(ctx context.Context, userID string) (*AdminUser
 		return nil, ErrInvalidUserValue
 	}
 
-	u := fmt.Sprintf("admin/users/%s/actions/revoke_admin", url.QueryEscape(userID))
+	u := fmt.Sprintf("admin/users/%s/actions/revoke_admin", url.PathEscape(userID))
 	req, err := a.client.NewRequest("POST", u, nil)
 	if err != nil {
 		return nil, err
@@ -219,7 +219,7 @@ func (a *adminUsers) Disable2FA(ctx context.Context, userID string) (*AdminUser,
 		return nil, ErrInvalidUserValue
 	}
 
-	u := fmt.Sprintf("admin/users/%s/actions/disable_two_factor", url.QueryEscape(userID))
+	u := fmt.Sprintf("admin/users/%s/actions/disable_two_factor", url.PathEscape(userID))
 	req, err := a.client.NewRequest("POST", u, nil)
 	if err != nil {
 		return nil, err

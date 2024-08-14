@@ -75,7 +75,7 @@ func (s *applies) Read(ctx context.Context, applyID string) (*Apply, error) {
 		return nil, ErrInvalidApplyID
 	}
 
-	u := fmt.Sprintf("applies/%s", url.QueryEscape(applyID))
+	u := fmt.Sprintf("applies/%s", url.PathEscape(applyID))
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, err

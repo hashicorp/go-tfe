@@ -346,7 +346,7 @@ func (s *organizations) ReadWithOptions(ctx context.Context, organization string
 		return nil, ErrInvalidOrg
 	}
 
-	u := fmt.Sprintf("organizations/%s", url.QueryEscape(organization))
+	u := fmt.Sprintf("organizations/%s", url.PathEscape(organization))
 	req, err := s.client.NewRequest("GET", u, &options)
 	if err != nil {
 		return nil, err
@@ -370,7 +370,7 @@ func (s *organizations) Update(ctx context.Context, organization string, options
 		return nil, ErrInvalidOrg
 	}
 
-	u := fmt.Sprintf("organizations/%s", url.QueryEscape(organization))
+	u := fmt.Sprintf("organizations/%s", url.PathEscape(organization))
 	req, err := s.client.NewRequest("PATCH", u, &options)
 	if err != nil {
 		return nil, err
@@ -391,7 +391,7 @@ func (s *organizations) Delete(ctx context.Context, organization string) error {
 		return ErrInvalidOrg
 	}
 
-	u := fmt.Sprintf("organizations/%s", url.QueryEscape(organization))
+	u := fmt.Sprintf("organizations/%s", url.PathEscape(organization))
 	req, err := s.client.NewRequest("DELETE", u, nil)
 	if err != nil {
 		return err
@@ -406,7 +406,7 @@ func (s *organizations) ReadCapacity(ctx context.Context, organization string) (
 		return nil, ErrInvalidOrg
 	}
 
-	u := fmt.Sprintf("organizations/%s/capacity", url.QueryEscape(organization))
+	u := fmt.Sprintf("organizations/%s/capacity", url.PathEscape(organization))
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, err
@@ -427,7 +427,7 @@ func (s *organizations) ReadEntitlements(ctx context.Context, organization strin
 		return nil, ErrInvalidOrg
 	}
 
-	u := fmt.Sprintf("organizations/%s/entitlement-set", url.QueryEscape(organization))
+	u := fmt.Sprintf("organizations/%s/entitlement-set", url.PathEscape(organization))
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, err
@@ -448,7 +448,7 @@ func (s *organizations) ReadRunQueue(ctx context.Context, organization string, o
 		return nil, ErrInvalidOrg
 	}
 
-	u := fmt.Sprintf("organizations/%s/runs/queue", url.QueryEscape(organization))
+	u := fmt.Sprintf("organizations/%s/runs/queue", url.PathEscape(organization))
 	req, err := s.client.NewRequest("GET", u, &options)
 	if err != nil {
 		return nil, err
@@ -468,7 +468,7 @@ func (s *organizations) ReadDataRetentionPolicy(ctx context.Context, organizatio
 		return nil, ErrInvalidOrg
 	}
 
-	u := fmt.Sprintf("organizations/%s/relationships/data-retention-policy", url.QueryEscape(organization))
+	u := fmt.Sprintf("organizations/%s/relationships/data-retention-policy", url.PathEscape(organization))
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, err
@@ -636,5 +636,5 @@ func (o OrganizationCreateOptions) valid() error {
 }
 
 func (s *organizations) dataRetentionPolicyLink(name string) string {
-	return fmt.Sprintf("organizations/%s/relationships/data-retention-policy", url.QueryEscape(name))
+	return fmt.Sprintf("organizations/%s/relationships/data-retention-policy", url.PathEscape(name))
 }

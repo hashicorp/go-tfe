@@ -185,7 +185,7 @@ func (s *teams) List(ctx context.Context, organization string, options *TeamList
 	if err := options.valid(); err != nil {
 		return nil, err
 	}
-	u := fmt.Sprintf("organizations/%s/teams", url.QueryEscape(organization))
+	u := fmt.Sprintf("organizations/%s/teams", url.PathEscape(organization))
 	req, err := s.client.NewRequest("GET", u, options)
 	if err != nil {
 		return nil, err
@@ -209,7 +209,7 @@ func (s *teams) Create(ctx context.Context, organization string, options TeamCre
 		return nil, err
 	}
 
-	u := fmt.Sprintf("organizations/%s/teams", url.QueryEscape(organization))
+	u := fmt.Sprintf("organizations/%s/teams", url.PathEscape(organization))
 	req, err := s.client.NewRequest("POST", u, &options)
 	if err != nil {
 		return nil, err
@@ -230,7 +230,7 @@ func (s *teams) Read(ctx context.Context, teamID string) (*Team, error) {
 		return nil, ErrInvalidTeamID
 	}
 
-	u := fmt.Sprintf("teams/%s", url.QueryEscape(teamID))
+	u := fmt.Sprintf("teams/%s", url.PathEscape(teamID))
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, err
@@ -251,7 +251,7 @@ func (s *teams) Update(ctx context.Context, teamID string, options TeamUpdateOpt
 		return nil, ErrInvalidTeamID
 	}
 
-	u := fmt.Sprintf("teams/%s", url.QueryEscape(teamID))
+	u := fmt.Sprintf("teams/%s", url.PathEscape(teamID))
 	req, err := s.client.NewRequest("PATCH", u, &options)
 	if err != nil {
 		return nil, err
@@ -272,7 +272,7 @@ func (s *teams) Delete(ctx context.Context, teamID string) error {
 		return ErrInvalidTeamID
 	}
 
-	u := fmt.Sprintf("teams/%s", url.QueryEscape(teamID))
+	u := fmt.Sprintf("teams/%s", url.PathEscape(teamID))
 	req, err := s.client.NewRequest("DELETE", u, nil)
 	if err != nil {
 		return err

@@ -113,7 +113,7 @@ func (s *adminWorkspaces) Read(ctx context.Context, workspaceID string) (*AdminW
 		return nil, ErrInvalidWorkspaceValue
 	}
 
-	u := fmt.Sprintf("admin/workspaces/%s", url.QueryEscape(workspaceID))
+	u := fmt.Sprintf("admin/workspaces/%s", url.PathEscape(workspaceID))
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, err
@@ -134,7 +134,7 @@ func (s *adminWorkspaces) Delete(ctx context.Context, workspaceID string) error 
 		return ErrInvalidWorkspaceValue
 	}
 
-	u := fmt.Sprintf("admin/workspaces/%s", url.QueryEscape(workspaceID))
+	u := fmt.Sprintf("admin/workspaces/%s", url.PathEscape(workspaceID))
 	req, err := s.client.NewRequest("DELETE", u, nil)
 	if err != nil {
 		return err

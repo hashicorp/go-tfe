@@ -134,7 +134,7 @@ func (s *variables) List(ctx context.Context, workspaceID string, options *Varia
 		return nil, ErrInvalidWorkspaceID
 	}
 
-	u := fmt.Sprintf("workspaces/%s/vars", url.QueryEscape(workspaceID))
+	u := fmt.Sprintf("workspaces/%s/vars", url.PathEscape(workspaceID))
 	req, err := s.client.NewRequest("GET", u, options)
 	if err != nil {
 		return nil, err
@@ -158,7 +158,7 @@ func (s *variables) Create(ctx context.Context, workspaceID string, options Vari
 		return nil, err
 	}
 
-	u := fmt.Sprintf("workspaces/%s/vars", url.QueryEscape(workspaceID))
+	u := fmt.Sprintf("workspaces/%s/vars", url.PathEscape(workspaceID))
 	req, err := s.client.NewRequest("POST", u, &options)
 	if err != nil {
 		return nil, err
@@ -182,7 +182,7 @@ func (s *variables) Read(ctx context.Context, workspaceID, variableID string) (*
 		return nil, ErrInvalidVariableID
 	}
 
-	u := fmt.Sprintf("workspaces/%s/vars/%s", url.QueryEscape(workspaceID), url.QueryEscape(variableID))
+	u := fmt.Sprintf("workspaces/%s/vars/%s", url.PathEscape(workspaceID), url.PathEscape(variableID))
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, err
@@ -206,7 +206,7 @@ func (s *variables) Update(ctx context.Context, workspaceID, variableID string, 
 		return nil, ErrInvalidVariableID
 	}
 
-	u := fmt.Sprintf("workspaces/%s/vars/%s", url.QueryEscape(workspaceID), url.QueryEscape(variableID))
+	u := fmt.Sprintf("workspaces/%s/vars/%s", url.PathEscape(workspaceID), url.PathEscape(variableID))
 	req, err := s.client.NewRequest("PATCH", u, &options)
 	if err != nil {
 		return nil, err
@@ -230,7 +230,7 @@ func (s *variables) Delete(ctx context.Context, workspaceID, variableID string) 
 		return ErrInvalidVariableID
 	}
 
-	u := fmt.Sprintf("workspaces/%s/vars/%s", url.QueryEscape(workspaceID), url.QueryEscape(variableID))
+	u := fmt.Sprintf("workspaces/%s/vars/%s", url.PathEscape(workspaceID), url.PathEscape(variableID))
 	req, err := s.client.NewRequest("DELETE", u, nil)
 	if err != nil {
 		return err
