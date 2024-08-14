@@ -33,9 +33,9 @@ type StackPlans interface {
 	// PlanDescription returns the plan description for a stack plan.
 	PlanDescription(ctx context.Context, stackPlanID string) (*JSONChangeDesc, error)
 
-	// AwaitTerminalState generates a channel that will receive the status of the stack plan as it progresses.
+	// AwaitTerminal generates a channel that will receive the status of the stack plan as it progresses.
 	// See WaitForStatusResult for more information.
-	AwaitTerminalState(ctx context.Context, stackPlanID string) <-chan WaitForStatusResult
+	AwaitTerminal(ctx context.Context, stackPlanID string) <-chan WaitForStatusResult
 
 	// AwaitRunning generates a channel that will receive the status of the stack plan as it progresses.
 	// See WaitForStatusResult for more information.
@@ -291,14 +291,14 @@ func (s stackPlans) PlanDescription(ctx context.Context, stackPlanID string) (*J
 	return jd, nil
 }
 
-// AwaitTerminalState generates a channel that will receive the status of the stack plan as it progresses.
+// AwaitTerminal generates a channel that will receive the status of the stack plan as it progresses.
 // The channel will be closed when the stack plan reaches a final status or an error occurs. The
 // read will be retried dependending on the configuration of the client. When the channel is closed,
 // the last value will either be a terminal status (finished, finished_no_changes, finished_applied,
 // finished_planned, discarded, canceled, errorer), or an error. The status check will continue even
 // if the stack plan is waiting for approval. Check the status within the the channel to determine
 // if the stack plan needs approval.
-func (s stackPlans) AwaitTerminalState(ctx context.Context, stackPlanID string) <-chan WaitForStatusResult {
+func (s stackPlans) AwaitTerminal(ctx context.Context, stackPlanID string) <-chan WaitForStatusResult {
 	return awaitPoll(ctx, stackPlanID, func(ctx context.Context) (string, error) {
 		stackPlan, err := s.Read(ctx, stackPlanID)
 		if err != nil {
