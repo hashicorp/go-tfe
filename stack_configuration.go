@@ -20,6 +20,33 @@ type StackConfigurations interface {
 
 	// JSONSchemas returns a byte slice of the JSON schema for the stack configuration.
 	JSONSchemas(ctx context.Context, stackConfigurationID string) ([]byte, error)
+
+	// AwaitCompleted generates a channel that will receive the status of the
+	// stack configuration as it progresses, until that status is "converged",
+	// "converging", "errored", "canceled".
+	AwaitCompleted(ctx context.Context, stackConfigurationID string) <-chan WaitForStatusResult
+
+	// AwaitPrepared generates a channel that will receive the status of the
+	// stack configuration as it progresses, until that status is "<status>",
+	// "errored", "canceled".
+	AwaitStatus(ctx context.Context, stackConfigurationID string, status StackConfigurationStatus) <-chan WaitForStatusResult
+}
+
+type StackConfigurationStatus string
+
+const (
+	StackConfigurationStatusPending    StackConfigurationStatus = "pending"
+	StackConfigurationStatusQueued     StackConfigurationStatus = "queued"
+	StackConfigurationStatusPreparing  StackConfigurationStatus = "preparing"
+	StackConfigurationStatusEnqueueing StackConfigurationStatus = "enqueueing"
+	StackConfigurationStatusConverged  StackConfigurationStatus = "converged"
+	StackConfigurationStatusConverging StackConfigurationStatus = "converging"
+	StackConfigurationStatusErrored    StackConfigurationStatus = "errored"
+	StackConfigurationStatusCanceled   StackConfigurationStatus = "canceled"
+)
+
+func (s StackConfigurationStatus) String() string {
+	return string(s)
 }
 
 type stackConfigurations struct {
@@ -63,4 +90,34 @@ func (s stackConfigurations) JSONSchemas(ctx context.Context, stackConfiguration
 	}
 
 	return raw.Bytes(), nil
+}
+
+// AwaitCompleted generates a channel that will receive the status of the stack configuration as it progresses.
+// The channel will be closed when the stack configuration reaches a status indicating that or an error occurs. The
+// read will be retried dependending on the configuration of the client. When the channel is closed,
+// the last value will either be a completed status or an error.
+func (s stackConfigurations) AwaitCompleted(ctx context.Context, stackConfigurationID string) <-chan WaitForStatusResult {
+	return awaitPoll(ctx, stackConfigurationID, func(ctx context.Context) (string, error) {
+		stackConfiguration, err := s.Read(ctx, stackConfigurationID)
+		if err != nil {
+			return "", err
+		}
+
+		return stackConfiguration.Status, nil
+	}, []string{StackConfigurationStatusConverged.String(), StackConfigurationStatusConverging.String(), StackConfigurationStatusErrored.String(), StackConfigurationStatusCanceled.String()})
+}
+
+// AwaitStatus generates a channel that will receive the status of the stack configuration as it progresses.
+// The channel will be closed when the stack configuration reaches a status indicating that or an error occurs. The
+// read will be retried dependending on the configuration of the client. When the channel is closed,
+// the last value will either be the specified status, "errored" status, or "canceled" status, or an error.
+func (s stackConfigurations) AwaitStatus(ctx context.Context, stackConfigurationID string, status StackConfigurationStatus) <-chan WaitForStatusResult {
+	return awaitPoll(ctx, stackConfigurationID, func(ctx context.Context) (string, error) {
+		stackConfiguration, err := s.Read(ctx, stackConfigurationID)
+		if err != nil {
+			return "", err
+		}
+
+		return stackConfiguration.Status, nil
+	}, []string{status.String(), StackConfigurationStatusErrored.String(), StackConfigurationStatusCanceled.String()})
 }
