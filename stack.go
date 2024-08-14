@@ -74,16 +74,16 @@ type StackVCSRepo struct {
 
 // Stack represents a stack.
 type Stack struct {
-	ID                      string        `jsonapi:"primary,stacks"`
-	Name                    string        `jsonapi:"attr,name"`
-	Description             string        `jsonapi:"attr,description"`
-	DeploymentNames         []string      `jsonapi:"attr,deployment-names"`
-	VCSRepo                 *StackVCSRepo `jsonapi:"attr,vcs-repo"`
-	ErrorsCount             int           `jsonapi:"attr,errors-count"`
-	WarningsCount           int           `jsonapi:"attr,warnings-count"`
-	SpeculativePlansEnabled bool          `jsonapi:"attr,speculative-enabled"`
-	CreatedAt               time.Time     `jsonapi:"attr,created-at,iso8601"`
-	UpdatedAt               time.Time     `jsonapi:"attr,updated-at,iso8601"`
+	ID                 string        `jsonapi:"primary,stacks"`
+	Name               string        `jsonapi:"attr,name"`
+	Description        string        `jsonapi:"attr,description"`
+	DeploymentNames    []string      `jsonapi:"attr,deployment-names"`
+	VCSRepo            *StackVCSRepo `jsonapi:"attr,vcs-repo"`
+	ErrorsCount        int           `jsonapi:"attr,errors-count"`
+	WarningsCount      int           `jsonapi:"attr,warnings-count"`
+	SpeculativeEnabled bool          `jsonapi:"attr,speculative-enabled"`
+	CreatedAt          time.Time     `jsonapi:"attr,created-at,iso8601"`
+	UpdatedAt          time.Time     `jsonapi:"attr,updated-at,iso8601"`
 
 	// Relationships
 	Project                  *Project            `jsonapi:"relation,project"`
