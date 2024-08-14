@@ -19,7 +19,7 @@ type StackSources interface {
 
 	// CreateAndUpload packages and uploads the specified Terraform Stacks
 	// configuration files in association with a Stack.
-	CreateAndUpload(ctx context.Context, stackID string, path string) (*StackSource, error)
+	CreateAndUpload(ctx context.Context, stackID string, path string, opts *CreateStackSourceOptions) (*StackSource, error)
 
 	// UploadTarGzip is used to upload Terraform configuration files contained a tar gzip archive.
 	// Any stream implementing io.Reader can be passed into this method. This method is also
@@ -28,6 +28,10 @@ type StackSources interface {
 	// **Note**: This method does not validate the content being uploaded and is therefore the caller's
 	// responsibility to ensure the raw content is a valid Terraform configuration.
 	UploadTarGzip(ctx context.Context, uploadURL string, archive io.Reader) error
+}
+
+type CreateStackSourceOptions struct {
+	SelectedDeployments *[]string `jsonapi:"attr,selected-deployments,omitempty"`
 }
 
 var _ StackSources = (*stackSources)(nil)
@@ -63,9 +67,12 @@ func (s *stackSources) Read(ctx context.Context, stackSourceID string) (*StackSo
 
 // CreateAndUpload packages and uploads the specified Terraform Stacks
 // configuration files in association with a Stack.
-func (s *stackSources) CreateAndUpload(ctx context.Context, stackID, path string) (*StackSource, error) {
+func (s *stackSources) CreateAndUpload(ctx context.Context, stackID, path string, opts *CreateStackSourceOptions) (*StackSource, error) {
+	if opts == nil {
+		opts = &CreateStackSourceOptions{}
+	}
 	u := fmt.Sprintf("stacks/%s/stack-sources", url.PathEscape(stackID))
-	req, err := s.client.NewRequest("POST", u, nil)
+	req, err := s.client.NewRequest("POST", u, opts)
 	if err != nil {
 		return nil, err
 	}
