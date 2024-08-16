@@ -773,6 +773,17 @@ func encodeQueryParams(v url.Values) string {
 	return buf.String()
 }
 
+// decodeQueryParams types an object and converts the struct fields into
+// Query Parameters, which can be used with NewRequestWithAdditionalQueryParams
+// Note that a field without a `url` annotation will be converted into a query
+// parameter. Use url:"-" to ignore struct fields.
+func decodeQueryParams(v any) (url.Values, error) {
+	if v == nil {
+		return make(url.Values, 0), nil
+	}
+	return query.Values(v)
+}
+
 // serializeRequestBody serializes the given ptr or ptr slice into a JSON
 // request. It automatically uses jsonapi or json serialization, depending
 // on the body type's tags.
