@@ -1,11 +1,15 @@
 # Unreleased
 
+# v1.64.0
+
+* Adds support for creating different organization token types by @glennsarti [#943](https://github.com/hashicorp/go-tfe/pull/943)
+* Adds more BETA support for `Stacks` resources, which is is EXPERIMENTAL, SUBJECT TO CHANGE, and may not be available to all users by @DanielMSchmidt [#963](https://github.com/hashicorp/go-tfe/pull/963)
+
 # v1.63.0
 
 ## Enhancements
 
 * Adds more BETA support for `Stacks` resources, which is is EXPERIMENTAL, SUBJECT TO CHANGE, and may not be available to all users by @brandonc [#957](https://github.com/hashicorp/go-tfe/pull/957) and @DanielMSchmidt [#960](https://github.com/hashicorp/go-tfe/pull/960)
-* Adds support for creating different organization token types by @glennsarti [#943](https://github.com/hashicorp/go-tfe/pull/943)
 
 # v1.62.0
 
