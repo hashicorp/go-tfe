@@ -155,7 +155,7 @@ func TestStackReadUpdateDelete(t *testing.T) {
 	require.NoError(t, err)
 	require.NotNil(t, stack)
 
-	stackRead, err := client.Stacks.Read(ctx, stack.ID)
+	stackRead, err := client.Stacks.Read(ctx, stack.ID, nil)
 	require.NoError(t, err)
 
 	assert.Equal(t, stack, stackRead)
@@ -174,7 +174,7 @@ func TestStackReadUpdateDelete(t *testing.T) {
 	err = client.Stacks.Delete(ctx, stack.ID)
 	require.NoError(t, err)
 
-	stackReadAfterDelete, err := client.Stacks.Read(ctx, stack.ID)
+	stackReadAfterDelete, err := client.Stacks.Read(ctx, stack.ID, nil)
 	require.ErrorIs(t, err, ErrResourceNotFound)
 	require.Nil(t, stackReadAfterDelete)
 }
@@ -199,7 +199,7 @@ func pollStackDeployments(t *testing.T, ctx context.Context, client *Client, sta
 			t.Fatalf("Stack %q had no deployments at deadline", stackID)
 		case <-ticker.C:
 			var err error
-			stack, err = client.Stacks.Read(ctx, stackID)
+			stack, err = client.Stacks.Read(ctx, stackID, nil)
 			if err != nil {
 				t.Fatalf("Failed to read stack %q: %s", stackID, err)
 			}
