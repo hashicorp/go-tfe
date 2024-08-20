@@ -18,7 +18,7 @@ type Stacks interface {
 	List(ctx context.Context, organization string, options *StackListOptions) (*StackList, error)
 
 	// Read returns a stack by its ID.
-	Read(ctx context.Context, stackID string) (*Stack, error)
+	Read(ctx context.Context, stackID string, options *StackReadOptions) (*Stack, error)
 
 	// Create creates a new stack.
 	Create(ctx context.Context, options StackCreateOptions) (*Stack, error)
@@ -143,12 +143,27 @@ type StackState struct {
 	ID string `jsonapi:"primary,stack-states"`
 }
 
+// StackIncludeOpt represents the include options for a stack.
+type StackIncludeOpt string
+
+const (
+	StackIncludeOrganization             StackIncludeOpt = "organization"
+	StackIncludeProject                  StackIncludeOpt = "project"
+	StackIncludeLatestStackConfiguration StackIncludeOpt = "latest_stack_configuration"
+	StackIncludeStackDiagnostics         StackIncludeOpt = "stack_diagnostics"
+)
+
 // StackListOptions represents the options for listing stacks.
 type StackListOptions struct {
 	ListOptions
-	ProjectID    string          `url:"filter[project[id]],omitempty"`
-	Sort         StackSortColumn `url:"sort,omitempty"`
-	SearchByName string          `url:"search[name],omitempty"`
+	ProjectID    string            `url:"filter[project[id]],omitempty"`
+	Sort         StackSortColumn   `url:"sort,omitempty"`
+	SearchByName string            `url:"search[name],omitempty"`
+	Include      []StackIncludeOpt `url:"include,omitempty"`
+}
+
+type StackReadOptions struct {
+	Include []StackIncludeOpt `url:"include,omitempty"`
 }
 
 // StackCreateOptions represents the options for creating a stack. The project
@@ -221,8 +236,8 @@ func (s stacks) List(ctx context.Context, organization string, options *StackLis
 }
 
 // Read returns a stack by its ID.
-func (s stacks) Read(ctx context.Context, stackID string) (*Stack, error) {
-	req, err := s.client.NewRequest("GET", fmt.Sprintf("stacks/%s", url.PathEscape(stackID)), nil)
+func (s stacks) Read(ctx context.Context, stackID string, options *StackReadOptions) (*Stack, error) {
+	req, err := s.client.NewRequest("GET", fmt.Sprintf("stacks/%s", url.PathEscape(stackID)), options)
 	if err != nil {
 		return nil, err
 	}
