@@ -1,4 +1,8 @@
-# Unreleased
+# v1.64.1
+
+# Bug Fixes
+
+* Fixes BETA feature regression in `Stacks` associated with decoding `StackVCSRepo` data by @brandonc [#964](https://github.com/hashicorp/go-tfe/pull/964)
 
 # v1.64.0
 
