@@ -317,7 +317,36 @@ func TestWorkspacesCreateTableDriven(t *testing.T) {
 	orgTest, orgTestCleanup := createOrganization(t, client)
 	t.Cleanup(orgTestCleanup)
 
+	oc, oaCleanup := createOAuthToken(t, client, orgTest)
+	t.Cleanup(oaCleanup)
+
 	workspaceTableTests := []WorkspaceTableTest{
+		{
+			scenario: "when options include vcs-repo",
+			options: &WorkspaceTableOptions{
+				createOptions: &WorkspaceCreateOptions{
+					Name: String("foobar"),
+					VCSRepo: &VCSRepoOptions{
+						Identifier:   String("hashicorp/terraform-random-module"),
+						OAuthTokenID: &oc.ID,
+						Branch:       String("main"),
+					},
+				},
+			},
+			assertion: func(t *testing.T, w *Workspace, options *WorkspaceTableOptions, err error) {
+				require.NoError(t, err)
+				require.NotNil(t, w)
+				require.NotEmpty(t, w.VCSRepo.Identifier)
+				require.NotEmpty(t, w.VCSRepo.OAuthTokenID)
+				require.NotEmpty(t, w.VCSRepo.Branch)
+
+				wRead, err := client.Workspaces.ReadByID(ctx, w.ID)
+				require.NoError(t, err)
+				require.Equal(t, w.VCSRepo.Identifier, wRead.VCSRepo.Identifier)
+				require.Equal(t, w.VCSRepo.OAuthTokenID, wRead.VCSRepo.OAuthTokenID)
+				require.Equal(t, w.VCSRepo.Branch, wRead.VCSRepo.Branch)
+			},
+		},
 		{
 			scenario: "when options include tags-regex",
 			options: &WorkspaceTableOptions{
@@ -450,7 +479,6 @@ func TestWorkspacesCreateTableDrivenWithGithubApp(t *testing.T) {
 	ctx := context.Background()
 
 	orgTest1, orgTestCleanup := createOrganization(t, client)
-
 	t.Cleanup(orgTestCleanup)
 
 	workspaceTableTests := []WorkspaceTableTest{

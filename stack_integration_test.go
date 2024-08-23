@@ -146,6 +146,7 @@ func TestStackReadUpdateDelete(t *testing.T) {
 		VCSRepo: &StackVCSRepo{
 			Identifier:   "brandonc/pet-nulls-stack",
 			OAuthTokenID: oauthClient.OAuthTokens[0].ID,
+			Branch:       "main",
 		},
 		Project: &Project{
 			ID: orgTest.DefaultProject.ID,
@@ -154,9 +155,15 @@ func TestStackReadUpdateDelete(t *testing.T) {
 
 	require.NoError(t, err)
 	require.NotNil(t, stack)
+	require.NotEmpty(t, stack.VCSRepo.Identifier)
+	require.NotEmpty(t, stack.VCSRepo.OAuthTokenID)
+	require.NotEmpty(t, stack.VCSRepo.Branch)
 
 	stackRead, err := client.Stacks.Read(ctx, stack.ID, nil)
 	require.NoError(t, err)
+	require.Equal(t, stack.VCSRepo.Identifier, stackRead.VCSRepo.Identifier)
+	require.Equal(t, stack.VCSRepo.OAuthTokenID, stackRead.VCSRepo.OAuthTokenID)
+	require.Equal(t, stack.VCSRepo.Branch, stackRead.VCSRepo.Branch)
 
 	assert.Equal(t, stack, stackRead)
 
