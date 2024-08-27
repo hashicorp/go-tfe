@@ -1,12 +1,14 @@
 # UNRELEASED
 
+# v1.64.2
+
 ## Enhancements
 
 * Adds support for including no-code permissions to the `OrganizationPermissions` struct [#967](https://github.com/hashicorp/go-tfe/pull/967)
 
 # v1.64.1
 
-# Bug Fixes
+## Bug Fixes
 
 * Fixes BETA feature regression in `Stacks` associated with decoding `StackVCSRepo` data by @brandonc [#964](https://github.com/hashicorp/go-tfe/pull/964)
 
