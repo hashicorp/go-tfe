@@ -183,7 +183,9 @@ type OrganizationPermissions struct {
 	CanCreateTeam               bool `jsonapi:"attr,can-create-team"`
 	CanCreateWorkspace          bool `jsonapi:"attr,can-create-workspace"`
 	CanCreateWorkspaceMigration bool `jsonapi:"attr,can-create-workspace-migration"`
+	CanDeployNoCodeModules      bool `jsonapi:"attr,can-deploy-no-code-modules"`
 	CanDestroy                  bool `jsonapi:"attr,can-destroy"`
+	CanManageNoCodeModules      bool `jsonapi:"attr,can-manage-no-code-modules"`
 	CanManageRunTasks           bool `jsonapi:"attr,can-manage-run-tasks"`
 	CanTraverse                 bool `jsonapi:"attr,can-traverse"`
 	CanUpdate                   bool `jsonapi:"attr,can-update"`
