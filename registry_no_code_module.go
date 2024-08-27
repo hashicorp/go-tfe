@@ -4,11 +4,8 @@
 package tfe
 
 import (
-	"bytes"
 	"context"
-	"encoding/json"
 	"fmt"
-	"github.com/hashicorp/jsonapi"
 	"net/url"
 )
 
@@ -192,11 +189,7 @@ type WorkspaceUpgrade struct {
 
 	// PlanURL is the URL to the plan of the upgrade
 	PlanURL string `jsonapi:"attr,plan-url"`
-}
 
-// WorkspaceUpgradeNoUpgradeAvailable is a struct used to unmarshal the response
-// when a workspace upgrade is not available, but the request was successful.
-type WorkspaceUpgradeNoUpgradeAvailable struct {
 	// Message is the message returned by the API when an upgrade is not available.
 	Message string `jsonapi:"attr,message"`
 }
@@ -338,27 +331,13 @@ func (r *registryNoCodeModules) UpgradeWorkspace(
 		return nil, err
 	}
 
-	var raw bytes.Buffer
-	err = req.Do(ctx, &raw)
+	wu := &WorkspaceUpgrade{}
+	err = req.Do(ctx, wu)
 	if err != nil {
 		return nil, err
 	}
 
-	// first attempt to unmarshal to the "happy path" - if an upgrade is
-	// available and was started
-	wu := WorkspaceUpgrade{}
-	if err := jsonapi.UnmarshalPayload(&raw, &wu); err == nil && wu.Status != "" && wu.PlanURL != "" {
-		return &wu, nil
-	}
-
-	// if the response is not the happy path, check if the workspace was not
-	// upgraded because an upgrade is not available
-	wuf := WorkspaceUpgradeNoUpgradeAvailable{}
-	if err := json.Unmarshal(raw.Bytes(), &wuf); err == nil && wuf.Message != "" {
-		return nil, fmt.Errorf("workspace not upgraded: %s", wuf.Message)
-	}
-
-	return nil, fmt.Errorf("failed to unmarshal response into known structures: %q", raw.String())
+	return wu, nil
 }
 
 func (o RegistryNoCodeModuleCreateOptions) valid() error {
