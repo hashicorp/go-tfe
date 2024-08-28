@@ -151,6 +151,30 @@ func TestOrganizationsCreate(t *testing.T) {
 	})
 }
 
+func TestOrganizationsReadWithBusiness(t *testing.T) {
+	client := testClient(t)
+	ctx := context.Background()
+
+	orgTest, orgTestCleanup := createOrganization(t, client)
+	t.Cleanup(orgTestCleanup)
+	// With Business
+	newSubscriptionUpdater(orgTest).WithBusinessPlan().Update(t)
+
+	t.Run("when the org exists", func(t *testing.T) {
+		org, err := client.Organizations.Read(ctx, orgTest.Name)
+		require.NoError(t, err)
+		assert.Equal(t, orgTest.Name, org.Name)
+		assert.Equal(t, orgTest.ExternalID, org.ExternalID)
+		assert.NotEmpty(t, org.Permissions)
+
+		t.Run("permissions are properly decoded", func(t *testing.T) {
+			assert.True(t, org.Permissions.CanDestroy)
+			assert.True(t, org.Permissions.CanDeployNoCodeModules)
+			assert.True(t, org.Permissions.CanManageNoCodeModules)
+		})
+	})
+}
+
 func TestOrganizationsRead(t *testing.T) {
 	client := testClient(t)
 	ctx := context.Background()
