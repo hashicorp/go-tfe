@@ -38,7 +38,7 @@ type RegistryNoCodeModules interface {
 	CreateWorkspace(ctx context.Context, noCodeModuleID string, options *RegistryNoCodeModuleCreateWorkspaceOptions) (*Workspace, error)
 
 	// UpgradeWorkspace initiates an upgrade of an existing no-code module workspace.
-	UpgradeWorkspace(ctx context.Context, noCodeModuleID string, workspaceID string, options *RegistryNoCodeModuleUpgradeWorkspaceOptions) (*Workspace, error)
+	UpgradeWorkspace(ctx context.Context, noCodeModuleID string, workspaceID string, options *RegistryNoCodeModuleUpgradeWorkspaceOptions) (*WorkspaceUpgrade, error)
 }
 
 type RegistryNoCodeModuleCreateWorkspaceOptions struct {
@@ -181,6 +181,19 @@ type RegistryNoCodeModuleUpdateOptions struct {
 	VariableOptions []*NoCodeVariableOption `jsonapi:"relation,variable-options,omitempty"`
 }
 
+// WorkspaceUpgrade contains the data returned by the no-code workspace upgrade
+// API endpoint.
+type WorkspaceUpgrade struct {
+	// Status is the status of the run of the upgrade
+	Status string `jsonapi:"attr,status"`
+
+	// PlanURL is the URL to the plan of the upgrade
+	PlanURL string `jsonapi:"attr,plan-url"`
+
+	// Message is the message returned by the API when an upgrade is not available.
+	Message string `jsonapi:"attr,message"`
+}
+
 // Create a new registry no-code module
 func (r *registryNoCodeModules) Create(ctx context.Context, organization string, options RegistryNoCodeModuleCreateOptions) (*RegistryNoCodeModule, error) {
 	if !validStringID(&organization) {
@@ -304,7 +317,7 @@ func (r *registryNoCodeModules) UpgradeWorkspace(
 	noCodeModuleID string,
 	workspaceID string,
 	options *RegistryNoCodeModuleUpgradeWorkspaceOptions,
-) (*Workspace, error) {
+) (*WorkspaceUpgrade, error) {
 	if err := options.valid(); err != nil {
 		return nil, err
 	}
@@ -318,13 +331,13 @@ func (r *registryNoCodeModules) UpgradeWorkspace(
 		return nil, err
 	}
 
-	w := &Workspace{}
-	err = req.Do(ctx, w)
+	wu := &WorkspaceUpgrade{}
+	err = req.Do(ctx, wu)
 	if err != nil {
 		return nil, err
 	}
 
-	return w, nil
+	return wu, nil
 }
 
 func (o RegistryNoCodeModuleCreateOptions) valid() error {

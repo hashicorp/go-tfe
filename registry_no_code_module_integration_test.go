@@ -470,15 +470,16 @@ func TestRegistryNoCodeModuleWorkspaceUpgrade(t *testing.T) {
 	r.NotNil(uncm)
 
 	t.Run("test upgrading a workspace via a no-code module", func(t *testing.T) {
-		ws, err := client.RegistryNoCodeModules.UpgradeWorkspace(
+		wu, err := client.RegistryNoCodeModules.UpgradeWorkspace(
 			ctx,
 			ncm.ID,
 			w.ID,
 			&RegistryNoCodeModuleUpgradeWorkspaceOptions{},
 		)
 		r.NoError(err)
-		r.NotNil(ws)
-		r.Equal(w.ID, ws.ID)
+		r.NotNil(wu)
+		r.NotEmpty(wu.Status)
+		r.NotEmpty(wu.PlanURL)
 	})
 
 	t.Run("fail to upgrade workspace with invalid no-code module", func(t *testing.T) {
