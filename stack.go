@@ -29,6 +29,9 @@ type Stacks interface {
 	// Delete deletes a stack.
 	Delete(ctx context.Context, stackID string) error
 
+	// ForceDelete deletes a stack.
+	ForceDelete(ctx context.Context, stackID string) error
+
 	// UpdateConfiguration updates the configuration of a stack, triggering stack preparation.
 	UpdateConfiguration(ctx context.Context, stackID string) (*Stack, error)
 }
@@ -290,6 +293,16 @@ func (s stacks) Update(ctx context.Context, stackID string, options StackUpdateO
 // Delete deletes a stack.
 func (s stacks) Delete(ctx context.Context, stackID string) error {
 	req, err := s.client.NewRequest("POST", fmt.Sprintf("stacks/%s/delete", url.PathEscape(stackID)), nil)
+	if err != nil {
+		return err
+	}
+
+	return req.Do(ctx, nil)
+}
+
+// ForceDelete deletes a stack that still has deployments.
+func (s stacks) ForceDelete(ctx context.Context, stackID string) error {
+	req, err := s.client.NewRequest("POST", fmt.Sprintf("stacks/%s/force-delete", url.PathEscape(stackID)), nil)
 	if err != nil {
 		return err
 	}
