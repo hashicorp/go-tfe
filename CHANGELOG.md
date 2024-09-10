@@ -1,5 +1,7 @@
 # UNRELEASED
 
+# v1.65.0
+
 ## Enhancements
 
 * Adds support for deleting `Stacks` that still have deployments through `ForceDelete` by @hashimoon [#969](https://github.com/hashicorp/go-tfe/pull/969)
