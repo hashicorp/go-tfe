@@ -63,6 +63,12 @@ var (
 	// ErrWorkspaceLockedByRun is returned when trying to unlock a workspace locked by a run.
 	ErrWorkspaceLockedByRun = errors.New("unable to unlock workspace locked by run")
 
+	// ErrWorkspaceLockedByTeam is returned when trying to unlock a workspace locked by a team.
+	ErrWorkspaceLockedByTeam = errors.New("unable to unlock workspace locked by team")
+
+	// ErrWorkspaceLockedByUser is returned when trying to unlock a workspace locked by a user.
+	ErrWorkspaceLockedByUser = errors.New("unable to unlock workspace locked by user")
+
 	// ErrWorkspaceStillProcessing is returned when a workspace is still processing state
 	// to determine if it is safe to delete. "conflict" followed by newline is used to
 	// preserve go-tfe version compatibility with the error constructed at runtime before it was
