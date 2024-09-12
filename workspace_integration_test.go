@@ -2041,6 +2041,7 @@ func TestWorkspacesUnlock(t *testing.T) {
 			Team:      tmTest,
 			Workspace: wTest2,
 		})
+		assert.Nil(t, err)
 		defer func() {
 			err := client.TeamAccess.Remove(ctx, ta.ID)
 			if err != nil {
