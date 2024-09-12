@@ -2029,6 +2029,40 @@ func TestWorkspacesUnlock(t *testing.T) {
 		assert.Equal(t, ErrWorkspaceLockedByRun, err)
 	})
 
+	t.Run("when a workspace is locked by a team", func(t *testing.T) {
+		wTest2, wTest2Cleanup := createWorkspace(t, client, orgTest)
+		t.Cleanup(wTest2Cleanup)
+
+		// Create a new team to lock the workspace
+		tmTest, tmTestCleanup := createTeam(t, client, orgTest)
+		defer tmTestCleanup()
+		ta, err := client.TeamAccess.Add(ctx, TeamAccessAddOptions{
+			Access:    Access(AccessAdmin),
+			Team:      tmTest,
+			Workspace: wTest2,
+		})
+		defer func() {
+			err := client.TeamAccess.Remove(ctx, ta.ID)
+			if err != nil {
+				t.Logf("error removing team access (%s): %s", ta.ID, err)
+			}
+		}()
+		tt, ttTestCleanup := createTeamToken(t, client, tmTest)
+		defer ttTestCleanup()
+
+		// Create a new client with the team token
+		teamClient := testClient(t)
+		teamClient.token = tt.Token
+
+		// Lock the workspace with the team client
+		_, err = teamClient.Workspaces.Lock(ctx, wTest2.ID, WorkspaceLockOptions{})
+		assert.Nil(t, err)
+
+		// Attempt to unlock the workspace with the original client
+		_, err = client.Workspaces.Unlock(ctx, wTest2.ID)
+		assert.Equal(t, ErrWorkspaceLockedByTeam, err)
+	})
+
 	t.Run("without a valid workspace ID", func(t *testing.T) {
 		w, err := client.Workspaces.Unlock(ctx, badIdentifier)
 		assert.Nil(t, w)
