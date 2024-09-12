@@ -443,6 +443,7 @@ func TestStateVersionsRead(t *testing.T) {
 			}
 		}
 
+		assert.NotEmpty(t, sv.BillableRUMCount)
 		assert.NotEmpty(t, sv.DownloadURL)
 		assert.NotEmpty(t, sv.StateVersion)
 		assert.NotEmpty(t, sv.TerraformVersion)
