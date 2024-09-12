@@ -426,8 +426,8 @@ func TestStateVersionsRead(t *testing.T) {
 				svTest, err := client.StateVersions.Read(ctx, svTest.ID)
 				require.NoError(t, err)
 
-				if !svTest.ResourcesProcessed {
-					return nil, fmt.Errorf("resources not processed %s", err)
+				if !svTest.ResourcesProcessed || svTest.BillableRUMCount == nil || *svTest.BillableRUMCount == 0 {
+					return nil, fmt.Errorf("resources not processed %v / %d", svTest.ResourcesProcessed, svTest.BillableRUMCount)
 				}
 
 				return svTest, nil
@@ -447,6 +447,9 @@ func TestStateVersionsRead(t *testing.T) {
 		assert.NotEmpty(t, sv.StateVersion)
 		assert.NotEmpty(t, sv.TerraformVersion)
 		assert.NotEmpty(t, sv.Outputs)
+
+		require.NotNil(t, sv.BillableRUMCount)
+		assert.Greater(t, *sv.BillableRUMCount, uint32(0))
 	})
 
 	t.Run("when the state version does not exist", func(t *testing.T) {
