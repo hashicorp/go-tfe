@@ -576,13 +576,18 @@ func createNotificationConfiguration(t *testing.T, client *Client, w *Workspace,
 		w, wCleanup = createWorkspace(t, client, nil)
 	}
 
+	runTaskURL := os.Getenv("TFC_RUN_TASK_URL")
+	if runTaskURL == "" {
+		t.Skip("Cannot create a notification configuration with an empty URL. You must set TFC_RUN_TASK_URL for run task related tests.")
+	}
+
 	if options == nil {
 		options = &NotificationConfigurationCreateOptions{
 			DestinationType: NotificationDestination(NotificationDestinationTypeGeneric),
 			Enabled:         Bool(false),
 			Name:            String(randomString(t)),
 			Token:           String(randomString(t)),
-			URL:             String("http://example.com"),
+			URL:             String(runTaskURL),
 			Triggers:        []NotificationTriggerType{NotificationTriggerCreated},
 		}
 	}
