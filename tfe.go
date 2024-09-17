@@ -973,6 +973,14 @@ func checkResponseCode(r *http.Response) error {
 				return ErrWorkspaceLockedByRun
 			}
 
+			if errorPayloadContains(errs, "is locked by Team") {
+				return ErrWorkspaceLockedByTeam
+			}
+
+			if errorPayloadContains(errs, "is locked by User") {
+				return ErrWorkspaceLockedByUser
+			}
+
 			return ErrWorkspaceNotLocked
 		case strings.HasSuffix(r.Request.URL.Path, "actions/force-unlock"):
 			return ErrWorkspaceNotLocked
