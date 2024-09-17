@@ -1,5 +1,7 @@
 # UNRELEASED
 
+# v1.65.1
+
 ## Enhancements
 
 * Adds `billable-rum-count` attribute to `StateVersion` by @shoekstra [#974](https://github.com/hashicorp/go-tfe/pull/974)
