@@ -6,6 +6,10 @@
 
 * Adds `billable-rum-count` attribute to `StateVersion` by @shoekstra [#974](https://github.com/hashicorp/go-tfe/pull/974)
 
+## Bug Fixes
+
+* Fixed the incorrect error "workspace already unlocked" being returned when attempting to unlock a workspace that was locked by a Team or different User @ctrombley / @lucasmelin [#975](https://github.com/hashicorp/go-tfe/pull/975)
+
 # v1.65.0
 
 ## Enhancements
