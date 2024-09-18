@@ -1,5 +1,9 @@
 # UNRELEASED
 
+## Enhancements
+
+* `Workspaces`: The `Unlock` method now returns a `ErrWorkspaceLockedStateVersionStillPending` error if the latest state version upload is still pending within the platform. This is a retryable error. by @brandonc
+
 # v1.66.0
 
 ## Enhancements
