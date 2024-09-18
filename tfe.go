@@ -934,10 +934,10 @@ func parsePagination(body io.Reader) (*Pagination, error) {
 	return &raw.Meta.Pagination, nil
 }
 
-// checkResponseCode can be used to check the status code of an HTTP request.
-
+// checkResponseCode refines typical API errors into more specific errors
+// if possible. It returns nil if the response code < 400
 func checkResponseCode(r *http.Response) error {
-	if r.StatusCode >= 200 && r.StatusCode <= 299 {
+	if r.StatusCode >= 200 && r.StatusCode <= 399 {
 		return nil
 	}
 
