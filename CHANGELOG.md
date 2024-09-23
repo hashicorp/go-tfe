@@ -4,6 +4,10 @@
 
 * Fixes a bug in `NewRequest` that did not allow query parameters to be specified in the first parameter, which broke several methods: `RegistryModules ReadVersion`, `VariableSets UpdateWorkspaces`, and `Workspaces Readme` by @brandonc [#982](https://github.com/hashicorp/go-tfe/pull/982)
 
+## Enhancements
+
+* Add support for reading a no-code module's variables by @paladin-devops [#979](https://github.com/hashicorp/go-tfe/pull/979)
+
 # v1.67.0
 
 ## Enhancements

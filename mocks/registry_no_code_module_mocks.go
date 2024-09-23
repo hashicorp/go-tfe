@@ -99,6 +99,21 @@ func (mr *MockRegistryNoCodeModulesMockRecorder) Read(ctx, noCodeModuleID, optio
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Read", reflect.TypeOf((*MockRegistryNoCodeModules)(nil).Read), ctx, noCodeModuleID, options)
 }
 
+// ReadVariables mocks base method.
+func (m *MockRegistryNoCodeModules) ReadVariables(ctx context.Context, noCodeModuleID, noCodeModuleVersion string, options *tfe.RegistryNoCodeModuleReadVariablesOptions) (*tfe.RegistryModuleVariableList, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "ReadVariables", ctx, noCodeModuleID, noCodeModuleVersion, options)
+	ret0, _ := ret[0].(*tfe.RegistryModuleVariableList)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// ReadVariables indicates an expected call of ReadVariables.
+func (mr *MockRegistryNoCodeModulesMockRecorder) ReadVariables(ctx, noCodeModuleID, noCodeModuleVersion, options any) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ReadVariables", reflect.TypeOf((*MockRegistryNoCodeModules)(nil).ReadVariables), ctx, noCodeModuleID, noCodeModuleVersion, options)
+}
+
 // Update mocks base method.
 func (m *MockRegistryNoCodeModules) Update(ctx context.Context, noCodeModuleID string, options tfe.RegistryNoCodeModuleUpdateOptions) (*tfe.RegistryNoCodeModule, error) {
 	m.ctrl.T.Helper()

@@ -26,6 +26,10 @@ type RegistryNoCodeModules interface {
 	// **Note: This API is still in BETA and subject to change.**
 	Read(ctx context.Context, noCodeModuleID string, options *RegistryNoCodeModuleReadOptions) (*RegistryNoCodeModule, error)
 
+	// ReadVariables returns the variables for a version of a no-code module
+	// **Note: This API is still in BETA and subject to change.**
+	ReadVariables(ctx context.Context, noCodeModuleID, noCodeModuleVersion string, options *RegistryNoCodeModuleReadVariablesOptions) (*RegistryModuleVariableList, error)
+
 	// Update a registry no-code module
 	// **Note: This API is still in BETA and subject to change.**
 	Update(ctx context.Context, noCodeModuleID string, options RegistryNoCodeModuleUpdateOptions) (*RegistryNoCodeModule, error)
@@ -39,6 +43,44 @@ type RegistryNoCodeModules interface {
 
 	// UpgradeWorkspace initiates an upgrade of an existing no-code module workspace.
 	UpgradeWorkspace(ctx context.Context, noCodeModuleID string, workspaceID string, options *RegistryNoCodeModuleUpgradeWorkspaceOptions) (*WorkspaceUpgrade, error)
+}
+
+// RegistryModuleVariableList is a list of registry module variables.
+type RegistryModuleVariableList struct {
+	Items []*RegistryModuleVariable
+
+	// NOTE: At the time of authoring this comment, the API endpoint to fetch
+	// registry module variables does not support pagination. This field is
+	// included to satisfy jsonapi unmarshaler implementation here:
+	// https://github.com/hashicorp/go-tfe/blob/3d29602707fa4b10469d1a02685644bd159d3ccc/tfe.go#L859
+	*Pagination
+}
+
+// RegistryModuleVariable represents a registry module variable.
+type RegistryModuleVariable struct {
+	// ID is the ID of the variable.
+	ID string `jsonapi:"primary,registry-module-variables"`
+
+	// Name is the name of the variable.
+	Name string `jsonapi:"attr,name"`
+
+	// VariableType is the type of the variable.
+	VariableType string `jsonapi:"attr,type"`
+
+	// Description is the description of the variable.
+	Description string `jsonapi:"attr,description"`
+
+	// Required is a boolean indicating if the variable is required.
+	Required bool `jsonapi:"attr,required"`
+
+	// Sensitive is a boolean indicating if the variable is sensitive.
+	Sensitive bool `jsonapi:"attr,sensitive"`
+
+	// Options is a slice of strings representing the options for the variable.
+	Options []string `jsonapi:"attr,options"`
+
+	// HasGlobal is a boolean indicating if the variable is global.
+	HasGlobal bool `jsonapi:"attr,has-global"`
 }
 
 type RegistryNoCodeModuleCreateWorkspaceOptions struct {
@@ -160,6 +202,14 @@ type RegistryNoCodeModuleReadOptions struct {
 	Include []RegistryNoCodeModuleIncludeOpt `url:"include,omitempty"`
 }
 
+type RegistryNoCodeModuleReadVariablesOptions struct {
+	// Type is a public field utilized by JSON:API to
+	// set the resource type via the field tag.
+	// It is not a user-defined value and does not need to be set.
+	// https://jsonapi.org/format/#crud-updating
+	Type string `jsonapi:"primary,no-code-modules"`
+}
+
 // RegistryNoCodeModuleUpdateOptions is used when updating a registry no-code module
 type RegistryNoCodeModuleUpdateOptions struct {
 	// Type is a public field utilized by JSON:API to
@@ -241,6 +291,39 @@ func (r *registryNoCodeModules) Read(ctx context.Context, noCodeModuleID string,
 	}
 
 	return rm, nil
+}
+
+// ReadVariables retrieves the no-code variable options for a version of a
+// module.
+func (r *registryNoCodeModules) ReadVariables(
+	ctx context.Context,
+	noCodeModuleID, noCodeModuleVersion string,
+	options *RegistryNoCodeModuleReadVariablesOptions,
+) (*RegistryModuleVariableList, error) {
+	if !validStringID(&noCodeModuleID) {
+		return nil, ErrInvalidModuleID
+	}
+	if !validVersion(noCodeModuleVersion) {
+		return nil, ErrInvalidVersion
+	}
+
+	u := fmt.Sprintf(
+		"no-code-modules/%s/versions/%s/module-variables",
+		url.PathEscape(noCodeModuleID),
+		url.PathEscape(noCodeModuleVersion),
+	)
+	req, err := r.client.NewRequest("GET", u, options)
+	if err != nil {
+		return nil, err
+	}
+
+	resp := &RegistryModuleVariableList{}
+	err = req.Do(ctx, resp)
+	if err != nil {
+		return nil, err
+	}
+
+	return resp, nil
 }
 
 // Update a registry no-code module
