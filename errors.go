@@ -69,6 +69,10 @@ var (
 	// ErrWorkspaceLockedByUser is returned when trying to unlock a workspace locked by a user.
 	ErrWorkspaceLockedByUser = errors.New("unable to unlock workspace locked by user")
 
+	// ErrWorkspaceLockedStateVersionStillPending is returned when trying to unlock whose
+	// latest state version is still pending.
+	ErrWorkspaceLockedStateVersionStillPending = errors.New("unable to unlock workspace while state version upload is still pending")
+
 	// ErrWorkspaceStillProcessing is returned when a workspace is still processing state
 	// to determine if it is safe to delete. "conflict" followed by newline is used to
 	// preserve go-tfe version compatibility with the error constructed at runtime before it was

@@ -1054,6 +1054,9 @@ func (s *workspaces) Unlock(ctx context.Context, workspaceID string) (*Workspace
 	w := &Workspace{}
 	err = req.Do(ctx, w)
 	if err != nil {
+		if strings.Contains(err.Error(), "latest state version is still pending") {
+			return nil, ErrWorkspaceLockedStateVersionStillPending
+		}
 		return nil, err
 	}
 
