@@ -1,8 +1,10 @@
 # UNRELEASED
 
+# v1.67.0
+
 ## Enhancements
 
-* `Workspaces`: The `Unlock` method now returns a `ErrWorkspaceLockedStateVersionStillPending` error if the latest state version upload is still pending within the platform. This is a retryable error. by @brandonc
+* `Workspaces`: The `Unlock` method now returns a `ErrWorkspaceLockedStateVersionStillPending` error if the latest state version upload is still pending within the platform. This is a retryable error. by @brandonc [#978](https://github.com/hashicorp/go-tfe/pull/978)
 
 # v1.66.0
 
