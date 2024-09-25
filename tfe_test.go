@@ -202,6 +202,43 @@ func Test_RegistryBasePath(t *testing.T) {
 	})
 }
 
+func Test_NewRequest(t *testing.T) {
+	testServer := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		switch r.URL.Path {
+		case "/get_request_with_query_param":
+			val := r.URL.Query().Get("include")
+			if val != "workspace,cost_estimate" {
+				t.Fatalf("unexpected include value: %q", val)
+			}
+			w.WriteHeader(http.StatusOK)
+			return
+		case "/api/v2/ping":
+			w.WriteHeader(http.StatusOK)
+			return
+		default:
+			t.Fatalf("unexpected request: %s", r.URL.String())
+		}
+	}))
+
+	t.Cleanup(func() {
+		testServer.Close()
+	})
+
+	client, err := NewClient(&Config{
+		Address: testServer.URL,
+	})
+	require.NoError(t, err)
+
+	t.Run("allows path to include query params", func(t *testing.T) {
+		request, err := client.NewRequest("GET", "/get_request_with_query_param?include=workspace,cost_estimate", nil)
+		require.NoError(t, err)
+
+		ctx := context.Background()
+		err = request.DoJSON(ctx, nil)
+		require.NoError(t, err)
+	})
+}
+
 func Test_NewRequestWithAdditionalQueryParams(t *testing.T) {
 	testServer := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		switch r.URL.Path {
