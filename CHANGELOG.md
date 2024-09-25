@@ -1,4 +1,8 @@
-# UNRELEASED
+# v1.67.1
+
+## Bug Fixes
+
+* Fixes a bug in `NewRequest` that did not allow query parameters to be specified in the first parameter, which broke several methods: `RegistryModules ReadVersion`, `VariableSets UpdateWorkspaces`, and `Workspaces Readme` by @brandonc [#982](https://github.com/hashicorp/go-tfe/pull/982)
 
 # v1.67.0
 
