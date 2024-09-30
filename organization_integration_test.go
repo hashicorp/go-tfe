@@ -458,6 +458,8 @@ func TestOrganizationsReadEntitlements(t *testing.T) {
 	orgTest, orgTestCleanup := createOrganization(t, client)
 	t.Cleanup(orgTestCleanup)
 
+	newSubscriptionUpdater(orgTest).WithPlusEntitlementPlan().Update(t)
+
 	t.Run("when the org exists", func(t *testing.T) {
 		entitlements, err := client.Organizations.ReadEntitlements(ctx, orgTest.Name)
 		require.NoError(t, err)
@@ -473,6 +475,8 @@ func TestOrganizationsReadEntitlements(t *testing.T) {
 		assert.True(t, entitlements.StateStorage)
 		assert.True(t, entitlements.Teams)
 		assert.True(t, entitlements.VCSIntegrations)
+		assert.True(t, entitlements.WaypointActions)
+		assert.True(t, entitlements.WaypointTemplatesAndAddons)
 	})
 
 	t.Run("with invalid name", func(t *testing.T) {
