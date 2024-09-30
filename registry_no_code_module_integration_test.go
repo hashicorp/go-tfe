@@ -214,7 +214,7 @@ func TestRegistryNoCodeModulesRead(t *testing.T) {
 // TestRegistryNoCodeModuleReadVariables tests the ReadVariables method of the
 // RegistryNoCodeModules service.
 //
-// This test requires that the environment variable "NO_CODE_MODULE_ID" is set
+// This test requires that the environment variable "GITHUB_REGISTRY_NO_CODE_MODULE_IDENTIFIER" is set
 // with the ID of an existing no-code module that has variables.
 func TestRegistryNoCodeModulesReadVariables(t *testing.T) {
 	skipUnlessBeta(t)
@@ -222,9 +222,9 @@ func TestRegistryNoCodeModulesReadVariables(t *testing.T) {
 	ctx := context.Background()
 	r := require.New(t)
 
-	ncmID := os.Getenv("NO_CODE_MODULE_ID")
+	ncmID := os.Getenv("GITHUB_REGISTRY_NO_CODE_MODULE_IDENTIFIER")
 	if ncmID == "" {
-		t.Skip("Export a valid NO_CODE_MODULE_ID before running this test")
+		t.Skip("Export a valid GITHUB_REGISTRY_NO_CODE_MODULE_IDENTIFIER before running this test")
 	}
 
 	ncm, err := client.RegistryNoCodeModules.Read(ctx, ncmID, nil)
