@@ -203,6 +203,8 @@ type RegistryNoCodeModuleReadOptions struct {
 	Include []RegistryNoCodeModuleIncludeOpt `url:"include,omitempty"`
 }
 
+// RegistryNoCodeModuleReadVariablesOptions is used when reading the variables
+// for a no-code module.
 type RegistryNoCodeModuleReadVariablesOptions struct {
 	// Type is a public field utilized by JSON:API to
 	// set the resource type via the field tag.
