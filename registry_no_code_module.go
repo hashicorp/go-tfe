@@ -46,6 +46,7 @@ type RegistryNoCodeModules interface {
 }
 
 // RegistryModuleVariableList is a list of registry module variables.
+// **Note: This API is still in BETA and subject to change.**
 type RegistryModuleVariableList struct {
 	Items []*RegistryModuleVariable
 
