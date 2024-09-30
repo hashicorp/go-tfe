@@ -1,3 +1,7 @@
+## Enhancements
+
+* Add support for reading a no-code module's variables by @paladin-devops [#979](https://github.com/hashicorp/go-tfe/pull/979)
+
 # v1.67.1
 
 ## Bug Fixes
