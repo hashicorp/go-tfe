@@ -33,7 +33,9 @@ func TestStackSourceCreateUploadAndRead(t *testing.T) {
 	})
 	require.NoError(t, err)
 
-	ss, err := client.StackSources.CreateAndUpload(ctx, stack.ID, "test-fixtures/stack-source")
+	ss, err := client.StackSources.CreateAndUpload(ctx, stack.ID, "test-fixtures/stack-source", &CreateStackSourceOptions{
+		SelectedDeployments: []string{"simple"},
+	})
 	require.NoError(t, err)
 	require.NotNil(t, ss)
 	require.Nil(t, ss.StackConfiguration)
