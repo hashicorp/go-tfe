@@ -2,6 +2,9 @@
 
 # v1.68.0
 
+## Features
+* Adds `SpeculativePlanManagementEnabled` field to `Organization` by @lilincmu [#983](https://github.com/hashicorp/go-tfe/pull/983)
+
 ## Enhancements
 
 * Add support for reading a no-code module's variables by @paladin-devops [#979](https://github.com/hashicorp/go-tfe/pull/979)
