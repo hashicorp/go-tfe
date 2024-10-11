@@ -1,11 +1,26 @@
-# UNRELEASED
+# Unreleased
+
+# v1.68.0
 
 ## Features
 * Adds `SpeculativePlanManagementEnabled` field to `Organization` by @lilincmu [#983](https://github.com/hashicorp/go-tfe/pull/983)
 
 ## Enhancements
 
-* `Workspaces`: The `Unlock` method now returns a `ErrWorkspaceLockedStateVersionStillPending` error if the latest state version upload is still pending within the platform. This is a retryable error. by @brandonc
+* Add support for reading a no-code module's variables by @paladin-devops [#979](https://github.com/hashicorp/go-tfe/pull/979)
+* Add Waypoint entitlements (the `waypoint-actions` and `waypoint-templates-and-addons` attributes) to `Entitlements` by @ignatius-j [#984](https://github.com/hashicorp/go-tfe/pull/984)
+
+# v1.67.1
+
+## Bug Fixes
+
+* Fixes a bug in `NewRequest` that did not allow query parameters to be specified in the first parameter, which broke several methods: `RegistryModules ReadVersion`, `VariableSets UpdateWorkspaces`, and `Workspaces Readme` by @brandonc [#982](https://github.com/hashicorp/go-tfe/pull/982)
+
+# v1.67.0
+
+## Enhancements
+
+* `Workspaces`: The `Unlock` method now returns a `ErrWorkspaceLockedStateVersionStillPending` error if the latest state version upload is still pending within the platform. This is a retryable error. by @brandonc [#978](https://github.com/hashicorp/go-tfe/pull/978)
 
 # v1.66.0
 

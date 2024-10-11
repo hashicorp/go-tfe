@@ -277,6 +277,8 @@ func (c *Client) NewRequestWithAdditionalQueryParams(method, path string, reqBod
 		}
 	}
 
+	// Will contain combined query values from path parsing and
+	// additionalQueryParams parameter
 	q := make(url.Values)
 
 	// Create a request specific headers map.
@@ -310,6 +312,9 @@ func (c *Client) NewRequestWithAdditionalQueryParams(method, path string, reqBod
 		body = reqBody
 	}
 
+	for k, v := range u.Query() {
+		q[k] = v
+	}
 	for k, v := range additionalQueryParams {
 		q[k] = v
 	}
