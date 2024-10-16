@@ -251,6 +251,8 @@ func TestWorkspacesList(t *testing.T) {
 	})
 
 	t.Run("when using a tags filter", func(t *testing.T) {
+		skipUnlessBeta(t)
+
 		w1, wTestCleanup1 := createWorkspaceWithOptions(t, client, orgTest, WorkspaceCreateOptions{
 			Name: String(randomString(t)),
 			TagBindings: []*TagBinding{
@@ -1300,12 +1302,14 @@ func TestWorkspacesUpdate(t *testing.T) {
 			assert.Equal(t, *options.WorkingDirectory, item.WorkingDirectory)
 		}
 
-		bindings, err := client.Workspaces.ListTagBindings(ctx, wTest.ID)
-		require.NoError(t, err)
+		if betaFeaturesEnabled() {
+			bindings, err := client.Workspaces.ListTagBindings(ctx, wTest.ID)
+			require.NoError(t, err)
 
-		assert.Len(t, bindings, 1)
-		assert.Equal(t, "foo", bindings[0].Key)
-		assert.Equal(t, "bar", bindings[0].Value)
+			assert.Len(t, bindings, 1)
+			assert.Equal(t, "foo", bindings[0].Key)
+			assert.Equal(t, "bar", bindings[0].Value)
+		}
 	})
 
 	t.Run("when options includes both an operations value and an enforcement mode value", func(t *testing.T) {

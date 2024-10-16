@@ -64,6 +64,8 @@ func TestProjectsList(t *testing.T) {
 	})
 
 	t.Run("when using a tags filter", func(t *testing.T) {
+		skipUnlessBeta(t)
+
 		p1, wTestCleanup1 := createProjectWithOptions(t, client, orgTest, ProjectCreateOptions{
 			Name: randomStringWithoutSpecialChar(t),
 			TagBindings: []*TagBinding{
@@ -217,12 +219,14 @@ func TestProjectsUpdate(t *testing.T) {
 		assert.NotEqual(t, kBefore.Name, kAfter.Name)
 		assert.NotEqual(t, kBefore.Description, kAfter.Description)
 
-		bindings, err := client.Projects.ListTagBindings(ctx, kAfter.ID)
-		require.NoError(t, err)
+		if betaFeaturesEnabled() {
+			bindings, err := client.Projects.ListTagBindings(ctx, kAfter.ID)
+			require.NoError(t, err)
 
-		assert.Len(t, bindings, 1)
-		assert.Equal(t, "foo", bindings[0].Key)
-		assert.Equal(t, "bar", bindings[0].Value)
+			assert.Len(t, bindings, 1)
+			assert.Equal(t, "foo", bindings[0].Key)
+			assert.Equal(t, "bar", bindings[0].Value)
+		}
 	})
 
 	t.Run("when updating with invalid name", func(t *testing.T) {
