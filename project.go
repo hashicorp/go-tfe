@@ -31,6 +31,9 @@ type Projects interface {
 
 	// Delete a project.
 	Delete(ctx context.Context, projectID string) error
+
+	// ListTagBindings lists all tag bindings associated with the project.
+	ListTagBindings(ctx context.Context, projectID string) ([]*TagBinding, error)
 }
 
 // projects implements Projects
@@ -67,6 +70,10 @@ type ProjectListOptions struct {
 
 	// Optional: A query string to search projects by names.
 	Query string `url:"q,omitempty"`
+
+	// Optional: A filter string to list projects filtered by key/value tags.
+	// These are not annotated and therefore not encoded by go-querystring
+	TagBindings []*TagBinding
 }
 
 // ProjectCreateOptions represents the options for creating a project
@@ -82,6 +89,9 @@ type ProjectCreateOptions struct {
 
 	// Optional: A description for the project.
 	Description *string `jsonapi:"attr,description,omitempty"`
+
+	// Associated TagBindings of the project.
+	TagBindings []*TagBinding `jsonapi:"relation,tag-bindings,omitempty"`
 }
 
 // ProjectUpdateOptions represents the options for updating a project
@@ -97,6 +107,10 @@ type ProjectUpdateOptions struct {
 
 	// Optional: A description for the project.
 	Description *string `jsonapi:"attr,description,omitempty"`
+
+	// Associated TagBindings of the project. Note that this will replace
+	// all existing tag bindings.
+	TagBindings []*TagBinding `jsonapi:"relation,tag-bindings,omitempty"`
 }
 
 // List all projects.
@@ -105,8 +119,13 @@ func (s *projects) List(ctx context.Context, organization string, options *Proje
 		return nil, ErrInvalidOrg
 	}
 
+	var tagFilters map[string][]string
+	if options != nil {
+		tagFilters = encodeTagFiltersAsParams(options.TagBindings)
+	}
+
 	u := fmt.Sprintf("organizations/%s/projects", url.PathEscape(organization))
-	req, err := s.client.NewRequest("GET", u, options)
+	req, err := s.client.NewRequestWithAdditionalQueryParams("GET", u, options, tagFilters)
 	if err != nil {
 		return nil, err
 	}
@@ -164,6 +183,30 @@ func (s *projects) Read(ctx context.Context, projectID string) (*Project, error)
 	}
 
 	return p, nil
+}
+
+func (s *projects) ListTagBindings(ctx context.Context, projectID string) ([]*TagBinding, error) {
+	if !validStringID(&projectID) {
+		return nil, ErrInvalidProjectID
+	}
+
+	u := fmt.Sprintf("projects/%s/tag-bindings", url.PathEscape(projectID))
+	req, err := s.client.NewRequest("GET", u, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	var list struct {
+		*Pagination
+		Items []*TagBinding
+	}
+
+	err = req.Do(ctx, &list)
+	if err != nil {
+		return nil, err
+	}
+
+	return list.Items, nil
 }
 
 // Update a project by its ID

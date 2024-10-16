@@ -62,6 +62,53 @@ func TestProjectsList(t *testing.T) {
 		assert.Nil(t, pl)
 		assert.EqualError(t, err, ErrInvalidOrg.Error())
 	})
+
+	t.Run("when using a tags filter", func(t *testing.T) {
+		p1, wTestCleanup1 := createProjectWithOptions(t, client, orgTest, ProjectCreateOptions{
+			Name: randomStringWithoutSpecialChar(t),
+			TagBindings: []*TagBinding{
+				{Key: "key1", Value: "value1"},
+				{Key: "key2", Value: "value2a"},
+			},
+		})
+		p2, wTestCleanup2 := createProjectWithOptions(t, client, orgTest, ProjectCreateOptions{
+			Name: randomStringWithoutSpecialChar(t),
+			TagBindings: []*TagBinding{
+				{Key: "key2", Value: "value2b"},
+				{Key: "key3", Value: "value3"},
+			},
+		})
+		t.Cleanup(wTestCleanup1)
+		t.Cleanup(wTestCleanup2)
+
+		// List all the workspaces under the given tag
+		pl, err := client.Projects.List(ctx, orgTest.Name, &ProjectListOptions{
+			TagBindings: []*TagBinding{
+				{Key: "key1"},
+			},
+		})
+		assert.NoError(t, err)
+		assert.Len(t, pl.Items, 1)
+		assert.Contains(t, pl.Items, p1)
+
+		pl2, err := client.Projects.List(ctx, orgTest.Name, &ProjectListOptions{
+			TagBindings: []*TagBinding{
+				{Key: "key2"},
+			},
+		})
+		assert.NoError(t, err)
+		assert.Len(t, pl2.Items, 2)
+		assert.Contains(t, pl2.Items, p1, p2)
+
+		pl3, err := client.Projects.List(ctx, orgTest.Name, &ProjectListOptions{
+			TagBindings: []*TagBinding{
+				{Key: "key2", Value: "value2b"},
+			},
+		})
+		assert.NoError(t, err)
+		assert.Len(t, pl3.Items, 1)
+		assert.Contains(t, pl3.Items, p2)
+	})
 }
 
 func TestProjectsRead(t *testing.T) {
@@ -160,12 +207,22 @@ func TestProjectsUpdate(t *testing.T) {
 		kAfter, err := client.Projects.Update(ctx, kBefore.ID, ProjectUpdateOptions{
 			Name:        String("new project name"),
 			Description: String("updated description"),
+			TagBindings: []*TagBinding{
+				{Key: "foo", Value: "bar"},
+			},
 		})
 		require.NoError(t, err)
 
 		assert.Equal(t, kBefore.ID, kAfter.ID)
 		assert.NotEqual(t, kBefore.Name, kAfter.Name)
 		assert.NotEqual(t, kBefore.Description, kAfter.Description)
+
+		bindings, err := client.Projects.ListTagBindings(ctx, kAfter.ID)
+		require.NoError(t, err)
+
+		assert.Len(t, bindings, 1)
+		assert.Equal(t, "foo", bindings[0].Key)
+		assert.Equal(t, "bar", bindings[0].Value)
 	})
 
 	t.Run("when updating with invalid name", func(t *testing.T) {

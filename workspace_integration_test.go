@@ -250,6 +250,53 @@ func TestWorkspacesList(t *testing.T) {
 		assert.Equal(t, 0, wl.TotalCount)
 	})
 
+	t.Run("when using a tags filter", func(t *testing.T) {
+		w1, wTestCleanup1 := createWorkspaceWithOptions(t, client, orgTest, WorkspaceCreateOptions{
+			Name: String(randomString(t)),
+			TagBindings: []*TagBinding{
+				{Key: "key1", Value: "value1"},
+				{Key: "key2", Value: "value2a"},
+			},
+		})
+		w2, wTestCleanup2 := createWorkspaceWithOptions(t, client, orgTest, WorkspaceCreateOptions{
+			Name: String(randomString(t)),
+			TagBindings: []*TagBinding{
+				{Key: "key2", Value: "value2b"},
+				{Key: "key3", Value: "value3"},
+			},
+		})
+		t.Cleanup(wTestCleanup1)
+		t.Cleanup(wTestCleanup2)
+
+		// List all the workspaces under the given tag
+		wl, err := client.Workspaces.List(ctx, orgTest.Name, &WorkspaceListOptions{
+			TagBindings: []*TagBinding{
+				{Key: "key1"},
+			},
+		})
+		assert.NoError(t, err)
+		assert.Len(t, wl.Items, 1)
+		assert.Contains(t, wl.Items, w1)
+
+		wl2, err := client.Workspaces.List(ctx, orgTest.Name, &WorkspaceListOptions{
+			TagBindings: []*TagBinding{
+				{Key: "key2"},
+			},
+		})
+		assert.NoError(t, err)
+		assert.Len(t, wl2.Items, 2)
+		assert.Contains(t, wl2.Items, w1, w2)
+
+		wl3, err := client.Workspaces.List(ctx, orgTest.Name, &WorkspaceListOptions{
+			TagBindings: []*TagBinding{
+				{Key: "key2", Value: "value2b"},
+			},
+		})
+		assert.NoError(t, err)
+		assert.Len(t, wl3.Items, 1)
+		assert.Contains(t, wl3.Items, w2)
+	})
+
 	t.Run("when using project id filter and project contains workspaces", func(t *testing.T) {
 		// create a project in the orgTest
 		p, pTestCleanup := createProject(t, client, orgTest)
@@ -1222,6 +1269,9 @@ func TestWorkspacesUpdate(t *testing.T) {
 			TerraformVersion:           String("0.11.1"),
 			TriggerPrefixes:            []string{"/modules", "/shared"},
 			WorkingDirectory:           String("baz/"),
+			TagBindings: []*TagBinding{
+				{Key: "foo", Value: "bar"},
+			},
 		}
 
 		w, err := client.Workspaces.Update(ctx, orgTest.Name, wTest.Name, options)
@@ -1249,6 +1299,13 @@ func TestWorkspacesUpdate(t *testing.T) {
 			assert.Equal(t, options.TriggerPrefixes, item.TriggerPrefixes)
 			assert.Equal(t, *options.WorkingDirectory, item.WorkingDirectory)
 		}
+
+		bindings, err := client.Workspaces.ListTagBindings(ctx, wTest.ID)
+		require.NoError(t, err)
+
+		assert.Len(t, bindings, 1)
+		assert.Equal(t, "foo", bindings[0].Key)
+		assert.Equal(t, "bar", bindings[0].Value)
 	})
 
 	t.Run("when options includes both an operations value and an enforcement mode value", func(t *testing.T) {
