@@ -1193,9 +1193,9 @@ func TestRegistryModulesRead(t *testing.T) {
 		})
 	})
 
-	t.Run("with a external ID field for private module", func(t *testing.T) {
+	t.Run("with a unique ID field for private module", func(t *testing.T) {
 		rm, err := client.RegistryModules.Read(ctx, RegistryModuleID{
-			ExternalID: registryModuleTest.ID,
+			ID: registryModuleTest.ID,
 		})
 		require.NoError(t, err)
 		require.NotEmpty(t, rm)

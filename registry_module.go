@@ -111,8 +111,8 @@ const (
 // Use NewPublicRegistryModuleID or NewPrivateRegistryModuleID to build one
 
 type RegistryModuleID struct {
-	// The unique external ID of the organization. If given, the other fields are ignored.
-	ExternalID string
+	// The unique ID of the module. If given, the other fields are ignored.
+	ID string
 	// The organization the module belongs to, see RegistryModule.Organization.Name
 	Organization string
 	// The name of the module, see RegistryModule.Name
@@ -527,7 +527,7 @@ func (r *registryModules) Read(ctx context.Context, moduleID RegistryModuleID) (
 	}
 
 	var u string
-	if moduleID.ExternalID == "" {
+	if moduleID.ID == "" {
 		if moduleID.RegistryName == "" {
 			log.Println("[WARN] Support for using the RegistryModuleID without RegistryName is deprecated as of release 1.5.0 and may be removed in a future version. The preferred method is to include the RegistryName in RegistryModuleID.")
 			moduleID.RegistryName = PrivateRegistry
@@ -547,7 +547,7 @@ func (r *registryModules) Read(ctx context.Context, moduleID RegistryModuleID) (
 			url.PathEscape(moduleID.Provider),
 		)
 	} else {
-		u = fmt.Sprintf("registry-modules/%s", url.PathEscape(moduleID.ExternalID))
+		u = fmt.Sprintf("registry-modules/%s", url.PathEscape(moduleID.ID))
 	}
 
 	req, err := r.client.NewRequest("GET", u, nil)
@@ -698,7 +698,7 @@ func (r *registryModules) DeleteVersion(ctx context.Context, moduleID RegistryMo
 }
 
 func (o RegistryModuleID) valid() error {
-	if validString(&o.ExternalID) && validStringID(&o.ExternalID) {
+	if validString(&o.ID) && validStringID(&o.ID) {
 		return nil
 	}
 
