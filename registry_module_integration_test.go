@@ -1193,6 +1193,27 @@ func TestRegistryModulesRead(t *testing.T) {
 		})
 	})
 
+	t.Run("with a unique ID field for private module", func(t *testing.T) {
+		rm, err := client.RegistryModules.Read(ctx, RegistryModuleID{
+			ID: registryModuleTest.ID,
+		})
+		require.NoError(t, err)
+		require.NotEmpty(t, rm)
+		assert.Equal(t, registryModuleTest.ID, rm.ID)
+
+		t.Run("permissions are properly decoded", func(t *testing.T) {
+			require.NotEmpty(t, rm.Permissions)
+			assert.True(t, rm.Permissions.CanDelete)
+			assert.True(t, rm.Permissions.CanResync)
+			assert.True(t, rm.Permissions.CanRetry)
+		})
+
+		t.Run("timestamps are properly decoded", func(t *testing.T) {
+			assert.NotEmpty(t, rm.CreatedAt)
+			assert.NotEmpty(t, rm.UpdatedAt)
+		})
+	})
+
 	t.Run("without a name", func(t *testing.T) {
 		rm, err := client.RegistryModules.Read(ctx, RegistryModuleID{
 			Organization: orgTest.Name,
