@@ -84,6 +84,21 @@ func (mr *MockProjectsMockRecorder) List(ctx, organization, options any) *gomock
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "List", reflect.TypeOf((*MockProjects)(nil).List), ctx, organization, options)
 }
 
+// ListTagBindings mocks base method.
+func (m *MockProjects) ListTagBindings(ctx context.Context, projectID string) ([]*tfe.TagBinding, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "ListTagBindings", ctx, projectID)
+	ret0, _ := ret[0].([]*tfe.TagBinding)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// ListTagBindings indicates an expected call of ListTagBindings.
+func (mr *MockProjectsMockRecorder) ListTagBindings(ctx, projectID any) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListTagBindings", reflect.TypeOf((*MockProjects)(nil).ListTagBindings), ctx, projectID)
+}
+
 // Read mocks base method.
 func (m *MockProjects) Read(ctx context.Context, projectID string) (*tfe.Project, error) {
 	m.ctrl.T.Helper()

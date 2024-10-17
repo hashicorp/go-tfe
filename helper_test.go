@@ -2519,6 +2519,12 @@ func upgradeOrganizationSubscription(t *testing.T, _ *Client, organization *Orga
 }
 
 func createProject(t *testing.T, client *Client, org *Organization) (*Project, func()) {
+	return createProjectWithOptions(t, client, org, ProjectCreateOptions{
+		Name: randomStringWithoutSpecialChar(t),
+	})
+}
+
+func createProjectWithOptions(t *testing.T, client *Client, org *Organization, options ProjectCreateOptions) (*Project, func()) {
 	var orgCleanup func()
 
 	if org == nil {
@@ -2526,9 +2532,7 @@ func createProject(t *testing.T, client *Client, org *Organization) (*Project, f
 	}
 
 	ctx := context.Background()
-	p, err := client.Projects.Create(ctx, org.Name, ProjectCreateOptions{
-		Name: randomStringWithoutSpecialChar(t),
-	})
+	p, err := client.Projects.Create(ctx, org.Name, options)
 	if err != nil {
 		t.Fatal(err)
 	}

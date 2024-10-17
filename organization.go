@@ -300,6 +300,10 @@ type OrganizationUpdateOptions struct {
 
 	// Optional: DefaultAgentPoolId default agent pool for workspaces, requires DefaultExecutionMode to be set to `agent`
 	DefaultAgentPool *AgentPool `jsonapi:"relation,default-agent-pool,omitempty"`
+
+	// Optional: StacksEnabled toggles whether stacks are enabled for the organization. This setting
+	// is considered BETA, SUBJECT TO CHANGE, and likely unavailable to most users.
+	StacksEnabled *bool `jsonapi:"attr,stacks-enabled,omitempty"`
 }
 
 // ReadRunQueueOptions represents the options for showing the queue.
