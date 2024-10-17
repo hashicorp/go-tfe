@@ -1,5 +1,10 @@
 # Unreleased
 
+## Enhancements
+
+* Add support for reading a registry module by its unique identifier by @dsa0x
+ [#988](https://github.com/hashicorp/go-tfe/pull/988)
+
 # v1.68.0
 
 ## Enhancements
