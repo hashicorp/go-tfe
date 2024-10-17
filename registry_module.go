@@ -530,7 +530,6 @@ func (r *registryModules) Read(ctx context.Context, moduleID RegistryModuleID) (
 	if moduleID.ExternalID != "" {
 		u = fmt.Sprintf("registry-modules/%s", url.PathEscape(moduleID.ExternalID))
 	} else {
-
 		if moduleID.RegistryName == "" {
 			log.Println("[WARN] Support for using the RegistryModuleID without RegistryName is deprecated as of release 1.5.0 and may be removed in a future version. The preferred method is to include the RegistryName in RegistryModuleID.")
 			moduleID.RegistryName = PrivateRegistry
