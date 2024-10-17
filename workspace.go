@@ -131,6 +131,9 @@ type Workspaces interface {
 	// DeleteDataRetentionPolicy deletes a workspace's data retention policy
 	// **Note: This functionality is only available in Terraform Enterprise.**
 	DeleteDataRetentionPolicy(ctx context.Context, workspaceID string) error
+
+	// ListTagBindings lists all tag bindings associated with the workspace.
+	ListTagBindings(ctx context.Context, workspaceID string) ([]*TagBinding, error)
 }
 
 // workspaces implements Workspaces.
@@ -208,6 +211,7 @@ type Workspace struct {
 	CurrentConfigurationVersion *ConfigurationVersion `jsonapi:"relation,current-configuration-version,omitempty"`
 	LockedBy                    *LockedByChoice       `jsonapi:"polyrelation,locked-by"`
 	Variables                   []*Variable           `jsonapi:"relation,vars"`
+	TagBindings                 []*TagBinding         `jsonapi:"relation,tag-bindings"`
 
 	// Deprecated: Use DataRetentionPolicyChoice instead.
 	DataRetentionPolicy *DataRetentionPolicy
@@ -328,6 +332,10 @@ type WorkspaceListOptions struct {
 
 	// Optional: A filter string to list all the workspaces filtered by current run status.
 	CurrentRunStatus string `url:"filter[current-run][status],omitempty"`
+
+	// Optional: A filter string to list workspaces filtered by key/value tags.
+	// These are not annotated and therefore not encoded by go-querystring
+	TagBindings []*TagBinding
 
 	// Optional: A list of relations to include. See available resources https://developer.hashicorp.com/terraform/cloud-docs/api-docs/workspaces#available-related-resources
 	Include []WSIncludeOpt `url:"include,omitempty"`
@@ -471,6 +479,9 @@ type WorkspaceCreateOptions struct {
 	// Associated Project with the workspace. If not provided, default project
 	// of the organization will be assigned to the workspace.
 	Project *Project `jsonapi:"relation,project,omitempty"`
+
+	// Associated TagBindings of the workspace.
+	TagBindings []*TagBinding `jsonapi:"relation,tag-bindings,omitempty"`
 }
 
 // TODO: move this struct out. VCSRepoOptions is used by workspaces, policy sets, and registry modules
@@ -610,6 +621,10 @@ type WorkspaceUpdateOptions struct {
 	// Associated Project with the workspace. If not provided, default project
 	// of the organization will be assigned to the workspace
 	Project *Project `jsonapi:"relation,project,omitempty"`
+
+	// Associated TagBindings of the project. Note that this will replace
+	// all existing tag bindings.
+	TagBindings []*TagBinding `jsonapi:"relation,tag-bindings,omitempty"`
 }
 
 // WorkspaceLockOptions represents the options for locking a workspace.
@@ -700,8 +715,14 @@ func (s *workspaces) List(ctx context.Context, organization string, options *Wor
 		return nil, err
 	}
 
+	var tagFilters map[string][]string
+	if options != nil {
+		tagFilters = encodeTagFiltersAsParams(options.TagBindings)
+	}
+
+	// Encode parameters that cannot be encoded by go-querystring
 	u := fmt.Sprintf("organizations/%s/workspaces", url.PathEscape(organization))
-	req, err := s.client.NewRequest("GET", u, options)
+	req, err := s.client.NewRequestWithAdditionalQueryParams("GET", u, options, tagFilters)
 	if err != nil {
 		return nil, err
 	}
@@ -713,6 +734,30 @@ func (s *workspaces) List(ctx context.Context, organization string, options *Wor
 	}
 
 	return wl, nil
+}
+
+func (s *workspaces) ListTagBindings(ctx context.Context, workspaceID string) ([]*TagBinding, error) {
+	if !validStringID(&workspaceID) {
+		return nil, ErrInvalidWorkspaceID
+	}
+
+	u := fmt.Sprintf("workspaces/%s/tag-bindings", url.PathEscape(workspaceID))
+	req, err := s.client.NewRequest("GET", u, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	var list struct {
+		*Pagination
+		Items []*TagBinding
+	}
+
+	err = req.Do(ctx, &list)
+	if err != nil {
+		return nil, err
+	}
+
+	return list.Items, nil
 }
 
 // Create is used to create a new workspace.
@@ -1436,7 +1481,7 @@ func (o WorkspaceCreateOptions) valid() error {
 	if o.AgentPoolID == nil && (o.ExecutionMode != nil && *o.ExecutionMode == "agent") {
 		return ErrRequiredAgentPoolID
 	}
-	if o.TriggerPrefixes != nil && len(o.TriggerPrefixes) > 0 &&
+	if len(o.TriggerPrefixes) > 0 &&
 		o.TriggerPatterns != nil && len(o.TriggerPatterns) > 0 {
 		return ErrUnsupportedBothTriggerPatternsAndPrefixes
 	}
@@ -1466,7 +1511,7 @@ func (o WorkspaceUpdateOptions) valid() error {
 	if o.AgentPoolID == nil && (o.ExecutionMode != nil && *o.ExecutionMode == "agent") {
 		return ErrRequiredAgentPoolID
 	}
-	if o.TriggerPrefixes != nil && len(o.TriggerPrefixes) > 0 &&
+	if len(o.TriggerPrefixes) > 0 &&
 		o.TriggerPatterns != nil && len(o.TriggerPatterns) > 0 {
 		return ErrUnsupportedBothTriggerPatternsAndPrefixes
 	}

@@ -1,5 +1,10 @@
 # Unreleased
 
+## Enhancements
+
+* Add support for enabling Stacks on an organization by @brandonc [#987](https://github.com/hashicorp/go-tfe/pull/987)
+* Add support for filtering by key/value tags by @brandonc [#987](https://github.com/hashicorp/go-tfe/pull/987)
+
 # v1.68.0
 
 ## Enhancements
