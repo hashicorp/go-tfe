@@ -319,7 +319,7 @@ func (c *Client) NewRequestWithAdditionalQueryParams(method, path string, reqBod
 		q[k] = v
 	}
 
-	u.RawQuery = encodeQueryParams(q)
+	u.RawQuery = strings.Join([]string{u.RawQuery, encodeQueryParams(q)}, "&")
 
 	req, err := retryablehttp.NewRequest(method, u.String(), body)
 	if err != nil {
