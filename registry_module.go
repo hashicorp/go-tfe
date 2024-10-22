@@ -109,7 +109,10 @@ const (
 
 // RegistryModuleID represents the set of IDs that identify a RegistryModule
 // Use NewPublicRegistryModuleID or NewPrivateRegistryModuleID to build one
+
 type RegistryModuleID struct {
+	// The unique ID of the module. If given, the other fields are ignored.
+	ID string
 	// The organization the module belongs to, see RegistryModule.Organization.Name
 	Organization string
 	// The name of the module, see RegistryModule.Name
@@ -523,24 +526,29 @@ func (r *registryModules) Read(ctx context.Context, moduleID RegistryModuleID) (
 		return nil, err
 	}
 
-	if moduleID.RegistryName == "" {
-		log.Println("[WARN] Support for using the RegistryModuleID without RegistryName is deprecated as of release 1.5.0 and may be removed in a future version. The preferred method is to include the RegistryName in RegistryModuleID.")
-		moduleID.RegistryName = PrivateRegistry
-	}
+	var u string
+	if moduleID.ID == "" {
+		if moduleID.RegistryName == "" {
+			log.Println("[WARN] Support for using the RegistryModuleID without RegistryName is deprecated as of release 1.5.0 and may be removed in a future version. The preferred method is to include the RegistryName in RegistryModuleID.")
+			moduleID.RegistryName = PrivateRegistry
+		}
 
-	if moduleID.RegistryName == PrivateRegistry && strings.TrimSpace(moduleID.Namespace) == "" {
-		log.Println("[WARN] Support for using the RegistryModuleID without Namespace is deprecated as of release 1.5.0 and may be removed in a future version. The preferred method is to include the Namespace in RegistryModuleID.")
-		moduleID.Namespace = moduleID.Organization
-	}
+		if moduleID.RegistryName == PrivateRegistry && strings.TrimSpace(moduleID.Namespace) == "" {
+			log.Println("[WARN] Support for using the RegistryModuleID without Namespace is deprecated as of release 1.5.0 and may be removed in a future version. The preferred method is to include the Namespace in RegistryModuleID.")
+			moduleID.Namespace = moduleID.Organization
+		}
 
-	u := fmt.Sprintf(
-		"organizations/%s/registry-modules/%s/%s/%s/%s",
-		url.PathEscape(moduleID.Organization),
-		url.PathEscape(string(moduleID.RegistryName)),
-		url.PathEscape(moduleID.Namespace),
-		url.PathEscape(moduleID.Name),
-		url.PathEscape(moduleID.Provider),
-	)
+		u = fmt.Sprintf(
+			"organizations/%s/registry-modules/%s/%s/%s/%s",
+			url.PathEscape(moduleID.Organization),
+			url.PathEscape(string(moduleID.RegistryName)),
+			url.PathEscape(moduleID.Namespace),
+			url.PathEscape(moduleID.Name),
+			url.PathEscape(moduleID.Provider),
+		)
+	} else {
+		u = fmt.Sprintf("registry-modules/%s", url.PathEscape(moduleID.ID))
+	}
 
 	req, err := r.client.NewRequest("GET", u, nil)
 	if err != nil {
@@ -690,6 +698,10 @@ func (r *registryModules) DeleteVersion(ctx context.Context, moduleID RegistryMo
 }
 
 func (o RegistryModuleID) valid() error {
+	if validString(&o.ID) && validStringID(&o.ID) {
+		return nil
+	}
+
 	if !validStringID(&o.Organization) {
 		return ErrInvalidOrg
 	}
