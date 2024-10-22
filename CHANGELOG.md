@@ -6,6 +6,7 @@
 * Add support for filtering by key/value tags by @brandonc [#987](https://github.com/hashicorp/go-tfe/pull/987)
 * Add support for reading a registry module by its unique identifier by @dsa0x
  [#988](https://github.com/hashicorp/go-tfe/pull/988)
+* Adds `SpeculativePlanManagementEnabled` field to `Organization` by @lilincmu [#983](https://github.com/hashicorp/go-tfe/pull/983)
 
 # v1.68.0
 
