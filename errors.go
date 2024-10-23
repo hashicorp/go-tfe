@@ -382,6 +382,8 @@ var (
 
 	ErrRequiredRegistryModule = errors.New("registry module is required")
 
+	ErrRequiredTagBindings = errors.New("TagBindings are required")
+
 	ErrInvalidTestRunID = errors.New("invalid value for test run id")
 
 	ErrTerraformVersionValidForPlanOnly = errors.New("setting terraform-version is only valid when plan-only is set to true")
