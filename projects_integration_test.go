@@ -248,6 +248,8 @@ func TestProjectsUpdate(t *testing.T) {
 }
 
 func TestProjectsAddTagBindings(t *testing.T) {
+	skipUnlessBeta(t)
+
 	client := testClient(t)
 	ctx := context.Background()
 

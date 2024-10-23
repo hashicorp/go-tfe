@@ -1174,6 +1174,8 @@ func TestWorkspacesReadByID(t *testing.T) {
 }
 
 func TestWorkspaceAddTagBindings(t *testing.T) {
+	skipUnlessBeta(t)
+
 	client := testClient(t)
 	ctx := context.Background()
 
