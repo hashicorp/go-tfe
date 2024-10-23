@@ -1173,7 +1173,7 @@ func TestWorkspacesReadByID(t *testing.T) {
 	})
 }
 
-func TestWorkspaceAddTagBindings(t *testing.T) {
+func TestWorkspacesAddTagBindings(t *testing.T) {
 	skipUnlessBeta(t)
 
 	client := testClient(t)
