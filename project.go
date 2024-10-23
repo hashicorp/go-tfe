@@ -34,6 +34,9 @@ type Projects interface {
 
 	// ListTagBindings lists all tag bindings associated with the project.
 	ListTagBindings(ctx context.Context, projectID string) ([]*TagBinding, error)
+
+	// AddTagBindings adds or modifies the value of existing tag binding keys for a project.
+	AddTagBindings(ctx context.Context, projectID string, options ProjectAddTagBindingsOptions) ([]*TagBinding, error)
 }
 
 // projects implements Projects
@@ -111,6 +114,12 @@ type ProjectUpdateOptions struct {
 	// Associated TagBindings of the project. Note that this will replace
 	// all existing tag bindings.
 	TagBindings []*TagBinding `jsonapi:"relation,tag-bindings,omitempty"`
+}
+
+// ProjectAddTagBindingsOptions represents the options for adding tag bindings
+// to a project.
+type ProjectAddTagBindingsOptions struct {
+	TagBindings []*TagBinding
 }
 
 // List all projects.
@@ -209,6 +218,31 @@ func (s *projects) ListTagBindings(ctx context.Context, projectID string) ([]*Ta
 	return list.Items, nil
 }
 
+// AddTagBindings adds or modifies the value of existing tag binding keys for a project
+func (s *projects) AddTagBindings(ctx context.Context, projectID string, options ProjectAddTagBindingsOptions) ([]*TagBinding, error) {
+	if !validStringID(&projectID) {
+		return nil, ErrInvalidProjectID
+	}
+
+	if err := options.valid(); err != nil {
+		return nil, err
+	}
+
+	u := fmt.Sprintf("projects/%s/tag-bindings", url.PathEscape(projectID))
+	req, err := s.client.NewRequest("PATCH", u, options.TagBindings)
+	if err != nil {
+		return nil, err
+	}
+
+	var response = struct {
+		*Pagination
+		Items []*TagBinding
+	}{}
+	err = req.Do(ctx, &response)
+
+	return response.Items, err
+}
+
 // Update a project by its ID
 func (s *projects) Update(ctx context.Context, projectID string, options ProjectUpdateOptions) (*Project, error) {
 	if !validStringID(&projectID) {
@@ -257,5 +291,13 @@ func (o ProjectCreateOptions) valid() error {
 }
 
 func (o ProjectUpdateOptions) valid() error {
+	return nil
+}
+
+func (o ProjectAddTagBindingsOptions) valid() error {
+	if len(o.TagBindings) == 0 {
+		return ErrRequiredTagBindings
+	}
+
 	return nil
 }
