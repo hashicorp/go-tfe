@@ -1173,6 +1173,70 @@ func TestWorkspacesReadByID(t *testing.T) {
 	})
 }
 
+func TestWorkspacesAddTagBindings(t *testing.T) {
+	skipUnlessBeta(t)
+
+	client := testClient(t)
+	ctx := context.Background()
+
+	wTest, wCleanup := createWorkspace(t, client, nil)
+	t.Cleanup(wCleanup)
+
+	t.Run("when adding tag bindings to a workspace", func(t *testing.T) {
+		tagBindings := []*TagBinding{
+			{Key: "foo", Value: "bar"},
+			{Key: "baz", Value: "qux"},
+		}
+
+		bindings, err := client.Workspaces.AddTagBindings(ctx, wTest.ID, WorkspaceAddTagBindingsOptions{
+			TagBindings: tagBindings,
+		})
+		require.NoError(t, err)
+
+		assert.Len(t, bindings, 2)
+		assert.Equal(t, tagBindings[0].Key, bindings[0].Key)
+		assert.Equal(t, tagBindings[0].Value, bindings[0].Value)
+		assert.Equal(t, tagBindings[1].Key, bindings[1].Key)
+		assert.Equal(t, tagBindings[1].Value, bindings[1].Value)
+	})
+
+	t.Run("when adding 26 tags", func(t *testing.T) {
+		tagBindings := []*TagBinding{
+			{Key: "alpha"},
+			{Key: "bravo"},
+			{Key: "charlie"},
+			{Key: "delta"},
+			{Key: "echo"},
+			{Key: "foxtrot"},
+			{Key: "golf"},
+			{Key: "hotel"},
+			{Key: "india"},
+			{Key: "juliet"},
+			{Key: "kilo"},
+			{Key: "lima"},
+			{Key: "mike"},
+			{Key: "november"},
+			{Key: "oscar"},
+			{Key: "papa"},
+			{Key: "quebec"},
+			{Key: "romeo"},
+			{Key: "sierra"},
+			{Key: "tango"},
+			{Key: "uniform"},
+			{Key: "victor"},
+			{Key: "whiskey"},
+			{Key: "xray"},
+			{Key: "yankee"},
+			{Key: "zulu"},
+		}
+
+		_, err := client.Workspaces.AddTagBindings(ctx, wTest.ID, WorkspaceAddTagBindingsOptions{
+			TagBindings: tagBindings,
+		})
+		require.Error(t, err, "cannot exceed 10 bindings per resource")
+	})
+}
+
 func TestWorkspacesUpdate(t *testing.T) {
 	client := testClient(t)
 	ctx := context.Background()
