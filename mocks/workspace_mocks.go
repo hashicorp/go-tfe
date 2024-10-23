@@ -55,6 +55,21 @@ func (mr *MockWorkspacesMockRecorder) AddRemoteStateConsumers(ctx, workspaceID, 
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "AddRemoteStateConsumers", reflect.TypeOf((*MockWorkspaces)(nil).AddRemoteStateConsumers), ctx, workspaceID, options)
 }
 
+// AddTagBindings mocks base method.
+func (m *MockWorkspaces) AddTagBindings(ctx context.Context, workspaceID string, options tfe.WorkspaceAddTagBindingsOptions) ([]*tfe.TagBinding, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "AddTagBindings", ctx, workspaceID, options)
+	ret0, _ := ret[0].([]*tfe.TagBinding)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// AddTagBindings indicates an expected call of AddTagBindings.
+func (mr *MockWorkspacesMockRecorder) AddTagBindings(ctx, workspaceID, options any) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "AddTagBindings", reflect.TypeOf((*MockWorkspaces)(nil).AddTagBindings), ctx, workspaceID, options)
+}
+
 // AddTags mocks base method.
 func (m *MockWorkspaces) AddTags(ctx context.Context, workspaceID string, options tfe.WorkspaceAddTagsOptions) error {
 	m.ctrl.T.Helper()

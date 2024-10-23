@@ -40,6 +40,21 @@ func (m *MockProjects) EXPECT() *MockProjectsMockRecorder {
 	return m.recorder
 }
 
+// AddTagBindings mocks base method.
+func (m *MockProjects) AddTagBindings(ctx context.Context, projectID string, options tfe.ProjectAddTagBindingsOptions) ([]*tfe.TagBinding, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "AddTagBindings", ctx, projectID, options)
+	ret0, _ := ret[0].([]*tfe.TagBinding)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// AddTagBindings indicates an expected call of AddTagBindings.
+func (mr *MockProjectsMockRecorder) AddTagBindings(ctx, projectID, options any) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "AddTagBindings", reflect.TypeOf((*MockProjects)(nil).AddTagBindings), ctx, projectID, options)
+}
+
 // Create mocks base method.
 func (m *MockProjects) Create(ctx context.Context, organization string, options tfe.ProjectCreateOptions) (*tfe.Project, error) {
 	m.ctrl.T.Helper()
