@@ -65,6 +65,13 @@ type VariableSetList struct {
 	Items []*VariableSet
 }
 
+// Parent represents the variable set's parent (currently only organizations and projects are supported).
+// This relation is considered BETA, SUBJECT TO CHANGE, and likely unavailable to most users.
+type Parent struct {
+	Organization *Organization
+	Project      *Project
+}
+
 // VariableSet represents a Terraform Enterprise variable set.
 type VariableSet struct {
 	ID          string `jsonapi:"primary,varsets"`
@@ -74,10 +81,13 @@ type VariableSet struct {
 	Priority    bool   `jsonapi:"attr,priority"`
 
 	// Relations
-	Organization *Organization          `jsonapi:"relation,organization"`
-	Workspaces   []*Workspace           `jsonapi:"relation,workspaces,omitempty"`
-	Projects     []*Project             `jsonapi:"relation,projects,omitempty"`
-	Variables    []*VariableSetVariable `jsonapi:"relation,vars,omitempty"`
+	Organization *Organization `jsonapi:"relation,organization"`
+	// Optional: Parent represents the variable set's parent (currently only organizations and projects are supported).
+	// This relation is considered BETA, SUBJECT TO CHANGE, and likely unavailable to most users.
+	Parent     *Parent                `jsonapi:"polyrelation,parent"`
+	Workspaces []*Workspace           `jsonapi:"relation,workspaces,omitempty"`
+	Projects   []*Project             `jsonapi:"relation,projects,omitempty"`
+	Variables  []*VariableSetVariable `jsonapi:"relation,vars,omitempty"`
 }
 
 // A list of relations to include. See available resources
@@ -122,6 +132,10 @@ type VariableSetCreateOptions struct {
 	// If true the variables in the set override any other variable values set
 	// in a more specific scope including values set on the command line.
 	Priority *bool `jsonapi:"attr,priority,omitempty"`
+
+	// Optional: Parent represents the variable set's parent (currently only organizations and projects are supported).
+	// This relation is considered BETA, SUBJECT TO CHANGE, and likely unavailable to most users.
+	Parent *Parent `jsonapi:"polyrelation,parent"`
 }
 
 // VariableSetReadOptions represents the options for reading variable sets.
