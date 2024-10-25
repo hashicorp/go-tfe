@@ -115,6 +115,7 @@ type Organization struct {
 	TwoFactorConformant                               bool                     `jsonapi:"attr,two-factor-conformant"`
 	SendPassingStatusesForUntriggeredSpeculativePlans bool                     `jsonapi:"attr,send-passing-statuses-for-untriggered-speculative-plans"`
 	RemainingTestableCount                            int                      `jsonapi:"attr,remaining-testable-count"`
+	SpeculativePlanManagementEnabled                  bool                     `jsonapi:"attr,speculative-plan-management-enabled"`
 	// Optional: If enabled, SendPassingStatusesForUntriggeredSpeculativePlans needs to be false.
 	AggregatedCommitStatusEnabled bool `jsonapi:"attr,aggregated-commit-status-enabled,omitempty"`
 	// Note: This will be false for TFE versions older than v202211, where the setting was introduced.
@@ -243,6 +244,9 @@ type OrganizationCreateOptions struct {
 	// Optional: If enabled, SendPassingStatusesForUntriggeredSpeculativePlans needs to be false.
 	AggregatedCommitStatusEnabled *bool `jsonapi:"attr,aggregated-commit-status-enabled,omitempty"`
 
+	// Optional: SpeculativePlanManagementEnabled toggles whether pending speculative plans from outdated commits will be cancelled if a newer commit is pushed to the same branch.
+	SpeculativePlanManagementEnabled *bool `jsonapi:"attr,speculative-plan-management-enabled,omitempty"`
+
 	// Optional: AllowForceDeleteWorkspaces toggles behavior of allowing workspace admins to delete workspaces with resources under management.
 	AllowForceDeleteWorkspaces *bool `jsonapi:"attr,allow-force-delete-workspaces,omitempty"`
 
@@ -291,6 +295,9 @@ type OrganizationUpdateOptions struct {
 
 	// Optional: If enabled, SendPassingStatusesForUntriggeredSpeculativePlans needs to be false.
 	AggregatedCommitStatusEnabled *bool `jsonapi:"attr,aggregated-commit-status-enabled,omitempty"`
+
+	// Optional: SpeculativePlanManagementEnabled toggles whether pending speculative plans from outdated commits will be cancelled if a newer commit is pushed to the same branch.
+	SpeculativePlanManagementEnabled *bool `jsonapi:"attr,speculative-plan-management-enabled,omitempty"`
 
 	// Optional: AllowForceDeleteWorkspaces toggles behavior of allowing workspace admins to delete workspaces with resources under management.
 	AllowForceDeleteWorkspaces *bool `jsonapi:"attr,allow-force-delete-workspaces,omitempty"`

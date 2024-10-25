@@ -7,6 +7,7 @@
 * Add support for reading a registry module by its unique identifier by @dsa0x
  [#988](https://github.com/hashicorp/go-tfe/pull/988)
 * Adds BETA support for a variable set `Parent` relation, which is EXPERIMENTAL, SUBJECT TO CHANGE, and may not be available to all users by @jbonhag [#992](https://github.com/hashicorp/go-tfe/pull/992)
+* Adds `SpeculativePlanManagementEnabled` field to `Organization` by @lilincmu [#983](https://github.com/hashicorp/go-tfe/pull/983)
 
 # v1.68.0
 
