@@ -21,9 +21,6 @@ func TestGPGKeyList(t *testing.T) {
 	org2, org2Cleanup := createOrganization(t, client)
 	t.Cleanup(org2Cleanup)
 
-	upgradeOrganizationSubscription(t, client, org1)
-	upgradeOrganizationSubscription(t, client, org2)
-
 	provider1, provider1Cleanup := createRegistryProvider(t, client, org1, PrivateRegistry)
 	t.Cleanup(provider1Cleanup)
 
@@ -103,8 +100,6 @@ func TestGPGKeyCreate(t *testing.T) {
 	org, orgCleanup := createOrganization(t, client)
 	t.Cleanup(orgCleanup)
 
-	upgradeOrganizationSubscription(t, client, org)
-
 	provider, providerCleanup := createRegistryProvider(t, client, org, PrivateRegistry)
 	t.Cleanup(providerCleanup)
 
@@ -162,8 +157,6 @@ func TestGPGKeyRead(t *testing.T) {
 	org, orgCleanup := createOrganization(t, client)
 	t.Cleanup(orgCleanup)
 
-	upgradeOrganizationSubscription(t, client, org)
-
 	provider, providerCleanup := createRegistryProvider(t, client, org, PrivateRegistry)
 	t.Cleanup(providerCleanup)
 
@@ -200,8 +193,6 @@ func TestGPGKeyUpdate(t *testing.T) {
 
 	org, orgCleanup := createOrganization(t, client)
 	t.Cleanup(orgCleanup)
-
-	upgradeOrganizationSubscription(t, client, org)
 
 	provider, providerCleanup := createRegistryProvider(t, client, org, PrivateRegistry)
 	t.Cleanup(providerCleanup)
@@ -263,8 +254,6 @@ func TestGPGKeyDelete(t *testing.T) {
 
 	org, orgCleanup := createOrganization(t, client)
 	t.Cleanup(orgCleanup)
-
-	upgradeOrganizationSubscription(t, client, org)
 
 	provider, providerCleanup := createRegistryProvider(t, client, org, PrivateRegistry)
 	t.Cleanup(providerCleanup)
