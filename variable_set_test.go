@@ -232,6 +232,40 @@ func TestVariableSetsCreate(t *testing.T) {
 		assert.Nil(t, vs)
 		assert.EqualError(t, err, ErrRequiredGlobalFlag.Error())
 	})
+
+	t.Run("when creating project-owned variable set", func(t *testing.T) {
+		skipUnlessBeta(t)
+
+		prjTest, prjTestCleanup := createProject(t, client, orgTest)
+		t.Cleanup(prjTestCleanup)
+
+		options := VariableSetCreateOptions{
+			Name:        String("project-varset"),
+			Description: String("a project variable set"),
+			Global:      Bool(false),
+			Parent: &Parent{
+				Project: prjTest,
+			},
+		}
+
+		vs, err := client.VariableSets.Create(ctx, orgTest.Name, &options)
+		require.NoError(t, err)
+
+		// Get refreshed view from the API
+		refreshed, err := client.VariableSets.Read(ctx, vs.ID, nil)
+		require.NoError(t, err)
+
+		for _, item := range []*VariableSet{
+			vs,
+			refreshed,
+		} {
+			assert.NotEmpty(t, item.ID)
+			assert.Equal(t, *options.Name, item.Name)
+			assert.Equal(t, *options.Description, item.Description)
+			assert.Equal(t, *options.Global, item.Global)
+			assert.Equal(t, options.Parent.Project.ID, item.Parent.Project.ID)
+		}
+	})
 }
 
 func TestVariableSetsRead(t *testing.T) {
@@ -254,6 +288,15 @@ func TestVariableSetsRead(t *testing.T) {
 		vs, err := client.VariableSets.Read(ctx, "nonexisting", nil)
 		assert.Nil(t, vs)
 		assert.Error(t, err)
+	})
+
+	t.Run("with parent relationship", func(t *testing.T) {
+		skipUnlessBeta(t)
+
+		vs, err := client.VariableSets.Read(ctx, vsTest.ID, nil)
+		require.NoError(t, err)
+		assert.Equal(t, vsTest, vs)
+		assert.Equal(t, orgTest.Name, vs.Parent.Organization.Name)
 	})
 }
 
