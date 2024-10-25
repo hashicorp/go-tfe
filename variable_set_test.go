@@ -289,6 +289,15 @@ func TestVariableSetsRead(t *testing.T) {
 		assert.Nil(t, vs)
 		assert.Error(t, err)
 	})
+
+	t.Run("with parent relationship", func(t *testing.T) {
+		skipUnlessBeta(t)
+
+		vs, err := client.VariableSets.Read(ctx, vsTest.ID, nil)
+		require.NoError(t, err)
+		assert.Equal(t, vsTest, vs)
+		assert.Equal(t, orgTest.Name, vs.Parent.Organization.Name)
+	})
 }
 
 func TestVariableSetsUpdate(t *testing.T) {
