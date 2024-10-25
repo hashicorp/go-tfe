@@ -1193,7 +1193,7 @@ func TestWorkspacesAddTagBindings(t *testing.T) {
 		})
 		require.NoError(t, err)
 
-		assert.Len(t, bindings, 2)
+		require.Len(t, bindings, 2)
 		assert.Equal(t, tagBindings[0].Key, bindings[0].Key)
 		assert.Equal(t, tagBindings[0].Value, bindings[0].Value)
 		assert.Equal(t, tagBindings[1].Key, bindings[1].Key)
