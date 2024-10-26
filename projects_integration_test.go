@@ -66,22 +66,22 @@ func TestProjectsList(t *testing.T) {
 	t.Run("when using a tags filter", func(t *testing.T) {
 		skipUnlessBeta(t)
 
-		p1, wTestCleanup1 := createProjectWithOptions(t, client, orgTest, ProjectCreateOptions{
+		p1, pTestCleanup1 := createProjectWithOptions(t, client, orgTest, ProjectCreateOptions{
 			Name: randomStringWithoutSpecialChar(t),
 			TagBindings: []*TagBinding{
 				{Key: "key1", Value: "value1"},
 				{Key: "key2", Value: "value2a"},
 			},
 		})
-		p2, wTestCleanup2 := createProjectWithOptions(t, client, orgTest, ProjectCreateOptions{
+		p2, pTestCleanup2 := createProjectWithOptions(t, client, orgTest, ProjectCreateOptions{
 			Name: randomStringWithoutSpecialChar(t),
 			TagBindings: []*TagBinding{
 				{Key: "key2", Value: "value2b"},
 				{Key: "key3", Value: "value3"},
 			},
 		})
-		t.Cleanup(wTestCleanup1)
-		t.Cleanup(wTestCleanup2)
+		t.Cleanup(pTestCleanup1)
+		t.Cleanup(pTestCleanup2)
 
 		// List all the workspaces under the given tag
 		pl, err := client.Projects.List(ctx, orgTest.Name, &ProjectListOptions{
@@ -244,6 +244,70 @@ func TestProjectsUpdate(t *testing.T) {
 		w, err := client.Projects.Update(ctx, badIdentifier, ProjectUpdateOptions{})
 		assert.Nil(t, w)
 		assert.EqualError(t, err, ErrInvalidProjectID.Error())
+	})
+}
+
+func TestProjectsAddTagBindings(t *testing.T) {
+	skipUnlessBeta(t)
+
+	client := testClient(t)
+	ctx := context.Background()
+
+	pTest, wCleanup := createProject(t, client, nil)
+	t.Cleanup(wCleanup)
+
+	t.Run("when adding tag bindings to a project", func(t *testing.T) {
+		tagBindings := []*TagBinding{
+			{Key: "foo", Value: "bar"},
+			{Key: "baz", Value: "qux"},
+		}
+
+		bindings, err := client.Projects.AddTagBindings(ctx, pTest.ID, ProjectAddTagBindingsOptions{
+			TagBindings: tagBindings,
+		})
+		require.NoError(t, err)
+
+		assert.Len(t, bindings, 2)
+		assert.Equal(t, tagBindings[0].Key, bindings[0].Key)
+		assert.Equal(t, tagBindings[0].Value, bindings[0].Value)
+		assert.Equal(t, tagBindings[1].Key, bindings[1].Key)
+		assert.Equal(t, tagBindings[1].Value, bindings[1].Value)
+	})
+
+	t.Run("when adding 26 tags", func(t *testing.T) {
+		tagBindings := []*TagBinding{
+			{Key: "alpha"},
+			{Key: "bravo"},
+			{Key: "charlie"},
+			{Key: "delta"},
+			{Key: "echo"},
+			{Key: "foxtrot"},
+			{Key: "golf"},
+			{Key: "hotel"},
+			{Key: "india"},
+			{Key: "juliet"},
+			{Key: "kilo"},
+			{Key: "lima"},
+			{Key: "mike"},
+			{Key: "november"},
+			{Key: "oscar"},
+			{Key: "papa"},
+			{Key: "quebec"},
+			{Key: "romeo"},
+			{Key: "sierra"},
+			{Key: "tango"},
+			{Key: "uniform"},
+			{Key: "victor"},
+			{Key: "whiskey"},
+			{Key: "xray"},
+			{Key: "yankee"},
+			{Key: "zulu"},
+		}
+
+		_, err := client.Workspaces.AddTagBindings(ctx, pTest.ID, WorkspaceAddTagBindingsOptions{
+			TagBindings: tagBindings,
+		})
+		require.Error(t, err, "cannot exceed 10 bindings per resource")
 	})
 }
 

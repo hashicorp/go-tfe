@@ -134,6 +134,9 @@ type Workspaces interface {
 
 	// ListTagBindings lists all tag bindings associated with the workspace.
 	ListTagBindings(ctx context.Context, workspaceID string) ([]*TagBinding, error)
+
+	// AddTagBindings adds or modifies the value of existing tag binding keys for a workspace.
+	AddTagBindings(ctx context.Context, workspaceID string, options WorkspaceAddTagBindingsOptions) ([]*TagBinding, error)
 }
 
 // workspaces implements Workspaces.
@@ -145,6 +148,12 @@ type workspaces struct {
 type WorkspaceList struct {
 	*Pagination
 	Items []*Workspace
+}
+
+// WorkspaceAddTagBindingsOptions represents the options for adding tag bindings
+// to a workspace.
+type WorkspaceAddTagBindingsOptions struct {
+	TagBindings []*TagBinding
 }
 
 // LockedByChoice is a choice type struct that represents the possible values
@@ -758,6 +767,31 @@ func (s *workspaces) ListTagBindings(ctx context.Context, workspaceID string) ([
 	}
 
 	return list.Items, nil
+}
+
+// AddTagBindings adds or modifies the value of existing tag binding keys for a workspace.
+func (s *workspaces) AddTagBindings(ctx context.Context, workspaceID string, options WorkspaceAddTagBindingsOptions) ([]*TagBinding, error) {
+	if !validStringID(&workspaceID) {
+		return nil, ErrInvalidWorkspaceID
+	}
+
+	if err := options.valid(); err != nil {
+		return nil, err
+	}
+
+	u := fmt.Sprintf("workspaces/%s/tag-bindings", url.PathEscape(workspaceID))
+	req, err := s.client.NewRequest("PATCH", u, options.TagBindings)
+	if err != nil {
+		return nil, err
+	}
+
+	var response = struct {
+		*Pagination
+		Items []*TagBinding
+	}{}
+	err = req.Do(ctx, &response)
+
+	return response.Items, err
 }
 
 // Create is used to create a new workspace.
@@ -1463,6 +1497,14 @@ func (s *workspaces) DeleteDataRetentionPolicy(ctx context.Context, workspaceID 
 	}
 
 	return req.Do(ctx, nil)
+}
+
+func (o WorkspaceAddTagBindingsOptions) valid() error {
+	if len(o.TagBindings) == 0 {
+		return ErrRequiredTagBindings
+	}
+
+	return nil
 }
 
 func (o WorkspaceCreateOptions) valid() error {
