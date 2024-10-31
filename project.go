@@ -35,6 +35,11 @@ type Projects interface {
 	// ListTagBindings lists all tag bindings associated with the project.
 	ListTagBindings(ctx context.Context, projectID string) ([]*TagBinding, error)
 
+	// ListEffectiveTagBindings lists all tag bindings associated with the project. In practice,
+	// this should be the same as ListTagBindings since projects do not currently inherit
+	// tag bindings.
+	ListEffectiveTagBindings(ctx context.Context, workspaceID string) ([]*EffectiveTagBinding, error)
+
 	// AddTagBindings adds or modifies the value of existing tag binding keys for a project.
 	AddTagBindings(ctx context.Context, projectID string, options ProjectAddTagBindingsOptions) ([]*TagBinding, error)
 }
@@ -208,6 +213,30 @@ func (s *projects) ListTagBindings(ctx context.Context, projectID string) ([]*Ta
 	var list struct {
 		*Pagination
 		Items []*TagBinding
+	}
+
+	err = req.Do(ctx, &list)
+	if err != nil {
+		return nil, err
+	}
+
+	return list.Items, nil
+}
+
+func (s *projects) ListEffectiveTagBindings(ctx context.Context, projectID string) ([]*EffectiveTagBinding, error) {
+	if !validStringID(&projectID) {
+		return nil, ErrInvalidProjectID
+	}
+
+	u := fmt.Sprintf("projects/%s/effective-tag-bindings", url.PathEscape(projectID))
+	req, err := s.client.NewRequest("GET", u, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	var list struct {
+		*Pagination
+		Items []*EffectiveTagBinding
 	}
 
 	err = req.Do(ctx, &list)

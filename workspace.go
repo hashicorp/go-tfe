@@ -135,6 +135,10 @@ type Workspaces interface {
 	// ListTagBindings lists all tag bindings associated with the workspace.
 	ListTagBindings(ctx context.Context, workspaceID string) ([]*TagBinding, error)
 
+	// ListEffectiveTagBindings lists all tag bindings associated with the workspace which may be
+	// either inherited from a project or binded to the workspace itself.
+	ListEffectiveTagBindings(ctx context.Context, workspaceID string) ([]*EffectiveTagBinding, error)
+
 	// AddTagBindings adds or modifies the value of existing tag binding keys for a workspace.
 	AddTagBindings(ctx context.Context, workspaceID string, options WorkspaceAddTagBindingsOptions) ([]*TagBinding, error)
 }
@@ -759,6 +763,30 @@ func (s *workspaces) ListTagBindings(ctx context.Context, workspaceID string) ([
 	var list struct {
 		*Pagination
 		Items []*TagBinding
+	}
+
+	err = req.Do(ctx, &list)
+	if err != nil {
+		return nil, err
+	}
+
+	return list.Items, nil
+}
+
+func (s *workspaces) ListEffectiveTagBindings(ctx context.Context, workspaceID string) ([]*EffectiveTagBinding, error) {
+	if !validStringID(&workspaceID) {
+		return nil, ErrInvalidWorkspaceID
+	}
+
+	u := fmt.Sprintf("workspaces/%s/effective-tag-bindings", url.PathEscape(workspaceID))
+	req, err := s.client.NewRequest("GET", u, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	var list struct {
+		*Pagination
+		Items []*EffectiveTagBinding
 	}
 
 	err = req.Do(ctx, &list)

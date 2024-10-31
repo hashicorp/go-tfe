@@ -22,6 +22,12 @@ type TagBinding struct {
 	Value string `jsonapi:"attr,value,omitempty"`
 }
 
+type EffectiveTagBinding struct {
+	ID    string `jsonapi:"primary,effective-tag-bindings"`
+	Key   string `jsonapi:"attr,key"`
+	Value string `jsonapi:"attr,value,omitempty"`
+}
+
 func encodeTagFiltersAsParams(filters []*TagBinding) map[string][]string {
 	if len(filters) == 0 {
 		return nil
