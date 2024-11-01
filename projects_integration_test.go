@@ -244,7 +244,12 @@ func TestProjectsUpdate(t *testing.T) {
 			require.NoError(t, err)
 
 			t.Cleanup(func() {
-				client.Workspaces.DeleteByID(ctx, ws.ID)
+				err := client.Workspaces.DeleteByID(ctx, ws.ID)
+				if err != nil {
+					t.Errorf("Error destroying workspace! WARNING: Dangling resources\n"+
+						"may exist! The full error is shown below.\n\n"+
+						"Error: %s", err)
+				}
 			})
 
 			wsEffectiveBindings, err := client.Workspaces.ListEffectiveTagBindings(ctx, ws.ID)
