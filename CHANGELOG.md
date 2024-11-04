@@ -1,5 +1,9 @@
 # Unreleased
 
+## Enhancements
+
+* Add support for listing effective tag bindings for a workspace or project by @brandonc
+
 # v1.69.0
 
 ## Enhancements

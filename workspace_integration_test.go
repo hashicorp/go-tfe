@@ -1373,6 +1373,13 @@ func TestWorkspacesUpdate(t *testing.T) {
 			assert.Len(t, bindings, 1)
 			assert.Equal(t, "foo", bindings[0].Key)
 			assert.Equal(t, "bar", bindings[0].Value)
+
+			effectiveBindings, err := client.Workspaces.ListEffectiveTagBindings(ctx, wTest.ID)
+			require.NoError(t, err)
+
+			assert.Len(t, effectiveBindings, 1)
+			assert.Equal(t, "foo", effectiveBindings[0].Key)
+			assert.Equal(t, "bar", effectiveBindings[0].Value)
 		}
 	})
 

@@ -204,7 +204,7 @@ func TestProjectsUpdate(t *testing.T) {
 
 	t.Run("with valid options", func(t *testing.T) {
 		kBefore, kTestCleanup := createProject(t, client, orgTest)
-		defer kTestCleanup()
+		t.Cleanup(kTestCleanup)
 
 		kAfter, err := client.Projects.Update(ctx, kBefore.ID, ProjectUpdateOptions{
 			Name:        String("new project name"),
@@ -226,6 +226,45 @@ func TestProjectsUpdate(t *testing.T) {
 			assert.Len(t, bindings, 1)
 			assert.Equal(t, "foo", bindings[0].Key)
 			assert.Equal(t, "bar", bindings[0].Value)
+
+			effectiveBindings, err := client.Projects.ListEffectiveTagBindings(ctx, kAfter.ID)
+			require.NoError(t, err)
+
+			assert.Len(t, effectiveBindings, 1)
+			assert.Equal(t, "foo", effectiveBindings[0].Key)
+			assert.Equal(t, "bar", effectiveBindings[0].Value)
+
+			ws, err := client.Workspaces.Create(ctx, orgTest.Name, WorkspaceCreateOptions{
+				Name:    String("new-workspace-inherits-tags"),
+				Project: kAfter,
+				TagBindings: []*TagBinding{
+					{Key: "baz", Value: "qux"},
+				},
+			})
+			require.NoError(t, err)
+
+			t.Cleanup(func() {
+				err := client.Workspaces.DeleteByID(ctx, ws.ID)
+				if err != nil {
+					t.Errorf("Error destroying workspace! WARNING: Dangling resources\n"+
+						"may exist! The full error is shown below.\n\n"+
+						"Error: %s", err)
+				}
+			})
+
+			wsEffectiveBindings, err := client.Workspaces.ListEffectiveTagBindings(ctx, ws.ID)
+			require.NoError(t, err)
+
+			assert.Len(t, wsEffectiveBindings, 2)
+			for _, b := range wsEffectiveBindings {
+				if b.Key == "foo" {
+					assert.Equal(t, "bar", b.Value)
+				} else if b.Key == "baz" {
+					assert.Equal(t, "qux", b.Value)
+				} else {
+					assert.Fail(t, "unexpected tag binding %q", b.Key)
+				}
+			}
 		}
 	})
 

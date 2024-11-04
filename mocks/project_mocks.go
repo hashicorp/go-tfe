@@ -99,6 +99,21 @@ func (mr *MockProjectsMockRecorder) List(ctx, organization, options any) *gomock
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "List", reflect.TypeOf((*MockProjects)(nil).List), ctx, organization, options)
 }
 
+// ListEffectiveTagBindings mocks base method.
+func (m *MockProjects) ListEffectiveTagBindings(ctx context.Context, workspaceID string) ([]*tfe.EffectiveTagBinding, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "ListEffectiveTagBindings", ctx, workspaceID)
+	ret0, _ := ret[0].([]*tfe.EffectiveTagBinding)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// ListEffectiveTagBindings indicates an expected call of ListEffectiveTagBindings.
+func (mr *MockProjectsMockRecorder) ListEffectiveTagBindings(ctx, workspaceID any) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListEffectiveTagBindings", reflect.TypeOf((*MockProjects)(nil).ListEffectiveTagBindings), ctx, workspaceID)
+}
+
 // ListTagBindings mocks base method.
 func (m *MockProjects) ListTagBindings(ctx context.Context, projectID string) ([]*tfe.TagBinding, error) {
 	m.ctrl.T.Helper()
