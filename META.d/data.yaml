@@ -1,0 +1,7 @@
+# Copyright (c) HashiCorp, Inc.
+# SPDX-License-Identifier: MPL-2.0
+
+data_summary:
+  gdpr:
+    exempt: true
+    last_reviewed: 2024-11-04
