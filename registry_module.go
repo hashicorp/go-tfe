@@ -156,7 +156,8 @@ type RegistryModule struct {
 	UpdatedAt           string                          `jsonapi:"attr,updated-at"`
 
 	// Relations
-	Organization *Organization `jsonapi:"relation,organization"`
+	Organization  *Organization           `jsonapi:"relation,organization"`
+	NoCodeModules []*RegistryNoCodeModule `jsonapi:"relation,no-code-modules"`
 }
 
 // Commit represents a commit
