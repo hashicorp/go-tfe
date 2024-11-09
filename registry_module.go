@@ -157,7 +157,7 @@ type RegistryModule struct {
 
 	// Relations
 	Organization  *Organization           `jsonapi:"relation,organization"`
-	NoCodeModules []*RegistryNoCodeModule `jsonapi:"relation,no-code-modules"`
+	NoCodeModules []*RegistryNoCodeModule `jsonapi:"relation,no-code-modules,omitempty"`
 }
 
 // Commit represents a commit
