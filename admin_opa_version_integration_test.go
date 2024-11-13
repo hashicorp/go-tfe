@@ -66,7 +66,7 @@ func TestAdminOPAVersions_List(t *testing.T) {
 
 	t.Run("with filter query string", func(t *testing.T) {
 		oList, err := client.Admin.OPAVersions.List(ctx, &AdminOPAVersionsListOptions{
-			Filter: "0.46.1",
+			Filter: "0.59.0",
 		})
 		require.NoError(t, err)
 		assert.Equal(t, 1, len(oList.Items))
@@ -80,7 +80,7 @@ func TestAdminOPAVersions_List(t *testing.T) {
 	})
 
 	t.Run("with search version query string", func(t *testing.T) {
-		searchVersion := "0.46.1"
+		searchVersion := "0.59.0"
 		oList, err := client.Admin.OPAVersions.List(ctx, &AdminOPAVersionsListOptions{
 			Search: searchVersion,
 		})

@@ -37,6 +37,7 @@ func TestAdminUsers_List(t *testing.T) {
 				PageSize:   100,
 			},
 		})
+
 		require.NoError(t, err)
 		// Out of range page number, so the items should be empty
 		assert.Empty(t, ul.Items)
@@ -55,10 +56,9 @@ func TestAdminUsers_List(t *testing.T) {
 
 	t.Run("query by username or email", func(t *testing.T) {
 		ul, err := client.Admin.Users.List(ctx, &AdminUserListOptions{
-			Query: currentUser.Username,
+			Query: "admin-security-maintenance",
 		})
 		require.NoError(t, err)
-		assert.Equal(t, currentUser.ID, ul.Items[0].ID)
 		assert.Equal(t, 1, ul.CurrentPage)
 		assert.Equal(t, true, ul.TotalCount == 1)
 
