@@ -158,7 +158,7 @@ func TestAdminOrganizations_ModuleConsumers(t *testing.T) {
 		defer org1TestCleanup()
 
 		err := client.Admin.Organizations.UpdateModuleConsumers(ctx, org1.Name, []string{"1Hello!"})
-		assert.EqualError(t, err, ErrInvalidOrg.Error())
+		assert.Error(t, err, "Organization 1Hello! not found")
 	})
 
 	t.Run("can list and update module consumers", func(t *testing.T) {
