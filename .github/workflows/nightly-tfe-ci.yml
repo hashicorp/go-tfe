@@ -71,7 +71,7 @@ jobs:
         with:
           payload: |
             {
-              "text": ":x::moon::sob: Nightly TFE tests *FAILED*",
+              "text": ":x::moon::sob: Nightly TFE tests *FAILED* on ${{ github.repository }}",
               "attachments": [
                 {
                   "color": "#C41E3A",
