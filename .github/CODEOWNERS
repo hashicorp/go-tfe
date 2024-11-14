@@ -1,2 +1,2 @@
-.github/ @hashicorp/tf-cli
-Makefile @hashicorp/tf-cli
+.github/ @hashicorp/tf-core-cloud
+Makefile @hashicorp/tf-core-cloud
