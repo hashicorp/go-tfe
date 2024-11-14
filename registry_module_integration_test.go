@@ -62,6 +62,31 @@ func TestRegistryModulesList(t *testing.T) {
 		assert.NotEmpty(t, modl.Items)
 		assert.Equal(t, 1, modl.CurrentPage)
 	})
+
+	t.Run("include no-code modules", func(t *testing.T) {
+		options := RegistryModuleCreateOptions{
+			Name:         String("iam"),
+			Provider:     String("aws"),
+			NoCode:       Bool(true),
+			RegistryName: PrivateRegistry,
+		}
+		rm, err := client.RegistryModules.Create(ctx, orgTest.Name, options)
+		require.NoError(t, err)
+
+		modl, err := client.RegistryModules.List(ctx, orgTest.Name, &RegistryModuleListOptions{
+			Include: []RegistryModuleListIncludeOpt{
+				IncludeNoCodeModules,
+			},
+		})
+		require.NoError(t, err)
+		assert.Len(t, modl.Items, 3)
+		for _, m := range modl.Items {
+			if m.ID == rm.ID {
+				assert.True(t, m.NoCode)
+				assert.Len(t, m.RegistryNoCodeModule, 1)
+			}
+		}
+	})
 }
 
 func TestRegistryModulesCreate(t *testing.T) {

@@ -22,7 +22,7 @@ var _ RegistryModules = (*registryModules)(nil)
 //
 // TFE API docs: https://developer.hashicorp.com/terraform/cloud-docs/api-docs/private-registry/modules
 type RegistryModules interface {
-	// List all the registory modules within an organization
+	// List all the registry modules within an organization
 	List(ctx context.Context, organization string, options *RegistryModuleListOptions) (*RegistryModuleList, error)
 
 	// ListCommits List the commits for the registry module
@@ -157,6 +157,8 @@ type RegistryModule struct {
 
 	// Relations
 	Organization *Organization `jsonapi:"relation,organization"`
+
+	RegistryNoCodeModule []*RegistryNoCodeModule `jsonapi:"relation,no-code-modules"`
 }
 
 // Commit represents a commit
@@ -202,7 +204,14 @@ type RegistryModuleVersionStatuses struct {
 // RegistryModuleListOptions represents the options for listing registry modules.
 type RegistryModuleListOptions struct {
 	ListOptions
+
+	// Include is a list of relations to include.
+	Include []RegistryModuleListIncludeOpt `url:"include,omitempty"`
 }
+
+type RegistryModuleListIncludeOpt string
+
+const IncludeNoCodeModules RegistryModuleListIncludeOpt = "no-code-modules"
 
 // RegistryModuleCreateOptions is used when creating a registry module without a VCS repo
 type RegistryModuleCreateOptions struct {
@@ -311,7 +320,7 @@ type RegistryModuleVCSRepoUpdateOptions struct {
 	Tags   *bool   `json:"tags,omitempty"`
 }
 
-// List all the registory modules within an organization.
+// List all the registry modules within an organization.
 func (r *registryModules) List(ctx context.Context, organization string, options *RegistryModuleListOptions) (*RegistryModuleList, error) {
 	if !validStringID(&organization) {
 		return nil, ErrInvalidOrg
