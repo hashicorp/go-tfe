@@ -100,7 +100,7 @@ runs:
         GO111MODULE: "on"
         ENABLE_TFE: ${{ inputs.enterprise }}
       run: |
-        gotestsum --junitfile summary.xml --format short-verbose -- -parallel=1 -timeout=59m -run "TestPlansRead"
+        gotestsum --junitfile summary.xml --format short-verbose -- -parallel=1 -timeout=59m -coverprofile cover.out -run "TestPlansRead"
       # run "${{ steps.test_split.outputs.run }}"
 
     - name: Upload test artifacts
