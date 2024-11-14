@@ -60,9 +60,18 @@ jobs:
     needs: [ tests ]
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout code
+        uses: actions/checkout@a5ac7e51b41094c92402da3b24376905380afc29 # v4.1.6
+
       - uses: actions/setup-node@60edb5dd545a775178f52524783378180af0d1f8 # v4.0.2
         with:
           node-version: 20
+
+      - name: Set up Go
+        uses: actions/setup-go@cdcb36043654635271a94b9a6d1392de5bb323a7 # v5.0.1
+        with:
+          go-version: '^1.22'
+          cache: true
 
       - name: Download artifacts
         uses: actions/download-artifact@9bc31d5ccc31df68ecc42ccf4149144866c47d8a # v3.0.2
@@ -70,7 +79,22 @@ jobs:
       - name: Install junit-report-merger
         run: npm install -g junit-report-merger
 
-      - name: Merge reports
+      - name: Install gocovmerge
+        run: go install github.com/wadey/gocovmerge@latest
+
+      # Note -- we're intentionally including this in the same job as the running of the tests themselves. This is to
+      # future proof for when Datadog supports tracing of Go tests rather than just uploading coverage results.
+      # Ref: https://docs.datadoghq.com/continuous_integration/setup_tests/
+      - name: prepare datadog-ci
+        run: |
+          curl -L --fail "https://github.com/DataDog/datadog-ci/releases/latest/download/datadog-ci_linux-x64" --output "/usr/local/bin/datadog-ci"
+          chmod +x /usr/local/bin/datadog-ci
+
+      - name: Merge coverage reports
+        run: |
+          gocovmerge junit-test-summary-0/cover.out > merged-coverage.out
+
+      - name: Merge junit reports
         run: jrm ./ci-summary.xml "junit-test-summary-0/*.xml"
 
       - name: Upload test artifacts
@@ -78,6 +102,14 @@ jobs:
         with:
           name: junit-test-summary
           path: ./ci-summary.xml
+      
+      - name: upload coverage
+        env:
+          DATADOG_API_KEY: "${{ secrets.TF_WORKFLOW_DATADOG_API_KEY }}"
+          DD_ENV: ci
+        run: |
+          coverage=$(go tool cover -func merged-coverage.out | tail -n 1 | awk '{print $3}' | tr -d -c 0-9.)
+          datadog-ci junit upload --service "$GITHUB_REPOSITORY" --report-measures=test.code_coverage.lines_pct:$coverage ./ci-summary.xml
 
   tests-summarize:
     name: Summarize Tests
