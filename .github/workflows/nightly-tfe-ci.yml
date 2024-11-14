@@ -62,8 +62,8 @@ jobs:
           exit 1
 
   slack-notify:
-    needs: [ tests ]
-    if: ${{ needs.tests.result == 'failure' }}
+    needs: [ tests-summarize ]
+    if: always() && (needs.tests-summarize.result == 'failure')
     runs-on: ubuntu-latest
     steps:
       - name: Send slack notification on failure
