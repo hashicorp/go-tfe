@@ -60,6 +60,9 @@ jobs:
     needs: [ tests ]
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout code
+        uses: actions/checkout@a5ac7e51b41094c92402da3b24376905380afc29 # v4.1.6
+
       - uses: actions/setup-node@60edb5dd545a775178f52524783378180af0d1f8 # v4.0.2
         with:
           node-version: 20
@@ -78,7 +81,7 @@ jobs:
 
       - name: Merge coverage reports
         run: |
-          gocovmerge junit-test-summary-0/cover.out > merged-coverage.out
+          $(go env GOBIN)/gocovmerge junit-test-summary-0/cover.out > merged-coverage.out
 
       - name: Upload test artifacts
         uses: actions/upload-artifact@0b7f8abb1508181956e8e162db84b466c27e18ce # v3.1.2
@@ -98,7 +101,9 @@ jobs:
         env:
           DATADOG_API_KEY: "${{ secrets.TF_WORKFLOW_DATADOG_API_KEY }}"
           DD_ENV: ci
-        run: datadog-ci junit upload --service "$GITHUB_REPOSITORY" ./ci-summary.xml
+        run: |
+          coverage=$(go tool cover -func merged-coverage.out | tail -n 1 | awk '{print $3}' | tr -d -c 0-9.)
+          datadog-ci junit upload --service "$GITHUB_REPOSITORY" --report-measures=test.code_coverage.lines_pct:$coverage ./ci-summary.xml
 
   tests-summarize:
     name: Summarize Tests
