@@ -70,8 +70,15 @@ jobs:
       - name: Install junit-report-merger
         run: npm install -g junit-report-merger
 
-      - name: Merge reports
+      - name: Install gocovmerge
+        run: go install github.com/wadey/gocovmerge@latest
+
+      - name: Merge junit reports
         run: jrm ./ci-summary.xml "junit-test-summary-0/*.xml"
+
+      - name: Merge coverage reports
+        run: |
+          gocovmerge junit-test-summary-0/cover.out > merged-coverage.out
 
       - name: Upload test artifacts
         uses: actions/upload-artifact@0b7f8abb1508181956e8e162db84b466c27e18ce # v3.1.2
