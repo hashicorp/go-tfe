@@ -92,7 +92,7 @@ jobs:
 
       - name: Merge coverage reports
         run: |
-          $(go env GOBIN)/gocovmerge junit-test-summary-0/cover.out > merged-coverage.out
+          gocovmerge junit-test-summary-0/cover.out > merged-coverage.out
 
       - name: Merge junit reports
         run: jrm ./ci-summary.xml "junit-test-summary-0/*.xml"
