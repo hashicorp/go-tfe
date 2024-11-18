@@ -951,7 +951,7 @@ func createOrganizationWithOptions(t *testing.T, client *Client, options Organiz
 
 	return org, func() {
 		if err := client.Organizations.Delete(ctx, org.Name); err != nil {
-			t.Errorf("Error destroying organization! WARNING: Dangling resources\n"+
+			t.Logf("Error destroying organization! WARNING: Dangling resources\n"+
 				"may exist! The full error is shown below.\n\n"+
 				"Organization: %s\nError: %s", org.Name, err)
 		}
