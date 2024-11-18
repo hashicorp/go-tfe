@@ -8,6 +8,6 @@ partition: tfc
 category: library
 
 summary:
-  owner: team-tf-cli
+  owner: team-tf-core-cloud
   description: HCP Terraform and Terraform Enterprise API Client/SDK in Golang
   visibility: external
