@@ -111,4 +111,4 @@ $ TFE_TOKEN=xyz TFE_HOSTNAME=tfe.local ENABLE_TFE=1 go test ./... -timeout=30m
 
 ### Running tests for HCP Terraform features that require paid plans (HashiCorp Employees)
 
-You can use the test helper `upgradeOrganizationSubscription()` to upgrade your test organization to a Business Plan, giving the organization access to all features in HCP Terraform. This method requires `TFE_TOKEN` to be a user token with administrator access in the target test environment. Furthermore, you **can not** have enterprise features enabled (`ENABLE_TFE=1`) in order to use this method since the API call fails against Terraform Enterprise test environments.
+You can use the test helper `newSubscriptionUpdater()` to upgrade your test organization to a Business Plan, giving the organization access to all features in HCP Terraform. This method requires `TFE_TOKEN` to be a user token with administrator access in the target test environment. Furthermore, you **can not** have enterprise features enabled (`ENABLE_TFE=1`) in order to use this method since the API call fails against Terraform Enterprise test environments.
