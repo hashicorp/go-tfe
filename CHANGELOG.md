@@ -1,6 +1,6 @@
 # Unreleased
 
-* Add support for project level auto destroy settings @simonxmh
+* Add support for project level auto destroy settings @simonxmh [#1010](https://github.com/hashicorp/go-tfe/pull/1011)
 
 ## Enhancements
 
