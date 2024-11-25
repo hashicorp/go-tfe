@@ -3007,23 +3007,110 @@ func TestWorkspacesAutoDestroyDuration(t *testing.T) {
 
 	upgradeOrganizationSubscription(t, client, orgTest)
 
-	duration := jsonapi.NewNullableAttrWithValue("14d")
-	nilDuration := jsonapi.NewNullNullableAttr[string]()
-	nilAutoDestroy := jsonapi.NewNullNullableAttr[time.Time]()
-	wTest, wCleanup := createWorkspaceWithOptions(t, client, orgTest, WorkspaceCreateOptions{
-		Name:                        String(randomString(t)),
-		AutoDestroyActivityDuration: duration,
+	t.Run("when creating a new workspace", func(t *testing.T) {
+		duration := jsonapi.NewNullableAttrWithValue("14d")
+		nilDuration := jsonapi.NewNullNullableAttr[string]()
+		nilAutoDestroy := jsonapi.NewNullNullableAttr[time.Time]()
+		wTest, wCleanup := createWorkspaceWithOptions(t, client, orgTest, WorkspaceCreateOptions{
+			Name:                        String(randomString(t)),
+			AutoDestroyActivityDuration: duration,
+		})
+		t.Cleanup(wCleanup)
+
+		require.Equal(t, duration, wTest.AutoDestroyActivityDuration)
+		require.NotEqual(t, nilAutoDestroy, wTest.AutoDestroyAt)
+
+		w, err := client.Workspaces.Update(ctx, orgTest.Name, wTest.Name, WorkspaceUpdateOptions{
+			AutoDestroyActivityDuration: nilDuration,
+		})
+
+		require.NoError(t, err)
+		require.False(t, w.AutoDestroyActivityDuration.IsSpecified())
+		require.False(t, w.AutoDestroyAt.IsSpecified())
 	})
-	t.Cleanup(wCleanup)
 
-	require.Equal(t, duration, wTest.AutoDestroyActivityDuration)
-	require.NotEqual(t, nilAutoDestroy, wTest.AutoDestroyAt)
+	t.Run("when moving from project without auto destroy to project with auto destroy", func(t *testing.T) {
+		kAfter, kTestCleanup := createProjectWithOptions(t, client, orgTest, ProjectCreateOptions{
+			Name:                        randomString(t),
+			AutoDestroyActivityDuration: jsonapi.NewNullableAttrWithValue("3d"),
+		})
+		defer kTestCleanup()
 
-	w, err := client.Workspaces.Update(ctx, orgTest.Name, wTest.Name, WorkspaceUpdateOptions{
-		AutoDestroyActivityDuration: nilDuration,
+		wBefore, wBeforeCleanup := createWorkspaceWithOptions(t, client, orgTest, WorkspaceCreateOptions{
+			Name:    String(randomString(t)),
+			Project: orgTest.DefaultProject,
+		})
+		defer wBeforeCleanup()
+
+		options := WorkspaceUpdateOptions{
+			Name:    String(wBefore.Name),
+			Project: kAfter,
+		}
+
+		wAfter, err := client.Workspaces.Update(ctx, orgTest.Name, wBefore.Name, options)
+		require.NoError(t, err)
+
+		assert.Equal(t, wAfter.Project.ID, kAfter.ID)
+		assert.Equal(t, wAfter.AutoDestroyActivityDuration, kAfter.AutoDestroyActivityDuration)
 	})
 
-	require.NoError(t, err)
-	require.False(t, w.AutoDestroyActivityDuration.IsSpecified())
-	require.False(t, w.AutoDestroyAt.IsSpecified())
+	t.Run("when moving from project with auto destroy to project without auto destroy", func(t *testing.T) {
+		kBefore, kTestCleanup := createProjectWithOptions(t, client, orgTest, ProjectCreateOptions{
+			Name:                        randomString(t),
+			AutoDestroyActivityDuration: jsonapi.NewNullableAttrWithValue("3d"),
+		})
+		defer kTestCleanup()
+
+		wBefore, wBeforeCleanup := createWorkspaceWithOptions(t, client, orgTest, WorkspaceCreateOptions{
+			Name:    String(randomString(t)),
+			Project: kBefore,
+		})
+		defer wBeforeCleanup()
+
+		options := WorkspaceUpdateOptions{
+			Name:    String(wBefore.Name),
+			Project: orgTest.DefaultProject,
+		}
+
+		assert.Equal(t, wBefore.AutoDestroyActivityDuration, kBefore.AutoDestroyActivityDuration)
+
+		wAfter, err := client.Workspaces.Update(ctx, orgTest.Name, wBefore.Name, options)
+		require.NoError(t, err)
+
+		assert.Equal(t, wAfter.Project.ID, orgTest.DefaultProject.ID)
+    require.False(t, wAfter.AutoDestroyActivityDuration.IsSpecified())
+	})
+
+	t.Run("when moving from project with auto destroy to another project with auto destroy", func(t *testing.T) {
+		kBefore, kTestCleanup := createProjectWithOptions(t, client, orgTest, ProjectCreateOptions{
+			Name:                        randomString(t),
+			AutoDestroyActivityDuration: jsonapi.NewNullableAttrWithValue("3d"),
+		})
+		defer kTestCleanup()
+
+		kAfter, kTestCleanup := createProjectWithOptions(t, client, orgTest, ProjectCreateOptions{
+			Name:                        randomString(t),
+			AutoDestroyActivityDuration: jsonapi.NewNullableAttrWithValue("1h"),
+		})
+		defer kTestCleanup()
+
+		wBefore, wBeforeCleanup := createWorkspaceWithOptions(t, client, orgTest, WorkspaceCreateOptions{
+			Name:    String(randomString(t)),
+			Project: kBefore,
+		})
+		defer wBeforeCleanup()
+
+		options := WorkspaceUpdateOptions{
+			Name:    String(wBefore.Name),
+			Project: kAfter,
+		}
+
+		assert.Equal(t, wBefore.AutoDestroyActivityDuration, kBefore.AutoDestroyActivityDuration)
+
+		wAfter, err := client.Workspaces.Update(ctx, orgTest.Name, wBefore.Name, options)
+		require.NoError(t, err)
+
+		assert.Equal(t, wAfter.Project.ID, kAfter.ID)
+		assert.Equal(t, wAfter.AutoDestroyActivityDuration, kAfter.AutoDestroyActivityDuration)
+	})
 }
