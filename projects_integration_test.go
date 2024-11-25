@@ -405,7 +405,7 @@ func TestProjectsDelete(t *testing.T) {
 	})
 }
 
-func TestProjectsAutoDestroySettings(t *testing.T) {
+func TestProjectsAutoDestroy(t *testing.T) {
 	client := testClient(t)
 	ctx := context.Background()
 

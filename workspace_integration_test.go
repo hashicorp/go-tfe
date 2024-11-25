@@ -3078,7 +3078,7 @@ func TestWorkspacesAutoDestroyDuration(t *testing.T) {
 		require.NoError(t, err)
 
 		assert.Equal(t, wAfter.Project.ID, orgTest.DefaultProject.ID)
-    require.False(t, wAfter.AutoDestroyActivityDuration.IsSpecified())
+		require.False(t, wAfter.AutoDestroyActivityDuration.IsSpecified())
 	})
 
 	t.Run("when moving from project with auto destroy to another project with auto destroy", func(t *testing.T) {
