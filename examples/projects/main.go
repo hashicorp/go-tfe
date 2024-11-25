@@ -8,6 +8,8 @@ import (
 	"log"
 
 	tfe "github.com/hashicorp/go-tfe"
+
+	"github.com/hashicorp/jsonapi"
 )
 
 func main() {
@@ -25,7 +27,7 @@ func main() {
 	ctx := context.Background()
 
 	// Create a new project
-	p, err := client.Projects.Create(ctx, "org-name", tfe.ProjectCreateOptions{
+	p, err := client.Projects.Create(ctx, "org-test", tfe.ProjectCreateOptions{
 		Name:          "my-app-tst",
 	})
 	if err != nil {
@@ -34,7 +36,7 @@ func main() {
 
 	// Update the project auto destroy activity duration
 	p, err = client.Projects.Update(ctx, p.ID, tfe.ProjectUpdateOptions{
-		AutoDestroyActivityDuration:    tfe.String("3d"),
+		AutoDestroyActivityDuration:    jsonapi.NewNullableAttrWithValue("3d"),
 	})
 	if err != nil {
 		log.Fatal(err)
@@ -42,7 +44,7 @@ func main() {
 
 	// Disable auto destroy
 	p, err = client.Projects.Update(ctx, p.ID, tfe.ProjectUpdateOptions{
-		AutoDestroyActivityDuration:    tfe.String(""),
+		AutoDestroyActivityDuration:    jsonapi.NewNullNullableAttr[string](),
 	})
 	if err != nil {
 		log.Fatal(err)
