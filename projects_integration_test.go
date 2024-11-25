@@ -156,7 +156,7 @@ func TestProjectsCreate(t *testing.T) {
 		options := ProjectCreateOptions{
 			Name:        "foo",
 			Description: String("qux"),
-      AutoDestroyActivityDuration: jsonapi.NewNullableAttrWithValue("3d"),
+      		AutoDestroyActivityDuration: jsonapi.NewNullableAttrWithValue("3d"),
 		}
 
 		w, err := client.Projects.Create(ctx, orgTest.Name, options)
@@ -430,4 +430,3 @@ func TestProjectsAutoDestroySettings(t *testing.T) {
 		assert.Equal(t, p.AutoDestroyActivityDuration, w.AutoDestroyActivityDuration,)
   })
 }
-
