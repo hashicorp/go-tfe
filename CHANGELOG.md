@@ -1,5 +1,7 @@
 # Unreleased
 
+* Add support for project level auto destroy settings @simonxmh
+
 ## Enhancements
 
 * Add support for listing effective tag bindings for a workspace or project by @brandonc
