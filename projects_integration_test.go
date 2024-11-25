@@ -154,9 +154,9 @@ func TestProjectsCreate(t *testing.T) {
 
 	t.Run("with valid options", func(t *testing.T) {
 		options := ProjectCreateOptions{
-			Name:        "foo",
-			Description: String("qux"),
-      		AutoDestroyActivityDuration: jsonapi.NewNullableAttrWithValue("3d"),
+			Name:                        "foo",
+			Description:                 String("qux"),
+			AutoDestroyActivityDuration: jsonapi.NewNullableAttrWithValue("3d"),
 		}
 
 		w, err := client.Projects.Create(ctx, orgTest.Name, options)
@@ -198,9 +198,9 @@ func TestProjectsCreate(t *testing.T) {
 		assert.EqualError(t, err, ErrInvalidOrg.Error())
 	})
 
-  t.Run("when options has an invalid auto destroy activity duration", func(t *testing.T) {
+	t.Run("when options has an invalid auto destroy activity duration", func(t *testing.T) {
 		w, err := client.Projects.Create(ctx, orgTest.Name, ProjectCreateOptions{
-			Name: "foo",
+			Name:                        "foo",
 			AutoDestroyActivityDuration: jsonapi.NewNullableAttrWithValue("20m"),
 		})
 		assert.Nil(t, w)
@@ -225,7 +225,7 @@ func TestProjectsUpdate(t *testing.T) {
 			TagBindings: []*TagBinding{
 				{Key: "foo", Value: "bar"},
 			},
-      AutoDestroyActivityDuration: jsonapi.NewNullableAttrWithValue("3d"),
+			AutoDestroyActivityDuration: jsonapi.NewNullableAttrWithValue("3d"),
 		})
 		require.NoError(t, err)
 
@@ -305,8 +305,8 @@ func TestProjectsUpdate(t *testing.T) {
 		defer kTestCleanup()
 
 		w, err := client.Projects.Update(ctx, kBefore.ID, ProjectUpdateOptions{
-      AutoDestroyActivityDuration: jsonapi.NewNullableAttrWithValue("bar"),
-    })
+			AutoDestroyActivityDuration: jsonapi.NewNullableAttrWithValue("bar"),
+		})
 		assert.Nil(t, w)
 		assert.Contains(t, err.Error(), "invalid attribute\n\nAuto destroy activity duration has an incorrect format, we expect up to 4 numeric digits and 1 unit ('d' or 'h')")
 	})
@@ -412,21 +412,21 @@ func TestProjectsAutoDestroySettings(t *testing.T) {
 	orgTest, orgTestCleanup := createOrganization(t, client)
 	defer orgTestCleanup()
 
-  t.Run("when creating workspace in project with autodestroy", func(t *testing.T) {
-    options := ProjectCreateOptions{
-        Name:        "foo",
-        Description: String("qux"),
-        AutoDestroyActivityDuration: jsonapi.NewNullableAttrWithValue("3d"),
-    }
+	t.Run("when creating workspace in project with autodestroy", func(t *testing.T) {
+		options := ProjectCreateOptions{
+			Name:                        "foo",
+			Description:                 String("qux"),
+			AutoDestroyActivityDuration: jsonapi.NewNullableAttrWithValue("3d"),
+		}
 
-    p, err := client.Projects.Create(ctx, orgTest.Name, options)
-    require.NoError(t, err)
+		p, err := client.Projects.Create(ctx, orgTest.Name, options)
+		require.NoError(t, err)
 
-    w, _ := createWorkspaceWithOptions(t, client, orgTest, WorkspaceCreateOptions{
-      Name: String(randomString(t)),
-      Project: p,
-    })
+		w, _ := createWorkspaceWithOptions(t, client, orgTest, WorkspaceCreateOptions{
+			Name:    String(randomString(t)),
+			Project: p,
+		})
 
-		assert.Equal(t, p.AutoDestroyActivityDuration, w.AutoDestroyActivityDuration,)
-  })
+		assert.Equal(t, p.AutoDestroyActivityDuration, w.AutoDestroyActivityDuration)
+	})
 }

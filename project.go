@@ -105,8 +105,8 @@ type ProjectCreateOptions struct {
 	// Associated TagBindings of the project.
 	TagBindings []*TagBinding `jsonapi:"relation,tag-bindings,omitempty"`
 
-	// Optional: For all workspaces in the project, the period of time to wait 
-	// after workspace activity to trigger a destroy run. The format should roughly 
+	// Optional: For all workspaces in the project, the period of time to wait
+	// after workspace activity to trigger a destroy run. The format should roughly
 	// match a Go duration string limited to days and hours, e.g. "24h" or "1d".
 	AutoDestroyActivityDuration jsonapi.NullableAttr[string] `jsonapi:"attr,auto-destroy-activity-duration,omitempty"`
 }
@@ -129,8 +129,8 @@ type ProjectUpdateOptions struct {
 	// all existing tag bindings.
 	TagBindings []*TagBinding `jsonapi:"relation,tag-bindings,omitempty"`
 
-	// Optional: For all workspaces in the project, the period of time to wait 
-	// after workspace activity to trigger a destroy run. The format should roughly 
+	// Optional: For all workspaces in the project, the period of time to wait
+	// after workspace activity to trigger a destroy run. The format should roughly
 	// match a Go duration string limited to days and hours, e.g. "24h" or "1d".
 	AutoDestroyActivityDuration jsonapi.NullableAttr[string] `jsonapi:"attr,auto-destroy-activity-duration,omitempty"`
 }
