@@ -3018,6 +3018,7 @@ func TestWorkspacesAutoDestroyDuration(t *testing.T) {
 		t.Cleanup(wCleanup)
 
 		require.Equal(t, duration, wTest.AutoDestroyActivityDuration)
+		require.Equal(t, wTest.InheritsProjectAutoDestroy, true)
 		require.NotEqual(t, nilAutoDestroy, wTest.AutoDestroyAt)
 
 		w, err := client.Workspaces.Update(ctx, orgTest.Name, wTest.Name, WorkspaceUpdateOptions{
@@ -3042,6 +3043,8 @@ func TestWorkspacesAutoDestroyDuration(t *testing.T) {
 		})
 		defer wBeforeCleanup()
 
+		assert.Equal(t, wBefore.InheritsProjectAutoDestroy, true)
+
 		options := WorkspaceUpdateOptions{
 			Name:    String(wBefore.Name),
 			Project: kAfter,
@@ -3052,6 +3055,7 @@ func TestWorkspacesAutoDestroyDuration(t *testing.T) {
 
 		assert.Equal(t, wAfter.Project.ID, kAfter.ID)
 		assert.Equal(t, wAfter.AutoDestroyActivityDuration, kAfter.AutoDestroyActivityDuration)
+		assert.Equal(t, wAfter.InheritsProjectAutoDestroy, true)
 	})
 
 	t.Run("when moving from project with auto destroy to project without auto destroy", func(t *testing.T) {
@@ -3067,6 +3071,8 @@ func TestWorkspacesAutoDestroyDuration(t *testing.T) {
 		})
 		defer wBeforeCleanup()
 
+		assert.Equal(t, wBefore.InheritsProjectAutoDestroy, true)
+
 		options := WorkspaceUpdateOptions{
 			Name:    String(wBefore.Name),
 			Project: orgTest.DefaultProject,
@@ -3078,6 +3084,7 @@ func TestWorkspacesAutoDestroyDuration(t *testing.T) {
 		require.NoError(t, err)
 
 		assert.Equal(t, wAfter.Project.ID, orgTest.DefaultProject.ID)
+		assert.Equal(t, wAfter.InheritsProjectAutoDestroy, true)
 		require.False(t, wAfter.AutoDestroyActivityDuration.IsSpecified())
 	})
 
@@ -3106,11 +3113,47 @@ func TestWorkspacesAutoDestroyDuration(t *testing.T) {
 		}
 
 		assert.Equal(t, wBefore.AutoDestroyActivityDuration, kBefore.AutoDestroyActivityDuration)
+		assert.Equal(t, wBefore.InheritsProjectAutoDestroy, true)
 
 		wAfter, err := client.Workspaces.Update(ctx, orgTest.Name, wBefore.Name, options)
 		require.NoError(t, err)
 
 		assert.Equal(t, wAfter.Project.ID, kAfter.ID)
+		assert.Equal(t, wAfter.InheritsProjectAutoDestroy, true)
 		assert.Equal(t, wAfter.AutoDestroyActivityDuration, kAfter.AutoDestroyActivityDuration)
+	})
+
+	t.Run("when moving workspaces that do not inherit project level settings", func(t *testing.T) {
+		kBefore, kTestCleanup := createProjectWithOptions(t, client, orgTest, ProjectCreateOptions{
+			Name: randomString(t),
+		})
+		defer kTestCleanup()
+
+		kAfter, kTestCleanup := createProjectWithOptions(t, client, orgTest, ProjectCreateOptions{
+			Name:                        randomString(t),
+			AutoDestroyActivityDuration: jsonapi.NewNullableAttrWithValue("1h"),
+		})
+		defer kTestCleanup()
+
+		wBefore, wBeforeCleanup := createWorkspaceWithOptions(t, client, orgTest, WorkspaceCreateOptions{
+			Name:                        String(randomString(t)),
+			Project:                     kBefore,
+			AutoDestroyActivityDuration: jsonapi.NewNullableAttrWithValue("10d"),
+		})
+		defer wBeforeCleanup()
+
+		assert.Equal(t, wBefore.InheritsProjectAutoDestroy, true)
+
+		options := WorkspaceUpdateOptions{
+			Name:    String(wBefore.Name),
+			Project: kAfter,
+		}
+
+		wAfter, err := client.Workspaces.Update(ctx, orgTest.Name, wBefore.Name, options)
+		require.NoError(t, err)
+
+		assert.Equal(t, wAfter.Project.ID, kAfter.ID)
+		assert.Equal(t, wAfter.InheritsProjectAutoDestroy, false)
+		assert.Equal(t, wAfter.AutoDestroyActivityDuration, wBefore.AutoDestroyActivityDuration)
 	})
 }

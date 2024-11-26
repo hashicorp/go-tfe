@@ -152,7 +152,7 @@ func TestProjectsCreate(t *testing.T) {
 	orgTest, orgTestCleanup := createOrganization(t, client)
 	defer orgTestCleanup()
 
-  upgradeOrganizationSubscription(t, client, orgTest)
+	upgradeOrganizationSubscription(t, client, orgTest)
 
 	t.Run("with valid options", func(t *testing.T) {
 		options := ProjectCreateOptions{
@@ -303,7 +303,7 @@ func TestProjectsUpdate(t *testing.T) {
 	})
 
 	t.Run("without a valid projects auto destroy activity duration", func(t *testing.T) {
-    upgradeOrganizationSubscription(t, client, orgTest)
+		upgradeOrganizationSubscription(t, client, orgTest)
 
 		kBefore, kTestCleanup := createProject(t, client, orgTest)
 		defer kTestCleanup()
