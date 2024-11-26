@@ -152,7 +152,7 @@ func TestProjectsCreate(t *testing.T) {
 	orgTest, orgTestCleanup := createOrganization(t, client)
 	defer orgTestCleanup()
 
-	upgradeOrganizationSubscription(t, client, orgTest)
+	newSubscriptionUpdater(orgTest).WithPlusEntitlementPlan().Update(t)
 
 	t.Run("with valid options", func(t *testing.T) {
 		options := ProjectCreateOptions{
@@ -303,7 +303,7 @@ func TestProjectsUpdate(t *testing.T) {
 	})
 
 	t.Run("without a valid projects auto destroy activity duration", func(t *testing.T) {
-		upgradeOrganizationSubscription(t, client, orgTest)
+		newSubscriptionUpdater(orgTest).WithPlusEntitlementPlan().Update(t)
 
 		kBefore, kTestCleanup := createProject(t, client, orgTest)
 		defer kTestCleanup()
@@ -415,6 +415,8 @@ func TestProjectsAutoDestroy(t *testing.T) {
 
 	orgTest, orgTestCleanup := createOrganization(t, client)
 	defer orgTestCleanup()
+
+	newSubscriptionUpdater(orgTest).WithPlusEntitlementPlan().Update(t)
 
 	t.Run("when creating workspace in project with autodestroy", func(t *testing.T) {
 		options := ProjectCreateOptions{

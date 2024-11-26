@@ -2961,7 +2961,7 @@ func TestWorkspacesAutoDestroy(t *testing.T) {
 	orgTest, orgTestCleanup := createOrganization(t, client)
 	t.Cleanup(orgTestCleanup)
 
-	upgradeOrganizationSubscription(t, client, orgTest)
+	newSubscriptionUpdater(orgTest).WithPlusEntitlementPlan().Update(t)
 
 	autoDestroyAt := NullableTime(time.Date(2025, 1, 1, 0, 0, 0, 0, time.UTC))
 	wTest, wCleanup := createWorkspaceWithOptions(t, client, orgTest, WorkspaceCreateOptions{
@@ -3005,7 +3005,7 @@ func TestWorkspacesAutoDestroyDuration(t *testing.T) {
 	orgTest, orgTestCleanup := createOrganization(t, client)
 	t.Cleanup(orgTestCleanup)
 
-	upgradeOrganizationSubscription(t, client, orgTest)
+	newSubscriptionUpdater(orgTest).WithBusinessPlan().Update(t)
 
 	t.Run("when creating a new workspace", func(t *testing.T) {
 		duration := jsonapi.NewNullableAttrWithValue("14d")
