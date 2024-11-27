@@ -1,11 +1,17 @@
 # Unreleased
 
-# v1.70.0
+# v1.71.0
 
 ## Enhancements
 
 * Add support for listing effective tag bindings for a workspace or project by @brandonc [#996](https://github.com/hashicorp/go-tfe/pull/996)
 * Add support for listing no-code modules by @paladin-devops [#1003](https://github.com/hashicorp/go-tfe/pull/1003)
+
+# v1.70.0
+
+## Enhancements
+
+* Actually adds support for adding/updating key/value tags, which was not unintentionally removed from the last release by @brandonc [#987](https://github.com/hashicorp/go-tfe/pull/987)
 
 # v1.69.0
 
