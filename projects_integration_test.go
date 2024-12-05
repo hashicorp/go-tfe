@@ -10,6 +10,8 @@ import (
 	"github.com/stretchr/testify/assert"
 
 	"github.com/stretchr/testify/require"
+
+	"github.com/hashicorp/jsonapi"
 )
 
 func TestProjectsList(t *testing.T) {
@@ -150,10 +152,13 @@ func TestProjectsCreate(t *testing.T) {
 	orgTest, orgTestCleanup := createOrganization(t, client)
 	defer orgTestCleanup()
 
+	newSubscriptionUpdater(orgTest).WithPlusEntitlementPlan().Update(t)
+
 	t.Run("with valid options", func(t *testing.T) {
 		options := ProjectCreateOptions{
-			Name:        "foo",
-			Description: String("qux"),
+			Name:                        "foo",
+			Description:                 String("qux"),
+			AutoDestroyActivityDuration: jsonapi.NewNullableAttrWithValue("3d"),
 		}
 
 		w, err := client.Projects.Create(ctx, orgTest.Name, options)
@@ -169,6 +174,7 @@ func TestProjectsCreate(t *testing.T) {
 			assert.NotEmpty(t, item.ID)
 			assert.Equal(t, options.Name, item.Name)
 			assert.Equal(t, *options.Description, item.Description)
+			assert.Equal(t, options.AutoDestroyActivityDuration, item.AutoDestroyActivityDuration)
 		}
 	})
 
@@ -193,6 +199,15 @@ func TestProjectsCreate(t *testing.T) {
 		assert.Nil(t, w)
 		assert.EqualError(t, err, ErrInvalidOrg.Error())
 	})
+
+	t.Run("when options has an invalid auto destroy activity duration", func(t *testing.T) {
+		w, err := client.Projects.Create(ctx, orgTest.Name, ProjectCreateOptions{
+			Name:                        "foo",
+			AutoDestroyActivityDuration: jsonapi.NewNullableAttrWithValue("20m"),
+		})
+		assert.Nil(t, w)
+		assert.Contains(t, err.Error(), "invalid attribute\n\nAuto destroy activity duration has an incorrect format, we expect up to 4 numeric digits and 1 unit ('d' or 'h')")
+	})
 }
 
 func TestProjectsUpdate(t *testing.T) {
@@ -212,12 +227,14 @@ func TestProjectsUpdate(t *testing.T) {
 			TagBindings: []*TagBinding{
 				{Key: "foo", Value: "bar"},
 			},
+			AutoDestroyActivityDuration: jsonapi.NewNullableAttrWithValue("3d"),
 		})
 		require.NoError(t, err)
 
 		assert.Equal(t, kBefore.ID, kAfter.ID)
 		assert.NotEqual(t, kBefore.Name, kAfter.Name)
 		assert.NotEqual(t, kBefore.Description, kAfter.Description)
+		assert.NotEqual(t, kBefore.AutoDestroyActivityDuration, kAfter.AutoDestroyActivityDuration)
 
 		if betaFeaturesEnabled() {
 			bindings, err := client.Projects.ListTagBindings(ctx, kAfter.ID)
@@ -283,6 +300,19 @@ func TestProjectsUpdate(t *testing.T) {
 		w, err := client.Projects.Update(ctx, badIdentifier, ProjectUpdateOptions{})
 		assert.Nil(t, w)
 		assert.EqualError(t, err, ErrInvalidProjectID.Error())
+	})
+
+	t.Run("without a valid projects auto destroy activity duration", func(t *testing.T) {
+		newSubscriptionUpdater(orgTest).WithPlusEntitlementPlan().Update(t)
+
+		kBefore, kTestCleanup := createProject(t, client, orgTest)
+		defer kTestCleanup()
+
+		w, err := client.Projects.Update(ctx, kBefore.ID, ProjectUpdateOptions{
+			AutoDestroyActivityDuration: jsonapi.NewNullableAttrWithValue("bar"),
+		})
+		assert.Nil(t, w)
+		assert.Contains(t, err.Error(), "invalid attribute\n\nAuto destroy activity duration has an incorrect format, we expect up to 4 numeric digits and 1 unit ('d' or 'h')")
 	})
 }
 
@@ -376,5 +406,33 @@ func TestProjectsDelete(t *testing.T) {
 	t.Run("when the project ID is invalid", func(t *testing.T) {
 		err := client.Projects.Delete(ctx, badIdentifier)
 		assert.EqualError(t, err, ErrInvalidProjectID.Error())
+	})
+}
+
+func TestProjectsAutoDestroy(t *testing.T) {
+	client := testClient(t)
+	ctx := context.Background()
+
+	orgTest, orgTestCleanup := createOrganization(t, client)
+	defer orgTestCleanup()
+
+	newSubscriptionUpdater(orgTest).WithPlusEntitlementPlan().Update(t)
+
+	t.Run("when creating workspace in project with autodestroy", func(t *testing.T) {
+		options := ProjectCreateOptions{
+			Name:                        "foo",
+			Description:                 String("qux"),
+			AutoDestroyActivityDuration: jsonapi.NewNullableAttrWithValue("3d"),
+		}
+
+		p, err := client.Projects.Create(ctx, orgTest.Name, options)
+		require.NoError(t, err)
+
+		w, _ := createWorkspaceWithOptions(t, client, orgTest, WorkspaceCreateOptions{
+			Name:    String(randomString(t)),
+			Project: p,
+		})
+
+		assert.Equal(t, p.AutoDestroyActivityDuration, w.AutoDestroyActivityDuration)
 	})
 }

@@ -2961,7 +2961,7 @@ func TestWorkspacesAutoDestroy(t *testing.T) {
 	orgTest, orgTestCleanup := createOrganization(t, client)
 	t.Cleanup(orgTestCleanup)
 
-	upgradeOrganizationSubscription(t, client, orgTest)
+	newSubscriptionUpdater(orgTest).WithPlusEntitlementPlan().Update(t)
 
 	autoDestroyAt := NullableTime(time.Date(2025, 1, 1, 0, 0, 0, 0, time.UTC))
 	wTest, wCleanup := createWorkspaceWithOptions(t, client, orgTest, WorkspaceCreateOptions{
@@ -3005,25 +3005,28 @@ func TestWorkspacesAutoDestroyDuration(t *testing.T) {
 	orgTest, orgTestCleanup := createOrganization(t, client)
 	t.Cleanup(orgTestCleanup)
 
-	upgradeOrganizationSubscription(t, client, orgTest)
+	newSubscriptionUpdater(orgTest).WithBusinessPlan().Update(t)
 
-	duration := jsonapi.NewNullableAttrWithValue("14d")
-	nilDuration := jsonapi.NewNullNullableAttr[string]()
-	nilAutoDestroy := jsonapi.NewNullNullableAttr[time.Time]()
-	wTest, wCleanup := createWorkspaceWithOptions(t, client, orgTest, WorkspaceCreateOptions{
-		Name:                        String(randomString(t)),
-		AutoDestroyActivityDuration: duration,
+	t.Run("when creating a new workspace", func(t *testing.T) {
+		duration := jsonapi.NewNullableAttrWithValue("14d")
+		nilDuration := jsonapi.NewNullNullableAttr[string]()
+		nilAutoDestroy := jsonapi.NewNullNullableAttr[time.Time]()
+		wTest, wCleanup := createWorkspaceWithOptions(t, client, orgTest, WorkspaceCreateOptions{
+			Name:                        String(randomString(t)),
+			AutoDestroyActivityDuration: duration,
+		})
+		t.Cleanup(wCleanup)
+
+		require.Equal(t, duration, wTest.AutoDestroyActivityDuration)
+		require.Equal(t, wTest.InheritsProjectAutoDestroy, true)
+		require.NotEqual(t, nilAutoDestroy, wTest.AutoDestroyAt)
+
+		w, err := client.Workspaces.Update(ctx, orgTest.Name, wTest.Name, WorkspaceUpdateOptions{
+			AutoDestroyActivityDuration: nilDuration,
+		})
+
+		require.NoError(t, err)
+		require.False(t, w.AutoDestroyActivityDuration.IsSpecified())
+		require.False(t, w.AutoDestroyAt.IsSpecified())
 	})
-	t.Cleanup(wCleanup)
-
-	require.Equal(t, duration, wTest.AutoDestroyActivityDuration)
-	require.NotEqual(t, nilAutoDestroy, wTest.AutoDestroyAt)
-
-	w, err := client.Workspaces.Update(ctx, orgTest.Name, wTest.Name, WorkspaceUpdateOptions{
-		AutoDestroyActivityDuration: nilDuration,
-	})
-
-	require.NoError(t, err)
-	require.False(t, w.AutoDestroyActivityDuration.IsSpecified())
-	require.False(t, w.AutoDestroyAt.IsSpecified())
 }
