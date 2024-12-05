@@ -123,70 +123,71 @@ type Client struct {
 	remoteTFEVersion  string
 	appName           string
 
-	Admin                      Admin
-	Agents                     Agents
-	AgentPools                 AgentPools
-	AgentTokens                AgentTokens
-	Applies                    Applies
-	AuditTrails                AuditTrails
-	Comments                   Comments
-	ConfigurationVersions      ConfigurationVersions
-	CostEstimates              CostEstimates
-	GHAInstallations           GHAInstallations
-	GPGKeys                    GPGKeys
-	NotificationConfigurations NotificationConfigurations
-	OAuthClients               OAuthClients
-	OAuthTokens                OAuthTokens
-	Organizations              Organizations
-	OrganizationMemberships    OrganizationMemberships
-	OrganizationTags           OrganizationTags
-	OrganizationTokens         OrganizationTokens
-	Plans                      Plans
-	PlanExports                PlanExports
-	Policies                   Policies
-	PolicyChecks               PolicyChecks
-	PolicyEvaluations          PolicyEvaluations
-	PolicySetOutcomes          PolicySetOutcomes
-	PolicySetParameters        PolicySetParameters
-	PolicySetVersions          PolicySetVersions
-	PolicySets                 PolicySets
-	RegistryModules            RegistryModules
-	RegistryNoCodeModules      RegistryNoCodeModules
-	RegistryProviders          RegistryProviders
-	RegistryProviderPlatforms  RegistryProviderPlatforms
-	RegistryProviderVersions   RegistryProviderVersions
-	Runs                       Runs
-	RunEvents                  RunEvents
-	RunTasks                   RunTasks
-	RunTasksIntegration        RunTasksIntegration
-	RunTriggers                RunTriggers
-	SSHKeys                    SSHKeys
-	Stacks                     Stacks
-	StackConfigurations        StackConfigurations
-	StackDeployments           StackDeployments
-	StackPlans                 StackPlans
-	StackPlanOperations        StackPlanOperations
-	StackSources               StackSources
-	StateVersionOutputs        StateVersionOutputs
-	StateVersions              StateVersions
-	TaskResults                TaskResults
-	TaskStages                 TaskStages
-	Teams                      Teams
-	TeamAccess                 TeamAccesses
-	TeamMembers                TeamMembers
-	TeamProjectAccess          TeamProjectAccesses
-	TeamTokens                 TeamTokens
-	TestRuns                   TestRuns
-	TestVariables              TestVariables
-	Users                      Users
-	UserTokens                 UserTokens
-	Variables                  Variables
-	VariableSets               VariableSets
-	VariableSetVariables       VariableSetVariables
-	Workspaces                 Workspaces
-	WorkspaceResources         WorkspaceResources
-	WorkspaceRunTasks          WorkspaceRunTasks
-	Projects                   Projects
+	Admin                          Admin
+	Agents                         Agents
+	AgentPools                     AgentPools
+	AgentTokens                    AgentTokens
+	Applies                        Applies
+	AuditTrails                    AuditTrails
+	Comments                       Comments
+	ConfigurationVersions          ConfigurationVersions
+	CostEstimates                  CostEstimates
+	GHAInstallations               GHAInstallations
+	GPGKeys                        GPGKeys
+	NotificationConfigurations     NotificationConfigurations
+	OAuthClients                   OAuthClients
+	OAuthTokens                    OAuthTokens
+	Organizations                  Organizations
+	OrganizationMemberships        OrganizationMemberships
+	OrganizationTags               OrganizationTags
+	OrganizationTokens             OrganizationTokens
+	Plans                          Plans
+	PlanExports                    PlanExports
+	Policies                       Policies
+	PolicyChecks                   PolicyChecks
+	PolicyEvaluations              PolicyEvaluations
+	PolicySetOutcomes              PolicySetOutcomes
+	PolicySetParameters            PolicySetParameters
+	PolicySetVersions              PolicySetVersions
+	PolicySets                     PolicySets
+	RegistryModules                RegistryModules
+	RegistryNoCodeModules          RegistryNoCodeModules
+	RegistryProviders              RegistryProviders
+	RegistryProviderPlatforms      RegistryProviderPlatforms
+	RegistryProviderVersions       RegistryProviderVersions
+	Runs                           Runs
+	RunEvents                      RunEvents
+	RunTasks                       RunTasks
+	RunTasksIntegration            RunTasksIntegration
+	RunTriggers                    RunTriggers
+	SSHKeys                        SSHKeys
+	Stacks                         Stacks
+	StackConfigurations            StackConfigurations
+	StackDeployments               StackDeployments
+	StackPlans                     StackPlans
+	StackPlanOperations            StackPlanOperations
+	StackSources                   StackSources
+	StateVersionOutputs            StateVersionOutputs
+	StateVersions                  StateVersions
+	TaskResults                    TaskResults
+	TaskStages                     TaskStages
+	Teams                          Teams
+	TeamAccess                     TeamAccesses
+	TeamMembers                    TeamMembers
+	TeamNotificationConfigurations TeamNotificationConfigurations
+	TeamProjectAccess              TeamProjectAccesses
+	TeamTokens                     TeamTokens
+	TestRuns                       TestRuns
+	TestVariables                  TestVariables
+	Users                          Users
+	UserTokens                     UserTokens
+	Variables                      Variables
+	VariableSets                   VariableSets
+	VariableSetVariables           VariableSetVariables
+	Workspaces                     Workspaces
+	WorkspaceResources             WorkspaceResources
+	WorkspaceRunTasks              WorkspaceRunTasks
+	Projects                       Projects
 
 	Meta Meta
 }
@@ -501,6 +502,7 @@ func NewClient(cfg *Config) (*Client, error) {
 	client.TaskStages = &taskStages{client: client}
 	client.TeamAccess = &teamAccesses{client: client}
 	client.TeamMembers = &teamMembers{client: client}
+	client.TeamNotificationConfigurations = &teamNotificationConfigurations{client: client}
 	client.TeamProjectAccess = &teamProjectAccesses{client: client}
 	client.Teams = &teams{client: client}
 	client.TeamTokens = &teamTokens{client: client}
