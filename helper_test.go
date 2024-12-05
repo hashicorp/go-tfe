@@ -2868,6 +2868,14 @@ func requireExactlyOneNotEmpty(t *testing.T, v ...any) {
 	}
 }
 
+func testExplorerOrganization(t *testing.T) string {
+	organization, ok := os.LookupEnv("EXPLORER_TEST_ORGANIZATION")
+	if !ok {
+		t.Skip("Skipping Explorer Integration tests, organization var is not set")
+	}
+	return organization
+}
+
 func runTaskCallbackMockServer(t *testing.T) *httptest.Server {
 	return httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		if r.Method == http.MethodGet {

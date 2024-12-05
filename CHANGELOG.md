@@ -1,5 +1,9 @@
 # Unreleased
 
+## Features
+
+* Add support for the Explorer API by @sebasslash [#1018](https://github.com/hashicorp/go-tfe/pull/1018)
+
 # v1.71.0
 
 ## Enhancements
