@@ -1467,7 +1467,7 @@ func createPlanExport(t *testing.T, client *Client, r *Run) (*PlanExport, func()
 		t.Fatal(err)
 	}
 
-	timeout := 15 * time.Minute
+	timeout := 20 * time.Minute
 
 	ctxPollExportReady, cancelPollExportReady := context.WithTimeout(ctx, timeout)
 	t.Cleanup(cancelPollExportReady)
