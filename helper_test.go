@@ -615,6 +615,54 @@ func createNotificationConfiguration(t *testing.T, client *Client, w *Workspace,
 	}
 }
 
+func createTeamNotificationConfiguration(t *testing.T, client *Client, team *Team, options *TeamNotificationConfigurationCreateOptions) (*TeamNotificationConfiguration, func()) {
+	var tCleanup func()
+
+	if team == nil {
+		team, tCleanup = createTeam(t, client, nil)
+	}
+
+	// Team notification configurations do not actually require a run task, but we'll
+	// reuse this as a URL that returns a 200.
+	runTaskURL := os.Getenv("TFC_RUN_TASK_URL")
+	if runTaskURL == "" {
+		t.Error("You must set TFC_RUN_TASK_URL for run task related tests.")
+	}
+
+	if options == nil {
+		options = &TeamNotificationConfigurationCreateOptions{
+			DestinationType: NotificationDestination(NotificationDestinationTypeGeneric),
+			Enabled:         Bool(false),
+			Name:            String(randomString(t)),
+			Token:           String(randomString(t)),
+			URL:             String(runTaskURL),
+			Triggers:        []NotificationTriggerType{NotificationTriggerChangeRequestCreated},
+		}
+	}
+
+	ctx := context.Background()
+	nc, err := client.TeamNotificationConfigurations.Create(
+		ctx,
+		team.ID,
+		*options,
+	)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	return nc, func() {
+		if err := client.TeamNotificationConfigurations.Delete(ctx, nc.ID); err != nil {
+			t.Errorf("Error destroying team notification configuration! WARNING: Dangling\n"+
+				"resources may exist! The full error is shown below.\n\n"+
+				"TeamNotificationConfiguration: %s\nError: %s", nc.ID, err)
+		}
+
+		if tCleanup != nil {
+			tCleanup()
+		}
+	}
+}
+
 func createPolicySetParameter(t *testing.T, client *Client, ps *PolicySet) (*PolicySetParameter, func()) {
 	var psCleanup func()
 
