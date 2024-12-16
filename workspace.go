@@ -557,7 +557,6 @@ type WorkspaceUpdateOptions struct {
 	// Optional: Whether the workspace inherits auto destroy settings from the project
 	InheritsProjectAutoDestroy *bool `jsonapi:"attr,inherits-project-auto-destroy,omitempty"`
 
-
 	// Optional: A new name for the workspace, which can only include letters, numbers, -,
 	// and _. This will be used as an identifier and must be unique in the
 	// organization. Warning: Changing a workspace's name changes its URL in the
