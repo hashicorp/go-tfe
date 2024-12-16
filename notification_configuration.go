@@ -59,6 +59,7 @@ const (
 	NotificationTriggerAssessmentCheckFailed          NotificationTriggerType = "assessment:check_failure"
 	NotificationTriggerWorkspaceAutoDestroyReminder   NotificationTriggerType = "workspace:auto_destroy_reminder"
 	NotificationTriggerWorkspaceAutoDestroyRunResults NotificationTriggerType = "workspace:auto_destroy_run_results"
+	NotificationTriggerChangeRequestCreated           NotificationTriggerType = "change_request:created"
 )
 
 // NotificationDestinationType represents the destination type of the
