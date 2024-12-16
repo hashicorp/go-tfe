@@ -20,7 +20,7 @@ func TestTeamNotificationConfigurationList(t *testing.T) {
 	orgTest, orgTestCleanup := createOrganization(t, client)
 	t.Cleanup(orgTestCleanup)
 
-	newSubscriptionUpdater(orgTest).WithPlusEntitlementPlan().Update(t)
+	newSubscriptionUpdater(orgTest).WithPlusPlan().Update(t)
 
 	tmTest, tmTestCleanup := createTeam(t, client, orgTest)
 	t.Cleanup(tmTestCleanup)
@@ -86,7 +86,7 @@ func TestTeamNotificationConfigurationCreate(t *testing.T) {
 	orgTest, orgTestCleanup := createOrganization(t, client)
 	t.Cleanup(orgTestCleanup)
 
-	newSubscriptionUpdater(orgTest).WithPlusEntitlementPlan().Update(t)
+	newSubscriptionUpdater(orgTest).WithPlusPlan().Update(t)
 
 	tmTest, tmTestCleanup := createTeam(t, client, orgTest)
 	t.Cleanup(tmTestCleanup)
@@ -225,7 +225,7 @@ func TestTeamNotificationConfigurationsCreate_byType(t *testing.T) {
 	orgTest, orgTestCleanup := createOrganization(t, client)
 	t.Cleanup(orgTestCleanup)
 
-	newSubscriptionUpdater(orgTest).WithPlusEntitlementPlan().Update(t)
+	newSubscriptionUpdater(orgTest).WithPlusPlan().Update(t)
 
 	tmTest, tmTestCleanup := createTeam(t, client, orgTest)
 	t.Cleanup(tmTestCleanup)
@@ -263,7 +263,7 @@ func TestTeamNotificationConfigurationRead(t *testing.T) {
 	orgTest, orgTestCleanup := createOrganization(t, client)
 	t.Cleanup(orgTestCleanup)
 
-	newSubscriptionUpdater(orgTest).WithPlusEntitlementPlan().Update(t)
+	newSubscriptionUpdater(orgTest).WithPlusPlan().Update(t)
 
 	tmTest, tmTestCleanup := createTeam(t, client, orgTest)
 	t.Cleanup(tmTestCleanup)
@@ -296,7 +296,7 @@ func TestTeamNotificationConfigurationUpdate(t *testing.T) {
 	orgTest, orgTestCleanup := createOrganization(t, client)
 	t.Cleanup(orgTestCleanup)
 
-	newSubscriptionUpdater(orgTest).WithPlusEntitlementPlan().Update(t)
+	newSubscriptionUpdater(orgTest).WithPlusPlan().Update(t)
 
 	tmTest, tmTestCleanup := createTeam(t, client, orgTest)
 	t.Cleanup(tmTestCleanup)
@@ -405,7 +405,7 @@ func TestTeamNotificationConfigurationDelete(t *testing.T) {
 	orgTest, orgTestCleanup := createOrganization(t, client)
 	t.Cleanup(orgTestCleanup)
 
-	newSubscriptionUpdater(orgTest).WithPlusEntitlementPlan().Update(t)
+	newSubscriptionUpdater(orgTest).WithPlusPlan().Update(t)
 
 	tmTest, tmTestCleanup := createTeam(t, client, orgTest)
 	t.Cleanup(tmTestCleanup)
@@ -439,7 +439,7 @@ func TestTeamNotificationConfigurationVerify(t *testing.T) {
 	orgTest, orgTestCleanup := createOrganization(t, client)
 	t.Cleanup(orgTestCleanup)
 
-	newSubscriptionUpdater(orgTest).WithPlusEntitlementPlan().Update(t)
+	newSubscriptionUpdater(orgTest).WithPlusPlan().Update(t)
 
 	tmTest, tmTestCleanup := createTeam(t, client, orgTest)
 	t.Cleanup(tmTestCleanup)
