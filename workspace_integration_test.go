@@ -3007,26 +3007,29 @@ func TestWorkspacesAutoDestroyDuration(t *testing.T) {
 
 	newSubscriptionUpdater(orgTest).WithBusinessPlan().Update(t)
 
-	t.Run("when creating a new workspace", func(t *testing.T) {
+	t.Run("when creating a new workspace with standalone auto destroy settings", func(t *testing.T) {
 		duration := jsonapi.NewNullableAttrWithValue("14d")
 		nilDuration := jsonapi.NewNullNullableAttr[string]()
 		nilAutoDestroy := jsonapi.NewNullNullableAttr[time.Time]()
 		wTest, wCleanup := createWorkspaceWithOptions(t, client, orgTest, WorkspaceCreateOptions{
 			Name:                        String(randomString(t)),
 			AutoDestroyActivityDuration: duration,
+			InheritsProjectAutoDestroy:  Bool(false),
 		})
 		t.Cleanup(wCleanup)
 
 		require.Equal(t, duration, wTest.AutoDestroyActivityDuration)
-		require.Equal(t, wTest.InheritsProjectAutoDestroy, true)
 		require.NotEqual(t, nilAutoDestroy, wTest.AutoDestroyAt)
+		require.Equal(t, wTest.InheritsProjectAutoDestroy, false)
 
 		w, err := client.Workspaces.Update(ctx, orgTest.Name, wTest.Name, WorkspaceUpdateOptions{
 			AutoDestroyActivityDuration: nilDuration,
+			InheritsProjectAutoDestroy:  Bool(false),
 		})
 
 		require.NoError(t, err)
 		require.False(t, w.AutoDestroyActivityDuration.IsSpecified())
 		require.False(t, w.AutoDestroyAt.IsSpecified())
+		require.Equal(t, wTest.InheritsProjectAutoDestroy, false)
 	})
 }

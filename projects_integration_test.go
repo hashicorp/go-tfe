@@ -235,6 +235,7 @@ func TestProjectsUpdate(t *testing.T) {
 		assert.NotEqual(t, kBefore.Name, kAfter.Name)
 		assert.NotEqual(t, kBefore.Description, kAfter.Description)
 		assert.NotEqual(t, kBefore.AutoDestroyActivityDuration, kAfter.AutoDestroyActivityDuration)
+		assert.Equal(t, kAfter.AutoDestroyActivityDuration, jsonapi.NewNullableAttrWithValue("3d"))
 
 		if betaFeaturesEnabled() {
 			bindings, err := client.Projects.ListTagBindings(ctx, kAfter.ID)
