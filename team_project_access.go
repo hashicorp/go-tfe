@@ -69,8 +69,9 @@ type TeamProjectAccess struct {
 
 // ProjectPermissions represents the team's permissions on its project
 type TeamProjectAccessProjectPermissions struct {
-	ProjectSettingsPermission ProjectSettingsPermissionType `jsonapi:"attr,settings"`
-	ProjectTeamsPermission    ProjectTeamsPermissionType    `jsonapi:"attr,teams"`
+	ProjectSettingsPermission     ProjectSettingsPermissionType     `jsonapi:"attr,settings"`
+	ProjectTeamsPermission        ProjectTeamsPermissionType        `jsonapi:"attr,teams"`
+	ProjectVariableSetsPermission ProjectVariableSetsPermissionType `jsonapi:"attr,variable-sets"`
 }
 
 // WorkspacePermissions represents the team's permission on all workspaces in its project
@@ -102,6 +103,15 @@ const (
 	ProjectTeamsPermissionNone   ProjectTeamsPermissionType = "none"
 	ProjectTeamsPermissionRead   ProjectTeamsPermissionType = "read"
 	ProjectTeamsPermissionManage ProjectTeamsPermissionType = "manage"
+)
+
+// ProjectVariableSetsPermissionType represents the permission type to a project's variable sets
+type ProjectVariableSetsPermissionType string
+
+const (
+	ProjectVariableSetsPermissionNone  ProjectVariableSetsPermissionType = "none"
+	ProjectVariableSetsPermissionRead  ProjectVariableSetsPermissionType = "read"
+	ProjectVariableSetsPermissionWrite ProjectVariableSetsPermissionType = "write"
 )
 
 // WorkspaceRunsPermissionType represents the permissiontype to project workspaces' runs
@@ -141,8 +151,9 @@ const (
 )
 
 type TeamProjectAccessProjectPermissionsOptions struct {
-	Settings *ProjectSettingsPermissionType `json:"settings,omitempty"`
-	Teams    *ProjectTeamsPermissionType    `json:"teams,omitempty"`
+	Settings     *ProjectSettingsPermissionType     `json:"settings,omitempty"`
+	Teams        *ProjectTeamsPermissionType        `json:"teams,omitempty"`
+	VariableSets *ProjectVariableSetsPermissionType `json:"variable-sets,omitempty"`
 }
 
 type TeamProjectAccessWorkspacePermissionsOptions struct {
