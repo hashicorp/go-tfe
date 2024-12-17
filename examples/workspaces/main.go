@@ -27,8 +27,9 @@ func main() {
 
 	// Create a new workspace
 	w, err := client.Workspaces.Create(ctx, "org-name", tfe.WorkspaceCreateOptions{
-		Name:          tfe.String("my-app-tst"),
-		AutoDestroyAt: tfe.NullableTime(time.Date(2025, 1, 1, 0, 0, 0, 0, time.UTC)),
+		Name:                       tfe.String("my-app-tst"),
+		AutoDestroyAt:              tfe.NullableTime(time.Date(2025, 1, 1, 0, 0, 0, 0, time.UTC)),
+		InheritsProjectAutoDestroy: tfe.Bool(false),
 	})
 	if err != nil {
 		log.Fatal(err)
@@ -36,10 +37,11 @@ func main() {
 
 	// Update the workspace
 	w, err = client.Workspaces.Update(ctx, "org-name", w.Name, tfe.WorkspaceUpdateOptions{
-		AutoApply:        tfe.Bool(false),
-		TerraformVersion: tfe.String("0.11.1"),
-		WorkingDirectory: tfe.String("my-app/infra"),
-		AutoDestroyAt:    tfe.NullableTime(time.Date(2025, 1, 1, 0, 0, 0, 0, time.UTC)),
+		AutoApply:                  tfe.Bool(false),
+		TerraformVersion:           tfe.String("0.11.1"),
+		WorkingDirectory:           tfe.String("my-app/infra"),
+		AutoDestroyAt:              tfe.NullableTime(time.Date(2025, 1, 1, 0, 0, 0, 0, time.UTC)),
+		InheritsProjectAutoDestroy: tfe.Bool(false),
 	})
 	if err != nil {
 		log.Fatal(err)
