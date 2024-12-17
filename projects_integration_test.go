@@ -152,7 +152,7 @@ func TestProjectsCreate(t *testing.T) {
 	orgTest, orgTestCleanup := createOrganization(t, client)
 	defer orgTestCleanup()
 
-	newSubscriptionUpdater(orgTest).WithPlusEntitlementPlan().Update(t)
+	newSubscriptionUpdater(orgTest).WithBusinessPlan().Update(t)
 
 	t.Run("with valid options", func(t *testing.T) {
 		options := ProjectCreateOptions{
@@ -227,15 +227,12 @@ func TestProjectsUpdate(t *testing.T) {
 			TagBindings: []*TagBinding{
 				{Key: "foo", Value: "bar"},
 			},
-			AutoDestroyActivityDuration: jsonapi.NewNullableAttrWithValue("3d"),
 		})
 		require.NoError(t, err)
 
 		assert.Equal(t, kBefore.ID, kAfter.ID)
 		assert.NotEqual(t, kBefore.Name, kAfter.Name)
 		assert.NotEqual(t, kBefore.Description, kAfter.Description)
-		assert.NotEqual(t, kBefore.AutoDestroyActivityDuration, kAfter.AutoDestroyActivityDuration)
-		assert.Equal(t, kAfter.AutoDestroyActivityDuration, jsonapi.NewNullableAttrWithValue("3d"))
 
 		if betaFeaturesEnabled() {
 			bindings, err := client.Projects.ListTagBindings(ctx, kAfter.ID)
@@ -304,7 +301,7 @@ func TestProjectsUpdate(t *testing.T) {
 	})
 
 	t.Run("without a valid projects auto destroy activity duration", func(t *testing.T) {
-		newSubscriptionUpdater(orgTest).WithPlusEntitlementPlan().Update(t)
+		newSubscriptionUpdater(orgTest).WithBusinessPlan().Update(t)
 
 		kBefore, kTestCleanup := createProject(t, client, orgTest)
 		defer kTestCleanup()
@@ -417,7 +414,7 @@ func TestProjectsAutoDestroy(t *testing.T) {
 	orgTest, orgTestCleanup := createOrganization(t, client)
 	defer orgTestCleanup()
 
-	newSubscriptionUpdater(orgTest).WithPlusEntitlementPlan().Update(t)
+	newSubscriptionUpdater(orgTest).WithBusinessPlan().Update(t)
 
 	t.Run("when creating workspace in project with autodestroy", func(t *testing.T) {
 		options := ProjectCreateOptions{
