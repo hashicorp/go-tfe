@@ -156,8 +156,8 @@ func TestProjectsCreate(t *testing.T) {
 
 	t.Run("with valid options", func(t *testing.T) {
 		options := ProjectCreateOptions{
-			Name:                        "foo",
-			Description:                 String("qux"),
+			Name:        "foo",
+			Description: String("qux"),
 		}
 
 		w, err := client.Projects.Create(ctx, orgTest.Name, options)
@@ -302,7 +302,7 @@ func TestProjectsUpdate(t *testing.T) {
 
 	t.Run("without a valid projects auto destroy activity duration", func(t *testing.T) {
 		skipUnlessBeta(t)
-		
+
 		newSubscriptionUpdater(orgTest).WithBusinessPlan().Update(t)
 
 		kBefore, kTestCleanup := createProject(t, client, orgTest)
