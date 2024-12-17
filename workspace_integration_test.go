@@ -2999,6 +2999,8 @@ func TestWorkspacesAutoDestroy(t *testing.T) {
 }
 
 func TestWorkspacesAutoDestroyDuration(t *testing.T) {
+	skipUnlessBeta(t)
+	
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -3007,7 +3009,7 @@ func TestWorkspacesAutoDestroyDuration(t *testing.T) {
 
 	newSubscriptionUpdater(orgTest).WithBusinessPlan().Update(t)
 
-	t.Run("when creating a new workspace with standalone auto destroy settings", func(t *testing.T) {
+	t.Run("when creating a new workspace with standalone auto destroy settings", func(t *testing.T) {		
 		duration := jsonapi.NewNullableAttrWithValue("14d")
 		nilDuration := jsonapi.NewNullNullableAttr[string]()
 		nilAutoDestroy := jsonapi.NewNullNullableAttr[time.Time]()

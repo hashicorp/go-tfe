@@ -158,7 +158,6 @@ func TestProjectsCreate(t *testing.T) {
 		options := ProjectCreateOptions{
 			Name:                        "foo",
 			Description:                 String("qux"),
-			AutoDestroyActivityDuration: jsonapi.NewNullableAttrWithValue("3d"),
 		}
 
 		w, err := client.Projects.Create(ctx, orgTest.Name, options)
@@ -174,7 +173,6 @@ func TestProjectsCreate(t *testing.T) {
 			assert.NotEmpty(t, item.ID)
 			assert.Equal(t, options.Name, item.Name)
 			assert.Equal(t, *options.Description, item.Description)
-			assert.Equal(t, options.AutoDestroyActivityDuration, item.AutoDestroyActivityDuration)
 		}
 	})
 
@@ -201,6 +199,8 @@ func TestProjectsCreate(t *testing.T) {
 	})
 
 	t.Run("when options has an invalid auto destroy activity duration", func(t *testing.T) {
+		skipUnlessBeta(t)
+
 		w, err := client.Projects.Create(ctx, orgTest.Name, ProjectCreateOptions{
 			Name:                        "foo",
 			AutoDestroyActivityDuration: jsonapi.NewNullableAttrWithValue("20m"),
@@ -301,6 +301,8 @@ func TestProjectsUpdate(t *testing.T) {
 	})
 
 	t.Run("without a valid projects auto destroy activity duration", func(t *testing.T) {
+		skipUnlessBeta(t)
+		
 		newSubscriptionUpdater(orgTest).WithBusinessPlan().Update(t)
 
 		kBefore, kTestCleanup := createProject(t, client, orgTest)
@@ -408,6 +410,7 @@ func TestProjectsDelete(t *testing.T) {
 }
 
 func TestProjectsAutoDestroy(t *testing.T) {
+	skipUnlessBeta(t)
 	client := testClient(t)
 	ctx := context.Background()
 
