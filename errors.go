@@ -145,6 +145,8 @@ var (
 
 	ErrInvalidNotificationConfigID = errors.New("invalid value for notification configuration ID")
 
+	ErrInvalidNotificationConfigSubscribableChoice = errors.New("invalid value for notification configuration subscribable choice")
+
 	ErrInvalidMembership = errors.New("invalid value for membership")
 
 	ErrInvalidMembershipIDs = errors.New("invalid value for organization membership ids")
