@@ -615,7 +615,7 @@ func createNotificationConfiguration(t *testing.T, client *Client, w *Workspace,
 	}
 }
 
-func createTeamNotificationConfiguration(t *testing.T, client *Client, team *Team, options *TeamNotificationConfigurationCreateOptions) (*TeamNotificationConfiguration, func()) {
+func createTeamNotificationConfiguration(t *testing.T, client *Client, team *Team, options *NotificationConfigurationCreateOptions) (*NotificationConfiguration, func()) {
 	var tCleanup func()
 
 	if team == nil {
@@ -630,18 +630,19 @@ func createTeamNotificationConfiguration(t *testing.T, client *Client, team *Tea
 	}
 
 	if options == nil {
-		options = &TeamNotificationConfigurationCreateOptions{
-			DestinationType: NotificationDestination(NotificationDestinationTypeGeneric),
-			Enabled:         Bool(false),
-			Name:            String(randomString(t)),
-			Token:           String(randomString(t)),
-			URL:             String(runTaskURL),
-			Triggers:        []NotificationTriggerType{NotificationTriggerChangeRequestCreated},
+		options = &NotificationConfigurationCreateOptions{
+			DestinationType:    NotificationDestination(NotificationDestinationTypeGeneric),
+			Enabled:            Bool(false),
+			Name:               String(randomString(t)),
+			Token:              String(randomString(t)),
+			URL:                String(runTaskURL),
+			Triggers:           []NotificationTriggerType{NotificationTriggerChangeRequestCreated},
+			SubscribableChoice: &NotificationConfigurationSubscribableChoice{Team: team},
 		}
 	}
 
 	ctx := context.Background()
-	nc, err := client.TeamNotificationConfigurations.Create(
+	nc, err := client.NotificationConfigurations.Create(
 		ctx,
 		team.ID,
 		*options,
@@ -651,10 +652,10 @@ func createTeamNotificationConfiguration(t *testing.T, client *Client, team *Tea
 	}
 
 	return nc, func() {
-		if err := client.TeamNotificationConfigurations.Delete(ctx, nc.ID); err != nil {
+		if err := client.NotificationConfigurations.Delete(ctx, nc.ID); err != nil {
 			t.Errorf("Error destroying team notification configuration! WARNING: Dangling\n"+
 				"resources may exist! The full error is shown below.\n\n"+
-				"TeamNotificationConfiguration: %s\nError: %s", nc.ID, err)
+				"NotificationConfiguration: %s\nError: %s", nc.ID, err)
 		}
 
 		if tCleanup != nil {

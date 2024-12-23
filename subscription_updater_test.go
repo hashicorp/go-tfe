@@ -72,19 +72,6 @@ func (b *organizationSubscriptionUpdater) WithTrialPlan() *organizationSubscript
 	return b
 }
 
-func (b *organizationSubscriptionUpdater) WithPlusPlan() *organizationSubscriptionUpdater {
-	b.planName = "Plus"
-
-	start := time.Now()
-	ceiling := 1
-	managedResourcesLimit := 1000
-
-	b.updateOpts.ContractStartAt = &start
-	b.updateOpts.RunsCeiling = &ceiling
-	b.updateOpts.ContractManagedResourcesLimit = &managedResourcesLimit
-	return b
-}
-
 func (b *organizationSubscriptionUpdater) WithPlusEntitlementPlan() *organizationSubscriptionUpdater {
 	b.planName = "Plus (entitlement)"
 

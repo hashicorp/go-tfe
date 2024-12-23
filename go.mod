@@ -22,3 +22,5 @@ require (
 	golang.org/x/sys v0.25.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
+
+replace github.com/hashicorp/jsonapi => github.com/notchairmk/jsonapi v0.0.0-20241223221631-b0c6a5b7edd8
