@@ -21,6 +21,7 @@ import (
 type MockWorkspaceResources struct {
 	ctrl     *gomock.Controller
 	recorder *MockWorkspaceResourcesMockRecorder
+	isgomock struct{}
 }
 
 // MockWorkspaceResourcesMockRecorder is the mock recorder for MockWorkspaceResources.

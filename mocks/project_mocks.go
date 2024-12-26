@@ -21,6 +21,7 @@ import (
 type MockProjects struct {
 	ctrl     *gomock.Controller
 	recorder *MockProjectsMockRecorder
+	isgomock struct{}
 }
 
 // MockProjectsMockRecorder is the mock recorder for MockProjects.
@@ -82,6 +83,20 @@ func (m *MockProjects) Delete(ctx context.Context, projectID string) error {
 func (mr *MockProjectsMockRecorder) Delete(ctx, projectID any) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Delete", reflect.TypeOf((*MockProjects)(nil).Delete), ctx, projectID)
+}
+
+// DeleteTagBindings mocks base method.
+func (m *MockProjects) DeleteTagBindings(ctx context.Context, projectID string) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "DeleteTagBindings", ctx, projectID)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// DeleteTagBindings indicates an expected call of DeleteTagBindings.
+func (mr *MockProjectsMockRecorder) DeleteTagBindings(ctx, projectID any) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteTagBindings", reflect.TypeOf((*MockProjects)(nil).DeleteTagBindings), ctx, projectID)
 }
 
 // List mocks base method.

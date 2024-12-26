@@ -21,6 +21,7 @@ import (
 type MockGHAInstallations struct {
 	ctrl     *gomock.Controller
 	recorder *MockGHAInstallationsMockRecorder
+	isgomock struct{}
 }
 
 // MockGHAInstallationsMockRecorder is the mock recorder for MockGHAInstallations.

@@ -21,6 +21,7 @@ import (
 type MockRunTriggers struct {
 	ctrl     *gomock.Controller
 	recorder *MockRunTriggersMockRecorder
+	isgomock struct{}
 }
 
 // MockRunTriggersMockRecorder is the mock recorder for MockRunTriggers.

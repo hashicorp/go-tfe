@@ -21,6 +21,7 @@ import (
 type MockGPGKeys struct {
 	ctrl     *gomock.Controller
 	recorder *MockGPGKeysMockRecorder
+	isgomock struct{}
 }
 
 // MockGPGKeysMockRecorder is the mock recorder for MockGPGKeys.

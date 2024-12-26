@@ -21,6 +21,7 @@ import (
 type MockAgentTokens struct {
 	ctrl     *gomock.Controller
 	recorder *MockAgentTokensMockRecorder
+	isgomock struct{}
 }
 
 // MockAgentTokensMockRecorder is the mock recorder for MockAgentTokens.

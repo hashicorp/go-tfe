@@ -1,7 +1,8 @@
 # Unreleased
 
 ## Enhancements
-* Add support for project level auto destroy settings @simonxmh [#1011](https://github.com/hashicorp/go-tfe/pull/1011)
+* Add support for project level auto destroy settings by @simonxmh [#1011](https://github.com/hashicorp/go-tfe/pull/1011)
+* Adds support to delete tag bindings on either a project or workspace by @sebasslash [#1023](https://github.com/hashicorp/go-tfe/pull/1023)
 
 # v1.71.0
 
