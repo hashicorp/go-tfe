@@ -1237,6 +1237,33 @@ func TestWorkspacesAddTagBindings(t *testing.T) {
 	})
 }
 
+func TestWorkspaces_DeleteAllTagBindings(t *testing.T) {
+	skipUnlessBeta(t)
+
+	client := testClient(t)
+	ctx := context.Background()
+
+	wTest, wCleanup := createWorkspace(t, client, nil)
+	t.Cleanup(wCleanup)
+
+	tagBindings := []*TagBinding{
+		{Key: "foo", Value: "bar"},
+		{Key: "baz", Value: "qux"},
+	}
+
+	_, err := client.Workspaces.AddTagBindings(ctx, wTest.ID, WorkspaceAddTagBindingsOptions{
+		TagBindings: tagBindings,
+	})
+	require.NoError(t, err)
+
+	err = client.Workspaces.DeleteAllTagBindings(ctx, wTest.ID)
+	require.NoError(t, err)
+
+	bindings, err := client.Workspaces.ListTagBindings(ctx, wTest.ID)
+	require.NoError(t, err)
+	require.Empty(t, bindings)
+}
+
 func TestWorkspacesUpdate(t *testing.T) {
 	client := testClient(t)
 	ctx := context.Background()

@@ -141,6 +141,9 @@ type Workspaces interface {
 
 	// AddTagBindings adds or modifies the value of existing tag binding keys for a workspace.
 	AddTagBindings(ctx context.Context, workspaceID string, options WorkspaceAddTagBindingsOptions) ([]*TagBinding, error)
+
+	// DeleteAllTagBindings removes all tag bindings for a workspace.
+	DeleteAllTagBindings(ctx context.Context, workspaceID string) error
 }
 
 // workspaces implements Workspaces.
@@ -827,6 +830,32 @@ func (s *workspaces) AddTagBindings(ctx context.Context, workspaceID string, opt
 	err = req.Do(ctx, &response)
 
 	return response.Items, err
+}
+
+// DeleteAllTagBindings removes all tag bindings associated with a workspace.
+// This method will not remove any inherited tag bindings, which must be
+// explicitly removed from the parent project.
+func (s *workspaces) DeleteAllTagBindings(ctx context.Context, workspaceID string) error {
+	if !validStringID(&workspaceID) {
+		return ErrInvalidWorkspaceID
+	}
+
+	type aliasOpts struct {
+		Type        string        `jsonapi:"primary,workspaces"`
+		TagBindings []*TagBinding `jsonapi:"relation,tag-bindings"`
+	}
+
+	opts := &aliasOpts{
+		TagBindings: []*TagBinding{},
+	}
+
+	u := fmt.Sprintf("workspaces/%s", url.PathEscape(workspaceID))
+	req, err := s.client.NewRequest("PATCH", u, opts)
+	if err != nil {
+		return err
+	}
+
+	return req.Do(ctx, nil)
 }
 
 // Create is used to create a new workspace.
