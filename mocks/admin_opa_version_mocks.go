@@ -21,6 +21,7 @@ import (
 type MockAdminOPAVersions struct {
 	ctrl     *gomock.Controller
 	recorder *MockAdminOPAVersionsMockRecorder
+	isgomock struct{}
 }
 
 // MockAdminOPAVersionsMockRecorder is the mock recorder for MockAdminOPAVersions.

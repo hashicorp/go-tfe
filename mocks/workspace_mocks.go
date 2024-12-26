@@ -22,6 +22,7 @@ import (
 type MockWorkspaces struct {
 	ctrl     *gomock.Controller
 	recorder *MockWorkspacesMockRecorder
+	isgomock struct{}
 }
 
 // MockWorkspacesMockRecorder is the mock recorder for MockWorkspaces.
@@ -154,6 +155,20 @@ func (m *MockWorkspaces) DeleteDataRetentionPolicy(ctx context.Context, workspac
 func (mr *MockWorkspacesMockRecorder) DeleteDataRetentionPolicy(ctx, workspaceID any) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteDataRetentionPolicy", reflect.TypeOf((*MockWorkspaces)(nil).DeleteDataRetentionPolicy), ctx, workspaceID)
+}
+
+// DeleteTagBindings mocks base method.
+func (m *MockWorkspaces) DeleteTagBindings(ctx context.Context, workspaceID string) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "DeleteTagBindings", ctx, workspaceID)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// DeleteTagBindings indicates an expected call of DeleteTagBindings.
+func (mr *MockWorkspacesMockRecorder) DeleteTagBindings(ctx, workspaceID any) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteTagBindings", reflect.TypeOf((*MockWorkspaces)(nil).DeleteTagBindings), ctx, workspaceID)
 }
 
 // ForceUnlock mocks base method.
