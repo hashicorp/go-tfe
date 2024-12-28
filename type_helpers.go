@@ -29,6 +29,11 @@ func ProjectTeamsPermission(v ProjectTeamsPermissionType) *ProjectTeamsPermissio
 	return &v
 }
 
+// ProjectVariableSetsPermission returns a pointer to the given team access project type.
+func ProjectVariableSetsPermission(v ProjectVariableSetsPermissionType) *ProjectVariableSetsPermissionType {
+	return &v
+}
+
 // WorkspaceRunsPermission returns a pointer to the given team access project type.
 func WorkspaceRunsPermission(v WorkspaceRunsPermissionType) *WorkspaceRunsPermissionType {
 	return &v
