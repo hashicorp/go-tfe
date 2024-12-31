@@ -1,5 +1,9 @@
 # Unreleased
 
+## Enhancements
+
+* Add `Archs` field to `AdminTerraformVersionCreateOptions` by @natalie-todd [#1022](https://github.com/hashicorp/go-tfe/pull/1022)
+
 # v1.71.0
 
 ## Enhancements
