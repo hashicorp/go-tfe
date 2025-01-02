@@ -307,6 +307,8 @@ func (s *notificationConfigurations) Read(ctx context.Context, notificationConfi
 		return nil, err
 	}
 
+	backfillDeprecatedSubscribable(nc)
+
 	return nc, nil
 }
 
@@ -331,6 +333,8 @@ func (s *notificationConfigurations) Update(ctx context.Context, notificationCon
 	if err != nil {
 		return nil, err
 	}
+
+	backfillDeprecatedSubscribable(nc)
 
 	return nc, nil
 }
