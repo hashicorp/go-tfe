@@ -41,18 +41,18 @@ func (m *MockNotificationConfigurations) EXPECT() *MockNotificationConfiguration
 }
 
 // Create mocks base method.
-func (m *MockNotificationConfigurations) Create(ctx context.Context, workspaceID string, options tfe.NotificationConfigurationCreateOptions) (*tfe.NotificationConfiguration, error) {
+func (m *MockNotificationConfigurations) Create(ctx context.Context, subscribableID string, options tfe.NotificationConfigurationCreateOptions) (*tfe.NotificationConfiguration, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "Create", ctx, workspaceID, options)
+	ret := m.ctrl.Call(m, "Create", ctx, subscribableID, options)
 	ret0, _ := ret[0].(*tfe.NotificationConfiguration)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
 
 // Create indicates an expected call of Create.
-func (mr *MockNotificationConfigurationsMockRecorder) Create(ctx, workspaceID, options any) *gomock.Call {
+func (mr *MockNotificationConfigurationsMockRecorder) Create(ctx, subscribableID, options any) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Create", reflect.TypeOf((*MockNotificationConfigurations)(nil).Create), ctx, workspaceID, options)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Create", reflect.TypeOf((*MockNotificationConfigurations)(nil).Create), ctx, subscribableID, options)
 }
 
 // Delete mocks base method.
@@ -70,18 +70,18 @@ func (mr *MockNotificationConfigurationsMockRecorder) Delete(ctx, notificationCo
 }
 
 // List mocks base method.
-func (m *MockNotificationConfigurations) List(ctx context.Context, workspaceID string, options *tfe.NotificationConfigurationListOptions) (*tfe.NotificationConfigurationList, error) {
+func (m *MockNotificationConfigurations) List(ctx context.Context, subscribableID string, options *tfe.NotificationConfigurationListOptions) (*tfe.NotificationConfigurationList, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "List", ctx, workspaceID, options)
+	ret := m.ctrl.Call(m, "List", ctx, subscribableID, options)
 	ret0, _ := ret[0].(*tfe.NotificationConfigurationList)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
 
 // List indicates an expected call of List.
-func (mr *MockNotificationConfigurationsMockRecorder) List(ctx, workspaceID, options any) *gomock.Call {
+func (mr *MockNotificationConfigurationsMockRecorder) List(ctx, subscribableID, options any) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "List", reflect.TypeOf((*MockNotificationConfigurations)(nil).List), ctx, workspaceID, options)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "List", reflect.TypeOf((*MockNotificationConfigurations)(nil).List), ctx, subscribableID, options)
 }
 
 // Read mocks base method.

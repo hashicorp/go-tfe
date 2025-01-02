@@ -57,7 +57,7 @@ type RunTrigger struct {
 	SourceableName string    `jsonapi:"attr,sourceable-name"`
 	WorkspaceName  string    `jsonapi:"attr,workspace-name"`
 	// DEPRECATED. The sourceable field is polymorphic. Use SourceableChoice instead.
-	Sourceable       *Workspace        `jsonapi:"relation,sourceable"`
+	Sourceable       *Workspace        `jsonapi:"relation,sourceable,omitempty"`
 	SourceableChoice *SourceableChoice `jsonapi:"polyrelation,sourceable"`
 	Workspace        *Workspace        `jsonapi:"relation,workspace"`
 }
@@ -121,6 +121,10 @@ func (s *runTriggers) List(ctx context.Context, workspaceID string, options *Run
 		return nil, err
 	}
 
+	for i := range rtl.Items {
+		backfillDeprecatedSourceable(rtl.Items[i])
+	}
+
 	return rtl, nil
 }
 
@@ -145,6 +149,8 @@ func (s *runTriggers) Create(ctx context.Context, workspaceID string, options Ru
 		return nil, err
 	}
 
+	backfillDeprecatedSourceable(rt)
+
 	return rt, nil
 }
 
@@ -165,6 +171,8 @@ func (s *runTriggers) Read(ctx context.Context, runTriggerID string) (*RunTrigge
 	if err != nil {
 		return nil, err
 	}
+
+	backfillDeprecatedSourceable(rt)
 
 	return rt, nil
 }
@@ -201,6 +209,14 @@ func (o *RunTriggerListOptions) valid() error {
 	}
 
 	return nil
+}
+
+func backfillDeprecatedSourceable(runTrigger *RunTrigger) {
+	if runTrigger.Sourceable != nil || runTrigger.SourceableChoice == nil {
+		return
+	}
+
+	runTrigger.Sourceable = runTrigger.SourceableChoice.Workspace
 }
 
 func validateRunTriggerFilterParam(filterParam RunTriggerFilterOp, includeParams []RunTriggerIncludeOpt) error {
