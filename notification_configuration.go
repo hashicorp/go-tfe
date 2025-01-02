@@ -248,28 +248,18 @@ func (s *notificationConfigurations) List(ctx context.Context, subscribableID st
 
 // Create a notification configuration with the given options.
 func (s *notificationConfigurations) Create(ctx context.Context, subscribableID string, options NotificationConfigurationCreateOptions) (*NotificationConfiguration, error) {
-	if err := options.valid(); err != nil {
-		return nil, err
-	}
-
 	var u string
 	var subscribableChoice *NotificationConfigurationSubscribableChoice
-	if options.SubscribableChoice == nil || options.SubscribableChoice.Workspace != nil {
-		if !validStringID(&subscribableID) {
-			return nil, ErrInvalidWorkspaceID
-		}
-
+	if options.SubscribableChoice == nil || options.SubscribableChoice.Team == nil {
 		u = fmt.Sprintf("workspaces/%s/notification-configurations", url.PathEscape(subscribableID))
-		subscribableChoice = &NotificationConfigurationSubscribableChoice{Workspace: &Workspace{ID: subscribableID}}
-	} else if options.SubscribableChoice != nil && options.SubscribableChoice.Team != nil {
-		if !validStringID(&subscribableID) {
-			return nil, ErrInvalidTeamID
-		}
-
-		u = fmt.Sprintf("teams/%s/notification-configurations", url.PathEscape(subscribableID))
-		subscribableChoice = &NotificationConfigurationSubscribableChoice{Team: &Team{ID: subscribableID}}
+		options.SubscribableChoice = &NotificationConfigurationSubscribableChoice{Workspace: &Workspace{ID: subscribableID}}
 	} else {
-		return nil, ErrInvalidNotificationConfigSubscribableChoice
+		u = fmt.Sprintf("teams/%s/notification-configurations", url.PathEscape(subscribableID))
+		options.SubscribableChoice = &NotificationConfigurationSubscribableChoice{Team: &Team{ID: subscribableID}}
+	}
+
+	if err := options.valid(); err != nil {
+		return nil, err
 	}
 
 	req, err := s.client.NewRequest("POST", u, &options)
@@ -378,6 +368,16 @@ func (s *notificationConfigurations) Verify(ctx context.Context, notificationCon
 }
 
 func (o NotificationConfigurationCreateOptions) valid() error {
+	if o.SubscribableChoice == nil || o.SubscribableChoice.Workspace != nil {
+		if !validStringID(&o.SubscribableChoice.Workspace.ID) {
+			return ErrInvalidWorkspaceID
+		}
+	} else {
+		if !validStringID(&o.SubscribableChoice.Team.ID) {
+			return ErrInvalidTeamID
+		}
+	}
+
 	if o.DestinationType == nil {
 		return ErrRequiredDestinationType
 	}

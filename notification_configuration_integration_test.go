@@ -70,7 +70,7 @@ func TestNotificationConfigurationList(t *testing.T) {
 			nil,
 		)
 		assert.Nil(t, ncl)
-		assert.EqualError(t, err, ErrRequiredDestinationType.Error())
+		assert.EqualError(t, err, ErrInvalidWorkspaceID.Error())
 	})
 }
 
