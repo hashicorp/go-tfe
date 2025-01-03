@@ -116,8 +116,8 @@ func TestAdminTerraformVersions_CreateDelete(t *testing.T) {
 			Archs: []*ToolVersionArchitecture{{
 				URL:  "https://www.hashicorp.com",
 				Sha:  *sha,
-				OS:   "linux",
-				Arch: "amd64",
+				OS:   linux,
+				Arch: amd64,
 			}},
 		}
 		tfv, err := client.Admin.TerraformVersions.Create(ctx, opts)
@@ -190,8 +190,8 @@ func TestAdminTerraformVersions_ReadUpdate(t *testing.T) {
 			Archs: []*ToolVersionArchitecture{{
 				URL:  "https://www.hashicorp.com",
 				Sha:  *sha,
-				OS:   "linux",
-				Arch: "amd64",
+				OS:   linux,
+				Arch: amd64,
 			}},
 		}
 		tfv, err := client.Admin.TerraformVersions.Create(ctx, opts)

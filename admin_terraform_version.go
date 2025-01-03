@@ -14,6 +14,12 @@ import (
 // Compile-time proof of interface implementation.
 var _ AdminTerraformVersions = (*adminTerraformVersions)(nil)
 
+const (
+	linux = "linux"
+	amd64 = "amd64"
+	arm64 = "arm64"
+)
+
 // AdminTerraformVersions describes all the admin terraform versions related methods that
 // the Terraform Enterprise API supports.
 // Note that admin terraform versions are only available in Terraform Enterprise.
@@ -209,12 +215,19 @@ func (o AdminTerraformVersionCreateOptions) valid() error {
 	if !validString(o.Version) {
 		return ErrRequiredVersion
 	}
-	if !validString(o.URL) {
-		return ErrRequiredURL
+	if !o.validArch() && (!validString(o.URL) || !validString(o.Sha)) {
+		return ErrRequiredArchOrURLAndSha
 	}
-	if !validString(o.Sha) {
-		return ErrRequiredSha
-	}
-
 	return nil
+}
+
+func (o AdminTerraformVersionCreateOptions) validArch() bool {
+	var valid bool
+	for _, a := range o.Archs {
+		valid = validString(&a.URL) && validString(&a.Sha) && a.OS == linux && (a.Arch == amd64 || a.Arch == arm64)
+		if valid {
+			break
+		}
+	}
+	return valid
 }

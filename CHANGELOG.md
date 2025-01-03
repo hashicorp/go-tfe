@@ -3,8 +3,8 @@
 ## Enhancements
 
 * Add support for project level auto destroy settings @simonxmh [#1011](https://github.com/hashicorp/go-tfe/pull/1011)
-* Add `Archs` field to `AdminTerraformVersionCreateOptions` by @natalie-todd [#1022](https://github.com/hashicorp/go-tfe/pull/1022)
-
+* Add BETA support for Linux arm64 agents, which is EXPERIMENTAL, SUBJECT TO CHANGE, and may not be available to all users @natalie-todd [#1022](https://github.com/hashicorp/go-tfe/pull/1022)
+  
 # v1.71.0
 
 ## Enhancements
