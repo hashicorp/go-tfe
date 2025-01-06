@@ -128,6 +128,20 @@ func (mr *MockWorkspacesMockRecorder) Delete(ctx, organization, workspace any) *
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Delete", reflect.TypeOf((*MockWorkspaces)(nil).Delete), ctx, organization, workspace)
 }
 
+// DeleteAllTagBindings mocks base method.
+func (m *MockWorkspaces) DeleteAllTagBindings(ctx context.Context, workspaceID string) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "DeleteAllTagBindings", ctx, workspaceID)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// DeleteAllTagBindings indicates an expected call of DeleteAllTagBindings.
+func (mr *MockWorkspacesMockRecorder) DeleteAllTagBindings(ctx, workspaceID any) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteAllTagBindings", reflect.TypeOf((*MockWorkspaces)(nil).DeleteAllTagBindings), ctx, workspaceID)
+}
+
 // DeleteByID mocks base method.
 func (m *MockWorkspaces) DeleteByID(ctx context.Context, workspaceID string) error {
 	m.ctrl.T.Helper()

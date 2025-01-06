@@ -44,6 +44,9 @@ type Projects interface {
 
 	// AddTagBindings adds or modifies the value of existing tag binding keys for a project.
 	AddTagBindings(ctx context.Context, projectID string, options ProjectAddTagBindingsOptions) ([]*TagBinding, error)
+
+	// DeleteAllTagBindings removes all existing tag bindings for a project.
+	DeleteAllTagBindings(ctx context.Context, projectID string) error
 }
 
 // projects implements Projects
@@ -319,6 +322,30 @@ func (s *projects) Delete(ctx context.Context, projectID string) error {
 
 	u := fmt.Sprintf("projects/%s", url.PathEscape(projectID))
 	req, err := s.client.NewRequest("DELETE", u, nil)
+	if err != nil {
+		return err
+	}
+
+	return req.Do(ctx, nil)
+}
+
+// Delete all tag bindings associated with a project.
+func (s *projects) DeleteAllTagBindings(ctx context.Context, projectID string) error {
+	if !validStringID(&projectID) {
+		return ErrInvalidProjectID
+	}
+
+	type aliasOpts struct {
+		Type        string        `jsonapi:"primary,projects"`
+		TagBindings []*TagBinding `jsonapi:"relation,tag-bindings"`
+	}
+
+	opts := &aliasOpts{
+		TagBindings: []*TagBinding{},
+	}
+
+	u := fmt.Sprintf("projects/%s", url.PathEscape(projectID))
+	req, err := s.client.NewRequest("PATCH", u, opts)
 	if err != nil {
 		return err
 	}

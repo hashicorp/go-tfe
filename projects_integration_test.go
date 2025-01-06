@@ -380,6 +380,33 @@ func TestProjectsAddTagBindings(t *testing.T) {
 	})
 }
 
+func TestProjects_DeleteAllTagBindings(t *testing.T) {
+	skipUnlessBeta(t)
+
+	client := testClient(t)
+	ctx := context.Background()
+
+	pTest, wCleanup := createProject(t, client, nil)
+	t.Cleanup(wCleanup)
+
+	tagBindings := []*TagBinding{
+		{Key: "foo", Value: "bar"},
+		{Key: "baz", Value: "qux"},
+	}
+
+	_, err := client.Projects.AddTagBindings(ctx, pTest.ID, ProjectAddTagBindingsOptions{
+		TagBindings: tagBindings,
+	})
+	require.NoError(t, err)
+
+	err = client.Projects.DeleteAllTagBindings(ctx, pTest.ID)
+	require.NoError(t, err)
+
+	bindings, err := client.Projects.ListTagBindings(ctx, pTest.ID)
+	require.NoError(t, err)
+	require.Empty(t, bindings)
+}
+
 func TestProjectsDelete(t *testing.T) {
 	client := testClient(t)
 	ctx := context.Background()
