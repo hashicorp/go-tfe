@@ -1,5 +1,7 @@
 # Unreleased
 
+# v1.72.0
+
 ## Enhancements
 
 * Add support for project level auto destroy settings @simonxmh [#1011](https://github.com/hashicorp/go-tfe/pull/1011)
