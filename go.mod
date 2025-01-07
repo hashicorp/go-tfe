@@ -9,7 +9,7 @@ require (
 	github.com/hashicorp/go-slug v0.16.0
 	github.com/hashicorp/go-uuid v1.0.3
 	github.com/hashicorp/go-version v1.7.0
-	github.com/hashicorp/jsonapi v1.3.1
+	github.com/hashicorp/jsonapi v1.3.2
 	github.com/stretchr/testify v1.9.0
 	go.uber.org/mock v0.4.0
 	golang.org/x/sync v0.8.0
@@ -22,5 +22,3 @@ require (
 	golang.org/x/sys v0.25.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
-
-replace github.com/hashicorp/jsonapi => github.com/notchairmk/jsonapi v0.0.0-20241223221631-b0c6a5b7edd8

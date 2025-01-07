@@ -1237,6 +1237,33 @@ func TestWorkspacesAddTagBindings(t *testing.T) {
 	})
 }
 
+func TestWorkspaces_DeleteAllTagBindings(t *testing.T) {
+	skipUnlessBeta(t)
+
+	client := testClient(t)
+	ctx := context.Background()
+
+	wTest, wCleanup := createWorkspace(t, client, nil)
+	t.Cleanup(wCleanup)
+
+	tagBindings := []*TagBinding{
+		{Key: "foo", Value: "bar"},
+		{Key: "baz", Value: "qux"},
+	}
+
+	_, err := client.Workspaces.AddTagBindings(ctx, wTest.ID, WorkspaceAddTagBindingsOptions{
+		TagBindings: tagBindings,
+	})
+	require.NoError(t, err)
+
+	err = client.Workspaces.DeleteAllTagBindings(ctx, wTest.ID)
+	require.NoError(t, err)
+
+	bindings, err := client.Workspaces.ListTagBindings(ctx, wTest.ID)
+	require.NoError(t, err)
+	require.Empty(t, bindings)
+}
+
 func TestWorkspacesUpdate(t *testing.T) {
 	client := testClient(t)
 	ctx := context.Background()
@@ -2961,7 +2988,7 @@ func TestWorkspacesAutoDestroy(t *testing.T) {
 	orgTest, orgTestCleanup := createOrganization(t, client)
 	t.Cleanup(orgTestCleanup)
 
-	upgradeOrganizationSubscription(t, client, orgTest)
+	newSubscriptionUpdater(orgTest).WithBusinessPlan().Update(t)
 
 	autoDestroyAt := NullableTime(time.Date(2025, 1, 1, 0, 0, 0, 0, time.UTC))
 	wTest, wCleanup := createWorkspaceWithOptions(t, client, orgTest, WorkspaceCreateOptions{
@@ -2999,31 +3026,39 @@ func TestWorkspacesAutoDestroy(t *testing.T) {
 }
 
 func TestWorkspacesAutoDestroyDuration(t *testing.T) {
+	skipUnlessBeta(t)
+
 	client := testClient(t)
 	ctx := context.Background()
 
 	orgTest, orgTestCleanup := createOrganization(t, client)
 	t.Cleanup(orgTestCleanup)
 
-	upgradeOrganizationSubscription(t, client, orgTest)
+	newSubscriptionUpdater(orgTest).WithBusinessPlan().Update(t)
 
-	duration := jsonapi.NewNullableAttrWithValue("14d")
-	nilDuration := jsonapi.NewNullNullableAttr[string]()
-	nilAutoDestroy := jsonapi.NewNullNullableAttr[time.Time]()
-	wTest, wCleanup := createWorkspaceWithOptions(t, client, orgTest, WorkspaceCreateOptions{
-		Name:                        String(randomString(t)),
-		AutoDestroyActivityDuration: duration,
+	t.Run("when creating a new workspace with standalone auto destroy settings", func(t *testing.T) {
+		duration := jsonapi.NewNullableAttrWithValue("14d")
+		nilDuration := jsonapi.NewNullNullableAttr[string]()
+		nilAutoDestroy := jsonapi.NewNullNullableAttr[time.Time]()
+		wTest, wCleanup := createWorkspaceWithOptions(t, client, orgTest, WorkspaceCreateOptions{
+			Name:                        String(randomString(t)),
+			AutoDestroyActivityDuration: duration,
+			InheritsProjectAutoDestroy:  Bool(false),
+		})
+		t.Cleanup(wCleanup)
+
+		require.Equal(t, duration, wTest.AutoDestroyActivityDuration)
+		require.NotEqual(t, nilAutoDestroy, wTest.AutoDestroyAt)
+		require.Equal(t, wTest.InheritsProjectAutoDestroy, false)
+
+		w, err := client.Workspaces.Update(ctx, orgTest.Name, wTest.Name, WorkspaceUpdateOptions{
+			AutoDestroyActivityDuration: nilDuration,
+			InheritsProjectAutoDestroy:  Bool(false),
+		})
+
+		require.NoError(t, err)
+		require.False(t, w.AutoDestroyActivityDuration.IsSpecified())
+		require.False(t, w.AutoDestroyAt.IsSpecified())
+		require.Equal(t, wTest.InheritsProjectAutoDestroy, false)
 	})
-	t.Cleanup(wCleanup)
-
-	require.Equal(t, duration, wTest.AutoDestroyActivityDuration)
-	require.NotEqual(t, nilAutoDestroy, wTest.AutoDestroyAt)
-
-	w, err := client.Workspaces.Update(ctx, orgTest.Name, wTest.Name, WorkspaceUpdateOptions{
-		AutoDestroyActivityDuration: nilDuration,
-	})
-
-	require.NoError(t, err)
-	require.False(t, w.AutoDestroyActivityDuration.IsSpecified())
-	require.False(t, w.AutoDestroyAt.IsSpecified())
 }

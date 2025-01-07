@@ -103,15 +103,22 @@ func TestAdminTerraformVersions_CreateDelete(t *testing.T) {
 	version := genSafeRandomTerraformVersion()
 
 	t.Run("with valid options", func(t *testing.T) {
+		sha := String(genSha(t))
 		opts := AdminTerraformVersionCreateOptions{
 			Version:          String(version),
 			URL:              String("https://www.hashicorp.com"),
-			Sha:              String(genSha(t)),
+			Sha:              sha,
 			Deprecated:       Bool(true),
 			DeprecatedReason: String("Test Reason"),
 			Official:         Bool(false),
 			Enabled:          Bool(false),
 			Beta:             Bool(false),
+			Archs: []*ToolVersionArchitecture{{
+				URL:  "https://www.hashicorp.com",
+				Sha:  *sha,
+				OS:   linux,
+				Arch: amd64,
+			}},
 		}
 		tfv, err := client.Admin.TerraformVersions.Create(ctx, opts)
 		require.NoError(t, err)
@@ -170,6 +177,7 @@ func TestAdminTerraformVersions_ReadUpdate(t *testing.T) {
 
 	t.Run("reads and updates", func(t *testing.T) {
 		version := genSafeRandomTerraformVersion()
+		sha := String(genSha(t))
 		opts := AdminTerraformVersionCreateOptions{
 			Version:          String(version),
 			URL:              String("https://www.hashicorp.com"),
@@ -179,6 +187,12 @@ func TestAdminTerraformVersions_ReadUpdate(t *testing.T) {
 			DeprecatedReason: String("Test Reason"),
 			Enabled:          Bool(false),
 			Beta:             Bool(false),
+			Archs: []*ToolVersionArchitecture{{
+				URL:  "https://www.hashicorp.com",
+				Sha:  *sha,
+				OS:   linux,
+				Arch: amd64,
+			}},
 		}
 		tfv, err := client.Admin.TerraformVersions.Create(ctx, opts)
 		require.NoError(t, err)

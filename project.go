@@ -7,6 +7,8 @@ import (
 	"context"
 	"fmt"
 	"net/url"
+
+	"github.com/hashicorp/jsonapi"
 )
 
 // Compile-time proof of interface implementation.
@@ -42,6 +44,9 @@ type Projects interface {
 
 	// AddTagBindings adds or modifies the value of existing tag binding keys for a project.
 	AddTagBindings(ctx context.Context, projectID string, options ProjectAddTagBindingsOptions) ([]*TagBinding, error)
+
+	// DeleteAllTagBindings removes all existing tag bindings for a project.
+	DeleteAllTagBindings(ctx context.Context, projectID string) error
 }
 
 // projects implements Projects
@@ -62,6 +67,8 @@ type Project struct {
 	Name      string `jsonapi:"attr,name"`
 
 	Description string `jsonapi:"attr,description"`
+
+	AutoDestroyActivityDuration jsonapi.NullableAttr[string] `jsonapi:"attr,auto-destroy-activity-duration,omitempty"`
 
 	// Relations
 	Organization *Organization `jsonapi:"relation,organization"`
@@ -100,6 +107,11 @@ type ProjectCreateOptions struct {
 
 	// Associated TagBindings of the project.
 	TagBindings []*TagBinding `jsonapi:"relation,tag-bindings,omitempty"`
+
+	// Optional: For all workspaces in the project, the period of time to wait
+	// after workspace activity to trigger a destroy run. The format should roughly
+	// match a Go duration string limited to days and hours, e.g. "24h" or "1d".
+	AutoDestroyActivityDuration jsonapi.NullableAttr[string] `jsonapi:"attr,auto-destroy-activity-duration,omitempty"`
 }
 
 // ProjectUpdateOptions represents the options for updating a project
@@ -119,6 +131,11 @@ type ProjectUpdateOptions struct {
 	// Associated TagBindings of the project. Note that this will replace
 	// all existing tag bindings.
 	TagBindings []*TagBinding `jsonapi:"relation,tag-bindings,omitempty"`
+
+	// Optional: For all workspaces in the project, the period of time to wait
+	// after workspace activity to trigger a destroy run. The format should roughly
+	// match a Go duration string limited to days and hours, e.g. "24h" or "1d".
+	AutoDestroyActivityDuration jsonapi.NullableAttr[string] `jsonapi:"attr,auto-destroy-activity-duration,omitempty"`
 }
 
 // ProjectAddTagBindingsOptions represents the options for adding tag bindings
@@ -305,6 +322,30 @@ func (s *projects) Delete(ctx context.Context, projectID string) error {
 
 	u := fmt.Sprintf("projects/%s", url.PathEscape(projectID))
 	req, err := s.client.NewRequest("DELETE", u, nil)
+	if err != nil {
+		return err
+	}
+
+	return req.Do(ctx, nil)
+}
+
+// Delete all tag bindings associated with a project.
+func (s *projects) DeleteAllTagBindings(ctx context.Context, projectID string) error {
+	if !validStringID(&projectID) {
+		return ErrInvalidProjectID
+	}
+
+	type aliasOpts struct {
+		Type        string        `jsonapi:"primary,projects"`
+		TagBindings []*TagBinding `jsonapi:"relation,tag-bindings"`
+	}
+
+	opts := &aliasOpts{
+		TagBindings: []*TagBinding{},
+	}
+
+	u := fmt.Sprintf("projects/%s", url.PathEscape(projectID))
+	req, err := s.client.NewRequest("PATCH", u, opts)
 	if err != nil {
 		return err
 	}

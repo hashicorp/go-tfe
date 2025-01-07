@@ -57,7 +57,7 @@ type RunTrigger struct {
 	SourceableName string    `jsonapi:"attr,sourceable-name"`
 	WorkspaceName  string    `jsonapi:"attr,workspace-name"`
 	// DEPRECATED. The sourceable field is polymorphic. Use SourceableChoice instead.
-	Sourceable       *Workspace        `jsonapi:"relation,sourceable,omitempty"`
+	Sourceable       *Workspace        `jsonapi:"relation,sourceable"`
 	SourceableChoice *SourceableChoice `jsonapi:"polyrelation,sourceable"`
 	Workspace        *Workspace        `jsonapi:"relation,workspace"`
 }

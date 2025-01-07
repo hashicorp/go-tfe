@@ -84,6 +84,20 @@ func (mr *MockProjectsMockRecorder) Delete(ctx, projectID any) *gomock.Call {
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Delete", reflect.TypeOf((*MockProjects)(nil).Delete), ctx, projectID)
 }
 
+// DeleteAllTagBindings mocks base method.
+func (m *MockProjects) DeleteAllTagBindings(ctx context.Context, projectID string) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "DeleteAllTagBindings", ctx, projectID)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// DeleteAllTagBindings indicates an expected call of DeleteAllTagBindings.
+func (mr *MockProjectsMockRecorder) DeleteAllTagBindings(ctx, projectID any) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteAllTagBindings", reflect.TypeOf((*MockProjects)(nil).DeleteAllTagBindings), ctx, projectID)
+}
+
 // List mocks base method.
 func (m *MockProjects) List(ctx context.Context, organization string, options *tfe.ProjectListOptions) (*tfe.ProjectList, error) {
 	m.ctrl.T.Helper()
