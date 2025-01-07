@@ -20,8 +20,6 @@ github.com/hashicorp/jsonapi v1.3.2 h1:gP3fX2ZT7qXi+PbwieptzkspIohO2kCSiBUvUTBAb
 github.com/hashicorp/jsonapi v1.3.2/go.mod h1:kWfdn49yCjQvbpnvY1dxxAuAFzISwrrMDQOcu6NsFoM=
 github.com/mattn/go-colorable v0.1.13 h1:fFA4WZxdEF4tXPZVKMLwD8oUnCTTo08duU7wxecdEvA=
 github.com/mattn/go-isatty v0.0.20 h1:xfD0iDuEKnDkl03q4limB+vH+GxLEtL/jb4xVJSWWEY=
-github.com/notchairmk/jsonapi v0.0.0-20241223221631-b0c6a5b7edd8 h1:Nll3UptyKamtMP60oCHnRKI3l/kgadZHKQ6/uLYPyVM=
-github.com/notchairmk/jsonapi v0.0.0-20241223221631-b0c6a5b7edd8/go.mod h1:kWfdn49yCjQvbpnvY1dxxAuAFzISwrrMDQOcu6NsFoM=
 github.com/pmezard/go-difflib v1.0.0 h1:4DBwDE0NGyQoBHbLQYPwSUPoCMWR5BEzIk/f1lZbAQM=
 github.com/pmezard/go-difflib v1.0.0/go.mod h1:iKH77koFhYxTK1pcRnkKkqfTogsbg7gZNVY4sRDYZ/4=
 github.com/stretchr/testify v1.9.0 h1:HtqpIVDClZ4nwg75+f6Lvsy/wHu+3BoSGCbBAcpTsTg=
