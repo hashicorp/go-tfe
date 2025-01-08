@@ -166,7 +166,7 @@ type NotificationConfigurationCreateOptions struct {
 	EmailUsers []*User `jsonapi:"relation,users,omitempty"`
 
 	// Required: The workspace or team that the notification configuration is associated with.
-	SubscribableChoice *NotificationConfigurationSubscribableChoice `jsonapi:"polyrelation,subscribable"`
+	SubscribableChoice *NotificationConfigurationSubscribableChoice `jsonapi:"polyrelation,subscribable,omitempty"`
 }
 
 // NotificationConfigurationUpdateOptions represents the options for
