@@ -100,25 +100,28 @@ func TestAdminTerraformVersions_CreateDelete(t *testing.T) {
 
 	client := testClient(t)
 	ctx := context.Background()
-	version := genSafeRandomTerraformVersion()
 
 	t.Run("with valid options", func(t *testing.T) {
-		sha := String(genSha(t))
 		opts := AdminTerraformVersionCreateOptions{
-			Version:          String(version),
-			URL:              String("https://www.hashicorp.com"),
-			Sha:              sha,
+			Version:          String(genSafeRandomTerraformVersion()),
 			Deprecated:       Bool(true),
 			DeprecatedReason: String("Test Reason"),
 			Official:         Bool(false),
 			Enabled:          Bool(false),
 			Beta:             Bool(false),
-			Archs: []*ToolVersionArchitecture{{
-				URL:  "https://www.hashicorp.com",
-				Sha:  *sha,
-				OS:   linux,
-				Arch: amd64,
-			}},
+			Archs: []*ToolVersionArchitecture{
+				{
+					URL:  "https://www.hashicorp.com",
+					Sha:  *String(genSha(t)),
+					OS:   linux,
+					Arch: amd64,
+				},
+				{
+					URL:  "https://www.hashicorp.com",
+					Sha:  *String(genSha(t)),
+					OS:   linux,
+					Arch: arm64,
+				}},
 		}
 		tfv, err := client.Admin.TerraformVersions.Create(ctx, opts)
 		require.NoError(t, err)

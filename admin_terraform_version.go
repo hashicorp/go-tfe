@@ -63,10 +63,10 @@ type AdminTerraformVersion struct {
 }
 
 type ToolVersionArchitecture struct {
-	URL  string `jsonapi:"attr,url"`
-	Sha  string `jsonapi:"attr,sha"`
-	OS   string `jsonapi:"attr,os"`
-	Arch string `jsonapi:"attr,arch"`
+	URL  string `json:"url"`
+	Sha  string `json:"sha"`
+	OS   string `json:"os"`
+	Arch string `json:"arch"`
 }
 
 // AdminTerraformVersionsListOptions represents the options for listing
@@ -168,7 +168,6 @@ func (a *adminTerraformVersions) Create(ctx context.Context, options AdminTerraf
 	if err != nil {
 		return nil, err
 	}
-
 	return tfv, nil
 }
 
