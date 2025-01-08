@@ -1,5 +1,11 @@
 # Unreleased
 
+# v1.73.0
+
+## Enhancements
+
+* Add support for team notification configurations @notchairmk [#1016](https://github.com/hashicorp/go-tfe/pull/1016)
+
 # v1.72.0
 
 ## Enhancements
