@@ -101,7 +101,7 @@ func TestAdminTerraformVersions_CreateDelete(t *testing.T) {
 	client := testClient(t)
 	ctx := context.Background()
 
-	t.Run("with valid options", func(t *testing.T) {
+	t.Run("with valid options and archs", func(t *testing.T) {
 		opts := AdminTerraformVersionCreateOptions{
 			Version:          String(genSafeRandomTerraformVersion()),
 			Deprecated:       Bool(true),
@@ -122,6 +122,35 @@ func TestAdminTerraformVersions_CreateDelete(t *testing.T) {
 					OS:   linux,
 					Arch: arm64,
 				}},
+		}
+		tfv, err := client.Admin.TerraformVersions.Create(ctx, opts)
+		require.NoError(t, err)
+
+		defer func() {
+			deleteErr := client.Admin.TerraformVersions.Delete(ctx, tfv.ID)
+			require.NoError(t, deleteErr)
+		}()
+
+		assert.Equal(t, *opts.Version, tfv.Version)
+		assert.Equal(t, *opts.URL, tfv.URL)
+		assert.Equal(t, *opts.Sha, tfv.Sha)
+		assert.Equal(t, *opts.Official, tfv.Official)
+		assert.Equal(t, *opts.Deprecated, tfv.Deprecated)
+		assert.Equal(t, *opts.DeprecatedReason, *tfv.DeprecatedReason)
+		assert.Equal(t, *opts.Enabled, tfv.Enabled)
+		assert.Equal(t, *opts.Beta, tfv.Beta)
+	})
+
+	t.Run("with valid options, url, and sha", func(t *testing.T) {
+		opts := AdminTerraformVersionCreateOptions{
+			Version:          String(genSafeRandomTerraformVersion()),
+			URL:              String("https://www.hashicorp.com"),
+			Sha:              String(genSha(t)),
+			Deprecated:       Bool(true),
+			DeprecatedReason: String("Test Reason"),
+			Official:         Bool(false),
+			Enabled:          Bool(false),
+			Beta:             Bool(false),
 		}
 		tfv, err := client.Admin.TerraformVersions.Create(ctx, opts)
 		require.NoError(t, err)
