@@ -1,5 +1,19 @@
 # Unreleased
 
+# v1.73.0
+
+## Enhancements
+
+* Add support for team notification configurations @notchairmk [#1016](https://github.com/hashicorp/go-tfe/pull/1016)
+
+# v1.72.0
+
+## Enhancements
+
+* Add support for project level auto destroy settings @simonxmh [#1011](https://github.com/hashicorp/go-tfe/pull/1011)
+* Add BETA support for Linux arm64 agents, which is EXPERIMENTAL, SUBJECT TO CHANGE, and may not be available to all users @natalie-todd [#1022](https://github.com/hashicorp/go-tfe/pull/1022)
+* Adds support to delete all tag bindings on either a project or workspace by @sebasslash [#1023](https://github.com/hashicorp/go-tfe/pull/1023)
+
 # v1.71.0
 
 ## Enhancements
