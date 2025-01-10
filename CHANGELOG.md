@@ -8,7 +8,8 @@
 
 ## Bug Fixes
 
-* Fixes a bug in BETA support for Linux arm64 agents, which is EXPERIMENTAL, SUBJECT TO CHANGE, and may not be available to all users @natalie-todd [#1022](https://github.com/hashicorp/go-tfe/pull/1022)
+* Update dependency `github.com/hashicorp/go-slug` `v0.16.0` => `v0.16.3` to integrate latest changes.
+* Fix bug in BETA support for Linux arm64 agents, which is EXPERIMENTAL, SUBJECT TO CHANGE, and may not be available to all users @natalie-todd [#1022](https://github.com/hashicorp/go-tfe/pull/1022)
 
 # v1.72.0
 
