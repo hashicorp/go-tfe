@@ -109,7 +109,7 @@ func TestAdminTerraformVersions_CreateDelete(t *testing.T) {
 			Official:         Bool(false),
 			Enabled:          Bool(false),
 			Beta:             Bool(false),
-			Archs: []*ToolVersionArchitecture{
+			Archs: []*ToolVersionArchitectureOptions{
 				{
 					URL:  "https://www.hashicorp.com",
 					Sha:  *String(genSha(t)),
@@ -219,7 +219,7 @@ func TestAdminTerraformVersions_ReadUpdate(t *testing.T) {
 			DeprecatedReason: String("Test Reason"),
 			Enabled:          Bool(false),
 			Beta:             Bool(false),
-			Archs: []*ToolVersionArchitecture{{
+			Archs: []*ToolVersionArchitectureOptions{{
 				URL:  "https://www.hashicorp.com",
 				Sha:  *sha,
 				OS:   linux,
