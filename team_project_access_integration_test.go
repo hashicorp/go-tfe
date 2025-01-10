@@ -171,9 +171,8 @@ func TestTeamProjectAccessesAdd(t *testing.T) {
 			Team:    tmTest,
 			Project: pTest,
 			ProjectAccess: &TeamProjectAccessProjectPermissionsOptions{
-				Settings:     ProjectSettingsPermission(ProjectSettingsPermissionUpdate),
-				Teams:        ProjectTeamsPermission(ProjectTeamsPermissionManage),
-				VariableSets: ProjectVariableSetsPermission(ProjectVariableSetsPermissionWrite),
+				Settings: ProjectSettingsPermission(ProjectSettingsPermissionUpdate),
+				Teams:    ProjectTeamsPermission(ProjectTeamsPermissionManage),
 			},
 			WorkspaceAccess: &TeamProjectAccessWorkspacePermissionsOptions{
 				Runs:          WorkspaceRunsPermission(WorkspaceRunsPermissionApply),
@@ -210,7 +209,6 @@ func TestTeamProjectAccessesAdd(t *testing.T) {
 			assert.Equal(t, options.Access, item.Access)
 			assert.Equal(t, *options.ProjectAccess.Settings, item.ProjectAccess.ProjectSettingsPermission)
 			assert.Equal(t, *options.ProjectAccess.Teams, item.ProjectAccess.ProjectTeamsPermission)
-			assert.Equal(t, *options.ProjectAccess.VariableSets, item.ProjectAccess.ProjectVariableSetsPermission)
 			assert.Equal(t, *options.WorkspaceAccess.Runs, item.WorkspaceAccess.WorkspaceRunsPermission)
 			assert.Equal(t, *options.WorkspaceAccess.SentinelMocks, item.WorkspaceAccess.WorkspaceSentinelMocksPermission)
 			assert.Equal(t, *options.WorkspaceAccess.StateVersions, item.WorkspaceAccess.WorkspaceStateVersionsPermission)
@@ -357,9 +355,8 @@ func TestTeamProjectAccessesUpdate(t *testing.T) {
 		options := TeamProjectAccessUpdateOptions{
 			Access: ProjectAccess(TeamProjectAccessCustom),
 			ProjectAccess: &TeamProjectAccessProjectPermissionsOptions{
-				Settings:     ProjectSettingsPermission(ProjectSettingsPermissionUpdate),
-				Teams:        ProjectTeamsPermission(ProjectTeamsPermissionManage),
-				VariableSets: ProjectVariableSetsPermission(ProjectVariableSetsPermissionWrite),
+				Settings: ProjectSettingsPermission(ProjectSettingsPermissionUpdate),
+				Teams:    ProjectTeamsPermission(ProjectTeamsPermissionManage),
 			},
 			WorkspaceAccess: &TeamProjectAccessWorkspacePermissionsOptions{
 				Runs:          WorkspaceRunsPermission(WorkspaceRunsPermissionPlan),
@@ -381,7 +378,6 @@ func TestTeamProjectAccessesUpdate(t *testing.T) {
 		assert.Equal(t, tpa.Access, TeamProjectAccessCustom)
 		assert.Equal(t, *options.ProjectAccess.Teams, tpa.ProjectAccess.ProjectTeamsPermission)
 		assert.Equal(t, *options.ProjectAccess.Settings, tpa.ProjectAccess.ProjectSettingsPermission)
-		assert.Equal(t, *options.ProjectAccess.VariableSets, tpa.ProjectAccess.ProjectVariableSetsPermission)
 		assert.Equal(t, *options.WorkspaceAccess.Runs, tpa.WorkspaceAccess.WorkspaceRunsPermission)
 		assert.Equal(t, *options.WorkspaceAccess.SentinelMocks, tpa.WorkspaceAccess.WorkspaceSentinelMocksPermission)
 		assert.Equal(t, *options.WorkspaceAccess.StateVersions, tpa.WorkspaceAccess.WorkspaceStateVersionsPermission)
@@ -426,7 +422,6 @@ func TestTeamProjectAccessesUpdate(t *testing.T) {
 		assert.Equal(t, false, tpa.WorkspaceAccess.WorkspaceCreatePermission)
 		// assert that other attributes remain the same
 		assert.Equal(t, tpaCustomTest.ProjectAccess.ProjectSettingsPermission, tpa.ProjectAccess.ProjectSettingsPermission)
-		assert.Equal(t, tpaCustomTest.ProjectAccess.ProjectVariableSetsPermission, tpa.ProjectAccess.ProjectVariableSetsPermission)
 		assert.Equal(t, tpaCustomTest.WorkspaceAccess.WorkspaceLockingPermission, tpa.WorkspaceAccess.WorkspaceLockingPermission)
 		assert.Equal(t, tpaCustomTest.WorkspaceAccess.WorkspaceMovePermission, tpa.WorkspaceAccess.WorkspaceMovePermission)
 		assert.Equal(t, tpaCustomTest.WorkspaceAccess.WorkspaceDeletePermission, tpa.WorkspaceAccess.WorkspaceDeletePermission)
