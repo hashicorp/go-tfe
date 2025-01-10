@@ -166,6 +166,7 @@ func TestTeamProjectAccessesAdd(t *testing.T) {
 	})
 
 	t.Run("with valid options for all custom TeamProject permissions", func(t *testing.T) {
+		skipUnlessBeta(t)
 		options := TeamProjectAccessAddOptions{
 			Access:  *ProjectAccess(TeamProjectAccessCustom),
 			Team:    tmTest,
@@ -354,6 +355,7 @@ func TestTeamProjectAccessesUpdate(t *testing.T) {
 	})
 
 	t.Run("with valid custom permissions attributes for all permissions", func(t *testing.T) {
+		skipUnlessBeta(t)
 		options := TeamProjectAccessUpdateOptions{
 			Access: ProjectAccess(TeamProjectAccessCustom),
 			ProjectAccess: &TeamProjectAccessProjectPermissionsOptions{
