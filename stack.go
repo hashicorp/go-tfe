@@ -334,14 +334,6 @@ func (s StackCreateOptions) valid() error {
 	return s.VCSRepo.valid()
 }
 
-func (s StackVCSRepo) valid() error {
-	if s.Identifier == "" {
-		return ErrRequiredVCSRepo
-	}
-
-	return nil
-}
-
 func (s StackVCSRepoOptions) valid() error {
 	if s.Identifier == "" {
 		return ErrRequiredVCSRepo
