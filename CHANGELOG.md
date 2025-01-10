@@ -2,7 +2,8 @@
 
 ## Bug fixes
 
-* Includes a critical security update in an upstream depdendency `hashicorp/go-slug`
+* Includes a critical security update in an upstream depdendency `hashicorp/go-slug` @NodyHub [#1025](https://github.com/hashicorp/go-tfe/pull/1025)
+* Fix bug in BETA support for Linux arm64 agents, which is EXPERIMENTAL, SUBJECT TO CHANGE, and may not be available to all users @natalie-todd [#1022](https://github.com/hashicorp/go-tfe/pull/1022)
 
 # v1.73.0
 
