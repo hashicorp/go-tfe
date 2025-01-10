@@ -69,8 +69,10 @@ type TeamProjectAccess struct {
 
 // ProjectPermissions represents the team's permissions on its project
 type TeamProjectAccessProjectPermissions struct {
-	ProjectSettingsPermission     ProjectSettingsPermissionType     `jsonapi:"attr,settings"`
-	ProjectTeamsPermission        ProjectTeamsPermissionType        `jsonapi:"attr,teams"`
+	ProjectSettingsPermission ProjectSettingsPermissionType `jsonapi:"attr,settings"`
+	ProjectTeamsPermission    ProjectTeamsPermissionType    `jsonapi:"attr,teams"`
+	// ProjectVariableSetsPermission represents read, manage, and no access custom permission for project-level variable sets
+	// This relation is considered BETA, SUBJECT TO CHANGE, and likely unavailable to most users.
 	ProjectVariableSetsPermission ProjectVariableSetsPermissionType `jsonapi:"attr,variable-sets"`
 }
 
@@ -106,6 +108,7 @@ const (
 )
 
 // ProjectVariableSetsPermissionType represents the permission type to a project's variable sets
+// This relation is considered BETA, SUBJECT TO CHANGE, and likely unavailable to most users.
 type ProjectVariableSetsPermissionType string
 
 const (
@@ -151,8 +154,9 @@ const (
 )
 
 type TeamProjectAccessProjectPermissionsOptions struct {
-	Settings     *ProjectSettingsPermissionType     `json:"settings,omitempty"`
-	Teams        *ProjectTeamsPermissionType        `json:"teams,omitempty"`
+	Settings *ProjectSettingsPermissionType `json:"settings,omitempty"`
+	Teams    *ProjectTeamsPermissionType    `json:"teams,omitempty"`
+	// This relation is considered BETA, SUBJECT TO CHANGE, and likely unavailable to most users.
 	VariableSets *ProjectVariableSetsPermissionType `json:"variable-sets,omitempty"`
 }
 
