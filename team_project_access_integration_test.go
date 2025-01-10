@@ -166,15 +166,13 @@ func TestTeamProjectAccessesAdd(t *testing.T) {
 	})
 
 	t.Run("with valid options for all custom TeamProject permissions", func(t *testing.T) {
-		skipUnlessBeta(t)
 		options := TeamProjectAccessAddOptions{
 			Access:  *ProjectAccess(TeamProjectAccessCustom),
 			Team:    tmTest,
 			Project: pTest,
 			ProjectAccess: &TeamProjectAccessProjectPermissionsOptions{
-				Settings:     ProjectSettingsPermission(ProjectSettingsPermissionUpdate),
-				Teams:        ProjectTeamsPermission(ProjectTeamsPermissionManage),
-				VariableSets: ProjectVariableSetsPermission(ProjectVariableSetsPermissionWrite),
+				Settings: ProjectSettingsPermission(ProjectSettingsPermissionUpdate),
+				Teams:    ProjectTeamsPermission(ProjectTeamsPermissionManage),
 			},
 			WorkspaceAccess: &TeamProjectAccessWorkspacePermissionsOptions{
 				Runs:          WorkspaceRunsPermission(WorkspaceRunsPermissionApply),
@@ -211,7 +209,6 @@ func TestTeamProjectAccessesAdd(t *testing.T) {
 			assert.Equal(t, options.Access, item.Access)
 			assert.Equal(t, *options.ProjectAccess.Settings, item.ProjectAccess.ProjectSettingsPermission)
 			assert.Equal(t, *options.ProjectAccess.Teams, item.ProjectAccess.ProjectTeamsPermission)
-			assert.Equal(t, *options.ProjectAccess.VariableSets, item.ProjectAccess.ProjectVariableSetsPermission)
 			assert.Equal(t, *options.WorkspaceAccess.Runs, item.WorkspaceAccess.WorkspaceRunsPermission)
 			assert.Equal(t, *options.WorkspaceAccess.SentinelMocks, item.WorkspaceAccess.WorkspaceSentinelMocksPermission)
 			assert.Equal(t, *options.WorkspaceAccess.StateVersions, item.WorkspaceAccess.WorkspaceStateVersionsPermission)
@@ -221,6 +218,45 @@ func TestTeamProjectAccessesAdd(t *testing.T) {
 			assert.Equal(t, item.WorkspaceAccess.WorkspaceMovePermission, true)
 			assert.Equal(t, item.WorkspaceAccess.WorkspaceDeletePermission, false)
 			assert.Equal(t, item.WorkspaceAccess.WorkspaceRunTasksPermission, false)
+		}
+	})
+
+	t.Run("with valid options for custom variable sets permissions", func(t *testing.T) {
+		skipUnlessBeta(t)
+		options := TeamProjectAccessAddOptions{
+			Access:  *ProjectAccess(TeamProjectAccessCustom),
+			Team:    tmTest,
+			Project: pTest,
+			ProjectAccess: &TeamProjectAccessProjectPermissionsOptions{
+				VariableSets: ProjectVariableSetsPermission(ProjectVariableSetsPermissionWrite),
+			},
+			WorkspaceAccess: &TeamProjectAccessWorkspacePermissionsOptions{
+				Runs: WorkspaceRunsPermission(WorkspaceRunsPermissionApply),
+			},
+		}
+
+		tpa, err := client.TeamProjectAccess.Add(ctx, options)
+		t.Cleanup(func() {
+			err := client.TeamProjectAccess.Remove(ctx, tpa.ID)
+			if err != nil {
+				t.Logf("error removing team access (%s): %s", tpa.ID, err)
+			}
+		})
+
+		require.NoError(t, err)
+
+		// Get a refreshed view from the API.
+		refreshed, err := client.TeamProjectAccess.Read(ctx, tpa.ID)
+		require.NoError(t, err)
+
+		for _, item := range []*TeamProjectAccess{
+			tpa,
+			refreshed,
+		} {
+			assert.NotEmpty(t, item.ID)
+			assert.Equal(t, options.Access, item.Access)
+			assert.Equal(t, *options.ProjectAccess.VariableSets, item.ProjectAccess.ProjectVariableSetsPermission)
+			assert.Equal(t, *options.WorkspaceAccess.Runs, item.WorkspaceAccess.WorkspaceRunsPermission)
 		}
 	})
 
@@ -355,13 +391,11 @@ func TestTeamProjectAccessesUpdate(t *testing.T) {
 	})
 
 	t.Run("with valid custom permissions attributes for all permissions", func(t *testing.T) {
-		skipUnlessBeta(t)
 		options := TeamProjectAccessUpdateOptions{
 			Access: ProjectAccess(TeamProjectAccessCustom),
 			ProjectAccess: &TeamProjectAccessProjectPermissionsOptions{
-				Settings:     ProjectSettingsPermission(ProjectSettingsPermissionUpdate),
-				Teams:        ProjectTeamsPermission(ProjectTeamsPermissionManage),
-				VariableSets: ProjectVariableSetsPermission(ProjectVariableSetsPermissionRead),
+				Settings: ProjectSettingsPermission(ProjectSettingsPermissionUpdate),
+				Teams:    ProjectTeamsPermission(ProjectTeamsPermissionManage),
 			},
 			WorkspaceAccess: &TeamProjectAccessWorkspacePermissionsOptions{
 				Runs:          WorkspaceRunsPermission(WorkspaceRunsPermissionPlan),
@@ -383,7 +417,6 @@ func TestTeamProjectAccessesUpdate(t *testing.T) {
 		assert.Equal(t, tpa.Access, TeamProjectAccessCustom)
 		assert.Equal(t, *options.ProjectAccess.Teams, tpa.ProjectAccess.ProjectTeamsPermission)
 		assert.Equal(t, *options.ProjectAccess.Settings, tpa.ProjectAccess.ProjectSettingsPermission)
-		assert.Equal(t, *options.ProjectAccess.VariableSets, tpa.ProjectAccess.ProjectVariableSetsPermission)
 		assert.Equal(t, *options.WorkspaceAccess.Runs, tpa.WorkspaceAccess.WorkspaceRunsPermission)
 		assert.Equal(t, *options.WorkspaceAccess.SentinelMocks, tpa.WorkspaceAccess.WorkspaceSentinelMocksPermission)
 		assert.Equal(t, *options.WorkspaceAccess.StateVersions, tpa.WorkspaceAccess.WorkspaceStateVersionsPermission)
@@ -393,6 +426,48 @@ func TestTeamProjectAccessesUpdate(t *testing.T) {
 		assert.Equal(t, false, tpa.WorkspaceAccess.WorkspaceMovePermission)
 		assert.Equal(t, true, tpa.WorkspaceAccess.WorkspaceDeletePermission)
 		assert.Equal(t, true, tpa.WorkspaceAccess.WorkspaceRunTasksPermission)
+	})
+
+	t.Run("with valid custom permissions attributes for variable sets permissions", func(t *testing.T) {
+		skipUnlessBeta(t)
+		// create tpaCustomTest to verify unupdated attributes stay the same for custom permissions
+		// because going from admin to read to custom changes the values of all custom permissions
+		tm2Test, tm2TestCleanup := createTeam(t, client, orgTest)
+		defer tm2TestCleanup()
+
+		TpaOptions := TeamProjectAccessAddOptions{
+			Access:  *ProjectAccess(TeamProjectAccessCustom),
+			Team:    tm2Test,
+			Project: pTest,
+		}
+
+		tpaCustomTest, err := client.TeamProjectAccess.Add(ctx, TpaOptions)
+		require.NoError(t, err)
+
+		options := TeamProjectAccessUpdateOptions{
+			Access: ProjectAccess(TeamProjectAccessCustom),
+			ProjectAccess: &TeamProjectAccessProjectPermissionsOptions{
+				VariableSets: ProjectVariableSetsPermission(ProjectVariableSetsPermissionRead),
+			},
+			WorkspaceAccess: &TeamProjectAccessWorkspacePermissionsOptions{
+				Create: Bool(false),
+			},
+		}
+
+		tpa, err := client.TeamProjectAccess.Update(ctx, tpaCustomTest.ID, options)
+		require.NoError(t, err)
+		require.NotNil(t, options.ProjectAccess)
+		require.NotNil(t, options.WorkspaceAccess)
+		assert.Equal(t, *options.ProjectAccess.VariableSets, tpa.ProjectAccess.ProjectVariableSetsPermission)
+		assert.Equal(t, false, tpa.WorkspaceAccess.WorkspaceCreatePermission)
+		// assert that other attributes remain the same
+		assert.Equal(t, tpaCustomTest.ProjectAccess.ProjectSettingsPermission, tpa.ProjectAccess.ProjectSettingsPermission)
+		assert.Equal(t, tpaCustomTest.WorkspaceAccess.WorkspaceLockingPermission, tpa.WorkspaceAccess.WorkspaceLockingPermission)
+		assert.Equal(t, tpaCustomTest.WorkspaceAccess.WorkspaceMovePermission, tpa.WorkspaceAccess.WorkspaceMovePermission)
+		assert.Equal(t, tpaCustomTest.WorkspaceAccess.WorkspaceDeletePermission, tpa.WorkspaceAccess.WorkspaceDeletePermission)
+		assert.Equal(t, tpaCustomTest.WorkspaceAccess.WorkspaceRunsPermission, tpa.WorkspaceAccess.WorkspaceRunsPermission)
+		assert.Equal(t, tpaCustomTest.WorkspaceAccess.WorkspaceSentinelMocksPermission, tpa.WorkspaceAccess.WorkspaceSentinelMocksPermission)
+		assert.Equal(t, tpaCustomTest.WorkspaceAccess.WorkspaceStateVersionsPermission, tpa.WorkspaceAccess.WorkspaceStateVersionsPermission)
 	})
 
 	t.Run("with valid custom permissions attributes for some permissions", func(t *testing.T) {
@@ -435,6 +510,7 @@ func TestTeamProjectAccessesUpdate(t *testing.T) {
 		assert.Equal(t, tpaCustomTest.WorkspaceAccess.WorkspaceSentinelMocksPermission, tpa.WorkspaceAccess.WorkspaceSentinelMocksPermission)
 		assert.Equal(t, tpaCustomTest.WorkspaceAccess.WorkspaceStateVersionsPermission, tpa.WorkspaceAccess.WorkspaceStateVersionsPermission)
 	})
+
 	t.Run("with invalid custom permissions attributes", func(t *testing.T) {
 		options := TeamProjectAccessUpdateOptions{
 			Access: ProjectAccess(TeamProjectAccessCustom),
