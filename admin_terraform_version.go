@@ -62,11 +62,11 @@ type AdminTerraformVersion struct {
 	CreatedAt        time.Time `jsonapi:"attr,created-at,iso8601"`
 }
 
-type ToolVersionArchitecture struct {
-	URL  string `jsonapi:"attr,url"`
-	Sha  string `jsonapi:"attr,sha"`
-	OS   string `jsonapi:"attr,os"`
-	Arch string `jsonapi:"attr,arch"`
+type ToolVersionArchitectureOptions struct {
+	URL  string `json:"url"`
+	Sha  string `json:"sha"`
+	OS   string `json:"os"`
+	Arch string `json:"arch"`
 }
 
 // AdminTerraformVersionsListOptions represents the options for listing
@@ -84,16 +84,16 @@ type AdminTerraformVersionsListOptions struct {
 // AdminTerraformVersionCreateOptions for creating a terraform version.
 // https://developer.hashicorp.com/terraform/enterprise/api-docs/admin/terraform-versions#request-body
 type AdminTerraformVersionCreateOptions struct {
-	Type             string                     `jsonapi:"primary,terraform-versions"`
-	Version          *string                    `jsonapi:"attr,version"` // Required
-	URL              *string                    `jsonapi:"attr,url"`     // Required
-	Sha              *string                    `jsonapi:"attr,sha"`     // Required
-	Official         *bool                      `jsonapi:"attr,official,omitempty"`
-	Deprecated       *bool                      `jsonapi:"attr,deprecated,omitempty"`
-	DeprecatedReason *string                    `jsonapi:"attr,deprecated-reason,omitempty"`
-	Enabled          *bool                      `jsonapi:"attr,enabled,omitempty"`
-	Beta             *bool                      `jsonapi:"attr,beta,omitempty"`
-	Archs            []*ToolVersionArchitecture `jsonapi:"attr,archs,omitempty"`
+	Type             string                            `jsonapi:"primary,terraform-versions"`
+	Version          *string                           `jsonapi:"attr,version"` // Required
+	URL              *string                           `jsonapi:"attr,url"`     // Required
+	Sha              *string                           `jsonapi:"attr,sha"`     // Required
+	Official         *bool                             `jsonapi:"attr,official,omitempty"`
+	Deprecated       *bool                             `jsonapi:"attr,deprecated,omitempty"`
+	DeprecatedReason *string                           `jsonapi:"attr,deprecated-reason,omitempty"`
+	Enabled          *bool                             `jsonapi:"attr,enabled,omitempty"`
+	Beta             *bool                             `jsonapi:"attr,beta,omitempty"`
+	Archs            []*ToolVersionArchitectureOptions `jsonapi:"attr,archs,omitempty"`
 }
 
 // AdminTerraformVersionUpdateOptions for updating terraform version.
@@ -168,7 +168,6 @@ func (a *adminTerraformVersions) Create(ctx context.Context, options AdminTerraf
 	if err != nil {
 		return nil, err
 	}
-
 	return tfv, nil
 }
 
