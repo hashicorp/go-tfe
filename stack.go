@@ -69,6 +69,14 @@ type StackList struct {
 
 // StackVCSRepo represents the version control system repository for a stack.
 type StackVCSRepo struct {
+	Identifier        string `jsonapi:"attr,identifier"`
+	Branch            string `jsonapi:"attr,branch,omitempty"`
+	GHAInstallationID string `jsonapi:"attr,github-app-installation-id,omitempty"`
+	OAuthTokenID      string `jsonapi:"attr,oauth-token-id,omitempty"`
+}
+
+// StackVCSRepoOptions
+type StackVCSRepoOptions struct {
 	Identifier        string `json:"identifier"`
 	Branch            string `json:"branch,omitempty"`
 	GHAInstallationID string `json:"github-app-installation-id,omitempty"`
@@ -172,11 +180,11 @@ type StackReadOptions struct {
 // StackCreateOptions represents the options for creating a stack. The project
 // relation is required.
 type StackCreateOptions struct {
-	Type        string        `jsonapi:"primary,stacks"`
-	Name        string        `jsonapi:"attr,name"`
-	Description *string       `jsonapi:"attr,description,omitempty"`
-	VCSRepo     *StackVCSRepo `jsonapi:"attr,vcs-repo"`
-	Project     *Project      `jsonapi:"relation,project"`
+	Type        string               `jsonapi:"primary,stacks"`
+	Name        string               `jsonapi:"attr,name"`
+	Description *string              `jsonapi:"attr,description,omitempty"`
+	VCSRepo     *StackVCSRepoOptions `jsonapi:"attr,vcs-repo"`
+	Project     *Project             `jsonapi:"relation,project"`
 }
 
 // StackUpdateOptions represents the options for updating a stack.
@@ -327,6 +335,14 @@ func (s StackCreateOptions) valid() error {
 }
 
 func (s StackVCSRepo) valid() error {
+	if s.Identifier == "" {
+		return ErrRequiredVCSRepo
+	}
+
+	return nil
+}
+
+func (s StackVCSRepoOptions) valid() error {
 	if s.Identifier == "" {
 		return ErrRequiredVCSRepo
 	}
