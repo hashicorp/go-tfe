@@ -357,8 +357,9 @@ func TestTeamProjectAccessesUpdate(t *testing.T) {
 		options := TeamProjectAccessUpdateOptions{
 			Access: ProjectAccess(TeamProjectAccessCustom),
 			ProjectAccess: &TeamProjectAccessProjectPermissionsOptions{
-				Settings: ProjectSettingsPermission(ProjectSettingsPermissionUpdate),
-				Teams:    ProjectTeamsPermission(ProjectTeamsPermissionManage),
+				Settings:     ProjectSettingsPermission(ProjectSettingsPermissionUpdate),
+				Teams:        ProjectTeamsPermission(ProjectTeamsPermissionManage),
+				VariableSets: ProjectVariableSetsPermission(ProjectVariableSetsPermissionRead),
 			},
 			WorkspaceAccess: &TeamProjectAccessWorkspacePermissionsOptions{
 				Runs:          WorkspaceRunsPermission(WorkspaceRunsPermissionPlan),
@@ -380,6 +381,7 @@ func TestTeamProjectAccessesUpdate(t *testing.T) {
 		assert.Equal(t, tpa.Access, TeamProjectAccessCustom)
 		assert.Equal(t, *options.ProjectAccess.Teams, tpa.ProjectAccess.ProjectTeamsPermission)
 		assert.Equal(t, *options.ProjectAccess.Settings, tpa.ProjectAccess.ProjectSettingsPermission)
+		assert.Equal(t, *options.ProjectAccess.VariableSets, tpa.ProjectAccess.ProjectVariableSetsPermission)
 		assert.Equal(t, *options.WorkspaceAccess.Runs, tpa.WorkspaceAccess.WorkspaceRunsPermission)
 		assert.Equal(t, *options.WorkspaceAccess.SentinelMocks, tpa.WorkspaceAccess.WorkspaceSentinelMocksPermission)
 		assert.Equal(t, *options.WorkspaceAccess.StateVersions, tpa.WorkspaceAccess.WorkspaceStateVersionsPermission)
