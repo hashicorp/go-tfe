@@ -26,7 +26,7 @@ func TestStackSourceCreateUploadAndRead(t *testing.T) {
 	stack, err := client.Stacks.Create(ctx, StackCreateOptions{
 		Project: orgTest.DefaultProject,
 		Name:    "test-stack",
-		VCSRepo: &StackVCSRepo{
+		VCSRepo: &StackVCSRepoOptions{
 			Identifier:   "hashicorp-guides/pet-nulls-stack",
 			OAuthTokenID: oauthClient.OAuthTokens[0].ID,
 		},
