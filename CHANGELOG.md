@@ -1,16 +1,21 @@
 # Unreleased
 
+## Enhancements
+
 * Add BETA support for adding custom project permission for variable sets `ProjectVariableSetsPermission` by @netramali [21879](https://github.com/hashicorp/atlas/pull/21879)
+
+# v1.73.1
+
+## Bug fixes
+
+* Includes a critical security update in an upstream depdendency `hashicorp/go-slug` @NodyHub [#1025](https://github.com/hashicorp/go-tfe/pull/1025)
+* Fix bug in BETA support for Linux arm64 agents, which is EXPERIMENTAL, SUBJECT TO CHANGE, and may not be available to all users @natalie-todd [#1022](https://github.com/hashicorp/go-tfe/pull/1022)
 
 # v1.73.0
 
 ## Enhancements
 
 * Add support for team notification configurations @notchairmk [#1016](https://github.com/hashicorp/go-tfe/pull/1016)
-
-## Bug Fixes
-
-* Update dependency `github.com/hashicorp/go-slug` `v0.16.0` => `v0.16.3` to integrate latest changes.
 
 # v1.72.0
 
