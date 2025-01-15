@@ -1,5 +1,7 @@
 # Unreleased
 
+# v1.74.0
+
 ## Enhancements
 
 * Add BETA support for adding custom project permission for variable sets `ProjectVariableSetsPermission` by @netramali [21879](https://github.com/hashicorp/atlas/pull/21879)
