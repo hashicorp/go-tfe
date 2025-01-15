@@ -140,6 +140,18 @@ func TestTestRunsCreate(t *testing.T) {
 		_, err := client.TestRuns.Create(ctx, options)
 		require.NoError(t, err)
 	})
+
+	p := 10
+	t.Run("with a custom parallelism version", func(t *testing.T) {
+		options := TestRunCreateOptions{
+			ConfigurationVersion: cvTest,
+			RegistryModule:       rmTest,
+			Parallelism:          &p,
+		}
+		_, err := client.TestRuns.Create(ctx, options)
+		require.NoError(t, err)
+	})
+
 	t.Run("without a configuration version", func(t *testing.T) {
 		options := TestRunCreateOptions{
 			RegistryModule: rmTest,

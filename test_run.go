@@ -117,6 +117,9 @@ type TestRunCreateOptions struct {
 	// executed by this TestRun.
 	Verbose *bool `jsonapi:"attr,verbose,omitempty"`
 
+	// Parallelism controls the number of parallel operations to execute within a single test run.
+	Parallelism *int `jsonapi:"attr,parallelism,omitempty"`
+
 	// Variables allows you to specify terraform input variables for
 	// a particular run, prioritized over variables defined on the workspace.
 	Variables []*RunVariable `jsonapi:"attr,variables,omitempty"`
