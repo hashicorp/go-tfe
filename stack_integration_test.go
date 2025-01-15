@@ -31,7 +31,7 @@ func TestStackCreateAndList(t *testing.T) {
 
 	stack1, err := client.Stacks.Create(ctx, StackCreateOptions{
 		Name: "aa-test-stack",
-		VCSRepo: &StackVCSRepo{
+		VCSRepo: &StackVCSRepoOptions{
 			Identifier:   "hashicorp-guides/pet-nulls-stack",
 			OAuthTokenID: oauthClient.OAuthTokens[0].ID,
 		},
@@ -45,7 +45,7 @@ func TestStackCreateAndList(t *testing.T) {
 
 	stack2, err := client.Stacks.Create(ctx, StackCreateOptions{
 		Name: "zz-test-stack",
-		VCSRepo: &StackVCSRepo{
+		VCSRepo: &StackVCSRepoOptions{
 			Identifier:   "hashicorp-guides/pet-nulls-stack",
 			OAuthTokenID: oauthClient.OAuthTokens[0].ID,
 		},
@@ -143,7 +143,7 @@ func TestStackReadUpdateDelete(t *testing.T) {
 
 	stack, err := client.Stacks.Create(ctx, StackCreateOptions{
 		Name: "test-stack",
-		VCSRepo: &StackVCSRepo{
+		VCSRepo: &StackVCSRepoOptions{
 			Identifier:   "brandonc/pet-nulls-stack",
 			OAuthTokenID: oauthClient.OAuthTokens[0].ID,
 			Branch:       "main",
@@ -200,7 +200,7 @@ func TestStackReadUpdateForceDelete(t *testing.T) {
 
 	stack, err := client.Stacks.Create(ctx, StackCreateOptions{
 		Name: "test-stack",
-		VCSRepo: &StackVCSRepo{
+		VCSRepo: &StackVCSRepoOptions{
 			Identifier:   "brandonc/pet-nulls-stack",
 			OAuthTokenID: oauthClient.OAuthTokens[0].ID,
 			Branch:       "main",
@@ -356,7 +356,7 @@ func TestStackConverged(t *testing.T) {
 
 	stack, err := client.Stacks.Create(ctx, StackCreateOptions{
 		Name: "test-stack",
-		VCSRepo: &StackVCSRepo{
+		VCSRepo: &StackVCSRepoOptions{
 			Identifier:   "brandonc/pet-nulls-stack",
 			OAuthTokenID: oauthClient.OAuthTokens[0].ID,
 		},

@@ -278,6 +278,8 @@ var (
 
 	ErrRequiredURL = errors.New("url is required")
 
+	ErrRequiredArchOrURLAndSha = errors.New("valid arch or url and sha is required")
+
 	ErrRequiredAPIURL = errors.New("API URL is required")
 
 	ErrRequiredHTTPURL = errors.New("HTTP URL is required")

@@ -311,7 +311,6 @@ func TestConfigurationVersionsUploadTarGzip(t *testing.T) {
 		packer, err := slug.NewPacker(
 			slug.DereferenceSymlinks(),
 			slug.ApplyTerraformIgnore(),
-			slug.AllowSymlinkTarget("/target/symlink/path/foo"),
 		)
 		require.NoError(t, err)
 
