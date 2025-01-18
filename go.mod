@@ -12,7 +12,7 @@ require (
 	github.com/hashicorp/jsonapi v1.3.2
 	github.com/stretchr/testify v1.10.0
 	go.uber.org/mock v0.4.0
-	golang.org/x/sync v0.8.0
+	golang.org/x/sync v0.10.0
 	golang.org/x/time v0.9.0
 )
 
