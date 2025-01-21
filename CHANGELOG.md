@@ -1,5 +1,11 @@
 # Unreleased
 
+# v1.74.1
+
+## Enhancements
+
+* Add parallelism to create options for TF Test Runs by @dsa0x [1037](https://github.com/hashicorp/go-tfe/pull/1025)
+
 # v1.74.0
 
 ## Enhancements
