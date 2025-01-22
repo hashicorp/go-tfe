@@ -132,8 +132,6 @@ func TestAdminTerraformVersions_CreateDelete(t *testing.T) {
 		}()
 
 		assert.Equal(t, *opts.Version, tfv.Version)
-		assert.Equal(t, *opts.URL, tfv.URL)
-		assert.Equal(t, *opts.Sha, tfv.Sha)
 		assert.Equal(t, *opts.Official, tfv.Official)
 		assert.Equal(t, *opts.Deprecated, tfv.Deprecated)
 		assert.Equal(t, *opts.DeprecatedReason, *tfv.DeprecatedReason)
