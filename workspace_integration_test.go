@@ -299,6 +299,33 @@ func TestWorkspacesList(t *testing.T) {
 		assert.Contains(t, wl3.Items, w2)
 	})
 
+	t.Run("when including effective tag bindings", func(t *testing.T) {
+		skipUnlessBeta(t)
+
+		orgTest2, orgTest2Cleanup := createOrganization(t, client)
+		t.Cleanup(orgTest2Cleanup)
+
+		_, wTestCleanup1 := createWorkspaceWithOptions(t, client, orgTest2, WorkspaceCreateOptions{
+			Name: String(randomString(t)),
+			TagBindings: []*TagBinding{
+				{Key: "key1", Value: "value1"},
+				{Key: "key2", Value: "value2a"},
+			},
+		})
+		t.Cleanup(wTestCleanup1)
+
+		wl, err := client.Workspaces.List(ctx, orgTest2.Name, &WorkspaceListOptions{
+			Include: []WSIncludeOpt{WSEffectiveTagBindings},
+		})
+		require.NoError(t, err)
+		require.Len(t, wl.Items, 1)
+		require.Len(t, wl.Items[0].EffectiveTagBindings, 2)
+		assert.NotEmpty(t, wl.Items[0].EffectiveTagBindings[0].Key)
+		assert.NotEmpty(t, wl.Items[0].EffectiveTagBindings[0].Value)
+		assert.NotEmpty(t, wl.Items[0].EffectiveTagBindings[1].Key)
+		assert.NotEmpty(t, wl.Items[0].EffectiveTagBindings[1].Value)
+	})
+
 	t.Run("when using project id filter and project contains workspaces", func(t *testing.T) {
 		// create a project in the orgTest
 		p, pTestCleanup := createProject(t, client, orgTest)

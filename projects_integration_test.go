@@ -113,6 +113,33 @@ func TestProjectsList(t *testing.T) {
 		assert.Len(t, pl3.Items, 1)
 		assert.Contains(t, pl3.Items, p2)
 	})
+
+	t.Run("when including effective tags relationship", func(t *testing.T) {
+		skipUnlessBeta(t)
+
+		orgTest2, orgTest2Cleanup := createOrganization(t, client)
+		t.Cleanup(orgTest2Cleanup)
+
+		_, pTestCleanup1 := createProjectWithOptions(t, client, orgTest2, ProjectCreateOptions{
+			Name: randomStringWithoutSpecialChar(t),
+			TagBindings: []*TagBinding{
+				{Key: "key1", Value: "value1"},
+				{Key: "key2", Value: "value2a"},
+			},
+		})
+		t.Cleanup(pTestCleanup1)
+
+		pl, err := client.Projects.List(ctx, orgTest2.Name, &ProjectListOptions{
+			Include: []ProjectIncludeOpt{ProjectEffectiveTagBindings},
+		})
+		require.NoError(t, err)
+		require.Len(t, pl.Items, 2)
+		require.Len(t, pl.Items[0].EffectiveTagBindings, 2)
+		assert.NotEmpty(t, pl.Items[0].EffectiveTagBindings[0].Key)
+		assert.NotEmpty(t, pl.Items[0].EffectiveTagBindings[0].Value)
+		assert.NotEmpty(t, pl.Items[0].EffectiveTagBindings[1].Key)
+		assert.NotEmpty(t, pl.Items[0].EffectiveTagBindings[1].Value)
+	})
 }
 
 func TestProjectsRead(t *testing.T) {

@@ -71,8 +71,15 @@ type Project struct {
 	AutoDestroyActivityDuration jsonapi.NullableAttr[string] `jsonapi:"attr,auto-destroy-activity-duration,omitempty"`
 
 	// Relations
-	Organization *Organization `jsonapi:"relation,organization"`
+	Organization         *Organization          `jsonapi:"relation,organization"`
+	EffectiveTagBindings []*EffectiveTagBinding `jsonapi:"relation,effective-tag-bindings"`
 }
+
+type ProjectIncludeOpt string
+
+const (
+	ProjectEffectiveTagBindings ProjectIncludeOpt = "effective_tag_bindings"
+)
 
 // ProjectListOptions represents the options for listing projects
 type ProjectListOptions struct {
@@ -89,6 +96,9 @@ type ProjectListOptions struct {
 	// Optional: A filter string to list projects filtered by key/value tags.
 	// These are not annotated and therefore not encoded by go-querystring
 	TagBindings []*TagBinding
+
+	// Optional: A list of relations to include
+	Include []ProjectIncludeOpt `url:"include,omitempty"`
 }
 
 // ProjectCreateOptions represents the options for creating a project
