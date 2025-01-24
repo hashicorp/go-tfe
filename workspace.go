@@ -217,18 +217,19 @@ type Workspace struct {
 	SettingOverwrites           *WorkspaceSettingOverwrites     `jsonapi:"attr,setting-overwrites"`
 
 	// Relations
-	AgentPool                   *AgentPool            `jsonapi:"relation,agent-pool"`
-	CurrentRun                  *Run                  `jsonapi:"relation,current-run"`
-	CurrentStateVersion         *StateVersion         `jsonapi:"relation,current-state-version"`
-	Organization                *Organization         `jsonapi:"relation,organization"`
-	SSHKey                      *SSHKey               `jsonapi:"relation,ssh-key"`
-	Outputs                     []*WorkspaceOutputs   `jsonapi:"relation,outputs"`
-	Project                     *Project              `jsonapi:"relation,project"`
-	Tags                        []*Tag                `jsonapi:"relation,tags"`
-	CurrentConfigurationVersion *ConfigurationVersion `jsonapi:"relation,current-configuration-version,omitempty"`
-	LockedBy                    *LockedByChoice       `jsonapi:"polyrelation,locked-by"`
-	Variables                   []*Variable           `jsonapi:"relation,vars"`
-	TagBindings                 []*TagBinding         `jsonapi:"relation,tag-bindings"`
+	AgentPool                   *AgentPool             `jsonapi:"relation,agent-pool"`
+	CurrentRun                  *Run                   `jsonapi:"relation,current-run"`
+	CurrentStateVersion         *StateVersion          `jsonapi:"relation,current-state-version"`
+	Organization                *Organization          `jsonapi:"relation,organization"`
+	SSHKey                      *SSHKey                `jsonapi:"relation,ssh-key"`
+	Outputs                     []*WorkspaceOutputs    `jsonapi:"relation,outputs"`
+	Project                     *Project               `jsonapi:"relation,project"`
+	Tags                        []*Tag                 `jsonapi:"relation,tags"`
+	CurrentConfigurationVersion *ConfigurationVersion  `jsonapi:"relation,current-configuration-version,omitempty"`
+	LockedBy                    *LockedByChoice        `jsonapi:"polyrelation,locked-by"`
+	Variables                   []*Variable            `jsonapi:"relation,vars"`
+	TagBindings                 []*TagBinding          `jsonapi:"relation,tag-bindings"`
+	EffectiveTagBindings        []*EffectiveTagBinding `jsonapi:"relation,effective-tag-bindings"`
 
 	// Deprecated: Use DataRetentionPolicyChoice instead.
 	DataRetentionPolicy *DataRetentionPolicy
@@ -314,6 +315,7 @@ const (
 	WSCurrentRunPlan             WSIncludeOpt = "current_run.plan"
 	WSCurrentRunConfigVer        WSIncludeOpt = "current_run.configuration_version"
 	WSCurrentrunConfigVerIngress WSIncludeOpt = "current_run.configuration_version.ingress_attributes"
+	WSEffectiveTagBindings       WSIncludeOpt = "effective_tag_bindings"
 	WSLockedBy                   WSIncludeOpt = "locked_by"
 	WSReadme                     WSIncludeOpt = "readme"
 	WSOutputs                    WSIncludeOpt = "outputs"
