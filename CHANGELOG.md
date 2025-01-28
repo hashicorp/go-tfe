@@ -1,5 +1,7 @@
 # Unreleased
 
+# v1.75.0
+
 ## Enhancements
 
 * Adds `EffectiveTagBindings` relation to projects and workspaces, allowing the relation to be included when listing projects or workspaces by @sebasslash [#1043](https://github.com/hashicorp/go-tfe/pull/1043)
