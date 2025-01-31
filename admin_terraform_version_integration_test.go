@@ -109,7 +109,7 @@ func TestAdminTerraformVersions_CreateDelete(t *testing.T) {
 			Official:         Bool(false),
 			Enabled:          Bool(false),
 			Beta:             Bool(false),
-			Archs: []*ToolVersionArchitectureOptions{
+			Archs: []*ToolVersionArchitecture{
 				{
 					URL:  "https://www.hashicorp.com",
 					Sha:  *String(genSha(t)),
@@ -212,8 +212,6 @@ func TestAdminTerraformVersions_ReadUpdate(t *testing.T) {
 	client := testClient(t)
 	ctx := context.Background()
 
-	var id string
-
 	t.Run("reads and updates", func(t *testing.T) {
 		version := genSafeRandomTerraformVersion()
 		sha := String(genSha(t))
@@ -226,7 +224,7 @@ func TestAdminTerraformVersions_ReadUpdate(t *testing.T) {
 			DeprecatedReason: String("Test Reason"),
 			Enabled:          Bool(false),
 			Beta:             Bool(false),
-			Archs: []*ToolVersionArchitectureOptions{{
+			Archs: []*ToolVersionArchitecture{{
 				URL:  "https://www.hashicorp.com",
 				Sha:  *sha,
 				OS:   linux,
@@ -235,7 +233,7 @@ func TestAdminTerraformVersions_ReadUpdate(t *testing.T) {
 		}
 		tfv, err := client.Admin.TerraformVersions.Create(ctx, opts)
 		require.NoError(t, err)
-		id = tfv.ID
+		id := tfv.ID
 
 		defer func() {
 			deleteErr := client.Admin.TerraformVersions.Delete(ctx, id)
@@ -263,6 +261,7 @@ func TestAdminTerraformVersions_ReadUpdate(t *testing.T) {
 		}
 
 		tfv, err = client.Admin.TerraformVersions.Update(ctx, id, updateOpts)
+
 		require.NoError(t, err)
 
 		assert.Equal(t, updateVersion, tfv.Version)
@@ -275,12 +274,38 @@ func TestAdminTerraformVersions_ReadUpdate(t *testing.T) {
 	})
 
 	t.Run("update with Archs", func(t *testing.T) {
-		updateVersion := genSafeRandomTerraformVersion()
+		version := genSafeRandomTerraformVersion()
 		sha := String(genSha(t))
+		opts := AdminTerraformVersionCreateOptions{
+			Version:          String(version),
+			URL:              String("https://www.hashicorp.com"),
+			Sha:              String(genSha(t)),
+			Official:         Bool(false),
+			Deprecated:       Bool(true),
+			DeprecatedReason: String("Test Reason"),
+			Enabled:          Bool(false),
+			Beta:             Bool(false),
+			Archs: []*ToolVersionArchitecture{{
+				URL:  "https://www.hashicorp.com",
+				Sha:  *sha,
+				OS:   linux,
+				Arch: amd64,
+			}},
+		}
+		tfv, err := client.Admin.TerraformVersions.Create(ctx, opts)
+		require.NoError(t, err)
+		id := tfv.ID
+
+		defer func() {
+			deleteErr := client.Admin.TerraformVersions.Delete(ctx, id)
+			require.NoError(t, deleteErr)
+		}()
+
+		updateVersion := genSafeRandomTerraformVersion()
 		updateArchOpts := AdminTerraformVersionUpdateOptions{
 			Version:    String(updateVersion),
 			Deprecated: Bool(false),
-			Archs: []*ToolVersionArchitectureOptions{{
+			Archs: []*ToolVersionArchitecture{{
 				URL:  "https://www.hashicorp.com",
 				Sha:  *sha,
 				OS:   linux,
@@ -288,7 +313,7 @@ func TestAdminTerraformVersions_ReadUpdate(t *testing.T) {
 			}},
 		}
 
-		tfv, err := client.Admin.TerraformVersions.Update(ctx, id, updateArchOpts)
+		tfv, err = client.Admin.TerraformVersions.Update(ctx, id, updateArchOpts)
 		require.NoError(t, err)
 
 		assert.Equal(t, len(tfv.Archs), 1)
