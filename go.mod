@@ -9,7 +9,7 @@ require (
 	github.com/hashicorp/go-slug v0.16.4
 	github.com/hashicorp/go-uuid v1.0.3
 	github.com/hashicorp/go-version v1.7.0
-	github.com/hashicorp/jsonapi v1.3.2
+	github.com/hashicorp/jsonapi v1.4.1
 	github.com/stretchr/testify v1.10.0
 	go.uber.org/mock v0.4.0
 	golang.org/x/sync v0.10.0
