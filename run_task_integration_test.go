@@ -15,13 +15,13 @@ import (
 
 func hasGlobalRunTasks(client *Client, organizationName string) (bool, error) {
 	ctx := context.Background()
-	if orgEntitlements, err := client.Organizations.ReadEntitlements(ctx, organizationName); err != nil {
+	orgEntitlements, err := client.Organizations.ReadEntitlements(ctx, organizationName)
+	if err != nil {
 		return false, err
 	} else if orgEntitlements == nil {
 		return false, errors.New("The organization entitlements are empty.")
-	} else {
-		return orgEntitlements.GlobalRunTasks, nil
 	}
+	return orgEntitlements.GlobalRunTasks, nil
 }
 
 func TestRunTasksCreate(t *testing.T) {
