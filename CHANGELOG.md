@@ -1,5 +1,9 @@
 # Unreleased
 
+## Enhancements
+
+* Add support for proxied Terraform Registry endpoints for reading detailed module information by @paladin-devops [#1057](https://github.com/hashicorp/go-tfe/pull/1057) 
+
 ## Bug fixes
 
 * Adds `ToolVersionArchitecture` to `AdminTerraformVersionUpdateOptions` and `AdminTerraformVersion`. This provides BETA support, which is EXPERIMENTAL, SUBJECT TO CHANGE, and may not be available to all users by @kelsi-hoyle [#1047](https://github.com/hashicorp/go-tfe/pull/1047)
