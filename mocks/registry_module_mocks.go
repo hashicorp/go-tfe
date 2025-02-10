@@ -187,6 +187,21 @@ func (mr *MockRegistryModulesMockRecorder) Read(ctx, moduleID any) *gomock.Call 
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Read", reflect.TypeOf((*MockRegistryModules)(nil).Read), ctx, moduleID)
 }
 
+// ReadRegistry mocks base method.
+func (m *MockRegistryModules) ReadRegistry(ctx context.Context, moduleID tfe.RegistryModuleID, version string) (*tfe.TerraformRegistryModule, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "ReadRegistry", ctx, moduleID, version)
+	ret0, _ := ret[0].(*tfe.TerraformRegistryModule)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// ReadRegistry indicates an expected call of ReadRegistry.
+func (mr *MockRegistryModulesMockRecorder) ReadRegistry(ctx, moduleID, version any) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ReadRegistry", reflect.TypeOf((*MockRegistryModules)(nil).ReadRegistry), ctx, moduleID, version)
+}
+
 // ReadVersion mocks base method.
 func (m *MockRegistryModules) ReadVersion(ctx context.Context, moduleID tfe.RegistryModuleID, version string) (*tfe.RegistryModuleVersion, error) {
 	m.ctrl.T.Helper()
