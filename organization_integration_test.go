@@ -388,6 +388,27 @@ func TestOrganizationsUpdate(t *testing.T) {
 
 		t.Cleanup(orgAgentTestCleanup)
 	})
+
+	t.Run("with different default project", func(t *testing.T) {
+		skipUnlessBeta(t)
+
+		// Create an organization and a second project in the organization
+		org, orgCleanup := createOrganization(t, client)
+		t.Cleanup(orgCleanup)
+
+		proj, _ := createProject(t, client, org) // skip cleanup because default project cannot be deleted
+
+		// Update the default project and verify the change
+		updated, err := client.Organizations.Update(ctx, org.Name, OrganizationUpdateOptions{
+			DefaultProject: proj,
+		})
+		require.NoError(t, err)
+		require.Equal(t, proj.ID, updated.DefaultProject.ID)
+
+		fetched, err := client.Organizations.Read(ctx, org.Name)
+		require.NoError(t, err)
+		require.Equal(t, proj.ID, fetched.DefaultProject.ID)
+	})
 }
 
 func TestOrganizationsDelete(t *testing.T) {
