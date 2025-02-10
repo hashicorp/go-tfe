@@ -12,6 +12,7 @@ import (
 	"regexp"
 	"strings"
 	"testing"
+	"time"
 
 	retryablehttp "github.com/hashicorp/go-retryablehttp"
 	slug "github.com/hashicorp/go-slug"
@@ -1320,6 +1321,60 @@ func TestRegistryModulesRead(t *testing.T) {
 		})
 		assert.Nil(t, rm)
 		assert.Error(t, err)
+	})
+}
+
+func TestRegistryModulesReadRegistry(t *testing.T) {
+	client := testClient(t)
+	ctx := context.Background()
+	r := require.New(t)
+
+	// create an org that will be deleted later. the wskp will live here
+	orgTest, orgTestCleanup := createOrganization(t, client)
+	defer orgTestCleanup()
+
+	org, err := client.Organizations.Read(ctx, orgTest.Name)
+	r.NoError(err)
+	r.NotNil(org)
+
+	githubIdentifier := os.Getenv("GITHUB_REGISTRY_NO_CODE_MODULE_IDENTIFIER")
+	if githubIdentifier == "" {
+		t.Skip("Export a valid GITHUB_REGISTRY_NO_CODE_MODULE_IDENTIFIER before running this test")
+	}
+
+	token, cleanupToken := createOAuthToken(t, client, org)
+	defer cleanupToken()
+
+	rmOpts := RegistryModuleCreateWithVCSConnectionOptions{
+		VCSRepo: &RegistryModuleVCSRepoOptions{
+			OrganizationName:  String(org.Name),
+			Identifier:        String(githubIdentifier),
+			Tags:              Bool(true),
+			OAuthTokenID:      String(token.ID),
+			DisplayIdentifier: String(githubIdentifier),
+		},
+	}
+
+	version := "1.0.0"
+	rm, err := client.RegistryModules.CreateWithVCSConnection(ctx, rmOpts)
+	r.NoError(err)
+
+	// Wait a few seconds to let the module become ready
+	time.Sleep(time.Second * 5)
+
+	t.Run("fetch module from registry", func(t *testing.T) {
+		rmID := RegistryModuleID{
+			Organization: orgTest.Name,
+			Name:         rm.Name,
+			Provider:     rm.Provider,
+			Namespace:    rm.Namespace,
+			RegistryName: rm.RegistryName,
+		}
+		tfm, err := client.RegistryModules.ReadRegistry(ctx, rmID, version)
+		r.NoError(err)
+		r.NotNil(tfm)
+		r.Equal(fmt.Sprintf("%s/%s/%s/%s", orgTest.Name, rm.Name, rm.Provider, version), tfm.ID)
+		r.Equal(version, tfm.Version)
 	})
 }
 
