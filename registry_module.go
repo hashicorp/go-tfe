@@ -89,7 +89,7 @@ type TerraformRegistryModule struct {
 	PublishedAt     string `json:"published_at"`
 	Downloads       int    `json:"downloads"`
 	Verified        bool   `json:"verified"`
-	Root            `json:"root"`
+	Root            Root   `json:"root"`
 	// Submodules []Submodule `json:"submodules"`
 	// Examples []Example `json:"examples"`
 	Providers []string `json:"providers"`
