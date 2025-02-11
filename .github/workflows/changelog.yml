@@ -3,12 +3,14 @@
 name: Changelog
 
 on:
-  pull_request:
+  pull_request_target:
     types:
       - opened
       - ready_for_review
       - reopened
       - synchronize
+      - labeled
+      - unlabeled
 
 # This workflow runs for not-yet-reviewed external contributions and so it
 # intentionally has no write access and only limited read access to the
@@ -22,6 +24,9 @@ jobs:
   check-changelog-entry:
     name: "Check Changelog Entry"
     runs-on: ubuntu-latest
+    concurrency:
+      group: changelog-${{ github.ref }}
+      cancel-in-progress: true
 
     steps:
       - name: "Changed files"
@@ -37,11 +42,13 @@ jobs:
         with:
           script: |
             async function createOrUpdateChangelogComment(commentDetails, deleteComment) {
-                const commentStart = "## Changelog Warning";
+                const commentStart = "## Changelog Warning"
+                
                 const body = commentStart + "\n\n" + commentDetails;
                 const { number: issue_number } = context.issue;
                 const { owner, repo } = context.repo;
-
+                
+                // List all comments
                 const allComments = (await github.rest.issues.listComments({
                     issue_number,
                     owner,
@@ -50,7 +57,7 @@ jobs:
 
                 const existingComment = allComments.find(c => c.body.startsWith(commentStart));
                 const comment_id = existingComment?.id;
-
+                
                 if (deleteComment) {
                     if (existingComment) {
                         await github.rest.issues.deleteComment({
@@ -80,13 +87,15 @@ jobs:
                     });
                 }
             }
-
+            
             const changelogChangesPresent = ${{steps.changelog.outputs.changelog}};
-            const noChangelogNeededLabel = (await github.rest.issues.listLabelsOnIssue({
+
+            const prLabels = await github.rest.issues.listLabelsOnIssue({
                 issue_number: context.issue.number,
                 owner: context.repo.owner,
                 repo: context.repo.repo
-            })).data.find(label => label.name === 'no-changelog-needed');
+            });
+            const noChangelogNeededLabel = prLabels.data.find(label => label.name === 'no-changelog-needed');
 
             if (noChangelogNeededLabel) {
                 if (changelogChangesPresent) {
@@ -102,4 +111,5 @@ jobs:
                 return;
             }
 
+            // Nothing to complain about, so delete any existing comment
             await createOrUpdateChangelogComment("", true);
