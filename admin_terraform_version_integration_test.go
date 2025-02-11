@@ -97,6 +97,7 @@ func TestAdminTerraformVersions_List(t *testing.T) {
 
 func TestAdminTerraformVersions_CreateDelete(t *testing.T) {
 	skipUnlessEnterprise(t)
+	skipUnlessBeta(t)
 
 	client := testClient(t)
 	ctx := context.Background()
