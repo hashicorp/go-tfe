@@ -51,7 +51,6 @@ type GHAInstallationListOptions struct {
 func (s *gHAInstallations) List(ctx context.Context, options *GHAInstallationListOptions) (*GHAInstallationList, error) {
 	u := "github-app/installations"
 	req, err := s.client.NewRequest("GET", u, options)
-	fmt.Println(u)
 	if err != nil {
 		return nil, err
 	}

@@ -236,6 +236,10 @@ var (
 	ErrInvalidAccessToken = errors.New("invalid value for access token")
 
 	ErrInvalidTaskResultsCallbackStatus = fmt.Errorf("invalid value for task result status. Must be either `%s`, `%s`, or `%s`", TaskFailed, TaskPassed, TaskRunning)
+
+	ErrInvalidExplorerQueryFilterIndex = errors.New("invalid query filter index, must be greater than or equal to 0")
+
+	ErrInvalidExplorerViewType = errors.New("invalid explorer query view type, must be one of workspaces, tf_versions, providers, or modules")
 )
 
 var (
