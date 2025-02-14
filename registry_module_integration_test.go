@@ -1324,40 +1324,81 @@ func TestRegistryModulesRead(t *testing.T) {
 	})
 }
 
-func TestRegistryModulesReadRegistry(t *testing.T) {
+func TestRegistryModulesReadTerraformRegistryModule(t *testing.T) {
 	client := testClient(t)
 	ctx := context.Background()
 	r := require.New(t)
-
-	orgTest, orgTestCleanup := createOrganization(t, client)
-	defer orgTestCleanup()
 
 	githubIdentifier := os.Getenv("GITHUB_REGISTRY_NO_CODE_MODULE_IDENTIFIER")
 	if githubIdentifier == "" {
 		t.Skip("Export a valid GITHUB_REGISTRY_NO_CODE_MODULE_IDENTIFIER before running this test")
 	}
 
-	token, cleanupToken := createOAuthToken(t, client, orgTest)
-	defer cleanupToken()
+	// NOTE: These test cases use time.Sleep to wait for the module to be ready,
+	// an enhancement to these test cases would be to use a polling mechanism to
+	// check if the module is ready, and then time out if it is not ready after a
+	// certain amount of time.
 
-	rmOpts := RegistryModuleCreateWithVCSConnectionOptions{
-		VCSRepo: &RegistryModuleVCSRepoOptions{
-			OrganizationName:  String(orgTest.Name),
-			Identifier:        String(githubIdentifier),
-			Tags:              Bool(true),
-			OAuthTokenID:      String(token.ID),
-			DisplayIdentifier: String(githubIdentifier),
-		},
-	}
+	t.Run("fetch module from private registry", func(t *testing.T) {
+		orgTest, orgTestCleanup := createOrganization(t, client)
+		defer orgTestCleanup()
 
-	version := "1.0.0"
-	rm, err := client.RegistryModules.CreateWithVCSConnection(ctx, rmOpts)
-	r.NoError(err)
+		token, cleanupToken := createOAuthToken(t, client, orgTest)
+		defer cleanupToken()
 
-	// Wait a few seconds to let the module become ready
-	time.Sleep(time.Second * 5)
+		rmOpts := RegistryModuleCreateWithVCSConnectionOptions{
+			VCSRepo: &RegistryModuleVCSRepoOptions{
+				OrganizationName:  String(orgTest.Name),
+				Identifier:        String(githubIdentifier),
+				Tags:              Bool(true),
+				OAuthTokenID:      String(token.ID),
+				DisplayIdentifier: String(githubIdentifier),
+			},
+		}
 
-	t.Run("fetch module from registry", func(t *testing.T) {
+		version := "1.0.0"
+		rm, err := client.RegistryModules.CreateWithVCSConnection(ctx, rmOpts)
+		r.NoError(err)
+
+		time.Sleep(time.Second * 10)
+
+		rmID := RegistryModuleID{
+			Organization: orgTest.Name,
+			Name:         rm.Name,
+			Provider:     rm.Provider,
+			Namespace:    rm.Namespace,
+			RegistryName: rm.RegistryName,
+		}
+		tfm, err := client.RegistryModules.ReadTerraformRegistryModule(ctx, rmID, version)
+		r.NoError(err)
+		r.NotNil(tfm)
+		r.Equal(fmt.Sprintf("%s/%s/%s/%s", orgTest.Name, rm.Name, rm.Provider, version), tfm.ID)
+		r.Equal(version, tfm.Version)
+	})
+
+	t.Run("fetch module from public registry", func(t *testing.T) {
+		orgTest, orgTestCleanup := createOrganization(t, client)
+		defer orgTestCleanup()
+
+		token, cleanupToken := createOAuthToken(t, client, orgTest)
+		defer cleanupToken()
+
+		rmOpts := RegistryModuleCreateWithVCSConnectionOptions{
+			VCSRepo: &RegistryModuleVCSRepoOptions{
+				OrganizationName:  String(orgTest.Name),
+				Identifier:        String(githubIdentifier),
+				Tags:              Bool(true),
+				OAuthTokenID:      String(token.ID),
+				DisplayIdentifier: String(githubIdentifier),
+			},
+		}
+
+		version := "1.0.0"
+		rm, err := client.RegistryModules.CreateWithVCSConnection(ctx, rmOpts)
+		r.NoError(err)
+
+		time.Sleep(time.Second * 10)
+
 		rmID := RegistryModuleID{
 			Organization: orgTest.Name,
 			Name:         rm.Name,
