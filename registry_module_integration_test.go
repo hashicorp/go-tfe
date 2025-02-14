@@ -1329,25 +1329,20 @@ func TestRegistryModulesReadRegistry(t *testing.T) {
 	ctx := context.Background()
 	r := require.New(t)
 
-	// create an org that will be deleted later. the wskp will live here
 	orgTest, orgTestCleanup := createOrganization(t, client)
 	defer orgTestCleanup()
-
-	org, err := client.Organizations.Read(ctx, orgTest.Name)
-	r.NoError(err)
-	r.NotNil(org)
 
 	githubIdentifier := os.Getenv("GITHUB_REGISTRY_NO_CODE_MODULE_IDENTIFIER")
 	if githubIdentifier == "" {
 		t.Skip("Export a valid GITHUB_REGISTRY_NO_CODE_MODULE_IDENTIFIER before running this test")
 	}
 
-	token, cleanupToken := createOAuthToken(t, client, org)
+	token, cleanupToken := createOAuthToken(t, client, orgTest)
 	defer cleanupToken()
 
 	rmOpts := RegistryModuleCreateWithVCSConnectionOptions{
 		VCSRepo: &RegistryModuleVCSRepoOptions{
-			OrganizationName:  String(org.Name),
+			OrganizationName:  String(orgTest.Name),
 			Identifier:        String(githubIdentifier),
 			Tags:              Bool(true),
 			OAuthTokenID:      String(token.ID),
@@ -1370,7 +1365,7 @@ func TestRegistryModulesReadRegistry(t *testing.T) {
 			Namespace:    rm.Namespace,
 			RegistryName: rm.RegistryName,
 		}
-		tfm, err := client.RegistryModules.ReadRegistry(ctx, rmID, version)
+		tfm, err := client.RegistryModules.ReadTerraformRegistryModule(ctx, rmID, version)
 		r.NoError(err)
 		r.NotNil(tfm)
 		r.Equal(fmt.Sprintf("%s/%s/%s/%s", orgTest.Name, rm.Name, rm.Provider, version), tfm.ID)

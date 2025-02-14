@@ -2,8 +2,8 @@
 
 ## Enhancements
 
-* Add support for proxied Terraform Registry endpoints for reading detailed module information by @paladin-devops [#1057](https://github.com/hashicorp/go-tfe/pull/1057) 
 * Adds `DefaultProject` to `OrganizationUpdateOptions` to support updating an organization's default project. This provides BETA support, which is EXPERIMENTAL, SUBJECT TO CHANGE, and may not be available to all users, by @mkam [#1056](https://github.com/hashicorp/go-tfe/pull/1056)
+* Adds `ReadTerraformRegistryModule` to support reading a registry module from Terraform Registry's proxied endpoints by @paladin-devops [#1057](https://github.com/hashicorp/go-tfe/pull/1057) 
 
 ## Bug fixes
 

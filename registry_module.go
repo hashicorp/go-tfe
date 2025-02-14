@@ -45,9 +45,11 @@ type RegistryModules interface {
 	// ReadVersion Read a registry module version
 	ReadVersion(ctx context.Context, moduleID RegistryModuleID, version string) (*RegistryModuleVersion, error)
 
-	// ReadRegistry Reads a registry module from the Terraform Registry.
+	// ReadTerraformRegistryModule Reads a registry module from the Terraform
+	// Registry, as opposed to Read or ReadVersion which read from the private
+	// registry of a Terraform organization.
 	// https://developer.hashicorp.com/terraform/enterprise/api-docs/private-registry/modules#hcp-terraform-registry-implementation
-	ReadRegistry(ctx context.Context, moduleID RegistryModuleID, version string) (*TerraformRegistryModule, error)
+	ReadTerraformRegistryModule(ctx context.Context, moduleID RegistryModuleID, version string) (*TerraformRegistryModule, error)
 
 	// Delete a registry module
 	// Warning: This method is deprecated and will be removed from a future version of go-tfe. Use DeleteByName instead.
@@ -76,35 +78,31 @@ type RegistryModules interface {
 
 // TerraformRegistryModule contains data about a module from the Terraform Registry.
 type TerraformRegistryModule struct {
-	ID              string `json:"id"`
-	Owner           string `json:"owner"`
-	Namespace       string `json:"namespace"`
-	Name            string `json:"name"`
-	Version         string `json:"version"`
-	Provider        string `json:"provider"`
-	ProviderLogoURL string `json:"provider_logo_url"`
-	Description     string `json:"description"`
-	Source          string `json:"source"`
-	Tag             string `json:"tag"`
-	PublishedAt     string `json:"published_at"`
-	Downloads       int    `json:"downloads"`
-	Verified        bool   `json:"verified"`
-	Root            Root   `json:"root"`
-	// Submodules []Submodule `json:"submodules"`
-	// Examples []Example `json:"examples"`
-	Providers []string `json:"providers"`
-	Versions  []string `json:"versions"`
-	// Deprecation *Deprecation `json:"deprecation"`
+	ID              string   `json:"id"`
+	Owner           string   `json:"owner"`
+	Namespace       string   `json:"namespace"`
+	Name            string   `json:"name"`
+	Version         string   `json:"version"`
+	Provider        string   `json:"provider"`
+	ProviderLogoURL string   `json:"provider_logo_url"`
+	Description     string   `json:"description"`
+	Source          string   `json:"source"`
+	Tag             string   `json:"tag"`
+	PublishedAt     string   `json:"published_at"`
+	Downloads       int      `json:"downloads"`
+	Verified        bool     `json:"verified"`
+	Root            Root     `json:"root"`
+	Providers       []string `json:"providers"`
+	Versions        []string `json:"versions"`
 }
 
 type Root struct {
-	Path    string   `json:"path"`
-	Name    string   `json:"name"`
-	Readme  string   `json:"readme"`
-	Empty   bool     `json:"empty"`
-	Inputs  []Input  `json:"inputs"`
-	Outputs []Output `json:"outputs"`
-	// Dependencies []Dependency `json:"dependencies"`
+	Path                 string               `json:"path"`
+	Name                 string               `json:"name"`
+	Readme               string               `json:"readme"`
+	Empty                bool                 `json:"empty"`
+	Inputs               []Input              `json:"inputs"`
+	Outputs              []Output             `json:"outputs"`
 	ProviderDependencies []ProviderDependency `json:"provider_dependencies"`
 	Resources            []Resource           `json:"resources"`
 }
@@ -638,7 +636,7 @@ func (r *registryModules) Read(ctx context.Context, moduleID RegistryModuleID) (
 }
 
 // ReadRegistry fetches a registry module from the Terraform Registry.
-func (r *registryModules) ReadRegistry(ctx context.Context, moduleID RegistryModuleID, version string) (*TerraformRegistryModule, error) {
+func (r *registryModules) ReadTerraformRegistryModule(ctx context.Context, moduleID RegistryModuleID, version string) (*TerraformRegistryModule, error) {
 	u := fmt.Sprintf(
 		"https://app.terraform.io/api/registry/v1/modules/%s/%s/%s/%s",
 		moduleID.Namespace,
