@@ -45,6 +45,12 @@ type RegistryModules interface {
 	// ReadVersion Read a registry module version
 	ReadVersion(ctx context.Context, moduleID RegistryModuleID, version string) (*RegistryModuleVersion, error)
 
+	// ReadTerraformRegistryModule Reads a registry module from the Terraform
+	// Registry, as opposed to Read or ReadVersion which read from the private
+	// registry of a Terraform organization.
+	// https://developer.hashicorp.com/terraform/enterprise/api-docs/private-registry/modules#hcp-terraform-registry-implementation
+	ReadTerraformRegistryModule(ctx context.Context, moduleID RegistryModuleID, version string) (*TerraformRegistryModule, error)
+
 	// Delete a registry module
 	// Warning: This method is deprecated and will be removed from a future version of go-tfe. Use DeleteByName instead.
 	Delete(ctx context.Context, organization string, name string) error
@@ -68,6 +74,62 @@ type RegistryModules interface {
 
 	// Upload a tar gzip archive to the specified configuration version upload URL.
 	UploadTarGzip(ctx context.Context, url string, r io.Reader) error
+}
+
+// TerraformRegistryModule contains data about a module from the Terraform Registry.
+type TerraformRegistryModule struct {
+	ID              string   `json:"id"`
+	Owner           string   `json:"owner"`
+	Namespace       string   `json:"namespace"`
+	Name            string   `json:"name"`
+	Version         string   `json:"version"`
+	Provider        string   `json:"provider"`
+	ProviderLogoURL string   `json:"provider_logo_url"`
+	Description     string   `json:"description"`
+	Source          string   `json:"source"`
+	Tag             string   `json:"tag"`
+	PublishedAt     string   `json:"published_at"`
+	Downloads       int      `json:"downloads"`
+	Verified        bool     `json:"verified"`
+	Root            Root     `json:"root"`
+	Providers       []string `json:"providers"`
+	Versions        []string `json:"versions"`
+}
+
+type Root struct {
+	Path                 string               `json:"path"`
+	Name                 string               `json:"name"`
+	Readme               string               `json:"readme"`
+	Empty                bool                 `json:"empty"`
+	Inputs               []Input              `json:"inputs"`
+	Outputs              []Output             `json:"outputs"`
+	ProviderDependencies []ProviderDependency `json:"provider_dependencies"`
+	Resources            []Resource           `json:"resources"`
+}
+
+type Input struct {
+	Name        string `json:"name"`
+	Type        string `json:"type"`
+	Description string `json:"description"`
+	Default     string `json:"default"`
+	Required    bool   `json:"required"`
+}
+
+type Output struct {
+	Name        string `json:"name"`
+	Description string `json:"description"`
+}
+
+type ProviderDependency struct {
+	Name      string `json:"name"`
+	Namespace string `json:"namespace"`
+	Source    string `json:"source"`
+	Version   string `json:"version"`
+}
+
+type Resource struct {
+	Name string `json:"name"`
+	Type string `json:"type"`
 }
 
 // registryModules implements RegistryModules.
@@ -572,6 +634,38 @@ func (r *registryModules) Read(ctx context.Context, moduleID RegistryModuleID) (
 
 	return rm, nil
 }
+
+// ReadRegistry fetches a registry module from the Terraform Registry.
+func (r *registryModules) ReadTerraformRegistryModule(ctx context.Context, moduleID RegistryModuleID, version string) (*TerraformRegistryModule, error) {
+	u := fmt.Sprintf(
+		"https://app.terraform.io/api/registry/v1/modules/%s/%s/%s/%s",
+		moduleID.Namespace,
+		moduleID.Name,
+		moduleID.Provider,
+		version,
+	)
+	if moduleID.RegistryName == PublicRegistry {
+		u = fmt.Sprintf(
+			"https://app.terraform.io/api/registry/public/v1/modules/%s/%s/%s/%s",
+			moduleID.Namespace,
+			moduleID.Name,
+			moduleID.Provider,
+			version,
+		)
+	}
+	req, err := r.client.NewRequest("GET", u, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	trm := &TerraformRegistryModule{}
+	err = req.DoJSON(ctx, trm)
+	if err != nil {
+		return nil, err
+	}
+	return trm, nil
+}
+
 func (r *registryModules) ReadVersion(ctx context.Context, moduleID RegistryModuleID, version string) (*RegistryModuleVersion, error) {
 	if err := moduleID.valid(); err != nil {
 		return nil, err

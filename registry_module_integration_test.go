@@ -12,6 +12,7 @@ import (
 	"regexp"
 	"strings"
 	"testing"
+	"time"
 
 	retryablehttp "github.com/hashicorp/go-retryablehttp"
 	slug "github.com/hashicorp/go-slug"
@@ -1320,6 +1321,126 @@ func TestRegistryModulesRead(t *testing.T) {
 		})
 		assert.Nil(t, rm)
 		assert.Error(t, err)
+	})
+}
+
+func TestRegistryModulesReadTerraformRegistryModule(t *testing.T) {
+	client := testClient(t)
+	ctx := context.Background()
+	r := require.New(t)
+
+	githubIdentifier := os.Getenv("GITHUB_REGISTRY_NO_CODE_MODULE_IDENTIFIER")
+	if githubIdentifier == "" {
+		t.Skip("Export a valid GITHUB_REGISTRY_NO_CODE_MODULE_IDENTIFIER before running this test")
+	}
+
+	// NOTE: These test cases use time.Sleep to wait for the module to be ready,
+	// an enhancement to these test cases would be to use a polling mechanism to
+	// check if the module is ready, and then time out if it is not ready after a
+	// certain amount of time.
+
+	t.Run("fetch module from private registry", func(t *testing.T) {
+		orgTest, orgTestCleanup := createOrganization(t, client)
+		defer orgTestCleanup()
+
+		token, cleanupToken := createOAuthToken(t, client, orgTest)
+		defer cleanupToken()
+
+		rmOpts := RegistryModuleCreateWithVCSConnectionOptions{
+			VCSRepo: &RegistryModuleVCSRepoOptions{
+				OrganizationName:  String(orgTest.Name),
+				Identifier:        String(githubIdentifier),
+				Tags:              Bool(true),
+				OAuthTokenID:      String(token.ID),
+				DisplayIdentifier: String(githubIdentifier),
+			},
+		}
+
+		version := "1.0.0"
+		rm, err := client.RegistryModules.CreateWithVCSConnection(ctx, rmOpts)
+		r.NoError(err)
+
+		time.Sleep(time.Second * 10)
+
+		rmID := RegistryModuleID{
+			Organization: orgTest.Name,
+			Name:         rm.Name,
+			Provider:     rm.Provider,
+			Namespace:    rm.Namespace,
+			RegistryName: rm.RegistryName,
+		}
+		tfm, err := client.RegistryModules.ReadTerraformRegistryModule(ctx, rmID, version)
+		r.NoError(err)
+		r.NotNil(tfm)
+		r.Equal(fmt.Sprintf("%s/%s/%s/%s", orgTest.Name, rm.Name, rm.Provider, version), tfm.ID)
+		r.Equal(rm.Name, tfm.Name)
+		r.Equal("A test Terraform module for use in CI pipelines", tfm.Description)
+		r.Equal(rm.Provider, tfm.Provider)
+		r.Equal(rm.Namespace, tfm.Namespace)
+		r.Equal(version, tfm.Version)
+		r.Equal("", tfm.Tag)
+		r.Equal(0, tfm.Downloads)
+		r.False(tfm.Verified)
+		r.NotNil(tfm.Root)
+		r.Equal(rm.Name, tfm.Root.Name)
+		r.Equal("", tfm.Root.Readme)
+		r.False(tfm.Root.Empty)
+		r.Len(tfm.Root.Inputs, 1)
+		r.Len(tfm.Root.Outputs, 1)
+		r.Len(tfm.Root.ProviderDependencies, 1)
+		r.Len(tfm.Root.Resources, 1)
+	})
+
+	t.Run("fetch module from public registry", func(t *testing.T) {
+		orgTest, orgTestCleanup := createOrganization(t, client)
+		defer orgTestCleanup()
+
+		token, cleanupToken := createOAuthToken(t, client, orgTest)
+		defer cleanupToken()
+
+		rmOpts := RegistryModuleCreateWithVCSConnectionOptions{
+			VCSRepo: &RegistryModuleVCSRepoOptions{
+				OrganizationName:  String(orgTest.Name),
+				Identifier:        String(githubIdentifier),
+				Tags:              Bool(true),
+				OAuthTokenID:      String(token.ID),
+				DisplayIdentifier: String(githubIdentifier),
+			},
+		}
+
+		version := "1.0.0"
+		rm, err := client.RegistryModules.CreateWithVCSConnection(ctx, rmOpts)
+		r.NoError(err)
+
+		time.Sleep(time.Second * 10)
+
+		rmID := RegistryModuleID{
+			Organization: orgTest.Name,
+			Name:         rm.Name,
+			Provider:     rm.Provider,
+			Namespace:    rm.Namespace,
+			RegistryName: rm.RegistryName,
+		}
+		tfm, err := client.RegistryModules.ReadTerraformRegistryModule(ctx, rmID, version)
+		r.NoError(err)
+		r.NotNil(tfm)
+		r.Equal(fmt.Sprintf("%s/%s/%s/%s", orgTest.Name, rm.Name, rm.Provider, version), tfm.ID)
+		r.Equal(rm.Name, tfm.Name)
+		r.Equal("A test Terraform module for use in CI pipelines", tfm.Description)
+		r.Equal(rm.Provider, tfm.Provider)
+		r.Equal(rm.Namespace, tfm.Namespace)
+		r.Equal(version, tfm.Version)
+		r.Equal("", tfm.Tag)
+		r.Equal(0, tfm.Downloads)
+		r.False(tfm.Verified)
+		r.NotNil(tfm.Root)
+		r.Equal(rm.Name, tfm.Root.Name)
+		r.Equal("", tfm.Root.Readme)
+		r.False(tfm.Root.Empty)
+		r.Len(tfm.Root.Inputs, 1)
+		r.Len(tfm.Root.Outputs, 1)
+		r.Len(tfm.Root.ProviderDependencies, 1)
+		r.Len(tfm.Root.Resources, 1)
 	})
 }
 
