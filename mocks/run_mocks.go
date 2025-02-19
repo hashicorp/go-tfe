@@ -141,18 +141,18 @@ func (mr *MockRunsMockRecorder) List(ctx, workspaceID, options any) *gomock.Call
 }
 
 // ListForOrganization mocks base method.
-func (m *MockRuns) ListForOrganization(ctx context.Context, organisation string, options *tfe.RunListForOrganizationOptions) (*tfe.RunList, error) {
+func (m *MockRuns) ListForOrganization(ctx context.Context, organization string, options *tfe.RunListForOrganizationOptions) (*tfe.RunList, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "ListForOrganization", ctx, organisation, options)
+	ret := m.ctrl.Call(m, "ListForOrganization", ctx, organization, options)
 	ret0, _ := ret[0].(*tfe.RunList)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
 
 // ListForOrganization indicates an expected call of ListForOrganization.
-func (mr *MockRunsMockRecorder) ListForOrganization(ctx, organisation, options any) *gomock.Call {
+func (mr *MockRunsMockRecorder) ListForOrganization(ctx, organization, options any) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListForOrganization", reflect.TypeOf((*MockRuns)(nil).ListForOrganization), ctx, organisation, options)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListForOrganization", reflect.TypeOf((*MockRuns)(nil).ListForOrganization), ctx, organization, options)
 }
 
 // Read mocks base method.

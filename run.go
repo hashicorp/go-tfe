@@ -22,7 +22,7 @@ type Runs interface {
 	List(ctx context.Context, workspaceID string, options *RunListOptions) (*RunList, error)
 
 	// List all the runs of the given organization.
-	ListForOrganization(ctx context.Context, organisation string, options *RunListForOrganizationOptions) (*RunList, error)
+	ListForOrganization(ctx context.Context, organization string, options *RunListForOrganizationOptions) (*RunList, error)
 
 	// Create a new run with the given options.
 	Create(ctx context.Context, options RunCreateOptions) (*Run, error)
