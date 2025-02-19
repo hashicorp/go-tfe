@@ -772,9 +772,7 @@ func TestRunsListForOrganization(t *testing.T) {
 	})
 
 	t.Run("with list options", func(t *testing.T) {
-		t.Skip("paging not supported yet in API")
-
-		// Request a page number which is out of range. The result should
+		// Request a page number that is out of range. The result should
 		// be successful, but return no results if the paging options are
 		// properly passed along.
 		rl, err := client.Runs.ListForOrganization(ctx, orgTest.Name, &RunListForOrganizationOptions{
