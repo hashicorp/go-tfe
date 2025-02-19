@@ -21,6 +21,9 @@ type Runs interface {
 	// List all the runs of the given workspace.
 	List(ctx context.Context, workspaceID string, options *RunListOptions) (*RunList, error)
 
+	// List all the runs of the given organization.
+	ListForOrganization(ctx context.Context, organization string, options *RunListForOrganizationOptions) (*RunList, error)
+
 	// Create a new run with the given options.
 	Create(ctx context.Context, options RunCreateOptions) (*Run, error)
 
@@ -250,6 +253,52 @@ type RunListOptions struct {
 	Include []RunIncludeOpt `url:"include,omitempty"`
 }
 
+// RunListForOrganizationOptions represents the options for listing runs for an organization.
+type RunListForOrganizationOptions struct {
+	ListOptions
+
+	// Optional: Searches runs that matches the supplied VCS username.
+	User string `url:"search[user],omitempty"`
+
+	// Optional: Searches runs that matches the supplied commit sha.
+	Commit string `url:"search[commit],omitempty"`
+
+	// Optional: Searches for runs that match the VCS username, commit sha, run_id, or run message your specify.
+	// The presence of search[commit] or search[user] takes priority over this parameter and will be omitted.
+	Basic string `url:"search[basic],omitempty"`
+
+	// Optional: Comma-separated list of acceptable run statuses.
+	// Options are listed at https://developer.hashicorp.com/terraform/cloud-docs/api-docs/run#run-states,
+	// or as constants with the RunStatus string type.
+	Status string `url:"filter[status],omitempty"`
+
+	// Optional: Comma-separated list of acceptable run sources.
+	// Options are listed at https://developer.hashicorp.com/terraform/cloud-docs/api-docs/run#run-sources,
+	// or as constants with the RunSource string type.
+	Source string `url:"filter[source],omitempty"`
+
+	// Optional: Comma-separated list of acceptable run operation types.
+	// Options are listed at https://developer.hashicorp.com/terraform/cloud-docs/api-docs/run#run-operations,
+	// or as constants with the RunOperation string type.
+	Operation string `url:"filter[operation],omitempty"`
+
+	// Optional: Comma-separated list of agent pool names.
+	AgentPoolNames string `url:"filter[agent_pool_names],omitempty"`
+
+	// Optional: Comma-separated list of run status groups.
+	StatusGroup string `url:"filter[status_group],omitempty"`
+
+	// Optional: Comma-separated list of run timeframe.
+	Timeframe string `url:"filter[timeframe],omitempty"`
+
+	// Optional: Comma-separated list of workspace names. The result lists runs that belong to one of the workspaces your specify.
+	WorkspaceNames string `url:"filter[workspace_names],omitempty"`
+
+	// Optional: A list of relations to include. See available resources:
+	// https://developer.hashicorp.com/terraform/cloud-docs/api-docs/run#available-related-resources
+	Include []RunIncludeOpt `url:"include,omitempty"`
+}
+
 // RunReadOptions represents the options for reading a run.
 type RunReadOptions struct {
 	// Optional: A list of relations to include. See available resources:
@@ -384,6 +433,30 @@ func (s *runs) List(ctx context.Context, workspaceID string, options *RunListOpt
 	}
 
 	u := fmt.Sprintf("workspaces/%s/runs", url.PathEscape(workspaceID))
+	req, err := s.client.NewRequest("GET", u, options)
+	if err != nil {
+		return nil, err
+	}
+
+	rl := &RunList{}
+	err = req.Do(ctx, rl)
+	if err != nil {
+		return nil, err
+	}
+
+	return rl, nil
+}
+
+// List all the runs of the given workspace.
+func (s *runs) ListForOrganization(ctx context.Context, organization string, options *RunListForOrganizationOptions) (*RunList, error) {
+	if !validStringID(&organization) {
+		return nil, ErrInvalidOrg
+	}
+	if err := options.valid(); err != nil {
+		return nil, err
+	}
+
+	u := fmt.Sprintf("organizations/%s/runs", url.PathEscape(organization))
 	req, err := s.client.NewRequest("GET", u, options)
 	if err != nil {
 		return nil, err
@@ -544,5 +617,9 @@ func (o *RunReadOptions) valid() error {
 }
 
 func (o *RunListOptions) valid() error {
+	return nil
+}
+
+func (o *RunListForOrganizationOptions) valid() error {
 	return nil
 }

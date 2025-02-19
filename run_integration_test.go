@@ -720,3 +720,126 @@ func TestRunCreateOptions_Marshal(t *testing.T) {
 
 	assert.Equal(t, string(bodyBytes), expectedBody)
 }
+
+func TestRunsListForOrganization(t *testing.T) {
+	client := testClient(t)
+	ctx := context.Background()
+
+	orgTest, orgTestCleanup := createOrganization(t, client)
+	defer orgTestCleanup()
+
+	apTest, _ := createAgentPool(t, client, orgTest)
+
+	wTest, _ := createWorkspaceWithOptions(t, client, orgTest, WorkspaceCreateOptions{
+		Name:          String(randomString(t)),
+		ExecutionMode: String("agent"),
+		AgentPoolID:   &apTest.ID,
+	})
+	rTest1, _ := createRun(t, client, wTest)
+	rTest2, _ := createRun(t, client, wTest)
+
+	t.Run("without list options", func(t *testing.T) {
+		rl, err := client.Runs.ListForOrganization(ctx, orgTest.Name, nil)
+		require.NoError(t, err)
+
+		found := []string{}
+		for _, r := range rl.Items {
+			found = append(found, r.ID)
+		}
+
+		assert.Contains(t, found, rTest1.ID)
+		assert.Contains(t, found, rTest2.ID)
+		assert.Equal(t, 1, rl.CurrentPage)
+		assert.Equal(t, 2, rl.TotalCount)
+	})
+
+	t.Run("without list options and include as nil", func(t *testing.T) {
+		rl, err := client.Runs.ListForOrganization(ctx, orgTest.Name, &RunListForOrganizationOptions{
+			Include: []RunIncludeOpt{},
+		})
+		require.NoError(t, err)
+		require.NotEmpty(t, rl.Items)
+
+		found := []string{}
+		for _, r := range rl.Items {
+			found = append(found, r.ID)
+		}
+
+		assert.Contains(t, found, rTest1.ID)
+		assert.Contains(t, found, rTest2.ID)
+		assert.Equal(t, 1, rl.CurrentPage)
+		assert.Equal(t, 2, rl.TotalCount)
+	})
+
+	t.Run("with list options", func(t *testing.T) {
+		// Request a page number that is out of range. The result should
+		// be successful, but return no results if the paging options are
+		// properly passed along.
+		rl, err := client.Runs.ListForOrganization(ctx, orgTest.Name, &RunListForOrganizationOptions{
+			ListOptions: ListOptions{
+				PageNumber: 999,
+				PageSize:   100,
+			},
+		})
+		require.NoError(t, err)
+		assert.Empty(t, rl.Items)
+		assert.Equal(t, 999, rl.CurrentPage)
+		assert.Equal(t, 2, rl.TotalCount)
+	})
+
+	t.Run("with workspace included", func(t *testing.T) {
+		rl, err := client.Runs.ListForOrganization(ctx, orgTest.Name, &RunListForOrganizationOptions{
+			Include: []RunIncludeOpt{RunWorkspace},
+		})
+		require.NoError(t, err)
+
+		require.NotEmpty(t, rl.Items)
+		require.NotNil(t, rl.Items[0].Workspace)
+		assert.NotEmpty(t, rl.Items[0].Workspace.Name)
+	})
+
+	t.Run("without a valid organization name", func(t *testing.T) {
+		rl, err := client.Runs.ListForOrganization(ctx, badIdentifier, nil)
+		assert.Nil(t, rl)
+		assert.EqualError(t, err, ErrInvalidOrg.Error())
+	})
+
+	t.Run("with filter by agent pool", func(t *testing.T) {
+		rl, err := client.Runs.ListForOrganization(ctx, orgTest.Name, &RunListForOrganizationOptions{
+			AgentPoolNames: apTest.Name,
+		})
+		require.NoError(t, err)
+
+		found := make([]string, len(rl.Items))
+		for i, r := range rl.Items {
+			found[i] = r.ID
+		}
+
+		assert.Contains(t, found, rTest1.ID)
+		assert.Contains(t, found, rTest2.ID)
+		assert.Equal(t, 1, rl.CurrentPage)
+		assert.Equal(t, 2, rl.TotalCount)
+	})
+
+	t.Run("with filter by workspace", func(t *testing.T) {
+		rl, err := client.Runs.ListForOrganization(ctx, orgTest.Name, &RunListForOrganizationOptions{
+			WorkspaceNames: wTest.Name,
+			Include:        []RunIncludeOpt{RunWorkspace},
+		})
+		require.NoError(t, err)
+
+		found := make([]string, len(rl.Items))
+		for i, r := range rl.Items {
+			found[i] = r.ID
+		}
+
+		assert.Contains(t, found, rTest1.ID)
+		assert.Contains(t, found, rTest2.ID)
+		require.NotNil(t, rl.Items[0].Workspace)
+		assert.NotEmpty(t, rl.Items[0].Workspace.Name)
+		require.NotNil(t, rl.Items[1].Workspace)
+		assert.NotEmpty(t, rl.Items[1].Workspace.Name)
+		assert.Equal(t, 1, rl.CurrentPage)
+		assert.Equal(t, 2, rl.TotalCount)
+	})
+}

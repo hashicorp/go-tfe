@@ -168,7 +168,7 @@ func TestTestRunsCreate(t *testing.T) {
 		_, err := client.TestRuns.Create(ctx, options)
 		require.Equal(t, ErrRequiredRegistryModule, err)
 	})
-	t.Run("without an organisation", func(t *testing.T) {
+	t.Run("without an organization", func(t *testing.T) {
 		rm := &RegistryModule{
 			ID:              rmTest.ID,
 			Name:            rmTest.Name,
