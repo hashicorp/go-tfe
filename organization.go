@@ -8,6 +8,8 @@ import (
 	"fmt"
 	"net/url"
 	"time"
+
+	"github.com/hashicorp/jsonapi"
 )
 
 // Compile-time proof of interface implementation.
@@ -314,7 +316,7 @@ type OrganizationUpdateOptions struct {
 
 	// Optional: DefaultProject is the default project that workspaces are created in when no project is specified.
 	// This setting is considered BETA, SUBJECT TO CHANGE, and likely unavailable to most users.
-	DefaultProject *Project `jsonapi:"relation,default-project,omitempty"`
+	DefaultProject jsonapi.NullableRelationship[*Project] `jsonapi:"relation,default-project,omitempty"`
 }
 
 // ReadRunQueueOptions represents the options for showing the queue.

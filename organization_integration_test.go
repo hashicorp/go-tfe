@@ -10,6 +10,7 @@ import (
 	"testing"
 	"time"
 
+	"github.com/hashicorp/jsonapi"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
@@ -400,7 +401,7 @@ func TestOrganizationsUpdate(t *testing.T) {
 
 		// Update the default project and verify the change
 		updated, err := client.Organizations.Update(ctx, org.Name, OrganizationUpdateOptions{
-			DefaultProject: proj,
+			DefaultProject: jsonapi.NewNullableRelationshipWithValue[*Project](proj),
 		})
 		require.NoError(t, err)
 		require.Equal(t, proj.ID, updated.DefaultProject.ID)
@@ -408,6 +409,26 @@ func TestOrganizationsUpdate(t *testing.T) {
 		fetched, err := client.Organizations.Read(ctx, org.Name)
 		require.NoError(t, err)
 		require.Equal(t, proj.ID, fetched.DefaultProject.ID)
+
+		// Update without setting default project and verify no changes
+		updated, err = client.Organizations.Update(ctx, org.Name, OrganizationUpdateOptions{})
+		require.NoError(t, err)
+		require.Equal(t, proj.ID, updated.DefaultProject.ID)
+
+		fetched, err = client.Organizations.Read(ctx, org.Name)
+		require.NoError(t, err)
+		require.Equal(t, proj.ID, fetched.DefaultProject.ID)
+
+		// Update the setting to an explicit null value and verify it is unset
+		deleted, err := client.Organizations.Update(ctx, org.Name, OrganizationUpdateOptions{
+			DefaultProject: jsonapi.NewNullNullableRelationship[*Project](),
+		})
+		require.NoError(t, err)
+		require.Nil(t, deleted.DefaultProject)
+
+		fetched, err = client.Organizations.Read(ctx, org.Name)
+		require.NoError(t, err)
+		require.Nil(t, fetched.DefaultProject)
 	})
 }
 
