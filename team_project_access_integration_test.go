@@ -166,7 +166,6 @@ func TestTeamProjectAccessesAdd(t *testing.T) {
 	})
 
 	t.Run("with no project access options for custom TeamProject permissions", func(t *testing.T) {
-		skipUnlessBeta(t)
 		options := TeamProjectAccessAddOptions{
 			Access:        *ProjectAccess(TeamProjectAccessCustom),
 			Team:          tmTest,
@@ -274,7 +273,6 @@ func TestTeamProjectAccessesAdd(t *testing.T) {
 	})
 
 	t.Run("with valid options for custom variable sets permissions", func(t *testing.T) {
-		skipUnlessBeta(t)
 		options := TeamProjectAccessAddOptions{
 			Access:  *ProjectAccess(TeamProjectAccessCustom),
 			Team:    tmTest,
@@ -481,7 +479,6 @@ func TestTeamProjectAccessesUpdate(t *testing.T) {
 	})
 
 	t.Run("with valid custom permissions attributes for variable sets permissions", func(t *testing.T) {
-		skipUnlessBeta(t)
 		// create tpaCustomTest to verify unupdated attributes stay the same for custom permissions
 		// because going from admin to read to custom changes the values of all custom permissions
 		tm2Test, tm2TestCleanup := createTeam(t, client, orgTest)
