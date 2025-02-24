@@ -125,8 +125,8 @@ type Organization struct {
 	AllowForceDeleteWorkspaces bool `jsonapi:"attr,allow-force-delete-workspaces"`
 
 	// Relations
-	DefaultProject   *Project   `jsonapi:"relation,default-project"`
-	DefaultAgentPool *AgentPool `jsonapi:"relation,default-agent-pool"`
+	DefaultProject   jsonapi.NullableRelationship[*Project] `jsonapi:"relation,default-project"`
+	DefaultAgentPool *AgentPool                             `jsonapi:"relation,default-agent-pool"`
 
 	// Deprecated: Use DataRetentionPolicyChoice instead.
 	DataRetentionPolicy *DataRetentionPolicy
