@@ -640,6 +640,36 @@ func TestOAuthClientsUpdate(t *testing.T) {
 		assert.NotEmpty(t, oc.ID)
 		assert.NotEqual(t, origOC.OrganizationScoped, oc.OrganizationScoped)
 	})
+
+	t.Run("updates agent pool", func(t *testing.T) {
+		testAgentPool1, agentPoolCleanup := createAgentPool(t, client, orgTest)
+		defer agentPoolCleanup()
+		testAgentPool2, agentPoolCleanup2 := createAgentPool(t, client, orgTest)
+		defer agentPoolCleanup2()
+
+		organizationScopedTrue := true
+		options := OAuthClientCreateOptions{
+			APIURL:             String("https://bbdc.com"),
+			HTTPURL:            String("https://bbdc.com"),
+			ServiceProvider:    ServiceProvider(ServiceProviderBitbucketDataCenter),
+			OrganizationScoped: &organizationScopedTrue,
+			AgentPool:          testAgentPool1,
+		}
+
+		origOC, err := client.OAuthClients.Create(ctx, orgTest.Name, options)
+
+		require.NoError(t, err)
+		assert.NotEmpty(t, origOC.ID)
+
+		updateOpts := OAuthClientUpdateOptions{
+			AgentPool: testAgentPool2,
+		}
+		oc, err := client.OAuthClients.Update(ctx, origOC.ID, updateOpts)
+		require.NoError(t, err)
+		assert.NotEmpty(t, oc.ID)
+		assert.Equal(t, oc.AgentPool.ID, testAgentPool2.ID)
+		assert.NotEqual(t, origOC.AgentPool.ID, oc.AgentPool.ID)
+	})
 }
 
 const publicKey = `
