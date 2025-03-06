@@ -141,10 +141,10 @@ func (mr *MockRunsMockRecorder) List(ctx, workspaceID, options any) *gomock.Call
 }
 
 // ListForOrganization mocks base method.
-func (m *MockRuns) ListForOrganization(ctx context.Context, organization string, options *tfe.RunListForOrganizationOptions) (*tfe.RunList, error) {
+func (m *MockRuns) ListForOrganization(ctx context.Context, organization string, options *tfe.RunListForOrganizationOptions) (*tfe.OrganizationRunList, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "ListForOrganization", ctx, organization, options)
-	ret0, _ := ret[0].(*tfe.RunList)
+	ret0, _ := ret[0].(*tfe.OrganizationRunList)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }

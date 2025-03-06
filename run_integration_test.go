@@ -750,7 +750,7 @@ func TestRunsListForOrganization(t *testing.T) {
 		assert.Contains(t, found, rTest1.ID)
 		assert.Contains(t, found, rTest2.ID)
 		assert.Equal(t, 1, rl.CurrentPage)
-		assert.Equal(t, 2, rl.TotalCount)
+		assert.Empty(t, rl.NextPage)
 	})
 
 	t.Run("without list options and include as nil", func(t *testing.T) {
@@ -768,7 +768,7 @@ func TestRunsListForOrganization(t *testing.T) {
 		assert.Contains(t, found, rTest1.ID)
 		assert.Contains(t, found, rTest2.ID)
 		assert.Equal(t, 1, rl.CurrentPage)
-		assert.Equal(t, 2, rl.TotalCount)
+		assert.Empty(t, rl.NextPage)
 	})
 
 	t.Run("with list options", func(t *testing.T) {
@@ -784,7 +784,7 @@ func TestRunsListForOrganization(t *testing.T) {
 		require.NoError(t, err)
 		assert.Empty(t, rl.Items)
 		assert.Equal(t, 999, rl.CurrentPage)
-		assert.Equal(t, 2, rl.TotalCount)
+		assert.Empty(t, rl.NextPage)
 	})
 
 	t.Run("with workspace included", func(t *testing.T) {
@@ -818,7 +818,7 @@ func TestRunsListForOrganization(t *testing.T) {
 		assert.Contains(t, found, rTest1.ID)
 		assert.Contains(t, found, rTest2.ID)
 		assert.Equal(t, 1, rl.CurrentPage)
-		assert.Equal(t, 2, rl.TotalCount)
+		assert.Empty(t, rl.NextPage)
 	})
 
 	t.Run("with filter by workspace", func(t *testing.T) {
@@ -840,6 +840,6 @@ func TestRunsListForOrganization(t *testing.T) {
 		require.NotNil(t, rl.Items[1].Workspace)
 		assert.NotEmpty(t, rl.Items[1].Workspace.Name)
 		assert.Equal(t, 1, rl.CurrentPage)
-		assert.Equal(t, 2, rl.TotalCount)
+		assert.Empty(t, rl.NextPage)
 	})
 }

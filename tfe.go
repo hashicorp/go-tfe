@@ -857,11 +857,10 @@ func unmarshalResponse(responseBody io.Reader, model interface{}) error {
 
 	// Try to get the Items and Pagination struct fields.
 	items := dst.FieldByName("Items")
-	pagination := dst.FieldByName("Pagination")
 
 	// Unmarshal a single value if model does not contain the
 	// Items and Pagination struct fields.
-	if !items.IsValid() || !pagination.IsValid() {
+	if !items.IsValid() {
 		return jsonapi.UnmarshalPayload(responseBody, model)
 	}
 
@@ -892,15 +891,25 @@ func unmarshalResponse(responseBody io.Reader, model interface{}) error {
 	// Pointer-swap the result.
 	items.Set(result)
 
+	pagination := dst.FieldByName("Pagination")
+	paginationWithoutTotals := dst.FieldByName("PaginationNextPrev")
+
 	// As we are getting a list of values, we need to decode
 	// the pagination details out of the response body.
-	p, err := parsePagination(body)
-	if err != nil {
-		return err
-	}
-
 	// Pointer-swap the decoded pagination details.
-	pagination.Set(reflect.ValueOf(p))
+	if paginationWithoutTotals.IsValid() {
+		p, err := parsePaginationWithoutTotal(body)
+		if err != nil {
+			return err
+		}
+		paginationWithoutTotals.Set(reflect.ValueOf(p))
+	} else if pagination.IsValid() {
+		p, err := parsePagination(body)
+		if err != nil {
+			return err
+		}
+		pagination.Set(reflect.ValueOf(p))
+	}
 
 	return nil
 }
@@ -915,13 +924,35 @@ type ListOptions struct {
 	PageSize int `url:"page[size],omitempty"`
 }
 
-// Pagination is used to return the pagination details of an API request.
+// PaginationNextPrev is used to return the pagination details of an API request.
+type PaginationNextPrev struct {
+	CurrentPage  int `json:"current-page"`
+	PreviousPage int `json:"prev-page"`
+	NextPage     int `json:"next-page"`
+}
+
+// Pagination is used to return the pagination details of an API request including TotalCount.
 type Pagination struct {
 	CurrentPage  int `json:"current-page"`
 	PreviousPage int `json:"prev-page"`
 	NextPage     int `json:"next-page"`
-	TotalPages   int `json:"total-pages"`
 	TotalCount   int `json:"total-count"`
+	TotalPages   int `json:"total-pages"`
+}
+
+func parsePaginationWithoutTotal(body io.Reader) (*PaginationNextPrev, error) {
+	var raw struct {
+		Meta struct {
+			Pagination PaginationNextPrev `jsonapi:"pagination"`
+		} `jsonapi:"meta"`
+	}
+
+	// JSON decode the raw response.
+	if err := json.NewDecoder(body).Decode(&raw); err != nil {
+		return &PaginationNextPrev{}, err
+	}
+
+	return &raw.Meta.Pagination, nil
 }
 
 func parsePagination(body io.Reader) (*Pagination, error) {

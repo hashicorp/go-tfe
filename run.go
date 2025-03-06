@@ -22,7 +22,7 @@ type Runs interface {
 	List(ctx context.Context, workspaceID string, options *RunListOptions) (*RunList, error)
 
 	// List all the runs of the given organization.
-	ListForOrganization(ctx context.Context, organization string, options *RunListForOrganizationOptions) (*RunList, error)
+	ListForOrganization(ctx context.Context, organization string, options *RunListForOrganizationOptions) (*OrganizationRunList, error)
 
 	// Create a new run with the given options.
 	Create(ctx context.Context, options RunCreateOptions) (*Run, error)
@@ -117,6 +117,14 @@ const (
 // RunList represents a list of runs.
 type RunList struct {
 	*Pagination
+	Items []*Run
+}
+
+// OrganizationRunList represents a list of runs across an organization. It
+// differs from the RunList in that it does not include a TotalCount of records
+// in the pagination details
+type OrganizationRunList struct {
+	*PaginationNextPrev
 	Items []*Run
 }
 
@@ -448,7 +456,7 @@ func (s *runs) List(ctx context.Context, workspaceID string, options *RunListOpt
 }
 
 // List all the runs of the given workspace.
-func (s *runs) ListForOrganization(ctx context.Context, organization string, options *RunListForOrganizationOptions) (*RunList, error) {
+func (s *runs) ListForOrganization(ctx context.Context, organization string, options *RunListForOrganizationOptions) (*OrganizationRunList, error) {
 	if !validStringID(&organization) {
 		return nil, ErrInvalidOrg
 	}
@@ -462,7 +470,7 @@ func (s *runs) ListForOrganization(ctx context.Context, organization string, opt
 		return nil, err
 	}
 
-	rl := &RunList{}
+	rl := &OrganizationRunList{}
 	err = req.Do(ctx, rl)
 	if err != nil {
 		return nil, err
