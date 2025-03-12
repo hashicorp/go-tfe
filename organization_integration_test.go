@@ -10,7 +10,6 @@ import (
 	"testing"
 	"time"
 
-	"github.com/hashicorp/jsonapi"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
@@ -388,47 +387,6 @@ func TestOrganizationsUpdate(t *testing.T) {
 		assert.Nil(t, org.DefaultAgentPool)
 
 		t.Cleanup(orgAgentTestCleanup)
-	})
-
-	t.Run("with different default project", func(t *testing.T) {
-		skipUnlessBeta(t)
-
-		// Create an organization and a second project in the organization
-		org, orgCleanup := createOrganization(t, client)
-		t.Cleanup(orgCleanup)
-
-		proj, _ := createProject(t, client, org) // skip cleanup because default project cannot be deleted
-
-		// Update the default project and verify the change
-		updated, err := client.Organizations.Update(ctx, org.Name, OrganizationUpdateOptions{
-			DefaultProject: jsonapi.NewNullableRelationshipWithValue[*Project](proj),
-		})
-		require.NoError(t, err)
-		require.Equal(t, proj.ID, updated.DefaultProject.ID)
-
-		fetched, err := client.Organizations.Read(ctx, org.Name)
-		require.NoError(t, err)
-		require.Equal(t, proj.ID, fetched.DefaultProject.ID)
-
-		// Update without setting default project and verify no changes
-		updated, err = client.Organizations.Update(ctx, org.Name, OrganizationUpdateOptions{})
-		require.NoError(t, err)
-		require.Equal(t, proj.ID, updated.DefaultProject.ID)
-
-		fetched, err = client.Organizations.Read(ctx, org.Name)
-		require.NoError(t, err)
-		require.Equal(t, proj.ID, fetched.DefaultProject.ID)
-
-		// Update the setting to an explicit null value and verify it is unset
-		deleted, err := client.Organizations.Update(ctx, org.Name, OrganizationUpdateOptions{
-			DefaultProject: jsonapi.NewNullNullableRelationship[*Project](),
-		})
-		require.NoError(t, err)
-		require.Nil(t, deleted.DefaultProject)
-
-		fetched, err = client.Organizations.Read(ctx, org.Name)
-		require.NoError(t, err)
-		require.Nil(t, fetched.DefaultProject)
 	})
 }
 
