@@ -1,5 +1,8 @@
 # Unreleased
 
+## Enhancements
+* Adds`TriggerDisabled` field to `stack` struct to enable a stack to opt-in/opt-out of webhook processing by @mjyocca [#1017](https://github.com/hashicorp/go-tfe/pull/1017) 
+
 ## BREAKING CHANGES
 
 In the last release, Runs interface method `ListForOrganization` included pagination fields `TotalCount` and `TotalPages`, but these are being removed as this feature approaches general availablity by @brandonc [#1074](https://github.com/hashicorp/go-tfe/pull/1074)
