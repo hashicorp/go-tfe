@@ -1,7 +1,9 @@
 # Unreleased
 
 ## Enhancements
-* Adds`TriggerDisabled` field to `stack` struct to enable a stack to opt-in/opt-out of webhook processing by @mjyocca [#1017](https://github.com/hashicorp/go-tfe/pull/1017) 
+
+* Remove `DefaultProject` from `OrganizationUpdateOptions` to prevent updating an organization's default project, by @netramali [#1078](https://github.com/hashicorp/go-tfe/pull/1078)
+* Adds`TriggerDisabled` field to `stack` struct to enable a stack to opt-in/opt-out of webhook processing by @mjyocca [#1017](https://github.com/hashicorp/go-tfe/pull/1017)
 
 ## BREAKING CHANGES
 
