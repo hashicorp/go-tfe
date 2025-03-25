@@ -8,8 +8,6 @@ import (
 	"fmt"
 	"net/url"
 	"time"
-
-	"github.com/hashicorp/jsonapi"
 )
 
 // Compile-time proof of interface implementation.
@@ -313,10 +311,6 @@ type OrganizationUpdateOptions struct {
 	// Optional: StacksEnabled toggles whether stacks are enabled for the organization. This setting
 	// is considered BETA, SUBJECT TO CHANGE, and likely unavailable to most users.
 	StacksEnabled *bool `jsonapi:"attr,stacks-enabled,omitempty"`
-
-	// Optional: DefaultProject is the default project that workspaces are created in when no project is specified.
-	// This setting is considered BETA, SUBJECT TO CHANGE, and likely unavailable to most users.
-	DefaultProject jsonapi.NullableRelationship[*Project] `jsonapi:"relation,default-project,omitempty"`
 }
 
 // ReadRunQueueOptions represents the options for showing the queue.

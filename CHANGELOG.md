@@ -1,5 +1,9 @@
 # Unreleased
 
+## Enhancements
+
+* Remove `DefaultProject` from `OrganizationUpdateOptions` to prevent updating an organization's default project, by @netramali [#1078](https://github.com/hashicorp/go-tfe/pull/1078)
+
 ## BREAKING CHANGES
 
 In the last release, Runs interface method `ListForOrganization` included pagination fields `TotalCount` and `TotalPages`, but these are being removed as this feature approaches general availablity by @brandonc [#1074](https://github.com/hashicorp/go-tfe/pull/1074)
