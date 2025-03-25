@@ -491,7 +491,7 @@ func TestOrganizationsReadEntitlements(t *testing.T) {
 		assert.True(t, entitlements.StateStorage)
 		assert.True(t, entitlements.Teams)
 		assert.True(t, entitlements.VCSIntegrations)
-		assert.True(t, entitlements.WaypointActions)
+		assert.False(t, entitlements.WaypointActions)
 		assert.True(t, entitlements.WaypointTemplatesAndAddons)
 	})
 
