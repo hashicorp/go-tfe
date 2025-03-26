@@ -1,5 +1,9 @@
 # Unreleased
 
+## Features
+
+* Add support for the Explorer API by @sebasslash [#1018](https://github.com/hashicorp/go-tfe/pull/1018)
+
 ## Enhancements
 
 * Remove `DefaultProject` from `OrganizationUpdateOptions` to prevent updating an organization's default project, by @netramali [#1078](https://github.com/hashicorp/go-tfe/pull/1078)
@@ -58,6 +62,7 @@ In the last release, Runs interface method `ListForOrganization` included pagina
 * Add support for project level auto destroy settings @simonxmh [#1011](https://github.com/hashicorp/go-tfe/pull/1011)
 * Add BETA support for Linux arm64 agents, which is EXPERIMENTAL, SUBJECT TO CHANGE, and may not be available to all users @natalie-todd [#1022](https://github.com/hashicorp/go-tfe/pull/1022)
 * Adds support to delete all tag bindings on either a project or workspace by @sebasslash [#1023](https://github.com/hashicorp/go-tfe/pull/1023)
+
 
 # v1.71.0
 
