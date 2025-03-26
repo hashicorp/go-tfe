@@ -196,6 +196,9 @@ type OAuthClientUpdateOptions struct {
 	// Optional: The token string you were given by your VCS provider.
 	OAuthToken *string `jsonapi:"attr,oauth-token-string,omitempty"`
 
+	// Optional: AgentPool to associate the VCS Provider with, for PrivateVCS support
+	AgentPool *AgentPool `jsonapi:"relation,agent-pool,omitempty"`
+
 	// Optional: Whether the OAuthClient is available to all workspaces in the organization.
 	// True if the oauth client is organization scoped, false otherwise.
 	OrganizationScoped *bool `jsonapi:"attr,organization-scoped,omitempty"`
