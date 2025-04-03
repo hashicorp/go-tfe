@@ -116,7 +116,7 @@ func (s *agentTokens) Read(ctx context.Context, agentTokenID string) (*AgentToke
 		return nil, ErrInvalidAgentTokenID
 	}
 
-	u := fmt.Sprintf("authentication-tokens/%s", url.PathEscape(agentTokenID))
+	u := fmt.Sprintf(AuthenticationTokensPath, url.PathEscape(agentTokenID))
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, err

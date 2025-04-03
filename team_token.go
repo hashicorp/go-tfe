@@ -13,6 +13,10 @@ import (
 // Compile-time proof of interface implementation.
 var _ TeamTokens = (*teamTokens)(nil)
 
+const (
+	AuthenticationTokensPath = "authentication-tokens/%s"
+)
+
 // TeamTokens describes all the team token related methods that the
 // Terraform Enterprise API supports.
 //
@@ -130,7 +134,7 @@ func (s *teamTokens) ReadByID(ctx context.Context, tokenID string) (*TeamToken, 
 		return nil, ErrInvalidTokenID
 	}
 
-	u := fmt.Sprintf("authentication-tokens/%s", url.PathEscape(tokenID))
+	u := fmt.Sprintf(AuthenticationTokensPath, url.PathEscape(tokenID))
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, err
@@ -166,7 +170,7 @@ func (s *teamTokens) DeleteByID(ctx context.Context, tokenID string) error {
 		return ErrInvalidTokenID
 	}
 
-	u := fmt.Sprintf("authentication-tokens/%s", url.PathEscape(tokenID))
+	u := fmt.Sprintf(AuthenticationTokensPath, url.PathEscape(tokenID))
 	req, err := s.client.NewRequest("DELETE", u, nil)
 	if err != nil {
 		return err
