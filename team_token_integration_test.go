@@ -5,6 +5,7 @@ package tfe
 
 import (
 	"context"
+	"fmt"
 	"testing"
 	"time"
 
@@ -89,6 +90,81 @@ func TestTeamTokens_CreateWithOptions(t *testing.T) {
 		require.NotEmpty(t, tt.Token)
 		assert.Equal(t, tt.ExpiredAt, oneDayLater)
 		tmToken = tt.Token
+	})
+}
+
+func TestTeamTokens_CreateWithOptions_MultipleTokens(t *testing.T) {
+	skipUnlessBeta(t)
+
+	client := testClient(t)
+	ctx := context.Background()
+
+	tmTest, tmTestCleanup := createTeam(t, client, nil)
+	t.Cleanup(tmTestCleanup)
+
+	t.Run("with multiple tokens", func(t *testing.T) {
+		desc1 := fmt.Sprintf("go-tfe-team-token-test-%s", randomString(t))
+		tt, err := client.TeamTokens.CreateWithOptions(ctx, tmTest.ID, TeamTokenCreateOptions{
+			Description: desc1,
+		})
+		require.NoError(t, err)
+		require.NotEmpty(t, tt.Token)
+		require.Equal(t, tt.Description, desc1)
+
+		desc2 := fmt.Sprintf("go-tfe-team-token-test-%s", randomString(t))
+		tt, err = client.TeamTokens.CreateWithOptions(ctx, tmTest.ID, TeamTokenCreateOptions{
+			Description: desc2,
+		})
+		require.NoError(t, err)
+		require.NotEmpty(t, tt.Token)
+		require.Equal(t, tt.Description, desc2)
+	})
+
+	t.Run("with an expiration date", func(t *testing.T) {
+		desc := fmt.Sprintf("go-tfe-team-token-test-%s", randomString(t))
+		currentTime := time.Now().UTC().Truncate(time.Second)
+		oneDayLater := currentTime.Add(24 * time.Hour)
+		tt, err := client.TeamTokens.CreateWithOptions(ctx, tmTest.ID, TeamTokenCreateOptions{
+			Description: desc,
+			ExpiredAt:   &oneDayLater,
+		})
+		require.NoError(t, err)
+		require.NotEmpty(t, tt.Token)
+		assert.Equal(t, tt.ExpiredAt, oneDayLater)
+		require.Equal(t, tt.Description, desc)
+	})
+
+	t.Run("without an expiration date", func(t *testing.T) {
+		desc := fmt.Sprintf("go-tfe-team-token-test-%s", randomString(t))
+		tt, err := client.TeamTokens.CreateWithOptions(ctx, tmTest.ID, TeamTokenCreateOptions{
+			Description: desc,
+		})
+		require.NoError(t, err)
+		require.NotEmpty(t, tt.Token)
+		assert.Empty(t, tt.ExpiredAt)
+		require.Equal(t, tt.Description, desc)
+	})
+
+	t.Run("when a token already exists with the same description", func(t *testing.T) {
+		desc := fmt.Sprintf("go-tfe-team-token-test-%s", randomString(t))
+		tt, err := client.TeamTokens.CreateWithOptions(ctx, tmTest.ID, TeamTokenCreateOptions{
+			Description: desc,
+		})
+		require.NoError(t, err)
+		require.NotEmpty(t, tt.Token)
+		require.Equal(t, tt.Description, desc)
+
+		tt, err = client.TeamTokens.CreateWithOptions(ctx, tmTest.ID, TeamTokenCreateOptions{
+			Description: desc,
+		})
+		assert.Nil(t, tt)
+		assert.Equal(t, err, ErrInvalidDescriptionConflict)
+	})
+
+	t.Run("without valid team ID", func(t *testing.T) {
+		tt, err := client.TeamTokens.CreateWithOptions(ctx, badIdentifier, TeamTokenCreateOptions{})
+		assert.Nil(t, tt)
+		assert.Equal(t, err, ErrInvalidTeamID)
 	})
 }
 

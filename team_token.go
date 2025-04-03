@@ -19,10 +19,13 @@ var _ TeamTokens = (*teamTokens)(nil)
 // TFE API docs:
 // https://developer.hashicorp.com/terraform/cloud-docs/api-docs/team-tokens
 type TeamTokens interface {
-	// Create a new team token, replacing any existing token.
+	// Create a new team token using the legacy creation behavior, which creates a token without a description
+	// or regenerates the existing, descriptionless token.
 	Create(ctx context.Context, teamID string) (*TeamToken, error)
 
-	// CreateWithOptions a new team token, with options, replacing any existing token.
+	// CreateWithOptions creates a team token, with options. If no description is provided, it uses the legacy
+	// creation behavior, which regenerates the descriptionless token if it already exists. Otherwise, it create
+	//  a new token with the given unique description, allowing for the creation of multiple team tokens.
 	CreateWithOptions(ctx context.Context, teamID string, options TeamTokenCreateOptions) (*TeamToken, error)
 
 	// Read a team token by its ID.
@@ -53,20 +56,33 @@ type TeamTokenCreateOptions struct {
 	// Optional: The token's expiration date.
 	// This feature is available in TFE release v202305-1 and later
 	ExpiredAt *time.Time `jsonapi:"attr,expired-at,iso8601,omitempty"`
+
+	// Optional: The token's description, which must unique per team.
+	// This feature is considered BETA, SUBJECT TO CHANGE, and likely unavailable to most users.
+	Description string `jsonapi:"attr,description,omitempty"`
 }
 
-// Create a new team token, replacing any existing token.
+// Create a new team token using the legacy creation behavior, which creates a token without a description
+// or regenerates the existing, descriptionless token.
 func (s *teamTokens) Create(ctx context.Context, teamID string) (*TeamToken, error) {
 	return s.CreateWithOptions(ctx, teamID, TeamTokenCreateOptions{})
 }
 
-// CreateWithOptions a new team token, with options, replacing any existing token.
+// CreateWithOptions creates a team token, with options. If no description is provided, it uses the legacy
+// creation behavior, which regenerates the descriptionless token if it already exists. Otherwise, it create
+// a new token with the given unique description, allowing for the creation of multiple team tokens.
 func (s *teamTokens) CreateWithOptions(ctx context.Context, teamID string, options TeamTokenCreateOptions) (*TeamToken, error) {
 	if !validStringID(&teamID) {
 		return nil, ErrInvalidTeamID
 	}
 
-	u := fmt.Sprintf("teams/%s/authentication-token", url.PathEscape(teamID))
+	var u string
+	if options.Description != "" {
+		u = fmt.Sprintf("teams/%s/authentication-tokens", url.PathEscape(teamID))
+	} else {
+		u = fmt.Sprintf("teams/%s/authentication-token", url.PathEscape(teamID))
+	}
+
 	req, err := s.client.NewRequest("POST", u, &options)
 	if err != nil {
 		return nil, err
