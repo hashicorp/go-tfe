@@ -84,6 +84,20 @@ func (mr *MockTeamTokensMockRecorder) Delete(ctx, teamID any) *gomock.Call {
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Delete", reflect.TypeOf((*MockTeamTokens)(nil).Delete), ctx, teamID)
 }
 
+// DeleteByID mocks base method.
+func (m *MockTeamTokens) DeleteByID(ctx context.Context, tokenID string) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "DeleteByID", ctx, tokenID)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// DeleteByID indicates an expected call of DeleteByID.
+func (mr *MockTeamTokensMockRecorder) DeleteByID(ctx, tokenID any) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteByID", reflect.TypeOf((*MockTeamTokens)(nil).DeleteByID), ctx, tokenID)
+}
+
 // Read mocks base method.
 func (m *MockTeamTokens) Read(ctx context.Context, teamID string) (*tfe.TeamToken, error) {
 	m.ctrl.T.Helper()
@@ -97,4 +111,19 @@ func (m *MockTeamTokens) Read(ctx context.Context, teamID string) (*tfe.TeamToke
 func (mr *MockTeamTokensMockRecorder) Read(ctx, teamID any) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Read", reflect.TypeOf((*MockTeamTokens)(nil).Read), ctx, teamID)
+}
+
+// ReadByID mocks base method.
+func (m *MockTeamTokens) ReadByID(ctx context.Context, teamID string) (*tfe.TeamToken, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "ReadByID", ctx, teamID)
+	ret0, _ := ret[0].(*tfe.TeamToken)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// ReadByID indicates an expected call of ReadByID.
+func (mr *MockTeamTokensMockRecorder) ReadByID(ctx, teamID any) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ReadByID", reflect.TypeOf((*MockTeamTokens)(nil).ReadByID), ctx, teamID)
 }

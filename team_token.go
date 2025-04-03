@@ -28,11 +28,17 @@ type TeamTokens interface {
 	//  a new token with the given unique description, allowing for the creation of multiple team tokens.
 	CreateWithOptions(ctx context.Context, teamID string, options TeamTokenCreateOptions) (*TeamToken, error)
 
-	// Read a team token by its ID.
+	// Read a team token by its team ID.
 	Read(ctx context.Context, teamID string) (*TeamToken, error)
 
-	// Delete a team token by its ID.
+	// Read a team token by its token ID.
+	ReadByID(ctx context.Context, teamID string) (*TeamToken, error)
+
+	// Delete a team token by its team ID.
 	Delete(ctx context.Context, teamID string) error
+
+	// Delete a team token by its token ID.
+	DeleteByID(ctx context.Context, tokenID string) error
 }
 
 // teamTokens implements TeamTokens.
@@ -97,7 +103,7 @@ func (s *teamTokens) CreateWithOptions(ctx context.Context, teamID string, optio
 	return tt, err
 }
 
-// Read a team token by its ID.
+// Read a team token by its team ID.
 func (s *teamTokens) Read(ctx context.Context, teamID string) (*TeamToken, error) {
 	if !validStringID(&teamID) {
 		return nil, ErrInvalidTeamID
@@ -118,13 +124,49 @@ func (s *teamTokens) Read(ctx context.Context, teamID string) (*TeamToken, error
 	return tt, err
 }
 
-// Delete a team token by its ID.
+// Read a team token by its token ID.
+func (s *teamTokens) ReadByID(ctx context.Context, tokenID string) (*TeamToken, error) {
+	if !validStringID(&tokenID) {
+		return nil, ErrInvalidTokenID
+	}
+
+	u := fmt.Sprintf("authentication-tokens/%s", url.PathEscape(tokenID))
+	req, err := s.client.NewRequest("GET", u, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	tt := &TeamToken{}
+	err = req.Do(ctx, tt)
+	if err != nil {
+		return nil, err
+	}
+
+	return tt, err
+}
+
+// Delete a team token by its team ID.
 func (s *teamTokens) Delete(ctx context.Context, teamID string) error {
 	if !validStringID(&teamID) {
 		return ErrInvalidTeamID
 	}
 
 	u := fmt.Sprintf("teams/%s/authentication-token", url.PathEscape(teamID))
+	req, err := s.client.NewRequest("DELETE", u, nil)
+	if err != nil {
+		return err
+	}
+
+	return req.Do(ctx, nil)
+}
+
+// Delete a team token by its token ID.
+func (s *teamTokens) DeleteByID(ctx context.Context, tokenID string) error {
+	if !validStringID(&tokenID) {
+		return ErrInvalidTokenID
+	}
+
+	u := fmt.Sprintf("authentication-tokens/%s", url.PathEscape(tokenID))
 	req, err := s.client.NewRequest("DELETE", u, nil)
 	if err != nil {
 		return err

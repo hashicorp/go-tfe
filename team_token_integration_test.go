@@ -212,6 +212,63 @@ func TestTeamTokensRead(t *testing.T) {
 	})
 }
 
+func TestTeamTokensReadByID(t *testing.T) {
+	client := testClient(t)
+	ctx := context.Background()
+
+	tmTest, tmTestCleanup := createTeam(t, client, nil)
+	t.Cleanup(tmTestCleanup)
+
+	currentTime := time.Now().UTC().Truncate(time.Second)
+	oneDayLater := currentTime.Add(24 * time.Hour)
+	t.Run("with legacy, descriptionless tokens", func(t *testing.T) {
+		token, ttTestCleanup := createTeamTokenWithOptions(t, client, tmTest, TeamTokenCreateOptions{
+			ExpiredAt: &oneDayLater,
+		})
+		t.Cleanup(ttTestCleanup)
+
+		tt, err := client.TeamTokens.ReadByID(ctx, token.ID)
+		require.NoError(t, err)
+		assert.NotEmpty(t, tt)
+		assert.Empty(t, tt.Description)
+		assert.Equal(t, tt.ExpiredAt, oneDayLater)
+	})
+
+	t.Run("with multiple team tokens", func(t *testing.T) {
+		skipUnlessBeta(t)
+		desc1 := fmt.Sprintf("go-tfe-team-token-test-%s", randomString(t))
+		token, ttTestCleanup := createTeamTokenWithOptions(t, client, tmTest, TeamTokenCreateOptions{
+			Description: desc1,
+		})
+		t.Cleanup(ttTestCleanup)
+
+		tt, err := client.TeamTokens.ReadByID(ctx, token.ID)
+		require.NoError(t, err)
+		assert.NotEmpty(t, tt)
+		assert.Equal(t, tt.Description, desc1)
+		assert.Empty(t, tt.ExpiredAt)
+
+		desc2 := fmt.Sprintf("go-tfe-team-token-test-%s", randomString(t))
+		tokenWithExpiration, ttTestCleanup2 := createTeamTokenWithOptions(t, client, tmTest, TeamTokenCreateOptions{
+			ExpiredAt:   &oneDayLater,
+			Description: desc2,
+		})
+		t.Cleanup(ttTestCleanup2)
+
+		tt2, err := client.TeamTokens.ReadByID(ctx, tokenWithExpiration.ID)
+		require.NoError(t, err)
+		assert.NotEmpty(t, tt2)
+		assert.Equal(t, tt2.Description, desc2)
+		assert.Equal(t, tt2.ExpiredAt, oneDayLater)
+	})
+
+	t.Run("when a token doesn't exists", func(t *testing.T) {
+		tt, err := client.TeamTokens.ReadByID(ctx, "nonexistent-token-id")
+		assert.Equal(t, ErrResourceNotFound, err)
+		assert.Nil(t, tt)
+	})
+}
+
 func TestTeamTokensDelete(t *testing.T) {
 	client := testClient(t)
 	ctx := context.Background()
@@ -234,5 +291,46 @@ func TestTeamTokensDelete(t *testing.T) {
 	t.Run("without valid team ID", func(t *testing.T) {
 		err := client.TeamTokens.Delete(ctx, badIdentifier)
 		assert.Equal(t, err, ErrInvalidTeamID)
+	})
+}
+
+func TestTeamTokensDeleteByID(t *testing.T) {
+	client := testClient(t)
+	ctx := context.Background()
+
+	tmTest, tmTestCleanup := createTeam(t, client, nil)
+	t.Cleanup(tmTestCleanup)
+
+	t.Run("with legacy, descriptionless tokens", func(t *testing.T) {
+		token, _ := createTeamToken(t, client, tmTest)
+		err := client.TeamTokens.DeleteByID(ctx, token.ID)
+		require.NoError(t, err)
+	})
+
+	t.Run("with multiple team tokens", func(t *testing.T) {
+		skipUnlessBeta(t)
+		token1, _ := createTeamTokenWithOptions(t, client, tmTest, TeamTokenCreateOptions{
+			Description: fmt.Sprintf("go-tfe-team-token-test-%s", randomString(t)),
+		})
+
+		token2, _ := createTeamTokenWithOptions(t, client, tmTest, TeamTokenCreateOptions{
+			Description: fmt.Sprintf("go-tfe-team-token-test-%s", randomString(t)),
+		})
+
+		err := client.TeamTokens.DeleteByID(ctx, token1.ID)
+		require.NoError(t, err)
+
+		err = client.TeamTokens.DeleteByID(ctx, token2.ID)
+		require.NoError(t, err)
+	})
+
+	t.Run("when a token does not exist", func(t *testing.T) {
+		err := client.TeamTokens.DeleteByID(ctx, "nonexistent-token-id")
+		assert.Equal(t, err, ErrResourceNotFound)
+	})
+
+	t.Run("with invalid token ID", func(t *testing.T) {
+		err := client.TeamTokens.DeleteByID(ctx, badIdentifier)
+		assert.Equal(t, err, ErrInvalidTokenID)
 	})
 }
