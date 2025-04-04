@@ -165,6 +165,7 @@ type Entitlements struct {
 	GlobalRunTasks             bool   `jsonapi:"attr,global-run-tasks"`
 	Operations                 bool   `jsonapi:"attr,operations"`
 	PrivateModuleRegistry      bool   `jsonapi:"attr,private-module-registry"`
+	PrivateRunTasks            bool   `jsonapi:"attr,private-run-tasks"`
 	RunTasks                   bool   `jsonapi:"attr,run-tasks"`
 	SSO                        bool   `jsonapi:"attr,sso"`
 	Sentinel                   bool   `jsonapi:"attr,sentinel"`

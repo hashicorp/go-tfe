@@ -3,6 +3,8 @@
 ## Enhancements
 
 * Remove `DefaultProject` from `OrganizationUpdateOptions` to prevent updating an organization's default project, by @netramali [#1078](https://github.com/hashicorp/go-tfe/pull/1078)
+* Adds `PrivateRunTasks` field to Entitlements by @glennsarti [#944](https://github.com/hashicorp/go-tfe/pull/944)
+* Adds `AgentPool` relationship to options when creating and updating Run Tasks by @glennsarti [#944](https://github.com/hashicorp/go-tfe/pull/944)
 
 ## BREAKING CHANGES
 
@@ -13,7 +15,7 @@ In the last release, Runs interface method `ListForOrganization` included pagina
 ## Enhancements
 
 * Adds `DefaultProject` to `OrganizationUpdateOptions` to support updating an organization's default project. This provides BETA support, which is EXPERIMENTAL, SUBJECT TO CHANGE, and may not be available to all users, by @mkam [#1056](https://github.com/hashicorp/go-tfe/pull/1056)
-* Adds `ReadTerraformRegistryModule` to support reading a registry module from Terraform Registry's proxied endpoints by @paladin-devops [#1057](https://github.com/hashicorp/go-tfe/pull/1057) 
+* Adds `ReadTerraformRegistryModule` to support reading a registry module from Terraform Registry's proxied endpoints by @paladin-devops [#1057](https://github.com/hashicorp/go-tfe/pull/1057)
 * Adds a new method `ListForOrganization` to list Runs in an organization by @arybolovlev [#1059](https://github.com/hashicorp/go-tfe/pull/1059)
 
 ## Bug fixes
@@ -154,6 +156,8 @@ In the last release, Runs interface method `ListForOrganization` included pagina
 ## Enhancements
 
 * Adds `AllowMemberTokenManagement` permission to `Team` by @juliannatetreault [#922](https://github.com/hashicorp/go-tfe/pull/922)
+* Adds `PrivateRunTasks` field to Entitlements by @glennsarti [#944](https://github.com/hashicorp/go-tfe/pull/944)
+* Adds `AgentPool` relationship to options when creating and updating Run Tasks by @glennsarti [#944](https://github.com/hashicorp/go-tfe/pull/944)
 
 # v1.61.0
 
