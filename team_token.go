@@ -59,6 +59,7 @@ type TeamToken struct {
 	Token       string           `jsonapi:"attr,token"`
 	ExpiredAt   time.Time        `jsonapi:"attr,expired-at,iso8601"`
 	CreatedBy   *CreatedByChoice `jsonapi:"polyrelation,created-by"`
+	Team        *Team            `jsonapi:"relation,team"`
 }
 
 // TeamTokenCreateOptions contains the options for creating a team token.

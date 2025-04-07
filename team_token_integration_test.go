@@ -181,6 +181,8 @@ func TestTeamTokensRead(t *testing.T) {
 		tt, err := client.TeamTokens.Read(ctx, tmTest.ID)
 		require.NoError(t, err)
 		assert.NotEmpty(t, tt)
+		require.NotEmpty(t, tt.Team)
+		assert.Equal(t, tt.Team.ID, tmTest.ID)
 
 		ttTestCleanup()
 	})
@@ -193,8 +195,10 @@ func TestTeamTokensRead(t *testing.T) {
 
 		tt, err := client.TeamTokens.Read(ctx, tmTest.ID)
 		require.NoError(t, err)
-		assert.NotEmpty(t, tt)
+		require.NotEmpty(t, tt)
 		assert.Equal(t, tt.ExpiredAt, oneDayLater)
+		require.NotEmpty(t, tt.Team)
+		assert.Equal(t, tt.Team.ID, tmTest.ID)
 
 		ttTestCleanup()
 	})
@@ -229,9 +233,11 @@ func TestTeamTokensReadByID(t *testing.T) {
 
 		tt, err := client.TeamTokens.ReadByID(ctx, token.ID)
 		require.NoError(t, err)
-		assert.NotEmpty(t, tt)
+		require.NotEmpty(t, tt)
 		assert.Empty(t, tt.Description)
 		assert.Equal(t, tt.ExpiredAt, oneDayLater)
+		require.NotEmpty(t, tt.Team)
+		assert.Equal(t, tt.Team.ID, tmTest.ID)
 	})
 
 	t.Run("with multiple team tokens", func(t *testing.T) {
@@ -244,9 +250,11 @@ func TestTeamTokensReadByID(t *testing.T) {
 
 		tt, err := client.TeamTokens.ReadByID(ctx, token.ID)
 		require.NoError(t, err)
-		assert.NotEmpty(t, tt)
+		require.NotEmpty(t, tt)
 		assert.Equal(t, tt.Description, desc1)
 		assert.Empty(t, tt.ExpiredAt)
+		require.NotEmpty(t, tt.Team)
+		assert.Equal(t, tt.Team.ID, tmTest.ID)
 
 		desc2 := fmt.Sprintf("go-tfe-team-token-test-%s", randomString(t))
 		tokenWithExpiration, ttTestCleanup2 := createTeamTokenWithOptions(t, client, tmTest, TeamTokenCreateOptions{
@@ -257,9 +265,11 @@ func TestTeamTokensReadByID(t *testing.T) {
 
 		tt2, err := client.TeamTokens.ReadByID(ctx, tokenWithExpiration.ID)
 		require.NoError(t, err)
-		assert.NotEmpty(t, tt2)
+		require.NotEmpty(t, tt2)
 		assert.Equal(t, tt2.Description, desc2)
 		assert.Equal(t, tt2.ExpiredAt, oneDayLater)
+		require.NotEmpty(t, tt.Team)
+		assert.Equal(t, tt.Team.ID, tmTest.ID)
 	})
 
 	t.Run("when a token doesn't exists", func(t *testing.T) {
