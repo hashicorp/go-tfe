@@ -137,7 +137,7 @@ func (s *agentTokens) Delete(ctx context.Context, agentTokenID string) error {
 		return ErrInvalidAgentTokenID
 	}
 
-	u := fmt.Sprintf("authentication-tokens/%s", url.PathEscape(agentTokenID))
+	u := fmt.Sprintf(AuthenticationTokensPath, url.PathEscape(agentTokenID))
 	req, err := s.client.NewRequest("DELETE", u, nil)
 	if err != nil {
 		return err
