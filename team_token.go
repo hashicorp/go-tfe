@@ -13,10 +13,6 @@ import (
 // Compile-time proof of interface implementation.
 var _ TeamTokens = (*teamTokens)(nil)
 
-const (
-	AuthenticationTokensPath = "authentication-tokens/%s"
-)
-
 // TeamTokens describes all the team token related methods that the
 // Terraform Enterprise API supports.
 //
