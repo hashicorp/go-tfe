@@ -3,6 +3,8 @@
 ## Enhancements
 
 * Remove `DefaultProject` from `OrganizationUpdateOptions` to prevent updating an organization's default project, by @netramali [#1078](https://github.com/hashicorp/go-tfe/pull/1078)
+* Adds support for creating multiple team tokens by adding `Description` to `TeamTokenCreateOptions`. This provides BETA support, which is EXPERIMENTAL, SUBJECT TO CHANGE, and may not be available to all users, by @mkam [#1083](https://github.com/hashicorp/go-tfe/pull/1083)
+* Adds support for reading and deleting team tokens by ID, by @mkam [#1083](https://github.com/hashicorp/go-tfe/pull/1083)
 
 ## BREAKING CHANGES
 
