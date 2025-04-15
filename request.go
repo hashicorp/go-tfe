@@ -11,28 +11,18 @@ import (
 	"net/http"
 
 	retryablehttp "github.com/hashicorp/go-retryablehttp"
-	"golang.org/x/time/rate"
 )
 
 // ClientRequest encapsulates a request sent by the Client
 type ClientRequest struct {
 	retryableRequest *retryablehttp.Request
 	http             *retryablehttp.Client
-	limiter          *rate.Limiter
 
 	// Header are the headers that will be sent in this request
 	Header http.Header
 }
 
 func (r ClientRequest) Do(ctx context.Context, model interface{}) error {
-	// Wait will block until the limiter can obtain a new token
-	// or returns an error if the given context is canceled.
-	if r.limiter != nil {
-		if err := r.limiter.Wait(ctx); err != nil {
-			return err
-		}
-	}
-
 	// If the caller provided a response header hook then we'll call it
 	// once we have a response.
 	respHeaderHook := contextResponseHeaderHook(ctx)
@@ -81,14 +71,6 @@ func (r ClientRequest) Do(ctx context.Context, model interface{}) error {
 // DoJSON is similar to Do except that it should be used when a plain JSON response is expected
 // as opposed to json-api.
 func (r *ClientRequest) DoJSON(ctx context.Context, model any) error {
-	// Wait will block until the limiter can obtain a new token
-	// or returns an error if the given context is canceled.
-	if r.limiter != nil {
-		if err := r.limiter.Wait(ctx); err != nil {
-			return err
-		}
-	}
-
 	// Add the context to the request.
 	contextReq := r.retryableRequest.WithContext(ctx)
 

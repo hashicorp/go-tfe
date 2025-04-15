@@ -1,11 +1,4 @@
-.PHONY: vet fmt lint test mocks envvars generate
-
-# Make target to generate resource scaffolding for specified RESOURCE
-generate: check-resource
-	@cd ./scripts/generate_resource; \
-	go mod tidy; \
-	go run . $(RESOURCE) ;
-
+.PHONY: vet fmt fmtchewck lint test mocks envvars api
 vet:
 	go vet
 
@@ -29,13 +22,8 @@ mocks: check-filename
 envvars:
 	./scripts/setup-test-envvars.sh
 
-check-filename:
-ifndef FILENAME
-	$(error Missing FILENAME param. Example usage: FILENAME=example_resource.go make mocks)
-endif
-
-check-resource:
-ifndef RESOURCE
-	$(error Missing RESOURCE param. Example usage: RESOURCE=foo_bar make generate)
-endif
-
+api:
+	mkdir -p openapi
+	mkdir -p api
+	cp ../atlas/openapi/bundled/hcpt_v2.json openapi/spec.json
+	docker run -v ./api:/app/output -v ./openapi/spec.json:/app/openapi.json mcr.microsoft.com/openapi/kiota generate --language go --openapi openapi.json --namespace-name github.com/hashicorp/go-tfe/api

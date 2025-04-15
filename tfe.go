@@ -10,25 +10,25 @@ import (
 	"errors"
 	"fmt"
 	"io"
-	"io/fs"
 	"log"
 	"math/rand"
 	"net/http"
 	"net/url"
-	"os"
 	"reflect"
 	"sort"
 	"strconv"
 	"strings"
 	"time"
 
+	auth "github.com/microsoft/kiota-abstractions-go/authentication"
+
 	"github.com/google/go-querystring/query"
 	cleanhttp "github.com/hashicorp/go-cleanhttp"
 	retryablehttp "github.com/hashicorp/go-retryablehttp"
+	"github.com/hashicorp/go-tfe/api"
+	"github.com/hashicorp/go-tfe/api/models"
 	"github.com/hashicorp/jsonapi"
 	"golang.org/x/time/rate"
-
-	slug "github.com/hashicorp/go-slug"
 )
 
 const (
@@ -41,11 +41,12 @@ const (
 	_includeQueryParam = "include"
 
 	DefaultAddress      = "https://app.terraform.io"
-	DefaultBasePath     = "/api/v2/"
+	DefaultBasePath     = "/api/v2"
 	DefaultRegistryPath = "/api/registry/"
 	// PingEndpoint is a no-op API endpoint used to configure the rate limiter
 	PingEndpoint       = "ping"
 	ContentTypeJSONAPI = "application/vnd.api+json"
+	ContentTypeJSON    = "application/json"
 )
 
 // RetryLogHook allows a function to run before each retry.
@@ -84,22 +85,13 @@ type Config struct {
 
 func DefaultConfig() *Config {
 	config := &Config{
-		Address:           os.Getenv("TFE_ADDRESS"),
+		Address:           DefaultAddress,
 		BasePath:          DefaultBasePath,
 		RegistryBasePath:  DefaultRegistryPath,
-		Token:             os.Getenv("TFE_TOKEN"),
+		Token:             "",
 		Headers:           make(http.Header),
 		HTTPClient:        cleanhttp.DefaultPooledClient(),
 		RetryServerErrors: false,
-	}
-
-	// Set the default address if none is given.
-	if config.Address == "" {
-		if host := os.Getenv("TFE_HOSTNAME"); host != "" {
-			config.Address = fmt.Sprintf("https://%s", host)
-		} else {
-			config.Address = DefaultAddress
-		}
 	}
 
 	// Set the default user agent.
@@ -119,90 +111,9 @@ type Client struct {
 	limiter           *rate.Limiter
 	retryLogHook      RetryLogHook
 	retryServerErrors bool
-	remoteAPIVersion  string
-	remoteTFEVersion  string
-	appName           string
-
-	Admin                      Admin
-	Agents                     Agents
-	AgentPools                 AgentPools
-	AgentTokens                AgentTokens
-	Applies                    Applies
-	AuditTrails                AuditTrails
-	Comments                   Comments
-	ConfigurationVersions      ConfigurationVersions
-	CostEstimates              CostEstimates
-	GHAInstallations           GHAInstallations
-	GPGKeys                    GPGKeys
-	NotificationConfigurations NotificationConfigurations
-	OAuthClients               OAuthClients
-	OAuthTokens                OAuthTokens
-	Organizations              Organizations
-	OrganizationMemberships    OrganizationMemberships
-	OrganizationTags           OrganizationTags
-	OrganizationTokens         OrganizationTokens
-	Plans                      Plans
-	PlanExports                PlanExports
-	Policies                   Policies
-	PolicyChecks               PolicyChecks
-	PolicyEvaluations          PolicyEvaluations
-	PolicySetOutcomes          PolicySetOutcomes
-	PolicySetParameters        PolicySetParameters
-	PolicySetVersions          PolicySetVersions
-	PolicySets                 PolicySets
-	RegistryModules            RegistryModules
-	RegistryNoCodeModules      RegistryNoCodeModules
-	RegistryProviders          RegistryProviders
-	RegistryProviderPlatforms  RegistryProviderPlatforms
-	RegistryProviderVersions   RegistryProviderVersions
-	Runs                       Runs
-	RunEvents                  RunEvents
-	RunTasks                   RunTasks
-	RunTasksIntegration        RunTasksIntegration
-	RunTriggers                RunTriggers
-	SSHKeys                    SSHKeys
-	Stacks                     Stacks
-	StackConfigurations        StackConfigurations
-	StackDeployments           StackDeployments
-	StackPlans                 StackPlans
-	StackPlanOperations        StackPlanOperations
-	StackSources               StackSources
-	StateVersionOutputs        StateVersionOutputs
-	StateVersions              StateVersions
-	TaskResults                TaskResults
-	TaskStages                 TaskStages
-	Teams                      Teams
-	TeamAccess                 TeamAccesses
-	TeamMembers                TeamMembers
-	TeamProjectAccess          TeamProjectAccesses
-	TeamTokens                 TeamTokens
-	TestRuns                   TestRuns
-	TestVariables              TestVariables
-	Users                      Users
-	UserTokens                 UserTokens
-	Variables                  Variables
-	VariableSets               VariableSets
-	VariableSetVariables       VariableSetVariables
-	Workspaces                 Workspaces
-	WorkspaceResources         WorkspaceResources
-	WorkspaceRunTasks          WorkspaceRunTasks
-	Projects                   Projects
+	API               *api.ApiClient
 
 	Meta Meta
-}
-
-// Admin is the the Terraform Enterprise Admin API. It provides access to site
-// wide admin settings. These are only available for Terraform Enterprise and
-// do not function against HCP Terraform
-type Admin struct {
-	Organizations     AdminOrganizations
-	Workspaces        AdminWorkspaces
-	Runs              AdminRuns
-	TerraformVersions AdminTerraformVersions
-	OPAVersions       AdminOPAVersions
-	SentinelVersions  AdminSentinelVersions
-	Users             AdminUsers
-	Settings          *AdminSettings
 }
 
 // Meta contains any HCP Terraform APIs which provide data about the API itself.
@@ -247,80 +158,32 @@ func (c *Client) doForeignPUTRequest(ctx context.Context, foreignURL string, dat
 	return request.DoJSON(ctx, nil)
 }
 
-// NewRequest performs some basic API request preparation based on the method
-// specified. For GET requests, the reqBody is encoded as query parameters.
-// For DELETE, PATCH, and POST requests, the request body is serialized as JSONAPI.
-// For PUT requests, the request body is sent as a stream of bytes.
-func (c *Client) NewRequest(method, path string, reqBody any) (*ClientRequest, error) {
-	return c.NewRequestWithAdditionalQueryParams(method, path, reqBody, nil)
-}
-
-// NewRequestWithAdditionalQueryParams performs some basic API request
-// preparation based on the method specified. For GET requests, the reqBody is
-// encoded as query parameters. For DELETE, PATCH, and POST requests, the
-// request body is serialized as JSONAPI. For PUT requests, the request body is
-// sent as a stream of bytes. Additional query parameters can be added to the
-// request as a string map. Note that if a key exists in both the reqBody and
-// additionalQueryParams, the value in additionalQueryParams will be used.
-func (c *Client) NewRequestWithAdditionalQueryParams(method, path string, reqBody any, additionalQueryParams map[string][]string) (*ClientRequest, error) {
-	var u *url.URL
-	var err error
-	if strings.Contains(path, "/api/registry/") {
-		u, err = c.registryBaseURL.Parse(path)
-		if err != nil {
-			return nil, err
-		}
-	} else {
-		u, err = c.baseURL.Parse(path)
-		if err != nil {
-			return nil, err
-		}
+func (c *Client) NewJSONAPIRequest(method, path string, reqBody, queryParams any) (*ClientRequest, error) {
+	u, err := c.baseURL.Parse(path)
+	if err != nil {
+		return nil, err
 	}
-
-	// Will contain combined query values from path parsing and
-	// additionalQueryParams parameter
-	q := make(url.Values)
 
 	// Create a request specific headers map.
 	reqHeaders := make(http.Header)
 	reqHeaders.Set("Authorization", "Bearer "+c.token)
+	reqHeaders.Set("Accept", ContentTypeJSONAPI)
 
 	var body any
-	switch method {
-	case "GET":
-		reqHeaders.Set("Accept", ContentTypeJSONAPI)
-
-		// Encode the reqBody as query parameters
-		if reqBody != nil {
-			q, err = query.Values(reqBody)
-			if err != nil {
-				return nil, err
-			}
-		}
-	case "DELETE", "PATCH", "POST":
-		reqHeaders.Set("Accept", ContentTypeJSONAPI)
+	if reqBody != nil && (method == "DELETE" || method == "PATCH" || method == "POST" || method == "PUT") {
 		reqHeaders.Set("Content-Type", ContentTypeJSONAPI)
 
-		if reqBody != nil {
-			if body, err = serializeRequestBody(reqBody); err != nil {
-				return nil, err
-			}
+		if body, err = serializeRequestBody(reqBody); err != nil {
+			return nil, err
 		}
-	case "PUT":
-		reqHeaders.Set("Accept", "application/json")
-		reqHeaders.Set("Content-Type", "application/octet-stream")
-		body = reqBody
 	}
 
-	for k, v := range u.Query() {
-		q[k] = v
-	}
-	for k, v := range additionalQueryParams {
-		q[k] = v
+	qv, err := query.Values(queryParams)
+	if err != nil {
+		return nil, err
 	}
 
-	u.RawQuery = encodeQueryParams(q)
-
+	u.RawQuery = encodeQueryParams(qv)
 	req, err := retryablehttp.NewRequest(method, u.String(), body)
 	if err != nil {
 		return nil, err
@@ -339,7 +202,55 @@ func (c *Client) NewRequestWithAdditionalQueryParams(method, path string, reqBod
 	return &ClientRequest{
 		retryableRequest: req,
 		http:             c.http,
-		limiter:          c.limiter,
+		Header:           req.Header,
+	}, nil
+}
+
+// NewJSONRequest performs some basic API request preparation based on the method
+func (c *Client) NewJSONRequest(method, path string, reqBody any, queryParams any) (*ClientRequest, error) {
+	u, err := c.baseURL.Parse(path)
+	if err != nil {
+		return nil, err
+	}
+
+	// Create a request specific headers map.
+	reqHeaders := make(http.Header)
+	reqHeaders.Set("Authorization", "Bearer "+c.token)
+	reqHeaders.Set("Accept", ContentTypeJSON)
+
+	var body any
+	if reqBody != nil && (method == "DELETE" || method == "PATCH" || method == "POST" || method == "PUT") {
+		reqHeaders.Set("Content-Type", ContentTypeJSONAPI)
+
+		if body, err = serializeRequestBody(reqBody); err != nil {
+			return nil, err
+		}
+	}
+
+	qv, err := query.Values(queryParams)
+	if err != nil {
+		return nil, err
+	}
+
+	u.RawQuery = encodeQueryParams(qv)
+	req, err := retryablehttp.NewRequest(method, u.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	// Set the default headers.
+	for k, v := range c.headers {
+		req.Header[k] = v
+	}
+
+	// Set the request specific headers.
+	for k, v := range reqHeaders {
+		req.Header[k] = v
+	}
+
+	return &ClientRequest{
+		retryableRequest: req,
+		http:             c.http,
 		Header:           req.Header,
 	}, nil
 }
@@ -381,9 +292,6 @@ func NewClient(cfg *Config) (*Client, error) {
 	}
 
 	baseURL.Path = config.BasePath
-	if !strings.HasSuffix(baseURL.Path, "/") {
-		baseURL.Path += "/"
-	}
 
 	registryURL, err := url.Parse(config.Address)
 	if err != nil {
@@ -391,9 +299,6 @@ func NewClient(cfg *Config) (*Client, error) {
 	}
 
 	registryURL.Path = config.RegistryBasePath
-	if !strings.HasSuffix(registryURL.Path, "/") {
-		registryURL.Path += "/"
-	}
 
 	// This value must be provided by the user.
 	if config.Token == "" {
@@ -420,178 +325,41 @@ func NewClient(cfg *Config) (*Client, error) {
 		RetryMax:     30,
 	}
 
-	meta, err := client.getRawAPIMetadata()
+	validator, err := auth.NewAllowedHostsValidatorErrorCheck([]string{
+		baseURL.Host,
+	})
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("invalid host configuration: %w", err)
 	}
 
-	// Configure the rate limiter.
-	client.configureLimiter(meta.RateLimit)
-
-	// Save the API version so we can return it from the RemoteAPIVersion
-	// method later.
-	client.remoteAPIVersion = meta.APIVersion
-
-	// Save the TFE version
-	client.remoteTFEVersion = meta.TFEVersion
-
-	// Save the app name
-	client.appName = meta.AppName
-
-	// Create Admin
-	client.Admin = Admin{
-		Organizations:     &adminOrganizations{client: client},
-		Workspaces:        &adminWorkspaces{client: client},
-		Runs:              &adminRuns{client: client},
-		Settings:          newAdminSettings(client),
-		TerraformVersions: &adminTerraformVersions{client: client},
-		OPAVersions:       &adminOPAVersions{client: client},
-		SentinelVersions:  &adminSentinelVersions{client: client},
-		Users:             &adminUsers{client: client},
+	tokenProvider := &accessTokenProvider{
+		allowedHosts: validator,
+		accessToken:  cfg.Token,
+		host:         baseURL.Host,
 	}
 
-	// Create the services.
-	client.AgentPools = &agentPools{client: client}
-	client.Agents = &agents{client: client}
-	client.AgentTokens = &agentTokens{client: client}
-	client.Applies = &applies{client: client}
-	client.AuditTrails = &auditTrails{client: client}
-	client.Comments = &comments{client: client}
-	client.ConfigurationVersions = &configurationVersions{client: client}
-	client.GHAInstallations = &gHAInstallations{client: client}
-	client.CostEstimates = &costEstimates{client: client}
-	client.GPGKeys = &gpgKeys{client: client}
-	client.RegistryNoCodeModules = &registryNoCodeModules{client: client}
-	client.NotificationConfigurations = &notificationConfigurations{client: client}
-	client.OAuthClients = &oAuthClients{client: client}
-	client.OAuthTokens = &oAuthTokens{client: client}
-	client.OrganizationMemberships = &organizationMemberships{client: client}
-	client.Organizations = &organizations{client: client}
-	client.OrganizationTags = &organizationTags{client: client}
-	client.OrganizationTokens = &organizationTokens{client: client}
-	client.PlanExports = &planExports{client: client}
-	client.Plans = &plans{client: client}
-	client.Policies = &policies{client: client}
-	client.PolicyChecks = &policyChecks{client: client}
-	client.PolicyEvaluations = &policyEvaluation{client: client}
-	client.PolicySetOutcomes = &policySetOutcome{client: client}
-	client.PolicySetParameters = &policySetParameters{client: client}
-	client.PolicySets = &policySets{client: client}
-	client.PolicySetVersions = &policySetVersions{client: client}
-	client.Projects = &projects{client: client}
-	client.RegistryModules = &registryModules{client: client}
-	client.RegistryProviderPlatforms = &registryProviderPlatforms{client: client}
-	client.RegistryProviders = &registryProviders{client: client}
-	client.RegistryProviderVersions = &registryProviderVersions{client: client}
-	client.Runs = &runs{client: client}
-	client.RunEvents = &runEvents{client: client}
-	client.RunTasks = &runTasks{client: client}
-	client.RunTasksIntegration = &runTaskIntegration{client: client}
-	client.RunTriggers = &runTriggers{client: client}
-	client.SSHKeys = &sshKeys{client: client}
-	client.Stacks = &stacks{client: client}
-	client.StackConfigurations = &stackConfigurations{client: client}
-	client.StackDeployments = &stackDeployments{client: client}
-	client.StackPlans = &stackPlans{client: client}
-	client.StackPlanOperations = &stackPlanOperations{client: client}
-	client.StackSources = &stackSources{client: client}
-	client.StateVersionOutputs = &stateVersionOutputs{client: client}
-	client.StateVersions = &stateVersions{client: client}
-	client.TaskResults = &taskResults{client: client}
-	client.TaskStages = &taskStages{client: client}
-	client.TeamAccess = &teamAccesses{client: client}
-	client.TeamMembers = &teamMembers{client: client}
-	client.TeamProjectAccess = &teamProjectAccesses{client: client}
-	client.Teams = &teams{client: client}
-	client.TeamTokens = &teamTokens{client: client}
-	client.TestRuns = &testRuns{client: client}
-	client.TestVariables = &testVariables{client: client}
-	client.Users = &users{client: client}
-	client.UserTokens = &userTokens{client: client}
-	client.Variables = &variables{client: client}
-	client.VariableSets = &variableSets{client: client}
-	client.VariableSetVariables = &variableSetVariables{client: client}
-	client.WorkspaceRunTasks = &workspaceRunTasks{client: client}
-	client.Workspaces = &workspaces{client: client}
-	client.WorkspaceResources = &workspaceResources{client: client}
+	authProvider := auth.NewBaseBearerTokenAuthenticationProvider(tokenProvider)
+
+	adapter, err := NewRequestAdapter(baseURL.String(), authProvider, client.http.HTTPClient)
+	if err != nil {
+		return nil, fmt.Errorf("error creating request adapter: %w", err)
+	}
+	client.API = api.NewApiClient(adapter)
 
 	client.Meta = Meta{
-		IPRanges: &ipRanges{client: client},
+		IPRanges: &ipRanges{
+			client: client,
+		},
 	}
 
+	client.limiter = rate.NewLimiter(rate.Inf, 0)
+
 	return client, nil
-}
-
-// AppName returns the name of the instance.
-func (c Client) AppName() string {
-	return c.appName
-}
-
-// IsCloud returns true if the client is configured against a HCP Terraform
-// instance.
-//
-// Whether an instance is HCP Terraform or Terraform Enterprise is derived from the TFP-AppName header.
-func (c Client) IsCloud() bool {
-	return c.appName == "HCP Terraform"
-}
-
-// IsEnterprise returns true if the client is configured against a Terraform
-// Enterprise instance.
-//
-// Whether an instance is HCP Terraform or TFE is derived from the TFP-AppName header. Note:
-// not all TFE releases include this header in API responses.
-func (c Client) IsEnterprise() bool {
-	return !c.IsCloud()
-}
-
-// RemoteAPIVersion returns the server's declared API version string.
-//
-// A HCP Terraform or Enterprise API server returns its API version in an
-// HTTP header field in all responses. The NewClient function saves the
-// version number returned in its initial setup request and RemoteAPIVersion
-// returns that cached value.
-//
-// The API protocol calls for this string to be a dotted-decimal version number
-// like 2.3.0, where the first number indicates the API major version while the
-// second indicates a minor version which may have introduced some
-// backward-compatible additional features compared to its predecessor.
-//
-// Explicit API versioning was added to the HCP Terraform and Enterprise
-// APIs as a later addition, so older servers will not return version
-// information. In that case, this function returns an empty string as the
-// version.
-func (c Client) RemoteAPIVersion() string {
-	return c.remoteAPIVersion
 }
 
 // BaseURL returns the base URL as configured in the client
 func (c Client) BaseURL() url.URL {
 	return *c.baseURL
-}
-
-// BaseRegistryURL returns the registry base URL as configured in the client
-func (c Client) BaseRegistryURL() url.URL {
-	return *c.registryBaseURL
-}
-
-// SetFakeRemoteAPIVersion allows setting a given string as the client's remoteAPIVersion,
-// overriding the value pulled from the API header during client initialization.
-//
-// This is intended for use in tests, when you may want to configure your TFE client to
-// return something different than the actual API version in order to test error handling.
-func (c *Client) SetFakeRemoteAPIVersion(fakeAPIVersion string) {
-	c.remoteAPIVersion = fakeAPIVersion
-}
-
-// RemoteTFEVersion returns the server's declared TFE version string.
-//
-// A Terraform Enterprise API server includes its current version in an
-// HTTP header field in all responses. This value is saved by the client
-// during the initial setup request and RemoteTFEVersion returns that cached
-// value. This function returns an empty string for any Terraform Enterprise version
-// earlier than v202208-3 and for HCP Terraform.
-func (c Client) RemoteTFEVersion() string {
-	return c.remoteTFEVersion
 }
 
 // RetryServerErrors configures the retry HTTP check to also retry
@@ -663,63 +431,25 @@ func rateLimitBackoff(minimum, maximum time.Duration, resp *http.Response) time.
 	return minimum + jitter
 }
 
-type rawAPIMetadata struct {
-	// APIVersion is the raw API version string reported by the server in the
-	// TFP-API-Version response header, or an empty string if that header
-	// field was not included in the response.
-	APIVersion string
+func SummarizeAPIErrors(err error) string {
+	merr, ok := err.(*models.Errors)
+	if !ok {
+		return err.Error()
+	}
 
-	// TFEVersion is the raw TFE version string reported by the server in the
-	// X-TFE-Version response header, or an empty string if that header
-	// field was not included in the response.
-	TFEVersion string
+	var sb strings.Builder
+	for _, e := range merr.GetErrors() {
+		if sb.Len() > 0 {
+			sb.WriteString(", ")
+		}
+		sb.WriteString(*e.GetTitle())
+	}
 
-	// RateLimit is the raw API version string reported by the server in the
-	// X-RateLimit-Limit response header, or an empty string if that header
-	// field was not included in the response.
-	RateLimit string
-
-	// AppName is either 'HCP Terraform' or 'Terraform Enterprise'
-	AppName string
+	return sb.String()
 }
 
-func (c *Client) getRawAPIMetadata() (rawAPIMetadata, error) {
-	var meta rawAPIMetadata
-
-	// Create a new request.
-	u, err := c.baseURL.Parse(PingEndpoint)
-	if err != nil {
-		return meta, err
-	}
-	req, err := http.NewRequest("GET", u.String(), nil)
-	if err != nil {
-		return meta, err
-	}
-
-	// Attach the default headers.
-	for k, v := range c.headers {
-		req.Header[k] = v
-	}
-	req.Header.Set("Accept", ContentTypeJSONAPI)
-	req.Header.Set("Authorization", "Bearer "+c.token)
-
-	// Make a single request to retrieve the rate limit headers.
-	resp, err := c.http.HTTPClient.Do(req)
-	if err != nil {
-		return meta, err
-	}
-	resp.Body.Close()
-
-	meta.APIVersion = resp.Header.Get(_headerAPIVersion)
-	meta.RateLimit = resp.Header.Get(_headerRateLimit)
-	meta.TFEVersion = resp.Header.Get(_headerTFEVersion)
-	meta.AppName = resp.Header.Get(_headerAppName)
-
-	return meta, nil
-}
-
-// configureLimiter configures the rate limiter.
-func (c *Client) configureLimiter(rawLimit string) {
+// ConfigureLimiter configures the rate limiter.
+func (c *Client) ConfigureLimiter(rawLimit string) {
 	// Set default values for when rate limiting is disabled.
 	limit := rate.Inf
 	burst := 0
@@ -776,17 +506,6 @@ func encodeQueryParams(v url.Values) string {
 		}
 	}
 	return buf.String()
-}
-
-// decodeQueryParams types an object and converts the struct fields into
-// Query Parameters, which can be used with NewRequestWithAdditionalQueryParams
-// Note that a field without a `url` annotation will be converted into a query
-// parameter. Use url:"-" to ignore struct fields.
-func decodeQueryParams(v any) (url.Values, error) {
-	if v == nil {
-		return make(url.Values, 0), nil
-	}
-	return query.Values(v)
 }
 
 // serializeRequestBody serializes the given ptr or ptr slice into a JSON
@@ -973,7 +692,7 @@ func parsePagination(body io.Reader) (*Pagination, error) {
 // checkResponseCode refines typical API errors into more specific errors
 // if possible. It returns nil if the response code < 400
 func checkResponseCode(r *http.Response) error {
-	if r.StatusCode >= 200 && r.StatusCode <= 399 {
+	if r.StatusCode >= 200 && r.StatusCode < 400 {
 		return nil
 	}
 
@@ -995,45 +714,6 @@ func checkResponseCode(r *http.Response) error {
 		return ErrUnauthorized
 	case 404:
 		return ErrResourceNotFound
-	case 409:
-		switch {
-		case strings.HasSuffix(r.Request.URL.Path, "actions/lock"):
-			return ErrWorkspaceLocked
-		case strings.HasSuffix(r.Request.URL.Path, "actions/unlock"):
-			errs, err = decodeErrorPayload(r)
-			if err != nil {
-				return err
-			}
-
-			if errorPayloadContains(errs, "is locked by Run") {
-				return ErrWorkspaceLockedByRun
-			}
-
-			if errorPayloadContains(errs, "is locked by Team") {
-				return ErrWorkspaceLockedByTeam
-			}
-
-			if errorPayloadContains(errs, "is locked by User") {
-				return ErrWorkspaceLockedByUser
-			}
-
-			return ErrWorkspaceNotLocked
-		case strings.HasSuffix(r.Request.URL.Path, "actions/force-unlock"):
-			return ErrWorkspaceNotLocked
-		case strings.HasSuffix(r.Request.URL.Path, "actions/safe-delete"):
-			errs, err = decodeErrorPayload(r)
-			if err != nil {
-				return err
-			}
-			if errorPayloadContains(errs, "locked") {
-				return ErrWorkspaceLockedCannotDelete
-			}
-			if errorPayloadContains(errs, "being processed") {
-				return ErrWorkspaceStillProcessing
-			}
-
-			return ErrWorkspaceNotSafeToDelete
-		}
 	}
 
 	errs, err = decodeErrorPayload(r)
@@ -1072,29 +752,6 @@ func errorPayloadContains(payloadErrors []string, match string) bool {
 		}
 	}
 	return false
-}
-
-func packContents(path string) (*bytes.Buffer, error) {
-	body := bytes.NewBuffer(nil)
-
-	file, err := os.Stat(path)
-	if err != nil {
-		if errors.Is(err, fs.ErrNotExist) {
-			return body, fmt.Errorf(`failed to find files under the path "%v": %w`, path, err)
-		}
-		return body, fmt.Errorf(`unable to upload files from the path "%v": %w`, path, err)
-	}
-
-	if !file.Mode().IsDir() {
-		return body, ErrMissingDirectory
-	}
-
-	_, errSlug := slug.Pack(path, body, true)
-	if errSlug != nil {
-		return body, errSlug
-	}
-
-	return body, nil
 }
 
 func validSliceKey(key string) bool {

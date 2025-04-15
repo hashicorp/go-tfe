@@ -36,7 +36,7 @@ func TestContextWithResponseHeaderHook(t *testing.T) {
 		gotHeader = header
 	})
 
-	req, err := client.NewRequest("GET", "boop", nil)
+	req, err := client.NewJSONRequest("GET", "boop", nil, nil)
 	if err != nil {
 		t.Fatal(err)
 	}

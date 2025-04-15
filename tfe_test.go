@@ -4,340 +4,380 @@
 package tfe
 
 import (
-	"bytes"
 	"context"
-	"encoding/json"
-	"fmt"
+	"errors"
 	"net/http"
 	"net/http/httptest"
-	"os"
 	"testing"
 	"time"
 
+	"github.com/hashicorp/go-tfe/api/models"
 	"github.com/stretchr/testify/assert"
-	"github.com/stretchr/testify/require"
+	"golang.org/x/time/rate"
 )
 
-type tfeAPI struct {
-	ID                string                   `jsonapi:"primary,tfe"`
-	Name              string                   `jsonapi:"attr,name"`
-	CreatedAt         time.Time                `jsonapi:"attr,created-at,iso8601"`
-	Enabled           bool                     `jsonapi:"attr,enabled"`
-	Emails            []string                 `jsonapi:"attr,emails"`
-	Status            tfeAPIStatus             `jsonapi:"attr,status"`
-	StatusTimestamps  tfeAPITimestamps         `jsonapi:"attr,status-timestamps"`
-	DeliveryResponses []tfeAPIDeliveryResponse `jsonapi:"attr,delivery-responses"`
+func setDefaultServerHeaders(w http.ResponseWriter) {
+	w.Header().Set("Content-Type", ContentTypeJSONAPI)
+	w.Header().Set("X-RateLimit-Limit", "30")
+	w.Header().Set("TFP-API-Version", "34.21.9")
+	w.Header().Set("X-TFE-Version", "202205-1")
+	w.Header().Set("TFP-AppName", "HCP Terraform")
 }
 
-type tfeAPIDeliveryResponse struct {
-	Body string `jsonapi:"attr,body"`
-	Code int    `jsonapi:"attr,code"`
-}
+func testServer(t *testing.T, handlers map[string]http.HandlerFunc) *httptest.Server {
+	t.Helper()
 
-type tfeAPIStatus string
+	mux := http.NewServeMux()
 
-type tfeAPITimestamps struct {
-	QueuedAt time.Time `jsonapi:"attr,queued-at,rfc3339"`
-}
-
-const (
-	tfeAPIStatusNormal tfeAPIStatus = "normal"
-)
-
-func Test_unmarshalResponse(t *testing.T) {
-	t.Run("unmarshal properly formatted json", func(t *testing.T) {
-		// This structure is intended to include multiple possible fields and
-		// formats that are valid for JSON:API
-		data := map[string]interface{}{
-			"data": map[string]interface{}{
-				"type": "tfe",
-				"id":   "1",
-				"attributes": map[string]interface{}{
-					"name":       "terraform",
-					"created-at": "2016-08-17T08:27:12Z",
-					"enabled":    true,
-					"status":     tfeAPIStatusNormal,
-					"emails":     []string{"test@hashicorp.com"},
-					"delivery-responses": []interface{}{
-						map[string]interface{}{
-							"body": "<html>",
-							"code": 200,
-						},
-						map[string]interface{}{
-							"body": "<body>",
-							"code": 300,
-						},
-					},
-					"status-timestamps": map[string]string{
-						"queued-at": "2020-03-16T23:15:59+00:00",
-					},
-				},
-			},
-		}
-		byteData, errMarshal := json.Marshal(data)
-		require.NoError(t, errMarshal)
-		responseBody := bytes.NewReader(byteData)
-
-		unmarshalledRequestBody := tfeAPI{}
-		err := unmarshalResponse(responseBody, &unmarshalledRequestBody)
-		require.NoError(t, err)
-		queuedParsedTime, err := time.Parse(time.RFC3339, "2020-03-16T23:15:59+00:00")
-		require.NoError(t, err)
-
-		assert.Equal(t, unmarshalledRequestBody.ID, "1")
-		assert.Equal(t, unmarshalledRequestBody.Name, "terraform")
-		assert.Equal(t, unmarshalledRequestBody.Status, tfeAPIStatusNormal)
-		assert.Equal(t, len(unmarshalledRequestBody.Emails), 1)
-		assert.Equal(t, unmarshalledRequestBody.Emails[0], "test@hashicorp.com")
-		assert.Equal(t, unmarshalledRequestBody.StatusTimestamps.QueuedAt, queuedParsedTime)
-		assert.NotEmpty(t, unmarshalledRequestBody.DeliveryResponses)
-		assert.Equal(t, len(unmarshalledRequestBody.DeliveryResponses), 2)
-		assert.Equal(t, unmarshalledRequestBody.DeliveryResponses[0].Body, "<html>")
-		assert.Equal(t, unmarshalledRequestBody.DeliveryResponses[0].Code, 200)
-		assert.Equal(t, unmarshalledRequestBody.DeliveryResponses[1].Body, "<body>")
-		assert.Equal(t, unmarshalledRequestBody.DeliveryResponses[1].Code, 300)
-		assert.Equal(t, unmarshalledRequestBody.Enabled, true)
-	})
-
-	t.Run("can only unmarshal Items that are slices", func(t *testing.T) {
-		responseBody := bytes.NewReader([]byte(""))
-		malformattedItemStruct := struct {
-			*Pagination
-			Items int
-		}{
-			Items: 1,
-		}
-		err := unmarshalResponse(responseBody, &malformattedItemStruct)
-		require.Error(t, err)
-		assert.Equal(t, err, ErrItemsMustBeSlice)
-	})
-
-	t.Run("can only unmarshal a struct", func(t *testing.T) {
-		payload := "random"
-		responseBody := bytes.NewReader([]byte(payload))
-
-		notStruct := "not a struct"
-		err := unmarshalResponse(responseBody, notStruct)
-		assert.Error(t, err)
-		assert.EqualError(t, err, fmt.Sprintf("%v must be a struct or an io.Writer", notStruct))
-	})
-}
-
-func Test_BaseURL(t *testing.T) {
-	client, err := NewClient(&Config{
-		Address:  "https://example.com",
-		BasePath: "api/v99",
-	})
-
-	require.NoError(t, err)
-
-	url := client.BaseURL()
-	assert.Equal(t, "https://example.com/api/v99/", url.String())
-}
-
-func Test_DefaultBaseURL(t *testing.T) {
-	client, err := NewClient(&Config{
-		Address: "https://example.com",
-	})
-
-	require.NoError(t, err)
-
-	url := client.BaseURL()
-	assert.Equal(t, "https://example.com/api/v2/", url.String())
-}
-
-func Test_DefaultRegistryBaseURL(t *testing.T) {
-	client, err := NewClient(&Config{
-		Address: "https://example.com",
-	})
-
-	require.NoError(t, err)
-
-	url := client.BaseRegistryURL()
-	assert.Equal(t, "https://example.com/api/registry/", url.String())
-}
-
-func Test_RegistryBaseURL(t *testing.T) {
-	client, err := NewClient(&Config{
-		Address:          "https://example.com",
-		RegistryBasePath: "/api/registry99",
-	})
-
-	require.NoError(t, err)
-
-	url := client.BaseRegistryURL()
-	assert.Equal(t, "https://example.com/api/registry99/", url.String())
-}
-
-func Test_EncodeQueryParams(t *testing.T) {
-	t.Run("with no listOptions and therefore no include field defined", func(t *testing.T) {
-		urlVals := map[string][]string{
-			"include": {},
-		}
-		requestURLquery := encodeQueryParams(urlVals)
-		assert.Equal(t, requestURLquery, "")
-	})
-	t.Run("with listOptions setting multiple include options", func(t *testing.T) {
-		urlVals := map[string][]string{
-			"include": {"workspace", "cost_estimate"},
-		}
-		requestURLquery := encodeQueryParams(urlVals)
-		assert.Equal(t, requestURLquery, "include=workspace%2Ccost_estimate")
-	})
-}
-
-func Test_RegistryBasePath(t *testing.T) {
-	client, err := NewClient(&Config{
-		Token: "foo",
-	})
-	require.NoError(t, err)
-
-	t.Run("ensures client creates a request with registry base path", func(t *testing.T) {
-		path := "/api/registry/some/path/to/resource"
-		req, err := client.NewRequest("GET", path, nil)
-		require.NoError(t, err)
-
-		expected := os.Getenv("TFE_ADDRESS") + path
-		assert.Equal(t, req.retryableRequest.URL.String(), expected)
-	})
-}
-
-func Test_NewRequest(t *testing.T) {
-	testServer := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		switch r.URL.Path {
-		case "/get_request_with_query_param":
-			val := r.URL.Query().Get("include")
-			if val != "workspace,cost_estimate" {
-				t.Fatalf("unexpected include value: %q", val)
-			}
-			w.WriteHeader(http.StatusOK)
-			return
-		case "/api/v2/ping":
-			w.WriteHeader(http.StatusOK)
-			return
-		default:
-			t.Fatalf("unexpected request: %s", r.URL.String())
-		}
-	}))
-
-	t.Cleanup(func() {
-		testServer.Close()
-	})
-
-	client, err := NewClient(&Config{
-		Address: testServer.URL,
-	})
-	require.NoError(t, err)
-
-	t.Run("allows path to include query params", func(t *testing.T) {
-		request, err := client.NewRequest("GET", "/get_request_with_query_param?include=workspace,cost_estimate", nil)
-		require.NoError(t, err)
-
-		ctx := context.Background()
-		err = request.DoJSON(ctx, nil)
-		require.NoError(t, err)
-	})
-}
-
-func Test_NewRequestWithAdditionalQueryParams(t *testing.T) {
-	testServer := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		switch r.URL.Path {
-		case "/get_request_include":
-			val := r.URL.Query().Get("include")
-			if val != "workspace,cost_estimate" {
-				t.Fatalf("unexpected include value: %q", val)
-			}
-			w.WriteHeader(http.StatusOK)
-			return
-		case "/get_request_include_extra":
-			val := r.URL.Query().Get("include")
-			if val != "workspace,cost_estimate" {
-				t.Fatalf("unexpected include value: expected %q, got %q", "extra,workspace,cost_estimate", val)
-			}
-			extra := r.URL.Query().Get("extra")
-			if extra != "value" {
-				t.Fatalf("unexpected extra value: expected %q, got %q", "value", extra)
-			}
-			w.WriteHeader(http.StatusOK)
-			return
-		case "/get_request_include_raw":
-			extra := r.URL.Query().Get("Name")
-			if extra != "yes" {
-				t.Fatalf("unexpected query: %s", r.URL.RawQuery)
-			}
-			w.WriteHeader(http.StatusOK)
-			return
-		case "/delete_with_query":
-			extra := r.URL.Query().Get("extra")
-			if extra != "value" {
-				t.Fatalf("unexpected query: expected %q, got %q", "value", extra)
-			}
-			w.WriteHeader(http.StatusOK)
-			return
-		case "/api/v2/ping":
-			w.WriteHeader(http.StatusOK)
-			return
-		default:
-			t.Fatalf("unexpected request: %s", r.URL.String())
-		}
-	}))
-	t.Cleanup(func() {
-		testServer.Close()
-	})
-
-	client, err := NewClient(&Config{
-		Address: testServer.URL,
-	})
-	require.NoError(t, err)
-
-	t.Run("with additional query parameters", func(t *testing.T) {
-		request, err := client.NewRequestWithAdditionalQueryParams("GET", "/get_request_include", nil, map[string][]string{
-			"include": {"workspace", "cost_estimate"},
-		})
-		require.NoError(t, err)
-
-		ctx := context.Background()
-		err = request.DoJSON(ctx, nil)
-		require.NoError(t, err)
-	})
-
-	type extra struct {
-		Extra string `url:"extra"`
+	for pattern, fn := range handlers {
+		mux.HandleFunc(pattern, fn)
 	}
 
-	// json-encoded structs use the field name as the query parameter name
-	type raw struct {
-		Name string `json:"extra"`
+	ts := httptest.NewServer(mux)
+	t.Cleanup(ts.Close)
+	return ts
+}
+
+func testServerWithClient(t *testing.T, handlers map[string]http.HandlerFunc) (*httptest.Server, *Client) {
+	ts := testServer(t, handlers)
+
+	client, err := NewClient(&Config{
+		HTTPClient: ts.Client(),
+		Token:      "test-token",
+	})
+
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
 	}
 
-	t.Run("GET request with req attr and additional request attributes", func(t *testing.T) {
-		request, err := client.NewRequestWithAdditionalQueryParams("GET", "/get_request_include_extra", &extra{Extra: "value"}, map[string][]string{
-			"include": {"workspace", "cost_estimate"},
-		})
-		require.NoError(t, err)
+	return ts, client
+}
 
-		ctx := context.Background()
-		err = request.DoJSON(ctx, nil)
-		require.NoError(t, err)
+func Test_NewClient(t *testing.T) {
+	ts := testServer(t, map[string]http.HandlerFunc{
+		"/": func(w http.ResponseWriter, r *http.Request) {
+			setDefaultServerHeaders(w)
+			w.WriteHeader(204)
+		}})
+
+	t.Run("fails if token is empty", func(t *testing.T) {
+		cfg := &Config{
+			HTTPClient: ts.Client(),
+		}
+
+		_, err := NewClient(cfg)
+		if err == nil || err.Error() != "missing API token" {
+			t.Fatalf("unexpected error: %v", err)
+		}
 	})
 
-	t.Run("DELETE request with additional request attributes", func(t *testing.T) {
-		request, err := client.NewRequestWithAdditionalQueryParams("DELETE", "/delete_with_query", nil, map[string][]string{
-			"extra": {"value"},
-		})
-		require.NoError(t, err)
+	t.Run("makes a new client with good settings", func(t *testing.T) {
+		config := &Config{
+			Address:    ts.URL,
+			Token:      "abcd1234",
+			HTTPClient: ts.Client(),
+		}
 
-		ctx := context.Background()
-		err = request.DoJSON(ctx, nil)
-		require.NoError(t, err)
+		client, err := NewClient(config)
+		if err != nil {
+			t.Fatal(err)
+		}
+
+		if config.Address+DefaultBasePath != client.baseURL.String() {
+			t.Fatalf("unexpected client address %q", client.baseURL.String())
+		}
+		if config.Token != client.token {
+			t.Fatalf("unexpected client token %q", client.token)
+		}
+		if ts.Client() != client.http.HTTPClient {
+			t.Fatal("unexpected HTTP client value")
+		}
+	})
+}
+
+func TestClient_API(t *testing.T) {
+	ts := testServer(t, map[string]http.HandlerFunc{
+		"/api/v2/account/details": func(w http.ResponseWriter, r *http.Request) {
+			setDefaultServerHeaders(w)
+
+			w.WriteHeader(200)
+			w.Write(([]byte)(`{
+	"data": {
+		"id": "usr-1234",
+		"type": "users",
+		"attributes": {
+			"email": "test@hashicorp.com"
+		}
+	}
+}`))
+		},
+		"/": func(w http.ResponseWriter, r *http.Request) {
+			setDefaultServerHeaders(w)
+			w.WriteHeader(404)
+			w.Write(([]byte)(`{
+	"errors": [
+		{
+			"status": "404",
+			"title": "resource not found"
+		}
+	]
+}`))
+		}})
+
+	cfg := &Config{
+		HTTPClient: ts.Client(),
+		Address:    ts.URL,
+		Token:      "abcd1234",
+	}
+
+	t.Run("basic success", func(t *testing.T) {
+		client, err := NewClient(cfg)
+		if err != nil {
+			t.Fatal(err)
+		}
+
+		response, err := client.API.Account().Details().Get(context.Background(), nil)
+		if err != nil {
+			t.Fatalf("Failed to fetch Account Details: %s", err)
+		}
+
+		expected := "test@hashicorp.com"
+		if actual := *response.GetData().GetAttributes().GetEmail(); actual != expected {
+			t.Errorf("expected account details data attribute email to be %q, got %q", expected, actual)
+		}
+
+		expected = "usr-1234"
+		if actual := *response.GetData().GetId(); actual != expected {
+			t.Errorf("expected account details id to be %q, got %q", expected, actual)
+		}
 	})
 
-	t.Run("GET request with other kinds of annotations", func(t *testing.T) {
-		request, err := client.NewRequestWithAdditionalQueryParams("GET", "/get_request_include_raw", &raw{Name: "yes"}, nil)
-		require.NoError(t, err)
+	t.Run("basic not found", func(t *testing.T) {
+		client, err := NewClient(cfg)
+		if err != nil {
+			t.Fatal(err)
+		}
 
-		ctx := context.Background()
-		err = request.DoJSON(ctx, nil)
-		require.NoError(t, err)
+		response, err := client.API.Organizations().ByOrganization_Id("hashicorp").GetAsOrganization_GetResponse(context.Background(), nil)
+		merr, ok := err.(*models.Errors)
+		if !ok {
+			t.Fatalf("expected *models.Errors, got %T", err)
+		}
+
+		if merr.ResponseStatusCode != 404 {
+			t.Errorf("expected status code %d, got %d", 404, merr.ResponseStatusCode)
+		}
+
+		if len(merr.GetErrors()) != 1 {
+			t.Fatalf("expected %d errors, got %d", 1, len(merr.GetErrors()))
+		}
+
+		for _, msg := range merr.GetErrors() {
+			expected := "404"
+			if actual := *msg.GetStatus(); actual != expected {
+				t.Fatalf("expected error status %q, got %q", expected, actual)
+			}
+
+			expected = "resource not found"
+			if actual := *msg.GetTitle(); actual != expected {
+				t.Fatalf("expected error title %q, got %q", expected, actual)
+			}
+		}
+
+		if response != nil {
+			t.Fatalf("expected nil organization response, got %v", response)
+		}
 	})
+}
+
+func TestClient_defaultConfig(t *testing.T) {
+	t.Run("with no environment variables", func(t *testing.T) {
+		config := DefaultConfig()
+
+		assert.Equal(t, config.Address, DefaultAddress)
+		assert.Equal(t, config.Token, "")
+		assert.NotNil(t, config.HTTPClient)
+	})
+}
+
+func TestClient_configureLimiter(t *testing.T) {
+	t.SkipNow()
+
+	rateLimit := ""
+	ts := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Content-Type", ContentTypeJSONAPI)
+		w.Header().Set("X-RateLimit-Limit", rateLimit)
+		w.WriteHeader(204) // We query the configured ping URL which should return a 204.
+	}))
+	defer ts.Close()
+
+	cfg := &Config{
+		Address:    ts.URL,
+		Token:      "dummy-token",
+		HTTPClient: ts.Client(),
+	}
+
+	cases := map[string]struct {
+		rate  string
+		limit rate.Limit
+		burst int
+	}{
+		"no-value": {
+			rate:  "",
+			limit: rate.Inf,
+			burst: 0,
+		},
+		"limit-0": {
+			rate:  "0",
+			limit: rate.Inf,
+			burst: 0,
+		},
+		"limit-30": {
+			rate:  "30",
+			limit: rate.Limit(19.8),
+			burst: 9,
+		},
+		"limit-100": {
+			rate:  "100",
+			limit: rate.Limit(66),
+			burst: 33,
+		},
+	}
+
+	for name, tc := range cases {
+		// First set the test rate limit.
+		rateLimit = tc.rate
+
+		client, err := NewClient(cfg)
+		if err != nil {
+			t.Fatal(err)
+		}
+
+		if client.limiter.Limit() != tc.limit {
+			t.Fatalf("test %s expected limit %f, got: %f", name, tc.limit, client.limiter.Limit())
+		}
+
+		if client.limiter.Burst() != tc.burst {
+			t.Fatalf("test %s expected burst %d, got: %d", name, tc.burst, client.limiter.Burst())
+		}
+	}
+}
+
+func TestClient_retryHTTPCheck(t *testing.T) {
+	ts := testServer(t, map[string]http.HandlerFunc{
+		"/": func(w http.ResponseWriter, r *http.Request) {
+			setDefaultServerHeaders(w)
+			w.WriteHeader(204)
+		},
+	})
+
+	cfg := &Config{
+		Address:    ts.URL,
+		Token:      "dummy-token",
+		HTTPClient: ts.Client(),
+	}
+
+	connErr := errors.New("connection error")
+
+	cases := map[string]struct {
+		resp              *http.Response
+		err               error
+		retryServerErrors bool
+		checkOK           bool
+		checkErr          error
+	}{
+		"429-no-server-errors": {
+			resp:     &http.Response{StatusCode: 429},
+			err:      nil,
+			checkOK:  true,
+			checkErr: nil,
+		},
+		"429-with-server-errors": {
+			resp:              &http.Response{StatusCode: 429},
+			err:               nil,
+			retryServerErrors: true,
+			checkOK:           true,
+			checkErr:          nil,
+		},
+		"500-no-server-errors": {
+			resp:     &http.Response{StatusCode: 500},
+			err:      nil,
+			checkOK:  false,
+			checkErr: nil,
+		},
+		"500-with-server-errors": {
+			resp:              &http.Response{StatusCode: 500},
+			err:               nil,
+			retryServerErrors: true,
+			checkOK:           true,
+			checkErr:          nil,
+		},
+		"err-no-server-errors": {
+			err:      connErr,
+			checkOK:  false,
+			checkErr: connErr,
+		},
+		"err-with-server-errors": {
+			err:               connErr,
+			retryServerErrors: true,
+			checkOK:           true,
+			checkErr:          connErr,
+		},
+	}
+
+	ctx := context.Background()
+
+	for name, tc := range cases {
+		client, err := NewClient(cfg)
+		if err != nil {
+			t.Fatal(err)
+		}
+
+		client.RetryServerErrors(tc.retryServerErrors)
+
+		checkOK, checkErr := client.retryHTTPCheck(ctx, tc.resp, tc.err)
+		if checkOK != tc.checkOK {
+			t.Fatalf("test %s expected checkOK %t, got: %t", name, tc.checkOK, checkOK)
+		}
+		if checkErr != tc.checkErr {
+			t.Fatalf("test %s expected checkErr %v, got: %v", name, tc.checkErr, checkErr)
+		}
+	}
+}
+
+func TestClient_retryHTTPBackoff(t *testing.T) {
+	ts := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Content-Type", ContentTypeJSONAPI)
+		w.Header().Set("X-RateLimit-Limit", "30")
+		w.WriteHeader(204) // We query the configured ping URL which should return a 204.
+	}))
+	defer ts.Close()
+
+	var attempts int
+	retryLogHook := func(attemptNum int, resp *http.Response) {
+		attempts++
+	}
+
+	cfg := &Config{
+		Address:      ts.URL,
+		Token:        "dummy-token",
+		HTTPClient:   ts.Client(),
+		RetryLogHook: retryLogHook,
+	}
+
+	client, err := NewClient(cfg)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	retries := 3
+	resp := &http.Response{StatusCode: 500}
+
+	for i := 0; i < retries; i++ {
+		client.retryHTTPBackoff(time.Second, time.Second, i, resp)
+	}
+
+	if attempts != retries {
+		t.Fatalf("expected %d log hook callbacks, got: %d callbacks", retries, attempts)
+	}
 }

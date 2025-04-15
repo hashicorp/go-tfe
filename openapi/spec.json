@@ -1,0 +1,4245 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "version": "2.6.0",
+    "title": "HCP Terraform API v2",
+    "description": "OpenAPI Specification for the HCP Terraform API V2",
+    "license": {
+      "name": "MPL-2.0",
+      "url": "https://www.mozilla.org/en-US/MPL/2.0/"
+    },
+    "contact": {
+      "name": "API Support",
+      "url": "https://developer.hashicorp.com/terraform/cloud-docs/api-docs",
+      "email": "support@hashicorp.com"
+    }
+  },
+  "servers": [
+    {
+      "url": "https://app.terraform.io/api/v2"
+    }
+  ],
+  "security": [
+    {
+      "bearerAuth": []
+    }
+  ],
+  "tags": [
+    {
+      "name": "accounts",
+      "x-displayName": "Accounts",
+      "description": "Account actions",
+      "externalDocs": {
+        "url": "https://developer.hashicorp.com/terraform/cloud-docs/api-docs/account"
+      }
+    },
+    {
+      "name": "agent-pools",
+      "x-displayName": "Agents and Agent Pools",
+      "description": "Agent and Agent Pool actions",
+      "externalDocs": {
+        "url": "https://developer.hashicorp.com/terraform/cloud-docs/api-docs/agents"
+      }
+    },
+    {
+      "name": "configuration-versions",
+      "x-displayName": "Configuration Versions",
+      "description": "Configuration Version actions",
+      "externalDocs": {
+        "url": "https://developer.hashicorp.com/terraform/cloud-docs/api-docs/configuration-versions"
+      }
+    },
+    {
+      "name": "organizations",
+      "x-displayName": "Organizations",
+      "description": "Organization actions",
+      "externalDocs": {
+        "url": "https://developer.hashicorp.com/terraform/cloud-docs/api-docs/organizations"
+      }
+    },
+    {
+      "name": "runs",
+      "x-displayName": "Runs",
+      "description": "Run actions",
+      "externalDocs": {
+        "url": "https://developer.hashicorp.com/terraform/cloud-docs/api-docs/run"
+      }
+    },
+    {
+      "name": "applies",
+      "x-displayName": "Applies",
+      "description": "Applies",
+      "externalDocs": {
+        "url": "https://developer.hashicorp.com/terraform/cloud-docs/api-docs/applies"
+      }
+    }
+  ],
+  "paths": {
+    "/account/details": {
+      "get": {
+        "operationId": "getAccountDetails",
+        "summary": "Account Details",
+        "description": "Get your account details",
+        "tags": [
+          "accounts"
+        ],
+        "responses": {
+          "200": {
+            "description": "Account details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "data"
+                  ],
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/account"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/account/update": {
+      "patch": {
+        "operationId": "updateAccount",
+        "summary": "Update account",
+        "description": "Update your username and email address",
+        "tags": [
+          "accounts"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/vnd.api+json": {
+              "schema": {
+                "$ref": "#/components/schemas/account_update"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Account updated",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "data"
+                  ],
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/account"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/account/password": {
+      "patch": {
+        "operationId": "updateAccountPassword",
+        "summary": "Update account password",
+        "description": "Change your account password",
+        "tags": [
+          "accounts"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/vnd.api+json": {
+              "schema": {
+                "$ref": "#/components/schemas/account_password"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Account updated",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/account"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/account/hcp-organizations/{hcp_organization_id}": {
+      "x-vis": [
+        "hcpt"
+      ],
+      "get": {
+        "operationId": "getHCPOrganization",
+        "summary": "HCP Organization",
+        "tags": [
+          "accounts"
+        ],
+        "description": "Get details of a specific HCP organization",
+        "parameters": [
+          {
+            "name": "hcp_organization_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "data"
+                  ],
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/hcp-organization"
+                    },
+                    "included": {
+                      "type": "array",
+                      "items": {
+                        "anyOf": [
+                          {
+                            "$ref": "#/components/schemas/hcp-billing-account"
+                          }
+                        ]
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/organizations/{organization_name}/agent-pools": {
+      "post": {
+        "operationId": "createAgentPool",
+        "summary": "Create Agent Pool",
+        "description": "Create an agent pool for an organization.",
+        "tags": [
+          "agent-pools"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "organization_name",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "Name of the organization"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Agent pool created",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "data"
+                  ],
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/agent-pool"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "operationId": "listAgentPools",
+        "summary": "List Agent Pools",
+        "description": "List agent pools, their agents, and their tokens for an organization.",
+        "tags": [
+          "agent-pools"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "organization_name",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "Name of the organization"
+          },
+          {
+            "in": "query",
+            "name": "page[number]",
+            "schema": {
+              "type": "integer"
+            },
+            "required": false,
+            "description": "If omitted, the endpoint will return the first page."
+          },
+          {
+            "in": "query",
+            "name": "page[size]",
+            "schema": {
+              "type": "integer"
+            },
+            "required": false,
+            "description": "If omitted, the endpoint will return 20 agents per page."
+          },
+          {
+            "in": "query",
+            "name": "filter[allowed-workspaces][name]",
+            "schema": {
+              "type": "string"
+            },
+            "required": false,
+            "description": "Filters agent pools to those associated with the given workspace. The workspace must have permission to use the agent pool."
+          },
+          {
+            "in": "query",
+            "name": "q",
+            "schema": {
+              "type": "string"
+            },
+            "required": false,
+            "description": "A search query string. Agent pools are searchable by name."
+          },
+          {
+            "in": "query",
+            "name": "sort",
+            "schema": {
+              "type": "string"
+            },
+            "required": false,
+            "description": "Allows sorting the returned agents pools. Valid values are \"name\" and \"created-at\". Prepending a hyphen to the sort parameter will reverse the order (e.g. \"-name\")."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Agent pools",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "data"
+                  ],
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/agent-pool"
+                      }
+                    },
+                    "meta": {
+                      "type": "object",
+                      "properties": {
+                        "pagination": {
+                          "$ref": "#/components/schemas/pagination"
+                        }
+                      }
+                    },
+                    "links": {
+                      "$ref": "#/components/schemas/self-with-pagination"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/agent-pools/{agent_pool_id}": {
+      "get": {
+        "operationId": "getAgentPool",
+        "summary": "Get Agent Pool details",
+        "description": "Get details about an agent pool",
+        "tags": [
+          "agent-pools"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "agent_pool_id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "Agent Pool ID"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Agent pool details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "data"
+                  ],
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/agent-pool"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "operationId": "updateAgentPool",
+        "summary": "Update Agent Pool",
+        "description": "Update an agent pool",
+        "tags": [
+          "agent-pools"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "agent_pool_id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "Agent Pool ID"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/vnd.api+json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "data"
+                ],
+                "properties": {
+                  "data": {
+                    "$ref": "#/components/schemas/agent-pool"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Agent pool updated",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "data"
+                  ],
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/agent-pool"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "operationId": "deleteAgentPool",
+        "summary": "Delete Agent Pool",
+        "description": "Delete an agent pool",
+        "tags": [
+          "agent-pools"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "agent_pool_id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "Agent Pool ID"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Agent pool deleted"
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/agent-pools/{agent_pool_id}/agents": {
+      "get": {
+        "operationId": "listAgents",
+        "summary": "List Agents",
+        "description": "List all agents in the specified agent pool.",
+        "tags": [
+          "agent-pools"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "agent_pool_id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The ID of the Agent Pool to list."
+          },
+          {
+            "in": "query",
+            "name": "filter[last-ping-since]",
+            "schema": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "required": false,
+            "description": "Accepts a date in ISO8601 format (ex. `2020-08-11T10:41:23Z`)."
+          },
+          {
+            "in": "query",
+            "name": "page[number]",
+            "schema": {
+              "type": "integer"
+            },
+            "required": false,
+            "description": "If omitted, the endpoint will return the first page."
+          },
+          {
+            "in": "query",
+            "name": "page[size]",
+            "schema": {
+              "type": "integer"
+            },
+            "required": false,
+            "description": "If omitted, the endpoint will return 20 agents per page."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/agent"
+                      }
+                    },
+                    "meta": {
+                      "type": "object",
+                      "properties": {
+                        "pagination": {
+                          "$ref": "#/components/schemas/pagination"
+                        }
+                      }
+                    },
+                    "links": {
+                      "$ref": "#/components/schemas/self-with-pagination"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Agent Pool not found, or user unauthorized to perform action",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/agents/{agent_id}": {
+      "get": {
+        "operationId": "getAgent",
+        "summary": "Get Agent details",
+        "description": "Get details about an agent",
+        "tags": [
+          "agent-pools"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "agent_id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "Agent ID"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Agent details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/agent"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "operationId": "deleteAgent",
+        "summary": "Delete Agent",
+        "description": "Remove an agent",
+        "tags": [
+          "agent-pools"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "agent_id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "Agent ID"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Agent removed"
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/organizations": {
+      "get": {
+        "operationId": "listOrganizations",
+        "summary": "List Organizations",
+        "description": "List organizations.",
+        "tags": [
+          "organizations"
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "q",
+            "schema": {
+              "type": "string"
+            },
+            "required": false,
+            "description": "A search query string. Organizations are searchable by name and notification email."
+          },
+          {
+            "in": "query",
+            "name": "q[email]",
+            "schema": {
+              "type": "string"
+            },
+            "required": false,
+            "description": "A search query string. This query searches organizations by notification email."
+          },
+          {
+            "in": "query",
+            "name": "q[name]",
+            "schema": {
+              "type": "string"
+            },
+            "required": false,
+            "description": "A search query string. This query searches organizations by name."
+          },
+          {
+            "in": "query",
+            "name": "page[number]",
+            "schema": {
+              "type": "integer"
+            },
+            "required": false,
+            "description": "Defaults to the first page, if omitted when `page[size]` is provided."
+          },
+          {
+            "in": "query",
+            "name": "page[size]",
+            "schema": {
+              "type": "integer"
+            },
+            "required": false,
+            "description": "Defaults to 20 organizations per page, if omitted when `page[number]` is provided."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Organizations list",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "data"
+                  ],
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/organization"
+                      }
+                    },
+                    "meta": {
+                      "type": "object",
+                      "properties": {
+                        "pagination": {
+                          "$ref": "#/components/schemas/pagination"
+                        }
+                      }
+                    },
+                    "links": {
+                      "$ref": "#/components/schemas/self-with-pagination"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "operationId": "createOrganization",
+        "summary": "Create Organization",
+        "description": "Create an organization.",
+        "tags": [
+          "organizations"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/vnd.api+json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "data"
+                ],
+                "properties": {
+                  "data": {
+                    "$ref": "#/components/schemas/organization"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Organization created",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "data"
+                  ],
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/organization"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/organizations/{organization_id}": {
+      "get": {
+        "operationId": "getOrganization",
+        "summary": "Get Organization details",
+        "description": "Get details about an organization.",
+        "tags": [
+          "organizations"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "organization_id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "Organization ID"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Organization details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "data"
+                  ],
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/organization"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "organizations"
+        ],
+        "operationId": "updateOrganization",
+        "summary": "Update Organization",
+        "description": "Update an organization.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "organization_id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "Organization ID"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/vnd.api+json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "data"
+                ],
+                "properties": {
+                  "data": {
+                    "$ref": "#/components/schemas/organization"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Organization updated",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "data"
+                  ],
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/organization"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "organizations"
+        ],
+        "operationId": "updateOrganization",
+        "summary": "Update Organization",
+        "description": "Update an organization.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "organization_id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "Organization ID"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/vnd.api+json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "data"
+                ],
+                "properties": {
+                  "data": {
+                    "$ref": "#/components/schemas/organization"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Organization updated",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "data"
+                  ],
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/organization"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "operationId": "deleteOrganization",
+        "summary": "Delete Organization",
+        "description": "Delete an organization.",
+        "tags": [
+          "organizations"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "organization_id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "Organization ID"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Organization deleted"
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/runs": {
+      "post": {
+        "operationId": "createRun",
+        "summary": "Create a Run",
+        "description": "Create a new run.",
+        "tags": [
+          "runs"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/vnd.api+json": {
+              "schema": {
+                "$ref": "#/components/schemas/run"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Run created",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/run"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "operationId": "listRuns",
+        "summary": "List Runs",
+        "description": "List all runs in a workspace.",
+        "tags": [
+          "runs"
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "workspace_id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "Workspace ID"
+          },
+          {
+            "in": "query",
+            "name": "organization_name",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "Organization Name"
+          },
+          {
+            "in": "query",
+            "name": "filter[operation]",
+            "schema": {
+              "type": "string"
+            },
+            "required": false,
+            "description": "Filter by run operation."
+          },
+          {
+            "in": "query",
+            "name": "filter[status]",
+            "schema": {
+              "type": "string"
+            },
+            "required": false,
+            "description": "Filter by run status."
+          },
+          {
+            "in": "query",
+            "name": "page[number]",
+            "schema": {
+              "type": "integer"
+            },
+            "required": false,
+            "description": "Page number."
+          },
+          {
+            "in": "query",
+            "name": "page[size]",
+            "schema": {
+              "type": "integer"
+            },
+            "required": false,
+            "description": "Page size."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of runs",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/run"
+                      }
+                    },
+                    "meta": {
+                      "type": "object",
+                      "properties": {
+                        "pagination": {
+                          "$ref": "#/components/schemas/pagination"
+                        }
+                      }
+                    },
+                    "links": {
+                      "$ref": "#/components/schemas/self-with-pagination"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/runs/{run_id}": {
+      "get": {
+        "operationId": "getRun",
+        "summary": "Get Run details",
+        "description": "Get details about a run.",
+        "tags": [
+          "runs"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "run_id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "Run ID"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Run details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/run"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/runs/{run_id}/configuration-version": {
+      "get": {
+        "operationId": "getRunConfigurationVersion",
+        "summary": "Get Run Configuration Version",
+        "description": "Retrieve details of a specific configuration version.",
+        "tags": [
+          "configuration-versions"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "run_id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The ID of the run"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Configuration version details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "data"
+                  ],
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/configuration-version"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/runs/{run_id}/configuration-version/download": {
+      "get": {
+        "operationId": "downloadRunConfigurationVersion",
+        "summary": "Download Run Configuration Version",
+        "description": "Generate a temporary URL to download the configuration version files.",
+        "tags": [
+          "configuration-versions"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "run_id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The ID of the run."
+          }
+        ],
+        "responses": {
+          "302": {
+            "description": "Temporary download URL generated",
+            "headers": {
+              "Location": {
+                "description": "Storage URL to .tar.gz file containing the configuration version",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/runs/{run_id}/actions/apply": {
+      "post": {
+        "operationId": "applyRun",
+        "summary": "Apply a Run",
+        "description": "Apply a run that is paused waiting for confirmation.",
+        "tags": [
+          "runs"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "run_id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "Run ID"
+          }
+        ],
+        "requestBody": {
+          "required": false,
+          "content": {
+            "application/vnd.api+json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "comment": {
+                    "type": "string",
+                    "nullable": true
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "202": {
+            "description": "Successfully queued an apply request"
+          },
+          "409": {
+            "description": "Run was not paused for confirmation; apply not allowed.",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/workspaces/{workspace_id}/runs": {
+      "get": {
+        "operationId": "listWorkspaceRuns",
+        "summary": "List Runs in a Workspace",
+        "description": "List all runs in a workspace.",
+        "tags": [
+          "runs"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "workspace_id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "Workspace ID"
+          },
+          {
+            "in": "query",
+            "name": "filter[operation]",
+            "schema": {
+              "type": "string"
+            },
+            "required": false,
+            "description": "Filter by run operation."
+          },
+          {
+            "in": "query",
+            "name": "filter[status]",
+            "schema": {
+              "type": "string"
+            },
+            "required": false,
+            "description": "Filter by run status."
+          },
+          {
+            "in": "query",
+            "name": "page[number]",
+            "schema": {
+              "type": "integer"
+            },
+            "required": false,
+            "description": "Page number."
+          },
+          {
+            "in": "query",
+            "name": "page[size]",
+            "schema": {
+              "type": "integer"
+            },
+            "required": false,
+            "description": "Page size."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of runs",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/run"
+                      }
+                    },
+                    "meta": {
+                      "type": "object",
+                      "properties": {
+                        "pagination": {
+                          "$ref": "#/components/schemas/pagination"
+                        }
+                      }
+                    },
+                    "links": {
+                      "$ref": "#/components/schemas/self-with-pagination"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/organizations/{organization_name}/runs": {
+      "get": {
+        "operationId": "listOrganizationRuns",
+        "summary": "List Runs in an Organization",
+        "description": "List all runs in an organization.",
+        "tags": [
+          "runs"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "organization_name",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "Organization name"
+          },
+          {
+            "in": "query",
+            "name": "filter[operation]",
+            "schema": {
+              "type": "string"
+            },
+            "required": false,
+            "description": "Filter by run operation."
+          },
+          {
+            "in": "query",
+            "name": "filter[status]",
+            "schema": {
+              "type": "string"
+            },
+            "required": false,
+            "description": "Filter by run status."
+          },
+          {
+            "in": "query",
+            "name": "filter[timeframe]",
+            "schema": {
+              "type": "string",
+              "default": "year"
+            },
+            "required": false,
+            "description": "Filter by timeframe. Must be a numeric year or \"year\" for the last 12 months (the default)."
+          },
+          {
+            "in": "query",
+            "name": "page[number]",
+            "schema": {
+              "type": "integer"
+            },
+            "required": false,
+            "description": "Page number."
+          },
+          {
+            "in": "query",
+            "name": "page[size]",
+            "schema": {
+              "type": "integer"
+            },
+            "required": false,
+            "description": "Page size."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of runs",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/run"
+                      }
+                    },
+                    "meta": {
+                      "type": "object",
+                      "properties": {
+                        "pagination": {
+                          "$ref": "#/components/schemas/pagination-without-totals"
+                        }
+                      }
+                    },
+                    "links": {
+                      "$ref": "#/components/schemas/self-with-pagination"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/applies/{id}": {
+      "get": {
+        "summary": "Show an apply",
+        "operationId": "getApply",
+        "tags": [
+          "applies"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "The ID of the apply to show.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The request was successful",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/apply"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Apply not found, or user unauthorized to perform action",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/applies/{id}/errored-state": {
+      "get": {
+        "summary": "Recover a failed state upload after applying",
+        "operationId": "getApplyErroredState",
+        "tags": [
+          "applies"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "The ID of the apply to recover state for.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "307": {
+            "description": "Errored state available and user is authorized to read it",
+            "headers": {
+              "Location": {
+                "description": "Storage URL to raw state file",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Apply not found, errored state not uploaded, or user unauthorized to perform action",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/errors"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/workspaces/{workspace_id}/configuration-versions": {
+      "get": {
+        "operationId": "listConfigurationVersions",
+        "summary": "List Configuration Versions",
+        "description": "List configuration versions for a workspace.",
+        "tags": [
+          "configuration-versions"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "workspace_id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The ID of the workspace."
+          },
+          {
+            "in": "query",
+            "name": "page[number]",
+            "schema": {
+              "type": "integer"
+            },
+            "required": false,
+            "description": "Defaults to the first page if omitted."
+          },
+          {
+            "in": "query",
+            "name": "page[size]",
+            "schema": {
+              "type": "integer"
+            },
+            "required": false,
+            "description": "Defaults to 20 configuration versions per page if omitted."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of configuration versions",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "data"
+                  ],
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/configuration-version"
+                      }
+                    },
+                    "meta": {
+                      "type": "object",
+                      "properties": {
+                        "pagination": {
+                          "$ref": "#/components/schemas/pagination"
+                        }
+                      }
+                    },
+                    "links": {
+                      "$ref": "#/components/schemas/self-with-pagination"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "operationId": "createConfigurationVersion",
+        "summary": "Create Configuration Version",
+        "description": "Create a new configuration version in a workspace.",
+        "tags": [
+          "configuration-versions"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "workspace_id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The ID of the workspace."
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/vnd.api+json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "data"
+                ],
+                "properties": {
+                  "data": {
+                    "$ref": "#/components/schemas/configuration-version"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Configuration version created",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "data"
+                  ],
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/configuration-version"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/configuration-versions/{configuration_version_id}": {
+      "get": {
+        "operationId": "getConfigurationVersion",
+        "summary": "Get Configuration Version",
+        "description": "Retrieve details of a specific configuration version.",
+        "tags": [
+          "configuration-versions"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "configuration_version_id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The ID of the configuration version."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Configuration version details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "data"
+                  ],
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/configuration-version"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/configuration-versions/{configuration_version_id}/ingress-attributes": {
+      "get": {
+        "operationId": "getIngressAttributes",
+        "summary": "Get Ingress Attributes",
+        "description": "Retrieve commit information for a configuration version.",
+        "tags": [
+          "configuration-versions"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "configuration_version_id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The ID of the configuration version."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Ingress attributes details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ingress-attributes"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/configuration-versions/{configuration_version_id}/actions/archive": {
+      "post": {
+        "operationId": "archiveConfigurationVersion",
+        "summary": "Archive Configuration Version",
+        "description": "Archive the uploaded files for a configuration version.",
+        "tags": [
+          "configuration-versions"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "configuration_version_id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The ID of the configuration version."
+          }
+        ],
+        "responses": {
+          "202": {
+            "description": "Archive process initiated"
+          },
+          "409": {
+            "description": "Configuration version was in a non-archivable state or the configuration version was created with VCS and cannot be archived through the API.",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/configuration-versions/{configuration_version_id}/download": {
+      "get": {
+        "operationId": "downloadConfigurationVersion",
+        "summary": "Download Configuration Version",
+        "description": "Generate a temporary URL to download the configuration version files.",
+        "tags": [
+          "configuration-versions"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "configuration_version_id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The ID of the configuration version."
+          }
+        ],
+        "responses": {
+          "302": {
+            "description": "Temporary download URL generated",
+            "headers": {
+              "Location": {
+                "description": "Storage URL to .tar.gz file containing the configuration version",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer"
+      }
+    },
+    "schemas": {
+      "errors": {
+        "type": "object",
+        "properties": {
+          "errors": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "string"
+                },
+                "title": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      },
+      "related": {
+        "type": "object",
+        "properties": {
+          "related": {
+            "type": "string"
+          }
+        }
+      },
+      "links_related": {
+        "type": "object",
+        "properties": {
+          "links": {
+            "$ref": "#/components/schemas/related"
+          }
+        }
+      },
+      "self": {
+        "type": "object",
+        "properties": {
+          "self": {
+            "type": "string"
+          }
+        }
+      },
+      "account": {
+        "type": "object",
+        "required": [
+          "id",
+          "type",
+          "attributes",
+          "links",
+          "relationships"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "readOnly": true
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "users"
+            ]
+          },
+          "attributes": {
+            "type": "object",
+            "properties": {
+              "username": {
+                "type": "string",
+                "nullable": true
+              },
+              "is-service-account": {
+                "type": "boolean"
+              },
+              "avatar-url": {
+                "type": "string",
+                "nullable": true
+              },
+              "auth-method": {
+                "type": "string"
+              },
+              "v2-only": {
+                "type": "boolean"
+              },
+              "is-admin": {
+                "type": "boolean"
+              },
+              "is-site-admin": {
+                "description": "Deprecated. Use is-admin.",
+                "type": "boolean"
+              },
+              "is-sso-login": {
+                "type": "boolean"
+              },
+              "is-confirmed": {
+                "type": "boolean"
+              },
+              "is-unified": {
+                "type": "boolean"
+              },
+              "is-sudo": {
+                "type": "boolean"
+              },
+              "email": {
+                "type": "string"
+              },
+              "unconfirmed-email": {
+                "type": "string",
+                "nullable": true
+              },
+              "password": {
+                "type": "string",
+                "nullable": true
+              },
+              "enterprise-support": {
+                "type": "boolean"
+              },
+              "has-linked-hcp": {
+                "type": "boolean"
+              },
+              "has-git-hub-app-token": {
+                "type": "boolean"
+              },
+              "two-factor": {
+                "type": "object",
+                "properties": {
+                  "enabled": {
+                    "type": "boolean"
+                  },
+                  "verified": {
+                    "type": "boolean"
+                  }
+                }
+              },
+              "permissions": {
+                "type": "object",
+                "properties": {
+                  "can-create-organization": {
+                    "type": "boolean"
+                  },
+                  "can-view-organizations": {
+                    "type": "boolean"
+                  },
+                  "can-view-settings": {
+                    "type": "boolean"
+                  },
+                  "can-view-smtp-settings": {
+                    "type": "boolean"
+                  },
+                  "can-view-twilio-settings": {
+                    "type": "boolean"
+                  },
+                  "can-view-saml-settings": {
+                    "type": "boolean"
+                  },
+                  "can-view-admin-workspaces": {
+                    "type": "boolean"
+                  },
+                  "can-view-admin-runs": {
+                    "type": "boolean"
+                  },
+                  "can-view-customization-settings": {
+                    "type": "boolean"
+                  },
+                  "can-view-cost-estimation-settings": {
+                    "type": "boolean"
+                  },
+                  "can-view-capabilities": {
+                    "type": "boolean"
+                  },
+                  "can-view-tool-versions": {
+                    "type": "boolean"
+                  },
+                  "can-create-tool-versions": {
+                    "type": "boolean"
+                  },
+                  "can-view-general-settings": {
+                    "type": "boolean"
+                  },
+                  "can-use-sql-runner": {
+                    "type": "boolean"
+                  },
+                  "can-view-profile": {
+                    "type": "boolean"
+                  },
+                  "can-change-email": {
+                    "type": "boolean"
+                  },
+                  "can-change-username": {
+                    "type": "boolean"
+                  },
+                  "can-change-password": {
+                    "type": "boolean"
+                  },
+                  "can-manage-sessions": {
+                    "type": "boolean"
+                  },
+                  "can-manage-user-tokens": {
+                    "type": "boolean"
+                  },
+                  "can-update-user": {
+                    "type": "boolean"
+                  },
+                  "can-reenable-2fa-by-unlinking": {
+                    "type": "boolean",
+                    "x-vis": [
+                      "hcpt"
+                    ]
+                  },
+                  "can-manage-hcp-accounts": {
+                    "type": "boolean",
+                    "x-vis": [
+                      "hcpt"
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          "relationships": {
+            "type": "object",
+            "properties": {
+              "authentication-tokens": {
+                "$ref": "#/components/schemas/links_related"
+              },
+              "github-app-oauth-tokens": {
+                "$ref": "#/components/schemas/links_related"
+              },
+              "authenticated-resource": {
+                "type": "object",
+                "properties": {
+                  "data": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "string"
+                      },
+                      "type": {
+                        "type": "string",
+                        "enum": [
+                          "organizations",
+                          "runs",
+                          "users",
+                          "teams"
+                        ]
+                      }
+                    }
+                  },
+                  "links": {
+                    "$ref": "#/components/schemas/related"
+                  }
+                }
+              }
+            }
+          },
+          "links": {
+            "$ref": "#/components/schemas/self"
+          }
+        }
+      },
+      "account_update": {
+        "type": "object",
+        "required": [
+          "data"
+        ],
+        "properties": {
+          "data": {
+            "type": "object",
+            "required": [
+              "type",
+              "attributes"
+            ],
+            "properties": {
+              "type": {
+                "type": "string",
+                "enum": [
+                  "users"
+                ]
+              },
+              "attributes": {
+                "type": "object",
+                "properties": {
+                  "username": {
+                    "type": "string"
+                  },
+                  "email": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "account_password": {
+        "type": "object",
+        "required": [
+          "data"
+        ],
+        "properties": {
+          "data": {
+            "type": "object",
+            "required": [
+              "type",
+              "attributes"
+            ],
+            "properties": {
+              "type": {
+                "type": "string",
+                "enum": [
+                  "users"
+                ]
+              },
+              "attributes": {
+                "type": "object",
+                "properties": {
+                  "current-password": {
+                    "type": "string"
+                  },
+                  "password": {
+                    "type": "string"
+                  },
+                  "password-confirmation": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "hcp-billing-accounts-id": {
+        "type": "object",
+        "nullable": false,
+        "properties": {
+          "data": {
+            "type": "object",
+            "required": [
+              "id",
+              "type"
+            ],
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "type": {
+                "type": "string",
+                "enum": [
+                  "hcp-billing-account"
+                ]
+              }
+            }
+          }
+        }
+      },
+      "feature-sets-id": {
+        "type": "object",
+        "required": [
+          "id",
+          "type"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "feature-sets"
+            ]
+          }
+        }
+      },
+      "hcp-organization": {
+        "type": "object",
+        "required": [
+          "id",
+          "type",
+          "attributes",
+          "relationships"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string"
+          },
+          "attributes": {
+            "type": "object",
+            "required": [
+              "name",
+              "is-hcp-admin",
+              "connected-org-external-ids"
+            ],
+            "properties": {
+              "name": {
+                "type": "string"
+              },
+              "hcp-owner-email": {
+                "type": "string",
+                "nullable": true
+              },
+              "is-hcp-admin": {
+                "type": "boolean"
+              },
+              "connected-org-external-ids": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "relationships": {
+            "type": "object",
+            "required": [
+              "default-account",
+              "connected-plans"
+            ],
+            "properties": {
+              "default-account": {
+                "$ref": "#/components/schemas/hcp-billing-accounts-id"
+              },
+              "connected-plans": {
+                "type": "object",
+                "properties": {
+                  "data": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/feature-sets-id"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "hcp-billing-account": {
+        "type": "object",
+        "required": [
+          "id",
+          "type",
+          "attributes"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string"
+          },
+          "attributes": {
+            "type": "object",
+            "required": [
+              "project-id",
+              "hcp-organization-name",
+              "hcp-organization-id",
+              "balance",
+              "card-brand",
+              "card-last4",
+              "card-exp-month",
+              "card-exp-year",
+              "account-type",
+              "status"
+            ],
+            "properties": {
+              "project-id": {
+                "type": "string"
+              },
+              "hcp-organization-name": {
+                "type": "string"
+              },
+              "hcp-organization-id": {
+                "type": "string"
+              },
+              "balance": {
+                "type": "number"
+              },
+              "card-brand": {
+                "type": "string"
+              },
+              "card-last4": {
+                "type": "string"
+              },
+              "card-exp-month": {
+                "type": "integer"
+              },
+              "card-exp-year": {
+                "type": "integer"
+              },
+              "account-type": {
+                "type": "string"
+              },
+              "status": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      },
+      "agent-pool": {
+        "type": "object",
+        "required": [
+          "type",
+          "attributes"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "readOnly": true
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "agent-pools"
+            ]
+          },
+          "attributes": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string"
+              },
+              "created-at": {
+                "type": "string",
+                "format": "date-time",
+                "readOnly": true
+              },
+              "organization-scoped": {
+                "type": "boolean"
+              },
+              "agent-count": {
+                "type": "integer",
+                "readOnly": true
+              }
+            }
+          },
+          "links": {
+            "$ref": "#/components/schemas/self"
+          },
+          "relationships": {
+            "type": "object",
+            "properties": {
+              "agents": {
+                "$ref": "#/components/schemas/links_related"
+              },
+              "authentication-tokens": {
+                "$ref": "#/components/schemas/links_related"
+              },
+              "workspaces": {
+                "readOnly": true,
+                "type": "object",
+                "properties": {
+                  "data": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "required": [
+                        "id",
+                        "type"
+                      ],
+                      "properties": {
+                        "id": {
+                          "type": "string"
+                        },
+                        "type": {
+                          "type": "string",
+                          "enum": [
+                            "workspaces"
+                          ]
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "allowed-workspaces": {
+                "type": "object",
+                "properties": {
+                  "data": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "required": [
+                        "id",
+                        "type"
+                      ],
+                      "properties": {
+                        "id": {
+                          "type": "string"
+                        },
+                        "type": {
+                          "type": "string",
+                          "enum": [
+                            "workspaces"
+                          ]
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "pagination": {
+        "type": "object",
+        "properties": {
+          "current-page": {
+            "type": "integer"
+          },
+          "page-size": {
+            "type": "integer"
+          },
+          "prev-page": {
+            "type": "integer",
+            "nullable": true
+          },
+          "next-page": {
+            "type": "integer",
+            "nullable": true
+          },
+          "total-pages": {
+            "type": "integer"
+          },
+          "total-count": {
+            "type": "integer"
+          }
+        }
+      },
+      "self-with-pagination": {
+        "type": "object",
+        "properties": {
+          "self": {
+            "type": "string"
+          },
+          "first": {
+            "type": "string"
+          },
+          "prev": {
+            "type": "string",
+            "nullable": true
+          },
+          "next": {
+            "type": "string",
+            "nullable": true
+          },
+          "last": {
+            "type": "string"
+          }
+        }
+      },
+      "agent": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "readOnly": true
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "agents"
+            ]
+          },
+          "attributes": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string"
+              },
+              "status": {
+                "type": "string"
+              },
+              "ip-address": {
+                "type": "string"
+              },
+              "last-ping-at": {
+                "type": "string",
+                "format": "date-time"
+              }
+            }
+          }
+        }
+      },
+      "agent-pools-id": {
+        "type": "object",
+        "nullable": true,
+        "required": [
+          "data"
+        ],
+        "properties": {
+          "data": {
+            "type": "object",
+            "nullable": true,
+            "required": [
+              "id",
+              "type"
+            ],
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "type": {
+                "type": "string",
+                "enum": [
+                  "agent-pools"
+                ]
+              }
+            }
+          }
+        }
+      },
+      "entitlement-sets-id": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "type": {
+                "type": "string",
+                "enum": [
+                  "entitlement-sets"
+                ]
+              }
+            }
+          },
+          "links": {
+            "$ref": "#/components/schemas/related"
+          }
+        }
+      },
+      "subscriptions-id": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "type": {
+                "type": "string",
+                "enum": [
+                  "subscriptions"
+                ]
+              }
+            }
+          },
+          "links": {
+            "$ref": "#/components/schemas/related"
+          }
+        }
+      },
+      "projects-id": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "type": {
+                "type": "string",
+                "enum": [
+                  "projects"
+                ]
+              }
+            }
+          },
+          "links": {
+            "$ref": "#/components/schemas/related"
+          }
+        }
+      },
+      "organization": {
+        "type": "object",
+        "required": [
+          "type",
+          "attributes"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "readOnly": true
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "organizations"
+            ]
+          },
+          "attributes": {
+            "type": "object",
+            "properties": {
+              "external-id": {
+                "type": "string",
+                "readOnly": true
+              },
+              "created-at": {
+                "type": "string",
+                "format": "date-time",
+                "readOnly": true
+              },
+              "email": {
+                "type": "string"
+              },
+              "session-timeout": {
+                "type": "integer",
+                "nullable": true
+              },
+              "session-remember": {
+                "type": "integer",
+                "nullable": true
+              },
+              "collaborator-auth-policy": {
+                "type": "string",
+                "enum": [
+                  "password",
+                  "two_factor_mandatory"
+                ]
+              },
+              "plan-expired": {
+                "type": "boolean",
+                "readOnly": true
+              },
+              "plan-expires-at": {
+                "type": "string",
+                "format": "date-time",
+                "nullable": true,
+                "readOnly": true
+              },
+              "plan-is-trial": {
+                "type": "boolean",
+                "readOnly": true
+              },
+              "plan-is-enterprise": {
+                "type": "boolean",
+                "readOnly": true
+              },
+              "plan-identifier": {
+                "type": "string",
+                "readOnly": true
+              },
+              "cost-estimation-enabled": {
+                "type": "boolean"
+              },
+              "send-passing-statuses-for-untriggered-speculative-plans": {
+                "type": "boolean"
+              },
+              "aggregated-commit-status-enabled": {
+                "type": "boolean"
+              },
+              "speculative-plan-management-enabled": {
+                "type": "boolean"
+              },
+              "allow-force-delete-workspaces": {
+                "type": "boolean"
+              },
+              "name": {
+                "type": "string"
+              },
+              "hcp-id": {
+                "type": "string",
+                "readOnly": true,
+                "x-vis": [
+                  "hcpt"
+                ]
+              },
+              "is-unified": {
+                "type": "boolean",
+                "readOnly": true,
+                "x-vis": [
+                  "hcpt"
+                ]
+              },
+              "permissions": {
+                "type": "object",
+                "properties": {
+                  "can-update": {
+                    "type": "boolean"
+                  },
+                  "can-update-authentication-token": {
+                    "type": "boolean"
+                  },
+                  "can-destroy": {
+                    "type": "boolean"
+                  },
+                  "can-access-via-teams": {
+                    "type": "boolean"
+                  },
+                  "can-create-module": {
+                    "type": "boolean"
+                  },
+                  "can-create-team": {
+                    "type": "boolean"
+                  },
+                  "can-create-workspace": {
+                    "type": "boolean"
+                  },
+                  "can-manage-users": {
+                    "type": "boolean"
+                  },
+                  "can-manage-subscription": {
+                    "type": "boolean"
+                  },
+                  "can-manage-sso": {
+                    "type": "boolean"
+                  },
+                  "can-update-oauth": {
+                    "type": "boolean"
+                  },
+                  "can-update-sentinel": {
+                    "type": "boolean"
+                  },
+                  "can-update-ssh-keys": {
+                    "type": "boolean"
+                  },
+                  "can-update-api-token": {
+                    "type": "boolean"
+                  },
+                  "can-traverse": {
+                    "type": "boolean"
+                  },
+                  "can-view-usage": {
+                    "type": "boolean"
+                  },
+                  "can-update-agent-pools": {
+                    "type": "boolean"
+                  },
+                  "can-manage-tags": {
+                    "type": "boolean"
+                  },
+                  "can-manage-varsets": {
+                    "type": "boolean"
+                  },
+                  "can-read-varsets": {
+                    "type": "boolean"
+                  },
+                  "can-manage-public-providers": {
+                    "type": "boolean"
+                  },
+                  "can-create-provider": {
+                    "type": "boolean"
+                  },
+                  "can-manage-public-modules": {
+                    "type": "boolean"
+                  },
+                  "can-manage-custom-providers": {
+                    "type": "boolean"
+                  },
+                  "can-manage-run-tasks": {
+                    "type": "boolean"
+                  },
+                  "can-read-run-tasks": {
+                    "type": "boolean"
+                  },
+                  "can-create-project": {
+                    "type": "boolean"
+                  },
+                  "can-enable-stacks": {
+                    "type": "boolean"
+                  },
+                  "can-manage-org-public-providers": {
+                    "type": "boolean"
+                  },
+                  "can-manage-org-public-modules": {
+                    "type": "boolean"
+                  },
+                  "can-manage-assessments": {
+                    "type": "boolean"
+                  },
+                  "can-read-assessments": {
+                    "type": "boolean"
+                  },
+                  "can-view-explorer": {
+                    "type": "boolean"
+                  },
+                  "can-deploy-no-code-modules": {
+                    "type": "boolean"
+                  },
+                  "can-manage-no-code-modules": {
+                    "type": "boolean"
+                  },
+                  "can-manage-groups-in-hcp": {
+                    "type": "boolean",
+                    "x-vis": [
+                      "hcpt"
+                    ]
+                  },
+                  "can-create-project-in-hcp": {
+                    "type": "boolean",
+                    "x-vis": [
+                      "hcpt"
+                    ]
+                  }
+                }
+              },
+              "fair-run-queuing-enabled": {
+                "type": "boolean",
+                "readOnly": true
+              },
+              "saml-enabled": {
+                "type": "boolean"
+              },
+              "owners-team-saml-role-id": {
+                "type": "string",
+                "nullable": true
+              },
+              "two-factor-conformant": {
+                "type": "boolean"
+              },
+              "assessments-enforced": {
+                "type": "boolean"
+              },
+              "is-in-degraded-mode": {
+                "type": "boolean",
+                "readOnly": true
+              },
+              "remaining-testable-count": {
+                "type": "integer",
+                "readOnly": true
+              },
+              "default-execution-mode": {
+                "type": "string",
+                "enum": [
+                  "remote",
+                  "local",
+                  "agent"
+                ]
+              }
+            }
+          },
+          "links": {
+            "$ref": "#/components/schemas/self"
+          },
+          "relationships": {
+            "type": "object",
+            "properties": {
+              "default-agent-pool": {
+                "$ref": "#/components/schemas/agent-pools-id"
+              },
+              "oauth-tokens": {
+                "$ref": "#/components/schemas/links_related"
+              },
+              "authentication-token": {
+                "$ref": "#/components/schemas/links_related"
+              },
+              "audit-trails-authentication-token": {
+                "$ref": "#/components/schemas/links_related",
+                "x-vis": [
+                  "hcpt"
+                ]
+              },
+              "entitlement-set": {
+                "$ref": "#/components/schemas/entitlement-sets-id"
+              },
+              "subscription": {
+                "$ref": "#/components/schemas/subscriptions-id"
+              },
+              "default-project": {
+                "$ref": "#/components/schemas/projects-id"
+              }
+            }
+          }
+        }
+      },
+      "workspaces-id": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "type": {
+                "type": "string",
+                "enum": [
+                  "workspaces"
+                ]
+              }
+            }
+          },
+          "links": {
+            "$ref": "#/components/schemas/related"
+          }
+        }
+      },
+      "runs-id": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "type": {
+                "type": "string",
+                "enum": [
+                  "runs"
+                ]
+              }
+            }
+          }
+        }
+      },
+      "applies-id": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "type": {
+                "type": "string",
+                "enum": [
+                  "applies"
+                ]
+              }
+            }
+          },
+          "links": {
+            "$ref": "#/components/schemas/related"
+          }
+        }
+      },
+      "users-id": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "type": {
+                "type": "string",
+                "enum": [
+                  "users"
+                ]
+              }
+            }
+          },
+          "links": {
+            "$ref": "#/components/schemas/related"
+          }
+        }
+      },
+      "configuration-versions-id": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "type": {
+                "type": "string",
+                "enum": [
+                  "configuration-versions"
+                ]
+              }
+            }
+          }
+        }
+      },
+      "cost-estimates-id": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "type": {
+                "type": "string",
+                "enum": [
+                  "cost-estimates"
+                ]
+              }
+            }
+          },
+          "links": {
+            "$ref": "#/components/schemas/related"
+          }
+        }
+      },
+      "plans-id": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "type": {
+                "type": "string",
+                "enum": [
+                  "plans"
+                ]
+              }
+            }
+          },
+          "links": {
+            "$ref": "#/components/schemas/related"
+          }
+        }
+      },
+      "run-events-id": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "type": {
+                "type": "string",
+                "enum": [
+                  "run-events"
+                ]
+              }
+            }
+          },
+          "links": {
+            "$ref": "#/components/schemas/related"
+          }
+        }
+      },
+      "task-stages-id": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "type": {
+                "type": "string",
+                "enum": [
+                  "task-stages"
+                ]
+              }
+            }
+          },
+          "links": {
+            "$ref": "#/components/schemas/related"
+          }
+        }
+      },
+      "policy-checks-id": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "type": {
+                "type": "string",
+                "enum": [
+                  "policy-checks"
+                ]
+              }
+            }
+          },
+          "links": {
+            "$ref": "#/components/schemas/related"
+          }
+        }
+      },
+      "comments-id": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "type": {
+                "type": "string",
+                "enum": [
+                  "workspace-comments"
+                ]
+              }
+            }
+          },
+          "links": {
+            "$ref": "#/components/schemas/related"
+          }
+        }
+      },
+      "run": {
+        "type": "object",
+        "required": [
+          "type",
+          "attributes"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "readOnly": true
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "runs"
+            ]
+          },
+          "attributes": {
+            "type": "object",
+            "properties": {
+              "actions": {
+                "type": "object",
+                "properties": {
+                  "is-cancelable": {
+                    "type": "boolean"
+                  },
+                  "is-confirmable": {
+                    "type": "boolean"
+                  },
+                  "is-discardable": {
+                    "type": "boolean"
+                  },
+                  "is-force-cancelable": {
+                    "type": "boolean"
+                  }
+                }
+              },
+              "allow-config-generation": {
+                "type": "boolean"
+              },
+              "allow-empty-apply": {
+                "type": "boolean"
+              },
+              "auto-apply": {
+                "type": "boolean"
+              },
+              "comment": {
+                "type": "string",
+                "writeOnly": true
+              },
+              "canceled-at": {
+                "type": "string",
+                "format": "date-time",
+                "nullable": true,
+                "readOnly": true
+              },
+              "created-at": {
+                "type": "string",
+                "format": "date-time",
+                "readOnly": true
+              },
+              "has-changes": {
+                "type": "boolean"
+              },
+              "is-destroy": {
+                "type": "boolean"
+              },
+              "message": {
+                "type": "string"
+              },
+              "plan-only": {
+                "type": "boolean"
+              },
+              "refresh": {
+                "type": "boolean"
+              },
+              "refresh-only": {
+                "type": "boolean"
+              },
+              "replace-addrs": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                },
+                "nullable": true
+              },
+              "save-plan": {
+                "type": "boolean"
+              },
+              "source": {
+                "type": "string"
+              },
+              "status-timestamps": {
+                "type": "object",
+                "properties": {
+                  "fetching-at": {
+                    "type": "string",
+                    "format": "date-time"
+                  },
+                  "fetched-at": {
+                    "type": "string",
+                    "format": "date-time"
+                  },
+                  "pre-plan-running-at": {
+                    "type": "string",
+                    "format": "date-time"
+                  },
+                  "pre-plan-completed-at": {
+                    "type": "string",
+                    "format": "date-time"
+                  },
+                  "plan-queued-at": {
+                    "type": "string",
+                    "format": "date-time"
+                  },
+                  "planning-at": {
+                    "type": "string",
+                    "format": "date-time"
+                  },
+                  "planned-at": {
+                    "type": "string",
+                    "format": "date-time"
+                  },
+                  "post-plan-running-at": {
+                    "type": "string",
+                    "format": "date-time"
+                  },
+                  "post-plan-completed-at": {
+                    "type": "string",
+                    "format": "date-time"
+                  },
+                  "cost-estimating-at": {
+                    "type": "string",
+                    "format": "date-time"
+                  },
+                  "cost-estimated-at": {
+                    "type": "string",
+                    "format": "date-time"
+                  },
+                  "policy-soft-failed-at": {
+                    "type": "string",
+                    "format": "date-time"
+                  },
+                  "policy-checked-at": {
+                    "type": "string",
+                    "format": "date-time"
+                  },
+                  "confirmed-at": {
+                    "type": "string",
+                    "format": "date-time"
+                  },
+                  "planned-and-finished-at": {
+                    "type": "string",
+                    "format": "date-time"
+                  },
+                  "planned-and-saved-at": {
+                    "type": "string",
+                    "format": "date-time"
+                  },
+                  "pre-apply-running-at": {
+                    "type": "string",
+                    "format": "date-time"
+                  },
+                  "pre-apply-completed-at": {
+                    "type": "string",
+                    "format": "date-time"
+                  },
+                  "apply-queued-at": {
+                    "type": "string",
+                    "format": "date-time"
+                  },
+                  "applying-at": {
+                    "type": "string",
+                    "format": "date-time"
+                  },
+                  "post-apply-completed-at": {
+                    "type": "string",
+                    "format": "date-time"
+                  },
+                  "applied-at": {
+                    "type": "string",
+                    "format": "date-time"
+                  },
+                  "post-apply-running-at": {
+                    "type": "string",
+                    "format": "date-time"
+                  },
+                  "discarded-at": {
+                    "type": "string",
+                    "format": "date-time"
+                  },
+                  "errored-at": {
+                    "type": "string",
+                    "format": "date-time"
+                  },
+                  "canceled-at": {
+                    "type": "string",
+                    "format": "date-time"
+                  },
+                  "force-canceled-at": {
+                    "type": "string",
+                    "format": "date-time"
+                  },
+                  "assessed-at": {
+                    "type": "string",
+                    "format": "date-time"
+                  },
+                  "queuing-at": {
+                    "type": "string",
+                    "format": "date-time"
+                  },
+                  "queuing-apply-at": {
+                    "type": "string",
+                    "format": "date-time"
+                  }
+                }
+              },
+              "status": {
+                "type": "string",
+                "enum": [
+                  "pending",
+                  "fetching",
+                  "fetching_completed",
+                  "pre_plan_running",
+                  "pre_plan_completed",
+                  "queuing",
+                  "plan_queued",
+                  "planning",
+                  "planned",
+                  "post_plan_running",
+                  "post_plan_completed",
+                  "cost_estimating",
+                  "cost_estimated",
+                  "policy_checking",
+                  "policy_override",
+                  "policy_soft_failed",
+                  "policy_checked",
+                  "confirmed",
+                  "pre_apply_running",
+                  "pre_apply_completed",
+                  "queuing_apply",
+                  "apply_queued",
+                  "applying",
+                  "post_apply_running",
+                  "post_apply_completed",
+                  "applied",
+                  "discarded",
+                  "errored",
+                  "canceled",
+                  "planned_and_finished",
+                  "planned_and_saved",
+                  "assessing",
+                  "assessed"
+                ]
+              },
+              "target-addrs": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                },
+                "nullable": true
+              },
+              "trigger-reason": {
+                "type": "string"
+              },
+              "terraform-version": {
+                "type": "string"
+              },
+              "updated-at": {
+                "type": "string",
+                "format": "date-time",
+                "readOnly": true
+              },
+              "triggering-source-name": {
+                "type": "string",
+                "nullable": true
+              },
+              "permissions": {
+                "type": "object",
+                "properties": {
+                  "can-apply": {
+                    "type": "boolean"
+                  },
+                  "can-cancel": {
+                    "type": "boolean"
+                  },
+                  "can-comment": {
+                    "type": "boolean"
+                  },
+                  "can-discard": {
+                    "type": "boolean"
+                  },
+                  "can-force-execute": {
+                    "type": "boolean"
+                  },
+                  "can-force-cancel": {
+                    "type": "boolean"
+                  },
+                  "can-override-policy-check": {
+                    "type": "boolean"
+                  }
+                }
+              },
+              "variables": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "key": {
+                      "type": "string"
+                    },
+                    "value": {
+                      "type": "string"
+                    }
+                  }
+                }
+              },
+              "force-cancel-available-at": {
+                "type": "string",
+                "format": "date-time",
+                "readOnly": true
+              }
+            }
+          },
+          "relationships": {
+            "type": "object",
+            "properties": {
+              "workspace": {
+                "$ref": "#/components/schemas/workspaces-id"
+              },
+              "triggering-source": {
+                "$ref": "#/components/schemas/workspaces-id"
+              },
+              "triggering-run": {
+                "$ref": "#/components/schemas/runs-id"
+              },
+              "apply": {
+                "$ref": "#/components/schemas/applies-id"
+              },
+              "canceled-by": {
+                "$ref": "#/components/schemas/users-id"
+              },
+              "configuration-version": {
+                "$ref": "#/components/schemas/configuration-versions-id"
+              },
+              "confirmed-by": {
+                "$ref": "#/components/schemas/users-id"
+              },
+              "cost-estimate": {
+                "$ref": "#/components/schemas/cost-estimates-id"
+              },
+              "created-by": {
+                "$ref": "#/components/schemas/users-id"
+              },
+              "plan": {
+                "$ref": "#/components/schemas/plans-id"
+              },
+              "run-events": {
+                "type": "object",
+                "properties": {
+                  "data": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/run-events-id"
+                    }
+                  }
+                }
+              },
+              "task-stages": {
+                "type": "object",
+                "properties": {
+                  "data": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/task-stages-id"
+                    }
+                  }
+                }
+              },
+              "policy-checks": {
+                "type": "object",
+                "properties": {
+                  "data": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/policy-checks-id"
+                    }
+                  }
+                }
+              },
+              "run-trigger-snapshots": {
+                "$ref": "#/components/schemas/related"
+              },
+              "comments": {
+                "type": "object",
+                "properties": {
+                  "data": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/comments-id"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "ingress-attributes-id": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "nullable": true,
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "type": {
+                "type": "string",
+                "enum": [
+                  "ingress-attributes"
+                ]
+              }
+            }
+          },
+          "links": {
+            "$ref": "#/components/schemas/related"
+          }
+        }
+      },
+      "configuration-version": {
+        "type": "object",
+        "required": [
+          "type",
+          "attributes"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "readOnly": true
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "configuration-versions"
+            ]
+          },
+          "attributes": {
+            "type": "object",
+            "properties": {
+              "auto-queue-runs": {
+                "type": "boolean"
+              },
+              "error": {
+                "type": "string",
+                "nullable": true
+              },
+              "error-message": {
+                "type": "string",
+                "nullable": true
+              },
+              "source": {
+                "type": "string",
+                "nullable": true
+              },
+              "speculative": {
+                "type": "boolean"
+              },
+              "status": {
+                "type": "string",
+                "enum": [
+                  "pending",
+                  "fetching",
+                  "uploaded",
+                  "archived",
+                  "errored",
+                  "backing_data_soft_deleted",
+                  "backing_data_permanently_deleted"
+                ]
+              },
+              "status-timestamps": {
+                "type": "object",
+                "properties": {
+                  "fetching-at": {
+                    "type": "string",
+                    "format": "date-time",
+                    "nullable": true
+                  },
+                  "uploaded-at": {
+                    "type": "string",
+                    "format": "date-time",
+                    "nullable": true
+                  },
+                  "errored-at": {
+                    "type": "string",
+                    "format": "date-time",
+                    "nullable": true
+                  },
+                  "archived-at": {
+                    "type": "string",
+                    "format": "date-time",
+                    "nullable": true
+                  },
+                  "soft-delete-backing-data-at": {
+                    "type": "string",
+                    "format": "date-time",
+                    "nullable": true
+                  },
+                  "restore-backing-data-at": {
+                    "type": "string",
+                    "format": "date-time",
+                    "nullable": true
+                  },
+                  "permanently-delete-backing-data-at": {
+                    "type": "string",
+                    "format": "date-time",
+                    "nullable": true
+                  }
+                }
+              },
+              "provisional": {
+                "type": "boolean"
+              },
+              "upload-url": {
+                "type": "string",
+                "nullable": true,
+                "readOnly": true
+              }
+            }
+          },
+          "relationships": {
+            "type": "object",
+            "properties": {
+              "ingress-attributes": {
+                "$ref": "#/components/schemas/ingress-attributes-id"
+              }
+            }
+          },
+          "links": {
+            "type": "object",
+            "properties": {
+              "self": {
+                "type": "string"
+              },
+              "download": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      },
+      "pagination-without-totals": {
+        "type": "object",
+        "properties": {
+          "current-page": {
+            "type": "integer"
+          },
+          "page-size": {
+            "type": "integer"
+          },
+          "prev-page": {
+            "type": "integer",
+            "nullable": true
+          },
+          "next-page": {
+            "type": "integer",
+            "nullable": true
+          }
+        }
+      },
+      "state-versions-id": {
+        "type": "object",
+        "required": [
+          "id",
+          "type"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "state-versions"
+            ]
+          }
+        }
+      },
+      "apply": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "applies"
+            ]
+          },
+          "attributes": {
+            "type": "object",
+            "properties": {
+              "execution-details": {
+                "type": "object",
+                "readOnly": true,
+                "nullable": true,
+                "properties": {
+                  "mode": {
+                    "type": "string",
+                    "enum": [
+                      "agent",
+                      "remote",
+                      "local"
+                    ]
+                  },
+                  "agent-id": {
+                    "type": "string"
+                  },
+                  "agent-name": {
+                    "type": "string"
+                  },
+                  "agent-pool-id": {
+                    "type": "string"
+                  },
+                  "agent-pool-name": {
+                    "type": "string"
+                  }
+                }
+              },
+              "status": {
+                "readOnly": true,
+                "type": "string",
+                "enum": [
+                  "created",
+                  "pending",
+                  "queued",
+                  "agent_queued",
+                  "running",
+                  "errored",
+                  "canceled",
+                  "finished",
+                  "unreachable"
+                ]
+              },
+              "status-timestamps": {
+                "readOnly": true,
+                "type": "object",
+                "properties": {
+                  "agent-queued-at": {
+                    "type": "string",
+                    "format": "date-time",
+                    "nullable": true
+                  },
+                  "started-at": {
+                    "type": "string",
+                    "format": "date-time",
+                    "nullable": true
+                  },
+                  "errored-at": {
+                    "type": "string",
+                    "format": "date-time",
+                    "nullable": true
+                  },
+                  "canceled-at": {
+                    "type": "string",
+                    "format": "date-time",
+                    "nullable": true
+                  },
+                  "force-canceled-at": {
+                    "type": "string",
+                    "format": "date-time",
+                    "nullable": true
+                  },
+                  "finished-at": {
+                    "type": "string",
+                    "format": "date-time",
+                    "nullable": true
+                  }
+                }
+              },
+              "log-read-url": {
+                "readOnly": true,
+                "type": "string"
+              },
+              "resource-additions": {
+                "readOnly": true,
+                "type": "integer",
+                "nullable": true
+              },
+              "resource-changes": {
+                "readOnly": true,
+                "type": "integer",
+                "nullable": true
+              },
+              "resource-destructions": {
+                "readOnly": true,
+                "type": "integer",
+                "nullable": true
+              },
+              "resource-imports": {
+                "readOnly": true,
+                "type": "integer",
+                "nullable": true
+              }
+            }
+          },
+          "relationships": {
+            "type": "object",
+            "properties": {
+              "state-versions": {
+                "type": "object",
+                "properties": {
+                  "data": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/state-versions-id"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "links": {
+            "$ref": "#/components/schemas/self"
+          }
+        }
+      },
+      "ingress-attributes": {
+        "type": "object",
+        "required": [
+          "type",
+          "attributes"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "readOnly": true
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "ingress-attributes"
+            ]
+          },
+          "attributes": {
+            "type": "object",
+            "properties": {
+              "branch": {
+                "type": "string"
+              },
+              "clone-url": {
+                "type": "string"
+              },
+              "commit-message": {
+                "type": "string"
+              },
+              "commit-sha": {
+                "type": "string"
+              },
+              "commit-url": {
+                "type": "string"
+              },
+              "compare-url": {
+                "type": "string"
+              },
+              "identifier": {
+                "type": "string"
+              },
+              "is-pull-request": {
+                "type": "boolean"
+              },
+              "on-default-branch": {
+                "type": "boolean"
+              },
+              "pull-request-number": {
+                "type": "integer"
+              },
+              "pull-request-url": {
+                "type": "string"
+              },
+              "pull-request-title": {
+                "type": "string"
+              },
+              "pull-request-body": {
+                "type": "string"
+              },
+              "tag": {
+                "type": "string",
+                "nullable": true
+              },
+              "sender-username": {
+                "type": "string"
+              },
+              "sender-avatar-url": {
+                "type": "string"
+              },
+              "sender-html-url": {
+                "type": "string"
+              }
+            }
+          },
+          "relationships": {
+            "type": "object",
+            "properties": {
+              "created-by": {
+                "$ref": "#/components/schemas/users-id"
+              }
+            }
+          },
+          "links": {
+            "$ref": "#/components/schemas/self"
+          }
+        }
+      }
+    }
+  }
+}
