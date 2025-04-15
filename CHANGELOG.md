@@ -1,5 +1,7 @@
 # Unreleased
 
+# v1.77.0
+
 ## Enhancements
 
 * Remove `DefaultProject` from `OrganizationUpdateOptions` to prevent updating an organization's default project, by @netramali [#1078](https://github.com/hashicorp/go-tfe/pull/1078)
