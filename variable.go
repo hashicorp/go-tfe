@@ -17,8 +17,11 @@ var _ Variables = (*variables)(nil)
 //
 // TFE API docs: https://developer.hashicorp.com/terraform/cloud-docs/api-docs/workspace-variables
 type Variables interface {
-	// List all the variables associated with the given workspace.
+	// List all the variables associated with the given workspace (doesn't include variables inherited variables from varsets).
 	List(ctx context.Context, workspaceID string, options *VariableListOptions) (*VariableList, error)
+
+	// List all the variables associated with the given workspace including variables inherited from varsets.
+	ListAll(ctx context.Context, workspaceID string, options *VariableListOptions) (*VariableList, error)
 
 	// Create is used to create a new variable.
 	Create(ctx context.Context, workspaceID string, options VariableCreateOptions) (*Variable, error)
@@ -128,13 +131,22 @@ type VariableUpdateOptions struct {
 	Sensitive *bool `jsonapi:"attr,sensitive,omitempty"`
 }
 
-// List all the variables associated with the given workspace.
+// List all the variables associated with the given workspace (doesn't include inherited variables from varsets).
 func (s *variables) List(ctx context.Context, workspaceID string, options *VariableListOptions) (*VariableList, error) {
+	return s.getList(ctx, workspaceID, options, "workspaces/%s/vars")
+}
+
+// ListAll the variables associated with the given workspace including inherited variables from varsets.
+func (s *variables) ListAll(ctx context.Context, workspaceID string, options *VariableListOptions) (*VariableList, error) {
+	return s.getList(ctx, workspaceID, options, "workspaces/%s/vars/all")
+}
+
+func (s *variables) getList(ctx context.Context, workspaceID string, options *VariableListOptions, path string) (*VariableList, error) {
 	if !validStringID(&workspaceID) {
 		return nil, ErrInvalidWorkspaceID
 	}
 
-	u := fmt.Sprintf("workspaces/%s/vars", url.PathEscape(workspaceID))
+	u := fmt.Sprintf(path, url.PathEscape(workspaceID))
 	req, err := s.client.NewRequest("GET", u, options)
 	if err != nil {
 		return nil, err
