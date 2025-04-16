@@ -2196,7 +2196,7 @@ func createTeamTokenWithOptions(t *testing.T, client *Client, tm *Team, options 
 	}
 
 	return tt, func() {
-		if err := client.TeamTokens.Delete(ctx, tm.ID); err != nil {
+		if err := client.TeamTokens.DeleteByID(ctx, tt.ID); err != nil {
 			t.Errorf("Error destroying team token! WARNING: Dangling resources\n"+
 				"may exist! The full error is shown below.\n\n"+
 				"TeamToken: %s\nError: %s", tm.ID, err)

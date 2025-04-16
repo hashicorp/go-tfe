@@ -119,7 +119,7 @@ func (s *userTokens) Read(ctx context.Context, tokenID string) (*UserToken, erro
 		return nil, ErrInvalidTokenID
 	}
 
-	u := fmt.Sprintf("authentication-tokens/%s", url.PathEscape(tokenID))
+	u := fmt.Sprintf(AuthenticationTokensPath, url.PathEscape(tokenID))
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, err
@@ -140,7 +140,7 @@ func (s *userTokens) Delete(ctx context.Context, tokenID string) error {
 		return ErrInvalidTokenID
 	}
 
-	u := fmt.Sprintf("authentication-tokens/%s", url.PathEscape(tokenID))
+	u := fmt.Sprintf(AuthenticationTokensPath, url.PathEscape(tokenID))
 	req, err := s.client.NewRequest("DELETE", u, nil)
 	if err != nil {
 		return err
