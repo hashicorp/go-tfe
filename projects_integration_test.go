@@ -142,6 +142,35 @@ func TestProjectsList(t *testing.T) {
 	})
 }
 
+func TestProjectsReadWithOptions(t *testing.T) {
+	client := testClient(t)
+	ctx := context.Background()
+
+	orgTest, orgTestCleanup := createOrganization(t, client)
+	defer orgTestCleanup()
+
+	pTest, pTestCleanup := createProjectWithOptions(t, client, orgTest, ProjectCreateOptions{
+		Name: "project-with-tags",
+		TagBindings: []*TagBinding{
+			{Key: "foo", Value: "bar"},
+		},
+	})
+	defer pTestCleanup()
+
+	t.Run("when the project exists", func(t *testing.T) {
+		p, err := client.Projects.ReadWithOptions(ctx, pTest.ID, ProjectReadOptions{
+			Include: []ProjectIncludeOpt{ProjectEffectiveTagBindings},
+		})
+		require.NoError(t, err)
+		assert.Equal(t, orgTest.Name, p.Organization.Name)
+
+		// Tag data is included
+		assert.Len(t, p.EffectiveTagBindings, 1)
+		assert.Equal(t, "foo", p.EffectiveTagBindings[0].Key)
+		assert.Equal(t, "bar", p.EffectiveTagBindings[0].Value)
+	})
+}
+
 func TestProjectsRead(t *testing.T) {
 	client := testClient(t)
 	ctx := context.Background()
