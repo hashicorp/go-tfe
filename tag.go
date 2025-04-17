@@ -25,10 +25,9 @@ type TagBinding struct {
 }
 
 type EffectiveTagBinding struct {
-	ID    string `jsonapi:"primary,effective-tag-bindings"`
-	Key   string `jsonapi:"attr,key"`
-	Value string `jsonapi:"attr,value,omitempty"`
-
+	ID    string                 `jsonapi:"primary,effective-tag-bindings"`
+	Key   string                 `jsonapi:"attr,key"`
+	Value string                 `jsonapi:"attr,value,omitempty"`
 	Links map[string]interface{} `jsonapi:"links,omitempty"`
 }
 

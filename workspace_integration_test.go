@@ -305,8 +305,17 @@ func TestWorkspacesList(t *testing.T) {
 		orgTest2, orgTest2Cleanup := createOrganization(t, client)
 		t.Cleanup(orgTest2Cleanup)
 
+		prj, pTestCleanup1 := createProjectWithOptions(t, client, orgTest2, ProjectCreateOptions{
+			Name: randomStringWithoutSpecialChar(t),
+			TagBindings: []*TagBinding{
+				{Key: "key3", Value: "value3"},
+			},
+		})
+		t.Cleanup(pTestCleanup1)
+
 		_, wTestCleanup1 := createWorkspaceWithOptions(t, client, orgTest2, WorkspaceCreateOptions{
-			Name: String(randomString(t)),
+			Name:    String(randomString(t)),
+			Project: prj,
 			TagBindings: []*TagBinding{
 				{Key: "key1", Value: "value1"},
 				{Key: "key2", Value: "value2a"},
@@ -319,11 +328,24 @@ func TestWorkspacesList(t *testing.T) {
 		})
 		require.NoError(t, err)
 		require.Len(t, wl.Items, 1)
-		require.Len(t, wl.Items[0].EffectiveTagBindings, 2)
+		require.Len(t, wl.Items[0].EffectiveTagBindings, 3)
 		assert.NotEmpty(t, wl.Items[0].EffectiveTagBindings[0].Key)
 		assert.NotEmpty(t, wl.Items[0].EffectiveTagBindings[0].Value)
 		assert.NotEmpty(t, wl.Items[0].EffectiveTagBindings[1].Key)
 		assert.NotEmpty(t, wl.Items[0].EffectiveTagBindings[1].Value)
+		assert.NotEmpty(t, wl.Items[0].EffectiveTagBindings[2].Key)
+		assert.NotEmpty(t, wl.Items[0].EffectiveTagBindings[2].Value)
+
+		inheritedTagsFound := 0
+		for _, tag := range wl.Items[0].EffectiveTagBindings {
+			if tag.Links["inherited-from"] != nil {
+				inheritedTagsFound += 1
+			}
+		}
+
+		if inheritedTagsFound != 1 {
+			t.Fatalf("Expected 1 inherited tag, got %d", inheritedTagsFound)
+		}
 	})
 
 	t.Run("when using project id filter and project contains workspaces", func(t *testing.T) {
