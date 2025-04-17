@@ -1,5 +1,7 @@
 # Unreleased
 
+# v1.78.0
+
 ## Enhancements
 * Adds `Links` field to `EffectiveTagBindings` to check whether an effective tag binding is inherited, by @sebasslash [#1087](https://github.com/hashicorp/go-tfe/pull/1087)
 
