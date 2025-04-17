@@ -3089,3 +3089,69 @@ func TestWorkspacesAutoDestroyDuration(t *testing.T) {
 		require.Equal(t, wTest.InheritsProjectAutoDestroy, false)
 	})
 }
+
+func TestWorkspaces_effectiveTagBindingsInheritedFrom(t *testing.T) {
+	skipUnlessBeta(t)
+
+	client := testClient(t)
+	ctx := context.Background()
+
+	orgTest, orgTestCleanup := createOrganization(t, client)
+	t.Cleanup(orgTestCleanup)
+
+	projTest, projTestCleanup := createProject(t, client, orgTest)
+	t.Cleanup(projTestCleanup)
+
+	ws, wsCleanup := createWorkspaceWithOptions(t, client, orgTest, WorkspaceCreateOptions{
+		Name:    String("mycoolworkspace"),
+		Project: projTest,
+	})
+	t.Cleanup(wsCleanup)
+
+	_, err := client.Workspaces.AddTagBindings(ctx, ws.ID, WorkspaceAddTagBindingsOptions{
+		TagBindings: []*TagBinding{
+			{
+				Key:   "a",
+				Value: "1",
+			},
+			{
+				Key:   "b",
+				Value: "2",
+			},
+		},
+	})
+	require.NoError(t, err)
+
+	t.Run("when no tags are inherited from the project", func(t *testing.T) {
+		effectiveBindings, err := client.Workspaces.ListEffectiveTagBindings(ctx, ws.ID)
+		require.NoError(t, err)
+
+		for _, binding := range effectiveBindings {
+			require.Nil(t, binding.Links)
+		}
+	})
+
+	t.Run("when tags are inherited from the project", func(t *testing.T) {
+		_, err := client.Projects.AddTagBindings(ctx, projTest.ID, ProjectAddTagBindingsOptions{
+			TagBindings: []*TagBinding{
+				{
+					Key:   "inherited",
+					Value: "foo",
+				},
+			},
+		})
+		require.NoError(t, err)
+
+		effectiveBindings, err := client.Workspaces.ListEffectiveTagBindings(ctx, ws.ID)
+		require.NoError(t, err)
+
+		for _, binding := range effectiveBindings {
+			if binding.Key == "inherited" {
+				require.NotNil(t, binding.Links)
+				require.NotNil(t, binding.Links["inherited-from"])
+			} else {
+				require.Nil(t, binding.Links)
+			}
+		}
+	})
+}

@@ -3,7 +3,9 @@
 
 package tfe
 
-import "fmt"
+import (
+	"fmt"
+)
 
 type TagList struct {
 	*Pagination
@@ -26,6 +28,8 @@ type EffectiveTagBinding struct {
 	ID    string `jsonapi:"primary,effective-tag-bindings"`
 	Key   string `jsonapi:"attr,key"`
 	Value string `jsonapi:"attr,value,omitempty"`
+
+	Links map[string]interface{} `jsonapi:"links,omitempty"`
 }
 
 func encodeTagFiltersAsParams(filters []*TagBinding) map[string][]string {
