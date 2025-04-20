@@ -78,6 +78,13 @@ type PolicySetVersion struct {
 	CreatedAt        time.Time                        `jsonapi:"attr,created-at,iso8601"`
 	UpdatedAt        time.Time                        `jsonapi:"attr,updated-at,iso8601"`
 
+	// Ingress-attributes
+	IngressAttributes struct {
+		CommitSHA  string `jsonapi:"attr,commit-sha"`
+		CommitURL  string `jsonapi:"attr,commit-url"`
+		Identifier string `jsonapi:"attr,identifier"`
+	} `jsonapi:"attr,ingress-attributes"`
+
 	// Relations
 	PolicySet *PolicySet `jsonapi:"relation,policy-set"`
 
