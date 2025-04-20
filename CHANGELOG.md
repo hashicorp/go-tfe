@@ -25,12 +25,6 @@
 
 In the last release, Runs interface method `ListForOrganization` included pagination fields `TotalCount` and `TotalPages`, but these are being removed as this feature approaches general availablity by @brandonc [#1074](https://github.com/hashicorp/go-tfe/pull/1074)
 
-# v1.77.0
-
-## Enhancements
-
-* Adds `IngressAttributes` field to `PolicySetVersion` by @jpadrianoGo [#1076](https://github.com/hashicorp/go-tfe/pull/1076)
-
 # v1.76.0
 
 ## Enhancements
