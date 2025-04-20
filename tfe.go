@@ -987,7 +987,7 @@ func checkResponseCode(r *http.Response) error {
 			return err
 		}
 
-		if errorPayloadContains(errs, "Invalid include parameter") {
+		if errorPayloadContains(errs, "include parameter") {
 			return ErrInvalidIncludeValue
 		}
 		return errors.New(strings.Join(errs, "\n"))
