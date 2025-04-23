@@ -1,5 +1,7 @@
 # Unreleased
 
+* Adds `AgentPool` field to the OAuthClientUpdateOptions struct, which is used to associate a VCS Provider with an AgentPool for PrivateVCS support  by @jpogran [#1075](https://github.com/hashicorp/go-tfe/pull/1075)
+
 ## BREAKING CHANGES
 
 * Updates team token `Description` to be a pointer, allowing for both nil descriptions and empty string descriptions. Team token descriptions and the ability to create multiple team tokens is in BETA, which is EXPERIMENTAL, SUBJECT TO CHANGE, and may not be available to all users, by @mkam [#1088](https://github.com/hashicorp/go-tfe/pull/1088)
@@ -20,6 +22,7 @@
 ## BREAKING CHANGES
 
 In the last release, Runs interface method `ListForOrganization` included pagination fields `TotalCount` and `TotalPages`, but these are being removed as this feature approaches general availablity by @brandonc [#1074](https://github.com/hashicorp/go-tfe/pull/1074)
+
 
 # v1.76.0
 
