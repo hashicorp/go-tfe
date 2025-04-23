@@ -1,5 +1,10 @@
 # Unreleased
 
+## Enhancements
+
+* Adds `PrivateRunTasks` field to Entitlements by @glennsarti [#944](https://github.com/hashicorp/go-tfe/pull/944)
+* Adds `AgentPool` relationship to options when creating and updating Run Tasks by @glennsarti [#944](https://github.com/hashicorp/go-tfe/pull/944)
+
 ## BREAKING CHANGES
 
 * Updates team token `Description` to be a pointer, allowing for both nil descriptions and empty string descriptions. Team token descriptions and the ability to create multiple team tokens is in BETA, which is EXPERIMENTAL, SUBJECT TO CHANGE, and may not be available to all users, by @mkam [#1088](https://github.com/hashicorp/go-tfe/pull/1088)
@@ -167,6 +172,8 @@ In the last release, Runs interface method `ListForOrganization` included pagina
 ## Enhancements
 
 * Adds `AllowMemberTokenManagement` permission to `Team` by @juliannatetreault [#922](https://github.com/hashicorp/go-tfe/pull/922)
+* Adds `PrivateRunTasks` field to Entitlements by @glennsarti [#944](https://github.com/hashicorp/go-tfe/pull/944)
+* Adds `AgentPool` relationship to options when creating and updating Run Tasks by @glennsarti [#944](https://github.com/hashicorp/go-tfe/pull/944)
 
 # v1.61.0
 
