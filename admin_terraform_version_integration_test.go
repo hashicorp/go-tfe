@@ -133,6 +133,7 @@ func TestAdminTerraformVersions_CreateDelete(t *testing.T) {
 		}()
 
 		assert.Equal(t, *opts.Version, tfv.Version)
+		assert.ElementsMatch(t, opts.Archs, tfv.Archs)
 		assert.Equal(t, *opts.Official, tfv.Official)
 		assert.Equal(t, *opts.Deprecated, tfv.Deprecated)
 		assert.Equal(t, *opts.DeprecatedReason, *tfv.DeprecatedReason)
@@ -169,7 +170,7 @@ func TestAdminTerraformVersions_CreateDelete(t *testing.T) {
 		assert.Equal(t, *opts.Beta, tfv.Beta)
 	})
 
-	t.Run("with only required options", func(t *testing.T) {
+	t.Run("with only required options including tool version url and sha", func(t *testing.T) {
 		version := genSafeRandomTerraformVersion()
 		opts := AdminTerraformVersionCreateOptions{
 			Version: String(version),
@@ -187,6 +188,41 @@ func TestAdminTerraformVersions_CreateDelete(t *testing.T) {
 		assert.Equal(t, *opts.Version, tfv.Version)
 		assert.Equal(t, *opts.URL, tfv.URL)
 		assert.Equal(t, *opts.Sha, tfv.Sha)
+		assert.Equal(t, false, tfv.Official)
+		assert.Equal(t, false, tfv.Deprecated)
+		assert.Nil(t, tfv.DeprecatedReason)
+		assert.Equal(t, true, tfv.Enabled)
+		assert.Equal(t, false, tfv.Beta)
+	})
+
+	t.Run("with only required options including archs", func(t *testing.T) {
+		version := genSafeRandomTerraformVersion()
+		opts := AdminTerraformVersionCreateOptions{
+			Version: String(version),
+			Archs: []*ToolVersionArchitecture{
+				{
+					URL:  "https://www.hashicorp.com",
+					Sha:  *String(genSha(t)),
+					OS:   linux,
+					Arch: amd64,
+				},
+				{
+					URL:  "https://www.hashicorp.com",
+					Sha:  *String(genSha(t)),
+					OS:   linux,
+					Arch: arm64,
+				}},
+		}
+		tfv, err := client.Admin.TerraformVersions.Create(ctx, opts)
+		require.NoError(t, err)
+
+		defer func() {
+			deleteErr := client.Admin.TerraformVersions.Delete(ctx, tfv.ID)
+			require.NoError(t, deleteErr)
+		}()
+
+		assert.Equal(t, *opts.Version, tfv.Version)
+		assert.ElementsMatch(t, opts.Archs, tfv.Archs)
 		assert.Equal(t, false, tfv.Official)
 		assert.Equal(t, false, tfv.Deprecated)
 		assert.Nil(t, tfv.DeprecatedReason)
@@ -238,8 +274,9 @@ func TestAdminTerraformVersions_ReadUpdate(t *testing.T) {
 		require.NoError(t, err)
 
 		assert.Equal(t, *opts.Version, tfv.Version)
-		assert.Equal(t, *opts.URL, tfv.URL)
-		assert.Equal(t, *opts.Sha, tfv.Sha)
+		assert.Equal(t, opts.Archs[0].URL, tfv.URL)
+		assert.Equal(t, opts.Archs[0].Sha, tfv.Sha)
+		assert.ElementsMatch(t, opts.Archs, tfv.Archs)
 		assert.Equal(t, *opts.Official, tfv.Official)
 		assert.Equal(t, *opts.Deprecated, tfv.Deprecated)
 		assert.Equal(t, *opts.DeprecatedReason, *tfv.DeprecatedReason)
@@ -251,6 +288,7 @@ func TestAdminTerraformVersions_ReadUpdate(t *testing.T) {
 		updateOpts := AdminTerraformVersionUpdateOptions{
 			Version:    String(updateVersion),
 			URL:        String(updateURL),
+			Sha:        sha,
 			Deprecated: Bool(false),
 		}
 
@@ -261,10 +299,37 @@ func TestAdminTerraformVersions_ReadUpdate(t *testing.T) {
 		assert.Equal(t, updateVersion, tfv.Version)
 		assert.Equal(t, updateURL, tfv.URL)
 		assert.Equal(t, *opts.Sha, tfv.Sha)
+		assert.Equal(t, updateURL, tfv.Archs[0].URL)
+		assert.Equal(t, *opts.Sha, tfv.Archs[0].Sha)
 		assert.Equal(t, *opts.Official, tfv.Official)
 		assert.Equal(t, *updateOpts.Deprecated, tfv.Deprecated)
 		assert.Equal(t, *opts.Enabled, tfv.Enabled)
 		assert.Equal(t, *opts.Beta, tfv.Beta)
+
+		updateOpts = AdminTerraformVersionUpdateOptions{
+			Archs: []*ToolVersionArchitecture{
+				{
+					URL:  "https://www.hashicorp.com/update",
+					Sha:  *sha,
+					OS:   linux,
+					Arch: amd64,
+				},
+				{
+					URL:  "https://www.hashicorp.com/update/arm64",
+					Sha:  *sha,
+					OS:   linux,
+					Arch: arm64,
+				},
+			},
+		}
+
+		tfv, err = client.Admin.TerraformVersions.Update(ctx, id, updateOpts)
+
+		require.NoError(t, err)
+
+		assert.Equal(t, "https://www.hashicorp.com/update", tfv.URL)
+		assert.Equal(t, *opts.Sha, tfv.Sha)
+		assert.ElementsMatch(t, updateOpts.Archs, tfv.Archs)
 	})
 
 	t.Run("with non-existent terraform version", func(t *testing.T) {
