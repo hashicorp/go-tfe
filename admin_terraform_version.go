@@ -223,12 +223,10 @@ func (o AdminTerraformVersionCreateOptions) valid() error {
 }
 
 func (o AdminTerraformVersionCreateOptions) validArch() bool {
-	var valid bool
 	for _, a := range o.Archs {
-		valid = validString(&a.URL) && validString(&a.Sha) && a.OS == linux && (a.Arch == amd64 || a.Arch == arm64)
-		if valid {
-			break
+		if a.URL != "" && a.Sha != "" && a.OS == linux && (a.Arch == amd64 || a.Arch == arm64) {
+			return true
 		}
 	}
-	return valid
+	return false
 }

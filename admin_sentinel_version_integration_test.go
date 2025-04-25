@@ -102,7 +102,46 @@ func TestAdminSentinelVersions_CreateDelete(t *testing.T) {
 	ctx := context.Background()
 	version := createAdminSentinelVersion()
 
-	t.Run("with valid options", func(t *testing.T) {
+	t.Run("with valid options including archs", func(t *testing.T) {
+		opts := AdminSentinelVersionCreateOptions{
+			Version:          version,
+			Deprecated:       Bool(true),
+			DeprecatedReason: String("Test Reason"),
+			Official:         Bool(false),
+			Enabled:          Bool(false),
+			Beta:             Bool(false),
+			Archs: []*ToolVersionArchitecture{
+				{
+					URL:  "https://www.hashicorp.com",
+					Sha:  *String(genSha(t)),
+					OS:   linux,
+					Arch: amd64,
+				},
+				{
+					URL:  "https://www.hashicorp.com",
+					Sha:  *String(genSha(t)),
+					OS:   linux,
+					Arch: arm64,
+				}},
+		}
+		sv, err := client.Admin.SentinelVersions.Create(ctx, opts)
+		require.NoError(t, err)
+
+		defer func() {
+			deleteErr := client.Admin.SentinelVersions.Delete(ctx, sv.ID)
+			require.NoError(t, deleteErr)
+		}()
+
+		assert.Equal(t, opts.Version, sv.Version)
+		assert.ElementsMatch(t, opts.Archs, sv.Archs)
+		assert.Equal(t, *opts.Official, sv.Official)
+		assert.Equal(t, *opts.Deprecated, sv.Deprecated)
+		assert.Equal(t, *opts.DeprecatedReason, *sv.DeprecatedReason)
+		assert.Equal(t, *opts.Enabled, sv.Enabled)
+		assert.Equal(t, *opts.Beta, sv.Beta)
+	})
+
+	t.Run("with valid options including url, and sha", func(t *testing.T) {
 		opts := AdminSentinelVersionCreateOptions{
 			Version:          version,
 			URL:              "https://www.hashicorp.com",
@@ -131,8 +170,8 @@ func TestAdminSentinelVersions_CreateDelete(t *testing.T) {
 		assert.Equal(t, *opts.Beta, sv.Beta)
 	})
 
-	t.Run("with only required options", func(t *testing.T) {
-		version := createAdminSentinelVersion()
+	t.Run("with only required options including tool version url and sha", func(t *testing.T) {
+		version = createAdminSentinelVersion()
 		opts := AdminSentinelVersionCreateOptions{
 			Version: version,
 			URL:     "https://www.hashicorp.com",
@@ -156,6 +195,41 @@ func TestAdminSentinelVersions_CreateDelete(t *testing.T) {
 		assert.Equal(t, false, sv.Beta)
 	})
 
+	t.Run("with only required options including archs", func(t *testing.T) {
+		version = createAdminSentinelVersion()
+		opts := AdminSentinelVersionCreateOptions{
+			Version: version,
+			Archs: []*ToolVersionArchitecture{
+				{
+					URL:  "https://www.hashicorp.com",
+					Sha:  *String(genSha(t)),
+					OS:   linux,
+					Arch: amd64,
+				},
+				{
+					URL:  "https://www.hashicorp.com",
+					Sha:  *String(genSha(t)),
+					OS:   linux,
+					Arch: arm64,
+				}},
+		}
+		sv, err := client.Admin.SentinelVersions.Create(ctx, opts)
+		require.NoError(t, err)
+
+		defer func() {
+			deleteErr := client.Admin.SentinelVersions.Delete(ctx, sv.ID)
+			require.NoError(t, deleteErr)
+		}()
+
+		assert.Equal(t, opts.Version, sv.Version)
+		assert.ElementsMatch(t, opts.Archs, sv.Archs)
+		assert.Equal(t, false, sv.Official)
+		assert.Equal(t, false, sv.Deprecated)
+		assert.Nil(t, sv.DeprecatedReason)
+		assert.Equal(t, true, sv.Enabled)
+		assert.Equal(t, false, sv.Beta)
+	})
+
 	t.Run("with empty options", func(t *testing.T) {
 		_, err := client.Admin.SentinelVersions.Create(ctx, AdminSentinelVersionCreateOptions{})
 		require.Equal(t, err, ErrRequiredSentinelVerCreateOps)
@@ -170,6 +244,7 @@ func TestAdminSentinelVersions_ReadUpdate(t *testing.T) {
 
 	t.Run("reads and updates", func(t *testing.T) {
 		version := createAdminSentinelVersion()
+		sha := String(genSha(t))
 		opts := AdminSentinelVersionCreateOptions{
 			Version:          version,
 			URL:              "https://www.hashicorp.com",
@@ -179,6 +254,12 @@ func TestAdminSentinelVersions_ReadUpdate(t *testing.T) {
 			DeprecatedReason: String("Test Reason"),
 			Enabled:          Bool(false),
 			Beta:             Bool(false),
+			Archs: []*ToolVersionArchitecture{{
+				URL:  "https://www.hashicorp.com",
+				Sha:  *sha,
+				OS:   linux,
+				Arch: amd64,
+			}},
 		}
 		sv, err := client.Admin.SentinelVersions.Create(ctx, opts)
 		require.NoError(t, err)
@@ -193,8 +274,9 @@ func TestAdminSentinelVersions_ReadUpdate(t *testing.T) {
 		require.NoError(t, err)
 
 		assert.Equal(t, opts.Version, sv.Version)
-		assert.Equal(t, opts.URL, sv.URL)
-		assert.Equal(t, opts.SHA, sv.SHA)
+		assert.Equal(t, opts.Archs[0].URL, sv.URL)
+		assert.Equal(t, opts.Archs[0].Sha, sv.SHA)
+		assert.ElementsMatch(t, opts.Archs, sv.Archs)
 		assert.Equal(t, *opts.Official, sv.Official)
 		assert.Equal(t, *opts.Deprecated, sv.Deprecated)
 		assert.Equal(t, *opts.DeprecatedReason, *sv.DeprecatedReason)
@@ -215,10 +297,37 @@ func TestAdminSentinelVersions_ReadUpdate(t *testing.T) {
 		assert.Equal(t, updateVersion, sv.Version)
 		assert.Equal(t, updateURL, sv.URL)
 		assert.Equal(t, opts.SHA, sv.SHA)
+		assert.Equal(t, updateURL, sv.Archs[0].URL)
+		assert.Equal(t, opts.SHA, sv.Archs[0].Sha)
 		assert.Equal(t, *opts.Official, sv.Official)
 		assert.Equal(t, *updateOpts.Deprecated, sv.Deprecated)
 		assert.Equal(t, *opts.Enabled, sv.Enabled)
 		assert.Equal(t, *opts.Beta, sv.Beta)
+
+		updateOpts = AdminSentinelVersionUpdateOptions{
+			Archs: []*ToolVersionArchitecture{
+				{
+					URL:  "https://www.hashicorp.com/update",
+					Sha:  *sha,
+					OS:   linux,
+					Arch: amd64,
+				},
+				{
+					URL:  "https://www.hashicorp.com/update/arm64",
+					Sha:  *sha,
+					OS:   linux,
+					Arch: arm64,
+				},
+			},
+		}
+
+		sv, err = client.Admin.SentinelVersions.Update(ctx, id, updateOpts)
+
+		require.NoError(t, err)
+
+		assert.Equal(t, "https://www.hashicorp.com/update", sv.URL)
+		assert.Equal(t, opts.SHA, sv.SHA)
+		assert.ElementsMatch(t, updateOpts.Archs, sv.Archs)
 	})
 
 	t.Run("with non-existent Sentinel version", func(t *testing.T) {

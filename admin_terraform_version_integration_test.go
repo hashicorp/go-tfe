@@ -102,7 +102,7 @@ func TestAdminTerraformVersions_CreateDelete(t *testing.T) {
 	client := testClient(t)
 	ctx := context.Background()
 
-	t.Run("with valid options and archs", func(t *testing.T) {
+	t.Run("with valid options including archs", func(t *testing.T) {
 		opts := AdminTerraformVersionCreateOptions{
 			Version:          String(genSafeRandomTerraformVersion()),
 			Deprecated:       Bool(true),
@@ -293,7 +293,6 @@ func TestAdminTerraformVersions_ReadUpdate(t *testing.T) {
 		}
 
 		tfv, err = client.Admin.TerraformVersions.Update(ctx, id, updateOpts)
-
 		require.NoError(t, err)
 
 		assert.Equal(t, updateVersion, tfv.Version)
