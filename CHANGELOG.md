@@ -1,7 +1,7 @@
 # Unreleased
 
 * Adds `AgentPool` field to the OAuthClientUpdateOptions struct, which is used to associate a VCS Provider with an AgentPool for PrivateVCS support  by @jpogran [#1075](https://github.com/hashicorp/go-tfe/pull/1075)
-* Adds `IngressAttributes` field to `PolicySetVersion` by @jpadrianoGo [#1089](https://github.com/hashicorp/go-tfe/pull/1089)
+* Adds `IngressAttributes` field to `PolicySetVersion` by @jpadrianoGo [#1091](https://github.com/hashicorp/go-tfe/pull/1091)
 
 ## BREAKING CHANGES
 
