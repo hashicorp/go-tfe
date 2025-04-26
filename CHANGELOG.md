@@ -1,5 +1,6 @@
 # Unreleased
 
+<<<<<<< HEAD
 ## Enhancements
 * Adds `IngressAttributes` field to `PolicySetVersion` by @jpadrianoGo [#1092](https://github.com/hashicorp/go-tfe/pull/1092)
 
@@ -9,6 +10,10 @@
 * Adds BETA support for `PolicyPaths` to the `Runs` interface, by sebasslash [#1104](https://github.com/hashicorp/go-tfe/pull/1104)
 
 # v1.79.0
+=======
+* Adds `AgentPool` field to the OAuthClientUpdateOptions struct, which is used to associate a VCS Provider with an AgentPool for PrivateVCS support  by @jpogran [#1075](https://github.com/hashicorp/go-tfe/pull/1075)
+* Adds `IngressAttributes` field to `PolicySetVersion` by @jpadrianoGo [#1092](https://github.com/hashicorp/go-tfe/pull/1092)
+>>>>>>> Updated changelog
 
 ## BREAKING CHANGES
 
