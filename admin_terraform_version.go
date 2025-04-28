@@ -216,17 +216,27 @@ func (o AdminTerraformVersionCreateOptions) valid() error {
 	if !validString(o.Version) {
 		return ErrRequiredVersion
 	}
-	if !o.validArch() && (!validString(o.URL) || !validString(o.Sha)) {
-		return ErrRequiredArchOrURLAndSha
+	if !o.validArchs() {
+		return ErrRequiredArchsOrURLAndSha
 	}
 	return nil
 }
 
-func (o AdminTerraformVersionCreateOptions) validArch() bool {
+func (o AdminTerraformVersionCreateOptions) validArchs() bool {
+	if o.Archs == nil && validString(o.URL) && validString(o.Sha) {
+		return true
+	}
+
+	emptyToolVersionFields := !validString(o.URL) && !validString(o.Sha)
+
 	for _, a := range o.Archs {
-		if a.URL != "" && a.Sha != "" && a.OS == linux && (a.Arch == amd64 || a.Arch == arm64) {
-			return true
+		if !validArch(a) || !emptyToolVersionFields && (*o.URL != a.URL || *o.Sha != a.Sha) {
+			return false
 		}
 	}
-	return false
+	return true
+}
+
+func validArch(a *ToolVersionArchitecture) bool {
+	return a.URL != "" && a.Sha != "" && a.OS == linux && (a.Arch == amd64 || a.Arch == arm64)
 }

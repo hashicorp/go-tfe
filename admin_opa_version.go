@@ -202,17 +202,23 @@ func (o AdminOPAVersionCreateOptions) valid() error {
 	if o.Version == "" {
 		return ErrRequiredVersion
 	}
-	if !o.validArch() && (o.URL == "" || o.SHA == "") {
-		return ErrRequiredArchOrURLAndSha
+	if !o.validArch() {
+		return ErrRequiredArchsOrURLAndSha
 	}
 	return nil
 }
 
 func (o AdminOPAVersionCreateOptions) validArch() bool {
+	if o.Archs == nil && o.URL != "" && o.SHA != "" {
+		return true
+	}
+
+	emptyToolVersionFields := o.URL == "" && o.SHA == ""
+
 	for _, a := range o.Archs {
-		if a.URL != "" && a.Sha != "" && a.OS == linux && (a.Arch == amd64 || a.Arch == arm64) {
-			return true
+		if !validArch(a) || !emptyToolVersionFields && (o.URL != a.URL || o.SHA != a.Sha) {
+			return false
 		}
 	}
-	return false
+	return true
 }

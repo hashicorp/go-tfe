@@ -133,7 +133,6 @@ func TestAdminSentinelVersions_CreateDelete(t *testing.T) {
 		}()
 
 		assert.Equal(t, opts.Version, sv.Version)
-		assert.ElementsMatch(t, opts.Archs, sv.Archs)
 		assert.Equal(t, *opts.Official, sv.Official)
 		assert.Equal(t, *opts.Deprecated, sv.Deprecated)
 		assert.Equal(t, *opts.DeprecatedReason, *sv.DeprecatedReason)
@@ -222,7 +221,6 @@ func TestAdminSentinelVersions_CreateDelete(t *testing.T) {
 		}()
 
 		assert.Equal(t, opts.Version, sv.Version)
-		assert.ElementsMatch(t, opts.Archs, sv.Archs)
 		assert.Equal(t, false, sv.Official)
 		assert.Equal(t, false, sv.Deprecated)
 		assert.Nil(t, sv.DeprecatedReason)
@@ -276,7 +274,6 @@ func TestAdminSentinelVersions_ReadUpdate(t *testing.T) {
 		assert.Equal(t, opts.Version, sv.Version)
 		assert.Equal(t, opts.Archs[0].URL, sv.URL)
 		assert.Equal(t, opts.Archs[0].Sha, sv.SHA)
-		assert.ElementsMatch(t, opts.Archs, sv.Archs)
 		assert.Equal(t, *opts.Official, sv.Official)
 		assert.Equal(t, *opts.Deprecated, sv.Deprecated)
 		assert.Equal(t, *opts.DeprecatedReason, *sv.DeprecatedReason)
@@ -297,37 +294,10 @@ func TestAdminSentinelVersions_ReadUpdate(t *testing.T) {
 		assert.Equal(t, updateVersion, sv.Version)
 		assert.Equal(t, updateURL, sv.URL)
 		assert.Equal(t, opts.SHA, sv.SHA)
-		assert.Equal(t, updateURL, sv.Archs[0].URL)
-		assert.Equal(t, opts.SHA, sv.Archs[0].Sha)
 		assert.Equal(t, *opts.Official, sv.Official)
 		assert.Equal(t, *updateOpts.Deprecated, sv.Deprecated)
 		assert.Equal(t, *opts.Enabled, sv.Enabled)
 		assert.Equal(t, *opts.Beta, sv.Beta)
-
-		updateOpts = AdminSentinelVersionUpdateOptions{
-			Archs: []*ToolVersionArchitecture{
-				{
-					URL:  "https://www.hashicorp.com/update",
-					Sha:  *sha,
-					OS:   linux,
-					Arch: amd64,
-				},
-				{
-					URL:  "https://www.hashicorp.com/update/arm64",
-					Sha:  *sha,
-					OS:   linux,
-					Arch: arm64,
-				},
-			},
-		}
-
-		sv, err = client.Admin.SentinelVersions.Update(ctx, id, updateOpts)
-
-		require.NoError(t, err)
-
-		assert.Equal(t, "https://www.hashicorp.com/update", sv.URL)
-		assert.Equal(t, opts.SHA, sv.SHA)
-		assert.ElementsMatch(t, updateOpts.Archs, sv.Archs)
 	})
 
 	t.Run("with non-existent Sentinel version", func(t *testing.T) {

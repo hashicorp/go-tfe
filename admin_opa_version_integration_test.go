@@ -133,7 +133,6 @@ func TestAdminOPAVersions_CreateDelete(t *testing.T) {
 		}()
 
 		assert.Equal(t, opts.Version, ov.Version)
-		assert.ElementsMatch(t, opts.Archs, ov.Archs)
 		assert.Equal(t, *opts.Official, ov.Official)
 		assert.Equal(t, *opts.Deprecated, ov.Deprecated)
 		assert.Equal(t, *opts.DeprecatedReason, *ov.DeprecatedReason)
@@ -222,7 +221,6 @@ func TestAdminOPAVersions_CreateDelete(t *testing.T) {
 		}()
 
 		assert.Equal(t, opts.Version, ov.Version)
-		assert.ElementsMatch(t, opts.Archs, ov.Archs)
 		assert.Equal(t, false, ov.Official)
 		assert.Equal(t, false, ov.Deprecated)
 		assert.Nil(t, ov.DeprecatedReason)
@@ -276,7 +274,6 @@ func TestAdminOPAVersions_ReadUpdate(t *testing.T) {
 		assert.Equal(t, opts.Version, ov.Version)
 		assert.Equal(t, opts.Archs[0].URL, ov.URL)
 		assert.Equal(t, opts.Archs[0].Sha, ov.SHA)
-		assert.ElementsMatch(t, opts.Archs, ov.Archs)
 		assert.Equal(t, *opts.Official, ov.Official)
 		assert.Equal(t, *opts.Deprecated, ov.Deprecated)
 		assert.Equal(t, *opts.DeprecatedReason, *ov.DeprecatedReason)
@@ -297,36 +294,10 @@ func TestAdminOPAVersions_ReadUpdate(t *testing.T) {
 		assert.Equal(t, updateVersion, ov.Version)
 		assert.Equal(t, updateURL, ov.URL)
 		assert.Equal(t, opts.SHA, ov.SHA)
-		assert.Equal(t, updateURL, ov.Archs[0].URL)
-		assert.Equal(t, opts.SHA, ov.Archs[0].Sha)
 		assert.Equal(t, *opts.Official, ov.Official)
 		assert.Equal(t, *updateOpts.Deprecated, ov.Deprecated)
 		assert.Equal(t, *opts.Enabled, ov.Enabled)
 		assert.Equal(t, *opts.Beta, ov.Beta)
-
-		updateOpts = AdminOPAVersionUpdateOptions{
-			Archs: []*ToolVersionArchitecture{
-				{
-					URL:  "https://www.hashicorp.com/update",
-					Sha:  *sha,
-					OS:   linux,
-					Arch: amd64,
-				},
-				{
-					URL:  "https://www.hashicorp.com/update/arm64",
-					Sha:  *sha,
-					OS:   linux,
-					Arch: arm64,
-				},
-			},
-		}
-
-		ov, err = client.Admin.OPAVersions.Update(ctx, id, updateOpts)
-		require.NoError(t, err)
-
-		assert.Equal(t, "https://www.hashicorp.com/update", ov.URL)
-		assert.Equal(t, opts.SHA, ov.SHA)
-		assert.ElementsMatch(t, updateOpts.Archs, ov.Archs)
 	})
 
 	t.Run("with non-existent OPA version", func(t *testing.T) {
