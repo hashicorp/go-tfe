@@ -3,13 +3,15 @@ package main
 import (
 	"context"
 	"log"
+	"os"
 
 	"github.com/hashicorp/go-tfe"
 )
 
 func main() {
 	client, err := tfe.NewClient(&tfe.Config{
-		Token: "API TOKEN",
+		Token:   os.Getenv("EXAMPLE_TOKEN"),
+		Address: os.Getenv("EXAMPLE_ADDRESS"),
 	})
 
 	if err != nil {
@@ -21,8 +23,5 @@ func main() {
 		log.Fatalf("API returned an error status: %s", tfe.SummarizeAPIErrors(err))
 	}
 
-	hcpID := response.GetData().GetAttributes().GetHcpId()
-	if hcpID == nil {
-		log.Printf("[INFO] Organization is not an HCP Organization")
-	}
+	log.Printf("Just fetched organization: %s, which was created at %s", *response.GetData().GetAttributes().GetName(), *response.GetData().GetAttributes().GetCreatedAt())
 }
