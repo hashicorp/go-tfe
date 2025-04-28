@@ -21,7 +21,7 @@ func (c *accessTokenProvider) GetAllowedHostsValidator() *auth.AllowedHostsValid
 	return c.allowedHosts
 }
 
-func (c *accessTokenProvider) GetAuthorizationToken(context context.Context, url *u.URL, additionalAuthenticationContext map[string]interface{}) (string, error) {
+func (c *accessTokenProvider) GetAuthorizationToken(ctx context.Context, url *u.URL, additionalAuthenticationContext map[string]interface{}) (string, error) {
 	c.mu.Lock()
 	defer c.mu.Unlock()
 

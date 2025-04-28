@@ -50,7 +50,13 @@ func contextResponseHeaderHook(ctx context.Context) func(int, http.Header) {
 		// Stub callback that does absolutely nothing, then.
 		return func(int, http.Header) {}
 	}
-	return cbI.(func(int, http.Header))
+
+	result, ok := cbI.(func(int, http.Header))
+	if !ok {
+		return func(int, http.Header) {}
+	}
+
+	return result
 }
 
 // contextResponseHeaderHookKey is the type of the internal key used to store

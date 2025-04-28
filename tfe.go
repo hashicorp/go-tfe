@@ -121,10 +121,10 @@ type Meta struct {
 	IPRanges IPRanges
 }
 
-// doForeignPUTRequest performs a PUT request using the specific data body. The Content-Type
+// DoObjectPUTRequest performs a PUT request using the specific data body. The Content-Type
 // header is set to application/octet-stream but no Authentication header is sent. No response
 // body is decoded.
-func (c *Client) doForeignPUTRequest(ctx context.Context, foreignURL string, data io.Reader) error {
+func (c *Client) DoObjectPUTRequest(ctx context.Context, foreignURL string, data io.Reader) error {
 	u, err := url.Parse(foreignURL)
 	if err != nil {
 		return fmt.Errorf("specified URL was not valid: %w", err)
@@ -207,7 +207,7 @@ func (c *Client) NewJSONAPIRequest(method, path string, reqBody, queryParams any
 }
 
 // NewJSONRequest performs some basic API request preparation based on the method
-func (c *Client) NewJSONRequest(method, path string, reqBody any, queryParams any) (*ClientRequest, error) {
+func (c *Client) NewJSONRequest(method, path string, reqBody, queryParams any) (*ClientRequest, error) {
 	u, err := c.baseURL.Parse(path)
 	if err != nil {
 		return nil, err

@@ -101,7 +101,7 @@ func TestClient_API(t *testing.T) {
 			setDefaultServerHeaders(w)
 
 			w.WriteHeader(200)
-			w.Write(([]byte)(`{
+			w.Write([]byte(`{
 	"data": {
 		"id": "usr-1234",
 		"type": "users",
@@ -114,7 +114,7 @@ func TestClient_API(t *testing.T) {
 		"/": func(w http.ResponseWriter, r *http.Request) {
 			setDefaultServerHeaders(w)
 			w.WriteHeader(404)
-			w.Write(([]byte)(`{
+			w.Write([]byte(`{
 	"errors": [
 		{
 			"status": "404",
