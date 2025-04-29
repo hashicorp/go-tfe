@@ -1,5 +1,7 @@
 # Unreleased
 
+# v1.79.0
+
 * Adds `AgentPool` field to the OAuthClientUpdateOptions struct, which is used to associate a VCS Provider with an AgentPool for PrivateVCS support  by @jpogran [#1075](https://github.com/hashicorp/go-tfe/pull/1075)
 
 ## BREAKING CHANGES
