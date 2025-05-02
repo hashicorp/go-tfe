@@ -146,7 +146,7 @@ func TestPolicySetVersionsIngressAttributes(t *testing.T) {
 	ctx := context.Background()
 
 	orgTest, orgTestCleanup := createOrganization(t, client)
-	defer orgTestCleanup()
+	t.Cleanup(orgTestCleanup)
 
 	t.Run("with vcs", func(t *testing.T) {
 		githubIdentifier := os.Getenv("GITHUB_POLICY_SET_IDENTIFIER")
@@ -155,7 +155,7 @@ func TestPolicySetVersionsIngressAttributes(t *testing.T) {
 		}
 
 		otTest, otTestCleanup := createOAuthToken(t, client, orgTest)
-		defer otTestCleanup()
+		t.Cleanup(otTestCleanup)
 
 		options := PolicySetCreateOptions{
 			Name:         String("vcs-policy-set"),
@@ -181,6 +181,7 @@ func TestPolicySetVersionsIngressAttributes(t *testing.T) {
 
 		psv, err := client.PolicySetVersions.Read(ctx, ps.NewestVersion.ID)
 		require.NoError(t, err)
+
 		require.NotNil(t, psv.IngressAttributes)
 		assert.NotZero(t, psv.IngressAttributes.CommitSHA)
 		assert.NotZero(t, psv.IngressAttributes.CommitURL)
@@ -189,13 +190,15 @@ func TestPolicySetVersionsIngressAttributes(t *testing.T) {
 
 	t.Run("without vcs", func(t *testing.T) {
 		psTest, psTestCleanup := createPolicySet(t, client, nil, nil, nil, nil, nil, "")
-		defer psTestCleanup()
+		t.Cleanup(psTestCleanup)
 
 		psv, err := client.PolicySetVersions.Create(ctx, psTest.ID)
 		require.NoError(t, err)
-		require.NotNil(t, psv.IngressAttributes)
-		assert.Zero(t, psv.IngressAttributes.CommitSHA)
-		assert.Zero(t, psv.IngressAttributes.CommitURL)
-		assert.Zero(t, psv.IngressAttributes.Identifier)
+
+		assert.NotEmpty(t, psv.ID)
+		assert.Equal(t, psv.Source, PolicySetVersionSourceAPI)
+		assert.Equal(t, psv.PolicySet.ID, psTest.ID)
+
+		assert.Nil(t, psv.IngressAttributes)
 	})
 }
