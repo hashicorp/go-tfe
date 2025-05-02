@@ -148,6 +148,8 @@ func TestPolicySetVersionsIngressAttributes(t *testing.T) {
 	orgTest, orgTestCleanup := createOrganization(t, client)
 	t.Cleanup(orgTestCleanup)
 
+	upgradeOrganizationSubscription(t, client, orgTest)
+
 	t.Run("with vcs", func(t *testing.T) {
 		githubIdentifier := os.Getenv("GITHUB_POLICY_SET_IDENTIFIER")
 		if githubIdentifier == "" {
