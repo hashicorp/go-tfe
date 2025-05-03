@@ -184,7 +184,6 @@ func TestPolicySetVersionsIngressAttributes(t *testing.T) {
 		psv, err := client.PolicySetVersions.Read(ctx, ps.NewestVersion.ID)
 		require.NoError(t, err)
 
-		require.NotNil(t, psv.IngressAttributes)
 		assert.NotZero(t, psv.IngressAttributes.CommitSHA)
 		assert.NotZero(t, psv.IngressAttributes.CommitURL)
 		assert.NotZero(t, psv.IngressAttributes.Identifier)
