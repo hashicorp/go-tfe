@@ -353,6 +353,24 @@ func TestRunsCreate(t *testing.T) {
 			}
 		}
 	})
+
+	t.Run("with policy paths", func(t *testing.T) {
+		skipUnlessBeta(t)
+
+		opts := RunCreateOptions{
+			Message:     String("creating with policy paths"),
+			Workspace:   wTest,
+			PolicyPaths: []string{"./path/to/dir1", "./path/to/dir2"},
+		}
+
+		r, err := client.Runs.Create(ctx, opts)
+		require.NoError(t, err)
+		require.NotEmpty(t, r.PolicyPaths)
+
+		assert.Len(t, r.PolicyPaths, 2)
+		assert.Contains(t, r.PolicyPaths, "./path/to/dir1")
+		assert.Contains(t, r.PolicyPaths, "./path/to/dir2")
+	})
 }
 
 func TestRunsRead_CostEstimate(t *testing.T) {
@@ -401,6 +419,31 @@ func TestRunsReadWithOptions(t *testing.T) {
 		require.NotEmpty(t, r.CreatedBy)
 		assert.NotEmpty(t, r.CreatedBy.Username)
 	})
+}
+
+func TestRunsReadWithPolicyPaths(t *testing.T) {
+	skipUnlessBeta(t)
+
+	client := testClient(t)
+	ctx := context.Background()
+
+	wTest, wTestCleanup := createWorkspace(t, client, nil)
+	t.Cleanup(wTestCleanup)
+
+	_, cvCleanup := createUploadedConfigurationVersion(t, client, wTest)
+	t.Cleanup(cvCleanup)
+
+	r, err := client.Runs.Create(ctx, RunCreateOptions{
+		Workspace:   wTest,
+		PolicyPaths: []string{"./foo"},
+	})
+	require.NoError(t, err)
+
+	r, err = client.Runs.Read(ctx, r.ID)
+	require.NoError(t, err)
+
+	require.NotEmpty(t, r.PolicyPaths)
+	assert.Contains(t, r.PolicyPaths, "./foo")
 }
 
 func TestRunsApply(t *testing.T) {
