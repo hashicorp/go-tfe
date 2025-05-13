@@ -1,5 +1,9 @@
 # Unreleased
 
+## Enhancements
+
+* Adds `IngressAttributes` field to `PolicySetVersion` by @jpadrianoGo [#1092](https://github.com/hashicorp/go-tfe/pull/1092)
+
 # v1.79.0
 
 ## BREAKING CHANGES
