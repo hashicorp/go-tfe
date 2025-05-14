@@ -141,6 +141,7 @@ type Run struct {
 	IsDestroy              bool                 `jsonapi:"attr,is-destroy"`
 	Message                string               `jsonapi:"attr,message"`
 	Permissions            *RunPermissions      `jsonapi:"attr,permissions"`
+	PolicyPaths            []string             `jsonapi:"attr,policy-paths,omitempty"`
 	PositionInQueue        int                  `jsonapi:"attr,position-in-queue"`
 	PlanOnly               bool                 `jsonapi:"attr,plan-only"`
 	Refresh                bool                 `jsonapi:"attr,refresh"`
@@ -384,6 +385,12 @@ type RunCreateOptions struct {
 	// (destroys and then re-creates) the objects specified by the given
 	// resource addresses.
 	ReplaceAddrs []string `jsonapi:"attr,replace-addrs,omitempty"`
+
+	// PolicyPaths is a list of relative directory paths that point to policy
+	// configuration files.
+	//
+	// **Note: This field is in BETA and subject to change.**
+	PolicyPaths []string `jsonapi:"attr,policy-paths,omitempty"`
 
 	// AutoApply determines if the run should be applied automatically without
 	// user confirmation. It defaults to the Workspace.AutoApply setting.
