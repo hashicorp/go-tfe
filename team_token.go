@@ -50,7 +50,7 @@ type teamTokens struct {
 type TeamToken struct {
 	ID          string           `jsonapi:"primary,authentication-tokens"`
 	CreatedAt   time.Time        `jsonapi:"attr,created-at,iso8601"`
-	Description string           `jsonapi:"attr,description"`
+	Description *string          `jsonapi:"attr,description"`
 	LastUsedAt  time.Time        `jsonapi:"attr,last-used-at,iso8601"`
 	Token       string           `jsonapi:"attr,token"`
 	ExpiredAt   time.Time        `jsonapi:"attr,expired-at,iso8601"`
@@ -66,7 +66,7 @@ type TeamTokenCreateOptions struct {
 
 	// Optional: The token's description, which must unique per team.
 	// This feature is considered BETA, SUBJECT TO CHANGE, and likely unavailable to most users.
-	Description string `jsonapi:"attr,description,omitempty"`
+	Description *string `jsonapi:"attr,description,omitempty"`
 }
 
 // Create a new team token using the legacy creation behavior, which creates a token without a description
@@ -84,7 +84,7 @@ func (s *teamTokens) CreateWithOptions(ctx context.Context, teamID string, optio
 	}
 
 	var u string
-	if options.Description != "" {
+	if options.Description != nil {
 		u = fmt.Sprintf("teams/%s/authentication-tokens", url.PathEscape(teamID))
 	} else {
 		u = fmt.Sprintf("teams/%s/authentication-token", url.PathEscape(teamID))

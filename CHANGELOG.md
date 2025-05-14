@@ -1,5 +1,22 @@
 # Unreleased
 
+# v1.79.0
+
+## BREAKING CHANGES
+
+* Updates team token `Description` to be a pointer, allowing for both nil descriptions and empty string descriptions. Team token descriptions and the ability to create multiple team tokens is in BETA, which is EXPERIMENTAL, SUBJECT TO CHANGE, and may not be available to all users, by @mkam [#1088](https://github.com/hashicorp/go-tfe/pull/1088)
+
+## Enhancements
+
+* Adds `AgentPool` field to the OAuthClientUpdateOptions struct, which is used to associate a VCS Provider with an AgentPool for PrivateVCS support  by @jpogran [#1075](https://github.com/hashicorp/go-tfe/pull/1075)
+
+* Add BETA support for use of OPA and Sentinel with Linux arm64 agents, which is EXPERIMENTAL, SUBJECT TO CHANGE, and may not be available to all users @natalie-todd [#1090](https://github.com/hashicorp/go-tfe/pull/1090)
+
+# v1.78.0
+
+## Enhancements
+* Adds `Links` field to `EffectiveTagBindings` to check whether an effective tag binding is inherited, by @sebasslash [#1087](https://github.com/hashicorp/go-tfe/pull/1087)
+
 # v1.77.0
 
 ## Enhancements
@@ -12,12 +29,13 @@
 
 In the last release, Runs interface method `ListForOrganization` included pagination fields `TotalCount` and `TotalPages`, but these are being removed as this feature approaches general availablity by @brandonc [#1074](https://github.com/hashicorp/go-tfe/pull/1074)
 
+
 # v1.76.0
 
 ## Enhancements
 
 * Adds `DefaultProject` to `OrganizationUpdateOptions` to support updating an organization's default project. This provides BETA support, which is EXPERIMENTAL, SUBJECT TO CHANGE, and may not be available to all users, by @mkam [#1056](https://github.com/hashicorp/go-tfe/pull/1056)
-* Adds `ReadTerraformRegistryModule` to support reading a registry module from Terraform Registry's proxied endpoints by @paladin-devops [#1057](https://github.com/hashicorp/go-tfe/pull/1057) 
+* Adds `ReadTerraformRegistryModule` to support reading a registry module from Terraform Registry's proxied endpoints by @paladin-devops [#1057](https://github.com/hashicorp/go-tfe/pull/1057)
 * Adds a new method `ListForOrganization` to list Runs in an organization by @arybolovlev [#1059](https://github.com/hashicorp/go-tfe/pull/1059)
 
 ## Bug fixes

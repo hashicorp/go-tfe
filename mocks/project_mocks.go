@@ -158,6 +158,21 @@ func (mr *MockProjectsMockRecorder) Read(ctx, projectID any) *gomock.Call {
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Read", reflect.TypeOf((*MockProjects)(nil).Read), ctx, projectID)
 }
 
+// ReadWithOptions mocks base method.
+func (m *MockProjects) ReadWithOptions(ctx context.Context, projectID string, options tfe.ProjectReadOptions) (*tfe.Project, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "ReadWithOptions", ctx, projectID, options)
+	ret0, _ := ret[0].(*tfe.Project)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// ReadWithOptions indicates an expected call of ReadWithOptions.
+func (mr *MockProjectsMockRecorder) ReadWithOptions(ctx, projectID, options any) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ReadWithOptions", reflect.TypeOf((*MockProjects)(nil).ReadWithOptions), ctx, projectID, options)
+}
+
 // Update mocks base method.
 func (m *MockProjects) Update(ctx context.Context, projectID string, options tfe.ProjectUpdateOptions) (*tfe.Project, error) {
 	m.ctrl.T.Helper()
