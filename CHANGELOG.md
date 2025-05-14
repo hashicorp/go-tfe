@@ -12,6 +12,8 @@
 
 * Add BETA support for use of OPA and Sentinel with Linux arm64 agents, which is EXPERIMENTAL, SUBJECT TO CHANGE, and may not be available to all users @natalie-todd [#1090](https://github.com/hashicorp/go-tfe/pull/1090)
 
+* Add support for HCP Terraform `/api/v2/workspaces/{external_id}/all-vars` API endpoint to fetch the list of all variables available to a workspce (include inherited variables from varsets) by @debrin-hc [#1105](https://github.com/hashicorp/go-tfe/pull/1105)
+
 # v1.78.0
 
 ## Enhancements
