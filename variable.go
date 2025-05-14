@@ -20,7 +20,7 @@ type Variables interface {
 	// List all the variables associated with the given workspace (doesn't include variables inherited variables from varsets).
 	List(ctx context.Context, workspaceID string, options *VariableListOptions) (*VariableList, error)
 
-	// List all the variables associated with the given workspace including variables inherited from varsets.
+	// ListAll all the variables associated with the given workspace including variables inherited from varsets.
 	ListAll(ctx context.Context, workspaceID string, options *VariableListOptions) (*VariableList, error)
 
 	// Create is used to create a new variable.
@@ -138,7 +138,8 @@ func (s *variables) List(ctx context.Context, workspaceID string, options *Varia
 
 // ListAll the variables associated with the given workspace including inherited variables from varsets.
 func (s *variables) ListAll(ctx context.Context, workspaceID string, options *VariableListOptions) (*VariableList, error) {
-	return s.getList(ctx, workspaceID, options, "workspaces/%s/vars/all")
+	fmt.Printf("Workspace ID: %s\n", workspaceID)
+	return s.getList(ctx, workspaceID, options, "workspaces/%s/all-vars")
 }
 
 func (s *variables) getList(ctx context.Context, workspaceID string, options *VariableListOptions, path string) (*VariableList, error) {
