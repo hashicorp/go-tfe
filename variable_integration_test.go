@@ -147,26 +147,34 @@ func TestVariablesListAll(t *testing.T) {
 	applyVariableSetToWorkspace(t, client, orgVarset.ID, wTest.ID)
 	applyVariableSetToWorkspace(t, client, prjVarset.ID, wTest.ID)
 
-	t.Run("without list all-vars options", func(t *testing.T) {
+	t.Run("when /workspace/{external_id}/all-vars API is called", func(t *testing.T) {
 		vl, err := client.Variables.ListAll(ctx, wTest.ID, nil)
-		variableIdToValueMap := make(map[string]string)
+		assert.NotNilf(t, vl, "expected to get variables list")
+
+		variableIDToValueMap := make(map[string]string)
 		for _, variable := range vl.Items {
-			variableIdToValueMap[variable.ID] = variable.Value
+			variableIDToValueMap[variable.ID] = variable.Value
 		}
 		require.NoError(t, err)
 		assert.Equal(t, len(vl.Items), 5)
-		assert.NotContains(t, variableIdToValueMap, glVarOverwrite.ID)
-		assert.NotContains(t, variableIdToValueMap, prjVarOverwrite.ID)
-		assert.Contains(t, variableIdToValueMap, glVar.ID)
-		assert.Contains(t, variableIdToValueMap, prjVar.ID)
-		assert.Contains(t, variableIdToValueMap, wsVar1.ID)
-		assert.Contains(t, variableIdToValueMap, wsVar2.ID)
-		assert.Contains(t, variableIdToValueMap, wsVar3.ID)
-		assert.Equal(t, glVar.Value, variableIdToValueMap[glVar.ID])
-		assert.Equal(t, prjVar.Value, variableIdToValueMap[prjVar.ID])
-		assert.Equal(t, wsVar1.Value, variableIdToValueMap[wsVar1.ID])
-		assert.Equal(t, wsVar2.Value, variableIdToValueMap[wsVar2.ID])
-		assert.Equal(t, wsVar3.Value, variableIdToValueMap[wsVar3.ID])
+		assert.NotContains(t, variableIDToValueMap, glVarOverwrite.ID)
+		assert.NotContains(t, variableIDToValueMap, prjVarOverwrite.ID)
+		assert.Contains(t, variableIDToValueMap, glVar.ID)
+		assert.Contains(t, variableIDToValueMap, prjVar.ID)
+		assert.Contains(t, variableIDToValueMap, wsVar1.ID)
+		assert.Contains(t, variableIDToValueMap, wsVar2.ID)
+		assert.Contains(t, variableIDToValueMap, wsVar3.ID)
+		assert.Equal(t, glVar.Value, variableIDToValueMap[glVar.ID])
+		assert.Equal(t, prjVar.Value, variableIDToValueMap[prjVar.ID])
+		assert.Equal(t, wsVar1.Value, variableIDToValueMap[wsVar1.ID])
+		assert.Equal(t, wsVar2.Value, variableIDToValueMap[wsVar2.ID])
+		assert.Equal(t, wsVar3.Value, variableIDToValueMap[wsVar3.ID])
+	})
+
+	t.Run("when workspace ID is invalid ID", func(t *testing.T) {
+		vl, err := client.Variables.ListAll(ctx, badIdentifier, nil)
+		assert.Nilf(t, vl, "expected variables list to be nil")
+		assert.EqualError(t, err, ErrInvalidWorkspaceID.Error())
 	})
 }
 

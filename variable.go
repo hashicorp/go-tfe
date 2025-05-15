@@ -138,7 +138,6 @@ func (s *variables) List(ctx context.Context, workspaceID string, options *Varia
 
 // ListAll the variables associated with the given workspace including inherited variables from varsets.
 func (s *variables) ListAll(ctx context.Context, workspaceID string, options *VariableListOptions) (*VariableList, error) {
-	fmt.Printf("Workspace ID: %s\n", workspaceID)
 	return s.getList(ctx, workspaceID, options, "workspaces/%s/all-vars")
 }
 
