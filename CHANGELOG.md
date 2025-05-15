@@ -1,5 +1,10 @@
 # Unreleased
 
+# v1.80.0
+
+## Enhancements
+* Adds BETA support for `PolicyPaths` to the `Runs` interface, by sebasslash [#1104](https://github.com/hashicorp/go-tfe/pull/1104)
+
 # v1.79.0
 
 ## BREAKING CHANGES
