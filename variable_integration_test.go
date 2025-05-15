@@ -147,7 +147,7 @@ func TestVariablesListAll(t *testing.T) {
 	applyVariableSetToWorkspace(t, client, orgVarset.ID, wTest.ID)
 	applyVariableSetToWorkspace(t, client, prjVarset.ID, wTest.ID)
 
-	t.Run("when /workspace/{external_id}/all-vars API is called", func(t *testing.T) {
+	t.Run("when /workspaces/{external_id}/all-vars API is called", func(t *testing.T) {
 		vl, err := client.Variables.ListAll(ctx, wTest.ID, nil)
 		assert.NotNilf(t, vl, "expected to get variables list")
 
