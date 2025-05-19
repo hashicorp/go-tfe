@@ -32,7 +32,7 @@ type StackSources interface {
 
 type CreateStackSourceOptions struct {
 	SelectedDeployments []string `jsonapi:"attr,selected-deployments,omitempty"`
-	Speculative         bool     `jsonapi:"attr,speculative,omitempty"`
+	Speculative         bool     `jsonapi:"attr,speculative"`
 }
 
 var _ StackSources = (*stackSources)(nil)
