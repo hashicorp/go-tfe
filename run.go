@@ -160,6 +160,7 @@ type Run struct {
 	ConfigurationVersion *ConfigurationVersion `jsonapi:"relation,configuration-version"`
 	CostEstimate         *CostEstimate         `jsonapi:"relation,cost-estimate"`
 	CreatedBy            *User                 `jsonapi:"relation,created-by"`
+	ConfirmedBy          *User                 `jsonapi:"relation,confirmed-by"`
 	Plan                 *Plan                 `jsonapi:"relation,plan"`
 	PolicyChecks         []*PolicyCheck        `jsonapi:"relation,policy-checks"`
 	TaskStages           []*TaskStage          `jsonapi:"relation,task-stages,omitempty"`

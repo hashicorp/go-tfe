@@ -446,6 +446,33 @@ func TestRunsReadWithPolicyPaths(t *testing.T) {
 	assert.Contains(t, r.PolicyPaths, "./foo")
 }
 
+func TestRunsConfirmedBy(t *testing.T) {
+	client := testClient(t)
+	ctx := context.Background()
+
+	t.Run("with apply", func(t *testing.T) {
+		rTest, rTestCleanup := createRunApply(t, client, nil)
+		t.Cleanup(rTestCleanup)
+
+		r, err := client.Runs.Read(ctx, rTest.ID)
+		require.NoError(t, err)
+
+		assert.NotNil(t, r.ConfirmedBy)
+		assert.NotZero(t, r.ConfirmedBy.ID)
+	})
+
+	t.Run("without apply", func(t *testing.T) {
+		rTest, rTestCleanup := createPlannedRun(t, client, nil)
+		t.Cleanup(rTestCleanup)
+
+		r, err := client.Runs.Read(ctx, rTest.ID)
+		require.NoError(t, err)
+		assert.Equal(t, rTest, r)
+
+		assert.Nil(t, r.ConfirmedBy)
+	})
+}
+
 func TestRunsApply(t *testing.T) {
 	client := testClient(t)
 	ctx := context.Background()
