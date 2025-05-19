@@ -131,12 +131,12 @@ type VariableUpdateOptions struct {
 	Sensitive *bool `jsonapi:"attr,sensitive,omitempty"`
 }
 
-// List all the variables associated with the given workspace (doesn't include inherited variables from varsets).
+// List all the variables associated with the given workspace (doesn't include variables inherited from varsets).
 func (s *variables) List(ctx context.Context, workspaceID string, options *VariableListOptions) (*VariableList, error) {
 	return s.getList(ctx, workspaceID, options, "workspaces/%s/vars")
 }
 
-// ListAll the variables associated with the given workspace including inherited variables from varsets.
+// ListAll the variables associated with the given workspace including variables inherited from varsets.
 func (s *variables) ListAll(ctx context.Context, workspaceID string, options *VariableListOptions) (*VariableList, error) {
 	return s.getList(ctx, workspaceID, options, "workspaces/%s/all-vars")
 }
