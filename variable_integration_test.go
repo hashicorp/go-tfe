@@ -5,7 +5,6 @@ package tfe
 
 import (
 	"context"
-	"fmt"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -150,7 +149,7 @@ func TestVariablesListAll(t *testing.T) {
 
 	t.Run("when /workspaces/{external_id}/all-vars API is called", func(t *testing.T) {
 		vl, err := client.Variables.ListAll(ctx, wTest.ID, nil)
-		require.NoErrorf(t, err, fmt.Sprintf("received unexpected error: %v", err.Error()))
+		require.NoError(t, err)
 		assert.NotNilf(t, vl, "expected to get a non-empty variables list")
 
 		variableIDToValueMap := make(map[string]string)
