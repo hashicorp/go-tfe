@@ -6,6 +6,7 @@ package tfe
 import (
 	"context"
 	"testing"
+	"time"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
@@ -13,6 +14,7 @@ import (
 
 func TestAgentTokensList(t *testing.T) {
 	skipIfEnterprise(t)
+	skipUnlessAfterDate(t, time.Date(2025, 5, 28, 0, 0, 0, 0, time.UTC))
 
 	client := testClient(t)
 	ctx := context.Background()

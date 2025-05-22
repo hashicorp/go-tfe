@@ -1,7 +1,10 @@
 # Unreleased
 
+# v1.81.0
+
 ## Enhancements
 * Adds `IngressAttributes` field to `PolicySetVersion` by @jpadrianoGo [#1092](https://github.com/hashicorp/go-tfe/pull/1092)
+* Adds `ConfirmedBy` field to `Run` by @jpadrianoGo [#1110](https://github.com/hashicorp/go-tfe/pull/1110)
 
 # v1.80.0
 
