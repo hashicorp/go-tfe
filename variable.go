@@ -17,7 +17,7 @@ var _ Variables = (*variables)(nil)
 //
 // TFE API docs: https://developer.hashicorp.com/terraform/cloud-docs/api-docs/workspace-variables
 type Variables interface {
-	// List all the variables associated with the given workspace (doesn't include variables inherited variables from varsets).
+	// List all the variables associated with the given workspace (doesn't include variables inherited from varsets).
 	List(ctx context.Context, workspaceID string, options *VariableListOptions) (*VariableList, error)
 
 	// ListAll all the variables associated with the given workspace including variables inherited from varsets.
