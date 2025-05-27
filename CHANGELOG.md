@@ -1,5 +1,9 @@
 # Unreleased
 
+## Enhancements
+
+* Adds support for listing team tokens, by @mkam [#1109](https://github.com/hashicorp/go-tfe/pull/1109)
+
 # v1.81.0
 
 ## Enhancements
