@@ -300,6 +300,97 @@ func TestTeamTokensReadByID(t *testing.T) {
 	})
 }
 
+func TestTeamTokensList(t *testing.T) {
+	client := testClient(t)
+	ctx := context.Background()
+
+	org, orgTestCleanup := createOrganization(t, client)
+	t.Cleanup(orgTestCleanup)
+
+	// Create a team with a token
+	team1, tmTestCleanup1 := createTeam(t, client, org)
+	t.Cleanup(tmTestCleanup1)
+
+	currentTime := time.Now().UTC().Truncate(time.Second)
+	oneDayLater := currentTime.Add(24 * time.Hour)
+	token1, ttTestCleanup := createTeamTokenWithOptions(t, client, team1, TeamTokenCreateOptions{
+		ExpiredAt: &oneDayLater,
+	})
+	t.Cleanup(ttTestCleanup)
+
+	// Create a second team with a token that has a later expiration date
+	team2, tmTestCleanup2 := createTeam(t, client, org)
+	t.Cleanup(tmTestCleanup2)
+
+	twoDaysLater := currentTime.Add(48 * time.Hour)
+	token2, ttTestCleanup := createTeamTokenWithOptions(t, client, team2, TeamTokenCreateOptions{
+		ExpiredAt: &twoDaysLater,
+	})
+	t.Cleanup(ttTestCleanup)
+
+	t.Run("with team tokens across multiple teams", func(t *testing.T) {
+		tokens, err := client.TeamTokens.List(ctx, org.Name, nil)
+		require.NoError(t, err)
+		require.NotNil(t, tokens)
+		require.Len(t, tokens.Items, 2)
+		require.ElementsMatch(t, []string{token1.ID, token2.ID}, []string{tokens.Items[0].ID, tokens.Items[1].ID})
+	})
+
+	t.Run("with filtering by team name", func(t *testing.T) {
+		tokens, err := client.TeamTokens.List(ctx, org.Name, &TeamTokenListOptions{
+			Query: team1.Name,
+		})
+		require.NoError(t, err)
+		require.NotNil(t, tokens)
+		require.Len(t, tokens.Items, 1)
+		require.Equal(t, token1.ID, tokens.Items[0].ID)
+	})
+
+	t.Run("with sorting", func(t *testing.T) {
+		tokens, err := client.TeamTokens.List(ctx, org.Name, &TeamTokenListOptions{
+			Sort: "expired-at",
+		})
+		require.NoError(t, err)
+		require.NotNil(t, tokens)
+		require.Len(t, tokens.Items, 2)
+		require.Equal(t, []string{token1.ID, token2.ID}, []string{tokens.Items[0].ID, tokens.Items[1].ID})
+
+		tokens, err = client.TeamTokens.List(ctx, org.Name, &TeamTokenListOptions{
+			Sort: "-expired-at",
+		})
+		require.NoError(t, err)
+		require.NotNil(t, tokens)
+		require.Len(t, tokens.Items, 2)
+		require.Equal(t, []string{token2.ID, token1.ID}, []string{tokens.Items[0].ID, tokens.Items[1].ID})
+	})
+
+	t.Run("with multiple team tokens in a single team", func(t *testing.T) {
+		skipUnlessBeta(t)
+		desc1 := fmt.Sprintf("go-tfe-team-token-test-%s", randomString(t))
+		multiToken1, ttTestCleanup := createTeamTokenWithOptions(t, client, team1, TeamTokenCreateOptions{
+			Description: &desc1,
+		})
+		t.Cleanup(ttTestCleanup)
+
+		desc2 := fmt.Sprintf("go-tfe-team-token-test-%s", randomString(t))
+		multiToken2, ttTestCleanup := createTeamTokenWithOptions(t, client, team1, TeamTokenCreateOptions{
+			Description: &desc2,
+		})
+		t.Cleanup(ttTestCleanup)
+
+		tokens, err := client.TeamTokens.List(ctx, org.Name, nil)
+		require.NoError(t, err)
+		require.NotNil(t, tokens)
+		require.Len(t, tokens.Items, 4)
+		actualIDs := []string{}
+		for _, token := range tokens.Items {
+			actualIDs = append(actualIDs, token.ID)
+		}
+		require.ElementsMatch(t, []string{token1.ID, token2.ID, multiToken1.ID, multiToken2.ID},
+			actualIDs)
+	})
+}
+
 func TestTeamTokensDelete(t *testing.T) {
 	client := testClient(t)
 	ctx := context.Background()

@@ -98,6 +98,21 @@ func (mr *MockTeamTokensMockRecorder) DeleteByID(ctx, tokenID any) *gomock.Call 
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteByID", reflect.TypeOf((*MockTeamTokens)(nil).DeleteByID), ctx, tokenID)
 }
 
+// List mocks base method.
+func (m *MockTeamTokens) List(ctx context.Context, organizationID string, options *tfe.TeamTokenListOptions) (*tfe.TeamTokenList, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "List", ctx, organizationID, options)
+	ret0, _ := ret[0].(*tfe.TeamTokenList)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// List indicates an expected call of List.
+func (mr *MockTeamTokensMockRecorder) List(ctx, organizationID, options any) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "List", reflect.TypeOf((*MockTeamTokens)(nil).List), ctx, organizationID, options)
+}
+
 // Read mocks base method.
 func (m *MockTeamTokens) Read(ctx context.Context, teamID string) (*tfe.TeamToken, error) {
 	m.ctrl.T.Helper()
