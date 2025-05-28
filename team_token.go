@@ -34,6 +34,9 @@ type TeamTokens interface {
 	// Read a team token by its token ID.
 	ReadByID(ctx context.Context, teamID string) (*TeamToken, error)
 
+	// List an organization's team tokens.
+	List(ctx context.Context, organizationID string, options *TeamTokenListOptions) (*TeamTokenList, error)
+
 	// Delete a team token by its team ID.
 	Delete(ctx context.Context, teamID string) error
 
@@ -67,6 +70,25 @@ type TeamTokenCreateOptions struct {
 	// Optional: The token's description, which must unique per team.
 	// This feature is considered BETA, SUBJECT TO CHANGE, and likely unavailable to most users.
 	Description *string `jsonapi:"attr,description,omitempty"`
+}
+
+// TeamTokenListOptions contains the options for listing team tokens.
+type TeamTokenListOptions struct {
+	ListOptions
+
+	// Optional: A query string used to filter team tokens by
+	// a specified team name.
+	Query string `url:"q,omitempty"`
+
+	// Optional: Allows sorting the team tokens by "team-name",
+	// "created-by", "expired-at", and "last-used-at"
+	Sort string `url:"sort,omitempty"`
+}
+
+// TeamTokenList represents a list of team tokens.
+type TeamTokenList struct {
+	*Pagination
+	Items []*TeamToken
 }
 
 // Create a new team token using the legacy creation behavior, which creates a token without a description
@@ -138,6 +160,28 @@ func (s *teamTokens) ReadByID(ctx context.Context, tokenID string) (*TeamToken, 
 	}
 
 	tt := &TeamToken{}
+	err = req.Do(ctx, tt)
+	if err != nil {
+		return nil, err
+	}
+
+	return tt, err
+}
+
+// List an organization's team tokens with the option to filter by team name.
+func (s *teamTokens) List(ctx context.Context, organizationID string, options *TeamTokenListOptions) (*TeamTokenList, error) {
+	if !validStringID(&organizationID) {
+		return nil, ErrInvalidOrg
+	}
+
+	u := fmt.Sprintf("organizations/%s/team-tokens", url.PathEscape(organizationID))
+
+	req, err := s.client.NewRequest("GET", u, options)
+	if err != nil {
+		return nil, err
+	}
+
+	tt := &TeamTokenList{}
 	err = req.Do(ctx, tt)
 	if err != nil {
 		return nil, err
