@@ -151,6 +151,16 @@ type workspaces struct {
 	client *Client
 }
 
+// WorkspaceSource represents a source type of a workspace.
+type WorkspaceSource string
+
+const (
+	WorkspaceSourceAPI       WorkspaceSource = "tfe-api"
+	WorkspaceSourceModule    WorkspaceSource = "tfe-module"
+	WorkspaceSourceUI        WorkspaceSource = "tfe-ui"
+	WorkspaceSourceTerraform WorkspaceSource = "terraform"
+)
+
 // WorkspaceList represents a list of workspaces.
 type WorkspaceList struct {
 	*Pagination
@@ -198,6 +208,7 @@ type Workspace struct {
 	Permissions                 *WorkspacePermissions           `jsonapi:"attr,permissions"`
 	QueueAllRuns                bool                            `jsonapi:"attr,queue-all-runs"`
 	SpeculativeEnabled          bool                            `jsonapi:"attr,speculative-enabled"`
+	Source                      WorkspaceSource                 `jsonapi:"attr,source"`
 	SourceName                  string                          `jsonapi:"attr,source-name"`
 	SourceURL                   string                          `jsonapi:"attr,source-url"`
 	StructuredRunOutputEnabled  bool                            `jsonapi:"attr,structured-run-output-enabled"`
