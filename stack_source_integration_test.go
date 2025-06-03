@@ -93,7 +93,7 @@ func TestStackSourceSpeculatives(t *testing.T) {
 		Project: &Project{
 			ID: orgTest.DefaultProject.ID,
 		},
-		Name:   "test-stack-hcp",
+		Name: "test-stack-hcp",
 	})
 	require.NoError(t, err)
 
