@@ -8,7 +8,6 @@ import (
 	"testing"
 	"time"
 
-	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
 
@@ -34,7 +33,6 @@ func TestStackSourceCreateUploadAndRead(t *testing.T) {
 	})
 	require.NoError(t, err)
 
-	// Should I modify create stack source options to include speculative enabled?
 	ss, err := client.StackSources.CreateAndUpload(ctx, stack.ID, "test-fixtures/stack-source", &CreateStackSourceOptions{
 		SelectedDeployments: []string{"simple"},
 	})
@@ -91,40 +89,40 @@ func TestStackSourceSpeculatives(t *testing.T) {
 	})
 	require.NoError(t, err)
 
-	t.Run("Speculative VCS Upload", func(t *testing.T) {
-		// This should not have errors, since it is a speculative run on a VCS upload.
-		options := &CreateStackSourceOptions{
-			SelectedDeployments: []string{"simple"},
-			SpeculativeEnabled:  true,
-		}
-		ss, err := client.StackSources.CreateAndUpload(ctx, stack.ID, "test-fixtures/stack-source", options)
-		require.NoError(t, err)
-		require.NotNil(t, ss)
-		require.NotNil(t, ss.UploadURL)
+	stackHCP, err := client.Stacks.Create(ctx, StackCreateOptions{
+		Project: &Project{
+			ID: orgTest.DefaultProject.ID,
+		},
+		Name:   "test-stack-hcp",
 	})
+	require.NoError(t, err)
 
-	// This test will need to be modified later once failing non-speculative runs on VCS uploads is implemented.
-	t.Run("Non-Speculative VCS Upload", func(t *testing.T) {
-		// This should fail because it is a non-speculative run on a VCS upload.
-		options := &CreateStackSourceOptions{
-			SelectedDeployments: []string{"simple"},
-			SpeculativeEnabled:  false,
-		}
-		ss, _ := client.StackSources.CreateAndUpload(ctx, stack.ID, "test-fixtures/stack-source", options)
-		// require.Nil(t, ss)
-		// require.Nil(t, ss.UploadURL)
-		// require.Error(t, err)
-		assert.Equal(t, options.SpeculativeEnabled, ss.Stack.SpeculativeEnabled)
-	})
-
-	t.Run("Speculative Manual Upload", func(t *testing.T) {
-		// This is a speculative run to HCP Terraform Cloud, so it should not error.
+	t.Run("with speculative run enabled for VCS upload", func(t *testing.T) {
 		ss, err := client.StackSources.CreateAndUpload(ctx, stack.ID, "test-fixtures/stack-source", &CreateStackSourceOptions{
 			SelectedDeployments: []string{"simple"},
-			SpeculativeEnabled:  true,
+			SpeculativeEnabled:  Bool(true),
 		})
 		require.NoError(t, err)
 		require.NotNil(t, ss)
 		require.NotNil(t, ss.UploadURL)
+	})
+
+	t.Run("with speculative run disabled for manual upload", func(t *testing.T) {
+		ss, err := client.StackSources.CreateAndUpload(ctx, stackHCP.ID, "test-fixtures/stack-source", &CreateStackSourceOptions{
+			SelectedDeployments: []string{"simple"},
+			SpeculativeEnabled:  Bool(false),
+		})
+		require.NoError(t, err)
+		require.NotNil(t, ss)
+		require.NotNil(t, ss.UploadURL)
+	})
+
+	t.Run("with invalid speculative run option for VCS upload", func(t *testing.T) {
+		ss, err := client.StackSources.CreateAndUpload(ctx, stack.ID, "test-fixtures/stack-source", &CreateStackSourceOptions{
+			SelectedDeployments: []string{"simple"},
+			SpeculativeEnabled:  Bool(false),
+		})
+		require.Nil(t, ss)
+		require.Error(t, err)
 	})
 }
