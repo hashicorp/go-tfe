@@ -2,7 +2,7 @@
 
 ## Enhancements
 
-* Adds `Source` field to `Workspace`, by @jpadrianoGo [#1118](https://github.com/hashicorp/go-tfe/pull/1118)
+* Adds `Source` and `SourceModuleID` field to `Workspace`, by @jpadrianoGo [#1118](https://github.com/hashicorp/go-tfe/pull/1118)
 
 # v1.81.0
 
