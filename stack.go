@@ -331,14 +331,6 @@ func (s StackCreateOptions) valid() error {
 		return ErrRequiredProject
 	}
 
-	return s.VCSRepo.valid()
-}
-
-func (s StackVCSRepoOptions) valid() error {
-	if s.Identifier == "" {
-		return ErrRequiredVCSRepo
-	}
-
 	return nil
 }
 
