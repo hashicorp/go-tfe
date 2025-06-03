@@ -395,8 +395,10 @@ func TestRegistryNoCodeModulesCreateWorkspace(t *testing.T) {
 		)
 		r.NoError(err)
 		r.Equal(wn, w.Name)
+		r.Equal(WorkspaceSourceModule, w.Source)
 		r.Equal(sn, w.SourceName)
 		r.Equal(su, w.SourceURL)
+		r.NotEmpty(w.SourceModuleId)
 		r.Equal("remote", w.ExecutionMode)
 	})
 

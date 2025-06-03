@@ -211,6 +211,7 @@ type Workspace struct {
 	Source                      WorkspaceSource                 `jsonapi:"attr,source"`
 	SourceName                  string                          `jsonapi:"attr,source-name"`
 	SourceURL                   string                          `jsonapi:"attr,source-url"`
+	SourceModuleId              string                          `jsonapi:"attr,source-module-id"`
 	StructuredRunOutputEnabled  bool                            `jsonapi:"attr,structured-run-output-enabled"`
 	TerraformVersion            string                          `jsonapi:"attr,terraform-version"`
 	TriggerPrefixes             []string                        `jsonapi:"attr,trigger-prefixes"`
