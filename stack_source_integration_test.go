@@ -79,9 +79,9 @@ func TestStackSourceSpeculatives(t *testing.T) {
 	oauthClient, cleanup := createOAuthClient(t, client, orgTest, nil)
 	t.Cleanup(cleanup)
 
-	stack, err := client.Stacks.Create(ctx, StackCreateOptions{
+	stackVCS, err := client.Stacks.Create(ctx, StackCreateOptions{
 		Project: orgTest.DefaultProject,
-		Name:    "test-stack",
+		Name:    "test-stack-vcs",
 		VCSRepo: &StackVCSRepoOptions{
 			Identifier:   "hashicorp-guides/pet-nulls-stack",
 			OAuthTokenID: oauthClient.OAuthTokens[0].ID,
@@ -89,16 +89,16 @@ func TestStackSourceSpeculatives(t *testing.T) {
 	})
 	require.NoError(t, err)
 
-	stackHCP, err := client.Stacks.Create(ctx, StackCreateOptions{
+	stack, err := client.Stacks.Create(ctx, StackCreateOptions{
 		Project: &Project{
 			ID: orgTest.DefaultProject.ID,
 		},
-		Name: "test-stack-hcp",
+		Name: "test-stack",
 	})
 	require.NoError(t, err)
 
 	t.Run("with speculative run enabled for VCS upload", func(t *testing.T) {
-		ss, err := client.StackSources.CreateAndUpload(ctx, stack.ID, "test-fixtures/stack-source", &CreateStackSourceOptions{
+		ss, err := client.StackSources.CreateAndUpload(ctx, stackVCS.ID, "test-fixtures/stack-source", &CreateStackSourceOptions{
 			SelectedDeployments: []string{"simple"},
 			SpeculativeEnabled:  Bool(true),
 		})
@@ -108,7 +108,7 @@ func TestStackSourceSpeculatives(t *testing.T) {
 	})
 
 	t.Run("with speculative run disabled for manual upload", func(t *testing.T) {
-		ss, err := client.StackSources.CreateAndUpload(ctx, stackHCP.ID, "test-fixtures/stack-source", &CreateStackSourceOptions{
+		ss, err := client.StackSources.CreateAndUpload(ctx, stack.ID, "test-fixtures/stack-source", &CreateStackSourceOptions{
 			SelectedDeployments: []string{"simple"},
 			SpeculativeEnabled:  Bool(false),
 		})
@@ -118,7 +118,7 @@ func TestStackSourceSpeculatives(t *testing.T) {
 	})
 
 	t.Run("with invalid speculative run option for VCS upload", func(t *testing.T) {
-		ss, err := client.StackSources.CreateAndUpload(ctx, stack.ID, "test-fixtures/stack-source", &CreateStackSourceOptions{
+		ss, err := client.StackSources.CreateAndUpload(ctx, stackVCS.ID, "test-fixtures/stack-source", &CreateStackSourceOptions{
 			SelectedDeployments: []string{"simple"},
 			SpeculativeEnabled:  Bool(false),
 		})
