@@ -209,9 +209,9 @@ type Workspace struct {
 	QueueAllRuns                bool                            `jsonapi:"attr,queue-all-runs"`
 	SpeculativeEnabled          bool                            `jsonapi:"attr,speculative-enabled"`
 	Source                      WorkspaceSource                 `jsonapi:"attr,source"`
+	SourceModuleID              string                          `jsonapi:"attr,source-module-id"`
 	SourceName                  string                          `jsonapi:"attr,source-name"`
 	SourceURL                   string                          `jsonapi:"attr,source-url"`
-	SourceModuleID              string                          `jsonapi:"attr,source-module-id"`
 	StructuredRunOutputEnabled  bool                            `jsonapi:"attr,structured-run-output-enabled"`
 	TerraformVersion            string                          `jsonapi:"attr,terraform-version"`
 	TriggerPrefixes             []string                        `jsonapi:"attr,trigger-prefixes"`
