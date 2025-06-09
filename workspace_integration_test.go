@@ -1222,6 +1222,22 @@ func TestWorkspacesReadByID(t *testing.T) {
 	})
 }
 
+func TestWorkspacesReadSource(t *testing.T) {
+	client := testClient(t)
+	ctx := context.Background()
+
+	orgTest, orgTestCleanup := createOrganization(t, client)
+	t.Cleanup(orgTestCleanup)
+
+	wTest, wTestCleanup := createWorkspace(t, client, orgTest)
+	t.Cleanup(wTestCleanup)
+
+	w, err := client.Workspaces.Read(ctx, orgTest.Name, wTest.Name)
+	require.NoError(t, err)
+
+	assert.Equal(t, WorkspaceSourceAPI, w.Source)
+}
+
 func TestWorkspacesAddTagBindings(t *testing.T) {
 	skipUnlessBeta(t)
 
