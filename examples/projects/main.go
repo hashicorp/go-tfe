@@ -28,7 +28,7 @@ func main() {
 
 	// Create a new project
 	p, err := client.Projects.Create(ctx, "org-test", tfe.ProjectCreateOptions{
-		Name:          "my-app-tst",
+		Name: "my-app-tst",
 	})
 	if err != nil {
 		log.Fatal(err)
@@ -36,7 +36,7 @@ func main() {
 
 	// Update the project auto destroy activity duration
 	p, err = client.Projects.Update(ctx, p.ID, tfe.ProjectUpdateOptions{
-		AutoDestroyActivityDuration:    jsonapi.NewNullableAttrWithValue("3d"),
+		AutoDestroyActivityDuration: jsonapi.NewNullableAttrWithValue("3d"),
 	})
 	if err != nil {
 		log.Fatal(err)
@@ -44,7 +44,7 @@ func main() {
 
 	// Disable auto destroy
 	p, err = client.Projects.Update(ctx, p.ID, tfe.ProjectUpdateOptions{
-		AutoDestroyActivityDuration:    jsonapi.NewNullNullableAttr[string](),
+		AutoDestroyActivityDuration: jsonapi.NewNullNullableAttr[string](),
 	})
 	if err != nil {
 		log.Fatal(err)
