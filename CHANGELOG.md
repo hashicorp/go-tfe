@@ -1,13 +1,15 @@
 # Unreleased
 * Add support for HCP Terraform `/api/v2/workspaces/{external_id}/all-vars` API endpoint to fetch the list of all variables available to a workspace (include inherited variables from varsets) by @debrin-hc [#1105](https://github.com/hashicorp/go-tfe/pull/1105)
 
+## Enhancements
+* Adds `Source` field to `Workspace`, by @jpadrianoGo [#1124](https://github.com/hashicorp/go-tfe/pull/1124)
+
 # v1.82.0
 
 ## Enhancements
 
 * Adds BETA support for speculative runs with `Stacks` resources and removes VCS repo validity check on `Stack` creation, which is EXPERIMENTAL, SUBJECT TO CHANGE, and may not be available to all users by @hwatkins05-hashicorp [#1119](https://github.com/hashicorp/go-tfe/pull/1119)
 * Adds support for listing team tokens, by @mkam [#1109](https://github.com/hashicorp/go-tfe/pull/1109)
-* Adds `Source` field to `Workspace`, by @jpadrianoGo [#1124](https://github.com/hashicorp/go-tfe/pull/1124)
 
 # v1.81.0
 
