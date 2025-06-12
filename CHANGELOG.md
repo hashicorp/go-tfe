@@ -5,9 +5,9 @@
 * Adds BETA support for speculative runs with `Stacks` resources and removes VCS repo validity check on `Stack` creation, which is EXPERIMENTAL, SUBJECT TO CHANGE, and may not be available to all users by @hwatkins05-hashicorp [#1119](https://github.com/hashicorp/go-tfe/pull/1119)
 * Adds support for listing team tokens, by @mkam [#1109](https://github.com/hashicorp/go-tfe/pull/1109)
 
-## Fixes
+## Bug Fixes
 
-* Use go-tfe client address for ReadTerraformRegistryModule, by @paladin-devops [#1126](https://github.com/hashicorp/go-tfe/pull/1126)
+* Fixes hard coded public terraform registry URL for ReadTerraformRegistryModule, by @paladin-devops [#1126](https://github.com/hashicorp/go-tfe/pull/1126)
 
 # v1.81.0
 
