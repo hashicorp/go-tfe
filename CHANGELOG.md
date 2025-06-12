@@ -2,6 +2,7 @@
 * Add support for HCP Terraform `/api/v2/workspaces/{external_id}/all-vars` API endpoint to fetch the list of all variables available to a workspace (include inherited variables from varsets) by @debrin-hc [#1105](https://github.com/hashicorp/go-tfe/pull/1105)
 
 ## Enhancements
+
 * Adds `Source` field to `Workspace`, by @jpadrianoGo [#1124](https://github.com/hashicorp/go-tfe/pull/1124)
 
 # v1.82.0
