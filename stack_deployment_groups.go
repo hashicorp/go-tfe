@@ -28,14 +28,14 @@ type stackDeploymentGroups struct {
 var _ StackDeploymentGroups = &stackDeploymentGroups{}
 
 type StackDeploymentGroup struct {
-	ID        string                
+	ID        string                `jsonapi:"primary,stacks-deployment-groups"`
 	Name      string                `jsonapi:"attr,name"`
 	Status    DeploymentGroupStatus `jsonapi:"attr,status"`
-	CreatedAt string                
-	UpdatedAt string                
+	CreatedAt string                `jsonapi:"attr,created-at"`
+	UpdatedAt string                `jsonapi:"attr,updated-at"`
 
 	// Relationships
-	StackConfiguration StackConfiguration 
+	StackConfiguration StackConfiguration `jsonapi:"relation,stack-configurations"`
 }
 
 // StackDeploymentGroupList represents a list of stack deployment groups.
