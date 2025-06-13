@@ -43,7 +43,7 @@ func TestStackDeploymentGroupsList(t *testing.T) {
 
 	stackUpdated.LatestStackConfiguration, _ = client.StackConfigurations.Read(ctx, stackUpdated.LatestStackConfiguration.ID)
 
-	t.Run("with valid stack configuration ID", func(t *testing.T) {
+	t.Run("List with valid stack configuration ID", func(t *testing.T) {
 		sdgl, err := client.StackDeploymentGroups.List(ctx, stackUpdated.LatestStackConfiguration.ID, nil)
 		require.NoError(t, err)
 		require.NotNil(t, sdgl)
@@ -57,7 +57,7 @@ func TestStackDeploymentGroupsList(t *testing.T) {
 		require.Len(t, sdgl.Items, 2)
 	})
 
-	t.Run("with invalid stack configuration ID", func(t *testing.T) {
+	t.Run("List with invalid stack configuration ID", func(t *testing.T) {
 		_, err := client.StackDeploymentGroups.List(ctx, "", nil)
 		require.Error(t, err)
 	})
