@@ -635,18 +635,17 @@ func (r *registryModules) Read(ctx context.Context, moduleID RegistryModuleID) (
 	return rm, nil
 }
 
-// ReadRegistry fetches a registry module from the Terraform Registry.
+// ReadTerraformRegistryModule fetches a registry module from the Terraform Registry.
 func (r *registryModules) ReadTerraformRegistryModule(ctx context.Context, moduleID RegistryModuleID, version string) (*TerraformRegistryModule, error) {
-	u := fmt.Sprintf(
-		"https://app.terraform.io/api/registry/v1/modules/%s/%s/%s/%s",
+	u := fmt.Sprintf("api/registry/v1/modules/%s/%s/%s/%s",
 		moduleID.Namespace,
 		moduleID.Name,
 		moduleID.Provider,
 		version,
 	)
+
 	if moduleID.RegistryName == PublicRegistry {
-		u = fmt.Sprintf(
-			"https://app.terraform.io/api/registry/public/v1/modules/%s/%s/%s/%s",
+		u = fmt.Sprintf("api/registry/public/v1/modules/%s/%s/%s/%s",
 			moduleID.Namespace,
 			moduleID.Name,
 			moduleID.Provider,
