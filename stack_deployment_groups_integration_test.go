@@ -44,39 +44,34 @@ func TestStackDeploymentGroupsList(t *testing.T) {
 	stackUpdated.LatestStackConfiguration, _ = client.StackConfigurations.Read(ctx, stackUpdated.LatestStackConfiguration.ID)
 
 	t.Run("with valid stack configuration ID", func(t *testing.T) {
-		//t.Parallel()
 		sdgl, err := client.StackDeploymentGroups.List(ctx, stackUpdated.LatestStackConfiguration.ID, nil)
 		require.NoError(t, err)
 		require.NotNil(t, sdgl)
-
 		for _, item := range sdgl.Items {
-			assert.NotNil(t, item.Id)
+			assert.NotNil(t, item.ID)
 			assert.NotEmpty(t, item.Name)
 			assert.NotEmpty(t, item.Status)
 			assert.NotNil(t, item.CreatedAt)
 			assert.NotNil(t, item.UpdatedAt)
-			assert.NotEmpty(t, item.StackConfigurationId)
-			assert.GreaterOrEqual(t, item.FailureCount, 0)
 		}
+		require.Len(t, sdgl.Items, 2)
 	})
 
-	// t.Run("with invalid stack configuration ID", func(t *testing.T) {
-	// 	//t.Parallel()
-	// 	_, err := client.StackDeploymentGroups.List(ctx, "", nil)
-	// 	require.Error(t, err)
-	// })
+	t.Run("with invalid stack configuration ID", func(t *testing.T) {
+		_, err := client.StackDeploymentGroups.List(ctx, "", nil)
+		require.Error(t, err)
+	})
 
-	// t.Run("List with pagination", func(t *testing.T) {
-	// 	t.Parallel()
-	// 	options := &StackDeploymentGroupListOptions{
-	// 		ListOptions: ListOptions{
-	// 			PageNumber: 2,
-	// 			PageSize: 2,
-	// 		},
-	// 	}
-	// 	sdgl, err := client.StackDeploymentGroups.List(ctx, stackUpdated.LatestStackConfiguration.ID, options)
-	// 	require.NoError(t, err)
-	// 	require.NotNil(t, sdgl)
-	// 	require.Len(t, sdgl.Items, 0)
-	// })
+	t.Run("List with pagination", func(t *testing.T) {
+		options := &StackDeploymentGroupListOptions{
+			ListOptions: ListOptions{
+				PageNumber: 1,
+				PageSize:   1,
+			},
+		}
+		sdgl, err := client.StackDeploymentGroups.List(ctx, stackUpdated.LatestStackConfiguration.ID, options)
+		require.NoError(t, err)
+		require.NotNil(t, sdgl)
+		require.Len(t, sdgl.Items, 1)
+	})
 }

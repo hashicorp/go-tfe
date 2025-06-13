@@ -21,14 +21,6 @@ const (
 	DeploymentGroupStatusAbandoned DeploymentGroupStatus = "abandoned"
 )
 
-var DeploymentGroupStatuses = []DeploymentGroupStatus{
-	DeploymentGroupStatusPending,
-	DeploymentGroupStatusDeploying,
-	DeploymentGroupStatusSucceeded,
-	DeploymentGroupStatusFailed,
-	DeploymentGroupStatusAbandoned,
-}
-
 type stackDeploymentGroups struct {
 	client *Client
 }
@@ -36,13 +28,14 @@ type stackDeploymentGroups struct {
 var _ StackDeploymentGroups = &stackDeploymentGroups{}
 
 type StackDeploymentGroup struct {
-	Id                   string
-	Name                 string
-	Status               DeploymentGroupStatus
-	CreatedAt            string
-	UpdatedAt            string // time.RFC3339
-	StackConfigurationId string
-	FailureCount         int
+	ID        string                
+	Name      string                `jsonapi:"attr,name"`
+	Status    DeploymentGroupStatus `jsonapi:"attr,status"`
+	CreatedAt string                
+	UpdatedAt string                
+
+	// Relationships
+	StackConfiguration StackConfiguration 
 }
 
 // StackDeploymentGroupList represents a list of stack deployment groups.
