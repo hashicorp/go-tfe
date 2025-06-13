@@ -3,11 +3,12 @@ package tfe
 import (
 	"context"
 	"fmt"
+	"net/url"
 )
 
 type StackDeploymentGroups interface {
 	// List returns a list of Deployment Groups in a stack.
-	List(ctx context.Context, stackConfigID string) (*StackDeploymentGroupList, error)
+	List(ctx context.Context, stackConfigID string, options *StackDeploymentGroupListOptions) (*StackDeploymentGroupList, error)
 }
 
 type DeploymentGroupStatus string
@@ -50,12 +51,20 @@ type StackDeploymentGroupList struct {
 	Items []*StackDeploymentGroup
 }
 
-func (s stackDeploymentGroups) List(ctx context.Context, stackConfigID string) (*StackDeploymentGroupList, error) {
+type StackDeploymentGroupListOptions struct {
+	ListOptions
+}
+
+func (s stackDeploymentGroups) List(ctx context.Context, stackConfigID string, options *StackDeploymentGroupListOptions) (*StackDeploymentGroupList, error) {
 	if !validStringID(&stackConfigID) {
 		return nil, fmt.Errorf("invalid stack configuration ID: %s", stackConfigID)
 	}
 
-	req, err := s.client.NewRequest("GET", fmt.Sprintf("stack-configurations/%s/stack-deployment-groups", stackConfigID), nil)
+	if options == nil {
+		options = &StackDeploymentGroupListOptions{}
+	}
+
+	req, err := s.client.NewRequest("GET", fmt.Sprintf("stack-configurations/%s/stack-deployment-groups", url.PathEscape(stackConfigID)), options)
 	if err != nil {
 		return nil, err
 	}
