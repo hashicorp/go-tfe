@@ -6,6 +6,7 @@ import (
 	"net/url"
 )
 
+// StackDeploymentGroups describes all the stack-deployment-groups related methods that the HCP Terraform API supports.
 type StackDeploymentGroups interface {
 	// List returns a list of Deployment Groups in a stack.
 	List(ctx context.Context, stackConfigID string, options *StackDeploymentGroupListOptions) (*StackDeploymentGroupList, error)
@@ -21,12 +22,14 @@ const (
 	DeploymentGroupStatusAbandoned DeploymentGroupStatus = "abandoned"
 )
 
+// stackDeploymentGroups implements StackDeploymentGroups.
 type stackDeploymentGroups struct {
 	client *Client
 }
 
 var _ StackDeploymentGroups = &stackDeploymentGroups{}
 
+// StackDeploymentGroup represents a stack deployment group.
 type StackDeploymentGroup struct {
 	ID        string                `jsonapi:"primary,stacks-deployment-groups"`
 	Name      string                `jsonapi:"attr,name"`
@@ -44,10 +47,12 @@ type StackDeploymentGroupList struct {
 	Items []*StackDeploymentGroup
 }
 
+// StackDeploymentGroupListOptions represents additional options when listing stack deployment groups.
 type StackDeploymentGroupListOptions struct {
 	ListOptions
 }
 
+// List returns a list of Deployment Groups in a stack, optionally filtered by additional parameters.
 func (s stackDeploymentGroups) List(ctx context.Context, stackConfigID string, options *StackDeploymentGroupListOptions) (*StackDeploymentGroupList, error) {
 	if !validStringID(&stackConfigID) {
 		return nil, fmt.Errorf("invalid stack configuration ID: %s", stackConfigID)
