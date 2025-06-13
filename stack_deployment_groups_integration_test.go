@@ -41,8 +41,6 @@ func TestStackDeploymentGroupsList(t *testing.T) {
 	stackUpdated = pollStackDeployments(t, ctx, client, stackUpdated.ID)
 	require.NotNil(t, stackUpdated.LatestStackConfiguration)
 
-	stackUpdated.LatestStackConfiguration, _ = client.StackConfigurations.Read(ctx, stackUpdated.LatestStackConfiguration.ID)
-
 	t.Run("List with valid stack configuration ID", func(t *testing.T) {
 		sdgl, err := client.StackDeploymentGroups.List(ctx, stackUpdated.LatestStackConfiguration.ID, nil)
 		require.NoError(t, err)
