@@ -1,6 +1,7 @@
 # Unreleased
 * Add support for HCP Terraform `/api/v2/workspaces/{external_id}/all-vars` API endpoint to fetch the list of all variables available to a workspace (include inherited variables from varsets) by @debrin-hc [#1105](https://github.com/hashicorp/go-tfe/pull/1105)
 
+* Add support for the querying and filtering private registry modules based on `provider`, `registry_name` and `organization_name`, by @sharathrnair87 [#850](https://github.com/hashicorp/go-tfe/pull/850) 
 # v1.82.0
 
 ## Enhancements
