@@ -87,7 +87,7 @@ func (s *organizationTags) List(ctx context.Context, organization string, option
 		return nil, ErrInvalidOrg
 	}
 
-	u := fmt.Sprintf("organizations/%s/tags", url.QueryEscape(organization))
+	u := fmt.Sprintf("organizations/%s/tags", url.PathEscape(organization))
 	req, err := s.client.NewRequest("GET", u, options)
 	if err != nil {
 		return nil, err
@@ -112,7 +112,7 @@ func (s *organizationTags) Delete(ctx context.Context, organization string, opti
 		return err
 	}
 
-	u := fmt.Sprintf("organizations/%s/tags", url.QueryEscape(organization))
+	u := fmt.Sprintf("organizations/%s/tags", url.PathEscape(organization))
 	var tagsToRemove []*tagID
 	for _, id := range options.IDs {
 		tagsToRemove = append(tagsToRemove, &tagID{ID: id})
@@ -141,7 +141,7 @@ func (s *organizationTags) AddWorkspaces(ctx context.Context, tag string, option
 		workspaces = append(workspaces, &workspaceID{ID: id})
 	}
 
-	u := fmt.Sprintf("tags/%s/relationships/workspaces", url.QueryEscape(tag))
+	u := fmt.Sprintf("tags/%s/relationships/workspaces", url.PathEscape(tag))
 	req, err := s.client.NewRequest("POST", u, workspaces)
 	if err != nil {
 		return err

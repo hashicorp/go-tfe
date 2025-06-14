@@ -11,7 +11,7 @@ import (
 )
 
 // A regular expression used to validate common string ID patterns.
-var reStringID = regexp.MustCompile(`^[a-zA-Z0-9\-._]+$`)
+var reStringID = regexp.MustCompile(`^[^/\s]+$`)
 
 // validEmail checks if the given input is a correct email
 func validEmail(v string) bool {

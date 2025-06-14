@@ -65,6 +65,13 @@ type VariableSetList struct {
 	Items []*VariableSet
 }
 
+// Parent represents the variable set's parent (currently only organizations and projects are supported).
+// This relation is considered BETA, SUBJECT TO CHANGE, and likely unavailable to most users.
+type Parent struct {
+	Organization *Organization
+	Project      *Project
+}
+
 // VariableSet represents a Terraform Enterprise variable set.
 type VariableSet struct {
 	ID          string `jsonapi:"primary,varsets"`
@@ -74,10 +81,13 @@ type VariableSet struct {
 	Priority    bool   `jsonapi:"attr,priority"`
 
 	// Relations
-	Organization *Organization          `jsonapi:"relation,organization"`
-	Workspaces   []*Workspace           `jsonapi:"relation,workspaces,omitempty"`
-	Projects     []*Project             `jsonapi:"relation,projects,omitempty"`
-	Variables    []*VariableSetVariable `jsonapi:"relation,vars,omitempty"`
+	Organization *Organization `jsonapi:"relation,organization"`
+	// Optional: Parent represents the variable set's parent (currently only organizations and projects are supported).
+	// This relation is considered BETA, SUBJECT TO CHANGE, and likely unavailable to most users.
+	Parent     *Parent                `jsonapi:"polyrelation,parent"`
+	Workspaces []*Workspace           `jsonapi:"relation,workspaces,omitempty"`
+	Projects   []*Project             `jsonapi:"relation,projects,omitempty"`
+	Variables  []*VariableSetVariable `jsonapi:"relation,vars,omitempty"`
 }
 
 // A list of relations to include. See available resources
@@ -94,6 +104,10 @@ const (
 type VariableSetListOptions struct {
 	ListOptions
 	Include string `url:"include"`
+
+	// Optional: A query string used to filter variable sets.
+	// Any variable sets with a name partially matching this value will be returned.
+	Query string `url:"q,omitempty"`
 }
 
 // VariableSetCreateOptions represents the options for creating a new variable set within in a organization.
@@ -118,6 +132,10 @@ type VariableSetCreateOptions struct {
 	// If true the variables in the set override any other variable values set
 	// in a more specific scope including values set on the command line.
 	Priority *bool `jsonapi:"attr,priority,omitempty"`
+
+	// Optional: Parent represents the variable set's parent (currently only organizations and projects are supported).
+	// This relation is considered BETA, SUBJECT TO CHANGE, and likely unavailable to most users.
+	Parent *Parent `jsonapi:"polyrelation,parent"`
 }
 
 // VariableSetReadOptions represents the options for reading variable sets.
@@ -202,7 +220,7 @@ func (s *variableSets) List(ctx context.Context, organization string, options *V
 		}
 	}
 
-	u := fmt.Sprintf("organizations/%s/varsets", url.QueryEscape(organization))
+	u := fmt.Sprintf("organizations/%s/varsets", url.PathEscape(organization))
 	req, err := s.client.NewRequest("GET", u, options)
 	if err != nil {
 		return nil, err
@@ -228,7 +246,7 @@ func (s *variableSets) ListForWorkspace(ctx context.Context, workspaceID string,
 		}
 	}
 
-	u := fmt.Sprintf("workspaces/%s/varsets", url.QueryEscape(workspaceID))
+	u := fmt.Sprintf("workspaces/%s/varsets", url.PathEscape(workspaceID))
 	req, err := s.client.NewRequest("GET", u, options)
 	if err != nil {
 		return nil, err
@@ -254,7 +272,7 @@ func (s *variableSets) ListForProject(ctx context.Context, projectID string, opt
 		}
 	}
 
-	u := fmt.Sprintf("projects/%s/varsets", url.QueryEscape(projectID))
+	u := fmt.Sprintf("projects/%s/varsets", url.PathEscape(projectID))
 	req, err := s.client.NewRequest("GET", u, options)
 	if err != nil {
 		return nil, err
@@ -278,7 +296,7 @@ func (s *variableSets) Create(ctx context.Context, organization string, options 
 		return nil, err
 	}
 
-	u := fmt.Sprintf("organizations/%s/varsets", url.QueryEscape(organization))
+	u := fmt.Sprintf("organizations/%s/varsets", url.PathEscape(organization))
 	req, err := s.client.NewRequest("POST", u, options)
 	if err != nil {
 		return nil, err
@@ -299,7 +317,7 @@ func (s *variableSets) Read(ctx context.Context, variableSetID string, options *
 		return nil, ErrInvalidVariableSetID
 	}
 
-	u := fmt.Sprintf("varsets/%s", url.QueryEscape(variableSetID))
+	u := fmt.Sprintf("varsets/%s", url.PathEscape(variableSetID))
 	req, err := s.client.NewRequest("GET", u, options)
 	if err != nil {
 		return nil, err
@@ -320,7 +338,7 @@ func (s *variableSets) Update(ctx context.Context, variableSetID string, options
 		return nil, ErrInvalidVariableSetID
 	}
 
-	u := fmt.Sprintf("varsets/%s", url.QueryEscape(variableSetID))
+	u := fmt.Sprintf("varsets/%s", url.PathEscape(variableSetID))
 	req, err := s.client.NewRequest("PATCH", u, options)
 	if err != nil {
 		return nil, err
@@ -341,7 +359,7 @@ func (s *variableSets) Delete(ctx context.Context, variableSetID string) error {
 		return ErrInvalidVariableSetID
 	}
 
-	u := fmt.Sprintf("varsets/%s", url.QueryEscape(variableSetID))
+	u := fmt.Sprintf("varsets/%s", url.PathEscape(variableSetID))
 	req, err := s.client.NewRequest("DELETE", u, nil)
 	if err != nil {
 		return err
@@ -360,7 +378,7 @@ func (s *variableSets) ApplyToWorkspaces(ctx context.Context, variableSetID stri
 		return err
 	}
 
-	u := fmt.Sprintf("varsets/%s/relationships/workspaces", url.QueryEscape(variableSetID))
+	u := fmt.Sprintf("varsets/%s/relationships/workspaces", url.PathEscape(variableSetID))
 	req, err := s.client.NewRequest("POST", u, options.Workspaces)
 	if err != nil {
 		return err
@@ -379,7 +397,7 @@ func (s *variableSets) RemoveFromWorkspaces(ctx context.Context, variableSetID s
 		return err
 	}
 
-	u := fmt.Sprintf("varsets/%s/relationships/workspaces", url.QueryEscape(variableSetID))
+	u := fmt.Sprintf("varsets/%s/relationships/workspaces", url.PathEscape(variableSetID))
 	req, err := s.client.NewRequest("DELETE", u, options.Workspaces)
 	if err != nil {
 		return err
@@ -398,7 +416,7 @@ func (s variableSets) ApplyToProjects(ctx context.Context, variableSetID string,
 		return err
 	}
 
-	u := fmt.Sprintf("varsets/%s/relationships/projects", url.QueryEscape(variableSetID))
+	u := fmt.Sprintf("varsets/%s/relationships/projects", url.PathEscape(variableSetID))
 	req, err := s.client.NewRequest("POST", u, options.Projects)
 	if err != nil {
 		return err
@@ -417,7 +435,7 @@ func (s variableSets) RemoveFromProjects(ctx context.Context, variableSetID stri
 		return err
 	}
 
-	u := fmt.Sprintf("varsets/%s/relationships/projects", url.QueryEscape(variableSetID))
+	u := fmt.Sprintf("varsets/%s/relationships/projects", url.PathEscape(variableSetID))
 	req, err := s.client.NewRequest("DELETE", u, options.Projects)
 	if err != nil {
 		return err
@@ -439,7 +457,7 @@ func (s *variableSets) UpdateWorkspaces(ctx context.Context, variableSetID strin
 	}
 
 	// We force inclusion of workspaces as that is the primary data for which we are concerned with confirming changes.
-	u := fmt.Sprintf("varsets/%s?include=%s", url.QueryEscape(variableSetID), VariableSetWorkspaces)
+	u := fmt.Sprintf("varsets/%s?include=%s", url.PathEscape(variableSetID), VariableSetWorkspaces)
 	req, err := s.client.NewRequest("PATCH", u, &o)
 	if err != nil {
 		return nil, err

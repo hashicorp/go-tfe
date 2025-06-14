@@ -214,7 +214,7 @@ func (s *configurationVersions) List(ctx context.Context, workspaceID string, op
 		return nil, err
 	}
 
-	u := fmt.Sprintf("workspaces/%s/configuration-versions", url.QueryEscape(workspaceID))
+	u := fmt.Sprintf("workspaces/%s/configuration-versions", url.PathEscape(workspaceID))
 	req, err := s.client.NewRequest("GET", u, options)
 	if err != nil {
 		return nil, err
@@ -236,7 +236,7 @@ func (s *configurationVersions) Create(ctx context.Context, workspaceID string, 
 		return nil, ErrInvalidWorkspaceID
 	}
 
-	u := fmt.Sprintf("workspaces/%s/configuration-versions", url.QueryEscape(workspaceID))
+	u := fmt.Sprintf("workspaces/%s/configuration-versions", url.PathEscape(workspaceID))
 	req, err := s.client.NewRequest("POST", u, &options)
 	if err != nil {
 		return nil, err
@@ -285,7 +285,7 @@ func (s *configurationVersions) ReadWithOptions(ctx context.Context, cvID string
 		return nil, err
 	}
 
-	u := fmt.Sprintf("configuration-versions/%s", url.QueryEscape(cvID))
+	u := fmt.Sprintf("configuration-versions/%s", url.PathEscape(cvID))
 	req, err := s.client.NewRequest("GET", u, options)
 	if err != nil {
 		return nil, err
@@ -331,7 +331,7 @@ func (s *configurationVersions) Archive(ctx context.Context, cvID string) error 
 
 	body := bytes.NewBuffer(nil)
 
-	u := fmt.Sprintf("configuration-versions/%s/actions/archive", url.QueryEscape(cvID))
+	u := fmt.Sprintf("configuration-versions/%s/actions/archive", url.PathEscape(cvID))
 	req, err := s.client.NewRequest("POST", u, body)
 	if err != nil {
 		return err
@@ -354,7 +354,7 @@ func (s *configurationVersions) Download(ctx context.Context, cvID string) ([]by
 		return nil, ErrInvalidConfigVersionID
 	}
 
-	u := fmt.Sprintf("configuration-versions/%s/download", url.QueryEscape(cvID))
+	u := fmt.Sprintf("configuration-versions/%s/download", url.PathEscape(cvID))
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, err

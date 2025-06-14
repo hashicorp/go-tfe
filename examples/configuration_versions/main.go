@@ -22,9 +22,8 @@ func main() {
 	}
 
 	packer, err := slug.NewPacker(
-		slug.DereferenceSymlinks(),            // dereferences symlinks
-		slug.ApplyTerraformIgnore(),           // ignores paths specified in .terraformignore
-		slug.AllowSymlinkTarget("/some/path"), // allow certain symlink target paths
+		slug.DereferenceSymlinks(),  // dereferences symlinks
+		slug.ApplyTerraformIgnore(), // ignores paths specified in .terraformignore
 	)
 	if err != nil {
 		log.Fatal(err)

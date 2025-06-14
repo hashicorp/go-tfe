@@ -20,10 +20,10 @@ var _ NotificationConfigurations = (*notificationConfigurations)(nil)
 // https://developer.hashicorp.com/terraform/cloud-docs/api-docs/notification-configurations
 type NotificationConfigurations interface {
 	// List all the notification configurations within a workspace.
-	List(ctx context.Context, workspaceID string, options *NotificationConfigurationListOptions) (*NotificationConfigurationList, error)
+	List(ctx context.Context, subscribableID string, options *NotificationConfigurationListOptions) (*NotificationConfigurationList, error)
 
 	// Create a new notification configuration with the given options.
-	Create(ctx context.Context, workspaceID string, options NotificationConfigurationCreateOptions) (*NotificationConfiguration, error)
+	Create(ctx context.Context, subscribableID string, options NotificationConfigurationCreateOptions) (*NotificationConfiguration, error)
 
 	// Read a notification configuration by its ID.
 	Read(ctx context.Context, notificationConfigurationID string) (*NotificationConfiguration, error)
@@ -48,15 +48,18 @@ type notificationConfigurations struct {
 type NotificationTriggerType string
 
 const (
-	NotificationTriggerCreated               NotificationTriggerType = "run:created"
-	NotificationTriggerPlanning              NotificationTriggerType = "run:planning"
-	NotificationTriggerNeedsAttention        NotificationTriggerType = "run:needs_attention"
-	NotificationTriggerApplying              NotificationTriggerType = "run:applying"
-	NotificationTriggerCompleted             NotificationTriggerType = "run:completed"
-	NotificationTriggerErrored               NotificationTriggerType = "run:errored"
-	NotificationTriggerAssessmentDrifted     NotificationTriggerType = "assessment:drifted"
-	NotificationTriggerAssessmentFailed      NotificationTriggerType = "assessment:failed"
-	NotificationTriggerAssessmentCheckFailed NotificationTriggerType = "assessment:check_failure"
+	NotificationTriggerCreated                        NotificationTriggerType = "run:created"
+	NotificationTriggerPlanning                       NotificationTriggerType = "run:planning"
+	NotificationTriggerNeedsAttention                 NotificationTriggerType = "run:needs_attention"
+	NotificationTriggerApplying                       NotificationTriggerType = "run:applying"
+	NotificationTriggerCompleted                      NotificationTriggerType = "run:completed"
+	NotificationTriggerErrored                        NotificationTriggerType = "run:errored"
+	NotificationTriggerAssessmentDrifted              NotificationTriggerType = "assessment:drifted"
+	NotificationTriggerAssessmentFailed               NotificationTriggerType = "assessment:failed"
+	NotificationTriggerAssessmentCheckFailed          NotificationTriggerType = "assessment:check_failure"
+	NotificationTriggerWorkspaceAutoDestroyReminder   NotificationTriggerType = "workspace:auto_destroy_reminder"
+	NotificationTriggerWorkspaceAutoDestroyRunResults NotificationTriggerType = "workspace:auto_destroy_run_results"
+	NotificationTriggerChangeRequestCreated           NotificationTriggerType = "change_request:created"
 )
 
 // NotificationDestinationType represents the destination type of the
@@ -78,6 +81,14 @@ type NotificationConfigurationList struct {
 	Items []*NotificationConfiguration
 }
 
+// NotificationConfigurationSubscribableChoice is a choice type struct that represents the possible values
+// within a polymorphic relation. If a value is available, exactly one field
+// will be non-nil.
+type NotificationConfigurationSubscribableChoice struct {
+	Team      *Team
+	Workspace *Workspace
+}
+
 // NotificationConfiguration represents a Notification Configuration.
 type NotificationConfiguration struct {
 	ID                string                      `jsonapi:"primary,notification-configurations"`
@@ -91,12 +102,15 @@ type NotificationConfiguration struct {
 	UpdatedAt         time.Time                   `jsonapi:"attr,updated-at,iso8601"`
 	URL               string                      `jsonapi:"attr,url"`
 
-	// EmailAddresses is only available for TFE users. It is not available in TFC.
+	// EmailAddresses is only available for TFE users. It is not available in HCP Terraform.
 	EmailAddresses []string `jsonapi:"attr,email-addresses"`
 
 	// Relations
-	Subscribable *Workspace `jsonapi:"relation,subscribable"`
-	EmailUsers   []*User    `jsonapi:"relation,users"`
+	// DEPRECATED. The subscribable field is polymorphic. Use NotificationConfigurationSubscribableChoice instead.
+	Subscribable       *Workspace                                   `jsonapi:"relation,subscribable,omitempty"`
+	SubscribableChoice *NotificationConfigurationSubscribableChoice `jsonapi:"polyrelation,subscribable"`
+
+	EmailUsers []*User `jsonapi:"relation,users"`
 }
 
 // DeliveryResponse represents a notification configuration delivery response.
@@ -113,6 +127,8 @@ type DeliveryResponse struct {
 // notification configurations.
 type NotificationConfigurationListOptions struct {
 	ListOptions
+
+	SubscribableChoice *NotificationConfigurationSubscribableChoice
 }
 
 // NotificationConfigurationCreateOptions represents the options for
@@ -143,11 +159,14 @@ type NotificationConfigurationCreateOptions struct {
 	URL *string `jsonapi:"attr,url,omitempty"`
 
 	// Optional: The list of email addresses that will receive notification emails.
-	// EmailAddresses is only available for TFE users. It is not available in TFC.
+	// EmailAddresses is only available for TFE users. It is not available in HCP Terraform.
 	EmailAddresses []string `jsonapi:"attr,email-addresses,omitempty"`
 
 	// Optional: The list of users belonging to the organization that will receive notification emails.
 	EmailUsers []*User `jsonapi:"relation,users,omitempty"`
+
+	// Required: The workspace or team that the notification configuration is associated with.
+	SubscribableChoice *NotificationConfigurationSubscribableChoice `jsonapi:"polyrelation,subscribable,omitempty"`
 }
 
 // NotificationConfigurationUpdateOptions represents the options for
@@ -175,7 +194,7 @@ type NotificationConfigurationUpdateOptions struct {
 	URL *string `jsonapi:"attr,url,omitempty"`
 
 	// Optional: The list of email addresses that will receive notification emails.
-	// EmailAddresses is only available for TFE users. It is not available in TFC.
+	// EmailAddresses is only available for TFE users. It is not available in HCP Terraform.
 	EmailAddresses []string `jsonapi:"attr,email-addresses,omitempty"`
 
 	// Optional: The list of users belonging to the organization that will receive notification emails.
@@ -183,12 +202,32 @@ type NotificationConfigurationUpdateOptions struct {
 }
 
 // List all the notification configurations associated with a workspace.
-func (s *notificationConfigurations) List(ctx context.Context, workspaceID string, options *NotificationConfigurationListOptions) (*NotificationConfigurationList, error) {
-	if !validStringID(&workspaceID) {
-		return nil, ErrInvalidWorkspaceID
+func (s *notificationConfigurations) List(ctx context.Context, subscribableID string, options *NotificationConfigurationListOptions) (*NotificationConfigurationList, error) {
+	var u string
+	if options == nil {
+		options = &NotificationConfigurationListOptions{
+			SubscribableChoice: &NotificationConfigurationSubscribableChoice{
+				Workspace: &Workspace{ID: subscribableID},
+			},
+		}
+	} else if options.SubscribableChoice == nil {
+		options.SubscribableChoice = &NotificationConfigurationSubscribableChoice{
+			Workspace: &Workspace{ID: subscribableID},
+		}
 	}
 
-	u := fmt.Sprintf("workspaces/%s/notification-configurations", url.QueryEscape(workspaceID))
+	if options.SubscribableChoice.Team != nil {
+		if !validStringID(&subscribableID) {
+			return nil, ErrInvalidTeamID
+		}
+		u = fmt.Sprintf("teams/%s/notification-configurations", url.PathEscape(subscribableID))
+	} else {
+		if !validStringID(&subscribableID) {
+			return nil, ErrInvalidWorkspaceID
+		}
+		u = fmt.Sprintf("workspaces/%s/notification-configurations", url.PathEscape(subscribableID))
+	}
+
 	req, err := s.client.NewRequest("GET", u, options)
 	if err != nil {
 		return nil, err
@@ -200,29 +239,42 @@ func (s *notificationConfigurations) List(ctx context.Context, workspaceID strin
 		return nil, err
 	}
 
+	for i := range ncl.Items {
+		backfillDeprecatedSubscribable(ncl.Items[i])
+	}
+
 	return ncl, nil
 }
 
 // Create a notification configuration with the given options.
-func (s *notificationConfigurations) Create(ctx context.Context, workspaceID string, options NotificationConfigurationCreateOptions) (*NotificationConfiguration, error) {
-	if !validStringID(&workspaceID) {
-		return nil, ErrInvalidWorkspaceID
+func (s *notificationConfigurations) Create(ctx context.Context, subscribableID string, options NotificationConfigurationCreateOptions) (*NotificationConfiguration, error) {
+	var u string
+	var subscribableChoice *NotificationConfigurationSubscribableChoice
+	if options.SubscribableChoice == nil || options.SubscribableChoice.Team == nil {
+		u = fmt.Sprintf("workspaces/%s/notification-configurations", url.PathEscape(subscribableID))
+		options.SubscribableChoice = &NotificationConfigurationSubscribableChoice{Workspace: &Workspace{ID: subscribableID}}
+	} else {
+		u = fmt.Sprintf("teams/%s/notification-configurations", url.PathEscape(subscribableID))
+		options.SubscribableChoice = &NotificationConfigurationSubscribableChoice{Team: &Team{ID: subscribableID}}
 	}
+
 	if err := options.valid(); err != nil {
 		return nil, err
 	}
 
-	u := fmt.Sprintf("workspaces/%s/notification-configurations", url.QueryEscape(workspaceID))
 	req, err := s.client.NewRequest("POST", u, &options)
 	if err != nil {
 		return nil, err
 	}
 
-	nc := &NotificationConfiguration{}
+	nc := &NotificationConfiguration{SubscribableChoice: subscribableChoice}
 	err = req.Do(ctx, nc)
+
 	if err != nil {
 		return nil, err
 	}
+
+	backfillDeprecatedSubscribable(nc)
 
 	return nc, nil
 }
@@ -233,7 +285,7 @@ func (s *notificationConfigurations) Read(ctx context.Context, notificationConfi
 		return nil, ErrInvalidNotificationConfigID
 	}
 
-	u := fmt.Sprintf("notification-configurations/%s", url.QueryEscape(notificationConfigurationID))
+	u := fmt.Sprintf("notification-configurations/%s", url.PathEscape(notificationConfigurationID))
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, err
@@ -244,6 +296,8 @@ func (s *notificationConfigurations) Read(ctx context.Context, notificationConfi
 	if err != nil {
 		return nil, err
 	}
+
+	backfillDeprecatedSubscribable(nc)
 
 	return nc, nil
 }
@@ -258,7 +312,7 @@ func (s *notificationConfigurations) Update(ctx context.Context, notificationCon
 		return nil, err
 	}
 
-	u := fmt.Sprintf("notification-configurations/%s", url.QueryEscape(notificationConfigurationID))
+	u := fmt.Sprintf("notification-configurations/%s", url.PathEscape(notificationConfigurationID))
 	req, err := s.client.NewRequest("PATCH", u, &options)
 	if err != nil {
 		return nil, err
@@ -270,6 +324,8 @@ func (s *notificationConfigurations) Update(ctx context.Context, notificationCon
 		return nil, err
 	}
 
+	backfillDeprecatedSubscribable(nc)
+
 	return nc, nil
 }
 
@@ -279,7 +335,7 @@ func (s *notificationConfigurations) Delete(ctx context.Context, notificationCon
 		return ErrInvalidNotificationConfigID
 	}
 
-	u := fmt.Sprintf("notification-configurations/%s", url.QueryEscape(notificationConfigurationID))
+	u := fmt.Sprintf("notification-configurations/%s", url.PathEscape(notificationConfigurationID))
 	req, err := s.client.NewRequest("DELETE", u, nil)
 	if err != nil {
 		return err
@@ -296,7 +352,7 @@ func (s *notificationConfigurations) Verify(ctx context.Context, notificationCon
 	}
 
 	u := fmt.Sprintf(
-		"notification-configurations/%s/actions/verify", url.QueryEscape(notificationConfigurationID))
+		"notification-configurations/%s/actions/verify", url.PathEscape(notificationConfigurationID))
 	req, err := s.client.NewRequest("POST", u, nil)
 	if err != nil {
 		return nil, err
@@ -312,6 +368,16 @@ func (s *notificationConfigurations) Verify(ctx context.Context, notificationCon
 }
 
 func (o NotificationConfigurationCreateOptions) valid() error {
+	if o.SubscribableChoice == nil || o.SubscribableChoice.Workspace != nil {
+		if !validStringID(&o.SubscribableChoice.Workspace.ID) {
+			return ErrInvalidWorkspaceID
+		}
+	} else {
+		if !validStringID(&o.SubscribableChoice.Team.ID) {
+			return ErrInvalidTeamID
+		}
+	}
+
 	if o.DestinationType == nil {
 		return ErrRequiredDestinationType
 	}
@@ -348,6 +414,16 @@ func (o NotificationConfigurationUpdateOptions) valid() error {
 	return nil
 }
 
+func backfillDeprecatedSubscribable(notification *NotificationConfiguration) {
+	if notification.Subscribable != nil || notification.SubscribableChoice == nil {
+		return
+	}
+
+	if notification.SubscribableChoice.Workspace != nil {
+		notification.Subscribable = notification.SubscribableChoice.Workspace
+	}
+}
+
 func validNotificationTriggerType(triggers []NotificationTriggerType) bool {
 	for _, t := range triggers {
 		switch t {
@@ -359,6 +435,9 @@ func validNotificationTriggerType(triggers []NotificationTriggerType) bool {
 			NotificationTriggerPlanning,
 			NotificationTriggerAssessmentDrifted,
 			NotificationTriggerAssessmentFailed,
+			NotificationTriggerWorkspaceAutoDestroyReminder,
+			NotificationTriggerWorkspaceAutoDestroyRunResults,
+			NotificationTriggerChangeRequestCreated,
 			NotificationTriggerAssessmentCheckFailed:
 			continue
 		default:

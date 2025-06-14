@@ -145,7 +145,7 @@ func TestStateVersionsUpload(t *testing.T) {
 		_, err = client.Workspaces.Unlock(ctx, wTest.ID)
 		require.NoError(t, err)
 
-		// TFC does some async processing on state versions, so we must await it
+		// HCP Terraform does some async processing on state versions, so we must await it
 		// lest we flake. Should take well less than a minute tho.
 		timeout := time.Minute / 2
 
@@ -426,8 +426,8 @@ func TestStateVersionsRead(t *testing.T) {
 				svTest, err := client.StateVersions.Read(ctx, svTest.ID)
 				require.NoError(t, err)
 
-				if !svTest.ResourcesProcessed {
-					return nil, fmt.Errorf("resources not processed %s", err)
+				if !svTest.ResourcesProcessed || svTest.BillableRUMCount == nil || *svTest.BillableRUMCount == 0 {
+					return nil, fmt.Errorf("resources not processed %v / %d", svTest.ResourcesProcessed, svTest.BillableRUMCount)
 				}
 
 				return svTest, nil
@@ -447,6 +447,9 @@ func TestStateVersionsRead(t *testing.T) {
 		assert.NotEmpty(t, sv.StateVersion)
 		assert.NotEmpty(t, sv.TerraformVersion)
 		assert.NotEmpty(t, sv.Outputs)
+
+		require.NotNil(t, sv.BillableRUMCount)
+		assert.Greater(t, *sv.BillableRUMCount, uint32(0))
 	})
 
 	t.Run("when the state version does not exist", func(t *testing.T) {
@@ -469,7 +472,7 @@ func TestStateVersionsReadWithOptions(t *testing.T) {
 	svTest, svTestCleanup := createStateVersion(t, client, 0, nil)
 	t.Cleanup(svTestCleanup)
 
-	// give TFC some time to process the statefile and extract the outputs.
+	// give HCP Terraform some time to process the statefile and extract the outputs.
 	waitForSVOutputs(t, client, svTest.ID)
 
 	t.Run("when the state version exists", func(t *testing.T) {
@@ -507,7 +510,7 @@ func TestStateVersionsCurrent(t *testing.T) {
 			// again during the GET.
 			stateVersion.DownloadURL = ""
 
-			// outputs, providers are populated only once the state has been parsed by TFC
+			// outputs, providers are populated only once the state has been parsed by HCP Terraform
 			// which can cause the tests to fail if it doesn't happen fast enough.
 			stateVersion.Outputs = nil
 			stateVersion.Providers = nil
@@ -539,7 +542,7 @@ func TestStateVersionsCurrentWithOptions(t *testing.T) {
 	svTest, svTestCleanup := createStateVersion(t, client, 0, wTest1)
 	t.Cleanup(svTestCleanup)
 
-	// give TFC some time to process the statefile and extract the outputs.
+	// give HCP Terraform some time to process the statefile and extract the outputs.
 	waitForSVOutputs(t, client, svTest.ID)
 
 	t.Run("when the state version exists", func(t *testing.T) {
@@ -587,7 +590,7 @@ func TestStateVersionOutputs(t *testing.T) {
 	sv, svTestCleanup := createStateVersion(t, client, 0, wTest1)
 	t.Cleanup(svTestCleanup)
 
-	// give TFC some time to process the statefile and extract the outputs.
+	// give HCP Terraform some time to process the statefile and extract the outputs.
 	waitForSVOutputs(t, client, sv.ID)
 
 	t.Run("when the state version exists", func(t *testing.T) {

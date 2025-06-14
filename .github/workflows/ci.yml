@@ -5,17 +5,16 @@ on:
   pull_request:
 
 concurrency:
-  group: ${{ github.head_ref || github.ref }}
-  cancel-in-progress: true
+  group: "one"
 
 jobs:
   lint:
     name: Lint
     runs-on: ubuntu-latest
-    timeout-minutes: 5
+    timeout-minutes: 10
     steps:
       - name: Checkout code
-        uses: actions/checkout@8e5e7e5ab8b370d6c329ec480221332ada57f0ab # v3.5.2
+        uses: actions/checkout@a5ac7e51b41094c92402da3b24376905380afc29 # v4.1.6
 
       - uses: ./.github/actions/lint-go-tfe
 
@@ -26,21 +25,20 @@ jobs:
       fail-fast: false
       matrix:
         # If you adjust these parameters, also adjust the jrm input files on the "Merge reports" step below
-        total: [ 4 ]
-        index: [ 0, 1, 2, 3 ]
+        total: [ 1 ]
+        index: [ 0 ]
 
-    timeout-minutes: 30
     steps:
       - name: terraform-cloud-outputs
         id: tflocal
-        uses: hashicorp-forge/terraform-cloud-action/outputs@4adbe7eea886138ac10a4c09e63c5c568aaa6672
+        uses: hashicorp-forge/terraform-cloud-action/outputs@5583d5f554d268ac91b3c37fd0a5e9da2c78c017 # v1.1.0
         with:
           token: ${{ secrets.TF_WORKFLOW_TFLOCAL_CLOUD_TFC_TOKEN }}
           organization: hashicorp-v2
           workspace: tflocal-go-tfe
 
       - name: Checkout code
-        uses: actions/checkout@8e5e7e5ab8b370d6c329ec480221332ada57f0ab # v3.5.2
+        uses: actions/checkout@a5ac7e51b41094c92402da3b24376905380afc29 # v4.1.6
 
       - uses: ./.github/actions/test-go-tfe
         with:
@@ -62,24 +60,56 @@ jobs:
     needs: [ tests ]
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/setup-node@64ed1c7eab4cce3362f8c340dee64e5eaeef8f7c # v3.6.0
+      - name: Checkout code
+        uses: actions/checkout@a5ac7e51b41094c92402da3b24376905380afc29 # v4.1.6
+
+      - uses: actions/setup-node@60edb5dd545a775178f52524783378180af0d1f8 # v4.0.2
         with:
-          node-version: 16
+          node-version: 20
+
+      - name: Set up Go
+        uses: actions/setup-go@d35c59abb061a4a6fb18e82ac0862c26744d6ab5 # v5.5.0
+        with:
+          go-version: '^1.22'
+          cache: true
 
       - name: Download artifacts
-        uses: actions/download-artifact@9bc31d5ccc31df68ecc42ccf4149144866c47d8a # v3.0.2
+        uses: actions/download-artifact@fa0a91b85d4f404e444e00e005971372dc801d16 # v4.18.0
 
       - name: Install junit-report-merger
         run: npm install -g junit-report-merger
 
-      - name: Merge reports
-        run: jrm ./ci-summary.xml "junit-test-summary-0/*.xml" "junit-test-summary-1/*.xml" "junit-test-summary-2/*.xml" "junit-test-summary-3/*.xml"
+      - name: Install gocovmerge
+        run: go install github.com/wadey/gocovmerge@latest
+
+      # Note -- we're intentionally including this in the same job as the running of the tests themselves. This is to
+      # future proof for when Datadog supports tracing of Go tests rather than just uploading coverage results.
+      # Ref: https://docs.datadoghq.com/continuous_integration/setup_tests/
+      - name: prepare datadog-ci
+        run: |
+          curl -L --fail "https://github.com/DataDog/datadog-ci/releases/latest/download/datadog-ci_linux-x64" --output "/usr/local/bin/datadog-ci"
+          chmod +x /usr/local/bin/datadog-ci
+
+      - name: Merge coverage reports
+        run: |
+          gocovmerge junit-test-summary-0/cover.out > merged-coverage.out
+
+      - name: Merge junit reports
+        run: jrm ./ci-summary.xml "junit-test-summary-0/*.xml"
 
       - name: Upload test artifacts
-        uses: actions/upload-artifact@0b7f8abb1508181956e8e162db84b466c27e18ce # v3.1.2
+        uses: actions/upload-artifact@65c4c4a1ddee5b72f698fdd19549f0f0fb45cf08 # v4.6.0
         with:
           name: junit-test-summary
           path: ./ci-summary.xml
+      
+      - name: upload coverage
+        env:
+          DATADOG_API_KEY: "${{ secrets.TF_WORKFLOW_DATADOG_API_KEY }}"
+          DD_ENV: ci
+        run: |
+          coverage=$(go tool cover -func merged-coverage.out | tail -n 1 | awk '{print $3}' | tr -d -c 0-9.)
+          datadog-ci junit upload --service "$GITHUB_REPOSITORY" --report-measures=test.code_coverage.lines_pct:$coverage ./ci-summary.xml
 
   tests-summarize:
     name: Summarize Tests

@@ -10,6 +10,8 @@ import (
 	"net/url"
 	"strings"
 	"time"
+
+	"github.com/hashicorp/jsonapi"
 )
 
 // Compile-time proof of interface implementation.
@@ -103,16 +105,45 @@ type Workspaces interface {
 	RemoveTags(ctx context.Context, workspaceID string, options WorkspaceRemoveTagsOptions) error
 
 	// ReadDataRetentionPolicy reads a workspace's data retention policy
-	// **Note: This functionality is only available in Terraform Enterprise.**
+	//
+	// Deprecated: Use ReadDataRetentionPolicyChoice instead.
+	// **Note: This functionality is only available in Terraform Enterprise versions v202311-1 and v202312-1.**
 	ReadDataRetentionPolicy(ctx context.Context, workspaceID string) (*DataRetentionPolicy, error)
 
-	// SetDataRetentionPolicy sets a workspace's data retention policy
+	// ReadDataRetentionPolicyChoice reads a workspace's data retention policy
 	// **Note: This functionality is only available in Terraform Enterprise.**
+	ReadDataRetentionPolicyChoice(ctx context.Context, workspaceID string) (*DataRetentionPolicyChoice, error)
+
+	// SetDataRetentionPolicy sets a workspace's data retention policy to delete data older than a certain number of days
+	//
+	// Deprecated: Use SetDataRetentionPolicyDeleteOlder instead
+	// **Note: This functionality is only available in Terraform Enterprise versions v202311-1 and v202312-1.**
 	SetDataRetentionPolicy(ctx context.Context, workspaceID string, options DataRetentionPolicySetOptions) (*DataRetentionPolicy, error)
+
+	// SetDataRetentionPolicyDeleteOlder sets a workspace's data retention policy to delete data older than a certain number of days
+	// **Note: This functionality is only available in Terraform Enterprise.**
+	SetDataRetentionPolicyDeleteOlder(ctx context.Context, workspaceID string, options DataRetentionPolicyDeleteOlderSetOptions) (*DataRetentionPolicyDeleteOlder, error)
+
+	// SetDataRetentionPolicyDontDelete sets a workspace's data retention policy to explicitly not delete data
+	// **Note: This functionality is only available in Terraform Enterprise.**
+	SetDataRetentionPolicyDontDelete(ctx context.Context, workspaceID string, options DataRetentionPolicyDontDeleteSetOptions) (*DataRetentionPolicyDontDelete, error)
 
 	// DeleteDataRetentionPolicy deletes a workspace's data retention policy
 	// **Note: This functionality is only available in Terraform Enterprise.**
 	DeleteDataRetentionPolicy(ctx context.Context, workspaceID string) error
+
+	// ListTagBindings lists all tag bindings associated with the workspace.
+	ListTagBindings(ctx context.Context, workspaceID string) ([]*TagBinding, error)
+
+	// ListEffectiveTagBindings lists all tag bindings associated with the workspace which may be
+	// either inherited from a project or binded to the workspace itself.
+	ListEffectiveTagBindings(ctx context.Context, workspaceID string) ([]*EffectiveTagBinding, error)
+
+	// AddTagBindings adds or modifies the value of existing tag binding keys for a workspace.
+	AddTagBindings(ctx context.Context, workspaceID string, options WorkspaceAddTagBindingsOptions) ([]*TagBinding, error)
+
+	// DeleteAllTagBindings removes all tag bindings for a workspace.
+	DeleteAllTagBindings(ctx context.Context, workspaceID string) error
 }
 
 // workspaces implements Workspaces.
@@ -126,6 +157,12 @@ type WorkspaceList struct {
 	Items []*Workspace
 }
 
+// WorkspaceAddTagBindingsOptions represents the options for adding tag bindings
+// to a workspace.
+type WorkspaceAddTagBindingsOptions struct {
+	TagBindings []*TagBinding
+}
+
 // LockedByChoice is a choice type struct that represents the possible values
 // within a polymorphic relation. If a value is available, exactly one field
 // will be non-nil.
@@ -137,58 +174,67 @@ type LockedByChoice struct {
 
 // Workspace represents a Terraform Enterprise workspace.
 type Workspace struct {
-	ID                         string                      `jsonapi:"primary,workspaces"`
-	Actions                    *WorkspaceActions           `jsonapi:"attr,actions"`
-	AllowDestroyPlan           bool                        `jsonapi:"attr,allow-destroy-plan"`
-	AssessmentsEnabled         bool                        `jsonapi:"attr,assessments-enabled"`
-	AutoApply                  bool                        `jsonapi:"attr,auto-apply"`
-	AutoApplyRunTrigger        bool                        `jsonapi:"attr,auto-apply-run-trigger"`
-	CanQueueDestroyPlan        bool                        `jsonapi:"attr,can-queue-destroy-plan"`
-	CreatedAt                  time.Time                   `jsonapi:"attr,created-at,iso8601"`
-	Description                string                      `jsonapi:"attr,description"`
-	Environment                string                      `jsonapi:"attr,environment"`
-	ExecutionMode              string                      `jsonapi:"attr,execution-mode"`
-	FileTriggersEnabled        bool                        `jsonapi:"attr,file-triggers-enabled"`
-	GlobalRemoteState          bool                        `jsonapi:"attr,global-remote-state"`
-	Locked                     bool                        `jsonapi:"attr,locked"`
-	MigrationEnvironment       string                      `jsonapi:"attr,migration-environment"`
-	Name                       string                      `jsonapi:"attr,name"`
-	Operations                 bool                        `jsonapi:"attr,operations"`
-	Permissions                *WorkspacePermissions       `jsonapi:"attr,permissions"`
-	QueueAllRuns               bool                        `jsonapi:"attr,queue-all-runs"`
-	SpeculativeEnabled         bool                        `jsonapi:"attr,speculative-enabled"`
-	SourceName                 string                      `jsonapi:"attr,source-name"`
-	SourceURL                  string                      `jsonapi:"attr,source-url"`
-	StructuredRunOutputEnabled bool                        `jsonapi:"attr,structured-run-output-enabled"`
-	TerraformVersion           string                      `jsonapi:"attr,terraform-version"`
-	TriggerPrefixes            []string                    `jsonapi:"attr,trigger-prefixes"`
-	TriggerPatterns            []string                    `jsonapi:"attr,trigger-patterns"`
-	VCSRepo                    *VCSRepo                    `jsonapi:"attr,vcs-repo"`
-	WorkingDirectory           string                      `jsonapi:"attr,working-directory"`
-	UpdatedAt                  time.Time                   `jsonapi:"attr,updated-at,iso8601"`
-	ResourceCount              int                         `jsonapi:"attr,resource-count"`
-	ApplyDurationAverage       time.Duration               `jsonapi:"attr,apply-duration-average"`
-	PlanDurationAverage        time.Duration               `jsonapi:"attr,plan-duration-average"`
-	PolicyCheckFailures        int                         `jsonapi:"attr,policy-check-failures"`
-	RunFailures                int                         `jsonapi:"attr,run-failures"`
-	RunsCount                  int                         `jsonapi:"attr,workspace-kpis-runs-count"`
-	TagNames                   []string                    `jsonapi:"attr,tag-names"`
-	SettingOverwrites          *WorkspaceSettingOverwrites `jsonapi:"attr,setting-overwrites"`
+	ID                          string                          `jsonapi:"primary,workspaces"`
+	Actions                     *WorkspaceActions               `jsonapi:"attr,actions"`
+	AllowDestroyPlan            bool                            `jsonapi:"attr,allow-destroy-plan"`
+	AssessmentsEnabled          bool                            `jsonapi:"attr,assessments-enabled"`
+	AutoApply                   bool                            `jsonapi:"attr,auto-apply"`
+	AutoApplyRunTrigger         bool                            `jsonapi:"attr,auto-apply-run-trigger"`
+	AutoDestroyAt               jsonapi.NullableAttr[time.Time] `jsonapi:"attr,auto-destroy-at,iso8601,omitempty"`
+	AutoDestroyActivityDuration jsonapi.NullableAttr[string]    `jsonapi:"attr,auto-destroy-activity-duration,omitempty"`
+	CanQueueDestroyPlan         bool                            `jsonapi:"attr,can-queue-destroy-plan"`
+	CreatedAt                   time.Time                       `jsonapi:"attr,created-at,iso8601"`
+	Description                 string                          `jsonapi:"attr,description"`
+	Environment                 string                          `jsonapi:"attr,environment"`
+	ExecutionMode               string                          `jsonapi:"attr,execution-mode"`
+	FileTriggersEnabled         bool                            `jsonapi:"attr,file-triggers-enabled"`
+	GlobalRemoteState           bool                            `jsonapi:"attr,global-remote-state"`
+	InheritsProjectAutoDestroy  bool                            `jsonapi:"attr,inherits-project-auto-destroy"`
+	Locked                      bool                            `jsonapi:"attr,locked"`
+	MigrationEnvironment        string                          `jsonapi:"attr,migration-environment"`
+	Name                        string                          `jsonapi:"attr,name"`
+	NoCodeUpgradeAvailable      bool                            `jsonapi:"attr,no-code-upgrade-available"`
+	Operations                  bool                            `jsonapi:"attr,operations"`
+	Permissions                 *WorkspacePermissions           `jsonapi:"attr,permissions"`
+	QueueAllRuns                bool                            `jsonapi:"attr,queue-all-runs"`
+	SpeculativeEnabled          bool                            `jsonapi:"attr,speculative-enabled"`
+	SourceName                  string                          `jsonapi:"attr,source-name"`
+	SourceURL                   string                          `jsonapi:"attr,source-url"`
+	StructuredRunOutputEnabled  bool                            `jsonapi:"attr,structured-run-output-enabled"`
+	TerraformVersion            string                          `jsonapi:"attr,terraform-version"`
+	TriggerPrefixes             []string                        `jsonapi:"attr,trigger-prefixes"`
+	TriggerPatterns             []string                        `jsonapi:"attr,trigger-patterns"`
+	VCSRepo                     *VCSRepo                        `jsonapi:"attr,vcs-repo"`
+	WorkingDirectory            string                          `jsonapi:"attr,working-directory"`
+	UpdatedAt                   time.Time                       `jsonapi:"attr,updated-at,iso8601"`
+	ResourceCount               int                             `jsonapi:"attr,resource-count"`
+	ApplyDurationAverage        time.Duration                   `jsonapi:"attr,apply-duration-average"`
+	PlanDurationAverage         time.Duration                   `jsonapi:"attr,plan-duration-average"`
+	PolicyCheckFailures         int                             `jsonapi:"attr,policy-check-failures"`
+	RunFailures                 int                             `jsonapi:"attr,run-failures"`
+	RunsCount                   int                             `jsonapi:"attr,workspace-kpis-runs-count"`
+	TagNames                    []string                        `jsonapi:"attr,tag-names"`
+	SettingOverwrites           *WorkspaceSettingOverwrites     `jsonapi:"attr,setting-overwrites"`
 
 	// Relations
-	AgentPool                   *AgentPool            `jsonapi:"relation,agent-pool"`
-	CurrentRun                  *Run                  `jsonapi:"relation,current-run"`
-	CurrentStateVersion         *StateVersion         `jsonapi:"relation,current-state-version"`
-	Organization                *Organization         `jsonapi:"relation,organization"`
-	SSHKey                      *SSHKey               `jsonapi:"relation,ssh-key"`
-	Outputs                     []*WorkspaceOutputs   `jsonapi:"relation,outputs"`
-	Project                     *Project              `jsonapi:"relation,project"`
-	Tags                        []*Tag                `jsonapi:"relation,tags"`
-	CurrentConfigurationVersion *ConfigurationVersion `jsonapi:"relation,current-configuration-version,omitempty"`
-	LockedBy                    *LockedByChoice       `jsonapi:"polyrelation,locked-by"`
+	AgentPool                   *AgentPool             `jsonapi:"relation,agent-pool"`
+	CurrentRun                  *Run                   `jsonapi:"relation,current-run"`
+	CurrentStateVersion         *StateVersion          `jsonapi:"relation,current-state-version"`
+	Organization                *Organization          `jsonapi:"relation,organization"`
+	SSHKey                      *SSHKey                `jsonapi:"relation,ssh-key"`
+	Outputs                     []*WorkspaceOutputs    `jsonapi:"relation,outputs"`
+	Project                     *Project               `jsonapi:"relation,project"`
+	Tags                        []*Tag                 `jsonapi:"relation,tags"`
+	CurrentConfigurationVersion *ConfigurationVersion  `jsonapi:"relation,current-configuration-version,omitempty"`
+	LockedBy                    *LockedByChoice        `jsonapi:"polyrelation,locked-by"`
+	Variables                   []*Variable            `jsonapi:"relation,vars"`
+	TagBindings                 []*TagBinding          `jsonapi:"relation,tag-bindings"`
+	EffectiveTagBindings        []*EffectiveTagBinding `jsonapi:"relation,effective-tag-bindings"`
 
+	// Deprecated: Use DataRetentionPolicyChoice instead.
+	DataRetentionPolicy *DataRetentionPolicy
 	// **Note: This functionality is only available in Terraform Enterprise.**
-	DataRetentionPolicy *DataRetentionPolicy `jsonapi:"relation,data-retention-policy"`
+	DataRetentionPolicyChoice *DataRetentionPolicyChoice `jsonapi:"polyrelation,data-retention-policy"`
 
 	// Links
 	Links map[string]interface{} `jsonapi:"links,omitempty"`
@@ -269,6 +315,7 @@ const (
 	WSCurrentRunPlan             WSIncludeOpt = "current_run.plan"
 	WSCurrentRunConfigVer        WSIncludeOpt = "current_run.configuration_version"
 	WSCurrentrunConfigVerIngress WSIncludeOpt = "current_run.configuration_version.ingress_attributes"
+	WSEffectiveTagBindings       WSIncludeOpt = "effective_tag_bindings"
 	WSLockedBy                   WSIncludeOpt = "locked_by"
 	WSReadme                     WSIncludeOpt = "readme"
 	WSOutputs                    WSIncludeOpt = "outputs"
@@ -302,8 +349,19 @@ type WorkspaceListOptions struct {
 	// Optional: A filter string to list all the workspaces linked to a given project id in the organization.
 	ProjectID string `url:"filter[project][id],omitempty"`
 
+	// Optional: A filter string to list all the workspaces filtered by current run status.
+	CurrentRunStatus string `url:"filter[current-run][status],omitempty"`
+
+	// Optional: A filter string to list workspaces filtered by key/value tags.
+	// These are not annotated and therefore not encoded by go-querystring
+	TagBindings []*TagBinding
+
 	// Optional: A list of relations to include. See available resources https://developer.hashicorp.com/terraform/cloud-docs/api-docs/workspaces#available-related-resources
 	Include []WSIncludeOpt `url:"include,omitempty"`
+
+	// Optional: May sort on "name" (the default) and "current-run.created-at" (which sorts by the time of the current run)
+	// Prepending a hyphen to the sort parameter will reverse the order (e.g. "-name" to reverse the default order)
+	Sort string `url:"sort,omitempty"`
 }
 
 // WorkspaceCreateOptions represents the options for creating a new workspace.
@@ -324,7 +382,7 @@ type WorkspaceCreateOptions struct {
 
 	// Optional: Whether to enable health assessments (drift detection etc.) for the workspace.
 	// Reference: https://developer.hashicorp.com/terraform/cloud-docs/api-docs/workspaces#create-a-workspace
-	// Requires remote execution mode, Terraform Cloud Business entitlement, and a valid agent pool to work
+	// Requires remote execution mode, HCP Terraform Business entitlement, and a valid agent pool to work
 	AssessmentsEnabled *bool `jsonapi:"attr,assessments-enabled,omitempty"`
 
 	// Optional: Whether to automatically apply changes when a Terraform plan is successful.
@@ -333,6 +391,16 @@ type WorkspaceCreateOptions struct {
 	// Optional: Whether to automatically apply changes for runs that are created by run triggers
 	// from another workspace.
 	AutoApplyRunTrigger *bool `jsonapi:"attr,auto-apply-run-trigger,omitempty"`
+
+	// Optional: The time after which an automatic destroy run will be queued
+	AutoDestroyAt jsonapi.NullableAttr[time.Time] `jsonapi:"attr,auto-destroy-at,iso8601,omitempty"`
+
+	// Optional: The period of time to wait after workspace activity to trigger a destroy run. The format
+	// should roughly match a Go duration string limited to days and hours, e.g. "24h" or "1d".
+	AutoDestroyActivityDuration jsonapi.NullableAttr[string] `jsonapi:"attr,auto-destroy-activity-duration,omitempty"`
+
+	// Optional: Whether the workspace inherits auto destroy settings from the project
+	InheritsProjectAutoDestroy *bool `jsonapi:"attr,inherits-project-auto-destroy,omitempty"`
 
 	// Optional: A description for the workspace.
 	Description *string `jsonapi:"attr,description,omitempty"`
@@ -370,7 +438,7 @@ type WorkspaceCreateOptions struct {
 	QueueAllRuns *bool `jsonapi:"attr,queue-all-runs,omitempty"`
 
 	// Whether this workspace allows speculative plans. Setting this to false
-	// prevents Terraform Cloud or the Terraform Enterprise instance from
+	// prevents HCP Terraform or the Terraform Enterprise instance from
 	// running plans on pull requests, which can improve security if the VCS
 	// repository is public or includes untrusted contributors.
 	SpeculativeEnabled *bool `jsonapi:"attr,speculative-enabled,omitempty"`
@@ -424,7 +492,7 @@ type WorkspaceCreateOptions struct {
 	// organization provides.
 	//
 	// In general, it's not necessary to mark a setting as `true` in this
-	// struct; if you provide a literal value for a setting, Terraform Cloud will
+	// struct; if you provide a literal value for a setting, HCP Terraform will
 	// automatically update its overwrites field to `true`. If you do choose to
 	// manually mark a setting as overwritten, you must provide a value for that
 	// setting at the same time.
@@ -433,6 +501,9 @@ type WorkspaceCreateOptions struct {
 	// Associated Project with the workspace. If not provided, default project
 	// of the organization will be assigned to the workspace.
 	Project *Project `jsonapi:"relation,project,omitempty"`
+
+	// Associated TagBindings of the workspace.
+	TagBindings []*TagBinding `jsonapi:"relation,tag-bindings,omitempty"`
 }
 
 // TODO: move this struct out. VCSRepoOptions is used by workspaces, policy sets, and registry modules
@@ -471,7 +542,7 @@ type WorkspaceUpdateOptions struct {
 
 	// Optional: Whether to enable health assessments (drift detection etc.) for the workspace.
 	// Reference: https://developer.hashicorp.com/terraform/cloud-docs/api-docs/workspaces#update-a-workspace
-	// Requires remote execution mode, Terraform Cloud Business entitlement, and a valid agent pool to work
+	// Requires remote execution mode, HCP Terraform Business entitlement, and a valid agent pool to work
 	AssessmentsEnabled *bool `jsonapi:"attr,assessments-enabled,omitempty"`
 
 	// Optional: Whether to automatically apply changes when a Terraform plan is successful.
@@ -480,6 +551,16 @@ type WorkspaceUpdateOptions struct {
 	// Optional: Whether to automatically apply changes for runs that are created by run triggers
 	// from another workspace.
 	AutoApplyRunTrigger *bool `jsonapi:"attr,auto-apply-run-trigger,omitempty"`
+
+	// Optional: The time after which an automatic destroy run will be queued
+	AutoDestroyAt jsonapi.NullableAttr[time.Time] `jsonapi:"attr,auto-destroy-at,iso8601,omitempty"`
+
+	// Optional: The period of time to wait after workspace activity to trigger a destroy run. The format
+	// should roughly match a Go duration string limited to days and hours, e.g. "24h" or "1d".
+	AutoDestroyActivityDuration jsonapi.NullableAttr[string] `jsonapi:"attr,auto-destroy-activity-duration,omitempty"`
+
+	// Optional: Whether the workspace inherits auto destroy settings from the project
+	InheritsProjectAutoDestroy *bool `jsonapi:"attr,inherits-project-auto-destroy,omitempty"`
 
 	// Optional: A new name for the workspace, which can only include letters, numbers, -,
 	// and _. This will be used as an identifier and must be unique in the
@@ -514,7 +595,7 @@ type WorkspaceUpdateOptions struct {
 	QueueAllRuns *bool `jsonapi:"attr,queue-all-runs,omitempty"`
 
 	// Optional: Whether this workspace allows speculative plans. Setting this to false
-	// prevents Terraform Cloud or the Terraform Enterprise instance from
+	// prevents HCP Terraform or the Terraform Enterprise instance from
 	// running plans on pull requests, which can improve security if the VCS
 	// repository is public or includes untrusted contributors.
 	SpeculativeEnabled *bool `jsonapi:"attr,speculative-enabled,omitempty"`
@@ -556,7 +637,7 @@ type WorkspaceUpdateOptions struct {
 	// organization provides.
 	//
 	// In general, it's not necessary to mark a setting as `true` in this
-	// struct; if you provide a literal value for a setting, Terraform Cloud will
+	// struct; if you provide a literal value for a setting, HCP Terraform will
 	// automatically update its overwrites field to `true`. If you do choose to
 	// manually mark a setting as overwritten, you must provide a value for that
 	// setting at the same time.
@@ -565,6 +646,10 @@ type WorkspaceUpdateOptions struct {
 	// Associated Project with the workspace. If not provided, default project
 	// of the organization will be assigned to the workspace
 	Project *Project `jsonapi:"relation,project,omitempty"`
+
+	// Associated TagBindings of the project. Note that this will replace
+	// all existing tag bindings.
+	TagBindings []*TagBinding `jsonapi:"relation,tag-bindings,omitempty"`
 }
 
 // WorkspaceLockOptions represents the options for locking a workspace.
@@ -655,8 +740,14 @@ func (s *workspaces) List(ctx context.Context, organization string, options *Wor
 		return nil, err
 	}
 
-	u := fmt.Sprintf("organizations/%s/workspaces", url.QueryEscape(organization))
-	req, err := s.client.NewRequest("GET", u, options)
+	var tagFilters map[string][]string
+	if options != nil {
+		tagFilters = encodeTagFiltersAsParams(options.TagBindings)
+	}
+
+	// Encode parameters that cannot be encoded by go-querystring
+	u := fmt.Sprintf("organizations/%s/workspaces", url.PathEscape(organization))
+	req, err := s.client.NewRequestWithAdditionalQueryParams("GET", u, options, tagFilters)
 	if err != nil {
 		return nil, err
 	}
@@ -670,6 +761,105 @@ func (s *workspaces) List(ctx context.Context, organization string, options *Wor
 	return wl, nil
 }
 
+func (s *workspaces) ListTagBindings(ctx context.Context, workspaceID string) ([]*TagBinding, error) {
+	if !validStringID(&workspaceID) {
+		return nil, ErrInvalidWorkspaceID
+	}
+
+	u := fmt.Sprintf("workspaces/%s/tag-bindings", url.PathEscape(workspaceID))
+	req, err := s.client.NewRequest("GET", u, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	var list struct {
+		*Pagination
+		Items []*TagBinding
+	}
+
+	err = req.Do(ctx, &list)
+	if err != nil {
+		return nil, err
+	}
+
+	return list.Items, nil
+}
+
+func (s *workspaces) ListEffectiveTagBindings(ctx context.Context, workspaceID string) ([]*EffectiveTagBinding, error) {
+	if !validStringID(&workspaceID) {
+		return nil, ErrInvalidWorkspaceID
+	}
+
+	u := fmt.Sprintf("workspaces/%s/effective-tag-bindings", url.PathEscape(workspaceID))
+	req, err := s.client.NewRequest("GET", u, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	var list struct {
+		*Pagination
+		Items []*EffectiveTagBinding
+	}
+
+	err = req.Do(ctx, &list)
+	if err != nil {
+		return nil, err
+	}
+
+	return list.Items, nil
+}
+
+// AddTagBindings adds or modifies the value of existing tag binding keys for a workspace.
+func (s *workspaces) AddTagBindings(ctx context.Context, workspaceID string, options WorkspaceAddTagBindingsOptions) ([]*TagBinding, error) {
+	if !validStringID(&workspaceID) {
+		return nil, ErrInvalidWorkspaceID
+	}
+
+	if err := options.valid(); err != nil {
+		return nil, err
+	}
+
+	u := fmt.Sprintf("workspaces/%s/tag-bindings", url.PathEscape(workspaceID))
+	req, err := s.client.NewRequest("PATCH", u, options.TagBindings)
+	if err != nil {
+		return nil, err
+	}
+
+	var response = struct {
+		*Pagination
+		Items []*TagBinding
+	}{}
+	err = req.Do(ctx, &response)
+
+	return response.Items, err
+}
+
+// DeleteAllTagBindings removes all tag bindings associated with a workspace.
+// This method will not remove any inherited tag bindings, which must be
+// explicitly removed from the parent project.
+func (s *workspaces) DeleteAllTagBindings(ctx context.Context, workspaceID string) error {
+	if !validStringID(&workspaceID) {
+		return ErrInvalidWorkspaceID
+	}
+
+	type aliasOpts struct {
+		Type        string        `jsonapi:"primary,workspaces"`
+		TagBindings []*TagBinding `jsonapi:"relation,tag-bindings"`
+	}
+
+	opts := &aliasOpts{
+		TagBindings: []*TagBinding{},
+	}
+
+	u := fmt.Sprintf("workspaces/%s", url.PathEscape(workspaceID))
+	req, err := s.client.NewRequest("PATCH", u, opts)
+	if err != nil {
+		return err
+	}
+
+	return req.Do(ctx, nil)
+}
+
 // Create is used to create a new workspace.
 func (s *workspaces) Create(ctx context.Context, organization string, options WorkspaceCreateOptions) (*Workspace, error) {
 	if !validStringID(&organization) {
@@ -679,7 +869,7 @@ func (s *workspaces) Create(ctx context.Context, organization string, options Wo
 		return nil, err
 	}
 
-	u := fmt.Sprintf("organizations/%s/workspaces", url.QueryEscape(organization))
+	u := fmt.Sprintf("organizations/%s/workspaces", url.PathEscape(organization))
 	req, err := s.client.NewRequest("POST", u, &options)
 	if err != nil {
 		return nil, err
@@ -713,8 +903,8 @@ func (s *workspaces) ReadWithOptions(ctx context.Context, organization, workspac
 
 	u := fmt.Sprintf(
 		"organizations/%s/workspaces/%s",
-		url.QueryEscape(organization),
-		url.QueryEscape(workspace),
+		url.PathEscape(organization),
+		url.PathEscape(workspace),
 	)
 	req, err := s.client.NewRequest("GET", u, options)
 	if err != nil {
@@ -726,6 +916,9 @@ func (s *workspaces) ReadWithOptions(ctx context.Context, organization, workspac
 	if err != nil {
 		return nil, err
 	}
+
+	// Manually populate the deprecated DataRetentionPolicy field
+	w.DataRetentionPolicy = w.DataRetentionPolicyChoice.ConvertToLegacyStruct()
 
 	// durations come over in ms
 	w.ApplyDurationAverage *= time.Millisecond
@@ -745,7 +938,7 @@ func (s *workspaces) ReadByIDWithOptions(ctx context.Context, workspaceID string
 		return nil, ErrInvalidWorkspaceID
 	}
 
-	u := fmt.Sprintf("workspaces/%s", url.QueryEscape(workspaceID))
+	u := fmt.Sprintf("workspaces/%s", url.PathEscape(workspaceID))
 	req, err := s.client.NewRequest("GET", u, options)
 	if err != nil {
 		return nil, err
@@ -755,6 +948,11 @@ func (s *workspaces) ReadByIDWithOptions(ctx context.Context, workspaceID string
 	err = req.Do(ctx, w)
 	if err != nil {
 		return nil, err
+	}
+
+	// Manually populate the deprecated DataRetentionPolicy field
+	if w.DataRetentionPolicyChoice != nil {
+		w.DataRetentionPolicy = w.DataRetentionPolicyChoice.ConvertToLegacyStruct()
 	}
 
 	// durations come over in ms
@@ -770,7 +968,7 @@ func (s *workspaces) Readme(ctx context.Context, workspaceID string) (io.Reader,
 		return nil, ErrInvalidWorkspaceID
 	}
 
-	u := fmt.Sprintf("workspaces/%s?include=readme", url.QueryEscape(workspaceID))
+	u := fmt.Sprintf("workspaces/%s?include=readme", url.PathEscape(workspaceID))
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, err
@@ -802,8 +1000,8 @@ func (s *workspaces) Update(ctx context.Context, organization, workspace string,
 
 	u := fmt.Sprintf(
 		"organizations/%s/workspaces/%s",
-		url.QueryEscape(organization),
-		url.QueryEscape(workspace),
+		url.PathEscape(organization),
+		url.PathEscape(workspace),
 	)
 	req, err := s.client.NewRequest("PATCH", u, &options)
 	if err != nil {
@@ -825,7 +1023,7 @@ func (s *workspaces) UpdateByID(ctx context.Context, workspaceID string, options
 		return nil, ErrInvalidWorkspaceID
 	}
 
-	u := fmt.Sprintf("workspaces/%s", url.QueryEscape(workspaceID))
+	u := fmt.Sprintf("workspaces/%s", url.PathEscape(workspaceID))
 	req, err := s.client.NewRequest("PATCH", u, &options)
 	if err != nil {
 		return nil, err
@@ -851,8 +1049,8 @@ func (s *workspaces) Delete(ctx context.Context, organization, workspace string)
 
 	u := fmt.Sprintf(
 		"organizations/%s/workspaces/%s",
-		url.QueryEscape(organization),
-		url.QueryEscape(workspace),
+		url.PathEscape(organization),
+		url.PathEscape(workspace),
 	)
 	req, err := s.client.NewRequest("DELETE", u, nil)
 	if err != nil {
@@ -868,7 +1066,7 @@ func (s *workspaces) DeleteByID(ctx context.Context, workspaceID string) error {
 		return ErrInvalidWorkspaceID
 	}
 
-	u := fmt.Sprintf("workspaces/%s", url.QueryEscape(workspaceID))
+	u := fmt.Sprintf("workspaces/%s", url.PathEscape(workspaceID))
 	req, err := s.client.NewRequest("DELETE", u, nil)
 	if err != nil {
 		return err
@@ -888,8 +1086,8 @@ func (s *workspaces) SafeDelete(ctx context.Context, organization, workspace str
 
 	u := fmt.Sprintf(
 		"organizations/%s/workspaces/%s/actions/safe-delete",
-		url.QueryEscape(organization),
-		url.QueryEscape(workspace),
+		url.PathEscape(organization),
+		url.PathEscape(workspace),
 	)
 	req, err := s.client.NewRequest("POST", u, nil)
 	if err != nil {
@@ -905,7 +1103,7 @@ func (s *workspaces) SafeDeleteByID(ctx context.Context, workspaceID string) err
 		return ErrInvalidWorkspaceID
 	}
 
-	u := fmt.Sprintf("workspaces/%s/actions/safe-delete", url.QueryEscape(workspaceID))
+	u := fmt.Sprintf("workspaces/%s/actions/safe-delete", url.PathEscape(workspaceID))
 	req, err := s.client.NewRequest("POST", u, nil)
 	if err != nil {
 		return err
@@ -925,8 +1123,8 @@ func (s *workspaces) RemoveVCSConnection(ctx context.Context, organization, work
 
 	u := fmt.Sprintf(
 		"organizations/%s/workspaces/%s",
-		url.QueryEscape(organization),
-		url.QueryEscape(workspace),
+		url.PathEscape(organization),
+		url.PathEscape(workspace),
 	)
 
 	req, err := s.client.NewRequest("PATCH", u, &workspaceRemoveVCSConnectionOptions{})
@@ -949,7 +1147,7 @@ func (s *workspaces) RemoveVCSConnectionByID(ctx context.Context, workspaceID st
 		return nil, ErrInvalidWorkspaceID
 	}
 
-	u := fmt.Sprintf("workspaces/%s", url.QueryEscape(workspaceID))
+	u := fmt.Sprintf("workspaces/%s", url.PathEscape(workspaceID))
 
 	req, err := s.client.NewRequest("PATCH", u, &workspaceRemoveVCSConnectionOptions{})
 	if err != nil {
@@ -971,7 +1169,7 @@ func (s *workspaces) Lock(ctx context.Context, workspaceID string, options Works
 		return nil, ErrInvalidWorkspaceID
 	}
 
-	u := fmt.Sprintf("workspaces/%s/actions/lock", url.QueryEscape(workspaceID))
+	u := fmt.Sprintf("workspaces/%s/actions/lock", url.PathEscape(workspaceID))
 	req, err := s.client.NewRequest("POST", u, &options)
 	if err != nil {
 		return nil, err
@@ -992,7 +1190,7 @@ func (s *workspaces) Unlock(ctx context.Context, workspaceID string) (*Workspace
 		return nil, ErrInvalidWorkspaceID
 	}
 
-	u := fmt.Sprintf("workspaces/%s/actions/unlock", url.QueryEscape(workspaceID))
+	u := fmt.Sprintf("workspaces/%s/actions/unlock", url.PathEscape(workspaceID))
 	req, err := s.client.NewRequest("POST", u, nil)
 	if err != nil {
 		return nil, err
@@ -1001,6 +1199,9 @@ func (s *workspaces) Unlock(ctx context.Context, workspaceID string) (*Workspace
 	w := &Workspace{}
 	err = req.Do(ctx, w)
 	if err != nil {
+		if strings.Contains(err.Error(), "latest state version is still pending") {
+			return nil, ErrWorkspaceLockedStateVersionStillPending
+		}
 		return nil, err
 	}
 
@@ -1013,7 +1214,7 @@ func (s *workspaces) ForceUnlock(ctx context.Context, workspaceID string) (*Work
 		return nil, ErrInvalidWorkspaceID
 	}
 
-	u := fmt.Sprintf("workspaces/%s/actions/force-unlock", url.QueryEscape(workspaceID))
+	u := fmt.Sprintf("workspaces/%s/actions/force-unlock", url.PathEscape(workspaceID))
 	req, err := s.client.NewRequest("POST", u, nil)
 	if err != nil {
 		return nil, err
@@ -1037,7 +1238,7 @@ func (s *workspaces) AssignSSHKey(ctx context.Context, workspaceID string, optio
 		return nil, err
 	}
 
-	u := fmt.Sprintf("workspaces/%s/relationships/ssh-key", url.QueryEscape(workspaceID))
+	u := fmt.Sprintf("workspaces/%s/relationships/ssh-key", url.PathEscape(workspaceID))
 	req, err := s.client.NewRequest("PATCH", u, &options)
 	if err != nil {
 		return nil, err
@@ -1058,7 +1259,7 @@ func (s *workspaces) UnassignSSHKey(ctx context.Context, workspaceID string) (*W
 		return nil, ErrInvalidWorkspaceID
 	}
 
-	u := fmt.Sprintf("workspaces/%s/relationships/ssh-key", url.QueryEscape(workspaceID))
+	u := fmt.Sprintf("workspaces/%s/relationships/ssh-key", url.PathEscape(workspaceID))
 	req, err := s.client.NewRequest("PATCH", u, &workspaceUnassignSSHKeyOptions{})
 	if err != nil {
 		return nil, err
@@ -1079,7 +1280,7 @@ func (s *workspaces) ListRemoteStateConsumers(ctx context.Context, workspaceID s
 		return nil, ErrInvalidWorkspaceID
 	}
 
-	u := fmt.Sprintf("workspaces/%s/relationships/remote-state-consumers", url.QueryEscape(workspaceID))
+	u := fmt.Sprintf("workspaces/%s/relationships/remote-state-consumers", url.PathEscape(workspaceID))
 
 	req, err := s.client.NewRequest("GET", u, options)
 	if err != nil {
@@ -1104,7 +1305,7 @@ func (s *workspaces) AddRemoteStateConsumers(ctx context.Context, workspaceID st
 		return err
 	}
 
-	u := fmt.Sprintf("workspaces/%s/relationships/remote-state-consumers", url.QueryEscape(workspaceID))
+	u := fmt.Sprintf("workspaces/%s/relationships/remote-state-consumers", url.PathEscape(workspaceID))
 	req, err := s.client.NewRequest("POST", u, options.Workspaces)
 	if err != nil {
 		return err
@@ -1122,7 +1323,7 @@ func (s *workspaces) RemoveRemoteStateConsumers(ctx context.Context, workspaceID
 		return err
 	}
 
-	u := fmt.Sprintf("workspaces/%s/relationships/remote-state-consumers", url.QueryEscape(workspaceID))
+	u := fmt.Sprintf("workspaces/%s/relationships/remote-state-consumers", url.PathEscape(workspaceID))
 	req, err := s.client.NewRequest("DELETE", u, options.Workspaces)
 	if err != nil {
 		return err
@@ -1140,7 +1341,7 @@ func (s *workspaces) UpdateRemoteStateConsumers(ctx context.Context, workspaceID
 		return err
 	}
 
-	u := fmt.Sprintf("workspaces/%s/relationships/remote-state-consumers", url.QueryEscape(workspaceID))
+	u := fmt.Sprintf("workspaces/%s/relationships/remote-state-consumers", url.PathEscape(workspaceID))
 	req, err := s.client.NewRequest("PATCH", u, options.Workspaces)
 	if err != nil {
 		return err
@@ -1155,7 +1356,7 @@ func (s *workspaces) ListTags(ctx context.Context, workspaceID string, options *
 		return nil, ErrInvalidWorkspaceID
 	}
 
-	u := fmt.Sprintf("workspaces/%s/relationships/tags", url.QueryEscape(workspaceID))
+	u := fmt.Sprintf("workspaces/%s/relationships/tags", url.PathEscape(workspaceID))
 
 	req, err := s.client.NewRequest("GET", u, options)
 	if err != nil {
@@ -1180,7 +1381,7 @@ func (s *workspaces) AddTags(ctx context.Context, workspaceID string, options Wo
 		return err
 	}
 
-	u := fmt.Sprintf("workspaces/%s/relationships/tags", url.QueryEscape(workspaceID))
+	u := fmt.Sprintf("workspaces/%s/relationships/tags", url.PathEscape(workspaceID))
 	req, err := s.client.NewRequest("POST", u, options.Tags)
 	if err != nil {
 		return err
@@ -1198,7 +1399,7 @@ func (s *workspaces) RemoveTags(ctx context.Context, workspaceID string, options
 		return err
 	}
 
-	u := fmt.Sprintf("workspaces/%s/relationships/tags", url.QueryEscape(workspaceID))
+	u := fmt.Sprintf("workspaces/%s/relationships/tags", url.PathEscape(workspaceID))
 	req, err := s.client.NewRequest("DELETE", u, options.Tags)
 	if err != nil {
 		return err
@@ -1212,7 +1413,7 @@ func (s *workspaces) ReadDataRetentionPolicy(ctx context.Context, workspaceID st
 		return nil, ErrInvalidWorkspaceID
 	}
 
-	u := fmt.Sprintf("workspaces/%s/relationships/data-retention-policy", url.QueryEscape(workspaceID))
+	u := fmt.Sprintf("workspaces/%s/relationships/data-retention-policy", url.PathEscape(workspaceID))
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, err
@@ -1220,6 +1421,65 @@ func (s *workspaces) ReadDataRetentionPolicy(ctx context.Context, workspaceID st
 
 	dataRetentionPolicy := &DataRetentionPolicy{}
 	err = req.Do(ctx, dataRetentionPolicy)
+
+	if err != nil {
+		// try to detect known issue where this function is used with TFE >= 202401,
+		// and direct user towards the V2 function
+		if drpUnmarshalEr.MatchString(err.Error()) {
+			return nil, fmt.Errorf("error reading deprecated DataRetentionPolicy, use ReadDataRetentionPolicyChoice instead")
+		}
+		return nil, err
+	}
+
+	return dataRetentionPolicy, nil
+}
+
+func (s *workspaces) ReadDataRetentionPolicyChoice(ctx context.Context, workspaceID string) (*DataRetentionPolicyChoice, error) {
+	if !validStringID(&workspaceID) {
+		return nil, ErrInvalidWorkspaceID
+	}
+
+	// The API to read the drp is workspaces/<id>/relationships/data-retention-policy
+	// However, this API can return multiple "types" (e.g. data-retention-policy-delete-olders, or data-retention-policy-dont-deletes)
+	// Ideally we would deserialize this directly into the choice type (DataRetentionPolicyChoice)...however, there isn't a way to
+	// tell the current jsonapi implementation that the direct result of an endpoint could be different types. Relationships can be polymorphic,
+	// but the direct result of an endpoint can't be (as far as the jsonapi implementation is concerned)
+
+	// Instead, we need to figure out the type of the data retention policy first, and deserialize it into the matching model. We
+	// can then create a choice type manually
+	ws, err := s.ReadByID(ctx, workspaceID)
+	if err != nil {
+		return nil, err
+	}
+
+	// there is no drp (of a known type)
+	if ws.DataRetentionPolicyChoice == nil || !ws.DataRetentionPolicyChoice.IsPopulated() {
+		return ws.DataRetentionPolicyChoice, nil
+	}
+
+	u := s.dataRetentionPolicyLink(workspaceID)
+	req, err := s.client.NewRequest("GET", u, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	dataRetentionPolicy := &DataRetentionPolicyChoice{}
+	// if reading the workspace told us it was a "delete older policy" deserialize into the DeleteOlder portion of the choice model
+	if ws.DataRetentionPolicyChoice.DataRetentionPolicyDeleteOlder != nil {
+		deleteOlder := &DataRetentionPolicyDeleteOlder{}
+		err = req.Do(ctx, deleteOlder)
+		dataRetentionPolicy.DataRetentionPolicyDeleteOlder = deleteOlder
+
+		// if reading the workspace told us it was a "delete older policy" deserialize into the DeleteOlder portion of the choice model
+	} else if ws.DataRetentionPolicyChoice.DataRetentionPolicyDontDelete != nil {
+		dontDelete := &DataRetentionPolicyDontDelete{}
+		err = req.Do(ctx, dontDelete)
+		dataRetentionPolicy.DataRetentionPolicyDontDelete = dontDelete
+	} else if ws.DataRetentionPolicyChoice != nil {
+		legacyDrp := &DataRetentionPolicy{}
+		err = req.Do(ctx, legacyDrp)
+		dataRetentionPolicy.DataRetentionPolicy = legacyDrp
+	}
 
 	if err != nil {
 		return nil, err
@@ -1233,7 +1493,7 @@ func (s *workspaces) SetDataRetentionPolicy(ctx context.Context, workspaceID str
 		return nil, ErrInvalidWorkspaceID
 	}
 
-	u := fmt.Sprintf("workspaces/%s/relationships/data-retention-policy", url.QueryEscape(workspaceID))
+	u := s.dataRetentionPolicyLink(workspaceID)
 	req, err := s.client.NewRequest("PATCH", u, &options)
 	if err != nil {
 		return nil, err
@@ -1249,18 +1509,68 @@ func (s *workspaces) SetDataRetentionPolicy(ctx context.Context, workspaceID str
 	return dataRetentionPolicy, nil
 }
 
+func (s *workspaces) SetDataRetentionPolicyDeleteOlder(ctx context.Context, workspaceID string, options DataRetentionPolicyDeleteOlderSetOptions) (*DataRetentionPolicyDeleteOlder, error) {
+	if !validStringID(&workspaceID) {
+		return nil, ErrInvalidWorkspaceID
+	}
+
+	u := s.dataRetentionPolicyLink(workspaceID)
+	req, err := s.client.NewRequest("POST", u, &options)
+	if err != nil {
+		return nil, err
+	}
+
+	dataRetentionPolicy := &DataRetentionPolicyDeleteOlder{}
+	err = req.Do(ctx, dataRetentionPolicy)
+
+	if err != nil {
+		return nil, err
+	}
+
+	return dataRetentionPolicy, nil
+}
+
+func (s *workspaces) SetDataRetentionPolicyDontDelete(ctx context.Context, workspaceID string, options DataRetentionPolicyDontDeleteSetOptions) (*DataRetentionPolicyDontDelete, error) {
+	if !validStringID(&workspaceID) {
+		return nil, ErrInvalidWorkspaceID
+	}
+
+	u := s.dataRetentionPolicyLink(workspaceID)
+	req, err := s.client.NewRequest("POST", u, &options)
+	if err != nil {
+		return nil, err
+	}
+
+	dataRetentionPolicy := &DataRetentionPolicyDontDelete{}
+	err = req.Do(ctx, dataRetentionPolicy)
+
+	if err != nil {
+		return nil, err
+	}
+
+	return dataRetentionPolicy, nil
+}
+
 func (s *workspaces) DeleteDataRetentionPolicy(ctx context.Context, workspaceID string) error {
 	if !validStringID(&workspaceID) {
 		return ErrInvalidWorkspaceID
 	}
 
-	u := fmt.Sprintf("workspaces/%s/relationships/data-retention-policy", url.QueryEscape(workspaceID))
+	u := s.dataRetentionPolicyLink(workspaceID)
 	req, err := s.client.NewRequest("DELETE", u, nil)
 	if err != nil {
 		return err
 	}
 
 	return req.Do(ctx, nil)
+}
+
+func (o WorkspaceAddTagBindingsOptions) valid() error {
+	if len(o.TagBindings) == 0 {
+		return ErrRequiredTagBindings
+	}
+
+	return nil
 }
 
 func (o WorkspaceCreateOptions) valid() error {
@@ -1279,7 +1589,7 @@ func (o WorkspaceCreateOptions) valid() error {
 	if o.AgentPoolID == nil && (o.ExecutionMode != nil && *o.ExecutionMode == "agent") {
 		return ErrRequiredAgentPoolID
 	}
-	if o.TriggerPrefixes != nil && len(o.TriggerPrefixes) > 0 &&
+	if len(o.TriggerPrefixes) > 0 &&
 		o.TriggerPatterns != nil && len(o.TriggerPatterns) > 0 {
 		return ErrUnsupportedBothTriggerPatternsAndPrefixes
 	}
@@ -1309,7 +1619,7 @@ func (o WorkspaceUpdateOptions) valid() error {
 	if o.AgentPoolID == nil && (o.ExecutionMode != nil && *o.ExecutionMode == "agent") {
 		return ErrRequiredAgentPoolID
 	}
-	if o.TriggerPrefixes != nil && len(o.TriggerPrefixes) > 0 &&
+	if len(o.TriggerPrefixes) > 0 &&
 		o.TriggerPatterns != nil && len(o.TriggerPatterns) > 0 {
 		return ErrUnsupportedBothTriggerPatternsAndPrefixes
 	}
@@ -1412,4 +1722,8 @@ func tagRegexDefined(options *VCSRepoOptions) bool {
 		return true
 	}
 	return false
+}
+
+func (s *workspaces) dataRetentionPolicyLink(wsID string) string {
+	return fmt.Sprintf("workspaces/%s/relationships/data-retention-policy", url.PathEscape(wsID))
 }

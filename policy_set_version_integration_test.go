@@ -5,6 +5,7 @@ package tfe
 
 import (
 	"context"
+	"os"
 	"testing"
 	"time"
 
@@ -79,7 +80,7 @@ func TestPolicySetVersionsUpload(t *testing.T) {
 		)
 		require.NoError(t, err)
 
-		// give TFC some time to process uploading the
+		// give HCP Terraform some time to process uploading the
 		// policy set version before reading.
 		time.Sleep(waitForPolicySetVersionUpload)
 
@@ -137,5 +138,69 @@ func TestPolicySetVersionsUploadURL(t *testing.T) {
 
 		_, err := psv.uploadURL()
 		assert.EqualError(t, err, "the Policy Set Version upload URL is empty")
+	})
+}
+
+func TestPolicySetVersionsIngressAttributes(t *testing.T) {
+	client := testClient(t)
+	ctx := context.Background()
+
+	orgTest, orgTestCleanup := createOrganization(t, client)
+	t.Cleanup(orgTestCleanup)
+
+	upgradeOrganizationSubscription(t, client, orgTest)
+
+	t.Run("with vcs", func(t *testing.T) {
+		githubIdentifier := os.Getenv("GITHUB_POLICY_SET_IDENTIFIER")
+		if githubIdentifier == "" {
+			t.Skip("Export a valid GITHUB_POLICY_SET_IDENTIFIER before running this test")
+		}
+
+		otTest, otTestCleanup := createOAuthToken(t, client, orgTest)
+		t.Cleanup(otTestCleanup)
+
+		options := PolicySetCreateOptions{
+			Name:         String("vcs-policy-set"),
+			Kind:         Sentinel,
+			PoliciesPath: String("policy-sets/foo"),
+			VCSRepo: &VCSRepoOptions{
+				Branch:            String("policies"),
+				Identifier:        String(githubIdentifier),
+				OAuthTokenID:      String(otTest.ID),
+				IngressSubmodules: Bool(true),
+			},
+		}
+
+		ps, err := client.PolicySets.Create(ctx, orgTest.Name, options)
+		require.NoError(t, err)
+
+		ps, err = client.PolicySets.ReadWithOptions(ctx, ps.ID, &PolicySetReadOptions{
+			Include: []PolicySetIncludeOpt{
+				PolicySetNewestVersion,
+			},
+		})
+		require.NoError(t, err)
+
+		psv, err := client.PolicySetVersions.Read(ctx, ps.NewestVersion.ID)
+		require.NoError(t, err)
+
+		require.NotNil(t, psv.IngressAttributes)
+		assert.NotZero(t, psv.IngressAttributes.CommitSHA)
+		assert.NotZero(t, psv.IngressAttributes.CommitURL)
+		assert.NotZero(t, psv.IngressAttributes.Identifier)
+	})
+
+	t.Run("without vcs", func(t *testing.T) {
+		psTest, psTestCleanup := createPolicySet(t, client, nil, nil, nil, nil, nil, "")
+		t.Cleanup(psTestCleanup)
+
+		psv, err := client.PolicySetVersions.Create(ctx, psTest.ID)
+		require.NoError(t, err)
+
+		assert.NotEmpty(t, psv.ID)
+		assert.Equal(t, psv.Source, PolicySetVersionSourceAPI)
+		assert.Equal(t, psv.PolicySet.ID, psTest.ID)
+
+		assert.Nil(t, psv.IngressAttributes)
 	})
 }

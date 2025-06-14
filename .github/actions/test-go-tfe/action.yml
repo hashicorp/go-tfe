@@ -11,31 +11,31 @@ inputs:
     description: Total number of matrix strategy runners
     required: true
   address:
-    description: Address of the Terraform Cloud instance to test against
+    description: Address of the HCP Terraform instance to test against
     required: true
   admin_configuration_token:
-    description: TFC Admin API Configuration role token
+    description: HCP Terraform Admin API Configuration role token
     required: true
   admin_provision_licenses_token:
-    description: TFC Admin API Provision Licenses role token
+    description: HCP Terraform Admin API Provision Licenses role token
     required: true
   admin_security_maintenance_token:
-    description: TFC Admin API Security Maintenance role token
+    description: HCP Terraform Admin API Security Maintenance role token
     required: true
   admin_site_admin_token:
-    description: TFC Admin API Site Admin role token
+    description: HCP Terraform Admin API Site Admin role token
     required: true
   admin_subscription_token:
-    description: TFC Admin API Subscription role token
+    description: HCP Terraform Admin API Subscription role token
     required: true
   admin_support_token:
-    description: TFC Admin API Support role token
+    description: HCP Terraform Admin API Support role token
     required: true
   admin_version_maintenance_token:
-    description: TFC Admin API Version Maintenance role token
+    description: HCP Terraform Admin API Version Maintenance role token
     required: true
   token:
-    description: Terraform Cloud token
+    description: HCP Terraform token
     required: true
   oauth-client-github-token:
     description: The GitHub token used for testing OAuth scenarios for VCS workspaces
@@ -48,7 +48,7 @@ runs:
   using: composite
   steps:
     - name: Set up Go
-      uses: actions/setup-go@4d34df0c2316fe8122ab82dc22947d607c0c91f9 # v4.0.0
+      uses: actions/setup-go@d35c59abb061a4a6fb18e82ac0862c26744d6ab5 # v5.5.0
       with:
         go-version-file: go.mod
         cache: true
@@ -65,7 +65,7 @@ runs:
 
     - name: Download artifact
       id: download-artifact
-      uses: dawidd6/action-download-artifact@246dbf436b23d7c49e21a7ab8204ca9ecd1fe615 # v2.27.0
+      uses: dawidd6/action-download-artifact@09f2f74827fd3a8607589e5ad7f9398816f540fe # v3.1.4
       with:
         workflow_conclusion: success
         name: junit-test-summary
@@ -95,15 +95,18 @@ runs:
         TFC_RUN_TASK_URL: "http://testing-mocks.tfe:22180/runtasks/pass"
         GITHUB_POLICY_SET_IDENTIFIER: "hashicorp/test-policy-set"
         GITHUB_REGISTRY_MODULE_IDENTIFIER: "hashicorp/terraform-random-module"
+        GITHUB_REGISTRY_NO_CODE_MODULE_IDENTIFIER: "hashicorp/terraform-random-no-code-module"
         OAUTH_CLIENT_GITHUB_TOKEN: "${{ inputs.oauth-client-github-token }}"
         GO111MODULE: "on"
         ENABLE_TFE: ${{ inputs.enterprise }}
       run: |
-        gotestsum --junitfile summary.xml --format short-verbose -- -timeout=29m -run "${{ steps.test_split.outputs.run }}"
+        gotestsum --junitfile summary.xml --format short-verbose -- -parallel=1 -timeout=59m -coverprofile cover.out -run "${{ steps.test_split.outputs.run }}"
 
     - name: Upload test artifacts
-      uses: actions/upload-artifact@0b7f8abb1508181956e8e162db84b466c27e18ce # v3.1.2
+      uses: actions/upload-artifact@65c4c4a1ddee5b72f698fdd19549f0f0fb45cf08 # v4.6.0
       with:
         name: junit-test-summary-${{ matrix.index }}
-        path: summary.xml
+        path: |
+          summary.xml
+          cover.out
         retention-days: 1

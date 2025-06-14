@@ -5,9 +5,10 @@ package tfe
 
 import (
 	"context"
+	"testing"
+
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
-	"testing"
 )
 
 func TestWorkspaceResourcesList(t *testing.T) {
@@ -23,7 +24,7 @@ func TestWorkspaceResourcesList(t *testing.T) {
 	svTest, svTestCleanup := createStateVersion(t, client, 0, wTest)
 	t.Cleanup(svTestCleanup)
 
-	// give TFC some time to process the statefile and extract the outputs.
+	// give HCP Terraform some time to process the statefile and extract the outputs.
 	waitForSVOutputs(t, client, svTest.ID)
 
 	t.Run("without list options", func(t *testing.T) {
@@ -33,10 +34,10 @@ func TestWorkspaceResourcesList(t *testing.T) {
 		assert.Equal(t, 1, rs.CurrentPage)
 		assert.Equal(t, 1, rs.TotalCount)
 
-		assert.Equal(t, "null_resource.test", rs.Items[0].Address)
-		assert.Equal(t, "test", rs.Items[0].Name)
-		assert.Equal(t, "root", rs.Items[0].Module)
-		assert.Equal(t, "null", rs.Items[0].Provider)
+		assert.Equal(t, "media_bucket.aws_s3_bucket_public_access_block.this[0]", rs.Items[0].Address)
+		assert.Equal(t, "this", rs.Items[0].Name)
+		assert.Equal(t, "media_bucket", rs.Items[0].Module)
+		assert.Equal(t, "hashicorp/aws", rs.Items[0].Provider)
 	})
 	t.Run("with list options", func(t *testing.T) {
 		rs, err := client.WorkspaceResources.List(ctx, wTest.ID, &WorkspaceResourceListOptions{

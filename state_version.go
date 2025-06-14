@@ -58,7 +58,7 @@ type StateVersions interface {
 	// Download retrieves the actual stored state of a state version
 	Download(ctx context.Context, url string) ([]byte, error)
 
-	// ListOutputs retrieves all the outputs of a state version by its ID. IMPORTANT: Terraform Cloud might
+	// ListOutputs retrieves all the outputs of a state version by its ID. IMPORTANT: HCP Terraform might
 	// process outputs asynchronously. When consuming outputs or other async StateVersion fields, be sure to
 	// wait for ResourcesProcessed to become `true` before assuming they are empty.
 	ListOutputs(ctx context.Context, svID string, options *StateVersionOutputsListOptions) (*StateVersionOutputsList, error)
@@ -89,17 +89,18 @@ type StateVersionList struct {
 
 // StateVersion represents a Terraform Enterprise state version.
 type StateVersion struct {
-	ID              string             `jsonapi:"primary,state-versions"`
-	CreatedAt       time.Time          `jsonapi:"attr,created-at,iso8601"`
-	DownloadURL     string             `jsonapi:"attr,hosted-state-download-url"`
-	UploadURL       string             `jsonapi:"attr,hosted-state-upload-url"`
-	Status          StateVersionStatus `jsonapi:"attr,status"`
-	JSONUploadURL   string             `jsonapi:"attr,hosted-json-state-upload-url"`
-	JSONDownloadURL string             `jsonapi:"attr,hosted-json-state-download-url"`
-	Serial          int64              `jsonapi:"attr,serial"`
-	VCSCommitSHA    string             `jsonapi:"attr,vcs-commit-sha"`
-	VCSCommitURL    string             `jsonapi:"attr,vcs-commit-url"`
-	// Whether Terraform Cloud has finished populating any StateVersion fields that required async processing.
+	ID               string             `jsonapi:"primary,state-versions"`
+	CreatedAt        time.Time          `jsonapi:"attr,created-at,iso8601"`
+	DownloadURL      string             `jsonapi:"attr,hosted-state-download-url"`
+	UploadURL        string             `jsonapi:"attr,hosted-state-upload-url"`
+	Status           StateVersionStatus `jsonapi:"attr,status"`
+	JSONUploadURL    string             `jsonapi:"attr,hosted-json-state-upload-url"`
+	JSONDownloadURL  string             `jsonapi:"attr,hosted-json-state-download-url"`
+	Serial           int64              `jsonapi:"attr,serial"`
+	VCSCommitSHA     string             `jsonapi:"attr,vcs-commit-sha"`
+	VCSCommitURL     string             `jsonapi:"attr,vcs-commit-url"`
+	BillableRUMCount *uint32            `jsonapi:"attr,billable-rum-count"`
+	// Whether HCP Terraform has finished populating any StateVersion fields that required async processing.
 	// If `false`, some fields may appear empty even if they should actually contain data; see comments on
 	// individual fields for details.
 	ResourcesProcessed bool `jsonapi:"attr,resources-processed"`
@@ -264,7 +265,7 @@ func (s *stateVersions) Create(ctx context.Context, workspaceID string, options 
 		return nil, err
 	}
 
-	u := fmt.Sprintf("workspaces/%s/state-versions", url.QueryEscape(workspaceID))
+	u := fmt.Sprintf("workspaces/%s/state-versions", url.PathEscape(workspaceID))
 	req, err := s.client.NewRequest("POST", u, &options)
 	if err != nil {
 		return nil, err
@@ -321,7 +322,7 @@ func (s *stateVersions) ReadWithOptions(ctx context.Context, svID string, option
 		return nil, err
 	}
 
-	u := fmt.Sprintf("state-versions/%s", url.QueryEscape(svID))
+	u := fmt.Sprintf("state-versions/%s", url.PathEscape(svID))
 	req, err := s.client.NewRequest("GET", u, options)
 	if err != nil {
 		return nil, err
@@ -350,7 +351,7 @@ func (s *stateVersions) ReadCurrentWithOptions(ctx context.Context, workspaceID 
 		return nil, err
 	}
 
-	u := fmt.Sprintf("workspaces/%s/current-state-version", url.QueryEscape(workspaceID))
+	u := fmt.Sprintf("workspaces/%s/current-state-version", url.PathEscape(workspaceID))
 	req, err := s.client.NewRequest("GET", u, options)
 	if err != nil {
 		return nil, err
@@ -387,7 +388,7 @@ func (s *stateVersions) Download(ctx context.Context, u string) ([]byte, error) 
 	return buf.Bytes(), nil
 }
 
-// ListOutputs retrieves all the outputs of a state version by its ID. IMPORTANT: Terraform Cloud might
+// ListOutputs retrieves all the outputs of a state version by its ID. IMPORTANT: HCP Terraform might
 // process outputs asynchronously. When consuming outputs or other async StateVersion fields, be sure to
 // wait for ResourcesProcessed to become `true` before assuming they are empty.
 func (s *stateVersions) ListOutputs(ctx context.Context, svID string, options *StateVersionOutputsListOptions) (*StateVersionOutputsList, error) {
@@ -395,7 +396,7 @@ func (s *stateVersions) ListOutputs(ctx context.Context, svID string, options *S
 		return nil, ErrInvalidStateVerID
 	}
 
-	u := fmt.Sprintf("state-versions/%s/outputs", url.QueryEscape(svID))
+	u := fmt.Sprintf("state-versions/%s/outputs", url.PathEscape(svID))
 	req, err := s.client.NewRequest("GET", u, options)
 	if err != nil {
 		return nil, err

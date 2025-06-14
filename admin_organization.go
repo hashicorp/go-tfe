@@ -53,6 +53,8 @@ type AdminOrganization struct {
 	SsoEnabled                       bool   `jsonapi:"attr,sso-enabled"`
 	TerraformBuildWorkerApplyTimeout string `jsonapi:"attr,terraform-build-worker-apply-timeout"`
 	TerraformBuildWorkerPlanTimeout  string `jsonapi:"attr,terraform-build-worker-plan-timeout"`
+	ApplyTimeout                     string `jsonapi:"attr,apply-timeout"`
+	PlanTimeout                      string `jsonapi:"attr,plan-timeout"`
 	TerraformWorkerSudoEnabled       bool   `jsonapi:"attr,terraform-worker-sudo-enabled"`
 	WorkspaceLimit                   *int   `jsonapi:"attr,workspace-limit"`
 
@@ -69,6 +71,8 @@ type AdminOrganizationUpdateOptions struct {
 	IsDisabled                       *bool   `jsonapi:"attr,is-disabled,omitempty"`
 	TerraformBuildWorkerApplyTimeout *string `jsonapi:"attr,terraform-build-worker-apply-timeout,omitempty"`
 	TerraformBuildWorkerPlanTimeout  *string `jsonapi:"attr,terraform-build-worker-plan-timeout,omitempty"`
+	ApplyTimeout                     *string `jsonapi:"attr,apply-timeout,omitempty"`
+	PlanTimeout                      *string `jsonapi:"attr,plan-timeout,omitempty"`
 	TerraformWorkerSudoEnabled       bool    `jsonapi:"attr,terraform-worker-sudo-enabled,omitempty"`
 	WorkspaceLimit                   *int    `jsonapi:"attr,workspace-limit,omitempty"`
 }
@@ -132,7 +136,7 @@ func (s *adminOrganizations) ListModuleConsumers(ctx context.Context, organizati
 		return nil, ErrInvalidOrg
 	}
 
-	u := fmt.Sprintf("admin/organizations/%s/relationships/module-consumers", url.QueryEscape(organization))
+	u := fmt.Sprintf("admin/organizations/%s/relationships/module-consumers", url.PathEscape(organization))
 
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
@@ -154,7 +158,7 @@ func (s *adminOrganizations) Read(ctx context.Context, organization string) (*Ad
 		return nil, ErrInvalidOrg
 	}
 
-	u := fmt.Sprintf("admin/organizations/%s", url.QueryEscape(organization))
+	u := fmt.Sprintf("admin/organizations/%s", url.PathEscape(organization))
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, err
@@ -175,7 +179,7 @@ func (s *adminOrganizations) Update(ctx context.Context, organization string, op
 		return nil, ErrInvalidOrg
 	}
 
-	u := fmt.Sprintf("admin/organizations/%s", url.QueryEscape(organization))
+	u := fmt.Sprintf("admin/organizations/%s", url.PathEscape(organization))
 	req, err := s.client.NewRequest("PATCH", u, &options)
 	if err != nil {
 		return nil, err
@@ -196,7 +200,7 @@ func (s *adminOrganizations) UpdateModuleConsumers(ctx context.Context, organiza
 		return ErrInvalidOrg
 	}
 
-	u := fmt.Sprintf("admin/organizations/%s/relationships/module-consumers", url.QueryEscape(organization))
+	u := fmt.Sprintf("admin/organizations/%s/relationships/module-consumers", url.PathEscape(organization))
 
 	var organizations []*AdminOrganizationID
 	for _, id := range consumerOrganizationIDs {
@@ -225,7 +229,7 @@ func (s *adminOrganizations) Delete(ctx context.Context, organization string) er
 		return ErrInvalidOrg
 	}
 
-	u := fmt.Sprintf("admin/organizations/%s", url.QueryEscape(organization))
+	u := fmt.Sprintf("admin/organizations/%s", url.PathEscape(organization))
 	req, err := s.client.NewRequest("DELETE", u, nil)
 	if err != nil {
 		return err

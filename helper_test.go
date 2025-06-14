@@ -18,7 +18,7 @@ import (
 	"io"
 	"math/rand"
 	"net/http"
-	"net/url"
+	"net/http/httptest"
 	"os"
 	"os/exec"
 	"path/filepath"
@@ -35,33 +35,10 @@ import (
 
 const badIdentifier = "! / nope" //nolint
 const agentVersion = "1.3.0"
+const testInitialClientToken = "insert-your-token-here"
+const testTaskResultCallbackToken = "this-is-task-result-callback-token"
 
 var _testAccountDetails *TestAccountDetails
-
-type featureSet struct {
-	ID string `jsonapi:"primary,feature-sets"`
-}
-
-type featureSetList struct {
-	Items []*featureSet
-	*Pagination
-}
-
-type featureSetListOptions struct {
-	Q string `url:"q,omitempty"`
-}
-
-type retryableFn func() (interface{}, error)
-
-type updateFeatureSetOptions struct {
-	Type               string    `jsonapi:"primary,subscription"`
-	RunsCeiling        int       `jsonapi:"attr,runs-ceiling"`
-	ContractStartAt    time.Time `jsonapi:"attr,contract-start-at,iso8601"`
-	ContractUserLimit  int       `jsonapi:"attr,contract-user-limit"`
-	ContractApplyLimit int       `jsonapi:"attr,contract-apply-limit"`
-
-	FeatureSet *featureSet `jsonapi:"relation,feature-set"`
-}
 
 func testClient(t *testing.T) *Client {
 	client, err := NewClient(&Config{
@@ -143,7 +120,7 @@ func testAuditTrailClient(t *testing.T, userClient *Client, org *Organization) *
 }
 
 // TestAccountDetails represents the basic account information
-// of a TFE/TFC user.
+// of a Terraform Enterprise or HCP Terraform user.
 //
 // See FetchTestAccountDetails for more information.
 type TestAccountDetails struct {
@@ -599,13 +576,18 @@ func createNotificationConfiguration(t *testing.T, client *Client, w *Workspace,
 		w, wCleanup = createWorkspace(t, client, nil)
 	}
 
+	runTaskURL := os.Getenv("TFC_RUN_TASK_URL")
+	if runTaskURL == "" {
+		t.Skip("Cannot create a notification configuration with an empty URL. You must set TFC_RUN_TASK_URL for run task related tests.")
+	}
+
 	if options == nil {
 		options = &NotificationConfigurationCreateOptions{
 			DestinationType: NotificationDestination(NotificationDestinationTypeGeneric),
 			Enabled:         Bool(false),
 			Name:            String(randomString(t)),
 			Token:           String(randomString(t)),
-			URL:             String("http://example.com"),
+			URL:             String(runTaskURL),
 			Triggers:        []NotificationTriggerType{NotificationTriggerCreated},
 		}
 	}
@@ -629,6 +611,55 @@ func createNotificationConfiguration(t *testing.T, client *Client, w *Workspace,
 
 		if wCleanup != nil {
 			wCleanup()
+		}
+	}
+}
+
+func createTeamNotificationConfiguration(t *testing.T, client *Client, team *Team, options *NotificationConfigurationCreateOptions) (*NotificationConfiguration, func()) {
+	var tCleanup func()
+
+	if team == nil {
+		team, tCleanup = createTeam(t, client, nil)
+	}
+
+	// Team notification configurations do not actually require a run task, but we'll
+	// reuse this as a URL that returns a 200.
+	runTaskURL := os.Getenv("TFC_RUN_TASK_URL")
+	if runTaskURL == "" {
+		t.Error("You must set TFC_RUN_TASK_URL for run task related tests.")
+	}
+
+	if options == nil {
+		options = &NotificationConfigurationCreateOptions{
+			DestinationType:    NotificationDestination(NotificationDestinationTypeGeneric),
+			Enabled:            Bool(false),
+			Name:               String(randomString(t)),
+			Token:              String(randomString(t)),
+			URL:                String(runTaskURL),
+			Triggers:           []NotificationTriggerType{NotificationTriggerChangeRequestCreated},
+			SubscribableChoice: &NotificationConfigurationSubscribableChoice{Team: team},
+		}
+	}
+
+	ctx := context.Background()
+	nc, err := client.NotificationConfigurations.Create(
+		ctx,
+		team.ID,
+		*options,
+	)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	return nc, func() {
+		if err := client.NotificationConfigurations.Delete(ctx, nc.ID); err != nil {
+			t.Errorf("Error destroying team notification configuration! WARNING: Dangling\n"+
+				"resources may exist! The full error is shown below.\n\n"+
+				"NotificationConfiguration: %s\nError: %s", nc.ID, err)
+		}
+
+		if tCleanup != nil {
+			tCleanup()
 		}
 	}
 }
@@ -797,20 +828,24 @@ func createPolicyWithOptions(t *testing.T, client *Client, org *Organization, op
 	}
 
 	name := randomString(t)
-	path := name + ".sentinel"
-	if opts.Kind == OPA {
-		path = name + ".rego"
-	}
 	options := PolicyCreateOptions{
-		Name:  String(name),
-		Kind:  opts.Kind,
-		Query: opts.Query,
-		Enforce: []*EnforcementOptions{
+		Name:             String(name),
+		Kind:             opts.Kind,
+		Query:            opts.Query,
+		EnforcementLevel: opts.EnforcementLevel,
+	}
+
+	if len(opts.Enforce) > 0 {
+		path := name + ".sentinel"
+		if opts.Kind == OPA {
+			path = name + ".rego"
+		}
+		options.Enforce = []*EnforcementOptions{
 			{
 				Path: String(path),
 				Mode: opts.Enforce[0].Mode,
 			},
-		},
+		}
 	}
 
 	ctx := context.Background()
@@ -952,6 +987,7 @@ func createOrganization(t *testing.T, client *Client) (*Organization, func()) {
 		Name:                  String("tst-" + randomString(t)),
 		Email:                 String(fmt.Sprintf("%s@tfe.local", randomString(t))),
 		CostEstimationEnabled: Bool(true),
+		StacksEnabled:         Bool(true),
 	})
 }
 
@@ -959,12 +995,12 @@ func createOrganizationWithOptions(t *testing.T, client *Client, options Organiz
 	ctx := context.Background()
 	org, err := client.Organizations.Create(ctx, options)
 	if err != nil {
-		t.Fatal(err)
+		t.Fatalf("Failed to create organization: %s", err)
 	}
 
 	return org, func() {
 		if err := client.Organizations.Delete(ctx, org.Name); err != nil {
-			t.Errorf("Error destroying organization! WARNING: Dangling resources\n"+
+			t.Logf("Error destroying organization! WARNING: Dangling resources\n"+
 				"may exist! The full error is shown below.\n\n"+
 				"Organization: %s\nError: %s", org.Name, err)
 		}
@@ -1121,7 +1157,7 @@ func createPolicyCheckedRun(t *testing.T, client *Client, w *Workspace) (*Run, f
 }
 
 func createPlannedRun(t *testing.T, client *Client, w *Workspace) (*Run, func()) {
-	return createRunWaitForStatus(t, client, w, RunCostEstimated)
+	return createRunWaitForAnyStatuses(t, client, w, []RunStatus{RunCostEstimated, RunPlanned})
 }
 
 func createCostEstimatedRun(t *testing.T, client *Client, w *Workspace) (*Run, func()) {
@@ -2191,7 +2227,7 @@ func createTeamTokenWithOptions(t *testing.T, client *Client, tm *Team, options 
 	}
 
 	return tt, func() {
-		if err := client.TeamTokens.Delete(ctx, tm.ID); err != nil {
+		if err := client.TeamTokens.DeleteByID(ctx, tt.ID); err != nil {
 			t.Errorf("Error destroying team token! WARNING: Dangling resources\n"+
 				"may exist! The full error is shown below.\n\n"+
 				"TeamToken: %s\nError: %s", tm.ID, err)
@@ -2204,19 +2240,48 @@ func createTeamTokenWithOptions(t *testing.T, client *Client, tm *Team, options 
 }
 
 func createVariable(t *testing.T, client *Client, w *Workspace) (*Variable, func()) {
+	options := VariableCreateOptions{
+		Key:         String(randomString(t)),
+		Value:       String(randomString(t)),
+		Category:    Category(CategoryTerraform),
+		Description: String(randomString(t)),
+	}
+	return createVariableWithOptions(t, client, w, options)
+}
+
+func createVariableWithOptions(t *testing.T, client *Client, w *Workspace, options VariableCreateOptions) (*Variable, func()) {
 	var wCleanup func()
 
 	if w == nil {
 		w, wCleanup = createWorkspace(t, client, nil)
 	}
 
+	if options.Key == nil {
+		options.Key = String(randomString(t))
+	}
+
+	if options.Value == nil {
+		options.Value = String(randomString(t))
+	}
+
+	if options.Description == nil {
+		options.Description = String(randomString(t))
+	}
+
+	if options.Category == nil {
+		options.Category = Category(CategoryTerraform)
+	}
+
+	if options.HCL == nil {
+		options.HCL = Bool(false)
+	}
+
+	if options.Sensitive == nil {
+		options.Sensitive = Bool(false)
+	}
+
 	ctx := context.Background()
-	v, err := client.Variables.Create(ctx, w.ID, VariableCreateOptions{
-		Key:         String(randomString(t)),
-		Value:       String(randomString(t)),
-		Category:    Category(CategoryTerraform),
-		Description: String(randomString(t)),
-	})
+	v, err := client.Variables.Create(ctx, w.ID, options)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -2557,52 +2622,18 @@ func createVariableSetVariable(t *testing.T, client *Client, vs *VariableSet, op
 }
 
 // Attempts to upgrade an organization to the business plan. Requires a user token with admin access.
-func upgradeOrganizationSubscription(t *testing.T, client *Client, organization *Organization) {
-	if enterpriseEnabled() {
-		t.Skip("Cannot upgrade an organization's subscription when enterprise is enabled. Set ENABLE_TFE=0 to run.")
-	}
-
-	adminClient := testAdminClient(t, provisionLicensesAdmin)
-	req, err := adminClient.NewRequest("GET", "admin/feature-sets", featureSetListOptions{
-		Q: "Business",
-	})
-	if err != nil {
-		t.Fatal(err)
-		return
-	}
-
-	fsl := &featureSetList{}
-	err = req.Do(context.Background(), fsl)
-	if err != nil {
-		t.Fatalf("failed to enumerate feature sets: %v", err)
-		return
-	} else if len(fsl.Items) == 0 {
-		t.Fatalf("feature set response was empty")
-		return
-	}
-
-	opts := updateFeatureSetOptions{
-		RunsCeiling:        10,
-		ContractStartAt:    time.Now(),
-		ContractUserLimit:  1000,
-		ContractApplyLimit: 5000,
-		FeatureSet:         fsl.Items[0],
-	}
-
-	u := fmt.Sprintf("admin/organizations/%s/subscription", url.QueryEscape(organization.Name))
-	req, err = adminClient.NewRequest("POST", u, &opts)
-	if err != nil {
-		t.Fatalf("Failed to create request: %v", err)
-		return
-	}
-
-	err = req.Do(context.Background(), nil)
-	if err != nil {
-		t.Fatalf("Failed to upgrade subscription: %v", err)
-	}
+// DEPRECATED : Please use the newSubscriptionUpdater instead.
+func upgradeOrganizationSubscription(t *testing.T, _ *Client, organization *Organization) {
+	newSubscriptionUpdater(organization).WithBusinessPlan().Update(t)
 }
 
 func createProject(t *testing.T, client *Client, org *Organization) (*Project, func()) {
+	return createProjectWithOptions(t, client, org, ProjectCreateOptions{
+		Name: randomStringWithoutSpecialChar(t),
+	})
+}
+
+func createProjectWithOptions(t *testing.T, client *Client, org *Organization, options ProjectCreateOptions) (*Project, func()) {
 	var orgCleanup func()
 
 	if org == nil {
@@ -2610,9 +2641,7 @@ func createProject(t *testing.T, client *Client, org *Organization) (*Project, f
 	}
 
 	ctx := context.Background()
-	p, err := client.Projects.Create(ctx, org.Name, ProjectCreateOptions{
-		Name: randomStringWithoutSpecialChar(t),
-	})
+	p, err := client.Projects.Create(ctx, org.Name, options)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -2768,8 +2797,8 @@ func genSha(t *testing.T) string {
 }
 
 // genSafeRandomTerraformVersion returns a random version number of the form
-// `1.0.<RANDOM>`, which TFC won't ever select as the latest available
-// Terraform. (At the time of writing, a fresh TFC instance will include
+// `1.0.<RANDOM>`, which HCP Terraform won't ever select as the latest available
+// Terraform. (At the time of writing, a fresh HCP Terraform instance will include
 // official Terraforms 1.2 and higher.) This is necessary because newly created
 // workspaces default to the latest available version, and there's nothing
 // preventing unrelated processes from creating workspaces during these tests.
@@ -2837,11 +2866,11 @@ func randomSemver(t *testing.T) string {
 	return fmt.Sprintf("%d.%d.%d", rand.Intn(99)+3, rand.Intn(99)+1, rand.Intn(99)+1)
 }
 
-// skips a test if the environment is for Terraform Cloud.
+// skips a test if the environment is for HCP Terraform.
 func skipUnlessEnterprise(t *testing.T) {
 	t.Helper()
 	if !enterpriseEnabled() {
-		t.Skip("Skipping test related to Terraform Cloud. Set ENABLE_TFE=1 to run.")
+		t.Skip("Skipping test related to HCP Terraform. Set ENABLE_TFE=1 to run.")
 	}
 }
 
@@ -2863,7 +2892,7 @@ func skipIfEnterprise(t *testing.T) {
 func skipUnlessBeta(t *testing.T) {
 	t.Helper()
 	if !betaFeaturesEnabled() {
-		t.Skip("Skipping test related to a Terraform Cloud beta feature. Set ENABLE_BETA=1 to run.")
+		t.Skip("Skipping test related to a HCP Terraform beta feature. Set ENABLE_BETA=1 to run.")
 	}
 }
 
@@ -2946,6 +2975,26 @@ func requireExactlyOneNotEmpty(t *testing.T, v ...any) {
 	if empty != len(v)-1 {
 		t.Fatalf("Expected exactly one value to not be empty, but found %d empty values", empty)
 	}
+}
+
+func runTaskCallbackMockServer(t *testing.T) *httptest.Server {
+	return httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		if r.Method == http.MethodGet {
+			return
+		}
+		if r.Header.Get("Accept") != ContentTypeJSONAPI {
+			t.Fatalf("unexpected accept header: %q", r.Header.Get("Accept"))
+		}
+		if r.Header.Get("Authorization") != fmt.Sprintf("Bearer %s", testTaskResultCallbackToken) {
+			t.Fatalf("unexpected authorization header: %q", r.Header.Get("Authorization"))
+		}
+		if r.Header.Get("Authorization") == fmt.Sprintf("Bearer %s", testInitialClientToken) {
+			t.Fatalf("authorization header is still the initial one: %q", r.Header.Get("Authorization"))
+		}
+		if r.Header.Get("User-Agent") != "go-tfe" {
+			t.Fatalf("unexpected user agent header: %q", r.Header.Get("User-Agent"))
+		}
+	}))
 }
 
 // Useless key but enough to pass validation in the API

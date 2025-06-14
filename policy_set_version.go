@@ -69,14 +69,15 @@ type PolicySetVersionStatusTimestamps struct {
 
 // PolicySetVersion represents a Terraform Enterprise Policy Set Version
 type PolicySetVersion struct {
-	ID               string                           `jsonapi:"primary,policy-set-versions"`
-	Source           PolicySetVersionSource           `jsonapi:"attr,source"`
-	Status           PolicySetVersionStatus           `jsonapi:"attr,status"`
-	StatusTimestamps PolicySetVersionStatusTimestamps `jsonapi:"attr,status-timestamps"`
-	Error            string                           `jsonapi:"attr,error"`
-	ErrorMessage     string                           `jsonapi:"attr,error-message"`
-	CreatedAt        time.Time                        `jsonapi:"attr,created-at,iso8601"`
-	UpdatedAt        time.Time                        `jsonapi:"attr,updated-at,iso8601"`
+	ID                string                           `jsonapi:"primary,policy-set-versions"`
+	Source            PolicySetVersionSource           `jsonapi:"attr,source"`
+	Status            PolicySetVersionStatus           `jsonapi:"attr,status"`
+	StatusTimestamps  PolicySetVersionStatusTimestamps `jsonapi:"attr,status-timestamps"`
+	Error             string                           `jsonapi:"attr,error"`
+	ErrorMessage      string                           `jsonapi:"attr,error-message"`
+	CreatedAt         time.Time                        `jsonapi:"attr,created-at,iso8601"`
+	UpdatedAt         time.Time                        `jsonapi:"attr,updated-at,iso8601"`
+	IngressAttributes *IngressAttributes               `jsonapi:"attr,ingress-attributes"`
 
 	// Relations
 	PolicySet *PolicySet `jsonapi:"relation,policy-set"`
@@ -104,7 +105,7 @@ func (p *policySetVersions) Create(ctx context.Context, policySetID string) (*Po
 		return nil, ErrInvalidPolicySetID
 	}
 
-	u := fmt.Sprintf("policy-sets/%s/versions", url.QueryEscape(policySetID))
+	u := fmt.Sprintf("policy-sets/%s/versions", url.PathEscape(policySetID))
 	req, err := p.client.NewRequest("POST", u, nil)
 	if err != nil {
 		return nil, err
@@ -125,7 +126,7 @@ func (p *policySetVersions) Read(ctx context.Context, policySetVersionID string)
 		return nil, ErrInvalidPolicySetID
 	}
 
-	u := fmt.Sprintf("policy-set-versions/%s", url.QueryEscape(policySetVersionID))
+	u := fmt.Sprintf("policy-set-versions/%s", url.PathEscape(policySetVersionID))
 	req, err := p.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, err

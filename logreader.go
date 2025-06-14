@@ -136,11 +136,11 @@ func (r *LogReader) read(l []byte) (int, error) {
 }
 
 // backoff will perform exponential backoff based on the iteration and
-// limited by the provided min and max (in milliseconds) durations.
-func backoff(min, max float64, iter int) time.Duration {
-	backoff := math.Pow(2, float64(iter)/5) * min
-	if backoff > max {
-		backoff = max
+// limited by the provided minimum and maximum (in milliseconds) durations.
+func backoff(minimum, maximum float64, iter int) time.Duration {
+	backoff := math.Pow(2, float64(iter)/5) * minimum
+	if backoff > maximum {
+		backoff = maximum
 	}
 	return time.Duration(backoff) * time.Millisecond
 }

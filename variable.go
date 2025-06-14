@@ -17,8 +17,11 @@ var _ Variables = (*variables)(nil)
 //
 // TFE API docs: https://developer.hashicorp.com/terraform/cloud-docs/api-docs/workspace-variables
 type Variables interface {
-	// List all the variables associated with the given workspace.
+	// List all the variables associated with the given workspace (doesn't include variables inherited from varsets).
 	List(ctx context.Context, workspaceID string, options *VariableListOptions) (*VariableList, error)
+
+	// ListAll all the variables associated with the given workspace including variables inherited from varsets.
+	ListAll(ctx context.Context, workspaceID string, options *VariableListOptions) (*VariableList, error)
 
 	// Create is used to create a new variable.
 	Create(ctx context.Context, workspaceID string, options VariableCreateOptions) (*Variable, error)
@@ -128,13 +131,22 @@ type VariableUpdateOptions struct {
 	Sensitive *bool `jsonapi:"attr,sensitive,omitempty"`
 }
 
-// List all the variables associated with the given workspace.
+// List all the variables associated with the given workspace (doesn't include variables inherited from varsets).
 func (s *variables) List(ctx context.Context, workspaceID string, options *VariableListOptions) (*VariableList, error) {
+	return s.getList(ctx, workspaceID, options, "workspaces/%s/vars")
+}
+
+// ListAll the variables associated with the given workspace including variables inherited from varsets.
+func (s *variables) ListAll(ctx context.Context, workspaceID string, options *VariableListOptions) (*VariableList, error) {
+	return s.getList(ctx, workspaceID, options, "workspaces/%s/all-vars")
+}
+
+func (s *variables) getList(ctx context.Context, workspaceID string, options *VariableListOptions, path string) (*VariableList, error) {
 	if !validStringID(&workspaceID) {
 		return nil, ErrInvalidWorkspaceID
 	}
 
-	u := fmt.Sprintf("workspaces/%s/vars", url.QueryEscape(workspaceID))
+	u := fmt.Sprintf(path, url.PathEscape(workspaceID))
 	req, err := s.client.NewRequest("GET", u, options)
 	if err != nil {
 		return nil, err
@@ -158,7 +170,7 @@ func (s *variables) Create(ctx context.Context, workspaceID string, options Vari
 		return nil, err
 	}
 
-	u := fmt.Sprintf("workspaces/%s/vars", url.QueryEscape(workspaceID))
+	u := fmt.Sprintf("workspaces/%s/vars", url.PathEscape(workspaceID))
 	req, err := s.client.NewRequest("POST", u, &options)
 	if err != nil {
 		return nil, err
@@ -182,7 +194,7 @@ func (s *variables) Read(ctx context.Context, workspaceID, variableID string) (*
 		return nil, ErrInvalidVariableID
 	}
 
-	u := fmt.Sprintf("workspaces/%s/vars/%s", url.QueryEscape(workspaceID), url.QueryEscape(variableID))
+	u := fmt.Sprintf("workspaces/%s/vars/%s", url.PathEscape(workspaceID), url.PathEscape(variableID))
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, err
@@ -206,7 +218,7 @@ func (s *variables) Update(ctx context.Context, workspaceID, variableID string, 
 		return nil, ErrInvalidVariableID
 	}
 
-	u := fmt.Sprintf("workspaces/%s/vars/%s", url.QueryEscape(workspaceID), url.QueryEscape(variableID))
+	u := fmt.Sprintf("workspaces/%s/vars/%s", url.PathEscape(workspaceID), url.PathEscape(variableID))
 	req, err := s.client.NewRequest("PATCH", u, &options)
 	if err != nil {
 		return nil, err
@@ -230,7 +242,7 @@ func (s *variables) Delete(ctx context.Context, workspaceID, variableID string) 
 		return ErrInvalidVariableID
 	}
 
-	u := fmt.Sprintf("workspaces/%s/vars/%s", url.QueryEscape(workspaceID), url.QueryEscape(variableID))
+	u := fmt.Sprintf("workspaces/%s/vars/%s", url.PathEscape(workspaceID), url.PathEscape(variableID))
 	req, err := s.client.NewRequest("DELETE", u, nil)
 	if err != nil {
 		return err

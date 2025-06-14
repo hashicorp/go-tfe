@@ -7,6 +7,8 @@ import (
 	"context"
 	"fmt"
 	"net/url"
+
+	"github.com/hashicorp/jsonapi"
 )
 
 // Compile-time proof of interface implementation.
@@ -26,11 +28,28 @@ type Projects interface {
 	// Read a project by its ID.
 	Read(ctx context.Context, projectID string) (*Project, error)
 
+	// ReadWithOptions a project by its ID.
+	ReadWithOptions(ctx context.Context, projectID string, options ProjectReadOptions) (*Project, error)
+
 	// Update a project.
 	Update(ctx context.Context, projectID string, options ProjectUpdateOptions) (*Project, error)
 
 	// Delete a project.
 	Delete(ctx context.Context, projectID string) error
+
+	// ListTagBindings lists all tag bindings associated with the project.
+	ListTagBindings(ctx context.Context, projectID string) ([]*TagBinding, error)
+
+	// ListEffectiveTagBindings lists all tag bindings associated with the project. In practice,
+	// this should be the same as ListTagBindings since projects do not currently inherit
+	// tag bindings.
+	ListEffectiveTagBindings(ctx context.Context, workspaceID string) ([]*EffectiveTagBinding, error)
+
+	// AddTagBindings adds or modifies the value of existing tag binding keys for a project.
+	AddTagBindings(ctx context.Context, projectID string, options ProjectAddTagBindingsOptions) ([]*TagBinding, error)
+
+	// DeleteAllTagBindings removes all existing tag bindings for a project.
+	DeleteAllTagBindings(ctx context.Context, projectID string) error
 }
 
 // projects implements Projects
@@ -46,21 +65,48 @@ type ProjectList struct {
 
 // Project represents a Terraform Enterprise project
 type Project struct {
-	ID   string `jsonapi:"primary,projects"`
-	Name string `jsonapi:"attr,name"`
+	ID        string `jsonapi:"primary,projects"`
+	IsUnified bool   `jsonapi:"attr,is-unified"`
+	Name      string `jsonapi:"attr,name"`
+
+	Description string `jsonapi:"attr,description"`
+
+	AutoDestroyActivityDuration jsonapi.NullableAttr[string] `jsonapi:"attr,auto-destroy-activity-duration,omitempty"`
 
 	// Relations
-	Organization *Organization `jsonapi:"relation,organization"`
+	Organization         *Organization          `jsonapi:"relation,organization"`
+	EffectiveTagBindings []*EffectiveTagBinding `jsonapi:"relation,effective-tag-bindings"`
 }
+
+type ProjectIncludeOpt string
+
+const (
+	ProjectEffectiveTagBindings ProjectIncludeOpt = "effective_tag_bindings"
+)
 
 // ProjectListOptions represents the options for listing projects
 type ProjectListOptions struct {
 	ListOptions
 
-	// Optional: String (partial project name) used to filter the results.
+	// Optional: String (complete project name) used to filter the results.
 	// If multiple, comma separated values are specified, projects matching
 	// any of the names are returned.
 	Name string `url:"filter[names],omitempty"`
+
+	// Optional: A query string to search projects by names.
+	Query string `url:"q,omitempty"`
+
+	// Optional: A filter string to list projects filtered by key/value tags.
+	// These are not annotated and therefore not encoded by go-querystring
+	TagBindings []*TagBinding
+
+	// Optional: A list of relations to include
+	Include []ProjectIncludeOpt `url:"include,omitempty"`
+}
+
+type ProjectReadOptions struct {
+	// Optional: A list of relations to include
+	Include []ProjectIncludeOpt `url:"include,omitempty"`
 }
 
 // ProjectCreateOptions represents the options for creating a project
@@ -73,6 +119,17 @@ type ProjectCreateOptions struct {
 
 	// Required: A name to identify the project.
 	Name string `jsonapi:"attr,name"`
+
+	// Optional: A description for the project.
+	Description *string `jsonapi:"attr,description,omitempty"`
+
+	// Associated TagBindings of the project.
+	TagBindings []*TagBinding `jsonapi:"relation,tag-bindings,omitempty"`
+
+	// Optional: For all workspaces in the project, the period of time to wait
+	// after workspace activity to trigger a destroy run. The format should roughly
+	// match a Go duration string limited to days and hours, e.g. "24h" or "1d".
+	AutoDestroyActivityDuration jsonapi.NullableAttr[string] `jsonapi:"attr,auto-destroy-activity-duration,omitempty"`
 }
 
 // ProjectUpdateOptions represents the options for updating a project
@@ -85,6 +142,24 @@ type ProjectUpdateOptions struct {
 
 	// Optional: A name to identify the project
 	Name *string `jsonapi:"attr,name,omitempty"`
+
+	// Optional: A description for the project.
+	Description *string `jsonapi:"attr,description,omitempty"`
+
+	// Associated TagBindings of the project. Note that this will replace
+	// all existing tag bindings.
+	TagBindings []*TagBinding `jsonapi:"relation,tag-bindings,omitempty"`
+
+	// Optional: For all workspaces in the project, the period of time to wait
+	// after workspace activity to trigger a destroy run. The format should roughly
+	// match a Go duration string limited to days and hours, e.g. "24h" or "1d".
+	AutoDestroyActivityDuration jsonapi.NullableAttr[string] `jsonapi:"attr,auto-destroy-activity-duration,omitempty"`
+}
+
+// ProjectAddTagBindingsOptions represents the options for adding tag bindings
+// to a project.
+type ProjectAddTagBindingsOptions struct {
+	TagBindings []*TagBinding
 }
 
 // List all projects.
@@ -93,8 +168,13 @@ func (s *projects) List(ctx context.Context, organization string, options *Proje
 		return nil, ErrInvalidOrg
 	}
 
-	u := fmt.Sprintf("organizations/%s/projects", url.QueryEscape(organization))
-	req, err := s.client.NewRequest("GET", u, options)
+	var tagFilters map[string][]string
+	if options != nil {
+		tagFilters = encodeTagFiltersAsParams(options.TagBindings)
+	}
+
+	u := fmt.Sprintf("organizations/%s/projects", url.PathEscape(organization))
+	req, err := s.client.NewRequestWithAdditionalQueryParams("GET", u, options, tagFilters)
 	if err != nil {
 		return nil, err
 	}
@@ -118,8 +198,29 @@ func (s *projects) Create(ctx context.Context, organization string, options Proj
 		return nil, err
 	}
 
-	u := fmt.Sprintf("organizations/%s/projects", url.QueryEscape(organization))
+	u := fmt.Sprintf("organizations/%s/projects", url.PathEscape(organization))
 	req, err := s.client.NewRequest("POST", u, &options)
+	if err != nil {
+		return nil, err
+	}
+
+	p := &Project{}
+	err = req.Do(ctx, p)
+	if err != nil {
+		return nil, err
+	}
+
+	return p, nil
+}
+
+// ReadWithOptions a project by its ID.
+func (s *projects) ReadWithOptions(ctx context.Context, projectID string, options ProjectReadOptions) (*Project, error) {
+	if !validStringID(&projectID) {
+		return nil, ErrInvalidProjectID
+	}
+
+	u := fmt.Sprintf("projects/%s", url.PathEscape(projectID))
+	req, err := s.client.NewRequest("GET", u, options)
 	if err != nil {
 		return nil, err
 	}
@@ -139,7 +240,7 @@ func (s *projects) Read(ctx context.Context, projectID string) (*Project, error)
 		return nil, ErrInvalidProjectID
 	}
 
-	u := fmt.Sprintf("projects/%s", url.QueryEscape(projectID))
+	u := fmt.Sprintf("projects/%s", url.PathEscape(projectID))
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, err
@@ -154,6 +255,79 @@ func (s *projects) Read(ctx context.Context, projectID string) (*Project, error)
 	return p, nil
 }
 
+func (s *projects) ListTagBindings(ctx context.Context, projectID string) ([]*TagBinding, error) {
+	if !validStringID(&projectID) {
+		return nil, ErrInvalidProjectID
+	}
+
+	u := fmt.Sprintf("projects/%s/tag-bindings", url.PathEscape(projectID))
+	req, err := s.client.NewRequest("GET", u, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	var list struct {
+		*Pagination
+		Items []*TagBinding
+	}
+
+	err = req.Do(ctx, &list)
+	if err != nil {
+		return nil, err
+	}
+
+	return list.Items, nil
+}
+
+func (s *projects) ListEffectiveTagBindings(ctx context.Context, projectID string) ([]*EffectiveTagBinding, error) {
+	if !validStringID(&projectID) {
+		return nil, ErrInvalidProjectID
+	}
+
+	u := fmt.Sprintf("projects/%s/effective-tag-bindings", url.PathEscape(projectID))
+	req, err := s.client.NewRequest("GET", u, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	var list struct {
+		*Pagination
+		Items []*EffectiveTagBinding
+	}
+
+	err = req.Do(ctx, &list)
+	if err != nil {
+		return nil, err
+	}
+
+	return list.Items, nil
+}
+
+// AddTagBindings adds or modifies the value of existing tag binding keys for a project
+func (s *projects) AddTagBindings(ctx context.Context, projectID string, options ProjectAddTagBindingsOptions) ([]*TagBinding, error) {
+	if !validStringID(&projectID) {
+		return nil, ErrInvalidProjectID
+	}
+
+	if err := options.valid(); err != nil {
+		return nil, err
+	}
+
+	u := fmt.Sprintf("projects/%s/tag-bindings", url.PathEscape(projectID))
+	req, err := s.client.NewRequest("PATCH", u, options.TagBindings)
+	if err != nil {
+		return nil, err
+	}
+
+	var response = struct {
+		*Pagination
+		Items []*TagBinding
+	}{}
+	err = req.Do(ctx, &response)
+
+	return response.Items, err
+}
+
 // Update a project by its ID
 func (s *projects) Update(ctx context.Context, projectID string, options ProjectUpdateOptions) (*Project, error) {
 	if !validStringID(&projectID) {
@@ -164,7 +338,7 @@ func (s *projects) Update(ctx context.Context, projectID string, options Project
 		return nil, err
 	}
 
-	u := fmt.Sprintf("projects/%s", url.QueryEscape(projectID))
+	u := fmt.Sprintf("projects/%s", url.PathEscape(projectID))
 	req, err := s.client.NewRequest("PATCH", u, &options)
 	if err != nil {
 		return nil, err
@@ -185,8 +359,32 @@ func (s *projects) Delete(ctx context.Context, projectID string) error {
 		return ErrInvalidProjectID
 	}
 
-	u := fmt.Sprintf("projects/%s", url.QueryEscape(projectID))
+	u := fmt.Sprintf("projects/%s", url.PathEscape(projectID))
 	req, err := s.client.NewRequest("DELETE", u, nil)
+	if err != nil {
+		return err
+	}
+
+	return req.Do(ctx, nil)
+}
+
+// Delete all tag bindings associated with a project.
+func (s *projects) DeleteAllTagBindings(ctx context.Context, projectID string) error {
+	if !validStringID(&projectID) {
+		return ErrInvalidProjectID
+	}
+
+	type aliasOpts struct {
+		Type        string        `jsonapi:"primary,projects"`
+		TagBindings []*TagBinding `jsonapi:"relation,tag-bindings"`
+	}
+
+	opts := &aliasOpts{
+		TagBindings: []*TagBinding{},
+	}
+
+	u := fmt.Sprintf("projects/%s", url.PathEscape(projectID))
+	req, err := s.client.NewRequest("PATCH", u, opts)
 	if err != nil {
 		return err
 	}
@@ -202,5 +400,13 @@ func (o ProjectCreateOptions) valid() error {
 }
 
 func (o ProjectUpdateOptions) valid() error {
+	return nil
+}
+
+func (o ProjectAddTagBindingsOptions) valid() error {
+	if len(o.TagBindings) == 0 {
+		return ErrRequiredTagBindings
+	}
+
 	return nil
 }

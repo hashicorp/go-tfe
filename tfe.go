@@ -158,8 +158,15 @@ type Client struct {
 	Runs                       Runs
 	RunEvents                  RunEvents
 	RunTasks                   RunTasks
+	RunTasksIntegration        RunTasksIntegration
 	RunTriggers                RunTriggers
 	SSHKeys                    SSHKeys
+	Stacks                     Stacks
+	StackConfigurations        StackConfigurations
+	StackDeployments           StackDeployments
+	StackPlans                 StackPlans
+	StackPlanOperations        StackPlanOperations
+	StackSources               StackSources
 	StateVersionOutputs        StateVersionOutputs
 	StateVersions              StateVersions
 	TaskResults                TaskResults
@@ -186,7 +193,7 @@ type Client struct {
 
 // Admin is the the Terraform Enterprise Admin API. It provides access to site
 // wide admin settings. These are only available for Terraform Enterprise and
-// do not function against Terraform Cloud
+// do not function against HCP Terraform
 type Admin struct {
 	Organizations     AdminOrganizations
 	Workspaces        AdminWorkspaces
@@ -198,7 +205,7 @@ type Admin struct {
 	Settings          *AdminSettings
 }
 
-// Meta contains any Terraform Cloud APIs which provide data about the API itself.
+// Meta contains any HCP Terraform APIs which provide data about the API itself.
 type Meta struct {
 	IPRanges IPRanges
 }
@@ -240,11 +247,22 @@ func (c *Client) doForeignPUTRequest(ctx context.Context, foreignURL string, dat
 	return request.DoJSON(ctx, nil)
 }
 
-func (c *Client) NewRequest(method, path string, reqAttr any) (*ClientRequest, error) {
-	return c.NewRequestWithAdditionalQueryParams(method, path, reqAttr, nil)
+// NewRequest performs some basic API request preparation based on the method
+// specified. For GET requests, the reqBody is encoded as query parameters.
+// For DELETE, PATCH, and POST requests, the request body is serialized as JSONAPI.
+// For PUT requests, the request body is sent as a stream of bytes.
+func (c *Client) NewRequest(method, path string, reqBody any) (*ClientRequest, error) {
+	return c.NewRequestWithAdditionalQueryParams(method, path, reqBody, nil)
 }
 
-func (c *Client) NewRequestWithAdditionalQueryParams(method, path string, reqAttr any, additionalQueryParams map[string][]string) (*ClientRequest, error) {
+// NewRequestWithAdditionalQueryParams performs some basic API request
+// preparation based on the method specified. For GET requests, the reqBody is
+// encoded as query parameters. For DELETE, PATCH, and POST requests, the
+// request body is serialized as JSONAPI. For PUT requests, the request body is
+// sent as a stream of bytes. Additional query parameters can be added to the
+// request as a string map. Note that if a key exists in both the reqBody and
+// additionalQueryParams, the value in additionalQueryParams will be used.
+func (c *Client) NewRequestWithAdditionalQueryParams(method, path string, reqBody any, additionalQueryParams map[string][]string) (*ClientRequest, error) {
 	var u *url.URL
 	var err error
 	if strings.Contains(path, "/api/registry/") {
@@ -259,6 +277,10 @@ func (c *Client) NewRequestWithAdditionalQueryParams(method, path string, reqAtt
 		}
 	}
 
+	// Will contain combined query values from path parsing and
+	// additionalQueryParams parameter
+	q := make(url.Values)
+
 	// Create a request specific headers map.
 	reqHeaders := make(http.Header)
 	reqHeaders.Set("Authorization", "Bearer "+c.token)
@@ -268,30 +290,36 @@ func (c *Client) NewRequestWithAdditionalQueryParams(method, path string, reqAtt
 	case "GET":
 		reqHeaders.Set("Accept", ContentTypeJSONAPI)
 
-		if reqAttr != nil {
-			q, err := query.Values(reqAttr)
+		// Encode the reqBody as query parameters
+		if reqBody != nil {
+			q, err = query.Values(reqBody)
 			if err != nil {
 				return nil, err
 			}
-			for k, v := range additionalQueryParams {
-				q[k] = v
-			}
-			u.RawQuery = encodeQueryParams(q)
 		}
 	case "DELETE", "PATCH", "POST":
 		reqHeaders.Set("Accept", ContentTypeJSONAPI)
 		reqHeaders.Set("Content-Type", ContentTypeJSONAPI)
 
-		if reqAttr != nil {
-			if body, err = serializeRequestBody(reqAttr); err != nil {
+		if reqBody != nil {
+			if body, err = serializeRequestBody(reqBody); err != nil {
 				return nil, err
 			}
 		}
 	case "PUT":
 		reqHeaders.Set("Accept", "application/json")
 		reqHeaders.Set("Content-Type", "application/octet-stream")
-		body = reqAttr
+		body = reqBody
 	}
+
+	for k, v := range u.Query() {
+		q[k] = v
+	}
+	for k, v := range additionalQueryParams {
+		q[k] = v
+	}
+
+	u.RawQuery = encodeQueryParams(q)
 
 	req, err := retryablehttp.NewRequest(method, u.String(), body)
 	if err != nil {
@@ -458,8 +486,15 @@ func NewClient(cfg *Config) (*Client, error) {
 	client.Runs = &runs{client: client}
 	client.RunEvents = &runEvents{client: client}
 	client.RunTasks = &runTasks{client: client}
+	client.RunTasksIntegration = &runTaskIntegration{client: client}
 	client.RunTriggers = &runTriggers{client: client}
 	client.SSHKeys = &sshKeys{client: client}
+	client.Stacks = &stacks{client: client}
+	client.StackConfigurations = &stackConfigurations{client: client}
+	client.StackDeployments = &stackDeployments{client: client}
+	client.StackPlans = &stackPlans{client: client}
+	client.StackPlanOperations = &stackPlanOperations{client: client}
+	client.StackSources = &stackSources{client: client}
 	client.StateVersionOutputs = &stateVersionOutputs{client: client}
 	client.StateVersions = &stateVersions{client: client}
 	client.TaskResults = &taskResults{client: client}
@@ -487,18 +522,23 @@ func NewClient(cfg *Config) (*Client, error) {
 	return client, nil
 }
 
-// IsCloud returns true if the client is configured against a Terraform Cloud
+// AppName returns the name of the instance.
+func (c Client) AppName() string {
+	return c.appName
+}
+
+// IsCloud returns true if the client is configured against a HCP Terraform
 // instance.
 //
-// Whether an instance is TFC or TFE is derived from the TFP-AppName header.
+// Whether an instance is HCP Terraform or Terraform Enterprise is derived from the TFP-AppName header.
 func (c Client) IsCloud() bool {
-	return c.appName == "Terraform Cloud"
+	return c.appName == "HCP Terraform"
 }
 
 // IsEnterprise returns true if the client is configured against a Terraform
 // Enterprise instance.
 //
-// Whether an instance is TFC or TFE is derived from the TFP-AppName header. Note:
+// Whether an instance is HCP Terraform or TFE is derived from the TFP-AppName header. Note:
 // not all TFE releases include this header in API responses.
 func (c Client) IsEnterprise() bool {
 	return !c.IsCloud()
@@ -506,7 +546,7 @@ func (c Client) IsEnterprise() bool {
 
 // RemoteAPIVersion returns the server's declared API version string.
 //
-// A Terraform Cloud or Enterprise API server returns its API version in an
+// A HCP Terraform or Enterprise API server returns its API version in an
 // HTTP header field in all responses. The NewClient function saves the
 // version number returned in its initial setup request and RemoteAPIVersion
 // returns that cached value.
@@ -516,7 +556,7 @@ func (c Client) IsEnterprise() bool {
 // second indicates a minor version which may have introduced some
 // backward-compatible additional features compared to its predecessor.
 //
-// Explicit API versioning was added to the Terraform Cloud and Enterprise
+// Explicit API versioning was added to the HCP Terraform and Enterprise
 // APIs as a later addition, so older servers will not return version
 // information. In that case, this function returns an empty string as the
 // version.
@@ -549,7 +589,7 @@ func (c *Client) SetFakeRemoteAPIVersion(fakeAPIVersion string) {
 // HTTP header field in all responses. This value is saved by the client
 // during the initial setup request and RemoteTFEVersion returns that cached
 // value. This function returns an empty string for any Terraform Enterprise version
-// earlier than v202208-3 and for Terraform Cloud.
+// earlier than v202208-3 and for HCP Terraform.
 func (c Client) RemoteTFEVersion() string {
 	return c.remoteTFEVersion
 }
@@ -577,36 +617,36 @@ func (c *Client) retryHTTPCheck(ctx context.Context, resp *http.Response, err er
 
 // retryHTTPBackoff provides a generic callback for Client.Backoff which
 // will pass through all calls based on the status code of the response.
-func (c *Client) retryHTTPBackoff(min, max time.Duration, attemptNum int, resp *http.Response) time.Duration {
+func (c *Client) retryHTTPBackoff(minimum, maximum time.Duration, attemptNum int, resp *http.Response) time.Duration {
 	if c.retryLogHook != nil {
 		c.retryLogHook(attemptNum, resp)
 	}
 
 	// Use the rate limit backoff function when we are rate limited.
 	if resp != nil && resp.StatusCode == 429 {
-		return rateLimitBackoff(min, max, resp)
+		return rateLimitBackoff(minimum, maximum, resp)
 	}
 
 	// Set custom duration's when we experience a service interruption.
-	min = 700 * time.Millisecond
-	max = 900 * time.Millisecond
+	minimum = 700 * time.Millisecond
+	maximum = 900 * time.Millisecond
 
-	return retryablehttp.LinearJitterBackoff(min, max, attemptNum, resp)
+	return retryablehttp.LinearJitterBackoff(minimum, maximum, attemptNum, resp)
 }
 
 // rateLimitBackoff provides a callback for Client.Backoff which will use the
 // X-RateLimit_Reset header to determine the time to wait. We add some jitter
 // to prevent a thundering herd.
 //
-// min and max are mainly used for bounding the jitter that will be added to
+// minimum and maximum are mainly used for bounding the jitter that will be added to
 // the reset time retrieved from the headers. But if the final wait time is
-// less then min, min will be used instead.
-func rateLimitBackoff(min, max time.Duration, resp *http.Response) time.Duration {
+// less than minimum, minimum will be used instead.
+func rateLimitBackoff(minimum, maximum time.Duration, resp *http.Response) time.Duration {
 	// rnd is used to generate pseudo-random numbers.
 	rnd := rand.New(rand.NewSource(time.Now().UnixNano()))
 
 	// First create some jitter bounded by the min and max durations.
-	jitter := time.Duration(rnd.Float64() * float64(max-min))
+	jitter := time.Duration(rnd.Float64() * float64(maximum-minimum))
 
 	if resp != nil && resp.Header.Get(_headerRateReset) != "" {
 		v := resp.Header.Get(_headerRateReset)
@@ -615,12 +655,12 @@ func rateLimitBackoff(min, max time.Duration, resp *http.Response) time.Duration
 			log.Fatal(err)
 		}
 		// Only update min if the given time to wait is longer
-		if reset > 0 && time.Duration(reset*1e9) > min {
-			min = time.Duration(reset * 1e9)
+		if reset > 0 && time.Duration(reset*1e9) > minimum {
+			minimum = time.Duration(reset * 1e9)
 		}
 	}
 
-	return min + jitter
+	return minimum + jitter
 }
 
 type rawAPIMetadata struct {
@@ -639,7 +679,7 @@ type rawAPIMetadata struct {
 	// field was not included in the response.
 	RateLimit string
 
-	// AppName is either 'Terraform Cloud' or 'Terraform Enterprise'
+	// AppName is either 'HCP Terraform' or 'Terraform Enterprise'
 	AppName string
 }
 
@@ -704,7 +744,9 @@ func (c *Client) configureLimiter(rawLimit string) {
 }
 
 // encodeQueryParams encodes the values into "URL encoded" form
-// ("bar=baz&foo=quux") sorted by key.
+// ("bar=baz&foo=quux") sorted by key. This version behaves as url.Values
+// Encode, except that it encodes certain keys as comma-separated values instead
+// of using multiple keys.
 func encodeQueryParams(v url.Values) string {
 	if v == nil {
 		return ""
@@ -734,6 +776,17 @@ func encodeQueryParams(v url.Values) string {
 		}
 	}
 	return buf.String()
+}
+
+// decodeQueryParams types an object and converts the struct fields into
+// Query Parameters, which can be used with NewRequestWithAdditionalQueryParams
+// Note that a field without a `url` annotation will be converted into a query
+// parameter. Use url:"-" to ignore struct fields.
+func decodeQueryParams(v any) (url.Values, error) {
+	if v == nil {
+		return make(url.Values, 0), nil
+	}
+	return query.Values(v)
 }
 
 // serializeRequestBody serializes the given ptr or ptr slice into a JSON
@@ -804,11 +857,10 @@ func unmarshalResponse(responseBody io.Reader, model interface{}) error {
 
 	// Try to get the Items and Pagination struct fields.
 	items := dst.FieldByName("Items")
-	pagination := dst.FieldByName("Pagination")
 
 	// Unmarshal a single value if model does not contain the
 	// Items and Pagination struct fields.
-	if !items.IsValid() || !pagination.IsValid() {
+	if !items.IsValid() {
 		return jsonapi.UnmarshalPayload(responseBody, model)
 	}
 
@@ -839,15 +891,25 @@ func unmarshalResponse(responseBody io.Reader, model interface{}) error {
 	// Pointer-swap the result.
 	items.Set(result)
 
+	pagination := dst.FieldByName("Pagination")
+	paginationWithoutTotals := dst.FieldByName("PaginationNextPrev")
+
 	// As we are getting a list of values, we need to decode
 	// the pagination details out of the response body.
-	p, err := parsePagination(body)
-	if err != nil {
-		return err
-	}
-
 	// Pointer-swap the decoded pagination details.
-	pagination.Set(reflect.ValueOf(p))
+	if paginationWithoutTotals.IsValid() {
+		p, err := parsePaginationWithoutTotal(body)
+		if err != nil {
+			return err
+		}
+		paginationWithoutTotals.Set(reflect.ValueOf(p))
+	} else if pagination.IsValid() {
+		p, err := parsePagination(body)
+		if err != nil {
+			return err
+		}
+		pagination.Set(reflect.ValueOf(p))
+	}
 
 	return nil
 }
@@ -862,13 +924,35 @@ type ListOptions struct {
 	PageSize int `url:"page[size],omitempty"`
 }
 
-// Pagination is used to return the pagination details of an API request.
+// PaginationNextPrev is used to return the pagination details of an API request.
+type PaginationNextPrev struct {
+	CurrentPage  int `json:"current-page"`
+	PreviousPage int `json:"prev-page"`
+	NextPage     int `json:"next-page"`
+}
+
+// Pagination is used to return the pagination details of an API request including TotalCount.
 type Pagination struct {
 	CurrentPage  int `json:"current-page"`
 	PreviousPage int `json:"prev-page"`
 	NextPage     int `json:"next-page"`
-	TotalPages   int `json:"total-pages"`
 	TotalCount   int `json:"total-count"`
+	TotalPages   int `json:"total-pages"`
+}
+
+func parsePaginationWithoutTotal(body io.Reader) (*PaginationNextPrev, error) {
+	var raw struct {
+		Meta struct {
+			Pagination PaginationNextPrev `jsonapi:"pagination"`
+		} `jsonapi:"meta"`
+	}
+
+	// JSON decode the raw response.
+	if err := json.NewDecoder(body).Decode(&raw); err != nil {
+		return &PaginationNextPrev{}, err
+	}
+
+	return &raw.Meta.Pagination, nil
 }
 
 func parsePagination(body io.Reader) (*Pagination, error) {
@@ -886,10 +970,10 @@ func parsePagination(body io.Reader) (*Pagination, error) {
 	return &raw.Meta.Pagination, nil
 }
 
-// checkResponseCode can be used to check the status code of an HTTP request.
-
+// checkResponseCode refines typical API errors into more specific errors
+// if possible. It returns nil if the response code < 400
 func checkResponseCode(r *http.Response) error {
-	if r.StatusCode >= 200 && r.StatusCode <= 299 {
+	if r.StatusCode >= 200 && r.StatusCode <= 399 {
 		return nil
 	}
 
@@ -903,7 +987,7 @@ func checkResponseCode(r *http.Response) error {
 			return err
 		}
 
-		if errorPayloadContains(errs, "Invalid include parameter") {
+		if errorPayloadContains(errs, "include parameter") {
 			return ErrInvalidIncludeValue
 		}
 		return errors.New(strings.Join(errs, "\n"))
@@ -923,6 +1007,14 @@ func checkResponseCode(r *http.Response) error {
 
 			if errorPayloadContains(errs, "is locked by Run") {
 				return ErrWorkspaceLockedByRun
+			}
+
+			if errorPayloadContains(errs, "is locked by Team") {
+				return ErrWorkspaceLockedByTeam
+			}
+
+			if errorPayloadContains(errs, "is locked by User") {
+				return ErrWorkspaceLockedByUser
 			}
 
 			return ErrWorkspaceNotLocked

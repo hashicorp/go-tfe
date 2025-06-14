@@ -75,7 +75,7 @@ func (s *costEstimates) Read(ctx context.Context, costEstimateID string) (*CostE
 		return nil, ErrInvalidCostEstimateID
 	}
 
-	u := fmt.Sprintf("cost-estimates/%s", url.QueryEscape(costEstimateID))
+	u := fmt.Sprintf("cost-estimates/%s", url.PathEscape(costEstimateID))
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, err
@@ -116,7 +116,7 @@ func (s *costEstimates) Logs(ctx context.Context, costEstimateID string) (io.Rea
 			}
 		}
 
-		u := fmt.Sprintf("cost-estimates/%s/output", url.QueryEscape(costEstimateID))
+		u := fmt.Sprintf("cost-estimates/%s/output", url.PathEscape(costEstimateID))
 		req, err := s.client.NewRequest("GET", u, nil)
 		if err != nil {
 			return nil, err

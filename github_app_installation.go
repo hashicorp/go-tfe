@@ -72,7 +72,7 @@ func (s *gHAInstallations) Read(ctx context.Context, id string) (*GHAInstallatio
 		return nil, ErrInvalidOauthClientID
 	}
 
-	u := fmt.Sprintf("github-app/installation/%s", url.QueryEscape(id))
+	u := fmt.Sprintf("github-app/installation/%s", url.PathEscape(id))
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, err

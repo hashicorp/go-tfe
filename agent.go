@@ -14,7 +14,7 @@ import (
 var _ Agents = (*agents)(nil)
 
 // Agents describes all the agent-related methods that the
-// Terraform Cloud API supports.
+// HCP Terraform API supports.
 // TFE API docs: https://developer.hashicorp.com/terraform/cloud-docs/api-docs/agents
 type Agents interface {
 	// Read an agent by its ID.
@@ -35,7 +35,7 @@ type AgentList struct {
 	Items []*Agent
 }
 
-// Agent represents a Terraform Cloud agent.
+// Agent represents a HCP Terraform agent.
 type Agent struct {
 	ID         string `jsonapi:"primary,agents"`
 	Name       string `jsonapi:"attr,name"`
@@ -57,7 +57,7 @@ func (s *agents) Read(ctx context.Context, agentID string) (*Agent, error) {
 		return nil, ErrInvalidAgentID
 	}
 
-	u := fmt.Sprintf("agents/%s", url.QueryEscape(agentID))
+	u := fmt.Sprintf("agents/%s", url.PathEscape(agentID))
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, err
@@ -78,7 +78,7 @@ func (s *agents) List(ctx context.Context, agentPoolID string, options *AgentLis
 		return nil, ErrInvalidOrg
 	}
 
-	u := fmt.Sprintf("agent-pools/%s/agents", url.QueryEscape(agentPoolID))
+	u := fmt.Sprintf("agent-pools/%s/agents", url.PathEscape(agentPoolID))
 	req, err := s.client.NewRequest("GET", u, options)
 	if err != nil {
 		return nil, err

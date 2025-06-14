@@ -26,6 +26,10 @@ type RegistryNoCodeModules interface {
 	// **Note: This API is still in BETA and subject to change.**
 	Read(ctx context.Context, noCodeModuleID string, options *RegistryNoCodeModuleReadOptions) (*RegistryNoCodeModule, error)
 
+	// ReadVariables returns the variables for a version of a no-code module
+	// **Note: This API is still in BETA and subject to change.**
+	ReadVariables(ctx context.Context, noCodeModuleID, noCodeModuleVersion string, options *RegistryNoCodeModuleReadVariablesOptions) (*RegistryModuleVariableList, error)
+
 	// Update a registry no-code module
 	// **Note: This API is still in BETA and subject to change.**
 	Update(ctx context.Context, noCodeModuleID string, options RegistryNoCodeModuleUpdateOptions) (*RegistryNoCodeModule, error)
@@ -33,6 +37,95 @@ type RegistryNoCodeModules interface {
 	// Delete a registry no-code module
 	// **Note: This API is still in BETA and subject to change.**
 	Delete(ctx context.Context, ID string) error
+
+	// CreateWorkspace creates a workspace using a no-code module.
+	CreateWorkspace(ctx context.Context, noCodeModuleID string, options *RegistryNoCodeModuleCreateWorkspaceOptions) (*Workspace, error)
+
+	// UpgradeWorkspace initiates an upgrade of an existing no-code module workspace.
+	UpgradeWorkspace(ctx context.Context, noCodeModuleID string, workspaceID string, options *RegistryNoCodeModuleUpgradeWorkspaceOptions) (*WorkspaceUpgrade, error)
+}
+
+// RegistryModuleVariableList is a list of registry module variables.
+// **Note: This API is still in BETA and subject to change.**
+type RegistryModuleVariableList struct {
+	Items []*RegistryModuleVariable
+
+	// NOTE: At the time of authoring this comment, the API endpoint to fetch
+	// registry module variables does not support pagination. This field is
+	// included to satisfy jsonapi unmarshaler implementation here:
+	// https://github.com/hashicorp/go-tfe/blob/3d29602707fa4b10469d1a02685644bd159d3ccc/tfe.go#L859
+	*Pagination
+}
+
+// RegistryModuleVariable represents a registry module variable.
+type RegistryModuleVariable struct {
+	// ID is the ID of the variable.
+	ID string `jsonapi:"primary,registry-module-variables"`
+
+	// Name is the name of the variable.
+	Name string `jsonapi:"attr,name"`
+
+	// VariableType is the type of the variable.
+	VariableType string `jsonapi:"attr,type"`
+
+	// Description is the description of the variable.
+	Description string `jsonapi:"attr,description"`
+
+	// Required is a boolean indicating if the variable is required.
+	Required bool `jsonapi:"attr,required"`
+
+	// Sensitive is a boolean indicating if the variable is sensitive.
+	Sensitive bool `jsonapi:"attr,sensitive"`
+
+	// Options is a slice of strings representing the options for the variable.
+	Options []string `jsonapi:"attr,options"`
+
+	// HasGlobal is a boolean indicating if the variable is global.
+	HasGlobal bool `jsonapi:"attr,has-global"`
+}
+
+type RegistryNoCodeModuleCreateWorkspaceOptions struct {
+	Type string `jsonapi:"primary,no-code-module-workspace"`
+
+	// Name is the name of the workspace, which can only include letters,
+	// numbers, and _. This will be used as an identifier and must be unique in
+	// the organization.
+	Name string `jsonapi:"attr,name"`
+
+	// Description is a description for the workspace.
+	Description *string `jsonapi:"attr,description,omitempty"`
+
+	AutoApply *bool `jsonapi:"attr,auto-apply,omitempty"`
+
+	// Project is the associated project with the workspace. If not provided,
+	// default project of the organization will be assigned to the workspace.
+	Project *Project `jsonapi:"relation,project,omitempty"`
+
+	// Variables is the slice of variables to be configured for the no-code
+	// workspace.
+	Variables []*Variable `jsonapi:"relation,vars,omitempty"`
+
+	// SourceName is the name of the source of the workspace.
+	SourceName *string `jsonapi:"attr,source-name,omitempty"`
+
+	// SourceUrl is the URL of the source of the workspace.
+	SourceURL *string `jsonapi:"attr,source-url,omitempty"`
+
+	// ExecutionMode is the execution mode of the workspace.
+	ExecutionMode *string `jsonapi:"attr,execution-mode,omitempty"`
+
+	// AgentPoolId is the ID of the agent pool to use for the workspace.
+	// This is required when execution mode is set to "agent".
+	// This must not be specified when execution mode is set to "remote".
+	AgentPoolID *string `jsonapi:"attr,agent-pool-id,omitempty"`
+}
+
+type RegistryNoCodeModuleUpgradeWorkspaceOptions struct {
+	Type string `jsonapi:"primary,no-code-module-workspace"`
+
+	// Variables is the slice of variables to be configured for the no-code
+	// workspace.
+	Variables []*Variable `jsonapi:"relation,vars,omitempty"`
 }
 
 // registryNoCodeModules implements RegistryNoCodeModules.
@@ -110,6 +203,16 @@ type RegistryNoCodeModuleReadOptions struct {
 	Include []RegistryNoCodeModuleIncludeOpt `url:"include,omitempty"`
 }
 
+// RegistryNoCodeModuleReadVariablesOptions is used when reading the variables
+// for a no-code module.
+type RegistryNoCodeModuleReadVariablesOptions struct {
+	// Type is a public field utilized by JSON:API to
+	// set the resource type via the field tag.
+	// It is not a user-defined value and does not need to be set.
+	// https://jsonapi.org/format/#crud-updating
+	Type string `jsonapi:"primary,no-code-modules"`
+}
+
 // RegistryNoCodeModuleUpdateOptions is used when updating a registry no-code module
 type RegistryNoCodeModuleUpdateOptions struct {
 	// Type is a public field utilized by JSON:API to
@@ -131,6 +234,19 @@ type RegistryNoCodeModuleUpdateOptions struct {
 	VariableOptions []*NoCodeVariableOption `jsonapi:"relation,variable-options,omitempty"`
 }
 
+// WorkspaceUpgrade contains the data returned by the no-code workspace upgrade
+// API endpoint.
+type WorkspaceUpgrade struct {
+	// Status is the status of the run of the upgrade
+	Status string `jsonapi:"attr,status"`
+
+	// PlanURL is the URL to the plan of the upgrade
+	PlanURL string `jsonapi:"attr,plan-url"`
+
+	// Message is the message returned by the API when an upgrade is not available.
+	Message string `jsonapi:"attr,message"`
+}
+
 // Create a new registry no-code module
 func (r *registryNoCodeModules) Create(ctx context.Context, organization string, options RegistryNoCodeModuleCreateOptions) (*RegistryNoCodeModule, error) {
 	if !validStringID(&organization) {
@@ -140,7 +256,7 @@ func (r *registryNoCodeModules) Create(ctx context.Context, organization string,
 		return nil, err
 	}
 
-	u := fmt.Sprintf("organizations/%s/no-code-modules", url.QueryEscape(organization))
+	u := fmt.Sprintf("organizations/%s/no-code-modules", url.PathEscape(organization))
 	req, err := r.client.NewRequest("POST", u, &options)
 	if err != nil {
 		return nil, err
@@ -165,7 +281,7 @@ func (r *registryNoCodeModules) Read(ctx context.Context, noCodeModuleID string,
 		return nil, err
 	}
 
-	u := fmt.Sprintf("no-code-modules/%s", url.QueryEscape(noCodeModuleID))
+	u := fmt.Sprintf("no-code-modules/%s", url.PathEscape(noCodeModuleID))
 	req, err := r.client.NewRequest("GET", u, options)
 	if err != nil {
 		return nil, err
@@ -178,6 +294,39 @@ func (r *registryNoCodeModules) Read(ctx context.Context, noCodeModuleID string,
 	}
 
 	return rm, nil
+}
+
+// ReadVariables retrieves the no-code variable options for a version of a
+// module.
+func (r *registryNoCodeModules) ReadVariables(
+	ctx context.Context,
+	noCodeModuleID, noCodeModuleVersion string,
+	options *RegistryNoCodeModuleReadVariablesOptions,
+) (*RegistryModuleVariableList, error) {
+	if !validStringID(&noCodeModuleID) {
+		return nil, ErrInvalidModuleID
+	}
+	if !validVersion(noCodeModuleVersion) {
+		return nil, ErrInvalidVersion
+	}
+
+	u := fmt.Sprintf(
+		"no-code-modules/%s/versions/%s/module-variables",
+		url.PathEscape(noCodeModuleID),
+		url.PathEscape(noCodeModuleVersion),
+	)
+	req, err := r.client.NewRequest("GET", u, options)
+	if err != nil {
+		return nil, err
+	}
+
+	resp := &RegistryModuleVariableList{}
+	err = req.Do(ctx, resp)
+	if err != nil {
+		return nil, err
+	}
+
+	return resp, nil
 }
 
 // Update a registry no-code module
@@ -193,7 +342,7 @@ func (r *registryNoCodeModules) Update(ctx context.Context, noCodeModuleID strin
 		return nil, err
 	}
 
-	u := fmt.Sprintf("no-code-modules/%s", url.QueryEscape(noCodeModuleID))
+	u := fmt.Sprintf("no-code-modules/%s", url.PathEscape(noCodeModuleID))
 	req, err := r.client.NewRequest("PATCH", u, &options)
 	if err != nil {
 		return nil, err
@@ -214,13 +363,67 @@ func (r *registryNoCodeModules) Delete(ctx context.Context, noCodeModuleID strin
 		return ErrInvalidModuleID
 	}
 
-	u := fmt.Sprintf("no-code-modules/%s", url.QueryEscape(noCodeModuleID))
+	u := fmt.Sprintf("no-code-modules/%s", url.PathEscape(noCodeModuleID))
 	req, err := r.client.NewRequest("DELETE", u, nil)
 	if err != nil {
 		return err
 	}
 
 	return req.Do(ctx, nil)
+}
+
+// CreateWorkspace creates a no-code workspace using a no-code module.
+func (r *registryNoCodeModules) CreateWorkspace(
+	ctx context.Context,
+	noCodeModuleID string,
+	options *RegistryNoCodeModuleCreateWorkspaceOptions,
+) (*Workspace, error) {
+	if err := options.valid(); err != nil {
+		return nil, err
+	}
+
+	u := fmt.Sprintf("no-code-modules/%s/workspaces", url.PathEscape(noCodeModuleID))
+	req, err := r.client.NewRequest("POST", u, options)
+	if err != nil {
+		return nil, err
+	}
+
+	w := &Workspace{}
+	err = req.Do(ctx, w)
+	if err != nil {
+		return nil, err
+	}
+
+	return w, nil
+}
+
+// UpgradeWorkspace initiates an upgrade of an existing no-code module workspace.
+func (r *registryNoCodeModules) UpgradeWorkspace(
+	ctx context.Context,
+	noCodeModuleID string,
+	workspaceID string,
+	options *RegistryNoCodeModuleUpgradeWorkspaceOptions,
+) (*WorkspaceUpgrade, error) {
+	if err := options.valid(); err != nil {
+		return nil, err
+	}
+
+	u := fmt.Sprintf("no-code-modules/%s/workspaces/%s/upgrade",
+		url.PathEscape(noCodeModuleID),
+		workspaceID,
+	)
+	req, err := r.client.NewRequest("POST", u, options)
+	if err != nil {
+		return nil, err
+	}
+
+	wu := &WorkspaceUpgrade{}
+	err = req.Do(ctx, wu)
+	if err != nil {
+		return nil, err
+	}
+
+	return wu, nil
 }
 
 func (o RegistryNoCodeModuleCreateOptions) valid() error {
@@ -244,5 +447,17 @@ func (o *RegistryNoCodeModuleUpdateOptions) valid() error {
 }
 
 func (o *RegistryNoCodeModuleReadOptions) valid() error {
+	return nil
+}
+
+func (o *RegistryNoCodeModuleCreateWorkspaceOptions) valid() error {
+	if !validString(&o.Name) {
+		return ErrRequiredName
+	}
+
+	return nil
+}
+
+func (o *RegistryNoCodeModuleUpgradeWorkspaceOptions) valid() error {
 	return nil
 }

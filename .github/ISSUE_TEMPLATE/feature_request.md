@@ -9,7 +9,7 @@ Hi there,
 
 Thank you for opening an issue! Please note that we try to keep the this issue tracker reserved for
 bug reports and feature requests related to the go-tfe API wrapper. If you know
-your issue relates to the Terraform Cloud/Enterprise platform itself, please contact
+your issue relates to the HCP Terraform and Terraform Enterprise platform itself, please contact
 tf-cloud@hashicorp.support. For general usage questions, please post to our community forum:
 https://discuss.hashicorp.com.
 -->

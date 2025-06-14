@@ -70,6 +70,9 @@ func TestAdminSettings_SAML_Update(t *testing.T) {
 		samlSettingsUpd, err := client.Admin.Settings.SAML.Update(ctx, AdminSAMLSettingsUpdateOptions{
 			Certificate:            String(cert),
 			PrivateKey:             String(pKey),
+			IDPCert:                String(cert),
+			SLOEndpointURL:         String("https://example.com/slo"),
+			SSOEndpointURL:         String("https://example.com/sso"),
 			SignatureSigningMethod: String(signatureSigningMethod),
 			SignatureDigestMethod:  String(signatureDigestMethod),
 		})
@@ -81,9 +84,18 @@ func TestAdminSettings_SAML_Update(t *testing.T) {
 	})
 
 	t.Run("with team management enabled", func(t *testing.T) {
+		cert := "testCert"
+		pKey := "testPrivateKey"
+		signatureSigningMethod := "SHA1"
+		signatureDigestMethod := "SHA1"
+
 		samlSettingsUpd, err := client.Admin.Settings.SAML.Update(ctx, AdminSAMLSettingsUpdateOptions{
-			Enabled:               Bool(true),
-			TeamManagementEnabled: Bool(true),
+			Enabled:                Bool(true),
+			TeamManagementEnabled:  Bool(true),
+			Certificate:            String(cert),
+			PrivateKey:             String(pKey),
+			SignatureSigningMethod: String(signatureSigningMethod),
+			SignatureDigestMethod:  String(signatureDigestMethod),
 		})
 		require.NoError(t, err)
 		assert.True(t, samlSettingsUpd.TeamManagementEnabled)
@@ -91,6 +103,7 @@ func TestAdminSettings_SAML_Update(t *testing.T) {
 
 	t.Run("with invalid signature digest method", func(t *testing.T) {
 		_, err := client.Admin.Settings.SAML.Update(ctx, AdminSAMLSettingsUpdateOptions{
+			AuthnRequestsSigned:   Bool(true),
 			SignatureDigestMethod: String("SHA1234"),
 		})
 		require.Error(t, err)
@@ -98,24 +111,21 @@ func TestAdminSettings_SAML_Update(t *testing.T) {
 
 	t.Run("with invalid signature signing method", func(t *testing.T) {
 		_, err := client.Admin.Settings.SAML.Update(ctx, AdminSAMLSettingsUpdateOptions{
+			AuthnRequestsSigned:    Bool(true),
 			SignatureSigningMethod: String("SHA1234"),
 		})
 		require.Error(t, err)
 	})
-}
 
-func TestAdminSettings_SAML_RevokeIdpCert(t *testing.T) {
-	skipUnlessEnterprise(t)
+	t.Run("revoke IDP cert", func(t *testing.T) {
+		_, err := client.Admin.Settings.SAML.Update(ctx, AdminSAMLSettingsUpdateOptions{
+			Enabled: Bool(true),
+			IDPCert: String("anotherTestCert"),
+		})
+		require.NoError(t, err)
 
-	client := testClient(t)
-	ctx := context.Background()
-
-	samlSettings, err := client.Admin.Settings.SAML.Read(ctx)
-	require.NoError(t, err)
-	if !samlSettings.Enabled {
-		t.Skip("SAML is not enabled, skipping Revoke IDP Cert test.")
-	}
-	samlSettings, err = client.Admin.Settings.SAML.RevokeIdpCert(ctx)
-	require.NoError(t, err)
-	assert.NotNil(t, samlSettings.IDPCert)
+		samlSettings, err = client.Admin.Settings.SAML.RevokeIdpCert(ctx)
+		require.NoError(t, err)
+		assert.NotNil(t, samlSettings.IDPCert)
+	})
 }

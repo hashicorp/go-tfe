@@ -5,7 +5,10 @@ package tfe
 
 import (
 	"context"
+	"fmt"
+	"os"
 	"testing"
+	"time"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
@@ -208,6 +211,34 @@ func TestRegistryNoCodeModulesRead(t *testing.T) {
 	})
 }
 
+// TestRegistryNoCodeModuleReadVariables tests the ReadVariables method of the
+// RegistryNoCodeModules service.
+//
+// This test requires that the environment variable "GITHUB_REGISTRY_NO_CODE_MODULE_IDENTIFIER" is set
+// with the ID of an existing no-code module that has variables.
+func TestRegistryNoCodeModulesReadVariables(t *testing.T) {
+	skipUnlessBeta(t)
+	client := testClient(t)
+	ctx := context.Background()
+	r := require.New(t)
+
+	ncmID := os.Getenv("GITHUB_REGISTRY_NO_CODE_MODULE_IDENTIFIER")
+	if ncmID == "" {
+		t.Skip("Export a valid GITHUB_REGISTRY_NO_CODE_MODULE_IDENTIFIER before running this test")
+	}
+
+	ncm, err := client.RegistryNoCodeModules.Read(ctx, ncmID, nil)
+	r.NoError(err)
+	r.NotNil(ncm)
+
+	t.Run("happy path", func(t *testing.T) {
+		vars, err := client.RegistryNoCodeModules.ReadVariables(ctx, ncm.ID, ncm.VersionPin, &RegistryNoCodeModuleReadVariablesOptions{})
+		r.NoError(err)
+		r.NotNil(vars)
+		r.NotEmpty(vars)
+	})
+}
+
 func TestRegistryNoCodeModulesUpdate(t *testing.T) {
 	skipUnlessBeta(t)
 	client := testClient(t)
@@ -297,4 +328,205 @@ func createNoCodeRegistryModule(t *testing.T, client *Client, orgName string, rm
 				"NoCode Module: %s\nError: %s", ncm.ID, err)
 		}
 	}
+}
+
+func TestRegistryNoCodeModulesCreateWorkspace(t *testing.T) {
+	skipUnlessBeta(t)
+	client := testClient(t)
+	ctx := context.Background()
+	r := require.New(t)
+
+	// create an org that will be deleted later. the wskp will live here
+	orgTest, orgTestCleanup := createOrganization(t, client)
+	defer orgTestCleanup()
+
+	org, err := client.Organizations.Read(ctx, orgTest.Name)
+	r.NoError(err)
+	r.NotNil(org)
+
+	githubIdentifier := os.Getenv("GITHUB_REGISTRY_NO_CODE_MODULE_IDENTIFIER")
+	if githubIdentifier == "" {
+		t.Skip("Export a valid GITHUB_REGISTRY_NO_CODE_MODULE_IDENTIFIER before running this test")
+	}
+
+	token, cleanupToken := createOAuthToken(t, client, org)
+	defer cleanupToken()
+
+	rmOpts := RegistryModuleCreateWithVCSConnectionOptions{
+		VCSRepo: &RegistryModuleVCSRepoOptions{
+			OrganizationName:  String(org.Name),
+			Identifier:        String(githubIdentifier),
+			Tags:              Bool(true),
+			OAuthTokenID:      String(token.ID),
+			DisplayIdentifier: String(githubIdentifier),
+		},
+	}
+
+	rm, err := client.RegistryModules.CreateWithVCSConnection(ctx, rmOpts)
+	r.NoError(err)
+
+	// 1. create the registry module
+	// 2. create the no-code module, with the registry module
+	// 3. use the ID to create the workspace
+	ncm, err := client.RegistryNoCodeModules.Create(ctx, org.Name, RegistryNoCodeModuleCreateOptions{
+		RegistryModule:  rm,
+		Enabled:         Bool(true),
+		VariableOptions: nil,
+	})
+	r.NoError(err)
+	r.NotNil(ncm)
+
+	// We sleep for 10 seconds to let the module finish getting ready
+	time.Sleep(time.Second * 10)
+
+	t.Run("test creating a workspace via a no-code module", func(t *testing.T) {
+		wn := fmt.Sprintf("foo-%s", randomString(t))
+		sn := "my-app"
+		su := "http://my-app.com"
+		w, err := client.RegistryNoCodeModules.CreateWorkspace(
+			ctx,
+			ncm.ID,
+			&RegistryNoCodeModuleCreateWorkspaceOptions{
+				Name:          wn,
+				SourceName:    String(sn),
+				SourceURL:     String(su),
+				ExecutionMode: String("remote"),
+			},
+		)
+		r.NoError(err)
+		r.Equal(wn, w.Name)
+		r.Equal(sn, w.SourceName)
+		r.Equal(su, w.SourceURL)
+		r.Equal("remote", w.ExecutionMode)
+	})
+
+	t.Run("fail to create a workspace with a bad module ID", func(t *testing.T) {
+		wn := fmt.Sprintf("foo-%s", randomString(t))
+		_, err = client.RegistryNoCodeModules.CreateWorkspace(
+			ctx,
+			"codeno-abc123XYZ",
+			&RegistryNoCodeModuleCreateWorkspaceOptions{
+				Name: wn,
+			},
+		)
+		r.Error(err)
+	})
+}
+
+func TestRegistryNoCodeModuleWorkspaceUpgrade(t *testing.T) {
+	skipUnlessBeta(t)
+
+	client := testClient(t)
+	ctx := context.Background()
+	r := require.New(t)
+
+	orgTest, orgTestCleanup := createOrganization(t, client)
+	defer orgTestCleanup()
+
+	org, err := client.Organizations.Read(ctx, orgTest.Name)
+	r.NoError(err)
+	r.NotNil(org)
+
+	githubIdentifier := os.Getenv("GITHUB_REGISTRY_NO_CODE_MODULE_IDENTIFIER")
+	if githubIdentifier == "" {
+		t.Skip("Export a valid GITHUB_REGISTRY_NO_CODE_MODULE_IDENTIFIER before running this test")
+	}
+
+	token, cleanupToken := createOAuthToken(t, client, org)
+	defer cleanupToken()
+
+	rmOpts := RegistryModuleCreateWithVCSConnectionOptions{
+		VCSRepo: &RegistryModuleVCSRepoOptions{
+			OrganizationName:  String(org.Name),
+			Identifier:        String(githubIdentifier),
+			Tags:              Bool(true),
+			OAuthTokenID:      String(token.ID),
+			DisplayIdentifier: String(githubIdentifier),
+		},
+		InitialVersion: String("1.0.0"),
+	}
+
+	// create the module
+	rm, err := client.RegistryModules.CreateWithVCSConnection(ctx, rmOpts)
+	r.NoError(err)
+
+	// create the no-code module
+	ncm, err := client.RegistryNoCodeModules.Create(ctx, org.Name, RegistryNoCodeModuleCreateOptions{
+		RegistryModule:  rm,
+		Enabled:         Bool(true),
+		VariableOptions: nil,
+	})
+	r.NoError(err)
+	r.NotNil(ncm)
+
+	// We sleep for 10 seconds to let the module finish getting ready
+	time.Sleep(time.Second * 10)
+
+	// update the module's pinned version to be 1.0.0
+	// NOTE: This is done here as an update instead of at create time, because
+	// that results in the following error:
+	// Validation failed: Provided version pin is not equal to latest or provided
+	// string does not represent an existing version of the module.
+	uncm, err := client.RegistryNoCodeModules.Update(ctx, ncm.ID, RegistryNoCodeModuleUpdateOptions{
+		RegistryModule: rm,
+		VersionPin:     "1.0.0",
+	})
+	r.NoError(err)
+	r.NotNil(uncm)
+
+	// create a workspace, which will be attempted to be updated during the test
+	wn := fmt.Sprintf("foo-%s", randomString(t))
+	sn := "my-app"
+	su := "http://my-app.com"
+	w, err := client.RegistryNoCodeModules.CreateWorkspace(
+		ctx,
+		uncm.ID,
+		&RegistryNoCodeModuleCreateWorkspaceOptions{
+			Name:       wn,
+			SourceName: String(sn),
+			SourceURL:  String(su),
+		},
+	)
+	r.NoError(err)
+	r.NotNil(w)
+
+	// update the module's pinned version
+	uncm, err = client.RegistryNoCodeModules.Update(ctx, ncm.ID, RegistryNoCodeModuleUpdateOptions{
+		VersionPin: "1.0.1",
+	})
+	r.NoError(err)
+	r.NotNil(uncm)
+
+	t.Run("test upgrading a workspace via a no-code module", func(t *testing.T) {
+		wu, err := client.RegistryNoCodeModules.UpgradeWorkspace(
+			ctx,
+			ncm.ID,
+			w.ID,
+			&RegistryNoCodeModuleUpgradeWorkspaceOptions{},
+		)
+		r.NoError(err)
+		r.NotNil(wu)
+		r.NotEmpty(wu.Status)
+		r.NotEmpty(wu.PlanURL)
+	})
+
+	t.Run("fail to upgrade workspace with invalid no-code module", func(t *testing.T) {
+		_, err = client.RegistryNoCodeModules.UpgradeWorkspace(
+			ctx,
+			ncm.ID+"-invalid",
+			w.ID,
+			&RegistryNoCodeModuleUpgradeWorkspaceOptions{},
+		)
+		r.Error(err)
+	})
+
+	t.Run("fail to upgrade workspace with invalid workspace ID", func(t *testing.T) {
+		_, err = client.RegistryNoCodeModules.UpgradeWorkspace(
+			ctx,
+			ncm.ID,
+			w.ID+"-invalid",
+			&RegistryNoCodeModuleUpgradeWorkspaceOptions{},
+		)
+		r.Error(err)
+	})
 }

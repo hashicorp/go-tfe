@@ -94,11 +94,11 @@ func (r *registryProviderPlatforms) Create(ctx context.Context, versionID Regist
 	// POST /organizations/:organization_name/registry-providers/:registry_name/:namespace/:name/versions/:version/platforms
 	u := fmt.Sprintf(
 		"organizations/%s/registry-providers/%s/%s/%s/versions/%s/platforms",
-		url.QueryEscape(versionID.OrganizationName),
-		url.QueryEscape(string(versionID.RegistryName)),
-		url.QueryEscape(versionID.Namespace),
-		url.QueryEscape(versionID.Name),
-		url.QueryEscape(versionID.Version),
+		url.PathEscape(versionID.OrganizationName),
+		url.PathEscape(string(versionID.RegistryName)),
+		url.PathEscape(versionID.Namespace),
+		url.PathEscape(versionID.Name),
+		url.PathEscape(versionID.Version),
 	)
 	req, err := r.client.NewRequest("POST", u, &options)
 	if err != nil {
@@ -126,11 +126,11 @@ func (r *registryProviderPlatforms) List(ctx context.Context, versionID Registry
 	// GET /organizations/:organization_name/registry-providers/:registry_name/:namespace/:name/versions/:version/platforms
 	u := fmt.Sprintf(
 		"organizations/%s/registry-providers/%s/%s/%s/versions/%s/platforms",
-		url.QueryEscape(versionID.RegistryProviderID.OrganizationName),
-		url.QueryEscape(string(versionID.RegistryProviderID.RegistryName)),
-		url.QueryEscape(versionID.RegistryProviderID.Namespace),
-		url.QueryEscape(versionID.RegistryProviderID.Name),
-		url.QueryEscape(versionID.Version),
+		url.PathEscape(versionID.RegistryProviderID.OrganizationName),
+		url.PathEscape(string(versionID.RegistryProviderID.RegistryName)),
+		url.PathEscape(versionID.RegistryProviderID.Namespace),
+		url.PathEscape(versionID.RegistryProviderID.Name),
+		url.PathEscape(versionID.Version),
 	)
 	req, err := r.client.NewRequest("GET", u, options)
 	if err != nil {
@@ -155,13 +155,13 @@ func (r *registryProviderPlatforms) Read(ctx context.Context, platformID Registr
 	// GET /organizations/:organization_name/registry-providers/:registry_name/:namespace/:name/versions/:version/platforms/:os/:arch
 	u := fmt.Sprintf(
 		"organizations/%s/registry-providers/%s/%s/%s/versions/%s/platforms/%s/%s",
-		url.QueryEscape(platformID.RegistryProviderID.OrganizationName),
-		url.QueryEscape(string(platformID.RegistryProviderID.RegistryName)),
-		url.QueryEscape(platformID.RegistryProviderID.Namespace),
-		url.QueryEscape(platformID.RegistryProviderID.Name),
-		url.QueryEscape(platformID.RegistryProviderVersionID.Version),
-		url.QueryEscape(platformID.OS),
-		url.QueryEscape(platformID.Arch),
+		url.PathEscape(platformID.RegistryProviderID.OrganizationName),
+		url.PathEscape(string(platformID.RegistryProviderID.RegistryName)),
+		url.PathEscape(platformID.RegistryProviderID.Namespace),
+		url.PathEscape(platformID.RegistryProviderID.Name),
+		url.PathEscape(platformID.RegistryProviderVersionID.Version),
+		url.PathEscape(platformID.OS),
+		url.PathEscape(platformID.Arch),
 	)
 	req, err := r.client.NewRequest("GET", u, nil)
 	if err != nil {
@@ -187,13 +187,13 @@ func (r *registryProviderPlatforms) Delete(ctx context.Context, platformID Regis
 	// DELETE /organizations/:organization_name/registry-providers/:registry_name/:namespace/:name/versions/:version/platforms/:os/:arch
 	u := fmt.Sprintf(
 		"organizations/%s/registry-providers/%s/%s/%s/versions/%s/platforms/%s/%s",
-		url.QueryEscape(platformID.OrganizationName),
-		url.QueryEscape(string(platformID.RegistryName)),
-		url.QueryEscape(platformID.Namespace),
-		url.QueryEscape(platformID.Name),
-		url.QueryEscape(platformID.Version),
-		url.QueryEscape(platformID.OS),
-		url.QueryEscape(platformID.Arch),
+		url.PathEscape(platformID.OrganizationName),
+		url.PathEscape(string(platformID.RegistryName)),
+		url.PathEscape(platformID.Namespace),
+		url.PathEscape(platformID.Name),
+		url.PathEscape(platformID.Version),
+		url.PathEscape(platformID.OS),
+		url.PathEscape(platformID.Arch),
 	)
 	req, err := r.client.NewRequest("DELETE", u, nil)
 	if err != nil {

@@ -7,7 +7,7 @@ runs:
   using: composite
   steps:
     - name: Set up Go
-      uses: actions/setup-go@4d34df0c2316fe8122ab82dc22947d607c0c91f9 # v4.0.0
+      uses: actions/setup-go@d35c59abb061a4a6fb18e82ac0862c26744d6ab5 # v5.5.0
       with:
         go-version-file: go.mod
         cache: true
@@ -30,15 +30,7 @@ runs:
 
     - name: Install mockgen
       shell: bash
-      run: |
-        set -eux -o pipefail
-        MOCKGEN_VERSION=$(curl -Ls -o /dev/null -w %{url_effective}   https://github.com/golang/mock/releases/latest | awk -F'/v' '{printf$2}')
-        MOCKGEN_ZIP=mock_${MOCKGEN_VERSION}_linux_amd64.tar.gz
-        curl -OL https://github.com/golang/mock/releases/download/v$MOCKGEN_VERSION/$MOCKGEN_ZIP
-        sudo tar xvzf $MOCKGEN_ZIP --strip-components 1 -C /usr/local
-        sudo chmod +x /usr/local/mockgen
-        rm -f $MOCKGEN_ZIP
-        echo /usr/local/ >> $GITHUB_PATH
+      run: go install go.uber.org/mock/mockgen@v0.4.0
 
     - name: Get dependencies
       shell: bash

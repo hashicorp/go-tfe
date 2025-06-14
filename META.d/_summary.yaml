@@ -1,0 +1,13 @@
+# Copyright (c) HashiCorp, Inc.
+# SPDX-License-Identifier: MPL-2.0
+
+---
+
+schema: 1.1
+partition: tfc
+category: library
+
+summary:
+  owner: team-tf-core-cloud
+  description: HCP Terraform and Terraform Enterprise API Client/SDK in Golang
+  visibility: external

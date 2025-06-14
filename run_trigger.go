@@ -14,7 +14,7 @@ import (
 var _ RunTriggers = (*runTriggers)(nil)
 
 // RunTriggers describes all the Run Trigger
-// related methods that the Terraform Cloud API supports.
+// related methods that the HCP Terraform API supports.
 //
 // TFE API docs:
 // https://developer.hashicorp.com/terraform/cloud-docs/api-docs/run-triggers
@@ -109,7 +109,7 @@ func (s *runTriggers) List(ctx context.Context, workspaceID string, options *Run
 		return nil, err
 	}
 
-	u := fmt.Sprintf("workspaces/%s/run-triggers", url.QueryEscape(workspaceID))
+	u := fmt.Sprintf("workspaces/%s/run-triggers", url.PathEscape(workspaceID))
 	req, err := s.client.NewRequest("GET", u, options)
 	if err != nil {
 		return nil, err
@@ -119,6 +119,10 @@ func (s *runTriggers) List(ctx context.Context, workspaceID string, options *Run
 	err = req.Do(ctx, rtl)
 	if err != nil {
 		return nil, err
+	}
+
+	for i := range rtl.Items {
+		backfillDeprecatedSourceable(rtl.Items[i])
 	}
 
 	return rtl, nil
@@ -133,7 +137,7 @@ func (s *runTriggers) Create(ctx context.Context, workspaceID string, options Ru
 		return nil, err
 	}
 
-	u := fmt.Sprintf("workspaces/%s/run-triggers", url.QueryEscape(workspaceID))
+	u := fmt.Sprintf("workspaces/%s/run-triggers", url.PathEscape(workspaceID))
 	req, err := s.client.NewRequest("POST", u, &options)
 	if err != nil {
 		return nil, err
@@ -145,6 +149,8 @@ func (s *runTriggers) Create(ctx context.Context, workspaceID string, options Ru
 		return nil, err
 	}
 
+	backfillDeprecatedSourceable(rt)
+
 	return rt, nil
 }
 
@@ -154,7 +160,7 @@ func (s *runTriggers) Read(ctx context.Context, runTriggerID string) (*RunTrigge
 		return nil, ErrInvalidRunTriggerID
 	}
 
-	u := fmt.Sprintf("run-triggers/%s", url.QueryEscape(runTriggerID))
+	u := fmt.Sprintf("run-triggers/%s", url.PathEscape(runTriggerID))
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, err
@@ -166,6 +172,8 @@ func (s *runTriggers) Read(ctx context.Context, runTriggerID string) (*RunTrigge
 		return nil, err
 	}
 
+	backfillDeprecatedSourceable(rt)
+
 	return rt, nil
 }
 
@@ -175,7 +183,7 @@ func (s *runTriggers) Delete(ctx context.Context, runTriggerID string) error {
 		return ErrInvalidRunTriggerID
 	}
 
-	u := fmt.Sprintf("run-triggers/%s", url.QueryEscape(runTriggerID))
+	u := fmt.Sprintf("run-triggers/%s", url.PathEscape(runTriggerID))
 	req, err := s.client.NewRequest("DELETE", u, nil)
 	if err != nil {
 		return err
@@ -201,6 +209,14 @@ func (o *RunTriggerListOptions) valid() error {
 	}
 
 	return nil
+}
+
+func backfillDeprecatedSourceable(runTrigger *RunTrigger) {
+	if runTrigger.Sourceable != nil || runTrigger.SourceableChoice == nil {
+		return
+	}
+
+	runTrigger.Sourceable = runTrigger.SourceableChoice.Workspace
 }
 
 func validateRunTriggerFilterParam(filterParam RunTriggerFilterOp, includeParams []RunTriggerIncludeOpt) error {

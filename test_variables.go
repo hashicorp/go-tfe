@@ -20,6 +20,9 @@ type TestVariables interface {
 	// List all the test variables associated with the given module.
 	List(ctx context.Context, moduleID RegistryModuleID, options *VariableListOptions) (*VariableList, error)
 
+	// Read a test variable by its ID.
+	Read(ctx context.Context, moduleID RegistryModuleID, variableID string) (*Variable, error)
+
 	// Create is used to create a new variable.
 	Create(ctx context.Context, moduleID RegistryModuleID, options VariableCreateOptions) (*Variable, error)
 
@@ -55,6 +58,32 @@ func (s *testVariables) List(ctx context.Context, moduleID RegistryModuleID, opt
 	return vl, nil
 }
 
+// Read a variable by its ID.
+func (s *testVariables) Read(ctx context.Context, moduleID RegistryModuleID, variableID string) (*Variable, error) {
+	if err := moduleID.valid(); err != nil {
+		return nil, err
+	}
+
+	if !validStringID(&variableID) {
+		return nil, ErrInvalidVariableID
+	}
+
+	u := fmt.Sprintf("%s/%s", testVarsPath(moduleID), url.PathEscape(variableID))
+
+	req, err := s.client.NewRequest("GET", u, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	v := &Variable{}
+	err = req.Do(ctx, v)
+	if err != nil {
+		return nil, err
+	}
+
+	return v, err
+}
+
 // Create is used to create a new variable.
 func (s *testVariables) Create(ctx context.Context, moduleID RegistryModuleID, options VariableCreateOptions) (*Variable, error) {
 	if err := moduleID.valid(); err != nil {
@@ -87,7 +116,7 @@ func (s *testVariables) Update(ctx context.Context, moduleID RegistryModuleID, v
 		return nil, ErrInvalidVariableID
 	}
 
-	u := fmt.Sprintf("%s/%s", testVarsPath(moduleID), url.QueryEscape(variableID))
+	u := fmt.Sprintf("%s/%s", testVarsPath(moduleID), url.PathEscape(variableID))
 	req, err := s.client.NewRequest("PATCH", u, &options)
 	if err != nil {
 		return nil, err
@@ -111,7 +140,7 @@ func (s *testVariables) Delete(ctx context.Context, moduleID RegistryModuleID, v
 		return ErrInvalidVariableID
 	}
 
-	u := fmt.Sprintf("%s/%s", testVarsPath(moduleID), url.QueryEscape(variableID))
+	u := fmt.Sprintf("%s/%s", testVarsPath(moduleID), url.PathEscape(variableID))
 	req, err := s.client.NewRequest("DELETE", u, nil)
 	if err != nil {
 		return err
@@ -122,9 +151,9 @@ func (s *testVariables) Delete(ctx context.Context, moduleID RegistryModuleID, v
 
 func testVarsPath(moduleID RegistryModuleID) string {
 	return fmt.Sprintf("organizations/%s/tests/registry-modules/%s/%s/%s/%s/vars",
-		url.QueryEscape(moduleID.Organization),
-		url.QueryEscape(string(moduleID.RegistryName)),
-		url.QueryEscape(moduleID.Namespace),
-		url.QueryEscape(moduleID.Name),
-		url.QueryEscape(moduleID.Provider))
+		url.PathEscape(moduleID.Organization),
+		url.PathEscape(string(moduleID.RegistryName)),
+		url.PathEscape(moduleID.Namespace),
+		url.PathEscape(moduleID.Name),
+		url.PathEscape(moduleID.Provider))
 }

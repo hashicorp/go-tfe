@@ -17,6 +17,7 @@ import (
 	"time"
 
 	retryablehttp "github.com/hashicorp/go-retryablehttp"
+	"github.com/hashicorp/jsonapi"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
@@ -29,8 +30,8 @@ type WorkspaceTableOptions struct {
 type WorkspaceTableTest struct {
 	scenario  string
 	options   *WorkspaceTableOptions
-	setup     func(options *WorkspaceTableOptions) (w *Workspace, cleanup func())
-	assertion func(w *Workspace, options *WorkspaceTableOptions, err error)
+	setup     func(t *testing.T, options *WorkspaceTableOptions) (w *Workspace, cleanup func())
+	assertion func(t *testing.T, w *Workspace, options *WorkspaceTableOptions, err error)
 }
 
 func TestWorkspacesList(t *testing.T) {
@@ -44,6 +45,8 @@ func TestWorkspacesList(t *testing.T) {
 	t.Cleanup(wTest1Cleanup)
 	wTest2, wTest2Cleanup := createWorkspace(t, client, orgTest)
 	t.Cleanup(wTest2Cleanup)
+	wTest3, wTest3Cleanup := createWorkspace(t, client, orgTest)
+	t.Cleanup(wTest3Cleanup)
 
 	t.Run("without list options", func(t *testing.T) {
 		wl, err := client.Workspaces.List(ctx, orgTest.Name, nil)
@@ -51,7 +54,7 @@ func TestWorkspacesList(t *testing.T) {
 		assert.Contains(t, wl.Items, wTest1)
 		assert.Contains(t, wl.Items, wTest2)
 		assert.Equal(t, 1, wl.CurrentPage)
-		assert.Equal(t, 2, wl.TotalCount)
+		assert.Equal(t, 3, wl.TotalCount)
 	})
 
 	t.Run("with list options", func(t *testing.T) {
@@ -67,7 +70,35 @@ func TestWorkspacesList(t *testing.T) {
 		require.NoError(t, err)
 		assert.Empty(t, wl.Items)
 		assert.Equal(t, 999, wl.CurrentPage)
-		assert.Equal(t, 2, wl.TotalCount)
+		assert.Equal(t, 3, wl.TotalCount)
+	})
+
+	t.Run("when sorting by workspace names", func(t *testing.T) {
+		wl, err := client.Workspaces.List(ctx, orgTest.Name, &WorkspaceListOptions{
+			Sort: "name",
+		})
+		require.NoError(t, err)
+		require.NotEmpty(t, wl.Items)
+		require.GreaterOrEqual(t, len(wl.Items), 2)
+		assert.Equal(t, wl.Items[0].Name < wl.Items[1].Name, true)
+	})
+
+	t.Run("when sorting workspaces on current-run.created-at", func(t *testing.T) {
+		_, unappliedCleanup1 := createRunUnapplied(t, client, wTest2)
+		t.Cleanup(unappliedCleanup1)
+
+		_, unappliedCleanup2 := createRunUnapplied(t, client, wTest3)
+		t.Cleanup(unappliedCleanup2)
+
+		wl, err := client.Workspaces.List(ctx, orgTest.Name, &WorkspaceListOptions{
+			Include: []WSIncludeOpt{WSCurrentRun},
+			Sort:    "current-run.created-at",
+		})
+
+		require.NoError(t, err)
+		require.NotEmpty(t, wl.Items)
+		require.GreaterOrEqual(t, len(wl.Items), 2)
+		assert.True(t, wl.Items[1].CurrentRun.CreatedAt.After(wl.Items[0].CurrentRun.CreatedAt))
 	})
 
 	t.Run("when searching a known workspace", func(t *testing.T) {
@@ -108,7 +139,7 @@ func TestWorkspacesList(t *testing.T) {
 	})
 
 	t.Run("when searching using exclude-tags", func(t *testing.T) {
-		for wsID, tag := range map[string]string{wTest1.ID: "foo", wTest2.ID: "bar"} {
+		for wsID, tag := range map[string]string{wTest1.ID: "foo", wTest2.ID: "bar", wTest3.ID: "foo"} {
 			err := client.Workspaces.AddTags(ctx, wsID, WorkspaceAddTagsOptions{
 				Tags: []*Tag{
 					{
@@ -219,6 +250,104 @@ func TestWorkspacesList(t *testing.T) {
 		assert.Equal(t, 0, wl.TotalCount)
 	})
 
+	t.Run("when using a tags filter", func(t *testing.T) {
+		skipUnlessBeta(t)
+
+		w1, wTestCleanup1 := createWorkspaceWithOptions(t, client, orgTest, WorkspaceCreateOptions{
+			Name: String(randomString(t)),
+			TagBindings: []*TagBinding{
+				{Key: "key1", Value: "value1"},
+				{Key: "key2", Value: "value2a"},
+			},
+		})
+		w2, wTestCleanup2 := createWorkspaceWithOptions(t, client, orgTest, WorkspaceCreateOptions{
+			Name: String(randomString(t)),
+			TagBindings: []*TagBinding{
+				{Key: "key2", Value: "value2b"},
+				{Key: "key3", Value: "value3"},
+			},
+		})
+		t.Cleanup(wTestCleanup1)
+		t.Cleanup(wTestCleanup2)
+
+		// List all the workspaces under the given tag
+		wl, err := client.Workspaces.List(ctx, orgTest.Name, &WorkspaceListOptions{
+			TagBindings: []*TagBinding{
+				{Key: "key1"},
+			},
+		})
+		assert.NoError(t, err)
+		assert.Len(t, wl.Items, 1)
+		assert.Contains(t, wl.Items, w1)
+
+		wl2, err := client.Workspaces.List(ctx, orgTest.Name, &WorkspaceListOptions{
+			TagBindings: []*TagBinding{
+				{Key: "key2"},
+			},
+		})
+		assert.NoError(t, err)
+		assert.Len(t, wl2.Items, 2)
+		assert.Contains(t, wl2.Items, w1, w2)
+
+		wl3, err := client.Workspaces.List(ctx, orgTest.Name, &WorkspaceListOptions{
+			TagBindings: []*TagBinding{
+				{Key: "key2", Value: "value2b"},
+			},
+		})
+		assert.NoError(t, err)
+		assert.Len(t, wl3.Items, 1)
+		assert.Contains(t, wl3.Items, w2)
+	})
+
+	t.Run("when including effective tag bindings", func(t *testing.T) {
+		skipUnlessBeta(t)
+
+		orgTest2, orgTest2Cleanup := createOrganization(t, client)
+		t.Cleanup(orgTest2Cleanup)
+
+		prj, pTestCleanup1 := createProjectWithOptions(t, client, orgTest2, ProjectCreateOptions{
+			Name: randomStringWithoutSpecialChar(t),
+			TagBindings: []*TagBinding{
+				{Key: "key3", Value: "value3"},
+			},
+		})
+		t.Cleanup(pTestCleanup1)
+
+		_, wTestCleanup1 := createWorkspaceWithOptions(t, client, orgTest2, WorkspaceCreateOptions{
+			Name:    String(randomString(t)),
+			Project: prj,
+			TagBindings: []*TagBinding{
+				{Key: "key1", Value: "value1"},
+				{Key: "key2", Value: "value2a"},
+			},
+		})
+		t.Cleanup(wTestCleanup1)
+
+		wl, err := client.Workspaces.List(ctx, orgTest2.Name, &WorkspaceListOptions{
+			Include: []WSIncludeOpt{WSEffectiveTagBindings},
+		})
+		require.NoError(t, err)
+		require.Len(t, wl.Items, 1)
+		require.Len(t, wl.Items[0].EffectiveTagBindings, 3)
+		assert.NotEmpty(t, wl.Items[0].EffectiveTagBindings[0].Key)
+		assert.NotEmpty(t, wl.Items[0].EffectiveTagBindings[0].Value)
+		assert.NotEmpty(t, wl.Items[0].EffectiveTagBindings[1].Key)
+		assert.NotEmpty(t, wl.Items[0].EffectiveTagBindings[1].Value)
+		assert.NotEmpty(t, wl.Items[0].EffectiveTagBindings[2].Key)
+		assert.NotEmpty(t, wl.Items[0].EffectiveTagBindings[2].Value)
+
+		inheritedTagsFound := 0
+		for _, tag := range wl.Items[0].EffectiveTagBindings {
+			if tag.Links["inherited-from"] != nil {
+				inheritedTagsFound += 1
+			}
+		}
+
+		if inheritedTagsFound != 1 {
+			t.Fatalf("Expected 1 inherited tag, got %d", inheritedTagsFound)
+		}
+	})
+
 	t.Run("when using project id filter and project contains workspaces", func(t *testing.T) {
 		// create a project in the orgTest
 		p, pTestCleanup := createProject(t, client, orgTest)
@@ -250,6 +379,33 @@ func TestWorkspacesList(t *testing.T) {
 		require.NoError(t, err)
 		assert.Empty(t, wl.Items)
 	})
+
+	t.Run("when filter workspaces by current run status", func(t *testing.T) {
+		wTest, wTestCleanup := createWorkspace(t, client, orgTest)
+		t.Cleanup(wTestCleanup)
+
+		rn, appliedCleanup := createRunApply(t, client, wTest)
+		t.Cleanup(appliedCleanup)
+
+		wl, err := client.Workspaces.List(ctx, orgTest.Name, &WorkspaceListOptions{
+			CurrentRunStatus: string(RunApplied),
+		})
+
+		require.NoError(t, err)
+		require.NotEmpty(t, wl.Items)
+		require.GreaterOrEqual(t, len(wl.Items), 1)
+
+		found := false
+		for _, ws := range wl.Items {
+			if ws.ID != wTest.ID {
+				continue
+			}
+			assert.Equal(t, ws.CurrentRun.ID, rn.ID)
+			found = true
+		}
+
+		assert.True(t, found)
+	})
 }
 
 func TestWorkspacesCreateTableDriven(t *testing.T) {
@@ -259,7 +415,36 @@ func TestWorkspacesCreateTableDriven(t *testing.T) {
 	orgTest, orgTestCleanup := createOrganization(t, client)
 	t.Cleanup(orgTestCleanup)
 
+	oc, oaCleanup := createOAuthToken(t, client, orgTest)
+	t.Cleanup(oaCleanup)
+
 	workspaceTableTests := []WorkspaceTableTest{
+		{
+			scenario: "when options include vcs-repo",
+			options: &WorkspaceTableOptions{
+				createOptions: &WorkspaceCreateOptions{
+					Name: String("foobar"),
+					VCSRepo: &VCSRepoOptions{
+						Identifier:   String("hashicorp/terraform-random-module"),
+						OAuthTokenID: &oc.ID,
+						Branch:       String("main"),
+					},
+				},
+			},
+			assertion: func(t *testing.T, w *Workspace, options *WorkspaceTableOptions, err error) {
+				require.NoError(t, err)
+				require.NotNil(t, w)
+				require.NotEmpty(t, w.VCSRepo.Identifier)
+				require.NotEmpty(t, w.VCSRepo.OAuthTokenID)
+				require.NotEmpty(t, w.VCSRepo.Branch)
+
+				wRead, err := client.Workspaces.ReadByID(ctx, w.ID)
+				require.NoError(t, err)
+				require.Equal(t, w.VCSRepo.Identifier, wRead.VCSRepo.Identifier)
+				require.Equal(t, w.VCSRepo.OAuthTokenID, wRead.VCSRepo.OAuthTokenID)
+				require.Equal(t, w.VCSRepo.Branch, wRead.VCSRepo.Branch)
+			},
+		},
 		{
 			scenario: "when options include tags-regex",
 			options: &WorkspaceTableOptions{
@@ -270,7 +455,7 @@ func TestWorkspacesCreateTableDriven(t *testing.T) {
 						TagsRegex: String("barfoo")},
 				},
 			},
-			setup: func(options *WorkspaceTableOptions) (w *Workspace, cleanup func()) {
+			setup: func(t *testing.T, options *WorkspaceTableOptions) (w *Workspace, cleanup func()) {
 				// Remove the below organization creation and use the one from the outer scope once the feature flag is removed
 				orgTest, orgTestCleanup := createOrganizationWithOptions(t, client, OrganizationCreateOptions{
 					Name:  String("tst-" + randomString(t)[0:20]),
@@ -284,7 +469,7 @@ func TestWorkspacesCreateTableDriven(t *testing.T) {
 					t.Cleanup(wTestCleanup)
 				}
 			},
-			assertion: func(w *Workspace, options *WorkspaceTableOptions, err error) {
+			assertion: func(t *testing.T, w *Workspace, options *WorkspaceTableOptions, err error) {
 				assert.Equal(t, *options.createOptions.VCSRepo.TagsRegex, w.VCSRepo.TagsRegex)
 
 				// Get a refreshed view from the API.
@@ -309,7 +494,7 @@ func TestWorkspacesCreateTableDriven(t *testing.T) {
 					TriggerPatterns:     []string{"/module-1/**/*", "/**/networking/*"},
 				},
 			},
-			assertion: func(w *Workspace, options *WorkspaceTableOptions, err error) {
+			assertion: func(t *testing.T, w *Workspace, options *WorkspaceTableOptions, err error) {
 				assert.Nil(t, w)
 				assert.EqualError(t, err, ErrUnsupportedBothTagsRegexAndTriggerPatterns.Error())
 			},
@@ -324,7 +509,7 @@ func TestWorkspacesCreateTableDriven(t *testing.T) {
 					TriggerPrefixes:     []string{"/module-1", "/module-2"},
 				},
 			},
-			assertion: func(w *Workspace, options *WorkspaceTableOptions, err error) {
+			assertion: func(t *testing.T, w *Workspace, options *WorkspaceTableOptions, err error) {
 				assert.Nil(t, w)
 				assert.EqualError(t, err, ErrUnsupportedBothTagsRegexAndTriggerPrefixes.Error())
 			},
@@ -338,7 +523,7 @@ func TestWorkspacesCreateTableDriven(t *testing.T) {
 					VCSRepo:             &VCSRepoOptions{TagsRegex: String("foobar")},
 				},
 			},
-			assertion: func(w *Workspace, options *WorkspaceTableOptions, err error) {
+			assertion: func(t *testing.T, w *Workspace, options *WorkspaceTableOptions, err error) {
 				assert.Nil(t, w)
 				assert.EqualError(t, err, ErrUnsupportedBothTagsRegexAndFileTriggersEnabled.Error())
 			},
@@ -352,14 +537,14 @@ func TestWorkspacesCreateTableDriven(t *testing.T) {
 					VCSRepo:             &VCSRepoOptions{TagsRegex: String("foobar")},
 				},
 			},
-			setup: func(options *WorkspaceTableOptions) (w *Workspace, cleanup func()) {
+			setup: func(t *testing.T, options *WorkspaceTableOptions) (w *Workspace, cleanup func()) {
 				w, wTestCleanup := createWorkspaceWithVCS(t, client, orgTest, *options.createOptions)
 
 				return w, func() {
 					t.Cleanup(wTestCleanup)
 				}
 			},
-			assertion: func(w *Workspace, options *WorkspaceTableOptions, err error) {
+			assertion: func(t *testing.T, w *Workspace, options *WorkspaceTableOptions, err error) {
 				require.NotNil(t, w)
 				require.NoError(t, err)
 			},
@@ -372,12 +557,12 @@ func TestWorkspacesCreateTableDriven(t *testing.T) {
 			var cleanup func()
 			var err error
 			if tableTest.setup != nil {
-				workspace, cleanup = tableTest.setup(tableTest.options)
+				workspace, cleanup = tableTest.setup(t, tableTest.options)
 				defer cleanup()
 			} else {
 				workspace, err = client.Workspaces.Create(ctx, orgTest.Name, *tableTest.options.createOptions)
 			}
-			tableTest.assertion(workspace, tableTest.options, err)
+			tableTest.assertion(t, workspace, tableTest.options, err)
 		})
 	}
 }
@@ -392,7 +577,6 @@ func TestWorkspacesCreateTableDrivenWithGithubApp(t *testing.T) {
 	ctx := context.Background()
 
 	orgTest1, orgTestCleanup := createOrganization(t, client)
-
 	t.Cleanup(orgTestCleanup)
 
 	workspaceTableTests := []WorkspaceTableTest{
@@ -406,7 +590,7 @@ func TestWorkspacesCreateTableDrivenWithGithubApp(t *testing.T) {
 						TagsRegex: String("barfoo")},
 				},
 			},
-			setup: func(options *WorkspaceTableOptions) (w *Workspace, cleanup func()) {
+			setup: func(t *testing.T, options *WorkspaceTableOptions) (w *Workspace, cleanup func()) {
 				// Remove the below organization creation and use the one from the outer scope once the feature flag is removed
 				orgTest, orgTestCleanup := createOrganizationWithOptions(t, client, OrganizationCreateOptions{
 					Name:  String("tst-" + randomString(t)[0:20]),
@@ -420,7 +604,7 @@ func TestWorkspacesCreateTableDrivenWithGithubApp(t *testing.T) {
 					t.Cleanup(wTestCleanup)
 				}
 			},
-			assertion: func(w *Workspace, options *WorkspaceTableOptions, err error) {
+			assertion: func(t *testing.T, w *Workspace, options *WorkspaceTableOptions, err error) {
 				assert.Equal(t, *options.createOptions.VCSRepo.TagsRegex, w.VCSRepo.TagsRegex)
 
 				// Get a refreshed view from the API.
@@ -442,12 +626,12 @@ func TestWorkspacesCreateTableDrivenWithGithubApp(t *testing.T) {
 			var cleanup func()
 			var err error
 			if tableTest.setup != nil {
-				workspace, cleanup = tableTest.setup(tableTest.options)
+				workspace, cleanup = tableTest.setup(t, tableTest.options)
 				defer cleanup()
 			} else {
 				workspace, err = client.Workspaces.Create(ctx, orgTest1.Name, *tableTest.options.createOptions)
 			}
-			tableTest.assertion(workspace, tableTest.options, err)
+			tableTest.assertion(t, workspace, tableTest.options, err)
 		})
 	}
 }
@@ -537,8 +721,9 @@ func TestWorkspacesCreate(t *testing.T) {
 	t.Run("with valid options", func(t *testing.T) {
 		options := WorkspaceCreateOptions{
 			Name:                       String(fmt.Sprintf("foo-%s", randomString(t))),
-			AllowDestroyPlan:           Bool(false),
+			AllowDestroyPlan:           Bool(true),
 			AutoApply:                  Bool(true),
+			AutoDestroyAt:              NullableTime(time.Date(2025, 1, 1, 0, 0, 0, 0, time.UTC)),
 			Description:                String("qux"),
 			AssessmentsEnabled:         Bool(false),
 			FileTriggersEnabled:        Bool(true),
@@ -577,6 +762,7 @@ func TestWorkspacesCreate(t *testing.T) {
 			assert.Equal(t, *options.Description, item.Description)
 			assert.Equal(t, *options.AllowDestroyPlan, item.AllowDestroyPlan)
 			assert.Equal(t, *options.AutoApply, item.AutoApply)
+			assert.Equal(t, options.AutoDestroyAt, item.AutoDestroyAt)
 			assert.Equal(t, *options.AssessmentsEnabled, item.AssessmentsEnabled)
 			assert.Equal(t, *options.FileTriggersEnabled, item.FileTriggersEnabled)
 			assert.Equal(t, *options.Operations, item.Operations)
@@ -891,7 +1077,7 @@ func TestWorkspacesReadWithOptions(t *testing.T) {
 	svTest, svTestCleanup := createStateVersion(t, client, 0, wTest)
 	t.Cleanup(svTestCleanup)
 
-	// give TFC some time to process the statefile and extract the outputs.
+	// give HCP Terraform some time to process the statefile and extract the outputs.
 	waitForSVOutputs(t, client, svTest.ID)
 
 	t.Run("when options to include resource", func(t *testing.T) {
@@ -1036,6 +1222,97 @@ func TestWorkspacesReadByID(t *testing.T) {
 	})
 }
 
+func TestWorkspacesAddTagBindings(t *testing.T) {
+	skipUnlessBeta(t)
+
+	client := testClient(t)
+	ctx := context.Background()
+
+	wTest, wCleanup := createWorkspace(t, client, nil)
+	t.Cleanup(wCleanup)
+
+	t.Run("when adding tag bindings to a workspace", func(t *testing.T) {
+		tagBindings := []*TagBinding{
+			{Key: "foo", Value: "bar"},
+			{Key: "baz", Value: "qux"},
+		}
+
+		bindings, err := client.Workspaces.AddTagBindings(ctx, wTest.ID, WorkspaceAddTagBindingsOptions{
+			TagBindings: tagBindings,
+		})
+		require.NoError(t, err)
+
+		assert.Len(t, bindings, 2)
+		assert.Equal(t, tagBindings[0].Key, bindings[0].Key)
+		assert.Equal(t, tagBindings[0].Value, bindings[0].Value)
+		assert.Equal(t, tagBindings[1].Key, bindings[1].Key)
+		assert.Equal(t, tagBindings[1].Value, bindings[1].Value)
+	})
+
+	t.Run("when adding 26 tags", func(t *testing.T) {
+		tagBindings := []*TagBinding{
+			{Key: "alpha"},
+			{Key: "bravo"},
+			{Key: "charlie"},
+			{Key: "delta"},
+			{Key: "echo"},
+			{Key: "foxtrot"},
+			{Key: "golf"},
+			{Key: "hotel"},
+			{Key: "india"},
+			{Key: "juliet"},
+			{Key: "kilo"},
+			{Key: "lima"},
+			{Key: "mike"},
+			{Key: "november"},
+			{Key: "oscar"},
+			{Key: "papa"},
+			{Key: "quebec"},
+			{Key: "romeo"},
+			{Key: "sierra"},
+			{Key: "tango"},
+			{Key: "uniform"},
+			{Key: "victor"},
+			{Key: "whiskey"},
+			{Key: "xray"},
+			{Key: "yankee"},
+			{Key: "zulu"},
+		}
+
+		_, err := client.Workspaces.AddTagBindings(ctx, wTest.ID, WorkspaceAddTagBindingsOptions{
+			TagBindings: tagBindings,
+		})
+		require.Error(t, err, "cannot exceed 10 bindings per resource")
+	})
+}
+
+func TestWorkspaces_DeleteAllTagBindings(t *testing.T) {
+	skipUnlessBeta(t)
+
+	client := testClient(t)
+	ctx := context.Background()
+
+	wTest, wCleanup := createWorkspace(t, client, nil)
+	t.Cleanup(wCleanup)
+
+	tagBindings := []*TagBinding{
+		{Key: "foo", Value: "bar"},
+		{Key: "baz", Value: "qux"},
+	}
+
+	_, err := client.Workspaces.AddTagBindings(ctx, wTest.ID, WorkspaceAddTagBindingsOptions{
+		TagBindings: tagBindings,
+	})
+	require.NoError(t, err)
+
+	err = client.Workspaces.DeleteAllTagBindings(ctx, wTest.ID)
+	require.NoError(t, err)
+
+	bindings, err := client.Workspaces.ListTagBindings(ctx, wTest.ID)
+	require.NoError(t, err)
+	require.Empty(t, bindings)
+}
+
 func TestWorkspacesUpdate(t *testing.T) {
 	client := testClient(t)
 	ctx := context.Background()
@@ -1124,6 +1401,7 @@ func TestWorkspacesUpdate(t *testing.T) {
 			Name:                       String(randomString(t)),
 			AllowDestroyPlan:           Bool(true),
 			AutoApply:                  Bool(false),
+			AutoDestroyAt:              NullableTime(time.Date(2025, 1, 1, 0, 0, 0, 0, time.UTC)),
 			FileTriggersEnabled:        Bool(true),
 			Operations:                 Bool(false),
 			QueueAllRuns:               Bool(false),
@@ -1133,6 +1411,9 @@ func TestWorkspacesUpdate(t *testing.T) {
 			TerraformVersion:           String("0.11.1"),
 			TriggerPrefixes:            []string{"/modules", "/shared"},
 			WorkingDirectory:           String("baz/"),
+			TagBindings: []*TagBinding{
+				{Key: "foo", Value: "bar"},
+			},
 		}
 
 		w, err := client.Workspaces.Update(ctx, orgTest.Name, wTest.Name, options)
@@ -1149,6 +1430,7 @@ func TestWorkspacesUpdate(t *testing.T) {
 			assert.Equal(t, *options.Name, item.Name)
 			assert.Equal(t, *options.AllowDestroyPlan, item.AllowDestroyPlan)
 			assert.Equal(t, *options.AutoApply, item.AutoApply)
+			assert.Equal(t, options.AutoDestroyAt, item.AutoDestroyAt)
 			assert.Equal(t, *options.FileTriggersEnabled, item.FileTriggersEnabled)
 			assert.Equal(t, *options.Description, item.Description)
 			assert.Equal(t, *options.Operations, item.Operations)
@@ -1158,6 +1440,22 @@ func TestWorkspacesUpdate(t *testing.T) {
 			assert.Equal(t, *options.TerraformVersion, item.TerraformVersion)
 			assert.Equal(t, options.TriggerPrefixes, item.TriggerPrefixes)
 			assert.Equal(t, *options.WorkingDirectory, item.WorkingDirectory)
+		}
+
+		if betaFeaturesEnabled() {
+			bindings, err := client.Workspaces.ListTagBindings(ctx, wTest.ID)
+			require.NoError(t, err)
+
+			assert.Len(t, bindings, 1)
+			assert.Equal(t, "foo", bindings[0].Key)
+			assert.Equal(t, "bar", bindings[0].Value)
+
+			effectiveBindings, err := client.Workspaces.ListEffectiveTagBindings(ctx, wTest.ID)
+			require.NoError(t, err)
+
+			assert.Len(t, effectiveBindings, 1)
+			assert.Equal(t, "foo", effectiveBindings[0].Key)
+			assert.Equal(t, "bar", effectiveBindings[0].Value)
 		}
 	})
 
@@ -1315,7 +1613,7 @@ func TestWorkspacesUpdateTableDriven(t *testing.T) {
 					VCSRepo:             &VCSRepoOptions{TagsRegex: String("foobar")},
 				},
 			},
-			setup: func(options *WorkspaceTableOptions) (w *Workspace, cleanup func()) {
+			setup: func(t *testing.T, options *WorkspaceTableOptions) (w *Workspace, cleanup func()) {
 				orgTest, orgTestCleanup := createOrganizationWithOptions(t, client, OrganizationCreateOptions{
 					Name:  String("tst-" + randomString(t)[0:20]),
 					Email: String(fmt.Sprintf("%s@tfe.local", randomString(t))),
@@ -1327,7 +1625,7 @@ func TestWorkspacesUpdateTableDriven(t *testing.T) {
 					t.Cleanup(wTestCleanup)
 				}
 			},
-			assertion: func(workspace *Workspace, options *WorkspaceTableOptions, _ error) {
+			assertion: func(t *testing.T, workspace *Workspace, options *WorkspaceTableOptions, _ error) {
 				assert.Equal(t, *options.createOptions.VCSRepo.TagsRegex, workspace.VCSRepo.TagsRegex)
 				assert.Equal(t, workspace.VCSRepo.TagsRegex, *String("barfoo")) // Sanity test
 
@@ -1358,7 +1656,7 @@ func TestWorkspacesUpdateTableDriven(t *testing.T) {
 					VCSRepo:             &VCSRepoOptions{TagsRegex: String("foobar")},
 				},
 			},
-			assertion: func(w *Workspace, options *WorkspaceTableOptions, err error) {
+			assertion: func(t *testing.T, w *Workspace, options *WorkspaceTableOptions, err error) {
 				assert.Nil(t, w)
 				assert.EqualError(t, err, ErrUnsupportedBothTagsRegexAndFileTriggersEnabled.Error())
 			},
@@ -1372,7 +1670,7 @@ func TestWorkspacesUpdateTableDriven(t *testing.T) {
 					VCSRepo:             &VCSRepoOptions{TagsRegex: String("foobar")},
 				},
 			},
-			assertion: func(w *Workspace, options *WorkspaceTableOptions, err error) {
+			assertion: func(t *testing.T, w *Workspace, options *WorkspaceTableOptions, err error) {
 				assert.Nil(t, w)
 				assert.EqualError(t, err, ErrUnsupportedBothTagsRegexAndFileTriggersEnabled.Error())
 			},
@@ -1387,7 +1685,7 @@ func TestWorkspacesUpdateTableDriven(t *testing.T) {
 					VCSRepo:             &VCSRepoOptions{TagsRegex: String("foobar")},
 				},
 			},
-			assertion: func(w *Workspace, options *WorkspaceTableOptions, err error) {
+			assertion: func(t *testing.T, w *Workspace, options *WorkspaceTableOptions, err error) {
 				assert.Nil(t, w)
 				assert.EqualError(t, err, ErrUnsupportedBothTagsRegexAndTriggerPrefixes.Error())
 			},
@@ -1402,7 +1700,7 @@ func TestWorkspacesUpdateTableDriven(t *testing.T) {
 					VCSRepo:             &VCSRepoOptions{TagsRegex: String("foobar")},
 				},
 			},
-			assertion: func(w *Workspace, options *WorkspaceTableOptions, err error) {
+			assertion: func(t *testing.T, w *Workspace, options *WorkspaceTableOptions, err error) {
 				assert.Nil(t, w)
 				assert.EqualError(t, err, ErrUnsupportedBothTagsRegexAndTriggerPatterns.Error())
 			},
@@ -1415,12 +1713,12 @@ func TestWorkspacesUpdateTableDriven(t *testing.T) {
 			var cleanup func()
 			var err error
 			if tableTest.setup != nil {
-				workspace, cleanup = tableTest.setup(tableTest.options)
+				workspace, cleanup = tableTest.setup(t, tableTest.options)
 				defer cleanup()
 			} else {
 				workspace, err = client.Workspaces.Update(ctx, orgTest.Name, wTest.Name, *tableTest.options.updateOptions)
 			}
-			tableTest.assertion(workspace, tableTest.options, err)
+			tableTest.assertion(t, workspace, tableTest.options, err)
 		})
 	}
 }
@@ -1458,7 +1756,7 @@ func TestWorkspacesUpdateTableDrivenWithGithubApp(t *testing.T) {
 					},
 				},
 			},
-			setup: func(options *WorkspaceTableOptions) (w *Workspace, cleanup func()) {
+			setup: func(t *testing.T, options *WorkspaceTableOptions) (w *Workspace, cleanup func()) {
 				orgTest, orgTestCleanup := createOrganizationWithOptions(t, client, OrganizationCreateOptions{
 					Name:  String("tst-" + randomString(t)[0:20]),
 					Email: String(fmt.Sprintf("%s@tfe.local", randomString(t))),
@@ -1470,7 +1768,7 @@ func TestWorkspacesUpdateTableDrivenWithGithubApp(t *testing.T) {
 					t.Cleanup(wTestCleanup)
 				}
 			},
-			assertion: func(workspace *Workspace, options *WorkspaceTableOptions, _ error) {
+			assertion: func(t *testing.T, workspace *Workspace, options *WorkspaceTableOptions, _ error) {
 				assert.Equal(t, *options.createOptions.VCSRepo.TagsRegex, workspace.VCSRepo.TagsRegex)
 				assert.Equal(t, workspace.VCSRepo.TagsRegex, *String("barfoo")) // Sanity test
 
@@ -1487,12 +1785,12 @@ func TestWorkspacesUpdateTableDrivenWithGithubApp(t *testing.T) {
 			var cleanup func()
 			var err error
 			if tableTest.setup != nil {
-				workspace, cleanup = tableTest.setup(tableTest.options)
+				workspace, cleanup = tableTest.setup(t, tableTest.options)
 				defer cleanup()
 			} else {
 				workspace, err = client.Workspaces.Update(ctx, orgTest.Name, wTest.Name, *tableTest.options.updateOptions)
 			}
-			tableTest.assertion(workspace, tableTest.options, err)
+			tableTest.assertion(t, workspace, tableTest.options, err)
 		})
 	}
 }
@@ -1937,6 +2235,41 @@ func TestWorkspacesUnlock(t *testing.T) {
 
 		_, err = client.Workspaces.Unlock(ctx, wTest2.ID)
 		assert.Equal(t, ErrWorkspaceLockedByRun, err)
+	})
+
+	t.Run("when a workspace is locked by a team", func(t *testing.T) {
+		wTest2, wTest2Cleanup := createWorkspace(t, client, orgTest)
+		t.Cleanup(wTest2Cleanup)
+
+		// Create a new team to lock the workspace
+		tmTest, tmTestCleanup := createTeam(t, client, orgTest)
+		defer tmTestCleanup()
+		ta, err := client.TeamAccess.Add(ctx, TeamAccessAddOptions{
+			Access:    Access(AccessAdmin),
+			Team:      tmTest,
+			Workspace: wTest2,
+		})
+		assert.Nil(t, err)
+		defer func() {
+			err := client.TeamAccess.Remove(ctx, ta.ID)
+			if err != nil {
+				t.Logf("error removing team access (%s): %s", ta.ID, err)
+			}
+		}()
+		tt, ttTestCleanup := createTeamToken(t, client, tmTest)
+		defer ttTestCleanup()
+
+		// Create a new client with the team token
+		teamClient := testClient(t)
+		teamClient.token = tt.Token
+
+		// Lock the workspace with the team client
+		_, err = teamClient.Workspaces.Lock(ctx, wTest2.ID, WorkspaceLockOptions{})
+		assert.Nil(t, err)
+
+		// Attempt to unlock the workspace with the original client
+		_, err = client.Workspaces.Unlock(ctx, wTest2.ID)
+		assert.Equal(t, ErrWorkspaceLockedByTeam, err)
 	})
 
 	t.Run("without a valid workspace ID", func(t *testing.T) {
@@ -2601,46 +2934,246 @@ func TestWorkspace_DataRetentionPolicy(t *testing.T) {
 	wTest, wTestCleanup := createWorkspace(t, client, nil)
 	defer wTestCleanup()
 
-	dataRetentionPolicy, err := client.Workspaces.ReadDataRetentionPolicy(ctx, wTest.ID)
-	assert.Equal(t, ErrResourceNotFound, err)
+	dataRetentionPolicy, err := client.Workspaces.ReadDataRetentionPolicyChoice(ctx, wTest.ID)
+	assert.Nil(t, err)
 	require.Nil(t, dataRetentionPolicy)
 
 	workspace, err := client.Workspaces.ReadByID(ctx, wTest.ID)
 	require.NoError(t, err)
 	require.Nil(t, workspace.DataRetentionPolicy)
+	require.Nil(t, workspace.DataRetentionPolicyChoice)
 
-	t.Run("set data retention policy", func(t *testing.T) {
-		createdDataRetentionPolicy, err := client.Workspaces.SetDataRetentionPolicy(ctx, wTest.ID, DataRetentionPolicySetOptions{DeleteOlderThanNDays: 33})
+	t.Run("set and update data retention policy to delete older", func(t *testing.T) {
+		createdDataRetentionPolicy, err := client.Workspaces.SetDataRetentionPolicyDeleteOlder(ctx, wTest.ID, DataRetentionPolicyDeleteOlderSetOptions{DeleteOlderThanNDays: 33})
 		require.NoError(t, err)
 		require.Equal(t, 33, createdDataRetentionPolicy.DeleteOlderThanNDays)
 		require.Contains(t, createdDataRetentionPolicy.ID, "drp-")
 
-		dataRetentionPolicy, err = client.Workspaces.ReadDataRetentionPolicy(ctx, wTest.ID)
+		dataRetentionPolicy, err = client.Workspaces.ReadDataRetentionPolicyChoice(ctx, wTest.ID)
 		require.NoError(t, err)
-		require.Equal(t, 33, dataRetentionPolicy.DeleteOlderThanNDays)
-		require.Equal(t, createdDataRetentionPolicy.ID, dataRetentionPolicy.ID)
-		require.Contains(t, dataRetentionPolicy.ID, "drp-")
+		require.NotNil(t, dataRetentionPolicy.DataRetentionPolicyDeleteOlder)
+
+		require.Equal(t, 33, dataRetentionPolicy.DataRetentionPolicyDeleteOlder.DeleteOlderThanNDays)
+		require.Equal(t, createdDataRetentionPolicy.ID, dataRetentionPolicy.DataRetentionPolicyDeleteOlder.ID)
+		require.Contains(t, dataRetentionPolicy.DataRetentionPolicyDeleteOlder.ID, "drp-")
 
 		workspace, err := client.Workspaces.ReadByID(ctx, wTest.ID)
 		require.NoError(t, err)
-		require.Equal(t, dataRetentionPolicy.ID, workspace.DataRetentionPolicy.ID)
+		require.Equal(t, dataRetentionPolicy.DataRetentionPolicyDeleteOlder.ID, workspace.DataRetentionPolicyChoice.DataRetentionPolicyDeleteOlder.ID)
+
+		// deprecated DataRetentionPolicy field should also have been populated
+		require.NotNil(t, workspace.DataRetentionPolicy)
+		require.Equal(t, workspace.DataRetentionPolicy.ID, dataRetentionPolicy.DataRetentionPolicyDeleteOlder.ID)
+
+		// try updating the number of days
+		createdDataRetentionPolicy, err = client.Workspaces.SetDataRetentionPolicyDeleteOlder(ctx, wTest.ID, DataRetentionPolicyDeleteOlderSetOptions{DeleteOlderThanNDays: 1})
+		require.NoError(t, err)
+		require.Equal(t, 1, createdDataRetentionPolicy.DeleteOlderThanNDays)
+
+		dataRetentionPolicy, err = client.Workspaces.ReadDataRetentionPolicyChoice(ctx, wTest.ID)
+		require.NoError(t, err)
+		require.NotNil(t, dataRetentionPolicy.DataRetentionPolicyDeleteOlder)
+		require.Equal(t, 1, dataRetentionPolicy.DataRetentionPolicyDeleteOlder.DeleteOlderThanNDays)
+		require.Equal(t, createdDataRetentionPolicy.ID, dataRetentionPolicy.DataRetentionPolicyDeleteOlder.ID)
 	})
 
-	t.Run("update data retention policy", func(t *testing.T) {
-		_, err = client.Workspaces.SetDataRetentionPolicy(ctx, wTest.ID, DataRetentionPolicySetOptions{DeleteOlderThanNDays: 45})
+	t.Run("set data retention policy to not delete", func(t *testing.T) {
+		createdDataRetentionPolicy, err := client.Workspaces.SetDataRetentionPolicyDontDelete(ctx, wTest.ID, DataRetentionPolicyDontDeleteSetOptions{})
+		require.NoError(t, err)
+		require.Contains(t, createdDataRetentionPolicy.ID, "drp-")
+
+		dataRetentionPolicy, err = client.Workspaces.ReadDataRetentionPolicyChoice(ctx, wTest.ID)
+		require.NoError(t, err)
+		require.NotNil(t, dataRetentionPolicy.DataRetentionPolicyDontDelete)
+		require.Equal(t, createdDataRetentionPolicy.ID, dataRetentionPolicy.DataRetentionPolicyDontDelete.ID)
+
+		// dont delete policies should leave the legacy DataRetentionPolicy field on workspaces empty
+		workspace, err := client.Workspaces.ReadByID(ctx, wTest.ID)
+		require.NoError(t, err)
+		require.Nil(t, workspace.DataRetentionPolicy)
+	})
+
+	t.Run("change data retention policy type", func(t *testing.T) {
+		_, err = client.Workspaces.SetDataRetentionPolicyDeleteOlder(ctx, wTest.ID, DataRetentionPolicyDeleteOlderSetOptions{DeleteOlderThanNDays: 45})
 		require.NoError(t, err)
 
-		dataRetentionPolicy, err = client.Workspaces.ReadDataRetentionPolicy(ctx, wTest.ID)
+		dataRetentionPolicy, err = client.Workspaces.ReadDataRetentionPolicyChoice(ctx, wTest.ID)
 		require.NoError(t, err)
-		require.Equal(t, 45, dataRetentionPolicy.DeleteOlderThanNDays)
+		require.NotNil(t, dataRetentionPolicy.DataRetentionPolicyDeleteOlder)
+		require.Equal(t, 45, dataRetentionPolicy.DataRetentionPolicyDeleteOlder.DeleteOlderThanNDays)
+		require.Nil(t, dataRetentionPolicy.DataRetentionPolicyDontDelete)
+
+		_, err = client.Workspaces.SetDataRetentionPolicyDontDelete(ctx, wTest.ID, DataRetentionPolicyDontDeleteSetOptions{})
+		require.NoError(t, err)
+		dataRetentionPolicy, err = client.Workspaces.ReadDataRetentionPolicyChoice(ctx, wTest.ID)
+		require.NoError(t, err)
+		require.Nil(t, dataRetentionPolicy.DataRetentionPolicyDeleteOlder)
+		require.NotNil(t, dataRetentionPolicy.DataRetentionPolicyDontDelete)
+
+		_, err = client.Workspaces.SetDataRetentionPolicyDeleteOlder(ctx, wTest.ID, DataRetentionPolicyDeleteOlderSetOptions{DeleteOlderThanNDays: 20})
+		require.NoError(t, err)
+
+		dataRetentionPolicy, err = client.Workspaces.ReadDataRetentionPolicyChoice(ctx, wTest.ID)
+		require.NoError(t, err)
+		require.NotNil(t, dataRetentionPolicy.DataRetentionPolicyDeleteOlder)
+		require.Equal(t, 20, dataRetentionPolicy.DataRetentionPolicyDeleteOlder.DeleteOlderThanNDays)
+		require.Nil(t, dataRetentionPolicy.DataRetentionPolicyDontDelete)
 	})
 
 	t.Run("delete data retention policy", func(t *testing.T) {
 		err = client.Workspaces.DeleteDataRetentionPolicy(ctx, wTest.ID)
 		require.NoError(t, err)
 
-		dataRetentionPolicy, err = client.Workspaces.ReadDataRetentionPolicy(ctx, wTest.ID)
-		assert.Equal(t, ErrResourceNotFound, err)
+		dataRetentionPolicy, err = client.Workspaces.ReadDataRetentionPolicyChoice(ctx, wTest.ID)
+		assert.Nil(t, err)
 		require.Nil(t, dataRetentionPolicy)
+	})
+}
+
+func TestWorkspacesAutoDestroy(t *testing.T) {
+	client := testClient(t)
+	ctx := context.Background()
+
+	orgTest, orgTestCleanup := createOrganization(t, client)
+	t.Cleanup(orgTestCleanup)
+
+	newSubscriptionUpdater(orgTest).WithBusinessPlan().Update(t)
+
+	autoDestroyAt := NullableTime(time.Date(2025, 1, 1, 0, 0, 0, 0, time.UTC))
+	wTest, wCleanup := createWorkspaceWithOptions(t, client, orgTest, WorkspaceCreateOptions{
+		Name:          String(randomString(t)),
+		AutoDestroyAt: autoDestroyAt,
+	})
+	t.Cleanup(wCleanup)
+
+	require.Equal(t, autoDestroyAt, wTest.AutoDestroyAt)
+
+	// respect default omitempty
+	w, err := client.Workspaces.Update(ctx, orgTest.Name, wTest.Name, WorkspaceUpdateOptions{
+		AutoDestroyAt: nil,
+	})
+
+	require.NoError(t, err)
+	require.NotNil(t, w.AutoDestroyAt)
+
+	// explicitly update the value of auto_destroy_at
+	w, err = client.Workspaces.Update(ctx, orgTest.Name, wTest.Name, WorkspaceUpdateOptions{
+		AutoDestroyAt: NullableTime(time.Date(2025, 1, 2, 0, 0, 0, 0, time.UTC)),
+	})
+
+	require.NoError(t, err)
+	require.NotNil(t, w.AutoDestroyAt)
+	require.NotEqual(t, autoDestroyAt, w.AutoDestroyAt)
+
+	// disable auto destroy
+	w, err = client.Workspaces.Update(ctx, orgTest.Name, wTest.Name, WorkspaceUpdateOptions{
+		AutoDestroyAt: NullTime(),
+	})
+
+	require.NoError(t, err)
+	require.Nil(t, w.AutoDestroyAt)
+}
+
+func TestWorkspacesAutoDestroyDuration(t *testing.T) {
+	skipUnlessBeta(t)
+
+	client := testClient(t)
+	ctx := context.Background()
+
+	orgTest, orgTestCleanup := createOrganization(t, client)
+	t.Cleanup(orgTestCleanup)
+
+	newSubscriptionUpdater(orgTest).WithBusinessPlan().Update(t)
+
+	t.Run("when creating a new workspace with standalone auto destroy settings", func(t *testing.T) {
+		duration := jsonapi.NewNullableAttrWithValue("14d")
+		nilDuration := jsonapi.NewNullNullableAttr[string]()
+		nilAutoDestroy := jsonapi.NewNullNullableAttr[time.Time]()
+		wTest, wCleanup := createWorkspaceWithOptions(t, client, orgTest, WorkspaceCreateOptions{
+			Name:                        String(randomString(t)),
+			AutoDestroyActivityDuration: duration,
+			InheritsProjectAutoDestroy:  Bool(false),
+		})
+		t.Cleanup(wCleanup)
+
+		require.Equal(t, duration, wTest.AutoDestroyActivityDuration)
+		require.NotEqual(t, nilAutoDestroy, wTest.AutoDestroyAt)
+		require.Equal(t, wTest.InheritsProjectAutoDestroy, false)
+
+		w, err := client.Workspaces.Update(ctx, orgTest.Name, wTest.Name, WorkspaceUpdateOptions{
+			AutoDestroyActivityDuration: nilDuration,
+			InheritsProjectAutoDestroy:  Bool(false),
+		})
+
+		require.NoError(t, err)
+		require.False(t, w.AutoDestroyActivityDuration.IsSpecified())
+		require.False(t, w.AutoDestroyAt.IsSpecified())
+		require.Equal(t, wTest.InheritsProjectAutoDestroy, false)
+	})
+}
+
+func TestWorkspaces_effectiveTagBindingsInheritedFrom(t *testing.T) {
+	skipUnlessBeta(t)
+
+	client := testClient(t)
+	ctx := context.Background()
+
+	orgTest, orgTestCleanup := createOrganization(t, client)
+	t.Cleanup(orgTestCleanup)
+
+	projTest, projTestCleanup := createProject(t, client, orgTest)
+	t.Cleanup(projTestCleanup)
+
+	ws, wsCleanup := createWorkspaceWithOptions(t, client, orgTest, WorkspaceCreateOptions{
+		Name:    String("mycoolworkspace"),
+		Project: projTest,
+	})
+	t.Cleanup(wsCleanup)
+
+	_, err := client.Workspaces.AddTagBindings(ctx, ws.ID, WorkspaceAddTagBindingsOptions{
+		TagBindings: []*TagBinding{
+			{
+				Key:   "a",
+				Value: "1",
+			},
+			{
+				Key:   "b",
+				Value: "2",
+			},
+		},
+	})
+	require.NoError(t, err)
+
+	t.Run("when no tags are inherited from the project", func(t *testing.T) {
+		effectiveBindings, err := client.Workspaces.ListEffectiveTagBindings(ctx, ws.ID)
+		require.NoError(t, err)
+
+		for _, binding := range effectiveBindings {
+			require.Nil(t, binding.Links)
+		}
+	})
+
+	t.Run("when tags are inherited from the project", func(t *testing.T) {
+		_, err := client.Projects.AddTagBindings(ctx, projTest.ID, ProjectAddTagBindingsOptions{
+			TagBindings: []*TagBinding{
+				{
+					Key:   "inherited",
+					Value: "foo",
+				},
+			},
+		})
+		require.NoError(t, err)
+
+		effectiveBindings, err := client.Workspaces.ListEffectiveTagBindings(ctx, ws.ID)
+		require.NoError(t, err)
+
+		for _, binding := range effectiveBindings {
+			if binding.Key == "inherited" {
+				require.NotNil(t, binding.Links)
+				require.NotNil(t, binding.Links["inherited-from"])
+			} else {
+				require.Nil(t, binding.Links)
+			}
+		}
 	})
 }

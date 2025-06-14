@@ -1,6 +1,6 @@
 # Running tests
 
-go-tfe relies on acceptance tests against either the Terraform Cloud and Terraform Enterprise APIs. go-tfe is tested against Terraform Cloud by our CI environment, and against Terraform Enterprise prior to release or otherwise as needed.
+go-tfe relies on acceptance tests against either the HCP Terraform and Terraform Enterprise APIs. go-tfe is tested against HCP Terraform by our CI environment, and against Terraform Enterprise prior to release or otherwise as needed.
 
 ## 1. (Optional) Create repositories for policy sets and registry modules
 
@@ -38,8 +38,8 @@ You'll need to have environment variables setup in your environment to run the t
 
 Tests are run against an actual backend so they require a valid backend address and token:
 
-1. `TFE_ADDRESS` - URL of a Terraform Cloud or Terraform Enterprise instance to be used for testing, including scheme. Example: `https://tfe.local`
-1. `TFE_TOKEN` - A [user API token](https://developer.hashicorp.com/terraform/cloud-docs/users-teams-organizations/users#tokens) for the Terraform Cloud or Terraform Enterprise instance being used for testing.
+1. `TFE_ADDRESS` - URL of a HCP Terraform or Terraform Enterprise instance to be used for testing, including scheme. Example: `https://tfe.local`
+1. `TFE_TOKEN` - A [user API token](https://developer.hashicorp.com/terraform/cloud-docs/users-teams-organizations/users#tokens) for the HCP Terraform or Terraform Enterprise instance being used for testing.
 
 **Note:** Alternatively, you can set `TFE_HOSTNAME` which serves as a fallback for `TFE_ADDRESS`. It will only be used if `TFE_ADDRESS` is not set and will resolve the host to an `https` scheme. Example: `tfe.local` => resolves to `https://tfe.local`
 
@@ -48,18 +48,19 @@ Tests are run against an actual backend so they require a valid backend address 
 1. `OAUTH_CLIENT_GITHUB_TOKEN` - [GitHub personal access token](https://help.github.com/en/github/authenticating-to-github/creating-a-personal-access-token-for-the-command-line). Required for running any tests that use VCS (OAuth clients, policy sets, etc).
 2. `GITHUB_POLICY_SET_IDENTIFIER` - GitHub policy set repository identifier in the format `username/repository`. Required for running policy set tests.
 3. `GITHUB_REGISTRY_MODULE_IDENTIFIER` - GitHub registry module repository identifier in the format `username/repository`. Required for running registry module tests.
-4. `ENABLE_TFE` - Some tests are only applicable to Terraform Enterprise or Terraform Cloud. By setting `ENABLE_TFE=1` you will enable enterprise only tests and disable cloud only tests. In CI `ENABLE_TFE` is not set so if you are writing enterprise only features you should manually test with `ENABLE_TFE=1` against a Terraform Enterprise instance.
+4. `ENABLE_TFE` - Some tests are only applicable to Terraform Enterprise or HCP Terraforrm. By setting `ENABLE_TFE=1` you will enable Terraform Enterprise only tests and disable HCP Terraform only tests. In CI `ENABLE_TFE` is not set so if you are writing enterprise only features you should manually test with `ENABLE_TFE=1` against a Terraform Enterprise instance.
 5. `ENABLE_BETA` - Some tests require access to beta features. By setting `ENABLE_BETA=1` you will enable tests that require access to beta features. IN CI `ENABLE_BETA` is not set so if you are writing beta only features you should manually test with `ENABLE_BETA=1` against a Terraform Enterprise instance with those features enabled.
 6. `TFC_RUN_TASK_URL` - Run task integration tests require a URL to use when creating run tasks. To learn more about the Run Task API, [read here](https://developer.hashicorp.com/terraform/cloud-docs/api-docs/run-tasks/run-tasks)
-7. `GITHUB_APP_INSTALLATION_ID` - Required for running any tests that use GitHub App as the VCS provider (workspace, policy sets, registry module). These tests are skipped in the automated CI pipeline because in order to use this variable, the user has to have a GitHub App Installation setup done using the [TFC UI](https://developer.hashicorp.com/terraform/enterprise/admin/application/github-app-integration). And then the value can be fetched either from the UI or from the `GET /github-app/installations` API. The test command is listed below.
+7. `GITHUB_APP_INSTALLATION_ID` - Required for running any tests that use GitHub App as the VCS provider (workspace, policy sets, registry module). These tests are skipped in the automated CI pipeline because in order to use this variable, the user has to have a GitHub App Installation setup done using the [HCP Terraform UI](https://developer.hashicorp.com/terraform/enterprise/admin/application/github-app-integration). And then the value can be fetched either from the UI or from the `GET /github-app/installations` API. The test command is listed below.
     ```sh
       $ GITHUB_APP_INSTALLATION_ID=ghain-xxxx TFE_ADDRESS= https://tfe.local TFE_TOKEN=xxx GITHUB_POLICY_SET_IDENTIFIER=username/repository GITHUB_REGISTRY_MODULE_IDENTIFIER=username/repository go test -run "(GHA|GithubApp)" -v ./...
     ```
+8. `GITHUB_REGISTRY_NO_CODE_MODULE_IDENTIFIER` - Required for running tests for workspaces using no-code modules.
 
 ## 3. Make sure run queue settings are correct
 
 In order for the tests relating to queuing and capacity to pass, FRQ (fair run queuing) should be
-enabled with a limit of 2 concurrent runs per organization on the Terraform Cloud or Terraform Enterprise instance you are using for testing.
+enabled with a limit of 2 concurrent runs per organization on the HCP Terraform or Terraform Enterprise instance you are using for testing.
 
 ## 4. Run tests
 
@@ -108,6 +109,6 @@ $ TFE_TOKEN=xyz TFE_HOSTNAME=tfe.local ENABLE_TFE=1 go test ./... -timeout=30m
 ```
 
 
-### Running tests for TFC features that require paid plans (HashiCorp Employees)
+### Running tests for HCP Terraform features that require paid plans (HashiCorp Employees)
 
-You can use the test helper `upgradeOrganizationSubscription()` to upgrade your test organization to a Business Plan, giving the organization access to all features in Terraform Cloud. This method requires `TFE_TOKEN` to be a user token with administrator access in the target test environment. Furthermore, you **can not** have enterprise features enabled (`ENABLE_TFE=1`) in order to use this method since the API call fails against TFE test environments.
+You can use the test helper `newSubscriptionUpdater()` to upgrade your test organization to a Business Plan, giving the organization access to all features in HCP Terraform. This method requires `TFE_TOKEN` to be a user token with administrator access in the target test environment. Furthermore, you **can not** have enterprise features enabled (`ENABLE_TFE=1`) in order to use this method since the API call fails against Terraform Enterprise test environments.

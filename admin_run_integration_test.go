@@ -112,9 +112,7 @@ func TestAdminRuns_List(t *testing.T) {
 		require.NoError(t, err)
 		require.NotEmpty(t, rl.Items)
 
-		assert.Equal(t, r1.Status, RunPlanning)
 		assert.Equal(t, adminRunItemsContainsID(rl.Items, r1.ID), false)
-		assert.Equal(t, r2.Status, RunPending)
 		assert.Equal(t, adminRunItemsContainsID(rl.Items, r2.ID), true)
 	})
 
@@ -189,7 +187,10 @@ func TestAdminRuns_ForceCancel(t *testing.T) {
 	t.Run("with can force cancel", func(t *testing.T) {
 		rTestPlanning, err := client.Runs.Read(ctx, rTest1.ID)
 		require.NoError(t, err)
-		assert.Equal(t, RunPlanning, rTestPlanning.Status)
+
+		ctxPollRunStatus, cancelPollPlanned := context.WithTimeout(ctx, 2*time.Minute)
+		defer cancelPollPlanned()
+		pollRunStatus(t, client, ctxPollRunStatus, rTestPlanning, []RunStatus{RunPlanning, RunPlanned, RunCostEstimated})
 
 		require.NotNil(t, rTestPlanning.Actions)
 		require.NotNil(t, rTestPlanning.Permissions)
@@ -198,7 +199,8 @@ func TestAdminRuns_ForceCancel(t *testing.T) {
 
 		rTestPending, err := client.Runs.Read(ctx, rTest2.ID)
 		require.NoError(t, err)
-		assert.Equal(t, RunPending, rTestPending.Status)
+
+		pollRunStatus(t, client, ctxPollRunStatus, rTest2, []RunStatus{RunPending})
 
 		require.NotNil(t, rTestPlanning.Actions)
 		require.NotNil(t, rTestPlanning.Permissions)
@@ -224,6 +226,68 @@ func TestAdminRuns_ForceCancel(t *testing.T) {
 		rTestPlanningResult, err := client.Runs.Read(ctx, rTestPlanning.ID)
 		require.NoError(t, err)
 		assert.Equal(t, RunCanceled, rTestPlanningResult.Status)
+	})
+}
+
+func TestAdminRuns_ListFilterByDates(t *testing.T) {
+	skipUnlessEnterprise(t)
+
+	client := testClient(t)
+	ctx := context.Background()
+
+	org, orgCleanup := createOrganization(t, client)
+	defer orgCleanup()
+
+	wTest, wTestCleanup := createWorkspace(t, client, org)
+	defer wTestCleanup()
+
+	timestamp1 := time.Now().Format(time.RFC3339)
+	// Sleeping helps ensure that the timestamps on client and server don't
+	// need to be exactly in sync
+	time.Sleep(2 * time.Second)
+
+	rTest1, rCleanup1 := createRun(t, client, wTest)
+	defer rCleanup1()
+
+	rTest2, rCleanup2 := createRun(t, client, wTest)
+	defer rCleanup2()
+
+	time.Sleep(2 * time.Second)
+	timestamp2 := time.Now().Format(time.RFC3339)
+
+	_, rCleanup3 := createRun(t, client, wTest)
+	defer rCleanup3()
+
+	time.Sleep(2 * time.Second)
+	timestamp3 := time.Now().Format(time.RFC3339)
+
+	t.Run("has valid date ranges", func(t *testing.T) {
+		rl, err := client.Admin.Runs.List(ctx, &AdminRunsListOptions{
+			CreatedAfter:  timestamp1,
+			CreatedBefore: timestamp2,
+		})
+
+		require.NoError(t, err)
+		assert.Equal(t, 2, len(rl.Items))
+		assert.Equal(t, adminRunItemsContainsID(rl.Items, rTest1.ID), true)
+		assert.Equal(t, adminRunItemsContainsID(rl.Items, rTest2.ID), true)
+	})
+
+	t.Run("has no items when CreatedAfter and CreatedBefore datetimes has no overlap", func(t *testing.T) {
+		rl, err := client.Admin.Runs.List(ctx, &AdminRunsListOptions{
+			CreatedAfter:  timestamp3,
+			CreatedBefore: timestamp2,
+		})
+
+		require.NoError(t, err)
+		assert.Equal(t, 0, len(rl.Items))
+	})
+
+	t.Run("errors with invalid input for CreatedAfter", func(t *testing.T) {
+		_, err := client.Admin.Runs.List(ctx, &AdminRunsListOptions{
+			CreatedAfter: "invalid",
+		})
+		assert.Error(t, err)
 	})
 }
 

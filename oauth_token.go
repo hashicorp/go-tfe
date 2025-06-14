@@ -79,7 +79,7 @@ func (s *oAuthTokens) List(ctx context.Context, organization string, options *OA
 		return nil, ErrInvalidOrg
 	}
 
-	u := fmt.Sprintf("organizations/%s/oauth-tokens", url.QueryEscape(organization))
+	u := fmt.Sprintf("organizations/%s/oauth-tokens", url.PathEscape(organization))
 	req, err := s.client.NewRequest("GET", u, options)
 	if err != nil {
 		return nil, err
@@ -100,7 +100,7 @@ func (s *oAuthTokens) Read(ctx context.Context, oAuthTokenID string) (*OAuthToke
 		return nil, ErrInvalidOauthTokenID
 	}
 
-	u := fmt.Sprintf("oauth-tokens/%s", url.QueryEscape(oAuthTokenID))
+	u := fmt.Sprintf("oauth-tokens/%s", url.PathEscape(oAuthTokenID))
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, err
@@ -121,7 +121,7 @@ func (s *oAuthTokens) Update(ctx context.Context, oAuthTokenID string, options O
 		return nil, ErrInvalidOauthTokenID
 	}
 
-	u := fmt.Sprintf("oauth-tokens/%s", url.QueryEscape(oAuthTokenID))
+	u := fmt.Sprintf("oauth-tokens/%s", url.PathEscape(oAuthTokenID))
 	req, err := s.client.NewRequest("PATCH", u, &options)
 	if err != nil {
 		return nil, err
@@ -142,7 +142,7 @@ func (s *oAuthTokens) Delete(ctx context.Context, oAuthTokenID string) error {
 		return ErrInvalidOauthTokenID
 	}
 
-	u := fmt.Sprintf("oauth-tokens/%s", url.QueryEscape(oAuthTokenID))
+	u := fmt.Sprintf("oauth-tokens/%s", url.PathEscape(oAuthTokenID))
 	req, err := s.client.NewRequest("DELETE", u, nil)
 	if err != nil {
 		return err

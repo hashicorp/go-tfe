@@ -195,6 +195,38 @@ func TestOrganizationMembershipsCreate(t *testing.T) {
 		assert.Nil(t, mem)
 		assert.Error(t, err)
 	})
+
+	t.Run("with initial teams", func(t *testing.T) {
+		teamTest1, teamTestCleanup1 := createTeam(t, client, orgTest)
+		defer teamTestCleanup1()
+		teamTest2, teamTestCleanup2 := createTeam(t, client, orgTest)
+		defer teamTestCleanup2()
+
+		options := OrganizationMembershipCreateOptions{
+			Email: String(fmt.Sprintf("%s@tfe.local", randomString(t))),
+			Teams: []*Team{teamTest1, teamTest2},
+		}
+
+		mem, err := client.OrganizationMemberships.Create(ctx, orgTest.Name, options)
+		require.NoError(t, err)
+
+		// Verify that the user is now in the org
+		refreshed, err := client.OrganizationMemberships.ReadWithOptions(ctx, mem.ID, OrganizationMembershipReadOptions{
+			Include: []OrgMembershipIncludeOpt{OrgMembershipUser},
+		})
+		require.NoError(t, err)
+		assert.Equal(t, refreshed, mem)
+
+		// Verify that the user is in the teams
+		// Cant read from the teams, b/c the user is invited to them not a full member yet
+		require.Equal(t, len(refreshed.Teams), 2)
+		refreshedTeamIds := make([]string, 2)
+		refreshedTeamIds[0] = refreshed.Teams[0].ID
+		refreshedTeamIds[1] = refreshed.Teams[1].ID
+
+		assert.Contains(t, refreshedTeamIds, teamTest1.ID)
+		assert.Contains(t, refreshedTeamIds, teamTest2.ID)
+	})
 }
 
 func TestOrganizationMembershipsRead(t *testing.T) {

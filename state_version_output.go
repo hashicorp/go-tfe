@@ -44,7 +44,7 @@ func (s *stateVersionOutputs) ReadCurrent(ctx context.Context, workspaceID strin
 		return nil, ErrInvalidWorkspaceID
 	}
 
-	u := fmt.Sprintf("workspaces/%s/current-state-version-outputs", url.QueryEscape(workspaceID))
+	u := fmt.Sprintf("workspaces/%s/current-state-version-outputs", url.PathEscape(workspaceID))
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, err
@@ -65,7 +65,7 @@ func (s *stateVersionOutputs) Read(ctx context.Context, outputID string) (*State
 		return nil, ErrInvalidOutputID
 	}
 
-	u := fmt.Sprintf("state-version-outputs/%s", url.QueryEscape(outputID))
+	u := fmt.Sprintf("state-version-outputs/%s", url.PathEscape(outputID))
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, err

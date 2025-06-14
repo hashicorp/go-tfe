@@ -60,7 +60,7 @@ func (s *workspaceResources) List(ctx context.Context, workspaceID string, optio
 		return nil, err
 	}
 
-	u := fmt.Sprintf("workspaces/%s/resources", url.QueryEscape(workspaceID))
+	u := fmt.Sprintf("workspaces/%s/resources", url.PathEscape(workspaceID))
 	req, err := s.client.NewRequest("GET", u, options)
 	if err != nil {
 		return nil, err

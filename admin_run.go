@@ -61,8 +61,10 @@ const (
 type AdminRunsListOptions struct {
 	ListOptions
 
-	RunStatus string `url:"filter[status],omitempty"`
-	Query     string `url:"q,omitempty"`
+	RunStatus     string `url:"filter[status],omitempty"`
+	CreatedBefore string `url:"filter[to],omitempty"`
+	CreatedAfter  string `url:"filter[from],omitempty"`
+	Query         string `url:"q,omitempty"`
 	// Optional: A list of relations to include. See available resources
 	// https://developer.hashicorp.com/terraform/enterprise/api-docs/admin/runs#available-related-resources
 	Include []AdminRunIncludeOpt `url:"include,omitempty"`
@@ -109,7 +111,7 @@ func (s *adminRuns) ForceCancel(ctx context.Context, runID string, options Admin
 		return ErrInvalidRunID
 	}
 
-	u := fmt.Sprintf("admin/runs/%s/actions/force-cancel", url.QueryEscape(runID))
+	u := fmt.Sprintf("admin/runs/%s/actions/force-cancel", url.PathEscape(runID))
 	req, err := s.client.NewRequest("POST", u, &options)
 	if err != nil {
 		return err
@@ -123,8 +125,30 @@ func (o *AdminRunsListOptions) valid() error {
 		return nil
 	}
 
+	if err := validateAdminRunDateRanges(o.CreatedBefore, o.CreatedAfter); err != nil {
+		return err
+	}
+
 	if err := validateAdminRunFilterParams(o.RunStatus); err != nil {
 		return err
+	}
+
+	return nil
+}
+
+func validateAdminRunDateRanges(before, after string) error {
+	if validString(&before) {
+		_, err := time.Parse(time.RFC3339, before)
+		if err != nil {
+			return fmt.Errorf("invalid date format for CreatedBefore: '%s', must be in RFC3339 format", before)
+		}
+	}
+
+	if validString(&after) {
+		_, err := time.Parse(time.RFC3339, after)
+		if err != nil {
+			return fmt.Errorf("invalid date format for CreatedAfter: '%s', must be in RFC3339 format", after)
+		}
 	}
 
 	return nil

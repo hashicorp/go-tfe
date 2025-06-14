@@ -134,7 +134,7 @@ func (r *registryProviders) List(ctx context.Context, organization string, optio
 		return nil, err
 	}
 
-	u := fmt.Sprintf("organizations/%s/registry-providers", url.QueryEscape(organization))
+	u := fmt.Sprintf("organizations/%s/registry-providers", url.PathEscape(organization))
 	req, err := r.client.NewRequest("GET", u, options)
 	if err != nil {
 		return nil, err
@@ -160,7 +160,7 @@ func (r *registryProviders) Create(ctx context.Context, organization string, opt
 
 	u := fmt.Sprintf(
 		"organizations/%s/registry-providers",
-		url.QueryEscape(organization),
+		url.PathEscape(organization),
 	)
 	req, err := r.client.NewRequest("POST", u, &options)
 	if err != nil {
@@ -183,10 +183,10 @@ func (r *registryProviders) Read(ctx context.Context, providerID RegistryProvide
 
 	u := fmt.Sprintf(
 		"organizations/%s/registry-providers/%s/%s/%s",
-		url.QueryEscape(providerID.OrganizationName),
-		url.QueryEscape(string(providerID.RegistryName)),
-		url.QueryEscape(providerID.Namespace),
-		url.QueryEscape(providerID.Name),
+		url.PathEscape(providerID.OrganizationName),
+		url.PathEscape(string(providerID.RegistryName)),
+		url.PathEscape(providerID.Namespace),
+		url.PathEscape(providerID.Name),
 	)
 	req, err := r.client.NewRequest("GET", u, options)
 	if err != nil {
@@ -209,10 +209,10 @@ func (r *registryProviders) Delete(ctx context.Context, providerID RegistryProvi
 
 	u := fmt.Sprintf(
 		"organizations/%s/registry-providers/%s/%s/%s",
-		url.QueryEscape(providerID.OrganizationName),
-		url.QueryEscape(string(providerID.RegistryName)),
-		url.QueryEscape(providerID.Namespace),
-		url.QueryEscape(providerID.Name),
+		url.PathEscape(providerID.OrganizationName),
+		url.PathEscape(string(providerID.RegistryName)),
+		url.PathEscape(providerID.Namespace),
+		url.PathEscape(providerID.Name),
 	)
 	req, err := r.client.NewRequest("DELETE", u, nil)
 	if err != nil {

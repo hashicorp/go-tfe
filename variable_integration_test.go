@@ -61,6 +61,123 @@ func TestVariablesList(t *testing.T) {
 	})
 }
 
+func TestVariablesListAll(t *testing.T) {
+	client := testClient(t)
+	ctx := context.Background()
+
+	orgTest, orgTestCleanup := createOrganization(t, client)
+	t.Cleanup(orgTestCleanup)
+
+	prjTest, prjTestCleanup := createProject(t, client, orgTest)
+	t.Cleanup(prjTestCleanup)
+
+	wTest, wTestCleanup := createWorkspaceWithOptions(t, client, orgTest, WorkspaceCreateOptions{
+		Name:    String(randomString(t)),
+		Project: prjTest,
+	})
+	t.Cleanup(wTestCleanup)
+
+	orgVarset, orgVarsetCleanup := createVariableSet(t, client, orgTest, VariableSetCreateOptions{})
+	t.Cleanup(orgVarsetCleanup)
+
+	prjVarset, prjVarsetCleanup := createVariableSet(t, client, orgTest, VariableSetCreateOptions{
+		Parent: &Parent{
+			Organization: orgTest,
+			Project:      prjTest,
+		},
+	})
+	t.Cleanup(prjVarsetCleanup)
+
+	glVar, glVarCleanup := createVariableSetVariable(t, client, orgVarset, VariableSetVariableCreateOptions{
+		Key:         String("key1"),
+		Value:       String("gl_value1"),
+		Category:    Category(CategoryTerraform),
+		Description: String(randomString(t)),
+	})
+	t.Cleanup(glVarCleanup)
+
+	glVarOverwrite, glVarOverwriteCleanup := createVariableSetVariable(t, client, orgVarset, VariableSetVariableCreateOptions{
+		Key:         String("key2"),
+		Value:       String("gl_value2"),
+		Category:    Category(CategoryTerraform),
+		Description: String(randomString(t)),
+	})
+	t.Cleanup(glVarOverwriteCleanup)
+
+	prjVar, prjVarCleanup := createVariableSetVariable(t, client, prjVarset, VariableSetVariableCreateOptions{
+		Key:         String("key3"),
+		Value:       String("prj_value3"),
+		Category:    Category(CategoryTerraform),
+		Description: String(randomString(t)),
+	})
+	t.Cleanup(prjVarCleanup)
+
+	prjVarOverwrite, prjVarOverwriteCleanup := createVariableSetVariable(t, client, prjVarset, VariableSetVariableCreateOptions{
+		Key:         String("key4"),
+		Value:       String("prj_value4"),
+		Category:    Category(CategoryTerraform),
+		Description: String(randomString(t)),
+	})
+	t.Cleanup(prjVarOverwriteCleanup)
+
+	wsVar1, wsVar1Cleanup := createVariableWithOptions(t, client, wTest, VariableCreateOptions{
+		Key:         String("key2"),
+		Value:       String("ws_value2"),
+		Category:    Category(CategoryTerraform),
+		Description: String(randomString(t)),
+	})
+	t.Cleanup(wsVar1Cleanup)
+
+	wsVar2, wsVar2Cleanup := createVariableWithOptions(t, client, wTest, VariableCreateOptions{
+		Key:         String("key4"),
+		Value:       String("ws_value4"),
+		Category:    Category(CategoryTerraform),
+		Description: String(randomString(t)),
+	})
+	t.Cleanup(wsVar2Cleanup)
+
+	wsVar3, wsVar3Cleanup := createVariableWithOptions(t, client, wTest, VariableCreateOptions{
+		Key:         String("key5"),
+		Value:       String("ws_value5"),
+		Category:    Category(CategoryTerraform),
+		Description: String(randomString(t)),
+	})
+	t.Cleanup(wsVar3Cleanup)
+
+	applyVariableSetToWorkspace(t, client, orgVarset.ID, wTest.ID)
+	applyVariableSetToWorkspace(t, client, prjVarset.ID, wTest.ID)
+
+	t.Run("when /workspaces/{external_id}/all-vars API is called", func(t *testing.T) {
+		vl, err := client.Variables.ListAll(ctx, wTest.ID, nil)
+		require.NoError(t, err)
+		assert.NotNilf(t, vl, "expected to get a non-empty variables list")
+
+		variableIDToValueMap := make(map[string]string)
+		for _, variable := range vl.Items {
+			variableIDToValueMap[variable.ID] = variable.Value
+		}
+		assert.Equal(t, len(vl.Items), 5)
+		assert.NotContains(t, variableIDToValueMap, glVarOverwrite.ID)
+		assert.NotContains(t, variableIDToValueMap, prjVarOverwrite.ID)
+		assert.Contains(t, variableIDToValueMap, glVar.ID)
+		assert.Contains(t, variableIDToValueMap, prjVar.ID)
+		assert.Contains(t, variableIDToValueMap, wsVar1.ID)
+		assert.Contains(t, variableIDToValueMap, wsVar2.ID)
+		assert.Contains(t, variableIDToValueMap, wsVar3.ID)
+		assert.Equal(t, glVar.Value, variableIDToValueMap[glVar.ID])
+		assert.Equal(t, prjVar.Value, variableIDToValueMap[prjVar.ID])
+		assert.Equal(t, wsVar1.Value, variableIDToValueMap[wsVar1.ID])
+		assert.Equal(t, wsVar2.Value, variableIDToValueMap[wsVar2.ID])
+		assert.Equal(t, wsVar3.Value, variableIDToValueMap[wsVar3.ID])
+	})
+
+	t.Run("when workspace ID is invalid ID", func(t *testing.T) {
+		vl, err := client.Variables.ListAll(ctx, badIdentifier, nil)
+		assert.Nilf(t, vl, "expected variables list to be nil")
+		assert.EqualError(t, err, ErrInvalidWorkspaceID.Error())
+	})
+}
+
 func TestVariablesCreate(t *testing.T) {
 	client := testClient(t)
 	ctx := context.Background()
@@ -79,6 +196,10 @@ func TestVariablesCreate(t *testing.T) {
 		v, err := client.Variables.Create(ctx, wTest.ID, options)
 		require.NoError(t, err)
 
+		// Refresh workspace once the variable is created.
+		reWorkspace, err := client.Workspaces.ReadByID(ctx, wTest.ID)
+		require.NoError(t, err)
+
 		assert.NotEmpty(t, v.ID)
 		assert.Equal(t, *options.Key, v.Key)
 		assert.Equal(t, *options.Value, v.Value)
@@ -87,6 +208,9 @@ func TestVariablesCreate(t *testing.T) {
 		// The workspace isn't returned correcly by the API.
 		// assert.Equal(t, *options.Workspace, v.Workspace)
 		assert.NotEmpty(t, v.VersionID)
+		// Validate that the same Variable is now listed in Workspace relations.
+		assert.NotEmpty(t, reWorkspace.Variables)
+		assert.Equal(t, reWorkspace.Variables[0].ID, v.ID)
 	})
 
 	t.Run("when options has an empty string value", func(t *testing.T) {

@@ -1,4 +1,335 @@
 # Unreleased
+* Add support for HCP Terraform `/api/v2/workspaces/{external_id}/all-vars` API endpoint to fetch the list of all variables available to a workspace (include inherited variables from varsets) by @debrin-hc [#1105](https://github.com/hashicorp/go-tfe/pull/1105)
+
+# v1.82.0
+
+## Enhancements
+
+* Adds BETA support for speculative runs with `Stacks` resources and removes VCS repo validity check on `Stack` creation, which is EXPERIMENTAL, SUBJECT TO CHANGE, and may not be available to all users by @hwatkins05-hashicorp [#1119](https://github.com/hashicorp/go-tfe/pull/1119)
+* Adds support for listing team tokens, by @mkam [#1109](https://github.com/hashicorp/go-tfe/pull/1109)
+
+# v1.81.0
+
+## Enhancements
+* Adds `IngressAttributes` field to `PolicySetVersion` by @jpadrianoGo [#1092](https://github.com/hashicorp/go-tfe/pull/1092)
+* Adds `ConfirmedBy` field to `Run` by @jpadrianoGo [#1110](https://github.com/hashicorp/go-tfe/pull/1110)
+
+# v1.80.0
+
+## Enhancements
+* Adds BETA support for `PolicyPaths` to the `Runs` interface, by sebasslash [#1104](https://github.com/hashicorp/go-tfe/pull/1104)
+
+# v1.79.0
+
+## BREAKING CHANGES
+
+* Updates team token `Description` to be a pointer, allowing for both nil descriptions and empty string descriptions. Team token descriptions and the ability to create multiple team tokens is in BETA, which is EXPERIMENTAL, SUBJECT TO CHANGE, and may not be available to all users, by @mkam [#1088](https://github.com/hashicorp/go-tfe/pull/1088)
+
+## Enhancements
+
+* Adds `AgentPool` field to the OAuthClientUpdateOptions struct, which is used to associate a VCS Provider with an AgentPool for PrivateVCS support  by @jpogran [#1075](https://github.com/hashicorp/go-tfe/pull/1075)
+
+* Add BETA support for use of OPA and Sentinel with Linux arm64 agents, which is EXPERIMENTAL, SUBJECT TO CHANGE, and may not be available to all users @natalie-todd [#1090](https://github.com/hashicorp/go-tfe/pull/1090)
+
+# v1.78.0
+
+## Enhancements
+* Adds `Links` field to `EffectiveTagBindings` to check whether an effective tag binding is inherited, by @sebasslash [#1087](https://github.com/hashicorp/go-tfe/pull/1087)
+
+# v1.77.0
+
+## Enhancements
+
+* Remove `DefaultProject` from `OrganizationUpdateOptions` to prevent updating an organization's default project, by @netramali [#1078](https://github.com/hashicorp/go-tfe/pull/1078)
+* Adds support for creating multiple team tokens by adding `Description` to `TeamTokenCreateOptions`. This provides BETA support, which is EXPERIMENTAL, SUBJECT TO CHANGE, and may not be available to all users, by @mkam [#1083](https://github.com/hashicorp/go-tfe/pull/1083)
+* Adds support for reading and deleting team tokens by ID, by @mkam [#1083](https://github.com/hashicorp/go-tfe/pull/1083)
+
+## BREAKING CHANGES
+
+In the last release, Runs interface method `ListForOrganization` included pagination fields `TotalCount` and `TotalPages`, but these are being removed as this feature approaches general availablity by @brandonc [#1074](https://github.com/hashicorp/go-tfe/pull/1074)
+
+
+# v1.76.0
+
+## Enhancements
+
+* Adds `DefaultProject` to `OrganizationUpdateOptions` to support updating an organization's default project. This provides BETA support, which is EXPERIMENTAL, SUBJECT TO CHANGE, and may not be available to all users, by @mkam [#1056](https://github.com/hashicorp/go-tfe/pull/1056)
+* Adds `ReadTerraformRegistryModule` to support reading a registry module from Terraform Registry's proxied endpoints by @paladin-devops [#1057](https://github.com/hashicorp/go-tfe/pull/1057)
+* Adds a new method `ListForOrganization` to list Runs in an organization by @arybolovlev [#1059](https://github.com/hashicorp/go-tfe/pull/1059)
+
+## Bug fixes
+
+* Adds `ToolVersionArchitecture` to `AdminTerraformVersionUpdateOptions` and `AdminTerraformVersion`. This provides BETA support, which is EXPERIMENTAL, SUBJECT TO CHANGE, and may not be available to all users by @kelsi-hoyle [#1047](https://github.com/hashicorp/go-tfe/pull/1047)
+
+# v1.75.0
+
+## Enhancements
+
+* Adds `EffectiveTagBindings` relation to projects and workspaces, allowing the relation to be included when listing projects or workspaces by @sebasslash [#1043](https://github.com/hashicorp/go-tfe/pull/1043)
+
+# v1.74.1
+
+## Enhancements
+
+* Add parallelism to create options for TF Test Runs by @dsa0x [1037](https://github.com/hashicorp/go-tfe/pull/1025)
+
+# v1.74.0
+
+## Enhancements
+
+* Add BETA support for adding custom project permission for variable sets `ProjectVariableSetsPermission` by @netramali [21879](https://github.com/hashicorp/atlas/pull/21879)
+
+# v1.73.1
+
+## Bug fixes
+
+* Includes a critical security update in an upstream depdendency `hashicorp/go-slug` @NodyHub [#1025](https://github.com/hashicorp/go-tfe/pull/1025)
+* Fix bug in BETA support for Linux arm64 agents, which is EXPERIMENTAL, SUBJECT TO CHANGE, and may not be available to all users @natalie-todd [#1022](https://github.com/hashicorp/go-tfe/pull/1022)
+
+# v1.73.0
+
+## Enhancements
+
+* Add support for team notification configurations @notchairmk [#1016](https://github.com/hashicorp/go-tfe/pull/1016)
+
+# v1.72.0
+
+## Enhancements
+
+* Add support for project level auto destroy settings @simonxmh [#1011](https://github.com/hashicorp/go-tfe/pull/1011)
+* Add BETA support for Linux arm64 agents, which is EXPERIMENTAL, SUBJECT TO CHANGE, and may not be available to all users @natalie-todd [#1022](https://github.com/hashicorp/go-tfe/pull/1022)
+* Adds support to delete all tag bindings on either a project or workspace by @sebasslash [#1023](https://github.com/hashicorp/go-tfe/pull/1023)
+
+# v1.71.0
+
+## Enhancements
+
+* Add support for listing effective tag bindings for a workspace or project by @brandonc [#996](https://github.com/hashicorp/go-tfe/pull/996)
+* Add support for listing no-code modules by @paladin-devops [#1003](https://github.com/hashicorp/go-tfe/pull/1003)
+
+# v1.70.0
+
+## Enhancements
+
+* Actually adds support for adding/updating key/value tags, which was not unintentionally removed from the last release by @brandonc [#987](https://github.com/hashicorp/go-tfe/pull/987)
+
+# v1.69.0
+
+## Enhancements
+
+* Adds BETA support for a variable set `Parent` relation, which is EXPERIMENTAL, SUBJECT TO CHANGE, and may not be available to all users by @jbonhag [#992](https://github.com/hashicorp/go-tfe/pull/992)
+* Add support for adding/updating key/value tags by @brandonc [#991](https://github.com/hashicorp/go-tfe/pull/991)
+* Add support for reading a registry module by its unique identifier by @dsa0x [#988](https://github.com/hashicorp/go-tfe/pull/988)
+* Add support for enabling Stacks on an organization by @brandonc [#987](https://github.com/hashicorp/go-tfe/pull/987)
+* Add support for filtering by key/value tags by @brandonc [#987](https://github.com/hashicorp/go-tfe/pull/987)
+* Adds `SpeculativePlanManagementEnabled` field to `Organization` by @lilincmu [#983](https://github.com/hashicorp/go-tfe/pull/983)
+
+# v1.68.0
+
+## Enhancements
+
+* Add support for reading a no-code module's variables by @paladin-devops [#979](https://github.com/hashicorp/go-tfe/pull/979)
+* Add Waypoint entitlements (the `waypoint-actions` and `waypoint-templates-and-addons` attributes) to `Entitlements` by @ignatius-j [#984](https://github.com/hashicorp/go-tfe/pull/984)
+
+# v1.67.1
+
+## Bug Fixes
+
+* Fixes a bug in `NewRequest` that did not allow query parameters to be specified in the first parameter, which broke several methods: `RegistryModules ReadVersion`, `VariableSets UpdateWorkspaces`, and `Workspaces Readme` by @brandonc [#982](https://github.com/hashicorp/go-tfe/pull/982)
+
+# v1.67.0
+
+## Enhancements
+
+* `Workspaces`: The `Unlock` method now returns a `ErrWorkspaceLockedStateVersionStillPending` error if the latest state version upload is still pending within the platform. This is a retryable error. by @brandonc [#978](https://github.com/hashicorp/go-tfe/pull/978)
+
+# v1.66.0
+
+## Enhancements
+
+* Adds `billable-rum-count` attribute to `StateVersion` by @shoekstra [#974](https://github.com/hashicorp/go-tfe/pull/974)
+
+## Bug Fixes
+
+* Fixed the incorrect error "workspace already unlocked" being returned when attempting to unlock a workspace that was locked by a Team or different User @ctrombley / @lucasmelin [#975](https://github.com/hashicorp/go-tfe/pull/975)
+
+# v1.65.0
+
+## Enhancements
+
+* Adds support for deleting `Stacks` that still have deployments through `ForceDelete` by @hashimoon [#969](https://github.com/hashicorp/go-tfe/pull/969)
+
+## Bug Fixes
+
+* Fixed `RegistryNoCodeModules` method `UpgradeWorkspace` to return a `WorkspaceUpgrade` type. This resulted in a BREAKING CHANGE, yet the previous type was not properly decoded nor reflective of the actual API result by @paladin-devops [#955](https://github.com/hashicorp/go-tfe/pull/955)
+
+# v1.64.2
+
+## Enhancements
+
+* Adds support for including no-code permissions to the `OrganizationPermissions` struct [#967](https://github.com/hashicorp/go-tfe/pull/967)
+
+# v1.64.1
+
+## Bug Fixes
+
+* Fixes BETA feature regression in `Stacks` associated with decoding `StackVCSRepo` data by @brandonc [#964](https://github.com/hashicorp/go-tfe/pull/964)
+
+# v1.64.0
+
+* Adds support for creating different organization token types by @glennsarti [#943](https://github.com/hashicorp/go-tfe/pull/943)
+* Adds more BETA support for `Stacks` resources, which is is EXPERIMENTAL, SUBJECT TO CHANGE, and may not be available to all users by @DanielMSchmidt [#963](https://github.com/hashicorp/go-tfe/pull/963)
+
+# v1.63.0
+
+## Enhancements
+
+* Adds more BETA support for `Stacks` resources, which is is EXPERIMENTAL, SUBJECT TO CHANGE, and may not be available to all users by @brandonc [#957](https://github.com/hashicorp/go-tfe/pull/957) and @DanielMSchmidt [#960](https://github.com/hashicorp/go-tfe/pull/960)
+
+# v1.62.0
+
+## Bug Fixes
+
+* Fixed `RegistryNoCodeModules` methods `CreateWorkspace` and `UpdateWorkspace` to return a `Workspace` type. This resulted in a BREAKING CHANGE, yet the previous type was not properly decoded nor reflective of the actual API result by @paladin-devops [#954](https://github.com/hashicorp/go-tfe/pull/954)
+
+## Enhancements
+
+* Adds `AllowMemberTokenManagement` permission to `Team` by @juliannatetreault [#922](https://github.com/hashicorp/go-tfe/pull/922)
+
+# v1.61.0
+
+## Enhancements
+
+* Adds support for creating no-code workspaces by @paladin-devops [#927](https://github.com/hashicorp/go-tfe/pull/927)
+* Adds support for upgrading no-code workspaces by @paladin-devops [#935](https://github.com/hashicorp/go-tfe/pull/935)
+
+# v1.60.0
+
+## Enhancements
+
+* Adds more BETA support for `Stacks` resources, which is EXPERIMENTAL, SUBJECT TO CHANGE, and may not be available to all users by @brandonc. [#934](https://github.com/hashicorp/go-tfe/pull/934)
+
+# v1.59.0
+
+## Features
+
+* Adds support for the Run Tasks Integration API by @karvounis-form3 [#929](https://github.com/hashicorp/go-tfe/pull/929)
+
+# v1.58.0
+
+## Enhancements
+
+* Adds BETA support for `Stacks` resources, which is EXPERIMENTAL, SUBJECT TO CHANGE, and may not be available to all users by @brandonc. [#920](https://github.com/hashicorp/go-tfe/pull/920)
+* Adds support for managing resources that have HCP IDs by @roncodingenthusiast. [#924](https://github.com/hashicorp/go-tfe/pull/924)
+
+# v1.57.0
+
+## Enhancements
+
+* Adds the `IsUnified` field to `Project`, `Organization` and `Team` by @roncodingenthusiast [#915](https://github.com/hashicorp/go-tfe/pull/915)
+* Adds Workspace auto-destroy notification types to `NotificationTriggerType` by @notchairmk [#918](https://github.com/hashicorp/go-tfe/pull/918)
+* Adds `CreatedAfter` and `CreatedBefore` Date Time filters to `AdminRunsListOptions` by @maed223 [#916](https://github.com/hashicorp/go-tfe/pull/916)
+
+# v1.56.0
+
+## Enhancements
+* Adds `ManageAgentPools` permission to team `OrganizationAccess` by @emlanctot [#901](https://github.com/hashicorp/go-tfe/pull/901)
+
+# v1.55.0
+
+## Enhancements
+* Adds the `CurrentRunStatus` filter to allow filtering workspaces by their current run status by @arybolovlev [#899](https://github.com/hashicorp/go-tfe/pull/899)
+
+# v1.54.0
+
+## Enhancements
+* Adds the `AutoDestroyActivityDuration` field to `Workspace` by @notchairmk [#902](https://github.com/hashicorp/go-tfe/pull/902)
+
+## Deprecations
+* The `IsSiteAdmin` field on User has been deprecated. Use the `IsAdmin` field instead [#900](https://github.com/hashicorp/go-tfe/pull/900)
+
+# v1.53.0
+
+## Enhancements
+* Adds `ManageTeams`, `ManageOrganizationAccess`, and `AccessSecretTeams` permissions to team `OrganizationAccess` by @juliannatetreault [#874](https://github.com/hashicorp/go-tfe/pull/874)
+* Mocks are now generated using the go.uber.org/mock package [#897](https://github.com/hashicorp/go-tfe/pull/897)
+
+# v1.52.0
+
+## Enhancements
+* Add `EnforcementLevel` to `Policy` create and update options. This will replace the deprecated `[]Enforce` method for specifying enforcement level. @JarrettSpiker [#895](https://github.com/hashicorp/go-tfe/pull/895)
+
+## Deprecations
+* The `Enforce` fields on `Policy`, `PolicyCreateOptions`, and `PolicyUpdateOptions` have been deprecated. Use the `EnforcementLevel` instead. @JarrettSpiker [#895](https://github.com/hashicorp/go-tfe/pull/895)
+
+# v1.51.0
+
+## Enhancements
+* Adds `Teams` field to `OrganizationMembershipCreateOptions` to allow users to be added to teams at the same time they are invited to an organization. by @JarrettSpiker [#886](https://github.com/hashicorp/go-tfe/pull/886)
+* `IsCloud()` returns true when TFP-AppName is "HCP Terraform" by @sebasslash [#891](https://github.com/hashicorp/go-tfe/pull/891)
+* `OrganizationScoped` attribute for `OAuthClient` is now generally available by @netramali [#873](https://github.com/hashicorp/go-tfe/pull/873)
+
+# v1.50.0
+
+## Enhancements
+* Adds Bitbucket Data Center as a new `ServiceProviderType` and ensures similar validation as Bitbucket Server by @zainq11 [#879](https://github.com/hashicorp/go-tfe/pull/879)
+* Add `GlobalRunTasks` field to `Entitlements`. by @glennsarti [#865](https://github.com/hashicorp/go-tfe/pull/865)
+* Add `Global` field to `RunTask`. by @glennsarti [#865](https://github.com/hashicorp/go-tfe/pull/865)
+* Add `Stages` field to `WorkspaceRunTask`. by @glennsarti [#865](https://github.com/hashicorp/go-tfe/pull/865)
+* Changing BETA `OrganizationScoped` attribute of `OAuthClient` to be a pointer for bug fix by @netramali [884](https://github.com/hashicorp/go-tfe/pull/884)
+* Adds `Query` parameter to `VariableSetListOptions` to allow searching variable sets by name, by @JarrettSpiker[#877](https://github.com/hashicorp/go-tfe/pull/877)
+
+## Deprecations
+* The `Stage` field has been deprecated on `WorkspaceRunTask`. Instead, use `Stages`. by @glennsarti [#865](https://github.com/hashicorp/go-tfe/pull/865)
+
+# v1.49.0
+
+## Enhancements
+* Adds `post_apply` to list of possible `stages` for Run Tasks by @glennsarti [#878](https://github.com/hashicorp/go-tfe/pull/878)
+
+# v1.48.0
+
+## Features
+* For Terraform Enterprise users who have data retention policies defined on Organizations or Workspaces: A new DataRetentionPolicyChoice relation has been added to reflect that [data retention policies are polymorphic](https://developer.hashicorp.com/terraform/enterprise/api-docs/data-retention-policies#data-retention-policy-types). Organizations and workspaces may be related to a `DataRetentionPolicyDeleteOlder` or `DataRetentionPolicyDontDelete` record through the `DataRetentionPolicyChoice` struct. Data retention policies can be read using `ReadDataRetentionPolicyChoice`, and set or updated (including changing their type) using `SetDataRetentionPolicyDeleteOlder` or `SetDataRetentionPolicyDontDelete` by  @JarrettSpiker [#652](https://github.com/hashicorp/go-tfe/pull/844)
+
+## Deprecations
+* The `DataRetentionPolicy` type, and the `DataRetentionPolicy` relationship on `Organization` and `Workspace`s have been deprecated. The `DataRetentionPolicy` type is equivalent to the new `DataRetentionPolicyDeleteOlder`. The Data retention policy relationships on `Organization` and `Workspace`s are now [polymorphic](https://developer.hashicorp.com/terraform/enterprise/api-docs/data-retention-policies#data-retention-policy-types), and are represented by the `DataRetentionPolicyChoice` relationship. The existing `DataRetentionPolicy` relationship will continue to be populated when reading an `Organization` or `Workspace`, but it may be removed in a future release. @JarrettSpiker [#652](https://github.com/hashicorp/go-tfe/pull/844)
+* The `SetDataRetentionPolicy` function on `Organizations` and `Workspaces` is now deprecated in favour of `SetDataRetentionPolicyDeleteOlder` or `SetDataRetentionPolicyDontDelete`. `SetDataRetentionPolicy` will only update the data retention policy when communicating with TFE versions v202311 and v202312. @JarrettSpiker [#652](https://github.com/hashicorp/go-tfe/pull/844)
+* The `ReadDataRetentionPolicy` function on `Organizations` and `Workspaces` is now deprecated in favour of `ReadDataRetentionPolicyChoice`. `ReadDataRetentionPolicyChoice` may return the different multiple data retention policy types added in TFE 202401-1. `SetDataRetentionPolicy` will only update the data retention policy when communicating with TFE versions v202311 and v202312. @JarrettSpiker [#652](https://github.com/hashicorp/go-tfe/pull/844)
+
+## Enhancements
+* Adds `Variables` relationship field to `Workspace` by @arybolovlev [#872](https://github.com/hashicorp/go-tfe/pull/872)
+
+# v1.47.1
+
+## Bug fixes
+* Change the error message for `ErrWorkspaceStillProcessing` to be the same error message returned by the API by @uturunku1 [#864](https://github.com/hashicorp/go-tfe/pull/864)
+
+# v1.47.0
+
+## Enhancements
+* Adds BETA `description` attribute to `Project` by @netramali [#861](https://github.com/hashicorp/go-tfe/pull/861)
+* Adds `Read` method to `TestVariables` by @aaabdelgany [#851](https://github.com/hashicorp/go-tfe/pull/851)
+
+# v1.46.0
+
+## Enhancements
+* Adds `Query` field to `Project` and `Team` list options, to allow projects and teams to be searched by name by @JarrettSpiker [#849](https://github.com/hashicorp/go-tfe/pull/849)
+* Adds `AgenPool` relation to `OAuthClient` create options to support for Private VCS by enabling creation of OAuth Client when AgentPoolID is set (as an optional param) @roleesinhaHC [#841](https://github.com/hashicorp/go-tfe/pull/841)
+* Add `Sort` field to workspace list options @Maed223 [#859](https://github.com/hashicorp/go-tfe/pull/859)
+
+# v1.45.0
+
+## Enhancements
+* Updates go-tfe client to export the instance name using `AppName()` @sebasslash [#848](https://github.com/hashicorp/go-tfe/pull/848)
+* Add `DeleteByName` API endpoint to `RegistryModule` @laurenolivia [#847](https://github.com/hashicorp/go-tfe/pull/847)
+* Update deprecated `RegistryModule` endpoints `DeleteProvider` and `DeleteVersion` with new API calls @laurenolivia [#847](https://github.com/hashicorp/go-tfe/pull/847)
+
+# v1.44.0
+
+## Enhancements
+* Updates `Workspaces` to include an `AutoDestroyAt` attribute on create and update by @notchairmk and @ctrombley [#786](https://github.com/hashicorp/go-tfe/pull/786)
+* Adds `AgentsEnabled` and `PolicyToolVersion` attributes to `PolicySet` by @mrinalirao [#752](https://github.com/hashicorp/go-tfe/pull/752)
 
 # v1.43.0
 

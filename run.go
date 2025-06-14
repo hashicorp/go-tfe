@@ -21,6 +21,9 @@ type Runs interface {
 	// List all the runs of the given workspace.
 	List(ctx context.Context, workspaceID string, options *RunListOptions) (*RunList, error)
 
+	// List all the runs of the given organization.
+	ListForOrganization(ctx context.Context, organization string, options *RunListForOrganizationOptions) (*OrganizationRunList, error)
+
 	// Create a new run with the given options.
 	Create(ctx context.Context, options RunCreateOptions) (*Run, error)
 
@@ -117,6 +120,14 @@ type RunList struct {
 	Items []*Run
 }
 
+// OrganizationRunList represents a list of runs across an organization. It
+// differs from the RunList in that it does not include a TotalCount of records
+// in the pagination details
+type OrganizationRunList struct {
+	*PaginationNextPrev
+	Items []*Run
+}
+
 // Run represents a Terraform Enterprise run.
 type Run struct {
 	ID                     string               `jsonapi:"primary,runs"`
@@ -130,6 +141,7 @@ type Run struct {
 	IsDestroy              bool                 `jsonapi:"attr,is-destroy"`
 	Message                string               `jsonapi:"attr,message"`
 	Permissions            *RunPermissions      `jsonapi:"attr,permissions"`
+	PolicyPaths            []string             `jsonapi:"attr,policy-paths,omitempty"`
 	PositionInQueue        int                  `jsonapi:"attr,position-in-queue"`
 	PlanOnly               bool                 `jsonapi:"attr,plan-only"`
 	Refresh                bool                 `jsonapi:"attr,refresh"`
@@ -148,6 +160,7 @@ type Run struct {
 	ConfigurationVersion *ConfigurationVersion `jsonapi:"relation,configuration-version"`
 	CostEstimate         *CostEstimate         `jsonapi:"relation,cost-estimate"`
 	CreatedBy            *User                 `jsonapi:"relation,created-by"`
+	ConfirmedBy          *User                 `jsonapi:"relation,confirmed-by"`
 	Plan                 *Plan                 `jsonapi:"relation,plan"`
 	PolicyChecks         []*PolicyCheck        `jsonapi:"relation,policy-checks"`
 	TaskStages           []*TaskStage          `jsonapi:"relation,task-stages,omitempty"`
@@ -250,6 +263,52 @@ type RunListOptions struct {
 	Include []RunIncludeOpt `url:"include,omitempty"`
 }
 
+// RunListForOrganizationOptions represents the options for listing runs for an organization.
+type RunListForOrganizationOptions struct {
+	ListOptions
+
+	// Optional: Searches runs that matches the supplied VCS username.
+	User string `url:"search[user],omitempty"`
+
+	// Optional: Searches runs that matches the supplied commit sha.
+	Commit string `url:"search[commit],omitempty"`
+
+	// Optional: Searches for runs that match the VCS username, commit sha, run_id, or run message your specify.
+	// The presence of search[commit] or search[user] takes priority over this parameter and will be omitted.
+	Basic string `url:"search[basic],omitempty"`
+
+	// Optional: Comma-separated list of acceptable run statuses.
+	// Options are listed at https://developer.hashicorp.com/terraform/cloud-docs/api-docs/run#run-states,
+	// or as constants with the RunStatus string type.
+	Status string `url:"filter[status],omitempty"`
+
+	// Optional: Comma-separated list of acceptable run sources.
+	// Options are listed at https://developer.hashicorp.com/terraform/cloud-docs/api-docs/run#run-sources,
+	// or as constants with the RunSource string type.
+	Source string `url:"filter[source],omitempty"`
+
+	// Optional: Comma-separated list of acceptable run operation types.
+	// Options are listed at https://developer.hashicorp.com/terraform/cloud-docs/api-docs/run#run-operations,
+	// or as constants with the RunOperation string type.
+	Operation string `url:"filter[operation],omitempty"`
+
+	// Optional: Comma-separated list of agent pool names.
+	AgentPoolNames string `url:"filter[agent_pool_names],omitempty"`
+
+	// Optional: Comma-separated list of run status groups.
+	StatusGroup string `url:"filter[status_group],omitempty"`
+
+	// Optional: Comma-separated list of run timeframe.
+	Timeframe string `url:"filter[timeframe],omitempty"`
+
+	// Optional: Comma-separated list of workspace names. The result lists runs that belong to one of the workspaces your specify.
+	WorkspaceNames string `url:"filter[workspace_names],omitempty"`
+
+	// Optional: A list of relations to include. See available resources:
+	// https://developer.hashicorp.com/terraform/cloud-docs/api-docs/run#available-related-resources
+	Include []RunIncludeOpt `url:"include,omitempty"`
+}
+
 // RunReadOptions represents the options for reading a run.
 type RunReadOptions struct {
 	// Optional: A list of relations to include. See available resources:
@@ -328,6 +387,12 @@ type RunCreateOptions struct {
 	// resource addresses.
 	ReplaceAddrs []string `jsonapi:"attr,replace-addrs,omitempty"`
 
+	// PolicyPaths is a list of relative directory paths that point to policy
+	// configuration files.
+	//
+	// **Note: This field is in BETA and subject to change.**
+	PolicyPaths []string `jsonapi:"attr,policy-paths,omitempty"`
+
 	// AutoApply determines if the run should be applied automatically without
 	// user confirmation. It defaults to the Workspace.AutoApply setting.
 	AutoApply *bool `jsonapi:"attr,auto-apply,omitempty"`
@@ -383,13 +448,37 @@ func (s *runs) List(ctx context.Context, workspaceID string, options *RunListOpt
 		return nil, err
 	}
 
-	u := fmt.Sprintf("workspaces/%s/runs", url.QueryEscape(workspaceID))
+	u := fmt.Sprintf("workspaces/%s/runs", url.PathEscape(workspaceID))
 	req, err := s.client.NewRequest("GET", u, options)
 	if err != nil {
 		return nil, err
 	}
 
 	rl := &RunList{}
+	err = req.Do(ctx, rl)
+	if err != nil {
+		return nil, err
+	}
+
+	return rl, nil
+}
+
+// List all the runs of the given workspace.
+func (s *runs) ListForOrganization(ctx context.Context, organization string, options *RunListForOrganizationOptions) (*OrganizationRunList, error) {
+	if !validStringID(&organization) {
+		return nil, ErrInvalidOrg
+	}
+	if err := options.valid(); err != nil {
+		return nil, err
+	}
+
+	u := fmt.Sprintf("organizations/%s/runs", url.PathEscape(organization))
+	req, err := s.client.NewRequest("GET", u, options)
+	if err != nil {
+		return nil, err
+	}
+
+	rl := &OrganizationRunList{}
 	err = req.Do(ctx, rl)
 	if err != nil {
 		return nil, err
@@ -432,7 +521,7 @@ func (s *runs) ReadWithOptions(ctx context.Context, runID string, options *RunRe
 		return nil, err
 	}
 
-	u := fmt.Sprintf("runs/%s", url.QueryEscape(runID))
+	u := fmt.Sprintf("runs/%s", url.PathEscape(runID))
 	req, err := s.client.NewRequest("GET", u, options)
 	if err != nil {
 		return nil, err
@@ -453,7 +542,7 @@ func (s *runs) Apply(ctx context.Context, runID string, options RunApplyOptions)
 		return ErrInvalidRunID
 	}
 
-	u := fmt.Sprintf("runs/%s/actions/apply", url.QueryEscape(runID))
+	u := fmt.Sprintf("runs/%s/actions/apply", url.PathEscape(runID))
 	req, err := s.client.NewRequest("POST", u, &options)
 	if err != nil {
 		return err
@@ -468,7 +557,7 @@ func (s *runs) Cancel(ctx context.Context, runID string, options RunCancelOption
 		return ErrInvalidRunID
 	}
 
-	u := fmt.Sprintf("runs/%s/actions/cancel", url.QueryEscape(runID))
+	u := fmt.Sprintf("runs/%s/actions/cancel", url.PathEscape(runID))
 	req, err := s.client.NewRequest("POST", u, &options)
 	if err != nil {
 		return err
@@ -483,7 +572,7 @@ func (s *runs) ForceCancel(ctx context.Context, runID string, options RunForceCa
 		return ErrInvalidRunID
 	}
 
-	u := fmt.Sprintf("runs/%s/actions/force-cancel", url.QueryEscape(runID))
+	u := fmt.Sprintf("runs/%s/actions/force-cancel", url.PathEscape(runID))
 	req, err := s.client.NewRequest("POST", u, &options)
 	if err != nil {
 		return err
@@ -495,7 +584,7 @@ func (s *runs) ForceCancel(ctx context.Context, runID string, options RunForceCa
 // ForceExecute is used to forcefully execute a run by its ID.
 //
 // Note: While useful at times, force-executing a run circumvents the typical
-// workflow of applying runs using Terraform Cloud. It is not intended for
+// workflow of applying runs using HCP Terraform. It is not intended for
 // regular use. If you find yourself using it frequently, please reach out to
 // HashiCorp Support for help in developing an alternative approach.
 func (s *runs) ForceExecute(ctx context.Context, runID string) error {
@@ -503,7 +592,7 @@ func (s *runs) ForceExecute(ctx context.Context, runID string) error {
 		return ErrInvalidRunID
 	}
 
-	u := fmt.Sprintf("runs/%s/actions/force-execute", url.QueryEscape(runID))
+	u := fmt.Sprintf("runs/%s/actions/force-execute", url.PathEscape(runID))
 	req, err := s.client.NewRequest("POST", u, nil)
 	if err != nil {
 		return err
@@ -518,7 +607,7 @@ func (s *runs) Discard(ctx context.Context, runID string, options RunDiscardOpti
 		return ErrInvalidRunID
 	}
 
-	u := fmt.Sprintf("runs/%s/actions/discard", url.QueryEscape(runID))
+	u := fmt.Sprintf("runs/%s/actions/discard", url.PathEscape(runID))
 	req, err := s.client.NewRequest("POST", u, &options)
 	if err != nil {
 		return err
@@ -544,5 +633,9 @@ func (o *RunReadOptions) valid() error {
 }
 
 func (o *RunListOptions) valid() error {
+	return nil
+}
+
+func (o *RunListForOrganizationOptions) valid() error {
 	return nil
 }

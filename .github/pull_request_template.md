@@ -3,7 +3,7 @@ Thank you for contributing to hashicorp/go-tfe! Please read docs/CONTRIBUTING.md
 
 Here's what to expect after the pull request is opened:
 
-The test suite contains many acceptance tests that are run against a test version of Terraform Cloud, and additional testing is done against Terraform Enterprise. You can read more about running the tests against your own Terraform Enterprise environment in TESTS.md. Our CI system (Github Actions) will not test your fork until a one-time approval takes place.
+The test suite contains many acceptance tests that are run against a test version of HCP Terraform, and additional testing is done against Terraform Enterprise. You can read more about running the tests against your own Terraform Enterprise environment in TESTS.md. Our CI system (Github Actions) will not test your fork until a one-time approval takes place.
 
 Your change, depending on its impact, may be released in the following ways:
 
@@ -49,3 +49,18 @@ $ TFE_ADDRESS="https://example" TFE_TOKEN="example" go test ./... -v -run TestFu
 
 ...
 ```
+
+<!-- heimdall_github_prtemplate:grc-pci_dss-2024-01-05 -->
+## Rollback Plan
+
+<!--
+Please outline a plan in the event changes need to be rolled back
+
+Example: If a change needs to be reverted, we will roll out an update to the code within 7 days.
+-->
+
+## Changes to Security Controls
+
+<!--
+Are there any changes to security controls (access controls, encryption, logging) in this pull request? If so, explain.
+-->

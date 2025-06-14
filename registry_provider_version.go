@@ -97,10 +97,10 @@ func (r *registryProviderVersions) List(ctx context.Context, providerID Registry
 
 	u := fmt.Sprintf(
 		"organizations/%s/registry-providers/%s/%s/%s/versions",
-		url.QueryEscape(providerID.OrganizationName),
-		url.QueryEscape(string(providerID.RegistryName)),
-		url.QueryEscape(providerID.Namespace),
-		url.QueryEscape(providerID.Name),
+		url.PathEscape(providerID.OrganizationName),
+		url.PathEscape(string(providerID.RegistryName)),
+		url.PathEscape(providerID.Namespace),
+		url.PathEscape(providerID.Name),
 	)
 	req, err := r.client.NewRequest("GET", u, options)
 	if err != nil {
@@ -132,10 +132,10 @@ func (r *registryProviderVersions) Create(ctx context.Context, providerID Regist
 
 	u := fmt.Sprintf(
 		"organizations/%s/registry-providers/%s/%s/%s/versions",
-		url.QueryEscape(providerID.OrganizationName),
-		url.QueryEscape(string(providerID.RegistryName)),
-		url.QueryEscape(providerID.Namespace),
-		url.QueryEscape(providerID.Name),
+		url.PathEscape(providerID.OrganizationName),
+		url.PathEscape(string(providerID.RegistryName)),
+		url.PathEscape(providerID.Namespace),
+		url.PathEscape(providerID.Name),
 	)
 	req, err := r.client.NewRequest("POST", u, &options)
 	if err != nil {
@@ -159,11 +159,11 @@ func (r *registryProviderVersions) Read(ctx context.Context, versionID RegistryP
 
 	u := fmt.Sprintf(
 		"organizations/%s/registry-providers/%s/%s/%s/versions/%s",
-		url.QueryEscape(versionID.OrganizationName),
-		url.QueryEscape(string(versionID.RegistryName)),
-		url.QueryEscape(versionID.Namespace),
-		url.QueryEscape(versionID.Name),
-		url.QueryEscape(versionID.Version),
+		url.PathEscape(versionID.OrganizationName),
+		url.PathEscape(string(versionID.RegistryName)),
+		url.PathEscape(versionID.Namespace),
+		url.PathEscape(versionID.Name),
+		url.PathEscape(versionID.Version),
 	)
 	req, err := r.client.NewRequest("GET", u, nil)
 	if err != nil {
@@ -187,11 +187,11 @@ func (r *registryProviderVersions) Delete(ctx context.Context, versionID Registr
 
 	u := fmt.Sprintf(
 		"organizations/%s/registry-providers/%s/%s/%s/versions/%s",
-		url.QueryEscape(versionID.OrganizationName),
-		url.QueryEscape(string(versionID.RegistryName)),
-		url.QueryEscape(versionID.Namespace),
-		url.QueryEscape(versionID.Name),
-		url.QueryEscape(versionID.Version),
+		url.PathEscape(versionID.OrganizationName),
+		url.PathEscape(string(versionID.RegistryName)),
+		url.PathEscape(versionID.Namespace),
+		url.PathEscape(versionID.Name),
+		url.PathEscape(versionID.Version),
 	)
 	req, err := r.client.NewRequest("DELETE", u, nil)
 	if err != nil {
