@@ -190,6 +190,8 @@ type Client struct {
 	Projects                   Projects
 
 	Meta Meta
+
+	StackDeploymentRuns StackDeploymentRuns
 }
 
 // Admin is the the Terraform Enterprise Admin API. It provides access to site
@@ -459,8 +461,8 @@ func NewClient(cfg *Config) (*Client, error) {
 	client.AuditTrails = &auditTrails{client: client}
 	client.Comments = &comments{client: client}
 	client.ConfigurationVersions = &configurationVersions{client: client}
-	client.GHAInstallations = &gHAInstallations{client: client}
 	client.CostEstimates = &costEstimates{client: client}
+	client.GHAInstallations = &gHAInstallations{client: client}
 	client.GPGKeys = &gpgKeys{client: client}
 	client.RegistryNoCodeModules = &registryNoCodeModules{client: client}
 	client.NotificationConfigurations = &notificationConfigurations{client: client}
@@ -520,6 +522,8 @@ func NewClient(cfg *Config) (*Client, error) {
 	client.Meta = Meta{
 		IPRanges: &ipRanges{client: client},
 	}
+
+	client.StackDeploymentRuns = &stackDeploymentRuns{client: client}
 
 	return client, nil
 }
