@@ -191,7 +191,7 @@ type StackCreateOptions struct {
 type StackUpdateOptions struct {
 	Name        *string              `jsonapi:"attr,name,omitempty"`
 	Description *string              `jsonapi:"attr,description,omitempty"`
-	VCSRepo     *StackVCSRepoOptions `jsonapi:"attr,vcs-repo,omitempty"`
+	VCSRepo     *StackVCSRepoOptions `jsonapi:"attr,vcs-repo"`
 }
 
 // WaitForStatusResult is the data structure that is sent over the channel
