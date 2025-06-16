@@ -2209,19 +2209,48 @@ func createTeamTokenWithOptions(t *testing.T, client *Client, tm *Team, options 
 }
 
 func createVariable(t *testing.T, client *Client, w *Workspace) (*Variable, func()) {
+	options := VariableCreateOptions{
+		Key:         String(randomString(t)),
+		Value:       String(randomString(t)),
+		Category:    Category(CategoryTerraform),
+		Description: String(randomString(t)),
+	}
+	return createVariableWithOptions(t, client, w, options)
+}
+
+func createVariableWithOptions(t *testing.T, client *Client, w *Workspace, options VariableCreateOptions) (*Variable, func()) {
 	var wCleanup func()
 
 	if w == nil {
 		w, wCleanup = createWorkspace(t, client, nil)
 	}
 
+	if options.Key == nil {
+		options.Key = String(randomString(t))
+	}
+
+	if options.Value == nil {
+		options.Value = String(randomString(t))
+	}
+
+	if options.Description == nil {
+		options.Description = String(randomString(t))
+	}
+
+	if options.Category == nil {
+		options.Category = Category(CategoryTerraform)
+	}
+
+	if options.HCL == nil {
+		options.HCL = Bool(false)
+	}
+
+	if options.Sensitive == nil {
+		options.Sensitive = Bool(false)
+	}
+
 	ctx := context.Background()
-	v, err := client.Variables.Create(ctx, w.ID, VariableCreateOptions{
-		Key:         String(randomString(t)),
-		Value:       String(randomString(t)),
-		Category:    Category(CategoryTerraform),
-		Description: String(randomString(t)),
-	})
+	v, err := client.Variables.Create(ctx, w.ID, options)
 	if err != nil {
 		t.Fatal(err)
 	}
