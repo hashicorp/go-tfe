@@ -21,6 +21,8 @@
 * Adds `PrivateRunTasks` field to Entitlements by @glennsarti [#944](https://github.com/hashicorp/go-tfe/pull/944)
 * Adds `AgentPool` relationship to options when creating and updating Run Tasks by @glennsarti [#944](https://github.com/hashicorp/go-tfe/pull/944)
 
+* Adds `Source` field to `Workspace`, by @jpadrianoGo [#1124](https://github.com/hashicorp/go-tfe/pull/1124)
+
 # v1.82.0
 
 ## Enhancements
