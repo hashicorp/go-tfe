@@ -10,6 +10,9 @@ import (
 type StackDeploymentGroups interface {
 	// List returns a list of Deployment Groups in a stack.
 	List(ctx context.Context, stackConfigID string, options *StackDeploymentGroupListOptions) (*StackDeploymentGroupList, error)
+
+	// Read retrieves a stack deployment group by its ID.
+	Read(ctx context.Context, stackDeploymentGroupID string) (*StackDeploymentGroup, error)
 }
 
 type DeploymentGroupStatus string
@@ -52,6 +55,9 @@ type StackDeploymentGroupListOptions struct {
 	ListOptions
 }
 
+// StackDeploymentGroupReadOptions represents additional options when reading a stack deployment group.
+type StackDeploymentGroupReadOptions struct {}
+
 // List returns a list of Deployment Groups in a stack, optionally filtered by additional parameters.
 func (s stackDeploymentGroups) List(ctx context.Context, stackConfigID string, options *StackDeploymentGroupListOptions) (*StackDeploymentGroupList, error) {
 	if !validStringID(&stackConfigID) {
@@ -74,4 +80,24 @@ func (s stackDeploymentGroups) List(ctx context.Context, stackConfigID string, o
 	}
 
 	return sdgl, nil
+}
+
+// Read retrieves a stack deployment group by its ID.
+func (s stackDeploymentGroups) Read(ctx context.Context, stackDeploymentGroupID string) (*StackDeploymentGroup, error) {
+	if !validStringID(&stackDeploymentGroupID) {
+		return nil, fmt.Errorf("invalid stack deployment group ID: %s", stackDeploymentGroupID)
+	}
+
+	req, err := s.client.NewRequest("GET", fmt.Sprintf("stack-deployment-groups/%s", url.PathEscape(stackDeploymentGroupID)), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	sdg := &StackDeploymentGroup{}
+	err = req.Do(ctx, sdg)
+	if err != nil {
+		return nil, err
+	}
+
+	return sdg, nil
 }
