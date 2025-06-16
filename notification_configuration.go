@@ -5,6 +5,7 @@ package tfe
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
 	"net/url"
 	"time"
@@ -91,16 +92,17 @@ type NotificationConfigurationSubscribableChoice struct {
 
 // NotificationConfiguration represents a Notification Configuration.
 type NotificationConfiguration struct {
-	ID                string                      `jsonapi:"primary,notification-configurations"`
-	CreatedAt         time.Time                   `jsonapi:"attr,created-at,iso8601"`
-	DeliveryResponses []*DeliveryResponse         `jsonapi:"attr,delivery-responses"`
-	DestinationType   NotificationDestinationType `jsonapi:"attr,destination-type"`
-	Enabled           bool                        `jsonapi:"attr,enabled"`
-	Name              string                      `jsonapi:"attr,name"`
-	Token             string                      `jsonapi:"attr,token"`
-	Triggers          []string                    `jsonapi:"attr,triggers"`
-	UpdatedAt         time.Time                   `jsonapi:"attr,updated-at,iso8601"`
-	URL               string                      `jsonapi:"attr,url"`
+	ID                   string                      `jsonapi:"primary,notification-configurations"`
+	CreatedAt            time.Time                   `jsonapi:"attr,created-at,iso8601"`
+	DeliveryResponsesRaw []interface{}               `jsonapi:"attr,delivery-responses"`
+	DeliveryResponses    []*DeliveryResponse         `json:"-"`
+	DestinationType      NotificationDestinationType `jsonapi:"attr,destination-type"`
+	Enabled              bool                        `jsonapi:"attr,enabled"`
+	Name                 string                      `jsonapi:"attr,name"`
+	Token                string                      `jsonapi:"attr,token"`
+	Triggers             []string                    `jsonapi:"attr,triggers"`
+	UpdatedAt            time.Time                   `jsonapi:"attr,updated-at,iso8601"`
+	URL                  string                      `jsonapi:"attr,url"`
 
 	// EmailAddresses is only available for TFE users. It is not available in HCP Terraform.
 	EmailAddresses []string `jsonapi:"attr,email-addresses"`
@@ -241,6 +243,8 @@ func (s *notificationConfigurations) List(ctx context.Context, subscribableID st
 
 	for i := range ncl.Items {
 		backfillDeprecatedSubscribable(ncl.Items[i])
+
+		parseDeliveryResponses(ncl.Items[i])
 	}
 
 	return ncl, nil
@@ -276,6 +280,8 @@ func (s *notificationConfigurations) Create(ctx context.Context, subscribableID 
 
 	backfillDeprecatedSubscribable(nc)
 
+	parseDeliveryResponses(nc)
+
 	return nc, nil
 }
 
@@ -298,6 +304,8 @@ func (s *notificationConfigurations) Read(ctx context.Context, notificationConfi
 	}
 
 	backfillDeprecatedSubscribable(nc)
+
+	parseDeliveryResponses(nc)
 
 	return nc, nil
 }
@@ -325,6 +333,8 @@ func (s *notificationConfigurations) Update(ctx context.Context, notificationCon
 	}
 
 	backfillDeprecatedSubscribable(nc)
+
+	parseDeliveryResponses(nc)
 
 	return nc, nil
 }
@@ -363,6 +373,8 @@ func (s *notificationConfigurations) Verify(ctx context.Context, notificationCon
 	if err != nil {
 		return nil, err
 	}
+
+	parseDeliveryResponses(nc)
 
 	return nc, nil
 }
@@ -446,4 +458,22 @@ func validNotificationTriggerType(triggers []NotificationTriggerType) bool {
 	}
 
 	return true
+}
+
+func parseDeliveryResponses(nc *NotificationConfiguration) {
+	for _, raw := range nc.DeliveryResponsesRaw {
+		data, ok := raw.(map[string]interface{})
+		if !ok {
+			continue
+		}
+		byteData, err := json.Marshal(data)
+		if err != nil {
+			continue
+		}
+		deliveryResponse := &DeliveryResponse{}
+		if err := json.Unmarshal(byteData, deliveryResponse); err != nil {
+			continue
+		}
+		nc.DeliveryResponses = append(nc.DeliveryResponses, deliveryResponse)
+	}
 }
