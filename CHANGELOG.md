@@ -21,10 +21,6 @@
 * Adds `PrivateRunTasks` field to Entitlements by @glennsarti [#944](https://github.com/hashicorp/go-tfe/pull/944)
 * Adds `AgentPool` relationship to options when creating and updating Run Tasks by @glennsarti [#944](https://github.com/hashicorp/go-tfe/pull/944)
 
-## Enhancements
-
-* Adds `DeliveryResponses` parsing in `NotificationConfiguration`, by @jpadrianoGo [#1129](https://github.com/hashicorp/go-tfe/pull/1129)
-
 # v1.82.0
 
 ## Enhancements
