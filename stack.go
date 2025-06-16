@@ -148,6 +148,42 @@ type StackDeployment struct {
 	CurrentStackState *StackState `jsonapi:"relation,current-stack-state"`
 }
 
+type StackDeploymentRun struct {
+	// Attributes
+	ID         string    `jsonapi:"primary,stacks-deployment-runs"`
+	Status     string    `jsonapi:"attr,status"`
+	Deployment string    `jsonapi:"attr,deployment"`
+	CreatedAt  time.Time `jsonapi:"attr,created-at,iso8601"`
+	UpdatedAt  time.Time `jsonapi:"attr,updated-at,iso8601"`
+
+	// Relationships
+	StackDeploymentGroup *StackDeploymentGroup `jsonapi:"relation,stacks-deployment-group"`
+}
+
+// StackDeploymentRunList represents a list of stack deployment runs
+type StackDeploymentRunList struct {
+	*Pagination
+	Items []*StackDeploymentRun
+}
+
+// StackDeploymentStep represents a step from a stack deployment
+type StackDeploymentStep struct {
+	// Attributes
+	ID        string    `jsonapi:"primary,stacks-deployment-steps"`
+	Status    string    `jsonapi:"attr,status"`
+	CreatedAt time.Time `jsonapi:"attr,created-at,iso8601"`
+	UpdatedAt time.Time `jsonapi:"attr,created-at,iso8601"`
+
+	// Relationships
+	StackDeploymentRun *StackDeploymentRun `jsonapi:"relation,stacks-deployment-run"`
+}
+
+// StackDeploymentStepList represents a list of stack deployment steps
+type StackDeploymentStepList struct {
+	*Pagination
+	Items []*StackDeploymentStep
+}
+
 // StackState represents a stack state
 type StackState struct {
 	// Attributes

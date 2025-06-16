@@ -1,3 +1,6 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
+
 package tfe
 
 import (
@@ -7,7 +10,6 @@ import (
 	"time"
 )
 
-// StackDeploymentGroups describes all the stack-deployment-groups related methods that the HCP Terraform API supports.
 type StackDeploymentGroups interface {
 	// List returns a list of Deployment Groups in a stack.
 	List(ctx context.Context, stackConfigID string, options *StackDeploymentGroupListOptions) (*StackDeploymentGroupList, error)
@@ -35,6 +37,7 @@ var _ StackDeploymentGroups = &stackDeploymentGroups{}
 
 // StackDeploymentGroup represents a stack deployment group.
 type StackDeploymentGroup struct {
+	// Attributes
 	ID        string    `jsonapi:"primary,stacks-deployment-groups"`
 	Name      string    `jsonapi:"attr,name"`
 	Status    string    `jsonapi:"attr,status"`
