@@ -55,9 +55,6 @@ type StackDeploymentGroupListOptions struct {
 	ListOptions
 }
 
-// StackDeploymentGroupReadOptions represents additional options when reading a stack deployment group.
-type StackDeploymentGroupReadOptions struct {}
-
 // List returns a list of Deployment Groups in a stack, optionally filtered by additional parameters.
 func (s stackDeploymentGroups) List(ctx context.Context, stackConfigID string, options *StackDeploymentGroupListOptions) (*StackDeploymentGroupList, error) {
 	if !validStringID(&stackConfigID) {
