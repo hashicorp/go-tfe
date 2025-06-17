@@ -6,6 +6,7 @@ package tfe
 import (
 	"context"
 	"testing"
+	"time"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
@@ -45,7 +46,12 @@ func TestStackDeploymentRunList(t *testing.T) {
 	require.NotNil(t, stack.LatestStackConfiguration)
 
 	// Get the deployment group ID from the stack configuration
-	deploymentGroupID := stack.LatestStackConfiguration.ID
+	deploymentGroups, err := client.StackDeploymentGroups.List(ctx, stack.LatestStackConfiguration.ID, nil)
+	require.NoError(t, err)
+	require.NotNil(t, deploymentGroups)
+	time.Sleep(300 * time.Second)
+	require.NotEmpty(t, deploymentGroups.Items)
+	deploymentGroupID := deploymentGroups.Items[0].ID
 
 	t.Run("List without options", func(t *testing.T) {
 		t.Parallel()

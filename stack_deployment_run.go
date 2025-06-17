@@ -25,11 +25,6 @@ type stackDeploymentRuns struct {
 
 var _ StackDeploymentRuns = &stackDeploymentRuns{}
 
-// StackDeploymentGroup represents a stack deployment group.
-type StackDeploymentGroup struct {
-	ID string `jsonapi:"primary,stacks-deployment-groups"`
-}
-
 // StackDeploymentRun represents a stack deployment run.
 type StackDeploymentRun struct {
 	ID          string    `jsonapi:"primary,stacks-deployment-runs"`
