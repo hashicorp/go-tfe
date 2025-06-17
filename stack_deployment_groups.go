@@ -14,6 +14,8 @@ type StackDeploymentGroups interface {
 
 	// Read retrieves a stack deployment group by its ID.
 	Read(ctx context.Context, stackDeploymentGroupID string) (*StackDeploymentGroup, error)
+
+	ApproveAllPlans(ctx context.Context, stackDeploymentGroupID string) error
 }
 
 type DeploymentGroupStatus string
@@ -98,4 +100,17 @@ func (s stackDeploymentGroups) Read(ctx context.Context, stackDeploymentGroupID 
 	}
 
 	return sdg, nil
+}
+
+func (s stackDeploymentGroups) ApproveAllPlans(ctx context.Context, stackDeploymentGroupID string) error {
+	if !validStringID(&stackDeploymentGroupID) {
+		return fmt.Errorf("invalid stack deployment group ID: %s", stackDeploymentGroupID)
+	}
+
+	req, err := s.client.NewRequest("POST", fmt.Sprintf("stack-deployment-groups/%s/approve-all-plans", url.PathEscape(stackDeploymentGroupID)), nil)
+	if err != nil {
+		return err
+	}
+
+	return req.Do(ctx, nil)
 }
