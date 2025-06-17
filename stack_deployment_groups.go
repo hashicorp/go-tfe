@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"net/url"
+	"time"
 )
 
 // StackDeploymentGroups describes all the stack-deployment-groups related methods that the HCP Terraform API supports.
@@ -34,14 +35,14 @@ var _ StackDeploymentGroups = &stackDeploymentGroups{}
 
 // StackDeploymentGroup represents a stack deployment group.
 type StackDeploymentGroup struct {
-	ID        string                `jsonapi:"primary,stacks-deployment-groups"`
-	Name      string                `jsonapi:"attr,name"`
-	Status    DeploymentGroupStatus `jsonapi:"attr,status"`
-	CreatedAt string                `jsonapi:"attr,created-at"`
-	UpdatedAt string                `jsonapi:"attr,updated-at"`
+	ID        string    `jsonapi:"primary,stacks-deployment-groups"`
+	Name      string    `jsonapi:"attr,name"`
+	Status    string    `jsonapi:"attr,status"`
+	CreatedAt time.Time `jsonapi:"attr,created-at,iso8601"`
+	UpdatedAt time.Time `jsonapi:"attr,updated-at,iso8601"`
 
 	// Relationships
-	StackConfiguration StackConfiguration `jsonapi:"relation,stack-configurations"`
+	StackConfiguration *StackConfiguration `jsonapi:"relation,stack-configuration"`
 }
 
 // StackDeploymentGroupList represents a list of stack deployment groups.
