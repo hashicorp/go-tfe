@@ -102,6 +102,7 @@ func (s stackDeploymentGroups) Read(ctx context.Context, stackDeploymentGroupID 
 	return sdg, nil
 }
 
+// ApproveAllPlans approves all pending plans in a stack deployment group.
 func (s stackDeploymentGroups) ApproveAllPlans(ctx context.Context, stackDeploymentGroupID string) error {
 	if !validStringID(&stackDeploymentGroupID) {
 		return fmt.Errorf("invalid stack deployment group ID: %s", stackDeploymentGroupID)
