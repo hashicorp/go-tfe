@@ -166,7 +166,7 @@ func TestStackDeploymentGroupsApproveAllPlans(t *testing.T) {
 
 	deploymentGroupID := deploymentGroups.Items[0].ID
 
-	t.Run("Approve all plans", func(t *testing.T) {
+	t.Run("Approving all plans", func(t *testing.T) {
 		err := client.StackDeploymentGroups.ApproveAllPlans(ctx, deploymentGroupID)
 		require.NoError(t, err)
 	})
