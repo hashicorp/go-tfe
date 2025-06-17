@@ -11,8 +11,6 @@ import (
 )
 
 // StackDeploymentRuns describes all the stack deployment runs-related methods that the HCP Terraform API supports.
-// NOTE WELL: This is a beta feature and is subject to change until noted otherwise in the
-// release notes.
 type StackDeploymentRuns interface {
 	// List returns a list of stack deployment runs for a given deployment group.
 	List(ctx context.Context, deploymentGroupID string, options *StackDeploymentRunListOptions) (*StackDeploymentRunList, error)

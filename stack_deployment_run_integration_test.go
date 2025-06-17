@@ -26,7 +26,7 @@ func TestStackDeploymentRunList(t *testing.T) {
 	stack, err := client.Stacks.Create(ctx, StackCreateOptions{
 		Name: "test-stack",
 		VCSRepo: &StackVCSRepoOptions{
-			Identifier:   "shwetamurali/pet-nulls-stack",
+			Identifier:   "hashicorp-guides/pet-nulls-stack",
 			OAuthTokenID: oauthClient.OAuthTokens[0].ID,
 			Branch:       "main",
 		},
@@ -48,7 +48,6 @@ func TestStackDeploymentRunList(t *testing.T) {
 	deploymentGroups, err := client.StackDeploymentGroups.List(ctx, stack.LatestStackConfiguration.ID, nil)
 	require.NoError(t, err)
 	require.NotNil(t, deploymentGroups)
-	// time.Sleep(300 * time.Second)
 	require.NotEmpty(t, deploymentGroups.Items)
 	deploymentGroupID := deploymentGroups.Items[0].ID
 
