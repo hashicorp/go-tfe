@@ -3,6 +3,7 @@
 ## Enhancements
 
 * Adds BETA support for approving all plans for a stack deployment run, which is EXPERIMENTAL, SUBJECT TO CHANGE, and may not be available to all users by @ctrombley [#1136](https://github.com/hashicorp/go-tfe/pull/1136)
+* Adds BETA support for listing and reading `StackDeploymentSteps`, which is EXPERIMENTAL, SUBJECT TO CHANGE, and may not be available to all users by @ctrombley [#1133](https://github.com/hashicorp/go-tfe/pull/1133)
 
 # v1.83.0
 
@@ -10,7 +11,6 @@
 
 * Adds BETA support for listing `StackDeploymentRuns`, which is EXPERIMENTAL, SUBJECT TO CHANGE, and may not be available to all users by @shwetamurali [#1134](https://github.com/hashicorp/go-tfe/pull/1134)
 * Add support for HCP Terraform `/api/v2/workspaces/{external_id}/all-vars` API endpoint to fetch the list of all variables available to a workspace (include inherited variables from varsets) by @debrin-hc [#1105](https://github.com/hashicorp/go-tfe/pull/1105)
-* Adds BETA support for listing and reading `StackDeploymentSteps`, which is EXPERIMENTAL, SUBJECT TO CHANGE, and may not be available to all users by @ctrombley [#1133](https://github.com/hashicorp/go-tfe/pull/1133)
 * Adds BETA support for listing `StackDeploymentGroups`, which is EXPERIMENTAL, SUBJECT TO CHANGE, and may not be available to all users by @hwatkins05-hashicorp [#1128](https://github.com/hashicorp/go-tfe/pull/1128)
 * Adds BETA support for removing/adding VCS backing for a Stack, which is EXPERIMENTAL, SUBJECT TO CHANGE, and may not be available to all users by @Maed223 [#1131](https://github.com/hashicorp/go-tfe/pull/1131)
 * Adds BETA support for reading a `StackDeploymentGroup`, which is EXPERIMENTAL, SUBJECT TO CHANGE, and may not be available to all users by @hwatkins05-hashicorp [#1132](https://github.com/hashicorp-go-tfe/pull/1132)
