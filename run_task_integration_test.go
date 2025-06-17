@@ -13,15 +13,32 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func hasGlobalRunTasks(client *Client, organizationName string) (bool, error) {
+func getOrgEntitlements(client *Client, organizationName string) (*Entitlements, error) {
 	ctx := context.Background()
-	if orgEntitlements, err := client.Organizations.ReadEntitlements(ctx, organizationName); err != nil {
-		return false, err
-	} else if orgEntitlements == nil {
-		return false, errors.New("The organization entitlements are empty.")
-	} else {
-		return orgEntitlements.GlobalRunTasks, nil
+	orgEntitlements, err := client.Organizations.ReadEntitlements(ctx, organizationName)
+	if err != nil {
+		return nil, err
 	}
+	if orgEntitlements == nil {
+		return nil, errors.New("The organization entitlements are empty.")
+	}
+	return orgEntitlements, nil
+}
+
+func hasGlobalRunTasks(client *Client, organizationName string) (bool, error) {
+	oe, err := getOrgEntitlements(client, organizationName)
+	if err != nil {
+		return false, err
+	}
+	return oe.GlobalRunTasks, nil
+}
+
+func hasPrivateRunTasks(client *Client, organizationName string) (bool, error) {
+	oe, err := getOrgEntitlements(client, organizationName)
+	if err != nil {
+		return false, err
+	}
+	return oe.PrivateRunTasks, nil
 }
 
 func TestRunTasksCreate(t *testing.T) {
@@ -53,6 +70,33 @@ func TestRunTasksCreate(t *testing.T) {
 		PrePlan,
 	}
 	globalEnforce := Mandatory
+
+	t.Run("with an agent pool", func(t *testing.T) {
+		// We can only test if the org, supports private run tasks. For now this isn't
+		// a fatal error and we just skip the test.
+		if v, err := hasPrivateRunTasks(client, orgTest.Name); err != nil {
+			t.Fatalf("Could not retrieve the entitlements for the test organization.: %s", err)
+		} else if !v {
+			t.Skip("The test organization requires the private-run-tasks entitlement but is not entitled.")
+			return
+		}
+
+		// Unfortunately when we create a Run Task it automatically verifies that the URL by sending a test payload. But
+		// this means with an agent pool, we need an agent pool to exist, and an agent created with request forwarding enabled.
+		// This is too much to create for this one test suite. So instead, we really only need to assert that; when the options include an
+		// agent pool, then we expect HCP Terraform to process the agent pool. So, if we send it a nonsense agent pool ID, then we
+		// expect an error to be returned saying that the ID was nonsense.
+		_, err := client.RunTasks.Create(ctx, orgTest.Name, RunTaskCreateOptions{
+			Name:        runTaskName,
+			URL:         runTaskServerURL,
+			Description: &runTaskDescription,
+			Category:    "task",
+			AgentPool: &AgentPool{
+				ID: "apool-this-pool-id-will-never-exist-so-we-expect-http-error-response",
+			},
+		})
+		require.ErrorContains(t, err, "The provided agent pool does not exist")
+	})
 
 	t.Run("add run task to organization", func(t *testing.T) {
 		r, err := client.RunTasks.Create(ctx, orgTest.Name, RunTaskCreateOptions{
@@ -261,6 +305,29 @@ func TestRunTasksUpdate(t *testing.T) {
 		require.NoError(t, err)
 
 		assert.Equal(t, newDescription, r.Description)
+	})
+
+	t.Run("with an agent pool", func(t *testing.T) {
+		// We can only test if the org, supports private run tasks. For now this isn't
+		// a fatal error and we just skip the test.
+		if v, err := hasPrivateRunTasks(client, orgTest.Name); err != nil {
+			t.Fatalf("Could not retrieve the entitlements for the test organization.: %s", err)
+		} else if !v {
+			t.Skip("The test organization requires the private-run-tasks entitlement but is not entitled.")
+			return
+		}
+
+		// Unfortunately when we update a Run Task it automatically verifies that the URL by sending a test payload. But
+		// this means with an agent pool, we need an agent pool to exist, and an agent created with request forwarding enabled.
+		// This is too much to create for this one test suite. So instead, we really only need to assert that; when the options include an
+		// agent pool, then we expect HCP Terraform to process the agent pool. So, if we send it a nonsense agent pool ID, then we
+		// expect an error to be returned saying that the ID was nonsense.
+		_, err := client.RunTasks.Update(ctx, runTaskTest.ID, RunTaskUpdateOptions{
+			AgentPool: &AgentPool{
+				ID: "apool-this-pool-id-will-never-exist-so-we-expect-http-error-response",
+			},
+		})
+		require.ErrorContains(t, err, "The provided agent pool does not exist")
 	})
 }
 
