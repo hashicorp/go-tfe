@@ -54,6 +54,7 @@ type RunTask struct {
 	Enabled     bool           `jsonapi:"attr,enabled"`
 	Global      *GlobalRunTask `jsonapi:"attr,global-configuration,omitempty"`
 
+	AgentPool         *AgentPool          `jsonapi:"relation,agent-pool"`
 	Organization      *Organization       `jsonapi:"relation,organization"`
 	WorkspaceRunTasks []*WorkspaceRunTask `jsonapi:"relation,workspace-tasks"`
 }
@@ -130,6 +131,10 @@ type RunTaskCreateOptions struct {
 
 	// Optional: Whether the task contains global configuration
 	Global *GlobalRunTaskOptions `jsonapi:"attr,global-configuration,omitempty"`
+
+	// Optional: Whether the task will be executed using an Agent Pool
+	// Requires the PrivateRunTasks entitlement
+	AgentPool *AgentPool `jsonapi:"relation,agent-pool,omitempty"`
 }
 
 // RunTaskUpdateOptions represents the set of options for updating an organization's run task
@@ -160,6 +165,10 @@ type RunTaskUpdateOptions struct {
 
 	// Optional: Whether the task contains global configuration
 	Global *GlobalRunTaskOptions `jsonapi:"attr,global-configuration,omitempty"`
+
+	// Optional: Whether the task will be executed using an Agent Pool
+	// Requires the PrivateRunTasks entitlement
+	AgentPool *AgentPool `jsonapi:"relation,agent-pool,omitempty"`
 }
 
 // Create is used to create a new run task for an organization

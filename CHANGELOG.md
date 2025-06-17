@@ -1,11 +1,19 @@
 # Unreleased
 
+# v1.83.0
+
 ## Enhancements
 
 * Adds BETA support for listing `StackDeploymentRuns`, which is EXPERIMENTAL, SUBJECT TO CHANGE, and may not be available to all users by @shwetamurali [#1134](https://github.com/hashicorp/go-tfe/pull/1134)
 * Add support for HCP Terraform `/api/v2/workspaces/{external_id}/all-vars` API endpoint to fetch the list of all variables available to a workspace (include inherited variables from varsets) by @debrin-hc [#1105](https://github.com/hashicorp/go-tfe/pull/1105)
 * Adds BETA support for listing `StackDeploymentGroups`, which is EXPERIMENTAL, SUBJECT TO CHANGE, and may not be available to all users by @hwatkins05-hashicorp [#1128](https://github.com/hashicorp/go-tfe/pull/1128)
 * Adds BETA support for removing/adding VCS backing for a Stack, which is EXPERIMENTAL, SUBJECT TO CHANGE, and may not be available to all users by @Maed223 [#1131](https://github.com/hashicorp/go-tfe/pull/1131)
+* Adds BETA support for reading a `StackDeploymentGroup`, which is EXPERIMENTAL, SUBJECT TO CHANGE, and may not be available to all users by @hwatkins05-hashicorp [#1132](https://github.com/hashicorp-go-tfe/pull/1132)
+
+## Enhancements
+
+* Adds `PrivateRunTasks` field to Entitlements by @glennsarti [#944](https://github.com/hashicorp/go-tfe/pull/944)
+* Adds `AgentPool` relationship to options when creating and updating Run Tasks by @glennsarti [#944](https://github.com/hashicorp/go-tfe/pull/944)
 
 # v1.82.0
 
@@ -205,6 +213,8 @@ In the last release, Runs interface method `ListForOrganization` included pagina
 ## Enhancements
 
 * Adds `AllowMemberTokenManagement` permission to `Team` by @juliannatetreault [#922](https://github.com/hashicorp/go-tfe/pull/922)
+* Adds `PrivateRunTasks` field to Entitlements by @glennsarti [#944](https://github.com/hashicorp/go-tfe/pull/944)
+* Adds `AgentPool` relationship to options when creating and updating Run Tasks by @glennsarti [#944](https://github.com/hashicorp/go-tfe/pull/944)
 
 # v1.61.0
 
