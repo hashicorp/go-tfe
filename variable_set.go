@@ -98,6 +98,7 @@ const (
 	VariableSetWorkspaces VariableSetIncludeOpt = "workspaces"
 	VariableSetProjects   VariableSetIncludeOpt = "projects"
 	VariableSetVars       VariableSetIncludeOpt = "vars"
+	VariableSetStacks     VariableSetIncludeOpt = "stacks"
 )
 
 // VariableSetListOptions represents the options for listing variable sets.
