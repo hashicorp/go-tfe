@@ -73,3 +73,54 @@ func TestStackDeploymentGroupsList(t *testing.T) {
 		require.Len(t, sdgl.Items, 1)
 	})
 }
+
+func TestStackDeploymentGroupsRead(t *testing.T) {
+	skipUnlessBeta(t)
+	client := testClient(t)
+	ctx := context.Background()
+
+	orgTest, orgTestCleanup := createOrganization(t, client)
+	t.Cleanup(orgTestCleanup)
+
+	oauthClient, cleanup := createOAuthClient(t, client, orgTest, nil)
+	t.Cleanup(cleanup)
+
+	stack, err := client.Stacks.Create(ctx, StackCreateOptions{
+		Name: "test-stack",
+		VCSRepo: &StackVCSRepoOptions{
+			Identifier:   "hashicorp-guides/pet-nulls-stack",
+			OAuthTokenID: oauthClient.OAuthTokens[0].ID,
+		},
+		Project: &Project{
+			ID: orgTest.DefaultProject.ID,
+		},
+	})
+
+	require.NoError(t, err)
+	require.NotNil(t, stack)
+
+	stackUpdated, err := client.Stacks.UpdateConfiguration(ctx, stack.ID)
+	require.NoError(t, err)
+	require.NotNil(t, stackUpdated)
+
+	stackUpdated = pollStackDeployments(t, ctx, client, stackUpdated.ID)
+	require.NotNil(t, stackUpdated.LatestStackConfiguration)
+
+	sdgl, err := client.StackDeploymentGroups.List(ctx, stackUpdated.LatestStackConfiguration.ID, nil)
+	require.NoError(t, err)
+	require.NotNil(t, sdgl)
+	require.Len(t, sdgl.Items, 2)
+
+	t.Run("Read with valid ID", func(t *testing.T) {
+		sdgRead, err := client.StackDeploymentGroups.Read(ctx, sdgl.Items[0].ID)
+		require.NoError(t, err)
+		assert.Equal(t, sdgl.Items[0].ID, sdgRead.ID)
+		assert.Equal(t, sdgl.Items[0].Name, sdgRead.Name)
+		assert.Equal(t, sdgl.Items[0].Status, sdgRead.Status)
+	})
+
+	t.Run("Read with invalid ID", func(t *testing.T) {
+		_, err := client.StackDeploymentGroups.Read(ctx, "")
+		require.Error(t, err)
+	})
+}

@@ -11,6 +11,9 @@ import (
 type StackDeploymentGroups interface {
 	// List returns a list of Deployment Groups in a stack.
 	List(ctx context.Context, stackConfigID string, options *StackDeploymentGroupListOptions) (*StackDeploymentGroupList, error)
+
+	// Read retrieves a stack deployment group by its ID.
+	Read(ctx context.Context, stackDeploymentGroupID string) (*StackDeploymentGroup, error)
 }
 
 type DeploymentGroupStatus string
@@ -75,4 +78,24 @@ func (s stackDeploymentGroups) List(ctx context.Context, stackConfigID string, o
 	}
 
 	return sdgl, nil
+}
+
+// Read retrieves a stack deployment group by its ID.
+func (s stackDeploymentGroups) Read(ctx context.Context, stackDeploymentGroupID string) (*StackDeploymentGroup, error) {
+	if !validStringID(&stackDeploymentGroupID) {
+		return nil, fmt.Errorf("invalid stack deployment group ID: %s", stackDeploymentGroupID)
+	}
+
+	req, err := s.client.NewRequest("GET", fmt.Sprintf("stack-deployment-groups/%s", url.PathEscape(stackDeploymentGroupID)), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	sdg := &StackDeploymentGroup{}
+	err = req.Do(ctx, sdg)
+	if err != nil {
+		return nil, err
+	}
+
+	return sdg, nil
 }
