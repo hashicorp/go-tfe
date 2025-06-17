@@ -1,5 +1,9 @@
 # Unreleased
 
+## Enhancements
+
+* Adds BETA support for approving all plans for a stack deployment run, which is EXPERIMENTAL, SUBJECT TO CHANGE, and may not be available to all users by @ctrombley [#1136](https://github.com/hashicorp/go-tfe/pull/1136)
+
 # v1.83.0
 
 ## Enhancements
