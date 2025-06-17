@@ -11,7 +11,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func TestStackDeploymentRunList(t *testing.T) {
+func TestStackDeploymentRunsList(t *testing.T) {
 	skipUnlessBeta(t)
 
 	client := testClient(t)
@@ -70,5 +70,61 @@ func TestStackDeploymentRunList(t *testing.T) {
 		})
 		require.NoError(t, err)
 		assert.NotNil(t, runList)
+	})
+}
+
+func TestStackDeploymentRunsApproveAllPlans(t *testing.T) {
+	skipUnlessBeta(t)
+
+	client := testClient(t)
+	ctx := context.Background()
+
+	orgTest, orgTestCleanup := createOrganization(t, client)
+	t.Cleanup(orgTestCleanup)
+
+	oauthClient, cleanup := createOAuthClient(t, client, orgTest, nil)
+	t.Cleanup(cleanup)
+
+	stack, err := client.Stacks.Create(ctx, StackCreateOptions{
+		Name: "test-stack",
+		VCSRepo: &StackVCSRepoOptions{
+			// Identifier:   "hashicorp-guides/pet-nulls-stack",
+			Identifier:   "ctrombley/tf-stacks-pet-nulls",
+			OAuthTokenID: oauthClient.OAuthTokens[0].ID,
+			Branch:       "main",
+		},
+		Project: &Project{
+			ID: orgTest.DefaultProject.ID,
+		},
+	})
+	require.NoError(t, err)
+	require.NotNil(t, stack)
+
+	stackUpdated, err := client.Stacks.UpdateConfiguration(ctx, stack.ID)
+	require.NoError(t, err)
+	require.NotNil(t, stackUpdated)
+
+	stack = pollStackDeployments(t, ctx, client, stackUpdated.ID)
+	require.NotNil(t, stack.LatestStackConfiguration)
+
+	// Get the deployment group ID from the stack configuration
+	deploymentGroups, err := client.StackDeploymentGroups.List(ctx, stack.LatestStackConfiguration.ID, nil)
+	require.NoError(t, err)
+	require.NotNil(t, deploymentGroups)
+	require.NotEmpty(t, deploymentGroups.Items)
+
+	deploymentGroupID := deploymentGroups.Items[0].ID
+
+	runList, err := client.StackDeploymentRuns.List(ctx, deploymentGroupID, nil)
+	require.NoError(t, err)
+	assert.NotNil(t, runList)
+
+	deploymentRunID := runList.Items[0].ID
+
+	t.Run("Approve all plans", func(t *testing.T) {
+		t.Parallel()
+
+		err := client.StackDeploymentRuns.ApproveAllPlans(ctx, deploymentRunID)
+		require.NoError(t, err)
 	})
 }
