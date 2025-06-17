@@ -192,8 +192,6 @@ type Client struct {
 	Projects                   Projects
 
 	Meta Meta
-
-	StackDeploymentRuns StackDeploymentRuns
 }
 
 // Admin is the the Terraform Enterprise Admin API. It provides access to site

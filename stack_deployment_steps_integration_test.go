@@ -74,8 +74,8 @@ func TestStackDeploymentStepsList(t *testing.T) {
 		assert.NotNil(t, step.ID)
 		assert.NotNil(t, step.Status)
 
-		require.NotNil(t, step.StackDeploymentGroup)
-		assert.Equal(t, sdg.ID, step.StackDeploymentGroup.ID)
+		require.NotNil(t, step.StackDeploymentRun)
+		assert.Equal(t, sdg.ID, step.StackDeploymentRun.ID)
 	})
 
 	t.Run("List with pagination", func(t *testing.T) {
@@ -96,8 +96,8 @@ func TestStackDeploymentStepsList(t *testing.T) {
 		assert.NotNil(t, step.ID)
 		assert.NotNil(t, step.Status)
 
-		require.NotNil(t, step.StackDeploymentGroup)
-		assert.Equal(t, sdg.ID, step.StackDeploymentGroup.ID)
+		require.NotNil(t, step.StackDeploymentRun)
+		assert.Equal(t, sdg.ID, step.StackDeploymentRun.ID)
 	})
 }
 

@@ -73,6 +73,61 @@ func TestStackDeploymentRunsList(t *testing.T) {
 	})
 }
 
+func TestStackDeploymentRunsRead(t *testing.T) {
+	skipUnlessBeta(t)
+
+	client := testClient(t)
+	ctx := context.Background()
+
+	orgTest, orgTestCleanup := createOrganization(t, client)
+	t.Cleanup(orgTestCleanup)
+
+	oauthClient, cleanup := createOAuthClient(t, client, orgTest, nil)
+	t.Cleanup(cleanup)
+
+	stack, err := client.Stacks.Create(ctx, StackCreateOptions{
+		Project: orgTest.DefaultProject,
+		Name:    "test-stack",
+		VCSRepo: &StackVCSRepoOptions{
+			Identifier:   "hashicorp-guides/pet-nulls-stack",
+			OAuthTokenID: oauthClient.OAuthTokens[0].ID,
+			Branch:       "main",
+		},
+	})
+	require.NoError(t, err)
+	require.NotNil(t, stack)
+
+	stackUpdated, err := client.Stacks.UpdateConfiguration(ctx, stack.ID)
+	require.NoError(t, err)
+	require.NotNil(t, stackUpdated)
+
+	stack = pollStackDeployments(t, ctx, client, stackUpdated.ID)
+	require.NotNil(t, stack.LatestStackConfiguration)
+
+	stackDeploymentGroups, err := client.StackDeploymentGroups.List(ctx, stack.LatestStackConfiguration.ID, nil)
+	require.NoError(t, err)
+	require.NotEmpty(t, stackDeploymentGroups)
+
+	sdg := stackDeploymentGroups.Items[0]
+
+	stackDeploymentRuns, err := client.StackDeploymentRuns.List(ctx, sdg.ID, nil)
+	require.NoError(t, err)
+	require.NotEmpty(t, stackDeploymentRuns)
+
+	sdr := stackDeploymentGroups.Items[0]
+
+	t.Run("Read with valid ID", func(t *testing.T) {
+		run, err := client.StackDeploymentRuns.Read(ctx, sdr.ID)
+		assert.NoError(t, err)
+		assert.NotNil(t, run)
+	})
+
+	t.Run("Read with invalid ID", func(t *testing.T) {
+		_, err := client.StackDeploymentRuns.Read(ctx, "")
+		assert.Error(t, err)
+	})
+}
+
 func TestStackDeploymentRunsApproveAllPlans(t *testing.T) {
 	skipUnlessBeta(t)
 
@@ -86,15 +141,12 @@ func TestStackDeploymentRunsApproveAllPlans(t *testing.T) {
 	t.Cleanup(cleanup)
 
 	stack, err := client.Stacks.Create(ctx, StackCreateOptions{
-		Name: "test-stack",
+		Project: orgTest.DefaultProject,
+		Name:    "test-stack",
 		VCSRepo: &StackVCSRepoOptions{
-			// Identifier:   "hashicorp-guides/pet-nulls-stack",
-			Identifier:   "ctrombley/tf-stacks-pet-nulls",
+			Identifier:   "hashicorp-guides/pet-nulls-stack",
 			OAuthTokenID: oauthClient.OAuthTokens[0].ID,
 			Branch:       "main",
-		},
-		Project: &Project{
-			ID: orgTest.DefaultProject.ID,
 		},
 	})
 	require.NoError(t, err)

@@ -14,6 +14,7 @@ import (
 type StackDeploymentRuns interface {
 	// List returns a list of stack deployment runs for a given deployment group.
 	List(ctx context.Context, deploymentGroupID string, options *StackDeploymentRunListOptions) (*StackDeploymentRunList, error)
+	Read(ctx context.Context, stackDeploymentRunID string) (*StackDeploymentRun, error)
 	ApproveAllPlans(ctx context.Context, deploymentRunID string) error
 }
 
@@ -60,6 +61,21 @@ func (s *stackDeploymentRuns) List(ctx context.Context, deploymentGroupID string
 	}
 
 	return sdrl, nil
+}
+
+func (s stackDeploymentRuns) Read(ctx context.Context, stackDeploymentRunID string) (*StackDeploymentRun, error) {
+	req, err := s.client.NewRequest("GET", fmt.Sprintf("stack-deployment-runs/%s", url.PathEscape(stackDeploymentRunID)), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	run := StackDeploymentRun{}
+	err = req.Do(ctx, &run)
+	if err != nil {
+		return nil, err
+	}
+
+	return &run, nil
 }
 
 func (s stackDeploymentRuns) ApproveAllPlans(ctx context.Context, stackDeploymentRunID string) error {

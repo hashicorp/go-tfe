@@ -10,6 +10,7 @@ import (
 	"time"
 )
 
+// StackDeploymentGroups describes all the stack-deployment-groups related methods that the HCP Terraform API supports.
 type StackDeploymentGroups interface {
 	// List returns a list of Deployment Groups in a stack.
 	List(ctx context.Context, stackConfigID string, options *StackDeploymentGroupListOptions) (*StackDeploymentGroupList, error)

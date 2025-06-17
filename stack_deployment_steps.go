@@ -29,7 +29,7 @@ type StackDeploymentStep struct {
 	UpdatedAt time.Time `jsonapi:"attr,created-at,iso8601"`
 
 	// Relationships
-	StackDeploymentGroup *StackDeploymentGroup `jsonapi:"relation,stack-deployment-group"`
+	StackDeploymentRun *StackDeploymentRun `jsonapi:"relation,stack-deployment-run"`
 }
 
 // StackDeploymentStepList represents a list of stack deployment steps
