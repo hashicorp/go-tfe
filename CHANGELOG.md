@@ -1,5 +1,7 @@
 # Unreleased
 
+# v1.83.0
+
 ## Enhancements
 
 * Add support for HCP Terraform `/api/v2/workspaces/{external_id}/all-vars` API endpoint to fetch the list of all variables available to a workspace (include inherited variables from varsets) by @debrin-hc [#1105](https://github.com/hashicorp/go-tfe/pull/1105)
