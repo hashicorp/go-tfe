@@ -74,10 +74,8 @@ func TestStackDeploymentStepsList(t *testing.T) {
 		assert.NotNil(t, step.ID)
 		assert.NotNil(t, step.Status)
 
-		require.NotNil(t, step.StackDeploymentRun)
-		assert.Equal(t, step.StackDeploymentRun.ID, sdr.ID)
-		assert.Equal(t, step.StackDeploymentRun.Status, sdr.Status)
-		assert.Equal(t, step.StackDeploymentRun.Deployment, sdr.Deployment)
+		require.NotNil(t, step.StackDeploymentGroup)
+		assert.Equal(t, sdg.ID, step.StackDeploymentGroup.ID)
 	})
 
 	t.Run("List with pagination", func(t *testing.T) {
@@ -98,10 +96,8 @@ func TestStackDeploymentStepsList(t *testing.T) {
 		assert.NotNil(t, step.ID)
 		assert.NotNil(t, step.Status)
 
-		require.NotNil(t, step.StackDeploymentRun)
-		assert.Equal(t, step.StackDeploymentRun.ID, sdr.ID)
-		assert.Equal(t, step.StackDeploymentRun.Status, sdr.Status)
-		assert.Equal(t, step.StackDeploymentRun.Deployment, sdr.Deployment)
+		require.NotNil(t, step.StackDeploymentGroup)
+		assert.Equal(t, sdg.ID, step.StackDeploymentGroup.ID)
 	})
 }
 
@@ -148,15 +144,21 @@ func TestStackDeploymentStepsRead(t *testing.T) {
 
 	sdr := stackDeploymentRuns.Items[0]
 
+	steps, err := client.StackDeploymentSteps.List(ctx, sdr.ID, nil)
+	assert.NoError(t, err)
+	assert.NotEmpty(t, steps)
+
+	step := steps.Items[0]
+
 	t.Run("Read with valid ID", func(t *testing.T) {
-		step, err := client.StackDeploymentSteps.Read(ctx, sdr.ID)
+		sds, err := client.StackDeploymentSteps.Read(ctx, step.ID)
 		assert.NoError(t, err)
-		assert.Equal(t, step.ID, sdg.ID)
-		assert.Equal(t, step.Status, sdg.Status)
+		assert.NotEmpty(t, sds.ID)
+		assert.NotEmpty(t, sds.Status)
 	})
 
 	t.Run("Read with invalid ID", func(t *testing.T) {
-		_, err := client.StackDeploymentGroups.Read(ctx, "")
+		_, err := client.StackDeploymentSteps.Read(ctx, "")
 		require.Error(t, err)
 	})
 }
