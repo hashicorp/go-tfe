@@ -6,7 +6,6 @@ package tfe
 import (
 	"context"
 	"testing"
-	"time"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
@@ -49,7 +48,7 @@ func TestStackDeploymentRunList(t *testing.T) {
 	deploymentGroups, err := client.StackDeploymentGroups.List(ctx, stack.LatestStackConfiguration.ID, nil)
 	require.NoError(t, err)
 	require.NotNil(t, deploymentGroups)
-	time.Sleep(300 * time.Second)
+	// time.Sleep(300 * time.Second)
 	require.NotEmpty(t, deploymentGroups.Items)
 	deploymentGroupID := deploymentGroups.Items[0].ID
 

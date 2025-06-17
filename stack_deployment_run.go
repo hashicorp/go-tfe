@@ -33,7 +33,7 @@ type StackDeploymentRun struct {
 	CompletedAt time.Time `jsonapi:"attr,completed-at,iso8601"`
 
 	// Relationships
-	StackDeploymentGroup *StackDeploymentGroup `jsonapi:"relation,stacks-deployment-group"`
+	StackDeploymentGroup *StackDeploymentGroup `jsonapi:"relation,stacks-deployment-groups"`
 }
 
 // StackDeploymentRunList represents a list of stack deployment runs.
