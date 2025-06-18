@@ -11,69 +11,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func TestStackDeploymentRunsList(t *testing.T) {
-	skipUnlessBeta(t)
-
-	client := testClient(t)
-	ctx := context.Background()
-
-	orgTest, orgTestCleanup := createOrganization(t, client)
-	t.Cleanup(orgTestCleanup)
-
-	oauthClient, cleanup := createOAuthClient(t, client, orgTest, nil)
-	t.Cleanup(cleanup)
-
-	stack, err := client.Stacks.Create(ctx, StackCreateOptions{
-		Name: "test-stack",
-		VCSRepo: &StackVCSRepoOptions{
-			Identifier:   "hashicorp-guides/pet-nulls-stack",
-			OAuthTokenID: oauthClient.OAuthTokens[0].ID,
-			Branch:       "main",
-		},
-		Project: &Project{
-			ID: orgTest.DefaultProject.ID,
-		},
-	})
-	require.NoError(t, err)
-	require.NotNil(t, stack)
-
-	stackUpdated, err := client.Stacks.UpdateConfiguration(ctx, stack.ID)
-	require.NoError(t, err)
-	require.NotNil(t, stackUpdated)
-
-	stack = pollStackDeployments(t, ctx, client, stackUpdated.ID)
-	require.NotNil(t, stack.LatestStackConfiguration)
-
-	// Get the deployment group ID from the stack configuration
-	deploymentGroups, err := client.StackDeploymentGroups.List(ctx, stack.LatestStackConfiguration.ID, nil)
-	require.NoError(t, err)
-	require.NotNil(t, deploymentGroups)
-	require.NotEmpty(t, deploymentGroups.Items)
-	deploymentGroupID := deploymentGroups.Items[0].ID
-
-	t.Run("List without options", func(t *testing.T) {
-		t.Parallel()
-
-		runList, err := client.StackDeploymentRuns.List(ctx, deploymentGroupID, nil)
-		require.NoError(t, err)
-		assert.NotNil(t, runList)
-	})
-
-	t.Run("List with pagination", func(t *testing.T) {
-		t.Parallel()
-
-		runList, err := client.StackDeploymentRuns.List(ctx, deploymentGroupID, &StackDeploymentRunListOptions{
-			ListOptions: ListOptions{
-				PageNumber: 1,
-				PageSize:   10,
-			},
-		})
-		require.NoError(t, err)
-		assert.NotNil(t, runList)
-	})
-}
-
-func TestStackDeploymentRunsRead(t *testing.T) {
+func TestStackDeploymentStepsList(t *testing.T) {
 	skipUnlessBeta(t)
 
 	client := testClient(t)
@@ -114,21 +52,56 @@ func TestStackDeploymentRunsRead(t *testing.T) {
 	require.NoError(t, err)
 	require.NotEmpty(t, stackDeploymentRuns)
 
-	sdr := stackDeploymentGroups.Items[0]
+	sdr := stackDeploymentRuns.Items[0]
 
-	t.Run("Read with valid ID", func(t *testing.T) {
-		run, err := client.StackDeploymentRuns.Read(ctx, sdr.ID)
-		assert.NoError(t, err)
-		assert.NotNil(t, run)
+	t.Run("List with invalid stack deployment run ID", func(t *testing.T) {
+		t.Parallel()
+
+		_, err := client.StackDeploymentSteps.List(ctx, "", nil)
+		assert.Error(t, err)
 	})
 
-	t.Run("Read with invalid ID", func(t *testing.T) {
-		_, err := client.StackDeploymentRuns.Read(ctx, "")
-		assert.Error(t, err)
+	t.Run("List without options", func(t *testing.T) {
+		t.Parallel()
+
+		steps, err := client.StackDeploymentSteps.List(ctx, sdr.ID, nil)
+		assert.NoError(t, err)
+		assert.NotEmpty(t, steps)
+
+		step := steps.Items[0]
+
+		assert.NotNil(t, step)
+		assert.NotNil(t, step.ID)
+		assert.NotNil(t, step.Status)
+
+		require.NotNil(t, step.StackDeploymentRun)
+		assert.Equal(t, sdg.ID, step.StackDeploymentRun.ID)
+	})
+
+	t.Run("List with pagination", func(t *testing.T) {
+		t.Parallel()
+
+		steps, err := client.StackDeploymentSteps.List(ctx, sdr.ID, &StackDeploymentStepsListOptions{
+			ListOptions: ListOptions{
+				PageNumber: 1,
+				PageSize:   10,
+			},
+		})
+		assert.NoError(t, err)
+		assert.NotEmpty(t, steps)
+
+		step := steps.Items[0]
+
+		assert.NotNil(t, step)
+		assert.NotNil(t, step.ID)
+		assert.NotNil(t, step.Status)
+
+		require.NotNil(t, step.StackDeploymentRun)
+		assert.Equal(t, sdg.ID, step.StackDeploymentRun.ID)
 	})
 }
 
-func TestStackDeploymentRunsApproveAllPlans(t *testing.T) {
+func TestStackDeploymentStepsRead(t *testing.T) {
 	skipUnlessBeta(t)
 
 	client := testClient(t)
@@ -159,24 +132,33 @@ func TestStackDeploymentRunsApproveAllPlans(t *testing.T) {
 	stack = pollStackDeployments(t, ctx, client, stackUpdated.ID)
 	require.NotNil(t, stack.LatestStackConfiguration)
 
-	// Get the deployment group ID from the stack configuration
-	deploymentGroups, err := client.StackDeploymentGroups.List(ctx, stack.LatestStackConfiguration.ID, nil)
+	stackDeploymentGroups, err := client.StackDeploymentGroups.List(ctx, stack.LatestStackConfiguration.ID, nil)
 	require.NoError(t, err)
-	require.NotNil(t, deploymentGroups)
-	require.NotEmpty(t, deploymentGroups.Items)
+	require.NotEmpty(t, stackDeploymentGroups)
 
-	deploymentGroupID := deploymentGroups.Items[0].ID
+	sdg := stackDeploymentGroups.Items[0]
 
-	runList, err := client.StackDeploymentRuns.List(ctx, deploymentGroupID, nil)
+	stackDeploymentRuns, err := client.StackDeploymentRuns.List(ctx, sdg.ID, nil)
 	require.NoError(t, err)
-	assert.NotNil(t, runList)
+	require.NotEmpty(t, stackDeploymentRuns)
 
-	deploymentRunID := runList.Items[0].ID
+	sdr := stackDeploymentRuns.Items[0]
 
-	t.Run("Approve all plans", func(t *testing.T) {
-		t.Parallel()
+	steps, err := client.StackDeploymentSteps.List(ctx, sdr.ID, nil)
+	assert.NoError(t, err)
+	assert.NotEmpty(t, steps)
 
-		err := client.StackDeploymentRuns.ApproveAllPlans(ctx, deploymentRunID)
-		require.NoError(t, err)
+	step := steps.Items[0]
+
+	t.Run("Read with valid ID", func(t *testing.T) {
+		sds, err := client.StackDeploymentSteps.Read(ctx, step.ID)
+		assert.NoError(t, err)
+		assert.NotEmpty(t, sds.ID)
+		assert.NotEmpty(t, sds.Status)
+	})
+
+	t.Run("Read with invalid ID", func(t *testing.T) {
+		_, err := client.StackDeploymentSteps.Read(ctx, "")
+		require.Error(t, err)
 	})
 }
