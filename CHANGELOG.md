@@ -6,6 +6,8 @@
 * Adds BETA support for listing and reading `StackDeploymentSteps`, which is EXPERIMENTAL, SUBJECT TO CHANGE, and may not be available to all users by @ctrombley [#1133](https://github.com/hashicorp/go-tfe/pull/1133)
 * Adds BETA support for approving all plans in `StackDeploymentGroups`, which is EXPERIMENTAL, SUBJECT TO CHANGE, and may not be available to all users by @hwatkins05-hashicorp [#1137](https://github.com/hashicorp/go-tfe/pull/1137)
 
+* Adds `Source` field to `Workspace`, by @jpadrianoGo [#1124](https://github.com/hashicorp/go-tfe/pull/1124)
+
 # v1.83.0
 
 ## Enhancements
