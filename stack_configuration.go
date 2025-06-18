@@ -18,6 +18,9 @@ type StackConfigurations interface {
 	// ReadConfiguration returns a stack configuration by its ID.
 	Read(ctx context.Context, id string) (*StackConfiguration, error)
 
+	// ListStackConfigurations returns a list of stack configurations for a stack.
+	List(ctx context.Context, stackID string, options *StackConfigurationListOptions) (*StackConfigurationList, error)
+
 	// JSONSchemas returns a byte slice of the JSON schema for the stack configuration.
 	JSONSchemas(ctx context.Context, stackConfigurationID string) ([]byte, error)
 
@@ -120,4 +123,34 @@ func (s stackConfigurations) AwaitStatus(ctx context.Context, stackConfiguration
 
 		return stackConfiguration.Status, nil
 	}, []string{status.String(), StackConfigurationStatusErrored.String(), StackConfigurationStatusCanceled.String()})
+}
+
+// StackConfigurationList represents a paginated list of stack configurations.
+type StackConfigurationList struct {
+	Pagination *Pagination
+	Items      []*StackConfiguration
+}
+
+// StackConfigurationListOptions represents the options for listing stack configurations.
+type StackConfigurationListOptions struct {
+	ListOptions
+}
+
+func (s stackConfigurations) List(ctx context.Context, stackID string, options *StackConfigurationListOptions) (*StackConfigurationList, error) {
+	if options == nil {
+		options = &StackConfigurationListOptions{}
+	}
+
+	req, err := s.client.NewRequest("GET", fmt.Sprintf("stacks/%s/stack-configurations", url.PathEscape(stackID)), options)
+	if err != nil {
+		return nil, err
+	}
+
+	result := &StackConfigurationList{}
+	err = req.Do(ctx, result)
+	if err != nil {
+		return nil, err
+	}
+
+	return result, nil
 }
