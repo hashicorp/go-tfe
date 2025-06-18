@@ -64,7 +64,10 @@ func TestTaskResultsCallbackRequestOptions_Marshal(t *testing.T) {
 	require.NoError(t, err)
 	expectedBody := `{"data":{"type":"task-results","attributes":{"message":"4 passed, 0 skipped, 0 failed","status":"passed","url":"https://external.service.dev/terraform-plan-checker/run-i3Df5to9ELvibKpQ"},"relationships":{"outcomes":{"data":[{"type":"task-result-outcomes","attributes":{"body":"# Resolution for issue ST-2942\n\n## Impact\n\nFollow instructions in the [AWS S3 docs](https://docs.aws.amazon.com/AmazonS3/latest/userguide/MultiFactorAuthenticationDelete.html) to manually configure the MFA setting.\n—-- Payload truncated —--","description":"ST-2942:S3 Bucket will not enforce MFA login on delete requests","outcome-id":"PRTNR-CC-TF-127","tags":{"Cost Centre":[{"label":"IT-OPS"}],"Severity":[{"label":"High","level":"error"},{"label":"Recoverable","level":"info"}],"Status":[{"label":"Denied","level":"error"}]},"url":"https://external.service.dev/result/PRTNR-CC-TF-127"}}]}}}}
 `
-	assert.Equal(t, reqBody.(*bytes.Buffer).String(), expectedBody)
+	buf, ok := reqBody.(*bytes.Buffer)
+	require.True(t, ok, "expected request body to be a bytes.Buffer")
+
+	assert.Equal(t, buf.String(), expectedBody)
 }
 
 func TestRunTasksIntegration_ValidateCallback(t *testing.T) {
