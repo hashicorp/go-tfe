@@ -31,14 +31,17 @@ func TestRegistryModulesList(t *testing.T) {
 	defer registryModuleTest1Cleanup()
 	registryModuleTest2, registryModuleTest2Cleanup := createRegistryModule(t, client, orgTest, PrivateRegistry)
 	defer registryModuleTest2Cleanup()
+	registryModuleTest3, registryModuleTest3Cleanup := createRegistryModuleWithProvider(t, client, orgTest)
+	defer registryModuleTest3Cleanup()
 
 	t.Run("with no list options", func(t *testing.T) {
 		modl, err := client.RegistryModules.List(ctx, orgTest.Name, &RegistryModuleListOptions{})
 		require.NoError(t, err)
 		assert.Contains(t, modl.Items, registryModuleTest1)
 		assert.Contains(t, modl.Items, registryModuleTest2)
+		assert.Contains(t, modl.Items, registryModuleTest3)
 		assert.Equal(t, 1, modl.CurrentPage)
-		assert.Equal(t, 2, modl.TotalCount)
+		assert.Equal(t, 3, modl.TotalCount)
 	})
 
 	t.Run("with list options", func(t *testing.T) {
@@ -63,6 +66,35 @@ func TestRegistryModulesList(t *testing.T) {
 		assert.NotEmpty(t, modl.Items)
 		assert.Equal(t, 1, modl.CurrentPage)
 	})
+
+	t.Run("with search query", func(t *testing.T) {
+		modl, err := client.RegistryModules.List(ctx, orgTest.Name, &RegistryModuleListOptions{
+			Search: registryModuleTest1.Name,
+		})
+		require.NoError(t, err)
+		assert.NotEmpty(t, modl.Items)
+		assert.Contains(t, modl.Items, registryModuleTest1)
+		assert.Equal(t, 1, modl.TotalCount)
+	})
+
+	t.Run("with filter[provider]", func(t *testing.T) {
+		modl, err := client.RegistryModules.List(ctx, orgTest.Name, &RegistryModuleListOptions{
+			Provider: registryModuleTest3.Provider,
+		})
+		require.NoError(t, err)
+		assert.NotEmpty(t, modl.Items)
+		assert.Contains(t, modl.Items, registryModuleTest3)
+		assert.Equal(t, 1, modl.TotalCount)
+	})
+
+	t.Run("with filter[registry_name]", func(t *testing.T) {
+		modl, err := client.RegistryModules.List(ctx, orgTest.Name, &RegistryModuleListOptions{
+			RegistryName: PrivateRegistry,
+		})
+		require.NoError(t, err)
+		assert.NotEmpty(t, modl.Items)
+		assert.Contains(t, modl.Items, registryModuleTest1)
+		assert.Equal(t, 3, modl.TotalCount)
 
 	t.Run("include no-code modules", func(t *testing.T) {
 		options := RegistryModuleCreateOptions{
