@@ -15,6 +15,7 @@ type StackDeploymentGroups interface {
 	// Read retrieves a stack deployment group by its ID.
 	Read(ctx context.Context, stackDeploymentGroupID string) (*StackDeploymentGroup, error)
 
+	// ApproveAllPlans approves all pending plans in a stack deployment group.
 	ApproveAllPlans(ctx context.Context, stackDeploymentGroupID string) error
 }
 
