@@ -1,3 +1,6 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
+
 package tfe
 
 import (
@@ -38,6 +41,7 @@ var _ StackDeploymentGroups = &stackDeploymentGroups{}
 
 // StackDeploymentGroup represents a stack deployment group.
 type StackDeploymentGroup struct {
+	// Attributes
 	ID        string    `jsonapi:"primary,stacks-deployment-groups"`
 	Name      string    `jsonapi:"attr,name"`
 	Status    string    `jsonapi:"attr,status"`

@@ -165,6 +165,8 @@ type Client struct {
 	StackConfigurations        StackConfigurations
 	StackDeployments           StackDeployments
 	StackDeploymentGroups      StackDeploymentGroups
+	StackDeploymentRuns        StackDeploymentRuns
+	StackDeploymentSteps       StackDeploymentSteps
 	StackPlans                 StackPlans
 	StackPlanOperations        StackPlanOperations
 	StackSources               StackSources
@@ -190,8 +192,6 @@ type Client struct {
 	Projects                   Projects
 
 	Meta Meta
-
-	StackDeploymentRuns StackDeploymentRuns
 }
 
 // Admin is the the Terraform Enterprise Admin API. It provides access to site
@@ -496,6 +496,8 @@ func NewClient(cfg *Config) (*Client, error) {
 	client.StackConfigurations = &stackConfigurations{client: client}
 	client.StackDeployments = &stackDeployments{client: client}
 	client.StackDeploymentGroups = &stackDeploymentGroups{client: client}
+	client.StackDeploymentRuns = &stackDeploymentRuns{client: client}
+	client.StackDeploymentSteps = &stackDeploymentSteps{client: client}
 	client.StackPlans = &stackPlans{client: client}
 	client.StackPlanOperations = &stackPlanOperations{client: client}
 	client.StackSources = &stackSources{client: client}
