@@ -2,6 +2,7 @@
 
 ## Enhancements
 
+* Adds BETA support for listing `StackConfigurationList`, which is EXPERIMENTAL, SUBJECT TO CHANGE, and may not be available to all users by @shwetamurali [#1138](https://github.com/hashicorp/go-tfe/pull/1138)
 * Adds BETA support for approving all plans for a stack deployment run, which is EXPERIMENTAL, SUBJECT TO CHANGE, and may not be available to all users by @ctrombley [#1136](https://github.com/hashicorp/go-tfe/pull/1136)
 * Adds BETA support for listing and reading `StackDeploymentSteps`, which is EXPERIMENTAL, SUBJECT TO CHANGE, and may not be available to all users by @ctrombley [#1133](https://github.com/hashicorp/go-tfe/pull/1133)
 * Adds BETA support for approving all plans in `StackDeploymentGroups`, which is EXPERIMENTAL, SUBJECT TO CHANGE, and may not be available to all users by @hwatkins05-hashicorp [#1137](https://github.com/hashicorp/go-tfe/pull/1137)
