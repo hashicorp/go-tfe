@@ -27,7 +27,7 @@ func TestStackConfigurationList(t *testing.T) {
 	stack, err := client.Stacks.Create(ctx, StackCreateOptions{
 		Name: "test-stack-list",
 		VCSRepo: &StackVCSRepoOptions{
-			Identifier:   "shwetamurali/pet-nulls-stack",
+			Identifier:   "hashicorp-guides/pet-nulls-stack",
 			OAuthTokenID: oauthClient.OAuthTokens[0].ID,
 		},
 		Project: &Project{
