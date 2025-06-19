@@ -132,7 +132,7 @@ type StackConfiguration struct {
 	EventStreamURL       string                              `jsonapi:"attr,event-stream-url"`
 	Diagnostics          []*StackDiagnostic                  `jsonapi:"attr,diags"`
 
-	Relationships map[string]interface{} `json:"relationships"`
+	Stack *Stack `jsonapi:"relation,stack"`
 }
 
 // StackDeployment represents a stack deployment, specified by configuration
