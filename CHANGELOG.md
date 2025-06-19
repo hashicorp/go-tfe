@@ -8,7 +8,7 @@
 
 ## Bug Fixes
 
-* Fix the registry URL path used for `ReadTerraformRegistryModule`[#1141](https://github.com/hashicorp/go-tfe/pull/1141)
+* Fix the registry URL path used for `ReadTerraformRegistryModule` by @paladin-devops [#1141](https://github.com/hashicorp/go-tfe/pull/1141)
 
 # v1.83.0
 
