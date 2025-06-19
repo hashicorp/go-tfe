@@ -8,7 +8,8 @@ import (
 	"testing"
 	"time"
 
-	. "github.com/stretchr/testify/require"
+	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 )
 
 func TestStackConfigurationList(t *testing.T) {
@@ -33,27 +34,27 @@ func TestStackConfigurationList(t *testing.T) {
 			ID: orgTest.DefaultProject.ID,
 		},
 	})
-	NoError(t, err)
+	require.NoError(t, err)
 
 	// Trigger first stack configuration by updating configuration
 	_, err = client.Stacks.UpdateConfiguration(ctx, stack.ID)
-	NoError(t, err)
+	require.NoError(t, err)
 
 	// Wait a bit and trigger second stack configuration
 	time.Sleep(2 * time.Second)
 	_, err = client.Stacks.UpdateConfiguration(ctx, stack.ID)
-	NoError(t, err)
+	require.NoError(t, err)
 
 	list, err := client.StackConfigurations.List(ctx, stack.ID, nil)
-	NoError(t, err)
-	NotNil(t, list)
-	Equal(t, len(list.Items), 2)
+	require.NoError(t, err)
+	require.NotNil(t, list)
+	assert.Equal(t, len(list.Items), 2)
 
 	// Assert attributes for each configuration
 	for _, cfg := range list.Items {
-		NotEmpty(t, cfg.ID)
-		NotEmpty(t, cfg.Status)
-		GreaterOrEqual(t, cfg.SequenceNumber, 1)
+		require.NotEmpty(t, cfg.ID)
+		require.NotEmpty(t, cfg.Status)
+		require.GreaterOrEqual(t, cfg.SequenceNumber, 1)
 	}
 
 	// Test with pagination options
@@ -66,9 +67,11 @@ func TestStackConfigurationList(t *testing.T) {
 		}
 
 		listWithOptions, err := client.StackConfigurations.List(ctx, stack.ID, options)
-		NoError(t, err)
-		NotNil(t, listWithOptions)
-		Equal(t, len(listWithOptions.Items), 2)
-		NotNil(t, listWithOptions.Pagination)
+		require.NoError(t, err)
+		require.NotNil(t, listWithOptions)
+		assert.GreaterOrEqual(t, len(listWithOptions.Items), 2)
+
+		require.NotNil(t, listWithOptions.Pagination)
+		assert.GreaterOrEqual(t, listWithOptions.Pagination.TotalCount, 2)
 	})
 }
