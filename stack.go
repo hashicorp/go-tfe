@@ -131,6 +131,8 @@ type StackConfiguration struct {
 	ErrorMessage         *string                             `jsonapi:"attr,error-message"`
 	EventStreamURL       string                              `jsonapi:"attr,event-stream-url"`
 	Diagnostics          []*StackDiagnostic                  `jsonapi:"attr,diags"`
+
+	Relationships map[string]interface{} `json:"relationships"`
 }
 
 // StackDeployment represents a stack deployment, specified by configuration

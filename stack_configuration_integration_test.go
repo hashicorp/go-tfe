@@ -55,6 +55,15 @@ func TestStackConfigurationList(t *testing.T) {
 		require.NotEmpty(t, cfg.ID)
 		require.NotEmpty(t, cfg.Status)
 		require.GreaterOrEqual(t, cfg.SequenceNumber, 1)
+
+		if cfg.Relationships != nil {
+			stackRel, ok := cfg.Relationships["stack"].(map[string]interface{})
+			require.True(t, ok)
+			data, ok := stackRel["data"].(map[string]interface{})
+			require.True(t, ok)
+			assert.NotEmpty(t, data["id"])
+			assert.Equal(t, "stacks", data["type"])
+		}
 	}
 
 	// Test with pagination options
