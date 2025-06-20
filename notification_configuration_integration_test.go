@@ -6,6 +6,7 @@ package tfe
 import (
 	"context"
 	"fmt"
+	"os"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -511,6 +512,112 @@ func TestNotificationConfigurationRead_forTeams(t *testing.T) {
 	t.Run("when the notification configuration ID is invalid", func(t *testing.T) {
 		_, err := client.NotificationConfigurations.Read(ctx, badIdentifier)
 		assert.Equal(t, err, ErrInvalidNotificationConfigID)
+	})
+}
+
+func TestNotificationConfigurationReadDeliveryResponses(t *testing.T) {
+	client := testClient(t)
+	ctx := context.Background()
+
+	runTaskURL := os.Getenv("TFC_RUN_TASK_URL")
+	if runTaskURL == "" {
+		t.Skip("Cannot create a notification configuration with an empty URL. You must set TFC_RUN_TASK_URL for run task related tests.")
+	}
+
+	options := &NotificationConfigurationCreateOptions{
+		DestinationType: NotificationDestination(NotificationDestinationTypeGeneric),
+		Enabled:         Bool(true),
+		Name:            String(randomString(t)),
+		Token:           String(randomString(t)),
+		URL:             String(runTaskURL),
+		Triggers:        []NotificationTriggerType{NotificationTriggerCreated},
+	}
+
+	t.Run("with notification configuration create", func(t *testing.T) {
+		ncTest, ncTestCleanup := createNotificationConfiguration(t, client, nil, options)
+		defer ncTestCleanup()
+
+		assert.Equal(t, 1, len(ncTest.DeliveryResponses))
+		assert.NotNil(t, ncTest.DeliveryResponses[0])
+		assert.NotEmpty(t, ncTest.DeliveryResponses[0].Code)
+	})
+
+	t.Run("with notification configuration list", func(t *testing.T) {
+		wTest, wTestCleanup := createWorkspace(t, client, nil)
+		defer wTestCleanup()
+
+		ncTest1, ncTestCleanup1 := createNotificationConfiguration(t, client, wTest, options)
+		defer ncTestCleanup1()
+		ncTest2, ncTestCleanup2 := createNotificationConfiguration(t, client, wTest, options)
+		defer ncTestCleanup2()
+
+		ncl, err := client.NotificationConfigurations.List(
+			ctx,
+			wTest.ID,
+			nil,
+		)
+		require.NoError(t, err)
+		assert.Contains(t, ncl.Items, ncTest1)
+		assert.Contains(t, ncl.Items, ncTest2)
+
+		assert.NotNil(t, ncl.Items[0].DeliveryResponses)
+		assert.NotEmpty(t, ncl.Items[0].DeliveryResponses)
+		assert.NotNil(t, ncl.Items[1].DeliveryResponses)
+		assert.NotEmpty(t, ncl.Items[1].DeliveryResponses)
+	})
+
+	t.Run("with notification configuration read", func(t *testing.T) {
+		ncTest, ncTestCleanup := createNotificationConfiguration(t, client, nil, options)
+		defer ncTestCleanup()
+
+		nc, err := client.NotificationConfigurations.Read(ctx, ncTest.ID)
+		require.NoError(t, err)
+		assert.Equal(t, ncTest.ID, nc.ID)
+		assert.Equal(t, 1, len(nc.DeliveryResponses))
+		assert.NotNil(t, nc.DeliveryResponses[0])
+		assert.NotEmpty(t, nc.DeliveryResponses[0].Code)
+	})
+
+	t.Run("with notification configuration update", func(t *testing.T) {
+		ncTest, ncTestCleanup := createNotificationConfiguration(t, client, nil, options)
+		defer ncTestCleanup()
+
+		optionsUpdate := NotificationConfigurationUpdateOptions{
+			Enabled: Bool(true),
+			Name:    String("newName"),
+		}
+
+		nc, err := client.NotificationConfigurations.Update(ctx, ncTest.ID, optionsUpdate)
+		require.NoError(t, err)
+
+		assert.Equal(t, nc.Name, "newName")
+		assert.Equal(t, ncTest.ID, nc.ID)
+		assert.Equal(t, 1, len(nc.DeliveryResponses))
+		assert.NotNil(t, nc.DeliveryResponses[0])
+		assert.NotEmpty(t, nc.DeliveryResponses[0].Code)
+	})
+
+	t.Run("with notification configuration verify", func(t *testing.T) {
+		ncTest, ncTestCleanup := createNotificationConfiguration(t, client, nil, options)
+		defer ncTestCleanup()
+
+		ncVerifyTest, err := client.NotificationConfigurations.Verify(ctx, ncTest.ID)
+		require.NoError(t, err)
+
+		assert.Equal(t, ncTest.ID, ncVerifyTest.ID)
+		assert.Equal(t, 1, len(ncVerifyTest.DeliveryResponses))
+		assert.NotNil(t, ncVerifyTest.DeliveryResponses[0])
+		assert.NotEmpty(t, ncVerifyTest.DeliveryResponses[0].Code)
+	})
+
+	t.Run("with notification configuration disabled", func(t *testing.T) {
+		ncTest, ncTestCleanup := createNotificationConfiguration(t, client, nil, nil)
+		defer ncTestCleanup()
+
+		nc, err := client.NotificationConfigurations.Read(ctx, ncTest.ID)
+		require.NoError(t, err)
+		assert.Equal(t, ncTest.ID, nc.ID)
+		assert.Equal(t, 0, len(nc.DeliveryResponses))
 	})
 }
 
