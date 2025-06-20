@@ -1,5 +1,7 @@
 # Unreleased
 
+# v1.84.0
+
 ## Enhancements
 
 * Adds BETA support for listing `StackConfigurationList`, which is EXPERIMENTAL, SUBJECT TO CHANGE, and may not be available to all users by @shwetamurali [#1138](https://github.com/hashicorp/go-tfe/pull/1138)
