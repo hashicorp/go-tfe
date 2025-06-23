@@ -10,6 +10,10 @@
 * Adds BETA support for approving all plans in `StackDeploymentGroups`, which is EXPERIMENTAL, SUBJECT TO CHANGE, and may not be available to all users by @hwatkins05-hashicorp [#1137](https://github.com/hashicorp/go-tfe/pull/1137)
 * Adds `DeliveryResponses` parsing in `NotificationConfiguration`, by @jpadrianoGo [#1129](https://github.com/hashicorp/go-tfe/pull/1129)
 
+## Bug Fixes
+
+* Fix the registry URL path used for `ReadTerraformRegistryModule` by @paladin-devops [#1141](https://github.com/hashicorp/go-tfe/pull/1141)
+
 # v1.83.0
 
 ## Enhancements
