@@ -607,10 +607,10 @@ func TestStateVersionOutputs(t *testing.T) {
 		testOutputString, ok := values["test_output_string"].(string)
 		require.True(t, ok)
 
-		testOutputNumber, ok := values["test_output_number"].(string)
+		testOutputNumber, ok := values["test_output_number"].(float64)
 		require.True(t, ok)
 
-		testOutputBool, ok := values["test_output_bool"].(string)
+		testOutputBool, ok := values["test_output_bool"].(bool)
 		require.True(t, ok)
 
 		testOutputListString, ok := values["test_output_list_string"].([]interface{})
