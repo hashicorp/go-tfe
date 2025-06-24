@@ -92,7 +92,7 @@ type ReservedTagKeyCreateOptions struct {
 	Key string `jsonapi:"attr,key,omitempty"`
 
 	// Optional: When true, project tag bindings that match this reserved tag key can not
-	// be overriden at the workspace level.
+	// be overridden at the workspace level.
 	DisableOverrides *bool `jsonapi:"attr,disable-overrides,omitempty"`
 }
 
@@ -130,7 +130,7 @@ type ReservedTagKeyUpdateOptions struct {
 	Key *string `jsonapi:"attr,key,omitempty"`
 
 	// Optional: When true, project tag bindings that match this reserved tag key can not
-	// be overriden at the workspace level.
+	// be overridden at the workspace level.
 	DisableOverrides *bool `jsonapi:"attr,disable-overrides,omitempty"`
 }
 
