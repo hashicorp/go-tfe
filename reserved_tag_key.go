@@ -89,17 +89,28 @@ type ReservedTagKeyCreateOptions struct {
 	Type string `jsonapi:"primary,reserved-tag-keys"`
 
 	// Required: The reserved tag key's key string.
-	Key string `jsonapi:"attr,key,omitempty"`
+	Key string `jsonapi:"attr,key"`
 
 	// Optional: When true, project tag bindings that match this reserved tag key can not
 	// be overridden at the workspace level.
 	DisableOverrides *bool `jsonapi:"attr,disable-overrides,omitempty"`
 }
 
+func (o ReservedTagKeyCreateOptions) valid() error {
+	if !validString(&o.Key) {
+		return ErrRequiredKey
+	}
+	return nil
+}
+
 // Create a reserved tag key.
 func (s *reservedTagKeys) Create(ctx context.Context, organization string, options ReservedTagKeyCreateOptions) (*ReservedTagKey, error) {
 	if !validStringID(&organization) {
 		return nil, ErrInvalidOrg
+	}
+
+	if err := options.valid(); err != nil {
+		return nil, err
 	}
 
 	u := fmt.Sprintf("organizations/%s/reserved-tag-keys", url.PathEscape(organization))

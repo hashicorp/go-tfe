@@ -115,7 +115,7 @@ func TestReservedTagKeysCreate(t *testing.T) {
 			DisableOverrides: Bool(true),
 		})
 		assert.Nil(t, w)
-		assert.EqualError(t, err, "invalid attribute\n\nKey can't be blank")
+		assert.EqualError(t, err, "key is required")
 	})
 
 	t.Run("when options has an invalid key", func(t *testing.T) {
@@ -148,7 +148,7 @@ func TestReservedTagKeysUpdate(t *testing.T) {
 	ctx := context.Background()
 
 	orgTest, orgTestCleanup := createOrganization(t, client)
-	defer orgTestCleanup()
+	t.Cleanup(orgTestCleanup)
 
 	rtkExisting, rtkTestCleanup := createReservedTagKey(t, client, orgTest, ReservedTagKeyCreateOptions{
 		Key:              randomString(t),
