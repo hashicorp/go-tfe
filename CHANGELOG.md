@@ -1,5 +1,9 @@
 # Unreleased
 
+## Enhancements
+
+* Adds support for managing reserved tag keys within a TFE organization, by @ctrombley [#1145](https://github.com/hashicorp/go-tfe/pull/1145)
+
 # v1.84.0
 
 ## Enhancements

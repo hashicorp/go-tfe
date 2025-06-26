@@ -123,6 +123,8 @@ var (
 
 	ErrInvalidPagination = errors.New("invalid value for page size or number")
 
+	ErrInvalidReservedTagKeyID = errors.New("invalid value for reserved tag key ID")
+
 	ErrInvalidRunTaskCategory = errors.New(`category must be "task"`)
 
 	ErrInvalidRunTaskID = errors.New("invalid value for run task ID")
