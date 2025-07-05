@@ -1,5 +1,9 @@
 # Unreleased
 
+## Enhancements
+
+* Adds `Source` field to `Workspace` by @jpadrianoGo [#1124](https://github.com/hashicorp/go-tfe/pull/1124)
+
 # v1.85.0
 
 ## Bug Fixes
