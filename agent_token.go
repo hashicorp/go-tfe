@@ -44,6 +44,9 @@ type AgentToken struct {
 	Description string    `jsonapi:"attr,description"`
 	LastUsedAt  time.Time `jsonapi:"attr,last-used-at,iso8601"`
 	Token       string    `jsonapi:"attr,token"`
+
+	// Relations
+	CreatedBy *User `jsonapi:"relation,created-by"`
 }
 
 // AgentTokenList represents a list of agent tokens.
