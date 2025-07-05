@@ -1,5 +1,9 @@
 # Unreleased
 
+## Enhancements
+
+* Adds `DeliveryResponses` parsing in `NotificationConfiguration`, by @jpadrianoGo [#1129](https://github.com/hashicorp/go-tfe/pull/1129)
+
 # v1.85.0
 
 ## Bug Fixes
