@@ -248,6 +248,23 @@ func TestAgentPoolsRead(t *testing.T) {
 	})
 }
 
+func TestAgentPoolsReadCreatedAt(t *testing.T) {
+	client := testClient(t)
+	ctx := context.Background()
+
+	orgTest, orgTestCleanup := createOrganization(t, client)
+	defer orgTestCleanup()
+
+	upgradeOrganizationSubscription(t, client, orgTest)
+
+	pool, poolCleanup := createAgentPool(t, client, orgTest)
+	defer poolCleanup()
+
+	k, err := client.AgentPools.Read(ctx, pool.ID)
+	assert.NotEmpty(t, k.CreatedAt)
+	require.NoError(t, err)
+}
+
 func TestAgentPoolsUpdate(t *testing.T) {
 	client := testClient(t)
 	ctx := context.Background()
