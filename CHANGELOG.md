@@ -1,5 +1,11 @@
 # Unreleased
 
+# v1.85.0
+
+## Bug Fixes
+
+* Fix the registry URL path used for `ReadTerraformRegistryModule` by @paladin-devops [#1141](https://github.com/hashicorp/go-tfe/pull/1141)
+
 ## Enhancements
 
 * Adds support for managing reserved tag keys within a TFE organization, by @ctrombley [#1145](https://github.com/hashicorp/go-tfe/pull/1145)
