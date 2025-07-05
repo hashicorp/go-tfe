@@ -2,7 +2,7 @@
 
 ## Enhancements
 
-* Adds fields to githubAppInstallation, by @jpadrianoGo [#1143](https://github.com/hashicorp/go-tfe/pull/1143)
+* Adds `IconUrl`, `InstallationType`, and `InstallationURL` to githubAppInstallation, by @jpadrianoGo [#1143](https://github.com/hashicorp/go-tfe/pull/1143)
 
 # v1.85.0
 
