@@ -1,5 +1,11 @@
 # Unreleased
 
+# v1.91.0
+
+## Enhancements
+
+* Adds `CreatedAt` field to `AgentPool` by @jpadrianoGo [#1150](https://github.com/hashicorp/go-tfe/pull/1150)
+
 # v1.90.0
 
 ## Bug Fixes
