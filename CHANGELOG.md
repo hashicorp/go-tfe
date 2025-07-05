@@ -1,5 +1,9 @@
 # Unreleased
 
+## Enhancements
+
+* Adds `CreatedBy` relation to `AgentToken` by @jpadrianoGo [#1149](https://github.com/hashicorp/go-tfe/pull/1149)
+
 # v1.90.0
 
 ## Bug Fixes
