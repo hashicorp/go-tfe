@@ -6,6 +6,7 @@ package tfe
 import (
 	"context"
 	"fmt"
+	"net/http"
 	"net/url"
 	"time"
 )
@@ -117,6 +118,14 @@ func (s stackDeploymentGroups) ApproveAllPlans(ctx context.Context, stackDeploym
 	if err != nil {
 		return err
 	}
+
+	var gotStatus int
+	var gotHeader http.Header
+	ctx = ContextWithResponseHeaderHook(context.Background(), func(status int, header http.Header) {
+		called = true
+		gotStatus = status
+		gotHeader = header
+	})
 
 	return req.Do(ctx, nil)
 }
