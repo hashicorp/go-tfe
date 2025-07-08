@@ -1,5 +1,9 @@
 # Unreleased
 
+## Enhancements
+
+* Adds option for `Includes` for `StackDeploymentRuns` Read/List, by @Maed223 [#1152](https://github.com/hashicorp/go-tfe/pull/1152)
+
 # v1.85.0
 
 ## Bug Fixes
