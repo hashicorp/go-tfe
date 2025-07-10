@@ -287,7 +287,6 @@ func TestNotificationConfigurationsCreate_byType(t *testing.T) {
 	}
 
 	for _, trigger := range testCases {
-		trigger := trigger
 		message := fmt.Sprintf("with trigger %s and all required values", trigger)
 
 		t.Run(message, func(t *testing.T) {
