@@ -482,6 +482,36 @@ func TestRegistryModuleUpdateWithVCSConnection(t *testing.T) {
 		assert.Equal(t, false, rm.VCSRepo.Tags)
 		assert.Equal(t, githubBranch, rm.VCSRepo.Branch)
 	})
+
+	t.Run("enabled tag-based monorepo publishing", func(t *testing.T) {
+		sourceDirectory := "src"
+		tagPrefix := "v"
+
+		options := RegistryModuleUpdateOptions{
+			VCSRepo: &RegistryModuleVCSRepoUpdateOptions{
+				SourceDirectory: String(sourceDirectory),
+				TagPrefix:       String(tagPrefix),
+			},
+		}
+
+		rm, err = client.RegistryModules.Update(ctx, RegistryModuleID{
+			Organization: orgTest.Name,
+			Name:         rm.Name,
+			Provider:     rm.Provider,
+			Namespace:    rm.Namespace,
+			RegistryName: rm.RegistryName,
+		}, options)
+
+		if rm.VCSRepo == nil {
+			t.Fatalf("expected VCSRepo to be set")
+		}
+		if rm.VCSRepo.SourceDirectory != sourceDirectory {
+			t.Errorf("expected SourceDirectory %q, got %q", sourceDirectory, rm.VCSRepo.SourceDirectory)
+		}
+		if rm.VCSRepo.TagPrefix != tagPrefix {
+			t.Errorf("expected TagPrefix %q, got %q", tagPrefix, rm.VCSRepo.TagPrefix)
+		}
+	})
 }
 
 func TestRegistryModulesCreateVersion(t *testing.T) {
