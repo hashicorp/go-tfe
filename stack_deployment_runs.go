@@ -28,7 +28,7 @@ var _ StackDeploymentRuns = &stackDeploymentRuns{}
 
 // StackDeploymentRun represents a stack deployment run.
 type StackDeploymentRun struct {
-	ID          string    `jsonapi:"primary,stacks-deployment-runs"`
+	ID          string    `jsonapi:"primary,stack-deployment-runs"`
 	Status      string    `jsonapi:"attr,status"`
 	StartedAt   time.Time `jsonapi:"attr,started-at,iso8601"`
 	CompletedAt time.Time `jsonapi:"attr,completed-at,iso8601"`
