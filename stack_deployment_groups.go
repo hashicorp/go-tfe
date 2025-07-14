@@ -42,7 +42,7 @@ var _ StackDeploymentGroups = &stackDeploymentGroups{}
 // StackDeploymentGroup represents a stack deployment group.
 type StackDeploymentGroup struct {
 	// Attributes
-	ID        string    `jsonapi:"primary,stacks-deployment-groups"`
+	ID        string    `jsonapi:"primary,stack-deployment-groups"`
 	Name      string    `jsonapi:"attr,name"`
 	Status    string    `jsonapi:"attr,status"`
 	CreatedAt time.Time `jsonapi:"attr,created-at,iso8601"`
