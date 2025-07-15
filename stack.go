@@ -212,9 +212,9 @@ type WaitForStatusResult struct {
 const minimumPollingIntervalMs = 3000
 const maximumPollingIntervalMs = 5000
 
-// UpdateConfiguration updates the configuration of a stack, triggering stack operations
+// UpdateConfiguration fetches the latest configuration of a stack from VCS, triggering stack operations
 func (s *stacks) UpdateConfiguration(ctx context.Context, stackID string) (*Stack, error) {
-	req, err := s.client.NewRequest("POST", fmt.Sprintf("stacks/%s/actions/update-configuration", url.PathEscape(stackID)), nil)
+	req, err := s.client.NewRequest("POST", fmt.Sprintf("stacks/%s/fetch-latest-from-vcs", url.PathEscape(stackID)), nil)
 	if err != nil {
 		return nil, err
 	}

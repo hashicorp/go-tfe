@@ -3,6 +3,10 @@
 ## Bug Fixes
 * Fixes incorrect primary key usage on `StackDeploymentRun`, `StackDeploymentGroup`, and `StackDeploymentStep`, by @Maed223 [#1156](https://github.com/hashicorp/go-tfe/pull/1156)
 
+## Enhancements
+
+* Updates endpoint for updating stack configuration from `actions/update-configuration` to `fetch-latest-from-vcs` by @hwatkins05-hashicorp [#1157](https://github.com/hashicorp/go-tfe/pull/1157)
+
 # v1.86.0
 
 ## Enhancements
