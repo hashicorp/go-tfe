@@ -4,6 +4,15 @@
 
 * Adds `CreatedBy` relation to `AgentToken` by @jpadrianoGo [#1149](https://github.com/hashicorp/go-tfe/pull/1149)
 
+## Bug Fixes
+* Fixes incorrect primary key usage on `StackDeploymentRun`, `StackDeploymentGroup`, and `StackDeploymentStep`, by @Maed223 [#1156](https://github.com/hashicorp/go-tfe/pull/1156)
+
+# v1.86.0
+
+## Enhancements
+
+* Adds option for `Includes` for `StackDeploymentRuns` Read/List, by @Maed223 [#1152](https://github.com/hashicorp/go-tfe/pull/1152)
+
 # v1.85.0
 
 ## Bug Fixes
