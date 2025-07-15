@@ -23,7 +23,7 @@ type StackDeploymentSteps interface {
 // StackDeploymentStep represents a step from a stack deployment
 type StackDeploymentStep struct {
 	// Attributes
-	ID        string    `jsonapi:"primary,stacks-deployment-steps"`
+	ID        string    `jsonapi:"primary,stack-deployment-steps"`
 	Status    string    `jsonapi:"attr,status"`
 	CreatedAt time.Time `jsonapi:"attr,created-at,iso8601"`
 	UpdatedAt time.Time `jsonapi:"attr,created-at,iso8601"`
