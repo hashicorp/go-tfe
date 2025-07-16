@@ -4,6 +4,8 @@
 
 * Adds `CreatedAt` field to `AgentPool` by @jpadrianoGo [#1150](https://github.com/hashicorp/go-tfe/pull/1150)
 
+# v1.87.0
+
 ## Bug Fixes
 
 * Fixes incorrect primary key usage on `StackDeploymentRun`, `StackDeploymentGroup`, and `StackDeploymentStep`, by @Maed223 [#1156](https://github.com/hashicorp/go-tfe/pull/1156)
