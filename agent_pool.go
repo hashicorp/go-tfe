@@ -7,6 +7,7 @@ import (
 	"context"
 	"fmt"
 	"net/url"
+	"time"
 )
 
 // Compile-time proof of interface implementation.
@@ -52,10 +53,11 @@ type AgentPoolList struct {
 
 // AgentPool represents a HCP Terraform agent pool.
 type AgentPool struct {
-	ID                 string `jsonapi:"primary,agent-pools"`
-	Name               string `jsonapi:"attr,name"`
-	AgentCount         int    `jsonapi:"attr,agent-count"`
-	OrganizationScoped bool   `jsonapi:"attr,organization-scoped"`
+	ID                 string    `jsonapi:"primary,agent-pools"`
+	Name               string    `jsonapi:"attr,name"`
+	AgentCount         int       `jsonapi:"attr,agent-count"`
+	OrganizationScoped bool      `jsonapi:"attr,organization-scoped"`
+	CreatedAt          time.Time `jsonapi:"attr,created-at,iso8601"`
 
 	// Relations
 	Organization      *Organization `jsonapi:"relation,organization"`
