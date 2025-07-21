@@ -1,5 +1,9 @@
 # Unreleased
 
+## Enhancements
+
+* Adds `CanceledAt`, `RunEvents`, `TriggerReason` field to `Run` by @jpadrianoGo [#1161](https://github.com/hashicorp/go-tfe/pull/1161)
+
 # v1.87.0
 
 ## Bug Fixes
