@@ -42,19 +42,20 @@ func (irt internalRunTask) ToRunTask() *RunTask {
 	}
 	obj.WorkspaceRunTasks = workspaceTasks
 
+	var boolVal bool
 	// Check if the global configuration exists
 	if val, ok := irt.RawGlobal["enabled"]; !ok {
 		// The enabled property is required so we can assume now that the
 		// global configuration was not supplied
 		return &obj
-	} else if boolVal, ok := val.(bool); !ok {
+	} else if boolVal, ok = val.(bool); !ok {
 		// The enabled property exists but it is invalid (Couldn't cast to boolean)
 		// so assume the global configuration was not supplied
 		return &obj
-	} else {
-		obj.Global = &GlobalRunTask{
-			Enabled: boolVal,
-		}
+	}
+
+	obj.Global = &GlobalRunTask{
+		Enabled: boolVal,
 	}
 
 	// Global Enforcement Level
