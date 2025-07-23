@@ -240,6 +240,8 @@ var (
 	ErrInvalidTaskResultsCallbackStatus = fmt.Errorf("invalid value for task result status. Must be either `%s`, `%s`, or `%s`", TaskFailed, TaskPassed, TaskRunning)
 
 	ErrInvalidDescriptionConflict = errors.New("invalid attributes\n\nValidation failed: Description has already been taken")
+
+	ErrInvalidHyokConfigID = errors.New("invalid value for HYOK Configuration ID")
 )
 
 var (
