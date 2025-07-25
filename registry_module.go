@@ -370,6 +370,10 @@ type RegistryModuleVCSRepoOptions struct {
 	// **Note: This field is still in BETA and subject to change.**
 	Branch *string `json:"branch,omitempty"`
 	Tags   *bool   `json:"tags,omitempty"`
+
+	// Optional: If set, the registry module will be branch-based or tag-based
+	SourceDirectory *string `json:"source-directory,omitempty"`
+	TagPrefix       *string `json:"tag-prefix,omitempty"`
 }
 
 type RegistryModuleVCSRepoUpdateOptions struct {
@@ -380,6 +384,10 @@ type RegistryModuleVCSRepoUpdateOptions struct {
 	// **Note: This field is still in BETA and subject to change.**
 	Branch *string `json:"branch,omitempty"`
 	Tags   *bool   `json:"tags,omitempty"`
+
+	// Optional: If set, the registry module will be branch-based or tag-based
+	SourceDirectory *string `json:"source-directory,omitempty"`
+	TagPrefix       *string `json:"tag-prefix,omitempty"`
 }
 
 // List all the registry modules within an organization.

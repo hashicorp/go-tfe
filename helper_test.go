@@ -991,6 +991,15 @@ func createOrganization(t *testing.T, client *Client) (*Organization, func()) {
 	})
 }
 
+func createOrganizationWithMonorepoSupport(t *testing.T, client *Client) (*Organization, func()) {
+	return createOrganizationWithOptions(t, client, OrganizationCreateOptions{
+		Name:                           String("tst-" + randomString(t)),
+		Email:                          String(fmt.Sprintf("%s@tfe.local", randomString(t))),
+		CostEstimationEnabled:          Bool(true),
+		RegistryMonorepoSupportEnabled: Bool(true),
+	})
+}
+
 func createOrganizationWithOptions(t *testing.T, client *Client, options OrganizationCreateOptions) (*Organization, func()) {
 	ctx := context.Background()
 	org, err := client.Organizations.Create(ctx, options)
