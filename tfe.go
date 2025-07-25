@@ -129,6 +129,10 @@ type Client struct {
 	AgentTokens                AgentTokens
 	Applies                    Applies
 	AuditTrails                AuditTrails
+	AwsOidcConfigurations      AwsOidcConfigurations
+	GcpOidcConfigurations      GcpOidcConfigurations
+	AzureOidcConfigurations    AzureOidcConfigurations
+	VaultOidcConfigurations    VaultOidcConfigurations
 	Comments                   Comments
 	ConfigurationVersions      ConfigurationVersions
 	CostEstimates              CostEstimates
@@ -163,6 +167,7 @@ type Client struct {
 	RunTriggers                RunTriggers
 	SSHKeys                    SSHKeys
 	Stacks                     Stacks
+	HyokConfigurations         HyokConfigurations
 	StackConfigurations        StackConfigurations
 	StackDeployments           StackDeployments
 	StackDeploymentGroups      StackDeploymentGroups
@@ -460,6 +465,10 @@ func NewClient(cfg *Config) (*Client, error) {
 	client.AgentTokens = &agentTokens{client: client}
 	client.Applies = &applies{client: client}
 	client.AuditTrails = &auditTrails{client: client}
+	client.AwsOidcConfigurations = &awsOidcConfigurations{client: client}
+	client.GcpOidcConfigurations = &gcpOidcConfigurations{client: client}
+	client.AzureOidcConfigurations = &azureOidcConfigurations{client: client}
+	client.VaultOidcConfigurations = &vaultOidcConfigurations{client: client}
 	client.Comments = &comments{client: client}
 	client.ConfigurationVersions = &configurationVersions{client: client}
 	client.CostEstimates = &costEstimates{client: client}
@@ -495,6 +504,7 @@ func NewClient(cfg *Config) (*Client, error) {
 	client.RunTriggers = &runTriggers{client: client}
 	client.SSHKeys = &sshKeys{client: client}
 	client.Stacks = &stacks{client: client}
+	client.HyokConfigurations = &hyokConfigurations{client: client}
 	client.StackConfigurations = &stackConfigurations{client: client}
 	client.StackDeployments = &stackDeployments{client: client}
 	client.StackDeploymentGroups = &stackDeploymentGroups{client: client}
