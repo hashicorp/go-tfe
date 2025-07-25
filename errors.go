@@ -240,6 +240,8 @@ var (
 	ErrInvalidTaskResultsCallbackStatus = fmt.Errorf("invalid value for task result status. Must be either `%s`, `%s`, or `%s`", TaskFailed, TaskPassed, TaskRunning)
 
 	ErrInvalidDescriptionConflict = errors.New("invalid attributes\n\nValidation failed: Description has already been taken")
+
+	ErrInvalidOidc = errors.New("invalid value for OIDC configuration ID")
 )
 
 var (
@@ -401,4 +403,26 @@ var (
 	ErrRequiredRawState = errors.New("RawState is required")
 
 	ErrStateVersionUploadNotSupported = errors.New("upload not supported by this version of Terraform Enterprise")
+
+	ErrRequiredRoleArn = errors.New("role-arn is required for AWS OIDC configuration")
+
+	ErrRequiredServiceAccountEmail = errors.New("service-account-email is required for GCP OIDC configuration")
+
+	ErrRequiredProjectNumber = errors.New("project-number is required for GCP OIDC configuration")
+
+	ErrRequiredWorkloadProviderName = errors.New("workload-provider-name is required for GCP OIDC configuration")
+
+	ErrRequiredClientID = errors.New("client-id is required for Azure OIDC configuration")
+
+	ErrRequiredSubscriptionID = errors.New("subscription-id is required for Azure OIDC configuration")
+
+	ErrRequiredTenantID = errors.New("tenant-id is required for Azure OIDC configuration")
+
+	ErrRequiredAddress = errors.New("address is required for Vault OIDC configuration")
+
+	ErrRequiredRoleName = errors.New("role is required for Vault OIDC configuration")
+
+	ErrRequiredJWTAuthPath = errors.New("auth_path is required for Vault OIDC configuration")
+
+	ErrRequiredTLSCACertificate = errors.New("encoded_cacert is required for Vault OIDC configuration")
 )
