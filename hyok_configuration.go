@@ -14,6 +14,12 @@ type HyokConfigurations interface {
 	Read(ctx context.Context, hyokID string, options *HyokConfigurationsReadOptions) (*HyokConfiguration, error)
 
 	Update(ctx context.Context, hyokID string, options HyokConfigurationsUpdateOptions) (*HyokConfiguration, error)
+
+	Delete(ctx context.Context, hyokID string) error
+
+	Test(ctx context.Context, hyokID string) error
+
+	Revoke(ctx context.Context, hyokID string) error
 }
 
 type hyokConfigurations struct {
@@ -21,6 +27,43 @@ type hyokConfigurations struct {
 }
 
 var _ HyokConfigurations = &hyokConfigurations{}
+
+type OIDCConfiguration struct {
+	ID   string `jsonapi:"primary,oidc-configuration"`
+	Type string `jsonapi:"attr,type"`
+}
+
+type KMSOptions struct {
+	KeyRegion   string `jsonapi:"attr,key-region,omitempty"`   // AWS KMS
+	KeyLocation string `jsonapi:"attr,key-location,omitempty"` // GCP KMS
+	KeyRingID   string `jsonapi:"attr,key-ring-id,omitempty"`  // GCP KMS
+}
+
+type HyokConfigurationsCustomerKeyVersion struct {
+	ID   string `jsonapi:"primary,hyok-customer-key-versions"`
+	Type string `jsonapi:"attr,type"`
+}
+
+type HyokConfiguration struct {
+	ID   string `jsonapi:"primary,hyok-configurations"`
+	Type string `jsonapi:"attr,type"`
+
+	// Attributes
+	KekID      string      `jsonapi:"attr,kek-id"`
+	KMSOptions *KMSOptions `jsonapi:"attr,kms-options"`
+	Name       string      `jsonapi:"attr,name"`
+	Primary    bool        `jsonapi:"attr,primary"`
+	Status     string      `jsonapi:"attr,status"`
+	Error      *string     `jsonapi:"attr,error"`
+
+	// Relationships
+	Organization           *Organization      `jsonapi:"relation,organization"`
+	AWSOIDCConfiguration   *OIDCConfiguration `jsonapi:"relation,aws-oidc-configuration,omitempty"`
+	AzureOIDCConfiguration *OIDCConfiguration `jsonapi:"relation,azure-oidc-configuration,omitempty"`
+	GCPOIDCConfiguration   *OIDCConfiguration `jsonapi:"relation,gcp-oidc-configuration,omitempty"`
+	VaultOIDCConfiguration *OIDCConfiguration `jsonapi:"relation,vault-oidc-configuration,omitempty"`
+	AgentPool              *AgentPool         `jsonapi:"relation,agent-pool"`
+}
 
 type HyokConfigurationsList struct {
 	*Pagination
@@ -46,10 +89,8 @@ const (
 type HyokConfigurationsIncludeOpt string
 
 const (
-	HyokConfigurationsIncludeOrganization            HyokConfigurationsIncludeOpt = "organization"
-	HyokConfigurationsIncludeProject                 HyokConfigurationsIncludeOpt = "project"
-	HyokConfigurationsIncludeLatestHyokConfiguration HyokConfigurationsIncludeOpt = "latest_hyokConfiguration"
-	HyokConfigurationsIncludeHyokDiagnostics         HyokConfigurationsIncludeOpt = "hyok_diagnostics"
+	HyokConfigurationsIncludeHyokCustomerKeyVersions HyokConfigurationsIncludeOpt = "hyok_customer_key_versions"
+	HyokConfigurationsIncludeOidcCconfiguration      HyokConfigurationsIncludeOpt = "oidc_configuration"
 )
 
 type HyokConfigurationsListOptions struct {
@@ -77,25 +118,12 @@ type HyokConfigurationsCreateOptions struct {
 	Error      *string     `jsonapi:"attr,error"`
 
 	// Relationships
-	Organization            *Organization                           `jsonapi:"relation,organization"`
-	OIDCConfiguration       *OIDCConfiguration                      `jsonapi:"relation,oidc-configuration"`
-	AgentPool               *AgentPool                              `jsonapi:"relation,agent-pool"`
-	HyokCustomerKeyVersions []*HyokConfigurationsCustomerKeyVersion `jsonapi:"relation,hyok-customer-key-versions"`
+	Organization      *Organization      `jsonapi:"relation,organization"`
+	OIDCConfiguration *OIDCConfiguration `jsonapi:"relation,oidc-configuration"`
+	AgentPool         *AgentPool         `jsonapi:"relation,agent-pool"`
 }
 
 type HyokConfigurationsUpdateOptions struct {
-	KekID      string      `jsonapi:"attr,kek-id"`
-	Name       string      `jsonapi:"attr,name"`
-	KMSOptions *KMSOptions `jsonapi:"attr,kms-options"`
-	Primary    bool        `jsonapi:"attr,primary"`
-}
-
-type OIDCConfiguration struct {
-	ID   string `jsonapi:"attr,id"`
-	Type string `jsonapi:"attr,type"`
-}
-
-type HyokConfiguration struct {
 	ID   string `jsonapi:"primary,hyok-configurations"`
 	Type string `jsonapi:"attr,type"`
 
@@ -108,36 +136,12 @@ type HyokConfiguration struct {
 	Error      *string     `jsonapi:"attr,error"`
 
 	// Relationships
-	Organization            *Organization                           `jsonapi:"relation,organization"`
-	OIDCConfiguration       *OIDCConfiguration                      `jsonapi:"relation,oidc-configuration"`
-	AgentPool               *AgentPool                              `jsonapi:"relation,agent-pool"`
-	HyokCustomerKeyVersions []*HyokConfigurationsCustomerKeyVersion `jsonapi:"relation,hyok-customer-key-versions"`
-}
-
-type KMSOptions struct {
-	KeyRegion   string `jsonapi:"attr,key-region"`   // AWS KMS
-	KeyLocation string `jsonapi:"attr,key-location"` // GCP KMS
-	KeyRingID   string `jsonapi:"attr,key-ring-id"`  // GCP KMS
-}
-
-type HyokConfigurationsCustomerKeyVersion struct {
-	ID   string `jsonapi:"primary,hyok-customer-key-versions"`
-	Type string `jsonapi:"attr,type"`
+	Organization      *Organization      `jsonapi:"relation,organization"`
+	OIDCConfiguration *OIDCConfiguration `jsonapi:"relation,oidc-configuration"`
+	AgentPool         *AgentPool         `jsonapi:"relation,agent-pool"`
 }
 
 func (h *HyokConfigurationsListOptions) valid() error {
-	return nil
-}
-
-func (h *HyokConfigurationsReadOptions) valid() error {
-	return nil
-}
-
-func (h *HyokConfigurationsCreateOptions) valid() error {
-	return nil
-}
-
-func (h *HyokConfigurationsUpdateOptions) valid() error {
 	return nil
 }
 
@@ -164,7 +168,15 @@ func (h hyokConfigurations) List(ctx context.Context, organization string, optio
 	return hyokConfigurationList, nil
 }
 
+func (h *HyokConfigurationsReadOptions) valid() error {
+	return nil
+}
+
 func (h hyokConfigurations) Read(ctx context.Context, hyokID string, options *HyokConfigurationsReadOptions) (*HyokConfiguration, error) {
+	if !validStringID(&hyokID) {
+		return nil, ErrInvalidHyok
+	}
+
 	if err := options.valid(); err != nil {
 		return nil, err
 	}
@@ -181,6 +193,50 @@ func (h hyokConfigurations) Read(ctx context.Context, hyokID string, options *Hy
 	}
 
 	return hyokConfiguration, nil
+}
+
+func (h *HyokConfigurationsCreateOptions) valid() error {
+	if h.KekID == "" {
+		return ErrRequiredKekID
+	}
+
+	if h.Name == "" {
+		return ErrRequiredName
+	}
+
+	if h.OIDCConfiguration == nil {
+		return ErrRequiredOIDCConfiguration
+	}
+
+	if h.AgentPool == nil {
+		return ErrRequiredAgentPool
+	}
+
+	if h.OIDCConfiguration.Type == "aws-oidc-configurations" {
+		if h.KMSOptions == nil {
+			return ErrRequiredKMSOptions
+		}
+
+		if h.KMSOptions.KeyRegion == "" {
+			return ErrRequiredKMSOptionsKeyRegion
+		}
+	}
+
+	if h.OIDCConfiguration.Type == "gcp-oidc-configurations" {
+		if h.KMSOptions == nil {
+			return ErrRequiredKMSOptions
+		}
+
+		if h.KMSOptions.KeyLocation == "" {
+			return ErrRequiredKMSOptionsKeyLocation
+		}
+
+		if h.KMSOptions.KeyRingID == "" {
+			return ErrRequiredKMSOptionsKeyRingID
+		}
+	}
+
+	return nil
 }
 
 func (h hyokConfigurations) Create(ctx context.Context, organization string, options HyokConfigurationsCreateOptions) (*HyokConfiguration, error) {
@@ -206,7 +262,55 @@ func (h hyokConfigurations) Create(ctx context.Context, organization string, opt
 	return hyokConfiguration, nil
 }
 
+func (h *HyokConfigurationsUpdateOptions) valid() error {
+	if h.KekID == "" {
+		return ErrRequiredKekID
+	}
+
+	if h.Name == "" {
+		return ErrRequiredName
+	}
+
+	if h.OIDCConfiguration == nil {
+		return ErrRequiredOIDCConfiguration
+	}
+
+	if h.AgentPool == nil {
+		return ErrRequiredAgentPool
+	}
+
+	if h.OIDCConfiguration.Type == "aws-oidc-configurations" {
+		if h.KMSOptions == nil {
+			return ErrRequiredKMSOptions
+		}
+
+		if h.KMSOptions.KeyRegion == "" {
+			return ErrRequiredKMSOptionsKeyRegion
+		}
+	}
+
+	if h.OIDCConfiguration.Type == "gcp-oidc-configurations" {
+		if h.KMSOptions == nil {
+			return ErrRequiredKMSOptions
+		}
+
+		if h.KMSOptions.KeyLocation == "" {
+			return ErrRequiredKMSOptionsKeyLocation
+		}
+
+		if h.KMSOptions.KeyRingID == "" {
+			return ErrRequiredKMSOptionsKeyRingID
+		}
+	}
+
+	return nil
+}
+
 func (h hyokConfigurations) Update(ctx context.Context, hyokID string, options HyokConfigurationsUpdateOptions) (*HyokConfiguration, error) {
+	if !validStringID(&hyokID) {
+		return nil, ErrInvalidHyok
+	}
+
 	if err := options.valid(); err != nil {
 		return nil, err
 	}
@@ -223,4 +327,43 @@ func (h hyokConfigurations) Update(ctx context.Context, hyokID string, options H
 	}
 
 	return hyokConfiguration, nil
+}
+
+func (h hyokConfigurations) Delete(ctx context.Context, hyokID string) error {
+	if !validStringID(&hyokID) {
+		return ErrInvalidHyok
+	}
+
+	req, err := h.client.NewRequest("DELETE", fmt.Sprintf("hyok-configurations/%s", url.PathEscape(hyokID)), nil)
+	if err != nil {
+		return err
+	}
+
+	return req.Do(ctx, nil)
+}
+
+func (h hyokConfigurations) Test(ctx context.Context, hyokID string) error {
+	if !validStringID(&hyokID) {
+		return ErrInvalidHyok
+	}
+
+	req, err := h.client.NewRequest("POST", fmt.Sprintf("hyok-configurations/%s/actions/test", url.PathEscape(hyokID)), nil)
+	if err != nil {
+		return err
+	}
+
+	return req.Do(ctx, nil)
+}
+
+func (h hyokConfigurations) Revoke(ctx context.Context, hyokID string) error {
+	if !validStringID(&hyokID) {
+		return ErrInvalidHyok
+	}
+
+	req, err := h.client.NewRequest("POST", fmt.Sprintf("hyok-configurations/%s/actions/revoke", url.PathEscape(hyokID)), nil)
+	if err != nil {
+		return err
+	}
+
+	return req.Do(ctx, nil)
 }

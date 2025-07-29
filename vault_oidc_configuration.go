@@ -9,7 +9,7 @@ import (
 type VaultOidcConfigurations interface {
 	Create(ctx context.Context, organization string, options VaultOidcConfigurationsCreateOptions) (*VaultOidcConfiguration, error)
 
-	Read(ctx context.Context, oidcID string, options *VaultOidcConfigurationsReadOptions) (*VaultOidcConfiguration, error)
+	Read(ctx context.Context, oidcID string) (*VaultOidcConfiguration, error)
 
 	Update(ctx context.Context, oidcID string, options VaultOidcConfigurationsUpdateOptions) (*VaultOidcConfiguration, error)
 
@@ -23,7 +23,7 @@ type vaultOidcConfigurations struct {
 var _ VaultOidcConfigurations = &vaultOidcConfigurations{}
 
 type VaultOidcConfiguration struct {
-	Type             string `jsonapi:"primary,vault-oidc-configurations"`
+	ID               string `jsonapi:"primary,vault-oidc-configurations"`
 	Address          string `jsonapi:"attr,address"`
 	RoleName         string `jsonapi:"attr,role"`
 	Namespace        string `jsonapi:"attr,namespace"`
@@ -34,7 +34,7 @@ type VaultOidcConfiguration struct {
 }
 
 type VaultOidcConfigurationsCreateOptions struct {
-	Type             string `jsonapi:"primary,vault-oidc-configurations"`
+	ID               string `jsonapi:"primary,vault-oidc-configurations"`
 	Address          string `jsonapi:"attr,address"`
 	RoleName         string `jsonapi:"attr,role"`
 	Namespace        string `jsonapi:"attr,namespace"`
@@ -44,21 +44,8 @@ type VaultOidcConfigurationsCreateOptions struct {
 	Organization *Organization `jsonapi:"relation,organization"`
 }
 
-type VaultOidcConfigurationsIncludeOpt string
-
-const (
-	VaultOidcConfigurationsIncludeOrganization            VaultOidcConfigurationsIncludeOpt = "organization"
-	VaultOidcConfigurationsIncludeProject                 VaultOidcConfigurationsIncludeOpt = "project"
-	VaultOidcConfigurationsIncludeLatestHyokConfiguration VaultOidcConfigurationsIncludeOpt = "latest_hyok_configuration"
-	VaultOidcConfigurationsIncludeHyokDiagnostics         VaultOidcConfigurationsIncludeOpt = "hyok_diagnostics"
-)
-
-type VaultOidcConfigurationsReadOptions struct {
-	Include []VaultOidcConfigurationsIncludeOpt `url:"include,omitempty"`
-}
-
 type VaultOidcConfigurationsUpdateOptions struct {
-	Type             string `jsonapi:"primary,vault-oidc-configurations"`
+	ID               string `jsonapi:"primary,vault-oidc-configurations"`
 	Address          string `jsonapi:"attr,address"`
 	RoleName         string `jsonapi:"attr,role"`
 	Namespace        string `jsonapi:"attr,namespace"`
@@ -103,18 +90,8 @@ func (voc *vaultOidcConfigurations) Create(ctx context.Context, organization str
 	return vaultOidcConfiguration, nil
 }
 
-func (o *VaultOidcConfigurationsReadOptions) valid() error {
-	return nil
-}
-
-func (voc *vaultOidcConfigurations) Read(ctx context.Context, oidcID string, options *VaultOidcConfigurationsReadOptions) (*VaultOidcConfiguration, error) {
-	if options != nil {
-		if err := options.valid(); err != nil {
-			return nil, err
-		}
-	}
-
-	req, err := voc.client.NewRequest("GET", fmt.Sprintf("oidc-configurations/%s", url.PathEscape(oidcID)), options)
+func (voc *vaultOidcConfigurations) Read(ctx context.Context, oidcID string) (*VaultOidcConfiguration, error) {
+	req, err := voc.client.NewRequest("GET", fmt.Sprintf("oidc-configurations/%s", url.PathEscape(oidcID)), nil)
 	if err != nil {
 		return nil, err
 	}
