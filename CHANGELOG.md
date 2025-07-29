@@ -1,5 +1,7 @@
 # Unreleased
 
+# v1.88.0
+
 ## Enhancements
 
 * Adds BETA support for reading, testing and updating Organization Audit Configuration by @glennsarti-hashi [#1151](https://github.com/hashicorp/go-tfe/pull/1151)
