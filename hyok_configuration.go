@@ -9,6 +9,8 @@ import (
 type HyokConfigurations interface {
 	List(ctx context.Context, organization string, options *HyokConfigurationsListOptions) (*HyokConfigurationsList, error)
 
+	TestUnpersisted(ctx context.Context, organization string) error
+
 	Create(ctx context.Context, organization string, options HyokConfigurationsCreateOptions) (*HyokConfiguration, error)
 
 	Read(ctx context.Context, hyokID string, options *HyokConfigurationsReadOptions) (*HyokConfiguration, error)
@@ -28,9 +30,11 @@ type hyokConfigurations struct {
 
 var _ HyokConfigurations = &hyokConfigurations{}
 
-type OIDCConfiguration struct {
-	ID   string `jsonapi:"primary,oidc-configuration"`
-	Type string `jsonapi:"attr,type"`
+type OidcConfigurationChoice struct {
+	AwsOidcConfiguration   *AwsOidcConfiguration
+	GcpOidcConfiguration   *GcpOidcConfiguration
+	AzureOidcConfiguration *AzureOidcConfiguration
+	VaultOidcConfiguration *VaultOidcConfiguration
 }
 
 type KMSOptions struct {
@@ -45,8 +49,7 @@ type HyokConfigurationsCustomerKeyVersion struct {
 }
 
 type HyokConfiguration struct {
-	ID   string `jsonapi:"primary,hyok-configurations"`
-	Type string `jsonapi:"attr,type"`
+	ID string `jsonapi:"primary,hyok-configurations"`
 
 	// Attributes
 	KekID      string      `jsonapi:"attr,kek-id"`
@@ -57,12 +60,9 @@ type HyokConfiguration struct {
 	Error      *string     `jsonapi:"attr,error"`
 
 	// Relationships
-	Organization           *Organization      `jsonapi:"relation,organization"`
-	AWSOIDCConfiguration   *OIDCConfiguration `jsonapi:"relation,aws-oidc-configuration,omitempty"`
-	AzureOIDCConfiguration *OIDCConfiguration `jsonapi:"relation,azure-oidc-configuration,omitempty"`
-	GCPOIDCConfiguration   *OIDCConfiguration `jsonapi:"relation,gcp-oidc-configuration,omitempty"`
-	VaultOIDCConfiguration *OIDCConfiguration `jsonapi:"relation,vault-oidc-configuration,omitempty"`
-	AgentPool              *AgentPool         `jsonapi:"relation,agent-pool"`
+	Organization      *Organization            `jsonapi:"relation,organization"`
+	OidcConfiguration *OidcConfigurationChoice `jsonapi:"polyrelation,oidc-configuration"`
+	AgentPool         *AgentPool               `jsonapi:"relation,agent-pool"`
 }
 
 type HyokConfigurationsList struct {
@@ -118,9 +118,9 @@ type HyokConfigurationsCreateOptions struct {
 	Error      *string     `jsonapi:"attr,error"`
 
 	// Relationships
-	Organization      *Organization      `jsonapi:"relation,organization"`
-	OIDCConfiguration *OIDCConfiguration `jsonapi:"relation,oidc-configuration"`
-	AgentPool         *AgentPool         `jsonapi:"relation,agent-pool"`
+	Organization      *Organization            `jsonapi:"relation,organization"`
+	OidcConfiguration *OidcConfigurationChoice `jsonapi:"polyrelation,oidc-configuration"`
+	AgentPool         *AgentPool               `jsonapi:"relation,agent-pool"`
 }
 
 type HyokConfigurationsUpdateOptions struct {
@@ -136,9 +136,9 @@ type HyokConfigurationsUpdateOptions struct {
 	Error      *string     `jsonapi:"attr,error"`
 
 	// Relationships
-	Organization      *Organization      `jsonapi:"relation,organization"`
-	OIDCConfiguration *OIDCConfiguration `jsonapi:"relation,oidc-configuration"`
-	AgentPool         *AgentPool         `jsonapi:"relation,agent-pool"`
+	Organization      *Organization            `jsonapi:"relation,organization"`
+	OidcConfiguration *OidcConfigurationChoice `jsonapi:"polyrelation,oidc-configuration"`
+	AgentPool         *AgentPool               `jsonapi:"relation,agent-pool"`
 }
 
 func (h *HyokConfigurationsListOptions) valid() error {
@@ -166,6 +166,19 @@ func (h hyokConfigurations) List(ctx context.Context, organization string, optio
 	}
 
 	return hyokConfigurationList, nil
+}
+
+func (h hyokConfigurations) TestUnpersisted(ctx context.Context, organization string) error {
+	if !validStringID(&organization) {
+		return ErrInvalidOrg
+	}
+
+	req, err := h.client.NewRequest("POST", fmt.Sprintf("organizations/%s/hyok-configurations/test", organization), nil)
+	if err != nil {
+		return err
+	}
+
+	return req.Do(ctx, nil)
 }
 
 func (h *HyokConfigurationsReadOptions) valid() error {
@@ -204,7 +217,7 @@ func (h *HyokConfigurationsCreateOptions) valid() error {
 		return ErrRequiredName
 	}
 
-	if h.OIDCConfiguration == nil {
+	if h.OidcConfiguration == nil {
 		return ErrRequiredOIDCConfiguration
 	}
 
@@ -212,7 +225,7 @@ func (h *HyokConfigurationsCreateOptions) valid() error {
 		return ErrRequiredAgentPool
 	}
 
-	if h.OIDCConfiguration.Type == "aws-oidc-configurations" {
+	if h.OidcConfiguration.AwsOidcConfiguration != nil {
 		if h.KMSOptions == nil {
 			return ErrRequiredKMSOptions
 		}
@@ -222,7 +235,7 @@ func (h *HyokConfigurationsCreateOptions) valid() error {
 		}
 	}
 
-	if h.OIDCConfiguration.Type == "gcp-oidc-configurations" {
+	if h.OidcConfiguration.GcpOidcConfiguration != nil {
 		if h.KMSOptions == nil {
 			return ErrRequiredKMSOptions
 		}
@@ -263,46 +276,6 @@ func (h hyokConfigurations) Create(ctx context.Context, organization string, opt
 }
 
 func (h *HyokConfigurationsUpdateOptions) valid() error {
-	if h.KekID == "" {
-		return ErrRequiredKekID
-	}
-
-	if h.Name == "" {
-		return ErrRequiredName
-	}
-
-	if h.OIDCConfiguration == nil {
-		return ErrRequiredOIDCConfiguration
-	}
-
-	if h.AgentPool == nil {
-		return ErrRequiredAgentPool
-	}
-
-	if h.OIDCConfiguration.Type == "aws-oidc-configurations" {
-		if h.KMSOptions == nil {
-			return ErrRequiredKMSOptions
-		}
-
-		if h.KMSOptions.KeyRegion == "" {
-			return ErrRequiredKMSOptionsKeyRegion
-		}
-	}
-
-	if h.OIDCConfiguration.Type == "gcp-oidc-configurations" {
-		if h.KMSOptions == nil {
-			return ErrRequiredKMSOptions
-		}
-
-		if h.KMSOptions.KeyLocation == "" {
-			return ErrRequiredKMSOptionsKeyLocation
-		}
-
-		if h.KMSOptions.KeyRingID == "" {
-			return ErrRequiredKMSOptionsKeyRingID
-		}
-	}
-
 	return nil
 }
 
