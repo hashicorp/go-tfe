@@ -67,6 +67,12 @@ type PolicySetVersionStatusTimestamps struct {
 	ErroredAt    time.Time `jsonapi:"attr,errored-at,rfc3339"`
 }
 
+type PolicySetIngressAttributes struct {
+	CommitSHA  string `jsonapi:"attr,commit-sha"`
+	CommitURL  string `jsonapi:"attr,commit-url"`
+	Identifier string `jsonapi:"attr,identifier"`
+}
+
 // PolicySetVersion represents a Terraform Enterprise Policy Set Version
 type PolicySetVersion struct {
 	ID                string                           `jsonapi:"primary,policy-set-versions"`
@@ -77,7 +83,7 @@ type PolicySetVersion struct {
 	ErrorMessage      string                           `jsonapi:"attr,error-message"`
 	CreatedAt         time.Time                        `jsonapi:"attr,created-at,iso8601"`
 	UpdatedAt         time.Time                        `jsonapi:"attr,updated-at,iso8601"`
-	IngressAttributes *IngressAttributes               `jsonapi:"attr,ingress-attributes"`
+	IngressAttributes *PolicySetIngressAttributes      `jsonapi:"attr,ingress-attributes"`
 
 	// Relations
 	PolicySet *PolicySet `jsonapi:"relation,policy-set"`

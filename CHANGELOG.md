@@ -1,5 +1,9 @@
 # Unreleased
 
+## Bug Fixes
+
+* Fixes `IngressAttributes` field decoding in `PolicySetVersion` by @rageshganeshkumar [#1164](https://github.com/hashicorp/go-tfe/pull/1164)
+
 ## Enhancements
 * Add support for querying and filtering private registry modules based on a search query, `provider`, `registry_name` and `organization_name`, by @gautambaghel [#1179](https://github.com/hashicorp/go-tfe/pull/1179) 
 * Adds support for `RegistryModule` VCS source_directory and tag_prefix options, by @jillrami [#1154] (https://github.com/hashicorp/go-tfe/pull/1154)
