@@ -69,18 +69,18 @@ type PolicySetVersionStatusTimestamps struct {
 
 // PolicySetVersion represents a Terraform Enterprise Policy Set Version
 type PolicySetVersion struct {
-	ID                string                           `jsonapi:"primary,policy-set-versions"`
-	Source            PolicySetVersionSource           `jsonapi:"attr,source"`
-	Status            PolicySetVersionStatus           `jsonapi:"attr,status"`
-	StatusTimestamps  PolicySetVersionStatusTimestamps `jsonapi:"attr,status-timestamps"`
-	Error             string                           `jsonapi:"attr,error"`
-	ErrorMessage      string                           `jsonapi:"attr,error-message"`
-	CreatedAt         time.Time                        `jsonapi:"attr,created-at,iso8601"`
-	UpdatedAt         time.Time                        `jsonapi:"attr,updated-at,iso8601"`
-	IngressAttributes *IngressAttributes               `jsonapi:"attr,ingress-attributes"`
+	ID               string                           `jsonapi:"primary,policy-set-versions"`
+	Source           PolicySetVersionSource           `jsonapi:"attr,source"`
+	Status           PolicySetVersionStatus           `jsonapi:"attr,status"`
+	StatusTimestamps PolicySetVersionStatusTimestamps `jsonapi:"attr,status-timestamps"`
+	Error            string                           `jsonapi:"attr,error"`
+	ErrorMessage     string                           `jsonapi:"attr,error-message"`
+	CreatedAt        time.Time                        `jsonapi:"attr,created-at,iso8601"`
+	UpdatedAt        time.Time                        `jsonapi:"attr,updated-at,iso8601"`
 
 	// Relations
-	PolicySet *PolicySet `jsonapi:"relation,policy-set"`
+	IngressAttributes *IngressAttributes `jsonapi:"relation,ingress-attributes"`
+	PolicySet         *PolicySet         `jsonapi:"relation,policy-set"`
 
 	// Links
 	Links map[string]interface{} `jsonapi:"links,omitempty"`

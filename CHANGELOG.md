@@ -1,5 +1,9 @@
 # Unreleased
 
+## Bug Fixes
+
+* Fixes `IngressAttributes` field in `PolicySetVersion` to use correct `relation` tag instead of `attr` tag for proper JSON:API compatibility by @rageshganeshkumar [#1164](https://github.com/hashicorp/go-tfe/pull/1164)
+
 ## Enhancements
 
 * Adds BETA support for reading, testing and updating Organization Audit Configuration by @glennsarti-hashi [#1151](https://github.com/hashicorp/go-tfe/pull/1151)
