@@ -9,7 +9,7 @@ import (
 type GcpOidcConfigurations interface {
 	Create(ctx context.Context, organization string, options GcpOidcConfigurationsCreateOptions) (*GcpOidcConfiguration, error)
 
-	Read(ctx context.Context, oidcID string, options *GcpOidcConfigurationsReadOptions) (*GcpOidcConfiguration, error)
+	Read(ctx context.Context, oidcID string) (*GcpOidcConfiguration, error)
 
 	Update(ctx context.Context, oidcID string, options GcpOidcConfigurationsUpdateOptions) (*GcpOidcConfiguration, error)
 
@@ -23,7 +23,7 @@ type gcpOidcConfigurations struct {
 var _ GcpOidcConfigurations = &gcpOidcConfigurations{}
 
 type GcpOidcConfiguration struct {
-	Type                 string `jsonapi:"primary,gcp-oidc-configurations"`
+	ID                   string `jsonapi:"primary,gcp-oidc-configurations"`
 	ServiceAccountEmail  string `jsonapi:"attr,service-account-email"`
 	ProjectNumber        string `jsonapi:"attr,project-number"`
 	WorkloadProviderName string `jsonapi:"attr,workload-provider-name"`
@@ -32,7 +32,7 @@ type GcpOidcConfiguration struct {
 }
 
 type GcpOidcConfigurationsCreateOptions struct {
-	Type                 string `jsonapi:"primary,gcp-oidc-configurations"`
+	ID                   string `jsonapi:"primary,gcp-oidc-configurations"`
 	ServiceAccountEmail  string `jsonapi:"attr,service-account-email"`
 	ProjectNumber        string `jsonapi:"attr,project-number"`
 	WorkloadProviderName string `jsonapi:"attr,workload-provider-name"`
@@ -40,21 +40,8 @@ type GcpOidcConfigurationsCreateOptions struct {
 	Organization *Organization `jsonapi:"relation,organization"`
 }
 
-type GcpOidcConfigurationsIncludeOpt string
-
-const (
-	GcpOidcConfigurationsIncludeOrganization            GcpOidcConfigurationsIncludeOpt = "organization"
-	GcpOidcConfigurationsIncludeProject                 GcpOidcConfigurationsIncludeOpt = "project"
-	GcpOidcConfigurationsIncludeLatestHyokConfiguration GcpOidcConfigurationsIncludeOpt = "latest_hyok_configuration"
-	GcpOidcConfigurationsIncludeHyokDiagnostics         GcpOidcConfigurationsIncludeOpt = "hyok_diagnostics"
-)
-
-type GcpOidcConfigurationsReadOptions struct {
-	Include []GcpOidcConfigurationsIncludeOpt `url:"include,omitempty"`
-}
-
 type GcpOidcConfigurationsUpdateOptions struct {
-	Type                 string `jsonapi:"primary,gcp-oidc-configurations"`
+	ID                   string `jsonapi:"primary,gcp-oidc-configurations"`
 	ServiceAccountEmail  string `jsonapi:"attr,service-account-email"`
 	ProjectNumber        string `jsonapi:"attr,project-number"`
 	WorkloadProviderName string `jsonapi:"attr,workload-provider-name"`
@@ -101,18 +88,8 @@ func (goc *gcpOidcConfigurations) Create(ctx context.Context, organization strin
 	return gcpOidcConfiguration, nil
 }
 
-func (o *GcpOidcConfigurationsReadOptions) valid() error {
-	return nil
-}
-
-func (goc *gcpOidcConfigurations) Read(ctx context.Context, oidcID string, options *GcpOidcConfigurationsReadOptions) (*GcpOidcConfiguration, error) {
-	if options != nil {
-		if err := options.valid(); err != nil {
-			return nil, err
-		}
-	}
-
-	req, err := goc.client.NewRequest("GET", fmt.Sprintf("oidc-configurations/%s", url.PathEscape(oidcID)), options)
+func (goc *gcpOidcConfigurations) Read(ctx context.Context, oidcID string) (*GcpOidcConfiguration, error) {
+	req, err := goc.client.NewRequest("GET", fmt.Sprintf("oidc-configurations/%s", url.PathEscape(oidcID)), nil)
 	if err != nil {
 		return nil, err
 	}

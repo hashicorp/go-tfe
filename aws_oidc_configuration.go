@@ -9,7 +9,7 @@ import (
 type AwsOidcConfigurations interface {
 	Create(ctx context.Context, organization string, options AwsOidcConfigurationsCreateOptions) (*AwsOidcConfiguration, error)
 
-	Read(ctx context.Context, hyokID string, options *AwsOidcConfigurationsReadOptions) (*AwsOidcConfiguration, error)
+	Read(ctx context.Context, hyokID string) (*AwsOidcConfiguration, error)
 
 	Update(ctx context.Context, hyokID string, options AwsOidcConfigurationsUpdateOptions) (*AwsOidcConfiguration, error)
 
@@ -23,34 +23,21 @@ type awsOidcConfigurations struct {
 var _ AwsOidcConfigurations = &awsOidcConfigurations{}
 
 type AwsOidcConfiguration struct {
-	Type    string `jsonapi:"primary,aws-oidc-configurations"`
+	ID      string `jsonapi:"primary,aws-oidc-configurations"`
 	RoleArn string `jsonapi:"attr,role-arn"`
 
 	Organization *Organization `jsonapi:"relation,organization"`
 }
 
 type AwsOidcConfigurationsCreateOptions struct {
-	Type    string `jsonapi:"primary,aws-oidc-configurations"`
+	ID      string `jsonapi:"primary,aws-oidc-configurations"`
 	RoleArn string `jsonapi:"attr,role-arn"`
 
 	Organization *Organization `jsonapi:"relation,organization"`
 }
 
-type AwsOidcConfigurationsIncludeOpt string
-
-const (
-	AwsOidcConfigurationsIncludeOrganization            AwsOidcConfigurationsIncludeOpt = "organization"
-	AwsOidcConfigurationsIncludeProject                 AwsOidcConfigurationsIncludeOpt = "project"
-	AwsOidcConfigurationsIncludeLatestHyokConfiguration AwsOidcConfigurationsIncludeOpt = "latest_hyok_configuration"
-	AwsOidcConfigurationsIncludeHyokDiagnostics         AwsOidcConfigurationsIncludeOpt = "hyok_diagnostics"
-)
-
-type AwsOidcConfigurationsReadOptions struct {
-	Include []AwsOidcConfigurationsIncludeOpt `url:"include,omitempty"`
-}
-
 type AwsOidcConfigurationsUpdateOptions struct {
-	Type    string `jsonapi:"primary,aws-oidc-configurations"`
+	ID      string `jsonapi:"primary,aws-oidc-configurations"`
 	RoleArn string `jsonapi:"attr,role-arn"`
 
 	Organization *Organization `jsonapi:"relation,organization"`
@@ -87,18 +74,8 @@ func (aoc *awsOidcConfigurations) Create(ctx context.Context, organization strin
 	return awsOidcConfiguration, nil
 }
 
-func (o *AwsOidcConfigurationsReadOptions) valid() error {
-	return nil
-}
-
-func (aoc *awsOidcConfigurations) Read(ctx context.Context, oidcID string, options *AwsOidcConfigurationsReadOptions) (*AwsOidcConfiguration, error) {
-	if options != nil {
-		if err := options.valid(); err != nil {
-			return nil, err
-		}
-	}
-
-	req, err := aoc.client.NewRequest("GET", fmt.Sprintf("oidc-configurations/%s", url.PathEscape(oidcID)), options)
+func (aoc *awsOidcConfigurations) Read(ctx context.Context, oidcID string) (*AwsOidcConfiguration, error) {
+	req, err := aoc.client.NewRequest("GET", fmt.Sprintf("oidc-configurations/%s", url.PathEscape(oidcID)), nil)
 	if err != nil {
 		return nil, err
 	}

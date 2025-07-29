@@ -9,7 +9,7 @@ import (
 type AzureOidcConfigurations interface {
 	Create(ctx context.Context, organization string, options AzureOidcConfigurationsCreateOptions) (*AzureOidcConfiguration, error)
 
-	Read(ctx context.Context, oidcID string, options *AzureOidcConfigurationsReadOptions) (*AzureOidcConfiguration, error)
+	Read(ctx context.Context, oidcID string) (*AzureOidcConfiguration, error)
 
 	Update(ctx context.Context, oidcID string, options AzureOidcConfigurationsUpdateOptions) (*AzureOidcConfiguration, error)
 
@@ -23,7 +23,7 @@ type azureOidcConfigurations struct {
 var _ AzureOidcConfigurations = &azureOidcConfigurations{}
 
 type AzureOidcConfiguration struct {
-	Type           string `jsonapi:"primary,azure-oidc-configurations"`
+	ID             string `jsonapi:"primary,azure-oidc-configurations"`
 	ClientID       string `jsonapi:"attr,client-id"`
 	SubscriptionID string `jsonapi:"attr,subscription-id"`
 	TenantID       string `jsonapi:"attr,tenant-id"`
@@ -32,7 +32,7 @@ type AzureOidcConfiguration struct {
 }
 
 type AzureOidcConfigurationsCreateOptions struct {
-	Type           string `jsonapi:"primary,azure-oidc-configurations"`
+	ID             string `jsonapi:"primary,azure-oidc-configurations"`
 	ClientID       string `jsonapi:"attr,client-id"`
 	SubscriptionID string `jsonapi:"attr,subscription-id"`
 	TenantID       string `jsonapi:"attr,tenant-id"`
@@ -40,21 +40,8 @@ type AzureOidcConfigurationsCreateOptions struct {
 	Organization *Organization `jsonapi:"relation,organization"`
 }
 
-type AzureOidcConfigurationsIncludeOpt string
-
-const (
-	AzureOidcConfigurationsIncludeOrganization            AzureOidcConfigurationsIncludeOpt = "organization"
-	AzureOidcConfigurationsIncludeProject                 AzureOidcConfigurationsIncludeOpt = "project"
-	AzureOidcConfigurationsIncludeLatestHyokConfiguration AzureOidcConfigurationsIncludeOpt = "latest_hyok_configuration"
-	AzureOidcConfigurationsIncludeHyokDiagnostics         AzureOidcConfigurationsIncludeOpt = "hyok_diagnostics"
-)
-
-type AzureOidcConfigurationsReadOptions struct {
-	Include []AzureOidcConfigurationsIncludeOpt `url:"include,omitempty"`
-}
-
 type AzureOidcConfigurationsUpdateOptions struct {
-	Type           string `jsonapi:"primary,azure-oidc-configurations"`
+	ID             string `jsonapi:"primary,azure-oidc-configurations"`
 	ClientID       string `jsonapi:"attr,client-id"`
 	SubscriptionID string `jsonapi:"attr,subscription-id"`
 	TenantID       string `jsonapi:"attr,tenant-id"`
@@ -101,18 +88,8 @@ func (aoc *azureOidcConfigurations) Create(ctx context.Context, organization str
 	return azureOidcConfiguration, nil
 }
 
-func (o *AzureOidcConfigurationsReadOptions) valid() error {
-	return nil
-}
-
-func (aoc *azureOidcConfigurations) Read(ctx context.Context, oidcID string, options *AzureOidcConfigurationsReadOptions) (*AzureOidcConfiguration, error) {
-	if options != nil {
-		if err := options.valid(); err != nil {
-			return nil, err
-		}
-	}
-
-	req, err := aoc.client.NewRequest("GET", fmt.Sprintf("oidc-configurations/%s", url.PathEscape(oidcID)), options)
+func (aoc *azureOidcConfigurations) Read(ctx context.Context, oidcID string) (*AzureOidcConfiguration, error) {
+	req, err := aoc.client.NewRequest("GET", fmt.Sprintf("oidc-configurations/%s", url.PathEscape(oidcID)), nil)
 	if err != nil {
 		return nil, err
 	}

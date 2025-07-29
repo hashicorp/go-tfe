@@ -242,6 +242,8 @@ var (
 	ErrInvalidDescriptionConflict = errors.New("invalid attributes\n\nValidation failed: Description has already been taken")
 
 	ErrInvalidOidc = errors.New("invalid value for OIDC configuration ID")
+
+	ErrInvalidHyok = errors.New("invalid value for HYOK configuration ID")
 )
 
 var (
@@ -425,4 +427,18 @@ var (
 	ErrRequiredJWTAuthPath = errors.New("auth_path is required for Vault OIDC configuration")
 
 	ErrRequiredTLSCACertificate = errors.New("encoded_cacert is required for Vault OIDC configuration")
+
+	ErrRequiredKekID = errors.New("kek-id is required for HYOK configuration")
+
+	ErrRequiredOIDCConfiguration = errors.New("oidc-configuration is required for HYOK configuration")
+
+	ErrRequiredAgentPool = errors.New("agent-pool is required for HYOK configuration")
+
+	ErrRequiredKMSOptions = errors.New("kms-options is required for HYOK configuration")
+
+	ErrRequiredKMSOptionsKeyRegion = errors.New("kms-options.key-region is required for HYOK configuration with AWS OIDC")
+
+	ErrRequiredKMSOptionsKeyLocation = errors.New("kms-options.key-location is required for HYOK configuration with GCP OIDC")
+
+	ErrRequiredKMSOptionsKeyRingID = errors.New("kms-options.key-ring-id is required for HYOK configuration with GCP OIDC")
 )
