@@ -17,7 +17,10 @@ import (
 type StackDeploymentSteps interface {
 	// List returns the stack deployment steps for a stack deployment run.
 	List(ctx context.Context, stackDeploymentRunID string, opts *StackDeploymentStepsListOptions) (*StackDeploymentStepList, error)
+	// Read returns a stack deployment step by its ID.
 	Read(ctx context.Context, stackDeploymentStepID string) (*StackDeploymentStep, error)
+	// Advance advances the stack deployment step when in the "pending_operator" state.
+	Advance(ctx context.Context, stackDeploymentStepID string) error
 }
 
 // StackDeploymentStep represents a step from a stack deployment
@@ -66,6 +69,7 @@ func (s stackDeploymentSteps) List(ctx context.Context, stackDeploymentRunID str
 	return &steps, nil
 }
 
+// Read returns a stack deployment step by its ID.
 func (s stackDeploymentSteps) Read(ctx context.Context, stackDeploymentStepID string) (*StackDeploymentStep, error) {
 	req, err := s.client.NewRequest("GET", fmt.Sprintf("stack-deployment-steps/%s", url.PathEscape(stackDeploymentStepID)), nil)
 	if err != nil {
@@ -79,4 +83,14 @@ func (s stackDeploymentSteps) Read(ctx context.Context, stackDeploymentStepID st
 	}
 
 	return &step, nil
+}
+
+// Advance advances the stack deployment step when in the "pending_operator" state.
+func (s stackDeploymentSteps) Advance(ctx context.Context, stackDeploymentStepID string) error {
+	req, err := s.client.NewRequest("POST", fmt.Sprintf("stack-deployment-steps/%s/advance", url.PathEscape(stackDeploymentStepID)), nil)
+	if err != nil {
+		return err
+	}
+
+	return req.Do(ctx, nil)
 }
