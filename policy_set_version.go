@@ -77,10 +77,10 @@ type PolicySetVersion struct {
 	ErrorMessage      string                           `jsonapi:"attr,error-message"`
 	CreatedAt         time.Time                        `jsonapi:"attr,created-at,iso8601"`
 	UpdatedAt         time.Time                        `jsonapi:"attr,updated-at,iso8601"`
-	IngressAttributes *IngressAttributes               `jsonapi:"attr,ingress-attributes"`
 
 	// Relations
-	PolicySet *PolicySet `jsonapi:"relation,policy-set"`
+	IngressAttributes *IngressAttributes `jsonapi:"relation,ingress-attributes"`
+	PolicySet         *PolicySet         `jsonapi:"relation,policy-set"`
 
 	// Links
 	Links map[string]interface{} `jsonapi:"links,omitempty"`
