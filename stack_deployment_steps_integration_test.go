@@ -162,3 +162,68 @@ func TestStackDeploymentStepsRead(t *testing.T) {
 		require.Error(t, err)
 	})
 }
+
+func TestStackDeploymentStepsAdvance(t *testing.T) {
+	skipUnlessBeta(t)
+
+	client := testClient(t)
+	ctx := context.Background()
+
+	orgTest, orgTestCleanup := createOrganization(t, client)
+	t.Cleanup(orgTestCleanup)
+
+	oauthClient, cleanup := createOAuthClient(t, client, orgTest, nil)
+	t.Cleanup(cleanup)
+
+	stack, err := client.Stacks.Create(ctx, StackCreateOptions{
+		Project: orgTest.DefaultProject,
+		Name:    "testing-stack",
+		VCSRepo: &StackVCSRepoOptions{
+			Identifier:   "hashicorp-guides/pet-nulls-stack",
+			OAuthTokenID: oauthClient.OAuthTokens[0].ID,
+			Branch:       "main",
+		},
+	})
+	require.NoError(t, err)
+	require.NotNil(t, stack)
+
+	stackUpdated, err := client.Stacks.UpdateConfiguration(ctx, stack.ID)
+	require.NoError(t, err)
+	require.NotNil(t, stackUpdated)
+
+	stack = pollStackDeployments(t, ctx, client, stackUpdated.ID)
+	require.NotNil(t, stack.LatestStackConfiguration)
+
+	stackDeploymentGroups, err := client.StackDeploymentGroups.List(ctx, stack.LatestStackConfiguration.ID, nil)
+	require.NoError(t, err)
+	require.NotEmpty(t, stackDeploymentGroups)
+
+	sdg := stackDeploymentGroups.Items[0]
+
+	stackDeploymentRuns, err := client.StackDeploymentRuns.List(ctx, sdg.ID, nil)
+	require.NoError(t, err)
+	require.NotEmpty(t, stackDeploymentRuns)
+
+	sdr := stackDeploymentRuns.Items[0]
+
+	steps, err := client.StackDeploymentSteps.List(ctx, sdr.ID, nil)
+	assert.NoError(t, err)
+	assert.NotEmpty(t, steps)
+
+	step := steps.Items[0]
+
+	t.Run("Advance with valid ID", func(t *testing.T) {
+		err := client.StackDeploymentSteps.Advance(ctx, step.ID)
+		assert.NoError(t, err)
+
+		// Verify that the step status has changed to "pending_operator"
+		sds, err := client.StackDeploymentSteps.Read(ctx, step.ID)
+		assert.NoError(t, err)
+		assert.Equal(t, "pending_operator", sds.Status)
+	})
+
+	t.Run("Advance with invalid ID", func(t *testing.T) {
+		err := client.StackDeploymentSteps.Advance(ctx, "")
+		require.Error(t, err)
+	})
+}
