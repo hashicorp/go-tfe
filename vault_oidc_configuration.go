@@ -6,23 +6,23 @@ import (
 	"net/url"
 )
 
-type VaultOidcConfigurations interface {
-	Create(ctx context.Context, organization string, options VaultOidcConfigurationsCreateOptions) (*VaultOidcConfiguration, error)
+type VaultOIDCConfigurations interface {
+	Create(ctx context.Context, organization string, options VaultOIDCConfigurationsCreateOptions) (*VaultOIDCConfiguration, error)
 
-	Read(ctx context.Context, oidcID string) (*VaultOidcConfiguration, error)
+	Read(ctx context.Context, oidcID string) (*VaultOIDCConfiguration, error)
 
-	Update(ctx context.Context, oidcID string, options VaultOidcConfigurationsUpdateOptions) (*VaultOidcConfiguration, error)
+	Update(ctx context.Context, oidcID string, options VaultOIDCConfigurationsUpdateOptions) (*VaultOIDCConfiguration, error)
 
 	Delete(ctx context.Context, oidcID string) error
 }
 
-type vaultOidcConfigurations struct {
+type vaultOIDCConfigurations struct {
 	client *Client
 }
 
-var _ VaultOidcConfigurations = &vaultOidcConfigurations{}
+var _ VaultOIDCConfigurations = &vaultOIDCConfigurations{}
 
-type VaultOidcConfiguration struct {
+type VaultOIDCConfiguration struct {
 	ID               string `jsonapi:"primary,vault-oidc-configurations"`
 	Address          string `jsonapi:"attr,address"`
 	RoleName         string `jsonapi:"attr,role"`
@@ -33,7 +33,7 @@ type VaultOidcConfiguration struct {
 	Organization *Organization `jsonapi:"relation,organization"`
 }
 
-type VaultOidcConfigurationsCreateOptions struct {
+type VaultOIDCConfigurationsCreateOptions struct {
 	ID               string `jsonapi:"primary,vault-oidc-configurations"`
 	Address          string `jsonapi:"attr,address"`
 	RoleName         string `jsonapi:"attr,role"`
@@ -44,7 +44,7 @@ type VaultOidcConfigurationsCreateOptions struct {
 	Organization *Organization `jsonapi:"relation,organization"`
 }
 
-type VaultOidcConfigurationsUpdateOptions struct {
+type VaultOIDCConfigurationsUpdateOptions struct {
 	ID               string `jsonapi:"primary,vault-oidc-configurations"`
 	Address          string `jsonapi:"attr,address"`
 	RoleName         string `jsonapi:"attr,role"`
@@ -55,7 +55,7 @@ type VaultOidcConfigurationsUpdateOptions struct {
 	Organization *Organization `jsonapi:"relation,organization"`
 }
 
-func (o *VaultOidcConfigurationsCreateOptions) valid() error {
+func (o *VaultOIDCConfigurationsCreateOptions) valid() error {
 	if o.Address == "" {
 		return ErrRequiredAddress
 	}
@@ -67,7 +67,7 @@ func (o *VaultOidcConfigurationsCreateOptions) valid() error {
 	return nil
 }
 
-func (voc *vaultOidcConfigurations) Create(ctx context.Context, organization string, options VaultOidcConfigurationsCreateOptions) (*VaultOidcConfiguration, error) {
+func (voc *vaultOIDCConfigurations) Create(ctx context.Context, organization string, options VaultOIDCConfigurationsCreateOptions) (*VaultOIDCConfiguration, error) {
 	if !validStringID(&organization) {
 		return nil, ErrInvalidOrg
 	}
@@ -81,31 +81,31 @@ func (voc *vaultOidcConfigurations) Create(ctx context.Context, organization str
 		return nil, err
 	}
 
-	vaultOidcConfiguration := &VaultOidcConfiguration{}
-	err = req.Do(ctx, vaultOidcConfiguration)
+	vaultOIDCConfiguration := &VaultOIDCConfiguration{}
+	err = req.Do(ctx, vaultOIDCConfiguration)
 	if err != nil {
 		return nil, err
 	}
 
-	return vaultOidcConfiguration, nil
+	return vaultOIDCConfiguration, nil
 }
 
-func (voc *vaultOidcConfigurations) Read(ctx context.Context, oidcID string) (*VaultOidcConfiguration, error) {
+func (voc *vaultOIDCConfigurations) Read(ctx context.Context, oidcID string) (*VaultOIDCConfiguration, error) {
 	req, err := voc.client.NewRequest("GET", fmt.Sprintf("oidc-configurations/%s", url.PathEscape(oidcID)), nil)
 	if err != nil {
 		return nil, err
 	}
 
-	vaultOidcConfiguration := &VaultOidcConfiguration{}
-	err = req.Do(ctx, vaultOidcConfiguration)
+	vaultOIDCConfiguration := &VaultOIDCConfiguration{}
+	err = req.Do(ctx, vaultOIDCConfiguration)
 	if err != nil {
 		return nil, err
 	}
 
-	return vaultOidcConfiguration, nil
+	return vaultOIDCConfiguration, nil
 }
 
-func (o *VaultOidcConfigurationsUpdateOptions) valid() error {
+func (o *VaultOIDCConfigurationsUpdateOptions) valid() error {
 	if o.Address == "" {
 		return ErrRequiredAddress
 	}
@@ -117,9 +117,9 @@ func (o *VaultOidcConfigurationsUpdateOptions) valid() error {
 	return nil
 }
 
-func (voc *vaultOidcConfigurations) Update(ctx context.Context, oidcID string, options VaultOidcConfigurationsUpdateOptions) (*VaultOidcConfiguration, error) {
+func (voc *vaultOIDCConfigurations) Update(ctx context.Context, oidcID string, options VaultOIDCConfigurationsUpdateOptions) (*VaultOIDCConfiguration, error) {
 	if !validStringID(&oidcID) {
-		return nil, ErrInvalidOidc
+		return nil, ErrInvalidOIDC
 	}
 
 	if err := options.valid(); err != nil {
@@ -131,18 +131,18 @@ func (voc *vaultOidcConfigurations) Update(ctx context.Context, oidcID string, o
 		return nil, err
 	}
 
-	vaultOidcConfiguration := &VaultOidcConfiguration{}
-	err = req.Do(ctx, vaultOidcConfiguration)
+	vaultOIDCConfiguration := &VaultOIDCConfiguration{}
+	err = req.Do(ctx, vaultOIDCConfiguration)
 	if err != nil {
 		return nil, err
 	}
 
-	return vaultOidcConfiguration, nil
+	return vaultOIDCConfiguration, nil
 }
 
-func (voc *vaultOidcConfigurations) Delete(ctx context.Context, oidcID string) error {
+func (voc *vaultOIDCConfigurations) Delete(ctx context.Context, oidcID string) error {
 	if !validStringID(&oidcID) {
-		return ErrInvalidOidc
+		return ErrInvalidOIDC
 	}
 
 	req, err := voc.client.NewRequest("DELETE", fmt.Sprintf("oidc-configurations/%s", url.PathEscape(oidcID)), nil)

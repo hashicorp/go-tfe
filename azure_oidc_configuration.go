@@ -6,23 +6,23 @@ import (
 	"net/url"
 )
 
-type AzureOidcConfigurations interface {
-	Create(ctx context.Context, organization string, options AzureOidcConfigurationsCreateOptions) (*AzureOidcConfiguration, error)
+type AzureOIDCConfigurations interface {
+	Create(ctx context.Context, organization string, options AzureOIDCConfigurationsCreateOptions) (*AzureOIDCConfiguration, error)
 
-	Read(ctx context.Context, oidcID string) (*AzureOidcConfiguration, error)
+	Read(ctx context.Context, oidcID string) (*AzureOIDCConfiguration, error)
 
-	Update(ctx context.Context, oidcID string, options AzureOidcConfigurationsUpdateOptions) (*AzureOidcConfiguration, error)
+	Update(ctx context.Context, oidcID string, options AzureOIDCConfigurationsUpdateOptions) (*AzureOIDCConfiguration, error)
 
 	Delete(ctx context.Context, oidcID string) error
 }
 
-type azureOidcConfigurations struct {
+type azureOIDCConfigurations struct {
 	client *Client
 }
 
-var _ AzureOidcConfigurations = &azureOidcConfigurations{}
+var _ AzureOIDCConfigurations = &azureOIDCConfigurations{}
 
-type AzureOidcConfiguration struct {
+type AzureOIDCConfiguration struct {
 	ID             string `jsonapi:"primary,azure-oidc-configurations"`
 	ClientID       string `jsonapi:"attr,client-id"`
 	SubscriptionID string `jsonapi:"attr,subscription-id"`
@@ -31,7 +31,7 @@ type AzureOidcConfiguration struct {
 	Organization *Organization `jsonapi:"relation,organization"`
 }
 
-type AzureOidcConfigurationsCreateOptions struct {
+type AzureOIDCConfigurationsCreateOptions struct {
 	ID             string `jsonapi:"primary,azure-oidc-configurations"`
 	ClientID       string `jsonapi:"attr,client-id"`
 	SubscriptionID string `jsonapi:"attr,subscription-id"`
@@ -40,7 +40,7 @@ type AzureOidcConfigurationsCreateOptions struct {
 	Organization *Organization `jsonapi:"relation,organization"`
 }
 
-type AzureOidcConfigurationsUpdateOptions struct {
+type AzureOIDCConfigurationsUpdateOptions struct {
 	ID             string `jsonapi:"primary,azure-oidc-configurations"`
 	ClientID       string `jsonapi:"attr,client-id"`
 	SubscriptionID string `jsonapi:"attr,subscription-id"`
@@ -49,7 +49,7 @@ type AzureOidcConfigurationsUpdateOptions struct {
 	Organization *Organization `jsonapi:"relation,organization"`
 }
 
-func (o *AzureOidcConfigurationsCreateOptions) valid() error {
+func (o *AzureOIDCConfigurationsCreateOptions) valid() error {
 	if o.ClientID == "" {
 		return ErrRequiredClientID
 	}
@@ -65,7 +65,7 @@ func (o *AzureOidcConfigurationsCreateOptions) valid() error {
 	return nil
 }
 
-func (aoc *azureOidcConfigurations) Create(ctx context.Context, organization string, options AzureOidcConfigurationsCreateOptions) (*AzureOidcConfiguration, error) {
+func (aoc *azureOIDCConfigurations) Create(ctx context.Context, organization string, options AzureOIDCConfigurationsCreateOptions) (*AzureOIDCConfiguration, error) {
 	if !validStringID(&organization) {
 		return nil, ErrInvalidOrg
 	}
@@ -79,31 +79,31 @@ func (aoc *azureOidcConfigurations) Create(ctx context.Context, organization str
 		return nil, err
 	}
 
-	azureOidcConfiguration := &AzureOidcConfiguration{}
-	err = req.Do(ctx, azureOidcConfiguration)
+	azureOIDCConfiguration := &AzureOIDCConfiguration{}
+	err = req.Do(ctx, azureOIDCConfiguration)
 	if err != nil {
 		return nil, err
 	}
 
-	return azureOidcConfiguration, nil
+	return azureOIDCConfiguration, nil
 }
 
-func (aoc *azureOidcConfigurations) Read(ctx context.Context, oidcID string) (*AzureOidcConfiguration, error) {
+func (aoc *azureOIDCConfigurations) Read(ctx context.Context, oidcID string) (*AzureOIDCConfiguration, error) {
 	req, err := aoc.client.NewRequest("GET", fmt.Sprintf("oidc-configurations/%s", url.PathEscape(oidcID)), nil)
 	if err != nil {
 		return nil, err
 	}
 
-	azureOidcConfiguration := &AzureOidcConfiguration{}
-	err = req.Do(ctx, azureOidcConfiguration)
+	azureOIDCConfiguration := &AzureOIDCConfiguration{}
+	err = req.Do(ctx, azureOIDCConfiguration)
 	if err != nil {
 		return nil, err
 	}
 
-	return azureOidcConfiguration, nil
+	return azureOIDCConfiguration, nil
 }
 
-func (o *AzureOidcConfigurationsUpdateOptions) valid() error {
+func (o *AzureOIDCConfigurationsUpdateOptions) valid() error {
 	if o.ClientID == "" {
 		return ErrRequiredClientID
 	}
@@ -119,9 +119,9 @@ func (o *AzureOidcConfigurationsUpdateOptions) valid() error {
 	return nil
 }
 
-func (aoc *azureOidcConfigurations) Update(ctx context.Context, oidcID string, options AzureOidcConfigurationsUpdateOptions) (*AzureOidcConfiguration, error) {
+func (aoc *azureOIDCConfigurations) Update(ctx context.Context, oidcID string, options AzureOIDCConfigurationsUpdateOptions) (*AzureOIDCConfiguration, error) {
 	if !validStringID(&oidcID) {
-		return nil, ErrInvalidOidc
+		return nil, ErrInvalidOIDC
 	}
 
 	if err := options.valid(); err != nil {
@@ -133,18 +133,18 @@ func (aoc *azureOidcConfigurations) Update(ctx context.Context, oidcID string, o
 		return nil, err
 	}
 
-	azureOidcConfiguration := &AzureOidcConfiguration{}
-	err = req.Do(ctx, azureOidcConfiguration)
+	azureOIDCConfiguration := &AzureOIDCConfiguration{}
+	err = req.Do(ctx, azureOIDCConfiguration)
 	if err != nil {
 		return nil, err
 	}
 
-	return azureOidcConfiguration, nil
+	return azureOIDCConfiguration, nil
 }
 
-func (aoc *azureOidcConfigurations) Delete(ctx context.Context, oidcID string) error {
+func (aoc *azureOIDCConfigurations) Delete(ctx context.Context, oidcID string) error {
 	if !validStringID(&oidcID) {
-		return ErrInvalidOidc
+		return ErrInvalidOIDC
 	}
 
 	req, err := aoc.client.NewRequest("DELETE", fmt.Sprintf("oidc-configurations/%s", url.PathEscape(oidcID)), nil)

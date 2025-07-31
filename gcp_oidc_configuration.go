@@ -6,23 +6,23 @@ import (
 	"net/url"
 )
 
-type GcpOidcConfigurations interface {
-	Create(ctx context.Context, organization string, options GcpOidcConfigurationsCreateOptions) (*GcpOidcConfiguration, error)
+type GCPOIDCConfigurations interface {
+	Create(ctx context.Context, organization string, options GCPOIDCConfigurationsCreateOptions) (*GcpOIDCConfiguration, error)
 
-	Read(ctx context.Context, oidcID string) (*GcpOidcConfiguration, error)
+	Read(ctx context.Context, oidcID string) (*GcpOIDCConfiguration, error)
 
-	Update(ctx context.Context, oidcID string, options GcpOidcConfigurationsUpdateOptions) (*GcpOidcConfiguration, error)
+	Update(ctx context.Context, oidcID string, options GCPOIDCConfigurationsUpdateOptions) (*GcpOIDCConfiguration, error)
 
 	Delete(ctx context.Context, oidcID string) error
 }
 
-type gcpOidcConfigurations struct {
+type gcpOIDCConfigurations struct {
 	client *Client
 }
 
-var _ GcpOidcConfigurations = &gcpOidcConfigurations{}
+var _ GCPOIDCConfigurations = &gcpOIDCConfigurations{}
 
-type GcpOidcConfiguration struct {
+type GcpOIDCConfiguration struct {
 	ID                   string `jsonapi:"primary,gcp-oidc-configurations"`
 	ServiceAccountEmail  string `jsonapi:"attr,service-account-email"`
 	ProjectNumber        string `jsonapi:"attr,project-number"`
@@ -31,7 +31,7 @@ type GcpOidcConfiguration struct {
 	Organization *Organization `jsonapi:"relation,organization"`
 }
 
-type GcpOidcConfigurationsCreateOptions struct {
+type GCPOIDCConfigurationsCreateOptions struct {
 	ID                   string `jsonapi:"primary,gcp-oidc-configurations"`
 	ServiceAccountEmail  string `jsonapi:"attr,service-account-email"`
 	ProjectNumber        string `jsonapi:"attr,project-number"`
@@ -40,7 +40,7 @@ type GcpOidcConfigurationsCreateOptions struct {
 	Organization *Organization `jsonapi:"relation,organization"`
 }
 
-type GcpOidcConfigurationsUpdateOptions struct {
+type GCPOIDCConfigurationsUpdateOptions struct {
 	ID                   string `jsonapi:"primary,gcp-oidc-configurations"`
 	ServiceAccountEmail  string `jsonapi:"attr,service-account-email"`
 	ProjectNumber        string `jsonapi:"attr,project-number"`
@@ -49,7 +49,7 @@ type GcpOidcConfigurationsUpdateOptions struct {
 	Organization *Organization `jsonapi:"relation,organization"`
 }
 
-func (o *GcpOidcConfigurationsCreateOptions) valid() error {
+func (o *GCPOIDCConfigurationsCreateOptions) valid() error {
 	if o.ServiceAccountEmail == "" {
 		return ErrRequiredServiceAccountEmail
 	}
@@ -65,7 +65,7 @@ func (o *GcpOidcConfigurationsCreateOptions) valid() error {
 	return nil
 }
 
-func (goc *gcpOidcConfigurations) Create(ctx context.Context, organization string, options GcpOidcConfigurationsCreateOptions) (*GcpOidcConfiguration, error) {
+func (goc *gcpOIDCConfigurations) Create(ctx context.Context, organization string, options GCPOIDCConfigurationsCreateOptions) (*GcpOIDCConfiguration, error) {
 	if !validStringID(&organization) {
 		return nil, ErrInvalidOrg
 	}
@@ -79,31 +79,31 @@ func (goc *gcpOidcConfigurations) Create(ctx context.Context, organization strin
 		return nil, err
 	}
 
-	gcpOidcConfiguration := &GcpOidcConfiguration{}
-	err = req.Do(ctx, gcpOidcConfiguration)
+	gcpOIDCConfiguration := &GcpOIDCConfiguration{}
+	err = req.Do(ctx, gcpOIDCConfiguration)
 	if err != nil {
 		return nil, err
 	}
 
-	return gcpOidcConfiguration, nil
+	return gcpOIDCConfiguration, nil
 }
 
-func (goc *gcpOidcConfigurations) Read(ctx context.Context, oidcID string) (*GcpOidcConfiguration, error) {
+func (goc *gcpOIDCConfigurations) Read(ctx context.Context, oidcID string) (*GcpOIDCConfiguration, error) {
 	req, err := goc.client.NewRequest("GET", fmt.Sprintf("oidc-configurations/%s", url.PathEscape(oidcID)), nil)
 	if err != nil {
 		return nil, err
 	}
 
-	gcpOidcConfiguration := &GcpOidcConfiguration{}
-	err = req.Do(ctx, gcpOidcConfiguration)
+	gcpOIDCConfiguration := &GcpOIDCConfiguration{}
+	err = req.Do(ctx, gcpOIDCConfiguration)
 	if err != nil {
 		return nil, err
 	}
 
-	return gcpOidcConfiguration, nil
+	return gcpOIDCConfiguration, nil
 }
 
-func (o *GcpOidcConfigurationsUpdateOptions) valid() error {
+func (o *GCPOIDCConfigurationsUpdateOptions) valid() error {
 	if o.ServiceAccountEmail == "" {
 		return ErrRequiredServiceAccountEmail
 	}
@@ -119,9 +119,9 @@ func (o *GcpOidcConfigurationsUpdateOptions) valid() error {
 	return nil
 }
 
-func (goc *gcpOidcConfigurations) Update(ctx context.Context, oidcID string, options GcpOidcConfigurationsUpdateOptions) (*GcpOidcConfiguration, error) {
+func (goc *gcpOIDCConfigurations) Update(ctx context.Context, oidcID string, options GCPOIDCConfigurationsUpdateOptions) (*GcpOIDCConfiguration, error) {
 	if !validStringID(&oidcID) {
-		return nil, ErrInvalidOidc
+		return nil, ErrInvalidOIDC
 	}
 
 	if err := options.valid(); err != nil {
@@ -133,18 +133,18 @@ func (goc *gcpOidcConfigurations) Update(ctx context.Context, oidcID string, opt
 		return nil, err
 	}
 
-	gcpOidcConfiguration := &GcpOidcConfiguration{}
-	err = req.Do(ctx, gcpOidcConfiguration)
+	gcpOIDCConfiguration := &GcpOIDCConfiguration{}
+	err = req.Do(ctx, gcpOIDCConfiguration)
 	if err != nil {
 		return nil, err
 	}
 
-	return gcpOidcConfiguration, nil
+	return gcpOIDCConfiguration, nil
 }
 
-func (goc *gcpOidcConfigurations) Delete(ctx context.Context, oidcID string) error {
+func (goc *gcpOIDCConfigurations) Delete(ctx context.Context, oidcID string) error {
 	if !validStringID(&oidcID) {
-		return ErrInvalidOidc
+		return ErrInvalidOIDC
 	}
 
 	req, err := goc.client.NewRequest("DELETE", fmt.Sprintf("oidc-configurations/%s", url.PathEscape(oidcID)), nil)

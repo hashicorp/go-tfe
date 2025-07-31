@@ -6,52 +6,52 @@ import (
 	"net/url"
 )
 
-type AwsOidcConfigurations interface {
-	Create(ctx context.Context, organization string, options AwsOidcConfigurationsCreateOptions) (*AwsOidcConfiguration, error)
+type AWSOIDCConfigurations interface {
+	Create(ctx context.Context, organization string, options AWSOIDCConfigurationsCreateOptions) (*AWSOIDCConfiguration, error)
 
-	Read(ctx context.Context, hyokID string) (*AwsOidcConfiguration, error)
+	Read(ctx context.Context, hyokID string) (*AWSOIDCConfiguration, error)
 
-	Update(ctx context.Context, hyokID string, options AwsOidcConfigurationsUpdateOptions) (*AwsOidcConfiguration, error)
+	Update(ctx context.Context, hyokID string, options AWSOIDCConfigurationsUpdateOptions) (*AWSOIDCConfiguration, error)
 
 	Delete(ctx context.Context, oidcID string) error
 }
 
-type awsOidcConfigurations struct {
+type awsOIDCConfigurations struct {
 	client *Client
 }
 
-var _ AwsOidcConfigurations = &awsOidcConfigurations{}
+var _ AWSOIDCConfigurations = &awsOIDCConfigurations{}
 
-type AwsOidcConfiguration struct {
+type AWSOIDCConfiguration struct {
 	ID      string `jsonapi:"primary,aws-oidc-configurations"`
-	RoleArn string `jsonapi:"attr,role-arn"`
+	RoleARN string `jsonapi:"attr,role-arn"`
 
 	Organization *Organization `jsonapi:"relation,organization"`
 }
 
-type AwsOidcConfigurationsCreateOptions struct {
+type AWSOIDCConfigurationsCreateOptions struct {
 	ID      string `jsonapi:"primary,aws-oidc-configurations"`
-	RoleArn string `jsonapi:"attr,role-arn"`
+	RoleARN string `jsonapi:"attr,role-arn"`
 
 	Organization *Organization `jsonapi:"relation,organization"`
 }
 
-type AwsOidcConfigurationsUpdateOptions struct {
+type AWSOIDCConfigurationsUpdateOptions struct {
 	ID      string `jsonapi:"primary,aws-oidc-configurations"`
-	RoleArn string `jsonapi:"attr,role-arn"`
+	RoleARN string `jsonapi:"attr,role-arn"`
 
 	Organization *Organization `jsonapi:"relation,organization"`
 }
 
-func (o *AwsOidcConfigurationsCreateOptions) valid() error {
-	if o.RoleArn == "" {
-		return ErrRequiredRoleArn
+func (o *AWSOIDCConfigurationsCreateOptions) valid() error {
+	if o.RoleARN == "" {
+		return ErrRequiredRoleARN
 	}
 
 	return nil
 }
 
-func (aoc *awsOidcConfigurations) Create(ctx context.Context, organization string, options AwsOidcConfigurationsCreateOptions) (*AwsOidcConfiguration, error) {
+func (aoc *awsOIDCConfigurations) Create(ctx context.Context, organization string, options AWSOIDCConfigurationsCreateOptions) (*AWSOIDCConfiguration, error) {
 	if !validStringID(&organization) {
 		return nil, ErrInvalidOrg
 	}
@@ -65,41 +65,41 @@ func (aoc *awsOidcConfigurations) Create(ctx context.Context, organization strin
 		return nil, err
 	}
 
-	awsOidcConfiguration := &AwsOidcConfiguration{}
-	err = req.Do(ctx, awsOidcConfiguration)
+	awsOIDCConfiguration := &AWSOIDCConfiguration{}
+	err = req.Do(ctx, awsOIDCConfiguration)
 	if err != nil {
 		return nil, err
 	}
 
-	return awsOidcConfiguration, nil
+	return awsOIDCConfiguration, nil
 }
 
-func (aoc *awsOidcConfigurations) Read(ctx context.Context, oidcID string) (*AwsOidcConfiguration, error) {
+func (aoc *awsOIDCConfigurations) Read(ctx context.Context, oidcID string) (*AWSOIDCConfiguration, error) {
 	req, err := aoc.client.NewRequest("GET", fmt.Sprintf("oidc-configurations/%s", url.PathEscape(oidcID)), nil)
 	if err != nil {
 		return nil, err
 	}
 
-	awsOidcConfiguration := &AwsOidcConfiguration{}
-	err = req.Do(ctx, awsOidcConfiguration)
+	awsOIDCConfiguration := &AWSOIDCConfiguration{}
+	err = req.Do(ctx, awsOIDCConfiguration)
 	if err != nil {
 		return nil, err
 	}
 
-	return awsOidcConfiguration, nil
+	return awsOIDCConfiguration, nil
 }
 
-func (o *AwsOidcConfigurationsUpdateOptions) valid() error {
-	if o.RoleArn == "" {
-		return ErrRequiredRoleArn
+func (o *AWSOIDCConfigurationsUpdateOptions) valid() error {
+	if o.RoleARN == "" {
+		return ErrRequiredRoleARN
 	}
 
 	return nil
 }
 
-func (aoc *awsOidcConfigurations) Update(ctx context.Context, oidcID string, options AwsOidcConfigurationsUpdateOptions) (*AwsOidcConfiguration, error) {
+func (aoc *awsOIDCConfigurations) Update(ctx context.Context, oidcID string, options AWSOIDCConfigurationsUpdateOptions) (*AWSOIDCConfiguration, error) {
 	if !validStringID(&oidcID) {
-		return nil, ErrInvalidOidc
+		return nil, ErrInvalidOIDC
 	}
 
 	if err := options.valid(); err != nil {
@@ -111,18 +111,18 @@ func (aoc *awsOidcConfigurations) Update(ctx context.Context, oidcID string, opt
 		return nil, err
 	}
 
-	awsOidcConfiguration := &AwsOidcConfiguration{}
-	err = req.Do(ctx, awsOidcConfiguration)
+	awsOIDCConfiguration := &AWSOIDCConfiguration{}
+	err = req.Do(ctx, awsOIDCConfiguration)
 	if err != nil {
 		return nil, err
 	}
 
-	return awsOidcConfiguration, nil
+	return awsOIDCConfiguration, nil
 }
 
-func (aoc *awsOidcConfigurations) Delete(ctx context.Context, oidcID string) error {
+func (aoc *awsOIDCConfigurations) Delete(ctx context.Context, oidcID string) error {
 	if !validStringID(&oidcID) {
-		return ErrInvalidOidc
+		return ErrInvalidOIDC
 	}
 
 	req, err := aoc.client.NewRequest("DELETE", fmt.Sprintf("oidc-configurations/%s", url.PathEscape(oidcID)), nil)
