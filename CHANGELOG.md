@@ -1,5 +1,8 @@
 # Unreleased
 
+## Enhancements
+* Add the `UploadUrl` attribute to the `StackDeploymentStep` struct to support the deployment step GET endpoint by @shwetamurali [#1167](https://github.com/hashicorp/go-tfe/pull/1167)
+
 # v1.88.0
 
 ## Enhancements
