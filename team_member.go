@@ -203,7 +203,7 @@ func (s *teamMembers) Remove(ctx context.Context, teamID string, options TeamMem
 // kind returns "users" or "organization-memberships"
 // depending on which is defined
 func (o *TeamMemberAddOptions) kind() string {
-	if o.Usernames != nil && len(o.Usernames) != 0 {
+	if len(o.Usernames) != 0 {
 		return "users"
 	}
 	return "organization-memberships"
@@ -212,7 +212,7 @@ func (o *TeamMemberAddOptions) kind() string {
 // kind returns "users" or "organization-memberships"
 // depending on which is defined
 func (o *TeamMemberRemoveOptions) kind() string {
-	if o.Usernames != nil && len(o.Usernames) != 0 {
+	if len(o.Usernames) != 0 {
 		return "users"
 	}
 	return "organization-memberships"
