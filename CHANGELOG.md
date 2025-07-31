@@ -61,6 +61,7 @@
 * Adds `PrivateRunTasks` field to Entitlements by @glennsarti [#944](https://github.com/hashicorp/go-tfe/pull/944)
 * Adds `AgentPool` relationship to options when creating and updating Run Tasks by @glennsarti [#944](https://github.com/hashicorp/go-tfe/pull/944)
 
+* Add support for querying and filtering private registry modules based on `provider`, `registry_name` and `organization_name`, by @sharathrnair87 [#850](https://github.com/hashicorp/go-tfe/pull/850) 
 # v1.82.0
 
 ## Enhancements
