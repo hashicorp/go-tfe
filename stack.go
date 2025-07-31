@@ -131,6 +131,8 @@ type StackConfiguration struct {
 	ErrorMessage         *string                             `jsonapi:"attr,error-message"`
 	EventStreamURL       string                              `jsonapi:"attr,event-stream-url"`
 	Diagnostics          []*StackDiagnostic                  `jsonapi:"attr,diags"`
+	CreatedAt            time.Time                           `jsonapi:"attr,created-at,iso8601"`
+	UpdatedAt            time.Time                           `jsonapi:"attr,updated-at,iso8601"`
 
 	Stack *Stack `jsonapi:"relation,stack"`
 }
