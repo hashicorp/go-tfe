@@ -1,9 +1,12 @@
 # Unreleased
 
+# v1.88.0
+
 ## Enhancements
 
 * Adds BETA support for reading, testing and updating Organization Audit Configuration by @glennsarti-hashi [#1151](https://github.com/hashicorp/go-tfe/pull/1151)
 * Adds `Completed` status to `StackConfiguration` by @hwatkins05-hashicorp [#1163](https://github.com/hashicorp/go-tfe/pull/1163)
+* Adds `CreatedAt` and `UpdatedAt` fields to `StackConfiguration` by @Maed223 [#1168](https://github.com/hashicorp/go-tfe/pull/1168)
 * Adds endpoint for advancing `StackDeploymentStep` by @hwatkins05-hashicorp [#1166](https://github.com/hashicorp/go-tfe/pull/1166)
 
 # v1.87.0
