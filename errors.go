@@ -241,9 +241,9 @@ var (
 
 	ErrInvalidDescriptionConflict = errors.New("invalid attributes\n\nValidation failed: Description has already been taken")
 
-	ErrInvalidOidc = errors.New("invalid value for OIDC configuration ID")
+	ErrInvalidOIDC = errors.New("invalid value for OIDC configuration ID")
 
-	ErrInvalidHyok = errors.New("invalid value for HYOK configuration ID")
+	ErrInvalidHYOK = errors.New("invalid value for HYOK configuration ID")
 )
 
 var (
@@ -406,7 +406,7 @@ var (
 
 	ErrStateVersionUploadNotSupported = errors.New("upload not supported by this version of Terraform Enterprise")
 
-	ErrRequiredRoleArn = errors.New("role-arn is required for AWS OIDC configuration")
+	ErrRequiredRoleARN = errors.New("role-arn is required for AWS OIDC configuration")
 
 	ErrRequiredServiceAccountEmail = errors.New("service-account-email is required for GCP OIDC configuration")
 
@@ -429,6 +429,8 @@ var (
 	ErrRequiredTLSCACertificate = errors.New("encoded_cacert is required for Vault OIDC configuration")
 
 	ErrRequiredKekID = errors.New("kek-id is required for HYOK configuration")
+
+	ErrRequiredHYOKConfiguration = errors.New("hyok-configuration is required for HYOK configuration")
 
 	ErrRequiredOIDCConfiguration = errors.New("oidc-configuration is required for HYOK configuration")
 

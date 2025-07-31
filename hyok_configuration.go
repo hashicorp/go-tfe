@@ -6,16 +6,16 @@ import (
 	"net/url"
 )
 
-type HyokConfigurations interface {
-	List(ctx context.Context, organization string, options *HyokConfigurationsListOptions) (*HyokConfigurationsList, error)
+type HYOKConfigurations interface {
+	List(ctx context.Context, organization string, options *HYOKConfigurationsListOptions) (*HYOKConfigurationsList, error)
 
-	TestUnpersisted(ctx context.Context, organization string) error
+	TestUnpersisted(ctx context.Context, organization string, options *HYOKConfigurationsTestOptions) error
 
-	Create(ctx context.Context, organization string, options HyokConfigurationsCreateOptions) (*HyokConfiguration, error)
+	Create(ctx context.Context, organization string, options HYOKConfigurationsCreateOptions) (*HYOKConfiguration, error)
 
-	Read(ctx context.Context, hyokID string, options *HyokConfigurationsReadOptions) (*HyokConfiguration, error)
+	Read(ctx context.Context, hyokID string, options *HYOKConfigurationsReadOptions) (*HYOKConfiguration, error)
 
-	Update(ctx context.Context, hyokID string, options HyokConfigurationsUpdateOptions) (*HyokConfiguration, error)
+	Update(ctx context.Context, hyokID string, options HYOKConfigurationsUpdateOptions) (*HYOKConfiguration, error)
 
 	Delete(ctx context.Context, hyokID string) error
 
@@ -28,32 +28,34 @@ type hyokConfigurations struct {
 	client *Client
 }
 
-var _ HyokConfigurations = &hyokConfigurations{}
+var _ HYOKConfigurations = &hyokConfigurations{}
 
-type OidcConfigurationChoice struct {
-	AwsOidcConfiguration   *AwsOidcConfiguration
-	GcpOidcConfiguration   *GcpOidcConfiguration
-	AzureOidcConfiguration *AzureOidcConfiguration
-	VaultOidcConfiguration *VaultOidcConfiguration
+type OIDCConfigurationChoice struct {
+	AWSOIDCConfiguration   *AWSOIDCConfiguration
+	GcpOIDCConfiguration   *GcpOIDCConfiguration
+	AzureOIDCConfiguration *AzureOIDCConfiguration
+	VaultOIDCConfiguration *VaultOIDCConfiguration
 }
 
 type KMSOptions struct {
-	KeyRegion   string `jsonapi:"attr,key-region,omitempty"`   // AWS KMS
-	KeyLocation string `jsonapi:"attr,key-location,omitempty"` // GCP KMS
-	KeyRingID   string `jsonapi:"attr,key-ring-id,omitempty"`  // GCP KMS
+	// AWS
+	KeyRegion string `jsonapi:"attr,key-region,omitempty"`
+	// GCP
+	KeyLocation string `jsonapi:"attr,key-location,omitempty"`
+	KeyRingID   string `jsonapi:"attr,key-ring-id,omitempty"`
 }
 
-type HyokConfigurationsCustomerKeyVersion struct {
+type HYOKConfigurationsCustomerKeyVersion struct {
 	ID   string `jsonapi:"primary,hyok-customer-key-versions"`
 	Type string `jsonapi:"attr,type"`
 }
 
-type HyokConfiguration struct {
+type HYOKConfiguration struct {
 	ID string `jsonapi:"primary,hyok-configurations"`
 
 	// Attributes
 	KekID      string      `jsonapi:"attr,kek-id"`
-	KMSOptions *KMSOptions `jsonapi:"attr,kms-options"`
+	KMSOptions *KMSOptions `jsonapi:"attr,kms-options,omitempty"`
 	Name       string      `jsonapi:"attr,name"`
 	Primary    bool        `jsonapi:"attr,primary"`
 	Status     string      `jsonapi:"attr,status"`
@@ -61,51 +63,56 @@ type HyokConfiguration struct {
 
 	// Relationships
 	Organization      *Organization            `jsonapi:"relation,organization"`
-	OidcConfiguration *OidcConfigurationChoice `jsonapi:"polyrelation,oidc-configuration"`
+	OIDCConfiguration *OIDCConfigurationChoice `jsonapi:"polyrelation,oidc-configuration"`
 	AgentPool         *AgentPool               `jsonapi:"relation,agent-pool"`
 }
 
-type HyokConfigurationsList struct {
+type HYOKConfigurationsList struct {
 	*Pagination
-	Items []*HyokConfiguration
+	Items []*HYOKConfiguration
 }
 
-type HyokConfigurationsSortColumn string
+type HYOKConfigurationsSortColumn string
 
 const (
-	// HyokConfigurationSortByName sorts by the name attribute.
-	HyokConfigurationSortByName HyokConfigurationsSortColumn = "name"
+	// HYOKConfigurationSortByName sorts by the name attribute.
+	HYOKConfigurationSortByName HYOKConfigurationsSortColumn = "name"
 
-	// HyokConfigurationSortByUpdatedAt sorts by the updated-at attribute.
-	HyokConfigurationSortByUpdatedAt HyokConfigurationsSortColumn = "updated-at"
+	// HYOKConfigurationSortByUpdatedAt sorts by the updated-at attribute.
+	HYOKConfigurationSortByUpdatedAt HYOKConfigurationsSortColumn = "updated-at"
 
-	// HyokConfigurationSortByNameDesc sorts by the name attribute in descending order.
-	HyokConfigurationSortByNameDesc HyokConfigurationsSortColumn = "-name"
+	// HYOKConfigurationSortByNameDesc sorts by the name attribute in descending order.
+	HYOKConfigurationSortByNameDesc HYOKConfigurationsSortColumn = "-name"
 
-	// HyokConfigurationSortByUpdatedAtDesc sorts by the updated-at attribute in descending order.
-	HyokConfigurationSortByUpdatedAtDesc HyokConfigurationsSortColumn = "-updated-at"
+	// HYOKConfigurationSortByUpdatedAtDesc sorts by the updated-at attribute in descending order.
+	HYOKConfigurationSortByUpdatedAtDesc HYOKConfigurationsSortColumn = "-updated-at"
 )
 
-type HyokConfigurationsIncludeOpt string
+type HYOKConfigurationsIncludeOpt string
 
 const (
-	HyokConfigurationsIncludeHyokCustomerKeyVersions HyokConfigurationsIncludeOpt = "hyok_customer_key_versions"
-	HyokConfigurationsIncludeOidcCconfiguration      HyokConfigurationsIncludeOpt = "oidc_configuration"
+	HYOKConfigurationsIncludeHYOKCustomerKeyVersions HYOKConfigurationsIncludeOpt = "hyok_customer_key_versions"
+	HYOKConfigurationsIncludeOIDCCconfiguration      HYOKConfigurationsIncludeOpt = "oidc_configuration"
 )
 
-type HyokConfigurationsListOptions struct {
+type HYOKConfigurationsListOptions struct {
 	ListOptions
 	ProjectID    string                         `url:"filter[project[id]],omitempty"`
-	Sort         HyokConfigurationsSortColumn   `url:"sort,omitempty"`
+	Sort         HYOKConfigurationsSortColumn   `url:"sort,omitempty"`
 	SearchByName string                         `url:"search[name],omitempty"`
-	Include      []HyokConfigurationsIncludeOpt `url:"include,omitempty"`
+	Include      []HYOKConfigurationsIncludeOpt `url:"include,omitempty"`
 }
 
-type HyokConfigurationsReadOptions struct {
-	Include []HyokConfigurationsIncludeOpt `url:"include,omitempty"`
+type HYOKConfigurationsTestOptions struct {
+	HYOKConfiguration *HYOKConfiguration       `jsonapi:"relation,hyok-configuration"`
+	OIDCConfiguration *OIDCConfigurationChoice `jsonapi:"polyrelation,oidc-configuration"`
 }
 
-type HyokConfigurationsCreateOptions struct {
+type HYOKConfigurationsReadOptions struct {
+	Include []HYOKConfigurationsIncludeOpt `url:"include,omitempty"`
+}
+
+type HYOKConfigurationsCreateOptions struct {
 	ID   string `jsonapi:"primary,hyok-configurations"`
 	Type string `jsonapi:"attr,type"`
 
@@ -119,11 +126,11 @@ type HyokConfigurationsCreateOptions struct {
 
 	// Relationships
 	Organization      *Organization            `jsonapi:"relation,organization"`
-	OidcConfiguration *OidcConfigurationChoice `jsonapi:"polyrelation,oidc-configuration"`
+	OIDCConfiguration *OIDCConfigurationChoice `jsonapi:"polyrelation,oidc-configuration"`
 	AgentPool         *AgentPool               `jsonapi:"relation,agent-pool"`
 }
 
-type HyokConfigurationsUpdateOptions struct {
+type HYOKConfigurationsUpdateOptions struct {
 	ID   string `jsonapi:"primary,hyok-configurations"`
 	Type string `jsonapi:"attr,type"`
 
@@ -137,15 +144,15 @@ type HyokConfigurationsUpdateOptions struct {
 
 	// Relationships
 	Organization      *Organization            `jsonapi:"relation,organization"`
-	OidcConfiguration *OidcConfigurationChoice `jsonapi:"polyrelation,oidc-configuration"`
+	OIDCConfiguration *OIDCConfigurationChoice `jsonapi:"polyrelation,oidc-configuration"`
 	AgentPool         *AgentPool               `jsonapi:"relation,agent-pool"`
 }
 
-func (h *HyokConfigurationsListOptions) valid() error {
+func (h *HYOKConfigurationsListOptions) valid() error {
 	return nil
 }
 
-func (h hyokConfigurations) List(ctx context.Context, organization string, options *HyokConfigurationsListOptions) (*HyokConfigurationsList, error) {
+func (h hyokConfigurations) List(ctx context.Context, organization string, options *HYOKConfigurationsListOptions) (*HYOKConfigurationsList, error) {
 	if !validStringID(&organization) {
 		return nil, ErrInvalidOrg
 	}
@@ -159,7 +166,7 @@ func (h hyokConfigurations) List(ctx context.Context, organization string, optio
 		return nil, err
 	}
 
-	hyokConfigurationList := &HyokConfigurationsList{}
+	hyokConfigurationList := &HYOKConfigurationsList{}
 	err = req.Do(ctx, hyokConfigurationList)
 	if err != nil {
 		return nil, err
@@ -168,12 +175,28 @@ func (h hyokConfigurations) List(ctx context.Context, organization string, optio
 	return hyokConfigurationList, nil
 }
 
-func (h hyokConfigurations) TestUnpersisted(ctx context.Context, organization string) error {
+func (h *HYOKConfigurationsTestOptions) valid() error {
+	if h.HYOKConfiguration == nil {
+		return ErrRequiredHYOKConfiguration
+	}
+
+	if h.OIDCConfiguration == nil {
+		return ErrRequiredOIDCConfiguration
+	}
+
+	return nil
+}
+
+func (h hyokConfigurations) TestUnpersisted(ctx context.Context, organization string, options *HYOKConfigurationsTestOptions) error {
 	if !validStringID(&organization) {
 		return ErrInvalidOrg
 	}
 
-	req, err := h.client.NewRequest("POST", fmt.Sprintf("organizations/%s/hyok-configurations/test", organization), nil)
+	if err := options.valid(); err != nil {
+		return err
+	}
+
+	req, err := h.client.NewRequest("POST", fmt.Sprintf("organizations/%s/hyok-configurations/test", organization), options)
 	if err != nil {
 		return err
 	}
@@ -181,13 +204,13 @@ func (h hyokConfigurations) TestUnpersisted(ctx context.Context, organization st
 	return req.Do(ctx, nil)
 }
 
-func (h *HyokConfigurationsReadOptions) valid() error {
+func (h *HYOKConfigurationsReadOptions) valid() error {
 	return nil
 }
 
-func (h hyokConfigurations) Read(ctx context.Context, hyokID string, options *HyokConfigurationsReadOptions) (*HyokConfiguration, error) {
+func (h hyokConfigurations) Read(ctx context.Context, hyokID string, options *HYOKConfigurationsReadOptions) (*HYOKConfiguration, error) {
 	if !validStringID(&hyokID) {
-		return nil, ErrInvalidHyok
+		return nil, ErrInvalidHYOK
 	}
 
 	if err := options.valid(); err != nil {
@@ -199,7 +222,7 @@ func (h hyokConfigurations) Read(ctx context.Context, hyokID string, options *Hy
 		return nil, err
 	}
 
-	hyokConfiguration := &HyokConfiguration{}
+	hyokConfiguration := &HYOKConfiguration{}
 	err = req.Do(ctx, hyokConfiguration)
 	if err != nil {
 		return nil, err
@@ -208,7 +231,7 @@ func (h hyokConfigurations) Read(ctx context.Context, hyokID string, options *Hy
 	return hyokConfiguration, nil
 }
 
-func (h *HyokConfigurationsCreateOptions) valid() error {
+func (h *HYOKConfigurationsCreateOptions) valid() error {
 	if h.KekID == "" {
 		return ErrRequiredKekID
 	}
@@ -217,7 +240,7 @@ func (h *HyokConfigurationsCreateOptions) valid() error {
 		return ErrRequiredName
 	}
 
-	if h.OidcConfiguration == nil {
+	if h.OIDCConfiguration == nil {
 		return ErrRequiredOIDCConfiguration
 	}
 
@@ -225,7 +248,7 @@ func (h *HyokConfigurationsCreateOptions) valid() error {
 		return ErrRequiredAgentPool
 	}
 
-	if h.OidcConfiguration.AwsOidcConfiguration != nil {
+	if h.OIDCConfiguration.AWSOIDCConfiguration != nil {
 		if h.KMSOptions == nil {
 			return ErrRequiredKMSOptions
 		}
@@ -235,7 +258,7 @@ func (h *HyokConfigurationsCreateOptions) valid() error {
 		}
 	}
 
-	if h.OidcConfiguration.GcpOidcConfiguration != nil {
+	if h.OIDCConfiguration.GcpOIDCConfiguration != nil {
 		if h.KMSOptions == nil {
 			return ErrRequiredKMSOptions
 		}
@@ -252,7 +275,7 @@ func (h *HyokConfigurationsCreateOptions) valid() error {
 	return nil
 }
 
-func (h hyokConfigurations) Create(ctx context.Context, organization string, options HyokConfigurationsCreateOptions) (*HyokConfiguration, error) {
+func (h hyokConfigurations) Create(ctx context.Context, organization string, options HYOKConfigurationsCreateOptions) (*HYOKConfiguration, error) {
 	if !validStringID(&organization) {
 		return nil, ErrInvalidOrg
 	}
@@ -266,7 +289,7 @@ func (h hyokConfigurations) Create(ctx context.Context, organization string, opt
 		return nil, err
 	}
 
-	hyokConfiguration := &HyokConfiguration{}
+	hyokConfiguration := &HYOKConfiguration{}
 	err = req.Do(ctx, hyokConfiguration)
 	if err != nil {
 		return nil, err
@@ -275,13 +298,13 @@ func (h hyokConfigurations) Create(ctx context.Context, organization string, opt
 	return hyokConfiguration, nil
 }
 
-func (h *HyokConfigurationsUpdateOptions) valid() error {
+func (h *HYOKConfigurationsUpdateOptions) valid() error {
 	return nil
 }
 
-func (h hyokConfigurations) Update(ctx context.Context, hyokID string, options HyokConfigurationsUpdateOptions) (*HyokConfiguration, error) {
+func (h hyokConfigurations) Update(ctx context.Context, hyokID string, options HYOKConfigurationsUpdateOptions) (*HYOKConfiguration, error) {
 	if !validStringID(&hyokID) {
-		return nil, ErrInvalidHyok
+		return nil, ErrInvalidHYOK
 	}
 
 	if err := options.valid(); err != nil {
@@ -293,7 +316,7 @@ func (h hyokConfigurations) Update(ctx context.Context, hyokID string, options H
 		return nil, err
 	}
 
-	hyokConfiguration := &HyokConfiguration{}
+	hyokConfiguration := &HYOKConfiguration{}
 	err = req.Do(ctx, hyokConfiguration)
 	if err != nil {
 		return nil, err
@@ -304,7 +327,7 @@ func (h hyokConfigurations) Update(ctx context.Context, hyokID string, options H
 
 func (h hyokConfigurations) Delete(ctx context.Context, hyokID string) error {
 	if !validStringID(&hyokID) {
-		return ErrInvalidHyok
+		return ErrInvalidHYOK
 	}
 
 	req, err := h.client.NewRequest("DELETE", fmt.Sprintf("hyok-configurations/%s", url.PathEscape(hyokID)), nil)
@@ -317,7 +340,7 @@ func (h hyokConfigurations) Delete(ctx context.Context, hyokID string) error {
 
 func (h hyokConfigurations) Test(ctx context.Context, hyokID string) error {
 	if !validStringID(&hyokID) {
-		return ErrInvalidHyok
+		return ErrInvalidHYOK
 	}
 
 	req, err := h.client.NewRequest("POST", fmt.Sprintf("hyok-configurations/%s/actions/test", url.PathEscape(hyokID)), nil)
@@ -330,7 +353,7 @@ func (h hyokConfigurations) Test(ctx context.Context, hyokID string) error {
 
 func (h hyokConfigurations) Revoke(ctx context.Context, hyokID string) error {
 	if !validStringID(&hyokID) {
-		return ErrInvalidHyok
+		return ErrInvalidHYOK
 	}
 
 	req, err := h.client.NewRequest("POST", fmt.Sprintf("hyok-configurations/%s/actions/revoke", url.PathEscape(hyokID)), nil)
