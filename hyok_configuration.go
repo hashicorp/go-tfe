@@ -129,12 +129,12 @@ type HYOKConfigurationsCreateOptions struct {
 	Type string `jsonapi:"attr,type"`
 
 	// Attributes
-	KekID      string      `jsonapi:"attr,kek-id"`
-	KMSOptions *KMSOptions `jsonapi:"attr,kms-options"`
-	Name       string      `jsonapi:"attr,name"`
-	Primary    bool        `jsonapi:"attr,primary"`
-	Status     string      `jsonapi:"attr,status"`
-	Error      *string     `jsonapi:"attr,error"`
+	KekID      string                  `jsonapi:"attr,kek-id"`
+	KMSOptions *KMSOptions             `jsonapi:"attr,kms-options"`
+	Name       string                  `jsonapi:"attr,name"`
+	Primary    bool                    `jsonapi:"attr,primary"`
+	Status     HYOKConfigurationStatus `jsonapi:"attr,status"`
+	Error      *string                 `jsonapi:"attr,error"`
 
 	// Relationships
 	Organization      *Organization            `jsonapi:"relation,organization"`
@@ -147,12 +147,12 @@ type HYOKConfigurationsUpdateOptions struct {
 	Type string `jsonapi:"attr,type"`
 
 	// Attributes
-	KekID      string      `jsonapi:"attr,kek-id"`
-	KMSOptions *KMSOptions `jsonapi:"attr,kms-options"`
-	Name       string      `jsonapi:"attr,name"`
-	Primary    bool        `jsonapi:"attr,primary"`
-	Status     string      `jsonapi:"attr,status"`
-	Error      *string     `jsonapi:"attr,error"`
+	KekID      string                  `jsonapi:"attr,kek-id"`
+	KMSOptions *KMSOptions             `jsonapi:"attr,kms-options"`
+	Name       string                  `jsonapi:"attr,name"`
+	Primary    bool                    `jsonapi:"attr,primary"`
+	Status     HYOKConfigurationStatus `jsonapi:"attr,status"`
+	Error      *string                 `jsonapi:"attr,error"`
 
 	// Relationships
 	Organization      *Organization            `jsonapi:"relation,organization"`
