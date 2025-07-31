@@ -30,6 +30,18 @@ type hyokConfigurations struct {
 
 var _ HYOKConfigurations = &hyokConfigurations{}
 
+type HYOKConfigurationStatus string
+
+const (
+	HYOKConfigurationUntested   HYOKConfigurationStatus = "untested"
+	HYOKConfigurationTesting    HYOKConfigurationStatus = "testing"
+	HYOKConfigurationTestFailed HYOKConfigurationStatus = "test_failed"
+	HYOKConfigurationAvailable  HYOKConfigurationStatus = "available"
+	HYOKConfigurationErrored    HYOKConfigurationStatus = "errored"
+	HYOKConfigurationRevoking   HYOKConfigurationStatus = "revoking"
+	HYOKConfigurationRevoked    HYOKConfigurationStatus = "revoked"
+)
+
 type OIDCConfigurationChoice struct {
 	AWSOIDCConfiguration   *AWSOIDCConfiguration
 	GcpOIDCConfiguration   *GcpOIDCConfiguration
@@ -54,12 +66,12 @@ type HYOKConfiguration struct {
 	ID string `jsonapi:"primary,hyok-configurations"`
 
 	// Attributes
-	KekID      string      `jsonapi:"attr,kek-id"`
-	KMSOptions *KMSOptions `jsonapi:"attr,kms-options,omitempty"`
-	Name       string      `jsonapi:"attr,name"`
-	Primary    bool        `jsonapi:"attr,primary"`
-	Status     string      `jsonapi:"attr,status"`
-	Error      *string     `jsonapi:"attr,error"`
+	KekID      string                  `jsonapi:"attr,kek-id"`
+	KMSOptions *KMSOptions             `jsonapi:"attr,kms-options,omitempty"`
+	Name       string                  `jsonapi:"attr,name"`
+	Primary    bool                    `jsonapi:"attr,primary"`
+	Status     HYOKConfigurationStatus `jsonapi:"attr,status"`
+	Error      *string                 `jsonapi:"attr,error"`
 
 	// Relationships
 	Organization      *Organization            `jsonapi:"relation,organization"`
