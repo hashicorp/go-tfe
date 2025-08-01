@@ -167,7 +167,7 @@ func validateAdminRunFilterParams(runStatus string) error {
 				string(RunApplying),
 				string(RunCanceled),
 				string(RunConfirmed),
-				string(RunCostEstimate),
+				string(RunCostEstimated),
 				string(RunCostEstimating),
 				string(RunDiscarded),
 				string(RunErrored),
