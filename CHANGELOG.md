@@ -7,6 +7,7 @@
 * Adds BETA support for reading, testing and updating Organization Audit Configuration by @glennsarti-hashi [#1151](https://github.com/hashicorp/go-tfe/pull/1151)
 * Adds `Completed` status to `StackConfiguration` by @hwatkins05-hashicorp [#1163](https://github.com/hashicorp/go-tfe/pull/1163)
 * Adds `CreatedAt` and `UpdatedAt` fields to `StackConfiguration` by @Maed223 [#1168](https://github.com/hashicorp/go-tfe/pull/1168)
+* Bug fix for RunStatus value `"cost_estimate"` by @KenCox-Hashicorp [#1169](https://github.com/hashicorp/go-tfe/pull/1169)
 
 # v1.87.0
 
