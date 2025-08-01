@@ -11,6 +11,9 @@
 * Adds `CreatedAt` and `UpdatedAt` fields to `StackConfiguration` by @Maed223 [#1168](https://github.com/hashicorp/go-tfe/pull/1168)
 * Adds endpoint for advancing `StackDeploymentStep` by @hwatkins05-hashicorp [#1166](https://github.com/hashicorp/go-tfe/pull/1166)
 
+## Bug Fixes
+* Fixes issue [1061](https://github.com/hashicorp/go-tfe/issues/1061), validation accepts all RunStatus including `"cost_estimated"` by @KenCox-Hashicorp [#1171](https://github.com/hashicorp/go-tfe/pull/1171)
+
 # v1.88.0
 
 ## Enhancements
