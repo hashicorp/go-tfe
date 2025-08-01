@@ -6,6 +6,7 @@ package tfe
 import (
 	"context"
 	"testing"
+	"time"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
@@ -211,19 +212,54 @@ func TestStackDeploymentStepsAdvance(t *testing.T) {
 	assert.NotEmpty(t, steps)
 
 	step := steps.Items[0]
+	step = pollStackDeploymentStepStatus(t, ctx, client, step.ID, "pending_operator")
+	require.NotNil(t, step)
 
 	t.Run("Advance with valid ID", func(t *testing.T) {
 		err := client.StackDeploymentSteps.Advance(ctx, step.ID)
 		assert.NoError(t, err)
 
-		// Verify that the step status has changed to "pending_operator"
+		// Verify that the step status has changed to "completed"
 		sds, err := client.StackDeploymentSteps.Read(ctx, step.ID)
 		assert.NoError(t, err)
-		assert.Equal(t, "pending_operator", sds.Status)
+		assert.Equal(t, "completed", sds.Status)
 	})
 
 	t.Run("Advance with invalid ID", func(t *testing.T) {
 		err := client.StackDeploymentSteps.Advance(ctx, "")
 		require.Error(t, err)
 	})
+}
+
+func pollStackDeploymentStepStatus(t *testing.T, ctx context.Context, client *Client, stackDeploymentStepID, status string) (deploymentStep *StackDeploymentStep) {
+	// pollStackDeploymentStepStatus will poll the given stack deployment step until its status changes or the deadline is reached.
+	ctx, cancel := context.WithDeadline(ctx, time.Now().Add(5*time.Minute))
+	defer cancel()
+
+	deadline, _ := ctx.Deadline()
+	t.Logf("Polling stack deployment step %q for change in status with deadline of %s", stackDeploymentStepID, deadline)
+
+	ticker := time.NewTicker(2 * time.Second)
+	defer ticker.Stop()
+
+	var err error
+	for finished := false; !finished; {
+		t.Log("...")
+		select {
+		case <-ctx.Done():
+			t.Fatalf("Stack deployment step %s did not have status %q at deadline", stackDeploymentStepID, status)
+		case <-ticker.C:
+			deploymentStep, err = client.StackDeploymentSteps.Read(ctx, stackDeploymentStepID)
+			if err != nil {
+				t.Fatalf("Failed to read stack deployment step %s: %s", stackDeploymentStepID, err)
+			}
+
+			t.Logf("Stack deployment step %s had status %q", deploymentStep.ID, deploymentStep.Status)
+			if deploymentStep.Status == status {
+				finished = true
+			}
+		}
+	}
+
+	return
 }
