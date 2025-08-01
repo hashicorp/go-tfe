@@ -8,6 +8,9 @@
 * Adds `Completed` status to `StackConfiguration` by @hwatkins05-hashicorp [#1163](https://github.com/hashicorp/go-tfe/pull/1163)
 * Adds `CreatedAt` and `UpdatedAt` fields to `StackConfiguration` by @Maed223 [#1168](https://github.com/hashicorp/go-tfe/pull/1168)
 
+## Bug Fixes
+* Fixes issue [1061](https://github.com/hashicorp/go-tfe/issues/1061), RunStatus value `"cost_estimated"` by @KenCox-Hashicorp [#1171](https://github.com/hashicorp/go-tfe/pull/1171)
+
 # v1.87.0
 
 ## Bug Fixes
