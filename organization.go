@@ -258,6 +258,9 @@ type OrganizationCreateOptions struct {
 	// Optional: StacksEnabled toggles whether stacks are enabled for the organization. This setting
 	// is considered BETA, SUBJECT TO CHANGE, and likely unavailable to most users.
 	StacksEnabled *bool `jsonapi:"attr,stacks-enabled,omitempty"`
+
+	// Optional: RegistryMonorepoSupportEnabled toggles whether monorepo support is enabled for the organization
+	RegistryMonorepoSupportEnabled *bool `jsonapi:"attr,registry-monorepo-support-enabled,omitempty"`
 }
 
 // OrganizationUpdateOptions represents the options for updating an organization.
@@ -313,6 +316,9 @@ type OrganizationUpdateOptions struct {
 	// Optional: StacksEnabled toggles whether stacks are enabled for the organization. This setting
 	// is considered BETA, SUBJECT TO CHANGE, and likely unavailable to most users.
 	StacksEnabled *bool `jsonapi:"attr,stacks-enabled,omitempty"`
+
+	// Optional: RegistryMonorepoSupportEnabled toggles whether monorepo support is enabled for the organization
+	RegistryMonorepoSupportEnabled *bool `jsonapi:"attr,registry-monorepo-support-enabled,omitempty"`
 }
 
 // ReadRunQueueOptions represents the options for showing the queue.
