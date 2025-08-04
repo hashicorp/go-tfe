@@ -9,8 +9,6 @@ import (
 type HYOKConfigurations interface {
 	List(ctx context.Context, organization string, options *HYOKConfigurationsListOptions) (*HYOKConfigurationsList, error)
 
-	TestUnpersisted(ctx context.Context, organization string, options *HYOKConfigurationsTestOptions) error
-
 	Create(ctx context.Context, organization string, options HYOKConfigurationsCreateOptions) (*HYOKConfiguration, error)
 
 	Read(ctx context.Context, hyokID string, options *HYOKConfigurationsReadOptions) (*HYOKConfiguration, error)
@@ -115,18 +113,12 @@ type HYOKConfigurationsListOptions struct {
 	Include      []HYOKConfigurationsIncludeOpt `url:"include,omitempty"`
 }
 
-type HYOKConfigurationsTestOptions struct {
-	HYOKConfiguration *HYOKConfiguration       `jsonapi:"relation,hyok-configuration"`
-	OIDCConfiguration *OIDCConfigurationChoice `jsonapi:"polyrelation,oidc-configuration"`
-}
-
 type HYOKConfigurationsReadOptions struct {
 	Include []HYOKConfigurationsIncludeOpt `url:"include,omitempty"`
 }
 
 type HYOKConfigurationsCreateOptions struct {
-	ID   string `jsonapi:"primary,hyok-configurations"`
-	Type string `jsonapi:"attr,type"`
+	ID string `jsonapi:"primary,hyok-configurations"`
 
 	// Attributes
 	KekID      string                  `jsonapi:"attr,kek-id"`
@@ -143,8 +135,7 @@ type HYOKConfigurationsCreateOptions struct {
 }
 
 type HYOKConfigurationsUpdateOptions struct {
-	ID   string `jsonapi:"primary,hyok-configurations"`
-	Type string `jsonapi:"attr,type"`
+	ID string `jsonapi:"primary,hyok-configurations"`
 
 	// Attributes
 	KekID      string                  `jsonapi:"attr,kek-id"`
@@ -185,35 +176,6 @@ func (h hyokConfigurations) List(ctx context.Context, organization string, optio
 	}
 
 	return hyokConfigurationList, nil
-}
-
-func (h *HYOKConfigurationsTestOptions) valid() error {
-	if h.HYOKConfiguration == nil {
-		return ErrRequiredHYOKConfiguration
-	}
-
-	if h.OIDCConfiguration == nil {
-		return ErrRequiredOIDCConfiguration
-	}
-
-	return nil
-}
-
-func (h hyokConfigurations) TestUnpersisted(ctx context.Context, organization string, options *HYOKConfigurationsTestOptions) error {
-	if !validStringID(&organization) {
-		return ErrInvalidOrg
-	}
-
-	if err := options.valid(); err != nil {
-		return err
-	}
-
-	req, err := h.client.NewRequest("POST", fmt.Sprintf("organizations/%s/hyok-configurations/test", organization), options)
-	if err != nil {
-		return err
-	}
-
-	return req.Do(ctx, nil)
 }
 
 func (h *HYOKConfigurationsReadOptions) valid() error {
