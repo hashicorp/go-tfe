@@ -307,7 +307,7 @@ func pollStackDeployments(t *testing.T, ctx context.Context, client *Client, sta
 	defer cancel()
 
 	deadline, _ := ctx.Deadline()
-	t.Logf("Polling stack %q for deployments with deadline of %s", stackID, deadline)
+	t.Logf("Polling stack %q for deployment groups with deadline of %s", stackID, deadline)
 
 	ticker := time.NewTicker(2 * time.Second)
 	defer ticker.Stop()
@@ -316,16 +316,22 @@ func pollStackDeployments(t *testing.T, ctx context.Context, client *Client, sta
 		t.Log("...")
 		select {
 		case <-ctx.Done():
-			t.Fatalf("Stack %q had no deployments at deadline", stackID)
+			t.Fatalf("Stack %q had no deployment groups at deadline", stackID)
 		case <-ticker.C:
 			var err error
-			stack, err = client.Stacks.Read(ctx, stackID, nil)
+			stack, err = client.Stacks.Read(ctx, stackID, &StackReadOptions{
+				Include: []StackIncludeOpt{StackIncludeLatestStackConfiguration},
+			})
 			if err != nil {
 				t.Fatalf("Failed to read stack %q: %s", stackID, err)
 			}
+			groups, err := client.StackDeploymentGroups.List(ctx, stack.LatestStackConfiguration.ID, nil)
+			if err != nil {
+				t.Fatalf("Failed to read deployment groups %q: %s", stackID, err)
+			}
 
-			t.Logf("Stack %q had %d deployments", stack.ID, len(stack.DeploymentNames))
-			if len(stack.DeploymentNames) > 0 {
+			t.Logf("Stack %q had %d deployment groups", stack.ID, len(stack.DeploymentNames))
+			if groups.TotalCount > 0 {
 				finished = true
 			}
 		}
