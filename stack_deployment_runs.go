@@ -17,6 +17,7 @@ type StackDeploymentRuns interface {
 	Read(ctx context.Context, stackDeploymentRunID string) (*StackDeploymentRun, error)
 	ReadWithOptions(ctx context.Context, stackDeploymentRunID string, options *StackDeploymentRunReadOptions) (*StackDeploymentRun, error)
 	ApproveAllPlans(ctx context.Context, deploymentRunID string) error
+	Cancel(ctx context.Context, stackDeploymentRunID string) error
 }
 
 // stackDeploymentRuns implements StackDeploymentRuns.
@@ -113,6 +114,15 @@ func (s stackDeploymentRuns) ReadWithOptions(ctx context.Context, stackDeploymen
 
 func (s stackDeploymentRuns) ApproveAllPlans(ctx context.Context, stackDeploymentRunID string) error {
 	req, err := s.client.NewRequest("POST", fmt.Sprintf("stack-deployment-runs/%s/approve-all-plans", url.PathEscape(stackDeploymentRunID)), nil)
+	if err != nil {
+		return err
+	}
+
+	return req.Do(ctx, nil)
+}
+
+func (s stackDeploymentRuns) Cancel(ctx context.Context, stackDeploymentRunID string) error {
+	req, err := s.client.NewRequest("POST", fmt.Sprintf("stack-deployment-runs/%s/cancel", url.PathEscape(stackDeploymentRunID)), nil)
 	if err != nil {
 		return err
 	}

@@ -2,6 +2,7 @@
 
 ## Enhancements
 * Add the `Links` attribute to the `StackDeploymentStep` struct to support the deployment step GET endpoint by @shwetamurali [#1167](https://github.com/h)
+* Adds endpoint for cancelling `StackDeploymentRun` by @Maed223 [#1172](https://github.com/hashicorp/go-tfe/pull/1172)
 
 # v1.88.0
 
