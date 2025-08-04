@@ -1,7 +1,7 @@
 # Unreleased
 
 ## Enhancements
-* Add the `UploadURL` attribute to the `StackDeploymentStep` struct to support the deployment step GET endpoint by @shwetamurali [#1167](https://github.com/h)
+* Add the `Links` attribute to the `StackDeploymentStep` struct to support the deployment step GET endpoint by @shwetamurali [#1167](https://github.com/h)
 
 # v1.88.0
 

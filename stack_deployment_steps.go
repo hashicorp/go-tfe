@@ -29,7 +29,7 @@ type StackDeploymentStep struct {
 	UpdatedAt time.Time `jsonapi:"attr,created-at,iso8601"`
 
 	// Links
-	UploadURL string `jsonapi:"links,upload-url,omitempty"`
+	Links map[string]interface{} `jsonapi:"links,omitempty"`
 
 	// Relationships
 	StackDeploymentRun *StackDeploymentRun `jsonapi:"relation,stack-deployment-run"`
