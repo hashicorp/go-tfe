@@ -157,12 +157,12 @@ func TestStackDeploymentStepsRead(t *testing.T) {
 		assert.NotEmpty(t, sds.Status)
 	})
 
-	t.Run("Read UploadUrl field serialization", func(t *testing.T) {
+	t.Run("Read UploadURL field serialization", func(t *testing.T) {
 		sds, err := client.StackDeploymentSteps.Read(ctx, step.ID)
 		assert.NoError(t, err)
 		assert.NotNil(t, sds)
 
-		assert.IsType(t, "", sds.UploadUrl)
+		assert.IsType(t, "", sds.UploadURL)
 	})
 
 	t.Run("Read with invalid ID", func(t *testing.T) {
