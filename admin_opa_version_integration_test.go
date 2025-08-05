@@ -335,7 +335,6 @@ func TestAdminOPAVersions_ReadUpdate(t *testing.T) {
 		assert.Equal(t, opts.Archs[0].Sha, ov.Archs[0].Sha)
 		assert.Equal(t, opts.Archs[0].OS, ov.Archs[0].OS)
 		assert.Equal(t, opts.Archs[0].Arch, ov.Archs[0].Arch)
-
 	})
 
 	t.Run("update with Archs", func(t *testing.T) {
