@@ -61,6 +61,7 @@ func TestAdminTerraformVersions_List(t *testing.T) {
 			assert.NotNil(t, item.Beta)
 			assert.NotNil(t, item.Usage)
 			assert.NotNil(t, item.CreatedAt)
+			assert.NotNil(t, item.Archs)
 		}
 	})
 
