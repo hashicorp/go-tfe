@@ -339,6 +339,60 @@ func TestAdminSentinelVersions_ReadUpdate(t *testing.T) {
 		assert.Equal(t, opts.Archs[0].Arch, sv.Archs[0].Arch)
 	})
 
+	t.Run("update with Archs", func(t *testing.T) {
+		version := createAdminSentinelVersion()
+		sha := String(genSha(t))
+		opts := AdminSentinelVersionCreateOptions{
+			Version:          *String(version),
+			URL:              *String("https://www.hashicorp.com"),
+			SHA:              *String(genSha(t)),
+			Official:         Bool(false),
+			Deprecated:       Bool(true),
+			DeprecatedReason: String("Test Reason"),
+			Enabled:          Bool(false),
+			Beta:             Bool(false),
+			Archs: []*ToolVersionArchitecture{{
+				URL:  "https://www.hashicorp.com",
+				Sha:  *sha,
+				OS:   linux,
+				Arch: amd64,
+			}},
+		}
+		sv, err := client.Admin.SentinelVersions.Create(ctx, opts)
+		require.NoError(t, err)
+		id := sv.ID
+
+		defer func() {
+			deleteErr := client.Admin.SentinelVersions.Delete(ctx, id)
+			require.NoError(t, deleteErr)
+		}()
+
+		updateArchOpts := AdminSentinelVersionUpdateOptions{
+			Archs: []*ToolVersionArchitecture{{
+				URL:  "https://www.hashicorp.com",
+				Sha:  *sha,
+				OS:   linux,
+				Arch: arm64,
+			}},
+		}
+
+		sv, err = client.Admin.SentinelVersions.Update(ctx, id, updateArchOpts)
+		require.NoError(t, err)
+
+		assert.Equal(t, opts.Version, sv.Version)
+		assert.Equal(t, "", sv.URL)
+		assert.Equal(t, "", sv.SHA)
+		assert.Equal(t, *opts.Official, sv.Official)
+		assert.Equal(t, *opts.Deprecated, sv.Deprecated)
+		assert.Equal(t, *opts.Enabled, sv.Enabled)
+		assert.Equal(t, *opts.Beta, sv.Beta)
+		assert.Equal(t, len(sv.Archs), 1)
+		assert.Equal(t, updateArchOpts.Archs[0].URL, sv.Archs[0].URL)
+		assert.Equal(t, updateArchOpts.Archs[0].Sha, sv.Archs[0].Sha)
+		assert.Equal(t, updateArchOpts.Archs[0].OS, sv.Archs[0].OS)
+		assert.Equal(t, updateArchOpts.Archs[0].Arch, sv.Archs[0].Arch)
+	})
+
 	t.Run("with non-existent Sentinel version", func(t *testing.T) {
 		randomID := "random-id"
 		_, err := client.Admin.SentinelVersions.Read(ctx, randomID)

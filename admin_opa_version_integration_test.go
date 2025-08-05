@@ -369,7 +369,7 @@ func TestAdminOPAVersions_ReadUpdate(t *testing.T) {
 				URL:  "https://www.hashicorp.com",
 				Sha:  *sha,
 				OS:   linux,
-				Arch: amd64,
+				Arch: arm64,
 			}},
 		}
 
@@ -377,8 +377,8 @@ func TestAdminOPAVersions_ReadUpdate(t *testing.T) {
 		require.NoError(t, err)
 
 		assert.Equal(t, opts.Version, ov.Version)
-		assert.Equal(t, updateArchOpts.Archs[0].URL, ov.URL)
-		assert.Equal(t, updateArchOpts.Archs[0].Sha, ov.SHA)
+		assert.Equal(t, "", ov.URL)
+		assert.Equal(t, "", ov.SHA)
 		assert.Equal(t, *opts.Official, ov.Official)
 		assert.Equal(t, *opts.Deprecated, ov.Deprecated)
 		assert.Equal(t, *opts.Enabled, ov.Enabled)
