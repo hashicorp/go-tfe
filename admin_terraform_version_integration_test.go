@@ -354,27 +354,30 @@ func TestAdminTerraformVersions_ReadUpdate(t *testing.T) {
 			require.NoError(t, deleteErr)
 		}()
 
-		updateVersion := genSafeRandomTerraformVersion()
 		updateArchOpts := AdminTerraformVersionUpdateOptions{
-			Version:    String(updateVersion),
-			Deprecated: Bool(false),
 			Archs: []*ToolVersionArchitecture{{
 				URL:  "https://www.hashicorp.com",
 				Sha:  *sha,
 				OS:   linux,
-				Arch: amd64,
+				Arch: arm64,
 			}},
 		}
 
 		tfv, err = client.Admin.TerraformVersions.Update(ctx, id, updateArchOpts)
 		require.NoError(t, err)
 
+		assert.Equal(t, *opts.Version, tfv.Version)
+		assert.Equal(t, "", tfv.URL)
+		assert.Equal(t, "", tfv.Sha)
+		assert.Equal(t, *opts.Official, tfv.Official)
+		assert.Equal(t, *opts.Deprecated, tfv.Deprecated)
+		assert.Equal(t, *opts.Enabled, tfv.Enabled)
+		assert.Equal(t, *opts.Beta, tfv.Beta)
 		assert.Equal(t, len(tfv.Archs), 1)
 		assert.Equal(t, updateArchOpts.Archs[0].URL, tfv.Archs[0].URL)
 		assert.Equal(t, updateArchOpts.Archs[0].Sha, tfv.Archs[0].Sha)
 		assert.Equal(t, updateArchOpts.Archs[0].OS, tfv.Archs[0].OS)
 		assert.Equal(t, updateArchOpts.Archs[0].Arch, tfv.Archs[0].Arch)
-		assert.Equal(t, updateVersion, tfv.Version)
 	})
 
 	t.Run("with non-existent terraform version", func(t *testing.T) {
