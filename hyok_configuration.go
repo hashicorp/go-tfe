@@ -55,11 +55,6 @@ type KMSOptions struct {
 	KeyRingID   string `jsonapi:"attr,key-ring-id,omitempty"`
 }
 
-type HYOKConfigurationsCustomerKeyVersion struct {
-	ID   string `jsonapi:"primary,hyok-customer-key-versions"`
-	Type string `jsonapi:"attr,type"`
-}
-
 type HYOKConfiguration struct {
 	ID string `jsonapi:"primary,hyok-configurations"`
 

@@ -58,10 +58,10 @@ type AgentPool struct {
 	OrganizationScoped bool   `jsonapi:"attr,organization-scoped"`
 
 	// Relations
-	Organization      *Organization        `jsonapi:"relation,organization"`
-	HYOKConfiguration []*HYOKConfiguration `jsonapi:"relation,hyok-configurations"`
-	Workspaces        []*Workspace         `jsonapi:"relation,workspaces"`
-	AllowedWorkspaces []*Workspace         `jsonapi:"relation,allowed-workspaces"`
+	Organization       *Organization        `jsonapi:"relation,organization"`
+	HYOKConfigurations []*HYOKConfiguration `jsonapi:"relation,hyok-configurations"`
+	Workspaces         []*Workspace         `jsonapi:"relation,workspaces"`
+	AllowedWorkspaces  []*Workspace         `jsonapi:"relation,allowed-workspaces"`
 }
 
 // A list of relations to include
