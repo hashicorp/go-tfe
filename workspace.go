@@ -215,6 +215,7 @@ type Workspace struct {
 	RunsCount                   int                             `jsonapi:"attr,workspace-kpis-runs-count"`
 	TagNames                    []string                        `jsonapi:"attr,tag-names"`
 	SettingOverwrites           *WorkspaceSettingOverwrites     `jsonapi:"attr,setting-overwrites"`
+	HYOKEnabled                 bool                            `jsonapi:"attr,hyok-enabled"`
 
 	// Relations
 	AgentPool                   *AgentPool             `jsonapi:"relation,agent-pool"`
@@ -295,6 +296,7 @@ type WorkspacePermissions struct {
 	CanForceUnlock    bool  `jsonapi:"attr,can-force-unlock"`
 	CanLock           bool  `jsonapi:"attr,can-lock"`
 	CanManageRunTasks bool  `jsonapi:"attr,can-manage-run-tasks"`
+	CanManageHYOK     bool  `jsonapi:"attr,can-manage-hyok"`
 	CanQueueApply     bool  `jsonapi:"attr,can-queue-apply"`
 	CanQueueDestroy   bool  `jsonapi:"attr,can-queue-destroy"`
 	CanQueueRun       bool  `jsonapi:"attr,can-queue-run"`
@@ -483,6 +485,13 @@ type WorkspaceCreateOptions struct {
 	// environment when multiple environments exist within the same repository.
 	WorkingDirectory *string `jsonapi:"attr,working-directory,omitempty"`
 
+	// Optional: Enables HYOK in the workspace.
+	// If set to true, the workspace will be created with HYOK enabled.
+	// If set to false, the workspace will be created with HYOK disabled.
+	// If not specified, the workspace will be created with HYOK disabled.
+	// Note: HYOK is only available in Terraform Enterprise.
+	HYOKEnabled bool `jsonapi:"attr,hyok-enabled,omitempty"`
+
 	// A list of tags to attach to the workspace. If the tag does not already
 	// exist, it is created and added to the workspace.
 	Tags []*Tag `jsonapi:"relation,tags,omitempty"`
@@ -644,6 +653,11 @@ type WorkspaceUpdateOptions struct {
 	// manually mark a setting as overwritten, you must provide a value for that
 	// setting at the same time.
 	SettingOverwrites *WorkspaceSettingOverwritesOptions `jsonapi:"attr,setting-overwrites,omitempty"`
+
+	// Optional: Enables HYOK in the workspace.
+	// If set to true, the workspace will be updated with HYOK enabled.
+	// This can't be set to false, as HYOK is a one-way operation.
+	HYOKEnabled bool `jsonapi:"attr,hyok-enabled,omitempty"`
 
 	// Associated Project with the workspace. If not provided, default project
 	// of the organization will be assigned to the workspace
