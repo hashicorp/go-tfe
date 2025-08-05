@@ -206,6 +206,13 @@ func TestAdminTerraformVersions_CreateDelete(t *testing.T) {
 		assert.Nil(t, tfv.DeprecatedReason)
 		assert.Equal(t, true, tfv.Enabled)
 		assert.Equal(t, false, tfv.Beta)
+		assert.Equal(t, len(opts.Archs), len(tfv.Archs))
+		for i, arch := range opts.Archs {
+			assert.Equal(t, arch.URL, tfv.Archs[i].URL)
+			assert.Equal(t, arch.Sha, tfv.Archs[i].Sha)
+			assert.Equal(t, arch.OS, tfv.Archs[i].OS)
+			assert.Equal(t, arch.Arch, tfv.Archs[i].Arch)
+		}
 	})
 
 	t.Run("with only required options including archs", func(t *testing.T) {
