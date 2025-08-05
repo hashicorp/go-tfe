@@ -180,7 +180,7 @@ func TestAdminSentinelVersions_CreateDelete(t *testing.T) {
 		assert.Equal(t, opts.SHA, sv.Archs[0].Sha)
 		assert.Equal(t, linux, sv.Archs[0].OS)
 		assert.Equal(t, amd64, sv.Archs[0].Arch)
-})
+	})
 
 	t.Run("with only required options including tool version url and sha", func(t *testing.T) {
 		version = createAdminSentinelVersion()
@@ -246,6 +246,13 @@ func TestAdminSentinelVersions_CreateDelete(t *testing.T) {
 		assert.Nil(t, sv.DeprecatedReason)
 		assert.Equal(t, true, sv.Enabled)
 		assert.Equal(t, false, sv.Beta)
+		assert.Equal(t, len(opts.Archs), len(sv.Archs))
+		for i, arch := range opts.Archs {
+			assert.Equal(t, arch.URL, sv.Archs[i].URL)
+			assert.Equal(t, arch.Sha, sv.Archs[i].Sha)
+			assert.Equal(t, arch.OS, sv.Archs[i].OS)
+			assert.Equal(t, arch.Arch, sv.Archs[i].Arch)
+		}
 	})
 
 	t.Run("with empty options", func(t *testing.T) {
