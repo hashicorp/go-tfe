@@ -426,7 +426,7 @@ var (
 
 	ErrRequiredTLSCACertificate = errors.New("encoded_cacert is required for Vault OIDC configuration")
 
-	ErrRequiredKekID = errors.New("kek-id is required for HYOK configuration")
+	ErrRequiredKEKID = errors.New("kek-id is required for HYOK configuration")
 
 	ErrRequiredHYOKConfiguration = errors.New("hyok-configuration is required for HYOK configuration")
 

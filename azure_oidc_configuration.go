@@ -7,11 +7,11 @@ import (
 )
 
 type AzureOIDCConfigurations interface {
-	Create(ctx context.Context, organization string, options AzureOIDCConfigurationsCreateOptions) (*AzureOIDCConfiguration, error)
+	Create(ctx context.Context, organization string, options AzureOIDCConfigurationCreateOptions) (*AzureOIDCConfiguration, error)
 
 	Read(ctx context.Context, oidcID string) (*AzureOIDCConfiguration, error)
 
-	Update(ctx context.Context, oidcID string, options AzureOIDCConfigurationsUpdateOptions) (*AzureOIDCConfiguration, error)
+	Update(ctx context.Context, oidcID string, options AzureOIDCConfigurationUpdateOptions) (*AzureOIDCConfiguration, error)
 
 	Delete(ctx context.Context, oidcID string) error
 }
@@ -31,7 +31,7 @@ type AzureOIDCConfiguration struct {
 	Organization *Organization `jsonapi:"relation,organization"`
 }
 
-type AzureOIDCConfigurationsCreateOptions struct {
+type AzureOIDCConfigurationCreateOptions struct {
 	ID             string `jsonapi:"primary,azure-oidc-configurations"`
 	ClientID       string `jsonapi:"attr,client-id"`
 	SubscriptionID string `jsonapi:"attr,subscription-id"`
@@ -40,7 +40,7 @@ type AzureOIDCConfigurationsCreateOptions struct {
 	Organization *Organization `jsonapi:"relation,organization"`
 }
 
-type AzureOIDCConfigurationsUpdateOptions struct {
+type AzureOIDCConfigurationUpdateOptions struct {
 	ID             string `jsonapi:"primary,azure-oidc-configurations"`
 	ClientID       string `jsonapi:"attr,client-id"`
 	SubscriptionID string `jsonapi:"attr,subscription-id"`
@@ -49,7 +49,7 @@ type AzureOIDCConfigurationsUpdateOptions struct {
 	Organization *Organization `jsonapi:"relation,organization"`
 }
 
-func (o *AzureOIDCConfigurationsCreateOptions) valid() error {
+func (o *AzureOIDCConfigurationCreateOptions) valid() error {
 	if o.ClientID == "" {
 		return ErrRequiredClientID
 	}
@@ -65,7 +65,7 @@ func (o *AzureOIDCConfigurationsCreateOptions) valid() error {
 	return nil
 }
 
-func (aoc *azureOIDCConfigurations) Create(ctx context.Context, organization string, options AzureOIDCConfigurationsCreateOptions) (*AzureOIDCConfiguration, error) {
+func (aoc *azureOIDCConfigurations) Create(ctx context.Context, organization string, options AzureOIDCConfigurationCreateOptions) (*AzureOIDCConfiguration, error) {
 	if !validStringID(&organization) {
 		return nil, ErrInvalidOrg
 	}
@@ -103,7 +103,7 @@ func (aoc *azureOIDCConfigurations) Read(ctx context.Context, oidcID string) (*A
 	return azureOIDCConfiguration, nil
 }
 
-func (o *AzureOIDCConfigurationsUpdateOptions) valid() error {
+func (o *AzureOIDCConfigurationUpdateOptions) valid() error {
 	if o.ClientID == "" {
 		return ErrRequiredClientID
 	}
@@ -119,7 +119,7 @@ func (o *AzureOIDCConfigurationsUpdateOptions) valid() error {
 	return nil
 }
 
-func (aoc *azureOIDCConfigurations) Update(ctx context.Context, oidcID string, options AzureOIDCConfigurationsUpdateOptions) (*AzureOIDCConfiguration, error) {
+func (aoc *azureOIDCConfigurations) Update(ctx context.Context, oidcID string, options AzureOIDCConfigurationUpdateOptions) (*AzureOIDCConfiguration, error) {
 	if !validStringID(&oidcID) {
 		return nil, ErrInvalidOIDC
 	}
