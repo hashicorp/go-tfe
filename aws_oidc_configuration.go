@@ -7,11 +7,11 @@ import (
 )
 
 type AWSOIDCConfigurations interface {
-	Create(ctx context.Context, organization string, options AWSOIDCConfigurationsCreateOptions) (*AWSOIDCConfiguration, error)
+	Create(ctx context.Context, organization string, options AWSOIDCConfigurationCreateOptions) (*AWSOIDCConfiguration, error)
 
 	Read(ctx context.Context, hyokID string) (*AWSOIDCConfiguration, error)
 
-	Update(ctx context.Context, hyokID string, options AWSOIDCConfigurationsUpdateOptions) (*AWSOIDCConfiguration, error)
+	Update(ctx context.Context, hyokID string, options AWSOIDCConfigurationUpdateOptions) (*AWSOIDCConfiguration, error)
 
 	Delete(ctx context.Context, oidcID string) error
 }
@@ -29,21 +29,21 @@ type AWSOIDCConfiguration struct {
 	Organization *Organization `jsonapi:"relation,organization"`
 }
 
-type AWSOIDCConfigurationsCreateOptions struct {
+type AWSOIDCConfigurationCreateOptions struct {
 	ID      string `jsonapi:"primary,aws-oidc-configurations"`
 	RoleARN string `jsonapi:"attr,role-arn"`
 
 	Organization *Organization `jsonapi:"relation,organization"`
 }
 
-type AWSOIDCConfigurationsUpdateOptions struct {
+type AWSOIDCConfigurationUpdateOptions struct {
 	ID      string `jsonapi:"primary,aws-oidc-configurations"`
 	RoleARN string `jsonapi:"attr,role-arn"`
 
 	Organization *Organization `jsonapi:"relation,organization"`
 }
 
-func (o *AWSOIDCConfigurationsCreateOptions) valid() error {
+func (o *AWSOIDCConfigurationCreateOptions) valid() error {
 	if o.RoleARN == "" {
 		return ErrRequiredRoleARN
 	}
@@ -51,7 +51,7 @@ func (o *AWSOIDCConfigurationsCreateOptions) valid() error {
 	return nil
 }
 
-func (aoc *awsOIDCConfigurations) Create(ctx context.Context, organization string, options AWSOIDCConfigurationsCreateOptions) (*AWSOIDCConfiguration, error) {
+func (aoc *awsOIDCConfigurations) Create(ctx context.Context, organization string, options AWSOIDCConfigurationCreateOptions) (*AWSOIDCConfiguration, error) {
 	if !validStringID(&organization) {
 		return nil, ErrInvalidOrg
 	}
@@ -89,7 +89,7 @@ func (aoc *awsOIDCConfigurations) Read(ctx context.Context, oidcID string) (*AWS
 	return awsOIDCConfiguration, nil
 }
 
-func (o *AWSOIDCConfigurationsUpdateOptions) valid() error {
+func (o *AWSOIDCConfigurationUpdateOptions) valid() error {
 	if o.RoleARN == "" {
 		return ErrRequiredRoleARN
 	}
@@ -97,7 +97,7 @@ func (o *AWSOIDCConfigurationsUpdateOptions) valid() error {
 	return nil
 }
 
-func (aoc *awsOIDCConfigurations) Update(ctx context.Context, oidcID string, options AWSOIDCConfigurationsUpdateOptions) (*AWSOIDCConfiguration, error) {
+func (aoc *awsOIDCConfigurations) Update(ctx context.Context, oidcID string, options AWSOIDCConfigurationUpdateOptions) (*AWSOIDCConfiguration, error) {
 	if !validStringID(&oidcID) {
 		return nil, ErrInvalidOIDC
 	}

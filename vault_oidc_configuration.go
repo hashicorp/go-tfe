@@ -7,11 +7,11 @@ import (
 )
 
 type VaultOIDCConfigurations interface {
-	Create(ctx context.Context, organization string, options VaultOIDCConfigurationsCreateOptions) (*VaultOIDCConfiguration, error)
+	Create(ctx context.Context, organization string, options VaultOIDCConfigurationCreateOptions) (*VaultOIDCConfiguration, error)
 
 	Read(ctx context.Context, oidcID string) (*VaultOIDCConfiguration, error)
 
-	Update(ctx context.Context, oidcID string, options VaultOIDCConfigurationsUpdateOptions) (*VaultOIDCConfiguration, error)
+	Update(ctx context.Context, oidcID string, options VaultOIDCConfigurationUpdateOptions) (*VaultOIDCConfiguration, error)
 
 	Delete(ctx context.Context, oidcID string) error
 }
@@ -33,7 +33,7 @@ type VaultOIDCConfiguration struct {
 	Organization *Organization `jsonapi:"relation,organization"`
 }
 
-type VaultOIDCConfigurationsCreateOptions struct {
+type VaultOIDCConfigurationCreateOptions struct {
 	ID               string `jsonapi:"primary,vault-oidc-configurations"`
 	Address          string `jsonapi:"attr,address"`
 	RoleName         string `jsonapi:"attr,role"`
@@ -44,7 +44,7 @@ type VaultOIDCConfigurationsCreateOptions struct {
 	Organization *Organization `jsonapi:"relation,organization"`
 }
 
-type VaultOIDCConfigurationsUpdateOptions struct {
+type VaultOIDCConfigurationUpdateOptions struct {
 	ID               string `jsonapi:"primary,vault-oidc-configurations"`
 	Address          string `jsonapi:"attr,address"`
 	RoleName         string `jsonapi:"attr,role"`
@@ -55,7 +55,7 @@ type VaultOIDCConfigurationsUpdateOptions struct {
 	Organization *Organization `jsonapi:"relation,organization"`
 }
 
-func (o *VaultOIDCConfigurationsCreateOptions) valid() error {
+func (o *VaultOIDCConfigurationCreateOptions) valid() error {
 	if o.Address == "" {
 		return ErrRequiredAddress
 	}
@@ -67,7 +67,7 @@ func (o *VaultOIDCConfigurationsCreateOptions) valid() error {
 	return nil
 }
 
-func (voc *vaultOIDCConfigurations) Create(ctx context.Context, organization string, options VaultOIDCConfigurationsCreateOptions) (*VaultOIDCConfiguration, error) {
+func (voc *vaultOIDCConfigurations) Create(ctx context.Context, organization string, options VaultOIDCConfigurationCreateOptions) (*VaultOIDCConfiguration, error) {
 	if !validStringID(&organization) {
 		return nil, ErrInvalidOrg
 	}
@@ -105,7 +105,7 @@ func (voc *vaultOIDCConfigurations) Read(ctx context.Context, oidcID string) (*V
 	return vaultOIDCConfiguration, nil
 }
 
-func (o *VaultOIDCConfigurationsUpdateOptions) valid() error {
+func (o *VaultOIDCConfigurationUpdateOptions) valid() error {
 	if o.Address == "" {
 		return ErrRequiredAddress
 	}
@@ -117,7 +117,7 @@ func (o *VaultOIDCConfigurationsUpdateOptions) valid() error {
 	return nil
 }
 
-func (voc *vaultOIDCConfigurations) Update(ctx context.Context, oidcID string, options VaultOIDCConfigurationsUpdateOptions) (*VaultOIDCConfiguration, error) {
+func (voc *vaultOIDCConfigurations) Update(ctx context.Context, oidcID string, options VaultOIDCConfigurationUpdateOptions) (*VaultOIDCConfiguration, error) {
 	if !validStringID(&oidcID) {
 		return nil, ErrInvalidOIDC
 	}

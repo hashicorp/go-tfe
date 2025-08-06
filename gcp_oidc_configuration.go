@@ -7,11 +7,11 @@ import (
 )
 
 type GCPOIDCConfigurations interface {
-	Create(ctx context.Context, organization string, options GCPOIDCConfigurationsCreateOptions) (*GcpOIDCConfiguration, error)
+	Create(ctx context.Context, organization string, options GCPOIDCConfigurationCreateOptions) (*GcpOIDCConfiguration, error)
 
 	Read(ctx context.Context, oidcID string) (*GcpOIDCConfiguration, error)
 
-	Update(ctx context.Context, oidcID string, options GCPOIDCConfigurationsUpdateOptions) (*GcpOIDCConfiguration, error)
+	Update(ctx context.Context, oidcID string, options GCPOIDCConfigurationUpdateOptions) (*GcpOIDCConfiguration, error)
 
 	Delete(ctx context.Context, oidcID string) error
 }
@@ -31,7 +31,7 @@ type GcpOIDCConfiguration struct {
 	Organization *Organization `jsonapi:"relation,organization"`
 }
 
-type GCPOIDCConfigurationsCreateOptions struct {
+type GCPOIDCConfigurationCreateOptions struct {
 	ID                   string `jsonapi:"primary,gcp-oidc-configurations"`
 	ServiceAccountEmail  string `jsonapi:"attr,service-account-email"`
 	ProjectNumber        string `jsonapi:"attr,project-number"`
@@ -40,7 +40,7 @@ type GCPOIDCConfigurationsCreateOptions struct {
 	Organization *Organization `jsonapi:"relation,organization"`
 }
 
-type GCPOIDCConfigurationsUpdateOptions struct {
+type GCPOIDCConfigurationUpdateOptions struct {
 	ID                   string `jsonapi:"primary,gcp-oidc-configurations"`
 	ServiceAccountEmail  string `jsonapi:"attr,service-account-email"`
 	ProjectNumber        string `jsonapi:"attr,project-number"`
@@ -49,7 +49,7 @@ type GCPOIDCConfigurationsUpdateOptions struct {
 	Organization *Organization `jsonapi:"relation,organization"`
 }
 
-func (o *GCPOIDCConfigurationsCreateOptions) valid() error {
+func (o *GCPOIDCConfigurationCreateOptions) valid() error {
 	if o.ServiceAccountEmail == "" {
 		return ErrRequiredServiceAccountEmail
 	}
@@ -65,7 +65,7 @@ func (o *GCPOIDCConfigurationsCreateOptions) valid() error {
 	return nil
 }
 
-func (goc *gcpOIDCConfigurations) Create(ctx context.Context, organization string, options GCPOIDCConfigurationsCreateOptions) (*GcpOIDCConfiguration, error) {
+func (goc *gcpOIDCConfigurations) Create(ctx context.Context, organization string, options GCPOIDCConfigurationCreateOptions) (*GcpOIDCConfiguration, error) {
 	if !validStringID(&organization) {
 		return nil, ErrInvalidOrg
 	}
@@ -103,7 +103,7 @@ func (goc *gcpOIDCConfigurations) Read(ctx context.Context, oidcID string) (*Gcp
 	return gcpOIDCConfiguration, nil
 }
 
-func (o *GCPOIDCConfigurationsUpdateOptions) valid() error {
+func (o *GCPOIDCConfigurationUpdateOptions) valid() error {
 	if o.ServiceAccountEmail == "" {
 		return ErrRequiredServiceAccountEmail
 	}
@@ -119,7 +119,7 @@ func (o *GCPOIDCConfigurationsUpdateOptions) valid() error {
 	return nil
 }
 
-func (goc *gcpOIDCConfigurations) Update(ctx context.Context, oidcID string, options GCPOIDCConfigurationsUpdateOptions) (*GcpOIDCConfiguration, error) {
+func (goc *gcpOIDCConfigurations) Update(ctx context.Context, oidcID string, options GCPOIDCConfigurationUpdateOptions) (*GcpOIDCConfiguration, error) {
 	if !validStringID(&oidcID) {
 		return nil, ErrInvalidOIDC
 	}

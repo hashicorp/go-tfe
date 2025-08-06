@@ -59,7 +59,7 @@ type HYOKConfiguration struct {
 	ID string `jsonapi:"primary,hyok-configurations"`
 
 	// Attributes
-	KekID      string                  `jsonapi:"attr,kek-id"`
+	KEKID      string                  `jsonapi:"attr,kek-id"`
 	KMSOptions *KMSOptions             `jsonapi:"attr,kms-options,omitempty"`
 	Name       string                  `jsonapi:"attr,name"`
 	Primary    bool                    `jsonapi:"attr,primary"`
@@ -116,7 +116,7 @@ type HYOKConfigurationsCreateOptions struct {
 	ID string `jsonapi:"primary,hyok-configurations"`
 
 	// Attributes
-	KekID      string                  `jsonapi:"attr,kek-id"`
+	KEKID      string                  `jsonapi:"attr,kek-id"`
 	KMSOptions *KMSOptions             `jsonapi:"attr,kms-options"`
 	Name       string                  `jsonapi:"attr,name"`
 	Primary    bool                    `jsonapi:"attr,primary"`
@@ -133,7 +133,7 @@ type HYOKConfigurationsUpdateOptions struct {
 	ID string `jsonapi:"primary,hyok-configurations"`
 
 	// Attributes
-	KekID      string                  `jsonapi:"attr,kek-id"`
+	KEKID      string                  `jsonapi:"attr,kek-id"`
 	KMSOptions *KMSOptions             `jsonapi:"attr,kms-options"`
 	Name       string                  `jsonapi:"attr,name"`
 	Primary    bool                    `jsonapi:"attr,primary"`
@@ -201,8 +201,8 @@ func (h hyokConfigurations) Read(ctx context.Context, hyokID string, options *HY
 }
 
 func (h *HYOKConfigurationsCreateOptions) valid() error {
-	if h.KekID == "" {
-		return ErrRequiredKekID
+	if h.KEKID == "" {
+		return ErrRequiredKEKID
 	}
 
 	if h.Name == "" {
