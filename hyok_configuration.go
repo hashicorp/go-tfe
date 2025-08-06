@@ -67,31 +67,16 @@ type HYOKConfiguration struct {
 	Error      *string                 `jsonapi:"attr,error"`
 
 	// Relationships
-	Organization      *Organization            `jsonapi:"relation,organization"`
-	OIDCConfiguration *OIDCConfigurationChoice `jsonapi:"polyrelation,oidc-configuration"`
-	AgentPool         *AgentPool               `jsonapi:"relation,agent-pool"`
+	Organization            *Organization             `jsonapi:"relation,organization"`
+	OIDCConfiguration       *OIDCConfigurationChoice  `jsonapi:"polyrelation,oidc-configuration"`
+	AgentPool               *AgentPool                `jsonapi:"relation,agent-pool"`
+	HYOKCustomerKeyVersions []*HYOKCustomerKeyVersion `jsonapi:"relation,hyok-customer-key-versions,omitempty"`
 }
 
 type HYOKConfigurationsList struct {
 	*Pagination
 	Items []*HYOKConfiguration
 }
-
-type HYOKConfigurationsSortColumn string
-
-const (
-	// HYOKConfigurationSortByName sorts by the name attribute.
-	HYOKConfigurationSortByName HYOKConfigurationsSortColumn = "name"
-
-	// HYOKConfigurationSortByUpdatedAt sorts by the updated-at attribute.
-	HYOKConfigurationSortByUpdatedAt HYOKConfigurationsSortColumn = "updated-at"
-
-	// HYOKConfigurationSortByNameDesc sorts by the name attribute in descending order.
-	HYOKConfigurationSortByNameDesc HYOKConfigurationsSortColumn = "-name"
-
-	// HYOKConfigurationSortByUpdatedAtDesc sorts by the updated-at attribute in descending order.
-	HYOKConfigurationSortByUpdatedAtDesc HYOKConfigurationsSortColumn = "-updated-at"
-)
 
 type HYOKConfigurationsIncludeOpt string
 
@@ -102,14 +87,8 @@ const (
 
 type HYOKConfigurationsListOptions struct {
 	ListOptions
-	ProjectID    string                         `url:"filter[project[id]],omitempty"`
-	Sort         HYOKConfigurationsSortColumn   `url:"sort,omitempty"`
-	SearchByName string                         `url:"search[name],omitempty"`
-	Include      []HYOKConfigurationsIncludeOpt `url:"include,omitempty"`
-}
-
-type HYOKConfigurationsReadOptions struct {
-	Include []HYOKConfigurationsIncludeOpt `url:"include,omitempty"`
+	SearchQuery string                         `url:"q,omitempty"`
+	Include     []HYOKConfigurationsIncludeOpt `url:"include,omitempty"`
 }
 
 type HYOKConfigurationsCreateOptions struct {
@@ -127,6 +106,10 @@ type HYOKConfigurationsCreateOptions struct {
 	Organization      *Organization            `jsonapi:"relation,organization"`
 	OIDCConfiguration *OIDCConfigurationChoice `jsonapi:"polyrelation,oidc-configuration"`
 	AgentPool         *AgentPool               `jsonapi:"relation,agent-pool"`
+}
+
+type HYOKConfigurationsReadOptions struct {
+	Include []HYOKConfigurationsIncludeOpt `url:"include,omitempty"`
 }
 
 type HYOKConfigurationsUpdateOptions struct {
