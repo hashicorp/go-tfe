@@ -72,6 +72,21 @@ func TestStackDeploymentGroupsList(t *testing.T) {
 		require.NotNil(t, sdgl)
 		require.Len(t, sdgl.Items, 1)
 	})
+
+	t.Run("List with filtering by group name", func(t *testing.T) {
+		noOptionSdg, err := client.StackDeploymentGroups.List(ctx, stackUpdated.LatestStackConfiguration.ID, nil)
+		require.NoError(t, err)
+		require.NotNil(t, noOptionSdg)
+		require.GreaterOrEqual(t, len(noOptionSdg.Items), 1)
+		options := &StackDeploymentGroupListOptions{
+			GroupName: noOptionSdg.Items[0].Name,
+		}
+		sdgl, err := client.StackDeploymentGroups.List(ctx, stackUpdated.LatestStackConfiguration.ID, options)
+		require.NoError(t, err)
+		require.NotNil(t, sdgl)
+		require.Equal(t, 1, len(sdgl.Items))
+		require.Equal(t, noOptionSdg.Items[0].Name, sdgl.Items[0].Name)
+	})
 }
 
 func TestStackDeploymentGroupsRead(t *testing.T) {
