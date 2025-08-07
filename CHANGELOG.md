@@ -2,6 +2,7 @@
 
 ## Enhancements
 * Adds support for `RegistryModule` VCS source_directory and tag_prefix options, by @jillrami [#1154] (https://github.com/hashicorp/go-tfe/pull/1154)
+* Adds `GroupName` filter option for `StackDeploymentGroup` by @Maed223 [#1175](https://github.com/hashicorp/go-tfe/pull/1175)
 
 # v1.89.0
 
