@@ -962,6 +962,149 @@ func TestRegistryModulesCreateBranchBasedWithVCSConnection(t *testing.T) {
 	})
 }
 
+func TestRegistryModulesCreateMonorepoBranchBasedWithVCSConnection(t *testing.T) {
+	skipUnlessBeta(t)
+
+	githubIdentifier := os.Getenv("GITHUB_REGISTRY_MODULE_IDENTIFIER")
+	if githubIdentifier == "" {
+		t.Skip("Export a valid GITHUB_REGISTRY_MODULE_IDENTIFIER before running this test")
+	}
+	repositoryName := strings.Split(githubIdentifier, "/")[1]
+	registryModuleProvider := strings.SplitN(repositoryName, "-", 3)[1]
+	registryModuleName := strings.SplitN(repositoryName, "-", 3)[2]
+
+	githubBranch := os.Getenv("GITHUB_REGISTRY_MODULE_BRANCH")
+	if githubBranch == "" {
+		githubBranch = "main"
+	}
+
+	client := testClient(t)
+	ctx := context.Background()
+
+	orgTest, orgTestCleanup := createOrganizationWithMonorepoSupport(t, client)
+	t.Cleanup(orgTestCleanup)
+
+	oauthTokenTest, oauthTokenTestCleanup := createOAuthToken(t, client, orgTest)
+	t.Cleanup(oauthTokenTestCleanup)
+
+	t.Run("with valid options including source directory", func(t *testing.T) {
+		sourceDirectory := "src"
+
+		options := RegistryModuleCreateWithVCSConnectionOptions{
+			VCSRepo: &RegistryModuleVCSRepoOptions{
+				OrganizationName:  String(orgTest.Name),
+				Identifier:        String(githubIdentifier),
+				OAuthTokenID:      String(oauthTokenTest.ID),
+				DisplayIdentifier: String(githubIdentifier),
+				Branch:            String(githubBranch),
+				SourceDirectory:   String(sourceDirectory),
+			},
+		}
+		rm, err := client.RegistryModules.CreateWithVCSConnection(ctx, options)
+		require.NoError(t, err)
+		assert.NotEmpty(t, rm.ID)
+		assert.Equal(t, registryModuleName, rm.Name)
+		assert.Equal(t, registryModuleProvider, rm.Provider)
+		assert.Equal(t, githubBranch, rm.VCSRepo.Branch)
+		assert.Equal(t, false, rm.VCSRepo.Tags)
+		assert.Equal(t, sourceDirectory, rm.VCSRepo.SourceDirectory)
+	})
+}
+
+func TestRegistryModulesCreateTagBasedWithVCSConnection(t *testing.T) {
+	skipUnlessBeta(t)
+
+	githubIdentifier := os.Getenv("GITHUB_REGISTRY_MODULE_IDENTIFIER")
+	if githubIdentifier == "" {
+		t.Skip("Export a valid GITHUB_REGISTRY_MODULE_IDENTIFIER before running this test")
+	}
+	repositoryName := strings.Split(githubIdentifier, "/")[1]
+	registryModuleProvider := strings.SplitN(repositoryName, "-", 3)[1]
+	registryModuleName := strings.SplitN(repositoryName, "-", 3)[2]
+
+	githubBranch := os.Getenv("GITHUB_REGISTRY_MODULE_BRANCH")
+	if githubBranch == "" {
+		githubBranch = "main"
+	}
+
+	client := testClient(t)
+	ctx := context.Background()
+
+	orgTest, orgTestCleanup := createOrganizationWithMonorepoSupport(t, client)
+	t.Cleanup(orgTestCleanup)
+
+	oauthTokenTest, oauthTokenTestCleanup := createOAuthToken(t, client, orgTest)
+	t.Cleanup(oauthTokenTestCleanup)
+
+	t.Run("with monorepo publishing", func(t *testing.T) {
+		sourceDirectory := "src"
+		tagPrefix := "v"
+
+		options := RegistryModuleCreateWithVCSConnectionOptions{
+			VCSRepo: &RegistryModuleVCSRepoOptions{
+				Identifier:        String(githubIdentifier),
+				OAuthTokenID:      String(oauthTokenTest.ID),
+				DisplayIdentifier: String(githubIdentifier),
+				Branch:            String(githubBranch),
+				SourceDirectory:   String(sourceDirectory),
+				TagPrefix:         String(tagPrefix),
+			},
+		}
+		rm, err := client.RegistryModules.CreateWithVCSConnection(ctx, options)
+		require.NoError(t, err)
+		assert.NotEmpty(t, rm.ID)
+		assert.Equal(t, registryModuleName, rm.Name)
+		assert.Equal(t, registryModuleProvider, rm.Provider)
+		assert.Equal(t, rm.VCSRepo.Branch, githubBranch)
+		assert.Equal(t, rm.VCSRepo.Identifier, githubIdentifier)
+		assert.Equal(t, rm.VCSRepo.IngressSubmodules, true)
+		assert.Equal(t, rm.VCSRepo.OAuthTokenID, oauthTokenTest.ID)
+		assert.Equal(t, rm.VCSRepo.RepositoryHTTPURL, fmt.Sprintf("https://github.com/%s", githubIdentifier))
+		assert.Equal(t, rm.VCSRepo.ServiceProvider, string(ServiceProviderGithub))
+		assert.Regexp(t, fmt.Sprintf("^%s/webhooks/vcs/[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$", regexp.QuoteMeta(DefaultConfig().Address)), rm.VCSRepo.WebhookURL)
+
+		if rm.VCSRepo.SourceDirectory != sourceDirectory {
+			t.Errorf("expected SourceDirectory %q, got %q", sourceDirectory, rm.VCSRepo.SourceDirectory)
+		}
+		if rm.VCSRepo.TagPrefix != tagPrefix {
+			t.Errorf("expected TagPrefix %q, got %q", tagPrefix, rm.VCSRepo.TagPrefix)
+		}
+	})
+
+	t.Run("without monorepo publishing", func(t *testing.T) {
+		tagPrefix := "v"
+
+		options := RegistryModuleCreateWithVCSConnectionOptions{
+			VCSRepo: &RegistryModuleVCSRepoOptions{
+				Identifier:        String(githubIdentifier),
+				OAuthTokenID:      String(oauthTokenTest.ID),
+				DisplayIdentifier: String(githubIdentifier),
+				Branch:            String(githubBranch),
+				TagPrefix:         String(tagPrefix),
+			},
+		}
+		rm, err := client.RegistryModules.CreateWithVCSConnection(ctx, options)
+		require.NoError(t, err)
+		assert.NotEmpty(t, rm.ID)
+		assert.Equal(t, registryModuleName, rm.Name)
+		assert.Equal(t, registryModuleProvider, rm.Provider)
+		assert.Equal(t, rm.VCSRepo.Branch, githubBranch)
+		assert.Equal(t, rm.VCSRepo.Identifier, githubIdentifier)
+		assert.Equal(t, rm.VCSRepo.IngressSubmodules, true)
+		assert.Equal(t, rm.VCSRepo.OAuthTokenID, oauthTokenTest.ID)
+		assert.Equal(t, rm.VCSRepo.RepositoryHTTPURL, fmt.Sprintf("https://github.com/%s", githubIdentifier))
+		assert.Equal(t, rm.VCSRepo.ServiceProvider, string(ServiceProviderGithub))
+		assert.Regexp(t, fmt.Sprintf("^%s/webhooks/vcs/[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$", regexp.QuoteMeta(DefaultConfig().Address)), rm.VCSRepo.WebhookURL)
+
+		if rm.VCSRepo.SourceDirectory != "" {
+			t.Errorf("expected SourceDirectory %q, got %q", "", rm.VCSRepo.SourceDirectory)
+		}
+		if rm.VCSRepo.TagPrefix != tagPrefix {
+			t.Errorf("expected TagPrefix %q, got %q", tagPrefix, rm.VCSRepo.TagPrefix)
+		}
+	})
+}
+
 func TestRegistryModulesCreateBranchBasedWithVCSConnectionWithTesting(t *testing.T) {
 	skipUnlessBeta(t)
 
