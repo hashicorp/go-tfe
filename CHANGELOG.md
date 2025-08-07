@@ -1,5 +1,8 @@
 # Unreleased
 
+## Enhancements
+* Adds support for `RegistryModule` VCS source_directory and tag_prefix options, by @jillrami [#1154] (https://github.com/hashicorp/go-tfe/pull/1154)
+
 # v1.89.0
 
 ## Enhancements
@@ -14,7 +17,6 @@
 
 * Adds BETA support for reading, testing and updating Organization Audit Configuration by @glennsarti-hashi [#1151](https://github.com/hashicorp/go-tfe/pull/1151)
 * Adds `Completed` status to `StackConfiguration` by @hwatkins05-hashicorp [#1163](https://github.com/hashicorp/go-tfe/pull/1163)
-
 
 # v1.87.0
 
