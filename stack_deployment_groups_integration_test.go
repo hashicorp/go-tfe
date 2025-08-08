@@ -2,6 +2,7 @@ package tfe
 
 import (
 	"context"
+	"fmt"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -169,5 +170,87 @@ func TestStackDeploymentGroupsApproveAllPlans(t *testing.T) {
 	t.Run("Approving all plans", func(t *testing.T) {
 		err := client.StackDeploymentGroups.ApproveAllPlans(ctx, deploymentGroupID)
 		require.NoError(t, err)
+	})
+}
+
+func TestStackDeploymentGroupsRerun(t *testing.T) {
+	skipUnlessBeta(t)
+
+	client := testClient(t)
+	ctx := context.Background()
+
+	orgTest, orgTestCleanup := createOrganization(t, client)
+	t.Cleanup(orgTestCleanup)
+
+	oauthClient, cleanup := createOAuthClient(t, client, orgTest, nil)
+	t.Cleanup(cleanup)
+
+	stack, err := client.Stacks.Create(ctx, StackCreateOptions{
+		Name: "test-stack",
+		VCSRepo: &StackVCSRepoOptions{
+			Identifier:   "hwatkins05-hashicorp/pet-nulls-stack",
+			OAuthTokenID: oauthClient.OAuthTokens[0].ID,
+			Branch:       "failing-branch",
+		},
+		Project: &Project{
+			ID: orgTest.DefaultProject.ID,
+		},
+	})
+	require.NoError(t, err)
+	require.NotNil(t, stack)
+
+	stackUpdated, err := client.Stacks.UpdateConfiguration(ctx, stack.ID)
+	require.NoError(t, err)
+	require.NotNil(t, stackUpdated)
+
+	stack = pollStackDeployments(t, ctx, client, stackUpdated.ID)
+	require.NotNil(t, stack.LatestStackConfiguration)
+
+	deploymentGroups, err := client.StackDeploymentGroups.List(ctx, stack.LatestStackConfiguration.ID, nil)
+	require.NoError(t, err)
+	require.NotNil(t, deploymentGroups)
+	require.NotEmpty(t, deploymentGroups.Items)
+
+	deploymentGroupID := deploymentGroups.Items[0].ID
+
+	deploymentRuns, err := client.StackDeploymentRuns.List(ctx, deploymentGroupID, nil)
+	require.NoError(t, err)
+	require.NotNil(t, deploymentRuns)
+	require.NotEmpty(t, deploymentRuns.Items)
+
+	err = client.StackDeploymentGroups.ApproveAllPlans(ctx, deploymentGroupID)
+	require.NoError(t, err)
+
+	deploymentRuns.Items[0] = pollStackDeploymentRunForDeployingStatus(t, ctx, client, deploymentRuns.Items[0].ID)
+
+	for _, dr := range deploymentRuns.Items {
+		fmt.Printf("Deployment run %s: \n\t%+v\n", dr.ID, dr)
+	}
+
+	deploymentRunNames := []string{deploymentRuns.Items[0].ID}
+	// for _, dr := range deploymentRuns.Items {
+	// 	deploymentRunNames = append(deploymentRunNames, dr.ID)
+	// }
+
+	// TO-DO: how to make programmatically failing deployment runs?
+	t.Run("Rerunning a deployment in the group", func(t *testing.T) {
+		err := client.StackDeploymentGroups.Rerun(ctx, deploymentGroupID, &StackDeploymentGroupRerunOptions{
+			Deployments: deploymentRunNames,
+		})
+		require.NoError(t, err)
+	})
+
+	t.Run("No deployments specified for rerun", func(t *testing.T) {
+		err := client.StackDeploymentGroups.Rerun(ctx, deploymentGroupID, nil)
+		require.Error(t, err)
+		assert.Contains(t, err.Error(), "params are missing")
+	})
+
+	t.Run("Rerun with invalid ID", func(t *testing.T) {
+		err := client.StackDeploymentGroups.Rerun(ctx, "", &StackDeploymentGroupRerunOptions{
+			Deployments: deploymentRunNames,
+		})
+		require.Error(t, err)
+		assert.Contains(t, err.Error(), "invalid stack deployment group ID")
 	})
 }

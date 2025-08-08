@@ -280,7 +280,7 @@ func TestStackDeploymentRunsCancel(t *testing.T) {
 	})
 }
 
-func pollStackDeploymentRunForDeployingStatus(t *testing.T, ctx context.Context, client *Client, stackDeploymentRunID string) {
+func pollStackDeploymentRunForDeployingStatus(t *testing.T, ctx context.Context, client *Client, stackDeploymentRunID string) (sdr *StackDeploymentRun) {
 	t.Helper()
 
 	ctx, cancel := context.WithDeadline(ctx, time.Now().Add(5*time.Minute))
@@ -299,14 +299,15 @@ func pollStackDeploymentRunForDeployingStatus(t *testing.T, ctx context.Context,
 			t.Fatalf("Stack deployment run %q not deploying at deadline", stackDeploymentRunID)
 		case <-ticker.C:
 			var err error
-			sdr, err := client.StackDeploymentRuns.Read(ctx, stackDeploymentRunID)
+			sdr, err = client.StackDeploymentRuns.Read(ctx, stackDeploymentRunID)
 			if err != nil {
 				t.Fatalf("Failed to read stack deployment run %q: %s", stackDeploymentRunID, err)
 			}
-
+			t.Logf("Stack deployment run %q had status of: %s", stackDeploymentRunID, sdr.Status)
 			if sdr.Status == "deploying" {
 				finished = true
 			}
 		}
 	}
+	return
 }
