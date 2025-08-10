@@ -62,8 +62,6 @@ func TestQueryRunsList(t *testing.T) {
 	})
 
 	t.Run("with list options", func(t *testing.T) {
-		t.Skip("paging not supported yet in API")
-
 		qrl, err := client.QueryRuns.List(ctx, wTest.ID, &QueryRunListOptions{
 			ListOptions: ListOptions{
 				PageNumber: 999,
