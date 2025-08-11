@@ -88,6 +88,88 @@ func TestRegistryModulesList(t *testing.T) {
 			}
 		}
 	})
+
+	t.Run("with search query", func(t *testing.T) {
+		// Search for modules by name
+		modl, err := client.RegistryModules.List(ctx, orgTest.Name, &RegistryModuleListOptions{
+			Search: registryModuleTest1.Name,
+		})
+		require.NoError(t, err)
+
+		// Should find at least the first test module
+		found := false
+		for _, m := range modl.Items {
+			if m.ID == registryModuleTest1.ID {
+				found = true
+				break
+			}
+		}
+		assert.True(t, found, "Registry module should be found by name search")
+	})
+
+	t.Run("with provider filter", func(t *testing.T) {
+		// Filter by provider
+		modl, err := client.RegistryModules.List(ctx, orgTest.Name, &RegistryModuleListOptions{
+			Provider: registryModuleTest1.Provider,
+		})
+		require.NoError(t, err)
+
+		// All returned modules should have the specified provider
+		for _, m := range modl.Items {
+			assert.Equal(t, registryModuleTest1.Provider, m.Provider)
+		}
+	})
+
+	t.Run("with registry name filter", func(t *testing.T) {
+		// Filter by registry name
+		modl, err := client.RegistryModules.List(ctx, orgTest.Name, &RegistryModuleListOptions{
+			RegistryName: PrivateRegistry,
+		})
+		require.NoError(t, err)
+
+		// All returned modules should have the specified registry name
+		for _, m := range modl.Items {
+			assert.Equal(t, PrivateRegistry, m.RegistryName)
+		}
+	})
+
+	t.Run("with organization name filter", func(t *testing.T) {
+		// Filter by organization name
+		modl, err := client.RegistryModules.List(ctx, orgTest.Name, &RegistryModuleListOptions{
+			OrganizationName: orgTest.Name,
+		})
+		require.NoError(t, err)
+
+		// All returned modules should belong to the specified organization
+		for _, m := range modl.Items {
+			assert.Equal(t, orgTest.Name, m.Namespace)
+		}
+	})
+
+	t.Run("with combined search and filters", func(t *testing.T) {
+		// Combine search with filters
+		modl, err := client.RegistryModules.List(ctx, orgTest.Name, &RegistryModuleListOptions{
+			Search:           registryModuleTest1.Name,
+			Provider:         registryModuleTest1.Provider,
+			RegistryName:     PrivateRegistry,
+			OrganizationName: orgTest.Name,
+		})
+		require.NoError(t, err)
+
+		// Should find the specific module when all criteria match
+		found := false
+		for _, m := range modl.Items {
+			if m.ID != registryModuleTest1.ID {
+				continue
+			}
+			found = true
+			assert.Equal(t, registryModuleTest1.Provider, m.Provider)
+			assert.Equal(t, PrivateRegistry, m.RegistryName)
+			assert.Equal(t, orgTest.Name, m.Namespace)
+			break
+		}
+		assert.True(t, found, "Registry module should be found with combined search and filters")
+	})
 }
 
 func TestRegistryModulesCreate(t *testing.T) {
