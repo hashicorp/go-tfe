@@ -20,7 +20,7 @@ type StackDeploymentGroups interface {
 	Read(ctx context.Context, stackDeploymentGroupID string) (*StackDeploymentGroup, error)
 
 	// ReadByName retrieves a stack deployment group by its Name.
-	ReadByName(ctx context.Context, stackConfigurationID string, stackDeploymentName string) (*StackDeploymentGroup, error)
+	ReadByName(ctx context.Context, stackConfigurationID, stackDeploymentName string) (*StackDeploymentGroup, error)
 
 	// ApproveAllPlans approves all pending plans in a stack deployment group.
 	ApproveAllPlans(ctx context.Context, stackDeploymentGroupID string) error
@@ -101,7 +101,7 @@ func (s stackDeploymentGroups) List(ctx context.Context, stackConfigID string, o
 }
 
 // ReadByName retrieves a stack deployment group by its Name.
-func (s stackDeploymentGroups) ReadByName(ctx context.Context, stackConfigurationID string, stackDeploymentName string) (*StackDeploymentGroup, error) {
+func (s stackDeploymentGroups) ReadByName(ctx context.Context, stackConfigurationID, stackDeploymentName string) (*StackDeploymentGroup, error) {
 	if !validStringID(&stackConfigurationID) {
 		return nil, fmt.Errorf("invalid stack configuration id: %s", stackConfigurationID)
 	}
