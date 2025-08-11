@@ -61,6 +61,8 @@ type StackDeploymentGroupList struct {
 // StackDeploymentGroupListOptions represents additional options when listing stack deployment groups.
 type StackDeploymentGroupListOptions struct {
 	ListOptions
+	// A query string used to filter by deployment group name.
+	GroupName string `url:"group_name,omitempty"`
 }
 
 // List returns a list of Deployment Groups in a stack, optionally filtered by additional parameters.
@@ -69,11 +71,12 @@ func (s stackDeploymentGroups) List(ctx context.Context, stackConfigID string, o
 		return nil, fmt.Errorf("invalid stack configuration ID: %s", stackConfigID)
 	}
 
-	if options == nil {
-		options = &StackDeploymentGroupListOptions{}
+	u := fmt.Sprintf("stack-configurations/%s/stack-deployment-groups/", url.PathEscape(stackConfigID))
+	qp, err := decodeQueryParams(options)
+	if err != nil {
+		return nil, err
 	}
-
-	req, err := s.client.NewRequest("GET", fmt.Sprintf("stack-configurations/%s/stack-deployment-groups", url.PathEscape(stackConfigID)), options)
+	req, err := s.client.NewRequestWithAdditionalQueryParams("GET", u, nil, qp)
 	if err != nil {
 		return nil, err
 	}
