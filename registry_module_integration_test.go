@@ -159,13 +159,14 @@ func TestRegistryModulesList(t *testing.T) {
 		// Should find the specific module when all criteria match
 		found := false
 		for _, m := range modl.Items {
-			if m.ID == registryModuleTest1.ID {
-				found = true
-				assert.Equal(t, registryModuleTest1.Provider, m.Provider)
-				assert.Equal(t, PrivateRegistry, m.RegistryName)
-				assert.Equal(t, orgTest.Name, m.Namespace)
-				break
+			if m.ID != registryModuleTest1.ID {
+				continue
 			}
+			found = true
+			assert.Equal(t, registryModuleTest1.Provider, m.Provider)
+			assert.Equal(t, PrivateRegistry, m.RegistryName)
+			assert.Equal(t, orgTest.Name, m.Namespace)
+			break
 		}
 		assert.True(t, found, "Registry module should be found with combined search and filters")
 	})

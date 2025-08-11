@@ -1,6 +1,7 @@
 # Unreleased
 
 ## Enhancements
+* Add support for querying and filtering private registry modules based on a search query, `provider`, `registry_name` and `organization_name`, by @gautambaghel [#1178](https://github.com/hashicorp/go-tfe/pull/1178) 
 * Adds support for `RegistryModule` VCS source_directory and tag_prefix options, by @jillrami [#1154] (https://github.com/hashicorp/go-tfe/pull/1154)
 
 ## Bug Fixes
