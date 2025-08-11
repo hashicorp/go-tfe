@@ -7,6 +7,7 @@ import (
 	"context"
 	"fmt"
 	"net/url"
+	"strings"
 	"time"
 )
 
@@ -71,7 +72,7 @@ type StackDeploymentGroupListOptions struct {
 // StackDeploymentGroupRerunOptions represents options for rerunning deployments in a stack deployment group.
 type StackDeploymentGroupRerunOptions struct {
 	// Required query parameter: A list of deployment run IDs to rerun.
-	Deployments []string `url:"deployments"`
+	Deployments []string
 }
 
 // List returns a list of Deployment Groups in a stack, optionally filtered by additional parameters.
@@ -143,7 +144,19 @@ func (s stackDeploymentGroups) Rerun(ctx context.Context, stackDeploymentGroupID
 		return fmt.Errorf("no deployments specified for rerun")
 	}
 
-	req, err := s.client.NewRequest("POST", fmt.Sprintf("stack-deployment-groups/%s/rerun", url.PathEscape(stackDeploymentGroupID)), options)
+	u := fmt.Sprintf("stack-deployment-groups/%s/rerun", url.PathEscape(stackDeploymentGroupID))
+
+	type DeploymentQueryParams struct {
+		Deployments string `url:"deployments"`
+	}
+
+	qp, err := decodeQueryParams(&DeploymentQueryParams{
+		Deployments: strings.Join(options.Deployments, ","),
+	})
+	if err != nil {
+		return err
+	}
+	req, err := s.client.NewRequestWithAdditionalQueryParams("POST", u, nil, qp)
 	if err != nil {
 		return err
 	}
