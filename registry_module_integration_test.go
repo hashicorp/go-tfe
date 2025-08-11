@@ -123,7 +123,7 @@ func TestRegistryModulesList(t *testing.T) {
 	t.Run("with registry name filter", func(t *testing.T) {
 		// Filter by registry name
 		modl, err := client.RegistryModules.List(ctx, orgTest.Name, &RegistryModuleListOptions{
-			RegistryName: string(PrivateRegistry),
+			RegistryName: PrivateRegistry,
 		})
 		require.NoError(t, err)
 
@@ -151,7 +151,7 @@ func TestRegistryModulesList(t *testing.T) {
 		modl, err := client.RegistryModules.List(ctx, orgTest.Name, &RegistryModuleListOptions{
 			Search:           registryModuleTest1.Name,
 			Provider:         registryModuleTest1.Provider,
-			RegistryName:     string(PrivateRegistry),
+			RegistryName:     PrivateRegistry,
 			OrganizationName: orgTest.Name,
 		})
 		require.NoError(t, err)

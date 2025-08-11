@@ -277,7 +277,7 @@ type RegistryModuleListOptions struct {
 	Provider string `url:"filter[provider],omitempty"`
 
 	// RegistryName filters results by registry name (public or private)
-	RegistryName string `url:"filter[registry_name],omitempty"`
+	RegistryName RegistryName `url:"filter[registry_name],omitempty"`
 
 	// OrganizationName filters results by organization name
 	OrganizationName string `url:"filter[organization_name],omitempty"`
