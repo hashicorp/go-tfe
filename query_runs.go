@@ -85,8 +85,8 @@ const (
 )
 
 const (
-	QueryRunCreatedBy RunIncludeOpt = "created_by"
-	QueryRunConfigVer RunIncludeOpt = "configuration_version"
+	QueryRunCreatedBy QueryRunIncludeOpt = "created_by"
+	QueryRunConfigVer QueryRunIncludeOpt = "configuration_version"
 )
 
 // queryRuns implements QueryRuns.
@@ -94,27 +94,24 @@ type queryRuns struct {
 	client *Client
 }
 
-// QueryRunList represents a list of runs.
+// QueryRunList represents a list of query runs.
 type QueryRunList struct {
 	*Pagination
 	Items []*QueryRun
 }
 
-// QueryRunListOptions represents the options for listing runs.
+// QueryRunListOptions represents the options for listing query runs.
 type QueryRunListOptions struct {
 	ListOptions
-	// Optional: A list of relations to include. See available resources:
-	// https://developer.hashicorp.com/terraform/cloud-docs/api-docs/run#available-related-resources
 	Include []QueryRunIncludeOpt `url:"include,omitempty"`
 }
 
+// QueryRunReadOptions represents the options for reading a query run.
 type QueryRunReadOptions struct {
-	// Optional: A list of relations to include. See available resources:
-	// https://developer.hashicorp.com/terraform/cloud-docs/api-docs/run#available-related-resources
 	Include []QueryRunIncludeOpt `url:"include,omitempty"`
 }
 
-// Run represents a Terraform Enterprise run.
+// QueryRun represents a Terraform Enterprise query run.
 type QueryRun struct {
 	ID               string               `jsonapi:"primary,queries"`
 	CreatedAt        time.Time            `jsonapi:"attr,created-at,iso8601"`
