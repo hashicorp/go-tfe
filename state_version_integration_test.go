@@ -422,7 +422,7 @@ func TestStateVersionsRead(t *testing.T) {
 		require.NoError(t, err)
 
 		if !sv.ResourcesProcessed {
-			svRetry, err := retry(func() (interface{}, error) {
+			svRetry, err := retryPatiently(func() (interface{}, error) {
 				svTest, err := client.StateVersions.Read(ctx, svTest.ID)
 				require.NoError(t, err)
 
@@ -436,6 +436,8 @@ func TestStateVersionsRead(t *testing.T) {
 			if err != nil {
 				t.Fatalf("error retrying state version read, err=%s", err)
 			}
+
+			require.NotNil(t, svRetry, "timed out waiting for resources to finish processing")
 
 			sv, ok = svRetry.(*StateVersion)
 			if !ok {
