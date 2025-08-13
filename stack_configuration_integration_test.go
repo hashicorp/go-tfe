@@ -78,3 +78,47 @@ func TestStackConfigurationList(t *testing.T) {
 		assert.GreaterOrEqual(t, listWithOptions.Pagination.TotalCount, 2)
 	})
 }
+
+func TestStackConfigurationCreateUploadAndRead(t *testing.T) {
+	skipUnlessBeta(t)
+
+	client := testClient(t)
+	ctx := context.Background()
+
+	orgTest, orgTestCleanup := createOrganization(t, client)
+	t.Cleanup(orgTestCleanup)
+
+	stack, err := client.Stacks.Create(ctx, StackCreateOptions{
+		Project: orgTest.DefaultProject,
+		Name:    "test-stack",
+	})
+	require.NoError(t, err)
+
+	ctx, cancel := context.WithTimeout(ctx, 20*time.Second)
+	defer cancel()
+
+	done := make(chan struct{})
+	go func() {
+		for {
+			sc, err := client.StackConfigurations.CreateAndUpload(ctx, stack.ID, "test-fixtures/stack-source", &CreateStackConfigurationOptions{
+				SelectedDeployments: []string{"simple"},
+			})
+			require.NoError(t, err)
+
+			if sc != nil {
+				done <- struct{}{}
+				return
+			}
+
+			time.Sleep(2 * time.Second)
+		}
+	}()
+
+	select {
+	case <-done:
+		t.Logf("Created and uploaded config to stack configuration")
+		return
+	case <-ctx.Done():
+		require.Fail(t, "timed out waiting for stack configuration to be processed")
+	}
+}

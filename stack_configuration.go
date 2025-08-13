@@ -7,7 +7,9 @@ import (
 	"bytes"
 	"context"
 	"fmt"
+	"io"
 	"net/url"
+	"time"
 )
 
 // StackConfigurations describes all the stacks configurations-related methods that the
@@ -15,6 +17,10 @@ import (
 // NOTE WELL: This is a beta feature and is subject to change until noted otherwise in the
 // release notes.
 type StackConfigurations interface {
+	// CreateAndUpload packages and uploads the specified Terraform Stacks
+	// configuration files in association with a Stack.
+	CreateAndUpload(ctx context.Context, stackID string, path string, opts *CreateStackConfigurationOptions) (*StackConfiguration, error)
+
 	// ReadConfiguration returns a stack configuration by its ID.
 	Read(ctx context.Context, id string) (*StackConfiguration, error)
 
@@ -154,4 +160,96 @@ func (s stackConfigurations) List(ctx context.Context, stackID string, options *
 	}
 
 	return result, nil
+}
+
+type CreateStackConfigurationOptions struct {
+	SelectedDeployments []string `jsonapi:"attr,selected-deployments,omitempty"`
+	SpeculativeEnabled  *bool    `jsonapi:"attr,speculative,omitempty"`
+}
+
+// CreateAndUpload packages and uploads the specified Terraform Stacks
+// configuration files in association with a Stack.
+func (s stackConfigurations) CreateAndUpload(ctx context.Context, stackID, path string, opts *CreateStackConfigurationOptions) (*StackConfiguration, error) {
+	if opts == nil {
+		opts = &CreateStackConfigurationOptions{}
+	}
+	u := fmt.Sprintf("stacks/%s/stack-configurations", url.PathEscape(stackID))
+	req, err := s.client.NewRequest("POST", u, opts)
+	if err != nil {
+		return nil, fmt.Errorf("error creating stack configuration request for stack %q: %w", stackID, err)
+	}
+
+	sc := &StackConfiguration{}
+	err = req.Do(ctx, sc)
+	if err != nil {
+		return nil, fmt.Errorf("error creating stack configuration for stack %q: %w", stackID, err)
+	}
+
+	uploadURL, err := s.pollForUploadURL(ctx, sc.ID)
+	if err != nil {
+		return nil, fmt.Errorf("error retrieving upload URL for stack configuration %q: %w", sc.ID, err)
+	}
+
+	body, err := packContents(path)
+	if err != nil {
+		return nil, err
+	}
+
+	err = s.uploadTarGzip(ctx, uploadURL, body)
+	if err != nil {
+		return nil, err
+	}
+
+	return sc, nil
+}
+
+// PollForUploadURL polls for the upload URL of a stack configuration until it becomes available.
+// It makes a request every 2 seconds until the upload URL is present in the response.
+// It will timeout after 10 seconds.
+func (s stackConfigurations) pollForUploadURL(ctx context.Context, stackConfigurationID string) (string, error) {
+	ticker := time.NewTicker(2 * time.Second)
+	defer ticker.Stop()
+
+	timeout := time.NewTimer(15 * time.Second)
+	defer timeout.Stop()
+
+	for {
+		select {
+		case <-ctx.Done():
+			return "", ctx.Err()
+		case <-timeout.C:
+			return "", fmt.Errorf("timeout waiting for upload URL for stack configuration %q", stackConfigurationID)
+		case <-ticker.C:
+			urlReq, err := s.client.NewRequest("GET", fmt.Sprintf("stack-configurations/%s/upload-url", stackConfigurationID), nil)
+			if err != nil {
+				return "", fmt.Errorf("error creating upload URL request for stack configuration %q: %w", stackConfigurationID, err)
+			}
+
+			type UploadURLResponse struct {
+				Data struct {
+					SourceUploadURL *string `json:"source-upload-url"`
+				} `json:"data"`
+			}
+
+			uploadResp := &UploadURLResponse{}
+			err = urlReq.DoJSON(ctx, uploadResp)
+			if err != nil {
+				return "", fmt.Errorf("error getting upload URL for stack configuration %q: %w", stackConfigurationID, err)
+			}
+
+			if uploadResp.Data.SourceUploadURL != nil {
+				return *uploadResp.Data.SourceUploadURL, nil
+			}
+		}
+	}
+}
+
+// UploadTarGzip is used to upload Terraform configuration files contained a tar gzip archive.
+// Any stream implementing io.Reader can be passed into this method. This method is also
+// particularly useful for tar streams created by non-default go-slug configurations.
+//
+// **Note**: This method does not validate the content being uploaded and is therefore the caller's
+// responsibility to ensure the raw content is a valid Terraform configuration.
+func (s stackConfigurations) uploadTarGzip(ctx context.Context, uploadURL string, archive io.Reader) error {
+	return s.client.doForeignPUTRequest(ctx, uploadURL, archive)
 }
