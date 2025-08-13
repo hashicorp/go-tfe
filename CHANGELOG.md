@@ -11,6 +11,7 @@
 * Adds endpoint for reruning a stack deployment by @hwatkins05-hashicorp/@Maed223 [#1176](https://github.com/hashicorp/go-tfe/pull/1176)
 * Adds `ReadByName` for `StackDeploymentGroup` by @Maed223 [#1181](https://github.com/hashicorp/go-tfe/pull/1181)
 * Adds BETA support for listing `QueryRuns`, which is EXPERIMENTAL, SUBJECT TO CHANGE, and may not be available to all users by @brandonc [#1177](https://github.com/hashicorp/go-tfe/pull/1177)
+* Adds BETA support for `CreateAndUpload` for `StackConfiguration`, which is EXPERIMENTAL, SUBJECT TO CHANGE, and may not be available to all users by @Maed223 [#1184](https://github.com/hashicorp/go-tfe/pull/1184)
 
 
 # v1.89.0
