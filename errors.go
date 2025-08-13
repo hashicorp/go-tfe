@@ -392,6 +392,8 @@ var (
 
 	ErrInvalidTestRunID = errors.New("invalid value for test run id")
 
+	ErrInvalidQueryRunID = errors.New("invalid value for query run id")
+
 	ErrTerraformVersionValidForPlanOnly = errors.New("setting terraform-version is only valid when plan-only is set to true")
 
 	ErrStateMustBeOmitted = errors.New("when uploading state, the State and JSONState strings must be omitted from options")
