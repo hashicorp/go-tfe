@@ -142,9 +142,9 @@ type ProjectCreateOptions struct {
 	// Optional: DefaultExecutionMode the default execution mode for workspaces in the project
 	DefaultExecutionMode *string `jsonapi:"attr,default-execution-mode,omitempty"`
 
-	// Optional: DefaultAgentPoolId default agent pool for workspaces in the project,
+	// Optional: DefaultAgentPoolID default agent pool for workspaces in the project,
 	// required when DefaultExecutionMode is set to `agent`
-	DefaultAgentPoolId *string `jsonapi:"attr,default-agent-pool-id,omitempty"`
+	DefaultAgentPoolID *string `jsonapi:"attr,default-agent-pool-id,omitempty"`
 
 	// Optional: Struct of booleans, which indicate whether the project
 	// specifies its own values for various settings. If you mark a setting as
@@ -185,9 +185,9 @@ type ProjectUpdateOptions struct {
 	// Optional: DefaultExecutionMode the default execution mode for workspaces
 	DefaultExecutionMode *string `jsonapi:"attr,default-execution-mode,omitempty"`
 
-	// Optional: DefaultAgentPoolId default agent pool for workspaces in the project,
+	// Optional: DefaultAgentPoolID default agent pool for workspaces in the project,
 	// required when DefaultExecutionMode is set to `agent`
-	DefaultAgentPoolId *string `jsonapi:"attr,default-agent-pool-id,omitempty"`
+	DefaultAgentPoolID *string `jsonapi:"attr,default-agent-pool-id,omitempty"`
 
 	// Optional: Struct of booleans, which indicate whether the project
 	// specifies its own values for various settings. If you mark a setting as
