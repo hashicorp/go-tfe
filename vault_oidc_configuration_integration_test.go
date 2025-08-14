@@ -8,50 +8,172 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func TestVaultOIDCConfigurationsCreateReadUpdateDelete(t *testing.T) {
+func TestVaultOIDCConfigurationCreate(t *testing.T) {
+	skipIfEnterprise(t)
+
 	client := testClient(t)
 	ctx := context.Background()
 
 	orgTest, orgTestCleanup := createOrganization(t, client)
 	t.Cleanup(orgTestCleanup)
 
-	// Using "silly_name" because of the hyok feature flag.
-	// Put in the name of the organization you want to test with.
-	orgTest, err := client.Organizations.Read(ctx, "silly_name")
+	t.Run("with valid options", func(t *testing.T) {
+		opts := VaultOIDCConfigurationCreateOptions{
+			Address:          "https://vault.example.com",
+			RoleName:         "vault-role-name",
+			Namespace:        "admin",
+			JWTAuthPath:      "jwt",
+			TLSCACertificate: randomString(t),
+			Organization: &Organization{
+				Name: orgTest.Name,
+			},
+		}
 
-	create_vault_oidc_configuration, err := client.VaultOIDCConfigurations.Create(ctx, orgTest.Name, VaultOIDCConfigurationCreateOptions{
-		Address:          "https://vault.example.com",
-		RoleName:         "vault-role-name",
-		Namespace:        "admin",
-		JWTAuthPath:      "jwt",
-		TLSCACertificate: "something",
-		Organization: &Organization{
-			Name: orgTest.Name,
-		},
+		oidcConfig, err := client.VaultOIDCConfigurations.Create(ctx, orgTest.Name, opts)
+		require.NoError(t, err)
+		require.NotNil(t, oidcConfig)
+		assert.Equal(t, opts.Address, oidcConfig.Address)
+		assert.Equal(t, opts.RoleName, oidcConfig.RoleName)
+		assert.Equal(t, opts.Namespace, oidcConfig.Namespace)
+		assert.Equal(t, opts.JWTAuthPath, oidcConfig.JWTAuthPath)
 	})
-	require.NoError(t, err)
-	require.NotNil(t, create_vault_oidc_configuration)
 
-	read_vault_oidc_configuration, err := client.VaultOIDCConfigurations.Read(ctx, create_vault_oidc_configuration.ID)
-	require.NoError(t, err)
-	require.NotNil(t, read_vault_oidc_configuration)
+	t.Run("missing address", func(t *testing.T) {
+		opts := VaultOIDCConfigurationCreateOptions{
+			RoleName:         "vault-role-name",
+			Namespace:        "admin",
+			JWTAuthPath:      "jwt",
+			TLSCACertificate: randomString(t),
+			Organization: &Organization{
+				Name: orgTest.Name,
+			},
+		}
 
-	update_vault_oidc_configuration, err := client.VaultOIDCConfigurations.Update(ctx, create_vault_oidc_configuration.ID, VaultOIDCConfigurationUpdateOptions{
-		Address:          "https://vault.example.updated.com",
-		RoleName:         "vault-role-name-updated",
-		Namespace:        "admin-updated",
-		JWTAuthPath:      "jwt-updated",
-		TLSCACertificate: "something-updated",
+		_, err := client.VaultOIDCConfigurations.Create(ctx, orgTest.Name, opts)
+		assert.ErrorIs(t, err, ErrRequiredVaultAddress)
 	})
-	require.NoError(t, err)
-	require.NotNil(t, update_vault_oidc_configuration)
-	assert.Equal(t, create_vault_oidc_configuration.ID, update_vault_oidc_configuration.ID)
-	assert.Equal(t, "https://vault.example.updated.com", update_vault_oidc_configuration.Address)
-	assert.Equal(t, "vault-role-name-updated", update_vault_oidc_configuration.RoleName)
-	assert.Equal(t, "admin-updated", update_vault_oidc_configuration.Namespace)
-	assert.Equal(t, "jwt-updated", update_vault_oidc_configuration.JWTAuthPath)
-	assert.Equal(t, "something-updated", update_vault_oidc_configuration.TLSCACertificate)
 
-	err = client.VaultOIDCConfigurations.Delete(ctx, create_vault_oidc_configuration.ID)
-	require.NoError(t, err)
+	t.Run("missing role name", func(t *testing.T) {
+		opts := VaultOIDCConfigurationCreateOptions{
+			Address:          "https://vault.example.com",
+			Namespace:        "admin",
+			JWTAuthPath:      "jwt",
+			TLSCACertificate: randomString(t),
+			Organization: &Organization{
+				Name: orgTest.Name,
+			},
+		}
+
+		_, err := client.VaultOIDCConfigurations.Create(ctx, orgTest.Name, opts)
+		assert.ErrorIs(t, err, ErrRequiredRoleName)
+	})
+}
+
+func TestVaultOIDCConfigurationRead(t *testing.T) {
+	skipIfEnterprise(t)
+
+	client := testClient(t)
+	ctx := context.Background()
+
+	orgTest, orgTestCleanup := createOrganization(t, client)
+	t.Cleanup(orgTestCleanup)
+
+	oidcConfig, oidcConfigCleanup := createVaultOIDCConfiguration(t, client, orgTest)
+	t.Cleanup(oidcConfigCleanup)
+
+	t.Run("fetch existing configuration", func(t *testing.T) {
+		fetched, err := client.VaultOIDCConfigurations.Read(ctx, oidcConfig.ID)
+		require.NoError(t, err)
+		require.NotEmpty(t, fetched)
+	})
+
+	t.Run("fetching non-existing configuration", func(t *testing.T) {
+		_, err := client.VaultOIDCConfigurations.Read(ctx, "voidc-notreal")
+		assert.ErrorIs(t, err, ErrResourceNotFound)
+	})
+}
+
+func TestVaultOIDCConfigurationUpdate(t *testing.T) {
+	skipIfEnterprise(t)
+
+	client := testClient(t)
+	ctx := context.Background()
+
+	orgTest, orgTestCleanup := createOrganization(t, client)
+	t.Cleanup(orgTestCleanup)
+
+	oidcConfig, oidcConfigCleanup := createVaultOIDCConfiguration(t, client, orgTest)
+	t.Cleanup(oidcConfigCleanup)
+
+	t.Run("with valid options", func(t *testing.T) {
+		opts := VaultOIDCConfigurationUpdateOptions{
+			Address:          randomString(t),
+			RoleName:         randomString(t),
+			Namespace:        randomString(t),
+			JWTAuthPath:      randomString(t),
+			TLSCACertificate: randomString(t),
+			Organization: &Organization{
+				Name: orgTest.Name,
+			},
+		}
+		updated, err := client.VaultOIDCConfigurations.Update(ctx, oidcConfig.ID, opts)
+		require.NoError(t, err)
+		require.NotEmpty(t, updated)
+		assert.NotEqual(t, oidcConfig.Address, updated.Address)
+		assert.NotEqual(t, oidcConfig.RoleName, updated.RoleName)
+		assert.NotEqual(t, oidcConfig.Namespace, updated.Namespace)
+		assert.NotEqual(t, oidcConfig.JWTAuthPath, updated.JWTAuthPath)
+	})
+
+	t.Run("missing address", func(t *testing.T) {
+		opts := VaultOIDCConfigurationUpdateOptions{
+			RoleName:         randomString(t),
+			Namespace:        randomString(t),
+			JWTAuthPath:      randomString(t),
+			TLSCACertificate: randomString(t),
+			Organization: &Organization{
+				Name: orgTest.Name,
+			},
+		}
+
+		_, err := client.VaultOIDCConfigurations.Update(ctx, orgTest.Name, opts)
+		assert.ErrorIs(t, err, ErrRequiredVaultAddress)
+	})
+
+	t.Run("missing role name", func(t *testing.T) {
+		opts := VaultOIDCConfigurationUpdateOptions{
+			Address:          randomString(t),
+			Namespace:        randomString(t),
+			JWTAuthPath:      randomString(t),
+			TLSCACertificate: randomString(t),
+			Organization: &Organization{
+				Name: orgTest.Name,
+			},
+		}
+
+		_, err := client.VaultOIDCConfigurations.Update(ctx, orgTest.Name, opts)
+		assert.ErrorIs(t, err, ErrRequiredRoleName)
+	})
+}
+
+func TestVaultOIDCConfigurationDelete(t *testing.T) {
+	skipIfEnterprise(t)
+
+	client := testClient(t)
+	ctx := context.Background()
+
+	orgTest, orgTestCleanup := createOrganization(t, client)
+	t.Cleanup(orgTestCleanup)
+
+	oidcConfig, _ := createVaultOIDCConfiguration(t, client, orgTest)
+
+	t.Run("delete existing configuration", func(t *testing.T) {
+		err := client.VaultOIDCConfigurations.Delete(ctx, oidcConfig.ID)
+		require.NoError(t, err)
+	})
+
+	t.Run("fetching non-existing configuration", func(t *testing.T) {
+		err := client.VaultOIDCConfigurations.Delete(ctx, "voidc-notreal")
+		require.ErrorIs(t, err, ErrResourceNotFound)
+	})
 }
