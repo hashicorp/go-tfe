@@ -420,7 +420,7 @@ var (
 
 	ErrRequiredTenantID = errors.New("tenant-id is required for Azure OIDC configuration")
 
-	ErrRequiredAddress = errors.New("address is required for Vault OIDC configuration")
+	ErrRequiredVaultAddress = errors.New("address is required for Vault OIDC configuration")
 
 	ErrRequiredRoleName = errors.New("role is required for Vault OIDC configuration")
 

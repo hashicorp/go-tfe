@@ -675,6 +675,44 @@ func createGCPOIDCConfiguration(t *testing.T, client *Client, org *Organization)
 	}
 }
 
+func createVaultOIDCConfiguration(t *testing.T, client *Client, org *Organization) (*VaultOIDCConfiguration, func()) {
+	var orgCleanup func()
+
+	ctx := context.Background()
+
+	if org == nil {
+		org, orgCleanup = createOrganization(t, client)
+	}
+
+	opts := VaultOIDCConfigurationCreateOptions{
+		Address:          "https://vault.example.com",
+		RoleName:         randomString(t),
+		Namespace:        randomString(t),
+		JWTAuthPath:      "jwt",
+		TLSCACertificate: randomString(t),
+		Organization: &Organization{
+			Name: org.Name,
+		},
+	}
+
+	oidcConfig, err := client.VaultOIDCConfigurations.Create(ctx, org.Name, opts)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	return oidcConfig, func() {
+		if err := client.VaultOIDCConfigurations.Delete(ctx, oidcConfig.ID); err != nil {
+			t.Errorf("Error removing GPG key! WARNING: Dangling resources\n"+
+				"may exist! The full error is shown below.\n\n"+
+				"VaultOIDCConfigurations: %s\nError: %s", oidcConfig.ID, err)
+		}
+
+		if orgCleanup != nil {
+			orgCleanup()
+		}
+	}
+}
+
 func createNotificationConfiguration(t *testing.T, client *Client, w *Workspace, options *NotificationConfigurationCreateOptions) (*NotificationConfiguration, func()) {
 	var wCleanup func()
 

@@ -27,8 +27,8 @@ type VaultOIDCConfiguration struct {
 	Address          string `jsonapi:"attr,address"`
 	RoleName         string `jsonapi:"attr,role"`
 	Namespace        string `jsonapi:"attr,namespace"`
-	JWTAuthPath      string `jsonapi:"attr,auth_path"`
-	TLSCACertificate string `jsonapi:"attr,encoded_cacert"`
+	JWTAuthPath      string `jsonapi:"attr,auth-path"`
+	TLSCACertificate string `jsonapi:"attr,encoded-cacert"`
 
 	Organization *Organization `jsonapi:"relation,organization"`
 }
@@ -38,8 +38,8 @@ type VaultOIDCConfigurationCreateOptions struct {
 	Address          string `jsonapi:"attr,address"`
 	RoleName         string `jsonapi:"attr,role"`
 	Namespace        string `jsonapi:"attr,namespace"`
-	JWTAuthPath      string `jsonapi:"attr,auth_path"`
-	TLSCACertificate string `jsonapi:"attr,encoded_cacert"`
+	JWTAuthPath      string `jsonapi:"attr,auth-path"`
+	TLSCACertificate string `jsonapi:"attr,encoded-cacert"`
 
 	Organization *Organization `jsonapi:"relation,organization"`
 }
@@ -49,15 +49,15 @@ type VaultOIDCConfigurationUpdateOptions struct {
 	Address          string `jsonapi:"attr,address"`
 	RoleName         string `jsonapi:"attr,role"`
 	Namespace        string `jsonapi:"attr,namespace"`
-	JWTAuthPath      string `jsonapi:"attr,auth_path"`
-	TLSCACertificate string `jsonapi:"attr,encoded_cacert"`
+	JWTAuthPath      string `jsonapi:"attr,auth-path"`
+	TLSCACertificate string `jsonapi:"attr,encoded-cacert"`
 
 	Organization *Organization `jsonapi:"relation,organization"`
 }
 
 func (o *VaultOIDCConfigurationCreateOptions) valid() error {
 	if o.Address == "" {
-		return ErrRequiredAddress
+		return ErrRequiredVaultAddress
 	}
 
 	if o.RoleName == "" {
@@ -107,7 +107,7 @@ func (voc *vaultOIDCConfigurations) Read(ctx context.Context, oidcID string) (*V
 
 func (o *VaultOIDCConfigurationUpdateOptions) valid() error {
 	if o.Address == "" {
-		return ErrRequiredAddress
+		return ErrRequiredVaultAddress
 	}
 
 	if o.RoleName == "" {
