@@ -8,44 +8,184 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func TestAzureOIDCConfigurationsCreateReadUpdateDelete(t *testing.T) {
+func TestAzureOIDCConfigurationCreate(t *testing.T) {
+	skipIfEnterprise(t)
+
 	client := testClient(t)
 	ctx := context.Background()
 
 	orgTest, orgTestCleanup := createOrganization(t, client)
 	t.Cleanup(orgTestCleanup)
 
-	// Using "silly_name" because of the hyok feature flag.
-	// Put in the name of the organization you want to test with.
-	orgTest, err := client.Organizations.Read(ctx, "silly_name")
+	t.Run("with valid options", func(t *testing.T) {
+		opts := AzureOIDCConfigurationCreateOptions{
+			ClientID:       "your-azure-client-id",
+			SubscriptionID: "your-azure-subscription-id",
+			TenantID:       "your-azure-tenant-id",
+			Organization: &Organization{
+				Name: orgTest.Name,
+			},
+		}
 
-	create_azure_oidc_configuration, err := client.AzureOIDCConfigurations.Create(ctx, orgTest.Name, AzureOIDCConfigurationCreateOptions{
-		ClientID:       "your-azure-client-id",
-		SubscriptionID: "your-azure-subscription-id",
-		TenantID:       "your-azure-tenant-id",
-		Organization: &Organization{
-			Name: orgTest.Name,
-		},
+		oidcConfig, err := client.AzureOIDCConfigurations.Create(ctx, orgTest.Name, opts)
+		require.NoError(t, err)
+		require.NotNil(t, oidcConfig)
+		assert.Equal(t, oidcConfig.ClientID, opts.ClientID)
+		assert.Equal(t, oidcConfig.SubscriptionID, opts.SubscriptionID)
+		assert.Equal(t, oidcConfig.TenantID, opts.TenantID)
 	})
-	require.NoError(t, err)
-	require.NotNil(t, create_azure_oidc_configuration)
 
-	read_azure_oidc_configuration, err := client.AzureOIDCConfigurations.Read(ctx, create_azure_oidc_configuration.ID)
-	require.NoError(t, err)
-	require.NotNil(t, read_azure_oidc_configuration)
+	t.Run("missing client ID", func(t *testing.T) {
+		opts := AzureOIDCConfigurationCreateOptions{
+			SubscriptionID: "your-azure-subscription-id",
+			TenantID:       "your-azure-tenant-id",
+			Organization: &Organization{
+				Name: orgTest.Name,
+			},
+		}
 
-	update_azure_oidc_configuration, err := client.AzureOIDCConfigurations.Update(ctx, create_azure_oidc_configuration.ID, AzureOIDCConfigurationUpdateOptions{
-		ClientID:       "your-azure-client-id-updated",
-		SubscriptionID: "your-azure-subscription-id-updated",
-		TenantID:       "your-azure-tenant-id-updated",
+		_, err := client.AzureOIDCConfigurations.Create(ctx, orgTest.Name, opts)
+		assert.ErrorIs(t, err, ErrRequiredClientID)
 	})
-	require.NoError(t, err)
-	require.NotNil(t, update_azure_oidc_configuration)
-	assert.Equal(t, create_azure_oidc_configuration.ID, update_azure_oidc_configuration.ID)
-	assert.Equal(t, "your-azure-client-id-updated", update_azure_oidc_configuration.ClientID)
-	assert.Equal(t, "your-azure-subscription-id-updated", update_azure_oidc_configuration.SubscriptionID)
-	assert.Equal(t, "your-azure-tenant-id-updated", update_azure_oidc_configuration.TenantID)
 
-	err = client.AzureOIDCConfigurations.Delete(ctx, create_azure_oidc_configuration.ID)
-	require.NoError(t, err)
+	t.Run("missing subscription ID", func(t *testing.T) {
+		opts := AzureOIDCConfigurationCreateOptions{
+			ClientID: "your-azure-client-id",
+			TenantID: "your-azure-tenant-id",
+			Organization: &Organization{
+				Name: orgTest.Name,
+			},
+		}
+
+		_, err := client.AzureOIDCConfigurations.Create(ctx, orgTest.Name, opts)
+		assert.ErrorIs(t, err, ErrRequiredSubscriptionID)
+	})
+
+	t.Run("missing tenant ID", func(t *testing.T) {
+		opts := AzureOIDCConfigurationCreateOptions{
+			ClientID:       "your-azure-client-id",
+			SubscriptionID: "your-azure-subscription-id",
+			Organization: &Organization{
+				Name: orgTest.Name,
+			},
+		}
+
+		_, err := client.AzureOIDCConfigurations.Create(ctx, orgTest.Name, opts)
+		assert.ErrorIs(t, err, ErrRequiredTenantID)
+	})
+}
+
+func TestAzureOIDCConfigurationRead(t *testing.T) {
+	skipIfEnterprise(t)
+
+	client := testClient(t)
+	ctx := context.Background()
+
+	orgTest, orgTestCleanup := createOrganization(t, client)
+	t.Cleanup(orgTestCleanup)
+
+	oidcConfig, oidcConfigCleanup := createAzureOIDCConfiguration(t, client, orgTest)
+	t.Cleanup(oidcConfigCleanup)
+
+	t.Run("fetch existing configuration", func(t *testing.T) {
+		fetched, err := client.AzureOIDCConfigurations.Read(ctx, oidcConfig.ID)
+		require.NoError(t, err)
+		require.NotEmpty(t, fetched)
+	})
+
+	t.Run("fetching non-existing configuration", func(t *testing.T) {
+		_, err := client.AzureOIDCConfigurations.Read(ctx, "azoidc-notreal")
+		assert.ErrorIs(t, err, ErrResourceNotFound)
+	})
+}
+
+func TestAzureOIDCConfigurationUpdate(t *testing.T) {
+	skipIfEnterprise(t)
+
+	client := testClient(t)
+	ctx := context.Background()
+
+	orgTest, orgTestCleanup := createOrganization(t, client)
+	t.Cleanup(orgTestCleanup)
+
+	oidcConfig, oidcConfigCleanup := createAzureOIDCConfiguration(t, client, orgTest)
+	t.Cleanup(oidcConfigCleanup)
+
+	t.Run("with valid options", func(t *testing.T) {
+		opts := AzureOIDCConfigurationUpdateOptions{
+			ClientID:       "your-azure-client-id",
+			SubscriptionID: "your-azure-subscription-id",
+			TenantID:       "your-azure-tenant-id",
+			Organization: &Organization{
+				Name: orgTest.Name,
+			},
+		}
+		updated, err := client.AzureOIDCConfigurations.Update(ctx, oidcConfig.ID, opts)
+		require.NoError(t, err)
+		require.NotEmpty(t, updated)
+		assert.NotEqual(t, oidcConfig.ClientID, updated.ClientID)
+		assert.NotEqual(t, oidcConfig.SubscriptionID, updated.SubscriptionID)
+		assert.NotEqual(t, oidcConfig.TenantID, updated.TenantID)
+	})
+
+	t.Run("missing client ID", func(t *testing.T) {
+		opts := AzureOIDCConfigurationUpdateOptions{
+			SubscriptionID: "your-azure-subscription-id",
+			TenantID:       "your-azure-tenant-id",
+			Organization: &Organization{
+				Name: orgTest.Name,
+			},
+		}
+
+		_, err := client.AzureOIDCConfigurations.Update(ctx, orgTest.Name, opts)
+		assert.ErrorIs(t, err, ErrRequiredClientID)
+	})
+
+	t.Run("missing subscription ID", func(t *testing.T) {
+		opts := AzureOIDCConfigurationUpdateOptions{
+			ClientID: "your-azure-client-id",
+			TenantID: "your-azure-tenant-id",
+			Organization: &Organization{
+				Name: orgTest.Name,
+			},
+		}
+
+		_, err := client.AzureOIDCConfigurations.Update(ctx, orgTest.Name, opts)
+		assert.ErrorIs(t, err, ErrRequiredSubscriptionID)
+	})
+
+	t.Run("missing tenant ID", func(t *testing.T) {
+		opts := AzureOIDCConfigurationUpdateOptions{
+			ClientID:       "your-azure-client-id",
+			SubscriptionID: "your-azure-subscription-id",
+			Organization: &Organization{
+				Name: orgTest.Name,
+			},
+		}
+
+		_, err := client.AzureOIDCConfigurations.Update(ctx, orgTest.Name, opts)
+		assert.ErrorIs(t, err, ErrRequiredTenantID)
+	})
+}
+
+func TestAzureOIDCConfigurationDelete(t *testing.T) {
+	skipIfEnterprise(t)
+
+	client := testClient(t)
+	ctx := context.Background()
+
+	orgTest, orgTestCleanup := createOrganization(t, client)
+	t.Cleanup(orgTestCleanup)
+
+	oidcConfig, _ := createAzureOIDCConfiguration(t, client, orgTest)
+
+	t.Run("delete existing configuration", func(t *testing.T) {
+		err := client.AzureOIDCConfigurations.Delete(ctx, oidcConfig.ID)
+		require.NoError(t, err)
+	})
+
+	t.Run("fetching non-existing configuration", func(t *testing.T) {
+		err := client.AzureOIDCConfigurations.Delete(ctx, "azoidc-notreal")
+		require.ErrorIs(t, err, ErrResourceNotFound)
+	})
 }
