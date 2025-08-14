@@ -569,6 +569,40 @@ func createGPGKey(t *testing.T, client *Client, org *Organization, provider *Reg
 	}
 }
 
+func createAWSOIDCConfiguration(t *testing.T, client *Client, org *Organization) (*AWSOIDCConfiguration, func()) {
+	var orgCleanup func()
+
+	ctx := context.Background()
+
+	if org == nil {
+		org, orgCleanup = createOrganization(t, client)
+	}
+
+	opts := AWSOIDCConfigurationCreateOptions{
+		RoleARN: fmt.Sprintf("arn:aws:iam::123456789012:role/%s", randomString(t)),
+		Organization: &Organization{
+			Name: org.Name,
+		},
+	}
+
+	oidcConfig, err := client.AWSOIDCConfigurations.Create(ctx, org.Name, opts)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	return oidcConfig, func() {
+		if err := client.AWSOIDCConfigurations.Delete(ctx, oidcConfig.ID); err != nil {
+			t.Errorf("Error removing GPG key! WARNING: Dangling resources\n"+
+				"may exist! The full error is shown below.\n\n"+
+				"AWSOIDCConfigurations: %s\nError: %s", oidcConfig.ID, err)
+		}
+
+		if orgCleanup != nil {
+			orgCleanup()
+		}
+	}
+}
+
 func createNotificationConfiguration(t *testing.T, client *Client, w *Workspace, options *NotificationConfigurationCreateOptions) (*NotificationConfiguration, func()) {
 	var wCleanup func()
 

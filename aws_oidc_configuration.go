@@ -9,9 +9,9 @@ import (
 type AWSOIDCConfigurations interface {
 	Create(ctx context.Context, organization string, options AWSOIDCConfigurationCreateOptions) (*AWSOIDCConfiguration, error)
 
-	Read(ctx context.Context, hyokID string) (*AWSOIDCConfiguration, error)
+	Read(ctx context.Context, oidcID string) (*AWSOIDCConfiguration, error)
 
-	Update(ctx context.Context, hyokID string, options AWSOIDCConfigurationUpdateOptions) (*AWSOIDCConfiguration, error)
+	Update(ctx context.Context, oidcID string, options AWSOIDCConfigurationUpdateOptions) (*AWSOIDCConfiguration, error)
 
 	Delete(ctx context.Context, oidcID string) error
 }
