@@ -42,7 +42,7 @@ const (
 
 type OIDCConfigurationChoice struct {
 	AWSOIDCConfiguration   *AWSOIDCConfiguration
-	GcpOIDCConfiguration   *GcpOIDCConfiguration
+	GcpOIDCConfiguration   *GCPOIDCConfiguration
 	AzureOIDCConfiguration *AzureOIDCConfiguration
 	VaultOIDCConfiguration *VaultOIDCConfiguration
 }
