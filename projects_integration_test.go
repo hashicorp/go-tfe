@@ -208,7 +208,7 @@ func TestProjectsRead(t *testing.T) {
 		proj, projCleanup := createProjectWithOptions(t, client, orgTest, ProjectCreateOptions{
 			Name:                 "project-with-agent-pool",
 			DefaultExecutionMode: String("agent"),
-			DefaultAgentPoolId:   String(agentPoolTest.ID),
+			DefaultAgentPoolID:   String(agentPoolTest.ID),
 		})
 		defer projCleanup()
 
@@ -318,7 +318,7 @@ func TestProjectsCreate(t *testing.T) {
 		p, err := client.Projects.Create(ctx, orgTest.Name, ProjectCreateOptions{
 			Name:                 fmt.Sprintf("foo-%s", randomString(t)),
 			DefaultExecutionMode: String("remote"),
-			DefaultAgentPoolId:   String(agentPoolTest.ID),
+			DefaultAgentPoolID:   String(agentPoolTest.ID),
 		})
 
 		assert.Nil(t, p)
@@ -368,7 +368,7 @@ func TestProjectsCreate(t *testing.T) {
 		p, err := client.Projects.Create(ctx, orgTest.Name, ProjectCreateOptions{
 			Name:                 fmt.Sprintf("foo-%s", randomString(t)),
 			DefaultExecutionMode: String("agent"),
-			DefaultAgentPoolId:   String(agentPoolTest.ID),
+			DefaultAgentPoolID:   String(agentPoolTest.ID),
 			SettingOverwrites: &ProjectSettingOverwrites{
 				AgentPool:     Bool(false),
 				ExecutionMode: Bool(true),
@@ -446,7 +446,7 @@ func TestProjectsUpdate(t *testing.T) {
 				{Key: "foo", Value: "bar"},
 			},
 			DefaultExecutionMode: String("agent"),
-			DefaultAgentPoolId:   String(agentPoolTest.ID),
+			DefaultAgentPoolID:   String(agentPoolTest.ID),
 		})
 		require.NoError(t, err)
 
@@ -546,7 +546,7 @@ func TestProjectsUpdate(t *testing.T) {
 
 		proj, err := client.Projects.Update(ctx, kBefore.ID, ProjectUpdateOptions{
 			DefaultExecutionMode: String("local"),
-			DefaultAgentPoolId:   String(pool.ID),
+			DefaultAgentPoolID:   String(pool.ID),
 		})
 		assert.Nil(t, proj)
 		assert.ErrorContains(t, err, "Agent pool must not be specified unless using 'agent' execution mode")
@@ -565,8 +565,9 @@ func TestProjectsUpdate(t *testing.T) {
 		// assert that project's execution mode can be updated from 'remote' -> 'agent'
 		proj, err := client.Projects.Update(ctx, proj.ID, ProjectUpdateOptions{
 			DefaultExecutionMode: String("agent"),
-			DefaultAgentPoolId:   String(agentPool.ID),
+			DefaultAgentPoolID:   String(agentPool.ID),
 		})
+		require.NoError(t, err)
 		assert.Equal(t, "agent", proj.DefaultExecutionMode)
 		assert.Equal(t, agentPool.ID, proj.DefaultAgentPool.ID)
 
