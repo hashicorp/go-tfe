@@ -36,6 +36,12 @@ type AgentPools interface {
 	// UpdateAllowedWorkspaces updates the list of allowed workspaces associated with an agent pool.
 	UpdateAllowedWorkspaces(ctx context.Context, agentPool string, options AgentPoolAllowedWorkspacesUpdateOptions) (*AgentPool, error)
 
+	// UpdateAllowedProjects updates the list of allowed projects associated with an agent pool.
+	UpdateAllowedProjects(ctx context.Context, agentPool string, options AgentPoolAllowedProjectsUpdateOptions) (*AgentPool, error)
+
+	// UpdateExcludedWorkspaces updates the list of excluded workspaces associated with an agent pool.
+	UpdateExcludedWorkspaces(ctx context.Context, agentPool string, options AgentPoolExcludedWorkspacesUpdateOptions) (*AgentPool, error)
+
 	// Delete an agent pool by its ID.
 	Delete(ctx context.Context, agentPoolID string) error
 }
@@ -60,9 +66,11 @@ type AgentPool struct {
 	CreatedAt          time.Time `jsonapi:"attr,created-at,iso8601"`
 
 	// Relations
-	Organization      *Organization `jsonapi:"relation,organization"`
-	Workspaces        []*Workspace  `jsonapi:"relation,workspaces"`
-	AllowedWorkspaces []*Workspace  `jsonapi:"relation,allowed-workspaces"`
+	Organization       *Organization `jsonapi:"relation,organization"`
+	Workspaces         []*Workspace  `jsonapi:"relation,workspaces"`
+	AllowedWorkspaces  []*Workspace  `jsonapi:"relation,allowed-workspaces"`
+	AllowedProjects    []*Project    `jsonapi:"relation,allowed-projects"`
+	ExcludedWorkspaces []*Workspace  `jsonapi:"relation,excluded-workspaces"`
 }
 
 // A list of relations to include
@@ -87,6 +95,9 @@ type AgentPoolListOptions struct {
 
 	// Optional: String (workspace name) used to filter the results.
 	AllowedWorkspacesName string `url:"filter[allowed_workspaces][name],omitempty"`
+
+	// Optional: String (project name) used to filter the results.
+	AllowedProjectsName string `url:"filter[allowed_projects][name],omitempty"`
 }
 
 // AgentPoolCreateOptions represents the options for creating an agent pool.
@@ -105,6 +116,12 @@ type AgentPoolCreateOptions struct {
 
 	// List of workspaces that are associated with an agent pool.
 	AllowedWorkspaces []*Workspace `jsonapi:"relation,allowed-workspaces,omitempty"`
+
+	// List of projects that are associated with an agent pool.
+	AllowedProjects []*Project `jsonapi:"relation,allowed-projects,omitempty"`
+
+	// List of workspaces that are excluded from the scope of an agent pool.
+	ExcludedWorkspaces []*Workspace `jsonapi:"relation,excluded-workspaces,omitempty"`
 }
 
 // List all the agent pools of the given organization.
@@ -201,9 +218,15 @@ type AgentPoolUpdateOptions struct {
 
 	// A new list of workspaces that are associated with an agent pool.
 	AllowedWorkspaces []*Workspace `jsonapi:"relation,allowed-workspaces,omitempty"`
+
+	// A new list of projects that are associated with an agent pool.
+	AllowedProjects []*Project `jsonapi:"relation,allowed-projects,omitempty"`
+
+	// A new list of workspaces that are excluded from the scope of an agent pool.
+	ExcludedWorkspaces []*Workspace `jsonapi:"relation,excluded-workspaces,omitempty"`
 }
 
-// AgentPoolUpdateAllowedWorkspacesOptions represents the options for updating the allowed workspace on an agent pool
+// AgentPoolAllowedWorkspacesUpdateOptions represents the options for updating the allowed workspace on an agent pool
 type AgentPoolAllowedWorkspacesUpdateOptions struct {
 	// Type is a public field utilized by JSON:API to
 	// set the resource type via the field tag.
@@ -215,8 +238,33 @@ type AgentPoolAllowedWorkspacesUpdateOptions struct {
 	AllowedWorkspaces []*Workspace `jsonapi:"relation,allowed-workspaces"`
 }
 
+// AgentPoolAllowedProjectsUpdateOptions represents the options for updating the allowed projects on an agent pool
+type AgentPoolAllowedProjectsUpdateOptions struct {
+	// Type is a public field utilized by JSON:API to
+	// set the resource type via the field tag.
+	// It is not a user-defined value and does not need to be set.
+	// https://jsonapi.org/format/#crud-creating
+	Type string `jsonapi:"primary,agent-pools"`
+
+	// A new list of projects that are associated with an agent pool.
+	AllowedProjects []*Project `jsonapi:"relation,allowed-projects"`
+}
+
+// AgentPoolExcludedWorkspacesUpdateOptions represents the options for updating the excluded workspace on an agent pool
+type AgentPoolExcludedWorkspacesUpdateOptions struct {
+	// Type is a public field utilized by JSON:API to
+	// set the resource type via the field tag.
+	// It is not a user-defined value and does not need to be set.
+	// https://jsonapi.org/format/#crud-creating
+	Type string `jsonapi:"primary,agent-pools"`
+
+	// A new list of workspaces that are excluded from the scope of an agent pool.
+	ExcludedWorkspaces []*Workspace `jsonapi:"relation,excluded-workspaces"`
+}
+
 // Update an agent pool by its ID.
-// **Note:** This method cannot be used to clear the allowed workspaces field, instead use UpdateAllowedWorkspaces
+// **Note:** This method cannot be used to clear the allowed workspaces, allowed projects, or excluded workspaces fields.
+// instead use UpdateAllowedWorkspaces, UpdateAllowedProjects, or UpdateExcludedWorkspaces methods respectively.
 func (s *agentPools) Update(ctx context.Context, agentPoolID string, options AgentPoolUpdateOptions) (*AgentPool, error) {
 	if !validStringID(&agentPoolID) {
 		return nil, ErrInvalidAgentPoolID
@@ -242,6 +290,46 @@ func (s *agentPools) Update(ctx context.Context, agentPoolID string, options Age
 }
 
 func (s *agentPools) UpdateAllowedWorkspaces(ctx context.Context, agentPoolID string, options AgentPoolAllowedWorkspacesUpdateOptions) (*AgentPool, error) {
+	if !validStringID(&agentPoolID) {
+		return nil, ErrInvalidAgentPoolID
+	}
+
+	u := fmt.Sprintf("agent-pools/%s", url.PathEscape(agentPoolID))
+	req, err := s.client.NewRequest("PATCH", u, &options)
+	if err != nil {
+		return nil, err
+	}
+
+	k := &AgentPool{}
+	err = req.Do(ctx, k)
+	if err != nil {
+		return nil, err
+	}
+
+	return k, nil
+}
+
+func (s *agentPools) UpdateAllowedProjects(ctx context.Context, agentPoolID string, options AgentPoolAllowedProjectsUpdateOptions) (*AgentPool, error) {
+	if !validStringID(&agentPoolID) {
+		return nil, ErrInvalidAgentPoolID
+	}
+
+	u := fmt.Sprintf("agent-pools/%s", url.PathEscape(agentPoolID))
+	req, err := s.client.NewRequest("PATCH", u, &options)
+	if err != nil {
+		return nil, err
+	}
+
+	k := &AgentPool{}
+	err = req.Do(ctx, k)
+	if err != nil {
+		return nil, err
+	}
+
+	return k, nil
+}
+
+func (s *agentPools) UpdateExcludedWorkspaces(ctx context.Context, agentPoolID string, options AgentPoolExcludedWorkspacesUpdateOptions) (*AgentPool, error) {
 	if !validStringID(&agentPoolID) {
 		return nil, ErrInvalidAgentPoolID
 	}

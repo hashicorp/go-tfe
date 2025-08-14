@@ -125,6 +125,47 @@ func TestAgentPoolsList(t *testing.T) {
 		assert.Contains(t, pools.Items, ap2)
 		assert.Equal(t, 2, pools.TotalCount)
 	})
+
+	t.Run("with allowed projects name filter", func(t *testing.T) {
+		proj1, proj1TestCleanup := createProject(t, client, orgTest)
+		defer proj1TestCleanup()
+
+		proj2, proj2TestCleanup := createProject(t, client, orgTest)
+		defer proj2TestCleanup()
+
+		organizationScoped := false
+		ap, apCleanup := createAgentPoolWithOptions(t, client, orgTest, AgentPoolCreateOptions{
+			Name:               String("a-pool"),
+			OrganizationScoped: &organizationScoped,
+			AllowedProjects:    []*Project{proj1},
+		})
+		defer apCleanup()
+
+		ap2, ap2Cleanup := createAgentPoolWithOptions(t, client, orgTest, AgentPoolCreateOptions{
+			Name:               String("b-pool"),
+			OrganizationScoped: &organizationScoped,
+			AllowedProjects:    []*Project{proj2},
+		})
+		defer ap2Cleanup()
+
+		pools, err := client.AgentPools.List(ctx, orgTest.Name, &AgentPoolListOptions{
+			AllowedProjectsName: proj1.Name,
+		})
+		require.NoError(t, err)
+		assert.NotEmpty(t, pools.Items)
+		assert.Contains(t, pools.Items, ap)
+		assert.Contains(t, pools.Items, agentPool)
+		assert.Equal(t, 2, pools.TotalCount)
+
+		pools, err = client.AgentPools.List(ctx, orgTest.Name, &AgentPoolListOptions{
+			AllowedProjectsName: proj2.Name,
+		})
+		require.NoError(t, err)
+		assert.NotEmpty(t, pools.Items)
+		assert.Contains(t, pools.Items, agentPool)
+		assert.Contains(t, pools.Items, ap2)
+		assert.Equal(t, 2, pools.TotalCount)
+	})
 }
 
 func TestAgentPoolsCreate(t *testing.T) {
@@ -188,6 +229,68 @@ func TestAgentPoolsCreate(t *testing.T) {
 
 		assert.Equal(t, 1, len(pool.AllowedWorkspaces))
 		assert.Equal(t, workspaceTest.ID, pool.AllowedWorkspaces[0].ID)
+
+		// Get a refreshed view from the API.
+		refreshed, err := client.AgentPools.Read(ctx, pool.ID)
+		require.NoError(t, err)
+
+		for _, item := range []*AgentPool{
+			pool,
+			refreshed,
+		} {
+			assert.NotEmpty(t, item.ID)
+		}
+	})
+
+	t.Run("with allowed-projects options", func(t *testing.T) {
+		projectTest, projectTestCleanup := createProject(t, client, orgTest)
+		defer projectTestCleanup()
+
+		organizationScoped := false
+		options := AgentPoolCreateOptions{
+			Name:               String("a-pool-2"),
+			OrganizationScoped: &organizationScoped,
+			AllowedProjects: []*Project{
+				projectTest,
+			},
+		}
+
+		pool, err := client.AgentPools.Create(ctx, orgTest.Name, options)
+		require.NoError(t, err)
+
+		assert.Equal(t, 1, len(pool.AllowedProjects))
+		assert.Equal(t, projectTest.ID, pool.AllowedProjects[0].ID)
+
+		// Get a refreshed view from the API.
+		refreshed, err := client.AgentPools.Read(ctx, pool.ID)
+		require.NoError(t, err)
+
+		for _, item := range []*AgentPool{
+			pool,
+			refreshed,
+		} {
+			assert.NotEmpty(t, item.ID)
+		}
+	})
+
+	t.Run("with excluded-workspaces options", func(t *testing.T) {
+		workspaceTest, workspaceTestCleanup := createWorkspace(t, client, orgTest)
+		defer workspaceTestCleanup()
+
+		organizationScoped := false
+		options := AgentPoolCreateOptions{
+			Name:               String("a-pool-3"),
+			OrganizationScoped: &organizationScoped,
+			ExcludedWorkspaces: []*Workspace{
+				workspaceTest,
+			},
+		}
+
+		pool, err := client.AgentPools.Create(ctx, orgTest.Name, options)
+		require.NoError(t, err)
+
+		assert.Equal(t, 1, len(pool.ExcludedWorkspaces))
+		assert.Equal(t, workspaceTest.ID, pool.ExcludedWorkspaces[0].ID)
 
 		// Get a refreshed view from the API.
 		refreshed, err := client.AgentPools.Read(ctx, pool.ID)
@@ -288,11 +391,14 @@ func TestAgentPoolsUpdate(t *testing.T) {
 	})
 
 	t.Run("when updating only the name", func(t *testing.T) {
-		// TODO: Fix failing assertion on AllowedWorkspaces and un-skip
-		t.Skip("Skipping test until we know why the API is no longer returning AllowedWorkspaces on update")
-
 		workspaceTest, workspaceTestCleanup := createWorkspace(t, client, orgTest)
 		defer workspaceTestCleanup()
+
+		projectTest, projectTestCleanup := createProject(t, client, orgTest)
+		defer projectTestCleanup()
+
+		excludedWorkspaceTest, excludedWorkspaceTestCleanup := createWorkspace(t, client, orgTest)
+		defer excludedWorkspaceTestCleanup()
 
 		organizationScoped := false
 		options := AgentPoolCreateOptions{
@@ -300,6 +406,12 @@ func TestAgentPoolsUpdate(t *testing.T) {
 			OrganizationScoped: &organizationScoped,
 			AllowedWorkspaces: []*Workspace{
 				workspaceTest,
+			},
+			AllowedProjects: []*Project{
+				projectTest,
+			},
+			ExcludedWorkspaces: []*Workspace{
+				excludedWorkspaceTest,
 			},
 		}
 		kBefore, err := client.AgentPools.Create(ctx, orgTest.Name, options)
@@ -314,6 +426,10 @@ func TestAgentPoolsUpdate(t *testing.T) {
 		assert.Equal(t, "updated-key-name", kAfter.Name)
 		assert.Equal(t, 1, len(kAfter.AllowedWorkspaces))
 		assert.Equal(t, workspaceTest.ID, kAfter.AllowedWorkspaces[0].ID)
+		assert.Equal(t, 1, len(kAfter.AllowedProjects))
+		assert.Equal(t, projectTest.ID, kAfter.AllowedProjects[0].ID)
+		assert.Equal(t, 1, len(kAfter.ExcludedWorkspaces))
+		assert.Equal(t, excludedWorkspaceTest.ID, kAfter.ExcludedWorkspaces[0].ID)
 	})
 
 	t.Run("without a valid agent pool ID", func(t *testing.T) {
@@ -355,6 +471,46 @@ func TestAgentPoolsUpdate(t *testing.T) {
 		assert.NotEqual(t, kBefore.AllowedWorkspaces, kAfter.AllowedWorkspaces)
 		assert.Equal(t, 1, len(kAfter.AllowedWorkspaces))
 		assert.Equal(t, workspaceTest.ID, kAfter.AllowedWorkspaces[0].ID)
+	})
+
+	t.Run("when updating allowed-projects", func(t *testing.T) {
+		kBefore, kTestCleanup := createAgentPool(t, client, orgTest)
+		defer kTestCleanup()
+
+		projectTest, projectTestCleanup := createProject(t, client, orgTest)
+		defer projectTestCleanup()
+
+		kAfter, err := client.AgentPools.Update(ctx, kBefore.ID, AgentPoolUpdateOptions{
+			AllowedProjects: []*Project{
+				projectTest,
+			},
+		})
+		require.NoError(t, err)
+
+		assert.Equal(t, kBefore.Name, kAfter.Name)
+		assert.NotEqual(t, kBefore.AllowedProjects, kAfter.AllowedProjects)
+		assert.Equal(t, 1, len(kAfter.AllowedProjects))
+		assert.Equal(t, projectTest.ID, kAfter.AllowedProjects[0].ID)
+	})
+
+	t.Run("when updating excluded-workspaces", func(t *testing.T) {
+		kBefore, kTestCleanup := createAgentPool(t, client, orgTest)
+		defer kTestCleanup()
+
+		workspaceTest, workspaceTestCleanup := createWorkspace(t, client, orgTest)
+		defer workspaceTestCleanup()
+
+		kAfter, err := client.AgentPools.Update(ctx, kBefore.ID, AgentPoolUpdateOptions{
+			ExcludedWorkspaces: []*Workspace{
+				workspaceTest,
+			},
+		})
+		require.NoError(t, err)
+
+		assert.Equal(t, kBefore.Name, kAfter.Name)
+		assert.NotEqual(t, kBefore.ExcludedWorkspaces, kAfter.ExcludedWorkspaces)
+		assert.Equal(t, 1, len(kAfter.ExcludedWorkspaces))
+		assert.Equal(t, workspaceTest.ID, kAfter.ExcludedWorkspaces[0].ID)
 	})
 }
 
@@ -411,6 +567,118 @@ func TestAgentPoolsUpdateAllowedWorkspaces(t *testing.T) {
 		assert.Equal(t, kBefore.ID, kAfter.ID)
 		assert.Equal(t, "a-pool", kAfter.Name)
 		assert.Empty(t, kAfter.AllowedWorkspaces)
+	})
+}
+
+func TestAgentPoolsUpdateAllowedProjects(t *testing.T) {
+	client := testClient(t)
+	ctx := context.Background()
+
+	orgTest, orgTestCleanup := createOrganization(t, client)
+	defer orgTestCleanup()
+
+	upgradeOrganizationSubscription(t, client, orgTest)
+
+	t.Run("when updating allowed-projects", func(t *testing.T) {
+		kBefore, kTestCleanup := createAgentPool(t, client, orgTest)
+		defer kTestCleanup()
+
+		projectTest, projectTestCleanup := createProject(t, client, orgTest)
+		defer projectTestCleanup()
+
+		kAfter, err := client.AgentPools.UpdateAllowedProjects(ctx, kBefore.ID, AgentPoolAllowedProjectsUpdateOptions{
+			AllowedProjects: []*Project{
+				projectTest,
+			},
+		})
+		require.NoError(t, err)
+
+		assert.Equal(t, kBefore.Name, kAfter.Name)
+		assert.NotEqual(t, kBefore.AllowedProjects, kAfter.AllowedProjects)
+		assert.Equal(t, 1, len(kAfter.AllowedProjects))
+		assert.Equal(t, projectTest.ID, kAfter.AllowedProjects[0].ID)
+	})
+
+	t.Run("when removing all the allowed-projects", func(t *testing.T) {
+		projectTest, projectTestCleanup := createProject(t, client, orgTest)
+		defer projectTestCleanup()
+
+		organizationScoped := false
+		options := AgentPoolCreateOptions{
+			Name:               String("a-pool"),
+			OrganizationScoped: &organizationScoped,
+			AllowedProjects: []*Project{
+				projectTest,
+			},
+		}
+
+		kBefore, kTestCleanup := createAgentPoolWithOptions(t, client, orgTest, options)
+		defer kTestCleanup()
+
+		kAfter, err := client.AgentPools.UpdateAllowedProjects(ctx, kBefore.ID, AgentPoolAllowedProjectsUpdateOptions{
+			AllowedProjects: []*Project{},
+		})
+		require.NoError(t, err)
+
+		assert.Equal(t, kBefore.ID, kAfter.ID)
+		assert.Equal(t, "a-pool", kAfter.Name)
+		assert.Empty(t, kAfter.AllowedProjects)
+	})
+}
+
+func TestAgentPoolsUpdateExcludedWorkspaces(t *testing.T) {
+	client := testClient(t)
+	ctx := context.Background()
+
+	orgTest, orgTestCleanup := createOrganization(t, client)
+	defer orgTestCleanup()
+
+	upgradeOrganizationSubscription(t, client, orgTest)
+
+	t.Run("when updating excluded-workspaces", func(t *testing.T) {
+		kBefore, kTestCleanup := createAgentPool(t, client, orgTest)
+		defer kTestCleanup()
+
+		workspaceTest, workspaceTestCleanup := createWorkspace(t, client, orgTest)
+		defer workspaceTestCleanup()
+
+		kAfter, err := client.AgentPools.UpdateExcludedWorkspaces(ctx, kBefore.ID, AgentPoolExcludedWorkspacesUpdateOptions{
+			ExcludedWorkspaces: []*Workspace{
+				workspaceTest,
+			},
+		})
+		require.NoError(t, err)
+
+		assert.Equal(t, kBefore.Name, kAfter.Name)
+		assert.NotEqual(t, kBefore.ExcludedWorkspaces, kAfter.ExcludedWorkspaces)
+		assert.Equal(t, 1, len(kAfter.ExcludedWorkspaces))
+		assert.Equal(t, workspaceTest.ID, kAfter.ExcludedWorkspaces[0].ID)
+	})
+
+	t.Run("when removing all the excluded-workspaces", func(t *testing.T) {
+		workspaceTest, workspaceTestCleanup := createWorkspace(t, client, orgTest)
+		defer workspaceTestCleanup()
+
+		organizationScoped := false
+		options := AgentPoolCreateOptions{
+			Name:               String("a-pool"),
+			OrganizationScoped: &organizationScoped,
+			ExcludedWorkspaces: []*Workspace{
+				workspaceTest,
+			},
+		}
+
+		kBefore, kTestCleanup := createAgentPoolWithOptions(t, client, orgTest, options)
+		defer kTestCleanup()
+
+		kAfter, err := client.AgentPools.UpdateExcludedWorkspaces(ctx, kBefore.ID, AgentPoolExcludedWorkspacesUpdateOptions{
+			ExcludedWorkspaces: []*Workspace{},
+		})
+		require.NoError(t, err)
+
+		assert.Equal(t, kBefore.ID, kAfter.ID)
+		assert.Equal(t, "a-pool", kAfter.Name)
+		assert.Empty(t, kAfter.ExcludedWorkspaces)
 	})
 }
 
