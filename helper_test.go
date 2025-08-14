@@ -603,6 +603,42 @@ func createAWSOIDCConfiguration(t *testing.T, client *Client, org *Organization)
 	}
 }
 
+func createAzureOIDCConfiguration(t *testing.T, client *Client, org *Organization) (*AzureOIDCConfiguration, func()) {
+	var orgCleanup func()
+
+	ctx := context.Background()
+
+	if org == nil {
+		org, orgCleanup = createOrganization(t, client)
+	}
+
+	opts := AzureOIDCConfigurationCreateOptions{
+		ClientID:       randomString(t),
+		SubscriptionID: randomString(t),
+		TenantID:       randomString(t),
+		Organization: &Organization{
+			Name: org.Name,
+		},
+	}
+
+	oidcConfig, err := client.AzureOIDCConfigurations.Create(ctx, org.Name, opts)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	return oidcConfig, func() {
+		if err := client.AzureOIDCConfigurations.Delete(ctx, oidcConfig.ID); err != nil {
+			t.Errorf("Error removing GPG key! WARNING: Dangling resources\n"+
+				"may exist! The full error is shown below.\n\n"+
+				"AzureOIDCConfigurations: %s\nError: %s", oidcConfig.ID, err)
+		}
+
+		if orgCleanup != nil {
+			orgCleanup()
+		}
+	}
+}
+
 func createNotificationConfiguration(t *testing.T, client *Client, w *Workspace, options *NotificationConfigurationCreateOptions) (*NotificationConfiguration, func()) {
 	var wCleanup func()
 
