@@ -8,49 +8,119 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func TestAWSOIDCConfigurationsCreateReadUpdateDelete(t *testing.T) {
+func TestAWSOIDCConfigurationCreate(t *testing.T) {
+	skipIfEnterprise(t)
+
 	client := testClient(t)
 	ctx := context.Background()
 
 	orgTest, orgTestCleanup := createOrganization(t, client)
 	t.Cleanup(orgTestCleanup)
 
-	// Using "silly_name" because of the hyok feature flag.
-	// Put in the name of the organization you want to test with.
-	orgTest, err := client.Organizations.Read(ctx, "silly_name")
-
-	create_aws_oidc_configuration, err := client.AWSOIDCConfigurations.Create(ctx, orgTest.Name, AWSOIDCConfigurationCreateOptions{
-		RoleARN: "arn:aws:iam::123456789012:role/rocket-hyok",
-		Organization: &Organization{
-			Name: orgTest.Name,
-		},
-	})
-	require.NoError(t, err)
-	require.NotNil(t, create_aws_oidc_configuration)
-
-	read_aws_oidc_configuration, err := client.AWSOIDCConfigurations.Read(ctx, create_aws_oidc_configuration.ID)
-	require.NoError(t, err)
-	require.NotNil(t, read_aws_oidc_configuration)
-
-	update_aws_oidc_configuration, err := client.AWSOIDCConfigurations.Update(ctx, create_aws_oidc_configuration.ID, AWSOIDCConfigurationUpdateOptions{
-		RoleARN: "arn:aws:iam::123456789012:role/rocket-hyok-updated",
-	})
-	require.NoError(t, err)
-	require.NotNil(t, update_aws_oidc_configuration)
-	assert.Equal(t, create_aws_oidc_configuration.ID, update_aws_oidc_configuration.ID)
-	assert.Equal(t, "arn:aws:iam::123456789012:role/rocket-hyok-updated", update_aws_oidc_configuration.RoleARN)
-
-	err = client.AWSOIDCConfigurations.Delete(ctx, create_aws_oidc_configuration.ID)
-	require.NoError(t, err)
-
-	t.Run("with empty role arn", func(t *testing.T) {
-		invalidConfig, err := client.AWSOIDCConfigurations.Create(ctx, orgTest.Name, AWSOIDCConfigurationCreateOptions{
-			RoleARN: "",
+	t.Run("with valid options", func(t *testing.T) {
+		opts := AWSOIDCConfigurationCreateOptions{
+			RoleARN: "arn:aws:iam::123456789012:role/some-role",
 			Organization: &Organization{
 				Name: orgTest.Name,
 			},
-		})
-		assert.Nil(t, invalidConfig)
-		assert.EqualError(t, err, ErrRequiredRoleARN.Error())
+		}
+
+		oidcConfig, err := client.AWSOIDCConfigurations.Create(ctx, orgTest.Name, opts)
+		require.NoError(t, err)
+		require.NotNil(t, oidcConfig)
+		assert.Equal(t, oidcConfig.RoleARN, opts.RoleARN)
+	})
+
+	t.Run("missing role ARN", func(t *testing.T) {
+		opts := AWSOIDCConfigurationCreateOptions{
+			Organization: &Organization{
+				Name: orgTest.Name,
+			},
+		}
+
+		_, err := client.AWSOIDCConfigurations.Create(ctx, orgTest.Name, opts)
+		assert.ErrorIs(t, err, ErrRequiredRoleARN)
+	})
+}
+
+func TestAWSOIDCConfigurationRead(t *testing.T) {
+	skipIfEnterprise(t)
+
+	client := testClient(t)
+	ctx := context.Background()
+
+	orgTest, orgTestCleanup := createOrganization(t, client)
+	t.Cleanup(orgTestCleanup)
+
+	oidcConfig, oidcConfigCleanup := createAWSOIDCConfiguration(t, client, orgTest)
+	t.Cleanup(oidcConfigCleanup)
+
+	t.Run("fetch existing configuration", func(t *testing.T) {
+		fetched, err := client.AWSOIDCConfigurations.Read(ctx, oidcConfig.ID)
+		require.NoError(t, err)
+		require.NotEmpty(t, fetched)
+	})
+
+	t.Run("fetching non-existing configuration", func(t *testing.T) {
+		_, err := client.AWSOIDCConfigurations.Read(ctx, "awsoidc-notreal")
+		assert.ErrorIs(t, err, ErrResourceNotFound)
+	})
+}
+
+func TestAWSOIDCConfigurationsUpdate(t *testing.T) {
+	skipIfEnterprise(t)
+
+	client := testClient(t)
+	ctx := context.Background()
+
+	orgTest, orgTestCleanup := createOrganization(t, client)
+	t.Cleanup(orgTestCleanup)
+
+	oidcConfig, oidcConfigCleanup := createAWSOIDCConfiguration(t, client, orgTest)
+	t.Cleanup(oidcConfigCleanup)
+
+	t.Run("with valid options", func(t *testing.T) {
+		opts := AWSOIDCConfigurationUpdateOptions{
+			RoleARN: "arn:aws:iam::123456789012:role/some-role-2",
+			Organization: &Organization{
+				Name: orgTest.Name,
+			},
+		}
+		updated, err := client.AWSOIDCConfigurations.Update(ctx, oidcConfig.ID, opts)
+		require.NoError(t, err)
+		require.NotEmpty(t, updated)
+		assert.NotEqual(t, oidcConfig.RoleARN, updated.RoleARN)
+	})
+
+	t.Run("missing role ARN", func(t *testing.T) {
+		opts := AWSOIDCConfigurationUpdateOptions{
+			Organization: &Organization{
+				Name: orgTest.Name,
+			},
+		}
+		_, err := client.AWSOIDCConfigurations.Update(ctx, oidcConfig.ID, opts)
+		assert.ErrorIs(t, err, ErrRequiredRoleARN)
+	})
+}
+
+func TestAWSOIDCConfigurationsDelete(t *testing.T) {
+	skipIfEnterprise(t)
+
+	client := testClient(t)
+	ctx := context.Background()
+
+	orgTest, orgTestCleanup := createOrganization(t, client)
+	t.Cleanup(orgTestCleanup)
+
+	oidcConfig, _ := createAWSOIDCConfiguration(t, client, orgTest)
+
+	t.Run("delete existing configuration", func(t *testing.T) {
+		err := client.AWSOIDCConfigurations.Delete(ctx, oidcConfig.ID)
+		require.NoError(t, err)
+	})
+
+	t.Run("fetching non-existing configuration", func(t *testing.T) {
+		err := client.AWSOIDCConfigurations.Delete(ctx, "awsoidc-notreal")
+		require.ErrorIs(t, err, ErrResourceNotFound)
 	})
 }
