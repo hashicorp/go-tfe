@@ -1,5 +1,9 @@
 # Unreleased
 
+## Enhancements
+* Adds `AllowedProjects` and `ExcludedWorkspaces` to `AgentPool` by @tylerwolf [#1185](https://github.com/hashicorp/go-tfe/pull/1185)
+* Adds `DefaultExecutionMode`, `DefaultAgentPool`, and `SettingOverwrites` to `Project` by @tylerwolf [#1185](https://github.com/hashicorp/go-tfe/pull/1185)
+
 # v1.90.0
 
 ## Bug Fixes
