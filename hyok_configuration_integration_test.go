@@ -10,13 +10,13 @@ import (
 
 // These tests are intended for local execution only, as HYOK requires specific conditions.
 // To run them locally, set skipTest to false. The default value is true.
-const skipTest = false
+const skipTest = true
 
 // organizationName is the name of an organization that can use HYOK.
-const organizationName = "hippos-for-sale"
+const organizationName = ""
 
 // agentPoolID represents an agent pool with running agents that have HYOK capabilities turned on.
-const agentPoolID = "apool-vUbcDykKhvoezDoP"
+const agentPoolID = ""
 
 func TestHyokConfigurationsCreateRevokeDelete(t *testing.T) {
 	if skipTest {
