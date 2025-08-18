@@ -273,8 +273,6 @@ type VCSRepo struct {
 	Tags              bool   `jsonapi:"attr,tags"`
 	TagsRegex         string `jsonapi:"attr,tags-regex"`
 	WebhookURL        string `jsonapi:"attr,webhook-url"`
-	SourceDirectory   string `jsonapi:"attr,source-directory"`
-	TagPrefix         string `jsonapi:"attr,tag-prefix"`
 }
 
 // Note: the fields of this struct are bool pointers instead of bool values, in order to simplify support for
