@@ -40,9 +40,9 @@ const (
 	HYOKConfigurationRevoked    HYOKConfigurationStatus = "revoked"
 )
 
-type OIDCConfigurationChoice struct {
+type OIDCConfigurationType struct {
 	AWSOIDCConfiguration   *AWSOIDCConfiguration
-	GcpOIDCConfiguration   *GCPOIDCConfiguration
+	GCPOIDCConfiguration   *GCPOIDCConfiguration
 	AzureOIDCConfiguration *AzureOIDCConfiguration
 	VaultOIDCConfiguration *VaultOIDCConfiguration
 }
@@ -68,7 +68,7 @@ type HYOKConfiguration struct {
 
 	// Relationships
 	Organization            *Organization             `jsonapi:"relation,organization"`
-	OIDCConfiguration       *OIDCConfigurationChoice  `jsonapi:"polyrelation,oidc-configuration"`
+	OIDCConfiguration       *OIDCConfigurationType    `jsonapi:"polyrelation,oidc-configuration"`
 	AgentPool               *AgentPool                `jsonapi:"relation,agent-pool"`
 	HYOKCustomerKeyVersions []*HYOKCustomerKeyVersion `jsonapi:"relation,hyok-customer-key-versions,omitempty"`
 }
@@ -82,7 +82,7 @@ type HYOKConfigurationsIncludeOpt string
 
 const (
 	HYOKConfigurationsIncludeHYOKCustomerKeyVersions HYOKConfigurationsIncludeOpt = "hyok_customer_key_versions"
-	HYOKConfigurationsIncludeOIDCCconfiguration      HYOKConfigurationsIncludeOpt = "oidc_configuration"
+	HYOKConfigurationsIncludeOIDCConfiguration       HYOKConfigurationsIncludeOpt = "oidc_configuration"
 )
 
 type HYOKConfigurationsListOptions struct {
@@ -95,17 +95,14 @@ type HYOKConfigurationsCreateOptions struct {
 	ID string `jsonapi:"primary,hyok-configurations"`
 
 	// Attributes
-	KEKID      string                  `jsonapi:"attr,kek-id"`
-	KMSOptions *KMSOptions             `jsonapi:"attr,kms-options"`
-	Name       string                  `jsonapi:"attr,name"`
-	Primary    bool                    `jsonapi:"attr,primary"`
-	Status     HYOKConfigurationStatus `jsonapi:"attr,status"`
-	Error      *string                 `jsonapi:"attr,error"`
+	KEKID      string      `jsonapi:"attr,kek-id"`
+	KMSOptions *KMSOptions `jsonapi:"attr,kms-options"`
+	Name       string      `jsonapi:"attr,name"`
 
 	// Relationships
-	Organization      *Organization            `jsonapi:"relation,organization"`
-	OIDCConfiguration *OIDCConfigurationChoice `jsonapi:"polyrelation,oidc-configuration"`
-	AgentPool         *AgentPool               `jsonapi:"relation,agent-pool"`
+	Organization      *Organization          `jsonapi:"relation,organization"`
+	OIDCConfiguration *OIDCConfigurationType `jsonapi:"polyrelation,oidc-configuration"`
+	AgentPool         *AgentPool             `jsonapi:"relation,agent-pool"`
 }
 
 type HYOKConfigurationsReadOptions struct {
@@ -116,17 +113,15 @@ type HYOKConfigurationsUpdateOptions struct {
 	ID string `jsonapi:"primary,hyok-configurations"`
 
 	// Attributes
-	KEKID      string                  `jsonapi:"attr,kek-id"`
-	KMSOptions *KMSOptions             `jsonapi:"attr,kms-options"`
-	Name       string                  `jsonapi:"attr,name"`
-	Primary    bool                    `jsonapi:"attr,primary"`
-	Status     HYOKConfigurationStatus `jsonapi:"attr,status"`
-	Error      *string                 `jsonapi:"attr,error"`
+	KEKID      string      `jsonapi:"attr,kek-id"`
+	KMSOptions *KMSOptions `jsonapi:"attr,kms-options"`
+	Name       string      `jsonapi:"attr,name"`
+	Primary    bool        `jsonapi:"attr,primary"`
 
 	// Relationships
-	Organization      *Organization            `jsonapi:"relation,organization"`
-	OIDCConfiguration *OIDCConfigurationChoice `jsonapi:"polyrelation,oidc-configuration"`
-	AgentPool         *AgentPool               `jsonapi:"relation,agent-pool"`
+	Organization      *Organization          `jsonapi:"relation,organization"`
+	OIDCConfiguration *OIDCConfigurationType `jsonapi:"polyrelation,oidc-configuration"`
+	AgentPool         *AgentPool             `jsonapi:"relation,agent-pool"`
 }
 
 func (h *HYOKConfigurationsListOptions) valid() error {
@@ -210,7 +205,7 @@ func (h *HYOKConfigurationsCreateOptions) valid() error {
 		}
 	}
 
-	if h.OIDCConfiguration.GcpOIDCConfiguration != nil {
+	if h.OIDCConfiguration.GCPOIDCConfiguration != nil {
 		if h.KMSOptions == nil {
 			return ErrRequiredKMSOptions
 		}

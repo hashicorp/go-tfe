@@ -592,9 +592,51 @@ func createAWSOIDCConfiguration(t *testing.T, client *Client, org *Organization)
 
 	return oidcConfig, func() {
 		if err := client.AWSOIDCConfigurations.Delete(ctx, oidcConfig.ID); err != nil {
-			t.Errorf("Error removing GPG key! WARNING: Dangling resources\n"+
+			t.Errorf("Error removing AWS OIDC Configuration! WARNING: Dangling resources\n"+
 				"may exist! The full error is shown below.\n\n"+
 				"AWSOIDCConfigurations: %s\nError: %s", oidcConfig.ID, err)
+		}
+
+		if orgCleanup != nil {
+			orgCleanup()
+		}
+	}
+}
+
+func (a *AWSOIDCConfiguration) createHYOKConfiguration(t *testing.T, client *Client, org *Organization, agentPool *AgentPool) (*HYOKConfiguration, func()) {
+	var orgCleanup func()
+
+	ctx := context.Background()
+
+	if org == nil {
+		org, orgCleanup = createOrganization(t, client)
+	}
+
+	opts := HYOKConfigurationsCreateOptions{
+		KEKID:             "arn:aws:kms:us-east-1:123456789012:key/this-is-not-a-real-key",
+		Name:              randomStringWithoutSpecialChar(t),
+		KMSOptions:        &KMSOptions{KeyRegion: "us-east-1"},
+		Organization:      org,
+		AgentPool:         agentPool,
+		OIDCConfiguration: &OIDCConfigurationType{AWSOIDCConfiguration: a},
+	}
+
+	hyokConfig, err := client.HYOKConfigurations.Create(ctx, org.Name, opts)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	return hyokConfig, func() {
+		if err := client.HYOKConfigurations.Revoke(ctx, hyokConfig.ID); err != nil {
+			t.Errorf("Error removing HYOK Configuration! WARNING: Dangling resources\n"+
+				"may exist! The full error is shown below.\n\n"+
+				"HYOKConfigurations: %s\nError: %s", hyokConfig.ID, err)
+		}
+
+		if err := client.HYOKConfigurations.Delete(ctx, hyokConfig.ID); err != nil {
+			t.Errorf("Error removing HYOK Configuration! WARNING: Dangling resources\n"+
+				"may exist! The full error is shown below.\n\n"+
+				"HYOKConfigurations: %s\nError: %s", hyokConfig.ID, err)
 		}
 
 		if orgCleanup != nil {
@@ -628,9 +670,50 @@ func createAzureOIDCConfiguration(t *testing.T, client *Client, org *Organizatio
 
 	return oidcConfig, func() {
 		if err := client.AzureOIDCConfigurations.Delete(ctx, oidcConfig.ID); err != nil {
-			t.Errorf("Error removing GPG key! WARNING: Dangling resources\n"+
+			t.Errorf("Error removing Azure OIDC Configuration! WARNING: Dangling resources\n"+
 				"may exist! The full error is shown below.\n\n"+
 				"AzureOIDCConfigurations: %s\nError: %s", oidcConfig.ID, err)
+		}
+
+		if orgCleanup != nil {
+			orgCleanup()
+		}
+	}
+}
+
+func (a *AzureOIDCConfiguration) createHYOKConfiguration(t *testing.T, client *Client, org *Organization, agentPool *AgentPool) (*HYOKConfiguration, func()) {
+	var orgCleanup func()
+
+	ctx := context.Background()
+
+	if org == nil {
+		org, orgCleanup = createOrganization(t, client)
+	}
+
+	opts := HYOKConfigurationsCreateOptions{
+		KEKID:             "https://vault-name.vault.azure.net/keys/key-name",
+		Name:              randomStringWithoutSpecialChar(t),
+		Organization:      org,
+		AgentPool:         agentPool,
+		OIDCConfiguration: &OIDCConfigurationType{AzureOIDCConfiguration: a},
+	}
+
+	hyokConfig, err := client.HYOKConfigurations.Create(ctx, org.Name, opts)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	return hyokConfig, func() {
+		if err := client.HYOKConfigurations.Revoke(ctx, hyokConfig.ID); err != nil {
+			t.Errorf("Error removing HYOK Configuration! WARNING: Dangling resources\n"+
+				"may exist! The full error is shown below.\n\n"+
+				"HYOKConfigurations: %s\nError: %s", hyokConfig.ID, err)
+		}
+
+		if err := client.HYOKConfigurations.Delete(ctx, hyokConfig.ID); err != nil {
+			t.Errorf("Error removing HYOK Configuration! WARNING: Dangling resources\n"+
+				"may exist! The full error is shown below.\n\n"+
+				"HYOKConfigurations: %s\nError: %s", hyokConfig.ID, err)
 		}
 
 		if orgCleanup != nil {
@@ -664,9 +747,51 @@ func createGCPOIDCConfiguration(t *testing.T, client *Client, org *Organization)
 
 	return oidcConfig, func() {
 		if err := client.GCPOIDCConfigurations.Delete(ctx, oidcConfig.ID); err != nil {
-			t.Errorf("Error removing GPG key! WARNING: Dangling resources\n"+
+			t.Errorf("Error removing GCP OIDC Configuration! WARNING: Dangling resources\n"+
 				"may exist! The full error is shown below.\n\n"+
 				"GCPOIDCConfigurations: %s\nError: %s", oidcConfig.ID, err)
+		}
+
+		if orgCleanup != nil {
+			orgCleanup()
+		}
+	}
+}
+
+func (g *GCPOIDCConfiguration) createHYOKConfiguration(t *testing.T, client *Client, org *Organization, agentPool *AgentPool) (*HYOKConfiguration, func()) {
+	var orgCleanup func()
+
+	ctx := context.Background()
+
+	if org == nil {
+		org, orgCleanup = createOrganization(t, client)
+	}
+
+	opts := HYOKConfigurationsCreateOptions{
+		KEKID:             randomStringWithoutSpecialChar(t),
+		Name:              randomStringWithoutSpecialChar(t),
+		KMSOptions:        &KMSOptions{KeyLocation: "global", KeyRingID: randomString(t)},
+		Organization:      org,
+		AgentPool:         agentPool,
+		OIDCConfiguration: &OIDCConfigurationType{GCPOIDCConfiguration: g},
+	}
+
+	hyokConfig, err := client.HYOKConfigurations.Create(ctx, org.Name, opts)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	return hyokConfig, func() {
+		if err := client.HYOKConfigurations.Revoke(ctx, hyokConfig.ID); err != nil {
+			t.Errorf("Error removing HYOK Configuration! WARNING: Dangling resources\n"+
+				"may exist! The full error is shown below.\n\n"+
+				"HYOKConfigurations: %s\nError: %s", hyokConfig.ID, err)
+		}
+
+		if err := client.HYOKConfigurations.Delete(ctx, hyokConfig.ID); err != nil {
+			t.Errorf("Error removing HYOK Configuration! WARNING: Dangling resources\n"+
+				"may exist! The full error is shown below.\n\n"+
+				"HYOKConfigurations: %s\nError: %s", hyokConfig.ID, err)
 		}
 
 		if orgCleanup != nil {
@@ -702,9 +827,50 @@ func createVaultOIDCConfiguration(t *testing.T, client *Client, org *Organizatio
 
 	return oidcConfig, func() {
 		if err := client.VaultOIDCConfigurations.Delete(ctx, oidcConfig.ID); err != nil {
-			t.Errorf("Error removing GPG key! WARNING: Dangling resources\n"+
+			t.Errorf("Error removing Vault OIDC Configuration! WARNING: Dangling resources\n"+
 				"may exist! The full error is shown below.\n\n"+
 				"VaultOIDCConfigurations: %s\nError: %s", oidcConfig.ID, err)
+		}
+
+		if orgCleanup != nil {
+			orgCleanup()
+		}
+	}
+}
+
+func (v *VaultOIDCConfiguration) createHYOKConfiguration(t *testing.T, client *Client, org *Organization, agentPool *AgentPool) (*HYOKConfiguration, func()) {
+	var orgCleanup func()
+
+	ctx := context.Background()
+
+	if org == nil {
+		org, orgCleanup = createOrganization(t, client)
+	}
+
+	opts := HYOKConfigurationsCreateOptions{
+		KEKID:             randomStringWithoutSpecialChar(t),
+		Name:              randomStringWithoutSpecialChar(t),
+		Organization:      org,
+		AgentPool:         agentPool,
+		OIDCConfiguration: &OIDCConfigurationType{VaultOIDCConfiguration: v},
+	}
+
+	hyokConfig, err := client.HYOKConfigurations.Create(ctx, org.Name, opts)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	return hyokConfig, func() {
+		if err := client.HYOKConfigurations.Revoke(ctx, hyokConfig.ID); err != nil {
+			t.Errorf("Error removing HYOK Configuration! WARNING: Dangling resources\n"+
+				"may exist! The full error is shown below.\n\n"+
+				"HYOKConfigurations: %s\nError: %s", hyokConfig.ID, err)
+		}
+
+		if err := client.HYOKConfigurations.Delete(ctx, hyokConfig.ID); err != nil {
+			t.Errorf("Error removing HYOK Configuration! WARNING: Dangling resources\n"+
+				"may exist! The full error is shown below.\n\n"+
+				"HYOKConfigurations: %s\nError: %s", hyokConfig.ID, err)
 		}
 
 		if orgCleanup != nil {
