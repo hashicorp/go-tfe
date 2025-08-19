@@ -18,7 +18,7 @@ const organizationName = ""
 // agentPoolID represents an agent pool with running agents that have HYOK capabilities turned on.
 const agentPoolID = ""
 
-func TestHyokConfigurationsCreateRevokeDelete(t *testing.T) {
+func TestHYOKConfigurationCreateRevokeDelete(t *testing.T) {
 	if skipTest {
 		t.Skip()
 	}
@@ -313,7 +313,7 @@ func TestHyokConfigurationsCreateRevokeDelete(t *testing.T) {
 	})
 }
 
-func TestHyokConfigurationsList(t *testing.T) {
+func TestHyokConfigurationList(t *testing.T) {
 	if skipTest {
 		t.Skip()
 	}
@@ -366,7 +366,7 @@ func TestHyokConfigurationsList(t *testing.T) {
 	})
 }
 
-func TestHyokConfigurationsRead(t *testing.T) {
+func TestHyokConfigurationRead(t *testing.T) {
 	if skipTest {
 		t.Skip()
 	}
@@ -459,7 +459,7 @@ func TestHyokConfigurationsRead(t *testing.T) {
 	})
 }
 
-func TestHyokConfigurationsUpdate(t *testing.T) {
+func TestHYOKConfigurationUpdate(t *testing.T) {
 	if skipTest {
 		t.Skip()
 	}
