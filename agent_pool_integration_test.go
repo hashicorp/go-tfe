@@ -16,12 +16,12 @@ func TestAgentPoolsList(t *testing.T) {
 	ctx := context.Background()
 
 	orgTest, orgTestCleanup := createOrganization(t, client)
-	defer orgTestCleanup()
+	t.Cleanup(orgTestCleanup)
 
 	upgradeOrganizationSubscription(t, client, orgTest)
 
 	agentPool, agentPoolCleanup := createAgentPool(t, client, orgTest)
-	defer agentPoolCleanup()
+	t.Cleanup(agentPoolCleanup)
 
 	t.Run("without list options", func(t *testing.T) {
 		pools, err := client.AgentPools.List(ctx, orgTest.Name, nil)
@@ -38,7 +38,7 @@ func TestAgentPoolsList(t *testing.T) {
 			ExecutionMode: String("agent"),
 			AgentPoolID:   String(agentPool.ID),
 		})
-		defer wTestCleanup()
+		t.Cleanup(wTestCleanup)
 
 		k, err := client.AgentPools.List(ctx, orgTest.Name, &AgentPoolListOptions{
 			Include: []AgentPoolIncludeOpt{AgentPoolWorkspaces},
@@ -87,10 +87,10 @@ func TestAgentPoolsList(t *testing.T) {
 
 	t.Run("with allowed workspace name filter", func(t *testing.T) {
 		ws1, ws1TestCleanup := createWorkspace(t, client, orgTest)
-		defer ws1TestCleanup()
+		t.Cleanup(ws1TestCleanup)
 
 		ws2, ws2TestCleanup := createWorkspace(t, client, orgTest)
-		defer ws2TestCleanup()
+		t.Cleanup(ws2TestCleanup)
 
 		organizationScoped := false
 		ap, apCleanup := createAgentPoolWithOptions(t, client, orgTest, AgentPoolCreateOptions{
@@ -98,14 +98,14 @@ func TestAgentPoolsList(t *testing.T) {
 			OrganizationScoped: &organizationScoped,
 			AllowedWorkspaces:  []*Workspace{ws1},
 		})
-		defer apCleanup()
+		t.Cleanup(apCleanup)
 
 		ap2, ap2Cleanup := createAgentPoolWithOptions(t, client, orgTest, AgentPoolCreateOptions{
 			Name:               String("b-pool"),
 			OrganizationScoped: &organizationScoped,
 			AllowedWorkspaces:  []*Workspace{ws2},
 		})
-		defer ap2Cleanup()
+		t.Cleanup(ap2Cleanup)
 
 		pools, err := client.AgentPools.List(ctx, orgTest.Name, &AgentPoolListOptions{
 			AllowedWorkspacesName: ws1.Name,
@@ -128,10 +128,10 @@ func TestAgentPoolsList(t *testing.T) {
 
 	t.Run("with allowed projects name filter", func(t *testing.T) {
 		proj1, proj1TestCleanup := createProject(t, client, orgTest)
-		defer proj1TestCleanup()
+		t.Cleanup(proj1TestCleanup)
 
 		proj2, proj2TestCleanup := createProject(t, client, orgTest)
-		defer proj2TestCleanup()
+		t.Cleanup(proj2TestCleanup)
 
 		organizationScoped := false
 		ap, apCleanup := createAgentPoolWithOptions(t, client, orgTest, AgentPoolCreateOptions{
@@ -139,14 +139,14 @@ func TestAgentPoolsList(t *testing.T) {
 			OrganizationScoped: &organizationScoped,
 			AllowedProjects:    []*Project{proj1},
 		})
-		defer apCleanup()
+		t.Cleanup(apCleanup)
 
 		ap2, ap2Cleanup := createAgentPoolWithOptions(t, client, orgTest, AgentPoolCreateOptions{
 			Name:               String("b-pool"),
 			OrganizationScoped: &organizationScoped,
 			AllowedProjects:    []*Project{proj2},
 		})
-		defer ap2Cleanup()
+		t.Cleanup(ap2Cleanup)
 
 		pools, err := client.AgentPools.List(ctx, orgTest.Name, &AgentPoolListOptions{
 			AllowedProjectsName: proj1.Name,
@@ -173,7 +173,7 @@ func TestAgentPoolsCreate(t *testing.T) {
 	ctx := context.Background()
 
 	orgTest, orgTestCleanup := createOrganization(t, client)
-	defer orgTestCleanup()
+	t.Cleanup(orgTestCleanup)
 
 	upgradeOrganizationSubscription(t, client, orgTest)
 
@@ -213,7 +213,7 @@ func TestAgentPoolsCreate(t *testing.T) {
 
 	t.Run("with allowed-workspaces options", func(t *testing.T) {
 		workspaceTest, workspaceTestCleanup := createWorkspace(t, client, orgTest)
-		defer workspaceTestCleanup()
+		t.Cleanup(workspaceTestCleanup)
 
 		organizationScoped := false
 		options := AgentPoolCreateOptions{
@@ -244,7 +244,7 @@ func TestAgentPoolsCreate(t *testing.T) {
 
 	t.Run("with allowed-projects options", func(t *testing.T) {
 		projectTest, projectTestCleanup := createProject(t, client, orgTest)
-		defer projectTestCleanup()
+		t.Cleanup(projectTestCleanup)
 
 		organizationScoped := false
 		options := AgentPoolCreateOptions{
@@ -275,7 +275,7 @@ func TestAgentPoolsCreate(t *testing.T) {
 
 	t.Run("with excluded-workspaces options", func(t *testing.T) {
 		workspaceTest, workspaceTestCleanup := createWorkspace(t, client, orgTest)
-		defer workspaceTestCleanup()
+		t.Cleanup(workspaceTestCleanup)
 
 		organizationScoped := false
 		options := AgentPoolCreateOptions{
@@ -310,12 +310,12 @@ func TestAgentPoolsRead(t *testing.T) {
 	ctx := context.Background()
 
 	orgTest, orgTestCleanup := createOrganization(t, client)
-	defer orgTestCleanup()
+	t.Cleanup(orgTestCleanup)
 
 	upgradeOrganizationSubscription(t, client, orgTest)
 
 	pool, poolCleanup := createAgentPool(t, client, orgTest)
-	defer poolCleanup()
+	t.Cleanup(poolCleanup)
 
 	t.Run("when the agent pool exists", func(t *testing.T) {
 		k, err := client.AgentPools.Read(ctx, pool.ID)
@@ -341,7 +341,7 @@ func TestAgentPoolsRead(t *testing.T) {
 			ExecutionMode: String("agent"),
 			AgentPoolID:   String(pool.ID),
 		})
-		defer wTestCleanup()
+		t.Cleanup(wTestCleanup)
 
 		k, err := client.AgentPools.ReadWithOptions(ctx, pool.ID, &AgentPoolReadOptions{
 			Include: []AgentPoolIncludeOpt{AgentPoolWorkspaces},
@@ -373,13 +373,13 @@ func TestAgentPoolsUpdate(t *testing.T) {
 	ctx := context.Background()
 
 	orgTest, orgTestCleanup := createOrganization(t, client)
-	defer orgTestCleanup()
+	t.Cleanup(orgTestCleanup)
 
 	upgradeOrganizationSubscription(t, client, orgTest)
 
 	t.Run("with valid options", func(t *testing.T) {
 		kBefore, kTestCleanup := createAgentPool(t, client, orgTest)
-		defer kTestCleanup()
+		t.Cleanup(kTestCleanup)
 
 		kAfter, err := client.AgentPools.Update(ctx, kBefore.ID, AgentPoolUpdateOptions{
 			Name: String(randomString(t)),
@@ -392,13 +392,13 @@ func TestAgentPoolsUpdate(t *testing.T) {
 
 	t.Run("when updating only the name", func(t *testing.T) {
 		workspaceTest, workspaceTestCleanup := createWorkspace(t, client, orgTest)
-		defer workspaceTestCleanup()
+		t.Cleanup(workspaceTestCleanup)
 
 		projectTest, projectTestCleanup := createProject(t, client, orgTest)
-		defer projectTestCleanup()
+		t.Cleanup(projectTestCleanup)
 
 		excludedWorkspaceTest, excludedWorkspaceTestCleanup := createWorkspace(t, client, orgTest)
-		defer excludedWorkspaceTestCleanup()
+		t.Cleanup(excludedWorkspaceTestCleanup)
 
 		organizationScoped := false
 		options := AgentPoolCreateOptions{
@@ -440,7 +440,7 @@ func TestAgentPoolsUpdate(t *testing.T) {
 
 	t.Run("when updating organization scope", func(t *testing.T) {
 		kBefore, kTestCleanup := createAgentPool(t, client, orgTest)
-		defer kTestCleanup()
+		t.Cleanup(kTestCleanup)
 
 		organizationScoped := false
 		kAfter, err := client.AgentPools.Update(ctx, kBefore.ID, AgentPoolUpdateOptions{
@@ -455,10 +455,10 @@ func TestAgentPoolsUpdate(t *testing.T) {
 
 	t.Run("when updating allowed-workspaces", func(t *testing.T) {
 		kBefore, kTestCleanup := createAgentPool(t, client, orgTest)
-		defer kTestCleanup()
+		t.Cleanup(kTestCleanup)
 
 		workspaceTest, workspaceTestCleanup := createWorkspace(t, client, orgTest)
-		defer workspaceTestCleanup()
+		t.Cleanup(workspaceTestCleanup)
 
 		kAfter, err := client.AgentPools.Update(ctx, kBefore.ID, AgentPoolUpdateOptions{
 			AllowedWorkspaces: []*Workspace{
@@ -475,10 +475,10 @@ func TestAgentPoolsUpdate(t *testing.T) {
 
 	t.Run("when updating allowed-projects", func(t *testing.T) {
 		kBefore, kTestCleanup := createAgentPool(t, client, orgTest)
-		defer kTestCleanup()
+		t.Cleanup(kTestCleanup)
 
 		projectTest, projectTestCleanup := createProject(t, client, orgTest)
-		defer projectTestCleanup()
+		t.Cleanup(projectTestCleanup)
 
 		kAfter, err := client.AgentPools.Update(ctx, kBefore.ID, AgentPoolUpdateOptions{
 			AllowedProjects: []*Project{
@@ -495,10 +495,10 @@ func TestAgentPoolsUpdate(t *testing.T) {
 
 	t.Run("when updating excluded-workspaces", func(t *testing.T) {
 		kBefore, kTestCleanup := createAgentPool(t, client, orgTest)
-		defer kTestCleanup()
+		t.Cleanup(kTestCleanup)
 
 		workspaceTest, workspaceTestCleanup := createWorkspace(t, client, orgTest)
-		defer workspaceTestCleanup()
+		t.Cleanup(workspaceTestCleanup)
 
 		kAfter, err := client.AgentPools.Update(ctx, kBefore.ID, AgentPoolUpdateOptions{
 			ExcludedWorkspaces: []*Workspace{
@@ -519,16 +519,16 @@ func TestAgentPoolsUpdateAllowedWorkspaces(t *testing.T) {
 	ctx := context.Background()
 
 	orgTest, orgTestCleanup := createOrganization(t, client)
-	defer orgTestCleanup()
+	t.Cleanup(orgTestCleanup)
 
 	upgradeOrganizationSubscription(t, client, orgTest)
 
 	t.Run("when updating allowed-workspaces", func(t *testing.T) {
 		kBefore, kTestCleanup := createAgentPool(t, client, orgTest)
-		defer kTestCleanup()
+		t.Cleanup(kTestCleanup)
 
 		workspaceTest, workspaceTestCleanup := createWorkspace(t, client, orgTest)
-		defer workspaceTestCleanup()
+		t.Cleanup(workspaceTestCleanup)
 
 		kAfter, err := client.AgentPools.UpdateAllowedWorkspaces(ctx, kBefore.ID, AgentPoolAllowedWorkspacesUpdateOptions{
 			AllowedWorkspaces: []*Workspace{
@@ -545,7 +545,7 @@ func TestAgentPoolsUpdateAllowedWorkspaces(t *testing.T) {
 
 	t.Run("when removing all the allowed-workspaces", func(t *testing.T) {
 		workspaceTest, workspaceTestCleanup := createWorkspace(t, client, orgTest)
-		defer workspaceTestCleanup()
+		t.Cleanup(workspaceTestCleanup)
 
 		organizationScoped := false
 		options := AgentPoolCreateOptions{
@@ -557,7 +557,7 @@ func TestAgentPoolsUpdateAllowedWorkspaces(t *testing.T) {
 		}
 
 		kBefore, kTestCleanup := createAgentPoolWithOptions(t, client, orgTest, options)
-		defer kTestCleanup()
+		t.Cleanup(kTestCleanup)
 
 		kAfter, err := client.AgentPools.UpdateAllowedWorkspaces(ctx, kBefore.ID, AgentPoolAllowedWorkspacesUpdateOptions{
 			AllowedWorkspaces: []*Workspace{},
@@ -575,16 +575,16 @@ func TestAgentPoolsUpdateAllowedProjects(t *testing.T) {
 	ctx := context.Background()
 
 	orgTest, orgTestCleanup := createOrganization(t, client)
-	defer orgTestCleanup()
+	t.Cleanup(orgTestCleanup)
 
 	upgradeOrganizationSubscription(t, client, orgTest)
 
 	t.Run("when updating allowed-projects", func(t *testing.T) {
 		kBefore, kTestCleanup := createAgentPool(t, client, orgTest)
-		defer kTestCleanup()
+		t.Cleanup(kTestCleanup)
 
 		projectTest, projectTestCleanup := createProject(t, client, orgTest)
-		defer projectTestCleanup()
+		t.Cleanup(projectTestCleanup)
 
 		kAfter, err := client.AgentPools.UpdateAllowedProjects(ctx, kBefore.ID, AgentPoolAllowedProjectsUpdateOptions{
 			AllowedProjects: []*Project{
@@ -601,7 +601,7 @@ func TestAgentPoolsUpdateAllowedProjects(t *testing.T) {
 
 	t.Run("when removing all the allowed-projects", func(t *testing.T) {
 		projectTest, projectTestCleanup := createProject(t, client, orgTest)
-		defer projectTestCleanup()
+		t.Cleanup(projectTestCleanup)
 
 		organizationScoped := false
 		options := AgentPoolCreateOptions{
@@ -613,7 +613,7 @@ func TestAgentPoolsUpdateAllowedProjects(t *testing.T) {
 		}
 
 		kBefore, kTestCleanup := createAgentPoolWithOptions(t, client, orgTest, options)
-		defer kTestCleanup()
+		t.Cleanup(kTestCleanup)
 
 		kAfter, err := client.AgentPools.UpdateAllowedProjects(ctx, kBefore.ID, AgentPoolAllowedProjectsUpdateOptions{
 			AllowedProjects: []*Project{},
@@ -631,16 +631,16 @@ func TestAgentPoolsUpdateExcludedWorkspaces(t *testing.T) {
 	ctx := context.Background()
 
 	orgTest, orgTestCleanup := createOrganization(t, client)
-	defer orgTestCleanup()
+	t.Cleanup(orgTestCleanup)
 
 	upgradeOrganizationSubscription(t, client, orgTest)
 
 	t.Run("when updating excluded-workspaces", func(t *testing.T) {
 		kBefore, kTestCleanup := createAgentPool(t, client, orgTest)
-		defer kTestCleanup()
+		t.Cleanup(kTestCleanup)
 
 		workspaceTest, workspaceTestCleanup := createWorkspace(t, client, orgTest)
-		defer workspaceTestCleanup()
+		t.Cleanup(workspaceTestCleanup)
 
 		kAfter, err := client.AgentPools.UpdateExcludedWorkspaces(ctx, kBefore.ID, AgentPoolExcludedWorkspacesUpdateOptions{
 			ExcludedWorkspaces: []*Workspace{
@@ -657,7 +657,7 @@ func TestAgentPoolsUpdateExcludedWorkspaces(t *testing.T) {
 
 	t.Run("when removing all the excluded-workspaces", func(t *testing.T) {
 		workspaceTest, workspaceTestCleanup := createWorkspace(t, client, orgTest)
-		defer workspaceTestCleanup()
+		t.Cleanup(workspaceTestCleanup)
 
 		organizationScoped := false
 		options := AgentPoolCreateOptions{
@@ -669,7 +669,7 @@ func TestAgentPoolsUpdateExcludedWorkspaces(t *testing.T) {
 		}
 
 		kBefore, kTestCleanup := createAgentPoolWithOptions(t, client, orgTest, options)
-		defer kTestCleanup()
+		t.Cleanup(kTestCleanup)
 
 		kAfter, err := client.AgentPools.UpdateExcludedWorkspaces(ctx, kBefore.ID, AgentPoolExcludedWorkspacesUpdateOptions{
 			ExcludedWorkspaces: []*Workspace{},
@@ -687,7 +687,7 @@ func TestAgentPoolsDelete(t *testing.T) {
 	ctx := context.Background()
 
 	orgTest, orgTestCleanup := createOrganization(t, client)
-	defer orgTestCleanup()
+	t.Cleanup(orgTestCleanup)
 
 	upgradeOrganizationSubscription(t, client, orgTest)
 

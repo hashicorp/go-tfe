@@ -20,13 +20,13 @@ func TestProjectsList(t *testing.T) {
 	ctx := context.Background()
 
 	orgTest, orgTestCleanup := createOrganization(t, client)
-	defer orgTestCleanup()
+	t.Cleanup(orgTestCleanup)
 
 	pTest1, pTestCleanup := createProject(t, client, orgTest)
-	defer pTestCleanup()
+	t.Cleanup(pTestCleanup)
 
 	pTest2, pTestCleanup := createProject(t, client, orgTest)
-	defer pTestCleanup()
+	t.Cleanup(pTestCleanup)
 
 	t.Run("without list options", func(t *testing.T) {
 		pl, err := client.Projects.List(ctx, orgTest.Name, nil)
@@ -148,7 +148,7 @@ func TestProjectsReadWithOptions(t *testing.T) {
 	ctx := context.Background()
 
 	orgTest, orgTestCleanup := createOrganization(t, client)
-	defer orgTestCleanup()
+	t.Cleanup(orgTestCleanup)
 
 	pTest, pTestCleanup := createProjectWithOptions(t, client, orgTest, ProjectCreateOptions{
 		Name: "project-with-tags",
@@ -156,7 +156,7 @@ func TestProjectsReadWithOptions(t *testing.T) {
 			{Key: "foo", Value: "bar"},
 		},
 	})
-	defer pTestCleanup()
+	t.Cleanup(pTestCleanup)
 
 	t.Run("when the project exists", func(t *testing.T) {
 		p, err := client.Projects.ReadWithOptions(ctx, pTest.ID, ProjectReadOptions{
@@ -177,10 +177,10 @@ func TestProjectsRead(t *testing.T) {
 	ctx := context.Background()
 
 	orgTest, orgTestCleanup := createOrganization(t, client)
-	defer orgTestCleanup()
+	t.Cleanup(orgTestCleanup)
 
 	pTest, pTestCleanup := createProject(t, client, orgTest)
-	defer pTestCleanup()
+	t.Cleanup(pTestCleanup)
 
 	t.Run("when the project exists", func(t *testing.T) {
 		w, err := client.Projects.Read(ctx, pTest.ID)
@@ -203,14 +203,14 @@ func TestProjectsRead(t *testing.T) {
 
 	t.Run("with default execution mode of 'agent'", func(t *testing.T) {
 		agentPoolTest, agentPoolTestCleanup := createAgentPool(t, client, orgTest)
-		defer agentPoolTestCleanup()
+		t.Cleanup(agentPoolTestCleanup)
 
 		proj, projCleanup := createProjectWithOptions(t, client, orgTest, ProjectCreateOptions{
 			Name:                 "project-with-agent-pool",
 			DefaultExecutionMode: String("agent"),
 			DefaultAgentPoolID:   String(agentPoolTest.ID),
 		})
-		defer projCleanup()
+		t.Cleanup(projCleanup)
 
 		t.Run("execution mode and agent pool are properly decoded", func(t *testing.T) {
 			assert.Equal(t, "agent", proj.DefaultExecutionMode)
@@ -252,7 +252,7 @@ func TestProjectsCreate(t *testing.T) {
 	ctx := context.Background()
 
 	orgTest, orgTestCleanup := createOrganization(t, client)
-	defer orgTestCleanup()
+	t.Cleanup(orgTestCleanup)
 
 	newSubscriptionUpdater(orgTest).WithBusinessPlan().Update(t)
 
@@ -313,7 +313,7 @@ func TestProjectsCreate(t *testing.T) {
 
 	t.Run("when a default agent pool ID is specified without 'agent' execution mode", func(t *testing.T) {
 		agentPoolTest, agentPoolTestCleanup := createAgentPool(t, client, orgTest)
-		defer agentPoolTestCleanup()
+		t.Cleanup(agentPoolTestCleanup)
 
 		p, err := client.Projects.Create(ctx, orgTest.Name, ProjectCreateOptions{
 			Name:                 fmt.Sprintf("foo-%s", randomString(t)),
@@ -363,7 +363,7 @@ func TestProjectsCreate(t *testing.T) {
 
 	t.Run("when agent pool and execution mode setting overwrites do not match", func(t *testing.T) {
 		agentPoolTest, agentPoolTestCleanup := createAgentPool(t, client, orgTest)
-		defer agentPoolTestCleanup()
+		t.Cleanup(agentPoolTestCleanup)
 
 		p, err := client.Projects.Create(ctx, orgTest.Name, ProjectCreateOptions{
 			Name:                 fmt.Sprintf("foo-%s", randomString(t)),
@@ -430,10 +430,10 @@ func TestProjectsUpdate(t *testing.T) {
 	ctx := context.Background()
 
 	orgTest, orgTestCleanup := createOrganization(t, client)
-	defer orgTestCleanup()
+	t.Cleanup(orgTestCleanup)
 
 	agentPoolTest, agentPoolTestCleanup := createAgentPool(t, client, orgTest)
-	defer agentPoolTestCleanup()
+	t.Cleanup(agentPoolTestCleanup)
 
 	t.Run("with valid options", func(t *testing.T) {
 		kBefore, kTestCleanup := createProject(t, client, orgTest)
@@ -507,7 +507,7 @@ func TestProjectsUpdate(t *testing.T) {
 
 	t.Run("when updating with invalid name", func(t *testing.T) {
 		kBefore, kTestCleanup := createProject(t, client, orgTest)
-		defer kTestCleanup()
+		t.Cleanup(kTestCleanup)
 
 		kAfter, err := client.Projects.Update(ctx, kBefore.ID, ProjectUpdateOptions{
 			Name: String(badIdentifier),
@@ -528,7 +528,7 @@ func TestProjectsUpdate(t *testing.T) {
 		newSubscriptionUpdater(orgTest).WithBusinessPlan().Update(t)
 
 		kBefore, kTestCleanup := createProject(t, client, orgTest)
-		defer kTestCleanup()
+		t.Cleanup(kTestCleanup)
 
 		w, err := client.Projects.Update(ctx, kBefore.ID, ProjectUpdateOptions{
 			AutoDestroyActivityDuration: jsonapi.NewNullableAttrWithValue("bar"),
@@ -539,7 +539,7 @@ func TestProjectsUpdate(t *testing.T) {
 
 	t.Run("with agent pool provided, but remote execution mode", func(t *testing.T) {
 		kBefore, kTestCleanup := createProject(t, client, orgTest)
-		defer kTestCleanup()
+		t.Cleanup(kTestCleanup)
 
 		pool, agentPoolCleanup := createAgentPool(t, client, orgTest)
 		t.Cleanup(agentPoolCleanup)
@@ -554,10 +554,10 @@ func TestProjectsUpdate(t *testing.T) {
 
 	t.Run("with different default execution modes", func(t *testing.T) {
 		proj, projCleanup := createProject(t, client, orgTest)
-		defer projCleanup()
+		t.Cleanup(projCleanup)
 
 		agentPool, agenPoolCleanup := createAgentPool(t, client, orgTest)
-		defer agenPoolCleanup()
+		t.Cleanup(agenPoolCleanup)
 
 		assert.Equal(t, "remote", proj.DefaultExecutionMode)
 		assert.Nil(t, proj.DefaultAgentPool)
@@ -593,7 +593,7 @@ func TestProjectsUpdate(t *testing.T) {
 		t.Cleanup(defaultExecutionOrgTestCleanup)
 
 		kBefore, kTestCleanup := createProject(t, client, defaultExecutionOrgTest)
-		defer kTestCleanup()
+		t.Cleanup(kTestCleanup)
 
 		options := ProjectUpdateOptions{
 			DefaultExecutionMode: String("local"),
@@ -613,7 +613,7 @@ func TestProjectsUpdate(t *testing.T) {
 		t.Cleanup(defaultExecutionOrgTestCleanup)
 
 		kBefore, kTestCleanup := createProject(t, client, defaultExecutionOrgTest)
-		defer kTestCleanup()
+		t.Cleanup(kTestCleanup)
 
 		options := ProjectUpdateOptions{
 			SettingOverwrites: &ProjectSettingOverwrites{
@@ -724,7 +724,7 @@ func TestProjectsDelete(t *testing.T) {
 	ctx := context.Background()
 
 	orgTest, orgTestCleanup := createOrganization(t, client)
-	defer orgTestCleanup()
+	t.Cleanup(orgTestCleanup)
 
 	pTest, _ := createProject(t, client, orgTest)
 
@@ -754,7 +754,7 @@ func TestProjectsAutoDestroy(t *testing.T) {
 	ctx := context.Background()
 
 	orgTest, orgTestCleanup := createOrganization(t, client)
-	defer orgTestCleanup()
+	t.Cleanup(orgTestCleanup)
 
 	newSubscriptionUpdater(orgTest).WithBusinessPlan().Update(t)
 
