@@ -5,6 +5,7 @@ package tfe
 
 import (
 	"context"
+	"io"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -166,11 +167,12 @@ func TestQueryRunsCreate(t *testing.T) {
 		assert.Equal(t, len(vars), len(qr.Variables))
 
 		for _, v := range qr.Variables {
-			if v.Key == "test_foo" {
+			switch v.Key {
+			case "test_foo":
 				assert.Equal(t, v.Value, "Hello, Foo!")
-			} else if v.Key == "test_variable" {
+			case "test_variable":
 				assert.Equal(t, v.Value, "Hello, World!")
-			} else {
+			default:
 				t.Fatalf("Unexpected variable key: %s", v.Key)
 			}
 		}
@@ -260,6 +262,28 @@ func TestQueryRunsCancel(t *testing.T) {
 	t.Run("with invalid query run ID", func(t *testing.T) {
 		err := client.QueryRuns.Cancel(ctx, badIdentifier)
 		assert.EqualError(t, err, ErrResourceNotFound.Error())
+	})
+}
+
+func TestQueryRunsLogs(t *testing.T) {
+	skipUnlessBeta(t)
+	client := testClient(t)
+	ctx := context.Background()
+
+	wTest, wTestCleanup := createWorkspace(t, client, nil)
+	defer wTestCleanup()
+
+	qr, cleanup := createQueryRunWaitForAnyStatuses(t, client, wTest, []QueryRunStatus{QueryRunErrored, QueryRunFinished})
+	t.Cleanup(cleanup)
+
+	t.Run("when the query run exists", func(t *testing.T) {
+		// We assume the second query run is in a state that can be canceled.
+		reader, err := client.QueryRuns.Logs(ctx, qr.ID)
+		require.NoError(t, err)
+
+		logs, err := io.ReadAll(reader)
+		require.NoError(t, err)
+		assert.NotEmpty(t, logs, "some logs should be returned")
 	})
 }
 
