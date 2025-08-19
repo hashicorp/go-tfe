@@ -290,63 +290,15 @@ func (s *agentPools) Update(ctx context.Context, agentPoolID string, options Age
 }
 
 func (s *agentPools) UpdateAllowedWorkspaces(ctx context.Context, agentPoolID string, options AgentPoolAllowedWorkspacesUpdateOptions) (*AgentPool, error) {
-	if !validStringID(&agentPoolID) {
-		return nil, ErrInvalidAgentPoolID
-	}
-
-	u := fmt.Sprintf("agent-pools/%s", url.PathEscape(agentPoolID))
-	req, err := s.client.NewRequest("PATCH", u, &options)
-	if err != nil {
-		return nil, err
-	}
-
-	k := &AgentPool{}
-	err = req.Do(ctx, k)
-	if err != nil {
-		return nil, err
-	}
-
-	return k, nil
+	return s.updateArrayAttribute(ctx, agentPoolID, &options)
 }
 
 func (s *agentPools) UpdateAllowedProjects(ctx context.Context, agentPoolID string, options AgentPoolAllowedProjectsUpdateOptions) (*AgentPool, error) {
-	if !validStringID(&agentPoolID) {
-		return nil, ErrInvalidAgentPoolID
-	}
-
-	u := fmt.Sprintf("agent-pools/%s", url.PathEscape(agentPoolID))
-	req, err := s.client.NewRequest("PATCH", u, &options)
-	if err != nil {
-		return nil, err
-	}
-
-	k := &AgentPool{}
-	err = req.Do(ctx, k)
-	if err != nil {
-		return nil, err
-	}
-
-	return k, nil
+	return s.updateArrayAttribute(ctx, agentPoolID, &options)
 }
 
 func (s *agentPools) UpdateExcludedWorkspaces(ctx context.Context, agentPoolID string, options AgentPoolExcludedWorkspacesUpdateOptions) (*AgentPool, error) {
-	if !validStringID(&agentPoolID) {
-		return nil, ErrInvalidAgentPoolID
-	}
-
-	u := fmt.Sprintf("agent-pools/%s", url.PathEscape(agentPoolID))
-	req, err := s.client.NewRequest("PATCH", u, &options)
-	if err != nil {
-		return nil, err
-	}
-
-	k := &AgentPool{}
-	err = req.Do(ctx, k)
-	if err != nil {
-		return nil, err
-	}
-
-	return k, nil
+	return s.updateArrayAttribute(ctx, agentPoolID, &options)
 }
 
 // Delete an agent pool by its ID.
@@ -362,6 +314,26 @@ func (s *agentPools) Delete(ctx context.Context, agentPoolID string) error {
 	}
 
 	return req.Do(ctx, nil)
+}
+
+func (s *agentPools) updateArrayAttribute(ctx context.Context, agentPoolID string, options any) (*AgentPool, error) {
+	if !validStringID(&agentPoolID) {
+		return nil, ErrInvalidAgentPoolID
+	}
+
+	u := fmt.Sprintf("agent-pools/%s", url.PathEscape(agentPoolID))
+	req, err := s.client.NewRequest("PATCH", u, options)
+	if err != nil {
+		return nil, err
+	}
+
+	k := &AgentPool{}
+	err = req.Do(ctx, k)
+	if err != nil {
+		return nil, err
+	}
+
+	return k, nil
 }
 
 func (o AgentPoolCreateOptions) valid() error {
