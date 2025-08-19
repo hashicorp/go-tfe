@@ -227,7 +227,7 @@ func TestAgentPoolsCreate(t *testing.T) {
 		pool, err := client.AgentPools.Create(ctx, orgTest.Name, options)
 		require.NoError(t, err)
 
-		assert.Equal(t, 1, len(pool.AllowedWorkspaces))
+		require.Equal(t, 1, len(pool.AllowedWorkspaces))
 		assert.Equal(t, workspaceTest.ID, pool.AllowedWorkspaces[0].ID)
 
 		// Get a refreshed view from the API.
@@ -258,7 +258,7 @@ func TestAgentPoolsCreate(t *testing.T) {
 		pool, err := client.AgentPools.Create(ctx, orgTest.Name, options)
 		require.NoError(t, err)
 
-		assert.Equal(t, 1, len(pool.AllowedProjects))
+		require.Equal(t, 1, len(pool.AllowedProjects))
 		assert.Equal(t, projectTest.ID, pool.AllowedProjects[0].ID)
 
 		// Get a refreshed view from the API.
@@ -289,7 +289,7 @@ func TestAgentPoolsCreate(t *testing.T) {
 		pool, err := client.AgentPools.Create(ctx, orgTest.Name, options)
 		require.NoError(t, err)
 
-		assert.Equal(t, 1, len(pool.ExcludedWorkspaces))
+		require.Equal(t, 1, len(pool.ExcludedWorkspaces))
 		assert.Equal(t, workspaceTest.ID, pool.ExcludedWorkspaces[0].ID)
 
 		// Get a refreshed view from the API.
@@ -424,11 +424,11 @@ func TestAgentPoolsUpdate(t *testing.T) {
 
 		assert.Equal(t, kBefore.ID, kAfter.ID)
 		assert.Equal(t, "updated-key-name", kAfter.Name)
-		assert.Equal(t, 1, len(kAfter.AllowedWorkspaces))
+		require.Equal(t, 1, len(kAfter.AllowedWorkspaces))
 		assert.Equal(t, workspaceTest.ID, kAfter.AllowedWorkspaces[0].ID)
-		assert.Equal(t, 1, len(kAfter.AllowedProjects))
+		require.Equal(t, 1, len(kAfter.AllowedProjects))
 		assert.Equal(t, projectTest.ID, kAfter.AllowedProjects[0].ID)
-		assert.Equal(t, 1, len(kAfter.ExcludedWorkspaces))
+		require.Equal(t, 1, len(kAfter.ExcludedWorkspaces))
 		assert.Equal(t, excludedWorkspaceTest.ID, kAfter.ExcludedWorkspaces[0].ID)
 	})
 
@@ -469,7 +469,7 @@ func TestAgentPoolsUpdate(t *testing.T) {
 
 		assert.Equal(t, kBefore.Name, kAfter.Name)
 		assert.NotEqual(t, kBefore.AllowedWorkspaces, kAfter.AllowedWorkspaces)
-		assert.Equal(t, 1, len(kAfter.AllowedWorkspaces))
+		require.Equal(t, 1, len(kAfter.AllowedWorkspaces))
 		assert.Equal(t, workspaceTest.ID, kAfter.AllowedWorkspaces[0].ID)
 	})
 
@@ -489,7 +489,7 @@ func TestAgentPoolsUpdate(t *testing.T) {
 
 		assert.Equal(t, kBefore.Name, kAfter.Name)
 		assert.NotEqual(t, kBefore.AllowedProjects, kAfter.AllowedProjects)
-		assert.Equal(t, 1, len(kAfter.AllowedProjects))
+		require.Equal(t, 1, len(kAfter.AllowedProjects))
 		assert.Equal(t, projectTest.ID, kAfter.AllowedProjects[0].ID)
 	})
 
@@ -509,7 +509,7 @@ func TestAgentPoolsUpdate(t *testing.T) {
 
 		assert.Equal(t, kBefore.Name, kAfter.Name)
 		assert.NotEqual(t, kBefore.ExcludedWorkspaces, kAfter.ExcludedWorkspaces)
-		assert.Equal(t, 1, len(kAfter.ExcludedWorkspaces))
+		require.Equal(t, 1, len(kAfter.ExcludedWorkspaces))
 		assert.Equal(t, workspaceTest.ID, kAfter.ExcludedWorkspaces[0].ID)
 	})
 }
@@ -539,7 +539,7 @@ func TestAgentPoolsUpdateAllowedWorkspaces(t *testing.T) {
 
 		assert.Equal(t, kBefore.Name, kAfter.Name)
 		assert.NotEqual(t, kBefore.AllowedWorkspaces, kAfter.AllowedWorkspaces)
-		assert.Equal(t, 1, len(kAfter.AllowedWorkspaces))
+		require.Equal(t, 1, len(kAfter.AllowedWorkspaces))
 		assert.Equal(t, workspaceTest.ID, kAfter.AllowedWorkspaces[0].ID)
 	})
 
@@ -595,7 +595,7 @@ func TestAgentPoolsUpdateAllowedProjects(t *testing.T) {
 
 		assert.Equal(t, kBefore.Name, kAfter.Name)
 		assert.NotEqual(t, kBefore.AllowedProjects, kAfter.AllowedProjects)
-		assert.Equal(t, 1, len(kAfter.AllowedProjects))
+		require.Equal(t, 1, len(kAfter.AllowedProjects))
 		assert.Equal(t, projectTest.ID, kAfter.AllowedProjects[0].ID)
 	})
 
@@ -651,7 +651,7 @@ func TestAgentPoolsUpdateExcludedWorkspaces(t *testing.T) {
 
 		assert.Equal(t, kBefore.Name, kAfter.Name)
 		assert.NotEqual(t, kBefore.ExcludedWorkspaces, kAfter.ExcludedWorkspaces)
-		assert.Equal(t, 1, len(kAfter.ExcludedWorkspaces))
+		require.Equal(t, 1, len(kAfter.ExcludedWorkspaces))
 		assert.Equal(t, workspaceTest.ID, kAfter.ExcludedWorkspaces[0].ID)
 	})
 

@@ -166,7 +166,7 @@ func TestProjectsReadWithOptions(t *testing.T) {
 		assert.Equal(t, orgTest.Name, p.Organization.Name)
 
 		// Tag data is included
-		assert.Len(t, p.EffectiveTagBindings, 1)
+		require.Len(t, p.EffectiveTagBindings, 1)
 		assert.Equal(t, "foo", p.EffectiveTagBindings[0].Key)
 		assert.Equal(t, "bar", p.EffectiveTagBindings[0].Value)
 	})
@@ -240,7 +240,7 @@ func TestProjectsRead(t *testing.T) {
 			assert.NotEmpty(t, p)
 
 			assert.Equal(t, defaultExecutionOrgTest.DefaultExecutionMode, p.DefaultExecutionMode)
-			assert.NotEmpty(t, p.SettingOverwrites)
+			require.NotNil(t, p.SettingOverwrites)
 			assert.Equal(t, false, *p.SettingOverwrites.ExecutionMode)
 			assert.Equal(t, false, *p.SettingOverwrites.ExecutionMode)
 		})
@@ -460,14 +460,14 @@ func TestProjectsUpdate(t *testing.T) {
 			bindings, err := client.Projects.ListTagBindings(ctx, kAfter.ID)
 			require.NoError(t, err)
 
-			assert.Len(t, bindings, 1)
+			require.Len(t, bindings, 1)
 			assert.Equal(t, "foo", bindings[0].Key)
 			assert.Equal(t, "bar", bindings[0].Value)
 
 			effectiveBindings, err := client.Projects.ListEffectiveTagBindings(ctx, kAfter.ID)
 			require.NoError(t, err)
 
-			assert.Len(t, effectiveBindings, 1)
+			require.Len(t, effectiveBindings, 1)
 			assert.Equal(t, "foo", effectiveBindings[0].Key)
 			assert.Equal(t, "bar", effectiveBindings[0].Value)
 
@@ -648,7 +648,7 @@ func TestProjectsAddTagBindings(t *testing.T) {
 		})
 		require.NoError(t, err)
 
-		assert.Len(t, bindings, 2)
+		require.Len(t, bindings, 2)
 		assert.Equal(t, tagBindings[0].Key, bindings[0].Key)
 		assert.Equal(t, tagBindings[0].Value, bindings[0].Value)
 		assert.Equal(t, tagBindings[1].Key, bindings[1].Key)
