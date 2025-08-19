@@ -11,6 +11,7 @@ package mocks
 
 import (
 	context "context"
+	io "io"
 	reflect "reflect"
 
 	tfe "github.com/hashicorp/go-tfe"
@@ -96,6 +97,21 @@ func (m *MockQueryRuns) List(ctx context.Context, workspaceID string, options *t
 func (mr *MockQueryRunsMockRecorder) List(ctx, workspaceID, options any) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "List", reflect.TypeOf((*MockQueryRuns)(nil).List), ctx, workspaceID, options)
+}
+
+// Logs mocks base method.
+func (m *MockQueryRuns) Logs(ctx context.Context, queryRunID string) (io.Reader, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Logs", ctx, queryRunID)
+	ret0, _ := ret[0].(io.Reader)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// Logs indicates an expected call of Logs.
+func (mr *MockQueryRunsMockRecorder) Logs(ctx, queryRunID any) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Logs", reflect.TypeOf((*MockQueryRuns)(nil).Logs), ctx, queryRunID)
 }
 
 // Read mocks base method.
