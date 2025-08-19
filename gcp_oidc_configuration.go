@@ -89,7 +89,7 @@ func (goc *gcpOIDCConfigurations) Create(ctx context.Context, organization strin
 }
 
 func (goc *gcpOIDCConfigurations) Read(ctx context.Context, oidcID string) (*GCPOIDCConfiguration, error) {
-	req, err := goc.client.NewRequest("GET", fmt.Sprintf("oidc-configurations/%s", url.PathEscape(oidcID)), nil)
+	req, err := goc.client.NewRequest("GET", fmt.Sprintf(OIDCConfigPathFormat, url.PathEscape(oidcID)), nil)
 	if err != nil {
 		return nil, err
 	}
@@ -128,7 +128,7 @@ func (goc *gcpOIDCConfigurations) Update(ctx context.Context, oidcID string, opt
 		return nil, err
 	}
 
-	req, err := goc.client.NewRequest("PATCH", fmt.Sprintf("oidc-configurations/%s", url.PathEscape(oidcID)), &options)
+	req, err := goc.client.NewRequest("PATCH", fmt.Sprintf(OIDCConfigPathFormat, url.PathEscape(oidcID)), &options)
 	if err != nil {
 		return nil, err
 	}
@@ -147,7 +147,7 @@ func (goc *gcpOIDCConfigurations) Delete(ctx context.Context, oidcID string) err
 		return ErrInvalidOIDC
 	}
 
-	req, err := goc.client.NewRequest("DELETE", fmt.Sprintf("oidc-configurations/%s", url.PathEscape(oidcID)), nil)
+	req, err := goc.client.NewRequest("DELETE", fmt.Sprintf(OIDCConfigPathFormat, url.PathEscape(oidcID)), nil)
 	if err != nil {
 		return err
 	}

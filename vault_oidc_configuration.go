@@ -91,7 +91,7 @@ func (voc *vaultOIDCConfigurations) Create(ctx context.Context, organization str
 }
 
 func (voc *vaultOIDCConfigurations) Read(ctx context.Context, oidcID string) (*VaultOIDCConfiguration, error) {
-	req, err := voc.client.NewRequest("GET", fmt.Sprintf("oidc-configurations/%s", url.PathEscape(oidcID)), nil)
+	req, err := voc.client.NewRequest("GET", fmt.Sprintf(OIDCConfigPathFormat, url.PathEscape(oidcID)), nil)
 	if err != nil {
 		return nil, err
 	}
@@ -126,7 +126,7 @@ func (voc *vaultOIDCConfigurations) Update(ctx context.Context, oidcID string, o
 		return nil, err
 	}
 
-	req, err := voc.client.NewRequest("PATCH", fmt.Sprintf("oidc-configurations/%s", url.PathEscape(oidcID)), &options)
+	req, err := voc.client.NewRequest("PATCH", fmt.Sprintf(OIDCConfigPathFormat, url.PathEscape(oidcID)), &options)
 	if err != nil {
 		return nil, err
 	}
@@ -145,7 +145,7 @@ func (voc *vaultOIDCConfigurations) Delete(ctx context.Context, oidcID string) e
 		return ErrInvalidOIDC
 	}
 
-	req, err := voc.client.NewRequest("DELETE", fmt.Sprintf("oidc-configurations/%s", url.PathEscape(oidcID)), nil)
+	req, err := voc.client.NewRequest("DELETE", fmt.Sprintf(OIDCConfigPathFormat, url.PathEscape(oidcID)), nil)
 	if err != nil {
 		return err
 	}

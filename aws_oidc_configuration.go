@@ -6,6 +6,8 @@ import (
 	"net/url"
 )
 
+const OIDCConfigPathFormat = "oidc-configurations/%s"
+
 type AWSOIDCConfigurations interface {
 	Create(ctx context.Context, organization string, options AWSOIDCConfigurationCreateOptions) (*AWSOIDCConfiguration, error)
 
@@ -75,7 +77,7 @@ func (aoc *awsOIDCConfigurations) Create(ctx context.Context, organization strin
 }
 
 func (aoc *awsOIDCConfigurations) Read(ctx context.Context, oidcID string) (*AWSOIDCConfiguration, error) {
-	req, err := aoc.client.NewRequest("GET", fmt.Sprintf("oidc-configurations/%s", url.PathEscape(oidcID)), nil)
+	req, err := aoc.client.NewRequest("GET", fmt.Sprintf(OIDCConfigPathFormat, url.PathEscape(oidcID)), nil)
 	if err != nil {
 		return nil, err
 	}
@@ -106,7 +108,7 @@ func (aoc *awsOIDCConfigurations) Update(ctx context.Context, oidcID string, opt
 		return nil, err
 	}
 
-	req, err := aoc.client.NewRequest("PATCH", fmt.Sprintf("oidc-configurations/%s", url.PathEscape(oidcID)), &options)
+	req, err := aoc.client.NewRequest("PATCH", fmt.Sprintf(OIDCConfigPathFormat, url.PathEscape(oidcID)), &options)
 	if err != nil {
 		return nil, err
 	}
@@ -125,7 +127,7 @@ func (aoc *awsOIDCConfigurations) Delete(ctx context.Context, oidcID string) err
 		return ErrInvalidOIDC
 	}
 
-	req, err := aoc.client.NewRequest("DELETE", fmt.Sprintf("oidc-configurations/%s", url.PathEscape(oidcID)), nil)
+	req, err := aoc.client.NewRequest("DELETE", fmt.Sprintf(OIDCConfigPathFormat, url.PathEscape(oidcID)), nil)
 	if err != nil {
 		return err
 	}

@@ -89,7 +89,7 @@ func (aoc *azureOIDCConfigurations) Create(ctx context.Context, organization str
 }
 
 func (aoc *azureOIDCConfigurations) Read(ctx context.Context, oidcID string) (*AzureOIDCConfiguration, error) {
-	req, err := aoc.client.NewRequest("GET", fmt.Sprintf("oidc-configurations/%s", url.PathEscape(oidcID)), nil)
+	req, err := aoc.client.NewRequest("GET", fmt.Sprintf(OIDCConfigPathFormat, url.PathEscape(oidcID)), nil)
 	if err != nil {
 		return nil, err
 	}
@@ -128,7 +128,7 @@ func (aoc *azureOIDCConfigurations) Update(ctx context.Context, oidcID string, o
 		return nil, err
 	}
 
-	req, err := aoc.client.NewRequest("PATCH", fmt.Sprintf("oidc-configurations/%s", url.PathEscape(oidcID)), &options)
+	req, err := aoc.client.NewRequest("PATCH", fmt.Sprintf(OIDCConfigPathFormat, url.PathEscape(oidcID)), &options)
 	if err != nil {
 		return nil, err
 	}
@@ -147,7 +147,7 @@ func (aoc *azureOIDCConfigurations) Delete(ctx context.Context, oidcID string) e
 		return ErrInvalidOIDC
 	}
 
-	req, err := aoc.client.NewRequest("DELETE", fmt.Sprintf("oidc-configurations/%s", url.PathEscape(oidcID)), nil)
+	req, err := aoc.client.NewRequest("DELETE", fmt.Sprintf(OIDCConfigPathFormat, url.PathEscape(oidcID)), nil)
 	if err != nil {
 		return err
 	}
