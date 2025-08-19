@@ -424,13 +424,7 @@ var (
 
 	ErrRequiredRoleName = errors.New("role is required for Vault OIDC configuration")
 
-	ErrRequiredJWTAuthPath = errors.New("auth_path is required for Vault OIDC configuration")
-
-	ErrRequiredTLSCACertificate = errors.New("encoded_cacert is required for Vault OIDC configuration")
-
 	ErrRequiredKEKID = errors.New("kek-id is required for HYOK configuration")
-
-	ErrRequiredHYOKConfiguration = errors.New("hyok-configuration is required for HYOK configuration")
 
 	ErrRequiredOIDCConfiguration = errors.New("oidc-configuration is required for HYOK configuration")
 
