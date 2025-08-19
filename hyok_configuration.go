@@ -67,10 +67,9 @@ type HYOKConfiguration struct {
 	Error      *string                 `jsonapi:"attr,error"`
 
 	// Relationships
-	Organization            *Organization             `jsonapi:"relation,organization"`
-	OIDCConfiguration       *OIDCConfigurationType    `jsonapi:"polyrelation,oidc-configuration"`
-	AgentPool               *AgentPool                `jsonapi:"relation,agent-pool"`
-	HYOKCustomerKeyVersions []*HYOKCustomerKeyVersion `jsonapi:"relation,hyok-customer-key-versions,omitempty"`
+	Organization      *Organization          `jsonapi:"relation,organization"`
+	OIDCConfiguration *OIDCConfigurationType `jsonapi:"polyrelation,oidc-configuration"`
+	AgentPool         *AgentPool             `jsonapi:"relation,agent-pool"`
 }
 
 type HYOKConfigurationsList struct {
