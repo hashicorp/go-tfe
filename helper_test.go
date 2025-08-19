@@ -1252,6 +1252,27 @@ func createRunWaitForAnyStatuses(t *testing.T, client *Client, w *Workspace, sta
 	}
 }
 
+func createQueryRunWaitForAnyStatuses(t *testing.T, client *Client, w *Workspace, statuses []QueryRunStatus) (*QueryRun, func()) {
+	ctx := context.Background()
+	qr := createQueryRun(t, client, w)
+
+	timeout := 2 * time.Minute
+
+	ctxPollQueryRunReady, cancelPollQueryRunReady := context.WithTimeout(ctx, timeout)
+
+	run := pollQueryRunStatus(
+		t,
+		client,
+		ctxPollQueryRunReady,
+		qr,
+		append(statuses, QueryRunErrored),
+	)
+
+	return run, func() {
+		cancelPollQueryRunReady()
+	}
+}
+
 func applyableStatuses(r *Run) []RunStatus {
 	if len(r.PolicyChecks) > 0 {
 		return []RunStatus{
@@ -1296,6 +1317,39 @@ func pollRunStatus(t *testing.T, client *Client, ctx context.Context, r *Run, rs
 	}
 
 	return r
+}
+
+// pollQueryRunStatus will poll the given query run until its status matches one of the given run statuses or the given context
+// times out.
+func pollQueryRunStatus(t *testing.T, client *Client, ctx context.Context, q *QueryRun, rss []QueryRunStatus) *QueryRun {
+	deadline, ok := ctx.Deadline()
+	if !ok {
+		t.Logf("No deadline was set to poll query run %q which could result in an infinite loop", q.ID)
+	}
+
+	t.Logf("Polling query run %q for status included in %q with deadline of %s", q.ID, rss, deadline)
+
+	ticker := time.NewTicker(2 * time.Second)
+	defer ticker.Stop()
+
+	for finished := false; !finished; {
+		t.Log("...")
+		select {
+		case <-ctx.Done():
+			t.Fatalf("Run %q had status %q at deadline", q.ID, q.Status)
+		case <-ticker.C:
+			q = readQueryRun(t, client, ctx, q)
+			t.Logf("Query Run %q had status %q", q.ID, q.Status)
+			for _, rs := range rss {
+				if rs == q.Status {
+					finished = true
+					break
+				}
+			}
+		}
+	}
+
+	return q
 }
 
 // pollStateVersionStatus will poll the given state version until its status
@@ -1345,6 +1399,18 @@ func readRun(t *testing.T, client *Client, ctx context.Context, r *Run) *Run {
 	}
 
 	return rr
+}
+
+// readQueryRun will re-read the given query run.
+func readQueryRun(t *testing.T, client *Client, ctx context.Context, r *QueryRun) *QueryRun {
+	t.Logf("Reading query run %q", r.ID)
+
+	qr, err := client.QueryRuns.Read(ctx, r.ID)
+	if err != nil {
+		t.Fatalf("Could not read run %q: %s", r.ID, err)
+	}
+
+	return qr
 }
 
 // applyRun will apply the given run.
