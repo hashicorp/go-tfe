@@ -129,10 +129,10 @@ type Client struct {
 	AgentTokens                     AgentTokens
 	Applies                         Applies
 	AuditTrails                     AuditTrails
-	AWSOIDCConfigurations      AWSOIDCConfigurations
-	GCPOIDCConfigurations      GCPOIDCConfigurations
-	AzureOIDCConfigurations    AzureOIDCConfigurations
-	VaultOIDCConfigurations    VaultOIDCConfigurations
+	AWSOIDCConfigurations           AWSOIDCConfigurations
+	GCPOIDCConfigurations           GCPOIDCConfigurations
+	AzureOIDCConfigurations         AzureOIDCConfigurations
+	VaultOIDCConfigurations         VaultOIDCConfigurations
 	Comments                        Comments
 	ConfigurationVersions           ConfigurationVersions
 	CostEstimates                   CostEstimates
@@ -169,7 +169,7 @@ type Client struct {
 	RunTriggers                     RunTriggers
 	SSHKeys                         SSHKeys
 	Stacks                          Stacks
-	HYOKConfigurations         HYOKConfigurations
+	HYOKConfigurations              HYOKConfigurations
 	StackConfigurations             StackConfigurations
 	StackDeployments                StackDeployments
 	StackDeploymentGroups           StackDeploymentGroups
