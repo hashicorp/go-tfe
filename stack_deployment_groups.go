@@ -7,6 +7,7 @@ import (
 	"context"
 	"fmt"
 	"net/url"
+	"strings"
 	"time"
 )
 
@@ -18,8 +19,14 @@ type StackDeploymentGroups interface {
 	// Read retrieves a stack deployment group by its ID.
 	Read(ctx context.Context, stackDeploymentGroupID string) (*StackDeploymentGroup, error)
 
+	// ReadByName retrieves a stack deployment group by its Name.
+	ReadByName(ctx context.Context, stackConfigurationID, stackDeploymentName string) (*StackDeploymentGroup, error)
+
 	// ApproveAllPlans approves all pending plans in a stack deployment group.
 	ApproveAllPlans(ctx context.Context, stackDeploymentGroupID string) error
+
+	// Rerun re-runs all the stack deployment runs in a deployment group.
+	Rerun(ctx context.Context, stackDeploymentGroupID string, options *StackDeploymentGroupRerunOptions) error
 }
 
 type DeploymentGroupStatus string
@@ -63,6 +70,12 @@ type StackDeploymentGroupListOptions struct {
 	ListOptions
 }
 
+// StackDeploymentGroupRerunOptions represents options for rerunning deployments in a stack deployment group.
+type StackDeploymentGroupRerunOptions struct {
+	// Required query parameter: A list of deployment run IDs to rerun.
+	Deployments []string
+}
+
 // List returns a list of Deployment Groups in a stack, optionally filtered by additional parameters.
 func (s stackDeploymentGroups) List(ctx context.Context, stackConfigID string, options *StackDeploymentGroupListOptions) (*StackDeploymentGroupList, error) {
 	if !validStringID(&stackConfigID) {
@@ -85,6 +98,29 @@ func (s stackDeploymentGroups) List(ctx context.Context, stackConfigID string, o
 	}
 
 	return sdgl, nil
+}
+
+// ReadByName retrieves a stack deployment group by its Name.
+func (s stackDeploymentGroups) ReadByName(ctx context.Context, stackConfigurationID, stackDeploymentName string) (*StackDeploymentGroup, error) {
+	if !validStringID(&stackConfigurationID) {
+		return nil, fmt.Errorf("invalid stack configuration id: %s", stackConfigurationID)
+	}
+	if !validStringID(&stackDeploymentName) {
+		return nil, fmt.Errorf("invalid stack deployment group name: %s", stackDeploymentName)
+	}
+
+	req, err := s.client.NewRequest("GET", fmt.Sprintf("stack-configurations/%s/stack-deployment-groups/%s", url.PathEscape(stackConfigurationID), url.PathEscape(stackDeploymentName)), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	sdg := &StackDeploymentGroup{}
+	err = req.Do(ctx, sdg)
+	if err != nil {
+		return nil, err
+	}
+
+	return sdg, nil
 }
 
 // Read retrieves a stack deployment group by its ID.
@@ -114,6 +150,36 @@ func (s stackDeploymentGroups) ApproveAllPlans(ctx context.Context, stackDeploym
 	}
 
 	req, err := s.client.NewRequest("POST", fmt.Sprintf("stack-deployment-groups/%s/approve-all-plans", url.PathEscape(stackDeploymentGroupID)), nil)
+	if err != nil {
+		return err
+	}
+
+	return req.Do(ctx, nil)
+}
+
+// Rerun re-runs all the stack deployment runs in a deployment group.
+func (s stackDeploymentGroups) Rerun(ctx context.Context, stackDeploymentGroupID string, options *StackDeploymentGroupRerunOptions) error {
+	if !validStringID(&stackDeploymentGroupID) {
+		return fmt.Errorf("invalid stack deployment group ID: %s", stackDeploymentGroupID)
+	}
+
+	if options == nil || len(options.Deployments) == 0 {
+		return fmt.Errorf("no deployments specified for rerun")
+	}
+
+	u := fmt.Sprintf("stack-deployment-groups/%s/rerun", url.PathEscape(stackDeploymentGroupID))
+
+	type DeploymentQueryParams struct {
+		Deployments string `url:"deployments"`
+	}
+
+	qp, err := decodeQueryParams(&DeploymentQueryParams{
+		Deployments: strings.Join(options.Deployments, ","),
+	})
+	if err != nil {
+		return err
+	}
+	req, err := s.client.NewRequestWithAdditionalQueryParams("POST", u, nil, qp)
 	if err != nil {
 		return err
 	}

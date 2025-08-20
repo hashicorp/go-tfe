@@ -269,6 +269,18 @@ type RegistryModuleListOptions struct {
 
 	// Include is a list of relations to include.
 	Include []RegistryModuleListIncludeOpt `url:"include,omitempty"`
+
+	// Search is a search query string. Modules are searchable by name, namespace, provider fields.
+	Search string `url:"q,omitempty"`
+
+	// Provider filters results by provider name
+	Provider string `url:"filter[provider],omitempty"`
+
+	// RegistryName filters results by registry name (public or private)
+	RegistryName RegistryName `url:"filter[registry_name],omitempty"`
+
+	// OrganizationName filters results by organization name
+	OrganizationName string `url:"filter[organization_name],omitempty"`
 }
 
 type RegistryModuleListIncludeOpt string
@@ -370,6 +382,10 @@ type RegistryModuleVCSRepoOptions struct {
 	// **Note: This field is still in BETA and subject to change.**
 	Branch *string `json:"branch,omitempty"`
 	Tags   *bool   `json:"tags,omitempty"`
+
+	// Optional: If set, the registry module will be branch-based or tag-based
+	SourceDirectory *string `json:"source-directory,omitempty"`
+	TagPrefix       *string `json:"tag-prefix,omitempty"`
 }
 
 type RegistryModuleVCSRepoUpdateOptions struct {
@@ -380,6 +396,10 @@ type RegistryModuleVCSRepoUpdateOptions struct {
 	// **Note: This field is still in BETA and subject to change.**
 	Branch *string `json:"branch,omitempty"`
 	Tags   *bool   `json:"tags,omitempty"`
+
+	// Optional: If set, the registry module will be branch-based or tag-based
+	SourceDirectory *string `json:"source-directory,omitempty"`
+	TagPrefix       *string `json:"tag-prefix,omitempty"`
 }
 
 // List all the registry modules within an organization.
