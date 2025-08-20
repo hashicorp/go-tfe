@@ -95,7 +95,7 @@ const (
 	QueryRunPending  QueryRunStatus = "pending"
 	QueryRunQueuing  QueryRunStatus = "queued"
 	QueryRunRunning  QueryRunStatus = "running"
-	QueryRunFinished QueryRunStatus = "queuing_apply"
+	QueryRunFinished QueryRunStatus = "finished"
 )
 
 // List all available run sources.
