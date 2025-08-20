@@ -48,6 +48,7 @@ mockgen -source=registry_module.go -destination=mocks/registry_module_mocks.go -
 mockgen -source=registry_provider.go -destination=mocks/registry_provider_mocks.go -package=mocks
 mockgen -source=registry_provider_platform.go -destination=mocks/registry_provider_platform_mocks.go -package=mocks
 mockgen -source=registry_provider_version.go -destination=mocks/registry_provider_version_mocks.go -package=mocks
+mockgen -source=query_runs.go -destination=mocks/query_runs_mocks.go -package=mocks
 mockgen -source=run.go -destination=mocks/run_mocks.go -package=mocks
 mockgen -source=run_event.go -destination=mocks/run_events_mocks.go -package=mocks
 mockgen -source=run_task.go -destination=mocks/run_tasks_mocks.go -package=mocks
@@ -77,4 +78,3 @@ mockgen -source=project.go -destination=mocks/project_mocks.go -package=mocks
 mockgen -source=registry_no_code_module.go -destination=mocks/registry_no_code_module_mocks.go -package=mocks
 mockgen -source=registry_module.go -destination=mocks/registry_module_mocks.go -package=mocks
 mockgen -source=workspace_resources.go -destination=mocks/workspace_resources.go -package=mocks
-mockgen -source=registry_module.go -destination=mocks/registry_module_mocks.go -package=mocks
