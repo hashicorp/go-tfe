@@ -18,8 +18,6 @@ func TestAgentPoolsList(t *testing.T) {
 	orgTest, orgTestCleanup := createOrganization(t, client)
 	t.Cleanup(orgTestCleanup)
 
-	upgradeOrganizationSubscription(t, client, orgTest)
-
 	agentPool, agentPoolCleanup := createAgentPool(t, client, orgTest)
 	t.Cleanup(agentPoolCleanup)
 
@@ -175,8 +173,6 @@ func TestAgentPoolsCreate(t *testing.T) {
 	orgTest, orgTestCleanup := createOrganization(t, client)
 	t.Cleanup(orgTestCleanup)
 
-	upgradeOrganizationSubscription(t, client, orgTest)
-
 	t.Run("with valid options", func(t *testing.T) {
 		options := AgentPoolCreateOptions{
 			Name: String("cool-pool"),
@@ -312,8 +308,6 @@ func TestAgentPoolsRead(t *testing.T) {
 	orgTest, orgTestCleanup := createOrganization(t, client)
 	t.Cleanup(orgTestCleanup)
 
-	upgradeOrganizationSubscription(t, client, orgTest)
-
 	pool, poolCleanup := createAgentPool(t, client, orgTest)
 	t.Cleanup(poolCleanup)
 
@@ -374,8 +368,6 @@ func TestAgentPoolsUpdate(t *testing.T) {
 
 	orgTest, orgTestCleanup := createOrganization(t, client)
 	t.Cleanup(orgTestCleanup)
-
-	upgradeOrganizationSubscription(t, client, orgTest)
 
 	t.Run("with valid options", func(t *testing.T) {
 		kBefore, kTestCleanup := createAgentPool(t, client, orgTest)
@@ -521,8 +513,6 @@ func TestAgentPoolsUpdateAllowedWorkspaces(t *testing.T) {
 	orgTest, orgTestCleanup := createOrganization(t, client)
 	t.Cleanup(orgTestCleanup)
 
-	upgradeOrganizationSubscription(t, client, orgTest)
-
 	t.Run("when updating allowed-workspaces", func(t *testing.T) {
 		kBefore, kTestCleanup := createAgentPool(t, client, orgTest)
 		t.Cleanup(kTestCleanup)
@@ -576,8 +566,6 @@ func TestAgentPoolsUpdateAllowedProjects(t *testing.T) {
 
 	orgTest, orgTestCleanup := createOrganization(t, client)
 	t.Cleanup(orgTestCleanup)
-
-	upgradeOrganizationSubscription(t, client, orgTest)
 
 	t.Run("when updating allowed-projects", func(t *testing.T) {
 		kBefore, kTestCleanup := createAgentPool(t, client, orgTest)
@@ -633,8 +621,6 @@ func TestAgentPoolsUpdateExcludedWorkspaces(t *testing.T) {
 	orgTest, orgTestCleanup := createOrganization(t, client)
 	t.Cleanup(orgTestCleanup)
 
-	upgradeOrganizationSubscription(t, client, orgTest)
-
 	t.Run("when updating excluded-workspaces", func(t *testing.T) {
 		kBefore, kTestCleanup := createAgentPool(t, client, orgTest)
 		t.Cleanup(kTestCleanup)
@@ -688,8 +674,6 @@ func TestAgentPoolsDelete(t *testing.T) {
 
 	orgTest, orgTestCleanup := createOrganization(t, client)
 	t.Cleanup(orgTestCleanup)
-
-	upgradeOrganizationSubscription(t, client, orgTest)
 
 	agentPool, _ := createAgentPool(t, client, orgTest)
 
