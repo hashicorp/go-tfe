@@ -58,9 +58,10 @@ type AgentPool struct {
 	OrganizationScoped bool   `jsonapi:"attr,organization-scoped"`
 
 	// Relations
-	Organization      *Organization `jsonapi:"relation,organization"`
-	Workspaces        []*Workspace  `jsonapi:"relation,workspaces"`
-	AllowedWorkspaces []*Workspace  `jsonapi:"relation,allowed-workspaces"`
+	Organization       *Organization        `jsonapi:"relation,organization"`
+	HYOKConfigurations []*HYOKConfiguration `jsonapi:"relation,hyok-configurations"`
+	Workspaces         []*Workspace         `jsonapi:"relation,workspaces"`
+	AllowedWorkspaces  []*Workspace         `jsonapi:"relation,allowed-workspaces"`
 }
 
 // A list of relations to include
@@ -169,7 +170,7 @@ func (s *agentPools) ReadWithOptions(ctx context.Context, agentpoolID string, op
 	}
 
 	u := fmt.Sprintf("agent-pools/%s", url.PathEscape(agentpoolID))
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest("GET", u, &options)
 	if err != nil {
 		return nil, err
 	}

@@ -65,7 +65,8 @@ type Plan struct {
 	StatusTimestamps       *PlanStatusTimestamps `jsonapi:"attr,status-timestamps"`
 
 	// Relations
-	Exports []*PlanExport `jsonapi:"relation,exports"`
+	Exports              []*PlanExport          `jsonapi:"relation,exports"`
+	HYOKEncryptedDataKey *HYOKEncryptedDataKeys `jsonapi:"relation,hyok-encrypted-data-key,omitempty"`
 }
 
 // PlanStatusTimestamps holds the timestamps for individual plan statuses.

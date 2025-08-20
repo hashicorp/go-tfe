@@ -89,17 +89,21 @@ type StateVersionList struct {
 
 // StateVersion represents a Terraform Enterprise state version.
 type StateVersion struct {
-	ID               string             `jsonapi:"primary,state-versions"`
-	CreatedAt        time.Time          `jsonapi:"attr,created-at,iso8601"`
-	DownloadURL      string             `jsonapi:"attr,hosted-state-download-url"`
-	UploadURL        string             `jsonapi:"attr,hosted-state-upload-url"`
-	Status           StateVersionStatus `jsonapi:"attr,status"`
-	JSONUploadURL    string             `jsonapi:"attr,hosted-json-state-upload-url"`
-	JSONDownloadURL  string             `jsonapi:"attr,hosted-json-state-download-url"`
-	Serial           int64              `jsonapi:"attr,serial"`
-	VCSCommitSHA     string             `jsonapi:"attr,vcs-commit-sha"`
-	VCSCommitURL     string             `jsonapi:"attr,vcs-commit-url"`
-	BillableRUMCount *uint32            `jsonapi:"attr,billable-rum-count"`
+	ID                        string             `jsonapi:"primary,state-versions"`
+	CreatedAt                 time.Time          `jsonapi:"attr,created-at,iso8601"`
+	DownloadURL               string             `jsonapi:"attr,hosted-state-download-url"`
+	UploadURL                 string             `jsonapi:"attr,hosted-state-upload-url"`
+	Status                    StateVersionStatus `jsonapi:"attr,status"`
+	JSONUploadURL             string             `jsonapi:"attr,hosted-json-state-upload-url"`
+	JSONDownloadURL           string             `jsonapi:"attr,hosted-json-state-download-url"`
+	Serial                    int64              `jsonapi:"attr,serial"`
+	VCSCommitSHA              string             `jsonapi:"attr,vcs-commit-sha"`
+	VCSCommitURL              string             `jsonapi:"attr,vcs-commit-url"`
+	BillableRUMCount          *uint32            `jsonapi:"attr,billable-rum-count"`
+	EncriptedStateDownloadURL string             `jsonapi:"attr,encripted-state-download-url,omitempty"`
+	SanitizedStateDownloadURL string             `jsonapi:"attr,sanitized-state-download-url,omitempty"`
+	SanitizedStateUploadURL   string             `jsonapi:"attr,sanitized-state-upload-url,omitempty"`
+
 	// Whether HCP Terraform has finished populating any StateVersion fields that required async processing.
 	// If `false`, some fields may appear empty even if they should actually contain data; see comments on
 	// individual fields for details.
@@ -117,6 +121,7 @@ type StateVersion struct {
 	// Relations
 	Run     *Run                  `jsonapi:"relation,run"`
 	Outputs []*StateVersionOutput `jsonapi:"relation,outputs"`
+	// HYOKEncryptedDataKey *HYOKEncryptedDataKeys `jsonapi:"relation,hyok-encrypted-data-key,omitempty"`
 }
 
 // StateVersionOutputsList represents a list of StateVersionOutput items.
