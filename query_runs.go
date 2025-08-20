@@ -93,7 +93,7 @@ const (
 	QueryRunCanceled QueryRunStatus = "canceled"
 	QueryRunErrored  QueryRunStatus = "errored"
 	QueryRunPending  QueryRunStatus = "pending"
-	QueryRunQueuing  QueryRunStatus = "queued"
+	QueryRunQueued   QueryRunStatus = "queued"
 	QueryRunRunning  QueryRunStatus = "running"
 	QueryRunFinished QueryRunStatus = "finished"
 )
