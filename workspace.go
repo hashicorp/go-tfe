@@ -517,6 +517,8 @@ type VCSRepoOptions struct {
 	OAuthTokenID      *string `json:"oauth-token-id,omitempty"`
 	TagsRegex         *string `json:"tags-regex,omitempty"`
 	GHAInstallationID *string `json:"github-app-installation-id,omitempty"`
+	SourceDirectory   *string `json:"source-directory,omitempty"`
+	TagPrefix         *string `json:"tag-prefix,omitempty"`
 }
 
 type WorkspaceSettingOverwritesOptions struct {

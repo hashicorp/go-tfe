@@ -1,4 +1,5 @@
 # Unreleased
+* Adds support for `Workspace` VCSRepoOptions source_directory and tag_prefix, by @jillrami [#1194] (https://github.com/hashicorp/go-tfe/pull/1194)
 
 # v1.90.0
 
