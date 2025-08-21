@@ -580,9 +580,6 @@ func createAWSOIDCConfiguration(t *testing.T, client *Client, org *Organization)
 
 	opts := AWSOIDCConfigurationCreateOptions{
 		RoleARN: fmt.Sprintf("arn:aws:iam::123456789012:role/%s", randomString(t)),
-		Organization: &Organization{
-			Name: org.Name,
-		},
 	}
 
 	oidcConfig, err := client.AWSOIDCConfigurations.Create(ctx, org.Name, opts)
@@ -616,7 +613,6 @@ func (a *AWSOIDCConfiguration) createHYOKConfiguration(t *testing.T, client *Cli
 		KEKID:             "arn:aws:kms:us-east-1:123456789012:key/this-is-not-a-real-key",
 		Name:              randomStringWithoutSpecialChar(t),
 		KMSOptions:        &KMSOptions{KeyRegion: "us-east-1"},
-		Organization:      org,
 		AgentPool:         agentPool,
 		OIDCConfiguration: &OIDCConfigurationTypeChoice{AWSOIDCConfiguration: a},
 	}
@@ -658,9 +654,6 @@ func createAzureOIDCConfiguration(t *testing.T, client *Client, org *Organizatio
 		ClientID:       randomString(t),
 		SubscriptionID: randomString(t),
 		TenantID:       randomString(t),
-		Organization: &Organization{
-			Name: org.Name,
-		},
 	}
 
 	oidcConfig, err := client.AzureOIDCConfigurations.Create(ctx, org.Name, opts)
@@ -693,7 +686,6 @@ func (a *AzureOIDCConfiguration) createHYOKConfiguration(t *testing.T, client *C
 	opts := HYOKConfigurationsCreateOptions{
 		KEKID:             "https://vault-name.vault.azure.net/keys/key-name",
 		Name:              randomStringWithoutSpecialChar(t),
-		Organization:      org,
 		AgentPool:         agentPool,
 		OIDCConfiguration: &OIDCConfigurationTypeChoice{AzureOIDCConfiguration: a},
 	}
@@ -735,9 +727,6 @@ func createGCPOIDCConfiguration(t *testing.T, client *Client, org *Organization)
 		ServiceAccountEmail:  randomString(t),
 		ProjectNumber:        "123456789012",
 		WorkloadProviderName: randomString(t),
-		Organization: &Organization{
-			Name: org.Name,
-		},
 	}
 
 	oidcConfig, err := client.GCPOIDCConfigurations.Create(ctx, org.Name, opts)
@@ -771,7 +760,6 @@ func (g *GCPOIDCConfiguration) createHYOKConfiguration(t *testing.T, client *Cli
 		KEKID:             randomStringWithoutSpecialChar(t),
 		Name:              randomStringWithoutSpecialChar(t),
 		KMSOptions:        &KMSOptions{KeyLocation: "global", KeyRingID: randomString(t)},
-		Organization:      org,
 		AgentPool:         agentPool,
 		OIDCConfiguration: &OIDCConfigurationTypeChoice{GCPOIDCConfiguration: g},
 	}
@@ -815,9 +803,6 @@ func createVaultOIDCConfiguration(t *testing.T, client *Client, org *Organizatio
 		Namespace:        randomString(t),
 		JWTAuthPath:      "jwt",
 		TLSCACertificate: randomString(t),
-		Organization: &Organization{
-			Name: org.Name,
-		},
 	}
 
 	oidcConfig, err := client.VaultOIDCConfigurations.Create(ctx, org.Name, opts)
@@ -850,7 +835,6 @@ func (v *VaultOIDCConfiguration) createHYOKConfiguration(t *testing.T, client *C
 	opts := HYOKConfigurationsCreateOptions{
 		KEKID:             randomStringWithoutSpecialChar(t),
 		Name:              randomStringWithoutSpecialChar(t),
-		Organization:      org,
 		AgentPool:         agentPool,
 		OIDCConfiguration: &OIDCConfigurationTypeChoice{VaultOIDCConfiguration: v},
 	}
