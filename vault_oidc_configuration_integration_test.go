@@ -107,10 +107,10 @@ func TestVaultOIDCConfigurationUpdate(t *testing.T) {
 		updated, err := client.VaultOIDCConfigurations.Update(ctx, oidcConfig.ID, opts)
 		require.NoError(t, err)
 		require.NotEmpty(t, updated)
-		assert.NotEqual(t, oidcConfig.Address, updated.Address)
-		assert.NotEqual(t, oidcConfig.RoleName, updated.RoleName)
-		assert.NotEqual(t, oidcConfig.Namespace, updated.Namespace)
-		assert.NotEqual(t, oidcConfig.JWTAuthPath, updated.JWTAuthPath)
+		assert.Equal(t, opts.Address, updated.Address)
+		assert.Equal(t, opts.RoleName, updated.RoleName)
+		assert.Equal(t, opts.Namespace, updated.Namespace)
+		assert.Equal(t, opts.JWTAuthPath, updated.JWTAuthPath)
 	})
 
 	t.Run("missing address", func(t *testing.T) {

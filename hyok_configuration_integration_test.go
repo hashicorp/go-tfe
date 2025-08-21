@@ -483,9 +483,9 @@ func TestHYOKConfigurationUpdate(t *testing.T) {
 
 		updated, err := client.HYOKConfigurations.Update(ctx, hyok.ID, opts)
 		require.NoError(t, err)
-		assert.NotEqual(t, hyok.Name, updated.Name)
-		assert.NotEqual(t, hyok.KEKID, updated.KEKID)
-		assert.NotEqual(t, hyok.KMSOptions.KeyRegion, updated.KMSOptions.KeyRegion)
+		assert.Equal(t, opts.Name, updated.Name)
+		assert.Equal(t, opts.KEKID, updated.KEKID)
+		assert.Equal(t, opts.KMSOptions.KeyRegion, updated.KMSOptions.KeyRegion)
 	})
 
 	t.Run("GCP with valid options", func(t *testing.T) {

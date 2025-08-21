@@ -108,9 +108,9 @@ func TestAzureOIDCConfigurationUpdate(t *testing.T) {
 		updated, err := client.AzureOIDCConfigurations.Update(ctx, oidcConfig.ID, opts)
 		require.NoError(t, err)
 		require.NotEmpty(t, updated)
-		assert.NotEqual(t, oidcConfig.ClientID, updated.ClientID)
-		assert.NotEqual(t, oidcConfig.SubscriptionID, updated.SubscriptionID)
-		assert.NotEqual(t, oidcConfig.TenantID, updated.TenantID)
+		assert.Equal(t, opts.ClientID, updated.ClientID)
+		assert.Equal(t, opts.SubscriptionID, updated.SubscriptionID)
+		assert.Equal(t, opts.TenantID, updated.TenantID)
 	})
 
 	t.Run("missing client ID", func(t *testing.T) {

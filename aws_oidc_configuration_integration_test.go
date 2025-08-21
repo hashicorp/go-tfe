@@ -79,7 +79,7 @@ func TestAWSOIDCConfigurationsUpdate(t *testing.T) {
 		updated, err := client.AWSOIDCConfigurations.Update(ctx, oidcConfig.ID, opts)
 		require.NoError(t, err)
 		require.NotEmpty(t, updated)
-		assert.NotEqual(t, oidcConfig.RoleARN, updated.RoleARN)
+		assert.Equal(t, opts.RoleARN, updated.RoleARN)
 	})
 
 	t.Run("missing role ARN", func(t *testing.T) {

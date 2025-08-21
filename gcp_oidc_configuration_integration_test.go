@@ -109,9 +109,9 @@ func TestGCPOIDCConfigurationUpdate(t *testing.T) {
 		updated, err := client.GCPOIDCConfigurations.Update(ctx, oidcConfig.ID, opts)
 		require.NoError(t, err)
 		require.NotNil(t, updated)
-		assert.Equal(t, updated.ServiceAccountEmail, opts.ServiceAccountEmail)
-		assert.Equal(t, updated.ProjectNumber, opts.ProjectNumber)
-		assert.Equal(t, updated.WorkloadProviderName, opts.WorkloadProviderName)
+		assert.Equal(t, opts.ServiceAccountEmail, updated.ServiceAccountEmail)
+		assert.Equal(t, opts.ProjectNumber, updated.ProjectNumber)
+		assert.Equal(t, opts.WorkloadProviderName, updated.WorkloadProviderName)
 	})
 
 	t.Run("missing workload provider name", func(t *testing.T) {
