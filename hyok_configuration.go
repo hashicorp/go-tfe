@@ -17,6 +17,8 @@ type HYOKConfigurations interface {
 
 	Delete(ctx context.Context, hyokID string) error
 
+	// Test checks the HYOK configuration and returns success if the configuration is valid.
+	// It returns an error along with the error message if any issues are found.
 	Test(ctx context.Context, hyokID string) error
 
 	Revoke(ctx context.Context, hyokID string) error
