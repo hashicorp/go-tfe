@@ -8,14 +8,21 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
+// These tests are intended for local execution only, as OIDC configurations for HYOK requires specific conditions.
+// To run them locally, follow the instructions outlined in hyok_configuration_integration_test.go
+
 func TestVaultOIDCConfigurationCreate(t *testing.T) {
-	skipIfEnterprise(t)
+	if skipHYOKIntegrationTests {
+		t.Skip()
+	}
 
 	client := testClient(t)
 	ctx := context.Background()
 
-	orgTest, orgTestCleanup := createOrganization(t, client)
-	t.Cleanup(orgTestCleanup)
+	orgTest, err := client.Organizations.Read(ctx, hyokOrganizationName)
+	if err != nil {
+		t.Fatal(err)
+	}
 
 	t.Run("with valid options", func(t *testing.T) {
 		opts := VaultOIDCConfigurationCreateOptions{
@@ -61,13 +68,17 @@ func TestVaultOIDCConfigurationCreate(t *testing.T) {
 }
 
 func TestVaultOIDCConfigurationRead(t *testing.T) {
-	skipIfEnterprise(t)
+	if skipHYOKIntegrationTests {
+		t.Skip()
+	}
 
 	client := testClient(t)
 	ctx := context.Background()
 
-	orgTest, orgTestCleanup := createOrganization(t, client)
-	t.Cleanup(orgTestCleanup)
+	orgTest, err := client.Organizations.Read(ctx, hyokOrganizationName)
+	if err != nil {
+		t.Fatal(err)
+	}
 
 	oidcConfig, oidcConfigCleanup := createVaultOIDCConfiguration(t, client, orgTest)
 	t.Cleanup(oidcConfigCleanup)
@@ -85,13 +96,17 @@ func TestVaultOIDCConfigurationRead(t *testing.T) {
 }
 
 func TestVaultOIDCConfigurationUpdate(t *testing.T) {
-	skipIfEnterprise(t)
+	if skipHYOKIntegrationTests {
+		t.Skip()
+	}
 
 	client := testClient(t)
 	ctx := context.Background()
 
-	orgTest, orgTestCleanup := createOrganization(t, client)
-	t.Cleanup(orgTestCleanup)
+	orgTest, err := client.Organizations.Read(ctx, hyokOrganizationName)
+	if err != nil {
+		t.Fatal(err)
+	}
 
 	t.Run("update all fields", func(t *testing.T) {
 		oidcConfig, oidcConfigCleanup := createVaultOIDCConfiguration(t, client, orgTest)
@@ -113,11 +128,11 @@ func TestVaultOIDCConfigurationUpdate(t *testing.T) {
 		updated, err := client.VaultOIDCConfigurations.Update(ctx, oidcConfig.ID, opts)
 		require.NoError(t, err)
 		require.NotEmpty(t, updated)
-		assert.Equal(t, opts.Address, updated.Address)
-		assert.Equal(t, opts.RoleName, updated.RoleName)
-		assert.Equal(t, opts.Namespace, updated.Namespace)
-		assert.Equal(t, opts.JWTAuthPath, updated.JWTAuthPath)
-		assert.Equal(t, opts.TLSCACertificate, updated.TLSCACertificate)
+		assert.Equal(t, *opts.Address, updated.Address)
+		assert.Equal(t, *opts.RoleName, updated.RoleName)
+		assert.Equal(t, *opts.Namespace, updated.Namespace)
+		assert.Equal(t, *opts.JWTAuthPath, updated.JWTAuthPath)
+		assert.Equal(t, *opts.TLSCACertificate, updated.TLSCACertificate)
 	})
 
 	t.Run("address not provided", func(t *testing.T) {
@@ -139,10 +154,10 @@ func TestVaultOIDCConfigurationUpdate(t *testing.T) {
 		require.NoError(t, err)
 		require.NotEmpty(t, updated)
 		assert.Equal(t, oidcConfig.Address, updated.Address) // not updated
-		assert.Equal(t, opts.RoleName, updated.RoleName)
-		assert.Equal(t, opts.Namespace, updated.Namespace)
-		assert.Equal(t, opts.JWTAuthPath, updated.JWTAuthPath)
-		assert.Equal(t, opts.TLSCACertificate, updated.TLSCACertificate)
+		assert.Equal(t, *opts.RoleName, updated.RoleName)
+		assert.Equal(t, *opts.Namespace, updated.Namespace)
+		assert.Equal(t, *opts.JWTAuthPath, updated.JWTAuthPath)
+		assert.Equal(t, *opts.TLSCACertificate, updated.TLSCACertificate)
 	})
 
 	t.Run("role name not provided", func(t *testing.T) {
@@ -163,11 +178,11 @@ func TestVaultOIDCConfigurationUpdate(t *testing.T) {
 		updated, err := client.VaultOIDCConfigurations.Update(ctx, oidcConfig.ID, opts)
 		require.NoError(t, err)
 		require.NotEmpty(t, updated)
-		assert.Equal(t, opts.Address, updated.Address)
+		assert.Equal(t, *opts.Address, updated.Address)
 		assert.Equal(t, oidcConfig.RoleName, updated.RoleName) // not updated
-		assert.Equal(t, opts.Namespace, updated.Namespace)
-		assert.Equal(t, opts.JWTAuthPath, updated.JWTAuthPath)
-		assert.Equal(t, opts.TLSCACertificate, updated.TLSCACertificate)
+		assert.Equal(t, *opts.Namespace, updated.Namespace)
+		assert.Equal(t, *opts.JWTAuthPath, updated.JWTAuthPath)
+		assert.Equal(t, *opts.TLSCACertificate, updated.TLSCACertificate)
 	})
 
 	t.Run("namespace not provided", func(t *testing.T) {
@@ -188,11 +203,11 @@ func TestVaultOIDCConfigurationUpdate(t *testing.T) {
 		updated, err := client.VaultOIDCConfigurations.Update(ctx, oidcConfig.ID, opts)
 		require.NoError(t, err)
 		require.NotEmpty(t, updated)
-		assert.Equal(t, opts.Address, updated.Address)
-		assert.Equal(t, opts.RoleName, updated.RoleName)
+		assert.Equal(t, *opts.Address, updated.Address)
+		assert.Equal(t, *opts.RoleName, updated.RoleName)
 		assert.Equal(t, oidcConfig.Namespace, updated.Namespace) // not updated
-		assert.Equal(t, opts.JWTAuthPath, updated.JWTAuthPath)
-		assert.Equal(t, opts.TLSCACertificate, updated.TLSCACertificate)
+		assert.Equal(t, *opts.JWTAuthPath, updated.JWTAuthPath)
+		assert.Equal(t, *opts.TLSCACertificate, updated.TLSCACertificate)
 	})
 
 	t.Run("JWTAuthPath not provided", func(t *testing.T) {
@@ -213,11 +228,11 @@ func TestVaultOIDCConfigurationUpdate(t *testing.T) {
 		updated, err := client.VaultOIDCConfigurations.Update(ctx, oidcConfig.ID, opts)
 		require.NoError(t, err)
 		require.NotEmpty(t, updated)
-		assert.Equal(t, opts.Address, updated.Address)
-		assert.Equal(t, opts.RoleName, updated.RoleName)
-		assert.Equal(t, opts.Namespace, updated.Namespace)
+		assert.Equal(t, *opts.Address, updated.Address)
+		assert.Equal(t, *opts.RoleName, updated.RoleName)
+		assert.Equal(t, *opts.Namespace, updated.Namespace)
 		assert.Equal(t, oidcConfig.JWTAuthPath, updated.JWTAuthPath) // not updated
-		assert.Equal(t, opts.TLSCACertificate, updated.TLSCACertificate)
+		assert.Equal(t, *opts.TLSCACertificate, updated.TLSCACertificate)
 	})
 
 	t.Run("TLSCACertificate not provided", func(t *testing.T) {
@@ -238,22 +253,26 @@ func TestVaultOIDCConfigurationUpdate(t *testing.T) {
 		updated, err := client.VaultOIDCConfigurations.Update(ctx, oidcConfig.ID, opts)
 		require.NoError(t, err)
 		require.NotEmpty(t, updated)
-		assert.Equal(t, opts.Address, updated.Address)
-		assert.Equal(t, opts.RoleName, updated.RoleName)
-		assert.Equal(t, opts.Namespace, updated.Namespace)
-		assert.Equal(t, opts.JWTAuthPath, updated.JWTAuthPath)
+		assert.Equal(t, *opts.Address, updated.Address)
+		assert.Equal(t, *opts.RoleName, updated.RoleName)
+		assert.Equal(t, *opts.Namespace, updated.Namespace)
+		assert.Equal(t, *opts.JWTAuthPath, updated.JWTAuthPath)
 		assert.Equal(t, oidcConfig.TLSCACertificate, updated.TLSCACertificate) // not updated
 	})
 }
 
 func TestVaultOIDCConfigurationDelete(t *testing.T) {
-	skipIfEnterprise(t)
+	if skipHYOKIntegrationTests {
+		t.Skip()
+	}
 
 	client := testClient(t)
 	ctx := context.Background()
 
-	orgTest, orgTestCleanup := createOrganization(t, client)
-	t.Cleanup(orgTestCleanup)
+	orgTest, err := client.Organizations.Read(ctx, hyokOrganizationName)
+	if err != nil {
+		t.Fatal(err)
+	}
 
 	oidcConfig, _ := createVaultOIDCConfiguration(t, client, orgTest)
 

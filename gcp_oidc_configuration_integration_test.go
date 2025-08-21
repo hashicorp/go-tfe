@@ -8,14 +8,21 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
+// These tests are intended for local execution only, as OIDC configurations for HYOK requires specific conditions.
+// To run them locally, follow the instructions outlined in hyok_configuration_integration_test.go
+
 func TestGCPOIDCConfigurationCreate(t *testing.T) {
-	skipIfEnterprise(t)
+	if skipHYOKIntegrationTests {
+		t.Skip()
+	}
 
 	client := testClient(t)
 	ctx := context.Background()
 
-	orgTest, orgTestCleanup := createOrganization(t, client)
-	t.Cleanup(orgTestCleanup)
+	orgTest, err := client.Organizations.Read(ctx, hyokOrganizationName)
+	if err != nil {
+		t.Fatal(err)
+	}
 
 	t.Run("with valid options", func(t *testing.T) {
 		opts := GCPOIDCConfigurationCreateOptions{
@@ -64,13 +71,17 @@ func TestGCPOIDCConfigurationCreate(t *testing.T) {
 }
 
 func TestGCPOIDCConfigurationRead(t *testing.T) {
-	skipIfEnterprise(t)
+	if skipHYOKIntegrationTests {
+		t.Skip()
+	}
 
 	client := testClient(t)
 	ctx := context.Background()
 
-	orgTest, orgTestCleanup := createOrganization(t, client)
-	t.Cleanup(orgTestCleanup)
+	orgTest, err := client.Organizations.Read(ctx, hyokOrganizationName)
+	if err != nil {
+		t.Fatal(err)
+	}
 
 	oidcConfig, oidcConfigCleanup := createGCPOIDCConfiguration(t, client, orgTest)
 	t.Cleanup(oidcConfigCleanup)
@@ -88,13 +99,17 @@ func TestGCPOIDCConfigurationRead(t *testing.T) {
 }
 
 func TestGCPOIDCConfigurationUpdate(t *testing.T) {
-	skipIfEnterprise(t)
+	if skipHYOKIntegrationTests {
+		t.Skip()
+	}
 
 	client := testClient(t)
 	ctx := context.Background()
 
-	orgTest, orgTestCleanup := createOrganization(t, client)
-	t.Cleanup(orgTestCleanup)
+	orgTest, err := client.Organizations.Read(ctx, hyokOrganizationName)
+	if err != nil {
+		t.Fatal(err)
+	}
 
 	t.Run("update all fields", func(t *testing.T) {
 		oidcConfig, oidcConfigCleanup := createGCPOIDCConfiguration(t, client, orgTest)
@@ -113,9 +128,9 @@ func TestGCPOIDCConfigurationUpdate(t *testing.T) {
 		updated, err := client.GCPOIDCConfigurations.Update(ctx, oidcConfig.ID, opts)
 		require.NoError(t, err)
 		require.NotNil(t, updated)
-		assert.Equal(t, opts.ServiceAccountEmail, updated.ServiceAccountEmail)
-		assert.Equal(t, opts.ProjectNumber, updated.ProjectNumber)
-		assert.Equal(t, opts.WorkloadProviderName, updated.WorkloadProviderName)
+		assert.Equal(t, *opts.ServiceAccountEmail, updated.ServiceAccountEmail)
+		assert.Equal(t, *opts.ProjectNumber, updated.ProjectNumber)
+		assert.Equal(t, *opts.WorkloadProviderName, updated.WorkloadProviderName)
 	})
 
 	t.Run("workload provider name not provided", func(t *testing.T) {
@@ -133,8 +148,8 @@ func TestGCPOIDCConfigurationUpdate(t *testing.T) {
 		updated, err := client.GCPOIDCConfigurations.Update(ctx, oidcConfig.ID, opts)
 		require.NoError(t, err)
 		require.NotNil(t, updated)
-		assert.Equal(t, opts.ServiceAccountEmail, updated.ServiceAccountEmail)
-		assert.Equal(t, opts.ProjectNumber, updated.ProjectNumber)
+		assert.Equal(t, *opts.ServiceAccountEmail, updated.ServiceAccountEmail)
+		assert.Equal(t, *opts.ProjectNumber, updated.ProjectNumber)
 		assert.Equal(t, oidcConfig.WorkloadProviderName, updated.WorkloadProviderName) // not updated
 	})
 
@@ -154,8 +169,8 @@ func TestGCPOIDCConfigurationUpdate(t *testing.T) {
 		require.NoError(t, err)
 		require.NotNil(t, updated)
 		assert.Equal(t, oidcConfig.ServiceAccountEmail, updated.ServiceAccountEmail) // not updated
-		assert.Equal(t, opts.ProjectNumber, updated.ProjectNumber)
-		assert.Equal(t, opts.WorkloadProviderName, updated.WorkloadProviderName)
+		assert.Equal(t, *opts.ProjectNumber, updated.ProjectNumber)
+		assert.Equal(t, *opts.WorkloadProviderName, updated.WorkloadProviderName)
 	})
 
 	t.Run("project number not provided", func(t *testing.T) {
@@ -173,20 +188,24 @@ func TestGCPOIDCConfigurationUpdate(t *testing.T) {
 		updated, err := client.GCPOIDCConfigurations.Update(ctx, oidcConfig.ID, opts)
 		require.NoError(t, err)
 		require.NotNil(t, updated)
-		assert.Equal(t, opts.ServiceAccountEmail, updated.ServiceAccountEmail)
+		assert.Equal(t, *opts.ServiceAccountEmail, updated.ServiceAccountEmail)
 		assert.Equal(t, oidcConfig.ProjectNumber, updated.ProjectNumber) // not updated
-		assert.Equal(t, opts.WorkloadProviderName, updated.WorkloadProviderName)
+		assert.Equal(t, *opts.WorkloadProviderName, updated.WorkloadProviderName)
 	})
 }
 
 func TestGCPOIDCConfigurationDelete(t *testing.T) {
-	skipIfEnterprise(t)
+	if skipHYOKIntegrationTests {
+		t.Skip()
+	}
 
 	client := testClient(t)
 	ctx := context.Background()
 
-	orgTest, orgTestCleanup := createOrganization(t, client)
-	t.Cleanup(orgTestCleanup)
+	orgTest, err := client.Organizations.Read(ctx, hyokOrganizationName)
+	if err != nil {
+		t.Fatal(err)
+	}
 
 	oidcConfig, _ := createGCPOIDCConfiguration(t, client, orgTest)
 

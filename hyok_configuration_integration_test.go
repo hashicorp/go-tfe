@@ -9,29 +9,28 @@ import (
 )
 
 // These tests are intended for local execution only, as HYOK requires specific conditions.
-// To run them locally, set skipTest to false. The default value is true.
-const skipTest = true
-
-// organizationName is the name of an organization that can use HYOK.
-const organizationName = ""
-
-// agentPoolID represents an agent pool with running agents that have HYOK capabilities turned on.
-const agentPoolID = ""
+// To test locally:
+//  1. set skipHYOKIntegrationTests to false. The default value is true.
+//  2. set hyokOrganizationName to the name of an organization that can use HYOK.
+//  3. set hyokAgentPoolID to an agent pool with running agents that have HYOK capabilities turned on.
+const skipHYOKIntegrationTests = false
+const hyokOrganizationName = "hippos-for-sale"
+const hyokAgentPoolID = "apool-vUbcDykKhvoezDoP"
 
 func TestHYOKConfigurationCreateRevokeDelete(t *testing.T) {
-	if skipTest {
+	if skipHYOKIntegrationTests {
 		t.Skip()
 	}
 
 	client := testClient(t)
 	ctx := context.Background()
 
-	orgTest, err := client.Organizations.Read(ctx, organizationName)
+	orgTest, err := client.Organizations.Read(ctx, hyokOrganizationName)
 	if err != nil {
 		t.Fatal(err)
 	}
 
-	agentPool, err := client.AgentPools.Read(ctx, agentPoolID)
+	agentPool, err := client.AgentPools.Read(ctx, hyokAgentPoolID)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -44,7 +43,7 @@ func TestHYOKConfigurationCreateRevokeDelete(t *testing.T) {
 		opts := HYOKConfigurationsCreateOptions{
 			Name: randomStringWithoutSpecialChar(t),
 			KMSOptions: &KMSOptions{
-				KeyRegion: &keyRegion,
+				KeyRegion: keyRegion,
 			},
 			KEKID:     "arn:aws:kms:us-east-1:123456789012:key/this-is-not-a-real-key",
 			AgentPool: agentPool,
@@ -106,8 +105,8 @@ func TestHYOKConfigurationCreateRevokeDelete(t *testing.T) {
 		opts := HYOKConfigurationsCreateOptions{
 			Name: randomStringWithoutSpecialChar(t),
 			KMSOptions: &KMSOptions{
-				KeyLocation: &keyLocation,
-				KeyRingID:   &keyRingID,
+				KeyLocation: keyLocation,
+				KeyRingID:   keyRingID,
 			},
 			KEKID:     randomStringWithoutSpecialChar(t),
 			AgentPool: agentPool,
@@ -148,7 +147,7 @@ func TestHYOKConfigurationCreateRevokeDelete(t *testing.T) {
 		opts := HYOKConfigurationsCreateOptions{
 			Name: randomStringWithoutSpecialChar(t),
 			KMSOptions: &KMSOptions{
-				KeyRingID: &keyRingID,
+				KeyRingID: keyRingID,
 			},
 			KEKID:     randomStringWithoutSpecialChar(t),
 			AgentPool: agentPool,
@@ -170,7 +169,7 @@ func TestHYOKConfigurationCreateRevokeDelete(t *testing.T) {
 		opts := HYOKConfigurationsCreateOptions{
 			Name: randomStringWithoutSpecialChar(t),
 			KMSOptions: &KMSOptions{
-				KeyLocation: &keyLocation,
+				KeyLocation: keyLocation,
 			},
 			KEKID:     randomStringWithoutSpecialChar(t),
 			AgentPool: agentPool,
@@ -262,7 +261,7 @@ func TestHYOKConfigurationCreateRevokeDelete(t *testing.T) {
 		opts := HYOKConfigurationsCreateOptions{
 			Name: randomStringWithoutSpecialChar(t),
 			KMSOptions: &KMSOptions{
-				KeyRegion: &keyRegion,
+				KeyRegion: keyRegion,
 			},
 			AgentPool: agentPool,
 			OIDCConfiguration: &OIDCConfigurationTypeChoice{
@@ -283,7 +282,7 @@ func TestHYOKConfigurationCreateRevokeDelete(t *testing.T) {
 		opts := HYOKConfigurationsCreateOptions{
 			Name: randomStringWithoutSpecialChar(t),
 			KMSOptions: &KMSOptions{
-				KeyRegion: &keyRegion,
+				KeyRegion: keyRegion,
 			},
 			KEKID: randomStringWithoutSpecialChar(t),
 			OIDCConfiguration: &OIDCConfigurationTypeChoice{
@@ -301,7 +300,7 @@ func TestHYOKConfigurationCreateRevokeDelete(t *testing.T) {
 		opts := HYOKConfigurationsCreateOptions{
 			Name: randomStringWithoutSpecialChar(t),
 			KMSOptions: &KMSOptions{
-				KeyRegion: &keyRegion,
+				KeyRegion: keyRegion,
 			},
 			KEKID:     randomStringWithoutSpecialChar(t),
 			AgentPool: agentPool,
@@ -313,19 +312,19 @@ func TestHYOKConfigurationCreateRevokeDelete(t *testing.T) {
 }
 
 func TestHyokConfigurationList(t *testing.T) {
-	if skipTest {
+	if skipHYOKIntegrationTests {
 		t.Skip()
 	}
 
 	client := testClient(t)
 	ctx := context.Background()
 
-	orgTest, err := client.Organizations.Read(ctx, organizationName)
+	orgTest, err := client.Organizations.Read(ctx, hyokOrganizationName)
 	if err != nil {
 		t.Fatal(err)
 	}
 
-	agentPool, err := client.AgentPools.Read(ctx, agentPoolID)
+	agentPool, err := client.AgentPools.Read(ctx, hyokAgentPoolID)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -366,19 +365,19 @@ func TestHyokConfigurationList(t *testing.T) {
 }
 
 func TestHyokConfigurationRead(t *testing.T) {
-	if skipTest {
+	if skipHYOKIntegrationTests {
 		t.Skip()
 	}
 
 	client := testClient(t)
 	ctx := context.Background()
 
-	orgTest, err := client.Organizations.Read(ctx, organizationName)
+	orgTest, err := client.Organizations.Read(ctx, hyokOrganizationName)
 	if err != nil {
 		t.Fatal(err)
 	}
 
-	agentPool, err := client.AgentPools.Read(ctx, agentPoolID)
+	agentPool, err := client.AgentPools.Read(ctx, hyokAgentPoolID)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -459,19 +458,19 @@ func TestHyokConfigurationRead(t *testing.T) {
 }
 
 func TestHYOKConfigurationUpdate(t *testing.T) {
-	if skipTest {
+	if skipHYOKIntegrationTests {
 		t.Skip()
 	}
 
 	client := testClient(t)
 	ctx := context.Background()
 
-	orgTest, err := client.Organizations.Read(ctx, organizationName)
+	orgTest, err := client.Organizations.Read(ctx, hyokOrganizationName)
 	if err != nil {
 		t.Fatal(err)
 	}
 
-	agentPool, err := client.AgentPools.Read(ctx, agentPoolID)
+	agentPool, err := client.AgentPools.Read(ctx, hyokAgentPoolID)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -485,12 +484,10 @@ func TestHYOKConfigurationUpdate(t *testing.T) {
 		name := randomStringWithoutSpecialChar(t)
 		kekId := "arn:aws:kms:us-east-1:123456789012:key/this-is-a-bad-key"
 
-		keyRegion := "us-east-2"
-
 		opts := HYOKConfigurationsUpdateOptions{
 			Name: &name,
 			KMSOptions: &KMSOptions{
-				KeyRegion: &keyRegion,
+				KeyRegion: "us-east-2",
 			},
 			KEKID:     &kekId,
 			AgentPool: agentPool,
@@ -498,8 +495,8 @@ func TestHYOKConfigurationUpdate(t *testing.T) {
 
 		updated, err := client.HYOKConfigurations.Update(ctx, hyok.ID, opts)
 		require.NoError(t, err)
-		assert.Equal(t, opts.Name, updated.Name)
-		assert.Equal(t, opts.KEKID, updated.KEKID)
+		assert.Equal(t, *opts.Name, updated.Name)
+		assert.Equal(t, *opts.KEKID, updated.KEKID)
 		assert.Equal(t, opts.KMSOptions.KeyRegion, updated.KMSOptions.KeyRegion)
 	})
 
@@ -510,15 +507,13 @@ func TestHYOKConfigurationUpdate(t *testing.T) {
 		t.Cleanup(hyokCleanup)
 
 		name := randomStringWithoutSpecialChar(t)
-		keyLocation := "ca"
-		keyRingID := randomStringWithoutSpecialChar(t)
-		kekId := "arn:aws:kms:us-east-1:123456789012:key/this-is-a-bad-key"
+		kekId := randomStringWithoutSpecialChar(t)
 
 		opts := HYOKConfigurationsUpdateOptions{
 			Name: &name,
 			KMSOptions: &KMSOptions{
-				KeyLocation: &keyLocation,
-				KeyRingID:   &keyRingID,
+				KeyLocation: "ca",
+				KeyRingID:   randomStringWithoutSpecialChar(t),
 			},
 			KEKID:     &kekId,
 			AgentPool: agentPool,
@@ -526,8 +521,8 @@ func TestHYOKConfigurationUpdate(t *testing.T) {
 
 		updated, err := client.HYOKConfigurations.Update(ctx, hyok.ID, opts)
 		require.NoError(t, err)
-		assert.Equal(t, opts.Name, updated.Name)
-		assert.Equal(t, opts.KEKID, updated.KEKID)
+		assert.Equal(t, *opts.Name, updated.Name)
+		assert.Equal(t, *opts.KEKID, updated.KEKID)
 		assert.Equal(t, opts.KMSOptions.KeyLocation, updated.KMSOptions.KeyLocation)
 		assert.Equal(t, opts.KMSOptions.KeyRingID, updated.KMSOptions.KeyRingID)
 	})
@@ -549,8 +544,8 @@ func TestHYOKConfigurationUpdate(t *testing.T) {
 
 		updated, err := client.HYOKConfigurations.Update(ctx, hyok.ID, opts)
 		require.NoError(t, err)
-		assert.Equal(t, opts.Name, updated.Name)
-		assert.Equal(t, opts.KEKID, updated.KEKID)
+		assert.Equal(t, *opts.Name, updated.Name)
+		assert.Equal(t, *opts.KEKID, updated.KEKID)
 		assert.Equal(t, opts.AgentPool.ID, updated.AgentPool.ID)
 	})
 
@@ -571,8 +566,8 @@ func TestHYOKConfigurationUpdate(t *testing.T) {
 
 		updated, err := client.HYOKConfigurations.Update(ctx, hyok.ID, opts)
 		require.NoError(t, err)
-		assert.Equal(t, opts.Name, updated.Name)
-		assert.Equal(t, opts.KEKID, updated.KEKID)
+		assert.Equal(t, *opts.Name, updated.Name)
+		assert.Equal(t, *opts.KEKID, updated.KEKID)
 		assert.Equal(t, opts.AgentPool.ID, updated.AgentPool.ID)
 	})
 }

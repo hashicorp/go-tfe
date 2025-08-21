@@ -8,14 +8,21 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
+// These tests are intended for local execution only, as OIDC configurations for HYOK requires specific conditions.
+// To run them locally, follow the instructions outlined in hyok_configuration_integration_test.go
+
 func TestAzureOIDCConfigurationCreate(t *testing.T) {
-	skipIfEnterprise(t)
+	if skipHYOKIntegrationTests {
+		t.Skip()
+	}
 
 	client := testClient(t)
 	ctx := context.Background()
 
-	orgTest, orgTestCleanup := createOrganization(t, client)
-	t.Cleanup(orgTestCleanup)
+	orgTest, err := client.Organizations.Read(ctx, hyokOrganizationName)
+	if err != nil {
+		t.Fatal(err)
+	}
 
 	t.Run("with valid options", func(t *testing.T) {
 		opts := AzureOIDCConfigurationCreateOptions{
@@ -64,13 +71,17 @@ func TestAzureOIDCConfigurationCreate(t *testing.T) {
 }
 
 func TestAzureOIDCConfigurationRead(t *testing.T) {
-	skipIfEnterprise(t)
+	if skipHYOKIntegrationTests {
+		t.Skip()
+	}
 
 	client := testClient(t)
 	ctx := context.Background()
 
-	orgTest, orgTestCleanup := createOrganization(t, client)
-	t.Cleanup(orgTestCleanup)
+	orgTest, err := client.Organizations.Read(ctx, hyokOrganizationName)
+	if err != nil {
+		t.Fatal(err)
+	}
 
 	oidcConfig, oidcConfigCleanup := createAzureOIDCConfiguration(t, client, orgTest)
 	t.Cleanup(oidcConfigCleanup)
@@ -88,13 +99,17 @@ func TestAzureOIDCConfigurationRead(t *testing.T) {
 }
 
 func TestAzureOIDCConfigurationUpdate(t *testing.T) {
-	skipIfEnterprise(t)
+	if skipHYOKIntegrationTests {
+		t.Skip()
+	}
 
 	client := testClient(t)
 	ctx := context.Background()
 
-	orgTest, orgTestCleanup := createOrganization(t, client)
-	t.Cleanup(orgTestCleanup)
+	orgTest, err := client.Organizations.Read(ctx, hyokOrganizationName)
+	if err != nil {
+		t.Fatal(err)
+	}
 
 	t.Run("update all fields", func(t *testing.T) {
 		oidcConfig, oidcConfigCleanup := createAzureOIDCConfiguration(t, client, orgTest)
@@ -113,9 +128,9 @@ func TestAzureOIDCConfigurationUpdate(t *testing.T) {
 		updated, err := client.AzureOIDCConfigurations.Update(ctx, oidcConfig.ID, opts)
 		require.NoError(t, err)
 		require.NotEmpty(t, updated)
-		assert.Equal(t, opts.ClientID, updated.ClientID)
-		assert.Equal(t, opts.SubscriptionID, updated.SubscriptionID)
-		assert.Equal(t, opts.TenantID, updated.TenantID)
+		assert.Equal(t, *opts.ClientID, updated.ClientID)
+		assert.Equal(t, *opts.SubscriptionID, updated.SubscriptionID)
+		assert.Equal(t, *opts.TenantID, updated.TenantID)
 	})
 
 	t.Run("client ID not provided", func(t *testing.T) {
@@ -134,8 +149,8 @@ func TestAzureOIDCConfigurationUpdate(t *testing.T) {
 		require.NoError(t, err)
 		require.NotEmpty(t, updated)
 		assert.Equal(t, oidcConfig.ClientID, updated.ClientID) // not updated
-		assert.Equal(t, opts.SubscriptionID, updated.SubscriptionID)
-		assert.Equal(t, opts.TenantID, updated.TenantID)
+		assert.Equal(t, *opts.SubscriptionID, updated.SubscriptionID)
+		assert.Equal(t, *opts.TenantID, updated.TenantID)
 	})
 
 	t.Run("subscription ID not provided", func(t *testing.T) {
@@ -153,9 +168,9 @@ func TestAzureOIDCConfigurationUpdate(t *testing.T) {
 		updated, err := client.AzureOIDCConfigurations.Update(ctx, oidcConfig.ID, opts)
 		require.NoError(t, err)
 		require.NotEmpty(t, updated)
-		assert.Equal(t, opts.ClientID, updated.ClientID)
+		assert.Equal(t, *opts.ClientID, updated.ClientID)
 		assert.Equal(t, oidcConfig.SubscriptionID, updated.SubscriptionID) // not updated
-		assert.Equal(t, opts.TenantID, updated.TenantID)
+		assert.Equal(t, *opts.TenantID, updated.TenantID)
 	})
 
 	t.Run("tenant ID not provided", func(t *testing.T) {
@@ -173,20 +188,24 @@ func TestAzureOIDCConfigurationUpdate(t *testing.T) {
 		updated, err := client.AzureOIDCConfigurations.Update(ctx, oidcConfig.ID, opts)
 		require.NoError(t, err)
 		require.NotEmpty(t, updated)
-		assert.Equal(t, opts.ClientID, updated.ClientID)
-		assert.Equal(t, opts.SubscriptionID, updated.SubscriptionID)
+		assert.Equal(t, *opts.ClientID, updated.ClientID)
+		assert.Equal(t, *opts.SubscriptionID, updated.SubscriptionID)
 		assert.Equal(t, oidcConfig.TenantID, updated.TenantID) // not updated
 	})
 }
 
 func TestAzureOIDCConfigurationDelete(t *testing.T) {
-	skipIfEnterprise(t)
+	if skipHYOKIntegrationTests {
+		t.Skip()
+	}
 
 	client := testClient(t)
 	ctx := context.Background()
 
-	orgTest, orgTestCleanup := createOrganization(t, client)
-	t.Cleanup(orgTestCleanup)
+	orgTest, err := client.Organizations.Read(ctx, hyokOrganizationName)
+	if err != nil {
+		t.Fatal(err)
+	}
 
 	oidcConfig, _ := createAzureOIDCConfiguration(t, client, orgTest)
 

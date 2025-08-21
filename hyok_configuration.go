@@ -51,10 +51,10 @@ type OIDCConfigurationTypeChoice struct {
 
 type KMSOptions struct {
 	// AWS
-	KeyRegion *string `jsonapi:"attr,key-region,omitempty"`
+	KeyRegion string `jsonapi:"attr,key-region,omitempty"`
 	// GCP
-	KeyLocation *string `jsonapi:"attr,key-location,omitempty"`
-	KeyRingID   *string `jsonapi:"attr,key-ring-id,omitempty"`
+	KeyLocation string `jsonapi:"attr,key-location,omitempty"`
+	KeyRingID   string `jsonapi:"attr,key-ring-id,omitempty"`
 }
 
 type HYOKConfiguration struct {
@@ -182,7 +182,7 @@ func (h *HYOKConfigurationsCreateOptions) valid() error {
 			return ErrRequiredKMSOptions
 		}
 
-		if *h.KMSOptions.KeyRegion == "" {
+		if h.KMSOptions.KeyRegion == "" {
 			return ErrRequiredKMSOptionsKeyRegion
 		}
 	}
@@ -192,11 +192,11 @@ func (h *HYOKConfigurationsCreateOptions) valid() error {
 			return ErrRequiredKMSOptions
 		}
 
-		if *h.KMSOptions.KeyLocation == "" {
+		if h.KMSOptions.KeyLocation == "" {
 			return ErrRequiredKMSOptionsKeyLocation
 		}
 
-		if *h.KMSOptions.KeyRingID == "" {
+		if h.KMSOptions.KeyRingID == "" {
 			return ErrRequiredKMSOptionsKeyRingID
 		}
 	}

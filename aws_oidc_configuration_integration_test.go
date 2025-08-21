@@ -8,14 +8,21 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
+// These tests are intended for local execution only, as OIDC configurations for HYOK requires specific conditions.
+// To run them locally, follow the instructions outlined in hyok_configuration_integration_test.go
+
 func TestAWSOIDCConfigurationCreate(t *testing.T) {
-	skipIfEnterprise(t)
+	if skipHYOKIntegrationTests {
+		t.Skip()
+	}
 
 	client := testClient(t)
 	ctx := context.Background()
 
-	orgTest, orgTestCleanup := createOrganization(t, client)
-	t.Cleanup(orgTestCleanup)
+	orgTest, err := client.Organizations.Read(ctx, hyokOrganizationName)
+	if err != nil {
+		t.Fatal(err)
+	}
 
 	t.Run("with valid options", func(t *testing.T) {
 		opts := AWSOIDCConfigurationCreateOptions{
@@ -37,13 +44,17 @@ func TestAWSOIDCConfigurationCreate(t *testing.T) {
 }
 
 func TestAWSOIDCConfigurationRead(t *testing.T) {
-	skipIfEnterprise(t)
+	if skipHYOKIntegrationTests {
+		t.Skip()
+	}
 
 	client := testClient(t)
 	ctx := context.Background()
 
-	orgTest, orgTestCleanup := createOrganization(t, client)
-	t.Cleanup(orgTestCleanup)
+	orgTest, err := client.Organizations.Read(ctx, hyokOrganizationName)
+	if err != nil {
+		t.Fatal(err)
+	}
 
 	oidcConfig, oidcConfigCleanup := createAWSOIDCConfiguration(t, client, orgTest)
 	t.Cleanup(oidcConfigCleanup)
@@ -61,13 +72,17 @@ func TestAWSOIDCConfigurationRead(t *testing.T) {
 }
 
 func TestAWSOIDCConfigurationsUpdate(t *testing.T) {
-	skipIfEnterprise(t)
+	if skipHYOKIntegrationTests {
+		t.Skip()
+	}
 
 	client := testClient(t)
 	ctx := context.Background()
 
-	orgTest, orgTestCleanup := createOrganization(t, client)
-	t.Cleanup(orgTestCleanup)
+	orgTest, err := client.Organizations.Read(ctx, hyokOrganizationName)
+	if err != nil {
+		t.Fatal(err)
+	}
 
 	oidcConfig, oidcConfigCleanup := createAWSOIDCConfiguration(t, client, orgTest)
 	t.Cleanup(oidcConfigCleanup)
@@ -90,14 +105,17 @@ func TestAWSOIDCConfigurationsUpdate(t *testing.T) {
 }
 
 func TestAWSOIDCConfigurationsDelete(t *testing.T) {
-	skipIfEnterprise(t)
+	if skipHYOKIntegrationTests {
+		t.Skip()
+	}
 
 	client := testClient(t)
 	ctx := context.Background()
 
-	orgTest, orgTestCleanup := createOrganization(t, client)
-	t.Cleanup(orgTestCleanup)
-
+	orgTest, err := client.Organizations.Read(ctx, hyokOrganizationName)
+	if err != nil {
+		t.Fatal(err)
+	}
 	oidcConfig, _ := createAWSOIDCConfiguration(t, client, orgTest)
 
 	t.Run("delete existing configuration", func(t *testing.T) {
