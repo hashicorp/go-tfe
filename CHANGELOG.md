@@ -1,5 +1,8 @@
 # Unreleased
 
+## Enhancements
+* Add `Sort` option to `Agents` and `AgentPools`, by @twitnithegirl [#1193](https://github.com/hashicorp/go-tfe/pull/1193)
+
 # v1.91.0
 
 ## Enhancements
@@ -13,6 +16,7 @@
 * Adds `DefaultExecutionMode`, `DefaultAgentPool`, and `SettingOverwrites` to `Project` by @tylerwolf [#1185](https://github.com/hashicorp/go-tfe/pull/1185)
 * Adds `IconUrl`, `InstallationType`, and `InstallationURL` to githubAppInstallation, by @jpadrianoGo [#1191](https://github.com/hashicorp/go-tfe/pull/1191)
 * Adds support for `Workspace` VCSRepoOptions source_directory and tag_prefix, by @jillrami [#1194] (https://github.com/hashicorp/go-tfe/pull/1194)
+
 
 # v1.90.0
 
