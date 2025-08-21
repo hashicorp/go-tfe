@@ -93,16 +93,22 @@ func TestVaultOIDCConfigurationUpdate(t *testing.T) {
 	orgTest, orgTestCleanup := createOrganization(t, client)
 	t.Cleanup(orgTestCleanup)
 
-	oidcConfig, oidcConfigCleanup := createVaultOIDCConfiguration(t, client, orgTest)
-	t.Cleanup(oidcConfigCleanup)
+	t.Run("update all fields", func(t *testing.T) {
+		oidcConfig, oidcConfigCleanup := createVaultOIDCConfiguration(t, client, orgTest)
+		t.Cleanup(oidcConfigCleanup)
 
-	t.Run("with valid options", func(t *testing.T) {
+		address := randomString(t)
+		roleName := randomString(t)
+		namespace := randomString(t)
+		jwtAuthPath := randomString(t)
+		tlscaCertificate := randomString(t)
+
 		opts := VaultOIDCConfigurationUpdateOptions{
-			Address:          randomString(t),
-			RoleName:         randomString(t),
-			Namespace:        randomString(t),
-			JWTAuthPath:      randomString(t),
-			TLSCACertificate: randomString(t),
+			Address:          &address,
+			RoleName:         &roleName,
+			Namespace:        &namespace,
+			JWTAuthPath:      &jwtAuthPath,
+			TLSCACertificate: &tlscaCertificate,
 		}
 		updated, err := client.VaultOIDCConfigurations.Update(ctx, oidcConfig.ID, opts)
 		require.NoError(t, err)
@@ -111,30 +117,132 @@ func TestVaultOIDCConfigurationUpdate(t *testing.T) {
 		assert.Equal(t, opts.RoleName, updated.RoleName)
 		assert.Equal(t, opts.Namespace, updated.Namespace)
 		assert.Equal(t, opts.JWTAuthPath, updated.JWTAuthPath)
+		assert.Equal(t, opts.TLSCACertificate, updated.TLSCACertificate)
 	})
 
-	t.Run("missing address", func(t *testing.T) {
-		opts := VaultOIDCConfigurationUpdateOptions{
-			RoleName:         randomString(t),
-			Namespace:        randomString(t),
-			JWTAuthPath:      randomString(t),
-			TLSCACertificate: randomString(t),
-		}
+	t.Run("address not provided", func(t *testing.T) {
+		oidcConfig, oidcConfigCleanup := createVaultOIDCConfiguration(t, client, orgTest)
+		t.Cleanup(oidcConfigCleanup)
 
-		_, err := client.VaultOIDCConfigurations.Update(ctx, orgTest.Name, opts)
-		assert.ErrorIs(t, err, ErrRequiredVaultAddress)
+		roleName := randomString(t)
+		namespace := randomString(t)
+		jwtAuthPath := randomString(t)
+		tlscaCertificate := randomString(t)
+
+		opts := VaultOIDCConfigurationUpdateOptions{
+			RoleName:         &roleName,
+			Namespace:        &namespace,
+			JWTAuthPath:      &jwtAuthPath,
+			TLSCACertificate: &tlscaCertificate,
+		}
+		updated, err := client.VaultOIDCConfigurations.Update(ctx, oidcConfig.ID, opts)
+		require.NoError(t, err)
+		require.NotEmpty(t, updated)
+		assert.Equal(t, oidcConfig.Address, updated.Address) // not updated
+		assert.Equal(t, opts.RoleName, updated.RoleName)
+		assert.Equal(t, opts.Namespace, updated.Namespace)
+		assert.Equal(t, opts.JWTAuthPath, updated.JWTAuthPath)
+		assert.Equal(t, opts.TLSCACertificate, updated.TLSCACertificate)
 	})
 
-	t.Run("missing role name", func(t *testing.T) {
-		opts := VaultOIDCConfigurationUpdateOptions{
-			Address:          randomString(t),
-			Namespace:        randomString(t),
-			JWTAuthPath:      randomString(t),
-			TLSCACertificate: randomString(t),
-		}
+	t.Run("role name not provided", func(t *testing.T) {
+		oidcConfig, oidcConfigCleanup := createVaultOIDCConfiguration(t, client, orgTest)
+		t.Cleanup(oidcConfigCleanup)
 
-		_, err := client.VaultOIDCConfigurations.Update(ctx, orgTest.Name, opts)
-		assert.ErrorIs(t, err, ErrRequiredRoleName)
+		address := randomString(t)
+		namespace := randomString(t)
+		jwtAuthPath := randomString(t)
+		tlscaCertificate := randomString(t)
+
+		opts := VaultOIDCConfigurationUpdateOptions{
+			Address:          &address,
+			Namespace:        &namespace,
+			JWTAuthPath:      &jwtAuthPath,
+			TLSCACertificate: &tlscaCertificate,
+		}
+		updated, err := client.VaultOIDCConfigurations.Update(ctx, oidcConfig.ID, opts)
+		require.NoError(t, err)
+		require.NotEmpty(t, updated)
+		assert.Equal(t, opts.Address, updated.Address)
+		assert.Equal(t, oidcConfig.RoleName, updated.RoleName) // not updated
+		assert.Equal(t, opts.Namespace, updated.Namespace)
+		assert.Equal(t, opts.JWTAuthPath, updated.JWTAuthPath)
+		assert.Equal(t, opts.TLSCACertificate, updated.TLSCACertificate)
+	})
+
+	t.Run("namespace not provided", func(t *testing.T) {
+		oidcConfig, oidcConfigCleanup := createVaultOIDCConfiguration(t, client, orgTest)
+		t.Cleanup(oidcConfigCleanup)
+
+		address := randomString(t)
+		roleName := randomString(t)
+		jwtAuthPath := randomString(t)
+		tlscaCertificate := randomString(t)
+
+		opts := VaultOIDCConfigurationUpdateOptions{
+			Address:          &address,
+			RoleName:         &roleName,
+			JWTAuthPath:      &jwtAuthPath,
+			TLSCACertificate: &tlscaCertificate,
+		}
+		updated, err := client.VaultOIDCConfigurations.Update(ctx, oidcConfig.ID, opts)
+		require.NoError(t, err)
+		require.NotEmpty(t, updated)
+		assert.Equal(t, opts.Address, updated.Address)
+		assert.Equal(t, opts.RoleName, updated.RoleName)
+		assert.Equal(t, oidcConfig.Namespace, updated.Namespace) // not updated
+		assert.Equal(t, opts.JWTAuthPath, updated.JWTAuthPath)
+		assert.Equal(t, opts.TLSCACertificate, updated.TLSCACertificate)
+	})
+
+	t.Run("JWTAuthPath not provided", func(t *testing.T) {
+		oidcConfig, oidcConfigCleanup := createVaultOIDCConfiguration(t, client, orgTest)
+		t.Cleanup(oidcConfigCleanup)
+
+		address := randomString(t)
+		roleName := randomString(t)
+		namespace := randomString(t)
+		tlscaCertificate := randomString(t)
+
+		opts := VaultOIDCConfigurationUpdateOptions{
+			Address:          &address,
+			RoleName:         &roleName,
+			Namespace:        &namespace,
+			TLSCACertificate: &tlscaCertificate,
+		}
+		updated, err := client.VaultOIDCConfigurations.Update(ctx, oidcConfig.ID, opts)
+		require.NoError(t, err)
+		require.NotEmpty(t, updated)
+		assert.Equal(t, opts.Address, updated.Address)
+		assert.Equal(t, opts.RoleName, updated.RoleName)
+		assert.Equal(t, opts.Namespace, updated.Namespace)
+		assert.Equal(t, oidcConfig.JWTAuthPath, updated.JWTAuthPath) // not updated
+		assert.Equal(t, opts.TLSCACertificate, updated.TLSCACertificate)
+	})
+
+	t.Run("TLSCACertificate not provided", func(t *testing.T) {
+		oidcConfig, oidcConfigCleanup := createVaultOIDCConfiguration(t, client, orgTest)
+		t.Cleanup(oidcConfigCleanup)
+
+		address := randomString(t)
+		roleName := randomString(t)
+		namespace := randomString(t)
+		jwtAuthPath := randomString(t)
+
+		opts := VaultOIDCConfigurationUpdateOptions{
+			Address:     &address,
+			RoleName:    &roleName,
+			Namespace:   &namespace,
+			JWTAuthPath: &jwtAuthPath,
+		}
+		updated, err := client.VaultOIDCConfigurations.Update(ctx, oidcConfig.ID, opts)
+		require.NoError(t, err)
+		require.NotEmpty(t, updated)
+		assert.Equal(t, opts.Address, updated.Address)
+		assert.Equal(t, opts.RoleName, updated.RoleName)
+		assert.Equal(t, opts.Namespace, updated.Namespace)
+		assert.Equal(t, opts.JWTAuthPath, updated.JWTAuthPath)
+		assert.Equal(t, oidcConfig.TLSCACertificate, updated.TLSCACertificate) // not updated
 	})
 }
 

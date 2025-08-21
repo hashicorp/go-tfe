@@ -51,10 +51,10 @@ type OIDCConfigurationTypeChoice struct {
 
 type KMSOptions struct {
 	// AWS
-	KeyRegion string `jsonapi:"attr,key-region,omitempty"`
+	KeyRegion *string `jsonapi:"attr,key-region,omitempty"`
 	// GCP
-	KeyLocation string `jsonapi:"attr,key-location,omitempty"`
-	KeyRingID   string `jsonapi:"attr,key-ring-id,omitempty"`
+	KeyLocation *string `jsonapi:"attr,key-location,omitempty"`
+	KeyRingID   *string `jsonapi:"attr,key-ring-id,omitempty"`
 }
 
 type HYOKConfiguration struct {
@@ -113,14 +113,13 @@ type HYOKConfigurationsUpdateOptions struct {
 	ID string `jsonapi:"primary,hyok-configurations"`
 
 	// Attributes
-	KEKID      string      `jsonapi:"attr,kek-id"`
-	KMSOptions *KMSOptions `jsonapi:"attr,kms-options"`
-	Name       string      `jsonapi:"attr,name"`
-	Primary    bool        `jsonapi:"attr,primary"`
+	KEKID      *string     `jsonapi:"attr,kek-id,omitempty"`
+	KMSOptions *KMSOptions `jsonapi:"attr,kms-options,omitempty"`
+	Name       *string     `jsonapi:"attr,name,omitempty"`
+	Primary    *bool       `jsonapi:"attr,primary,omitempty"`
 
 	// Relationships
-	OIDCConfiguration *OIDCConfigurationTypeChoice `jsonapi:"polyrelation,oidc-configuration"`
-	AgentPool         *AgentPool                   `jsonapi:"relation,agent-pool"`
+	AgentPool *AgentPool `jsonapi:"relation,agent-pool,omitempty"`
 }
 
 func (h hyokConfigurations) List(ctx context.Context, organization string, options *HYOKConfigurationsListOptions) (*HYOKConfigurationsList, error) {
@@ -183,7 +182,7 @@ func (h *HYOKConfigurationsCreateOptions) valid() error {
 			return ErrRequiredKMSOptions
 		}
 
-		if h.KMSOptions.KeyRegion == "" {
+		if *h.KMSOptions.KeyRegion == "" {
 			return ErrRequiredKMSOptionsKeyRegion
 		}
 	}
@@ -193,11 +192,11 @@ func (h *HYOKConfigurationsCreateOptions) valid() error {
 			return ErrRequiredKMSOptions
 		}
 
-		if h.KMSOptions.KeyLocation == "" {
+		if *h.KMSOptions.KeyLocation == "" {
 			return ErrRequiredKMSOptionsKeyLocation
 		}
 
-		if h.KMSOptions.KeyRingID == "" {
+		if *h.KMSOptions.KeyRingID == "" {
 			return ErrRequiredKMSOptionsKeyRingID
 		}
 	}

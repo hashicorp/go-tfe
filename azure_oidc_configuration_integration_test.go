@@ -96,15 +96,20 @@ func TestAzureOIDCConfigurationUpdate(t *testing.T) {
 	orgTest, orgTestCleanup := createOrganization(t, client)
 	t.Cleanup(orgTestCleanup)
 
-	oidcConfig, oidcConfigCleanup := createAzureOIDCConfiguration(t, client, orgTest)
-	t.Cleanup(oidcConfigCleanup)
+	t.Run("update all fields", func(t *testing.T) {
+		oidcConfig, oidcConfigCleanup := createAzureOIDCConfiguration(t, client, orgTest)
+		t.Cleanup(oidcConfigCleanup)
 
-	t.Run("with valid options", func(t *testing.T) {
+		clientID := "your-azure-client-id"
+		subscriptionID := "your-azure-subscription-id"
+		tenantID := "your-azure-tenant-id"
+
 		opts := AzureOIDCConfigurationUpdateOptions{
-			ClientID:       "your-azure-client-id",
-			SubscriptionID: "your-azure-subscription-id",
-			TenantID:       "your-azure-tenant-id",
+			ClientID:       &clientID,
+			SubscriptionID: &subscriptionID,
+			TenantID:       &tenantID,
 		}
+
 		updated, err := client.AzureOIDCConfigurations.Update(ctx, oidcConfig.ID, opts)
 		require.NoError(t, err)
 		require.NotEmpty(t, updated)
@@ -113,34 +118,64 @@ func TestAzureOIDCConfigurationUpdate(t *testing.T) {
 		assert.Equal(t, opts.TenantID, updated.TenantID)
 	})
 
-	t.Run("missing client ID", func(t *testing.T) {
+	t.Run("client ID not provided", func(t *testing.T) {
+		oidcConfig, oidcConfigCleanup := createAzureOIDCConfiguration(t, client, orgTest)
+		t.Cleanup(oidcConfigCleanup)
+
+		subscriptionID := "your-azure-subscription-id"
+		tenantID := "your-azure-tenant-id"
+
 		opts := AzureOIDCConfigurationUpdateOptions{
-			SubscriptionID: "your-azure-subscription-id",
-			TenantID:       "your-azure-tenant-id",
+			SubscriptionID: &subscriptionID,
+			TenantID:       &tenantID,
 		}
 
-		_, err := client.AzureOIDCConfigurations.Update(ctx, orgTest.Name, opts)
-		assert.ErrorIs(t, err, ErrRequiredClientID)
+		updated, err := client.AzureOIDCConfigurations.Update(ctx, oidcConfig.ID, opts)
+		require.NoError(t, err)
+		require.NotEmpty(t, updated)
+		assert.Equal(t, oidcConfig.ClientID, updated.ClientID) // not updated
+		assert.Equal(t, opts.SubscriptionID, updated.SubscriptionID)
+		assert.Equal(t, opts.TenantID, updated.TenantID)
 	})
 
-	t.Run("missing subscription ID", func(t *testing.T) {
+	t.Run("subscription ID not provided", func(t *testing.T) {
+		oidcConfig, oidcConfigCleanup := createAzureOIDCConfiguration(t, client, orgTest)
+		t.Cleanup(oidcConfigCleanup)
+
+		clientID := "your-azure-client-id"
+		tenantID := "your-azure-tenant-id"
+
 		opts := AzureOIDCConfigurationUpdateOptions{
-			ClientID: "your-azure-client-id",
-			TenantID: "your-azure-tenant-id",
+			ClientID: &clientID,
+			TenantID: &tenantID,
 		}
 
-		_, err := client.AzureOIDCConfigurations.Update(ctx, orgTest.Name, opts)
-		assert.ErrorIs(t, err, ErrRequiredSubscriptionID)
+		updated, err := client.AzureOIDCConfigurations.Update(ctx, oidcConfig.ID, opts)
+		require.NoError(t, err)
+		require.NotEmpty(t, updated)
+		assert.Equal(t, opts.ClientID, updated.ClientID)
+		assert.Equal(t, oidcConfig.SubscriptionID, updated.SubscriptionID) // not updated
+		assert.Equal(t, opts.TenantID, updated.TenantID)
 	})
 
-	t.Run("missing tenant ID", func(t *testing.T) {
+	t.Run("tenant ID not provided", func(t *testing.T) {
+		oidcConfig, oidcConfigCleanup := createAzureOIDCConfiguration(t, client, orgTest)
+		t.Cleanup(oidcConfigCleanup)
+
+		clientID := "your-azure-client-id"
+		subscriptionID := "your-azure-subscription-id"
+
 		opts := AzureOIDCConfigurationUpdateOptions{
-			ClientID:       "your-azure-client-id",
-			SubscriptionID: "your-azure-subscription-id",
+			ClientID:       &clientID,
+			SubscriptionID: &subscriptionID,
 		}
 
-		_, err := client.AzureOIDCConfigurations.Update(ctx, orgTest.Name, opts)
-		assert.ErrorIs(t, err, ErrRequiredTenantID)
+		updated, err := client.AzureOIDCConfigurations.Update(ctx, oidcConfig.ID, opts)
+		require.NoError(t, err)
+		require.NotEmpty(t, updated)
+		assert.Equal(t, opts.ClientID, updated.ClientID)
+		assert.Equal(t, opts.SubscriptionID, updated.SubscriptionID)
+		assert.Equal(t, oidcConfig.TenantID, updated.TenantID) // not updated
 	})
 }
 

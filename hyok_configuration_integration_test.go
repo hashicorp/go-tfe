@@ -40,10 +40,11 @@ func TestHYOKConfigurationCreateRevokeDelete(t *testing.T) {
 		awsOIDCConfig, configCleanup := createAWSOIDCConfiguration(t, client, orgTest)
 		t.Cleanup(configCleanup)
 
+		keyRegion := "us-east-1"
 		opts := HYOKConfigurationsCreateOptions{
 			Name: randomStringWithoutSpecialChar(t),
 			KMSOptions: &KMSOptions{
-				KeyRegion: "us-east-1",
+				KeyRegion: &keyRegion,
 			},
 			KEKID:     "arn:aws:kms:us-east-1:123456789012:key/this-is-not-a-real-key",
 			AgentPool: agentPool,
@@ -99,11 +100,14 @@ func TestHYOKConfigurationCreateRevokeDelete(t *testing.T) {
 		gcpOIDCConfig, configCleanup := createGCPOIDCConfiguration(t, client, orgTest)
 		t.Cleanup(configCleanup)
 
+		keyLocation := "global"
+		keyRingID := randomStringWithoutSpecialChar(t)
+
 		opts := HYOKConfigurationsCreateOptions{
 			Name: randomStringWithoutSpecialChar(t),
 			KMSOptions: &KMSOptions{
-				KeyLocation: "global",
-				KeyRingID:   randomStringWithoutSpecialChar(t),
+				KeyLocation: &keyLocation,
+				KeyRingID:   &keyRingID,
 			},
 			KEKID:     randomStringWithoutSpecialChar(t),
 			AgentPool: agentPool,
@@ -140,10 +144,11 @@ func TestHYOKConfigurationCreateRevokeDelete(t *testing.T) {
 		gcpOIDCConfig, configCleanup := createGCPOIDCConfiguration(t, client, orgTest)
 		t.Cleanup(configCleanup)
 
+		keyRingID := randomStringWithoutSpecialChar(t)
 		opts := HYOKConfigurationsCreateOptions{
 			Name: randomStringWithoutSpecialChar(t),
 			KMSOptions: &KMSOptions{
-				KeyRingID: randomStringWithoutSpecialChar(t),
+				KeyRingID: &keyRingID,
 			},
 			KEKID:     randomStringWithoutSpecialChar(t),
 			AgentPool: agentPool,
@@ -160,10 +165,12 @@ func TestHYOKConfigurationCreateRevokeDelete(t *testing.T) {
 		gcpOIDCConfig, configCleanup := createGCPOIDCConfiguration(t, client, orgTest)
 		t.Cleanup(configCleanup)
 
+		keyLocation := "global"
+
 		opts := HYOKConfigurationsCreateOptions{
 			Name: randomStringWithoutSpecialChar(t),
 			KMSOptions: &KMSOptions{
-				KeyLocation: "global",
+				KeyLocation: &keyLocation,
 			},
 			KEKID:     randomStringWithoutSpecialChar(t),
 			AgentPool: agentPool,
@@ -250,10 +257,12 @@ func TestHYOKConfigurationCreateRevokeDelete(t *testing.T) {
 		awsOIDCConfig, configCleanup := createAWSOIDCConfiguration(t, client, orgTest)
 		t.Cleanup(configCleanup)
 
+		keyRegion := "us-east-1"
+
 		opts := HYOKConfigurationsCreateOptions{
 			Name: randomStringWithoutSpecialChar(t),
 			KMSOptions: &KMSOptions{
-				KeyRegion: "us-east-1",
+				KeyRegion: &keyRegion,
 			},
 			AgentPool: agentPool,
 			OIDCConfiguration: &OIDCConfigurationTypeChoice{
@@ -269,10 +278,12 @@ func TestHYOKConfigurationCreateRevokeDelete(t *testing.T) {
 		awsOIDCConfig, configCleanup := createAWSOIDCConfiguration(t, client, orgTest)
 		t.Cleanup(configCleanup)
 
+		keyRegion := "us-east-1"
+
 		opts := HYOKConfigurationsCreateOptions{
 			Name: randomStringWithoutSpecialChar(t),
 			KMSOptions: &KMSOptions{
-				KeyRegion: "us-east-1",
+				KeyRegion: &keyRegion,
 			},
 			KEKID: randomStringWithoutSpecialChar(t),
 			OIDCConfiguration: &OIDCConfigurationTypeChoice{
@@ -285,10 +296,12 @@ func TestHYOKConfigurationCreateRevokeDelete(t *testing.T) {
 	})
 
 	t.Run("with missing OIDC config", func(t *testing.T) {
+		keyRegion := "us-east-1"
+
 		opts := HYOKConfigurationsCreateOptions{
 			Name: randomStringWithoutSpecialChar(t),
 			KMSOptions: &KMSOptions{
-				KeyRegion: "us-east-1",
+				KeyRegion: &keyRegion,
 			},
 			KEKID:     randomStringWithoutSpecialChar(t),
 			AgentPool: agentPool,
@@ -469,16 +482,18 @@ func TestHYOKConfigurationUpdate(t *testing.T) {
 		hyok, hyokCleanup := oidc.createHYOKConfiguration(t, client, orgTest, agentPool)
 		t.Cleanup(hyokCleanup)
 
+		name := randomStringWithoutSpecialChar(t)
+		kekId := "arn:aws:kms:us-east-1:123456789012:key/this-is-a-bad-key"
+
+		keyRegion := "us-east-2"
+
 		opts := HYOKConfigurationsUpdateOptions{
-			Name: randomStringWithoutSpecialChar(t),
+			Name: &name,
 			KMSOptions: &KMSOptions{
-				KeyRegion: "us-east-2",
+				KeyRegion: &keyRegion,
 			},
-			KEKID:     "arn:aws:kms:us-east-1:123456789012:key/this-is-a-bad-key",
+			KEKID:     &kekId,
 			AgentPool: agentPool,
-			OIDCConfiguration: &OIDCConfigurationTypeChoice{
-				AWSOIDCConfiguration: oidc,
-			},
 		}
 
 		updated, err := client.HYOKConfigurations.Update(ctx, hyok.ID, opts)
@@ -494,17 +509,19 @@ func TestHYOKConfigurationUpdate(t *testing.T) {
 		hyok, hyokCleanup := oidc.createHYOKConfiguration(t, client, orgTest, agentPool)
 		t.Cleanup(hyokCleanup)
 
+		name := randomStringWithoutSpecialChar(t)
+		keyLocation := "ca"
+		keyRingID := randomStringWithoutSpecialChar(t)
+		kekId := "arn:aws:kms:us-east-1:123456789012:key/this-is-a-bad-key"
+
 		opts := HYOKConfigurationsUpdateOptions{
-			Name: randomStringWithoutSpecialChar(t),
+			Name: &name,
 			KMSOptions: &KMSOptions{
-				KeyLocation: "ca",
-				KeyRingID:   randomStringWithoutSpecialChar(t),
+				KeyLocation: &keyLocation,
+				KeyRingID:   &keyRingID,
 			},
-			KEKID:     randomStringWithoutSpecialChar(t),
+			KEKID:     &kekId,
 			AgentPool: agentPool,
-			OIDCConfiguration: &OIDCConfigurationTypeChoice{
-				GCPOIDCConfiguration: oidc,
-			},
 		}
 
 		updated, err := client.HYOKConfigurations.Update(ctx, hyok.ID, opts)
@@ -521,13 +538,13 @@ func TestHYOKConfigurationUpdate(t *testing.T) {
 		hyok, hyokCleanup := oidc.createHYOKConfiguration(t, client, orgTest, agentPool)
 		t.Cleanup(hyokCleanup)
 
+		name := randomStringWithoutSpecialChar(t)
+		kekID := randomStringWithoutSpecialChar(t)
+
 		opts := HYOKConfigurationsUpdateOptions{
-			Name:      randomStringWithoutSpecialChar(t),
-			KEKID:     randomStringWithoutSpecialChar(t),
+			Name:      &name,
+			KEKID:     &kekID,
 			AgentPool: agentPool,
-			OIDCConfiguration: &OIDCConfigurationTypeChoice{
-				VaultOIDCConfiguration: oidc,
-			},
 		}
 
 		updated, err := client.HYOKConfigurations.Update(ctx, hyok.ID, opts)
@@ -535,7 +552,6 @@ func TestHYOKConfigurationUpdate(t *testing.T) {
 		assert.Equal(t, opts.Name, updated.Name)
 		assert.Equal(t, opts.KEKID, updated.KEKID)
 		assert.Equal(t, opts.AgentPool.ID, updated.AgentPool.ID)
-		assert.Equal(t, opts.OIDCConfiguration.VaultOIDCConfiguration.ID, updated.OIDCConfiguration.VaultOIDCConfiguration.ID)
 	})
 
 	t.Run("Azure with valid options", func(t *testing.T) {
@@ -544,13 +560,13 @@ func TestHYOKConfigurationUpdate(t *testing.T) {
 		hyok, hyokCleanup := oidc.createHYOKConfiguration(t, client, orgTest, agentPool)
 		t.Cleanup(hyokCleanup)
 
+		name := randomStringWithoutSpecialChar(t)
+		kekID := "https://random.vault.azure.net/keys/some-key-2"
+
 		opts := HYOKConfigurationsUpdateOptions{
-			Name:      randomStringWithoutSpecialChar(t),
-			KEKID:     "https://random.vault.azure.net/keys/some-key-2",
+			Name:      &name,
+			KEKID:     &kekID,
 			AgentPool: agentPool,
-			OIDCConfiguration: &OIDCConfigurationTypeChoice{
-				AzureOIDCConfiguration: oidc,
-			},
 		}
 
 		updated, err := client.HYOKConfigurations.Update(ctx, hyok.ID, opts)
@@ -558,6 +574,5 @@ func TestHYOKConfigurationUpdate(t *testing.T) {
 		assert.Equal(t, opts.Name, updated.Name)
 		assert.Equal(t, opts.KEKID, updated.KEKID)
 		assert.Equal(t, opts.AgentPool.ID, updated.AgentPool.ID)
-		assert.Equal(t, opts.OIDCConfiguration.AzureOIDCConfiguration.ID, updated.OIDCConfiguration.AzureOIDCConfiguration.ID)
 	})
 }

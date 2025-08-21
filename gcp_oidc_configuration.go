@@ -39,10 +39,10 @@ type GCPOIDCConfigurationCreateOptions struct {
 }
 
 type GCPOIDCConfigurationUpdateOptions struct {
-	ID                   string `jsonapi:"primary,gcp-oidc-configurations"`
-	ServiceAccountEmail  string `jsonapi:"attr,service-account-email"`
-	ProjectNumber        string `jsonapi:"attr,project-number"`
-	WorkloadProviderName string `jsonapi:"attr,workload-provider-name"`
+	ID                   string  `jsonapi:"primary,gcp-oidc-configurations"`
+	ServiceAccountEmail  *string `jsonapi:"attr,service-account-email,omitempty"`
+	ProjectNumber        *string `jsonapi:"attr,project-number,omitempty"`
+	WorkloadProviderName *string `jsonapi:"attr,workload-provider-name,omitempty"`
 }
 
 func (o *GCPOIDCConfigurationCreateOptions) valid() error {
@@ -99,29 +99,9 @@ func (goc *gcpOIDCConfigurations) Read(ctx context.Context, oidcID string) (*GCP
 	return gcpOIDCConfiguration, nil
 }
 
-func (o *GCPOIDCConfigurationUpdateOptions) valid() error {
-	if o.ServiceAccountEmail == "" {
-		return ErrRequiredServiceAccountEmail
-	}
-
-	if o.ProjectNumber == "" {
-		return ErrRequiredProjectNumber
-	}
-
-	if o.WorkloadProviderName == "" {
-		return ErrRequiredWorkloadProviderName
-	}
-
-	return nil
-}
-
 func (goc *gcpOIDCConfigurations) Update(ctx context.Context, oidcID string, options GCPOIDCConfigurationUpdateOptions) (*GCPOIDCConfiguration, error) {
 	if !validStringID(&oidcID) {
 		return nil, ErrInvalidOIDC
-	}
-
-	if err := options.valid(); err != nil {
-		return nil, err
 	}
 
 	req, err := goc.client.NewRequest("PATCH", fmt.Sprintf(OIDCConfigPathFormat, url.PathEscape(oidcID)), &options)

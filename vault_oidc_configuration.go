@@ -43,12 +43,12 @@ type VaultOIDCConfigurationCreateOptions struct {
 }
 
 type VaultOIDCConfigurationUpdateOptions struct {
-	ID               string `jsonapi:"primary,vault-oidc-configurations"`
-	Address          string `jsonapi:"attr,address"`
-	RoleName         string `jsonapi:"attr,role"`
-	Namespace        string `jsonapi:"attr,namespace"`
-	JWTAuthPath      string `jsonapi:"attr,auth-path"`
-	TLSCACertificate string `jsonapi:"attr,encoded-cacert"`
+	ID               string  `jsonapi:"primary,vault-oidc-configurations"`
+	Address          *string `jsonapi:"attr,address,omitempty"`
+	RoleName         *string `jsonapi:"attr,role,omitempty"`
+	Namespace        *string `jsonapi:"attr,namespace,omitempty"`
+	JWTAuthPath      *string `jsonapi:"attr,auth-path,omitempty"`
+	TLSCACertificate *string `jsonapi:"attr,encoded-cacert,omitempty"`
 }
 
 func (o *VaultOIDCConfigurationCreateOptions) valid() error {
@@ -101,25 +101,9 @@ func (voc *vaultOIDCConfigurations) Read(ctx context.Context, oidcID string) (*V
 	return vaultOIDCConfiguration, nil
 }
 
-func (o *VaultOIDCConfigurationUpdateOptions) valid() error {
-	if o.Address == "" {
-		return ErrRequiredVaultAddress
-	}
-
-	if o.RoleName == "" {
-		return ErrRequiredRoleName
-	}
-
-	return nil
-}
-
 func (voc *vaultOIDCConfigurations) Update(ctx context.Context, oidcID string, options VaultOIDCConfigurationUpdateOptions) (*VaultOIDCConfiguration, error) {
 	if !validStringID(&oidcID) {
 		return nil, ErrInvalidOIDC
-	}
-
-	if err := options.valid(); err != nil {
-		return nil, err
 	}
 
 	req, err := voc.client.NewRequest("PATCH", fmt.Sprintf(OIDCConfigPathFormat, url.PathEscape(oidcID)), &options)

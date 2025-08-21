@@ -39,10 +39,10 @@ type AzureOIDCConfigurationCreateOptions struct {
 }
 
 type AzureOIDCConfigurationUpdateOptions struct {
-	ID             string `jsonapi:"primary,azure-oidc-configurations"`
-	ClientID       string `jsonapi:"attr,client-id"`
-	SubscriptionID string `jsonapi:"attr,subscription-id"`
-	TenantID       string `jsonapi:"attr,tenant-id"`
+	ID             string  `jsonapi:"primary,azure-oidc-configurations"`
+	ClientID       *string `jsonapi:"attr,client-id,omitempty"`
+	SubscriptionID *string `jsonapi:"attr,subscription-id,omitempty"`
+	TenantID       *string `jsonapi:"attr,tenant-id,omitempty"`
 }
 
 func (o *AzureOIDCConfigurationCreateOptions) valid() error {
@@ -99,29 +99,9 @@ func (aoc *azureOIDCConfigurations) Read(ctx context.Context, oidcID string) (*A
 	return azureOIDCConfiguration, nil
 }
 
-func (o *AzureOIDCConfigurationUpdateOptions) valid() error {
-	if o.ClientID == "" {
-		return ErrRequiredClientID
-	}
-
-	if o.SubscriptionID == "" {
-		return ErrRequiredSubscriptionID
-	}
-
-	if o.TenantID == "" {
-		return ErrRequiredTenantID
-	}
-
-	return nil
-}
-
 func (aoc *azureOIDCConfigurations) Update(ctx context.Context, oidcID string, options AzureOIDCConfigurationUpdateOptions) (*AzureOIDCConfiguration, error) {
 	if !validStringID(&oidcID) {
 		return nil, ErrInvalidOIDC
-	}
-
-	if err := options.valid(); err != nil {
-		return nil, err
 	}
 
 	req, err := aoc.client.NewRequest("PATCH", fmt.Sprintf(OIDCConfigPathFormat, url.PathEscape(oidcID)), &options)

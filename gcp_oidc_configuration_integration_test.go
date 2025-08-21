@@ -96,14 +96,18 @@ func TestGCPOIDCConfigurationUpdate(t *testing.T) {
 	orgTest, orgTestCleanup := createOrganization(t, client)
 	t.Cleanup(orgTestCleanup)
 
-	oidcConfig, oidcConfigCleanup := createGCPOIDCConfiguration(t, client, orgTest)
-	t.Cleanup(oidcConfigCleanup)
+	t.Run("update all fields", func(t *testing.T) {
+		oidcConfig, oidcConfigCleanup := createGCPOIDCConfiguration(t, client, orgTest)
+		t.Cleanup(oidcConfigCleanup)
 
-	t.Run("with valid options", func(t *testing.T) {
+		serviceAccountEmail := "updated-service-account@example.iam.gserviceaccount.com"
+		projectNumber := "123456789012"
+		workloadProviderName := randomString(t)
+
 		opts := GCPOIDCConfigurationUpdateOptions{
-			ServiceAccountEmail:  "updated-service-account@example.iam.gserviceaccount.com",
-			ProjectNumber:        "123456789012",
-			WorkloadProviderName: randomString(t),
+			ServiceAccountEmail:  &serviceAccountEmail,
+			ProjectNumber:        &projectNumber,
+			WorkloadProviderName: &workloadProviderName,
 		}
 
 		updated, err := client.GCPOIDCConfigurations.Update(ctx, oidcConfig.ID, opts)
@@ -114,34 +118,64 @@ func TestGCPOIDCConfigurationUpdate(t *testing.T) {
 		assert.Equal(t, opts.WorkloadProviderName, updated.WorkloadProviderName)
 	})
 
-	t.Run("missing workload provider name", func(t *testing.T) {
+	t.Run("workload provider name not provided", func(t *testing.T) {
+		oidcConfig, oidcConfigCleanup := createGCPOIDCConfiguration(t, client, orgTest)
+		t.Cleanup(oidcConfigCleanup)
+
+		serviceAccountEmail := "updated-service-account@example.iam.gserviceaccount.com"
+		projectNumber := "123456789012"
+
 		opts := GCPOIDCConfigurationUpdateOptions{
-			ServiceAccountEmail: "updated-service-account@example.iam.gserviceaccount.com",
-			ProjectNumber:       "123456789012",
+			ServiceAccountEmail: &serviceAccountEmail,
+			ProjectNumber:       &projectNumber,
 		}
 
-		_, err := client.GCPOIDCConfigurations.Update(ctx, oidcConfig.ID, opts)
-		assert.ErrorIs(t, err, ErrRequiredWorkloadProviderName)
+		updated, err := client.GCPOIDCConfigurations.Update(ctx, oidcConfig.ID, opts)
+		require.NoError(t, err)
+		require.NotNil(t, updated)
+		assert.Equal(t, opts.ServiceAccountEmail, updated.ServiceAccountEmail)
+		assert.Equal(t, opts.ProjectNumber, updated.ProjectNumber)
+		assert.Equal(t, oidcConfig.WorkloadProviderName, updated.WorkloadProviderName) // not updated
 	})
 
-	t.Run("missing service account email", func(t *testing.T) {
+	t.Run("service account email not provided", func(t *testing.T) {
+		oidcConfig, oidcConfigCleanup := createGCPOIDCConfiguration(t, client, orgTest)
+		t.Cleanup(oidcConfigCleanup)
+
+		projectNumber := "123456789012"
+		workloadProviderName := randomString(t)
+
 		opts := GCPOIDCConfigurationUpdateOptions{
-			ProjectNumber:        "123456789012",
-			WorkloadProviderName: randomString(t),
+			ProjectNumber:        &projectNumber,
+			WorkloadProviderName: &workloadProviderName,
 		}
 
-		_, err := client.GCPOIDCConfigurations.Update(ctx, oidcConfig.ID, opts)
-		assert.ErrorIs(t, err, ErrRequiredServiceAccountEmail)
+		updated, err := client.GCPOIDCConfigurations.Update(ctx, oidcConfig.ID, opts)
+		require.NoError(t, err)
+		require.NotNil(t, updated)
+		assert.Equal(t, oidcConfig.ServiceAccountEmail, updated.ServiceAccountEmail) // not updated
+		assert.Equal(t, opts.ProjectNumber, updated.ProjectNumber)
+		assert.Equal(t, opts.WorkloadProviderName, updated.WorkloadProviderName)
 	})
 
-	t.Run("missing project number", func(t *testing.T) {
+	t.Run("project number not provided", func(t *testing.T) {
+		oidcConfig, oidcConfigCleanup := createGCPOIDCConfiguration(t, client, orgTest)
+		t.Cleanup(oidcConfigCleanup)
+
+		serviceAccountEmail := "updated-service-account@example.iam.gserviceaccount.com"
+		workloadProviderName := randomString(t)
+
 		opts := GCPOIDCConfigurationUpdateOptions{
-			ServiceAccountEmail:  "updated-service-account@example.iam.gserviceaccount.com",
-			WorkloadProviderName: randomString(t),
+			ServiceAccountEmail:  &serviceAccountEmail,
+			WorkloadProviderName: &workloadProviderName,
 		}
 
-		_, err := client.GCPOIDCConfigurations.Update(ctx, oidcConfig.ID, opts)
-		assert.ErrorIs(t, err, ErrRequiredProjectNumber)
+		updated, err := client.GCPOIDCConfigurations.Update(ctx, oidcConfig.ID, opts)
+		require.NoError(t, err)
+		require.NotNil(t, updated)
+		assert.Equal(t, opts.ServiceAccountEmail, updated.ServiceAccountEmail)
+		assert.Equal(t, oidcConfig.ProjectNumber, updated.ProjectNumber) // not updated
+		assert.Equal(t, opts.WorkloadProviderName, updated.WorkloadProviderName)
 	})
 }
 
