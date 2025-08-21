@@ -316,6 +316,10 @@ func (s *agentPools) Delete(ctx context.Context, agentPoolID string) error {
 	return req.Do(ctx, nil)
 }
 
+// updateArrayAttribute is a helper function to update array attributes of an agent pool, such as allowed workspaces, allowed projects, or excluded workspaces.
+// Note: This function does not validate the options parameter, so it should be used with caution.  It is intended to be used with options structs
+// (e.g. AgentPoolAllowedWorkspacesUpdateOptions, AgentPoolAllowedProjectsUpdateOptions, AgentPoolExcludedWorkspacesUpdateOptions) whose array
+// attributes are NOT marked `omitempty`, so that an empty array is sent to the API to clear the existing values.
 func (s *agentPools) updateArrayAttribute(ctx context.Context, agentPoolID string, options any) (*AgentPool, error) {
 	if !validStringID(&agentPoolID) {
 		return nil, ErrInvalidAgentPoolID
