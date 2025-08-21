@@ -58,7 +58,7 @@ func TestAgentsList(t *testing.T) {
 
 	agent1, agentPool, agentCleanup := createAgent(t, client, org)
 	t.Cleanup(agentCleanup)
-	agent2, agentPool, agentCleanup2 := createAgent(t, client, org)
+	agent2, _, agentCleanup2 := createAgent(t, client, org)
 	t.Cleanup(agentCleanup2)
 
 	t.Run("expect an agent to exist", func(t *testing.T) {
