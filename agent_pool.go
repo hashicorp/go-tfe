@@ -85,6 +85,9 @@ type AgentPoolListOptions struct {
 
 	// Optional: String (workspace name) used to filter the results.
 	AllowedWorkspacesName string `url:"filter[allowed_workspaces][name],omitempty"`
+
+	// Optional: Allows sorting the agent pools by "created-by" or "name"
+	Sort string `url:"sort,omitempty"`
 }
 
 // AgentPoolCreateOptions represents the options for creating an agent pool.

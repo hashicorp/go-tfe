@@ -56,8 +56,10 @@ func TestAgentsList(t *testing.T) {
 
 	upgradeOrganizationSubscription(t, client, org)
 
-	_, agentPool, agentCleanup := createAgent(t, client, org)
+	agent1, agentPool, agentCleanup := createAgent(t, client, org)
 	t.Cleanup(agentCleanup)
+	agent2, _, agentCleanup2 := createAgent(t, client, org)
+	t.Cleanup(agentCleanup2)
 
 	t.Run("expect an agent to exist", func(t *testing.T) {
 		agent, err := client.Agents.List(ctx, agentPool.ID, nil)
@@ -65,6 +67,24 @@ func TestAgentsList(t *testing.T) {
 		require.NoError(t, err)
 		require.NotEmpty(t, agent.Items)
 		assert.NotEmpty(t, agent.Items[0].ID)
+	})
+
+	t.Run("with sorting", func(t *testing.T) {
+		agents, err := client.Agents.List(ctx, agentPool.ID, &AgentListOptions{
+			Sort: "created-at",
+		})
+		require.NoError(t, err)
+		require.NotNil(t, agents)
+		require.Len(t, agents.Items, 2)
+		require.Equal(t, []string{agent1.ID, agent2.ID}, []string{agents.Items[0].ID, agents.Items[1].ID})
+
+		agents, err = client.Agents.List(ctx, agentPool.ID, &AgentListOptions{
+			Sort: "-created-at",
+		})
+		require.NoError(t, err)
+		require.NotNil(t, agents)
+		require.Len(t, agents.Items, 2)
+		require.Equal(t, []string{agent2.ID, agent1.ID}, []string{agents.Items[0].ID, agents.Items[1].ID})
 	})
 
 	t.Run("without a valid agent pool ID", func(t *testing.T) {

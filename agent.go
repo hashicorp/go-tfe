@@ -49,6 +49,9 @@ type AgentListOptions struct {
 
 	//Optional:
 	LastPingSince time.Time `url:"filter[last-ping-since],omitempty,iso8601"`
+
+	// Optional: Allows sorting the agents by "created-by"
+	Sort string `url:"sort,omitempty"`
 }
 
 // Read a single agent by its ID
