@@ -40,7 +40,7 @@ const (
 	HYOKConfigurationRevoked    HYOKConfigurationStatus = "revoked"
 )
 
-type OIDCConfigurationType struct {
+type OIDCConfigurationTypeChoice struct {
 	AWSOIDCConfiguration   *AWSOIDCConfiguration
 	GCPOIDCConfiguration   *GCPOIDCConfiguration
 	AzureOIDCConfiguration *AzureOIDCConfiguration
@@ -67,9 +67,9 @@ type HYOKConfiguration struct {
 	Error      *string                 `jsonapi:"attr,error"`
 
 	// Relationships
-	Organization      *Organization          `jsonapi:"relation,organization"`
-	OIDCConfiguration *OIDCConfigurationType `jsonapi:"polyrelation,oidc-configuration"`
-	AgentPool         *AgentPool             `jsonapi:"relation,agent-pool"`
+	Organization      *Organization                `jsonapi:"relation,organization"`
+	OIDCConfiguration *OIDCConfigurationTypeChoice `jsonapi:"polyrelation,oidc-configuration"`
+	AgentPool         *AgentPool                   `jsonapi:"relation,agent-pool"`
 }
 
 type HYOKConfigurationsList struct {
@@ -99,9 +99,9 @@ type HYOKConfigurationsCreateOptions struct {
 	Name       string      `jsonapi:"attr,name"`
 
 	// Relationships
-	Organization      *Organization          `jsonapi:"relation,organization"`
-	OIDCConfiguration *OIDCConfigurationType `jsonapi:"polyrelation,oidc-configuration"`
-	AgentPool         *AgentPool             `jsonapi:"relation,agent-pool"`
+	Organization      *Organization                `jsonapi:"relation,organization"`
+	OIDCConfiguration *OIDCConfigurationTypeChoice `jsonapi:"polyrelation,oidc-configuration"`
+	AgentPool         *AgentPool                   `jsonapi:"relation,agent-pool"`
 }
 
 type HYOKConfigurationsReadOptions struct {
@@ -118,9 +118,9 @@ type HYOKConfigurationsUpdateOptions struct {
 	Primary    bool        `jsonapi:"attr,primary"`
 
 	// Relationships
-	Organization      *Organization          `jsonapi:"relation,organization"`
-	OIDCConfiguration *OIDCConfigurationType `jsonapi:"polyrelation,oidc-configuration"`
-	AgentPool         *AgentPool             `jsonapi:"relation,agent-pool"`
+	Organization      *Organization                `jsonapi:"relation,organization"`
+	OIDCConfiguration *OIDCConfigurationTypeChoice `jsonapi:"polyrelation,oidc-configuration"`
+	AgentPool         *AgentPool                   `jsonapi:"relation,agent-pool"`
 }
 
 func (h *HYOKConfigurationsListOptions) valid() error {

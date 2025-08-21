@@ -618,7 +618,7 @@ func (a *AWSOIDCConfiguration) createHYOKConfiguration(t *testing.T, client *Cli
 		KMSOptions:        &KMSOptions{KeyRegion: "us-east-1"},
 		Organization:      org,
 		AgentPool:         agentPool,
-		OIDCConfiguration: &OIDCConfigurationType{AWSOIDCConfiguration: a},
+		OIDCConfiguration: &OIDCConfigurationTypeChoice{AWSOIDCConfiguration: a},
 	}
 
 	hyokConfig, err := client.HYOKConfigurations.Create(ctx, org.Name, opts)
@@ -695,7 +695,7 @@ func (a *AzureOIDCConfiguration) createHYOKConfiguration(t *testing.T, client *C
 		Name:              randomStringWithoutSpecialChar(t),
 		Organization:      org,
 		AgentPool:         agentPool,
-		OIDCConfiguration: &OIDCConfigurationType{AzureOIDCConfiguration: a},
+		OIDCConfiguration: &OIDCConfigurationTypeChoice{AzureOIDCConfiguration: a},
 	}
 
 	hyokConfig, err := client.HYOKConfigurations.Create(ctx, org.Name, opts)
@@ -773,7 +773,7 @@ func (g *GCPOIDCConfiguration) createHYOKConfiguration(t *testing.T, client *Cli
 		KMSOptions:        &KMSOptions{KeyLocation: "global", KeyRingID: randomString(t)},
 		Organization:      org,
 		AgentPool:         agentPool,
-		OIDCConfiguration: &OIDCConfigurationType{GCPOIDCConfiguration: g},
+		OIDCConfiguration: &OIDCConfigurationTypeChoice{GCPOIDCConfiguration: g},
 	}
 
 	hyokConfig, err := client.HYOKConfigurations.Create(ctx, org.Name, opts)
@@ -852,7 +852,7 @@ func (v *VaultOIDCConfiguration) createHYOKConfiguration(t *testing.T, client *C
 		Name:              randomStringWithoutSpecialChar(t),
 		Organization:      org,
 		AgentPool:         agentPool,
-		OIDCConfiguration: &OIDCConfigurationType{VaultOIDCConfiguration: v},
+		OIDCConfiguration: &OIDCConfigurationTypeChoice{VaultOIDCConfiguration: v},
 	}
 
 	hyokConfig, err := client.HYOKConfigurations.Create(ctx, org.Name, opts)

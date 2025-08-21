@@ -48,7 +48,7 @@ func TestHYOKConfigurationCreateRevokeDelete(t *testing.T) {
 			KEKID:        "arn:aws:kms:us-east-1:123456789012:key/this-is-not-a-real-key",
 			AgentPool:    agentPool,
 			Organization: orgTest,
-			OIDCConfiguration: &OIDCConfigurationType{
+			OIDCConfiguration: &OIDCConfigurationTypeChoice{
 				AWSOIDCConfiguration: awsOIDCConfig,
 			},
 		}
@@ -89,7 +89,7 @@ func TestHYOKConfigurationCreateRevokeDelete(t *testing.T) {
 			KEKID:        "arn:aws:kms:us-east-1:123456789012:key/this-is-not-a-real-key",
 			AgentPool:    agentPool,
 			Organization: orgTest,
-			OIDCConfiguration: &OIDCConfigurationType{
+			OIDCConfiguration: &OIDCConfigurationTypeChoice{
 				AWSOIDCConfiguration: awsOIDCConfig,
 			},
 		}
@@ -111,7 +111,7 @@ func TestHYOKConfigurationCreateRevokeDelete(t *testing.T) {
 			KEKID:        randomStringWithoutSpecialChar(t),
 			AgentPool:    agentPool,
 			Organization: orgTest,
-			OIDCConfiguration: &OIDCConfigurationType{
+			OIDCConfiguration: &OIDCConfigurationTypeChoice{
 				GCPOIDCConfiguration: gcpOIDCConfig,
 			},
 		}
@@ -153,7 +153,7 @@ func TestHYOKConfigurationCreateRevokeDelete(t *testing.T) {
 			KEKID:        randomStringWithoutSpecialChar(t),
 			AgentPool:    agentPool,
 			Organization: orgTest,
-			OIDCConfiguration: &OIDCConfigurationType{
+			OIDCConfiguration: &OIDCConfigurationTypeChoice{
 				GCPOIDCConfiguration: gcpOIDCConfig,
 			},
 		}
@@ -174,7 +174,7 @@ func TestHYOKConfigurationCreateRevokeDelete(t *testing.T) {
 			KEKID:        randomStringWithoutSpecialChar(t),
 			AgentPool:    agentPool,
 			Organization: orgTest,
-			OIDCConfiguration: &OIDCConfigurationType{
+			OIDCConfiguration: &OIDCConfigurationTypeChoice{
 				GCPOIDCConfiguration: gcpOIDCConfig,
 			},
 		}
@@ -192,7 +192,7 @@ func TestHYOKConfigurationCreateRevokeDelete(t *testing.T) {
 			KEKID:        randomStringWithoutSpecialChar(t),
 			AgentPool:    agentPool,
 			Organization: orgTest,
-			OIDCConfiguration: &OIDCConfigurationType{
+			OIDCConfiguration: &OIDCConfigurationTypeChoice{
 				VaultOIDCConfiguration: vaultOIDCConfig,
 			},
 		}
@@ -229,7 +229,7 @@ func TestHYOKConfigurationCreateRevokeDelete(t *testing.T) {
 			KEKID:        "https://random.vault.azure.net/keys/some-key",
 			AgentPool:    agentPool,
 			Organization: orgTest,
-			OIDCConfiguration: &OIDCConfigurationType{
+			OIDCConfiguration: &OIDCConfigurationTypeChoice{
 				AzureOIDCConfiguration: azureOIDCConfig,
 			},
 		}
@@ -268,7 +268,7 @@ func TestHYOKConfigurationCreateRevokeDelete(t *testing.T) {
 			},
 			AgentPool:    agentPool,
 			Organization: orgTest,
-			OIDCConfiguration: &OIDCConfigurationType{
+			OIDCConfiguration: &OIDCConfigurationTypeChoice{
 				AWSOIDCConfiguration: awsOIDCConfig,
 			},
 		}
@@ -288,7 +288,7 @@ func TestHYOKConfigurationCreateRevokeDelete(t *testing.T) {
 			},
 			KEKID:        randomStringWithoutSpecialChar(t),
 			Organization: orgTest,
-			OIDCConfiguration: &OIDCConfigurationType{
+			OIDCConfiguration: &OIDCConfigurationTypeChoice{
 				AWSOIDCConfiguration: awsOIDCConfig,
 			},
 		}
@@ -491,7 +491,7 @@ func TestHYOKConfigurationUpdate(t *testing.T) {
 			KEKID:        "arn:aws:kms:us-east-1:123456789012:key/this-is-a-bad-key",
 			AgentPool:    agentPool,
 			Organization: orgTest,
-			OIDCConfiguration: &OIDCConfigurationType{
+			OIDCConfiguration: &OIDCConfigurationTypeChoice{
 				AWSOIDCConfiguration: oidc,
 			},
 		}
@@ -518,7 +518,7 @@ func TestHYOKConfigurationUpdate(t *testing.T) {
 			KEKID:        randomStringWithoutSpecialChar(t),
 			AgentPool:    agentPool,
 			Organization: orgTest,
-			OIDCConfiguration: &OIDCConfigurationType{
+			OIDCConfiguration: &OIDCConfigurationTypeChoice{
 				GCPOIDCConfiguration: oidc,
 			},
 		}
@@ -542,7 +542,7 @@ func TestHYOKConfigurationUpdate(t *testing.T) {
 			KEKID:        randomStringWithoutSpecialChar(t),
 			AgentPool:    agentPool,
 			Organization: orgTest,
-			OIDCConfiguration: &OIDCConfigurationType{
+			OIDCConfiguration: &OIDCConfigurationTypeChoice{
 				VaultOIDCConfiguration: oidc,
 			},
 		}
@@ -567,7 +567,7 @@ func TestHYOKConfigurationUpdate(t *testing.T) {
 			KEKID:        "https://random.vault.azure.net/keys/some-key-2",
 			AgentPool:    agentPool,
 			Organization: orgTest,
-			OIDCConfiguration: &OIDCConfigurationType{
+			OIDCConfiguration: &OIDCConfigurationTypeChoice{
 				AzureOIDCConfiguration: oidc,
 			},
 		}
