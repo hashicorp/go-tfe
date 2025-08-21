@@ -6,6 +6,7 @@ package tfe
 import (
 	"context"
 	"fmt"
+	"io"
 	"net/url"
 	"time"
 )
@@ -31,6 +32,9 @@ type QueryRuns interface {
 	// ReadWithOptions reads a query run by its ID using the options supplied
 	ReadWithOptions(ctx context.Context, queryRunID string, options *QueryRunReadOptions) (*QueryRun, error)
 
+	// Logs retrieves the logs of a query run.
+	Logs(ctx context.Context, queryRunID string) (io.Reader, error)
+
 	// Cancel a query run by its ID.
 	Cancel(ctx context.Context, runID string) error
 
@@ -46,18 +50,17 @@ type QueryRunCreateOptions struct {
 	// https://jsonapi.org/format/#crud-creating
 	Type string `jsonapi:"primary,queries"`
 
-	// TerraformVersion specifies the Terraform version to use in this run.
-	// Only valid for plan-only runs; must be a valid Terraform version available to the organization.
+	// TerraformVersion specifies the Terraform version to use in this query run.
 	TerraformVersion *string `jsonapi:"attr,terraform-version,omitempty"`
 
 	Source QueryRunSource `jsonapi:"attr,source"`
 
-	// Specifies the configuration version to use for this run. If the
+	// Specifies the configuration version to use for this query run. If the
 	// configuration version object is omitted, the run will be created using the
 	// workspace's latest configuration version.
 	ConfigurationVersion *ConfigurationVersion `jsonapi:"relation,configuration-version"`
 
-	// Specifies the workspace where the run will be executed.
+	// Specifies the workspace where the query run will be executed.
 	Workspace *Workspace `jsonapi:"relation,workspace"`
 
 	// Variables allows you to specify terraform input variables for
@@ -81,6 +84,19 @@ type QueryRunIncludeOpt string
 
 // QueryRunSource represents the available sources for query runs.
 type QueryRunSource string
+
+// QueryRunStatus is the query run state
+type QueryRunStatus string
+
+// List all available run statuses.
+const (
+	QueryRunCanceled QueryRunStatus = "canceled"
+	QueryRunErrored  QueryRunStatus = "errored"
+	QueryRunPending  QueryRunStatus = "pending"
+	QueryRunQueued   QueryRunStatus = "queued"
+	QueryRunRunning  QueryRunStatus = "running"
+	QueryRunFinished QueryRunStatus = "finished"
+)
 
 // List all available run sources.
 const (
@@ -116,13 +132,14 @@ type QueryRunReadOptions struct {
 
 // QueryRun represents a Terraform Enterprise query run.
 type QueryRun struct {
-	ID               string               `jsonapi:"primary,queries"`
-	CreatedAt        time.Time            `jsonapi:"attr,created-at,iso8601"`
-	Source           RunSource            `jsonapi:"attr,source"`
-	Status           RunStatus            `jsonapi:"attr,status"`
-	StatusTimestamps *RunStatusTimestamps `jsonapi:"attr,status-timestamps"`
-	TerraformVersion string               `jsonapi:"attr,terraform-version"`
-	Variables        []*RunVariableAttr   `jsonapi:"attr,variables"`
+	ID               string                    `jsonapi:"primary,queries"`
+	CreatedAt        time.Time                 `jsonapi:"attr,created-at,iso8601"`
+	Source           QueryRunSource            `jsonapi:"attr,source"`
+	Status           QueryRunStatus            `jsonapi:"attr,status"`
+	StatusTimestamps *QueryRunStatusTimestamps `jsonapi:"attr,status-timestamps"`
+	TerraformVersion string                    `jsonapi:"attr,terraform-version"`
+	Variables        []*RunVariableAttr        `jsonapi:"attr,variables"`
+	LogReadURL       string                    `jsonapi:"attr,log-read-url"`
 
 	// Relations
 	ConfigurationVersion *ConfigurationVersion `jsonapi:"relation,configuration-version"`
@@ -204,6 +221,49 @@ func (r *queryRuns) ReadWithOptions(ctx context.Context, queryRunID string, opti
 	}
 
 	return &run, nil
+}
+
+func (r *queryRuns) Logs(ctx context.Context, queryRunID string) (io.Reader, error) {
+	if !validStringID(&queryRunID) {
+		return nil, ErrInvalidQueryRunID
+	}
+
+	// Get the query to make sure it exists.
+	q, err := r.Read(ctx, queryRunID)
+	if err != nil {
+		return nil, err
+	}
+
+	// Return an error if the log URL is empty.
+	if q.LogReadURL == "" {
+		return nil, fmt.Errorf("query %s does not have a log URL", queryRunID)
+	}
+
+	u, err := url.Parse(q.LogReadURL)
+	if err != nil {
+		return nil, fmt.Errorf("invalid log URL: %w", err)
+	}
+
+	done := func() (bool, error) {
+		p, err := r.Read(ctx, q.ID)
+		if err != nil {
+			return false, err
+		}
+
+		switch p.Status {
+		case QueryRunCanceled, QueryRunErrored, QueryRunFinished:
+			return true, nil
+		default:
+			return false, nil
+		}
+	}
+
+	return &LogReader{
+		client: r.client,
+		ctx:    ctx,
+		done:   done,
+		logURL: u,
+	}, nil
 }
 
 func (r *queryRuns) Cancel(ctx context.Context, queryRunID string) error {
