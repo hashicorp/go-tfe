@@ -1,10 +1,9 @@
 # Unreleased
 
-# v1.91.0
-
 ## Enhancements
 
 * Adds `CreatedAt` field to `AgentPool` by @jpadrianoGo [#1150](https://github.com/hashicorp/go-tfe/pull/1150)
+* Adds `Logs` method to `QueryRuns`, which is EXPERIMENTAL, SUBJECT TO CHANGE, and may not be available to all users by @brandonc [#1186](https://github.com/hashicorp/go-tfe/pull/1186)
 
 # v1.90.0
 
