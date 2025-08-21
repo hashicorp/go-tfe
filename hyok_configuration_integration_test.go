@@ -482,14 +482,14 @@ func TestHYOKConfigurationUpdate(t *testing.T) {
 		t.Cleanup(hyokCleanup)
 
 		name := randomStringWithoutSpecialChar(t)
-		kekId := "arn:aws:kms:us-east-1:123456789012:key/this-is-a-bad-key"
+		kekID := "arn:aws:kms:us-east-1:123456789012:key/this-is-a-bad-key"
 
 		opts := HYOKConfigurationsUpdateOptions{
 			Name: &name,
 			KMSOptions: &KMSOptions{
 				KeyRegion: "us-east-2",
 			},
-			KEKID:     &kekId,
+			KEKID:     &kekID,
 			AgentPool: agentPool,
 		}
 
