@@ -121,17 +121,9 @@ type HYOKConfigurationsUpdateOptions struct {
 	AgentPool         *AgentPool                   `jsonapi:"relation,agent-pool"`
 }
 
-func (h *HYOKConfigurationsListOptions) valid() error {
-	return nil
-}
-
 func (h hyokConfigurations) List(ctx context.Context, organization string, options *HYOKConfigurationsListOptions) (*HYOKConfigurationsList, error) {
 	if !validStringID(&organization) {
 		return nil, ErrInvalidOrg
-	}
-
-	if err := options.valid(); err != nil {
-		return nil, err
 	}
 
 	req, err := h.client.NewRequest("GET", fmt.Sprintf("organizations/%s/hyok-configurations", organization), options)
@@ -148,17 +140,9 @@ func (h hyokConfigurations) List(ctx context.Context, organization string, optio
 	return hyokConfigurationList, nil
 }
 
-func (h *HYOKConfigurationsReadOptions) valid() error {
-	return nil
-}
-
 func (h hyokConfigurations) Read(ctx context.Context, hyokID string, options *HYOKConfigurationsReadOptions) (*HYOKConfiguration, error) {
 	if !validStringID(&hyokID) {
 		return nil, ErrInvalidHYOK
-	}
-
-	if err := options.valid(); err != nil {
-		return nil, err
 	}
 
 	req, err := h.client.NewRequest("GET", fmt.Sprintf("hyok-configurations/%s", url.PathEscape(hyokID)), options)
@@ -242,17 +226,9 @@ func (h hyokConfigurations) Create(ctx context.Context, organization string, opt
 	return hyokConfiguration, nil
 }
 
-func (h *HYOKConfigurationsUpdateOptions) valid() error {
-	return nil
-}
-
 func (h hyokConfigurations) Update(ctx context.Context, hyokID string, options HYOKConfigurationsUpdateOptions) (*HYOKConfiguration, error) {
 	if !validStringID(&hyokID) {
 		return nil, ErrInvalidHYOK
-	}
-
-	if err := options.valid(); err != nil {
-		return nil, err
 	}
 
 	req, err := h.client.NewRequest("PATCH", fmt.Sprintf("hyok-configurations/%s", url.PathEscape(hyokID)), &options)
