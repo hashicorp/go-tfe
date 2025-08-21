@@ -24,9 +24,6 @@ func TestVaultOIDCConfigurationCreate(t *testing.T) {
 			Namespace:        "admin",
 			JWTAuthPath:      "jwt",
 			TLSCACertificate: randomString(t),
-			Organization: &Organization{
-				Name: orgTest.Name,
-			},
 		}
 
 		oidcConfig, err := client.VaultOIDCConfigurations.Create(ctx, orgTest.Name, opts)
@@ -44,9 +41,6 @@ func TestVaultOIDCConfigurationCreate(t *testing.T) {
 			Namespace:        "admin",
 			JWTAuthPath:      "jwt",
 			TLSCACertificate: randomString(t),
-			Organization: &Organization{
-				Name: orgTest.Name,
-			},
 		}
 
 		_, err := client.VaultOIDCConfigurations.Create(ctx, orgTest.Name, opts)
@@ -59,9 +53,6 @@ func TestVaultOIDCConfigurationCreate(t *testing.T) {
 			Namespace:        "admin",
 			JWTAuthPath:      "jwt",
 			TLSCACertificate: randomString(t),
-			Organization: &Organization{
-				Name: orgTest.Name,
-			},
 		}
 
 		_, err := client.VaultOIDCConfigurations.Create(ctx, orgTest.Name, opts)
@@ -112,9 +103,6 @@ func TestVaultOIDCConfigurationUpdate(t *testing.T) {
 			Namespace:        randomString(t),
 			JWTAuthPath:      randomString(t),
 			TLSCACertificate: randomString(t),
-			Organization: &Organization{
-				Name: orgTest.Name,
-			},
 		}
 		updated, err := client.VaultOIDCConfigurations.Update(ctx, oidcConfig.ID, opts)
 		require.NoError(t, err)
@@ -131,9 +119,6 @@ func TestVaultOIDCConfigurationUpdate(t *testing.T) {
 			Namespace:        randomString(t),
 			JWTAuthPath:      randomString(t),
 			TLSCACertificate: randomString(t),
-			Organization: &Organization{
-				Name: orgTest.Name,
-			},
 		}
 
 		_, err := client.VaultOIDCConfigurations.Update(ctx, orgTest.Name, opts)
@@ -146,9 +131,6 @@ func TestVaultOIDCConfigurationUpdate(t *testing.T) {
 			Namespace:        randomString(t),
 			JWTAuthPath:      randomString(t),
 			TLSCACertificate: randomString(t),
-			Organization: &Organization{
-				Name: orgTest.Name,
-			},
 		}
 
 		_, err := client.VaultOIDCConfigurations.Update(ctx, orgTest.Name, opts)

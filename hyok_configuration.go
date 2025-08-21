@@ -99,7 +99,6 @@ type HYOKConfigurationsCreateOptions struct {
 	Name       string      `jsonapi:"attr,name"`
 
 	// Relationships
-	Organization      *Organization                `jsonapi:"relation,organization"`
 	OIDCConfiguration *OIDCConfigurationTypeChoice `jsonapi:"polyrelation,oidc-configuration"`
 	AgentPool         *AgentPool                   `jsonapi:"relation,agent-pool"`
 }
@@ -118,7 +117,6 @@ type HYOKConfigurationsUpdateOptions struct {
 	Primary    bool        `jsonapi:"attr,primary"`
 
 	// Relationships
-	Organization      *Organization                `jsonapi:"relation,organization"`
 	OIDCConfiguration *OIDCConfigurationTypeChoice `jsonapi:"polyrelation,oidc-configuration"`
 	AgentPool         *AgentPool                   `jsonapi:"relation,agent-pool"`
 }

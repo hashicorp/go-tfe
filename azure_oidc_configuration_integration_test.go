@@ -22,9 +22,6 @@ func TestAzureOIDCConfigurationCreate(t *testing.T) {
 			ClientID:       "your-azure-client-id",
 			SubscriptionID: "your-azure-subscription-id",
 			TenantID:       "your-azure-tenant-id",
-			Organization: &Organization{
-				Name: orgTest.Name,
-			},
 		}
 
 		oidcConfig, err := client.AzureOIDCConfigurations.Create(ctx, orgTest.Name, opts)
@@ -39,9 +36,6 @@ func TestAzureOIDCConfigurationCreate(t *testing.T) {
 		opts := AzureOIDCConfigurationCreateOptions{
 			SubscriptionID: "your-azure-subscription-id",
 			TenantID:       "your-azure-tenant-id",
-			Organization: &Organization{
-				Name: orgTest.Name,
-			},
 		}
 
 		_, err := client.AzureOIDCConfigurations.Create(ctx, orgTest.Name, opts)
@@ -52,9 +46,6 @@ func TestAzureOIDCConfigurationCreate(t *testing.T) {
 		opts := AzureOIDCConfigurationCreateOptions{
 			ClientID: "your-azure-client-id",
 			TenantID: "your-azure-tenant-id",
-			Organization: &Organization{
-				Name: orgTest.Name,
-			},
 		}
 
 		_, err := client.AzureOIDCConfigurations.Create(ctx, orgTest.Name, opts)
@@ -65,9 +56,6 @@ func TestAzureOIDCConfigurationCreate(t *testing.T) {
 		opts := AzureOIDCConfigurationCreateOptions{
 			ClientID:       "your-azure-client-id",
 			SubscriptionID: "your-azure-subscription-id",
-			Organization: &Organization{
-				Name: orgTest.Name,
-			},
 		}
 
 		_, err := client.AzureOIDCConfigurations.Create(ctx, orgTest.Name, opts)
@@ -116,9 +104,6 @@ func TestAzureOIDCConfigurationUpdate(t *testing.T) {
 			ClientID:       "your-azure-client-id",
 			SubscriptionID: "your-azure-subscription-id",
 			TenantID:       "your-azure-tenant-id",
-			Organization: &Organization{
-				Name: orgTest.Name,
-			},
 		}
 		updated, err := client.AzureOIDCConfigurations.Update(ctx, oidcConfig.ID, opts)
 		require.NoError(t, err)
@@ -132,9 +117,6 @@ func TestAzureOIDCConfigurationUpdate(t *testing.T) {
 		opts := AzureOIDCConfigurationUpdateOptions{
 			SubscriptionID: "your-azure-subscription-id",
 			TenantID:       "your-azure-tenant-id",
-			Organization: &Organization{
-				Name: orgTest.Name,
-			},
 		}
 
 		_, err := client.AzureOIDCConfigurations.Update(ctx, orgTest.Name, opts)
@@ -145,9 +127,6 @@ func TestAzureOIDCConfigurationUpdate(t *testing.T) {
 		opts := AzureOIDCConfigurationUpdateOptions{
 			ClientID: "your-azure-client-id",
 			TenantID: "your-azure-tenant-id",
-			Organization: &Organization{
-				Name: orgTest.Name,
-			},
 		}
 
 		_, err := client.AzureOIDCConfigurations.Update(ctx, orgTest.Name, opts)
@@ -158,9 +137,6 @@ func TestAzureOIDCConfigurationUpdate(t *testing.T) {
 		opts := AzureOIDCConfigurationUpdateOptions{
 			ClientID:       "your-azure-client-id",
 			SubscriptionID: "your-azure-subscription-id",
-			Organization: &Organization{
-				Name: orgTest.Name,
-			},
 		}
 
 		_, err := client.AzureOIDCConfigurations.Update(ctx, orgTest.Name, opts)

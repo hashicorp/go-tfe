@@ -36,8 +36,6 @@ type GCPOIDCConfigurationCreateOptions struct {
 	ServiceAccountEmail  string `jsonapi:"attr,service-account-email"`
 	ProjectNumber        string `jsonapi:"attr,project-number"`
 	WorkloadProviderName string `jsonapi:"attr,workload-provider-name"`
-
-	Organization *Organization `jsonapi:"relation,organization"`
 }
 
 type GCPOIDCConfigurationUpdateOptions struct {
@@ -45,8 +43,6 @@ type GCPOIDCConfigurationUpdateOptions struct {
 	ServiceAccountEmail  string `jsonapi:"attr,service-account-email"`
 	ProjectNumber        string `jsonapi:"attr,project-number"`
 	WorkloadProviderName string `jsonapi:"attr,workload-provider-name"`
-
-	Organization *Organization `jsonapi:"relation,organization"`
 }
 
 func (o *GCPOIDCConfigurationCreateOptions) valid() error {

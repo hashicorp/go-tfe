@@ -40,8 +40,6 @@ type VaultOIDCConfigurationCreateOptions struct {
 	Namespace        string `jsonapi:"attr,namespace"`
 	JWTAuthPath      string `jsonapi:"attr,auth-path"`
 	TLSCACertificate string `jsonapi:"attr,encoded-cacert"`
-
-	Organization *Organization `jsonapi:"relation,organization"`
 }
 
 type VaultOIDCConfigurationUpdateOptions struct {
@@ -51,8 +49,6 @@ type VaultOIDCConfigurationUpdateOptions struct {
 	Namespace        string `jsonapi:"attr,namespace"`
 	JWTAuthPath      string `jsonapi:"attr,auth-path"`
 	TLSCACertificate string `jsonapi:"attr,encoded-cacert"`
-
-	Organization *Organization `jsonapi:"relation,organization"`
 }
 
 func (o *VaultOIDCConfigurationCreateOptions) valid() error {

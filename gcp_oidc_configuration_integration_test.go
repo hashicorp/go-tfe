@@ -22,9 +22,6 @@ func TestGCPOIDCConfigurationCreate(t *testing.T) {
 			ServiceAccountEmail:  "updated-service-account@example.iam.gserviceaccount.com",
 			ProjectNumber:        "123456789012",
 			WorkloadProviderName: randomString(t),
-			Organization: &Organization{
-				Name: orgTest.Name,
-			},
 		}
 
 		oidcConfig, err := client.GCPOIDCConfigurations.Create(ctx, orgTest.Name, opts)
@@ -39,9 +36,6 @@ func TestGCPOIDCConfigurationCreate(t *testing.T) {
 		opts := GCPOIDCConfigurationCreateOptions{
 			ServiceAccountEmail: "updated-service-account@example.iam.gserviceaccount.com",
 			ProjectNumber:       "123456789012",
-			Organization: &Organization{
-				Name: orgTest.Name,
-			},
 		}
 
 		_, err := client.GCPOIDCConfigurations.Create(ctx, orgTest.Name, opts)
@@ -52,9 +46,6 @@ func TestGCPOIDCConfigurationCreate(t *testing.T) {
 		opts := GCPOIDCConfigurationCreateOptions{
 			ProjectNumber:        "123456789012",
 			WorkloadProviderName: randomString(t),
-			Organization: &Organization{
-				Name: orgTest.Name,
-			},
 		}
 
 		_, err := client.GCPOIDCConfigurations.Create(ctx, orgTest.Name, opts)
@@ -65,9 +56,6 @@ func TestGCPOIDCConfigurationCreate(t *testing.T) {
 		opts := GCPOIDCConfigurationCreateOptions{
 			ServiceAccountEmail:  "updated-service-account@example.iam.gserviceaccount.com",
 			WorkloadProviderName: randomString(t),
-			Organization: &Organization{
-				Name: orgTest.Name,
-			},
 		}
 
 		_, err := client.GCPOIDCConfigurations.Create(ctx, orgTest.Name, opts)
@@ -116,9 +104,6 @@ func TestGCPOIDCConfigurationUpdate(t *testing.T) {
 			ServiceAccountEmail:  "updated-service-account@example.iam.gserviceaccount.com",
 			ProjectNumber:        "123456789012",
 			WorkloadProviderName: randomString(t),
-			Organization: &Organization{
-				Name: orgTest.Name,
-			},
 		}
 
 		updated, err := client.GCPOIDCConfigurations.Update(ctx, oidcConfig.ID, opts)
@@ -133,9 +118,6 @@ func TestGCPOIDCConfigurationUpdate(t *testing.T) {
 		opts := GCPOIDCConfigurationUpdateOptions{
 			ServiceAccountEmail: "updated-service-account@example.iam.gserviceaccount.com",
 			ProjectNumber:       "123456789012",
-			Organization: &Organization{
-				Name: orgTest.Name,
-			},
 		}
 
 		_, err := client.GCPOIDCConfigurations.Update(ctx, oidcConfig.ID, opts)
@@ -146,9 +128,6 @@ func TestGCPOIDCConfigurationUpdate(t *testing.T) {
 		opts := GCPOIDCConfigurationUpdateOptions{
 			ProjectNumber:        "123456789012",
 			WorkloadProviderName: randomString(t),
-			Organization: &Organization{
-				Name: orgTest.Name,
-			},
 		}
 
 		_, err := client.GCPOIDCConfigurations.Update(ctx, oidcConfig.ID, opts)
@@ -159,9 +138,6 @@ func TestGCPOIDCConfigurationUpdate(t *testing.T) {
 		opts := GCPOIDCConfigurationUpdateOptions{
 			ServiceAccountEmail:  "updated-service-account@example.iam.gserviceaccount.com",
 			WorkloadProviderName: randomString(t),
-			Organization: &Organization{
-				Name: orgTest.Name,
-			},
 		}
 
 		_, err := client.GCPOIDCConfigurations.Update(ctx, oidcConfig.ID, opts)

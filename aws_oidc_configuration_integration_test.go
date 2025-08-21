@@ -20,9 +20,6 @@ func TestAWSOIDCConfigurationCreate(t *testing.T) {
 	t.Run("with valid options", func(t *testing.T) {
 		opts := AWSOIDCConfigurationCreateOptions{
 			RoleARN: "arn:aws:iam::123456789012:role/some-role",
-			Organization: &Organization{
-				Name: orgTest.Name,
-			},
 		}
 
 		oidcConfig, err := client.AWSOIDCConfigurations.Create(ctx, orgTest.Name, opts)
@@ -32,11 +29,7 @@ func TestAWSOIDCConfigurationCreate(t *testing.T) {
 	})
 
 	t.Run("missing role ARN", func(t *testing.T) {
-		opts := AWSOIDCConfigurationCreateOptions{
-			Organization: &Organization{
-				Name: orgTest.Name,
-			},
-		}
+		opts := AWSOIDCConfigurationCreateOptions{}
 
 		_, err := client.AWSOIDCConfigurations.Create(ctx, orgTest.Name, opts)
 		assert.ErrorIs(t, err, ErrRequiredRoleARN)
@@ -82,9 +75,6 @@ func TestAWSOIDCConfigurationsUpdate(t *testing.T) {
 	t.Run("with valid options", func(t *testing.T) {
 		opts := AWSOIDCConfigurationUpdateOptions{
 			RoleARN: "arn:aws:iam::123456789012:role/some-role-2",
-			Organization: &Organization{
-				Name: orgTest.Name,
-			},
 		}
 		updated, err := client.AWSOIDCConfigurations.Update(ctx, oidcConfig.ID, opts)
 		require.NoError(t, err)
@@ -93,11 +83,7 @@ func TestAWSOIDCConfigurationsUpdate(t *testing.T) {
 	})
 
 	t.Run("missing role ARN", func(t *testing.T) {
-		opts := AWSOIDCConfigurationUpdateOptions{
-			Organization: &Organization{
-				Name: orgTest.Name,
-			},
-		}
+		opts := AWSOIDCConfigurationUpdateOptions{}
 		_, err := client.AWSOIDCConfigurations.Update(ctx, oidcConfig.ID, opts)
 		assert.ErrorIs(t, err, ErrRequiredRoleARN)
 	})

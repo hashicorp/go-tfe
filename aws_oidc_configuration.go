@@ -34,15 +34,11 @@ type AWSOIDCConfiguration struct {
 type AWSOIDCConfigurationCreateOptions struct {
 	ID      string `jsonapi:"primary,aws-oidc-configurations"`
 	RoleARN string `jsonapi:"attr,role-arn"`
-
-	Organization *Organization `jsonapi:"relation,organization"`
 }
 
 type AWSOIDCConfigurationUpdateOptions struct {
 	ID      string `jsonapi:"primary,aws-oidc-configurations"`
 	RoleARN string `jsonapi:"attr,role-arn"`
-
-	Organization *Organization `jsonapi:"relation,organization"`
 }
 
 func (o *AWSOIDCConfigurationCreateOptions) valid() error {

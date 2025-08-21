@@ -36,8 +36,6 @@ type AzureOIDCConfigurationCreateOptions struct {
 	ClientID       string `jsonapi:"attr,client-id"`
 	SubscriptionID string `jsonapi:"attr,subscription-id"`
 	TenantID       string `jsonapi:"attr,tenant-id"`
-
-	Organization *Organization `jsonapi:"relation,organization"`
 }
 
 type AzureOIDCConfigurationUpdateOptions struct {
@@ -45,8 +43,6 @@ type AzureOIDCConfigurationUpdateOptions struct {
 	ClientID       string `jsonapi:"attr,client-id"`
 	SubscriptionID string `jsonapi:"attr,subscription-id"`
 	TenantID       string `jsonapi:"attr,tenant-id"`
-
-	Organization *Organization `jsonapi:"relation,organization"`
 }
 
 func (o *AzureOIDCConfigurationCreateOptions) valid() error {
