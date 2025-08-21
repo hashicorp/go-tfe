@@ -507,7 +507,7 @@ func TestHYOKConfigurationUpdate(t *testing.T) {
 		t.Cleanup(hyokCleanup)
 
 		name := randomStringWithoutSpecialChar(t)
-		kekId := randomStringWithoutSpecialChar(t)
+		kekID := randomStringWithoutSpecialChar(t)
 
 		opts := HYOKConfigurationsUpdateOptions{
 			Name: &name,
@@ -515,7 +515,7 @@ func TestHYOKConfigurationUpdate(t *testing.T) {
 				KeyLocation: "ca",
 				KeyRingID:   randomStringWithoutSpecialChar(t),
 			},
-			KEKID:     &kekId,
+			KEKID:     &kekID,
 			AgentPool: agentPool,
 		}
 
