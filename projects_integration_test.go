@@ -224,7 +224,7 @@ func TestProjectsRead(t *testing.T) {
 		t.Cleanup(defaultExecutionOrgTestCleanup)
 
 		options := ProjectCreateOptions{
-			Name: fmt.Sprintf("tst-" + randomString(t)[0:20]),
+			Name: fmt.Sprintf("tst-%s", randomString(t)[0:20]),
 			SettingOverwrites: &ProjectSettingOverwrites{
 				ExecutionMode: Bool(false),
 				AgentPool:     Bool(false),

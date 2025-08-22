@@ -247,7 +247,10 @@ func TestConfigurationVersionsReadWithOptions(t *testing.T) {
 
 	require.NoError(t, err)
 
-	cv := w.(*Workspace).CurrentRun.ConfigurationVersion
+	ws, ok := w.(*Workspace)
+	require.True(t, ok, "Expected Workspace, got %T", w)
+
+	cv := ws.CurrentRun.ConfigurationVersion
 
 	t.Run("when the configuration version exists", func(t *testing.T) {
 		options := &ConfigurationVersionReadOptions{

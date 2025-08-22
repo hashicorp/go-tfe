@@ -44,13 +44,19 @@ func ContextWithResponseHeaderHook(parentCtx context.Context, cb func(status int
 	return context.WithValue(parentCtx, contextResponseHeaderHookKey, finalCb)
 }
 
-func contextResponseHeaderHook(ctx context.Context) func(int, http.Header) {
+func contextResponseHeaderHook(ctx context.Context) (func(int, http.Header), error) {
 	cbI := ctx.Value(contextResponseHeaderHookKey)
 	if cbI == nil {
 		// Stub callback that does absolutely nothing, then.
-		return func(int, http.Header) {}
+		return func(int, http.Header) {}, nil
 	}
-	return cbI.(func(int, http.Header))
+
+	cb, ok := cbI.(func(int, http.Header))
+	if !ok {
+		return nil, fmt.Errorf("context has response header hook of invalid type %T", cbI)
+	}
+
+	return cb, nil
 }
 
 // contextResponseHeaderHookKey is the type of the internal key used to store

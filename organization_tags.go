@@ -151,7 +151,7 @@ func (s *organizationTags) AddWorkspaces(ctx context.Context, tag string, option
 }
 
 func (opts *OrganizationTagsDeleteOptions) valid() error {
-	if opts.IDs == nil || len(opts.IDs) == 0 {
+	if len(opts.IDs) == 0 {
 		return ErrRequiredTagID
 	}
 
@@ -166,7 +166,7 @@ func (opts *OrganizationTagsDeleteOptions) valid() error {
 }
 
 func (w *AddWorkspacesToTagOptions) valid() error {
-	if w.WorkspaceIDs == nil || len(w.WorkspaceIDs) == 0 {
+	if len(w.WorkspaceIDs) == 0 {
 		return ErrRequiredTagWorkspaceID
 	}
 
