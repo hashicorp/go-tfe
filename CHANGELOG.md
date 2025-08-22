@@ -1,5 +1,7 @@
 # Unreleased
 
+# v1.91.0
+
 ## Enhancements
 
 * Adds `Logs` method to `QueryRuns`, which is EXPERIMENTAL, SUBJECT TO CHANGE, and may not be available to all users by @brandonc [#1186](https://github.com/hashicorp/go-tfe/pull/1186)
