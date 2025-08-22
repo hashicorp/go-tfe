@@ -108,6 +108,23 @@ func TestAgentTokensRead(t *testing.T) {
 	})
 }
 
+func TestAgentTokensReadCreatedBy(t *testing.T) {
+	skipIfEnterprise(t)
+
+	client := testClient(t)
+	ctx := context.Background()
+
+	apTest, apTestCleanup := createAgentPool(t, client, nil)
+	defer apTestCleanup()
+
+	token, tokenTestCleanup := createAgentToken(t, client, apTest)
+	defer tokenTestCleanup()
+
+	at, err := client.AgentTokens.Read(ctx, token.ID)
+	require.NoError(t, err)
+	require.NotNil(t, at.CreatedBy)
+}
+
 func TestAgentTokensDelete(t *testing.T) {
 	skipIfEnterprise(t)
 
