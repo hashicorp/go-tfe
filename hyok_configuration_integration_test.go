@@ -13,9 +13,9 @@ import (
 //  1. set skipHYOKIntegrationTests to false. The default value is true.
 //  2. set hyokOrganizationName to the name of an organization that can use HYOK.
 //  3. set hyokAgentPoolID to an agent pool with running agents that have HYOK capabilities turned on.
-const skipHYOKIntegrationTests = false
-const hyokOrganizationName = "hippos-for-sale"
-const hyokAgentPoolID = "apool-vUbcDykKhvoezDoP"
+const skipHYOKIntegrationTests = true
+const hyokOrganizationName = ""
+const hyokAgentPoolID = ""
 
 func TestHYOKConfigurationCreateRevokeDelete(t *testing.T) {
 	if skipHYOKIntegrationTests {
