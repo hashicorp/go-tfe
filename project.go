@@ -65,17 +65,25 @@ type ProjectList struct {
 
 // Project represents a Terraform Enterprise project
 type Project struct {
-	ID        string `jsonapi:"primary,projects"`
-	IsUnified bool   `jsonapi:"attr,is-unified"`
-	Name      string `jsonapi:"attr,name"`
-
-	Description string `jsonapi:"attr,description"`
-
+	ID                          string                       `jsonapi:"primary,projects"`
 	AutoDestroyActivityDuration jsonapi.NullableAttr[string] `jsonapi:"attr,auto-destroy-activity-duration,omitempty"`
+	DefaultExecutionMode        string                       `jsonapi:"attr,default-execution-mode"`
+	Description                 string                       `jsonapi:"attr,description"`
+	IsUnified                   bool                         `jsonapi:"attr,is-unified"`
+	Name                        string                       `jsonapi:"attr,name"`
+	SettingOverwrites           *ProjectSettingOverwrites    `jsonapi:"attr,setting-overwrites"`
 
 	// Relations
-	Organization         *Organization          `jsonapi:"relation,organization"`
+	DefaultAgentPool     *AgentPool             `jsonapi:"relation,default-agent-pool"`
 	EffectiveTagBindings []*EffectiveTagBinding `jsonapi:"relation,effective-tag-bindings"`
+	Organization         *Organization          `jsonapi:"relation,organization"`
+}
+
+// Note: the fields of this struct are bool pointers instead of bool values, in order to simplify support for
+// future TFE versions that support *some but not all* of the inherited defaults that go-tfe knows about.
+type ProjectSettingOverwrites struct {
+	ExecutionMode *bool `jsonapi:"attr,default-execution-mode"`
+	AgentPool     *bool `jsonapi:"attr,default-agent-pool"`
 }
 
 type ProjectIncludeOpt string
@@ -130,6 +138,25 @@ type ProjectCreateOptions struct {
 	// after workspace activity to trigger a destroy run. The format should roughly
 	// match a Go duration string limited to days and hours, e.g. "24h" or "1d".
 	AutoDestroyActivityDuration jsonapi.NullableAttr[string] `jsonapi:"attr,auto-destroy-activity-duration,omitempty"`
+
+	// Optional: DefaultExecutionMode the default execution mode for workspaces in the project
+	DefaultExecutionMode *string `jsonapi:"attr,default-execution-mode,omitempty"`
+
+	// Optional: DefaultAgentPoolID default agent pool for workspaces in the project,
+	// required when DefaultExecutionMode is set to `agent`
+	DefaultAgentPoolID *string `jsonapi:"attr,default-agent-pool-id,omitempty"`
+
+	// Optional: Struct of booleans, which indicate whether the project
+	// specifies its own values for various settings. If you mark a setting as
+	// `false` in this struct, it will clear the project's existing value for
+	// that setting and defer to the default value that its organization provides.
+	//
+	// In general, it's not necessary to mark a setting as `true` in this
+	// struct; if you provide a literal value for a setting, HCP Terraform will
+	// automatically update its overwrites field to `true`. If you do choose to
+	// manually mark a setting as overwritten, you must provide a value for that
+	// setting at the same time.
+	SettingOverwrites *ProjectSettingOverwrites `jsonapi:"attr,setting-overwrites,omitempty"`
 }
 
 // ProjectUpdateOptions represents the options for updating a project
@@ -154,6 +181,25 @@ type ProjectUpdateOptions struct {
 	// after workspace activity to trigger a destroy run. The format should roughly
 	// match a Go duration string limited to days and hours, e.g. "24h" or "1d".
 	AutoDestroyActivityDuration jsonapi.NullableAttr[string] `jsonapi:"attr,auto-destroy-activity-duration,omitempty"`
+
+	// Optional: DefaultExecutionMode the default execution mode for workspaces
+	DefaultExecutionMode *string `jsonapi:"attr,default-execution-mode,omitempty"`
+
+	// Optional: DefaultAgentPoolID default agent pool for workspaces in the project,
+	// required when DefaultExecutionMode is set to `agent`
+	DefaultAgentPoolID *string `jsonapi:"attr,default-agent-pool-id,omitempty"`
+
+	// Optional: Struct of booleans, which indicate whether the project
+	// specifies its own values for various settings. If you mark a setting as
+	// `false` in this struct, it will clear the project's existing value for
+	// that setting and defer to the default value that its organization provides.
+	//
+	// In general, it's not necessary to mark a setting as `true` in this
+	// struct; if you provide a literal value for a setting, HCP Terraform will
+	// automatically update its overwrites field to `true`. If you do choose to
+	// manually mark a setting as overwritten, you must provide a value for that
+	// setting at the same time.
+	SettingOverwrites *ProjectSettingOverwrites `jsonapi:"attr,setting-overwrites,omitempty"`
 }
 
 // ProjectAddTagBindingsOptions represents the options for adding tag bindings
