@@ -629,6 +629,11 @@ func (a *AWSOIDCConfiguration) createHYOKConfiguration(t *testing.T, client *Cli
 				"HYOKConfigurations: %s\nError: %s", hyokConfig.ID, err)
 		}
 
+		_, err = waitForHYOKConfigurationStatus(t, ctx, client, hyokConfig.ID, HYOKConfigurationRevoked)
+		if err != nil {
+			t.Errorf("Timed out waiting for HYOK configuration %s to revoke", hyokConfig.ID)
+		}
+
 		if err := client.HYOKConfigurations.Delete(ctx, hyokConfig.ID); err != nil {
 			t.Errorf("Error removing HYOK Configuration! WARNING: Dangling resources\n"+
 				"may exist! The full error is shown below.\n\n"+
@@ -700,6 +705,11 @@ func (a *AzureOIDCConfiguration) createHYOKConfiguration(t *testing.T, client *C
 			t.Errorf("Error removing HYOK Configuration! WARNING: Dangling resources\n"+
 				"may exist! The full error is shown below.\n\n"+
 				"HYOKConfigurations: %s\nError: %s", hyokConfig.ID, err)
+		}
+
+		_, err = waitForHYOKConfigurationStatus(t, ctx, client, hyokConfig.ID, HYOKConfigurationRevoked)
+		if err != nil {
+			t.Errorf("Timed out waiting for HYOK configuration %s to revoke", hyokConfig.ID)
 		}
 
 		if err := client.HYOKConfigurations.Delete(ctx, hyokConfig.ID); err != nil {
@@ -774,6 +784,11 @@ func (g *GCPOIDCConfiguration) createHYOKConfiguration(t *testing.T, client *Cli
 			t.Errorf("Error removing HYOK Configuration! WARNING: Dangling resources\n"+
 				"may exist! The full error is shown below.\n\n"+
 				"HYOKConfigurations: %s\nError: %s", hyokConfig.ID, err)
+		}
+
+		_, err = waitForHYOKConfigurationStatus(t, ctx, client, hyokConfig.ID, HYOKConfigurationRevoked)
+		if err != nil {
+			t.Errorf("Timed out waiting for HYOK configuration %s to revoke", hyokConfig.ID)
 		}
 
 		if err := client.HYOKConfigurations.Delete(ctx, hyokConfig.ID); err != nil {
@@ -851,6 +866,11 @@ func (v *VaultOIDCConfiguration) createHYOKConfiguration(t *testing.T, client *C
 				"HYOKConfigurations: %s\nError: %s", hyokConfig.ID, err)
 		}
 
+		_, err = waitForHYOKConfigurationStatus(t, ctx, client, hyokConfig.ID, HYOKConfigurationRevoked)
+		if err != nil {
+			t.Errorf("Timed out waiting for HYOK configuration %s to revoke", hyokConfig.ID)
+		}
+
 		if err := client.HYOKConfigurations.Delete(ctx, hyokConfig.ID); err != nil {
 			t.Errorf("Error removing HYOK Configuration! WARNING: Dangling resources\n"+
 				"may exist! The full error is shown below.\n\n"+
@@ -861,6 +881,23 @@ func (v *VaultOIDCConfiguration) createHYOKConfiguration(t *testing.T, client *C
 			orgCleanup()
 		}
 	}
+}
+
+func waitForHYOKConfigurationStatus(t *testing.T, ctx context.Context, client *Client, hyokID string, status HYOKConfigurationStatus) (interface{}, error) {
+	t.Helper()
+
+	return retryPatiently(func() (interface{}, error) {
+		fetched, err := client.HYOKConfigurations.Read(ctx, hyokID, nil)
+		if err != nil {
+			return nil, err
+		}
+
+		if fetched.Status == status {
+			return fetched, nil
+		}
+
+		return nil, fmt.Errorf("HYOK Configuration is not %s! HYOKConfiguration: %s\nStatus: %s", status, hyokID, fetched.Status)
+	})
 }
 
 func createNotificationConfiguration(t *testing.T, client *Client, w *Workspace, options *NotificationConfigurationCreateOptions) (*NotificationConfiguration, func()) {

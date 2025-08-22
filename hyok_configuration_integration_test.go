@@ -63,13 +63,9 @@ func TestHYOKConfigurationCreateRevokeDelete(t *testing.T) {
 
 		// Must revoke and delete HYOK config or else agent pool and OIDC configs cannot be cleaned up
 		err = client.HYOKConfigurations.Revoke(ctx, created.ID)
-		if err != nil {
-			require.NoError(t, err)
-		}
-
-		fetched, err := client.HYOKConfigurations.Read(ctx, created.ID, nil)
 		require.NoError(t, err)
-		assert.True(t, fetched.Status == HYOKConfigurationRevoked || fetched.Status == HYOKConfigurationRevoking)
+		_, err = waitForHYOKConfigurationStatus(t, ctx, client, created.ID, HYOKConfigurationRevoked)
+		require.NoError(t, err, "Timed out waiting for HYOK configuration %s to revoke", created.ID)
 
 		err = client.HYOKConfigurations.Delete(ctx, created.ID)
 		require.NoError(t, err)
@@ -128,10 +124,8 @@ func TestHYOKConfigurationCreateRevokeDelete(t *testing.T) {
 		// Must revoke and delete HYOK config or else agent pool and OIDC configs cannot be cleaned up
 		err = client.HYOKConfigurations.Revoke(ctx, created.ID)
 		require.NoError(t, err)
-
-		fetched, err := client.HYOKConfigurations.Read(ctx, created.ID, nil)
-		require.NoError(t, err)
-		assert.True(t, fetched.Status == HYOKConfigurationRevoked || fetched.Status == HYOKConfigurationRevoking)
+		_, err = waitForHYOKConfigurationStatus(t, ctx, client, created.ID, HYOKConfigurationRevoked)
+		require.NoError(t, err, "Timed out waiting for HYOK configuration %s to revoke", created.ID)
 
 		err = client.HYOKConfigurations.Delete(ctx, created.ID)
 		require.NoError(t, err)
@@ -206,10 +200,8 @@ func TestHYOKConfigurationCreateRevokeDelete(t *testing.T) {
 		// Must revoke and delete HYOK config or else agent pool and OIDC configs cannot be cleaned up
 		err = client.HYOKConfigurations.Revoke(ctx, created.ID)
 		require.NoError(t, err)
-
-		fetched, err := client.HYOKConfigurations.Read(ctx, created.ID, nil)
-		require.NoError(t, err)
-		assert.True(t, fetched.Status == HYOKConfigurationRevoked || fetched.Status == HYOKConfigurationRevoking)
+		_, err = waitForHYOKConfigurationStatus(t, ctx, client, created.ID, HYOKConfigurationRevoked)
+		require.NoError(t, err, "Timed out waiting for HYOK configuration %s to revoke", created.ID)
 
 		err = client.HYOKConfigurations.Delete(ctx, created.ID)
 		require.NoError(t, err)
@@ -241,10 +233,8 @@ func TestHYOKConfigurationCreateRevokeDelete(t *testing.T) {
 		// Must revoke and delete HYOK config or else agent pool and OIDC configs cannot be cleaned up
 		err = client.HYOKConfigurations.Revoke(ctx, created.ID)
 		require.NoError(t, err)
-
-		fetched, err := client.HYOKConfigurations.Read(ctx, created.ID, nil)
-		require.NoError(t, err)
-		assert.True(t, fetched.Status == HYOKConfigurationRevoked || fetched.Status == HYOKConfigurationRevoking)
+		_, err = waitForHYOKConfigurationStatus(t, ctx, client, created.ID, HYOKConfigurationRevoked)
+		require.NoError(t, err, "Timed out waiting for HYOK configuration %s to revoke", created.ID)
 
 		err = client.HYOKConfigurations.Delete(ctx, created.ID)
 		require.NoError(t, err)
