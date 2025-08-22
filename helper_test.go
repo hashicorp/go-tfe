@@ -1281,9 +1281,9 @@ func applyableStatuses(r *Run) []RunStatus {
 		}
 	} else if r.CostEstimate != nil {
 		return []RunStatus{RunCostEstimated}
-	} else {
-		return []RunStatus{RunPlanned}
 	}
+
+	return []RunStatus{RunPlanned}
 }
 
 // pollRunStatus will poll the given run until its status matches one of the given run statuses or the given context

@@ -35,7 +35,10 @@ func (r ClientRequest) Do(ctx context.Context, model interface{}) error {
 
 	// If the caller provided a response header hook then we'll call it
 	// once we have a response.
-	respHeaderHook := contextResponseHeaderHook(ctx)
+	respHeaderHook, err := contextResponseHeaderHook(ctx)
+	if err != nil {
+		return err
+	}
 
 	// Add the context to the request.
 	reqWithCxt := r.retryableRequest.WithContext(ctx)
@@ -94,7 +97,10 @@ func (r *ClientRequest) DoJSON(ctx context.Context, model any) error {
 
 	// If the caller provided a response header hook then we'll call it
 	// once we have a response.
-	respHeaderHook := contextResponseHeaderHook(ctx)
+	respHeaderHook, err := contextResponseHeaderHook(ctx)
+	if err != nil {
+		return err
+	}
 
 	// Execute the request and check the response.
 	resp, err := r.http.Do(contextReq)
