@@ -4,6 +4,7 @@
 
 * Adds `Logs` method to `QueryRuns`, which is EXPERIMENTAL, SUBJECT TO CHANGE, and may not be available to all users by @brandonc [#1186](https://github.com/hashicorp/go-tfe/pull/1186)
 * Adds `Source` field to `Workspace` by @jpadrianoGo [#1124](https://github.com/hashicorp/go-tfe/pull/1124)
+* Adds `CanceledAt`, `RunEvents`, `TriggerReason` field to `Run` by @jpadrianoGo [#1161](https://github.com/hashicorp/go-tfe/pull/1161)
 * Adds `CreatedAt` field to `AgentPool` by @jpadrianoGo [#1150](https://github.com/hashicorp/go-tfe/pull/1150)
 * Adds `CreatedBy` relation to `AgentToken` by @jpadrianoGo [#1149](https://github.com/hashicorp/go-tfe/pull/1149)
 
