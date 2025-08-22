@@ -32,14 +32,26 @@ type AzureOIDCConfiguration struct {
 }
 
 type AzureOIDCConfigurationCreateOptions struct {
-	ID             string `jsonapi:"primary,azure-oidc-configurations"`
+	// Type is a public field utilized by JSON:API to
+	// set the resource type via the field tag.
+	// It is not a user-defined value and does not need to be set.
+	// https://jsonapi.org/format/#crud-creating
+	Type string `jsonapi:"primary,azure-oidc-configurations"`
+
+	// Attributes
 	ClientID       string `jsonapi:"attr,client-id"`
 	SubscriptionID string `jsonapi:"attr,subscription-id"`
 	TenantID       string `jsonapi:"attr,tenant-id"`
 }
 
 type AzureOIDCConfigurationUpdateOptions struct {
-	ID             string  `jsonapi:"primary,azure-oidc-configurations"`
+	// Type is a public field utilized by JSON:API to
+	// set the resource type via the field tag.
+	// It is not a user-defined value and does not need to be set.
+	// https://jsonapi.org/format/#crud-creating
+	Type string `jsonapi:"primary,azure-oidc-configurations"`
+
+	// Attributes
 	ClientID       *string `jsonapi:"attr,client-id,omitempty"`
 	SubscriptionID *string `jsonapi:"attr,subscription-id,omitempty"`
 	TenantID       *string `jsonapi:"attr,tenant-id,omitempty"`

@@ -93,7 +93,11 @@ type HYOKConfigurationsListOptions struct {
 }
 
 type HYOKConfigurationsCreateOptions struct {
-	ID string `jsonapi:"primary,hyok-configurations"`
+	// Type is a public field utilized by JSON:API to
+	// set the resource type via the field tag.
+	// It is not a user-defined value and does not need to be set.
+	// https://jsonapi.org/format/#crud-creating
+	Type string `jsonapi:"primary,hyok-configurations"`
 
 	// Attributes
 	KEKID      string      `jsonapi:"attr,kek-id"`
@@ -110,7 +114,11 @@ type HYOKConfigurationsReadOptions struct {
 }
 
 type HYOKConfigurationsUpdateOptions struct {
-	ID string `jsonapi:"primary,hyok-configurations"`
+	// Type is a public field utilized by JSON:API to
+	// set the resource type via the field tag.
+	// It is not a user-defined value and does not need to be set.
+	// https://jsonapi.org/format/#crud-creating
+	Type string `jsonapi:"primary,hyok-configurations"`
 
 	// Attributes
 	KEKID      *string     `jsonapi:"attr,kek-id,omitempty"`

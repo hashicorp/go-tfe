@@ -32,14 +32,26 @@ type GCPOIDCConfiguration struct {
 }
 
 type GCPOIDCConfigurationCreateOptions struct {
-	ID                   string `jsonapi:"primary,gcp-oidc-configurations"`
+	// Type is a public field utilized by JSON:API to
+	// set the resource type via the field tag.
+	// It is not a user-defined value and does not need to be set.
+	// https://jsonapi.org/format/#crud-creating
+	Type string `jsonapi:"primary,gcp-oidc-configurations"`
+
+	// Attributes
 	ServiceAccountEmail  string `jsonapi:"attr,service-account-email"`
 	ProjectNumber        string `jsonapi:"attr,project-number"`
 	WorkloadProviderName string `jsonapi:"attr,workload-provider-name"`
 }
 
 type GCPOIDCConfigurationUpdateOptions struct {
-	ID                   string  `jsonapi:"primary,gcp-oidc-configurations"`
+	// Type is a public field utilized by JSON:API to
+	// set the resource type via the field tag.
+	// It is not a user-defined value and does not need to be set.
+	// https://jsonapi.org/format/#crud-creating
+	Type string `jsonapi:"primary,gcp-oidc-configurations"`
+
+	// Attributes
 	ServiceAccountEmail  *string `jsonapi:"attr,service-account-email,omitempty"`
 	ProjectNumber        *string `jsonapi:"attr,project-number,omitempty"`
 	WorkloadProviderName *string `jsonapi:"attr,workload-provider-name,omitempty"`

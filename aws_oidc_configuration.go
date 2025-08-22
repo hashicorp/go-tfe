@@ -32,12 +32,24 @@ type AWSOIDCConfiguration struct {
 }
 
 type AWSOIDCConfigurationCreateOptions struct {
-	ID      string `jsonapi:"primary,aws-oidc-configurations"`
+	// Type is a public field utilized by JSON:API to
+	// set the resource type via the field tag.
+	// It is not a user-defined value and does not need to be set.
+	// https://jsonapi.org/format/#crud-creating
+	Type string `jsonapi:"primary,aws-oidc-configurations"`
+
+	// Attributes
 	RoleARN string `jsonapi:"attr,role-arn"`
 }
 
 type AWSOIDCConfigurationUpdateOptions struct {
-	ID      string `jsonapi:"primary,aws-oidc-configurations"`
+	// Type is a public field utilized by JSON:API to
+	// set the resource type via the field tag.
+	// It is not a user-defined value and does not need to be set.
+	// https://jsonapi.org/format/#crud-creating
+	Type string `jsonapi:"primary,aws-oidc-configurations"`
+
+	// Attributes
 	RoleARN string `jsonapi:"attr,role-arn"`
 }
 

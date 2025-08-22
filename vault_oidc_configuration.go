@@ -34,7 +34,13 @@ type VaultOIDCConfiguration struct {
 }
 
 type VaultOIDCConfigurationCreateOptions struct {
-	ID               string `jsonapi:"primary,vault-oidc-configurations"`
+	// Type is a public field utilized by JSON:API to
+	// set the resource type via the field tag.
+	// It is not a user-defined value and does not need to be set.
+	// https://jsonapi.org/format/#crud-creating
+	Type string `jsonapi:"primary,vault-oidc-configurations"`
+
+	// Attributes
 	Address          string `jsonapi:"attr,address"`
 	RoleName         string `jsonapi:"attr,role"`
 	Namespace        string `jsonapi:"attr,namespace"`
@@ -43,7 +49,13 @@ type VaultOIDCConfigurationCreateOptions struct {
 }
 
 type VaultOIDCConfigurationUpdateOptions struct {
-	ID               string  `jsonapi:"primary,vault-oidc-configurations"`
+	// Type is a public field utilized by JSON:API to
+	// set the resource type via the field tag.
+	// It is not a user-defined value and does not need to be set.
+	// https://jsonapi.org/format/#crud-creating
+	Type string `jsonapi:"primary,vault-oidc-configurations"`
+
+	// Attributes
 	Address          *string `jsonapi:"attr,address,omitempty"`
 	RoleName         *string `jsonapi:"attr,role,omitempty"`
 	Namespace        *string `jsonapi:"attr,namespace,omitempty"`
