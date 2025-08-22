@@ -38,7 +38,7 @@ type GHAInstallationList struct {
 // GHAInstallation represents a github app installation
 type GHAInstallation struct {
 	ID               *string `jsonapi:"primary,github-app-installations"`
-	IconUrl          *string `jsonapi:"attr,icon-url"`
+	IconURL          *string `jsonapi:"attr,icon-url"`
 	InstallationID   *int    `jsonapi:"attr,installation-id"`
 	InstallationType *string `jsonapi:"attr,installation-type"`
 	InstallationURL  *string `jsonapi:"attr,installation-url"`

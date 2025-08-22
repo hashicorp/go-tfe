@@ -40,7 +40,7 @@ func TestGHAInstallationRead(t *testing.T) {
 	t.Run("when installation id exists", func(t *testing.T) {
 		ghais, err := client.GHAInstallations.Read(ctx, GHAInstallationID)
 		require.NoError(t, err)
-		assert.NotEmpty(t, ghais.IconUrl)
+		assert.NotEmpty(t, ghais.IconURL)
 		assert.NotEmpty(t, ghais.ID)
 		assert.NotEmpty(t, ghais.InstallationID)
 		assert.NotEmpty(t, ghais.InstallationType)
