@@ -135,6 +135,7 @@ type Run struct {
 	AutoApply              bool                 `jsonapi:"attr,auto-apply,omitempty"`
 	AllowConfigGeneration  *bool                `jsonapi:"attr,allow-config-generation,omitempty"`
 	AllowEmptyApply        bool                 `jsonapi:"attr,allow-empty-apply"`
+	CanceledAt             time.Time            `jsonapi:"attr,canceled-at,iso8601"`
 	CreatedAt              time.Time            `jsonapi:"attr,created-at,iso8601"`
 	ForceCancelAvailableAt time.Time            `jsonapi:"attr,force-cancel-available-at,iso8601"`
 	HasChanges             bool                 `jsonapi:"attr,has-changes"`
@@ -154,6 +155,7 @@ type Run struct {
 	StatusTimestamps       *RunStatusTimestamps `jsonapi:"attr,status-timestamps"`
 	TargetAddrs            []string             `jsonapi:"attr,target-addrs,omitempty"`
 	TerraformVersion       string               `jsonapi:"attr,terraform-version"`
+	TriggerReason          string               `jsonapi:"attr,trigger-reason"`
 	Variables              []*RunVariableAttr   `jsonapi:"attr,variables"`
 
 	// Relations
@@ -164,6 +166,7 @@ type Run struct {
 	ConfirmedBy          *User                 `jsonapi:"relation,confirmed-by"`
 	Plan                 *Plan                 `jsonapi:"relation,plan"`
 	PolicyChecks         []*PolicyCheck        `jsonapi:"relation,policy-checks"`
+	RunEvents            []*RunEvent           `jsonapi:"relation,run-events"`
 	TaskStages           []*TaskStage          `jsonapi:"relation,task-stages,omitempty"`
 	Workspace            *Workspace            `jsonapi:"relation,workspace"`
 	Comments             []*Comment            `jsonapi:"relation,comments"`

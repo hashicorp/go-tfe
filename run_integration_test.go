@@ -475,6 +475,96 @@ func TestRunsConfirmedBy(t *testing.T) {
 	})
 }
 
+func TestRunsCanceledAt(t *testing.T) {
+	client := testClient(t)
+
+	ctx := context.Background()
+
+	wTest, wTestCleanup := createWorkspace(t, client, nil)
+	t.Cleanup(wTestCleanup)
+
+	// We need to create 2 runs here. The first run will automatically
+	// be planned so that one cannot be cancelled. The second one will
+	// be pending until the first one is confirmed or discarded, so we
+	// can cancel that one.
+	createRun(t, client, wTest)
+	rTest, _ := createRun(t, client, wTest)
+
+	t.Run("when the run is not canceled", func(t *testing.T) {
+		r, err := client.Runs.Read(ctx, rTest.ID)
+		require.NoError(t, err)
+
+		assert.Empty(t, r.CanceledAt)
+	})
+
+	t.Run("when the run is canceled", func(t *testing.T) {
+		err := client.Runs.Cancel(ctx, rTest.ID, RunCancelOptions{})
+		require.NoError(t, err)
+
+		for i := 1; ; i++ {
+			// Refresh the view of the run
+			rTest, err = client.Runs.Read(ctx, rTest.ID)
+			require.NoError(t, err)
+
+			// Check if the timestamp is present.
+			if !rTest.ForceCancelAvailableAt.IsZero() {
+				break
+			}
+
+			if i > 30 {
+				t.Fatal("Timeout waiting for run to be canceled")
+			}
+
+			time.Sleep(time.Second)
+		}
+
+		r, err := client.Runs.Read(ctx, rTest.ID)
+		require.NoError(t, err)
+
+		assert.NotEmpty(t, r.CanceledAt)
+	})
+}
+
+func TestRunsRunEvents(t *testing.T) {
+	client := testClient(t)
+	ctx := context.Background()
+
+	wTest, wTestCleanup := createWorkspace(t, client, nil)
+	defer wTestCleanup()
+
+	_, cvCleanup := createUploadedConfigurationVersion(t, client, wTest)
+	t.Cleanup(cvCleanup)
+
+	options := RunCreateOptions{
+		Workspace: wTest,
+	}
+
+	r, err := client.Runs.Create(ctx, options)
+	require.NoError(t, err)
+
+	assert.NotEmpty(t, r.RunEvents)
+}
+
+func TestRunsTriggerReason(t *testing.T) {
+	client := testClient(t)
+	ctx := context.Background()
+
+	wTest, wTestCleanup := createWorkspace(t, client, nil)
+	defer wTestCleanup()
+
+	_, cvCleanup := createUploadedConfigurationVersion(t, client, wTest)
+	t.Cleanup(cvCleanup)
+
+	options := RunCreateOptions{
+		Workspace: wTest,
+	}
+
+	r, err := client.Runs.Create(ctx, options)
+	require.NoError(t, err)
+
+	assert.NotNil(t, r.TriggerReason)
+}
+
 func TestRunsApply(t *testing.T) {
 	client := testClient(t)
 	ctx := context.Background()
