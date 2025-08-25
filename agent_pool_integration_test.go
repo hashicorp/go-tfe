@@ -20,8 +20,6 @@ func TestAgentPoolsList(t *testing.T) {
 
 	agentPool, agentPoolCleanup := createAgentPool(t, client, orgTest)
 	t.Cleanup(agentPoolCleanup)
-	agentPool2, agentPoolCleanup2 := createAgentPool(t, client, orgTest)
-	defer agentPoolCleanup2()
 
 	t.Run("without list options", func(t *testing.T) {
 		pools, err := client.AgentPools.List(ctx, orgTest.Name, nil)
@@ -65,6 +63,9 @@ func TestAgentPoolsList(t *testing.T) {
 		assert.Equal(t, 1, pools.TotalCount)
 	})
 	t.Run("with sorting", func(t *testing.T) {
+		agentPool2, agentPoolCleanup2 := createAgentPool(t, client, orgTest)
+		t.Cleanup(agentPoolCleanup2)
+
 		pools, err := client.AgentPools.List(ctx, orgTest.Name, &AgentPoolListOptions{
 			Sort: "created-at",
 		})
