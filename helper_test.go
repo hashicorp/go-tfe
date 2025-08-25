@@ -623,7 +623,7 @@ func (a *AWSOIDCConfiguration) createHYOKConfiguration(t *testing.T, client *Cli
 	}
 
 	return hyokConfig, func() {
-		deleteHYOKConfiguration(t, ctx, client, hyokConfig.ID)
+		cleanupHYOKConfiguration(t, ctx, client, hyokConfig.ID)
 
 		if orgCleanup != nil {
 			orgCleanup()
@@ -686,7 +686,7 @@ func (a *AzureOIDCConfiguration) createHYOKConfiguration(t *testing.T, client *C
 	}
 
 	return hyokConfig, func() {
-		deleteHYOKConfiguration(t, ctx, client, hyokConfig.ID)
+		cleanupHYOKConfiguration(t, ctx, client, hyokConfig.ID)
 
 		if orgCleanup != nil {
 			orgCleanup()
@@ -750,7 +750,7 @@ func (g *GCPOIDCConfiguration) createHYOKConfiguration(t *testing.T, client *Cli
 	}
 
 	return hyokConfig, func() {
-		deleteHYOKConfiguration(t, ctx, client, hyokConfig.ID)
+		cleanupHYOKConfiguration(t, ctx, client, hyokConfig.ID)
 
 		if orgCleanup != nil {
 			orgCleanup()
@@ -815,7 +815,7 @@ func (v *VaultOIDCConfiguration) createHYOKConfiguration(t *testing.T, client *C
 	}
 
 	return hyokConfig, func() {
-		deleteHYOKConfiguration(t, ctx, client, hyokConfig.ID)
+		cleanupHYOKConfiguration(t, ctx, client, hyokConfig.ID)
 
 		if orgCleanup != nil {
 			orgCleanup()
@@ -840,7 +840,7 @@ func waitForHYOKConfigurationStatus(t *testing.T, ctx context.Context, client *C
 	})
 }
 
-func deleteHYOKConfiguration(t *testing.T, ctx context.Context, client *Client, hyokID string) {
+func cleanupHYOKConfiguration(t *testing.T, ctx context.Context, client *Client, hyokID string) {
 	if err := client.HYOKConfigurations.Revoke(ctx, hyokID); err != nil {
 		t.Errorf("Error removing HYOK Configuration! WARNING: Dangling resources\n"+
 			"may exist! The full error is shown below.\n\n"+
