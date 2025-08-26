@@ -489,7 +489,7 @@ type WorkspaceCreateOptions struct {
 	// If set to true, the workspace will be created with HYOK enabled.
 	// If set to false, the workspace will be created with HYOK disabled.
 	// If not specified, the workspace will be created with HYOK disabled.
-	// Note: HYOK is only available in Terraform Enterprise.
+	// Note: HYOK is only available in HCP Terraform.
 	HYOKEnabled bool `jsonapi:"attr,hyok-enabled,omitempty"`
 
 	// A list of tags to attach to the workspace. If the tag does not already
