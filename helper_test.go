@@ -261,9 +261,10 @@ func downloadTFCAgent(t *testing.T) (string, error) {
 	return fmt.Sprintf("%s/tfc-agent", tmpDir), nil
 }
 
-func createAgent(t *testing.T, client *Client, org *Organization) (*Agent, *AgentPool, func()) {
+func createAgent(t *testing.T, client *Client, org *Organization, agentPool *AgentPool) (*Agent, *AgentPool, func()) {
 	var orgCleanup func()
 	var agentPoolTokenCleanup func()
+	var agentPoolCleanup func()
 	var agent *Agent
 	var ok bool
 
@@ -271,7 +272,9 @@ func createAgent(t *testing.T, client *Client, org *Organization) (*Agent, *Agen
 		org, orgCleanup = createOrganization(t, client)
 	}
 
-	agentPool, agentPoolCleanup := createAgentPool(t, client, org)
+	if agentPool == nil {
+		agentPool, agentPoolCleanup := createAgentPool(t, client, org)
+	}
 
 	upgradeOrganizationSubscription(t, client, org)
 

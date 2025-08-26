@@ -17,7 +17,6 @@
 * Adds `IconUrl`, `InstallationType`, and `InstallationURL` to githubAppInstallation, by @jpadrianoGo [#1191](https://github.com/hashicorp/go-tfe/pull/1191)
 * Adds support for `Workspace` VCSRepoOptions source_directory and tag_prefix, by @jillrami [#1194] (https://github.com/hashicorp/go-tfe/pull/1194)
 
-
 # v1.90.0
 
 ## Bug Fixes
