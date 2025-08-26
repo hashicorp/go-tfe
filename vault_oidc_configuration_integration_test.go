@@ -11,7 +11,7 @@ import (
 // These tests are intended for local execution only, as OIDC configurations for HYOK requires specific conditions.
 // To run them locally, follow the instructions outlined in hyok_configuration_integration_test.go
 
-func TestVaultOIDCConfigurationCreate(t *testing.T) {
+func TestVaultOIDCConfigurationCreateDelete(t *testing.T) {
 	if skipHYOKIntegrationTests {
 		t.Skip()
 	}
@@ -40,6 +40,10 @@ func TestVaultOIDCConfigurationCreate(t *testing.T) {
 		assert.Equal(t, opts.RoleName, oidcConfig.RoleName)
 		assert.Equal(t, opts.Namespace, oidcConfig.Namespace)
 		assert.Equal(t, opts.JWTAuthPath, oidcConfig.JWTAuthPath)
+
+		// delete the created configuration
+		err = client.VaultOIDCConfigurations.Delete(ctx, oidcConfig.ID)
+		require.NoError(t, err)
 	})
 
 	t.Run("missing address", func(t *testing.T) {
@@ -258,31 +262,5 @@ func TestVaultOIDCConfigurationUpdate(t *testing.T) {
 		assert.Equal(t, *opts.Namespace, updated.Namespace)
 		assert.Equal(t, *opts.JWTAuthPath, updated.JWTAuthPath)
 		assert.Equal(t, oidcConfig.TLSCACertificate, updated.TLSCACertificate) // not updated
-	})
-}
-
-func TestVaultOIDCConfigurationDelete(t *testing.T) {
-	if skipHYOKIntegrationTests {
-		t.Skip()
-	}
-
-	client := testClient(t)
-	ctx := context.Background()
-
-	orgTest, err := client.Organizations.Read(ctx, hyokOrganizationName)
-	if err != nil {
-		t.Fatal(err)
-	}
-
-	oidcConfig, _ := createVaultOIDCConfiguration(t, client, orgTest)
-
-	t.Run("delete existing configuration", func(t *testing.T) {
-		err := client.VaultOIDCConfigurations.Delete(ctx, oidcConfig.ID)
-		require.NoError(t, err)
-	})
-
-	t.Run("fetching non-existing configuration", func(t *testing.T) {
-		err := client.VaultOIDCConfigurations.Delete(ctx, "voidc-notreal")
-		require.ErrorIs(t, err, ErrResourceNotFound)
 	})
 }

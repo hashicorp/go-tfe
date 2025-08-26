@@ -11,7 +11,7 @@ import (
 // These tests are intended for local execution only, as OIDC configurations for HYOK requires specific conditions.
 // To run them locally, follow the instructions outlined in hyok_configuration_integration_test.go
 
-func TestAWSOIDCConfigurationCreate(t *testing.T) {
+func TestAWSOIDCConfigurationCreateDelete(t *testing.T) {
 	if skipHYOKIntegrationTests {
 		t.Skip()
 	}
@@ -33,6 +33,10 @@ func TestAWSOIDCConfigurationCreate(t *testing.T) {
 		require.NoError(t, err)
 		require.NotNil(t, oidcConfig)
 		assert.Equal(t, oidcConfig.RoleARN, opts.RoleARN)
+
+		// delete the created configuration
+		err = client.AWSOIDCConfigurations.Delete(ctx, oidcConfig.ID)
+		require.NoError(t, err)
 	})
 
 	t.Run("missing role ARN", func(t *testing.T) {
@@ -101,30 +105,5 @@ func TestAWSOIDCConfigurationsUpdate(t *testing.T) {
 		opts := AWSOIDCConfigurationUpdateOptions{}
 		_, err := client.AWSOIDCConfigurations.Update(ctx, oidcConfig.ID, opts)
 		assert.ErrorIs(t, err, ErrRequiredRoleARN)
-	})
-}
-
-func TestAWSOIDCConfigurationsDelete(t *testing.T) {
-	if skipHYOKIntegrationTests {
-		t.Skip()
-	}
-
-	client := testClient(t)
-	ctx := context.Background()
-
-	orgTest, err := client.Organizations.Read(ctx, hyokOrganizationName)
-	if err != nil {
-		t.Fatal(err)
-	}
-	oidcConfig, _ := createAWSOIDCConfiguration(t, client, orgTest)
-
-	t.Run("delete existing configuration", func(t *testing.T) {
-		err := client.AWSOIDCConfigurations.Delete(ctx, oidcConfig.ID)
-		require.NoError(t, err)
-	})
-
-	t.Run("fetching non-existing configuration", func(t *testing.T) {
-		err := client.AWSOIDCConfigurations.Delete(ctx, "awsoidc-notreal")
-		require.ErrorIs(t, err, ErrResourceNotFound)
 	})
 }

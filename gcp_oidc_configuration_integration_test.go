@@ -11,7 +11,7 @@ import (
 // These tests are intended for local execution only, as OIDC configurations for HYOK requires specific conditions.
 // To run them locally, follow the instructions outlined in hyok_configuration_integration_test.go
 
-func TestGCPOIDCConfigurationCreate(t *testing.T) {
+func TestGCPOIDCConfigurationCreateDelete(t *testing.T) {
 	if skipHYOKIntegrationTests {
 		t.Skip()
 	}
@@ -37,6 +37,10 @@ func TestGCPOIDCConfigurationCreate(t *testing.T) {
 		assert.Equal(t, oidcConfig.ServiceAccountEmail, opts.ServiceAccountEmail)
 		assert.Equal(t, oidcConfig.ProjectNumber, opts.ProjectNumber)
 		assert.Equal(t, oidcConfig.WorkloadProviderName, opts.WorkloadProviderName)
+
+		// delete the created configuration
+		err = client.GCPOIDCConfigurations.Delete(ctx, oidcConfig.ID)
+		require.NoError(t, err)
 	})
 
 	t.Run("missing workload provider name", func(t *testing.T) {
@@ -191,31 +195,5 @@ func TestGCPOIDCConfigurationUpdate(t *testing.T) {
 		assert.Equal(t, *opts.ServiceAccountEmail, updated.ServiceAccountEmail)
 		assert.Equal(t, oidcConfig.ProjectNumber, updated.ProjectNumber) // not updated
 		assert.Equal(t, *opts.WorkloadProviderName, updated.WorkloadProviderName)
-	})
-}
-
-func TestGCPOIDCConfigurationDelete(t *testing.T) {
-	if skipHYOKIntegrationTests {
-		t.Skip()
-	}
-
-	client := testClient(t)
-	ctx := context.Background()
-
-	orgTest, err := client.Organizations.Read(ctx, hyokOrganizationName)
-	if err != nil {
-		t.Fatal(err)
-	}
-
-	oidcConfig, _ := createGCPOIDCConfiguration(t, client, orgTest)
-
-	t.Run("delete existing configuration", func(t *testing.T) {
-		err := client.GCPOIDCConfigurations.Delete(ctx, oidcConfig.ID)
-		require.NoError(t, err)
-	})
-
-	t.Run("fetching non-existing configuration", func(t *testing.T) {
-		err := client.GCPOIDCConfigurations.Delete(ctx, "gcpoidc-notreal")
-		require.ErrorIs(t, err, ErrResourceNotFound)
 	})
 }

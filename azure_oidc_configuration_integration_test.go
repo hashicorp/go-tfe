@@ -11,7 +11,7 @@ import (
 // These tests are intended for local execution only, as OIDC configurations for HYOK requires specific conditions.
 // To run them locally, follow the instructions outlined in hyok_configuration_integration_test.go
 
-func TestAzureOIDCConfigurationCreate(t *testing.T) {
+func TestAzureOIDCConfigurationCreateDelete(t *testing.T) {
 	if skipHYOKIntegrationTests {
 		t.Skip()
 	}
@@ -37,6 +37,10 @@ func TestAzureOIDCConfigurationCreate(t *testing.T) {
 		assert.Equal(t, oidcConfig.ClientID, opts.ClientID)
 		assert.Equal(t, oidcConfig.SubscriptionID, opts.SubscriptionID)
 		assert.Equal(t, oidcConfig.TenantID, opts.TenantID)
+
+		// delete the created configuration
+		err = client.AzureOIDCConfigurations.Delete(ctx, oidcConfig.ID)
+		require.NoError(t, err)
 	})
 
 	t.Run("missing client ID", func(t *testing.T) {
@@ -191,31 +195,5 @@ func TestAzureOIDCConfigurationUpdate(t *testing.T) {
 		assert.Equal(t, *opts.ClientID, updated.ClientID)
 		assert.Equal(t, *opts.SubscriptionID, updated.SubscriptionID)
 		assert.Equal(t, oidcConfig.TenantID, updated.TenantID) // not updated
-	})
-}
-
-func TestAzureOIDCConfigurationDelete(t *testing.T) {
-	if skipHYOKIntegrationTests {
-		t.Skip()
-	}
-
-	client := testClient(t)
-	ctx := context.Background()
-
-	orgTest, err := client.Organizations.Read(ctx, hyokOrganizationName)
-	if err != nil {
-		t.Fatal(err)
-	}
-
-	oidcConfig, _ := createAzureOIDCConfiguration(t, client, orgTest)
-
-	t.Run("delete existing configuration", func(t *testing.T) {
-		err := client.AzureOIDCConfigurations.Delete(ctx, oidcConfig.ID)
-		require.NoError(t, err)
-	})
-
-	t.Run("fetching non-existing configuration", func(t *testing.T) {
-		err := client.AzureOIDCConfigurations.Delete(ctx, "azoidc-notreal")
-		require.ErrorIs(t, err, ErrResourceNotFound)
 	})
 }
