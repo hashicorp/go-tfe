@@ -240,6 +240,10 @@ var (
 	ErrInvalidTaskResultsCallbackStatus = fmt.Errorf("invalid value for task result status. Must be either `%s`, `%s`, or `%s`", TaskFailed, TaskPassed, TaskRunning)
 
 	ErrInvalidDescriptionConflict = errors.New("invalid attributes\n\nValidation failed: Description has already been taken")
+
+	ErrInvalidOIDC = errors.New("invalid value for OIDC configuration ID")
+
+	ErrInvalidHYOK = errors.New("invalid value for HYOK configuration ID")
 )
 
 var (
@@ -401,4 +405,36 @@ var (
 	ErrRequiredRawState = errors.New("RawState is required")
 
 	ErrStateVersionUploadNotSupported = errors.New("upload not supported by this version of Terraform Enterprise")
+
+	ErrRequiredRoleARN = errors.New("role-arn is required for AWS OIDC configuration")
+
+	ErrRequiredServiceAccountEmail = errors.New("service-account-email is required for GCP OIDC configuration")
+
+	ErrRequiredProjectNumber = errors.New("project-number is required for GCP OIDC configuration")
+
+	ErrRequiredWorkloadProviderName = errors.New("workload-provider-name is required for GCP OIDC configuration")
+
+	ErrRequiredClientID = errors.New("client-id is required for Azure OIDC configuration")
+
+	ErrRequiredSubscriptionID = errors.New("subscription-id is required for Azure OIDC configuration")
+
+	ErrRequiredTenantID = errors.New("tenant-id is required for Azure OIDC configuration")
+
+	ErrRequiredVaultAddress = errors.New("address is required for Vault OIDC configuration")
+
+	ErrRequiredRoleName = errors.New("role is required for Vault OIDC configuration")
+
+	ErrRequiredKEKID = errors.New("kek-id is required for HYOK configuration")
+
+	ErrRequiredOIDCConfiguration = errors.New("oidc-configuration is required for HYOK configuration")
+
+	ErrRequiredAgentPool = errors.New("agent-pool is required for HYOK configuration")
+
+	ErrRequiredKMSOptions = errors.New("kms-options is required for HYOK configuration")
+
+	ErrRequiredKMSOptionsKeyRegion = errors.New("kms-options.key-region is required for HYOK configuration with AWS OIDC")
+
+	ErrRequiredKMSOptionsKeyLocation = errors.New("kms-options.key-location is required for HYOK configuration with GCP OIDC")
+
+	ErrRequiredKMSOptionsKeyRingID = errors.New("kms-options.key-ring-id is required for HYOK configuration with GCP OIDC")
 )
