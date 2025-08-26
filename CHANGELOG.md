@@ -1,7 +1,12 @@
 # Unreleased
 
 ## Enhancements
+
 * Add `Sort` option to `Agents` and `AgentPools`, by @twitnithegirl [#1193](https://github.com/hashicorp/go-tfe/pull/1193)
+
+## Bug Fixes
+
+* Fixes timestamp attribute mapping for deployment runs to use correct API field names (`created-at`/`updated-at` instead of `started-at`/`completed-at`) by @shwetamurali [#1199](https://github.com/hashicorp/go-tfe/pull/1199)
 
 # v1.91.0
 
