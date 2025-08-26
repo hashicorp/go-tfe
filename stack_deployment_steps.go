@@ -29,7 +29,7 @@ type StackDeploymentStep struct {
 	ID        string    `jsonapi:"primary,stack-deployment-steps"`
 	Status    string    `jsonapi:"attr,status"`
 	CreatedAt time.Time `jsonapi:"attr,created-at,iso8601"`
-	UpdatedAt time.Time `jsonapi:"attr,created-at,iso8601"`
+	UpdatedAt time.Time `jsonapi:"attr,updated-at,iso8601"`
 
 	// Links
 	Links map[string]interface{} `jsonapi:"links,omitempty"`
