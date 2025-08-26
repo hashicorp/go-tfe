@@ -273,7 +273,7 @@ func createAgent(t *testing.T, client *Client, org *Organization, agentPool *Age
 	}
 
 	if agentPool == nil {
-		agentPool, agentPoolCleanup := createAgentPool(t, client, org)
+		agentPool, agentPoolCleanup = createAgentPool(t, client, org)
 	}
 
 	upgradeOrganizationSubscription(t, client, org)
