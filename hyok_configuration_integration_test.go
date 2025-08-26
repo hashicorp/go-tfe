@@ -12,8 +12,8 @@ import (
 // To test locally:
 //  1. set skipHYOKIntegrationTests to false. The default value is true.
 //  2. set hyokOrganizationName to the name of an organization that can use HYOK.
-const skipHYOKIntegrationTests = false
-const hyokOrganizationName = "hippos-for-sale"
+const skipHYOKIntegrationTests = true
+const hyokOrganizationName = ""
 
 func TestHYOKConfigurationCreateRevokeDelete(t *testing.T) {
 	if skipHYOKIntegrationTests {
