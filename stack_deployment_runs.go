@@ -29,10 +29,10 @@ var _ StackDeploymentRuns = &stackDeploymentRuns{}
 
 // StackDeploymentRun represents a stack deployment run.
 type StackDeploymentRun struct {
-	ID          string    `jsonapi:"primary,stack-deployment-runs"`
-	Status      string    `jsonapi:"attr,status"`
-	StartedAt   time.Time `jsonapi:"attr,started-at,iso8601"`
-	CompletedAt time.Time `jsonapi:"attr,completed-at,iso8601"`
+	ID        string    `jsonapi:"primary,stack-deployment-runs"`
+	Status    string    `jsonapi:"attr,status"`
+	CreatedAt time.Time `jsonapi:"attr,created-at,iso8601"`
+	UpdatedAt time.Time `jsonapi:"attr,updated-at,iso8601"`
 
 	// Relationships
 	StackDeploymentGroup *StackDeploymentGroup `jsonapi:"relation,stack-deployment-group"`
