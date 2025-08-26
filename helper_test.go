@@ -842,6 +842,9 @@ func waitForHYOKConfigurationStatus(t *testing.T, ctx context.Context, client *C
 
 func cleanupHYOKConfiguration(t *testing.T, ctx context.Context, client *Client, hyokID string) {
 	_, err := waitForHYOKConfigurationStatus(t, ctx, client, hyokID, HYOKConfigurationTestFailed)
+	if err != nil {
+		t.Errorf("Timed out waiting for HYOK configuration %s to fail test", hyokID)
+	}
 
 	if err = client.HYOKConfigurations.Revoke(ctx, hyokID); err != nil {
 		t.Errorf("Error removing HYOK Configuration! WARNING: Dangling resources\n"+
