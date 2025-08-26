@@ -59,6 +59,7 @@ func TestHYOKConfigurationCreateRevokeDelete(t *testing.T) {
 
 		// Must first wait for test_failed status before revoking and deleting the HYOK config or else OIDC configs cannot be cleaned up
 		_, err = waitForHYOKConfigurationStatus(t, ctx, client, created.ID, HYOKConfigurationTestFailed)
+		require.NoError(t, err)
 		err = client.HYOKConfigurations.Revoke(ctx, created.ID)
 		require.NoError(t, err)
 		_, err = waitForHYOKConfigurationStatus(t, ctx, client, created.ID, HYOKConfigurationRevoked)
@@ -120,6 +121,7 @@ func TestHYOKConfigurationCreateRevokeDelete(t *testing.T) {
 
 		// Must first wait for test_failed status before revoking and deleting the HYOK config or else OIDC configs cannot be cleaned up
 		_, err = waitForHYOKConfigurationStatus(t, ctx, client, created.ID, HYOKConfigurationTestFailed)
+		require.NoError(t, err)
 		err = client.HYOKConfigurations.Revoke(ctx, created.ID)
 		require.NoError(t, err)
 		_, err = waitForHYOKConfigurationStatus(t, ctx, client, created.ID, HYOKConfigurationRevoked)
@@ -197,6 +199,7 @@ func TestHYOKConfigurationCreateRevokeDelete(t *testing.T) {
 
 		// Must first wait for test_failed status before revoking and deleting the HYOK config or else OIDC configs cannot be cleaned up
 		_, err = waitForHYOKConfigurationStatus(t, ctx, client, created.ID, HYOKConfigurationTestFailed)
+		require.NoError(t, err)
 		err = client.HYOKConfigurations.Revoke(ctx, created.ID)
 		require.NoError(t, err)
 		_, err = waitForHYOKConfigurationStatus(t, ctx, client, created.ID, HYOKConfigurationRevoked)
@@ -231,6 +234,7 @@ func TestHYOKConfigurationCreateRevokeDelete(t *testing.T) {
 
 		// Must first wait for test_failed status before revoking and deleting the HYOK config or else OIDC configs cannot be cleaned up
 		_, err = waitForHYOKConfigurationStatus(t, ctx, client, created.ID, HYOKConfigurationTestFailed)
+		require.NoError(t, err)
 		err = client.HYOKConfigurations.Revoke(ctx, created.ID)
 		require.NoError(t, err)
 		_, err = waitForHYOKConfigurationStatus(t, ctx, client, created.ID, HYOKConfigurationRevoked)
