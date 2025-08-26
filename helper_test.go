@@ -841,13 +841,15 @@ func waitForHYOKConfigurationStatus(t *testing.T, ctx context.Context, client *C
 }
 
 func cleanupHYOKConfiguration(t *testing.T, ctx context.Context, client *Client, hyokID string) {
-	if err := client.HYOKConfigurations.Revoke(ctx, hyokID); err != nil {
+	_, err := waitForHYOKConfigurationStatus(t, ctx, client, hyokID, HYOKConfigurationTestFailed)
+
+	if err = client.HYOKConfigurations.Revoke(ctx, hyokID); err != nil {
 		t.Errorf("Error removing HYOK Configuration! WARNING: Dangling resources\n"+
 			"may exist! The full error is shown below.\n\n"+
 			"HYOKConfigurations: %s\nError: %s", hyokID, err)
 	}
 
-	_, err := waitForHYOKConfigurationStatus(t, ctx, client, hyokID, HYOKConfigurationRevoked)
+	_, err = waitForHYOKConfigurationStatus(t, ctx, client, hyokID, HYOKConfigurationRevoked)
 	if err != nil {
 		t.Errorf("Timed out waiting for HYOK configuration %s to revoke", hyokID)
 	}

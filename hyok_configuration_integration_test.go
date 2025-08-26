@@ -12,10 +12,8 @@ import (
 // To test locally:
 //  1. set skipHYOKIntegrationTests to false. The default value is true.
 //  2. set hyokOrganizationName to the name of an organization that can use HYOK.
-//  3. set hyokAgentPoolID to an agent pool with running agents that have HYOK capabilities turned on.
-const skipHYOKIntegrationTests = true
-const hyokOrganizationName = ""
-const hyokAgentPoolID = ""
+const skipHYOKIntegrationTests = false
+const hyokOrganizationName = "hippos-for-sale"
 
 func TestHYOKConfigurationCreateRevokeDelete(t *testing.T) {
 	if skipHYOKIntegrationTests {
@@ -30,10 +28,8 @@ func TestHYOKConfigurationCreateRevokeDelete(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	agentPool, err := client.AgentPools.Read(ctx, hyokAgentPoolID)
-	if err != nil {
-		t.Fatal(err)
-	}
+	agentPool, agentPoolCleanup := createAgentPool(t, client, orgTest)
+	t.Cleanup(agentPoolCleanup)
 
 	t.Run("AWS with valid options", func(t *testing.T) {
 		awsOIDCConfig, configCleanup := createAWSOIDCConfiguration(t, client, orgTest)
@@ -61,7 +57,8 @@ func TestHYOKConfigurationCreateRevokeDelete(t *testing.T) {
 		assert.Equal(t, opts.AgentPool.ID, created.AgentPool.ID)
 		assert.Equal(t, opts.OIDCConfiguration.AWSOIDCConfiguration.ID, created.OIDCConfiguration.AWSOIDCConfiguration.ID)
 
-		// Must revoke and delete HYOK config or else agent pool and OIDC configs cannot be cleaned up
+		// Must first wait for test_failed status before revoking and deleting the HYOK config or else OIDC configs cannot be cleaned up
+		_, err = waitForHYOKConfigurationStatus(t, ctx, client, created.ID, HYOKConfigurationTestFailed)
 		err = client.HYOKConfigurations.Revoke(ctx, created.ID)
 		require.NoError(t, err)
 		_, err = waitForHYOKConfigurationStatus(t, ctx, client, created.ID, HYOKConfigurationRevoked)
@@ -121,7 +118,8 @@ func TestHYOKConfigurationCreateRevokeDelete(t *testing.T) {
 		assert.Equal(t, opts.AgentPool.ID, created.AgentPool.ID)
 		assert.Equal(t, opts.OIDCConfiguration.GCPOIDCConfiguration.ID, created.OIDCConfiguration.GCPOIDCConfiguration.ID)
 
-		// Must revoke and delete HYOK config or else agent pool and OIDC configs cannot be cleaned up
+		// Must first wait for test_failed status before revoking and deleting the HYOK config or else OIDC configs cannot be cleaned up
+		_, err = waitForHYOKConfigurationStatus(t, ctx, client, created.ID, HYOKConfigurationTestFailed)
 		err = client.HYOKConfigurations.Revoke(ctx, created.ID)
 		require.NoError(t, err)
 		_, err = waitForHYOKConfigurationStatus(t, ctx, client, created.ID, HYOKConfigurationRevoked)
@@ -197,7 +195,8 @@ func TestHYOKConfigurationCreateRevokeDelete(t *testing.T) {
 		assert.Equal(t, opts.AgentPool.ID, created.AgentPool.ID)
 		assert.Equal(t, opts.OIDCConfiguration.VaultOIDCConfiguration.ID, created.OIDCConfiguration.VaultOIDCConfiguration.ID)
 
-		// Must revoke and delete HYOK config or else agent pool and OIDC configs cannot be cleaned up
+		// Must first wait for test_failed status before revoking and deleting the HYOK config or else OIDC configs cannot be cleaned up
+		_, err = waitForHYOKConfigurationStatus(t, ctx, client, created.ID, HYOKConfigurationTestFailed)
 		err = client.HYOKConfigurations.Revoke(ctx, created.ID)
 		require.NoError(t, err)
 		_, err = waitForHYOKConfigurationStatus(t, ctx, client, created.ID, HYOKConfigurationRevoked)
@@ -230,7 +229,8 @@ func TestHYOKConfigurationCreateRevokeDelete(t *testing.T) {
 		assert.Equal(t, opts.AgentPool.ID, created.AgentPool.ID)
 		assert.Equal(t, opts.OIDCConfiguration.AzureOIDCConfiguration.ID, created.OIDCConfiguration.AzureOIDCConfiguration.ID)
 
-		// Must revoke and delete HYOK config or else agent pool and OIDC configs cannot be cleaned up
+		// Must first wait for test_failed status before revoking and deleting the HYOK config or else OIDC configs cannot be cleaned up
+		_, err = waitForHYOKConfigurationStatus(t, ctx, client, created.ID, HYOKConfigurationTestFailed)
 		err = client.HYOKConfigurations.Revoke(ctx, created.ID)
 		require.NoError(t, err)
 		_, err = waitForHYOKConfigurationStatus(t, ctx, client, created.ID, HYOKConfigurationRevoked)
@@ -314,10 +314,8 @@ func TestHyokConfigurationList(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	agentPool, err := client.AgentPools.Read(ctx, hyokAgentPoolID)
-	if err != nil {
-		t.Fatal(err)
-	}
+	agentPool, agentPoolCleanup := createAgentPool(t, client, orgTest)
+	t.Cleanup(agentPoolCleanup)
 
 	azureOIDC, azureOIDCCleanup := createAzureOIDCConfiguration(t, client, orgTest)
 	t.Cleanup(azureOIDCCleanup)
@@ -367,10 +365,8 @@ func TestHyokConfigurationRead(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	agentPool, err := client.AgentPools.Read(ctx, hyokAgentPoolID)
-	if err != nil {
-		t.Fatal(err)
-	}
+	agentPool, agentPoolCleanup := createAgentPool(t, client, orgTest)
+	t.Cleanup(agentPoolCleanup)
 
 	t.Run("AWS", func(t *testing.T) {
 		oidc, oidcCleanup := createAWSOIDCConfiguration(t, client, orgTest)
@@ -460,10 +456,8 @@ func TestHYOKConfigurationUpdate(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	agentPool, err := client.AgentPools.Read(ctx, hyokAgentPoolID)
-	if err != nil {
-		t.Fatal(err)
-	}
+	agentPool, agentPoolCleanup := createAgentPool(t, client, orgTest)
+	t.Cleanup(agentPoolCleanup)
 
 	t.Run("AWS with valid options", func(t *testing.T) {
 		oidc, oidcCleanup := createAWSOIDCConfiguration(t, client, orgTest)
