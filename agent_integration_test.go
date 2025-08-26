@@ -75,6 +75,7 @@ func TestAgentsList(t *testing.T) {
 		require.NoError(t, err)
 		require.NotNil(t, agents)
 		require.Len(t, agents.Items, 2)
+		t.Log(agents)
 		require.Equal(t, []string{agent1.ID, agent2.ID}, []string{agents.Items[0].ID, agents.Items[1].ID})
 
 		agents, err = client.Agents.List(ctx, agentPool.ID, &AgentListOptions{
