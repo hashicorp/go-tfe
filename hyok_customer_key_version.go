@@ -8,8 +8,6 @@ import (
 )
 
 // HyokCustomerKeyVersions describes all the hyok customer key version related methods that the HCP Terraform API supports.
-//
-// TFE API docs: (TODO: ADD DOCS URL)
 type HyokCustomerKeyVersions interface {
 	// List all hyok customer key versions associated to a HYOK configuration.
 	List(ctx context.Context, hyokConfiguration string, options *HyokCustomerKeyVersionListOptions) (*HyokCustomerKeyVersionList, error)
@@ -63,33 +61,11 @@ type HyokCustomerKeyVersionListOptions struct {
 	Refresh bool `query:"refresh"`
 }
 
-func (o *HyokCustomerKeyVersionListOptions) valid() error {
-	return nil
-}
-
-// HyokCustomerKeyVersionCreateOptions represents the options for creating a hyok customer key version
-type HyokCustomerKeyVersionCreateOptions struct {
-	Type string `jsonapi:"primary,hyok-customer-key-version"`
-	// Add more create options here
-}
-
-// HyokCustomerKeyVersionUpdateOptions represents the options for updating a hyok customer key version
-type HyokCustomerKeyVersionUpdateOptions struct {
-	ID string `jsonapi:"primary,hyok-customer-key-version"`
-
-	// Add more update options here
-}
-
 // List all hyok customer key versions.
 func (s *hyokCustomerKeyVersions) List(ctx context.Context, hyokConfiguration string, options *HyokCustomerKeyVersionListOptions) (*HyokCustomerKeyVersionList, error) {
 	if !validStringID(&hyokConfiguration) {
-		return nil, ErrInvalidHyokConfigID
+		return nil, ErrInvalidHYOK
 	}
-
-	// TODO: DO I NEED TO CHECK THIS?
-	//if err := options.valid(); err != nil {
-	//	return nil, err
-	//}
 
 	path := fmt.Sprintf("hyok-configurations/%s/hyok-customer-key-versions", url.PathEscape(hyokConfiguration))
 	req, err := s.client.NewRequest("GET", path, options)
@@ -109,7 +85,7 @@ func (s *hyokCustomerKeyVersions) List(ctx context.Context, hyokConfiguration st
 // Read a hyok customer key version by its ID.
 func (s *hyokCustomerKeyVersions) Read(ctx context.Context, HyokCustomerKeyVersionID string) (*HyokCustomerKeyVersion, error) {
 	if !validStringID(&HyokCustomerKeyVersionID) {
-		return nil, ErrInvalidHyokConfigID
+		return nil, ErrInvalidHYOK
 	}
 
 	path := fmt.Sprintf("hyok-customer-key-versions/%s", url.PathEscape(HyokCustomerKeyVersionID))
@@ -125,13 +101,12 @@ func (s *hyokCustomerKeyVersions) Read(ctx context.Context, HyokCustomerKeyVersi
 	}
 
 	return kv, nil
-
 }
 
 // Revoke a hyok customer key version.
 func (s *hyokCustomerKeyVersions) Revoke(ctx context.Context, HyokCustomerKeyVersionID string) error {
 	if !validStringID(&HyokCustomerKeyVersionID) {
-		return ErrInvalidHyokConfigID
+		return ErrInvalidHYOK
 	}
 
 	path := fmt.Sprintf("hyok-customer-key-versions/%s/actions/revoke", url.PathEscape(HyokCustomerKeyVersionID))
@@ -146,7 +121,7 @@ func (s *hyokCustomerKeyVersions) Revoke(ctx context.Context, HyokCustomerKeyVer
 // Delete a hyok customer key version.
 func (s *hyokCustomerKeyVersions) Delete(ctx context.Context, HyokCustomerKeyVersionID string) error {
 	if !validStringID(&HyokCustomerKeyVersionID) {
-		return ErrInvalidHyokConfigID
+		return ErrInvalidHYOK
 	}
 
 	path := fmt.Sprintf("hyok-customer-key-versions/%s", url.PathEscape(HyokCustomerKeyVersionID))
