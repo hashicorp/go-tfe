@@ -72,6 +72,7 @@ type HYOKConfiguration struct {
 	Organization      *Organization                `jsonapi:"relation,organization"`
 	OIDCConfiguration *OIDCConfigurationTypeChoice `jsonapi:"polyrelation,oidc-configuration"`
 	AgentPool         *AgentPool                   `jsonapi:"relation,agent-pool"`
+	KeyVersions       []*HYOKCustomerKeyVersions   `jsonapi:"relation,hyok-customer-key-versions"`
 }
 
 type HYOKConfigurationsList struct {
