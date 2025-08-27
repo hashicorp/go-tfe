@@ -108,6 +108,7 @@ type HYOKConfigurationsCreateOptions struct {
 	// Relationships
 	OIDCConfiguration *OIDCConfigurationTypeChoice `jsonapi:"polyrelation,oidc-configuration"`
 	AgentPool         *AgentPool                   `jsonapi:"relation,agent-pool"`
+	KeyVersions       []*HYOKCustomerKeyVersions   `jsonapi:"relation,hyok-customer-key-versions"`
 }
 
 type HYOKConfigurationsReadOptions struct {

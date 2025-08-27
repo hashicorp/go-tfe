@@ -35,8 +35,9 @@ type HYOKCustomerKeyVersionList struct {
 	Items []*HYOKCustomerKeyVersion
 }
 
-// HYOKCustomerKeyVersion represents a Terraform Enterprise $resource
+// HYOKCustomerKeyVersion represents the resource
 type HYOKCustomerKeyVersion struct {
+	// Attributes
 	ID         string               `jsonapi:"primary,hyok-customer-key-version"`
 	KeyVersion string               `jsonapi:"attr,key-version"`
 	CreatedAt  time.Time            `jsonapi:"attr,created-at,iso8601"`
@@ -44,6 +45,9 @@ type HYOKCustomerKeyVersion struct {
 	RevokedAt  time.Time            `jsonapi:"attr,revoked-at,iso8601"`
 	Status     HYOKKeyVersionStatus `jsonapi:"attr,status"`
 	Error      string               `jsonapi:"attr,error"`
+
+	// Relationships
+	HYOKConfiguration *HYOKConfiguration `jsonapi:"relation,hyok-configuration"`
 }
 
 // HYOKKeyVersionStatus represents a key version status.
