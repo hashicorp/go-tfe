@@ -22,7 +22,7 @@ func TestAgentsRead(t *testing.T) {
 
 	upgradeOrganizationSubscription(t, client, org)
 
-	agent, _, agentCleanup := createAgent(t, client, org, nil)
+	agent, _, agentCleanup := createAgent(t, client, org, nil, nil)
 	t.Cleanup(agentCleanup)
 
 	t.Run("when the agent exists", func(t *testing.T) {
