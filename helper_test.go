@@ -261,7 +261,7 @@ func downloadTFCAgent(t *testing.T) (string, error) {
 	return fmt.Sprintf("%s/tfc-agent", tmpDir), nil
 }
 
-func createAgent(t *testing.T, client *Client, org *Organization, agentPool *AgentPool) (*Agent, *AgentPool, func()) {
+func createAgent(t *testing.T, client *Client, org *Organization, agentPool *AgentPool, name *string) (*Agent, *AgentPool, func()) {
 	var orgCleanup func()
 	var agentPoolTokenCleanup func()
 	var agentPoolCleanup func()
@@ -299,11 +299,14 @@ func createAgent(t *testing.T, client *Client, org *Organization, agentPool *Age
 
 	ctx := context.Background()
 
+	if name == nil {
+		*name = "test-agent"
+	}
 	cmd := exec.Command(agentPath)
 	cmd.Env = os.Environ()
 	cmd.Env = append(cmd.Env,
 		"TFC_AGENT_TOKEN="+agentPoolToken.Token,
-		"TFC_AGENT_NAME="+"test-agent",
+		"TFC_AGENT_NAME="+*name,
 		"TFC_ADDRESS="+DefaultConfig().Address,
 	)
 
@@ -327,7 +330,11 @@ func createAgent(t *testing.T, client *Client, org *Organization, agentPool *Age
 		}
 
 		if agentList != nil && len(agentList.Items) > 0 {
-			return agentList.Items[0], nil
+			for _, value := range agentList.Items {
+				if value.Name == *name {
+					return value, nil
+				}
+			}
 		}
 		return nil, errors.New("no agent found")
 	})

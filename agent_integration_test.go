@@ -55,9 +55,9 @@ func TestAgentsList(t *testing.T) {
 
 	upgradeOrganizationSubscription(t, client, org)
 
-	agent1, agentPool, agentCleanup := createAgent(t, client, org, nil)
+	agent1, agentPool, agentCleanup := createAgent(t, client, org, nil, String("agent1"))
 	t.Cleanup(agentCleanup)
-	agent2, _, agentCleanup2 := createAgent(t, client, org, agentPool)
+	agent2, _, agentCleanup2 := createAgent(t, client, org, agentPool, String("agent2"))
 	t.Cleanup(agentCleanup2)
 
 	t.Run("expect an agent to exist", func(t *testing.T) {
@@ -75,7 +75,6 @@ func TestAgentsList(t *testing.T) {
 		require.NoError(t, err)
 		require.NotNil(t, agents)
 		require.Len(t, agents.Items, 2)
-		t.Log(agents.Items)
 		require.Equal(t, []string{agent1.ID, agent2.ID}, []string{agents.Items[0].ID, agents.Items[1].ID})
 
 		agents, err = client.Agents.List(ctx, agentPool.ID, &AgentListOptions{
