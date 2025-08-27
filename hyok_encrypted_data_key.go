@@ -23,13 +23,13 @@ type hyokEncryptedDataKeys struct {
 // HYOKEncryptedDataKey represents the resource
 type HYOKEncryptedDataKey struct {
 	// Attributes
-	ID              string    `jsonapi:"primary,hyok-encrypted-data-key"`
+	ID              string    `jsonapi:"primary,hyok-encrypted-data-keys"`
 	EncryptedDEK    string    `jsonapi:"attr,encrypted-dek"`
 	CustomerKeyName string    `jsonapi:"attr,customer-key-name"`
 	CreatedAt       time.Time `jsonapi:"attr,created-at,iso8601"`
 
 	// Relationships
-	KeyVersion *HYOKCustomerKeyVersions `jsonapi:"relation,hyok-customer-key-version"`
+	KeyVersion *HYOKCustomerKeyVersion `jsonapi:"relation,hyok-customer-key-versions"`
 }
 
 // Read a HYOK encrypted data key by its ID.

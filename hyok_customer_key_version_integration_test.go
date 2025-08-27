@@ -7,8 +7,10 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-// These tests are intended for local execution only, as OIDC configurations for HYOK requires specific conditions.
-// To run them locally, follow the instructions outlined in hyok_configuration_integration_test.go
+// These tests are intended for local execution only, as key versions for HYOK requires specific conditions
+// for tests to run successfully. To test locally:
+// 1. Follow the instructions outlined in hyok_configuration_integration_test.go.
+// 2. Set hyokCustomerKeyVersionID to the ID of an existing HYOK customer key version
 
 func TestHYOKCustomerKeyVersionsList(t *testing.T) {
 	if skipHYOKIntegrationTests {
@@ -33,6 +35,21 @@ func TestHYOKCustomerKeyVersionsList(t *testing.T) {
 
 	t.Run("with no list options", func(t *testing.T) {
 		_, err := client.HYOKCustomerKeyVersions.List(ctx, hyok.ID, nil)
+		require.NoError(t, err)
+	})
+}
+
+func TestHYOKCustomerKeyVersionsRead(t *testing.T) {
+	if skipHYOKIntegrationTests {
+		t.Skip()
+	}
+
+	client := testClient(t)
+	ctx := context.Background()
+
+	t.Run("read an existing key version", func(t *testing.T) {
+		hyokCustomerKeyVersionID := ""
+		_, err := client.HYOKCustomerKeyVersions.Read(ctx, hyokCustomerKeyVersionID)
 		require.NoError(t, err)
 	})
 }
