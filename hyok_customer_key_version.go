@@ -7,6 +7,8 @@ import (
 	"time"
 )
 
+var _ HYOKCustomerKeyVersions = (*hyokCustomerKeyVersions)(nil)
+
 // HYOKCustomerKeyVersions describes all the hyok customer key version related methods that the HCP Terraform API supports.
 type HYOKCustomerKeyVersions interface {
 	// List all hyok customer key versions associated to a HYOK configuration.
@@ -58,7 +60,7 @@ const (
 // HYOKCustomerKeyVersionListOptions represents the options for listing hyok customer key versions
 type HYOKCustomerKeyVersionListOptions struct {
 	ListOptions
-	Refresh bool `query:"refresh"`
+	Refresh string `url:"refresh,omitempty"`
 }
 
 // List all hyok customer key versions.
