@@ -6,6 +6,9 @@ import (
 	"net/url"
 )
 
+// HYOKConfigurations describes all the HYOK configuration related methods that the HCP Terraform API supports.
+// HCP Terraform API docs:
+// https://developer.hashicorp.com/terraform/cloud-docs/api-docs/hold-your-own-key/configurations
 type HYOKConfigurations interface {
 	List(ctx context.Context, organization string, options *HYOKConfigurationsListOptions) (*HYOKConfigurationsList, error)
 

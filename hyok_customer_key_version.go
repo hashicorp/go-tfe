@@ -10,6 +10,8 @@ import (
 var _ HYOKCustomerKeyVersions = (*hyokCustomerKeyVersions)(nil)
 
 // HYOKCustomerKeyVersions describes all the hyok customer key version related methods that the HCP Terraform API supports.
+// HCP Terraform API docs:
+// https://developer.hashicorp.com/terraform/cloud-docs/api-docs/hold-your-own-key/key-versions
 type HYOKCustomerKeyVersions interface {
 	// List all hyok customer key versions associated to a HYOK configuration.
 	List(ctx context.Context, hyokConfigurationID string, options *HYOKCustomerKeyVersionListOptions) (*HYOKCustomerKeyVersionList, error)

@@ -10,6 +10,8 @@ import (
 var _ HYOKEncryptedDataKeys = (*hyokEncryptedDataKeys)(nil)
 
 // HYOKEncryptedDataKeys describes all the hyok customer key version related methods that the HCP Terraform API supports.
+// HCP Terraform API docs:
+// https://developer.hashicorp.com/terraform/cloud-docs/api-docs/hold-your-own-key/encrypted-data-keys
 type HYOKEncryptedDataKeys interface {
 	// Read a HYOK encrypted data key by its ID.
 	Read(ctx context.Context, hyokEncryptedDataKeyID string) (*HYOKEncryptedDataKey, error)
