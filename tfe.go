@@ -170,7 +170,7 @@ type Client struct {
 	SSHKeys                         SSHKeys
 	Stacks                          Stacks
 	HYOKConfigurations              HYOKConfigurations
-	HyokCustomerKeyVersions         HyokCustomerKeyVersions
+	HYOKCustomerKeyVersions         HYOKCustomerKeyVersions
 	StackConfigurations             StackConfigurations
 	StackDeployments                StackDeployments
 	StackDeploymentGroups           StackDeploymentGroups
