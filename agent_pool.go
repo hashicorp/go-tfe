@@ -7,6 +7,7 @@ import (
 	"context"
 	"fmt"
 	"net/url"
+	"time"
 )
 
 // Compile-time proof of interface implementation.
@@ -35,6 +36,12 @@ type AgentPools interface {
 	// UpdateAllowedWorkspaces updates the list of allowed workspaces associated with an agent pool.
 	UpdateAllowedWorkspaces(ctx context.Context, agentPool string, options AgentPoolAllowedWorkspacesUpdateOptions) (*AgentPool, error)
 
+	// UpdateAllowedProjects updates the list of allowed projects associated with an agent pool.
+	UpdateAllowedProjects(ctx context.Context, agentPool string, options AgentPoolAllowedProjectsUpdateOptions) (*AgentPool, error)
+
+	// UpdateExcludedWorkspaces updates the list of excluded workspaces associated with an agent pool.
+	UpdateExcludedWorkspaces(ctx context.Context, agentPool string, options AgentPoolExcludedWorkspacesUpdateOptions) (*AgentPool, error)
+
 	// Delete an agent pool by its ID.
 	Delete(ctx context.Context, agentPoolID string) error
 }
@@ -52,16 +59,19 @@ type AgentPoolList struct {
 
 // AgentPool represents a HCP Terraform agent pool.
 type AgentPool struct {
-	ID                 string `jsonapi:"primary,agent-pools"`
-	Name               string `jsonapi:"attr,name"`
-	AgentCount         int    `jsonapi:"attr,agent-count"`
-	OrganizationScoped bool   `jsonapi:"attr,organization-scoped"`
+	ID                 string    `jsonapi:"primary,agent-pools"`
+	Name               string    `jsonapi:"attr,name"`
+	AgentCount         int       `jsonapi:"attr,agent-count"`
+	OrganizationScoped bool      `jsonapi:"attr,organization-scoped"`
+	CreatedAt          time.Time `jsonapi:"attr,created-at,iso8601"`
 
 	// Relations
 	Organization       *Organization        `jsonapi:"relation,organization"`
 	HYOKConfigurations []*HYOKConfiguration `jsonapi:"relation,hyok-configurations"`
 	Workspaces         []*Workspace         `jsonapi:"relation,workspaces"`
 	AllowedWorkspaces  []*Workspace         `jsonapi:"relation,allowed-workspaces"`
+	AllowedProjects    []*Project           `jsonapi:"relation,allowed-projects"`
+	ExcludedWorkspaces []*Workspace         `jsonapi:"relation,excluded-workspaces"`
 }
 
 // A list of relations to include
@@ -86,6 +96,9 @@ type AgentPoolListOptions struct {
 
 	// Optional: String (workspace name) used to filter the results.
 	AllowedWorkspacesName string `url:"filter[allowed_workspaces][name],omitempty"`
+
+	// Optional: String (project name) used to filter the results.
+	AllowedProjectsName string `url:"filter[allowed_projects][name],omitempty"`
 }
 
 // AgentPoolCreateOptions represents the options for creating an agent pool.
@@ -104,6 +117,12 @@ type AgentPoolCreateOptions struct {
 
 	// List of workspaces that are associated with an agent pool.
 	AllowedWorkspaces []*Workspace `jsonapi:"relation,allowed-workspaces,omitempty"`
+
+	// List of projects that are associated with an agent pool.
+	AllowedProjects []*Project `jsonapi:"relation,allowed-projects,omitempty"`
+
+	// List of workspaces that are excluded from the scope of an agent pool.
+	ExcludedWorkspaces []*Workspace `jsonapi:"relation,excluded-workspaces,omitempty"`
 }
 
 // List all the agent pools of the given organization.
@@ -200,9 +219,15 @@ type AgentPoolUpdateOptions struct {
 
 	// A new list of workspaces that are associated with an agent pool.
 	AllowedWorkspaces []*Workspace `jsonapi:"relation,allowed-workspaces,omitempty"`
+
+	// A new list of projects that are associated with an agent pool.
+	AllowedProjects []*Project `jsonapi:"relation,allowed-projects,omitempty"`
+
+	// A new list of workspaces that are excluded from the scope of an agent pool.
+	ExcludedWorkspaces []*Workspace `jsonapi:"relation,excluded-workspaces,omitempty"`
 }
 
-// AgentPoolUpdateAllowedWorkspacesOptions represents the options for updating the allowed workspace on an agent pool
+// AgentPoolAllowedWorkspacesUpdateOptions represents the options for updating the allowed workspace on an agent pool
 type AgentPoolAllowedWorkspacesUpdateOptions struct {
 	// Type is a public field utilized by JSON:API to
 	// set the resource type via the field tag.
@@ -214,8 +239,33 @@ type AgentPoolAllowedWorkspacesUpdateOptions struct {
 	AllowedWorkspaces []*Workspace `jsonapi:"relation,allowed-workspaces"`
 }
 
+// AgentPoolAllowedProjectsUpdateOptions represents the options for updating the allowed projects on an agent pool
+type AgentPoolAllowedProjectsUpdateOptions struct {
+	// Type is a public field utilized by JSON:API to
+	// set the resource type via the field tag.
+	// It is not a user-defined value and does not need to be set.
+	// https://jsonapi.org/format/#crud-creating
+	Type string `jsonapi:"primary,agent-pools"`
+
+	// A new list of projects that are associated with an agent pool.
+	AllowedProjects []*Project `jsonapi:"relation,allowed-projects"`
+}
+
+// AgentPoolExcludedWorkspacesUpdateOptions represents the options for updating the excluded workspace on an agent pool
+type AgentPoolExcludedWorkspacesUpdateOptions struct {
+	// Type is a public field utilized by JSON:API to
+	// set the resource type via the field tag.
+	// It is not a user-defined value and does not need to be set.
+	// https://jsonapi.org/format/#crud-creating
+	Type string `jsonapi:"primary,agent-pools"`
+
+	// A new list of workspaces that are excluded from the scope of an agent pool.
+	ExcludedWorkspaces []*Workspace `jsonapi:"relation,excluded-workspaces"`
+}
+
 // Update an agent pool by its ID.
-// **Note:** This method cannot be used to clear the allowed workspaces field, instead use UpdateAllowedWorkspaces
+// **Note:** This method cannot be used to clear the allowed workspaces, allowed projects, or excluded workspaces fields.
+// instead use UpdateAllowedWorkspaces, UpdateAllowedProjects, or UpdateExcludedWorkspaces methods respectively.
 func (s *agentPools) Update(ctx context.Context, agentPoolID string, options AgentPoolUpdateOptions) (*AgentPool, error) {
 	if !validStringID(&agentPoolID) {
 		return nil, ErrInvalidAgentPoolID
@@ -241,23 +291,15 @@ func (s *agentPools) Update(ctx context.Context, agentPoolID string, options Age
 }
 
 func (s *agentPools) UpdateAllowedWorkspaces(ctx context.Context, agentPoolID string, options AgentPoolAllowedWorkspacesUpdateOptions) (*AgentPool, error) {
-	if !validStringID(&agentPoolID) {
-		return nil, ErrInvalidAgentPoolID
-	}
+	return s.updateArrayAttribute(ctx, agentPoolID, &options)
+}
 
-	u := fmt.Sprintf("agent-pools/%s", url.PathEscape(agentPoolID))
-	req, err := s.client.NewRequest("PATCH", u, &options)
-	if err != nil {
-		return nil, err
-	}
+func (s *agentPools) UpdateAllowedProjects(ctx context.Context, agentPoolID string, options AgentPoolAllowedProjectsUpdateOptions) (*AgentPool, error) {
+	return s.updateArrayAttribute(ctx, agentPoolID, &options)
+}
 
-	k := &AgentPool{}
-	err = req.Do(ctx, k)
-	if err != nil {
-		return nil, err
-	}
-
-	return k, nil
+func (s *agentPools) UpdateExcludedWorkspaces(ctx context.Context, agentPoolID string, options AgentPoolExcludedWorkspacesUpdateOptions) (*AgentPool, error) {
+	return s.updateArrayAttribute(ctx, agentPoolID, &options)
 }
 
 // Delete an agent pool by its ID.
@@ -273,6 +315,30 @@ func (s *agentPools) Delete(ctx context.Context, agentPoolID string) error {
 	}
 
 	return req.Do(ctx, nil)
+}
+
+// updateArrayAttribute is a helper function to update array attributes of an agent pool, such as allowed workspaces, allowed projects, or excluded workspaces.
+// Note: This function does not validate the options parameter, so it should be used with caution.  It is intended to be used with options structs
+// (e.g. AgentPoolAllowedWorkspacesUpdateOptions, AgentPoolAllowedProjectsUpdateOptions, AgentPoolExcludedWorkspacesUpdateOptions) whose array
+// attributes are NOT marked `omitempty`, so that an empty array is sent to the API to clear the existing values.
+func (s *agentPools) updateArrayAttribute(ctx context.Context, agentPoolID string, options any) (*AgentPool, error) {
+	if !validStringID(&agentPoolID) {
+		return nil, ErrInvalidAgentPoolID
+	}
+
+	u := fmt.Sprintf("agent-pools/%s", url.PathEscape(agentPoolID))
+	req, err := s.client.NewRequest("PATCH", u, options)
+	if err != nil {
+		return nil, err
+	}
+
+	k := &AgentPool{}
+	err = req.Do(ctx, k)
+	if err != nil {
+		return nil, err
+	}
+
+	return k, nil
 }
 
 func (o AgentPoolCreateOptions) valid() error {

@@ -1,5 +1,25 @@
 # Unreleased
 
+# v1.91.1
+
+## Bug Fixes
+
+* Fixes timestamp attribute mapping for deployment runs to use correct API field names (`created-at`/`updated-at` instead of `started-at`/`completed-at`) by @shwetamurali [#1199](https://github.com/hashicorp/go-tfe/pull/1199)
+
+# v1.91.0
+
+## Enhancements
+
+* Adds `Logs` method to `QueryRuns`, which is EXPERIMENTAL, SUBJECT TO CHANGE, and may not be available to all users by @brandonc [#1186](https://github.com/hashicorp/go-tfe/pull/1186)
+* Adds `Source` field to `Workspace` by @jpadrianoGo [#1124](https://github.com/hashicorp/go-tfe/pull/1124)
+* Adds `CreatedBy` relation to `AgentToken` by @jpadrianoGo [#1149](https://github.com/hashicorp/go-tfe/pull/1149)
+* Adds `CreatedAt` field to `AgentPool` by @jpadrianoGo [#1150](https://github.com/hashicorp/go-tfe/pull/1150)
+* Adds `CanceledAt`, `RunEvents`, `TriggerReason` field to `Run` by @jpadrianoGo [#1161](https://github.com/hashicorp/go-tfe/pull/1161)
+* Adds `AllowedProjects` and `ExcludedWorkspaces` to `AgentPool` by @tylerwolf [#1185](https://github.com/hashicorp/go-tfe/pull/1185)
+* Adds `DefaultExecutionMode`, `DefaultAgentPool`, and `SettingOverwrites` to `Project` by @tylerwolf [#1185](https://github.com/hashicorp/go-tfe/pull/1185)
+* Adds `IconUrl`, `InstallationType`, and `InstallationURL` to githubAppInstallation, by @jpadrianoGo [#1191](https://github.com/hashicorp/go-tfe/pull/1191)
+* Adds support for `Workspace` VCSRepoOptions source_directory and tag_prefix, by @jillrami [#1194] (https://github.com/hashicorp/go-tfe/pull/1194)
+
 # v1.90.0
 
 ## Bug Fixes

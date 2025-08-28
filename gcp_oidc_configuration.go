@@ -6,6 +6,9 @@ import (
 	"net/url"
 )
 
+// GCPOIDCConfigurations describes all the GCP OIDC configuration related methods that the HCP Terraform API supports.
+// HCP Terraform API docs:
+// https://developer.hashicorp.com/terraform/cloud-docs/api-docs/hold-your-own-key/oidc-configurations/gcp
 type GCPOIDCConfigurations interface {
 	Create(ctx context.Context, organization string, options GCPOIDCConfigurationCreateOptions) (*GCPOIDCConfiguration, error)
 

@@ -6,6 +6,9 @@ import (
 	"net/url"
 )
 
+// AzureOIDCConfigurations describes all the Azure OIDC configuration related methods that the HCP Terraform API supports.
+// HCP Terraform API docs:
+// https://developer.hashicorp.com/terraform/cloud-docs/api-docs/hold-your-own-key/oidc-configurations/azure
 type AzureOIDCConfigurations interface {
 	Create(ctx context.Context, organization string, options AzureOIDCConfigurationCreateOptions) (*AzureOIDCConfiguration, error)
 

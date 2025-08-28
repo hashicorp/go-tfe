@@ -170,6 +170,8 @@ type Client struct {
 	SSHKeys                         SSHKeys
 	Stacks                          Stacks
 	HYOKConfigurations              HYOKConfigurations
+	HYOKCustomerKeyVersions         HYOKCustomerKeyVersions
+	HYOKEncryptedDataKeys           HYOKEncryptedDataKeys
 	StackConfigurations             StackConfigurations
 	StackDeployments                StackDeployments
 	StackDeploymentGroups           StackDeploymentGroups
@@ -509,6 +511,8 @@ func NewClient(cfg *Config) (*Client, error) {
 	client.SSHKeys = &sshKeys{client: client}
 	client.Stacks = &stacks{client: client}
 	client.HYOKConfigurations = &hyokConfigurations{client: client}
+	client.HYOKCustomerKeyVersions = &hyokCustomerKeyVersions{client: client}
+	client.HYOKEncryptedDataKeys = &hyokEncryptedDataKeys{client: client}
 	client.StackConfigurations = &stackConfigurations{client: client}
 	client.StackDeployments = &stackDeployments{client: client}
 	client.StackDeploymentGroups = &stackDeploymentGroups{client: client}

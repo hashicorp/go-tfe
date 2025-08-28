@@ -244,6 +244,10 @@ var (
 	ErrInvalidOIDC = errors.New("invalid value for OIDC configuration ID")
 
 	ErrInvalidHYOK = errors.New("invalid value for HYOK configuration ID")
+
+	ErrInvalidHYOKCustomerKeyVersion = errors.New("invalid value for HYOK Customer key version ID")
+
+	ErrInvalidHYOKEncryptedDataKey = errors.New("invalid value for HYOK encrypted data key ID")
 )
 
 var (

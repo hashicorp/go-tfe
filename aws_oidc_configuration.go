@@ -8,6 +8,9 @@ import (
 
 const OIDCConfigPathFormat = "oidc-configurations/%s"
 
+// AWSOIDCConfigurations describes all the AWS OIDC configuration related methods that the HCP Terraform API supports.
+// HCP Terraform API docs:
+// https://developer.hashicorp.com/terraform/cloud-docs/api-docs/hold-your-own-key/oidc-configurations/aws
 type AWSOIDCConfigurations interface {
 	Create(ctx context.Context, organization string, options AWSOIDCConfigurationCreateOptions) (*AWSOIDCConfiguration, error)
 

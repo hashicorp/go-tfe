@@ -5,10 +5,11 @@ package tfe
 
 import (
 	"context"
-	"github.com/stretchr/testify/assert"
-	"github.com/stretchr/testify/require"
 	"os"
 	"testing"
+
+	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 )
 
 func TestGHAInstallationList(t *testing.T) {
@@ -39,8 +40,11 @@ func TestGHAInstallationRead(t *testing.T) {
 	t.Run("when installation id exists", func(t *testing.T) {
 		ghais, err := client.GHAInstallations.Read(ctx, GHAInstallationID)
 		require.NoError(t, err)
-		assert.NotEmpty(t, ghais.InstallationID)
+		assert.NotEmpty(t, ghais.IconURL)
 		assert.NotEmpty(t, ghais.ID)
+		assert.NotEmpty(t, ghais.InstallationID)
+		assert.NotEmpty(t, ghais.InstallationType)
+		assert.NotEmpty(t, ghais.InstallationURL)
 		assert.NotEmpty(t, ghais.Name)
 		assert.Equal(t, *ghais.ID, gHAInstallationID)
 	})

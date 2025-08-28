@@ -129,6 +129,21 @@ func (mr *MockAgentPoolsMockRecorder) Update(ctx, agentPool, options any) *gomoc
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Update", reflect.TypeOf((*MockAgentPools)(nil).Update), ctx, agentPool, options)
 }
 
+// UpdateAllowedProjects mocks base method.
+func (m *MockAgentPools) UpdateAllowedProjects(ctx context.Context, agentPool string, options tfe.AgentPoolAllowedProjectsUpdateOptions) (*tfe.AgentPool, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "UpdateAllowedProjects", ctx, agentPool, options)
+	ret0, _ := ret[0].(*tfe.AgentPool)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// UpdateAllowedProjects indicates an expected call of UpdateAllowedProjects.
+func (mr *MockAgentPoolsMockRecorder) UpdateAllowedProjects(ctx, agentPool, options any) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdateAllowedProjects", reflect.TypeOf((*MockAgentPools)(nil).UpdateAllowedProjects), ctx, agentPool, options)
+}
+
 // UpdateAllowedWorkspaces mocks base method.
 func (m *MockAgentPools) UpdateAllowedWorkspaces(ctx context.Context, agentPool string, options tfe.AgentPoolAllowedWorkspacesUpdateOptions) (*tfe.AgentPool, error) {
 	m.ctrl.T.Helper()
@@ -142,4 +157,19 @@ func (m *MockAgentPools) UpdateAllowedWorkspaces(ctx context.Context, agentPool 
 func (mr *MockAgentPoolsMockRecorder) UpdateAllowedWorkspaces(ctx, agentPool, options any) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdateAllowedWorkspaces", reflect.TypeOf((*MockAgentPools)(nil).UpdateAllowedWorkspaces), ctx, agentPool, options)
+}
+
+// UpdateExcludedWorkspaces mocks base method.
+func (m *MockAgentPools) UpdateExcludedWorkspaces(ctx context.Context, agentPool string, options tfe.AgentPoolExcludedWorkspacesUpdateOptions) (*tfe.AgentPool, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "UpdateExcludedWorkspaces", ctx, agentPool, options)
+	ret0, _ := ret[0].(*tfe.AgentPool)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// UpdateExcludedWorkspaces indicates an expected call of UpdateExcludedWorkspaces.
+func (mr *MockAgentPoolsMockRecorder) UpdateExcludedWorkspaces(ctx, agentPool, options any) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdateExcludedWorkspaces", reflect.TypeOf((*MockAgentPools)(nil).UpdateExcludedWorkspaces), ctx, agentPool, options)
 }

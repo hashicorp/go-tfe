@@ -5,6 +5,7 @@ package tfe
 
 import (
 	"context"
+	"fmt"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -19,13 +20,13 @@ func TestProjectsList(t *testing.T) {
 	ctx := context.Background()
 
 	orgTest, orgTestCleanup := createOrganization(t, client)
-	defer orgTestCleanup()
+	t.Cleanup(orgTestCleanup)
 
 	pTest1, pTestCleanup := createProject(t, client, orgTest)
-	defer pTestCleanup()
+	t.Cleanup(pTestCleanup)
 
 	pTest2, pTestCleanup := createProject(t, client, orgTest)
-	defer pTestCleanup()
+	t.Cleanup(pTestCleanup)
 
 	t.Run("without list options", func(t *testing.T) {
 		pl, err := client.Projects.List(ctx, orgTest.Name, nil)
@@ -147,7 +148,7 @@ func TestProjectsReadWithOptions(t *testing.T) {
 	ctx := context.Background()
 
 	orgTest, orgTestCleanup := createOrganization(t, client)
-	defer orgTestCleanup()
+	t.Cleanup(orgTestCleanup)
 
 	pTest, pTestCleanup := createProjectWithOptions(t, client, orgTest, ProjectCreateOptions{
 		Name: "project-with-tags",
@@ -155,7 +156,7 @@ func TestProjectsReadWithOptions(t *testing.T) {
 			{Key: "foo", Value: "bar"},
 		},
 	})
-	defer pTestCleanup()
+	t.Cleanup(pTestCleanup)
 
 	t.Run("when the project exists", func(t *testing.T) {
 		p, err := client.Projects.ReadWithOptions(ctx, pTest.ID, ProjectReadOptions{
@@ -165,7 +166,7 @@ func TestProjectsReadWithOptions(t *testing.T) {
 		assert.Equal(t, orgTest.Name, p.Organization.Name)
 
 		// Tag data is included
-		assert.Len(t, p.EffectiveTagBindings, 1)
+		require.Len(t, p.EffectiveTagBindings, 1)
 		assert.Equal(t, "foo", p.EffectiveTagBindings[0].Key)
 		assert.Equal(t, "bar", p.EffectiveTagBindings[0].Value)
 	})
@@ -176,10 +177,10 @@ func TestProjectsRead(t *testing.T) {
 	ctx := context.Background()
 
 	orgTest, orgTestCleanup := createOrganization(t, client)
-	defer orgTestCleanup()
+	t.Cleanup(orgTestCleanup)
 
 	pTest, pTestCleanup := createProject(t, client, orgTest)
-	defer pTestCleanup()
+	t.Cleanup(pTestCleanup)
 
 	t.Run("when the project exists", func(t *testing.T) {
 		w, err := client.Projects.Read(ctx, pTest.ID)
@@ -199,6 +200,51 @@ func TestProjectsRead(t *testing.T) {
 		assert.Nil(t, w)
 		assert.EqualError(t, err, ErrInvalidProjectID.Error())
 	})
+
+	t.Run("with default execution mode of 'agent'", func(t *testing.T) {
+		agentPoolTest, agentPoolTestCleanup := createAgentPool(t, client, orgTest)
+		t.Cleanup(agentPoolTestCleanup)
+
+		proj, projCleanup := createProjectWithOptions(t, client, orgTest, ProjectCreateOptions{
+			Name:                 "project-with-agent-pool",
+			DefaultExecutionMode: String("agent"),
+			DefaultAgentPoolID:   String(agentPoolTest.ID),
+		})
+		t.Cleanup(projCleanup)
+
+		t.Run("execution mode and agent pool are properly decoded", func(t *testing.T) {
+			assert.Equal(t, "agent", proj.DefaultExecutionMode)
+			assert.NotNil(t, proj.DefaultAgentPool)
+			assert.Equal(t, proj.DefaultAgentPool.ID, agentPoolTest.ID)
+		})
+	})
+
+	t.Run("when project is inheriting the default execution mode", func(t *testing.T) {
+		defaultExecutionOrgTest, defaultExecutionOrgTestCleanup := createOrganizationWithDefaultAgentPool(t, client)
+		t.Cleanup(defaultExecutionOrgTestCleanup)
+
+		options := ProjectCreateOptions{
+			Name: fmt.Sprintf("tst-%s", randomString(t)[0:20]),
+			SettingOverwrites: &ProjectSettingOverwrites{
+				ExecutionMode: Bool(false),
+				AgentPool:     Bool(false),
+			},
+		}
+
+		pDefaultTest, pDefaultTestCleanup := createProjectWithOptions(t, client, defaultExecutionOrgTest, options)
+		t.Cleanup(pDefaultTestCleanup)
+
+		t.Run("and project execution mode is default", func(t *testing.T) {
+			p, err := client.Projects.Read(ctx, pDefaultTest.ID)
+			assert.NoError(t, err)
+			assert.NotEmpty(t, p)
+
+			assert.Equal(t, defaultExecutionOrgTest.DefaultExecutionMode, p.DefaultExecutionMode)
+			require.NotNil(t, p.SettingOverwrites)
+			assert.Equal(t, false, *p.SettingOverwrites.ExecutionMode)
+			assert.Equal(t, false, *p.SettingOverwrites.ExecutionMode)
+		})
+	})
 }
 
 func TestProjectsCreate(t *testing.T) {
@@ -206,7 +252,7 @@ func TestProjectsCreate(t *testing.T) {
 	ctx := context.Background()
 
 	orgTest, orgTestCleanup := createOrganization(t, client)
-	defer orgTestCleanup()
+	t.Cleanup(orgTestCleanup)
 
 	newSubscriptionUpdater(orgTest).WithBusinessPlan().Update(t)
 
@@ -264,6 +310,119 @@ func TestProjectsCreate(t *testing.T) {
 		assert.Nil(t, w)
 		assert.Contains(t, err.Error(), "invalid attribute\n\nAuto destroy activity duration has an incorrect format, we expect up to 4 numeric digits and 1 unit ('d' or 'h')")
 	})
+
+	t.Run("when a default agent pool ID is specified without 'agent' execution mode", func(t *testing.T) {
+		agentPoolTest, agentPoolTestCleanup := createAgentPool(t, client, orgTest)
+		t.Cleanup(agentPoolTestCleanup)
+
+		p, err := client.Projects.Create(ctx, orgTest.Name, ProjectCreateOptions{
+			Name:                 fmt.Sprintf("foo-%s", randomString(t)),
+			DefaultExecutionMode: String("remote"),
+			DefaultAgentPoolID:   String(agentPoolTest.ID),
+		})
+
+		assert.Nil(t, p)
+		assert.Contains(t, err.Error(), "unprocessable entity\n\nAgent pool must not be specified unless using 'agent' execution mode")
+	})
+
+	t.Run("when 'agent' execution mode is specified without an a default agent pool ID", func(t *testing.T) {
+		p, err := client.Projects.Create(ctx, orgTest.Name, ProjectCreateOptions{
+			Name:                 fmt.Sprintf("foo-%s", randomString(t)),
+			DefaultExecutionMode: String("agent"),
+		})
+
+		assert.Nil(t, p)
+		assert.Contains(t, err.Error(), "invalid attribute\n\nDefault agent pool must be specified when using 'agent' execution mode")
+	})
+
+	t.Run("when no execution mode is specified, in an organization with local as default execution mode", func(t *testing.T) {
+		orgTest, orgTestCleanup := createOrganizationWithOptions(t, client, OrganizationCreateOptions{
+			Name:                 String("tst-" + randomString(t)[0:20]),
+			Email:                String(fmt.Sprintf("%s@tfe.local", randomString(t))),
+			DefaultExecutionMode: String("local"),
+		})
+		t.Cleanup(orgTestCleanup)
+
+		options := ProjectCreateOptions{
+			Name: fmt.Sprintf("foo-%s", randomString(t)),
+			SettingOverwrites: &ProjectSettingOverwrites{
+				ExecutionMode: Bool(false),
+				AgentPool:     Bool(false),
+			},
+		}
+
+		p, err := client.Projects.Create(ctx, orgTest.Name, options)
+		require.NoError(t, err)
+
+		// Get a refreshed view from the API.
+		refreshed, err := client.Projects.Read(ctx, p.ID)
+		require.NoError(t, err)
+
+		assert.Equal(t, "local", refreshed.DefaultExecutionMode)
+	})
+
+	t.Run("when agent pool and execution mode setting overwrites do not match", func(t *testing.T) {
+		agentPoolTest, agentPoolTestCleanup := createAgentPool(t, client, orgTest)
+		t.Cleanup(agentPoolTestCleanup)
+
+		p, err := client.Projects.Create(ctx, orgTest.Name, ProjectCreateOptions{
+			Name:                 fmt.Sprintf("foo-%s", randomString(t)),
+			DefaultExecutionMode: String("agent"),
+			DefaultAgentPoolID:   String(agentPoolTest.ID),
+			SettingOverwrites: &ProjectSettingOverwrites{
+				AgentPool:     Bool(false),
+				ExecutionMode: Bool(true),
+			},
+		})
+
+		assert.Nil(t, p)
+		assert.Contains(t, err.Error(), "If agent-pool and execution-mode are both included in setting-overwrites, their values must be the same.")
+	})
+
+	t.Run("when organization has a default execution mode", func(t *testing.T) {
+		defaultExecutionOrgTest, defaultExecutionOrgTestCleanup := createOrganizationWithDefaultAgentPool(t, client)
+		t.Cleanup(defaultExecutionOrgTestCleanup)
+
+		t.Run("with setting overwrites set to false, project inherits the default execution mode", func(t *testing.T) {
+			options := ProjectCreateOptions{
+				Name: fmt.Sprintf("tst-proj-%s", randomString(t)[0:20]),
+				SettingOverwrites: &ProjectSettingOverwrites{
+					ExecutionMode: Bool(false),
+					AgentPool:     Bool(false),
+				},
+			}
+			p, err := client.Projects.Create(ctx, defaultExecutionOrgTest.Name, options)
+
+			require.NoError(t, err)
+			assert.Equal(t, "agent", p.DefaultExecutionMode)
+		})
+
+		t.Run("with setting overwrites set to true, project ignores the default execution mode", func(t *testing.T) {
+			options := ProjectCreateOptions{
+				Name:                 fmt.Sprintf("tst-proj-%s", randomString(t)[0:20]),
+				DefaultExecutionMode: String("local"),
+				SettingOverwrites: &ProjectSettingOverwrites{
+					ExecutionMode: Bool(true),
+					AgentPool:     Bool(true),
+				},
+			}
+			p, err := client.Projects.Create(ctx, defaultExecutionOrgTest.Name, options)
+
+			require.NoError(t, err)
+			assert.Equal(t, "local", p.DefaultExecutionMode)
+		})
+
+		t.Run("when explicitly setting default execution mode, project ignores the org default execution mode", func(t *testing.T) {
+			options := ProjectCreateOptions{
+				Name:                 fmt.Sprintf("tst-proj-%s", randomString(t)[0:20]),
+				DefaultExecutionMode: String("remote"),
+			}
+			p, err := client.Projects.Create(ctx, defaultExecutionOrgTest.Name, options)
+
+			require.NoError(t, err)
+			assert.Equal(t, "remote", p.DefaultExecutionMode)
+		})
+	})
 }
 
 func TestProjectsUpdate(t *testing.T) {
@@ -271,7 +430,10 @@ func TestProjectsUpdate(t *testing.T) {
 	ctx := context.Background()
 
 	orgTest, orgTestCleanup := createOrganization(t, client)
-	defer orgTestCleanup()
+	t.Cleanup(orgTestCleanup)
+
+	agentPoolTest, agentPoolTestCleanup := createAgentPool(t, client, orgTest)
+	t.Cleanup(agentPoolTestCleanup)
 
 	t.Run("with valid options", func(t *testing.T) {
 		kBefore, kTestCleanup := createProject(t, client, orgTest)
@@ -283,25 +445,29 @@ func TestProjectsUpdate(t *testing.T) {
 			TagBindings: []*TagBinding{
 				{Key: "foo", Value: "bar"},
 			},
+			DefaultExecutionMode: String("agent"),
+			DefaultAgentPoolID:   String(agentPoolTest.ID),
 		})
 		require.NoError(t, err)
 
 		assert.Equal(t, kBefore.ID, kAfter.ID)
 		assert.NotEqual(t, kBefore.Name, kAfter.Name)
 		assert.NotEqual(t, kBefore.Description, kAfter.Description)
+		assert.NotEqual(t, kBefore.DefaultExecutionMode, kAfter.DefaultExecutionMode)
+		assert.NotEqual(t, kBefore.DefaultAgentPool, kAfter.DefaultAgentPool)
 
 		if betaFeaturesEnabled() {
 			bindings, err := client.Projects.ListTagBindings(ctx, kAfter.ID)
 			require.NoError(t, err)
 
-			assert.Len(t, bindings, 1)
+			require.Len(t, bindings, 1)
 			assert.Equal(t, "foo", bindings[0].Key)
 			assert.Equal(t, "bar", bindings[0].Value)
 
 			effectiveBindings, err := client.Projects.ListEffectiveTagBindings(ctx, kAfter.ID)
 			require.NoError(t, err)
 
-			assert.Len(t, effectiveBindings, 1)
+			require.Len(t, effectiveBindings, 1)
 			assert.Equal(t, "foo", effectiveBindings[0].Key)
 			assert.Equal(t, "bar", effectiveBindings[0].Value)
 
@@ -341,7 +507,7 @@ func TestProjectsUpdate(t *testing.T) {
 
 	t.Run("when updating with invalid name", func(t *testing.T) {
 		kBefore, kTestCleanup := createProject(t, client, orgTest)
-		defer kTestCleanup()
+		t.Cleanup(kTestCleanup)
 
 		kAfter, err := client.Projects.Update(ctx, kBefore.ID, ProjectUpdateOptions{
 			Name: String(badIdentifier),
@@ -362,13 +528,103 @@ func TestProjectsUpdate(t *testing.T) {
 		newSubscriptionUpdater(orgTest).WithBusinessPlan().Update(t)
 
 		kBefore, kTestCleanup := createProject(t, client, orgTest)
-		defer kTestCleanup()
+		t.Cleanup(kTestCleanup)
 
 		w, err := client.Projects.Update(ctx, kBefore.ID, ProjectUpdateOptions{
 			AutoDestroyActivityDuration: jsonapi.NewNullableAttrWithValue("bar"),
 		})
 		assert.Nil(t, w)
 		assert.Contains(t, err.Error(), "invalid attribute\n\nAuto destroy activity duration has an incorrect format, we expect up to 4 numeric digits and 1 unit ('d' or 'h')")
+	})
+
+	t.Run("with agent pool provided, but remote execution mode", func(t *testing.T) {
+		kBefore, kTestCleanup := createProject(t, client, orgTest)
+		t.Cleanup(kTestCleanup)
+
+		pool, agentPoolCleanup := createAgentPool(t, client, orgTest)
+		t.Cleanup(agentPoolCleanup)
+
+		proj, err := client.Projects.Update(ctx, kBefore.ID, ProjectUpdateOptions{
+			DefaultExecutionMode: String("local"),
+			DefaultAgentPoolID:   String(pool.ID),
+		})
+		assert.Nil(t, proj)
+		assert.ErrorContains(t, err, "Agent pool must not be specified unless using 'agent' execution mode")
+	})
+
+	t.Run("with different default execution modes", func(t *testing.T) {
+		proj, projCleanup := createProject(t, client, orgTest)
+		t.Cleanup(projCleanup)
+
+		agentPool, agenPoolCleanup := createAgentPool(t, client, orgTest)
+		t.Cleanup(agenPoolCleanup)
+
+		assert.Equal(t, "remote", proj.DefaultExecutionMode)
+		assert.Nil(t, proj.DefaultAgentPool)
+
+		// assert that project's execution mode can be updated from 'remote' -> 'agent'
+		proj, err := client.Projects.Update(ctx, proj.ID, ProjectUpdateOptions{
+			DefaultExecutionMode: String("agent"),
+			DefaultAgentPoolID:   String(agentPool.ID),
+		})
+		require.NoError(t, err)
+		assert.Equal(t, "agent", proj.DefaultExecutionMode)
+		assert.Equal(t, agentPool.ID, proj.DefaultAgentPool.ID)
+
+		// assert that project's execution mode can be updated from 'agent' -> 'remote'
+		proj, err = client.Projects.Update(ctx, proj.ID, ProjectUpdateOptions{
+			DefaultExecutionMode: String("remote"),
+		})
+		require.NoError(t, err)
+		assert.Equal(t, "remote", proj.DefaultExecutionMode)
+		assert.Nil(t, proj.DefaultAgentPool)
+
+		// assert that project's execution mode can be updated from 'remote' -> 'local'
+		proj, err = client.Projects.Update(ctx, proj.ID, ProjectUpdateOptions{
+			DefaultExecutionMode: String("local"),
+		})
+		require.NoError(t, err)
+		assert.Equal(t, "local", proj.DefaultExecutionMode)
+		assert.Nil(t, proj.DefaultAgentPool)
+	})
+
+	t.Run("with setting overwrites set to true, project ignores the default execution mode", func(t *testing.T) {
+		defaultExecutionOrgTest, defaultExecutionOrgTestCleanup := createOrganizationWithDefaultAgentPool(t, client)
+		t.Cleanup(defaultExecutionOrgTestCleanup)
+
+		kBefore, kTestCleanup := createProject(t, client, defaultExecutionOrgTest)
+		t.Cleanup(kTestCleanup)
+
+		options := ProjectUpdateOptions{
+			DefaultExecutionMode: String("local"),
+			SettingOverwrites: &ProjectSettingOverwrites{
+				ExecutionMode: Bool(true),
+				AgentPool:     Bool(true),
+			},
+		}
+		p, err := client.Projects.Update(ctx, kBefore.ID, options)
+
+		require.NoError(t, err)
+		assert.Equal(t, "local", p.DefaultExecutionMode)
+	})
+
+	t.Run("with setting overwrites set to false, project inherits the default execution mode", func(t *testing.T) {
+		defaultExecutionOrgTest, defaultExecutionOrgTestCleanup := createOrganizationWithDefaultAgentPool(t, client)
+		t.Cleanup(defaultExecutionOrgTestCleanup)
+
+		kBefore, kTestCleanup := createProject(t, client, defaultExecutionOrgTest)
+		t.Cleanup(kTestCleanup)
+
+		options := ProjectUpdateOptions{
+			SettingOverwrites: &ProjectSettingOverwrites{
+				ExecutionMode: Bool(false),
+				AgentPool:     Bool(false),
+			},
+		}
+		p, err := client.Projects.Update(ctx, kBefore.ID, options)
+
+		require.NoError(t, err)
+		assert.Equal(t, "agent", p.DefaultExecutionMode)
 	})
 }
 
@@ -392,7 +648,7 @@ func TestProjectsAddTagBindings(t *testing.T) {
 		})
 		require.NoError(t, err)
 
-		assert.Len(t, bindings, 2)
+		require.Len(t, bindings, 2)
 		assert.Equal(t, tagBindings[0].Key, bindings[0].Key)
 		assert.Equal(t, tagBindings[0].Value, bindings[0].Value)
 		assert.Equal(t, tagBindings[1].Key, bindings[1].Key)
@@ -468,7 +724,7 @@ func TestProjectsDelete(t *testing.T) {
 	ctx := context.Background()
 
 	orgTest, orgTestCleanup := createOrganization(t, client)
-	defer orgTestCleanup()
+	t.Cleanup(orgTestCleanup)
 
 	pTest, _ := createProject(t, client, orgTest)
 
@@ -498,7 +754,7 @@ func TestProjectsAutoDestroy(t *testing.T) {
 	ctx := context.Background()
 
 	orgTest, orgTestCleanup := createOrganization(t, client)
-	defer orgTestCleanup()
+	t.Cleanup(orgTestCleanup)
 
 	newSubscriptionUpdater(orgTest).WithBusinessPlan().Update(t)
 
