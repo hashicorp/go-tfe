@@ -8,7 +8,7 @@ import (
 
 type StackConfigurationSummaries interface {
 	// List lists all the stack configuration summaries for a stack.
-	List(ctx context.Context, stackID string) (*StackConfigurationSummaryList, error)
+	List(ctx context.Context, stackID string, options *StackConfigurationSummaryListOptions) (*StackConfigurationSummaryList, error)
 }
 
 type stackConfigurationSummaries struct {
@@ -22,19 +22,27 @@ type StackConfigurationSummaryList struct {
 	Items []*StackConfigurationSummary
 }
 
-type StackConfigurationSummary struct {
-	ID             string
-	Type           string
-	Status         string
-	SequenceNumber int
+type StackConfigurationSummaryListOptions struct {
+	ListOptions
 }
 
-func (s stackConfigurationSummaries) List(ctx context.Context, stackID string) (*StackConfigurationSummaryList, error) {
+type StackConfigurationSummary struct {
+	ID             string `jsonapi:"primary,stack-configuration-summaries"`
+	Type           string `jsonapi:"attr,type"`
+	Status         string `jsonapi:"attr,status"`
+	SequenceNumber int    `jsonapi:"attr,sequence-number"`
+}
+
+func (s stackConfigurationSummaries) List(ctx context.Context, stackID string, options *StackConfigurationSummaryListOptions) (*StackConfigurationSummaryList, error) {
 	if !validStringID(&stackID) {
 		return nil, fmt.Errorf("invalid stack ID: %s", stackID)
 	}
 
-	req, err := s.client.NewRequest("GET", fmt.Sprintf("stacks/%s/stack-configuration-summaries", url.PathEscape(stackID)), nil)
+	if options == nil {
+		options = &StackConfigurationSummaryListOptions{}
+	}
+
+	req, err := s.client.NewRequest("GET", fmt.Sprintf("stacks/%s/stack-configuration-summaries", url.PathEscape(stackID)), options)
 	if err != nil {
 		return nil, err
 	}

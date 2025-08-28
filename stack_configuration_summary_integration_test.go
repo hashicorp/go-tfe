@@ -27,7 +27,7 @@ func TestStackConfigurationSummaryList(t *testing.T) {
 	stack, err := client.Stacks.Create(ctx, StackCreateOptions{
 		Name: "aa-test-stack",
 		VCSRepo: &StackVCSRepoOptions{
-			Identifier:   "hwatkins05-hashicorp/pet-nulls-stack",
+			Identifier:   "hashicorp-guides/pet-nulls-stack",
 			OAuthTokenID: oauthClient.OAuthTokens[0].ID,
 		},
 		Project: &Project{
@@ -39,7 +39,7 @@ func TestStackConfigurationSummaryList(t *testing.T) {
 	stack2, err := client.Stacks.Create(ctx, StackCreateOptions{
 		Name: "bb-test-stack",
 		VCSRepo: &StackVCSRepoOptions{
-			Identifier:   "hwatkins05-hashicorp/pet-nulls-stack",
+			Identifier:   "hashicorp-guides/pet-nulls-stack",
 			OAuthTokenID: oauthClient.OAuthTokens[0].ID,
 		},
 		Project: &Project{
@@ -59,21 +59,21 @@ func TestStackConfigurationSummaryList(t *testing.T) {
 	require.NoError(t, err)
 
 	t.Run("Successful empty list", func(t *testing.T) {
-		stackConfigSummaryList, err := client.StackConfigurationSummaries.List(ctx, stack.ID)
+		stackConfigSummaryList, err := client.StackConfigurationSummaries.List(ctx, stack.ID, nil)
 		require.NoError(t, err)
 
 		assert.Len(t, stackConfigSummaryList.Items, 0)
 	})
 
 	t.Run("Successful multiple config summary list", func(t *testing.T) {
-		stackConfigSummaryList, err := client.StackConfigurationSummaries.List(ctx, stack2.ID)
+		stackConfigSummaryList, err := client.StackConfigurationSummaries.List(ctx, stack2.ID, nil)
 		require.NoError(t, err)
 
 		assert.Len(t, stackConfigSummaryList.Items, 2)
 	})
 
 	t.Run("Unsuccessful list", func(t *testing.T) {
-		_, err := client.StackConfigurationSummaries.List(ctx, "")
+		_, err := client.StackConfigurationSummaries.List(ctx, "", nil)
 		require.Error(t, err)
 	})
 }
