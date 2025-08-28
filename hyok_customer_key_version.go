@@ -93,7 +93,7 @@ func (s *hyokCustomerKeyVersions) List(ctx context.Context, hyokConfigurationID 
 // Read a hyok customer key version by its ID.
 func (s *hyokCustomerKeyVersions) Read(ctx context.Context, hyokCustomerKeyVersionID string) (*HYOKCustomerKeyVersion, error) {
 	if !validStringID(&hyokCustomerKeyVersionID) {
-		return nil, ErrInvalidHYOK
+		return nil, ErrInvalidHYOKCustomerKeyVersion
 	}
 
 	path := fmt.Sprintf("hyok-customer-key-versions/%s", url.PathEscape(hyokCustomerKeyVersionID))
@@ -115,7 +115,7 @@ func (s *hyokCustomerKeyVersions) Read(ctx context.Context, hyokCustomerKeyVersi
 // Returns `error` if there was a problem triggering the revocation. Otherwise revocation has been triggered successfully.
 func (s *hyokCustomerKeyVersions) Revoke(ctx context.Context, hyokCustomerKeyVersionID string) error {
 	if !validStringID(&hyokCustomerKeyVersionID) {
-		return ErrInvalidHYOK
+		return ErrInvalidHYOKCustomerKeyVersion
 	}
 
 	path := fmt.Sprintf("hyok-customer-key-versions/%s/actions/revoke", url.PathEscape(hyokCustomerKeyVersionID))
@@ -130,7 +130,7 @@ func (s *hyokCustomerKeyVersions) Revoke(ctx context.Context, hyokCustomerKeyVer
 // Delete a hyok customer key version.
 func (s *hyokCustomerKeyVersions) Delete(ctx context.Context, hyokCustomerKeyVersionID string) error {
 	if !validStringID(&hyokCustomerKeyVersionID) {
-		return ErrInvalidHYOK
+		return ErrInvalidHYOKCustomerKeyVersion
 	}
 
 	path := fmt.Sprintf("hyok-customer-key-versions/%s", url.PathEscape(hyokCustomerKeyVersionID))

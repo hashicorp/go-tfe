@@ -37,7 +37,7 @@ type HYOKEncryptedDataKey struct {
 // Read a HYOK encrypted data key by its ID.
 func (h hyokEncryptedDataKeys) Read(ctx context.Context, hyokEncryptedDataKeyID string) (*HYOKEncryptedDataKey, error) {
 	if !validStringID(&hyokEncryptedDataKeyID) {
-		return nil, ErrInvalidHYOK
+		return nil, ErrInvalidHYOKEncryptedDataKey
 	}
 
 	path := fmt.Sprintf("hyok-encrypted-data-keys/%s", url.PathEscape(hyokEncryptedDataKeyID))
