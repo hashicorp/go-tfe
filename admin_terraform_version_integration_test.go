@@ -61,6 +61,7 @@ func TestAdminTerraformVersions_List(t *testing.T) {
 			assert.NotNil(t, item.Beta)
 			assert.NotNil(t, item.Usage)
 			assert.NotNil(t, item.CreatedAt)
+			assert.NotNil(t, item.Archs)
 		}
 	})
 
@@ -138,6 +139,13 @@ func TestAdminTerraformVersions_CreateDelete(t *testing.T) {
 		assert.Equal(t, *opts.DeprecatedReason, *tfv.DeprecatedReason)
 		assert.Equal(t, *opts.Enabled, tfv.Enabled)
 		assert.Equal(t, *opts.Beta, tfv.Beta)
+		assert.Equal(t, len(opts.Archs), len(tfv.Archs))
+		for i, arch := range opts.Archs {
+			assert.Equal(t, arch.URL, tfv.Archs[i].URL)
+			assert.Equal(t, arch.Sha, tfv.Archs[i].Sha)
+			assert.Equal(t, arch.OS, tfv.Archs[i].OS)
+			assert.Equal(t, arch.Arch, tfv.Archs[i].Arch)
+		}
 	})
 
 	t.Run("with valid options, url, and sha", func(t *testing.T) {
@@ -167,6 +175,12 @@ func TestAdminTerraformVersions_CreateDelete(t *testing.T) {
 		assert.Equal(t, *opts.DeprecatedReason, *tfv.DeprecatedReason)
 		assert.Equal(t, *opts.Enabled, tfv.Enabled)
 		assert.Equal(t, *opts.Beta, tfv.Beta)
+		for i, arch := range opts.Archs {
+			assert.Equal(t, arch.URL, tfv.Archs[i].URL)
+			assert.Equal(t, arch.Sha, tfv.Archs[i].Sha)
+			assert.Equal(t, arch.OS, tfv.Archs[i].OS)
+			assert.Equal(t, arch.Arch, tfv.Archs[i].Arch)
+		}
 	})
 
 	t.Run("with only required options including tool version url and sha", func(t *testing.T) {
@@ -192,6 +206,13 @@ func TestAdminTerraformVersions_CreateDelete(t *testing.T) {
 		assert.Nil(t, tfv.DeprecatedReason)
 		assert.Equal(t, true, tfv.Enabled)
 		assert.Equal(t, false, tfv.Beta)
+		assert.Equal(t, len(opts.Archs), len(tfv.Archs))
+		for i, arch := range opts.Archs {
+			assert.Equal(t, arch.URL, tfv.Archs[i].URL)
+			assert.Equal(t, arch.Sha, tfv.Archs[i].Sha)
+			assert.Equal(t, arch.OS, tfv.Archs[i].OS)
+			assert.Equal(t, arch.Arch, tfv.Archs[i].Arch)
+		}
 	})
 
 	t.Run("with only required options including archs", func(t *testing.T) {
@@ -299,6 +320,64 @@ func TestAdminTerraformVersions_ReadUpdate(t *testing.T) {
 		assert.Equal(t, *updateOpts.Deprecated, tfv.Deprecated)
 		assert.Equal(t, *opts.Enabled, tfv.Enabled)
 		assert.Equal(t, *opts.Beta, tfv.Beta)
+		assert.Equal(t, updateURL, tfv.Archs[0].URL)
+		assert.Equal(t, *opts.Sha, tfv.Archs[0].Sha)
+		assert.Equal(t, amd64, tfv.Archs[0].Arch)
+		assert.Equal(t, linux, tfv.Archs[0].OS)
+	})
+
+	t.Run("update with Archs", func(t *testing.T) {
+		version := genSafeRandomTerraformVersion()
+		sha := String(genSha(t))
+		opts := AdminTerraformVersionCreateOptions{
+			Version:          String(version),
+			URL:              String("https://www.hashicorp.com"),
+			Sha:              String(genSha(t)),
+			Official:         Bool(false),
+			Deprecated:       Bool(true),
+			DeprecatedReason: String("Test Reason"),
+			Enabled:          Bool(false),
+			Beta:             Bool(false),
+			Archs: []*ToolVersionArchitecture{{
+				URL:  "https://www.hashicorp.com",
+				Sha:  *sha,
+				OS:   linux,
+				Arch: amd64,
+			}},
+		}
+		tfv, err := client.Admin.TerraformVersions.Create(ctx, opts)
+		require.NoError(t, err)
+		id := tfv.ID
+
+		defer func() {
+			deleteErr := client.Admin.TerraformVersions.Delete(ctx, id)
+			require.NoError(t, deleteErr)
+		}()
+
+		updateArchOpts := AdminTerraformVersionUpdateOptions{
+			Archs: []*ToolVersionArchitecture{{
+				URL:  "https://www.hashicorp.com",
+				Sha:  *sha,
+				OS:   linux,
+				Arch: arm64,
+			}},
+		}
+
+		tfv, err = client.Admin.TerraformVersions.Update(ctx, id, updateArchOpts)
+		require.NoError(t, err)
+
+		assert.Equal(t, *opts.Version, tfv.Version)
+		assert.Equal(t, "", tfv.URL)
+		assert.Equal(t, "", tfv.Sha)
+		assert.Equal(t, *opts.Official, tfv.Official)
+		assert.Equal(t, *opts.Deprecated, tfv.Deprecated)
+		assert.Equal(t, *opts.Enabled, tfv.Enabled)
+		assert.Equal(t, *opts.Beta, tfv.Beta)
+		assert.Equal(t, len(tfv.Archs), 1)
+		assert.Equal(t, updateArchOpts.Archs[0].URL, tfv.Archs[0].URL)
+		assert.Equal(t, updateArchOpts.Archs[0].Sha, tfv.Archs[0].Sha)
+		assert.Equal(t, updateArchOpts.Archs[0].OS, tfv.Archs[0].OS)
+		assert.Equal(t, updateArchOpts.Archs[0].Arch, tfv.Archs[0].Arch)
 	})
 
 	t.Run("with non-existent terraform version", func(t *testing.T) {
