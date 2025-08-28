@@ -7,7 +7,7 @@ import (
 )
 
 type StackConfigurationSummaries interface {
-	//List lists all the stack configuration summaries for a stack.
+	// List lists all the stack configuration summaries for a stack.
 	List(ctx context.Context, stackID string) (*StackConfigurationSummaryList, error)
 }
 
