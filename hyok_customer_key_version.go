@@ -66,7 +66,7 @@ const (
 // HYOKCustomerKeyVersionListOptions represents the options for listing hyok customer key versions
 type HYOKCustomerKeyVersionListOptions struct {
 	ListOptions
-	Refresh string `url:"refresh,omitempty"`
+	Refresh bool `url:"refresh,omitempty"`
 }
 
 // List all hyok customer key versions.
