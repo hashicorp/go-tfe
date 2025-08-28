@@ -7,8 +7,8 @@ import (
 )
 
 type StackConfigurationSummaries interface {
-	//ListStackConfigurationSummaries lists all the stack configuration summaries for a stack.
-	ListStackConfigurationSummaries(ctx context.Context, stackID string) (*StackConfigurationSummaryList, error)
+	//List lists all the stack configuration summaries for a stack.
+	List(ctx context.Context, stackID string) (*StackConfigurationSummaryList, error)
 }
 
 type stackConfigurationSummaries struct {
@@ -29,7 +29,7 @@ type StackConfigurationSummary struct {
 	SequenceNumber int
 }
 
-func (s stackConfigurationSummaries) ListStackConfigurationSummaries(ctx context.Context, stackID string) (*StackConfigurationSummaryList, error) {
+func (s stackConfigurationSummaries) List(ctx context.Context, stackID string) (*StackConfigurationSummaryList, error) {
 	if !validStringID(&stackID) {
 		return nil, fmt.Errorf("invalid stack ID: %s", stackID)
 	}
