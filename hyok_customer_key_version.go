@@ -111,7 +111,8 @@ func (s *hyokCustomerKeyVersions) Read(ctx context.Context, hyokCustomerKeyVersi
 	return kv, nil
 }
 
-// Revoke a hyok customer key version.
+// Revoke a hyok customer key version. This process is asynchronous.
+// Returns `error` if there was a problem triggering the revocation. Otherwise revocation has been triggered successfully.
 func (s *hyokCustomerKeyVersions) Revoke(ctx context.Context, hyokCustomerKeyVersionID string) error {
 	if !validStringID(&hyokCustomerKeyVersionID) {
 		return ErrInvalidHYOK
