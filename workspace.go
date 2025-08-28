@@ -215,7 +215,7 @@ type Workspace struct {
 	RunsCount                   int                             `jsonapi:"attr,workspace-kpis-runs-count"`
 	TagNames                    []string                        `jsonapi:"attr,tag-names"`
 	SettingOverwrites           *WorkspaceSettingOverwrites     `jsonapi:"attr,setting-overwrites"`
-	HYOKEnabled                 bool                            `jsonapi:"attr,hyok-enabled"`
+	HYOKEnabled                 *bool                           `jsonapi:"attr,hyok-enabled"`
 
 	// Relations
 	AgentPool                   *AgentPool             `jsonapi:"relation,agent-pool"`
@@ -490,7 +490,7 @@ type WorkspaceCreateOptions struct {
 	// If set to false, the workspace will be created with HYOK disabled.
 	// If not specified, the workspace will be created with HYOK disabled.
 	// Note: HYOK is only available in HCP Terraform.
-	HYOKEnabled bool `jsonapi:"attr,hyok-enabled,omitempty"`
+	HYOKEnabled *bool `jsonapi:"attr,hyok-enabled,omitempty"`
 
 	// A list of tags to attach to the workspace. If the tag does not already
 	// exist, it is created and added to the workspace.
@@ -657,7 +657,7 @@ type WorkspaceUpdateOptions struct {
 	// Optional: Enables HYOK in the workspace.
 	// If set to true, the workspace will be updated with HYOK enabled.
 	// This can't be set to false, as HYOK is a one-way operation.
-	HYOKEnabled bool `jsonapi:"attr,hyok-enabled,omitempty"`
+	HYOKEnabled *bool `jsonapi:"attr,hyok-enabled,omitempty"`
 
 	// Associated Project with the workspace. If not provided, default project
 	// of the organization will be assigned to the workspace

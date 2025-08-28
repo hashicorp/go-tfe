@@ -119,9 +119,9 @@ type StateVersion struct {
 	Resources []*StateVersionResources `jsonapi:"attr,resources"`
 
 	// Relations
-	Run     *Run                  `jsonapi:"relation,run"`
-	Outputs []*StateVersionOutput `jsonapi:"relation,outputs"`
-	// HYOKEncryptedDataKey *HYOKEncryptedDataKeys `jsonapi:"relation,hyok-encrypted-data-key,omitempty"`
+	Run                  *Run                   `jsonapi:"relation,run"`
+	Outputs              []*StateVersionOutput  `jsonapi:"relation,outputs"`
+	HYOKEncryptedDataKey *HYOKEncryptedDataKeys `jsonapi:"relation,hyok-encrypted-data-key,omitempty"`
 }
 
 // StateVersionOutputsList represents a list of StateVersionOutput items.
