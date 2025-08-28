@@ -28,7 +28,6 @@ type StackConfigurationSummaryListOptions struct {
 
 type StackConfigurationSummary struct {
 	ID             string `jsonapi:"primary,stack-configuration-summaries"`
-	Type           string `jsonapi:"attr,type"`
 	Status         string `jsonapi:"attr,status"`
 	SequenceNumber int    `jsonapi:"attr,sequence-number"`
 }
