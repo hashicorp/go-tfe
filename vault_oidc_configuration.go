@@ -6,6 +6,9 @@ import (
 	"net/url"
 )
 
+// VaultOIDCConfigurations describes all the Vault OIDC configuration related methods that the HCP Terraform API supports.
+// HCP Terraform API docs:
+// https://developer.hashicorp.com/terraform/cloud-docs/api-docs/hold-your-own-key/oidc-configurations/vault
 type VaultOIDCConfigurations interface {
 	Create(ctx context.Context, organization string, options VaultOIDCConfigurationCreateOptions) (*VaultOIDCConfiguration, error)
 

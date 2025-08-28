@@ -6,6 +6,9 @@ import (
 	"net/url"
 )
 
+// HYOKConfigurations describes all the HYOK configuration related methods that the HCP Terraform API supports.
+// HCP Terraform API docs:
+// https://developer.hashicorp.com/terraform/cloud-docs/api-docs/hold-your-own-key/configurations
 type HYOKConfigurations interface {
 	List(ctx context.Context, organization string, options *HYOKConfigurationsListOptions) (*HYOKConfigurationsList, error)
 
@@ -72,6 +75,7 @@ type HYOKConfiguration struct {
 	Organization      *Organization                `jsonapi:"relation,organization"`
 	OIDCConfiguration *OIDCConfigurationTypeChoice `jsonapi:"polyrelation,oidc-configuration"`
 	AgentPool         *AgentPool                   `jsonapi:"relation,agent-pool"`
+	KeyVersions       []*HYOKCustomerKeyVersion    `jsonapi:"relation,hyok-customer-key-versions"`
 }
 
 type HYOKConfigurationsList struct {
