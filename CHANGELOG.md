@@ -9,17 +9,17 @@
 
 ## Deprecations
 
-* The `GET` endpoint to return a `StackPlan` by its ID has been deprecated by 
-* The `GET` endpoint to return a list of stack plans for a given stack configuration has been deprecated by 
-* The `POST` endpoint to approve a stack plan has been deprecated by
-* The `POST` endpoint to cancel a stack plan has been deprecated by
-* The `POST` endpoint to discard a stack plan has been deprecated by
-* The `GET` endpoint to return the plan description for a stack plan has been deprecated by
-* The `AwaitTerminal` method to generate a channel that will receive the status of the stack plan has been deprecated by
-* The `AwaitRunning` method to generate a channel that will receive the status of the stack plan has been deprecated by
-* The `GET` endpoint to return a stack plan operation by its ID has been deprecated by
-* The `GET` endpoint to return a stack source by its ID has been deprecated by
-* The `POST` endpoint to package and upload the specified Terraform Stacks configuration files in association with a Stack has been deprecated by
+* The `GET` endpoint to return a `StackPlan` by its ID has been deprecated by @sahar-azizighannad [#...](https://github.com/hashicorp/go-tfe/pull/...)
+* The `GET` endpoint to return a list of stack plans for a given stack configuration has been deprecated by @sahar-azizighannad [#...](https://github.com/hashicorp/go-tfe/pull/...)
+* The `POST` endpoint to approve a stack plan has been deprecated by @sahar-azizighannad [#...](https://github.com/hashicorp/go-tfe/pull/...)
+* The `POST` endpoint to cancel a stack plan has been deprecated by @sahar-azizighannad [#...](https://github.com/hashicorp/go-tfe/pull/...)
+* The `POST` endpoint to discard a stack plan has been deprecated by @sahar-azizighannad [#...](https://github.com/hashicorp/go-tfe/pull/...)
+* The `GET` endpoint to return the plan description for a stack plan has been deprecated by @sahar-azizighannad [#...](https://github.com/hashicorp/go-tfe/pull/...)
+* The `AwaitTerminal` method to generate a channel that will receive the status of the stack plan has been deprecated by @sahar-azizighannad [#...](https://github.com/hashicorp/go-tfe/pull/...)
+* The `AwaitRunning` method to generate a channel that will receive the status of the stack plan has been deprecated by @sahar-azizighannad [#...](https://github.com/hashicorp/go-tfe/pull/...)
+* The `GET` endpoint to return a stack plan operation by its ID has been deprecated by @sahar-azizighannad [#...](https://github.com/hashicorp/go-tfe/pull/...)
+* The `GET` endpoint to return a stack source by its ID has been deprecated by @sahar-azizighannad [#...](https://github.com/hashicorp/go-tfe/pull/...)
+* The `POST` endpoint to package and upload the specified Terraform Stacks configuration files in association with a Stack has been deprecated by @sahar-azizighannad [#...](https://github.com/hashicorp/go-tfe/pull/...)
 
 ## Bug Fixes
 
