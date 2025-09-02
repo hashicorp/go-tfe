@@ -334,6 +334,7 @@ func createAgent(t *testing.T, client *Client, org *Organization, agentPool *Age
 		if agentList != nil && len(agentList.Items) > 0 {
 			for _, value := range agentList.Items {
 				if value.Name == *name {
+					fmt.Println("sanity")
 					return value, nil
 				}
 			}
