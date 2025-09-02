@@ -276,6 +276,11 @@ func createAgent(t *testing.T, client *Client, org *Organization, agentPool *Age
 		agentPool, agentPoolCleanup = createAgentPool(t, client, org)
 	}
 
+	if name == nil {
+		defaultName := "test-agent"
+		name = &defaultName
+	}
+
 	upgradeOrganizationSubscription(t, client, org)
 
 	agentPoolToken, agentPoolTokenCleanup := createAgentToken(t, client, agentPool)
@@ -299,9 +304,6 @@ func createAgent(t *testing.T, client *Client, org *Organization, agentPool *Age
 
 	ctx := context.Background()
 
-	if name == nil {
-		*name = "test-agent"
-	}
 	cmd := exec.Command(agentPath)
 	cmd.Env = os.Environ()
 	cmd.Env = append(cmd.Env,
