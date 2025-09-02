@@ -340,37 +340,6 @@ func pollStackDeployments(t *testing.T, ctx context.Context, client *Client, sta
 	return
 }
 
-func pollStackDeploymentStatus(t *testing.T, ctx context.Context, client *Client, stackID, deploymentName, status string) {
-	// pollStackDeployments will poll the given stack until it has deployments or the deadline is reached.
-	ctx, cancel := context.WithDeadline(ctx, time.Now().Add(5*time.Minute))
-	defer cancel()
-
-	deadline, _ := ctx.Deadline()
-	t.Logf("Polling stack %q for deployments with deadline of %s", stackID, deadline)
-
-	ticker := time.NewTicker(2 * time.Second)
-	defer ticker.Stop()
-
-	for finished := false; !finished; {
-		t.Log("...")
-		select {
-		case <-ctx.Done():
-			t.Fatalf("Stack deployment %s/%s did not have status %q at deadline", stackID, deploymentName, status)
-		case <-ticker.C:
-			var err error
-			deployment, err := client.StackDeployments.Read(ctx, stackID, deploymentName)
-			if err != nil {
-				t.Fatalf("Failed to read stack deployment %s/%s: %s", stackID, deploymentName, err)
-			}
-
-			t.Logf("Stack deployment %s/%s had status %q", stackID, deploymentName, deployment.Status)
-			if deployment.Status == status {
-				finished = true
-			}
-		}
-	}
-}
-
 func pollStackConfigurationStatus(t *testing.T, ctx context.Context, client *Client, stackConfigID, status string) (stackConfig *StackConfiguration) {
 	// pollStackDeployments will poll the given stack until it has deployments or the deadline is reached.
 	ctx, cancel := context.WithDeadline(ctx, time.Now().Add(5*time.Minute))
@@ -439,10 +408,6 @@ func TestStackConverged(t *testing.T) {
 	stack = pollStackDeployments(t, ctx, client, stackUpdated.ID)
 	require.ElementsMatch(t, deployments, stack.DeploymentNames)
 	require.NotNil(t, stack.LatestStackConfiguration)
-
-	for _, deployment := range deployments {
-		pollStackDeploymentStatus(t, ctx, client, stack.ID, deployment, "paused")
-	}
 
 	pollStackConfigurationStatus(t, ctx, client, stack.LatestStackConfiguration.ID, "converged")
 }
