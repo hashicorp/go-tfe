@@ -304,12 +304,11 @@ func TestRunsCreate(t *testing.T) {
 
 	t.Run("with additional attributes", func(t *testing.T) {
 		options := RunCreateOptions{
-			Message:           String("yo"),
-			Workspace:         wTest,
-			Refresh:           Bool(false),
-			ReplaceAddrs:      []string{"null_resource.example"},
-			TargetAddrs:       []string{"null_resource.example"},
-			InvokeActionAddrs: []string{"actions.foo.bar"},
+			Message:      String("yo"),
+			Workspace:    wTest,
+			Refresh:      Bool(false),
+			ReplaceAddrs: []string{"null_resource.example"},
+			TargetAddrs:  []string{"null_resource.example"},
 		}
 
 		r, err := client.Runs.Create(ctx, options)
@@ -318,7 +317,6 @@ func TestRunsCreate(t *testing.T) {
 		assert.Equal(t, *options.Refresh, r.Refresh)
 		assert.Equal(t, options.ReplaceAddrs, r.ReplaceAddrs)
 		assert.Equal(t, options.TargetAddrs, r.TargetAddrs)
-		assert.Equal(t, options.InvokeActionAddrs, r.InvokeActionAddrs)
 		assert.Nil(t, r.Variables)
 	})
 
