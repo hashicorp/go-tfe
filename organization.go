@@ -199,6 +199,8 @@ type OrganizationPermissions struct {
 	CanUpdateAPIToken           bool `jsonapi:"attr,can-update-api-token"`
 	CanUpdateOAuth              bool `jsonapi:"attr,can-update-oauth"`
 	CanUpdateSentinel           bool `jsonapi:"attr,can-update-sentinel"`
+	CanUpdateHYOKConfiguration  bool `jsonapi:"attr,can-update-hyok-configuration"`
+	CanViewHYOKFeatureInfo      bool `jsonapi:"attr,can-view-hyok-feature-info"`
 }
 
 // OrganizationListOptions represents the options for listing organizations.
@@ -258,7 +260,7 @@ type OrganizationCreateOptions struct {
 	DefaultExecutionMode *string `jsonapi:"attr,default-execution-mode,omitempty"`
 
 	// Optional: EnforceHYOK if HYOK is enforced for the organization.
-	EnforceHYOK bool `jsonapi:"attr,enforce-hyok,omitempty"`
+	EnforceHYOK *bool `jsonapi:"attr,enforce-hyok,omitempty"`
 
 	// Optional: StacksEnabled toggles whether stacks are enabled for the organization. This setting
 	// is considered BETA, SUBJECT TO CHANGE, and likely unavailable to most users.
@@ -319,7 +321,7 @@ type OrganizationUpdateOptions struct {
 	DefaultAgentPool *AgentPool `jsonapi:"relation,default-agent-pool,omitempty"`
 
 	// Optional: EnforceHYOK if HYOK is enforced for the organization.
-	EnforceHYOK bool `jsonapi:"attr,enforce-hyok,omitempty"`
+	EnforceHYOK *bool `jsonapi:"attr,enforce-hyok,omitempty"`
 
 	// Optional: StacksEnabled toggles whether stacks are enabled for the organization. This setting
 	// is considered BETA, SUBJECT TO CHANGE, and likely unavailable to most users.

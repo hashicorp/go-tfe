@@ -233,6 +233,28 @@ func TestOrganizationsRead(t *testing.T) {
 			assert.Equal(t, org.DefaultAgentPool.ID, orgAgentTest.DefaultAgentPool.ID)
 		})
 	})
+
+	t.Run("read existing primary hyok configuration of an organization", func(t *testing.T) {
+		if skipHYOKIntegrationTests {
+			t.Skip()
+		}
+
+		orgID := ""
+		obj, err := client.Organizations.Read(ctx, orgID)
+		assert.NotEmpty(t, obj.PrimaryHYOKConfiguration)
+		require.NoError(t, err)
+	})
+
+	t.Run("read enforce hyok of an organization", func(t *testing.T) {
+		if skipHYOKIntegrationTests {
+			t.Skip()
+		}
+
+		orgID := ""
+		obj, err := client.Organizations.Read(ctx, orgID)
+		assert.True(t, obj.EnforceHYOK || !obj.EnforceHYOK)
+		require.NoError(t, err)
+	})
 }
 
 func TestOrganizationsUpdate(t *testing.T) {
@@ -387,6 +409,32 @@ func TestOrganizationsUpdate(t *testing.T) {
 		assert.Nil(t, org.DefaultAgentPool)
 
 		t.Cleanup(orgAgentTestCleanup)
+	})
+
+	t.Run("update enforce hyok of an organization to true", func(t *testing.T) {
+		if skipHYOKIntegrationTests {
+			t.Skip()
+		}
+
+		orgName := ""
+		org, err := client.Organizations.Update(ctx, orgName, OrganizationUpdateOptions{
+			EnforceHYOK: Bool(true),
+		})
+		require.NoError(t, err)
+		assert.True(t, org.EnforceHYOK)
+	})
+
+	t.Run("update enforce hyok of an organization to false", func(t *testing.T) {
+		if skipHYOKIntegrationTests {
+			t.Skip()
+		}
+
+		orgName := ""
+		org, err := client.Organizations.Update(ctx, orgName, OrganizationUpdateOptions{
+			EnforceHYOK: Bool(false),
+		})
+		require.NoError(t, err)
+		assert.False(t, org.EnforceHYOK)
 	})
 }
 
