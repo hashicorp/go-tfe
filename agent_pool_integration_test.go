@@ -362,6 +362,24 @@ func TestAgentPoolsReadCreatedAt(t *testing.T) {
 	require.NoError(t, err)
 }
 
+func TestAgentPoolsReadHYOKAttributes(t *testing.T) {
+	if skipHYOKIntegrationTests {
+		t.Skip()
+	}
+
+	client := testClient(t)
+	ctx := context.Background()
+
+	t.Run("read existing hyok configurations of an agent pool", func(t *testing.T) {
+		poolID := ""
+		obj, err := client.AgentPools.ReadWithOptions(ctx, poolID, &AgentPoolReadOptions{
+			Include: []AgentPoolIncludeOpt{AgentPoolHYOKConfigurations},
+		})
+		assert.NotEmpty(t, obj.HYOKConfigurations)
+		require.NoError(t, err)
+	})
+}
+
 func TestAgentPoolsUpdate(t *testing.T) {
 	client := testClient(t)
 	ctx := context.Background()

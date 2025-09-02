@@ -79,6 +79,7 @@ type AgentPool struct {
 type AgentPoolIncludeOpt string
 
 const AgentPoolWorkspaces AgentPoolIncludeOpt = "workspaces"
+const AgentPoolHYOKConfigurations AgentPoolIncludeOpt = "hyok-configurations"
 
 type AgentPoolReadOptions struct {
 	Include []AgentPoolIncludeOpt `url:"include,omitempty"`
