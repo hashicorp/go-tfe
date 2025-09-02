@@ -1,5 +1,9 @@
 # Unreleased
 
+## Enhancements
+
+* Add `invoke-action-addrs` to `CreateRunOptions` by @mutahhir [#1206](https://github.com/hashicorp/go-tfe/pull/1206)
+
 # v1.93.0
 
 ## Enhancements
