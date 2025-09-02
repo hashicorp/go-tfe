@@ -4,8 +4,8 @@
 
 ## Enhancements
 
-* Updates endpoint for deleting stack from `POST` to `DELETE` and removing `/delete` from endpoint by
-* Updates endpoint for force deleting stack from `POST` to `DELETE` and removing `/force-delete` from endpoint and adding `?force=true` by
+* Updates endpoint for deleting stack from `POST` to `DELETE` and removing `/delete` from endpoint by @sahar-azizighannad  [#1205](https://github.com/hashicorp/go-tfe/pull/1205)
+* Updates endpoint for force deleting stack from `POST` to `DELETE` and removing `/force-delete` from endpoint and adding `?force=true` by @sahar-azizighannad  [#1205](https://github.com/hashicorp/go-tfe/pull/1205)
 
 ## Deprecations
 
