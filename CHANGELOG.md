@@ -9,18 +9,7 @@
 
 ## Deprecations
 
-* The `GET` endpoint to return a `StackPlan` by its ID has been deprecated by @sahar-azizighannad [#1205](https://github.com/hashicorp/go-tfe/pull/1205)
-* The `GET` endpoint to return a list of stack plans for a given stack configuration has been deprecated by @sahar-azizighannad [#1205](https://github.com/hashicorp/go-tfe/pull/1205)
-* The `POST` endpoint to approve a stack plan has been deprecated by @sahar-azizighannad [#1205](https://github.com/hashicorp/go-tfe/pull/1205)
-* The `POST` endpoint to cancel a stack plan has been deprecated by @sahar-azizighannad [#1205](https://github.com/hashicorp/go-tfe/pull/1205)
-* The `POST` endpoint to discard a stack plan has been deprecated by @sahar-azizighannad [#1205](https://github.com/hashicorp/go-tfe/pull/1205)
-* The `GET` endpoint to return the plan description for a stack plan has been deprecated by @sahar-azizighannad [#1205](https://github.com/hashicorp/go-tfe/pull/1205)
-* The `AwaitTerminal` method to generate a channel that will receive the status of the stack plan has been deprecated by @sahar-azizighannad [#1205](https://github.com/hashicorp/go-tfe/pull/1205)
-* The `AwaitRunning` method to generate a channel that will receive the status of the stack plan has been deprecated by @sahar-azizighannad [#1205](https://github.com/hashicorp/go-tfe/pull/1205)
-* The `GET` endpoint to return a stack plan operation by its ID has been deprecated by @sahar-azizighannad [#1205](https://github.com/hashicorp/go-tfe/pull/1205)
-* The `GET` endpoint to return a stack source by its ID has been deprecated by @sahar-azizighannad [#1205](https://github.com/hashicorp/go-tfe/pull/1205)
-* The `POST` endpoint to package and upload the specified Terraform Stacks configuration files in association with a Stack has been deprecated by @sahar-azizighannad [#1205](https://github.com/hashicorp/go-tfe/pull/1205)
-
+* The beta `StackDeployments`, `StackPlan`, `StackPlanOperation`, and `StackSource` resources have been removed, by @sahar-azizighannad  [#1205](https://github.com/hashicorp/go-tfe/pull/1205)
 ## Bug Fixes
 
 * Fixes timestamp attribute mapping for deployment runs to use correct API field names (`created-at`/`updated-at` instead of `started-at`/`completed-at`) by @shwetamurali [#1199](https://github.com/hashicorp/go-tfe/pull/1199)
