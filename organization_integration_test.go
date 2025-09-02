@@ -239,9 +239,9 @@ func TestOrganizationsRead(t *testing.T) {
 			t.Skip()
 		}
 
-		orgID := ""
-		obj, err := client.Organizations.Read(ctx, orgID)
-		assert.NotEmpty(t, obj.PrimaryHYOKConfiguration)
+		orgName := ""
+		org, err := client.Organizations.Read(ctx, orgName)
+		assert.NotEmpty(t, org.PrimaryHYOKConfiguration)
 		require.NoError(t, err)
 	})
 
@@ -250,9 +250,9 @@ func TestOrganizationsRead(t *testing.T) {
 			t.Skip()
 		}
 
-		orgID := ""
-		obj, err := client.Organizations.Read(ctx, orgID)
-		assert.True(t, obj.EnforceHYOK || !obj.EnforceHYOK)
+		orgName := ""
+		org, err := client.Organizations.Read(ctx, orgName)
+		assert.True(t, org.EnforceHYOK || !org.EnforceHYOK)
 		require.NoError(t, err)
 	})
 }
