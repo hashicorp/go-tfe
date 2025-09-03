@@ -261,7 +261,7 @@ func downloadTFCAgent(t *testing.T) (string, error) {
 	return fmt.Sprintf("%s/tfc-agent", tmpDir), nil
 }
 
-func createAgent(t *testing.T, client *Client, org *Organization, agentPool *AgentPool, name *string) (*Agent, *AgentPool, func()) {
+func createAgent(t *testing.T, client *Client, org *Organization, agentPool *AgentPool, name string) (*Agent, *AgentPool, func()) {
 	var orgCleanup func()
 	var agentPoolTokenCleanup func()
 	var agentPoolCleanup func()
@@ -276,9 +276,8 @@ func createAgent(t *testing.T, client *Client, org *Organization, agentPool *Age
 		agentPool, agentPoolCleanup = createAgentPool(t, client, org)
 	}
 
-	if name == nil {
-		defaultName := "test-agent"
-		name = &defaultName
+	if name == "" {
+		name = "test-agent"
 	}
 
 	upgradeOrganizationSubscription(t, client, org)
@@ -308,7 +307,7 @@ func createAgent(t *testing.T, client *Client, org *Organization, agentPool *Age
 	cmd.Env = os.Environ()
 	cmd.Env = append(cmd.Env,
 		"TFC_AGENT_TOKEN="+agentPoolToken.Token,
-		"TFC_AGENT_NAME="+*name,
+		"TFC_AGENT_NAME="+name,
 		"TFC_ADDRESS="+DefaultConfig().Address,
 	)
 
@@ -334,7 +333,7 @@ func createAgent(t *testing.T, client *Client, org *Organization, agentPool *Age
 		if agentList != nil && len(agentList.Items) > 0 {
 			var result *Agent
 			for _, value := range agentList.Items {
-				if value.Name == *name {
+				if value.Name == name {
 					result = value
 				}
 			}

@@ -5,6 +5,7 @@ package tfe
 
 import (
 	"context"
+	"fmt"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -22,7 +23,7 @@ func TestAgentsRead(t *testing.T) {
 
 	upgradeOrganizationSubscription(t, client, org)
 
-	agent, _, agentCleanup := createAgent(t, client, org, nil, nil)
+	agent, _, agentCleanup := createAgent(t, client, org, nil, "")
 	t.Cleanup(agentCleanup)
 
 	t.Run("when the agent exists", func(t *testing.T) {
@@ -55,9 +56,9 @@ func TestAgentsList(t *testing.T) {
 
 	upgradeOrganizationSubscription(t, client, org)
 
-	agent1, agentPool, agentCleanup := createAgent(t, client, org, nil, String("agent1"))
+	agent1, agentPool, agentCleanup := createAgent(t, client, org, nil, "agent1")
 	t.Cleanup(agentCleanup)
-	agent2, _, agentCleanup2 := createAgent(t, client, org, agentPool, String("agent2"))
+	agent2, _, agentCleanup2 := createAgent(t, client, org, agentPool, "agent2")
 	t.Cleanup(agentCleanup2)
 
 	t.Run("expect an agent to exist", func(t *testing.T) {
@@ -75,6 +76,14 @@ func TestAgentsList(t *testing.T) {
 		require.NoError(t, err)
 		require.NotNil(t, agents)
 		require.Len(t, agents.Items, 2)
+		fmt.Println(agent1)
+		fmt.Println(agent1.Name)
+		fmt.Println(agent2)
+		fmt.Println(agent2.Name)
+		fmt.Println(agents)
+		fmt.Println(agents.Items[0].Name)
+		fmt.Println(agents.Items[1].Name)
+
 		require.Equal(t, []string{agent1.ID, agent2.ID}, []string{agents.Items[0].ID, agents.Items[1].ID})
 
 		agents, err = client.Agents.List(ctx, agentPool.ID, &AgentListOptions{
