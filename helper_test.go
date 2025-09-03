@@ -279,6 +279,8 @@ func createAgent(t *testing.T, client *Client, org *Organization, agentPool *Age
 	if name == "" {
 		name = "test-agent"
 	}
+	fmt.Println("the names")
+	fmt.Println(name)
 
 	upgradeOrganizationSubscription(t, client, org)
 
@@ -333,8 +335,6 @@ func createAgent(t *testing.T, client *Client, org *Organization, agentPool *Age
 		if agentList != nil && len(agentList.Items) > 0 {
 			var result *Agent
 			for _, value := range agentList.Items {
-				fmt.Println("the names")
-				fmt.Println(name)
 				fmt.Println(value.Name)
 				if value.Name == name {
 					result = value
