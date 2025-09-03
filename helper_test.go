@@ -280,7 +280,6 @@ func createAgent(t *testing.T, client *Client, org *Organization, agentPool *Age
 		defaultName := "test-agent"
 		name = &defaultName
 	}
-	fmt.Println(*name)
 
 	upgradeOrganizationSubscription(t, client, org)
 
@@ -333,12 +332,13 @@ func createAgent(t *testing.T, client *Client, org *Organization, agentPool *Age
 		}
 
 		if agentList != nil && len(agentList.Items) > 0 {
+			var result *Agent = nil
 			for _, value := range agentList.Items {
 				if value.Name == *name {
-					fmt.Println("sanity")
-					return value, nil
+					result = value
 				}
 			}
+			return result, nil
 		}
 		return nil, errors.New("no agent found")
 	})
