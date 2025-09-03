@@ -137,21 +137,6 @@ type StackConfiguration struct {
 	Stack *Stack `jsonapi:"relation,stack"`
 }
 
-// StackDeployment represents a stack deployment, specified by configuration
-type StackDeployment struct {
-	// Attributes
-	ID            string    `jsonapi:"primary,stack-deployments"`
-	Name          string    `jsonapi:"attr,name"`
-	Status        string    `jsonapi:"attr,status"`
-	DeployedAt    time.Time `jsonapi:"attr,deployed-at,iso8601"`
-	ErrorsCount   int       `jsonapi:"attr,errors-count"`
-	WarningsCount int       `jsonapi:"attr,warnings-count"`
-	PausedCount   int       `jsonapi:"attr,paused-count"`
-
-	// Relationships
-	CurrentStackState *StackState `jsonapi:"relation,current-stack-state"`
-}
-
 // StackState represents a stack state
 type StackState struct {
 	// Attributes
