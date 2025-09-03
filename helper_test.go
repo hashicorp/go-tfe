@@ -279,7 +279,7 @@ func createAgent(t *testing.T, client *Client, org *Organization, agentPool *Age
 	if name == "" {
 		name = "test-agent"
 	}
-	fmt.Println("the names")
+	fmt.Println("the name passed into createAgent")
 	fmt.Println(name)
 
 	upgradeOrganizationSubscription(t, client, org)
@@ -295,6 +295,21 @@ func createAgent(t *testing.T, client *Client, org *Organization, agentPool *Age
 
 		if orgCleanup != nil {
 			orgCleanup()
+		}
+	}
+
+	xctx := context.Background()
+
+	agentList, err := client.Agents.List(xctx, agentPool.ID, nil)
+	if err != nil {
+		fmt.Println("OMG!")
+	}
+
+	if agentList != nil && len(agentList.Items) > 0 {
+		for _, value := range agentList.Items {
+			fmt.Println("the before times")
+			fmt.Println(value.Name)
+			fmt.Println(value.ID)
 		}
 	}
 
@@ -335,7 +350,9 @@ func createAgent(t *testing.T, client *Client, org *Organization, agentPool *Age
 		if agentList != nil && len(agentList.Items) > 0 {
 			var result *Agent
 			for _, value := range agentList.Items {
+				fmt.Println("value.Name for agent in list")
 				fmt.Println(value.Name)
+				fmt.Println(value.ID)
 				if value.Name == name {
 					result = value
 				}
