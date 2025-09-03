@@ -58,7 +58,10 @@ func TestAgentsList(t *testing.T) {
 
 	agent1, agentPool, agentCleanup := createAgent(t, client, org, nil, "agent1")
 	t.Cleanup(agentCleanup)
-	agent2, _, agentCleanup2 := createAgent(t, client, org, agentPool, "agent2")
+	agent2, agentPool2, agentCleanup2 := createAgent(t, client, org, agentPool, "agent2")
+	fmt.Println("agent pool stuff")
+	fmt.Println(agentPool2.ID)
+	fmt.Println(agentPool.ID)
 	t.Cleanup(agentCleanup2)
 
 	t.Run("expect an agent to exist", func(t *testing.T) {
@@ -73,6 +76,9 @@ func TestAgentsList(t *testing.T) {
 		agents, err := client.Agents.List(ctx, agentPool.ID, &AgentListOptions{
 			Sort: "created-at",
 		})
+		fmt.Println("line 78")
+		fmt.Println(agents.Items[0].Name)
+		fmt.Println(agents.Items[1].Name)
 		require.NoError(t, err)
 		require.NotNil(t, agents)
 		require.Len(t, agents.Items, 2)
@@ -81,8 +87,6 @@ func TestAgentsList(t *testing.T) {
 		fmt.Println(agent2)
 		fmt.Println(agent2.Name)
 		fmt.Println(agents)
-		fmt.Println(agents.Items[0].Name)
-		fmt.Println(agents.Items[1].Name)
 
 		require.Equal(t, []string{agent1.ID, agent2.ID}, []string{agents.Items[0].ID, agents.Items[1].ID})
 
