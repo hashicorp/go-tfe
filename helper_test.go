@@ -280,6 +280,7 @@ func createAgent(t *testing.T, client *Client, org *Organization, agentPool *Age
 		defaultName := "test-agent"
 		name = &defaultName
 	}
+	fmt.Println(name)
 
 	upgradeOrganizationSubscription(t, client, org)
 
