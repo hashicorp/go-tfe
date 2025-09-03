@@ -5,6 +5,7 @@ package tfe
 
 import (
 	"context"
+	"fmt"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -22,8 +23,7 @@ func TestAgentsRead(t *testing.T) {
 
 	upgradeOrganizationSubscription(t, client, org)
 
-	agent, _, agentCleanup := createAgent(t, client, org)
-
+	agent, _, agentCleanup := createAgent(t, client, org, nil, "")
 	t.Cleanup(agentCleanup)
 
 	t.Run("when the agent exists", func(t *testing.T) {
@@ -56,8 +56,13 @@ func TestAgentsList(t *testing.T) {
 
 	upgradeOrganizationSubscription(t, client, org)
 
-	_, agentPool, agentCleanup := createAgent(t, client, org)
+	agent1, agentPool, agentCleanup := createAgent(t, client, org, nil, "agent1")
 	t.Cleanup(agentCleanup)
+	agent2, agentPool2, agentCleanup2 := createAgent(t, client, org, agentPool, "agent2")
+	fmt.Println("agent pool stuff")
+	fmt.Println(agentPool2.ID)
+	fmt.Println(agentPool.ID)
+	t.Cleanup(agentCleanup2)
 
 	t.Run("expect an agent to exist", func(t *testing.T) {
 		agent, err := client.Agents.List(ctx, agentPool.ID, nil)
@@ -65,6 +70,35 @@ func TestAgentsList(t *testing.T) {
 		require.NoError(t, err)
 		require.NotEmpty(t, agent.Items)
 		assert.NotEmpty(t, agent.Items[0].ID)
+	})
+
+	t.Run("with sorting", func(t *testing.T) {
+		agents, err := client.Agents.List(ctx, agentPool.ID, &AgentListOptions{
+			Sort: "created-at",
+		})
+		fmt.Println("line 78")
+		fmt.Println(agents.Items[0].Name)
+		fmt.Println(agents.Items[0].ID)
+		fmt.Println(agents.Items[1].Name)
+		fmt.Println(agents.Items[1].ID)
+		require.NoError(t, err)
+		require.NotNil(t, agents)
+		require.Len(t, agents.Items, 2)
+		fmt.Println(agent1)
+		fmt.Println(agent1.Name)
+		fmt.Println(agent2)
+		fmt.Println(agent2.Name)
+		fmt.Println(agents)
+
+		require.Equal(t, []string{agent1.ID, agent2.ID}, []string{agents.Items[0].ID, agents.Items[1].ID})
+
+		agents, err = client.Agents.List(ctx, agentPool.ID, &AgentListOptions{
+			Sort: "-created-at",
+		})
+		require.NoError(t, err)
+		require.NotNil(t, agents)
+		require.Len(t, agents.Items, 2)
+		require.Equal(t, []string{agent2.ID, agent1.ID}, []string{agents.Items[0].ID, agents.Items[1].ID})
 	})
 
 	t.Run("without a valid agent pool ID", func(t *testing.T) {

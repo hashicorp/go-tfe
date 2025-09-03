@@ -1,5 +1,8 @@
 # Unreleased
 
+## Enhancements
+* Add `Sort` option to `Agents` and `AgentPools`, by @twitnithegirl [#1193](https://github.com/hashicorp/go-tfe/pull/1193)
+
 # v1.91.1
 
 ## Bug Fixes

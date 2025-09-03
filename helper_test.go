@@ -261,9 +261,10 @@ func downloadTFCAgent(t *testing.T) (string, error) {
 	return fmt.Sprintf("%s/tfc-agent", tmpDir), nil
 }
 
-func createAgent(t *testing.T, client *Client, org *Organization) (*Agent, *AgentPool, func()) {
+func createAgent(t *testing.T, client *Client, org *Organization, agentPool *AgentPool, name string) (*Agent, *AgentPool, func()) {
 	var orgCleanup func()
 	var agentPoolTokenCleanup func()
+	var agentPoolCleanup func()
 	var agent *Agent
 	var ok bool
 
@@ -271,7 +272,15 @@ func createAgent(t *testing.T, client *Client, org *Organization) (*Agent, *Agen
 		org, orgCleanup = createOrganization(t, client)
 	}
 
-	agentPool, agentPoolCleanup := createAgentPool(t, client, org)
+	if agentPool == nil {
+		agentPool, agentPoolCleanup = createAgentPool(t, client, org)
+	}
+
+	if name == "" {
+		name = "test-agent"
+	}
+	fmt.Println("the name passed into createAgent")
+	fmt.Println(name)
 
 	upgradeOrganizationSubscription(t, client, org)
 
@@ -289,6 +298,21 @@ func createAgent(t *testing.T, client *Client, org *Organization) (*Agent, *Agen
 		}
 	}
 
+	xctx := context.Background()
+
+	agentList, err := client.Agents.List(xctx, agentPool.ID, nil)
+	if err != nil {
+		fmt.Println("OMG!")
+	}
+
+	if agentList != nil && len(agentList.Items) > 0 {
+		for _, value := range agentList.Items {
+			fmt.Println("the before times")
+			fmt.Println(value.Name)
+			fmt.Println(value.ID)
+		}
+	}
+
 	agentPath, err := downloadTFCAgent(t)
 	if err != nil {
 		return agent, agentPool, cleanup
@@ -300,7 +324,7 @@ func createAgent(t *testing.T, client *Client, org *Organization) (*Agent, *Agen
 	cmd.Env = os.Environ()
 	cmd.Env = append(cmd.Env,
 		"TFC_AGENT_TOKEN="+agentPoolToken.Token,
-		"TFC_AGENT_NAME="+"test-agent",
+		"TFC_AGENT_NAME="+name,
 		"TFC_ADDRESS="+DefaultConfig().Address,
 	)
 
@@ -324,7 +348,16 @@ func createAgent(t *testing.T, client *Client, org *Organization) (*Agent, *Agen
 		}
 
 		if agentList != nil && len(agentList.Items) > 0 {
-			return agentList.Items[0], nil
+			var result *Agent
+			for _, value := range agentList.Items {
+				fmt.Println("value.Name for agent in list")
+				fmt.Println(value.Name)
+				fmt.Println(value.ID)
+				if value.Name == name {
+					result = value
+				}
+			}
+			return result, nil
 		}
 		return nil, errors.New("no agent found")
 	})
