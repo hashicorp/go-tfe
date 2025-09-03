@@ -234,15 +234,15 @@ func TestOrganizationsRead(t *testing.T) {
 		})
 	})
 
-	t.Run("read existing primary hyok configuration of an organization", func(t *testing.T) {
+	t.Run("read primary hyok configuration of an organization", func(t *testing.T) {
 		if skipHYOKIntegrationTests {
 			t.Skip()
 		}
 
 		orgName := ""
 		org, err := client.Organizations.Read(ctx, orgName)
-		assert.NotEmpty(t, org.PrimaryHYOKConfiguration)
 		require.NoError(t, err)
+		assert.NotEmpty(t, org.PrimaryHYOKConfiguration)
 	})
 
 	t.Run("read enforce hyok of an organization", func(t *testing.T) {
@@ -252,8 +252,8 @@ func TestOrganizationsRead(t *testing.T) {
 
 		orgName := ""
 		org, err := client.Organizations.Read(ctx, orgName)
-		assert.True(t, org.EnforceHYOK || !org.EnforceHYOK)
 		require.NoError(t, err)
+		assert.True(t, org.EnforceHYOK || !org.EnforceHYOK)
 	})
 }
 

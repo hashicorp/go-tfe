@@ -344,17 +344,17 @@ func TestAgentPoolsRead(t *testing.T) {
 		assert.NotEmpty(t, k.Workspaces[0])
 	})
 
-	t.Run("read existing hyok configurations of an agent pool", func(t *testing.T) {
+	t.Run("read hyok configurations of an agent pool", func(t *testing.T) {
 		if skipHYOKIntegrationTests {
 			t.Skip()
 		}
 
 		poolID := ""
-		obj, err := client.AgentPools.ReadWithOptions(ctx, poolID, &AgentPoolReadOptions{
+		k, err := client.AgentPools.ReadWithOptions(ctx, poolID, &AgentPoolReadOptions{
 			Include: []AgentPoolIncludeOpt{AgentPoolHYOKConfigurations},
 		})
-		assert.NotEmpty(t, obj.HYOKConfigurations)
 		require.NoError(t, err)
+		assert.NotEmpty(t, k.HYOKConfigurations)
 	})
 }
 

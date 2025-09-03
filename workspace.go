@@ -242,6 +242,7 @@ type Workspace struct {
 	Variables                   []*Variable            `jsonapi:"relation,vars"`
 	TagBindings                 []*TagBinding          `jsonapi:"relation,tag-bindings"`
 	EffectiveTagBindings        []*EffectiveTagBinding `jsonapi:"relation,effective-tag-bindings"`
+	HYOKEncryptedDataKey        *HYOKEncryptedDataKeys `jsonapi:"relation,hyok-encrypted-data-key,omitempty"`
 
 	// Deprecated: Use DataRetentionPolicyChoice instead.
 	DataRetentionPolicy *DataRetentionPolicy
