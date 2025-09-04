@@ -564,6 +564,104 @@ func TestVariableSetsApplyToAndRemoveFromProjects(t *testing.T) {
 	})
 }
 
+func TestVariableSetsApplyToAndRemoveFromStacks(t *testing.T) {
+	client := testClient(t)
+	ctx := context.Background()
+
+	orgTest, orgTestCleanup := createOrganization(t, client)
+	t.Cleanup(orgTestCleanup)
+
+	vsTest, vsTestCleanup := createVariableSet(t, client, orgTest, VariableSetCreateOptions{})
+	t.Cleanup(vsTestCleanup)
+
+	stackTest1, stackTest1Cleanup := createStack(t, client, orgTest)
+	defer stackTest1Cleanup()
+	stackTest2, stackTest2Cleanup := createStack(t, client, orgTest)
+	defer stackTest2Cleanup()
+
+	t.Run("with first stack added", func(t *testing.T) {
+		options := VariableSetApplyToWorkspacesOptions{
+			Workspaces: []*Workspace{{ID: stackTest1.ID}},
+		}
+
+		err := client.VariableSets.ApplyToStacks(ctx, vsTest.ID, &options)
+		require.NoError(t, err)
+
+		vsAfter, err := client.VariableSets.Read(ctx, vsTest.ID, &VariableSetReadOptions{
+			Include: &[]VariableSetIncludeOpt{VariableSetStacks},
+		})
+		require.NoError(t, err)
+
+		assert.Equal(t, 1, len(vsAfter.Workspaces))
+		assert.Equal(t, stackTest1.ID, vsAfter.Workspaces[0].ID)
+	})
+
+	t.Run("with second stack added", func(t *testing.T) {
+		options := VariableSetApplyToWorkspacesOptions{
+			Workspaces: []*Workspace{{ID: stackTest2.ID}},
+		}
+
+		err := client.VariableSets.ApplyToStacks(ctx, vsTest.ID, &options)
+		require.NoError(t, err)
+
+		vsAfter, err := client.VariableSets.Read(ctx, vsTest.ID, &VariableSetReadOptions{
+			Include: &[]VariableSetIncludeOpt{VariableSetStacks},
+		})
+		require.NoError(t, err)
+
+		assert.Equal(t, 2, len(vsAfter.Workspaces))
+		stackIDs := []string{vsAfter.Workspaces[0].ID, vsAfter.Workspaces[1].ID}
+		assert.Contains(t, stackIDs, stackTest1.ID)
+		assert.Contains(t, stackIDs, stackTest2.ID)
+	})
+
+	t.Run("with first stack removed", func(t *testing.T) {
+		options := VariableSetRemoveFromWorkspacesOptions{
+			Workspaces: []*Workspace{{ID: stackTest1.ID}},
+		}
+
+		err := client.VariableSets.RemoveFromStacks(ctx, vsTest.ID, &options)
+		require.NoError(t, err)
+
+		vsAfter, err := client.VariableSets.Read(ctx, vsTest.ID, &VariableSetReadOptions{
+			Include: &[]VariableSetIncludeOpt{VariableSetStacks},
+		})
+		require.NoError(t, err)
+
+		assert.Equal(t, 1, len(vsAfter.Workspaces))
+		assert.Equal(t, stackTest2.ID, vsAfter.Workspaces[0].ID)
+	})
+
+	t.Run("when variable set ID is invalid", func(t *testing.T) {
+		applyOptions := VariableSetApplyToWorkspacesOptions{
+			Workspaces: []*Workspace{{ID: stackTest1.ID}},
+		}
+		err := client.VariableSets.ApplyToStacks(ctx, badIdentifier, &applyOptions)
+		assert.EqualError(t, err, ErrInvalidVariableSetID.Error())
+
+		removeOptions := VariableSetRemoveFromWorkspacesOptions{
+			Workspaces: []*Workspace{{ID: stackTest1.ID}},
+		}
+		err = client.VariableSets.RemoveFromStacks(ctx, badIdentifier, &removeOptions)
+		assert.EqualError(t, err, ErrInvalidVariableSetID.Error())
+	})
+
+	t.Run("when stack ID is invalid", func(t *testing.T) {
+		badStack := &Workspace{ID: badIdentifier}
+		applyOptions := VariableSetApplyToWorkspacesOptions{
+			Workspaces: []*Workspace{badStack},
+		}
+		err := client.VariableSets.ApplyToStacks(ctx, vsTest.ID, &applyOptions)
+		assert.EqualError(t, err, ErrRequiredWorkspaceID.Error())
+
+		removeOptions := VariableSetRemoveFromWorkspacesOptions{
+			Workspaces: []*Workspace{badStack},
+		}
+		err = client.VariableSets.RemoveFromStacks(ctx, vsTest.ID, &removeOptions)
+		assert.EqualError(t, err, ErrRequiredWorkspaceID.Error())
+	})
+}
+
 func TestVariableSetsUpdateWorkspaces(t *testing.T) {
 	client := testClient(t)
 	ctx := context.Background()
@@ -593,6 +691,53 @@ func TestVariableSetsUpdateWorkspaces(t *testing.T) {
 		}
 
 		vsAfter, err = client.VariableSets.UpdateWorkspaces(ctx, vsTest.ID, &options)
+		require.NoError(t, err)
+
+		assert.Equal(t, len(options.Workspaces), len(vsAfter.Workspaces))
+	})
+}
+
+func TestVariableSetsUpdateStacks(t *testing.T) {
+	client := testClient(t)
+	ctx := context.Background()
+
+	orgTest, orgTestCleanup := createOrganization(t, client)
+	t.Cleanup(orgTestCleanup)
+
+	vsTest, vsTestCleanup := createVariableSet(t, client, orgTest, VariableSetCreateOptions{})
+	t.Cleanup(vsTestCleanup)
+
+	// stackTest, stackTestCleanup := client.Stacks.Create()
+	stack, err := client.Stacks.Create(ctx, StackCreateOptions{
+		Name: "test-stack",
+		VCSRepo: &StackVCSRepoOptions{
+			Identifier:   "brandonc/pet-nulls-stack",
+			OAuthTokenID: oauthClient.OAuthTokens[0].ID,
+			Branch:       "main",
+		},
+		Project: &Project{
+			ID: orgTest.DefaultProject.ID,
+		},
+	})
+
+	t.Cleanup(stackTestCleanup)
+
+	t.Run("with valid stacks", func(t *testing.T) {
+		options := VariableSetUpdateWorkspacesOptions{
+			Workspaces: []*Workspace{{ID: stackTest.ID}},
+		}
+
+		vsAfter, err := client.VariableSets.UpdateStacks(ctx, vsTest.ID, &options)
+		require.NoError(t, err)
+
+		assert.Equal(t, len(options.Workspaces), len(vsAfter.Workspaces))
+		assert.Equal(t, options.Workspaces[0].ID, vsAfter.Workspaces[0].ID)
+
+		options = VariableSetUpdateWorkspacesOptions{
+			Workspaces: []*Workspace{},
+		}
+
+		vsAfter, err = client.VariableSets.UpdateStacks(ctx, vsTest.ID, &options)
 		require.NoError(t, err)
 
 		assert.Equal(t, len(options.Workspaces), len(vsAfter.Workspaces))

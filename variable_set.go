@@ -50,8 +50,17 @@ type VariableSets interface {
 	// Remove variable set from projects in the supplied list.
 	RemoveFromProjects(ctx context.Context, variableSetID string, options VariableSetRemoveFromProjectsOptions) error
 
+	// Apply variable set to stacks in the supplied list.
+	ApplyToStacks(ctx context.Context, variableSetID string, options *VariableSetApplyToStacksOptions) error
+
+	// Remove variable set from stacks in the supplied list.
+	RemoveFromStacks(ctx context.Context, variableSetID string, options *VariableSetRemoveFromStacksOptions) error
+
 	// Update list of workspaces to which the variable set is applied to match the supplied list.
 	UpdateWorkspaces(ctx context.Context, variableSetID string, options *VariableSetUpdateWorkspacesOptions) (*VariableSet, error)
+
+	// Update list of stacks to which the variable set is applied to match the supplied list.
+	UpdateStacks(ctx context.Context, variableSetID string, options *VariableSetUpdateStacksOptions) (*VariableSet, error)
 }
 
 // variableSets implements VariableSets.
@@ -190,6 +199,26 @@ type VariableSetApplyToProjectsOptions struct {
 type VariableSetRemoveFromProjectsOptions struct {
 	// The projects to remove the variable set from.
 	Projects []*Project
+}
+
+// VariableSetApplyToStacksOptions represents the options for applying variable sets to stacks.
+type VariableSetApplyToStacksOptions struct {
+	// The stacks to apply the variable set to (additive).
+	Stacks []*Stack
+}
+
+// VariableSetRemoveFromStacksOptions represents the options for removing variable sets from stacks.
+type VariableSetRemoveFromStacksOptions struct {
+	// The stacks to remove the variable set from.
+	Stacks []*Stack
+}
+
+// VariableSetUpdateStacksOptions represents a subset of update options specifically for applying variable sets to stacks
+// Type is a public field utilized by JSON:API to set the resource type via the field tag.
+type VariableSetUpdateStacksOptions struct {
+	Type string `jsonapi:"primary,varsets"`
+	// The stacks to be applied to. An empty set means remove all applied
+	Stacks []*Stack `jsonapi:"relation,stacks"`
 }
 
 // VariableSetUpdateWorkspacesOptions represents a subset of update options specifically for applying variable sets to workspaces
@@ -445,6 +474,48 @@ func (s variableSets) RemoveFromProjects(ctx context.Context, variableSetID stri
 	return req.Do(ctx, nil)
 }
 
+// Apply variable set to stacks in the supplied list.
+// Note: this method will return an error if the variable set has global = true.
+func (s *variableSets) ApplyToStacks(ctx context.Context, variableSetID string, options *VariableSetApplyToStacksOptions) error {
+	if !validStringID(&variableSetID) {
+		return ErrInvalidVariableSetID
+	}
+	for _, s := range options.Stacks {
+		if !validStringID(&s.ID) {
+			return ErrRequiredWorkspaceID
+		}
+	}
+
+	u := fmt.Sprintf("varsets/%s/relationships/stacks", url.PathEscape(variableSetID))
+	req, err := s.client.NewRequest("POST", u, options.Stacks)
+	if err != nil {
+		return err
+	}
+
+	return req.Do(ctx, nil)
+}
+
+// Remove variable set from stacks in the supplied list.
+// Note: this method will return an error if the variable set has global = true.
+func (s *variableSets) RemoveFromStacks(ctx context.Context, variableSetID string, options *VariableSetRemoveFromStacksOptions) error {
+	if !validStringID(&variableSetID) {
+		return ErrInvalidVariableSetID
+	}
+	for _, s := range options.Stacks {
+		if !validStringID(&s.ID) {
+			return ErrRequiredWorkspaceID
+		}
+	}
+
+	u := fmt.Sprintf("varsets/%s/relationships/stacks", url.PathEscape(variableSetID))
+	req, err := s.client.NewRequest("DELETE", u, options.Stacks)
+	if err != nil {
+		return err
+	}
+
+	return req.Do(ctx, nil)
+}
+
 // Update variable set to be applied to only the workspaces in the supplied list.
 func (s *variableSets) UpdateWorkspaces(ctx context.Context, variableSetID string, options *VariableSetUpdateWorkspacesOptions) (*VariableSet, error) {
 	if err := options.valid(); err != nil {
@@ -453,12 +524,46 @@ func (s *variableSets) UpdateWorkspaces(ctx context.Context, variableSetID strin
 
 	// Use private struct to ensure global is set to false when applying to workspaces
 	o := privateVariableSetUpdateWorkspacesOptions{
-		Global:     bool(false),
+		Type:       options.Type,
+		Global:     false,
 		Workspaces: options.Workspaces,
 	}
 
 	// We force inclusion of workspaces as that is the primary data for which we are concerned with confirming changes.
 	u := fmt.Sprintf("varsets/%s?include=%s", url.PathEscape(variableSetID), VariableSetWorkspaces)
+	req, err := s.client.NewRequest("PATCH", u, &o)
+	if err != nil {
+		return nil, err
+	}
+
+	v := &VariableSet{}
+	err = req.Do(ctx, v)
+	if err != nil {
+		return nil, err
+	}
+
+	return v, nil
+}
+
+// UpdateStacks updates the list of stacks to which the variable set is applied to match the supplied list.
+func (s *variableSets) UpdateStacks(ctx context.Context, variableSetID string, options *VariableSetUpdateStacksOptions) (*VariableSet, error) {
+	if options == nil || options.Stacks == nil {
+		return nil, ErrRequiredWorkspacesList
+	}
+
+	// Use private struct to ensure global is set to false when applying to stacks
+	type privateVariableSetUpdateStacksOptions struct {
+		Type   string       `jsonapi:"primary,varsets"`
+		Global bool         `jsonapi:"attr,global"`
+		Stacks []*Workspace `jsonapi:"relation,stacks"`
+	}
+	o := privateVariableSetUpdateStacksOptions{
+		Type:   options.Type,
+		Global: false,
+		Stacks: options.Stacks,
+	}
+
+	u := fmt.Sprintf("varsets/%s?include=%s", url.PathEscape(variableSetID), VariableSetStacks)
 	req, err := s.client.NewRequest("PATCH", u, &o)
 	if err != nil {
 		return nil, err
