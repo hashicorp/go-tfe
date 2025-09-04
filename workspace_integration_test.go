@@ -983,9 +983,9 @@ func TestWorkspacesCreate(t *testing.T) {
 			t.Skip()
 		}
 
-		orgName := ""
+		orgName := "" // replace with a valid organization name with hyok permissions
 		options := WorkspaceCreateOptions{
-			Name:        String(""),
+			Name:        String(""), // replace with a valid workspace name
 			HYOKEnabled: Bool(false),
 		}
 
@@ -1000,9 +1000,9 @@ func TestWorkspacesCreate(t *testing.T) {
 			t.Skip()
 		}
 
-		orgName := ""
+		orgName := "" // replace with a valid organization name with hyok permissions
 		options := WorkspaceCreateOptions{
-			Name:        String(""),
+			Name:        String(""), // replace with a valid workspace name
 			HYOKEnabled: Bool(true),
 		}
 
@@ -1102,8 +1102,8 @@ func TestWorkspacesRead(t *testing.T) {
 			t.Skip()
 		}
 
-		orgName := ""
-		workspaceName := ""
+		orgName := ""       // replace with a valid organization name with hyok permissions
+		workspaceName := "" // replace with a valid workspace name with hyok enabled set to true or false
 		w, err := client.Workspaces.Read(ctx, orgName, workspaceName)
 		require.NoError(t, err)
 		assert.NotNil(t, w.HYOKEnabled)
@@ -1114,8 +1114,8 @@ func TestWorkspacesRead(t *testing.T) {
 			t.Skip()
 		}
 
-		orgName := ""
-		workspaceName := ""
+		orgName := ""       // replace with a valid organization name with hyok permissions
+		workspaceName := "" // replace with a valid workspace name with hyok encrypted data key
 		w, err := client.Workspaces.Read(ctx, orgName, workspaceName)
 		require.NoError(t, err)
 		assert.NotEmpty(t, w.HYOKEncryptedDataKey)
@@ -1665,8 +1665,8 @@ func TestWorkspacesUpdate(t *testing.T) {
 			t.Skip()
 		}
 
-		orgName := ""
-		workspaceName := ""
+		orgName := ""       // replace with a valid organization name with hyok permissions
+		workspaceName := "" // replace with a valid workspace name with hyok disabled
 		options := WorkspaceUpdateOptions{
 			HYOKEnabled: Bool(true),
 		}
@@ -1687,8 +1687,8 @@ func TestWorkspacesUpdate(t *testing.T) {
 			t.Skip()
 		}
 
-		orgName := ""
-		workspaceName := ""
+		orgName := ""       // replace with a valid organization name with hyok permissions
+		workspaceName := "" // replace with a valid workspace name with hyok disabled
 		options := WorkspaceUpdateOptions{
 			HYOKEnabled: Bool(false),
 		}
@@ -1709,8 +1709,8 @@ func TestWorkspacesUpdate(t *testing.T) {
 			t.Skip()
 		}
 
-		orgName := ""
-		workspaceName := ""
+		orgName := ""       // replace with a valid organization name with hyok permissions
+		workspaceName := "" // replace with a valid workspace name with hyok enabled
 		options := WorkspaceUpdateOptions{
 			HYOKEnabled: Bool(true),
 		}
@@ -1731,8 +1731,8 @@ func TestWorkspacesUpdate(t *testing.T) {
 			t.Skip()
 		}
 
-		orgName := ""
-		workspaceName := ""
+		orgName := ""       // replace with a valid organization name with hyok permissions
+		workspaceName := "" // replace with a valid workspace name with hyok enabled
 		options := WorkspaceUpdateOptions{
 			HYOKEnabled: Bool(false),
 		}

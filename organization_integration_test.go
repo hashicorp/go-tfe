@@ -239,7 +239,7 @@ func TestOrganizationsRead(t *testing.T) {
 			t.Skip()
 		}
 
-		orgName := ""
+		orgName := "" // replace with a valid organization name that has primary hyok configuration
 		org, err := client.Organizations.Read(ctx, orgName)
 		require.NoError(t, err)
 		assert.NotEmpty(t, org.PrimaryHYOKConfiguration)
@@ -250,7 +250,7 @@ func TestOrganizationsRead(t *testing.T) {
 			t.Skip()
 		}
 
-		orgName := ""
+		orgName := "" // replace with a valid organization name that has enforce hyok set to true or false
 		org, err := client.Organizations.Read(ctx, orgName)
 		require.NoError(t, err)
 		assert.True(t, org.EnforceHYOK || !org.EnforceHYOK)
@@ -416,7 +416,7 @@ func TestOrganizationsUpdate(t *testing.T) {
 			t.Skip()
 		}
 
-		orgName := ""
+		orgName := "" // replace with a valid organization name with hyok permissions
 		org, err := client.Organizations.Update(ctx, orgName, OrganizationUpdateOptions{
 			EnforceHYOK: Bool(true),
 		})
@@ -429,7 +429,7 @@ func TestOrganizationsUpdate(t *testing.T) {
 			t.Skip()
 		}
 
-		orgName := ""
+		orgName := "" // replace with a valid organization name with hyok permissions
 		org, err := client.Organizations.Update(ctx, orgName, OrganizationUpdateOptions{
 			EnforceHYOK: Bool(false),
 		})

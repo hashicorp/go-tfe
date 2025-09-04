@@ -349,7 +349,7 @@ func TestAgentPoolsRead(t *testing.T) {
 			t.Skip()
 		}
 
-		poolID := ""
+		poolID := "" // replace with a valid agent pool ID that has HYOK configurations
 		k, err := client.AgentPools.ReadWithOptions(ctx, poolID, &AgentPoolReadOptions{
 			Include: []AgentPoolIncludeOpt{AgentPoolHYOKConfigurations},
 		})
