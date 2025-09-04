@@ -465,6 +465,39 @@ func TestStateVersionsRead(t *testing.T) {
 		assert.Nil(t, sv)
 		assert.Equal(t, err, ErrInvalidStateVerID)
 	})
+
+	t.Run("read encrypted state download url of a state version", func(t *testing.T) {
+		if skipHYOKIntegrationTests {
+			t.Skip()
+		}
+
+		stateVersionID := "" // replace with a state version ID that has a encrypted state download url
+		sv, err := client.StateVersions.Read(ctx, stateVersionID)
+		require.NoError(t, err)
+		assert.NotEmpty(t, sv.EncryptedStateDownloadURL)
+	})
+
+	t.Run("read sanitized state download url of a state version", func(t *testing.T) {
+		if skipHYOKIntegrationTests {
+			t.Skip()
+		}
+
+		stateVersionID := "" // replace with a state version ID that has a sanitized state download url
+		sv, err := client.StateVersions.Read(ctx, stateVersionID)
+		require.NoError(t, err)
+		assert.NotEmpty(t, sv.SanitizedStateDownloadURL)
+	})
+
+	t.Run("read hyok encrypted data key of a state version", func(t *testing.T) {
+		if skipHYOKIntegrationTests {
+			t.Skip()
+		}
+
+		stateVersionID := "" // replace with a valid state version ID that has a hyok encrypted data key
+		sv, err := client.StateVersions.Read(ctx, stateVersionID)
+		require.NoError(t, err)
+		assert.NotEmpty(t, sv.HYOKEncryptedDataKey)
+	})
 }
 
 func TestStateVersionsReadWithOptions(t *testing.T) {

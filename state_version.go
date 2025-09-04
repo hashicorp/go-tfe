@@ -100,9 +100,8 @@ type StateVersion struct {
 	VCSCommitSHA              string             `jsonapi:"attr,vcs-commit-sha"`
 	VCSCommitURL              string             `jsonapi:"attr,vcs-commit-url"`
 	BillableRUMCount          *uint32            `jsonapi:"attr,billable-rum-count"`
-	EncriptedStateDownloadURL string             `jsonapi:"attr,encripted-state-download-url,omitempty"`
+	EncryptedStateDownloadURL string             `jsonapi:"attr,encrypted-state-download-url,omitempty"`
 	SanitizedStateDownloadURL string             `jsonapi:"attr,sanitized-state-download-url,omitempty"`
-	SanitizedStateUploadURL   string             `jsonapi:"attr,sanitized-state-upload-url,omitempty"`
 
 	// Whether HCP Terraform has finished populating any StateVersion fields that required async processing.
 	// If `false`, some fields may appear empty even if they should actually contain data; see comments on
@@ -119,9 +118,9 @@ type StateVersion struct {
 	Resources []*StateVersionResources `jsonapi:"attr,resources"`
 
 	// Relations
-	Run                  *Run                   `jsonapi:"relation,run"`
-	Outputs              []*StateVersionOutput  `jsonapi:"relation,outputs"`
-	HYOKEncryptedDataKey *HYOKEncryptedDataKeys `jsonapi:"relation,hyok-encrypted-data-key,omitempty"`
+	Run                  *Run                  `jsonapi:"relation,run"`
+	Outputs              []*StateVersionOutput `jsonapi:"relation,outputs"`
+	HYOKEncryptedDataKey *HYOKEncryptedDataKey `jsonapi:"relation,hyok-encrypted-data-key,omitempty"`
 }
 
 // StateVersionOutputsList represents a list of StateVersionOutput items.
