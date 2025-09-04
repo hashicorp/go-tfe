@@ -977,6 +977,40 @@ func TestWorkspacesCreate(t *testing.T) {
 			assert.Equal(t, "remote", w.ExecutionMode)
 		})
 	})
+
+	t.Run("create workspace with hyok enabled set to false", func(t *testing.T) {
+		if skipHYOKIntegrationTests {
+			t.Skip()
+		}
+
+		orgName := ""
+		options := WorkspaceCreateOptions{
+			Name:        String(""),
+			HYOKEnabled: Bool(false),
+		}
+
+		w, err := client.Workspaces.Create(ctx, orgName, options)
+		require.NoError(t, err)
+		assert.NotNil(t, w.HYOKEnabled)
+		assert.False(t, *w.HYOKEnabled)
+	})
+
+	t.Run("create workspace with hyok enabled set to true", func(t *testing.T) {
+		if skipHYOKIntegrationTests {
+			t.Skip()
+		}
+
+		orgName := ""
+		options := WorkspaceCreateOptions{
+			Name:        String(""),
+			HYOKEnabled: Bool(true),
+		}
+
+		w, err := client.Workspaces.Create(ctx, orgName, options)
+		require.NoError(t, err)
+		assert.NotNil(t, w.HYOKEnabled)
+		assert.True(t, *w.HYOKEnabled)
+	})
 }
 
 func TestWorkspacesRead(t *testing.T) {
@@ -1061,6 +1095,30 @@ func TestWorkspacesRead(t *testing.T) {
 			assert.Equal(t, false, *w.SettingOverwrites.ExecutionMode)
 			assert.Equal(t, false, *w.SettingOverwrites.ExecutionMode)
 		})
+	})
+
+	t.Run("read hyok enabled of a workspace", func(t *testing.T) {
+		if skipHYOKIntegrationTests {
+			t.Skip()
+		}
+
+		orgName := ""
+		workspaceName := ""
+		w, err := client.Workspaces.Read(ctx, orgName, workspaceName)
+		require.NoError(t, err)
+		assert.NotNil(t, w.HYOKEnabled)
+	})
+
+	t.Run("read hyok encrypted data key of a workspace", func(t *testing.T) {
+		if skipHYOKIntegrationTests {
+			t.Skip()
+		}
+
+		orgName := ""
+		workspaceName := ""
+		w, err := client.Workspaces.Read(ctx, orgName, workspaceName)
+		require.NoError(t, err)
+		assert.NotEmpty(t, w.HYOKEncryptedDataKey)
 	})
 }
 
@@ -1600,6 +1658,92 @@ func TestWorkspacesUpdate(t *testing.T) {
 			assert.Empty(t, options.TriggerPrefixes)
 			assert.Equal(t, options.TriggerPatterns, item.TriggerPatterns)
 		}
+	})
+
+	t.Run("update hyok enabled of a workspace from false to true", func(t *testing.T) {
+		if skipHYOKIntegrationTests {
+			t.Skip()
+		}
+
+		orgName := ""
+		workspaceName := ""
+		options := WorkspaceUpdateOptions{
+			HYOKEnabled: Bool(true),
+		}
+
+		w, err := client.Workspaces.Read(ctx, orgName, workspaceName)
+		require.NoError(t, err)
+		assert.NotNil(t, w.HYOKEnabled)
+		assert.False(t, *w.HYOKEnabled)
+
+		w, err = client.Workspaces.Update(ctx, orgName, workspaceName, options)
+		require.NoError(t, err)
+		assert.NotNil(t, w.HYOKEnabled)
+		assert.True(t, *w.HYOKEnabled)
+	})
+
+	t.Run("update hyok enabled of a workspace from false to false", func(t *testing.T) {
+		if skipHYOKIntegrationTests {
+			t.Skip()
+		}
+
+		orgName := ""
+		workspaceName := ""
+		options := WorkspaceUpdateOptions{
+			HYOKEnabled: Bool(false),
+		}
+
+		w, err := client.Workspaces.Read(ctx, orgName, workspaceName)
+		require.NoError(t, err)
+		assert.NotNil(t, w.HYOKEnabled)
+		assert.False(t, *w.HYOKEnabled)
+
+		w, err = client.Workspaces.Update(ctx, orgName, workspaceName, options)
+		require.NoError(t, err)
+		assert.NotNil(t, w.HYOKEnabled)
+		assert.False(t, *w.HYOKEnabled)
+	})
+
+	t.Run("update hyok enabled of a workspace from true to true", func(t *testing.T) {
+		if skipHYOKIntegrationTests {
+			t.Skip()
+		}
+
+		orgName := ""
+		workspaceName := ""
+		options := WorkspaceUpdateOptions{
+			HYOKEnabled: Bool(true),
+		}
+
+		w, err := client.Workspaces.Read(ctx, orgName, workspaceName)
+		require.NoError(t, err)
+		assert.NotNil(t, w.HYOKEnabled)
+		assert.True(t, *w.HYOKEnabled)
+
+		w, err = client.Workspaces.Update(ctx, orgName, workspaceName, options)
+		require.NoError(t, err)
+		assert.NotNil(t, w.HYOKEnabled)
+		assert.True(t, *w.HYOKEnabled)
+	})
+
+	t.Run("update hyok enabled of a workspace from true to false", func(t *testing.T) {
+		if skipHYOKIntegrationTests {
+			t.Skip()
+		}
+
+		orgName := ""
+		workspaceName := ""
+		options := WorkspaceUpdateOptions{
+			HYOKEnabled: Bool(false),
+		}
+
+		w, err := client.Workspaces.Read(ctx, orgName, workspaceName)
+		require.NoError(t, err)
+		assert.NotNil(t, w.HYOKEnabled)
+		assert.True(t, *w.HYOKEnabled)
+
+		_, err = client.Workspaces.Update(ctx, orgName, workspaceName, options)
+		assert.EqualError(t, err, "bad request\n\nhyok may not be disabled once it has been turned on for a workspace")
 	})
 }
 
