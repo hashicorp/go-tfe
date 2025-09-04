@@ -1,5 +1,11 @@
 # Unreleased
 
+# v1.92.0
+
+## Enhancements
+
+* Adds support for listing `StackConfigurationSummaries` by @hwatkins05-hashicorp [#1204](https://github.com/hashicorp/go-tfe/pull/1204)
+
 # v1.91.1
 
 ## Bug Fixes
