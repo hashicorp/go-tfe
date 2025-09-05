@@ -102,6 +102,57 @@ func TestAdminSentinelVersions_CreateDelete(t *testing.T) {
 	client := testClient(t)
 	ctx := context.Background()
 	version := createAdminSentinelVersion()
+	url := "https://www.hashicorp.com"
+	amd64Sha := String(genSha(t))
+
+	t.Run("with valid options including top level url & sha and archs", func(t *testing.T) {
+		opts := AdminSentinelVersionCreateOptions{
+			Version:          version,
+			Deprecated:       Bool(true),
+			DeprecatedReason: String("Test Reason"),
+			Official:         Bool(false),
+			Enabled:          Bool(false),
+			Beta:             Bool(false),
+			URL:              url,
+			SHA:              *amd64Sha,
+			Archs: []*ToolVersionArchitecture{
+				{
+					URL:  url,
+					Sha:  *amd64Sha,
+					OS:   linux,
+					Arch: amd64,
+				},
+				{
+					URL:  url,
+					Sha:  *String(genSha(t)),
+					OS:   linux,
+					Arch: arm64,
+				}},
+		}
+		sv, err := client.Admin.SentinelVersions.Create(ctx, opts)
+		require.NoError(t, err)
+
+		defer func() {
+			deleteErr := client.Admin.SentinelVersions.Delete(ctx, sv.ID)
+			require.NoError(t, deleteErr)
+		}()
+
+		assert.Equal(t, opts.Version, sv.Version)
+		assert.Equal(t, *opts.Official, sv.Official)
+		assert.Equal(t, *opts.Deprecated, sv.Deprecated)
+		assert.Equal(t, *opts.DeprecatedReason, *sv.DeprecatedReason)
+		assert.Equal(t, *opts.Enabled, sv.Enabled)
+		assert.Equal(t, *opts.Beta, sv.Beta)
+		assert.Equal(t, opts.URL, sv.URL)
+		assert.Equal(t, opts.SHA, sv.SHA)
+		assert.Equal(t, len(opts.Archs), len(sv.Archs))
+		for i, arch := range opts.Archs {
+			assert.Equal(t, arch.URL, sv.Archs[i].URL)
+			assert.Equal(t, arch.Sha, sv.Archs[i].Sha)
+			assert.Equal(t, arch.OS, sv.Archs[i].OS)
+			assert.Equal(t, arch.Arch, sv.Archs[i].Arch)
+		}
+	})
 
 	t.Run("with valid options including archs", func(t *testing.T) {
 		opts := AdminSentinelVersionCreateOptions{
@@ -113,13 +164,13 @@ func TestAdminSentinelVersions_CreateDelete(t *testing.T) {
 			Beta:             Bool(false),
 			Archs: []*ToolVersionArchitecture{
 				{
-					URL:  "https://www.hashicorp.com",
-					Sha:  *String(genSha(t)),
+					URL:  url,
+					Sha:  *amd64Sha,
 					OS:   linux,
 					Arch: amd64,
 				},
 				{
-					URL:  "https://www.hashicorp.com",
+					URL:  url,
 					Sha:  *String(genSha(t)),
 					OS:   linux,
 					Arch: arm64,
@@ -151,8 +202,8 @@ func TestAdminSentinelVersions_CreateDelete(t *testing.T) {
 	t.Run("with valid options including url, and sha", func(t *testing.T) {
 		opts := AdminSentinelVersionCreateOptions{
 			Version:          version,
-			URL:              "https://www.hashicorp.com",
-			SHA:              genSha(t),
+			URL:              url,
+			SHA:              *amd64Sha,
 			Deprecated:       Bool(true),
 			DeprecatedReason: String("Test Reason"),
 			Official:         Bool(false),
@@ -186,8 +237,8 @@ func TestAdminSentinelVersions_CreateDelete(t *testing.T) {
 		version = createAdminSentinelVersion()
 		opts := AdminSentinelVersionCreateOptions{
 			Version: version,
-			URL:     "https://www.hashicorp.com",
-			SHA:     genSha(t),
+			URL:     url,
+			SHA:     *amd64Sha,
 		}
 		sv, err := client.Admin.SentinelVersions.Create(ctx, opts)
 		require.NoError(t, err)
@@ -220,8 +271,8 @@ func TestAdminSentinelVersions_CreateDelete(t *testing.T) {
 			Version: version,
 			Archs: []*ToolVersionArchitecture{
 				{
-					URL:  "https://www.hashicorp.com",
-					Sha:  *String(genSha(t)),
+					URL:  url,
+					Sha:  *amd64Sha,
 					OS:   linux,
 					Arch: amd64,
 				},

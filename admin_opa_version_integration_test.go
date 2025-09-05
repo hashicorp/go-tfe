@@ -204,7 +204,7 @@ func TestAdminOPAVersions_CreateDelete(t *testing.T) {
 	t.Run("with valid options including, url, and sha", func(t *testing.T) {
 		opts := AdminOPAVersionCreateOptions{
 			Version:          version,
-			URL:              "https://www.hashicorp.com",
+			URL:              url,
 			SHA:              genSha(t),
 			Deprecated:       Bool(true),
 			DeprecatedReason: String("Test Reason"),
@@ -271,13 +271,13 @@ func TestAdminOPAVersions_CreateDelete(t *testing.T) {
 			Version: version,
 			Archs: []*ToolVersionArchitecture{
 				{
-					URL:  "https://www.hashicorp.com",
-					Sha:  *String(genSha(t)),
+					URL:  url,
+					Sha:  amd64Sha,
 					OS:   linux,
 					Arch: amd64,
 				},
 				{
-					URL:  "https://www.hashicorp.com",
+					URL:  url,
 					Sha:  *String(genSha(t)),
 					OS:   linux,
 					Arch: arm64,
