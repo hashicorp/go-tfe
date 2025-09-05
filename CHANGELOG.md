@@ -4,6 +4,10 @@
 
 * Fixes arch validation on Terraform, OPA, and Sentinel Tool Versions when providing top level `url` and `sha` with multiple `archs` by @kelsi-hoyle [#1212](https://github.com/hashicorp/go-tfe/pull/1212)
 
+## Enhancements
+
+* Adds BETA support for performing Registry Module test runs on custom Agents by @hashimooon [#1209](httpsLhttps://github.com/hashicorp/go-tfe/pull/1209)
+
 # v1.91.1
 
 ## Bug Fixes
