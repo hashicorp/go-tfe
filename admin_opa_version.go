@@ -215,10 +215,20 @@ func (o AdminOPAVersionCreateOptions) validArch() bool {
 
 	emptyToolVersionFields := o.URL == "" && o.SHA == ""
 
+	var amdArch *ToolVersionArchitecture
 	for _, a := range o.Archs {
-		if !validArch(a) || !emptyToolVersionFields && (o.URL != a.URL || o.SHA != a.Sha) {
+		if !validArch(a) {
 			return false
 		}
+
+		if a.Arch == "amd64" {
+			amdArch = a
+		}
 	}
+
+	if !emptyToolVersionFields && (amdArch.URL != o.URL || amdArch.Sha != o.SHA) {
+		return false
+	}
+
 	return true
 }
