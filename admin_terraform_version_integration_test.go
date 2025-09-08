@@ -106,7 +106,6 @@ func TestAdminTerraformVersions_CreateDelete(t *testing.T) {
 	url := "https://www.hashicorp.com"
 
 	t.Run("with valid options including top level url & sha and archs", func(t *testing.T) {
-
 		opts := AdminTerraformVersionCreateOptions{
 			Version:          String(genSafeRandomTerraformVersion()),
 			URL:              String(url),
