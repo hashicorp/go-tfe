@@ -213,21 +213,10 @@ func (o AdminSentinelVersionCreateOptions) validArch() bool {
 		return true
 	}
 
-	emptyToolVersionFields := o.URL == "" && o.SHA == ""
-
-	var amdArch *ToolVersionArchitecture
 	for _, a := range o.Archs {
 		if !validArch(a) {
 			return false
 		}
-
-		if a.Arch == "amd64" {
-			amdArch = a
-		}
-	}
-
-	if !emptyToolVersionFields && (amdArch.URL != o.URL || amdArch.Sha != o.SHA) {
-		return false
 	}
 
 	return true

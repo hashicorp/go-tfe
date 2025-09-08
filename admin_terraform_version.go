@@ -227,21 +227,10 @@ func (o AdminTerraformVersionCreateOptions) validArchs() bool {
 		return true
 	}
 
-	emptyToolVersionFields := !validString(o.URL) && !validString(o.Sha)
-
-	var amdArch *ToolVersionArchitecture
 	for _, a := range o.Archs {
 		if !validArch(a) {
 			return false
 		}
-
-		if a.Arch == "amd64" {
-			amdArch = a
-		}
-	}
-
-	if !emptyToolVersionFields && (amdArch.URL != *o.URL || amdArch.Sha != *o.Sha) {
-		return false
 	}
 
 	return true
