@@ -319,9 +319,7 @@ func pollStackDeployments(t *testing.T, ctx context.Context, client *Client, sta
 			t.Fatalf("Stack %q had no deployment groups at deadline", stackID)
 		case <-ticker.C:
 			var err error
-			stack, err = client.Stacks.Read(ctx, stackID, &StackReadOptions{
-				Include: []StackIncludeOpt{StackIncludeLatestStackConfiguration},
-			})
+			stack, err = client.Stacks.Read(ctx, stackID, nil)
 			if err != nil {
 				t.Fatalf("Failed to read stack %q: %s", stackID, err)
 			}
@@ -330,7 +328,7 @@ func pollStackDeployments(t *testing.T, ctx context.Context, client *Client, sta
 				t.Fatalf("Failed to read deployment groups %q: %s", stackID, err)
 			}
 
-			t.Logf("Stack %q had %d deployment groups", stack.ID, len(stack.DeploymentNames))
+			t.Logf("Stack %q had %d deployment groups", stack.ID, groups.TotalCount)
 			if groups.TotalCount > 0 {
 				finished = true
 			}
@@ -340,6 +338,7 @@ func pollStackDeployments(t *testing.T, ctx context.Context, client *Client, sta
 	return
 }
 
+// ??? do we need this still?
 func pollStackDeploymentStatus(t *testing.T, ctx context.Context, client *Client, stackID, deploymentName, status string) {
 	// pollStackDeployments will poll the given stack until it has deployments or the deadline is reached.
 	ctx, cancel := context.WithDeadline(ctx, time.Now().Add(5*time.Minute))
@@ -363,8 +362,8 @@ func pollStackDeploymentStatus(t *testing.T, ctx context.Context, client *Client
 				t.Fatalf("Failed to read stack deployment %s/%s: %s", stackID, deploymentName, err)
 			}
 
-			t.Logf("Stack deployment %s/%s had status %q", stackID, deploymentName, deployment.Status)
-			if deployment.Status == status {
+			t.Logf("Stack deployment %s/%s had status %q", stackID, deploymentName, deployment.LatestDeploymentRun.Status)
+			if deployment.LatestDeploymentRun.Status == status {
 				finished = true
 			}
 		}
@@ -437,7 +436,6 @@ func TestStackConverged(t *testing.T) {
 	deployments := []string{"production", "staging"}
 
 	stack = pollStackDeployments(t, ctx, client, stackUpdated.ID)
-	require.ElementsMatch(t, deployments, stack.DeploymentNames)
 	require.NotNil(t, stack.LatestStackConfiguration)
 
 	for _, deployment := range deployments {

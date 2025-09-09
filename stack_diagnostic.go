@@ -3,15 +3,25 @@
 
 package tfe
 
+import "time"
+
 // StackDiagnostic represents any sourcebundle.Diagnostic value. The simplest form has
 // just a severity, single line summary, and optional detail. If there is more
 // information about the source of the diagnostic, this is represented in the
 // range field.
 type StackDiagnostic struct {
-	Severity string           `jsonapi:"attr,severity"`
-	Summary  string           `jsonapi:"attr,summary"`
-	Detail   string           `jsonapi:"attr,detail"`
-	Range    *DiagnosticRange `jsonapi:"attr,range"`
+	Severity       string           `jsonapi:"attr,severity"`
+	Summary        string           `jsonapi:"attr,summary"`
+	Detail         string           `jsonapi:"attr,detail"`
+	Diags          *DiagnosticRange `jsonapi:"attr,diags"`
+	Acknowledged   bool             `jsonapi:"attr,acknowledged"`
+	AcknowledgedAt *time.Time       `jsonapi:"attr,acknowledged-at,iso8601"`
+	CreatedAt      *time.Time       `jsonapi:"attr,created-at,iso8601"`
+
+	// Relationships
+	StackDeploymentStep *StackConfiguration `jsonapi:"relation,stack-deployment-step"`
+	StackConfiguration  *StackConfiguration `jsonapi:"relation,stack-configuration"`
+	AcknowledgedBy      *User               `jsonapi:"relation,acknowledged-by"`
 }
 
 // DiagnosticPos represents a position in the source code.

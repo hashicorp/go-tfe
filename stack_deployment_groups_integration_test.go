@@ -39,6 +39,7 @@ func TestStackDeploymentGroupsList(t *testing.T) {
 	stackUpdated, err := client.Stacks.UpdateConfiguration(ctx, stack.ID)
 	require.NoError(t, err)
 	require.NotNil(t, stackUpdated)
+	require.NotNil(t, stackUpdated.LatestStackConfiguration)
 	require.NotEmpty(t, stackUpdated.LatestStackConfiguration.ID)
 
 	stackUpdated = pollStackDeployments(t, ctx, client, stackUpdated.ID)
