@@ -2,26 +2,27 @@ package tfe
 
 import (
 	"context"
+	"os"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
 
-// These tests are intended for local execution only, as HYOK requires specific conditions.
-// To test locally:
-//  1. set skipHYOKIntegrationTests to false. The default value is true.
-//  2. set hyokOrganizationName to the name of an organization that can use HYOK.
-const skipHYOKIntegrationTests = true
-const hyokOrganizationName = ""
-
 func TestHYOKConfigurationCreateRevokeDelete(t *testing.T) {
+	skipHYOKIntegrationTests := os.Getenv("SKIP_HYOK_INTEGRATION_TESTS") == "true"
 	if skipHYOKIntegrationTests {
 		t.Skip()
 	}
 
 	client := testClient(t)
 	ctx := context.Background()
+
+	// replace the environment variable with a valid organization name that has HYOK configurations
+	hyokOrganizationName := os.Getenv("HYOK_ORGANIZATION_NAME")
+	if hyokOrganizationName == "" {
+		t.Fatal("Export a valid HYOK_ORGANIZATION_NAME before running this test!")
+	}
 
 	orgTest, err := client.Organizations.Read(ctx, hyokOrganizationName)
 	if err != nil {
@@ -306,12 +307,19 @@ func TestHYOKConfigurationCreateRevokeDelete(t *testing.T) {
 }
 
 func TestHyokConfigurationList(t *testing.T) {
+	skipHYOKIntegrationTests := os.Getenv("SKIP_HYOK_INTEGRATION_TESTS") == "true"
 	if skipHYOKIntegrationTests {
 		t.Skip()
 	}
 
 	client := testClient(t)
 	ctx := context.Background()
+
+	// replace the environment variable with a valid organization name that has HYOK configurations
+	hyokOrganizationName := os.Getenv("HYOK_ORGANIZATION_NAME")
+	if hyokOrganizationName == "" {
+		t.Fatal("Export a valid HYOK_ORGANIZATION_NAME before running this test!")
+	}
 
 	orgTest, err := client.Organizations.Read(ctx, hyokOrganizationName)
 	if err != nil {
@@ -357,12 +365,19 @@ func TestHyokConfigurationList(t *testing.T) {
 }
 
 func TestHyokConfigurationRead(t *testing.T) {
+	skipHYOKIntegrationTests := os.Getenv("SKIP_HYOK_INTEGRATION_TESTS") == "true"
 	if skipHYOKIntegrationTests {
 		t.Skip()
 	}
 
 	client := testClient(t)
 	ctx := context.Background()
+
+	// replace the environment variable with a valid organization name that has HYOK configurations
+	hyokOrganizationName := os.Getenv("HYOK_ORGANIZATION_NAME")
+	if hyokOrganizationName == "" {
+		t.Fatal("Export a valid HYOK_ORGANIZATION_NAME before running this test!")
+	}
 
 	orgTest, err := client.Organizations.Read(ctx, hyokOrganizationName)
 	if err != nil {
@@ -448,12 +463,19 @@ func TestHyokConfigurationRead(t *testing.T) {
 }
 
 func TestHYOKConfigurationUpdate(t *testing.T) {
+	skipHYOKIntegrationTests := os.Getenv("SKIP_HYOK_INTEGRATION_TESTS") == "true"
 	if skipHYOKIntegrationTests {
 		t.Skip()
 	}
 
 	client := testClient(t)
 	ctx := context.Background()
+
+	// replace the environment variable with a valid organization name that has HYOK configurations
+	hyokOrganizationName := os.Getenv("HYOK_ORGANIZATION_NAME")
+	if hyokOrganizationName == "" {
+		t.Fatal("Export a valid HYOK_ORGANIZATION_NAME before running this test!")
+	}
 
 	orgTest, err := client.Organizations.Read(ctx, hyokOrganizationName)
 	if err != nil {

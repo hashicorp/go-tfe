@@ -8,6 +8,7 @@ import (
 	"context"
 	"encoding/json"
 	"io"
+	"os"
 	"testing"
 	"time"
 
@@ -44,26 +45,38 @@ func TestPlansRead(t *testing.T) {
 		assert.Equal(t, err, ErrInvalidPlanID)
 	})
 
-	t.Run("read sanitized plan of a plan", func(t *testing.T) {
-		if skipHYOKIntegrationTests {
-			t.Skip()
-		}
-
-		planID := "" // replace with a valid plan ID that has a sanitized plan link
-		p, err := client.Plans.Read(ctx, planID)
-		require.NoError(t, err)
-		assert.NotEmpty(t, p.Links["sanitized-plan"])
-	})
-
 	t.Run("read hyok encrypted data key of a plan", func(t *testing.T) {
+		skipHYOKIntegrationTests := os.Getenv("SKIP_HYOK_INTEGRATION_TESTS") == "true"
 		if skipHYOKIntegrationTests {
 			t.Skip()
 		}
 
-		planID := "" // replace with a valid plan ID that has a hyok encrypted data key
-		p, err := client.Plans.Read(ctx, planID)
+		// replace the environment variable with a valid plan ID that has a hyok encrypted data key
+		hyokPlanID := os.Getenv("HYOK_PLAN_ID")
+		if hyokPlanID == "" {
+			t.Fatal("Export a valid HYOK_PLAN_ID before running this test!")
+		}
+
+		p, err := client.Plans.Read(ctx, hyokPlanID)
 		require.NoError(t, err)
 		assert.NotNil(t, p.HYOKEncryptedDataKey)
+	})
+
+	t.Run("read sanitized plan of a plan", func(t *testing.T) {
+		skipHYOKIntegrationTests := os.Getenv("SKIP_HYOK_INTEGRATION_TESTS") == "true"
+		if skipHYOKIntegrationTests {
+			t.Skip()
+		}
+
+		// replace the environment variable with a valid plan ID that has a sanitized plan link
+		hyokPlanID := os.Getenv("HYOK_PLAN_ID")
+		if hyokPlanID == "" {
+			t.Fatal("Export a valid HYOK_PLAN_ID before running this test!")
+		}
+
+		p, err := client.Plans.Read(ctx, hyokPlanID)
+		require.NoError(t, err)
+		assert.NotEmpty(t, p.Links["sanitized-plan"])
 	})
 }
 

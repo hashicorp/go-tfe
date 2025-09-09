@@ -2,6 +2,7 @@ package tfe
 
 import (
 	"context"
+	"os"
 	"testing"
 
 	"github.com/stretchr/testify/require"
@@ -13,12 +14,19 @@ import (
 // 2. Set hyokCustomerKeyVersionID to the ID of an existing HYOK customer key version
 
 func TestHYOKCustomerKeyVersionsList(t *testing.T) {
+	skipHYOKIntegrationTests := os.Getenv("SKIP_HYOK_INTEGRATION_TESTS") == "true"
 	if skipHYOKIntegrationTests {
 		t.Skip()
 	}
 
 	client := testClient(t)
 	ctx := context.Background()
+
+	// replace the environment variable with a valid organization name that has HYOK Customer Key Versions configurations
+	hyokOrganizationName := os.Getenv("HYOK_ORGANIZATION_NAME")
+	if hyokOrganizationName == "" {
+		t.Fatal("Export a valid HYOK_ORGANIZATION_NAME before running this test!")
+	}
 
 	orgTest, err := client.Organizations.Read(ctx, hyokOrganizationName)
 	if err != nil {
@@ -40,6 +48,7 @@ func TestHYOKCustomerKeyVersionsList(t *testing.T) {
 }
 
 func TestHYOKCustomerKeyVersionsRead(t *testing.T) {
+	skipHYOKIntegrationTests := os.Getenv("SKIP_HYOK_INTEGRATION_TESTS") == "true"
 	if skipHYOKIntegrationTests {
 		t.Skip()
 	}
@@ -48,7 +57,11 @@ func TestHYOKCustomerKeyVersionsRead(t *testing.T) {
 	ctx := context.Background()
 
 	t.Run("read an existing key version", func(t *testing.T) {
-		hyokCustomerKeyVersionID := ""
+		hyokCustomerKeyVersionID := os.Getenv("HYOK_CUSTOMER_KEY_VERSION_ID")
+		if hyokCustomerKeyVersionID == "" {
+			t.Fatal("Export a valid HYOK_CUSTOMER_KEY_VERSION_ID before running this test!")
+		}
+
 		_, err := client.HYOKCustomerKeyVersions.Read(ctx, hyokCustomerKeyVersionID)
 		require.NoError(t, err)
 	})

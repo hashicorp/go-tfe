@@ -2,6 +2,7 @@ package tfe
 
 import (
 	"context"
+	"os"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -12,12 +13,19 @@ import (
 // To run them locally, follow the instructions outlined in hyok_configuration_integration_test.go
 
 func TestAzureOIDCConfigurationCreateDelete(t *testing.T) {
+	skipHYOKIntegrationTests := os.Getenv("SKIP_HYOK_INTEGRATION_TESTS") == "true"
 	if skipHYOKIntegrationTests {
 		t.Skip()
 	}
 
 	client := testClient(t)
 	ctx := context.Background()
+
+	// replace the environment variable with a valid organization name that has Azure OIDC HYOK configurations
+	hyokOrganizationName := os.Getenv("HYOK_ORGANIZATION_NAME")
+	if hyokOrganizationName == "" {
+		t.Fatal("Export a valid HYOK_ORGANIZATION_NAME before running this test!")
+	}
 
 	orgTest, err := client.Organizations.Read(ctx, hyokOrganizationName)
 	if err != nil {
@@ -75,12 +83,19 @@ func TestAzureOIDCConfigurationCreateDelete(t *testing.T) {
 }
 
 func TestAzureOIDCConfigurationRead(t *testing.T) {
+	skipHYOKIntegrationTests := os.Getenv("SKIP_HYOK_INTEGRATION_TESTS") == "true"
 	if skipHYOKIntegrationTests {
 		t.Skip()
 	}
 
 	client := testClient(t)
 	ctx := context.Background()
+
+	// replace the environment variable with a valid organization name that has Azure OIDC HYOK configurations
+	hyokOrganizationName := os.Getenv("HYOK_ORGANIZATION_NAME")
+	if hyokOrganizationName == "" {
+		t.Fatal("Export a valid HYOK_ORGANIZATION_NAME before running this test!")
+	}
 
 	orgTest, err := client.Organizations.Read(ctx, hyokOrganizationName)
 	if err != nil {
@@ -103,12 +118,19 @@ func TestAzureOIDCConfigurationRead(t *testing.T) {
 }
 
 func TestAzureOIDCConfigurationUpdate(t *testing.T) {
+	skipHYOKIntegrationTests := os.Getenv("SKIP_HYOK_INTEGRATION_TESTS") == "true"
 	if skipHYOKIntegrationTests {
 		t.Skip()
 	}
 
 	client := testClient(t)
 	ctx := context.Background()
+
+	// replace the environment variable with a valid organization name that has Azure OIDC HYOK configurations
+	hyokOrganizationName := os.Getenv("HYOK_ORGANIZATION_NAME")
+	if hyokOrganizationName == "" {
+		t.Fatal("Export a valid HYOK_ORGANIZATION_NAME before running this test!")
+	}
 
 	orgTest, err := client.Organizations.Read(ctx, hyokOrganizationName)
 	if err != nil {

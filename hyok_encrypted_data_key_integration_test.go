@@ -2,6 +2,7 @@ package tfe
 
 import (
 	"context"
+	"os"
 	"testing"
 
 	"github.com/stretchr/testify/require"
@@ -13,6 +14,7 @@ import (
 // 2. Set hyokEncryptedDataKeyID to the ID of an existing data encryption key
 
 func TestHYOKEncryptedDataKeyRead(t *testing.T) {
+	skipHYOKIntegrationTests := os.Getenv("SKIP_HYOK_INTEGRATION_TESTS") == "true"
 	if skipHYOKIntegrationTests {
 		t.Skip()
 	}
@@ -21,7 +23,11 @@ func TestHYOKEncryptedDataKeyRead(t *testing.T) {
 	ctx := context.Background()
 
 	t.Run("read an existing encrypted data key", func(t *testing.T) {
-		hyokEncryptedDataKeyID := ""
+		hyokEncryptedDataKeyID := os.Getenv("HYOK_ENCRYPTED_DATA_KEY_ID")
+		if hyokEncryptedDataKeyID == "" {
+			t.Fatal("Export a valid HYOK_ENCRYPTED_DATA_KEY_ID before running this test!")
+		}
+
 		_, err := client.HYOKEncryptedDataKeys.Read(ctx, hyokEncryptedDataKeyID)
 		require.NoError(t, err)
 	})
