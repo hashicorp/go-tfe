@@ -1,5 +1,9 @@
 # Unreleased
 
+## Bug Fixes
+
+* Fixes arch validation on Terraform, OPA, and Sentinel Tool Versions when providing top level `url` and `sha` with multiple `archs` by @kelsi-hoyle [#1212](https://github.com/hashicorp/go-tfe/pull/1212)
+
 # v1.91.1
 
 ## Enhancements
