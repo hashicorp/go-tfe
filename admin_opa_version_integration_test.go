@@ -102,8 +102,61 @@ func TestAdminOPAVersions_CreateDelete(t *testing.T) {
 	client := testClient(t)
 	ctx := context.Background()
 	version := createAdminOPAVersion()
+	url := "https://www.hashicorp.com"
+	amd64Sha := *String(genSha(t))
+
+	t.Run("with valid options including top level url & sha and archs", func(t *testing.T) {
+		opts := AdminOPAVersionCreateOptions{
+			Version:          version,
+			Deprecated:       Bool(true),
+			DeprecatedReason: String("Test Reason"),
+			Official:         Bool(false),
+			Enabled:          Bool(false),
+			Beta:             Bool(false),
+			URL:              url,
+			SHA:              amd64Sha,
+
+			Archs: []*ToolVersionArchitecture{
+				{
+					URL:  url,
+					Sha:  amd64Sha,
+					OS:   linux,
+					Arch: amd64,
+				},
+				{
+					URL:  url,
+					Sha:  *String(genSha(t)),
+					OS:   linux,
+					Arch: arm64,
+				}},
+		}
+		ov, err := client.Admin.OPAVersions.Create(ctx, opts)
+		require.NoError(t, err)
+
+		defer func() {
+			deleteErr := client.Admin.OPAVersions.Delete(ctx, ov.ID)
+			require.NoError(t, deleteErr)
+		}()
+
+		assert.Equal(t, opts.Version, ov.Version)
+		assert.Equal(t, *opts.Official, ov.Official)
+		assert.Equal(t, *opts.Deprecated, ov.Deprecated)
+		assert.Equal(t, *opts.DeprecatedReason, *ov.DeprecatedReason)
+		assert.Equal(t, *opts.Enabled, ov.Enabled)
+		assert.Equal(t, *opts.Beta, ov.Beta)
+		assert.Equal(t, len(opts.Archs), len(ov.Archs))
+		assert.Equal(t, opts.URL, ov.URL)
+		assert.Equal(t, opts.SHA, ov.SHA)
+		for i, arch := range opts.Archs {
+			assert.Equal(t, arch.URL, ov.Archs[i].URL)
+			assert.Equal(t, arch.Sha, ov.Archs[i].Sha)
+			assert.Equal(t, arch.OS, ov.Archs[i].OS)
+			assert.Equal(t, arch.Arch, ov.Archs[i].Arch)
+		}
+	})
 
 	t.Run("with valid options including archs", func(t *testing.T) {
+		version = createAdminOPAVersion()
 		opts := AdminOPAVersionCreateOptions{
 			Version:          version,
 			Deprecated:       Bool(true),
@@ -125,9 +178,9 @@ func TestAdminOPAVersions_CreateDelete(t *testing.T) {
 					Arch: arm64,
 				}},
 		}
+
 		ov, err := client.Admin.OPAVersions.Create(ctx, opts)
 		require.NoError(t, err)
-
 		defer func() {
 			deleteErr := client.Admin.OPAVersions.Delete(ctx, ov.ID)
 			require.NoError(t, deleteErr)
@@ -151,7 +204,7 @@ func TestAdminOPAVersions_CreateDelete(t *testing.T) {
 	t.Run("with valid options including, url, and sha", func(t *testing.T) {
 		opts := AdminOPAVersionCreateOptions{
 			Version:          version,
-			URL:              "https://www.hashicorp.com",
+			URL:              url,
 			SHA:              genSha(t),
 			Deprecated:       Bool(true),
 			DeprecatedReason: String("Test Reason"),
@@ -218,13 +271,13 @@ func TestAdminOPAVersions_CreateDelete(t *testing.T) {
 			Version: version,
 			Archs: []*ToolVersionArchitecture{
 				{
-					URL:  "https://www.hashicorp.com",
-					Sha:  *String(genSha(t)),
+					URL:  url,
+					Sha:  amd64Sha,
 					OS:   linux,
 					Arch: amd64,
 				},
 				{
-					URL:  "https://www.hashicorp.com",
+					URL:  url,
 					Sha:  *String(genSha(t)),
 					OS:   linux,
 					Arch: arm64,
