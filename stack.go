@@ -18,7 +18,7 @@ type Stacks interface {
 	List(ctx context.Context, organization string, options *StackListOptions) (*StackList, error)
 
 	// Read returns a stack by its ID.
-	Read(ctx context.Context, stackID string, options *StackReadOptions) (*Stack, error)
+	Read(ctx context.Context, stackID string) (*Stack, error)
 
 	// Create creates a new stack.
 	Create(ctx context.Context, options StackCreateOptions) (*Stack, error)
@@ -239,8 +239,8 @@ func (s stacks) List(ctx context.Context, organization string, options *StackLis
 }
 
 // Read returns a stack by its ID.
-func (s stacks) Read(ctx context.Context, stackID string, options *StackReadOptions) (*Stack, error) {
-	req, err := s.client.NewRequest("GET", fmt.Sprintf("stacks/%s", url.PathEscape(stackID)), options)
+func (s stacks) Read(ctx context.Context, stackID string) (*Stack, error) {
+	req, err := s.client.NewRequest("GET", fmt.Sprintf("stacks/%s", url.PathEscape(stackID)), nil)
 	if err != nil {
 		return nil, err
 	}
