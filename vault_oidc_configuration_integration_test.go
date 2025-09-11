@@ -13,7 +13,7 @@ import (
 // To run them locally, follow the instructions outlined in hyok_configuration_integration_test.go
 
 func TestVaultOIDCConfigurationCreateDelete(t *testing.T) {
-	skipHYOKIntegrationTests := os.Getenv("SKIP_HYOK_INTEGRATION_TESTS") == "true"
+	skipHYOKIntegrationTests := os.Getenv("SKIP_HYOK_INTEGRATION_TESTS") != "false"
 	if skipHYOKIntegrationTests {
 		t.Skip()
 	}
@@ -80,7 +80,7 @@ func TestVaultOIDCConfigurationCreateDelete(t *testing.T) {
 }
 
 func TestVaultOIDCConfigurationRead(t *testing.T) {
-	skipHYOKIntegrationTests := os.Getenv("SKIP_HYOK_INTEGRATION_TESTS") == "true"
+	skipHYOKIntegrationTests := os.Getenv("SKIP_HYOK_INTEGRATION_TESTS") != "false"
 	if skipHYOKIntegrationTests {
 		t.Skip()
 	}
@@ -115,7 +115,7 @@ func TestVaultOIDCConfigurationRead(t *testing.T) {
 }
 
 func TestVaultOIDCConfigurationUpdate(t *testing.T) {
-	skipHYOKIntegrationTests := os.Getenv("SKIP_HYOK_INTEGRATION_TESTS") == "true"
+	skipHYOKIntegrationTests := os.Getenv("SKIP_HYOK_INTEGRATION_TESTS") != "false"
 	if skipHYOKIntegrationTests {
 		t.Skip()
 	}

@@ -46,7 +46,7 @@ func TestPlansRead(t *testing.T) {
 	})
 
 	t.Run("read hyok encrypted data key of a plan", func(t *testing.T) {
-		skipHYOKIntegrationTests := os.Getenv("SKIP_HYOK_INTEGRATION_TESTS") == "true"
+		skipHYOKIntegrationTests := os.Getenv("SKIP_HYOK_INTEGRATION_TESTS") != "false"
 		if skipHYOKIntegrationTests {
 			t.Skip()
 		}
@@ -63,7 +63,7 @@ func TestPlansRead(t *testing.T) {
 	})
 
 	t.Run("read sanitized plan of a plan", func(t *testing.T) {
-		skipHYOKIntegrationTests := os.Getenv("SKIP_HYOK_INTEGRATION_TESTS") == "true"
+		skipHYOKIntegrationTests := os.Getenv("SKIP_HYOK_INTEGRATION_TESTS") != "false"
 		if skipHYOKIntegrationTests {
 			t.Skip()
 		}

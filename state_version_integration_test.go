@@ -189,7 +189,7 @@ func TestStateVersionsUpload(t *testing.T) {
 	})
 
 	t.Run("SanitizedStateUploadURL is required when uploading sanitized state", func(t *testing.T) {
-		skipHYOKIntegrationTests := os.Getenv("SKIP_HYOK_INTEGRATION_TESTS") == "true"
+		skipHYOKIntegrationTests := os.Getenv("SKIP_HYOK_INTEGRATION_TESTS") != "false"
 		if skipHYOKIntegrationTests {
 			t.Skip()
 		}
@@ -496,7 +496,7 @@ func TestStateVersionsRead(t *testing.T) {
 	})
 
 	t.Run("read encrypted state download url of a state version", func(t *testing.T) {
-		skipHYOKIntegrationTests := os.Getenv("SKIP_HYOK_INTEGRATION_TESTS") == "true"
+		skipHYOKIntegrationTests := os.Getenv("SKIP_HYOK_INTEGRATION_TESTS") != "false"
 		if skipHYOKIntegrationTests {
 			t.Skip()
 		}
@@ -508,7 +508,7 @@ func TestStateVersionsRead(t *testing.T) {
 	})
 
 	t.Run("read sanitized state download url of a state version", func(t *testing.T) {
-		skipHYOKIntegrationTests := os.Getenv("SKIP_HYOK_INTEGRATION_TESTS") == "true"
+		skipHYOKIntegrationTests := os.Getenv("SKIP_HYOK_INTEGRATION_TESTS") != "false"
 		if skipHYOKIntegrationTests {
 			t.Skip()
 		}
@@ -520,7 +520,7 @@ func TestStateVersionsRead(t *testing.T) {
 	})
 
 	t.Run("read hyok encrypted data key of a state version", func(t *testing.T) {
-		skipHYOKIntegrationTests := os.Getenv("SKIP_HYOK_INTEGRATION_TESTS") == "true"
+		skipHYOKIntegrationTests := os.Getenv("SKIP_HYOK_INTEGRATION_TESTS") != "false"
 		if skipHYOKIntegrationTests {
 			t.Skip()
 		}

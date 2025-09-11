@@ -979,7 +979,7 @@ func TestWorkspacesCreate(t *testing.T) {
 	})
 
 	t.Run("create workspace with hyok enabled set to false", func(t *testing.T) {
-		skipHYOKIntegrationTests := os.Getenv("SKIP_HYOK_INTEGRATION_TESTS") == "true"
+		skipHYOKIntegrationTests := os.Getenv("SKIP_HYOK_INTEGRATION_TESTS") != "false"
 		if skipHYOKIntegrationTests {
 			t.Skip()
 		}
@@ -1004,7 +1004,7 @@ func TestWorkspacesCreate(t *testing.T) {
 	})
 
 	t.Run("create workspace with hyok enabled set to true", func(t *testing.T) {
-		skipHYOKIntegrationTests := os.Getenv("SKIP_HYOK_INTEGRATION_TESTS") == "true"
+		skipHYOKIntegrationTests := os.Getenv("SKIP_HYOK_INTEGRATION_TESTS") != "false"
 		if skipHYOKIntegrationTests {
 			t.Skip()
 		}
@@ -1115,7 +1115,7 @@ func TestWorkspacesRead(t *testing.T) {
 	})
 
 	t.Run("read hyok enabled of a workspace", func(t *testing.T) {
-		skipHYOKIntegrationTests := os.Getenv("SKIP_HYOK_INTEGRATION_TESTS") == "true"
+		skipHYOKIntegrationTests := os.Getenv("SKIP_HYOK_INTEGRATION_TESTS") != "false"
 		if skipHYOKIntegrationTests {
 			t.Skip()
 		}
@@ -1138,7 +1138,7 @@ func TestWorkspacesRead(t *testing.T) {
 	})
 
 	t.Run("read hyok encrypted data key of a workspace", func(t *testing.T) {
-		skipHYOKIntegrationTests := os.Getenv("SKIP_HYOK_INTEGRATION_TESTS") == "true"
+		skipHYOKIntegrationTests := os.Getenv("SKIP_HYOK_INTEGRATION_TESTS") != "false"
 		if skipHYOKIntegrationTests {
 			t.Skip()
 		}
@@ -1700,7 +1700,7 @@ func TestWorkspacesUpdate(t *testing.T) {
 	})
 
 	t.Run("update hyok enabled of a workspace from false to false", func(t *testing.T) {
-		skipHYOKIntegrationTests := os.Getenv("SKIP_HYOK_INTEGRATION_TESTS") == "true"
+		skipHYOKIntegrationTests := os.Getenv("SKIP_HYOK_INTEGRATION_TESTS") != "false"
 		if skipHYOKIntegrationTests {
 			t.Skip()
 		}
@@ -1735,7 +1735,7 @@ func TestWorkspacesUpdate(t *testing.T) {
 	})
 
 	t.Run("update hyok enabled of a workspace from false to true", func(t *testing.T) {
-		skipHYOKIntegrationTests := os.Getenv("SKIP_HYOK_INTEGRATION_TESTS") == "true"
+		skipHYOKIntegrationTests := os.Getenv("SKIP_HYOK_INTEGRATION_TESTS") != "false"
 		if skipHYOKIntegrationTests {
 			t.Skip()
 		}
@@ -1770,7 +1770,7 @@ func TestWorkspacesUpdate(t *testing.T) {
 	})
 
 	t.Run("update hyok enabled of a workspace from true to true", func(t *testing.T) {
-		skipHYOKIntegrationTests := os.Getenv("SKIP_HYOK_INTEGRATION_TESTS") == "true"
+		skipHYOKIntegrationTests := os.Getenv("SKIP_HYOK_INTEGRATION_TESTS") != "false"
 		if skipHYOKIntegrationTests {
 			t.Skip()
 		}
@@ -1805,7 +1805,7 @@ func TestWorkspacesUpdate(t *testing.T) {
 	})
 
 	t.Run("update hyok enabled of a workspace from true to false", func(t *testing.T) {
-		skipHYOKIntegrationTests := os.Getenv("SKIP_HYOK_INTEGRATION_TESTS") == "true"
+		skipHYOKIntegrationTests := os.Getenv("SKIP_HYOK_INTEGRATION_TESTS") != "false"
 		if skipHYOKIntegrationTests {
 			t.Skip()
 		}

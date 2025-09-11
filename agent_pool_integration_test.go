@@ -346,7 +346,7 @@ func TestAgentPoolsRead(t *testing.T) {
 	})
 
 	t.Run("read hyok configurations of an agent pool", func(t *testing.T) {
-		skipHYOKIntegrationTests := os.Getenv("SKIP_HYOK_INTEGRATION_TESTS") == "true"
+		skipHYOKIntegrationTests := os.Getenv("SKIP_HYOK_INTEGRATION_TESTS") != "false"
 		if skipHYOKIntegrationTests {
 			t.Skip()
 		}

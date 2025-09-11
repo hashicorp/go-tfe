@@ -10,7 +10,7 @@ import (
 )
 
 func TestHYOKConfigurationCreateRevokeDelete(t *testing.T) {
-	skipHYOKIntegrationTests := os.Getenv("SKIP_HYOK_INTEGRATION_TESTS") == "true"
+	skipHYOKIntegrationTests := os.Getenv("SKIP_HYOK_INTEGRATION_TESTS") != "false"
 	if skipHYOKIntegrationTests {
 		t.Skip()
 	}
@@ -307,7 +307,7 @@ func TestHYOKConfigurationCreateRevokeDelete(t *testing.T) {
 }
 
 func TestHyokConfigurationList(t *testing.T) {
-	skipHYOKIntegrationTests := os.Getenv("SKIP_HYOK_INTEGRATION_TESTS") == "true"
+	skipHYOKIntegrationTests := os.Getenv("SKIP_HYOK_INTEGRATION_TESTS") != "false"
 	if skipHYOKIntegrationTests {
 		t.Skip()
 	}
@@ -365,7 +365,7 @@ func TestHyokConfigurationList(t *testing.T) {
 }
 
 func TestHyokConfigurationRead(t *testing.T) {
-	skipHYOKIntegrationTests := os.Getenv("SKIP_HYOK_INTEGRATION_TESTS") == "true"
+	skipHYOKIntegrationTests := os.Getenv("SKIP_HYOK_INTEGRATION_TESTS") != "false"
 	if skipHYOKIntegrationTests {
 		t.Skip()
 	}
@@ -463,7 +463,7 @@ func TestHyokConfigurationRead(t *testing.T) {
 }
 
 func TestHYOKConfigurationUpdate(t *testing.T) {
-	skipHYOKIntegrationTests := os.Getenv("SKIP_HYOK_INTEGRATION_TESTS") == "true"
+	skipHYOKIntegrationTests := os.Getenv("SKIP_HYOK_INTEGRATION_TESTS") != "false"
 	if skipHYOKIntegrationTests {
 		t.Skip()
 	}
