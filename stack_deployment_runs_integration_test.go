@@ -27,7 +27,7 @@ func TestStackDeploymentRunsList(t *testing.T) {
 	stack, err := client.Stacks.Create(ctx, StackCreateOptions{
 		Name: "test-stack",
 		VCSRepo: &StackVCSRepoOptions{
-			Identifier:   "hashicorp-guides/pet-nulls-stack",
+			Identifier:   "ctrombley/linked-stacks-demo-network",
 			OAuthTokenID: oauthClient.OAuthTokens[0].ID,
 			Branch:       "main",
 		},
@@ -42,11 +42,11 @@ func TestStackDeploymentRunsList(t *testing.T) {
 	require.NoError(t, err)
 	require.NotNil(t, stackUpdated)
 
-	stack = pollStackDeployments(t, ctx, client, stackUpdated.ID)
-	require.NotNil(t, stack.LatestStackConfiguration)
+	stackUpdated = pollStackDeploymentGroups(t, ctx, client, stackUpdated.ID)
+	require.NotNil(t, stackUpdated.LatestStackConfiguration)
 
 	// Get the deployment group ID from the stack configuration
-	deploymentGroups, err := client.StackDeploymentGroups.List(ctx, stack.LatestStackConfiguration.ID, nil)
+	deploymentGroups, err := client.StackDeploymentGroups.List(ctx, stackUpdated.LatestStackConfiguration.ID, nil)
 	require.NoError(t, err)
 	require.NotNil(t, deploymentGroups)
 	require.NotEmpty(t, deploymentGroups.Items)
@@ -90,7 +90,7 @@ func TestStackDeploymentRunsRead(t *testing.T) {
 		Project: orgTest.DefaultProject,
 		Name:    "test-stack",
 		VCSRepo: &StackVCSRepoOptions{
-			Identifier:   "hashicorp-guides/pet-nulls-stack",
+			Identifier:   "ctrombley/linked-stacks-demo-network",
 			OAuthTokenID: oauthClient.OAuthTokens[0].ID,
 			Branch:       "main",
 		},
@@ -102,10 +102,10 @@ func TestStackDeploymentRunsRead(t *testing.T) {
 	require.NoError(t, err)
 	require.NotNil(t, stackUpdated)
 
-	stack = pollStackDeployments(t, ctx, client, stackUpdated.ID)
-	require.NotNil(t, stack.LatestStackConfiguration)
+	stackUpdated = pollStackDeploymentGroups(t, ctx, client, stackUpdated.ID)
+	require.NotNil(t, stackUpdated.LatestStackConfiguration)
 
-	stackDeploymentGroups, err := client.StackDeploymentGroups.List(ctx, stack.LatestStackConfiguration.ID, nil)
+	stackDeploymentGroups, err := client.StackDeploymentGroups.List(ctx, stackUpdated.LatestStackConfiguration.ID, nil)
 	require.NoError(t, err)
 	require.NotEmpty(t, stackDeploymentGroups)
 
@@ -115,7 +115,7 @@ func TestStackDeploymentRunsRead(t *testing.T) {
 	require.NoError(t, err)
 	require.NotEmpty(t, stackDeploymentRuns)
 
-	sdr := stackDeploymentGroups.Items[0]
+	sdr := stackDeploymentRuns.Items[0]
 
 	t.Run("Read with valid ID", func(t *testing.T) {
 		run, err := client.StackDeploymentRuns.Read(ctx, sdr.ID)
@@ -145,7 +145,7 @@ func TestStackDeploymentRunsApproveAllPlans(t *testing.T) {
 		Project: orgTest.DefaultProject,
 		Name:    "test-stack",
 		VCSRepo: &StackVCSRepoOptions{
-			Identifier:   "hashicorp-guides/pet-nulls-stack",
+			Identifier:   "ctrombley/linked-stacks-demo-network",
 			OAuthTokenID: oauthClient.OAuthTokens[0].ID,
 			Branch:       "main",
 		},
@@ -157,11 +157,11 @@ func TestStackDeploymentRunsApproveAllPlans(t *testing.T) {
 	require.NoError(t, err)
 	require.NotNil(t, stackUpdated)
 
-	stack = pollStackDeployments(t, ctx, client, stackUpdated.ID)
-	require.NotNil(t, stack.LatestStackConfiguration)
+	stackUpdated = pollStackDeploymentGroups(t, ctx, client, stackUpdated.ID)
+	require.NotNil(t, stackUpdated.LatestStackConfiguration)
 
 	// Get the deployment group ID from the stack configuration
-	deploymentGroups, err := client.StackDeploymentGroups.List(ctx, stack.LatestStackConfiguration.ID, nil)
+	deploymentGroups, err := client.StackDeploymentGroups.List(ctx, stackUpdated.LatestStackConfiguration.ID, nil)
 	require.NoError(t, err)
 	require.NotNil(t, deploymentGroups)
 	require.NotEmpty(t, deploymentGroups.Items)
@@ -198,7 +198,7 @@ func TestStackDeploymentRunsCancel(t *testing.T) {
 		Project: orgTest.DefaultProject,
 		Name:    "test-stack",
 		VCSRepo: &StackVCSRepoOptions{
-			Identifier:   "hashicorp-guides/pet-nulls-stack",
+			Identifier:   "ctrombley/linked-stacks-demo-network",
 			OAuthTokenID: oauthClient.OAuthTokens[0].ID,
 			Branch:       "main",
 		},
@@ -210,11 +210,11 @@ func TestStackDeploymentRunsCancel(t *testing.T) {
 	require.NoError(t, err)
 	require.NotNil(t, stackUpdated)
 
-	stack = pollStackDeployments(t, ctx, client, stackUpdated.ID)
-	require.NotNil(t, stack.LatestStackConfiguration)
+	stackUpdated = pollStackDeploymentGroups(t, ctx, client, stackUpdated.ID)
+	require.NotNil(t, stackUpdated.LatestStackConfiguration)
 
 	// Get the deployment group ID from the stack configuration
-	deploymentGroups, err := client.StackDeploymentGroups.List(ctx, stack.LatestStackConfiguration.ID, nil)
+	deploymentGroups, err := client.StackDeploymentGroups.List(ctx, stackUpdated.LatestStackConfiguration.ID, nil)
 	require.NoError(t, err)
 	require.NotNil(t, deploymentGroups)
 	require.NotEmpty(t, deploymentGroups.Items)
