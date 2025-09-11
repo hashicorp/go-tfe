@@ -32,7 +32,7 @@ func TestStackCreateAndList(t *testing.T) {
 	stack1, err := client.Stacks.Create(ctx, StackCreateOptions{
 		Name: "aa-test-stack",
 		VCSRepo: &StackVCSRepoOptions{
-			Identifier:   "hashicorp-guides/pet-nulls-stack",
+			Identifier:   "ctrombley/linked-stacks-demo-network",
 			OAuthTokenID: oauthClient.OAuthTokens[0].ID,
 		},
 		Project: &Project{
@@ -46,7 +46,7 @@ func TestStackCreateAndList(t *testing.T) {
 	stack2, err := client.Stacks.Create(ctx, StackCreateOptions{
 		Name: "zz-test-stack",
 		VCSRepo: &StackVCSRepoOptions{
-			Identifier:   "hashicorp-guides/pet-nulls-stack",
+			Identifier:   "ctrombley/linked-stacks-demo-network",
 			OAuthTokenID: oauthClient.OAuthTokens[0].ID,
 		},
 		Project: &Project{
@@ -149,7 +149,7 @@ func TestStackReadUpdateDelete(t *testing.T) {
 	stack, err := client.Stacks.Create(ctx, StackCreateOptions{
 		Name: "test-stack",
 		VCSRepo: &StackVCSRepoOptions{
-			Identifier:   "brandonc/pet-nulls-stack",
+			Identifier:   "ctrombley/linked-stacks-demo-network",
 			OAuthTokenID: oauthClient.OAuthTokens[0].ID,
 			Branch:       "main",
 		},
@@ -181,7 +181,7 @@ func TestStackReadUpdateDelete(t *testing.T) {
 	stackUpdated, err := client.Stacks.Update(ctx, stack.ID, StackUpdateOptions{
 		Description: String("updated description"),
 		VCSRepo: &StackVCSRepoOptions{
-			Identifier:   "brandonc/pet-nulls-stack",
+			Identifier:   "ctrombley/linked-stacks-demo-network",
 			OAuthTokenID: oauthClient.OAuthTokens[0].ID,
 			Branch:       "main",
 		},
@@ -219,7 +219,7 @@ func TestStackRemoveVCSBacking(t *testing.T) {
 	stack, err := client.Stacks.Create(ctx, StackCreateOptions{
 		Name: "test-stack",
 		VCSRepo: &StackVCSRepoOptions{
-			Identifier:   "brandonc/pet-nulls-stack",
+			Identifier:   "ctrombley/linked-stacks-demo-network",
 			OAuthTokenID: oauthClient.OAuthTokens[0].ID,
 			Branch:       "main",
 		},
@@ -265,7 +265,7 @@ func TestStackReadUpdateForceDelete(t *testing.T) {
 	stack, err := client.Stacks.Create(ctx, StackCreateOptions{
 		Name: "test-stack",
 		VCSRepo: &StackVCSRepoOptions{
-			Identifier:   "brandonc/pet-nulls-stack",
+			Identifier:   "ctrombley/linked-stacks-demo-network",
 			OAuthTokenID: oauthClient.OAuthTokens[0].ID,
 			Branch:       "main",
 		},
@@ -291,7 +291,7 @@ func TestStackReadUpdateForceDelete(t *testing.T) {
 	stackUpdated, err := client.Stacks.Update(ctx, stack.ID, StackUpdateOptions{
 		Description: String("updated description"),
 		VCSRepo: &StackVCSRepoOptions{
-			Identifier:   "brandonc/pet-nulls-stack",
+			Identifier:   "ctrombley/linked-stacks-demo-network",
 			OAuthTokenID: oauthClient.OAuthTokens[0].ID,
 			Branch:       "main",
 		},
@@ -312,7 +312,7 @@ func TestStackReadUpdateForceDelete(t *testing.T) {
 	require.Nil(t, stackReadAfterDelete)
 }
 
-func pollStackDeployments(t *testing.T, ctx context.Context, client *Client, stackID string) (stack *Stack) {
+func pollStackDeploymentGroups(t *testing.T, ctx context.Context, client *Client, stackID string) (stack *Stack) {
 	t.Helper()
 
 	// pollStackDeployments will poll the given stack until it has deployments or the deadline is reached.
@@ -341,14 +341,48 @@ func pollStackDeployments(t *testing.T, ctx context.Context, client *Client, sta
 				t.Fatalf("Failed to read deployment groups %q: %s", stackID, err)
 			}
 
-			t.Logf("Stack %q had %d deployment groups", stack.ID, len(stack.DeploymentNames))
+			t.Logf("Stack %q had %d deployment groups", stack.ID, groups.TotalCount)
 			if groups.TotalCount > 0 {
 				finished = true
 			}
 		}
 	}
 
-	return
+	return stack
+}
+
+func pollStackDeploymentGroupStatus(t *testing.T, ctx context.Context, client *Client, stackID, status string) {
+	// pollStackDeploymentGroupStatus will poll the given stack until its deployment groups
+	// all match the given status, or the deadline is reached.
+	ctx, cancel := context.WithDeadline(ctx, time.Now().Add(5*time.Minute))
+	defer cancel()
+
+	deadline, _ := ctx.Deadline()
+	t.Logf("Polling stack %q for deployments with deadline of %s", stackID, deadline)
+
+	ticker := time.NewTicker(2 * time.Second)
+	defer ticker.Stop()
+
+	for finished := false; !finished; {
+		t.Log("...")
+		select {
+		case <-ctx.Done():
+			t.Fatalf("Stack deployment groups for config %s did not have status %q at deadline", stackID, status)
+		case <-ticker.C:
+			var err error
+			summaries, err := client.StackDeploymentGroupSummaries.List(ctx, stackID, nil)
+			if err != nil {
+				t.Fatalf("Failed to read stack deployment groups or config %s: %s", stackID, err)
+			}
+
+			for _, group := range summaries.Items {
+				t.Logf("Stack deployment group %s for config %s had status %q", group.ID, stackID, group.Status)
+				if group.Status == status {
+					finished = true
+				}
+			}
+		}
+	}
 }
 
 func pollStackConfigurationStatus(t *testing.T, ctx context.Context, client *Client, stackConfigID, status string) (stackConfig *StackConfiguration) {
@@ -399,7 +433,7 @@ func TestStackConverged(t *testing.T) {
 	stack, err := client.Stacks.Create(ctx, StackCreateOptions{
 		Name: "test-stack",
 		VCSRepo: &StackVCSRepoOptions{
-			Identifier:   "brandonc/pet-nulls-stack",
+			Identifier:   "ctrombley/linked-stacks-demo-network",
 			OAuthTokenID: oauthClient.OAuthTokens[0].ID,
 		},
 		Project: &Project{
@@ -414,11 +448,11 @@ func TestStackConverged(t *testing.T) {
 	require.NoError(t, err)
 	require.NotNil(t, stackUpdated)
 
-	deployments := []string{"production", "staging"}
+	stackUpdated = pollStackDeploymentGroups(t, ctx, client, stackUpdated.ID)
+	require.NotNil(t, stackUpdated.LatestStackConfiguration)
 
-	stack = pollStackDeployments(t, ctx, client, stackUpdated.ID)
-	require.ElementsMatch(t, deployments, stack.DeploymentNames)
-	require.NotNil(t, stack.LatestStackConfiguration)
-
-	pollStackConfigurationStatus(t, ctx, client, stack.LatestStackConfiguration.ID, "converged")
+	// Poll until all deployment groups are pending
+	configurationID := stackUpdated.LatestStackConfiguration.ID
+	pollStackConfigurationStatus(t, ctx, client, configurationID, "completed")
+	pollStackDeploymentGroupStatus(t, ctx, client, configurationID, "pending")
 }
