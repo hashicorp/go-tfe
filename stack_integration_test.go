@@ -192,7 +192,7 @@ func TestStackReadUpdateDelete(t *testing.T) {
 	require.Equal(t, "updated description", stackUpdated.Description)
 	require.Equal(t, updatedPool.ID, stackUpdated.AgentPool.ID)
 
-	stackUpdatedConfig, err := client.Stacks.UpdateConfiguration(ctx, stack.ID)
+	stackUpdatedConfig, err := client.Stacks.FetchConfiguration(ctx, stack.ID)
 	require.NoError(t, err)
 	require.Equal(t, stack.Name, stackUpdatedConfig.Name)
 
@@ -300,7 +300,7 @@ func TestStackReadUpdateForceDelete(t *testing.T) {
 	require.NoError(t, err)
 	require.Equal(t, "updated description", stackUpdated.Description)
 
-	stackUpdatedConfig, err := client.Stacks.UpdateConfiguration(ctx, stack.ID)
+	stackUpdatedConfig, err := client.Stacks.FetchConfiguration(ctx, stack.ID)
 	require.NoError(t, err)
 	require.Equal(t, stack.Name, stackUpdatedConfig.Name)
 
@@ -410,7 +410,7 @@ func TestStackConverged(t *testing.T) {
 	require.NoError(t, err)
 	require.NotNil(t, stack)
 
-	stackUpdated, err := client.Stacks.UpdateConfiguration(ctx, stack.ID)
+	stackUpdated, err := client.Stacks.FetchConfiguration(ctx, stack.ID)
 	require.NoError(t, err)
 	require.NotNil(t, stackUpdated)
 

@@ -32,8 +32,8 @@ type Stacks interface {
 	// ForceDelete deletes a stack.
 	ForceDelete(ctx context.Context, stackID string) error
 
-	// UpdateConfiguration updates the configuration of a stack, triggering stack preparation.
-	UpdateConfiguration(ctx context.Context, stackID string) (*Stack, error)
+	// FetchConfiguration updates the configuration of a stack, triggering stack preparation.
+	FetchConfiguration(ctx context.Context, stackID string) (*Stack, error)
 }
 
 // stacks implements Stacks.
@@ -202,8 +202,8 @@ type WaitForStatusResult struct {
 const minimumPollingIntervalMs = 3000
 const maximumPollingIntervalMs = 5000
 
-// UpdateConfiguration fetches the latest configuration of a stack from VCS, triggering stack operations
-func (s *stacks) UpdateConfiguration(ctx context.Context, stackID string) (*Stack, error) {
+// FetchConfiguration fetches the latest configuration of a stack from VCS, triggering stack operations
+func (s *stacks) FetchConfiguration(ctx context.Context, stackID string) (*Stack, error) {
 	req, err := s.client.NewRequest("POST", fmt.Sprintf("stacks/%s/fetch-latest-from-vcs", url.PathEscape(stackID)), nil)
 	if err != nil {
 		return nil, err
