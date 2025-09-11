@@ -165,7 +165,7 @@ func TestStackReadUpdateDelete(t *testing.T) {
 	require.NotEmpty(t, stack.VCSRepo.OAuthTokenID)
 	require.NotEmpty(t, stack.VCSRepo.Branch)
 
-	stackRead, err := client.Stacks.Read(ctx, stack.ID, nil)
+	stackRead, err := client.Stacks.Read(ctx, stack.ID)
 	require.NoError(t, err)
 	require.Equal(t, stack.VCSRepo.Identifier, stackRead.VCSRepo.Identifier)
 	require.Equal(t, stack.VCSRepo.OAuthTokenID, stackRead.VCSRepo.OAuthTokenID)
@@ -199,7 +199,7 @@ func TestStackReadUpdateDelete(t *testing.T) {
 	err = client.Stacks.Delete(ctx, stack.ID)
 	require.NoError(t, err)
 
-	stackReadAfterDelete, err := client.Stacks.Read(ctx, stack.ID, nil)
+	stackReadAfterDelete, err := client.Stacks.Read(ctx, stack.ID)
 	require.ErrorIs(t, err, ErrResourceNotFound)
 	require.Nil(t, stackReadAfterDelete)
 }
@@ -234,7 +234,7 @@ func TestStackRemoveVCSBacking(t *testing.T) {
 	require.NotEmpty(t, stack.VCSRepo.OAuthTokenID)
 	require.NotEmpty(t, stack.VCSRepo.Branch)
 
-	stackRead, err := client.Stacks.Read(ctx, stack.ID, nil)
+	stackRead, err := client.Stacks.Read(ctx, stack.ID)
 	require.NoError(t, err)
 	require.Equal(t, stack.VCSRepo.Identifier, stackRead.VCSRepo.Identifier)
 	require.Equal(t, stack.VCSRepo.OAuthTokenID, stackRead.VCSRepo.OAuthTokenID)
@@ -280,7 +280,7 @@ func TestStackReadUpdateForceDelete(t *testing.T) {
 	require.NotEmpty(t, stack.VCSRepo.OAuthTokenID)
 	require.NotEmpty(t, stack.VCSRepo.Branch)
 
-	stackRead, err := client.Stacks.Read(ctx, stack.ID, nil)
+	stackRead, err := client.Stacks.Read(ctx, stack.ID)
 	require.NoError(t, err)
 	require.Equal(t, stack.VCSRepo.Identifier, stackRead.VCSRepo.Identifier)
 	require.Equal(t, stack.VCSRepo.OAuthTokenID, stackRead.VCSRepo.OAuthTokenID)
@@ -307,7 +307,7 @@ func TestStackReadUpdateForceDelete(t *testing.T) {
 	err = client.Stacks.ForceDelete(ctx, stack.ID)
 	require.NoError(t, err)
 
-	stackReadAfterDelete, err := client.Stacks.Read(ctx, stack.ID, nil)
+	stackReadAfterDelete, err := client.Stacks.Read(ctx, stack.ID)
 	require.ErrorIs(t, err, ErrResourceNotFound)
 	require.Nil(t, stackReadAfterDelete)
 }
@@ -332,9 +332,7 @@ func pollStackDeployments(t *testing.T, ctx context.Context, client *Client, sta
 			t.Fatalf("Stack %q had no deployment groups at deadline", stackID)
 		case <-ticker.C:
 			var err error
-			stack, err = client.Stacks.Read(ctx, stackID, &StackReadOptions{
-				Include: []StackIncludeOpt{StackIncludeLatestStackConfiguration},
-			})
+			stack, err = client.Stacks.Read(ctx, stackID)
 			if err != nil {
 				t.Fatalf("Failed to read stack %q: %s", stackID, err)
 			}
