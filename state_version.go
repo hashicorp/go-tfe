@@ -43,6 +43,10 @@ type StateVersions interface {
 	// This is a more resilient form of Create and is the recommended approach to creating state versions.
 	Upload(ctx context.Context, workspaceID string, options StateVersionUploadOptions) (*StateVersion, error)
 
+	// UploadSanitizedState uploads a sanitized version of the state to the provided StateVersion.
+	// The StateVersion must already exist and have a SanitizedStateUploadURL.
+	UploadSanitizedState(ctx context.Context, stateVersion *StateVersion, sanitizedState []byte) error
+
 	// Read a state version by its ID.
 	Read(ctx context.Context, svID string) (*StateVersion, error)
 
@@ -101,6 +105,7 @@ type StateVersion struct {
 	VCSCommitURL              string             `jsonapi:"attr,vcs-commit-url"`
 	BillableRUMCount          *uint32            `jsonapi:"attr,billable-rum-count"`
 	EncryptedStateDownloadURL string             `jsonapi:"attr,encrypted-state-download-url,omitempty"`
+	SanitizedStateUploadURL   string             `jsonapi:"attr,sanitized-state-upload-url,omitempty"`
 	SanitizedStateDownloadURL string             `jsonapi:"attr,sanitized-state-download-url,omitempty"`
 
 	// Whether HCP Terraform has finished populating any StateVersion fields that required async processing.
@@ -315,6 +320,21 @@ func (s *stateVersions) Upload(ctx context.Context, workspaceID string, options 
 
 	// Re-read the state version to get the updated status, if available
 	return s.Read(ctx, sv.ID)
+}
+
+func (s *stateVersions) UploadSanitizedState(ctx context.Context, stateVersion *StateVersion, sanitizedState []byte) error {
+	if stateVersion.SanitizedStateUploadURL == "" {
+		sv, err := s.Read(ctx, stateVersion.ID)
+		if err != nil {
+			return err
+		}
+		if sv.SanitizedStateUploadURL == "" {
+			return ErrSanitizedStateUploadURLMissing
+		}
+		stateVersion.SanitizedStateUploadURL = sv.SanitizedStateUploadURL
+	}
+
+	return s.client.doForeignPUTRequest(ctx, stateVersion.SanitizedStateUploadURL, bytes.NewReader(sanitizedState))
 }
 
 // Read a state version by its ID.

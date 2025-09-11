@@ -187,6 +187,35 @@ func TestStateVersionsUpload(t *testing.T) {
 		})
 		require.ErrorIs(t, err, ErrRequiredRawState)
 	})
+
+	t.Run("SanitizedStateUploadURL is required when uploading sanitized state", func(t *testing.T) {
+		skipHYOKIntegrationTests := os.Getenv("SKIP_HYOK_INTEGRATION_TESTS") == "true"
+		if skipHYOKIntegrationTests {
+			t.Skip()
+		}
+
+		ctx := context.Background()
+		_, err := client.Workspaces.Lock(ctx, wTest.ID, WorkspaceLockOptions{})
+		if err != nil {
+			t.Fatal(err)
+		}
+
+		sv, err := client.StateVersions.Create(ctx, wTest.ID, StateVersionCreateOptions{
+			Lineage: String("741c4949-60b9-5bb1-5bf8-b14f4bb14af3"),
+			MD5:     String(fmt.Sprintf("%x", md5.Sum(state))),
+			Serial:  Int64(1),
+		})
+		require.NoError(t, err)
+
+		err = client.StateVersions.UploadSanitizedState(ctx, sv, state)
+		require.Error(t, err, ErrSanitizedStateUploadURLMissing)
+
+		// Workspaces must be force-unlocked when there is a pending state version
+		_, err = client.Workspaces.ForceUnlock(ctx, wTest.ID)
+		if err != nil {
+			t.Fatal(err)
+		}
+	})
 }
 
 func TestStateVersionsCreate(t *testing.T) {
@@ -467,6 +496,7 @@ func TestStateVersionsRead(t *testing.T) {
 	})
 
 	t.Run("read encrypted state download url of a state version", func(t *testing.T) {
+		skipHYOKIntegrationTests := os.Getenv("SKIP_HYOK_INTEGRATION_TESTS") == "true"
 		if skipHYOKIntegrationTests {
 			t.Skip()
 		}
@@ -478,6 +508,7 @@ func TestStateVersionsRead(t *testing.T) {
 	})
 
 	t.Run("read sanitized state download url of a state version", func(t *testing.T) {
+		skipHYOKIntegrationTests := os.Getenv("SKIP_HYOK_INTEGRATION_TESTS") == "true"
 		if skipHYOKIntegrationTests {
 			t.Skip()
 		}
@@ -489,6 +520,7 @@ func TestStateVersionsRead(t *testing.T) {
 	})
 
 	t.Run("read hyok encrypted data key of a state version", func(t *testing.T) {
+		skipHYOKIntegrationTests := os.Getenv("SKIP_HYOK_INTEGRATION_TESTS") == "true"
 		if skipHYOKIntegrationTests {
 			t.Skip()
 		}
