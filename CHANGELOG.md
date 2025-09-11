@@ -1,5 +1,9 @@
 # Unreleased
 
+## Enhancements
+
+* Adds support for managing agent pools on `Stacks` by @maed223 [#1214](https://github.com/hashicorp/go-tfe/pull/1214)
+
 ## Bug Fixes
 
 * Fixes arch validation on Terraform, OPA, and Sentinel Tool Versions when providing top level `url` and `sha` with multiple `archs` by @kelsi-hoyle [#1212](https://github.com/hashicorp/go-tfe/pull/1212)
