@@ -1,8 +1,6 @@
 # Unreleased
 
-## Enhancements
-
-* Adds support for managing agent pools on `Stacks` by @maed223 [#1214](https://github.com/hashicorp/go-tfe/pull/1214)
+# v1.92.0
 
 ## Bug Fixes
 
@@ -11,6 +9,7 @@
 ## Enhancements
 
 * Adds BETA support for performing Registry Module test runs on custom Agents by @hashimooon [#1209](httpsLhttps://github.com/hashicorp/go-tfe/pull/1209)
+* Adds support for managing agent pools on `Stacks` by @maed223 [#1214](https://github.com/hashicorp/go-tfe/pull/1214)
 
 # v1.91.1
 
