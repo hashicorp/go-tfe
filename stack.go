@@ -83,22 +83,27 @@ type StackVCSRepoOptions struct {
 	OAuthTokenID      string `json:"oauth-token-id,omitempty"`
 }
 
+type LinkedStackConnections struct {
+	UpstreamCount   int `jsonapi:"attr,upstream-count"`
+	DownstreamCount int `jsonapi:"attr,downstream-count"`
+	InputsCount     int `jsonapi:"attr,inputs-count"`
+	OutputsCount    int `jsonapi:"attr,outputs-count"`
+}
+
 // Stack represents a stack.
 type Stack struct {
-	ID                 string        `jsonapi:"primary,stacks"`
-	Name               string        `jsonapi:"attr,name"`
-	Description        string        `jsonapi:"attr,description"`
-	DeploymentNames    []string      `jsonapi:"attr,deployment-names"`
-	VCSRepo            *StackVCSRepo `jsonapi:"attr,vcs-repo"`
-	ErrorsCount        int           `jsonapi:"attr,errors-count"`
-	WarningsCount      int           `jsonapi:"attr,warnings-count"`
-	SpeculativeEnabled bool          `jsonapi:"attr,speculative-enabled"`
-	CreatedAt          time.Time     `jsonapi:"attr,created-at,iso8601"`
-	UpdatedAt          time.Time     `jsonapi:"attr,updated-at,iso8601"`
+	ID                     string                  `jsonapi:"primary,stacks"`
+	Name                   string                  `jsonapi:"attr,name"`
+	Description            string                  `jsonapi:"attr,description"`
+	VCSRepo                *StackVCSRepo           `jsonapi:"attr,vcs-repo"`
+	SpeculativeEnabled     bool                    `jsonapi:"attr,speculative-enabled"`
+	CreatedAt              time.Time               `jsonapi:"attr,created-at,iso8601"`
+	UpdatedAt              time.Time               `jsonapi:"attr,updated-at,iso8601"`
+	LinkedStackConnections *LinkedStackConnections `jsonapi:"attr,linked-stack-connections"`
 
 	// Relationships
-	AgentPool                *AgentPool          `jsonapi:"relation,agent-pool"`
 	Project                  *Project            `jsonapi:"relation,project"`
+	AgentPool                *AgentPool          `jsonapi:"relation,agent-pool"`
 	LatestStackConfiguration *StackConfiguration `jsonapi:"relation,latest-stack-configuration"`
 }
 
@@ -117,54 +122,49 @@ type StackComponent struct {
 	Name       string `json:"name"`
 	Correlator string `json:"correlator"`
 	Expanded   bool   `json:"expanded"`
+	Removed    bool   `json:"removed"`
 }
 
 // StackConfiguration represents a stack configuration snapshot
 type StackConfiguration struct {
 	// Attributes
-	ID                   string                              `jsonapi:"primary,stack-configurations"`
-	Status               string                              `jsonapi:"attr,status"`
-	StatusTimestamps     *StackConfigurationStatusTimestamps `jsonapi:"attr,status-timestamps"`
-	SequenceNumber       int                                 `jsonapi:"attr,sequence-number"`
-	DeploymentNames      []string                            `jsonapi:"attr,deployment-names"`
-	ConvergedDeployments []string                            `jsonapi:"attr,converged-deployments"`
-	Components           []*StackComponent                   `jsonapi:"attr,components"`
-	ErrorMessage         *string                             `jsonapi:"attr,error-message"`
-	EventStreamURL       string                              `jsonapi:"attr,event-stream-url"`
-	Diagnostics          []*StackDiagnostic                  `jsonapi:"attr,diags"`
-	CreatedAt            time.Time                           `jsonapi:"attr,created-at,iso8601"`
-	UpdatedAt            time.Time                           `jsonapi:"attr,updated-at,iso8601"`
+	ID                      string            `jsonapi:"primary,stack-configurations"`
+	Status                  string            `jsonapi:"attr,status"`
+	SequenceNumber          int               `jsonapi:"attr,sequence-number"`
+	Components              []*StackComponent `jsonapi:"attr,components"`
+	PreparingEventStreamURL string            `jsonapi:"attr,preparing-event-stream-url"`
+	CreatedAt               time.Time         `jsonapi:"attr,created-at,iso8601"`
+	UpdatedAt               time.Time         `jsonapi:"attr,updated-at,iso8601"`
+	Speculative             bool              `jsonapi:"attr,speculative"`
 
-	Stack *Stack `jsonapi:"relation,stack"`
+	// Relationships
+	Stack             *Stack             `jsonapi:"relation,stack"`
+	IngressAttributes *IngressAttributes `jsonapi:"relation,ingress-attributes"`
 }
 
 // StackState represents a stack state
 type StackState struct {
 	// Attributes
-	ID string `jsonapi:"primary,stack-states"`
+	ID                    string `jsonapi:"primary,stack-states"`
+	Description           string `jsonapi:"attr,description"`
+	Generation            int    `jsonapi:"attr,generation"`
+	Status                string `jsonapi:"attr,status"`
+	Deployment            string `jsonapi:"attr,deployment"`
+	Components            string `jsonapi:"attr,components"`
+	IsCurrent             bool   `jsonapi:"attr,is-current"`
+	ResourceInstanceCount int    `jsonapi:"attr,resource-instance-count"`
+
+	// Relationships
+	Stack              *Stack              `jsonapi:"relation,stack"`
+	StackDeploymentRun *StackDeploymentRun `jsonapi:"relation,stack-deployment-run"`
 }
-
-// StackIncludeOpt represents the include options for a stack.
-type StackIncludeOpt string
-
-const (
-	StackIncludeOrganization             StackIncludeOpt = "organization"
-	StackIncludeProject                  StackIncludeOpt = "project"
-	StackIncludeLatestStackConfiguration StackIncludeOpt = "latest_stack_configuration"
-	StackIncludeStackDiagnostics         StackIncludeOpt = "stack_diagnostics"
-)
 
 // StackListOptions represents the options for listing stacks.
 type StackListOptions struct {
 	ListOptions
-	ProjectID    string            `url:"filter[project[id]],omitempty"`
-	Sort         StackSortColumn   `url:"sort,omitempty"`
-	SearchByName string            `url:"search[name],omitempty"`
-	Include      []StackIncludeOpt `url:"include,omitempty"`
-}
-
-type StackReadOptions struct {
-	Include []StackIncludeOpt `url:"include,omitempty"`
+	ProjectID    string          `url:"filter[project[id]],omitempty"`
+	Sort         StackSortColumn `url:"sort,omitempty"`
+	SearchByName string          `url:"search[name],omitempty"`
 }
 
 // StackCreateOptions represents the options for creating a stack. The project
