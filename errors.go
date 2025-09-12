@@ -89,6 +89,9 @@ var (
 	// it is locked. "conflict" followed by newline is used to preserve go-tfe version
 	// compatibility with the error constructed at runtime before it was defined here.
 	ErrWorkspaceLockedCannotDelete = errors.New("conflict\nWorkspace is currently locked. Workspace must be unlocked before it can be safely deleted")
+
+	// ErrHYOKCannotBeDisabled is returned when attempting to disable HYOK on a workspace that already has it enabled.
+	ErrHYOKCannotBeDisabled = errors.New("bad request\n\nhyok may not be disabled once it has been turned on for a workspace")
 )
 
 // Invalid values for resources/struct fields
@@ -409,6 +412,8 @@ var (
 	ErrRequiredRawState = errors.New("RawState is required")
 
 	ErrStateVersionUploadNotSupported = errors.New("upload not supported by this version of Terraform Enterprise")
+
+	ErrSanitizedStateUploadURLMissing = errors.New("sanitized state upload URL is missing")
 
 	ErrRequiredRoleARN = errors.New("role-arn is required for AWS OIDC configuration")
 
