@@ -43,8 +43,8 @@ type StateVersions interface {
 	// This is a more resilient form of Create and is the recommended approach to creating state versions.
 	Upload(ctx context.Context, workspaceID string, options StateVersionUploadOptions) (*StateVersion, error)
 
-	// UploadSanitizedState uploads a sanitized version of the state to the provided StateVersion.
-	// The StateVersion must already exist and have a SanitizedStateUploadURL.
+	// UploadSanitizedState uploads a sanitized version of the state to the provided sanitized state upload url.
+	// The SanitizedStateUploadURL cannot be empty.
 	UploadSanitizedState(ctx context.Context, sanitizedStateUploadURL string, sanitizedState []byte) error
 
 	// Read a state version by its ID.
@@ -322,6 +322,8 @@ func (s *stateVersions) Upload(ctx context.Context, workspaceID string, options 
 	return s.Read(ctx, sv.ID)
 }
 
+// UploadSanitizedState uploads a sanitized version of the state to the provided sanitized state upload url.
+// The SanitizedStateUploadURL cannot be empty.
 func (s *stateVersions) UploadSanitizedState(ctx context.Context, sanitizedStateUploadURL string, sanitizedState []byte) error {
 	if sanitizedStateUploadURL == "" {
 		return ErrSanitizedStateUploadURLMissing
