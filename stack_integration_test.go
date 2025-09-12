@@ -141,6 +141,11 @@ func TestStackReadUpdateDelete(t *testing.T) {
 	oauthClient, cleanup := createOAuthClient(t, client, orgTest, nil)
 	t.Cleanup(cleanup)
 
+	initialPool, err := client.AgentPools.Create(ctx, orgTest.Name, AgentPoolCreateOptions{
+		Name: String("initial-test-pool"),
+	})
+	require.NoError(t, err)
+
 	stack, err := client.Stacks.Create(ctx, StackCreateOptions{
 		Name: "test-stack",
 		VCSRepo: &StackVCSRepoOptions{
@@ -151,6 +156,7 @@ func TestStackReadUpdateDelete(t *testing.T) {
 		Project: &Project{
 			ID: orgTest.DefaultProject.ID,
 		},
+		AgentPool: initialPool,
 	})
 
 	require.NoError(t, err)
@@ -164,8 +170,13 @@ func TestStackReadUpdateDelete(t *testing.T) {
 	require.Equal(t, stack.VCSRepo.Identifier, stackRead.VCSRepo.Identifier)
 	require.Equal(t, stack.VCSRepo.OAuthTokenID, stackRead.VCSRepo.OAuthTokenID)
 	require.Equal(t, stack.VCSRepo.Branch, stackRead.VCSRepo.Branch)
-
+	require.Equal(t, stack.AgentPool.ID, stackRead.AgentPool.ID)
 	assert.Equal(t, stack, stackRead)
+
+	updatedPool, err := client.AgentPools.Create(ctx, orgTest.Name, AgentPoolCreateOptions{
+		Name: String("updated-test-pool"),
+	})
+	require.NoError(t, err)
 
 	stackUpdated, err := client.Stacks.Update(ctx, stack.ID, StackUpdateOptions{
 		Description: String("updated description"),
@@ -174,10 +185,12 @@ func TestStackReadUpdateDelete(t *testing.T) {
 			OAuthTokenID: oauthClient.OAuthTokens[0].ID,
 			Branch:       "main",
 		},
+		AgentPool: updatedPool,
 	})
 
 	require.NoError(t, err)
 	require.Equal(t, "updated description", stackUpdated.Description)
+	require.Equal(t, updatedPool.ID, stackUpdated.AgentPool.ID)
 
 	stackUpdatedConfig, err := client.Stacks.UpdateConfiguration(ctx, stack.ID)
 	require.NoError(t, err)

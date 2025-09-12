@@ -14,6 +14,22 @@ import (
 	"strings"
 )
 
+type AgentExecutionMode string
+
+const (
+	AgentExecutionModeAgent  AgentExecutionMode = "agent"
+	AgentExecutionModeRemote AgentExecutionMode = "remote"
+)
+
+func (a *AgentExecutionMode) UnmarshalText(text []byte) error {
+	*a = AgentExecutionMode(string(text))
+	return nil
+}
+
+func (a AgentExecutionMode) MarshalText() ([]byte, error) {
+	return []byte(string(a)), nil
+}
+
 // Compile-time proof of interface implementation.
 var _ RegistryModules = (*registryModules)(nil)
 
@@ -366,7 +382,9 @@ type RegistryModuleUpdateOptions struct {
 }
 
 type RegistryModuleTestConfigOptions struct {
-	TestsEnabled *bool `jsonapi:"attr,tests-enabled,omitempty"`
+	TestsEnabled       *bool               `jsonapi:"attr,tests-enabled,omitempty"`
+	AgentExecutionMode *AgentExecutionMode `jsonapi:"attr,agent-execution-mode,omitempty"`
+	AgentPoolID        *string             `jsonapi:"attr,agent-pool-id,omitempty"`
 }
 
 type RegistryModuleVCSRepoOptions struct {
@@ -533,6 +551,12 @@ func (r *registryModules) Update(ctx context.Context, moduleID RegistryModuleID,
 		}
 	}
 
+	if options.TestConfig != nil && options.TestConfig.AgentExecutionMode != nil {
+		if *options.TestConfig.AgentExecutionMode == AgentExecutionModeRemote && options.TestConfig.AgentPoolID != nil {
+			return nil, ErrAgentPoolNotRequiredForRemoteExecution
+		}
+	}
+
 	org := url.PathEscape(moduleID.Organization)
 	registryName := url.PathEscape(string(moduleID.RegistryName))
 	namespace := url.PathEscape(moduleID.Namespace)
@@ -597,6 +621,13 @@ func (r *registryModules) CreateWithVCSConnection(ctx context.Context, options R
 			url.PathEscape(*options.VCSRepo.OrganizationName),
 		)
 	}
+
+	if options.TestConfig != nil && options.TestConfig.AgentExecutionMode != nil {
+		if *options.TestConfig.AgentExecutionMode == AgentExecutionModeRemote && options.TestConfig.AgentPoolID != nil {
+			return nil, ErrAgentPoolNotRequiredForRemoteExecution
+		}
+	}
+
 	req, err := r.client.NewRequest("POST", u, &options)
 	if err != nil {
 		return nil, err
