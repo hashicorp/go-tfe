@@ -547,7 +547,7 @@ func TestOrganizationsReadEntitlements(t *testing.T) {
 	orgTest, orgTestCleanup := createOrganization(t, client)
 	t.Cleanup(orgTestCleanup)
 
-	newSubscriptionUpdater(orgTest).WithPlusEntitlementPlan().Update(t)
+	newSubscriptionUpdater(orgTest).WithStandardEntitlementPlan().Update(t)
 
 	t.Run("when the org exists", func(t *testing.T) {
 		entitlements, err := client.Organizations.ReadEntitlements(ctx, orgTest.Name)

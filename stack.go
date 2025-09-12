@@ -97,6 +97,7 @@ type Stack struct {
 	UpdatedAt          time.Time     `jsonapi:"attr,updated-at,iso8601"`
 
 	// Relationships
+	AgentPool                *AgentPool          `jsonapi:"relation,agent-pool"`
 	Project                  *Project            `jsonapi:"relation,project"`
 	LatestStackConfiguration *StackConfiguration `jsonapi:"relation,latest-stack-configuration"`
 }
@@ -189,6 +190,7 @@ type StackCreateOptions struct {
 	Description *string              `jsonapi:"attr,description,omitempty"`
 	VCSRepo     *StackVCSRepoOptions `jsonapi:"attr,vcs-repo"`
 	Project     *Project             `jsonapi:"relation,project"`
+	AgentPool   *AgentPool           `jsonapi:"relation,agent-pool"`
 }
 
 // StackUpdateOptions represents the options for updating a stack.
@@ -196,6 +198,7 @@ type StackUpdateOptions struct {
 	Name        *string              `jsonapi:"attr,name,omitempty"`
 	Description *string              `jsonapi:"attr,description,omitempty"`
 	VCSRepo     *StackVCSRepoOptions `jsonapi:"attr,vcs-repo"`
+	AgentPool   *AgentPool           `jsonapi:"relation,agent-pool"`
 }
 
 // WaitForStatusResult is the data structure that is sent over the channel

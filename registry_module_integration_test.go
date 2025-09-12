@@ -2221,3 +2221,234 @@ func TestRegistryCreateWithVCSOptions_Marshal(t *testing.T) {
 `
 	assert.Equal(t, expectedBody, string(bodyBytes))
 }
+
+func TestRegistryModulesUpdate_AgentExecutionValidation(t *testing.T) {
+	skipUnlessBeta(t)
+
+	githubIdentifier := os.Getenv("GITHUB_REGISTRY_MODULE_IDENTIFIER")
+	if githubIdentifier == "" {
+		t.Skip("Export a valid GITHUB_REGISTRY_MODULE_IDENTIFIER before running this test")
+	}
+
+	githubBranch := os.Getenv("GITHUB_REGISTRY_MODULE_BRANCH")
+	if githubBranch == "" {
+		githubBranch = "main"
+	}
+
+	client := testClient(t)
+	ctx := context.Background()
+
+	orgTest, orgTestCleanup := createOrganization(t, client)
+	defer orgTestCleanup()
+
+	agentPool, agentPoolCleanup := createAgentPool(t, client, orgTest)
+	defer agentPoolCleanup()
+
+	oauthTokenTest, oauthTokenTestCleanup := createOAuthToken(t, client, orgTest)
+	defer oauthTokenTestCleanup()
+
+	// Create a VCS-connected registry module with tests enabled for testing updates
+	createOptions := RegistryModuleCreateWithVCSConnectionOptions{
+		VCSRepo: &RegistryModuleVCSRepoOptions{
+			OrganizationName:  String(orgTest.Name),
+			Identifier:        String(githubIdentifier),
+			OAuthTokenID:      String(oauthTokenTest.ID),
+			DisplayIdentifier: String(githubIdentifier),
+			Branch:            String(githubBranch),
+		},
+		TestConfig: &RegistryModuleTestConfigOptions{
+			TestsEnabled: Bool(true),
+		},
+	}
+	rm, err := client.RegistryModules.CreateWithVCSConnection(ctx, createOptions)
+	require.NoError(t, err)
+	assert.NotEmpty(t, rm.ID)
+
+	moduleID := RegistryModuleID{
+		Organization: orgTest.Name,
+		Name:         rm.Name,
+		Provider:     rm.Provider,
+		Namespace:    rm.Namespace,
+		RegistryName: rm.RegistryName,
+	}
+
+	// Cleanup the created module
+	defer func() {
+		if err := client.RegistryModules.Delete(ctx, orgTest.Name, rm.Name); err != nil {
+			t.Logf("Error deleting registry module: %v", err)
+		}
+	}()
+
+	t.Run("errors when remote execution mode has agent pool ID", func(t *testing.T) {
+		updateOptions := RegistryModuleUpdateOptions{
+			TestConfig: &RegistryModuleTestConfigOptions{
+				TestsEnabled:       Bool(true),
+				AgentExecutionMode: AgentExecutionModePtr(AgentExecutionModeRemote),
+				AgentPoolID:        String(agentPool.ID),
+			},
+		}
+
+		_, err := client.RegistryModules.Update(ctx, moduleID, updateOptions)
+		assert.Error(t, err)
+		assert.Equal(t, ErrAgentPoolNotRequiredForRemoteExecution, err)
+	})
+
+	t.Run("succeeds when agent execution mode has agent pool ID", func(t *testing.T) {
+		updateOptions := RegistryModuleUpdateOptions{
+			TestConfig: &RegistryModuleTestConfigOptions{
+				TestsEnabled:       Bool(true),
+				AgentExecutionMode: AgentExecutionModePtr(AgentExecutionModeAgent),
+				AgentPoolID:        String(agentPool.ID),
+			},
+		}
+
+		updatedRM, err := client.RegistryModules.Update(ctx, moduleID, updateOptions)
+		require.NoError(t, err)
+		assert.NotNil(t, updatedRM)
+		assert.NotNil(t, updatedRM.TestConfig)
+		assert.True(t, updatedRM.TestConfig.TestsEnabled)
+
+		// Verify that AgentExecutionMode and AgentPoolID are returned correctly
+		assert.NotNil(t, updatedRM.TestConfig.AgentExecutionMode)
+		assert.Equal(t, string(AgentExecutionModeAgent), *updatedRM.TestConfig.AgentExecutionMode)
+		assert.NotNil(t, updatedRM.TestConfig.AgentPoolID)
+		assert.Equal(t, agentPool.ID, *updatedRM.TestConfig.AgentPoolID)
+	})
+
+	t.Run("succeeds when remote execution mode has no agent pool ID", func(t *testing.T) {
+		updateOptions := RegistryModuleUpdateOptions{
+			TestConfig: &RegistryModuleTestConfigOptions{
+				TestsEnabled:       Bool(true),
+				AgentExecutionMode: AgentExecutionModePtr(AgentExecutionModeRemote),
+			},
+		}
+
+		updatedRM, err := client.RegistryModules.Update(ctx, moduleID, updateOptions)
+		require.NoError(t, err)
+		assert.NotNil(t, updatedRM)
+		assert.NotNil(t, updatedRM.TestConfig)
+		assert.True(t, updatedRM.TestConfig.TestsEnabled)
+
+		// Verify that AgentExecutionMode is returned correctly and AgentPoolID is nil
+		assert.NotNil(t, updatedRM.TestConfig.AgentExecutionMode)
+		assert.Equal(t, string(AgentExecutionModeRemote), *updatedRM.TestConfig.AgentExecutionMode)
+		assert.Nil(t, updatedRM.TestConfig.AgentPoolID)
+	})
+}
+
+func TestRegistryModulesCreateWithVCSConnection_AgentExecutionValidation(t *testing.T) {
+	skipUnlessBeta(t)
+
+	githubIdentifier := os.Getenv("GITHUB_REGISTRY_MODULE_IDENTIFIER")
+	if githubIdentifier == "" {
+		t.Skip("Export a valid GITHUB_REGISTRY_MODULE_IDENTIFIER before running this test")
+	}
+
+	githubBranch := os.Getenv("GITHUB_REGISTRY_MODULE_BRANCH")
+	if githubBranch == "" {
+		githubBranch = "main"
+	}
+
+	client := testClient(t)
+	ctx := context.Background()
+
+	orgTest, orgTestCleanup := createOrganization(t, client)
+	defer orgTestCleanup()
+
+	agentPool, agentPoolCleanup := createAgentPool(t, client, orgTest)
+	defer agentPoolCleanup()
+
+	oauthTokenTest, oauthTokenTestCleanup := createOAuthToken(t, client, orgTest)
+	defer oauthTokenTestCleanup()
+
+	t.Run("errors when remote execution mode has agent pool ID", func(t *testing.T) {
+		options := RegistryModuleCreateWithVCSConnectionOptions{
+			VCSRepo: &RegistryModuleVCSRepoOptions{
+				OrganizationName:  String(orgTest.Name),
+				Identifier:        String(githubIdentifier),
+				OAuthTokenID:      String(oauthTokenTest.ID),
+				DisplayIdentifier: String(githubIdentifier),
+				Branch:            String(githubBranch),
+			},
+			TestConfig: &RegistryModuleTestConfigOptions{
+				TestsEnabled:       Bool(true),
+				AgentExecutionMode: AgentExecutionModePtr(AgentExecutionModeRemote),
+				AgentPoolID:        String(agentPool.ID),
+			},
+		}
+
+		_, err := client.RegistryModules.CreateWithVCSConnection(ctx, options)
+		assert.Error(t, err)
+		assert.Equal(t, ErrAgentPoolNotRequiredForRemoteExecution, err)
+	})
+
+	t.Run("succeeds when agent execution mode has agent pool ID", func(t *testing.T) {
+		options := RegistryModuleCreateWithVCSConnectionOptions{
+			VCSRepo: &RegistryModuleVCSRepoOptions{
+				OrganizationName:  String(orgTest.Name),
+				Identifier:        String(githubIdentifier),
+				OAuthTokenID:      String(oauthTokenTest.ID),
+				DisplayIdentifier: String(githubIdentifier),
+				Branch:            String(githubBranch),
+			},
+			TestConfig: &RegistryModuleTestConfigOptions{
+				TestsEnabled:       Bool(true),
+				AgentExecutionMode: AgentExecutionModePtr(AgentExecutionModeAgent),
+				AgentPoolID:        String(agentPool.ID),
+			},
+		}
+
+		rm, err := client.RegistryModules.CreateWithVCSConnection(ctx, options)
+		require.NoError(t, err)
+		assert.NotEmpty(t, rm.ID)
+		assert.NotNil(t, rm.TestConfig)
+		assert.True(t, rm.TestConfig.TestsEnabled)
+
+		// Verify that AgentExecutionMode and AgentPoolID are returned correctly
+		assert.NotNil(t, rm.TestConfig.AgentExecutionMode)
+		assert.Equal(t, string(AgentExecutionModeAgent), *rm.TestConfig.AgentExecutionMode)
+		assert.NotNil(t, rm.TestConfig.AgentPoolID)
+		assert.Equal(t, agentPool.ID, *rm.TestConfig.AgentPoolID)
+
+		// Cleanup the created module
+		defer func() {
+			if err := client.RegistryModules.Delete(ctx, orgTest.Name, rm.Name); err != nil {
+				t.Logf("Error deleting registry module: %v", err)
+			}
+		}()
+	})
+
+	t.Run("succeeds when remote execution mode has no agent pool ID", func(t *testing.T) {
+		options := RegistryModuleCreateWithVCSConnectionOptions{
+			VCSRepo: &RegistryModuleVCSRepoOptions{
+				OrganizationName:  String(orgTest.Name),
+				Identifier:        String(githubIdentifier),
+				OAuthTokenID:      String(oauthTokenTest.ID),
+				DisplayIdentifier: String(githubIdentifier),
+				Branch:            String(githubBranch),
+			},
+			TestConfig: &RegistryModuleTestConfigOptions{
+				TestsEnabled:       Bool(true),
+				AgentExecutionMode: AgentExecutionModePtr(AgentExecutionModeRemote),
+			},
+		}
+
+		rm, err := client.RegistryModules.CreateWithVCSConnection(ctx, options)
+		require.NoError(t, err)
+		assert.NotEmpty(t, rm.ID)
+		assert.NotNil(t, rm.TestConfig)
+		assert.True(t, rm.TestConfig.TestsEnabled)
+
+		// Verify that AgentExecutionMode is returned correctly and AgentPoolID is nil
+		assert.NotNil(t, rm.TestConfig.AgentExecutionMode)
+		assert.Equal(t, string(AgentExecutionModeRemote), *rm.TestConfig.AgentExecutionMode)
+		assert.Nil(t, rm.TestConfig.AgentPoolID)
+
+		// Cleanup the created module
+		defer func() {
+			if err := client.RegistryModules.Delete(ctx, orgTest.Name, rm.Name); err != nil {
+				t.Logf("Error deleting registry module: %v", err)
+			}
+		}()
+	})
+}

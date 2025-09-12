@@ -213,12 +213,11 @@ func (o AdminSentinelVersionCreateOptions) validArch() bool {
 		return true
 	}
 
-	emptyToolVersionFields := o.URL == "" && o.SHA == ""
-
 	for _, a := range o.Archs {
-		if !validArch(a) || !emptyToolVersionFields && (o.URL != a.URL || o.SHA != a.Sha) {
+		if !validArch(a) {
 			return false
 		}
 	}
+
 	return true
 }

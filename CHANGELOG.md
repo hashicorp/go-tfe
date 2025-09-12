@@ -1,10 +1,25 @@
 # Unreleased
 
+# v1.92.0
+
+## Enhancements
+
+* Adds BETA support for performing Registry Module test runs on custom Agents by @hashimooon [#1209](httpsLhttps://github.com/hashicorp/go-tfe/pull/1209)
+* Adds support for managing agent pools on `Stacks` by @maed223 [#1214](https://github.com/hashicorp/go-tfe/pull/1214)
+
+## Bug Fixes
+
+* Fixes arch validation on Terraform, OPA, and Sentinel Tool Versions when providing top level `url` and `sha` with multiple `archs` by @kelsi-hoyle [#1212](https://github.com/hashicorp/go-tfe/pull/1212)
+
 # v1.91.1
 
 ## Bug Fixes
 
 * Fixes timestamp attribute mapping for deployment runs to use correct API field names (`created-at`/`updated-at` instead of `started-at`/`completed-at`) by @shwetamurali [#1199](https://github.com/hashicorp/go-tfe/pull/1199)
+
+## Enhancements
+
+* Adds support for listing `StackConfigurationSummaries` by @hwatkins05-hashicorp [#1204](https://github.com/hashicorp/go-tfe/pull/1204)
 
 # v1.91.0
 

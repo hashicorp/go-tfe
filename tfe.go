@@ -173,6 +173,7 @@ type Client struct {
 	HYOKCustomerKeyVersions         HYOKCustomerKeyVersions
 	HYOKEncryptedDataKeys           HYOKEncryptedDataKeys
 	StackConfigurations             StackConfigurations
+	StackConfigurationSummaries     StackConfigurationSummaries
 	StackDeployments                StackDeployments
 	StackDeploymentGroups           StackDeploymentGroups
 	StackDeploymentRuns             StackDeploymentRuns
@@ -514,6 +515,7 @@ func NewClient(cfg *Config) (*Client, error) {
 	client.HYOKCustomerKeyVersions = &hyokCustomerKeyVersions{client: client}
 	client.HYOKEncryptedDataKeys = &hyokEncryptedDataKeys{client: client}
 	client.StackConfigurations = &stackConfigurations{client: client}
+	client.StackConfigurationSummaries = &stackConfigurationSummaries{client: client}
 	client.StackDeployments = &stackDeployments{client: client}
 	client.StackDeploymentGroups = &stackDeploymentGroups{client: client}
 	client.StackDeploymentRuns = &stackDeploymentRuns{client: client}
