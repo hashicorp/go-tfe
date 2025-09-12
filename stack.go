@@ -138,21 +138,6 @@ type StackConfiguration struct {
 	Stack *Stack `jsonapi:"relation,stack"`
 }
 
-// StackDeployment represents a stack deployment, specified by configuration
-type StackDeployment struct {
-	// Attributes
-	ID            string    `jsonapi:"primary,stack-deployments"`
-	Name          string    `jsonapi:"attr,name"`
-	Status        string    `jsonapi:"attr,status"`
-	DeployedAt    time.Time `jsonapi:"attr,deployed-at,iso8601"`
-	ErrorsCount   int       `jsonapi:"attr,errors-count"`
-	WarningsCount int       `jsonapi:"attr,warnings-count"`
-	PausedCount   int       `jsonapi:"attr,paused-count"`
-
-	// Relationships
-	CurrentStackState *StackState `jsonapi:"relation,current-stack-state"`
-}
-
 // StackState represents a stack state
 type StackState struct {
 	// Attributes
@@ -307,7 +292,7 @@ func (s stacks) Update(ctx context.Context, stackID string, options StackUpdateO
 
 // Delete deletes a stack.
 func (s stacks) Delete(ctx context.Context, stackID string) error {
-	req, err := s.client.NewRequest("POST", fmt.Sprintf("stacks/%s/delete", url.PathEscape(stackID)), nil)
+	req, err := s.client.NewRequest("DELETE", fmt.Sprintf("stacks/%s", url.PathEscape(stackID)), nil)
 	if err != nil {
 		return err
 	}
@@ -317,7 +302,7 @@ func (s stacks) Delete(ctx context.Context, stackID string) error {
 
 // ForceDelete deletes a stack that still has deployments.
 func (s stacks) ForceDelete(ctx context.Context, stackID string) error {
-	req, err := s.client.NewRequest("POST", fmt.Sprintf("stacks/%s/force-delete", url.PathEscape(stackID)), nil)
+	req, err := s.client.NewRequest("DELETE", fmt.Sprintf("stacks/%s?force=true", url.PathEscape(stackID)), nil)
 	if err != nil {
 		return err
 	}

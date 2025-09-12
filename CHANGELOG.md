@@ -13,6 +13,14 @@
 
 # v1.91.1
 
+## Enhancements
+
+* Updates endpoint for deleting stack from `POST` to `DELETE` and removing `/delete` from endpoint by @sahar-azizighannad  [#1205](https://github.com/hashicorp/go-tfe/pull/1205)
+* Updates endpoint for force deleting stack from `POST` to `DELETE` and removing `/force-delete` from endpoint and adding `?force=true` by @sahar-azizighannad  [#1205](https://github.com/hashicorp/go-tfe/pull/1205)
+
+## Deprecations
+
+* The beta `StackDeployments`, `StackPlan`, `StackPlanOperation`, and `StackSource` resources have been removed, by @sahar-azizighannad  [#1205](https://github.com/hashicorp/go-tfe/pull/1205)
 ## Bug Fixes
 
 * Fixes timestamp attribute mapping for deployment runs to use correct API field names (`created-at`/`updated-at` instead of `started-at`/`completed-at`) by @shwetamurali [#1199](https://github.com/hashicorp/go-tfe/pull/1199)
