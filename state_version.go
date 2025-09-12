@@ -45,7 +45,7 @@ type StateVersions interface {
 
 	// UploadSanitizedState uploads a sanitized version of the state to the provided StateVersion.
 	// The StateVersion must already exist and have a SanitizedStateUploadURL.
-	UploadSanitizedState(ctx context.Context, stateVersion *StateVersion, sanitizedState []byte) error
+	UploadSanitizedState(ctx context.Context, sanitizedStateUploadURL string, sanitizedState []byte) error
 
 	// Read a state version by its ID.
 	Read(ctx context.Context, svID string) (*StateVersion, error)
@@ -322,19 +322,12 @@ func (s *stateVersions) Upload(ctx context.Context, workspaceID string, options 
 	return s.Read(ctx, sv.ID)
 }
 
-func (s *stateVersions) UploadSanitizedState(ctx context.Context, stateVersion *StateVersion, sanitizedState []byte) error {
-	if stateVersion.SanitizedStateUploadURL == "" {
-		sv, err := s.Read(ctx, stateVersion.ID)
-		if err != nil {
-			return err
-		}
-		if sv.SanitizedStateUploadURL == "" {
-			return ErrSanitizedStateUploadURLMissing
-		}
-		stateVersion.SanitizedStateUploadURL = sv.SanitizedStateUploadURL
+func (s *stateVersions) UploadSanitizedState(ctx context.Context, sanitizedStateUploadURL string, sanitizedState []byte) error {
+	if sanitizedStateUploadURL == "" {
+		return ErrSanitizedStateUploadURLMissing
 	}
 
-	return s.client.doForeignPUTRequest(ctx, stateVersion.SanitizedStateUploadURL, bytes.NewReader(sanitizedState))
+	return s.client.doForeignPUTRequest(ctx, sanitizedStateUploadURL, bytes.NewReader(sanitizedState))
 }
 
 // Read a state version by its ID.
