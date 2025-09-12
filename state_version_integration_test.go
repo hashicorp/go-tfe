@@ -205,6 +205,9 @@ func TestStateVersionsUpload(t *testing.T) {
 		}
 
 		w, err := client.Workspaces.Read(context.Background(), hyokOrganizationName, hyokWorkspaceName)
+		if err != nil {
+			t.Fatal(err)
+		}
 
 		ctx := context.Background()
 		_, err = client.Workspaces.Lock(ctx, w.ID, WorkspaceLockOptions{})
