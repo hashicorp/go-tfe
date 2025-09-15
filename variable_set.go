@@ -50,8 +50,17 @@ type VariableSets interface {
 	// Remove variable set from projects in the supplied list.
 	RemoveFromProjects(ctx context.Context, variableSetID string, options VariableSetRemoveFromProjectsOptions) error
 
+	// Apply variable set to stacks in the supplied list.
+	ApplyToStacks(ctx context.Context, variableSetID string, options *VariableSetApplyToStacksOptions) error
+
+	// Remove variable set from stacks in the supplied list.
+	RemoveFromStacks(ctx context.Context, variableSetID string, options *VariableSetRemoveFromStacksOptions) error
+
 	// Update list of workspaces to which the variable set is applied to match the supplied list.
 	UpdateWorkspaces(ctx context.Context, variableSetID string, options *VariableSetUpdateWorkspacesOptions) (*VariableSet, error)
+
+	// Update list of stacks to which the variable set is applied to match the supplied list.
+	// UpdateStacks(ctx context.Context, variableSetID string, options *VariableSetUpdateStacksOptions) (*VariableSet, error)
 }
 
 // variableSets implements VariableSets.
@@ -98,6 +107,7 @@ const (
 	VariableSetWorkspaces VariableSetIncludeOpt = "workspaces"
 	VariableSetProjects   VariableSetIncludeOpt = "projects"
 	VariableSetVars       VariableSetIncludeOpt = "vars"
+	VariableSetStacks     VariableSetIncludeOpt = "stacks"
 )
 
 // VariableSetListOptions represents the options for listing variable sets.
@@ -189,6 +199,18 @@ type VariableSetApplyToProjectsOptions struct {
 type VariableSetRemoveFromProjectsOptions struct {
 	// The projects to remove the variable set from.
 	Projects []*Project
+}
+
+// VariableSetApplyToStacksOptions represents the options for applying variable sets to stacks.
+type VariableSetApplyToStacksOptions struct {
+	// The stacks to apply the variable set to (additive).
+	Stacks []*Stack
+}
+
+// VariableSetRemoveFromStacksOptions represents the options for removing variable sets from stacks.
+type VariableSetRemoveFromStacksOptions struct {
+	// The stacks to remove the variable set from.
+	Stacks []*Stack
 }
 
 // VariableSetUpdateWorkspacesOptions represents a subset of update options specifically for applying variable sets to workspaces
@@ -444,6 +466,44 @@ func (s variableSets) RemoveFromProjects(ctx context.Context, variableSetID stri
 	return req.Do(ctx, nil)
 }
 
+// RemoveFromProjects removes the variable set from projects in the supplied list.
+// This method will return an error if the variable set has global = true.
+func (s variableSets) ApplyToStacks(ctx context.Context, variableSetID string, options *VariableSetApplyToStacksOptions) error {
+	if !validStringID(&variableSetID) {
+		return ErrInvalidVariableSetID
+	}
+	if err := options.valid(); err != nil {
+		return err
+	}
+
+	u := fmt.Sprintf("varsets/%s/relationships/stacks", url.PathEscape(variableSetID))
+	req, err := s.client.NewRequest("POST", u, options.Stacks)
+	if err != nil {
+		return err
+	}
+
+	return req.Do(ctx, nil)
+}
+
+// RemoveFromProjects removes the variable set from projects in the supplied list.
+// This method will return an error if the variable set has global = true.
+func (s variableSets) RemoveFromStacks(ctx context.Context, variableSetID string, options *VariableSetRemoveFromStacksOptions) error {
+	if !validStringID(&variableSetID) {
+		return ErrInvalidVariableSetID
+	}
+	if err := options.valid(); err != nil {
+		return err
+	}
+
+	u := fmt.Sprintf("varsets/%s/relationships/stacks", url.PathEscape(variableSetID))
+	req, err := s.client.NewRequest("DELETE", u, options.Stacks)
+	if err != nil {
+		return err
+	}
+
+	return req.Do(ctx, nil)
+}
+
 // Update variable set to be applied to only the workspaces in the supplied list.
 func (s *variableSets) UpdateWorkspaces(ctx context.Context, variableSetID string, options *VariableSetUpdateWorkspacesOptions) (*VariableSet, error) {
 	if err := options.valid(); err != nil {
@@ -520,6 +580,24 @@ func (o VariableSetRemoveFromProjectsOptions) valid() error {
 	for _, s := range o.Projects {
 		if !validStringID(&s.ID) {
 			return ErrRequiredProjectID
+		}
+	}
+	return nil
+}
+
+func (o VariableSetApplyToStacksOptions) valid() error {
+	for _, s := range o.Stacks {
+		if !validStringID(&s.ID) {
+			return ErrRequiredStackID
+		}
+	}
+	return nil
+}
+
+func (o VariableSetRemoveFromStacksOptions) valid() error {
+	for _, s := range o.Stacks {
+		if !validStringID(&s.ID) {
+			return ErrRequiredStackID
 		}
 	}
 	return nil
