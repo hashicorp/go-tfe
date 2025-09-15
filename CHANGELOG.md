@@ -7,20 +7,16 @@
 * Adds BETA support for performing Registry Module test runs on custom Agents by @hashimooon [#1209](httpsLhttps://github.com/hashicorp/go-tfe/pull/1209)
 * Adds support for managing agent pools on `Stacks` by @maed223 [#1214](https://github.com/hashicorp/go-tfe/pull/1214)
 
+## Deprecations
+
+* The beta `StackDeployments`, `StackPlan`, `StackPlanOperation`, and `StackSource` resources have been removed, by @sahar-azizighannad  [#1205](https://github.com/hashicorp/go-tfe/pull/1205)
+
 ## Bug Fixes
 
 * Fixes arch validation on Terraform, OPA, and Sentinel Tool Versions when providing top level `url` and `sha` with multiple `archs` by @kelsi-hoyle [#1212](https://github.com/hashicorp/go-tfe/pull/1212)
 
 # v1.91.1
 
-## Enhancements
-
-* Updates endpoint for deleting stack from `POST` to `DELETE` and removing `/delete` from endpoint by @sahar-azizighannad  [#1205](https://github.com/hashicorp/go-tfe/pull/1205)
-* Updates endpoint for force deleting stack from `POST` to `DELETE` and removing `/force-delete` from endpoint and adding `?force=true` by @sahar-azizighannad  [#1205](https://github.com/hashicorp/go-tfe/pull/1205)
-
-## Deprecations
-
-* The beta `StackDeployments`, `StackPlan`, `StackPlanOperation`, and `StackSource` resources have been removed, by @sahar-azizighannad  [#1205](https://github.com/hashicorp/go-tfe/pull/1205)
 ## Bug Fixes
 
 * Fixes timestamp attribute mapping for deployment runs to use correct API field names (`created-at`/`updated-at` instead of `started-at`/`completed-at`) by @shwetamurali [#1199](https://github.com/hashicorp/go-tfe/pull/1199)
