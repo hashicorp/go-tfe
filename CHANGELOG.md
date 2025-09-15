@@ -2,6 +2,7 @@
 
 ## Enhancements
 * Exports the StackConfiguration UploadTarGzip receiver function[#1219](https://github.com/hashicorp/go-tfe/pull/1219)
+* Adds support for Hold Your Own Key [#1201](https://github.com/hashicorp/go-tfe/pull/1201)
 
 # v1.92.0
 
