@@ -21,6 +21,9 @@ type StackConfigurations interface {
 	// configuration files in association with a Stack.
 	CreateAndUpload(ctx context.Context, stackID string, path string, opts *CreateStackConfigurationOptions) (*StackConfiguration, error)
 
+	// Upload a tar gzip archive to the specified stack configuration upload URL.
+	UploadTarGzip(ctx context.Context, url string, archive io.Reader) error
+
 	// ReadConfiguration returns a stack configuration by its ID.
 	Read(ctx context.Context, id string) (*StackConfiguration, error)
 
@@ -195,7 +198,7 @@ func (s stackConfigurations) CreateAndUpload(ctx context.Context, stackID, path 
 		return nil, err
 	}
 
-	err = s.uploadTarGzip(ctx, uploadURL, body)
+	err = s.UploadTarGzip(ctx, uploadURL, body)
 	if err != nil {
 		return nil, err
 	}
@@ -250,6 +253,6 @@ func (s stackConfigurations) pollForUploadURL(ctx context.Context, stackConfigur
 //
 // **Note**: This method does not validate the content being uploaded and is therefore the caller's
 // responsibility to ensure the raw content is a valid Terraform configuration.
-func (s stackConfigurations) uploadTarGzip(ctx context.Context, uploadURL string, archive io.Reader) error {
+func (s stackConfigurations) UploadTarGzip(ctx context.Context, uploadURL string, archive io.Reader) error {
 	return s.client.doForeignPUTRequest(ctx, uploadURL, archive)
 }
