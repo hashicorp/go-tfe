@@ -82,7 +82,7 @@ func TestNotificationConfigurationList_forTeams(t *testing.T) {
 	orgTest, orgTestCleanup := createOrganization(t, client)
 	t.Cleanup(orgTestCleanup)
 
-	newSubscriptionUpdater(orgTest).WithPlusEntitlementPlan().Update(t)
+	newSubscriptionUpdater(orgTest).WithStandardEntitlementPlan().Update(t)
 
 	tmTest, tmTestCleanup := createTeam(t, client, orgTest)
 	t.Cleanup(tmTestCleanup)
@@ -314,7 +314,7 @@ func TestNotificationConfigurationCreate_forTeams(t *testing.T) {
 	orgTest, orgTestCleanup := createOrganization(t, client)
 	t.Cleanup(orgTestCleanup)
 
-	newSubscriptionUpdater(orgTest).WithPlusEntitlementPlan().Update(t)
+	newSubscriptionUpdater(orgTest).WithStandardEntitlementPlan().Update(t)
 
 	tmTest, tmTestCleanup := createTeam(t, client, orgTest)
 	t.Cleanup(tmTestCleanup)
@@ -488,7 +488,7 @@ func TestNotificationConfigurationRead_forTeams(t *testing.T) {
 	orgTest, orgTestCleanup := createOrganization(t, client)
 	t.Cleanup(orgTestCleanup)
 
-	newSubscriptionUpdater(orgTest).WithPlusEntitlementPlan().Update(t)
+	newSubscriptionUpdater(orgTest).WithStandardEntitlementPlan().Update(t)
 
 	tmTest, tmTestCleanup := createTeam(t, client, orgTest)
 	t.Cleanup(tmTestCleanup)
@@ -521,7 +521,7 @@ func TestNotificationConfigurationUpdate_forTeams(t *testing.T) {
 	orgTest, orgTestCleanup := createOrganization(t, client)
 	t.Cleanup(orgTestCleanup)
 
-	newSubscriptionUpdater(orgTest).WithPlusEntitlementPlan().Update(t)
+	newSubscriptionUpdater(orgTest).WithStandardEntitlementPlan().Update(t)
 
 	tmTest, tmTestCleanup := createTeam(t, client, orgTest)
 	t.Cleanup(tmTestCleanup)
@@ -756,7 +756,7 @@ func TestNotificationConfigurationDelete_forTeams(t *testing.T) {
 	orgTest, orgTestCleanup := createOrganization(t, client)
 	t.Cleanup(orgTestCleanup)
 
-	newSubscriptionUpdater(orgTest).WithPlusEntitlementPlan().Update(t)
+	newSubscriptionUpdater(orgTest).WithStandardEntitlementPlan().Update(t)
 
 	tmTest, tmTestCleanup := createTeam(t, client, orgTest)
 	t.Cleanup(tmTestCleanup)
@@ -813,7 +813,7 @@ func TestNotificationConfigurationVerify_forTeams(t *testing.T) {
 	orgTest, orgTestCleanup := createOrganization(t, client)
 	t.Cleanup(orgTestCleanup)
 
-	newSubscriptionUpdater(orgTest).WithPlusEntitlementPlan().Update(t)
+	newSubscriptionUpdater(orgTest).WithStandardEntitlementPlan().Update(t)
 
 	tmTest, tmTestCleanup := createTeam(t, client, orgTest)
 	t.Cleanup(tmTestCleanup)

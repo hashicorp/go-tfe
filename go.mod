@@ -1,6 +1,8 @@
 module github.com/hashicorp/go-tfe
 
-go 1.24
+go 1.24.0
+
+toolchain go1.24.1
 
 require (
 	github.com/google/go-querystring v1.1.0
@@ -10,9 +12,9 @@ require (
 	github.com/hashicorp/go-uuid v1.0.3
 	github.com/hashicorp/go-version v1.7.0
 	github.com/hashicorp/jsonapi v1.4.3-0.20250220162346-81a76b606f3e
-	github.com/stretchr/testify v1.10.0
-	go.uber.org/mock v0.6.0
-	golang.org/x/sync v0.16.0
+	github.com/stretchr/testify v1.11.1
+	go.uber.org/mock v0.4.0
+	golang.org/x/sync v0.17.0
 	golang.org/x/time v0.12.0
 )
 

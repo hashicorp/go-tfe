@@ -72,8 +72,8 @@ func (b *organizationSubscriptionUpdater) WithTrialPlan() *organizationSubscript
 	return b
 }
 
-func (b *organizationSubscriptionUpdater) WithPlusEntitlementPlan() *organizationSubscriptionUpdater {
-	b.planName = "Plus (entitlement)"
+func (b *organizationSubscriptionUpdater) WithStandardEntitlementPlan() *organizationSubscriptionUpdater {
+	b.planName = "Standard (entitlement)"
 
 	start := time.Now()
 	ceiling := 1

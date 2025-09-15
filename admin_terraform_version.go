@@ -227,13 +227,12 @@ func (o AdminTerraformVersionCreateOptions) validArchs() bool {
 		return true
 	}
 
-	emptyToolVersionFields := !validString(o.URL) && !validString(o.Sha)
-
 	for _, a := range o.Archs {
-		if !validArch(a) || !emptyToolVersionFields && (*o.URL != a.URL || *o.Sha != a.Sha) {
+		if !validArch(a) {
 			return false
 		}
 	}
+
 	return true
 }
 

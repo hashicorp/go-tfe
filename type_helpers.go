@@ -14,6 +14,10 @@ func Access(v AccessType) *AccessType {
 	return &v
 }
 
+func AgentExecutionModePtr(v AgentExecutionMode) *AgentExecutionMode {
+	return &v
+}
+
 // ProjectAccess returns a pointer to the given team access project type.
 func ProjectAccess(v TeamProjectAccessType) *TeamProjectAccessType {
 	return &v
