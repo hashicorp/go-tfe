@@ -236,10 +236,7 @@ func TestOrganizationsRead(t *testing.T) {
 	})
 
 	t.Run("read primary hyok configuration of an organization", func(t *testing.T) {
-		skipHYOKIntegrationTests := os.Getenv("SKIP_HYOK_INTEGRATION_TESTS") != "false"
-		if skipHYOKIntegrationTests {
-			t.Skip()
-		}
+		skipHYOKIntegrationTests(t)
 
 		// replace the environment variable with a valid organization name that has primary hyok configuration
 		hyokOrganizationName := os.Getenv("HYOK_ORGANIZATION_NAME")
@@ -253,10 +250,7 @@ func TestOrganizationsRead(t *testing.T) {
 	})
 
 	t.Run("read enforce hyok of an organization", func(t *testing.T) {
-		skipHYOKIntegrationTests := os.Getenv("SKIP_HYOK_INTEGRATION_TESTS") != "false"
-		if skipHYOKIntegrationTests {
-			t.Skip()
-		}
+		skipHYOKIntegrationTests(t)
 
 		// replace the environment variable with a valid organization name that has enforce hyok set to true or false
 		hyokOrganizationName := os.Getenv("HYOK_ORGANIZATION_NAME")
@@ -425,10 +419,7 @@ func TestOrganizationsUpdate(t *testing.T) {
 	})
 
 	t.Run("update enforce hyok of an organization to true", func(t *testing.T) {
-		skipHYOKIntegrationTests := os.Getenv("SKIP_HYOK_INTEGRATION_TESTS") != "false"
-		if skipHYOKIntegrationTests {
-			t.Skip()
-		}
+		skipHYOKIntegrationTests(t)
 
 		// replace the environment variable with a valid organization name with hyok permissions
 		hyokOrganizationName := os.Getenv("HYOK_ORGANIZATION_NAME")
@@ -444,10 +435,7 @@ func TestOrganizationsUpdate(t *testing.T) {
 	})
 
 	t.Run("update enforce hyok of an organization to false", func(t *testing.T) {
-		skipHYOKIntegrationTests := os.Getenv("SKIP_HYOK_INTEGRATION_TESTS") != "false"
-		if skipHYOKIntegrationTests {
-			t.Skip()
-		}
+		skipHYOKIntegrationTests(t)
 
 		// replace the environment variable with a valid organization name with hyok permissions
 		hyokOrganizationName := os.Getenv("HYOK_ORGANIZATION_NAME")

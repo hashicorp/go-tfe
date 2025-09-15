@@ -3221,6 +3221,13 @@ func skipIfEnterprise(t *testing.T) {
 	}
 }
 
+func skipHYOKIntegrationTests(t *testing.T) {
+	t.Helper()
+	if !hyokIntegrationTestsEnabled() {
+		t.Skip("Skipping test related to HYOK features. Set ENABLE_HYOK_INTEGRATION_TESTS=1 to run.")
+	}
+}
+
 // skips a test if the underlying beta feature is not available.
 // **Note: ENABLE_BETA is always disabled in CI, so ensure you:
 //
@@ -3267,6 +3274,11 @@ func enterpriseEnabled() bool {
 // Checks to see if ENABLE_BETA is set to 1, thereby enabling tests for beta features.
 func betaFeaturesEnabled() bool {
 	return os.Getenv("ENABLE_BETA") == "1"
+}
+
+// Checks to see if HYOK_INTEGRATION_TESTS is set to 1, thereby enabling tests for HYOK features.
+func hyokIntegrationTestsEnabled() bool {
+	return os.Getenv("ENABLE_HYOK_INTEGRATION_TESTS") == "1"
 }
 
 // isEmpty gets whether the specified object is considered empty or not.

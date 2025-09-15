@@ -14,10 +14,7 @@ import (
 // 2. Set hyokEncryptedDataKeyID to the ID of an existing data encryption key
 
 func TestHYOKEncryptedDataKeyRead(t *testing.T) {
-	skipHYOKIntegrationTests := os.Getenv("SKIP_HYOK_INTEGRATION_TESTS") != "false"
-	if skipHYOKIntegrationTests {
-		t.Skip()
-	}
+	skipHYOKIntegrationTests(t)
 
 	client := testClient(t)
 	ctx := context.Background()

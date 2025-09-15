@@ -979,10 +979,7 @@ func TestWorkspacesCreate(t *testing.T) {
 	})
 
 	t.Run("create workspace with hyok enabled set to false", func(t *testing.T) {
-		skipHYOKIntegrationTests := os.Getenv("SKIP_HYOK_INTEGRATION_TESTS") != "false"
-		if skipHYOKIntegrationTests {
-			t.Skip()
-		}
+		skipHYOKIntegrationTests(t)
 
 		// replace the environment variable with a valid organization name that has HYOK permissions
 		hyokOrganizationName := os.Getenv("HYOK_ORGANIZATION_NAME")
@@ -1004,10 +1001,7 @@ func TestWorkspacesCreate(t *testing.T) {
 	})
 
 	t.Run("create workspace with hyok enabled set to true", func(t *testing.T) {
-		skipHYOKIntegrationTests := os.Getenv("SKIP_HYOK_INTEGRATION_TESTS") != "false"
-		if skipHYOKIntegrationTests {
-			t.Skip()
-		}
+		skipHYOKIntegrationTests(t)
 
 		// replace the environment variable with a valid organization name that has HYOK permissions
 		hyokOrganizationName := os.Getenv("HYOK_ORGANIZATION_NAME")
@@ -1115,10 +1109,7 @@ func TestWorkspacesRead(t *testing.T) {
 	})
 
 	t.Run("read hyok enabled of a workspace", func(t *testing.T) {
-		skipHYOKIntegrationTests := os.Getenv("SKIP_HYOK_INTEGRATION_TESTS") != "false"
-		if skipHYOKIntegrationTests {
-			t.Skip()
-		}
+		skipHYOKIntegrationTests(t)
 
 		// replace the environment variable with a valid organization name that has HYOK permissions
 		hyokOrganizationName := os.Getenv("HYOK_ORGANIZATION_NAME")
@@ -1138,10 +1129,7 @@ func TestWorkspacesRead(t *testing.T) {
 	})
 
 	t.Run("read hyok encrypted data key of a workspace", func(t *testing.T) {
-		skipHYOKIntegrationTests := os.Getenv("SKIP_HYOK_INTEGRATION_TESTS") != "false"
-		if skipHYOKIntegrationTests {
-			t.Skip()
-		}
+		skipHYOKIntegrationTests(t)
 
 		// replace the environment variable with a valid organization name that has HYOK permissions
 		hyokOrganizationName := os.Getenv("HYOK_ORGANIZATION_NAME")
@@ -1700,10 +1688,7 @@ func TestWorkspacesUpdate(t *testing.T) {
 	})
 
 	t.Run("update hyok enabled of a workspace from false to false", func(t *testing.T) {
-		skipHYOKIntegrationTests := os.Getenv("SKIP_HYOK_INTEGRATION_TESTS") != "false"
-		if skipHYOKIntegrationTests {
-			t.Skip()
-		}
+		skipHYOKIntegrationTests(t)
 
 		// replace the environment variable with a valid organization name that has HYOK permissions
 		hyokOrganizationName := os.Getenv("HYOK_ORGANIZATION_NAME")
@@ -1735,10 +1720,7 @@ func TestWorkspacesUpdate(t *testing.T) {
 	})
 
 	t.Run("update hyok enabled of a workspace from false to true", func(t *testing.T) {
-		skipHYOKIntegrationTests := os.Getenv("SKIP_HYOK_INTEGRATION_TESTS") != "false"
-		if skipHYOKIntegrationTests {
-			t.Skip()
-		}
+		skipHYOKIntegrationTests(t)
 
 		// replace the environment variable with a valid organization name that has HYOK permissions
 		hyokOrganizationName := os.Getenv("HYOK_ORGANIZATION_NAME")
@@ -1770,10 +1752,7 @@ func TestWorkspacesUpdate(t *testing.T) {
 	})
 
 	t.Run("update hyok enabled of a workspace from true to true", func(t *testing.T) {
-		skipHYOKIntegrationTests := os.Getenv("SKIP_HYOK_INTEGRATION_TESTS") != "false"
-		if skipHYOKIntegrationTests {
-			t.Skip()
-		}
+		skipHYOKIntegrationTests(t)
 
 		// replace the environment variable with a valid organization name that has HYOK permissions
 		hyokOrganizationName := os.Getenv("HYOK_ORGANIZATION_NAME")
@@ -1805,10 +1784,7 @@ func TestWorkspacesUpdate(t *testing.T) {
 	})
 
 	t.Run("update hyok enabled of a workspace from true to false", func(t *testing.T) {
-		skipHYOKIntegrationTests := os.Getenv("SKIP_HYOK_INTEGRATION_TESTS") != "false"
-		if skipHYOKIntegrationTests {
-			t.Skip()
-		}
+		skipHYOKIntegrationTests(t)
 
 		// replace the environment variable with a valid organization name that has HYOK permissions
 		hyokOrganizationName := os.Getenv("HYOK_ORGANIZATION_NAME")

@@ -13,10 +13,7 @@ import (
 // To run them locally, follow the instructions outlined in hyok_configuration_integration_test.go
 
 func TestGCPOIDCConfigurationCreateDelete(t *testing.T) {
-	skipHYOKIntegrationTests := os.Getenv("SKIP_HYOK_INTEGRATION_TESTS") != "false"
-	if skipHYOKIntegrationTests {
-		t.Skip()
-	}
+	skipHYOKIntegrationTests(t)
 
 	client := testClient(t)
 	ctx := context.Background()
@@ -83,10 +80,7 @@ func TestGCPOIDCConfigurationCreateDelete(t *testing.T) {
 }
 
 func TestGCPOIDCConfigurationRead(t *testing.T) {
-	skipHYOKIntegrationTests := os.Getenv("SKIP_HYOK_INTEGRATION_TESTS") != "false"
-	if skipHYOKIntegrationTests {
-		t.Skip()
-	}
+	skipHYOKIntegrationTests(t)
 
 	client := testClient(t)
 	ctx := context.Background()
@@ -118,10 +112,7 @@ func TestGCPOIDCConfigurationRead(t *testing.T) {
 }
 
 func TestGCPOIDCConfigurationUpdate(t *testing.T) {
-	skipHYOKIntegrationTests := os.Getenv("SKIP_HYOK_INTEGRATION_TESTS") != "false"
-	if skipHYOKIntegrationTests {
-		t.Skip()
-	}
+	skipHYOKIntegrationTests(t)
 
 	client := testClient(t)
 	ctx := context.Background()

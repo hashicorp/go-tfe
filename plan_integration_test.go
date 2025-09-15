@@ -46,10 +46,7 @@ func TestPlansRead(t *testing.T) {
 	})
 
 	t.Run("read hyok encrypted data key of a plan", func(t *testing.T) {
-		skipHYOKIntegrationTests := os.Getenv("SKIP_HYOK_INTEGRATION_TESTS") != "false"
-		if skipHYOKIntegrationTests {
-			t.Skip()
-		}
+		skipHYOKIntegrationTests(t)
 
 		// replace the environment variable with a valid plan ID that has a hyok encrypted data key
 		hyokPlanID := os.Getenv("HYOK_PLAN_ID")
@@ -63,10 +60,7 @@ func TestPlansRead(t *testing.T) {
 	})
 
 	t.Run("read sanitized plan of a plan", func(t *testing.T) {
-		skipHYOKIntegrationTests := os.Getenv("SKIP_HYOK_INTEGRATION_TESTS") != "false"
-		if skipHYOKIntegrationTests {
-			t.Skip()
-		}
+		skipHYOKIntegrationTests(t)
 
 		// replace the environment variable with a valid plan ID that has a sanitized plan link
 		hyokPlanID := os.Getenv("HYOK_PLAN_ID")

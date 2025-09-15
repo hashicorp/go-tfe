@@ -189,10 +189,7 @@ func TestStateVersionsUpload(t *testing.T) {
 	})
 
 	t.Run("uploading state using SanitizedStateUploadURL and verifying SanitizedStateDownloadURL exists", func(t *testing.T) {
-		skipHYOKIntegrationTests := os.Getenv("SKIP_HYOK_INTEGRATION_TESTS") != "false"
-		if skipHYOKIntegrationTests {
-			t.Skip()
-		}
+		skipHYOKIntegrationTests(t)
 
 		hyokOrganizationName := os.Getenv("HYOK_ORGANIZATION_NAME")
 		if hyokOrganizationName == "" {
@@ -239,10 +236,7 @@ func TestStateVersionsUpload(t *testing.T) {
 	})
 
 	t.Run("SanitizedStateUploadURL is required when uploading sanitized state", func(t *testing.T) {
-		skipHYOKIntegrationTests := os.Getenv("SKIP_HYOK_INTEGRATION_TESTS") != "false"
-		if skipHYOKIntegrationTests {
-			t.Skip()
-		}
+		skipHYOKIntegrationTests(t)
 
 		ctx := context.Background()
 		_, err := client.Workspaces.Lock(ctx, wTest.ID, WorkspaceLockOptions{})
@@ -546,10 +540,7 @@ func TestStateVersionsRead(t *testing.T) {
 	})
 
 	t.Run("read encrypted state download url of a state version", func(t *testing.T) {
-		skipHYOKIntegrationTests := os.Getenv("SKIP_HYOK_INTEGRATION_TESTS") != "false"
-		if skipHYOKIntegrationTests {
-			t.Skip()
-		}
+		skipHYOKIntegrationTests(t)
 
 		hyokStateVersionID := os.Getenv("HYOK_STATE_VERSION_ID")
 		if hyokStateVersionID == "" {
@@ -562,10 +553,7 @@ func TestStateVersionsRead(t *testing.T) {
 	})
 
 	t.Run("read sanitized state download url of a state version", func(t *testing.T) {
-		skipHYOKIntegrationTests := os.Getenv("SKIP_HYOK_INTEGRATION_TESTS") != "false"
-		if skipHYOKIntegrationTests {
-			t.Skip()
-		}
+		skipHYOKIntegrationTests(t)
 
 		hyokStateVersionID := os.Getenv("HYOK_STATE_VERSION_ID")
 		if hyokStateVersionID == "" {
@@ -578,10 +566,7 @@ func TestStateVersionsRead(t *testing.T) {
 	})
 
 	t.Run("read hyok encrypted data key of a state version", func(t *testing.T) {
-		skipHYOKIntegrationTests := os.Getenv("SKIP_HYOK_INTEGRATION_TESTS") != "false"
-		if skipHYOKIntegrationTests {
-			t.Skip()
-		}
+		skipHYOKIntegrationTests(t)
 
 		hyokStateVersionID := os.Getenv("HYOK_STATE_VERSION_ID")
 		if hyokStateVersionID == "" {

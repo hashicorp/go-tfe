@@ -346,10 +346,7 @@ func TestAgentPoolsRead(t *testing.T) {
 	})
 
 	t.Run("read hyok configurations of an agent pool", func(t *testing.T) {
-		skipHYOKIntegrationTests := os.Getenv("SKIP_HYOK_INTEGRATION_TESTS") != "false"
-		if skipHYOKIntegrationTests {
-			t.Skip()
-		}
+		skipHYOKIntegrationTests(t)
 
 		// replace the environment variable with a valid agent pool ID that has HYOK configurations
 		hyokPoolID := os.Getenv("HYOK_POOL_ID")

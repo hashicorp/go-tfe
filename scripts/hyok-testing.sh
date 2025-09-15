@@ -108,7 +108,9 @@ for pair in "${pairs[@]}"; do
     IFS=':' read -r parent child <<< "$pair"
     result=$(envchain ${env} go test -run "^${parent}$/^${child}$" -v ./...)
     status="\033[33mUNKNOWN\033[0m" # yellow by default
-    if echo "$result" | grep -q "^--- PASS: ${parent}"; then
+    if echo "$result" | grep -q "^    --- SKIP: ${parent}/${child}"; then
+        status="\033[33mSKIP\033[0m" # yellow
+    elif echo "$result" | grep -q "^--- PASS: ${parent}"; then
         status="\033[32mPASS\033[0m" # green
     elif echo "$result" | grep -q "^--- FAIL: ${parent}"; then
         status="\033[31mFAIL\033[0m" # red

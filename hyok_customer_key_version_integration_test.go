@@ -14,10 +14,7 @@ import (
 // 2. Set hyokCustomerKeyVersionID to the ID of an existing HYOK customer key version
 
 func TestHYOKCustomerKeyVersionsList(t *testing.T) {
-	skipHYOKIntegrationTests := os.Getenv("SKIP_HYOK_INTEGRATION_TESTS") != "false"
-	if skipHYOKIntegrationTests {
-		t.Skip()
-	}
+	skipHYOKIntegrationTests(t)
 
 	client := testClient(t)
 	ctx := context.Background()
@@ -48,10 +45,7 @@ func TestHYOKCustomerKeyVersionsList(t *testing.T) {
 }
 
 func TestHYOKCustomerKeyVersionsRead(t *testing.T) {
-	skipHYOKIntegrationTests := os.Getenv("SKIP_HYOK_INTEGRATION_TESTS") != "false"
-	if skipHYOKIntegrationTests {
-		t.Skip()
-	}
+	skipHYOKIntegrationTests(t)
 
 	client := testClient(t)
 	ctx := context.Background()

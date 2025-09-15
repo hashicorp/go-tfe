@@ -10,10 +10,7 @@ import (
 )
 
 func TestHYOKConfigurationCreateRevokeDelete(t *testing.T) {
-	skipHYOKIntegrationTests := os.Getenv("SKIP_HYOK_INTEGRATION_TESTS") != "false"
-	if skipHYOKIntegrationTests {
-		t.Skip()
-	}
+	skipHYOKIntegrationTests(t)
 
 	client := testClient(t)
 	ctx := context.Background()
@@ -307,10 +304,7 @@ func TestHYOKConfigurationCreateRevokeDelete(t *testing.T) {
 }
 
 func TestHyokConfigurationList(t *testing.T) {
-	skipHYOKIntegrationTests := os.Getenv("SKIP_HYOK_INTEGRATION_TESTS") != "false"
-	if skipHYOKIntegrationTests {
-		t.Skip()
-	}
+	skipHYOKIntegrationTests(t)
 
 	client := testClient(t)
 	ctx := context.Background()
@@ -365,10 +359,7 @@ func TestHyokConfigurationList(t *testing.T) {
 }
 
 func TestHyokConfigurationRead(t *testing.T) {
-	skipHYOKIntegrationTests := os.Getenv("SKIP_HYOK_INTEGRATION_TESTS") != "false"
-	if skipHYOKIntegrationTests {
-		t.Skip()
-	}
+	skipHYOKIntegrationTests(t)
 
 	client := testClient(t)
 	ctx := context.Background()
@@ -463,10 +454,7 @@ func TestHyokConfigurationRead(t *testing.T) {
 }
 
 func TestHYOKConfigurationUpdate(t *testing.T) {
-	skipHYOKIntegrationTests := os.Getenv("SKIP_HYOK_INTEGRATION_TESTS") != "false"
-	if skipHYOKIntegrationTests {
-		t.Skip()
-	}
+	skipHYOKIntegrationTests(t)
 
 	client := testClient(t)
 	ctx := context.Background()
