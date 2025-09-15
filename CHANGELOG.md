@@ -1,5 +1,8 @@
 # Unreleased
 
+## Enhancements
+* Exports the StackConfiguration UploadTarGzip receiver function[#1219](https://github.com/hashicorp/go-tfe/pull/1219)
+
 # v1.92.0
 
 ## Enhancements
