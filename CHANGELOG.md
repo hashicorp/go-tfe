@@ -3,6 +3,10 @@
 ## Enhancements
 * Exports the StackConfiguration UploadTarGzip receiver function[#1219](https://github.com/hashicorp/go-tfe/pull/1219)
 
+## Deprecations
+
+* The beta `StackDeployments`, `StackPlan`, `StackPlanOperation`, and `StackSource` resources have been removed, by @sahar-azizighannad  [#1205](https://github.com/hashicorp/go-tfe/pull/1205)
+
 # v1.92.0
 
 ## Enhancements
