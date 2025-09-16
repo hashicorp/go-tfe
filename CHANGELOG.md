@@ -3,16 +3,16 @@
 ## Enhancements
 * Exports the StackConfiguration UploadTarGzip receiver function[#1219](https://github.com/hashicorp/go-tfe/pull/1219)
 
+## Deprecations
+
+* The beta `StackDeployments`, `StackPlan`, `StackPlanOperation`, and `StackSource` resources have been removed, by @sahar-azizighannad  [#1205](https://github.com/hashicorp/go-tfe/pull/1205)
+
 # v1.92.0
 
 ## Enhancements
 
 * Adds BETA support for performing Registry Module test runs on custom Agents by @hashimooon [#1209](httpsLhttps://github.com/hashicorp/go-tfe/pull/1209)
 * Adds support for managing agent pools on `Stacks` by @maed223 [#1214](https://github.com/hashicorp/go-tfe/pull/1214)
-
-## Deprecations
-
-* The beta `StackDeployments`, `StackPlan`, `StackPlanOperation`, and `StackSource` resources have been removed, by @sahar-azizighannad  [#1205](https://github.com/hashicorp/go-tfe/pull/1205)
 
 ## Bug Fixes
 
