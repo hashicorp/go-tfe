@@ -307,7 +307,7 @@ func (s stacks) Update(ctx context.Context, stackID string, options StackUpdateO
 
 // Delete deletes a stack.
 func (s stacks) Delete(ctx context.Context, stackID string) error {
-	req, err := s.client.NewRequest("POST", fmt.Sprintf("stacks/%s/delete", url.PathEscape(stackID)), nil)
+	req, err := s.client.NewRequest("DELETE", fmt.Sprintf("stacks/%s", url.PathEscape(stackID)), nil)
 	if err != nil {
 		return err
 	}
@@ -317,7 +317,7 @@ func (s stacks) Delete(ctx context.Context, stackID string) error {
 
 // ForceDelete deletes a stack that still has deployments.
 func (s stacks) ForceDelete(ctx context.Context, stackID string) error {
-	req, err := s.client.NewRequest("POST", fmt.Sprintf("stacks/%s/force-delete", url.PathEscape(stackID)), nil)
+	req, err := s.client.NewRequest("DELETE", fmt.Sprintf("stacks/%s?force=true", url.PathEscape(stackID)), nil)
 	if err != nil {
 		return err
 	}
