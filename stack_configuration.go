@@ -51,8 +51,6 @@ const (
 	StackConfigurationStatusQueued     StackConfigurationStatus = "queued"
 	StackConfigurationStatusPreparing  StackConfigurationStatus = "preparing"
 	StackConfigurationStatusEnqueueing StackConfigurationStatus = "enqueueing"
-	StackConfigurationStatusConverged  StackConfigurationStatus = "converged"
-	StackConfigurationStatusConverging StackConfigurationStatus = "converging"
 	StackConfigurationStatusErrored    StackConfigurationStatus = "errored"
 	StackConfigurationStatusCanceled   StackConfigurationStatus = "canceled"
 	StackConfigurationStatusCompleted  StackConfigurationStatus = "completed"
@@ -117,7 +115,7 @@ func (s stackConfigurations) AwaitCompleted(ctx context.Context, stackConfigurat
 		}
 
 		return stackConfiguration.Status, nil
-	}, []string{StackConfigurationStatusConverged.String(), StackConfigurationStatusConverging.String(), StackConfigurationStatusCompleted.String(), StackConfigurationStatusErrored.String(), StackConfigurationStatusCanceled.String()})
+	}, []string{StackConfigurationStatusCompleted.String(), StackConfigurationStatusErrored.String(), StackConfigurationStatusCanceled.String()})
 }
 
 // AwaitStatus generates a channel that will receive the status of the stack configuration as it progresses.
