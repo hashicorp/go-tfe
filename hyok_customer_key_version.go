@@ -43,8 +43,6 @@ type HYOKCustomerKeyVersion struct {
 	ID         string               `jsonapi:"primary,hyok-customer-key-versions"`
 	KeyVersion string               `jsonapi:"attr,key-version"`
 	CreatedAt  time.Time            `jsonapi:"attr,created-at,iso8601"`
-	UpdatedAt  time.Time            `jsonapi:"attr,updated-at,iso8601"`
-	RevokedAt  time.Time            `jsonapi:"attr,revoked-at,iso8601"`
 	Status     HYOKKeyVersionStatus `jsonapi:"attr,status"`
 	Error      string               `jsonapi:"attr,error"`
 
