@@ -96,6 +96,7 @@ type VariableSet struct {
 	Parent     *Parent                `jsonapi:"polyrelation,parent"`
 	Workspaces []*Workspace           `jsonapi:"relation,workspaces,omitempty"`
 	Projects   []*Project             `jsonapi:"relation,projects,omitempty"`
+	Stacks     []*Stack               `jsonapi:"relation,stacks,omitempty"`
 	Variables  []*VariableSetVariable `jsonapi:"relation,vars,omitempty"`
 }
 
@@ -466,9 +467,9 @@ func (s variableSets) RemoveFromProjects(ctx context.Context, variableSetID stri
 	return req.Do(ctx, nil)
 }
 
-// RemoveFromProjects removes the variable set from projects in the supplied list.
+// ApplyToStacks applies the variable set to stacks in the supplied list.
 // This method will return an error if the variable set has global = true.
-func (s variableSets) ApplyToStacks(ctx context.Context, variableSetID string, options *VariableSetApplyToStacksOptions) error {
+func (s *variableSets) ApplyToStacks(ctx context.Context, variableSetID string, options *VariableSetApplyToStacksOptions) error {
 	if !validStringID(&variableSetID) {
 		return ErrInvalidVariableSetID
 	}
@@ -481,13 +482,14 @@ func (s variableSets) ApplyToStacks(ctx context.Context, variableSetID string, o
 	if err != nil {
 		return err
 	}
-
-	return req.Do(ctx, nil)
+	a := req.Do(ctx, nil)
+	fmt.Printf("a: %v\n", a)
+	return a
 }
 
-// RemoveFromProjects removes the variable set from projects in the supplied list.
+// RemoveFromStacks removes the variable set from stacks in the supplied list.
 // This method will return an error if the variable set has global = true.
-func (s variableSets) RemoveFromStacks(ctx context.Context, variableSetID string, options *VariableSetRemoveFromStacksOptions) error {
+func (s *variableSets) RemoveFromStacks(ctx context.Context, variableSetID string, options *VariableSetRemoveFromStacksOptions) error {
 	if !validStringID(&variableSetID) {
 		return ErrInvalidVariableSetID
 	}
