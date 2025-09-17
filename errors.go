@@ -310,6 +310,8 @@ var (
 
 	ErrRequiredProjectID = errors.New("project ID is required")
 
+	ErrRequiredStackID = errors.New("stack ID is required")
+
 	ErrWorkspacesRequired = errors.New("workspaces is required")
 
 	ErrWorkspaceMinLimit = errors.New("must provide at least one workspace")
