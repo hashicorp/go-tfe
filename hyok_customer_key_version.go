@@ -40,11 +40,12 @@ type HYOKCustomerKeyVersionList struct {
 // HYOKCustomerKeyVersion represents the resource
 type HYOKCustomerKeyVersion struct {
 	// Attributes
-	ID         string               `jsonapi:"primary,hyok-customer-key-versions"`
-	KeyVersion string               `jsonapi:"attr,key-version"`
-	CreatedAt  time.Time            `jsonapi:"attr,created-at,iso8601"`
-	Status     HYOKKeyVersionStatus `jsonapi:"attr,status"`
-	Error      string               `jsonapi:"attr,error"`
+	ID                string               `jsonapi:"primary,hyok-customer-key-versions"`
+	KeyVersion        string               `jsonapi:"attr,key-version"`
+	CreatedAt         time.Time            `jsonapi:"attr,created-at,iso8601"`
+	Status            HYOKKeyVersionStatus `jsonapi:"attr,status"`
+	WorkplacesSecured int                  `jsonapi:"attr,workplaces-secured"`
+	Error             string               `jsonapi:"attr,error"`
 
 	// Relationships
 	HYOKConfiguration *HYOKConfiguration `jsonapi:"relation,hyok-configuration"`
