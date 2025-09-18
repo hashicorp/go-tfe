@@ -5,6 +5,7 @@ package tfe
 
 import (
 	"context"
+	"os"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -342,6 +343,22 @@ func TestAgentPoolsRead(t *testing.T) {
 		})
 		require.NoError(t, err)
 		assert.NotEmpty(t, k.Workspaces[0])
+	})
+
+	t.Run("read hyok configurations of an agent pool", func(t *testing.T) {
+		skipHYOKIntegrationTests(t)
+
+		// replace the environment variable with a valid agent pool ID that has HYOK configurations
+		hyokPoolID := os.Getenv("HYOK_POOL_ID")
+		if hyokPoolID == "" {
+			t.Fatal("Export a valid HYOK_POOL_ID before running this test!")
+		}
+
+		k, err := client.AgentPools.ReadWithOptions(ctx, hyokPoolID, &AgentPoolReadOptions{
+			Include: []AgentPoolIncludeOpt{AgentPoolHYOKConfigurations},
+		})
+		require.NoError(t, err)
+		assert.NotEmpty(t, k.HYOKConfigurations)
 	})
 }
 
