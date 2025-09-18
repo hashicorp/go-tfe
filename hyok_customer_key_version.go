@@ -44,7 +44,7 @@ type HYOKCustomerKeyVersion struct {
 	KeyVersion        string               `jsonapi:"attr,key-version"`
 	CreatedAt         time.Time            `jsonapi:"attr,created-at,iso8601"`
 	Status            HYOKKeyVersionStatus `jsonapi:"attr,status"`
-	WorkplacesSecured int                  `jsonapi:"attr,workplaces-secured"`
+	WorkspacesSecured int                  `jsonapi:"attr,workspaces-secured"`
 	Error             string               `jsonapi:"attr,error"`
 
 	// Relationships
