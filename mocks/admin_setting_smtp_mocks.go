@@ -21,6 +21,7 @@ import (
 type MockSMTPSettings struct {
 	ctrl     *gomock.Controller
 	recorder *MockSMTPSettingsMockRecorder
+	isgomock struct{}
 }
 
 // MockSMTPSettingsMockRecorder is the mock recorder for MockSMTPSettings.
