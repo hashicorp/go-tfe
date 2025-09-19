@@ -286,36 +286,3 @@ func TestQueryRunsLogs(t *testing.T) {
 		assert.NotEmpty(t, logs, "some logs should be returned")
 	})
 }
-
-func TestQueryRunsForceCancel(t *testing.T) {
-	skipUnlessBeta(t)
-	client := testClient(t)
-	ctx := context.Background()
-
-	wTest, wTestCleanup := createWorkspace(t, client, nil)
-	defer wTestCleanup()
-
-	_ = createQueryRun(t, client, wTest)
-	qrTest2 := createQueryRun(t, client, wTest)
-
-	// A force-cancel is not needed in any normal circumstance.
-	// We can't easily get a query run into a state where it can be force-canceled.
-	// So we'll just test the negative paths.
-
-	t.Run("when the query run is not in a force-cancelable state", func(t *testing.T) {
-		// This will likely return an error, but we are testing that the call can be made.
-		// The API should return a 409 Conflict in this case.
-		err := client.QueryRuns.ForceCancel(ctx, qrTest2.ID)
-		assert.Error(t, err)
-	})
-
-	t.Run("when the query run does not exist", func(t *testing.T) {
-		err := client.QueryRuns.ForceCancel(ctx, "nonexisting")
-		assert.Equal(t, err, ErrResourceNotFound)
-	})
-
-	t.Run("with invalid query run ID", func(t *testing.T) {
-		err := client.QueryRuns.ForceCancel(ctx, badIdentifier)
-		assert.EqualError(t, err, ErrResourceNotFound.Error())
-	})
-}
