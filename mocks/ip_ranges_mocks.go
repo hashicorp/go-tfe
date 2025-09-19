@@ -21,6 +21,7 @@ import (
 type MockIPRanges struct {
 	ctrl     *gomock.Controller
 	recorder *MockIPRangesMockRecorder
+	isgomock struct{}
 }
 
 // MockIPRangesMockRecorder is the mock recorder for MockIPRanges.

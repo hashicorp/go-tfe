@@ -21,6 +21,7 @@ import (
 type MockSSHKeys struct {
 	ctrl     *gomock.Controller
 	recorder *MockSSHKeysMockRecorder
+	isgomock struct{}
 }
 
 // MockSSHKeysMockRecorder is the mock recorder for MockSSHKeys.

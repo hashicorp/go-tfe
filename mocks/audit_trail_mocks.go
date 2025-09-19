@@ -21,6 +21,7 @@ import (
 type MockAuditTrails struct {
 	ctrl     *gomock.Controller
 	recorder *MockAuditTrailsMockRecorder
+	isgomock struct{}
 }
 
 // MockAuditTrailsMockRecorder is the mock recorder for MockAuditTrails.
