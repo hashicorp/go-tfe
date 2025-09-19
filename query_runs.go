@@ -37,9 +37,6 @@ type QueryRuns interface {
 
 	// Cancel a query run by its ID.
 	Cancel(ctx context.Context, runID string) error
-
-	// Force-cancel a query run by its ID.
-	ForceCancel(ctx context.Context, runID string) error
 }
 
 // QueryRunCreateOptions represents the options for creating a new run.
@@ -272,20 +269,6 @@ func (r *queryRuns) Cancel(ctx context.Context, queryRunID string) error {
 	}
 
 	u := fmt.Sprintf("queries/%s/actions/cancel", url.PathEscape(queryRunID))
-	req, err := r.client.NewRequest("POST", u, nil)
-	if err != nil {
-		return err
-	}
-
-	return req.Do(ctx, nil)
-}
-
-func (r *queryRuns) ForceCancel(ctx context.Context, queryRunID string) error {
-	if queryRunID == "" {
-		return ErrInvalidQueryRunID
-	}
-
-	u := fmt.Sprintf("queries/%s/actions/force-cancel", url.PathEscape(queryRunID))
 	req, err := r.client.NewRequest("POST", u, nil)
 	if err != nil {
 		return err
