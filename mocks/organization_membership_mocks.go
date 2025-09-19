@@ -21,6 +21,7 @@ import (
 type MockOrganizationMemberships struct {
 	ctrl     *gomock.Controller
 	recorder *MockOrganizationMembershipsMockRecorder
+	isgomock struct{}
 }
 
 // MockOrganizationMembershipsMockRecorder is the mock recorder for MockOrganizationMemberships.

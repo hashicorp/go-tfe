@@ -21,6 +21,7 @@ import (
 type MockGeneralSettings struct {
 	ctrl     *gomock.Controller
 	recorder *MockGeneralSettingsMockRecorder
+	isgomock struct{}
 }
 
 // MockGeneralSettingsMockRecorder is the mock recorder for MockGeneralSettings.

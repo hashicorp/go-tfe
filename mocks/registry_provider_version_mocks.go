@@ -21,6 +21,7 @@ import (
 type MockRegistryProviderVersions struct {
 	ctrl     *gomock.Controller
 	recorder *MockRegistryProviderVersionsMockRecorder
+	isgomock struct{}
 }
 
 // MockRegistryProviderVersionsMockRecorder is the mock recorder for MockRegistryProviderVersions.

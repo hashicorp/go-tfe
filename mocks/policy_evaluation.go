@@ -21,6 +21,7 @@ import (
 type MockPolicyEvaluations struct {
 	ctrl     *gomock.Controller
 	recorder *MockPolicyEvaluationsMockRecorder
+	isgomock struct{}
 }
 
 // MockPolicyEvaluationsMockRecorder is the mock recorder for MockPolicyEvaluations.
@@ -59,6 +60,7 @@ func (mr *MockPolicyEvaluationsMockRecorder) List(ctx, taskStageID, options any)
 type MockPolicySetOutcomes struct {
 	ctrl     *gomock.Controller
 	recorder *MockPolicySetOutcomesMockRecorder
+	isgomock struct{}
 }
 
 // MockPolicySetOutcomesMockRecorder is the mock recorder for MockPolicySetOutcomes.

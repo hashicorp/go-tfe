@@ -21,6 +21,7 @@ import (
 type MockAdminTerraformVersions struct {
 	ctrl     *gomock.Controller
 	recorder *MockAdminTerraformVersionsMockRecorder
+	isgomock struct{}
 }
 
 // MockAdminTerraformVersionsMockRecorder is the mock recorder for MockAdminTerraformVersions.
