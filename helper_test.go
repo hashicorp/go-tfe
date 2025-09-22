@@ -370,7 +370,7 @@ func createAgent(t *testing.T, client *Client, org *Organization, agentPool *Age
 	if !ok {
 		t.Fatalf("Expected type to be *Agent but got %T", agent)
 	}
-
+	require.NotNil(t, agent)
 	return agent, agentPool, cleanup
 }
 
