@@ -1,7 +1,8 @@
 # Unreleased
 
 ## Enhancements
-* Exports the StackConfiguration UploadTarGzip receiver function[#1219](https://github.com/hashicorp/go-tfe/pull/1219)
+* Exports the StackConfiguration UploadTarGzip receiver function [#1219](https://github.com/hashicorp/go-tfe/pull/1219)
+* Updates BETA stacks resource schemas to match latest API spec by @ctrombley [#1220](https://github.com/hashicorp/go-tfe/pull/1220)
 
 ## Deprecations
 
