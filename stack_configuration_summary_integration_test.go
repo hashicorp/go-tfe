@@ -27,7 +27,7 @@ func TestStackConfigurationSummaryList(t *testing.T) {
 	stack, err := client.Stacks.Create(ctx, StackCreateOptions{
 		Name: "aa-test-stack",
 		VCSRepo: &StackVCSRepoOptions{
-			Identifier:   "ctrombley/linked-stacks-demo-network",
+			Identifier:   "hashicorp-guides/pet-nulls-stack",
 			OAuthTokenID: oauthClient.OAuthTokens[0].ID,
 		},
 		Project: &Project{
@@ -39,7 +39,7 @@ func TestStackConfigurationSummaryList(t *testing.T) {
 	stack2, err := client.Stacks.Create(ctx, StackCreateOptions{
 		Name: "bb-test-stack",
 		VCSRepo: &StackVCSRepoOptions{
-			Identifier:   "ctrombley/linked-stacks-demo-network",
+			Identifier:   "hashicorp-guides/pet-nulls-stack",
 			OAuthTokenID: oauthClient.OAuthTokens[0].ID,
 		},
 		Project: &Project{
@@ -50,12 +50,12 @@ func TestStackConfigurationSummaryList(t *testing.T) {
 	require.NotNil(t, stack2)
 
 	// Trigger first stack configuration by updating configuration
-	_, err = client.Stacks.FetchConfiguration(ctx, stack2.ID)
+	_, err = client.Stacks.FetchLatestFromVcs(ctx, stack2.ID)
 	require.NoError(t, err)
 
 	// Wait a bit and trigger second stack configuration
 	time.Sleep(2 * time.Second)
-	_, err = client.Stacks.FetchConfiguration(ctx, stack2.ID)
+	_, err = client.Stacks.FetchLatestFromVcs(ctx, stack2.ID)
 	require.NoError(t, err)
 
 	t.Run("Successful empty list", func(t *testing.T) {

@@ -25,7 +25,7 @@ func TestStackDeploymentGroupsList(t *testing.T) {
 	stack, err := client.Stacks.Create(ctx, StackCreateOptions{
 		Name: "test-stack",
 		VCSRepo: &StackVCSRepoOptions{
-			Identifier:   "ctrombley/linked-stacks-demo-network",
+			Identifier:   "hashicorp-guides/pet-nulls-stack",
 			OAuthTokenID: oauthClient.OAuthTokens[0].ID,
 		},
 		Project: &Project{
@@ -36,7 +36,7 @@ func TestStackDeploymentGroupsList(t *testing.T) {
 	require.NoError(t, err)
 	require.NotNil(t, stack)
 
-	stackUpdated, err := client.Stacks.FetchConfiguration(ctx, stack.ID)
+	stackUpdated, err := client.Stacks.FetchLatestFromVcs(ctx, stack.ID)
 	require.NoError(t, err)
 	require.NotNil(t, stackUpdated)
 
@@ -90,7 +90,7 @@ func TestStackDeploymentGroupsRead(t *testing.T) {
 	stack, err := client.Stacks.Create(ctx, StackCreateOptions{
 		Name: "test-stack",
 		VCSRepo: &StackVCSRepoOptions{
-			Identifier:   "ctrombley/linked-stacks-demo-network",
+			Identifier:   "hashicorp-guides/pet-nulls-stack",
 			OAuthTokenID: oauthClient.OAuthTokens[0].ID,
 		},
 		Project: &Project{
@@ -101,7 +101,7 @@ func TestStackDeploymentGroupsRead(t *testing.T) {
 	require.NoError(t, err)
 	require.NotNil(t, stack)
 
-	stackUpdated, err := client.Stacks.FetchConfiguration(ctx, stack.ID)
+	stackUpdated, err := client.Stacks.FetchLatestFromVcs(ctx, stack.ID)
 	require.NoError(t, err)
 	require.NotNil(t, stackUpdated)
 
@@ -142,7 +142,7 @@ func TestStackDeploymentGroupsApproveAllPlans(t *testing.T) {
 	stack, err := client.Stacks.Create(ctx, StackCreateOptions{
 		Name: "test-stack",
 		VCSRepo: &StackVCSRepoOptions{
-			Identifier:   "ctrombley/linked-stacks-demo-network",
+			Identifier:   "hashicorp-guides/pet-nulls-stack",
 			OAuthTokenID: oauthClient.OAuthTokens[0].ID,
 			Branch:       "main",
 		},
@@ -153,7 +153,7 @@ func TestStackDeploymentGroupsApproveAllPlans(t *testing.T) {
 	require.NoError(t, err)
 	require.NotNil(t, stack)
 
-	stackUpdated, err := client.Stacks.FetchConfiguration(ctx, stack.ID)
+	stackUpdated, err := client.Stacks.FetchLatestFromVcs(ctx, stack.ID)
 	require.NoError(t, err)
 	require.NotNil(t, stackUpdated)
 
@@ -189,7 +189,7 @@ func TestStackDeploymentGroupsRerun(t *testing.T) {
 	stack, err := client.Stacks.Create(ctx, StackCreateOptions{
 		Name: "test-stack",
 		VCSRepo: &StackVCSRepoOptions{
-			Identifier:   "ctrombley/linked-stacks-demo-network",
+			Identifier:   "hashicorp-guides/pet-nulls-stack",
 			OAuthTokenID: oauthClient.OAuthTokens[0].ID,
 			Branch:       "main",
 		},
@@ -200,7 +200,7 @@ func TestStackDeploymentGroupsRerun(t *testing.T) {
 	require.NoError(t, err)
 	require.NotNil(t, stack)
 
-	stackUpdated, err := client.Stacks.FetchConfiguration(ctx, stack.ID)
+	stackUpdated, err := client.Stacks.FetchLatestFromVcs(ctx, stack.ID)
 	require.NoError(t, err)
 	require.NotNil(t, stackUpdated)
 

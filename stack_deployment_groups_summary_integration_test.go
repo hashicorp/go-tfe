@@ -26,7 +26,7 @@ func TestStackDeploymentGroupSummaryList(t *testing.T) {
 	stack, err := client.Stacks.Create(ctx, StackCreateOptions{
 		Name: "aa-test-stack",
 		VCSRepo: &StackVCSRepoOptions{
-			Identifier:   "ctrombley/linked-stacks-demo-network",
+			Identifier:   "hashicorp-guides/pet-nulls-stack",
 			OAuthTokenID: oauthClient.OAuthTokens[0].ID,
 		},
 		Project: &Project{
@@ -38,7 +38,7 @@ func TestStackDeploymentGroupSummaryList(t *testing.T) {
 	stack2, err := client.Stacks.Create(ctx, StackCreateOptions{
 		Name: "bb-test-stack",
 		VCSRepo: &StackVCSRepoOptions{
-			Identifier:   "ctrombley/linked-stacks-demo-network",
+			Identifier:   "hashicorp-guides/pet-nulls-stack",
 			OAuthTokenID: oauthClient.OAuthTokens[0].ID,
 		},
 		Project: &Project{
@@ -49,14 +49,14 @@ func TestStackDeploymentGroupSummaryList(t *testing.T) {
 	require.NotNil(t, stack2)
 
 	// Trigger first stack configuration with a fetch
-	_, err = client.Stacks.FetchConfiguration(ctx, stack.ID)
+	_, err = client.Stacks.FetchLatestFromVcs(ctx, stack.ID)
 	require.NoError(t, err)
 
 	updatedStack := pollStackDeploymentGroups(t, ctx, client, stack.ID)
 	require.NotNil(t, updatedStack.LatestStackConfiguration.ID)
 
 	// Trigger second stack configuration with a fetch
-	_, err = client.Stacks.FetchConfiguration(ctx, stack2.ID)
+	_, err = client.Stacks.FetchLatestFromVcs(ctx, stack2.ID)
 	require.NoError(t, err)
 
 	updatedStack2 := pollStackDeploymentGroups(t, ctx, client, stack2.ID)

@@ -32,8 +32,8 @@ type Stacks interface {
 	// ForceDelete deletes a stack.
 	ForceDelete(ctx context.Context, stackID string) error
 
-	// FetchConfiguration updates the configuration of a stack, triggering stack preparation.
-	FetchConfiguration(ctx context.Context, stackID string) (*Stack, error)
+	// FetchLatestFromVcs updates the configuration of a stack, triggering stack preparation.
+	FetchLatestFromVcs(ctx context.Context, stackID string) (*Stack, error)
 }
 
 // stacks implements Stacks.
@@ -83,23 +83,19 @@ type StackVCSRepoOptions struct {
 	OAuthTokenID      string `json:"oauth-token-id,omitempty"`
 }
 
-type LinkedStackConnections struct {
-	UpstreamCount   int `jsonapi:"attr,upstream-count"`
-	DownstreamCount int `jsonapi:"attr,downstream-count"`
-	InputsCount     int `jsonapi:"attr,inputs-count"`
-	OutputsCount    int `jsonapi:"attr,outputs-count"`
-}
-
 // Stack represents a stack.
 type Stack struct {
-	ID                     string                  `jsonapi:"primary,stacks"`
-	Name                   string                  `jsonapi:"attr,name"`
-	Description            string                  `jsonapi:"attr,description"`
-	VCSRepo                *StackVCSRepo           `jsonapi:"attr,vcs-repo"`
-	SpeculativeEnabled     bool                    `jsonapi:"attr,speculative-enabled"`
-	CreatedAt              time.Time               `jsonapi:"attr,created-at,iso8601"`
-	UpdatedAt              time.Time               `jsonapi:"attr,updated-at,iso8601"`
-	LinkedStackConnections *LinkedStackConnections `jsonapi:"attr,linked-stack-connections"`
+	ID                 string        `jsonapi:"primary,stacks"`
+	Name               string        `jsonapi:"attr,name"`
+	Description        string        `jsonapi:"attr,description"`
+	VCSRepo            *StackVCSRepo `jsonapi:"attr,vcs-repo"`
+	SpeculativeEnabled bool          `jsonapi:"attr,speculative-enabled"`
+	CreatedAt          time.Time     `jsonapi:"attr,created-at,iso8601"`
+	UpdatedAt          time.Time     `jsonapi:"attr,updated-at,iso8601"`
+	UpstreamCount      int           `jsonapi:"attr,upstream-count"`
+	DownstreamCount    int           `jsonapi:"attr,downstream-count"`
+	InputsCount        int           `jsonapi:"attr,inputs-count"`
+	OutputsCount       int           `jsonapi:"attr,outputs-count"`
 
 	// Relationships
 	Project                  *Project            `jsonapi:"relation,project"`
@@ -202,8 +198,8 @@ type WaitForStatusResult struct {
 const minimumPollingIntervalMs = 3000
 const maximumPollingIntervalMs = 5000
 
-// FetchConfiguration fetches the latest configuration of a stack from VCS, triggering stack operations
-func (s *stacks) FetchConfiguration(ctx context.Context, stackID string) (*Stack, error) {
+// FetchLatestFromVcs fetches the latest configuration of a stack from VCS, triggering stack operations
+func (s *stacks) FetchLatestFromVcs(ctx context.Context, stackID string) (*Stack, error) {
 	req, err := s.client.NewRequest("POST", fmt.Sprintf("stacks/%s/fetch-latest-from-vcs", url.PathEscape(stackID)), nil)
 	if err != nil {
 		return nil, err

@@ -27,7 +27,7 @@ func TestStackDeploymentRunsList(t *testing.T) {
 	stack, err := client.Stacks.Create(ctx, StackCreateOptions{
 		Name: "test-stack",
 		VCSRepo: &StackVCSRepoOptions{
-			Identifier:   "ctrombley/linked-stacks-demo-network",
+			Identifier:   "hashicorp-guides/pet-nulls-stack",
 			OAuthTokenID: oauthClient.OAuthTokens[0].ID,
 			Branch:       "main",
 		},
@@ -38,7 +38,7 @@ func TestStackDeploymentRunsList(t *testing.T) {
 	require.NoError(t, err)
 	require.NotNil(t, stack)
 
-	stackUpdated, err := client.Stacks.FetchConfiguration(ctx, stack.ID)
+	stackUpdated, err := client.Stacks.FetchLatestFromVcs(ctx, stack.ID)
 	require.NoError(t, err)
 	require.NotNil(t, stackUpdated)
 
@@ -90,7 +90,7 @@ func TestStackDeploymentRunsRead(t *testing.T) {
 		Project: orgTest.DefaultProject,
 		Name:    "test-stack",
 		VCSRepo: &StackVCSRepoOptions{
-			Identifier:   "ctrombley/linked-stacks-demo-network",
+			Identifier:   "hashicorp-guides/pet-nulls-stack",
 			OAuthTokenID: oauthClient.OAuthTokens[0].ID,
 			Branch:       "main",
 		},
@@ -98,7 +98,7 @@ func TestStackDeploymentRunsRead(t *testing.T) {
 	require.NoError(t, err)
 	require.NotNil(t, stack)
 
-	stackUpdated, err := client.Stacks.FetchConfiguration(ctx, stack.ID)
+	stackUpdated, err := client.Stacks.FetchLatestFromVcs(ctx, stack.ID)
 	require.NoError(t, err)
 	require.NotNil(t, stackUpdated)
 
@@ -145,7 +145,7 @@ func TestStackDeploymentRunsApproveAllPlans(t *testing.T) {
 		Project: orgTest.DefaultProject,
 		Name:    "test-stack",
 		VCSRepo: &StackVCSRepoOptions{
-			Identifier:   "ctrombley/linked-stacks-demo-network",
+			Identifier:   "hashicorp-guides/pet-nulls-stack",
 			OAuthTokenID: oauthClient.OAuthTokens[0].ID,
 			Branch:       "main",
 		},
@@ -153,7 +153,7 @@ func TestStackDeploymentRunsApproveAllPlans(t *testing.T) {
 	require.NoError(t, err)
 	require.NotNil(t, stack)
 
-	stackUpdated, err := client.Stacks.FetchConfiguration(ctx, stack.ID)
+	stackUpdated, err := client.Stacks.FetchLatestFromVcs(ctx, stack.ID)
 	require.NoError(t, err)
 	require.NotNil(t, stackUpdated)
 
@@ -198,7 +198,7 @@ func TestStackDeploymentRunsCancel(t *testing.T) {
 		Project: orgTest.DefaultProject,
 		Name:    "test-stack",
 		VCSRepo: &StackVCSRepoOptions{
-			Identifier:   "ctrombley/linked-stacks-demo-network",
+			Identifier:   "hashicorp-guides/pet-nulls-stack",
 			OAuthTokenID: oauthClient.OAuthTokens[0].ID,
 			Branch:       "main",
 		},
@@ -206,7 +206,7 @@ func TestStackDeploymentRunsCancel(t *testing.T) {
 	require.NoError(t, err)
 	require.NotNil(t, stack)
 
-	stackUpdated, err := client.Stacks.FetchConfiguration(ctx, stack.ID)
+	stackUpdated, err := client.Stacks.FetchLatestFromVcs(ctx, stack.ID)
 	require.NoError(t, err)
 	require.NotNil(t, stackUpdated)
 

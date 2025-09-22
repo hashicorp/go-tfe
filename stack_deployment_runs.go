@@ -37,6 +37,17 @@ type StackDeploymentRun struct {
 	StackDeploymentGroup *StackDeploymentGroup `jsonapi:"relation,stack-deployment-group"`
 }
 
+type SDRIncludeOpt string
+
+const (
+	SDRDeploymentGroup SDRIncludeOpt = "stack-deployment-group"
+)
+
+type StackDeploymentRunReadOptions struct {
+	// Optional: A list of relations to include.
+	Include []SDRIncludeOpt `url:"include,omitempty"`
+}
+
 // StackDeploymentRunList represents a list of stack deployment runs.
 type StackDeploymentRunList struct {
 	*Pagination
@@ -46,6 +57,9 @@ type StackDeploymentRunList struct {
 // StackDeploymentRunListOptions represents the options for listing stack deployment runs.
 type StackDeploymentRunListOptions struct {
 	ListOptions
+
+	// Optional: A list of relations to include.
+	Include []SDRIncludeOpt `url:"include,omitempty"`
 }
 
 // List returns a list of stack deployment runs for a given deployment group.
@@ -78,6 +92,26 @@ func (s stackDeploymentRuns) Read(ctx context.Context, stackDeploymentRunID stri
 
 	return &run, nil
 }
+
+func (s stackDeploymentRuns) ReadWithOptions(ctx context.Context, stackDeploymentRunID string, options *StackDeploymentRunReadOptions) (*StackDeploymentRun, error) {
+	if err := options.valid(); err != nil {
+		return nil, err
+	}
+
+	req, err := s.client.NewRequest("GET", fmt.Sprintf("stack-deployment-runs/%s", url.PathEscape(stackDeploymentRunID)), options)
+	if err != nil {
+		return nil, err
+	}
+
+	run := StackDeploymentRun{}
+	err = req.Do(ctx, &run)
+	if err != nil {
+		return nil, err
+	}
+
+	return &run, nil
+}
+
 func (s stackDeploymentRuns) ApproveAllPlans(ctx context.Context, stackDeploymentRunID string) error {
 	req, err := s.client.NewRequest("POST", fmt.Sprintf("stack-deployment-runs/%s/approve-all-plans", url.PathEscape(stackDeploymentRunID)), nil)
 	if err != nil {
@@ -94,4 +128,16 @@ func (s stackDeploymentRuns) Cancel(ctx context.Context, stackDeploymentRunID st
 	}
 
 	return req.Do(ctx, nil)
+}
+
+func (o *StackDeploymentRunReadOptions) valid() error {
+	for _, include := range o.Include {
+		switch include {
+		case SDRDeploymentGroup:
+			// Valid option, do nothing.
+		default:
+			return fmt.Errorf("invalid include option: %s", include)
+		}
+	}
+	return nil
 }

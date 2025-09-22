@@ -32,7 +32,7 @@ func TestStackCreateAndList(t *testing.T) {
 	stack1, err := client.Stacks.Create(ctx, StackCreateOptions{
 		Name: "aa-test-stack",
 		VCSRepo: &StackVCSRepoOptions{
-			Identifier:   "ctrombley/linked-stacks-demo-network",
+			Identifier:   "hashicorp-guides/pet-nulls-stack",
 			OAuthTokenID: oauthClient.OAuthTokens[0].ID,
 		},
 		Project: &Project{
@@ -46,7 +46,7 @@ func TestStackCreateAndList(t *testing.T) {
 	stack2, err := client.Stacks.Create(ctx, StackCreateOptions{
 		Name: "zz-test-stack",
 		VCSRepo: &StackVCSRepoOptions{
-			Identifier:   "ctrombley/linked-stacks-demo-network",
+			Identifier:   "hashicorp-guides/pet-nulls-stack",
 			OAuthTokenID: oauthClient.OAuthTokens[0].ID,
 		},
 		Project: &Project{
@@ -149,7 +149,7 @@ func TestStackReadUpdateDelete(t *testing.T) {
 	stack, err := client.Stacks.Create(ctx, StackCreateOptions{
 		Name: "test-stack",
 		VCSRepo: &StackVCSRepoOptions{
-			Identifier:   "ctrombley/linked-stacks-demo-network",
+			Identifier:   "hashicorp-guides/pet-nulls-stack",
 			OAuthTokenID: oauthClient.OAuthTokens[0].ID,
 			Branch:       "main",
 		},
@@ -181,7 +181,7 @@ func TestStackReadUpdateDelete(t *testing.T) {
 	stackUpdated, err := client.Stacks.Update(ctx, stack.ID, StackUpdateOptions{
 		Description: String("updated description"),
 		VCSRepo: &StackVCSRepoOptions{
-			Identifier:   "ctrombley/linked-stacks-demo-network",
+			Identifier:   "hashicorp-guides/pet-nulls-stack",
 			OAuthTokenID: oauthClient.OAuthTokens[0].ID,
 			Branch:       "main",
 		},
@@ -192,7 +192,7 @@ func TestStackReadUpdateDelete(t *testing.T) {
 	require.Equal(t, "updated description", stackUpdated.Description)
 	require.Equal(t, updatedPool.ID, stackUpdated.AgentPool.ID)
 
-	stackUpdatedConfig, err := client.Stacks.FetchConfiguration(ctx, stack.ID)
+	stackUpdatedConfig, err := client.Stacks.FetchLatestFromVcs(ctx, stack.ID)
 	require.NoError(t, err)
 	require.Equal(t, stack.Name, stackUpdatedConfig.Name)
 
@@ -219,7 +219,7 @@ func TestStackRemoveVCSBacking(t *testing.T) {
 	stack, err := client.Stacks.Create(ctx, StackCreateOptions{
 		Name: "test-stack",
 		VCSRepo: &StackVCSRepoOptions{
-			Identifier:   "ctrombley/linked-stacks-demo-network",
+			Identifier:   "hashicorp-guides/pet-nulls-stack",
 			OAuthTokenID: oauthClient.OAuthTokens[0].ID,
 			Branch:       "main",
 		},
@@ -265,7 +265,7 @@ func TestStackReadUpdateForceDelete(t *testing.T) {
 	stack, err := client.Stacks.Create(ctx, StackCreateOptions{
 		Name: "test-stack",
 		VCSRepo: &StackVCSRepoOptions{
-			Identifier:   "ctrombley/linked-stacks-demo-network",
+			Identifier:   "hashicorp-guides/pet-nulls-stack",
 			OAuthTokenID: oauthClient.OAuthTokens[0].ID,
 			Branch:       "main",
 		},
@@ -291,7 +291,7 @@ func TestStackReadUpdateForceDelete(t *testing.T) {
 	stackUpdated, err := client.Stacks.Update(ctx, stack.ID, StackUpdateOptions{
 		Description: String("updated description"),
 		VCSRepo: &StackVCSRepoOptions{
-			Identifier:   "ctrombley/linked-stacks-demo-network",
+			Identifier:   "hashicorp-guides/pet-nulls-stack",
 			OAuthTokenID: oauthClient.OAuthTokens[0].ID,
 			Branch:       "main",
 		},
@@ -300,7 +300,7 @@ func TestStackReadUpdateForceDelete(t *testing.T) {
 	require.NoError(t, err)
 	require.Equal(t, "updated description", stackUpdated.Description)
 
-	stackUpdatedConfig, err := client.Stacks.FetchConfiguration(ctx, stack.ID)
+	stackUpdatedConfig, err := client.Stacks.FetchLatestFromVcs(ctx, stack.ID)
 	require.NoError(t, err)
 	require.Equal(t, stack.Name, stackUpdatedConfig.Name)
 
@@ -433,7 +433,7 @@ func TestStackConverged(t *testing.T) {
 	stack, err := client.Stacks.Create(ctx, StackCreateOptions{
 		Name: "test-stack",
 		VCSRepo: &StackVCSRepoOptions{
-			Identifier:   "ctrombley/linked-stacks-demo-network",
+			Identifier:   "hashicorp-guides/pet-nulls-stack",
 			OAuthTokenID: oauthClient.OAuthTokens[0].ID,
 		},
 		Project: &Project{
@@ -444,7 +444,7 @@ func TestStackConverged(t *testing.T) {
 	require.NoError(t, err)
 	require.NotNil(t, stack)
 
-	stackUpdated, err := client.Stacks.FetchConfiguration(ctx, stack.ID)
+	stackUpdated, err := client.Stacks.FetchLatestFromVcs(ctx, stack.ID)
 	require.NoError(t, err)
 	require.NotNil(t, stackUpdated)
 

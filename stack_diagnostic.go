@@ -19,9 +19,9 @@ type StackDiagnostic struct {
 	CreatedAt      *time.Time       `jsonapi:"attr,created-at,iso8601"`
 
 	// Relationships
-	StackDeploymentStep *StackConfiguration `jsonapi:"relation,stack-deployment-step"`
-	StackConfiguration  *StackConfiguration `jsonapi:"relation,stack-configuration"`
-	AcknowledgedBy      *User               `jsonapi:"relation,acknowledged-by"`
+	StackDeploymentStep *StackDeploymentStep `jsonapi:"relation,stack-deployment-step"`
+	StackConfiguration  *StackConfiguration  `jsonapi:"relation,stack-configuration"`
+	AcknowledgedBy      *User                `jsonapi:"relation,acknowledged-by"`
 }
 
 // DiagnosticPos represents a position in the source code.
