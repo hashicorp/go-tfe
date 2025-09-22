@@ -72,6 +72,28 @@ func TestStackDeploymentRunsList(t *testing.T) {
 		require.NoError(t, err)
 		assert.NotNil(t, runList)
 	})
+
+	t.Run("With include option", func(t *testing.T) {
+		t.Parallel()
+
+		runList, err := client.StackDeploymentRuns.List(ctx, deploymentGroupID, &StackDeploymentRunListOptions{
+			Include: []SDRIncludeOpt{"stack-deployment-group"},
+		})
+		assert.NoError(t, err)
+		assert.NotNil(t, runList)
+		for _, run := range runList.Items {
+			assert.NotNil(t, run.StackDeploymentGroup.ID)
+		}
+	})
+
+	t.Run("With invalid include option", func(t *testing.T) {
+		t.Parallel()
+
+		_, err := client.StackDeploymentRuns.List(ctx, deploymentGroupID, &StackDeploymentRunListOptions{
+			Include: []SDRIncludeOpt{"invalid-option"},
+		})
+		assert.Error(t, err)
+	})
 }
 
 func TestStackDeploymentRunsRead(t *testing.T) {
@@ -125,6 +147,22 @@ func TestStackDeploymentRunsRead(t *testing.T) {
 
 	t.Run("Read with invalid ID", func(t *testing.T) {
 		_, err := client.StackDeploymentRuns.Read(ctx, "")
+		assert.Error(t, err)
+	})
+
+	t.Run("Read with options", func(t *testing.T) {
+		run, err := client.StackDeploymentRuns.ReadWithOptions(ctx, sdr.ID, &StackDeploymentRunReadOptions{
+			Include: []SDRIncludeOpt{"stack-deployment-group"},
+		})
+		assert.NoError(t, err)
+		assert.NotNil(t, run)
+		assert.NotNil(t, run.StackDeploymentGroup.ID)
+	})
+
+	t.Run("Read with invalid options", func(t *testing.T) {
+		_, err := client.StackDeploymentRuns.ReadWithOptions(ctx, sdr.ID, &StackDeploymentRunReadOptions{
+			Include: []SDRIncludeOpt{"invalid-option"},
+		})
 		assert.Error(t, err)
 	})
 }

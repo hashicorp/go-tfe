@@ -15,6 +15,7 @@ type StackDeploymentRuns interface {
 	// List returns a list of stack deployment runs for a given deployment group.
 	List(ctx context.Context, deploymentGroupID string, options *StackDeploymentRunListOptions) (*StackDeploymentRunList, error)
 	Read(ctx context.Context, stackDeploymentRunID string) (*StackDeploymentRun, error)
+	ReadWithOptions(ctx context.Context, stackDeploymentRunID string, options *StackDeploymentRunReadOptions) (*StackDeploymentRun, error)
 	ApproveAllPlans(ctx context.Context, deploymentRunID string) error
 	Cancel(ctx context.Context, stackDeploymentRunID string) error
 }
@@ -43,21 +44,20 @@ const (
 	SDRDeploymentGroup SDRIncludeOpt = "stack-deployment-group"
 )
 
-type StackDeploymentRunReadOptions struct {
-	// Optional: A list of relations to include.
-	Include []SDRIncludeOpt `url:"include,omitempty"`
-}
-
 // StackDeploymentRunList represents a list of stack deployment runs.
 type StackDeploymentRunList struct {
 	*Pagination
 	Items []*StackDeploymentRun
 }
 
+type StackDeploymentRunReadOptions struct {
+	// Optional: A list of relations to include.
+	Include []SDRIncludeOpt `url:"include,omitempty"`
+}
+
 // StackDeploymentRunListOptions represents the options for listing stack deployment runs.
 type StackDeploymentRunListOptions struct {
 	ListOptions
-
 	// Optional: A list of relations to include.
 	Include []SDRIncludeOpt `url:"include,omitempty"`
 }
