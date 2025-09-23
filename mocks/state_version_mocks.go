@@ -218,7 +218,7 @@ func (mr *MockStateVersionsMockRecorder) Upload(ctx, workspaceID, options any) *
 }
 
 // UploadSanitizedState mocks base method.
-func (m *MockStateVersions) UploadSanitizedState(ctx context.Context, sanitizedStateUploadURL string, sanitizedState []byte) error {
+func (m *MockStateVersions) UploadSanitizedState(ctx context.Context, sanitizedStateUploadURL *string, sanitizedState []byte) error {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "UploadSanitizedState", ctx, sanitizedStateUploadURL, sanitizedState)
 	ret0, _ := ret[0].(error)
