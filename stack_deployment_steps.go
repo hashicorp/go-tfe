@@ -12,8 +12,6 @@ import (
 
 // StackDeploymentSteps describes all the stacks deployment step-related methods that the
 // HCP Terraform API supports.
-// NOTE WELL: This is a beta feature and is subject to change until noted otherwise in the
-// release notes.
 type StackDeploymentSteps interface {
 	// List returns the stack deployment steps for a stack deployment run.
 	List(ctx context.Context, stackDeploymentRunID string, opts *StackDeploymentStepsListOptions) (*StackDeploymentStepList, error)

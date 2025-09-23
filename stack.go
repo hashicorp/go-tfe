@@ -11,8 +11,6 @@ import (
 )
 
 // Stacks describes all the stacks-related methods that the HCP Terraform API supports.
-// NOTE WELL: This is a beta feature and is subject to change until noted otherwise in the
-// release notes.
 type Stacks interface {
 	// List returns a list of stacks, optionally filtered by project.
 	List(ctx context.Context, organization string, options *StackListOptions) (*StackList, error)

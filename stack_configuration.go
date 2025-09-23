@@ -14,8 +14,6 @@ import (
 
 // StackConfigurations describes all the stacks configurations-related methods that the
 // HCP Terraform API supports.
-// NOTE WELL: This is a beta feature and is subject to change until noted otherwise in the
-// release notes.
 type StackConfigurations interface {
 	// CreateAndUpload packages and uploads the specified Terraform Stacks
 	// configuration files in association with a Stack.
@@ -28,7 +26,7 @@ type StackConfigurations interface {
 	Read(ctx context.Context, id string) (*StackConfiguration, error)
 
 	// ListStackConfigurations returns a list of stack configurations for a stack.
-	List(ctx context.Context, stackID string, options *StackConfigurationListOptions) (*StackConfigurationList, error)
+	List(ctx context.Context, stackID string, opts *StackConfigurationListOptions) (*StackConfigurationList, error)
 
 	// JSONSchemas returns a byte slice of the JSON schema for the stack configuration.
 	JSONSchemas(ctx context.Context, stackConfigurationID string) ([]byte, error)
