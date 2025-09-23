@@ -85,7 +85,7 @@ func (aoc *azureOIDCConfigurations) Create(ctx context.Context, organization str
 		return nil, err
 	}
 
-	req, err := aoc.client.NewRequest("POST", fmt.Sprintf("organizations/%s/oidc-configurations", organization), &options)
+	req, err := aoc.client.NewRequest("POST", fmt.Sprintf("organizations/%s/oidc-configurations", url.PathEscape(organization)), &options)
 	if err != nil {
 		return nil, err
 	}

@@ -139,7 +139,7 @@ func (h hyokConfigurations) List(ctx context.Context, organization string, optio
 		return nil, ErrInvalidOrg
 	}
 
-	req, err := h.client.NewRequest("GET", fmt.Sprintf("organizations/%s/hyok-configurations", organization), options)
+	req, err := h.client.NewRequest("GET", fmt.Sprintf("organizations/%s/hyok-configurations", url.PathEscape(organization)), options)
 	if err != nil {
 		return nil, err
 	}
@@ -225,7 +225,7 @@ func (h hyokConfigurations) Create(ctx context.Context, organization string, opt
 		return nil, err
 	}
 
-	req, err := h.client.NewRequest("POST", fmt.Sprintf("organizations/%s/hyok-configurations", organization), &options)
+	req, err := h.client.NewRequest("POST", fmt.Sprintf("organizations/%s/hyok-configurations", url.PathEscape(organization)), &options)
 	if err != nil {
 		return nil, err
 	}

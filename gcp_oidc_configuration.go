@@ -85,7 +85,7 @@ func (goc *gcpOIDCConfigurations) Create(ctx context.Context, organization strin
 		return nil, err
 	}
 
-	req, err := goc.client.NewRequest("POST", fmt.Sprintf("organizations/%s/oidc-configurations", organization), &options)
+	req, err := goc.client.NewRequest("POST", fmt.Sprintf("organizations/%s/oidc-configurations", url.PathEscape(organization)), &options)
 	if err != nil {
 		return nil, err
 	}
