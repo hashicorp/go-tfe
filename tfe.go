@@ -174,10 +174,13 @@ type Client struct {
 	HYOKEncryptedDataKeys           HYOKEncryptedDataKeys
 	StackConfigurations             StackConfigurations
 	StackConfigurationSummaries     StackConfigurationSummaries
+	StackDeployments                StackDeployments
 	StackDeploymentGroups           StackDeploymentGroups
 	StackDeploymentGroupSummaries   StackDeploymentGroupSummaries
 	StackDeploymentRuns             StackDeploymentRuns
 	StackDeploymentSteps            StackDeploymentSteps
+	StackDiagnostics                StackDiagnostics
+	StackStates                     StackStates
 	StateVersionOutputs             StateVersionOutputs
 	StateVersions                   StateVersions
 	TaskResults                     TaskResults

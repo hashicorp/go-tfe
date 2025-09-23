@@ -21,6 +21,8 @@ type StackDeploymentSteps interface {
 	Read(ctx context.Context, stackDeploymentStepID string) (*StackDeploymentStep, error)
 	// Advance advances the stack deployment step when in the "pending_operator" state.
 	Advance(ctx context.Context, stackDeploymentStepID string) error
+	// Diagnostics returns the diagnostics for this stack deployment step.
+	Diagnostics(ctx context.Context, stackConfigurationID string, opts *StackDiagnosticListOptions) (*StackDiagnosticsList, error)
 }
 
 // StackDeploymentStep represents a step from a stack deployment
@@ -93,4 +95,18 @@ func (s stackDeploymentSteps) Advance(ctx context.Context, stackDeploymentStepID
 	}
 
 	return req.Do(ctx, nil)
+}
+
+// Diagnostics returns the diagnostics for this stack deployment step.
+func (s stackDeploymentSteps) Diagnostics(ctx context.Context, stackConfigurationID string, opts *StackDiagnosticListOptions) (*StackDiagnosticsList, error) {
+	req, err := s.client.NewRequest("GET", fmt.Sprintf("stack-deployment-steps/%s/stack-diagnostics", url.PathEscape(stackConfigurationID)), opts)
+	if err != nil {
+		return nil, err
+	}
+	diagnostics := &StackDiagnosticsList{}
+	err = req.Do(ctx, diagnostics)
+	if err != nil {
+		return nil, err
+	}
+	return diagnostics, nil
 }

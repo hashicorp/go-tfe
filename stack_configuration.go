@@ -42,6 +42,9 @@ type StackConfigurations interface {
 	// stack configuration as it progresses, until that status is "<status>",
 	// "errored", "canceled".
 	AwaitStatus(ctx context.Context, stackConfigurationID string, status StackConfigurationStatus) <-chan WaitForStatusResult
+
+	// Diagnostics returns the diagnostics for this stack configuration.
+	Diagnostics(ctx context.Context, stackConfigurationID string, opts *StackDiagnosticListOptions) (*StackDiagnosticsList, error)
 }
 
 type StackConfigurationStatus string
@@ -253,4 +256,25 @@ func (s stackConfigurations) pollForUploadURL(ctx context.Context, stackConfigur
 // responsibility to ensure the raw content is a valid Terraform configuration.
 func (s stackConfigurations) UploadTarGzip(ctx context.Context, uploadURL string, archive io.Reader) error {
 	return s.client.doForeignPUTRequest(ctx, uploadURL, archive)
+}
+
+type StackDiagnosticListOptions struct {
+	ListOptions
+}
+
+// Diagnostics returns the diagnostics for this stack configuration.
+func (s stackConfigurations) Diagnostics(ctx context.Context, stackConfigurationID string,
+	opts *StackDiagnosticListOptions) (*StackDiagnosticsList, error) {
+	req, err := s.client.NewRequest("GET", fmt.Sprintf("stack-configurations/%s/stack-diagnostics", url.PathEscape(stackConfigurationID)), opts)
+
+	if err != nil {
+		return nil, err
+	}
+
+	diagnostics := &StackDiagnosticsList{}
+	err = req.Do(ctx, diagnostics)
+	if err != nil {
+		return nil, err
+	}
+	return diagnostics, nil
 }

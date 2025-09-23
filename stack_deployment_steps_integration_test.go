@@ -263,3 +263,74 @@ func pollStackDeploymentStepStatus(t *testing.T, ctx context.Context, client *Cl
 
 	return
 }
+
+func TestStackDeploymentStepsDiagnostics(t *testing.T) {
+	skipUnlessBeta(t)
+
+	client := testClient(t)
+	ctx := context.Background()
+
+	orgTest, orgTestCleanup := createOrganization(t, client)
+	t.Cleanup(orgTestCleanup)
+
+	oauthClient, cleanup := createOAuthClient(t, client, orgTest, nil)
+	t.Cleanup(cleanup)
+
+	stack, err := client.Stacks.Create(ctx, StackCreateOptions{
+
+		Project: orgTest.DefaultProject,
+		Name:    "test-stack",
+
+		VCSRepo: &StackVCSRepoOptions{
+			Identifier:   "ctrombley/linked-stacks-demo-network",
+			OAuthTokenID: oauthClient.OAuthTokens[0].ID,
+			Branch:       "main",
+		},
+	})
+	require.NoError(t, err)
+	require.NotNil(t, stack)
+
+	stackUpdated, err := client.Stacks.FetchLatestFromVcs(ctx, stack.ID)
+	require.NoError(t, err)
+	require.NotNil(t, stackUpdated)
+
+	stackUpdated = pollStackDeploymentGroups(t, ctx, client, stackUpdated.ID)
+	require.NotNil(t, stackUpdated.LatestStackConfiguration)
+
+	stackDeploymentGroups, err := client.StackDeploymentGroups.List(ctx, stackUpdated.LatestStackConfiguration.ID, nil)
+	require.NoError(t, err)
+	require.NotEmpty(t, stackDeploymentGroups)
+
+	sdg := stackDeploymentGroups.Items[0]
+
+	stackDeploymentRuns, err := client.StackDeploymentRuns.List(ctx, sdg.ID, nil)
+	require.NoError(t, err)
+	require.NotEmpty(t, stackDeploymentRuns)
+
+	sdr := stackDeploymentRuns.Items[0]
+	steps, err := client.StackDeploymentSteps.List(ctx, sdr.ID, nil)
+	assert.NoError(t, err)
+	assert.NotEmpty(t, steps)
+
+	step := steps.Items[0]
+	step = pollStackDeploymentStepStatus(t, ctx, client, step.ID, "pending_operator")
+	require.NotNil(t, step)
+
+	t.Run("Diagnostics with valid ID", func(t *testing.T) {
+		opts := &StackDiagnosticListOptions{
+			ListOptions: ListOptions{
+				PageNumber: 1,
+				PageSize:   10,
+			},
+		}
+
+		sds, err := client.StackDeploymentSteps.Diagnostics(ctx, step.ID, opts)
+		assert.NoError(t, err)
+		assert.NotEmpty(t, sds)
+	})
+
+	t.Run("Diagnostics with invalid ID", func(t *testing.T) {
+		_, err := client.StackDeploymentSteps.Diagnostics(ctx, step.ID, nil)
+		require.Error(t, err)
+	})
+}

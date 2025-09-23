@@ -3,7 +3,19 @@
 
 package tfe
 
-import "time"
+import (
+	"context"
+	"fmt"
+	"net/url"
+	"time"
+)
+
+type StackDiagnostics interface {
+	// Read retrieves a stack diagnostic by its ID.
+	Read(ctx context.Context, stackConfigurationID string) (*StackDiagnostic, error)
+	// Acknowledge marks a diagnostic as acknowledged.
+	Acknowledge(ctx context.Context, stackDiagnosticID string) error
+}
 
 // StackDiagnostic represents any sourcebundle.Diagnostic value. The simplest form has
 // just a severity, single line summary, and optional detail. If there is more
@@ -22,6 +34,19 @@ type StackDiagnostic struct {
 	StackDeploymentStep *StackDeploymentStep `jsonapi:"relation,stack-deployment-step"`
 	StackConfiguration  *StackConfiguration  `jsonapi:"relation,stack-configuration"`
 	AcknowledgedBy      *User                `jsonapi:"relation,acknowledged-by"`
+}
+
+type stackDiagnostics struct {
+	client *Client
+}
+
+type StackDiagnosticsListOptions struct {
+	ListOptions
+}
+
+type StackDiagnosticsList struct {
+	*Pagination
+	Items []*StackDiagnostic
 }
 
 // DiagnosticPos represents a position in the source code.
@@ -55,4 +80,34 @@ type DiagnosticRange struct {
 	Source   string        `jsonapi:"attr,source"`
 	Start    DiagnosticPos `jsonapi:"attr,start"`
 	End      DiagnosticPos `jsonapi:"attr,end"`
+}
+
+// Read retrieves a stack diagnostic by its ID.
+func (s stackDiagnostics) Read(ctx context.Context, stackDiagnosticID string) (*StackDiagnostic, error) {
+	req, err := s.client.NewRequest("GET", fmt.Sprintf("stack-diagnostics/%s", url.PathEscape(stackDiagnosticID)), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	var diagnostics *StackDiagnostic
+	if err := req.Do(ctx, diagnostics); err != nil {
+		return nil, err
+	}
+
+	return diagnostics, nil
+}
+
+// Acknowledge marks a diagnostic as acknowledged.
+func (s stackDiagnostics) Acknowledge(ctx context.Context, stackDiagnosticID string) error {
+	req, err := s.client.NewRequest("POST", fmt.Sprintf("stack-diagnostics/%s/acknowledge", url.PathEscape(stackDiagnosticID)), nil)
+	if err != nil {
+		return err
+	}
+
+	diagnostic := StackDiagnostic{}
+	if err := req.Do(ctx, &diagnostic); err != nil {
+		return err
+	}
+
+	return nil
 }

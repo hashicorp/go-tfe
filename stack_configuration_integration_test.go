@@ -122,3 +122,51 @@ func TestStackConfigurationCreateUploadAndRead(t *testing.T) {
 		require.Fail(t, "timed out waiting for stack configuration to be processed")
 	}
 }
+
+func TestStackConfigurationDiagnostics(t *testing.T) {
+	skipUnlessBeta(t)
+
+	client := testClient(t)
+	ctx := context.Background()
+
+	orgTest, orgTestCleanup := createOrganization(t, client)
+	t.Cleanup(orgTestCleanup)
+
+	oauthClient, cleanup := createOAuthClient(t, client, orgTest, nil)
+	t.Cleanup(cleanup)
+
+	stack, err := client.Stacks.Create(ctx, StackCreateOptions{
+
+		Project: orgTest.DefaultProject,
+		Name:    "test-stack",
+
+		VCSRepo: &StackVCSRepoOptions{
+			Identifier:   "ctrombley/linked-stacks-demo-network",
+			OAuthTokenID: oauthClient.OAuthTokens[0].ID,
+			Branch:       "main",
+		},
+	})
+	require.NoError(t, err)
+	require.NotNil(t, stack)
+
+	stackUpdated, err := client.Stacks.FetchLatestFromVcs(ctx, stack.ID)
+	require.NoError(t, err)
+	require.NotNil(t, stackUpdated)
+
+	t.Run("Diagnostics with valid ID", func(t *testing.T) {
+		opts := &StackDiagnosticListOptions{
+			ListOptions: ListOptions{
+				PageNumber: 1,
+				PageSize:   10,
+			},
+		}
+		sds, err := client.StackDeploymentSteps.Diagnostics(ctx, stackUpdated.LatestStackConfiguration.ID, opts)
+		assert.NoError(t, err)
+		assert.NotEmpty(t, sds)
+	})
+
+	t.Run("Diagnostics with invalid ID", func(t *testing.T) {
+		_, err := client.StackDeploymentSteps.Diagnostics(ctx, stackUpdated.LatestStackConfiguration.ID, nil)
+		require.Error(t, err)
+	})
+}

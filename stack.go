@@ -138,22 +138,15 @@ type StackConfiguration struct {
 	IngressAttributes *IngressAttributes `jsonapi:"relation,ingress-attributes"`
 }
 
-// StackState represents a stack state
-type StackState struct {
-	// Attributes
-	ID                    string `jsonapi:"primary,stack-states"`
-	Description           string `jsonapi:"attr,description"`
-	Generation            int    `jsonapi:"attr,generation"`
-	Status                string `jsonapi:"attr,status"`
-	Deployment            string `jsonapi:"attr,deployment"`
-	Components            string `jsonapi:"attr,components"`
-	IsCurrent             bool   `jsonapi:"attr,is-current"`
-	ResourceInstanceCount int    `jsonapi:"attr,resource-instance-count"`
+// StackIncludeOpt represents the include options for a stack.
+type StackIncludeOpt string
 
-	// Relationships
-	Stack              *Stack              `jsonapi:"relation,stack"`
-	StackDeploymentRun *StackDeploymentRun `jsonapi:"relation,stack-deployment-run"`
-}
+const (
+	StackIncludeOrganization             StackIncludeOpt = "organization"
+	StackIncludeProject                  StackIncludeOpt = "project"
+	StackIncludeLatestStackConfiguration StackIncludeOpt = "latest_stack_configuration"
+	StackIncludeStackDiagnostics         StackIncludeOpt = "stack_diagnostics"
+)
 
 // StackListOptions represents the options for listing stacks.
 type StackListOptions struct {
