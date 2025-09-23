@@ -38,15 +38,15 @@ func TestStackDeploymentRunsList(t *testing.T) {
 	require.NoError(t, err)
 	require.NotNil(t, stack)
 
-	stackUpdated, err := client.Stacks.UpdateConfiguration(ctx, stack.ID)
+	stackUpdated, err := client.Stacks.FetchLatestFromVcs(ctx, stack.ID)
 	require.NoError(t, err)
 	require.NotNil(t, stackUpdated)
 
-	stack = pollStackDeployments(t, ctx, client, stackUpdated.ID)
-	require.NotNil(t, stack.LatestStackConfiguration)
+	stackUpdated = pollStackDeploymentGroups(t, ctx, client, stackUpdated.ID)
+	require.NotNil(t, stackUpdated.LatestStackConfiguration)
 
 	// Get the deployment group ID from the stack configuration
-	deploymentGroups, err := client.StackDeploymentGroups.List(ctx, stack.LatestStackConfiguration.ID, nil)
+	deploymentGroups, err := client.StackDeploymentGroups.List(ctx, stackUpdated.LatestStackConfiguration.ID, nil)
 	require.NoError(t, err)
 	require.NotNil(t, deploymentGroups)
 	require.NotEmpty(t, deploymentGroups.Items)
@@ -120,14 +120,14 @@ func TestStackDeploymentRunsRead(t *testing.T) {
 	require.NoError(t, err)
 	require.NotNil(t, stack)
 
-	stackUpdated, err := client.Stacks.UpdateConfiguration(ctx, stack.ID)
+	stackUpdated, err := client.Stacks.FetchLatestFromVcs(ctx, stack.ID)
 	require.NoError(t, err)
 	require.NotNil(t, stackUpdated)
 
-	stack = pollStackDeployments(t, ctx, client, stackUpdated.ID)
-	require.NotNil(t, stack.LatestStackConfiguration)
+	stackUpdated = pollStackDeploymentGroups(t, ctx, client, stackUpdated.ID)
+	require.NotNil(t, stackUpdated.LatestStackConfiguration)
 
-	stackDeploymentGroups, err := client.StackDeploymentGroups.List(ctx, stack.LatestStackConfiguration.ID, nil)
+	stackDeploymentGroups, err := client.StackDeploymentGroups.List(ctx, stackUpdated.LatestStackConfiguration.ID, nil)
 	require.NoError(t, err)
 	require.NotEmpty(t, stackDeploymentGroups)
 
@@ -137,7 +137,7 @@ func TestStackDeploymentRunsRead(t *testing.T) {
 	require.NoError(t, err)
 	require.NotEmpty(t, stackDeploymentRuns)
 
-	sdr := stackDeploymentGroups.Items[0]
+	sdr := stackDeploymentRuns.Items[0]
 
 	t.Run("Read with valid ID", func(t *testing.T) {
 		run, err := client.StackDeploymentRuns.Read(ctx, sdr.ID)
@@ -149,6 +149,7 @@ func TestStackDeploymentRunsRead(t *testing.T) {
 		_, err := client.StackDeploymentRuns.Read(ctx, "")
 		assert.Error(t, err)
 	})
+
 	t.Run("Read with options", func(t *testing.T) {
 		run, err := client.StackDeploymentRuns.ReadWithOptions(ctx, sdr.ID, &StackDeploymentRunReadOptions{
 			Include: []SDRIncludeOpt{"stack-deployment-group"},
@@ -157,6 +158,7 @@ func TestStackDeploymentRunsRead(t *testing.T) {
 		assert.NotNil(t, run)
 		assert.NotNil(t, run.StackDeploymentGroup.ID)
 	})
+
 	t.Run("Read with invalid options", func(t *testing.T) {
 		_, err := client.StackDeploymentRuns.ReadWithOptions(ctx, sdr.ID, &StackDeploymentRunReadOptions{
 			Include: []SDRIncludeOpt{"invalid-option"},
@@ -189,15 +191,15 @@ func TestStackDeploymentRunsApproveAllPlans(t *testing.T) {
 	require.NoError(t, err)
 	require.NotNil(t, stack)
 
-	stackUpdated, err := client.Stacks.UpdateConfiguration(ctx, stack.ID)
+	stackUpdated, err := client.Stacks.FetchLatestFromVcs(ctx, stack.ID)
 	require.NoError(t, err)
 	require.NotNil(t, stackUpdated)
 
-	stack = pollStackDeployments(t, ctx, client, stackUpdated.ID)
-	require.NotNil(t, stack.LatestStackConfiguration)
+	stackUpdated = pollStackDeploymentGroups(t, ctx, client, stackUpdated.ID)
+	require.NotNil(t, stackUpdated.LatestStackConfiguration)
 
 	// Get the deployment group ID from the stack configuration
-	deploymentGroups, err := client.StackDeploymentGroups.List(ctx, stack.LatestStackConfiguration.ID, nil)
+	deploymentGroups, err := client.StackDeploymentGroups.List(ctx, stackUpdated.LatestStackConfiguration.ID, nil)
 	require.NoError(t, err)
 	require.NotNil(t, deploymentGroups)
 	require.NotEmpty(t, deploymentGroups.Items)
@@ -242,15 +244,15 @@ func TestStackDeploymentRunsCancel(t *testing.T) {
 	require.NoError(t, err)
 	require.NotNil(t, stack)
 
-	stackUpdated, err := client.Stacks.UpdateConfiguration(ctx, stack.ID)
+	stackUpdated, err := client.Stacks.FetchLatestFromVcs(ctx, stack.ID)
 	require.NoError(t, err)
 	require.NotNil(t, stackUpdated)
 
-	stack = pollStackDeployments(t, ctx, client, stackUpdated.ID)
-	require.NotNil(t, stack.LatestStackConfiguration)
+	stackUpdated = pollStackDeploymentGroups(t, ctx, client, stackUpdated.ID)
+	require.NotNil(t, stackUpdated.LatestStackConfiguration)
 
 	// Get the deployment group ID from the stack configuration
-	deploymentGroups, err := client.StackDeploymentGroups.List(ctx, stack.LatestStackConfiguration.ID, nil)
+	deploymentGroups, err := client.StackDeploymentGroups.List(ctx, stackUpdated.LatestStackConfiguration.ID, nil)
 	require.NoError(t, err)
 	require.NotNil(t, deploymentGroups)
 	require.NotEmpty(t, deploymentGroups.Items)

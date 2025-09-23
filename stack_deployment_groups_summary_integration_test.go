@@ -6,13 +6,12 @@ package tfe
 import (
 	"context"
 	"testing"
-	"time"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
 
-func TestStackConfigurationSummaryList(t *testing.T) {
+func TestStackDeploymentGroupSummaryList(t *testing.T) {
 	skipUnlessBeta(t)
 
 	client := testClient(t)
@@ -49,31 +48,29 @@ func TestStackConfigurationSummaryList(t *testing.T) {
 	require.NoError(t, err)
 	require.NotNil(t, stack2)
 
-	// Trigger first stack configuration by updating configuration
+	// Trigger first stack configuration with a fetch
+	_, err = client.Stacks.FetchLatestFromVcs(ctx, stack.ID)
+	require.NoError(t, err)
+
+	updatedStack := pollStackDeploymentGroups(t, ctx, client, stack.ID)
+	require.NotNil(t, updatedStack.LatestStackConfiguration.ID)
+
+	// Trigger second stack configuration with a fetch
 	_, err = client.Stacks.FetchLatestFromVcs(ctx, stack2.ID)
 	require.NoError(t, err)
 
-	// Wait a bit and trigger second stack configuration
-	time.Sleep(2 * time.Second)
-	_, err = client.Stacks.FetchLatestFromVcs(ctx, stack2.ID)
-	require.NoError(t, err)
+	updatedStack2 := pollStackDeploymentGroups(t, ctx, client, stack2.ID)
+	require.NotNil(t, updatedStack2.LatestStackConfiguration.ID)
 
-	t.Run("Successful empty list", func(t *testing.T) {
-		stackConfigSummaryList, err := client.StackConfigurationSummaries.List(ctx, stack.ID, nil)
-		require.NoError(t, err)
-
-		assert.Len(t, stackConfigSummaryList.Items, 0)
-	})
-
-	t.Run("Successful multiple config summary list", func(t *testing.T) {
-		stackConfigSummaryList, err := client.StackConfigurationSummaries.List(ctx, stack2.ID, nil)
+	t.Run("Successful multiple deployment group summary list", func(t *testing.T) {
+		stackConfigSummaryList, err := client.StackDeploymentGroupSummaries.List(ctx, updatedStack2.LatestStackConfiguration.ID, nil)
 		require.NoError(t, err)
 
 		assert.Len(t, stackConfigSummaryList.Items, 2)
 	})
 
 	t.Run("Unsuccessful list", func(t *testing.T) {
-		_, err := client.StackConfigurationSummaries.List(ctx, "", nil)
+		_, err := client.StackDeploymentGroupSummaries.List(ctx, "", nil)
 		require.Error(t, err)
 	})
 }

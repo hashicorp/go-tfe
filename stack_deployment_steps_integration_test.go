@@ -36,14 +36,14 @@ func TestStackDeploymentStepsList(t *testing.T) {
 	require.NoError(t, err)
 	require.NotNil(t, stack)
 
-	stackUpdated, err := client.Stacks.UpdateConfiguration(ctx, stack.ID)
+	stackUpdated, err := client.Stacks.FetchLatestFromVcs(ctx, stack.ID)
 	require.NoError(t, err)
 	require.NotNil(t, stackUpdated)
 
-	stack = pollStackDeployments(t, ctx, client, stackUpdated.ID)
-	require.NotNil(t, stack.LatestStackConfiguration)
+	stackUpdated = pollStackDeploymentGroups(t, ctx, client, stackUpdated.ID)
+	require.NotNil(t, stackUpdated.LatestStackConfiguration)
 
-	stackDeploymentGroups, err := client.StackDeploymentGroups.List(ctx, stack.LatestStackConfiguration.ID, nil)
+	stackDeploymentGroups, err := client.StackDeploymentGroups.List(ctx, stackUpdated.LatestStackConfiguration.ID, nil)
 	require.NoError(t, err)
 	require.NotEmpty(t, stackDeploymentGroups)
 
@@ -76,7 +76,7 @@ func TestStackDeploymentStepsList(t *testing.T) {
 		assert.NotNil(t, step.Status)
 
 		require.NotNil(t, step.StackDeploymentRun)
-		assert.Equal(t, sdg.ID, step.StackDeploymentRun.ID)
+		assert.Equal(t, sdr.ID, step.StackDeploymentRun.ID)
 	})
 
 	t.Run("List with pagination", func(t *testing.T) {
@@ -98,7 +98,7 @@ func TestStackDeploymentStepsList(t *testing.T) {
 		assert.NotNil(t, step.Status)
 
 		require.NotNil(t, step.StackDeploymentRun)
-		assert.Equal(t, sdg.ID, step.StackDeploymentRun.ID)
+		assert.Equal(t, sdr.ID, step.StackDeploymentRun.ID)
 	})
 }
 
@@ -126,14 +126,14 @@ func TestStackDeploymentStepsRead(t *testing.T) {
 	require.NoError(t, err)
 	require.NotNil(t, stack)
 
-	stackUpdated, err := client.Stacks.UpdateConfiguration(ctx, stack.ID)
+	stackUpdated, err := client.Stacks.FetchLatestFromVcs(ctx, stack.ID)
 	require.NoError(t, err)
 	require.NotNil(t, stackUpdated)
 
-	stack = pollStackDeployments(t, ctx, client, stackUpdated.ID)
-	require.NotNil(t, stack.LatestStackConfiguration)
+	stackUpdated = pollStackDeploymentGroups(t, ctx, client, stackUpdated.ID)
+	require.NotNil(t, stackUpdated.LatestStackConfiguration)
 
-	stackDeploymentGroups, err := client.StackDeploymentGroups.List(ctx, stack.LatestStackConfiguration.ID, nil)
+	stackDeploymentGroups, err := client.StackDeploymentGroups.List(ctx, stackUpdated.LatestStackConfiguration.ID, nil)
 	require.NoError(t, err)
 	require.NotEmpty(t, stackDeploymentGroups)
 
@@ -188,14 +188,14 @@ func TestStackDeploymentStepsAdvance(t *testing.T) {
 	require.NoError(t, err)
 	require.NotNil(t, stack)
 
-	stackUpdated, err := client.Stacks.UpdateConfiguration(ctx, stack.ID)
+	stackUpdated, err := client.Stacks.FetchLatestFromVcs(ctx, stack.ID)
 	require.NoError(t, err)
 	require.NotNil(t, stackUpdated)
 
-	stack = pollStackDeployments(t, ctx, client, stackUpdated.ID)
-	require.NotNil(t, stack.LatestStackConfiguration)
+	stackUpdated = pollStackDeploymentGroups(t, ctx, client, stackUpdated.ID)
+	require.NotNil(t, stackUpdated.LatestStackConfiguration)
 
-	stackDeploymentGroups, err := client.StackDeploymentGroups.List(ctx, stack.LatestStackConfiguration.ID, nil)
+	stackDeploymentGroups, err := client.StackDeploymentGroups.List(ctx, stackUpdated.LatestStackConfiguration.ID, nil)
 	require.NoError(t, err)
 	require.NotEmpty(t, stackDeploymentGroups)
 

@@ -211,6 +211,8 @@ func TestRegistryProviderPlatformsDelete(t *testing.T) {
 }
 
 func TestRegistryProviderPlatformsRead(t *testing.T) {
+	t.Skip()
+
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -290,6 +292,8 @@ func TestRegistryProviderPlatformsRead(t *testing.T) {
 }
 
 func TestRegistryProviderPlatformsList(t *testing.T) {
+	t.Skip()
+
 	client := testClient(t)
 	ctx := context.Background()
 

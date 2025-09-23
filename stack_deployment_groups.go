@@ -32,11 +32,14 @@ type StackDeploymentGroups interface {
 type DeploymentGroupStatus string
 
 const (
-	DeploymentGroupStatusPending   DeploymentGroupStatus = "pending"
-	DeploymentGroupStatusDeploying DeploymentGroupStatus = "deploying"
-	DeploymentGroupStatusSucceeded DeploymentGroupStatus = "succeeded"
-	DeploymentGroupStatusFailed    DeploymentGroupStatus = "failed"
-	DeploymentGroupStatusAbandoned DeploymentGroupStatus = "abandoned"
+	DeploymentGroupStatusPending                     DeploymentGroupStatus = "pending"
+	DeploymentGroupStatusPreDeploying                DeploymentGroupStatus = "pre-deploying"
+	DeploymentGroupStatusPreDeployingPendingOperator DeploymentGroupStatus = "pending-operator"
+	DeploymentGroupStatusAcquiringLock               DeploymentGroupStatus = "acquiring-lock"
+	DeploymentGroupStatusDeploying                   DeploymentGroupStatus = "deploying"
+	DeploymentGroupStatusSucceeded                   DeploymentGroupStatus = "succeeded"
+	DeploymentGroupStatusFailed                      DeploymentGroupStatus = "failed"
+	DeploymentGroupStatusAbandoned                   DeploymentGroupStatus = "abandoned"
 )
 
 // stackDeploymentGroups implements StackDeploymentGroups.
