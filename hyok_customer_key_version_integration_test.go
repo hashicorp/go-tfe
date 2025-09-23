@@ -19,16 +19,7 @@ func TestHYOKCustomerKeyVersionsList(t *testing.T) {
 	client := testClient(t)
 	ctx := context.Background()
 
-	// replace the environment variable with a valid organization name that has HYOK Customer Key Versions configurations
-	hyokOrganizationName := os.Getenv("HYOK_ORGANIZATION_NAME")
-	if hyokOrganizationName == "" {
-		t.Fatal("Export a valid HYOK_ORGANIZATION_NAME before running this test!")
-	}
-
-	orgTest, err := client.Organizations.Read(ctx, hyokOrganizationName)
-	if err != nil {
-		t.Fatal(err)
-	}
+	orgTest := testHyokOrganization(t, client)
 
 	agentPool, agentPoolCleanup := createAgentPool(t, client, orgTest)
 	t.Cleanup(agentPoolCleanup)

@@ -3281,6 +3281,23 @@ func hyokIntegrationTestsEnabled() bool {
 	return os.Getenv("ENABLE_HYOK_INTEGRATION_TESTS") == "1"
 }
 
+func testHyokOrganization(t *testing.T, client *Client) *Organization {
+	ctx := context.Background()
+
+	// replace the environment variable with a valid organization name that has desired test configurations
+	hyokOrganizationName := os.Getenv("HYOK_ORGANIZATION_NAME")
+	if hyokOrganizationName == "" {
+		t.Fatal("Export a valid HYOK_ORGANIZATION_NAME before running this test!")
+	}
+
+	orgTest, err := client.Organizations.Read(ctx, hyokOrganizationName)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	return orgTest
+}
+
 // isEmpty gets whether the specified object is considered empty or not.
 func isEmpty(object interface{}) bool {
 	// get nil case out of the way

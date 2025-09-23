@@ -2,7 +2,6 @@ package tfe
 
 import (
 	"context"
-	"os"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -18,16 +17,7 @@ func TestAWSOIDCConfigurationCreateDelete(t *testing.T) {
 	client := testClient(t)
 	ctx := context.Background()
 
-	// replace the environment variable with a valid organization name that has AWS OIDC HYOK configurations
-	hyokOrganizationName := os.Getenv("HYOK_ORGANIZATION_NAME")
-	if hyokOrganizationName == "" {
-		t.Fatal("Export a valid HYOK_ORGANIZATION_NAME before running this test!")
-	}
-
-	orgTest, err := client.Organizations.Read(ctx, hyokOrganizationName)
-	if err != nil {
-		t.Fatal(err)
-	}
+	orgTest := testHyokOrganization(t, client)
 
 	t.Run("with valid options", func(t *testing.T) {
 		opts := AWSOIDCConfigurationCreateOptions{
@@ -58,16 +48,7 @@ func TestAWSOIDCConfigurationRead(t *testing.T) {
 	client := testClient(t)
 	ctx := context.Background()
 
-	// replace the environment variable with a valid organization name that has AWS OIDC HYOK configurations
-	hyokOrganizationName := os.Getenv("HYOK_ORGANIZATION_NAME")
-	if hyokOrganizationName == "" {
-		t.Fatal("Export a valid HYOK_ORGANIZATION_NAME before running this test!")
-	}
-
-	orgTest, err := client.Organizations.Read(ctx, hyokOrganizationName)
-	if err != nil {
-		t.Fatal(err)
-	}
+	orgTest := testHyokOrganization(t, client)
 
 	oidcConfig, oidcConfigCleanup := createAWSOIDCConfiguration(t, client, orgTest)
 	t.Cleanup(oidcConfigCleanup)
@@ -90,16 +71,7 @@ func TestAWSOIDCConfigurationsUpdate(t *testing.T) {
 	client := testClient(t)
 	ctx := context.Background()
 
-	// replace the environment variable with a valid organization name that has AWS OIDC HYOK configurations
-	hyokOrganizationName := os.Getenv("HYOK_ORGANIZATION_NAME")
-	if hyokOrganizationName == "" {
-		t.Fatal("Export a valid HYOK_ORGANIZATION_NAME before running this test!")
-	}
-
-	orgTest, err := client.Organizations.Read(ctx, hyokOrganizationName)
-	if err != nil {
-		t.Fatal(err)
-	}
+	orgTest := testHyokOrganization(t, client)
 
 	oidcConfig, oidcConfigCleanup := createAWSOIDCConfiguration(t, client, orgTest)
 	t.Cleanup(oidcConfigCleanup)
