@@ -66,7 +66,7 @@ type Plan struct {
 
 	// Relations
 	Exports              []*PlanExport         `jsonapi:"relation,exports"`
-	HYOKEncryptedDataKey *HYOKEncryptedDataKey `jsonapi:"relation,hyok-encrypted-data-key,omitempty"`
+	HYOKEncryptedDataKey *HYOKEncryptedDataKey `jsonapi:"relation,hyok-encrypted-data-key"`
 
 	// Links
 	Links map[string]interface{} `jsonapi:"links,omitempty"`
