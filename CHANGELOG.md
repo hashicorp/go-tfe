@@ -4,6 +4,7 @@
 
 * Add `Sort` option to `Agents` and `AgentPools`, by @twitnithegirl [#1229](https://github.com/hashicorp/go-tfe/pull/1229)
 * Add serialization for `StacksEnabled` field, `CanEnableStacks` & `CanCreateProject` permissions on Organization Read by @a-anurag27 [#1230](https://github.com/hashicorp/go-tfe/pull/1230)
+* Adds new stacks resources `StackDeployments`, `StackDiagnostics`, and `StackStates`, by @ctrombley [#1226](https://github.com/hashicorp/go-tfe/pull/1226)
 
 # v1.94.0
 
