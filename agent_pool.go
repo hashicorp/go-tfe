@@ -79,8 +79,8 @@ type AgentPool struct {
 type AgentPoolIncludeOpt string
 
 const (
-  AgentPoolWorkspaces AgentPoolIncludeOpt = "workspaces"
-  AgentPoolHYOKConfigurations AgentPoolIncludeOpt = "hyok-configurations"
+	AgentPoolWorkspaces         AgentPoolIncludeOpt = "workspaces"
+	AgentPoolHYOKConfigurations AgentPoolIncludeOpt = "hyok-configurations"
 )
 
 type AgentPoolReadOptions struct {

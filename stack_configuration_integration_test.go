@@ -37,12 +37,12 @@ func TestStackConfigurationList(t *testing.T) {
 	require.NoError(t, err)
 
 	// Trigger first stack configuration by updating configuration
-	_, err = client.Stacks.UpdateConfiguration(ctx, stack.ID)
+	_, err = client.Stacks.FetchLatestFromVcs(ctx, stack.ID)
 	require.NoError(t, err)
 
 	// Wait a bit and trigger second stack configuration
 	time.Sleep(2 * time.Second)
-	_, err = client.Stacks.UpdateConfiguration(ctx, stack.ID)
+	_, err = client.Stacks.FetchLatestFromVcs(ctx, stack.ID)
 	require.NoError(t, err)
 
 	list, err := client.StackConfigurations.List(ctx, stack.ID, nil)

@@ -149,7 +149,7 @@ func TestStackReadUpdateDelete(t *testing.T) {
 	stack, err := client.Stacks.Create(ctx, StackCreateOptions{
 		Name: "test-stack",
 		VCSRepo: &StackVCSRepoOptions{
-			Identifier:   "brandonc/pet-nulls-stack",
+			Identifier:   "hashicorp-guides/pet-nulls-stack",
 			OAuthTokenID: oauthClient.OAuthTokens[0].ID,
 			Branch:       "main",
 		},
@@ -165,7 +165,7 @@ func TestStackReadUpdateDelete(t *testing.T) {
 	require.NotEmpty(t, stack.VCSRepo.OAuthTokenID)
 	require.NotEmpty(t, stack.VCSRepo.Branch)
 
-	stackRead, err := client.Stacks.Read(ctx, stack.ID, nil)
+	stackRead, err := client.Stacks.Read(ctx, stack.ID)
 	require.NoError(t, err)
 	require.Equal(t, stack.VCSRepo.Identifier, stackRead.VCSRepo.Identifier)
 	require.Equal(t, stack.VCSRepo.OAuthTokenID, stackRead.VCSRepo.OAuthTokenID)
@@ -181,7 +181,7 @@ func TestStackReadUpdateDelete(t *testing.T) {
 	stackUpdated, err := client.Stacks.Update(ctx, stack.ID, StackUpdateOptions{
 		Description: String("updated description"),
 		VCSRepo: &StackVCSRepoOptions{
-			Identifier:   "brandonc/pet-nulls-stack",
+			Identifier:   "hashicorp-guides/pet-nulls-stack",
 			OAuthTokenID: oauthClient.OAuthTokens[0].ID,
 			Branch:       "main",
 		},
@@ -192,14 +192,14 @@ func TestStackReadUpdateDelete(t *testing.T) {
 	require.Equal(t, "updated description", stackUpdated.Description)
 	require.Equal(t, updatedPool.ID, stackUpdated.AgentPool.ID)
 
-	stackUpdatedConfig, err := client.Stacks.UpdateConfiguration(ctx, stack.ID)
+	stackUpdatedConfig, err := client.Stacks.FetchLatestFromVcs(ctx, stack.ID)
 	require.NoError(t, err)
 	require.Equal(t, stack.Name, stackUpdatedConfig.Name)
 
 	err = client.Stacks.Delete(ctx, stack.ID)
 	require.NoError(t, err)
 
-	stackReadAfterDelete, err := client.Stacks.Read(ctx, stack.ID, nil)
+	stackReadAfterDelete, err := client.Stacks.Read(ctx, stack.ID)
 	require.ErrorIs(t, err, ErrResourceNotFound)
 	require.Nil(t, stackReadAfterDelete)
 }
@@ -219,7 +219,7 @@ func TestStackRemoveVCSBacking(t *testing.T) {
 	stack, err := client.Stacks.Create(ctx, StackCreateOptions{
 		Name: "test-stack",
 		VCSRepo: &StackVCSRepoOptions{
-			Identifier:   "brandonc/pet-nulls-stack",
+			Identifier:   "hashicorp-guides/pet-nulls-stack",
 			OAuthTokenID: oauthClient.OAuthTokens[0].ID,
 			Branch:       "main",
 		},
@@ -234,7 +234,7 @@ func TestStackRemoveVCSBacking(t *testing.T) {
 	require.NotEmpty(t, stack.VCSRepo.OAuthTokenID)
 	require.NotEmpty(t, stack.VCSRepo.Branch)
 
-	stackRead, err := client.Stacks.Read(ctx, stack.ID, nil)
+	stackRead, err := client.Stacks.Read(ctx, stack.ID)
 	require.NoError(t, err)
 	require.Equal(t, stack.VCSRepo.Identifier, stackRead.VCSRepo.Identifier)
 	require.Equal(t, stack.VCSRepo.OAuthTokenID, stackRead.VCSRepo.OAuthTokenID)
@@ -265,7 +265,7 @@ func TestStackReadUpdateForceDelete(t *testing.T) {
 	stack, err := client.Stacks.Create(ctx, StackCreateOptions{
 		Name: "test-stack",
 		VCSRepo: &StackVCSRepoOptions{
-			Identifier:   "brandonc/pet-nulls-stack",
+			Identifier:   "hashicorp-guides/pet-nulls-stack",
 			OAuthTokenID: oauthClient.OAuthTokens[0].ID,
 			Branch:       "main",
 		},
@@ -280,7 +280,7 @@ func TestStackReadUpdateForceDelete(t *testing.T) {
 	require.NotEmpty(t, stack.VCSRepo.OAuthTokenID)
 	require.NotEmpty(t, stack.VCSRepo.Branch)
 
-	stackRead, err := client.Stacks.Read(ctx, stack.ID, nil)
+	stackRead, err := client.Stacks.Read(ctx, stack.ID)
 	require.NoError(t, err)
 	require.Equal(t, stack.VCSRepo.Identifier, stackRead.VCSRepo.Identifier)
 	require.Equal(t, stack.VCSRepo.OAuthTokenID, stackRead.VCSRepo.OAuthTokenID)
@@ -291,7 +291,7 @@ func TestStackReadUpdateForceDelete(t *testing.T) {
 	stackUpdated, err := client.Stacks.Update(ctx, stack.ID, StackUpdateOptions{
 		Description: String("updated description"),
 		VCSRepo: &StackVCSRepoOptions{
-			Identifier:   "brandonc/pet-nulls-stack",
+			Identifier:   "hashicorp-guides/pet-nulls-stack",
 			OAuthTokenID: oauthClient.OAuthTokens[0].ID,
 			Branch:       "main",
 		},
@@ -300,19 +300,19 @@ func TestStackReadUpdateForceDelete(t *testing.T) {
 	require.NoError(t, err)
 	require.Equal(t, "updated description", stackUpdated.Description)
 
-	stackUpdatedConfig, err := client.Stacks.UpdateConfiguration(ctx, stack.ID)
+	stackUpdatedConfig, err := client.Stacks.FetchLatestFromVcs(ctx, stack.ID)
 	require.NoError(t, err)
 	require.Equal(t, stack.Name, stackUpdatedConfig.Name)
 
 	err = client.Stacks.ForceDelete(ctx, stack.ID)
 	require.NoError(t, err)
 
-	stackReadAfterDelete, err := client.Stacks.Read(ctx, stack.ID, nil)
+	stackReadAfterDelete, err := client.Stacks.Read(ctx, stack.ID)
 	require.ErrorIs(t, err, ErrResourceNotFound)
 	require.Nil(t, stackReadAfterDelete)
 }
 
-func pollStackDeployments(t *testing.T, ctx context.Context, client *Client, stackID string) (stack *Stack) {
+func pollStackDeploymentGroups(t *testing.T, ctx context.Context, client *Client, stackID string) (stack *Stack) {
 	t.Helper()
 
 	// pollStackDeployments will poll the given stack until it has deployments or the deadline is reached.
@@ -332,9 +332,7 @@ func pollStackDeployments(t *testing.T, ctx context.Context, client *Client, sta
 			t.Fatalf("Stack %q had no deployment groups at deadline", stackID)
 		case <-ticker.C:
 			var err error
-			stack, err = client.Stacks.Read(ctx, stackID, &StackReadOptions{
-				Include: []StackIncludeOpt{StackIncludeLatestStackConfiguration},
-			})
+			stack, err = client.Stacks.Read(ctx, stackID)
 			if err != nil {
 				t.Fatalf("Failed to read stack %q: %s", stackID, err)
 			}
@@ -343,18 +341,19 @@ func pollStackDeployments(t *testing.T, ctx context.Context, client *Client, sta
 				t.Fatalf("Failed to read deployment groups %q: %s", stackID, err)
 			}
 
-			t.Logf("Stack %q had %d deployment groups", stack.ID, len(stack.DeploymentNames))
+			t.Logf("Stack %q had %d deployment groups", stack.ID, groups.TotalCount)
 			if groups.TotalCount > 0 {
 				finished = true
 			}
 		}
 	}
 
-	return
+	return stack
 }
 
-func pollStackDeploymentStatus(t *testing.T, ctx context.Context, client *Client, stackID, deploymentName, status string) {
-	// pollStackDeployments will poll the given stack until it has deployments or the deadline is reached.
+func pollStackDeploymentGroupStatus(t *testing.T, ctx context.Context, client *Client, stackID, status string) {
+	// pollStackDeploymentGroupStatus will poll the given stack until its deployment groups
+	// all match the given status, or the deadline is reached.
 	ctx, cancel := context.WithDeadline(ctx, time.Now().Add(5*time.Minute))
 	defer cancel()
 
@@ -368,17 +367,19 @@ func pollStackDeploymentStatus(t *testing.T, ctx context.Context, client *Client
 		t.Log("...")
 		select {
 		case <-ctx.Done():
-			t.Fatalf("Stack deployment %s/%s did not have status %q at deadline", stackID, deploymentName, status)
+			t.Fatalf("Stack deployment groups for config %s did not have status %q at deadline", stackID, status)
 		case <-ticker.C:
 			var err error
-			deployment, err := client.StackDeployments.Read(ctx, stackID, deploymentName)
+			summaries, err := client.StackDeploymentGroupSummaries.List(ctx, stackID, nil)
 			if err != nil {
-				t.Fatalf("Failed to read stack deployment %s/%s: %s", stackID, deploymentName, err)
+				t.Fatalf("Failed to read stack deployment groups or config %s: %s", stackID, err)
 			}
 
-			t.Logf("Stack deployment %s/%s had status %q", stackID, deploymentName, deployment.Status)
-			if deployment.Status == status {
-				finished = true
+			for _, group := range summaries.Items {
+				t.Logf("Stack deployment group %s for config %s had status %q", group.ID, stackID, group.Status)
+				if group.Status == status {
+					finished = true
+				}
 			}
 		}
 	}
@@ -432,7 +433,7 @@ func TestStackConverged(t *testing.T) {
 	stack, err := client.Stacks.Create(ctx, StackCreateOptions{
 		Name: "test-stack",
 		VCSRepo: &StackVCSRepoOptions{
-			Identifier:   "brandonc/pet-nulls-stack",
+			Identifier:   "hashicorp-guides/pet-nulls-stack",
 			OAuthTokenID: oauthClient.OAuthTokens[0].ID,
 		},
 		Project: &Project{
@@ -443,19 +444,15 @@ func TestStackConverged(t *testing.T) {
 	require.NoError(t, err)
 	require.NotNil(t, stack)
 
-	stackUpdated, err := client.Stacks.UpdateConfiguration(ctx, stack.ID)
+	stackUpdated, err := client.Stacks.FetchLatestFromVcs(ctx, stack.ID)
 	require.NoError(t, err)
 	require.NotNil(t, stackUpdated)
 
-	deployments := []string{"production", "staging"}
+	stackUpdated = pollStackDeploymentGroups(t, ctx, client, stackUpdated.ID)
+	require.NotNil(t, stackUpdated.LatestStackConfiguration)
 
-	stack = pollStackDeployments(t, ctx, client, stackUpdated.ID)
-	require.ElementsMatch(t, deployments, stack.DeploymentNames)
-	require.NotNil(t, stack.LatestStackConfiguration)
-
-	for _, deployment := range deployments {
-		pollStackDeploymentStatus(t, ctx, client, stack.ID, deployment, "paused")
-	}
-
-	pollStackConfigurationStatus(t, ctx, client, stack.LatestStackConfiguration.ID, "converged")
+	// Poll until all deployment groups are pending
+	configurationID := stackUpdated.LatestStackConfiguration.ID
+	pollStackConfigurationStatus(t, ctx, client, configurationID, "completed")
+	pollStackDeploymentGroupStatus(t, ctx, client, configurationID, "pending")
 }
