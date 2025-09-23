@@ -78,8 +78,10 @@ type AgentPool struct {
 // https://developer.hashicorp.com/terraform/cloud-docs/api-docs/agents#available-related-resources
 type AgentPoolIncludeOpt string
 
-const AgentPoolWorkspaces AgentPoolIncludeOpt = "workspaces"
-const AgentPoolHYOKConfigurations AgentPoolIncludeOpt = "hyok-configurations"
+const (
+  AgentPoolWorkspaces AgentPoolIncludeOpt = "workspaces"
+  AgentPoolHYOKConfigurations AgentPoolIncludeOpt = "hyok-configurations"
+)
 
 type AgentPoolReadOptions struct {
 	Include []AgentPoolIncludeOpt `url:"include,omitempty"`
