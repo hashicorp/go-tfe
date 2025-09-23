@@ -64,6 +64,14 @@ func (o *AWSOIDCConfigurationCreateOptions) valid() error {
 	return nil
 }
 
+func (o *AWSOIDCConfigurationUpdateOptions) valid() error {
+	if o.RoleARN == "" {
+		return ErrRequiredRoleARN
+	}
+
+	return nil
+}
+
 func (aoc *awsOIDCConfigurations) Create(ctx context.Context, organization string, options AWSOIDCConfigurationCreateOptions) (*AWSOIDCConfiguration, error) {
 	if !validStringID(&organization) {
 		return nil, ErrInvalidOrg
@@ -100,14 +108,6 @@ func (aoc *awsOIDCConfigurations) Read(ctx context.Context, oidcID string) (*AWS
 	}
 
 	return awsOIDCConfiguration, nil
-}
-
-func (o *AWSOIDCConfigurationUpdateOptions) valid() error {
-	if o.RoleARN == "" {
-		return ErrRequiredRoleARN
-	}
-
-	return nil
 }
 
 func (aoc *awsOIDCConfigurations) Update(ctx context.Context, oidcID string, options AWSOIDCConfigurationUpdateOptions) (*AWSOIDCConfiguration, error) {
