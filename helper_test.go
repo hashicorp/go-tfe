@@ -569,6 +569,301 @@ func createGPGKey(t *testing.T, client *Client, org *Organization, provider *Reg
 	}
 }
 
+func createAWSOIDCConfiguration(t *testing.T, client *Client, org *Organization) (*AWSOIDCConfiguration, func()) {
+	var orgCleanup func()
+
+	ctx := context.Background()
+
+	if org == nil {
+		org, orgCleanup = createOrganization(t, client)
+	}
+
+	opts := AWSOIDCConfigurationCreateOptions{
+		RoleARN: fmt.Sprintf("arn:aws:iam::123456789012:role/%s", randomString(t)),
+	}
+
+	oidcConfig, err := client.AWSOIDCConfigurations.Create(ctx, org.Name, opts)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	return oidcConfig, func() {
+		if err := client.AWSOIDCConfigurations.Delete(ctx, oidcConfig.ID); err != nil {
+			t.Errorf("Error removing AWS OIDC Configuration! WARNING: Dangling resources\n"+
+				"may exist! The full error is shown below.\n\n"+
+				"AWSOIDCConfigurations: %s\nError: %s", oidcConfig.ID, err)
+		}
+
+		if orgCleanup != nil {
+			orgCleanup()
+		}
+	}
+}
+
+func (a *AWSOIDCConfiguration) createHYOKConfiguration(t *testing.T, client *Client, org *Organization, agentPool *AgentPool) (*HYOKConfiguration, func()) {
+	var orgCleanup func()
+
+	ctx := context.Background()
+
+	if org == nil {
+		org, orgCleanup = createOrganization(t, client)
+	}
+
+	opts := HYOKConfigurationsCreateOptions{
+		KEKID:             "arn:aws:kms:us-east-1:123456789012:key/this-is-not-a-real-key",
+		Name:              randomStringWithoutSpecialChar(t),
+		KMSOptions:        &KMSOptions{KeyRegion: "us-east-1"},
+		AgentPool:         agentPool,
+		OIDCConfiguration: &OIDCConfigurationTypeChoice{AWSOIDCConfiguration: a},
+	}
+
+	hyokConfig, err := client.HYOKConfigurations.Create(ctx, org.Name, opts)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	return hyokConfig, func() {
+		cleanupHYOKConfiguration(t, ctx, client, hyokConfig.ID)
+
+		if orgCleanup != nil {
+			orgCleanup()
+		}
+	}
+}
+
+func createAzureOIDCConfiguration(t *testing.T, client *Client, org *Organization) (*AzureOIDCConfiguration, func()) {
+	var orgCleanup func()
+
+	ctx := context.Background()
+
+	if org == nil {
+		org, orgCleanup = createOrganization(t, client)
+	}
+
+	opts := AzureOIDCConfigurationCreateOptions{
+		ClientID:       randomString(t),
+		SubscriptionID: randomString(t),
+		TenantID:       randomString(t),
+	}
+
+	oidcConfig, err := client.AzureOIDCConfigurations.Create(ctx, org.Name, opts)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	return oidcConfig, func() {
+		if err := client.AzureOIDCConfigurations.Delete(ctx, oidcConfig.ID); err != nil {
+			t.Errorf("Error removing Azure OIDC Configuration! WARNING: Dangling resources\n"+
+				"may exist! The full error is shown below.\n\n"+
+				"AzureOIDCConfigurations: %s\nError: %s", oidcConfig.ID, err)
+		}
+
+		if orgCleanup != nil {
+			orgCleanup()
+		}
+	}
+}
+
+func (a *AzureOIDCConfiguration) createHYOKConfiguration(t *testing.T, client *Client, org *Organization, agentPool *AgentPool) (*HYOKConfiguration, func()) {
+	var orgCleanup func()
+
+	ctx := context.Background()
+
+	if org == nil {
+		org, orgCleanup = createOrganization(t, client)
+	}
+
+	opts := HYOKConfigurationsCreateOptions{
+		KEKID:             "https://vault-name.vault.azure.net/keys/key-name",
+		Name:              randomStringWithoutSpecialChar(t),
+		AgentPool:         agentPool,
+		OIDCConfiguration: &OIDCConfigurationTypeChoice{AzureOIDCConfiguration: a},
+	}
+
+	hyokConfig, err := client.HYOKConfigurations.Create(ctx, org.Name, opts)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	return hyokConfig, func() {
+		cleanupHYOKConfiguration(t, ctx, client, hyokConfig.ID)
+
+		if orgCleanup != nil {
+			orgCleanup()
+		}
+	}
+}
+
+func createGCPOIDCConfiguration(t *testing.T, client *Client, org *Organization) (*GCPOIDCConfiguration, func()) {
+	var orgCleanup func()
+
+	ctx := context.Background()
+
+	if org == nil {
+		org, orgCleanup = createOrganization(t, client)
+	}
+
+	opts := GCPOIDCConfigurationCreateOptions{
+		ServiceAccountEmail:  randomString(t),
+		ProjectNumber:        "123456789012",
+		WorkloadProviderName: randomString(t),
+	}
+
+	oidcConfig, err := client.GCPOIDCConfigurations.Create(ctx, org.Name, opts)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	return oidcConfig, func() {
+		if err := client.GCPOIDCConfigurations.Delete(ctx, oidcConfig.ID); err != nil {
+			t.Errorf("Error removing GCP OIDC Configuration! WARNING: Dangling resources\n"+
+				"may exist! The full error is shown below.\n\n"+
+				"GCPOIDCConfigurations: %s\nError: %s", oidcConfig.ID, err)
+		}
+
+		if orgCleanup != nil {
+			orgCleanup()
+		}
+	}
+}
+
+func (g *GCPOIDCConfiguration) createHYOKConfiguration(t *testing.T, client *Client, org *Organization, agentPool *AgentPool) (*HYOKConfiguration, func()) {
+	var orgCleanup func()
+
+	ctx := context.Background()
+
+	if org == nil {
+		org, orgCleanup = createOrganization(t, client)
+	}
+
+	opts := HYOKConfigurationsCreateOptions{
+		KEKID:             randomStringWithoutSpecialChar(t),
+		Name:              randomStringWithoutSpecialChar(t),
+		KMSOptions:        &KMSOptions{KeyLocation: "global", KeyRingID: randomString(t)},
+		AgentPool:         agentPool,
+		OIDCConfiguration: &OIDCConfigurationTypeChoice{GCPOIDCConfiguration: g},
+	}
+
+	hyokConfig, err := client.HYOKConfigurations.Create(ctx, org.Name, opts)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	return hyokConfig, func() {
+		cleanupHYOKConfiguration(t, ctx, client, hyokConfig.ID)
+
+		if orgCleanup != nil {
+			orgCleanup()
+		}
+	}
+}
+
+func createVaultOIDCConfiguration(t *testing.T, client *Client, org *Organization) (*VaultOIDCConfiguration, func()) {
+	var orgCleanup func()
+
+	ctx := context.Background()
+
+	if org == nil {
+		org, orgCleanup = createOrganization(t, client)
+	}
+
+	opts := VaultOIDCConfigurationCreateOptions{
+		Address:          "https://vault.example.com",
+		RoleName:         randomString(t),
+		Namespace:        randomString(t),
+		JWTAuthPath:      "jwt",
+		TLSCACertificate: randomString(t),
+	}
+
+	oidcConfig, err := client.VaultOIDCConfigurations.Create(ctx, org.Name, opts)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	return oidcConfig, func() {
+		if err := client.VaultOIDCConfigurations.Delete(ctx, oidcConfig.ID); err != nil {
+			t.Errorf("Error removing Vault OIDC Configuration! WARNING: Dangling resources\n"+
+				"may exist! The full error is shown below.\n\n"+
+				"VaultOIDCConfigurations: %s\nError: %s", oidcConfig.ID, err)
+		}
+
+		if orgCleanup != nil {
+			orgCleanup()
+		}
+	}
+}
+
+func (v *VaultOIDCConfiguration) createHYOKConfiguration(t *testing.T, client *Client, org *Organization, agentPool *AgentPool) (*HYOKConfiguration, func()) {
+	var orgCleanup func()
+
+	ctx := context.Background()
+
+	if org == nil {
+		org, orgCleanup = createOrganization(t, client)
+	}
+
+	opts := HYOKConfigurationsCreateOptions{
+		KEKID:             randomStringWithoutSpecialChar(t),
+		Name:              randomStringWithoutSpecialChar(t),
+		AgentPool:         agentPool,
+		OIDCConfiguration: &OIDCConfigurationTypeChoice{VaultOIDCConfiguration: v},
+	}
+
+	hyokConfig, err := client.HYOKConfigurations.Create(ctx, org.Name, opts)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	return hyokConfig, func() {
+		cleanupHYOKConfiguration(t, ctx, client, hyokConfig.ID)
+
+		if orgCleanup != nil {
+			orgCleanup()
+		}
+	}
+}
+
+func waitForHYOKConfigurationStatus(t *testing.T, ctx context.Context, client *Client, hyokID string, status HYOKConfigurationStatus) (interface{}, error) {
+	t.Helper()
+
+	return retryPatiently(func() (interface{}, error) {
+		fetched, err := client.HYOKConfigurations.Read(ctx, hyokID, nil)
+		if err != nil {
+			return nil, err
+		}
+
+		if fetched.Status == status {
+			return fetched, nil
+		}
+
+		return nil, fmt.Errorf("HYOK Configuration is not %s! HYOKConfiguration: %s\nStatus: %s", status, hyokID, fetched.Status)
+	})
+}
+
+func cleanupHYOKConfiguration(t *testing.T, ctx context.Context, client *Client, hyokID string) {
+	_, err := waitForHYOKConfigurationStatus(t, ctx, client, hyokID, HYOKConfigurationTestFailed)
+	if err != nil {
+		t.Errorf("Timed out waiting for HYOK configuration %s to fail test", hyokID)
+	}
+
+	if err = client.HYOKConfigurations.Revoke(ctx, hyokID); err != nil {
+		t.Errorf("Error removing HYOK Configuration! WARNING: Dangling resources\n"+
+			"may exist! The full error is shown below.\n\n"+
+			"HYOKConfigurations: %s\nError: %s", hyokID, err)
+	}
+
+	_, err = waitForHYOKConfigurationStatus(t, ctx, client, hyokID, HYOKConfigurationRevoked)
+	if err != nil {
+		t.Errorf("Timed out waiting for HYOK configuration %s to revoke", hyokID)
+	}
+
+	if err := client.HYOKConfigurations.Delete(ctx, hyokID); err != nil {
+		t.Errorf("Error removing HYOK Configuration! WARNING: Dangling resources\n"+
+			"may exist! The full error is shown below.\n\n"+
+			"HYOKConfigurations: %s\nError: %s", hyokID, err)
+	}
+}
+
 func createNotificationConfiguration(t *testing.T, client *Client, w *Workspace, options *NotificationConfigurationCreateOptions) (*NotificationConfiguration, func()) {
 	var wCleanup func()
 
@@ -2926,6 +3221,13 @@ func skipIfEnterprise(t *testing.T) {
 	}
 }
 
+func skipHYOKIntegrationTests(t *testing.T) {
+	t.Helper()
+	if !hyokIntegrationTestsEnabled() {
+		t.Skip("Skipping test related to HYOK features. Set ENABLE_HYOK_INTEGRATION_TESTS=1 to run.")
+	}
+}
+
 // skips a test if the underlying beta feature is not available.
 // **Note: ENABLE_BETA is always disabled in CI, so ensure you:
 //
@@ -2972,6 +3274,28 @@ func enterpriseEnabled() bool {
 // Checks to see if ENABLE_BETA is set to 1, thereby enabling tests for beta features.
 func betaFeaturesEnabled() bool {
 	return os.Getenv("ENABLE_BETA") == "1"
+}
+
+// Checks to see if HYOK_INTEGRATION_TESTS is set to 1, thereby enabling tests for HYOK features.
+func hyokIntegrationTestsEnabled() bool {
+	return os.Getenv("ENABLE_HYOK_INTEGRATION_TESTS") == "1"
+}
+
+func testHyokOrganization(t *testing.T, client *Client) *Organization {
+	ctx := context.Background()
+
+	// replace the environment variable with a valid organization name that has desired test configurations
+	hyokOrganizationName := os.Getenv("HYOK_ORGANIZATION_NAME")
+	if hyokOrganizationName == "" {
+		t.Fatal("Export a valid HYOK_ORGANIZATION_NAME before running this test!")
+	}
+
+	orgTest, err := client.Organizations.Read(ctx, hyokOrganizationName)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	return orgTest
 }
 
 // isEmpty gets whether the specified object is considered empty or not.

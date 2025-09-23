@@ -43,6 +43,10 @@ type StateVersions interface {
 	// This is a more resilient form of Create and is the recommended approach to creating state versions.
 	Upload(ctx context.Context, workspaceID string, options StateVersionUploadOptions) (*StateVersion, error)
 
+	// UploadSanitizedState uploads a sanitized version of the state to the provided sanitized state upload url.
+	// The SanitizedStateUploadURL cannot be empty.
+	UploadSanitizedState(ctx context.Context, sanitizedStateUploadURL *string, sanitizedState []byte) error
+
 	// Read a state version by its ID.
 	Read(ctx context.Context, svID string) (*StateVersion, error)
 
@@ -89,17 +93,21 @@ type StateVersionList struct {
 
 // StateVersion represents a Terraform Enterprise state version.
 type StateVersion struct {
-	ID               string             `jsonapi:"primary,state-versions"`
-	CreatedAt        time.Time          `jsonapi:"attr,created-at,iso8601"`
-	DownloadURL      string             `jsonapi:"attr,hosted-state-download-url"`
-	UploadURL        string             `jsonapi:"attr,hosted-state-upload-url"`
-	Status           StateVersionStatus `jsonapi:"attr,status"`
-	JSONUploadURL    string             `jsonapi:"attr,hosted-json-state-upload-url"`
-	JSONDownloadURL  string             `jsonapi:"attr,hosted-json-state-download-url"`
-	Serial           int64              `jsonapi:"attr,serial"`
-	VCSCommitSHA     string             `jsonapi:"attr,vcs-commit-sha"`
-	VCSCommitURL     string             `jsonapi:"attr,vcs-commit-url"`
-	BillableRUMCount *uint32            `jsonapi:"attr,billable-rum-count"`
+	ID                        string             `jsonapi:"primary,state-versions"`
+	CreatedAt                 time.Time          `jsonapi:"attr,created-at,iso8601"`
+	DownloadURL               string             `jsonapi:"attr,hosted-state-download-url"`
+	UploadURL                 string             `jsonapi:"attr,hosted-state-upload-url"`
+	Status                    StateVersionStatus `jsonapi:"attr,status"`
+	JSONUploadURL             string             `jsonapi:"attr,hosted-json-state-upload-url"`
+	JSONDownloadURL           string             `jsonapi:"attr,hosted-json-state-download-url"`
+	Serial                    int64              `jsonapi:"attr,serial"`
+	VCSCommitSHA              string             `jsonapi:"attr,vcs-commit-sha"`
+	VCSCommitURL              string             `jsonapi:"attr,vcs-commit-url"`
+	BillableRUMCount          *uint32            `jsonapi:"attr,billable-rum-count"`
+	EncryptedStateDownloadURL *string            `jsonapi:"attr,encrypted-state-download-url,omitempty"`
+	SanitizedStateUploadURL   *string            `jsonapi:"attr,sanitized-state-upload-url,omitempty"`
+	SanitizedStateDownloadURL *string            `jsonapi:"attr,sanitized-state-download-url,omitempty"`
+
 	// Whether HCP Terraform has finished populating any StateVersion fields that required async processing.
 	// If `false`, some fields may appear empty even if they should actually contain data; see comments on
 	// individual fields for details.
@@ -115,8 +123,9 @@ type StateVersion struct {
 	Resources []*StateVersionResources `jsonapi:"attr,resources"`
 
 	// Relations
-	Run     *Run                  `jsonapi:"relation,run"`
-	Outputs []*StateVersionOutput `jsonapi:"relation,outputs"`
+	Run                  *Run                  `jsonapi:"relation,run"`
+	Outputs              []*StateVersionOutput `jsonapi:"relation,outputs"`
+	HYOKEncryptedDataKey *HYOKEncryptedDataKey `jsonapi:"relation,hyok-encrypted-data-key,omitempty"`
 }
 
 // StateVersionOutputsList represents a list of StateVersionOutput items.
@@ -311,6 +320,16 @@ func (s *stateVersions) Upload(ctx context.Context, workspaceID string, options 
 
 	// Re-read the state version to get the updated status, if available
 	return s.Read(ctx, sv.ID)
+}
+
+// UploadSanitizedState uploads a sanitized version of the state to the provided sanitized state upload url.
+// The SanitizedStateUploadURL cannot be empty.
+func (s *stateVersions) UploadSanitizedState(ctx context.Context, sanitizedStateUploadURL *string, sanitizedState []byte) error {
+	if sanitizedStateUploadURL == nil {
+		return ErrSanitizedStateUploadURLMissing
+	}
+
+	return s.client.doForeignPUTRequest(ctx, *sanitizedStateUploadURL, bytes.NewReader(sanitizedState))
 }
 
 // Read a state version by its ID.

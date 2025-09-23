@@ -3,6 +3,7 @@
 ## Enhancements
 * Exports the StackConfiguration UploadTarGzip receiver function [#1219](https://github.com/hashicorp/go-tfe/pull/1219)
 * Updates BETA stacks resource schemas to match latest API spec by @ctrombley [#1220](https://github.com/hashicorp/go-tfe/pull/1220)
+* Adds support for Hold Your Own Key by @helenjw , @iuri-slywitch-hashicorp and @dominic-retli-hashi [#1201](https://github.com/hashicorp/go-tfe/pull/1201)
 
 ## Deprecations
 

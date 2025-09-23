@@ -66,18 +66,22 @@ type AgentPool struct {
 	CreatedAt          time.Time `jsonapi:"attr,created-at,iso8601"`
 
 	// Relations
-	Organization       *Organization `jsonapi:"relation,organization"`
-	Workspaces         []*Workspace  `jsonapi:"relation,workspaces"`
-	AllowedWorkspaces  []*Workspace  `jsonapi:"relation,allowed-workspaces"`
-	AllowedProjects    []*Project    `jsonapi:"relation,allowed-projects"`
-	ExcludedWorkspaces []*Workspace  `jsonapi:"relation,excluded-workspaces"`
+	Organization       *Organization        `jsonapi:"relation,organization"`
+	HYOKConfigurations []*HYOKConfiguration `jsonapi:"relation,hyok-configurations"`
+	Workspaces         []*Workspace         `jsonapi:"relation,workspaces"`
+	AllowedWorkspaces  []*Workspace         `jsonapi:"relation,allowed-workspaces"`
+	AllowedProjects    []*Project           `jsonapi:"relation,allowed-projects"`
+	ExcludedWorkspaces []*Workspace         `jsonapi:"relation,excluded-workspaces"`
 }
 
 // A list of relations to include
 // https://developer.hashicorp.com/terraform/cloud-docs/api-docs/agents#available-related-resources
 type AgentPoolIncludeOpt string
 
-const AgentPoolWorkspaces AgentPoolIncludeOpt = "workspaces"
+const (
+	AgentPoolWorkspaces         AgentPoolIncludeOpt = "workspaces"
+	AgentPoolHYOKConfigurations AgentPoolIncludeOpt = "hyok-configurations"
+)
 
 type AgentPoolReadOptions struct {
 	Include []AgentPoolIncludeOpt `url:"include,omitempty"`
@@ -188,7 +192,7 @@ func (s *agentPools) ReadWithOptions(ctx context.Context, agentpoolID string, op
 	}
 
 	u := fmt.Sprintf("agent-pools/%s", url.PathEscape(agentpoolID))
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest("GET", u, &options)
 	if err != nil {
 		return nil, err
 	}

@@ -116,6 +116,7 @@ type Organization struct {
 	SendPassingStatusesForUntriggeredSpeculativePlans bool                     `jsonapi:"attr,send-passing-statuses-for-untriggered-speculative-plans"`
 	RemainingTestableCount                            int                      `jsonapi:"attr,remaining-testable-count"`
 	SpeculativePlanManagementEnabled                  bool                     `jsonapi:"attr,speculative-plan-management-enabled"`
+	EnforceHYOK                                       bool                     `jsonapi:"attr,enforce-hyok"`
 	// Optional: If enabled, SendPassingStatusesForUntriggeredSpeculativePlans needs to be false.
 	AggregatedCommitStatusEnabled bool `jsonapi:"attr,aggregated-commit-status-enabled,omitempty"`
 	// Note: This will be false for TFE versions older than v202211, where the setting was introduced.
@@ -123,8 +124,9 @@ type Organization struct {
 	AllowForceDeleteWorkspaces bool `jsonapi:"attr,allow-force-delete-workspaces"`
 
 	// Relations
-	DefaultProject   *Project   `jsonapi:"relation,default-project"`
-	DefaultAgentPool *AgentPool `jsonapi:"relation,default-agent-pool"`
+	DefaultProject           *Project           `jsonapi:"relation,default-project"`
+	DefaultAgentPool         *AgentPool         `jsonapi:"relation,default-agent-pool"`
+	PrimaryHYOKConfiguration *HYOKConfiguration `jsonapi:"relation,primary-hyok-configuration,omitempty"`
 
 	// Deprecated: Use DataRetentionPolicyChoice instead.
 	DataRetentionPolicy *DataRetentionPolicy
@@ -197,6 +199,8 @@ type OrganizationPermissions struct {
 	CanUpdateAPIToken           bool `jsonapi:"attr,can-update-api-token"`
 	CanUpdateOAuth              bool `jsonapi:"attr,can-update-oauth"`
 	CanUpdateSentinel           bool `jsonapi:"attr,can-update-sentinel"`
+	CanUpdateHYOKConfiguration  bool `jsonapi:"attr,can-update-hyok-configuration"`
+	CanViewHYOKFeatureInfo      bool `jsonapi:"attr,can-view-hyok-feature-info"`
 }
 
 // OrganizationListOptions represents the options for listing organizations.
@@ -255,6 +259,9 @@ type OrganizationCreateOptions struct {
 	// Optional: DefaultExecutionMode the default execution mode for workspaces
 	DefaultExecutionMode *string `jsonapi:"attr,default-execution-mode,omitempty"`
 
+	// Optional: EnforceHYOK if HYOK is enforced for the organization.
+	EnforceHYOK *bool `jsonapi:"attr,enforce-hyok,omitempty"`
+
 	// Optional: StacksEnabled toggles whether stacks are enabled for the organization. This setting
 	// is considered BETA, SUBJECT TO CHANGE, and likely unavailable to most users.
 	StacksEnabled *bool `jsonapi:"attr,stacks-enabled,omitempty"`
@@ -312,6 +319,9 @@ type OrganizationUpdateOptions struct {
 
 	// Optional: DefaultAgentPoolId default agent pool for workspaces, requires DefaultExecutionMode to be set to `agent`
 	DefaultAgentPool *AgentPool `jsonapi:"relation,default-agent-pool,omitempty"`
+
+	// Optional: EnforceHYOK if HYOK is enforced for the organization.
+	EnforceHYOK *bool `jsonapi:"attr,enforce-hyok,omitempty"`
 
 	// Optional: StacksEnabled toggles whether stacks are enabled for the organization. This setting
 	// is considered BETA, SUBJECT TO CHANGE, and likely unavailable to most users.

@@ -129,6 +129,10 @@ type Client struct {
 	AgentTokens                     AgentTokens
 	Applies                         Applies
 	AuditTrails                     AuditTrails
+	AWSOIDCConfigurations           AWSOIDCConfigurations
+	GCPOIDCConfigurations           GCPOIDCConfigurations
+	AzureOIDCConfigurations         AzureOIDCConfigurations
+	VaultOIDCConfigurations         VaultOIDCConfigurations
 	Comments                        Comments
 	ConfigurationVersions           ConfigurationVersions
 	CostEstimates                   CostEstimates
@@ -165,6 +169,9 @@ type Client struct {
 	RunTriggers                     RunTriggers
 	SSHKeys                         SSHKeys
 	Stacks                          Stacks
+	HYOKConfigurations              HYOKConfigurations
+	HYOKCustomerKeyVersions         HYOKCustomerKeyVersions
+	HYOKEncryptedDataKeys           HYOKEncryptedDataKeys
 	StackConfigurations             StackConfigurations
 	StackConfigurationSummaries     StackConfigurationSummaries
 	StackDeploymentGroups           StackDeploymentGroups
@@ -460,6 +467,10 @@ func NewClient(cfg *Config) (*Client, error) {
 	client.AgentTokens = &agentTokens{client: client}
 	client.Applies = &applies{client: client}
 	client.AuditTrails = &auditTrails{client: client}
+	client.AWSOIDCConfigurations = &awsOIDCConfigurations{client: client}
+	client.GCPOIDCConfigurations = &gcpOIDCConfigurations{client: client}
+	client.AzureOIDCConfigurations = &azureOIDCConfigurations{client: client}
+	client.VaultOIDCConfigurations = &vaultOIDCConfigurations{client: client}
 	client.Comments = &comments{client: client}
 	client.ConfigurationVersions = &configurationVersions{client: client}
 	client.CostEstimates = &costEstimates{client: client}
@@ -497,6 +508,9 @@ func NewClient(cfg *Config) (*Client, error) {
 	client.RunTriggers = &runTriggers{client: client}
 	client.SSHKeys = &sshKeys{client: client}
 	client.Stacks = &stacks{client: client}
+	client.HYOKConfigurations = &hyokConfigurations{client: client}
+	client.HYOKCustomerKeyVersions = &hyokCustomerKeyVersions{client: client}
+	client.HYOKEncryptedDataKeys = &hyokEncryptedDataKeys{client: client}
 	client.StackConfigurations = &stackConfigurations{client: client}
 	client.StackConfigurationSummaries = &stackConfigurationSummaries{client: client}
 	client.StackDeploymentGroups = &stackDeploymentGroups{client: client}

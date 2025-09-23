@@ -216,3 +216,17 @@ func (mr *MockStateVersionsMockRecorder) Upload(ctx, workspaceID, options any) *
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Upload", reflect.TypeOf((*MockStateVersions)(nil).Upload), ctx, workspaceID, options)
 }
+
+// UploadSanitizedState mocks base method.
+func (m *MockStateVersions) UploadSanitizedState(ctx context.Context, sanitizedStateUploadURL *string, sanitizedState []byte) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "UploadSanitizedState", ctx, sanitizedStateUploadURL, sanitizedState)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// UploadSanitizedState indicates an expected call of UploadSanitizedState.
+func (mr *MockStateVersionsMockRecorder) UploadSanitizedState(ctx, sanitizedStateUploadURL, sanitizedState any) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UploadSanitizedState", reflect.TypeOf((*MockStateVersions)(nil).UploadSanitizedState), ctx, sanitizedStateUploadURL, sanitizedState)
+}
