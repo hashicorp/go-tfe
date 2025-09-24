@@ -118,7 +118,7 @@ type Organization struct {
 	RemainingTestableCount                            int                      `jsonapi:"attr,remaining-testable-count"`
 	SpeculativePlanManagementEnabled                  bool                     `jsonapi:"attr,speculative-plan-management-enabled"`
 	EnforceHYOK                                       bool                     `jsonapi:"attr,enforce-hyok"`
-	UserTokensEnabled                                 bool                     `jsonapi:"attr,user-tokens-enabled"`
+	UserTokensEnabled                                 *bool                    `jsonapi:"attr,user-tokens-enabled"`
 	// Optional: If enabled, SendPassingStatusesForUntriggeredSpeculativePlans needs to be false.
 	AggregatedCommitStatusEnabled bool `jsonapi:"attr,aggregated-commit-status-enabled,omitempty"`
 	// Note: This will be false for TFE versions older than v202211, where the setting was introduced.

@@ -324,7 +324,7 @@ func TestOrganizationsUpdate(t *testing.T) {
 		orgTest, orgTestCleanup := createOrganization(t, client)
 		t.Cleanup(orgTestCleanup)
 
-		assert.True(t, orgTest.UserTokensEnabled, "user tokens enabled by default")
+		assert.True(t, *orgTest.UserTokensEnabled, "user tokens enabled by default")
 
 		// we need to switch to an owner's team token, otherwise the client (which auths with a user token)
 		// wont be able to delete the org after we disable user tokens
@@ -348,14 +348,14 @@ func TestOrganizationsUpdate(t *testing.T) {
 
 		org, err := ownerClient.Organizations.Update(ctx, orgTest.Name, options)
 		require.NoError(t, err)
-		assert.False(t, org.UserTokensEnabled, "user tokens disabled")
+		assert.False(t, *org.UserTokensEnabled, "user tokens disabled")
 
 		options = OrganizationUpdateOptions{
 			UserTokensEnabled: Bool(true),
 		}
 		org, err = ownerClient.Organizations.Update(ctx, orgTest.Name, options)
 		require.NoError(t, err)
-		assert.True(t, org.UserTokensEnabled, "user tokens re-enabled")
+		assert.True(t, *org.UserTokensEnabled, "user tokens re-enabled")
 	})
 
 	t.Run("with valid options", func(t *testing.T) {
