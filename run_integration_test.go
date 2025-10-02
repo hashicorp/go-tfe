@@ -371,6 +371,23 @@ func TestRunsCreate(t *testing.T) {
 		assert.Contains(t, r.PolicyPaths, "./path/to/dir1")
 		assert.Contains(t, r.PolicyPaths, "./path/to/dir2")
 	})
+
+	t.Run("with action invocations", func(t *testing.T) {
+		skipUnlessBeta(t)
+
+		opts := RunCreateOptions{
+			Message:           String("creating with policy paths"),
+			Workspace:         wTest,
+			InvokeActionAddrs: []string{"actions.foo.bar"},
+		}
+
+		r, err := client.Runs.Create(ctx, opts)
+		require.NoError(t, err)
+		require.NotEmpty(t, r.InvokeActionAddrs)
+
+		assert.Len(t, r.InvokeActionAddrs, 1)
+		assert.Contains(t, r.InvokeActionAddrs, "actions.foo.bar")
+	})
 }
 
 func TestRunsRead_CostEstimate(t *testing.T) {

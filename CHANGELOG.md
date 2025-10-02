@@ -1,5 +1,7 @@
 # Unreleased
 
+* Add BETA support for Action invocations via `CreateRunOptions` by @mutahhir [#1206](https://github.com/hashicorp/go-tfe/pull/1206)
+
 # v1.93.0
 
 ## Enhancements
