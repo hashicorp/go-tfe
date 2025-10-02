@@ -102,6 +102,9 @@ type AgentPoolListOptions struct {
 
 	// Optional: String (project name) used to filter the results.
 	AllowedProjectsName string `url:"filter[allowed_projects][name],omitempty"`
+
+	// Optional: Allows sorting the agent pools by "created-by" or "name"
+	Sort string `url:"sort,omitempty"`
 }
 
 // AgentPoolCreateOptions represents the options for creating an agent pool.
