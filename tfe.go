@@ -516,10 +516,13 @@ func NewClient(cfg *Config) (*Client, error) {
 	client.HYOKEncryptedDataKeys = &hyokEncryptedDataKeys{client: client}
 	client.StackConfigurations = &stackConfigurations{client: client}
 	client.StackConfigurationSummaries = &stackConfigurationSummaries{client: client}
+	client.StackDeployments = &stackDeployments{client: client}
 	client.StackDeploymentGroups = &stackDeploymentGroups{client: client}
 	client.StackDeploymentGroupSummaries = &stackDeploymentGroupSummaries{client: client}
 	client.StackDeploymentRuns = &stackDeploymentRuns{client: client}
 	client.StackDeploymentSteps = &stackDeploymentSteps{client: client}
+	client.StackDiagnostics = &stackDiagnostics{client: client}
+	client.StackStates = &stackStates{client: client}
 	client.StateVersionOutputs = &stateVersionOutputs{client: client}
 	client.StateVersions = &stateVersions{client: client}
 	client.TaskResults = &taskResults{client: client}

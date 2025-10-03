@@ -6,30 +6,31 @@ package tfe
 import (
 	"context"
 	"fmt"
+	"io"
 	"net/url"
 )
 
 // StackState ...
 type StackStates interface {
 	// List ...
-	List(ctx context.Context, stackID string) ([]*StackState, error)
+	List(ctx context.Context, stackID string, opts *StackStateListOptions) (*StackStateList, error)
 	// Read ...
 	Read(ctx context.Context, stackStateID string) (*StackState, error)
 	// Description ...
-	Description(ctx context.Context, stackStateID string) (string, error)
+	Description(ctx context.Context, stackStateID string) (io.ReadCloser, error)
 }
 
 // StackState represents a stack state.
 type StackState struct {
 	// Attributes
-	ID                    string `jsonapi:"primary,stack-states"`
-	Description           string `jsonapi:"attr,description"`
-	Generation            int    `jsonapi:"attr,generation"`
-	Status                string `jsonapi:"attr,status"`
-	Deployment            string `jsonapi:"attr,deployment"`
-	Components            string `jsonapi:"attr,components"`
-	IsCurrent             bool   `jsonapi:"attr,is-current"`
-	ResourceInstanceCount int    `jsonapi:"attr,resource-instance-count"`
+	ID                    string            `jsonapi:"primary,stack-states"`
+	Description           string            `jsonapi:"attr,description"`
+	Generation            int               `jsonapi:"attr,generation"`
+	Status                string            `jsonapi:"attr,status"`
+	Deployment            string            `jsonapi:"attr,deployment"`
+	Components            []*StackComponent `jsonapi:"attr,components"`
+	IsCurrent             bool              `jsonapi:"attr,is-current"`
+	ResourceInstanceCount int               `jsonapi:"attr,resource-instance-count"`
 
 	// Relationships
 	Stack              *Stack              `jsonapi:"relation,stack"`
@@ -39,7 +40,7 @@ type StackState struct {
 // StackDeploymentStepList represents a list of stack deployment steps
 type StackStateList struct {
 	*Pagination
-	Items []*StackDeploymentStep
+	Items []*StackState
 }
 
 type stackStates struct {
@@ -80,17 +81,12 @@ func (s stackStates) Read(ctx context.Context, stackStateID string) (*StackState
 	return &state, nil
 }
 
-// Description ...
-func (s stackStates) Description(ctx context.Context, stackStateID string) (*StackState, error) {
-	req, err := s.client.NewRequest("GET", fmt.Sprintf("stack-states/%s/artifacts", url.PathEscape(stackStateID)), nil)
+// Description returns the state description for the given stack state.
+func (s stackStates) Description(ctx context.Context, stackStateID string) (io.ReadCloser, error) {
+	req, err := s.client.NewRequest("GET", fmt.Sprintf("stack-states/%s/description", url.PathEscape(stackStateID)), nil)
 	if err != nil {
 		return nil, err
 	}
 
-	state := StackState{}
-	if err := req.Do(ctx, &state); err != nil {
-		return nil, err
-	}
-
-	return &state, nil
+	return req.DoRaw(ctx)
 }
