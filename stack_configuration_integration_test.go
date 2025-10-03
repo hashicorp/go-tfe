@@ -143,7 +143,7 @@ func TestStackConfigurationDiagnostics(t *testing.T) {
 		VCSRepo: &StackVCSRepoOptions{
 			Identifier:   "ctrombley/linked-stacks-demo-network",
 			OAuthTokenID: oauthClient.OAuthTokens[0].ID,
-			Branch:       "main",
+			Branch:       "diagnostics", // This branch will produce diagnostics
 		},
 	})
 	require.NoError(t, err)
@@ -153,20 +153,35 @@ func TestStackConfigurationDiagnostics(t *testing.T) {
 	require.NoError(t, err)
 	require.NotNil(t, stackUpdated)
 
+	stackUpdated, err = client.Stacks.Read(ctx, stackUpdated.ID)
+	require.NoError(t, err)
+	require.NotNil(t, stackUpdated.LatestStackConfiguration)
+
+	pollStackConfigurationStatus(t, ctx, client, stackUpdated.LatestStackConfiguration.ID, "failed")
+
 	t.Run("Diagnostics with valid ID", func(t *testing.T) {
-		opts := &StackDiagnosticListOptions{
-			ListOptions: ListOptions{
-				PageNumber: 1,
-				PageSize:   10,
-			},
-		}
-		sds, err := client.StackDeploymentSteps.Diagnostics(ctx, stackUpdated.LatestStackConfiguration.ID, opts)
+		diags, err := client.StackConfigurations.Diagnostics(ctx, stackUpdated.LatestStackConfiguration.ID)
 		assert.NoError(t, err)
-		assert.NotEmpty(t, sds)
+		require.NotEmpty(t, diags.Items)
+
+		diag := diags.Items[0]
+
+		assert.NotEmpty(t, diag.ID)
+		assert.NotEmpty(t, diag.Severity)
+		assert.NotEmpty(t, diag.Summary)
+		assert.NotEmpty(t, diag.Detail)
+		assert.NotEmpty(t, diag.Diags)
+		assert.False(t, diag.Acknowledged)
+		assert.Nil(t, diag.AcknowledgedAt)
+		assert.NotZero(t, diag.CreatedAt)
+
+		assert.Nil(t, diag.StackDeploymentStep)
+		assert.NotNil(t, diag.StackConfiguration)
+		assert.Nil(t, diag.AcknowledgedBy)
 	})
 
 	t.Run("Diagnostics with invalid ID", func(t *testing.T) {
-		_, err := client.StackDeploymentSteps.Diagnostics(ctx, stackUpdated.LatestStackConfiguration.ID, nil)
+		_, err := client.StackConfigurations.Diagnostics(ctx, "invalid-id")
 		require.Error(t, err)
 	})
 }

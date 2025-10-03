@@ -4,10 +4,11 @@ import (
 	"context"
 	"testing"
 
+	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
 
-func TestStackDiagnosticsRead(t *testing.T) {
+func TestStackDiagnosticsReadAcknowledge(t *testing.T) {
 	skipUnlessBeta(t)
 
 	client := testClient(t)
@@ -22,7 +23,8 @@ func TestStackDiagnosticsRead(t *testing.T) {
 	stack, err := client.Stacks.Create(ctx, StackCreateOptions{
 		Name: "cc-test-stack",
 		VCSRepo: &StackVCSRepoOptions{
-			Identifier:   "ctrombley/linked-stacks-demo-network",
+			Identifier:   "ctrombley/demo-network-stack",
+			Branch:       "diagnostics",
 			OAuthTokenID: oauthClient.OAuthTokens[0].ID,
 		},
 		Project: &Project{
@@ -33,72 +35,43 @@ func TestStackDiagnosticsRead(t *testing.T) {
 	require.NoError(t, err)
 	require.NotNil(t, stack)
 
-	// Trigger first stack configuration with a fetch
-	_, err = client.Stacks.FetchLatestFromVcs(ctx, stack.ID)
+	stackUpdated, err := client.Stacks.FetchLatestFromVcs(ctx, stack.ID)
 	require.NoError(t, err)
+	require.NotNil(t, stackUpdated)
 
-	updatedStack := pollStackDeploymentGroups(t, ctx, client, stack.ID)
-	require.NotNil(t, updatedStack.LatestStackConfiguration.ID)
-
-	sdgl, err := client.StackDeploymentGroups.List(ctx, updatedStack.LatestStackConfiguration.ID, nil)
+	stackUpdated, err = client.Stacks.Read(ctx, stackUpdated.ID)
 	require.NoError(t, err)
-	require.NotNil(t, sdgl)
-	require.Len(t, sdgl.Items, 2)
+	require.NotNil(t, stackUpdated.LatestStackConfiguration)
+
+	pollStackConfigurationStatus(t, ctx, client, stackUpdated.LatestStackConfiguration.ID, "failed")
+
+	diags, err := client.StackConfigurations.Diagnostics(ctx, stackUpdated.LatestStackConfiguration.ID)
+	assert.NoError(t, err)
+	require.NotEmpty(t, diags.Items)
+
+	diag := diags.Items[0]
 
 	t.Run("Read with valid ID", func(t *testing.T) {
-		_, err := client.StackDiagnostics.Read(ctx, sdgl.Items[0].ID)
+		diag, err := client.StackDiagnostics.Read(ctx, diag.ID)
 		require.NoError(t, err)
-		// assert.Equal(t, sdgl.Items[0].ID, sdgRead.StackDeploymentGroup.ID)
-		// assert.NotNil(t, sdgRead.Diagnostics)
+		assert.NotNil(t, diag)
 	})
 
 	t.Run("Read with invalid ID", func(t *testing.T) {
 		_, err := client.StackDiagnostics.Read(ctx, "")
 		require.Error(t, err)
 	})
-}
-
-func TestStackDiagnosticsAcknowledge(t *testing.T) {
-	skipUnlessBeta(t)
-
-	client := testClient(t)
-	ctx := context.Background()
-
-	orgTest, orgTestCleanup := createOrganization(t, client)
-	t.Cleanup(orgTestCleanup)
-
-	oauthClient, cleanup := createOAuthClient(t, client, orgTest, nil)
-	t.Cleanup(cleanup)
-
-	stack, err := client.Stacks.Create(ctx, StackCreateOptions{
-		Name: "cc-test-stack",
-		VCSRepo: &StackVCSRepoOptions{
-			Identifier:   "ctrombley/linked-stacks-demo-network",
-			OAuthTokenID: oauthClient.OAuthTokens[0].ID,
-		},
-		Project: &Project{
-			ID: orgTest.DefaultProject.ID,
-		},
-	})
-
-	require.NoError(t, err)
-	require.NotNil(t, stack)
-
-	// Trigger first stack configuration with a fetch
-	_, err = client.Stacks.FetchLatestFromVcs(ctx, stack.ID)
-	require.NoError(t, err)
-
-	updatedStack := pollStackDeploymentGroups(t, ctx, client, stack.ID)
-	require.NotNil(t, updatedStack.LatestStackConfiguration.ID)
-
-	sdgl, err := client.StackDeploymentGroups.List(ctx, updatedStack.LatestStackConfiguration.ID, nil)
-	require.NoError(t, err)
-	require.NotNil(t, sdgl)
-	require.Len(t, sdgl.Items, 2)
 
 	t.Run("Acknowledge with valid ID", func(t *testing.T) {
-		err := client.StackDiagnostics.Acknowledge(ctx, "")
+		err := client.StackDiagnostics.Acknowledge(ctx, diag.ID)
 		require.NoError(t, err)
+
+		diag, err := client.StackDiagnostics.Read(ctx, diag.ID)
+		require.NoError(t, err)
+		assert.NotNil(t, diag)
+		assert.True(t, diag.Acknowledged)
+		assert.NotNil(t, diag.AcknowledgedAt)
+		assert.NotNil(t, diag.AcknowledgedBy)
 	})
 
 	t.Run("Acknowledge with invalid ID", func(t *testing.T) {

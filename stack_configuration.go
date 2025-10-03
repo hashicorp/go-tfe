@@ -42,7 +42,7 @@ type StackConfigurations interface {
 	AwaitStatus(ctx context.Context, stackConfigurationID string, status StackConfigurationStatus) <-chan WaitForStatusResult
 
 	// Diagnostics returns the diagnostics for this stack configuration.
-	Diagnostics(ctx context.Context, stackConfigurationID string, opts *StackDiagnosticListOptions) (*StackDiagnosticsList, error)
+	Diagnostics(ctx context.Context, stackConfigurationID string) (*StackDiagnosticsList, error)
 }
 
 type StackConfigurationStatus string
@@ -256,14 +256,9 @@ func (s stackConfigurations) UploadTarGzip(ctx context.Context, uploadURL string
 	return s.client.doForeignPUTRequest(ctx, uploadURL, archive)
 }
 
-type StackDiagnosticListOptions struct {
-	ListOptions
-}
-
 // Diagnostics returns the diagnostics for this stack configuration.
-func (s stackConfigurations) Diagnostics(ctx context.Context, stackConfigurationID string,
-	opts *StackDiagnosticListOptions) (*StackDiagnosticsList, error) {
-	req, err := s.client.NewRequest("GET", fmt.Sprintf("stack-configurations/%s/stack-diagnostics", url.PathEscape(stackConfigurationID)), opts)
+func (s stackConfigurations) Diagnostics(ctx context.Context, stackConfigurationID string) (*StackDiagnosticsList, error) {
+	req, err := s.client.NewRequest("GET", fmt.Sprintf("stack-configurations/%s/stack-diagnostics", url.PathEscape(stackConfigurationID)), nil)
 
 	if err != nil {
 		return nil, err

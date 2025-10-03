@@ -317,20 +317,13 @@ func TestStackDeploymentStepsDiagnostics(t *testing.T) {
 	require.NotNil(t, step)
 
 	t.Run("Diagnostics with valid ID", func(t *testing.T) {
-		opts := &StackDiagnosticListOptions{
-			ListOptions: ListOptions{
-				PageNumber: 1,
-				PageSize:   10,
-			},
-		}
-
-		sds, err := client.StackDeploymentSteps.Diagnostics(ctx, step.ID, opts)
+		sds, err := client.StackDeploymentSteps.Diagnostics(ctx, step.ID)
 		assert.NoError(t, err)
 		assert.NotEmpty(t, sds)
 	})
 
 	t.Run("Diagnostics with invalid ID", func(t *testing.T) {
-		_, err := client.StackDeploymentSteps.Diagnostics(ctx, step.ID, nil)
+		_, err := client.StackDeploymentSteps.Diagnostics(ctx, step.ID)
 		require.Error(t, err)
 	})
 }

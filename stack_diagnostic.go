@@ -22,13 +22,14 @@ type StackDiagnostics interface {
 // information about the source of the diagnostic, this is represented in the
 // range field.
 type StackDiagnostic struct {
-	Severity       string           `jsonapi:"attr,severity"`
-	Summary        string           `jsonapi:"attr,summary"`
-	Detail         string           `jsonapi:"attr,detail"`
-	Diags          *DiagnosticRange `jsonapi:"attr,diags"`
-	Acknowledged   bool             `jsonapi:"attr,acknowledged"`
-	AcknowledgedAt *time.Time       `jsonapi:"attr,acknowledged-at,iso8601"`
-	CreatedAt      *time.Time       `jsonapi:"attr,created-at,iso8601"`
+	ID             string                    `jsonapi:"primary,stack-diagnostics"`
+	Severity       string                    `jsonapi:"attr,severity"`
+	Summary        string                    `jsonapi:"attr,summary"`
+	Detail         string                    `jsonapi:"attr,detail"`
+	Diags          []*StackDiagnosticSummary `jsonapi:"attr,diags"`
+	Acknowledged   bool                      `jsonapi:"attr,acknowledged"`
+	AcknowledgedAt *time.Time                `jsonapi:"attr,acknowledged-at,iso8601"`
+	CreatedAt      *time.Time                `jsonapi:"attr,created-at,iso8601"`
 
 	// Relationships
 	StackDeploymentStep *StackDeploymentStep `jsonapi:"relation,stack-deployment-step"`
@@ -36,16 +37,18 @@ type StackDiagnostic struct {
 	AcknowledgedBy      *User                `jsonapi:"relation,acknowledged-by"`
 }
 
+type StackDiagnosticSummary struct {
+	Severity string           `jsonapi:"attr,severity"`
+	Summary  string           `jsonapi:"attr,summary"`
+	Detail   string           `jsonapi:"attr,detail"`
+	Range    *DiagnosticRange `jsonapi:"attr,range"`
+}
+
 type stackDiagnostics struct {
 	client *Client
 }
 
-type StackDiagnosticsListOptions struct {
-	ListOptions
-}
-
 type StackDiagnosticsList struct {
-	*Pagination
 	Items []*StackDiagnostic
 }
 
