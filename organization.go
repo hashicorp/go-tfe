@@ -109,6 +109,7 @@ type Organization struct {
 	OwnersTeamSAMLRoleID                              string                   `jsonapi:"attr,owners-team-saml-role-id"`
 	Permissions                                       *OrganizationPermissions `jsonapi:"attr,permissions"`
 	SAMLEnabled                                       bool                     `jsonapi:"attr,saml-enabled"`
+	StacksEnabled                                     bool                     `jsonapi:"attr,stacks-enabled"`
 	SessionRemember                                   int                      `jsonapi:"attr,session-remember"`
 	SessionTimeout                                    int                      `jsonapi:"attr,session-timeout"`
 	TrialExpiresAt                                    time.Time                `jsonapi:"attr,trial-expires-at,iso8601"`
@@ -201,6 +202,8 @@ type OrganizationPermissions struct {
 	CanUpdateSentinel           bool `jsonapi:"attr,can-update-sentinel"`
 	CanUpdateHYOKConfiguration  bool `jsonapi:"attr,can-update-hyok-configuration"`
 	CanViewHYOKFeatureInfo      bool `jsonapi:"attr,can-view-hyok-feature-info"`
+	CanEnableStacks             bool `jsonapi:"attr,can-enable-stacks"`
+	CanCreateProject            bool `jsonapi:"attr,can-create-project"`
 }
 
 // OrganizationListOptions represents the options for listing organizations.
