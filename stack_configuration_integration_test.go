@@ -13,8 +13,6 @@ import (
 )
 
 func TestStackConfigurationList(t *testing.T) {
-	skipUnlessBeta(t)
-
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -80,8 +78,6 @@ func TestStackConfigurationList(t *testing.T) {
 }
 
 func TestStackConfigurationCreateUploadAndRead(t *testing.T) {
-	skipUnlessBeta(t)
-
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -124,8 +120,6 @@ func TestStackConfigurationCreateUploadAndRead(t *testing.T) {
 }
 
 func TestStackConfigurationDiagnostics(t *testing.T) {
-	skipUnlessBeta(t)
-
 	client := testClient(t)
 	ctx := context.Background()
 

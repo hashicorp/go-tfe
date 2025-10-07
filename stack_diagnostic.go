@@ -92,12 +92,12 @@ func (s stackDiagnostics) Read(ctx context.Context, stackDiagnosticID string) (*
 		return nil, err
 	}
 
-	var diagnostics *StackDiagnostic
-	if err := req.Do(ctx, diagnostics); err != nil {
+	var diagnostics StackDiagnostic
+	if err := req.Do(ctx, &diagnostics); err != nil {
 		return nil, err
 	}
 
-	return diagnostics, nil
+	return &diagnostics, nil
 }
 
 // Acknowledge marks a diagnostic as acknowledged.

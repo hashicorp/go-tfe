@@ -5,6 +5,7 @@ package tfe
 
 import (
 	"context"
+	"io"
 	"testing"
 	"time"
 
@@ -13,8 +14,6 @@ import (
 )
 
 func TestStackDeploymentStepsList(t *testing.T) {
-	skipUnlessBeta(t)
-
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -103,8 +102,6 @@ func TestStackDeploymentStepsList(t *testing.T) {
 }
 
 func TestStackDeploymentStepsRead(t *testing.T) {
-	skipUnlessBeta(t)
-
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -165,8 +162,6 @@ func TestStackDeploymentStepsRead(t *testing.T) {
 }
 
 func TestStackDeploymentStepsAdvance(t *testing.T) {
-	skipUnlessBeta(t)
-
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -264,9 +259,7 @@ func pollStackDeploymentStepStatus(t *testing.T, ctx context.Context, client *Cl
 	return
 }
 
-func TestStackDeploymentStepsDiagnostics(t *testing.T) {
-	skipUnlessBeta(t)
-
+func TestStackDeploymentStepsDiagnosticsArtifacts(t *testing.T) {
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -282,7 +275,7 @@ func TestStackDeploymentStepsDiagnostics(t *testing.T) {
 		Name:    "test-stack",
 
 		VCSRepo: &StackVCSRepoOptions{
-			Identifier:   "ctrombley/linked-stacks-demo-network",
+			Identifier:   "hashicorp-guides/pet-nulls-stack",
 			OAuthTokenID: oauthClient.OAuthTokens[0].ID,
 			Branch:       "main",
 		},
@@ -323,7 +316,26 @@ func TestStackDeploymentStepsDiagnostics(t *testing.T) {
 	})
 
 	t.Run("Diagnostics with invalid ID", func(t *testing.T) {
-		_, err := client.StackDeploymentSteps.Diagnostics(ctx, step.ID)
+		_, err := client.StackDeploymentSteps.Diagnostics(ctx, "invalid-id")
+		require.Error(t, err)
+	})
+
+	t.Run("Artifacts with valid artifact name (plan-description)", func(t *testing.T) {
+		rawBytes, err := client.StackDeploymentSteps.Artifacts(ctx, step.ID, StackDeploymentStepArtifactPlanDescription)
+		assert.NoError(t, err)
+
+		b, err := io.ReadAll(rawBytes)
+		assert.NoError(t, err)
+		assert.NotEmpty(t, string(b))
+	})
+
+	t.Run("Artifacts with invalid artifact name", func(t *testing.T) {
+		_, err := client.StackDeploymentSteps.Artifacts(ctx, step.ID, "invalid-artifact-name")
+		assert.Error(t, err)
+	})
+
+	t.Run("Artifacts with invalid step ID", func(t *testing.T) {
+		_, err := client.StackDeploymentSteps.Diagnostics(ctx, "invalid-id")
 		require.Error(t, err)
 	})
 }

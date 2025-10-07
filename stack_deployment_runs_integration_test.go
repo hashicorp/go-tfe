@@ -1,4 +1,5 @@
 // Copyright (c) HashiCorp, Inc.
+
 // SPDX-License-Identifier: MPL-2.0
 
 package tfe
@@ -13,8 +14,6 @@ import (
 )
 
 func TestStackDeploymentRunsList(t *testing.T) {
-	skipUnlessBeta(t)
-
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -97,8 +96,6 @@ func TestStackDeploymentRunsList(t *testing.T) {
 }
 
 func TestStackDeploymentRunsRead(t *testing.T) {
-	skipUnlessBeta(t)
-
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -168,8 +165,6 @@ func TestStackDeploymentRunsRead(t *testing.T) {
 }
 
 func TestStackDeploymentRunsApproveAllPlans(t *testing.T) {
-	skipUnlessBeta(t)
-
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -221,8 +216,6 @@ func TestStackDeploymentRunsApproveAllPlans(t *testing.T) {
 }
 
 func TestStackDeploymentRunsCancel(t *testing.T) {
-	skipUnlessBeta(t)
-
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -252,7 +245,8 @@ func TestStackDeploymentRunsCancel(t *testing.T) {
 	require.NotNil(t, stackUpdated.LatestStackConfiguration)
 
 	// Get the deployment group ID from the stack configuration
-	deploymentGroups, err := client.StackDeploymentGroups.List(ctx, stackUpdated.LatestStackConfiguration.ID, nil)
+	configurationID := stackUpdated.LatestStackConfiguration.ID
+	deploymentGroups, err := client.StackDeploymentGroups.List(ctx, configurationID, nil)
 	require.NoError(t, err)
 	require.NotNil(t, deploymentGroups)
 	require.NotEmpty(t, deploymentGroups.Items)
@@ -263,22 +257,20 @@ func TestStackDeploymentRunsCancel(t *testing.T) {
 	require.NoError(t, err)
 	assert.NotNil(t, runList)
 
-	deploymentRunID := runList.Items[0].ID
-
 	t.Run("cancel deployment run", func(t *testing.T) {
 		t.Parallel()
-		err := client.StackDeploymentRuns.ApproveAllPlans(ctx, deploymentRunID)
-		require.NoError(t, err)
 
-		pollStackDeploymentRunForDeployingStatus(t, ctx, client, deploymentRunID)
+		for _, sdr := range runList.Items {
+			err := client.StackDeploymentRuns.ApproveAllPlans(ctx, sdr.ID)
+			require.NoError(t, err)
+		}
 
-		err = client.StackDeploymentRuns.Cancel(ctx, deploymentRunID)
-		require.NoError(t, err)
+		for _, sdr := range runList.Items {
+			err := client.StackDeploymentRuns.Cancel(ctx, sdr.ID)
+			require.NoError(t, err)
+		}
 
-		dr, err := client.StackDeploymentRuns.Read(ctx, deploymentRunID)
-		require.NoError(t, err)
-		assert.NotNil(t, dr)
-		assert.Equal(t, "abandoned", dr.Status)
+		pollStackDeploymentGroupStatus(t, ctx, client, configurationID, "failed")
 	})
 }
 

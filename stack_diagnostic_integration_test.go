@@ -9,8 +9,6 @@ import (
 )
 
 func TestStackDiagnosticsReadAcknowledge(t *testing.T) {
-	skipUnlessBeta(t)
-
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -23,7 +21,7 @@ func TestStackDiagnosticsReadAcknowledge(t *testing.T) {
 	stack, err := client.Stacks.Create(ctx, StackCreateOptions{
 		Name: "cc-test-stack",
 		VCSRepo: &StackVCSRepoOptions{
-			Identifier:   "ctrombley/demo-network-stack",
+			Identifier:   "ctrombley/linked-stacks-demo-network",
 			Branch:       "diagnostics",
 			OAuthTokenID: oauthClient.OAuthTokens[0].ID,
 		},

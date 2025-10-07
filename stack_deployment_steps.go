@@ -6,6 +6,7 @@ package tfe
 import (
 	"context"
 	"fmt"
+	"io"
 	"net/url"
 	"time"
 )
@@ -21,7 +22,19 @@ type StackDeploymentSteps interface {
 	Advance(ctx context.Context, stackDeploymentStepID string) error
 	// Diagnostics returns the diagnostics for this stack deployment step.
 	Diagnostics(ctx context.Context, stackConfigurationID string) (*StackDiagnosticsList, error)
+	// Artifacts returns the artifacts for this stack deployment step.
+	// Valid artifact names are "plan-description" and "apply-description".
+	Artifacts(ctx context.Context, stackDeploymentStepID string, artifactType StackDeploymentStepArtifactType) (io.ReadCloser, error)
 }
+
+type StackDeploymentStepArtifactType string
+
+const (
+	// StackDeploymentStepArtifactPlanDescription represents the plan description artifact type.
+	StackDeploymentStepArtifactPlanDescription StackDeploymentStepArtifactType = "plan-description"
+	// StackDeploymentStepArtifactApplyDescription represents the apply description artifact type.
+	StackDeploymentStepArtifactApplyDescription StackDeploymentStepArtifactType = "apply-description"
+)
 
 // StackDeploymentStep represents a step from a stack deployment
 type StackDeploymentStep struct {
@@ -107,4 +120,19 @@ func (s stackDeploymentSteps) Diagnostics(ctx context.Context, stackConfiguratio
 		return nil, err
 	}
 	return diagnostics, nil
+}
+
+// Artifacts returns the artifacts for this stack deployment step.
+// Valid artifact names are "plan-description" and "apply-description".
+func (s stackDeploymentSteps) Artifacts(ctx context.Context, stackDeploymentStepID string, artifactType StackDeploymentStepArtifactType) (io.ReadCloser, error) {
+	req, err := s.client.NewRequestWithAdditionalQueryParams("GET",
+		fmt.Sprintf("stack-deployment-steps/%s/artifacts", url.PathEscape(stackDeploymentStepID)),
+		nil,
+		map[string][]string{"name": []string{url.PathEscape(string(artifactType))}},
+	)
+	if err != nil {
+		return nil, err
+	}
+
+	return req.DoRaw(ctx)
 }

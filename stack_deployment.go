@@ -49,15 +49,15 @@ func (s stackDeployments) List(ctx context.Context, stackID string, opts *StackD
 		return nil, ErrInvalidStackID
 	}
 
-	req, err := s.client.NewRequest("GET", fmt.Sprintf("stack-deployments/%s", url.PathEscape(stackID)), opts)
+	req, err := s.client.NewRequest("GET", fmt.Sprintf("stacks/%s/stack-deployments", url.PathEscape(stackID)), opts)
 	if err != nil {
 		return nil, err
 	}
 
-	var deployments *StackDeploymentList
-	if err := req.Do(ctx, deployments); err != nil {
+	var deployments StackDeploymentList
+	if err := req.Do(ctx, &deployments); err != nil {
 		return nil, err
 	}
 
-	return deployments, nil
+	return &deployments, nil
 }
