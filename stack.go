@@ -143,7 +143,7 @@ const (
 	StackIncludeOrganization             StackIncludeOpt = "organization"
 	StackIncludeProject                  StackIncludeOpt = "project"
 	StackIncludeLatestStackConfiguration StackIncludeOpt = "latest_stack_configuration"
-	StackIncludeStackDiagnostics         StackIncludeOpt = "stack_diagnostics"
+	StackIncludeStackDiagnostics         StackIncludeOpt = "latest_stack_configuration.stack_diagnostics"
 )
 
 // StackListOptions represents the options for listing stacks.

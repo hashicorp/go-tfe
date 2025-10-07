@@ -10,13 +10,16 @@ import (
 	"net/url"
 )
 
-// StackState ...
+// StackState describes all the stack state-related methods that the
+// HCP Terraform API supports.
 type StackStates interface {
-	// List ...
+	// List returns the stack states for a stack.
 	List(ctx context.Context, stackID string, opts *StackStateListOptions) (*StackStateList, error)
-	// Read ...
+	// Read returns a stack state by its ID.
 	Read(ctx context.Context, stackStateID string) (*StackState, error)
-	// Description ...
+	// Description returns the state description for the given stack state.
+	// The description is returned as an io.ReadCloser and should be closed and
+	// unmarshaled by the caller.
 	Description(ctx context.Context, stackStateID string) (io.ReadCloser, error)
 }
 
@@ -37,7 +40,7 @@ type StackState struct {
 	StackDeploymentRun *StackDeploymentRun `jsonapi:"relation,stack-deployment-run"`
 }
 
-// StackDeploymentStepList represents a list of stack deployment steps
+// StackStateList represents a list of stack states.
 type StackStateList struct {
 	*Pagination
 	Items []*StackState
@@ -52,6 +55,7 @@ type StackStateListOptions struct {
 	ListOptions
 }
 
+// List returns the stack states for a stack.
 func (s stackStates) List(ctx context.Context, stackID string, opts *StackStateListOptions) (*StackStateList, error) {
 	req, err := s.client.NewRequest("GET", fmt.Sprintf("stacks/%s/stack-states", url.PathEscape(stackID)), opts)
 	if err != nil {

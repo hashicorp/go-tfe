@@ -335,7 +335,7 @@ func TestStackDeploymentStepsDiagnosticsArtifacts(t *testing.T) {
 	})
 
 	t.Run("Artifacts with invalid step ID", func(t *testing.T) {
-		_, err := client.StackDeploymentSteps.Diagnostics(ctx, "invalid-id")
+		_, err := client.StackDeploymentSteps.Artifacts(ctx, "invalid-id", StackDeploymentStepArtifactPlanDescription)
 		require.Error(t, err)
 	})
 }

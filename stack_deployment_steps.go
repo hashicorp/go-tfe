@@ -109,8 +109,8 @@ func (s stackDeploymentSteps) Advance(ctx context.Context, stackDeploymentStepID
 }
 
 // Diagnostics returns the diagnostics for this stack deployment step.
-func (s stackDeploymentSteps) Diagnostics(ctx context.Context, stackConfigurationID string) (*StackDiagnosticsList, error) {
-	req, err := s.client.NewRequest("GET", fmt.Sprintf("stack-deployment-steps/%s/stack-diagnostics", url.PathEscape(stackConfigurationID)), nil)
+func (s stackDeploymentSteps) Diagnostics(ctx context.Context, stackDeploymentStepID string) (*StackDiagnosticsList, error) {
+	req, err := s.client.NewRequest("GET", fmt.Sprintf("stack-deployment-steps/%s/stack-diagnostics", url.PathEscape(stackDeploymentStepID)), nil)
 	if err != nil {
 		return nil, err
 	}
@@ -128,7 +128,7 @@ func (s stackDeploymentSteps) Artifacts(ctx context.Context, stackDeploymentStep
 	req, err := s.client.NewRequestWithAdditionalQueryParams("GET",
 		fmt.Sprintf("stack-deployment-steps/%s/artifacts", url.PathEscape(stackDeploymentStepID)),
 		nil,
-		map[string][]string{"name": []string{url.PathEscape(string(artifactType))}},
+		map[string][]string{"name": {url.PathEscape(string(artifactType))}},
 	)
 	if err != nil {
 		return nil, err

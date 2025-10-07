@@ -4,7 +4,6 @@ import (
 	"context"
 	"fmt"
 	"net/url"
-	"time"
 )
 
 type StackDeployments interface {
@@ -14,21 +13,12 @@ type StackDeployments interface {
 
 type StackDeployment struct {
 	// Attributes
-	ID            string    `jsonapi:"primary,stack-deployments"`
-	Status        string    `jsonapi:"attr,status"`
-	Name          string    `jsonapi:"attr,name"`
-	DeployedAt    time.Time `jsonapi:"attr,deployed-at,iso8601"`
-	ErrorsCount   int       `jsonapi:"attr,errors-count"`
-	WarningsCount int       `jsonapi:"attr,warnings-count"`
-	PausedCount   int       `jsonapi:"attr,paused-count"`
-	HasEmptyState bool      `jsonapi:"attr,has-empty-state"`
+	ID   string `jsonapi:"primary,stack-deployments"`
+	Name string `jsonapi:"attr,name"`
 
 	// Relationships
-	Stack              *Stack              `jsonapi:"relation,stack"`
-	CurrentStackState  *StackState         `jsonapi:"relation,current-stack-state"`
-	StackConfiguration *StackConfiguration `jsonapi:"relation,stack-configuration"`
-	LatestStackPlan    *StackPlan          `jsonapi:"relation,latest-stack-plan"`
-	Diagnostics        []*StackDiagnostic  `jsonapi:"relation,stack-diagnostics"`
+	Stack               *Stack              `jsonapi:"relation,stack"`
+	LatestDeploymentRun *StackDeploymentRun `jsonapi:"relation,latest-deployment-run"`
 }
 
 type stackDeployments struct {
