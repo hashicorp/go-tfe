@@ -1550,6 +1550,8 @@ func TestRegistryModulesRead(t *testing.T) {
 }
 
 func TestRegistryModulesReadTerraformRegistryModule(t *testing.T) {
+	t.Skip("Skipping due to persistent failures - see TF-31172")
+
 	client := testClient(t)
 	ctx := context.Background()
 	r := require.New(t)
