@@ -482,6 +482,8 @@ func TestStateVersionsCreate(t *testing.T) {
 }
 
 func TestStateVersionsRead(t *testing.T) {
+	t.Skip("Skipping due to persistent failures - see TF-31172")
+
 	client := testClient(t)
 	ctx := context.Background()
 

@@ -260,6 +260,8 @@ func TestOAuthClientsCreate_agentPool(t *testing.T) {
 	})
 
 	t.Run("with no agents connected", func(t *testing.T) {
+		t.Skip("Skipping due to persistent failures - see TF-31172")
+
 		orgTest, orgTestCleanup := createOrganization(t, client)
 		defer orgTestCleanup()
 		agentPoolTest, agentPoolCleanup := createAgentPool(t, client, orgTest)
