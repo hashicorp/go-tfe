@@ -27,7 +27,6 @@ type StackStates interface {
 type StackState struct {
 	// Attributes
 	ID                    string            `jsonapi:"primary,stack-states"`
-	Description           string            `jsonapi:"attr,description"`
 	Generation            int               `jsonapi:"attr,generation"`
 	Status                string            `jsonapi:"attr,status"`
 	Deployment            string            `jsonapi:"attr,deployment"`
