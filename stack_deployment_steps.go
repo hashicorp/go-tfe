@@ -34,6 +34,10 @@ const (
 	StackDeploymentStepArtifactPlanDescription StackDeploymentStepArtifactType = "plan-description"
 	// StackDeploymentStepArtifactApplyDescription represents the apply description artifact type.
 	StackDeploymentStepArtifactApplyDescription StackDeploymentStepArtifactType = "apply-description"
+	// StackDeploymentStepArtifactPlanDescription represents the plan debug log artifact type.
+	StackDeploymentStepArtifactPlanDebugLog StackDeploymentStepArtifactType = "plan-debug-log"
+	// StackDeploymentStepArtifactApplyDescription represents the apply debug log artifact type.
+	StackDeploymentStepArtifactApplyDebugLog StackDeploymentStepArtifactType = "apply-debug-log"
 )
 
 // StackDeploymentStep represents a step from a stack deployment

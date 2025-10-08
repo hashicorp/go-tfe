@@ -7,6 +7,7 @@
 * Adds new stacks resources `StackDeployments`, `StackDiagnostics`, and `StackStates`, by @ctrombley [#1226](https://github.com/hashicorp/go-tfe/pull/1226)
 * Adds new `Diagnostics` methods to `StackConfigurations`, and `StackDeploymentSteps`, by @ctrombley [#1226](https://github.com/hashicorp/go-tfe/pull/1226)
 * Adds new `Artifacts` method to `StackDeploymentSteps`, by @ctrombley [#1226](https://github.com/hashicorp/go-tfe/pull/1226)
+* Add serialization for `StacksEnabled` field, `CanEnableStacks` & `CanCreateProject` permissions on Organization Read by @a-anurag27 [#1230](https://github.com/hashicorp/go-tfe/pull/1230)
 
 # v1.94.0
 
