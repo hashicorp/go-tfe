@@ -5,6 +5,7 @@ import (
 	"io"
 	"testing"
 
+	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
 
@@ -83,6 +84,29 @@ func TestStackStateListReadDescription(t *testing.T) {
 		state, err := client.StackStates.Read(ctx, state.ID)
 		require.NoError(t, err)
 		require.NotNil(t, state)
+
+		assert.NotEmpty(t, state.ID)
+
+		// Assert attribute presence
+		assert.NotZero(t, state.Generation)
+		assert.NotEmpty(t, state.Status)
+		assert.NotEmpty(t, state.Deployment)
+		assert.NotNil(t, state.Components)
+		assert.True(t, state.IsCurrent)
+		assert.NotZero(t, state.ResourceInstanceCount)
+
+		// Assert relationship presence
+		assert.NotNil(t, state.Stack)
+		assert.NotEmpty(t, state.Stack.ID)
+		assert.NotNil(t, state.StackDeploymentRun)
+		assert.NotEmpty(t, state.StackDeploymentRun)
+
+		// Assert link presence
+		assert.NotEmpty(t, state.Links)
+		// Description link
+		description, ok := state.Links["description"].(string)
+		require.True(t, ok)
+		assert.NotEmpty(t, description)
 	})
 
 	t.Run("Read with invalid ID", func(t *testing.T) {

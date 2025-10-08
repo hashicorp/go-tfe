@@ -37,6 +37,9 @@ type StackState struct {
 	// Relationships
 	Stack              *Stack              `jsonapi:"relation,stack"`
 	StackDeploymentRun *StackDeploymentRun `jsonapi:"relation,stack-deployment-run"`
+
+	// Links
+	Links map[string]interface{} `jsonapi:"links,omitempty"`
 }
 
 // StackStateList represents a list of stack states.
