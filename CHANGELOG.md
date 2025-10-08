@@ -1,5 +1,7 @@
 # Unreleased
 
+# v1.94.0
+
 * Add BETA support for Action invocations via `CreateRunOptions` by @mutahhir [#1206](https://github.com/hashicorp/go-tfe/pull/1206)
 * Add serialization for `StackEnabled` field, `CanCreateStack` & `CanCreateProject` permissions on Organization Read by @a-anurag27 [#1230](https://github.com/hashicorp/go-tfe/pull/1230)
 
