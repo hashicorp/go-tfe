@@ -64,6 +64,27 @@ func TestAgentPoolsList(t *testing.T) {
 		assert.Equal(t, 1, pools.TotalCount)
 	})
 
+	t.Run("with sorting", func(t *testing.T) {
+		agentPool2, agentPoolCleanup2 := createAgentPool(t, client, orgTest)
+		t.Cleanup(agentPoolCleanup2)
+
+		pools, err := client.AgentPools.List(ctx, orgTest.Name, &AgentPoolListOptions{
+			Sort: "created-at",
+		})
+		require.NoError(t, err)
+		require.NotNil(t, pools)
+		require.Len(t, pools.Items, 2)
+		require.Equal(t, []string{agentPool.ID, agentPool2.ID}, []string{pools.Items[0].ID, pools.Items[1].ID})
+
+		pools, err = client.AgentPools.List(ctx, orgTest.Name, &AgentPoolListOptions{
+			Sort: "-created-at",
+		})
+		require.NoError(t, err)
+		require.NotNil(t, pools)
+		require.Len(t, pools.Items, 2)
+		require.Equal(t, []string{agentPool2.ID, agentPool.ID}, []string{pools.Items[0].ID, pools.Items[1].ID})
+	})
+
 	t.Run("without a valid organization", func(t *testing.T) {
 		pools, err := client.AgentPools.List(ctx, badIdentifier, nil)
 		assert.Nil(t, pools)
