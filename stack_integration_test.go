@@ -377,6 +377,38 @@ func pollStackDeploymentGroupStatus(t *testing.T, ctx context.Context, client *C
 	}
 }
 
+func pollStackDeploymentRunStatus(t *testing.T, ctx context.Context, client *Client, deploymentRunID, status string) {
+	// pollStackDeploymentRunStatus will poll the given stack until the targeted
+	// deployment run matches the given status, or the deadline is reached.
+	ctx, cancel := context.WithDeadline(ctx, time.Now().Add(5*time.Minute))
+	defer cancel()
+
+	deadline, _ := ctx.Deadline()
+	t.Logf("Polling deployment run %q for status %s with deadline of %s", deploymentRunID, status, deadline)
+
+	ticker := time.NewTicker(2 * time.Second)
+	defer ticker.Stop()
+
+	for finished := false; !finished; {
+		t.Log("...")
+		select {
+		case <-ctx.Done():
+			t.Fatalf("Stack deployment run %s did not have status %q at deadline", deploymentRunID, status)
+		case <-ticker.C:
+			var err error
+			deploymentRun, err := client.StackDeploymentRuns.Read(ctx, deploymentRunID)
+			if err != nil {
+				t.Fatalf("Failed to read stack deployment run %s: %s", deploymentRunID, err)
+			}
+
+			t.Logf("Stack deployment run %s had status %q", deploymentRunID, deploymentRun.Status)
+			if deploymentRun.Status == status {
+				finished = true
+			}
+		}
+	}
+}
+
 func pollStackConfigurationStatus(t *testing.T, ctx context.Context, client *Client, stackConfigID, status string) (stackConfig *StackConfiguration) {
 	// pollStackDeployments will poll the given stack until it has deployments or the deadline is reached.
 	ctx, cancel := context.WithDeadline(ctx, time.Now().Add(5*time.Minute))

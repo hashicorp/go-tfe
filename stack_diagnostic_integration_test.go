@@ -53,6 +53,48 @@ func TestStackDiagnosticsReadAcknowledge(t *testing.T) {
 		diag, err := client.StackDiagnostics.Read(ctx, diag.ID)
 		require.NoError(t, err)
 		assert.NotNil(t, diag)
+
+		assert.NotEmpty(t, diag.ID)
+		assert.NotEmpty(t, diag.Severity)
+		assert.NotEmpty(t, diag.Summary)
+		assert.NotEmpty(t, diag.Detail)
+		assert.NotEmpty(t, diag.Diags)
+
+		for _, d := range diag.Diags {
+			assert.NotEmpty(t, d.Detail)
+			assert.NotEmpty(t, d.Severity)
+			assert.NotEmpty(t, d.Summary)
+			assert.Empty(t, d.Origin)
+
+			require.NotNil(t, d.Range)
+			assert.NotEmpty(t, d.Range.Filename)
+			assert.NotEmpty(t, d.Range.Source)
+
+			require.NotNil(t, d.Range.Start)
+			assert.NotZero(t, d.Range.Start.Line)
+			assert.NotZero(t, d.Range.Start.Column)
+			assert.NotZero(t, d.Range.Start.Byte)
+
+			require.NotNil(t, d.Range.End)
+			assert.NotZero(t, d.Range.End.Line)
+			assert.NotZero(t, d.Range.End.Column)
+			assert.NotZero(t, d.Range.End.Byte)
+
+			require.NotNil(t, d.Snippet)
+			assert.NotEmpty(t, d.Snippet.Code)
+			assert.Empty(t, d.Snippet.Values)
+			assert.Nil(t, d.Snippet.Context)
+			assert.Zero(t, d.Snippet.HighlightStartOffset)
+			assert.NotZero(t, d.Snippet.HighlightEndOffset)
+		}
+
+		assert.False(t, diag.Acknowledged)
+		assert.Nil(t, diag.AcknowledgedAt)
+		assert.NotZero(t, diag.CreatedAt)
+
+		assert.Nil(t, diag.StackDeploymentStep)
+		assert.NotNil(t, diag.StackConfiguration)
+		assert.Nil(t, diag.AcknowledgedBy)
 	})
 
 	t.Run("Read with invalid ID", func(t *testing.T) {

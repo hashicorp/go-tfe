@@ -232,7 +232,7 @@ func pollStackDeploymentStepStatus(t *testing.T, ctx context.Context, client *Cl
 	defer cancel()
 
 	deadline, _ := ctx.Deadline()
-	t.Logf("Polling stack deployment step %q for change in status with deadline of %s", stackDeploymentStepID, deadline)
+	t.Logf("Polling stack deployment step %q for change in status to %s with deadline of %s", stackDeploymentStepID, status, deadline)
 
 	ticker := time.NewTicker(2 * time.Second)
 	defer ticker.Stop()

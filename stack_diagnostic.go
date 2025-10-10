@@ -38,10 +38,21 @@ type StackDiagnostic struct {
 }
 
 type StackDiagnosticSummary struct {
-	Severity string           `jsonapi:"attr,severity"`
-	Summary  string           `jsonapi:"attr,summary"`
-	Detail   string           `jsonapi:"attr,detail"`
-	Range    *DiagnosticRange `jsonapi:"attr,range"`
+	Severity string             `jsonapi:"attr,severity"`
+	Summary  string             `jsonapi:"attr,summary"`
+	Detail   string             `jsonapi:"attr,detail"`
+	Range    *DiagnosticRange   `jsonapi:"attr,range"`
+	Origin   string             `jsonapi:"attr,origin"`
+	Snippet  *DiagnosticSnippet `jsonapi:"attr,snippet"`
+}
+
+type DiagnosticSnippet struct {
+	Code                 string   `jsonapi:"attr,code"`
+	Values               []string `jsonapi:"attr,values"`
+	Context              *string  `jsonapi:"attr,context"`
+	StartLine            int      `jsonapi:"attr,start_line"`
+	HighlightEndOffset   int      `jsonapi:"attr,highlight_end_offset"`
+	HighlightStartOffset int      `jsonapi:"attr,highlight_start_offset"`
 }
 
 type stackDiagnostics struct {

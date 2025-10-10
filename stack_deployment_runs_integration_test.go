@@ -7,7 +7,6 @@ package tfe
 import (
 	"context"
 	"testing"
-	"time"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
@@ -257,50 +256,24 @@ func TestStackDeploymentRunsCancel(t *testing.T) {
 	require.NoError(t, err)
 	assert.NotNil(t, runList)
 
+	run := runList.Items[0]
+
+	steps, err := client.StackDeploymentSteps.List(ctx, run.ID, nil)
+	require.NoError(t, err)
+	require.NotNil(t, steps)
+	require.NotEmpty(t, steps.Items)
+
+	step := steps.Items[0]
+
 	t.Run("cancel deployment run", func(t *testing.T) {
 		t.Parallel()
 
-		for _, sdr := range runList.Items {
-			err := client.StackDeploymentRuns.ApproveAllPlans(ctx, sdr.ID)
-			require.NoError(t, err)
-		}
+		pollStackDeploymentStepStatus(t, ctx, client, step.ID, "pending_operator")
 
-		for _, sdr := range runList.Items {
-			err := client.StackDeploymentRuns.Cancel(ctx, sdr.ID)
-			require.NoError(t, err)
-		}
+		err = client.StackDeploymentRuns.Cancel(ctx, run.ID)
+		require.NoError(t, err)
 
-		pollStackDeploymentGroupStatus(t, ctx, client, configurationID, "failed")
+		pollStackDeploymentStepStatus(t, ctx, client, step.ID, "failed")
+		pollStackDeploymentRunStatus(t, ctx, client, run.ID, "abandoned")
 	})
-}
-
-func pollStackDeploymentRunForDeployingStatus(t *testing.T, ctx context.Context, client *Client, stackDeploymentRunID string) {
-	t.Helper()
-
-	ctx, cancel := context.WithDeadline(ctx, time.Now().Add(5*time.Minute))
-	defer cancel()
-
-	deadline, _ := ctx.Deadline()
-	t.Logf("Polling stack deployment run %q for deploying status, with deadline of %s", stackDeploymentRunID, deadline)
-
-	ticker := time.NewTicker(2 * time.Second)
-	defer ticker.Stop()
-
-	for finished := false; !finished; {
-		t.Log("...")
-		select {
-		case <-ctx.Done():
-			t.Fatalf("Stack deployment run %q not deploying at deadline", stackDeploymentRunID)
-		case <-ticker.C:
-			var err error
-			sdr, err := client.StackDeploymentRuns.Read(ctx, stackDeploymentRunID)
-			if err != nil {
-				t.Fatalf("Failed to read stack deployment run %q: %s", stackDeploymentRunID, err)
-			}
-
-			if sdr.Status == "deploying" {
-				finished = true
-			}
-		}
-	}
 }

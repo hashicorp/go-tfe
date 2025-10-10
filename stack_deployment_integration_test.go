@@ -53,7 +53,7 @@ func TestStackDeploymentsList(t *testing.T) {
 		opts := &StackDeploymentListOptions{
 			ListOptions: ListOptions{
 				PageNumber: -1,
-				PageSize:   0,
+				PageSize:   -1,
 			},
 		}
 
