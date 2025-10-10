@@ -1363,6 +1363,17 @@ func createOrganizationMembership(t *testing.T, client *Client, org *Organizatio
 	}
 }
 
+func createPremiumOrganization(t *testing.T, client *Client) (*Organization, func()) {
+	org, orgCleanup := createOrganizationWithOptions(t, client, OrganizationCreateOptions{
+		Name:  String("tst-" + randomString(t)),
+		Email: String(fmt.Sprintf("%s@tfe.local", randomString(t))),
+	})
+
+	newSubscriptionUpdater(org).WithPremiumPlan().Update(t)
+
+	return org, orgCleanup
+}
+
 func createOrganizationToken(t *testing.T, client *Client, org *Organization) (*OrganizationToken, func()) {
 	var orgCleanup func()
 
@@ -2685,7 +2696,7 @@ func createWorkspaceWithVCS(t *testing.T, client *Client, org *Organization, opt
 
 	githubIdentifier := os.Getenv("GITHUB_POLICY_SET_IDENTIFIER")
 	if githubIdentifier == "" {
-		t.Fatal("Export a valid GITHUB_POLICY_SET_IDENTIFIER before running this test!")
+		t.Skip("Export a valid GITHUB_POLICY_SET_IDENTIFIER before running this test")
 	}
 
 	if options.Name == nil {
@@ -2741,7 +2752,7 @@ func createWorkspaceWithGithubApp(t *testing.T, client *Client, org *Organizatio
 
 	githubIdentifier := os.Getenv("GITHUB_POLICY_SET_IDENTIFIER")
 	if githubIdentifier == "" {
-		t.Fatal("Export a valid GITHUB_POLICY_SET_IDENTIFIER before running this test!")
+		t.Skip("Export a valid GITHUB_POLICY_SET_IDENTIFIER before running this test")
 	}
 
 	if options.Name == nil {
