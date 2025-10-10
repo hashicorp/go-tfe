@@ -12,6 +12,8 @@ import (
 )
 
 func TestStackDeploymentGroupSummaryList(t *testing.T) {
+	skipUnlessBeta(t)
+
 	client := testClient(t)
 	ctx := context.Background()
 

@@ -9,6 +9,8 @@ import (
 )
 
 func TestStackDiagnosticsReadAcknowledge(t *testing.T) {
+	skipUnlessBeta(t)
+
 	client := testClient(t)
 	ctx := context.Background()
 

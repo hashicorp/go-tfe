@@ -10,6 +10,8 @@ import (
 )
 
 func TestStackStateListReadDescription(t *testing.T) {
+	skipUnlessBeta(t)
+
 	client := testClient(t)
 	ctx := context.Background()
 	orgTest, orgTestCleanup := createOrganization(t, client)

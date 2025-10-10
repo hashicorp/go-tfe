@@ -14,6 +14,8 @@ import (
 )
 
 func TestStackDeploymentStepsList(t *testing.T) {
+	skipUnlessBeta(t)
+
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -102,6 +104,8 @@ func TestStackDeploymentStepsList(t *testing.T) {
 }
 
 func TestStackDeploymentStepsRead(t *testing.T) {
+	skipUnlessBeta(t)
+
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -162,6 +166,8 @@ func TestStackDeploymentStepsRead(t *testing.T) {
 }
 
 func TestStackDeploymentStepsAdvance(t *testing.T) {
+	skipUnlessBeta(t)
+
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -260,6 +266,8 @@ func pollStackDeploymentStepStatus(t *testing.T, ctx context.Context, client *Cl
 }
 
 func TestStackDeploymentStepsDiagnosticsArtifacts(t *testing.T) {
+	skipUnlessBeta(t)
+
 	client := testClient(t)
 	ctx := context.Background()
 

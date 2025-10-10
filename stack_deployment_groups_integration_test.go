@@ -12,6 +12,8 @@ import (
 )
 
 func TestStackDeploymentGroupsList(t *testing.T) {
+	skipUnlessBeta(t)
+
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -76,6 +78,8 @@ func TestStackDeploymentGroupsList(t *testing.T) {
 }
 
 func TestStackDeploymentGroupsRead(t *testing.T) {
+	skipUnlessBeta(t)
+
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -126,6 +130,8 @@ func TestStackDeploymentGroupsRead(t *testing.T) {
 }
 
 func TestStackDeploymentGroupsApproveAllPlans(t *testing.T) {
+	skipUnlessBeta(t)
+
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -171,6 +177,8 @@ func TestStackDeploymentGroupsApproveAllPlans(t *testing.T) {
 }
 
 func TestStackDeploymentGroupsRerun(t *testing.T) {
+	skipUnlessBeta(t)
+
 	client := testClient(t)
 	ctx := context.Background()
 
