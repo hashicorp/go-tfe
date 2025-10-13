@@ -251,6 +251,8 @@ var (
 	ErrInvalidHYOKCustomerKeyVersion = errors.New("invalid value for HYOK Customer key version ID")
 
 	ErrInvalidHYOKEncryptedDataKey = errors.New("invalid value for HYOK encrypted data key ID")
+
+	ErrInvalidStackID = errors.New("invalid value for stack ID")
 )
 
 var (

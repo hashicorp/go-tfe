@@ -13,6 +13,7 @@ import (
 
 func TestStackDeploymentGroupsList(t *testing.T) {
 	skipUnlessBeta(t)
+
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -78,6 +79,7 @@ func TestStackDeploymentGroupsList(t *testing.T) {
 
 func TestStackDeploymentGroupsRead(t *testing.T) {
 	skipUnlessBeta(t)
+
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -222,7 +224,7 @@ func TestStackDeploymentGroupsRerun(t *testing.T) {
 	err = client.StackDeploymentGroups.ApproveAllPlans(ctx, deploymentGroupID)
 	require.NoError(t, err)
 
-	pollStackDeploymentRunForDeployingStatus(t, ctx, client, deploymentRuns.Items[0].ID)
+	pollStackDeploymentRunStatus(t, ctx, client, deploymentRuns.Items[0].ID, "deploying")
 
 	deploymentRunIds := []string{deploymentRuns.Items[0].ID}
 	for _, dr := range deploymentRuns.Items {
