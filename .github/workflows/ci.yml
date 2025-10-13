@@ -25,8 +25,8 @@ jobs:
       fail-fast: false
       matrix:
         # If you adjust these parameters, also adjust the jrm input files on the "Merge reports" step below
-        total: [ 1 ]
-        index: [ 0 ]
+        total: [ 4 ]
+        index: [ 0, 1, 2, 3 ]
 
     steps:
       - name: terraform-cloud-outputs
@@ -95,7 +95,7 @@ jobs:
           gocovmerge junit-test-summary-0/cover.out > merged-coverage.out
 
       - name: Merge junit reports
-        run: jrm ./ci-summary.xml "junit-test-summary-0/*.xml"
+        run: jrm ./ci-summary.xml "junit-test-summary-0/*.xml" "junit-test-summary-1/*.xml" "junit-test-summary-2/*.xml" "junit-test-summary-3/*.xml"
 
       - name: Upload test artifacts
         uses: actions/upload-artifact@65c4c4a1ddee5b72f698fdd19549f0f0fb45cf08 # v4.6.0
