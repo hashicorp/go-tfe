@@ -1,4 +1,5 @@
 // Copyright (c) HashiCorp, Inc.
+
 // SPDX-License-Identifier: MPL-2.0
 
 package tfe
@@ -6,7 +7,6 @@ package tfe
 import (
 	"context"
 	"testing"
-	"time"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
@@ -252,7 +252,8 @@ func TestStackDeploymentRunsCancel(t *testing.T) {
 	require.NotNil(t, stackUpdated.LatestStackConfiguration)
 
 	// Get the deployment group ID from the stack configuration
-	deploymentGroups, err := client.StackDeploymentGroups.List(ctx, stackUpdated.LatestStackConfiguration.ID, nil)
+	configurationID := stackUpdated.LatestStackConfiguration.ID
+	deploymentGroups, err := client.StackDeploymentGroups.List(ctx, configurationID, nil)
 	require.NoError(t, err)
 	require.NotNil(t, deploymentGroups)
 	require.NotEmpty(t, deploymentGroups.Items)
@@ -263,52 +264,24 @@ func TestStackDeploymentRunsCancel(t *testing.T) {
 	require.NoError(t, err)
 	assert.NotNil(t, runList)
 
-	deploymentRunID := runList.Items[0].ID
+	run := runList.Items[0]
+
+	steps, err := client.StackDeploymentSteps.List(ctx, run.ID, nil)
+	require.NoError(t, err)
+	require.NotNil(t, steps)
+	require.NotEmpty(t, steps.Items)
+
+	step := steps.Items[0]
 
 	t.Run("cancel deployment run", func(t *testing.T) {
 		t.Parallel()
-		err := client.StackDeploymentRuns.ApproveAllPlans(ctx, deploymentRunID)
+
+		pollStackDeploymentStepStatus(t, ctx, client, step.ID, "pending_operator")
+
+		err = client.StackDeploymentRuns.Cancel(ctx, run.ID)
 		require.NoError(t, err)
 
-		pollStackDeploymentRunForDeployingStatus(t, ctx, client, deploymentRunID)
-
-		err = client.StackDeploymentRuns.Cancel(ctx, deploymentRunID)
-		require.NoError(t, err)
-
-		dr, err := client.StackDeploymentRuns.Read(ctx, deploymentRunID)
-		require.NoError(t, err)
-		assert.NotNil(t, dr)
-		assert.Equal(t, "abandoned", dr.Status)
+		pollStackDeploymentStepStatus(t, ctx, client, step.ID, "failed")
+		pollStackDeploymentRunStatus(t, ctx, client, run.ID, "abandoned")
 	})
-}
-
-func pollStackDeploymentRunForDeployingStatus(t *testing.T, ctx context.Context, client *Client, stackDeploymentRunID string) {
-	t.Helper()
-
-	ctx, cancel := context.WithDeadline(ctx, time.Now().Add(5*time.Minute))
-	defer cancel()
-
-	deadline, _ := ctx.Deadline()
-	t.Logf("Polling stack deployment run %q for deploying status, with deadline of %s", stackDeploymentRunID, deadline)
-
-	ticker := time.NewTicker(2 * time.Second)
-	defer ticker.Stop()
-
-	for finished := false; !finished; {
-		t.Log("...")
-		select {
-		case <-ctx.Done():
-			t.Fatalf("Stack deployment run %q not deploying at deadline", stackDeploymentRunID)
-		case <-ticker.C:
-			var err error
-			sdr, err := client.StackDeploymentRuns.Read(ctx, stackDeploymentRunID)
-			if err != nil {
-				t.Fatalf("Failed to read stack deployment run %q: %s", stackDeploymentRunID, err)
-			}
-
-			if sdr.Status == "deploying" {
-				finished = true
-			}
-		}
-	}
 }

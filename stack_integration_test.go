@@ -351,14 +351,14 @@ func pollStackDeploymentGroups(t *testing.T, ctx context.Context, client *Client
 	return stack
 }
 
-func pollStackDeploymentGroupStatus(t *testing.T, ctx context.Context, client *Client, stackID, status string) {
+func pollStackDeploymentGroupStatus(t *testing.T, ctx context.Context, client *Client, configurationID, status string) {
 	// pollStackDeploymentGroupStatus will poll the given stack until its deployment groups
 	// all match the given status, or the deadline is reached.
 	ctx, cancel := context.WithDeadline(ctx, time.Now().Add(5*time.Minute))
 	defer cancel()
 
 	deadline, _ := ctx.Deadline()
-	t.Logf("Polling stack %q for deployments with deadline of %s", stackID, deadline)
+	t.Logf("Polling configuration %q for deployments with deadline of %s", configurationID, deadline)
 
 	ticker := time.NewTicker(2 * time.Second)
 	defer ticker.Stop()
@@ -367,19 +367,51 @@ func pollStackDeploymentGroupStatus(t *testing.T, ctx context.Context, client *C
 		t.Log("...")
 		select {
 		case <-ctx.Done():
-			t.Fatalf("Stack deployment groups for config %s did not have status %q at deadline", stackID, status)
+			t.Fatalf("Stack deployment groups for config %s did not have status %q at deadline", configurationID, status)
 		case <-ticker.C:
 			var err error
-			summaries, err := client.StackDeploymentGroupSummaries.List(ctx, stackID, nil)
+			summaries, err := client.StackDeploymentGroupSummaries.List(ctx, configurationID, nil)
 			if err != nil {
-				t.Fatalf("Failed to read stack deployment groups or config %s: %s", stackID, err)
+				t.Fatalf("Failed to read stack deployment groups for config %s: %s", configurationID, err)
 			}
 
 			for _, group := range summaries.Items {
-				t.Logf("Stack deployment group %s for config %s had status %q", group.ID, stackID, group.Status)
+				t.Logf("Stack deployment group %s for config %s had status %q", group.ID, configurationID, group.Status)
 				if group.Status == status {
 					finished = true
 				}
+			}
+		}
+	}
+}
+
+func pollStackDeploymentRunStatus(t *testing.T, ctx context.Context, client *Client, deploymentRunID, status string) {
+	// pollStackDeploymentRunStatus will poll the given stack until the targeted
+	// deployment run matches the given status, or the deadline is reached.
+	ctx, cancel := context.WithDeadline(ctx, time.Now().Add(5*time.Minute))
+	defer cancel()
+
+	deadline, _ := ctx.Deadline()
+	t.Logf("Polling deployment run %q for status %s with deadline of %s", deploymentRunID, status, deadline)
+
+	ticker := time.NewTicker(2 * time.Second)
+	defer ticker.Stop()
+
+	for finished := false; !finished; {
+		t.Log("...")
+		select {
+		case <-ctx.Done():
+			t.Fatalf("Stack deployment run %s did not have status %q at deadline", deploymentRunID, status)
+		case <-ticker.C:
+			var err error
+			deploymentRun, err := client.StackDeploymentRuns.Read(ctx, deploymentRunID)
+			if err != nil {
+				t.Fatalf("Failed to read stack deployment run %s: %s", deploymentRunID, err)
+			}
+
+			t.Logf("Stack deployment run %s had status %q", deploymentRunID, deploymentRun.Status)
+			if deploymentRun.Status == status {
+				finished = true
 			}
 		}
 	}
@@ -418,41 +450,35 @@ func pollStackConfigurationStatus(t *testing.T, ctx context.Context, client *Cli
 	return
 }
 
-func TestStackConverged(t *testing.T) {
-	skipUnlessBeta(t)
+func pollNewStackConfiguration(t *testing.T, ctx context.Context, client *Client, stackID string) (stackConfig *StackConfiguration) {
+	// pollNewStackConfiguration can be used after a new configuration is fetched
+	// to ensure a non-nil configuration is returned.
+	ctx, cancel := context.WithDeadline(ctx, time.Now().Add(5*time.Minute))
+	defer cancel()
 
-	client := testClient(t)
-	ctx := context.Background()
+	deadline, _ := ctx.Deadline()
+	t.Logf("Polling stack %s for new stack configuration with deadline of %s", stackID, deadline)
 
-	orgTest, orgTestCleanup := createOrganization(t, client)
-	t.Cleanup(orgTestCleanup)
+	ticker := time.NewTicker(2 * time.Second)
+	defer ticker.Stop()
 
-	oauthClient, cleanup := createOAuthClient(t, client, orgTest, nil)
-	t.Cleanup(cleanup)
+	for finished := false; !finished; {
+		t.Log("...")
+		select {
+		case <-ctx.Done():
+			t.Fatalf("Stack %q had no new configuration at deadline", stackID)
+		case <-ticker.C:
+			stackConfigs, err := client.StackConfigurations.List(ctx, stackID, nil)
+			if err != nil {
+				t.Fatalf("Failed to list stack configurations for stack %q: %s", stackID, err)
+			}
 
-	stack, err := client.Stacks.Create(ctx, StackCreateOptions{
-		Name: "test-stack",
-		VCSRepo: &StackVCSRepoOptions{
-			Identifier:   "hashicorp-guides/pet-nulls-stack",
-			OAuthTokenID: oauthClient.OAuthTokens[0].ID,
-		},
-		Project: &Project{
-			ID: orgTest.DefaultProject.ID,
-		},
-	})
+			if len(stackConfigs.Items) > 0 {
+				stackConfig = stackConfigs.Items[0]
+				finished = true
+			}
+		}
+	}
 
-	require.NoError(t, err)
-	require.NotNil(t, stack)
-
-	stackUpdated, err := client.Stacks.FetchLatestFromVcs(ctx, stack.ID)
-	require.NoError(t, err)
-	require.NotNil(t, stackUpdated)
-
-	stackUpdated = pollStackDeploymentGroups(t, ctx, client, stackUpdated.ID)
-	require.NotNil(t, stackUpdated.LatestStackConfiguration)
-
-	// Poll until all deployment groups are pending
-	configurationID := stackUpdated.LatestStackConfiguration.ID
-	pollStackConfigurationStatus(t, ctx, client, configurationID, "completed")
-	pollStackDeploymentGroupStatus(t, ctx, client, configurationID, "pending")
+	return
 }
