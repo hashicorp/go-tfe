@@ -14,7 +14,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func TestCostEstimatesRead(t *testing.T) {
+func TestCostEstimatesRead_RunDependent(t *testing.T) {
 	skipIfEnterprise(t)
 
 	client := testClient(t)

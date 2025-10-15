@@ -15,7 +15,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func TestAppliesRead(t *testing.T) {
+func TestAppliesRead_RunDependent(t *testing.T) {
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -46,7 +46,7 @@ func TestAppliesRead(t *testing.T) {
 	})
 }
 
-func TestAppliesLogs(t *testing.T) {
+func TestAppliesLogs_RunDependent(t *testing.T) {
 	client := testClient(t)
 	ctx := context.Background()
 
