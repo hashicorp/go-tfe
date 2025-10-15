@@ -43,6 +43,9 @@ inputs:
   enterprise:
     description: Test enterprise features (`address` must be running in ON_PREM mode)
     required: false
+  skip-statement:
+    description: Skip tests with this statement substring in their name
+    required: false
 
 runs:
   using: composite
@@ -109,7 +112,7 @@ runs:
         GO111MODULE: "on"
         ENABLE_TFE: ${{ inputs.enterprise }}
       run: |
-        gotestsum --junitfile summary.xml --format short-verbose -- -parallel=2 -timeout=59m -coverprofile cover.out -run "${{ steps.test_split.outputs.run }}" -skip '_RunDependent$'
+        gotestsum --junitfile summary.xml --format short-verbose -- -parallel=2 -timeout=59m -coverprofile cover.out -run "${{ steps.test_split.outputs.run }}" ${{ inputs.skip-statement }}
 
     - name: Upload test artifacts
       uses: actions/upload-artifact@65c4c4a1ddee5b72f698fdd19549f0f0fb45cf08 # v4.6.0
