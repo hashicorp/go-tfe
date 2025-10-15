@@ -164,10 +164,10 @@ jobs:
 
       - name: Merge coverage reports
         run: |
-          gocovmerge junit-test-summary-0/cover.out junit-test-summary-1/cover.out junit-test-summary-2/cover.out junit-test-summary-3/cover.out junit-test-summary-4/cover.out junit-test-summary-5/cover.out junit-test-summary-6/cover.out junit-test-summary-7/cover.out junit-run-dependent-test-summary/cover.out > merged-coverage.out
+          gocovmerge junit-test-summary-{0..7}/cover.out junit-run-dependent-test-summary/cover.out > merged-coverage.out
 
       - name: Merge junit reports
-        run: jrm ./ci-summary.xml "junit-test-summary-0/*.xml" "junit-test-summary-1/*.xml" "junit-test-summary-2/*.xml" "junit-test-summary-3/*.xml" "junit-test-summary-4/*.xml" "junit-test-summary-5/*.xml" "junit-test-summary-6/*.xml" "junit-test-summary-7/*.xml" "junit-run-dependent-test-summary/*.xml"
+        run: jrm ./ci-summary.xml "junit-test-summary-{0..7}/*.xml" "junit-run-dependent-test-summary/*.xml"
 
       - name: Upload test artifacts
         uses: actions/upload-artifact@65c4c4a1ddee5b72f698fdd19549f0f0fb45cf08 # v4.6.0
