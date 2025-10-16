@@ -22,6 +22,7 @@ import (
 type MockCostEstimates struct {
 	ctrl     *gomock.Controller
 	recorder *MockCostEstimatesMockRecorder
+	isgomock struct{}
 }
 
 // MockCostEstimatesMockRecorder is the mock recorder for MockCostEstimates.

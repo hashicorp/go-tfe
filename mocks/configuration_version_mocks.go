@@ -22,6 +22,7 @@ import (
 type MockConfigurationVersions struct {
 	ctrl     *gomock.Controller
 	recorder *MockConfigurationVersionsMockRecorder
+	isgomock struct{}
 }
 
 // MockConfigurationVersionsMockRecorder is the mock recorder for MockConfigurationVersions.

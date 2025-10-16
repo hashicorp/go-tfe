@@ -20,6 +20,7 @@ import (
 type MockOIDCSettings struct {
 	ctrl     *gomock.Controller
 	recorder *MockOIDCSettingsMockRecorder
+	isgomock struct{}
 }
 
 // MockOIDCSettingsMockRecorder is the mock recorder for MockOIDCSettings.

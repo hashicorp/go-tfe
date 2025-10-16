@@ -21,6 +21,7 @@ import (
 type MockTwilioSettings struct {
 	ctrl     *gomock.Controller
 	recorder *MockTwilioSettingsMockRecorder
+	isgomock struct{}
 }
 
 // MockTwilioSettingsMockRecorder is the mock recorder for MockTwilioSettings.

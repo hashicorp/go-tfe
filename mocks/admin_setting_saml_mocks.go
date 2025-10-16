@@ -21,6 +21,7 @@ import (
 type MockSAMLSettings struct {
 	ctrl     *gomock.Controller
 	recorder *MockSAMLSettingsMockRecorder
+	isgomock struct{}
 }
 
 // MockSAMLSettingsMockRecorder is the mock recorder for MockSAMLSettings.

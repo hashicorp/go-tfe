@@ -21,6 +21,7 @@ import (
 type MockPolicySets struct {
 	ctrl     *gomock.Controller
 	recorder *MockPolicySetsMockRecorder
+	isgomock struct{}
 }
 
 // MockPolicySetsMockRecorder is the mock recorder for MockPolicySets.

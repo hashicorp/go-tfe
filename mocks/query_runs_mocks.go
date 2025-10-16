@@ -22,6 +22,7 @@ import (
 type MockQueryRuns struct {
 	ctrl     *gomock.Controller
 	recorder *MockQueryRunsMockRecorder
+	isgomock struct{}
 }
 
 // MockQueryRunsMockRecorder is the mock recorder for MockQueryRuns.
@@ -68,20 +69,6 @@ func (m *MockQueryRuns) Create(ctx context.Context, options tfe.QueryRunCreateOp
 func (mr *MockQueryRunsMockRecorder) Create(ctx, options any) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Create", reflect.TypeOf((*MockQueryRuns)(nil).Create), ctx, options)
-}
-
-// ForceCancel mocks base method.
-func (m *MockQueryRuns) ForceCancel(ctx context.Context, runID string) error {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "ForceCancel", ctx, runID)
-	ret0, _ := ret[0].(error)
-	return ret0
-}
-
-// ForceCancel indicates an expected call of ForceCancel.
-func (mr *MockQueryRunsMockRecorder) ForceCancel(ctx, runID any) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ForceCancel", reflect.TypeOf((*MockQueryRuns)(nil).ForceCancel), ctx, runID)
 }
 
 // List mocks base method.
