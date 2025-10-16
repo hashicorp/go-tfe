@@ -11,7 +11,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func TestTaskStagesRead(t *testing.T) {
+func TestTaskStagesRead_RunDependent(t *testing.T) {
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -77,7 +77,7 @@ func TestTaskStagesRead(t *testing.T) {
 	})
 }
 
-func TestTaskStagesList(t *testing.T) {
+func TestTaskStagesList_RunDependent(t *testing.T) {
 	client := testClient(t)
 	ctx := context.Background()
 

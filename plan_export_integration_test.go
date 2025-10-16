@@ -14,7 +14,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func TestPlanExportsCreate(t *testing.T) {
+func TestPlanExportsCreate_RunDependent(t *testing.T) {
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -59,7 +59,7 @@ func TestPlanExportsCreate(t *testing.T) {
 	})
 }
 
-func TestPlanExportsRead(t *testing.T) {
+func TestPlanExportsRead_RunDependent(t *testing.T) {
 	// TODO: Investigate why this test keeps tripping the test suite timeout
 	t.Skip()
 	client := testClient(t)
@@ -84,7 +84,7 @@ func TestPlanExportsRead(t *testing.T) {
 	})
 }
 
-func TestPlanExportsDelete(t *testing.T) {
+func TestPlanExportsDelete_RunDependent(t *testing.T) {
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -107,7 +107,7 @@ func TestPlanExportsDelete(t *testing.T) {
 	})
 }
 
-func TestPlanExportsDownload(t *testing.T) {
+func TestPlanExportsDownload_RunDependent(t *testing.T) {
 	client := testClient(t)
 	ctx := context.Background()
 

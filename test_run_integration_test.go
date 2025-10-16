@@ -12,7 +12,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func TestTestRunsList(t *testing.T) {
+func TestTestRunsList_RunDependent(t *testing.T) {
 	skipUnlessBeta(t)
 	client := testClient(t)
 	ctx := context.Background()
@@ -83,7 +83,7 @@ func TestTestRunsList(t *testing.T) {
 	})
 }
 
-func TestTestRunsRead(t *testing.T) {
+func TestTestRunsRead_RunDependent(t *testing.T) {
 	skipUnlessBeta(t)
 	client := testClient(t)
 	ctx := context.Background()
@@ -195,7 +195,7 @@ func TestTestRunsCreate(t *testing.T) {
 	})
 }
 
-func TestTestRunsLogs(t *testing.T) {
+func TestTestRunsLogs_RunDependent(t *testing.T) {
 	skipUnlessBeta(t)
 	client := testClient(t)
 	ctx := context.Background()
@@ -236,7 +236,7 @@ func TestTestRunsLogs(t *testing.T) {
 	})
 }
 
-func TestTestRunsCancel(t *testing.T) {
+func TestTestRunsCancel_RunDependent(t *testing.T) {
 	skipUnlessBeta(t)
 	client := testClient(t)
 	ctx := context.Background()

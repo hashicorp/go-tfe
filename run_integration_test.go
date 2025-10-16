@@ -16,7 +16,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func TestRunsList(t *testing.T) {
+func TestRunsList_RunDependent(t *testing.T) {
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -96,7 +96,7 @@ func TestRunsList(t *testing.T) {
 	})
 }
 
-func TestRunsListQueryParams(t *testing.T) {
+func TestRunsListQueryParams_RunDependent(t *testing.T) {
 	type testCase struct {
 		options     *RunListOptions
 		description string
@@ -390,7 +390,7 @@ func TestRunsCreate(t *testing.T) {
 	})
 }
 
-func TestRunsRead_CostEstimate(t *testing.T) {
+func TestRunsRead_CostEstimate_RunDependent(t *testing.T) {
 	skipIfEnterprise(t)
 
 	client := testClient(t)
@@ -418,7 +418,7 @@ func TestRunsRead_CostEstimate(t *testing.T) {
 	})
 }
 
-func TestRunsReadWithOptions(t *testing.T) {
+func TestRunsReadWithOptions_RunDependent(t *testing.T) {
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -463,7 +463,7 @@ func TestRunsReadWithPolicyPaths(t *testing.T) {
 	assert.Contains(t, r.PolicyPaths, "./foo")
 }
 
-func TestRunsConfirmedBy(t *testing.T) {
+func TestRunsConfirmedBy_RunDependent(t *testing.T) {
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -490,7 +490,7 @@ func TestRunsConfirmedBy(t *testing.T) {
 	})
 }
 
-func TestRunsCanceledAt(t *testing.T) {
+func TestRunsCanceledAt_RunDependent(t *testing.T) {
 	client := testClient(t)
 
 	ctx := context.Background()
@@ -580,7 +580,7 @@ func TestRunsTriggerReason(t *testing.T) {
 	assert.NotNil(t, r.TriggerReason)
 }
 
-func TestRunsApply(t *testing.T) {
+func TestRunsApply_RunDependent(t *testing.T) {
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -617,7 +617,7 @@ func TestRunsApply(t *testing.T) {
 	})
 }
 
-func TestRunsCancel(t *testing.T) {
+func TestRunsCancel_RunDependent(t *testing.T) {
 	client := testClient(t)
 
 	ctx := context.Background()
@@ -648,7 +648,7 @@ func TestRunsCancel(t *testing.T) {
 	})
 }
 
-func TestRunsForceCancel(t *testing.T) {
+func TestRunsForceCancel_RunDependent(t *testing.T) {
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -716,7 +716,7 @@ func TestRunsForceCancel(t *testing.T) {
 	})
 }
 
-func TestRunsForceExecute(t *testing.T) {
+func TestRunsForceExecute_RunDependent(t *testing.T) {
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -771,7 +771,7 @@ func TestRunsForceExecute(t *testing.T) {
 	})
 }
 
-func TestRunsDiscard(t *testing.T) {
+func TestRunsDiscard_RunDependent(t *testing.T) {
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -898,7 +898,7 @@ func TestRunCreateOptions_Marshal(t *testing.T) {
 	assert.Equal(t, string(bodyBytes), expectedBody)
 }
 
-func TestRunsListForOrganization(t *testing.T) {
+func TestRunsListForOrganization_RunDependent(t *testing.T) {
 	client := testClient(t)
 	ctx := context.Background()
 

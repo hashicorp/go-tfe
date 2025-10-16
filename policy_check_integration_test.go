@@ -16,7 +16,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func TestPolicyChecksList(t *testing.T) {
+func TestPolicyChecksList_RunDependent(t *testing.T) {
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -80,7 +80,7 @@ func TestPolicyChecksList(t *testing.T) {
 	})
 }
 
-func TestPolicyChecksRead(t *testing.T) {
+func TestPolicyChecksRead_RunDependent(t *testing.T) {
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -125,7 +125,7 @@ func TestPolicyChecksRead(t *testing.T) {
 	})
 }
 
-func TestPolicyChecksOverride(t *testing.T) {
+func TestPolicyChecksOverride_RunDependent(t *testing.T) {
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -183,7 +183,7 @@ func TestPolicyChecksOverride(t *testing.T) {
 	})
 }
 
-func TestPolicyChecksLogs(t *testing.T) {
+func TestPolicyChecksLogs_RunDependent(t *testing.T) {
 	client := testClient(t)
 	ctx := context.Background()
 

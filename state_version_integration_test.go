@@ -262,7 +262,7 @@ func TestStateVersionsUpload(t *testing.T) {
 	})
 }
 
-func TestStateVersionsCreate(t *testing.T) {
+func TestStateVersionsCreate_RunDependent(t *testing.T) {
 	client := testClient(t)
 	ctx := context.Background()
 

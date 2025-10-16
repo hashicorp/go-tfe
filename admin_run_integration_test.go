@@ -16,7 +16,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func TestAdminRuns_List(t *testing.T) {
+func TestAdminRuns_List_RunDependent(t *testing.T) {
 	skipUnlessEnterprise(t)
 
 	client := testClient(t)
@@ -146,7 +146,7 @@ func TestAdminRuns_List(t *testing.T) {
 	})
 }
 
-func TestAdminRuns_ForceCancel(t *testing.T) {
+func TestAdminRuns_ForceCancel_RunDependent(t *testing.T) {
 	skipUnlessEnterprise(t)
 
 	client := testClient(t)
@@ -229,7 +229,7 @@ func TestAdminRuns_ForceCancel(t *testing.T) {
 	})
 }
 
-func TestAdminRuns_ListFilterByDates(t *testing.T) {
+func TestAdminRuns_ListFilterByDates_RunDependent(t *testing.T) {
 	skipUnlessEnterprise(t)
 
 	client := testClient(t)

@@ -16,7 +16,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func TestPlansRead(t *testing.T) {
+func TestPlansRead_RunDependent(t *testing.T) {
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -74,7 +74,7 @@ func TestPlansRead(t *testing.T) {
 	})
 }
 
-func TestPlansLogs(t *testing.T) {
+func TestPlansLogs_RunDependent(t *testing.T) {
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -145,7 +145,7 @@ func TestPlan_Unmarshal(t *testing.T) {
 	assert.Equal(t, plan.StatusTimestamps.ErroredAt, erroredParsedTime)
 }
 
-func TestPlansJSONOutput(t *testing.T) {
+func TestPlansJSONOutput_RunDependent(t *testing.T) {
 	client := testClient(t)
 	ctx := context.Background()
 	rTest, rTestCleanup := createPlannedRun(t, client, nil)
