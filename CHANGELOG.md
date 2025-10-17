@@ -2,6 +2,8 @@
 
 * Remove org settings validation in RegistryModulesCreateMonorepo tests, by @jillirami ([#1236](https://github.com/hashicorp/go-tfe/pull/1236))
 
+# v1.95.0
+
 ## Enhancements
 
 * Add `Sort` option to `Agents` and `AgentPools`, by @twitnithegirl [#1229](https://github.com/hashicorp/go-tfe/pull/1229)

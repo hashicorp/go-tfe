@@ -11,7 +11,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func TestTaskStagesRead_Beta(t *testing.T) {
+func TestTaskStagesRead_Beta_RunDependent(t *testing.T) {
 	skipUnlessBeta(t)
 
 	client := testClient(t)
@@ -108,7 +108,7 @@ func TestTaskStagesRead_Beta(t *testing.T) {
 	})
 }
 
-func TestTaskStagesList_Beta(t *testing.T) {
+func TestTaskStagesList_Beta_RunDependent(t *testing.T) {
 	skipUnlessBeta(t)
 
 	client := testClient(t)
@@ -171,7 +171,7 @@ func TestTaskStagesList_Beta(t *testing.T) {
 	})
 }
 
-func TestTaskStageOverride_Beta(t *testing.T) {
+func TestTaskStageOverride_Beta_RunDependent(t *testing.T) {
 	skipUnlessBeta(t)
 
 	client := testClient(t)

@@ -34,7 +34,7 @@ type WorkspaceTableTest struct {
 	assertion func(t *testing.T, w *Workspace, options *WorkspaceTableOptions, err error)
 }
 
-func TestWorkspacesList(t *testing.T) {
+func TestWorkspacesList_RunDependent(t *testing.T) {
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -1216,7 +1216,7 @@ func TestWorkspacesReadWithOptions(t *testing.T) {
 	})
 }
 
-func TestWorkspacesReadWithHistory(t *testing.T) {
+func TestWorkspacesReadWithHistory_RunDependent(t *testing.T) {
 	client := testClient(t)
 
 	orgTest, orgTestCleanup := createOrganization(t, client)
@@ -1251,7 +1251,7 @@ func TestWorkspacesReadWithHistory(t *testing.T) {
 // If you've set your own GITHUB_POLICY_SET_IDENTIFIER, make sure the readme
 // starts with the string: This is a simple test
 // Otherwise the test will not pass
-func TestWorkspacesReadReadme(t *testing.T) {
+func TestWorkspacesReadReadme_RunDependent(t *testing.T) {
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -2425,7 +2425,7 @@ func TestWorkspacesLock(t *testing.T) {
 	})
 }
 
-func TestWorkspacesUnlock(t *testing.T) {
+func TestWorkspacesUnlock_RunDependent(t *testing.T) {
 	client := testClient(t)
 	ctx := context.Background()
 

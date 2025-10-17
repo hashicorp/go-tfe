@@ -1701,6 +1701,7 @@ func readQueryRun(t *testing.T, client *Client, ctx context.Context, r *QueryRun
 
 // applyRun will apply the given run.
 func applyRun(t *testing.T, client *Client, ctx context.Context, r *Run) {
+	runDependentTestNameValidator(t)
 	t.Logf("Applying run %q", r.ID)
 
 	if err := client.Runs.Apply(ctx, r.ID, RunApplyOptions{}); err != nil {
@@ -1749,6 +1750,7 @@ func fatalDumpRunLog(t *testing.T, client *Client, ctx context.Context, run *Run
 }
 
 func createRun(t *testing.T, client *Client, w *Workspace) (*Run, func()) {
+	runDependentTestNameValidator(t)
 	var wCleanup func()
 
 	if w == nil {
@@ -3270,6 +3272,22 @@ func betaFeaturesEnabled() bool {
 // Checks to see if HYOK_INTEGRATION_TESTS is set to 1, thereby enabling tests for HYOK features.
 func hyokIntegrationTestsEnabled() bool {
 	return os.Getenv("ENABLE_HYOK_INTEGRATION_TESTS") == "1"
+}
+
+func runDependentTestNameValidator(t *testing.T) {
+	t.Helper()
+
+	testName := t.Name()
+	testNameParts := strings.Split(testName, "/")
+
+	if len(testNameParts) == 0 {
+		return
+	}
+
+	rootTestName := testNameParts[0]
+	if rootTestName != "" && !strings.HasSuffix(rootTestName, "_RunDependent") {
+		t.Fatalf("Tests that start runs must have names ending with '_RunDependent', but got: %s", rootTestName)
+	}
 }
 
 func testHyokOrganization(t *testing.T, client *Client) *Organization {

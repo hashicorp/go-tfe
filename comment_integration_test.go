@@ -11,7 +11,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func TestCommentsList(t *testing.T) {
+func TestCommentsList_RunDependent(t *testing.T) {
 	client := testClient(t)
 	ctx := context.Background()
 
