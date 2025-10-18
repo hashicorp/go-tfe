@@ -1,5 +1,7 @@
 # Unreleased
 
+* Remove org settings validation in RegistryModulesCreateMonorepo tests, by @jillirami ([#1236](https://github.com/hashicorp/go-tfe/pull/1236))
+
 # v1.95.0
 
 ## Enhancements

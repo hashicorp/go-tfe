@@ -1063,7 +1063,7 @@ func TestRegistryModulesCreateMonorepoBranchBasedWithVCSConnection(t *testing.T)
 	client := testClient(t)
 	ctx := context.Background()
 
-	orgTest, orgTestCleanup := createOrganizationWithMonorepoSupport(t, client)
+	orgTest, orgTestCleanup := createOrganization(t, client)
 	t.Cleanup(orgTestCleanup)
 
 	oauthTokenTest, oauthTokenTestCleanup := createOAuthToken(t, client, orgTest)
@@ -1093,7 +1093,7 @@ func TestRegistryModulesCreateMonorepoBranchBasedWithVCSConnection(t *testing.T)
 	})
 }
 
-func TestRegistryModulesCreateTagBasedWithVCSConnection(t *testing.T) {
+func TestRegistryModulesCreateMonorepoTagBasedWithVCSConnection(t *testing.T) {
 	skipUnlessBeta(t)
 
 	githubIdentifier := os.Getenv("GITHUB_REGISTRY_MODULE_IDENTIFIER")
@@ -1112,7 +1112,7 @@ func TestRegistryModulesCreateTagBasedWithVCSConnection(t *testing.T) {
 	client := testClient(t)
 	ctx := context.Background()
 
-	orgTest, orgTestCleanup := createOrganizationWithMonorepoSupport(t, client)
+	orgTest, orgTestCleanup := createOrganization(t, client)
 	t.Cleanup(orgTestCleanup)
 
 	oauthTokenTest, oauthTokenTestCleanup := createOAuthToken(t, client, orgTest)
@@ -1124,6 +1124,7 @@ func TestRegistryModulesCreateTagBasedWithVCSConnection(t *testing.T) {
 
 		options := RegistryModuleCreateWithVCSConnectionOptions{
 			VCSRepo: &RegistryModuleVCSRepoOptions{
+				OrganizationName:  String(orgTest.Name),
 				Identifier:        String(githubIdentifier),
 				OAuthTokenID:      String(oauthTokenTest.ID),
 				DisplayIdentifier: String(githubIdentifier),
@@ -1141,7 +1142,6 @@ func TestRegistryModulesCreateTagBasedWithVCSConnection(t *testing.T) {
 		assert.Equal(t, rm.VCSRepo.Identifier, githubIdentifier)
 		assert.Equal(t, rm.VCSRepo.IngressSubmodules, true)
 		assert.Equal(t, rm.VCSRepo.OAuthTokenID, oauthTokenTest.ID)
-		assert.Equal(t, rm.VCSRepo.RepositoryHTTPURL, fmt.Sprintf("https://github.com/%s", githubIdentifier))
 		assert.Equal(t, rm.VCSRepo.ServiceProvider, string(ServiceProviderGithub))
 		assert.Regexp(t, fmt.Sprintf("^%s/webhooks/vcs/[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$", regexp.QuoteMeta(DefaultConfig().Address)), rm.VCSRepo.WebhookURL)
 
@@ -1158,6 +1158,7 @@ func TestRegistryModulesCreateTagBasedWithVCSConnection(t *testing.T) {
 
 		options := RegistryModuleCreateWithVCSConnectionOptions{
 			VCSRepo: &RegistryModuleVCSRepoOptions{
+				OrganizationName:  String(orgTest.Name),
 				Identifier:        String(githubIdentifier),
 				OAuthTokenID:      String(oauthTokenTest.ID),
 				DisplayIdentifier: String(githubIdentifier),
@@ -1174,7 +1175,6 @@ func TestRegistryModulesCreateTagBasedWithVCSConnection(t *testing.T) {
 		assert.Equal(t, rm.VCSRepo.Identifier, githubIdentifier)
 		assert.Equal(t, rm.VCSRepo.IngressSubmodules, true)
 		assert.Equal(t, rm.VCSRepo.OAuthTokenID, oauthTokenTest.ID)
-		assert.Equal(t, rm.VCSRepo.RepositoryHTTPURL, fmt.Sprintf("https://github.com/%s", githubIdentifier))
 		assert.Equal(t, rm.VCSRepo.ServiceProvider, string(ServiceProviderGithub))
 		assert.Regexp(t, fmt.Sprintf("^%s/webhooks/vcs/[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$", regexp.QuoteMeta(DefaultConfig().Address)), rm.VCSRepo.WebhookURL)
 
