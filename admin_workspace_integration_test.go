@@ -98,7 +98,7 @@ func TestAdminWorkspaces_ListWithSort_RunDependent(t *testing.T) {
 	})
 }
 
-func TestAdminWorkspaces_List(t *testing.T) {
+func TestAdminWorkspaces_List_RunDependent(t *testing.T) {
 	skipUnlessEnterprise(t)
 
 	client := testClient(t)

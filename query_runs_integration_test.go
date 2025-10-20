@@ -26,7 +26,7 @@ func createQueryRun(t *testing.T, client *Client, workspace *Workspace) *QueryRu
 	return queryRun
 }
 
-func TestQueryRunsList(t *testing.T) {
+func TestQueryRunsList_RunDependent(t *testing.T) {
 	skipUnlessBeta(t)
 	client := testClient(t)
 	ctx := context.Background()

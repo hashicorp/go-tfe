@@ -175,7 +175,7 @@ func TestRunsListQueryParams_RunDependent(t *testing.T) {
 	}
 }
 
-func TestRunsCreate(t *testing.T) {
+func TestRunsCreate_RunDependent(t *testing.T) {
 	client := testClient(t)
 	ctx := context.Background()
 
