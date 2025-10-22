@@ -54,6 +54,7 @@ jobs:
           admin_support_token: ${{ fromJSON(steps.tflocal.outputs.workspace-outputs-json).tfe_admin_token_by_role.support }}
           admin_version_maintenance_token: ${{ fromJSON(steps.tflocal.outputs.workspace-outputs-json).tfe_admin_token_by_role.version-maintenance }}
           oauth-client-github-token: ${{ secrets.OAUTH_CLIENT_GITHUB_TOKEN }}
+          datadog-workflow-token: ${{ secrets.TF_WORKFLOW_DATADOG_API_KEY }}
           skip-statement: "-skip '_RunDependent$'"
   
   tests-run-dependent:
@@ -96,6 +97,13 @@ jobs:
           name: junit-test-summary
           if_no_artifact_found: warn
           branch: main
+      
+      - name: Configure Datadog Test Optimization
+        uses: datadog/test-visibility-github-action@v2
+        with:
+          languages: go
+          api_key: ${{ secrets.TF_WORKFLOW_DATADOG_API_KEY }}
+          site: datadoghq.com 
 
       - name: Run integration tests
         shell: bash
