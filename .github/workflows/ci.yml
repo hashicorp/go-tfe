@@ -91,7 +91,7 @@ jobs:
 
       - name: Download artifact
         id: download-artifact
-        uses: dawidd6/action-download-artifact@09f2f74827fd3a8607589e5ad7f9398816f540fe # v3.1.4
+        uses: dawidd6/action-download-artifact@ac66b43f0e6a346234dd65d4d0c8fbb31cb316e5 # v11
         with:
           workflow_conclusion: success
           name: junit-test-summary
@@ -99,7 +99,7 @@ jobs:
           branch: main
       
       - name: Configure Datadog Test Optimization
-        uses: datadog/test-visibility-github-action@v2
+        uses: datadog/test-visibility-github-action@f4b026bb8b8b53f323960cf86a849a0231ff93b9 # v2.5.0
         with:
           languages: go
           api_key: ${{ secrets.TF_WORKFLOW_DATADOG_API_KEY }}
