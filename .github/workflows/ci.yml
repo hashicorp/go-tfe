@@ -1,7 +1,7 @@
 name: CI
 on:
   push:
-    branches: [ main ]
+    branches: [main]
   pull_request:
 
 concurrency:
@@ -25,8 +25,8 @@ jobs:
       fail-fast: false
       matrix:
         # If you adjust these parameters, also adjust the jrm input files on the "Merge reports" step below
-        total: [ 8 ]
-        index: [ 0, 1, 2, 3, 4, 5, 6, 7 ]
+        total: [8]
+        index: [0, 1, 2, 3, 4, 5, 6, 7]
 
     steps:
       - name: terraform-cloud-outputs
@@ -56,7 +56,7 @@ jobs:
           oauth-client-github-token: ${{ secrets.OAUTH_CLIENT_GITHUB_TOKEN }}
           datadog-workflow-token: ${{ secrets.TF_WORKFLOW_DATADOG_API_KEY }}
           skip-statement: "-skip '_RunDependent$'"
-  
+
   tests-run-dependent:
     name: Run Dependent Tests
     runs-on: ubuntu-latest
@@ -91,19 +91,19 @@ jobs:
 
       - name: Download artifact
         id: download-artifact
-        uses: dawidd6/action-download-artifact@09f2f74827fd3a8607589e5ad7f9398816f540fe # v3.1.4
+        uses: dawidd6/action-download-artifact@ac66b43f0e6a346234dd65d4d0c8fbb31cb316e5 # v11
         with:
           workflow_conclusion: success
           name: junit-test-summary
           if_no_artifact_found: warn
           branch: main
-      
+
       - name: Configure Datadog Test Optimization
-        uses: datadog/test-visibility-github-action@v2
+        uses: datadog/test-visibility-github-action@f4b026bb8b8b53f323960cf86a849a0231ff93b9 # v2.5.0
         with:
           languages: go
           api_key: ${{ secrets.TF_WORKFLOW_DATADOG_API_KEY }}
-          site: datadoghq.com 
+          site: datadoghq.com
 
       - name: Run integration tests
         shell: bash
@@ -137,7 +137,7 @@ jobs:
 
   tests-combine-summaries:
     name: Combine Test Reports
-    needs: [ tests, tests-run-dependent ]
+    needs: [tests, tests-run-dependent]
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -150,7 +150,7 @@ jobs:
       - name: Set up Go
         uses: actions/setup-go@d35c59abb061a4a6fb18e82ac0862c26744d6ab5 # v5.5.0
         with:
-          go-version: '^1.22'
+          go-version: "^1.22"
           cache: true
 
       - name: Download artifacts
@@ -182,7 +182,7 @@ jobs:
         with:
           name: junit-test-summary
           path: ./ci-summary.xml
-      
+
       - name: upload coverage
         env:
           DATADOG_API_KEY: "${{ secrets.TF_WORKFLOW_DATADOG_API_KEY }}"
@@ -193,7 +193,7 @@ jobs:
 
   tests-summarize:
     name: Summarize Tests
-    needs: [ tests, tests-run-dependent ]
+    needs: [tests, tests-run-dependent]
     runs-on: ubuntu-latest
     if: ${{ always() }}
     steps:
