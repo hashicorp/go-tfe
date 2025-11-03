@@ -43,10 +43,11 @@ const (
 // StackDeploymentStep represents a step from a stack deployment
 type StackDeploymentStep struct {
 	// Attributes
-	ID        string    `jsonapi:"primary,stack-deployment-steps"`
-	Status    string    `jsonapi:"attr,status"`
-	CreatedAt time.Time `jsonapi:"attr,created-at,iso8601"`
-	UpdatedAt time.Time `jsonapi:"attr,updated-at,iso8601"`
+	ID            string    `jsonapi:"primary,stack-deployment-steps"`
+	Status        string    `jsonapi:"attr,status"`
+	OperationType string    `jsonapi:"attr,operation-type"`
+	CreatedAt     time.Time `jsonapi:"attr,created-at,iso8601"`
+	UpdatedAt     time.Time `jsonapi:"attr,updated-at,iso8601"`
 
 	// Links
 	Links map[string]interface{} `jsonapi:"links,omitempty"`
