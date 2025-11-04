@@ -17,8 +17,8 @@ var _ QueryRuns = (*queryRuns)(nil)
 // QueryRuns describes all the run related methods that the Terraform Enterprise
 // API supports.
 //
-// NOTE WELL: This is a beta feature and is subject to change until noted otherwise in the
-// release notes.
+// TFE API docs:
+// https://developer.hashicorp.com/terraform/cloud-docs/api-docs/query-runs
 type QueryRuns interface {
 	// List all the query runs of the given workspace.
 	List(ctx context.Context, workspaceID string, options *QueryRunListOptions) (*QueryRunList, error)
