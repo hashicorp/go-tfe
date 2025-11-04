@@ -7,7 +7,7 @@ import (
 )
 
 type StackDeploymentGroupSummaries interface {
-	// List lists all the stack configuration summaries for a stack.
+	// List lists all the stack deployment group summaries for a stack.
 	List(ctx context.Context, configurationID string, options *StackDeploymentGroupSummaryListOptions) (*StackDeploymentGroupSummaryList, error)
 }
 

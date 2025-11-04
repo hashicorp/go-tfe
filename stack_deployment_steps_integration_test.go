@@ -157,6 +157,7 @@ func TestStackDeploymentStepsRead(t *testing.T) {
 		assert.NoError(t, err)
 		assert.NotEmpty(t, sds.ID)
 		assert.NotEmpty(t, sds.Status)
+		assert.NotEmpty(t, sds.OperationType)
 	})
 
 	t.Run("Read with invalid ID", func(t *testing.T) {

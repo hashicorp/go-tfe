@@ -149,7 +149,7 @@ const (
 // StackListOptions represents the options for listing stacks.
 type StackListOptions struct {
 	ListOptions
-	ProjectID    string          `url:"filter[project[id]],omitempty"`
+	ProjectID    string          `url:"filter[project][id],omitempty"`
 	Sort         StackSortColumn `url:"sort,omitempty"`
 	SearchByName string          `url:"search[name],omitempty"`
 }
