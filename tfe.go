@@ -32,13 +32,14 @@ import (
 )
 
 const (
-	_userAgent         = "go-tfe"
-	_headerRateLimit   = "X-RateLimit-Limit"
-	_headerRateReset   = "X-RateLimit-Reset"
-	_headerAppName     = "TFP-AppName"
-	_headerAPIVersion  = "TFP-API-Version"
-	_headerTFEVersion  = "X-TFE-Version"
-	_includeQueryParam = "include"
+	_userAgent               = "go-tfe"
+	_headerRateLimit         = "X-RateLimit-Limit"
+	_headerRateReset         = "X-RateLimit-Reset"
+	_headerAppName           = "TFP-AppName"
+	_headerAPIVersion        = "TFP-API-Version"
+	_headerTFEVersion        = "X-TFE-Version"
+	_headerTFENumericVersion = "X-TFE-Current-Version"
+	_includeQueryParam       = "include"
 
 	DefaultAddress      = "https://app.terraform.io"
 	DefaultBasePath     = "/api/v2/"
@@ -111,17 +112,18 @@ func DefaultConfig() *Config {
 // Client is the Terraform Enterprise API client. It provides the basic
 // connectivity and configuration for accessing the TFE API
 type Client struct {
-	baseURL           *url.URL
-	registryBaseURL   *url.URL
-	token             string
-	headers           http.Header
-	http              *retryablehttp.Client
-	limiter           *rate.Limiter
-	retryLogHook      RetryLogHook
-	retryServerErrors bool
-	remoteAPIVersion  string
-	remoteTFEVersion  string
-	appName           string
+	baseURL                 *url.URL
+	registryBaseURL         *url.URL
+	token                   string
+	headers                 http.Header
+	http                    *retryablehttp.Client
+	limiter                 *rate.Limiter
+	retryLogHook            RetryLogHook
+	retryServerErrors       bool
+	remoteAPIVersion        string
+	remoteTFEVersion        string
+	remoteTFENumericVersion string
+	appName                 string
 
 	Admin                           Admin
 	Agents                          Agents
@@ -449,6 +451,9 @@ func NewClient(cfg *Config) (*Client, error) {
 	// Save the TFE version
 	client.remoteTFEVersion = meta.TFEVersion
 
+	// Save the TFE Numeric version
+	client.remoteTFENumericVersion = meta.TFENumericVersion
+
 	// Save the app name
 	client.appName = meta.AppName
 
@@ -613,7 +618,7 @@ func (c *Client) SetFakeRemoteAPIVersion(fakeAPIVersion string) {
 	c.remoteAPIVersion = fakeAPIVersion
 }
 
-// RemoteTFEVersion returns the server's declared TFE version string.
+// RemoteTFEVersion returns the server's declared TFE monthly version string.
 //
 // A Terraform Enterprise API server includes its current version in an
 // HTTP header field in all responses. This value is saved by the client
@@ -622,6 +627,17 @@ func (c *Client) SetFakeRemoteAPIVersion(fakeAPIVersion string) {
 // earlier than v202208-3 and for HCP Terraform.
 func (c Client) RemoteTFEVersion() string {
 	return c.remoteTFEVersion
+}
+
+// RemoteTFENumericVersion returns the server's declared TFE version string.
+//
+// A Terraform Enterprise API server includes its current numeric version in an
+// HTTP header field in all responses. This value is saved by the client
+// during the initial setup request and RemoteTFENumericVersion returns that cached
+// value. This function returns an empty string for any Terraform Enterprise version
+// earlier than 1.0.3 and for HCP Terraform.
+func (c Client) RemoteTFENumericVersion() string {
+	return c.remoteTFENumericVersion
 }
 
 // RetryServerErrors configures the retry HTTP check to also retry
@@ -699,10 +715,15 @@ type rawAPIMetadata struct {
 	// field was not included in the response.
 	APIVersion string
 
-	// TFEVersion is the raw TFE version string reported by the server in the
+	// TFEVersion is the raw TFE monthly version string reported by the server in the
 	// X-TFE-Version response header, or an empty string if that header
 	// field was not included in the response.
 	TFEVersion string
+
+	// TFENumericVersion is the raw TFE Numeric version string reported by the server in the
+	// X-TFE-Current-Version response header, or an empty string if that header
+	// field was not included in the response.
+	TFENumericVersion string
 
 	// RateLimit is the raw API version string reported by the server in the
 	// X-RateLimit-Limit response header, or an empty string if that header
@@ -743,6 +764,7 @@ func (c *Client) getRawAPIMetadata() (rawAPIMetadata, error) {
 	meta.APIVersion = resp.Header.Get(_headerAPIVersion)
 	meta.RateLimit = resp.Header.Get(_headerRateLimit)
 	meta.TFEVersion = resp.Header.Get(_headerTFEVersion)
+	meta.TFENumericVersion = resp.Header.Get(_headerTFENumericVersion)
 	meta.AppName = resp.Header.Get(_headerAppName)
 
 	return meta, nil

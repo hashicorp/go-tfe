@@ -25,6 +25,7 @@ func TestClient_newClient(t *testing.T) {
 		w.Header().Set("X-RateLimit-Limit", "30")
 		w.Header().Set("TFP-API-Version", "34.21.9")
 		w.Header().Set("X-TFE-Version", "202205-1")
+		w.Header().Set("X-TFE-Current-Version", "1.1.0")
 		if enterpriseEnabled() {
 			w.Header().Set("TFP-AppName", "Terraform Enterprise")
 		} else {
@@ -87,7 +88,10 @@ func TestClient_newClient(t *testing.T) {
 			t.Errorf("unexpected remote API version %q; want %q", client.RemoteAPIVersion(), want)
 		}
 		if want := "202205-1"; client.RemoteTFEVersion() != want {
-			t.Errorf("unexpected remote TFE version %q; want %q", client.RemoteTFEVersion(), want)
+			t.Errorf("unexpected remote TFE monthly version %q; want %q", client.RemoteTFEVersion(), want)
+		}
+		if want := "1.1.0"; client.RemoteTFENumericVersion() != want {
+			t.Errorf("unexpected remote TFE numeric version %q; want %q", client.RemoteTFENumericVersion(), want)
 		}
 
 		if enterpriseEnabled() {
