@@ -14,7 +14,7 @@ require (
 	github.com/hashicorp/jsonapi v1.4.3-0.20250220162346-81a76b606f3e
 	github.com/stretchr/testify v1.11.1
 	go.uber.org/mock v0.4.0
-	golang.org/x/sync v0.17.0
+	golang.org/x/sync v0.18.0
 	golang.org/x/time v0.14.0
 )
 
