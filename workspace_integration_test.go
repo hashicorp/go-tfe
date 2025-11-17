@@ -2637,9 +2637,10 @@ func TestWorkspaces_AddRemoteStateConsumers(t *testing.T) {
 	wTest, wTestCleanup := createWorkspace(t, client, orgTest)
 	t.Cleanup(wTestCleanup)
 
-	// Update workspace to not allow global remote state
+	// Update workspace to not allow global and project remote state
 	options := WorkspaceUpdateOptions{
 		GlobalRemoteState: Bool(false),
+		ProjectRemoteState: Bool(false),
 	}
 	wTest, err := client.Workspaces.Update(ctx, orgTest.Name, wTest.Name, options)
 	require.NoError(t, err)
@@ -2694,9 +2695,10 @@ func TestWorkspaces_RemoveRemoteStateConsumers(t *testing.T) {
 	wTest, wTestCleanup := createWorkspace(t, client, orgTest)
 	t.Cleanup(wTestCleanup)
 
-	// Update workspace to not allow global remote state
+	// Update workspace to not allow global or project remote state
 	options := WorkspaceUpdateOptions{
 		GlobalRemoteState: Bool(false),
+		ProjectRemoteState: Bool(false),
 	}
 	wTest, err := client.Workspaces.Update(ctx, orgTest.Name, wTest.Name, options)
 	require.NoError(t, err)
@@ -2770,9 +2772,10 @@ func TestWorkspaces_UpdateRemoteStateConsumers(t *testing.T) {
 	wTest, wTestCleanup := createWorkspace(t, client, orgTest)
 	t.Cleanup(wTestCleanup)
 
-	// Update workspace to not allow global remote state
+	// Update workspace to not allow global or project remote state
 	options := WorkspaceUpdateOptions{
 		GlobalRemoteState: Bool(false),
+		ProjectRemoteState: Bool(false),
 	}
 	wTest, err := client.Workspaces.Update(ctx, orgTest.Name, wTest.Name, options)
 	require.NoError(t, err)
