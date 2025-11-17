@@ -199,6 +199,7 @@ type Workspace struct {
 	ExecutionMode               string                          `jsonapi:"attr,execution-mode"`
 	FileTriggersEnabled         bool                            `jsonapi:"attr,file-triggers-enabled"`
 	GlobalRemoteState           bool                            `jsonapi:"attr,global-remote-state"`
+	ProjectRemoteState 			bool 							`jsonapi:"attr,project-remote-state"`
 	InheritsProjectAutoDestroy  bool                            `jsonapi:"attr,inherits-project-auto-destroy"`
 	Locked                      bool                            `jsonapi:"attr,locked"`
 	MigrationEnvironment        string                          `jsonapi:"attr,migration-environment"`
@@ -435,6 +436,10 @@ type WorkspaceCreateOptions struct {
 
 	GlobalRemoteState *bool `jsonapi:"attr,global-remote-state,omitempty"`
 
+	// Optional: Allows the workspace to share remote state at the project level.
+	// Default is false.
+	ProjectRemoteState *bool `jsonapi:"attr,project-remote-state,omitempty"`
+
 	// Optional: The legacy TFE environment to use as the source of the migration, in the
 	// form organization/environment. Omit this unless you are migrating a legacy
 	// environment.
@@ -608,6 +613,10 @@ type WorkspaceUpdateOptions struct {
 
 	// Optional:
 	GlobalRemoteState *bool `jsonapi:"attr,global-remote-state,omitempty"`
+
+	// Optional: Allows the workspace to share remote state at the project level.
+	// Default is false.
+	ProjectRemoteState *bool `jsonapi:"attr,project-remote-state,omitempty"`
 
 	// DEPRECATED. Whether the workspace will use remote or local execution mode.
 	// Use ExecutionMode instead.
