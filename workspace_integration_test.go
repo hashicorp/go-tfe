@@ -3433,7 +3433,7 @@ func TestWorkspacesProjectRemoteState(t *testing.T) {
 	// Update workspace to allow project remote state sharing
 	options := WorkspaceUpdateOptions{
 		ProjectRemoteState: Bool(true),
-		GlobalRemoteState: Bool(false),
+		GlobalRemoteState:  Bool(false),
 	}
 	wTest, err := client.Workspaces.Update(ctx, orgTest.Name, wTest.Name, options)
 	require.NoError(t, err)
@@ -3482,7 +3482,7 @@ func TestWorkspacesProjectRemoteState(t *testing.T) {
 		// Update workspace to allow project remote state sharing
 		options := WorkspaceUpdateOptions{
 			ProjectRemoteState: Bool(true),
-			GlobalRemoteState: Bool(true),
+			GlobalRemoteState:  Bool(true),
 		}
 
 		_, err = client.Workspaces.Update(ctx, orgTest.Name, wTest.Name, options)
