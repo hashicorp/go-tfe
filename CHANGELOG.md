@@ -1,6 +1,7 @@
 # Unreleased
 
 * Remove org settings validation in RegistryModulesCreateMonorepo tests, by @jillirami ([#1236](https://github.com/hashicorp/go-tfe/pull/1236))
+* Add `ProjectRemoteState` attribute to `Workspace` by @hs26gill [#1248](https://github.com/hashicorp/go-tfe/pull/1248)
 
 # v1.95.0
 
