@@ -199,7 +199,8 @@ type Workspace struct {
 	ExecutionMode               string                          `jsonapi:"attr,execution-mode"`
 	FileTriggersEnabled         bool                            `jsonapi:"attr,file-triggers-enabled"`
 	GlobalRemoteState           bool                            `jsonapi:"attr,global-remote-state"`
-	ProjectRemoteState 			bool 							`jsonapi:"attr,project-remote-state"`
+	// **Note: This field is still in BETA and subject to change.**
+	ProjectRemoteState          bool                            `jsonapi:"attr,project-remote-state"`
 	InheritsProjectAutoDestroy  bool                            `jsonapi:"attr,inherits-project-auto-destroy"`
 	Locked                      bool                            `jsonapi:"attr,locked"`
 	MigrationEnvironment        string                          `jsonapi:"attr,migration-environment"`
@@ -436,6 +437,7 @@ type WorkspaceCreateOptions struct {
 
 	GlobalRemoteState *bool `jsonapi:"attr,global-remote-state,omitempty"`
 
+	// **Note: This field is still in BETA and subject to change.**
 	// Optional: Allows the workspace to share remote state at the project level.
 	// Default is false.
 	ProjectRemoteState *bool `jsonapi:"attr,project-remote-state,omitempty"`
@@ -614,6 +616,7 @@ type WorkspaceUpdateOptions struct {
 	// Optional:
 	GlobalRemoteState *bool `jsonapi:"attr,global-remote-state,omitempty"`
 
+	// **Note: This field is still in BETA and subject to change.**
 	// Optional: Allows the workspace to share remote state at the project level.
 	// Default is false.
 	ProjectRemoteState *bool `jsonapi:"attr,project-remote-state,omitempty"`
