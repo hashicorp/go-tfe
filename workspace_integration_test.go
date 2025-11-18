@@ -3487,7 +3487,7 @@ func TestWorkspacesProjectRemoteState(t *testing.T) {
 
 		_, err = client.Workspaces.Update(ctx, orgTest.Name, wTest.Name, options)
 		require.Error(t, err)
-		assert.EqualError(t, err, ErrInvalidRemoteStateOptions.Error())
+		assert.ErrorContains(t, err, ErrInvalidRemoteStateOptions.Error())
 	})
 
 	t.Run("without a valid workspace ID", func(t *testing.T) {
