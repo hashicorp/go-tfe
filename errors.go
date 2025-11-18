@@ -253,6 +253,8 @@ var (
 	ErrInvalidHYOKEncryptedDataKey = errors.New("invalid value for HYOK encrypted data key ID")
 
 	ErrInvalidStackID = errors.New("invalid value for stack ID")
+
+	ErrInvalidRemoteStateOptions = errors.New("invalid attribute\n\nProject remote state cannot be enabled when global remote state sharing is enabled.")
 )
 
 var (
