@@ -1,5 +1,7 @@
 # Unreleased
 
+* Add `ProjectRemoteState` attribute to `Workspace` by @hs26gill [#1248](https://github.com/hashicorp/go-tfe/pull/1248)
+
 # v1.96.0
 
 ## Enhancements
