@@ -1,5 +1,7 @@
 # Unreleased
 
+# v1.96.0
+
 ## Enhancements
 
 * QueryRun API is now generally available in HCP Terraform (not available in Terraform Enterprise), by @sowju-hashicorp [#1245](https://github.com/hashicorp/go-tfe/pull/1245)
