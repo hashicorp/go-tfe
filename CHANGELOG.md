@@ -1,5 +1,9 @@
 # Unreleased
 
+## Enhancements
+
+* QueryRun API is now generally available in HCP Terraform (not available in Terraform Enterprise), by @sowju-hashicorp [#1245](https://github.com/hashicorp/go-tfe/pull/1245)
+
 * Remove org settings validation in RegistryModulesCreateMonorepo tests, by @jillirami ([#1236](https://github.com/hashicorp/go-tfe/pull/1236))
 * Add `RemoteTFENumericVersion()` to the `Client` interface, which exposes the `X-TFE-Current-Version` header set by a remote TFE instance by @skj-skj [#1246](https://github.com/hashicorp/go-tfe/pull/1246)
 
