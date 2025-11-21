@@ -604,7 +604,7 @@ func TestVariableSetsApplyToAndRemoveFromStacks(t *testing.T) {
 	})
 
 	// Wait for stack to be ready by triggering configuration update
-	_, err = client.Stacks.UpdateConfiguration(ctx, stackTest1.ID)
+	_, err = client.Stacks.FetchLatestFromVcs(ctx, stackTest1.ID)
 	// Don't require this to succeed as it might not be needed
 
 	stackTest2, err := client.Stacks.Create(ctx, StackCreateOptions{
@@ -625,7 +625,7 @@ func TestVariableSetsApplyToAndRemoveFromStacks(t *testing.T) {
 	})
 
 	// Wait for stack to be ready by triggering configuration update
-	_, err = client.Stacks.UpdateConfiguration(ctx, stackTest2.ID)
+	_, err = client.Stacks.FetchLatestFromVcs(ctx, stackTest2.ID)
 	// Don't require this to succeed as it might not be needed
 
 	t.Run("with first stack added", func(t *testing.T) {
