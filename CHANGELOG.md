@@ -1,5 +1,42 @@
 # Unreleased
 
+# v1.96.0
+
+## Enhancements
+
+* QueryRun API is now generally available in HCP Terraform (not available in Terraform Enterprise), by @sowju-hashicorp [#1245](https://github.com/hashicorp/go-tfe/pull/1245)
+
+* Remove org settings validation in RegistryModulesCreateMonorepo tests, by @jillirami ([#1236](https://github.com/hashicorp/go-tfe/pull/1236))
+* Add `RemoteTFENumericVersion()` to the `Client` interface, which exposes the `X-TFE-Current-Version` header set by a remote TFE instance by @skj-skj [#1246](https://github.com/hashicorp/go-tfe/pull/1246)
+
+# v1.95.0
+
+## Enhancements
+
+* Add `Sort` option to `Agents` and `AgentPools`, by @twitnithegirl [#1229](https://github.com/hashicorp/go-tfe/pull/1229)
+* Add serialization for `StacksEnabled` field, `CanEnableStacks` & `CanCreateProject` permissions on Organization Read by @a-anurag27 [#1230](https://github.com/hashicorp/go-tfe/pull/1230)
+* Adds new stacks resources `StackDeployments`, `StackDiagnostics`, and `StackStates`, by @ctrombley [#1226](https://github.com/hashicorp/go-tfe/pull/1226)
+* Adds new `Diagnostics` methods to `StackConfigurations`, and `StackDeploymentSteps`, by @ctrombley [#1226](https://github.com/hashicorp/go-tfe/pull/1226)
+* Adds new `Artifacts` method to `StackDeploymentSteps`, by @ctrombley [#1226](https://github.com/hashicorp/go-tfe/pull/1226)
+* Add serialization for `StacksEnabled` field, `CanEnableStacks` & `CanCreateProject` permissions on Organization Read by @a-anurag27 [#1230](https://github.com/hashicorp/go-tfe/pull/1230)
+
+# v1.94.0
+
+## Enhancements
+
+* Add BETA support for Action invocations via `CreateRunOptions` by @mutahhir [#1206](https://github.com/hashicorp/go-tfe/pull/1206)
+
+# v1.93.0
+
+## Enhancements
+* Exports the StackConfiguration UploadTarGzip receiver function [#1219](https://github.com/hashicorp/go-tfe/pull/1219)
+* Updates BETA stacks resource schemas to match latest API spec by @ctrombley [#1220](https://github.com/hashicorp/go-tfe/pull/1220)
+* Adds support for Hold Your Own Key by @helenjw , @iuri-slywitch-hashicorp and @dominic-retli-hashi [#1201](https://github.com/hashicorp/go-tfe/pull/1201)
+
+## Deprecations
+
+* The beta `StackDeployments`, `StackPlan`, `StackPlanOperation`, and `StackSource` resources have been removed, by @sahar-azizighannad  [#1205](https://github.com/hashicorp/go-tfe/pull/1205)
+
 # v1.92.0
 
 ## Enhancements

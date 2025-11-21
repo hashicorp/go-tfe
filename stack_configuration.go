@@ -14,18 +14,19 @@ import (
 
 // StackConfigurations describes all the stacks configurations-related methods that the
 // HCP Terraform API supports.
-// NOTE WELL: This is a beta feature and is subject to change until noted otherwise in the
-// release notes.
 type StackConfigurations interface {
 	// CreateAndUpload packages and uploads the specified Terraform Stacks
 	// configuration files in association with a Stack.
 	CreateAndUpload(ctx context.Context, stackID string, path string, opts *CreateStackConfigurationOptions) (*StackConfiguration, error)
 
+	// Upload a tar gzip archive to the specified stack configuration upload URL.
+	UploadTarGzip(ctx context.Context, url string, archive io.Reader) error
+
 	// ReadConfiguration returns a stack configuration by its ID.
 	Read(ctx context.Context, id string) (*StackConfiguration, error)
 
 	// ListStackConfigurations returns a list of stack configurations for a stack.
-	List(ctx context.Context, stackID string, options *StackConfigurationListOptions) (*StackConfigurationList, error)
+	List(ctx context.Context, stackID string, opts *StackConfigurationListOptions) (*StackConfigurationList, error)
 
 	// JSONSchemas returns a byte slice of the JSON schema for the stack configuration.
 	JSONSchemas(ctx context.Context, stackConfigurationID string) ([]byte, error)
@@ -39,6 +40,9 @@ type StackConfigurations interface {
 	// stack configuration as it progresses, until that status is "<status>",
 	// "errored", "canceled".
 	AwaitStatus(ctx context.Context, stackConfigurationID string, status StackConfigurationStatus) <-chan WaitForStatusResult
+
+	// Diagnostics returns the diagnostics for this stack configuration.
+	Diagnostics(ctx context.Context, stackConfigurationID string) (*StackDiagnosticsList, error)
 }
 
 type StackConfigurationStatus string
@@ -48,8 +52,6 @@ const (
 	StackConfigurationStatusQueued     StackConfigurationStatus = "queued"
 	StackConfigurationStatusPreparing  StackConfigurationStatus = "preparing"
 	StackConfigurationStatusEnqueueing StackConfigurationStatus = "enqueueing"
-	StackConfigurationStatusConverged  StackConfigurationStatus = "converged"
-	StackConfigurationStatusConverging StackConfigurationStatus = "converging"
 	StackConfigurationStatusErrored    StackConfigurationStatus = "errored"
 	StackConfigurationStatusCanceled   StackConfigurationStatus = "canceled"
 	StackConfigurationStatusCompleted  StackConfigurationStatus = "completed"
@@ -114,7 +116,7 @@ func (s stackConfigurations) AwaitCompleted(ctx context.Context, stackConfigurat
 		}
 
 		return stackConfiguration.Status, nil
-	}, []string{StackConfigurationStatusConverged.String(), StackConfigurationStatusConverging.String(), StackConfigurationStatusCompleted.String(), StackConfigurationStatusErrored.String(), StackConfigurationStatusCanceled.String()})
+	}, []string{StackConfigurationStatusCompleted.String(), StackConfigurationStatusErrored.String(), StackConfigurationStatusCanceled.String()})
 }
 
 // AwaitStatus generates a channel that will receive the status of the stack configuration as it progresses.
@@ -195,7 +197,7 @@ func (s stackConfigurations) CreateAndUpload(ctx context.Context, stackID, path 
 		return nil, err
 	}
 
-	err = s.uploadTarGzip(ctx, uploadURL, body)
+	err = s.UploadTarGzip(ctx, uploadURL, body)
 	if err != nil {
 		return nil, err
 	}
@@ -250,6 +252,22 @@ func (s stackConfigurations) pollForUploadURL(ctx context.Context, stackConfigur
 //
 // **Note**: This method does not validate the content being uploaded and is therefore the caller's
 // responsibility to ensure the raw content is a valid Terraform configuration.
-func (s stackConfigurations) uploadTarGzip(ctx context.Context, uploadURL string, archive io.Reader) error {
+func (s stackConfigurations) UploadTarGzip(ctx context.Context, uploadURL string, archive io.Reader) error {
 	return s.client.doForeignPUTRequest(ctx, uploadURL, archive)
+}
+
+// Diagnostics returns the diagnostics for this stack configuration.
+func (s stackConfigurations) Diagnostics(ctx context.Context, stackConfigurationID string) (*StackDiagnosticsList, error) {
+	req, err := s.client.NewRequest("GET", fmt.Sprintf("stack-configurations/%s/stack-diagnostics", url.PathEscape(stackConfigurationID)), nil)
+
+	if err != nil {
+		return nil, err
+	}
+
+	diagnostics := &StackDiagnosticsList{}
+	err = req.Do(ctx, diagnostics)
+	if err != nil {
+		return nil, err
+	}
+	return diagnostics, nil
 }

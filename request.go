@@ -144,3 +144,58 @@ func (r *ClientRequest) DoJSON(ctx context.Context, model any) error {
 
 	return json.NewDecoder(resp.Body).Decode(model)
 }
+
+// DoRaw exposes the underlying io.ReadCloser for the response body.
+// The caller is responsible for closing the ReadCloser and unmarshaling the
+// results.
+func (r *ClientRequest) DoRaw(ctx context.Context) (io.ReadCloser, error) {
+	// Wait will block until the limiter can obtain a new token
+	// or returns an error if the given context is canceled.
+	if r.limiter != nil {
+		if err := r.limiter.Wait(ctx); err != nil {
+			return nil, err
+		}
+	}
+
+	// Add the context to the request.
+	contextReq := r.retryableRequest.WithContext(ctx)
+
+	// If the caller provided a response header hook then we'll call it
+	// once we have a response.
+	respHeaderHook, err := contextResponseHeaderHook(ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	// Execute the request and check the response.
+	resp, err := r.http.Do(contextReq)
+	if resp != nil {
+		// We call the callback whenever there's any sort of response,
+		// even if it's returned in conjunction with an error.
+		respHeaderHook(resp.StatusCode, resp.Header)
+	}
+	if err != nil {
+		// If we got an error, and the context has been canceled,
+		// the context's error is probably more useful.
+		select {
+		case <-ctx.Done():
+			return nil, ctx.Err()
+		default:
+			return nil, err
+		}
+	}
+
+	if resp.StatusCode < 200 || resp.StatusCode >= 400 {
+		// Close the body here since we won't be returning it to the caller.
+		resp.Body.Close()
+		return nil, fmt.Errorf("error HTTP response: %d", resp.StatusCode)
+	} else if resp.StatusCode == 304 {
+		// Got a "Not Modified" response, but we can't return a model because there is no response body.
+		// This is necessary to support the IPRanges endpoint, which has the peculiar behavior
+		// of not returning content but allowing a 304 response by optionally sending an
+		// If-Modified-Since header.
+		return nil, nil
+	}
+
+	return resp.Body, nil
+}

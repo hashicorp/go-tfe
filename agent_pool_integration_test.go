@@ -5,6 +5,7 @@ package tfe
 
 import (
 	"context"
+	"os"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -61,6 +62,27 @@ func TestAgentPoolsList(t *testing.T) {
 		assert.Empty(t, pools.Items)
 		assert.Equal(t, 999, pools.CurrentPage)
 		assert.Equal(t, 1, pools.TotalCount)
+	})
+
+	t.Run("with sorting", func(t *testing.T) {
+		agentPool2, agentPoolCleanup2 := createAgentPool(t, client, orgTest)
+		t.Cleanup(agentPoolCleanup2)
+
+		pools, err := client.AgentPools.List(ctx, orgTest.Name, &AgentPoolListOptions{
+			Sort: "created-at",
+		})
+		require.NoError(t, err)
+		require.NotNil(t, pools)
+		require.Len(t, pools.Items, 2)
+		require.Equal(t, []string{agentPool.ID, agentPool2.ID}, []string{pools.Items[0].ID, pools.Items[1].ID})
+
+		pools, err = client.AgentPools.List(ctx, orgTest.Name, &AgentPoolListOptions{
+			Sort: "-created-at",
+		})
+		require.NoError(t, err)
+		require.NotNil(t, pools)
+		require.Len(t, pools.Items, 2)
+		require.Equal(t, []string{agentPool2.ID, agentPool.ID}, []string{pools.Items[0].ID, pools.Items[1].ID})
 	})
 
 	t.Run("without a valid organization", func(t *testing.T) {
@@ -342,6 +364,22 @@ func TestAgentPoolsRead(t *testing.T) {
 		})
 		require.NoError(t, err)
 		assert.NotEmpty(t, k.Workspaces[0])
+	})
+
+	t.Run("read hyok configurations of an agent pool", func(t *testing.T) {
+		skipHYOKIntegrationTests(t)
+
+		// replace the environment variable with a valid agent pool ID that has HYOK configurations
+		hyokPoolID := os.Getenv("HYOK_POOL_ID")
+		if hyokPoolID == "" {
+			t.Fatal("Export a valid HYOK_POOL_ID before running this test!")
+		}
+
+		k, err := client.AgentPools.ReadWithOptions(ctx, hyokPoolID, &AgentPoolReadOptions{
+			Include: []AgentPoolIncludeOpt{AgentPoolHYOKConfigurations},
+		})
+		require.NoError(t, err)
+		assert.NotEmpty(t, k.HYOKConfigurations)
 	})
 }
 

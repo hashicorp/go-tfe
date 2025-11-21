@@ -140,6 +140,7 @@ type Run struct {
 	ForceCancelAvailableAt time.Time            `jsonapi:"attr,force-cancel-available-at,iso8601"`
 	HasChanges             bool                 `jsonapi:"attr,has-changes"`
 	IsDestroy              bool                 `jsonapi:"attr,is-destroy"`
+	InvokeActionAddrs      []string             `jsonapi:"attr,invoke-action-addrs,omitempty"`
 	Message                string               `jsonapi:"attr,message"`
 	Permissions            *RunPermissions      `jsonapi:"attr,permissions"`
 	PolicyPaths            []string             `jsonapi:"attr,policy-paths,omitempty"`
@@ -403,6 +404,9 @@ type RunCreateOptions struct {
 	// Variables allows you to specify terraform input variables for
 	// a particular run, prioritized over variables defined on the workspace.
 	Variables []*RunVariable `jsonapi:"attr,variables,omitempty"`
+
+	// Action Addresses to invoke.
+	InvokeActionAddrs []string `jsonapi:"attr,invoke-action-addrs,omitempty"`
 }
 
 // RunApplyOptions represents the options for applying a run.

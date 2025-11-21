@@ -43,6 +43,12 @@ inputs:
   enterprise:
     description: Test enterprise features (`address` must be running in ON_PREM mode)
     required: false
+  datadog-workflow-token:
+    description: Datadog API key for test optimization
+    required: false
+  skip-statement:
+    description: Skip tests with this statement substring in their name
+    required: false
 
 runs:
   using: composite
@@ -52,6 +58,7 @@ runs:
       with:
         go-version-file: go.mod
         cache: true
+        cache-dependency-path: go.sum
 
     - name: Sync dependencies
       shell: bash
@@ -80,6 +87,13 @@ runs:
         total: ${{ inputs.matrix_total }}
         junit-summary: ./ci-summary.xml
 
+    - name: Configure Datadog Test Optimization
+      uses: datadog/test-visibility-github-action@v2
+      with:
+        languages: go
+        api_key: ${{ inputs.datadog-workflow-token }}
+        site: datadoghq.com 
+
     - name: Run integration tests
       shell: bash
       env:
@@ -97,10 +111,18 @@ runs:
         GITHUB_REGISTRY_MODULE_IDENTIFIER: "hashicorp/terraform-random-module"
         GITHUB_REGISTRY_NO_CODE_MODULE_IDENTIFIER: "hashicorp/terraform-random-no-code-module"
         OAUTH_CLIENT_GITHUB_TOKEN: "${{ inputs.oauth-client-github-token }}"
+        SKIP_HYOK_INTEGRATION_TESTS: "${{ inputs.skip-hyok-integration-tests }}"
+        HYOK_ORGANIZATION_NAME: "${{ inputs.hyok-organization-name }}"
+        HYOK_WORKSPACE_NAME: "${{ inputs.hyok-workspace-name }}"
+        HYOK_POOL_ID: "${{ inputs.hyok-pool-id }}"
+        HYOK_PLAN_ID: "${{ inputs.hyok-plan-id }}"
+        HYOK_STATE_VERSION_ID: "${{ inputs.hyok-state-version-id }}"
+        HYOK_CUSTOMER_KEY_VERSION_ID: "${{ inputs.hyok-customer-key-version-id }}"
+        HYOK_ENCRYPTED_DATA_KEY_ID: "${{ inputs.hyok-encrypted-data-key-id }}"
         GO111MODULE: "on"
         ENABLE_TFE: ${{ inputs.enterprise }}
       run: |
-        gotestsum --junitfile summary.xml --format short-verbose -- -parallel=1 -timeout=59m -coverprofile cover.out -run "${{ steps.test_split.outputs.run }}"
+        gotestsum --junitfile summary.xml --format short-verbose -- -parallel=2 -timeout=59m -coverprofile cover.out -run "${{ steps.test_split.outputs.run }}" ${{ inputs.skip-statement }}
 
     - name: Upload test artifacts
       uses: actions/upload-artifact@65c4c4a1ddee5b72f698fdd19549f0f0fb45cf08 # v4.6.0

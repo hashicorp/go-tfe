@@ -11,7 +11,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func TestPolicyEvaluationList_Beta(t *testing.T) {
+func TestPolicyEvaluationList_Beta_RunDependent(t *testing.T) {
 	skipUnlessBeta(t)
 
 	client := testClient(t)
@@ -66,7 +66,7 @@ func TestPolicyEvaluationList_Beta(t *testing.T) {
 	})
 }
 
-func TestPolicySetOutcomeList_Beta(t *testing.T) {
+func TestPolicySetOutcomeList_Beta_RunDependent(t *testing.T) {
 	skipUnlessBeta(t)
 
 	client := testClient(t)
@@ -177,7 +177,7 @@ func TestPolicySetOutcomeList_Beta(t *testing.T) {
 	})
 }
 
-func TestPolicySetOutcomeRead_Beta(t *testing.T) {
+func TestPolicySetOutcomeRead_Beta_RunDependent(t *testing.T) {
 	skipUnlessBeta(t)
 
 	client := testClient(t)

@@ -13,6 +13,7 @@ import (
 
 func TestStackDeploymentGroupsList(t *testing.T) {
 	skipUnlessBeta(t)
+
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -36,13 +37,12 @@ func TestStackDeploymentGroupsList(t *testing.T) {
 	require.NoError(t, err)
 	require.NotNil(t, stack)
 
-	stackUpdated, err := client.Stacks.UpdateConfiguration(ctx, stack.ID)
+	stackUpdated, err := client.Stacks.FetchLatestFromVcs(ctx, stack.ID)
 	require.NoError(t, err)
 	require.NotNil(t, stackUpdated)
-	require.NotEmpty(t, stackUpdated.LatestStackConfiguration.ID)
 
-	stackUpdated = pollStackDeployments(t, ctx, client, stackUpdated.ID)
-	require.NotNil(t, stackUpdated.LatestStackConfiguration)
+	stackUpdated = pollStackDeploymentGroups(t, ctx, client, stackUpdated.ID)
+	require.NotEmpty(t, stackUpdated.LatestStackConfiguration.ID)
 
 	t.Run("List with valid stack configuration ID", func(t *testing.T) {
 		sdgl, err := client.StackDeploymentGroups.List(ctx, stackUpdated.LatestStackConfiguration.ID, nil)
@@ -79,6 +79,7 @@ func TestStackDeploymentGroupsList(t *testing.T) {
 
 func TestStackDeploymentGroupsRead(t *testing.T) {
 	skipUnlessBeta(t)
+
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -102,11 +103,11 @@ func TestStackDeploymentGroupsRead(t *testing.T) {
 	require.NoError(t, err)
 	require.NotNil(t, stack)
 
-	stackUpdated, err := client.Stacks.UpdateConfiguration(ctx, stack.ID)
+	stackUpdated, err := client.Stacks.FetchLatestFromVcs(ctx, stack.ID)
 	require.NoError(t, err)
 	require.NotNil(t, stackUpdated)
 
-	stackUpdated = pollStackDeployments(t, ctx, client, stackUpdated.ID)
+	stackUpdated = pollStackDeploymentGroups(t, ctx, client, stackUpdated.ID)
 	require.NotNil(t, stackUpdated.LatestStackConfiguration)
 
 	sdgl, err := client.StackDeploymentGroups.List(ctx, stackUpdated.LatestStackConfiguration.ID, nil)
@@ -154,15 +155,15 @@ func TestStackDeploymentGroupsApproveAllPlans(t *testing.T) {
 	require.NoError(t, err)
 	require.NotNil(t, stack)
 
-	stackUpdated, err := client.Stacks.UpdateConfiguration(ctx, stack.ID)
+	stackUpdated, err := client.Stacks.FetchLatestFromVcs(ctx, stack.ID)
 	require.NoError(t, err)
 	require.NotNil(t, stackUpdated)
 
-	stack = pollStackDeployments(t, ctx, client, stackUpdated.ID)
-	require.NotNil(t, stack.LatestStackConfiguration)
+	stackUpdated = pollStackDeploymentGroups(t, ctx, client, stackUpdated.ID)
+	require.NotNil(t, stackUpdated.LatestStackConfiguration)
 
 	// Get the deployment group ID from the stack configuration
-	deploymentGroups, err := client.StackDeploymentGroups.List(ctx, stack.LatestStackConfiguration.ID, nil)
+	deploymentGroups, err := client.StackDeploymentGroups.List(ctx, stackUpdated.LatestStackConfiguration.ID, nil)
 	require.NoError(t, err)
 	require.NotNil(t, deploymentGroups)
 	require.NotEmpty(t, deploymentGroups.Items)
@@ -201,14 +202,14 @@ func TestStackDeploymentGroupsRerun(t *testing.T) {
 	require.NoError(t, err)
 	require.NotNil(t, stack)
 
-	stackUpdated, err := client.Stacks.UpdateConfiguration(ctx, stack.ID)
+	stackUpdated, err := client.Stacks.FetchLatestFromVcs(ctx, stack.ID)
 	require.NoError(t, err)
 	require.NotNil(t, stackUpdated)
 
-	stack = pollStackDeployments(t, ctx, client, stackUpdated.ID)
-	require.NotNil(t, stack.LatestStackConfiguration)
+	stackUpdated = pollStackDeploymentGroups(t, ctx, client, stackUpdated.ID)
+	require.NotNil(t, stackUpdated.LatestStackConfiguration)
 
-	deploymentGroups, err := client.StackDeploymentGroups.List(ctx, stack.LatestStackConfiguration.ID, nil)
+	deploymentGroups, err := client.StackDeploymentGroups.List(ctx, stackUpdated.LatestStackConfiguration.ID, nil)
 	require.NoError(t, err)
 	require.NotNil(t, deploymentGroups)
 	require.NotEmpty(t, deploymentGroups.Items)
@@ -223,7 +224,7 @@ func TestStackDeploymentGroupsRerun(t *testing.T) {
 	err = client.StackDeploymentGroups.ApproveAllPlans(ctx, deploymentGroupID)
 	require.NoError(t, err)
 
-	pollStackDeploymentRunForDeployingStatus(t, ctx, client, deploymentRuns.Items[0].ID)
+	pollStackDeploymentRunStatus(t, ctx, client, deploymentRuns.Items[0].ID, "deploying")
 
 	deploymentRunIds := []string{deploymentRuns.Items[0].ID}
 	for _, dr := range deploymentRuns.Items {

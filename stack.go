@@ -11,14 +11,12 @@ import (
 )
 
 // Stacks describes all the stacks-related methods that the HCP Terraform API supports.
-// NOTE WELL: This is a beta feature and is subject to change until noted otherwise in the
-// release notes.
 type Stacks interface {
 	// List returns a list of stacks, optionally filtered by project.
 	List(ctx context.Context, organization string, options *StackListOptions) (*StackList, error)
 
 	// Read returns a stack by its ID.
-	Read(ctx context.Context, stackID string, options *StackReadOptions) (*Stack, error)
+	Read(ctx context.Context, stackID string) (*Stack, error)
 
 	// Create creates a new stack.
 	Create(ctx context.Context, options StackCreateOptions) (*Stack, error)
@@ -32,8 +30,8 @@ type Stacks interface {
 	// ForceDelete deletes a stack.
 	ForceDelete(ctx context.Context, stackID string) error
 
-	// UpdateConfiguration updates the configuration of a stack, triggering stack preparation.
-	UpdateConfiguration(ctx context.Context, stackID string) (*Stack, error)
+	// FetchLatestFromVcs updates the configuration of a stack, triggering stack preparation.
+	FetchLatestFromVcs(ctx context.Context, stackID string) (*Stack, error)
 }
 
 // stacks implements Stacks.
@@ -88,17 +86,18 @@ type Stack struct {
 	ID                 string        `jsonapi:"primary,stacks"`
 	Name               string        `jsonapi:"attr,name"`
 	Description        string        `jsonapi:"attr,description"`
-	DeploymentNames    []string      `jsonapi:"attr,deployment-names"`
 	VCSRepo            *StackVCSRepo `jsonapi:"attr,vcs-repo"`
-	ErrorsCount        int           `jsonapi:"attr,errors-count"`
-	WarningsCount      int           `jsonapi:"attr,warnings-count"`
 	SpeculativeEnabled bool          `jsonapi:"attr,speculative-enabled"`
 	CreatedAt          time.Time     `jsonapi:"attr,created-at,iso8601"`
 	UpdatedAt          time.Time     `jsonapi:"attr,updated-at,iso8601"`
+	UpstreamCount      int           `jsonapi:"attr,upstream-count"`
+	DownstreamCount    int           `jsonapi:"attr,downstream-count"`
+	InputsCount        int           `jsonapi:"attr,inputs-count"`
+	OutputsCount       int           `jsonapi:"attr,outputs-count"`
 
 	// Relationships
-	AgentPool                *AgentPool          `jsonapi:"relation,agent-pool"`
 	Project                  *Project            `jsonapi:"relation,project"`
+	AgentPool                *AgentPool          `jsonapi:"relation,agent-pool"`
 	LatestStackConfiguration *StackConfiguration `jsonapi:"relation,latest-stack-configuration"`
 }
 
@@ -117,46 +116,24 @@ type StackComponent struct {
 	Name       string `json:"name"`
 	Correlator string `json:"correlator"`
 	Expanded   bool   `json:"expanded"`
+	Removed    bool   `json:"removed"`
 }
 
 // StackConfiguration represents a stack configuration snapshot
 type StackConfiguration struct {
 	// Attributes
-	ID                   string                              `jsonapi:"primary,stack-configurations"`
-	Status               string                              `jsonapi:"attr,status"`
-	StatusTimestamps     *StackConfigurationStatusTimestamps `jsonapi:"attr,status-timestamps"`
-	SequenceNumber       int                                 `jsonapi:"attr,sequence-number"`
-	DeploymentNames      []string                            `jsonapi:"attr,deployment-names"`
-	ConvergedDeployments []string                            `jsonapi:"attr,converged-deployments"`
-	Components           []*StackComponent                   `jsonapi:"attr,components"`
-	ErrorMessage         *string                             `jsonapi:"attr,error-message"`
-	EventStreamURL       string                              `jsonapi:"attr,event-stream-url"`
-	Diagnostics          []*StackDiagnostic                  `jsonapi:"attr,diags"`
-	CreatedAt            time.Time                           `jsonapi:"attr,created-at,iso8601"`
-	UpdatedAt            time.Time                           `jsonapi:"attr,updated-at,iso8601"`
-
-	Stack *Stack `jsonapi:"relation,stack"`
-}
-
-// StackDeployment represents a stack deployment, specified by configuration
-type StackDeployment struct {
-	// Attributes
-	ID            string    `jsonapi:"primary,stack-deployments"`
-	Name          string    `jsonapi:"attr,name"`
-	Status        string    `jsonapi:"attr,status"`
-	DeployedAt    time.Time `jsonapi:"attr,deployed-at,iso8601"`
-	ErrorsCount   int       `jsonapi:"attr,errors-count"`
-	WarningsCount int       `jsonapi:"attr,warnings-count"`
-	PausedCount   int       `jsonapi:"attr,paused-count"`
+	ID                      string            `jsonapi:"primary,stack-configurations"`
+	Status                  string            `jsonapi:"attr,status"`
+	SequenceNumber          int               `jsonapi:"attr,sequence-number"`
+	Components              []*StackComponent `jsonapi:"attr,components"`
+	PreparingEventStreamURL string            `jsonapi:"attr,preparing-event-stream-url"`
+	CreatedAt               time.Time         `jsonapi:"attr,created-at,iso8601"`
+	UpdatedAt               time.Time         `jsonapi:"attr,updated-at,iso8601"`
+	Speculative             bool              `jsonapi:"attr,speculative"`
 
 	// Relationships
-	CurrentStackState *StackState `jsonapi:"relation,current-stack-state"`
-}
-
-// StackState represents a stack state
-type StackState struct {
-	// Attributes
-	ID string `jsonapi:"primary,stack-states"`
+	Stack             *Stack             `jsonapi:"relation,stack"`
+	IngressAttributes *IngressAttributes `jsonapi:"relation,ingress-attributes"`
 }
 
 // StackIncludeOpt represents the include options for a stack.
@@ -166,20 +143,15 @@ const (
 	StackIncludeOrganization             StackIncludeOpt = "organization"
 	StackIncludeProject                  StackIncludeOpt = "project"
 	StackIncludeLatestStackConfiguration StackIncludeOpt = "latest_stack_configuration"
-	StackIncludeStackDiagnostics         StackIncludeOpt = "stack_diagnostics"
+	StackIncludeStackDiagnostics         StackIncludeOpt = "latest_stack_configuration.stack_diagnostics"
 )
 
 // StackListOptions represents the options for listing stacks.
 type StackListOptions struct {
 	ListOptions
-	ProjectID    string            `url:"filter[project[id]],omitempty"`
-	Sort         StackSortColumn   `url:"sort,omitempty"`
-	SearchByName string            `url:"search[name],omitempty"`
-	Include      []StackIncludeOpt `url:"include,omitempty"`
-}
-
-type StackReadOptions struct {
-	Include []StackIncludeOpt `url:"include,omitempty"`
+	ProjectID    string          `url:"filter[project][id],omitempty"`
+	Sort         StackSortColumn `url:"sort,omitempty"`
+	SearchByName string          `url:"search[name],omitempty"`
 }
 
 // StackCreateOptions represents the options for creating a stack. The project
@@ -217,8 +189,8 @@ type WaitForStatusResult struct {
 const minimumPollingIntervalMs = 3000
 const maximumPollingIntervalMs = 5000
 
-// UpdateConfiguration fetches the latest configuration of a stack from VCS, triggering stack operations
-func (s *stacks) UpdateConfiguration(ctx context.Context, stackID string) (*Stack, error) {
+// FetchLatestFromVcs fetches the latest configuration of a stack from VCS, triggering stack operations
+func (s *stacks) FetchLatestFromVcs(ctx context.Context, stackID string) (*Stack, error) {
 	req, err := s.client.NewRequest("POST", fmt.Sprintf("stacks/%s/fetch-latest-from-vcs", url.PathEscape(stackID)), nil)
 	if err != nil {
 		return nil, err
@@ -254,8 +226,8 @@ func (s stacks) List(ctx context.Context, organization string, options *StackLis
 }
 
 // Read returns a stack by its ID.
-func (s stacks) Read(ctx context.Context, stackID string, options *StackReadOptions) (*Stack, error) {
-	req, err := s.client.NewRequest("GET", fmt.Sprintf("stacks/%s", url.PathEscape(stackID)), options)
+func (s stacks) Read(ctx context.Context, stackID string) (*Stack, error) {
+	req, err := s.client.NewRequest("GET", fmt.Sprintf("stacks/%s", url.PathEscape(stackID)), nil)
 	if err != nil {
 		return nil, err
 	}
@@ -307,7 +279,7 @@ func (s stacks) Update(ctx context.Context, stackID string, options StackUpdateO
 
 // Delete deletes a stack.
 func (s stacks) Delete(ctx context.Context, stackID string) error {
-	req, err := s.client.NewRequest("POST", fmt.Sprintf("stacks/%s/delete", url.PathEscape(stackID)), nil)
+	req, err := s.client.NewRequest("DELETE", fmt.Sprintf("stacks/%s", url.PathEscape(stackID)), nil)
 	if err != nil {
 		return err
 	}
@@ -317,7 +289,7 @@ func (s stacks) Delete(ctx context.Context, stackID string) error {
 
 // ForceDelete deletes a stack that still has deployments.
 func (s stacks) ForceDelete(ctx context.Context, stackID string) error {
-	req, err := s.client.NewRequest("POST", fmt.Sprintf("stacks/%s/force-delete", url.PathEscape(stackID)), nil)
+	req, err := s.client.NewRequest("DELETE", fmt.Sprintf("stacks/%s?force=true", url.PathEscape(stackID)), nil)
 	if err != nil {
 		return err
 	}
