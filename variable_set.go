@@ -60,7 +60,7 @@ type VariableSets interface {
 	UpdateWorkspaces(ctx context.Context, variableSetID string, options *VariableSetUpdateWorkspacesOptions) (*VariableSet, error)
 
 	// Update list of stacks to which the variable set is applied to match the supplied list.
-	// UpdateStacks(ctx context.Context, variableSetID string, options *VariableSetUpdateStacksOptions) (*VariableSet, error)
+	UpdateStacks(ctx context.Context, variableSetID string, options *VariableSetUpdateStacksOptions) (*VariableSet, error)
 }
 
 // variableSets implements VariableSets.
@@ -230,6 +230,24 @@ type privateVariableSetUpdateWorkspacesOptions struct {
 	Type       string       `jsonapi:"primary,varsets"`
 	Global     bool         `jsonapi:"attr,global"`
 	Workspaces []*Workspace `jsonapi:"relation,workspaces"`
+}
+
+// VariableSetUpdateStacksOptions represents a subset of update options specifically for applying variable sets to stacks
+type VariableSetUpdateStacksOptions struct {
+	// Type is a public field utilized by JSON:API to
+	// set the resource type via the field tag.
+	// It is not a user-defined value and does not need to be set.
+	// https://jsonapi.org/format/#crud-creating
+	Type string `jsonapi:"primary,varsets"`
+
+	// The stacks to be applied to. An empty set means remove all applied
+	Stacks []*Stack `jsonapi:"relation,stacks"`
+}
+
+type privateVariableSetUpdateStacksOptions struct {
+	Type   string   `jsonapi:"primary,varsets"`
+	Global bool     `jsonapi:"attr,global"`
+	Stacks []*Stack `jsonapi:"relation,stacks"`
 }
 
 // List all Variable Sets in the organization
@@ -534,6 +552,34 @@ func (s *variableSets) UpdateWorkspaces(ctx context.Context, variableSetID strin
 	return v, nil
 }
 
+// Update variable set to be applied to only the stacks in the supplied list.
+func (s *variableSets) UpdateStacks(ctx context.Context, variableSetID string, options *VariableSetUpdateStacksOptions) (*VariableSet, error) {
+	if err := options.valid(); err != nil {
+		return nil, err
+	}
+
+	// Use private struct to ensure global is set to false when applying to stacks
+	o := privateVariableSetUpdateStacksOptions{
+		Global: bool(false),
+		Stacks: options.Stacks,
+	}
+
+	// We force inclusion of stacks as that is the primary data for which we are concerned with confirming changes.
+	u := fmt.Sprintf("varsets/%s?include=%s", url.PathEscape(variableSetID), VariableSetStacks)
+	req, err := s.client.NewRequest("PATCH", u, &o)
+	if err != nil {
+		return nil, err
+	}
+
+	v := &VariableSet{}
+	err = req.Do(ctx, v)
+	if err != nil {
+		return nil, err
+	}
+
+	return v, nil
+}
+
 func (o *VariableSetListOptions) valid() error {
 	return nil
 }
@@ -608,6 +654,13 @@ func (o VariableSetRemoveFromStacksOptions) valid() error {
 func (o *VariableSetUpdateWorkspacesOptions) valid() error {
 	if o == nil || o.Workspaces == nil {
 		return ErrRequiredWorkspacesList
+	}
+	return nil
+}
+
+func (o *VariableSetUpdateStacksOptions) valid() error {
+	if o == nil || o.Stacks == nil {
+		return ErrRequiredStacksList
 	}
 	return nil
 }
