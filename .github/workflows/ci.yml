@@ -118,8 +118,8 @@ jobs:
           TFE_ADMIN_SUPPORT_TOKEN: ${{ fromJSON(steps.tflocal.outputs.workspace-outputs-json).tfe_admin_token_by_role.support }}
           TFE_ADMIN_VERSION_MAINTENANCE_TOKEN: ${{ fromJSON(steps.tflocal.outputs.workspace-outputs-json).tfe_admin_token_by_role.version-maintenance }}
           TFC_RUN_TASK_URL: "http://testing-mocks.tfe:22180/runtasks/pass"
-          GITHUB_POLICY_SET_IDENTIFIER: "hashicorp/test-policy-set"
-          GITHUB_REGISTRY_MODULE_IDENTIFIER: "hashicorp/terraform-random-module"
+          GITHUB_POLICY_SET_IDENTIFIER: "Maed223/test-policy-set"
+          GITHUB_REGISTRY_MODULE_IDENTIFIER: "Maed223/terraform-random-module"
           GITHUB_REGISTRY_NO_CODE_MODULE_IDENTIFIER: "hashicorp/terraform-random-no-code-module"
           OAUTH_CLIENT_GITHUB_TOKEN: "${{ secrets.OAUTH_CLIENT_GITHUB_TOKEN }}"
           GO111MODULE: "on"
