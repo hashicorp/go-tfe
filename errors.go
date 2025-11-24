@@ -323,6 +323,8 @@ var (
 
 	ErrRequiredProjectID = errors.New("project ID is required")
 
+	ErrRequiredStackID = errors.New("stack ID is required")
+
 	ErrWorkspacesRequired = errors.New("workspaces is required")
 
 	ErrWorkspaceMinLimit = errors.New("must provide at least one workspace")
@@ -378,6 +380,8 @@ var (
 	ErrRequiredGlobalFlag = errors.New("global flag is required")
 
 	ErrRequiredWorkspacesList = errors.New("no workspaces list provided")
+
+	ErrRequiredStacksList = errors.New("no stacks list provided")
 
 	ErrCommentBody = errors.New("comment body is required")
 
