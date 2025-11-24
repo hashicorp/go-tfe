@@ -1,5 +1,9 @@
 # Unreleased
 
+## Enhancements
+
+* Add variable set support for stacks with `ApplyToStacks`, `RemoveFromStacks`, and `UpdateStacks` API methods by @nithishravindra [#1251](https://github.com/hashicorp/go-tfe/pull/1251)
+
 # v1.96.0
 
 ## Enhancements
