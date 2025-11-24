@@ -598,7 +598,7 @@ func TestVariableSetsApplyToAndRemoveFromStacks(t *testing.T) {
 
 	// Wait for stack to be ready by triggering configuration update
 	_, err = client.Stacks.FetchLatestFromVcs(ctx, stackTest1.ID)
-	// Don't require this to succeed as it might not be needed
+	require.NoError(t, err)
 
 	stackTest2, err := client.Stacks.Create(ctx, StackCreateOptions{
 		Name: "test-stack-2",
@@ -773,18 +773,18 @@ func TestVariableSetsUpdateStacks(t *testing.T) {
 
 	// Wait for stack to be ready by triggering configuration update
 	_, err = client.Stacks.FetchLatestFromVcs(ctx, stackTest.ID)
-	// Don't require this to succeed as it might not be needed
+	require.NoError(t, err)
 
 	t.Run("with valid stacks", func(t *testing.T) {
 		options := VariableSetUpdateStacksOptions{
 			Stacks: []*Stack{stackTest},
 		}
 
-		vsAfter, err := client.VariableSets.UpdateStacks(ctx, vsTest.ID, &options)
+		_, err := client.VariableSets.UpdateStacks(ctx, vsTest.ID, &options)
 		require.NoError(t, err)
 
 		readOpts := &VariableSetReadOptions{Include: &[]VariableSetIncludeOpt{VariableSetStacks}}
-		vsAfter, err = client.VariableSets.Read(ctx, vsTest.ID, readOpts)
+		vsAfter, err := client.VariableSets.Read(ctx, vsTest.ID, readOpts)
 		require.NoError(t, err)
 
 		assert.Equal(t, len(options.Stacks), len(vsAfter.Stacks))
@@ -794,7 +794,7 @@ func TestVariableSetsUpdateStacks(t *testing.T) {
 			Stacks: []*Stack{},
 		}
 
-		vsAfter, err = client.VariableSets.UpdateStacks(ctx, vsTest.ID, &options)
+		_, err = client.VariableSets.UpdateStacks(ctx, vsTest.ID, &options)
 		require.NoError(t, err)
 
 		readOpts = &VariableSetReadOptions{Include: &[]VariableSetIncludeOpt{VariableSetStacks}}

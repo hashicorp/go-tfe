@@ -500,9 +500,8 @@ func (s *variableSets) ApplyToStacks(ctx context.Context, variableSetID string, 
 	if err != nil {
 		return err
 	}
-	a := req.Do(ctx, nil)
-	fmt.Printf("a: %v\n", a)
-	return a
+
+	return req.Do(ctx, nil)
 }
 
 func (s *variableSets) RemoveFromStacks(ctx context.Context, variableSetID string, options *VariableSetRemoveFromStacksOptions) error {
