@@ -332,7 +332,8 @@ func TestOrganizationsUpdate(t *testing.T) {
 			Names: []string{"owners"},
 		})
 		require.NoError(t, err)
-		//it should be the only team, we just created the org...
+
+		// it should be the only team, we just created the org...
 		require.Len(t, teamList.Items, 1)
 		ownersTeam := teamList.Items[0]
 
