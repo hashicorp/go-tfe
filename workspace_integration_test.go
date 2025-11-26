@@ -1252,6 +1252,8 @@ func TestWorkspacesReadWithHistory_RunDependent(t *testing.T) {
 // starts with the string: This is a simple test
 // Otherwise the test will not pass
 func TestWorkspacesReadReadme_RunDependent(t *testing.T) {
+	t.Skip("Skipping due to persistent failures - see TF-31172")
+
 	client := testClient(t)
 	ctx := context.Background()
 

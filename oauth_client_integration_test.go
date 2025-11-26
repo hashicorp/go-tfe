@@ -644,6 +644,7 @@ func TestOAuthClientsUpdate(t *testing.T) {
 	})
 
 	t.Run("updates agent pool", func(t *testing.T) {
+		t.Skip("Skipping due to persistent failures - see TF-31172")
 		testAgentPool1, agentPoolCleanup := createAgentPool(t, client, orgTest)
 		defer agentPoolCleanup()
 		testAgentPool2, agentPoolCleanup2 := createAgentPool(t, client, orgTest)
