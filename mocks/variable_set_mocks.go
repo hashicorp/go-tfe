@@ -21,7 +21,6 @@ import (
 type MockVariableSets struct {
 	ctrl     *gomock.Controller
 	recorder *MockVariableSetsMockRecorder
-	isgomock struct{}
 }
 
 // MockVariableSetsMockRecorder is the mock recorder for MockVariableSets.
