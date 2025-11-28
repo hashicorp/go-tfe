@@ -3411,7 +3411,7 @@ func TestWorkspaces_effectiveTagBindingsInheritedFrom(t *testing.T) {
 }
 
 func TestWorkspacesProjectRemoteState(t *testing.T) {
-	skipUnlessBeta(t)
+	skipUnlessEnterprise(t)
 
 	client := testClient(t)
 	ctx := context.Background()
