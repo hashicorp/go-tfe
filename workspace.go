@@ -199,34 +199,36 @@ type Workspace struct {
 	ExecutionMode               string                          `jsonapi:"attr,execution-mode"`
 	FileTriggersEnabled         bool                            `jsonapi:"attr,file-triggers-enabled"`
 	GlobalRemoteState           bool                            `jsonapi:"attr,global-remote-state"`
-	InheritsProjectAutoDestroy  bool                            `jsonapi:"attr,inherits-project-auto-destroy"`
-	Locked                      bool                            `jsonapi:"attr,locked"`
-	MigrationEnvironment        string                          `jsonapi:"attr,migration-environment"`
-	Name                        string                          `jsonapi:"attr,name"`
-	NoCodeUpgradeAvailable      bool                            `jsonapi:"attr,no-code-upgrade-available"`
-	Operations                  bool                            `jsonapi:"attr,operations"`
-	Permissions                 *WorkspacePermissions           `jsonapi:"attr,permissions"`
-	QueueAllRuns                bool                            `jsonapi:"attr,queue-all-runs"`
-	SpeculativeEnabled          bool                            `jsonapi:"attr,speculative-enabled"`
-	Source                      WorkspaceSource                 `jsonapi:"attr,source"`
-	SourceName                  string                          `jsonapi:"attr,source-name"`
-	SourceURL                   string                          `jsonapi:"attr,source-url"`
-	StructuredRunOutputEnabled  bool                            `jsonapi:"attr,structured-run-output-enabled"`
-	TerraformVersion            string                          `jsonapi:"attr,terraform-version"`
-	TriggerPrefixes             []string                        `jsonapi:"attr,trigger-prefixes"`
-	TriggerPatterns             []string                        `jsonapi:"attr,trigger-patterns"`
-	VCSRepo                     *VCSRepo                        `jsonapi:"attr,vcs-repo"`
-	WorkingDirectory            string                          `jsonapi:"attr,working-directory"`
-	UpdatedAt                   time.Time                       `jsonapi:"attr,updated-at,iso8601"`
-	ResourceCount               int                             `jsonapi:"attr,resource-count"`
-	ApplyDurationAverage        time.Duration                   `jsonapi:"attr,apply-duration-average"`
-	PlanDurationAverage         time.Duration                   `jsonapi:"attr,plan-duration-average"`
-	PolicyCheckFailures         int                             `jsonapi:"attr,policy-check-failures"`
-	RunFailures                 int                             `jsonapi:"attr,run-failures"`
-	RunsCount                   int                             `jsonapi:"attr,workspace-kpis-runs-count"`
-	TagNames                    []string                        `jsonapi:"attr,tag-names"`
-	SettingOverwrites           *WorkspaceSettingOverwrites     `jsonapi:"attr,setting-overwrites"`
-	HYOKEnabled                 *bool                           `jsonapi:"attr,hyok-enabled"`
+	// **Note: This field is still in BETA and subject to change.**
+	ProjectRemoteState         bool                        `jsonapi:"attr,project-remote-state"`
+	InheritsProjectAutoDestroy bool                        `jsonapi:"attr,inherits-project-auto-destroy"`
+	Locked                     bool                        `jsonapi:"attr,locked"`
+	MigrationEnvironment       string                      `jsonapi:"attr,migration-environment"`
+	Name                       string                      `jsonapi:"attr,name"`
+	NoCodeUpgradeAvailable     bool                        `jsonapi:"attr,no-code-upgrade-available"`
+	Operations                 bool                        `jsonapi:"attr,operations"`
+	Permissions                *WorkspacePermissions       `jsonapi:"attr,permissions"`
+	QueueAllRuns               bool                        `jsonapi:"attr,queue-all-runs"`
+	SpeculativeEnabled         bool                        `jsonapi:"attr,speculative-enabled"`
+	Source                     WorkspaceSource             `jsonapi:"attr,source"`
+	SourceName                 string                      `jsonapi:"attr,source-name"`
+	SourceURL                  string                      `jsonapi:"attr,source-url"`
+	StructuredRunOutputEnabled bool                        `jsonapi:"attr,structured-run-output-enabled"`
+	TerraformVersion           string                      `jsonapi:"attr,terraform-version"`
+	TriggerPrefixes            []string                    `jsonapi:"attr,trigger-prefixes"`
+	TriggerPatterns            []string                    `jsonapi:"attr,trigger-patterns"`
+	VCSRepo                    *VCSRepo                    `jsonapi:"attr,vcs-repo"`
+	WorkingDirectory           string                      `jsonapi:"attr,working-directory"`
+	UpdatedAt                  time.Time                   `jsonapi:"attr,updated-at,iso8601"`
+	ResourceCount              int                         `jsonapi:"attr,resource-count"`
+	ApplyDurationAverage       time.Duration               `jsonapi:"attr,apply-duration-average"`
+	PlanDurationAverage        time.Duration               `jsonapi:"attr,plan-duration-average"`
+	PolicyCheckFailures        int                         `jsonapi:"attr,policy-check-failures"`
+	RunFailures                int                         `jsonapi:"attr,run-failures"`
+	RunsCount                  int                         `jsonapi:"attr,workspace-kpis-runs-count"`
+	TagNames                   []string                    `jsonapi:"attr,tag-names"`
+	SettingOverwrites          *WorkspaceSettingOverwrites `jsonapi:"attr,setting-overwrites"`
+	HYOKEnabled                *bool                       `jsonapi:"attr,hyok-enabled"`
 
 	// Relations
 	AgentPool                   *AgentPool             `jsonapi:"relation,agent-pool"`
@@ -435,6 +437,11 @@ type WorkspaceCreateOptions struct {
 
 	GlobalRemoteState *bool `jsonapi:"attr,global-remote-state,omitempty"`
 
+	// **Note: This field is still in BETA and subject to change.**
+	// Optional: Allows the workspace to share remote state at the project level.
+	// Default is false.
+	ProjectRemoteState *bool `jsonapi:"attr,project-remote-state,omitempty"`
+
 	// Optional: The legacy TFE environment to use as the source of the migration, in the
 	// form organization/environment. Omit this unless you are migrating a legacy
 	// environment.
@@ -608,6 +615,11 @@ type WorkspaceUpdateOptions struct {
 
 	// Optional:
 	GlobalRemoteState *bool `jsonapi:"attr,global-remote-state,omitempty"`
+
+	// **Note: This field is still in BETA and subject to change.**
+	// Optional: Allows the workspace to share remote state at the project level.
+	// Default is false.
+	ProjectRemoteState *bool `jsonapi:"attr,project-remote-state,omitempty"`
 
 	// DEPRECATED. Whether the workspace will use remote or local execution mode.
 	// Use ExecutionMode instead.
