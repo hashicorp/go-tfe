@@ -3430,9 +3430,9 @@ func TestWorkspacesProjectRemoteState(t *testing.T) {
 	})
 	t.Cleanup(wTestCleanup)
 
-	// Update workspace to allow project remote state sharing
+	// Update workspace to allow no remote state sharing
 	options := WorkspaceUpdateOptions{
-		ProjectRemoteState: Bool(true),
+		ProjectRemoteState: Bool(false),
 		GlobalRemoteState:  Bool(false),
 	}
 	wTest, err := client.Workspaces.Update(ctx, orgTest.Name, wTest.Name, options)
@@ -3451,21 +3451,41 @@ func TestWorkspacesProjectRemoteState(t *testing.T) {
 		t.Cleanup(projTest2Cleanup)
 
 		// create consumer workspace in the other project
-		wTestNonConsumer, wTestCleanupNonConsumer := createWorkspaceWithOptions(t, client, orgTest, WorkspaceCreateOptions{
+		wTestConsumer2, wTestCleanupConsumer2 := createWorkspaceWithOptions(t, client, orgTest, WorkspaceCreateOptions{
 			Name:    String(randomString(t)),
 			Project: projTest2,
 		})
-		t.Cleanup(wTestCleanupNonConsumer)
+		t.Cleanup(wTestCleanupConsumer2)
 
-		_, err = client.Workspaces.Read(ctx, orgTest.Name, wTest.Name)
+		err := client.Workspaces.AddRemoteStateConsumers(ctx, wTest.ID, WorkspaceAddRemoteStateConsumersOptions{
+			Workspaces: []*Workspace{wTestConsumer1, wTestConsumer2},
+		})
 		require.NoError(t, err)
 
 		rsc, err := client.Workspaces.ListRemoteStateConsumers(ctx, wTest.ID, nil)
 		require.NoError(t, err)
 
+		// all the consumer workspaces are in the list
+		assert.Equal(t, 2, len(rsc.Items))
+		assert.Contains(t, rsc.Items, wTestConsumer1, wTestConsumer2)
+
+		// Update workspace to allow project remote state sharing
+		options := WorkspaceUpdateOptions{
+			ProjectRemoteState: Bool(true),
+			GlobalRemoteState:  Bool(false),
+		}
+		wTest, err := client.Workspaces.Update(ctx, orgTest.Name, wTest.Name, options)
+		require.NoError(t, err)
+
+		_, err = client.Workspaces.Read(ctx, orgTest.Name, wTest.Name)
+		require.NoError(t, err)
+
+		rsc, err = client.Workspaces.ListRemoteStateConsumers(ctx, wTest.ID, nil)
+		require.NoError(t, err)
+
 		assert.Equal(t, 1, len(rsc.Items))
 		assert.Contains(t, rsc.Items, wTestConsumer1)
-		assert.NotContains(t, rsc.Items, wTestNonConsumer)
+		assert.NotContains(t, rsc.Items, wTestConsumer2)
 	})
 
 	t.Run("with invalid options", func(t *testing.T) {
