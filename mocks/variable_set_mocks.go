@@ -54,6 +54,20 @@ func (mr *MockVariableSetsMockRecorder) ApplyToProjects(ctx, variableSetID, opti
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ApplyToProjects", reflect.TypeOf((*MockVariableSets)(nil).ApplyToProjects), ctx, variableSetID, options)
 }
 
+// ApplyToStacks mocks base method.
+func (m *MockVariableSets) ApplyToStacks(ctx context.Context, variableSetID string, options *tfe.VariableSetApplyToStacksOptions) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "ApplyToStacks", ctx, variableSetID, options)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// ApplyToStacks indicates an expected call of ApplyToStacks.
+func (mr *MockVariableSetsMockRecorder) ApplyToStacks(ctx, variableSetID, options any) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ApplyToStacks", reflect.TypeOf((*MockVariableSets)(nil).ApplyToStacks), ctx, variableSetID, options)
+}
+
 // ApplyToWorkspaces mocks base method.
 func (m *MockVariableSets) ApplyToWorkspaces(ctx context.Context, variableSetID string, options *tfe.VariableSetApplyToWorkspacesOptions) error {
 	m.ctrl.T.Helper()
@@ -171,6 +185,20 @@ func (mr *MockVariableSetsMockRecorder) RemoveFromProjects(ctx, variableSetID, o
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "RemoveFromProjects", reflect.TypeOf((*MockVariableSets)(nil).RemoveFromProjects), ctx, variableSetID, options)
 }
 
+// RemoveFromStacks mocks base method.
+func (m *MockVariableSets) RemoveFromStacks(ctx context.Context, variableSetID string, options *tfe.VariableSetRemoveFromStacksOptions) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "RemoveFromStacks", ctx, variableSetID, options)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// RemoveFromStacks indicates an expected call of RemoveFromStacks.
+func (mr *MockVariableSetsMockRecorder) RemoveFromStacks(ctx, variableSetID, options any) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "RemoveFromStacks", reflect.TypeOf((*MockVariableSets)(nil).RemoveFromStacks), ctx, variableSetID, options)
+}
+
 // RemoveFromWorkspaces mocks base method.
 func (m *MockVariableSets) RemoveFromWorkspaces(ctx context.Context, variableSetID string, options *tfe.VariableSetRemoveFromWorkspacesOptions) error {
 	m.ctrl.T.Helper()
@@ -198,6 +226,21 @@ func (m *MockVariableSets) Update(ctx context.Context, variableSetID string, opt
 func (mr *MockVariableSetsMockRecorder) Update(ctx, variableSetID, options any) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Update", reflect.TypeOf((*MockVariableSets)(nil).Update), ctx, variableSetID, options)
+}
+
+// UpdateStacks mocks base method.
+func (m *MockVariableSets) UpdateStacks(ctx context.Context, variableSetID string, options *tfe.VariableSetUpdateStacksOptions) (*tfe.VariableSet, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "UpdateStacks", ctx, variableSetID, options)
+	ret0, _ := ret[0].(*tfe.VariableSet)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// UpdateStacks indicates an expected call of UpdateStacks.
+func (mr *MockVariableSetsMockRecorder) UpdateStacks(ctx, variableSetID, options any) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdateStacks", reflect.TypeOf((*MockVariableSets)(nil).UpdateStacks), ctx, variableSetID, options)
 }
 
 // UpdateWorkspaces mocks base method.
