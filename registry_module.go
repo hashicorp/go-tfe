@@ -14,6 +14,22 @@ import (
 	"strings"
 )
 
+type AgentExecutionMode string
+
+const (
+	AgentExecutionModeAgent  AgentExecutionMode = "agent"
+	AgentExecutionModeRemote AgentExecutionMode = "remote"
+)
+
+func (a *AgentExecutionMode) UnmarshalText(text []byte) error {
+	*a = AgentExecutionMode(string(text))
+	return nil
+}
+
+func (a AgentExecutionMode) MarshalText() ([]byte, error) {
+	return []byte(string(a)), nil
+}
+
 // Compile-time proof of interface implementation.
 var _ RegistryModules = (*registryModules)(nil)
 
@@ -269,6 +285,18 @@ type RegistryModuleListOptions struct {
 
 	// Include is a list of relations to include.
 	Include []RegistryModuleListIncludeOpt `url:"include,omitempty"`
+
+	// Search is a search query string. Modules are searchable by name, namespace, provider fields.
+	Search string `url:"q,omitempty"`
+
+	// Provider filters results by provider name
+	Provider string `url:"filter[provider],omitempty"`
+
+	// RegistryName filters results by registry name (public or private)
+	RegistryName RegistryName `url:"filter[registry_name],omitempty"`
+
+	// OrganizationName filters results by organization name
+	OrganizationName string `url:"filter[organization_name],omitempty"`
 }
 
 type RegistryModuleListIncludeOpt string
@@ -354,7 +382,9 @@ type RegistryModuleUpdateOptions struct {
 }
 
 type RegistryModuleTestConfigOptions struct {
-	TestsEnabled *bool `jsonapi:"attr,tests-enabled,omitempty"`
+	TestsEnabled       *bool               `jsonapi:"attr,tests-enabled,omitempty"`
+	AgentExecutionMode *AgentExecutionMode `jsonapi:"attr,agent-execution-mode,omitempty"`
+	AgentPoolID        *string             `jsonapi:"attr,agent-pool-id,omitempty"`
 }
 
 type RegistryModuleVCSRepoOptions struct {
@@ -370,6 +400,10 @@ type RegistryModuleVCSRepoOptions struct {
 	// **Note: This field is still in BETA and subject to change.**
 	Branch *string `json:"branch,omitempty"`
 	Tags   *bool   `json:"tags,omitempty"`
+
+	// Optional: If set, the registry module will be branch-based or tag-based
+	SourceDirectory *string `json:"source-directory,omitempty"`
+	TagPrefix       *string `json:"tag-prefix,omitempty"`
 }
 
 type RegistryModuleVCSRepoUpdateOptions struct {
@@ -380,6 +414,10 @@ type RegistryModuleVCSRepoUpdateOptions struct {
 	// **Note: This field is still in BETA and subject to change.**
 	Branch *string `json:"branch,omitempty"`
 	Tags   *bool   `json:"tags,omitempty"`
+
+	// Optional: If set, the registry module will be branch-based or tag-based
+	SourceDirectory *string `json:"source-directory,omitempty"`
+	TagPrefix       *string `json:"tag-prefix,omitempty"`
 }
 
 // List all the registry modules within an organization.
@@ -513,6 +551,12 @@ func (r *registryModules) Update(ctx context.Context, moduleID RegistryModuleID,
 		}
 	}
 
+	if options.TestConfig != nil && options.TestConfig.AgentExecutionMode != nil {
+		if *options.TestConfig.AgentExecutionMode == AgentExecutionModeRemote && options.TestConfig.AgentPoolID != nil {
+			return nil, ErrAgentPoolNotRequiredForRemoteExecution
+		}
+	}
+
 	org := url.PathEscape(moduleID.Organization)
 	registryName := url.PathEscape(string(moduleID.RegistryName))
 	namespace := url.PathEscape(moduleID.Namespace)
@@ -577,6 +621,13 @@ func (r *registryModules) CreateWithVCSConnection(ctx context.Context, options R
 			url.PathEscape(*options.VCSRepo.OrganizationName),
 		)
 	}
+
+	if options.TestConfig != nil && options.TestConfig.AgentExecutionMode != nil {
+		if *options.TestConfig.AgentExecutionMode == AgentExecutionModeRemote && options.TestConfig.AgentPoolID != nil {
+			return nil, ErrAgentPoolNotRequiredForRemoteExecution
+		}
+	}
+
 	req, err := r.client.NewRequest("POST", u, &options)
 	if err != nil {
 		return nil, err
@@ -635,18 +686,17 @@ func (r *registryModules) Read(ctx context.Context, moduleID RegistryModuleID) (
 	return rm, nil
 }
 
-// ReadRegistry fetches a registry module from the Terraform Registry.
+// ReadTerraformRegistryModule fetches a registry module from the Terraform Registry.
 func (r *registryModules) ReadTerraformRegistryModule(ctx context.Context, moduleID RegistryModuleID, version string) (*TerraformRegistryModule, error) {
-	u := fmt.Sprintf(
-		"https://app.terraform.io/api/registry/v1/modules/%s/%s/%s/%s",
+	u := fmt.Sprintf("/api/registry/v1/modules/%s/%s/%s/%s",
 		moduleID.Namespace,
 		moduleID.Name,
 		moduleID.Provider,
 		version,
 	)
+
 	if moduleID.RegistryName == PublicRegistry {
-		u = fmt.Sprintf(
-			"https://app.terraform.io/api/registry/public/v1/modules/%s/%s/%s/%s",
+		u = fmt.Sprintf("/api/registry/public/v1/modules/%s/%s/%s/%s",
 			moduleID.Namespace,
 			moduleID.Name,
 			moduleID.Provider,

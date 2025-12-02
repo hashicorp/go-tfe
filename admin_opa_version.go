@@ -7,6 +7,7 @@ import (
 	"context"
 	"fmt"
 	"net/url"
+	"reflect"
 	"time"
 )
 
@@ -42,17 +43,18 @@ type adminOPAVersions struct {
 
 // AdminOPAVersion represents a OPA Version
 type AdminOPAVersion struct {
-	ID               string    `jsonapi:"primary,opa-versions"`
-	Version          string    `jsonapi:"attr,version"`
-	URL              string    `jsonapi:"attr,url"`
-	SHA              string    `jsonapi:"attr,sha"`
-	Deprecated       bool      `jsonapi:"attr,deprecated"`
-	DeprecatedReason *string   `jsonapi:"attr,deprecated-reason,omitempty"`
-	Official         bool      `jsonapi:"attr,official"`
-	Enabled          bool      `jsonapi:"attr,enabled"`
-	Beta             bool      `jsonapi:"attr,beta"`
-	Usage            int       `jsonapi:"attr,usage"`
-	CreatedAt        time.Time `jsonapi:"attr,created-at,iso8601"`
+	ID               string                     `jsonapi:"primary,opa-versions"`
+	Version          string                     `jsonapi:"attr,version"`
+	URL              string                     `jsonapi:"attr,url,omitempty"`
+	SHA              string                     `jsonapi:"attr,sha,omitempty"`
+	Deprecated       bool                       `jsonapi:"attr,deprecated"`
+	DeprecatedReason *string                    `jsonapi:"attr,deprecated-reason,omitempty"`
+	Official         bool                       `jsonapi:"attr,official"`
+	Enabled          bool                       `jsonapi:"attr,enabled"`
+	Beta             bool                       `jsonapi:"attr,beta"`
+	Usage            int                        `jsonapi:"attr,usage"`
+	CreatedAt        time.Time                  `jsonapi:"attr,created-at,iso8601"`
+	Archs            []*ToolVersionArchitecture `jsonapi:"attr,archs,omitempty"`
 }
 
 // AdminOPAVersionsListOptions represents the options for listing
@@ -69,28 +71,30 @@ type AdminOPAVersionsListOptions struct {
 
 // AdminOPAVersionCreateOptions for creating an OPA version.
 type AdminOPAVersionCreateOptions struct {
-	Type             string  `jsonapi:"primary,opa-versions"`
-	Version          string  `jsonapi:"attr,version"` // Required
-	URL              string  `jsonapi:"attr,url"`     // Required
-	SHA              string  `jsonapi:"attr,sha"`     // Required
-	Official         *bool   `jsonapi:"attr,official,omitempty"`
-	Deprecated       *bool   `jsonapi:"attr,deprecated,omitempty"`
-	DeprecatedReason *string `jsonapi:"attr,deprecated-reason,omitempty"`
-	Enabled          *bool   `jsonapi:"attr,enabled,omitempty"`
-	Beta             *bool   `jsonapi:"attr,beta,omitempty"`
+	Type             string                     `jsonapi:"primary,opa-versions"`
+	Version          string                     `jsonapi:"attr,version"`       // Required
+	URL              string                     `jsonapi:"attr,url,omitempty"` // Required w/ SHA unless Archs are provided
+	SHA              string                     `jsonapi:"attr,sha,omitempty"` // Required w/ URL unless Archs are provided
+	Official         *bool                      `jsonapi:"attr,official,omitempty"`
+	Deprecated       *bool                      `jsonapi:"attr,deprecated,omitempty"`
+	DeprecatedReason *string                    `jsonapi:"attr,deprecated-reason,omitempty"`
+	Enabled          *bool                      `jsonapi:"attr,enabled,omitempty"`
+	Beta             *bool                      `jsonapi:"attr,beta,omitempty"`
+	Archs            []*ToolVersionArchitecture `jsonapi:"attr,archs,omitempty"` // Required unless URL and SHA are provided
 }
 
 // AdminOPAVersionUpdateOptions for updating OPA version.
 type AdminOPAVersionUpdateOptions struct {
-	Type             string  `jsonapi:"primary,opa-versions"`
-	Version          *string `jsonapi:"attr,version,omitempty"`
-	URL              *string `jsonapi:"attr,url,omitempty"`
-	SHA              *string `jsonapi:"attr,sha,omitempty"`
-	Official         *bool   `jsonapi:"attr,official,omitempty"`
-	Deprecated       *bool   `jsonapi:"attr,deprecated,omitempty"`
-	DeprecatedReason *string `jsonapi:"attr,deprecated-reason,omitempty"`
-	Enabled          *bool   `jsonapi:"attr,enabled,omitempty"`
-	Beta             *bool   `jsonapi:"attr,beta,omitempty"`
+	Type             string                     `jsonapi:"primary,opa-versions"`
+	Version          *string                    `jsonapi:"attr,version,omitempty"`
+	URL              *string                    `jsonapi:"attr,url,omitempty"`
+	SHA              *string                    `jsonapi:"attr,sha,omitempty"`
+	Official         *bool                      `jsonapi:"attr,official,omitempty"`
+	Deprecated       *bool                      `jsonapi:"attr,deprecated,omitempty"`
+	DeprecatedReason *string                    `jsonapi:"attr,deprecated-reason,omitempty"`
+	Enabled          *bool                      `jsonapi:"attr,enabled,omitempty"`
+	Beta             *bool                      `jsonapi:"attr,beta,omitempty"`
+	Archs            []*ToolVersionArchitecture `jsonapi:"attr,archs,omitempty"`
 }
 
 // AdminOPAVersionsList represents a list of OPA versions.
@@ -192,18 +196,28 @@ func (a *adminOPAVersions) Delete(ctx context.Context, id string) error {
 }
 
 func (o AdminOPAVersionCreateOptions) valid() error {
-	if (o == AdminOPAVersionCreateOptions{}) {
+	if (reflect.DeepEqual(o, AdminOPAVersionCreateOptions{})) {
 		return ErrRequiredOPAVerCreateOps
 	}
 	if o.Version == "" {
 		return ErrRequiredVersion
 	}
-	if o.URL == "" {
-		return ErrRequiredURL
+	if !o.validArch() {
+		return ErrRequiredArchsOrURLAndSha
 	}
-	if o.SHA == "" {
-		return ErrRequiredSha
+	return nil
+}
+
+func (o AdminOPAVersionCreateOptions) validArch() bool {
+	if o.Archs == nil && o.URL != "" && o.SHA != "" {
+		return true
 	}
 
-	return nil
+	for _, a := range o.Archs {
+		if !validArch(a) {
+			return false
+		}
+	}
+
+	return true
 }

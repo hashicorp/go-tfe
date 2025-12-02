@@ -43,15 +43,22 @@ inputs:
   enterprise:
     description: Test enterprise features (`address` must be running in ON_PREM mode)
     required: false
+  datadog-workflow-token:
+    description: Datadog API key for test optimization
+    required: false
+  skip-statement:
+    description: Skip tests with this statement substring in their name
+    required: false
 
 runs:
   using: composite
   steps:
     - name: Set up Go
-      uses: actions/setup-go@cdcb36043654635271a94b9a6d1392de5bb323a7 # v5.0.1
+      uses: actions/setup-go@d35c59abb061a4a6fb18e82ac0862c26744d6ab5 # v5.5.0
       with:
         go-version-file: go.mod
         cache: true
+        cache-dependency-path: go.sum
 
     - name: Sync dependencies
       shell: bash
@@ -61,7 +68,7 @@ runs:
 
     - name: Install gotestsum
       shell: bash
-      run: go install gotest.tools/gotestsum@latest
+      run: go install gotest.tools/gotestsum@5768fec807c3a620b209c79845e80fb4befa5857 # v1.12.2
 
     - name: Download artifact
       id: download-artifact
@@ -80,6 +87,13 @@ runs:
         total: ${{ inputs.matrix_total }}
         junit-summary: ./ci-summary.xml
 
+    - name: Configure Datadog Test Optimization
+      uses: datadog/test-visibility-github-action@v2
+      with:
+        languages: go
+        api_key: ${{ inputs.datadog-workflow-token }}
+        site: datadoghq.com 
+
     - name: Run integration tests
       shell: bash
       env:
@@ -93,14 +107,22 @@ runs:
         TFE_ADMIN_SUPPORT_TOKEN: ${{ inputs.admin_support_token }}
         TFE_ADMIN_VERSION_MAINTENANCE_TOKEN: ${{ inputs.admin_version_maintenance_token }}
         TFC_RUN_TASK_URL: "http://testing-mocks.tfe:22180/runtasks/pass"
-        GITHUB_POLICY_SET_IDENTIFIER: "hashicorp/test-policy-set"
-        GITHUB_REGISTRY_MODULE_IDENTIFIER: "hashicorp/terraform-random-module"
+        GITHUB_POLICY_SET_IDENTIFIER: "Maed223/test-policy-set"
+        GITHUB_REGISTRY_MODULE_IDENTIFIER: "Maed223/terraform-random-module"
         GITHUB_REGISTRY_NO_CODE_MODULE_IDENTIFIER: "hashicorp/terraform-random-no-code-module"
         OAUTH_CLIENT_GITHUB_TOKEN: "${{ inputs.oauth-client-github-token }}"
+        SKIP_HYOK_INTEGRATION_TESTS: "${{ inputs.skip-hyok-integration-tests }}"
+        HYOK_ORGANIZATION_NAME: "${{ inputs.hyok-organization-name }}"
+        HYOK_WORKSPACE_NAME: "${{ inputs.hyok-workspace-name }}"
+        HYOK_POOL_ID: "${{ inputs.hyok-pool-id }}"
+        HYOK_PLAN_ID: "${{ inputs.hyok-plan-id }}"
+        HYOK_STATE_VERSION_ID: "${{ inputs.hyok-state-version-id }}"
+        HYOK_CUSTOMER_KEY_VERSION_ID: "${{ inputs.hyok-customer-key-version-id }}"
+        HYOK_ENCRYPTED_DATA_KEY_ID: "${{ inputs.hyok-encrypted-data-key-id }}"
         GO111MODULE: "on"
         ENABLE_TFE: ${{ inputs.enterprise }}
       run: |
-        gotestsum --junitfile summary.xml --format short-verbose -- -parallel=1 -timeout=59m -coverprofile cover.out -run "${{ steps.test_split.outputs.run }}"
+        gotestsum --junitfile summary.xml --format short-verbose -- -parallel=2 -timeout=59m -coverprofile cover.out -run "${{ steps.test_split.outputs.run }}" ${{ inputs.skip-statement }}
 
     - name: Upload test artifacts
       uses: actions/upload-artifact@65c4c4a1ddee5b72f698fdd19549f0f0fb45cf08 # v4.6.0

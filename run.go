@@ -135,12 +135,15 @@ type Run struct {
 	AutoApply              bool                 `jsonapi:"attr,auto-apply,omitempty"`
 	AllowConfigGeneration  *bool                `jsonapi:"attr,allow-config-generation,omitempty"`
 	AllowEmptyApply        bool                 `jsonapi:"attr,allow-empty-apply"`
+	CanceledAt             time.Time            `jsonapi:"attr,canceled-at,iso8601"`
 	CreatedAt              time.Time            `jsonapi:"attr,created-at,iso8601"`
 	ForceCancelAvailableAt time.Time            `jsonapi:"attr,force-cancel-available-at,iso8601"`
 	HasChanges             bool                 `jsonapi:"attr,has-changes"`
 	IsDestroy              bool                 `jsonapi:"attr,is-destroy"`
+	InvokeActionAddrs      []string             `jsonapi:"attr,invoke-action-addrs,omitempty"`
 	Message                string               `jsonapi:"attr,message"`
 	Permissions            *RunPermissions      `jsonapi:"attr,permissions"`
+	PolicyPaths            []string             `jsonapi:"attr,policy-paths,omitempty"`
 	PositionInQueue        int                  `jsonapi:"attr,position-in-queue"`
 	PlanOnly               bool                 `jsonapi:"attr,plan-only"`
 	Refresh                bool                 `jsonapi:"attr,refresh"`
@@ -152,6 +155,7 @@ type Run struct {
 	StatusTimestamps       *RunStatusTimestamps `jsonapi:"attr,status-timestamps"`
 	TargetAddrs            []string             `jsonapi:"attr,target-addrs,omitempty"`
 	TerraformVersion       string               `jsonapi:"attr,terraform-version"`
+	TriggerReason          string               `jsonapi:"attr,trigger-reason"`
 	Variables              []*RunVariableAttr   `jsonapi:"attr,variables"`
 
 	// Relations
@@ -159,8 +163,10 @@ type Run struct {
 	ConfigurationVersion *ConfigurationVersion `jsonapi:"relation,configuration-version"`
 	CostEstimate         *CostEstimate         `jsonapi:"relation,cost-estimate"`
 	CreatedBy            *User                 `jsonapi:"relation,created-by"`
+	ConfirmedBy          *User                 `jsonapi:"relation,confirmed-by"`
 	Plan                 *Plan                 `jsonapi:"relation,plan"`
 	PolicyChecks         []*PolicyCheck        `jsonapi:"relation,policy-checks"`
+	RunEvents            []*RunEvent           `jsonapi:"relation,run-events"`
 	TaskStages           []*TaskStage          `jsonapi:"relation,task-stages,omitempty"`
 	Workspace            *Workspace            `jsonapi:"relation,workspace"`
 	Comments             []*Comment            `jsonapi:"relation,comments"`
@@ -385,6 +391,12 @@ type RunCreateOptions struct {
 	// resource addresses.
 	ReplaceAddrs []string `jsonapi:"attr,replace-addrs,omitempty"`
 
+	// PolicyPaths is a list of relative directory paths that point to policy
+	// configuration files.
+	//
+	// **Note: This field is in BETA and subject to change.**
+	PolicyPaths []string `jsonapi:"attr,policy-paths,omitempty"`
+
 	// AutoApply determines if the run should be applied automatically without
 	// user confirmation. It defaults to the Workspace.AutoApply setting.
 	AutoApply *bool `jsonapi:"attr,auto-apply,omitempty"`
@@ -392,6 +404,9 @@ type RunCreateOptions struct {
 	// Variables allows you to specify terraform input variables for
 	// a particular run, prioritized over variables defined on the workspace.
 	Variables []*RunVariable `jsonapi:"attr,variables,omitempty"`
+
+	// Action Addresses to invoke.
+	InvokeActionAddrs []string `jsonapi:"attr,invoke-action-addrs,omitempty"`
 }
 
 // RunApplyOptions represents the options for applying a run.

@@ -16,7 +16,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func TestRunsList(t *testing.T) {
+func TestRunsList_RunDependent(t *testing.T) {
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -96,7 +96,7 @@ func TestRunsList(t *testing.T) {
 	})
 }
 
-func TestRunsListQueryParams(t *testing.T) {
+func TestRunsListQueryParams_RunDependent(t *testing.T) {
 	type testCase struct {
 		options     *RunListOptions
 		description string
@@ -175,7 +175,7 @@ func TestRunsListQueryParams(t *testing.T) {
 	}
 }
 
-func TestRunsCreate(t *testing.T) {
+func TestRunsCreate_RunDependent(t *testing.T) {
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -353,9 +353,44 @@ func TestRunsCreate(t *testing.T) {
 			}
 		}
 	})
+
+	t.Run("with policy paths", func(t *testing.T) {
+		skipUnlessBeta(t)
+
+		opts := RunCreateOptions{
+			Message:     String("creating with policy paths"),
+			Workspace:   wTest,
+			PolicyPaths: []string{"./path/to/dir1", "./path/to/dir2"},
+		}
+
+		r, err := client.Runs.Create(ctx, opts)
+		require.NoError(t, err)
+		require.NotEmpty(t, r.PolicyPaths)
+
+		assert.Len(t, r.PolicyPaths, 2)
+		assert.Contains(t, r.PolicyPaths, "./path/to/dir1")
+		assert.Contains(t, r.PolicyPaths, "./path/to/dir2")
+	})
+
+	t.Run("with action invocations", func(t *testing.T) {
+		skipUnlessBeta(t)
+
+		opts := RunCreateOptions{
+			Message:           String("creating with policy paths"),
+			Workspace:         wTest,
+			InvokeActionAddrs: []string{"actions.foo.bar"},
+		}
+
+		r, err := client.Runs.Create(ctx, opts)
+		require.NoError(t, err)
+		require.NotEmpty(t, r.InvokeActionAddrs)
+
+		assert.Len(t, r.InvokeActionAddrs, 1)
+		assert.Contains(t, r.InvokeActionAddrs, "actions.foo.bar")
+	})
 }
 
-func TestRunsRead_CostEstimate(t *testing.T) {
+func TestRunsRead_CostEstimate_RunDependent(t *testing.T) {
 	skipIfEnterprise(t)
 
 	client := testClient(t)
@@ -383,7 +418,7 @@ func TestRunsRead_CostEstimate(t *testing.T) {
 	})
 }
 
-func TestRunsReadWithOptions(t *testing.T) {
+func TestRunsReadWithOptions_RunDependent(t *testing.T) {
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -403,7 +438,149 @@ func TestRunsReadWithOptions(t *testing.T) {
 	})
 }
 
-func TestRunsApply(t *testing.T) {
+func TestRunsReadWithPolicyPaths(t *testing.T) {
+	skipUnlessBeta(t)
+
+	client := testClient(t)
+	ctx := context.Background()
+
+	wTest, wTestCleanup := createWorkspace(t, client, nil)
+	t.Cleanup(wTestCleanup)
+
+	_, cvCleanup := createUploadedConfigurationVersion(t, client, wTest)
+	t.Cleanup(cvCleanup)
+
+	r, err := client.Runs.Create(ctx, RunCreateOptions{
+		Workspace:   wTest,
+		PolicyPaths: []string{"./foo"},
+	})
+	require.NoError(t, err)
+
+	r, err = client.Runs.Read(ctx, r.ID)
+	require.NoError(t, err)
+
+	require.NotEmpty(t, r.PolicyPaths)
+	assert.Contains(t, r.PolicyPaths, "./foo")
+}
+
+func TestRunsConfirmedBy_RunDependent(t *testing.T) {
+	client := testClient(t)
+	ctx := context.Background()
+
+	t.Run("with apply", func(t *testing.T) {
+		rTest, rTestCleanup := createRunApply(t, client, nil)
+		t.Cleanup(rTestCleanup)
+
+		r, err := client.Runs.Read(ctx, rTest.ID)
+		require.NoError(t, err)
+
+		assert.NotNil(t, r.ConfirmedBy)
+		assert.NotZero(t, r.ConfirmedBy.ID)
+	})
+
+	t.Run("without apply", func(t *testing.T) {
+		rTest, rTestCleanup := createPlannedRun(t, client, nil)
+		t.Cleanup(rTestCleanup)
+
+		r, err := client.Runs.Read(ctx, rTest.ID)
+		require.NoError(t, err)
+		assert.Equal(t, rTest, r)
+
+		assert.Nil(t, r.ConfirmedBy)
+	})
+}
+
+func TestRunsCanceledAt_RunDependent(t *testing.T) {
+	client := testClient(t)
+
+	ctx := context.Background()
+
+	wTest, wTestCleanup := createWorkspace(t, client, nil)
+	t.Cleanup(wTestCleanup)
+
+	// We need to create 2 runs here. The first run will automatically
+	// be planned so that one cannot be cancelled. The second one will
+	// be pending until the first one is confirmed or discarded, so we
+	// can cancel that one.
+	createRun(t, client, wTest)
+	rTest, _ := createRun(t, client, wTest)
+
+	t.Run("when the run is not canceled", func(t *testing.T) {
+		r, err := client.Runs.Read(ctx, rTest.ID)
+		require.NoError(t, err)
+
+		assert.Empty(t, r.CanceledAt)
+	})
+
+	t.Run("when the run is canceled", func(t *testing.T) {
+		err := client.Runs.Cancel(ctx, rTest.ID, RunCancelOptions{})
+		require.NoError(t, err)
+
+		for i := 1; ; i++ {
+			// Refresh the view of the run
+			rTest, err = client.Runs.Read(ctx, rTest.ID)
+			require.NoError(t, err)
+
+			// Check if the timestamp is present.
+			if !rTest.ForceCancelAvailableAt.IsZero() {
+				break
+			}
+
+			if i > 30 {
+				t.Fatal("Timeout waiting for run to be canceled")
+			}
+
+			time.Sleep(time.Second)
+		}
+
+		r, err := client.Runs.Read(ctx, rTest.ID)
+		require.NoError(t, err)
+
+		assert.NotEmpty(t, r.CanceledAt)
+	})
+}
+
+func TestRunsRunEvents(t *testing.T) {
+	client := testClient(t)
+	ctx := context.Background()
+
+	wTest, wTestCleanup := createWorkspace(t, client, nil)
+	defer wTestCleanup()
+
+	_, cvCleanup := createUploadedConfigurationVersion(t, client, wTest)
+	t.Cleanup(cvCleanup)
+
+	options := RunCreateOptions{
+		Workspace: wTest,
+	}
+
+	r, err := client.Runs.Create(ctx, options)
+	require.NoError(t, err)
+
+	assert.NotEmpty(t, r.RunEvents)
+}
+
+func TestRunsTriggerReason(t *testing.T) {
+	client := testClient(t)
+	ctx := context.Background()
+
+	wTest, wTestCleanup := createWorkspace(t, client, nil)
+	defer wTestCleanup()
+
+	_, cvCleanup := createUploadedConfigurationVersion(t, client, wTest)
+	t.Cleanup(cvCleanup)
+
+	options := RunCreateOptions{
+		Workspace: wTest,
+	}
+
+	r, err := client.Runs.Create(ctx, options)
+	require.NoError(t, err)
+
+	assert.NotNil(t, r.TriggerReason)
+}
+
+func TestRunsApply_RunDependent(t *testing.T) {
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -440,7 +617,7 @@ func TestRunsApply(t *testing.T) {
 	})
 }
 
-func TestRunsCancel(t *testing.T) {
+func TestRunsCancel_RunDependent(t *testing.T) {
 	client := testClient(t)
 
 	ctx := context.Background()
@@ -471,7 +648,7 @@ func TestRunsCancel(t *testing.T) {
 	})
 }
 
-func TestRunsForceCancel(t *testing.T) {
+func TestRunsForceCancel_RunDependent(t *testing.T) {
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -539,7 +716,7 @@ func TestRunsForceCancel(t *testing.T) {
 	})
 }
 
-func TestRunsForceExecute(t *testing.T) {
+func TestRunsForceExecute_RunDependent(t *testing.T) {
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -594,7 +771,7 @@ func TestRunsForceExecute(t *testing.T) {
 	})
 }
 
-func TestRunsDiscard(t *testing.T) {
+func TestRunsDiscard_RunDependent(t *testing.T) {
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -721,7 +898,7 @@ func TestRunCreateOptions_Marshal(t *testing.T) {
 	assert.Equal(t, string(bodyBytes), expectedBody)
 }
 
-func TestRunsListForOrganization(t *testing.T) {
+func TestRunsListForOrganization_RunDependent(t *testing.T) {
 	client := testClient(t)
 	ctx := context.Background()
 

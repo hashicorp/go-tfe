@@ -109,6 +109,7 @@ type Organization struct {
 	OwnersTeamSAMLRoleID                              string                   `jsonapi:"attr,owners-team-saml-role-id"`
 	Permissions                                       *OrganizationPermissions `jsonapi:"attr,permissions"`
 	SAMLEnabled                                       bool                     `jsonapi:"attr,saml-enabled"`
+	StacksEnabled                                     bool                     `jsonapi:"attr,stacks-enabled"`
 	SessionRemember                                   int                      `jsonapi:"attr,session-remember"`
 	SessionTimeout                                    int                      `jsonapi:"attr,session-timeout"`
 	TrialExpiresAt                                    time.Time                `jsonapi:"attr,trial-expires-at,iso8601"`
@@ -116,6 +117,7 @@ type Organization struct {
 	SendPassingStatusesForUntriggeredSpeculativePlans bool                     `jsonapi:"attr,send-passing-statuses-for-untriggered-speculative-plans"`
 	RemainingTestableCount                            int                      `jsonapi:"attr,remaining-testable-count"`
 	SpeculativePlanManagementEnabled                  bool                     `jsonapi:"attr,speculative-plan-management-enabled"`
+	EnforceHYOK                                       bool                     `jsonapi:"attr,enforce-hyok"`
 	// Optional: If enabled, SendPassingStatusesForUntriggeredSpeculativePlans needs to be false.
 	AggregatedCommitStatusEnabled bool `jsonapi:"attr,aggregated-commit-status-enabled,omitempty"`
 	// Note: This will be false for TFE versions older than v202211, where the setting was introduced.
@@ -123,8 +125,9 @@ type Organization struct {
 	AllowForceDeleteWorkspaces bool `jsonapi:"attr,allow-force-delete-workspaces"`
 
 	// Relations
-	DefaultProject   *Project   `jsonapi:"relation,default-project"`
-	DefaultAgentPool *AgentPool `jsonapi:"relation,default-agent-pool"`
+	DefaultProject           *Project           `jsonapi:"relation,default-project"`
+	DefaultAgentPool         *AgentPool         `jsonapi:"relation,default-agent-pool"`
+	PrimaryHYOKConfiguration *HYOKConfiguration `jsonapi:"relation,primary-hyok-configuration,omitempty"`
 
 	// Deprecated: Use DataRetentionPolicyChoice instead.
 	DataRetentionPolicy *DataRetentionPolicy
@@ -165,6 +168,7 @@ type Entitlements struct {
 	GlobalRunTasks             bool   `jsonapi:"attr,global-run-tasks"`
 	Operations                 bool   `jsonapi:"attr,operations"`
 	PrivateModuleRegistry      bool   `jsonapi:"attr,private-module-registry"`
+	PrivateRunTasks            bool   `jsonapi:"attr,private-run-tasks"`
 	RunTasks                   bool   `jsonapi:"attr,run-tasks"`
 	SSO                        bool   `jsonapi:"attr,sso"`
 	Sentinel                   bool   `jsonapi:"attr,sentinel"`
@@ -188,6 +192,7 @@ type OrganizationPermissions struct {
 	CanCreateWorkspaceMigration bool `jsonapi:"attr,can-create-workspace-migration"`
 	CanDeployNoCodeModules      bool `jsonapi:"attr,can-deploy-no-code-modules"`
 	CanDestroy                  bool `jsonapi:"attr,can-destroy"`
+	CanManageAuditing           bool `jsonapi:"attr,can-manage-auditing"`
 	CanManageNoCodeModules      bool `jsonapi:"attr,can-manage-no-code-modules"`
 	CanManageRunTasks           bool `jsonapi:"attr,can-manage-run-tasks"`
 	CanTraverse                 bool `jsonapi:"attr,can-traverse"`
@@ -195,6 +200,10 @@ type OrganizationPermissions struct {
 	CanUpdateAPIToken           bool `jsonapi:"attr,can-update-api-token"`
 	CanUpdateOAuth              bool `jsonapi:"attr,can-update-oauth"`
 	CanUpdateSentinel           bool `jsonapi:"attr,can-update-sentinel"`
+	CanUpdateHYOKConfiguration  bool `jsonapi:"attr,can-update-hyok-configuration"`
+	CanViewHYOKFeatureInfo      bool `jsonapi:"attr,can-view-hyok-feature-info"`
+	CanEnableStacks             bool `jsonapi:"attr,can-enable-stacks"`
+	CanCreateProject            bool `jsonapi:"attr,can-create-project"`
 }
 
 // OrganizationListOptions represents the options for listing organizations.
@@ -253,9 +262,15 @@ type OrganizationCreateOptions struct {
 	// Optional: DefaultExecutionMode the default execution mode for workspaces
 	DefaultExecutionMode *string `jsonapi:"attr,default-execution-mode,omitempty"`
 
+	// Optional: EnforceHYOK if HYOK is enforced for the organization.
+	EnforceHYOK *bool `jsonapi:"attr,enforce-hyok,omitempty"`
+
 	// Optional: StacksEnabled toggles whether stacks are enabled for the organization. This setting
 	// is considered BETA, SUBJECT TO CHANGE, and likely unavailable to most users.
 	StacksEnabled *bool `jsonapi:"attr,stacks-enabled,omitempty"`
+
+	// Optional: RegistryMonorepoSupportEnabled toggles whether monorepo support is enabled for the organization
+	RegistryMonorepoSupportEnabled *bool `jsonapi:"attr,registry-monorepo-support-enabled,omitempty"`
 }
 
 // OrganizationUpdateOptions represents the options for updating an organization.
@@ -308,9 +323,15 @@ type OrganizationUpdateOptions struct {
 	// Optional: DefaultAgentPoolId default agent pool for workspaces, requires DefaultExecutionMode to be set to `agent`
 	DefaultAgentPool *AgentPool `jsonapi:"relation,default-agent-pool,omitempty"`
 
+	// Optional: EnforceHYOK if HYOK is enforced for the organization.
+	EnforceHYOK *bool `jsonapi:"attr,enforce-hyok,omitempty"`
+
 	// Optional: StacksEnabled toggles whether stacks are enabled for the organization. This setting
 	// is considered BETA, SUBJECT TO CHANGE, and likely unavailable to most users.
 	StacksEnabled *bool `jsonapi:"attr,stacks-enabled,omitempty"`
+
+	// Optional: RegistryMonorepoSupportEnabled toggles whether monorepo support is enabled for the organization
+	RegistryMonorepoSupportEnabled *bool `jsonapi:"attr,registry-monorepo-support-enabled,omitempty"`
 }
 
 // ReadRunQueueOptions represents the options for showing the queue.

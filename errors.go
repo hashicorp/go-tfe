@@ -89,6 +89,9 @@ var (
 	// it is locked. "conflict" followed by newline is used to preserve go-tfe version
 	// compatibility with the error constructed at runtime before it was defined here.
 	ErrWorkspaceLockedCannotDelete = errors.New("conflict\nWorkspace is currently locked. Workspace must be unlocked before it can be safely deleted")
+
+	// ErrHYOKCannotBeDisabled is returned when attempting to disable HYOK on a workspace that already has it enabled.
+	ErrHYOKCannotBeDisabled = errors.New("bad request\n\nhyok may not be disabled once it has been turned on for a workspace")
 )
 
 // Invalid values for resources/struct fields
@@ -122,6 +125,8 @@ var (
 	ErrInvalidProjectID = errors.New("invalid value for project ID")
 
 	ErrInvalidPagination = errors.New("invalid value for page size or number")
+
+	ErrInvalidReservedTagKeyID = errors.New("invalid value for reserved tag key ID")
 
 	ErrInvalidRunTaskCategory = errors.New(`category must be "task"`)
 
@@ -236,6 +241,18 @@ var (
 	ErrInvalidAccessToken = errors.New("invalid value for access token")
 
 	ErrInvalidTaskResultsCallbackStatus = fmt.Errorf("invalid value for task result status. Must be either `%s`, `%s`, or `%s`", TaskFailed, TaskPassed, TaskRunning)
+
+	ErrInvalidDescriptionConflict = errors.New("invalid attributes\n\nValidation failed: Description has already been taken")
+
+	ErrInvalidOIDC = errors.New("invalid value for OIDC configuration ID")
+
+	ErrInvalidHYOK = errors.New("invalid value for HYOK configuration ID")
+
+	ErrInvalidHYOKCustomerKeyVersion = errors.New("invalid value for HYOK Customer key version ID")
+
+	ErrInvalidHYOKEncryptedDataKey = errors.New("invalid value for HYOK encrypted data key ID")
+
+	ErrInvalidStackID = errors.New("invalid value for stack ID")
 )
 
 var (
@@ -243,12 +260,12 @@ var (
 
 	ErrRequiredAgentPoolID = errors.New("'agent' execution mode requires an agent pool ID to be specified")
 
-	ErrRequiredAgentMode                = errors.New("specifying an agent pool ID requires 'agent' execution mode")
-	ErrRequiredBranchWhenTestsEnabled   = errors.New("VCS branch is required when enabling tests")
-	ErrBranchMustBeEmptyWhenTagsEnabled = errors.New("VCS branch must be empty to enable tags")
-	ErrRequiredCategory                 = errors.New("category is required")
-
-	ErrRequiredDestinationType = errors.New("destination type is required")
+	ErrRequiredAgentMode                      = errors.New("specifying an agent pool ID requires 'agent' execution mode")
+	ErrRequiredBranchWhenTestsEnabled         = errors.New("VCS branch is required when enabling tests")
+	ErrBranchMustBeEmptyWhenTagsEnabled       = errors.New("VCS branch must be empty to enable tags")
+	ErrRequiredCategory                       = errors.New("category is required")
+	ErrAgentPoolNotRequiredForRemoteExecution = errors.New("'remote' execution mode does not support agent pool IDs")
+	ErrRequiredDestinationType                = errors.New("destination type is required")
 
 	ErrRequiredDataType = errors.New("data type is required")
 
@@ -274,7 +291,7 @@ var (
 
 	ErrRequiredURL = errors.New("url is required")
 
-	ErrRequiredArchOrURLAndSha = errors.New("valid arch or url and sha is required")
+	ErrRequiredArchsOrURLAndSha = errors.New("valid archs or url and sha are required")
 
 	ErrRequiredAPIURL = errors.New("API URL is required")
 
@@ -305,6 +322,8 @@ var (
 	ErrRequiredWorkspaceID = errors.New("workspace ID is required")
 
 	ErrRequiredProjectID = errors.New("project ID is required")
+
+	ErrRequiredStackID = errors.New("stack ID is required")
 
 	ErrWorkspacesRequired = errors.New("workspaces is required")
 
@@ -362,6 +381,8 @@ var (
 
 	ErrRequiredWorkspacesList = errors.New("no workspaces list provided")
 
+	ErrRequiredStacksList = errors.New("no stacks list provided")
+
 	ErrCommentBody = errors.New("comment body is required")
 
 	ErrEmptyTeamName = errors.New("team name can not be empty")
@@ -388,6 +409,8 @@ var (
 
 	ErrInvalidTestRunID = errors.New("invalid value for test run id")
 
+	ErrInvalidQueryRunID = errors.New("invalid value for query run id")
+
 	ErrTerraformVersionValidForPlanOnly = errors.New("setting terraform-version is only valid when plan-only is set to true")
 
 	ErrStateMustBeOmitted = errors.New("when uploading state, the State and JSONState strings must be omitted from options")
@@ -395,4 +418,38 @@ var (
 	ErrRequiredRawState = errors.New("RawState is required")
 
 	ErrStateVersionUploadNotSupported = errors.New("upload not supported by this version of Terraform Enterprise")
+
+	ErrSanitizedStateUploadURLMissing = errors.New("sanitized state upload URL is missing")
+
+	ErrRequiredRoleARN = errors.New("role-arn is required for AWS OIDC configuration")
+
+	ErrRequiredServiceAccountEmail = errors.New("service-account-email is required for GCP OIDC configuration")
+
+	ErrRequiredProjectNumber = errors.New("project-number is required for GCP OIDC configuration")
+
+	ErrRequiredWorkloadProviderName = errors.New("workload-provider-name is required for GCP OIDC configuration")
+
+	ErrRequiredClientID = errors.New("client-id is required for Azure OIDC configuration")
+
+	ErrRequiredSubscriptionID = errors.New("subscription-id is required for Azure OIDC configuration")
+
+	ErrRequiredTenantID = errors.New("tenant-id is required for Azure OIDC configuration")
+
+	ErrRequiredVaultAddress = errors.New("address is required for Vault OIDC configuration")
+
+	ErrRequiredRoleName = errors.New("role is required for Vault OIDC configuration")
+
+	ErrRequiredKEKID = errors.New("kek-id is required for HYOK configuration")
+
+	ErrRequiredOIDCConfiguration = errors.New("oidc-configuration is required for HYOK configuration")
+
+	ErrRequiredAgentPool = errors.New("agent-pool is required for HYOK configuration")
+
+	ErrRequiredKMSOptions = errors.New("kms-options is required for HYOK configuration")
+
+	ErrRequiredKMSOptionsKeyRegion = errors.New("kms-options.key-region is required for HYOK configuration with AWS OIDC")
+
+	ErrRequiredKMSOptionsKeyLocation = errors.New("kms-options.key-location is required for HYOK configuration with GCP OIDC")
+
+	ErrRequiredKMSOptionsKeyRingID = errors.New("kms-options.key-ring-id is required for HYOK configuration with GCP OIDC")
 )

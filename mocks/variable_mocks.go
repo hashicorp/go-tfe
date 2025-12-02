@@ -84,6 +84,21 @@ func (mr *MockVariablesMockRecorder) List(ctx, workspaceID, options any) *gomock
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "List", reflect.TypeOf((*MockVariables)(nil).List), ctx, workspaceID, options)
 }
 
+// ListAll mocks base method.
+func (m *MockVariables) ListAll(ctx context.Context, workspaceID string, options *tfe.VariableListOptions) (*tfe.VariableList, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "ListAll", ctx, workspaceID, options)
+	ret0, _ := ret[0].(*tfe.VariableList)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// ListAll indicates an expected call of ListAll.
+func (mr *MockVariablesMockRecorder) ListAll(ctx, workspaceID, options any) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListAll", reflect.TypeOf((*MockVariables)(nil).ListAll), ctx, workspaceID, options)
+}
+
 // Read mocks base method.
 func (m *MockVariables) Read(ctx context.Context, workspaceID, variableID string) (*tfe.Variable, error) {
 	m.ctrl.T.Helper()

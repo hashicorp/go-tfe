@@ -11,7 +11,7 @@ linters:
     # - noctx #https://github.com/sonatard/noctx
     - nilerr #https://github.com/gostaticanalysis/nilerr
     - nestif #https://github.com/nakabonne/nestif
-    - exportloopref #https://github.com/kyoh86/exportloopref
+    - copyloopvar #https://github.com/karamaru-alpha/copyloopvar
     - bodyclose #https://github.com/timakin/bodyclose
     - goconst #https://github.com/jgautheron/goconst
     - gofmt
@@ -55,7 +55,6 @@ linters-settings:
       - hugeParam
       - singleCaseSwitch
       - ifElseChain
-      - sloppyTestFuncName
   revive:
     # see https://github.com/mgechev/revive#available-rules for details.
     ignore-generated-header: false #recommended in their configuration

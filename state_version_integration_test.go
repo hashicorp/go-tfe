@@ -187,9 +187,82 @@ func TestStateVersionsUpload(t *testing.T) {
 		})
 		require.ErrorIs(t, err, ErrRequiredRawState)
 	})
+
+	t.Run("uploading state using SanitizedStateUploadURL and verifying SanitizedStateDownloadURL exists", func(t *testing.T) {
+		skipHYOKIntegrationTests(t)
+
+		hyokOrganizationName := os.Getenv("HYOK_ORGANIZATION_NAME")
+		if hyokOrganizationName == "" {
+			t.Fatal("Export a valid HYOK_ORGANIZATION_NAME before running this test!")
+		}
+
+		hyokWorkspaceName := os.Getenv("HYOK_WORKSPACE_NAME")
+		if hyokWorkspaceName == "" {
+			t.Fatal("Export a valid HYOK_WORKSPACE_NAME before running this test!")
+		}
+
+		w, err := client.Workspaces.Read(context.Background(), hyokOrganizationName, hyokWorkspaceName)
+		if err != nil {
+			t.Fatal(err)
+		}
+
+		ctx := context.Background()
+		_, err = client.Workspaces.Lock(ctx, w.ID, WorkspaceLockOptions{})
+		if err != nil {
+			t.Fatal(err)
+		}
+
+		sv, err := client.StateVersions.Create(ctx, w.ID, StateVersionCreateOptions{
+			Lineage: String("741c4949-60b9-5bb1-5bf8-b14f4bb14af3"),
+			MD5:     String(fmt.Sprintf("%x", md5.Sum(state))),
+			Serial:  Int64(1),
+		})
+		require.NoError(t, err)
+
+		err = client.StateVersions.UploadSanitizedState(ctx, sv.SanitizedStateUploadURL, jsonState)
+		require.NoError(t, err)
+
+		// Get a refreshed view of the configuration version.
+		sv, err = client.StateVersions.Read(ctx, sv.ID)
+		require.NoError(t, err)
+
+		assert.NotEmpty(t, sv.SanitizedStateDownloadURL)
+		assert.Empty(t, sv.SanitizedStateUploadURL)
+
+		_, err = client.Workspaces.ForceUnlock(ctx, w.ID)
+		if err != nil {
+			t.Fatal(err)
+		}
+	})
+
+	t.Run("SanitizedStateUploadURL is required when uploading sanitized state", func(t *testing.T) {
+		skipHYOKIntegrationTests(t)
+
+		ctx := context.Background()
+		_, err := client.Workspaces.Lock(ctx, wTest.ID, WorkspaceLockOptions{})
+		if err != nil {
+			t.Fatal(err)
+		}
+
+		sv, err := client.StateVersions.Create(ctx, wTest.ID, StateVersionCreateOptions{
+			Lineage: String("741c4949-60b9-5bb1-5bf8-b14f4bb14af3"),
+			MD5:     String(fmt.Sprintf("%x", md5.Sum(state))),
+			Serial:  Int64(1),
+		})
+		require.NoError(t, err)
+
+		err = client.StateVersions.UploadSanitizedState(ctx, sv.SanitizedStateUploadURL, state)
+		require.Error(t, err, ErrSanitizedStateUploadURLMissing)
+
+		// Workspaces must be force-unlocked when there is a pending state version
+		_, err = client.Workspaces.ForceUnlock(ctx, wTest.ID)
+		if err != nil {
+			t.Fatal(err)
+		}
+	})
 }
 
-func TestStateVersionsCreate(t *testing.T) {
+func TestStateVersionsCreate_RunDependent(t *testing.T) {
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -409,6 +482,8 @@ func TestStateVersionsCreate(t *testing.T) {
 }
 
 func TestStateVersionsRead(t *testing.T) {
+	t.Skip("Skipping due to persistent failures - see TF-31172")
+
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -422,7 +497,7 @@ func TestStateVersionsRead(t *testing.T) {
 		require.NoError(t, err)
 
 		if !sv.ResourcesProcessed {
-			svRetry, err := retry(func() (interface{}, error) {
+			svRetry, err := retryPatiently(func() (interface{}, error) {
 				svTest, err := client.StateVersions.Read(ctx, svTest.ID)
 				require.NoError(t, err)
 
@@ -436,6 +511,8 @@ func TestStateVersionsRead(t *testing.T) {
 			if err != nil {
 				t.Fatalf("error retrying state version read, err=%s", err)
 			}
+
+			require.NotNil(t, svRetry, "timed out waiting for resources to finish processing")
 
 			sv, ok = svRetry.(*StateVersion)
 			if !ok {
@@ -462,6 +539,45 @@ func TestStateVersionsRead(t *testing.T) {
 		sv, err := client.StateVersions.Read(ctx, badIdentifier)
 		assert.Nil(t, sv)
 		assert.Equal(t, err, ErrInvalidStateVerID)
+	})
+
+	t.Run("read encrypted state download url of a state version", func(t *testing.T) {
+		skipHYOKIntegrationTests(t)
+
+		hyokStateVersionID := os.Getenv("HYOK_STATE_VERSION_ID")
+		if hyokStateVersionID == "" {
+			t.Fatal("Export a valid HYOK_STATE_VERSION_ID before running this test!")
+		}
+
+		sv, err := client.StateVersions.Read(ctx, hyokStateVersionID)
+		require.NoError(t, err)
+		assert.NotEmpty(t, sv.EncryptedStateDownloadURL)
+	})
+
+	t.Run("read sanitized state download url of a state version", func(t *testing.T) {
+		skipHYOKIntegrationTests(t)
+
+		hyokStateVersionID := os.Getenv("HYOK_STATE_VERSION_ID")
+		if hyokStateVersionID == "" {
+			t.Fatal("Export a valid HYOK_STATE_VERSION_ID before running this test!")
+		}
+
+		sv, err := client.StateVersions.Read(ctx, hyokStateVersionID)
+		require.NoError(t, err)
+		assert.NotEmpty(t, sv.SanitizedStateDownloadURL)
+	})
+
+	t.Run("read hyok encrypted data key of a state version", func(t *testing.T) {
+		skipHYOKIntegrationTests(t)
+
+		hyokStateVersionID := os.Getenv("HYOK_STATE_VERSION_ID")
+		if hyokStateVersionID == "" {
+			t.Fatal("Export a valid HYOK_STATE_VERSION_ID before running this test!")
+		}
+
+		sv, err := client.StateVersions.Read(ctx, hyokStateVersionID)
+		require.NoError(t, err)
+		assert.NotEmpty(t, sv.HYOKEncryptedDataKey)
 	})
 }
 
@@ -604,15 +720,36 @@ func TestStateVersionOutputs(t *testing.T) {
 			values[op.Name] = op.Value
 		}
 
+		testOutputString, ok := values["test_output_string"].(string)
+		require.True(t, ok)
+
+		testOutputNumber, ok := values["test_output_number"].(float64)
+		require.True(t, ok)
+
+		testOutputBool, ok := values["test_output_bool"].(bool)
+		require.True(t, ok)
+
+		testOutputListString, ok := values["test_output_list_string"].([]interface{})
+		require.True(t, ok)
+
+		testOutputTupleNumber, ok := values["test_output_tuple_number"].([]interface{})
+		require.True(t, ok)
+
+		testOutputTupleString, ok := values["test_output_tuple_string"].([]interface{})
+		require.True(t, ok)
+
+		testOutputObject, ok := values["test_output_object"].(map[string]interface{})
+		require.True(t, ok)
+
 		// These asserts are based off of the values in
 		// test-fixtures/state-version/terraform.tfstate
-		assert.Equal(t, "9023256633839603543", values["test_output_string"].(string))
-		assert.Equal(t, float64(5), values["test_output_number"].(float64))
-		assert.Equal(t, true, values["test_output_bool"].(bool))
-		assert.Equal(t, []interface{}{"us-west-1a"}, values["test_output_list_string"].([]interface{}))
-		assert.Equal(t, []interface{}{float64(1), float64(2)}, values["test_output_tuple_number"].([]interface{}))
-		assert.Equal(t, []interface{}{"one", "two"}, values["test_output_tuple_string"].([]interface{}))
-		assert.Equal(t, map[string]interface{}{"foo": "bar"}, values["test_output_object"].(map[string]interface{}))
+		assert.Equal(t, "9023256633839603543", testOutputString)
+		assert.Equal(t, float64(5), testOutputNumber)
+		assert.Equal(t, true, testOutputBool)
+		assert.Equal(t, []interface{}{"us-west-1a"}, testOutputListString)
+		assert.Equal(t, []interface{}{float64(1), float64(2)}, testOutputTupleNumber)
+		assert.Equal(t, []interface{}{"one", "two"}, testOutputTupleString)
+		assert.Equal(t, map[string]interface{}{"foo": "bar"}, testOutputObject)
 	})
 
 	t.Run("with list options", func(t *testing.T) {

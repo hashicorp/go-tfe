@@ -21,7 +21,7 @@ import (
 // you might have to get creative and/or settle for less when testing the
 // behavior of these endpoints.
 
-func TestAdminWorkspaces_ListWithFilter(t *testing.T) {
+func TestAdminWorkspaces_ListWithFilter_RunDependent(t *testing.T) {
 	skipUnlessEnterprise(t)
 
 	client := testClient(t)
@@ -54,7 +54,7 @@ func TestAdminWorkspaces_ListWithFilter(t *testing.T) {
 	})
 }
 
-func TestAdminWorkspaces_ListWithSort(t *testing.T) {
+func TestAdminWorkspaces_ListWithSort_RunDependent(t *testing.T) {
 	skipUnlessEnterprise(t)
 
 	client := testClient(t)
@@ -98,7 +98,7 @@ func TestAdminWorkspaces_ListWithSort(t *testing.T) {
 	})
 }
 
-func TestAdminWorkspaces_List(t *testing.T) {
+func TestAdminWorkspaces_List_RunDependent(t *testing.T) {
 	skipUnlessEnterprise(t)
 
 	client := testClient(t)

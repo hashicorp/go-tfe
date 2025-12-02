@@ -44,6 +44,9 @@ type AgentToken struct {
 	Description string    `jsonapi:"attr,description"`
 	LastUsedAt  time.Time `jsonapi:"attr,last-used-at,iso8601"`
 	Token       string    `jsonapi:"attr,token"`
+
+	// Relations
+	CreatedBy *User `jsonapi:"relation,created-by"`
 }
 
 // AgentTokenList represents a list of agent tokens.
@@ -116,7 +119,7 @@ func (s *agentTokens) Read(ctx context.Context, agentTokenID string) (*AgentToke
 		return nil, ErrInvalidAgentTokenID
 	}
 
-	u := fmt.Sprintf("authentication-tokens/%s", url.PathEscape(agentTokenID))
+	u := fmt.Sprintf(AuthenticationTokensPath, url.PathEscape(agentTokenID))
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, err
@@ -137,7 +140,7 @@ func (s *agentTokens) Delete(ctx context.Context, agentTokenID string) error {
 		return ErrInvalidAgentTokenID
 	}
 
-	u := fmt.Sprintf("authentication-tokens/%s", url.PathEscape(agentTokenID))
+	u := fmt.Sprintf(AuthenticationTokensPath, url.PathEscape(agentTokenID))
 	req, err := s.client.NewRequest("DELETE", u, nil)
 	if err != nil {
 		return err

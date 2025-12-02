@@ -8,6 +8,7 @@ import (
 	"context"
 	"encoding/json"
 	"io"
+	"os"
 	"testing"
 	"time"
 
@@ -15,7 +16,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func TestPlansRead(t *testing.T) {
+func TestPlansRead_RunDependent(t *testing.T) {
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -43,9 +44,37 @@ func TestPlansRead(t *testing.T) {
 		assert.Nil(t, p)
 		assert.Equal(t, err, ErrInvalidPlanID)
 	})
+
+	t.Run("read hyok encrypted data key of a plan", func(t *testing.T) {
+		skipHYOKIntegrationTests(t)
+
+		// replace the environment variable with a valid plan ID that has a hyok encrypted data key
+		hyokPlanID := os.Getenv("HYOK_PLAN_ID")
+		if hyokPlanID == "" {
+			t.Fatal("Export a valid HYOK_PLAN_ID before running this test!")
+		}
+
+		p, err := client.Plans.Read(ctx, hyokPlanID)
+		require.NoError(t, err)
+		assert.NotNil(t, p.HYOKEncryptedDataKey)
+	})
+
+	t.Run("read sanitized plan of a plan", func(t *testing.T) {
+		skipHYOKIntegrationTests(t)
+
+		// replace the environment variable with a valid plan ID that has a sanitized plan link
+		hyokPlanID := os.Getenv("HYOK_PLAN_ID")
+		if hyokPlanID == "" {
+			t.Fatal("Export a valid HYOK_PLAN_ID before running this test!")
+		}
+
+		p, err := client.Plans.Read(ctx, hyokPlanID)
+		require.NoError(t, err)
+		assert.NotEmpty(t, p.Links["sanitized-plan"])
+	})
 }
 
-func TestPlansLogs(t *testing.T) {
+func TestPlansLogs_RunDependent(t *testing.T) {
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -116,7 +145,7 @@ func TestPlan_Unmarshal(t *testing.T) {
 	assert.Equal(t, plan.StatusTimestamps.ErroredAt, erroredParsedTime)
 }
 
-func TestPlansJSONOutput(t *testing.T) {
+func TestPlansJSONOutput_RunDependent(t *testing.T) {
 	client := testClient(t)
 	ctx := context.Background()
 	rTest, rTestCleanup := createPlannedRun(t, client, nil)

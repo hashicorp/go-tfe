@@ -7,7 +7,7 @@ runs:
   using: composite
   steps:
     - name: Set up Go
-      uses: actions/setup-go@cdcb36043654635271a94b9a6d1392de5bb323a7 # v5.0.1
+      uses: actions/setup-go@d35c59abb061a4a6fb18e82ac0862c26744d6ab5 # v5.5.0
       with:
         go-version-file: go.mod
         cache: true
@@ -19,7 +19,7 @@ runs:
       run: curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/0b5709648c8ba9780e821faf16c5c2bb3262ce3e/install.sh | sh -s -- -b $(go env GOPATH)/bin $GOLANGCILINT_VERSION
       shell: bash
       env:
-        GOLANGCILINT_VERSION: v1.52.2
+        GOLANGCILINT_VERSION: v1.64.8
 
     - run: make lint
       shell: bash

@@ -151,6 +151,16 @@ type workspaces struct {
 	client *Client
 }
 
+// WorkspaceSource represents a source type of a workspace.
+type WorkspaceSource string
+
+const (
+	WorkspaceSourceAPI       WorkspaceSource = "tfe-api"
+	WorkspaceSourceModule    WorkspaceSource = "tfe-module"
+	WorkspaceSourceUI        WorkspaceSource = "tfe-ui"
+	WorkspaceSourceTerraform WorkspaceSource = "terraform"
+)
+
 // WorkspaceList represents a list of workspaces.
 type WorkspaceList struct {
 	*Pagination
@@ -198,6 +208,7 @@ type Workspace struct {
 	Permissions                 *WorkspacePermissions           `jsonapi:"attr,permissions"`
 	QueueAllRuns                bool                            `jsonapi:"attr,queue-all-runs"`
 	SpeculativeEnabled          bool                            `jsonapi:"attr,speculative-enabled"`
+	Source                      WorkspaceSource                 `jsonapi:"attr,source"`
 	SourceName                  string                          `jsonapi:"attr,source-name"`
 	SourceURL                   string                          `jsonapi:"attr,source-url"`
 	StructuredRunOutputEnabled  bool                            `jsonapi:"attr,structured-run-output-enabled"`
@@ -215,6 +226,7 @@ type Workspace struct {
 	RunsCount                   int                             `jsonapi:"attr,workspace-kpis-runs-count"`
 	TagNames                    []string                        `jsonapi:"attr,tag-names"`
 	SettingOverwrites           *WorkspaceSettingOverwrites     `jsonapi:"attr,setting-overwrites"`
+	HYOKEnabled                 *bool                           `jsonapi:"attr,hyok-enabled"`
 
 	// Relations
 	AgentPool                   *AgentPool             `jsonapi:"relation,agent-pool"`
@@ -230,6 +242,7 @@ type Workspace struct {
 	Variables                   []*Variable            `jsonapi:"relation,vars"`
 	TagBindings                 []*TagBinding          `jsonapi:"relation,tag-bindings"`
 	EffectiveTagBindings        []*EffectiveTagBinding `jsonapi:"relation,effective-tag-bindings"`
+	HYOKEncryptedDataKey        *HYOKEncryptedDataKey  `jsonapi:"relation,hyok-data-key-for-encryption"`
 
 	// Deprecated: Use DataRetentionPolicyChoice instead.
 	DataRetentionPolicy *DataRetentionPolicy
@@ -273,6 +286,8 @@ type VCSRepo struct {
 	Tags              bool   `jsonapi:"attr,tags"`
 	TagsRegex         string `jsonapi:"attr,tags-regex"`
 	WebhookURL        string `jsonapi:"attr,webhook-url"`
+	SourceDirectory   string `jsonapi:"attr,source-directory"`
+	TagPrefix         string `jsonapi:"attr,tag-prefix"`
 }
 
 // Note: the fields of this struct are bool pointers instead of bool values, in order to simplify support for
@@ -293,6 +308,7 @@ type WorkspacePermissions struct {
 	CanForceUnlock    bool  `jsonapi:"attr,can-force-unlock"`
 	CanLock           bool  `jsonapi:"attr,can-lock"`
 	CanManageRunTasks bool  `jsonapi:"attr,can-manage-run-tasks"`
+	CanManageHYOK     bool  `jsonapi:"attr,can-manage-hyok"`
 	CanQueueApply     bool  `jsonapi:"attr,can-queue-apply"`
 	CanQueueDestroy   bool  `jsonapi:"attr,can-queue-destroy"`
 	CanQueueRun       bool  `jsonapi:"attr,can-queue-run"`
@@ -481,6 +497,13 @@ type WorkspaceCreateOptions struct {
 	// environment when multiple environments exist within the same repository.
 	WorkingDirectory *string `jsonapi:"attr,working-directory,omitempty"`
 
+	// Optional: Enables HYOK in the workspace.
+	// If set to true, the workspace will be created with HYOK enabled.
+	// If set to false, the workspace will be created with HYOK disabled.
+	// If not specified, the workspace will be created with HYOK disabled.
+	// Note: HYOK is only available in HCP Terraform.
+	HYOKEnabled *bool `jsonapi:"attr,hyok-enabled,omitempty"`
+
 	// A list of tags to attach to the workspace. If the tag does not already
 	// exist, it is created and added to the workspace.
 	Tags []*Tag `jsonapi:"relation,tags,omitempty"`
@@ -642,6 +665,11 @@ type WorkspaceUpdateOptions struct {
 	// manually mark a setting as overwritten, you must provide a value for that
 	// setting at the same time.
 	SettingOverwrites *WorkspaceSettingOverwritesOptions `jsonapi:"attr,setting-overwrites,omitempty"`
+
+	// Optional: Enables HYOK in the workspace.
+	// If set to true, the workspace will be updated with HYOK enabled.
+	// This can't be set to false, as HYOK is a one-way operation.
+	HYOKEnabled *bool `jsonapi:"attr,hyok-enabled,omitempty"`
 
 	// Associated Project with the workspace. If not provided, default project
 	// of the organization will be assigned to the workspace

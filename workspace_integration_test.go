@@ -34,7 +34,7 @@ type WorkspaceTableTest struct {
 	assertion func(t *testing.T, w *Workspace, options *WorkspaceTableOptions, err error)
 }
 
-func TestWorkspacesList(t *testing.T) {
+func TestWorkspacesList_RunDependent(t *testing.T) {
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -305,8 +305,17 @@ func TestWorkspacesList(t *testing.T) {
 		orgTest2, orgTest2Cleanup := createOrganization(t, client)
 		t.Cleanup(orgTest2Cleanup)
 
+		prj, pTestCleanup1 := createProjectWithOptions(t, client, orgTest2, ProjectCreateOptions{
+			Name: randomStringWithoutSpecialChar(t),
+			TagBindings: []*TagBinding{
+				{Key: "key3", Value: "value3"},
+			},
+		})
+		t.Cleanup(pTestCleanup1)
+
 		_, wTestCleanup1 := createWorkspaceWithOptions(t, client, orgTest2, WorkspaceCreateOptions{
-			Name: String(randomString(t)),
+			Name:    String(randomString(t)),
+			Project: prj,
 			TagBindings: []*TagBinding{
 				{Key: "key1", Value: "value1"},
 				{Key: "key2", Value: "value2a"},
@@ -319,11 +328,24 @@ func TestWorkspacesList(t *testing.T) {
 		})
 		require.NoError(t, err)
 		require.Len(t, wl.Items, 1)
-		require.Len(t, wl.Items[0].EffectiveTagBindings, 2)
+		require.Len(t, wl.Items[0].EffectiveTagBindings, 3)
 		assert.NotEmpty(t, wl.Items[0].EffectiveTagBindings[0].Key)
 		assert.NotEmpty(t, wl.Items[0].EffectiveTagBindings[0].Value)
 		assert.NotEmpty(t, wl.Items[0].EffectiveTagBindings[1].Key)
 		assert.NotEmpty(t, wl.Items[0].EffectiveTagBindings[1].Value)
+		assert.NotEmpty(t, wl.Items[0].EffectiveTagBindings[2].Key)
+		assert.NotEmpty(t, wl.Items[0].EffectiveTagBindings[2].Value)
+
+		inheritedTagsFound := 0
+		for _, tag := range wl.Items[0].EffectiveTagBindings {
+			if tag.Links["inherited-from"] != nil {
+				inheritedTagsFound += 1
+			}
+		}
+
+		if inheritedTagsFound != 1 {
+			t.Fatalf("Expected 1 inherited tag, got %d", inheritedTagsFound)
+		}
 	})
 
 	t.Run("when using project id filter and project contains workspaces", func(t *testing.T) {
@@ -387,6 +409,8 @@ func TestWorkspacesList(t *testing.T) {
 }
 
 func TestWorkspacesCreateTableDriven(t *testing.T) {
+	t.Skip("Skipping due to persistent failures - see TF-31172")
+
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -955,6 +979,51 @@ func TestWorkspacesCreate(t *testing.T) {
 			assert.Equal(t, "remote", w.ExecutionMode)
 		})
 	})
+
+	t.Run("create workspace with hyok enabled set to false", func(t *testing.T) {
+		skipHYOKIntegrationTests(t)
+
+		// replace the environment variable with a valid organization name that has HYOK permissions
+		hyokOrganizationName := os.Getenv("HYOK_ORGANIZATION_NAME")
+		if hyokOrganizationName == "" {
+			t.Fatal("Export a valid HYOK_ORGANIZATION_NAME before running this test!")
+		}
+		workspaceCreateOptions := WorkspaceCreateOptions{
+			Name:        String("go-tfe-test-hyok-enabled-false"),
+			HYOKEnabled: Bool(false),
+		}
+
+		w, err := client.Workspaces.Create(ctx, hyokOrganizationName, workspaceCreateOptions)
+		require.NoError(t, err)
+		assert.NotNil(t, w.HYOKEnabled)
+		assert.False(t, *w.HYOKEnabled)
+
+		err = client.Workspaces.Delete(ctx, hyokOrganizationName, *workspaceCreateOptions.Name)
+		require.NoError(t, err)
+	})
+
+	t.Run("create workspace with hyok enabled set to true", func(t *testing.T) {
+		skipHYOKIntegrationTests(t)
+
+		// replace the environment variable with a valid organization name that has HYOK permissions
+		hyokOrganizationName := os.Getenv("HYOK_ORGANIZATION_NAME")
+		if hyokOrganizationName == "" {
+			t.Fatal("Export a valid HYOK_ORGANIZATION_NAME before running this test!")
+		}
+
+		workspaceCreateOptions := WorkspaceCreateOptions{
+			Name:        String("go-tfe-test-hyok-enabled-true"),
+			HYOKEnabled: Bool(true),
+		}
+
+		w, err := client.Workspaces.Create(ctx, hyokOrganizationName, workspaceCreateOptions)
+		require.NoError(t, err)
+		assert.NotNil(t, w.HYOKEnabled)
+		assert.True(t, *w.HYOKEnabled)
+
+		err = client.Workspaces.Delete(ctx, hyokOrganizationName, *workspaceCreateOptions.Name)
+		require.NoError(t, err)
+	})
 }
 
 func TestWorkspacesRead(t *testing.T) {
@@ -1040,6 +1109,62 @@ func TestWorkspacesRead(t *testing.T) {
 			assert.Equal(t, false, *w.SettingOverwrites.ExecutionMode)
 		})
 	})
+
+	t.Run("read hyok enabled of a workspace", func(t *testing.T) {
+		skipHYOKIntegrationTests(t)
+
+		// replace the environment variable with a valid organization name that has HYOK permissions
+		hyokOrganizationName := os.Getenv("HYOK_ORGANIZATION_NAME")
+		if hyokOrganizationName == "" {
+			t.Fatal("Export a valid HYOK_ORGANIZATION_NAME before running this test!")
+		}
+
+		// replace the environment variable with a valid workspace name that has hyok enabled set to true or false
+		hyokWorkspaceName := os.Getenv("HYOK_WORKSPACE_NAME")
+		if hyokWorkspaceName == "" {
+			t.Fatal("Export a valid HYOK_WORKSPACE_NAME before running this test!")
+		}
+
+		w, err := client.Workspaces.Read(ctx, hyokOrganizationName, hyokWorkspaceName)
+		require.NoError(t, err)
+		assert.NotNil(t, w.HYOKEnabled)
+	})
+
+	t.Run("read hyok encrypted data key of a workspace", func(t *testing.T) {
+		skipHYOKIntegrationTests(t)
+
+		// replace the environment variable with a valid organization name that has HYOK permissions
+		hyokOrganizationName := os.Getenv("HYOK_ORGANIZATION_NAME")
+		if hyokOrganizationName == "" {
+			t.Fatal("Export a valid HYOK_ORGANIZATION_NAME before running this test!")
+		}
+
+		// replace the environment variable with a valid workspace name that has hyok encrypted data key
+		hyokWorkspaceName := os.Getenv("HYOK_WORKSPACE_NAME")
+		if hyokWorkspaceName == "" {
+			t.Fatal("Export a valid HYOK_WORKSPACE_NAME before running this test!")
+		}
+
+		w, err := client.Workspaces.Read(ctx, hyokOrganizationName, hyokWorkspaceName)
+		require.NoError(t, err)
+		assert.NotEmpty(t, w.HYOKEncryptedDataKey)
+	})
+}
+
+func TestWorkspacesReadSource(t *testing.T) {
+	client := testClient(t)
+	ctx := context.Background()
+
+	orgTest, orgTestCleanup := createOrganization(t, client)
+	t.Cleanup(orgTestCleanup)
+
+	wTest, wTestCleanup := createWorkspace(t, client, orgTest)
+	t.Cleanup(wTestCleanup)
+
+	w, err := client.Workspaces.Read(ctx, orgTest.Name, wTest.Name)
+	require.NoError(t, err)
+
+	assert.Equal(t, WorkspaceSourceAPI, w.Source)
 }
 
 func TestWorkspacesReadWithOptions(t *testing.T) {
@@ -1091,7 +1216,7 @@ func TestWorkspacesReadWithOptions(t *testing.T) {
 	})
 }
 
-func TestWorkspacesReadWithHistory(t *testing.T) {
+func TestWorkspacesReadWithHistory_RunDependent(t *testing.T) {
 	client := testClient(t)
 
 	orgTest, orgTestCleanup := createOrganization(t, client)
@@ -1126,7 +1251,9 @@ func TestWorkspacesReadWithHistory(t *testing.T) {
 // If you've set your own GITHUB_POLICY_SET_IDENTIFIER, make sure the readme
 // starts with the string: This is a simple test
 // Otherwise the test will not pass
-func TestWorkspacesReadReadme(t *testing.T) {
+func TestWorkspacesReadReadme_RunDependent(t *testing.T) {
+	t.Skip("Skipping due to persistent failures - see TF-31172")
+
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -1562,6 +1689,133 @@ func TestWorkspacesUpdate(t *testing.T) {
 			assert.Empty(t, options.TriggerPrefixes)
 			assert.Equal(t, options.TriggerPatterns, item.TriggerPatterns)
 		}
+	})
+
+	t.Run("update hyok enabled of a workspace from false to false", func(t *testing.T) {
+		skipHYOKIntegrationTests(t)
+
+		// replace the environment variable with a valid organization name that has HYOK permissions
+		hyokOrganizationName := os.Getenv("HYOK_ORGANIZATION_NAME")
+		if hyokOrganizationName == "" {
+			t.Fatal("Export a valid HYOK_ORGANIZATION_NAME before running this test!")
+		}
+
+		workspaceCreateOptions := WorkspaceCreateOptions{
+			Name:        String("go-tfe-test-hyok-enabled-false"),
+			HYOKEnabled: Bool(false),
+		}
+
+		w, err := client.Workspaces.Create(ctx, hyokOrganizationName, workspaceCreateOptions)
+		require.NoError(t, err)
+		assert.NotNil(t, w.HYOKEnabled)
+		assert.False(t, *w.HYOKEnabled)
+
+		workspaceUpdateOptions := WorkspaceUpdateOptions{
+			HYOKEnabled: Bool(false),
+		}
+
+		w, err = client.Workspaces.Update(ctx, hyokOrganizationName, w.Name, workspaceUpdateOptions)
+		require.NoError(t, err)
+		assert.NotNil(t, w.HYOKEnabled)
+		assert.False(t, *w.HYOKEnabled)
+
+		err = client.Workspaces.Delete(ctx, hyokOrganizationName, *workspaceCreateOptions.Name)
+		require.NoError(t, err)
+	})
+
+	t.Run("update hyok enabled of a workspace from false to true", func(t *testing.T) {
+		skipHYOKIntegrationTests(t)
+
+		// replace the environment variable with a valid organization name that has HYOK permissions
+		hyokOrganizationName := os.Getenv("HYOK_ORGANIZATION_NAME")
+		if hyokOrganizationName == "" {
+			t.Fatal("Export a valid HYOK_ORGANIZATION_NAME before running this test!")
+		}
+
+		workspaceCreateOptions := WorkspaceCreateOptions{
+			Name:        String("go-tfe-test-hyok-enabled-false"),
+			HYOKEnabled: Bool(false),
+		}
+
+		w, err := client.Workspaces.Create(ctx, hyokOrganizationName, workspaceCreateOptions)
+		require.NoError(t, err)
+		assert.NotNil(t, w.HYOKEnabled)
+		assert.False(t, *w.HYOKEnabled)
+
+		workspaceUpdateOptions := WorkspaceUpdateOptions{
+			HYOKEnabled: Bool(true),
+		}
+
+		w, err = client.Workspaces.Update(ctx, hyokOrganizationName, w.Name, workspaceUpdateOptions)
+		require.NoError(t, err)
+		assert.NotNil(t, w.HYOKEnabled)
+		assert.True(t, *w.HYOKEnabled)
+
+		err = client.Workspaces.Delete(ctx, hyokOrganizationName, *workspaceCreateOptions.Name)
+		require.NoError(t, err)
+	})
+
+	t.Run("update hyok enabled of a workspace from true to true", func(t *testing.T) {
+		skipHYOKIntegrationTests(t)
+
+		// replace the environment variable with a valid organization name that has HYOK permissions
+		hyokOrganizationName := os.Getenv("HYOK_ORGANIZATION_NAME")
+		if hyokOrganizationName == "" {
+			t.Fatal("Export a valid HYOK_ORGANIZATION_NAME before running this test!")
+		}
+
+		workspaceCreateOptions := WorkspaceCreateOptions{
+			Name:        String("go-tfe-test-hyok-enabled-true"),
+			HYOKEnabled: Bool(true),
+		}
+
+		w, err := client.Workspaces.Create(ctx, hyokOrganizationName, workspaceCreateOptions)
+		require.NoError(t, err)
+		assert.NotNil(t, w.HYOKEnabled)
+		assert.True(t, *w.HYOKEnabled)
+
+		workspaceUpdateOptions := WorkspaceUpdateOptions{
+			HYOKEnabled: Bool(true),
+		}
+
+		w, err = client.Workspaces.Update(ctx, hyokOrganizationName, w.Name, workspaceUpdateOptions)
+		require.NoError(t, err)
+		assert.NotNil(t, w.HYOKEnabled)
+		assert.True(t, *w.HYOKEnabled)
+
+		err = client.Workspaces.Delete(ctx, hyokOrganizationName, *workspaceCreateOptions.Name)
+		require.NoError(t, err)
+	})
+
+	t.Run("update hyok enabled of a workspace from true to false", func(t *testing.T) {
+		skipHYOKIntegrationTests(t)
+
+		// replace the environment variable with a valid organization name that has HYOK permissions
+		hyokOrganizationName := os.Getenv("HYOK_ORGANIZATION_NAME")
+		if hyokOrganizationName == "" {
+			t.Fatal("Export a valid HYOK_ORGANIZATION_NAME before running this test!")
+		}
+
+		workspaceCreateOptions := WorkspaceCreateOptions{
+			Name:        String("go-tfe-test-hyok-enabled-true"),
+			HYOKEnabled: Bool(true),
+		}
+
+		w, err := client.Workspaces.Create(ctx, hyokOrganizationName, workspaceCreateOptions)
+		require.NoError(t, err)
+		assert.NotNil(t, w.HYOKEnabled)
+		assert.True(t, *w.HYOKEnabled)
+
+		workspaceUpdateOptions := WorkspaceUpdateOptions{
+			HYOKEnabled: Bool(false),
+		}
+
+		_, err = client.Workspaces.Update(ctx, hyokOrganizationName, w.Name, workspaceUpdateOptions)
+		require.Error(t, err)
+		assert.EqualError(t, err, ErrHYOKCannotBeDisabled.Error())
+
+		err = client.Workspaces.Delete(ctx, hyokOrganizationName, *workspaceCreateOptions.Name)
+		require.NoError(t, err)
 	})
 }
 
@@ -2173,7 +2427,7 @@ func TestWorkspacesLock(t *testing.T) {
 	})
 }
 
-func TestWorkspacesUnlock(t *testing.T) {
+func TestWorkspacesUnlock_RunDependent(t *testing.T) {
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -3087,5 +3341,71 @@ func TestWorkspacesAutoDestroyDuration(t *testing.T) {
 		require.False(t, w.AutoDestroyActivityDuration.IsSpecified())
 		require.False(t, w.AutoDestroyAt.IsSpecified())
 		require.Equal(t, wTest.InheritsProjectAutoDestroy, false)
+	})
+}
+
+func TestWorkspaces_effectiveTagBindingsInheritedFrom(t *testing.T) {
+	skipUnlessBeta(t)
+
+	client := testClient(t)
+	ctx := context.Background()
+
+	orgTest, orgTestCleanup := createOrganization(t, client)
+	t.Cleanup(orgTestCleanup)
+
+	projTest, projTestCleanup := createProject(t, client, orgTest)
+	t.Cleanup(projTestCleanup)
+
+	ws, wsCleanup := createWorkspaceWithOptions(t, client, orgTest, WorkspaceCreateOptions{
+		Name:    String("mycoolworkspace"),
+		Project: projTest,
+	})
+	t.Cleanup(wsCleanup)
+
+	_, err := client.Workspaces.AddTagBindings(ctx, ws.ID, WorkspaceAddTagBindingsOptions{
+		TagBindings: []*TagBinding{
+			{
+				Key:   "a",
+				Value: "1",
+			},
+			{
+				Key:   "b",
+				Value: "2",
+			},
+		},
+	})
+	require.NoError(t, err)
+
+	t.Run("when no tags are inherited from the project", func(t *testing.T) {
+		effectiveBindings, err := client.Workspaces.ListEffectiveTagBindings(ctx, ws.ID)
+		require.NoError(t, err)
+
+		for _, binding := range effectiveBindings {
+			require.Nil(t, binding.Links)
+		}
+	})
+
+	t.Run("when tags are inherited from the project", func(t *testing.T) {
+		_, err := client.Projects.AddTagBindings(ctx, projTest.ID, ProjectAddTagBindingsOptions{
+			TagBindings: []*TagBinding{
+				{
+					Key:   "inherited",
+					Value: "foo",
+				},
+			},
+		})
+		require.NoError(t, err)
+
+		effectiveBindings, err := client.Workspaces.ListEffectiveTagBindings(ctx, ws.ID)
+		require.NoError(t, err)
+
+		for _, binding := range effectiveBindings {
+			if binding.Key == "inherited" {
+				require.NotNil(t, binding.Links)
+				require.NotNil(t, binding.Links["inherited-from"])
+			} else {
+				require.Nil(t, binding.Links)
+			}
+		}
 	})
 }

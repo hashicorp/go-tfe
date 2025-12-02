@@ -7,6 +7,7 @@ import (
 	"context"
 	"fmt"
 	"net/url"
+	"reflect"
 	"time"
 )
 
@@ -42,17 +43,18 @@ type adminSentinelVersions struct {
 
 // AdminSentinelVersion represents a Sentinel Version
 type AdminSentinelVersion struct {
-	ID               string    `jsonapi:"primary,sentinel-versions"`
-	Version          string    `jsonapi:"attr,version"`
-	URL              string    `jsonapi:"attr,url"`
-	SHA              string    `jsonapi:"attr,sha"`
-	Deprecated       bool      `jsonapi:"attr,deprecated"`
-	DeprecatedReason *string   `jsonapi:"attr,deprecated-reason,omitempty"`
-	Official         bool      `jsonapi:"attr,official"`
-	Enabled          bool      `jsonapi:"attr,enabled"`
-	Beta             bool      `jsonapi:"attr,beta"`
-	Usage            int       `jsonapi:"attr,usage"`
-	CreatedAt        time.Time `jsonapi:"attr,created-at,iso8601"`
+	ID               string                     `jsonapi:"primary,sentinel-versions"`
+	Version          string                     `jsonapi:"attr,version"`
+	URL              string                     `jsonapi:"attr,url,omitempty"`
+	SHA              string                     `jsonapi:"attr,sha,omitempty"`
+	Deprecated       bool                       `jsonapi:"attr,deprecated"`
+	DeprecatedReason *string                    `jsonapi:"attr,deprecated-reason,omitempty"`
+	Official         bool                       `jsonapi:"attr,official"`
+	Enabled          bool                       `jsonapi:"attr,enabled"`
+	Beta             bool                       `jsonapi:"attr,beta"`
+	Usage            int                        `jsonapi:"attr,usage"`
+	CreatedAt        time.Time                  `jsonapi:"attr,created-at,iso8601"`
+	Archs            []*ToolVersionArchitecture `jsonapi:"attr,archs,omitempty"`
 }
 
 // AdminSentinelVersionsListOptions represents the options for listing
@@ -69,28 +71,30 @@ type AdminSentinelVersionsListOptions struct {
 
 // AdminSentinelVersionCreateOptions for creating an Sentinel version.
 type AdminSentinelVersionCreateOptions struct {
-	Type             string  `jsonapi:"primary,sentinel-versions"`
-	Version          string  `jsonapi:"attr,version"` // Required
-	URL              string  `jsonapi:"attr,url"`     // Required
-	SHA              string  `jsonapi:"attr,sha"`     // Required
-	Official         *bool   `jsonapi:"attr,official,omitempty"`
-	Deprecated       *bool   `jsonapi:"attr,deprecated,omitempty"`
-	DeprecatedReason *string `jsonapi:"attr,deprecated-reason,omitempty"`
-	Enabled          *bool   `jsonapi:"attr,enabled,omitempty"`
-	Beta             *bool   `jsonapi:"attr,beta,omitempty"`
+	Type             string                     `jsonapi:"primary,sentinel-versions"`
+	Version          string                     `jsonapi:"attr,version"`       // Required
+	URL              string                     `jsonapi:"attr,url,omitempty"` // Required w/ SHA unless Archs are provided
+	SHA              string                     `jsonapi:"attr,sha,omitempty"` // Required w/ URL unless Archs are provided
+	Official         *bool                      `jsonapi:"attr,official,omitempty"`
+	Deprecated       *bool                      `jsonapi:"attr,deprecated,omitempty"`
+	DeprecatedReason *string                    `jsonapi:"attr,deprecated-reason,omitempty"`
+	Enabled          *bool                      `jsonapi:"attr,enabled,omitempty"`
+	Beta             *bool                      `jsonapi:"attr,beta,omitempty"`
+	Archs            []*ToolVersionArchitecture `jsonapi:"attr,archs,omitempty"` // Required unless URL and SHA are provided
 }
 
 // AdminSentinelVersionUpdateOptions for updating Sentinel version.
 type AdminSentinelVersionUpdateOptions struct {
-	Type             string  `jsonapi:"primary,sentinel-versions"`
-	Version          *string `jsonapi:"attr,version,omitempty"`
-	URL              *string `jsonapi:"attr,url,omitempty"`
-	SHA              *string `jsonapi:"attr,sha,omitempty"`
-	Official         *bool   `jsonapi:"attr,official,omitempty"`
-	Deprecated       *bool   `jsonapi:"attr,deprecated,omitempty"`
-	DeprecatedReason *string `jsonapi:"attr,deprecated-reason,omitempty"`
-	Enabled          *bool   `jsonapi:"attr,enabled,omitempty"`
-	Beta             *bool   `jsonapi:"attr,beta,omitempty"`
+	Type             string                     `jsonapi:"primary,sentinel-versions"`
+	Version          *string                    `jsonapi:"attr,version,omitempty"`
+	URL              *string                    `jsonapi:"attr,url,omitempty"`
+	SHA              *string                    `jsonapi:"attr,sha,omitempty"`
+	Official         *bool                      `jsonapi:"attr,official,omitempty"`
+	Deprecated       *bool                      `jsonapi:"attr,deprecated,omitempty"`
+	DeprecatedReason *string                    `jsonapi:"attr,deprecated-reason,omitempty"`
+	Enabled          *bool                      `jsonapi:"attr,enabled,omitempty"`
+	Beta             *bool                      `jsonapi:"attr,beta,omitempty"`
+	Archs            []*ToolVersionArchitecture `jsonapi:"attr,archs,omitempty"`
 }
 
 // AdminSentinelVersionsList represents a list of Sentinel versions.
@@ -192,18 +196,28 @@ func (a *adminSentinelVersions) Delete(ctx context.Context, id string) error {
 }
 
 func (o AdminSentinelVersionCreateOptions) valid() error {
-	if (o == AdminSentinelVersionCreateOptions{}) {
+	if (reflect.DeepEqual(o, AdminSentinelVersionCreateOptions{})) {
 		return ErrRequiredSentinelVerCreateOps
 	}
 	if o.Version == "" {
 		return ErrRequiredVersion
 	}
-	if o.URL == "" {
-		return ErrRequiredURL
+	if !o.validArch() {
+		return ErrRequiredArchsOrURLAndSha
 	}
-	if o.SHA == "" {
-		return ErrRequiredSha
+	return nil
+}
+
+func (o AdminSentinelVersionCreateOptions) validArch() bool {
+	if o.Archs == nil && o.URL != "" && o.SHA != "" {
+		return true
 	}
 
-	return nil
+	for _, a := range o.Archs {
+		if !validArch(a) {
+			return false
+		}
+	}
+
+	return true
 }

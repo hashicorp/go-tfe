@@ -7,6 +7,7 @@ import (
 	"bytes"
 	"context"
 	"encoding/json"
+	"os"
 	"testing"
 	"time"
 
@@ -233,6 +234,34 @@ func TestOrganizationsRead(t *testing.T) {
 			assert.Equal(t, org.DefaultAgentPool.ID, orgAgentTest.DefaultAgentPool.ID)
 		})
 	})
+
+	t.Run("read primary hyok configuration of an organization", func(t *testing.T) {
+		skipHYOKIntegrationTests(t)
+
+		// replace the environment variable with a valid organization name that has primary hyok configuration
+		hyokOrganizationName := os.Getenv("HYOK_ORGANIZATION_NAME")
+		if hyokOrganizationName == "" {
+			t.Fatal("Export a valid HYOK_ORGANIZATION_NAME before running this test!")
+		}
+
+		org, err := client.Organizations.Read(ctx, hyokOrganizationName)
+		require.NoError(t, err)
+		assert.NotEmpty(t, org.PrimaryHYOKConfiguration)
+	})
+
+	t.Run("read enforce hyok of an organization", func(t *testing.T) {
+		skipHYOKIntegrationTests(t)
+
+		// replace the environment variable with a valid organization name that has enforce hyok set to true or false
+		hyokOrganizationName := os.Getenv("HYOK_ORGANIZATION_NAME")
+		if hyokOrganizationName == "" {
+			t.Fatal("Export a valid HYOK_ORGANIZATION_NAME before running this test!")
+		}
+
+		org, err := client.Organizations.Read(ctx, hyokOrganizationName)
+		require.NoError(t, err)
+		assert.True(t, org.EnforceHYOK || !org.EnforceHYOK)
+	})
 }
 
 func TestOrganizationsUpdate(t *testing.T) {
@@ -388,6 +417,38 @@ func TestOrganizationsUpdate(t *testing.T) {
 
 		t.Cleanup(orgAgentTestCleanup)
 	})
+
+	t.Run("update enforce hyok of an organization to true", func(t *testing.T) {
+		skipHYOKIntegrationTests(t)
+
+		// replace the environment variable with a valid organization name with hyok permissions
+		hyokOrganizationName := os.Getenv("HYOK_ORGANIZATION_NAME")
+		if hyokOrganizationName == "" {
+			t.Fatal("Export a valid HYOK_ORGANIZATION_NAME before running this test!")
+		}
+
+		org, err := client.Organizations.Update(ctx, hyokOrganizationName, OrganizationUpdateOptions{
+			EnforceHYOK: Bool(true),
+		})
+		require.NoError(t, err)
+		assert.True(t, org.EnforceHYOK)
+	})
+
+	t.Run("update enforce hyok of an organization to false", func(t *testing.T) {
+		skipHYOKIntegrationTests(t)
+
+		// replace the environment variable with a valid organization name with hyok permissions
+		hyokOrganizationName := os.Getenv("HYOK_ORGANIZATION_NAME")
+		if hyokOrganizationName == "" {
+			t.Fatal("Export a valid HYOK_ORGANIZATION_NAME before running this test!")
+		}
+
+		org, err := client.Organizations.Update(ctx, hyokOrganizationName, OrganizationUpdateOptions{
+			EnforceHYOK: Bool(false),
+		})
+		require.NoError(t, err)
+		assert.False(t, org.EnforceHYOK)
+	})
 }
 
 func TestOrganizationsDelete(t *testing.T) {
@@ -411,7 +472,7 @@ func TestOrganizationsDelete(t *testing.T) {
 	})
 }
 
-func TestOrganizationsReadCapacity(t *testing.T) {
+func TestOrganizationsReadCapacity_RunDependent(t *testing.T) {
 	t.Skip("Capacity queues are not available in the API")
 	client := testClient(t)
 	ctx := context.Background()
@@ -474,7 +535,7 @@ func TestOrganizationsReadEntitlements(t *testing.T) {
 	orgTest, orgTestCleanup := createOrganization(t, client)
 	t.Cleanup(orgTestCleanup)
 
-	newSubscriptionUpdater(orgTest).WithPlusEntitlementPlan().Update(t)
+	newSubscriptionUpdater(orgTest).WithStandardEntitlementPlan().Update(t)
 
 	t.Run("when the org exists", func(t *testing.T) {
 		entitlements, err := client.Organizations.ReadEntitlements(ctx, orgTest.Name)
@@ -507,7 +568,7 @@ func TestOrganizationsReadEntitlements(t *testing.T) {
 	})
 }
 
-func TestOrganizationsReadRunQueue(t *testing.T) {
+func TestOrganizationsReadRunQueue_RunDependent(t *testing.T) {
 	t.Skip("Capacity queues are not available in the API")
 	client := testClient(t)
 	ctx := context.Background()

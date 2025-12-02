@@ -11,7 +11,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func TestRunEventsList(t *testing.T) {
+func TestRunEventsList_RunDependent(t *testing.T) {
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -73,7 +73,7 @@ func TestRunEventsList(t *testing.T) {
 	})
 }
 
-func TestRunEventsRead(t *testing.T) {
+func TestRunEventsRead_RunDependent(t *testing.T) {
 	client := testClient(t)
 	ctx := context.Background()
 
