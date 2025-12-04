@@ -343,6 +343,7 @@ func TestOrganizationsUpdate(t *testing.T) {
 		ownerClient := testClient(t)
 		ownerClient.token = ownerToken.Token
 
+		// disable user tokens for the organization
 		options := OrganizationUpdateOptions{
 			UserTokensEnabled: Bool(false),
 		}
@@ -351,11 +352,29 @@ func TestOrganizationsUpdate(t *testing.T) {
 		require.NoError(t, err)
 		assert.False(t, *org.UserTokensEnabled, "user tokens disabled")
 
+		// try reading something with the user token client and verify that it fails, where the team token client
+		// succeeds
+		_, err = client.Organizations.Read(ctx, orgTest.Name)
+		assert.Error(t, err)
+		assert.ErrorContains(t, err, "unauthorized")
+
+		org, err = ownerClient.Organizations.Read(ctx, orgTest.Name)
+		assert.NoError(t, err)
+		assert.Equal(t, orgTest.Name, org.Name)
+		assert.False(t, *org.UserTokensEnabled, "user tokens disabled")
+
+		// re-enable user tokens
 		options = OrganizationUpdateOptions{
 			UserTokensEnabled: Bool(true),
 		}
 		org, err = ownerClient.Organizations.Update(ctx, orgTest.Name, options)
 		require.NoError(t, err)
+		assert.True(t, *org.UserTokensEnabled, "user tokens re-enabled")
+
+		// try reading with the user token again and verify that it works
+		org, err = client.Organizations.Read(ctx, orgTest.Name)
+		assert.NoError(t, err)
+		assert.Equal(t, orgTest.Name, org.Name)
 		assert.True(t, *org.UserTokensEnabled, "user tokens re-enabled")
 	})
 
