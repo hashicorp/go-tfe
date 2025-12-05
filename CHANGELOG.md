@@ -1,5 +1,9 @@
 # Unreleased
 
+## Enhancements
+
+* Policy Sets: Add `PolicyUpdatePattern []string` to `PolicySet`, `PolicySetCreateOptions`, and `PolicySetUpdateOptions` to support `policy-update-patterns`.
+
 # v1.97.0
 
 ## Enhancements
