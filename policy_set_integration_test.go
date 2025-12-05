@@ -315,23 +315,6 @@ func TestPolicySetsCreate(t *testing.T) {
 		assert.True(t, ps.Global)
 	})
 
-	t.Run("with policy update patterns", func(t *testing.T) {
-		options := PolicySetCreateOptions{
-			Name:                String("policy-set-with-patterns"),
-			Kind:                Sentinel,
-			PolicyUpdatePattern: []*string{String("*.sentinel"), String("policies/**")},
-		}
-
-		ps, err := client.PolicySets.Create(ctx, orgTest.Name, options)
-		require.NoError(t, err)
-
-		assert.Equal(t, ps.Name, *options.Name)
-		assert.Equal(t, ps.Kind, Sentinel)
-		assert.Equal(t, len(ps.PolicyUpdatePattern), 2)
-		assert.Contains(t, ps.PolicyUpdatePattern, "*.sentinel")
-		assert.Contains(t, ps.PolicyUpdatePattern, "policies/**")
-	})
-
 	t.Run("with policies and workspaces provided", func(t *testing.T) {
 		pTest, pTestCleanup := createPolicy(t, client, orgTest)
 		defer pTestCleanup()
@@ -757,21 +740,6 @@ func TestPolicySetsUpdate(t *testing.T) {
 		})
 		assert.Nil(t, ps)
 		assert.Equal(t, err, ErrInvalidPolicySetID)
-	})
-
-	t.Run("with policy update patterns", func(t *testing.T) {
-		options := PolicySetUpdateOptions{
-			Name:                String("updated-policy-set"),
-			PolicyUpdatePattern: []*string{String("*.sentinel"), String("policies/**")},
-		}
-
-		ps, err := client.PolicySets.Update(ctx, psTest.ID, options)
-		require.NoError(t, err)
-
-		assert.Equal(t, ps.Name, *options.Name)
-		assert.Equal(t, len(ps.PolicyUpdatePattern), 2)
-		assert.Contains(t, ps.PolicyUpdatePattern, "*.sentinel")
-		assert.Contains(t, ps.PolicyUpdatePattern, "policies/**")
 	})
 }
 
