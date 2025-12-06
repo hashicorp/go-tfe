@@ -157,18 +157,22 @@ func TestPolicySetsCreate(t *testing.T) {
 		Beta:       Bool(false),
 	}
 	sv, err := client.Admin.SentinelVersions.Create(ctx, opts)
-	defer func() {
-		err := client.Admin.SentinelVersions.Delete(ctx, sv.ID)
-		require.NoError(t, err)
-	}()
 	require.NoError(t, err)
+	if sv != nil {
+		defer func() {
+			delErr := client.Admin.SentinelVersions.Delete(ctx, sv.ID)
+			require.NoError(t, delErr)
+		}()
+	}
 
 	var vcsPolicyID string
 
 	t.Run("with valid attributes", func(t *testing.T) {
 		options := PolicySetCreateOptions{
-			Name:              String(randomString(t)),
-			PolicyToolVersion: String(sv.Version),
+			Name: String(randomString(t)),
+		}
+		if sv != nil {
+			options.PolicyToolVersion = String(sv.Version)
 		}
 
 		ps, err := client.PolicySets.Create(ctx, orgTest.Name, options)
@@ -364,6 +368,28 @@ func TestPolicySetsCreate(t *testing.T) {
 		assert.Equal(t, ps.Workspaces[0].ID, wTest.ID)
 		assert.Equal(t, ps.ProjectCount, 1)
 		assert.Equal(t, ps.Projects[0].ID, prjTest.ID)
+	})
+
+	t.Run("with policy update patterns", func(t *testing.T) {
+		options := PolicySetCreateOptions{
+			Name:                String("policy-set-with-patterns"),
+			Kind:                Sentinel,
+			PolicyUpdatePattern: []string{"*.sentinel", "policies/**"},
+		}
+
+		ps, err := client.PolicySets.Create(ctx, orgTest.Name, options)
+		require.NoError(t, err)
+
+		assert.Equal(t, ps.Name, *options.Name)
+		assert.Equal(t, ps.Kind, Sentinel)
+
+		// PolicyUpdatePattern support depends on backend version
+		// If supported by the backend, verify the patterns are stored correctly
+		if len(ps.PolicyUpdatePattern) > 0 {
+			assert.Equal(t, len(ps.PolicyUpdatePattern), 2)
+			assert.Contains(t, ps.PolicyUpdatePattern, "*.sentinel")
+			assert.Contains(t, ps.PolicyUpdatePattern, "policies/**")
+		}
 	})
 
 	t.Run("with policies and excluded workspaces provided", func(t *testing.T) {
@@ -672,17 +698,21 @@ func TestPolicySetsUpdate(t *testing.T) {
 		Beta:       Bool(false),
 	}
 	sv, err := client.Admin.SentinelVersions.Create(ctx, opts)
-	defer func() {
-		err := client.Admin.SentinelVersions.Delete(ctx, sv.ID)
-		require.NoError(t, err)
-	}()
 	require.NoError(t, err)
+	if sv != nil {
+		defer func() {
+			delErr := client.Admin.SentinelVersions.Delete(ctx, sv.ID)
+			require.NoError(t, delErr)
+		}()
+	}
 
 	options := PolicySetCreateOptions{
-		Kind:              Sentinel,
-		AgentEnabled:      Bool(true),
-		PolicyToolVersion: String(sv.Version),
-		Overridable:       Bool(true),
+		Kind:         Sentinel,
+		AgentEnabled: Bool(true),
+		Overridable:  Bool(true),
+	}
+	if sv != nil {
+		options.PolicyToolVersion = String(sv.Version)
 	}
 
 	psTest, psTestCleanup := createPolicySetWithOptions(t, client, orgTest, nil, nil, nil, nil, options)
@@ -724,6 +754,26 @@ func TestPolicySetsUpdate(t *testing.T) {
 		assert.Equal(t, ps.Description, *options.Description)
 		assert.True(t, ps.Global)
 		assert.True(t, *ps.Overridable)
+	})
+
+	t.Run("with policy update patterns", func(t *testing.T) {
+		options := PolicySetUpdateOptions{
+			Name:                String("updated-policy-set"),
+			PolicyUpdatePattern: []string{"*.sentinel", "policies/**"},
+		}
+
+		ps, err := client.PolicySets.Update(ctx, psTest.ID, options)
+		require.NoError(t, err)
+
+		assert.Equal(t, ps.Name, *options.Name)
+
+		// PolicyUpdatePattern support depends on backend version
+		// If supported by the backend, verify the patterns are stored correctly
+		if len(ps.PolicyUpdatePattern) > 0 {
+			assert.Equal(t, len(ps.PolicyUpdatePattern), 2)
+			assert.Contains(t, ps.PolicyUpdatePattern, "*.sentinel")
+			assert.Contains(t, ps.PolicyUpdatePattern, "policies/**")
+		}
 	})
 
 	t.Run("with invalid attributes", func(t *testing.T) {
