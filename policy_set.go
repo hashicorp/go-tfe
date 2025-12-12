@@ -190,7 +190,7 @@ type PolicySetCreateOptions struct {
 	PolicyToolVersion *string `jsonapi:"attr,policy-tool-version,omitempty"`
 
 	// Optional: List of policy update patterns.
-	PolicyUpdatePattern []string `jsonapi:"attr,policy-update-pattern,omitempty"`
+	PolicyUpdatePattern []*string `jsonapi:"attr,policy-update-pattern,omitempty"`
 
 	// Optional: The sub-path within the attached VCS repository to ingress. All
 	// files and directories outside of this sub-path will be ignored.
@@ -245,7 +245,7 @@ type PolicySetUpdateOptions struct {
 	PolicyToolVersion *string `jsonapi:"attr,policy-tool-version,omitempty"`
 
 	// Optional: List of policy update patterns.
-	PolicyUpdatePattern []string `jsonapi:"attr,policy-update-pattern,omitempty"`
+	PolicyUpdatePattern []*string `jsonapi:"attr,policy-update-pattern,omitempty"`
 
 	// Optional: The sub-path within the attached VCS repository to ingress. All
 	// files and directories outside of this sub-path will be ignored.
