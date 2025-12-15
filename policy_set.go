@@ -93,15 +93,15 @@ type PolicySet struct {
 	Global       bool       `jsonapi:"attr,global"`
 	PoliciesPath string     `jsonapi:"attr,policies-path"`
 	// **Note: This field is still in BETA and subject to change.**
-	PolicyCount         int       `jsonapi:"attr,policy-count"`
-	VCSRepo             *VCSRepo  `jsonapi:"attr,vcs-repo"`
-	WorkspaceCount      int       `jsonapi:"attr,workspace-count"`
-	ProjectCount        int       `jsonapi:"attr,project-count"`
-	CreatedAt           time.Time `jsonapi:"attr,created-at,iso8601"`
-	UpdatedAt           time.Time `jsonapi:"attr,updated-at,iso8601"`
-	AgentEnabled        bool      `jsonapi:"attr,agent-enabled"`
-	PolicyToolVersion   string    `jsonapi:"attr,policy-tool-version"`
-	PolicyUpdatePattern []string  `jsonapi:"attr,policy-update-pattern"`
+	PolicyCount          int       `jsonapi:"attr,policy-count"`
+	VCSRepo              *VCSRepo  `jsonapi:"attr,vcs-repo"`
+	WorkspaceCount       int       `jsonapi:"attr,workspace-count"`
+	ProjectCount         int       `jsonapi:"attr,project-count"`
+	CreatedAt            time.Time `jsonapi:"attr,created-at,iso8601"`
+	UpdatedAt            time.Time `jsonapi:"attr,updated-at,iso8601"`
+	AgentEnabled         bool      `jsonapi:"attr,agent-enabled"`
+	PolicyToolVersion    string    `jsonapi:"attr,policy-tool-version"`
+	PolicyUpdatePatterns []string  `jsonapi:"attr,policy-update-patterns"`
 
 	// Relations
 	// The organization to which the policy set belongs to.
@@ -190,7 +190,7 @@ type PolicySetCreateOptions struct {
 	PolicyToolVersion *string `jsonapi:"attr,policy-tool-version,omitempty"`
 
 	// Optional: List of policy update patterns.
-	PolicyUpdatePattern []*string `jsonapi:"attr,policy-update-pattern,omitempty"`
+	PolicyUpdatePatterns []*string `jsonapi:"attr,policy-update-patterns,omitempty"`
 
 	// Optional: The sub-path within the attached VCS repository to ingress. All
 	// files and directories outside of this sub-path will be ignored.
@@ -245,7 +245,7 @@ type PolicySetUpdateOptions struct {
 	PolicyToolVersion *string `jsonapi:"attr,policy-tool-version,omitempty"`
 
 	// Optional: List of policy update patterns.
-	PolicyUpdatePattern []*string `jsonapi:"attr,policy-update-pattern,omitempty"`
+	PolicyUpdatePatterns []*string `jsonapi:"attr,policy-update-patterns,omitempty"`
 
 	// Optional: The sub-path within the attached VCS repository to ingress. All
 	// files and directories outside of this sub-path will be ignored.

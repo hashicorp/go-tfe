@@ -414,6 +414,7 @@ func TestPolicySetsCreate(t *testing.T) {
 				OAuthTokenID:      String(oc.ID),
 				IngressSubmodules: Bool(true),
 			},
+			PolicyUpdatePatterns: []*string{String("**"), String("*.sentinel")},
 		}
 
 		ps, err := client.PolicySets.Create(ctx, orgTest.Name, options)
@@ -435,6 +436,9 @@ func TestPolicySetsCreate(t *testing.T) {
 		assert.Equal(t, ps.VCSRepo.RepositoryHTTPURL, fmt.Sprintf("https://github.com/%s", githubIdentifier))
 		assert.Equal(t, ps.VCSRepo.ServiceProvider, string(ServiceProviderGithub))
 		assert.Regexp(t, fmt.Sprintf("^%s/webhooks/vcs/[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$", regexp.QuoteMeta(DefaultConfig().Address)), ps.VCSRepo.WebhookURL)
+
+		assert.Equal(t, len(ps.PolicyUpdatePatterns), 2)
+		assert.Contains(t, ps.PolicyUpdatePatterns, "*.sentinel")
 	})
 
 	t.Run("with vcs policy updated", func(t *testing.T) {
@@ -460,7 +464,7 @@ func TestPolicySetsCreate(t *testing.T) {
 				OAuthTokenID:      String(oc.ID),
 				IngressSubmodules: Bool(false),
 			},
-			PolicyUpdatePattern: []*string{String("**"), String("*.sentinel")},
+			PolicyUpdatePatterns: []*string{String("**"), String("*.sentinel")},
 		}
 
 		ps, err := client.PolicySets.Update(ctx, vcsPolicyID, options)
@@ -479,8 +483,8 @@ func TestPolicySetsCreate(t *testing.T) {
 		assert.Equal(t, ps.VCSRepo.ServiceProvider, string(ServiceProviderGithub))
 		assert.Regexp(t, fmt.Sprintf("^%s/webhooks/vcs/[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$", regexp.QuoteMeta(DefaultConfig().Address)), ps.VCSRepo.WebhookURL)
 
-		// assert.Equal(t, len(ps.PolicyUpdatePattern), 1)
-		// assert.Contains(t, ps.PolicyUpdatePattern, "*.sentinel")
+		assert.Equal(t, len(ps.PolicyUpdatePatterns), 1)
+		assert.Contains(t, ps.PolicyUpdatePatterns, "*.sentinel")
 	})
 
 	t.Run("without a name provided", func(t *testing.T) {
