@@ -2,6 +2,11 @@
 
 ## Enhancements
 * Adds `UserTokensEnabled` field to `Organization` to support enabling/disabling user tokens for an organization by @JarrettSpiker [#1225](https://github.com/hashicorp/go-tfe/pull/1225)
+* Adds `DeploymentRunStatus` and `DeploymentStepStatus` types by @Maed223 [#1261](https://github.com/hashicorp/go-tfe/pull/1261)
+
+## Bug Fixes
+
+* Resolve differences between given and actual status composition in `StackConfigurationStatus` and `DeploymentGroupStatus`  by @Maed223 [#1261](https://github.com/hashicorp/go-tfe/pull/1261)
 
 # v1.97.0
 

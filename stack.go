@@ -122,14 +122,14 @@ type StackComponent struct {
 // StackConfiguration represents a stack configuration snapshot
 type StackConfiguration struct {
 	// Attributes
-	ID                      string            `jsonapi:"primary,stack-configurations"`
-	Status                  string            `jsonapi:"attr,status"`
-	SequenceNumber          int               `jsonapi:"attr,sequence-number"`
-	Components              []*StackComponent `jsonapi:"attr,components"`
-	PreparingEventStreamURL string            `jsonapi:"attr,preparing-event-stream-url"`
-	CreatedAt               time.Time         `jsonapi:"attr,created-at,iso8601"`
-	UpdatedAt               time.Time         `jsonapi:"attr,updated-at,iso8601"`
-	Speculative             bool              `jsonapi:"attr,speculative"`
+	ID                      string                   `jsonapi:"primary,stack-configurations"`
+	Status                  StackConfigurationStatus `jsonapi:"attr,status"`
+	SequenceNumber          int                      `jsonapi:"attr,sequence-number"`
+	Components              []*StackComponent        `jsonapi:"attr,components"`
+	PreparingEventStreamURL string                   `jsonapi:"attr,preparing-event-stream-url"`
+	CreatedAt               time.Time                `jsonapi:"attr,created-at,iso8601"`
+	UpdatedAt               time.Time                `jsonapi:"attr,updated-at,iso8601"`
+	Speculative             bool                     `jsonapi:"attr,speculative"`
 
 	// Relationships
 	Stack             *Stack             `jsonapi:"relation,stack"`

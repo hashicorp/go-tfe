@@ -48,13 +48,11 @@ type StackConfigurations interface {
 type StackConfigurationStatus string
 
 const (
-	StackConfigurationStatusPending    StackConfigurationStatus = "pending"
-	StackConfigurationStatusQueued     StackConfigurationStatus = "queued"
-	StackConfigurationStatusPreparing  StackConfigurationStatus = "preparing"
-	StackConfigurationStatusEnqueueing StackConfigurationStatus = "enqueueing"
-	StackConfigurationStatusErrored    StackConfigurationStatus = "errored"
-	StackConfigurationStatusCanceled   StackConfigurationStatus = "canceled"
-	StackConfigurationStatusCompleted  StackConfigurationStatus = "completed"
+	StackConfigurationStatusPending   StackConfigurationStatus = "pending"
+	StackConfigurationStatusQueued    StackConfigurationStatus = "queued"
+	StackConfigurationStatusPreparing StackConfigurationStatus = "preparing"
+	StackConfigurationStatusCompleted StackConfigurationStatus = "completed"
+	StackConfigurationStatusFailed    StackConfigurationStatus = "failed"
 )
 
 func (s StackConfigurationStatus) String() string {
@@ -115,8 +113,8 @@ func (s stackConfigurations) AwaitCompleted(ctx context.Context, stackConfigurat
 			return "", err
 		}
 
-		return stackConfiguration.Status, nil
-	}, []string{StackConfigurationStatusCompleted.String(), StackConfigurationStatusErrored.String(), StackConfigurationStatusCanceled.String()})
+		return stackConfiguration.Status.String(), nil
+	}, []string{StackConfigurationStatusCompleted.String(), StackConfigurationStatusFailed.String()})
 }
 
 // AwaitStatus generates a channel that will receive the status of the stack configuration as it progresses.
@@ -130,8 +128,8 @@ func (s stackConfigurations) AwaitStatus(ctx context.Context, stackConfiguration
 			return "", err
 		}
 
-		return stackConfiguration.Status, nil
-	}, []string{status.String(), StackConfigurationStatusErrored.String(), StackConfigurationStatusCanceled.String()})
+		return stackConfiguration.Status.String(), nil
+	}, []string{status.String(), StackConfigurationStatusFailed.String()})
 }
 
 // StackConfigurationList represents a paginated list of stack configurations.
