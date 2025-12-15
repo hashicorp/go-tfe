@@ -5,7 +5,6 @@
 * Policy Sets: Add `PolicyUpdatePattern []string` to `PolicySet`, `PolicySetCreateOptions`, and `PolicySetUpdateOptions` to support `policy-update-patterns`.
 * Adds `UserTokensEnabled` field to `Organization` to support enabling/disabling user tokens for an organization by @JarrettSpiker [#1225](https://github.com/hashicorp/go-tfe/pull/1225)
 
-
 # v1.97.0
 
 ## Enhancements
