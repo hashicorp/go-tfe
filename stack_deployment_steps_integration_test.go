@@ -257,7 +257,7 @@ func pollStackDeploymentStepStatus(t *testing.T, ctx context.Context, client *Cl
 			}
 
 			t.Logf("Stack deployment step %s had status %q", deploymentStep.ID, deploymentStep.Status)
-			if deploymentStep.Status == status {
+			if deploymentStep.Status.String() == status {
 				finished = true
 			}
 		}

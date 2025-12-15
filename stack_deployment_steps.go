@@ -40,14 +40,30 @@ const (
 	StackDeploymentStepArtifactApplyDebugLog StackDeploymentStepArtifactType = "apply-debug-log"
 )
 
+type DeploymentStepStatus string
+
+const (
+	DeploymentStepStatusBlocked         DeploymentStepStatus = "blocked"
+	DeploymentStepStatusAbandoned       DeploymentStepStatus = "abandoned"
+	DeploymentStepStatusQueued          DeploymentStepStatus = "queued"
+	DeploymentStepStatusRunning         DeploymentStepStatus = "running"
+	DeploymentStepStatusPendingOperator DeploymentStepStatus = "pending-operator"
+	DeploymentStepStatusCompleted       DeploymentStepStatus = "completed"
+	DeploymentStepStatusFailed          DeploymentStepStatus = "failed"
+)
+
+func (s DeploymentStepStatus) String() string {
+	return string(s)
+}
+
 // StackDeploymentStep represents a step from a stack deployment
 type StackDeploymentStep struct {
 	// Attributes
-	ID            string    `jsonapi:"primary,stack-deployment-steps"`
-	Status        string    `jsonapi:"attr,status"`
-	OperationType string    `jsonapi:"attr,operation-type"`
-	CreatedAt     time.Time `jsonapi:"attr,created-at,iso8601"`
-	UpdatedAt     time.Time `jsonapi:"attr,updated-at,iso8601"`
+	ID            string               `jsonapi:"primary,stack-deployment-steps"`
+	Status        DeploymentStepStatus `jsonapi:"attr,status"`
+	OperationType string               `jsonapi:"attr,operation-type"`
+	CreatedAt     time.Time            `jsonapi:"attr,created-at,iso8601"`
+	UpdatedAt     time.Time            `jsonapi:"attr,updated-at,iso8601"`
 
 	// Links
 	Links map[string]interface{} `jsonapi:"links,omitempty"`
