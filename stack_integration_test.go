@@ -410,7 +410,7 @@ func pollStackDeploymentRunStatus(t *testing.T, ctx context.Context, client *Cli
 			}
 
 			t.Logf("Stack deployment run %s had status %q", deploymentRunID, deploymentRun.Status)
-			if deploymentRun.Status == status {
+			if deploymentRun.Status.String() == status {
 				finished = true
 			}
 		}
@@ -441,7 +441,7 @@ func pollStackConfigurationStatus(t *testing.T, ctx context.Context, client *Cli
 			}
 
 			t.Logf("Stack configuration %q had status %q", stackConfigID, stackConfig.Status)
-			if stackConfig.Status == status {
+			if stackConfig.Status.String() == status {
 				finished = true
 			}
 		}
