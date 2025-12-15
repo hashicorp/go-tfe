@@ -1,4 +1,4 @@
-// Copyright (c) HashiCorp, Inc.
+// Copyright IBM Corp. 2018, 2025
 // SPDX-License-Identifier: MPL-2.0
 
 package tfe
@@ -118,6 +118,7 @@ type Organization struct {
 	RemainingTestableCount                            int                      `jsonapi:"attr,remaining-testable-count"`
 	SpeculativePlanManagementEnabled                  bool                     `jsonapi:"attr,speculative-plan-management-enabled"`
 	EnforceHYOK                                       bool                     `jsonapi:"attr,enforce-hyok"`
+	UserTokensEnabled                                 *bool                    `jsonapi:"attr,user-tokens-enabled"`
 	// Optional: If enabled, SendPassingStatusesForUntriggeredSpeculativePlans needs to be false.
 	AggregatedCommitStatusEnabled bool `jsonapi:"attr,aggregated-commit-status-enabled,omitempty"`
 	// Note: This will be false for TFE versions older than v202211, where the setting was introduced.
@@ -271,6 +272,9 @@ type OrganizationCreateOptions struct {
 
 	// Optional: RegistryMonorepoSupportEnabled toggles whether monorepo support is enabled for the organization
 	RegistryMonorepoSupportEnabled *bool `jsonapi:"attr,registry-monorepo-support-enabled,omitempty"`
+
+	// Optional: UserTokensEnabled toggles whether user tokens may be used to access resources in this organization.
+	UserTokensEnabled *bool `jsonapi:"attr,user-tokens-enabled,omitempty"`
 }
 
 // OrganizationUpdateOptions represents the options for updating an organization.
@@ -332,6 +336,9 @@ type OrganizationUpdateOptions struct {
 
 	// Optional: RegistryMonorepoSupportEnabled toggles whether monorepo support is enabled for the organization
 	RegistryMonorepoSupportEnabled *bool `jsonapi:"attr,registry-monorepo-support-enabled,omitempty"`
+
+	// Optional: UserTokensEnabled toggles whether user tokens may be used to access resources in this organization.
+	UserTokensEnabled *bool `jsonapi:"attr,user-tokens-enabled,omitempty"`
 }
 
 // ReadRunQueueOptions represents the options for showing the queue.

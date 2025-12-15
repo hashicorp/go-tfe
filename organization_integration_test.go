@@ -1,4 +1,4 @@
-// Copyright (c) HashiCorp, Inc.
+// Copyright IBM Corp. 2018, 2025
 // SPDX-License-Identifier: MPL-2.0
 
 package tfe
@@ -318,6 +318,64 @@ func TestOrganizationsUpdate(t *testing.T) {
 
 			assert.Equal(t, testCase, org.SpeculativePlanManagementEnabled)
 		}
+	})
+
+	t.Run("with new UserTokensEnabled option", func(t *testing.T) {
+		orgTest, orgTestCleanup := createOrganization(t, client)
+		t.Cleanup(orgTestCleanup)
+
+		assert.True(t, *orgTest.UserTokensEnabled, "user tokens enabled by default")
+
+		// we need to switch to an owner's team token, otherwise the client (which auths with a user token)
+		// wont be able to delete the org after we disable user tokens
+		teamList, err := client.Teams.List(ctx, orgTest.Name, &TeamListOptions{
+			Names: []string{"owners"},
+		})
+		require.NoError(t, err)
+
+		// it should be the only team, we just created the org...
+		require.Len(t, teamList.Items, 1)
+		ownersTeam := teamList.Items[0]
+
+		ownerToken, ownerTokenCleanup := createTeamToken(t, client, ownersTeam)
+		t.Cleanup(ownerTokenCleanup)
+
+		ownerClient := testClient(t)
+		ownerClient.token = ownerToken.Token
+
+		// disable user tokens for the organization
+		options := OrganizationUpdateOptions{
+			UserTokensEnabled: Bool(false),
+		}
+
+		org, err := ownerClient.Organizations.Update(ctx, orgTest.Name, options)
+		require.NoError(t, err)
+		assert.False(t, *org.UserTokensEnabled, "user tokens disabled")
+
+		// try reading something with the user token client and verify that it fails, where the team token client
+		// succeeds
+		_, err = client.Organizations.Read(ctx, orgTest.Name)
+		assert.Error(t, err)
+		assert.ErrorContains(t, err, "unauthorized")
+
+		org, err = ownerClient.Organizations.Read(ctx, orgTest.Name)
+		assert.NoError(t, err)
+		assert.Equal(t, orgTest.Name, org.Name)
+		assert.False(t, *org.UserTokensEnabled, "user tokens disabled")
+
+		// re-enable user tokens
+		options = OrganizationUpdateOptions{
+			UserTokensEnabled: Bool(true),
+		}
+		org, err = ownerClient.Organizations.Update(ctx, orgTest.Name, options)
+		require.NoError(t, err)
+		assert.True(t, *org.UserTokensEnabled, "user tokens re-enabled")
+
+		// try reading with the user token again and verify that it works
+		org, err = client.Organizations.Read(ctx, orgTest.Name)
+		assert.NoError(t, err)
+		assert.Equal(t, orgTest.Name, org.Name)
+		assert.True(t, *org.UserTokensEnabled, "user tokens re-enabled")
 	})
 
 	t.Run("with valid options", func(t *testing.T) {
