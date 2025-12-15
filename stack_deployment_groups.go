@@ -32,15 +32,16 @@ type StackDeploymentGroups interface {
 type DeploymentGroupStatus string
 
 const (
-	DeploymentGroupStatusPending                     DeploymentGroupStatus = "pending"
-	DeploymentGroupStatusPreDeploying                DeploymentGroupStatus = "pre-deploying"
-	DeploymentGroupStatusPreDeployingPendingOperator DeploymentGroupStatus = "pending-operator"
-	DeploymentGroupStatusAcquiringLock               DeploymentGroupStatus = "acquiring-lock"
-	DeploymentGroupStatusDeploying                   DeploymentGroupStatus = "deploying"
-	DeploymentGroupStatusSucceeded                   DeploymentGroupStatus = "succeeded"
-	DeploymentGroupStatusFailed                      DeploymentGroupStatus = "failed"
-	DeploymentGroupStatusAbandoned                   DeploymentGroupStatus = "abandoned"
+	DeploymentGroupStatusPending   DeploymentGroupStatus = "pending"
+	DeploymentGroupStatusDeploying DeploymentGroupStatus = "deploying"
+	DeploymentGroupStatusSucceeded DeploymentGroupStatus = "succeeded"
+	DeploymentGroupStatusFailed    DeploymentGroupStatus = "failed"
+	DeploymentGroupStatusAbandoned DeploymentGroupStatus = "abandoned"
 )
+
+func (s DeploymentGroupStatus) String() string {
+	return string(s)
+}
 
 // stackDeploymentGroups implements StackDeploymentGroups.
 type stackDeploymentGroups struct {
@@ -52,11 +53,11 @@ var _ StackDeploymentGroups = &stackDeploymentGroups{}
 // StackDeploymentGroup represents a stack deployment group.
 type StackDeploymentGroup struct {
 	// Attributes
-	ID        string    `jsonapi:"primary,stack-deployment-groups"`
-	Name      string    `jsonapi:"attr,name"`
-	Status    string    `jsonapi:"attr,status"`
-	CreatedAt time.Time `jsonapi:"attr,created-at,iso8601"`
-	UpdatedAt time.Time `jsonapi:"attr,updated-at,iso8601"`
+	ID        string                `jsonapi:"primary,stack-deployment-groups"`
+	Name      string                `jsonapi:"attr,name"`
+	Status    DeploymentGroupStatus `jsonapi:"attr,status"`
+	CreatedAt time.Time             `jsonapi:"attr,created-at,iso8601"`
+	UpdatedAt time.Time             `jsonapi:"attr,updated-at,iso8601"`
 
 	// Relationships
 	StackConfiguration *StackConfiguration `jsonapi:"relation,stack-configuration"`
