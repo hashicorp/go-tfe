@@ -20,6 +20,24 @@ type StackDeploymentRuns interface {
 	Cancel(ctx context.Context, stackDeploymentRunID string) error
 }
 
+type DeploymentRunStatus string
+
+const (
+	DeploymentRunStatusPending                     DeploymentRunStatus = "pending"
+	DeploymentRunStatusPreDeploying                DeploymentRunStatus = "pre-deploying"
+	DeploymentRunStatusPreDeployingPendingOperator DeploymentRunStatus = "pre-deploying-pending-operator"
+	DeploymentRunStatusAcquiringLock               DeploymentRunStatus = "acquiring-lock"
+	DeploymentRunStatusDeploying                   DeploymentRunStatus = "deploying"
+	DeploymentRunStatusDeployingPendingOperator    DeploymentRunStatus = "deploying-pending-operator"
+	DeploymentRunStatusSucceeded                   DeploymentRunStatus = "succeeded"
+	DeploymentRunStatusFailed                      DeploymentRunStatus = "failed"
+	DeploymentRunStatusAbandoned                   DeploymentRunStatus = "abandoned"
+)
+
+func (s DeploymentRunStatus) String() string {
+	return string(s)
+}
+
 // stackDeploymentRuns implements StackDeploymentRuns.
 type stackDeploymentRuns struct {
 	client *Client
@@ -29,10 +47,10 @@ var _ StackDeploymentRuns = &stackDeploymentRuns{}
 
 // StackDeploymentRun represents a stack deployment run.
 type StackDeploymentRun struct {
-	ID        string    `jsonapi:"primary,stack-deployment-runs"`
-	Status    string    `jsonapi:"attr,status"`
-	CreatedAt time.Time `jsonapi:"attr,created-at,iso8601"`
-	UpdatedAt time.Time `jsonapi:"attr,updated-at,iso8601"`
+	ID        string              `jsonapi:"primary,stack-deployment-runs"`
+	Status    DeploymentRunStatus `jsonapi:"attr,status"`
+	CreatedAt time.Time           `jsonapi:"attr,created-at,iso8601"`
+	UpdatedAt time.Time           `jsonapi:"attr,updated-at,iso8601"`
 
 	// Relationships
 	StackDeploymentGroup *StackDeploymentGroup `jsonapi:"relation,stack-deployment-group"`
