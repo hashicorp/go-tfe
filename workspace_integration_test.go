@@ -3425,18 +3425,11 @@ func TestWorkspacesProjectRemoteState(t *testing.T) {
 
 	// create workspace in first project
 	wTest, wTestCleanup := createWorkspaceWithOptions(t, client, orgTest, WorkspaceCreateOptions{
-		Name:    String(randomString(t)),
-		Project: projTest,
+		Name:              String(randomString(t)),
+		Project:           projTest,
+		GlobalRemoteState: Bool(false),
 	})
 	t.Cleanup(wTestCleanup)
-
-	// Update workspace to allow no remote state sharing
-	options := WorkspaceUpdateOptions{
-		ProjectRemoteState: Bool(false),
-		GlobalRemoteState:  Bool(false),
-	}
-	wTest, err := client.Workspaces.Update(ctx, orgTest.Name, wTest.Name, options)
-	require.NoError(t, err)
 
 	t.Run("successfully returns remote state consumer list", func(t *testing.T) {
 		// create consumer workspace in the test project
@@ -3472,7 +3465,6 @@ func TestWorkspacesProjectRemoteState(t *testing.T) {
 		// Update workspace to allow project remote state sharing
 		options := WorkspaceUpdateOptions{
 			ProjectRemoteState: Bool(true),
-			GlobalRemoteState:  Bool(false),
 		}
 		wTest, err := client.Workspaces.Update(ctx, orgTest.Name, wTest.Name, options)
 		require.NoError(t, err)
@@ -3499,7 +3491,7 @@ func TestWorkspacesProjectRemoteState(t *testing.T) {
 		require.Error(t, err)
 		assert.EqualError(t, err, ErrWorkspaceMinLimit.Error())
 
-		// Update workspace to allow project remote state sharing
+		// Update workspace to allow project and global remote state sharing
 		options := WorkspaceUpdateOptions{
 			ProjectRemoteState: Bool(true),
 			GlobalRemoteState:  Bool(true),

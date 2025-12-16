@@ -1,7 +1,7 @@
 # Unreleased
 
 ## Enhancements
-* Add `ProjectRemoteState` attribute to `Workspace` by @hs26gill [#1248](https://github.com/hashicorp/go-tfe/pull/1248)
+* Adds `ProjectRemoteState` field to `Workspace` to support state sharing at the project level, by @hs26gill [#1248](https://github.com/hashicorp/go-tfe/pull/1248)
 
 # v1.98.0
 
