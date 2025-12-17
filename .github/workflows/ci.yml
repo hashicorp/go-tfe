@@ -4,6 +4,9 @@ on:
     branches: [main]
   pull_request:
 
+concurrency:
+  group: "one"
+
 jobs:
   lint:
     name: Lint
@@ -57,10 +60,6 @@ jobs:
   tests-run-dependent:
     name: Run Dependent Tests
     runs-on: ubuntu-latest
-    concurrency:
-      group: "one-at-a-time-tests-run-dependent"
-      cancel-in-progress: true
-
     steps:
       - name: terraform-cloud-outputs
         id: tflocal
