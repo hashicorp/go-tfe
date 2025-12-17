@@ -58,7 +58,7 @@ jobs:
     name: Run Dependent Tests
     runs-on: ubuntu-latest
     concurrency:
-      group: "one"
+      group: "one-at-a-time-tests-run-dependent"
 
     steps:
       - name: terraform-cloud-outputs
