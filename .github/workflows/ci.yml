@@ -59,6 +59,7 @@ jobs:
     runs-on: ubuntu-latest
     concurrency:
       group: "one-at-a-time-tests-run-dependent"
+      cancel-in-progress: true
 
     steps:
       - name: terraform-cloud-outputs
