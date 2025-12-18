@@ -3409,3 +3409,102 @@ func TestWorkspaces_effectiveTagBindingsInheritedFrom(t *testing.T) {
 		}
 	})
 }
+
+func TestWorkspacesProjectRemoteState(t *testing.T) {
+	skipUnlessEnterprise(t)
+
+	client := testClient(t)
+	ctx := context.Background()
+
+	orgTest, orgTestCleanup := createOrganization(t, client)
+	t.Cleanup(orgTestCleanup)
+
+	// create project
+	projTest, projTestCleanup := createProject(t, client, orgTest)
+	t.Cleanup(projTestCleanup)
+
+	// create workspace in first project
+	wTest, wTestCleanup := createWorkspaceWithOptions(t, client, orgTest, WorkspaceCreateOptions{
+		Name:              String(randomString(t)),
+		Project:           projTest,
+		GlobalRemoteState: Bool(false),
+	})
+	t.Cleanup(wTestCleanup)
+
+	t.Run("successfully returns remote state consumer list", func(t *testing.T) {
+		// create consumer workspace in the test project
+		wTestConsumer1, wTestCleanupConsumer1 := createWorkspaceWithOptions(t, client, orgTest, WorkspaceCreateOptions{
+			Name:    String(randomString(t)),
+			Project: projTest,
+		})
+		t.Cleanup(wTestCleanupConsumer1)
+
+		// create another project
+		projTest2, projTest2Cleanup := createProject(t, client, orgTest)
+		t.Cleanup(projTest2Cleanup)
+
+		// create consumer workspace in the other project
+		wTestConsumer2, wTestCleanupConsumer2 := createWorkspaceWithOptions(t, client, orgTest, WorkspaceCreateOptions{
+			Name:    String(randomString(t)),
+			Project: projTest2,
+		})
+		t.Cleanup(wTestCleanupConsumer2)
+
+		err := client.Workspaces.AddRemoteStateConsumers(ctx, wTest.ID, WorkspaceAddRemoteStateConsumersOptions{
+			Workspaces: []*Workspace{wTestConsumer1, wTestConsumer2},
+		})
+		require.NoError(t, err)
+
+		rsc, err := client.Workspaces.ListRemoteStateConsumers(ctx, wTest.ID, nil)
+		require.NoError(t, err)
+
+		// all the consumer workspaces are in the list
+		assert.Equal(t, 2, len(rsc.Items))
+		assert.Contains(t, rsc.Items, wTestConsumer1, wTestConsumer2)
+
+		// Update workspace to allow project remote state sharing
+		options := WorkspaceUpdateOptions{
+			ProjectRemoteState: Bool(true),
+		}
+		wTest, err := client.Workspaces.Update(ctx, orgTest.Name, wTest.Name, options)
+		require.NoError(t, err)
+
+		_, err = client.Workspaces.Read(ctx, orgTest.Name, wTest.Name)
+		require.NoError(t, err)
+
+		rsc, err = client.Workspaces.ListRemoteStateConsumers(ctx, wTest.ID, nil)
+		require.NoError(t, err)
+
+		assert.Equal(t, 1, len(rsc.Items))
+		assert.Contains(t, rsc.Items, wTestConsumer1)
+		assert.NotContains(t, rsc.Items, wTestConsumer2)
+	})
+
+	t.Run("with invalid options", func(t *testing.T) {
+		err := client.Workspaces.AddRemoteStateConsumers(ctx, wTest.ID, WorkspaceAddRemoteStateConsumersOptions{})
+		require.Error(t, err)
+		assert.EqualError(t, err, ErrWorkspacesRequired.Error())
+
+		err = client.Workspaces.AddRemoteStateConsumers(ctx, wTest.ID, WorkspaceAddRemoteStateConsumersOptions{
+			Workspaces: []*Workspace{},
+		})
+		require.Error(t, err)
+		assert.EqualError(t, err, ErrWorkspaceMinLimit.Error())
+
+		// Update workspace to allow project and global remote state sharing
+		options := WorkspaceUpdateOptions{
+			ProjectRemoteState: Bool(true),
+			GlobalRemoteState:  Bool(true),
+		}
+
+		_, err = client.Workspaces.Update(ctx, orgTest.Name, wTest.Name, options)
+		require.Error(t, err)
+		assert.ErrorContains(t, err, ErrInvalidRemoteStateOptions.Error())
+	})
+
+	t.Run("without a valid workspace ID", func(t *testing.T) {
+		err := client.Workspaces.AddRemoteStateConsumers(ctx, badIdentifier, WorkspaceAddRemoteStateConsumersOptions{})
+		require.Error(t, err)
+		assert.EqualError(t, err, ErrInvalidWorkspaceID.Error())
+	})
+}
