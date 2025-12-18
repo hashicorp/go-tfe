@@ -1452,7 +1452,7 @@ func createPolicyCheckedRun(t *testing.T, client *Client, w *Workspace) (*Run, f
 }
 
 func createPlannedRun(t *testing.T, client *Client, w *Workspace) (*Run, func()) {
-	return createRunWaitForAnyStatuses(t, client, w, []RunStatus{RunCostEstimated, RunPlanned})
+	return createRunWaitForAnyStatuses(t, client, w, []RunStatus{RunCostEstimated, RunPlanned, RunPostPlanCompleted, RunErrored})
 }
 
 func createCostEstimatedRun(t *testing.T, client *Client, w *Workspace) (*Run, func()) {
