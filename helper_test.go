@@ -3050,7 +3050,7 @@ func createTarGzipArchive(t *testing.T, files []string, outputPath string) {
 func waitForSVOutputs(t *testing.T, client *Client, svID string) {
 	t.Helper()
 
-	_, err := retryPatiently(func() (interface{}, error) {
+	_, err := retryVeryPatiently(func() (interface{}, error) {
 		outputs, err := client.StateVersions.ListOutputs(context.Background(), svID, nil)
 		if err != nil {
 			return nil, err
@@ -3107,6 +3107,10 @@ func retryTimes(maxRetries, secondsBetween int, f retryableFn) (interface{}, err
 			retries += 1
 		}
 	}
+}
+
+func retryVeryPatiently(f retryableFn) (interface{}, error) { //nolint
+	return retryTimes(159, 3, f) // 160 attempts over 480 seconds
 }
 
 func retryPatiently(f retryableFn) (interface{}, error) { //nolint
