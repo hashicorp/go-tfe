@@ -13,6 +13,7 @@ import (
 )
 
 func TestRegistryProviderVersionsIDValidation(t *testing.T) {
+	t.Parallel()
 	version := "1.0.0"
 	validRegistryProviderID := RegistryProviderID{
 		OrganizationName: "orgName",
@@ -86,6 +87,7 @@ func TestRegistryProviderVersionsIDValidation(t *testing.T) {
 }
 
 func TestRegistryProviderVersionsCreate(t *testing.T) {
+	t.Parallel()
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -198,6 +200,7 @@ func TestRegistryProviderVersionsCreate(t *testing.T) {
 }
 
 func TestRegistryProviderVersionsList(t *testing.T) {
+	t.Parallel()
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -298,6 +301,7 @@ func TestRegistryProviderVersionsList(t *testing.T) {
 }
 
 func TestRegistryProviderVersionsDelete(t *testing.T) {
+	t.Parallel()
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -338,6 +342,7 @@ func TestRegistryProviderVersionsDelete(t *testing.T) {
 }
 
 func TestRegistryProviderVersionsRead(t *testing.T) {
+	t.Parallel()
 	client := testClient(t)
 	ctx := context.Background()
 

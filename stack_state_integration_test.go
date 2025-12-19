@@ -10,6 +10,7 @@ import (
 )
 
 func TestStackStateListReadDescription(t *testing.T) {
+	t.Parallel()
 	skipUnlessBeta(t)
 
 	client := testClient(t)

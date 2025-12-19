@@ -15,6 +15,7 @@ import (
 )
 
 func TestPlanExportsCreate_RunDependent(t *testing.T) {
+	t.Parallel()
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -60,6 +61,7 @@ func TestPlanExportsCreate_RunDependent(t *testing.T) {
 }
 
 func TestPlanExportsRead_RunDependent(t *testing.T) {
+	t.Parallel()
 	// TODO: Investigate why this test keeps tripping the test suite timeout
 	t.Skip()
 	client := testClient(t)
@@ -85,6 +87,7 @@ func TestPlanExportsRead_RunDependent(t *testing.T) {
 }
 
 func TestPlanExportsDelete_RunDependent(t *testing.T) {
+	t.Parallel()
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -108,6 +111,7 @@ func TestPlanExportsDelete_RunDependent(t *testing.T) {
 }
 
 func TestPlanExportsDownload_RunDependent(t *testing.T) {
+	t.Parallel()
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -128,6 +132,7 @@ func TestPlanExportsDownload_RunDependent(t *testing.T) {
 }
 
 func TestPlanExport_Unmarshal(t *testing.T) {
+	t.Parallel()
 	data := map[string]interface{}{
 		"data": map[string]interface{}{
 			"type": "plan-exports",

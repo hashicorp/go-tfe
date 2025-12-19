@@ -26,6 +26,7 @@ func containsStateVersion(versions []*StateVersion, item *StateVersion) bool {
 }
 
 func TestStateVersionsList(t *testing.T) {
+	t.Parallel()
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -105,6 +106,7 @@ func TestStateVersionsList(t *testing.T) {
 }
 
 func TestStateVersionsUpload(t *testing.T) {
+	t.Parallel()
 	client := testClient(t)
 
 	wTest, wTestCleanup := createWorkspace(t, client, nil)
@@ -263,6 +265,7 @@ func TestStateVersionsUpload(t *testing.T) {
 }
 
 func TestStateVersionsCreate_RunDependent(t *testing.T) {
+	t.Parallel()
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -482,6 +485,7 @@ func TestStateVersionsCreate_RunDependent(t *testing.T) {
 }
 
 func TestStateVersionsRead(t *testing.T) {
+	t.Parallel()
 	t.Skip("Skipping due to persistent failures - see TF-31172")
 
 	client := testClient(t)
@@ -582,6 +586,7 @@ func TestStateVersionsRead(t *testing.T) {
 }
 
 func TestStateVersionsReadWithOptions(t *testing.T) {
+	t.Parallel()
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -604,6 +609,7 @@ func TestStateVersionsReadWithOptions(t *testing.T) {
 }
 
 func TestStateVersionsCurrent(t *testing.T) {
+	t.Parallel()
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -649,6 +655,7 @@ func TestStateVersionsCurrent(t *testing.T) {
 }
 
 func TestStateVersionsCurrentWithOptions(t *testing.T) {
+	t.Parallel()
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -674,6 +681,7 @@ func TestStateVersionsCurrentWithOptions(t *testing.T) {
 }
 
 func TestStateVersionsDownload(t *testing.T) {
+	t.Parallel()
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -697,6 +705,7 @@ func TestStateVersionsDownload(t *testing.T) {
 }
 
 func TestStateVersionOutputs(t *testing.T) {
+	t.Parallel()
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -776,6 +785,7 @@ func TestStateVersionOutputs(t *testing.T) {
 }
 
 func TestStateVersions_ManageBackingData(t *testing.T) {
+	t.Parallel()
 	skipUnlessEnterprise(t)
 
 	client := testClient(t)

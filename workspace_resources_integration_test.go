@@ -12,6 +12,7 @@ import (
 )
 
 func TestWorkspaceResourcesList(t *testing.T) {
+	t.Parallel()
 	client := testClient(t)
 	ctx := context.Background()
 

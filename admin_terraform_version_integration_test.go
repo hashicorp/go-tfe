@@ -13,6 +13,7 @@ import (
 )
 
 func TestAdminTerraformVersions_List(t *testing.T) {
+	t.Parallel()
 	skipUnlessEnterprise(t)
 
 	client := testClient(t)
@@ -97,6 +98,7 @@ func TestAdminTerraformVersions_List(t *testing.T) {
 }
 
 func TestAdminTerraformVersions_CreateDelete(t *testing.T) {
+	t.Parallel()
 	skipUnlessEnterprise(t)
 	skipUnlessBeta(t)
 
@@ -303,6 +305,7 @@ func TestAdminTerraformVersions_CreateDelete(t *testing.T) {
 }
 
 func TestAdminTerraformVersions_ReadUpdate(t *testing.T) {
+	t.Parallel()
 	skipUnlessEnterprise(t)
 
 	client := testClient(t)

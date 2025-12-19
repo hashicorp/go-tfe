@@ -16,6 +16,7 @@ import (
 )
 
 func TestOrganizationsList(t *testing.T) {
+	t.Parallel()
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -102,6 +103,7 @@ func TestOrganizationsList(t *testing.T) {
 }
 
 func TestOrganizationsCreate(t *testing.T) {
+	t.Parallel()
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -153,6 +155,7 @@ func TestOrganizationsCreate(t *testing.T) {
 }
 
 func TestOrganizationsReadWithBusiness(t *testing.T) {
+	t.Parallel()
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -177,6 +180,7 @@ func TestOrganizationsReadWithBusiness(t *testing.T) {
 }
 
 func TestOrganizationsRead(t *testing.T) {
+	t.Parallel()
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -265,6 +269,7 @@ func TestOrganizationsRead(t *testing.T) {
 }
 
 func TestOrganizationsUpdate(t *testing.T) {
+	t.Parallel()
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -510,6 +515,7 @@ func TestOrganizationsUpdate(t *testing.T) {
 }
 
 func TestOrganizationsDelete(t *testing.T) {
+	t.Parallel()
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -531,6 +537,7 @@ func TestOrganizationsDelete(t *testing.T) {
 }
 
 func TestOrganizationsReadCapacity_RunDependent(t *testing.T) {
+	t.Parallel()
 	t.Skip("Capacity queues are not available in the API")
 	client := testClient(t)
 	ctx := context.Background()
@@ -585,6 +592,7 @@ func TestOrganizationsReadCapacity_RunDependent(t *testing.T) {
 }
 
 func TestOrganizationsReadEntitlements(t *testing.T) {
+	t.Parallel()
 	skipIfEnterprise(t)
 
 	client := testClient(t)
@@ -627,6 +635,7 @@ func TestOrganizationsReadEntitlements(t *testing.T) {
 }
 
 func TestOrganizationsReadRunQueue_RunDependent(t *testing.T) {
+	t.Parallel()
 	t.Skip("Capacity queues are not available in the API")
 	client := testClient(t)
 	ctx := context.Background()
@@ -723,6 +732,7 @@ func TestOrganizationsReadRunQueue_RunDependent(t *testing.T) {
 }
 
 func TestOrganization_Unmarshal(t *testing.T) {
+	t.Parallel()
 	data := map[string]interface{}{
 		"data": map[string]interface{}{
 			"type": "organizations",
@@ -761,6 +771,7 @@ func TestOrganization_Unmarshal(t *testing.T) {
 }
 
 func TestOrganizationsReadRunTasksPermission(t *testing.T) {
+	t.Parallel()
 	skipUnlessBeta(t)
 
 	client := testClient(t)
@@ -782,6 +793,7 @@ func TestOrganizationsReadRunTasksPermission(t *testing.T) {
 }
 
 func TestOrganizationsReadRunTasksEntitlement(t *testing.T) {
+	t.Parallel()
 	skipIfEnterprise(t)
 	skipUnlessBeta(t)
 
@@ -801,6 +813,7 @@ func TestOrganizationsReadRunTasksEntitlement(t *testing.T) {
 }
 
 func TestOrganizationsAllowForceDeleteSetting(t *testing.T) {
+	t.Parallel()
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -836,6 +849,7 @@ func TestOrganizationsAllowForceDeleteSetting(t *testing.T) {
 }
 
 func TestOrganization_DataRetentionPolicy(t *testing.T) {
+	t.Parallel()
 	skipUnlessEnterprise(t)
 
 	client := testClient(t)

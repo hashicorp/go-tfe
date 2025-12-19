@@ -11,6 +11,7 @@ import (
 )
 
 func Test_validateAdminRunFilterParams(t *testing.T) {
+	t.Parallel()
 	// All RunStatus values - keep this in sync with run.go
 	validRunStatuses := []string{
 		"applied",

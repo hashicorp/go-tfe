@@ -23,6 +23,7 @@ type wellKnownJwks struct {
 }
 
 func TestAdminSettings_Oidc_RotateKey(t *testing.T) {
+	t.Parallel()
 	skipUnlessEnterprise(t)
 
 	client := testClient(t)
@@ -53,6 +54,7 @@ func TestAdminSettings_Oidc_RotateKey(t *testing.T) {
 }
 
 func TestAdminSettings_Oidc_TrimKey(t *testing.T) {
+	t.Parallel()
 	skipUnlessEnterprise(t)
 
 	client := testClient(t)

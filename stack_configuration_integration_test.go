@@ -13,6 +13,7 @@ import (
 )
 
 func TestStackConfigurationList(t *testing.T) {
+	t.Parallel()
 	skipUnlessBeta(t)
 
 	client := testClient(t)
@@ -80,6 +81,7 @@ func TestStackConfigurationList(t *testing.T) {
 }
 
 func TestStackConfigurationCreateUploadAndRead(t *testing.T) {
+	t.Parallel()
 	skipUnlessBeta(t)
 
 	client := testClient(t)
@@ -124,6 +126,7 @@ func TestStackConfigurationCreateUploadAndRead(t *testing.T) {
 }
 
 func TestStackConfigurationDiagnostics(t *testing.T) {
+	t.Parallel()
 	skipUnlessBeta(t)
 
 	client := testClient(t)

@@ -13,6 +13,7 @@ import (
 )
 
 func TestTeamProjectAccessesList(t *testing.T) {
+	t.Parallel()
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -79,6 +80,7 @@ func TestTeamProjectAccessesList(t *testing.T) {
 }
 
 func TestTeamProjectAccessesRead(t *testing.T) {
+	t.Parallel()
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -123,6 +125,7 @@ func TestTeamProjectAccessesRead(t *testing.T) {
 }
 
 func TestTeamProjectAccessesAdd(t *testing.T) {
+	t.Parallel()
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -414,6 +417,7 @@ func TestTeamProjectAccessesAdd(t *testing.T) {
 }
 
 func TestTeamProjectAccessesUpdate(t *testing.T) {
+	t.Parallel()
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -576,6 +580,7 @@ func TestTeamProjectAccessesUpdate(t *testing.T) {
 }
 
 func TestTeamProjectAccessesRemove(t *testing.T) {
+	t.Parallel()
 	client := testClient(t)
 	ctx := context.Background()
 

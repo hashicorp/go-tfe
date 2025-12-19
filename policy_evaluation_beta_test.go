@@ -12,6 +12,7 @@ import (
 )
 
 func TestPolicyEvaluationList_Beta_RunDependent(t *testing.T) {
+	t.Parallel()
 	skipUnlessBeta(t)
 
 	client := testClient(t)
@@ -67,6 +68,7 @@ func TestPolicyEvaluationList_Beta_RunDependent(t *testing.T) {
 }
 
 func TestPolicySetOutcomeList_Beta_RunDependent(t *testing.T) {
+	t.Parallel()
 	skipUnlessBeta(t)
 
 	client := testClient(t)
@@ -178,6 +180,7 @@ func TestPolicySetOutcomeList_Beta_RunDependent(t *testing.T) {
 }
 
 func TestPolicySetOutcomeRead_Beta_RunDependent(t *testing.T) {
+	t.Parallel()
 	skipUnlessBeta(t)
 
 	client := testClient(t)
