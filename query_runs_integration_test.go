@@ -27,7 +27,6 @@ func createQueryRun(t *testing.T, client *Client, workspace *Workspace) *QueryRu
 }
 
 func TestQueryRunsList_RunDependent(t *testing.T) {
-	t.Parallel()
 	skipUnlessBeta(t)
 	client := testClient(t)
 	ctx := context.Background()
@@ -98,7 +97,6 @@ func TestQueryRunsList_RunDependent(t *testing.T) {
 }
 
 func TestQueryRunsCreate_RunDependent(t *testing.T) {
-	t.Parallel()
 	skipUnlessBeta(t)
 	client := testClient(t)
 	ctx := context.Background()
@@ -182,7 +180,6 @@ func TestQueryRunsCreate_RunDependent(t *testing.T) {
 }
 
 func TestQueryRunsRead_RunDependent(t *testing.T) {
-	t.Parallel()
 	skipUnlessBeta(t)
 	client := testClient(t)
 	ctx := context.Background()
@@ -211,7 +208,6 @@ func TestQueryRunsRead_RunDependent(t *testing.T) {
 }
 
 func TestQueryRunsReadWithOptions_RunDependent(t *testing.T) {
-	t.Parallel()
 	skipUnlessBeta(t)
 	client := testClient(t)
 	ctx := context.Background()
@@ -236,7 +232,6 @@ func TestQueryRunsReadWithOptions_RunDependent(t *testing.T) {
 }
 
 func TestQueryRunsCancel_RunDependent(t *testing.T) {
-	t.Parallel()
 	t.Skip("Cancel not yet implemented")
 
 	skipUnlessBeta(t)
@@ -271,7 +266,6 @@ func TestQueryRunsCancel_RunDependent(t *testing.T) {
 }
 
 func TestQueryRunsLogs_RunDependent(t *testing.T) {
-	t.Parallel()
 	skipUnlessBeta(t)
 	client := testClient(t)
 	ctx := context.Background()
@@ -294,7 +288,6 @@ func TestQueryRunsLogs_RunDependent(t *testing.T) {
 }
 
 func TestQueryRunsForceCancel_RunDependent(t *testing.T) {
-	t.Parallel()
 	skipUnlessBeta(t)
 	client := testClient(t)
 	ctx := context.Background()

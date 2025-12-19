@@ -15,7 +15,6 @@ import (
 )
 
 func TestCostEstimatesRead_RunDependent(t *testing.T) {
-	t.Parallel()
 	skipIfEnterprise(t)
 
 	client := testClient(t)

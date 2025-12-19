@@ -537,7 +537,6 @@ func TestOrganizationsDelete(t *testing.T) {
 }
 
 func TestOrganizationsReadCapacity_RunDependent(t *testing.T) {
-	t.Parallel()
 	t.Skip("Capacity queues are not available in the API")
 	client := testClient(t)
 	ctx := context.Background()
@@ -635,7 +634,6 @@ func TestOrganizationsReadEntitlements(t *testing.T) {
 }
 
 func TestOrganizationsReadRunQueue_RunDependent(t *testing.T) {
-	t.Parallel()
 	t.Skip("Capacity queues are not available in the API")
 	client := testClient(t)
 	ctx := context.Background()

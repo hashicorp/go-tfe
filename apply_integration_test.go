@@ -16,7 +16,6 @@ import (
 )
 
 func TestAppliesRead_RunDependent(t *testing.T) {
-	t.Parallel()
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -48,8 +47,6 @@ func TestAppliesRead_RunDependent(t *testing.T) {
 }
 
 func TestAppliesLogs_RunDependent(t *testing.T) {
-	t.Parallel()
-
 	client := testClient(t)
 	ctx := context.Background()
 

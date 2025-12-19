@@ -17,7 +17,6 @@ import (
 )
 
 func TestAdminRuns_List_RunDependent(t *testing.T) {
-	t.Parallel()
 	skipUnlessEnterprise(t)
 
 	client := testClient(t)
@@ -148,7 +147,6 @@ func TestAdminRuns_List_RunDependent(t *testing.T) {
 }
 
 func TestAdminRuns_ForceCancel_RunDependent(t *testing.T) {
-	t.Parallel()
 	skipUnlessEnterprise(t)
 
 	client := testClient(t)
@@ -232,7 +230,6 @@ func TestAdminRuns_ForceCancel_RunDependent(t *testing.T) {
 }
 
 func TestAdminRuns_ListFilterByDates_RunDependent(t *testing.T) {
-	t.Parallel()
 	skipUnlessEnterprise(t)
 
 	client := testClient(t)
