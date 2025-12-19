@@ -31,6 +31,7 @@ func TestWorkspaceResourcesList(t *testing.T) {
 	t.Run("without list options", func(t *testing.T) {
 		rs, err := client.WorkspaceResources.List(ctx, wTest.ID, nil)
 		require.NoError(t, err)
+		require.NotEmpty(t, rs.Items)
 		assert.Equal(t, 1, len(rs.Items))
 		assert.Equal(t, 1, rs.CurrentPage)
 		assert.Equal(t, 1, rs.TotalCount)
