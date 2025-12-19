@@ -17,7 +17,6 @@ import (
 )
 
 func TestPlansRead_RunDependent(t *testing.T) {
-	t.Parallel()
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -76,7 +75,6 @@ func TestPlansRead_RunDependent(t *testing.T) {
 }
 
 func TestPlansLogs_RunDependent(t *testing.T) {
-	t.Parallel()
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -149,7 +147,6 @@ func TestPlan_Unmarshal(t *testing.T) {
 }
 
 func TestPlansJSONOutput_RunDependent(t *testing.T) {
-	t.Parallel()
 	client := testClient(t)
 	ctx := context.Background()
 	rTest, rTestCleanup := createPlannedRun(t, client, nil)

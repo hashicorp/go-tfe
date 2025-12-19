@@ -22,7 +22,6 @@ import (
 // behavior of these endpoints.
 
 func TestAdminWorkspaces_ListWithFilter_RunDependent(t *testing.T) {
-	t.Parallel()
 	skipUnlessEnterprise(t)
 
 	client := testClient(t)
@@ -56,7 +55,6 @@ func TestAdminWorkspaces_ListWithFilter_RunDependent(t *testing.T) {
 }
 
 func TestAdminWorkspaces_ListWithSort_RunDependent(t *testing.T) {
-	t.Parallel()
 	skipUnlessEnterprise(t)
 
 	client := testClient(t)
@@ -101,7 +99,6 @@ func TestAdminWorkspaces_ListWithSort_RunDependent(t *testing.T) {
 }
 
 func TestAdminWorkspaces_List_RunDependent(t *testing.T) {
-	t.Parallel()
 	skipUnlessEnterprise(t)
 
 	client := testClient(t)

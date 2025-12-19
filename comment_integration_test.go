@@ -12,7 +12,6 @@ import (
 )
 
 func TestCommentsList_RunDependent(t *testing.T) {
-	t.Parallel()
 	client := testClient(t)
 	ctx := context.Background()
 

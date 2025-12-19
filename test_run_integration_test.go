@@ -13,7 +13,6 @@ import (
 )
 
 func TestTestRunsList_RunDependent(t *testing.T) {
-	t.Parallel()
 	skipUnlessBeta(t)
 	client := testClient(t)
 	ctx := context.Background()
@@ -85,7 +84,6 @@ func TestTestRunsList_RunDependent(t *testing.T) {
 }
 
 func TestTestRunsRead_RunDependent(t *testing.T) {
-	t.Parallel()
 	skipUnlessBeta(t)
 	client := testClient(t)
 	ctx := context.Background()
@@ -199,7 +197,6 @@ func TestTestRunsCreate(t *testing.T) {
 }
 
 func TestTestRunsLogs_RunDependent(t *testing.T) {
-	t.Parallel()
 	skipUnlessBeta(t)
 	client := testClient(t)
 	ctx := context.Background()
@@ -241,7 +238,6 @@ func TestTestRunsLogs_RunDependent(t *testing.T) {
 }
 
 func TestTestRunsCancel_RunDependent(t *testing.T) {
-	t.Parallel()
 	skipUnlessBeta(t)
 	client := testClient(t)
 	ctx := context.Background()

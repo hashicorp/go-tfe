@@ -265,7 +265,6 @@ func TestStateVersionsUpload(t *testing.T) {
 }
 
 func TestStateVersionsCreate_RunDependent(t *testing.T) {
-	t.Parallel()
 	client := testClient(t)
 	ctx := context.Background()
 

@@ -17,7 +17,6 @@ import (
 )
 
 func TestRunsList_RunDependent(t *testing.T) {
-	t.Parallel()
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -98,8 +97,6 @@ func TestRunsList_RunDependent(t *testing.T) {
 }
 
 func TestRunsListQueryParams_RunDependent(t *testing.T) {
-	t.Parallel()
-
 	type testCase struct {
 		options     *RunListOptions
 		description string
@@ -179,7 +176,6 @@ func TestRunsListQueryParams_RunDependent(t *testing.T) {
 }
 
 func TestRunsCreate_RunDependent(t *testing.T) {
-	t.Parallel()
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -395,7 +391,6 @@ func TestRunsCreate_RunDependent(t *testing.T) {
 }
 
 func TestRunsRead_CostEstimate_RunDependent(t *testing.T) {
-	t.Parallel()
 	skipIfEnterprise(t)
 
 	client := testClient(t)
@@ -424,7 +419,6 @@ func TestRunsRead_CostEstimate_RunDependent(t *testing.T) {
 }
 
 func TestRunsReadWithOptions_RunDependent(t *testing.T) {
-	t.Parallel()
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -471,7 +465,6 @@ func TestRunsReadWithPolicyPaths(t *testing.T) {
 }
 
 func TestRunsConfirmedBy_RunDependent(t *testing.T) {
-	t.Parallel()
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -499,7 +492,6 @@ func TestRunsConfirmedBy_RunDependent(t *testing.T) {
 }
 
 func TestRunsCanceledAt_RunDependent(t *testing.T) {
-	t.Parallel()
 	client := testClient(t)
 
 	ctx := context.Background()
@@ -592,7 +584,6 @@ func TestRunsTriggerReason(t *testing.T) {
 }
 
 func TestRunsApply_RunDependent(t *testing.T) {
-	t.Parallel()
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -630,7 +621,6 @@ func TestRunsApply_RunDependent(t *testing.T) {
 }
 
 func TestRunsCancel_RunDependent(t *testing.T) {
-	t.Parallel()
 	client := testClient(t)
 
 	ctx := context.Background()
@@ -662,7 +652,6 @@ func TestRunsCancel_RunDependent(t *testing.T) {
 }
 
 func TestRunsForceCancel_RunDependent(t *testing.T) {
-	t.Parallel()
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -731,7 +720,6 @@ func TestRunsForceCancel_RunDependent(t *testing.T) {
 }
 
 func TestRunsForceExecute_RunDependent(t *testing.T) {
-	t.Parallel()
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -787,7 +775,6 @@ func TestRunsForceExecute_RunDependent(t *testing.T) {
 }
 
 func TestRunsDiscard_RunDependent(t *testing.T) {
-	t.Parallel()
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -917,7 +904,6 @@ func TestRunCreateOptions_Marshal(t *testing.T) {
 }
 
 func TestRunsListForOrganization_RunDependent(t *testing.T) {
-	t.Parallel()
 	client := testClient(t)
 	ctx := context.Background()
 

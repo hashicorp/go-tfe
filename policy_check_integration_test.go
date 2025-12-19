@@ -17,7 +17,6 @@ import (
 )
 
 func TestPolicyChecksList_RunDependent(t *testing.T) {
-	t.Parallel()
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -82,7 +81,6 @@ func TestPolicyChecksList_RunDependent(t *testing.T) {
 }
 
 func TestPolicyChecksRead_RunDependent(t *testing.T) {
-	t.Parallel()
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -128,7 +126,6 @@ func TestPolicyChecksRead_RunDependent(t *testing.T) {
 }
 
 func TestPolicyChecksOverride_RunDependent(t *testing.T) {
-	t.Parallel()
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -187,7 +184,6 @@ func TestPolicyChecksOverride_RunDependent(t *testing.T) {
 }
 
 func TestPolicyChecksLogs_RunDependent(t *testing.T) {
-	t.Parallel()
 	client := testClient(t)
 	ctx := context.Background()
 
