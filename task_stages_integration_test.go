@@ -12,6 +12,7 @@ import (
 )
 
 func TestTaskStagesRead_RunDependent(t *testing.T) {
+	t.Parallel()
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -78,6 +79,7 @@ func TestTaskStagesRead_RunDependent(t *testing.T) {
 }
 
 func TestTaskStagesList_RunDependent(t *testing.T) {
+	t.Parallel()
 	client := testClient(t)
 	ctx := context.Background()
 

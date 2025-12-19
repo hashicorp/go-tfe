@@ -12,6 +12,7 @@ import (
 )
 
 func TestAgentTokensList(t *testing.T) {
+	t.Parallel()
 	skipIfEnterprise(t)
 
 	client := testClient(t)
@@ -51,6 +52,7 @@ func TestAgentTokensList(t *testing.T) {
 }
 
 func TestAgentTokensCreate(t *testing.T) {
+	t.Parallel()
 	skipIfEnterprise(t)
 
 	client := testClient(t)
@@ -82,6 +84,7 @@ func TestAgentTokensCreate(t *testing.T) {
 	})
 }
 func TestAgentTokensRead(t *testing.T) {
+	t.Parallel()
 	skipIfEnterprise(t)
 
 	client := testClient(t)
@@ -109,6 +112,7 @@ func TestAgentTokensRead(t *testing.T) {
 }
 
 func TestAgentTokensReadCreatedBy(t *testing.T) {
+	t.Parallel()
 	skipIfEnterprise(t)
 
 	client := testClient(t)
@@ -126,6 +130,7 @@ func TestAgentTokensReadCreatedBy(t *testing.T) {
 }
 
 func TestAgentTokensDelete(t *testing.T) {
+	t.Parallel()
 	skipIfEnterprise(t)
 
 	client := testClient(t)

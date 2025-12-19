@@ -9,6 +9,7 @@ import (
 )
 
 func TestHYOKConfigurationCreateRevokeDelete(t *testing.T) {
+	t.Parallel()
 	skipHYOKIntegrationTests(t)
 
 	client := testClient(t)
@@ -294,6 +295,7 @@ func TestHYOKConfigurationCreateRevokeDelete(t *testing.T) {
 }
 
 func TestHyokConfigurationList(t *testing.T) {
+	t.Parallel()
 	skipHYOKIntegrationTests(t)
 
 	client := testClient(t)
@@ -340,6 +342,7 @@ func TestHyokConfigurationList(t *testing.T) {
 }
 
 func TestHyokConfigurationRead(t *testing.T) {
+	t.Parallel()
 	skipHYOKIntegrationTests(t)
 
 	client := testClient(t)
@@ -426,6 +429,7 @@ func TestHyokConfigurationRead(t *testing.T) {
 }
 
 func TestHYOKConfigurationUpdate(t *testing.T) {
+	t.Parallel()
 	skipHYOKIntegrationTests(t)
 
 	client := testClient(t)

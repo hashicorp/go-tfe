@@ -13,6 +13,7 @@ import (
 )
 
 func TestGHAInstallationList(t *testing.T) {
+	t.Parallel()
 	gHAInstallationID := os.Getenv("GITHUB_APP_INSTALLATION_ID")
 
 	if gHAInstallationID == "" {
@@ -27,6 +28,7 @@ func TestGHAInstallationList(t *testing.T) {
 	})
 }
 func TestGHAInstallationRead(t *testing.T) {
+	t.Parallel()
 	gHAInstallationID := os.Getenv("GITHUB_APP_INSTALLATION_ID")
 
 	if gHAInstallationID == "" {

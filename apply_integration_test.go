@@ -16,6 +16,7 @@ import (
 )
 
 func TestAppliesRead_RunDependent(t *testing.T) {
+	t.Parallel()
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -47,7 +48,7 @@ func TestAppliesRead_RunDependent(t *testing.T) {
 }
 
 func TestAppliesLogs_RunDependent(t *testing.T) {
-	t.Skip("Skipping test due to flakiness")
+	t.Parallel()
 
 	client := testClient(t)
 	ctx := context.Background()
@@ -76,6 +77,7 @@ func TestAppliesLogs_RunDependent(t *testing.T) {
 }
 
 func TestApplies_Unmarshal(t *testing.T) {
+	t.Parallel()
 	data := map[string]interface{}{
 		"data": map[string]interface{}{
 			"type": "applies",

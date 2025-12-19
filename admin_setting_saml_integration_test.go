@@ -12,6 +12,7 @@ import (
 )
 
 func TestAdminSettings_SAML_Read(t *testing.T) {
+	t.Parallel()
 	skipUnlessEnterprise(t)
 
 	client := testClient(t)
@@ -42,6 +43,7 @@ func TestAdminSettings_SAML_Read(t *testing.T) {
 }
 
 func TestAdminSettings_SAML_Update(t *testing.T) {
+	t.Parallel()
 	skipUnlessEnterprise(t)
 
 	client := testClient(t)

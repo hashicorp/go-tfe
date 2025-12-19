@@ -12,6 +12,7 @@ import (
 )
 
 func TestTaskStagesRead_Beta_RunDependent(t *testing.T) {
+	t.Parallel()
 	skipUnlessBeta(t)
 
 	client := testClient(t)
@@ -109,6 +110,7 @@ func TestTaskStagesRead_Beta_RunDependent(t *testing.T) {
 }
 
 func TestTaskStagesList_Beta_RunDependent(t *testing.T) {
+	t.Parallel()
 	skipUnlessBeta(t)
 
 	client := testClient(t)
@@ -172,6 +174,7 @@ func TestTaskStagesList_Beta_RunDependent(t *testing.T) {
 }
 
 func TestTaskStageOverride_Beta_RunDependent(t *testing.T) {
+	t.Parallel()
 	skipUnlessBeta(t)
 
 	client := testClient(t)

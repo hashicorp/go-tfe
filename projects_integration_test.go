@@ -16,6 +16,7 @@ import (
 )
 
 func TestProjectsList(t *testing.T) {
+	t.Parallel()
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -144,6 +145,7 @@ func TestProjectsList(t *testing.T) {
 }
 
 func TestProjectsReadWithOptions(t *testing.T) {
+	t.Parallel()
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -173,6 +175,7 @@ func TestProjectsReadWithOptions(t *testing.T) {
 }
 
 func TestProjectsRead(t *testing.T) {
+	t.Parallel()
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -248,6 +251,7 @@ func TestProjectsRead(t *testing.T) {
 }
 
 func TestProjectsCreate(t *testing.T) {
+	t.Parallel()
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -426,6 +430,7 @@ func TestProjectsCreate(t *testing.T) {
 }
 
 func TestProjectsUpdate(t *testing.T) {
+	t.Parallel()
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -629,6 +634,7 @@ func TestProjectsUpdate(t *testing.T) {
 }
 
 func TestProjectsAddTagBindings(t *testing.T) {
+	t.Parallel()
 	skipUnlessBeta(t)
 
 	client := testClient(t)
@@ -693,6 +699,7 @@ func TestProjectsAddTagBindings(t *testing.T) {
 }
 
 func TestProjects_DeleteAllTagBindings(t *testing.T) {
+	t.Parallel()
 	skipUnlessBeta(t)
 
 	client := testClient(t)
@@ -720,6 +727,7 @@ func TestProjects_DeleteAllTagBindings(t *testing.T) {
 }
 
 func TestProjectsDelete(t *testing.T) {
+	t.Parallel()
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -749,6 +757,7 @@ func TestProjectsDelete(t *testing.T) {
 }
 
 func TestProjectsAutoDestroy(t *testing.T) {
+	t.Parallel()
 	skipUnlessBeta(t)
 	client := testClient(t)
 	ctx := context.Background()

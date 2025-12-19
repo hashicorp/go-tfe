@@ -14,6 +14,7 @@ import (
 )
 
 func TestTeamTokensCreate(t *testing.T) {
+	t.Parallel()
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -45,6 +46,7 @@ func TestTeamTokensCreate(t *testing.T) {
 }
 
 func TestTeamTokens_CreateWithOptions(t *testing.T) {
+	t.Parallel()
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -94,6 +96,7 @@ func TestTeamTokens_CreateWithOptions(t *testing.T) {
 }
 
 func TestTeamTokens_CreateWithOptions_MultipleTokens(t *testing.T) {
+	t.Parallel()
 	skipUnlessBeta(t)
 
 	client := testClient(t)
@@ -188,6 +191,7 @@ func TestTeamTokens_CreateWithOptions_MultipleTokens(t *testing.T) {
 }
 
 func TestTeamTokensRead(t *testing.T) {
+	t.Parallel()
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -236,6 +240,7 @@ func TestTeamTokensRead(t *testing.T) {
 }
 
 func TestTeamTokensReadByID(t *testing.T) {
+	t.Parallel()
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -301,6 +306,7 @@ func TestTeamTokensReadByID(t *testing.T) {
 }
 
 func TestTeamTokensList(t *testing.T) {
+	t.Parallel()
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -392,6 +398,7 @@ func TestTeamTokensList(t *testing.T) {
 }
 
 func TestTeamTokensDelete(t *testing.T) {
+	t.Parallel()
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -417,6 +424,7 @@ func TestTeamTokensDelete(t *testing.T) {
 }
 
 func TestTeamTokensDeleteByID(t *testing.T) {
+	t.Parallel()
 	client := testClient(t)
 	ctx := context.Background()
 

@@ -21,6 +21,7 @@ import (
 )
 
 func TestRegistryModulesList(t *testing.T) {
+	t.Parallel()
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -173,6 +174,7 @@ func TestRegistryModulesList(t *testing.T) {
 }
 
 func TestRegistryModulesCreate(t *testing.T) {
+	t.Parallel()
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -360,6 +362,7 @@ func TestRegistryModulesCreate(t *testing.T) {
 }
 
 func TestRegistryModuleUpdate(t *testing.T) {
+	t.Parallel()
 	skipUnlessBeta(t)
 	client := testClient(t)
 	ctx := context.Background()
@@ -409,6 +412,7 @@ func TestRegistryModuleUpdate(t *testing.T) {
 }
 
 func TestRegistryModuleUpdateWithVCSConnection(t *testing.T) {
+	t.Parallel()
 	skipUnlessBeta(t)
 	githubBranch := os.Getenv("GITHUB_REGISTRY_MODULE_BRANCH")
 	if githubBranch == "" {
@@ -567,6 +571,7 @@ func TestRegistryModuleUpdateWithVCSConnection(t *testing.T) {
 }
 
 func TestRegistryModulesCreateVersion(t *testing.T) {
+	t.Parallel()
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -713,6 +718,7 @@ func TestRegistryModulesCreateVersion(t *testing.T) {
 }
 
 func TestRegistryModulesShowVersion(t *testing.T) {
+	t.Parallel()
 	skipUnlessBeta(t)
 	client := testClient(t)
 	ctx := context.Background()
@@ -786,6 +792,7 @@ func TestRegistryModulesShowVersion(t *testing.T) {
 }
 
 func TestRegistryModulesListCommit(t *testing.T) {
+	t.Parallel()
 	skipUnlessBeta(t)
 	githubIdentifier := os.Getenv("GITHUB_REGISTRY_MODULE_IDENTIFIER")
 	if githubIdentifier == "" {
@@ -867,6 +874,7 @@ func TestRegistryModulesListCommit(t *testing.T) {
 }
 
 func TestRegistryModulesCreateWithVCSConnection(t *testing.T) {
+	t.Parallel()
 	githubIdentifier := os.Getenv("GITHUB_REGISTRY_MODULE_IDENTIFIER")
 	if githubIdentifier == "" {
 		t.Skip("Export a valid GITHUB_REGISTRY_MODULE_IDENTIFIER before running this test")
@@ -988,6 +996,7 @@ func TestRegistryModulesCreateWithVCSConnection(t *testing.T) {
 }
 
 func TestRegistryModulesCreateBranchBasedWithVCSConnection(t *testing.T) {
+	t.Parallel()
 	skipUnlessBeta(t)
 
 	githubIdentifier := os.Getenv("GITHUB_REGISTRY_MODULE_IDENTIFIER")
@@ -1045,6 +1054,7 @@ func TestRegistryModulesCreateBranchBasedWithVCSConnection(t *testing.T) {
 }
 
 func TestRegistryModulesCreateMonorepoBranchBasedWithVCSConnection(t *testing.T) {
+	t.Parallel()
 	skipUnlessBeta(t)
 
 	githubIdentifier := os.Getenv("GITHUB_REGISTRY_MODULE_IDENTIFIER")
@@ -1094,6 +1104,7 @@ func TestRegistryModulesCreateMonorepoBranchBasedWithVCSConnection(t *testing.T)
 }
 
 func TestRegistryModulesCreateMonorepoTagBasedWithVCSConnection(t *testing.T) {
+	t.Parallel()
 	skipUnlessBeta(t)
 
 	githubIdentifier := os.Getenv("GITHUB_REGISTRY_MODULE_IDENTIFIER")
@@ -1188,6 +1199,7 @@ func TestRegistryModulesCreateMonorepoTagBasedWithVCSConnection(t *testing.T) {
 }
 
 func TestRegistryModulesCreateBranchBasedWithVCSConnectionWithTesting(t *testing.T) {
+	t.Parallel()
 	skipUnlessBeta(t)
 
 	githubIdentifier := os.Getenv("GITHUB_REGISTRY_MODULE_IDENTIFIER")
@@ -1269,6 +1281,7 @@ func TestRegistryModulesCreateBranchBasedWithVCSConnectionWithTesting(t *testing
 }
 
 func TestRegistryModulesCreateWithGithubApp(t *testing.T) {
+	t.Parallel()
 	githubIdentifier := os.Getenv("GITHUB_REGISTRY_MODULE_IDENTIFIER")
 	if githubIdentifier == "" {
 		t.Skip("Export a valid GITHUB_REGISTRY_MODULE_IDENTIFIER before running this test")
@@ -1361,6 +1374,7 @@ func TestRegistryModulesCreateWithGithubApp(t *testing.T) {
 }
 
 func TestRegistryModulesRead(t *testing.T) {
+	t.Parallel()
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -1550,6 +1564,7 @@ func TestRegistryModulesRead(t *testing.T) {
 }
 
 func TestRegistryModulesReadTerraformRegistryModule(t *testing.T) {
+	t.Parallel()
 	t.Skip("Skipping due to persistent failures - see TF-31172")
 
 	client := testClient(t)
@@ -1672,6 +1687,7 @@ func TestRegistryModulesReadTerraformRegistryModule(t *testing.T) {
 }
 
 func TestRegistryModulesDelete(t *testing.T) {
+	t.Parallel()
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -1716,6 +1732,7 @@ func TestRegistryModulesDelete(t *testing.T) {
 }
 
 func TestRegistryModulesDeleteByName(t *testing.T) {
+	t.Parallel()
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -1770,6 +1787,7 @@ func TestRegistryModulesDeleteByName(t *testing.T) {
 }
 
 func TestRegistryModulesDeleteProvider(t *testing.T) {
+	t.Parallel()
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -1882,6 +1900,7 @@ func TestRegistryModulesDeleteProvider(t *testing.T) {
 }
 
 func TestRegistryModulesDeleteVersion(t *testing.T) {
+	t.Parallel()
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -2042,6 +2061,7 @@ func TestRegistryModulesDeleteVersion(t *testing.T) {
 }
 
 func TestRegistryModulesUpload(t *testing.T) {
+	t.Parallel()
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -2084,6 +2104,7 @@ func TestRegistryModulesUpload(t *testing.T) {
 }
 
 func TestRegistryModulesUploadTarGzip(t *testing.T) {
+	t.Parallel()
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -2136,6 +2157,7 @@ func TestRegistryModulesUploadTarGzip(t *testing.T) {
 }
 
 func TestRegistryModule_Unmarshal(t *testing.T) {
+	t.Parallel()
 	data := map[string]interface{}{
 		"data": map[string]interface{}{
 			"type": "registry-modules",
@@ -2203,6 +2225,7 @@ func TestRegistryModule_Unmarshal(t *testing.T) {
 }
 
 func TestRegistryCreateWithVCSOptions_Marshal(t *testing.T) {
+	t.Parallel()
 	// https://developer.hashicorp.com/terraform/cloud-docs/api-docs/private-registry/modules#sample-payload
 	opts := RegistryModuleCreateWithVCSConnectionOptions{
 		VCSRepo: &RegistryModuleVCSRepoOptions{
@@ -2225,6 +2248,7 @@ func TestRegistryCreateWithVCSOptions_Marshal(t *testing.T) {
 }
 
 func TestRegistryModulesUpdate_AgentExecutionValidation(t *testing.T) {
+	t.Parallel()
 	skipUnlessBeta(t)
 
 	githubIdentifier := os.Getenv("GITHUB_REGISTRY_MODULE_IDENTIFIER")
@@ -2339,6 +2363,7 @@ func TestRegistryModulesUpdate_AgentExecutionValidation(t *testing.T) {
 }
 
 func TestRegistryModulesCreateWithVCSConnection_AgentExecutionValidation(t *testing.T) {
+	t.Parallel()
 	skipUnlessBeta(t)
 
 	githubIdentifier := os.Getenv("GITHUB_REGISTRY_MODULE_IDENTIFIER")

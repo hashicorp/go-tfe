@@ -45,6 +45,7 @@ const (
 )
 
 func Test_unmarshalResponse(t *testing.T) {
+	t.Parallel()
 	t.Run("unmarshal properly formatted json", func(t *testing.T) {
 		// This structure is intended to include multiple possible fields and
 		// formats that are valid for JSON:API
@@ -124,6 +125,7 @@ func Test_unmarshalResponse(t *testing.T) {
 }
 
 func Test_BaseURL(t *testing.T) {
+	t.Parallel()
 	client, err := NewClient(&Config{
 		Address:  "https://example.com",
 		BasePath: "api/v99",
@@ -136,6 +138,7 @@ func Test_BaseURL(t *testing.T) {
 }
 
 func Test_DefaultBaseURL(t *testing.T) {
+	t.Parallel()
 	client, err := NewClient(&Config{
 		Address: "https://example.com",
 	})
@@ -147,6 +150,7 @@ func Test_DefaultBaseURL(t *testing.T) {
 }
 
 func Test_DefaultRegistryBaseURL(t *testing.T) {
+	t.Parallel()
 	client, err := NewClient(&Config{
 		Address: "https://example.com",
 	})
@@ -158,6 +162,7 @@ func Test_DefaultRegistryBaseURL(t *testing.T) {
 }
 
 func Test_RegistryBaseURL(t *testing.T) {
+	t.Parallel()
 	client, err := NewClient(&Config{
 		Address:          "https://example.com",
 		RegistryBasePath: "/api/registry99",
@@ -170,6 +175,7 @@ func Test_RegistryBaseURL(t *testing.T) {
 }
 
 func Test_EncodeQueryParams(t *testing.T) {
+	t.Parallel()
 	t.Run("with no listOptions and therefore no include field defined", func(t *testing.T) {
 		urlVals := map[string][]string{
 			"include": {},
@@ -187,6 +193,7 @@ func Test_EncodeQueryParams(t *testing.T) {
 }
 
 func Test_RegistryBasePath(t *testing.T) {
+	t.Parallel()
 	client, err := NewClient(&Config{
 		Token: "foo",
 	})
@@ -203,6 +210,7 @@ func Test_RegistryBasePath(t *testing.T) {
 }
 
 func Test_NewRequest(t *testing.T) {
+	t.Parallel()
 	testServer := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		switch r.URL.Path {
 		case "/get_request_with_query_param":
@@ -240,6 +248,7 @@ func Test_NewRequest(t *testing.T) {
 }
 
 func Test_NewRequestWithAdditionalQueryParams(t *testing.T) {
+	t.Parallel()
 	testServer := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		switch r.URL.Path {
 		case "/get_request_include":

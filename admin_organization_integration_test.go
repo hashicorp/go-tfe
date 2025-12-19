@@ -13,6 +13,7 @@ import (
 )
 
 func TestAdminOrganizations_List(t *testing.T) {
+	t.Parallel()
 	skipUnlessEnterprise(t)
 
 	client := testClient(t)
@@ -70,6 +71,7 @@ func TestAdminOrganizations_List(t *testing.T) {
 }
 
 func TestAdminOrganizations_Read(t *testing.T) {
+	t.Parallel()
 	skipUnlessEnterprise(t)
 
 	client := testClient(t)
@@ -111,6 +113,7 @@ func TestAdminOrganizations_Read(t *testing.T) {
 }
 
 func TestAdminOrganizations_Delete(t *testing.T) {
+	t.Parallel()
 	skipUnlessEnterprise(t)
 
 	client := testClient(t)
@@ -148,6 +151,7 @@ func TestAdminOrganizations_Delete(t *testing.T) {
 }
 
 func TestAdminOrganizations_ModuleConsumers(t *testing.T) {
+	t.Parallel()
 	skipUnlessEnterprise(t)
 
 	client := testClient(t)
@@ -192,6 +196,7 @@ func TestAdminOrganizations_ModuleConsumers(t *testing.T) {
 }
 
 func TestAdminOrganizations_Update(t *testing.T) {
+	t.Parallel()
 	skipUnlessEnterprise(t)
 
 	client := testClient(t)

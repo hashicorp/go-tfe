@@ -12,6 +12,7 @@ import (
 )
 
 func TestAdminSettings_General_Read(t *testing.T) {
+	t.Parallel()
 	skipUnlessEnterprise(t)
 
 	client := testClient(t)
@@ -40,6 +41,7 @@ func TestAdminSettings_General_Read(t *testing.T) {
 }
 
 func TestAdminSettings_General_Update(t *testing.T) {
+	t.Parallel()
 	skipUnlessEnterprise(t)
 
 	client := testClient(t)

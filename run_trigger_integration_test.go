@@ -12,6 +12,7 @@ import (
 )
 
 func TestRunTriggerList(t *testing.T) {
+	t.Parallel()
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -148,6 +149,7 @@ func TestRunTriggerList(t *testing.T) {
 }
 
 func TestRunTriggerCreate(t *testing.T) {
+	t.Parallel()
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -198,6 +200,7 @@ func TestRunTriggerCreate(t *testing.T) {
 }
 
 func TestRunTriggerRead(t *testing.T) {
+	t.Parallel()
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -231,6 +234,7 @@ func TestRunTriggerRead(t *testing.T) {
 }
 
 func TestRunTriggerDelete(t *testing.T) {
+	t.Parallel()
 	client := testClient(t)
 	ctx := context.Background()
 

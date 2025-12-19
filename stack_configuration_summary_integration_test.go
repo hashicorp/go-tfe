@@ -13,6 +13,7 @@ import (
 )
 
 func TestStackConfigurationSummaryList(t *testing.T) {
+	t.Parallel()
 	skipUnlessBeta(t)
 
 	client := testClient(t)

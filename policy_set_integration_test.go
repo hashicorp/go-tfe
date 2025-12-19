@@ -16,6 +16,7 @@ import (
 )
 
 func TestPolicySetsList(t *testing.T) {
+	t.Parallel()
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -138,6 +139,7 @@ func TestPolicySetsList(t *testing.T) {
 }
 
 func TestPolicySetsCreate(t *testing.T) {
+	t.Parallel()
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -501,6 +503,7 @@ func TestPolicySetsCreate(t *testing.T) {
 }
 
 func TestPolicySetsCreateWithGithubApp(t *testing.T) {
+	t.Parallel()
 	gHAInstallationID := os.Getenv("GITHUB_APP_INSTALLATION_ID")
 	if gHAInstallationID == "" {
 		t.Skip("Export a valid GITHUB_APP_INSTALLATION_ID before running this test!")
@@ -584,6 +587,7 @@ func TestPolicySetsCreateWithGithubApp(t *testing.T) {
 	})
 }
 func TestPolicySetsRead(t *testing.T) {
+	t.Parallel()
 	client := testClient(t)
 	ctx := context.Background()
 	orgTest, orgTestCleanup := createOrganization(t, client)
@@ -653,6 +657,7 @@ func TestPolicySetsRead(t *testing.T) {
 }
 
 func TestPolicySetsUpdate(t *testing.T) {
+	t.Parallel()
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -744,6 +749,7 @@ func TestPolicySetsUpdate(t *testing.T) {
 }
 
 func TestPolicySetsAddPolicies(t *testing.T) {
+	t.Parallel()
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -799,6 +805,7 @@ func TestPolicySetsAddPolicies(t *testing.T) {
 }
 
 func TestPolicySetsRemovePolicies(t *testing.T) {
+	t.Parallel()
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -848,6 +855,7 @@ func TestPolicySetsRemovePolicies(t *testing.T) {
 }
 
 func TestPolicySetsAddWorkspaces(t *testing.T) {
+	t.Parallel()
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -917,6 +925,7 @@ func TestPolicySetsAddWorkspaces(t *testing.T) {
 }
 
 func TestPolicySetsRemoveWorkspaces(t *testing.T) {
+	t.Parallel()
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -980,6 +989,7 @@ func TestPolicySetsRemoveWorkspaces(t *testing.T) {
 }
 
 func TestPolicySetsAddWorkspaceExclusions(t *testing.T) {
+	t.Parallel()
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -1049,6 +1059,7 @@ func TestPolicySetsAddWorkspaceExclusions(t *testing.T) {
 }
 
 func TestPolicySetsRemoveWorkspaceExclusions(t *testing.T) {
+	t.Parallel()
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -1112,6 +1123,7 @@ func TestPolicySetsRemoveWorkspaceExclusions(t *testing.T) {
 }
 
 func TestPolicySetsAddProjects(t *testing.T) {
+	t.Parallel()
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -1181,6 +1193,7 @@ func TestPolicySetsAddProjects(t *testing.T) {
 }
 
 func TestPolicySetsRemoveProjects(t *testing.T) {
+	t.Parallel()
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -1244,6 +1257,7 @@ func TestPolicySetsRemoveProjects(t *testing.T) {
 }
 
 func TestPolicySetsDelete(t *testing.T) {
+	t.Parallel()
 	client := testClient(t)
 	ctx := context.Background()
 
