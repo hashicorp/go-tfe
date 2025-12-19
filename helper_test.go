@@ -1452,7 +1452,7 @@ func createPolicyCheckedRun(t *testing.T, client *Client, w *Workspace) (*Run, f
 }
 
 func createPlannedRun(t *testing.T, client *Client, w *Workspace) (*Run, func()) {
-	return createRunWaitForAnyStatuses(t, client, w, []RunStatus{RunCostEstimated, RunPlanned, RunPostPlanCompleted, RunErrored})
+	return createRunWaitForAnyStatuses(t, client, w, []RunStatus{RunCostEstimated, RunPlanned, RunPostPlanCompleted})
 }
 
 func createCostEstimatedRun(t *testing.T, client *Client, w *Workspace) (*Run, func()) {
@@ -1569,7 +1569,7 @@ func applyableStatuses(r *Run) []RunStatus {
 		return []RunStatus{RunCostEstimated}
 	}
 
-	return []RunStatus{RunPlanned}
+	return []RunStatus{RunPlanned, RunPostPlanCompleted}
 }
 
 // pollRunStatus will poll the given run until its status matches one of the given run statuses or the given context
