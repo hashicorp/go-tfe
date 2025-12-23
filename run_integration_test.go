@@ -679,22 +679,15 @@ func TestRunsForceCancel_RunDependent(t *testing.T) {
 		err := client.Runs.Cancel(ctx, rTest.ID, RunCancelOptions{})
 		require.NoError(t, err)
 
-		for i := 1; ; i++ {
-			// Refresh the view of the run
-			rTest, err = client.Runs.Read(ctx, rTest.ID)
-			require.NoError(t, err)
-
-			// Check if the timestamp is present.
-			if !rTest.ForceCancelAvailableAt.IsZero() {
-				break
-			}
-
-			if i > 30 {
-				t.Fatal("Timeout waiting for run to be canceled")
-			}
-
-			time.Sleep(time.Second)
-		}
+		rTest, err := retryPatientlyIf(
+			func() (any, error) {
+				return client.Runs.Read(ctx, rTest.ID)
+			},
+			func(r *Run) bool {
+				return r.ForceCancelAvailableAt.IsZero()
+			},
+		)
+		require.NoError(t, err)
 
 		t.Run("force-cancel-available-at timestamp is present", func(t *testing.T) {
 			assert.True(t, rTest.ForceCancelAvailableAt.After(time.Now()))

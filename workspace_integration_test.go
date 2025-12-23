@@ -2936,7 +2936,16 @@ func TestWorkspaces_AddTags(t *testing.T) {
 		require.NoError(t, err)
 
 		// tag is now in the tag_names
-		w, err := client.Workspaces.Read(ctx, orgTest.Name, wTest.Name)
+		// retry in case the system is busy
+		w, err := retryPatientlyIf(
+			func() (any, error) {
+				return client.Workspaces.Read(ctx, orgTest.Name, wTest.Name)
+			},
+			func(w *Workspace) bool {
+				return len(w.TagNames) < 5
+			},
+		)
+
 		require.NoError(t, err)
 		assert.Equal(t, 5, len(w.TagNames))
 		sort.Strings(w.TagNames)
