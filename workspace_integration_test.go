@@ -2320,6 +2320,7 @@ func TestWorkspacesSafeDelete(t *testing.T) {
 
 func TestWorkspacesSafeDeleteByID(t *testing.T) {
 	t.Parallel()
+
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -2360,7 +2361,7 @@ func TestWorkspacesSafeDeleteByID(t *testing.T) {
 		_, svTestCleanup := createStateVersion(t, client, 0, wTest)
 		t.Cleanup(svTestCleanup)
 
-		_, err := retry(func() (interface{}, error) {
+		_, err := retryPatiently(func() (interface{}, error) {
 			err := client.Workspaces.SafeDeleteByID(ctx, wTest.ID)
 			if errors.Is(err, ErrWorkspaceStillProcessing) {
 				return nil, err
