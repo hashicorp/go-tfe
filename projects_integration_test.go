@@ -499,11 +499,12 @@ func TestProjectsUpdate(t *testing.T) {
 
 			assert.Len(t, wsEffectiveBindings, 2)
 			for _, b := range wsEffectiveBindings {
-				if b.Key == "foo" {
+				switch b.Key {
+				case "foo":
 					assert.Equal(t, "bar", b.Value)
-				} else if b.Key == "baz" {
+				case "baz":
 					assert.Equal(t, "qux", b.Value)
-				} else {
+				default:
 					assert.Fail(t, "unexpected tag binding %q", b.Key)
 				}
 			}

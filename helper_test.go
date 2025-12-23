@@ -1899,15 +1899,17 @@ func createPlanExport(t *testing.T, client *Client, r *Run) (*PlanExport, func()
 				t.Fatal(err)
 			}
 
-			if pe.Status == PlanExportFinished || pe.Status == PlanExportQueued {
+			switch pe.Status {
+			case PlanExportFinished, PlanExportQueued:
 				return pe, func() {
 					if rCleanup != nil {
 						rCleanup()
 					}
 				}
-			} else if pe.Status == PlanExportErrored {
+			case PlanExportErrored:
 				t.Fatal("Plan export failed")
-			} else {
+
+			default:
 				t.Logf("Waiting for plan export finished or queued but was %s", pe.Status)
 			}
 		}
@@ -3115,20 +3117,26 @@ func retryTimesIf[T any](maxRetries, secondsBetween int, f retryableFn, c func(T
 
 	defer tick.Stop()
 
-	for { //nolint
-		select {
-		case <-tick.C:
-			res, err := f()
-			if err == nil && !c(res.(T)) {
-				return res.(T), nil
-			}
+	var zero T
+	for {
+		<-tick.C
 
-			if retries >= maxRetries {
-				return res.(T), err
-			}
+		res, err := f()
 
-			retries += 1
+		obj, ok := res.(T)
+		if !ok {
+			return zero, fmt.Errorf("type assertion failed in retryTimesIf")
 		}
+
+		if err == nil && !c(obj) {
+			return obj, nil
+		}
+
+		if retries >= maxRetries {
+			return zero, err
+		}
+
+		retries += 1
 	}
 }
 

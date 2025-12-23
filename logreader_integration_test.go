@@ -54,8 +54,8 @@ func TestLogReader_withMarkersSingle(t *testing.T) {
 	logReads := 0
 	ts, lr := testLogReader(t, http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		logReads++
-		switch {
-		case logReads == 2:
+		switch logReads {
+		case 2:
 			checkedWrite(t, w, []byte("\x02Terraform run started - logs - Terraform run finished\x03"))
 		}
 	}))
@@ -93,10 +93,10 @@ func TestLogReader_withMarkersDouble(t *testing.T) {
 	logReads := 0
 	ts, lr := testLogReader(t, http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		logReads++
-		switch {
-		case logReads == 2:
+		switch logReads {
+		case 2:
 			checkedWrite(t, w, []byte("\x02Terraform run started"))
-		case logReads == 3:
+		case 3:
 			checkedWrite(t, w, []byte(" - logs - Terraform run finished\x03"))
 		}
 	}))
@@ -134,16 +134,16 @@ func TestLogReader_withMarkersMulti(t *testing.T) {
 	logReads := 0
 	ts, lr := testLogReader(t, http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		logReads++
-		switch {
-		case logReads == 2:
+		switch logReads {
+		case 2:
 			checkedWrite(t, w, []byte("\x02"))
-		case logReads == 3:
+		case 3:
 			checkedWrite(t, w, []byte("Terraform run started"))
-		case logReads == 16:
+		case 16:
 			checkedWrite(t, w, []byte(" - logs - "))
-		case logReads == 30:
+		case 30:
 			checkedWrite(t, w, []byte("Terraform run finished"))
-		case logReads == 31:
+		case 31:
 			checkedWrite(t, w, []byte("\x03"))
 		}
 	}))
@@ -181,12 +181,12 @@ func TestLogReader_withoutMarkers(t *testing.T) {
 	logReads := 0
 	ts, lr := testLogReader(t, http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		logReads++
-		switch {
-		case logReads == 2:
+		switch logReads {
+		case 2:
 			checkedWrite(t, w, []byte("Terraform run started"))
-		case logReads == 16:
+		case 16:
 			checkedWrite(t, w, []byte(" - logs - "))
-		case logReads == 31:
+		case 31:
 			checkedWrite(t, w, []byte("Terraform run finished"))
 		}
 	}))
@@ -224,14 +224,14 @@ func TestLogReader_withoutEndOfTextMarker(t *testing.T) {
 	logReads := 0
 	ts, lr := testLogReader(t, http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		logReads++
-		switch {
-		case logReads == 2:
+		switch logReads {
+		case 2:
 			checkedWrite(t, w, []byte("\x02"))
-		case logReads == 3:
+		case 3:
 			checkedWrite(t, w, []byte("Terraform run started"))
-		case logReads == 16:
+		case 16:
 			checkedWrite(t, w, []byte(" - logs - "))
-		case logReads == 31:
+		case 31:
 			checkedWrite(t, w, []byte("Terraform run finished"))
 		}
 	}))

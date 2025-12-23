@@ -5,7 +5,6 @@ package tfe
 
 import (
 	"context"
-	"flag"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -13,10 +12,6 @@ import (
 )
 
 func TestWorkspaceResourcesList(t *testing.T) {
-	// Once go 1.22+ is required, replace with:
-	// t.SetTimeout(30 * time.Minute)
-	flag.Set("test.timeout", "30m0s")
-
 	client := testClient(t)
 	ctx := context.Background()
 

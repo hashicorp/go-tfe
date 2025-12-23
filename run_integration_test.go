@@ -344,11 +344,12 @@ func TestRunsCreate_RunDependent(t *testing.T) {
 		assert.Equal(t, len(vars), len(r.Variables))
 
 		for _, v := range r.Variables {
-			if v.Key == "test_foo" {
+			switch v.Key {
+			case "test_foo":
 				assert.Equal(t, v.Value, "Hello, Foo!")
-			} else if v.Key == "test_variable" {
+			case "test_variable":
 				assert.Equal(t, v.Value, "Hello, World!")
-			} else {
+			default:
 				t.Fatalf("Unexpected variable key: %s", v.Key)
 			}
 		}
