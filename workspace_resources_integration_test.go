@@ -33,7 +33,7 @@ func TestWorkspaceResourcesList(t *testing.T) {
 		// Retry while waiting for workspace resources to be populated.
 		// This can take some time after the state version is created, so we
 		// retry the list call until we get non-empty results.
-		rs, err := retryIf(
+		rs, err := retryPatientlyIf(
 			func() (any, error) {
 				return client.WorkspaceResources.List(ctx, wTest.ID, nil)
 			},
@@ -43,6 +43,8 @@ func TestWorkspaceResourcesList(t *testing.T) {
 		)
 
 		require.NoError(t, err)
+		require.NotNil(t, rs)
+		require.NotNil(t, rs.Items)
 		require.NotEmpty(t, rs.Items)
 		assert.Equal(t, 1, len(rs.Items))
 		assert.Equal(t, 1, rs.CurrentPage)

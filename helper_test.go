@@ -3140,16 +3140,20 @@ func retryTimesIf[T any](maxRetries, secondsBetween int, f retryableFn, c func(T
 	}
 }
 
-func retryPatiently(f retryableFn) (interface{}, error) { //nolint
+func retryPatiently(f retryableFn) (interface{}, error) {
 	return retryTimes(39, 3, f) // 40 attempts over 120 seconds
-}
-
-func retryIf[T any](f retryableFn, c func(T) bool) (T, error) { //nolint
-	return retryTimesIf[T](9, 3, f, c) // 10 attempts over 30 seconds
 }
 
 func retry(f retryableFn) (interface{}, error) { //nolint
 	return retryTimes(9, 3, f) // 10 attempts over 30 seconds
+}
+
+func retryPatientlyIf[T any](f retryableFn, c func(T) bool) (T, error) {
+	return retryTimesIf[T](39, 3, f, c) // 40 attempts over 120 seconds
+}
+
+func retryIf[T any](f retryableFn, c func(T) bool) (T, error) {
+	return retryTimesIf[T](9, 3, f, c) // 10 attempts over 30 seconds
 }
 
 func genSha(t *testing.T) string {
