@@ -29,7 +29,18 @@ func TestWorkspaceResourcesList(t *testing.T) {
 	waitForSVOutputs(t, client, svTest.ID)
 
 	t.Run("without list options", func(t *testing.T) {
-		rs, err := client.WorkspaceResources.List(ctx, wTest.ID, nil)
+		// Retry while waiting for workspace resources to be populated.
+		// This can take some time after the state version is created, so we
+		// retry the list call until we get non-empty results.
+		rs, err := retryIf(
+			func() (any, error) {
+				return client.WorkspaceResources.List(ctx, wTest.ID, nil)
+			},
+			func(rs *WorkspaceResourcesList) bool {
+				return len(rs.Items) == 0
+			},
+		)
+
 		require.NoError(t, err)
 		require.NotEmpty(t, rs.Items)
 		assert.Equal(t, 1, len(rs.Items))

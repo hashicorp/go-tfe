@@ -24,7 +24,7 @@ type featureSetListOptions struct {
 	Q string `url:"q,omitempty"`
 }
 
-type retryableFn func() (interface{}, error)
+type retryableFn func() (any, error)
 
 type updateFeatureSetOptions struct {
 	Type                          string     `jsonapi:"primary,subscription"`

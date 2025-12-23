@@ -3109,8 +3109,35 @@ func retryTimes(maxRetries, secondsBetween int, f retryableFn) (interface{}, err
 	}
 }
 
+func retryTimesIf[T any](maxRetries, secondsBetween int, f retryableFn, c func(T) bool) (T, error) {
+	tick := time.NewTicker(time.Duration(secondsBetween) * time.Second)
+	retries := 0
+
+	defer tick.Stop()
+
+	for { //nolint
+		select {
+		case <-tick.C:
+			res, err := f()
+			if err == nil && !c(res.(T)) {
+				return res.(T), nil
+			}
+
+			if retries >= maxRetries {
+				return res.(T), err
+			}
+
+			retries += 1
+		}
+	}
+}
+
 func retryPatiently(f retryableFn) (interface{}, error) { //nolint
 	return retryTimes(39, 3, f) // 40 attempts over 120 seconds
+}
+
+func retryIf[T any](f retryableFn, c func(T) bool) (T, error) { //nolint
+	return retryTimesIf[T](9, 3, f, c) // 10 attempts over 30 seconds
 }
 
 func retry(f retryableFn) (interface{}, error) { //nolint
