@@ -36,6 +36,7 @@ func newTestRequest(r *retryablehttp.Request) ClientRequest {
 }
 
 func TestClientRequest_DoJSON(t *testing.T) {
+	t.Parallel()
 	testServer := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		fakeBody := map[string]any{
 			"id":     "example",

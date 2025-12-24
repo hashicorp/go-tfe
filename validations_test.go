@@ -10,6 +10,7 @@ import (
 )
 
 func TestValidStringID(t *testing.T) {
+	t.Parallel()
 	type testCase struct {
 		externalID    *string
 		expectedValue bool

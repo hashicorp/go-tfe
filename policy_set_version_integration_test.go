@@ -16,6 +16,7 @@ import (
 const waitForPolicySetVersionUpload = 500 * time.Millisecond
 
 func TestPolicySetVersionsCreate(t *testing.T) {
+	t.Parallel()
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -38,6 +39,7 @@ func TestPolicySetVersionsCreate(t *testing.T) {
 }
 
 func TestPolicySetVersionsRead(t *testing.T) {
+	t.Parallel()
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -62,6 +64,7 @@ func TestPolicySetVersionsRead(t *testing.T) {
 }
 
 func TestPolicySetVersionsUpload(t *testing.T) {
+	t.Parallel()
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -102,6 +105,7 @@ func TestPolicySetVersionsUpload(t *testing.T) {
 }
 
 func TestPolicySetVersionsUploadURL(t *testing.T) {
+	t.Parallel()
 	t.Run("successfully returns upload link", func(t *testing.T) {
 		links := map[string]interface{}{
 			"upload": "example.com",
@@ -142,6 +146,7 @@ func TestPolicySetVersionsUploadURL(t *testing.T) {
 }
 
 func TestPolicySetVersionsIngressAttributes(t *testing.T) {
+	t.Parallel()
 	client := testClient(t)
 	ctx := context.Background()
 

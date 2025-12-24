@@ -15,6 +15,7 @@ import (
 )
 
 func TestRegistryNoCodeModulesCreate(t *testing.T) {
+	t.Parallel()
 	skipUnlessBeta(t)
 	client := testClient(t)
 	ctx := context.Background()
@@ -149,6 +150,7 @@ func TestRegistryNoCodeModulesCreate(t *testing.T) {
 }
 
 func TestRegistryNoCodeModulesRead(t *testing.T) {
+	t.Parallel()
 	skipUnlessBeta(t)
 	client := testClient(t)
 	ctx := context.Background()
@@ -217,6 +219,7 @@ func TestRegistryNoCodeModulesRead(t *testing.T) {
 // This test requires that the environment variable "GITHUB_REGISTRY_NO_CODE_MODULE_IDENTIFIER" is set
 // with the ID of an existing no-code module that has variables.
 func TestRegistryNoCodeModulesReadVariables(t *testing.T) {
+	t.Parallel()
 	skipUnlessBeta(t)
 	client := testClient(t)
 	ctx := context.Background()
@@ -240,6 +243,7 @@ func TestRegistryNoCodeModulesReadVariables(t *testing.T) {
 }
 
 func TestRegistryNoCodeModulesUpdate(t *testing.T) {
+	t.Parallel()
 	skipUnlessBeta(t)
 	client := testClient(t)
 	ctx := context.Background()
@@ -278,6 +282,7 @@ func TestRegistryNoCodeModulesUpdate(t *testing.T) {
 }
 
 func TestRegistryNoCodeModulesDelete(t *testing.T) {
+	t.Parallel()
 	skipUnlessBeta(t)
 	client := testClient(t)
 	ctx := context.Background()
@@ -331,6 +336,7 @@ func createNoCodeRegistryModule(t *testing.T, client *Client, orgName string, rm
 }
 
 func TestRegistryNoCodeModulesCreateWorkspace(t *testing.T) {
+	t.Parallel()
 	skipUnlessBeta(t)
 	client := testClient(t)
 	ctx := context.Background()
@@ -414,6 +420,7 @@ func TestRegistryNoCodeModulesCreateWorkspace(t *testing.T) {
 }
 
 func TestRegistryNoCodeModuleWorkspaceUpgrade(t *testing.T) {
+	t.Parallel()
 	skipUnlessBeta(t)
 
 	client := testClient(t)

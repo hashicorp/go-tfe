@@ -13,6 +13,7 @@ import (
 )
 
 func TestRunTasksCreate(t *testing.T) {
+	t.Parallel()
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -101,6 +102,7 @@ func TestRunTasksCreate(t *testing.T) {
 }
 
 func TestRunTasksCreateWithoutGlobalEntitlement(t *testing.T) {
+	t.Parallel()
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -151,6 +153,7 @@ func TestRunTasksCreateWithoutGlobalEntitlement(t *testing.T) {
 }
 
 func TestRunTasksList(t *testing.T) {
+	t.Parallel()
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -177,6 +180,7 @@ func TestRunTasksList(t *testing.T) {
 }
 
 func TestRunTasksRead(t *testing.T) {
+	t.Parallel()
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -228,6 +232,7 @@ func TestRunTasksRead(t *testing.T) {
 }
 
 func TestRunTasksUpdate(t *testing.T) {
+	t.Parallel()
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -303,6 +308,7 @@ func TestRunTasksUpdate(t *testing.T) {
 }
 
 func TestRunTasksDelete(t *testing.T) {
+	t.Parallel()
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -333,6 +339,7 @@ func TestRunTasksDelete(t *testing.T) {
 }
 
 func TestRunTasksAttachToWorkspace(t *testing.T) {
+	t.Parallel()
 	client := testClient(t)
 	ctx := context.Background()
 

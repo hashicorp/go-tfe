@@ -13,6 +13,7 @@ import (
 )
 
 func TestNotificationConfigurationList(t *testing.T) {
+	t.Parallel()
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -75,6 +76,7 @@ func TestNotificationConfigurationList(t *testing.T) {
 }
 
 func TestNotificationConfigurationList_forTeams(t *testing.T) {
+	t.Parallel()
 	skipUnlessBeta(t)
 	client := testClient(t)
 	ctx := context.Background()
@@ -124,6 +126,7 @@ func TestNotificationConfigurationList_forTeams(t *testing.T) {
 }
 
 func TestNotificationConfigurationCreate(t *testing.T) {
+	t.Parallel()
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -307,6 +310,7 @@ func TestNotificationConfigurationsCreate_byType(t *testing.T) {
 }
 
 func TestNotificationConfigurationCreate_forTeams(t *testing.T) {
+	t.Parallel()
 	skipUnlessBeta(t)
 	client := testClient(t)
 	ctx := context.Background()
@@ -457,6 +461,7 @@ func TestNotificationConfigurationCreate_forTeams(t *testing.T) {
 }
 
 func TestNotificationConfigurationRead(t *testing.T) {
+	t.Parallel()
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -481,6 +486,7 @@ func TestNotificationConfigurationRead(t *testing.T) {
 }
 
 func TestNotificationConfigurationRead_forTeams(t *testing.T) {
+	t.Parallel()
 	skipUnlessBeta(t)
 	client := testClient(t)
 	ctx := context.Background()
@@ -514,6 +520,7 @@ func TestNotificationConfigurationRead_forTeams(t *testing.T) {
 }
 
 func TestNotificationConfigurationUpdate_forTeams(t *testing.T) {
+	t.Parallel()
 	skipUnlessBeta(t)
 	client := testClient(t)
 	ctx := context.Background()
@@ -624,6 +631,7 @@ func TestNotificationConfigurationUpdate_forTeams(t *testing.T) {
 }
 
 func TestNotificationConfigurationUpdate(t *testing.T) {
+	t.Parallel()
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -721,6 +729,7 @@ func TestNotificationConfigurationUpdate(t *testing.T) {
 }
 
 func TestNotificationConfigurationDelete(t *testing.T) {
+	t.Parallel()
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -749,6 +758,7 @@ func TestNotificationConfigurationDelete(t *testing.T) {
 }
 
 func TestNotificationConfigurationDelete_forTeams(t *testing.T) {
+	t.Parallel()
 	skipUnlessBeta(t)
 	client := testClient(t)
 	ctx := context.Background()
@@ -783,6 +793,7 @@ func TestNotificationConfigurationDelete_forTeams(t *testing.T) {
 }
 
 func TestNotificationConfigurationVerify(t *testing.T) {
+	t.Parallel()
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -806,6 +817,7 @@ func TestNotificationConfigurationVerify(t *testing.T) {
 }
 
 func TestNotificationConfigurationVerify_forTeams(t *testing.T) {
+	t.Parallel()
 	skipUnlessBeta(t)
 	client := testClient(t)
 	ctx := context.Background()

@@ -128,6 +128,7 @@ func TestPlanExportsDownload_RunDependent(t *testing.T) {
 }
 
 func TestPlanExport_Unmarshal(t *testing.T) {
+	t.Parallel()
 	data := map[string]interface{}{
 		"data": map[string]interface{}{
 			"type": "plan-exports",

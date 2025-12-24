@@ -15,6 +15,7 @@ import (
 )
 
 func TestTeamsList(t *testing.T) {
+	t.Parallel()
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -87,6 +88,7 @@ func TestTeamsList(t *testing.T) {
 }
 
 func TestTeamsCreate(t *testing.T) {
+	t.Parallel()
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -144,6 +146,7 @@ func TestTeamsCreate(t *testing.T) {
 }
 
 func TestTeamsRead(t *testing.T) {
+	t.Parallel()
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -209,6 +212,7 @@ func TestTeamsRead(t *testing.T) {
 }
 
 func TestTeamsUpdate(t *testing.T) {
+	t.Parallel()
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -290,6 +294,7 @@ func TestTeamsUpdate(t *testing.T) {
 }
 
 func TestTeamsDelete(t *testing.T) {
+	t.Parallel()
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -314,6 +319,7 @@ func TestTeamsDelete(t *testing.T) {
 }
 
 func TestTeam_Unmarshal(t *testing.T) {
+	t.Parallel()
 	data := map[string]interface{}{
 		"data": map[string]interface{}{
 			"type": "teams",
@@ -357,6 +363,7 @@ func TestTeam_Unmarshal(t *testing.T) {
 }
 
 func TestTeamCreateOptions_Marshal(t *testing.T) {
+	t.Parallel()
 	opts := TeamCreateOptions{
 		Name:                       String("team name"),
 		Visibility:                 String("organization"),
@@ -379,6 +386,7 @@ func TestTeamCreateOptions_Marshal(t *testing.T) {
 }
 
 func TestTeamsUpdateRunTasks(t *testing.T) {
+	t.Parallel()
 	skipUnlessBeta(t)
 	skipIfEnterprise(t)
 
@@ -420,6 +428,7 @@ func TestTeamsUpdateRunTasks(t *testing.T) {
 }
 
 func TestTeamsUpdateManageProjects(t *testing.T) {
+	t.Parallel()
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -460,6 +469,7 @@ func TestTeamsUpdateManageProjects(t *testing.T) {
 }
 
 func TestTeamsUpdateManageManageMembership(t *testing.T) {
+	t.Parallel()
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -495,6 +505,7 @@ func TestTeamsUpdateManageManageMembership(t *testing.T) {
 }
 
 func TestTeamsUpdateManageTeams(t *testing.T) {
+	t.Parallel()
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -535,6 +546,7 @@ func TestTeamsUpdateManageTeams(t *testing.T) {
 }
 
 func TestTeamsUpdateManageOrganizationAccess(t *testing.T) {
+	t.Parallel()
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -579,6 +591,7 @@ func TestTeamsUpdateManageOrganizationAccess(t *testing.T) {
 }
 
 func TestTeamsUpdateAccessSecretTeams(t *testing.T) {
+	t.Parallel()
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -624,6 +637,7 @@ func TestTeamsUpdateAccessSecretTeams(t *testing.T) {
 }
 
 func TestTeamsUpdateManageAgentPools(t *testing.T) {
+	t.Parallel()
 	client := testClient(t)
 	ctx := context.Background()
 

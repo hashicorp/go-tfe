@@ -12,6 +12,7 @@ import (
 )
 
 func TestAdminSettings_CostEstimation_Read(t *testing.T) {
+	t.Parallel()
 	skipUnlessEnterprise(t)
 
 	client := testClient(t)
@@ -24,6 +25,7 @@ func TestAdminSettings_CostEstimation_Read(t *testing.T) {
 }
 
 func TestAdminSettings_CostEstimation_Update(t *testing.T) {
+	t.Parallel()
 	skipUnlessEnterprise(t)
 
 	client := testClient(t)

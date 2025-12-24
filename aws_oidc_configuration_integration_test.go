@@ -12,6 +12,7 @@ import (
 // To run them locally, follow the instructions outlined in hyok_configuration_integration_test.go
 
 func TestAWSOIDCConfigurationCreateDelete(t *testing.T) {
+	t.Parallel()
 	skipHYOKIntegrationTests(t)
 
 	client := testClient(t)
@@ -43,6 +44,7 @@ func TestAWSOIDCConfigurationCreateDelete(t *testing.T) {
 }
 
 func TestAWSOIDCConfigurationRead(t *testing.T) {
+	t.Parallel()
 	skipHYOKIntegrationTests(t)
 
 	client := testClient(t)
@@ -66,6 +68,7 @@ func TestAWSOIDCConfigurationRead(t *testing.T) {
 }
 
 func TestAWSOIDCConfigurationsUpdate(t *testing.T) {
+	t.Parallel()
 	skipHYOKIntegrationTests(t)
 
 	client := testClient(t)
