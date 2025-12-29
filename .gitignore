@@ -6,3 +6,4 @@
 .vscode/settings.json
 .idea/
 .envrc
+api/.kiota.log
