@@ -22,6 +22,8 @@ type ItemAgentsRequestBuilderGetQueryParameters struct {
     Pagenumber *int32 `uriparametername:"page%5Bnumber%5D"`
     // If omitted, the endpoint will return 20 agents per page.
     Pagesize *int32 `uriparametername:"page%5Bsize%5D"`
+    // Allows sorting the returned agents. Valid value is "created-at". Prepending a hyphen to the sort parameter will reverse the order (e.g. "-name").
+    Sort *string `uriparametername:"sort"`
 }
 // ItemAgentsRequestBuilderGetRequestConfiguration configuration for the request such as headers, query parameters, and middleware options.
 type ItemAgentsRequestBuilderGetRequestConfiguration struct {
@@ -35,7 +37,7 @@ type ItemAgentsRequestBuilderGetRequestConfiguration struct {
 // NewItemAgentsRequestBuilderInternal instantiates a new ItemAgentsRequestBuilder and sets the default values.
 func NewItemAgentsRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*ItemAgentsRequestBuilder) {
     m := &ItemAgentsRequestBuilder{
-        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/agent-pools/{agent_pool_id}/agents{?filter%5Blast%2Dping%2Dsince%5D*,page%5Bnumber%5D*,page%5Bsize%5D*}", pathParameters),
+        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/agent-pools/{agent_pool_id}/agents{?filter%5Blast%2Dping%2Dsince%5D*,page%5Bnumber%5D*,page%5Bsize%5D*,sort*}", pathParameters),
     }
     return m
 }

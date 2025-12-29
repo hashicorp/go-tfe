@@ -10,8 +10,7 @@
     },
     "contact": {
       "name": "API Support",
-      "url": "https://developer.hashicorp.com/terraform/cloud-docs/api-docs",
-      "email": "support@hashicorp.com"
+      "url": "https://developer.hashicorp.com/terraform/cloud-docs/api-docs"
     }
   },
   "servers": [
@@ -42,6 +41,25 @@
       }
     },
     {
+      "name": "auditing",
+      "x-displayName": "Auditing",
+      "description": "Auditing actions",
+      "externalDocs": {
+        "url": "https://developer.hashicorp.com/terraform/cloud-docs/api-docs/audit-trails"
+      }
+    },
+    {
+      "name": "feature-sets",
+      "x-vis": [
+        "hcpt"
+      ],
+      "x-displayName": "Feature Sets",
+      "description": "Feature set actions representing different pricing plans",
+      "externalDocs": {
+        "url": "https://developer.hashicorp.com/terraform/cloud-docs/api-docs/feature-sets"
+      }
+    },
+    {
       "name": "configuration-versions",
       "x-displayName": "Configuration Versions",
       "description": "Configuration Version actions",
@@ -58,6 +76,30 @@
       }
     },
     {
+      "name": "organization-memberships",
+      "x-displayName": "Organization Memberships",
+      "description": "Organization membership management, including inviting and removing members",
+      "externalDocs": {
+        "url": "https://developer.hashicorp.com/terraform/cloud-docs/api-docs/organization-memberships"
+      }
+    },
+    {
+      "name": "projects",
+      "x-displayName": "Projects",
+      "description": "Project actions",
+      "externalDocs": {
+        "url": "https://developer.hashicorp.com/terraform/cloud-docs/api-docs/projects"
+      }
+    },
+    {
+      "name": "registry",
+      "x-displayName": "Registry",
+      "description": "Private Registry actions",
+      "externalDocs": {
+        "url": "https://developer.hashicorp.com/terraform/cloud-docs/registry"
+      }
+    },
+    {
       "name": "runs",
       "x-displayName": "Runs",
       "description": "Run actions",
@@ -66,11 +108,51 @@
       }
     },
     {
+      "name": "plans",
+      "x-displayName": "Plans",
+      "description": "Plan actions",
+      "externalDocs": {
+        "url": "https://developer.hashicorp.com/terraform/cloud-docs/api-docs/plans"
+      }
+    },
+    {
       "name": "applies",
       "x-displayName": "Applies",
       "description": "Applies",
       "externalDocs": {
         "url": "https://developer.hashicorp.com/terraform/cloud-docs/api-docs/applies"
+      }
+    },
+    {
+      "name": "authentication-tokens",
+      "x-displayName": "Authentication Tokens",
+      "description": "Authentication Token Actions",
+      "externalDocs": {
+        "url": "https://developer.hashicorp.com/terraform/cloud-docs/users-teams-organizations/api-tokens"
+      }
+    },
+    {
+      "name": "teams",
+      "x-displayName": "Teams",
+      "description": "Team management actions",
+      "externalDocs": {
+        "url": "https://developer.hashicorp.com/terraform/cloud-docs/api-docs/teams"
+      }
+    },
+    {
+      "name": "vcs",
+      "x-displayName": "Version Control System",
+      "description": "Operations related to VCS repositories and files",
+      "externalDocs": {
+        "url": "https://developer.hashicorp.com/terraform/cloud-docs/vcs"
+      }
+    },
+    {
+      "name": "queries",
+      "x-displayName": "Queries",
+      "description": "Query actions",
+      "externalDocs": {
+        "url": "https://developer.hashicorp.com/terraform/cloud-docs/api-docs/queries"
       }
     }
   ],
@@ -88,14 +170,26 @@
             "description": "Account details",
             "content": {
               "application/vnd.api+json": {
+                "examples": {
+                  "successResponse": {
+                    "summary": "Example successful response",
+                    "value": {
+                      "data": {
+                        "type": "users",
+                        "id": "user-12345678"
+                      }
+                    }
+                  }
+                },
                 "schema": {
+                  "description": "User resource representing the account details of the authenticated user.\nFor internal reasons, HCP Terraform associates team and organization tokens\nwith a synthetic user account called service user.\n",
                   "type": "object",
                   "required": [
                     "data"
                   ],
                   "properties": {
                     "data": {
-                      "$ref": "#/components/schemas/account"
+                      "$ref": "#/components/schemas/user"
                     }
                   }
                 }
@@ -145,7 +239,7 @@
                   ],
                   "properties": {
                     "data": {
-                      "$ref": "#/components/schemas/account"
+                      "$ref": "#/components/schemas/user"
                     }
                   }
                 }
@@ -189,7 +283,7 @@
             "content": {
               "application/vnd.api+json": {
                 "schema": {
-                  "$ref": "#/components/schemas/account"
+                  "$ref": "#/components/schemas/user"
                 }
               }
             }
@@ -259,6 +353,171 @@
           },
           "default": {
             "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/feature-sets": {
+      "x-vis": [
+        "hcpt"
+      ],
+      "get": {
+        "summary": "List Feature Sets",
+        "description": "Lists the feature sets available in HCP Terraform. Returns feature sets that are active, current, and public.",
+        "operationId": "listFeatureSets",
+        "tags": [
+          "feature-sets"
+        ],
+        "parameters": [
+          {
+            "name": "page[number]",
+            "in": "query",
+            "required": false,
+            "description": "The page number to request. If omitted, the endpoint will return the first page.",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "page[size]",
+            "in": "query",
+            "required": false,
+            "description": "The number of feature sets per page. If omitted, the endpoint will return 20 feature sets per page.",
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved feature sets",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/feature-set"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/organizations/{organization_name}/feature-sets": {
+      "x-vis": [
+        "hcpt"
+      ],
+      "get": {
+        "summary": "List Feature Sets for Organization",
+        "description": "Lists the feature sets a particular organization is eligible to access.",
+        "operationId": "listOrganizationFeatureSets",
+        "tags": [
+          "feature-sets"
+        ],
+        "parameters": [
+          {
+            "name": "organization_name",
+            "in": "path",
+            "required": true,
+            "description": "The name of the organization",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "page[number]",
+            "in": "query",
+            "required": false,
+            "description": "The page number to request. If omitted, the endpoint will return the first page.",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "page[size]",
+            "in": "query",
+            "required": false,
+            "description": "The number of feature sets per page. If omitted, the endpoint will return 20 feature sets per page.",
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved feature sets for the organization",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/feature-set"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Organization not found",
             "content": {
               "application/vnd.api+json": {
                 "schema": {
@@ -626,6 +885,15 @@
             },
             "required": false,
             "description": "If omitted, the endpoint will return 20 agents per page."
+          },
+          {
+            "in": "query",
+            "name": "sort",
+            "schema": {
+              "type": "string"
+            },
+            "required": false,
+            "description": "Allows sorting the returned agents. Valid value is \"created-at\". Prepending a hyphen to the sort parameter will reverse the order (e.g. \"-name\")."
           }
         ],
         "responses": {
@@ -759,6 +1027,18 @@
         "parameters": [
           {
             "in": "query",
+            "name": "include",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "subscription"
+              ]
+            },
+            "required": false,
+            "description": "Optionally side-load relationships of the specified name"
+          },
+          {
+            "in": "query",
             "name": "q",
             "schema": {
               "type": "string"
@@ -830,6 +1110,16 @@
                     },
                     "links": {
                       "$ref": "#/components/schemas/self-with-pagination"
+                    },
+                    "included": {
+                      "type": "array",
+                      "items": {
+                        "anyOf": [
+                          {
+                            "$ref": "#/components/schemas/subscription"
+                          }
+                        ]
+                      }
                     }
                   }
                 }
@@ -905,7 +1195,7 @@
         }
       }
     },
-    "/organizations/{organization_id}": {
+    "/organizations/{organization_name}": {
       "get": {
         "operationId": "getOrganization",
         "summary": "Get Organization details",
@@ -916,12 +1206,24 @@
         "parameters": [
           {
             "in": "path",
-            "name": "organization_id",
+            "name": "organization_name",
             "schema": {
               "type": "string"
             },
             "required": true,
-            "description": "Organization ID"
+            "description": "Organization Name"
+          },
+          {
+            "in": "query",
+            "name": "include",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "subscription"
+              ]
+            },
+            "required": false,
+            "description": "Optionally side-load relationships of the specified name"
           }
         ],
         "responses": {
@@ -937,6 +1239,16 @@
                   "properties": {
                     "data": {
                       "$ref": "#/components/schemas/organization"
+                    },
+                    "included": {
+                      "type": "array",
+                      "items": {
+                        "anyOf": [
+                          {
+                            "$ref": "#/components/schemas/subscription"
+                          }
+                        ]
+                      }
                     }
                   }
                 }
@@ -965,12 +1277,12 @@
         "parameters": [
           {
             "in": "path",
-            "name": "organization_id",
+            "name": "organization_name",
             "schema": {
               "type": "string"
             },
             "required": true,
-            "description": "Organization ID"
+            "description": "Organization Name"
           }
         ],
         "requestBody": {
@@ -1032,12 +1344,12 @@
         "parameters": [
           {
             "in": "path",
-            "name": "organization_id",
+            "name": "organization_name",
             "schema": {
               "type": "string"
             },
             "required": true,
-            "description": "Organization ID"
+            "description": "Organization Name"
           }
         ],
         "requestBody": {
@@ -1099,17 +1411,1285 @@
         "parameters": [
           {
             "in": "path",
-            "name": "organization_id",
+            "name": "organization_name",
             "schema": {
               "type": "string"
             },
             "required": true,
-            "description": "Organization ID"
+            "description": "Organization Name"
           }
         ],
         "responses": {
           "204": {
             "description": "Organization deleted"
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/organizations/{organization_name}/organization-memberships": {
+      "get": {
+        "operationId": "listOrganizationMemberships",
+        "summary": "List Organization Memberships",
+        "description": "List all memberships in an organization. This includes both active members and invited users who have not yet accepted their invitation.",
+        "tags": [
+          "organization-memberships"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "organization_name",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The name of the organization to list memberships for"
+          },
+          {
+            "in": "query",
+            "name": "q",
+            "schema": {
+              "type": "string"
+            },
+            "required": false,
+            "description": "A search query string. Memberships are searchable by user name or email (case-insensitive)."
+          },
+          {
+            "in": "query",
+            "name": "filter[status]",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "active",
+                "invited"
+              ]
+            },
+            "required": false,
+            "description": "Filter memberships by status. Can be \"active\" or \"invited\"."
+          },
+          {
+            "in": "query",
+            "name": "filter[email]",
+            "schema": {
+              "type": "string",
+              "format": "email"
+            },
+            "required": false,
+            "description": "Filter memberships by exact email address match."
+          },
+          {
+            "in": "query",
+            "name": "include",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "user",
+                "teams"
+              ]
+            },
+            "required": false,
+            "description": "Optionally side-load relationships. Can include \"user\" or \"teams\"."
+          },
+          {
+            "in": "query",
+            "name": "page[number]",
+            "schema": {
+              "type": "integer"
+            },
+            "required": false,
+            "description": "If omitted, the endpoint will return the first page."
+          },
+          {
+            "in": "query",
+            "name": "page[size]",
+            "schema": {
+              "type": "integer"
+            },
+            "required": false,
+            "description": "If omitted, the endpoint will return 20 memberships per page."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Organization memberships list",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "data"
+                  ],
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/organization-membership"
+                      }
+                    },
+                    "meta": {
+                      "type": "object",
+                      "properties": {
+                        "pagination": {
+                          "$ref": "#/components/schemas/pagination"
+                        }
+                      }
+                    },
+                    "links": {
+                      "$ref": "#/components/schemas/self-with-pagination"
+                    },
+                    "included": {
+                      "type": "array",
+                      "items": {
+                        "anyOf": [
+                          {
+                            "$ref": "#/components/schemas/user"
+                          },
+                          {
+                            "$ref": "#/components/schemas/team"
+                          },
+                          {
+                            "$ref": "#/components/schemas/organization"
+                          }
+                        ]
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid filter or include parameter",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Organization not found, or user unauthorized to perform action",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "operationId": "createOrganizationMembership",
+        "summary": "Invite a User to an Organization",
+        "description": "Invite a user to join an organization. Users can be invited by email address.",
+        "tags": [
+          "organization-memberships"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "organization_name",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The name of the organization the user will be invited to join"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/vnd.api+json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "data"
+                ],
+                "properties": {
+                  "data": {
+                    "type": "object",
+                    "required": [
+                      "type",
+                      "attributes"
+                    ],
+                    "properties": {
+                      "type": {
+                        "type": "string",
+                        "enum": [
+                          "organization-memberships"
+                        ]
+                      },
+                      "attributes": {
+                        "type": "object",
+                        "required": [
+                          "email"
+                        ],
+                        "properties": {
+                          "email": {
+                            "type": "string",
+                            "format": "email",
+                            "description": "The email address of the user to be invited"
+                          }
+                        }
+                      },
+                      "relationships": {
+                        "type": "object",
+                        "properties": {
+                          "teams": {
+                            "type": "object",
+                            "required": [
+                              "data"
+                            ],
+                            "description": "A list of teams the invited user will be a member of. All users must be added to at least one team.",
+                            "properties": {
+                              "data": {
+                                "type": "array",
+                                "items": {
+                                  "type": "object",
+                                  "required": [
+                                    "id",
+                                    "type"
+                                  ],
+                                  "properties": {
+                                    "id": {
+                                      "type": "string",
+                                      "description": "The team ID"
+                                    },
+                                    "type": {
+                                      "type": "string",
+                                      "enum": [
+                                        "teams"
+                                      ]
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "examples": {
+                "inviteUser": {
+                  "summary": "Invite a user to an organization with team memberships",
+                  "value": {
+                    "data": {
+                      "type": "organization-memberships",
+                      "attributes": {
+                        "email": "user@example.com"
+                      },
+                      "relationships": {
+                        "teams": {
+                          "data": [
+                            {
+                              "type": "teams",
+                              "id": "team-GeLZkdnK6xAVjA5H"
+                            },
+                            {
+                              "type": "teams",
+                              "id": "team-XxEoUFzP9pW3r5d1"
+                            }
+                          ]
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Successfully invited the user",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "data"
+                  ],
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/organization-membership"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Unable to invite user due to organization limits",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Organization not found, or user unauthorized to perform action",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Unable to invite user due to validation errors (e.g., invalid email, missing teams)",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/organization-memberships": {
+      "get": {
+        "operationId": "listUserOrganizationMemberships",
+        "summary": "List User's Own Organization Memberships",
+        "description": "List all organization memberships for the currently authenticated user.",
+        "tags": [
+          "organization-memberships"
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "include",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "user",
+                "teams",
+                "organization"
+              ]
+            },
+            "required": false,
+            "description": "Optionally side-load relationships. Can include \"user\", \"teams\", or \"organization\"."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "User's organization memberships list",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "data"
+                  ],
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/organization-membership"
+                      }
+                    },
+                    "included": {
+                      "type": "array",
+                      "items": {
+                        "anyOf": [
+                          {
+                            "$ref": "#/components/schemas/user"
+                          },
+                          {
+                            "$ref": "#/components/schemas/team"
+                          },
+                          {
+                            "$ref": "#/components/schemas/organization"
+                          }
+                        ]
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/organization-memberships/{organization_membership_id}": {
+      "get": {
+        "operationId": "getOrganizationMembership",
+        "summary": "Show Organization Membership",
+        "description": "Get details about a specific organization membership.",
+        "tags": [
+          "organization-memberships"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "organization_membership_id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The organization membership ID"
+          },
+          {
+            "in": "query",
+            "name": "include",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "user",
+                "teams"
+              ]
+            },
+            "required": false,
+            "description": "Optionally side-load relationships. Can include \"user\" or \"teams\"."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Organization membership details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "data"
+                  ],
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/organization-membership"
+                    },
+                    "included": {
+                      "type": "array",
+                      "items": {
+                        "anyOf": [
+                          {
+                            "$ref": "#/components/schemas/user"
+                          },
+                          {
+                            "$ref": "#/components/schemas/team"
+                          }
+                        ]
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Organization membership not found, or user unauthorized to perform action",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "operationId": "deleteOrganizationMembership",
+        "summary": "Remove User from Organization",
+        "description": "Remove a user from an organization. You cannot remove yourself from organizations which you own.",
+        "tags": [
+          "organization-memberships"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "organization_membership_id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The organization membership ID"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successfully removed the user from the organization"
+          },
+          "403": {
+            "description": "Unable to remove the user. You cannot remove yourself from organizations which you own.",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Organization membership not found, or user unauthorized to perform action",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/organizations/{organization_name}/projects": {
+      "get": {
+        "operationId": "listProjects",
+        "summary": "List Projects",
+        "description": "List all projects in an organization.",
+        "tags": [
+          "projects"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "organization_name",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The name of the organization."
+          },
+          {
+            "in": "query",
+            "name": "page[number]",
+            "schema": {
+              "type": "integer"
+            },
+            "required": false,
+            "description": "Page number for pagination."
+          },
+          {
+            "in": "query",
+            "name": "page[size]",
+            "schema": {
+              "type": "integer"
+            },
+            "required": false,
+            "description": "Page size for pagination."
+          },
+          {
+            "in": "query",
+            "name": "filter[names]",
+            "schema": {
+              "type": "string"
+            },
+            "required": false,
+            "description": "Comma-separated list of project names to filter by."
+          },
+          {
+            "in": "query",
+            "name": "filter[permissions][create-workspace]",
+            "schema": {
+              "type": "boolean"
+            },
+            "required": false,
+            "description": "If present, returns a list of projects that the authenticated user can create workspaces in."
+          },
+          {
+            "in": "query",
+            "name": "filter[permissions][update]",
+            "schema": {
+              "type": "boolean"
+            },
+            "required": false,
+            "description": "If present, returns a list of projects that the authenticated user can update."
+          },
+          {
+            "in": "query",
+            "name": "sort",
+            "schema": {
+              "type": "string"
+            },
+            "required": false,
+            "description": "Optional. Allows sorting the organization's projects by \"name\". Prepending a hyphen to the sort parameter reverses the order. For example, \"-name\" sorts by name in reverse alphabetical order. If omitted, the default sort order is arbitrary but stable.\n"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of projects",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/project"
+                      }
+                    },
+                    "links": {
+                      "$ref": "#/components/schemas/self-with-pagination"
+                    },
+                    "meta": {
+                      "$ref": "#/components/schemas/pagination"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "operationId": "createProject",
+        "summary": "Create a Project",
+        "description": "Create a new project in an organization.",
+        "tags": [
+          "projects"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "organization_name",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The name of the organization."
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/vnd.api+json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "data"
+                ],
+                "properties": {
+                  "data": {
+                    "type": "object",
+                    "required": [
+                      "type",
+                      "attributes"
+                    ],
+                    "properties": {
+                      "type": {
+                        "type": "string",
+                        "enum": [
+                          "projects"
+                        ]
+                      },
+                      "attributes": {
+                        "type": "object",
+                        "properties": {
+                          "name": {
+                            "type": "string"
+                          },
+                          "description": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "auto-destroy-activity-duration": {
+                            "type": "string",
+                            "nullable": true
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Project created",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/project"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/projects/{project_id}": {
+      "get": {
+        "operationId": "getProject",
+        "summary": "Get Project",
+        "description": "Get details of a specific project.",
+        "tags": [
+          "projects"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "project_id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The ID of the project."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Project details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/project"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "operationId": "updateProject",
+        "summary": "Update Project",
+        "description": "Update an existing project.",
+        "tags": [
+          "projects"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "project_id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The ID of the project."
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/vnd.api+json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "data"
+                ],
+                "properties": {
+                  "data": {
+                    "type": "object",
+                    "required": [
+                      "type",
+                      "attributes"
+                    ],
+                    "properties": {
+                      "type": {
+                        "type": "string",
+                        "enum": [
+                          "projects"
+                        ]
+                      },
+                      "attributes": {
+                        "type": "object",
+                        "properties": {
+                          "name": {
+                            "type": "string"
+                          },
+                          "description": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "auto-destroy-activity-duration": {
+                            "type": "string",
+                            "nullable": true
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Project updated",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/project"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "operationId": "deleteProject",
+        "summary": "Delete Project",
+        "description": "Delete a project.",
+        "tags": [
+          "projects"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "project_id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The ID of the project."
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Project deleted"
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/projects/{project_id}/relationships/workspaces": {
+      "post": {
+        "operationId": "moveWorkspacesIntoProject",
+        "summary": "Move Workspaces into a Project",
+        "description": "Move one or more workspaces into a project. You must have permission to move workspaces on the destination project as well as any source project(s). If you are not authorized to move any of the workspaces in the request, or if any workspaces in the request are not found, then no workspaces will be moved.\n",
+        "tags": [
+          "projects"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "project_id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The ID of the destination project."
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/vnd.api+json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "data"
+                ],
+                "properties": {
+                  "data": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "required": [
+                        "type",
+                        "id"
+                      ],
+                      "properties": {
+                        "type": {
+                          "type": "string",
+                          "enum": [
+                            "workspaces"
+                          ]
+                        },
+                        "id": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "Successfully moved workspace(s)."
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/workspaces/{workspace_id}/queries": {
+      "x-vs": [
+        "internal-beta"
+      ],
+      "get": {
+        "operationId": "getWorkspaceQueries",
+        "summary": "Get Queries for a Workspace",
+        "description": "Get list of queries for a particular workspace.",
+        "tags": [
+          "queries"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "workspace_id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The id of the workspace."
+          },
+          {
+            "in": "query",
+            "name": "page[number]",
+            "schema": {
+              "type": "integer"
+            },
+            "required": false,
+            "description": "Page number for pagination."
+          },
+          {
+            "in": "query",
+            "name": "page[size]",
+            "schema": {
+              "type": "integer"
+            },
+            "required": false,
+            "description": "Page size for pagination."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of Queries",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/query"
+                      }
+                    },
+                    "links": {
+                      "$ref": "#/components/schemas/self-with-pagination"
+                    },
+                    "meta": {
+                      "$ref": "#/components/schemas/pagination"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/workspaces/{workspace_id}/all-vars": {
+      "get": {
+        "operationId": "listAllVars",
+        "summary": "List All Variables Accessible to a Workspace",
+        "description": "This API returns the list of all variables that are accessible to a workspace. This includes variables defined directly on the workspace as well as variables inherited from any variable sets attached to the workspace.",
+        "tags": [
+          "vars"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "workspace_id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The external ID of the workspace."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of all variables accessible to a workspace",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "data"
+                  ],
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/var"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/workspaces/{workspace_id}/resources": {
+      "get": {
+        "operationId": "listWorkspaceResources",
+        "summary": "List Workspace Resources",
+        "description": "List all resources in a workspace's current state.",
+        "tags": [
+          "workspaces"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "workspace_id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The ID of the workspace to retrieve resources from."
+          },
+          {
+            "in": "query",
+            "name": "q",
+            "schema": {
+              "type": "string"
+            },
+            "required": false,
+            "description": "Optional search query to filter resources by address pattern."
+          },
+          {
+            "in": "query",
+            "name": "sort",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "name:asc",
+                "name:desc",
+                "nameIndex:asc",
+                "nameIndex:desc",
+                "provider:asc",
+                "provider:desc",
+                "providerType:asc",
+                "providerType:desc",
+                "module:asc",
+                "module:desc",
+                "updatedAt:asc",
+                "updatedAt:desc"
+              ]
+            },
+            "required": false,
+            "description": "Optional sort parameter. Allows sorting workspace resources by name, nameIndex, provider,  providerType, module, or updatedAt. Format is \"field:order\" where order is \"asc\" or \"desc\".\n"
+          },
+          {
+            "in": "query",
+            "name": "page[number]",
+            "schema": {
+              "type": "integer"
+            },
+            "required": false,
+            "description": "Page number for pagination. If omitted, returns the first page."
+          },
+          {
+            "in": "query",
+            "name": "page[size]",
+            "schema": {
+              "type": "integer"
+            },
+            "required": false,
+            "description": "Number of resources per page. If omitted, returns 20 resources per page."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of workspace resources",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/workspace-resource"
+                      }
+                    },
+                    "links": {
+                      "$ref": "#/components/schemas/self-with-pagination"
+                    },
+                    "meta": {
+                      "type": "object",
+                      "properties": {
+                        "pagination": {
+                          "$ref": "#/components/schemas/pagination"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Workspace not found or user unauthorized to perform action",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
           },
           "default": {
             "description": "Error details",
@@ -1328,7 +2908,7 @@
       "get": {
         "operationId": "getRunConfigurationVersion",
         "summary": "Get Run Configuration Version",
-        "description": "Retrieve details of a specific configuration version.",
+        "description": "Get details of a specific configuration version.",
         "tags": [
           "configuration-versions"
         ],
@@ -1677,6 +3257,276 @@
         }
       }
     },
+    "/plans/{id}": {
+      "get": {
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "The ID of the plan to show.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "operationId": "showPlan",
+        "summary": "Show a plan",
+        "description": "This endpoint returns a specific plan by its ID.",
+        "tags": [
+          "plans"
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully returned the plan.",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/plan"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/plans/{id}/json-output": {
+      "get": {
+        "operationId": "getPlanJSONOutput",
+        "summary": "Get the JSON execution plan",
+        "description": "This endpoint generates a temporary authenticated URL to the location of the JSON formatted execution plan.\nWhen successful, this endpoint responds with a temporary redirect that should be followed.\n\nThis endpoint is available for plans using Terraform 0.12 and later.\nThe temporary URL has a life of 1 minute and should not be relied upon beyond the initial request.\n",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "The ID of the plan to show.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "tags": [
+          "plans"
+        ],
+        "responses": {
+          "204": {
+            "description": "Plan JSON supported, but plan has not yet completed."
+          },
+          "307": {
+            "description": "Plan JSON found and temporary download URL generated.",
+            "headers": {
+              "Location": {
+                "description": "Temporary URL to download the JSON output",
+                "schema": {
+                  "type": "string",
+                  "format": "uri"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Plan does not use a supported version of Terraform (< 0.12.X).",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/runs/{id}/plan/json-schema": {
+      "get": {
+        "operationId": "getPlanJSONSchemaOutput",
+        "summary": "Get the JSON provider schema corresponding to a plan",
+        "description": "This endpoint generates a temporary authenticated URL to the location of the JSON formatted provider schema.\nWhen successful, this endpoint responds with a temporary redirect that should be followed.\n\nThis endpoint is available for plans using Terraform 0.12 and later.\nThe temporary URL has a life of 1 minute and should not be relied upon beyond the initial request.\n",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "The ID of the plan to show.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "tags": [
+          "plans"
+        ],
+        "responses": {
+          "204": {
+            "description": "Plan JSON supported, but plan has not yet completed."
+          },
+          "307": {
+            "description": "Plan JSON found and temporary download URL generated.",
+            "headers": {
+              "Location": {
+                "description": "Temporary URL to download the JSON schema output",
+                "schema": {
+                  "type": "string",
+                  "format": "uri"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Plan does not use a supported version of Terraform (< 0.12.X).",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/runs/{id}/plan": {
+      "get": {
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "The ID of the run whose plan you want to get.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "operationId": "getRunPlan",
+        "summary": "Get a plan by Run ID",
+        "description": "This endpoint returns a specific plan by its run ID.",
+        "tags": [
+          "plans"
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully returned the plan.",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/plan"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/runs/{id}/plan/json-output": {
+      "get": {
+        "operationId": "getRunPlanJsonOutput",
+        "summary": "Get the JSON execution plan by Run ID",
+        "description": "This endpoint generates a temporary authenticated URL to the location of the JSON formatted execution plan.\nWhen successful, this endpoint responds with a temporary redirect that should be followed.\n\nThis endpoint is available for plans using Terraform 0.12 and later.\nThe temporary URL has a life of 1 minute and should not be relied upon beyond the initial request.\n",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "The ID of the run whose plan json you want to get.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "tags": [
+          "plans"
+        ],
+        "responses": {
+          "204": {
+            "description": "Plan JSON supported, but plan has not yet completed."
+          },
+          "307": {
+            "description": "Plan JSON found and temporary download URL generated.",
+            "headers": {
+              "Location": {
+                "description": "Temporary URL to download the JSON output",
+                "schema": {
+                  "type": "string",
+                  "format": "uri"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Plan does not use a supported version of Terraform (< 0.12.X).",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/applies/{id}": {
       "get": {
         "summary": "Show an apply",
@@ -1765,6 +3615,1194 @@
                       "$ref": "#/components/schemas/errors"
                     }
                   }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/authentication-tokens/{id}": {
+      "get": {
+        "operationId": "getAuthenticationToken",
+        "summary": "Get authentication token details",
+        "description": "Get details about an authentication token",
+        "tags": [
+          "authentication-tokens"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "ID - Can be a token ID or a team ID, depending on the token type"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Authentication Token details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "data"
+                  ],
+                  "properties": {
+                    "included": {
+                      "type": "array",
+                      "items": {
+                        "anyOf": [
+                          {
+                            "$ref": "#/components/schemas/authentication-token"
+                          }
+                        ]
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error Details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "operationId": "createAuthenticationToken",
+        "summary": "Create Authentication Token",
+        "description": "Create an authentication token",
+        "tags": [
+          "authentication-tokens"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "ID - Can be a token ID or a team ID, depending on the token type"
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Authentication token created",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "data"
+                  ],
+                  "properties": {
+                    "included": {
+                      "type": "array",
+                      "items": {
+                        "anyOf": [
+                          {
+                            "$ref": "#/components/schemas/authentication-token"
+                          }
+                        ]
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "operationId": "deleteAuthenticationToken",
+        "summary": "Delete authentication Token",
+        "description": "Delete an authentication token",
+        "tags": [
+          "authentication-tokens"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "ID - Can be a token ID or a team ID, depending on the token type"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Authentication token deleted"
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users/{user_id}/authentication-tokens": {
+      "get": {
+        "operationId": "listUserTokens",
+        "summary": "List User Tokens",
+        "description": "List all tokens for a specified user",
+        "tags": [
+          "authentication-tokens"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "user_id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "User ID"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/authentication-token"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "operationId": "createUserToken",
+        "summary": "Create User Token",
+        "description": "Create a user token",
+        "tags": [
+          "authentication-tokens"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "user_id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "User ID"
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "User token created",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "data"
+                  ],
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/authentication-token"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/agent-pools/{agent_pool_id}/authentication-tokens": {
+      "get": {
+        "operationId": "listAgentTokens",
+        "summary": "List Agent Tokens",
+        "description": "List all tokens for the specified agent pool.",
+        "tags": [
+          "authentication-tokens"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "agent_pool_id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The ID of the Agent Pool"
+          },
+          {
+            "in": "query",
+            "name": "page[number]",
+            "schema": {
+              "type": "integer"
+            },
+            "required": false,
+            "description": "If omitted, the endpoint will return the first page."
+          },
+          {
+            "in": "query",
+            "name": "page[size]",
+            "schema": {
+              "type": "integer"
+            },
+            "required": false,
+            "description": "If omitted, the endpoint will return 20 agents per page."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/authentication-token"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "operationId": "createAgentToken",
+        "summary": "Create Agent Token",
+        "description": "Create an agent token",
+        "tags": [
+          "authentication-tokens"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "agent_pool_id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The ID of the Agent Pool"
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Agent token created",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "data"
+                  ],
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/authentication-token"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Agent Pool not found or user unauthorized to perform action"
+          },
+          "422": {
+            "description": "Malformed request body (missing attributes, wrong types, etc.)"
+          },
+          "500": {
+            "description": "Failure during Agent Token creation"
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/teams/{id}/authentication-token": {
+      "get": {
+        "operationId": "getAuthenticationToken",
+        "summary": "Get authentication token details",
+        "description": "Get details about an authentication token",
+        "tags": [
+          "authentication-tokens"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "ID - Can be a token ID or a team ID, depending on the token type"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Authentication Token details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "data"
+                  ],
+                  "properties": {
+                    "included": {
+                      "type": "array",
+                      "items": {
+                        "anyOf": [
+                          {
+                            "$ref": "#/components/schemas/authentication-token"
+                          }
+                        ]
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error Details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "operationId": "createAuthenticationToken",
+        "summary": "Create Authentication Token",
+        "description": "Create an authentication token",
+        "tags": [
+          "authentication-tokens"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "ID - Can be a token ID or a team ID, depending on the token type"
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Authentication token created",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "data"
+                  ],
+                  "properties": {
+                    "included": {
+                      "type": "array",
+                      "items": {
+                        "anyOf": [
+                          {
+                            "$ref": "#/components/schemas/authentication-token"
+                          }
+                        ]
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "operationId": "deleteAuthenticationToken",
+        "summary": "Delete authentication Token",
+        "description": "Delete an authentication token",
+        "tags": [
+          "authentication-tokens"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "ID - Can be a token ID or a team ID, depending on the token type"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Authentication token deleted"
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/organizations/{organization_name}/authentication-token": {
+      "get": {
+        "operationId": "getOrganizationToken",
+        "summary": "Get organization token details",
+        "description": "Get details about an organization token",
+        "tags": [
+          "authentication-tokens"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "organization_name",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "Organization name"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Organization Token details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "data"
+                  ],
+                  "properties": {
+                    "included": {
+                      "type": "array",
+                      "items": {
+                        "oneOf": [
+                          {
+                            "$ref": "#/components/schemas/authentication-token"
+                          }
+                        ]
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error Details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "operationId": "createOrganizationToken",
+        "summary": "Create Organization Token",
+        "description": "Create an organization token",
+        "tags": [
+          "authentication-tokens"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "organization_name",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "Organization name"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Organization token created",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "data"
+                  ],
+                  "properties": {
+                    "included": {
+                      "type": "array",
+                      "items": {
+                        "oneOf": [
+                          {
+                            "$ref": "#/components/schemas/authentication-token"
+                          }
+                        ]
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "operationId": "deleteOrganizationToken",
+        "summary": "Delete organization Token",
+        "description": "Delete an organization token",
+        "tags": [
+          "authentication-tokens"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "organization_name",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "Organization name"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Organization token deleted"
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/organizations/{organization_name}/team-tokens": {
+      "get": {
+        "operationId": "listTeamTokensForAnOrganization",
+        "summary": "List Team Tokens for an Organization",
+        "description": "List all tokens for a specified organization",
+        "tags": [
+          "authentication-tokens"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "organization_name",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "Organization Name"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/authentication-token"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/organizations/{organization_name}/teams": {
+      "get": {
+        "operationId": "listTeams",
+        "summary": "List Teams",
+        "description": "List teams in an organization. Any member of an organization can view visible teams and any secret teams they are a member of.",
+        "tags": [
+          "teams"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "organization_name",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "Name of the organization"
+          },
+          {
+            "in": "query",
+            "name": "q",
+            "schema": {
+              "type": "string"
+            },
+            "required": false,
+            "description": "A search query string. Teams are searchable by name (case-insensitive)."
+          },
+          {
+            "in": "query",
+            "name": "filter[names]",
+            "schema": {
+              "type": "string"
+            },
+            "required": false,
+            "description": "If specified, restricts results to a team with a matching name. If multiple comma separated values are specified, teams matching any of the names are returned."
+          },
+          {
+            "in": "query",
+            "name": "include",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "users",
+                "organization-memberships"
+              ]
+            },
+            "required": false,
+            "description": "Optionally side-load relationships. Can include \"users\" or \"organization-memberships\"."
+          },
+          {
+            "in": "query",
+            "name": "page[number]",
+            "schema": {
+              "type": "integer"
+            },
+            "required": false,
+            "description": "If omitted, the endpoint will return the first page."
+          },
+          {
+            "in": "query",
+            "name": "page[size]",
+            "schema": {
+              "type": "integer"
+            },
+            "required": false,
+            "description": "If omitted, the endpoint will return 20 teams per page."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Teams list",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "data"
+                  ],
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/team"
+                      }
+                    },
+                    "meta": {
+                      "type": "object",
+                      "properties": {
+                        "pagination": {
+                          "$ref": "#/components/schemas/pagination"
+                        }
+                      }
+                    },
+                    "links": {
+                      "$ref": "#/components/schemas/self-with-pagination"
+                    },
+                    "included": {
+                      "type": "array",
+                      "items": {
+                        "anyOf": [
+                          {
+                            "$ref": "#/components/schemas/user"
+                          },
+                          {
+                            "$ref": "#/components/schemas/organization-membership"
+                          }
+                        ]
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid include parameter",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Organization not found, or user unauthorized to perform action",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "operationId": "createTeam",
+        "summary": "Create Team",
+        "description": "Create a team in an organization.",
+        "tags": [
+          "teams"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "organization_name",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "Name of the organization"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/vnd.api+json": {
+              "schema": {
+                "$ref": "#/components/schemas/team"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Team created successfully",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "data"
+                  ],
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/team"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid include parameter",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Organization not found, or user unauthorized to perform action",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Malformed request body (missing attributes, wrong types, etc.)",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/teams/{team_id}": {
+      "get": {
+        "operationId": "getTeam",
+        "summary": "Show Team Information",
+        "description": "Get details about a team.",
+        "tags": [
+          "teams"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "team_id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "Team ID"
+          },
+          {
+            "in": "query",
+            "name": "include",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "users",
+                "organization-memberships"
+              ]
+            },
+            "required": false,
+            "description": "Optionally side-load relationships. Can include \"users\" or \"organization-memberships\"."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Team details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "data"
+                  ],
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/team"
+                    },
+                    "included": {
+                      "type": "array",
+                      "items": {
+                        "anyOf": [
+                          {
+                            "$ref": "#/components/schemas/user"
+                          },
+                          {
+                            "$ref": "#/components/schemas/organization-membership"
+                          }
+                        ]
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid include parameter",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Team not found, or user unauthorized to perform action",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "operationId": "updateTeam",
+        "summary": "Update Team",
+        "description": "Update a team's attributes.",
+        "tags": [
+          "teams"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "team_id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "Team ID"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/vnd.api+json": {
+              "schema": {
+                "$ref": "#/components/schemas/team"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Team updated successfully",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "data"
+                  ],
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/team"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid include parameter",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Team not found, or user unauthorized to perform action",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Malformed request body (missing attributes, wrong types, etc.)",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "operationId": "deleteTeam",
+        "summary": "Delete Team",
+        "description": "Delete a team. Only organization owners can delete teams.",
+        "tags": [
+          "teams"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "team_id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "Team ID"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Team deleted successfully"
+          },
+          "404": {
+            "description": "Team not found, or user unauthorized to perform action",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
                 }
               }
             }
@@ -1926,7 +4964,7 @@
       "get": {
         "operationId": "getConfigurationVersion",
         "summary": "Get Configuration Version",
-        "description": "Retrieve details of a specific configuration version.",
+        "description": "Get details of a specific configuration version.",
         "tags": [
           "configuration-versions"
         ],
@@ -1977,7 +5015,7 @@
       "get": {
         "operationId": "getIngressAttributes",
         "summary": "Get Ingress Attributes",
-        "description": "Retrieve commit information for a configuration version.",
+        "description": "Get commit information for a configuration version.",
         "tags": [
           "configuration-versions"
         ],
@@ -2105,6 +5143,286 @@
           }
         }
       }
+    },
+    "/organizations/{organization_name}/vcs/tree": {
+      "get": {
+        "operationId": "getVcsTree",
+        "summary": "List directories in a repository",
+        "description": "This endpoint returns a list of directories in a repository \nat the root or at a specific reference (branch, tag, or commit SHA).\nNote: This endpoint only returns directories, not files.\n",
+        "tags": [
+          "vcs"
+        ],
+        "parameters": [
+          {
+            "name": "organization_name",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The name of the organization"
+          },
+          {
+            "name": "oauth_token_id",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The OAuth token ID to authenticate with the VCS provider"
+          },
+          {
+            "name": "identifier",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The repository identifier (e.g., \"owner/repo\")"
+          },
+          {
+            "name": "branch",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The branch, tag, or commit SHA to list directories for. \nIf not provided, the default branch will be used.\n"
+          },
+          {
+            "name": "githubAppInstallationId",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The GitHub App installation ID (only needed when using GitHub App authentication)"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved repository directories",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "string",
+                            "description": "Unique identifier for the directory"
+                          },
+                          "type": {
+                            "type": "string",
+                            "enum": [
+                              "vcs-tree"
+                            ]
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Repository not found or user doesn't have access"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/organizations/{organization_name}/vcs/repo": {
+      "get": {
+        "operationId": "checkVcsRepository",
+        "summary": "Check if a repository exists",
+        "description": "This endpoint checks if a repository exists and is accessible to the user.\n",
+        "tags": [
+          "vcs"
+        ],
+        "parameters": [
+          {
+            "name": "organization_name",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The name of the organization"
+          },
+          {
+            "name": "oauth_token_id",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The OAuth token ID to authenticate with the VCS provider"
+          },
+          {
+            "name": "identifier",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The repository identifier (e.g., \"owner/repo\")"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully checked repository existence",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "string",
+                          "description": "An identifier for the repository check (typically the repository identifier)"
+                        },
+                        "type": {
+                          "type": "string",
+                          "enum": [
+                            "vcs-repo-check"
+                          ]
+                        },
+                        "attributes": {
+                          "type": "object",
+                          "properties": {
+                            "exists": {
+                              "type": "boolean",
+                              "description": "Whether the repository exists and is accessible"
+                            },
+                            "identifier": {
+                              "type": "string",
+                              "description": "The repository identifier that was checked"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "OAuth token not found or user doesn't have access"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/organizations/{organization_name}/registry-modules/validation": {
+      "get": {
+        "operationId": "validateRegistryModuleNames",
+        "summary": "Check if a module name and provider combination is available",
+        "description": "This endpoint checks if a module name and provider combination is available for use within an organization.\nIt returns a validation result indicating whether the name is already in use.\n",
+        "tags": [
+          "registry"
+        ],
+        "parameters": [
+          {
+            "name": "organization_name",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The name of the organization"
+          },
+          {
+            "name": "name",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The name of the module to validate"
+          },
+          {
+            "name": "provider",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The provider of the module to validate"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully validated the module name and provider",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "string",
+                          "description": "A unique identifier for this validation result"
+                        },
+                        "type": {
+                          "type": "string",
+                          "enum": [
+                            "registry-module-address-validations"
+                          ]
+                        },
+                        "attributes": {
+                          "type": "object",
+                          "properties": {
+                            "module-name": {
+                              "type": "string",
+                              "description": "The module name that was validated"
+                            },
+                            "provider-name": {
+                              "type": "string",
+                              "description": "The provider name that was validated"
+                            },
+                            "valid": {
+                              "type": "boolean",
+                              "description": "Whether the module name and provider combination is available"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Organization not found"
+          }
+        }
+      }
     }
   },
   "components": {
@@ -2127,6 +5445,9 @@
                   "type": "string"
                 },
                 "title": {
+                  "type": "string"
+                },
+                "detail": {
                   "type": "string"
                 }
               }
@@ -2158,7 +5479,7 @@
           }
         }
       },
-      "account": {
+      "user": {
         "type": "object",
         "required": [
           "id",
@@ -2186,6 +5507,7 @@
                 "nullable": true
               },
               "is-service-account": {
+                "description": "Indicates whether this user is a synthetic user representing a team or organization.",
                 "type": "boolean"
               },
               "avatar-url": {
@@ -2279,9 +5601,6 @@
                     "type": "boolean"
                   },
                   "can-view-cost-estimation-settings": {
-                    "type": "boolean"
-                  },
-                  "can-view-capabilities": {
                     "type": "boolean"
                   },
                   "can-view-tool-versions": {
@@ -2430,14 +5749,17 @@
               "attributes": {
                 "type": "object",
                 "properties": {
-                  "current-password": {
-                    "type": "string"
+                  "current_password": {
+                    "type": "string",
+                    "description": "The user's current password. Unlike most API dataattributes, this one uses underscore_case instead of kebab-case."
                   },
                   "password": {
-                    "type": "string"
+                    "type": "string",
+                    "description": "The user's new password."
                   },
-                  "password-confirmation": {
-                    "type": "string"
+                  "password_confirmation": {
+                    "type": "string",
+                    "description": "The confirmation of the user's new password. Unlike most API data attributes, this one uses underscore_case instead of kebab-case."
                   }
                 }
               }
@@ -2466,24 +5788,36 @@
                 ]
               }
             }
+          },
+          "links": {
+            "$ref": "#/components/schemas/related"
           }
         }
       },
       "feature-sets-id": {
         "type": "object",
+        "nullable": true,
         "required": [
-          "id",
-          "type"
+          "data"
         ],
         "properties": {
-          "id": {
-            "type": "string"
-          },
-          "type": {
-            "type": "string",
-            "enum": [
-              "feature-sets"
-            ]
+          "data": {
+            "type": "object",
+            "required": [
+              "id",
+              "type"
+            ],
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "type": {
+                "type": "string",
+                "enum": [
+                  "feature-sets"
+                ]
+              }
+            }
           }
         }
       },
@@ -2615,6 +5949,221 @@
             }
           }
         }
+      },
+      "feature-set": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "The external ID of the feature set"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "feature-sets"
+            ]
+          },
+          "attributes": {
+            "type": "object",
+            "properties": {
+              "assessments": {
+                "type": "boolean",
+                "description": "Whether the feature set includes assessments"
+              },
+              "audit-logging": {
+                "type": "boolean",
+                "description": "Whether the feature set includes audit logging"
+              },
+              "can-self-service-downgrade": {
+                "type": "boolean",
+                "description": "Whether the organization can self-service downgrade from this feature set"
+              },
+              "change-requests": {
+                "type": "boolean",
+                "description": "Whether the feature set includes change requests"
+              },
+              "concurrency-override": {
+                "type": "boolean",
+                "description": "Whether concurrency can be overridden for this feature set"
+              },
+              "cost": {
+                "type": "number",
+                "description": "The cost of the feature set in cents"
+              },
+              "cost-estimation": {
+                "type": "boolean",
+                "description": "Whether the feature set includes cost estimation"
+              },
+              "default-agents-ceiling": {
+                "type": "number",
+                "description": "Default maximum number of concurrent agents"
+              },
+              "default-runs-ceiling": {
+                "type": "number",
+                "description": "Default maximum number of concurrent runs"
+              },
+              "description": {
+                "type": "string",
+                "description": "Description of the feature set"
+              },
+              "global-run-tasks": {
+                "type": "boolean",
+                "description": "Whether the feature set includes global run tasks"
+              },
+              "hyok": {
+                "type": "boolean",
+                "description": "Whether the feature set includes Hold Your Own Key encryption"
+              },
+              "identifier": {
+                "type": "string",
+                "description": "Unique identifier for the feature set"
+              },
+              "invoke-terraform-action": {
+                "type": "boolean",
+                "description": "Whether the feature set includes action invocations"
+              },
+              "is-current": {
+                "type": "boolean",
+                "description": "Whether this is a current/active feature set"
+              },
+              "is-free-tier": {
+                "type": "boolean",
+                "description": "Whether this is a free tier feature set"
+              },
+              "is-managed-resource-plan": {
+                "type": "boolean",
+                "description": "Whether this is a managed resource plan"
+              },
+              "module-deprecations": {
+                "type": "boolean",
+                "description": "Whether this feature set includes module deprecations"
+              },
+              "module-revocations": {
+                "type": "boolean",
+                "description": "Whether this feature set includes module revocations"
+              },
+              "module-tests-agent-support": {
+                "type": "boolean"
+              },
+              "module-tests-generation": {
+                "type": "boolean",
+                "description": "Whether the feature set includes module test generation"
+              },
+              "name": {
+                "type": "string",
+                "description": "Name of the feature set"
+              },
+              "no-code-modules": {
+                "type": "boolean",
+                "description": "Whether the feature set includes no-code modules"
+              },
+              "plan": {
+                "type": "string",
+                "nullable": true,
+                "description": "Associated plan ID"
+              },
+              "policy-enforcement": {
+                "type": "boolean",
+                "description": "Whether the feature set includes policy enforcement"
+              },
+              "policy-limit": {
+                "type": "number",
+                "nullable": true,
+                "description": "Maximum number of policies (null means unlimited)"
+              },
+              "policy-mandatory-enforcement-limit": {
+                "type": "number",
+                "nullable": true,
+                "description": "Maximum number of mandatory enforcement policies (null means unlimited)"
+              },
+              "policy-set-limit": {
+                "type": "number",
+                "nullable": true,
+                "description": "Maximum number of policy sets (null means unlimited)"
+              },
+              "private-networking": {
+                "type": "boolean",
+                "description": "Whether the feature set includes private networking"
+              },
+              "private-policy-agents": {
+                "type": "boolean",
+                "description": "Whether the feature set includes private policy agents"
+              },
+              "private-run-tasks": {
+                "type": "boolean",
+                "description": "Whether the feature set includes private run tasks"
+              },
+              "private-vcs": {
+                "type": "boolean",
+                "description": "Whether the feature set includes private VCS"
+              },
+              "run-task-limit": {
+                "type": "number",
+                "nullable": true,
+                "description": "Maximum number of run tasks (null means unlimited)"
+              },
+              "run-task-mandatory-enforcement-limit": {
+                "type": "number",
+                "nullable": true,
+                "description": "Maximum number of mandatory enforcement run tasks (null means unlimited)"
+              },
+              "run-task-workspace-limit": {
+                "type": "number",
+                "nullable": true,
+                "description": "Maximum number of workspaces per run task (null means unlimited)"
+              },
+              "run-tasks": {
+                "type": "boolean",
+                "description": "Whether the feature set includes run tasks"
+              },
+              "self-serve-billing": {
+                "type": "boolean",
+                "description": "Whether the feature set supports self-serve billing"
+              },
+              "sentinel": {
+                "type": "boolean",
+                "description": "Whether the feature set includes Sentinel (alias for policy-enforcement)"
+              },
+              "sso": {
+                "type": "boolean",
+                "description": "Whether the feature set includes SSO"
+              },
+              "stacks": {
+                "type": "boolean",
+                "description": "Whether the feature set includes stacks"
+              },
+              "teams": {
+                "type": "boolean",
+                "description": "Whether the feature set includes teams"
+              },
+              "user-limit": {
+                "type": "number",
+                "nullable": true,
+                "description": "Maximum number of users (null means unlimited)"
+              },
+              "uses-hcp-rum-billing-resource": {
+                "type": "boolean",
+                "description": "Whether the feature set uses HCP RUM billing resource"
+              },
+              "versioned-policy-set-limit": {
+                "type": "number",
+                "nullable": true,
+                "description": "Maximum number of versioned policy sets (null means unlimited)"
+              },
+              "waypoint-actions": {
+                "type": "boolean"
+              },
+              "waypoint-templates-and-addons": {
+                "type": "boolean"
+              }
+            }
+          }
+        },
+        "required": [
+          "id",
+          "type",
+          "attributes"
+        ]
       },
       "agent-pool": {
         "type": "object",
@@ -2797,6 +6346,11 @@
               "last-ping-at": {
                 "type": "string",
                 "format": "date-time"
+              },
+              "created-at": {
+                "type": "string",
+                "format": "date-time",
+                "readOnly": true
               }
             }
           }
@@ -3188,6 +6742,810 @@
           }
         }
       },
+      "organizations-id": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "required": [
+              "id",
+              "type"
+            ],
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "type": {
+                "type": "string",
+                "enum": [
+                  "organizations"
+                ]
+              }
+            }
+          },
+          "links": {
+            "$ref": "#/components/schemas/related"
+          }
+        }
+      },
+      "subscription": {
+        "type": "object",
+        "required": [
+          "type",
+          "attributes"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "readOnly": true
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "subscriptions"
+            ]
+          },
+          "attributes": {
+            "type": "object",
+            "properties": {
+              "end-at": {
+                "type": "string",
+                "format": "date-time",
+                "nullable": true
+              },
+              "is-active": {
+                "type": "boolean"
+              },
+              "start-at": {
+                "type": "string",
+                "format": "date-time",
+                "nullable": true
+              },
+              "runs-ceiling": {
+                "type": "integer",
+                "nullable": true
+              },
+              "agents-ceiling": {
+                "type": "integer",
+                "nullable": true
+              },
+              "contract-start-at": {
+                "type": "string",
+                "format": "date-time",
+                "nullable": true
+              },
+              "contract-user-limit": {
+                "type": "integer",
+                "nullable": true
+              },
+              "contract-apply-limit": {
+                "type": "integer",
+                "nullable": true
+              },
+              "contract-managed-resources-limit": {
+                "type": "integer",
+                "nullable": true
+              },
+              "hcp-organization-id": {
+                "type": "string",
+                "nullable": true
+              },
+              "hcp-project-id": {
+                "type": "string",
+                "nullable": true
+              },
+              "run-task-limit": {
+                "type": "integer",
+                "nullable": true
+              },
+              "run-task-workspace-limit": {
+                "type": "integer",
+                "nullable": true
+              },
+              "run-task-mandatory-enforcement-limit": {
+                "type": "integer",
+                "nullable": true
+              },
+              "versioned-policy-set-limit": {
+                "type": "integer",
+                "nullable": true
+              },
+              "policy-set-limit": {
+                "type": "integer",
+                "nullable": true
+              },
+              "policy-limit": {
+                "type": "integer",
+                "nullable": true
+              },
+              "policy-mandatory-enforcement-limit": {
+                "type": "integer",
+                "nullable": true
+              },
+              "is-public-free-tier": {
+                "type": "boolean"
+              },
+              "is-self-serve-trial": {
+                "type": "boolean"
+              },
+              "is-change-approved": {
+                "type": "boolean"
+              },
+              "is-change-approval-required": {
+                "type": "boolean"
+              },
+              "free-apply-monthly-limit-starts-at": {
+                "type": "string",
+                "format": "date-time",
+                "nullable": true
+              },
+              "free-apply-monthly-limit": {
+                "type": "integer",
+                "nullable": true
+              },
+              "free-apply-monthly-limit-remaining": {
+                "type": "integer",
+                "nullable": true
+              },
+              "free-resource-under-management-monthly-limit": {
+                "type": "integer",
+                "nullable": true
+              }
+            }
+          },
+          "relationships": {
+            "type": "object",
+            "required": [
+              "organization",
+              "feature-set"
+            ],
+            "properties": {
+              "organization": {
+                "$ref": "#/components/schemas/organizations-id"
+              },
+              "feature-set": {
+                "$ref": "#/components/schemas/feature-sets-id"
+              },
+              "hcp-billing-account": {
+                "$ref": "#/components/schemas/links_related"
+              },
+              "next-subscription": {
+                "$ref": "#/components/schemas/subscriptions-id"
+              }
+            }
+          }
+        }
+      },
+      "status-counts": {
+        "type": "object",
+        "properties": {
+          "total": {
+            "type": "integer"
+          },
+          "active": {
+            "type": "integer"
+          },
+          "invited": {
+            "type": "integer"
+          }
+        }
+      },
+      "organization-membership": {
+        "type": "object",
+        "required": [
+          "type",
+          "attributes"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "readOnly": true,
+            "description": "The organization membership ID"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "organization-memberships"
+            ]
+          },
+          "attributes": {
+            "type": "object",
+            "required": [
+              "status"
+            ],
+            "properties": {
+              "status": {
+                "type": "string",
+                "enum": [
+                  "active",
+                  "invited"
+                ],
+                "description": "The status of the organization membership. Can be \"active\" or \"invited\"."
+              },
+              "email": {
+                "type": "string",
+                "format": "email",
+                "description": "The email address of the user."
+              },
+              "created-at": {
+                "type": "string",
+                "format": "date-time",
+                "readOnly": true,
+                "description": "The timestamp when the organization membership was created."
+              },
+              "is-org-two-factor-required": {
+                "type": "boolean",
+                "nullable": true,
+                "description": "Whether two-factor authentication is required for the organization. Only present for invited users."
+              }
+            }
+          },
+          "relationships": {
+            "type": "object",
+            "properties": {
+              "teams": {
+                "type": "object",
+                "description": "The teams this user is a member of. Only shows teams the requesting user has access to, and teams that are not \"secret\" (unless the requester is a member).",
+                "properties": {
+                  "data": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "string"
+                        },
+                        "type": {
+                          "type": "string",
+                          "enum": [
+                            "teams"
+                          ]
+                        }
+                      }
+                    }
+                  },
+                  "links": {
+                    "$ref": "#/components/schemas/related"
+                  }
+                }
+              },
+              "user": {
+                "type": "object",
+                "description": "The user associated with this organization membership.",
+                "properties": {
+                  "data": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "string"
+                      },
+                      "type": {
+                        "type": "string",
+                        "enum": [
+                          "users"
+                        ]
+                      }
+                    }
+                  },
+                  "links": {
+                    "$ref": "#/components/schemas/related"
+                  }
+                }
+              },
+              "organization": {
+                "type": "object",
+                "description": "The organization this membership belongs to.",
+                "properties": {
+                  "data": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "string"
+                      },
+                      "type": {
+                        "type": "string",
+                        "enum": [
+                          "organizations"
+                        ]
+                      }
+                    }
+                  },
+                  "links": {
+                    "$ref": "#/components/schemas/related"
+                  }
+                }
+              }
+            }
+          },
+          "links": {
+            "$ref": "#/components/schemas/self-with-pagination"
+          },
+          "meta": {
+            "type": "object",
+            "properties": {
+              "status-counts": {
+                "$ref": "#/components/schemas/status-counts"
+              },
+              "pagination": {
+                "$ref": "#/components/schemas/pagination"
+              }
+            }
+          }
+        }
+      },
+      "team": {
+        "type": "object",
+        "required": [
+          "type",
+          "attributes"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "readOnly": true
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "teams"
+            ]
+          },
+          "attributes": {
+            "type": "object",
+            "required": [
+              "name"
+            ],
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "The name of the team, which can only include letters, numbers, `-`, and `_`."
+              },
+              "users-count": {
+                "type": "integer",
+                "readOnly": true,
+                "description": "The number of active users in the team."
+              },
+              "description": {
+                "type": "string",
+                "nullable": true,
+                "description": "Team description. Only available when effective permissions are enabled for unified organizations."
+              },
+              "sso-team-id": {
+                "type": "string",
+                "nullable": true,
+                "description": "The unique identifier of the team from the SAML MemberOf attribute."
+              },
+              "visibility": {
+                "type": "string",
+                "enum": [
+                  "secret",
+                  "organization"
+                ],
+                "description": "The team's visibility. Can be \"secret\" or \"organization\" (visible)."
+              },
+              "allow-member-token-management": {
+                "type": "boolean",
+                "description": "Whether team members are allowed to manage their own authentication tokens."
+              },
+              "hcp-resource-name": {
+                "type": "string",
+                "nullable": true,
+                "readOnly": true,
+                "description": "The HCP resource name for unified teams.",
+                "x-vis": [
+                  "hcpt"
+                ]
+              },
+              "is-unified": {
+                "type": "boolean",
+                "readOnly": true,
+                "description": "Whether this team is unified with HCP.",
+                "x-vis": [
+                  "hcpt"
+                ]
+              },
+              "non-service-users-count": {
+                "type": "integer",
+                "nullable": true,
+                "readOnly": true,
+                "description": "The number of non-service account users in the team."
+              },
+              "permissions": {
+                "type": "object",
+                "readOnly": true,
+                "description": "Permissions for the current user on this team.",
+                "properties": {
+                  "can-update-membership": {
+                    "type": "boolean"
+                  },
+                  "can-destroy": {
+                    "type": "boolean"
+                  },
+                  "can-update-organization-access": {
+                    "type": "boolean"
+                  },
+                  "can-update-api-token": {
+                    "type": "boolean"
+                  },
+                  "can-update-visibility": {
+                    "type": "boolean"
+                  },
+                  "can-update-name": {
+                    "type": "boolean"
+                  },
+                  "can-update-sso-team-id": {
+                    "type": "boolean"
+                  },
+                  "can-update-member-token-management": {
+                    "type": "boolean"
+                  },
+                  "can-view-api-token": {
+                    "type": "boolean"
+                  }
+                }
+              },
+              "organization-access": {
+                "type": "object",
+                "nullable": true,
+                "description": "Settings for the team's organization-level permissions.",
+                "properties": {
+                  "manage-policies": {
+                    "type": "boolean"
+                  },
+                  "manage-workspaces": {
+                    "type": "boolean"
+                  },
+                  "manage-vcs-settings": {
+                    "type": "boolean"
+                  },
+                  "manage-policy-overrides": {
+                    "type": "boolean"
+                  },
+                  "manage-modules": {
+                    "type": "boolean"
+                  },
+                  "manage-providers": {
+                    "type": "boolean"
+                  },
+                  "manage-run-tasks": {
+                    "type": "boolean"
+                  },
+                  "manage-projects": {
+                    "type": "boolean"
+                  },
+                  "manage-membership": {
+                    "type": "boolean"
+                  },
+                  "manage-teams": {
+                    "type": "boolean"
+                  },
+                  "manage-organization-access": {
+                    "type": "boolean"
+                  },
+                  "access-secret-teams": {
+                    "type": "boolean"
+                  },
+                  "read-projects": {
+                    "type": "boolean"
+                  },
+                  "read-workspaces": {
+                    "type": "boolean"
+                  },
+                  "manage-agent-pools": {
+                    "type": "boolean"
+                  },
+                  "manage-public-providers": {
+                    "type": "boolean",
+                    "x-vis": [
+                      "hcpt"
+                    ]
+                  },
+                  "manage-public-modules": {
+                    "type": "boolean",
+                    "x-vis": [
+                      "hcpt"
+                    ]
+                  },
+                  "manage-registry-components": {
+                    "type": "boolean",
+                    "nullable": true
+                  },
+                  "manage-registry-artifact-tags": {
+                    "type": "boolean",
+                    "nullable": true
+                  },
+                  "manage-registry-artifact-version-tags": {
+                    "type": "boolean",
+                    "nullable": true
+                  }
+                }
+              }
+            }
+          },
+          "links": {
+            "$ref": "#/components/schemas/self"
+          },
+          "relationships": {
+            "type": "object",
+            "properties": {
+              "organization": {
+                "$ref": "#/components/schemas/organizations-id"
+              },
+              "users": {
+                "type": "object",
+                "description": "Team members (active users only).",
+                "properties": {
+                  "data": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "required": [
+                        "id",
+                        "type"
+                      ],
+                      "properties": {
+                        "id": {
+                          "type": "string"
+                        },
+                        "type": {
+                          "type": "string",
+                          "enum": [
+                            "users"
+                          ]
+                        }
+                      }
+                    }
+                  },
+                  "links": {
+                    "$ref": "#/components/schemas/links_related"
+                  }
+                }
+              },
+              "organization-memberships": {
+                "type": "object",
+                "description": "Organization memberships for team members.",
+                "properties": {
+                  "data": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "required": [
+                        "id",
+                        "type"
+                      ],
+                      "properties": {
+                        "id": {
+                          "type": "string"
+                        },
+                        "type": {
+                          "type": "string",
+                          "enum": [
+                            "organization-memberships"
+                          ]
+                        }
+                      }
+                    }
+                  },
+                  "links": {
+                    "$ref": "#/components/schemas/related"
+                  }
+                }
+              },
+              "authentication-token": {
+                "$ref": "#/components/schemas/links_related"
+              },
+              "authentication-tokens": {
+                "$ref": "#/components/schemas/links_related"
+              }
+            }
+          }
+        }
+      },
+      "effective-tag-bindings-id": {
+        "type": "object",
+        "required": [
+          "data"
+        ],
+        "properties": {
+          "data": {
+            "type": "object",
+            "nullable": true,
+            "required": [
+              "id",
+              "type"
+            ],
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "type": {
+                "type": "string",
+                "enum": [
+                  "effective-tag-bindings"
+                ]
+              }
+            }
+          }
+        }
+      },
+      "project": {
+        "type": "object",
+        "required": [
+          "type",
+          "attributes"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "projects"
+            ]
+          },
+          "attributes": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string"
+              },
+              "description": {
+                "type": "string",
+                "nullable": true
+              },
+              "created-at": {
+                "type": "string",
+                "format": "date-time",
+                "readOnly": true
+              },
+              "auto-destroy-activity-duration": {
+                "type": "string",
+                "nullable": true
+              },
+              "permissions": {
+                "type": "object",
+                "nullable": true,
+                "properties": {
+                  "can-read": {
+                    "type": "boolean"
+                  },
+                  "can-update": {
+                    "type": "boolean"
+                  },
+                  "can-destroy": {
+                    "type": "boolean"
+                  },
+                  "can-create-workspace": {
+                    "type": "boolean"
+                  },
+                  "can-move-workspace": {
+                    "type": "boolean"
+                  },
+                  "can-move-stack": {
+                    "type": "boolean"
+                  },
+                  "can-manage-stacks": {
+                    "type": "boolean"
+                  },
+                  "can-view-stacks": {
+                    "type": "boolean"
+                  },
+                  "can-update-stacks": {
+                    "type": "boolean"
+                  },
+                  "can-deploy-no-code-modules": {
+                    "type": "boolean"
+                  },
+                  "can-read-teams": {
+                    "type": "boolean"
+                  },
+                  "can-manage-tags": {
+                    "type": "boolean"
+                  },
+                  "can-manage-teams": {
+                    "type": "boolean"
+                  },
+                  "can-manage-in-hcp": {
+                    "type": "boolean",
+                    "x-vis": [
+                      "hcpt"
+                    ]
+                  },
+                  "can-manage-varsets": {
+                    "type": "boolean"
+                  },
+                  "can-manage-ephemeral-workspace-for-projects": {
+                    "type": "boolean"
+                  }
+                }
+              },
+              "workspace-count": {
+                "type": "integer",
+                "nullable": true
+              },
+              "team-count": {
+                "type": "integer",
+                "nullable": true
+              },
+              "hcp-id": {
+                "type": "string",
+                "nullable": true,
+                "x-vis": [
+                  "hcpt"
+                ]
+              },
+              "is-unified": {
+                "type": "boolean",
+                "nullable": true,
+                "x-vis": [
+                  "hcpt"
+                ]
+              }
+            }
+          },
+          "relationships": {
+            "type": "object",
+            "properties": {
+              "organization": {
+                "type": "object",
+                "properties": {
+                  "data": {
+                    "$ref": "#/components/schemas/organizations-id"
+                  },
+                  "links": {
+                    "type": "object",
+                    "properties": {
+                      "related": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              },
+              "tag-bindings": {
+                "type": "object",
+                "nullable": true,
+                "properties": {
+                  "links": {
+                    "type": "object",
+                    "properties": {
+                      "related": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              },
+              "effective-tag-bindings": {
+                "type": "object",
+                "nullable": true,
+                "properties": {
+                  "data": {
+                    "$ref": "#/components/schemas/effective-tag-bindings-id"
+                  },
+                  "links": {
+                    "type": "object",
+                    "properties": {
+                      "related": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "links": {
+            "type": "object",
+            "properties": {
+              "self": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      },
       "workspaces-id": {
         "type": "object",
         "properties": {
@@ -3201,47 +7559,6 @@
                 "type": "string",
                 "enum": [
                   "workspaces"
-                ]
-              }
-            }
-          },
-          "links": {
-            "$ref": "#/components/schemas/related"
-          }
-        }
-      },
-      "runs-id": {
-        "type": "object",
-        "properties": {
-          "data": {
-            "type": "object",
-            "properties": {
-              "id": {
-                "type": "string"
-              },
-              "type": {
-                "type": "string",
-                "enum": [
-                  "runs"
-                ]
-              }
-            }
-          }
-        }
-      },
-      "applies-id": {
-        "type": "object",
-        "properties": {
-          "data": {
-            "type": "object",
-            "properties": {
-              "id": {
-                "type": "string"
-              },
-              "type": {
-                "type": "string",
-                "enum": [
-                  "applies"
                 ]
               }
             }
@@ -3289,6 +7606,388 @@
                 ]
               }
             }
+          }
+        }
+      },
+      "query": {
+        "type": "object",
+        "required": [
+          "type",
+          "attributes",
+          "relationships"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "readOnly": true
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "queries"
+            ]
+          },
+          "attributes": {
+            "type": "object",
+            "properties": {
+              "actions": {
+                "type": "object",
+                "required": [
+                  "is-cancelable",
+                  "is-force-cancelable"
+                ],
+                "properties": {
+                  "is-cancelable": {
+                    "type": "boolean"
+                  },
+                  "is-force-cancelable": {
+                    "type": "boolean"
+                  }
+                }
+              },
+              "canceled-at": {
+                "type": "string",
+                "format": "date-time",
+                "nullable": true,
+                "readOnly": true
+              },
+              "updated-at": {
+                "type": "string",
+                "format": "date-time",
+                "readOnly": true
+              },
+              "created-at": {
+                "type": "string",
+                "format": "date-time",
+                "readOnly": true
+              },
+              "source": {
+                "type": "string"
+              },
+              "status-timestamps": {
+                "type": "object",
+                "properties": {
+                  "pending-at": {
+                    "type": "string",
+                    "format": "date-time"
+                  },
+                  "queued-at": {
+                    "type": "string",
+                    "format": "date-time"
+                  },
+                  "errored-at": {
+                    "type": "string",
+                    "format": "date-time"
+                  },
+                  "canceled-at": {
+                    "type": "string",
+                    "format": "date-time"
+                  },
+                  "running-at": {
+                    "type": "string",
+                    "format": "date-time"
+                  },
+                  "finished-at": {
+                    "type": "string",
+                    "format": "date-time"
+                  }
+                }
+              },
+              "status": {
+                "type": "string",
+                "enum": [
+                  "pending",
+                  "running",
+                  "finished",
+                  "canceled",
+                  "errored"
+                ]
+              },
+              "log-read-url": {
+                "type": "string",
+                "readOnly": true
+              },
+              "permissions": {
+                "type": "object",
+                "properties": {
+                  "can-cancel": {
+                    "type": "boolean"
+                  },
+                  "can-force-cancel": {
+                    "type": "boolean"
+                  }
+                }
+              },
+              "force-cancel-available-at": {
+                "type": "string",
+                "format": "date-time",
+                "readOnly": true
+              }
+            }
+          },
+          "relationships": {
+            "type": "object",
+            "required": [
+              "workspace",
+              "configuration-version"
+            ],
+            "properties": {
+              "workspace": {
+                "$ref": "#/components/schemas/workspaces-id"
+              },
+              "canceled-by": {
+                "$ref": "#/components/schemas/users-id"
+              },
+              "configuration-version": {
+                "$ref": "#/components/schemas/configuration-versions-id"
+              },
+              "created-by": {
+                "$ref": "#/components/schemas/users-id"
+              }
+            }
+          }
+        }
+      },
+      "vars-id": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "type": {
+                "type": "string",
+                "enum": [
+                  "vars"
+                ]
+              }
+            }
+          }
+        }
+      },
+      "var": {
+        "type": "object",
+        "required": [
+          "type",
+          "attributes"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "vars"
+            ]
+          },
+          "attributes": {
+            "type": "object",
+            "properties": {
+              "key": {
+                "type": "string"
+              },
+              "value": {
+                "type": "string",
+                "nullable": true
+              },
+              "sensitive": {
+                "type": "boolean"
+              },
+              "category": {
+                "type": "string",
+                "enum": [
+                  "terraform",
+                  "env",
+                  "terraform-cloud"
+                ]
+              },
+              "hcl": {
+                "type": "boolean"
+              },
+              "created-at": {
+                "type": "string",
+                "format": "date-time",
+                "readOnly": true
+              },
+              "description": {
+                "type": "string",
+                "nullable": true
+              },
+              "version-id": {
+                "type": "string"
+              }
+            }
+          },
+          "relationships": {
+            "type": "object",
+            "properties": {
+              "varset": {
+                "type": "object",
+                "properties": {
+                  "data": {
+                    "type": "object",
+                    "nullable": true,
+                    "properties": {
+                      "id": {
+                        "type": "string"
+                      },
+                      "type": {
+                        "type": "string",
+                        "enum": [
+                          "varset"
+                        ]
+                      }
+                    }
+                  },
+                  "links": {
+                    "type": "object",
+                    "properties": {
+                      "related": {
+                        "type": "string",
+                        "format": "uri"
+                      }
+                    }
+                  }
+                }
+              },
+              "overwritten": {
+                "type": "object",
+                "properties": {
+                  "data": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/vars-id"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "links": {
+            "type": "object",
+            "properties": {
+              "self": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      },
+      "workspace-resource": {
+        "type": "object",
+        "required": [
+          "id",
+          "type",
+          "attributes"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "readOnly": true,
+            "description": "The external ID of the workspace resource"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "resources"
+            ]
+          },
+          "attributes": {
+            "type": "object",
+            "properties": {
+              "address": {
+                "type": "string",
+                "description": "The full address of the resource in Terraform configuration"
+              },
+              "name": {
+                "type": "string",
+                "description": "The name of the resource"
+              },
+              "created-at": {
+                "type": "string",
+                "format": "date-time",
+                "nullable": true,
+                "readOnly": true,
+                "description": "The timestamp when the resource was first created"
+              },
+              "updated-at": {
+                "type": "string",
+                "format": "date-time",
+                "nullable": true,
+                "readOnly": true,
+                "description": "The timestamp when the resource was last updated"
+              },
+              "module": {
+                "type": "string",
+                "nullable": true,
+                "description": "The module name where the resource is defined (e.g., \"root\" for root module)"
+              },
+              "provider": {
+                "type": "string",
+                "nullable": true,
+                "description": "The provider name (e.g., \"hashicorp/random\")"
+              },
+              "provider-type": {
+                "type": "string",
+                "nullable": true,
+                "description": "The resource type from the provider (e.g., \"random_pet\")"
+              },
+              "modified-by-state-version-id": {
+                "type": "string",
+                "nullable": true,
+                "readOnly": true,
+                "description": "The external ID of the state version that last modified this resource"
+              },
+              "name-index": {
+                "type": "string",
+                "nullable": true,
+                "description": "The index of the resource when there are multiple instances with the same name"
+              }
+            }
+          }
+        }
+      },
+      "runs-id": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "type": {
+                "type": "string",
+                "enum": [
+                  "runs"
+                ]
+              }
+            }
+          }
+        }
+      },
+      "applies-id": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "type": {
+                "type": "string",
+                "enum": [
+                  "applies"
+                ]
+              }
+            }
+          },
+          "links": {
+            "$ref": "#/components/schemas/related"
           }
         }
       },
@@ -3701,6 +8400,20 @@
                 "type": "string",
                 "nullable": true
               },
+              "policy-paths": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                },
+                "nullable": true
+              },
+              "invoke-action-addrs": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                },
+                "nullable": true
+              },
               "permissions": {
                 "type": "object",
                 "properties": {
@@ -3995,6 +8708,267 @@
           }
         }
       },
+      "plan": {
+        "type": "object",
+        "required": [
+          "id",
+          "type",
+          "attributes"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "example": "plan-8F5JFydVYAmtTjET"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "plans"
+            ]
+          },
+          "attributes": {
+            "type": "object",
+            "properties": {
+              "execution-details": {
+                "type": "object",
+                "nullable": true,
+                "description": "Details about the execution of this plan. Null if plan has not started.",
+                "properties": {
+                  "mode": {
+                    "type": "string",
+                    "description": "Execution mode of the run",
+                    "enum": [
+                      "remote",
+                      "agent",
+                      "local"
+                    ]
+                  },
+                  "agent-id": {
+                    "type": "string",
+                    "example": "agent-S1Y7tcKxXPJDQAvq",
+                    "description": "ID of the agent used for this run (when mode is agent)",
+                    "x-vis": [
+                      "hcpt"
+                    ]
+                  },
+                  "agent-name": {
+                    "type": "string",
+                    "example": "agent_01",
+                    "description": "Name of the agent used for this run (when mode is agent)",
+                    "x-vis": [
+                      "hcpt"
+                    ]
+                  },
+                  "agent-pool-id": {
+                    "type": "string",
+                    "example": "apool-Zigq2VGreKq7nwph",
+                    "description": "ID of the agent pool used for this run (when mode is agent)",
+                    "x-vis": [
+                      "hcpt"
+                    ]
+                  },
+                  "agent-pool-name": {
+                    "type": "string",
+                    "example": "first-pool",
+                    "description": "Name of the agent pool used for this run (when mode is agent)",
+                    "x-vis": [
+                      "hcpt"
+                    ]
+                  }
+                }
+              },
+              "generated-configuration": {
+                "type": "boolean",
+                "default": false,
+                "nullable": true,
+                "description": "Whether the plan generated new configuration as part of this run"
+              },
+              "has-changes": {
+                "type": "boolean",
+                "description": "Whether the plan has any changes"
+              },
+              "resource-additions": {
+                "type": "integer",
+                "description": "Number of resources that will be added",
+                "nullable": true
+              },
+              "resource-changes": {
+                "type": "integer",
+                "description": "Number of resources that will be changed",
+                "nullable": true
+              },
+              "resource-destructions": {
+                "type": "integer",
+                "description": "Number of resources that will be destroyed",
+                "nullable": true
+              },
+              "resource-imports": {
+                "type": "integer",
+                "description": "Number of resources that will be imported",
+                "nullable": true
+              },
+              "structured-run-output-enabled": {
+                "type": "boolean",
+                "nullable": true,
+                "description": "Whether structured run output is enabled"
+              },
+              "status": {
+                "type": "string",
+                "description": "Current status of the plan",
+                "enum": [
+                  "pending",
+                  "managed_queued",
+                  "queued",
+                  "running",
+                  "errored",
+                  "canceled",
+                  "finished",
+                  "unreachable"
+                ]
+              },
+              "status-timestamps": {
+                "type": "object",
+                "description": "Timestamps for state transitions of the plan",
+                "properties": {
+                  "queued-at": {
+                    "type": "string",
+                    "format": "date-time",
+                    "nullable": true
+                  },
+                  "pending-at": {
+                    "type": "string",
+                    "format": "date-time",
+                    "nullable": true
+                  },
+                  "started-at": {
+                    "type": "string",
+                    "format": "date-time",
+                    "nullable": true
+                  },
+                  "finished-at": {
+                    "type": "string",
+                    "format": "date-time",
+                    "nullable": true
+                  }
+                }
+              },
+              "log-read-url": {
+                "type": "string",
+                "nullable": true,
+                "description": "URL to read the logs for this plan"
+              },
+              "actions": {
+                "type": "object",
+                "description": "Actions available for this plan",
+                "properties": {
+                  "is-exportable": {
+                    "type": "boolean",
+                    "description": "Whether the plan can be exported"
+                  }
+                }
+              },
+              "permissions": {
+                "type": "object",
+                "description": "Permissions for the current user related to this plan",
+                "nullable": true,
+                "properties": {
+                  "can-export": {
+                    "type": "boolean",
+                    "description": "Whether the current user can export the plan"
+                  }
+                }
+              }
+            }
+          },
+          "relationships": {
+            "type": "object",
+            "properties": {
+              "state-versions": {
+                "type": "object",
+                "description": "State versions associated with this plan (for TF <= 0.8)",
+                "properties": {
+                  "data": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "required": [
+                        "id",
+                        "type"
+                      ],
+                      "properties": {
+                        "id": {
+                          "type": "string"
+                        },
+                        "type": {
+                          "type": "string",
+                          "enum": [
+                            "state-versions"
+                          ]
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "exports": {
+                "type": "object",
+                "description": "Exports associated with this plan",
+                "properties": {
+                  "data": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "required": [
+                        "id",
+                        "type"
+                      ],
+                      "properties": {
+                        "id": {
+                          "type": "string"
+                        },
+                        "type": {
+                          "type": "string",
+                          "enum": [
+                            "plan-exports"
+                          ]
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "links": {
+            "type": "object",
+            "properties": {
+              "self": {
+                "type": "string",
+                "format": "uri",
+                "description": "API URL for this plan"
+              },
+              "json-output": {
+                "type": "string",
+                "format": "uri",
+                "nullable": true,
+                "description": "API URL for the JSON formatted execution plan (available for Terraform 0.12+)"
+              },
+              "json-output-redacted": {
+                "type": "string",
+                "format": "uri",
+                "nullable": true,
+                "description": "API URL for the redacted JSON formatted execution plan (available for Terraform 0.15.2+)"
+              },
+              "json-schema": {
+                "type": "string",
+                "format": "uri",
+                "nullable": true,
+                "description": "API URL for the JSON schema of this plan (available for Terraform 0.12+)"
+              }
+            }
+          }
+        }
+      },
       "state-versions-id": {
         "type": "object",
         "required": [
@@ -4150,6 +9124,91 @@
           },
           "links": {
             "$ref": "#/components/schemas/self"
+          }
+        }
+      },
+      "authentication-token": {
+        "type": "object",
+        "required": [
+          "type",
+          "attributes"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "readOnly": true
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "authentication-tokens"
+            ]
+          },
+          "attributes": {
+            "type": "object",
+            "properties": {
+              "description": {
+                "type": "string"
+              },
+              "expired-at": {
+                "type": "string",
+                "format": "date-time",
+                "nullable": true
+              },
+              "last-used-at": {
+                "type": "string",
+                "format": "date-time",
+                "readOnly": true,
+                "nullable": true
+              },
+              "created-at": {
+                "type": "string",
+                "format": "date-time",
+                "readOnly": true
+              },
+              "token": {
+                "type": "string",
+                "readOnly": true,
+                "nullable": true
+              }
+            }
+          },
+          "relationships": {
+            "type": "object",
+            "properties": {
+              "team": {
+                "$ref": "#/components/schemas/links_related",
+                "properties": {
+                  "data": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "string"
+                      },
+                      "type": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              },
+              "created-by": {
+                "$ref": "#/components/schemas/links_related",
+                "properties": {
+                  "data": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "string"
+                      },
+                      "type": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              }
+            }
           }
         }
       },

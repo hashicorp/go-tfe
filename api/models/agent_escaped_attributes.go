@@ -11,6 +11,8 @@ import (
 type Agent_attributes struct {
     // Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
     additionalData map[string]any
+    // The createdAt property
+    createdAt *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
     // The ipAddress property
     ipAddress *string
     // The lastPingAt property
@@ -37,10 +39,25 @@ func CreateAgent_attributesFromDiscriminatorValue(parseNode i878a80d2330e89d2689
 func (m *Agent_attributes) GetAdditionalData()(map[string]any) {
     return m.additionalData
 }
+// GetCreatedAt gets the created-at property value. The createdAt property
+// returns a *Time when successful
+func (m *Agent_attributes) GetCreatedAt()(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
+    return m.createdAt
+}
 // GetFieldDeserializers the deserialization information for the current model
 // returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error) when successful
 func (m *Agent_attributes) GetFieldDeserializers()(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error)) {
     res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error))
+    res["created-at"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetTimeValue()
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            m.SetCreatedAt(val)
+        }
+        return nil
+    }
     res["ip-address"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
         val, err := n.GetStringValue()
         if err != nil {
@@ -141,6 +158,10 @@ func (m *Agent_attributes) Serialize(writer i878a80d2330e89d26896388a3f487eef27b
 func (m *Agent_attributes) SetAdditionalData(value map[string]any)() {
     m.additionalData = value
 }
+// SetCreatedAt sets the created-at property value. The createdAt property
+func (m *Agent_attributes) SetCreatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)() {
+    m.createdAt = value
+}
 // SetIpAddress sets the ip-address property value. The ipAddress property
 func (m *Agent_attributes) SetIpAddress(value *string)() {
     m.ipAddress = value
@@ -160,10 +181,12 @@ func (m *Agent_attributes) SetStatus(value *string)() {
 type Agent_attributesable interface {
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
+    GetCreatedAt()(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
     GetIpAddress()(*string)
     GetLastPingAt()(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
     GetName()(*string)
     GetStatus()(*string)
+    SetCreatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)()
     SetIpAddress(value *string)()
     SetLastPingAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)()
     SetName(value *string)()

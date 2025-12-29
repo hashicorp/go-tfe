@@ -12,6 +12,8 @@ type HcpBillingAccountsId struct {
     additionalData map[string]any
     // The data property
     data HcpBillingAccountsId_dataable
+    // The links property
+    links Relatedable
 }
 // NewHcpBillingAccountsId instantiates a new HcpBillingAccountsId and sets the default values.
 func NewHcpBillingAccountsId()(*HcpBillingAccountsId) {
@@ -49,12 +51,33 @@ func (m *HcpBillingAccountsId) GetFieldDeserializers()(map[string]func(i878a80d2
         }
         return nil
     }
+    res["links"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetObjectValue(CreateRelatedFromDiscriminatorValue)
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            m.SetLinks(val.(Relatedable))
+        }
+        return nil
+    }
     return res
+}
+// GetLinks gets the links property value. The links property
+// returns a Relatedable when successful
+func (m *HcpBillingAccountsId) GetLinks()(Relatedable) {
+    return m.links
 }
 // Serialize serializes information the current object
 func (m *HcpBillingAccountsId) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter)(error) {
     {
         err := writer.WriteObjectValue("data", m.GetData())
+        if err != nil {
+            return err
+        }
+    }
+    {
+        err := writer.WriteObjectValue("links", m.GetLinks())
         if err != nil {
             return err
         }
@@ -75,9 +98,15 @@ func (m *HcpBillingAccountsId) SetAdditionalData(value map[string]any)() {
 func (m *HcpBillingAccountsId) SetData(value HcpBillingAccountsId_dataable)() {
     m.data = value
 }
+// SetLinks sets the links property value. The links property
+func (m *HcpBillingAccountsId) SetLinks(value Relatedable)() {
+    m.links = value
+}
 type HcpBillingAccountsIdable interface {
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
     GetData()(HcpBillingAccountsId_dataable)
+    GetLinks()(Relatedable)
     SetData(value HcpBillingAccountsId_dataable)()
+    SetLinks(value Relatedable)()
 }

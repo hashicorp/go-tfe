@@ -36,8 +36,6 @@ type Account_attributes_permissions struct {
     canViewAdminRuns *bool
     // The canViewAdminWorkspaces property
     canViewAdminWorkspaces *bool
-    // The canViewCapabilities property
-    canViewCapabilities *bool
     // The canViewCostEstimationSettings property
     canViewCostEstimationSettings *bool
     // The canViewCustomizationSettings property
@@ -140,11 +138,6 @@ func (m *Account_attributes_permissions) GetCanViewAdminRuns()(*bool) {
 // returns a *bool when successful
 func (m *Account_attributes_permissions) GetCanViewAdminWorkspaces()(*bool) {
     return m.canViewAdminWorkspaces
-}
-// GetCanViewCapabilities gets the can-view-capabilities property value. The canViewCapabilities property
-// returns a *bool when successful
-func (m *Account_attributes_permissions) GetCanViewCapabilities()(*bool) {
-    return m.canViewCapabilities
 }
 // GetCanViewCostEstimationSettings gets the can-view-cost-estimation-settings property value. The canViewCostEstimationSettings property
 // returns a *bool when successful
@@ -327,16 +320,6 @@ func (m *Account_attributes_permissions) GetFieldDeserializers()(map[string]func
         }
         if val != nil {
             m.SetCanViewAdminWorkspaces(val)
-        }
-        return nil
-    }
-    res["can-view-capabilities"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetBoolValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetCanViewCapabilities(val)
         }
         return nil
     }
@@ -523,12 +506,6 @@ func (m *Account_attributes_permissions) Serialize(writer i878a80d2330e89d268963
         }
     }
     {
-        err := writer.WriteBoolValue("can-view-capabilities", m.GetCanViewCapabilities())
-        if err != nil {
-            return err
-        }
-    }
-    {
         err := writer.WriteBoolValue("can-view-cost-estimation-settings", m.GetCanViewCostEstimationSettings())
         if err != nil {
             return err
@@ -652,10 +629,6 @@ func (m *Account_attributes_permissions) SetCanViewAdminRuns(value *bool)() {
 func (m *Account_attributes_permissions) SetCanViewAdminWorkspaces(value *bool)() {
     m.canViewAdminWorkspaces = value
 }
-// SetCanViewCapabilities sets the can-view-capabilities property value. The canViewCapabilities property
-func (m *Account_attributes_permissions) SetCanViewCapabilities(value *bool)() {
-    m.canViewCapabilities = value
-}
 // SetCanViewCostEstimationSettings sets the can-view-cost-estimation-settings property value. The canViewCostEstimationSettings property
 func (m *Account_attributes_permissions) SetCanViewCostEstimationSettings(value *bool)() {
     m.canViewCostEstimationSettings = value
@@ -712,7 +685,6 @@ type Account_attributes_permissionsable interface {
     GetCanUseSqlRunner()(*bool)
     GetCanViewAdminRuns()(*bool)
     GetCanViewAdminWorkspaces()(*bool)
-    GetCanViewCapabilities()(*bool)
     GetCanViewCostEstimationSettings()(*bool)
     GetCanViewCustomizationSettings()(*bool)
     GetCanViewGeneralSettings()(*bool)
@@ -736,7 +708,6 @@ type Account_attributes_permissionsable interface {
     SetCanUseSqlRunner(value *bool)()
     SetCanViewAdminRuns(value *bool)()
     SetCanViewAdminWorkspaces(value *bool)()
-    SetCanViewCapabilities(value *bool)()
     SetCanViewCostEstimationSettings(value *bool)()
     SetCanViewCustomizationSettings(value *bool)()
     SetCanViewGeneralSettings(value *bool)()

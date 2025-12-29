@@ -29,6 +29,8 @@ type Run_attributes struct {
     forceCancelAvailableAt *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
     // The hasChanges property
     hasChanges *bool
+    // The invokeActionAddrs property
+    invokeActionAddrs []string
     // The isDestroy property
     isDestroy *bool
     // The message property
@@ -37,6 +39,8 @@ type Run_attributes struct {
     permissions Run_attributes_permissionsable
     // The planOnly property
     planOnly *bool
+    // The policyPaths property
+    policyPaths []string
     // The refresh property
     refresh *bool
     // The refreshOnly property
@@ -210,6 +214,22 @@ func (m *Run_attributes) GetFieldDeserializers()(map[string]func(i878a80d2330e89
         }
         return nil
     }
+    res["invoke-action-addrs"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetCollectionOfPrimitiveValues("string")
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            res := make([]string, len(val))
+            for i, v := range val {
+                if v != nil {
+                    res[i] = *(v.(*string))
+                }
+            }
+            m.SetInvokeActionAddrs(res)
+        }
+        return nil
+    }
     res["is-destroy"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
         val, err := n.GetBoolValue()
         if err != nil {
@@ -247,6 +267,22 @@ func (m *Run_attributes) GetFieldDeserializers()(map[string]func(i878a80d2330e89
         }
         if val != nil {
             m.SetPlanOnly(val)
+        }
+        return nil
+    }
+    res["policy-paths"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetCollectionOfPrimitiveValues("string")
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            res := make([]string, len(val))
+            for i, v := range val {
+                if v != nil {
+                    res[i] = *(v.(*string))
+                }
+            }
+            m.SetPolicyPaths(res)
         }
         return nil
     }
@@ -410,6 +446,11 @@ func (m *Run_attributes) GetForceCancelAvailableAt()(*i336074805fc853987abe6f7fe
 func (m *Run_attributes) GetHasChanges()(*bool) {
     return m.hasChanges
 }
+// GetInvokeActionAddrs gets the invoke-action-addrs property value. The invokeActionAddrs property
+// returns a []string when successful
+func (m *Run_attributes) GetInvokeActionAddrs()([]string) {
+    return m.invokeActionAddrs
+}
 // GetIsDestroy gets the is-destroy property value. The isDestroy property
 // returns a *bool when successful
 func (m *Run_attributes) GetIsDestroy()(*bool) {
@@ -429,6 +470,11 @@ func (m *Run_attributes) GetPermissions()(Run_attributes_permissionsable) {
 // returns a *bool when successful
 func (m *Run_attributes) GetPlanOnly()(*bool) {
     return m.planOnly
+}
+// GetPolicyPaths gets the policy-paths property value. The policyPaths property
+// returns a []string when successful
+func (m *Run_attributes) GetPolicyPaths()([]string) {
+    return m.policyPaths
 }
 // GetRefresh gets the refresh property value. The refresh property
 // returns a *bool when successful
@@ -533,6 +579,12 @@ func (m *Run_attributes) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a
             return err
         }
     }
+    if m.GetInvokeActionAddrs() != nil {
+        err := writer.WriteCollectionOfStringValues("invoke-action-addrs", m.GetInvokeActionAddrs())
+        if err != nil {
+            return err
+        }
+    }
     {
         err := writer.WriteBoolValue("is-destroy", m.GetIsDestroy())
         if err != nil {
@@ -553,6 +605,12 @@ func (m *Run_attributes) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a
     }
     {
         err := writer.WriteBoolValue("plan-only", m.GetPlanOnly())
+        if err != nil {
+            return err
+        }
+    }
+    if m.GetPolicyPaths() != nil {
+        err := writer.WriteCollectionOfStringValues("policy-paths", m.GetPolicyPaths())
         if err != nil {
             return err
         }
@@ -684,6 +742,10 @@ func (m *Run_attributes) SetForceCancelAvailableAt(value *i336074805fc853987abe6
 func (m *Run_attributes) SetHasChanges(value *bool)() {
     m.hasChanges = value
 }
+// SetInvokeActionAddrs sets the invoke-action-addrs property value. The invokeActionAddrs property
+func (m *Run_attributes) SetInvokeActionAddrs(value []string)() {
+    m.invokeActionAddrs = value
+}
 // SetIsDestroy sets the is-destroy property value. The isDestroy property
 func (m *Run_attributes) SetIsDestroy(value *bool)() {
     m.isDestroy = value
@@ -699,6 +761,10 @@ func (m *Run_attributes) SetPermissions(value Run_attributes_permissionsable)() 
 // SetPlanOnly sets the plan-only property value. The planOnly property
 func (m *Run_attributes) SetPlanOnly(value *bool)() {
     m.planOnly = value
+}
+// SetPolicyPaths sets the policy-paths property value. The policyPaths property
+func (m *Run_attributes) SetPolicyPaths(value []string)() {
+    m.policyPaths = value
 }
 // SetRefresh sets the refresh property value. The refresh property
 func (m *Run_attributes) SetRefresh(value *bool)() {
@@ -764,10 +830,12 @@ type Run_attributesable interface {
     GetCreatedAt()(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
     GetForceCancelAvailableAt()(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
     GetHasChanges()(*bool)
+    GetInvokeActionAddrs()([]string)
     GetIsDestroy()(*bool)
     GetMessage()(*string)
     GetPermissions()(Run_attributes_permissionsable)
     GetPlanOnly()(*bool)
+    GetPolicyPaths()([]string)
     GetRefresh()(*bool)
     GetRefreshOnly()(*bool)
     GetReplaceAddrs()([]string)
@@ -790,10 +858,12 @@ type Run_attributesable interface {
     SetCreatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)()
     SetForceCancelAvailableAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)()
     SetHasChanges(value *bool)()
+    SetInvokeActionAddrs(value []string)()
     SetIsDestroy(value *bool)()
     SetMessage(value *string)()
     SetPermissions(value Run_attributes_permissionsable)()
     SetPlanOnly(value *bool)()
+    SetPolicyPaths(value []string)()
     SetRefresh(value *bool)()
     SetRefreshOnly(value *bool)()
     SetReplaceAddrs(value []string)()

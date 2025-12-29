@@ -15,6 +15,11 @@ type OrganizationsRequestBuilder struct {
 }
 // OrganizationsRequestBuilderGetQueryParameters list organizations.
 type OrganizationsRequestBuilderGetQueryParameters struct {
+    // Optionally side-load relationships of the specified name
+    // Deprecated: This property is deprecated, use IncludeAsGetIncludeQueryParameterType instead
+    Include *string `uriparametername:"include"`
+    // Optionally side-load relationships of the specified name
+    IncludeAsGetIncludeQueryParameterType *GetIncludeQueryParameterType `uriparametername:"include"`
     // Defaults to the first page, if omitted when `page[size]` is provided.
     Pagenumber *int32 `uriparametername:"page%5Bnumber%5D"`
     // Defaults to 20 organizations per page, if omitted when `page[number]` is provided.
@@ -42,22 +47,22 @@ type OrganizationsRequestBuilderPostRequestConfiguration struct {
     // Request options
     Options []i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestOption
 }
-// ByOrganization_Id gets an item from the github.com/hashicorp/go-tfe/api.organizations.item collection
-// returns a *Organization_ItemRequestBuilder when successful
-func (m *OrganizationsRequestBuilder) ByOrganization_Id(organization_Id string)(*Organization_ItemRequestBuilder) {
+// ByOrganization_name gets an item from the github.com/hashicorp/go-tfe/api.organizations.item collection
+// returns a *WithOrganization_nameItemRequestBuilder when successful
+func (m *OrganizationsRequestBuilder) ByOrganization_name(organization_name string)(*WithOrganization_nameItemRequestBuilder) {
     urlTplParams := make(map[string]string)
     for idx, item := range m.BaseRequestBuilder.PathParameters {
         urlTplParams[idx] = item
     }
-    if organization_Id != "" {
-        urlTplParams["organization_%2Did"] = organization_Id
+    if organization_name != "" {
+        urlTplParams["organization_name"] = organization_name
     }
-    return NewOrganization_ItemRequestBuilderInternal(urlTplParams, m.BaseRequestBuilder.RequestAdapter)
+    return NewWithOrganization_nameItemRequestBuilderInternal(urlTplParams, m.BaseRequestBuilder.RequestAdapter)
 }
 // NewOrganizationsRequestBuilderInternal instantiates a new OrganizationsRequestBuilder and sets the default values.
 func NewOrganizationsRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*OrganizationsRequestBuilder) {
     m := &OrganizationsRequestBuilder{
-        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/organizations{?page%5Bnumber%5D*,page%5Bsize%5D*,q*,q%5Bemail%5D*,q%5Bname%5D*}", pathParameters),
+        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/organizations{?include*,page%5Bnumber%5D*,page%5Bsize%5D*,q*,q%5Bemail%5D*,q%5Bname%5D*}", pathParameters),
     }
     return m
 }

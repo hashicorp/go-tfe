@@ -44,17 +44,17 @@ type RunsRequestBuilderPostRequestConfiguration struct {
     // Request options
     Options []i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestOption
 }
-// ByRun_id gets an item from the github.com/hashicorp/go-tfe/api.runs.item collection
-// returns a *WithRun_ItemRequestBuilder when successful
-func (m *RunsRequestBuilder) ByRun_id(run_id string)(*WithRun_ItemRequestBuilder) {
+// ById gets an item from the github.com/hashicorp/go-tfe/api.runs.item collection
+// returns a *ItemRequestBuilder when successful
+func (m *RunsRequestBuilder) ById(id string)(*ItemRequestBuilder) {
     urlTplParams := make(map[string]string)
     for idx, item := range m.BaseRequestBuilder.PathParameters {
         urlTplParams[idx] = item
     }
-    if run_id != "" {
-        urlTplParams["run_id"] = run_id
+    if id != "" {
+        urlTplParams["%2Did"] = id
     }
-    return NewWithRun_ItemRequestBuilderInternal(urlTplParams, m.BaseRequestBuilder.RequestAdapter)
+    return NewItemRequestBuilderInternal(urlTplParams, m.BaseRequestBuilder.RequestAdapter)
 }
 // NewRunsRequestBuilderInternal instantiates a new RunsRequestBuilder and sets the default values.
 func NewRunsRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*RunsRequestBuilder) {

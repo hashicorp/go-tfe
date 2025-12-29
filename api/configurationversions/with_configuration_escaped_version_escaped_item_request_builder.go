@@ -43,7 +43,7 @@ func NewWithConfiguration_version_ItemRequestBuilder(rawUrl string, requestAdapt
 func (m *WithConfiguration_version_ItemRequestBuilder) Download()(*ItemDownloadRequestBuilder) {
     return NewItemDownloadRequestBuilderInternal(m.BaseRequestBuilder.PathParameters, m.BaseRequestBuilder.RequestAdapter)
 }
-// Get retrieve details of a specific configuration version.
+// Get get details of a specific configuration version.
 // Deprecated: This method is obsolete. Use GetAsWithConfiguration_version_GetResponse instead.
 // returns a ItemWithConfiguration_version_Responseable when successful
 // returns a Errors error when the service returns a 4XX or 5XX status code
@@ -64,7 +64,7 @@ func (m *WithConfiguration_version_ItemRequestBuilder) Get(ctx context.Context, 
     }
     return res.(ItemWithConfiguration_version_Responseable), nil
 }
-// GetAsWithConfiguration_version_GetResponse retrieve details of a specific configuration version.
+// GetAsWithConfiguration_version_GetResponse get details of a specific configuration version.
 // returns a ItemWithConfiguration_version_GetResponseable when successful
 // returns a Errors error when the service returns a 4XX or 5XX status code
 func (m *WithConfiguration_version_ItemRequestBuilder) GetAsWithConfiguration_version_GetResponse(ctx context.Context, requestConfiguration *WithConfiguration_version_ItemRequestBuilderGetRequestConfiguration)(ItemWithConfiguration_version_GetResponseable, error) {
@@ -89,7 +89,7 @@ func (m *WithConfiguration_version_ItemRequestBuilder) GetAsWithConfiguration_ve
 func (m *WithConfiguration_version_ItemRequestBuilder) IngressAttributes()(*ItemIngressAttributesRequestBuilder) {
     return NewItemIngressAttributesRequestBuilderInternal(m.BaseRequestBuilder.PathParameters, m.BaseRequestBuilder.RequestAdapter)
 }
-// ToGetRequestInformation retrieve details of a specific configuration version.
+// ToGetRequestInformation get details of a specific configuration version.
 // returns a *RequestInformation when successful
 func (m *WithConfiguration_version_ItemRequestBuilder) ToGetRequestInformation(ctx context.Context, requestConfiguration *WithConfiguration_version_ItemRequestBuilderGetRequestConfiguration)(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
     requestInfo := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewRequestInformationWithMethodAndUrlTemplateAndPathParameters(i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.GET, m.BaseRequestBuilder.UrlTemplate, m.BaseRequestBuilder.PathParameters)

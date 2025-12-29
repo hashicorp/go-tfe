@@ -9,7 +9,7 @@ import (
     ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f "github.com/hashicorp/go-tfe/api/models"
 )
 
-// ItemActionsApplyRequestBuilder builds and executes requests for operations under \runs\{run_id}\actions\apply
+// ItemActionsApplyRequestBuilder builds and executes requests for operations under \runs\{-id}\actions\apply
 type ItemActionsApplyRequestBuilder struct {
     i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.BaseRequestBuilder
 }
@@ -23,7 +23,7 @@ type ItemActionsApplyRequestBuilderPostRequestConfiguration struct {
 // NewItemActionsApplyRequestBuilderInternal instantiates a new ItemActionsApplyRequestBuilder and sets the default values.
 func NewItemActionsApplyRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*ItemActionsApplyRequestBuilder) {
     m := &ItemActionsApplyRequestBuilder{
-        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/runs/{run_id}/actions/apply", pathParameters),
+        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/runs/{%2Did}/actions/apply", pathParameters),
     }
     return m
 }

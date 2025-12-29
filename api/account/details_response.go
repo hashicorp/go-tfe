@@ -7,6 +7,7 @@ import (
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
 )
 
+// DetailsResponse user resource representing the account details of the authenticated user.For internal reasons, HCP Terraform associates team and organization tokenswith a synthetic user account called service user.
 // Deprecated: This class is obsolete. Use DetailsGetResponseable instead.
 type DetailsResponse struct {
     DetailsGetResponse

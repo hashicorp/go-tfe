@@ -26,4 +26,4 @@ api:
 	mkdir -p openapi
 	mkdir -p api
 	cp ../atlas/openapi/bundled/hcpt_v2.json openapi/spec.json
-	docker run -v ./api:/app/output -v ./openapi/spec.json:/app/openapi.json mcr.microsoft.com/openapi/kiota generate --language go --openapi openapi.json --namespace-name github.com/hashicorp/go-tfe/api
+	docker run -v ./api:/app/output -v ./openapi/spec.json:/app/openapi.json mcr.microsoft.com/openapi/kiota:1.25.1 generate --language go --openapi openapi.json --namespace-name github.com/hashicorp/go-tfe/api

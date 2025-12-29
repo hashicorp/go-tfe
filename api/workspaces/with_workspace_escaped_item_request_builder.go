@@ -11,6 +11,11 @@ import (
 type WithWorkspace_ItemRequestBuilder struct {
     i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.BaseRequestBuilder
 }
+// AllVars the allVars property
+// returns a *ItemAllVarsRequestBuilder when successful
+func (m *WithWorkspace_ItemRequestBuilder) AllVars()(*ItemAllVarsRequestBuilder) {
+    return NewItemAllVarsRequestBuilderInternal(m.BaseRequestBuilder.PathParameters, m.BaseRequestBuilder.RequestAdapter)
+}
 // ConfigurationVersions the configurationVersions property
 // returns a *ItemConfigurationVersionsRequestBuilder when successful
 func (m *WithWorkspace_ItemRequestBuilder) ConfigurationVersions()(*ItemConfigurationVersionsRequestBuilder) {
@@ -28,6 +33,16 @@ func NewWithWorkspace_ItemRequestBuilder(rawUrl string, requestAdapter i2ae4187f
     urlParams := make(map[string]string)
     urlParams["request-raw-url"] = rawUrl
     return NewWithWorkspace_ItemRequestBuilderInternal(urlParams, requestAdapter)
+}
+// Queries the queries property
+// returns a *ItemQueriesRequestBuilder when successful
+func (m *WithWorkspace_ItemRequestBuilder) Queries()(*ItemQueriesRequestBuilder) {
+    return NewItemQueriesRequestBuilderInternal(m.BaseRequestBuilder.PathParameters, m.BaseRequestBuilder.RequestAdapter)
+}
+// Resources the resources property
+// returns a *ItemResourcesRequestBuilder when successful
+func (m *WithWorkspace_ItemRequestBuilder) Resources()(*ItemResourcesRequestBuilder) {
+    return NewItemResourcesRequestBuilderInternal(m.BaseRequestBuilder.PathParameters, m.BaseRequestBuilder.RequestAdapter)
 }
 // Runs the runs property
 // returns a *ItemRunsRequestBuilder when successful

@@ -9,7 +9,7 @@ import (
     ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f "github.com/hashicorp/go-tfe/api/models"
 )
 
-// ItemAgentPoolsRequestBuilder builds and executes requests for operations under \organizations\{organization_-id}\agent-pools
+// ItemAgentPoolsRequestBuilder builds and executes requests for operations under \organizations\{organization_name}\agent-pools
 type ItemAgentPoolsRequestBuilder struct {
     i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.BaseRequestBuilder
 }
@@ -45,7 +45,7 @@ type ItemAgentPoolsRequestBuilderPostRequestConfiguration struct {
 // NewItemAgentPoolsRequestBuilderInternal instantiates a new ItemAgentPoolsRequestBuilder and sets the default values.
 func NewItemAgentPoolsRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*ItemAgentPoolsRequestBuilder) {
     m := &ItemAgentPoolsRequestBuilder{
-        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/organizations/{organization_%2Did}/agent-pools{?filter%5Ballowed%2Dworkspaces%5D%5Bname%5D*,page%5Bnumber%5D*,page%5Bsize%5D*,q*,sort*}", pathParameters),
+        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/organizations/{organization_name}/agent-pools{?filter%5Ballowed%2Dworkspaces%5D%5Bname%5D*,page%5Bnumber%5D*,page%5Bsize%5D*,q*,sort*}", pathParameters),
     }
     return m
 }

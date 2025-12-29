@@ -10,6 +10,8 @@ import (
 type Errors_errors struct {
     // Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
     additionalData map[string]any
+    // The detail property
+    detail *string
     // The status property
     status *string
     // The title property
@@ -32,10 +34,25 @@ func CreateErrors_errorsFromDiscriminatorValue(parseNode i878a80d2330e89d2689638
 func (m *Errors_errors) GetAdditionalData()(map[string]any) {
     return m.additionalData
 }
+// GetDetail gets the detail property value. The detail property
+// returns a *string when successful
+func (m *Errors_errors) GetDetail()(*string) {
+    return m.detail
+}
 // GetFieldDeserializers the deserialization information for the current model
 // returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error) when successful
 func (m *Errors_errors) GetFieldDeserializers()(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error)) {
     res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error))
+    res["detail"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetStringValue()
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            m.SetDetail(val)
+        }
+        return nil
+    }
     res["status"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
         val, err := n.GetStringValue()
         if err != nil {
@@ -71,6 +88,12 @@ func (m *Errors_errors) GetTitle()(*string) {
 // Serialize serializes information the current object
 func (m *Errors_errors) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter)(error) {
     {
+        err := writer.WriteStringValue("detail", m.GetDetail())
+        if err != nil {
+            return err
+        }
+    }
+    {
         err := writer.WriteStringValue("status", m.GetStatus())
         if err != nil {
             return err
@@ -94,6 +117,10 @@ func (m *Errors_errors) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0
 func (m *Errors_errors) SetAdditionalData(value map[string]any)() {
     m.additionalData = value
 }
+// SetDetail sets the detail property value. The detail property
+func (m *Errors_errors) SetDetail(value *string)() {
+    m.detail = value
+}
 // SetStatus sets the status property value. The status property
 func (m *Errors_errors) SetStatus(value *string)() {
     m.status = value
@@ -105,8 +132,10 @@ func (m *Errors_errors) SetTitle(value *string)() {
 type Errors_errorsable interface {
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
+    GetDetail()(*string)
     GetStatus()(*string)
     GetTitle()(*string)
+    SetDetail(value *string)()
     SetStatus(value *string)()
     SetTitle(value *string)()
 }

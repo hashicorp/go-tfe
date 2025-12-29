@@ -442,7 +442,12 @@ func SummarizeAPIErrors(err error) string {
 		if sb.Len() > 0 {
 			sb.WriteString(", ")
 		}
-		sb.WriteString(*e.GetTitle())
+		detail := e.GetDetail()
+		if detail != nil {
+			sb.WriteString(fmt.Sprintf("%s: %s", *e.GetTitle(), *detail))
+		} else {
+			sb.WriteString(fmt.Sprintf("%s: %s", *e.GetStatus(), *e.GetTitle()))
+		}
 	}
 
 	return sb.String()

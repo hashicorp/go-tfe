@@ -39,6 +39,11 @@ type WithAgent_pool_ItemRequestBuilderPatchRequestConfiguration struct {
 func (m *WithAgent_pool_ItemRequestBuilder) Agents()(*ItemAgentsRequestBuilder) {
     return NewItemAgentsRequestBuilderInternal(m.BaseRequestBuilder.PathParameters, m.BaseRequestBuilder.RequestAdapter)
 }
+// AuthenticationTokens the authenticationTokens property
+// returns a *ItemAuthenticationTokensRequestBuilder when successful
+func (m *WithAgent_pool_ItemRequestBuilder) AuthenticationTokens()(*ItemAuthenticationTokensRequestBuilder) {
+    return NewItemAuthenticationTokensRequestBuilderInternal(m.BaseRequestBuilder.PathParameters, m.BaseRequestBuilder.RequestAdapter)
+}
 // NewWithAgent_pool_ItemRequestBuilderInternal instantiates a new WithAgent_pool_ItemRequestBuilder and sets the default values.
 func NewWithAgent_pool_ItemRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*WithAgent_pool_ItemRequestBuilder) {
     m := &WithAgent_pool_ItemRequestBuilder{

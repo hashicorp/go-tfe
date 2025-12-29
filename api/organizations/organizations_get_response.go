@@ -13,6 +13,8 @@ type OrganizationsGetResponse struct {
     additionalData map[string]any
     // The data property
     data []ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.Organizationable
+    // The included property
+    included []ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.Subscriptionable
     // The links property
     links ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.SelfWithPaginationable
     // The meta property
@@ -60,6 +62,22 @@ func (m *OrganizationsGetResponse) GetFieldDeserializers()(map[string]func(i878a
         }
         return nil
     }
+    res["included"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetCollectionOfObjectValues(ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.CreateSubscriptionFromDiscriminatorValue)
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            res := make([]ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.Subscriptionable, len(val))
+            for i, v := range val {
+                if v != nil {
+                    res[i] = v.(ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.Subscriptionable)
+                }
+            }
+            m.SetIncluded(res)
+        }
+        return nil
+    }
     res["links"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
         val, err := n.GetObjectValue(ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.CreateSelfWithPaginationFromDiscriminatorValue)
         if err != nil {
@@ -82,6 +100,11 @@ func (m *OrganizationsGetResponse) GetFieldDeserializers()(map[string]func(i878a
     }
     return res
 }
+// GetIncluded gets the included property value. The included property
+// returns a []Subscriptionable when successful
+func (m *OrganizationsGetResponse) GetIncluded()([]ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.Subscriptionable) {
+    return m.included
+}
 // GetLinks gets the links property value. The links property
 // returns a SelfWithPaginationable when successful
 func (m *OrganizationsGetResponse) GetLinks()(ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.SelfWithPaginationable) {
@@ -102,6 +125,18 @@ func (m *OrganizationsGetResponse) Serialize(writer i878a80d2330e89d26896388a3f4
             }
         }
         err := writer.WriteCollectionOfObjectValues("data", cast)
+        if err != nil {
+            return err
+        }
+    }
+    if m.GetIncluded() != nil {
+        cast := make([]i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, len(m.GetIncluded()))
+        for i, v := range m.GetIncluded() {
+            if v != nil {
+                cast[i] = v.(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable)
+            }
+        }
+        err := writer.WriteCollectionOfObjectValues("included", cast)
         if err != nil {
             return err
         }
@@ -134,6 +169,10 @@ func (m *OrganizationsGetResponse) SetAdditionalData(value map[string]any)() {
 func (m *OrganizationsGetResponse) SetData(value []ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.Organizationable)() {
     m.data = value
 }
+// SetIncluded sets the included property value. The included property
+func (m *OrganizationsGetResponse) SetIncluded(value []ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.Subscriptionable)() {
+    m.included = value
+}
 // SetLinks sets the links property value. The links property
 func (m *OrganizationsGetResponse) SetLinks(value ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.SelfWithPaginationable)() {
     m.links = value
@@ -146,9 +185,11 @@ type OrganizationsGetResponseable interface {
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
     GetData()([]ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.Organizationable)
+    GetIncluded()([]ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.Subscriptionable)
     GetLinks()(ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.SelfWithPaginationable)
     GetMeta()(OrganizationsGetResponse_metaable)
     SetData(value []ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.Organizationable)()
+    SetIncluded(value []ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.Subscriptionable)()
     SetLinks(value ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.SelfWithPaginationable)()
     SetMeta(value OrganizationsGetResponse_metaable)()
 }

@@ -33,7 +33,7 @@ func NewItemIngressAttributesRequestBuilder(rawUrl string, requestAdapter i2ae41
     urlParams["request-raw-url"] = rawUrl
     return NewItemIngressAttributesRequestBuilderInternal(urlParams, requestAdapter)
 }
-// Get retrieve commit information for a configuration version.
+// Get get commit information for a configuration version.
 // returns a IngressAttributesable when successful
 // returns a Errors error when the service returns a 4XX or 5XX status code
 func (m *ItemIngressAttributesRequestBuilder) Get(ctx context.Context, requestConfiguration *ItemIngressAttributesRequestBuilderGetRequestConfiguration)(ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.IngressAttributesable, error) {
@@ -53,7 +53,7 @@ func (m *ItemIngressAttributesRequestBuilder) Get(ctx context.Context, requestCo
     }
     return res.(ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.IngressAttributesable), nil
 }
-// ToGetRequestInformation retrieve commit information for a configuration version.
+// ToGetRequestInformation get commit information for a configuration version.
 // returns a *RequestInformation when successful
 func (m *ItemIngressAttributesRequestBuilder) ToGetRequestInformation(ctx context.Context, requestConfiguration *ItemIngressAttributesRequestBuilderGetRequestConfiguration)(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
     requestInfo := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewRequestInformationWithMethodAndUrlTemplateAndPathParameters(i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.GET, m.BaseRequestBuilder.UrlTemplate, m.BaseRequestBuilder.PathParameters)

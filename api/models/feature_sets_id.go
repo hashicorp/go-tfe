@@ -10,10 +10,8 @@ import (
 type FeatureSetsId struct {
     // Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
     additionalData map[string]any
-    // The id property
-    id *string
-    // The type property
-    typeEscaped *FeatureSetsId_type
+    // The data property
+    data FeatureSetsId_dataable
 }
 // NewFeatureSetsId instantiates a new FeatureSetsId and sets the default values.
 func NewFeatureSetsId()(*FeatureSetsId) {
@@ -32,53 +30,31 @@ func CreateFeatureSetsIdFromDiscriminatorValue(parseNode i878a80d2330e89d2689638
 func (m *FeatureSetsId) GetAdditionalData()(map[string]any) {
     return m.additionalData
 }
+// GetData gets the data property value. The data property
+// returns a FeatureSetsId_dataable when successful
+func (m *FeatureSetsId) GetData()(FeatureSetsId_dataable) {
+    return m.data
+}
 // GetFieldDeserializers the deserialization information for the current model
 // returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error) when successful
 func (m *FeatureSetsId) GetFieldDeserializers()(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error)) {
     res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error))
-    res["id"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetStringValue()
+    res["data"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetObjectValue(CreateFeatureSetsId_dataFromDiscriminatorValue)
         if err != nil {
             return err
         }
         if val != nil {
-            m.SetId(val)
-        }
-        return nil
-    }
-    res["type"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetEnumValue(ParseFeatureSetsId_type)
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetTypeEscaped(val.(*FeatureSetsId_type))
+            m.SetData(val.(FeatureSetsId_dataable))
         }
         return nil
     }
     return res
 }
-// GetId gets the id property value. The id property
-// returns a *string when successful
-func (m *FeatureSetsId) GetId()(*string) {
-    return m.id
-}
-// GetTypeEscaped gets the type property value. The type property
-// returns a *FeatureSetsId_type when successful
-func (m *FeatureSetsId) GetTypeEscaped()(*FeatureSetsId_type) {
-    return m.typeEscaped
-}
 // Serialize serializes information the current object
 func (m *FeatureSetsId) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter)(error) {
     {
-        err := writer.WriteStringValue("id", m.GetId())
-        if err != nil {
-            return err
-        }
-    }
-    if m.GetTypeEscaped() != nil {
-        cast := (*m.GetTypeEscaped()).String()
-        err := writer.WriteStringValue("type", &cast)
+        err := writer.WriteObjectValue("data", m.GetData())
         if err != nil {
             return err
         }
@@ -95,19 +71,13 @@ func (m *FeatureSetsId) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0
 func (m *FeatureSetsId) SetAdditionalData(value map[string]any)() {
     m.additionalData = value
 }
-// SetId sets the id property value. The id property
-func (m *FeatureSetsId) SetId(value *string)() {
-    m.id = value
-}
-// SetTypeEscaped sets the type property value. The type property
-func (m *FeatureSetsId) SetTypeEscaped(value *FeatureSetsId_type)() {
-    m.typeEscaped = value
+// SetData sets the data property value. The data property
+func (m *FeatureSetsId) SetData(value FeatureSetsId_dataable)() {
+    m.data = value
 }
 type FeatureSetsIdable interface {
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
-    GetId()(*string)
-    GetTypeEscaped()(*FeatureSetsId_type)
-    SetId(value *string)()
-    SetTypeEscaped(value *FeatureSetsId_type)()
+    GetData()(FeatureSetsId_dataable)
+    SetData(value FeatureSetsId_dataable)()
 }

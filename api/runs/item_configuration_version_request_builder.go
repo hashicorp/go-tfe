@@ -9,7 +9,7 @@ import (
     ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f "github.com/hashicorp/go-tfe/api/models"
 )
 
-// ItemConfigurationVersionRequestBuilder builds and executes requests for operations under \runs\{run_id}\configuration-version
+// ItemConfigurationVersionRequestBuilder builds and executes requests for operations under \runs\{-id}\configuration-version
 type ItemConfigurationVersionRequestBuilder struct {
     i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.BaseRequestBuilder
 }
@@ -23,7 +23,7 @@ type ItemConfigurationVersionRequestBuilderGetRequestConfiguration struct {
 // NewItemConfigurationVersionRequestBuilderInternal instantiates a new ItemConfigurationVersionRequestBuilder and sets the default values.
 func NewItemConfigurationVersionRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*ItemConfigurationVersionRequestBuilder) {
     m := &ItemConfigurationVersionRequestBuilder{
-        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/runs/{run_id}/configuration-version", pathParameters),
+        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/runs/{%2Did}/configuration-version", pathParameters),
     }
     return m
 }
@@ -38,7 +38,7 @@ func NewItemConfigurationVersionRequestBuilder(rawUrl string, requestAdapter i2a
 func (m *ItemConfigurationVersionRequestBuilder) Download()(*ItemConfigurationVersionDownloadRequestBuilder) {
     return NewItemConfigurationVersionDownloadRequestBuilderInternal(m.BaseRequestBuilder.PathParameters, m.BaseRequestBuilder.RequestAdapter)
 }
-// Get retrieve details of a specific configuration version.
+// Get get details of a specific configuration version.
 // Deprecated: This method is obsolete. Use GetAsConfigurationVersionGetResponse instead.
 // returns a ItemConfigurationVersionResponseable when successful
 // returns a Errors error when the service returns a 4XX or 5XX status code
@@ -59,7 +59,7 @@ func (m *ItemConfigurationVersionRequestBuilder) Get(ctx context.Context, reques
     }
     return res.(ItemConfigurationVersionResponseable), nil
 }
-// GetAsConfigurationVersionGetResponse retrieve details of a specific configuration version.
+// GetAsConfigurationVersionGetResponse get details of a specific configuration version.
 // returns a ItemConfigurationVersionGetResponseable when successful
 // returns a Errors error when the service returns a 4XX or 5XX status code
 func (m *ItemConfigurationVersionRequestBuilder) GetAsConfigurationVersionGetResponse(ctx context.Context, requestConfiguration *ItemConfigurationVersionRequestBuilderGetRequestConfiguration)(ItemConfigurationVersionGetResponseable, error) {
@@ -79,7 +79,7 @@ func (m *ItemConfigurationVersionRequestBuilder) GetAsConfigurationVersionGetRes
     }
     return res.(ItemConfigurationVersionGetResponseable), nil
 }
-// ToGetRequestInformation retrieve details of a specific configuration version.
+// ToGetRequestInformation get details of a specific configuration version.
 // returns a *RequestInformation when successful
 func (m *ItemConfigurationVersionRequestBuilder) ToGetRequestInformation(ctx context.Context, requestConfiguration *ItemConfigurationVersionRequestBuilderGetRequestConfiguration)(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
     requestInfo := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewRequestInformationWithMethodAndUrlTemplateAndPathParameters(i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.GET, m.BaseRequestBuilder.UrlTemplate, m.BaseRequestBuilder.PathParameters)

@@ -10,14 +10,21 @@ import (
     i56887720f41ac882814261620b1c8459c4a992a0207af547c4453dd39fabc426 "github.com/microsoft/kiota-serialization-multipart-go"
     i7294a22093d408fdca300f11b81a887d89c47b764af06c8b803e2323973fdb83 "github.com/microsoft/kiota-serialization-text-go"
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
+    i02e4b2db5ddeba90c612fb21e076eab573cb510e753756e4456d4ac0f37efc30 "github.com/hashicorp/go-tfe/api/organizationmemberships"
     i0c9dd52fbe92381dc0c16a43be34f4daded22424b9e8c73a7632565805ac598b "github.com/hashicorp/go-tfe/api/configurationversions"
+    i21980416ea4ff0be8fbe2c24dfe88e8cfe07538f71f8871e9231acec0ac13016 "github.com/hashicorp/go-tfe/api/authenticationtokens"
     i36a3ec5d650543e4919787940a09d63fd7ff309f36d0ea5f3470a275b8ffb1c1 "github.com/hashicorp/go-tfe/api/agents"
+    i5955e49d70b4ba8f9a5e42fe2c2d558b4d549b380055c9313158800c4da2d666 "github.com/hashicorp/go-tfe/api/featuresets"
     i60776ed6aa7d53fcc2d3d05fbba7f57b25b44e5d7733a002e0f924883b0aa919 "github.com/hashicorp/go-tfe/api/account"
     i7ea257a94517c1e6f7b690fd869b3340baef1a88c5684f5d6c3428a566089308 "github.com/hashicorp/go-tfe/api/organizations"
     ibb514b4e80f2962de55572e51dd3240db4e5d854c39cbe3119f4b86e6869b4d9 "github.com/hashicorp/go-tfe/api/agentpools"
+    ibcfd5db966c1b29ef43f9b32197dc95ee3deddc127eab0aa6c35624d2774ef36 "github.com/hashicorp/go-tfe/api/teams"
     ic4d2a74a1c75b8062366a20b2ff0652bfd0a55f95e3ae19856954d66887e915c "github.com/hashicorp/go-tfe/api/workspaces"
+    icc00dba9969ac503bbba866de398cc5c7a124e6bf8108c1cc5edfed3d17b5618 "github.com/hashicorp/go-tfe/api/projects"
+    icfe3d851e6c9af14b1413bd7e78cb0665ed69829cdf8ae7a13857ea9d950ab07 "github.com/hashicorp/go-tfe/api/users"
     id7553685f3a8f95cdd99241ab3a472c8f29dff524e9e3a988f816cfabc0ed4f9 "github.com/hashicorp/go-tfe/api/applies"
     ifb7da758d38f55b7366921567d0a6806e9b8d23de5e80e1df859a4fc4574859b "github.com/hashicorp/go-tfe/api/runs"
+    ife88d569b783ea322dcbb8b1cfaf81286b0cfff614ea025b240ea1f93bd97918 "github.com/hashicorp/go-tfe/api/plans"
 )
 
 // ApiClient the main entry point of the SDK, exposes the configuration and the fluent API.
@@ -44,6 +51,11 @@ func (m *ApiClient) Agents()(*i36a3ec5d650543e4919787940a09d63fd7ff309f36d0ea5f3
 func (m *ApiClient) Applies()(*id7553685f3a8f95cdd99241ab3a472c8f29dff524e9e3a988f816cfabc0ed4f9.AppliesRequestBuilder) {
     return id7553685f3a8f95cdd99241ab3a472c8f29dff524e9e3a988f816cfabc0ed4f9.NewAppliesRequestBuilderInternal(m.BaseRequestBuilder.PathParameters, m.BaseRequestBuilder.RequestAdapter)
 }
+// AuthenticationTokens the authenticationTokens property
+// returns a *AuthenticationTokensRequestBuilder when successful
+func (m *ApiClient) AuthenticationTokens()(*i21980416ea4ff0be8fbe2c24dfe88e8cfe07538f71f8871e9231acec0ac13016.AuthenticationTokensRequestBuilder) {
+    return i21980416ea4ff0be8fbe2c24dfe88e8cfe07538f71f8871e9231acec0ac13016.NewAuthenticationTokensRequestBuilderInternal(m.BaseRequestBuilder.PathParameters, m.BaseRequestBuilder.RequestAdapter)
+}
 // ConfigurationVersions the configurationVersions property
 // returns a *ConfigurationVersionsRequestBuilder when successful
 func (m *ApiClient) ConfigurationVersions()(*i0c9dd52fbe92381dc0c16a43be34f4daded22424b9e8c73a7632565805ac598b.ConfigurationVersionsRequestBuilder) {
@@ -67,15 +79,45 @@ func NewApiClient(requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa52901
     m.BaseRequestBuilder.PathParameters["baseurl"] = m.BaseRequestBuilder.RequestAdapter.GetBaseUrl()
     return m
 }
+// FeatureSets the featureSets property
+// returns a *FeatureSetsRequestBuilder when successful
+func (m *ApiClient) FeatureSets()(*i5955e49d70b4ba8f9a5e42fe2c2d558b4d549b380055c9313158800c4da2d666.FeatureSetsRequestBuilder) {
+    return i5955e49d70b4ba8f9a5e42fe2c2d558b4d549b380055c9313158800c4da2d666.NewFeatureSetsRequestBuilderInternal(m.BaseRequestBuilder.PathParameters, m.BaseRequestBuilder.RequestAdapter)
+}
+// OrganizationMemberships the organizationMemberships property
+// returns a *OrganizationMembershipsRequestBuilder when successful
+func (m *ApiClient) OrganizationMemberships()(*i02e4b2db5ddeba90c612fb21e076eab573cb510e753756e4456d4ac0f37efc30.OrganizationMembershipsRequestBuilder) {
+    return i02e4b2db5ddeba90c612fb21e076eab573cb510e753756e4456d4ac0f37efc30.NewOrganizationMembershipsRequestBuilderInternal(m.BaseRequestBuilder.PathParameters, m.BaseRequestBuilder.RequestAdapter)
+}
 // Organizations the organizations property
 // returns a *OrganizationsRequestBuilder when successful
 func (m *ApiClient) Organizations()(*i7ea257a94517c1e6f7b690fd869b3340baef1a88c5684f5d6c3428a566089308.OrganizationsRequestBuilder) {
     return i7ea257a94517c1e6f7b690fd869b3340baef1a88c5684f5d6c3428a566089308.NewOrganizationsRequestBuilderInternal(m.BaseRequestBuilder.PathParameters, m.BaseRequestBuilder.RequestAdapter)
 }
+// Plans the plans property
+// returns a *PlansRequestBuilder when successful
+func (m *ApiClient) Plans()(*ife88d569b783ea322dcbb8b1cfaf81286b0cfff614ea025b240ea1f93bd97918.PlansRequestBuilder) {
+    return ife88d569b783ea322dcbb8b1cfaf81286b0cfff614ea025b240ea1f93bd97918.NewPlansRequestBuilderInternal(m.BaseRequestBuilder.PathParameters, m.BaseRequestBuilder.RequestAdapter)
+}
+// Projects the projects property
+// returns a *ProjectsRequestBuilder when successful
+func (m *ApiClient) Projects()(*icc00dba9969ac503bbba866de398cc5c7a124e6bf8108c1cc5edfed3d17b5618.ProjectsRequestBuilder) {
+    return icc00dba9969ac503bbba866de398cc5c7a124e6bf8108c1cc5edfed3d17b5618.NewProjectsRequestBuilderInternal(m.BaseRequestBuilder.PathParameters, m.BaseRequestBuilder.RequestAdapter)
+}
 // Runs the runs property
 // returns a *RunsRequestBuilder when successful
 func (m *ApiClient) Runs()(*ifb7da758d38f55b7366921567d0a6806e9b8d23de5e80e1df859a4fc4574859b.RunsRequestBuilder) {
     return ifb7da758d38f55b7366921567d0a6806e9b8d23de5e80e1df859a4fc4574859b.NewRunsRequestBuilderInternal(m.BaseRequestBuilder.PathParameters, m.BaseRequestBuilder.RequestAdapter)
+}
+// Teams the teams property
+// returns a *TeamsRequestBuilder when successful
+func (m *ApiClient) Teams()(*ibcfd5db966c1b29ef43f9b32197dc95ee3deddc127eab0aa6c35624d2774ef36.TeamsRequestBuilder) {
+    return ibcfd5db966c1b29ef43f9b32197dc95ee3deddc127eab0aa6c35624d2774ef36.NewTeamsRequestBuilderInternal(m.BaseRequestBuilder.PathParameters, m.BaseRequestBuilder.RequestAdapter)
+}
+// Users the users property
+// returns a *UsersRequestBuilder when successful
+func (m *ApiClient) Users()(*icfe3d851e6c9af14b1413bd7e78cb0665ed69829cdf8ae7a13857ea9d950ab07.UsersRequestBuilder) {
+    return icfe3d851e6c9af14b1413bd7e78cb0665ed69829cdf8ae7a13857ea9d950ab07.NewUsersRequestBuilderInternal(m.BaseRequestBuilder.PathParameters, m.BaseRequestBuilder.RequestAdapter)
 }
 // Workspaces the workspaces property
 // returns a *WorkspacesRequestBuilder when successful

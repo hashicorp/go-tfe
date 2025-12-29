@@ -158,7 +158,7 @@ func TestClient_API(t *testing.T) {
 			t.Fatal(err)
 		}
 
-		response, err := client.API.Organizations().ByOrganization_Id("hashicorp").GetAsOrganization_GetResponse(context.Background(), nil)
+		response, err := client.API.Organizations().ByOrganization_name("hashicorp").GetAsWithOrganization_nameGetResponse(context.Background(), nil)
 		merr, ok := err.(*models.Errors)
 		if !ok {
 			t.Fatalf("expected *models.Errors, got %T", err)

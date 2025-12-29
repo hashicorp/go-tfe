@@ -10,12 +10,12 @@ import (
 type Account_password_data_attributes struct {
     // Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
     additionalData map[string]any
-    // The currentPassword property
-    currentPassword *string
-    // The password property
+    // The user's current password. Unlike most API dataattributes, this one uses underscore_case instead of kebab-case.
+    current_password *string
+    // The user's new password.
     password *string
-    // The passwordConfirmation property
-    passwordConfirmation *string
+    // The confirmation of the user's new password. Unlike most API data attributes, this one uses underscore_case instead of kebab-case.
+    password_confirmation *string
 }
 // NewAccount_password_data_attributes instantiates a new Account_password_data_attributes and sets the default values.
 func NewAccount_password_data_attributes()(*Account_password_data_attributes) {
@@ -34,16 +34,16 @@ func CreateAccount_password_data_attributesFromDiscriminatorValue(parseNode i878
 func (m *Account_password_data_attributes) GetAdditionalData()(map[string]any) {
     return m.additionalData
 }
-// GetCurrentPassword gets the current-password property value. The currentPassword property
+// GetCurrentPassword gets the current_password property value. The user's current password. Unlike most API dataattributes, this one uses underscore_case instead of kebab-case.
 // returns a *string when successful
 func (m *Account_password_data_attributes) GetCurrentPassword()(*string) {
-    return m.currentPassword
+    return m.current_password
 }
 // GetFieldDeserializers the deserialization information for the current model
 // returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error) when successful
 func (m *Account_password_data_attributes) GetFieldDeserializers()(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error)) {
     res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error))
-    res["current-password"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+    res["current_password"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
         val, err := n.GetStringValue()
         if err != nil {
             return err
@@ -63,7 +63,7 @@ func (m *Account_password_data_attributes) GetFieldDeserializers()(map[string]fu
         }
         return nil
     }
-    res["password-confirmation"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+    res["password_confirmation"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
         val, err := n.GetStringValue()
         if err != nil {
             return err
@@ -75,20 +75,20 @@ func (m *Account_password_data_attributes) GetFieldDeserializers()(map[string]fu
     }
     return res
 }
-// GetPassword gets the password property value. The password property
+// GetPassword gets the password property value. The user's new password.
 // returns a *string when successful
 func (m *Account_password_data_attributes) GetPassword()(*string) {
     return m.password
 }
-// GetPasswordConfirmation gets the password-confirmation property value. The passwordConfirmation property
+// GetPasswordConfirmation gets the password_confirmation property value. The confirmation of the user's new password. Unlike most API data attributes, this one uses underscore_case instead of kebab-case.
 // returns a *string when successful
 func (m *Account_password_data_attributes) GetPasswordConfirmation()(*string) {
-    return m.passwordConfirmation
+    return m.password_confirmation
 }
 // Serialize serializes information the current object
 func (m *Account_password_data_attributes) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter)(error) {
     {
-        err := writer.WriteStringValue("current-password", m.GetCurrentPassword())
+        err := writer.WriteStringValue("current_password", m.GetCurrentPassword())
         if err != nil {
             return err
         }
@@ -100,7 +100,7 @@ func (m *Account_password_data_attributes) Serialize(writer i878a80d2330e89d2689
         }
     }
     {
-        err := writer.WriteStringValue("password-confirmation", m.GetPasswordConfirmation())
+        err := writer.WriteStringValue("password_confirmation", m.GetPasswordConfirmation())
         if err != nil {
             return err
         }
@@ -117,17 +117,17 @@ func (m *Account_password_data_attributes) Serialize(writer i878a80d2330e89d2689
 func (m *Account_password_data_attributes) SetAdditionalData(value map[string]any)() {
     m.additionalData = value
 }
-// SetCurrentPassword sets the current-password property value. The currentPassword property
+// SetCurrentPassword sets the current_password property value. The user's current password. Unlike most API dataattributes, this one uses underscore_case instead of kebab-case.
 func (m *Account_password_data_attributes) SetCurrentPassword(value *string)() {
-    m.currentPassword = value
+    m.current_password = value
 }
-// SetPassword sets the password property value. The password property
+// SetPassword sets the password property value. The user's new password.
 func (m *Account_password_data_attributes) SetPassword(value *string)() {
     m.password = value
 }
-// SetPasswordConfirmation sets the password-confirmation property value. The passwordConfirmation property
+// SetPasswordConfirmation sets the password_confirmation property value. The confirmation of the user's new password. Unlike most API data attributes, this one uses underscore_case instead of kebab-case.
 func (m *Account_password_data_attributes) SetPasswordConfirmation(value *string)() {
-    m.passwordConfirmation = value
+    m.password_confirmation = value
 }
 type Account_password_data_attributesable interface {
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder

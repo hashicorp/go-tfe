@@ -9,7 +9,7 @@ import (
     ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f "github.com/hashicorp/go-tfe/api/models"
 )
 
-// ItemConfigurationVersionDownloadRequestBuilder builds and executes requests for operations under \runs\{run_id}\configuration-version\download
+// ItemConfigurationVersionDownloadRequestBuilder builds and executes requests for operations under \runs\{-id}\configuration-version\download
 type ItemConfigurationVersionDownloadRequestBuilder struct {
     i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.BaseRequestBuilder
 }
@@ -23,7 +23,7 @@ type ItemConfigurationVersionDownloadRequestBuilderGetRequestConfiguration struc
 // NewItemConfigurationVersionDownloadRequestBuilderInternal instantiates a new ItemConfigurationVersionDownloadRequestBuilder and sets the default values.
 func NewItemConfigurationVersionDownloadRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*ItemConfigurationVersionDownloadRequestBuilder) {
     m := &ItemConfigurationVersionDownloadRequestBuilder{
-        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/runs/{run_id}/configuration-version/download", pathParameters),
+        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/runs/{%2Did}/configuration-version/download", pathParameters),
     }
     return m
 }
