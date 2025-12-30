@@ -1452,7 +1452,7 @@ func createPolicyCheckedRun(t *testing.T, client *Client, w *Workspace) (*Run, f
 }
 
 func createPlannedRun(t *testing.T, client *Client, w *Workspace) (*Run, func()) {
-	return createRunWaitForAnyStatuses(t, client, w, []RunStatus{RunCostEstimated, RunPlanned, RunPostPlanCompleted, RunErrored})
+	return createRunWaitForAnyStatuses(t, client, w, []RunStatus{RunCostEstimated, RunPlanned, RunPostPlanCompleted})
 }
 
 func createCostEstimatedRun(t *testing.T, client *Client, w *Workspace) (*Run, func()) {
@@ -1569,7 +1569,7 @@ func applyableStatuses(r *Run) []RunStatus {
 		return []RunStatus{RunCostEstimated}
 	}
 
-	return []RunStatus{RunPlanned}
+	return []RunStatus{RunPlanned, RunPostPlanCompleted}
 }
 
 // pollRunStatus will poll the given run until its status matches one of the given run statuses or the given context
@@ -1899,15 +1899,17 @@ func createPlanExport(t *testing.T, client *Client, r *Run) (*PlanExport, func()
 				t.Fatal(err)
 			}
 
-			if pe.Status == PlanExportFinished || pe.Status == PlanExportQueued {
+			switch pe.Status {
+			case PlanExportFinished, PlanExportQueued:
 				return pe, func() {
 					if rCleanup != nil {
 						rCleanup()
 					}
 				}
-			} else if pe.Status == PlanExportErrored {
+			case PlanExportErrored:
 				t.Fatal("Plan export failed")
-			} else {
+
+			default:
 				t.Logf("Waiting for plan export finished or queued but was %s", pe.Status)
 			}
 		}
@@ -3109,12 +3111,49 @@ func retryTimes(maxRetries, secondsBetween int, f retryableFn) (interface{}, err
 	}
 }
 
-func retryPatiently(f retryableFn) (interface{}, error) { //nolint
+func retryTimesIf[T any](maxRetries, secondsBetween int, f retryableFn, c func(T) bool) (T, error) {
+	tick := time.NewTicker(time.Duration(secondsBetween) * time.Second)
+	retries := 0
+
+	defer tick.Stop()
+
+	var zero T
+	for {
+		<-tick.C
+
+		res, err := f()
+
+		obj, ok := res.(T)
+		if !ok {
+			return zero, fmt.Errorf("type assertion failed in retryTimesIf")
+		}
+
+		if err == nil && !c(obj) {
+			return obj, nil
+		}
+
+		if retries >= maxRetries {
+			return zero, err
+		}
+
+		retries += 1
+	}
+}
+
+func retryPatiently(f retryableFn) (interface{}, error) {
 	return retryTimes(39, 3, f) // 40 attempts over 120 seconds
 }
 
 func retry(f retryableFn) (interface{}, error) { //nolint
 	return retryTimes(9, 3, f) // 10 attempts over 30 seconds
+}
+
+func retryPatientlyIf[T any](f retryableFn, c func(T) bool) (T, error) {
+	return retryTimesIf[T](39, 3, f, c) // 40 attempts over 120 seconds
+}
+
+func retryIf[T any](f retryableFn, c func(T) bool) (T, error) {
+	return retryTimesIf[T](9, 3, f, c) // 10 attempts over 30 seconds
 }
 
 func genSha(t *testing.T) string {

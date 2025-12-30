@@ -13,6 +13,7 @@ import (
 )
 
 func TestStackCreateAndList(t *testing.T) {
+	t.Parallel()
 	skipUnlessBeta(t)
 
 	client := testClient(t)
@@ -124,12 +125,13 @@ func TestStackCreateAndList(t *testing.T) {
 		require.NoError(t, err)
 
 		assert.Len(t, stackList.Items, 1)
-		assert.Equal(t, 2, stackList.Pagination.TotalPages)
-		assert.Equal(t, 2, stackList.Pagination.TotalCount)
+		assert.Equal(t, 2, stackList.TotalPages)
+		assert.Equal(t, 2, stackList.TotalCount)
 	})
 }
 
 func TestStackReadUpdateDelete(t *testing.T) {
+	t.Parallel()
 	skipUnlessBeta(t)
 
 	client := testClient(t)
@@ -205,6 +207,7 @@ func TestStackReadUpdateDelete(t *testing.T) {
 }
 
 func TestStackRemoveVCSBacking(t *testing.T) {
+	t.Parallel()
 	skipUnlessBeta(t)
 
 	client := testClient(t)
@@ -251,6 +254,7 @@ func TestStackRemoveVCSBacking(t *testing.T) {
 }
 
 func TestStackReadUpdateForceDelete(t *testing.T) {
+	t.Parallel()
 	skipUnlessBeta(t)
 
 	client := testClient(t)

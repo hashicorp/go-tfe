@@ -59,6 +59,7 @@ func TestCostEstimatesRead_RunDependent(t *testing.T) {
 }
 
 func TestCostEsimate_Unmarshal(t *testing.T) {
+	t.Parallel()
 	data := map[string]interface{}{
 		"data": map[string]interface{}{
 			"type": "cost-estimates",

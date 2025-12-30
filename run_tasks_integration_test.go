@@ -14,6 +14,7 @@ import (
 
 // TestRunTasksIntegration_Validate runs a series of tests that test whether various TaskResultCallbackRequestOptions objects can be considered valid or not
 func TestRunTasksIntegration_Validate(t *testing.T) {
+	t.Parallel()
 	t.Run("with an empty status", func(t *testing.T) {
 		opts := TaskResultCallbackRequestOptions{Status: ""}
 		err := opts.valid()
@@ -38,6 +39,7 @@ func TestRunTasksIntegration_Validate(t *testing.T) {
 // TestTaskResultsCallbackRequestOptions_Marshal tests whether you can properly serialise a TaskResultCallbackRequestOptions object
 // You may find the expected body here: https://developer.hashicorp.com/terraform/enterprise/api-docs/run-tasks/run-tasks-integration#request-body-1
 func TestTaskResultsCallbackRequestOptions_Marshal(t *testing.T) {
+	t.Parallel()
 	opts := TaskResultCallbackRequestOptions{
 		Status:  TaskPassed,
 		Message: "4 passed, 0 skipped, 0 failed",
@@ -71,6 +73,7 @@ func TestTaskResultsCallbackRequestOptions_Marshal(t *testing.T) {
 }
 
 func TestRunTasksIntegration_ValidateCallback(t *testing.T) {
+	t.Parallel()
 	t.Run("with invalid callbackURL", func(t *testing.T) {
 		trc := runTaskIntegration{client: nil}
 		err := trc.Callback(context.Background(), "", "", TaskResultCallbackRequestOptions{})
@@ -84,6 +87,7 @@ func TestRunTasksIntegration_ValidateCallback(t *testing.T) {
 }
 
 func TestRunTasksIntegration_Callback(t *testing.T) {
+	t.Parallel()
 	ts := runTaskCallbackMockServer(t)
 	defer ts.Close()
 

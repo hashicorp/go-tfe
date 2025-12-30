@@ -13,6 +13,7 @@ import (
 )
 
 func TestAuditTrailsList(t *testing.T) {
+	t.Parallel()
 	skipIfEnterprise(t)
 
 	userClient := testClient(t)

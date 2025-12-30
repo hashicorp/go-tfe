@@ -118,6 +118,7 @@ func TestTestRunsRead_RunDependent(t *testing.T) {
 }
 
 func TestTestRunsCreate(t *testing.T) {
+	t.Parallel()
 	skipUnlessBeta(t)
 	client := testClient(t)
 	ctx := context.Background()

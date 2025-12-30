@@ -13,6 +13,7 @@ import (
 )
 
 func TestOrganizationTokensCreate(t *testing.T) {
+	t.Parallel()
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -43,6 +44,7 @@ func TestOrganizationTokensCreate(t *testing.T) {
 }
 
 func TestOrganizationTokens_CreateWithOptions(t *testing.T) {
+	t.Parallel()
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -104,6 +106,7 @@ func TestOrganizationTokens_CreateWithOptions(t *testing.T) {
 }
 
 func TestOrganizationTokensRead(t *testing.T) {
+	t.Parallel()
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -148,6 +151,7 @@ func TestOrganizationTokensRead(t *testing.T) {
 }
 
 func TestOrganizationTokensReadWithOptions(t *testing.T) {
+	t.Parallel()
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -182,6 +186,7 @@ func TestOrganizationTokensReadWithOptions(t *testing.T) {
 }
 
 func TestOrganizationTokensDelete(t *testing.T) {
+	t.Parallel()
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -207,6 +212,7 @@ func TestOrganizationTokensDelete(t *testing.T) {
 }
 
 func TestOrganizationTokensDeleteWithOptions(t *testing.T) {
+	t.Parallel()
 	client := testClient(t)
 	ctx := context.Background()
 

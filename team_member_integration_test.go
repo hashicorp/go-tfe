@@ -12,6 +12,7 @@ import (
 )
 
 func TestTeamMembersList(t *testing.T) {
+	t.Parallel()
 	// The TeamMembers.List() endpoint is available for everyone,
 	// but this test uses extra functionality that is only available
 	// to paid accounts. Organizations under a free account can
@@ -56,6 +57,7 @@ func TestTeamMembersList(t *testing.T) {
 }
 
 func TestTeamMembersAddWithInvalidOptions(t *testing.T) {
+	t.Parallel()
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -98,6 +100,7 @@ func TestTeamMembersAddWithInvalidOptions(t *testing.T) {
 }
 
 func TestTeamMembersAddByUsername(t *testing.T) {
+	t.Parallel()
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -130,6 +133,7 @@ func TestTeamMembersAddByUsername(t *testing.T) {
 }
 
 func TestTeamMembersAddByOrganizationMembers(t *testing.T) {
+	t.Parallel()
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -166,6 +170,7 @@ func TestTeamMembersAddByOrganizationMembers(t *testing.T) {
 }
 
 func TestTeamMembersRemoveWithInvalidOptions(t *testing.T) {
+	t.Parallel()
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -208,6 +213,7 @@ func TestTeamMembersRemoveWithInvalidOptions(t *testing.T) {
 }
 
 func TestTeamMembersRemoveByUsernames(t *testing.T) {
+	t.Parallel()
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -233,6 +239,7 @@ func TestTeamMembersRemoveByUsernames(t *testing.T) {
 }
 
 func TestTeamMembersRemoveByOrganizationMemberships(t *testing.T) {
+	t.Parallel()
 	client := testClient(t)
 	ctx := context.Background()
 

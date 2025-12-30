@@ -13,6 +13,7 @@ import (
 )
 
 func TestAdminSentinelVersions_List(t *testing.T) {
+	t.Parallel()
 	skipUnlessEnterprise(t)
 
 	client := testClient(t)
@@ -97,6 +98,7 @@ func TestAdminSentinelVersions_List(t *testing.T) {
 }
 
 func TestAdminSentinelVersions_CreateDelete(t *testing.T) {
+	t.Parallel()
 	skipUnlessEnterprise(t)
 
 	client := testClient(t)
@@ -313,6 +315,7 @@ func TestAdminSentinelVersions_CreateDelete(t *testing.T) {
 }
 
 func TestAdminSentinelVersions_ReadUpdate(t *testing.T) {
+	t.Parallel()
 	skipUnlessEnterprise(t)
 
 	client := testClient(t)
