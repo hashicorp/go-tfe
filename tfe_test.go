@@ -5,15 +5,12 @@ package tfe
 
 import (
 	"context"
-	"errors"
 	"net/http"
 	"net/http/httptest"
 	"testing"
-	"time"
 
 	"github.com/hashicorp/go-tfe/api/models"
 	"github.com/stretchr/testify/assert"
-	"golang.org/x/time/rate"
 )
 
 func setDefaultServerHeaders(w http.ResponseWriter) {
@@ -42,8 +39,8 @@ func testServerWithClient(t *testing.T, handlers map[string]http.HandlerFunc) (*
 	ts := testServer(t, handlers)
 
 	client, err := NewClient(&Config{
-		HTTPClient: ts.Client(),
-		Token:      "test-token",
+		Address: ts.URL,
+		Token:   "test-token",
 	})
 
 	if err != nil {
@@ -62,7 +59,7 @@ func Test_NewClient(t *testing.T) {
 
 	t.Run("fails if token is empty", func(t *testing.T) {
 		cfg := &Config{
-			HTTPClient: ts.Client(),
+			Address: ts.URL,
 		}
 
 		_, err := NewClient(cfg)
@@ -73,9 +70,8 @@ func Test_NewClient(t *testing.T) {
 
 	t.Run("makes a new client with good settings", func(t *testing.T) {
 		config := &Config{
-			Address:    ts.URL,
-			Token:      "abcd1234",
-			HTTPClient: ts.Client(),
+			Address: ts.URL,
+			Token:   "abcd1234",
 		}
 
 		client, err := NewClient(config)
@@ -88,9 +84,6 @@ func Test_NewClient(t *testing.T) {
 		}
 		if config.Token != client.token {
 			t.Fatalf("unexpected client token %q", client.token)
-		}
-		if ts.Client() != client.http.HTTPClient {
-			t.Fatal("unexpected HTTP client value")
 		}
 	})
 }
@@ -125,9 +118,8 @@ func TestClient_API(t *testing.T) {
 		}})
 
 	cfg := &Config{
-		HTTPClient: ts.Client(),
-		Address:    ts.URL,
-		Token:      "abcd1234",
+		Address: ts.URL,
+		Token:   "abcd1234",
 	}
 
 	t.Run("basic success", func(t *testing.T) {
@@ -196,188 +188,5 @@ func TestClient_defaultConfig(t *testing.T) {
 
 		assert.Equal(t, config.Address, DefaultAddress)
 		assert.Equal(t, config.Token, "")
-		assert.NotNil(t, config.HTTPClient)
 	})
-}
-
-func TestClient_configureLimiter(t *testing.T) {
-	t.SkipNow()
-
-	rateLimit := ""
-	ts := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		w.Header().Set("Content-Type", ContentTypeJSONAPI)
-		w.Header().Set("X-RateLimit-Limit", rateLimit)
-		w.WriteHeader(204) // We query the configured ping URL which should return a 204.
-	}))
-	defer ts.Close()
-
-	cfg := &Config{
-		Address:    ts.URL,
-		Token:      "dummy-token",
-		HTTPClient: ts.Client(),
-	}
-
-	cases := map[string]struct {
-		rate  string
-		limit rate.Limit
-		burst int
-	}{
-		"no-value": {
-			rate:  "",
-			limit: rate.Inf,
-			burst: 0,
-		},
-		"limit-0": {
-			rate:  "0",
-			limit: rate.Inf,
-			burst: 0,
-		},
-		"limit-30": {
-			rate:  "30",
-			limit: rate.Limit(19.8),
-			burst: 9,
-		},
-		"limit-100": {
-			rate:  "100",
-			limit: rate.Limit(66),
-			burst: 33,
-		},
-	}
-
-	for name, tc := range cases {
-		// First set the test rate limit.
-		rateLimit = tc.rate
-
-		client, err := NewClient(cfg)
-		if err != nil {
-			t.Fatal(err)
-		}
-
-		if client.limiter.Limit() != tc.limit {
-			t.Fatalf("test %s expected limit %f, got: %f", name, tc.limit, client.limiter.Limit())
-		}
-
-		if client.limiter.Burst() != tc.burst {
-			t.Fatalf("test %s expected burst %d, got: %d", name, tc.burst, client.limiter.Burst())
-		}
-	}
-}
-
-func TestClient_retryHTTPCheck(t *testing.T) {
-	ts := testServer(t, map[string]http.HandlerFunc{
-		"/": func(w http.ResponseWriter, r *http.Request) {
-			setDefaultServerHeaders(w)
-			w.WriteHeader(204)
-		},
-	})
-
-	cfg := &Config{
-		Address:    ts.URL,
-		Token:      "dummy-token",
-		HTTPClient: ts.Client(),
-	}
-
-	connErr := errors.New("connection error")
-
-	cases := map[string]struct {
-		resp              *http.Response
-		err               error
-		retryServerErrors bool
-		checkOK           bool
-		checkErr          error
-	}{
-		"429-no-server-errors": {
-			resp:     &http.Response{StatusCode: 429},
-			err:      nil,
-			checkOK:  true,
-			checkErr: nil,
-		},
-		"429-with-server-errors": {
-			resp:              &http.Response{StatusCode: 429},
-			err:               nil,
-			retryServerErrors: true,
-			checkOK:           true,
-			checkErr:          nil,
-		},
-		"500-no-server-errors": {
-			resp:     &http.Response{StatusCode: 500},
-			err:      nil,
-			checkOK:  false,
-			checkErr: nil,
-		},
-		"500-with-server-errors": {
-			resp:              &http.Response{StatusCode: 500},
-			err:               nil,
-			retryServerErrors: true,
-			checkOK:           true,
-			checkErr:          nil,
-		},
-		"err-no-server-errors": {
-			err:      connErr,
-			checkOK:  false,
-			checkErr: connErr,
-		},
-		"err-with-server-errors": {
-			err:               connErr,
-			retryServerErrors: true,
-			checkOK:           true,
-			checkErr:          connErr,
-		},
-	}
-
-	ctx := context.Background()
-
-	for name, tc := range cases {
-		client, err := NewClient(cfg)
-		if err != nil {
-			t.Fatal(err)
-		}
-
-		client.RetryServerErrors(tc.retryServerErrors)
-
-		checkOK, checkErr := client.retryHTTPCheck(ctx, tc.resp, tc.err)
-		if checkOK != tc.checkOK {
-			t.Fatalf("test %s expected checkOK %t, got: %t", name, tc.checkOK, checkOK)
-		}
-		if checkErr != tc.checkErr {
-			t.Fatalf("test %s expected checkErr %v, got: %v", name, tc.checkErr, checkErr)
-		}
-	}
-}
-
-func TestClient_retryHTTPBackoff(t *testing.T) {
-	ts := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		w.Header().Set("Content-Type", ContentTypeJSONAPI)
-		w.Header().Set("X-RateLimit-Limit", "30")
-		w.WriteHeader(204) // We query the configured ping URL which should return a 204.
-	}))
-	defer ts.Close()
-
-	var attempts int
-	retryLogHook := func(attemptNum int, resp *http.Response) {
-		attempts++
-	}
-
-	cfg := &Config{
-		Address:      ts.URL,
-		Token:        "dummy-token",
-		HTTPClient:   ts.Client(),
-		RetryLogHook: retryLogHook,
-	}
-
-	client, err := NewClient(cfg)
-	if err != nil {
-		t.Fatal(err)
-	}
-
-	retries := 3
-	resp := &http.Response{StatusCode: 500}
-
-	for i := 0; i < retries; i++ {
-		client.retryHTTPBackoff(time.Second, time.Second, i, resp)
-	}
-
-	if attempts != retries {
-		t.Fatalf("expected %d log hook callbacks, got: %d callbacks", retries, attempts)
-	}
 }
