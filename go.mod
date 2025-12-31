@@ -5,10 +5,6 @@ go 1.23.0
 toolchain go1.23.8
 
 require (
-	github.com/google/go-querystring v1.1.0
-	github.com/hashicorp/go-cleanhttp v0.5.2
-	github.com/hashicorp/go-retryablehttp v0.7.7
-	github.com/hashicorp/jsonapi v1.4.3-0.20250220162346-81a76b606f3e
 	github.com/microsoft/kiota-abstractions-go v1.9.2
 	github.com/microsoft/kiota-http-go v1.5.3
 	github.com/microsoft/kiota-serialization-form-go v1.1.2
@@ -16,7 +12,6 @@ require (
 	github.com/microsoft/kiota-serialization-multipart-go v1.1.2
 	github.com/microsoft/kiota-serialization-text-go v1.1.2
 	github.com/stretchr/testify v1.11.1
-	golang.org/x/time v0.10.0
 )
 
 require (
@@ -30,6 +25,5 @@ require (
 	go.opentelemetry.io/otel v1.35.0 // indirect
 	go.opentelemetry.io/otel/metric v1.35.0 // indirect
 	go.opentelemetry.io/otel/trace v1.35.0 // indirect
-	golang.org/x/sys v0.29.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
