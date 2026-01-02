@@ -10,10 +10,13 @@ import (
 
 func GetForKiota(tfeSDKVersion string, options ...MiddlewareOption) ([]khttp.Middleware, error) {
 	retryServerErrors := false
+	var retryHook RetryHookCallback = func(int, *nethttp.Response) {}
 	for _, option := range options {
 		switch option.key {
 		case "RetryServerErrors":
 			retryServerErrors = option.value.(bool)
+		case "RetryHook":
+			retryHook = option.value.(RetryHookCallback)
 		}
 	}
 
@@ -22,7 +25,11 @@ func GetForKiota(tfeSDKVersion string, options ...MiddlewareOption) ([]khttp.Mid
 		DelaySeconds: 1,
 		ShouldRetry: func(delay time.Duration, executionCount int, request *nethttp.Request, response *nethttp.Response) bool {
 			// Retry on 425, 429, and 5XX if the option is enabled
-			return (response.StatusCode == 429 || response.StatusCode == 425) || (retryServerErrors && response.StatusCode >= 500)
+			if (response.StatusCode == 429 || response.StatusCode == 425) || (retryServerErrors && response.StatusCode >= 500) {
+				retryHook(executionCount, response)
+				return true
+			}
+			return false
 		},
 	}
 	redirectHandlerOptions := khttp.RedirectHandlerOptions{

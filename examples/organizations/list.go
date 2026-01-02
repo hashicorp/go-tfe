@@ -40,6 +40,8 @@ func (organizationListCommand) Run(args []string) int {
 	}
 
 	ctx := context.Background()
+
+	// Include subscriptions in the response by setting the include query parameter
 	includeSubscriptions := organizations.SUBSCRIPTION_GETINCLUDEQUERYPARAMETERTYPE
 	c := organizations.OrganizationsRequestBuilderGetRequestConfiguration{
 		QueryParameters: &organizations.OrganizationsRequestBuilderGetQueryParameters{
@@ -53,6 +55,7 @@ func (organizationListCommand) Run(args []string) int {
 		return 1
 	}
 
+	// Serialize the response to JSON for display
 	buffer, err := serialization.SerializeToJson(response)
 	if err != nil {
 		log.Fatalf("Error serializing response: %s", err)

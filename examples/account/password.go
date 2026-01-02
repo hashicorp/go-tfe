@@ -29,7 +29,24 @@ func (accountPasswordCommand) Synopsis() string {
 	return "Change your account password"
 }
 
-func (accountPasswordCommand) Run(args []string) int {
+func (accountPasswordCommand) changePasswordModelHelper(oldPassword, newPassword *string) *models.Account_password {
+	pw := models.NewAccount_password()
+	pwd := models.NewAccount_password_data()
+
+	pwda := models.NewAccount_password_data_attributes()
+	pwda.SetCurrentPassword(oldPassword)
+	pwda.SetPassword(newPassword)
+	pwda.SetPasswordConfirmation(newPassword)
+
+	t := models.USERS_ACCOUNT_PASSWORD_DATA_TYPE
+	pwd.SetTypeEscaped(&t)
+	pwd.SetAttributes(pwda)
+	pw.SetData(pwd)
+
+	return pw
+}
+
+func (c accountPasswordCommand) Run(args []string) int {
 	client, err := tfe.NewClient(&tfe.Config{
 		Token:   os.Getenv("TFE_TOKEN"),
 		Address: os.Getenv("TFE_ADDRESS"),
@@ -55,27 +72,17 @@ func (accountPasswordCommand) Run(args []string) int {
 		return 1
 	}
 
-	pw := models.NewAccount_password()
-	pwd := models.NewAccount_password_data()
-
-	pwda := models.NewAccount_password_data_attributes()
-	pwda.SetCurrentPassword(oldPassword)
-	pwda.SetPassword(newPassword)
-	pwda.SetPasswordConfirmation(newPassword)
-
-	t := models.USERS_ACCOUNT_PASSWORD_DATA_TYPE
-
-	pwd.SetTypeEscaped(&t)
-	pwd.SetAttributes(pwda)
-	pw.SetData(pwd)
-
 	ctx := context.Background()
-	response, err := client.API.Account().Password().Patch(ctx, pw, nil)
+
+	// It can be helpful to use wrapper functions to construct models used as
+	// request bodies because they require many local variables to build
+	response, err := client.API.Account().Password().Patch(ctx, c.changePasswordModelHelper(oldPassword, newPassword), nil)
 	if err != nil {
 		log.Fatalf("API returned an error status: %s", tfe.SummarizeAPIErrors(err))
 		return 1
 	}
 
+	// Serialize the response to JSON for display
 	buffer, err := serialization.SerializeToJson(response)
 	if err != nil {
 		log.Fatalf("Error serializing response: %s", err)

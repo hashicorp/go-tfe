@@ -1,4 +1,4 @@
-HCP Terraform and Terraform Enterprise Go Client
+HCP Terraform and Terraform Enterprise Go SDK Client 2.0
 ==============================
 
 [![Tests](https://github.com/hashicorp/go-tfe/actions/workflows/ci.yml/badge.svg)](https://github.com/hashicorp/go-tfe/actions/workflows/ci.yml)
@@ -20,26 +20,24 @@ the other, if applicable (rare).
 
 Almost always, minor version changes will indicate backwards-compatible features and enhancements. Occasionally, function signature changes that reflect a bug fix may appear as a minor version change. Patch version changes will be used for bug fixes, performance improvements, and otherwise unimpactful changes.
 
-## Example Usage
+## Basic Usage
 
 Construct a new TFE client, then use the various endpoints on the client to
 access different parts of the Terraform Enterprise API. The following example lists
 all organizations.
 
-### (Recommended Approach) Using custom config to provide configuration details to the API client
-
 ```go
 import (
-  "context"
-  "log"
+	"context"
+	"log"
 
-  "github.com/hashicorp/go-tfe"
+	"github.com/hashicorp/go-tfe"
 )
 
 config := &tfe.Config{
-	Address: "https://tfe.local",
-	Token: "insert-your-token-here",
-  RetryServerErrors: true,
+	Token: "insert-your-token-here",   // Required
+	Address: "https://tfe.local",      // Defaults to app.terraform.io
+	RetryServerErrors: true,           // Defaults to false
 }
 
 client, err := tfe.NewClient(config)
@@ -47,83 +45,40 @@ if err != nil {
 	log.Fatal(err)
 }
 
-orgs, err := client.Organizations.List(context.Background(), nil)
+org, err := client.API.Organizations().GetAsOrganizationsGetResponse(ctx, nil)
 if err != nil {
-	log.Fatal(err)
+	log.Fatalf("API returned an error status: %s", tfe.SummarizeAPIErrors(err))
+	return 1
 }
 ```
 
-### Using the default config with env vars
-The default configuration makes use of the `TFE_ADDRESS` and `TFE_TOKEN` environment variables.
+## Configuration Options Reference
 
-1. `TFE_ADDRESS` - URL of a HCP Terraform or Terraform Enterprise instance. Example: `https://tfe.local`
-1. `TFE_TOKEN` - An [API token](https://developer.hashicorp.com/terraform/cloud-docs/users-teams-organizations/api-tokens) for the HCP Terraform or Terraform Enterprise instance.
+All configuration fields defined by `tfe.Config`
 
-**Note:** Alternatively, you can set `TFE_HOSTNAME` which serves as a fallback for `TFE_ADDRESS`. It will only be used if `TFE_ADDRESS` is not set and will resolve the host to an `https` scheme. Example: `tfe.local` => resolves to `https://tfe.local`
+| Option              | Description                                                      | Default            |
+|---------------------|------------------------------------------------------------------|--------------------|
+| `Address`           | The address URI of the TFE/HCPT service                          | `api.terraform.io` |
+| `BasePath`          | The base endpoint path                                           | `/api/v2`          |
+| `Token`             | The API token used for authentication.                           |                    |
+| `Headers`           | `net/http` Header values to send with every request.             |                    |
+| `RetryServerErrors` | Whether or not to retry 5XX errors automatically, up to 5 times. | `false`            |
+| `RetryHook`         | A callback invoked _before_ the next retry after a server error. |                    |
 
-The environment variables are used as a fallback to configure TFE client if the Address or Token values are not provided as in the cases below:
+## Reference Examples
 
-#### Using the default configuration
-```go
-import (
-  "context"
-  "log"
-
-  "github.com/hashicorp/go-tfe"
-)
-
-// Passing nil to tfe.NewClient method will also use the default configuration
-client, err := tfe.NewClient(tfe.DefaultConfig())
-if err != nil {
-	log.Fatal(err)
-}
-
-orgs, err := client.Organizations.List(context.Background(), nil)
-if err != nil {
-	log.Fatal(err)
-}
-```
-
-#### When Address or Token has no value
-```go
-import (
-  "context"
-  "log"
-
-  "github.com/hashicorp/go-tfe"
-)
-
-config := &tfe.Config{
-	Address: "",
-	Token: "",
-}
-
-client, err := tfe.NewClient(config)
-if err != nil {
-	log.Fatal(err)
-}
-
-orgs, err := client.Organizations.List(context.Background(), nil)
-if err != nil {
-	log.Fatal(err)
-}
-```
+See the [examples/ directory](https://github.com/hashicorp/go-tfe/tree/main/examples) for runnable
+example code.
 
 ## Documentation
 
 For complete usage of the API client, see the [full package docs](https://pkg.go.dev/github.com/hashicorp/go-tfe).
 
-## Examples
-
-See the [examples directory](https://github.com/hashicorp/go-tfe/tree/main/examples).
-
-## Running tests
-
-See [TESTS.md](docs/TESTS.md).
-
 ## Issues and Contributing
 
-See [CONTRIBUTING.md](docs/CONTRIBUTING.md)
+This API client is a wrapper around a client generated from an OpenAPI specification so it may be
+likely there is an issue in the upstream API definition. To contribute to the wrapper portion of the
+API client, see [CONTRIBUTING.md](docs/CONTRIBUTING.md)
 
 ## Releases
 

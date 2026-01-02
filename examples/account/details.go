@@ -39,6 +39,9 @@ func (accountDetailsCommand) Run(args []string) int {
 	}
 
 	ctx := context.Background()
+
+	// nil request configuration is common and indicates no query parameters,
+	// headers, or special request options
 	response, err := client.API.Account().Details().GetAsDetailsGetResponse(ctx, nil)
 
 	if err != nil {
@@ -46,6 +49,7 @@ func (accountDetailsCommand) Run(args []string) int {
 		return 1
 	}
 
+	// Serialize the response to JSON for display
 	buffer, err := serialization.SerializeToJson(response)
 	if err != nil {
 		log.Fatalf("Error serializing response: %s", err)
