@@ -80,6 +80,10 @@ This API client is a wrapper around a client generated from an OpenAPI specifica
 likely there is an issue in the upstream API definition. To contribute to the wrapper portion of the
 API client, see [CONTRIBUTING.md](docs/CONTRIBUTING.md)
 
+## Updating the SDK Client from Spec
+
+Copy the JSON OpenAPI specification to the `openapi/spec.json` directory and run `make api`
+
 ## Releases
 
 See [RELEASES.md](docs/RELEASES.md)

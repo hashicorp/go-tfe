@@ -1,4 +1,4 @@
-.PHONY: vet fmt fmtchewck lint test mocks envvars api
+.PHONY: vet fmt fmtchewck lint test mocks envvars api openapi
 vet:
 	go vet
 
@@ -22,8 +22,10 @@ mocks: check-filename
 envvars:
 	./scripts/setup-test-envvars.sh
 
-api:
+openapi:
 	mkdir -p openapi
 	mkdir -p api
 	cp ../atlas/openapi/bundled/hcpt_v2.json openapi/spec.json
+
+api: openapi
 	docker run -v ./api:/app/output -v ./openapi/spec.json:/app/openapi.json mcr.microsoft.com/openapi/kiota:1.25.1 generate --language go --openapi openapi.json --namespace-name github.com/hashicorp/go-tfe/api
