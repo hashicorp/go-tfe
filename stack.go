@@ -94,6 +94,7 @@ type Stack struct {
 	DownstreamCount    int           `jsonapi:"attr,downstream-count"`
 	InputsCount        int           `jsonapi:"attr,inputs-count"`
 	OutputsCount       int           `jsonapi:"attr,outputs-count"`
+	CreationSource     string        `jsonapi:"attr,creation-source"`
 
 	// Relationships
 	Project                  *Project            `jsonapi:"relation,project"`
@@ -159,6 +160,7 @@ type StackListOptions struct {
 type StackCreateOptions struct {
 	Type        string               `jsonapi:"primary,stacks"`
 	Name        string               `jsonapi:"attr,name"`
+	Migration   *bool                `jsonapi:"attr,migration,omitempty"`
 	Description *string              `jsonapi:"attr,description,omitempty"`
 	VCSRepo     *StackVCSRepoOptions `jsonapi:"attr,vcs-repo"`
 	Project     *Project             `jsonapi:"relation,project"`
