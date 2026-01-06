@@ -2947,6 +2947,7 @@ func TestWorkspaces_AddTags(t *testing.T) {
 		)
 
 		require.NoError(t, err)
+		require.NotEmpty(t, w)
 		assert.Equal(t, 5, len(w.TagNames))
 		sort.Strings(w.TagNames)
 		assert.Equal(t, w.TagNames, []string{"tag1", "tag2", "tag3", "tag4", "tagbyid"})
