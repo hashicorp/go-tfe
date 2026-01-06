@@ -39,6 +39,7 @@ func TestStackCreateAndList(t *testing.T) {
 		Project: &Project{
 			ID: orgTest.DefaultProject.ID,
 		},
+		Migration: Bool(true),
 	})
 
 	require.NoError(t, err)
@@ -65,6 +66,8 @@ func TestStackCreateAndList(t *testing.T) {
 		require.NoError(t, err)
 
 		assert.Len(t, stackList.Items, 2)
+		assert.Equal(t, stack1.CreationSource, "migration-api")
+		assert.Equal(t, stack2.CreationSource, "api")
 	})
 
 	t.Run("List with project filter", func(t *testing.T) {
