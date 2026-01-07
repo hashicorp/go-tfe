@@ -1,5 +1,7 @@
 # Unreleased
 
+# v1.99.0
+
 ## Enhancements
 * Adds `ProjectRemoteState` field to `Workspace` to support state sharing at the project level, by @hs26gill [#1248](https://github.com/hashicorp/go-tfe/pull/1248)
 * Adds 'Migration' field to `StackCreateOptions` and `CreationSource` to stack struct to provide insights re: stack creation [#1266](https://github.com/hashicorp/go-tfe/pull/1266)
