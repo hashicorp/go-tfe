@@ -13,6 +13,7 @@ import (
 )
 
 func TestOrganizationTagsList(t *testing.T) {
+	t.Parallel()
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -104,6 +105,7 @@ func TestOrganizationTagsList(t *testing.T) {
 }
 
 func TestOrganizationTagsDelete(t *testing.T) {
+	t.Parallel()
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -154,6 +156,7 @@ func TestOrganizationTagsDelete(t *testing.T) {
 }
 
 func TestOrganizationTagsAddWorkspace(t *testing.T) {
+	t.Parallel()
 	client := testClient(t)
 	ctx := context.Background()
 

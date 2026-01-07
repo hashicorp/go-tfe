@@ -126,10 +126,10 @@ func (r *registryProviderPlatforms) List(ctx context.Context, versionID Registry
 	// GET /organizations/:organization_name/registry-providers/:registry_name/:namespace/:name/versions/:version/platforms
 	u := fmt.Sprintf(
 		"organizations/%s/registry-providers/%s/%s/%s/versions/%s/platforms",
-		url.PathEscape(versionID.RegistryProviderID.OrganizationName),
-		url.PathEscape(string(versionID.RegistryProviderID.RegistryName)),
-		url.PathEscape(versionID.RegistryProviderID.Namespace),
-		url.PathEscape(versionID.RegistryProviderID.Name),
+		url.PathEscape(versionID.OrganizationName),
+		url.PathEscape(string(versionID.RegistryName)),
+		url.PathEscape(versionID.Namespace),
+		url.PathEscape(versionID.Name),
 		url.PathEscape(versionID.Version),
 	)
 	req, err := r.client.NewRequest("GET", u, options)
@@ -155,11 +155,11 @@ func (r *registryProviderPlatforms) Read(ctx context.Context, platformID Registr
 	// GET /organizations/:organization_name/registry-providers/:registry_name/:namespace/:name/versions/:version/platforms/:os/:arch
 	u := fmt.Sprintf(
 		"organizations/%s/registry-providers/%s/%s/%s/versions/%s/platforms/%s/%s",
-		url.PathEscape(platformID.RegistryProviderID.OrganizationName),
-		url.PathEscape(string(platformID.RegistryProviderID.RegistryName)),
-		url.PathEscape(platformID.RegistryProviderID.Namespace),
-		url.PathEscape(platformID.RegistryProviderID.Name),
-		url.PathEscape(platformID.RegistryProviderVersionID.Version),
+		url.PathEscape(platformID.OrganizationName),
+		url.PathEscape(string(platformID.RegistryName)),
+		url.PathEscape(platformID.Namespace),
+		url.PathEscape(platformID.Name),
+		url.PathEscape(platformID.Version),
 		url.PathEscape(platformID.OS),
 		url.PathEscape(platformID.Arch),
 	)

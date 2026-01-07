@@ -409,6 +409,7 @@ func TestWorkspacesList_RunDependent(t *testing.T) {
 }
 
 func TestWorkspacesCreateTableDriven(t *testing.T) {
+	t.Parallel()
 	t.Skip("Skipping due to persistent failures - see TF-31172")
 
 	client := testClient(t)
@@ -570,6 +571,7 @@ func TestWorkspacesCreateTableDriven(t *testing.T) {
 }
 
 func TestWorkspacesCreateTableDrivenWithGithubApp(t *testing.T) {
+	t.Parallel()
 	gHAInstallationID := os.Getenv("GITHUB_APP_INSTALLATION_ID")
 
 	if gHAInstallationID == "" {
@@ -639,6 +641,7 @@ func TestWorkspacesCreateTableDrivenWithGithubApp(t *testing.T) {
 }
 
 func TestWorkspacesCreate(t *testing.T) {
+	t.Parallel()
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -1027,6 +1030,7 @@ func TestWorkspacesCreate(t *testing.T) {
 }
 
 func TestWorkspacesRead(t *testing.T) {
+	t.Parallel()
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -1152,6 +1156,7 @@ func TestWorkspacesRead(t *testing.T) {
 }
 
 func TestWorkspacesReadSource(t *testing.T) {
+	t.Parallel()
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -1168,6 +1173,7 @@ func TestWorkspacesReadSource(t *testing.T) {
 }
 
 func TestWorkspacesReadWithOptions(t *testing.T) {
+	t.Parallel()
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -1294,6 +1300,7 @@ func TestWorkspacesReadReadme_RunDependent(t *testing.T) {
 }
 
 func TestWorkspacesReadByID(t *testing.T) {
+	t.Parallel()
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -1328,6 +1335,7 @@ func TestWorkspacesReadByID(t *testing.T) {
 }
 
 func TestWorkspacesAddTagBindings(t *testing.T) {
+	t.Parallel()
 	skipUnlessBeta(t)
 
 	client := testClient(t)
@@ -1392,6 +1400,7 @@ func TestWorkspacesAddTagBindings(t *testing.T) {
 }
 
 func TestWorkspaces_DeleteAllTagBindings(t *testing.T) {
+	t.Parallel()
 	skipUnlessBeta(t)
 
 	client := testClient(t)
@@ -1419,6 +1428,7 @@ func TestWorkspaces_DeleteAllTagBindings(t *testing.T) {
 }
 
 func TestWorkspacesUpdate(t *testing.T) {
+	t.Parallel()
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -1820,6 +1830,7 @@ func TestWorkspacesUpdate(t *testing.T) {
 }
 
 func TestWorkspacesUpdateTableDriven(t *testing.T) {
+	t.Parallel()
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -1956,6 +1967,7 @@ func TestWorkspacesUpdateTableDriven(t *testing.T) {
 }
 
 func TestWorkspacesUpdateTableDrivenWithGithubApp(t *testing.T) {
+	t.Parallel()
 	gHAInstallationID := os.Getenv("GITHUB_APP_INSTALLATION_ID")
 
 	if gHAInstallationID == "" {
@@ -2028,6 +2040,7 @@ func TestWorkspacesUpdateTableDrivenWithGithubApp(t *testing.T) {
 }
 
 func TestWorkspacesUpdateByID(t *testing.T) {
+	t.Parallel()
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -2114,6 +2127,7 @@ func TestWorkspacesUpdateByID(t *testing.T) {
 }
 
 func TestWorkspacesUpdateWithDefaultExecutionMode(t *testing.T) {
+	t.Parallel()
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -2162,6 +2176,7 @@ func TestWorkspacesUpdateWithDefaultExecutionMode(t *testing.T) {
 }
 
 func TestWorkspacesDelete(t *testing.T) {
+	t.Parallel()
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -2192,6 +2207,7 @@ func TestWorkspacesDelete(t *testing.T) {
 }
 
 func TestWorkspacesDeleteByID(t *testing.T) {
+	t.Parallel()
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -2217,6 +2233,7 @@ func TestWorkspacesDeleteByID(t *testing.T) {
 }
 
 func TestCanForceDeletePermission(t *testing.T) {
+	t.Parallel()
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -2237,6 +2254,7 @@ func TestCanForceDeletePermission(t *testing.T) {
 }
 
 func TestWorkspacesSafeDelete(t *testing.T) {
+	t.Parallel()
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -2301,6 +2319,8 @@ func TestWorkspacesSafeDelete(t *testing.T) {
 }
 
 func TestWorkspacesSafeDeleteByID(t *testing.T) {
+	t.Parallel()
+
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -2341,7 +2361,7 @@ func TestWorkspacesSafeDeleteByID(t *testing.T) {
 		_, svTestCleanup := createStateVersion(t, client, 0, wTest)
 		t.Cleanup(svTestCleanup)
 
-		_, err := retry(func() (interface{}, error) {
+		_, err := retryPatiently(func() (interface{}, error) {
 			err := client.Workspaces.SafeDeleteByID(ctx, wTest.ID)
 			if errors.Is(err, ErrWorkspaceStillProcessing) {
 				return nil, err
@@ -2360,6 +2380,7 @@ func TestWorkspacesSafeDeleteByID(t *testing.T) {
 }
 
 func TestWorkspacesRemoveVCSConnection(t *testing.T) {
+	t.Parallel()
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -2377,6 +2398,7 @@ func TestWorkspacesRemoveVCSConnection(t *testing.T) {
 }
 
 func TestWorkspacesRemoveVCSConnectionByID(t *testing.T) {
+	t.Parallel()
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -2394,6 +2416,7 @@ func TestWorkspacesRemoveVCSConnectionByID(t *testing.T) {
 }
 
 func TestWorkspacesLock(t *testing.T) {
+	t.Parallel()
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -2512,6 +2535,7 @@ func TestWorkspacesUnlock_RunDependent(t *testing.T) {
 }
 
 func TestWorkspacesForceUnlock(t *testing.T) {
+	t.Parallel()
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -2547,6 +2571,7 @@ func TestWorkspacesForceUnlock(t *testing.T) {
 }
 
 func TestWorkspacesAssignSSHKey(t *testing.T) {
+	t.Parallel()
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -2592,6 +2617,7 @@ func TestWorkspacesAssignSSHKey(t *testing.T) {
 }
 
 func TestWorkspacesUnassignSSHKey(t *testing.T) {
+	t.Parallel()
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -2628,6 +2654,7 @@ func TestWorkspacesUnassignSSHKey(t *testing.T) {
 }
 
 func TestWorkspaces_AddRemoteStateConsumers(t *testing.T) {
+	t.Parallel()
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -2685,6 +2712,7 @@ func TestWorkspaces_AddRemoteStateConsumers(t *testing.T) {
 }
 
 func TestWorkspaces_RemoveRemoteStateConsumers(t *testing.T) {
+	t.Parallel()
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -2761,6 +2789,7 @@ func TestWorkspaces_RemoveRemoteStateConsumers(t *testing.T) {
 }
 
 func TestWorkspaces_UpdateRemoteStateConsumers(t *testing.T) {
+	t.Parallel()
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -2824,6 +2853,7 @@ func TestWorkspaces_UpdateRemoteStateConsumers(t *testing.T) {
 }
 
 func TestWorkspaces_AddTags(t *testing.T) {
+	t.Parallel()
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -2906,8 +2936,18 @@ func TestWorkspaces_AddTags(t *testing.T) {
 		require.NoError(t, err)
 
 		// tag is now in the tag_names
-		w, err := client.Workspaces.Read(ctx, orgTest.Name, wTest.Name)
+		// retry in case the system is busy
+		w, err := retryPatientlyIf(
+			func() (any, error) {
+				return client.Workspaces.Read(ctx, orgTest.Name, wTest.Name)
+			},
+			func(w *Workspace) bool {
+				return len(w.TagNames) < 5
+			},
+		)
+
 		require.NoError(t, err)
+		require.NotEmpty(t, w)
 		assert.Equal(t, 5, len(w.TagNames))
 		sort.Strings(w.TagNames)
 		assert.Equal(t, w.TagNames, []string{"tag1", "tag2", "tag3", "tag4", "tagbyid"})
@@ -2936,6 +2976,7 @@ func TestWorkspaces_AddTags(t *testing.T) {
 }
 
 func TestWorkspaces_RemoveTags(t *testing.T) {
+	t.Parallel()
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -3013,6 +3054,7 @@ func TestWorkspaces_RemoveTags(t *testing.T) {
 }
 
 func TestWorkspace_Unmarshal(t *testing.T) {
+	t.Parallel()
 	data := map[string]interface{}{
 		"data": map[string]interface{}{
 			"type": "workspaces",
@@ -3078,6 +3120,7 @@ func TestWorkspace_Unmarshal(t *testing.T) {
 }
 
 func TestWorkspaceCreateOptions_Marshal(t *testing.T) {
+	t.Parallel()
 	opts := WorkspaceCreateOptions{
 		AllowDestroyPlan: Bool(true),
 		Name:             String("my-workspace"),
@@ -3102,6 +3145,7 @@ func TestWorkspaceCreateOptions_Marshal(t *testing.T) {
 }
 
 func TestWorkspacesRunTasksPermission(t *testing.T) {
+	t.Parallel()
 	skipUnlessBeta(t)
 
 	client := testClient(t)
@@ -3122,6 +3166,7 @@ func TestWorkspacesRunTasksPermission(t *testing.T) {
 }
 
 func TestWorkspacesProjects(t *testing.T) {
+	t.Parallel()
 	skipUnlessBeta(t)
 	client := testClient(t)
 	ctx := context.Background()
@@ -3158,6 +3203,7 @@ func TestWorkspacesProjects(t *testing.T) {
 }
 
 func TestWorkspace_DataRetentionPolicy(t *testing.T) {
+	t.Parallel()
 	skipUnlessEnterprise(t)
 
 	client := testClient(t)
@@ -3263,6 +3309,7 @@ func TestWorkspace_DataRetentionPolicy(t *testing.T) {
 }
 
 func TestWorkspacesAutoDestroy(t *testing.T) {
+	t.Parallel()
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -3307,6 +3354,7 @@ func TestWorkspacesAutoDestroy(t *testing.T) {
 }
 
 func TestWorkspacesAutoDestroyDuration(t *testing.T) {
+	t.Parallel()
 	skipUnlessBeta(t)
 
 	client := testClient(t)
@@ -3345,6 +3393,7 @@ func TestWorkspacesAutoDestroyDuration(t *testing.T) {
 }
 
 func TestWorkspaces_effectiveTagBindingsInheritedFrom(t *testing.T) {
+	t.Parallel()
 	skipUnlessBeta(t)
 
 	client := testClient(t)

@@ -12,6 +12,7 @@ import (
 )
 
 func TestWorkspaceRunTasksCreate(t *testing.T) {
+	t.Parallel()
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -53,6 +54,7 @@ func TestWorkspaceRunTasksCreate(t *testing.T) {
 }
 
 func TestWorkspaceRunTasksCreateDeprecated(t *testing.T) {
+	t.Parallel()
 	// This test uses the deprecate `stage` attribute
 	client := testClient(t)
 	ctx := context.Background()
@@ -94,6 +96,7 @@ func TestWorkspaceRunTasksCreateDeprecated(t *testing.T) {
 }
 
 func TestWorkspaceRunTasksList(t *testing.T) {
+	t.Parallel()
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -128,6 +131,7 @@ func TestWorkspaceRunTasksList(t *testing.T) {
 }
 
 func TestWorkspaceRunTasksRead(t *testing.T) {
+	t.Parallel()
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -163,6 +167,7 @@ func TestWorkspaceRunTasksRead(t *testing.T) {
 }
 
 func TestWorkspaceRunTasksUpdate(t *testing.T) {
+	t.Parallel()
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -198,6 +203,7 @@ func TestWorkspaceRunTasksUpdate(t *testing.T) {
 }
 
 func TestWorkspaceRunTasksUpdateDeprecated(t *testing.T) {
+	t.Parallel()
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -232,6 +238,7 @@ func TestWorkspaceRunTasksUpdateDeprecated(t *testing.T) {
 }
 
 func TestWorkspaceRunTasksDelete(t *testing.T) {
+	t.Parallel()
 	client := testClient(t)
 	ctx := context.Background()
 

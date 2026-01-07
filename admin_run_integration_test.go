@@ -292,6 +292,7 @@ func TestAdminRuns_ListFilterByDates_RunDependent(t *testing.T) {
 }
 
 func TestAdminRuns_AdminRunsListOptions_valid(t *testing.T) {
+	t.Parallel()
 	skipUnlessEnterprise(t)
 
 	t.Run("has valid status", func(t *testing.T) {
@@ -333,6 +334,7 @@ func TestAdminRuns_AdminRunsListOptions_valid(t *testing.T) {
 }
 
 func TestAdminRun_ForceCancel_Marshal(t *testing.T) {
+	t.Parallel()
 	opts := AdminRunForceCancelOptions{
 		Comment: String("cancel comment"),
 	}
@@ -349,6 +351,7 @@ func TestAdminRun_ForceCancel_Marshal(t *testing.T) {
 }
 
 func TestAdminRun_Unmarshal(t *testing.T) {
+	t.Parallel()
 	data := map[string]interface{}{
 		"data": map[string]interface{}{
 			"type": "runs",

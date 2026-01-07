@@ -12,6 +12,7 @@ import (
 )
 
 func TestVariableSetVariablesList(t *testing.T) {
+	t.Parallel()
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -72,6 +73,7 @@ func TestVariableSetVariablesList(t *testing.T) {
 }
 
 func TestVariableSetVariablesCreate(t *testing.T) {
+	t.Parallel()
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -212,6 +214,7 @@ func TestVariableSetVariablesCreate(t *testing.T) {
 }
 
 func TestVariableSetVariablesRead(t *testing.T) {
+	t.Parallel()
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -256,6 +259,7 @@ func TestVariableSetVariablesRead(t *testing.T) {
 }
 
 func TestVariableSetVariablesUpdate(t *testing.T) {
+	t.Parallel()
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -345,6 +349,7 @@ func TestVariableSetVariablesUpdate(t *testing.T) {
 }
 
 func TestVariableSetVariablesDelete(t *testing.T) {
+	t.Parallel()
 	client := testClient(t)
 	ctx := context.Background()
 

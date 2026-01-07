@@ -12,6 +12,7 @@ import (
 )
 
 func TestGPGKeyList(t *testing.T) {
+	t.Parallel()
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -94,6 +95,7 @@ func TestGPGKeyList(t *testing.T) {
 }
 
 func TestGPGKeyCreate(t *testing.T) {
+	t.Parallel()
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -151,6 +153,7 @@ func TestGPGKeyCreate(t *testing.T) {
 }
 
 func TestGPGKeyRead(t *testing.T) {
+	t.Parallel()
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -188,6 +191,7 @@ func TestGPGKeyRead(t *testing.T) {
 }
 
 func TestGPGKeyUpdate(t *testing.T) {
+	t.Parallel()
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -249,6 +253,7 @@ func TestGPGKeyUpdate(t *testing.T) {
 }
 
 func TestGPGKeyDelete(t *testing.T) {
+	t.Parallel()
 	client := testClient(t)
 	ctx := context.Background()
 

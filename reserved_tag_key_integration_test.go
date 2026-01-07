@@ -13,6 +13,7 @@ import (
 )
 
 func TestReservedTagKeysList(t *testing.T) {
+	t.Parallel()
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -66,6 +67,7 @@ func TestReservedTagKeysList(t *testing.T) {
 }
 
 func TestReservedTagKeysCreate(t *testing.T) {
+	t.Parallel()
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -144,6 +146,7 @@ func TestReservedTagKeysCreate(t *testing.T) {
 }
 
 func TestReservedTagKeysUpdate(t *testing.T) {
+	t.Parallel()
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -219,6 +222,7 @@ func TestReservedTagKeysUpdate(t *testing.T) {
 }
 
 func TestReservedTagKeysDelete(t *testing.T) {
+	t.Parallel()
 	client := testClient(t)
 	ctx := context.Background()
 

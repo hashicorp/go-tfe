@@ -13,6 +13,7 @@ import (
 )
 
 func TestIPRangesRead(t *testing.T) {
+	t.Parallel()
 	skipIfEnterprise(t)
 
 	client := testClient(t)

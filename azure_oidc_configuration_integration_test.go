@@ -12,6 +12,7 @@ import (
 // To run them locally, follow the instructions outlined in hyok_configuration_integration_test.go
 
 func TestAzureOIDCConfigurationCreateDelete(t *testing.T) {
+	t.Parallel()
 	skipHYOKIntegrationTests(t)
 
 	client := testClient(t)
@@ -70,6 +71,7 @@ func TestAzureOIDCConfigurationCreateDelete(t *testing.T) {
 }
 
 func TestAzureOIDCConfigurationRead(t *testing.T) {
+	t.Parallel()
 	skipHYOKIntegrationTests(t)
 
 	client := testClient(t)
@@ -93,6 +95,7 @@ func TestAzureOIDCConfigurationRead(t *testing.T) {
 }
 
 func TestAzureOIDCConfigurationUpdate(t *testing.T) {
+	t.Parallel()
 	skipHYOKIntegrationTests(t)
 
 	client := testClient(t)

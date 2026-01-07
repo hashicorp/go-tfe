@@ -12,6 +12,7 @@ import (
 // To run them locally, follow the instructions outlined in hyok_configuration_integration_test.go
 
 func TestVaultOIDCConfigurationCreateDelete(t *testing.T) {
+	t.Parallel()
 	skipHYOKIntegrationTests(t)
 
 	client := testClient(t)
@@ -67,6 +68,7 @@ func TestVaultOIDCConfigurationCreateDelete(t *testing.T) {
 }
 
 func TestVaultOIDCConfigurationRead(t *testing.T) {
+	t.Parallel()
 	skipHYOKIntegrationTests(t)
 
 	client := testClient(t)
@@ -90,6 +92,7 @@ func TestVaultOIDCConfigurationRead(t *testing.T) {
 }
 
 func TestVaultOIDCConfigurationUpdate(t *testing.T) {
+	t.Parallel()
 	skipHYOKIntegrationTests(t)
 
 	client := testClient(t)

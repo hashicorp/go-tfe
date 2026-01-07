@@ -12,6 +12,7 @@ import (
 )
 
 func TestStackDeploymentGroupSummaryList(t *testing.T) {
+	t.Parallel()
 	skipUnlessBeta(t)
 
 	client := testClient(t)

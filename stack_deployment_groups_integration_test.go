@@ -12,6 +12,7 @@ import (
 )
 
 func TestStackDeploymentGroupsList(t *testing.T) {
+	t.Parallel()
 	skipUnlessBeta(t)
 
 	client := testClient(t)
@@ -78,6 +79,7 @@ func TestStackDeploymentGroupsList(t *testing.T) {
 }
 
 func TestStackDeploymentGroupsRead(t *testing.T) {
+	t.Parallel()
 	skipUnlessBeta(t)
 
 	client := testClient(t)
@@ -130,6 +132,7 @@ func TestStackDeploymentGroupsRead(t *testing.T) {
 }
 
 func TestStackDeploymentGroupsApproveAllPlans(t *testing.T) {
+	t.Parallel()
 	skipUnlessBeta(t)
 
 	client := testClient(t)
@@ -177,6 +180,7 @@ func TestStackDeploymentGroupsApproveAllPlans(t *testing.T) {
 }
 
 func TestStackDeploymentGroupsRerun(t *testing.T) {
+	t.Parallel()
 	skipUnlessBeta(t)
 
 	client := testClient(t)

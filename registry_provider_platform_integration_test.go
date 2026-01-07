@@ -12,6 +12,7 @@ import (
 )
 
 func TestRegistryProviderPlatformsCreate(t *testing.T) {
+	t.Parallel()
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -166,6 +167,7 @@ func TestRegistryProviderPlatformsCreate(t *testing.T) {
 }
 
 func TestRegistryProviderPlatformsDelete(t *testing.T) {
+	t.Parallel()
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -211,6 +213,7 @@ func TestRegistryProviderPlatformsDelete(t *testing.T) {
 }
 
 func TestRegistryProviderPlatformsRead(t *testing.T) {
+	t.Parallel()
 	t.Skip()
 
 	client := testClient(t)
@@ -292,6 +295,7 @@ func TestRegistryProviderPlatformsRead(t *testing.T) {
 }
 
 func TestRegistryProviderPlatformsList(t *testing.T) {
+	t.Parallel()
 	t.Skip()
 
 	client := testClient(t)

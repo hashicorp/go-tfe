@@ -20,6 +20,7 @@ import (
 )
 
 func TestClient_newClient(t *testing.T) {
+	t.Parallel()
 	ts := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", ContentTypeJSONAPI)
 		w.Header().Set("X-RateLimit-Limit", "30")
@@ -109,6 +110,7 @@ func TestClient_newClient(t *testing.T) {
 }
 
 func TestClient_defaultConfig(t *testing.T) {
+	t.Parallel()
 	t.Run("with no environment variables", func(t *testing.T) {
 		defer setupEnvVars("", "")()
 		os.Unsetenv("TFE_HOSTNAME")
@@ -141,6 +143,7 @@ func TestClient_defaultConfig(t *testing.T) {
 }
 
 func TestClient_headers(t *testing.T) {
+	t.Parallel()
 	testedCalls := 0
 	ts := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		testedCalls++
@@ -204,6 +207,7 @@ func TestClient_headers(t *testing.T) {
 }
 
 func TestClient_userAgent(t *testing.T) {
+	t.Parallel()
 	testedCalls := 0
 	ts := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		testedCalls++
@@ -264,6 +268,7 @@ type InvalidBody struct {
 }
 
 func TestClient_requestBodySerialization(t *testing.T) {
+	t.Parallel()
 	t.Run("jsonapi request", func(t *testing.T) {
 		body := JSONAPIBody{StrAttr: "foo"}
 		requestBody, err := createRequest(&body)
@@ -356,10 +361,12 @@ func TestClient_requestBodySerialization(t *testing.T) {
 		}
 	})
 
+	expectedErr := "go-tfe bug: DELETE/PATCH/POST body must be nil, ptr, or ptr slice"
+
 	t.Run("non-pointer request", func(t *testing.T) {
 		body := InvalidBody{}
 		_, err := createRequest(body)
-		if err == nil || err.Error() != "go-tfe bug: DELETE/PATCH/POST body must be nil, ptr, or ptr slice" {
+		if err == nil || err.Error() != expectedErr {
 			t.Fatalf("unexpected error: %v", err)
 		}
 	})
@@ -367,7 +374,7 @@ func TestClient_requestBodySerialization(t *testing.T) {
 	t.Run("slice of non-pointer request", func(t *testing.T) {
 		body := []InvalidBody{{}}
 		_, err := createRequest(body)
-		if err == nil || err.Error() != "go-tfe bug: DELETE/PATCH/POST body must be nil, ptr, or ptr slice" {
+		if err == nil || err.Error() != expectedErr {
 			t.Fatalf("unexpected error: %v", err)
 		}
 	})
@@ -375,7 +382,7 @@ func TestClient_requestBodySerialization(t *testing.T) {
 	t.Run("map request", func(t *testing.T) {
 		body := make(map[string]string)
 		_, err := createRequest(body)
-		if err == nil || err.Error() != "go-tfe bug: DELETE/PATCH/POST body must be nil, ptr, or ptr slice" {
+		if err == nil || err.Error() != expectedErr {
 			t.Fatalf("unexpected error: %v", err)
 		}
 	})
@@ -383,7 +390,7 @@ func TestClient_requestBodySerialization(t *testing.T) {
 	t.Run("string request", func(t *testing.T) {
 		body := "foo"
 		_, err := createRequest(body)
-		if err == nil || err.Error() != "go-tfe bug: DELETE/PATCH/POST body must be nil, ptr, or ptr slice" {
+		if err == nil || err.Error() != expectedErr {
 			t.Fatalf("unexpected error: %v", err)
 		}
 	})
@@ -409,6 +416,7 @@ func createRequest(v interface{}) ([]byte, error) {
 }
 
 func TestClient_configureLimiter(t *testing.T) {
+	t.Parallel()
 	rateLimit := ""
 	ts := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", ContentTypeJSONAPI)
@@ -470,6 +478,7 @@ func TestClient_configureLimiter(t *testing.T) {
 }
 
 func TestClient_retryHTTPCheck(t *testing.T) {
+	t.Parallel()
 	ts := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", ContentTypeJSONAPI)
 		w.Header().Set("X-RateLimit-Limit", "30")
@@ -552,6 +561,7 @@ func TestClient_retryHTTPCheck(t *testing.T) {
 }
 
 func TestClient_retryHTTPBackoff(t *testing.T) {
+	t.Parallel()
 	ts := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", ContentTypeJSONAPI)
 		w.Header().Set("X-RateLimit-Limit", "30")

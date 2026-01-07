@@ -12,6 +12,7 @@ import (
 )
 
 func TestVariableSetsList(t *testing.T) {
+	t.Parallel()
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -67,6 +68,7 @@ func TestVariableSetsList(t *testing.T) {
 }
 
 func TestVariableSetsListForWorkspace(t *testing.T) {
+	t.Parallel()
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -127,6 +129,7 @@ func TestVariableSetsListForWorkspace(t *testing.T) {
 }
 
 func TestVariableSetsListForProject(t *testing.T) {
+	t.Parallel()
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -184,6 +187,7 @@ func TestVariableSetsListForProject(t *testing.T) {
 }
 
 func TestVariableSetsCreate(t *testing.T) {
+	t.Parallel()
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -269,6 +273,7 @@ func TestVariableSetsCreate(t *testing.T) {
 }
 
 func TestVariableSetsRead(t *testing.T) {
+	t.Parallel()
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -301,6 +306,7 @@ func TestVariableSetsRead(t *testing.T) {
 }
 
 func TestVariableSetsUpdate(t *testing.T) {
+	t.Parallel()
 	client := testClient(t)
 	ctx := context.Background()
 	orgTest, orgTestCleanup := createOrganization(t, client)
@@ -337,6 +343,7 @@ func TestVariableSetsUpdate(t *testing.T) {
 }
 
 func TestVariableSetsDelete(t *testing.T) {
+	t.Parallel()
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -705,6 +712,7 @@ func TestVariableSetsApplyToAndRemoveFromStacks(t *testing.T) {
 }
 
 func TestVariableSetsUpdateWorkspaces(t *testing.T) {
+	t.Parallel()
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -740,6 +748,7 @@ func TestVariableSetsUpdateWorkspaces(t *testing.T) {
 }
 
 func TestVariableSetsUpdateStacks(t *testing.T) {
+	t.Parallel()
 	skipUnlessBeta(t)
 
 	client := testClient(t)

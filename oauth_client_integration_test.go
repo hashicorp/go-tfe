@@ -14,6 +14,7 @@ import (
 )
 
 func TestOAuthClientsList(t *testing.T) {
+	t.Parallel()
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -87,6 +88,7 @@ func TestOAuthClientsList(t *testing.T) {
 }
 
 func TestOAuthClientsCreate(t *testing.T) {
+	t.Parallel()
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -178,6 +180,7 @@ func TestOAuthClientsCreate(t *testing.T) {
 }
 
 func TestOAuthClientsCreate_rsaKeyPair(t *testing.T) {
+	t.Parallel()
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -207,6 +210,7 @@ func TestOAuthClientsCreate_rsaKeyPair(t *testing.T) {
 }
 
 func TestOAuthClientsCreate_agentPool(t *testing.T) {
+	t.Parallel()
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -280,6 +284,7 @@ func TestOAuthClientsCreate_agentPool(t *testing.T) {
 }
 
 func TestOAuthClientsRead(t *testing.T) {
+	t.Parallel()
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -314,6 +319,7 @@ func TestOAuthClientsRead(t *testing.T) {
 }
 
 func TestOAuthClientsReadWithOptions(t *testing.T) {
+	t.Parallel()
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -338,6 +344,7 @@ func TestOAuthClientsReadWithOptions(t *testing.T) {
 }
 
 func TestOAuthClientsDelete(t *testing.T) {
+	t.Parallel()
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -373,6 +380,7 @@ func TestOAuthClientsDelete(t *testing.T) {
 }
 
 func TestOAuthClientsCreateOptionsValid(t *testing.T) {
+	t.Parallel()
 	t.Run("with valid options", func(t *testing.T) {
 		options := OAuthClientCreateOptions{
 			APIURL:          String("https://api.github.com"),
@@ -482,6 +490,7 @@ func TestOAuthClientsCreateOptionsValid(t *testing.T) {
 }
 
 func TestOAuthClientsAddProjects(t *testing.T) {
+	t.Parallel()
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -551,6 +560,7 @@ func TestOAuthClientsAddProjects(t *testing.T) {
 }
 
 func TestOAuthClientsRemoveProjects(t *testing.T) {
+	t.Parallel()
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -614,6 +624,7 @@ func TestOAuthClientsRemoveProjects(t *testing.T) {
 }
 
 func TestOAuthClientsUpdate(t *testing.T) {
+	t.Parallel()
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -688,6 +699,7 @@ MIIEpAIBAAKCAQEAoKizy4xbN6qZFAwIJV24liz/vYBSvR3SjEiUzhpp0uMAmICN
 `
 
 func TestOAuthClientsUpdate_rsaKeyPair(t *testing.T) {
+	t.Parallel()
 	client := testClient(t)
 	ctx := context.Background()
 

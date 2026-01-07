@@ -13,6 +13,7 @@ import (
 )
 
 func TestAgentPoolsList(t *testing.T) {
+	t.Parallel()
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -189,6 +190,7 @@ func TestAgentPoolsList(t *testing.T) {
 }
 
 func TestAgentPoolsCreate(t *testing.T) {
+	t.Parallel()
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -324,6 +326,7 @@ func TestAgentPoolsCreate(t *testing.T) {
 }
 
 func TestAgentPoolsRead(t *testing.T) {
+	t.Parallel()
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -384,6 +387,7 @@ func TestAgentPoolsRead(t *testing.T) {
 }
 
 func TestAgentPoolsReadCreatedAt(t *testing.T) {
+	t.Parallel()
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -401,6 +405,7 @@ func TestAgentPoolsReadCreatedAt(t *testing.T) {
 }
 
 func TestAgentPoolsUpdate(t *testing.T) {
+	t.Parallel()
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -545,6 +550,7 @@ func TestAgentPoolsUpdate(t *testing.T) {
 }
 
 func TestAgentPoolsUpdateAllowedWorkspaces(t *testing.T) {
+	t.Parallel()
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -599,6 +605,7 @@ func TestAgentPoolsUpdateAllowedWorkspaces(t *testing.T) {
 }
 
 func TestAgentPoolsUpdateAllowedProjects(t *testing.T) {
+	t.Parallel()
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -653,6 +660,7 @@ func TestAgentPoolsUpdateAllowedProjects(t *testing.T) {
 }
 
 func TestAgentPoolsUpdateExcludedWorkspaces(t *testing.T) {
+	t.Parallel()
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -707,6 +715,7 @@ func TestAgentPoolsUpdateExcludedWorkspaces(t *testing.T) {
 }
 
 func TestAgentPoolsDelete(t *testing.T) {
+	t.Parallel()
 	client := testClient(t)
 	ctx := context.Background()
 

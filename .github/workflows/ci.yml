@@ -5,7 +5,8 @@ on:
   pull_request:
 
 concurrency:
-  group: "one"
+  group: ${{ github.head_ref || github.ref }}
+  cancel-in-progress: true
 
 jobs:
   lint:
@@ -55,89 +56,10 @@ jobs:
           admin_version_maintenance_token: ${{ fromJSON(steps.tflocal.outputs.workspace-outputs-json).tfe_admin_token_by_role.version-maintenance }}
           oauth-client-github-token: ${{ secrets.OAUTH_CLIENT_GITHUB_TOKEN }}
           datadog-workflow-token: ${{ secrets.TF_WORKFLOW_DATADOG_API_KEY }}
-          skip-statement: "-skip '_RunDependent$'"
-
-  tests-run-dependent:
-    name: Run Dependent Tests
-    runs-on: ubuntu-latest
-    steps:
-      - name: terraform-cloud-outputs
-        id: tflocal
-        uses: hashicorp-forge/terraform-cloud-action/outputs@5583d5f554d268ac91b3c37fd0a5e9da2c78c017 # v1.1.0
-        with:
-          token: ${{ secrets.TF_WORKFLOW_TFLOCAL_CLOUD_TFC_TOKEN }}
-          organization: hashicorp-v2
-          workspace: tflocal-go-tfe
-
-      - name: Checkout code
-        uses: actions/checkout@a5ac7e51b41094c92402da3b24376905380afc29 # v4.1.6
-
-      - name: Set up Go
-        uses: actions/setup-go@d35c59abb061a4a6fb18e82ac0862c26744d6ab5 # v5.5.0
-        with:
-          go-version-file: go.mod
-          cache: true
-          cache-dependency-path: go.sum
-
-      - name: Sync dependencies
-        shell: bash
-        run: |
-          go mod download
-          go mod tidy
-
-      - name: Install gotestsum
-        shell: bash
-        run: go install gotest.tools/gotestsum@5768fec807c3a620b209c79845e80fb4befa5857 # v1.12.2
-
-      - name: Download artifact
-        id: download-artifact
-        uses: dawidd6/action-download-artifact@ac66b43f0e6a346234dd65d4d0c8fbb31cb316e5 # v11
-        with:
-          workflow_conclusion: success
-          name: junit-test-summary
-          if_no_artifact_found: warn
-          branch: main
-
-      - name: Configure Datadog Test Optimization
-        uses: datadog/test-visibility-github-action@f4b026bb8b8b53f323960cf86a849a0231ff93b9 # v2.5.0
-        with:
-          languages: go
-          api_key: ${{ secrets.TF_WORKFLOW_DATADOG_API_KEY }}
-          site: datadoghq.com
-
-      - name: Run integration tests
-        shell: bash
-        env:
-          TFE_ADDRESS: ${{ fromJSON(steps.tflocal.outputs.workspace-outputs-json).tfe_address }}
-          TFE_TOKEN: ${{ fromJSON(steps.tflocal.outputs.workspace-outputs-json).tfe_token }}
-          TFE_ADMIN_CONFIGURATION_TOKEN: ${{ fromJSON(steps.tflocal.outputs.workspace-outputs-json).tfe_admin_token_by_role.configuration }}
-          TFE_ADMIN_PROVISION_LICENSES_TOKEN: ${{ fromJSON(steps.tflocal.outputs.workspace-outputs-json).tfe_admin_token_by_role.provision-licenses }}
-          TFE_ADMIN_SECURITY_MAINTENANCE_TOKEN: ${{ fromJSON(steps.tflocal.outputs.workspace-outputs-json).tfe_admin_token_by_role.security-maintenance }}
-          TFE_ADMIN_SITE_ADMIN_TOKEN: ${{ fromJSON(steps.tflocal.outputs.workspace-outputs-json).tfe_admin_token_by_role.site-admin }}
-          TFE_ADMIN_SUBSCRIPTION_TOKEN: ${{ fromJSON(steps.tflocal.outputs.workspace-outputs-json).tfe_admin_token_by_role.subscription }}
-          TFE_ADMIN_SUPPORT_TOKEN: ${{ fromJSON(steps.tflocal.outputs.workspace-outputs-json).tfe_admin_token_by_role.support }}
-          TFE_ADMIN_VERSION_MAINTENANCE_TOKEN: ${{ fromJSON(steps.tflocal.outputs.workspace-outputs-json).tfe_admin_token_by_role.version-maintenance }}
-          TFC_RUN_TASK_URL: "http://testing-mocks.tfe:22180/runtasks/pass"
-          GITHUB_POLICY_SET_IDENTIFIER: "Maed223/test-policy-set"
-          GITHUB_REGISTRY_MODULE_IDENTIFIER: "Maed223/terraform-random-module"
-          GITHUB_REGISTRY_NO_CODE_MODULE_IDENTIFIER: "hashicorp/terraform-random-no-code-module"
-          OAUTH_CLIENT_GITHUB_TOKEN: "${{ secrets.OAUTH_CLIENT_GITHUB_TOKEN }}"
-          GO111MODULE: "on"
-        run: |
-          gotestsum --junitfile run-dependent-summary.xml --format short-verbose --rerun-fails=3 --packages=./ -- -parallel=1 -timeout=59m -coverprofile cover.out -run "_RunDependent$"
-
-      - name: Upload test artifacts
-        uses: actions/upload-artifact@65c4c4a1ddee5b72f698fdd19549f0f0fb45cf08 # v4.6.0
-        with:
-          name: junit-run-dependent-test-summary
-          path: |
-            summary.xml
-            cover.out
-          retention-days: 1
 
   tests-combine-summaries:
     name: Combine Test Reports
-    needs: [tests, tests-run-dependent]
+    needs: [tests]
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -172,10 +94,10 @@ jobs:
 
       - name: Merge coverage reports
         run: |
-          gocovmerge junit-test-summary-{0..7}/cover.out junit-run-dependent-test-summary/cover.out > merged-coverage.out
+          gocovmerge junit-test-summary-{0..7}/cover.out > merged-coverage.out
 
       - name: Merge junit reports
-        run: jrm ./ci-summary.xml "junit-test-summary-{0..7}/*.xml" "junit-run-dependent-test-summary/*.xml"
+        run: jrm ./ci-summary.xml "junit-test-summary-{0..7}/*.xml"
 
       - name: Upload test artifacts
         uses: actions/upload-artifact@65c4c4a1ddee5b72f698fdd19549f0f0fb45cf08 # v4.6.0
@@ -193,13 +115,13 @@ jobs:
 
   tests-summarize:
     name: Summarize Tests
-    needs: [tests, tests-run-dependent]
+    needs: [tests]
     runs-on: ubuntu-latest
     if: ${{ always() }}
     steps:
       - name: Check tests Status
         run: |
-          if [ "${{ needs.tests.result }}" = "success" ] && [ "${{ needs.tests-run-dependent.result }}" = "success" ]; then
+          if [ "${{ needs.tests.result }}" = "success" ]; then
             exit 0
           fi
           exit 1

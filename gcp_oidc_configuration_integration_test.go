@@ -12,6 +12,7 @@ import (
 // To run them locally, follow the instructions outlined in hyok_configuration_integration_test.go
 
 func TestGCPOIDCConfigurationCreateDelete(t *testing.T) {
+	t.Parallel()
 	skipHYOKIntegrationTests(t)
 
 	client := testClient(t)
@@ -70,6 +71,7 @@ func TestGCPOIDCConfigurationCreateDelete(t *testing.T) {
 }
 
 func TestGCPOIDCConfigurationRead(t *testing.T) {
+	t.Parallel()
 	skipHYOKIntegrationTests(t)
 
 	client := testClient(t)
@@ -93,6 +95,7 @@ func TestGCPOIDCConfigurationRead(t *testing.T) {
 }
 
 func TestGCPOIDCConfigurationUpdate(t *testing.T) {
+	t.Parallel()
 	skipHYOKIntegrationTests(t)
 
 	client := testClient(t)

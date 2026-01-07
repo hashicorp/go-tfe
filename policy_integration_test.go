@@ -16,6 +16,7 @@ import (
 )
 
 func TestPoliciesList(t *testing.T) {
+	t.Parallel()
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -103,6 +104,7 @@ func TestPoliciesList(t *testing.T) {
 }
 
 func TestPoliciesCreate(t *testing.T) {
+	t.Parallel()
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -426,6 +428,7 @@ func TestPoliciesCreate(t *testing.T) {
 }
 
 func TestPoliciesRead(t *testing.T) {
+	t.Parallel()
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -479,6 +482,7 @@ func TestPoliciesRead(t *testing.T) {
 }
 
 func TestPoliciesUpdate(t *testing.T) {
+	t.Parallel()
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -621,6 +625,7 @@ func TestPoliciesUpdate(t *testing.T) {
 }
 
 func TestPoliciesDelete(t *testing.T) {
+	t.Parallel()
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -650,6 +655,7 @@ func TestPoliciesDelete(t *testing.T) {
 }
 
 func TestPoliciesUpload(t *testing.T) {
+	t.Parallel()
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -678,6 +684,7 @@ func TestPoliciesUpload(t *testing.T) {
 }
 
 func TestPoliciesDownload(t *testing.T) {
+	t.Parallel()
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -709,6 +716,7 @@ func TestPoliciesDownload(t *testing.T) {
 }
 
 func TestPolicy_Unmarshal(t *testing.T) {
+	t.Parallel()
 	data := map[string]interface{}{
 		"data": map[string]interface{}{
 			"type": "policies",
@@ -749,6 +757,7 @@ func TestPolicy_Unmarshal(t *testing.T) {
 }
 
 func TestPolicyCreateOptions_Marshal(t *testing.T) {
+	t.Parallel()
 	opts := PolicyCreateOptions{
 		Name:        String("my-policy"),
 		Description: String("details"),
@@ -777,6 +786,7 @@ func TestPolicyCreateOptions_Marshal(t *testing.T) {
 }
 
 func TestPolicyUpdateOptions_Marshal(t *testing.T) {
+	t.Parallel()
 	opts := PolicyUpdateOptions{
 		Description: String("details"),
 		Enforce: []*EnforcementOptions{

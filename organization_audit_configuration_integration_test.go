@@ -12,6 +12,7 @@ import (
 )
 
 func TestOrganizationAuditConfigurationRead(t *testing.T) {
+	t.Parallel()
 	skipUnlessBeta(t)
 
 	client := testClient(t)
@@ -39,6 +40,7 @@ func TestOrganizationAuditConfigurationRead(t *testing.T) {
 }
 
 func TestOrganizationAuditConfigurationTest(t *testing.T) {
+	t.Parallel()
 	skipUnlessBeta(t)
 
 	client := testClient(t)
@@ -64,6 +66,7 @@ func TestOrganizationAuditConfigurationTest(t *testing.T) {
 }
 
 func TestOrganizationAuditConfigurationUpdate(t *testing.T) {
+	t.Parallel()
 	skipUnlessBeta(t)
 
 	client := testClient(t)
