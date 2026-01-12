@@ -686,12 +686,25 @@ func TestStateVersionsDownload(t *testing.T) {
 
 	svTest, svTestCleanup := createStateVersion(t, client, 0, nil)
 	t.Cleanup(svTestCleanup)
+	require.NotNil(t, svTest)
+
+	// Download URL may not be immediately available after creation
+	// Poll until it is ready
+	svTest, err := retryPatientlyIf(
+		func() (any, error) {
+			return client.StateVersions.Read(ctx, svTest.ID)
+		},
+		func(sv *StateVersion) bool {
+			return sv.DownloadURL == ""
+		},
+	)
 
 	stateTest, err := os.ReadFile("test-fixtures/state-version/terraform.tfstate")
 	require.NoError(t, err)
 
 	t.Run("when the state version exists", func(t *testing.T) {
 		state, err := client.StateVersions.Download(ctx, svTest.DownloadURL)
+
 		require.NoError(t, err)
 		assert.Equal(t, stateTest, state)
 	})
