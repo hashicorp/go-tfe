@@ -2386,6 +2386,20 @@ func createStateVersion(t *testing.T, client *Client, serial int64, w *Workspace
 		t.Fatal(err)
 	}
 
+	// Download URL may not be immediately available after creation
+	// Poll until download URL is ready
+	sv, err = retryPatientlyIf(
+		func() (any, error) {
+			return client.StateVersions.Read(ctx, sv.ID)
+		},
+		func(nsv *StateVersion) bool {
+			return nsv.DownloadURL == ""
+		},
+	)
+	if err != nil {
+		t.Fatal(err)
+	}
+
 	return sv, func() {
 		// There currently isn't a way to delete a state, so we
 		// can only cleanup by deleting the workspace.

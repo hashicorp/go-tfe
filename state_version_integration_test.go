@@ -225,7 +225,10 @@ func TestStateVersionsUpload(t *testing.T) {
 		require.NoError(t, err)
 
 		// Get a refreshed view of the configuration version.
-		sv, err = client.StateVersions.Read(ctx, sv.ID)
+		sv, err = retryPatientlyIf(
+			func() (any, error) { return client.StateVersions.Read(ctx, sv.ID) },
+			func(sv *StateVersion) bool { return sv.DownloadURL == "" },
+		)
 		require.NoError(t, err)
 
 		assert.NotEmpty(t, sv.SanitizedStateDownloadURL)
@@ -323,7 +326,10 @@ func TestStateVersionsCreate_RunDependent(t *testing.T) {
 		require.NoError(t, err)
 
 		// Get a refreshed view of the configuration version.
-		refreshed, err := client.StateVersions.Read(ctx, sv.ID)
+		refreshed, err := retryPatientlyIf(
+			func() (any, error) { return client.StateVersions.Read(ctx, sv.ID) },
+			func(sv *StateVersion) bool { return sv.DownloadURL == "" },
+		)
 		require.NoError(t, err)
 
 		_, err = client.Workspaces.Unlock(ctx, wTest.ID)
@@ -338,8 +344,9 @@ func TestStateVersionsCreate_RunDependent(t *testing.T) {
 			assert.NotEmpty(t, item.ID)
 			assert.Equal(t, int64(1), item.Serial)
 			assert.NotEmpty(t, item.CreatedAt)
-			assert.NotEmpty(t, item.DownloadURL)
 		}
+
+		assert.NotEmpty(t, refreshed.DownloadURL)
 	})
 
 	t.Run("with external state representation", func(t *testing.T) {
@@ -360,7 +367,10 @@ func TestStateVersionsCreate_RunDependent(t *testing.T) {
 		require.NoError(t, err)
 
 		// Get a refreshed view of the configuration version.
-		refreshed, err := client.StateVersions.Read(ctx, sv.ID)
+		refreshed, err := retryPatientlyIf(
+			func() (any, error) { return client.StateVersions.Read(ctx, sv.ID) },
+			func(sv *StateVersion) bool { return sv.DownloadURL == "" },
+		)
 		require.NoError(t, err)
 
 		_, err = client.Workspaces.Unlock(ctx, wTest.ID)
@@ -377,8 +387,9 @@ func TestStateVersionsCreate_RunDependent(t *testing.T) {
 			assert.NotEmpty(t, item.ID)
 			assert.Equal(t, int64(1), item.Serial)
 			assert.NotEmpty(t, item.CreatedAt)
-			assert.NotEmpty(t, item.DownloadURL)
 		}
+
+		assert.NotEmpty(t, refreshed.DownloadURL)
 	})
 
 	t.Run("with the force flag set", func(t *testing.T) {
@@ -406,7 +417,10 @@ func TestStateVersionsCreate_RunDependent(t *testing.T) {
 		require.NoError(t, err)
 
 		// Get a refreshed view of the configuration version.
-		refreshed, err := client.StateVersions.Read(ctx, sv.ID)
+		refreshed, err := retryPatientlyIf(
+			func() (any, error) { return client.StateVersions.Read(ctx, sv.ID) },
+			func(sv *StateVersion) bool { return sv.DownloadURL == "" },
+		)
 		require.NoError(t, err)
 
 		_, err = client.Workspaces.Unlock(ctx, wTest.ID)
@@ -421,8 +435,9 @@ func TestStateVersionsCreate_RunDependent(t *testing.T) {
 			assert.NotEmpty(t, item.ID)
 			assert.Equal(t, int64(2), item.Serial)
 			assert.NotEmpty(t, item.CreatedAt)
-			assert.NotEmpty(t, item.DownloadURL)
 		}
+
+		assert.NotEmpty(t, refreshed.DownloadURL)
 	})
 
 	t.Run("with a run to associate with", func(t *testing.T) {
@@ -442,7 +457,10 @@ func TestStateVersionsCreate_RunDependent(t *testing.T) {
 		require.NotEmpty(t, sv.Run)
 
 		// Get a refreshed view of the configuration version.
-		refreshed, err := client.StateVersions.Read(ctx, sv.ID)
+		refreshed, err := retryPatientlyIf(
+			func() (any, error) { return client.StateVersions.Read(ctx, sv.ID) },
+			func(sv *StateVersion) bool { return sv.DownloadURL == "" },
+		)
 		require.NoError(t, err)
 		require.NotEmpty(t, refreshed.Run)
 
