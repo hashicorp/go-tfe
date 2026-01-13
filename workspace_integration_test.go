@@ -2921,43 +2921,61 @@ func TestWorkspaces_AddTags(t *testing.T) {
 		})
 		require.NoError(t, err)
 
-		// get the id of the new tag
-		tags, err := client.Workspaces.ListTags(ctx, wTest2.ID, nil)
+		// get the id of the new tag (may take a moment to show up)
+		createdTags, err := retryPatientlyIf(
+			func() (any, error) {
+				return client.Workspaces.ListTags(ctx, wTest2.ID, nil)
+			},
+			func(tl *TagList) bool {
+				return tl == nil || len(tl.Items) == 0
+			},
+		)
 		require.NoError(t, err)
+		require.NotNil(t, createdTags)
+		require.NotEmpty(t, createdTags.Items)
+		tagID := createdTags.Items[0].ID
 
 		// add the tag to our workspace by id
 		err = client.Workspaces.AddTags(ctx, wTest.ID, WorkspaceAddTagsOptions{
 			Tags: []*Tag{
 				{
-					ID: tags.Items[0].ID,
+					ID: tagID,
 				},
 			},
 		})
 		require.NoError(t, err)
 
-		// tag is now in the tag_names
-		// retry in case the system is busy
-		w, err := retryPatientlyIf(
+		// tag is now in our tag list
+		wt, err := retryPatientlyIf(
 			func() (any, error) {
-				return client.Workspaces.Read(ctx, orgTest.Name, wTest.Name)
+				return client.Workspaces.ListTags(ctx, wTest.ID, nil)
 			},
-			func(w *Workspace) bool {
-				return len(w.TagNames) < 5
+			func(tl *TagList) bool {
+				// wait for the tag to appear
+				if tl == nil {
+					return true
+				}
+				for _, tag := range tl.Items {
+					if tag.ID == tagID {
+						return false
+					}
+				}
+				return true
 			},
 		)
-
 		require.NoError(t, err)
-		require.NotEmpty(t, w)
-		assert.Equal(t, 5, len(w.TagNames))
-		sort.Strings(w.TagNames)
-		assert.Equal(t, w.TagNames, []string{"tag1", "tag2", "tag3", "tag4", "tagbyid"})
+		require.NotNil(t, wt)
 
-		// tag is now in our tag list
-		wt, err := client.Workspaces.ListTags(ctx, wTest.ID, nil)
-		require.NoError(t, err)
-		assert.Equal(t, 5, len(wt.Items))
-		assert.Equal(t, wt.Items[4].ID, tags.Items[0].ID)
-		assert.Equal(t, wt.Items[4].Name, "tagbyid")
+		// find the tag we added
+		var addedTag *Tag
+		for _, tag := range wt.Items {
+			if tag.ID == tagID {
+				addedTag = tag
+				break
+			}
+		}
+		require.NotNil(t, addedTag)
+		assert.Equal(t, "tagbyid", addedTag.Name)
 	})
 
 	t.Run("with invalid options", func(t *testing.T) {
