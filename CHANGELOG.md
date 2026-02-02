@@ -9,6 +9,7 @@
 # v1.98.0
 
 ## Enhancements
+* Adds `ReadWithOptions` method to `RunTriggers` to support including related resources when reading a run trigger by @Maed223 [#1275](https://github.com/hashicorp/go-tfe/pull/1275)
 * Adds `UserTokensEnabled` field to `Organization` to support enabling/disabling user tokens for an organization by @JarrettSpiker [#1225](https://github.com/hashicorp/go-tfe/pull/1225)
 * Adds `DeploymentRunStatus` and `DeploymentStepStatus` types by @Maed223 [#1261](https://github.com/hashicorp/go-tfe/pull/1261)
 

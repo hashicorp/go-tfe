@@ -28,6 +28,9 @@ type RunTriggers interface {
 	// Read a run trigger by its ID.
 	Read(ctx context.Context, RunTriggerID string) (*RunTrigger, error)
 
+	// ReadWithOptions reads a run trigger by its ID using the options supplied
+	ReadWithOptions(ctx context.Context, runID string, options *RunTriggerReadOptions) (*RunTrigger, error)
+
 	// Delete a run trigger by its ID.
 	Delete(ctx context.Context, RunTriggerID string) error
 }
@@ -100,6 +103,11 @@ type RunTriggerCreateOptions struct {
 	Sourceable *Workspace `jsonapi:"relation,sourceable"`
 }
 
+// RunTriggerCreateOptions represents the options for reading a run.
+type RunTriggerReadOptions struct {
+	Include []RunTriggerIncludeOpt `url:"include,omitempty"` // optional`
+}
+
 // List all the run triggers associated with a workspace.
 func (s *runTriggers) List(ctx context.Context, workspaceID string, options *RunTriggerListOptions) (*RunTriggerList, error) {
 	if !validStringID(&workspaceID) {
@@ -156,12 +164,17 @@ func (s *runTriggers) Create(ctx context.Context, workspaceID string, options Ru
 
 // Read a run trigger by its ID.
 func (s *runTriggers) Read(ctx context.Context, runTriggerID string) (*RunTrigger, error) {
+	return s.ReadWithOptions(ctx, runTriggerID, nil)
+}
+
+// Read a run trigger by its ID.
+func (s *runTriggers) ReadWithOptions(ctx context.Context, runTriggerID string, options *RunTriggerReadOptions) (*RunTrigger, error) {
 	if !validStringID(&runTriggerID) {
 		return nil, ErrInvalidRunTriggerID
 	}
 
 	u := fmt.Sprintf("run-triggers/%s", url.PathEscape(runTriggerID))
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest("GET", u, options)
 	if err != nil {
 		return nil, err
 	}
