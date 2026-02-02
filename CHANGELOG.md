@@ -1,5 +1,8 @@
 # Unreleased
 
+## Enhancements
+* Adds `Name` and `Provider` fields to `RegistryModuleCreateWithVCSConnectionOptions` to support explicit module naming for monorepos with non-standard repository names, by @jillirami [#1277](https://github.com/hashicorp/go-tfe/pull/1277)
+
 # v1.99.0
 
 ## Enhancements

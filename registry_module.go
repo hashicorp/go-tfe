@@ -345,6 +345,16 @@ type RegistryModuleCreateWithVCSConnectionOptions struct {
 	// https://jsonapi.org/format/#crud-creating
 	Type string `jsonapi:"primary,registry-modules"`
 
+	// Optional: The name of the module. If not provided, will be inferred from the VCS repository identifier.
+	// This is particularly useful for monorepos with source_directory where the repository name
+	// doesn't follow the terraform-<provider>-<name> convention.
+	Name *string `jsonapi:"attr,name,omitempty"`
+
+	// Optional: The provider name. If not provided, will be inferred from the VCS repository identifier.
+	// This is particularly useful for monorepos with source_directory where the repository name
+	// doesn't follow the terraform-<provider>-<name> convention.
+	Provider *string `jsonapi:"attr,provider,omitempty"`
+
 	// Required: VCS repository information
 	VCSRepo *RegistryModuleVCSRepoOptions `jsonapi:"attr,vcs-repo"`
 
