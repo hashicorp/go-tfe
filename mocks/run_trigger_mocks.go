@@ -98,3 +98,18 @@ func (mr *MockRunTriggersMockRecorder) Read(ctx, RunTriggerID any) *gomock.Call 
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Read", reflect.TypeOf((*MockRunTriggers)(nil).Read), ctx, RunTriggerID)
 }
+
+// ReadWithOptions mocks base method.
+func (m *MockRunTriggers) ReadWithOptions(ctx context.Context, runID string, options *tfe.RunTriggerReadOptions) (*tfe.RunTrigger, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "ReadWithOptions", ctx, runID, options)
+	ret0, _ := ret[0].(*tfe.RunTrigger)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// ReadWithOptions indicates an expected call of ReadWithOptions.
+func (mr *MockRunTriggersMockRecorder) ReadWithOptions(ctx, runID, options any) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ReadWithOptions", reflect.TypeOf((*MockRunTriggers)(nil).ReadWithOptions), ctx, runID, options)
+}
