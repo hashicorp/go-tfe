@@ -39,7 +39,8 @@ func TestStackCreateAndList(t *testing.T) {
 		Project: &Project{
 			ID: orgTest.DefaultProject.ID,
 		},
-		Migration: Bool(true),
+		Migration:          Bool(true),
+		SpeculativeEnabled: Bool(true),
 	})
 
 	require.NoError(t, err)
