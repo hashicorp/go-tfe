@@ -1,5 +1,9 @@
 # Unreleased
 
+# Enhancements
+
+* Adds the `SpeculativeEnabled` field to the `StackCreateOptions` and `StackUpdateOptions` structs.
+
 # v1.100.0
 
 ## Enhancements
