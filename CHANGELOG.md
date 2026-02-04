@@ -3,6 +3,11 @@
 ## Enhancements
 * Adds `Name` and `Provider` fields to `RegistryModuleCreateWithVCSConnectionOptions` to support explicit module naming for monorepos with non-standard repository names, by @jillirami [#1277](https://github.com/hashicorp/go-tfe/pull/1277)
 
+# v1.100.0
+
+## Enhancements
+* Adds `ReadWithOptions` method to `RunTriggers` to support including related resources when reading a run trigger by @Maed223 [#1275](https://github.com/hashicorp/go-tfe/pull/1275)
+
 # v1.99.0
 
 ## Enhancements
