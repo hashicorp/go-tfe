@@ -45,6 +45,7 @@ func TestStackCreateAndList(t *testing.T) {
 
 	require.NoError(t, err)
 	require.NotNil(t, stack1)
+	require.True(t, stack1.SpeculativeEnabled)
 
 	stack2, err := client.Stacks.Create(ctx, StackCreateOptions{
 		Name: "zz-test-stack",
@@ -170,6 +171,7 @@ func TestStackReadUpdateDelete(t *testing.T) {
 	require.NotEmpty(t, stack.VCSRepo.Identifier)
 	require.NotEmpty(t, stack.VCSRepo.OAuthTokenID)
 	require.NotEmpty(t, stack.VCSRepo.Branch)
+	require.False(t, stack.SpeculativeEnabled)
 
 	stackRead, err := client.Stacks.Read(ctx, stack.ID)
 	require.NoError(t, err)
@@ -178,6 +180,7 @@ func TestStackReadUpdateDelete(t *testing.T) {
 	require.Equal(t, stack.VCSRepo.Branch, stackRead.VCSRepo.Branch)
 	require.Equal(t, stack.AgentPool.ID, stackRead.AgentPool.ID)
 	assert.Equal(t, stack, stackRead)
+	assert.False(t, stackRead.SpeculativeEnabled)
 
 	updatedPool, err := client.AgentPools.Create(ctx, orgTest.Name, AgentPoolCreateOptions{
 		Name: String("updated-test-pool"),
@@ -191,12 +194,14 @@ func TestStackReadUpdateDelete(t *testing.T) {
 			OAuthTokenID: oauthClient.OAuthTokens[0].ID,
 			Branch:       "main",
 		},
-		AgentPool: updatedPool,
+		AgentPool:          updatedPool,
+		SpeculativeEnabled: Bool(true),
 	})
 
 	require.NoError(t, err)
 	require.Equal(t, "updated description", stackUpdated.Description)
 	require.Equal(t, updatedPool.ID, stackUpdated.AgentPool.ID)
+	require.True(t, stackUpdated.SpeculativeEnabled)
 
 	stackUpdatedConfig, err := client.Stacks.FetchLatestFromVcs(ctx, stack.ID)
 	require.NoError(t, err)
