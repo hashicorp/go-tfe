@@ -2,7 +2,7 @@
 
 # Enhancements
 
-* Adds the `SpeculativeEnabled` field to the `StackCreateOptions` and `StackUpdateOptions` structs.
+* Adds the `SpeculativeEnabled` field to the `StackCreateOptions` and `StackUpdateOptions` structs by @arunatibm [1279](https://github.com/hashicorp/go-tfe/pull/1279)
 
 # v1.100.0
 
