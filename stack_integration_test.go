@@ -60,6 +60,7 @@ func TestStackCreateAndList(t *testing.T) {
 
 	require.NoError(t, err)
 	require.NotNil(t, stack2)
+	require.False(t, stack2.SpeculativeEnabled)
 
 	t.Run("List without options", func(t *testing.T) {
 		t.Parallel()
