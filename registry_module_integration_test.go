@@ -1198,6 +1198,156 @@ func TestRegistryModulesCreateMonorepoTagBasedWithVCSConnection(t *testing.T) {
 	})
 }
 
+func TestRegistryModulesCreateMonorepoNonStandardName(t *testing.T) {
+	t.Parallel()
+	skipUnlessBeta(t)
+
+	// This test uses a repository like "private-modules" or "monorepo" that doesn't
+	// follow the terraform-<provider>-<name> pattern, which would previously fail
+	// with "Name is invalid" error.
+	githubIdentifier := os.Getenv("GITHUB_REGISTRY_MODULE_IDENTIFIER")
+	if githubIdentifier == "" {
+		t.Skip("Export a valid GITHUB_REGISTRY_MODULE_IDENTIFIER before running this test")
+	}
+
+	githubBranch := os.Getenv("GITHUB_REGISTRY_MODULE_BRANCH")
+	if githubBranch == "" {
+		githubBranch = "main"
+	}
+
+	client := testClient(t)
+	ctx := context.Background()
+
+	orgTest, orgTestCleanup := createOrganization(t, client)
+	t.Cleanup(orgTestCleanup)
+
+	oauthTokenTest, oauthTokenTestCleanup := createOAuthToken(t, client, orgTest)
+	t.Cleanup(oauthTokenTestCleanup)
+
+	t.Run("with explicit name and provider for monorepo with tags", func(t *testing.T) {
+		sourceDirectory := "modules/nestedA"
+		moduleName := "nestedA"
+		moduleProvider := "aws"
+
+		options := RegistryModuleCreateWithVCSConnectionOptions{
+			Name:     String(moduleName),
+			Provider: String(moduleProvider),
+			VCSRepo: &RegistryModuleVCSRepoOptions{
+				OrganizationName:  String(orgTest.Name),
+				Identifier:        String(githubIdentifier),
+				OAuthTokenID:      String(oauthTokenTest.ID),
+				DisplayIdentifier: String(githubIdentifier),
+				SourceDirectory:   String(sourceDirectory),
+				Tags:              Bool(true),
+			},
+		}
+		rm, err := client.RegistryModules.CreateWithVCSConnection(ctx, options)
+		require.NoError(t, err)
+		assert.NotEmpty(t, rm.ID)
+		assert.Equal(t, moduleName, rm.Name)
+		assert.Equal(t, moduleProvider, rm.Provider)
+		assert.Equal(t, sourceDirectory, rm.VCSRepo.SourceDirectory)
+		assert.Equal(t, true, rm.VCSRepo.Tags)
+	})
+
+	t.Run("with explicit name and provider for monorepo with branch", func(t *testing.T) {
+		sourceDirectory := "modules/nestedB"
+		moduleName := "nestedB"
+		moduleProvider := "gcp"
+
+		options := RegistryModuleCreateWithVCSConnectionOptions{
+			Name:     String(moduleName),
+			Provider: String(moduleProvider),
+			VCSRepo: &RegistryModuleVCSRepoOptions{
+				OrganizationName:  String(orgTest.Name),
+				Identifier:        String(githubIdentifier),
+				OAuthTokenID:      String(oauthTokenTest.ID),
+				DisplayIdentifier: String(githubIdentifier),
+				Branch:            String(githubBranch),
+				SourceDirectory:   String(sourceDirectory),
+			},
+		}
+		rm, err := client.RegistryModules.CreateWithVCSConnection(ctx, options)
+		require.NoError(t, err)
+		assert.NotEmpty(t, rm.ID)
+		assert.Equal(t, moduleName, rm.Name)
+		assert.Equal(t, moduleProvider, rm.Provider)
+		assert.Equal(t, sourceDirectory, rm.VCSRepo.SourceDirectory)
+		assert.Equal(t, githubBranch, rm.VCSRepo.Branch)
+		assert.Equal(t, false, rm.VCSRepo.Tags)
+	})
+
+	t.Run("with explicit name and provider for deeply nested path", func(t *testing.T) {
+		sourceDirectory := "terraform/modules/aws/compute"
+		moduleName := "compute"
+		moduleProvider := "aws"
+
+		options := RegistryModuleCreateWithVCSConnectionOptions{
+			Name:     String(moduleName),
+			Provider: String(moduleProvider),
+			VCSRepo: &RegistryModuleVCSRepoOptions{
+				OrganizationName:  String(orgTest.Name),
+				Identifier:        String(githubIdentifier),
+				OAuthTokenID:      String(oauthTokenTest.ID),
+				DisplayIdentifier: String(githubIdentifier),
+				Branch:            String(githubBranch),
+				SourceDirectory:   String(sourceDirectory),
+			},
+		}
+		rm, err := client.RegistryModules.CreateWithVCSConnection(ctx, options)
+		require.NoError(t, err)
+		assert.NotEmpty(t, rm.ID)
+		assert.Equal(t, moduleName, rm.Name)
+		assert.Equal(t, moduleProvider, rm.Provider)
+		assert.Equal(t, sourceDirectory, rm.VCSRepo.SourceDirectory)
+	})
+
+	t.Run("with explicit name and provider for various providers", func(t *testing.T) {
+		testCases := []struct {
+			name            string
+			moduleName      string
+			moduleProvider  string
+			sourceDirectory string
+		}{
+			{
+				name:            "azurerm provider",
+				moduleName:      "vnet",
+				moduleProvider:  "azurerm",
+				sourceDirectory: "modules/azure-vnet",
+			},
+			{
+				name:            "random provider",
+				moduleName:      "pet",
+				moduleProvider:  "random",
+				sourceDirectory: "modules/random-pet",
+			},
+		}
+
+		for _, tc := range testCases {
+			t.Run(tc.name, func(t *testing.T) {
+				options := RegistryModuleCreateWithVCSConnectionOptions{
+					Name:     String(tc.moduleName),
+					Provider: String(tc.moduleProvider),
+					VCSRepo: &RegistryModuleVCSRepoOptions{
+						OrganizationName:  String(orgTest.Name),
+						Identifier:        String(githubIdentifier),
+						OAuthTokenID:      String(oauthTokenTest.ID),
+						DisplayIdentifier: String(githubIdentifier),
+						Branch:            String(githubBranch),
+						SourceDirectory:   String(tc.sourceDirectory),
+					},
+				}
+				rm, err := client.RegistryModules.CreateWithVCSConnection(ctx, options)
+				require.NoError(t, err)
+				assert.NotEmpty(t, rm.ID)
+				assert.Equal(t, tc.moduleName, rm.Name)
+				assert.Equal(t, tc.moduleProvider, rm.Provider)
+				assert.Equal(t, tc.sourceDirectory, rm.VCSRepo.SourceDirectory)
+			})
+		}
+	})
+}
+
 func TestRegistryModulesCreateBranchBasedWithVCSConnectionWithTesting(t *testing.T) {
 	t.Parallel()
 	skipUnlessBeta(t)
