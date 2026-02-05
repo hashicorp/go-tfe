@@ -158,21 +158,23 @@ type StackListOptions struct {
 // StackCreateOptions represents the options for creating a stack. The project
 // relation is required.
 type StackCreateOptions struct {
-	Type        string               `jsonapi:"primary,stacks"`
-	Name        string               `jsonapi:"attr,name"`
-	Migration   *bool                `jsonapi:"attr,migration,omitempty"`
-	Description *string              `jsonapi:"attr,description,omitempty"`
-	VCSRepo     *StackVCSRepoOptions `jsonapi:"attr,vcs-repo"`
-	Project     *Project             `jsonapi:"relation,project"`
-	AgentPool   *AgentPool           `jsonapi:"relation,agent-pool"`
+	Type               string               `jsonapi:"primary,stacks"`
+	Name               string               `jsonapi:"attr,name"`
+	Migration          *bool                `jsonapi:"attr,migration,omitempty"`
+	SpeculativeEnabled *bool                `jsonapi:"attr,speculative-enabled,omitempty"`
+	Description        *string              `jsonapi:"attr,description,omitempty"`
+	VCSRepo            *StackVCSRepoOptions `jsonapi:"attr,vcs-repo"`
+	Project            *Project             `jsonapi:"relation,project"`
+	AgentPool          *AgentPool           `jsonapi:"relation,agent-pool"`
 }
 
 // StackUpdateOptions represents the options for updating a stack.
 type StackUpdateOptions struct {
-	Name        *string              `jsonapi:"attr,name,omitempty"`
-	Description *string              `jsonapi:"attr,description,omitempty"`
-	VCSRepo     *StackVCSRepoOptions `jsonapi:"attr,vcs-repo"`
-	AgentPool   *AgentPool           `jsonapi:"relation,agent-pool"`
+	Name               *string              `jsonapi:"attr,name,omitempty"`
+	Description        *string              `jsonapi:"attr,description,omitempty"`
+	SpeculativeEnabled *bool                `jsonapi:"attr,speculative-enabled,omitempty"`
+	VCSRepo            *StackVCSRepoOptions `jsonapi:"attr,vcs-repo"`
+	AgentPool          *AgentPool           `jsonapi:"relation,agent-pool"`
 }
 
 // WaitForStatusResult is the data structure that is sent over the channel
