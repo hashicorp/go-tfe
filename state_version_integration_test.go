@@ -159,6 +159,32 @@ func TestStateVersionsUpload(t *testing.T) {
 		assert.NotEmpty(t, sv.DownloadURL)
 		assert.Equal(t, StateVersionFinalized, sv.Status)
 	})
+    t.Run("state version Size is populated", func(t *testing.T) {
+        ctx := context.Background()
+        _, err := client.Workspaces.Lock(ctx, wTest.ID, WorkspaceLockOptions{})
+        require.NoError(t, err)
+
+        sv, err := client.StateVersions.Upload(ctx, wTest.ID, StateVersionUploadOptions{
+            StateVersionCreateOptions: StateVersionCreateOptions{
+                Lineage: String("741c4949-60b9-5bb1-5bf8-b14f4bb14af3"),
+                MD5:     String(fmt.Sprintf("%x", md5.Sum(state))),
+                Serial:  Int64(1),
+            },
+            RawState: state,
+        })
+        require.NoError(t, err)
+
+        _, err = client.Workspaces.Unlock(ctx, wTest.ID)
+        require.NoError(t, err)
+
+        timeout := time.Minute / 2
+        ctxPollSVReady, cancelPollSVReady := context.WithTimeout(ctx, timeout)
+        defer cancelPollSVReady()
+
+        sv = pollStateVersionStatus(t, client, ctxPollSVReady, sv, []StateVersionStatus{StateVersionFinalized})
+
+        assert.Greater(t, sv.Size, int64(0))
+    })
 
 	t.Run("cannot provide base64 state parameter when uploading", func(t *testing.T) {
 		ctx := context.Background()

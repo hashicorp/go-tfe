@@ -97,10 +97,11 @@ type StateVersion struct {
 	CreatedAt                 time.Time          `jsonapi:"attr,created-at,iso8601"`
 	DownloadURL               string             `jsonapi:"attr,hosted-state-download-url"`
 	UploadURL                 string             `jsonapi:"attr,hosted-state-upload-url"`
-	Status                    StateVersionStatus `jsonapi:"attr,status"`
+	Status                    StateVersionStatus `jsonapi:"attr,status"` 					  
 	JSONUploadURL             string             `jsonapi:"attr,hosted-json-state-upload-url"`
 	JSONDownloadURL           string             `jsonapi:"attr,hosted-json-state-download-url"`
 	Serial                    int64              `jsonapi:"attr,serial"`
+	Size                      int64              `jsonapi:"attr,size"`
 	VCSCommitSHA              string             `jsonapi:"attr,vcs-commit-sha"`
 	VCSCommitURL              string             `jsonapi:"attr,vcs-commit-url"`
 	BillableRUMCount          *uint32            `jsonapi:"attr,billable-rum-count"`
