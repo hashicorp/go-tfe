@@ -159,7 +159,6 @@ func TestStateVersionsUpload(t *testing.T) {
 		assert.NotEmpty(t, sv.DownloadURL)
 		assert.Equal(t, StateVersionFinalized, sv.Status)
 	})
-
 	t.Run("cannot provide base64 state parameter when uploading", func(t *testing.T) {
 		ctx := context.Background()
 		_, err = client.StateVersions.Upload(ctx, wTest.ID, StateVersionUploadOptions{
@@ -548,6 +547,7 @@ func TestStateVersionsRead(t *testing.T) {
 
 		require.NotNil(t, sv.BillableRUMCount)
 		assert.Greater(t, *sv.BillableRUMCount, uint32(0))
+		assert.Greater(t, sv.Size, int64(0))
 	})
 
 	t.Run("when the state version does not exist", func(t *testing.T) {

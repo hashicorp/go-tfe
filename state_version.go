@@ -101,6 +101,7 @@ type StateVersion struct {
 	JSONUploadURL             string             `jsonapi:"attr,hosted-json-state-upload-url"`
 	JSONDownloadURL           string             `jsonapi:"attr,hosted-json-state-download-url"`
 	Serial                    int64              `jsonapi:"attr,serial"`
+	Size                      int64              `jsonapi:"attr,size"`
 	VCSCommitSHA              string             `jsonapi:"attr,vcs-commit-sha"`
 	VCSCommitURL              string             `jsonapi:"attr,vcs-commit-url"`
 	BillableRUMCount          *uint32            `jsonapi:"attr,billable-rum-count"`

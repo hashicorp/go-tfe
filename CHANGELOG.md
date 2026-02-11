@@ -5,6 +5,8 @@
 ## Enhancements
 * Adds the `SpeculativeEnabled` field to the `StackCreateOptions` and `StackUpdateOptions` structs by @arunatibm [1279](https://github.com/hashicorp/go-tfe/pull/1279)
 * Adds `Name` and `Provider` fields to `RegistryModuleCreateWithVCSConnectionOptions` to support explicit module naming for monorepos with non-standard repository names, by @jillirami [#1277](https://github.com/hashicorp/go-tfe/pull/1277)
+* Adds the `Size` field to `StateVersion` by @Shaunakone [#1280](https://github.com/hashicorp/go-tfe/pull/1280)
+
 
 # v1.100.0
 
