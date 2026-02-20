@@ -1,5 +1,9 @@
 # Unreleased
 
+## Bug Fixes
+
+Fix an issue where stack creation panics if no project is provided in the `StackCreateOptions` creation options structure by @arybolovlev [#1284](https://github.com/hashicorp/go-tfe/pull/1284)
+
 # v1.101.0
 
 ## Enhancements

@@ -310,7 +310,7 @@ func (s StackCreateOptions) valid() error {
 		return ErrRequiredName
 	}
 
-	if s.Project.ID == "" {
+	if s.Project == nil || s.Project.ID == "" {
 		return ErrRequiredProject
 	}
 
