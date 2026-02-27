@@ -34,6 +34,7 @@
 ## Enhancements
 
 * Add variable set support for stacks with `ApplyToStacks`, `RemoveFromStacks`, and `UpdateStacks` API methods by @nithishravindra [#1251](https://github.com/hashicorp/go-tfe/pull/1251)
+* Adds`TriggerDisabled` field to `stack` struct to enable a stack to opt-in/opt-out of webhook processing by @mjyocca [#1017](https://github.com/hashicorp/go-tfe/pull/1017)
 
 # v1.96.0
 

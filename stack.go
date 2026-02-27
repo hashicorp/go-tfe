@@ -71,6 +71,7 @@ type StackVCSRepo struct {
 	Branch            string `jsonapi:"attr,branch,omitempty"`
 	GHAInstallationID string `jsonapi:"attr,github-app-installation-id,omitempty"`
 	OAuthTokenID      string `jsonapi:"attr,oauth-token-id,omitempty"`
+	TriggerDisabled   bool   `jsonapi:"attr,trigger-disabled"`
 }
 
 // StackVCSRepoOptions
