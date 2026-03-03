@@ -12,6 +12,8 @@ type Plan_relationships struct {
     additionalData map[string]any
     // Exports associated with this plan
     exports Plan_relationships_exportsable
+    // HYOK encrypted data key associated with this plan
+    hyokEncryptedDataKey Plan_relationships_hyokEncryptedDataKeyable
     // State versions associated with this plan (for TF <= 0.8)
     stateVersions Plan_relationships_stateVersionsable
 }
@@ -51,6 +53,16 @@ func (m *Plan_relationships) GetFieldDeserializers()(map[string]func(i878a80d233
         }
         return nil
     }
+    res["hyok-encrypted-data-key"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetObjectValue(CreatePlan_relationships_hyokEncryptedDataKeyFromDiscriminatorValue)
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            m.SetHyokEncryptedDataKey(val.(Plan_relationships_hyokEncryptedDataKeyable))
+        }
+        return nil
+    }
     res["state-versions"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
         val, err := n.GetObjectValue(CreatePlan_relationships_stateVersionsFromDiscriminatorValue)
         if err != nil {
@@ -63,6 +75,11 @@ func (m *Plan_relationships) GetFieldDeserializers()(map[string]func(i878a80d233
     }
     return res
 }
+// GetHyokEncryptedDataKey gets the hyok-encrypted-data-key property value. HYOK encrypted data key associated with this plan
+// returns a Plan_relationships_hyokEncryptedDataKeyable when successful
+func (m *Plan_relationships) GetHyokEncryptedDataKey()(Plan_relationships_hyokEncryptedDataKeyable) {
+    return m.hyokEncryptedDataKey
+}
 // GetStateVersions gets the state-versions property value. State versions associated with this plan (for TF <= 0.8)
 // returns a Plan_relationships_stateVersionsable when successful
 func (m *Plan_relationships) GetStateVersions()(Plan_relationships_stateVersionsable) {
@@ -72,6 +89,12 @@ func (m *Plan_relationships) GetStateVersions()(Plan_relationships_stateVersions
 func (m *Plan_relationships) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter)(error) {
     {
         err := writer.WriteObjectValue("exports", m.GetExports())
+        if err != nil {
+            return err
+        }
+    }
+    {
+        err := writer.WriteObjectValue("hyok-encrypted-data-key", m.GetHyokEncryptedDataKey())
         if err != nil {
             return err
         }
@@ -98,6 +121,10 @@ func (m *Plan_relationships) SetAdditionalData(value map[string]any)() {
 func (m *Plan_relationships) SetExports(value Plan_relationships_exportsable)() {
     m.exports = value
 }
+// SetHyokEncryptedDataKey sets the hyok-encrypted-data-key property value. HYOK encrypted data key associated with this plan
+func (m *Plan_relationships) SetHyokEncryptedDataKey(value Plan_relationships_hyokEncryptedDataKeyable)() {
+    m.hyokEncryptedDataKey = value
+}
 // SetStateVersions sets the state-versions property value. State versions associated with this plan (for TF <= 0.8)
 func (m *Plan_relationships) SetStateVersions(value Plan_relationships_stateVersionsable)() {
     m.stateVersions = value
@@ -106,7 +133,9 @@ type Plan_relationshipsable interface {
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
     GetExports()(Plan_relationships_exportsable)
+    GetHyokEncryptedDataKey()(Plan_relationships_hyokEncryptedDataKeyable)
     GetStateVersions()(Plan_relationships_stateVersionsable)
     SetExports(value Plan_relationships_exportsable)()
+    SetHyokEncryptedDataKey(value Plan_relationships_hyokEncryptedDataKeyable)()
     SetStateVersions(value Plan_relationships_stateVersionsable)()
 }

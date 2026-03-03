@@ -28,9 +28,9 @@ type ItemOrganizationMembershipsRequestBuilderGetQueryParameters struct {
     Include *string `uriparametername:"include"`
     // Optionally side-load relationships. Can include "user" or "teams".
     IncludeAsGetIncludeQueryParameterType *ida746806a5317411888a626b04e3136eca0733b586a4563515e25332070a269b.GetIncludeQueryParameterType `uriparametername:"include"`
-    // If omitted, the endpoint will return the first page.
+    // The page number to retrieve.
     Pagenumber *int32 `uriparametername:"page%5Bnumber%5D"`
-    // If omitted, the endpoint will return 20 memberships per page.
+    // The number of items to retrieve per page. Defaults to 20.
     Pagesize *int32 `uriparametername:"page%5Bsize%5D"`
     // A search query string. Memberships are searchable by user name or email (case-insensitive).
     Q *string `uriparametername:"q"`

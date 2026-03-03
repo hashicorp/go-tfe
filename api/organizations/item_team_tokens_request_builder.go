@@ -13,17 +13,26 @@ import (
 type ItemTeamTokensRequestBuilder struct {
     i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.BaseRequestBuilder
 }
+// ItemTeamTokensRequestBuilderGetQueryParameters list all tokens for a specified organization
+type ItemTeamTokensRequestBuilderGetQueryParameters struct {
+    // The page number to retrieve.
+    Pagenumber *int32 `uriparametername:"page%5Bnumber%5D"`
+    // The number of items to retrieve per page. Defaults to 20.
+    Pagesize *int32 `uriparametername:"page%5Bsize%5D"`
+}
 // ItemTeamTokensRequestBuilderGetRequestConfiguration configuration for the request such as headers, query parameters, and middleware options.
 type ItemTeamTokensRequestBuilderGetRequestConfiguration struct {
     // Request headers
     Headers *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestHeaders
     // Request options
     Options []i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestOption
+    // Request query parameters
+    QueryParameters *ItemTeamTokensRequestBuilderGetQueryParameters
 }
 // NewItemTeamTokensRequestBuilderInternal instantiates a new ItemTeamTokensRequestBuilder and sets the default values.
 func NewItemTeamTokensRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*ItemTeamTokensRequestBuilder) {
     m := &ItemTeamTokensRequestBuilder{
-        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/organizations/{organization_name}/team-tokens", pathParameters),
+        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/organizations/{organization_name}/team-tokens{?page%5Bnumber%5D*,page%5Bsize%5D*}", pathParameters),
     }
     return m
 }
@@ -79,6 +88,9 @@ func (m *ItemTeamTokensRequestBuilder) GetAsTeamTokensGetResponse(ctx context.Co
 func (m *ItemTeamTokensRequestBuilder) ToGetRequestInformation(ctx context.Context, requestConfiguration *ItemTeamTokensRequestBuilderGetRequestConfiguration)(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
     requestInfo := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewRequestInformationWithMethodAndUrlTemplateAndPathParameters(i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.GET, m.BaseRequestBuilder.UrlTemplate, m.BaseRequestBuilder.PathParameters)
     if requestConfiguration != nil {
+        if requestConfiguration.QueryParameters != nil {
+            requestInfo.AddQueryParameters(*(requestConfiguration.QueryParameters))
+        }
         requestInfo.Headers.AddAll(requestConfiguration.Headers)
         requestInfo.AddRequestOptions(requestConfiguration.Options)
     }

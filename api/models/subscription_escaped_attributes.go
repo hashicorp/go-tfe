@@ -37,8 +37,6 @@ type Subscription_attributes struct {
     hcpProjectId *string
     // The isActive property
     isActive *bool
-    // The isChangeApprovalRequired property
-    isChangeApprovalRequired *bool
     // The isChangeApproved property
     isChangeApproved *bool
     // The isPublicFreeTier property
@@ -245,16 +243,6 @@ func (m *Subscription_attributes) GetFieldDeserializers()(map[string]func(i878a8
         }
         return nil
     }
-    res["is-change-approval-required"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetBoolValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetIsChangeApprovalRequired(val)
-        }
-        return nil
-    }
     res["is-change-approved"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
         val, err := n.GetBoolValue()
         if err != nil {
@@ -412,11 +400,6 @@ func (m *Subscription_attributes) GetHcpProjectId()(*string) {
 func (m *Subscription_attributes) GetIsActive()(*bool) {
     return m.isActive
 }
-// GetIsChangeApprovalRequired gets the is-change-approval-required property value. The isChangeApprovalRequired property
-// returns a *bool when successful
-func (m *Subscription_attributes) GetIsChangeApprovalRequired()(*bool) {
-    return m.isChangeApprovalRequired
-}
 // GetIsChangeApproved gets the is-change-approved property value. The isChangeApproved property
 // returns a *bool when successful
 func (m *Subscription_attributes) GetIsChangeApproved()(*bool) {
@@ -558,12 +541,6 @@ func (m *Subscription_attributes) Serialize(writer i878a80d2330e89d26896388a3f48
         }
     }
     {
-        err := writer.WriteBoolValue("is-change-approval-required", m.GetIsChangeApprovalRequired())
-        if err != nil {
-            return err
-        }
-    }
-    {
         err := writer.WriteBoolValue("is-change-approved", m.GetIsChangeApproved())
         if err != nil {
             return err
@@ -699,10 +676,6 @@ func (m *Subscription_attributes) SetHcpProjectId(value *string)() {
 func (m *Subscription_attributes) SetIsActive(value *bool)() {
     m.isActive = value
 }
-// SetIsChangeApprovalRequired sets the is-change-approval-required property value. The isChangeApprovalRequired property
-func (m *Subscription_attributes) SetIsChangeApprovalRequired(value *bool)() {
-    m.isChangeApprovalRequired = value
-}
 // SetIsChangeApproved sets the is-change-approved property value. The isChangeApproved property
 func (m *Subscription_attributes) SetIsChangeApproved(value *bool)() {
     m.isChangeApproved = value
@@ -767,7 +740,6 @@ type Subscription_attributesable interface {
     GetHcpOrganizationId()(*string)
     GetHcpProjectId()(*string)
     GetIsActive()(*bool)
-    GetIsChangeApprovalRequired()(*bool)
     GetIsChangeApproved()(*bool)
     GetIsPublicFreeTier()(*bool)
     GetIsSelfServeTrial()(*bool)
@@ -793,7 +765,6 @@ type Subscription_attributesable interface {
     SetHcpOrganizationId(value *string)()
     SetHcpProjectId(value *string)()
     SetIsActive(value *bool)()
-    SetIsChangeApprovalRequired(value *bool)()
     SetIsChangeApproved(value *bool)()
     SetIsPublicFreeTier(value *bool)()
     SetIsSelfServeTrial(value *bool)()

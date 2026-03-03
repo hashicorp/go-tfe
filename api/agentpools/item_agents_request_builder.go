@@ -18,9 +18,9 @@ type ItemAgentsRequestBuilder struct {
 type ItemAgentsRequestBuilderGetQueryParameters struct {
     // Accepts a date in ISO8601 format (ex. `2020-08-11T10:41:23Z`).
     FilterlastPingSince *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time `uriparametername:"filter%5Blast%2Dping%2Dsince%5D"`
-    // If omitted, the endpoint will return the first page.
+    // The page number to retrieve.
     Pagenumber *int32 `uriparametername:"page%5Bnumber%5D"`
-    // If omitted, the endpoint will return 20 agents per page.
+    // The number of items to retrieve per page. Defaults to 20.
     Pagesize *int32 `uriparametername:"page%5Bsize%5D"`
     // Allows sorting the returned agents. Valid value is "created-at". Prepending a hyphen to the sort parameter will reverse the order (e.g. "-name").
     Sort *string `uriparametername:"sort"`

@@ -5,17 +5,17 @@ package models
 type Var_relationships_varset_data_type int
 
 const (
-    VARSET_VAR_RELATIONSHIPS_VARSET_DATA_TYPE Var_relationships_varset_data_type = iota
+    VARSETS_VAR_RELATIONSHIPS_VARSET_DATA_TYPE Var_relationships_varset_data_type = iota
 )
 
 func (i Var_relationships_varset_data_type) String() string {
-    return []string{"varset"}[i]
+    return []string{"varsets"}[i]
 }
 func ParseVar_relationships_varset_data_type(v string) (any, error) {
-    result := VARSET_VAR_RELATIONSHIPS_VARSET_DATA_TYPE
+    result := VARSETS_VAR_RELATIONSHIPS_VARSET_DATA_TYPE
     switch v {
-        case "varset":
-            result = VARSET_VAR_RELATIONSHIPS_VARSET_DATA_TYPE
+        case "varsets":
+            result = VARSETS_VAR_RELATIONSHIPS_VARSET_DATA_TYPE
         default:
             return nil, nil
     }

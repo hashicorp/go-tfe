@@ -39,6 +39,8 @@ type Organization_attributes struct {
     isUnified *bool
     // The name property
     name *string
+    // The overStacksResourceLimit property
+    overStacksResourceLimit *bool
     // The ownersTeamSamlRoleId property
     ownersTeamSamlRoleId *string
     // The permissions property
@@ -65,6 +67,10 @@ type Organization_attributes struct {
     sessionTimeout *int32
     // The speculativePlanManagementEnabled property
     speculativePlanManagementEnabled *bool
+    // The stacksEnabled property
+    stacksEnabled *bool
+    // The testGenerationEnabled property
+    testGenerationEnabled *bool
     // The twoFactorConformant property
     twoFactorConformant *bool
 }
@@ -279,6 +285,16 @@ func (m *Organization_attributes) GetFieldDeserializers()(map[string]func(i878a8
         }
         return nil
     }
+    res["over-stacks-resource-limit"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetBoolValue()
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            m.SetOverStacksResourceLimit(val)
+        }
+        return nil
+    }
     res["owners-team-saml-role-id"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
         val, err := n.GetStringValue()
         if err != nil {
@@ -409,6 +425,26 @@ func (m *Organization_attributes) GetFieldDeserializers()(map[string]func(i878a8
         }
         return nil
     }
+    res["stacks-enabled"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetBoolValue()
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            m.SetStacksEnabled(val)
+        }
+        return nil
+    }
+    res["test-generation-enabled"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetBoolValue()
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            m.SetTestGenerationEnabled(val)
+        }
+        return nil
+    }
     res["two-factor-conformant"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
         val, err := n.GetBoolValue()
         if err != nil {
@@ -440,6 +476,11 @@ func (m *Organization_attributes) GetIsUnified()(*bool) {
 // returns a *string when successful
 func (m *Organization_attributes) GetName()(*string) {
     return m.name
+}
+// GetOverStacksResourceLimit gets the over-stacks-resource-limit property value. The overStacksResourceLimit property
+// returns a *bool when successful
+func (m *Organization_attributes) GetOverStacksResourceLimit()(*bool) {
+    return m.overStacksResourceLimit
 }
 // GetOwnersTeamSamlRoleId gets the owners-team-saml-role-id property value. The ownersTeamSamlRoleId property
 // returns a *string when successful
@@ -505,6 +546,16 @@ func (m *Organization_attributes) GetSessionTimeout()(*int32) {
 // returns a *bool when successful
 func (m *Organization_attributes) GetSpeculativePlanManagementEnabled()(*bool) {
     return m.speculativePlanManagementEnabled
+}
+// GetStacksEnabled gets the stacks-enabled property value. The stacksEnabled property
+// returns a *bool when successful
+func (m *Organization_attributes) GetStacksEnabled()(*bool) {
+    return m.stacksEnabled
+}
+// GetTestGenerationEnabled gets the test-generation-enabled property value. The testGenerationEnabled property
+// returns a *bool when successful
+func (m *Organization_attributes) GetTestGenerationEnabled()(*bool) {
+    return m.testGenerationEnabled
 }
 // GetTwoFactorConformant gets the two-factor-conformant property value. The twoFactorConformant property
 // returns a *bool when successful
@@ -606,6 +657,12 @@ func (m *Organization_attributes) Serialize(writer i878a80d2330e89d26896388a3f48
         }
     }
     {
+        err := writer.WriteBoolValue("stacks-enabled", m.GetStacksEnabled())
+        if err != nil {
+            return err
+        }
+    }
+    {
         err := writer.WriteBoolValue("two-factor-conformant", m.GetTwoFactorConformant())
         if err != nil {
             return err
@@ -679,6 +736,10 @@ func (m *Organization_attributes) SetIsUnified(value *bool)() {
 func (m *Organization_attributes) SetName(value *string)() {
     m.name = value
 }
+// SetOverStacksResourceLimit sets the over-stacks-resource-limit property value. The overStacksResourceLimit property
+func (m *Organization_attributes) SetOverStacksResourceLimit(value *bool)() {
+    m.overStacksResourceLimit = value
+}
 // SetOwnersTeamSamlRoleId sets the owners-team-saml-role-id property value. The ownersTeamSamlRoleId property
 func (m *Organization_attributes) SetOwnersTeamSamlRoleId(value *string)() {
     m.ownersTeamSamlRoleId = value
@@ -731,6 +792,14 @@ func (m *Organization_attributes) SetSessionTimeout(value *int32)() {
 func (m *Organization_attributes) SetSpeculativePlanManagementEnabled(value *bool)() {
     m.speculativePlanManagementEnabled = value
 }
+// SetStacksEnabled sets the stacks-enabled property value. The stacksEnabled property
+func (m *Organization_attributes) SetStacksEnabled(value *bool)() {
+    m.stacksEnabled = value
+}
+// SetTestGenerationEnabled sets the test-generation-enabled property value. The testGenerationEnabled property
+func (m *Organization_attributes) SetTestGenerationEnabled(value *bool)() {
+    m.testGenerationEnabled = value
+}
 // SetTwoFactorConformant sets the two-factor-conformant property value. The twoFactorConformant property
 func (m *Organization_attributes) SetTwoFactorConformant(value *bool)() {
     m.twoFactorConformant = value
@@ -752,6 +821,7 @@ type Organization_attributesable interface {
     GetIsInDegradedMode()(*bool)
     GetIsUnified()(*bool)
     GetName()(*string)
+    GetOverStacksResourceLimit()(*bool)
     GetOwnersTeamSamlRoleId()(*string)
     GetPermissions()(Organization_attributes_permissionsable)
     GetPlanExpired()(*bool)
@@ -765,6 +835,8 @@ type Organization_attributesable interface {
     GetSessionRemember()(*int32)
     GetSessionTimeout()(*int32)
     GetSpeculativePlanManagementEnabled()(*bool)
+    GetStacksEnabled()(*bool)
+    GetTestGenerationEnabled()(*bool)
     GetTwoFactorConformant()(*bool)
     SetAggregatedCommitStatusEnabled(value *bool)()
     SetAllowForceDeleteWorkspaces(value *bool)()
@@ -780,6 +852,7 @@ type Organization_attributesable interface {
     SetIsInDegradedMode(value *bool)()
     SetIsUnified(value *bool)()
     SetName(value *string)()
+    SetOverStacksResourceLimit(value *bool)()
     SetOwnersTeamSamlRoleId(value *string)()
     SetPermissions(value Organization_attributes_permissionsable)()
     SetPlanExpired(value *bool)()
@@ -793,5 +866,7 @@ type Organization_attributesable interface {
     SetSessionRemember(value *int32)()
     SetSessionTimeout(value *int32)()
     SetSpeculativePlanManagementEnabled(value *bool)()
+    SetStacksEnabled(value *bool)()
+    SetTestGenerationEnabled(value *bool)()
     SetTwoFactorConformant(value *bool)()
 }

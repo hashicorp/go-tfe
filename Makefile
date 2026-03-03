@@ -25,7 +25,7 @@ envvars:
 openapi:
 	mkdir -p openapi
 	mkdir -p api
-	cp ../atlas/openapi/bundled/hcpt_v2.json openapi/spec.json
+	cp ../atlas/openapi/bundled/hcpt_v2_public_beta.json openapi/spec.json
 
 api: openapi
 	docker run -v ./api:/app/output -v ./openapi/spec.json:/app/openapi.json mcr.microsoft.com/openapi/kiota:1.25.1 generate --language go --openapi openapi.json --namespace-name github.com/hashicorp/go-tfe/api

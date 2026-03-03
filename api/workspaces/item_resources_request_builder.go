@@ -16,9 +16,9 @@ type ItemResourcesRequestBuilder struct {
 }
 // ItemResourcesRequestBuilderGetQueryParameters list all resources in a workspace's current state.
 type ItemResourcesRequestBuilderGetQueryParameters struct {
-    // Page number for pagination. If omitted, returns the first page.
+    // The page number to retrieve.
     Pagenumber *int32 `uriparametername:"page%5Bnumber%5D"`
-    // Number of resources per page. If omitted, returns 20 resources per page.
+    // The number of items to retrieve per page. Defaults to 20.
     Pagesize *int32 `uriparametername:"page%5Bsize%5D"`
     // Optional search query to filter resources by address pattern.
     Q *string `uriparametername:"q"`

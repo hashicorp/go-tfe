@@ -16,6 +16,8 @@ type Plan_links struct {
     jsonOutputRedacted *string
     // API URL for the JSON schema of this plan (available for Terraform 0.12+)
     jsonSchema *string
+    // API URL for the sanitized plan (available when HYOK is enabled and with compatible Terraform version)
+    sanitizedPlan *string
     // API URL for this plan
     self *string
 }
@@ -70,6 +72,16 @@ func (m *Plan_links) GetFieldDeserializers()(map[string]func(i878a80d2330e89d268
         }
         return nil
     }
+    res["sanitized-plan"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetStringValue()
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            m.SetSanitizedPlan(val)
+        }
+        return nil
+    }
     res["self"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
         val, err := n.GetStringValue()
         if err != nil {
@@ -97,6 +109,11 @@ func (m *Plan_links) GetJsonOutputRedacted()(*string) {
 func (m *Plan_links) GetJsonSchema()(*string) {
     return m.jsonSchema
 }
+// GetSanitizedPlan gets the sanitized-plan property value. API URL for the sanitized plan (available when HYOK is enabled and with compatible Terraform version)
+// returns a *string when successful
+func (m *Plan_links) GetSanitizedPlan()(*string) {
+    return m.sanitizedPlan
+}
 // GetSelf gets the self property value. API URL for this plan
 // returns a *string when successful
 func (m *Plan_links) GetSelf()(*string) {
@@ -118,6 +135,12 @@ func (m *Plan_links) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c
     }
     {
         err := writer.WriteStringValue("json-schema", m.GetJsonSchema())
+        if err != nil {
+            return err
+        }
+    }
+    {
+        err := writer.WriteStringValue("sanitized-plan", m.GetSanitizedPlan())
         if err != nil {
             return err
         }
@@ -152,6 +175,10 @@ func (m *Plan_links) SetJsonOutputRedacted(value *string)() {
 func (m *Plan_links) SetJsonSchema(value *string)() {
     m.jsonSchema = value
 }
+// SetSanitizedPlan sets the sanitized-plan property value. API URL for the sanitized plan (available when HYOK is enabled and with compatible Terraform version)
+func (m *Plan_links) SetSanitizedPlan(value *string)() {
+    m.sanitizedPlan = value
+}
 // SetSelf sets the self property value. API URL for this plan
 func (m *Plan_links) SetSelf(value *string)() {
     m.self = value
@@ -162,9 +189,11 @@ type Plan_linksable interface {
     GetJsonOutput()(*string)
     GetJsonOutputRedacted()(*string)
     GetJsonSchema()(*string)
+    GetSanitizedPlan()(*string)
     GetSelf()(*string)
     SetJsonOutput(value *string)()
     SetJsonOutputRedacted(value *string)()
     SetJsonSchema(value *string)()
+    SetSanitizedPlan(value *string)()
     SetSelf(value *string)()
 }

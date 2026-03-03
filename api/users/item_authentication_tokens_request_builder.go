@@ -13,12 +13,21 @@ import (
 type ItemAuthenticationTokensRequestBuilder struct {
     i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.BaseRequestBuilder
 }
+// ItemAuthenticationTokensRequestBuilderGetQueryParameters list all tokens for a specified user
+type ItemAuthenticationTokensRequestBuilderGetQueryParameters struct {
+    // The page number to retrieve.
+    Pagenumber *int32 `uriparametername:"page%5Bnumber%5D"`
+    // The number of items to retrieve per page. Defaults to 20.
+    Pagesize *int32 `uriparametername:"page%5Bsize%5D"`
+}
 // ItemAuthenticationTokensRequestBuilderGetRequestConfiguration configuration for the request such as headers, query parameters, and middleware options.
 type ItemAuthenticationTokensRequestBuilderGetRequestConfiguration struct {
     // Request headers
     Headers *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestHeaders
     // Request options
     Options []i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestOption
+    // Request query parameters
+    QueryParameters *ItemAuthenticationTokensRequestBuilderGetQueryParameters
 }
 // ItemAuthenticationTokensRequestBuilderPostRequestConfiguration configuration for the request such as headers, query parameters, and middleware options.
 type ItemAuthenticationTokensRequestBuilderPostRequestConfiguration struct {
@@ -30,7 +39,7 @@ type ItemAuthenticationTokensRequestBuilderPostRequestConfiguration struct {
 // NewItemAuthenticationTokensRequestBuilderInternal instantiates a new ItemAuthenticationTokensRequestBuilder and sets the default values.
 func NewItemAuthenticationTokensRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*ItemAuthenticationTokensRequestBuilder) {
     m := &ItemAuthenticationTokensRequestBuilder{
-        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/users/{user_id}/authentication-tokens", pathParameters),
+        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/users/{user_id}/authentication-tokens{?page%5Bnumber%5D*,page%5Bsize%5D*}", pathParameters),
     }
     return m
 }
@@ -127,6 +136,9 @@ func (m *ItemAuthenticationTokensRequestBuilder) PostAsAuthenticationTokensPostR
 func (m *ItemAuthenticationTokensRequestBuilder) ToGetRequestInformation(ctx context.Context, requestConfiguration *ItemAuthenticationTokensRequestBuilderGetRequestConfiguration)(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
     requestInfo := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewRequestInformationWithMethodAndUrlTemplateAndPathParameters(i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.GET, m.BaseRequestBuilder.UrlTemplate, m.BaseRequestBuilder.PathParameters)
     if requestConfiguration != nil {
+        if requestConfiguration.QueryParameters != nil {
+            requestInfo.AddQueryParameters(*(requestConfiguration.QueryParameters))
+        }
         requestInfo.Headers.AddAll(requestConfiguration.Headers)
         requestInfo.AddRequestOptions(requestConfiguration.Options)
     }

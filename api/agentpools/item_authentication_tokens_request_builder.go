@@ -15,9 +15,9 @@ type ItemAuthenticationTokensRequestBuilder struct {
 }
 // ItemAuthenticationTokensRequestBuilderGetQueryParameters list all tokens for the specified agent pool.
 type ItemAuthenticationTokensRequestBuilderGetQueryParameters struct {
-    // If omitted, the endpoint will return the first page.
+    // The page number to retrieve.
     Pagenumber *int32 `uriparametername:"page%5Bnumber%5D"`
-    // If omitted, the endpoint will return 20 agents per page.
+    // The number of items to retrieve per page. Defaults to 20.
     Pagesize *int32 `uriparametername:"page%5Bsize%5D"`
 }
 // ItemAuthenticationTokensRequestBuilderGetRequestConfiguration configuration for the request such as headers, query parameters, and middleware options.
@@ -93,6 +93,9 @@ func (m *ItemAuthenticationTokensRequestBuilder) GetAsAuthenticationTokensGetRes
 // Post create an agent token
 // Deprecated: This method is obsolete. Use PostAsAuthenticationTokensPostResponse instead.
 // returns a ItemAuthenticationTokensResponseable when successful
+// returns a Errors error when the service returns a 404 status code
+// returns a Errors error when the service returns a 422 status code
+// returns a Errors error when the service returns a 500 status code
 // returns a Errors error when the service returns a 4XX or 5XX status code
 func (m *ItemAuthenticationTokensRequestBuilder) Post(ctx context.Context, requestConfiguration *ItemAuthenticationTokensRequestBuilderPostRequestConfiguration)(ItemAuthenticationTokensResponseable, error) {
     requestInfo, err := m.ToPostRequestInformation(ctx, requestConfiguration);
@@ -100,6 +103,9 @@ func (m *ItemAuthenticationTokensRequestBuilder) Post(ctx context.Context, reque
         return nil, err
     }
     errorMapping := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ErrorMappings {
+        "404": ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.CreateErrorsFromDiscriminatorValue,
+        "422": ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.CreateErrorsFromDiscriminatorValue,
+        "500": ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.CreateErrorsFromDiscriminatorValue,
         "XXX": ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.CreateErrorsFromDiscriminatorValue,
     }
     res, err := m.BaseRequestBuilder.RequestAdapter.Send(ctx, requestInfo, CreateItemAuthenticationTokensResponseFromDiscriminatorValue, errorMapping)
@@ -113,6 +119,9 @@ func (m *ItemAuthenticationTokensRequestBuilder) Post(ctx context.Context, reque
 }
 // PostAsAuthenticationTokensPostResponse create an agent token
 // returns a ItemAuthenticationTokensPostResponseable when successful
+// returns a Errors error when the service returns a 404 status code
+// returns a Errors error when the service returns a 422 status code
+// returns a Errors error when the service returns a 500 status code
 // returns a Errors error when the service returns a 4XX or 5XX status code
 func (m *ItemAuthenticationTokensRequestBuilder) PostAsAuthenticationTokensPostResponse(ctx context.Context, requestConfiguration *ItemAuthenticationTokensRequestBuilderPostRequestConfiguration)(ItemAuthenticationTokensPostResponseable, error) {
     requestInfo, err := m.ToPostRequestInformation(ctx, requestConfiguration);
@@ -120,6 +129,9 @@ func (m *ItemAuthenticationTokensRequestBuilder) PostAsAuthenticationTokensPostR
         return nil, err
     }
     errorMapping := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ErrorMappings {
+        "404": ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.CreateErrorsFromDiscriminatorValue,
+        "422": ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.CreateErrorsFromDiscriminatorValue,
+        "500": ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.CreateErrorsFromDiscriminatorValue,
         "XXX": ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.CreateErrorsFromDiscriminatorValue,
     }
     res, err := m.BaseRequestBuilder.RequestAdapter.Send(ctx, requestInfo, CreateItemAuthenticationTokensPostResponseFromDiscriminatorValue, errorMapping)

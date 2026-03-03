@@ -10,7 +10,7 @@ import (
 type Account_password_data_attributes struct {
     // Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
     additionalData map[string]any
-    // The user's current password. Unlike most API dataattributes, this one uses underscore_case instead of kebab-case.
+    // The user's current password. Unlike most API data attributes, this one uses underscore_case instead of kebab-case.
     current_password *string
     // The user's new password.
     password *string
@@ -34,7 +34,7 @@ func CreateAccount_password_data_attributesFromDiscriminatorValue(parseNode i878
 func (m *Account_password_data_attributes) GetAdditionalData()(map[string]any) {
     return m.additionalData
 }
-// GetCurrentPassword gets the current_password property value. The user's current password. Unlike most API dataattributes, this one uses underscore_case instead of kebab-case.
+// GetCurrentPassword gets the current_password property value. The user's current password. Unlike most API data attributes, this one uses underscore_case instead of kebab-case.
 // returns a *string when successful
 func (m *Account_password_data_attributes) GetCurrentPassword()(*string) {
     return m.current_password
@@ -117,7 +117,7 @@ func (m *Account_password_data_attributes) Serialize(writer i878a80d2330e89d2689
 func (m *Account_password_data_attributes) SetAdditionalData(value map[string]any)() {
     m.additionalData = value
 }
-// SetCurrentPassword sets the current_password property value. The user's current password. Unlike most API dataattributes, this one uses underscore_case instead of kebab-case.
+// SetCurrentPassword sets the current_password property value. The user's current password. Unlike most API data attributes, this one uses underscore_case instead of kebab-case.
 func (m *Account_password_data_attributes) SetCurrentPassword(value *string)() {
     m.current_password = value
 }

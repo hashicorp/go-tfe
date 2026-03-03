@@ -21,9 +21,9 @@ type ItemProjectsRequestBuilderGetQueryParameters struct {
     FilterpermissionscreateWorkspace *bool `uriparametername:"filter%5Bpermissions%5D%5Bcreate%2Dworkspace%5D"`
     // If present, returns a list of projects that the authenticated user can update.
     Filterpermissionsupdate *bool `uriparametername:"filter%5Bpermissions%5D%5Bupdate%5D"`
-    // Page number for pagination.
+    // The page number to retrieve.
     Pagenumber *int32 `uriparametername:"page%5Bnumber%5D"`
-    // Page size for pagination.
+    // The number of items to retrieve per page. Defaults to 20.
     Pagesize *int32 `uriparametername:"page%5Bsize%5D"`
     // Optional. Allows sorting the organization's projects by "name". Prepending a hyphen to the sort parameter reverses the order. For example, "-name" sorts by name in reverse alphabetical order. If omitted, the default sort order is arbitrary but stable.
     Sort *string `uriparametername:"sort"`

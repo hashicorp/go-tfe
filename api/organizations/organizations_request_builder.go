@@ -20,9 +20,9 @@ type OrganizationsRequestBuilderGetQueryParameters struct {
     Include *string `uriparametername:"include"`
     // Optionally side-load relationships of the specified name
     IncludeAsGetIncludeQueryParameterType *GetIncludeQueryParameterType `uriparametername:"include"`
-    // Defaults to the first page, if omitted when `page[size]` is provided.
+    // The page number to retrieve.
     Pagenumber *int32 `uriparametername:"page%5Bnumber%5D"`
-    // Defaults to 20 organizations per page, if omitted when `page[number]` is provided.
+    // The number of items to retrieve per page. Defaults to 20.
     Pagesize *int32 `uriparametername:"page%5Bsize%5D"`
     // A search query string. Organizations are searchable by name and notification email.
     Q *string `uriparametername:"q"`

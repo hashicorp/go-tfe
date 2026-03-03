@@ -4,12 +4,21 @@
 package users
 
 import (
+    "context"
     i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f "github.com/microsoft/kiota-abstractions-go"
+    ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f "github.com/hashicorp/go-tfe/api/models"
 )
 
 // WithUser_ItemRequestBuilder builds and executes requests for operations under \users\{user_id}
 type WithUser_ItemRequestBuilder struct {
     i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.BaseRequestBuilder
+}
+// WithUser_ItemRequestBuilderGetRequestConfiguration configuration for the request such as headers, query parameters, and middleware options.
+type WithUser_ItemRequestBuilderGetRequestConfiguration struct {
+    // Request headers
+    Headers *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestHeaders
+    // Request options
+    Options []i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestOption
 }
 // AuthenticationTokens the authenticationTokens property
 // returns a *ItemAuthenticationTokensRequestBuilder when successful
@@ -28,4 +37,66 @@ func NewWithUser_ItemRequestBuilder(rawUrl string, requestAdapter i2ae4187f7daee
     urlParams := make(map[string]string)
     urlParams["request-raw-url"] = rawUrl
     return NewWithUser_ItemRequestBuilderInternal(urlParams, requestAdapter)
+}
+// Get shows details for a given user.
+// Deprecated: This method is obsolete. Use GetAsWithUser_GetResponse instead.
+// returns a ItemWithUser_Responseable when successful
+// returns a Errors error when the service returns a 4XX or 5XX status code
+func (m *WithUser_ItemRequestBuilder) Get(ctx context.Context, requestConfiguration *WithUser_ItemRequestBuilderGetRequestConfiguration)(ItemWithUser_Responseable, error) {
+    requestInfo, err := m.ToGetRequestInformation(ctx, requestConfiguration);
+    if err != nil {
+        return nil, err
+    }
+    errorMapping := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ErrorMappings {
+        "XXX": ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.CreateErrorsFromDiscriminatorValue,
+    }
+    res, err := m.BaseRequestBuilder.RequestAdapter.Send(ctx, requestInfo, CreateItemWithUser_ResponseFromDiscriminatorValue, errorMapping)
+    if err != nil {
+        return nil, err
+    }
+    if res == nil {
+        return nil, nil
+    }
+    return res.(ItemWithUser_Responseable), nil
+}
+// GetAsWithUser_GetResponse shows details for a given user.
+// returns a ItemWithUser_GetResponseable when successful
+// returns a Errors error when the service returns a 4XX or 5XX status code
+func (m *WithUser_ItemRequestBuilder) GetAsWithUser_GetResponse(ctx context.Context, requestConfiguration *WithUser_ItemRequestBuilderGetRequestConfiguration)(ItemWithUser_GetResponseable, error) {
+    requestInfo, err := m.ToGetRequestInformation(ctx, requestConfiguration);
+    if err != nil {
+        return nil, err
+    }
+    errorMapping := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ErrorMappings {
+        "XXX": ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.CreateErrorsFromDiscriminatorValue,
+    }
+    res, err := m.BaseRequestBuilder.RequestAdapter.Send(ctx, requestInfo, CreateItemWithUser_GetResponseFromDiscriminatorValue, errorMapping)
+    if err != nil {
+        return nil, err
+    }
+    if res == nil {
+        return nil, nil
+    }
+    return res.(ItemWithUser_GetResponseable), nil
+}
+// GithubAppOauthTokens the githubAppOauthTokens property
+// returns a *ItemGithubAppOauthTokensRequestBuilder when successful
+func (m *WithUser_ItemRequestBuilder) GithubAppOauthTokens()(*ItemGithubAppOauthTokensRequestBuilder) {
+    return NewItemGithubAppOauthTokensRequestBuilderInternal(m.BaseRequestBuilder.PathParameters, m.BaseRequestBuilder.RequestAdapter)
+}
+// ToGetRequestInformation shows details for a given user.
+// returns a *RequestInformation when successful
+func (m *WithUser_ItemRequestBuilder) ToGetRequestInformation(ctx context.Context, requestConfiguration *WithUser_ItemRequestBuilderGetRequestConfiguration)(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
+    requestInfo := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewRequestInformationWithMethodAndUrlTemplateAndPathParameters(i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.GET, m.BaseRequestBuilder.UrlTemplate, m.BaseRequestBuilder.PathParameters)
+    if requestConfiguration != nil {
+        requestInfo.Headers.AddAll(requestConfiguration.Headers)
+        requestInfo.AddRequestOptions(requestConfiguration.Options)
+    }
+    requestInfo.Headers.TryAdd("Accept", "application/vnd.api+json")
+    return requestInfo, nil
+}
+// WithUrl returns a request builder with the provided arbitrary URL. Using this method means any other path or query parameters are ignored.
+// returns a *WithUser_ItemRequestBuilder when successful
+func (m *WithUser_ItemRequestBuilder) WithUrl(rawUrl string)(*WithUser_ItemRequestBuilder) {
+    return NewWithUser_ItemRequestBuilder(rawUrl, m.BaseRequestBuilder.RequestAdapter);
 }

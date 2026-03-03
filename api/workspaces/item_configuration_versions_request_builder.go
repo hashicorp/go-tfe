@@ -15,9 +15,9 @@ type ItemConfigurationVersionsRequestBuilder struct {
 }
 // ItemConfigurationVersionsRequestBuilderGetQueryParameters list configuration versions for a workspace.
 type ItemConfigurationVersionsRequestBuilderGetQueryParameters struct {
-    // Defaults to the first page if omitted.
+    // The page number to retrieve.
     Pagenumber *int32 `uriparametername:"page%5Bnumber%5D"`
-    // Defaults to 20 configuration versions per page if omitted.
+    // The number of items to retrieve per page. Defaults to 20.
     Pagesize *int32 `uriparametername:"page%5Bsize%5D"`
 }
 // ItemConfigurationVersionsRequestBuilderGetRequestConfiguration configuration for the request such as headers, query parameters, and middleware options.

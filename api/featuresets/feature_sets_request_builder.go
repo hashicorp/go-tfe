@@ -15,9 +15,9 @@ type FeatureSetsRequestBuilder struct {
 }
 // FeatureSetsRequestBuilderGetQueryParameters lists the feature sets available in HCP Terraform. Returns feature sets that are active, current, and public.
 type FeatureSetsRequestBuilderGetQueryParameters struct {
-    // The page number to request. If omitted, the endpoint will return the first page.
+    // The page number to retrieve.
     Pagenumber *int32 `uriparametername:"page%5Bnumber%5D"`
-    // The number of feature sets per page. If omitted, the endpoint will return 20 feature sets per page.
+    // The number of items to retrieve per page. Defaults to 20.
     Pagesize *int32 `uriparametername:"page%5Bsize%5D"`
 }
 // FeatureSetsRequestBuilderGetRequestConfiguration configuration for the request such as headers, query parameters, and middleware options.

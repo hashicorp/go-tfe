@@ -15,9 +15,9 @@ type ItemFeatureSetsRequestBuilder struct {
 }
 // ItemFeatureSetsRequestBuilderGetQueryParameters lists the feature sets a particular organization is eligible to access.
 type ItemFeatureSetsRequestBuilderGetQueryParameters struct {
-    // The page number to request. If omitted, the endpoint will return the first page.
+    // The page number to retrieve.
     Pagenumber *int32 `uriparametername:"page%5Bnumber%5D"`
-    // The number of feature sets per page. If omitted, the endpoint will return 20 feature sets per page.
+    // The number of items to retrieve per page. Defaults to 20.
     Pagesize *int32 `uriparametername:"page%5Bsize%5D"`
 }
 // ItemFeatureSetsRequestBuilderGetRequestConfiguration configuration for the request such as headers, query parameters, and middleware options.

@@ -137,6 +137,26 @@ func (m *WithOrganization_nameItemRequestBuilder) GetAsWithOrganization_nameGetR
     }
     return res.(ItemWithOrganization_nameGetResponseable), nil
 }
+// GithubAppInstallations the githubAppInstallations property
+// returns a *ItemGithubAppInstallationsRequestBuilder when successful
+func (m *WithOrganization_nameItemRequestBuilder) GithubAppInstallations()(*ItemGithubAppInstallationsRequestBuilder) {
+    return NewItemGithubAppInstallationsRequestBuilderInternal(m.BaseRequestBuilder.PathParameters, m.BaseRequestBuilder.RequestAdapter)
+}
+// Invoices the invoices property
+// returns a *ItemInvoicesRequestBuilder when successful
+func (m *WithOrganization_nameItemRequestBuilder) Invoices()(*ItemInvoicesRequestBuilder) {
+    return NewItemInvoicesRequestBuilderInternal(m.BaseRequestBuilder.PathParameters, m.BaseRequestBuilder.RequestAdapter)
+}
+// OauthClients the oauthClients property
+// returns a *ItemOauthClientsRequestBuilder when successful
+func (m *WithOrganization_nameItemRequestBuilder) OauthClients()(*ItemOauthClientsRequestBuilder) {
+    return NewItemOauthClientsRequestBuilderInternal(m.BaseRequestBuilder.PathParameters, m.BaseRequestBuilder.RequestAdapter)
+}
+// OauthTokens the oauthTokens property
+// returns a *ItemOauthTokensRequestBuilder when successful
+func (m *WithOrganization_nameItemRequestBuilder) OauthTokens()(*ItemOauthTokensRequestBuilder) {
+    return NewItemOauthTokensRequestBuilderInternal(m.BaseRequestBuilder.PathParameters, m.BaseRequestBuilder.RequestAdapter)
+}
 // OrganizationMemberships the organizationMemberships property
 // returns a *ItemOrganizationMembershipsRequestBuilder when successful
 func (m *WithOrganization_nameItemRequestBuilder) OrganizationMemberships()(*ItemOrganizationMembershipsRequestBuilder) {
@@ -182,6 +202,16 @@ func (m *WithOrganization_nameItemRequestBuilder) PatchAsWithOrganization_namePa
         return nil, nil
     }
     return res.(ItemWithOrganization_namePatchResponseable), nil
+}
+// Policies the policies property
+// returns a *ItemPoliciesRequestBuilder when successful
+func (m *WithOrganization_nameItemRequestBuilder) Policies()(*ItemPoliciesRequestBuilder) {
+    return NewItemPoliciesRequestBuilderInternal(m.BaseRequestBuilder.PathParameters, m.BaseRequestBuilder.RequestAdapter)
+}
+// PolicySets the policySets property
+// returns a *ItemPolicySetsRequestBuilder when successful
+func (m *WithOrganization_nameItemRequestBuilder) PolicySets()(*ItemPolicySetsRequestBuilder) {
+    return NewItemPolicySetsRequestBuilderInternal(m.BaseRequestBuilder.PathParameters, m.BaseRequestBuilder.RequestAdapter)
 }
 // Projects the projects property
 // returns a *ItemProjectsRequestBuilder when successful
@@ -238,6 +268,16 @@ func (m *WithOrganization_nameItemRequestBuilder) RegistryModules()(*ItemRegistr
 // returns a *ItemRunsRequestBuilder when successful
 func (m *WithOrganization_nameItemRequestBuilder) Runs()(*ItemRunsRequestBuilder) {
     return NewItemRunsRequestBuilderInternal(m.BaseRequestBuilder.PathParameters, m.BaseRequestBuilder.RequestAdapter)
+}
+// SshKeys the sshKeys property
+// returns a *ItemSshKeysRequestBuilder when successful
+func (m *WithOrganization_nameItemRequestBuilder) SshKeys()(*ItemSshKeysRequestBuilder) {
+    return NewItemSshKeysRequestBuilderInternal(m.BaseRequestBuilder.PathParameters, m.BaseRequestBuilder.RequestAdapter)
+}
+// Tasks the tasks property
+// returns a *ItemTasksRequestBuilder when successful
+func (m *WithOrganization_nameItemRequestBuilder) Tasks()(*ItemTasksRequestBuilder) {
+    return NewItemTasksRequestBuilderInternal(m.BaseRequestBuilder.PathParameters, m.BaseRequestBuilder.RequestAdapter)
 }
 // Teams the teams property
 // returns a *ItemTeamsRequestBuilder when successful
@@ -304,13 +344,28 @@ func (m *WithOrganization_nameItemRequestBuilder) ToPutRequestInformation(ctx co
     }
     return requestInfo, nil
 }
+// Varsets the varsets property
+// returns a *ItemVarsetsRequestBuilder when successful
+func (m *WithOrganization_nameItemRequestBuilder) Varsets()(*ItemVarsetsRequestBuilder) {
+    return NewItemVarsetsRequestBuilderInternal(m.BaseRequestBuilder.PathParameters, m.BaseRequestBuilder.RequestAdapter)
+}
 // Vcs the vcs property
 // returns a *ItemVcsRequestBuilder when successful
 func (m *WithOrganization_nameItemRequestBuilder) Vcs()(*ItemVcsRequestBuilder) {
     return NewItemVcsRequestBuilderInternal(m.BaseRequestBuilder.PathParameters, m.BaseRequestBuilder.RequestAdapter)
 }
+// VcsEvents the vcsEvents property
+// returns a *ItemVcsEventsRequestBuilder when successful
+func (m *WithOrganization_nameItemRequestBuilder) VcsEvents()(*ItemVcsEventsRequestBuilder) {
+    return NewItemVcsEventsRequestBuilderInternal(m.BaseRequestBuilder.PathParameters, m.BaseRequestBuilder.RequestAdapter)
+}
 // WithUrl returns a request builder with the provided arbitrary URL. Using this method means any other path or query parameters are ignored.
 // returns a *WithOrganization_nameItemRequestBuilder when successful
 func (m *WithOrganization_nameItemRequestBuilder) WithUrl(rawUrl string)(*WithOrganization_nameItemRequestBuilder) {
     return NewWithOrganization_nameItemRequestBuilder(rawUrl, m.BaseRequestBuilder.RequestAdapter);
+}
+// Workspaces the workspaces property
+// returns a *ItemWorkspacesRequestBuilder when successful
+func (m *WithOrganization_nameItemRequestBuilder) Workspaces()(*ItemWorkspacesRequestBuilder) {
+    return NewItemWorkspacesRequestBuilderInternal(m.BaseRequestBuilder.PathParameters, m.BaseRequestBuilder.RequestAdapter)
 }

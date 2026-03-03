@@ -15,7 +15,7 @@ type WorkspaceResource_attributes struct {
     address *string
     // The timestamp when the resource was first created
     createdAt *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
-    // The external ID of the state version that last modified this resource
+    // The ID of the state version that last modified this resource
     modifiedByStateVersionId *string
     // The module name where the resource is defined (e.g., "root" for root module)
     module *string
@@ -153,7 +153,7 @@ func (m *WorkspaceResource_attributes) GetFieldDeserializers()(map[string]func(i
     }
     return res
 }
-// GetModifiedByStateVersionId gets the modified-by-state-version-id property value. The external ID of the state version that last modified this resource
+// GetModifiedByStateVersionId gets the modified-by-state-version-id property value. The ID of the state version that last modified this resource
 // returns a *string when successful
 func (m *WorkspaceResource_attributes) GetModifiedByStateVersionId()(*string) {
     return m.modifiedByStateVersionId
@@ -246,7 +246,7 @@ func (m *WorkspaceResource_attributes) SetAddress(value *string)() {
 func (m *WorkspaceResource_attributes) SetCreatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)() {
     m.createdAt = value
 }
-// SetModifiedByStateVersionId sets the modified-by-state-version-id property value. The external ID of the state version that last modified this resource
+// SetModifiedByStateVersionId sets the modified-by-state-version-id property value. The ID of the state version that last modified this resource
 func (m *WorkspaceResource_attributes) SetModifiedByStateVersionId(value *string)() {
     m.modifiedByStateVersionId = value
 }

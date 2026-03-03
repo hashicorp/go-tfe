@@ -12,7 +12,7 @@ type FeatureSet struct {
     additionalData map[string]any
     // The attributes property
     attributes FeatureSet_attributesable
-    // The external ID of the feature set
+    // The ID of the feature set
     id *string
     // The type property
     typeEscaped *FeatureSet_type
@@ -75,7 +75,7 @@ func (m *FeatureSet) GetFieldDeserializers()(map[string]func(i878a80d2330e89d268
     }
     return res
 }
-// GetId gets the id property value. The external ID of the feature set
+// GetId gets the id property value. The ID of the feature set
 // returns a *string when successful
 func (m *FeatureSet) GetId()(*string) {
     return m.id
@@ -122,7 +122,7 @@ func (m *FeatureSet) SetAdditionalData(value map[string]any)() {
 func (m *FeatureSet) SetAttributes(value FeatureSet_attributesable)() {
     m.attributes = value
 }
-// SetId sets the id property value. The external ID of the feature set
+// SetId sets the id property value. The ID of the feature set
 func (m *FeatureSet) SetId(value *string)() {
     m.id = value
 }

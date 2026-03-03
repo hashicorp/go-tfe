@@ -25,6 +25,11 @@ type ItemRequestBuilderGetRequestConfiguration struct {
 func (m *ItemRequestBuilder) Actions()(*ItemActionsRequestBuilder) {
     return NewItemActionsRequestBuilderInternal(m.BaseRequestBuilder.PathParameters, m.BaseRequestBuilder.RequestAdapter)
 }
+// Comments the comments property
+// returns a *ItemCommentsRequestBuilder when successful
+func (m *ItemRequestBuilder) Comments()(*ItemCommentsRequestBuilder) {
+    return NewItemCommentsRequestBuilderInternal(m.BaseRequestBuilder.PathParameters, m.BaseRequestBuilder.RequestAdapter)
+}
 // ConfigurationVersion the configurationVersion property
 // returns a *ItemConfigurationVersionRequestBuilder when successful
 func (m *ItemRequestBuilder) ConfigurationVersion()(*ItemConfigurationVersionRequestBuilder) {
@@ -88,6 +93,16 @@ func (m *ItemRequestBuilder) GetAsGetResponse(ctx context.Context, requestConfig
 // returns a *ItemPlanRequestBuilder when successful
 func (m *ItemRequestBuilder) Plan()(*ItemPlanRequestBuilder) {
     return NewItemPlanRequestBuilderInternal(m.BaseRequestBuilder.PathParameters, m.BaseRequestBuilder.RequestAdapter)
+}
+// PolicyChecks the policyChecks property
+// returns a *ItemPolicyChecksRequestBuilder when successful
+func (m *ItemRequestBuilder) PolicyChecks()(*ItemPolicyChecksRequestBuilder) {
+    return NewItemPolicyChecksRequestBuilderInternal(m.BaseRequestBuilder.PathParameters, m.BaseRequestBuilder.RequestAdapter)
+}
+// TaskStages the taskStages property
+// returns a *ItemTaskStagesRequestBuilder when successful
+func (m *ItemRequestBuilder) TaskStages()(*ItemTaskStagesRequestBuilder) {
+    return NewItemTaskStagesRequestBuilderInternal(m.BaseRequestBuilder.PathParameters, m.BaseRequestBuilder.RequestAdapter)
 }
 // ToGetRequestInformation get details about a run.
 // returns a *RequestInformation when successful

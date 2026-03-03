@@ -17,9 +17,9 @@ type ItemAgentPoolsRequestBuilder struct {
 type ItemAgentPoolsRequestBuilderGetQueryParameters struct {
     // Filters agent pools to those associated with the given workspace. The workspace must have permission to use the agent pool.
     FilterallowedWorkspacesname *string `uriparametername:"filter%5Ballowed%2Dworkspaces%5D%5Bname%5D"`
-    // If omitted, the endpoint will return the first page.
+    // The page number to retrieve.
     Pagenumber *int32 `uriparametername:"page%5Bnumber%5D"`
-    // If omitted, the endpoint will return 20 agents per page.
+    // The number of items to retrieve per page. Defaults to 20.
     Pagesize *int32 `uriparametername:"page%5Bsize%5D"`
     // A search query string. Agent pools are searchable by name.
     Q *string `uriparametername:"q"`

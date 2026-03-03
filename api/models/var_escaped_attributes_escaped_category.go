@@ -8,10 +8,11 @@ const (
     TERRAFORM_VAR_ATTRIBUTES_CATEGORY Var_attributes_category = iota
     ENV_VAR_ATTRIBUTES_CATEGORY
     TERRAFORMCLOUD_VAR_ATTRIBUTES_CATEGORY
+    POLICYSET_VAR_ATTRIBUTES_CATEGORY
 )
 
 func (i Var_attributes_category) String() string {
-    return []string{"terraform", "env", "terraform-cloud"}[i]
+    return []string{"terraform", "env", "terraform-cloud", "policy-set"}[i]
 }
 func ParseVar_attributes_category(v string) (any, error) {
     result := TERRAFORM_VAR_ATTRIBUTES_CATEGORY
@@ -22,6 +23,8 @@ func ParseVar_attributes_category(v string) (any, error) {
             result = ENV_VAR_ATTRIBUTES_CATEGORY
         case "terraform-cloud":
             result = TERRAFORMCLOUD_VAR_ATTRIBUTES_CATEGORY
+        case "policy-set":
+            result = POLICYSET_VAR_ATTRIBUTES_CATEGORY
         default:
             return nil, nil
     }

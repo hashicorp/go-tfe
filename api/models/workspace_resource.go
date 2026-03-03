@@ -12,7 +12,7 @@ type WorkspaceResource struct {
     additionalData map[string]any
     // The attributes property
     attributes WorkspaceResource_attributesable
-    // The external ID of the workspace resource
+    // The ID of the workspace resource
     id *string
     // The type property
     typeEscaped *WorkspaceResource_type
@@ -75,7 +75,7 @@ func (m *WorkspaceResource) GetFieldDeserializers()(map[string]func(i878a80d2330
     }
     return res
 }
-// GetId gets the id property value. The external ID of the workspace resource
+// GetId gets the id property value. The ID of the workspace resource
 // returns a *string when successful
 func (m *WorkspaceResource) GetId()(*string) {
     return m.id
@@ -116,7 +116,7 @@ func (m *WorkspaceResource) SetAdditionalData(value map[string]any)() {
 func (m *WorkspaceResource) SetAttributes(value WorkspaceResource_attributesable)() {
     m.attributes = value
 }
-// SetId sets the id property value. The external ID of the workspace resource
+// SetId sets the id property value. The ID of the workspace resource
 func (m *WorkspaceResource) SetId(value *string)() {
     m.id = value
 }

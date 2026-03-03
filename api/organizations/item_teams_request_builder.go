@@ -23,9 +23,9 @@ type ItemTeamsRequestBuilderGetQueryParameters struct {
     Include *string `uriparametername:"include"`
     // Optionally side-load relationships. Can include "users" or "organization-memberships".
     IncludeAsGetIncludeQueryParameterType *i3bb772f8e0f713c017190b642d9eb6304558be9c9cd28469a97c7960a0c4a61e.GetIncludeQueryParameterType `uriparametername:"include"`
-    // If omitted, the endpoint will return the first page.
+    // The page number to retrieve.
     Pagenumber *int32 `uriparametername:"page%5Bnumber%5D"`
-    // If omitted, the endpoint will return 20 teams per page.
+    // The number of items to retrieve per page. Defaults to 20.
     Pagesize *int32 `uriparametername:"page%5Bsize%5D"`
     // A search query string. Teams are searchable by name (case-insensitive).
     Q *string `uriparametername:"q"`

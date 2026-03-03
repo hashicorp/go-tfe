@@ -4,17 +4,62 @@
 package workspaces
 
 import (
+    "context"
     i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f "github.com/microsoft/kiota-abstractions-go"
+    ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f "github.com/hashicorp/go-tfe/api/models"
 )
 
 // WithWorkspace_ItemRequestBuilder builds and executes requests for operations under \workspaces\{workspace_id}
 type WithWorkspace_ItemRequestBuilder struct {
     i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.BaseRequestBuilder
 }
+// WithWorkspace_ItemRequestBuilderDeleteRequestConfiguration configuration for the request such as headers, query parameters, and middleware options.
+type WithWorkspace_ItemRequestBuilderDeleteRequestConfiguration struct {
+    // Request headers
+    Headers *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestHeaders
+    // Request options
+    Options []i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestOption
+}
+// WithWorkspace_ItemRequestBuilderGetQueryParameters get details of a specific workspace by its external ID.
+type WithWorkspace_ItemRequestBuilderGetQueryParameters struct {
+    // Optionally side-load relationships. Comma-separated list of relationship names (e.g. current_run, current_state_version, locked_by, outputs, project, agent_pool).
+    Include *string `uriparametername:"include"`
+}
+// WithWorkspace_ItemRequestBuilderGetRequestConfiguration configuration for the request such as headers, query parameters, and middleware options.
+type WithWorkspace_ItemRequestBuilderGetRequestConfiguration struct {
+    // Request headers
+    Headers *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestHeaders
+    // Request options
+    Options []i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestOption
+    // Request query parameters
+    QueryParameters *WithWorkspace_ItemRequestBuilderGetQueryParameters
+}
+// WithWorkspace_ItemRequestBuilderPatchRequestConfiguration configuration for the request such as headers, query parameters, and middleware options.
+type WithWorkspace_ItemRequestBuilderPatchRequestConfiguration struct {
+    // Request headers
+    Headers *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestHeaders
+    // Request options
+    Options []i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestOption
+}
+// Actions the actions property
+// returns a *ItemActionsRequestBuilder when successful
+func (m *WithWorkspace_ItemRequestBuilder) Actions()(*ItemActionsRequestBuilder) {
+    return NewItemActionsRequestBuilderInternal(m.BaseRequestBuilder.PathParameters, m.BaseRequestBuilder.RequestAdapter)
+}
 // AllVars the allVars property
 // returns a *ItemAllVarsRequestBuilder when successful
 func (m *WithWorkspace_ItemRequestBuilder) AllVars()(*ItemAllVarsRequestBuilder) {
     return NewItemAllVarsRequestBuilderInternal(m.BaseRequestBuilder.PathParameters, m.BaseRequestBuilder.RequestAdapter)
+}
+// ApplicableVarsets the applicableVarsets property
+// returns a *ItemApplicableVarsetsRequestBuilder when successful
+func (m *WithWorkspace_ItemRequestBuilder) ApplicableVarsets()(*ItemApplicableVarsetsRequestBuilder) {
+    return NewItemApplicableVarsetsRequestBuilderInternal(m.BaseRequestBuilder.PathParameters, m.BaseRequestBuilder.RequestAdapter)
+}
+// ChangeRequests the changeRequests property
+// returns a *ItemChangeRequestsRequestBuilder when successful
+func (m *WithWorkspace_ItemRequestBuilder) ChangeRequests()(*ItemChangeRequestsRequestBuilder) {
+    return NewItemChangeRequestsRequestBuilderInternal(m.BaseRequestBuilder.PathParameters, m.BaseRequestBuilder.RequestAdapter)
 }
 // ConfigurationVersions the configurationVersions property
 // returns a *ItemConfigurationVersionsRequestBuilder when successful
@@ -24,7 +69,7 @@ func (m *WithWorkspace_ItemRequestBuilder) ConfigurationVersions()(*ItemConfigur
 // NewWithWorkspace_ItemRequestBuilderInternal instantiates a new WithWorkspace_ItemRequestBuilder and sets the default values.
 func NewWithWorkspace_ItemRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*WithWorkspace_ItemRequestBuilder) {
     m := &WithWorkspace_ItemRequestBuilder{
-        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/workspaces/{workspace_id}", pathParameters),
+        BaseRequestBuilder: *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewBaseRequestBuilder(requestAdapter, "{+baseurl}/workspaces/{workspace_id}{?include*}", pathParameters),
     }
     return m
 }
@@ -34,10 +79,147 @@ func NewWithWorkspace_ItemRequestBuilder(rawUrl string, requestAdapter i2ae4187f
     urlParams["request-raw-url"] = rawUrl
     return NewWithWorkspace_ItemRequestBuilderInternal(urlParams, requestAdapter)
 }
+// CurrentAssessmentResult the currentAssessmentResult property
+// returns a *ItemCurrentAssessmentResultRequestBuilder when successful
+func (m *WithWorkspace_ItemRequestBuilder) CurrentAssessmentResult()(*ItemCurrentAssessmentResultRequestBuilder) {
+    return NewItemCurrentAssessmentResultRequestBuilderInternal(m.BaseRequestBuilder.PathParameters, m.BaseRequestBuilder.RequestAdapter)
+}
+// CurrentStateVersion the currentStateVersion property
+// returns a *ItemCurrentStateVersionRequestBuilder when successful
+func (m *WithWorkspace_ItemRequestBuilder) CurrentStateVersion()(*ItemCurrentStateVersionRequestBuilder) {
+    return NewItemCurrentStateVersionRequestBuilderInternal(m.BaseRequestBuilder.PathParameters, m.BaseRequestBuilder.RequestAdapter)
+}
+// CurrentStateVersionOutputs the currentStateVersionOutputs property
+// returns a *ItemCurrentStateVersionOutputsRequestBuilder when successful
+func (m *WithWorkspace_ItemRequestBuilder) CurrentStateVersionOutputs()(*ItemCurrentStateVersionOutputsRequestBuilder) {
+    return NewItemCurrentStateVersionOutputsRequestBuilderInternal(m.BaseRequestBuilder.PathParameters, m.BaseRequestBuilder.RequestAdapter)
+}
+// Delete delete a workspace. This permanently removes the workspace and all its associated data including runs, state versions, and configuration versions.
+// returns a Errors error when the service returns a 404 status code
+// returns a Errors error when the service returns a 4XX or 5XX status code
+func (m *WithWorkspace_ItemRequestBuilder) Delete(ctx context.Context, requestConfiguration *WithWorkspace_ItemRequestBuilderDeleteRequestConfiguration)(error) {
+    requestInfo, err := m.ToDeleteRequestInformation(ctx, requestConfiguration);
+    if err != nil {
+        return err
+    }
+    errorMapping := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ErrorMappings {
+        "404": ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.CreateErrorsFromDiscriminatorValue,
+        "XXX": ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.CreateErrorsFromDiscriminatorValue,
+    }
+    err = m.BaseRequestBuilder.RequestAdapter.SendNoContent(ctx, requestInfo, errorMapping)
+    if err != nil {
+        return err
+    }
+    return nil
+}
+// Get get details of a specific workspace by its external ID.
+// Deprecated: This method is obsolete. Use GetAsWithWorkspace_GetResponse instead.
+// returns a ItemWithWorkspace_Responseable when successful
+// returns a Errors error when the service returns a 404 status code
+// returns a Errors error when the service returns a 4XX or 5XX status code
+func (m *WithWorkspace_ItemRequestBuilder) Get(ctx context.Context, requestConfiguration *WithWorkspace_ItemRequestBuilderGetRequestConfiguration)(ItemWithWorkspace_Responseable, error) {
+    requestInfo, err := m.ToGetRequestInformation(ctx, requestConfiguration);
+    if err != nil {
+        return nil, err
+    }
+    errorMapping := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ErrorMappings {
+        "404": ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.CreateErrorsFromDiscriminatorValue,
+        "XXX": ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.CreateErrorsFromDiscriminatorValue,
+    }
+    res, err := m.BaseRequestBuilder.RequestAdapter.Send(ctx, requestInfo, CreateItemWithWorkspace_ResponseFromDiscriminatorValue, errorMapping)
+    if err != nil {
+        return nil, err
+    }
+    if res == nil {
+        return nil, nil
+    }
+    return res.(ItemWithWorkspace_Responseable), nil
+}
+// GetAsWithWorkspace_GetResponse get details of a specific workspace by its external ID.
+// returns a ItemWithWorkspace_GetResponseable when successful
+// returns a Errors error when the service returns a 404 status code
+// returns a Errors error when the service returns a 4XX or 5XX status code
+func (m *WithWorkspace_ItemRequestBuilder) GetAsWithWorkspace_GetResponse(ctx context.Context, requestConfiguration *WithWorkspace_ItemRequestBuilderGetRequestConfiguration)(ItemWithWorkspace_GetResponseable, error) {
+    requestInfo, err := m.ToGetRequestInformation(ctx, requestConfiguration);
+    if err != nil {
+        return nil, err
+    }
+    errorMapping := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ErrorMappings {
+        "404": ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.CreateErrorsFromDiscriminatorValue,
+        "XXX": ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.CreateErrorsFromDiscriminatorValue,
+    }
+    res, err := m.BaseRequestBuilder.RequestAdapter.Send(ctx, requestInfo, CreateItemWithWorkspace_GetResponseFromDiscriminatorValue, errorMapping)
+    if err != nil {
+        return nil, err
+    }
+    if res == nil {
+        return nil, nil
+    }
+    return res.(ItemWithWorkspace_GetResponseable), nil
+}
+// NotificationConfigurations the notificationConfigurations property
+// returns a *ItemNotificationConfigurationsRequestBuilder when successful
+func (m *WithWorkspace_ItemRequestBuilder) NotificationConfigurations()(*ItemNotificationConfigurationsRequestBuilder) {
+    return NewItemNotificationConfigurationsRequestBuilderInternal(m.BaseRequestBuilder.PathParameters, m.BaseRequestBuilder.RequestAdapter)
+}
+// Patch update settings of an existing workspace.
+// Deprecated: This method is obsolete. Use PatchAsWithWorkspace_PatchResponse instead.
+// returns a ItemWithWorkspace_Responseable when successful
+// returns a Errors error when the service returns a 404 status code
+// returns a Errors error when the service returns a 422 status code
+// returns a Errors error when the service returns a 4XX or 5XX status code
+func (m *WithWorkspace_ItemRequestBuilder) Patch(ctx context.Context, body ItemWithWorkspace_PatchRequestBodyable, requestConfiguration *WithWorkspace_ItemRequestBuilderPatchRequestConfiguration)(ItemWithWorkspace_Responseable, error) {
+    requestInfo, err := m.ToPatchRequestInformation(ctx, body, requestConfiguration);
+    if err != nil {
+        return nil, err
+    }
+    errorMapping := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ErrorMappings {
+        "404": ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.CreateErrorsFromDiscriminatorValue,
+        "422": ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.CreateErrorsFromDiscriminatorValue,
+        "XXX": ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.CreateErrorsFromDiscriminatorValue,
+    }
+    res, err := m.BaseRequestBuilder.RequestAdapter.Send(ctx, requestInfo, CreateItemWithWorkspace_ResponseFromDiscriminatorValue, errorMapping)
+    if err != nil {
+        return nil, err
+    }
+    if res == nil {
+        return nil, nil
+    }
+    return res.(ItemWithWorkspace_Responseable), nil
+}
+// PatchAsWithWorkspace_PatchResponse update settings of an existing workspace.
+// returns a ItemWithWorkspace_PatchResponseable when successful
+// returns a Errors error when the service returns a 404 status code
+// returns a Errors error when the service returns a 422 status code
+// returns a Errors error when the service returns a 4XX or 5XX status code
+func (m *WithWorkspace_ItemRequestBuilder) PatchAsWithWorkspace_PatchResponse(ctx context.Context, body ItemWithWorkspace_PatchRequestBodyable, requestConfiguration *WithWorkspace_ItemRequestBuilderPatchRequestConfiguration)(ItemWithWorkspace_PatchResponseable, error) {
+    requestInfo, err := m.ToPatchRequestInformation(ctx, body, requestConfiguration);
+    if err != nil {
+        return nil, err
+    }
+    errorMapping := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ErrorMappings {
+        "404": ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.CreateErrorsFromDiscriminatorValue,
+        "422": ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.CreateErrorsFromDiscriminatorValue,
+        "XXX": ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.CreateErrorsFromDiscriminatorValue,
+    }
+    res, err := m.BaseRequestBuilder.RequestAdapter.Send(ctx, requestInfo, CreateItemWithWorkspace_PatchResponseFromDiscriminatorValue, errorMapping)
+    if err != nil {
+        return nil, err
+    }
+    if res == nil {
+        return nil, nil
+    }
+    return res.(ItemWithWorkspace_PatchResponseable), nil
+}
 // Queries the queries property
 // returns a *ItemQueriesRequestBuilder when successful
 func (m *WithWorkspace_ItemRequestBuilder) Queries()(*ItemQueriesRequestBuilder) {
     return NewItemQueriesRequestBuilderInternal(m.BaseRequestBuilder.PathParameters, m.BaseRequestBuilder.RequestAdapter)
+}
+// Relationships the relationships property
+// returns a *ItemRelationshipsRequestBuilder when successful
+func (m *WithWorkspace_ItemRequestBuilder) Relationships()(*ItemRelationshipsRequestBuilder) {
+    return NewItemRelationshipsRequestBuilderInternal(m.BaseRequestBuilder.PathParameters, m.BaseRequestBuilder.RequestAdapter)
 }
 // Resources the resources property
 // returns a *ItemResourcesRequestBuilder when successful
@@ -48,4 +230,74 @@ func (m *WithWorkspace_ItemRequestBuilder) Resources()(*ItemResourcesRequestBuil
 // returns a *ItemRunsRequestBuilder when successful
 func (m *WithWorkspace_ItemRequestBuilder) Runs()(*ItemRunsRequestBuilder) {
     return NewItemRunsRequestBuilderInternal(m.BaseRequestBuilder.PathParameters, m.BaseRequestBuilder.RequestAdapter)
+}
+// RunTriggers the runTriggers property
+// returns a *ItemRunTriggersRequestBuilder when successful
+func (m *WithWorkspace_ItemRequestBuilder) RunTriggers()(*ItemRunTriggersRequestBuilder) {
+    return NewItemRunTriggersRequestBuilderInternal(m.BaseRequestBuilder.PathParameters, m.BaseRequestBuilder.RequestAdapter)
+}
+// StateVersions the stateVersions property
+// returns a *ItemStateVersionsRequestBuilder when successful
+func (m *WithWorkspace_ItemRequestBuilder) StateVersions()(*ItemStateVersionsRequestBuilder) {
+    return NewItemStateVersionsRequestBuilderInternal(m.BaseRequestBuilder.PathParameters, m.BaseRequestBuilder.RequestAdapter)
+}
+// Tasks the tasks property
+// returns a *ItemTasksRequestBuilder when successful
+func (m *WithWorkspace_ItemRequestBuilder) Tasks()(*ItemTasksRequestBuilder) {
+    return NewItemTasksRequestBuilderInternal(m.BaseRequestBuilder.PathParameters, m.BaseRequestBuilder.RequestAdapter)
+}
+// ToDeleteRequestInformation delete a workspace. This permanently removes the workspace and all its associated data including runs, state versions, and configuration versions.
+// returns a *RequestInformation when successful
+func (m *WithWorkspace_ItemRequestBuilder) ToDeleteRequestInformation(ctx context.Context, requestConfiguration *WithWorkspace_ItemRequestBuilderDeleteRequestConfiguration)(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
+    requestInfo := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewRequestInformationWithMethodAndUrlTemplateAndPathParameters(i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DELETE, m.BaseRequestBuilder.UrlTemplate, m.BaseRequestBuilder.PathParameters)
+    if requestConfiguration != nil {
+        requestInfo.Headers.AddAll(requestConfiguration.Headers)
+        requestInfo.AddRequestOptions(requestConfiguration.Options)
+    }
+    requestInfo.Headers.TryAdd("Accept", "application/vnd.api+json")
+    return requestInfo, nil
+}
+// ToGetRequestInformation get details of a specific workspace by its external ID.
+// returns a *RequestInformation when successful
+func (m *WithWorkspace_ItemRequestBuilder) ToGetRequestInformation(ctx context.Context, requestConfiguration *WithWorkspace_ItemRequestBuilderGetRequestConfiguration)(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
+    requestInfo := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewRequestInformationWithMethodAndUrlTemplateAndPathParameters(i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.GET, m.BaseRequestBuilder.UrlTemplate, m.BaseRequestBuilder.PathParameters)
+    if requestConfiguration != nil {
+        if requestConfiguration.QueryParameters != nil {
+            requestInfo.AddQueryParameters(*(requestConfiguration.QueryParameters))
+        }
+        requestInfo.Headers.AddAll(requestConfiguration.Headers)
+        requestInfo.AddRequestOptions(requestConfiguration.Options)
+    }
+    requestInfo.Headers.TryAdd("Accept", "application/vnd.api+json")
+    return requestInfo, nil
+}
+// ToPatchRequestInformation update settings of an existing workspace.
+// returns a *RequestInformation when successful
+func (m *WithWorkspace_ItemRequestBuilder) ToPatchRequestInformation(ctx context.Context, body ItemWithWorkspace_PatchRequestBodyable, requestConfiguration *WithWorkspace_ItemRequestBuilderPatchRequestConfiguration)(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
+    requestInfo := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewRequestInformationWithMethodAndUrlTemplateAndPathParameters(i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.PATCH, m.BaseRequestBuilder.UrlTemplate, m.BaseRequestBuilder.PathParameters)
+    if requestConfiguration != nil {
+        requestInfo.Headers.AddAll(requestConfiguration.Headers)
+        requestInfo.AddRequestOptions(requestConfiguration.Options)
+    }
+    requestInfo.Headers.TryAdd("Accept", "application/vnd.api+json")
+    err := requestInfo.SetContentFromParsable(ctx, m.BaseRequestBuilder.RequestAdapter, "application/vnd.api+json", body)
+    if err != nil {
+        return nil, err
+    }
+    return requestInfo, nil
+}
+// Vars the vars property
+// returns a *ItemVarsRequestBuilder when successful
+func (m *WithWorkspace_ItemRequestBuilder) Vars()(*ItemVarsRequestBuilder) {
+    return NewItemVarsRequestBuilderInternal(m.BaseRequestBuilder.PathParameters, m.BaseRequestBuilder.RequestAdapter)
+}
+// Varsets the varsets property
+// returns a *ItemVarsetsRequestBuilder when successful
+func (m *WithWorkspace_ItemRequestBuilder) Varsets()(*ItemVarsetsRequestBuilder) {
+    return NewItemVarsetsRequestBuilderInternal(m.BaseRequestBuilder.PathParameters, m.BaseRequestBuilder.RequestAdapter)
+}
+// WithUrl returns a request builder with the provided arbitrary URL. Using this method means any other path or query parameters are ignored.
+// returns a *WithWorkspace_ItemRequestBuilder when successful
+func (m *WithWorkspace_ItemRequestBuilder) WithUrl(rawUrl string)(*WithWorkspace_ItemRequestBuilder) {
+    return NewWithWorkspace_ItemRequestBuilder(rawUrl, m.BaseRequestBuilder.RequestAdapter);
 }

@@ -10,8 +10,6 @@ import (
 type HcpOrganization_attributes struct {
     // Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
     additionalData map[string]any
-    // The connectedOrgExternalIds property
-    connectedOrgExternalIds []string
     // The hcpOwnerEmail property
     hcpOwnerEmail *string
     // The isHcpAdmin property
@@ -36,31 +34,10 @@ func CreateHcpOrganization_attributesFromDiscriminatorValue(parseNode i878a80d23
 func (m *HcpOrganization_attributes) GetAdditionalData()(map[string]any) {
     return m.additionalData
 }
-// GetConnectedOrgExternalIds gets the connected-org-external-ids property value. The connectedOrgExternalIds property
-// returns a []string when successful
-func (m *HcpOrganization_attributes) GetConnectedOrgExternalIds()([]string) {
-    return m.connectedOrgExternalIds
-}
 // GetFieldDeserializers the deserialization information for the current model
 // returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error) when successful
 func (m *HcpOrganization_attributes) GetFieldDeserializers()(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error)) {
     res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error))
-    res["connected-org-external-ids"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetCollectionOfPrimitiveValues("string")
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            res := make([]string, len(val))
-            for i, v := range val {
-                if v != nil {
-                    res[i] = *(v.(*string))
-                }
-            }
-            m.SetConnectedOrgExternalIds(res)
-        }
-        return nil
-    }
     res["hcp-owner-email"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
         val, err := n.GetStringValue()
         if err != nil {
@@ -110,12 +87,6 @@ func (m *HcpOrganization_attributes) GetName()(*string) {
 }
 // Serialize serializes information the current object
 func (m *HcpOrganization_attributes) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter)(error) {
-    if m.GetConnectedOrgExternalIds() != nil {
-        err := writer.WriteCollectionOfStringValues("connected-org-external-ids", m.GetConnectedOrgExternalIds())
-        if err != nil {
-            return err
-        }
-    }
     {
         err := writer.WriteStringValue("hcp-owner-email", m.GetHcpOwnerEmail())
         if err != nil {
@@ -146,10 +117,6 @@ func (m *HcpOrganization_attributes) Serialize(writer i878a80d2330e89d26896388a3
 func (m *HcpOrganization_attributes) SetAdditionalData(value map[string]any)() {
     m.additionalData = value
 }
-// SetConnectedOrgExternalIds sets the connected-org-external-ids property value. The connectedOrgExternalIds property
-func (m *HcpOrganization_attributes) SetConnectedOrgExternalIds(value []string)() {
-    m.connectedOrgExternalIds = value
-}
 // SetHcpOwnerEmail sets the hcp-owner-email property value. The hcpOwnerEmail property
 func (m *HcpOrganization_attributes) SetHcpOwnerEmail(value *string)() {
     m.hcpOwnerEmail = value
@@ -165,11 +132,9 @@ func (m *HcpOrganization_attributes) SetName(value *string)() {
 type HcpOrganization_attributesable interface {
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
-    GetConnectedOrgExternalIds()([]string)
     GetHcpOwnerEmail()(*string)
     GetIsHcpAdmin()(*bool)
     GetName()(*string)
-    SetConnectedOrgExternalIds(value []string)()
     SetHcpOwnerEmail(value *string)()
     SetIsHcpAdmin(value *bool)()
     SetName(value *string)()

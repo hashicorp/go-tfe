@@ -15,6 +15,10 @@ type OrganizationMembershipsGetResponse struct {
     data []ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.OrganizationMembershipable
     // The included property
     included []OrganizationMembershipsGetResponse_OrganizationMembershipsGetResponse_includedable
+    // The links property
+    links ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.SelfWithPaginationable
+    // The meta property
+    meta OrganizationMembershipsGetResponse_metaable
 }
 // OrganizationMembershipsGetResponse_OrganizationMembershipsGetResponse_included composed type wrapper for classes ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.Organizationable, ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.Teamable, ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.Userable
 type OrganizationMembershipsGetResponse_OrganizationMembershipsGetResponse_included struct {
@@ -185,12 +189,42 @@ func (m *OrganizationMembershipsGetResponse) GetFieldDeserializers()(map[string]
         }
         return nil
     }
+    res["links"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetObjectValue(ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.CreateSelfWithPaginationFromDiscriminatorValue)
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            m.SetLinks(val.(ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.SelfWithPaginationable))
+        }
+        return nil
+    }
+    res["meta"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetObjectValue(CreateOrganizationMembershipsGetResponse_metaFromDiscriminatorValue)
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            m.SetMeta(val.(OrganizationMembershipsGetResponse_metaable))
+        }
+        return nil
+    }
     return res
 }
 // GetIncluded gets the included property value. The included property
 // returns a []OrganizationMembershipsGetResponse_OrganizationMembershipsGetResponse_includedable when successful
 func (m *OrganizationMembershipsGetResponse) GetIncluded()([]OrganizationMembershipsGetResponse_OrganizationMembershipsGetResponse_includedable) {
     return m.included
+}
+// GetLinks gets the links property value. The links property
+// returns a SelfWithPaginationable when successful
+func (m *OrganizationMembershipsGetResponse) GetLinks()(ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.SelfWithPaginationable) {
+    return m.links
+}
+// GetMeta gets the meta property value. The meta property
+// returns a OrganizationMembershipsGetResponse_metaable when successful
+func (m *OrganizationMembershipsGetResponse) GetMeta()(OrganizationMembershipsGetResponse_metaable) {
+    return m.meta
 }
 // Serialize serializes information the current object
 func (m *OrganizationMembershipsGetResponse) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter)(error) {
@@ -219,6 +253,18 @@ func (m *OrganizationMembershipsGetResponse) Serialize(writer i878a80d2330e89d26
         }
     }
     {
+        err := writer.WriteObjectValue("links", m.GetLinks())
+        if err != nil {
+            return err
+        }
+    }
+    {
+        err := writer.WriteObjectValue("meta", m.GetMeta())
+        if err != nil {
+            return err
+        }
+    }
+    {
         err := writer.WriteAdditionalData(m.GetAdditionalData())
         if err != nil {
             return err
@@ -238,11 +284,23 @@ func (m *OrganizationMembershipsGetResponse) SetData(value []ie0c034c41cc7c7bace
 func (m *OrganizationMembershipsGetResponse) SetIncluded(value []OrganizationMembershipsGetResponse_OrganizationMembershipsGetResponse_includedable)() {
     m.included = value
 }
+// SetLinks sets the links property value. The links property
+func (m *OrganizationMembershipsGetResponse) SetLinks(value ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.SelfWithPaginationable)() {
+    m.links = value
+}
+// SetMeta sets the meta property value. The meta property
+func (m *OrganizationMembershipsGetResponse) SetMeta(value OrganizationMembershipsGetResponse_metaable)() {
+    m.meta = value
+}
 type OrganizationMembershipsGetResponseable interface {
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
     GetData()([]ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.OrganizationMembershipable)
     GetIncluded()([]OrganizationMembershipsGetResponse_OrganizationMembershipsGetResponse_includedable)
+    GetLinks()(ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.SelfWithPaginationable)
+    GetMeta()(OrganizationMembershipsGetResponse_metaable)
     SetData(value []ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.OrganizationMembershipable)()
     SetIncluded(value []OrganizationMembershipsGetResponse_OrganizationMembershipsGetResponse_includedable)()
+    SetLinks(value ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.SelfWithPaginationable)()
+    SetMeta(value OrganizationMembershipsGetResponse_metaable)()
 }

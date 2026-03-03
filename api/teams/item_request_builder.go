@@ -130,6 +130,11 @@ func (m *ItemRequestBuilder) GetAsGetResponse(ctx context.Context, requestConfig
     }
     return res.(ItemGetResponseable), nil
 }
+// NotificationConfigurations the notificationConfigurations property
+// returns a *ItemNotificationConfigurationsRequestBuilder when successful
+func (m *ItemRequestBuilder) NotificationConfigurations()(*ItemNotificationConfigurationsRequestBuilder) {
+    return NewItemNotificationConfigurationsRequestBuilderInternal(m.BaseRequestBuilder.PathParameters, m.BaseRequestBuilder.RequestAdapter)
+}
 // Patch update a team's attributes.
 // Deprecated: This method is obsolete. Use PatchAsPatchResponse instead.
 // returns a ItemResponseable when successful
@@ -182,6 +187,11 @@ func (m *ItemRequestBuilder) PatchAsPatchResponse(ctx context.Context, body ie0c
         return nil, nil
     }
     return res.(ItemPatchResponseable), nil
+}
+// Relationships the relationships property
+// returns a *ItemRelationshipsRequestBuilder when successful
+func (m *ItemRequestBuilder) Relationships()(*ItemRelationshipsRequestBuilder) {
+    return NewItemRelationshipsRequestBuilderInternal(m.BaseRequestBuilder.PathParameters, m.BaseRequestBuilder.RequestAdapter)
 }
 // ToDeleteRequestInformation delete a team. Only organization owners can delete teams.
 // returns a *RequestInformation when successful

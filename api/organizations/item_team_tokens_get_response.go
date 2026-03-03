@@ -13,6 +13,10 @@ type ItemTeamTokensGetResponse struct {
     additionalData map[string]any
     // The data property
     data []ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.AuthenticationTokenable
+    // The links property
+    links ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.SelfWithPaginationable
+    // The meta property
+    meta ItemTeamTokensGetResponse_metaable
 }
 // NewItemTeamTokensGetResponse instantiates a new ItemTeamTokensGetResponse and sets the default values.
 func NewItemTeamTokensGetResponse()(*ItemTeamTokensGetResponse) {
@@ -56,7 +60,37 @@ func (m *ItemTeamTokensGetResponse) GetFieldDeserializers()(map[string]func(i878
         }
         return nil
     }
+    res["links"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetObjectValue(ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.CreateSelfWithPaginationFromDiscriminatorValue)
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            m.SetLinks(val.(ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.SelfWithPaginationable))
+        }
+        return nil
+    }
+    res["meta"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetObjectValue(CreateItemTeamTokensGetResponse_metaFromDiscriminatorValue)
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            m.SetMeta(val.(ItemTeamTokensGetResponse_metaable))
+        }
+        return nil
+    }
     return res
+}
+// GetLinks gets the links property value. The links property
+// returns a SelfWithPaginationable when successful
+func (m *ItemTeamTokensGetResponse) GetLinks()(ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.SelfWithPaginationable) {
+    return m.links
+}
+// GetMeta gets the meta property value. The meta property
+// returns a ItemTeamTokensGetResponse_metaable when successful
+func (m *ItemTeamTokensGetResponse) GetMeta()(ItemTeamTokensGetResponse_metaable) {
+    return m.meta
 }
 // Serialize serializes information the current object
 func (m *ItemTeamTokensGetResponse) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter)(error) {
@@ -68,6 +102,18 @@ func (m *ItemTeamTokensGetResponse) Serialize(writer i878a80d2330e89d26896388a3f
             }
         }
         err := writer.WriteCollectionOfObjectValues("data", cast)
+        if err != nil {
+            return err
+        }
+    }
+    {
+        err := writer.WriteObjectValue("links", m.GetLinks())
+        if err != nil {
+            return err
+        }
+    }
+    {
+        err := writer.WriteObjectValue("meta", m.GetMeta())
         if err != nil {
             return err
         }
@@ -88,9 +134,21 @@ func (m *ItemTeamTokensGetResponse) SetAdditionalData(value map[string]any)() {
 func (m *ItemTeamTokensGetResponse) SetData(value []ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.AuthenticationTokenable)() {
     m.data = value
 }
+// SetLinks sets the links property value. The links property
+func (m *ItemTeamTokensGetResponse) SetLinks(value ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.SelfWithPaginationable)() {
+    m.links = value
+}
+// SetMeta sets the meta property value. The meta property
+func (m *ItemTeamTokensGetResponse) SetMeta(value ItemTeamTokensGetResponse_metaable)() {
+    m.meta = value
+}
 type ItemTeamTokensGetResponseable interface {
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
     GetData()([]ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.AuthenticationTokenable)
+    GetLinks()(ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.SelfWithPaginationable)
+    GetMeta()(ItemTeamTokensGetResponse_metaable)
     SetData(value []ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.AuthenticationTokenable)()
+    SetLinks(value ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.SelfWithPaginationable)()
+    SetMeta(value ItemTeamTokensGetResponse_metaable)()
 }

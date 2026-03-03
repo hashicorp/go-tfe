@@ -104,6 +104,11 @@ func (m *WithProject_ItemRequestBuilder) GetAsWithProject_GetResponse(ctx contex
     }
     return res.(ItemWithProject_GetResponseable), nil
 }
+// NotificationConfigurations the notificationConfigurations property
+// returns a *ItemNotificationConfigurationsRequestBuilder when successful
+func (m *WithProject_ItemRequestBuilder) NotificationConfigurations()(*ItemNotificationConfigurationsRequestBuilder) {
+    return NewItemNotificationConfigurationsRequestBuilderInternal(m.BaseRequestBuilder.PathParameters, m.BaseRequestBuilder.RequestAdapter)
+}
 // Patch update an existing project.
 // Deprecated: This method is obsolete. Use PatchAsWithProject_PatchResponse instead.
 // returns a ItemWithProject_Responseable when successful
@@ -186,6 +191,11 @@ func (m *WithProject_ItemRequestBuilder) ToPatchRequestInformation(ctx context.C
         return nil, err
     }
     return requestInfo, nil
+}
+// Varsets the varsets property
+// returns a *ItemVarsetsRequestBuilder when successful
+func (m *WithProject_ItemRequestBuilder) Varsets()(*ItemVarsetsRequestBuilder) {
+    return NewItemVarsetsRequestBuilderInternal(m.BaseRequestBuilder.PathParameters, m.BaseRequestBuilder.RequestAdapter)
 }
 // WithUrl returns a request builder with the provided arbitrary URL. Using this method means any other path or query parameters are ignored.
 // returns a *WithProject_ItemRequestBuilder when successful

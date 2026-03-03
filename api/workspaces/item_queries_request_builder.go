@@ -15,9 +15,9 @@ type ItemQueriesRequestBuilder struct {
 }
 // ItemQueriesRequestBuilderGetQueryParameters get list of queries for a particular workspace.
 type ItemQueriesRequestBuilderGetQueryParameters struct {
-    // Page number for pagination.
+    // The page number to retrieve.
     Pagenumber *int32 `uriparametername:"page%5Bnumber%5D"`
-    // Page size for pagination.
+    // The number of items to retrieve per page. Defaults to 20.
     Pagesize *int32 `uriparametername:"page%5Bsize%5D"`
 }
 // ItemQueriesRequestBuilderGetRequestConfiguration configuration for the request such as headers, query parameters, and middleware options.
