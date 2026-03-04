@@ -30,6 +30,10 @@ func TestUsersReadCurrent(t *testing.T) {
 	t.Run("permissions are decoded", func(t *testing.T) {
 		assert.NotNil(t, u.Permissions)
 	})
+
+	t.Run("auth method is decoded", func(t *testing.T) {
+		assert.NotNil(t, u.AuthMethod)
+	})
 }
 
 func TestUsersUpdate(t *testing.T) {

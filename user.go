@@ -30,6 +30,7 @@ type users struct {
 // User represents a Terraform Enterprise user.
 type User struct {
 	ID               string     `jsonapi:"primary,users"`
+	AuthMethod       string     `jsonapi:"attr,auth-method"`
 	AvatarURL        string     `jsonapi:"attr,avatar-url"`
 	Email            string     `jsonapi:"attr,email"`
 	IsServiceAccount bool       `jsonapi:"attr,is-service-account"`

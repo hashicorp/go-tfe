@@ -1,5 +1,8 @@
 # Unreleased
 
+## Enhancements
+* Adds the `AuthMethod` field to the `User` struct to expose the authentication method used by the current user ([#1315](https://github.com/hashicorp/terraform-provider-tfe/issues/1315))
+
 # v1.101.0
 
 ## Enhancements
