@@ -161,6 +161,11 @@ type PolicySetOutcomeList struct {
 	Items []*PolicySetOutcome
 }
 
+// OutcomeOutput represents a single print output entry from a policy outcome.
+type OutcomeOutput struct {
+	Print string `jsonapi:"attr,print"`
+}
+
 // Outcome represents the outcome of the individual policy
 type Outcome struct {
 	EnforcementLevel EnforcementLevel `jsonapi:"attr,enforcement_level"`
@@ -168,6 +173,7 @@ type Outcome struct {
 	Status           string           `jsonapi:"attr,status"`
 	PolicyName       string           `jsonapi:"attr,policy_name"`
 	Description      string           `jsonapi:"attr,description"`
+	Output           []OutcomeOutput  `jsonapi:"attr,output,omitempty"`
 }
 
 // PolicySetOutcome represents outcome of the policy set that are part of the policy evaluation

@@ -1,5 +1,8 @@
 # Unreleased
 
+## Enhancements
+* Adds `Output` field to `Outcome` struct by @straubt1 [#XXXX](https://github.com/hashicorp/go-tfe/pull/XXXX)
+
 # v1.101.0
 
 ## Enhancements

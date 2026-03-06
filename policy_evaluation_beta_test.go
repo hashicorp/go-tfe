@@ -116,6 +116,9 @@ func TestPolicySetOutcomeList_Beta_RunDependent(t *testing.T) {
 		assert.NotEmpty(t, polSetOutcomesList.Items[0].ID)
 		assert.NotEmpty(t, polSetOutcomesList.Items[0].Outcomes)
 		assert.NotEmpty(t, polSetOutcomesList.Items[0].PolicySetName)
+		// Output is populated only for Sentinel policies that emit print() statements.
+		// OPA policies do not produce print output, so Output will be empty here.
+		assert.Empty(t, polSetOutcomesList.Items[0].Outcomes[0].Output)
 	})
 
 	t.Run("with non-matching filters", func(t *testing.T) {
