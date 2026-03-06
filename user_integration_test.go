@@ -32,7 +32,7 @@ func TestUsersReadCurrent(t *testing.T) {
 	})
 
 	t.Run("auth method is decoded", func(t *testing.T) {
-		assert.NotNil(t, u.AuthMethod)
+		assert.NotEmpty(t, u.AuthMethod)
 	})
 }
 
