@@ -1290,7 +1290,7 @@ func TestPolicySetAddProjectExclusions(t *testing.T) {
 
 		ps, err := client.PolicySets.ReadWithOptions(ctx, psTest.ID, &PolicySetReadOptions{
 			Include: []PolicySetIncludeOpt{
-				"project_exclusions",
+				PolicySetProjectExclusions,
 			},
 		})
 		require.NoError(t, err)
