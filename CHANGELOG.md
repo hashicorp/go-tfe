@@ -1,5 +1,7 @@
 # Unreleased
 
+* Adds the `ProjectExclusions` field to the `PolicySet` struct to support project level exclusions of policy sets by @subhro-acharjee-1 [#1290](https://github.com/hashicorp/go-tfe/pull/1290)
+
 # v1.101.0
 
 ## Enhancements
