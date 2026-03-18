@@ -1257,7 +1257,7 @@ func TestPolicySetsRemoveProjects(t *testing.T) {
 }
 
 func TestPolicySetAddProjectExclusions(t *testing.T) {
-	t.Parallel()
+	// t.Parallel()
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -1337,7 +1337,7 @@ func TestPolicySetAddProjectExclusions(t *testing.T) {
 }
 
 func TestPolicySetRemoveProjectExclusions(t *testing.T) {
-	t.Parallel()
+	// t.Parallel()
 	client := testClient(t)
 	ctx := context.Background()
 
