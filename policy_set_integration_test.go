@@ -1257,7 +1257,7 @@ func TestPolicySetsRemoveProjects(t *testing.T) {
 }
 
 func TestPolicySetAddProjectExclusions(t *testing.T) {
-	t.Parallel()
+	// t.Parallel()
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -1279,10 +1279,11 @@ func TestPolicySetAddProjectExclusions(t *testing.T) {
 	defer psTestCleanup()
 
 	t.Run("with project exclusions provided", func(t *testing.T) {
-		// poll to ensure policy set is fully created before adding project exclusions
 		ps, err := retryPatientlyIf(
 			func() (any, error) {
-				return client.PolicySets.Read(ctx, psTest.ID)
+				return client.PolicySets.ReadWithOptions(ctx, psTest.ID, &PolicySetReadOptions{
+					Include: []PolicySetIncludeOpt{PolicySetProjectExclusions},
+				})
 			},
 			func(ps *PolicySet) bool {
 				return ps == nil
