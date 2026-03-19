@@ -68,7 +68,7 @@ runs:
 
     - name: Install gotestsum
       shell: bash
-      run: go install gotest.tools/gotestsum@5768fec807c3a620b209c79845e80fb4befa5857 # v1.12.2
+      run: go install gotest.tools/gotestsum@c4a0df2e75a225d979a444342dd3db752b53619f # v1.13.0
 
     - name: Download artifact
       id: download-artifact
