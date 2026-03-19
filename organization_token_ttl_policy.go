@@ -30,7 +30,7 @@ type organizationTokenTTLPolicies struct {
 }
 
 type OrganizationTokenTTLPolicy struct {
-	ID        string    `jsonapi:"primary,token-ttl-policies"`
+	ID        string    `jsonapi:"primary,organization-token-ttl-policies"`
 	TokenType string    `jsonapi:"attr,token-type"`
 	MaxTTLMs  int64     `jsonapi:"attr,max-ttl-ms"`
 	CreatedAt time.Time `jsonapi:"attr,created-at,iso8601"`
@@ -84,7 +84,6 @@ func (s *organizationTokenTTLPolicies) Update(ctx context.Context, organization 
 		return nil, ErrRequiredPolicies
 	}
 
-	// Manually serialize to JSON bytes
 	body, err := json.Marshal(options)
 	if err != nil {
 		return nil, err
