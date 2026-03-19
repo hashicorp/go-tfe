@@ -1257,7 +1257,7 @@ func TestPolicySetsRemoveProjects(t *testing.T) {
 }
 
 func TestPolicySetAddProjectExclusions(t *testing.T) {
-	// t.Parallel()
+	t.Parallel()
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -1279,7 +1279,19 @@ func TestPolicySetAddProjectExclusions(t *testing.T) {
 	defer psTestCleanup()
 
 	t.Run("with project exclusions provided", func(t *testing.T) {
-		err := client.PolicySets.AddProjectExclusions(
+		// poll to ensure policy set is fully created before adding project exclusions
+		ps, err := retryPatientlyIf(
+			func() (any, error) {
+				return client.PolicySets.Read(ctx, psTest.ID)
+			},
+			func(ps *PolicySet) bool {
+				return ps == nil
+			},
+		)
+		require.NoError(t, err)
+		require.NotNil(t, ps)
+
+		err = client.PolicySets.AddProjectExclusions(
 			ctx,
 			psTest.ID,
 			PolicySetAddProjectExclusionsOptions{
@@ -1288,7 +1300,7 @@ func TestPolicySetAddProjectExclusions(t *testing.T) {
 		)
 		require.NoError(t, err)
 
-		ps, err := client.PolicySets.ReadWithOptions(ctx, psTest.ID, &PolicySetReadOptions{
+		ps, err = client.PolicySets.ReadWithOptions(ctx, psTest.ID, &PolicySetReadOptions{
 			Include: []PolicySetIncludeOpt{
 				PolicySetProjectExclusions,
 			},
