@@ -72,7 +72,7 @@ func TestPolicySetParametersCreate(t *testing.T) {
 
 	t.Run("with valid options", func(t *testing.T) {
 		options := PolicySetParameterCreateOptions{
-			Key:      String(randomString(t)),
+			Key:      String(randomKeyValue(t)),
 			Value:    String(randomString(t)),
 			Category: Category(CategoryPolicySet),
 		}
@@ -91,7 +91,7 @@ func TestPolicySetParametersCreate(t *testing.T) {
 
 	t.Run("when options has an empty string value", func(t *testing.T) {
 		options := PolicySetParameterCreateOptions{
-			Key:      String(randomString(t)),
+			Key:      String(randomKeyValue(t)),
 			Value:    String(""),
 			Category: Category(CategoryPolicySet),
 		}
@@ -107,7 +107,7 @@ func TestPolicySetParametersCreate(t *testing.T) {
 
 	t.Run("when options is missing value", func(t *testing.T) {
 		options := PolicySetParameterCreateOptions{
-			Key:      String(randomString(t)),
+			Key:      String(randomKeyValue(t)),
 			Category: Category(CategoryPolicySet),
 		}
 
@@ -143,7 +143,7 @@ func TestPolicySetParametersCreate(t *testing.T) {
 
 	t.Run("when options is missing category", func(t *testing.T) {
 		options := PolicySetParameterCreateOptions{
-			Key:   String(randomString(t)),
+			Key:   String(randomKeyValue(t)),
 			Value: String(randomString(t)),
 		}
 
@@ -153,7 +153,7 @@ func TestPolicySetParametersCreate(t *testing.T) {
 
 	t.Run("when policy set ID is invalid", func(t *testing.T) {
 		options := PolicySetParameterCreateOptions{
-			Key:      String(randomString(t)),
+			Key:      String(randomKeyValue(t)),
 			Value:    String(randomString(t)),
 			Category: Category(CategoryPolicySet),
 		}
