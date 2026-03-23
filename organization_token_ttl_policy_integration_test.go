@@ -143,8 +143,18 @@ func TestOrganizationTokenTTLPoliciesUpdate(t *testing.T) {
 				policies, err := client.OrganizationTokenTTLPolicies.Update(ctx, orgTest.Name, options)
 				require.NoError(t, err)
 				require.NotNil(t, policies)
-				require.Len(t, policies, 1)
-				assert.Equal(t, tc.value, policies[0].MaxTTLMs)
+				require.Len(t, policies, 4) // API returns all 4 token type policies
+
+				// Find the organization token policy and verify its value
+				var orgPolicy *OrganizationTokenTTLPolicy
+				for _, policy := range policies {
+					if policy.TokenType == TokenTypeOrganization {
+						orgPolicy = policy
+						break
+					}
+				}
+				require.NotNil(t, orgPolicy, "Organization token policy should be present")
+				assert.Equal(t, tc.value, orgPolicy.MaxTTLMs)
 			})
 		}
 	})
@@ -223,8 +233,18 @@ func TestOrganizationTokenTTLPoliciesUpdate_RoundTrip(t *testing.T) {
 		updatedSingle, err := client.OrganizationTokenTTLPolicies.Update(ctx, orgTest.Name, updateSingleOptions)
 		require.NoError(t, err)
 		require.NotNil(t, updatedSingle)
-		require.Len(t, updatedSingle, 1)
-		assert.Equal(t, int64(63072000000), updatedSingle[0].MaxTTLMs)
+		require.Len(t, updatedSingle, 4) // API returns all 4 token type policies
+
+		// Find the organization token policy and verify its value
+		var orgPolicy *OrganizationTokenTTLPolicy
+		for _, policy := range updatedSingle {
+			if policy.TokenType == TokenTypeOrganization {
+				orgPolicy = policy
+				break
+			}
+		}
+		require.NotNil(t, orgPolicy, "Organization token policy should be present")
+		assert.Equal(t, int64(63072000000), orgPolicy.MaxTTLMs)
 
 		finalList, err := client.OrganizationTokenTTLPolicies.List(ctx, orgTest.Name, nil)
 		require.NoError(t, err)
