@@ -12,6 +12,7 @@ import (
 )
 
 func TestOrganizationTokenTTLPoliciesList(t *testing.T) {
+	skipUnlessBeta(t)
 	t.Parallel()
 	client := testClient(t)
 	ctx := context.Background()
@@ -34,6 +35,7 @@ func TestOrganizationTokenTTLPoliciesList(t *testing.T) {
 }
 
 func TestOrganizationTokenTTLPoliciesUpdate(t *testing.T) {
+	skipUnlessBeta(t)
 	t.Parallel()
 	client := testClient(t)
 	ctx := context.Background()
@@ -174,6 +176,7 @@ func TestOrganizationTokenTTLPoliciesUpdate(t *testing.T) {
 }
 
 func TestOrganizationTokenTTLPoliciesUpdate_RoundTrip(t *testing.T) {
+	skipUnlessBeta(t)
 	t.Parallel()
 	client := testClient(t)
 	ctx := context.Background()
