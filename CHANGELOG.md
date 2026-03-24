@@ -1,6 +1,6 @@
 # Unreleased
 
-* Upgrade go version from `1.24` to `1.25` by @uk1288 [1297](https://github.com/hashicorp/go-tfe/pull/1297)
+* Upgrade go version from `1.24` to `1.25` by @uk1288 [#1297](https://github.com/hashicorp/go-tfe/pull/1297)
 
 # v1.101.0
 
