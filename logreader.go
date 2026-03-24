@@ -67,7 +67,7 @@ func (r *LogReader) read(l []byte) (int, error) {
 	if err != nil {
 		return 0, err
 	}
-	defer resp.Body.Close()
+	defer resp.Body.Close() //nolint:errcheck
 
 	// Basic response checking.
 	if err := checkResponseCode(resp); err != nil {

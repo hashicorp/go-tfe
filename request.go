@@ -60,7 +60,7 @@ func (r ClientRequest) Do(ctx context.Context, model interface{}) error {
 			return err
 		}
 	}
-	defer resp.Body.Close()
+	defer resp.Body.Close() //nolint:errcheck
 
 	// Basic response checking.
 	if err := checkResponseCode(resp); err != nil {
@@ -119,7 +119,7 @@ func (r *ClientRequest) DoJSON(ctx context.Context, model any) error {
 			return err
 		}
 	}
-	defer resp.Body.Close()
+	defer resp.Body.Close() //nolint:errcheck
 
 	if resp.StatusCode < 200 || resp.StatusCode >= 400 {
 		return fmt.Errorf("error HTTP response: %d", resp.StatusCode)
@@ -187,7 +187,7 @@ func (r *ClientRequest) DoRaw(ctx context.Context) (io.ReadCloser, error) {
 
 	if resp.StatusCode < 200 || resp.StatusCode >= 400 {
 		// Close the body here since we won't be returning it to the caller.
-		resp.Body.Close()
+		resp.Body.Close() //nolint:errcheck
 		return nil, fmt.Errorf("error HTTP response: %d", resp.StatusCode)
 	} else if resp.StatusCode == 304 {
 		// Got a "Not Modified" response, but we can't return a model because there is no response body.
