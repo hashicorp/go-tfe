@@ -14,7 +14,6 @@ import (
 
 func TestStackCreateAndList(t *testing.T) {
 	t.Parallel()
-	skipUnlessBeta(t)
 
 	client := testClient(t)
 	ctx := context.Background()
@@ -138,7 +137,6 @@ func TestStackCreateAndList(t *testing.T) {
 
 func TestStackReadUpdateDelete(t *testing.T) {
 	t.Parallel()
-	skipUnlessBeta(t)
 
 	client := testClient(t)
 	ctx := context.Background()
@@ -218,7 +216,6 @@ func TestStackReadUpdateDelete(t *testing.T) {
 
 func TestStackRemoveVCSBacking(t *testing.T) {
 	t.Parallel()
-	skipUnlessBeta(t)
 
 	client := testClient(t)
 	ctx := context.Background()
@@ -265,7 +262,6 @@ func TestStackRemoveVCSBacking(t *testing.T) {
 
 func TestStackReadUpdateForceDelete(t *testing.T) {
 	t.Parallel()
-	skipUnlessBeta(t)
 
 	client := testClient(t)
 	ctx := context.Background()

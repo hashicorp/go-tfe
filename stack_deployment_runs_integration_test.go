@@ -14,7 +14,6 @@ import (
 
 func TestStackDeploymentRunsList(t *testing.T) {
 	t.Parallel()
-	skipUnlessBeta(t)
 
 	client := testClient(t)
 	ctx := context.Background()
@@ -99,7 +98,6 @@ func TestStackDeploymentRunsList(t *testing.T) {
 
 func TestStackDeploymentRunsRead(t *testing.T) {
 	t.Parallel()
-	skipUnlessBeta(t)
 
 	client := testClient(t)
 	ctx := context.Background()
@@ -171,7 +169,6 @@ func TestStackDeploymentRunsRead(t *testing.T) {
 
 func TestStackDeploymentRunsApproveAllPlans(t *testing.T) {
 	t.Parallel()
-	skipUnlessBeta(t)
 
 	client := testClient(t)
 	ctx := context.Background()
@@ -225,7 +222,6 @@ func TestStackDeploymentRunsApproveAllPlans(t *testing.T) {
 
 func TestStackDeploymentRunsCancel(t *testing.T) {
 	t.Parallel()
-	skipUnlessBeta(t)
 
 	client := testClient(t)
 	ctx := context.Background()
