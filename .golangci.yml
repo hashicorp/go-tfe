@@ -1,8 +1,11 @@
 # Copyright (c) HashiCorp, Inc.
 # SPDX-License-Identifier: MPL-2.0
 
+version: "2"
+
 run:
   timeout: 5m
+
 linters:
 # This set of linters are enabled by default: deadcode, errcheck, gosimple, govet, ineffasign, staticcheck, struccheck, typecheck, unused, varcheck
   enable:
@@ -14,52 +17,47 @@ linters:
     - copyloopvar #https://github.com/karamaru-alpha/copyloopvar
     - bodyclose #https://github.com/timakin/bodyclose
     - goconst #https://github.com/jgautheron/goconst
-    - gofmt
     - errcheck #https://github.com/kisielk/errcheck
-    - stylecheck #https://github.com/dominikh/go-tools/tree/master/stylecheck
+    - staticcheck # stylecheck/gosimple checks are part of staticcheck in v2
     - revive #golint is deprecated and golangci-lint recommends to use revive instead https://github.com/mgechev/revive
     #other deprecated lint libraries: maligned, scopelint, interfacer
     - gocritic #https://github.com/go-critic/go-critic
     - unparam #https://github.com/mvdan/unparam
     - misspell #https://github.com/client9/misspell
-issues:
-  exclude-rules:
-  - path: tfe_integration_test.go
-    linters:
-    - errcheck # Many calls in this test are known to return an error and not checked
-  - linters:
-      - stylecheck
-    text: "Ascii" # Permanently part of the public interface unless we break the API
-  - path: _test\.go
-    linters:
-    - unused
-    - deadcode
-    - unparam
-linters-settings:
-  errcheck:
-    # https://github.com/kisielk/errcheck#excluding-functions
-    check-type-assertions: true
-    check-blank: true
-  goconst:
-    min-len: 20
-    min-occurrences: 5
-    ignore-calls: false
-    ignore-tests: true
-  gocritic:
-    enabled-tags:
+  exclusions:
+    rules:
+    - path: tfe_integration_test.go
+      linters:
+      - errcheck # Many calls in this test are known to return an error and not checked
+    - linters:
+      - staticcheck
+      text: "Ascii" # Permanently part of the public interface unless we break the API
+    - path: _test\.go
+      linters:
+      - unused
+      - unparam
+  settings:
+    errcheck:
+      # https://github.com/kisielk/errcheck#excluding-functions
+      check-type-assertions: true
+      check-blank: true
+    goconst:
+      min-len: 20
+      min-occurrences: 5
+      ignore-calls: false
+    gocritic:
+      enabled-tags:
       - diagnostic
       - opinionated
       - performance
-    disabled-checks:
+      disabled-checks:
       - unnamedResult
       - hugeParam
       - singleCaseSwitch
       - ifElseChain
-  revive:
-    # see https://github.com/mgechev/revive#available-rules for details.
-    ignore-generated-header: false #recommended in their configuration
-    severity: warning
-    rules:
+    revive:
+      severity: warning
+      rules:
       - name: indent-error-flow #Prevents redundant else statements
         severity: warning
       - name: useless-break
