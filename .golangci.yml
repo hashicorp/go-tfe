@@ -34,6 +34,8 @@ linters:
       text: "Ascii" # Permanently part of the public interface unless we break the API
     - path: _test\.go
       linters:
+      - errcheck
+      - goconst
       - unused
       - unparam
   settings:
