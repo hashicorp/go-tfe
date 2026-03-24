@@ -94,7 +94,8 @@ func (s *organizationTokenTTLPolicies) Update(ctx context.Context, organization 
 	if err != nil {
 		return nil, err
 	}
-	req.Header.Set("Content-Type", "application/vnd.api+json")
+	req.Header.Set("Content-Type", ContentTypeJSONAPI)
+	req.Header.Set("Accept", ContentTypeJSONAPI)
 
 	policyList := &OrganizationTokenTTLPolicyList{}
 	err = req.Do(ctx, policyList)

@@ -56,11 +56,20 @@ func TestOrganizationTokenTTLPoliciesUpdate(t *testing.T) {
 		policies, err := client.OrganizationTokenTTLPolicies.Update(ctx, orgTest.Name, options)
 		require.NoError(t, err)
 		require.NotNil(t, policies)
-		require.Len(t, policies, 1)
+		require.Len(t, policies, 4) // API returns all 4 token type policies
 
-		assert.Equal(t, TokenTypeOrganization, policies[0].TokenType)
-		assert.Equal(t, int64(86400000), policies[0].MaxTTLMs)
-		assert.NotEmpty(t, policies[0].ID)
+		// Find the organization token policy and verify its value
+		var orgPolicy *OrganizationTokenTTLPolicy
+		for _, policy := range policies {
+			if policy.TokenType == TokenTypeOrganization {
+				orgPolicy = policy
+				break
+			}
+		}
+		require.NotNil(t, orgPolicy, "Organization token policy should be present")
+		assert.Equal(t, TokenTypeOrganization, orgPolicy.TokenType)
+		assert.Equal(t, int64(86400000), orgPolicy.MaxTTLMs)
+		assert.NotEmpty(t, orgPolicy.ID)
 	})
 
 	t.Run("update multiple policies", func(t *testing.T) {
@@ -84,18 +93,29 @@ func TestOrganizationTokenTTLPoliciesUpdate(t *testing.T) {
 		policies, err := client.OrganizationTokenTTLPolicies.Update(ctx, orgTest.Name, options)
 		require.NoError(t, err)
 		require.NotNil(t, policies)
-		require.Len(t, policies, 3)
+		require.Len(t, policies, 4) // API returns all 4 token type policies
 
-		tokenTypes := make(map[string]bool)
+		// Build a map of returned policies by token type
+		policyMap := make(map[string]*OrganizationTokenTTLPolicy)
 		for _, policy := range policies {
-			tokenTypes[policy.TokenType] = true
+			policyMap[policy.TokenType] = policy
 			assert.NotEmpty(t, policy.ID)
 			assert.Greater(t, policy.MaxTTLMs, int64(0))
 		}
 
-		assert.True(t, tokenTypes[TokenTypeOrganization])
-		assert.True(t, tokenTypes[TokenTypeTeam])
-		assert.True(t, tokenTypes[TokenTypeUser])
+		// Verify the three policies we updated have the correct values
+		require.Contains(t, policyMap, TokenTypeOrganization)
+		assert.Equal(t, int64(31536000000), policyMap[TokenTypeOrganization].MaxTTLMs)
+
+		require.Contains(t, policyMap, TokenTypeTeam)
+		assert.Equal(t, int64(15768000000), policyMap[TokenTypeTeam].MaxTTLMs)
+
+		require.Contains(t, policyMap, TokenTypeUser)
+		assert.Equal(t, int64(2592000000), policyMap[TokenTypeUser].MaxTTLMs)
+
+		// Verify audit trails policy has the default 2-year value (not updated)
+		require.Contains(t, policyMap, TokenTypeAuditTrails)
+		assert.Equal(t, int64(63113904000), policyMap[TokenTypeAuditTrails].MaxTTLMs, "Audit trails should have default 2-year TTL")
 	})
 
 	t.Run("update all token types", func(t *testing.T) {
