@@ -9,7 +9,6 @@ import (
 
 func TestStackDeploymentsList(t *testing.T) {
 	t.Parallel()
-	skipUnlessBeta(t)
 
 	client := testClient(t)
 	ctx := context.Background()
