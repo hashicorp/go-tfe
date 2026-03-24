@@ -968,8 +968,8 @@ func createPolicySetParameter(t *testing.T, client *Client, ps *PolicySet) (*Pol
 
 	ctx := context.Background()
 	v, err := client.PolicySetParameters.Create(ctx, ps.ID, PolicySetParameterCreateOptions{
-		Key:      String(randomString(t)),
-		Value:    String(randomString(t)),
+		Key:      String(randomKeyValue(t)),
+		Value:    String(randomKeyValue(t)),
 		Category: Category(CategoryPolicySet),
 	})
 	if err != nil {
