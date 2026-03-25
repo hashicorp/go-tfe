@@ -148,6 +148,7 @@ type Client struct {
 	Organizations                   Organizations
 	OrganizationTags                OrganizationTags
 	OrganizationTokens              OrganizationTokens
+	OrganizationTokenTTLPolicies    OrganizationTokenTTLPolicies
 	Plans                           Plans
 	PlanExports                     PlanExports
 	Policies                        Policies
@@ -492,6 +493,7 @@ func NewClient(cfg *Config) (*Client, error) {
 	client.Organizations = &organizations{client: client}
 	client.OrganizationTags = &organizationTags{client: client}
 	client.OrganizationTokens = &organizationTokens{client: client}
+	client.OrganizationTokenTTLPolicies = &organizationTokenTTLPolicies{client: client}
 	client.OrganizationAuditConfigurations = &organizationAuditConfigurations{client: client}
 	client.PlanExports = &planExports{client: client}
 	client.Plans = &plans{client: client}
