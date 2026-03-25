@@ -761,7 +761,7 @@ func (c *Client) getRawAPIMetadata() (rawAPIMetadata, error) {
 	if err != nil {
 		return meta, err
 	}
-	resp.Body.Close()
+	resp.Body.Close() //nolint:errcheck
 
 	meta.APIVersion = resp.Header.Get(_headerAPIVersion)
 	meta.RateLimit = resp.Header.Get(_headerRateLimit)

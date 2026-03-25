@@ -1,15 +1,16 @@
 # Unreleased
 
 ## Enhancements
+* Adds the `Size` field to `StateVersion` by @shaunakone [#1280](https://github.com/hashicorp/go-tfe/pull/1280)
+* Upgrade go version from `1.24` to `1.25` by @uk1288 [#1297](https://github.com/hashicorp/go-tfe/pull/1297)
 * Adds `OrganizationTokenTTLPolicies` API support with `List` and `Update` methods to manage organization token TTL policies. Policies are managed as an array with millisecond-based TTL values, by @sana-faraz [#1291](https://github.com/hashicorp/go-tfe/pull/1291)
+
 
 # v1.101.0
 
 ## Enhancements
 * Adds the `SpeculativeEnabled` field to the `StackCreateOptions` and `StackUpdateOptions` structs by @arunatibm [1279](https://github.com/hashicorp/go-tfe/pull/1279)
 * Adds `Name` and `Provider` fields to `RegistryModuleCreateWithVCSConnectionOptions` to support explicit module naming for monorepos with non-standard repository names, by @jillirami [#1277](https://github.com/hashicorp/go-tfe/pull/1277)
-* Adds the `Size` field to `StateVersion` by @Shaunakone [#1280](https://github.com/hashicorp/go-tfe/pull/1280)
-
 
 # v1.100.0
 
@@ -118,7 +119,7 @@
 * Fixes issue [1061](https://github.com/hashicorp/go-tfe/issues/1061), validation accepts all RunStatus including `"cost_estimated"` by @KenCox-Hashicorp [#1171](https://github.com/hashicorp/go-tfe/pull/1171)
 
 ## Enhancements
-* Add support for querying and filtering private registry modules based on a search query, `provider`, `registry_name` and `organization_name`, by @gautambaghel [#1179](https://github.com/hashicorp/go-tfe/pull/1179) 
+* Add support for querying and filtering private registry modules based on a search query, `provider`, `registry_name` and `organization_name`, by @gautambaghel [#1179](https://github.com/hashicorp/go-tfe/pull/1179)
 * Adds support for `RegistryModule` VCS source_directory and tag_prefix options, by @jillrami [#1154] (https://github.com/hashicorp/go-tfe/pull/1154)
 * Adds endpoint for reruning a stack deployment by @hwatkins05-hashicorp/@Maed223 [#1176](https://github.com/hashicorp/go-tfe/pull/1176)
 * Adds `ReadByName` for `StackDeploymentGroup` by @Maed223 [#1181](https://github.com/hashicorp/go-tfe/pull/1181)

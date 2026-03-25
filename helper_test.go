@@ -155,7 +155,7 @@ func downloadFile(filePath, fileURL string) error {
 	if err != nil {
 		return err
 	}
-	defer resp.Body.Close()
+	defer resp.Body.Close() //nolint:errcheck
 
 	// Create the file
 	out, err := os.Create(filePath)
@@ -967,6 +967,7 @@ func createPolicySetParameter(t *testing.T, client *Client, ps *PolicySet) (*Pol
 	}
 
 	ctx := context.Background()
+
 	v, err := client.PolicySetParameters.Create(ctx, ps.ID, PolicySetParameterCreateOptions{
 		Key:      String(randomKeyValue(t)),
 		Value:    String(randomKeyValue(t)),
