@@ -78,7 +78,10 @@ func TestTeamTokens_CreateWithOptions(t *testing.T) {
 		tt, err := client.TeamTokens.CreateWithOptions(ctx, tmTest.ID, TeamTokenCreateOptions{})
 		require.NoError(t, err)
 		require.NotEmpty(t, tt.Token)
-		assert.Empty(t, tt.ExpiredAt)
+		assert.NotZero(t, tt.ExpiredAt)
+		expectedExpiry := tt.CreatedAt.AddDate(defaultTokenExpirationYears, 0, 0)
+		// Allow a small buffer (1 minute) for timestamp precision differences.
+		assert.WithinDuration(t, expectedExpiry, tt.ExpiredAt, time.Minute)
 		tmToken = tt.Token
 	})
 
@@ -161,7 +164,10 @@ func TestTeamTokens_CreateWithOptions_MultipleTokens(t *testing.T) {
 		})
 		require.NoError(t, err)
 		require.NotEmpty(t, tt.Token)
-		assert.Empty(t, tt.ExpiredAt)
+		assert.NotZero(t, tt.ExpiredAt)
+		expectedExpiry := tt.CreatedAt.AddDate(defaultTokenExpirationYears, 0, 0)
+		// Allow a small buffer (1 minute) for timestamp precision differences.
+		assert.WithinDuration(t, expectedExpiry, tt.ExpiredAt, time.Minute)
 		require.NotNil(t, tt.Description)
 		require.Equal(t, *tt.Description, desc)
 	})
@@ -277,7 +283,10 @@ func TestTeamTokensReadByID(t *testing.T) {
 		require.NotEmpty(t, tt)
 		require.NotNil(t, tt.Description)
 		assert.Equal(t, *tt.Description, desc1)
-		assert.Empty(t, tt.ExpiredAt)
+		assert.NotZero(t, tt.ExpiredAt)
+		expectedExpiry := tt.CreatedAt.AddDate(defaultTokenExpirationYears, 0, 0)
+		// Allow a small buffer (1 minute) for timestamp precision differences.
+		assert.WithinDuration(t, expectedExpiry, tt.ExpiredAt, time.Minute)
 		require.NotEmpty(t, tt.Team)
 		assert.Equal(t, tt.Team.ID, tmTest.ID)
 
