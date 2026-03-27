@@ -1042,6 +1042,8 @@ func createPolicySetWithOptions(t *testing.T, client *Client, org *Organization,
 		Overridable:         opts.Overridable,
 		AgentEnabled:        opts.AgentEnabled,
 		PolicyToolVersion:   opts.PolicyToolVersion,
+		ProjectExclusions:   opts.ProjectExclusions,
+		Global:              opts.Global,
 	})
 	if err != nil {
 		t.Fatal(err)
