@@ -2423,10 +2423,11 @@ func createTeam(t *testing.T, client *Client, org *Organization) (*Team, func())
 	tm, err := client.Teams.Create(ctx, org.Name, TeamCreateOptions{
 		Name: String(randomString(t)),
 		OrganizationAccess: &OrganizationAccessOptions{
-			ManagePolicies:        Bool(true),
-			ManagePolicyOverrides: Bool(true),
-			ManageProviders:       Bool(true),
-			ManageModules:         Bool(true),
+			ManagePolicies:          Bool(true),
+			ManagePolicyOverrides:   Bool(true),
+			DelegatePolicyOverrides: Bool(true),
+			ManageProviders:         Bool(true),
+			ManageModules:           Bool(true),
 		},
 	})
 	if err != nil {
