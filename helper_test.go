@@ -37,6 +37,7 @@ const badIdentifier = "! / nope" //nolint
 const agentVersion = "1.3.0"
 const testInitialClientToken = "insert-your-token-here"
 const testTaskResultCallbackToken = "this-is-task-result-callback-token"
+const defaultTokenExpirationYears = 2
 
 var _testAccountDetails *TestAccountDetails
 
