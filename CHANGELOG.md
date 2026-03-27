@@ -11,6 +11,7 @@
 
 ## Enhancements
 * Adds the `ProjectExclusions` field to the `PolicySet` struct to support project level exclusions of policy sets by @subhro-acharjee-1 [#1290](https://github.com/hashicorp/go-tfe/pull/1290)
+* Adds BETA support for delegating policy overrides on teams by @jbonhag [#1301](https://github.com/hashicorp/go-tfe/pull/1301)
 
 # v1.102.0
 
