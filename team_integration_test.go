@@ -190,8 +190,7 @@ func TestTeamsRead(t *testing.T) {
 		Name:      String(randomString(t)),
 		SSOTeamID: String(randomString(t)),
 		OrganizationAccess: &OrganizationAccessOptions{
-			ManagePolicies:          Bool(true),
-			DelegatePolicyOverrides: Bool(true),
+			ManagePolicies: Bool(true),
 		},
 		AllowMemberTokenManagement: Bool(true),
 	}
@@ -205,7 +204,8 @@ func TestTeamsRead(t *testing.T) {
 	t.Run("when the team exists", func(t *testing.T) {
 		tm, err := client.Teams.Read(ctx, tmTest.ID)
 		require.NoError(t, err)
-		assert.Equal(t, tmTest, tm)
+		assert.Equal(t, tmTest.ID, tm.ID)
+		assert.Equal(t, tmTest.Name, tm.Name)
 
 		t.Run("visibility is returned", func(t *testing.T) {
 			assert.Equal(t, "secret", tm.Visibility)
@@ -217,7 +217,6 @@ func TestTeamsRead(t *testing.T) {
 
 		t.Run("organization access is properly decoded", func(t *testing.T) {
 			assert.Equal(t, tm.OrganizationAccess.ManagePolicies, *opts.OrganizationAccess.ManagePolicies)
-			assert.Equal(t, tm.OrganizationAccess.DelegatePolicyOverrides, *opts.OrganizationAccess.DelegatePolicyOverrides)
 		})
 
 		t.Run("SSO team id is returned", func(t *testing.T) {
@@ -258,12 +257,11 @@ func TestTeamsUpdate(t *testing.T) {
 		options := TeamUpdateOptions{
 			Name: String("foo bar"),
 			OrganizationAccess: &OrganizationAccessOptions{
-				ManagePolicies:          Bool(false),
-				ManageVCSSettings:       Bool(true),
-				ManagePolicyOverrides:   Bool(true),
-				DelegatePolicyOverrides: Bool(true),
-				ManageProviders:         Bool(true),
-				ManageModules:           Bool(false),
+				ManagePolicies:        Bool(false),
+				ManageVCSSettings:     Bool(true),
+				ManagePolicyOverrides: Bool(true),
+				ManageProviders:       Bool(true),
+				ManageModules:         Bool(false),
 			},
 			Visibility:                 String("organization"),
 			AllowMemberTokenManagement: Bool(true),
@@ -301,10 +299,6 @@ func TestTeamsUpdate(t *testing.T) {
 				item.OrganizationAccess.ManagePolicyOverrides,
 			)
 			assert.Equal(t,
-				*options.OrganizationAccess.DelegatePolicyOverrides,
-				item.OrganizationAccess.DelegatePolicyOverrides,
-			)
-			assert.Equal(t,
 				*options.OrganizationAccess.ManageProviders,
 				item.OrganizationAccess.ManageProviders,
 			)
@@ -313,6 +307,32 @@ func TestTeamsUpdate(t *testing.T) {
 				item.OrganizationAccess.ManageModules,
 			)
 		}
+	})
+
+	t.Run("with beta delegate policy overrides", func(t *testing.T) {
+		skipUnlessBeta(t)
+
+		team, err := client.Teams.Create(ctx, orgTest.Name, TeamCreateOptions{
+			Name: String(randomString(t)),
+		})
+		require.NoError(t, err)
+		defer func() {
+			err := client.Teams.Delete(ctx, team.ID)
+			require.NoError(t, err)
+		}()
+
+		updated, err := client.Teams.Update(ctx, team.ID, TeamUpdateOptions{
+			OrganizationAccess: &OrganizationAccessOptions{
+				DelegatePolicyOverrides: Bool(true),
+			},
+		})
+		require.NoError(t, err)
+
+		refreshed, err := client.Teams.Read(ctx, team.ID)
+		require.NoError(t, err)
+
+		assert.True(t, updated.OrganizationAccess.DelegatePolicyOverrides)
+		assert.True(t, refreshed.OrganizationAccess.DelegatePolicyOverrides)
 	})
 
 	t.Run("when the team does not exist", func(t *testing.T) {

@@ -399,8 +399,8 @@ func TestTeamAccessesUpdateRunTasks(t *testing.T) {
 }
 
 func TestTeamAccessesAddPolicyOverrides(t *testing.T) {
-	t.Parallel()
 	skipUnlessBeta(t)
+	t.Parallel()
 
 	client := testClient(t)
 	ctx := context.Background()
