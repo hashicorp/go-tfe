@@ -37,6 +37,7 @@ const badIdentifier = "! / nope" //nolint
 const agentVersion = "1.3.0"
 const testInitialClientToken = "insert-your-token-here"
 const testTaskResultCallbackToken = "this-is-task-result-callback-token"
+const defaultTokenExpirationYears = 2
 
 var _testAccountDetails *TestAccountDetails
 
@@ -1042,6 +1043,8 @@ func createPolicySetWithOptions(t *testing.T, client *Client, org *Organization,
 		Overridable:         opts.Overridable,
 		AgentEnabled:        opts.AgentEnabled,
 		PolicyToolVersion:   opts.PolicyToolVersion,
+		ProjectExclusions:   opts.ProjectExclusions,
+		Global:              opts.Global,
 	})
 	if err != nil {
 		t.Fatal(err)

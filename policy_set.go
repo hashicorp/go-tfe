@@ -68,6 +68,12 @@ type PolicySets interface {
 	// Remove projects from a policy set.
 	RemoveProjects(ctx context.Context, policySetID string, options PolicySetRemoveProjectsOptions) error
 
+	// Add Project exclusions to a policy set.
+	AddProjectExclusions(ctx context.Context, policySetID string, options PolicySetAddProjectExclusionsOptions) error
+
+	// Remove project exclusions from a policy set.
+	RemoveProjectExclusions(ctx context.Context, policySetID string, options PolicySetRemoveProjectExclusionsOptions) error
+
 	// Delete a policy set by its ID.
 	Delete(ctx context.Context, policyID string) error
 }
@@ -119,6 +125,8 @@ type PolicySet struct {
 	WorkspaceExclusions []*Workspace `jsonapi:"relation,workspace-exclusions"`
 	// The projects to which the policy set applies.
 	Projects []*Project `jsonapi:"relation,projects"`
+	// The project exclusions to which the policy set applies.
+	ProjectExclusions []*Project `jsonapi:"relation,project-exclusions"`
 }
 
 // PolicySetIncludeOpt represents the available options for include query params.
@@ -132,6 +140,7 @@ const (
 	PolicySetNewestVersion       PolicySetIncludeOpt = "newest_version"
 	PolicySetProjects            PolicySetIncludeOpt = "projects"
 	PolicySetWorkspaceExclusions PolicySetIncludeOpt = "workspace_exclusions"
+	PolicySetProjectExclusions   PolicySetIncludeOpt = "project_exclusions"
 )
 
 // PolicySetListOptions represents the options for listing policy sets.
@@ -211,6 +220,9 @@ type PolicySetCreateOptions struct {
 
 	// Optional: The initial list of projects for which the policy set should be enforced.
 	Projects []*Project `jsonapi:"relation,projects,omitempty"`
+
+	// Optional: The initial list of project exclusions for which the policy set should be enforced.
+	ProjectExclusions []*Project `jsonapi:"relation,project-exclusions,omitempty"`
 }
 
 // PolicySetUpdateOptions represents the options for updating a policy set.
@@ -292,6 +304,18 @@ type PolicySetAddWorkspaceExclusionsOptions struct {
 type PolicySetRemoveWorkspaceExclusionsOptions struct {
 	// The workspaces to remove from the policy set exclusion list.
 	WorkspaceExclusions []*Workspace
+}
+
+// PolicySetAddProjectExclusionsOptions represents the options for adding project exclusions to a policy set.
+type PolicySetAddProjectExclusionsOptions struct {
+	// The projects to add to the policy set exclusion list.
+	ProjectExclusions []*Project
+}
+
+// PolicySetRemoveProjectExclusionsOptions represents the options for removing project exclusions from a policy set.
+type PolicySetRemoveProjectExclusionsOptions struct {
+	// The projects to remove from the policy set exclusion list.
+	ProjectExclusions []*Project
 }
 
 // PolicySetAddProjectsOptions represents the options for adding projects
@@ -550,6 +574,43 @@ func (s *policySets) RemoveProjects(ctx context.Context, policySetID string, opt
 	return req.Do(ctx, nil)
 }
 
+// AddProjectExclusions adds project exclusions to a given policy set.
+func (s *policySets) AddProjectExclusions(ctx context.Context, policySetID string, options PolicySetAddProjectExclusionsOptions) error {
+	if !validStringID(&policySetID) {
+		return ErrInvalidPolicySetID
+	}
+
+	if err := options.valid(); err != nil {
+		return err
+	}
+
+	u := fmt.Sprintf("policy-sets/%s/relationships/project-exclusions", url.PathEscape(policySetID))
+	req, err := s.client.NewRequest("POST", u, options.ProjectExclusions)
+	if err != nil {
+		return err
+	}
+
+	return req.Do(ctx, nil)
+}
+
+// RemoveProjectExclusions removes project exclusions to a given policy set.
+func (s *policySets) RemoveProjectExclusions(ctx context.Context, policySetID string, options PolicySetRemoveProjectExclusionsOptions) error {
+	if !validStringID(&policySetID) {
+		return ErrInvalidPolicySetID
+	}
+	if err := options.valid(); err != nil {
+		return err
+	}
+
+	u := fmt.Sprintf("policy-sets/%s/relationships/project-exclusions", url.PathEscape(policySetID))
+	req, err := s.client.NewRequest("DELETE", u, options.ProjectExclusions)
+	if err != nil {
+		return err
+	}
+
+	return req.Do(ctx, nil)
+}
+
 // Delete a policy set by its ID.
 func (s *policySets) Delete(ctx context.Context, policySetID string) error {
 	if !validStringID(&policySetID) {
@@ -657,6 +718,26 @@ func (o PolicySetAddProjectsOptions) valid() error {
 		return ErrRequiredProject
 	}
 	if len(o.Projects) == 0 {
+		return ErrProjectMinLimit
+	}
+	return nil
+}
+
+func (o PolicySetAddProjectExclusionsOptions) valid() error {
+	if o.ProjectExclusions == nil {
+		return ErrRequiredProject
+	}
+	if len(o.ProjectExclusions) == 0 {
+		return ErrProjectMinLimit
+	}
+	return nil
+}
+
+func (o PolicySetRemoveProjectExclusionsOptions) valid() error {
+	if o.ProjectExclusions == nil {
+		return ErrRequiredProject
+	}
+	if len(o.ProjectExclusions) == 0 {
 		return ErrProjectMinLimit
 	}
 	return nil
