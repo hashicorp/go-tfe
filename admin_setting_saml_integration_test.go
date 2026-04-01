@@ -133,7 +133,6 @@ func TestAdminSettings_SAML_Update(t *testing.T) {
 	})
 
 	t.Run("with provider type defined", func(t *testing.T) {
-
 		providerTypesForTesting := []string{"okta", "entra", "saml", "unknown", "error"}
 		for _, providerType := range providerTypesForTesting {
 			_, err := client.Admin.Settings.SAML.Update(ctx, AdminSAMLSettingsUpdateOptions{
