@@ -13,13 +13,6 @@ import (
 type ItemGithubAppInstallationsItemLinkAccountRequestBuilder struct {
     i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.BaseRequestBuilder
 }
-// ItemGithubAppInstallationsItemLinkAccountRequestBuilderPostRequestConfiguration configuration for the request such as headers, query parameters, and middleware options.
-type ItemGithubAppInstallationsItemLinkAccountRequestBuilderPostRequestConfiguration struct {
-    // Request headers
-    Headers *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestHeaders
-    // Request options
-    Options []i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestOption
-}
 // NewItemGithubAppInstallationsItemLinkAccountRequestBuilderInternal instantiates a new ItemGithubAppInstallationsItemLinkAccountRequestBuilder and sets the default values.
 func NewItemGithubAppInstallationsItemLinkAccountRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*ItemGithubAppInstallationsItemLinkAccountRequestBuilder) {
     m := &ItemGithubAppInstallationsItemLinkAccountRequestBuilder{
@@ -35,7 +28,7 @@ func NewItemGithubAppInstallationsItemLinkAccountRequestBuilder(rawUrl string, r
 }
 // Post link a GitHub App installation to an organization.
 // returns a Errors error when the service returns a 4XX or 5XX status code
-func (m *ItemGithubAppInstallationsItemLinkAccountRequestBuilder) Post(ctx context.Context, requestConfiguration *ItemGithubAppInstallationsItemLinkAccountRequestBuilderPostRequestConfiguration)(error) {
+func (m *ItemGithubAppInstallationsItemLinkAccountRequestBuilder) Post(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(error) {
     requestInfo, err := m.ToPostRequestInformation(ctx, requestConfiguration);
     if err != nil {
         return err
@@ -51,12 +44,9 @@ func (m *ItemGithubAppInstallationsItemLinkAccountRequestBuilder) Post(ctx conte
 }
 // ToPostRequestInformation link a GitHub App installation to an organization.
 // returns a *RequestInformation when successful
-func (m *ItemGithubAppInstallationsItemLinkAccountRequestBuilder) ToPostRequestInformation(ctx context.Context, requestConfiguration *ItemGithubAppInstallationsItemLinkAccountRequestBuilderPostRequestConfiguration)(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
+func (m *ItemGithubAppInstallationsItemLinkAccountRequestBuilder) ToPostRequestInformation(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
     requestInfo := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewRequestInformationWithMethodAndUrlTemplateAndPathParameters(i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.POST, m.BaseRequestBuilder.UrlTemplate, m.BaseRequestBuilder.PathParameters)
-    if requestConfiguration != nil {
-        requestInfo.Headers.AddAll(requestConfiguration.Headers)
-        requestInfo.AddRequestOptions(requestConfiguration.Options)
-    }
+    i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ConfigureRequestInformation(requestInfo, requestConfiguration)
     requestInfo.Headers.TryAdd("Accept", "application/vnd.api+json")
     return requestInfo, nil
 }

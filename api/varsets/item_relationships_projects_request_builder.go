@@ -13,20 +13,6 @@ import (
 type ItemRelationshipsProjectsRequestBuilder struct {
     i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.BaseRequestBuilder
 }
-// ItemRelationshipsProjectsRequestBuilderDeleteRequestConfiguration configuration for the request such as headers, query parameters, and middleware options.
-type ItemRelationshipsProjectsRequestBuilderDeleteRequestConfiguration struct {
-    // Request headers
-    Headers *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestHeaders
-    // Request options
-    Options []i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestOption
-}
-// ItemRelationshipsProjectsRequestBuilderPostRequestConfiguration configuration for the request such as headers, query parameters, and middleware options.
-type ItemRelationshipsProjectsRequestBuilderPostRequestConfiguration struct {
-    // Request headers
-    Headers *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestHeaders
-    // Request options
-    Options []i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestOption
-}
 // NewItemRelationshipsProjectsRequestBuilderInternal instantiates a new ItemRelationshipsProjectsRequestBuilder and sets the default values.
 func NewItemRelationshipsProjectsRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*ItemRelationshipsProjectsRequestBuilder) {
     m := &ItemRelationshipsProjectsRequestBuilder{
@@ -42,7 +28,7 @@ func NewItemRelationshipsProjectsRequestBuilder(rawUrl string, requestAdapter i2
 }
 // Delete remove a variable set from one or more projects.
 // returns a Errors error when the service returns a 4XX or 5XX status code
-func (m *ItemRelationshipsProjectsRequestBuilder) Delete(ctx context.Context, body ItemRelationshipsProjectsDeleteRequestBodyable, requestConfiguration *ItemRelationshipsProjectsRequestBuilderDeleteRequestConfiguration)(error) {
+func (m *ItemRelationshipsProjectsRequestBuilder) Delete(ctx context.Context, body ItemRelationshipsProjectsDeleteRequestBodyable, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(error) {
     requestInfo, err := m.ToDeleteRequestInformation(ctx, body, requestConfiguration);
     if err != nil {
         return err
@@ -58,7 +44,7 @@ func (m *ItemRelationshipsProjectsRequestBuilder) Delete(ctx context.Context, bo
 }
 // Post apply a variable set to one or more projects. When you apply a variable set to a project, all the workspaces in that project will have the variable set applied to them.
 // returns a Errors error when the service returns a 4XX or 5XX status code
-func (m *ItemRelationshipsProjectsRequestBuilder) Post(ctx context.Context, body ItemRelationshipsProjectsPostRequestBodyable, requestConfiguration *ItemRelationshipsProjectsRequestBuilderPostRequestConfiguration)(error) {
+func (m *ItemRelationshipsProjectsRequestBuilder) Post(ctx context.Context, body ItemRelationshipsProjectsPostRequestBodyable, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(error) {
     requestInfo, err := m.ToPostRequestInformation(ctx, body, requestConfiguration);
     if err != nil {
         return err
@@ -74,12 +60,9 @@ func (m *ItemRelationshipsProjectsRequestBuilder) Post(ctx context.Context, body
 }
 // ToDeleteRequestInformation remove a variable set from one or more projects.
 // returns a *RequestInformation when successful
-func (m *ItemRelationshipsProjectsRequestBuilder) ToDeleteRequestInformation(ctx context.Context, body ItemRelationshipsProjectsDeleteRequestBodyable, requestConfiguration *ItemRelationshipsProjectsRequestBuilderDeleteRequestConfiguration)(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
+func (m *ItemRelationshipsProjectsRequestBuilder) ToDeleteRequestInformation(ctx context.Context, body ItemRelationshipsProjectsDeleteRequestBodyable, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
     requestInfo := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewRequestInformationWithMethodAndUrlTemplateAndPathParameters(i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DELETE, m.BaseRequestBuilder.UrlTemplate, m.BaseRequestBuilder.PathParameters)
-    if requestConfiguration != nil {
-        requestInfo.Headers.AddAll(requestConfiguration.Headers)
-        requestInfo.AddRequestOptions(requestConfiguration.Options)
-    }
+    i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ConfigureRequestInformation(requestInfo, requestConfiguration)
     requestInfo.Headers.TryAdd("Accept", "application/vnd.api+json")
     err := requestInfo.SetContentFromParsable(ctx, m.BaseRequestBuilder.RequestAdapter, "application/vnd.api+json", body)
     if err != nil {
@@ -89,12 +72,9 @@ func (m *ItemRelationshipsProjectsRequestBuilder) ToDeleteRequestInformation(ctx
 }
 // ToPostRequestInformation apply a variable set to one or more projects. When you apply a variable set to a project, all the workspaces in that project will have the variable set applied to them.
 // returns a *RequestInformation when successful
-func (m *ItemRelationshipsProjectsRequestBuilder) ToPostRequestInformation(ctx context.Context, body ItemRelationshipsProjectsPostRequestBodyable, requestConfiguration *ItemRelationshipsProjectsRequestBuilderPostRequestConfiguration)(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
+func (m *ItemRelationshipsProjectsRequestBuilder) ToPostRequestInformation(ctx context.Context, body ItemRelationshipsProjectsPostRequestBodyable, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
     requestInfo := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewRequestInformationWithMethodAndUrlTemplateAndPathParameters(i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.POST, m.BaseRequestBuilder.UrlTemplate, m.BaseRequestBuilder.PathParameters)
-    if requestConfiguration != nil {
-        requestInfo.Headers.AddAll(requestConfiguration.Headers)
-        requestInfo.AddRequestOptions(requestConfiguration.Options)
-    }
+    i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ConfigureRequestInformation(requestInfo, requestConfiguration)
     requestInfo.Headers.TryAdd("Accept", "application/vnd.api+json")
     err := requestInfo.SetContentFromParsable(ctx, m.BaseRequestBuilder.RequestAdapter, "application/vnd.api+json", body)
     if err != nil {

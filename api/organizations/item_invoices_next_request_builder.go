@@ -13,13 +13,6 @@ import (
 type ItemInvoicesNextRequestBuilder struct {
     i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.BaseRequestBuilder
 }
-// ItemInvoicesNextRequestBuilderGetRequestConfiguration configuration for the request such as headers, query parameters, and middleware options.
-type ItemInvoicesNextRequestBuilderGetRequestConfiguration struct {
-    // Request headers
-    Headers *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestHeaders
-    // Request options
-    Options []i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestOption
-}
 // NewItemInvoicesNextRequestBuilderInternal instantiates a new ItemInvoicesNextRequestBuilder and sets the default values.
 func NewItemInvoicesNextRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*ItemInvoicesNextRequestBuilder) {
     m := &ItemInvoicesNextRequestBuilder{
@@ -34,30 +27,9 @@ func NewItemInvoicesNextRequestBuilder(rawUrl string, requestAdapter i2ae4187f7d
     return NewItemInvoicesNextRequestBuilderInternal(urlParams, requestAdapter)
 }
 // Get returns the upcoming invoice for the next billing period for an organization. Returns null when no upcoming invoice is available.
-// Deprecated: This method is obsolete. Use GetAsNextGetResponse instead.
-// returns a ItemInvoicesNextResponseable when successful
-// returns a Errors error when the service returns a 4XX or 5XX status code
-func (m *ItemInvoicesNextRequestBuilder) Get(ctx context.Context, requestConfiguration *ItemInvoicesNextRequestBuilderGetRequestConfiguration)(ItemInvoicesNextResponseable, error) {
-    requestInfo, err := m.ToGetRequestInformation(ctx, requestConfiguration);
-    if err != nil {
-        return nil, err
-    }
-    errorMapping := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ErrorMappings {
-        "XXX": ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.CreateErrorsFromDiscriminatorValue,
-    }
-    res, err := m.BaseRequestBuilder.RequestAdapter.Send(ctx, requestInfo, CreateItemInvoicesNextResponseFromDiscriminatorValue, errorMapping)
-    if err != nil {
-        return nil, err
-    }
-    if res == nil {
-        return nil, nil
-    }
-    return res.(ItemInvoicesNextResponseable), nil
-}
-// GetAsNextGetResponse returns the upcoming invoice for the next billing period for an organization. Returns null when no upcoming invoice is available.
 // returns a ItemInvoicesNextGetResponseable when successful
 // returns a Errors error when the service returns a 4XX or 5XX status code
-func (m *ItemInvoicesNextRequestBuilder) GetAsNextGetResponse(ctx context.Context, requestConfiguration *ItemInvoicesNextRequestBuilderGetRequestConfiguration)(ItemInvoicesNextGetResponseable, error) {
+func (m *ItemInvoicesNextRequestBuilder) Get(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(ItemInvoicesNextGetResponseable, error) {
     requestInfo, err := m.ToGetRequestInformation(ctx, requestConfiguration);
     if err != nil {
         return nil, err
@@ -76,12 +48,9 @@ func (m *ItemInvoicesNextRequestBuilder) GetAsNextGetResponse(ctx context.Contex
 }
 // ToGetRequestInformation returns the upcoming invoice for the next billing period for an organization. Returns null when no upcoming invoice is available.
 // returns a *RequestInformation when successful
-func (m *ItemInvoicesNextRequestBuilder) ToGetRequestInformation(ctx context.Context, requestConfiguration *ItemInvoicesNextRequestBuilderGetRequestConfiguration)(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
+func (m *ItemInvoicesNextRequestBuilder) ToGetRequestInformation(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
     requestInfo := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewRequestInformationWithMethodAndUrlTemplateAndPathParameters(i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.GET, m.BaseRequestBuilder.UrlTemplate, m.BaseRequestBuilder.PathParameters)
-    if requestConfiguration != nil {
-        requestInfo.Headers.AddAll(requestConfiguration.Headers)
-        requestInfo.AddRequestOptions(requestConfiguration.Options)
-    }
+    i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ConfigureRequestInformation(requestInfo, requestConfiguration)
     requestInfo.Headers.TryAdd("Accept", "application/json")
     return requestInfo, nil
 }

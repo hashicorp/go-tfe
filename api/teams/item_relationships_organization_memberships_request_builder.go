@@ -14,50 +14,18 @@ import (
 type ItemRelationshipsOrganizationMembershipsRequestBuilder struct {
     i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.BaseRequestBuilder
 }
-// ItemRelationshipsOrganizationMembershipsRequestBuilderDeleteRequestConfiguration configuration for the request such as headers, query parameters, and middleware options.
-type ItemRelationshipsOrganizationMembershipsRequestBuilderDeleteRequestConfiguration struct {
-    // Request headers
-    Headers *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestHeaders
-    // Request options
-    Options []i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestOption
-}
 // ItemRelationshipsOrganizationMembershipsRequestBuilderGetQueryParameters list all organization memberships for a team. Returns both active members and invited users.
 type ItemRelationshipsOrganizationMembershipsRequestBuilderGetQueryParameters struct {
     // Filter to include only service account members.
-    // Deprecated: This property is deprecated, use Filteris_service_accountAsGetFilterIs_service_accountQueryParameterType instead
-    Filteris_service_account *string `uriparametername:"filter%5Bis_service_account%5D"`
-    // Filter to include only service account members.
-    Filteris_service_accountAsGetFilterIs_service_accountQueryParameterType *i98db415a72f90bc600ef09fbcde2886f051eaf3193e546ed9a7ea6b4ebb1ace8.GetFilterIs_service_accountQueryParameterType `uriparametername:"filter%5Bis_service_account%5D"`
+    Filteris_service_account *i98db415a72f90bc600ef09fbcde2886f051eaf3193e546ed9a7ea6b4ebb1ace8.GetFilterIs_service_accountQueryParameterType `uriparametername:"filter%5Bis_service_account%5D"`
     // Filter memberships by status.
-    // Deprecated: This property is deprecated, use FilterstatusAsGetFilterStatusQueryParameterType instead
-    Filterstatus *string `uriparametername:"filter%5Bstatus%5D"`
-    // Filter memberships by status.
-    FilterstatusAsGetFilterStatusQueryParameterType *i98db415a72f90bc600ef09fbcde2886f051eaf3193e546ed9a7ea6b4ebb1ace8.GetFilterStatusQueryParameterType `uriparametername:"filter%5Bstatus%5D"`
+    Filterstatus *i98db415a72f90bc600ef09fbcde2886f051eaf3193e546ed9a7ea6b4ebb1ace8.GetFilterStatusQueryParameterType `uriparametername:"filter%5Bstatus%5D"`
     // The page number to retrieve.
     Pagenumber *int32 `uriparametername:"page%5Bnumber%5D"`
     // The number of items to retrieve per page. Defaults to 20.
     Pagesize *int32 `uriparametername:"page%5Bsize%5D"`
     // Sort memberships. Prefix with '-' for descending order (e.g. '-status').
-    // Deprecated: This property is deprecated, use SortAsGetSortQueryParameterType instead
-    Sort *string `uriparametername:"sort"`
-    // Sort memberships. Prefix with '-' for descending order (e.g. '-status').
-    SortAsGetSortQueryParameterType *i98db415a72f90bc600ef09fbcde2886f051eaf3193e546ed9a7ea6b4ebb1ace8.GetSortQueryParameterType `uriparametername:"sort"`
-}
-// ItemRelationshipsOrganizationMembershipsRequestBuilderGetRequestConfiguration configuration for the request such as headers, query parameters, and middleware options.
-type ItemRelationshipsOrganizationMembershipsRequestBuilderGetRequestConfiguration struct {
-    // Request headers
-    Headers *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestHeaders
-    // Request options
-    Options []i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestOption
-    // Request query parameters
-    QueryParameters *ItemRelationshipsOrganizationMembershipsRequestBuilderGetQueryParameters
-}
-// ItemRelationshipsOrganizationMembershipsRequestBuilderPostRequestConfiguration configuration for the request such as headers, query parameters, and middleware options.
-type ItemRelationshipsOrganizationMembershipsRequestBuilderPostRequestConfiguration struct {
-    // Request headers
-    Headers *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestHeaders
-    // Request options
-    Options []i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestOption
+    Sort *i98db415a72f90bc600ef09fbcde2886f051eaf3193e546ed9a7ea6b4ebb1ace8.GetSortQueryParameterType `uriparametername:"sort"`
 }
 // NewItemRelationshipsOrganizationMembershipsRequestBuilderInternal instantiates a new ItemRelationshipsOrganizationMembershipsRequestBuilder and sets the default values.
 func NewItemRelationshipsOrganizationMembershipsRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*ItemRelationshipsOrganizationMembershipsRequestBuilder) {
@@ -77,7 +45,7 @@ func NewItemRelationshipsOrganizationMembershipsRequestBuilder(rawUrl string, re
 // returns a Errors error when the service returns a 403 status code
 // returns a Errors error when the service returns a 404 status code
 // returns a Errors error when the service returns a 4XX or 5XX status code
-func (m *ItemRelationshipsOrganizationMembershipsRequestBuilder) Delete(ctx context.Context, body ItemRelationshipsOrganizationMembershipsDeleteRequestBodyable, requestConfiguration *ItemRelationshipsOrganizationMembershipsRequestBuilderDeleteRequestConfiguration)(error) {
+func (m *ItemRelationshipsOrganizationMembershipsRequestBuilder) Delete(ctx context.Context, body ItemRelationshipsOrganizationMembershipsDeleteRequestBodyable, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(error) {
     requestInfo, err := m.ToDeleteRequestInformation(ctx, body, requestConfiguration);
     if err != nil {
         return err
@@ -95,36 +63,11 @@ func (m *ItemRelationshipsOrganizationMembershipsRequestBuilder) Delete(ctx cont
     return nil
 }
 // Get list all organization memberships for a team. Returns both active members and invited users.
-// Deprecated: This method is obsolete. Use GetAsOrganizationMembershipsGetResponse instead.
-// returns a ItemRelationshipsOrganizationMembershipsResponseable when successful
-// returns a Errors error when the service returns a 400 status code
-// returns a Errors error when the service returns a 404 status code
-// returns a Errors error when the service returns a 4XX or 5XX status code
-func (m *ItemRelationshipsOrganizationMembershipsRequestBuilder) Get(ctx context.Context, requestConfiguration *ItemRelationshipsOrganizationMembershipsRequestBuilderGetRequestConfiguration)(ItemRelationshipsOrganizationMembershipsResponseable, error) {
-    requestInfo, err := m.ToGetRequestInformation(ctx, requestConfiguration);
-    if err != nil {
-        return nil, err
-    }
-    errorMapping := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ErrorMappings {
-        "400": ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.CreateErrorsFromDiscriminatorValue,
-        "404": ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.CreateErrorsFromDiscriminatorValue,
-        "XXX": ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.CreateErrorsFromDiscriminatorValue,
-    }
-    res, err := m.BaseRequestBuilder.RequestAdapter.Send(ctx, requestInfo, CreateItemRelationshipsOrganizationMembershipsResponseFromDiscriminatorValue, errorMapping)
-    if err != nil {
-        return nil, err
-    }
-    if res == nil {
-        return nil, nil
-    }
-    return res.(ItemRelationshipsOrganizationMembershipsResponseable), nil
-}
-// GetAsOrganizationMembershipsGetResponse list all organization memberships for a team. Returns both active members and invited users.
 // returns a ItemRelationshipsOrganizationMembershipsGetResponseable when successful
 // returns a Errors error when the service returns a 400 status code
 // returns a Errors error when the service returns a 404 status code
 // returns a Errors error when the service returns a 4XX or 5XX status code
-func (m *ItemRelationshipsOrganizationMembershipsRequestBuilder) GetAsOrganizationMembershipsGetResponse(ctx context.Context, requestConfiguration *ItemRelationshipsOrganizationMembershipsRequestBuilderGetRequestConfiguration)(ItemRelationshipsOrganizationMembershipsGetResponseable, error) {
+func (m *ItemRelationshipsOrganizationMembershipsRequestBuilder) Get(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[ItemRelationshipsOrganizationMembershipsRequestBuilderGetQueryParameters])(ItemRelationshipsOrganizationMembershipsGetResponseable, error) {
     requestInfo, err := m.ToGetRequestInformation(ctx, requestConfiguration);
     if err != nil {
         return nil, err
@@ -148,7 +91,7 @@ func (m *ItemRelationshipsOrganizationMembershipsRequestBuilder) GetAsOrganizati
 // returns a Errors error when the service returns a 403 status code
 // returns a Errors error when the service returns a 404 status code
 // returns a Errors error when the service returns a 4XX or 5XX status code
-func (m *ItemRelationshipsOrganizationMembershipsRequestBuilder) Post(ctx context.Context, body ItemRelationshipsOrganizationMembershipsPostRequestBodyable, requestConfiguration *ItemRelationshipsOrganizationMembershipsRequestBuilderPostRequestConfiguration)(error) {
+func (m *ItemRelationshipsOrganizationMembershipsRequestBuilder) Post(ctx context.Context, body ItemRelationshipsOrganizationMembershipsPostRequestBodyable, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(error) {
     requestInfo, err := m.ToPostRequestInformation(ctx, body, requestConfiguration);
     if err != nil {
         return err
@@ -167,12 +110,9 @@ func (m *ItemRelationshipsOrganizationMembershipsRequestBuilder) Post(ctx contex
 }
 // ToDeleteRequestInformation remove multiple users from a team using their organization membership IDs. This only removes users from this team; it does not delete the users from the organization.
 // returns a *RequestInformation when successful
-func (m *ItemRelationshipsOrganizationMembershipsRequestBuilder) ToDeleteRequestInformation(ctx context.Context, body ItemRelationshipsOrganizationMembershipsDeleteRequestBodyable, requestConfiguration *ItemRelationshipsOrganizationMembershipsRequestBuilderDeleteRequestConfiguration)(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
+func (m *ItemRelationshipsOrganizationMembershipsRequestBuilder) ToDeleteRequestInformation(ctx context.Context, body ItemRelationshipsOrganizationMembershipsDeleteRequestBodyable, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
     requestInfo := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewRequestInformationWithMethodAndUrlTemplateAndPathParameters(i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DELETE, m.BaseRequestBuilder.UrlTemplate, m.BaseRequestBuilder.PathParameters)
-    if requestConfiguration != nil {
-        requestInfo.Headers.AddAll(requestConfiguration.Headers)
-        requestInfo.AddRequestOptions(requestConfiguration.Options)
-    }
+    i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ConfigureRequestInformation(requestInfo, requestConfiguration)
     requestInfo.Headers.TryAdd("Accept", "application/vnd.api+json")
     err := requestInfo.SetContentFromParsable(ctx, m.BaseRequestBuilder.RequestAdapter, "application/vnd.api+json", body)
     if err != nil {
@@ -182,26 +122,17 @@ func (m *ItemRelationshipsOrganizationMembershipsRequestBuilder) ToDeleteRequest
 }
 // ToGetRequestInformation list all organization memberships for a team. Returns both active members and invited users.
 // returns a *RequestInformation when successful
-func (m *ItemRelationshipsOrganizationMembershipsRequestBuilder) ToGetRequestInformation(ctx context.Context, requestConfiguration *ItemRelationshipsOrganizationMembershipsRequestBuilderGetRequestConfiguration)(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
+func (m *ItemRelationshipsOrganizationMembershipsRequestBuilder) ToGetRequestInformation(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[ItemRelationshipsOrganizationMembershipsRequestBuilderGetQueryParameters])(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
     requestInfo := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewRequestInformationWithMethodAndUrlTemplateAndPathParameters(i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.GET, m.BaseRequestBuilder.UrlTemplate, m.BaseRequestBuilder.PathParameters)
-    if requestConfiguration != nil {
-        if requestConfiguration.QueryParameters != nil {
-            requestInfo.AddQueryParameters(*(requestConfiguration.QueryParameters))
-        }
-        requestInfo.Headers.AddAll(requestConfiguration.Headers)
-        requestInfo.AddRequestOptions(requestConfiguration.Options)
-    }
+    i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ConfigureRequestInformation(requestInfo, requestConfiguration)
     requestInfo.Headers.TryAdd("Accept", "application/vnd.api+json")
     return requestInfo, nil
 }
 // ToPostRequestInformation add multiple users to a team using their organization membership IDs. Unlike the username method, users only need a pending invitation to the organization.
 // returns a *RequestInformation when successful
-func (m *ItemRelationshipsOrganizationMembershipsRequestBuilder) ToPostRequestInformation(ctx context.Context, body ItemRelationshipsOrganizationMembershipsPostRequestBodyable, requestConfiguration *ItemRelationshipsOrganizationMembershipsRequestBuilderPostRequestConfiguration)(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
+func (m *ItemRelationshipsOrganizationMembershipsRequestBuilder) ToPostRequestInformation(ctx context.Context, body ItemRelationshipsOrganizationMembershipsPostRequestBodyable, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
     requestInfo := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewRequestInformationWithMethodAndUrlTemplateAndPathParameters(i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.POST, m.BaseRequestBuilder.UrlTemplate, m.BaseRequestBuilder.PathParameters)
-    if requestConfiguration != nil {
-        requestInfo.Headers.AddAll(requestConfiguration.Headers)
-        requestInfo.AddRequestOptions(requestConfiguration.Options)
-    }
+    i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ConfigureRequestInformation(requestInfo, requestConfiguration)
     requestInfo.Headers.TryAdd("Accept", "application/vnd.api+json")
     err := requestInfo.SetContentFromParsable(ctx, m.BaseRequestBuilder.RequestAdapter, "application/vnd.api+json", body)
     if err != nil {

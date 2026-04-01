@@ -16,10 +16,7 @@ type OrganizationsRequestBuilder struct {
 // OrganizationsRequestBuilderGetQueryParameters list organizations.
 type OrganizationsRequestBuilderGetQueryParameters struct {
     // Optionally side-load relationships of the specified name
-    // Deprecated: This property is deprecated, use IncludeAsGetIncludeQueryParameterType instead
-    Include *string `uriparametername:"include"`
-    // Optionally side-load relationships of the specified name
-    IncludeAsGetIncludeQueryParameterType *GetIncludeQueryParameterType `uriparametername:"include"`
+    Include *GetIncludeQueryParameterType `uriparametername:"include"`
     // The page number to retrieve.
     Pagenumber *int32 `uriparametername:"page%5Bnumber%5D"`
     // The number of items to retrieve per page. Defaults to 20.
@@ -30,22 +27,6 @@ type OrganizationsRequestBuilderGetQueryParameters struct {
     Qemail *string `uriparametername:"q%5Bemail%5D"`
     // A search query string. This query searches organizations by name.
     Qname *string `uriparametername:"q%5Bname%5D"`
-}
-// OrganizationsRequestBuilderGetRequestConfiguration configuration for the request such as headers, query parameters, and middleware options.
-type OrganizationsRequestBuilderGetRequestConfiguration struct {
-    // Request headers
-    Headers *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestHeaders
-    // Request options
-    Options []i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestOption
-    // Request query parameters
-    QueryParameters *OrganizationsRequestBuilderGetQueryParameters
-}
-// OrganizationsRequestBuilderPostRequestConfiguration configuration for the request such as headers, query parameters, and middleware options.
-type OrganizationsRequestBuilderPostRequestConfiguration struct {
-    // Request headers
-    Headers *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestHeaders
-    // Request options
-    Options []i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestOption
 }
 // ByOrganization_name gets an item from the github.com/hashicorp/go-tfe/api.organizations.item collection
 // returns a *WithOrganization_nameItemRequestBuilder when successful
@@ -73,30 +54,9 @@ func NewOrganizationsRequestBuilder(rawUrl string, requestAdapter i2ae4187f7daee
     return NewOrganizationsRequestBuilderInternal(urlParams, requestAdapter)
 }
 // Get list organizations.
-// Deprecated: This method is obsolete. Use GetAsOrganizationsGetResponse instead.
-// returns a OrganizationsResponseable when successful
-// returns a Errors error when the service returns a 4XX or 5XX status code
-func (m *OrganizationsRequestBuilder) Get(ctx context.Context, requestConfiguration *OrganizationsRequestBuilderGetRequestConfiguration)(OrganizationsResponseable, error) {
-    requestInfo, err := m.ToGetRequestInformation(ctx, requestConfiguration);
-    if err != nil {
-        return nil, err
-    }
-    errorMapping := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ErrorMappings {
-        "XXX": ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.CreateErrorsFromDiscriminatorValue,
-    }
-    res, err := m.BaseRequestBuilder.RequestAdapter.Send(ctx, requestInfo, CreateOrganizationsResponseFromDiscriminatorValue, errorMapping)
-    if err != nil {
-        return nil, err
-    }
-    if res == nil {
-        return nil, nil
-    }
-    return res.(OrganizationsResponseable), nil
-}
-// GetAsOrganizationsGetResponse list organizations.
 // returns a OrganizationsGetResponseable when successful
 // returns a Errors error when the service returns a 4XX or 5XX status code
-func (m *OrganizationsRequestBuilder) GetAsOrganizationsGetResponse(ctx context.Context, requestConfiguration *OrganizationsRequestBuilderGetRequestConfiguration)(OrganizationsGetResponseable, error) {
+func (m *OrganizationsRequestBuilder) Get(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[OrganizationsRequestBuilderGetQueryParameters])(OrganizationsGetResponseable, error) {
     requestInfo, err := m.ToGetRequestInformation(ctx, requestConfiguration);
     if err != nil {
         return nil, err
@@ -114,30 +74,9 @@ func (m *OrganizationsRequestBuilder) GetAsOrganizationsGetResponse(ctx context.
     return res.(OrganizationsGetResponseable), nil
 }
 // Post create an organization.
-// Deprecated: This method is obsolete. Use PostAsOrganizationsPostResponse instead.
-// returns a OrganizationsResponseable when successful
-// returns a Errors error when the service returns a 4XX or 5XX status code
-func (m *OrganizationsRequestBuilder) Post(ctx context.Context, body OrganizationsPostRequestBodyable, requestConfiguration *OrganizationsRequestBuilderPostRequestConfiguration)(OrganizationsResponseable, error) {
-    requestInfo, err := m.ToPostRequestInformation(ctx, body, requestConfiguration);
-    if err != nil {
-        return nil, err
-    }
-    errorMapping := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ErrorMappings {
-        "XXX": ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.CreateErrorsFromDiscriminatorValue,
-    }
-    res, err := m.BaseRequestBuilder.RequestAdapter.Send(ctx, requestInfo, CreateOrganizationsResponseFromDiscriminatorValue, errorMapping)
-    if err != nil {
-        return nil, err
-    }
-    if res == nil {
-        return nil, nil
-    }
-    return res.(OrganizationsResponseable), nil
-}
-// PostAsOrganizationsPostResponse create an organization.
 // returns a OrganizationsPostResponseable when successful
 // returns a Errors error when the service returns a 4XX or 5XX status code
-func (m *OrganizationsRequestBuilder) PostAsOrganizationsPostResponse(ctx context.Context, body OrganizationsPostRequestBodyable, requestConfiguration *OrganizationsRequestBuilderPostRequestConfiguration)(OrganizationsPostResponseable, error) {
+func (m *OrganizationsRequestBuilder) Post(ctx context.Context, body OrganizationsPostRequestBodyable, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(OrganizationsPostResponseable, error) {
     requestInfo, err := m.ToPostRequestInformation(ctx, body, requestConfiguration);
     if err != nil {
         return nil, err
@@ -156,26 +95,17 @@ func (m *OrganizationsRequestBuilder) PostAsOrganizationsPostResponse(ctx contex
 }
 // ToGetRequestInformation list organizations.
 // returns a *RequestInformation when successful
-func (m *OrganizationsRequestBuilder) ToGetRequestInformation(ctx context.Context, requestConfiguration *OrganizationsRequestBuilderGetRequestConfiguration)(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
+func (m *OrganizationsRequestBuilder) ToGetRequestInformation(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[OrganizationsRequestBuilderGetQueryParameters])(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
     requestInfo := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewRequestInformationWithMethodAndUrlTemplateAndPathParameters(i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.GET, m.BaseRequestBuilder.UrlTemplate, m.BaseRequestBuilder.PathParameters)
-    if requestConfiguration != nil {
-        if requestConfiguration.QueryParameters != nil {
-            requestInfo.AddQueryParameters(*(requestConfiguration.QueryParameters))
-        }
-        requestInfo.Headers.AddAll(requestConfiguration.Headers)
-        requestInfo.AddRequestOptions(requestConfiguration.Options)
-    }
+    i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ConfigureRequestInformation(requestInfo, requestConfiguration)
     requestInfo.Headers.TryAdd("Accept", "application/vnd.api+json")
     return requestInfo, nil
 }
 // ToPostRequestInformation create an organization.
 // returns a *RequestInformation when successful
-func (m *OrganizationsRequestBuilder) ToPostRequestInformation(ctx context.Context, body OrganizationsPostRequestBodyable, requestConfiguration *OrganizationsRequestBuilderPostRequestConfiguration)(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
+func (m *OrganizationsRequestBuilder) ToPostRequestInformation(ctx context.Context, body OrganizationsPostRequestBodyable, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
     requestInfo := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewRequestInformationWithMethodAndUrlTemplateAndPathParameters(i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.POST, m.BaseRequestBuilder.UrlTemplate, m.BaseRequestBuilder.PathParameters)
-    if requestConfiguration != nil {
-        requestInfo.Headers.AddAll(requestConfiguration.Headers)
-        requestInfo.AddRequestOptions(requestConfiguration.Options)
-    }
+    i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ConfigureRequestInformation(requestInfo, requestConfiguration)
     requestInfo.Headers.TryAdd("Accept", "application/vnd.api+json")
     err := requestInfo.SetContentFromParsable(ctx, m.BaseRequestBuilder.RequestAdapter, "application/vnd.api+json", body)
     if err != nil {

@@ -13,33 +13,10 @@ import (
 type WithOauth_client_ItemRequestBuilder struct {
     i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.BaseRequestBuilder
 }
-// WithOauth_client_ItemRequestBuilderDeleteRequestConfiguration configuration for the request such as headers, query parameters, and middleware options.
-type WithOauth_client_ItemRequestBuilderDeleteRequestConfiguration struct {
-    // Request headers
-    Headers *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestHeaders
-    // Request options
-    Options []i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestOption
-}
 // WithOauth_client_ItemRequestBuilderGetQueryParameters show details of an existing OAuth client.
 type WithOauth_client_ItemRequestBuilderGetQueryParameters struct {
     // If true, includes names of up to 25 affected workspaces and the total count.
     Show_affected_workspaces *bool `uriparametername:"show_affected_workspaces"`
-}
-// WithOauth_client_ItemRequestBuilderGetRequestConfiguration configuration for the request such as headers, query parameters, and middleware options.
-type WithOauth_client_ItemRequestBuilderGetRequestConfiguration struct {
-    // Request headers
-    Headers *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestHeaders
-    // Request options
-    Options []i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestOption
-    // Request query parameters
-    QueryParameters *WithOauth_client_ItemRequestBuilderGetQueryParameters
-}
-// WithOauth_client_ItemRequestBuilderPatchRequestConfiguration configuration for the request such as headers, query parameters, and middleware options.
-type WithOauth_client_ItemRequestBuilderPatchRequestConfiguration struct {
-    // Request headers
-    Headers *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestHeaders
-    // Request options
-    Options []i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestOption
 }
 // NewWithOauth_client_ItemRequestBuilderInternal instantiates a new WithOauth_client_ItemRequestBuilder and sets the default values.
 func NewWithOauth_client_ItemRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*WithOauth_client_ItemRequestBuilder) {
@@ -56,7 +33,7 @@ func NewWithOauth_client_ItemRequestBuilder(rawUrl string, requestAdapter i2ae41
 }
 // Delete remove an existing OAuth client and unlink any associated workspaces.
 // returns a Errors error when the service returns a 4XX or 5XX status code
-func (m *WithOauth_client_ItemRequestBuilder) Delete(ctx context.Context, requestConfiguration *WithOauth_client_ItemRequestBuilderDeleteRequestConfiguration)(error) {
+func (m *WithOauth_client_ItemRequestBuilder) Delete(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(error) {
     requestInfo, err := m.ToDeleteRequestInformation(ctx, requestConfiguration);
     if err != nil {
         return err
@@ -71,30 +48,9 @@ func (m *WithOauth_client_ItemRequestBuilder) Delete(ctx context.Context, reques
     return nil
 }
 // Get show details of an existing OAuth client.
-// Deprecated: This method is obsolete. Use GetAsWithOauth_client_GetResponse instead.
-// returns a ItemWithOauth_client_Responseable when successful
-// returns a Errors error when the service returns a 4XX or 5XX status code
-func (m *WithOauth_client_ItemRequestBuilder) Get(ctx context.Context, requestConfiguration *WithOauth_client_ItemRequestBuilderGetRequestConfiguration)(ItemWithOauth_client_Responseable, error) {
-    requestInfo, err := m.ToGetRequestInformation(ctx, requestConfiguration);
-    if err != nil {
-        return nil, err
-    }
-    errorMapping := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ErrorMappings {
-        "XXX": ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.CreateErrorsFromDiscriminatorValue,
-    }
-    res, err := m.BaseRequestBuilder.RequestAdapter.Send(ctx, requestInfo, CreateItemWithOauth_client_ResponseFromDiscriminatorValue, errorMapping)
-    if err != nil {
-        return nil, err
-    }
-    if res == nil {
-        return nil, nil
-    }
-    return res.(ItemWithOauth_client_Responseable), nil
-}
-// GetAsWithOauth_client_GetResponse show details of an existing OAuth client.
 // returns a ItemWithOauth_client_GetResponseable when successful
 // returns a Errors error when the service returns a 4XX or 5XX status code
-func (m *WithOauth_client_ItemRequestBuilder) GetAsWithOauth_client_GetResponse(ctx context.Context, requestConfiguration *WithOauth_client_ItemRequestBuilderGetRequestConfiguration)(ItemWithOauth_client_GetResponseable, error) {
+func (m *WithOauth_client_ItemRequestBuilder) Get(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[WithOauth_client_ItemRequestBuilderGetQueryParameters])(ItemWithOauth_client_GetResponseable, error) {
     requestInfo, err := m.ToGetRequestInformation(ctx, requestConfiguration);
     if err != nil {
         return nil, err
@@ -117,30 +73,9 @@ func (m *WithOauth_client_ItemRequestBuilder) OauthTokens()(*ItemOauthTokensRequ
     return NewItemOauthTokensRequestBuilderInternal(m.BaseRequestBuilder.PathParameters, m.BaseRequestBuilder.RequestAdapter)
 }
 // Patch update settings of an existing OAuth client.
-// Deprecated: This method is obsolete. Use PatchAsWithOauth_client_PatchResponse instead.
-// returns a ItemWithOauth_client_Responseable when successful
-// returns a Errors error when the service returns a 4XX or 5XX status code
-func (m *WithOauth_client_ItemRequestBuilder) Patch(ctx context.Context, body ItemWithOauth_client_PatchRequestBodyable, requestConfiguration *WithOauth_client_ItemRequestBuilderPatchRequestConfiguration)(ItemWithOauth_client_Responseable, error) {
-    requestInfo, err := m.ToPatchRequestInformation(ctx, body, requestConfiguration);
-    if err != nil {
-        return nil, err
-    }
-    errorMapping := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ErrorMappings {
-        "XXX": ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.CreateErrorsFromDiscriminatorValue,
-    }
-    res, err := m.BaseRequestBuilder.RequestAdapter.Send(ctx, requestInfo, CreateItemWithOauth_client_ResponseFromDiscriminatorValue, errorMapping)
-    if err != nil {
-        return nil, err
-    }
-    if res == nil {
-        return nil, nil
-    }
-    return res.(ItemWithOauth_client_Responseable), nil
-}
-// PatchAsWithOauth_client_PatchResponse update settings of an existing OAuth client.
 // returns a ItemWithOauth_client_PatchResponseable when successful
 // returns a Errors error when the service returns a 4XX or 5XX status code
-func (m *WithOauth_client_ItemRequestBuilder) PatchAsWithOauth_client_PatchResponse(ctx context.Context, body ItemWithOauth_client_PatchRequestBodyable, requestConfiguration *WithOauth_client_ItemRequestBuilderPatchRequestConfiguration)(ItemWithOauth_client_PatchResponseable, error) {
+func (m *WithOauth_client_ItemRequestBuilder) Patch(ctx context.Context, body ItemWithOauth_client_PatchRequestBodyable, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(ItemWithOauth_client_PatchResponseable, error) {
     requestInfo, err := m.ToPatchRequestInformation(ctx, body, requestConfiguration);
     if err != nil {
         return nil, err
@@ -164,37 +99,25 @@ func (m *WithOauth_client_ItemRequestBuilder) Relationships()(*ItemRelationships
 }
 // ToDeleteRequestInformation remove an existing OAuth client and unlink any associated workspaces.
 // returns a *RequestInformation when successful
-func (m *WithOauth_client_ItemRequestBuilder) ToDeleteRequestInformation(ctx context.Context, requestConfiguration *WithOauth_client_ItemRequestBuilderDeleteRequestConfiguration)(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
+func (m *WithOauth_client_ItemRequestBuilder) ToDeleteRequestInformation(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
     requestInfo := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewRequestInformationWithMethodAndUrlTemplateAndPathParameters(i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DELETE, m.BaseRequestBuilder.UrlTemplate, m.BaseRequestBuilder.PathParameters)
-    if requestConfiguration != nil {
-        requestInfo.Headers.AddAll(requestConfiguration.Headers)
-        requestInfo.AddRequestOptions(requestConfiguration.Options)
-    }
+    i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ConfigureRequestInformation(requestInfo, requestConfiguration)
     requestInfo.Headers.TryAdd("Accept", "application/vnd.api+json")
     return requestInfo, nil
 }
 // ToGetRequestInformation show details of an existing OAuth client.
 // returns a *RequestInformation when successful
-func (m *WithOauth_client_ItemRequestBuilder) ToGetRequestInformation(ctx context.Context, requestConfiguration *WithOauth_client_ItemRequestBuilderGetRequestConfiguration)(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
+func (m *WithOauth_client_ItemRequestBuilder) ToGetRequestInformation(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[WithOauth_client_ItemRequestBuilderGetQueryParameters])(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
     requestInfo := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewRequestInformationWithMethodAndUrlTemplateAndPathParameters(i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.GET, m.BaseRequestBuilder.UrlTemplate, m.BaseRequestBuilder.PathParameters)
-    if requestConfiguration != nil {
-        if requestConfiguration.QueryParameters != nil {
-            requestInfo.AddQueryParameters(*(requestConfiguration.QueryParameters))
-        }
-        requestInfo.Headers.AddAll(requestConfiguration.Headers)
-        requestInfo.AddRequestOptions(requestConfiguration.Options)
-    }
+    i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ConfigureRequestInformation(requestInfo, requestConfiguration)
     requestInfo.Headers.TryAdd("Accept", "application/vnd.api+json")
     return requestInfo, nil
 }
 // ToPatchRequestInformation update settings of an existing OAuth client.
 // returns a *RequestInformation when successful
-func (m *WithOauth_client_ItemRequestBuilder) ToPatchRequestInformation(ctx context.Context, body ItemWithOauth_client_PatchRequestBodyable, requestConfiguration *WithOauth_client_ItemRequestBuilderPatchRequestConfiguration)(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
+func (m *WithOauth_client_ItemRequestBuilder) ToPatchRequestInformation(ctx context.Context, body ItemWithOauth_client_PatchRequestBodyable, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
     requestInfo := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewRequestInformationWithMethodAndUrlTemplateAndPathParameters(i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.PATCH, m.BaseRequestBuilder.UrlTemplate, m.BaseRequestBuilder.PathParameters)
-    if requestConfiguration != nil {
-        requestInfo.Headers.AddAll(requestConfiguration.Headers)
-        requestInfo.AddRequestOptions(requestConfiguration.Options)
-    }
+    i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ConfigureRequestInformation(requestInfo, requestConfiguration)
     requestInfo.Headers.TryAdd("Accept", "application/vnd.api+json")
     err := requestInfo.SetContentFromParsable(ctx, m.BaseRequestBuilder.RequestAdapter, "application/vnd.api+json", body)
     if err != nil {

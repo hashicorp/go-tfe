@@ -20,22 +20,6 @@ type ItemSshKeysRequestBuilderGetQueryParameters struct {
     // The number of items to retrieve per page. Defaults to 20.
     Pagesize *int32 `uriparametername:"page%5Bsize%5D"`
 }
-// ItemSshKeysRequestBuilderGetRequestConfiguration configuration for the request such as headers, query parameters, and middleware options.
-type ItemSshKeysRequestBuilderGetRequestConfiguration struct {
-    // Request headers
-    Headers *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestHeaders
-    // Request options
-    Options []i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestOption
-    // Request query parameters
-    QueryParameters *ItemSshKeysRequestBuilderGetQueryParameters
-}
-// ItemSshKeysRequestBuilderPostRequestConfiguration configuration for the request such as headers, query parameters, and middleware options.
-type ItemSshKeysRequestBuilderPostRequestConfiguration struct {
-    // Request headers
-    Headers *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestHeaders
-    // Request options
-    Options []i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestOption
-}
 // NewItemSshKeysRequestBuilderInternal instantiates a new ItemSshKeysRequestBuilder and sets the default values.
 func NewItemSshKeysRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*ItemSshKeysRequestBuilder) {
     m := &ItemSshKeysRequestBuilder{
@@ -50,30 +34,9 @@ func NewItemSshKeysRequestBuilder(rawUrl string, requestAdapter i2ae4187f7daee26
     return NewItemSshKeysRequestBuilderInternal(urlParams, requestAdapter)
 }
 // Get list all SSH keys for an organization.
-// Deprecated: This method is obsolete. Use GetAsSshKeysGetResponse instead.
-// returns a ItemSshKeysResponseable when successful
-// returns a Errors error when the service returns a 404 status code
-func (m *ItemSshKeysRequestBuilder) Get(ctx context.Context, requestConfiguration *ItemSshKeysRequestBuilderGetRequestConfiguration)(ItemSshKeysResponseable, error) {
-    requestInfo, err := m.ToGetRequestInformation(ctx, requestConfiguration);
-    if err != nil {
-        return nil, err
-    }
-    errorMapping := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ErrorMappings {
-        "404": ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.CreateErrorsFromDiscriminatorValue,
-    }
-    res, err := m.BaseRequestBuilder.RequestAdapter.Send(ctx, requestInfo, CreateItemSshKeysResponseFromDiscriminatorValue, errorMapping)
-    if err != nil {
-        return nil, err
-    }
-    if res == nil {
-        return nil, nil
-    }
-    return res.(ItemSshKeysResponseable), nil
-}
-// GetAsSshKeysGetResponse list all SSH keys for an organization.
 // returns a ItemSshKeysGetResponseable when successful
 // returns a Errors error when the service returns a 404 status code
-func (m *ItemSshKeysRequestBuilder) GetAsSshKeysGetResponse(ctx context.Context, requestConfiguration *ItemSshKeysRequestBuilderGetRequestConfiguration)(ItemSshKeysGetResponseable, error) {
+func (m *ItemSshKeysRequestBuilder) Get(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[ItemSshKeysRequestBuilderGetQueryParameters])(ItemSshKeysGetResponseable, error) {
     requestInfo, err := m.ToGetRequestInformation(ctx, requestConfiguration);
     if err != nil {
         return nil, err
@@ -91,33 +54,10 @@ func (m *ItemSshKeysRequestBuilder) GetAsSshKeysGetResponse(ctx context.Context,
     return res.(ItemSshKeysGetResponseable), nil
 }
 // Post create a new SSH key for an organization.
-// Deprecated: This method is obsolete. Use PostAsSshKeysPostResponse instead.
-// returns a ItemSshKeysResponseable when successful
-// returns a Errors error when the service returns a 404 status code
-// returns a Errors error when the service returns a 422 status code
-func (m *ItemSshKeysRequestBuilder) Post(ctx context.Context, body ItemSshKeysPostRequestBodyable, requestConfiguration *ItemSshKeysRequestBuilderPostRequestConfiguration)(ItemSshKeysResponseable, error) {
-    requestInfo, err := m.ToPostRequestInformation(ctx, body, requestConfiguration);
-    if err != nil {
-        return nil, err
-    }
-    errorMapping := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ErrorMappings {
-        "404": ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.CreateErrorsFromDiscriminatorValue,
-        "422": ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.CreateErrorsFromDiscriminatorValue,
-    }
-    res, err := m.BaseRequestBuilder.RequestAdapter.Send(ctx, requestInfo, CreateItemSshKeysResponseFromDiscriminatorValue, errorMapping)
-    if err != nil {
-        return nil, err
-    }
-    if res == nil {
-        return nil, nil
-    }
-    return res.(ItemSshKeysResponseable), nil
-}
-// PostAsSshKeysPostResponse create a new SSH key for an organization.
 // returns a ItemSshKeysPostResponseable when successful
 // returns a Errors error when the service returns a 404 status code
 // returns a Errors error when the service returns a 422 status code
-func (m *ItemSshKeysRequestBuilder) PostAsSshKeysPostResponse(ctx context.Context, body ItemSshKeysPostRequestBodyable, requestConfiguration *ItemSshKeysRequestBuilderPostRequestConfiguration)(ItemSshKeysPostResponseable, error) {
+func (m *ItemSshKeysRequestBuilder) Post(ctx context.Context, body ItemSshKeysPostRequestBodyable, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(ItemSshKeysPostResponseable, error) {
     requestInfo, err := m.ToPostRequestInformation(ctx, body, requestConfiguration);
     if err != nil {
         return nil, err
@@ -137,26 +77,17 @@ func (m *ItemSshKeysRequestBuilder) PostAsSshKeysPostResponse(ctx context.Contex
 }
 // ToGetRequestInformation list all SSH keys for an organization.
 // returns a *RequestInformation when successful
-func (m *ItemSshKeysRequestBuilder) ToGetRequestInformation(ctx context.Context, requestConfiguration *ItemSshKeysRequestBuilderGetRequestConfiguration)(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
+func (m *ItemSshKeysRequestBuilder) ToGetRequestInformation(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[ItemSshKeysRequestBuilderGetQueryParameters])(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
     requestInfo := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewRequestInformationWithMethodAndUrlTemplateAndPathParameters(i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.GET, m.BaseRequestBuilder.UrlTemplate, m.BaseRequestBuilder.PathParameters)
-    if requestConfiguration != nil {
-        if requestConfiguration.QueryParameters != nil {
-            requestInfo.AddQueryParameters(*(requestConfiguration.QueryParameters))
-        }
-        requestInfo.Headers.AddAll(requestConfiguration.Headers)
-        requestInfo.AddRequestOptions(requestConfiguration.Options)
-    }
+    i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ConfigureRequestInformation(requestInfo, requestConfiguration)
     requestInfo.Headers.TryAdd("Accept", "application/vnd.api+json")
     return requestInfo, nil
 }
 // ToPostRequestInformation create a new SSH key for an organization.
 // returns a *RequestInformation when successful
-func (m *ItemSshKeysRequestBuilder) ToPostRequestInformation(ctx context.Context, body ItemSshKeysPostRequestBodyable, requestConfiguration *ItemSshKeysRequestBuilderPostRequestConfiguration)(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
+func (m *ItemSshKeysRequestBuilder) ToPostRequestInformation(ctx context.Context, body ItemSshKeysPostRequestBodyable, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
     requestInfo := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewRequestInformationWithMethodAndUrlTemplateAndPathParameters(i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.POST, m.BaseRequestBuilder.UrlTemplate, m.BaseRequestBuilder.PathParameters)
-    if requestConfiguration != nil {
-        requestInfo.Headers.AddAll(requestConfiguration.Headers)
-        requestInfo.AddRequestOptions(requestConfiguration.Options)
-    }
+    i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ConfigureRequestInformation(requestInfo, requestConfiguration)
     requestInfo.Headers.TryAdd("Accept", "application/vnd.api+json")
     err := requestInfo.SetContentFromParsable(ctx, m.BaseRequestBuilder.RequestAdapter, "application/vnd.api+json", body)
     if err != nil {

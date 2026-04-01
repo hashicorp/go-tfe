@@ -13,13 +13,6 @@ import (
 type DetailsRequestBuilder struct {
     i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.BaseRequestBuilder
 }
-// DetailsRequestBuilderGetRequestConfiguration configuration for the request such as headers, query parameters, and middleware options.
-type DetailsRequestBuilderGetRequestConfiguration struct {
-    // Request headers
-    Headers *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestHeaders
-    // Request options
-    Options []i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestOption
-}
 // NewDetailsRequestBuilderInternal instantiates a new DetailsRequestBuilder and sets the default values.
 func NewDetailsRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*DetailsRequestBuilder) {
     m := &DetailsRequestBuilder{
@@ -34,30 +27,9 @@ func NewDetailsRequestBuilder(rawUrl string, requestAdapter i2ae4187f7daee263371
     return NewDetailsRequestBuilderInternal(urlParams, requestAdapter)
 }
 // Get get your account details
-// Deprecated: This method is obsolete. Use GetAsDetailsGetResponse instead.
-// returns a DetailsResponseable when successful
-// returns a Errors error when the service returns a 4XX or 5XX status code
-func (m *DetailsRequestBuilder) Get(ctx context.Context, requestConfiguration *DetailsRequestBuilderGetRequestConfiguration)(DetailsResponseable, error) {
-    requestInfo, err := m.ToGetRequestInformation(ctx, requestConfiguration);
-    if err != nil {
-        return nil, err
-    }
-    errorMapping := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ErrorMappings {
-        "XXX": ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.CreateErrorsFromDiscriminatorValue,
-    }
-    res, err := m.BaseRequestBuilder.RequestAdapter.Send(ctx, requestInfo, CreateDetailsResponseFromDiscriminatorValue, errorMapping)
-    if err != nil {
-        return nil, err
-    }
-    if res == nil {
-        return nil, nil
-    }
-    return res.(DetailsResponseable), nil
-}
-// GetAsDetailsGetResponse get your account details
 // returns a DetailsGetResponseable when successful
 // returns a Errors error when the service returns a 4XX or 5XX status code
-func (m *DetailsRequestBuilder) GetAsDetailsGetResponse(ctx context.Context, requestConfiguration *DetailsRequestBuilderGetRequestConfiguration)(DetailsGetResponseable, error) {
+func (m *DetailsRequestBuilder) Get(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(DetailsGetResponseable, error) {
     requestInfo, err := m.ToGetRequestInformation(ctx, requestConfiguration);
     if err != nil {
         return nil, err
@@ -76,12 +48,9 @@ func (m *DetailsRequestBuilder) GetAsDetailsGetResponse(ctx context.Context, req
 }
 // ToGetRequestInformation get your account details
 // returns a *RequestInformation when successful
-func (m *DetailsRequestBuilder) ToGetRequestInformation(ctx context.Context, requestConfiguration *DetailsRequestBuilderGetRequestConfiguration)(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
+func (m *DetailsRequestBuilder) ToGetRequestInformation(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
     requestInfo := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewRequestInformationWithMethodAndUrlTemplateAndPathParameters(i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.GET, m.BaseRequestBuilder.UrlTemplate, m.BaseRequestBuilder.PathParameters)
-    if requestConfiguration != nil {
-        requestInfo.Headers.AddAll(requestConfiguration.Headers)
-        requestInfo.AddRequestOptions(requestConfiguration.Options)
-    }
+    i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ConfigureRequestInformation(requestInfo, requestConfiguration)
     requestInfo.Headers.TryAdd("Accept", "application/vnd.api+json")
     return requestInfo, nil
 }

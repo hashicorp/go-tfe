@@ -13,27 +13,6 @@ import (
 type ItemRelationshipsVarsVarsItemRequestBuilder struct {
     i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.BaseRequestBuilder
 }
-// ItemRelationshipsVarsVarsItemRequestBuilderDeleteRequestConfiguration configuration for the request such as headers, query parameters, and middleware options.
-type ItemRelationshipsVarsVarsItemRequestBuilderDeleteRequestConfiguration struct {
-    // Request headers
-    Headers *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestHeaders
-    // Request options
-    Options []i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestOption
-}
-// ItemRelationshipsVarsVarsItemRequestBuilderGetRequestConfiguration configuration for the request such as headers, query parameters, and middleware options.
-type ItemRelationshipsVarsVarsItemRequestBuilderGetRequestConfiguration struct {
-    // Request headers
-    Headers *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestHeaders
-    // Request options
-    Options []i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestOption
-}
-// ItemRelationshipsVarsVarsItemRequestBuilderPatchRequestConfiguration configuration for the request such as headers, query parameters, and middleware options.
-type ItemRelationshipsVarsVarsItemRequestBuilderPatchRequestConfiguration struct {
-    // Request headers
-    Headers *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestHeaders
-    // Request options
-    Options []i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestOption
-}
 // NewItemRelationshipsVarsVarsItemRequestBuilderInternal instantiates a new ItemRelationshipsVarsVarsItemRequestBuilder and sets the default values.
 func NewItemRelationshipsVarsVarsItemRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*ItemRelationshipsVarsVarsItemRequestBuilder) {
     m := &ItemRelationshipsVarsVarsItemRequestBuilder{
@@ -49,7 +28,7 @@ func NewItemRelationshipsVarsVarsItemRequestBuilder(rawUrl string, requestAdapte
 }
 // Delete delete a variable from a variable set.
 // returns a Errors error when the service returns a 4XX or 5XX status code
-func (m *ItemRelationshipsVarsVarsItemRequestBuilder) Delete(ctx context.Context, requestConfiguration *ItemRelationshipsVarsVarsItemRequestBuilderDeleteRequestConfiguration)(error) {
+func (m *ItemRelationshipsVarsVarsItemRequestBuilder) Delete(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(error) {
     requestInfo, err := m.ToDeleteRequestInformation(ctx, requestConfiguration);
     if err != nil {
         return err
@@ -64,30 +43,9 @@ func (m *ItemRelationshipsVarsVarsItemRequestBuilder) Delete(ctx context.Context
     return nil
 }
 // Get show details of a variable in a variable set.
-// Deprecated: This method is obsolete. Use GetAsVarsGetResponse instead.
-// returns a ItemRelationshipsVarsItemVarsResponseable when successful
-// returns a Errors error when the service returns a 4XX or 5XX status code
-func (m *ItemRelationshipsVarsVarsItemRequestBuilder) Get(ctx context.Context, requestConfiguration *ItemRelationshipsVarsVarsItemRequestBuilderGetRequestConfiguration)(ItemRelationshipsVarsItemVarsResponseable, error) {
-    requestInfo, err := m.ToGetRequestInformation(ctx, requestConfiguration);
-    if err != nil {
-        return nil, err
-    }
-    errorMapping := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ErrorMappings {
-        "XXX": ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.CreateErrorsFromDiscriminatorValue,
-    }
-    res, err := m.BaseRequestBuilder.RequestAdapter.Send(ctx, requestInfo, CreateItemRelationshipsVarsItemVarsResponseFromDiscriminatorValue, errorMapping)
-    if err != nil {
-        return nil, err
-    }
-    if res == nil {
-        return nil, nil
-    }
-    return res.(ItemRelationshipsVarsItemVarsResponseable), nil
-}
-// GetAsVarsGetResponse show details of a variable in a variable set.
 // returns a ItemRelationshipsVarsItemVarsGetResponseable when successful
 // returns a Errors error when the service returns a 4XX or 5XX status code
-func (m *ItemRelationshipsVarsVarsItemRequestBuilder) GetAsVarsGetResponse(ctx context.Context, requestConfiguration *ItemRelationshipsVarsVarsItemRequestBuilderGetRequestConfiguration)(ItemRelationshipsVarsItemVarsGetResponseable, error) {
+func (m *ItemRelationshipsVarsVarsItemRequestBuilder) Get(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(ItemRelationshipsVarsItemVarsGetResponseable, error) {
     requestInfo, err := m.ToGetRequestInformation(ctx, requestConfiguration);
     if err != nil {
         return nil, err
@@ -105,30 +63,9 @@ func (m *ItemRelationshipsVarsVarsItemRequestBuilder) GetAsVarsGetResponse(ctx c
     return res.(ItemRelationshipsVarsItemVarsGetResponseable), nil
 }
 // Patch update attributes of an existing variable in a variable set.
-// Deprecated: This method is obsolete. Use PatchAsVarsPatchResponse instead.
-// returns a ItemRelationshipsVarsItemVarsResponseable when successful
-// returns a Errors error when the service returns a 4XX or 5XX status code
-func (m *ItemRelationshipsVarsVarsItemRequestBuilder) Patch(ctx context.Context, body ItemRelationshipsVarsItemVarsPatchRequestBodyable, requestConfiguration *ItemRelationshipsVarsVarsItemRequestBuilderPatchRequestConfiguration)(ItemRelationshipsVarsItemVarsResponseable, error) {
-    requestInfo, err := m.ToPatchRequestInformation(ctx, body, requestConfiguration);
-    if err != nil {
-        return nil, err
-    }
-    errorMapping := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ErrorMappings {
-        "XXX": ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.CreateErrorsFromDiscriminatorValue,
-    }
-    res, err := m.BaseRequestBuilder.RequestAdapter.Send(ctx, requestInfo, CreateItemRelationshipsVarsItemVarsResponseFromDiscriminatorValue, errorMapping)
-    if err != nil {
-        return nil, err
-    }
-    if res == nil {
-        return nil, nil
-    }
-    return res.(ItemRelationshipsVarsItemVarsResponseable), nil
-}
-// PatchAsVarsPatchResponse update attributes of an existing variable in a variable set.
 // returns a ItemRelationshipsVarsItemVarsPatchResponseable when successful
 // returns a Errors error when the service returns a 4XX or 5XX status code
-func (m *ItemRelationshipsVarsVarsItemRequestBuilder) PatchAsVarsPatchResponse(ctx context.Context, body ItemRelationshipsVarsItemVarsPatchRequestBodyable, requestConfiguration *ItemRelationshipsVarsVarsItemRequestBuilderPatchRequestConfiguration)(ItemRelationshipsVarsItemVarsPatchResponseable, error) {
+func (m *ItemRelationshipsVarsVarsItemRequestBuilder) Patch(ctx context.Context, body ItemRelationshipsVarsItemVarsPatchRequestBodyable, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(ItemRelationshipsVarsItemVarsPatchResponseable, error) {
     requestInfo, err := m.ToPatchRequestInformation(ctx, body, requestConfiguration);
     if err != nil {
         return nil, err
@@ -147,34 +84,25 @@ func (m *ItemRelationshipsVarsVarsItemRequestBuilder) PatchAsVarsPatchResponse(c
 }
 // ToDeleteRequestInformation delete a variable from a variable set.
 // returns a *RequestInformation when successful
-func (m *ItemRelationshipsVarsVarsItemRequestBuilder) ToDeleteRequestInformation(ctx context.Context, requestConfiguration *ItemRelationshipsVarsVarsItemRequestBuilderDeleteRequestConfiguration)(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
+func (m *ItemRelationshipsVarsVarsItemRequestBuilder) ToDeleteRequestInformation(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
     requestInfo := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewRequestInformationWithMethodAndUrlTemplateAndPathParameters(i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DELETE, m.BaseRequestBuilder.UrlTemplate, m.BaseRequestBuilder.PathParameters)
-    if requestConfiguration != nil {
-        requestInfo.Headers.AddAll(requestConfiguration.Headers)
-        requestInfo.AddRequestOptions(requestConfiguration.Options)
-    }
+    i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ConfigureRequestInformation(requestInfo, requestConfiguration)
     requestInfo.Headers.TryAdd("Accept", "application/vnd.api+json")
     return requestInfo, nil
 }
 // ToGetRequestInformation show details of a variable in a variable set.
 // returns a *RequestInformation when successful
-func (m *ItemRelationshipsVarsVarsItemRequestBuilder) ToGetRequestInformation(ctx context.Context, requestConfiguration *ItemRelationshipsVarsVarsItemRequestBuilderGetRequestConfiguration)(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
+func (m *ItemRelationshipsVarsVarsItemRequestBuilder) ToGetRequestInformation(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
     requestInfo := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewRequestInformationWithMethodAndUrlTemplateAndPathParameters(i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.GET, m.BaseRequestBuilder.UrlTemplate, m.BaseRequestBuilder.PathParameters)
-    if requestConfiguration != nil {
-        requestInfo.Headers.AddAll(requestConfiguration.Headers)
-        requestInfo.AddRequestOptions(requestConfiguration.Options)
-    }
+    i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ConfigureRequestInformation(requestInfo, requestConfiguration)
     requestInfo.Headers.TryAdd("Accept", "application/vnd.api+json")
     return requestInfo, nil
 }
 // ToPatchRequestInformation update attributes of an existing variable in a variable set.
 // returns a *RequestInformation when successful
-func (m *ItemRelationshipsVarsVarsItemRequestBuilder) ToPatchRequestInformation(ctx context.Context, body ItemRelationshipsVarsItemVarsPatchRequestBodyable, requestConfiguration *ItemRelationshipsVarsVarsItemRequestBuilderPatchRequestConfiguration)(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
+func (m *ItemRelationshipsVarsVarsItemRequestBuilder) ToPatchRequestInformation(ctx context.Context, body ItemRelationshipsVarsItemVarsPatchRequestBodyable, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
     requestInfo := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewRequestInformationWithMethodAndUrlTemplateAndPathParameters(i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.PATCH, m.BaseRequestBuilder.UrlTemplate, m.BaseRequestBuilder.PathParameters)
-    if requestConfiguration != nil {
-        requestInfo.Headers.AddAll(requestConfiguration.Headers)
-        requestInfo.AddRequestOptions(requestConfiguration.Options)
-    }
+    i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ConfigureRequestInformation(requestInfo, requestConfiguration)
     requestInfo.Headers.TryAdd("Accept", "application/vnd.api+json")
     err := requestInfo.SetContentFromParsable(ctx, m.BaseRequestBuilder.RequestAdapter, "application/vnd.api+json", body)
     if err != nil {

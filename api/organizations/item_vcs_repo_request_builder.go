@@ -19,15 +19,6 @@ type ItemVcsRepoRequestBuilderGetQueryParameters struct {
     // The OAuth token ID to authenticate with the VCS provider
     Oauth_token_id *string `uriparametername:"oauth_token_id"`
 }
-// ItemVcsRepoRequestBuilderGetRequestConfiguration configuration for the request such as headers, query parameters, and middleware options.
-type ItemVcsRepoRequestBuilderGetRequestConfiguration struct {
-    // Request headers
-    Headers *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestHeaders
-    // Request options
-    Options []i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestOption
-    // Request query parameters
-    QueryParameters *ItemVcsRepoRequestBuilderGetQueryParameters
-}
 // NewItemVcsRepoRequestBuilderInternal instantiates a new ItemVcsRepoRequestBuilder and sets the default values.
 func NewItemVcsRepoRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*ItemVcsRepoRequestBuilder) {
     m := &ItemVcsRepoRequestBuilder{
@@ -42,25 +33,8 @@ func NewItemVcsRepoRequestBuilder(rawUrl string, requestAdapter i2ae4187f7daee26
     return NewItemVcsRepoRequestBuilderInternal(urlParams, requestAdapter)
 }
 // Get this endpoint checks if a repository exists and is accessible to the user.
-// Deprecated: This method is obsolete. Use GetAsRepoGetResponse instead.
-// returns a ItemVcsRepoResponseable when successful
-func (m *ItemVcsRepoRequestBuilder) Get(ctx context.Context, requestConfiguration *ItemVcsRepoRequestBuilderGetRequestConfiguration)(ItemVcsRepoResponseable, error) {
-    requestInfo, err := m.ToGetRequestInformation(ctx, requestConfiguration);
-    if err != nil {
-        return nil, err
-    }
-    res, err := m.BaseRequestBuilder.RequestAdapter.Send(ctx, requestInfo, CreateItemVcsRepoResponseFromDiscriminatorValue, nil)
-    if err != nil {
-        return nil, err
-    }
-    if res == nil {
-        return nil, nil
-    }
-    return res.(ItemVcsRepoResponseable), nil
-}
-// GetAsRepoGetResponse this endpoint checks if a repository exists and is accessible to the user.
 // returns a ItemVcsRepoGetResponseable when successful
-func (m *ItemVcsRepoRequestBuilder) GetAsRepoGetResponse(ctx context.Context, requestConfiguration *ItemVcsRepoRequestBuilderGetRequestConfiguration)(ItemVcsRepoGetResponseable, error) {
+func (m *ItemVcsRepoRequestBuilder) Get(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[ItemVcsRepoRequestBuilderGetQueryParameters])(ItemVcsRepoGetResponseable, error) {
     requestInfo, err := m.ToGetRequestInformation(ctx, requestConfiguration);
     if err != nil {
         return nil, err
@@ -76,15 +50,9 @@ func (m *ItemVcsRepoRequestBuilder) GetAsRepoGetResponse(ctx context.Context, re
 }
 // ToGetRequestInformation this endpoint checks if a repository exists and is accessible to the user.
 // returns a *RequestInformation when successful
-func (m *ItemVcsRepoRequestBuilder) ToGetRequestInformation(ctx context.Context, requestConfiguration *ItemVcsRepoRequestBuilderGetRequestConfiguration)(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
+func (m *ItemVcsRepoRequestBuilder) ToGetRequestInformation(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[ItemVcsRepoRequestBuilderGetQueryParameters])(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
     requestInfo := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewRequestInformationWithMethodAndUrlTemplateAndPathParameters(i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.GET, m.BaseRequestBuilder.UrlTemplate, m.BaseRequestBuilder.PathParameters)
-    if requestConfiguration != nil {
-        if requestConfiguration.QueryParameters != nil {
-            requestInfo.AddQueryParameters(*(requestConfiguration.QueryParameters))
-        }
-        requestInfo.Headers.AddAll(requestConfiguration.Headers)
-        requestInfo.AddRequestOptions(requestConfiguration.Options)
-    }
+    i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ConfigureRequestInformation(requestInfo, requestConfiguration)
     requestInfo.Headers.TryAdd("Accept", "application/vnd.api+json")
     return requestInfo, nil
 }

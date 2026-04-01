@@ -17,10 +17,7 @@ type ItemPoliciesRequestBuilder struct {
 // ItemPoliciesRequestBuilderGetQueryParameters list all policies for an organization.
 type ItemPoliciesRequestBuilderGetQueryParameters struct {
     // Filter policies by kind. Valid values are sentinel and opa.
-    // Deprecated: This property is deprecated, use FilterkindAsGetFilterKindQueryParameterType instead
-    Filterkind *string `uriparametername:"filter%5Bkind%5D"`
-    // Filter policies by kind. Valid values are sentinel and opa.
-    FilterkindAsGetFilterKindQueryParameterType *i29ed60ffada51fea9c66680f62ab8824b02e11b84346bfd017c990c54eec3585.GetFilterKindQueryParameterType `uriparametername:"filter%5Bkind%5D"`
+    Filterkind *i29ed60ffada51fea9c66680f62ab8824b02e11b84346bfd017c990c54eec3585.GetFilterKindQueryParameterType `uriparametername:"filter%5Bkind%5D"`
     // The page number to retrieve.
     Pagenumber *int32 `uriparametername:"page%5Bnumber%5D"`
     // The number of items to retrieve per page. Defaults to 20.
@@ -29,22 +26,6 @@ type ItemPoliciesRequestBuilderGetQueryParameters struct {
     Searchname *string `uriparametername:"search%5Bname%5D"`
     // Sort policies by the specified field. Valid values are name, -name, updated-at, and -updated-at. Prefix with - for descending order.
     Sort *string `uriparametername:"sort"`
-}
-// ItemPoliciesRequestBuilderGetRequestConfiguration configuration for the request such as headers, query parameters, and middleware options.
-type ItemPoliciesRequestBuilderGetRequestConfiguration struct {
-    // Request headers
-    Headers *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestHeaders
-    // Request options
-    Options []i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestOption
-    // Request query parameters
-    QueryParameters *ItemPoliciesRequestBuilderGetQueryParameters
-}
-// ItemPoliciesRequestBuilderPostRequestConfiguration configuration for the request such as headers, query parameters, and middleware options.
-type ItemPoliciesRequestBuilderPostRequestConfiguration struct {
-    // Request headers
-    Headers *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestHeaders
-    // Request options
-    Options []i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestOption
 }
 // NewItemPoliciesRequestBuilderInternal instantiates a new ItemPoliciesRequestBuilder and sets the default values.
 func NewItemPoliciesRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*ItemPoliciesRequestBuilder) {
@@ -60,30 +41,9 @@ func NewItemPoliciesRequestBuilder(rawUrl string, requestAdapter i2ae4187f7daee2
     return NewItemPoliciesRequestBuilderInternal(urlParams, requestAdapter)
 }
 // Get list all policies for an organization.
-// Deprecated: This method is obsolete. Use GetAsPoliciesGetResponse instead.
-// returns a ItemPoliciesResponseable when successful
-// returns a Errors error when the service returns a 4XX or 5XX status code
-func (m *ItemPoliciesRequestBuilder) Get(ctx context.Context, requestConfiguration *ItemPoliciesRequestBuilderGetRequestConfiguration)(ItemPoliciesResponseable, error) {
-    requestInfo, err := m.ToGetRequestInformation(ctx, requestConfiguration);
-    if err != nil {
-        return nil, err
-    }
-    errorMapping := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ErrorMappings {
-        "XXX": ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.CreateErrorsFromDiscriminatorValue,
-    }
-    res, err := m.BaseRequestBuilder.RequestAdapter.Send(ctx, requestInfo, CreateItemPoliciesResponseFromDiscriminatorValue, errorMapping)
-    if err != nil {
-        return nil, err
-    }
-    if res == nil {
-        return nil, nil
-    }
-    return res.(ItemPoliciesResponseable), nil
-}
-// GetAsPoliciesGetResponse list all policies for an organization.
 // returns a ItemPoliciesGetResponseable when successful
 // returns a Errors error when the service returns a 4XX or 5XX status code
-func (m *ItemPoliciesRequestBuilder) GetAsPoliciesGetResponse(ctx context.Context, requestConfiguration *ItemPoliciesRequestBuilderGetRequestConfiguration)(ItemPoliciesGetResponseable, error) {
+func (m *ItemPoliciesRequestBuilder) Get(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[ItemPoliciesRequestBuilderGetQueryParameters])(ItemPoliciesGetResponseable, error) {
     requestInfo, err := m.ToGetRequestInformation(ctx, requestConfiguration);
     if err != nil {
         return nil, err
@@ -101,30 +61,9 @@ func (m *ItemPoliciesRequestBuilder) GetAsPoliciesGetResponse(ctx context.Contex
     return res.(ItemPoliciesGetResponseable), nil
 }
 // Post create a new policy object for the organization. After creation, upload the policy code using the upload endpoint.
-// Deprecated: This method is obsolete. Use PostAsPoliciesPostResponse instead.
-// returns a ItemPoliciesResponseable when successful
-// returns a Errors error when the service returns a 4XX or 5XX status code
-func (m *ItemPoliciesRequestBuilder) Post(ctx context.Context, body ItemPoliciesPostRequestBodyable, requestConfiguration *ItemPoliciesRequestBuilderPostRequestConfiguration)(ItemPoliciesResponseable, error) {
-    requestInfo, err := m.ToPostRequestInformation(ctx, body, requestConfiguration);
-    if err != nil {
-        return nil, err
-    }
-    errorMapping := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ErrorMappings {
-        "XXX": ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.CreateErrorsFromDiscriminatorValue,
-    }
-    res, err := m.BaseRequestBuilder.RequestAdapter.Send(ctx, requestInfo, CreateItemPoliciesResponseFromDiscriminatorValue, errorMapping)
-    if err != nil {
-        return nil, err
-    }
-    if res == nil {
-        return nil, nil
-    }
-    return res.(ItemPoliciesResponseable), nil
-}
-// PostAsPoliciesPostResponse create a new policy object for the organization. After creation, upload the policy code using the upload endpoint.
 // returns a ItemPoliciesPostResponseable when successful
 // returns a Errors error when the service returns a 4XX or 5XX status code
-func (m *ItemPoliciesRequestBuilder) PostAsPoliciesPostResponse(ctx context.Context, body ItemPoliciesPostRequestBodyable, requestConfiguration *ItemPoliciesRequestBuilderPostRequestConfiguration)(ItemPoliciesPostResponseable, error) {
+func (m *ItemPoliciesRequestBuilder) Post(ctx context.Context, body ItemPoliciesPostRequestBodyable, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(ItemPoliciesPostResponseable, error) {
     requestInfo, err := m.ToPostRequestInformation(ctx, body, requestConfiguration);
     if err != nil {
         return nil, err
@@ -143,26 +82,17 @@ func (m *ItemPoliciesRequestBuilder) PostAsPoliciesPostResponse(ctx context.Cont
 }
 // ToGetRequestInformation list all policies for an organization.
 // returns a *RequestInformation when successful
-func (m *ItemPoliciesRequestBuilder) ToGetRequestInformation(ctx context.Context, requestConfiguration *ItemPoliciesRequestBuilderGetRequestConfiguration)(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
+func (m *ItemPoliciesRequestBuilder) ToGetRequestInformation(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[ItemPoliciesRequestBuilderGetQueryParameters])(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
     requestInfo := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewRequestInformationWithMethodAndUrlTemplateAndPathParameters(i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.GET, m.BaseRequestBuilder.UrlTemplate, m.BaseRequestBuilder.PathParameters)
-    if requestConfiguration != nil {
-        if requestConfiguration.QueryParameters != nil {
-            requestInfo.AddQueryParameters(*(requestConfiguration.QueryParameters))
-        }
-        requestInfo.Headers.AddAll(requestConfiguration.Headers)
-        requestInfo.AddRequestOptions(requestConfiguration.Options)
-    }
+    i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ConfigureRequestInformation(requestInfo, requestConfiguration)
     requestInfo.Headers.TryAdd("Accept", "application/vnd.api+json")
     return requestInfo, nil
 }
 // ToPostRequestInformation create a new policy object for the organization. After creation, upload the policy code using the upload endpoint.
 // returns a *RequestInformation when successful
-func (m *ItemPoliciesRequestBuilder) ToPostRequestInformation(ctx context.Context, body ItemPoliciesPostRequestBodyable, requestConfiguration *ItemPoliciesRequestBuilderPostRequestConfiguration)(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
+func (m *ItemPoliciesRequestBuilder) ToPostRequestInformation(ctx context.Context, body ItemPoliciesPostRequestBodyable, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
     requestInfo := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewRequestInformationWithMethodAndUrlTemplateAndPathParameters(i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.POST, m.BaseRequestBuilder.UrlTemplate, m.BaseRequestBuilder.PathParameters)
-    if requestConfiguration != nil {
-        requestInfo.Headers.AddAll(requestConfiguration.Headers)
-        requestInfo.AddRequestOptions(requestConfiguration.Options)
-    }
+    i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ConfigureRequestInformation(requestInfo, requestConfiguration)
     requestInfo.Headers.TryAdd("Accept", "application/vnd.api+json")
     err := requestInfo.SetContentFromParsable(ctx, m.BaseRequestBuilder.RequestAdapter, "application/vnd.api+json", body)
     if err != nil {

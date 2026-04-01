@@ -13,20 +13,6 @@ import (
 type ItemActionsArchiveRequestBuilder struct {
     i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.BaseRequestBuilder
 }
-// ItemActionsArchiveRequestBuilderGetRequestConfiguration configuration for the request such as headers, query parameters, and middleware options.
-type ItemActionsArchiveRequestBuilderGetRequestConfiguration struct {
-    // Request headers
-    Headers *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestHeaders
-    // Request options
-    Options []i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestOption
-}
-// ItemActionsArchiveRequestBuilderPostRequestConfiguration configuration for the request such as headers, query parameters, and middleware options.
-type ItemActionsArchiveRequestBuilderPostRequestConfiguration struct {
-    // Request headers
-    Headers *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestHeaders
-    // Request options
-    Options []i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestOption
-}
 // NewItemActionsArchiveRequestBuilderInternal instantiates a new ItemActionsArchiveRequestBuilder and sets the default values.
 func NewItemActionsArchiveRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*ItemActionsArchiveRequestBuilder) {
     m := &ItemActionsArchiveRequestBuilder{
@@ -41,30 +27,9 @@ func NewItemActionsArchiveRequestBuilder(rawUrl string, requestAdapter i2ae4187f
     return NewItemActionsArchiveRequestBuilderInternal(urlParams, requestAdapter)
 }
 // Get get the current state of a change request, including its archive status.
-// Deprecated: This method is obsolete. Use GetAsArchiveGetResponse instead.
-// returns a ItemActionsArchiveResponseable when successful
-// returns a Errors error when the service returns a 4XX or 5XX status code
-func (m *ItemActionsArchiveRequestBuilder) Get(ctx context.Context, requestConfiguration *ItemActionsArchiveRequestBuilderGetRequestConfiguration)(ItemActionsArchiveResponseable, error) {
-    requestInfo, err := m.ToGetRequestInformation(ctx, requestConfiguration);
-    if err != nil {
-        return nil, err
-    }
-    errorMapping := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ErrorMappings {
-        "XXX": ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.CreateErrorsFromDiscriminatorValue,
-    }
-    res, err := m.BaseRequestBuilder.RequestAdapter.Send(ctx, requestInfo, CreateItemActionsArchiveResponseFromDiscriminatorValue, errorMapping)
-    if err != nil {
-        return nil, err
-    }
-    if res == nil {
-        return nil, nil
-    }
-    return res.(ItemActionsArchiveResponseable), nil
-}
-// GetAsArchiveGetResponse get the current state of a change request, including its archive status.
 // returns a ItemActionsArchiveGetResponseable when successful
 // returns a Errors error when the service returns a 4XX or 5XX status code
-func (m *ItemActionsArchiveRequestBuilder) GetAsArchiveGetResponse(ctx context.Context, requestConfiguration *ItemActionsArchiveRequestBuilderGetRequestConfiguration)(ItemActionsArchiveGetResponseable, error) {
+func (m *ItemActionsArchiveRequestBuilder) Get(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(ItemActionsArchiveGetResponseable, error) {
     requestInfo, err := m.ToGetRequestInformation(ctx, requestConfiguration);
     if err != nil {
         return nil, err
@@ -82,33 +47,10 @@ func (m *ItemActionsArchiveRequestBuilder) GetAsArchiveGetResponse(ctx context.C
     return res.(ItemActionsArchiveGetResponseable), nil
 }
 // Post archive a change request to mark it as completed.
-// Deprecated: This method is obsolete. Use PostAsArchivePostResponse instead.
-// returns a ItemActionsArchiveResponseable when successful
-// returns a Errors error when the service returns a 400 status code
-// returns a Errors error when the service returns a 4XX or 5XX status code
-func (m *ItemActionsArchiveRequestBuilder) Post(ctx context.Context, requestConfiguration *ItemActionsArchiveRequestBuilderPostRequestConfiguration)(ItemActionsArchiveResponseable, error) {
-    requestInfo, err := m.ToPostRequestInformation(ctx, requestConfiguration);
-    if err != nil {
-        return nil, err
-    }
-    errorMapping := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ErrorMappings {
-        "400": ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.CreateErrorsFromDiscriminatorValue,
-        "XXX": ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.CreateErrorsFromDiscriminatorValue,
-    }
-    res, err := m.BaseRequestBuilder.RequestAdapter.Send(ctx, requestInfo, CreateItemActionsArchiveResponseFromDiscriminatorValue, errorMapping)
-    if err != nil {
-        return nil, err
-    }
-    if res == nil {
-        return nil, nil
-    }
-    return res.(ItemActionsArchiveResponseable), nil
-}
-// PostAsArchivePostResponse archive a change request to mark it as completed.
 // returns a ItemActionsArchivePostResponseable when successful
 // returns a Errors error when the service returns a 400 status code
 // returns a Errors error when the service returns a 4XX or 5XX status code
-func (m *ItemActionsArchiveRequestBuilder) PostAsArchivePostResponse(ctx context.Context, requestConfiguration *ItemActionsArchiveRequestBuilderPostRequestConfiguration)(ItemActionsArchivePostResponseable, error) {
+func (m *ItemActionsArchiveRequestBuilder) Post(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(ItemActionsArchivePostResponseable, error) {
     requestInfo, err := m.ToPostRequestInformation(ctx, requestConfiguration);
     if err != nil {
         return nil, err
@@ -128,23 +70,17 @@ func (m *ItemActionsArchiveRequestBuilder) PostAsArchivePostResponse(ctx context
 }
 // ToGetRequestInformation get the current state of a change request, including its archive status.
 // returns a *RequestInformation when successful
-func (m *ItemActionsArchiveRequestBuilder) ToGetRequestInformation(ctx context.Context, requestConfiguration *ItemActionsArchiveRequestBuilderGetRequestConfiguration)(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
+func (m *ItemActionsArchiveRequestBuilder) ToGetRequestInformation(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
     requestInfo := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewRequestInformationWithMethodAndUrlTemplateAndPathParameters(i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.GET, m.BaseRequestBuilder.UrlTemplate, m.BaseRequestBuilder.PathParameters)
-    if requestConfiguration != nil {
-        requestInfo.Headers.AddAll(requestConfiguration.Headers)
-        requestInfo.AddRequestOptions(requestConfiguration.Options)
-    }
+    i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ConfigureRequestInformation(requestInfo, requestConfiguration)
     requestInfo.Headers.TryAdd("Accept", "application/vnd.api+json")
     return requestInfo, nil
 }
 // ToPostRequestInformation archive a change request to mark it as completed.
 // returns a *RequestInformation when successful
-func (m *ItemActionsArchiveRequestBuilder) ToPostRequestInformation(ctx context.Context, requestConfiguration *ItemActionsArchiveRequestBuilderPostRequestConfiguration)(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
+func (m *ItemActionsArchiveRequestBuilder) ToPostRequestInformation(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
     requestInfo := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewRequestInformationWithMethodAndUrlTemplateAndPathParameters(i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.POST, m.BaseRequestBuilder.UrlTemplate, m.BaseRequestBuilder.PathParameters)
-    if requestConfiguration != nil {
-        requestInfo.Headers.AddAll(requestConfiguration.Headers)
-        requestInfo.AddRequestOptions(requestConfiguration.Options)
-    }
+    i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ConfigureRequestInformation(requestInfo, requestConfiguration)
     requestInfo.Headers.TryAdd("Accept", "application/vnd.api+json")
     return requestInfo, nil
 }

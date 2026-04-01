@@ -13,13 +13,6 @@ import (
 type ItemUploadRequestBuilder struct {
     i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.BaseRequestBuilder
 }
-// ItemUploadRequestBuilderPutRequestConfiguration configuration for the request such as headers, query parameters, and middleware options.
-type ItemUploadRequestBuilderPutRequestConfiguration struct {
-    // Request headers
-    Headers *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestHeaders
-    // Request options
-    Options []i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestOption
-}
 // NewItemUploadRequestBuilderInternal instantiates a new ItemUploadRequestBuilder and sets the default values.
 func NewItemUploadRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*ItemUploadRequestBuilder) {
     m := &ItemUploadRequestBuilder{
@@ -34,30 +27,9 @@ func NewItemUploadRequestBuilder(rawUrl string, requestAdapter i2ae4187f7daee263
     return NewItemUploadRequestBuilderInternal(urlParams, requestAdapter)
 }
 // Put upload code to an existing Sentinel or OPA policy. The request body must be the policy code with a Content-Type of application/octet-stream. Policy uploads are limited to 10MB.
-// Deprecated: This method is obsolete. Use PutAsUploadPutResponse instead.
-// returns a ItemUploadResponseable when successful
-// returns a Errors error when the service returns a 4XX or 5XX status code
-func (m *ItemUploadRequestBuilder) Put(ctx context.Context, body []byte, requestConfiguration *ItemUploadRequestBuilderPutRequestConfiguration)(ItemUploadResponseable, error) {
-    requestInfo, err := m.ToPutRequestInformation(ctx, body, requestConfiguration);
-    if err != nil {
-        return nil, err
-    }
-    errorMapping := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ErrorMappings {
-        "XXX": ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.CreateErrorsFromDiscriminatorValue,
-    }
-    res, err := m.BaseRequestBuilder.RequestAdapter.Send(ctx, requestInfo, CreateItemUploadResponseFromDiscriminatorValue, errorMapping)
-    if err != nil {
-        return nil, err
-    }
-    if res == nil {
-        return nil, nil
-    }
-    return res.(ItemUploadResponseable), nil
-}
-// PutAsUploadPutResponse upload code to an existing Sentinel or OPA policy. The request body must be the policy code with a Content-Type of application/octet-stream. Policy uploads are limited to 10MB.
 // returns a ItemUploadPutResponseable when successful
 // returns a Errors error when the service returns a 4XX or 5XX status code
-func (m *ItemUploadRequestBuilder) PutAsUploadPutResponse(ctx context.Context, body []byte, requestConfiguration *ItemUploadRequestBuilderPutRequestConfiguration)(ItemUploadPutResponseable, error) {
+func (m *ItemUploadRequestBuilder) Put(ctx context.Context, body []byte, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(ItemUploadPutResponseable, error) {
     requestInfo, err := m.ToPutRequestInformation(ctx, body, requestConfiguration);
     if err != nil {
         return nil, err
@@ -76,12 +48,9 @@ func (m *ItemUploadRequestBuilder) PutAsUploadPutResponse(ctx context.Context, b
 }
 // ToPutRequestInformation upload code to an existing Sentinel or OPA policy. The request body must be the policy code with a Content-Type of application/octet-stream. Policy uploads are limited to 10MB.
 // returns a *RequestInformation when successful
-func (m *ItemUploadRequestBuilder) ToPutRequestInformation(ctx context.Context, body []byte, requestConfiguration *ItemUploadRequestBuilderPutRequestConfiguration)(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
+func (m *ItemUploadRequestBuilder) ToPutRequestInformation(ctx context.Context, body []byte, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
     requestInfo := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewRequestInformationWithMethodAndUrlTemplateAndPathParameters(i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.PUT, m.BaseRequestBuilder.UrlTemplate, m.BaseRequestBuilder.PathParameters)
-    if requestConfiguration != nil {
-        requestInfo.Headers.AddAll(requestConfiguration.Headers)
-        requestInfo.AddRequestOptions(requestConfiguration.Options)
-    }
+    i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ConfigureRequestInformation(requestInfo, requestConfiguration)
     requestInfo.Headers.TryAdd("Accept", "application/vnd.api+json")
     requestInfo.SetStreamContentAndContentType(body, "application/octet-stream")
     return requestInfo, nil

@@ -13,27 +13,6 @@ import (
 type WithOauth_token_ItemRequestBuilder struct {
     i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.BaseRequestBuilder
 }
-// WithOauth_token_ItemRequestBuilderDeleteRequestConfiguration configuration for the request such as headers, query parameters, and middleware options.
-type WithOauth_token_ItemRequestBuilderDeleteRequestConfiguration struct {
-    // Request headers
-    Headers *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestHeaders
-    // Request options
-    Options []i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestOption
-}
-// WithOauth_token_ItemRequestBuilderGetRequestConfiguration configuration for the request such as headers, query parameters, and middleware options.
-type WithOauth_token_ItemRequestBuilderGetRequestConfiguration struct {
-    // Request headers
-    Headers *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestHeaders
-    // Request options
-    Options []i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestOption
-}
-// WithOauth_token_ItemRequestBuilderPatchRequestConfiguration configuration for the request such as headers, query parameters, and middleware options.
-type WithOauth_token_ItemRequestBuilderPatchRequestConfiguration struct {
-    // Request headers
-    Headers *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestHeaders
-    // Request options
-    Options []i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestOption
-}
 // AuthorizedRepos the authorizedRepos property
 // returns a *ItemAuthorizedReposRequestBuilder when successful
 func (m *WithOauth_token_ItemRequestBuilder) AuthorizedRepos()(*ItemAuthorizedReposRequestBuilder) {
@@ -54,7 +33,7 @@ func NewWithOauth_token_ItemRequestBuilder(rawUrl string, requestAdapter i2ae418
 }
 // Delete destroy an OAuth token.
 // returns a Errors error when the service returns a 404 status code
-func (m *WithOauth_token_ItemRequestBuilder) Delete(ctx context.Context, requestConfiguration *WithOauth_token_ItemRequestBuilderDeleteRequestConfiguration)(error) {
+func (m *WithOauth_token_ItemRequestBuilder) Delete(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(error) {
     requestInfo, err := m.ToDeleteRequestInformation(ctx, requestConfiguration);
     if err != nil {
         return err
@@ -69,30 +48,9 @@ func (m *WithOauth_token_ItemRequestBuilder) Delete(ctx context.Context, request
     return nil
 }
 // Get get details about an OAuth token.
-// Deprecated: This method is obsolete. Use GetAsWithOauth_token_GetResponse instead.
-// returns a ItemWithOauth_token_Responseable when successful
-// returns a Errors error when the service returns a 404 status code
-func (m *WithOauth_token_ItemRequestBuilder) Get(ctx context.Context, requestConfiguration *WithOauth_token_ItemRequestBuilderGetRequestConfiguration)(ItemWithOauth_token_Responseable, error) {
-    requestInfo, err := m.ToGetRequestInformation(ctx, requestConfiguration);
-    if err != nil {
-        return nil, err
-    }
-    errorMapping := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ErrorMappings {
-        "404": ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.CreateErrorsFromDiscriminatorValue,
-    }
-    res, err := m.BaseRequestBuilder.RequestAdapter.Send(ctx, requestInfo, CreateItemWithOauth_token_ResponseFromDiscriminatorValue, errorMapping)
-    if err != nil {
-        return nil, err
-    }
-    if res == nil {
-        return nil, nil
-    }
-    return res.(ItemWithOauth_token_Responseable), nil
-}
-// GetAsWithOauth_token_GetResponse get details about an OAuth token.
 // returns a ItemWithOauth_token_GetResponseable when successful
 // returns a Errors error when the service returns a 404 status code
-func (m *WithOauth_token_ItemRequestBuilder) GetAsWithOauth_token_GetResponse(ctx context.Context, requestConfiguration *WithOauth_token_ItemRequestBuilderGetRequestConfiguration)(ItemWithOauth_token_GetResponseable, error) {
+func (m *WithOauth_token_ItemRequestBuilder) Get(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(ItemWithOauth_token_GetResponseable, error) {
     requestInfo, err := m.ToGetRequestInformation(ctx, requestConfiguration);
     if err != nil {
         return nil, err
@@ -110,33 +68,10 @@ func (m *WithOauth_token_ItemRequestBuilder) GetAsWithOauth_token_GetResponse(ct
     return res.(ItemWithOauth_token_GetResponseable), nil
 }
 // Patch update an OAuth token by setting its SSH key.
-// Deprecated: This method is obsolete. Use PatchAsWithOauth_token_PatchResponse instead.
-// returns a ItemWithOauth_token_Responseable when successful
-// returns a Errors error when the service returns a 404 status code
-// returns a Errors error when the service returns a 422 status code
-func (m *WithOauth_token_ItemRequestBuilder) Patch(ctx context.Context, body ItemWithOauth_token_PatchRequestBodyable, requestConfiguration *WithOauth_token_ItemRequestBuilderPatchRequestConfiguration)(ItemWithOauth_token_Responseable, error) {
-    requestInfo, err := m.ToPatchRequestInformation(ctx, body, requestConfiguration);
-    if err != nil {
-        return nil, err
-    }
-    errorMapping := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ErrorMappings {
-        "404": ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.CreateErrorsFromDiscriminatorValue,
-        "422": ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.CreateErrorsFromDiscriminatorValue,
-    }
-    res, err := m.BaseRequestBuilder.RequestAdapter.Send(ctx, requestInfo, CreateItemWithOauth_token_ResponseFromDiscriminatorValue, errorMapping)
-    if err != nil {
-        return nil, err
-    }
-    if res == nil {
-        return nil, nil
-    }
-    return res.(ItemWithOauth_token_Responseable), nil
-}
-// PatchAsWithOauth_token_PatchResponse update an OAuth token by setting its SSH key.
 // returns a ItemWithOauth_token_PatchResponseable when successful
 // returns a Errors error when the service returns a 404 status code
 // returns a Errors error when the service returns a 422 status code
-func (m *WithOauth_token_ItemRequestBuilder) PatchAsWithOauth_token_PatchResponse(ctx context.Context, body ItemWithOauth_token_PatchRequestBodyable, requestConfiguration *WithOauth_token_ItemRequestBuilderPatchRequestConfiguration)(ItemWithOauth_token_PatchResponseable, error) {
+func (m *WithOauth_token_ItemRequestBuilder) Patch(ctx context.Context, body ItemWithOauth_token_PatchRequestBodyable, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(ItemWithOauth_token_PatchResponseable, error) {
     requestInfo, err := m.ToPatchRequestInformation(ctx, body, requestConfiguration);
     if err != nil {
         return nil, err
@@ -156,34 +91,25 @@ func (m *WithOauth_token_ItemRequestBuilder) PatchAsWithOauth_token_PatchRespons
 }
 // ToDeleteRequestInformation destroy an OAuth token.
 // returns a *RequestInformation when successful
-func (m *WithOauth_token_ItemRequestBuilder) ToDeleteRequestInformation(ctx context.Context, requestConfiguration *WithOauth_token_ItemRequestBuilderDeleteRequestConfiguration)(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
+func (m *WithOauth_token_ItemRequestBuilder) ToDeleteRequestInformation(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
     requestInfo := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewRequestInformationWithMethodAndUrlTemplateAndPathParameters(i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DELETE, m.BaseRequestBuilder.UrlTemplate, m.BaseRequestBuilder.PathParameters)
-    if requestConfiguration != nil {
-        requestInfo.Headers.AddAll(requestConfiguration.Headers)
-        requestInfo.AddRequestOptions(requestConfiguration.Options)
-    }
+    i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ConfigureRequestInformation(requestInfo, requestConfiguration)
     requestInfo.Headers.TryAdd("Accept", "application/vnd.api+json")
     return requestInfo, nil
 }
 // ToGetRequestInformation get details about an OAuth token.
 // returns a *RequestInformation when successful
-func (m *WithOauth_token_ItemRequestBuilder) ToGetRequestInformation(ctx context.Context, requestConfiguration *WithOauth_token_ItemRequestBuilderGetRequestConfiguration)(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
+func (m *WithOauth_token_ItemRequestBuilder) ToGetRequestInformation(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
     requestInfo := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewRequestInformationWithMethodAndUrlTemplateAndPathParameters(i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.GET, m.BaseRequestBuilder.UrlTemplate, m.BaseRequestBuilder.PathParameters)
-    if requestConfiguration != nil {
-        requestInfo.Headers.AddAll(requestConfiguration.Headers)
-        requestInfo.AddRequestOptions(requestConfiguration.Options)
-    }
+    i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ConfigureRequestInformation(requestInfo, requestConfiguration)
     requestInfo.Headers.TryAdd("Accept", "application/vnd.api+json")
     return requestInfo, nil
 }
 // ToPatchRequestInformation update an OAuth token by setting its SSH key.
 // returns a *RequestInformation when successful
-func (m *WithOauth_token_ItemRequestBuilder) ToPatchRequestInformation(ctx context.Context, body ItemWithOauth_token_PatchRequestBodyable, requestConfiguration *WithOauth_token_ItemRequestBuilderPatchRequestConfiguration)(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
+func (m *WithOauth_token_ItemRequestBuilder) ToPatchRequestInformation(ctx context.Context, body ItemWithOauth_token_PatchRequestBodyable, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
     requestInfo := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewRequestInformationWithMethodAndUrlTemplateAndPathParameters(i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.PATCH, m.BaseRequestBuilder.UrlTemplate, m.BaseRequestBuilder.PathParameters)
-    if requestConfiguration != nil {
-        requestInfo.Headers.AddAll(requestConfiguration.Headers)
-        requestInfo.AddRequestOptions(requestConfiguration.Options)
-    }
+    i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ConfigureRequestInformation(requestInfo, requestConfiguration)
     requestInfo.Headers.TryAdd("Accept", "application/vnd.api+json")
     err := requestInfo.SetContentFromParsable(ctx, m.BaseRequestBuilder.RequestAdapter, "application/vnd.api+json", body)
     if err != nil {

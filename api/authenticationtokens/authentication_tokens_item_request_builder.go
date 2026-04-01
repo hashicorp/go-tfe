@@ -13,27 +13,6 @@ import (
 type AuthenticationTokensItemRequestBuilder struct {
     i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.BaseRequestBuilder
 }
-// AuthenticationTokensItemRequestBuilderDeleteRequestConfiguration configuration for the request such as headers, query parameters, and middleware options.
-type AuthenticationTokensItemRequestBuilderDeleteRequestConfiguration struct {
-    // Request headers
-    Headers *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestHeaders
-    // Request options
-    Options []i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestOption
-}
-// AuthenticationTokensItemRequestBuilderGetRequestConfiguration configuration for the request such as headers, query parameters, and middleware options.
-type AuthenticationTokensItemRequestBuilderGetRequestConfiguration struct {
-    // Request headers
-    Headers *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestHeaders
-    // Request options
-    Options []i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestOption
-}
-// AuthenticationTokensItemRequestBuilderPostRequestConfiguration configuration for the request such as headers, query parameters, and middleware options.
-type AuthenticationTokensItemRequestBuilderPostRequestConfiguration struct {
-    // Request headers
-    Headers *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestHeaders
-    // Request options
-    Options []i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestOption
-}
 // NewAuthenticationTokensItemRequestBuilderInternal instantiates a new AuthenticationTokensItemRequestBuilder and sets the default values.
 func NewAuthenticationTokensItemRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*AuthenticationTokensItemRequestBuilder) {
     m := &AuthenticationTokensItemRequestBuilder{
@@ -49,7 +28,7 @@ func NewAuthenticationTokensItemRequestBuilder(rawUrl string, requestAdapter i2a
 }
 // Delete delete an authentication token
 // returns a Errors error when the service returns a 4XX or 5XX status code
-func (m *AuthenticationTokensItemRequestBuilder) Delete(ctx context.Context, requestConfiguration *AuthenticationTokensItemRequestBuilderDeleteRequestConfiguration)(error) {
+func (m *AuthenticationTokensItemRequestBuilder) Delete(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(error) {
     requestInfo, err := m.ToDeleteRequestInformation(ctx, requestConfiguration);
     if err != nil {
         return err
@@ -64,30 +43,9 @@ func (m *AuthenticationTokensItemRequestBuilder) Delete(ctx context.Context, req
     return nil
 }
 // Get get details about an authentication token
-// Deprecated: This method is obsolete. Use GetAsAuthenticationTokensGetResponse instead.
-// returns a ItemAuthenticationTokensResponseable when successful
-// returns a Errors error when the service returns a 4XX or 5XX status code
-func (m *AuthenticationTokensItemRequestBuilder) Get(ctx context.Context, requestConfiguration *AuthenticationTokensItemRequestBuilderGetRequestConfiguration)(ItemAuthenticationTokensResponseable, error) {
-    requestInfo, err := m.ToGetRequestInformation(ctx, requestConfiguration);
-    if err != nil {
-        return nil, err
-    }
-    errorMapping := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ErrorMappings {
-        "XXX": ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.CreateErrorsFromDiscriminatorValue,
-    }
-    res, err := m.BaseRequestBuilder.RequestAdapter.Send(ctx, requestInfo, CreateItemAuthenticationTokensResponseFromDiscriminatorValue, errorMapping)
-    if err != nil {
-        return nil, err
-    }
-    if res == nil {
-        return nil, nil
-    }
-    return res.(ItemAuthenticationTokensResponseable), nil
-}
-// GetAsAuthenticationTokensGetResponse get details about an authentication token
 // returns a ItemAuthenticationTokensGetResponseable when successful
 // returns a Errors error when the service returns a 4XX or 5XX status code
-func (m *AuthenticationTokensItemRequestBuilder) GetAsAuthenticationTokensGetResponse(ctx context.Context, requestConfiguration *AuthenticationTokensItemRequestBuilderGetRequestConfiguration)(ItemAuthenticationTokensGetResponseable, error) {
+func (m *AuthenticationTokensItemRequestBuilder) Get(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(ItemAuthenticationTokensGetResponseable, error) {
     requestInfo, err := m.ToGetRequestInformation(ctx, requestConfiguration);
     if err != nil {
         return nil, err
@@ -105,30 +63,9 @@ func (m *AuthenticationTokensItemRequestBuilder) GetAsAuthenticationTokensGetRes
     return res.(ItemAuthenticationTokensGetResponseable), nil
 }
 // Post create an authentication token
-// Deprecated: This method is obsolete. Use PostAsAuthenticationTokensPostResponse instead.
-// returns a ItemAuthenticationTokensResponseable when successful
-// returns a Errors error when the service returns a 4XX or 5XX status code
-func (m *AuthenticationTokensItemRequestBuilder) Post(ctx context.Context, requestConfiguration *AuthenticationTokensItemRequestBuilderPostRequestConfiguration)(ItemAuthenticationTokensResponseable, error) {
-    requestInfo, err := m.ToPostRequestInformation(ctx, requestConfiguration);
-    if err != nil {
-        return nil, err
-    }
-    errorMapping := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ErrorMappings {
-        "XXX": ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.CreateErrorsFromDiscriminatorValue,
-    }
-    res, err := m.BaseRequestBuilder.RequestAdapter.Send(ctx, requestInfo, CreateItemAuthenticationTokensResponseFromDiscriminatorValue, errorMapping)
-    if err != nil {
-        return nil, err
-    }
-    if res == nil {
-        return nil, nil
-    }
-    return res.(ItemAuthenticationTokensResponseable), nil
-}
-// PostAsAuthenticationTokensPostResponse create an authentication token
 // returns a ItemAuthenticationTokensPostResponseable when successful
 // returns a Errors error when the service returns a 4XX or 5XX status code
-func (m *AuthenticationTokensItemRequestBuilder) PostAsAuthenticationTokensPostResponse(ctx context.Context, requestConfiguration *AuthenticationTokensItemRequestBuilderPostRequestConfiguration)(ItemAuthenticationTokensPostResponseable, error) {
+func (m *AuthenticationTokensItemRequestBuilder) Post(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(ItemAuthenticationTokensPostResponseable, error) {
     requestInfo, err := m.ToPostRequestInformation(ctx, requestConfiguration);
     if err != nil {
         return nil, err
@@ -147,34 +84,25 @@ func (m *AuthenticationTokensItemRequestBuilder) PostAsAuthenticationTokensPostR
 }
 // ToDeleteRequestInformation delete an authentication token
 // returns a *RequestInformation when successful
-func (m *AuthenticationTokensItemRequestBuilder) ToDeleteRequestInformation(ctx context.Context, requestConfiguration *AuthenticationTokensItemRequestBuilderDeleteRequestConfiguration)(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
+func (m *AuthenticationTokensItemRequestBuilder) ToDeleteRequestInformation(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
     requestInfo := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewRequestInformationWithMethodAndUrlTemplateAndPathParameters(i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DELETE, m.BaseRequestBuilder.UrlTemplate, m.BaseRequestBuilder.PathParameters)
-    if requestConfiguration != nil {
-        requestInfo.Headers.AddAll(requestConfiguration.Headers)
-        requestInfo.AddRequestOptions(requestConfiguration.Options)
-    }
+    i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ConfigureRequestInformation(requestInfo, requestConfiguration)
     requestInfo.Headers.TryAdd("Accept", "application/vnd.api+json")
     return requestInfo, nil
 }
 // ToGetRequestInformation get details about an authentication token
 // returns a *RequestInformation when successful
-func (m *AuthenticationTokensItemRequestBuilder) ToGetRequestInformation(ctx context.Context, requestConfiguration *AuthenticationTokensItemRequestBuilderGetRequestConfiguration)(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
+func (m *AuthenticationTokensItemRequestBuilder) ToGetRequestInformation(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
     requestInfo := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewRequestInformationWithMethodAndUrlTemplateAndPathParameters(i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.GET, m.BaseRequestBuilder.UrlTemplate, m.BaseRequestBuilder.PathParameters)
-    if requestConfiguration != nil {
-        requestInfo.Headers.AddAll(requestConfiguration.Headers)
-        requestInfo.AddRequestOptions(requestConfiguration.Options)
-    }
+    i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ConfigureRequestInformation(requestInfo, requestConfiguration)
     requestInfo.Headers.TryAdd("Accept", "application/vnd.api+json")
     return requestInfo, nil
 }
 // ToPostRequestInformation create an authentication token
 // returns a *RequestInformation when successful
-func (m *AuthenticationTokensItemRequestBuilder) ToPostRequestInformation(ctx context.Context, requestConfiguration *AuthenticationTokensItemRequestBuilderPostRequestConfiguration)(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
+func (m *AuthenticationTokensItemRequestBuilder) ToPostRequestInformation(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
     requestInfo := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewRequestInformationWithMethodAndUrlTemplateAndPathParameters(i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.POST, m.BaseRequestBuilder.UrlTemplate, m.BaseRequestBuilder.PathParameters)
-    if requestConfiguration != nil {
-        requestInfo.Headers.AddAll(requestConfiguration.Headers)
-        requestInfo.AddRequestOptions(requestConfiguration.Options)
-    }
+    i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ConfigureRequestInformation(requestInfo, requestConfiguration)
     requestInfo.Headers.TryAdd("Accept", "application/vnd.api+json")
     return requestInfo, nil
 }

@@ -13,27 +13,6 @@ import (
 type WithNotification_configuration_ItemRequestBuilder struct {
     i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.BaseRequestBuilder
 }
-// WithNotification_configuration_ItemRequestBuilderDeleteRequestConfiguration configuration for the request such as headers, query parameters, and middleware options.
-type WithNotification_configuration_ItemRequestBuilderDeleteRequestConfiguration struct {
-    // Request headers
-    Headers *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestHeaders
-    // Request options
-    Options []i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestOption
-}
-// WithNotification_configuration_ItemRequestBuilderGetRequestConfiguration configuration for the request such as headers, query parameters, and middleware options.
-type WithNotification_configuration_ItemRequestBuilderGetRequestConfiguration struct {
-    // Request headers
-    Headers *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestHeaders
-    // Request options
-    Options []i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestOption
-}
-// WithNotification_configuration_ItemRequestBuilderPatchRequestConfiguration configuration for the request such as headers, query parameters, and middleware options.
-type WithNotification_configuration_ItemRequestBuilderPatchRequestConfiguration struct {
-    // Request headers
-    Headers *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestHeaders
-    // Request options
-    Options []i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestOption
-}
 // Actions the actions property
 // returns a *ItemActionsRequestBuilder when successful
 func (m *WithNotification_configuration_ItemRequestBuilder) Actions()(*ItemActionsRequestBuilder) {
@@ -54,7 +33,7 @@ func NewWithNotification_configuration_ItemRequestBuilder(rawUrl string, request
 }
 // Delete delete a notification configuration.
 // returns a Errors error when the service returns a 4XX or 5XX status code
-func (m *WithNotification_configuration_ItemRequestBuilder) Delete(ctx context.Context, requestConfiguration *WithNotification_configuration_ItemRequestBuilderDeleteRequestConfiguration)(error) {
+func (m *WithNotification_configuration_ItemRequestBuilder) Delete(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(error) {
     requestInfo, err := m.ToDeleteRequestInformation(ctx, requestConfiguration);
     if err != nil {
         return err
@@ -69,30 +48,9 @@ func (m *WithNotification_configuration_ItemRequestBuilder) Delete(ctx context.C
     return nil
 }
 // Get get details about a notification configuration.
-// Deprecated: This method is obsolete. Use GetAsWithNotification_configuration_GetResponse instead.
-// returns a ItemWithNotification_configuration_Responseable when successful
-// returns a Errors error when the service returns a 4XX or 5XX status code
-func (m *WithNotification_configuration_ItemRequestBuilder) Get(ctx context.Context, requestConfiguration *WithNotification_configuration_ItemRequestBuilderGetRequestConfiguration)(ItemWithNotification_configuration_Responseable, error) {
-    requestInfo, err := m.ToGetRequestInformation(ctx, requestConfiguration);
-    if err != nil {
-        return nil, err
-    }
-    errorMapping := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ErrorMappings {
-        "XXX": ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.CreateErrorsFromDiscriminatorValue,
-    }
-    res, err := m.BaseRequestBuilder.RequestAdapter.Send(ctx, requestInfo, CreateItemWithNotification_configuration_ResponseFromDiscriminatorValue, errorMapping)
-    if err != nil {
-        return nil, err
-    }
-    if res == nil {
-        return nil, nil
-    }
-    return res.(ItemWithNotification_configuration_Responseable), nil
-}
-// GetAsWithNotification_configuration_GetResponse get details about a notification configuration.
 // returns a ItemWithNotification_configuration_GetResponseable when successful
 // returns a Errors error when the service returns a 4XX or 5XX status code
-func (m *WithNotification_configuration_ItemRequestBuilder) GetAsWithNotification_configuration_GetResponse(ctx context.Context, requestConfiguration *WithNotification_configuration_ItemRequestBuilderGetRequestConfiguration)(ItemWithNotification_configuration_GetResponseable, error) {
+func (m *WithNotification_configuration_ItemRequestBuilder) Get(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(ItemWithNotification_configuration_GetResponseable, error) {
     requestInfo, err := m.ToGetRequestInformation(ctx, requestConfiguration);
     if err != nil {
         return nil, err
@@ -110,30 +68,9 @@ func (m *WithNotification_configuration_ItemRequestBuilder) GetAsWithNotificatio
     return res.(ItemWithNotification_configuration_GetResponseable), nil
 }
 // Patch update an existing notification configuration.
-// Deprecated: This method is obsolete. Use PatchAsWithNotification_configuration_PatchResponse instead.
-// returns a ItemWithNotification_configuration_Responseable when successful
-// returns a Errors error when the service returns a 4XX or 5XX status code
-func (m *WithNotification_configuration_ItemRequestBuilder) Patch(ctx context.Context, body ItemWithNotification_configuration_PatchRequestBodyable, requestConfiguration *WithNotification_configuration_ItemRequestBuilderPatchRequestConfiguration)(ItemWithNotification_configuration_Responseable, error) {
-    requestInfo, err := m.ToPatchRequestInformation(ctx, body, requestConfiguration);
-    if err != nil {
-        return nil, err
-    }
-    errorMapping := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ErrorMappings {
-        "XXX": ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.CreateErrorsFromDiscriminatorValue,
-    }
-    res, err := m.BaseRequestBuilder.RequestAdapter.Send(ctx, requestInfo, CreateItemWithNotification_configuration_ResponseFromDiscriminatorValue, errorMapping)
-    if err != nil {
-        return nil, err
-    }
-    if res == nil {
-        return nil, nil
-    }
-    return res.(ItemWithNotification_configuration_Responseable), nil
-}
-// PatchAsWithNotification_configuration_PatchResponse update an existing notification configuration.
 // returns a ItemWithNotification_configuration_PatchResponseable when successful
 // returns a Errors error when the service returns a 4XX or 5XX status code
-func (m *WithNotification_configuration_ItemRequestBuilder) PatchAsWithNotification_configuration_PatchResponse(ctx context.Context, body ItemWithNotification_configuration_PatchRequestBodyable, requestConfiguration *WithNotification_configuration_ItemRequestBuilderPatchRequestConfiguration)(ItemWithNotification_configuration_PatchResponseable, error) {
+func (m *WithNotification_configuration_ItemRequestBuilder) Patch(ctx context.Context, body ItemWithNotification_configuration_PatchRequestBodyable, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(ItemWithNotification_configuration_PatchResponseable, error) {
     requestInfo, err := m.ToPatchRequestInformation(ctx, body, requestConfiguration);
     if err != nil {
         return nil, err
@@ -152,34 +89,25 @@ func (m *WithNotification_configuration_ItemRequestBuilder) PatchAsWithNotificat
 }
 // ToDeleteRequestInformation delete a notification configuration.
 // returns a *RequestInformation when successful
-func (m *WithNotification_configuration_ItemRequestBuilder) ToDeleteRequestInformation(ctx context.Context, requestConfiguration *WithNotification_configuration_ItemRequestBuilderDeleteRequestConfiguration)(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
+func (m *WithNotification_configuration_ItemRequestBuilder) ToDeleteRequestInformation(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
     requestInfo := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewRequestInformationWithMethodAndUrlTemplateAndPathParameters(i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DELETE, m.BaseRequestBuilder.UrlTemplate, m.BaseRequestBuilder.PathParameters)
-    if requestConfiguration != nil {
-        requestInfo.Headers.AddAll(requestConfiguration.Headers)
-        requestInfo.AddRequestOptions(requestConfiguration.Options)
-    }
+    i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ConfigureRequestInformation(requestInfo, requestConfiguration)
     requestInfo.Headers.TryAdd("Accept", "application/vnd.api+json")
     return requestInfo, nil
 }
 // ToGetRequestInformation get details about a notification configuration.
 // returns a *RequestInformation when successful
-func (m *WithNotification_configuration_ItemRequestBuilder) ToGetRequestInformation(ctx context.Context, requestConfiguration *WithNotification_configuration_ItemRequestBuilderGetRequestConfiguration)(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
+func (m *WithNotification_configuration_ItemRequestBuilder) ToGetRequestInformation(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
     requestInfo := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewRequestInformationWithMethodAndUrlTemplateAndPathParameters(i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.GET, m.BaseRequestBuilder.UrlTemplate, m.BaseRequestBuilder.PathParameters)
-    if requestConfiguration != nil {
-        requestInfo.Headers.AddAll(requestConfiguration.Headers)
-        requestInfo.AddRequestOptions(requestConfiguration.Options)
-    }
+    i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ConfigureRequestInformation(requestInfo, requestConfiguration)
     requestInfo.Headers.TryAdd("Accept", "application/vnd.api+json")
     return requestInfo, nil
 }
 // ToPatchRequestInformation update an existing notification configuration.
 // returns a *RequestInformation when successful
-func (m *WithNotification_configuration_ItemRequestBuilder) ToPatchRequestInformation(ctx context.Context, body ItemWithNotification_configuration_PatchRequestBodyable, requestConfiguration *WithNotification_configuration_ItemRequestBuilderPatchRequestConfiguration)(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
+func (m *WithNotification_configuration_ItemRequestBuilder) ToPatchRequestInformation(ctx context.Context, body ItemWithNotification_configuration_PatchRequestBodyable, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
     requestInfo := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewRequestInformationWithMethodAndUrlTemplateAndPathParameters(i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.PATCH, m.BaseRequestBuilder.UrlTemplate, m.BaseRequestBuilder.PathParameters)
-    if requestConfiguration != nil {
-        requestInfo.Headers.AddAll(requestConfiguration.Headers)
-        requestInfo.AddRequestOptions(requestConfiguration.Options)
-    }
+    i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ConfigureRequestInformation(requestInfo, requestConfiguration)
     requestInfo.Headers.TryAdd("Accept", "application/vnd.api+json")
     err := requestInfo.SetContentFromParsable(ctx, m.BaseRequestBuilder.RequestAdapter, "application/vnd.api+json", body)
     if err != nil {

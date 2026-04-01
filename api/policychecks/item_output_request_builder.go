@@ -13,13 +13,6 @@ import (
 type ItemOutputRequestBuilder struct {
     i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.BaseRequestBuilder
 }
-// ItemOutputRequestBuilderGetRequestConfiguration configuration for the request such as headers, query parameters, and middleware options.
-type ItemOutputRequestBuilderGetRequestConfiguration struct {
-    // Request headers
-    Headers *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestHeaders
-    // Request options
-    Options []i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestOption
-}
 // NewItemOutputRequestBuilderInternal instantiates a new ItemOutputRequestBuilder and sets the default values.
 func NewItemOutputRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*ItemOutputRequestBuilder) {
     m := &ItemOutputRequestBuilder{
@@ -35,7 +28,7 @@ func NewItemOutputRequestBuilder(rawUrl string, requestAdapter i2ae4187f7daee263
 }
 // Get retrieve the Sentinel output log for a policy check. When output is available, the response redirects to a temporary presigned URL. When no result exists yet, the response is 204 No Content.
 // returns a Errors error when the service returns a 4XX or 5XX status code
-func (m *ItemOutputRequestBuilder) Get(ctx context.Context, requestConfiguration *ItemOutputRequestBuilderGetRequestConfiguration)(error) {
+func (m *ItemOutputRequestBuilder) Get(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(error) {
     requestInfo, err := m.ToGetRequestInformation(ctx, requestConfiguration);
     if err != nil {
         return err
@@ -51,12 +44,9 @@ func (m *ItemOutputRequestBuilder) Get(ctx context.Context, requestConfiguration
 }
 // ToGetRequestInformation retrieve the Sentinel output log for a policy check. When output is available, the response redirects to a temporary presigned URL. When no result exists yet, the response is 204 No Content.
 // returns a *RequestInformation when successful
-func (m *ItemOutputRequestBuilder) ToGetRequestInformation(ctx context.Context, requestConfiguration *ItemOutputRequestBuilderGetRequestConfiguration)(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
+func (m *ItemOutputRequestBuilder) ToGetRequestInformation(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
     requestInfo := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewRequestInformationWithMethodAndUrlTemplateAndPathParameters(i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.GET, m.BaseRequestBuilder.UrlTemplate, m.BaseRequestBuilder.PathParameters)
-    if requestConfiguration != nil {
-        requestInfo.Headers.AddAll(requestConfiguration.Headers)
-        requestInfo.AddRequestOptions(requestConfiguration.Options)
-    }
+    i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ConfigureRequestInformation(requestInfo, requestConfiguration)
     requestInfo.Headers.TryAdd("Accept", "application/vnd.api+json")
     return requestInfo, nil
 }

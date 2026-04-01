@@ -7,7 +7,6 @@ import (
 
 	"github.com/hashicorp/cli"
 	"github.com/hashicorp/go-tfe"
-	"github.com/hashicorp/go-tfe/api/account"
 
 	abstractions "github.com/microsoft/kiota-abstractions-go"
 	khttp "github.com/microsoft/kiota-http-go"
@@ -47,7 +46,7 @@ func (inspectHeadersCommand) Run(args []string) int {
 	inspectionOptions.InspectResponseHeaders = true
 
 	// 2. Create/add the option to the RequestInformation object for the request
-	req := account.DetailsRequestBuilderGetRequestConfiguration{
+	req := abstractions.RequestConfiguration[abstractions.DefaultQueryParameters]{
 		Options: []abstractions.RequestOption{inspectionOptions},
 	}
 	if err != nil {
@@ -56,7 +55,7 @@ func (inspectHeadersCommand) Run(args []string) int {
 	}
 
 	// 3. Execute the request
-	_, err = client.API.Account().Details().GetAsDetailsGetResponse(ctx, &req)
+	_, err = client.API.Account().Details().Get(ctx, &req)
 	if err != nil {
 		log.Fatalf("Error getting account details: %s", err)
 		return 1

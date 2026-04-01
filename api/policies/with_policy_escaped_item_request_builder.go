@@ -13,27 +13,6 @@ import (
 type WithPolicy_ItemRequestBuilder struct {
     i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.BaseRequestBuilder
 }
-// WithPolicy_ItemRequestBuilderDeleteRequestConfiguration configuration for the request such as headers, query parameters, and middleware options.
-type WithPolicy_ItemRequestBuilderDeleteRequestConfiguration struct {
-    // Request headers
-    Headers *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestHeaders
-    // Request options
-    Options []i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestOption
-}
-// WithPolicy_ItemRequestBuilderGetRequestConfiguration configuration for the request such as headers, query parameters, and middleware options.
-type WithPolicy_ItemRequestBuilderGetRequestConfiguration struct {
-    // Request headers
-    Headers *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestHeaders
-    // Request options
-    Options []i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestOption
-}
-// WithPolicy_ItemRequestBuilderPatchRequestConfiguration configuration for the request such as headers, query parameters, and middleware options.
-type WithPolicy_ItemRequestBuilderPatchRequestConfiguration struct {
-    // Request headers
-    Headers *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestHeaders
-    // Request options
-    Options []i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestOption
-}
 // NewWithPolicy_ItemRequestBuilderInternal instantiates a new WithPolicy_ItemRequestBuilder and sets the default values.
 func NewWithPolicy_ItemRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*WithPolicy_ItemRequestBuilder) {
     m := &WithPolicy_ItemRequestBuilder{
@@ -49,7 +28,7 @@ func NewWithPolicy_ItemRequestBuilder(rawUrl string, requestAdapter i2ae4187f7da
 }
 // Delete delete a policy from an organization.
 // returns a Errors error when the service returns a 4XX or 5XX status code
-func (m *WithPolicy_ItemRequestBuilder) Delete(ctx context.Context, requestConfiguration *WithPolicy_ItemRequestBuilderDeleteRequestConfiguration)(error) {
+func (m *WithPolicy_ItemRequestBuilder) Delete(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(error) {
     requestInfo, err := m.ToDeleteRequestInformation(ctx, requestConfiguration);
     if err != nil {
         return err
@@ -69,30 +48,9 @@ func (m *WithPolicy_ItemRequestBuilder) Download()(*ItemDownloadRequestBuilder) 
     return NewItemDownloadRequestBuilderInternal(m.BaseRequestBuilder.PathParameters, m.BaseRequestBuilder.RequestAdapter)
 }
 // Get get details about a policy.
-// Deprecated: This method is obsolete. Use GetAsWithPolicy_GetResponse instead.
-// returns a ItemWithPolicy_Responseable when successful
-// returns a Errors error when the service returns a 4XX or 5XX status code
-func (m *WithPolicy_ItemRequestBuilder) Get(ctx context.Context, requestConfiguration *WithPolicy_ItemRequestBuilderGetRequestConfiguration)(ItemWithPolicy_Responseable, error) {
-    requestInfo, err := m.ToGetRequestInformation(ctx, requestConfiguration);
-    if err != nil {
-        return nil, err
-    }
-    errorMapping := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ErrorMappings {
-        "XXX": ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.CreateErrorsFromDiscriminatorValue,
-    }
-    res, err := m.BaseRequestBuilder.RequestAdapter.Send(ctx, requestInfo, CreateItemWithPolicy_ResponseFromDiscriminatorValue, errorMapping)
-    if err != nil {
-        return nil, err
-    }
-    if res == nil {
-        return nil, nil
-    }
-    return res.(ItemWithPolicy_Responseable), nil
-}
-// GetAsWithPolicy_GetResponse get details about a policy.
 // returns a ItemWithPolicy_GetResponseable when successful
 // returns a Errors error when the service returns a 4XX or 5XX status code
-func (m *WithPolicy_ItemRequestBuilder) GetAsWithPolicy_GetResponse(ctx context.Context, requestConfiguration *WithPolicy_ItemRequestBuilderGetRequestConfiguration)(ItemWithPolicy_GetResponseable, error) {
+func (m *WithPolicy_ItemRequestBuilder) Get(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(ItemWithPolicy_GetResponseable, error) {
     requestInfo, err := m.ToGetRequestInformation(ctx, requestConfiguration);
     if err != nil {
         return nil, err
@@ -110,30 +68,9 @@ func (m *WithPolicy_ItemRequestBuilder) GetAsWithPolicy_GetResponse(ctx context.
     return res.(ItemWithPolicy_GetResponseable), nil
 }
 // Patch update the enforcement level or description of an existing policy. To update the policy code itself, use the upload endpoint.
-// Deprecated: This method is obsolete. Use PatchAsWithPolicy_PatchResponse instead.
-// returns a ItemWithPolicy_Responseable when successful
-// returns a Errors error when the service returns a 4XX or 5XX status code
-func (m *WithPolicy_ItemRequestBuilder) Patch(ctx context.Context, body ItemWithPolicy_PatchRequestBodyable, requestConfiguration *WithPolicy_ItemRequestBuilderPatchRequestConfiguration)(ItemWithPolicy_Responseable, error) {
-    requestInfo, err := m.ToPatchRequestInformation(ctx, body, requestConfiguration);
-    if err != nil {
-        return nil, err
-    }
-    errorMapping := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ErrorMappings {
-        "XXX": ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.CreateErrorsFromDiscriminatorValue,
-    }
-    res, err := m.BaseRequestBuilder.RequestAdapter.Send(ctx, requestInfo, CreateItemWithPolicy_ResponseFromDiscriminatorValue, errorMapping)
-    if err != nil {
-        return nil, err
-    }
-    if res == nil {
-        return nil, nil
-    }
-    return res.(ItemWithPolicy_Responseable), nil
-}
-// PatchAsWithPolicy_PatchResponse update the enforcement level or description of an existing policy. To update the policy code itself, use the upload endpoint.
 // returns a ItemWithPolicy_PatchResponseable when successful
 // returns a Errors error when the service returns a 4XX or 5XX status code
-func (m *WithPolicy_ItemRequestBuilder) PatchAsWithPolicy_PatchResponse(ctx context.Context, body ItemWithPolicy_PatchRequestBodyable, requestConfiguration *WithPolicy_ItemRequestBuilderPatchRequestConfiguration)(ItemWithPolicy_PatchResponseable, error) {
+func (m *WithPolicy_ItemRequestBuilder) Patch(ctx context.Context, body ItemWithPolicy_PatchRequestBodyable, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(ItemWithPolicy_PatchResponseable, error) {
     requestInfo, err := m.ToPatchRequestInformation(ctx, body, requestConfiguration);
     if err != nil {
         return nil, err
@@ -152,34 +89,25 @@ func (m *WithPolicy_ItemRequestBuilder) PatchAsWithPolicy_PatchResponse(ctx cont
 }
 // ToDeleteRequestInformation delete a policy from an organization.
 // returns a *RequestInformation when successful
-func (m *WithPolicy_ItemRequestBuilder) ToDeleteRequestInformation(ctx context.Context, requestConfiguration *WithPolicy_ItemRequestBuilderDeleteRequestConfiguration)(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
+func (m *WithPolicy_ItemRequestBuilder) ToDeleteRequestInformation(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
     requestInfo := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewRequestInformationWithMethodAndUrlTemplateAndPathParameters(i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DELETE, m.BaseRequestBuilder.UrlTemplate, m.BaseRequestBuilder.PathParameters)
-    if requestConfiguration != nil {
-        requestInfo.Headers.AddAll(requestConfiguration.Headers)
-        requestInfo.AddRequestOptions(requestConfiguration.Options)
-    }
+    i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ConfigureRequestInformation(requestInfo, requestConfiguration)
     requestInfo.Headers.TryAdd("Accept", "application/vnd.api+json")
     return requestInfo, nil
 }
 // ToGetRequestInformation get details about a policy.
 // returns a *RequestInformation when successful
-func (m *WithPolicy_ItemRequestBuilder) ToGetRequestInformation(ctx context.Context, requestConfiguration *WithPolicy_ItemRequestBuilderGetRequestConfiguration)(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
+func (m *WithPolicy_ItemRequestBuilder) ToGetRequestInformation(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
     requestInfo := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewRequestInformationWithMethodAndUrlTemplateAndPathParameters(i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.GET, m.BaseRequestBuilder.UrlTemplate, m.BaseRequestBuilder.PathParameters)
-    if requestConfiguration != nil {
-        requestInfo.Headers.AddAll(requestConfiguration.Headers)
-        requestInfo.AddRequestOptions(requestConfiguration.Options)
-    }
+    i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ConfigureRequestInformation(requestInfo, requestConfiguration)
     requestInfo.Headers.TryAdd("Accept", "application/vnd.api+json")
     return requestInfo, nil
 }
 // ToPatchRequestInformation update the enforcement level or description of an existing policy. To update the policy code itself, use the upload endpoint.
 // returns a *RequestInformation when successful
-func (m *WithPolicy_ItemRequestBuilder) ToPatchRequestInformation(ctx context.Context, body ItemWithPolicy_PatchRequestBodyable, requestConfiguration *WithPolicy_ItemRequestBuilderPatchRequestConfiguration)(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
+func (m *WithPolicy_ItemRequestBuilder) ToPatchRequestInformation(ctx context.Context, body ItemWithPolicy_PatchRequestBodyable, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
     requestInfo := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewRequestInformationWithMethodAndUrlTemplateAndPathParameters(i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.PATCH, m.BaseRequestBuilder.UrlTemplate, m.BaseRequestBuilder.PathParameters)
-    if requestConfiguration != nil {
-        requestInfo.Headers.AddAll(requestConfiguration.Headers)
-        requestInfo.AddRequestOptions(requestConfiguration.Options)
-    }
+    i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ConfigureRequestInformation(requestInfo, requestConfiguration)
     requestInfo.Headers.TryAdd("Accept", "application/vnd.api+json")
     err := requestInfo.SetContentFromParsable(ctx, m.BaseRequestBuilder.RequestAdapter, "application/vnd.api+json", body)
     if err != nil {

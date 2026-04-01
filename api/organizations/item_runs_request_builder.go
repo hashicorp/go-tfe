@@ -26,15 +26,6 @@ type ItemRunsRequestBuilderGetQueryParameters struct {
     // The number of items to retrieve per page. Defaults to 20.
     Pagesize *int32 `uriparametername:"page%5Bsize%5D"`
 }
-// ItemRunsRequestBuilderGetRequestConfiguration configuration for the request such as headers, query parameters, and middleware options.
-type ItemRunsRequestBuilderGetRequestConfiguration struct {
-    // Request headers
-    Headers *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestHeaders
-    // Request options
-    Options []i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestOption
-    // Request query parameters
-    QueryParameters *ItemRunsRequestBuilderGetQueryParameters
-}
 // NewItemRunsRequestBuilderInternal instantiates a new ItemRunsRequestBuilder and sets the default values.
 func NewItemRunsRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*ItemRunsRequestBuilder) {
     m := &ItemRunsRequestBuilder{
@@ -49,30 +40,9 @@ func NewItemRunsRequestBuilder(rawUrl string, requestAdapter i2ae4187f7daee26337
     return NewItemRunsRequestBuilderInternal(urlParams, requestAdapter)
 }
 // Get list all runs in an organization.
-// Deprecated: This method is obsolete. Use GetAsRunsGetResponse instead.
-// returns a ItemRunsResponseable when successful
-// returns a Errors error when the service returns a 4XX or 5XX status code
-func (m *ItemRunsRequestBuilder) Get(ctx context.Context, requestConfiguration *ItemRunsRequestBuilderGetRequestConfiguration)(ItemRunsResponseable, error) {
-    requestInfo, err := m.ToGetRequestInformation(ctx, requestConfiguration);
-    if err != nil {
-        return nil, err
-    }
-    errorMapping := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ErrorMappings {
-        "XXX": ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.CreateErrorsFromDiscriminatorValue,
-    }
-    res, err := m.BaseRequestBuilder.RequestAdapter.Send(ctx, requestInfo, CreateItemRunsResponseFromDiscriminatorValue, errorMapping)
-    if err != nil {
-        return nil, err
-    }
-    if res == nil {
-        return nil, nil
-    }
-    return res.(ItemRunsResponseable), nil
-}
-// GetAsRunsGetResponse list all runs in an organization.
 // returns a ItemRunsGetResponseable when successful
 // returns a Errors error when the service returns a 4XX or 5XX status code
-func (m *ItemRunsRequestBuilder) GetAsRunsGetResponse(ctx context.Context, requestConfiguration *ItemRunsRequestBuilderGetRequestConfiguration)(ItemRunsGetResponseable, error) {
+func (m *ItemRunsRequestBuilder) Get(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[ItemRunsRequestBuilderGetQueryParameters])(ItemRunsGetResponseable, error) {
     requestInfo, err := m.ToGetRequestInformation(ctx, requestConfiguration);
     if err != nil {
         return nil, err
@@ -91,15 +61,9 @@ func (m *ItemRunsRequestBuilder) GetAsRunsGetResponse(ctx context.Context, reque
 }
 // ToGetRequestInformation list all runs in an organization.
 // returns a *RequestInformation when successful
-func (m *ItemRunsRequestBuilder) ToGetRequestInformation(ctx context.Context, requestConfiguration *ItemRunsRequestBuilderGetRequestConfiguration)(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
+func (m *ItemRunsRequestBuilder) ToGetRequestInformation(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[ItemRunsRequestBuilderGetQueryParameters])(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
     requestInfo := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewRequestInformationWithMethodAndUrlTemplateAndPathParameters(i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.GET, m.BaseRequestBuilder.UrlTemplate, m.BaseRequestBuilder.PathParameters)
-    if requestConfiguration != nil {
-        if requestConfiguration.QueryParameters != nil {
-            requestInfo.AddQueryParameters(*(requestConfiguration.QueryParameters))
-        }
-        requestInfo.Headers.AddAll(requestConfiguration.Headers)
-        requestInfo.AddRequestOptions(requestConfiguration.Options)
-    }
+    i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ConfigureRequestInformation(requestInfo, requestConfiguration)
     requestInfo.Headers.TryAdd("Accept", "application/vnd.api+json")
     return requestInfo, nil
 }

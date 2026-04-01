@@ -20,22 +20,6 @@ type ItemVersionsRequestBuilderGetQueryParameters struct {
     // The number of items to retrieve per page. Defaults to 20.
     Pagesize *int32 `uriparametername:"page%5Bsize%5D"`
 }
-// ItemVersionsRequestBuilderGetRequestConfiguration configuration for the request such as headers, query parameters, and middleware options.
-type ItemVersionsRequestBuilderGetRequestConfiguration struct {
-    // Request headers
-    Headers *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestHeaders
-    // Request options
-    Options []i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestOption
-    // Request query parameters
-    QueryParameters *ItemVersionsRequestBuilderGetQueryParameters
-}
-// ItemVersionsRequestBuilderPostRequestConfiguration configuration for the request such as headers, query parameters, and middleware options.
-type ItemVersionsRequestBuilderPostRequestConfiguration struct {
-    // Request headers
-    Headers *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestHeaders
-    // Request options
-    Options []i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestOption
-}
 // NewItemVersionsRequestBuilderInternal instantiates a new ItemVersionsRequestBuilder and sets the default values.
 func NewItemVersionsRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*ItemVersionsRequestBuilder) {
     m := &ItemVersionsRequestBuilder{
@@ -50,30 +34,9 @@ func NewItemVersionsRequestBuilder(rawUrl string, requestAdapter i2ae4187f7daee2
     return NewItemVersionsRequestBuilderInternal(urlParams, requestAdapter)
 }
 // Get list all versions of a policy set.
-// Deprecated: This method is obsolete. Use GetAsVersionsGetResponse instead.
-// returns a ItemVersionsResponseable when successful
-// returns a Errors error when the service returns a 4XX or 5XX status code
-func (m *ItemVersionsRequestBuilder) Get(ctx context.Context, requestConfiguration *ItemVersionsRequestBuilderGetRequestConfiguration)(ItemVersionsResponseable, error) {
-    requestInfo, err := m.ToGetRequestInformation(ctx, requestConfiguration);
-    if err != nil {
-        return nil, err
-    }
-    errorMapping := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ErrorMappings {
-        "XXX": ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.CreateErrorsFromDiscriminatorValue,
-    }
-    res, err := m.BaseRequestBuilder.RequestAdapter.Send(ctx, requestInfo, CreateItemVersionsResponseFromDiscriminatorValue, errorMapping)
-    if err != nil {
-        return nil, err
-    }
-    if res == nil {
-        return nil, nil
-    }
-    return res.(ItemVersionsResponseable), nil
-}
-// GetAsVersionsGetResponse list all versions of a policy set.
 // returns a ItemVersionsGetResponseable when successful
 // returns a Errors error when the service returns a 4XX or 5XX status code
-func (m *ItemVersionsRequestBuilder) GetAsVersionsGetResponse(ctx context.Context, requestConfiguration *ItemVersionsRequestBuilderGetRequestConfiguration)(ItemVersionsGetResponseable, error) {
+func (m *ItemVersionsRequestBuilder) Get(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[ItemVersionsRequestBuilderGetQueryParameters])(ItemVersionsGetResponseable, error) {
     requestInfo, err := m.ToGetRequestInformation(ctx, requestConfiguration);
     if err != nil {
         return nil, err
@@ -91,30 +54,9 @@ func (m *ItemVersionsRequestBuilder) GetAsVersionsGetResponse(ctx context.Contex
     return res.(ItemVersionsGetResponseable), nil
 }
 // Post create a new version for a policy set. The version will be in a pending state until policies are uploaded to it.
-// Deprecated: This method is obsolete. Use PostAsVersionsPostResponse instead.
-// returns a ItemVersionsResponseable when successful
-// returns a Errors error when the service returns a 4XX or 5XX status code
-func (m *ItemVersionsRequestBuilder) Post(ctx context.Context, requestConfiguration *ItemVersionsRequestBuilderPostRequestConfiguration)(ItemVersionsResponseable, error) {
-    requestInfo, err := m.ToPostRequestInformation(ctx, requestConfiguration);
-    if err != nil {
-        return nil, err
-    }
-    errorMapping := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ErrorMappings {
-        "XXX": ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.CreateErrorsFromDiscriminatorValue,
-    }
-    res, err := m.BaseRequestBuilder.RequestAdapter.Send(ctx, requestInfo, CreateItemVersionsResponseFromDiscriminatorValue, errorMapping)
-    if err != nil {
-        return nil, err
-    }
-    if res == nil {
-        return nil, nil
-    }
-    return res.(ItemVersionsResponseable), nil
-}
-// PostAsVersionsPostResponse create a new version for a policy set. The version will be in a pending state until policies are uploaded to it.
 // returns a ItemVersionsPostResponseable when successful
 // returns a Errors error when the service returns a 4XX or 5XX status code
-func (m *ItemVersionsRequestBuilder) PostAsVersionsPostResponse(ctx context.Context, requestConfiguration *ItemVersionsRequestBuilderPostRequestConfiguration)(ItemVersionsPostResponseable, error) {
+func (m *ItemVersionsRequestBuilder) Post(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(ItemVersionsPostResponseable, error) {
     requestInfo, err := m.ToPostRequestInformation(ctx, requestConfiguration);
     if err != nil {
         return nil, err
@@ -133,26 +75,17 @@ func (m *ItemVersionsRequestBuilder) PostAsVersionsPostResponse(ctx context.Cont
 }
 // ToGetRequestInformation list all versions of a policy set.
 // returns a *RequestInformation when successful
-func (m *ItemVersionsRequestBuilder) ToGetRequestInformation(ctx context.Context, requestConfiguration *ItemVersionsRequestBuilderGetRequestConfiguration)(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
+func (m *ItemVersionsRequestBuilder) ToGetRequestInformation(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[ItemVersionsRequestBuilderGetQueryParameters])(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
     requestInfo := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewRequestInformationWithMethodAndUrlTemplateAndPathParameters(i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.GET, m.BaseRequestBuilder.UrlTemplate, m.BaseRequestBuilder.PathParameters)
-    if requestConfiguration != nil {
-        if requestConfiguration.QueryParameters != nil {
-            requestInfo.AddQueryParameters(*(requestConfiguration.QueryParameters))
-        }
-        requestInfo.Headers.AddAll(requestConfiguration.Headers)
-        requestInfo.AddRequestOptions(requestConfiguration.Options)
-    }
+    i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ConfigureRequestInformation(requestInfo, requestConfiguration)
     requestInfo.Headers.TryAdd("Accept", "application/vnd.api+json")
     return requestInfo, nil
 }
 // ToPostRequestInformation create a new version for a policy set. The version will be in a pending state until policies are uploaded to it.
 // returns a *RequestInformation when successful
-func (m *ItemVersionsRequestBuilder) ToPostRequestInformation(ctx context.Context, requestConfiguration *ItemVersionsRequestBuilderPostRequestConfiguration)(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
+func (m *ItemVersionsRequestBuilder) ToPostRequestInformation(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
     requestInfo := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewRequestInformationWithMethodAndUrlTemplateAndPathParameters(i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.POST, m.BaseRequestBuilder.UrlTemplate, m.BaseRequestBuilder.PathParameters)
-    if requestConfiguration != nil {
-        requestInfo.Headers.AddAll(requestConfiguration.Headers)
-        requestInfo.AddRequestOptions(requestConfiguration.Options)
-    }
+    i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ConfigureRequestInformation(requestInfo, requestConfiguration)
     requestInfo.Headers.TryAdd("Accept", "application/vnd.api+json")
     return requestInfo, nil
 }

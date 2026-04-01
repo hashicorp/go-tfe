@@ -14,43 +14,10 @@ import (
 type WithOrganization_nameItemRequestBuilder struct {
     i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.BaseRequestBuilder
 }
-// WithOrganization_nameItemRequestBuilderDeleteRequestConfiguration configuration for the request such as headers, query parameters, and middleware options.
-type WithOrganization_nameItemRequestBuilderDeleteRequestConfiguration struct {
-    // Request headers
-    Headers *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestHeaders
-    // Request options
-    Options []i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestOption
-}
 // WithOrganization_nameItemRequestBuilderGetQueryParameters get details about an organization.
 type WithOrganization_nameItemRequestBuilderGetQueryParameters struct {
     // Optionally side-load relationships of the specified name
-    // Deprecated: This property is deprecated, use IncludeAsGetIncludeQueryParameterType instead
-    Include *string `uriparametername:"include"`
-    // Optionally side-load relationships of the specified name
-    IncludeAsGetIncludeQueryParameterType *i3b301eb718eaf7613c153906831f17e34c0b894c5be075398405f2d619219d51.GetIncludeQueryParameterType `uriparametername:"include"`
-}
-// WithOrganization_nameItemRequestBuilderGetRequestConfiguration configuration for the request such as headers, query parameters, and middleware options.
-type WithOrganization_nameItemRequestBuilderGetRequestConfiguration struct {
-    // Request headers
-    Headers *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestHeaders
-    // Request options
-    Options []i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestOption
-    // Request query parameters
-    QueryParameters *WithOrganization_nameItemRequestBuilderGetQueryParameters
-}
-// WithOrganization_nameItemRequestBuilderPatchRequestConfiguration configuration for the request such as headers, query parameters, and middleware options.
-type WithOrganization_nameItemRequestBuilderPatchRequestConfiguration struct {
-    // Request headers
-    Headers *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestHeaders
-    // Request options
-    Options []i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestOption
-}
-// WithOrganization_nameItemRequestBuilderPutRequestConfiguration configuration for the request such as headers, query parameters, and middleware options.
-type WithOrganization_nameItemRequestBuilderPutRequestConfiguration struct {
-    // Request headers
-    Headers *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestHeaders
-    // Request options
-    Options []i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestOption
+    Include *i3b301eb718eaf7613c153906831f17e34c0b894c5be075398405f2d619219d51.GetIncludeQueryParameterType `uriparametername:"include"`
 }
 // AgentPools the agentPools property
 // returns a *ItemAgentPoolsRequestBuilder when successful
@@ -77,7 +44,7 @@ func NewWithOrganization_nameItemRequestBuilder(rawUrl string, requestAdapter i2
 }
 // Delete delete an organization.
 // returns a Errors error when the service returns a 4XX or 5XX status code
-func (m *WithOrganization_nameItemRequestBuilder) Delete(ctx context.Context, requestConfiguration *WithOrganization_nameItemRequestBuilderDeleteRequestConfiguration)(error) {
+func (m *WithOrganization_nameItemRequestBuilder) Delete(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(error) {
     requestInfo, err := m.ToDeleteRequestInformation(ctx, requestConfiguration);
     if err != nil {
         return err
@@ -97,30 +64,9 @@ func (m *WithOrganization_nameItemRequestBuilder) FeatureSets()(*ItemFeatureSets
     return NewItemFeatureSetsRequestBuilderInternal(m.BaseRequestBuilder.PathParameters, m.BaseRequestBuilder.RequestAdapter)
 }
 // Get get details about an organization.
-// Deprecated: This method is obsolete. Use GetAsWithOrganization_nameGetResponse instead.
-// returns a ItemWithOrganization_nameResponseable when successful
-// returns a Errors error when the service returns a 4XX or 5XX status code
-func (m *WithOrganization_nameItemRequestBuilder) Get(ctx context.Context, requestConfiguration *WithOrganization_nameItemRequestBuilderGetRequestConfiguration)(ItemWithOrganization_nameResponseable, error) {
-    requestInfo, err := m.ToGetRequestInformation(ctx, requestConfiguration);
-    if err != nil {
-        return nil, err
-    }
-    errorMapping := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ErrorMappings {
-        "XXX": ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.CreateErrorsFromDiscriminatorValue,
-    }
-    res, err := m.BaseRequestBuilder.RequestAdapter.Send(ctx, requestInfo, CreateItemWithOrganization_nameResponseFromDiscriminatorValue, errorMapping)
-    if err != nil {
-        return nil, err
-    }
-    if res == nil {
-        return nil, nil
-    }
-    return res.(ItemWithOrganization_nameResponseable), nil
-}
-// GetAsWithOrganization_nameGetResponse get details about an organization.
 // returns a ItemWithOrganization_nameGetResponseable when successful
 // returns a Errors error when the service returns a 4XX or 5XX status code
-func (m *WithOrganization_nameItemRequestBuilder) GetAsWithOrganization_nameGetResponse(ctx context.Context, requestConfiguration *WithOrganization_nameItemRequestBuilderGetRequestConfiguration)(ItemWithOrganization_nameGetResponseable, error) {
+func (m *WithOrganization_nameItemRequestBuilder) Get(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[WithOrganization_nameItemRequestBuilderGetQueryParameters])(ItemWithOrganization_nameGetResponseable, error) {
     requestInfo, err := m.ToGetRequestInformation(ctx, requestConfiguration);
     if err != nil {
         return nil, err
@@ -163,30 +109,9 @@ func (m *WithOrganization_nameItemRequestBuilder) OrganizationMemberships()(*Ite
     return NewItemOrganizationMembershipsRequestBuilderInternal(m.BaseRequestBuilder.PathParameters, m.BaseRequestBuilder.RequestAdapter)
 }
 // Patch update an organization.
-// Deprecated: This method is obsolete. Use PatchAsWithOrganization_namePatchResponse instead.
-// returns a ItemWithOrganization_nameResponseable when successful
-// returns a Errors error when the service returns a 4XX or 5XX status code
-func (m *WithOrganization_nameItemRequestBuilder) Patch(ctx context.Context, body ItemWithOrganization_namePatchRequestBodyable, requestConfiguration *WithOrganization_nameItemRequestBuilderPatchRequestConfiguration)(ItemWithOrganization_nameResponseable, error) {
-    requestInfo, err := m.ToPatchRequestInformation(ctx, body, requestConfiguration);
-    if err != nil {
-        return nil, err
-    }
-    errorMapping := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ErrorMappings {
-        "XXX": ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.CreateErrorsFromDiscriminatorValue,
-    }
-    res, err := m.BaseRequestBuilder.RequestAdapter.Send(ctx, requestInfo, CreateItemWithOrganization_nameResponseFromDiscriminatorValue, errorMapping)
-    if err != nil {
-        return nil, err
-    }
-    if res == nil {
-        return nil, nil
-    }
-    return res.(ItemWithOrganization_nameResponseable), nil
-}
-// PatchAsWithOrganization_namePatchResponse update an organization.
 // returns a ItemWithOrganization_namePatchResponseable when successful
 // returns a Errors error when the service returns a 4XX or 5XX status code
-func (m *WithOrganization_nameItemRequestBuilder) PatchAsWithOrganization_namePatchResponse(ctx context.Context, body ItemWithOrganization_namePatchRequestBodyable, requestConfiguration *WithOrganization_nameItemRequestBuilderPatchRequestConfiguration)(ItemWithOrganization_namePatchResponseable, error) {
+func (m *WithOrganization_nameItemRequestBuilder) Patch(ctx context.Context, body ItemWithOrganization_namePatchRequestBodyable, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(ItemWithOrganization_namePatchResponseable, error) {
     requestInfo, err := m.ToPatchRequestInformation(ctx, body, requestConfiguration);
     if err != nil {
         return nil, err
@@ -219,30 +144,9 @@ func (m *WithOrganization_nameItemRequestBuilder) Projects()(*ItemProjectsReques
     return NewItemProjectsRequestBuilderInternal(m.BaseRequestBuilder.PathParameters, m.BaseRequestBuilder.RequestAdapter)
 }
 // Put update an organization.
-// Deprecated: This method is obsolete. Use PutAsWithOrganization_namePutResponse instead.
-// returns a ItemWithOrganization_nameResponseable when successful
-// returns a Errors error when the service returns a 4XX or 5XX status code
-func (m *WithOrganization_nameItemRequestBuilder) Put(ctx context.Context, body ItemWithOrganization_namePutRequestBodyable, requestConfiguration *WithOrganization_nameItemRequestBuilderPutRequestConfiguration)(ItemWithOrganization_nameResponseable, error) {
-    requestInfo, err := m.ToPutRequestInformation(ctx, body, requestConfiguration);
-    if err != nil {
-        return nil, err
-    }
-    errorMapping := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ErrorMappings {
-        "XXX": ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.CreateErrorsFromDiscriminatorValue,
-    }
-    res, err := m.BaseRequestBuilder.RequestAdapter.Send(ctx, requestInfo, CreateItemWithOrganization_nameResponseFromDiscriminatorValue, errorMapping)
-    if err != nil {
-        return nil, err
-    }
-    if res == nil {
-        return nil, nil
-    }
-    return res.(ItemWithOrganization_nameResponseable), nil
-}
-// PutAsWithOrganization_namePutResponse update an organization.
 // returns a ItemWithOrganization_namePutResponseable when successful
 // returns a Errors error when the service returns a 4XX or 5XX status code
-func (m *WithOrganization_nameItemRequestBuilder) PutAsWithOrganization_namePutResponse(ctx context.Context, body ItemWithOrganization_namePutRequestBodyable, requestConfiguration *WithOrganization_nameItemRequestBuilderPutRequestConfiguration)(ItemWithOrganization_namePutResponseable, error) {
+func (m *WithOrganization_nameItemRequestBuilder) Put(ctx context.Context, body ItemWithOrganization_namePutRequestBodyable, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(ItemWithOrganization_namePutResponseable, error) {
     requestInfo, err := m.ToPutRequestInformation(ctx, body, requestConfiguration);
     if err != nil {
         return nil, err
@@ -291,37 +195,30 @@ func (m *WithOrganization_nameItemRequestBuilder) TeamTokens()(*ItemTeamTokensRe
 }
 // ToDeleteRequestInformation delete an organization.
 // returns a *RequestInformation when successful
-func (m *WithOrganization_nameItemRequestBuilder) ToDeleteRequestInformation(ctx context.Context, requestConfiguration *WithOrganization_nameItemRequestBuilderDeleteRequestConfiguration)(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
+func (m *WithOrganization_nameItemRequestBuilder) ToDeleteRequestInformation(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
     requestInfo := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewRequestInformationWithMethodAndUrlTemplateAndPathParameters(i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DELETE, m.BaseRequestBuilder.UrlTemplate, m.BaseRequestBuilder.PathParameters)
-    if requestConfiguration != nil {
-        requestInfo.Headers.AddAll(requestConfiguration.Headers)
-        requestInfo.AddRequestOptions(requestConfiguration.Options)
-    }
+    i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ConfigureRequestInformation(requestInfo, requestConfiguration)
     requestInfo.Headers.TryAdd("Accept", "application/vnd.api+json")
     return requestInfo, nil
 }
 // ToGetRequestInformation get details about an organization.
 // returns a *RequestInformation when successful
-func (m *WithOrganization_nameItemRequestBuilder) ToGetRequestInformation(ctx context.Context, requestConfiguration *WithOrganization_nameItemRequestBuilderGetRequestConfiguration)(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
+func (m *WithOrganization_nameItemRequestBuilder) ToGetRequestInformation(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[WithOrganization_nameItemRequestBuilderGetQueryParameters])(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
     requestInfo := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewRequestInformationWithMethodAndUrlTemplateAndPathParameters(i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.GET, m.BaseRequestBuilder.UrlTemplate, m.BaseRequestBuilder.PathParameters)
-    if requestConfiguration != nil {
-        if requestConfiguration.QueryParameters != nil {
-            requestInfo.AddQueryParameters(*(requestConfiguration.QueryParameters))
-        }
-        requestInfo.Headers.AddAll(requestConfiguration.Headers)
-        requestInfo.AddRequestOptions(requestConfiguration.Options)
-    }
+    i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ConfigureRequestInformation(requestInfo, requestConfiguration)
     requestInfo.Headers.TryAdd("Accept", "application/vnd.api+json")
     return requestInfo, nil
 }
+// TokenTtlPolicies the tokenTtlPolicies property
+// returns a *ItemTokenTtlPoliciesRequestBuilder when successful
+func (m *WithOrganization_nameItemRequestBuilder) TokenTtlPolicies()(*ItemTokenTtlPoliciesRequestBuilder) {
+    return NewItemTokenTtlPoliciesRequestBuilderInternal(m.BaseRequestBuilder.PathParameters, m.BaseRequestBuilder.RequestAdapter)
+}
 // ToPatchRequestInformation update an organization.
 // returns a *RequestInformation when successful
-func (m *WithOrganization_nameItemRequestBuilder) ToPatchRequestInformation(ctx context.Context, body ItemWithOrganization_namePatchRequestBodyable, requestConfiguration *WithOrganization_nameItemRequestBuilderPatchRequestConfiguration)(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
+func (m *WithOrganization_nameItemRequestBuilder) ToPatchRequestInformation(ctx context.Context, body ItemWithOrganization_namePatchRequestBodyable, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
     requestInfo := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewRequestInformationWithMethodAndUrlTemplateAndPathParameters(i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.PATCH, m.BaseRequestBuilder.UrlTemplate, m.BaseRequestBuilder.PathParameters)
-    if requestConfiguration != nil {
-        requestInfo.Headers.AddAll(requestConfiguration.Headers)
-        requestInfo.AddRequestOptions(requestConfiguration.Options)
-    }
+    i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ConfigureRequestInformation(requestInfo, requestConfiguration)
     requestInfo.Headers.TryAdd("Accept", "application/vnd.api+json")
     err := requestInfo.SetContentFromParsable(ctx, m.BaseRequestBuilder.RequestAdapter, "application/vnd.api+json", body)
     if err != nil {
@@ -331,12 +228,9 @@ func (m *WithOrganization_nameItemRequestBuilder) ToPatchRequestInformation(ctx 
 }
 // ToPutRequestInformation update an organization.
 // returns a *RequestInformation when successful
-func (m *WithOrganization_nameItemRequestBuilder) ToPutRequestInformation(ctx context.Context, body ItemWithOrganization_namePutRequestBodyable, requestConfiguration *WithOrganization_nameItemRequestBuilderPutRequestConfiguration)(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
+func (m *WithOrganization_nameItemRequestBuilder) ToPutRequestInformation(ctx context.Context, body ItemWithOrganization_namePutRequestBodyable, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
     requestInfo := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewRequestInformationWithMethodAndUrlTemplateAndPathParameters(i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.PUT, m.BaseRequestBuilder.UrlTemplate, m.BaseRequestBuilder.PathParameters)
-    if requestConfiguration != nil {
-        requestInfo.Headers.AddAll(requestConfiguration.Headers)
-        requestInfo.AddRequestOptions(requestConfiguration.Options)
-    }
+    i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ConfigureRequestInformation(requestInfo, requestConfiguration)
     requestInfo.Headers.TryAdd("Accept", "application/vnd.api+json")
     err := requestInfo.SetContentFromParsable(ctx, m.BaseRequestBuilder.RequestAdapter, "application/vnd.api+json", body)
     if err != nil {

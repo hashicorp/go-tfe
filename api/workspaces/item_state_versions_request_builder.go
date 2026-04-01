@@ -13,20 +13,6 @@ import (
 type ItemStateVersionsRequestBuilder struct {
     i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.BaseRequestBuilder
 }
-// ItemStateVersionsRequestBuilderPatchRequestConfiguration configuration for the request such as headers, query parameters, and middleware options.
-type ItemStateVersionsRequestBuilderPatchRequestConfiguration struct {
-    // Request headers
-    Headers *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestHeaders
-    // Request options
-    Options []i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestOption
-}
-// ItemStateVersionsRequestBuilderPostRequestConfiguration configuration for the request such as headers, query parameters, and middleware options.
-type ItemStateVersionsRequestBuilderPostRequestConfiguration struct {
-    // Request headers
-    Headers *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestHeaders
-    // Request options
-    Options []i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestOption
-}
 // NewItemStateVersionsRequestBuilderInternal instantiates a new ItemStateVersionsRequestBuilder and sets the default values.
 func NewItemStateVersionsRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*ItemStateVersionsRequestBuilder) {
     m := &ItemStateVersionsRequestBuilder{
@@ -41,30 +27,9 @@ func NewItemStateVersionsRequestBuilder(rawUrl string, requestAdapter i2ae4187f7
     return NewItemStateVersionsRequestBuilderInternal(urlParams, requestAdapter)
 }
 // Patch create a state version by duplicating the specified state version and set it as the current state version for the given workspace. The workspace must be locked by the user performing the rollback.
-// Deprecated: This method is obsolete. Use PatchAsStateVersionsPatchResponse instead.
-// returns a ItemStateVersionsResponseable when successful
-// returns a Errors error when the service returns a 4XX or 5XX status code
-func (m *ItemStateVersionsRequestBuilder) Patch(ctx context.Context, body ItemStateVersionsPatchRequestBodyable, requestConfiguration *ItemStateVersionsRequestBuilderPatchRequestConfiguration)(ItemStateVersionsResponseable, error) {
-    requestInfo, err := m.ToPatchRequestInformation(ctx, body, requestConfiguration);
-    if err != nil {
-        return nil, err
-    }
-    errorMapping := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ErrorMappings {
-        "XXX": ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.CreateErrorsFromDiscriminatorValue,
-    }
-    res, err := m.BaseRequestBuilder.RequestAdapter.Send(ctx, requestInfo, CreateItemStateVersionsResponseFromDiscriminatorValue, errorMapping)
-    if err != nil {
-        return nil, err
-    }
-    if res == nil {
-        return nil, nil
-    }
-    return res.(ItemStateVersionsResponseable), nil
-}
-// PatchAsStateVersionsPatchResponse create a state version by duplicating the specified state version and set it as the current state version for the given workspace. The workspace must be locked by the user performing the rollback.
 // returns a ItemStateVersionsPatchResponseable when successful
 // returns a Errors error when the service returns a 4XX or 5XX status code
-func (m *ItemStateVersionsRequestBuilder) PatchAsStateVersionsPatchResponse(ctx context.Context, body ItemStateVersionsPatchRequestBodyable, requestConfiguration *ItemStateVersionsRequestBuilderPatchRequestConfiguration)(ItemStateVersionsPatchResponseable, error) {
+func (m *ItemStateVersionsRequestBuilder) Patch(ctx context.Context, body ItemStateVersionsPatchRequestBodyable, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(ItemStateVersionsPatchResponseable, error) {
     requestInfo, err := m.ToPatchRequestInformation(ctx, body, requestConfiguration);
     if err != nil {
         return nil, err
@@ -82,30 +47,9 @@ func (m *ItemStateVersionsRequestBuilder) PatchAsStateVersionsPatchResponse(ctx 
     return res.(ItemStateVersionsPatchResponseable), nil
 }
 // Post create a state version and set it as the current state version for the given workspace. The workspace must be locked by the user creating the state version.
-// Deprecated: This method is obsolete. Use PostAsStateVersionsPostResponse instead.
-// returns a ItemStateVersionsResponseable when successful
-// returns a Errors error when the service returns a 4XX or 5XX status code
-func (m *ItemStateVersionsRequestBuilder) Post(ctx context.Context, body ItemStateVersionsPostRequestBodyable, requestConfiguration *ItemStateVersionsRequestBuilderPostRequestConfiguration)(ItemStateVersionsResponseable, error) {
-    requestInfo, err := m.ToPostRequestInformation(ctx, body, requestConfiguration);
-    if err != nil {
-        return nil, err
-    }
-    errorMapping := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ErrorMappings {
-        "XXX": ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.CreateErrorsFromDiscriminatorValue,
-    }
-    res, err := m.BaseRequestBuilder.RequestAdapter.Send(ctx, requestInfo, CreateItemStateVersionsResponseFromDiscriminatorValue, errorMapping)
-    if err != nil {
-        return nil, err
-    }
-    if res == nil {
-        return nil, nil
-    }
-    return res.(ItemStateVersionsResponseable), nil
-}
-// PostAsStateVersionsPostResponse create a state version and set it as the current state version for the given workspace. The workspace must be locked by the user creating the state version.
 // returns a ItemStateVersionsPostResponseable when successful
 // returns a Errors error when the service returns a 4XX or 5XX status code
-func (m *ItemStateVersionsRequestBuilder) PostAsStateVersionsPostResponse(ctx context.Context, body ItemStateVersionsPostRequestBodyable, requestConfiguration *ItemStateVersionsRequestBuilderPostRequestConfiguration)(ItemStateVersionsPostResponseable, error) {
+func (m *ItemStateVersionsRequestBuilder) Post(ctx context.Context, body ItemStateVersionsPostRequestBodyable, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(ItemStateVersionsPostResponseable, error) {
     requestInfo, err := m.ToPostRequestInformation(ctx, body, requestConfiguration);
     if err != nil {
         return nil, err
@@ -124,12 +68,9 @@ func (m *ItemStateVersionsRequestBuilder) PostAsStateVersionsPostResponse(ctx co
 }
 // ToPatchRequestInformation create a state version by duplicating the specified state version and set it as the current state version for the given workspace. The workspace must be locked by the user performing the rollback.
 // returns a *RequestInformation when successful
-func (m *ItemStateVersionsRequestBuilder) ToPatchRequestInformation(ctx context.Context, body ItemStateVersionsPatchRequestBodyable, requestConfiguration *ItemStateVersionsRequestBuilderPatchRequestConfiguration)(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
+func (m *ItemStateVersionsRequestBuilder) ToPatchRequestInformation(ctx context.Context, body ItemStateVersionsPatchRequestBodyable, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
     requestInfo := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewRequestInformationWithMethodAndUrlTemplateAndPathParameters(i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.PATCH, m.BaseRequestBuilder.UrlTemplate, m.BaseRequestBuilder.PathParameters)
-    if requestConfiguration != nil {
-        requestInfo.Headers.AddAll(requestConfiguration.Headers)
-        requestInfo.AddRequestOptions(requestConfiguration.Options)
-    }
+    i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ConfigureRequestInformation(requestInfo, requestConfiguration)
     requestInfo.Headers.TryAdd("Accept", "application/vnd.api+json")
     err := requestInfo.SetContentFromParsable(ctx, m.BaseRequestBuilder.RequestAdapter, "application/vnd.api+json", body)
     if err != nil {
@@ -139,12 +80,9 @@ func (m *ItemStateVersionsRequestBuilder) ToPatchRequestInformation(ctx context.
 }
 // ToPostRequestInformation create a state version and set it as the current state version for the given workspace. The workspace must be locked by the user creating the state version.
 // returns a *RequestInformation when successful
-func (m *ItemStateVersionsRequestBuilder) ToPostRequestInformation(ctx context.Context, body ItemStateVersionsPostRequestBodyable, requestConfiguration *ItemStateVersionsRequestBuilderPostRequestConfiguration)(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
+func (m *ItemStateVersionsRequestBuilder) ToPostRequestInformation(ctx context.Context, body ItemStateVersionsPostRequestBodyable, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
     requestInfo := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewRequestInformationWithMethodAndUrlTemplateAndPathParameters(i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.POST, m.BaseRequestBuilder.UrlTemplate, m.BaseRequestBuilder.PathParameters)
-    if requestConfiguration != nil {
-        requestInfo.Headers.AddAll(requestConfiguration.Headers)
-        requestInfo.AddRequestOptions(requestConfiguration.Options)
-    }
+    i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ConfigureRequestInformation(requestInfo, requestConfiguration)
     requestInfo.Headers.TryAdd("Accept", "application/vnd.api+json")
     err := requestInfo.SetContentFromParsable(ctx, m.BaseRequestBuilder.RequestAdapter, "application/vnd.api+json", body)
     if err != nil {

@@ -13,34 +13,6 @@ import (
 type WithVarset_ItemRequestBuilder struct {
     i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.BaseRequestBuilder
 }
-// WithVarset_ItemRequestBuilderDeleteRequestConfiguration configuration for the request such as headers, query parameters, and middleware options.
-type WithVarset_ItemRequestBuilderDeleteRequestConfiguration struct {
-    // Request headers
-    Headers *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestHeaders
-    // Request options
-    Options []i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestOption
-}
-// WithVarset_ItemRequestBuilderGetRequestConfiguration configuration for the request such as headers, query parameters, and middleware options.
-type WithVarset_ItemRequestBuilderGetRequestConfiguration struct {
-    // Request headers
-    Headers *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestHeaders
-    // Request options
-    Options []i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestOption
-}
-// WithVarset_ItemRequestBuilderPatchRequestConfiguration configuration for the request such as headers, query parameters, and middleware options.
-type WithVarset_ItemRequestBuilderPatchRequestConfiguration struct {
-    // Request headers
-    Headers *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestHeaders
-    // Request options
-    Options []i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestOption
-}
-// WithVarset_ItemRequestBuilderPostRequestConfiguration configuration for the request such as headers, query parameters, and middleware options.
-type WithVarset_ItemRequestBuilderPostRequestConfiguration struct {
-    // Request headers
-    Headers *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestHeaders
-    // Request options
-    Options []i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestOption
-}
 // NewWithVarset_ItemRequestBuilderInternal instantiates a new WithVarset_ItemRequestBuilder and sets the default values.
 func NewWithVarset_ItemRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*WithVarset_ItemRequestBuilder) {
     m := &WithVarset_ItemRequestBuilder{
@@ -56,7 +28,7 @@ func NewWithVarset_ItemRequestBuilder(rawUrl string, requestAdapter i2ae4187f7da
 }
 // Delete delete an existing variable set.
 // returns a Errors error when the service returns a 4XX or 5XX status code
-func (m *WithVarset_ItemRequestBuilder) Delete(ctx context.Context, requestConfiguration *WithVarset_ItemRequestBuilderDeleteRequestConfiguration)(error) {
+func (m *WithVarset_ItemRequestBuilder) Delete(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(error) {
     requestInfo, err := m.ToDeleteRequestInformation(ctx, requestConfiguration);
     if err != nil {
         return err
@@ -71,30 +43,9 @@ func (m *WithVarset_ItemRequestBuilder) Delete(ctx context.Context, requestConfi
     return nil
 }
 // Get fetch details about the specified variable set.
-// Deprecated: This method is obsolete. Use GetAsWithVarset_GetResponse instead.
-// returns a ItemWithVarset_Responseable when successful
-// returns a Errors error when the service returns a 4XX or 5XX status code
-func (m *WithVarset_ItemRequestBuilder) Get(ctx context.Context, requestConfiguration *WithVarset_ItemRequestBuilderGetRequestConfiguration)(ItemWithVarset_Responseable, error) {
-    requestInfo, err := m.ToGetRequestInformation(ctx, requestConfiguration);
-    if err != nil {
-        return nil, err
-    }
-    errorMapping := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ErrorMappings {
-        "XXX": ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.CreateErrorsFromDiscriminatorValue,
-    }
-    res, err := m.BaseRequestBuilder.RequestAdapter.Send(ctx, requestInfo, CreateItemWithVarset_ResponseFromDiscriminatorValue, errorMapping)
-    if err != nil {
-        return nil, err
-    }
-    if res == nil {
-        return nil, nil
-    }
-    return res.(ItemWithVarset_Responseable), nil
-}
-// GetAsWithVarset_GetResponse fetch details about the specified variable set.
 // returns a ItemWithVarset_GetResponseable when successful
 // returns a Errors error when the service returns a 4XX or 5XX status code
-func (m *WithVarset_ItemRequestBuilder) GetAsWithVarset_GetResponse(ctx context.Context, requestConfiguration *WithVarset_ItemRequestBuilderGetRequestConfiguration)(ItemWithVarset_GetResponseable, error) {
+func (m *WithVarset_ItemRequestBuilder) Get(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(ItemWithVarset_GetResponseable, error) {
     requestInfo, err := m.ToGetRequestInformation(ctx, requestConfiguration);
     if err != nil {
         return nil, err
@@ -112,30 +63,9 @@ func (m *WithVarset_ItemRequestBuilder) GetAsWithVarset_GetResponse(ctx context.
     return res.(ItemWithVarset_GetResponseable), nil
 }
 // Patch update attributes of an existing variable set.
-// Deprecated: This method is obsolete. Use PatchAsWithVarset_PatchResponse instead.
-// returns a ItemWithVarset_Responseable when successful
-// returns a Errors error when the service returns a 4XX or 5XX status code
-func (m *WithVarset_ItemRequestBuilder) Patch(ctx context.Context, body ItemWithVarset_PatchRequestBodyable, requestConfiguration *WithVarset_ItemRequestBuilderPatchRequestConfiguration)(ItemWithVarset_Responseable, error) {
-    requestInfo, err := m.ToPatchRequestInformation(ctx, body, requestConfiguration);
-    if err != nil {
-        return nil, err
-    }
-    errorMapping := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ErrorMappings {
-        "XXX": ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.CreateErrorsFromDiscriminatorValue,
-    }
-    res, err := m.BaseRequestBuilder.RequestAdapter.Send(ctx, requestInfo, CreateItemWithVarset_ResponseFromDiscriminatorValue, errorMapping)
-    if err != nil {
-        return nil, err
-    }
-    if res == nil {
-        return nil, nil
-    }
-    return res.(ItemWithVarset_Responseable), nil
-}
-// PatchAsWithVarset_PatchResponse update attributes of an existing variable set.
 // returns a ItemWithVarset_PatchResponseable when successful
 // returns a Errors error when the service returns a 4XX or 5XX status code
-func (m *WithVarset_ItemRequestBuilder) PatchAsWithVarset_PatchResponse(ctx context.Context, body ItemWithVarset_PatchRequestBodyable, requestConfiguration *WithVarset_ItemRequestBuilderPatchRequestConfiguration)(ItemWithVarset_PatchResponseable, error) {
+func (m *WithVarset_ItemRequestBuilder) Patch(ctx context.Context, body ItemWithVarset_PatchRequestBodyable, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(ItemWithVarset_PatchResponseable, error) {
     requestInfo, err := m.ToPatchRequestInformation(ctx, body, requestConfiguration);
     if err != nil {
         return nil, err
@@ -153,30 +83,9 @@ func (m *WithVarset_ItemRequestBuilder) PatchAsWithVarset_PatchResponse(ctx cont
     return res.(ItemWithVarset_PatchResponseable), nil
 }
 // Post update attributes of an existing variable set using POST.
-// Deprecated: This method is obsolete. Use PostAsWithVarset_PostResponse instead.
-// returns a ItemWithVarset_Responseable when successful
-// returns a Errors error when the service returns a 4XX or 5XX status code
-func (m *WithVarset_ItemRequestBuilder) Post(ctx context.Context, body ItemWithVarset_PostRequestBodyable, requestConfiguration *WithVarset_ItemRequestBuilderPostRequestConfiguration)(ItemWithVarset_Responseable, error) {
-    requestInfo, err := m.ToPostRequestInformation(ctx, body, requestConfiguration);
-    if err != nil {
-        return nil, err
-    }
-    errorMapping := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ErrorMappings {
-        "XXX": ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.CreateErrorsFromDiscriminatorValue,
-    }
-    res, err := m.BaseRequestBuilder.RequestAdapter.Send(ctx, requestInfo, CreateItemWithVarset_ResponseFromDiscriminatorValue, errorMapping)
-    if err != nil {
-        return nil, err
-    }
-    if res == nil {
-        return nil, nil
-    }
-    return res.(ItemWithVarset_Responseable), nil
-}
-// PostAsWithVarset_PostResponse update attributes of an existing variable set using POST.
 // returns a ItemWithVarset_PostResponseable when successful
 // returns a Errors error when the service returns a 4XX or 5XX status code
-func (m *WithVarset_ItemRequestBuilder) PostAsWithVarset_PostResponse(ctx context.Context, body ItemWithVarset_PostRequestBodyable, requestConfiguration *WithVarset_ItemRequestBuilderPostRequestConfiguration)(ItemWithVarset_PostResponseable, error) {
+func (m *WithVarset_ItemRequestBuilder) Post(ctx context.Context, body ItemWithVarset_PostRequestBodyable, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(ItemWithVarset_PostResponseable, error) {
     requestInfo, err := m.ToPostRequestInformation(ctx, body, requestConfiguration);
     if err != nil {
         return nil, err
@@ -200,34 +109,25 @@ func (m *WithVarset_ItemRequestBuilder) Relationships()(*ItemRelationshipsReques
 }
 // ToDeleteRequestInformation delete an existing variable set.
 // returns a *RequestInformation when successful
-func (m *WithVarset_ItemRequestBuilder) ToDeleteRequestInformation(ctx context.Context, requestConfiguration *WithVarset_ItemRequestBuilderDeleteRequestConfiguration)(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
+func (m *WithVarset_ItemRequestBuilder) ToDeleteRequestInformation(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
     requestInfo := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewRequestInformationWithMethodAndUrlTemplateAndPathParameters(i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DELETE, m.BaseRequestBuilder.UrlTemplate, m.BaseRequestBuilder.PathParameters)
-    if requestConfiguration != nil {
-        requestInfo.Headers.AddAll(requestConfiguration.Headers)
-        requestInfo.AddRequestOptions(requestConfiguration.Options)
-    }
+    i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ConfigureRequestInformation(requestInfo, requestConfiguration)
     requestInfo.Headers.TryAdd("Accept", "application/vnd.api+json")
     return requestInfo, nil
 }
 // ToGetRequestInformation fetch details about the specified variable set.
 // returns a *RequestInformation when successful
-func (m *WithVarset_ItemRequestBuilder) ToGetRequestInformation(ctx context.Context, requestConfiguration *WithVarset_ItemRequestBuilderGetRequestConfiguration)(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
+func (m *WithVarset_ItemRequestBuilder) ToGetRequestInformation(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
     requestInfo := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewRequestInformationWithMethodAndUrlTemplateAndPathParameters(i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.GET, m.BaseRequestBuilder.UrlTemplate, m.BaseRequestBuilder.PathParameters)
-    if requestConfiguration != nil {
-        requestInfo.Headers.AddAll(requestConfiguration.Headers)
-        requestInfo.AddRequestOptions(requestConfiguration.Options)
-    }
+    i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ConfigureRequestInformation(requestInfo, requestConfiguration)
     requestInfo.Headers.TryAdd("Accept", "application/vnd.api+json")
     return requestInfo, nil
 }
 // ToPatchRequestInformation update attributes of an existing variable set.
 // returns a *RequestInformation when successful
-func (m *WithVarset_ItemRequestBuilder) ToPatchRequestInformation(ctx context.Context, body ItemWithVarset_PatchRequestBodyable, requestConfiguration *WithVarset_ItemRequestBuilderPatchRequestConfiguration)(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
+func (m *WithVarset_ItemRequestBuilder) ToPatchRequestInformation(ctx context.Context, body ItemWithVarset_PatchRequestBodyable, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
     requestInfo := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewRequestInformationWithMethodAndUrlTemplateAndPathParameters(i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.PATCH, m.BaseRequestBuilder.UrlTemplate, m.BaseRequestBuilder.PathParameters)
-    if requestConfiguration != nil {
-        requestInfo.Headers.AddAll(requestConfiguration.Headers)
-        requestInfo.AddRequestOptions(requestConfiguration.Options)
-    }
+    i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ConfigureRequestInformation(requestInfo, requestConfiguration)
     requestInfo.Headers.TryAdd("Accept", "application/vnd.api+json")
     err := requestInfo.SetContentFromParsable(ctx, m.BaseRequestBuilder.RequestAdapter, "application/vnd.api+json", body)
     if err != nil {
@@ -237,12 +137,9 @@ func (m *WithVarset_ItemRequestBuilder) ToPatchRequestInformation(ctx context.Co
 }
 // ToPostRequestInformation update attributes of an existing variable set using POST.
 // returns a *RequestInformation when successful
-func (m *WithVarset_ItemRequestBuilder) ToPostRequestInformation(ctx context.Context, body ItemWithVarset_PostRequestBodyable, requestConfiguration *WithVarset_ItemRequestBuilderPostRequestConfiguration)(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
+func (m *WithVarset_ItemRequestBuilder) ToPostRequestInformation(ctx context.Context, body ItemWithVarset_PostRequestBodyable, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
     requestInfo := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewRequestInformationWithMethodAndUrlTemplateAndPathParameters(i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.POST, m.BaseRequestBuilder.UrlTemplate, m.BaseRequestBuilder.PathParameters)
-    if requestConfiguration != nil {
-        requestInfo.Headers.AddAll(requestConfiguration.Headers)
-        requestInfo.AddRequestOptions(requestConfiguration.Options)
-    }
+    i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ConfigureRequestInformation(requestInfo, requestConfiguration)
     requestInfo.Headers.TryAdd("Accept", "application/vnd.api+json")
     err := requestInfo.SetContentFromParsable(ctx, m.BaseRequestBuilder.RequestAdapter, "application/vnd.api+json", body)
     if err != nil {

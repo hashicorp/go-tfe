@@ -18,15 +18,6 @@ type ItemInvoicesRequestBuilderGetQueryParameters struct {
     // The ID of the invoice where the page should start. If omitted, the endpoint returns the first page.
     Cursor *string `uriparametername:"cursor"`
 }
-// ItemInvoicesRequestBuilderGetRequestConfiguration configuration for the request such as headers, query parameters, and middleware options.
-type ItemInvoicesRequestBuilderGetRequestConfiguration struct {
-    // Request headers
-    Headers *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestHeaders
-    // Request options
-    Options []i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestOption
-    // Request query parameters
-    QueryParameters *ItemInvoicesRequestBuilderGetQueryParameters
-}
 // NewItemInvoicesRequestBuilderInternal instantiates a new ItemInvoicesRequestBuilder and sets the default values.
 func NewItemInvoicesRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*ItemInvoicesRequestBuilder) {
     m := &ItemInvoicesRequestBuilder{
@@ -41,30 +32,9 @@ func NewItemInvoicesRequestBuilder(rawUrl string, requestAdapter i2ae4187f7daee2
     return NewItemInvoicesRequestBuilderInternal(urlParams, requestAdapter)
 }
 // Get lists the previous invoices for an organization. This endpoint uses cursor-based pagination with a fixed page size of 10 items. Pass the value of meta.continuation as the cursor parameter to retrieve the next page. When meta.continuation is null there are no further pages.
-// Deprecated: This method is obsolete. Use GetAsInvoicesGetResponse instead.
-// returns a ItemInvoicesResponseable when successful
-// returns a Errors error when the service returns a 4XX or 5XX status code
-func (m *ItemInvoicesRequestBuilder) Get(ctx context.Context, requestConfiguration *ItemInvoicesRequestBuilderGetRequestConfiguration)(ItemInvoicesResponseable, error) {
-    requestInfo, err := m.ToGetRequestInformation(ctx, requestConfiguration);
-    if err != nil {
-        return nil, err
-    }
-    errorMapping := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ErrorMappings {
-        "XXX": ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.CreateErrorsFromDiscriminatorValue,
-    }
-    res, err := m.BaseRequestBuilder.RequestAdapter.Send(ctx, requestInfo, CreateItemInvoicesResponseFromDiscriminatorValue, errorMapping)
-    if err != nil {
-        return nil, err
-    }
-    if res == nil {
-        return nil, nil
-    }
-    return res.(ItemInvoicesResponseable), nil
-}
-// GetAsInvoicesGetResponse lists the previous invoices for an organization. This endpoint uses cursor-based pagination with a fixed page size of 10 items. Pass the value of meta.continuation as the cursor parameter to retrieve the next page. When meta.continuation is null there are no further pages.
 // returns a ItemInvoicesGetResponseable when successful
 // returns a Errors error when the service returns a 4XX or 5XX status code
-func (m *ItemInvoicesRequestBuilder) GetAsInvoicesGetResponse(ctx context.Context, requestConfiguration *ItemInvoicesRequestBuilderGetRequestConfiguration)(ItemInvoicesGetResponseable, error) {
+func (m *ItemInvoicesRequestBuilder) Get(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[ItemInvoicesRequestBuilderGetQueryParameters])(ItemInvoicesGetResponseable, error) {
     requestInfo, err := m.ToGetRequestInformation(ctx, requestConfiguration);
     if err != nil {
         return nil, err
@@ -88,15 +58,9 @@ func (m *ItemInvoicesRequestBuilder) Next()(*ItemInvoicesNextRequestBuilder) {
 }
 // ToGetRequestInformation lists the previous invoices for an organization. This endpoint uses cursor-based pagination with a fixed page size of 10 items. Pass the value of meta.continuation as the cursor parameter to retrieve the next page. When meta.continuation is null there are no further pages.
 // returns a *RequestInformation when successful
-func (m *ItemInvoicesRequestBuilder) ToGetRequestInformation(ctx context.Context, requestConfiguration *ItemInvoicesRequestBuilderGetRequestConfiguration)(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
+func (m *ItemInvoicesRequestBuilder) ToGetRequestInformation(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[ItemInvoicesRequestBuilderGetQueryParameters])(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
     requestInfo := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewRequestInformationWithMethodAndUrlTemplateAndPathParameters(i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.GET, m.BaseRequestBuilder.UrlTemplate, m.BaseRequestBuilder.PathParameters)
-    if requestConfiguration != nil {
-        if requestConfiguration.QueryParameters != nil {
-            requestInfo.AddQueryParameters(*(requestConfiguration.QueryParameters))
-        }
-        requestInfo.Headers.AddAll(requestConfiguration.Headers)
-        requestInfo.AddRequestOptions(requestConfiguration.Options)
-    }
+    i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ConfigureRequestInformation(requestInfo, requestConfiguration)
     requestInfo.Headers.TryAdd("Accept", "application/vnd.api+json")
     return requestInfo, nil
 }

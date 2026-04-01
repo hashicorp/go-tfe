@@ -13,13 +13,6 @@ import (
 type ItemVarsetsItemRelationshipsVarsVarsItemRequestBuilder struct {
     i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.BaseRequestBuilder
 }
-// ItemVarsetsItemRelationshipsVarsVarsItemRequestBuilderGetRequestConfiguration configuration for the request such as headers, query parameters, and middleware options.
-type ItemVarsetsItemRelationshipsVarsVarsItemRequestBuilderGetRequestConfiguration struct {
-    // Request headers
-    Headers *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestHeaders
-    // Request options
-    Options []i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestOption
-}
 // NewItemVarsetsItemRelationshipsVarsVarsItemRequestBuilderInternal instantiates a new ItemVarsetsItemRelationshipsVarsVarsItemRequestBuilder and sets the default values.
 func NewItemVarsetsItemRelationshipsVarsVarsItemRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*ItemVarsetsItemRelationshipsVarsVarsItemRequestBuilder) {
     m := &ItemVarsetsItemRelationshipsVarsVarsItemRequestBuilder{
@@ -34,30 +27,9 @@ func NewItemVarsetsItemRelationshipsVarsVarsItemRequestBuilder(rawUrl string, re
     return NewItemVarsetsItemRelationshipsVarsVarsItemRequestBuilderInternal(urlParams, requestAdapter)
 }
 // Get show details of a variable in a variable set, with overwrite context from the specified workspace.
-// Deprecated: This method is obsolete. Use GetAsVarsGetResponse instead.
-// returns a ItemVarsetsItemRelationshipsVarsItemVarsResponseable when successful
-// returns a Errors error when the service returns a 4XX or 5XX status code
-func (m *ItemVarsetsItemRelationshipsVarsVarsItemRequestBuilder) Get(ctx context.Context, requestConfiguration *ItemVarsetsItemRelationshipsVarsVarsItemRequestBuilderGetRequestConfiguration)(ItemVarsetsItemRelationshipsVarsItemVarsResponseable, error) {
-    requestInfo, err := m.ToGetRequestInformation(ctx, requestConfiguration);
-    if err != nil {
-        return nil, err
-    }
-    errorMapping := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ErrorMappings {
-        "XXX": ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.CreateErrorsFromDiscriminatorValue,
-    }
-    res, err := m.BaseRequestBuilder.RequestAdapter.Send(ctx, requestInfo, CreateItemVarsetsItemRelationshipsVarsItemVarsResponseFromDiscriminatorValue, errorMapping)
-    if err != nil {
-        return nil, err
-    }
-    if res == nil {
-        return nil, nil
-    }
-    return res.(ItemVarsetsItemRelationshipsVarsItemVarsResponseable), nil
-}
-// GetAsVarsGetResponse show details of a variable in a variable set, with overwrite context from the specified workspace.
 // returns a ItemVarsetsItemRelationshipsVarsItemVarsGetResponseable when successful
 // returns a Errors error when the service returns a 4XX or 5XX status code
-func (m *ItemVarsetsItemRelationshipsVarsVarsItemRequestBuilder) GetAsVarsGetResponse(ctx context.Context, requestConfiguration *ItemVarsetsItemRelationshipsVarsVarsItemRequestBuilderGetRequestConfiguration)(ItemVarsetsItemRelationshipsVarsItemVarsGetResponseable, error) {
+func (m *ItemVarsetsItemRelationshipsVarsVarsItemRequestBuilder) Get(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(ItemVarsetsItemRelationshipsVarsItemVarsGetResponseable, error) {
     requestInfo, err := m.ToGetRequestInformation(ctx, requestConfiguration);
     if err != nil {
         return nil, err
@@ -76,12 +48,9 @@ func (m *ItemVarsetsItemRelationshipsVarsVarsItemRequestBuilder) GetAsVarsGetRes
 }
 // ToGetRequestInformation show details of a variable in a variable set, with overwrite context from the specified workspace.
 // returns a *RequestInformation when successful
-func (m *ItemVarsetsItemRelationshipsVarsVarsItemRequestBuilder) ToGetRequestInformation(ctx context.Context, requestConfiguration *ItemVarsetsItemRelationshipsVarsVarsItemRequestBuilderGetRequestConfiguration)(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
+func (m *ItemVarsetsItemRelationshipsVarsVarsItemRequestBuilder) ToGetRequestInformation(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
     requestInfo := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewRequestInformationWithMethodAndUrlTemplateAndPathParameters(i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.GET, m.BaseRequestBuilder.UrlTemplate, m.BaseRequestBuilder.PathParameters)
-    if requestConfiguration != nil {
-        requestInfo.Headers.AddAll(requestConfiguration.Headers)
-        requestInfo.AddRequestOptions(requestConfiguration.Options)
-    }
+    i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ConfigureRequestInformation(requestInfo, requestConfiguration)
     requestInfo.Headers.TryAdd("Accept", "application/vnd.api+json")
     return requestInfo, nil
 }

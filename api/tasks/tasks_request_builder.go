@@ -36,3 +36,8 @@ func NewTasksRequestBuilder(rawUrl string, requestAdapter i2ae4187f7daee263371cb
     urlParams["request-raw-url"] = rawUrl
     return NewTasksRequestBuilderInternal(urlParams, requestAdapter)
 }
+// Integrations the integrations property
+// returns a *IntegrationsRequestBuilder when successful
+func (m *TasksRequestBuilder) Integrations()(*IntegrationsRequestBuilder) {
+    return NewIntegrationsRequestBuilderInternal(m.BaseRequestBuilder.PathParameters, m.BaseRequestBuilder.RequestAdapter)
+}

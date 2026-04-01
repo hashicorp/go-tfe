@@ -117,6 +117,11 @@
       }
     },
     {
+      "name": "token-ttl-policies",
+      "x-displayName": "Token TTL Policies",
+      "description": "Token TTL policy management, including creating and updating policies"
+    },
+    {
       "name": "projects",
       "x-displayName": "Projects",
       "description": "Project actions",
@@ -2576,6 +2581,197 @@
         }
       }
     },
+    "/organizations/{organization_name}/token-ttl-policies": {
+      "get": {
+        "operationId": "listTokenTtlPolicies",
+        "summary": "List Token TTL Policies",
+        "description": "List all token TTL policies for an organization.",
+        "tags": [
+          "token-ttl-policies"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "organization_name",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The name of the organization to list token TTL policies for"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Token TTL policies list",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "data"
+                  ],
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/token-ttl-policy"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "User is not part of the owners team of the organization",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Organization does not exist or user does not belong to the organization",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "operationId": "upsertTokenTtlPolicies",
+        "summary": "Create or Update Token TTL Policies",
+        "description": "Create or Update token TTL policies for an organization.",
+        "tags": [
+          "organization-token-ttl-policies"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "organization_name",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The name of the organization"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/vnd.api+json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "token_ttl_policies"
+                ],
+                "properties": {
+                  "token_ttl_policies": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/token-ttl-policy"
+                    }
+                  }
+                }
+              },
+              "examples": {
+                "upsert": {
+                  "summary": "Upsert token TTL policies",
+                  "value": {
+                    "token_ttl_policies": [
+                      {
+                        "token-type": "ORG_TOKEN",
+                        "max-ttl-ms": 3600000
+                      },
+                      {
+                        "token-type": "USER_TOKEN",
+                        "max-ttl-ms": 7200000
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Successfully created or updated token TTL policies",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "data"
+                  ],
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/token-ttl-policy"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "User is not part of the owners team of the organization",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Organization does not exist or user does not belong to the organization",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Unable to create token TTL policy due to validation errors",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/projects/{project_id}": {
       "get": {
         "operationId": "getProject",
@@ -2808,6 +3004,167 @@
         "responses": {
           "204": {
             "description": "Successfully moved workspace(s)."
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/projects/{project_id}/relationships/tag-bindings": {
+      "get": {
+        "operationId": "listProjectTagBindings",
+        "summary": "List Project Tag Bindings",
+        "description": "List all tags associated with a project.",
+        "tags": [
+          "projects"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "project_id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The ID of the project."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of tags",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/tag-bindings-request"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Project not found or user unauthorized to view project",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "operationId": "addProjectTagBindings",
+        "summary": "Add Tag Bindings to a Project",
+        "description": "Add one or more tag bindings to a project.",
+        "tags": [
+          "projects"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "project_id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The ID of the project."
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/vnd.api+json": {
+              "schema": {
+                "$ref": "#/components/schemas/tag-bindings-request"
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "Tags added"
+          },
+          "404": {
+            "description": "Project not found or user unauthorized to manage tags",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "operationId": "replaceProjectTagBindings",
+        "summary": "Replace Tag Bindings in a Project",
+        "description": "Replace all tag bindings in a project.",
+        "tags": [
+          "projects"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "project_id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The ID of the project."
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/vnd.api+json": {
+              "schema": {
+                "$ref": "#/components/schemas/tag-bindings-request"
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "Tag bindings replaced"
+          },
+          "404": {
+            "description": "Project not found or user unauthorized to manage tag bindings",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
           },
           "default": {
             "description": "Error details",
@@ -8203,6 +8560,167 @@
           },
           "422": {
             "description": "Validation error on one or more variables",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/workspaces/{workspace_id}/relationships/tag-bindings": {
+      "get": {
+        "operationId": "listWorkspaceTagBindings",
+        "summary": "List Workspace Tags",
+        "description": "List all tags associated with a workspace.",
+        "tags": [
+          "workspaces"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "workspace_id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The ID of the workspace."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of tags",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/tag-bindings-request"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Workspace not found or user unauthorized to view workspace",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "operationId": "addWorkspaceTagBindings",
+        "summary": "Add Tag Bindings to a Workspace",
+        "description": "Add one or more tag bindings to a workspace.",
+        "tags": [
+          "workspaces"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "workspace_id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The external ID of the workspace."
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/vnd.api+json": {
+              "schema": {
+                "$ref": "#/components/schemas/tag-bindings-request"
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "Tags added"
+          },
+          "404": {
+            "description": "Workspace not found or user unauthorized to manage tags",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error details",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "operationId": "replaceWorkspaceTagBindings",
+        "summary": "Replace Tag Bindings in a Workspace",
+        "description": "Replace all tag bindings in a workspace.",
+        "tags": [
+          "workspaces"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "workspace_id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The ID of the workspace."
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/vnd.api+json": {
+              "schema": {
+                "$ref": "#/components/schemas/tag-bindings-request"
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "Tag bindings replaced"
+          },
+          "404": {
+            "description": "Workspace not found or user unauthorized to manage tag bindings",
             "content": {
               "application/vnd.api+json": {
                 "schema": {
@@ -16735,6 +17253,108 @@
         }
       }
     },
+    "/tasks/integrations": {
+      "get": {
+        "tags": [
+          "tasks"
+        ],
+        "summary": "List Integrations",
+        "description": "List all available integrations that can be used with tasks. \nBy default, only active integrations are returned.\n",
+        "parameters": [
+          {
+            "name": "search",
+            "in": "query",
+            "required": false,
+            "description": "Search integrations by name (case-insensitive, partial match).",
+            "schema": {
+              "type": "string",
+              "example": "cloud"
+            }
+          },
+          {
+            "name": "category",
+            "in": "query",
+            "required": false,
+            "description": "Filter integrations by category.",
+            "schema": {
+              "type": "string",
+              "example": "cost-estimation"
+            }
+          },
+          {
+            "name": "include_inactive",
+            "in": "query",
+            "required": false,
+            "description": "Include inactive integrations in the results.",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "true",
+                "false"
+              ],
+              "default": "false"
+            }
+          },
+          {
+            "$ref": "#/components/parameters/page_number"
+          },
+          {
+            "$ref": "#/components/parameters/page_size"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/integration"
+                      }
+                    },
+                    "links": {
+                      "$ref": "#/components/schemas/self-with-pagination"
+                    },
+                    "meta": {
+                      "type": "object",
+                      "properties": {
+                        "pagination": {
+                          "$ref": "#/components/schemas/pagination"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Unprocessable Entity",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/workspaces/{workspace_id}/configuration-versions": {
       "get": {
         "operationId": "listConfigurationVersions",
@@ -21265,9 +21885,9 @@
                 "type": "string",
                 "description": "Unique identifier for the feature set"
               },
-              "invoke-terraform-action": {
+              "terraform-actions": {
                 "type": "boolean",
-                "description": "Whether the feature set includes action invocations"
+                "description": "Whether the feature set includes Terraform Actions features"
               },
               "is-current": {
                 "type": "boolean",
@@ -22852,6 +23472,114 @@
               "self": {
                 "type": "string"
               }
+            }
+          }
+        }
+      },
+      "token-ttl-policy": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "readOnly": true,
+            "description": "The token TTL policy ID"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "organization-token-ttl-policies"
+            ]
+          },
+          "attributes": {
+            "type": "object",
+            "properties": {
+              "token-type": {
+                "type": "string",
+                "description": "The type of the token TTL policy",
+                "enum": [
+                  "organization",
+                  "team",
+                  "user",
+                  "audit_trails"
+                ],
+                "example": "organization"
+              },
+              "max-ttl-ms": {
+                "type": "integer",
+                "description": "The maximum time-to-live for the token in milliseconds",
+                "example": 3600000
+              },
+              "created-at": {
+                "type": "string",
+                "format": "date-time",
+                "description": "When the policy was created"
+              },
+              "updated-at": {
+                "type": "string",
+                "format": "date-time",
+                "description": "When the policy was last updated"
+              }
+            },
+            "required": [
+              "token-type",
+              "max-ttl-ms"
+            ]
+          }
+        }
+      },
+      "tag-binding": {
+        "type": "object",
+        "required": [
+          "type",
+          "attributes"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "readOnly": true,
+            "example": "tb-7AHdkTVXrmxiB8vQ"
+          },
+          "type": {
+            "type": "string",
+            "readOnly": true,
+            "enum": [
+              "tag-bindings"
+            ]
+          },
+          "attributes": {
+            "type": "object",
+            "required": [
+              "key"
+            ],
+            "properties": {
+              "created-at": {
+                "type": "string",
+                "format": "date-time",
+                "nullable": true
+              },
+              "key": {
+                "type": "string"
+              },
+              "value": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      },
+      "tag-bindings-request": {
+        "x-helperify": {
+          "jsonapitype": "tag-bindings"
+        },
+        "type": "object",
+        "required": [
+          "data"
+        ],
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/tag-binding"
             }
           }
         }
@@ -27628,6 +28356,96 @@
             "$ref": "#/components/schemas/self"
           }
         }
+      },
+      "integration": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "The external ID of the integration.",
+            "example": "int-xxxxxxxxxxxxxxxx"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "integrations"
+            ]
+          },
+          "attributes": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "The name of the integration.",
+                "example": "Cloudability"
+              },
+              "provider": {
+                "type": "string",
+                "description": "The provider identifier for the integration.",
+                "example": "cloudability"
+              },
+              "description": {
+                "type": "string",
+                "description": "A description of what the integration does.",
+                "example": "Cloud cost management"
+              },
+              "homepage": {
+                "type": "string",
+                "format": "uri",
+                "description": "The homepage URL for the integration.",
+                "example": "https://www.apptio.com/products/cloudability/"
+              },
+              "stages": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                },
+                "description": "The run stages where this integration can be used.",
+                "example": [
+                  "post_plan"
+                ]
+              },
+              "params": {
+                "type": "object",
+                "description": "Configuration parameters required by the integration.",
+                "additionalProperties": {
+                  "type": "object",
+                  "properties": {
+                    "kind": {
+                      "type": "string",
+                      "description": "The type of the parameter."
+                    },
+                    "sensitive": {
+                      "type": "boolean",
+                      "description": "Whether the parameter contains sensitive data."
+                    },
+                    "required": {
+                      "type": "boolean",
+                      "description": "Whether the parameter is required."
+                    },
+                    "description": {
+                      "type": "string",
+                      "description": "Description of the parameter."
+                    }
+                  }
+                }
+              }
+            },
+            "required": [
+              "name",
+              "provider",
+              "description",
+              "homepage",
+              "stages",
+              "params"
+            ]
+          }
+        },
+        "required": [
+          "id",
+          "type",
+          "attributes"
+        ]
       },
       "ingress-attributes": {
         "type": "object",

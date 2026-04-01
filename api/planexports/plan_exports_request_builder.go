@@ -13,13 +13,6 @@ import (
 type PlanExportsRequestBuilder struct {
     i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.BaseRequestBuilder
 }
-// PlanExportsRequestBuilderPostRequestConfiguration configuration for the request such as headers, query parameters, and middleware options.
-type PlanExportsRequestBuilderPostRequestConfiguration struct {
-    // Request headers
-    Headers *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestHeaders
-    // Request options
-    Options []i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestOption
-}
 // ById gets an item from the github.com/hashicorp/go-tfe/api.planExports.item collection
 // returns a *PlanExportsItemRequestBuilder when successful
 func (m *PlanExportsRequestBuilder) ById(id string)(*PlanExportsItemRequestBuilder) {
@@ -46,30 +39,9 @@ func NewPlanExportsRequestBuilder(rawUrl string, requestAdapter i2ae4187f7daee26
     return NewPlanExportsRequestBuilderInternal(urlParams, requestAdapter)
 }
 // Post export data from a plan in the specified format. The export process is asynchronous, and the resulting data becomes downloadable when its status is "finished".
-// Deprecated: This method is obsolete. Use PostAsPlanExportsPostResponse instead.
-// returns a PlanExportsResponseable when successful
-// returns a Errors error when the service returns a 4XX or 5XX status code
-func (m *PlanExportsRequestBuilder) Post(ctx context.Context, body ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.PlanExportable, requestConfiguration *PlanExportsRequestBuilderPostRequestConfiguration)(PlanExportsResponseable, error) {
-    requestInfo, err := m.ToPostRequestInformation(ctx, body, requestConfiguration);
-    if err != nil {
-        return nil, err
-    }
-    errorMapping := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ErrorMappings {
-        "XXX": ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.CreateErrorsFromDiscriminatorValue,
-    }
-    res, err := m.BaseRequestBuilder.RequestAdapter.Send(ctx, requestInfo, CreatePlanExportsResponseFromDiscriminatorValue, errorMapping)
-    if err != nil {
-        return nil, err
-    }
-    if res == nil {
-        return nil, nil
-    }
-    return res.(PlanExportsResponseable), nil
-}
-// PostAsPlanExportsPostResponse export data from a plan in the specified format. The export process is asynchronous, and the resulting data becomes downloadable when its status is "finished".
 // returns a PlanExportsPostResponseable when successful
 // returns a Errors error when the service returns a 4XX or 5XX status code
-func (m *PlanExportsRequestBuilder) PostAsPlanExportsPostResponse(ctx context.Context, body ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.PlanExportable, requestConfiguration *PlanExportsRequestBuilderPostRequestConfiguration)(PlanExportsPostResponseable, error) {
+func (m *PlanExportsRequestBuilder) Post(ctx context.Context, body ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.PlanExportable, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(PlanExportsPostResponseable, error) {
     requestInfo, err := m.ToPostRequestInformation(ctx, body, requestConfiguration);
     if err != nil {
         return nil, err
@@ -88,12 +60,9 @@ func (m *PlanExportsRequestBuilder) PostAsPlanExportsPostResponse(ctx context.Co
 }
 // ToPostRequestInformation export data from a plan in the specified format. The export process is asynchronous, and the resulting data becomes downloadable when its status is "finished".
 // returns a *RequestInformation when successful
-func (m *PlanExportsRequestBuilder) ToPostRequestInformation(ctx context.Context, body ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.PlanExportable, requestConfiguration *PlanExportsRequestBuilderPostRequestConfiguration)(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
+func (m *PlanExportsRequestBuilder) ToPostRequestInformation(ctx context.Context, body ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.PlanExportable, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
     requestInfo := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewRequestInformationWithMethodAndUrlTemplateAndPathParameters(i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.POST, m.BaseRequestBuilder.UrlTemplate, m.BaseRequestBuilder.PathParameters)
-    if requestConfiguration != nil {
-        requestInfo.Headers.AddAll(requestConfiguration.Headers)
-        requestInfo.AddRequestOptions(requestConfiguration.Options)
-    }
+    i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ConfigureRequestInformation(requestInfo, requestConfiguration)
     requestInfo.Headers.TryAdd("Accept", "application/vnd.api+json")
     err := requestInfo.SetContentFromParsable(ctx, m.BaseRequestBuilder.RequestAdapter, "application/vnd.api+json", body)
     if err != nil {

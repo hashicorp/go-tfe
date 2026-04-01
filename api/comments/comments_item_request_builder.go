@@ -13,13 +13,6 @@ import (
 type CommentsItemRequestBuilder struct {
     i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.BaseRequestBuilder
 }
-// CommentsItemRequestBuilderGetRequestConfiguration configuration for the request such as headers, query parameters, and middleware options.
-type CommentsItemRequestBuilderGetRequestConfiguration struct {
-    // Request headers
-    Headers *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestHeaders
-    // Request options
-    Options []i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestOption
-}
 // NewCommentsItemRequestBuilderInternal instantiates a new CommentsItemRequestBuilder and sets the default values.
 func NewCommentsItemRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*CommentsItemRequestBuilder) {
     m := &CommentsItemRequestBuilder{
@@ -34,30 +27,9 @@ func NewCommentsItemRequestBuilder(rawUrl string, requestAdapter i2ae4187f7daee2
     return NewCommentsItemRequestBuilderInternal(urlParams, requestAdapter)
 }
 // Get get details about a comment.
-// Deprecated: This method is obsolete. Use GetAsCommentsGetResponse instead.
-// returns a ItemCommentsResponseable when successful
-// returns a Errors error when the service returns a 4XX or 5XX status code
-func (m *CommentsItemRequestBuilder) Get(ctx context.Context, requestConfiguration *CommentsItemRequestBuilderGetRequestConfiguration)(ItemCommentsResponseable, error) {
-    requestInfo, err := m.ToGetRequestInformation(ctx, requestConfiguration);
-    if err != nil {
-        return nil, err
-    }
-    errorMapping := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ErrorMappings {
-        "XXX": ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.CreateErrorsFromDiscriminatorValue,
-    }
-    res, err := m.BaseRequestBuilder.RequestAdapter.Send(ctx, requestInfo, CreateItemCommentsResponseFromDiscriminatorValue, errorMapping)
-    if err != nil {
-        return nil, err
-    }
-    if res == nil {
-        return nil, nil
-    }
-    return res.(ItemCommentsResponseable), nil
-}
-// GetAsCommentsGetResponse get details about a comment.
 // returns a ItemCommentsGetResponseable when successful
 // returns a Errors error when the service returns a 4XX or 5XX status code
-func (m *CommentsItemRequestBuilder) GetAsCommentsGetResponse(ctx context.Context, requestConfiguration *CommentsItemRequestBuilderGetRequestConfiguration)(ItemCommentsGetResponseable, error) {
+func (m *CommentsItemRequestBuilder) Get(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(ItemCommentsGetResponseable, error) {
     requestInfo, err := m.ToGetRequestInformation(ctx, requestConfiguration);
     if err != nil {
         return nil, err
@@ -76,12 +48,9 @@ func (m *CommentsItemRequestBuilder) GetAsCommentsGetResponse(ctx context.Contex
 }
 // ToGetRequestInformation get details about a comment.
 // returns a *RequestInformation when successful
-func (m *CommentsItemRequestBuilder) ToGetRequestInformation(ctx context.Context, requestConfiguration *CommentsItemRequestBuilderGetRequestConfiguration)(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
+func (m *CommentsItemRequestBuilder) ToGetRequestInformation(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
     requestInfo := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewRequestInformationWithMethodAndUrlTemplateAndPathParameters(i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.GET, m.BaseRequestBuilder.UrlTemplate, m.BaseRequestBuilder.PathParameters)
-    if requestConfiguration != nil {
-        requestInfo.Headers.AddAll(requestConfiguration.Headers)
-        requestInfo.AddRequestOptions(requestConfiguration.Options)
-    }
+    i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ConfigureRequestInformation(requestInfo, requestConfiguration)
     requestInfo.Headers.TryAdd("Accept", "application/vnd.api+json")
     return requestInfo, nil
 }

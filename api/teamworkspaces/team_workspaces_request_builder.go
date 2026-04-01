@@ -24,22 +24,6 @@ type TeamWorkspacesRequestBuilderGetQueryParameters struct {
     // The number of items to retrieve per page. Defaults to 20.
     Pagesize *int32 `uriparametername:"page%5Bsize%5D"`
 }
-// TeamWorkspacesRequestBuilderGetRequestConfiguration configuration for the request such as headers, query parameters, and middleware options.
-type TeamWorkspacesRequestBuilderGetRequestConfiguration struct {
-    // Request headers
-    Headers *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestHeaders
-    // Request options
-    Options []i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestOption
-    // Request query parameters
-    QueryParameters *TeamWorkspacesRequestBuilderGetQueryParameters
-}
-// TeamWorkspacesRequestBuilderPostRequestConfiguration configuration for the request such as headers, query parameters, and middleware options.
-type TeamWorkspacesRequestBuilderPostRequestConfiguration struct {
-    // Request headers
-    Headers *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestHeaders
-    // Request options
-    Options []i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestOption
-}
 // ByTeam_workspace_id gets an item from the github.com/hashicorp/go-tfe/api.teamWorkspaces.item collection
 // returns a *WithTeam_workspace_ItemRequestBuilder when successful
 func (m *TeamWorkspacesRequestBuilder) ByTeam_workspace_id(team_workspace_id string)(*WithTeam_workspace_ItemRequestBuilder) {
@@ -66,33 +50,10 @@ func NewTeamWorkspacesRequestBuilder(rawUrl string, requestAdapter i2ae4187f7dae
     return NewTeamWorkspacesRequestBuilderInternal(urlParams, requestAdapter)
 }
 // Get list all team access relationships. Optionally filter by workspace or team ID.
-// Deprecated: This method is obsolete. Use GetAsTeamWorkspacesGetResponse instead.
-// returns a TeamWorkspacesResponseable when successful
-// returns a Errors error when the service returns a 404 status code
-// returns a Errors error when the service returns a 4XX or 5XX status code
-func (m *TeamWorkspacesRequestBuilder) Get(ctx context.Context, requestConfiguration *TeamWorkspacesRequestBuilderGetRequestConfiguration)(TeamWorkspacesResponseable, error) {
-    requestInfo, err := m.ToGetRequestInformation(ctx, requestConfiguration);
-    if err != nil {
-        return nil, err
-    }
-    errorMapping := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ErrorMappings {
-        "404": ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.CreateErrorsFromDiscriminatorValue,
-        "XXX": ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.CreateErrorsFromDiscriminatorValue,
-    }
-    res, err := m.BaseRequestBuilder.RequestAdapter.Send(ctx, requestInfo, CreateTeamWorkspacesResponseFromDiscriminatorValue, errorMapping)
-    if err != nil {
-        return nil, err
-    }
-    if res == nil {
-        return nil, nil
-    }
-    return res.(TeamWorkspacesResponseable), nil
-}
-// GetAsTeamWorkspacesGetResponse list all team access relationships. Optionally filter by workspace or team ID.
 // returns a TeamWorkspacesGetResponseable when successful
 // returns a Errors error when the service returns a 404 status code
 // returns a Errors error when the service returns a 4XX or 5XX status code
-func (m *TeamWorkspacesRequestBuilder) GetAsTeamWorkspacesGetResponse(ctx context.Context, requestConfiguration *TeamWorkspacesRequestBuilderGetRequestConfiguration)(TeamWorkspacesGetResponseable, error) {
+func (m *TeamWorkspacesRequestBuilder) Get(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[TeamWorkspacesRequestBuilderGetQueryParameters])(TeamWorkspacesGetResponseable, error) {
     requestInfo, err := m.ToGetRequestInformation(ctx, requestConfiguration);
     if err != nil {
         return nil, err
@@ -111,36 +72,11 @@ func (m *TeamWorkspacesRequestBuilder) GetAsTeamWorkspacesGetResponse(ctx contex
     return res.(TeamWorkspacesGetResponseable), nil
 }
 // Post add a team's access to a workspace.
-// Deprecated: This method is obsolete. Use PostAsTeamWorkspacesPostResponse instead.
-// returns a TeamWorkspacesResponseable when successful
-// returns a Errors error when the service returns a 404 status code
-// returns a Errors error when the service returns a 422 status code
-// returns a Errors error when the service returns a 4XX or 5XX status code
-func (m *TeamWorkspacesRequestBuilder) Post(ctx context.Context, body ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.TeamWorkspaceable, requestConfiguration *TeamWorkspacesRequestBuilderPostRequestConfiguration)(TeamWorkspacesResponseable, error) {
-    requestInfo, err := m.ToPostRequestInformation(ctx, body, requestConfiguration);
-    if err != nil {
-        return nil, err
-    }
-    errorMapping := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ErrorMappings {
-        "404": ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.CreateErrorsFromDiscriminatorValue,
-        "422": ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.CreateErrorsFromDiscriminatorValue,
-        "XXX": ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.CreateErrorsFromDiscriminatorValue,
-    }
-    res, err := m.BaseRequestBuilder.RequestAdapter.Send(ctx, requestInfo, CreateTeamWorkspacesResponseFromDiscriminatorValue, errorMapping)
-    if err != nil {
-        return nil, err
-    }
-    if res == nil {
-        return nil, nil
-    }
-    return res.(TeamWorkspacesResponseable), nil
-}
-// PostAsTeamWorkspacesPostResponse add a team's access to a workspace.
 // returns a TeamWorkspacesPostResponseable when successful
 // returns a Errors error when the service returns a 404 status code
 // returns a Errors error when the service returns a 422 status code
 // returns a Errors error when the service returns a 4XX or 5XX status code
-func (m *TeamWorkspacesRequestBuilder) PostAsTeamWorkspacesPostResponse(ctx context.Context, body ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.TeamWorkspaceable, requestConfiguration *TeamWorkspacesRequestBuilderPostRequestConfiguration)(TeamWorkspacesPostResponseable, error) {
+func (m *TeamWorkspacesRequestBuilder) Post(ctx context.Context, body ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.TeamWorkspaceable, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(TeamWorkspacesPostResponseable, error) {
     requestInfo, err := m.ToPostRequestInformation(ctx, body, requestConfiguration);
     if err != nil {
         return nil, err
@@ -161,26 +97,17 @@ func (m *TeamWorkspacesRequestBuilder) PostAsTeamWorkspacesPostResponse(ctx cont
 }
 // ToGetRequestInformation list all team access relationships. Optionally filter by workspace or team ID.
 // returns a *RequestInformation when successful
-func (m *TeamWorkspacesRequestBuilder) ToGetRequestInformation(ctx context.Context, requestConfiguration *TeamWorkspacesRequestBuilderGetRequestConfiguration)(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
+func (m *TeamWorkspacesRequestBuilder) ToGetRequestInformation(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[TeamWorkspacesRequestBuilderGetQueryParameters])(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
     requestInfo := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewRequestInformationWithMethodAndUrlTemplateAndPathParameters(i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.GET, m.BaseRequestBuilder.UrlTemplate, m.BaseRequestBuilder.PathParameters)
-    if requestConfiguration != nil {
-        if requestConfiguration.QueryParameters != nil {
-            requestInfo.AddQueryParameters(*(requestConfiguration.QueryParameters))
-        }
-        requestInfo.Headers.AddAll(requestConfiguration.Headers)
-        requestInfo.AddRequestOptions(requestConfiguration.Options)
-    }
+    i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ConfigureRequestInformation(requestInfo, requestConfiguration)
     requestInfo.Headers.TryAdd("Accept", "application/vnd.api+json")
     return requestInfo, nil
 }
 // ToPostRequestInformation add a team's access to a workspace.
 // returns a *RequestInformation when successful
-func (m *TeamWorkspacesRequestBuilder) ToPostRequestInformation(ctx context.Context, body ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.TeamWorkspaceable, requestConfiguration *TeamWorkspacesRequestBuilderPostRequestConfiguration)(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
+func (m *TeamWorkspacesRequestBuilder) ToPostRequestInformation(ctx context.Context, body ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.TeamWorkspaceable, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
     requestInfo := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewRequestInformationWithMethodAndUrlTemplateAndPathParameters(i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.POST, m.BaseRequestBuilder.UrlTemplate, m.BaseRequestBuilder.PathParameters)
-    if requestConfiguration != nil {
-        requestInfo.Headers.AddAll(requestConfiguration.Headers)
-        requestInfo.AddRequestOptions(requestConfiguration.Options)
-    }
+    i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ConfigureRequestInformation(requestInfo, requestConfiguration)
     requestInfo.Headers.TryAdd("Accept", "application/vnd.api+json")
     err := requestInfo.SetContentFromParsable(ctx, m.BaseRequestBuilder.RequestAdapter, "application/vnd.api+json", body)
     if err != nil {

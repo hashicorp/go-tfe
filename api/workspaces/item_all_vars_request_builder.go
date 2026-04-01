@@ -13,13 +13,6 @@ import (
 type ItemAllVarsRequestBuilder struct {
     i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.BaseRequestBuilder
 }
-// ItemAllVarsRequestBuilderGetRequestConfiguration configuration for the request such as headers, query parameters, and middleware options.
-type ItemAllVarsRequestBuilderGetRequestConfiguration struct {
-    // Request headers
-    Headers *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestHeaders
-    // Request options
-    Options []i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestOption
-}
 // NewItemAllVarsRequestBuilderInternal instantiates a new ItemAllVarsRequestBuilder and sets the default values.
 func NewItemAllVarsRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*ItemAllVarsRequestBuilder) {
     m := &ItemAllVarsRequestBuilder{
@@ -34,30 +27,9 @@ func NewItemAllVarsRequestBuilder(rawUrl string, requestAdapter i2ae4187f7daee26
     return NewItemAllVarsRequestBuilderInternal(urlParams, requestAdapter)
 }
 // Get this API returns the list of all variables that are accessible to a workspace. This includes variables defined directly on the workspace as well as variables inherited from any variable sets attached to the workspace.
-// Deprecated: This method is obsolete. Use GetAsAllVarsGetResponse instead.
-// returns a ItemAllVarsResponseable when successful
-// returns a Errors error when the service returns a 4XX or 5XX status code
-func (m *ItemAllVarsRequestBuilder) Get(ctx context.Context, requestConfiguration *ItemAllVarsRequestBuilderGetRequestConfiguration)(ItemAllVarsResponseable, error) {
-    requestInfo, err := m.ToGetRequestInformation(ctx, requestConfiguration);
-    if err != nil {
-        return nil, err
-    }
-    errorMapping := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ErrorMappings {
-        "XXX": ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.CreateErrorsFromDiscriminatorValue,
-    }
-    res, err := m.BaseRequestBuilder.RequestAdapter.Send(ctx, requestInfo, CreateItemAllVarsResponseFromDiscriminatorValue, errorMapping)
-    if err != nil {
-        return nil, err
-    }
-    if res == nil {
-        return nil, nil
-    }
-    return res.(ItemAllVarsResponseable), nil
-}
-// GetAsAllVarsGetResponse this API returns the list of all variables that are accessible to a workspace. This includes variables defined directly on the workspace as well as variables inherited from any variable sets attached to the workspace.
 // returns a ItemAllVarsGetResponseable when successful
 // returns a Errors error when the service returns a 4XX or 5XX status code
-func (m *ItemAllVarsRequestBuilder) GetAsAllVarsGetResponse(ctx context.Context, requestConfiguration *ItemAllVarsRequestBuilderGetRequestConfiguration)(ItemAllVarsGetResponseable, error) {
+func (m *ItemAllVarsRequestBuilder) Get(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(ItemAllVarsGetResponseable, error) {
     requestInfo, err := m.ToGetRequestInformation(ctx, requestConfiguration);
     if err != nil {
         return nil, err
@@ -76,12 +48,9 @@ func (m *ItemAllVarsRequestBuilder) GetAsAllVarsGetResponse(ctx context.Context,
 }
 // ToGetRequestInformation this API returns the list of all variables that are accessible to a workspace. This includes variables defined directly on the workspace as well as variables inherited from any variable sets attached to the workspace.
 // returns a *RequestInformation when successful
-func (m *ItemAllVarsRequestBuilder) ToGetRequestInformation(ctx context.Context, requestConfiguration *ItemAllVarsRequestBuilderGetRequestConfiguration)(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
+func (m *ItemAllVarsRequestBuilder) ToGetRequestInformation(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
     requestInfo := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewRequestInformationWithMethodAndUrlTemplateAndPathParameters(i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.GET, m.BaseRequestBuilder.UrlTemplate, m.BaseRequestBuilder.PathParameters)
-    if requestConfiguration != nil {
-        requestInfo.Headers.AddAll(requestConfiguration.Headers)
-        requestInfo.AddRequestOptions(requestConfiguration.Options)
-    }
+    i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ConfigureRequestInformation(requestInfo, requestConfiguration)
     requestInfo.Headers.TryAdd("Accept", "application/vnd.api+json")
     return requestInfo, nil
 }

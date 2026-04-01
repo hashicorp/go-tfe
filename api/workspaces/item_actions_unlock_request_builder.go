@@ -13,13 +13,6 @@ import (
 type ItemActionsUnlockRequestBuilder struct {
     i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.BaseRequestBuilder
 }
-// ItemActionsUnlockRequestBuilderPostRequestConfiguration configuration for the request such as headers, query parameters, and middleware options.
-type ItemActionsUnlockRequestBuilderPostRequestConfiguration struct {
-    // Request headers
-    Headers *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestHeaders
-    // Request options
-    Options []i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestOption
-}
 // NewItemActionsUnlockRequestBuilderInternal instantiates a new ItemActionsUnlockRequestBuilder and sets the default values.
 func NewItemActionsUnlockRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*ItemActionsUnlockRequestBuilder) {
     m := &ItemActionsUnlockRequestBuilder{
@@ -34,36 +27,11 @@ func NewItemActionsUnlockRequestBuilder(rawUrl string, requestAdapter i2ae4187f7
     return NewItemActionsUnlockRequestBuilderInternal(urlParams, requestAdapter)
 }
 // Post unlock a workspace. Users can unlock a workspace if they locked it. Unlocking a workspace locked by another user requires force-unlock. Returns a conflict error if the workspace is not locked by the requesting user.
-// Deprecated: This method is obsolete. Use PostAsUnlockPostResponse instead.
-// returns a ItemActionsUnlockResponseable when successful
-// returns a Errors error when the service returns a 404 status code
-// returns a Errors error when the service returns a 409 status code
-// returns a Errors error when the service returns a 4XX or 5XX status code
-func (m *ItemActionsUnlockRequestBuilder) Post(ctx context.Context, requestConfiguration *ItemActionsUnlockRequestBuilderPostRequestConfiguration)(ItemActionsUnlockResponseable, error) {
-    requestInfo, err := m.ToPostRequestInformation(ctx, requestConfiguration);
-    if err != nil {
-        return nil, err
-    }
-    errorMapping := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ErrorMappings {
-        "404": ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.CreateErrorsFromDiscriminatorValue,
-        "409": ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.CreateErrorsFromDiscriminatorValue,
-        "XXX": ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.CreateErrorsFromDiscriminatorValue,
-    }
-    res, err := m.BaseRequestBuilder.RequestAdapter.Send(ctx, requestInfo, CreateItemActionsUnlockResponseFromDiscriminatorValue, errorMapping)
-    if err != nil {
-        return nil, err
-    }
-    if res == nil {
-        return nil, nil
-    }
-    return res.(ItemActionsUnlockResponseable), nil
-}
-// PostAsUnlockPostResponse unlock a workspace. Users can unlock a workspace if they locked it. Unlocking a workspace locked by another user requires force-unlock. Returns a conflict error if the workspace is not locked by the requesting user.
 // returns a ItemActionsUnlockPostResponseable when successful
 // returns a Errors error when the service returns a 404 status code
 // returns a Errors error when the service returns a 409 status code
 // returns a Errors error when the service returns a 4XX or 5XX status code
-func (m *ItemActionsUnlockRequestBuilder) PostAsUnlockPostResponse(ctx context.Context, requestConfiguration *ItemActionsUnlockRequestBuilderPostRequestConfiguration)(ItemActionsUnlockPostResponseable, error) {
+func (m *ItemActionsUnlockRequestBuilder) Post(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(ItemActionsUnlockPostResponseable, error) {
     requestInfo, err := m.ToPostRequestInformation(ctx, requestConfiguration);
     if err != nil {
         return nil, err
@@ -84,12 +52,9 @@ func (m *ItemActionsUnlockRequestBuilder) PostAsUnlockPostResponse(ctx context.C
 }
 // ToPostRequestInformation unlock a workspace. Users can unlock a workspace if they locked it. Unlocking a workspace locked by another user requires force-unlock. Returns a conflict error if the workspace is not locked by the requesting user.
 // returns a *RequestInformation when successful
-func (m *ItemActionsUnlockRequestBuilder) ToPostRequestInformation(ctx context.Context, requestConfiguration *ItemActionsUnlockRequestBuilderPostRequestConfiguration)(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
+func (m *ItemActionsUnlockRequestBuilder) ToPostRequestInformation(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
     requestInfo := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewRequestInformationWithMethodAndUrlTemplateAndPathParameters(i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.POST, m.BaseRequestBuilder.UrlTemplate, m.BaseRequestBuilder.PathParameters)
-    if requestConfiguration != nil {
-        requestInfo.Headers.AddAll(requestConfiguration.Headers)
-        requestInfo.AddRequestOptions(requestConfiguration.Options)
-    }
+    i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ConfigureRequestInformation(requestInfo, requestConfiguration)
     requestInfo.Headers.TryAdd("Accept", "application/vnd.api+json")
     return requestInfo, nil
 }

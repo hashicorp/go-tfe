@@ -13,13 +13,6 @@ import (
 type ItemActionsAssessRequestBuilder struct {
     i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.BaseRequestBuilder
 }
-// ItemActionsAssessRequestBuilderPostRequestConfiguration configuration for the request such as headers, query parameters, and middleware options.
-type ItemActionsAssessRequestBuilderPostRequestConfiguration struct {
-    // Request headers
-    Headers *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestHeaders
-    // Request options
-    Options []i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestOption
-}
 // NewItemActionsAssessRequestBuilderInternal instantiates a new ItemActionsAssessRequestBuilder and sets the default values.
 func NewItemActionsAssessRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*ItemActionsAssessRequestBuilder) {
     m := &ItemActionsAssessRequestBuilder{
@@ -34,36 +27,11 @@ func NewItemActionsAssessRequestBuilder(rawUrl string, requestAdapter i2ae4187f7
     return NewItemActionsAssessRequestBuilderInternal(urlParams, requestAdapter)
 }
 // Post trigger a drift detection assessment for a workspace. The workspace must have assessments enabled and not have a pending assessment already running.
-// Deprecated: This method is obsolete. Use PostAsAssessPostResponse instead.
-// returns a ItemActionsAssessResponseable when successful
-// returns a Errors error when the service returns a 404 status code
-// returns a Errors error when the service returns a 409 status code
-// returns a Errors error when the service returns a 4XX or 5XX status code
-func (m *ItemActionsAssessRequestBuilder) Post(ctx context.Context, requestConfiguration *ItemActionsAssessRequestBuilderPostRequestConfiguration)(ItemActionsAssessResponseable, error) {
-    requestInfo, err := m.ToPostRequestInformation(ctx, requestConfiguration);
-    if err != nil {
-        return nil, err
-    }
-    errorMapping := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ErrorMappings {
-        "404": ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.CreateErrorsFromDiscriminatorValue,
-        "409": ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.CreateErrorsFromDiscriminatorValue,
-        "XXX": ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.CreateErrorsFromDiscriminatorValue,
-    }
-    res, err := m.BaseRequestBuilder.RequestAdapter.Send(ctx, requestInfo, CreateItemActionsAssessResponseFromDiscriminatorValue, errorMapping)
-    if err != nil {
-        return nil, err
-    }
-    if res == nil {
-        return nil, nil
-    }
-    return res.(ItemActionsAssessResponseable), nil
-}
-// PostAsAssessPostResponse trigger a drift detection assessment for a workspace. The workspace must have assessments enabled and not have a pending assessment already running.
 // returns a ItemActionsAssessPostResponseable when successful
 // returns a Errors error when the service returns a 404 status code
 // returns a Errors error when the service returns a 409 status code
 // returns a Errors error when the service returns a 4XX or 5XX status code
-func (m *ItemActionsAssessRequestBuilder) PostAsAssessPostResponse(ctx context.Context, requestConfiguration *ItemActionsAssessRequestBuilderPostRequestConfiguration)(ItemActionsAssessPostResponseable, error) {
+func (m *ItemActionsAssessRequestBuilder) Post(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(ItemActionsAssessPostResponseable, error) {
     requestInfo, err := m.ToPostRequestInformation(ctx, requestConfiguration);
     if err != nil {
         return nil, err
@@ -84,12 +52,9 @@ func (m *ItemActionsAssessRequestBuilder) PostAsAssessPostResponse(ctx context.C
 }
 // ToPostRequestInformation trigger a drift detection assessment for a workspace. The workspace must have assessments enabled and not have a pending assessment already running.
 // returns a *RequestInformation when successful
-func (m *ItemActionsAssessRequestBuilder) ToPostRequestInformation(ctx context.Context, requestConfiguration *ItemActionsAssessRequestBuilderPostRequestConfiguration)(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
+func (m *ItemActionsAssessRequestBuilder) ToPostRequestInformation(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
     requestInfo := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewRequestInformationWithMethodAndUrlTemplateAndPathParameters(i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.POST, m.BaseRequestBuilder.UrlTemplate, m.BaseRequestBuilder.PathParameters)
-    if requestConfiguration != nil {
-        requestInfo.Headers.AddAll(requestConfiguration.Headers)
-        requestInfo.AddRequestOptions(requestConfiguration.Options)
-    }
+    i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ConfigureRequestInformation(requestInfo, requestConfiguration)
     requestInfo.Headers.TryAdd("Accept", "application/vnd.api+json")
     return requestInfo, nil
 }

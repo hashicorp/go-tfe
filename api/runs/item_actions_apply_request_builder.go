@@ -13,13 +13,6 @@ import (
 type ItemActionsApplyRequestBuilder struct {
     i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.BaseRequestBuilder
 }
-// ItemActionsApplyRequestBuilderPostRequestConfiguration configuration for the request such as headers, query parameters, and middleware options.
-type ItemActionsApplyRequestBuilderPostRequestConfiguration struct {
-    // Request headers
-    Headers *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestHeaders
-    // Request options
-    Options []i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestOption
-}
 // NewItemActionsApplyRequestBuilderInternal instantiates a new ItemActionsApplyRequestBuilder and sets the default values.
 func NewItemActionsApplyRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*ItemActionsApplyRequestBuilder) {
     m := &ItemActionsApplyRequestBuilder{
@@ -35,7 +28,7 @@ func NewItemActionsApplyRequestBuilder(rawUrl string, requestAdapter i2ae4187f7d
 }
 // Post apply a run that is paused waiting for confirmation.
 // returns a Errors error when the service returns a 409 status code
-func (m *ItemActionsApplyRequestBuilder) Post(ctx context.Context, body ItemActionsApplyPostRequestBodyable, requestConfiguration *ItemActionsApplyRequestBuilderPostRequestConfiguration)(error) {
+func (m *ItemActionsApplyRequestBuilder) Post(ctx context.Context, body ItemActionsApplyPostRequestBodyable, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(error) {
     requestInfo, err := m.ToPostRequestInformation(ctx, body, requestConfiguration);
     if err != nil {
         return err
@@ -51,12 +44,9 @@ func (m *ItemActionsApplyRequestBuilder) Post(ctx context.Context, body ItemActi
 }
 // ToPostRequestInformation apply a run that is paused waiting for confirmation.
 // returns a *RequestInformation when successful
-func (m *ItemActionsApplyRequestBuilder) ToPostRequestInformation(ctx context.Context, body ItemActionsApplyPostRequestBodyable, requestConfiguration *ItemActionsApplyRequestBuilderPostRequestConfiguration)(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
+func (m *ItemActionsApplyRequestBuilder) ToPostRequestInformation(ctx context.Context, body ItemActionsApplyPostRequestBodyable, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
     requestInfo := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewRequestInformationWithMethodAndUrlTemplateAndPathParameters(i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.POST, m.BaseRequestBuilder.UrlTemplate, m.BaseRequestBuilder.PathParameters)
-    if requestConfiguration != nil {
-        requestInfo.Headers.AddAll(requestConfiguration.Headers)
-        requestInfo.AddRequestOptions(requestConfiguration.Options)
-    }
+    i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ConfigureRequestInformation(requestInfo, requestConfiguration)
     requestInfo.Headers.TryAdd("Accept", "application/vnd.api+json")
     err := requestInfo.SetContentFromParsable(ctx, m.BaseRequestBuilder.RequestAdapter, "application/vnd.api+json", body)
     if err != nil {

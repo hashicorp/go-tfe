@@ -23,15 +23,6 @@ type AuditTrailRequestBuilderGetQueryParameters struct {
     // Returns only audit events created after this date. Must be a UTC ISO8601 datetime string (YYYY-MM-DDTHH:MM:SS.SSSZ).
     Since *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time `uriparametername:"since"`
 }
-// AuditTrailRequestBuilderGetRequestConfiguration configuration for the request such as headers, query parameters, and middleware options.
-type AuditTrailRequestBuilderGetRequestConfiguration struct {
-    // Request headers
-    Headers *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestHeaders
-    // Request options
-    Options []i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestOption
-    // Request query parameters
-    QueryParameters *AuditTrailRequestBuilderGetQueryParameters
-}
 // NewAuditTrailRequestBuilderInternal instantiates a new AuditTrailRequestBuilder and sets the default values.
 func NewAuditTrailRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*AuditTrailRequestBuilder) {
     m := &AuditTrailRequestBuilder{
@@ -46,30 +37,9 @@ func NewAuditTrailRequestBuilder(rawUrl string, requestAdapter i2ae4187f7daee263
     return NewAuditTrailRequestBuilderInternal(urlParams, requestAdapter)
 }
 // Get returns a list of audit events for the organization associated with the authentication token. HCP Terraform retains 14 days of audit log information. Unlike most HCP Terraform APIs, this endpoint does not use the JSON:API specification. This endpoint requires an organization token or an audit trail token; user tokens and team tokens are not accepted.
-// Deprecated: This method is obsolete. Use GetAsAuditTrailGetResponse instead.
-// returns a AuditTrailResponseable when successful
-// returns a Errors error when the service returns a 4XX or 5XX status code
-func (m *AuditTrailRequestBuilder) Get(ctx context.Context, requestConfiguration *AuditTrailRequestBuilderGetRequestConfiguration)(AuditTrailResponseable, error) {
-    requestInfo, err := m.ToGetRequestInformation(ctx, requestConfiguration);
-    if err != nil {
-        return nil, err
-    }
-    errorMapping := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ErrorMappings {
-        "XXX": ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.CreateErrorsFromDiscriminatorValue,
-    }
-    res, err := m.BaseRequestBuilder.RequestAdapter.Send(ctx, requestInfo, CreateAuditTrailResponseFromDiscriminatorValue, errorMapping)
-    if err != nil {
-        return nil, err
-    }
-    if res == nil {
-        return nil, nil
-    }
-    return res.(AuditTrailResponseable), nil
-}
-// GetAsAuditTrailGetResponse returns a list of audit events for the organization associated with the authentication token. HCP Terraform retains 14 days of audit log information. Unlike most HCP Terraform APIs, this endpoint does not use the JSON:API specification. This endpoint requires an organization token or an audit trail token; user tokens and team tokens are not accepted.
 // returns a AuditTrailGetResponseable when successful
 // returns a Errors error when the service returns a 4XX or 5XX status code
-func (m *AuditTrailRequestBuilder) GetAsAuditTrailGetResponse(ctx context.Context, requestConfiguration *AuditTrailRequestBuilderGetRequestConfiguration)(AuditTrailGetResponseable, error) {
+func (m *AuditTrailRequestBuilder) Get(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[AuditTrailRequestBuilderGetQueryParameters])(AuditTrailGetResponseable, error) {
     requestInfo, err := m.ToGetRequestInformation(ctx, requestConfiguration);
     if err != nil {
         return nil, err
@@ -88,15 +58,9 @@ func (m *AuditTrailRequestBuilder) GetAsAuditTrailGetResponse(ctx context.Contex
 }
 // ToGetRequestInformation returns a list of audit events for the organization associated with the authentication token. HCP Terraform retains 14 days of audit log information. Unlike most HCP Terraform APIs, this endpoint does not use the JSON:API specification. This endpoint requires an organization token or an audit trail token; user tokens and team tokens are not accepted.
 // returns a *RequestInformation when successful
-func (m *AuditTrailRequestBuilder) ToGetRequestInformation(ctx context.Context, requestConfiguration *AuditTrailRequestBuilderGetRequestConfiguration)(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
+func (m *AuditTrailRequestBuilder) ToGetRequestInformation(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[AuditTrailRequestBuilderGetQueryParameters])(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
     requestInfo := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewRequestInformationWithMethodAndUrlTemplateAndPathParameters(i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.GET, m.BaseRequestBuilder.UrlTemplate, m.BaseRequestBuilder.PathParameters)
-    if requestConfiguration != nil {
-        if requestConfiguration.QueryParameters != nil {
-            requestInfo.AddQueryParameters(*(requestConfiguration.QueryParameters))
-        }
-        requestInfo.Headers.AddAll(requestConfiguration.Headers)
-        requestInfo.AddRequestOptions(requestConfiguration.Options)
-    }
+    i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ConfigureRequestInformation(requestInfo, requestConfiguration)
     requestInfo.Headers.TryAdd("Accept", "application/json")
     return requestInfo, nil
 }

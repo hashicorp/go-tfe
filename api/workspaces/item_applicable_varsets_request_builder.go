@@ -22,15 +22,6 @@ type ItemApplicableVarsetsRequestBuilderGetQueryParameters struct {
     // Optional search query to filter variable sets by name.
     Q *string `uriparametername:"q"`
 }
-// ItemApplicableVarsetsRequestBuilderGetRequestConfiguration configuration for the request such as headers, query parameters, and middleware options.
-type ItemApplicableVarsetsRequestBuilderGetRequestConfiguration struct {
-    // Request headers
-    Headers *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestHeaders
-    // Request options
-    Options []i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestOption
-    // Request query parameters
-    QueryParameters *ItemApplicableVarsetsRequestBuilderGetQueryParameters
-}
 // NewItemApplicableVarsetsRequestBuilderInternal instantiates a new ItemApplicableVarsetsRequestBuilder and sets the default values.
 func NewItemApplicableVarsetsRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*ItemApplicableVarsetsRequestBuilder) {
     m := &ItemApplicableVarsetsRequestBuilder{
@@ -45,33 +36,10 @@ func NewItemApplicableVarsetsRequestBuilder(rawUrl string, requestAdapter i2ae41
     return NewItemApplicableVarsetsRequestBuilderInternal(urlParams, requestAdapter)
 }
 // Get list the variable sets that can be applied to a workspace. This returns variable sets from the workspace's organization that are not already applied to the workspace, filtered by project scope.
-// Deprecated: This method is obsolete. Use GetAsApplicableVarsetsGetResponse instead.
-// returns a ItemApplicableVarsetsResponseable when successful
-// returns a Errors error when the service returns a 404 status code
-// returns a Errors error when the service returns a 4XX or 5XX status code
-func (m *ItemApplicableVarsetsRequestBuilder) Get(ctx context.Context, requestConfiguration *ItemApplicableVarsetsRequestBuilderGetRequestConfiguration)(ItemApplicableVarsetsResponseable, error) {
-    requestInfo, err := m.ToGetRequestInformation(ctx, requestConfiguration);
-    if err != nil {
-        return nil, err
-    }
-    errorMapping := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ErrorMappings {
-        "404": ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.CreateErrorsFromDiscriminatorValue,
-        "XXX": ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.CreateErrorsFromDiscriminatorValue,
-    }
-    res, err := m.BaseRequestBuilder.RequestAdapter.Send(ctx, requestInfo, CreateItemApplicableVarsetsResponseFromDiscriminatorValue, errorMapping)
-    if err != nil {
-        return nil, err
-    }
-    if res == nil {
-        return nil, nil
-    }
-    return res.(ItemApplicableVarsetsResponseable), nil
-}
-// GetAsApplicableVarsetsGetResponse list the variable sets that can be applied to a workspace. This returns variable sets from the workspace's organization that are not already applied to the workspace, filtered by project scope.
 // returns a ItemApplicableVarsetsGetResponseable when successful
 // returns a Errors error when the service returns a 404 status code
 // returns a Errors error when the service returns a 4XX or 5XX status code
-func (m *ItemApplicableVarsetsRequestBuilder) GetAsApplicableVarsetsGetResponse(ctx context.Context, requestConfiguration *ItemApplicableVarsetsRequestBuilderGetRequestConfiguration)(ItemApplicableVarsetsGetResponseable, error) {
+func (m *ItemApplicableVarsetsRequestBuilder) Get(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[ItemApplicableVarsetsRequestBuilderGetQueryParameters])(ItemApplicableVarsetsGetResponseable, error) {
     requestInfo, err := m.ToGetRequestInformation(ctx, requestConfiguration);
     if err != nil {
         return nil, err
@@ -91,15 +59,9 @@ func (m *ItemApplicableVarsetsRequestBuilder) GetAsApplicableVarsetsGetResponse(
 }
 // ToGetRequestInformation list the variable sets that can be applied to a workspace. This returns variable sets from the workspace's organization that are not already applied to the workspace, filtered by project scope.
 // returns a *RequestInformation when successful
-func (m *ItemApplicableVarsetsRequestBuilder) ToGetRequestInformation(ctx context.Context, requestConfiguration *ItemApplicableVarsetsRequestBuilderGetRequestConfiguration)(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
+func (m *ItemApplicableVarsetsRequestBuilder) ToGetRequestInformation(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[ItemApplicableVarsetsRequestBuilderGetQueryParameters])(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
     requestInfo := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewRequestInformationWithMethodAndUrlTemplateAndPathParameters(i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.GET, m.BaseRequestBuilder.UrlTemplate, m.BaseRequestBuilder.PathParameters)
-    if requestConfiguration != nil {
-        if requestConfiguration.QueryParameters != nil {
-            requestInfo.AddQueryParameters(*(requestConfiguration.QueryParameters))
-        }
-        requestInfo.Headers.AddAll(requestConfiguration.Headers)
-        requestInfo.AddRequestOptions(requestConfiguration.Options)
-    }
+    i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ConfigureRequestInformation(requestInfo, requestConfiguration)
     requestInfo.Headers.TryAdd("Accept", "application/vnd.api+json")
     return requestInfo, nil
 }

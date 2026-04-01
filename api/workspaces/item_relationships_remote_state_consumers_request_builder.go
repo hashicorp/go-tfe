@@ -13,40 +13,10 @@ import (
 type ItemRelationshipsRemoteStateConsumersRequestBuilder struct {
     i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.BaseRequestBuilder
 }
-// ItemRelationshipsRemoteStateConsumersRequestBuilderDeleteRequestConfiguration configuration for the request such as headers, query parameters, and middleware options.
-type ItemRelationshipsRemoteStateConsumersRequestBuilderDeleteRequestConfiguration struct {
-    // Request headers
-    Headers *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestHeaders
-    // Request options
-    Options []i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestOption
-}
 // ItemRelationshipsRemoteStateConsumersRequestBuilderGetQueryParameters list the workspaces that are allowed to access this workspace's state. When global-remote-state is enabled on the workspace, this lists all workspaces in the organization; otherwise, it lists only the explicitly allowed consumers.
 type ItemRelationshipsRemoteStateConsumersRequestBuilderGetQueryParameters struct {
     // When true, return only explicitly configured remote state consumers even if global-remote-state is enabled.
     Show_only_configured *bool `uriparametername:"show_only_configured"`
-}
-// ItemRelationshipsRemoteStateConsumersRequestBuilderGetRequestConfiguration configuration for the request such as headers, query parameters, and middleware options.
-type ItemRelationshipsRemoteStateConsumersRequestBuilderGetRequestConfiguration struct {
-    // Request headers
-    Headers *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestHeaders
-    // Request options
-    Options []i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestOption
-    // Request query parameters
-    QueryParameters *ItemRelationshipsRemoteStateConsumersRequestBuilderGetQueryParameters
-}
-// ItemRelationshipsRemoteStateConsumersRequestBuilderPatchRequestConfiguration configuration for the request such as headers, query parameters, and middleware options.
-type ItemRelationshipsRemoteStateConsumersRequestBuilderPatchRequestConfiguration struct {
-    // Request headers
-    Headers *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestHeaders
-    // Request options
-    Options []i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestOption
-}
-// ItemRelationshipsRemoteStateConsumersRequestBuilderPostRequestConfiguration configuration for the request such as headers, query parameters, and middleware options.
-type ItemRelationshipsRemoteStateConsumersRequestBuilderPostRequestConfiguration struct {
-    // Request headers
-    Headers *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestHeaders
-    // Request options
-    Options []i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestOption
 }
 // NewItemRelationshipsRemoteStateConsumersRequestBuilderInternal instantiates a new ItemRelationshipsRemoteStateConsumersRequestBuilder and sets the default values.
 func NewItemRelationshipsRemoteStateConsumersRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*ItemRelationshipsRemoteStateConsumersRequestBuilder) {
@@ -64,7 +34,7 @@ func NewItemRelationshipsRemoteStateConsumersRequestBuilder(rawUrl string, reque
 // Delete remove workspaces from the list of allowed remote state consumers.
 // returns a Errors error when the service returns a 404 status code
 // returns a Errors error when the service returns a 4XX or 5XX status code
-func (m *ItemRelationshipsRemoteStateConsumersRequestBuilder) Delete(ctx context.Context, body ItemRelationshipsRemoteStateConsumersDeleteRequestBodyable, requestConfiguration *ItemRelationshipsRemoteStateConsumersRequestBuilderDeleteRequestConfiguration)(error) {
+func (m *ItemRelationshipsRemoteStateConsumersRequestBuilder) Delete(ctx context.Context, body ItemRelationshipsRemoteStateConsumersDeleteRequestBodyable, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(error) {
     requestInfo, err := m.ToDeleteRequestInformation(ctx, body, requestConfiguration);
     if err != nil {
         return err
@@ -80,33 +50,10 @@ func (m *ItemRelationshipsRemoteStateConsumersRequestBuilder) Delete(ctx context
     return nil
 }
 // Get list the workspaces that are allowed to access this workspace's state. When global-remote-state is enabled on the workspace, this lists all workspaces in the organization; otherwise, it lists only the explicitly allowed consumers.
-// Deprecated: This method is obsolete. Use GetAsRemoteStateConsumersGetResponse instead.
-// returns a ItemRelationshipsRemoteStateConsumersResponseable when successful
-// returns a Errors error when the service returns a 404 status code
-// returns a Errors error when the service returns a 4XX or 5XX status code
-func (m *ItemRelationshipsRemoteStateConsumersRequestBuilder) Get(ctx context.Context, requestConfiguration *ItemRelationshipsRemoteStateConsumersRequestBuilderGetRequestConfiguration)(ItemRelationshipsRemoteStateConsumersResponseable, error) {
-    requestInfo, err := m.ToGetRequestInformation(ctx, requestConfiguration);
-    if err != nil {
-        return nil, err
-    }
-    errorMapping := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ErrorMappings {
-        "404": ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.CreateErrorsFromDiscriminatorValue,
-        "XXX": ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.CreateErrorsFromDiscriminatorValue,
-    }
-    res, err := m.BaseRequestBuilder.RequestAdapter.Send(ctx, requestInfo, CreateItemRelationshipsRemoteStateConsumersResponseFromDiscriminatorValue, errorMapping)
-    if err != nil {
-        return nil, err
-    }
-    if res == nil {
-        return nil, nil
-    }
-    return res.(ItemRelationshipsRemoteStateConsumersResponseable), nil
-}
-// GetAsRemoteStateConsumersGetResponse list the workspaces that are allowed to access this workspace's state. When global-remote-state is enabled on the workspace, this lists all workspaces in the organization; otherwise, it lists only the explicitly allowed consumers.
 // returns a ItemRelationshipsRemoteStateConsumersGetResponseable when successful
 // returns a Errors error when the service returns a 404 status code
 // returns a Errors error when the service returns a 4XX or 5XX status code
-func (m *ItemRelationshipsRemoteStateConsumersRequestBuilder) GetAsRemoteStateConsumersGetResponse(ctx context.Context, requestConfiguration *ItemRelationshipsRemoteStateConsumersRequestBuilderGetRequestConfiguration)(ItemRelationshipsRemoteStateConsumersGetResponseable, error) {
+func (m *ItemRelationshipsRemoteStateConsumersRequestBuilder) Get(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[ItemRelationshipsRemoteStateConsumersRequestBuilderGetQueryParameters])(ItemRelationshipsRemoteStateConsumersGetResponseable, error) {
     requestInfo, err := m.ToGetRequestInformation(ctx, requestConfiguration);
     if err != nil {
         return nil, err
@@ -127,7 +74,7 @@ func (m *ItemRelationshipsRemoteStateConsumersRequestBuilder) GetAsRemoteStateCo
 // Patch replace the entire list of allowed remote state consumers with the provided list.
 // returns a Errors error when the service returns a 404 status code
 // returns a Errors error when the service returns a 4XX or 5XX status code
-func (m *ItemRelationshipsRemoteStateConsumersRequestBuilder) Patch(ctx context.Context, body ItemRelationshipsRemoteStateConsumersPatchRequestBodyable, requestConfiguration *ItemRelationshipsRemoteStateConsumersRequestBuilderPatchRequestConfiguration)(error) {
+func (m *ItemRelationshipsRemoteStateConsumersRequestBuilder) Patch(ctx context.Context, body ItemRelationshipsRemoteStateConsumersPatchRequestBodyable, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(error) {
     requestInfo, err := m.ToPatchRequestInformation(ctx, body, requestConfiguration);
     if err != nil {
         return err
@@ -145,7 +92,7 @@ func (m *ItemRelationshipsRemoteStateConsumersRequestBuilder) Patch(ctx context.
 // Post add workspaces to the list of allowed remote state consumers.
 // returns a Errors error when the service returns a 404 status code
 // returns a Errors error when the service returns a 4XX or 5XX status code
-func (m *ItemRelationshipsRemoteStateConsumersRequestBuilder) Post(ctx context.Context, body ItemRelationshipsRemoteStateConsumersPostRequestBodyable, requestConfiguration *ItemRelationshipsRemoteStateConsumersRequestBuilderPostRequestConfiguration)(error) {
+func (m *ItemRelationshipsRemoteStateConsumersRequestBuilder) Post(ctx context.Context, body ItemRelationshipsRemoteStateConsumersPostRequestBodyable, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(error) {
     requestInfo, err := m.ToPostRequestInformation(ctx, body, requestConfiguration);
     if err != nil {
         return err
@@ -162,12 +109,9 @@ func (m *ItemRelationshipsRemoteStateConsumersRequestBuilder) Post(ctx context.C
 }
 // ToDeleteRequestInformation remove workspaces from the list of allowed remote state consumers.
 // returns a *RequestInformation when successful
-func (m *ItemRelationshipsRemoteStateConsumersRequestBuilder) ToDeleteRequestInformation(ctx context.Context, body ItemRelationshipsRemoteStateConsumersDeleteRequestBodyable, requestConfiguration *ItemRelationshipsRemoteStateConsumersRequestBuilderDeleteRequestConfiguration)(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
+func (m *ItemRelationshipsRemoteStateConsumersRequestBuilder) ToDeleteRequestInformation(ctx context.Context, body ItemRelationshipsRemoteStateConsumersDeleteRequestBodyable, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
     requestInfo := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewRequestInformationWithMethodAndUrlTemplateAndPathParameters(i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DELETE, m.BaseRequestBuilder.UrlTemplate, m.BaseRequestBuilder.PathParameters)
-    if requestConfiguration != nil {
-        requestInfo.Headers.AddAll(requestConfiguration.Headers)
-        requestInfo.AddRequestOptions(requestConfiguration.Options)
-    }
+    i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ConfigureRequestInformation(requestInfo, requestConfiguration)
     requestInfo.Headers.TryAdd("Accept", "application/vnd.api+json")
     err := requestInfo.SetContentFromParsable(ctx, m.BaseRequestBuilder.RequestAdapter, "application/vnd.api+json", body)
     if err != nil {
@@ -177,26 +121,17 @@ func (m *ItemRelationshipsRemoteStateConsumersRequestBuilder) ToDeleteRequestInf
 }
 // ToGetRequestInformation list the workspaces that are allowed to access this workspace's state. When global-remote-state is enabled on the workspace, this lists all workspaces in the organization; otherwise, it lists only the explicitly allowed consumers.
 // returns a *RequestInformation when successful
-func (m *ItemRelationshipsRemoteStateConsumersRequestBuilder) ToGetRequestInformation(ctx context.Context, requestConfiguration *ItemRelationshipsRemoteStateConsumersRequestBuilderGetRequestConfiguration)(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
+func (m *ItemRelationshipsRemoteStateConsumersRequestBuilder) ToGetRequestInformation(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[ItemRelationshipsRemoteStateConsumersRequestBuilderGetQueryParameters])(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
     requestInfo := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewRequestInformationWithMethodAndUrlTemplateAndPathParameters(i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.GET, m.BaseRequestBuilder.UrlTemplate, m.BaseRequestBuilder.PathParameters)
-    if requestConfiguration != nil {
-        if requestConfiguration.QueryParameters != nil {
-            requestInfo.AddQueryParameters(*(requestConfiguration.QueryParameters))
-        }
-        requestInfo.Headers.AddAll(requestConfiguration.Headers)
-        requestInfo.AddRequestOptions(requestConfiguration.Options)
-    }
+    i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ConfigureRequestInformation(requestInfo, requestConfiguration)
     requestInfo.Headers.TryAdd("Accept", "application/vnd.api+json")
     return requestInfo, nil
 }
 // ToPatchRequestInformation replace the entire list of allowed remote state consumers with the provided list.
 // returns a *RequestInformation when successful
-func (m *ItemRelationshipsRemoteStateConsumersRequestBuilder) ToPatchRequestInformation(ctx context.Context, body ItemRelationshipsRemoteStateConsumersPatchRequestBodyable, requestConfiguration *ItemRelationshipsRemoteStateConsumersRequestBuilderPatchRequestConfiguration)(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
+func (m *ItemRelationshipsRemoteStateConsumersRequestBuilder) ToPatchRequestInformation(ctx context.Context, body ItemRelationshipsRemoteStateConsumersPatchRequestBodyable, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
     requestInfo := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewRequestInformationWithMethodAndUrlTemplateAndPathParameters(i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.PATCH, m.BaseRequestBuilder.UrlTemplate, m.BaseRequestBuilder.PathParameters)
-    if requestConfiguration != nil {
-        requestInfo.Headers.AddAll(requestConfiguration.Headers)
-        requestInfo.AddRequestOptions(requestConfiguration.Options)
-    }
+    i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ConfigureRequestInformation(requestInfo, requestConfiguration)
     requestInfo.Headers.TryAdd("Accept", "application/vnd.api+json")
     err := requestInfo.SetContentFromParsable(ctx, m.BaseRequestBuilder.RequestAdapter, "application/vnd.api+json", body)
     if err != nil {
@@ -206,12 +141,9 @@ func (m *ItemRelationshipsRemoteStateConsumersRequestBuilder) ToPatchRequestInfo
 }
 // ToPostRequestInformation add workspaces to the list of allowed remote state consumers.
 // returns a *RequestInformation when successful
-func (m *ItemRelationshipsRemoteStateConsumersRequestBuilder) ToPostRequestInformation(ctx context.Context, body ItemRelationshipsRemoteStateConsumersPostRequestBodyable, requestConfiguration *ItemRelationshipsRemoteStateConsumersRequestBuilderPostRequestConfiguration)(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
+func (m *ItemRelationshipsRemoteStateConsumersRequestBuilder) ToPostRequestInformation(ctx context.Context, body ItemRelationshipsRemoteStateConsumersPostRequestBodyable, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
     requestInfo := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewRequestInformationWithMethodAndUrlTemplateAndPathParameters(i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.POST, m.BaseRequestBuilder.UrlTemplate, m.BaseRequestBuilder.PathParameters)
-    if requestConfiguration != nil {
-        requestInfo.Headers.AddAll(requestConfiguration.Headers)
-        requestInfo.AddRequestOptions(requestConfiguration.Options)
-    }
+    i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ConfigureRequestInformation(requestInfo, requestConfiguration)
     requestInfo.Headers.TryAdd("Accept", "application/vnd.api+json")
     err := requestInfo.SetContentFromParsable(ctx, m.BaseRequestBuilder.RequestAdapter, "application/vnd.api+json", body)
     if err != nil {

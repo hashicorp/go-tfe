@@ -22,15 +22,6 @@ type ItemLogOutputRequestBuilderGetQueryParameters struct {
     // If true, return the last N bytes instead of the first N bytes
     Tail *bool `uriparametername:"tail"`
 }
-// ItemLogOutputRequestBuilderGetRequestConfiguration configuration for the request such as headers, query parameters, and middleware options.
-type ItemLogOutputRequestBuilderGetRequestConfiguration struct {
-    // Request headers
-    Headers *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestHeaders
-    // Request options
-    Options []i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestOption
-    // Request query parameters
-    QueryParameters *ItemLogOutputRequestBuilderGetQueryParameters
-}
 // NewItemLogOutputRequestBuilderInternal instantiates a new ItemLogOutputRequestBuilder and sets the default values.
 func NewItemLogOutputRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*ItemLogOutputRequestBuilder) {
     m := &ItemLogOutputRequestBuilder{
@@ -47,7 +38,7 @@ func NewItemLogOutputRequestBuilder(rawUrl string, requestAdapter i2ae4187f7daee
 // Get this endpoint returns the log output for the assessment result.Supports both JSON and plain text formats based on the Accept header.Query parameters allow for pagination of log output.
 // returns a *string when successful
 // returns a Errors error when the service returns a 4XX or 5XX status code
-func (m *ItemLogOutputRequestBuilder) Get(ctx context.Context, requestConfiguration *ItemLogOutputRequestBuilderGetRequestConfiguration)(*string, error) {
+func (m *ItemLogOutputRequestBuilder) Get(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[ItemLogOutputRequestBuilderGetQueryParameters])(*string, error) {
     requestInfo, err := m.ToGetRequestInformation(ctx, requestConfiguration);
     if err != nil {
         return nil, err
@@ -66,15 +57,9 @@ func (m *ItemLogOutputRequestBuilder) Get(ctx context.Context, requestConfigurat
 }
 // ToGetRequestInformation this endpoint returns the log output for the assessment result.Supports both JSON and plain text formats based on the Accept header.Query parameters allow for pagination of log output.
 // returns a *RequestInformation when successful
-func (m *ItemLogOutputRequestBuilder) ToGetRequestInformation(ctx context.Context, requestConfiguration *ItemLogOutputRequestBuilderGetRequestConfiguration)(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
+func (m *ItemLogOutputRequestBuilder) ToGetRequestInformation(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[ItemLogOutputRequestBuilderGetQueryParameters])(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
     requestInfo := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewRequestInformationWithMethodAndUrlTemplateAndPathParameters(i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.GET, m.BaseRequestBuilder.UrlTemplate, m.BaseRequestBuilder.PathParameters)
-    if requestConfiguration != nil {
-        if requestConfiguration.QueryParameters != nil {
-            requestInfo.AddQueryParameters(*(requestConfiguration.QueryParameters))
-        }
-        requestInfo.Headers.AddAll(requestConfiguration.Headers)
-        requestInfo.AddRequestOptions(requestConfiguration.Options)
-    }
+    i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ConfigureRequestInformation(requestInfo, requestConfiguration)
     requestInfo.Headers.TryAdd("Accept", "text/plain;q=0.9")
     return requestInfo, nil
 }

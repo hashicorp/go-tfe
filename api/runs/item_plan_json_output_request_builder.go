@@ -13,13 +13,6 @@ import (
 type ItemPlanJsonOutputRequestBuilder struct {
     i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.BaseRequestBuilder
 }
-// ItemPlanJsonOutputRequestBuilderGetRequestConfiguration configuration for the request such as headers, query parameters, and middleware options.
-type ItemPlanJsonOutputRequestBuilderGetRequestConfiguration struct {
-    // Request headers
-    Headers *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestHeaders
-    // Request options
-    Options []i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestOption
-}
 // NewItemPlanJsonOutputRequestBuilderInternal instantiates a new ItemPlanJsonOutputRequestBuilder and sets the default values.
 func NewItemPlanJsonOutputRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*ItemPlanJsonOutputRequestBuilder) {
     m := &ItemPlanJsonOutputRequestBuilder{
@@ -36,7 +29,7 @@ func NewItemPlanJsonOutputRequestBuilder(rawUrl string, requestAdapter i2ae4187f
 // Get this endpoint generates a temporary authenticated URL to the location of the JSON formatted execution plan.When successful, this endpoint responds with a temporary redirect that should be followed.This endpoint is available for plans using Terraform 0.12 and later.The temporary URL has a life of 1 minute and should not be relied upon beyond the initial request.
 // returns a Errors error when the service returns a 422 status code
 // returns a Errors error when the service returns a 4XX or 5XX status code
-func (m *ItemPlanJsonOutputRequestBuilder) Get(ctx context.Context, requestConfiguration *ItemPlanJsonOutputRequestBuilderGetRequestConfiguration)(error) {
+func (m *ItemPlanJsonOutputRequestBuilder) Get(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(error) {
     requestInfo, err := m.ToGetRequestInformation(ctx, requestConfiguration);
     if err != nil {
         return err
@@ -53,12 +46,9 @@ func (m *ItemPlanJsonOutputRequestBuilder) Get(ctx context.Context, requestConfi
 }
 // ToGetRequestInformation this endpoint generates a temporary authenticated URL to the location of the JSON formatted execution plan.When successful, this endpoint responds with a temporary redirect that should be followed.This endpoint is available for plans using Terraform 0.12 and later.The temporary URL has a life of 1 minute and should not be relied upon beyond the initial request.
 // returns a *RequestInformation when successful
-func (m *ItemPlanJsonOutputRequestBuilder) ToGetRequestInformation(ctx context.Context, requestConfiguration *ItemPlanJsonOutputRequestBuilderGetRequestConfiguration)(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
+func (m *ItemPlanJsonOutputRequestBuilder) ToGetRequestInformation(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
     requestInfo := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewRequestInformationWithMethodAndUrlTemplateAndPathParameters(i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.GET, m.BaseRequestBuilder.UrlTemplate, m.BaseRequestBuilder.PathParameters)
-    if requestConfiguration != nil {
-        requestInfo.Headers.AddAll(requestConfiguration.Headers)
-        requestInfo.AddRequestOptions(requestConfiguration.Options)
-    }
+    i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ConfigureRequestInformation(requestInfo, requestConfiguration)
     requestInfo.Headers.TryAdd("Accept", "application/vnd.api+json")
     return requestInfo, nil
 }

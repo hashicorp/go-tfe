@@ -13,13 +13,6 @@ import (
 type ItemActionsEnableRequestBuilder struct {
     i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.BaseRequestBuilder
 }
-// ItemActionsEnableRequestBuilderPostRequestConfiguration configuration for the request such as headers, query parameters, and middleware options.
-type ItemActionsEnableRequestBuilderPostRequestConfiguration struct {
-    // Request headers
-    Headers *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestHeaders
-    // Request options
-    Options []i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestOption
-}
 // NewItemActionsEnableRequestBuilderInternal instantiates a new ItemActionsEnableRequestBuilder and sets the default values.
 func NewItemActionsEnableRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*ItemActionsEnableRequestBuilder) {
     m := &ItemActionsEnableRequestBuilder{
@@ -34,30 +27,9 @@ func NewItemActionsEnableRequestBuilder(rawUrl string, requestAdapter i2ae4187f7
     return NewItemActionsEnableRequestBuilderInternal(urlParams, requestAdapter)
 }
 // Post enable a notification configuration by triggering a verification request.
-// Deprecated: This method is obsolete. Use PostAsEnablePostResponse instead.
-// returns a ItemActionsEnableResponseable when successful
-// returns a Errors error when the service returns a 4XX or 5XX status code
-func (m *ItemActionsEnableRequestBuilder) Post(ctx context.Context, requestConfiguration *ItemActionsEnableRequestBuilderPostRequestConfiguration)(ItemActionsEnableResponseable, error) {
-    requestInfo, err := m.ToPostRequestInformation(ctx, requestConfiguration);
-    if err != nil {
-        return nil, err
-    }
-    errorMapping := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ErrorMappings {
-        "XXX": ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.CreateErrorsFromDiscriminatorValue,
-    }
-    res, err := m.BaseRequestBuilder.RequestAdapter.Send(ctx, requestInfo, CreateItemActionsEnableResponseFromDiscriminatorValue, errorMapping)
-    if err != nil {
-        return nil, err
-    }
-    if res == nil {
-        return nil, nil
-    }
-    return res.(ItemActionsEnableResponseable), nil
-}
-// PostAsEnablePostResponse enable a notification configuration by triggering a verification request.
 // returns a ItemActionsEnablePostResponseable when successful
 // returns a Errors error when the service returns a 4XX or 5XX status code
-func (m *ItemActionsEnableRequestBuilder) PostAsEnablePostResponse(ctx context.Context, requestConfiguration *ItemActionsEnableRequestBuilderPostRequestConfiguration)(ItemActionsEnablePostResponseable, error) {
+func (m *ItemActionsEnableRequestBuilder) Post(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(ItemActionsEnablePostResponseable, error) {
     requestInfo, err := m.ToPostRequestInformation(ctx, requestConfiguration);
     if err != nil {
         return nil, err
@@ -76,12 +48,9 @@ func (m *ItemActionsEnableRequestBuilder) PostAsEnablePostResponse(ctx context.C
 }
 // ToPostRequestInformation enable a notification configuration by triggering a verification request.
 // returns a *RequestInformation when successful
-func (m *ItemActionsEnableRequestBuilder) ToPostRequestInformation(ctx context.Context, requestConfiguration *ItemActionsEnableRequestBuilderPostRequestConfiguration)(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
+func (m *ItemActionsEnableRequestBuilder) ToPostRequestInformation(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
     requestInfo := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewRequestInformationWithMethodAndUrlTemplateAndPathParameters(i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.POST, m.BaseRequestBuilder.UrlTemplate, m.BaseRequestBuilder.PathParameters)
-    if requestConfiguration != nil {
-        requestInfo.Headers.AddAll(requestConfiguration.Headers)
-        requestInfo.AddRequestOptions(requestConfiguration.Options)
-    }
+    i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ConfigureRequestInformation(requestInfo, requestConfiguration)
     requestInfo.Headers.TryAdd("Accept", "application/vnd.api+json")
     return requestInfo, nil
 }

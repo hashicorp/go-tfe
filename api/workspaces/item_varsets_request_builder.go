@@ -22,15 +22,6 @@ type ItemVarsetsRequestBuilderGetQueryParameters struct {
     // A search query string. You can search for a variable set using its name.
     Q *string `uriparametername:"q"`
 }
-// ItemVarsetsRequestBuilderGetRequestConfiguration configuration for the request such as headers, query parameters, and middleware options.
-type ItemVarsetsRequestBuilderGetRequestConfiguration struct {
-    // Request headers
-    Headers *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestHeaders
-    // Request options
-    Options []i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestOption
-    // Request query parameters
-    QueryParameters *ItemVarsetsRequestBuilderGetQueryParameters
-}
 // ByVarset_id gets an item from the github.com/hashicorp/go-tfe/api.workspaces.item.varsets.item collection
 // returns a *ItemVarsetsWithVarset_ItemRequestBuilder when successful
 func (m *ItemVarsetsRequestBuilder) ByVarset_id(varset_id string)(*ItemVarsetsWithVarset_ItemRequestBuilder) {
@@ -57,30 +48,9 @@ func NewItemVarsetsRequestBuilder(rawUrl string, requestAdapter i2ae4187f7daee26
     return NewItemVarsetsRequestBuilderInternal(urlParams, requestAdapter)
 }
 // Get list all variable sets for a workspace. This includes global variable sets from the workspace's organization and variable sets attached to the project this workspace is contained within.
-// Deprecated: This method is obsolete. Use GetAsVarsetsGetResponse instead.
-// returns a ItemVarsetsResponseable when successful
-// returns a Errors error when the service returns a 4XX or 5XX status code
-func (m *ItemVarsetsRequestBuilder) Get(ctx context.Context, requestConfiguration *ItemVarsetsRequestBuilderGetRequestConfiguration)(ItemVarsetsResponseable, error) {
-    requestInfo, err := m.ToGetRequestInformation(ctx, requestConfiguration);
-    if err != nil {
-        return nil, err
-    }
-    errorMapping := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ErrorMappings {
-        "XXX": ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.CreateErrorsFromDiscriminatorValue,
-    }
-    res, err := m.BaseRequestBuilder.RequestAdapter.Send(ctx, requestInfo, CreateItemVarsetsResponseFromDiscriminatorValue, errorMapping)
-    if err != nil {
-        return nil, err
-    }
-    if res == nil {
-        return nil, nil
-    }
-    return res.(ItemVarsetsResponseable), nil
-}
-// GetAsVarsetsGetResponse list all variable sets for a workspace. This includes global variable sets from the workspace's organization and variable sets attached to the project this workspace is contained within.
 // returns a ItemVarsetsGetResponseable when successful
 // returns a Errors error when the service returns a 4XX or 5XX status code
-func (m *ItemVarsetsRequestBuilder) GetAsVarsetsGetResponse(ctx context.Context, requestConfiguration *ItemVarsetsRequestBuilderGetRequestConfiguration)(ItemVarsetsGetResponseable, error) {
+func (m *ItemVarsetsRequestBuilder) Get(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[ItemVarsetsRequestBuilderGetQueryParameters])(ItemVarsetsGetResponseable, error) {
     requestInfo, err := m.ToGetRequestInformation(ctx, requestConfiguration);
     if err != nil {
         return nil, err
@@ -99,15 +69,9 @@ func (m *ItemVarsetsRequestBuilder) GetAsVarsetsGetResponse(ctx context.Context,
 }
 // ToGetRequestInformation list all variable sets for a workspace. This includes global variable sets from the workspace's organization and variable sets attached to the project this workspace is contained within.
 // returns a *RequestInformation when successful
-func (m *ItemVarsetsRequestBuilder) ToGetRequestInformation(ctx context.Context, requestConfiguration *ItemVarsetsRequestBuilderGetRequestConfiguration)(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
+func (m *ItemVarsetsRequestBuilder) ToGetRequestInformation(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[ItemVarsetsRequestBuilderGetQueryParameters])(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
     requestInfo := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewRequestInformationWithMethodAndUrlTemplateAndPathParameters(i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.GET, m.BaseRequestBuilder.UrlTemplate, m.BaseRequestBuilder.PathParameters)
-    if requestConfiguration != nil {
-        if requestConfiguration.QueryParameters != nil {
-            requestInfo.AddQueryParameters(*(requestConfiguration.QueryParameters))
-        }
-        requestInfo.Headers.AddAll(requestConfiguration.Headers)
-        requestInfo.AddRequestOptions(requestConfiguration.Options)
-    }
+    i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ConfigureRequestInformation(requestInfo, requestConfiguration)
     requestInfo.Headers.TryAdd("Accept", "application/vnd.api+json")
     return requestInfo, nil
 }

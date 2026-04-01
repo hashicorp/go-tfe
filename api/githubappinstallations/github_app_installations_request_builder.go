@@ -24,15 +24,6 @@ type GithubAppInstallationsRequestBuilderGetQueryParameters struct {
     // The number of items to retrieve per page. Defaults to 20.
     Pagesize *int32 `uriparametername:"page%5Bsize%5D"`
 }
-// GithubAppInstallationsRequestBuilderGetRequestConfiguration configuration for the request such as headers, query parameters, and middleware options.
-type GithubAppInstallationsRequestBuilderGetRequestConfiguration struct {
-    // Request headers
-    Headers *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestHeaders
-    // Request options
-    Options []i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestOption
-    // Request query parameters
-    QueryParameters *GithubAppInstallationsRequestBuilderGetQueryParameters
-}
 // ByGithub_app_installation_id gets an item from the github.com/hashicorp/go-tfe/api.githubAppInstallations.item collection
 // returns a *WithGithub_app_installation_ItemRequestBuilder when successful
 func (m *GithubAppInstallationsRequestBuilder) ByGithub_app_installation_id(github_app_installation_id string)(*WithGithub_app_installation_ItemRequestBuilder) {
@@ -59,30 +50,9 @@ func NewGithubAppInstallationsRequestBuilder(rawUrl string, requestAdapter i2ae4
     return NewGithubAppInstallationsRequestBuilderInternal(urlParams, requestAdapter)
 }
 // Get list GitHub App installations available to the current user.
-// Deprecated: This method is obsolete. Use GetAsGithubAppInstallationsGetResponse instead.
-// returns a GithubAppInstallationsResponseable when successful
-// returns a Errors error when the service returns a 4XX or 5XX status code
-func (m *GithubAppInstallationsRequestBuilder) Get(ctx context.Context, requestConfiguration *GithubAppInstallationsRequestBuilderGetRequestConfiguration)(GithubAppInstallationsResponseable, error) {
-    requestInfo, err := m.ToGetRequestInformation(ctx, requestConfiguration);
-    if err != nil {
-        return nil, err
-    }
-    errorMapping := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ErrorMappings {
-        "XXX": ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.CreateErrorsFromDiscriminatorValue,
-    }
-    res, err := m.BaseRequestBuilder.RequestAdapter.Send(ctx, requestInfo, CreateGithubAppInstallationsResponseFromDiscriminatorValue, errorMapping)
-    if err != nil {
-        return nil, err
-    }
-    if res == nil {
-        return nil, nil
-    }
-    return res.(GithubAppInstallationsResponseable), nil
-}
-// GetAsGithubAppInstallationsGetResponse list GitHub App installations available to the current user.
 // returns a GithubAppInstallationsGetResponseable when successful
 // returns a Errors error when the service returns a 4XX or 5XX status code
-func (m *GithubAppInstallationsRequestBuilder) GetAsGithubAppInstallationsGetResponse(ctx context.Context, requestConfiguration *GithubAppInstallationsRequestBuilderGetRequestConfiguration)(GithubAppInstallationsGetResponseable, error) {
+func (m *GithubAppInstallationsRequestBuilder) Get(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[GithubAppInstallationsRequestBuilderGetQueryParameters])(GithubAppInstallationsGetResponseable, error) {
     requestInfo, err := m.ToGetRequestInformation(ctx, requestConfiguration);
     if err != nil {
         return nil, err
@@ -101,15 +71,9 @@ func (m *GithubAppInstallationsRequestBuilder) GetAsGithubAppInstallationsGetRes
 }
 // ToGetRequestInformation list GitHub App installations available to the current user.
 // returns a *RequestInformation when successful
-func (m *GithubAppInstallationsRequestBuilder) ToGetRequestInformation(ctx context.Context, requestConfiguration *GithubAppInstallationsRequestBuilderGetRequestConfiguration)(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
+func (m *GithubAppInstallationsRequestBuilder) ToGetRequestInformation(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[GithubAppInstallationsRequestBuilderGetQueryParameters])(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
     requestInfo := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewRequestInformationWithMethodAndUrlTemplateAndPathParameters(i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.GET, m.BaseRequestBuilder.UrlTemplate, m.BaseRequestBuilder.PathParameters)
-    if requestConfiguration != nil {
-        if requestConfiguration.QueryParameters != nil {
-            requestInfo.AddQueryParameters(*(requestConfiguration.QueryParameters))
-        }
-        requestInfo.Headers.AddAll(requestConfiguration.Headers)
-        requestInfo.AddRequestOptions(requestConfiguration.Options)
-    }
+    i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ConfigureRequestInformation(requestInfo, requestConfiguration)
     requestInfo.Headers.TryAdd("Accept", "application/vnd.api+json")
     return requestInfo, nil
 }

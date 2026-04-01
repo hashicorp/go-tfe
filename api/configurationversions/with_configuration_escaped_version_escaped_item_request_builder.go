@@ -13,13 +13,6 @@ import (
 type WithConfiguration_version_ItemRequestBuilder struct {
     i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.BaseRequestBuilder
 }
-// WithConfiguration_version_ItemRequestBuilderGetRequestConfiguration configuration for the request such as headers, query parameters, and middleware options.
-type WithConfiguration_version_ItemRequestBuilderGetRequestConfiguration struct {
-    // Request headers
-    Headers *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestHeaders
-    // Request options
-    Options []i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestOption
-}
 // Actions the actions property
 // returns a *ItemActionsRequestBuilder when successful
 func (m *WithConfiguration_version_ItemRequestBuilder) Actions()(*ItemActionsRequestBuilder) {
@@ -44,30 +37,9 @@ func (m *WithConfiguration_version_ItemRequestBuilder) Download()(*ItemDownloadR
     return NewItemDownloadRequestBuilderInternal(m.BaseRequestBuilder.PathParameters, m.BaseRequestBuilder.RequestAdapter)
 }
 // Get get details of a specific configuration version.
-// Deprecated: This method is obsolete. Use GetAsWithConfiguration_version_GetResponse instead.
-// returns a ItemWithConfiguration_version_Responseable when successful
-// returns a Errors error when the service returns a 4XX or 5XX status code
-func (m *WithConfiguration_version_ItemRequestBuilder) Get(ctx context.Context, requestConfiguration *WithConfiguration_version_ItemRequestBuilderGetRequestConfiguration)(ItemWithConfiguration_version_Responseable, error) {
-    requestInfo, err := m.ToGetRequestInformation(ctx, requestConfiguration);
-    if err != nil {
-        return nil, err
-    }
-    errorMapping := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ErrorMappings {
-        "XXX": ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.CreateErrorsFromDiscriminatorValue,
-    }
-    res, err := m.BaseRequestBuilder.RequestAdapter.Send(ctx, requestInfo, CreateItemWithConfiguration_version_ResponseFromDiscriminatorValue, errorMapping)
-    if err != nil {
-        return nil, err
-    }
-    if res == nil {
-        return nil, nil
-    }
-    return res.(ItemWithConfiguration_version_Responseable), nil
-}
-// GetAsWithConfiguration_version_GetResponse get details of a specific configuration version.
 // returns a ItemWithConfiguration_version_GetResponseable when successful
 // returns a Errors error when the service returns a 4XX or 5XX status code
-func (m *WithConfiguration_version_ItemRequestBuilder) GetAsWithConfiguration_version_GetResponse(ctx context.Context, requestConfiguration *WithConfiguration_version_ItemRequestBuilderGetRequestConfiguration)(ItemWithConfiguration_version_GetResponseable, error) {
+func (m *WithConfiguration_version_ItemRequestBuilder) Get(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(ItemWithConfiguration_version_GetResponseable, error) {
     requestInfo, err := m.ToGetRequestInformation(ctx, requestConfiguration);
     if err != nil {
         return nil, err
@@ -91,12 +63,9 @@ func (m *WithConfiguration_version_ItemRequestBuilder) IngressAttributes()(*Item
 }
 // ToGetRequestInformation get details of a specific configuration version.
 // returns a *RequestInformation when successful
-func (m *WithConfiguration_version_ItemRequestBuilder) ToGetRequestInformation(ctx context.Context, requestConfiguration *WithConfiguration_version_ItemRequestBuilderGetRequestConfiguration)(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
+func (m *WithConfiguration_version_ItemRequestBuilder) ToGetRequestInformation(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
     requestInfo := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewRequestInformationWithMethodAndUrlTemplateAndPathParameters(i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.GET, m.BaseRequestBuilder.UrlTemplate, m.BaseRequestBuilder.PathParameters)
-    if requestConfiguration != nil {
-        requestInfo.Headers.AddAll(requestConfiguration.Headers)
-        requestInfo.AddRequestOptions(requestConfiguration.Options)
-    }
+    i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ConfigureRequestInformation(requestInfo, requestConfiguration)
     requestInfo.Headers.TryAdd("Accept", "application/vnd.api+json")
     return requestInfo, nil
 }

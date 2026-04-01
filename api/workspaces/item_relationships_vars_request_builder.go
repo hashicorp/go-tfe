@@ -13,13 +13,6 @@ import (
 type ItemRelationshipsVarsRequestBuilder struct {
     i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.BaseRequestBuilder
 }
-// ItemRelationshipsVarsRequestBuilderPatchRequestConfiguration configuration for the request such as headers, query parameters, and middleware options.
-type ItemRelationshipsVarsRequestBuilderPatchRequestConfiguration struct {
-    // Request headers
-    Headers *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestHeaders
-    // Request options
-    Options []i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestOption
-}
 // NewItemRelationshipsVarsRequestBuilderInternal instantiates a new ItemRelationshipsVarsRequestBuilder and sets the default values.
 func NewItemRelationshipsVarsRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*ItemRelationshipsVarsRequestBuilder) {
     m := &ItemRelationshipsVarsRequestBuilder{
@@ -38,7 +31,7 @@ func NewItemRelationshipsVarsRequestBuilder(rawUrl string, requestAdapter i2ae41
 // returns a Errors error when the service returns a 404 status code
 // returns a Errors error when the service returns a 422 status code
 // returns a Errors error when the service returns a 4XX or 5XX status code
-func (m *ItemRelationshipsVarsRequestBuilder) Patch(ctx context.Context, body ItemRelationshipsVarsPatchRequestBodyable, requestConfiguration *ItemRelationshipsVarsRequestBuilderPatchRequestConfiguration)(error) {
+func (m *ItemRelationshipsVarsRequestBuilder) Patch(ctx context.Context, body ItemRelationshipsVarsPatchRequestBodyable, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(error) {
     requestInfo, err := m.ToPatchRequestInformation(ctx, body, requestConfiguration);
     if err != nil {
         return err
@@ -57,12 +50,9 @@ func (m *ItemRelationshipsVarsRequestBuilder) Patch(ctx context.Context, body It
 }
 // ToPatchRequestInformation batch update workspace variables. Provide an array of variable objects to update. Variables are matched by their external ID.
 // returns a *RequestInformation when successful
-func (m *ItemRelationshipsVarsRequestBuilder) ToPatchRequestInformation(ctx context.Context, body ItemRelationshipsVarsPatchRequestBodyable, requestConfiguration *ItemRelationshipsVarsRequestBuilderPatchRequestConfiguration)(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
+func (m *ItemRelationshipsVarsRequestBuilder) ToPatchRequestInformation(ctx context.Context, body ItemRelationshipsVarsPatchRequestBodyable, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
     requestInfo := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewRequestInformationWithMethodAndUrlTemplateAndPathParameters(i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.PATCH, m.BaseRequestBuilder.UrlTemplate, m.BaseRequestBuilder.PathParameters)
-    if requestConfiguration != nil {
-        requestInfo.Headers.AddAll(requestConfiguration.Headers)
-        requestInfo.AddRequestOptions(requestConfiguration.Options)
-    }
+    i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ConfigureRequestInformation(requestInfo, requestConfiguration)
     requestInfo.Headers.TryAdd("Accept", "application/vnd.api+json")
     err := requestInfo.SetContentFromParsable(ctx, m.BaseRequestBuilder.RequestAdapter, "application/vnd.api+json", body)
     if err != nil {

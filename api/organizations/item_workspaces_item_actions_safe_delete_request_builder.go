@@ -13,13 +13,6 @@ import (
 type ItemWorkspacesItemActionsSafeDeleteRequestBuilder struct {
     i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.BaseRequestBuilder
 }
-// ItemWorkspacesItemActionsSafeDeleteRequestBuilderPostRequestConfiguration configuration for the request such as headers, query parameters, and middleware options.
-type ItemWorkspacesItemActionsSafeDeleteRequestBuilderPostRequestConfiguration struct {
-    // Request headers
-    Headers *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestHeaders
-    // Request options
-    Options []i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestOption
-}
 // NewItemWorkspacesItemActionsSafeDeleteRequestBuilderInternal instantiates a new ItemWorkspacesItemActionsSafeDeleteRequestBuilder and sets the default values.
 func NewItemWorkspacesItemActionsSafeDeleteRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*ItemWorkspacesItemActionsSafeDeleteRequestBuilder) {
     m := &ItemWorkspacesItemActionsSafeDeleteRequestBuilder{
@@ -37,7 +30,7 @@ func NewItemWorkspacesItemActionsSafeDeleteRequestBuilder(rawUrl string, request
 // returns a Errors error when the service returns a 404 status code
 // returns a Errors error when the service returns a 409 status code
 // returns a Errors error when the service returns a 4XX or 5XX status code
-func (m *ItemWorkspacesItemActionsSafeDeleteRequestBuilder) Post(ctx context.Context, requestConfiguration *ItemWorkspacesItemActionsSafeDeleteRequestBuilderPostRequestConfiguration)(error) {
+func (m *ItemWorkspacesItemActionsSafeDeleteRequestBuilder) Post(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(error) {
     requestInfo, err := m.ToPostRequestInformation(ctx, requestConfiguration);
     if err != nil {
         return err
@@ -55,12 +48,9 @@ func (m *ItemWorkspacesItemActionsSafeDeleteRequestBuilder) Post(ctx context.Con
 }
 // ToPostRequestInformation delete a workspace by organization name and workspace name only if it has no resources under management. Returns a conflict error if the workspace has managed resources or is locked.
 // returns a *RequestInformation when successful
-func (m *ItemWorkspacesItemActionsSafeDeleteRequestBuilder) ToPostRequestInformation(ctx context.Context, requestConfiguration *ItemWorkspacesItemActionsSafeDeleteRequestBuilderPostRequestConfiguration)(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
+func (m *ItemWorkspacesItemActionsSafeDeleteRequestBuilder) ToPostRequestInformation(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
     requestInfo := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewRequestInformationWithMethodAndUrlTemplateAndPathParameters(i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.POST, m.BaseRequestBuilder.UrlTemplate, m.BaseRequestBuilder.PathParameters)
-    if requestConfiguration != nil {
-        requestInfo.Headers.AddAll(requestConfiguration.Headers)
-        requestInfo.AddRequestOptions(requestConfiguration.Options)
-    }
+    i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ConfigureRequestInformation(requestInfo, requestConfiguration)
     requestInfo.Headers.TryAdd("Accept", "application/vnd.api+json")
     return requestInfo, nil
 }

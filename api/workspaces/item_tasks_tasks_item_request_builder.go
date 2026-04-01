@@ -13,27 +13,6 @@ import (
 type ItemTasksTasksItemRequestBuilder struct {
     i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.BaseRequestBuilder
 }
-// ItemTasksTasksItemRequestBuilderDeleteRequestConfiguration configuration for the request such as headers, query parameters, and middleware options.
-type ItemTasksTasksItemRequestBuilderDeleteRequestConfiguration struct {
-    // Request headers
-    Headers *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestHeaders
-    // Request options
-    Options []i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestOption
-}
-// ItemTasksTasksItemRequestBuilderGetRequestConfiguration configuration for the request such as headers, query parameters, and middleware options.
-type ItemTasksTasksItemRequestBuilderGetRequestConfiguration struct {
-    // Request headers
-    Headers *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestHeaders
-    // Request options
-    Options []i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestOption
-}
-// ItemTasksTasksItemRequestBuilderPatchRequestConfiguration configuration for the request such as headers, query parameters, and middleware options.
-type ItemTasksTasksItemRequestBuilderPatchRequestConfiguration struct {
-    // Request headers
-    Headers *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestHeaders
-    // Request options
-    Options []i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestOption
-}
 // NewItemTasksTasksItemRequestBuilderInternal instantiates a new ItemTasksTasksItemRequestBuilder and sets the default values.
 func NewItemTasksTasksItemRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*ItemTasksTasksItemRequestBuilder) {
     m := &ItemTasksTasksItemRequestBuilder{
@@ -49,7 +28,7 @@ func NewItemTasksTasksItemRequestBuilder(rawUrl string, requestAdapter i2ae4187f
 }
 // Delete delete a workspace run task, dissociating the run task from the workspace.
 // returns a Errors error when the service returns a 4XX or 5XX status code
-func (m *ItemTasksTasksItemRequestBuilder) Delete(ctx context.Context, requestConfiguration *ItemTasksTasksItemRequestBuilderDeleteRequestConfiguration)(error) {
+func (m *ItemTasksTasksItemRequestBuilder) Delete(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(error) {
     requestInfo, err := m.ToDeleteRequestInformation(ctx, requestConfiguration);
     if err != nil {
         return err
@@ -64,30 +43,9 @@ func (m *ItemTasksTasksItemRequestBuilder) Delete(ctx context.Context, requestCo
     return nil
 }
 // Get get details about a workspace run task.
-// Deprecated: This method is obsolete. Use GetAsTasksGetResponse instead.
-// returns a ItemTasksItemTasksResponseable when successful
-// returns a Errors error when the service returns a 4XX or 5XX status code
-func (m *ItemTasksTasksItemRequestBuilder) Get(ctx context.Context, requestConfiguration *ItemTasksTasksItemRequestBuilderGetRequestConfiguration)(ItemTasksItemTasksResponseable, error) {
-    requestInfo, err := m.ToGetRequestInformation(ctx, requestConfiguration);
-    if err != nil {
-        return nil, err
-    }
-    errorMapping := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ErrorMappings {
-        "XXX": ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.CreateErrorsFromDiscriminatorValue,
-    }
-    res, err := m.BaseRequestBuilder.RequestAdapter.Send(ctx, requestInfo, CreateItemTasksItemTasksResponseFromDiscriminatorValue, errorMapping)
-    if err != nil {
-        return nil, err
-    }
-    if res == nil {
-        return nil, nil
-    }
-    return res.(ItemTasksItemTasksResponseable), nil
-}
-// GetAsTasksGetResponse get details about a workspace run task.
 // returns a ItemTasksItemTasksGetResponseable when successful
 // returns a Errors error when the service returns a 4XX or 5XX status code
-func (m *ItemTasksTasksItemRequestBuilder) GetAsTasksGetResponse(ctx context.Context, requestConfiguration *ItemTasksTasksItemRequestBuilderGetRequestConfiguration)(ItemTasksItemTasksGetResponseable, error) {
+func (m *ItemTasksTasksItemRequestBuilder) Get(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(ItemTasksItemTasksGetResponseable, error) {
     requestInfo, err := m.ToGetRequestInformation(ctx, requestConfiguration);
     if err != nil {
         return nil, err
@@ -105,30 +63,9 @@ func (m *ItemTasksTasksItemRequestBuilder) GetAsTasksGetResponse(ctx context.Con
     return res.(ItemTasksItemTasksGetResponseable), nil
 }
 // Patch update a workspace run task.
-// Deprecated: This method is obsolete. Use PatchAsTasksPatchResponse instead.
-// returns a ItemTasksItemTasksResponseable when successful
-// returns a Errors error when the service returns a 4XX or 5XX status code
-func (m *ItemTasksTasksItemRequestBuilder) Patch(ctx context.Context, body ItemTasksItemTasksPatchRequestBodyable, requestConfiguration *ItemTasksTasksItemRequestBuilderPatchRequestConfiguration)(ItemTasksItemTasksResponseable, error) {
-    requestInfo, err := m.ToPatchRequestInformation(ctx, body, requestConfiguration);
-    if err != nil {
-        return nil, err
-    }
-    errorMapping := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ErrorMappings {
-        "XXX": ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.CreateErrorsFromDiscriminatorValue,
-    }
-    res, err := m.BaseRequestBuilder.RequestAdapter.Send(ctx, requestInfo, CreateItemTasksItemTasksResponseFromDiscriminatorValue, errorMapping)
-    if err != nil {
-        return nil, err
-    }
-    if res == nil {
-        return nil, nil
-    }
-    return res.(ItemTasksItemTasksResponseable), nil
-}
-// PatchAsTasksPatchResponse update a workspace run task.
 // returns a ItemTasksItemTasksPatchResponseable when successful
 // returns a Errors error when the service returns a 4XX or 5XX status code
-func (m *ItemTasksTasksItemRequestBuilder) PatchAsTasksPatchResponse(ctx context.Context, body ItemTasksItemTasksPatchRequestBodyable, requestConfiguration *ItemTasksTasksItemRequestBuilderPatchRequestConfiguration)(ItemTasksItemTasksPatchResponseable, error) {
+func (m *ItemTasksTasksItemRequestBuilder) Patch(ctx context.Context, body ItemTasksItemTasksPatchRequestBodyable, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(ItemTasksItemTasksPatchResponseable, error) {
     requestInfo, err := m.ToPatchRequestInformation(ctx, body, requestConfiguration);
     if err != nil {
         return nil, err
@@ -147,34 +84,25 @@ func (m *ItemTasksTasksItemRequestBuilder) PatchAsTasksPatchResponse(ctx context
 }
 // ToDeleteRequestInformation delete a workspace run task, dissociating the run task from the workspace.
 // returns a *RequestInformation when successful
-func (m *ItemTasksTasksItemRequestBuilder) ToDeleteRequestInformation(ctx context.Context, requestConfiguration *ItemTasksTasksItemRequestBuilderDeleteRequestConfiguration)(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
+func (m *ItemTasksTasksItemRequestBuilder) ToDeleteRequestInformation(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
     requestInfo := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewRequestInformationWithMethodAndUrlTemplateAndPathParameters(i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DELETE, m.BaseRequestBuilder.UrlTemplate, m.BaseRequestBuilder.PathParameters)
-    if requestConfiguration != nil {
-        requestInfo.Headers.AddAll(requestConfiguration.Headers)
-        requestInfo.AddRequestOptions(requestConfiguration.Options)
-    }
+    i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ConfigureRequestInformation(requestInfo, requestConfiguration)
     requestInfo.Headers.TryAdd("Accept", "application/vnd.api+json")
     return requestInfo, nil
 }
 // ToGetRequestInformation get details about a workspace run task.
 // returns a *RequestInformation when successful
-func (m *ItemTasksTasksItemRequestBuilder) ToGetRequestInformation(ctx context.Context, requestConfiguration *ItemTasksTasksItemRequestBuilderGetRequestConfiguration)(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
+func (m *ItemTasksTasksItemRequestBuilder) ToGetRequestInformation(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
     requestInfo := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewRequestInformationWithMethodAndUrlTemplateAndPathParameters(i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.GET, m.BaseRequestBuilder.UrlTemplate, m.BaseRequestBuilder.PathParameters)
-    if requestConfiguration != nil {
-        requestInfo.Headers.AddAll(requestConfiguration.Headers)
-        requestInfo.AddRequestOptions(requestConfiguration.Options)
-    }
+    i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ConfigureRequestInformation(requestInfo, requestConfiguration)
     requestInfo.Headers.TryAdd("Accept", "application/vnd.api+json")
     return requestInfo, nil
 }
 // ToPatchRequestInformation update a workspace run task.
 // returns a *RequestInformation when successful
-func (m *ItemTasksTasksItemRequestBuilder) ToPatchRequestInformation(ctx context.Context, body ItemTasksItemTasksPatchRequestBodyable, requestConfiguration *ItemTasksTasksItemRequestBuilderPatchRequestConfiguration)(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
+func (m *ItemTasksTasksItemRequestBuilder) ToPatchRequestInformation(ctx context.Context, body ItemTasksItemTasksPatchRequestBodyable, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
     requestInfo := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewRequestInformationWithMethodAndUrlTemplateAndPathParameters(i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.PATCH, m.BaseRequestBuilder.UrlTemplate, m.BaseRequestBuilder.PathParameters)
-    if requestConfiguration != nil {
-        requestInfo.Headers.AddAll(requestConfiguration.Headers)
-        requestInfo.AddRequestOptions(requestConfiguration.Options)
-    }
+    i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ConfigureRequestInformation(requestInfo, requestConfiguration)
     requestInfo.Headers.TryAdd("Accept", "application/vnd.api+json")
     err := requestInfo.SetContentFromParsable(ctx, m.BaseRequestBuilder.RequestAdapter, "application/vnd.api+json", body)
     if err != nil {

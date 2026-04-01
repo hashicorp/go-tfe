@@ -13,13 +13,6 @@ import (
 type OauthClientsRequestBuilder struct {
     i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.BaseRequestBuilder
 }
-// OauthClientsRequestBuilderPostRequestConfiguration configuration for the request such as headers, query parameters, and middleware options.
-type OauthClientsRequestBuilderPostRequestConfiguration struct {
-    // Request headers
-    Headers *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestHeaders
-    // Request options
-    Options []i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestOption
-}
 // ByOauth_client_id gets an item from the github.com/hashicorp/go-tfe/api.oauthClients.item collection
 // returns a *WithOauth_client_ItemRequestBuilder when successful
 func (m *OauthClientsRequestBuilder) ByOauth_client_id(oauth_client_id string)(*WithOauth_client_ItemRequestBuilder) {
@@ -46,30 +39,9 @@ func NewOauthClientsRequestBuilder(rawUrl string, requestAdapter i2ae4187f7daee2
     return NewOauthClientsRequestBuilderInternal(urlParams, requestAdapter)
 }
 // Post create a VCS connection between an organization and a VCS provider. The organization is specified via the `organization-id` attribute. This endpoint allows you to provide a pre-generated OAuth token string instead of going through the OAuth Application flow.
-// Deprecated: This method is obsolete. Use PostAsOauthClientsPostResponse instead.
-// returns a OauthClientsResponseable when successful
-// returns a Errors error when the service returns a 4XX or 5XX status code
-func (m *OauthClientsRequestBuilder) Post(ctx context.Context, body OauthClientsPostRequestBodyable, requestConfiguration *OauthClientsRequestBuilderPostRequestConfiguration)(OauthClientsResponseable, error) {
-    requestInfo, err := m.ToPostRequestInformation(ctx, body, requestConfiguration);
-    if err != nil {
-        return nil, err
-    }
-    errorMapping := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ErrorMappings {
-        "XXX": ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.CreateErrorsFromDiscriminatorValue,
-    }
-    res, err := m.BaseRequestBuilder.RequestAdapter.Send(ctx, requestInfo, CreateOauthClientsResponseFromDiscriminatorValue, errorMapping)
-    if err != nil {
-        return nil, err
-    }
-    if res == nil {
-        return nil, nil
-    }
-    return res.(OauthClientsResponseable), nil
-}
-// PostAsOauthClientsPostResponse create a VCS connection between an organization and a VCS provider. The organization is specified via the `organization-id` attribute. This endpoint allows you to provide a pre-generated OAuth token string instead of going through the OAuth Application flow.
 // returns a OauthClientsPostResponseable when successful
 // returns a Errors error when the service returns a 4XX or 5XX status code
-func (m *OauthClientsRequestBuilder) PostAsOauthClientsPostResponse(ctx context.Context, body OauthClientsPostRequestBodyable, requestConfiguration *OauthClientsRequestBuilderPostRequestConfiguration)(OauthClientsPostResponseable, error) {
+func (m *OauthClientsRequestBuilder) Post(ctx context.Context, body OauthClientsPostRequestBodyable, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(OauthClientsPostResponseable, error) {
     requestInfo, err := m.ToPostRequestInformation(ctx, body, requestConfiguration);
     if err != nil {
         return nil, err
@@ -88,12 +60,9 @@ func (m *OauthClientsRequestBuilder) PostAsOauthClientsPostResponse(ctx context.
 }
 // ToPostRequestInformation create a VCS connection between an organization and a VCS provider. The organization is specified via the `organization-id` attribute. This endpoint allows you to provide a pre-generated OAuth token string instead of going through the OAuth Application flow.
 // returns a *RequestInformation when successful
-func (m *OauthClientsRequestBuilder) ToPostRequestInformation(ctx context.Context, body OauthClientsPostRequestBodyable, requestConfiguration *OauthClientsRequestBuilderPostRequestConfiguration)(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
+func (m *OauthClientsRequestBuilder) ToPostRequestInformation(ctx context.Context, body OauthClientsPostRequestBodyable, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
     requestInfo := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewRequestInformationWithMethodAndUrlTemplateAndPathParameters(i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.POST, m.BaseRequestBuilder.UrlTemplate, m.BaseRequestBuilder.PathParameters)
-    if requestConfiguration != nil {
-        requestInfo.Headers.AddAll(requestConfiguration.Headers)
-        requestInfo.AddRequestOptions(requestConfiguration.Options)
-    }
+    i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ConfigureRequestInformation(requestInfo, requestConfiguration)
     requestInfo.Headers.TryAdd("Accept", "application/vnd.api+json")
     err := requestInfo.SetContentFromParsable(ctx, m.BaseRequestBuilder.RequestAdapter, "application/vnd.api+json", body)
     if err != nil {

@@ -13,13 +13,6 @@ import (
 type ItemActionsOverrideRequestBuilder struct {
     i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.BaseRequestBuilder
 }
-// ItemActionsOverrideRequestBuilderPostRequestConfiguration configuration for the request such as headers, query parameters, and middleware options.
-type ItemActionsOverrideRequestBuilderPostRequestConfiguration struct {
-    // Request headers
-    Headers *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestHeaders
-    // Request options
-    Options []i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestOption
-}
 // NewItemActionsOverrideRequestBuilderInternal instantiates a new ItemActionsOverrideRequestBuilder and sets the default values.
 func NewItemActionsOverrideRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*ItemActionsOverrideRequestBuilder) {
     m := &ItemActionsOverrideRequestBuilder{
@@ -34,33 +27,10 @@ func NewItemActionsOverrideRequestBuilder(rawUrl string, requestAdapter i2ae4187
     return NewItemActionsOverrideRequestBuilderInternal(urlParams, requestAdapter)
 }
 // Post override a soft-mandatory or warning policy check to allow the run to continue.
-// Deprecated: This method is obsolete. Use PostAsOverridePostResponse instead.
-// returns a ItemActionsOverrideResponseable when successful
-// returns a Errors error when the service returns a 409 status code
-// returns a Errors error when the service returns a 4XX or 5XX status code
-func (m *ItemActionsOverrideRequestBuilder) Post(ctx context.Context, body ItemActionsOverridePostRequestBodyable, requestConfiguration *ItemActionsOverrideRequestBuilderPostRequestConfiguration)(ItemActionsOverrideResponseable, error) {
-    requestInfo, err := m.ToPostRequestInformation(ctx, body, requestConfiguration);
-    if err != nil {
-        return nil, err
-    }
-    errorMapping := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ErrorMappings {
-        "409": ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.CreateErrorsFromDiscriminatorValue,
-        "XXX": ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.CreateErrorsFromDiscriminatorValue,
-    }
-    res, err := m.BaseRequestBuilder.RequestAdapter.Send(ctx, requestInfo, CreateItemActionsOverrideResponseFromDiscriminatorValue, errorMapping)
-    if err != nil {
-        return nil, err
-    }
-    if res == nil {
-        return nil, nil
-    }
-    return res.(ItemActionsOverrideResponseable), nil
-}
-// PostAsOverridePostResponse override a soft-mandatory or warning policy check to allow the run to continue.
 // returns a ItemActionsOverridePostResponseable when successful
 // returns a Errors error when the service returns a 409 status code
 // returns a Errors error when the service returns a 4XX or 5XX status code
-func (m *ItemActionsOverrideRequestBuilder) PostAsOverridePostResponse(ctx context.Context, body ItemActionsOverridePostRequestBodyable, requestConfiguration *ItemActionsOverrideRequestBuilderPostRequestConfiguration)(ItemActionsOverridePostResponseable, error) {
+func (m *ItemActionsOverrideRequestBuilder) Post(ctx context.Context, body ItemActionsOverridePostRequestBodyable, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(ItemActionsOverridePostResponseable, error) {
     requestInfo, err := m.ToPostRequestInformation(ctx, body, requestConfiguration);
     if err != nil {
         return nil, err
@@ -80,12 +50,9 @@ func (m *ItemActionsOverrideRequestBuilder) PostAsOverridePostResponse(ctx conte
 }
 // ToPostRequestInformation override a soft-mandatory or warning policy check to allow the run to continue.
 // returns a *RequestInformation when successful
-func (m *ItemActionsOverrideRequestBuilder) ToPostRequestInformation(ctx context.Context, body ItemActionsOverridePostRequestBodyable, requestConfiguration *ItemActionsOverrideRequestBuilderPostRequestConfiguration)(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
+func (m *ItemActionsOverrideRequestBuilder) ToPostRequestInformation(ctx context.Context, body ItemActionsOverridePostRequestBodyable, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
     requestInfo := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewRequestInformationWithMethodAndUrlTemplateAndPathParameters(i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.POST, m.BaseRequestBuilder.UrlTemplate, m.BaseRequestBuilder.PathParameters)
-    if requestConfiguration != nil {
-        requestInfo.Headers.AddAll(requestConfiguration.Headers)
-        requestInfo.AddRequestOptions(requestConfiguration.Options)
-    }
+    i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ConfigureRequestInformation(requestInfo, requestConfiguration)
     requestInfo.Headers.TryAdd("Accept", "application/vnd.api+json")
     err := requestInfo.SetContentFromParsable(ctx, m.BaseRequestBuilder.RequestAdapter, "application/vnd.api+json", body)
     if err != nil {

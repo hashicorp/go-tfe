@@ -13,13 +13,6 @@ import (
 type PlansItemRequestBuilder struct {
     i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.BaseRequestBuilder
 }
-// PlansItemRequestBuilderGetRequestConfiguration configuration for the request such as headers, query parameters, and middleware options.
-type PlansItemRequestBuilderGetRequestConfiguration struct {
-    // Request headers
-    Headers *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestHeaders
-    // Request options
-    Options []i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestOption
-}
 // NewPlansItemRequestBuilderInternal instantiates a new PlansItemRequestBuilder and sets the default values.
 func NewPlansItemRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*PlansItemRequestBuilder) {
     m := &PlansItemRequestBuilder{
@@ -34,30 +27,9 @@ func NewPlansItemRequestBuilder(rawUrl string, requestAdapter i2ae4187f7daee2633
     return NewPlansItemRequestBuilderInternal(urlParams, requestAdapter)
 }
 // Get this endpoint returns a specific plan by its ID.
-// Deprecated: This method is obsolete. Use GetAsPlansGetResponse instead.
-// returns a ItemPlansResponseable when successful
-// returns a Errors error when the service returns a 4XX or 5XX status code
-func (m *PlansItemRequestBuilder) Get(ctx context.Context, requestConfiguration *PlansItemRequestBuilderGetRequestConfiguration)(ItemPlansResponseable, error) {
-    requestInfo, err := m.ToGetRequestInformation(ctx, requestConfiguration);
-    if err != nil {
-        return nil, err
-    }
-    errorMapping := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ErrorMappings {
-        "XXX": ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.CreateErrorsFromDiscriminatorValue,
-    }
-    res, err := m.BaseRequestBuilder.RequestAdapter.Send(ctx, requestInfo, CreateItemPlansResponseFromDiscriminatorValue, errorMapping)
-    if err != nil {
-        return nil, err
-    }
-    if res == nil {
-        return nil, nil
-    }
-    return res.(ItemPlansResponseable), nil
-}
-// GetAsPlansGetResponse this endpoint returns a specific plan by its ID.
 // returns a ItemPlansGetResponseable when successful
 // returns a Errors error when the service returns a 4XX or 5XX status code
-func (m *PlansItemRequestBuilder) GetAsPlansGetResponse(ctx context.Context, requestConfiguration *PlansItemRequestBuilderGetRequestConfiguration)(ItemPlansGetResponseable, error) {
+func (m *PlansItemRequestBuilder) Get(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(ItemPlansGetResponseable, error) {
     requestInfo, err := m.ToGetRequestInformation(ctx, requestConfiguration);
     if err != nil {
         return nil, err
@@ -81,12 +53,9 @@ func (m *PlansItemRequestBuilder) JsonOutput()(*ItemJsonOutputRequestBuilder) {
 }
 // ToGetRequestInformation this endpoint returns a specific plan by its ID.
 // returns a *RequestInformation when successful
-func (m *PlansItemRequestBuilder) ToGetRequestInformation(ctx context.Context, requestConfiguration *PlansItemRequestBuilderGetRequestConfiguration)(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
+func (m *PlansItemRequestBuilder) ToGetRequestInformation(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
     requestInfo := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewRequestInformationWithMethodAndUrlTemplateAndPathParameters(i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.GET, m.BaseRequestBuilder.UrlTemplate, m.BaseRequestBuilder.PathParameters)
-    if requestConfiguration != nil {
-        requestInfo.Headers.AddAll(requestConfiguration.Headers)
-        requestInfo.AddRequestOptions(requestConfiguration.Options)
-    }
+    i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ConfigureRequestInformation(requestInfo, requestConfiguration)
     requestInfo.Headers.TryAdd("Accept", "application/vnd.api+json")
     return requestInfo, nil
 }

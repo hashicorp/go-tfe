@@ -23,19 +23,7 @@ type ItemResourcesRequestBuilderGetQueryParameters struct {
     // Optional search query to filter resources by address pattern.
     Q *string `uriparametername:"q"`
     // Optional sort parameter. Allows sorting workspace resources by name, nameIndex, provider,  providerType, module, or updatedAt. Format is "field:order" where order is "asc" or "desc".
-    // Deprecated: This property is deprecated, use SortAsGetSortQueryParameterType instead
-    Sort *string `uriparametername:"sort"`
-    // Optional sort parameter. Allows sorting workspace resources by name, nameIndex, provider,  providerType, module, or updatedAt. Format is "field:order" where order is "asc" or "desc".
-    SortAsGetSortQueryParameterType *ia046148a76e9397934e325e52da2cbad0f04264533cdfc939d01bac8c7839f50.GetSortQueryParameterType `uriparametername:"sort"`
-}
-// ItemResourcesRequestBuilderGetRequestConfiguration configuration for the request such as headers, query parameters, and middleware options.
-type ItemResourcesRequestBuilderGetRequestConfiguration struct {
-    // Request headers
-    Headers *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestHeaders
-    // Request options
-    Options []i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestOption
-    // Request query parameters
-    QueryParameters *ItemResourcesRequestBuilderGetQueryParameters
+    Sort *ia046148a76e9397934e325e52da2cbad0f04264533cdfc939d01bac8c7839f50.GetSortQueryParameterType `uriparametername:"sort"`
 }
 // NewItemResourcesRequestBuilderInternal instantiates a new ItemResourcesRequestBuilder and sets the default values.
 func NewItemResourcesRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*ItemResourcesRequestBuilder) {
@@ -51,33 +39,10 @@ func NewItemResourcesRequestBuilder(rawUrl string, requestAdapter i2ae4187f7daee
     return NewItemResourcesRequestBuilderInternal(urlParams, requestAdapter)
 }
 // Get list all resources in a workspace's current state.
-// Deprecated: This method is obsolete. Use GetAsResourcesGetResponse instead.
-// returns a ItemResourcesResponseable when successful
-// returns a Errors error when the service returns a 404 status code
-// returns a Errors error when the service returns a 4XX or 5XX status code
-func (m *ItemResourcesRequestBuilder) Get(ctx context.Context, requestConfiguration *ItemResourcesRequestBuilderGetRequestConfiguration)(ItemResourcesResponseable, error) {
-    requestInfo, err := m.ToGetRequestInformation(ctx, requestConfiguration);
-    if err != nil {
-        return nil, err
-    }
-    errorMapping := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ErrorMappings {
-        "404": ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.CreateErrorsFromDiscriminatorValue,
-        "XXX": ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.CreateErrorsFromDiscriminatorValue,
-    }
-    res, err := m.BaseRequestBuilder.RequestAdapter.Send(ctx, requestInfo, CreateItemResourcesResponseFromDiscriminatorValue, errorMapping)
-    if err != nil {
-        return nil, err
-    }
-    if res == nil {
-        return nil, nil
-    }
-    return res.(ItemResourcesResponseable), nil
-}
-// GetAsResourcesGetResponse list all resources in a workspace's current state.
 // returns a ItemResourcesGetResponseable when successful
 // returns a Errors error when the service returns a 404 status code
 // returns a Errors error when the service returns a 4XX or 5XX status code
-func (m *ItemResourcesRequestBuilder) GetAsResourcesGetResponse(ctx context.Context, requestConfiguration *ItemResourcesRequestBuilderGetRequestConfiguration)(ItemResourcesGetResponseable, error) {
+func (m *ItemResourcesRequestBuilder) Get(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[ItemResourcesRequestBuilderGetQueryParameters])(ItemResourcesGetResponseable, error) {
     requestInfo, err := m.ToGetRequestInformation(ctx, requestConfiguration);
     if err != nil {
         return nil, err
@@ -97,15 +62,9 @@ func (m *ItemResourcesRequestBuilder) GetAsResourcesGetResponse(ctx context.Cont
 }
 // ToGetRequestInformation list all resources in a workspace's current state.
 // returns a *RequestInformation when successful
-func (m *ItemResourcesRequestBuilder) ToGetRequestInformation(ctx context.Context, requestConfiguration *ItemResourcesRequestBuilderGetRequestConfiguration)(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
+func (m *ItemResourcesRequestBuilder) ToGetRequestInformation(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[ItemResourcesRequestBuilderGetQueryParameters])(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
     requestInfo := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewRequestInformationWithMethodAndUrlTemplateAndPathParameters(i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.GET, m.BaseRequestBuilder.UrlTemplate, m.BaseRequestBuilder.PathParameters)
-    if requestConfiguration != nil {
-        if requestConfiguration.QueryParameters != nil {
-            requestInfo.AddQueryParameters(*(requestConfiguration.QueryParameters))
-        }
-        requestInfo.Headers.AddAll(requestConfiguration.Headers)
-        requestInfo.AddRequestOptions(requestConfiguration.Options)
-    }
+    i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ConfigureRequestInformation(requestInfo, requestConfiguration)
     requestInfo.Headers.TryAdd("Accept", "application/vnd.api+json")
     return requestInfo, nil
 }

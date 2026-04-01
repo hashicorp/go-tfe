@@ -13,13 +13,6 @@ import (
 type WithPolicy_evaluation_ItemRequestBuilder struct {
     i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.BaseRequestBuilder
 }
-// WithPolicy_evaluation_ItemRequestBuilderGetRequestConfiguration configuration for the request such as headers, query parameters, and middleware options.
-type WithPolicy_evaluation_ItemRequestBuilderGetRequestConfiguration struct {
-    // Request headers
-    Headers *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestHeaders
-    // Request options
-    Options []i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestOption
-}
 // NewWithPolicy_evaluation_ItemRequestBuilderInternal instantiates a new WithPolicy_evaluation_ItemRequestBuilder and sets the default values.
 func NewWithPolicy_evaluation_ItemRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*WithPolicy_evaluation_ItemRequestBuilder) {
     m := &WithPolicy_evaluation_ItemRequestBuilder{
@@ -34,30 +27,9 @@ func NewWithPolicy_evaluation_ItemRequestBuilder(rawUrl string, requestAdapter i
     return NewWithPolicy_evaluation_ItemRequestBuilderInternal(urlParams, requestAdapter)
 }
 // Get get details about a specific policy evaluation.
-// Deprecated: This method is obsolete. Use GetAsWithPolicy_evaluation_GetResponse instead.
-// returns a ItemWithPolicy_evaluation_Responseable when successful
-// returns a Errors error when the service returns a 4XX or 5XX status code
-func (m *WithPolicy_evaluation_ItemRequestBuilder) Get(ctx context.Context, requestConfiguration *WithPolicy_evaluation_ItemRequestBuilderGetRequestConfiguration)(ItemWithPolicy_evaluation_Responseable, error) {
-    requestInfo, err := m.ToGetRequestInformation(ctx, requestConfiguration);
-    if err != nil {
-        return nil, err
-    }
-    errorMapping := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ErrorMappings {
-        "XXX": ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.CreateErrorsFromDiscriminatorValue,
-    }
-    res, err := m.BaseRequestBuilder.RequestAdapter.Send(ctx, requestInfo, CreateItemWithPolicy_evaluation_ResponseFromDiscriminatorValue, errorMapping)
-    if err != nil {
-        return nil, err
-    }
-    if res == nil {
-        return nil, nil
-    }
-    return res.(ItemWithPolicy_evaluation_Responseable), nil
-}
-// GetAsWithPolicy_evaluation_GetResponse get details about a specific policy evaluation.
 // returns a ItemWithPolicy_evaluation_GetResponseable when successful
 // returns a Errors error when the service returns a 4XX or 5XX status code
-func (m *WithPolicy_evaluation_ItemRequestBuilder) GetAsWithPolicy_evaluation_GetResponse(ctx context.Context, requestConfiguration *WithPolicy_evaluation_ItemRequestBuilderGetRequestConfiguration)(ItemWithPolicy_evaluation_GetResponseable, error) {
+func (m *WithPolicy_evaluation_ItemRequestBuilder) Get(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(ItemWithPolicy_evaluation_GetResponseable, error) {
     requestInfo, err := m.ToGetRequestInformation(ctx, requestConfiguration);
     if err != nil {
         return nil, err
@@ -81,12 +53,9 @@ func (m *WithPolicy_evaluation_ItemRequestBuilder) PolicySetOutcomes()(*ItemPoli
 }
 // ToGetRequestInformation get details about a specific policy evaluation.
 // returns a *RequestInformation when successful
-func (m *WithPolicy_evaluation_ItemRequestBuilder) ToGetRequestInformation(ctx context.Context, requestConfiguration *WithPolicy_evaluation_ItemRequestBuilderGetRequestConfiguration)(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
+func (m *WithPolicy_evaluation_ItemRequestBuilder) ToGetRequestInformation(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
     requestInfo := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewRequestInformationWithMethodAndUrlTemplateAndPathParameters(i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.GET, m.BaseRequestBuilder.UrlTemplate, m.BaseRequestBuilder.PathParameters)
-    if requestConfiguration != nil {
-        requestInfo.Headers.AddAll(requestConfiguration.Headers)
-        requestInfo.AddRequestOptions(requestConfiguration.Options)
-    }
+    i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ConfigureRequestInformation(requestInfo, requestConfiguration)
     requestInfo.Headers.TryAdd("Accept", "application/vnd.api+json")
     return requestInfo, nil
 }

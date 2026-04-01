@@ -20,15 +20,6 @@ type ItemGithubAppOauthTokensRequestBuilderGetQueryParameters struct {
     // The number of items to retrieve per page. Defaults to 20.
     Pagesize *int32 `uriparametername:"page%5Bsize%5D"`
 }
-// ItemGithubAppOauthTokensRequestBuilderGetRequestConfiguration configuration for the request such as headers, query parameters, and middleware options.
-type ItemGithubAppOauthTokensRequestBuilderGetRequestConfiguration struct {
-    // Request headers
-    Headers *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestHeaders
-    // Request options
-    Options []i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestOption
-    // Request query parameters
-    QueryParameters *ItemGithubAppOauthTokensRequestBuilderGetQueryParameters
-}
 // NewItemGithubAppOauthTokensRequestBuilderInternal instantiates a new ItemGithubAppOauthTokensRequestBuilder and sets the default values.
 func NewItemGithubAppOauthTokensRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*ItemGithubAppOauthTokensRequestBuilder) {
     m := &ItemGithubAppOauthTokensRequestBuilder{
@@ -43,30 +34,9 @@ func NewItemGithubAppOauthTokensRequestBuilder(rawUrl string, requestAdapter i2a
     return NewItemGithubAppOauthTokensRequestBuilderInternal(urlParams, requestAdapter)
 }
 // Get list GitHub App OAuth tokens for a given user.
-// Deprecated: This method is obsolete. Use GetAsGithubAppOauthTokensGetResponse instead.
-// returns a ItemGithubAppOauthTokensResponseable when successful
-// returns a Errors error when the service returns a 4XX or 5XX status code
-func (m *ItemGithubAppOauthTokensRequestBuilder) Get(ctx context.Context, requestConfiguration *ItemGithubAppOauthTokensRequestBuilderGetRequestConfiguration)(ItemGithubAppOauthTokensResponseable, error) {
-    requestInfo, err := m.ToGetRequestInformation(ctx, requestConfiguration);
-    if err != nil {
-        return nil, err
-    }
-    errorMapping := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ErrorMappings {
-        "XXX": ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.CreateErrorsFromDiscriminatorValue,
-    }
-    res, err := m.BaseRequestBuilder.RequestAdapter.Send(ctx, requestInfo, CreateItemGithubAppOauthTokensResponseFromDiscriminatorValue, errorMapping)
-    if err != nil {
-        return nil, err
-    }
-    if res == nil {
-        return nil, nil
-    }
-    return res.(ItemGithubAppOauthTokensResponseable), nil
-}
-// GetAsGithubAppOauthTokensGetResponse list GitHub App OAuth tokens for a given user.
 // returns a ItemGithubAppOauthTokensGetResponseable when successful
 // returns a Errors error when the service returns a 4XX or 5XX status code
-func (m *ItemGithubAppOauthTokensRequestBuilder) GetAsGithubAppOauthTokensGetResponse(ctx context.Context, requestConfiguration *ItemGithubAppOauthTokensRequestBuilderGetRequestConfiguration)(ItemGithubAppOauthTokensGetResponseable, error) {
+func (m *ItemGithubAppOauthTokensRequestBuilder) Get(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[ItemGithubAppOauthTokensRequestBuilderGetQueryParameters])(ItemGithubAppOauthTokensGetResponseable, error) {
     requestInfo, err := m.ToGetRequestInformation(ctx, requestConfiguration);
     if err != nil {
         return nil, err
@@ -85,15 +55,9 @@ func (m *ItemGithubAppOauthTokensRequestBuilder) GetAsGithubAppOauthTokensGetRes
 }
 // ToGetRequestInformation list GitHub App OAuth tokens for a given user.
 // returns a *RequestInformation when successful
-func (m *ItemGithubAppOauthTokensRequestBuilder) ToGetRequestInformation(ctx context.Context, requestConfiguration *ItemGithubAppOauthTokensRequestBuilderGetRequestConfiguration)(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
+func (m *ItemGithubAppOauthTokensRequestBuilder) ToGetRequestInformation(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[ItemGithubAppOauthTokensRequestBuilderGetQueryParameters])(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
     requestInfo := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewRequestInformationWithMethodAndUrlTemplateAndPathParameters(i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.GET, m.BaseRequestBuilder.UrlTemplate, m.BaseRequestBuilder.PathParameters)
-    if requestConfiguration != nil {
-        if requestConfiguration.QueryParameters != nil {
-            requestInfo.AddQueryParameters(*(requestConfiguration.QueryParameters))
-        }
-        requestInfo.Headers.AddAll(requestConfiguration.Headers)
-        requestInfo.AddRequestOptions(requestConfiguration.Options)
-    }
+    i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ConfigureRequestInformation(requestInfo, requestConfiguration)
     requestInfo.Headers.TryAdd("Accept", "application/vnd.api+json")
     return requestInfo, nil
 }

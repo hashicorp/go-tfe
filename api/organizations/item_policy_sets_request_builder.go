@@ -17,10 +17,7 @@ type ItemPolicySetsRequestBuilder struct {
 // ItemPolicySetsRequestBuilderGetQueryParameters list all policy sets in an organization.
 type ItemPolicySetsRequestBuilderGetQueryParameters struct {
     // Filter policy sets by kind.
-    // Deprecated: This property is deprecated, use FilterkindAsGetFilterKindQueryParameterType instead
-    Filterkind *string `uriparametername:"filter%5Bkind%5D"`
-    // Filter policy sets by kind.
-    FilterkindAsGetFilterKindQueryParameterType *ia906111a8da6eb65115f4c37de8ebd3f15c697ab149e99bd516a998bccd84c95.GetFilterKindQueryParameterType `uriparametername:"filter%5Bkind%5D"`
+    Filterkind *ia906111a8da6eb65115f4c37de8ebd3f15c697ab149e99bd516a998bccd84c95.GetFilterKindQueryParameterType `uriparametername:"filter%5Bkind%5D"`
     // If true, only return versioned policy sets. If false, only return non-versioned policy sets.
     Filterversioned *bool `uriparametername:"filter%5Bversioned%5D"`
     // The page number to retrieve.
@@ -29,22 +26,6 @@ type ItemPolicySetsRequestBuilderGetQueryParameters struct {
     Pagesize *int32 `uriparametername:"page%5Bsize%5D"`
     // Filter policy sets by name.
     Searchname *string `uriparametername:"search%5Bname%5D"`
-}
-// ItemPolicySetsRequestBuilderGetRequestConfiguration configuration for the request such as headers, query parameters, and middleware options.
-type ItemPolicySetsRequestBuilderGetRequestConfiguration struct {
-    // Request headers
-    Headers *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestHeaders
-    // Request options
-    Options []i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestOption
-    // Request query parameters
-    QueryParameters *ItemPolicySetsRequestBuilderGetQueryParameters
-}
-// ItemPolicySetsRequestBuilderPostRequestConfiguration configuration for the request such as headers, query parameters, and middleware options.
-type ItemPolicySetsRequestBuilderPostRequestConfiguration struct {
-    // Request headers
-    Headers *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestHeaders
-    // Request options
-    Options []i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestOption
 }
 // NewItemPolicySetsRequestBuilderInternal instantiates a new ItemPolicySetsRequestBuilder and sets the default values.
 func NewItemPolicySetsRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*ItemPolicySetsRequestBuilder) {
@@ -60,30 +41,9 @@ func NewItemPolicySetsRequestBuilder(rawUrl string, requestAdapter i2ae4187f7dae
     return NewItemPolicySetsRequestBuilderInternal(urlParams, requestAdapter)
 }
 // Get list all policy sets in an organization.
-// Deprecated: This method is obsolete. Use GetAsPolicySetsGetResponse instead.
-// returns a ItemPolicySetsResponseable when successful
-// returns a Errors error when the service returns a 4XX or 5XX status code
-func (m *ItemPolicySetsRequestBuilder) Get(ctx context.Context, requestConfiguration *ItemPolicySetsRequestBuilderGetRequestConfiguration)(ItemPolicySetsResponseable, error) {
-    requestInfo, err := m.ToGetRequestInformation(ctx, requestConfiguration);
-    if err != nil {
-        return nil, err
-    }
-    errorMapping := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ErrorMappings {
-        "XXX": ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.CreateErrorsFromDiscriminatorValue,
-    }
-    res, err := m.BaseRequestBuilder.RequestAdapter.Send(ctx, requestInfo, CreateItemPolicySetsResponseFromDiscriminatorValue, errorMapping)
-    if err != nil {
-        return nil, err
-    }
-    if res == nil {
-        return nil, nil
-    }
-    return res.(ItemPolicySetsResponseable), nil
-}
-// GetAsPolicySetsGetResponse list all policy sets in an organization.
 // returns a ItemPolicySetsGetResponseable when successful
 // returns a Errors error when the service returns a 4XX or 5XX status code
-func (m *ItemPolicySetsRequestBuilder) GetAsPolicySetsGetResponse(ctx context.Context, requestConfiguration *ItemPolicySetsRequestBuilderGetRequestConfiguration)(ItemPolicySetsGetResponseable, error) {
+func (m *ItemPolicySetsRequestBuilder) Get(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[ItemPolicySetsRequestBuilderGetQueryParameters])(ItemPolicySetsGetResponseable, error) {
     requestInfo, err := m.ToGetRequestInformation(ctx, requestConfiguration);
     if err != nil {
         return nil, err
@@ -101,30 +61,9 @@ func (m *ItemPolicySetsRequestBuilder) GetAsPolicySetsGetResponse(ctx context.Co
     return res.(ItemPolicySetsGetResponseable), nil
 }
 // Post create a new policy set in an organization.
-// Deprecated: This method is obsolete. Use PostAsPolicySetsPostResponse instead.
-// returns a ItemPolicySetsResponseable when successful
-// returns a Errors error when the service returns a 4XX or 5XX status code
-func (m *ItemPolicySetsRequestBuilder) Post(ctx context.Context, body ItemPolicySetsPostRequestBodyable, requestConfiguration *ItemPolicySetsRequestBuilderPostRequestConfiguration)(ItemPolicySetsResponseable, error) {
-    requestInfo, err := m.ToPostRequestInformation(ctx, body, requestConfiguration);
-    if err != nil {
-        return nil, err
-    }
-    errorMapping := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ErrorMappings {
-        "XXX": ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.CreateErrorsFromDiscriminatorValue,
-    }
-    res, err := m.BaseRequestBuilder.RequestAdapter.Send(ctx, requestInfo, CreateItemPolicySetsResponseFromDiscriminatorValue, errorMapping)
-    if err != nil {
-        return nil, err
-    }
-    if res == nil {
-        return nil, nil
-    }
-    return res.(ItemPolicySetsResponseable), nil
-}
-// PostAsPolicySetsPostResponse create a new policy set in an organization.
 // returns a ItemPolicySetsPostResponseable when successful
 // returns a Errors error when the service returns a 4XX or 5XX status code
-func (m *ItemPolicySetsRequestBuilder) PostAsPolicySetsPostResponse(ctx context.Context, body ItemPolicySetsPostRequestBodyable, requestConfiguration *ItemPolicySetsRequestBuilderPostRequestConfiguration)(ItemPolicySetsPostResponseable, error) {
+func (m *ItemPolicySetsRequestBuilder) Post(ctx context.Context, body ItemPolicySetsPostRequestBodyable, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(ItemPolicySetsPostResponseable, error) {
     requestInfo, err := m.ToPostRequestInformation(ctx, body, requestConfiguration);
     if err != nil {
         return nil, err
@@ -143,26 +82,17 @@ func (m *ItemPolicySetsRequestBuilder) PostAsPolicySetsPostResponse(ctx context.
 }
 // ToGetRequestInformation list all policy sets in an organization.
 // returns a *RequestInformation when successful
-func (m *ItemPolicySetsRequestBuilder) ToGetRequestInformation(ctx context.Context, requestConfiguration *ItemPolicySetsRequestBuilderGetRequestConfiguration)(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
+func (m *ItemPolicySetsRequestBuilder) ToGetRequestInformation(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[ItemPolicySetsRequestBuilderGetQueryParameters])(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
     requestInfo := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewRequestInformationWithMethodAndUrlTemplateAndPathParameters(i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.GET, m.BaseRequestBuilder.UrlTemplate, m.BaseRequestBuilder.PathParameters)
-    if requestConfiguration != nil {
-        if requestConfiguration.QueryParameters != nil {
-            requestInfo.AddQueryParameters(*(requestConfiguration.QueryParameters))
-        }
-        requestInfo.Headers.AddAll(requestConfiguration.Headers)
-        requestInfo.AddRequestOptions(requestConfiguration.Options)
-    }
+    i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ConfigureRequestInformation(requestInfo, requestConfiguration)
     requestInfo.Headers.TryAdd("Accept", "application/vnd.api+json")
     return requestInfo, nil
 }
 // ToPostRequestInformation create a new policy set in an organization.
 // returns a *RequestInformation when successful
-func (m *ItemPolicySetsRequestBuilder) ToPostRequestInformation(ctx context.Context, body ItemPolicySetsPostRequestBodyable, requestConfiguration *ItemPolicySetsRequestBuilderPostRequestConfiguration)(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
+func (m *ItemPolicySetsRequestBuilder) ToPostRequestInformation(ctx context.Context, body ItemPolicySetsPostRequestBodyable, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
     requestInfo := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewRequestInformationWithMethodAndUrlTemplateAndPathParameters(i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.POST, m.BaseRequestBuilder.UrlTemplate, m.BaseRequestBuilder.PathParameters)
-    if requestConfiguration != nil {
-        requestInfo.Headers.AddAll(requestConfiguration.Headers)
-        requestInfo.AddRequestOptions(requestConfiguration.Options)
-    }
+    i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ConfigureRequestInformation(requestInfo, requestConfiguration)
     requestInfo.Headers.TryAdd("Accept", "application/vnd.api+json")
     err := requestInfo.SetContentFromParsable(ctx, m.BaseRequestBuilder.RequestAdapter, "application/vnd.api+json", body)
     if err != nil {

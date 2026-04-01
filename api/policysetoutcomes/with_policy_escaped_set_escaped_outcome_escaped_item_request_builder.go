@@ -13,13 +13,6 @@ import (
 type WithPolicy_set_outcome_ItemRequestBuilder struct {
     i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.BaseRequestBuilder
 }
-// WithPolicy_set_outcome_ItemRequestBuilderGetRequestConfiguration configuration for the request such as headers, query parameters, and middleware options.
-type WithPolicy_set_outcome_ItemRequestBuilderGetRequestConfiguration struct {
-    // Request headers
-    Headers *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestHeaders
-    // Request options
-    Options []i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestOption
-}
 // NewWithPolicy_set_outcome_ItemRequestBuilderInternal instantiates a new WithPolicy_set_outcome_ItemRequestBuilder and sets the default values.
 func NewWithPolicy_set_outcome_ItemRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*WithPolicy_set_outcome_ItemRequestBuilder) {
     m := &WithPolicy_set_outcome_ItemRequestBuilder{
@@ -34,30 +27,9 @@ func NewWithPolicy_set_outcome_ItemRequestBuilder(rawUrl string, requestAdapter 
     return NewWithPolicy_set_outcome_ItemRequestBuilderInternal(urlParams, requestAdapter)
 }
 // Get get details about a specific policy set outcome.
-// Deprecated: This method is obsolete. Use GetAsWithPolicy_set_outcome_GetResponse instead.
-// returns a ItemWithPolicy_set_outcome_Responseable when successful
-// returns a Errors error when the service returns a 4XX or 5XX status code
-func (m *WithPolicy_set_outcome_ItemRequestBuilder) Get(ctx context.Context, requestConfiguration *WithPolicy_set_outcome_ItemRequestBuilderGetRequestConfiguration)(ItemWithPolicy_set_outcome_Responseable, error) {
-    requestInfo, err := m.ToGetRequestInformation(ctx, requestConfiguration);
-    if err != nil {
-        return nil, err
-    }
-    errorMapping := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ErrorMappings {
-        "XXX": ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.CreateErrorsFromDiscriminatorValue,
-    }
-    res, err := m.BaseRequestBuilder.RequestAdapter.Send(ctx, requestInfo, CreateItemWithPolicy_set_outcome_ResponseFromDiscriminatorValue, errorMapping)
-    if err != nil {
-        return nil, err
-    }
-    if res == nil {
-        return nil, nil
-    }
-    return res.(ItemWithPolicy_set_outcome_Responseable), nil
-}
-// GetAsWithPolicy_set_outcome_GetResponse get details about a specific policy set outcome.
 // returns a ItemWithPolicy_set_outcome_GetResponseable when successful
 // returns a Errors error when the service returns a 4XX or 5XX status code
-func (m *WithPolicy_set_outcome_ItemRequestBuilder) GetAsWithPolicy_set_outcome_GetResponse(ctx context.Context, requestConfiguration *WithPolicy_set_outcome_ItemRequestBuilderGetRequestConfiguration)(ItemWithPolicy_set_outcome_GetResponseable, error) {
+func (m *WithPolicy_set_outcome_ItemRequestBuilder) Get(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(ItemWithPolicy_set_outcome_GetResponseable, error) {
     requestInfo, err := m.ToGetRequestInformation(ctx, requestConfiguration);
     if err != nil {
         return nil, err
@@ -76,12 +48,9 @@ func (m *WithPolicy_set_outcome_ItemRequestBuilder) GetAsWithPolicy_set_outcome_
 }
 // ToGetRequestInformation get details about a specific policy set outcome.
 // returns a *RequestInformation when successful
-func (m *WithPolicy_set_outcome_ItemRequestBuilder) ToGetRequestInformation(ctx context.Context, requestConfiguration *WithPolicy_set_outcome_ItemRequestBuilderGetRequestConfiguration)(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
+func (m *WithPolicy_set_outcome_ItemRequestBuilder) ToGetRequestInformation(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
     requestInfo := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewRequestInformationWithMethodAndUrlTemplateAndPathParameters(i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.GET, m.BaseRequestBuilder.UrlTemplate, m.BaseRequestBuilder.PathParameters)
-    if requestConfiguration != nil {
-        requestInfo.Headers.AddAll(requestConfiguration.Headers)
-        requestInfo.AddRequestOptions(requestConfiguration.Options)
-    }
+    i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ConfigureRequestInformation(requestInfo, requestConfiguration)
     requestInfo.Headers.TryAdd("Accept", "application/vnd.api+json")
     return requestInfo, nil
 }

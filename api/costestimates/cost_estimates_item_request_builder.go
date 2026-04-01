@@ -13,13 +13,6 @@ import (
 type CostEstimatesItemRequestBuilder struct {
     i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.BaseRequestBuilder
 }
-// CostEstimatesItemRequestBuilderGetRequestConfiguration configuration for the request such as headers, query parameters, and middleware options.
-type CostEstimatesItemRequestBuilderGetRequestConfiguration struct {
-    // Request headers
-    Headers *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestHeaders
-    // Request options
-    Options []i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestOption
-}
 // NewCostEstimatesItemRequestBuilderInternal instantiates a new CostEstimatesItemRequestBuilder and sets the default values.
 func NewCostEstimatesItemRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*CostEstimatesItemRequestBuilder) {
     m := &CostEstimatesItemRequestBuilder{
@@ -34,30 +27,9 @@ func NewCostEstimatesItemRequestBuilder(rawUrl string, requestAdapter i2ae4187f7
     return NewCostEstimatesItemRequestBuilderInternal(urlParams, requestAdapter)
 }
 // Get show a cost estimate
-// Deprecated: This method is obsolete. Use GetAsCostEstimatesGetResponse instead.
-// returns a ItemCostEstimatesResponseable when successful
-// returns a Errors error when the service returns a 4XX or 5XX status code
-func (m *CostEstimatesItemRequestBuilder) Get(ctx context.Context, requestConfiguration *CostEstimatesItemRequestBuilderGetRequestConfiguration)(ItemCostEstimatesResponseable, error) {
-    requestInfo, err := m.ToGetRequestInformation(ctx, requestConfiguration);
-    if err != nil {
-        return nil, err
-    }
-    errorMapping := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ErrorMappings {
-        "XXX": ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.CreateErrorsFromDiscriminatorValue,
-    }
-    res, err := m.BaseRequestBuilder.RequestAdapter.Send(ctx, requestInfo, CreateItemCostEstimatesResponseFromDiscriminatorValue, errorMapping)
-    if err != nil {
-        return nil, err
-    }
-    if res == nil {
-        return nil, nil
-    }
-    return res.(ItemCostEstimatesResponseable), nil
-}
-// GetAsCostEstimatesGetResponse show a cost estimate
 // returns a ItemCostEstimatesGetResponseable when successful
 // returns a Errors error when the service returns a 4XX or 5XX status code
-func (m *CostEstimatesItemRequestBuilder) GetAsCostEstimatesGetResponse(ctx context.Context, requestConfiguration *CostEstimatesItemRequestBuilderGetRequestConfiguration)(ItemCostEstimatesGetResponseable, error) {
+func (m *CostEstimatesItemRequestBuilder) Get(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(ItemCostEstimatesGetResponseable, error) {
     requestInfo, err := m.ToGetRequestInformation(ctx, requestConfiguration);
     if err != nil {
         return nil, err
@@ -76,12 +48,9 @@ func (m *CostEstimatesItemRequestBuilder) GetAsCostEstimatesGetResponse(ctx cont
 }
 // ToGetRequestInformation show a cost estimate
 // returns a *RequestInformation when successful
-func (m *CostEstimatesItemRequestBuilder) ToGetRequestInformation(ctx context.Context, requestConfiguration *CostEstimatesItemRequestBuilderGetRequestConfiguration)(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
+func (m *CostEstimatesItemRequestBuilder) ToGetRequestInformation(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
     requestInfo := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewRequestInformationWithMethodAndUrlTemplateAndPathParameters(i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.GET, m.BaseRequestBuilder.UrlTemplate, m.BaseRequestBuilder.PathParameters)
-    if requestConfiguration != nil {
-        requestInfo.Headers.AddAll(requestConfiguration.Headers)
-        requestInfo.AddRequestOptions(requestConfiguration.Options)
-    }
+    i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ConfigureRequestInformation(requestInfo, requestConfiguration)
     requestInfo.Headers.TryAdd("Accept", "application/vnd.api+json")
     return requestInfo, nil
 }

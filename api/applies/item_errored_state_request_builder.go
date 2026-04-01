@@ -12,13 +12,6 @@ import (
 type ItemErroredStateRequestBuilder struct {
     i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.BaseRequestBuilder
 }
-// ItemErroredStateRequestBuilderGetRequestConfiguration configuration for the request such as headers, query parameters, and middleware options.
-type ItemErroredStateRequestBuilderGetRequestConfiguration struct {
-    // Request headers
-    Headers *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestHeaders
-    // Request options
-    Options []i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestOption
-}
 // NewItemErroredStateRequestBuilderInternal instantiates a new ItemErroredStateRequestBuilder and sets the default values.
 func NewItemErroredStateRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*ItemErroredStateRequestBuilder) {
     m := &ItemErroredStateRequestBuilder{
@@ -35,7 +28,7 @@ func NewItemErroredStateRequestBuilder(rawUrl string, requestAdapter i2ae4187f7d
 // Get recover a failed state upload after applying
 // returns a ItemErroredState4XXError error when the service returns a 4XX status code
 // returns a ItemErroredState5XXError error when the service returns a 5XX status code
-func (m *ItemErroredStateRequestBuilder) Get(ctx context.Context, requestConfiguration *ItemErroredStateRequestBuilderGetRequestConfiguration)(error) {
+func (m *ItemErroredStateRequestBuilder) Get(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(error) {
     requestInfo, err := m.ToGetRequestInformation(ctx, requestConfiguration);
     if err != nil {
         return err
@@ -52,12 +45,9 @@ func (m *ItemErroredStateRequestBuilder) Get(ctx context.Context, requestConfigu
 }
 // ToGetRequestInformation recover a failed state upload after applying
 // returns a *RequestInformation when successful
-func (m *ItemErroredStateRequestBuilder) ToGetRequestInformation(ctx context.Context, requestConfiguration *ItemErroredStateRequestBuilderGetRequestConfiguration)(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
+func (m *ItemErroredStateRequestBuilder) ToGetRequestInformation(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
     requestInfo := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewRequestInformationWithMethodAndUrlTemplateAndPathParameters(i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.GET, m.BaseRequestBuilder.UrlTemplate, m.BaseRequestBuilder.PathParameters)
-    if requestConfiguration != nil {
-        requestInfo.Headers.AddAll(requestConfiguration.Headers)
-        requestInfo.AddRequestOptions(requestConfiguration.Options)
-    }
+    i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ConfigureRequestInformation(requestInfo, requestConfiguration)
     requestInfo.Headers.TryAdd("Accept", "application/vnd.api+json")
     return requestInfo, nil
 }

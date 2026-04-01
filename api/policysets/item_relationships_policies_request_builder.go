@@ -13,20 +13,6 @@ import (
 type ItemRelationshipsPoliciesRequestBuilder struct {
     i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.BaseRequestBuilder
 }
-// ItemRelationshipsPoliciesRequestBuilderDeleteRequestConfiguration configuration for the request such as headers, query parameters, and middleware options.
-type ItemRelationshipsPoliciesRequestBuilderDeleteRequestConfiguration struct {
-    // Request headers
-    Headers *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestHeaders
-    // Request options
-    Options []i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestOption
-}
-// ItemRelationshipsPoliciesRequestBuilderPostRequestConfiguration configuration for the request such as headers, query parameters, and middleware options.
-type ItemRelationshipsPoliciesRequestBuilderPostRequestConfiguration struct {
-    // Request headers
-    Headers *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestHeaders
-    // Request options
-    Options []i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestOption
-}
 // NewItemRelationshipsPoliciesRequestBuilderInternal instantiates a new ItemRelationshipsPoliciesRequestBuilder and sets the default values.
 func NewItemRelationshipsPoliciesRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*ItemRelationshipsPoliciesRequestBuilder) {
     m := &ItemRelationshipsPoliciesRequestBuilder{
@@ -42,7 +28,7 @@ func NewItemRelationshipsPoliciesRequestBuilder(rawUrl string, requestAdapter i2
 }
 // Delete remove policies from a policy set. Policies not currently in the set are ignored.
 // returns a Errors error when the service returns a 4XX or 5XX status code
-func (m *ItemRelationshipsPoliciesRequestBuilder) Delete(ctx context.Context, body ItemRelationshipsPoliciesDeleteRequestBodyable, requestConfiguration *ItemRelationshipsPoliciesRequestBuilderDeleteRequestConfiguration)(error) {
+func (m *ItemRelationshipsPoliciesRequestBuilder) Delete(ctx context.Context, body ItemRelationshipsPoliciesDeleteRequestBodyable, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(error) {
     requestInfo, err := m.ToDeleteRequestInformation(ctx, body, requestConfiguration);
     if err != nil {
         return err
@@ -58,7 +44,7 @@ func (m *ItemRelationshipsPoliciesRequestBuilder) Delete(ctx context.Context, bo
 }
 // Post add policies to a policy set. Relationships are additive; existing policy memberships are preserved.
 // returns a Errors error when the service returns a 4XX or 5XX status code
-func (m *ItemRelationshipsPoliciesRequestBuilder) Post(ctx context.Context, body ItemRelationshipsPoliciesPostRequestBodyable, requestConfiguration *ItemRelationshipsPoliciesRequestBuilderPostRequestConfiguration)(error) {
+func (m *ItemRelationshipsPoliciesRequestBuilder) Post(ctx context.Context, body ItemRelationshipsPoliciesPostRequestBodyable, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(error) {
     requestInfo, err := m.ToPostRequestInformation(ctx, body, requestConfiguration);
     if err != nil {
         return err
@@ -74,12 +60,9 @@ func (m *ItemRelationshipsPoliciesRequestBuilder) Post(ctx context.Context, body
 }
 // ToDeleteRequestInformation remove policies from a policy set. Policies not currently in the set are ignored.
 // returns a *RequestInformation when successful
-func (m *ItemRelationshipsPoliciesRequestBuilder) ToDeleteRequestInformation(ctx context.Context, body ItemRelationshipsPoliciesDeleteRequestBodyable, requestConfiguration *ItemRelationshipsPoliciesRequestBuilderDeleteRequestConfiguration)(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
+func (m *ItemRelationshipsPoliciesRequestBuilder) ToDeleteRequestInformation(ctx context.Context, body ItemRelationshipsPoliciesDeleteRequestBodyable, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
     requestInfo := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewRequestInformationWithMethodAndUrlTemplateAndPathParameters(i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DELETE, m.BaseRequestBuilder.UrlTemplate, m.BaseRequestBuilder.PathParameters)
-    if requestConfiguration != nil {
-        requestInfo.Headers.AddAll(requestConfiguration.Headers)
-        requestInfo.AddRequestOptions(requestConfiguration.Options)
-    }
+    i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ConfigureRequestInformation(requestInfo, requestConfiguration)
     requestInfo.Headers.TryAdd("Accept", "application/vnd.api+json")
     err := requestInfo.SetContentFromParsable(ctx, m.BaseRequestBuilder.RequestAdapter, "application/vnd.api+json", body)
     if err != nil {
@@ -89,12 +72,9 @@ func (m *ItemRelationshipsPoliciesRequestBuilder) ToDeleteRequestInformation(ctx
 }
 // ToPostRequestInformation add policies to a policy set. Relationships are additive; existing policy memberships are preserved.
 // returns a *RequestInformation when successful
-func (m *ItemRelationshipsPoliciesRequestBuilder) ToPostRequestInformation(ctx context.Context, body ItemRelationshipsPoliciesPostRequestBodyable, requestConfiguration *ItemRelationshipsPoliciesRequestBuilderPostRequestConfiguration)(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
+func (m *ItemRelationshipsPoliciesRequestBuilder) ToPostRequestInformation(ctx context.Context, body ItemRelationshipsPoliciesPostRequestBodyable, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
     requestInfo := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewRequestInformationWithMethodAndUrlTemplateAndPathParameters(i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.POST, m.BaseRequestBuilder.UrlTemplate, m.BaseRequestBuilder.PathParameters)
-    if requestConfiguration != nil {
-        requestInfo.Headers.AddAll(requestConfiguration.Headers)
-        requestInfo.AddRequestOptions(requestConfiguration.Options)
-    }
+    i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ConfigureRequestInformation(requestInfo, requestConfiguration)
     requestInfo.Headers.TryAdd("Accept", "application/vnd.api+json")
     err := requestInfo.SetContentFromParsable(ctx, m.BaseRequestBuilder.RequestAdapter, "application/vnd.api+json", body)
     if err != nil {

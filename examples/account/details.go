@@ -42,7 +42,7 @@ func (accountDetailsCommand) Run(args []string) int {
 
 	// nil request configuration is common and indicates no query parameters,
 	// headers, or special request options
-	response, err := client.API.Account().Details().GetAsDetailsGetResponse(ctx, nil)
+	response, err := client.API.Account().Details().Get(ctx, nil)
 
 	if err != nil {
 		log.Fatalf("API returned an error status: %s", tfe.SummarizeAPIErrors(err))

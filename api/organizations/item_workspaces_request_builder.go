@@ -36,22 +36,6 @@ type ItemWorkspacesRequestBuilderGetQueryParameters struct {
     // Sort workspaces. Valid values include name, current-run.created-at. Prefix with a hyphen (e.g., -name) to sort in descending order.
     Sort *string `uriparametername:"sort"`
 }
-// ItemWorkspacesRequestBuilderGetRequestConfiguration configuration for the request such as headers, query parameters, and middleware options.
-type ItemWorkspacesRequestBuilderGetRequestConfiguration struct {
-    // Request headers
-    Headers *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestHeaders
-    // Request options
-    Options []i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestOption
-    // Request query parameters
-    QueryParameters *ItemWorkspacesRequestBuilderGetQueryParameters
-}
-// ItemWorkspacesRequestBuilderPostRequestConfiguration configuration for the request such as headers, query parameters, and middleware options.
-type ItemWorkspacesRequestBuilderPostRequestConfiguration struct {
-    // Request headers
-    Headers *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestHeaders
-    // Request options
-    Options []i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestOption
-}
 // ByWorkspace_name gets an item from the github.com/hashicorp/go-tfe/api.organizations.item.workspaces.item collection
 // returns a *ItemWorkspacesWithWorkspace_nameItemRequestBuilder when successful
 func (m *ItemWorkspacesRequestBuilder) ByWorkspace_name(workspace_name string)(*ItemWorkspacesWithWorkspace_nameItemRequestBuilder) {
@@ -78,33 +62,10 @@ func NewItemWorkspacesRequestBuilder(rawUrl string, requestAdapter i2ae4187f7dae
     return NewItemWorkspacesRequestBuilderInternal(urlParams, requestAdapter)
 }
 // Get list all workspaces in an organization.
-// Deprecated: This method is obsolete. Use GetAsWorkspacesGetResponse instead.
-// returns a ItemWorkspacesResponseable when successful
-// returns a Errors error when the service returns a 404 status code
-// returns a Errors error when the service returns a 4XX or 5XX status code
-func (m *ItemWorkspacesRequestBuilder) Get(ctx context.Context, requestConfiguration *ItemWorkspacesRequestBuilderGetRequestConfiguration)(ItemWorkspacesResponseable, error) {
-    requestInfo, err := m.ToGetRequestInformation(ctx, requestConfiguration);
-    if err != nil {
-        return nil, err
-    }
-    errorMapping := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ErrorMappings {
-        "404": ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.CreateErrorsFromDiscriminatorValue,
-        "XXX": ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.CreateErrorsFromDiscriminatorValue,
-    }
-    res, err := m.BaseRequestBuilder.RequestAdapter.Send(ctx, requestInfo, CreateItemWorkspacesResponseFromDiscriminatorValue, errorMapping)
-    if err != nil {
-        return nil, err
-    }
-    if res == nil {
-        return nil, nil
-    }
-    return res.(ItemWorkspacesResponseable), nil
-}
-// GetAsWorkspacesGetResponse list all workspaces in an organization.
 // returns a ItemWorkspacesGetResponseable when successful
 // returns a Errors error when the service returns a 404 status code
 // returns a Errors error when the service returns a 4XX or 5XX status code
-func (m *ItemWorkspacesRequestBuilder) GetAsWorkspacesGetResponse(ctx context.Context, requestConfiguration *ItemWorkspacesRequestBuilderGetRequestConfiguration)(ItemWorkspacesGetResponseable, error) {
+func (m *ItemWorkspacesRequestBuilder) Get(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[ItemWorkspacesRequestBuilderGetQueryParameters])(ItemWorkspacesGetResponseable, error) {
     requestInfo, err := m.ToGetRequestInformation(ctx, requestConfiguration);
     if err != nil {
         return nil, err
@@ -123,36 +84,11 @@ func (m *ItemWorkspacesRequestBuilder) GetAsWorkspacesGetResponse(ctx context.Co
     return res.(ItemWorkspacesGetResponseable), nil
 }
 // Post create a new workspace in an organization.
-// Deprecated: This method is obsolete. Use PostAsWorkspacesPostResponse instead.
-// returns a ItemWorkspacesResponseable when successful
-// returns a Errors error when the service returns a 404 status code
-// returns a Errors error when the service returns a 422 status code
-// returns a Errors error when the service returns a 4XX or 5XX status code
-func (m *ItemWorkspacesRequestBuilder) Post(ctx context.Context, body ItemWorkspacesPostRequestBodyable, requestConfiguration *ItemWorkspacesRequestBuilderPostRequestConfiguration)(ItemWorkspacesResponseable, error) {
-    requestInfo, err := m.ToPostRequestInformation(ctx, body, requestConfiguration);
-    if err != nil {
-        return nil, err
-    }
-    errorMapping := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ErrorMappings {
-        "404": ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.CreateErrorsFromDiscriminatorValue,
-        "422": ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.CreateErrorsFromDiscriminatorValue,
-        "XXX": ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.CreateErrorsFromDiscriminatorValue,
-    }
-    res, err := m.BaseRequestBuilder.RequestAdapter.Send(ctx, requestInfo, CreateItemWorkspacesResponseFromDiscriminatorValue, errorMapping)
-    if err != nil {
-        return nil, err
-    }
-    if res == nil {
-        return nil, nil
-    }
-    return res.(ItemWorkspacesResponseable), nil
-}
-// PostAsWorkspacesPostResponse create a new workspace in an organization.
 // returns a ItemWorkspacesPostResponseable when successful
 // returns a Errors error when the service returns a 404 status code
 // returns a Errors error when the service returns a 422 status code
 // returns a Errors error when the service returns a 4XX or 5XX status code
-func (m *ItemWorkspacesRequestBuilder) PostAsWorkspacesPostResponse(ctx context.Context, body ItemWorkspacesPostRequestBodyable, requestConfiguration *ItemWorkspacesRequestBuilderPostRequestConfiguration)(ItemWorkspacesPostResponseable, error) {
+func (m *ItemWorkspacesRequestBuilder) Post(ctx context.Context, body ItemWorkspacesPostRequestBodyable, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(ItemWorkspacesPostResponseable, error) {
     requestInfo, err := m.ToPostRequestInformation(ctx, body, requestConfiguration);
     if err != nil {
         return nil, err
@@ -173,26 +109,17 @@ func (m *ItemWorkspacesRequestBuilder) PostAsWorkspacesPostResponse(ctx context.
 }
 // ToGetRequestInformation list all workspaces in an organization.
 // returns a *RequestInformation when successful
-func (m *ItemWorkspacesRequestBuilder) ToGetRequestInformation(ctx context.Context, requestConfiguration *ItemWorkspacesRequestBuilderGetRequestConfiguration)(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
+func (m *ItemWorkspacesRequestBuilder) ToGetRequestInformation(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[ItemWorkspacesRequestBuilderGetQueryParameters])(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
     requestInfo := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewRequestInformationWithMethodAndUrlTemplateAndPathParameters(i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.GET, m.BaseRequestBuilder.UrlTemplate, m.BaseRequestBuilder.PathParameters)
-    if requestConfiguration != nil {
-        if requestConfiguration.QueryParameters != nil {
-            requestInfo.AddQueryParameters(*(requestConfiguration.QueryParameters))
-        }
-        requestInfo.Headers.AddAll(requestConfiguration.Headers)
-        requestInfo.AddRequestOptions(requestConfiguration.Options)
-    }
+    i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ConfigureRequestInformation(requestInfo, requestConfiguration)
     requestInfo.Headers.TryAdd("Accept", "application/vnd.api+json")
     return requestInfo, nil
 }
 // ToPostRequestInformation create a new workspace in an organization.
 // returns a *RequestInformation when successful
-func (m *ItemWorkspacesRequestBuilder) ToPostRequestInformation(ctx context.Context, body ItemWorkspacesPostRequestBodyable, requestConfiguration *ItemWorkspacesRequestBuilderPostRequestConfiguration)(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
+func (m *ItemWorkspacesRequestBuilder) ToPostRequestInformation(ctx context.Context, body ItemWorkspacesPostRequestBodyable, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
     requestInfo := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewRequestInformationWithMethodAndUrlTemplateAndPathParameters(i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.POST, m.BaseRequestBuilder.UrlTemplate, m.BaseRequestBuilder.PathParameters)
-    if requestConfiguration != nil {
-        requestInfo.Headers.AddAll(requestConfiguration.Headers)
-        requestInfo.AddRequestOptions(requestConfiguration.Options)
-    }
+    i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ConfigureRequestInformation(requestInfo, requestConfiguration)
     requestInfo.Headers.TryAdd("Accept", "application/vnd.api+json")
     err := requestInfo.SetContentFromParsable(ctx, m.BaseRequestBuilder.RequestAdapter, "application/vnd.api+json", body)
     if err != nil {

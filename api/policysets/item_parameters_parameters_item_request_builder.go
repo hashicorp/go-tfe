@@ -13,27 +13,6 @@ import (
 type ItemParametersParametersItemRequestBuilder struct {
     i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.BaseRequestBuilder
 }
-// ItemParametersParametersItemRequestBuilderDeleteRequestConfiguration configuration for the request such as headers, query parameters, and middleware options.
-type ItemParametersParametersItemRequestBuilderDeleteRequestConfiguration struct {
-    // Request headers
-    Headers *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestHeaders
-    // Request options
-    Options []i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestOption
-}
-// ItemParametersParametersItemRequestBuilderGetRequestConfiguration configuration for the request such as headers, query parameters, and middleware options.
-type ItemParametersParametersItemRequestBuilderGetRequestConfiguration struct {
-    // Request headers
-    Headers *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestHeaders
-    // Request options
-    Options []i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestOption
-}
-// ItemParametersParametersItemRequestBuilderPatchRequestConfiguration configuration for the request such as headers, query parameters, and middleware options.
-type ItemParametersParametersItemRequestBuilderPatchRequestConfiguration struct {
-    // Request headers
-    Headers *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestHeaders
-    // Request options
-    Options []i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestOption
-}
 // NewItemParametersParametersItemRequestBuilderInternal instantiates a new ItemParametersParametersItemRequestBuilder and sets the default values.
 func NewItemParametersParametersItemRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*ItemParametersParametersItemRequestBuilder) {
     m := &ItemParametersParametersItemRequestBuilder{
@@ -49,7 +28,7 @@ func NewItemParametersParametersItemRequestBuilder(rawUrl string, requestAdapter
 }
 // Delete delete a policy set parameter.
 // returns a Errors error when the service returns a 4XX or 5XX status code
-func (m *ItemParametersParametersItemRequestBuilder) Delete(ctx context.Context, requestConfiguration *ItemParametersParametersItemRequestBuilderDeleteRequestConfiguration)(error) {
+func (m *ItemParametersParametersItemRequestBuilder) Delete(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(error) {
     requestInfo, err := m.ToDeleteRequestInformation(ctx, requestConfiguration);
     if err != nil {
         return err
@@ -64,30 +43,9 @@ func (m *ItemParametersParametersItemRequestBuilder) Delete(ctx context.Context,
     return nil
 }
 // Get get details about a policy set parameter.
-// Deprecated: This method is obsolete. Use GetAsParametersGetResponse instead.
-// returns a ItemParametersItemParametersResponseable when successful
-// returns a Errors error when the service returns a 4XX or 5XX status code
-func (m *ItemParametersParametersItemRequestBuilder) Get(ctx context.Context, requestConfiguration *ItemParametersParametersItemRequestBuilderGetRequestConfiguration)(ItemParametersItemParametersResponseable, error) {
-    requestInfo, err := m.ToGetRequestInformation(ctx, requestConfiguration);
-    if err != nil {
-        return nil, err
-    }
-    errorMapping := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ErrorMappings {
-        "XXX": ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.CreateErrorsFromDiscriminatorValue,
-    }
-    res, err := m.BaseRequestBuilder.RequestAdapter.Send(ctx, requestInfo, CreateItemParametersItemParametersResponseFromDiscriminatorValue, errorMapping)
-    if err != nil {
-        return nil, err
-    }
-    if res == nil {
-        return nil, nil
-    }
-    return res.(ItemParametersItemParametersResponseable), nil
-}
-// GetAsParametersGetResponse get details about a policy set parameter.
 // returns a ItemParametersItemParametersGetResponseable when successful
 // returns a Errors error when the service returns a 4XX or 5XX status code
-func (m *ItemParametersParametersItemRequestBuilder) GetAsParametersGetResponse(ctx context.Context, requestConfiguration *ItemParametersParametersItemRequestBuilderGetRequestConfiguration)(ItemParametersItemParametersGetResponseable, error) {
+func (m *ItemParametersParametersItemRequestBuilder) Get(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(ItemParametersItemParametersGetResponseable, error) {
     requestInfo, err := m.ToGetRequestInformation(ctx, requestConfiguration);
     if err != nil {
         return nil, err
@@ -105,30 +63,9 @@ func (m *ItemParametersParametersItemRequestBuilder) GetAsParametersGetResponse(
     return res.(ItemParametersItemParametersGetResponseable), nil
 }
 // Patch update an existing policy set parameter.
-// Deprecated: This method is obsolete. Use PatchAsParametersPatchResponse instead.
-// returns a ItemParametersItemParametersResponseable when successful
-// returns a Errors error when the service returns a 4XX or 5XX status code
-func (m *ItemParametersParametersItemRequestBuilder) Patch(ctx context.Context, body ItemParametersItemParametersPatchRequestBodyable, requestConfiguration *ItemParametersParametersItemRequestBuilderPatchRequestConfiguration)(ItemParametersItemParametersResponseable, error) {
-    requestInfo, err := m.ToPatchRequestInformation(ctx, body, requestConfiguration);
-    if err != nil {
-        return nil, err
-    }
-    errorMapping := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ErrorMappings {
-        "XXX": ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.CreateErrorsFromDiscriminatorValue,
-    }
-    res, err := m.BaseRequestBuilder.RequestAdapter.Send(ctx, requestInfo, CreateItemParametersItemParametersResponseFromDiscriminatorValue, errorMapping)
-    if err != nil {
-        return nil, err
-    }
-    if res == nil {
-        return nil, nil
-    }
-    return res.(ItemParametersItemParametersResponseable), nil
-}
-// PatchAsParametersPatchResponse update an existing policy set parameter.
 // returns a ItemParametersItemParametersPatchResponseable when successful
 // returns a Errors error when the service returns a 4XX or 5XX status code
-func (m *ItemParametersParametersItemRequestBuilder) PatchAsParametersPatchResponse(ctx context.Context, body ItemParametersItemParametersPatchRequestBodyable, requestConfiguration *ItemParametersParametersItemRequestBuilderPatchRequestConfiguration)(ItemParametersItemParametersPatchResponseable, error) {
+func (m *ItemParametersParametersItemRequestBuilder) Patch(ctx context.Context, body ItemParametersItemParametersPatchRequestBodyable, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(ItemParametersItemParametersPatchResponseable, error) {
     requestInfo, err := m.ToPatchRequestInformation(ctx, body, requestConfiguration);
     if err != nil {
         return nil, err
@@ -147,34 +84,25 @@ func (m *ItemParametersParametersItemRequestBuilder) PatchAsParametersPatchRespo
 }
 // ToDeleteRequestInformation delete a policy set parameter.
 // returns a *RequestInformation when successful
-func (m *ItemParametersParametersItemRequestBuilder) ToDeleteRequestInformation(ctx context.Context, requestConfiguration *ItemParametersParametersItemRequestBuilderDeleteRequestConfiguration)(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
+func (m *ItemParametersParametersItemRequestBuilder) ToDeleteRequestInformation(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
     requestInfo := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewRequestInformationWithMethodAndUrlTemplateAndPathParameters(i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DELETE, m.BaseRequestBuilder.UrlTemplate, m.BaseRequestBuilder.PathParameters)
-    if requestConfiguration != nil {
-        requestInfo.Headers.AddAll(requestConfiguration.Headers)
-        requestInfo.AddRequestOptions(requestConfiguration.Options)
-    }
+    i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ConfigureRequestInformation(requestInfo, requestConfiguration)
     requestInfo.Headers.TryAdd("Accept", "application/vnd.api+json")
     return requestInfo, nil
 }
 // ToGetRequestInformation get details about a policy set parameter.
 // returns a *RequestInformation when successful
-func (m *ItemParametersParametersItemRequestBuilder) ToGetRequestInformation(ctx context.Context, requestConfiguration *ItemParametersParametersItemRequestBuilderGetRequestConfiguration)(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
+func (m *ItemParametersParametersItemRequestBuilder) ToGetRequestInformation(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
     requestInfo := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewRequestInformationWithMethodAndUrlTemplateAndPathParameters(i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.GET, m.BaseRequestBuilder.UrlTemplate, m.BaseRequestBuilder.PathParameters)
-    if requestConfiguration != nil {
-        requestInfo.Headers.AddAll(requestConfiguration.Headers)
-        requestInfo.AddRequestOptions(requestConfiguration.Options)
-    }
+    i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ConfigureRequestInformation(requestInfo, requestConfiguration)
     requestInfo.Headers.TryAdd("Accept", "application/vnd.api+json")
     return requestInfo, nil
 }
 // ToPatchRequestInformation update an existing policy set parameter.
 // returns a *RequestInformation when successful
-func (m *ItemParametersParametersItemRequestBuilder) ToPatchRequestInformation(ctx context.Context, body ItemParametersItemParametersPatchRequestBodyable, requestConfiguration *ItemParametersParametersItemRequestBuilderPatchRequestConfiguration)(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
+func (m *ItemParametersParametersItemRequestBuilder) ToPatchRequestInformation(ctx context.Context, body ItemParametersItemParametersPatchRequestBodyable, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
     requestInfo := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewRequestInformationWithMethodAndUrlTemplateAndPathParameters(i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.PATCH, m.BaseRequestBuilder.UrlTemplate, m.BaseRequestBuilder.PathParameters)
-    if requestConfiguration != nil {
-        requestInfo.Headers.AddAll(requestConfiguration.Headers)
-        requestInfo.AddRequestOptions(requestConfiguration.Options)
-    }
+    i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ConfigureRequestInformation(requestInfo, requestConfiguration)
     requestInfo.Headers.TryAdd("Accept", "application/vnd.api+json")
     err := requestInfo.SetContentFromParsable(ctx, m.BaseRequestBuilder.RequestAdapter, "application/vnd.api+json", body)
     if err != nil {

@@ -13,20 +13,6 @@ import (
 type RunTriggersItemRequestBuilder struct {
     i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.BaseRequestBuilder
 }
-// RunTriggersItemRequestBuilderDeleteRequestConfiguration configuration for the request such as headers, query parameters, and middleware options.
-type RunTriggersItemRequestBuilderDeleteRequestConfiguration struct {
-    // Request headers
-    Headers *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestHeaders
-    // Request options
-    Options []i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestOption
-}
-// RunTriggersItemRequestBuilderGetRequestConfiguration configuration for the request such as headers, query parameters, and middleware options.
-type RunTriggersItemRequestBuilderGetRequestConfiguration struct {
-    // Request headers
-    Headers *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestHeaders
-    // Request options
-    Options []i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestOption
-}
 // NewRunTriggersItemRequestBuilderInternal instantiates a new RunTriggersItemRequestBuilder and sets the default values.
 func NewRunTriggersItemRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*RunTriggersItemRequestBuilder) {
     m := &RunTriggersItemRequestBuilder{
@@ -42,7 +28,7 @@ func NewRunTriggersItemRequestBuilder(rawUrl string, requestAdapter i2ae4187f7da
 }
 // Delete delete a run trigger.
 // returns a Errors error when the service returns a 4XX or 5XX status code
-func (m *RunTriggersItemRequestBuilder) Delete(ctx context.Context, requestConfiguration *RunTriggersItemRequestBuilderDeleteRequestConfiguration)(error) {
+func (m *RunTriggersItemRequestBuilder) Delete(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(error) {
     requestInfo, err := m.ToDeleteRequestInformation(ctx, requestConfiguration);
     if err != nil {
         return err
@@ -57,30 +43,9 @@ func (m *RunTriggersItemRequestBuilder) Delete(ctx context.Context, requestConfi
     return nil
 }
 // Get get details about a run trigger.
-// Deprecated: This method is obsolete. Use GetAsRunTriggersGetResponse instead.
-// returns a ItemRunTriggersResponseable when successful
-// returns a Errors error when the service returns a 4XX or 5XX status code
-func (m *RunTriggersItemRequestBuilder) Get(ctx context.Context, requestConfiguration *RunTriggersItemRequestBuilderGetRequestConfiguration)(ItemRunTriggersResponseable, error) {
-    requestInfo, err := m.ToGetRequestInformation(ctx, requestConfiguration);
-    if err != nil {
-        return nil, err
-    }
-    errorMapping := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ErrorMappings {
-        "XXX": ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.CreateErrorsFromDiscriminatorValue,
-    }
-    res, err := m.BaseRequestBuilder.RequestAdapter.Send(ctx, requestInfo, CreateItemRunTriggersResponseFromDiscriminatorValue, errorMapping)
-    if err != nil {
-        return nil, err
-    }
-    if res == nil {
-        return nil, nil
-    }
-    return res.(ItemRunTriggersResponseable), nil
-}
-// GetAsRunTriggersGetResponse get details about a run trigger.
 // returns a ItemRunTriggersGetResponseable when successful
 // returns a Errors error when the service returns a 4XX or 5XX status code
-func (m *RunTriggersItemRequestBuilder) GetAsRunTriggersGetResponse(ctx context.Context, requestConfiguration *RunTriggersItemRequestBuilderGetRequestConfiguration)(ItemRunTriggersGetResponseable, error) {
+func (m *RunTriggersItemRequestBuilder) Get(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(ItemRunTriggersGetResponseable, error) {
     requestInfo, err := m.ToGetRequestInformation(ctx, requestConfiguration);
     if err != nil {
         return nil, err
@@ -99,23 +64,17 @@ func (m *RunTriggersItemRequestBuilder) GetAsRunTriggersGetResponse(ctx context.
 }
 // ToDeleteRequestInformation delete a run trigger.
 // returns a *RequestInformation when successful
-func (m *RunTriggersItemRequestBuilder) ToDeleteRequestInformation(ctx context.Context, requestConfiguration *RunTriggersItemRequestBuilderDeleteRequestConfiguration)(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
+func (m *RunTriggersItemRequestBuilder) ToDeleteRequestInformation(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
     requestInfo := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewRequestInformationWithMethodAndUrlTemplateAndPathParameters(i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DELETE, m.BaseRequestBuilder.UrlTemplate, m.BaseRequestBuilder.PathParameters)
-    if requestConfiguration != nil {
-        requestInfo.Headers.AddAll(requestConfiguration.Headers)
-        requestInfo.AddRequestOptions(requestConfiguration.Options)
-    }
+    i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ConfigureRequestInformation(requestInfo, requestConfiguration)
     requestInfo.Headers.TryAdd("Accept", "application/vnd.api+json")
     return requestInfo, nil
 }
 // ToGetRequestInformation get details about a run trigger.
 // returns a *RequestInformation when successful
-func (m *RunTriggersItemRequestBuilder) ToGetRequestInformation(ctx context.Context, requestConfiguration *RunTriggersItemRequestBuilderGetRequestConfiguration)(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
+func (m *RunTriggersItemRequestBuilder) ToGetRequestInformation(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
     requestInfo := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewRequestInformationWithMethodAndUrlTemplateAndPathParameters(i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.GET, m.BaseRequestBuilder.UrlTemplate, m.BaseRequestBuilder.PathParameters)
-    if requestConfiguration != nil {
-        requestInfo.Headers.AddAll(requestConfiguration.Headers)
-        requestInfo.AddRequestOptions(requestConfiguration.Options)
-    }
+    i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ConfigureRequestInformation(requestInfo, requestConfiguration)
     requestInfo.Headers.TryAdd("Accept", "application/vnd.api+json")
     return requestInfo, nil
 }

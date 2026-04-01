@@ -16,23 +16,11 @@ type OrganizationMembershipsRequestBuilder struct {
 // OrganizationMembershipsRequestBuilderGetQueryParameters list all organization memberships for the currently authenticated user.
 type OrganizationMembershipsRequestBuilderGetQueryParameters struct {
     // Optionally side-load relationships. Can include "user", "teams", or "organization".
-    // Deprecated: This property is deprecated, use IncludeAsGetIncludeQueryParameterType instead
-    Include *string `uriparametername:"include"`
-    // Optionally side-load relationships. Can include "user", "teams", or "organization".
-    IncludeAsGetIncludeQueryParameterType *GetIncludeQueryParameterType `uriparametername:"include"`
+    Include *GetIncludeQueryParameterType `uriparametername:"include"`
     // The page number to retrieve.
     Pagenumber *int32 `uriparametername:"page%5Bnumber%5D"`
     // The number of items to retrieve per page. Defaults to 20.
     Pagesize *int32 `uriparametername:"page%5Bsize%5D"`
-}
-// OrganizationMembershipsRequestBuilderGetRequestConfiguration configuration for the request such as headers, query parameters, and middleware options.
-type OrganizationMembershipsRequestBuilderGetRequestConfiguration struct {
-    // Request headers
-    Headers *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestHeaders
-    // Request options
-    Options []i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestOption
-    // Request query parameters
-    QueryParameters *OrganizationMembershipsRequestBuilderGetQueryParameters
 }
 // ByOrganization_membership_id gets an item from the github.com/hashicorp/go-tfe/api.organizationMemberships.item collection
 // returns a *WithOrganization_membership_ItemRequestBuilder when successful
@@ -60,30 +48,9 @@ func NewOrganizationMembershipsRequestBuilder(rawUrl string, requestAdapter i2ae
     return NewOrganizationMembershipsRequestBuilderInternal(urlParams, requestAdapter)
 }
 // Get list all organization memberships for the currently authenticated user.
-// Deprecated: This method is obsolete. Use GetAsOrganizationMembershipsGetResponse instead.
-// returns a OrganizationMembershipsResponseable when successful
-// returns a Errors error when the service returns a 4XX or 5XX status code
-func (m *OrganizationMembershipsRequestBuilder) Get(ctx context.Context, requestConfiguration *OrganizationMembershipsRequestBuilderGetRequestConfiguration)(OrganizationMembershipsResponseable, error) {
-    requestInfo, err := m.ToGetRequestInformation(ctx, requestConfiguration);
-    if err != nil {
-        return nil, err
-    }
-    errorMapping := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ErrorMappings {
-        "XXX": ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.CreateErrorsFromDiscriminatorValue,
-    }
-    res, err := m.BaseRequestBuilder.RequestAdapter.Send(ctx, requestInfo, CreateOrganizationMembershipsResponseFromDiscriminatorValue, errorMapping)
-    if err != nil {
-        return nil, err
-    }
-    if res == nil {
-        return nil, nil
-    }
-    return res.(OrganizationMembershipsResponseable), nil
-}
-// GetAsOrganizationMembershipsGetResponse list all organization memberships for the currently authenticated user.
 // returns a OrganizationMembershipsGetResponseable when successful
 // returns a Errors error when the service returns a 4XX or 5XX status code
-func (m *OrganizationMembershipsRequestBuilder) GetAsOrganizationMembershipsGetResponse(ctx context.Context, requestConfiguration *OrganizationMembershipsRequestBuilderGetRequestConfiguration)(OrganizationMembershipsGetResponseable, error) {
+func (m *OrganizationMembershipsRequestBuilder) Get(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[OrganizationMembershipsRequestBuilderGetQueryParameters])(OrganizationMembershipsGetResponseable, error) {
     requestInfo, err := m.ToGetRequestInformation(ctx, requestConfiguration);
     if err != nil {
         return nil, err
@@ -102,15 +69,9 @@ func (m *OrganizationMembershipsRequestBuilder) GetAsOrganizationMembershipsGetR
 }
 // ToGetRequestInformation list all organization memberships for the currently authenticated user.
 // returns a *RequestInformation when successful
-func (m *OrganizationMembershipsRequestBuilder) ToGetRequestInformation(ctx context.Context, requestConfiguration *OrganizationMembershipsRequestBuilderGetRequestConfiguration)(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
+func (m *OrganizationMembershipsRequestBuilder) ToGetRequestInformation(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[OrganizationMembershipsRequestBuilderGetQueryParameters])(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
     requestInfo := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewRequestInformationWithMethodAndUrlTemplateAndPathParameters(i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.GET, m.BaseRequestBuilder.UrlTemplate, m.BaseRequestBuilder.PathParameters)
-    if requestConfiguration != nil {
-        if requestConfiguration.QueryParameters != nil {
-            requestInfo.AddQueryParameters(*(requestConfiguration.QueryParameters))
-        }
-        requestInfo.Headers.AddAll(requestConfiguration.Headers)
-        requestInfo.AddRequestOptions(requestConfiguration.Options)
-    }
+    i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ConfigureRequestInformation(requestInfo, requestConfiguration)
     requestInfo.Headers.TryAdd("Accept", "application/vnd.api+json")
     return requestInfo, nil
 }

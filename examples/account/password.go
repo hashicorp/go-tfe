@@ -9,7 +9,8 @@ import (
 
 	"github.com/hashicorp/cli"
 	"github.com/hashicorp/go-tfe"
-	"github.com/hashicorp/go-tfe/api/models"
+	"github.com/hashicorp/go-tfe/api/account"
+	"github.com/hashicorp/go-tfe/helpers"
 	"github.com/microsoft/kiota-abstractions-go/serialization"
 )
 
@@ -27,23 +28,6 @@ func (accountPasswordCommand) Help() string {
 
 func (accountPasswordCommand) Synopsis() string {
 	return "Change your account password"
-}
-
-func (accountPasswordCommand) changePasswordModelHelper(oldPassword, newPassword *string) *models.Account_password {
-	pw := models.NewAccount_password()
-	pwd := models.NewAccount_password_data()
-
-	pwda := models.NewAccount_password_data_attributes()
-	pwda.SetCurrentPassword(oldPassword)
-	pwda.SetPassword(newPassword)
-	pwda.SetPasswordConfirmation(newPassword)
-
-	t := models.USERS_ACCOUNT_PASSWORD_DATA_TYPE
-	pwd.SetTypeEscaped(&t)
-	pwd.SetAttributes(pwda)
-	pw.SetData(pwd)
-
-	return pw
 }
 
 func (c accountPasswordCommand) Run(args []string) int {
@@ -66,7 +50,7 @@ func (c accountPasswordCommand) Run(args []string) int {
 		return 1
 	}
 
-	if *oldPassword == "" || *newPassword == "" {
+	if oldPassword == nil || *oldPassword == "" || newPassword == nil || *newPassword == "" {
 		fmt.Println("Both --old-password and --new-password are required")
 		passwordFlags.Usage()
 		return 1
@@ -74,9 +58,16 @@ func (c accountPasswordCommand) Run(args []string) int {
 
 	ctx := context.Background()
 
-	// It can be helpful to use wrapper functions to construct models used as
-	// request bodies because they require many local variables to build
-	response, err := client.API.Account().Password().Patch(ctx, c.changePasswordModelHelper(oldPassword, newPassword), nil)
+	passwordable := helpers.NewAccountPasswordBody(helpers.AccountPasswordParams{
+		CurrentPassword:      oldPassword,
+		Password:             newPassword,
+		PasswordConfirmation: newPassword,
+	})
+
+	pw := account.NewPasswordPatchRequestBody()
+	pw.SetData(passwordable)
+
+	response, err := client.API.Account().Password().Patch(ctx, pw, nil)
 	if err != nil {
 		log.Fatalf("API returned an error status: %s", tfe.SummarizeAPIErrors(err))
 		return 1

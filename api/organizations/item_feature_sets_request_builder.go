@@ -20,15 +20,6 @@ type ItemFeatureSetsRequestBuilderGetQueryParameters struct {
     // The number of items to retrieve per page. Defaults to 20.
     Pagesize *int32 `uriparametername:"page%5Bsize%5D"`
 }
-// ItemFeatureSetsRequestBuilderGetRequestConfiguration configuration for the request such as headers, query parameters, and middleware options.
-type ItemFeatureSetsRequestBuilderGetRequestConfiguration struct {
-    // Request headers
-    Headers *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestHeaders
-    // Request options
-    Options []i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestOption
-    // Request query parameters
-    QueryParameters *ItemFeatureSetsRequestBuilderGetQueryParameters
-}
 // NewItemFeatureSetsRequestBuilderInternal instantiates a new ItemFeatureSetsRequestBuilder and sets the default values.
 func NewItemFeatureSetsRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*ItemFeatureSetsRequestBuilder) {
     m := &ItemFeatureSetsRequestBuilder{
@@ -43,36 +34,11 @@ func NewItemFeatureSetsRequestBuilder(rawUrl string, requestAdapter i2ae4187f7da
     return NewItemFeatureSetsRequestBuilderInternal(urlParams, requestAdapter)
 }
 // Get lists the feature sets a particular organization is eligible to access.
-// Deprecated: This method is obsolete. Use GetAsFeatureSetsGetResponse instead.
-// returns a ItemFeatureSetsResponseable when successful
-// returns a Errors error when the service returns a 401 status code
-// returns a Errors error when the service returns a 403 status code
-// returns a Errors error when the service returns a 404 status code
-func (m *ItemFeatureSetsRequestBuilder) Get(ctx context.Context, requestConfiguration *ItemFeatureSetsRequestBuilderGetRequestConfiguration)(ItemFeatureSetsResponseable, error) {
-    requestInfo, err := m.ToGetRequestInformation(ctx, requestConfiguration);
-    if err != nil {
-        return nil, err
-    }
-    errorMapping := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ErrorMappings {
-        "401": ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.CreateErrorsFromDiscriminatorValue,
-        "403": ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.CreateErrorsFromDiscriminatorValue,
-        "404": ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.CreateErrorsFromDiscriminatorValue,
-    }
-    res, err := m.BaseRequestBuilder.RequestAdapter.Send(ctx, requestInfo, CreateItemFeatureSetsResponseFromDiscriminatorValue, errorMapping)
-    if err != nil {
-        return nil, err
-    }
-    if res == nil {
-        return nil, nil
-    }
-    return res.(ItemFeatureSetsResponseable), nil
-}
-// GetAsFeatureSetsGetResponse lists the feature sets a particular organization is eligible to access.
 // returns a ItemFeatureSetsGetResponseable when successful
 // returns a Errors error when the service returns a 401 status code
 // returns a Errors error when the service returns a 403 status code
 // returns a Errors error when the service returns a 404 status code
-func (m *ItemFeatureSetsRequestBuilder) GetAsFeatureSetsGetResponse(ctx context.Context, requestConfiguration *ItemFeatureSetsRequestBuilderGetRequestConfiguration)(ItemFeatureSetsGetResponseable, error) {
+func (m *ItemFeatureSetsRequestBuilder) Get(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[ItemFeatureSetsRequestBuilderGetQueryParameters])(ItemFeatureSetsGetResponseable, error) {
     requestInfo, err := m.ToGetRequestInformation(ctx, requestConfiguration);
     if err != nil {
         return nil, err
@@ -93,15 +59,9 @@ func (m *ItemFeatureSetsRequestBuilder) GetAsFeatureSetsGetResponse(ctx context.
 }
 // ToGetRequestInformation lists the feature sets a particular organization is eligible to access.
 // returns a *RequestInformation when successful
-func (m *ItemFeatureSetsRequestBuilder) ToGetRequestInformation(ctx context.Context, requestConfiguration *ItemFeatureSetsRequestBuilderGetRequestConfiguration)(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
+func (m *ItemFeatureSetsRequestBuilder) ToGetRequestInformation(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[ItemFeatureSetsRequestBuilderGetQueryParameters])(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
     requestInfo := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewRequestInformationWithMethodAndUrlTemplateAndPathParameters(i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.GET, m.BaseRequestBuilder.UrlTemplate, m.BaseRequestBuilder.PathParameters)
-    if requestConfiguration != nil {
-        if requestConfiguration.QueryParameters != nil {
-            requestInfo.AddQueryParameters(*(requestConfiguration.QueryParameters))
-        }
-        requestInfo.Headers.AddAll(requestConfiguration.Headers)
-        requestInfo.AddRequestOptions(requestConfiguration.Options)
-    }
+    i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ConfigureRequestInformation(requestInfo, requestConfiguration)
     requestInfo.Headers.TryAdd("Accept", "application/vnd.api+json")
     return requestInfo, nil
 }

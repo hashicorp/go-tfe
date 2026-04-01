@@ -18,15 +18,6 @@ type WithTask_stage_ItemRequestBuilderGetQueryParameters struct {
     // A comma-separated list of related resources to include. Supported values: run, run.workspace, task-results, policy-evaluations.
     Include *string `uriparametername:"include"`
 }
-// WithTask_stage_ItemRequestBuilderGetRequestConfiguration configuration for the request such as headers, query parameters, and middleware options.
-type WithTask_stage_ItemRequestBuilderGetRequestConfiguration struct {
-    // Request headers
-    Headers *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestHeaders
-    // Request options
-    Options []i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestOption
-    // Request query parameters
-    QueryParameters *WithTask_stage_ItemRequestBuilderGetQueryParameters
-}
 // Actions the actions property
 // returns a *ItemActionsRequestBuilder when successful
 func (m *WithTask_stage_ItemRequestBuilder) Actions()(*ItemActionsRequestBuilder) {
@@ -46,30 +37,9 @@ func NewWithTask_stage_ItemRequestBuilder(rawUrl string, requestAdapter i2ae4187
     return NewWithTask_stage_ItemRequestBuilderInternal(urlParams, requestAdapter)
 }
 // Get get details about a specific run task stage.
-// Deprecated: This method is obsolete. Use GetAsWithTask_stage_GetResponse instead.
-// returns a ItemWithTask_stage_Responseable when successful
-// returns a Errors error when the service returns a 4XX or 5XX status code
-func (m *WithTask_stage_ItemRequestBuilder) Get(ctx context.Context, requestConfiguration *WithTask_stage_ItemRequestBuilderGetRequestConfiguration)(ItemWithTask_stage_Responseable, error) {
-    requestInfo, err := m.ToGetRequestInformation(ctx, requestConfiguration);
-    if err != nil {
-        return nil, err
-    }
-    errorMapping := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ErrorMappings {
-        "XXX": ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.CreateErrorsFromDiscriminatorValue,
-    }
-    res, err := m.BaseRequestBuilder.RequestAdapter.Send(ctx, requestInfo, CreateItemWithTask_stage_ResponseFromDiscriminatorValue, errorMapping)
-    if err != nil {
-        return nil, err
-    }
-    if res == nil {
-        return nil, nil
-    }
-    return res.(ItemWithTask_stage_Responseable), nil
-}
-// GetAsWithTask_stage_GetResponse get details about a specific run task stage.
 // returns a ItemWithTask_stage_GetResponseable when successful
 // returns a Errors error when the service returns a 4XX or 5XX status code
-func (m *WithTask_stage_ItemRequestBuilder) GetAsWithTask_stage_GetResponse(ctx context.Context, requestConfiguration *WithTask_stage_ItemRequestBuilderGetRequestConfiguration)(ItemWithTask_stage_GetResponseable, error) {
+func (m *WithTask_stage_ItemRequestBuilder) Get(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[WithTask_stage_ItemRequestBuilderGetQueryParameters])(ItemWithTask_stage_GetResponseable, error) {
     requestInfo, err := m.ToGetRequestInformation(ctx, requestConfiguration);
     if err != nil {
         return nil, err
@@ -93,15 +63,9 @@ func (m *WithTask_stage_ItemRequestBuilder) PolicyEvaluations()(*ItemPolicyEvalu
 }
 // ToGetRequestInformation get details about a specific run task stage.
 // returns a *RequestInformation when successful
-func (m *WithTask_stage_ItemRequestBuilder) ToGetRequestInformation(ctx context.Context, requestConfiguration *WithTask_stage_ItemRequestBuilderGetRequestConfiguration)(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
+func (m *WithTask_stage_ItemRequestBuilder) ToGetRequestInformation(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[WithTask_stage_ItemRequestBuilderGetQueryParameters])(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
     requestInfo := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewRequestInformationWithMethodAndUrlTemplateAndPathParameters(i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.GET, m.BaseRequestBuilder.UrlTemplate, m.BaseRequestBuilder.PathParameters)
-    if requestConfiguration != nil {
-        if requestConfiguration.QueryParameters != nil {
-            requestInfo.AddQueryParameters(*(requestConfiguration.QueryParameters))
-        }
-        requestInfo.Headers.AddAll(requestConfiguration.Headers)
-        requestInfo.AddRequestOptions(requestConfiguration.Options)
-    }
+    i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ConfigureRequestInformation(requestInfo, requestConfiguration)
     requestInfo.Headers.TryAdd("Accept", "application/vnd.api+json")
     return requestInfo, nil
 }

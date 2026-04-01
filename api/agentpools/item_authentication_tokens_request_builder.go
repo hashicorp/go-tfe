@@ -20,22 +20,6 @@ type ItemAuthenticationTokensRequestBuilderGetQueryParameters struct {
     // The number of items to retrieve per page. Defaults to 20.
     Pagesize *int32 `uriparametername:"page%5Bsize%5D"`
 }
-// ItemAuthenticationTokensRequestBuilderGetRequestConfiguration configuration for the request such as headers, query parameters, and middleware options.
-type ItemAuthenticationTokensRequestBuilderGetRequestConfiguration struct {
-    // Request headers
-    Headers *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestHeaders
-    // Request options
-    Options []i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestOption
-    // Request query parameters
-    QueryParameters *ItemAuthenticationTokensRequestBuilderGetQueryParameters
-}
-// ItemAuthenticationTokensRequestBuilderPostRequestConfiguration configuration for the request such as headers, query parameters, and middleware options.
-type ItemAuthenticationTokensRequestBuilderPostRequestConfiguration struct {
-    // Request headers
-    Headers *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestHeaders
-    // Request options
-    Options []i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestOption
-}
 // NewItemAuthenticationTokensRequestBuilderInternal instantiates a new ItemAuthenticationTokensRequestBuilder and sets the default values.
 func NewItemAuthenticationTokensRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*ItemAuthenticationTokensRequestBuilder) {
     m := &ItemAuthenticationTokensRequestBuilder{
@@ -50,30 +34,9 @@ func NewItemAuthenticationTokensRequestBuilder(rawUrl string, requestAdapter i2a
     return NewItemAuthenticationTokensRequestBuilderInternal(urlParams, requestAdapter)
 }
 // Get list all tokens for the specified agent pool.
-// Deprecated: This method is obsolete. Use GetAsAuthenticationTokensGetResponse instead.
-// returns a ItemAuthenticationTokensResponseable when successful
-// returns a Errors error when the service returns a 4XX or 5XX status code
-func (m *ItemAuthenticationTokensRequestBuilder) Get(ctx context.Context, requestConfiguration *ItemAuthenticationTokensRequestBuilderGetRequestConfiguration)(ItemAuthenticationTokensResponseable, error) {
-    requestInfo, err := m.ToGetRequestInformation(ctx, requestConfiguration);
-    if err != nil {
-        return nil, err
-    }
-    errorMapping := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ErrorMappings {
-        "XXX": ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.CreateErrorsFromDiscriminatorValue,
-    }
-    res, err := m.BaseRequestBuilder.RequestAdapter.Send(ctx, requestInfo, CreateItemAuthenticationTokensResponseFromDiscriminatorValue, errorMapping)
-    if err != nil {
-        return nil, err
-    }
-    if res == nil {
-        return nil, nil
-    }
-    return res.(ItemAuthenticationTokensResponseable), nil
-}
-// GetAsAuthenticationTokensGetResponse list all tokens for the specified agent pool.
 // returns a ItemAuthenticationTokensGetResponseable when successful
 // returns a Errors error when the service returns a 4XX or 5XX status code
-func (m *ItemAuthenticationTokensRequestBuilder) GetAsAuthenticationTokensGetResponse(ctx context.Context, requestConfiguration *ItemAuthenticationTokensRequestBuilderGetRequestConfiguration)(ItemAuthenticationTokensGetResponseable, error) {
+func (m *ItemAuthenticationTokensRequestBuilder) Get(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[ItemAuthenticationTokensRequestBuilderGetQueryParameters])(ItemAuthenticationTokensGetResponseable, error) {
     requestInfo, err := m.ToGetRequestInformation(ctx, requestConfiguration);
     if err != nil {
         return nil, err
@@ -91,39 +54,12 @@ func (m *ItemAuthenticationTokensRequestBuilder) GetAsAuthenticationTokensGetRes
     return res.(ItemAuthenticationTokensGetResponseable), nil
 }
 // Post create an agent token
-// Deprecated: This method is obsolete. Use PostAsAuthenticationTokensPostResponse instead.
-// returns a ItemAuthenticationTokensResponseable when successful
-// returns a Errors error when the service returns a 404 status code
-// returns a Errors error when the service returns a 422 status code
-// returns a Errors error when the service returns a 500 status code
-// returns a Errors error when the service returns a 4XX or 5XX status code
-func (m *ItemAuthenticationTokensRequestBuilder) Post(ctx context.Context, requestConfiguration *ItemAuthenticationTokensRequestBuilderPostRequestConfiguration)(ItemAuthenticationTokensResponseable, error) {
-    requestInfo, err := m.ToPostRequestInformation(ctx, requestConfiguration);
-    if err != nil {
-        return nil, err
-    }
-    errorMapping := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ErrorMappings {
-        "404": ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.CreateErrorsFromDiscriminatorValue,
-        "422": ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.CreateErrorsFromDiscriminatorValue,
-        "500": ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.CreateErrorsFromDiscriminatorValue,
-        "XXX": ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.CreateErrorsFromDiscriminatorValue,
-    }
-    res, err := m.BaseRequestBuilder.RequestAdapter.Send(ctx, requestInfo, CreateItemAuthenticationTokensResponseFromDiscriminatorValue, errorMapping)
-    if err != nil {
-        return nil, err
-    }
-    if res == nil {
-        return nil, nil
-    }
-    return res.(ItemAuthenticationTokensResponseable), nil
-}
-// PostAsAuthenticationTokensPostResponse create an agent token
 // returns a ItemAuthenticationTokensPostResponseable when successful
 // returns a Errors error when the service returns a 404 status code
 // returns a Errors error when the service returns a 422 status code
 // returns a Errors error when the service returns a 500 status code
 // returns a Errors error when the service returns a 4XX or 5XX status code
-func (m *ItemAuthenticationTokensRequestBuilder) PostAsAuthenticationTokensPostResponse(ctx context.Context, requestConfiguration *ItemAuthenticationTokensRequestBuilderPostRequestConfiguration)(ItemAuthenticationTokensPostResponseable, error) {
+func (m *ItemAuthenticationTokensRequestBuilder) Post(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(ItemAuthenticationTokensPostResponseable, error) {
     requestInfo, err := m.ToPostRequestInformation(ctx, requestConfiguration);
     if err != nil {
         return nil, err
@@ -145,26 +81,17 @@ func (m *ItemAuthenticationTokensRequestBuilder) PostAsAuthenticationTokensPostR
 }
 // ToGetRequestInformation list all tokens for the specified agent pool.
 // returns a *RequestInformation when successful
-func (m *ItemAuthenticationTokensRequestBuilder) ToGetRequestInformation(ctx context.Context, requestConfiguration *ItemAuthenticationTokensRequestBuilderGetRequestConfiguration)(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
+func (m *ItemAuthenticationTokensRequestBuilder) ToGetRequestInformation(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[ItemAuthenticationTokensRequestBuilderGetQueryParameters])(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
     requestInfo := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewRequestInformationWithMethodAndUrlTemplateAndPathParameters(i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.GET, m.BaseRequestBuilder.UrlTemplate, m.BaseRequestBuilder.PathParameters)
-    if requestConfiguration != nil {
-        if requestConfiguration.QueryParameters != nil {
-            requestInfo.AddQueryParameters(*(requestConfiguration.QueryParameters))
-        }
-        requestInfo.Headers.AddAll(requestConfiguration.Headers)
-        requestInfo.AddRequestOptions(requestConfiguration.Options)
-    }
+    i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ConfigureRequestInformation(requestInfo, requestConfiguration)
     requestInfo.Headers.TryAdd("Accept", "application/vnd.api+json")
     return requestInfo, nil
 }
 // ToPostRequestInformation create an agent token
 // returns a *RequestInformation when successful
-func (m *ItemAuthenticationTokensRequestBuilder) ToPostRequestInformation(ctx context.Context, requestConfiguration *ItemAuthenticationTokensRequestBuilderPostRequestConfiguration)(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
+func (m *ItemAuthenticationTokensRequestBuilder) ToPostRequestInformation(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
     requestInfo := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewRequestInformationWithMethodAndUrlTemplateAndPathParameters(i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.POST, m.BaseRequestBuilder.UrlTemplate, m.BaseRequestBuilder.PathParameters)
-    if requestConfiguration != nil {
-        requestInfo.Headers.AddAll(requestConfiguration.Headers)
-        requestInfo.AddRequestOptions(requestConfiguration.Options)
-    }
+    i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ConfigureRequestInformation(requestInfo, requestConfiguration)
     requestInfo.Headers.TryAdd("Accept", "application/vnd.api+json")
     return requestInfo, nil
 }

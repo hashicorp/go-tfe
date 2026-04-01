@@ -20,15 +20,6 @@ type ItemOauthTokensRequestBuilderGetQueryParameters struct {
     // The number of items to retrieve per page. Defaults to 20.
     Pagesize *int32 `uriparametername:"page%5Bsize%5D"`
 }
-// ItemOauthTokensRequestBuilderGetRequestConfiguration configuration for the request such as headers, query parameters, and middleware options.
-type ItemOauthTokensRequestBuilderGetRequestConfiguration struct {
-    // Request headers
-    Headers *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestHeaders
-    // Request options
-    Options []i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestOption
-    // Request query parameters
-    QueryParameters *ItemOauthTokensRequestBuilderGetQueryParameters
-}
 // NewItemOauthTokensRequestBuilderInternal instantiates a new ItemOauthTokensRequestBuilder and sets the default values.
 func NewItemOauthTokensRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*ItemOauthTokensRequestBuilder) {
     m := &ItemOauthTokensRequestBuilder{
@@ -43,30 +34,9 @@ func NewItemOauthTokensRequestBuilder(rawUrl string, requestAdapter i2ae4187f7da
     return NewItemOauthTokensRequestBuilderInternal(urlParams, requestAdapter)
 }
 // Get list all OAuth tokens for a given OAuth client.
-// Deprecated: This method is obsolete. Use GetAsOauthTokensGetResponse instead.
-// returns a ItemOauthTokensResponseable when successful
-// returns a Errors error when the service returns a 404 status code
-func (m *ItemOauthTokensRequestBuilder) Get(ctx context.Context, requestConfiguration *ItemOauthTokensRequestBuilderGetRequestConfiguration)(ItemOauthTokensResponseable, error) {
-    requestInfo, err := m.ToGetRequestInformation(ctx, requestConfiguration);
-    if err != nil {
-        return nil, err
-    }
-    errorMapping := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ErrorMappings {
-        "404": ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.CreateErrorsFromDiscriminatorValue,
-    }
-    res, err := m.BaseRequestBuilder.RequestAdapter.Send(ctx, requestInfo, CreateItemOauthTokensResponseFromDiscriminatorValue, errorMapping)
-    if err != nil {
-        return nil, err
-    }
-    if res == nil {
-        return nil, nil
-    }
-    return res.(ItemOauthTokensResponseable), nil
-}
-// GetAsOauthTokensGetResponse list all OAuth tokens for a given OAuth client.
 // returns a ItemOauthTokensGetResponseable when successful
 // returns a Errors error when the service returns a 404 status code
-func (m *ItemOauthTokensRequestBuilder) GetAsOauthTokensGetResponse(ctx context.Context, requestConfiguration *ItemOauthTokensRequestBuilderGetRequestConfiguration)(ItemOauthTokensGetResponseable, error) {
+func (m *ItemOauthTokensRequestBuilder) Get(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[ItemOauthTokensRequestBuilderGetQueryParameters])(ItemOauthTokensGetResponseable, error) {
     requestInfo, err := m.ToGetRequestInformation(ctx, requestConfiguration);
     if err != nil {
         return nil, err
@@ -85,15 +55,9 @@ func (m *ItemOauthTokensRequestBuilder) GetAsOauthTokensGetResponse(ctx context.
 }
 // ToGetRequestInformation list all OAuth tokens for a given OAuth client.
 // returns a *RequestInformation when successful
-func (m *ItemOauthTokensRequestBuilder) ToGetRequestInformation(ctx context.Context, requestConfiguration *ItemOauthTokensRequestBuilderGetRequestConfiguration)(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
+func (m *ItemOauthTokensRequestBuilder) ToGetRequestInformation(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[ItemOauthTokensRequestBuilderGetQueryParameters])(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
     requestInfo := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewRequestInformationWithMethodAndUrlTemplateAndPathParameters(i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.GET, m.BaseRequestBuilder.UrlTemplate, m.BaseRequestBuilder.PathParameters)
-    if requestConfiguration != nil {
-        if requestConfiguration.QueryParameters != nil {
-            requestInfo.AddQueryParameters(*(requestConfiguration.QueryParameters))
-        }
-        requestInfo.Headers.AddAll(requestConfiguration.Headers)
-        requestInfo.AddRequestOptions(requestConfiguration.Options)
-    }
+    i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ConfigureRequestInformation(requestInfo, requestConfiguration)
     requestInfo.Headers.TryAdd("Accept", "application/vnd.api+json")
     return requestInfo, nil
 }

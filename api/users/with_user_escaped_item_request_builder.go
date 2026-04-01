@@ -13,13 +13,6 @@ import (
 type WithUser_ItemRequestBuilder struct {
     i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.BaseRequestBuilder
 }
-// WithUser_ItemRequestBuilderGetRequestConfiguration configuration for the request such as headers, query parameters, and middleware options.
-type WithUser_ItemRequestBuilderGetRequestConfiguration struct {
-    // Request headers
-    Headers *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestHeaders
-    // Request options
-    Options []i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestOption
-}
 // AuthenticationTokens the authenticationTokens property
 // returns a *ItemAuthenticationTokensRequestBuilder when successful
 func (m *WithUser_ItemRequestBuilder) AuthenticationTokens()(*ItemAuthenticationTokensRequestBuilder) {
@@ -39,30 +32,9 @@ func NewWithUser_ItemRequestBuilder(rawUrl string, requestAdapter i2ae4187f7daee
     return NewWithUser_ItemRequestBuilderInternal(urlParams, requestAdapter)
 }
 // Get shows details for a given user.
-// Deprecated: This method is obsolete. Use GetAsWithUser_GetResponse instead.
-// returns a ItemWithUser_Responseable when successful
-// returns a Errors error when the service returns a 4XX or 5XX status code
-func (m *WithUser_ItemRequestBuilder) Get(ctx context.Context, requestConfiguration *WithUser_ItemRequestBuilderGetRequestConfiguration)(ItemWithUser_Responseable, error) {
-    requestInfo, err := m.ToGetRequestInformation(ctx, requestConfiguration);
-    if err != nil {
-        return nil, err
-    }
-    errorMapping := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ErrorMappings {
-        "XXX": ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.CreateErrorsFromDiscriminatorValue,
-    }
-    res, err := m.BaseRequestBuilder.RequestAdapter.Send(ctx, requestInfo, CreateItemWithUser_ResponseFromDiscriminatorValue, errorMapping)
-    if err != nil {
-        return nil, err
-    }
-    if res == nil {
-        return nil, nil
-    }
-    return res.(ItemWithUser_Responseable), nil
-}
-// GetAsWithUser_GetResponse shows details for a given user.
 // returns a ItemWithUser_GetResponseable when successful
 // returns a Errors error when the service returns a 4XX or 5XX status code
-func (m *WithUser_ItemRequestBuilder) GetAsWithUser_GetResponse(ctx context.Context, requestConfiguration *WithUser_ItemRequestBuilderGetRequestConfiguration)(ItemWithUser_GetResponseable, error) {
+func (m *WithUser_ItemRequestBuilder) Get(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(ItemWithUser_GetResponseable, error) {
     requestInfo, err := m.ToGetRequestInformation(ctx, requestConfiguration);
     if err != nil {
         return nil, err
@@ -86,12 +58,9 @@ func (m *WithUser_ItemRequestBuilder) GithubAppOauthTokens()(*ItemGithubAppOauth
 }
 // ToGetRequestInformation shows details for a given user.
 // returns a *RequestInformation when successful
-func (m *WithUser_ItemRequestBuilder) ToGetRequestInformation(ctx context.Context, requestConfiguration *WithUser_ItemRequestBuilderGetRequestConfiguration)(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
+func (m *WithUser_ItemRequestBuilder) ToGetRequestInformation(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
     requestInfo := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewRequestInformationWithMethodAndUrlTemplateAndPathParameters(i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.GET, m.BaseRequestBuilder.UrlTemplate, m.BaseRequestBuilder.PathParameters)
-    if requestConfiguration != nil {
-        requestInfo.Headers.AddAll(requestConfiguration.Headers)
-        requestInfo.AddRequestOptions(requestConfiguration.Options)
-    }
+    i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ConfigureRequestInformation(requestInfo, requestConfiguration)
     requestInfo.Headers.TryAdd("Accept", "application/vnd.api+json")
     return requestInfo, nil
 }

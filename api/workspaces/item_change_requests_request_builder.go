@@ -22,15 +22,6 @@ type ItemChangeRequestsRequestBuilderGetQueryParameters struct {
     // The number of items to retrieve per page. Defaults to 20.
     Pagesize *int32 `uriparametername:"page%5Bsize%5D"`
 }
-// ItemChangeRequestsRequestBuilderGetRequestConfiguration configuration for the request such as headers, query parameters, and middleware options.
-type ItemChangeRequestsRequestBuilderGetRequestConfiguration struct {
-    // Request headers
-    Headers *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestHeaders
-    // Request options
-    Options []i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestOption
-    // Request query parameters
-    QueryParameters *ItemChangeRequestsRequestBuilderGetQueryParameters
-}
 // NewItemChangeRequestsRequestBuilderInternal instantiates a new ItemChangeRequestsRequestBuilder and sets the default values.
 func NewItemChangeRequestsRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*ItemChangeRequestsRequestBuilder) {
     m := &ItemChangeRequestsRequestBuilder{
@@ -45,30 +36,9 @@ func NewItemChangeRequestsRequestBuilder(rawUrl string, requestAdapter i2ae4187f
     return NewItemChangeRequestsRequestBuilderInternal(urlParams, requestAdapter)
 }
 // Get list all change requests for a workspace.
-// Deprecated: This method is obsolete. Use GetAsChangeRequestsGetResponse instead.
-// returns a ItemChangeRequestsResponseable when successful
-// returns a Errors error when the service returns a 4XX or 5XX status code
-func (m *ItemChangeRequestsRequestBuilder) Get(ctx context.Context, requestConfiguration *ItemChangeRequestsRequestBuilderGetRequestConfiguration)(ItemChangeRequestsResponseable, error) {
-    requestInfo, err := m.ToGetRequestInformation(ctx, requestConfiguration);
-    if err != nil {
-        return nil, err
-    }
-    errorMapping := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ErrorMappings {
-        "XXX": ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.CreateErrorsFromDiscriminatorValue,
-    }
-    res, err := m.BaseRequestBuilder.RequestAdapter.Send(ctx, requestInfo, CreateItemChangeRequestsResponseFromDiscriminatorValue, errorMapping)
-    if err != nil {
-        return nil, err
-    }
-    if res == nil {
-        return nil, nil
-    }
-    return res.(ItemChangeRequestsResponseable), nil
-}
-// GetAsChangeRequestsGetResponse list all change requests for a workspace.
 // returns a ItemChangeRequestsGetResponseable when successful
 // returns a Errors error when the service returns a 4XX or 5XX status code
-func (m *ItemChangeRequestsRequestBuilder) GetAsChangeRequestsGetResponse(ctx context.Context, requestConfiguration *ItemChangeRequestsRequestBuilderGetRequestConfiguration)(ItemChangeRequestsGetResponseable, error) {
+func (m *ItemChangeRequestsRequestBuilder) Get(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[ItemChangeRequestsRequestBuilderGetQueryParameters])(ItemChangeRequestsGetResponseable, error) {
     requestInfo, err := m.ToGetRequestInformation(ctx, requestConfiguration);
     if err != nil {
         return nil, err
@@ -87,15 +57,9 @@ func (m *ItemChangeRequestsRequestBuilder) GetAsChangeRequestsGetResponse(ctx co
 }
 // ToGetRequestInformation list all change requests for a workspace.
 // returns a *RequestInformation when successful
-func (m *ItemChangeRequestsRequestBuilder) ToGetRequestInformation(ctx context.Context, requestConfiguration *ItemChangeRequestsRequestBuilderGetRequestConfiguration)(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
+func (m *ItemChangeRequestsRequestBuilder) ToGetRequestInformation(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[ItemChangeRequestsRequestBuilderGetQueryParameters])(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
     requestInfo := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewRequestInformationWithMethodAndUrlTemplateAndPathParameters(i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.GET, m.BaseRequestBuilder.UrlTemplate, m.BaseRequestBuilder.PathParameters)
-    if requestConfiguration != nil {
-        if requestConfiguration.QueryParameters != nil {
-            requestInfo.AddQueryParameters(*(requestConfiguration.QueryParameters))
-        }
-        requestInfo.Headers.AddAll(requestConfiguration.Headers)
-        requestInfo.AddRequestOptions(requestConfiguration.Options)
-    }
+    i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ConfigureRequestInformation(requestInfo, requestConfiguration)
     requestInfo.Headers.TryAdd("Accept", "application/vnd.api+json")
     return requestInfo, nil
 }

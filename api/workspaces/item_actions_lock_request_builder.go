@@ -13,13 +13,6 @@ import (
 type ItemActionsLockRequestBuilder struct {
     i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.BaseRequestBuilder
 }
-// ItemActionsLockRequestBuilderPostRequestConfiguration configuration for the request such as headers, query parameters, and middleware options.
-type ItemActionsLockRequestBuilderPostRequestConfiguration struct {
-    // Request headers
-    Headers *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestHeaders
-    // Request options
-    Options []i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestOption
-}
 // NewItemActionsLockRequestBuilderInternal instantiates a new ItemActionsLockRequestBuilder and sets the default values.
 func NewItemActionsLockRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*ItemActionsLockRequestBuilder) {
     m := &ItemActionsLockRequestBuilder{
@@ -34,36 +27,11 @@ func NewItemActionsLockRequestBuilder(rawUrl string, requestAdapter i2ae4187f7da
     return NewItemActionsLockRequestBuilderInternal(urlParams, requestAdapter)
 }
 // Post lock a workspace. A workspace can only be locked by one entity at a time. Returns a conflict error if the workspace is already locked.
-// Deprecated: This method is obsolete. Use PostAsLockPostResponse instead.
-// returns a ItemActionsLockResponseable when successful
-// returns a Errors error when the service returns a 404 status code
-// returns a Errors error when the service returns a 409 status code
-// returns a Errors error when the service returns a 4XX or 5XX status code
-func (m *ItemActionsLockRequestBuilder) Post(ctx context.Context, body ItemActionsLockPostRequestBodyable, requestConfiguration *ItemActionsLockRequestBuilderPostRequestConfiguration)(ItemActionsLockResponseable, error) {
-    requestInfo, err := m.ToPostRequestInformation(ctx, body, requestConfiguration);
-    if err != nil {
-        return nil, err
-    }
-    errorMapping := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ErrorMappings {
-        "404": ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.CreateErrorsFromDiscriminatorValue,
-        "409": ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.CreateErrorsFromDiscriminatorValue,
-        "XXX": ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.CreateErrorsFromDiscriminatorValue,
-    }
-    res, err := m.BaseRequestBuilder.RequestAdapter.Send(ctx, requestInfo, CreateItemActionsLockResponseFromDiscriminatorValue, errorMapping)
-    if err != nil {
-        return nil, err
-    }
-    if res == nil {
-        return nil, nil
-    }
-    return res.(ItemActionsLockResponseable), nil
-}
-// PostAsLockPostResponse lock a workspace. A workspace can only be locked by one entity at a time. Returns a conflict error if the workspace is already locked.
 // returns a ItemActionsLockPostResponseable when successful
 // returns a Errors error when the service returns a 404 status code
 // returns a Errors error when the service returns a 409 status code
 // returns a Errors error when the service returns a 4XX or 5XX status code
-func (m *ItemActionsLockRequestBuilder) PostAsLockPostResponse(ctx context.Context, body ItemActionsLockPostRequestBodyable, requestConfiguration *ItemActionsLockRequestBuilderPostRequestConfiguration)(ItemActionsLockPostResponseable, error) {
+func (m *ItemActionsLockRequestBuilder) Post(ctx context.Context, body ItemActionsLockPostRequestBodyable, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(ItemActionsLockPostResponseable, error) {
     requestInfo, err := m.ToPostRequestInformation(ctx, body, requestConfiguration);
     if err != nil {
         return nil, err
@@ -84,12 +52,9 @@ func (m *ItemActionsLockRequestBuilder) PostAsLockPostResponse(ctx context.Conte
 }
 // ToPostRequestInformation lock a workspace. A workspace can only be locked by one entity at a time. Returns a conflict error if the workspace is already locked.
 // returns a *RequestInformation when successful
-func (m *ItemActionsLockRequestBuilder) ToPostRequestInformation(ctx context.Context, body ItemActionsLockPostRequestBodyable, requestConfiguration *ItemActionsLockRequestBuilderPostRequestConfiguration)(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
+func (m *ItemActionsLockRequestBuilder) ToPostRequestInformation(ctx context.Context, body ItemActionsLockPostRequestBodyable, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
     requestInfo := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewRequestInformationWithMethodAndUrlTemplateAndPathParameters(i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.POST, m.BaseRequestBuilder.UrlTemplate, m.BaseRequestBuilder.PathParameters)
-    if requestConfiguration != nil {
-        requestInfo.Headers.AddAll(requestConfiguration.Headers)
-        requestInfo.AddRequestOptions(requestConfiguration.Options)
-    }
+    i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ConfigureRequestInformation(requestInfo, requestConfiguration)
     requestInfo.Headers.TryAdd("Accept", "application/vnd.api+json")
     err := requestInfo.SetContentFromParsable(ctx, m.BaseRequestBuilder.RequestAdapter, "application/vnd.api+json", body)
     if err != nil {

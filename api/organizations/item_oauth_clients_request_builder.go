@@ -22,22 +22,6 @@ type ItemOauthClientsRequestBuilderGetQueryParameters struct {
     // If true, includes names of up to 25 affected workspaces and total count per client.
     Show_affected_workspaces *bool `uriparametername:"show_affected_workspaces"`
 }
-// ItemOauthClientsRequestBuilderGetRequestConfiguration configuration for the request such as headers, query parameters, and middleware options.
-type ItemOauthClientsRequestBuilderGetRequestConfiguration struct {
-    // Request headers
-    Headers *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestHeaders
-    // Request options
-    Options []i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestOption
-    // Request query parameters
-    QueryParameters *ItemOauthClientsRequestBuilderGetQueryParameters
-}
-// ItemOauthClientsRequestBuilderPostRequestConfiguration configuration for the request such as headers, query parameters, and middleware options.
-type ItemOauthClientsRequestBuilderPostRequestConfiguration struct {
-    // Request headers
-    Headers *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestHeaders
-    // Request options
-    Options []i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestOption
-}
 // NewItemOauthClientsRequestBuilderInternal instantiates a new ItemOauthClientsRequestBuilder and sets the default values.
 func NewItemOauthClientsRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*ItemOauthClientsRequestBuilder) {
     m := &ItemOauthClientsRequestBuilder{
@@ -52,30 +36,9 @@ func NewItemOauthClientsRequestBuilder(rawUrl string, requestAdapter i2ae4187f7d
     return NewItemOauthClientsRequestBuilderInternal(urlParams, requestAdapter)
 }
 // Get list all VCS connections between an organization and its VCS providers.
-// Deprecated: This method is obsolete. Use GetAsOauthClientsGetResponse instead.
-// returns a ItemOauthClientsResponseable when successful
-// returns a Errors error when the service returns a 4XX or 5XX status code
-func (m *ItemOauthClientsRequestBuilder) Get(ctx context.Context, requestConfiguration *ItemOauthClientsRequestBuilderGetRequestConfiguration)(ItemOauthClientsResponseable, error) {
-    requestInfo, err := m.ToGetRequestInformation(ctx, requestConfiguration);
-    if err != nil {
-        return nil, err
-    }
-    errorMapping := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ErrorMappings {
-        "XXX": ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.CreateErrorsFromDiscriminatorValue,
-    }
-    res, err := m.BaseRequestBuilder.RequestAdapter.Send(ctx, requestInfo, CreateItemOauthClientsResponseFromDiscriminatorValue, errorMapping)
-    if err != nil {
-        return nil, err
-    }
-    if res == nil {
-        return nil, nil
-    }
-    return res.(ItemOauthClientsResponseable), nil
-}
-// GetAsOauthClientsGetResponse list all VCS connections between an organization and its VCS providers.
 // returns a ItemOauthClientsGetResponseable when successful
 // returns a Errors error when the service returns a 4XX or 5XX status code
-func (m *ItemOauthClientsRequestBuilder) GetAsOauthClientsGetResponse(ctx context.Context, requestConfiguration *ItemOauthClientsRequestBuilderGetRequestConfiguration)(ItemOauthClientsGetResponseable, error) {
+func (m *ItemOauthClientsRequestBuilder) Get(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[ItemOauthClientsRequestBuilderGetQueryParameters])(ItemOauthClientsGetResponseable, error) {
     requestInfo, err := m.ToGetRequestInformation(ctx, requestConfiguration);
     if err != nil {
         return nil, err
@@ -93,30 +56,9 @@ func (m *ItemOauthClientsRequestBuilder) GetAsOauthClientsGetResponse(ctx contex
     return res.(ItemOauthClientsGetResponseable), nil
 }
 // Post create a VCS connection between an organization and a VCS provider. This endpoint allows you to provide a pre-generated OAuth token string instead of going through the OAuth Application flow.
-// Deprecated: This method is obsolete. Use PostAsOauthClientsPostResponse instead.
-// returns a ItemOauthClientsResponseable when successful
-// returns a Errors error when the service returns a 4XX or 5XX status code
-func (m *ItemOauthClientsRequestBuilder) Post(ctx context.Context, body ItemOauthClientsPostRequestBodyable, requestConfiguration *ItemOauthClientsRequestBuilderPostRequestConfiguration)(ItemOauthClientsResponseable, error) {
-    requestInfo, err := m.ToPostRequestInformation(ctx, body, requestConfiguration);
-    if err != nil {
-        return nil, err
-    }
-    errorMapping := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ErrorMappings {
-        "XXX": ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.CreateErrorsFromDiscriminatorValue,
-    }
-    res, err := m.BaseRequestBuilder.RequestAdapter.Send(ctx, requestInfo, CreateItemOauthClientsResponseFromDiscriminatorValue, errorMapping)
-    if err != nil {
-        return nil, err
-    }
-    if res == nil {
-        return nil, nil
-    }
-    return res.(ItemOauthClientsResponseable), nil
-}
-// PostAsOauthClientsPostResponse create a VCS connection between an organization and a VCS provider. This endpoint allows you to provide a pre-generated OAuth token string instead of going through the OAuth Application flow.
 // returns a ItemOauthClientsPostResponseable when successful
 // returns a Errors error when the service returns a 4XX or 5XX status code
-func (m *ItemOauthClientsRequestBuilder) PostAsOauthClientsPostResponse(ctx context.Context, body ItemOauthClientsPostRequestBodyable, requestConfiguration *ItemOauthClientsRequestBuilderPostRequestConfiguration)(ItemOauthClientsPostResponseable, error) {
+func (m *ItemOauthClientsRequestBuilder) Post(ctx context.Context, body ItemOauthClientsPostRequestBodyable, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(ItemOauthClientsPostResponseable, error) {
     requestInfo, err := m.ToPostRequestInformation(ctx, body, requestConfiguration);
     if err != nil {
         return nil, err
@@ -135,26 +77,17 @@ func (m *ItemOauthClientsRequestBuilder) PostAsOauthClientsPostResponse(ctx cont
 }
 // ToGetRequestInformation list all VCS connections between an organization and its VCS providers.
 // returns a *RequestInformation when successful
-func (m *ItemOauthClientsRequestBuilder) ToGetRequestInformation(ctx context.Context, requestConfiguration *ItemOauthClientsRequestBuilderGetRequestConfiguration)(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
+func (m *ItemOauthClientsRequestBuilder) ToGetRequestInformation(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[ItemOauthClientsRequestBuilderGetQueryParameters])(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
     requestInfo := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewRequestInformationWithMethodAndUrlTemplateAndPathParameters(i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.GET, m.BaseRequestBuilder.UrlTemplate, m.BaseRequestBuilder.PathParameters)
-    if requestConfiguration != nil {
-        if requestConfiguration.QueryParameters != nil {
-            requestInfo.AddQueryParameters(*(requestConfiguration.QueryParameters))
-        }
-        requestInfo.Headers.AddAll(requestConfiguration.Headers)
-        requestInfo.AddRequestOptions(requestConfiguration.Options)
-    }
+    i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ConfigureRequestInformation(requestInfo, requestConfiguration)
     requestInfo.Headers.TryAdd("Accept", "application/vnd.api+json")
     return requestInfo, nil
 }
 // ToPostRequestInformation create a VCS connection between an organization and a VCS provider. This endpoint allows you to provide a pre-generated OAuth token string instead of going through the OAuth Application flow.
 // returns a *RequestInformation when successful
-func (m *ItemOauthClientsRequestBuilder) ToPostRequestInformation(ctx context.Context, body ItemOauthClientsPostRequestBodyable, requestConfiguration *ItemOauthClientsRequestBuilderPostRequestConfiguration)(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
+func (m *ItemOauthClientsRequestBuilder) ToPostRequestInformation(ctx context.Context, body ItemOauthClientsPostRequestBodyable, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
     requestInfo := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewRequestInformationWithMethodAndUrlTemplateAndPathParameters(i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.POST, m.BaseRequestBuilder.UrlTemplate, m.BaseRequestBuilder.PathParameters)
-    if requestConfiguration != nil {
-        requestInfo.Headers.AddAll(requestConfiguration.Headers)
-        requestInfo.AddRequestOptions(requestConfiguration.Options)
-    }
+    i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ConfigureRequestInformation(requestInfo, requestConfiguration)
     requestInfo.Headers.TryAdd("Accept", "application/vnd.api+json")
     err := requestInfo.SetContentFromParsable(ctx, m.BaseRequestBuilder.RequestAdapter, "application/vnd.api+json", body)
     if err != nil {

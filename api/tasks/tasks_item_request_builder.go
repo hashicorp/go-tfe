@@ -13,33 +13,10 @@ import (
 type TasksItemRequestBuilder struct {
     i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.BaseRequestBuilder
 }
-// TasksItemRequestBuilderDeleteRequestConfiguration configuration for the request such as headers, query parameters, and middleware options.
-type TasksItemRequestBuilderDeleteRequestConfiguration struct {
-    // Request headers
-    Headers *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestHeaders
-    // Request options
-    Options []i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestOption
-}
 // TasksItemRequestBuilderGetQueryParameters get details about a run task.
 type TasksItemRequestBuilderGetQueryParameters struct {
     // Allows including related resource data. Value must be a comma-separated list containing one or more of `workspace_tasks` or `workspace_tasks.workspace`.
     Include *string `uriparametername:"include"`
-}
-// TasksItemRequestBuilderGetRequestConfiguration configuration for the request such as headers, query parameters, and middleware options.
-type TasksItemRequestBuilderGetRequestConfiguration struct {
-    // Request headers
-    Headers *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestHeaders
-    // Request options
-    Options []i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestOption
-    // Request query parameters
-    QueryParameters *TasksItemRequestBuilderGetQueryParameters
-}
-// TasksItemRequestBuilderPatchRequestConfiguration configuration for the request such as headers, query parameters, and middleware options.
-type TasksItemRequestBuilderPatchRequestConfiguration struct {
-    // Request headers
-    Headers *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestHeaders
-    // Request options
-    Options []i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestOption
 }
 // NewTasksItemRequestBuilderInternal instantiates a new TasksItemRequestBuilder and sets the default values.
 func NewTasksItemRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*TasksItemRequestBuilder) {
@@ -56,7 +33,7 @@ func NewTasksItemRequestBuilder(rawUrl string, requestAdapter i2ae4187f7daee2633
 }
 // Delete delete a run task.
 // returns a Errors error when the service returns a 4XX or 5XX status code
-func (m *TasksItemRequestBuilder) Delete(ctx context.Context, requestConfiguration *TasksItemRequestBuilderDeleteRequestConfiguration)(error) {
+func (m *TasksItemRequestBuilder) Delete(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(error) {
     requestInfo, err := m.ToDeleteRequestInformation(ctx, requestConfiguration);
     if err != nil {
         return err
@@ -71,30 +48,9 @@ func (m *TasksItemRequestBuilder) Delete(ctx context.Context, requestConfigurati
     return nil
 }
 // Get get details about a run task.
-// Deprecated: This method is obsolete. Use GetAsTasksGetResponse instead.
-// returns a ItemTasksResponseable when successful
-// returns a Errors error when the service returns a 4XX or 5XX status code
-func (m *TasksItemRequestBuilder) Get(ctx context.Context, requestConfiguration *TasksItemRequestBuilderGetRequestConfiguration)(ItemTasksResponseable, error) {
-    requestInfo, err := m.ToGetRequestInformation(ctx, requestConfiguration);
-    if err != nil {
-        return nil, err
-    }
-    errorMapping := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ErrorMappings {
-        "XXX": ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.CreateErrorsFromDiscriminatorValue,
-    }
-    res, err := m.BaseRequestBuilder.RequestAdapter.Send(ctx, requestInfo, CreateItemTasksResponseFromDiscriminatorValue, errorMapping)
-    if err != nil {
-        return nil, err
-    }
-    if res == nil {
-        return nil, nil
-    }
-    return res.(ItemTasksResponseable), nil
-}
-// GetAsTasksGetResponse get details about a run task.
 // returns a ItemTasksGetResponseable when successful
 // returns a Errors error when the service returns a 4XX or 5XX status code
-func (m *TasksItemRequestBuilder) GetAsTasksGetResponse(ctx context.Context, requestConfiguration *TasksItemRequestBuilderGetRequestConfiguration)(ItemTasksGetResponseable, error) {
+func (m *TasksItemRequestBuilder) Get(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[TasksItemRequestBuilderGetQueryParameters])(ItemTasksGetResponseable, error) {
     requestInfo, err := m.ToGetRequestInformation(ctx, requestConfiguration);
     if err != nil {
         return nil, err
@@ -112,30 +68,9 @@ func (m *TasksItemRequestBuilder) GetAsTasksGetResponse(ctx context.Context, req
     return res.(ItemTasksGetResponseable), nil
 }
 // Patch update a run task.
-// Deprecated: This method is obsolete. Use PatchAsTasksPatchResponse instead.
-// returns a ItemTasksResponseable when successful
-// returns a Errors error when the service returns a 4XX or 5XX status code
-func (m *TasksItemRequestBuilder) Patch(ctx context.Context, body ItemTasksPatchRequestBodyable, requestConfiguration *TasksItemRequestBuilderPatchRequestConfiguration)(ItemTasksResponseable, error) {
-    requestInfo, err := m.ToPatchRequestInformation(ctx, body, requestConfiguration);
-    if err != nil {
-        return nil, err
-    }
-    errorMapping := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ErrorMappings {
-        "XXX": ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.CreateErrorsFromDiscriminatorValue,
-    }
-    res, err := m.BaseRequestBuilder.RequestAdapter.Send(ctx, requestInfo, CreateItemTasksResponseFromDiscriminatorValue, errorMapping)
-    if err != nil {
-        return nil, err
-    }
-    if res == nil {
-        return nil, nil
-    }
-    return res.(ItemTasksResponseable), nil
-}
-// PatchAsTasksPatchResponse update a run task.
 // returns a ItemTasksPatchResponseable when successful
 // returns a Errors error when the service returns a 4XX or 5XX status code
-func (m *TasksItemRequestBuilder) PatchAsTasksPatchResponse(ctx context.Context, body ItemTasksPatchRequestBodyable, requestConfiguration *TasksItemRequestBuilderPatchRequestConfiguration)(ItemTasksPatchResponseable, error) {
+func (m *TasksItemRequestBuilder) Patch(ctx context.Context, body ItemTasksPatchRequestBodyable, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(ItemTasksPatchResponseable, error) {
     requestInfo, err := m.ToPatchRequestInformation(ctx, body, requestConfiguration);
     if err != nil {
         return nil, err
@@ -159,37 +94,25 @@ func (m *TasksItemRequestBuilder) Relationships()(*ItemRelationshipsRequestBuild
 }
 // ToDeleteRequestInformation delete a run task.
 // returns a *RequestInformation when successful
-func (m *TasksItemRequestBuilder) ToDeleteRequestInformation(ctx context.Context, requestConfiguration *TasksItemRequestBuilderDeleteRequestConfiguration)(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
+func (m *TasksItemRequestBuilder) ToDeleteRequestInformation(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
     requestInfo := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewRequestInformationWithMethodAndUrlTemplateAndPathParameters(i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DELETE, m.BaseRequestBuilder.UrlTemplate, m.BaseRequestBuilder.PathParameters)
-    if requestConfiguration != nil {
-        requestInfo.Headers.AddAll(requestConfiguration.Headers)
-        requestInfo.AddRequestOptions(requestConfiguration.Options)
-    }
+    i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ConfigureRequestInformation(requestInfo, requestConfiguration)
     requestInfo.Headers.TryAdd("Accept", "application/vnd.api+json")
     return requestInfo, nil
 }
 // ToGetRequestInformation get details about a run task.
 // returns a *RequestInformation when successful
-func (m *TasksItemRequestBuilder) ToGetRequestInformation(ctx context.Context, requestConfiguration *TasksItemRequestBuilderGetRequestConfiguration)(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
+func (m *TasksItemRequestBuilder) ToGetRequestInformation(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[TasksItemRequestBuilderGetQueryParameters])(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
     requestInfo := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewRequestInformationWithMethodAndUrlTemplateAndPathParameters(i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.GET, m.BaseRequestBuilder.UrlTemplate, m.BaseRequestBuilder.PathParameters)
-    if requestConfiguration != nil {
-        if requestConfiguration.QueryParameters != nil {
-            requestInfo.AddQueryParameters(*(requestConfiguration.QueryParameters))
-        }
-        requestInfo.Headers.AddAll(requestConfiguration.Headers)
-        requestInfo.AddRequestOptions(requestConfiguration.Options)
-    }
+    i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ConfigureRequestInformation(requestInfo, requestConfiguration)
     requestInfo.Headers.TryAdd("Accept", "application/vnd.api+json")
     return requestInfo, nil
 }
 // ToPatchRequestInformation update a run task.
 // returns a *RequestInformation when successful
-func (m *TasksItemRequestBuilder) ToPatchRequestInformation(ctx context.Context, body ItemTasksPatchRequestBodyable, requestConfiguration *TasksItemRequestBuilderPatchRequestConfiguration)(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
+func (m *TasksItemRequestBuilder) ToPatchRequestInformation(ctx context.Context, body ItemTasksPatchRequestBodyable, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
     requestInfo := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewRequestInformationWithMethodAndUrlTemplateAndPathParameters(i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.PATCH, m.BaseRequestBuilder.UrlTemplate, m.BaseRequestBuilder.PathParameters)
-    if requestConfiguration != nil {
-        requestInfo.Headers.AddAll(requestConfiguration.Headers)
-        requestInfo.AddRequestOptions(requestConfiguration.Options)
-    }
+    i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ConfigureRequestInformation(requestInfo, requestConfiguration)
     requestInfo.Headers.TryAdd("Accept", "application/vnd.api+json")
     err := requestInfo.SetContentFromParsable(ctx, m.BaseRequestBuilder.RequestAdapter, "application/vnd.api+json", body)
     if err != nil {

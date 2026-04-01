@@ -25,15 +25,6 @@ type ItemAgentsRequestBuilderGetQueryParameters struct {
     // Allows sorting the returned agents. Valid value is "created-at". Prepending a hyphen to the sort parameter will reverse the order (e.g. "-name").
     Sort *string `uriparametername:"sort"`
 }
-// ItemAgentsRequestBuilderGetRequestConfiguration configuration for the request such as headers, query parameters, and middleware options.
-type ItemAgentsRequestBuilderGetRequestConfiguration struct {
-    // Request headers
-    Headers *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestHeaders
-    // Request options
-    Options []i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestOption
-    // Request query parameters
-    QueryParameters *ItemAgentsRequestBuilderGetQueryParameters
-}
 // NewItemAgentsRequestBuilderInternal instantiates a new ItemAgentsRequestBuilder and sets the default values.
 func NewItemAgentsRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*ItemAgentsRequestBuilder) {
     m := &ItemAgentsRequestBuilder{
@@ -48,30 +39,9 @@ func NewItemAgentsRequestBuilder(rawUrl string, requestAdapter i2ae4187f7daee263
     return NewItemAgentsRequestBuilderInternal(urlParams, requestAdapter)
 }
 // Get list all agents in the specified agent pool.
-// Deprecated: This method is obsolete. Use GetAsAgentsGetResponse instead.
-// returns a ItemAgentsResponseable when successful
-// returns a Errors error when the service returns a 4XX or 5XX status code
-func (m *ItemAgentsRequestBuilder) Get(ctx context.Context, requestConfiguration *ItemAgentsRequestBuilderGetRequestConfiguration)(ItemAgentsResponseable, error) {
-    requestInfo, err := m.ToGetRequestInformation(ctx, requestConfiguration);
-    if err != nil {
-        return nil, err
-    }
-    errorMapping := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ErrorMappings {
-        "XXX": ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.CreateErrorsFromDiscriminatorValue,
-    }
-    res, err := m.BaseRequestBuilder.RequestAdapter.Send(ctx, requestInfo, CreateItemAgentsResponseFromDiscriminatorValue, errorMapping)
-    if err != nil {
-        return nil, err
-    }
-    if res == nil {
-        return nil, nil
-    }
-    return res.(ItemAgentsResponseable), nil
-}
-// GetAsAgentsGetResponse list all agents in the specified agent pool.
 // returns a ItemAgentsGetResponseable when successful
 // returns a Errors error when the service returns a 4XX or 5XX status code
-func (m *ItemAgentsRequestBuilder) GetAsAgentsGetResponse(ctx context.Context, requestConfiguration *ItemAgentsRequestBuilderGetRequestConfiguration)(ItemAgentsGetResponseable, error) {
+func (m *ItemAgentsRequestBuilder) Get(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[ItemAgentsRequestBuilderGetQueryParameters])(ItemAgentsGetResponseable, error) {
     requestInfo, err := m.ToGetRequestInformation(ctx, requestConfiguration);
     if err != nil {
         return nil, err
@@ -90,15 +60,9 @@ func (m *ItemAgentsRequestBuilder) GetAsAgentsGetResponse(ctx context.Context, r
 }
 // ToGetRequestInformation list all agents in the specified agent pool.
 // returns a *RequestInformation when successful
-func (m *ItemAgentsRequestBuilder) ToGetRequestInformation(ctx context.Context, requestConfiguration *ItemAgentsRequestBuilderGetRequestConfiguration)(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
+func (m *ItemAgentsRequestBuilder) ToGetRequestInformation(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[ItemAgentsRequestBuilderGetQueryParameters])(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
     requestInfo := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewRequestInformationWithMethodAndUrlTemplateAndPathParameters(i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.GET, m.BaseRequestBuilder.UrlTemplate, m.BaseRequestBuilder.PathParameters)
-    if requestConfiguration != nil {
-        if requestConfiguration.QueryParameters != nil {
-            requestInfo.AddQueryParameters(*(requestConfiguration.QueryParameters))
-        }
-        requestInfo.Headers.AddAll(requestConfiguration.Headers)
-        requestInfo.AddRequestOptions(requestConfiguration.Options)
-    }
+    i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ConfigureRequestInformation(requestInfo, requestConfiguration)
     requestInfo.Headers.TryAdd("Accept", "application/vnd.api+json")
     return requestInfo, nil
 }

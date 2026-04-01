@@ -13,13 +13,6 @@ import (
 type ItemCurrentStateVersionOutputsRequestBuilder struct {
     i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.BaseRequestBuilder
 }
-// ItemCurrentStateVersionOutputsRequestBuilderGetRequestConfiguration configuration for the request such as headers, query parameters, and middleware options.
-type ItemCurrentStateVersionOutputsRequestBuilderGetRequestConfiguration struct {
-    // Request headers
-    Headers *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestHeaders
-    // Request options
-    Options []i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestOption
-}
 // NewItemCurrentStateVersionOutputsRequestBuilderInternal instantiates a new ItemCurrentStateVersionOutputsRequestBuilder and sets the default values.
 func NewItemCurrentStateVersionOutputsRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*ItemCurrentStateVersionOutputsRequestBuilder) {
     m := &ItemCurrentStateVersionOutputsRequestBuilder{
@@ -34,33 +27,10 @@ func NewItemCurrentStateVersionOutputsRequestBuilder(rawUrl string, requestAdapt
     return NewItemCurrentStateVersionOutputsRequestBuilderInternal(urlParams, requestAdapter)
 }
 // Get list the current state version outputs for a workspace. Sensitive output values are not revealed and will be returned as null. Organization users who do not have permission to read state versions may use this endpoint to fetch the latest output values for a workspace.
-// Deprecated: This method is obsolete. Use GetAsCurrentStateVersionOutputsGetResponse instead.
-// returns a ItemCurrentStateVersionOutputsResponseable when successful
-// returns a Errors error when the service returns a 503 status code
-// returns a Errors error when the service returns a 4XX or 5XX status code
-func (m *ItemCurrentStateVersionOutputsRequestBuilder) Get(ctx context.Context, requestConfiguration *ItemCurrentStateVersionOutputsRequestBuilderGetRequestConfiguration)(ItemCurrentStateVersionOutputsResponseable, error) {
-    requestInfo, err := m.ToGetRequestInformation(ctx, requestConfiguration);
-    if err != nil {
-        return nil, err
-    }
-    errorMapping := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ErrorMappings {
-        "503": ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.CreateErrorsFromDiscriminatorValue,
-        "XXX": ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.CreateErrorsFromDiscriminatorValue,
-    }
-    res, err := m.BaseRequestBuilder.RequestAdapter.Send(ctx, requestInfo, CreateItemCurrentStateVersionOutputsResponseFromDiscriminatorValue, errorMapping)
-    if err != nil {
-        return nil, err
-    }
-    if res == nil {
-        return nil, nil
-    }
-    return res.(ItemCurrentStateVersionOutputsResponseable), nil
-}
-// GetAsCurrentStateVersionOutputsGetResponse list the current state version outputs for a workspace. Sensitive output values are not revealed and will be returned as null. Organization users who do not have permission to read state versions may use this endpoint to fetch the latest output values for a workspace.
 // returns a ItemCurrentStateVersionOutputsGetResponseable when successful
 // returns a Errors error when the service returns a 503 status code
 // returns a Errors error when the service returns a 4XX or 5XX status code
-func (m *ItemCurrentStateVersionOutputsRequestBuilder) GetAsCurrentStateVersionOutputsGetResponse(ctx context.Context, requestConfiguration *ItemCurrentStateVersionOutputsRequestBuilderGetRequestConfiguration)(ItemCurrentStateVersionOutputsGetResponseable, error) {
+func (m *ItemCurrentStateVersionOutputsRequestBuilder) Get(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(ItemCurrentStateVersionOutputsGetResponseable, error) {
     requestInfo, err := m.ToGetRequestInformation(ctx, requestConfiguration);
     if err != nil {
         return nil, err
@@ -80,12 +50,9 @@ func (m *ItemCurrentStateVersionOutputsRequestBuilder) GetAsCurrentStateVersionO
 }
 // ToGetRequestInformation list the current state version outputs for a workspace. Sensitive output values are not revealed and will be returned as null. Organization users who do not have permission to read state versions may use this endpoint to fetch the latest output values for a workspace.
 // returns a *RequestInformation when successful
-func (m *ItemCurrentStateVersionOutputsRequestBuilder) ToGetRequestInformation(ctx context.Context, requestConfiguration *ItemCurrentStateVersionOutputsRequestBuilderGetRequestConfiguration)(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
+func (m *ItemCurrentStateVersionOutputsRequestBuilder) ToGetRequestInformation(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
     requestInfo := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewRequestInformationWithMethodAndUrlTemplateAndPathParameters(i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.GET, m.BaseRequestBuilder.UrlTemplate, m.BaseRequestBuilder.PathParameters)
-    if requestConfiguration != nil {
-        requestInfo.Headers.AddAll(requestConfiguration.Headers)
-        requestInfo.AddRequestOptions(requestConfiguration.Options)
-    }
+    i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ConfigureRequestInformation(requestInfo, requestConfiguration)
     requestInfo.Headers.TryAdd("Accept", "application/vnd.api+json")
     return requestInfo, nil
 }

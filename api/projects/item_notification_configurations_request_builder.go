@@ -12,20 +12,6 @@ import (
 type ItemNotificationConfigurationsRequestBuilder struct {
     i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.BaseRequestBuilder
 }
-// ItemNotificationConfigurationsRequestBuilderGetRequestConfiguration configuration for the request such as headers, query parameters, and middleware options.
-type ItemNotificationConfigurationsRequestBuilderGetRequestConfiguration struct {
-    // Request headers
-    Headers *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestHeaders
-    // Request options
-    Options []i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestOption
-}
-// ItemNotificationConfigurationsRequestBuilderPostRequestConfiguration configuration for the request such as headers, query parameters, and middleware options.
-type ItemNotificationConfigurationsRequestBuilderPostRequestConfiguration struct {
-    // Request headers
-    Headers *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestHeaders
-    // Request options
-    Options []i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestOption
-}
 // NewItemNotificationConfigurationsRequestBuilderInternal instantiates a new ItemNotificationConfigurationsRequestBuilder and sets the default values.
 func NewItemNotificationConfigurationsRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*ItemNotificationConfigurationsRequestBuilder) {
     m := &ItemNotificationConfigurationsRequestBuilder{
@@ -40,25 +26,8 @@ func NewItemNotificationConfigurationsRequestBuilder(rawUrl string, requestAdapt
     return NewItemNotificationConfigurationsRequestBuilderInternal(urlParams, requestAdapter)
 }
 // Get list all notification configurations for a given project.
-// Deprecated: This method is obsolete. Use GetAsNotificationConfigurationsGetResponse instead.
-// returns a ItemNotificationConfigurationsResponseable when successful
-func (m *ItemNotificationConfigurationsRequestBuilder) Get(ctx context.Context, requestConfiguration *ItemNotificationConfigurationsRequestBuilderGetRequestConfiguration)(ItemNotificationConfigurationsResponseable, error) {
-    requestInfo, err := m.ToGetRequestInformation(ctx, requestConfiguration);
-    if err != nil {
-        return nil, err
-    }
-    res, err := m.BaseRequestBuilder.RequestAdapter.Send(ctx, requestInfo, CreateItemNotificationConfigurationsResponseFromDiscriminatorValue, nil)
-    if err != nil {
-        return nil, err
-    }
-    if res == nil {
-        return nil, nil
-    }
-    return res.(ItemNotificationConfigurationsResponseable), nil
-}
-// GetAsNotificationConfigurationsGetResponse list all notification configurations for a given project.
 // returns a ItemNotificationConfigurationsGetResponseable when successful
-func (m *ItemNotificationConfigurationsRequestBuilder) GetAsNotificationConfigurationsGetResponse(ctx context.Context, requestConfiguration *ItemNotificationConfigurationsRequestBuilderGetRequestConfiguration)(ItemNotificationConfigurationsGetResponseable, error) {
+func (m *ItemNotificationConfigurationsRequestBuilder) Get(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(ItemNotificationConfigurationsGetResponseable, error) {
     requestInfo, err := m.ToGetRequestInformation(ctx, requestConfiguration);
     if err != nil {
         return nil, err
@@ -73,25 +42,8 @@ func (m *ItemNotificationConfigurationsRequestBuilder) GetAsNotificationConfigur
     return res.(ItemNotificationConfigurationsGetResponseable), nil
 }
 // Post create a new notification configuration for a given project.
-// Deprecated: This method is obsolete. Use PostAsNotificationConfigurationsPostResponse instead.
-// returns a ItemNotificationConfigurationsResponseable when successful
-func (m *ItemNotificationConfigurationsRequestBuilder) Post(ctx context.Context, body ItemNotificationConfigurationsPostRequestBodyable, requestConfiguration *ItemNotificationConfigurationsRequestBuilderPostRequestConfiguration)(ItemNotificationConfigurationsResponseable, error) {
-    requestInfo, err := m.ToPostRequestInformation(ctx, body, requestConfiguration);
-    if err != nil {
-        return nil, err
-    }
-    res, err := m.BaseRequestBuilder.RequestAdapter.Send(ctx, requestInfo, CreateItemNotificationConfigurationsResponseFromDiscriminatorValue, nil)
-    if err != nil {
-        return nil, err
-    }
-    if res == nil {
-        return nil, nil
-    }
-    return res.(ItemNotificationConfigurationsResponseable), nil
-}
-// PostAsNotificationConfigurationsPostResponse create a new notification configuration for a given project.
 // returns a ItemNotificationConfigurationsPostResponseable when successful
-func (m *ItemNotificationConfigurationsRequestBuilder) PostAsNotificationConfigurationsPostResponse(ctx context.Context, body ItemNotificationConfigurationsPostRequestBodyable, requestConfiguration *ItemNotificationConfigurationsRequestBuilderPostRequestConfiguration)(ItemNotificationConfigurationsPostResponseable, error) {
+func (m *ItemNotificationConfigurationsRequestBuilder) Post(ctx context.Context, body ItemNotificationConfigurationsPostRequestBodyable, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(ItemNotificationConfigurationsPostResponseable, error) {
     requestInfo, err := m.ToPostRequestInformation(ctx, body, requestConfiguration);
     if err != nil {
         return nil, err
@@ -107,23 +59,17 @@ func (m *ItemNotificationConfigurationsRequestBuilder) PostAsNotificationConfigu
 }
 // ToGetRequestInformation list all notification configurations for a given project.
 // returns a *RequestInformation when successful
-func (m *ItemNotificationConfigurationsRequestBuilder) ToGetRequestInformation(ctx context.Context, requestConfiguration *ItemNotificationConfigurationsRequestBuilderGetRequestConfiguration)(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
+func (m *ItemNotificationConfigurationsRequestBuilder) ToGetRequestInformation(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
     requestInfo := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewRequestInformationWithMethodAndUrlTemplateAndPathParameters(i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.GET, m.BaseRequestBuilder.UrlTemplate, m.BaseRequestBuilder.PathParameters)
-    if requestConfiguration != nil {
-        requestInfo.Headers.AddAll(requestConfiguration.Headers)
-        requestInfo.AddRequestOptions(requestConfiguration.Options)
-    }
+    i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ConfigureRequestInformation(requestInfo, requestConfiguration)
     requestInfo.Headers.TryAdd("Accept", "application/vnd.api+json")
     return requestInfo, nil
 }
 // ToPostRequestInformation create a new notification configuration for a given project.
 // returns a *RequestInformation when successful
-func (m *ItemNotificationConfigurationsRequestBuilder) ToPostRequestInformation(ctx context.Context, body ItemNotificationConfigurationsPostRequestBodyable, requestConfiguration *ItemNotificationConfigurationsRequestBuilderPostRequestConfiguration)(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
+func (m *ItemNotificationConfigurationsRequestBuilder) ToPostRequestInformation(ctx context.Context, body ItemNotificationConfigurationsPostRequestBodyable, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
     requestInfo := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewRequestInformationWithMethodAndUrlTemplateAndPathParameters(i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.POST, m.BaseRequestBuilder.UrlTemplate, m.BaseRequestBuilder.PathParameters)
-    if requestConfiguration != nil {
-        requestInfo.Headers.AddAll(requestConfiguration.Headers)
-        requestInfo.AddRequestOptions(requestConfiguration.Options)
-    }
+    i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ConfigureRequestInformation(requestInfo, requestConfiguration)
     requestInfo.Headers.TryAdd("Accept", "application/vnd.api+json")
     err := requestInfo.SetContentFromParsable(ctx, m.BaseRequestBuilder.RequestAdapter, "application/vnd.api+json", body)
     if err != nil {

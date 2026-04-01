@@ -9,6 +9,7 @@ import (
 	"github.com/hashicorp/cli"
 	"github.com/hashicorp/go-tfe"
 	"github.com/hashicorp/go-tfe/api/organizations"
+	abstractions "github.com/microsoft/kiota-abstractions-go"
 	"github.com/microsoft/kiota-abstractions-go/serialization"
 )
 
@@ -43,13 +44,13 @@ func (organizationListCommand) Run(args []string) int {
 
 	// Include subscriptions in the response by setting the include query parameter
 	includeSubscriptions := organizations.SUBSCRIPTION_GETINCLUDEQUERYPARAMETERTYPE
-	c := organizations.OrganizationsRequestBuilderGetRequestConfiguration{
+	c := abstractions.RequestConfiguration[organizations.OrganizationsRequestBuilderGetQueryParameters]{
 		QueryParameters: &organizations.OrganizationsRequestBuilderGetQueryParameters{
-			IncludeAsGetIncludeQueryParameterType: &includeSubscriptions,
+			Include: &includeSubscriptions,
 		},
 	}
 
-	response, err := client.API.Organizations().GetAsOrganizationsGetResponse(ctx, &c)
+	response, err := client.API.Organizations().Get(ctx, &c)
 	if err != nil {
 		log.Fatalf("API returned an error status: %s", tfe.SummarizeAPIErrors(err))
 		return 1

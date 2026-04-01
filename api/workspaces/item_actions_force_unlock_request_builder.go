@@ -13,13 +13,6 @@ import (
 type ItemActionsForceUnlockRequestBuilder struct {
     i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.BaseRequestBuilder
 }
-// ItemActionsForceUnlockRequestBuilderPostRequestConfiguration configuration for the request such as headers, query parameters, and middleware options.
-type ItemActionsForceUnlockRequestBuilderPostRequestConfiguration struct {
-    // Request headers
-    Headers *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestHeaders
-    // Request options
-    Options []i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestOption
-}
 // NewItemActionsForceUnlockRequestBuilderInternal instantiates a new ItemActionsForceUnlockRequestBuilder and sets the default values.
 func NewItemActionsForceUnlockRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*ItemActionsForceUnlockRequestBuilder) {
     m := &ItemActionsForceUnlockRequestBuilder{
@@ -34,33 +27,10 @@ func NewItemActionsForceUnlockRequestBuilder(rawUrl string, requestAdapter i2ae4
     return NewItemActionsForceUnlockRequestBuilderInternal(urlParams, requestAdapter)
 }
 // Post forcibly unlock a workspace regardless of who locked it. This action requires elevated permissions and should be used with caution.
-// Deprecated: This method is obsolete. Use PostAsForceUnlockPostResponse instead.
-// returns a ItemActionsForceUnlockResponseable when successful
-// returns a Errors error when the service returns a 404 status code
-// returns a Errors error when the service returns a 4XX or 5XX status code
-func (m *ItemActionsForceUnlockRequestBuilder) Post(ctx context.Context, requestConfiguration *ItemActionsForceUnlockRequestBuilderPostRequestConfiguration)(ItemActionsForceUnlockResponseable, error) {
-    requestInfo, err := m.ToPostRequestInformation(ctx, requestConfiguration);
-    if err != nil {
-        return nil, err
-    }
-    errorMapping := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ErrorMappings {
-        "404": ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.CreateErrorsFromDiscriminatorValue,
-        "XXX": ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.CreateErrorsFromDiscriminatorValue,
-    }
-    res, err := m.BaseRequestBuilder.RequestAdapter.Send(ctx, requestInfo, CreateItemActionsForceUnlockResponseFromDiscriminatorValue, errorMapping)
-    if err != nil {
-        return nil, err
-    }
-    if res == nil {
-        return nil, nil
-    }
-    return res.(ItemActionsForceUnlockResponseable), nil
-}
-// PostAsForceUnlockPostResponse forcibly unlock a workspace regardless of who locked it. This action requires elevated permissions and should be used with caution.
 // returns a ItemActionsForceUnlockPostResponseable when successful
 // returns a Errors error when the service returns a 404 status code
 // returns a Errors error when the service returns a 4XX or 5XX status code
-func (m *ItemActionsForceUnlockRequestBuilder) PostAsForceUnlockPostResponse(ctx context.Context, requestConfiguration *ItemActionsForceUnlockRequestBuilderPostRequestConfiguration)(ItemActionsForceUnlockPostResponseable, error) {
+func (m *ItemActionsForceUnlockRequestBuilder) Post(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(ItemActionsForceUnlockPostResponseable, error) {
     requestInfo, err := m.ToPostRequestInformation(ctx, requestConfiguration);
     if err != nil {
         return nil, err
@@ -80,12 +50,9 @@ func (m *ItemActionsForceUnlockRequestBuilder) PostAsForceUnlockPostResponse(ctx
 }
 // ToPostRequestInformation forcibly unlock a workspace regardless of who locked it. This action requires elevated permissions and should be used with caution.
 // returns a *RequestInformation when successful
-func (m *ItemActionsForceUnlockRequestBuilder) ToPostRequestInformation(ctx context.Context, requestConfiguration *ItemActionsForceUnlockRequestBuilderPostRequestConfiguration)(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
+func (m *ItemActionsForceUnlockRequestBuilder) ToPostRequestInformation(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
     requestInfo := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewRequestInformationWithMethodAndUrlTemplateAndPathParameters(i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.POST, m.BaseRequestBuilder.UrlTemplate, m.BaseRequestBuilder.PathParameters)
-    if requestConfiguration != nil {
-        requestInfo.Headers.AddAll(requestConfiguration.Headers)
-        requestInfo.AddRequestOptions(requestConfiguration.Options)
-    }
+    i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ConfigureRequestInformation(requestInfo, requestConfiguration)
     requestInfo.Headers.TryAdd("Accept", "application/vnd.api+json")
     return requestInfo, nil
 }

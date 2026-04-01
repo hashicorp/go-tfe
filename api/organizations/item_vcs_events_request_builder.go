@@ -31,15 +31,6 @@ type ItemVcsEventsRequestBuilderGetQueryParameters struct {
     // The number of items to retrieve per page. Defaults to 20.
     Pagesize *int32 `uriparametername:"page%5Bsize%5D"`
 }
-// ItemVcsEventsRequestBuilderGetRequestConfiguration configuration for the request such as headers, query parameters, and middleware options.
-type ItemVcsEventsRequestBuilderGetRequestConfiguration struct {
-    // Request headers
-    Headers *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestHeaders
-    // Request options
-    Options []i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestOption
-    // Request query parameters
-    QueryParameters *ItemVcsEventsRequestBuilderGetQueryParameters
-}
 // NewItemVcsEventsRequestBuilderInternal instantiates a new ItemVcsEventsRequestBuilder and sets the default values.
 func NewItemVcsEventsRequestBuilderInternal(pathParameters map[string]string, requestAdapter i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestAdapter)(*ItemVcsEventsRequestBuilder) {
     m := &ItemVcsEventsRequestBuilder{
@@ -54,30 +45,9 @@ func NewItemVcsEventsRequestBuilder(rawUrl string, requestAdapter i2ae4187f7daee
     return NewItemVcsEventsRequestBuilderInternal(urlParams, requestAdapter)
 }
 // Get list VCS events for an organization.
-// Deprecated: This method is obsolete. Use GetAsVcsEventsGetResponse instead.
-// returns a ItemVcsEventsResponseable when successful
-// returns a Errors error when the service returns a 4XX or 5XX status code
-func (m *ItemVcsEventsRequestBuilder) Get(ctx context.Context, requestConfiguration *ItemVcsEventsRequestBuilderGetRequestConfiguration)(ItemVcsEventsResponseable, error) {
-    requestInfo, err := m.ToGetRequestInformation(ctx, requestConfiguration);
-    if err != nil {
-        return nil, err
-    }
-    errorMapping := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ErrorMappings {
-        "XXX": ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.CreateErrorsFromDiscriminatorValue,
-    }
-    res, err := m.BaseRequestBuilder.RequestAdapter.Send(ctx, requestInfo, CreateItemVcsEventsResponseFromDiscriminatorValue, errorMapping)
-    if err != nil {
-        return nil, err
-    }
-    if res == nil {
-        return nil, nil
-    }
-    return res.(ItemVcsEventsResponseable), nil
-}
-// GetAsVcsEventsGetResponse list VCS events for an organization.
 // returns a ItemVcsEventsGetResponseable when successful
 // returns a Errors error when the service returns a 4XX or 5XX status code
-func (m *ItemVcsEventsRequestBuilder) GetAsVcsEventsGetResponse(ctx context.Context, requestConfiguration *ItemVcsEventsRequestBuilderGetRequestConfiguration)(ItemVcsEventsGetResponseable, error) {
+func (m *ItemVcsEventsRequestBuilder) Get(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[ItemVcsEventsRequestBuilderGetQueryParameters])(ItemVcsEventsGetResponseable, error) {
     requestInfo, err := m.ToGetRequestInformation(ctx, requestConfiguration);
     if err != nil {
         return nil, err
@@ -96,15 +66,9 @@ func (m *ItemVcsEventsRequestBuilder) GetAsVcsEventsGetResponse(ctx context.Cont
 }
 // ToGetRequestInformation list VCS events for an organization.
 // returns a *RequestInformation when successful
-func (m *ItemVcsEventsRequestBuilder) ToGetRequestInformation(ctx context.Context, requestConfiguration *ItemVcsEventsRequestBuilderGetRequestConfiguration)(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
+func (m *ItemVcsEventsRequestBuilder) ToGetRequestInformation(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[ItemVcsEventsRequestBuilderGetQueryParameters])(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
     requestInfo := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewRequestInformationWithMethodAndUrlTemplateAndPathParameters(i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.GET, m.BaseRequestBuilder.UrlTemplate, m.BaseRequestBuilder.PathParameters)
-    if requestConfiguration != nil {
-        if requestConfiguration.QueryParameters != nil {
-            requestInfo.AddQueryParameters(*(requestConfiguration.QueryParameters))
-        }
-        requestInfo.Headers.AddAll(requestConfiguration.Headers)
-        requestInfo.AddRequestOptions(requestConfiguration.Options)
-    }
+    i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ConfigureRequestInformation(requestInfo, requestConfiguration)
     requestInfo.Headers.TryAdd("Accept", "application/vnd.api+json")
     return requestInfo, nil
 }

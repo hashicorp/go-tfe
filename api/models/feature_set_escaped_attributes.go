@@ -36,8 +36,6 @@ type FeatureSet_attributes struct {
     hyok *bool
     // Unique identifier for the feature set
     identifier *string
-    // Whether the feature set includes action invocations
-    invokeTerraformAction *bool
     // Whether this is a current/active feature set
     isCurrent *bool
     // Whether this is a free tier feature set
@@ -92,6 +90,8 @@ type FeatureSet_attributes struct {
     stacks *bool
     // Whether the feature set includes teams
     teams *bool
+    // Whether the feature set includes Terraform Actions features
+    terraformActions *bool
     // Maximum number of users (null means unlimited)
     userLimit *float64
     // Whether the feature set uses HCP RUM billing resource
@@ -301,16 +301,6 @@ func (m *FeatureSet_attributes) GetFieldDeserializers()(map[string]func(i878a80d
         }
         if val != nil {
             m.SetIdentifier(val)
-        }
-        return nil
-    }
-    res["invoke-terraform-action"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetBoolValue()
-        if err != nil {
-            return err
-        }
-        if val != nil {
-            m.SetInvokeTerraformAction(val)
         }
         return nil
     }
@@ -584,6 +574,16 @@ func (m *FeatureSet_attributes) GetFieldDeserializers()(map[string]func(i878a80d
         }
         return nil
     }
+    res["terraform-actions"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetBoolValue()
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            m.SetTerraformActions(val)
+        }
+        return nil
+    }
     res["user-limit"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
         val, err := n.GetFloat64Value()
         if err != nil {
@@ -650,11 +650,6 @@ func (m *FeatureSet_attributes) GetHyok()(*bool) {
 // returns a *string when successful
 func (m *FeatureSet_attributes) GetIdentifier()(*string) {
     return m.identifier
-}
-// GetInvokeTerraformAction gets the invoke-terraform-action property value. Whether the feature set includes action invocations
-// returns a *bool when successful
-func (m *FeatureSet_attributes) GetInvokeTerraformAction()(*bool) {
-    return m.invokeTerraformAction
 }
 // GetIsCurrent gets the is-current property value. Whether this is a current/active feature set
 // returns a *bool when successful
@@ -791,6 +786,11 @@ func (m *FeatureSet_attributes) GetStacks()(*bool) {
 func (m *FeatureSet_attributes) GetTeams()(*bool) {
     return m.teams
 }
+// GetTerraformActions gets the terraform-actions property value. Whether the feature set includes Terraform Actions features
+// returns a *bool when successful
+func (m *FeatureSet_attributes) GetTerraformActions()(*bool) {
+    return m.terraformActions
+}
 // GetUserLimit gets the user-limit property value. Maximum number of users (null means unlimited)
 // returns a *float64 when successful
 func (m *FeatureSet_attributes) GetUserLimit()(*float64) {
@@ -892,12 +892,6 @@ func (m *FeatureSet_attributes) Serialize(writer i878a80d2330e89d26896388a3f487e
     }
     {
         err := writer.WriteStringValue("identifier", m.GetIdentifier())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteBoolValue("invoke-terraform-action", m.GetInvokeTerraformAction())
         if err != nil {
             return err
         }
@@ -1065,6 +1059,12 @@ func (m *FeatureSet_attributes) Serialize(writer i878a80d2330e89d26896388a3f487e
         }
     }
     {
+        err := writer.WriteBoolValue("terraform-actions", m.GetTerraformActions())
+        if err != nil {
+            return err
+        }
+    }
+    {
         err := writer.WriteFloat64Value("user-limit", m.GetUserLimit())
         if err != nil {
             return err
@@ -1157,10 +1157,6 @@ func (m *FeatureSet_attributes) SetHyok(value *bool)() {
 // SetIdentifier sets the identifier property value. Unique identifier for the feature set
 func (m *FeatureSet_attributes) SetIdentifier(value *string)() {
     m.identifier = value
-}
-// SetInvokeTerraformAction sets the invoke-terraform-action property value. Whether the feature set includes action invocations
-func (m *FeatureSet_attributes) SetInvokeTerraformAction(value *bool)() {
-    m.invokeTerraformAction = value
 }
 // SetIsCurrent sets the is-current property value. Whether this is a current/active feature set
 func (m *FeatureSet_attributes) SetIsCurrent(value *bool)() {
@@ -1270,6 +1266,10 @@ func (m *FeatureSet_attributes) SetStacks(value *bool)() {
 func (m *FeatureSet_attributes) SetTeams(value *bool)() {
     m.teams = value
 }
+// SetTerraformActions sets the terraform-actions property value. Whether the feature set includes Terraform Actions features
+func (m *FeatureSet_attributes) SetTerraformActions(value *bool)() {
+    m.terraformActions = value
+}
 // SetUserLimit sets the user-limit property value. Maximum number of users (null means unlimited)
 func (m *FeatureSet_attributes) SetUserLimit(value *float64)() {
     m.userLimit = value
@@ -1306,7 +1306,6 @@ type FeatureSet_attributesable interface {
     GetGlobalRunTasks()(*bool)
     GetHyok()(*bool)
     GetIdentifier()(*string)
-    GetInvokeTerraformAction()(*bool)
     GetIsCurrent()(*bool)
     GetIsFreeTier()(*bool)
     GetIsManagedResourcePlan()(*bool)
@@ -1334,6 +1333,7 @@ type FeatureSet_attributesable interface {
     GetSso()(*bool)
     GetStacks()(*bool)
     GetTeams()(*bool)
+    GetTerraformActions()(*bool)
     GetUserLimit()(*float64)
     GetUsesHcpRumBillingResource()(*bool)
     GetVersionedPolicySetLimit()(*float64)
@@ -1352,7 +1352,6 @@ type FeatureSet_attributesable interface {
     SetGlobalRunTasks(value *bool)()
     SetHyok(value *bool)()
     SetIdentifier(value *string)()
-    SetInvokeTerraformAction(value *bool)()
     SetIsCurrent(value *bool)()
     SetIsFreeTier(value *bool)()
     SetIsManagedResourcePlan(value *bool)()
@@ -1380,6 +1379,7 @@ type FeatureSet_attributesable interface {
     SetSso(value *bool)()
     SetStacks(value *bool)()
     SetTeams(value *bool)()
+    SetTerraformActions(value *bool)()
     SetUserLimit(value *float64)()
     SetUsesHcpRumBillingResource(value *bool)()
     SetVersionedPolicySetLimit(value *float64)()

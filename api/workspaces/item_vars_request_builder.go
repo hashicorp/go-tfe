@@ -13,20 +13,6 @@ import (
 type ItemVarsRequestBuilder struct {
     i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.BaseRequestBuilder
 }
-// ItemVarsRequestBuilderGetRequestConfiguration configuration for the request such as headers, query parameters, and middleware options.
-type ItemVarsRequestBuilderGetRequestConfiguration struct {
-    // Request headers
-    Headers *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestHeaders
-    // Request options
-    Options []i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestOption
-}
-// ItemVarsRequestBuilderPostRequestConfiguration configuration for the request such as headers, query parameters, and middleware options.
-type ItemVarsRequestBuilderPostRequestConfiguration struct {
-    // Request headers
-    Headers *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestHeaders
-    // Request options
-    Options []i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestOption
-}
 // ById gets an item from the github.com/hashicorp/go-tfe/api.workspaces.item.vars.item collection
 // returns a *ItemVarsVarsItemRequestBuilder when successful
 func (m *ItemVarsRequestBuilder) ById(id string)(*ItemVarsVarsItemRequestBuilder) {
@@ -53,30 +39,9 @@ func NewItemVarsRequestBuilder(rawUrl string, requestAdapter i2ae4187f7daee26337
     return NewItemVarsRequestBuilderInternal(urlParams, requestAdapter)
 }
 // Get list variables for a workspace.
-// Deprecated: This method is obsolete. Use GetAsVarsGetResponse instead.
-// returns a ItemVarsResponseable when successful
-// returns a Errors error when the service returns a 4XX or 5XX status code
-func (m *ItemVarsRequestBuilder) Get(ctx context.Context, requestConfiguration *ItemVarsRequestBuilderGetRequestConfiguration)(ItemVarsResponseable, error) {
-    requestInfo, err := m.ToGetRequestInformation(ctx, requestConfiguration);
-    if err != nil {
-        return nil, err
-    }
-    errorMapping := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ErrorMappings {
-        "XXX": ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.CreateErrorsFromDiscriminatorValue,
-    }
-    res, err := m.BaseRequestBuilder.RequestAdapter.Send(ctx, requestInfo, CreateItemVarsResponseFromDiscriminatorValue, errorMapping)
-    if err != nil {
-        return nil, err
-    }
-    if res == nil {
-        return nil, nil
-    }
-    return res.(ItemVarsResponseable), nil
-}
-// GetAsVarsGetResponse list variables for a workspace.
 // returns a ItemVarsGetResponseable when successful
 // returns a Errors error when the service returns a 4XX or 5XX status code
-func (m *ItemVarsRequestBuilder) GetAsVarsGetResponse(ctx context.Context, requestConfiguration *ItemVarsRequestBuilderGetRequestConfiguration)(ItemVarsGetResponseable, error) {
+func (m *ItemVarsRequestBuilder) Get(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(ItemVarsGetResponseable, error) {
     requestInfo, err := m.ToGetRequestInformation(ctx, requestConfiguration);
     if err != nil {
         return nil, err
@@ -94,30 +59,9 @@ func (m *ItemVarsRequestBuilder) GetAsVarsGetResponse(ctx context.Context, reque
     return res.(ItemVarsGetResponseable), nil
 }
 // Post create a variable for a workspace.
-// Deprecated: This method is obsolete. Use PostAsVarsPostResponse instead.
-// returns a ItemVarsResponseable when successful
-// returns a Errors error when the service returns a 4XX or 5XX status code
-func (m *ItemVarsRequestBuilder) Post(ctx context.Context, body ItemVarsPostRequestBodyable, requestConfiguration *ItemVarsRequestBuilderPostRequestConfiguration)(ItemVarsResponseable, error) {
-    requestInfo, err := m.ToPostRequestInformation(ctx, body, requestConfiguration);
-    if err != nil {
-        return nil, err
-    }
-    errorMapping := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ErrorMappings {
-        "XXX": ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.CreateErrorsFromDiscriminatorValue,
-    }
-    res, err := m.BaseRequestBuilder.RequestAdapter.Send(ctx, requestInfo, CreateItemVarsResponseFromDiscriminatorValue, errorMapping)
-    if err != nil {
-        return nil, err
-    }
-    if res == nil {
-        return nil, nil
-    }
-    return res.(ItemVarsResponseable), nil
-}
-// PostAsVarsPostResponse create a variable for a workspace.
 // returns a ItemVarsPostResponseable when successful
 // returns a Errors error when the service returns a 4XX or 5XX status code
-func (m *ItemVarsRequestBuilder) PostAsVarsPostResponse(ctx context.Context, body ItemVarsPostRequestBodyable, requestConfiguration *ItemVarsRequestBuilderPostRequestConfiguration)(ItemVarsPostResponseable, error) {
+func (m *ItemVarsRequestBuilder) Post(ctx context.Context, body ItemVarsPostRequestBodyable, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(ItemVarsPostResponseable, error) {
     requestInfo, err := m.ToPostRequestInformation(ctx, body, requestConfiguration);
     if err != nil {
         return nil, err
@@ -136,23 +80,17 @@ func (m *ItemVarsRequestBuilder) PostAsVarsPostResponse(ctx context.Context, bod
 }
 // ToGetRequestInformation list variables for a workspace.
 // returns a *RequestInformation when successful
-func (m *ItemVarsRequestBuilder) ToGetRequestInformation(ctx context.Context, requestConfiguration *ItemVarsRequestBuilderGetRequestConfiguration)(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
+func (m *ItemVarsRequestBuilder) ToGetRequestInformation(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
     requestInfo := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewRequestInformationWithMethodAndUrlTemplateAndPathParameters(i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.GET, m.BaseRequestBuilder.UrlTemplate, m.BaseRequestBuilder.PathParameters)
-    if requestConfiguration != nil {
-        requestInfo.Headers.AddAll(requestConfiguration.Headers)
-        requestInfo.AddRequestOptions(requestConfiguration.Options)
-    }
+    i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ConfigureRequestInformation(requestInfo, requestConfiguration)
     requestInfo.Headers.TryAdd("Accept", "application/vnd.api+json")
     return requestInfo, nil
 }
 // ToPostRequestInformation create a variable for a workspace.
 // returns a *RequestInformation when successful
-func (m *ItemVarsRequestBuilder) ToPostRequestInformation(ctx context.Context, body ItemVarsPostRequestBodyable, requestConfiguration *ItemVarsRequestBuilderPostRequestConfiguration)(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
+func (m *ItemVarsRequestBuilder) ToPostRequestInformation(ctx context.Context, body ItemVarsPostRequestBodyable, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(*i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestInformation, error) {
     requestInfo := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.NewRequestInformationWithMethodAndUrlTemplateAndPathParameters(i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.POST, m.BaseRequestBuilder.UrlTemplate, m.BaseRequestBuilder.PathParameters)
-    if requestConfiguration != nil {
-        requestInfo.Headers.AddAll(requestConfiguration.Headers)
-        requestInfo.AddRequestOptions(requestConfiguration.Options)
-    }
+    i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ConfigureRequestInformation(requestInfo, requestConfiguration)
     requestInfo.Headers.TryAdd("Accept", "application/vnd.api+json")
     err := requestInfo.SetContentFromParsable(ctx, m.BaseRequestBuilder.RequestAdapter, "application/vnd.api+json", body)
     if err != nil {
