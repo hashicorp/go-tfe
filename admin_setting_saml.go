@@ -51,6 +51,7 @@ type AdminSAMLSetting struct {
 	PrivateKey                string `jsonapi:"attr,private-key"`
 	SignatureSigningMethod    string `jsonapi:"attr,signature-signing-method"`
 	SignatureDigestMethod     string `jsonapi:"attr,signature-digest-method"`
+	ProviderType              string `jsonapi:"attr,provider-type"`
 }
 
 // Read returns the SAML settings.
@@ -90,6 +91,7 @@ type AdminSAMLSettingsUpdateOptions struct {
 	WantAssertionsSigned      *bool   `jsonapi:"attr,want-assertions-signed,omitempty"`
 	SignatureSigningMethod    *string `jsonapi:"attr,signature-signing-method,omitempty"`
 	SignatureDigestMethod     *string `jsonapi:"attr,signature-digest-method,omitempty"`
+	ProviderType              *string `jsonapi:"attr,provider-type,omitempty"`
 }
 
 // Update updates the SAML settings.
