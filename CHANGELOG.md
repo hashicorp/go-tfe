@@ -1,5 +1,8 @@
 # Unreleased
 
+## Enhancements
+* Adds the `ProviderType` field to `AdminSAMLSetting` and `AdminSAMLSettingsUpdateOptions` to support the `provider-type` SAML setting.
+
 # v1.103.0
 
 ## Enhancements
