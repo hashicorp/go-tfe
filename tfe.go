@@ -1099,22 +1099,33 @@ func checkResponseCode(r *http.Response) error {
 func decodeErrorPayload(r *http.Response) ([]string, error) {
 	// Decode the error payload.
 	var errs []string
-	errPayload := &jsonapi.ErrorsPayload{}
-	err := json.NewDecoder(r.Body).Decode(errPayload)
-	if err != nil || len(errPayload.Errors) == 0 {
+	body, err := io.ReadAll(r.Body)
+	if err != nil {
 		return errs, errors.New(r.Status)
 	}
 
-	// Parse and format the errors.
-	for _, e := range errPayload.Errors {
-		if e.Detail == "" {
-			errs = append(errs, e.Title)
-		} else {
-			errs = append(errs, fmt.Sprintf("%s\n\n%s", e.Title, e.Detail))
+	// attempt JSON:API error payloads unwrapping
+	errPayload := &jsonapi.ErrorsPayload{}
+	if err := json.Unmarshal(body, errPayload); err == nil && len(errPayload.Errors) > 0 {
+		for _, e := range errPayload.Errors {
+			if e.Detail == "" {
+				errs = append(errs, e.Title)
+			} else {
+				errs = append(errs, fmt.Sprintf("%s\n\n%s", e.Title, e.Detail))
+			}
 		}
+		return errs, nil
 	}
 
-	return errs, nil
+	// attempt JSON error payloads unwrapping: like {"errors":["..."]}.
+	var rawErrs struct {
+		Errors []string `json:"errors"`
+	}
+	if err := json.Unmarshal(body, &rawErrs); err == nil && len(rawErrs.Errors) > 0 {
+		return rawErrs.Errors, nil
+	}
+
+	return errs, errors.New(r.Status)
 }
 
 func errorPayloadContains(payloadErrors []string, match string) bool {
