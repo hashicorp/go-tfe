@@ -5,7 +5,6 @@ package tfe
 
 import (
 	"context"
-	"encoding/json"
 	"fmt"
 	"net/url"
 	"time"
@@ -47,12 +46,13 @@ type OrganizationTokenTTLPolicyListOptions struct {
 }
 
 type OrganizationTokenTTLPolicyUpdateItem struct {
-	TokenType string `json:"token_type"`
-	MaxTTLMs  int64  `json:"max_ttl_ms"`
+	TokenType string `jsonapi:"attr,token-type"`
+	MaxTTLMs  int64  `jsonapi:"attr,max-ttl-ms"`
 }
 
 type OrganizationTokenTTLPolicyUpdateOptions struct {
-	Policies []OrganizationTokenTTLPolicyUpdateItem `json:"token_ttl_policies"`
+	Type     string                                 `jsonapi:"primary,organization-token-ttl-policies"`
+	Policies []OrganizationTokenTTLPolicyUpdateItem `jsonapi:"attr,token-ttl-policies"`
 }
 
 func (s *organizationTokenTTLPolicies) List(ctx context.Context, organization string, options *OrganizationTokenTTLPolicyListOptions) (*OrganizationTokenTTLPolicyList, error) {
@@ -84,18 +84,11 @@ func (s *organizationTokenTTLPolicies) Update(ctx context.Context, organization 
 		return nil, ErrRequiredPolicies
 	}
 
-	body, err := json.Marshal(options)
-	if err != nil {
-		return nil, err
-	}
-
 	u := fmt.Sprintf("organizations/%s/token-ttl-policies", url.PathEscape(organization))
-	req, err := s.client.NewRequest("PUT", u, body)
+	req, err := s.client.NewRequest("PATCH", u, &options)
 	if err != nil {
 		return nil, err
 	}
-	req.Header.Set("Content-Type", ContentTypeJSONAPI)
-	req.Header.Set("Accept", ContentTypeJSONAPI)
 
 	policyList := &OrganizationTokenTTLPolicyList{}
 	err = req.Do(ctx, policyList)
