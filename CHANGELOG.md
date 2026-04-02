@@ -1,5 +1,9 @@
 # Unreleased
 
+## Bug Fixes
+* Improve API error handling to decode both JSON:API error objects and regular JSON errors arrays by @uk1288 [#1304](https://github.com/hashicorp/go-tfe/pull/1304)
+
+
 # v1.103.0
 
 ## Enhancements
