@@ -11,6 +11,18 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
+const (
+	ttl1HourInMs         int64 = 3600000
+	ttl12HoursInMs       int64 = 43200000
+	ttl1DayInMs          int64 = 86400000
+	ttl7DaysInMs         int64 = 604800000
+	ttl30DaysInMs        int64 = 2592000000
+	ttl6MonthsInMs       int64 = 15768000000
+	ttl1YearInMs         int64 = 31536000000
+	ttl2YearsInMs        int64 = 63072000000
+	ttl2YearsDefaultInMs int64 = 63113904000 // Default 2-year TTL used by the API
+)
+
 func TestOrganizationTokenTTLPoliciesList(t *testing.T) {
 	skipUnlessBeta(t)
 	t.Parallel()
@@ -43,12 +55,23 @@ func TestOrganizationTokenTTLPoliciesUpdate(t *testing.T) {
 	orgTest, orgTestCleanup := createOrganization(t, client)
 	defer orgTestCleanup()
 
+	setupOptions := OrganizationTokenTTLPolicyUpdateOptions{
+		Policies: []OrganizationTokenTTLPolicyUpdateItem{
+			{TokenType: TokenTypeOrganization, MaxTTLMs: ttl2YearsDefaultInMs},
+			{TokenType: TokenTypeTeam, MaxTTLMs: ttl2YearsDefaultInMs},
+			{TokenType: TokenTypeUser, MaxTTLMs: ttl2YearsDefaultInMs},
+			{TokenType: TokenTypeAuditTrails, MaxTTLMs: ttl2YearsDefaultInMs},
+		},
+	}
+	_, err := client.OrganizationTokenTTLPolicies.Update(ctx, orgTest.Name, setupOptions)
+	require.NoError(t, err, "Failed to create initial policies")
+
 	t.Run("update single policy", func(t *testing.T) {
 		options := OrganizationTokenTTLPolicyUpdateOptions{
 			Policies: []OrganizationTokenTTLPolicyUpdateItem{
 				{
 					TokenType: TokenTypeOrganization,
-					MaxTTLMs:  86400000, // 1 day in milliseconds
+					MaxTTLMs:  ttl1DayInMs,
 				},
 			},
 		}
@@ -68,7 +91,7 @@ func TestOrganizationTokenTTLPoliciesUpdate(t *testing.T) {
 		}
 		require.NotNil(t, orgPolicy, "Organization token policy should be present")
 		assert.Equal(t, TokenTypeOrganization, orgPolicy.TokenType)
-		assert.Equal(t, int64(86400000), orgPolicy.MaxTTLMs)
+		assert.Equal(t, ttl1DayInMs, orgPolicy.MaxTTLMs)
 		assert.NotEmpty(t, orgPolicy.ID)
 	})
 
@@ -77,15 +100,15 @@ func TestOrganizationTokenTTLPoliciesUpdate(t *testing.T) {
 			Policies: []OrganizationTokenTTLPolicyUpdateItem{
 				{
 					TokenType: TokenTypeOrganization,
-					MaxTTLMs:  31536000000, // 1 year
+					MaxTTLMs:  ttl1YearInMs,
 				},
 				{
 					TokenType: TokenTypeTeam,
-					MaxTTLMs:  15768000000, // 6 months
+					MaxTTLMs:  ttl6MonthsInMs,
 				},
 				{
 					TokenType: TokenTypeUser,
-					MaxTTLMs:  2592000000, // 30 days
+					MaxTTLMs:  ttl30DaysInMs,
 				},
 			},
 		}
@@ -96,7 +119,7 @@ func TestOrganizationTokenTTLPoliciesUpdate(t *testing.T) {
 		require.Len(t, policies, 4) // API returns all 4 token type policies
 
 		// Build a map of returned policies by token type
-		policyMap := make(map[string]*OrganizationTokenTTLPolicy)
+		policyMap := make(map[TokenType]*OrganizationTokenTTLPolicy)
 		for _, policy := range policies {
 			policyMap[policy.TokenType] = policy
 			assert.NotEmpty(t, policy.ID)
@@ -105,26 +128,26 @@ func TestOrganizationTokenTTLPoliciesUpdate(t *testing.T) {
 
 		// Verify the three policies we updated have the correct values
 		require.Contains(t, policyMap, TokenTypeOrganization)
-		assert.Equal(t, int64(31536000000), policyMap[TokenTypeOrganization].MaxTTLMs)
+		assert.Equal(t, ttl1YearInMs, policyMap[TokenTypeOrganization].MaxTTLMs)
 
 		require.Contains(t, policyMap, TokenTypeTeam)
-		assert.Equal(t, int64(15768000000), policyMap[TokenTypeTeam].MaxTTLMs)
+		assert.Equal(t, ttl6MonthsInMs, policyMap[TokenTypeTeam].MaxTTLMs)
 
 		require.Contains(t, policyMap, TokenTypeUser)
-		assert.Equal(t, int64(2592000000), policyMap[TokenTypeUser].MaxTTLMs)
+		assert.Equal(t, ttl30DaysInMs, policyMap[TokenTypeUser].MaxTTLMs)
 
 		// Verify audit trails policy has the default 2-year value (not updated)
 		require.Contains(t, policyMap, TokenTypeAuditTrails)
-		assert.Equal(t, int64(63113904000), policyMap[TokenTypeAuditTrails].MaxTTLMs, "Audit trails should have default 2-year TTL")
+		assert.Equal(t, ttl2YearsDefaultInMs, policyMap[TokenTypeAuditTrails].MaxTTLMs, "Audit trails should have default 2-year TTL")
 	})
 
 	t.Run("update all token types", func(t *testing.T) {
 		options := OrganizationTokenTTLPolicyUpdateOptions{
 			Policies: []OrganizationTokenTTLPolicyUpdateItem{
-				{TokenType: TokenTypeOrganization, MaxTTLMs: 31536000000},
-				{TokenType: TokenTypeTeam, MaxTTLMs: 15768000000},
-				{TokenType: TokenTypeUser, MaxTTLMs: 2592000000},
-				{TokenType: TokenTypeAuditTrails, MaxTTLMs: 7776000000},
+				{TokenType: TokenTypeOrganization, MaxTTLMs: ttl1YearInMs},
+				{TokenType: TokenTypeTeam, MaxTTLMs: ttl6MonthsInMs},
+				{TokenType: TokenTypeUser, MaxTTLMs: ttl30DaysInMs},
+				{TokenType: TokenTypeAuditTrails, MaxTTLMs: ttl6MonthsInMs},
 			},
 		}
 
@@ -139,14 +162,14 @@ func TestOrganizationTokenTTLPoliciesUpdate(t *testing.T) {
 			name  string
 			value int64
 		}{
-			{"1 hour", 3600000},
-			{"12 hours", 43200000},
-			{"1 day", 86400000},
-			{"7 days", 604800000},
-			{"30 days", 2592000000},
-			{"6 months", 15768000000},
-			{"1 year", 31536000000},
-			{"2 years", 63072000000},
+			{"1 hour", ttl1HourInMs},
+			{"12 hours", ttl12HoursInMs},
+			{"1 day", ttl1DayInMs},
+			{"7 days", ttl7DaysInMs},
+			{"30 days", ttl30DaysInMs},
+			{"6 months", ttl6MonthsInMs},
+			{"1 year", ttl1YearInMs},
+			{"2 years", ttl2YearsInMs},
 		}
 
 		for _, tc := range testCases {
@@ -217,10 +240,10 @@ func TestOrganizationTokenTTLPoliciesUpdate_RoundTrip(t *testing.T) {
 	t.Run("create, list, and verify", func(t *testing.T) {
 		updateOptions := OrganizationTokenTTLPolicyUpdateOptions{
 			Policies: []OrganizationTokenTTLPolicyUpdateItem{
-				{TokenType: TokenTypeOrganization, MaxTTLMs: 31536000000},
-				{TokenType: TokenTypeTeam, MaxTTLMs: 15768000000},
-				{TokenType: TokenTypeUser, MaxTTLMs: 2592000000},
-				{TokenType: TokenTypeAuditTrails, MaxTTLMs: 7776000000},
+				{TokenType: TokenTypeOrganization, MaxTTLMs: ttl1YearInMs},
+				{TokenType: TokenTypeTeam, MaxTTLMs: ttl6MonthsInMs},
+				{TokenType: TokenTypeUser, MaxTTLMs: ttl30DaysInMs},
+				{TokenType: TokenTypeAuditTrails, MaxTTLMs: ttl6MonthsInMs},
 			},
 		}
 
@@ -234,19 +257,19 @@ func TestOrganizationTokenTTLPoliciesUpdate_RoundTrip(t *testing.T) {
 		require.NotNil(t, policyList)
 		require.Len(t, policyList.Items, 4)
 
-		policyMap := make(map[string]*OrganizationTokenTTLPolicy)
+		policyMap := make(map[TokenType]*OrganizationTokenTTLPolicy)
 		for _, policy := range policyList.Items {
 			policyMap[policy.TokenType] = policy
 		}
 
-		assert.Equal(t, int64(31536000000), policyMap[TokenTypeOrganization].MaxTTLMs)
-		assert.Equal(t, int64(15768000000), policyMap[TokenTypeTeam].MaxTTLMs)
-		assert.Equal(t, int64(2592000000), policyMap[TokenTypeUser].MaxTTLMs)
-		assert.Equal(t, int64(7776000000), policyMap[TokenTypeAuditTrails].MaxTTLMs)
+		assert.Equal(t, ttl1YearInMs, policyMap[TokenTypeOrganization].MaxTTLMs)
+		assert.Equal(t, ttl6MonthsInMs, policyMap[TokenTypeTeam].MaxTTLMs)
+		assert.Equal(t, ttl30DaysInMs, policyMap[TokenTypeUser].MaxTTLMs)
+		assert.Equal(t, ttl6MonthsInMs, policyMap[TokenTypeAuditTrails].MaxTTLMs)
 
 		updateSingleOptions := OrganizationTokenTTLPolicyUpdateOptions{
 			Policies: []OrganizationTokenTTLPolicyUpdateItem{
-				{TokenType: TokenTypeOrganization, MaxTTLMs: 63072000000}, // 2 years
+				{TokenType: TokenTypeOrganization, MaxTTLMs: ttl2YearsInMs},
 			},
 		}
 
@@ -264,17 +287,21 @@ func TestOrganizationTokenTTLPoliciesUpdate_RoundTrip(t *testing.T) {
 			}
 		}
 		require.NotNil(t, orgPolicy, "Organization token policy should be present")
-		assert.Equal(t, int64(63072000000), orgPolicy.MaxTTLMs)
+		assert.Equal(t, ttl2YearsInMs, orgPolicy.MaxTTLMs)
 
 		finalList, err := client.OrganizationTokenTTLPolicies.List(ctx, orgTest.Name, nil)
 		require.NoError(t, err)
 		require.NotNil(t, finalList)
 
+		// Verify the organization policy was updated in the final list
+		var foundOrgPolicy bool
 		for _, policy := range finalList.Items {
 			if policy.TokenType == TokenTypeOrganization {
-				assert.Equal(t, int64(63072000000), policy.MaxTTLMs)
+				assert.Equal(t, ttl2YearsInMs, policy.MaxTTLMs)
+				foundOrgPolicy = true
 				break
 			}
 		}
+		require.True(t, foundOrgPolicy, "Organization token policy should be present in final list")
 	})
 }

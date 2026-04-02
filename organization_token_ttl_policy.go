@@ -12,13 +12,6 @@ import (
 
 var _ OrganizationTokenTTLPolicies = (*organizationTokenTTLPolicies)(nil)
 
-const (
-	TokenTypeOrganization = "organization"
-	TokenTypeTeam         = "team"
-	TokenTypeUser         = "user"
-	TokenTypeAuditTrails  = "audit_trails"
-)
-
 type OrganizationTokenTTLPolicies interface {
 	List(ctx context.Context, organization string, options *OrganizationTokenTTLPolicyListOptions) (*OrganizationTokenTTLPolicyList, error)
 	Update(ctx context.Context, organization string, options OrganizationTokenTTLPolicyUpdateOptions) ([]*OrganizationTokenTTLPolicy, error)
@@ -30,7 +23,7 @@ type organizationTokenTTLPolicies struct {
 
 type OrganizationTokenTTLPolicy struct {
 	ID        string    `jsonapi:"primary,organization-token-ttl-policies"`
-	TokenType string    `jsonapi:"attr,token-type"`
+	TokenType TokenType `jsonapi:"attr,token-type"`
 	MaxTTLMs  int64     `jsonapi:"attr,max-ttl-ms"`
 	CreatedAt time.Time `jsonapi:"attr,created-at,iso8601"`
 	UpdatedAt time.Time `jsonapi:"attr,updated-at,iso8601"`
@@ -46,8 +39,8 @@ type OrganizationTokenTTLPolicyListOptions struct {
 }
 
 type OrganizationTokenTTLPolicyUpdateItem struct {
-	TokenType string `jsonapi:"attr,token-type"`
-	MaxTTLMs  int64  `jsonapi:"attr,max-ttl-ms"`
+	TokenType TokenType `jsonapi:"attr,token-type"`
+	MaxTTLMs  int64     `jsonapi:"attr,max-ttl-ms"`
 }
 
 type OrganizationTokenTTLPolicyUpdateOptions struct {
