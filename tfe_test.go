@@ -8,6 +8,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"io"
 	"net/http"
 	"net/http/httptest"
 	"os"
@@ -121,6 +122,82 @@ func Test_unmarshalResponse(t *testing.T) {
 		err := unmarshalResponse(responseBody, notStruct)
 		assert.Error(t, err)
 		assert.EqualError(t, err, fmt.Sprintf("%v must be a struct or an io.Writer", notStruct))
+	})
+}
+
+func Test_decodeErrorPayload(t *testing.T) {
+	t.Parallel()
+
+	t.Run("with jsonapi errors payload", func(t *testing.T) {
+		resp := &http.Response{
+			Status:     "400 Bad Request",
+			StatusCode: http.StatusBadRequest,
+			Body: io.NopCloser(bytes.NewBufferString(
+				`{"errors":[{"title":"org name invalid","detail":"Org name is invalid"}]}`,
+			)),
+		}
+
+		errs, err := decodeErrorPayload(resp)
+		require.NoError(t, err)
+		require.Len(t, errs, 1)
+		assert.Equal(t, "org name invalid\n\nOrg name is invalid", errs[0])
+	})
+
+	t.Run("with regular json errors payload", func(t *testing.T) {
+		resp := &http.Response{
+			Status:     "400 Bad Request",
+			StatusCode: http.StatusBadRequest,
+			Body: io.NopCloser(bytes.NewBufferString(
+				`{"errors":["Unsupported GPG Key algorithm. Supported key algorithms are [RSA, DSA]"]}`,
+			)),
+		}
+
+		errs, err := decodeErrorPayload(resp)
+		require.NoError(t, err)
+		require.Len(t, errs, 1)
+		assert.Equal(t, "Unsupported GPG Key algorithm. Supported key algorithms are [RSA, DSA]", errs[0])
+	})
+
+	t.Run("with non-json error body", func(t *testing.T) {
+		resp := &http.Response{
+			Status:     "400 Bad Request",
+			StatusCode: http.StatusBadRequest,
+			Body:       io.NopCloser(bytes.NewBufferString("this is not json")),
+		}
+
+		errs, err := decodeErrorPayload(resp)
+		require.EqualError(t, err, "400 Bad Request")
+		assert.Empty(t, errs)
+	})
+}
+
+func Test_checkResponseCode(t *testing.T) {
+	t.Parallel()
+
+	t.Run("returns regular json error message", func(t *testing.T) {
+		resp := &http.Response{
+			Status:     "400 Bad Request",
+			StatusCode: http.StatusBadRequest,
+			Body: io.NopCloser(bytes.NewBufferString(
+				`{"errors":["Unsupported GPG Key algorithm. Supported key algorithms are [RSA, DSA]"]}`,
+			)),
+		}
+
+		err := checkResponseCode(resp)
+		require.EqualError(t, err, "Unsupported GPG Key algorithm. Supported key algorithms are [RSA, DSA]")
+	})
+
+	t.Run("still maps invalid include message", func(t *testing.T) {
+		resp := &http.Response{
+			Status:     "400 Bad Request",
+			StatusCode: http.StatusBadRequest,
+			Body: io.NopCloser(bytes.NewBufferString(
+				`{"errors":["include parameter is invalid"]}`,
+			)),
+		}
+
+		err := checkResponseCode(resp)
+		assert.ErrorIs(t, err, ErrInvalidIncludeValue)
 	})
 }
 
