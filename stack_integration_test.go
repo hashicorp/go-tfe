@@ -32,7 +32,7 @@ func TestStackCreateAndList(t *testing.T) {
 	stack1, err := client.Stacks.Create(ctx, StackCreateOptions{
 		Name: "aa-test-stack",
 		VCSRepo: &StackVCSRepoOptions{
-			Identifier:   "hashicorp-guides/pet-nulls-stack",
+			Identifier:   stackVCSRepoIdentifier(t),
 			OAuthTokenID: oauthClient.OAuthTokens[0].ID,
 		},
 		Project: &Project{
@@ -49,7 +49,7 @@ func TestStackCreateAndList(t *testing.T) {
 	stack2, err := client.Stacks.Create(ctx, StackCreateOptions{
 		Name: "zz-test-stack",
 		VCSRepo: &StackVCSRepoOptions{
-			Identifier:   "hashicorp-guides/pet-nulls-stack",
+			Identifier:   stackVCSRepoIdentifier(t),
 			OAuthTokenID: oauthClient.OAuthTokens[0].ID,
 		},
 		Project: &Project{
@@ -155,7 +155,7 @@ func TestStackReadUpdateDelete(t *testing.T) {
 	stack, err := client.Stacks.Create(ctx, StackCreateOptions{
 		Name: "test-stack",
 		VCSRepo: &StackVCSRepoOptions{
-			Identifier:   "hashicorp-guides/pet-nulls-stack",
+			Identifier:   stackVCSRepoIdentifier(t),
 			OAuthTokenID: oauthClient.OAuthTokens[0].ID,
 			Branch:       "main",
 		},
@@ -189,7 +189,7 @@ func TestStackReadUpdateDelete(t *testing.T) {
 	stackUpdated, err := client.Stacks.Update(ctx, stack.ID, StackUpdateOptions{
 		Description: String("updated description"),
 		VCSRepo: &StackVCSRepoOptions{
-			Identifier:   "hashicorp-guides/pet-nulls-stack",
+			Identifier:   stackVCSRepoIdentifier(t),
 			OAuthTokenID: oauthClient.OAuthTokens[0].ID,
 			Branch:       "main",
 		},
@@ -229,7 +229,7 @@ func TestStackRemoveVCSBacking(t *testing.T) {
 	stack, err := client.Stacks.Create(ctx, StackCreateOptions{
 		Name: "test-stack",
 		VCSRepo: &StackVCSRepoOptions{
-			Identifier:   "hashicorp-guides/pet-nulls-stack",
+			Identifier:   stackVCSRepoIdentifier(t),
 			OAuthTokenID: oauthClient.OAuthTokens[0].ID,
 			Branch:       "main",
 		},
@@ -275,7 +275,7 @@ func TestStackReadUpdateForceDelete(t *testing.T) {
 	stack, err := client.Stacks.Create(ctx, StackCreateOptions{
 		Name: "test-stack",
 		VCSRepo: &StackVCSRepoOptions{
-			Identifier:   "hashicorp-guides/pet-nulls-stack",
+			Identifier:   stackVCSRepoIdentifier(t),
 			OAuthTokenID: oauthClient.OAuthTokens[0].ID,
 			Branch:       "main",
 		},
@@ -301,7 +301,7 @@ func TestStackReadUpdateForceDelete(t *testing.T) {
 	stackUpdated, err := client.Stacks.Update(ctx, stack.ID, StackUpdateOptions{
 		Description: String("updated description"),
 		VCSRepo: &StackVCSRepoOptions{
-			Identifier:   "hashicorp-guides/pet-nulls-stack",
+			Identifier:   stackVCSRepoIdentifier(t),
 			OAuthTokenID: oauthClient.OAuthTokens[0].ID,
 			Branch:       "main",
 		},

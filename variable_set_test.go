@@ -589,7 +589,7 @@ func TestVariableSetsApplyToAndRemoveFromStacks(t *testing.T) {
 	stackTest1, err := client.Stacks.Create(ctx, StackCreateOptions{
 		Name: "test-stack-1",
 		VCSRepo: &StackVCSRepoOptions{
-			Identifier:   "hashicorp-guides/pet-nulls-stack",
+			Identifier:   stackVCSRepoIdentifier(t),
 			OAuthTokenID: oauthClient.OAuthTokens[0].ID,
 		},
 		Project: &Project{
@@ -610,7 +610,7 @@ func TestVariableSetsApplyToAndRemoveFromStacks(t *testing.T) {
 	stackTest2, err := client.Stacks.Create(ctx, StackCreateOptions{
 		Name: "test-stack-2",
 		VCSRepo: &StackVCSRepoOptions{
-			Identifier:   "hashicorp-guides/pet-nulls-stack",
+			Identifier:   stackVCSRepoIdentifier(t),
 			OAuthTokenID: oauthClient.OAuthTokens[0].ID,
 		},
 		Project: &Project{
@@ -766,7 +766,7 @@ func TestVariableSetsUpdateStacks(t *testing.T) {
 	stackTest, err := client.Stacks.Create(ctx, StackCreateOptions{
 		Name: "test-stack",
 		VCSRepo: &StackVCSRepoOptions{
-			Identifier:   "hashicorp-guides/pet-nulls-stack",
+			Identifier:   stackVCSRepoIdentifier(t),
 			OAuthTokenID: oauthClient.OAuthTokens[0].ID,
 		},
 		Project: &Project{

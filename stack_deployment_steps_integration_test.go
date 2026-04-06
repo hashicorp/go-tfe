@@ -29,7 +29,7 @@ func TestStackDeploymentStepsList(t *testing.T) {
 		Project: orgTest.DefaultProject,
 		Name:    "test-stack",
 		VCSRepo: &StackVCSRepoOptions{
-			Identifier:   "hashicorp-guides/pet-nulls-stack",
+			Identifier:   stackVCSRepoIdentifier(t),
 			OAuthTokenID: oauthClient.OAuthTokens[0].ID,
 			Branch:       "main",
 		},
@@ -119,7 +119,7 @@ func TestStackDeploymentStepsRead(t *testing.T) {
 		Project: orgTest.DefaultProject,
 		Name:    "test-stack",
 		VCSRepo: &StackVCSRepoOptions{
-			Identifier:   "hashicorp-guides/pet-nulls-stack",
+			Identifier:   stackVCSRepoIdentifier(t),
 			OAuthTokenID: oauthClient.OAuthTokens[0].ID,
 			Branch:       "main",
 		},
@@ -182,7 +182,7 @@ func TestStackDeploymentStepsAdvance(t *testing.T) {
 		Project: orgTest.DefaultProject,
 		Name:    "testing-stack",
 		VCSRepo: &StackVCSRepoOptions{
-			Identifier:   "hashicorp-guides/pet-nulls-stack",
+			Identifier:   stackVCSRepoIdentifier(t),
 			OAuthTokenID: oauthClient.OAuthTokens[0].ID,
 			Branch:       "main",
 		},
@@ -284,7 +284,7 @@ func TestStackDeploymentStepsDiagnosticsArtifacts(t *testing.T) {
 		Name:    "test-stack",
 
 		VCSRepo: &StackVCSRepoOptions{
-			Identifier:   "hashicorp-guides/pet-nulls-stack",
+			Identifier:   stackVCSRepoIdentifier(t),
 			OAuthTokenID: oauthClient.OAuthTokens[0].ID,
 			Branch:       "main",
 		},

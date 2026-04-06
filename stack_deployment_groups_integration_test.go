@@ -26,7 +26,7 @@ func TestStackDeploymentGroupsList(t *testing.T) {
 	stack, err := client.Stacks.Create(ctx, StackCreateOptions{
 		Name: "test-stack",
 		VCSRepo: &StackVCSRepoOptions{
-			Identifier:   "hashicorp-guides/pet-nulls-stack",
+			Identifier:   stackVCSRepoIdentifier(t),
 			OAuthTokenID: oauthClient.OAuthTokens[0].ID,
 		},
 		Project: &Project{
@@ -92,7 +92,7 @@ func TestStackDeploymentGroupsRead(t *testing.T) {
 	stack, err := client.Stacks.Create(ctx, StackCreateOptions{
 		Name: "test-stack",
 		VCSRepo: &StackVCSRepoOptions{
-			Identifier:   "hashicorp-guides/pet-nulls-stack",
+			Identifier:   stackVCSRepoIdentifier(t),
 			OAuthTokenID: oauthClient.OAuthTokens[0].ID,
 		},
 		Project: &Project{
@@ -144,7 +144,7 @@ func TestStackDeploymentGroupsApproveAllPlans(t *testing.T) {
 	stack, err := client.Stacks.Create(ctx, StackCreateOptions{
 		Name: "test-stack",
 		VCSRepo: &StackVCSRepoOptions{
-			Identifier:   "hashicorp-guides/pet-nulls-stack",
+			Identifier:   stackVCSRepoIdentifier(t),
 			OAuthTokenID: oauthClient.OAuthTokens[0].ID,
 			Branch:       "main",
 		},
@@ -191,7 +191,7 @@ func TestStackDeploymentGroupsRerun(t *testing.T) {
 	stack, err := client.Stacks.Create(ctx, StackCreateOptions{
 		Name: "test-stack",
 		VCSRepo: &StackVCSRepoOptions{
-			Identifier:   "hashicorp-guides/pet-nulls-stack",
+			Identifier:   stackVCSRepoIdentifier(t),
 			OAuthTokenID: oauthClient.OAuthTokens[0].ID,
 			Branch:       "main",
 		},
