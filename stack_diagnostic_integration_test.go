@@ -23,8 +23,8 @@ func TestStackDiagnosticsReadAcknowledge(t *testing.T) {
 	stack, err := client.Stacks.Create(ctx, StackCreateOptions{
 		Name: "cc-test-stack",
 		VCSRepo: &StackVCSRepoOptions{
-			Identifier:   "ctrombley/linked-stacks-demo-network",
-			Branch:       "diagnostics",
+			Identifier:   stackVCSRepoIdentifier(t),
+			Branch:       stackVCSRepoBranch(),
 			OAuthTokenID: oauthClient.OAuthTokens[0].ID,
 		},
 		Project: &Project{

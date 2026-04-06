@@ -27,7 +27,7 @@ func TestStackConfigurationList(t *testing.T) {
 	stack, err := client.Stacks.Create(ctx, StackCreateOptions{
 		Name: "test-stack-list",
 		VCSRepo: &StackVCSRepoOptions{
-			Identifier:   "hashicorp-guides/pet-nulls-stack",
+			Identifier:   stackVCSRepoIdentifier(t),
 			OAuthTokenID: oauthClient.OAuthTokens[0].ID,
 		},
 		Project: &Project{
@@ -141,9 +141,9 @@ func TestStackConfigurationDiagnostics(t *testing.T) {
 		Name:    "test-stack",
 
 		VCSRepo: &StackVCSRepoOptions{
-			Identifier:   "ctrombley/linked-stacks-demo-network",
+			Identifier:   stackVCSRepoIdentifier(t),
 			OAuthTokenID: oauthClient.OAuthTokens[0].ID,
-			Branch:       "diagnostics", // This branch will produce diagnostics
+			Branch:       stackVCSRepoBranch(),
 		},
 	})
 	require.NoError(t, err)
