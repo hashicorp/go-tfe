@@ -166,6 +166,8 @@ type StackCreateOptions struct {
 	VCSRepo            *StackVCSRepoOptions `jsonapi:"attr,vcs-repo"`
 	Project            *Project             `jsonapi:"relation,project"`
 	AgentPool          *AgentPool           `jsonapi:"relation,agent-pool"`
+	WorkingDirectory   *string              `jsonapi:"attr,working-directory,omitempty"`
+	TriggerPatterns    []string             `jsonapi:"attr,trigger-patterns"`
 }
 
 // StackUpdateOptions represents the options for updating a stack.
@@ -175,6 +177,8 @@ type StackUpdateOptions struct {
 	SpeculativeEnabled *bool                `jsonapi:"attr,speculative-enabled,omitempty"`
 	VCSRepo            *StackVCSRepoOptions `jsonapi:"attr,vcs-repo"`
 	AgentPool          *AgentPool           `jsonapi:"relation,agent-pool"`
+	WorkingDirectory   *string              `jsonapi:"attr,working-directory,omitempty"`
+	TriggerPatterns    []string             `jsonapi:"attr,trigger-patterns"`
 }
 
 // WaitForStatusResult is the data structure that is sent over the channel
