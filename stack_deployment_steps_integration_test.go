@@ -224,7 +224,7 @@ func TestStackDeploymentStepsAdvance(t *testing.T) {
 		// Verify that the step status has changed to "completed"
 		sds, err := client.StackDeploymentSteps.Read(ctx, step.ID)
 		assert.NoError(t, err)
-		assert.Equal(t, "completed", sds.Status)
+		assert.Equal(t, DeploymentStepStatusCompleted, sds.Status)
 	})
 
 	t.Run("Advance with invalid ID", func(t *testing.T) {

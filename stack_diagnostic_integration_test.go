@@ -49,50 +49,35 @@ func TestStackDiagnosticsRead(t *testing.T) {
 	assert.NoError(t, err)
 	require.NotEmpty(t, diags.Items)
 
-	diag := diags.Items[0]
+	expectedDiag := diags.Items[0]
 
 	t.Run("Read with valid ID", func(t *testing.T) {
-		diag, err := client.StackDiagnostics.Read(ctx, diag.ID)
+		diag, err := client.StackDiagnostics.Read(ctx, expectedDiag.ID)
 		require.NoError(t, err)
 		assert.NotNil(t, diag)
 
-		assert.NotEmpty(t, diag.ID)
-		assert.NotEmpty(t, diag.Severity)
-		assert.NotEmpty(t, diag.Summary)
-		assert.NotEmpty(t, diag.Detail)
-		assert.NotEmpty(t, diag.Diags)
+		assert.Equal(t, expectedDiag.ID, diag.ID)
+		assert.Equal(t, expectedDiag.Severity, diag.Severity)
+		assert.Equal(t, expectedDiag.Summary, diag.Summary)
+		assert.Equal(t, expectedDiag.Detail, diag.Detail)
+		assert.Equal(t, expectedDiag.CreatedAt, diag.CreatedAt)
+		require.Len(t, diag.Diags, len(expectedDiag.Diags))
 
-		for _, d := range diag.Diags {
-			assert.NotEmpty(t, d.Detail)
-			assert.NotEmpty(t, d.Severity)
-			assert.NotEmpty(t, d.Summary)
-			assert.Empty(t, d.Origin)
-
-			require.NotNil(t, d.Range)
-			assert.NotEmpty(t, d.Range.Filename)
-			assert.NotEmpty(t, d.Range.Source)
-
-			require.NotNil(t, d.Range.Start)
-			assert.NotZero(t, d.Range.Start.Line)
-			assert.NotZero(t, d.Range.Start.Column)
-			assert.NotZero(t, d.Range.Start.Byte)
-
-			require.NotNil(t, d.Range.End)
-			assert.NotZero(t, d.Range.End.Line)
-			assert.NotZero(t, d.Range.End.Column)
-			assert.NotZero(t, d.Range.End.Byte)
-
-			require.NotNil(t, d.Snippet)
-			assert.NotEmpty(t, d.Snippet.Code)
-			assert.Empty(t, d.Snippet.Values)
-			assert.Nil(t, d.Snippet.Context)
-			assert.Zero(t, d.Snippet.HighlightStartOffset)
-			assert.NotZero(t, d.Snippet.HighlightEndOffset)
+		for i, d := range diag.Diags {
+			expectedNestedDiag := expectedDiag.Diags[i]
+			assert.Equal(t, expectedNestedDiag.Severity, d.Severity)
+			assert.Equal(t, expectedNestedDiag.Summary, d.Summary)
+			assert.Equal(t, expectedNestedDiag.Detail, d.Detail)
+			assert.Equal(t, expectedNestedDiag.Origin, d.Origin)
+			assert.Equal(t, expectedNestedDiag.Range, d.Range)
+			assert.Equal(t, expectedNestedDiag.Snippet, d.Snippet)
 		}
 
 		assert.NotZero(t, diag.CreatedAt)
-		assert.Nil(t, diag.StackDeploymentStep)
-		assert.NotNil(t, diag.StackConfiguration)
+		assert.Equal(t, expectedDiag.StackDeploymentStep, diag.StackDeploymentStep)
+		require.NotNil(t, diag.StackConfiguration)
+		require.NotNil(t, expectedDiag.StackConfiguration)
+		assert.Equal(t, expectedDiag.StackConfiguration.ID, diag.StackConfiguration.ID)
 	})
 
 	t.Run("Read with invalid ID", func(t *testing.T) {
