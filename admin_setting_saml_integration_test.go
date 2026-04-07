@@ -40,6 +40,7 @@ func TestAdminSettings_SAML_Read(t *testing.T) {
 	assert.NotNil(t, samlSettings.PrivateKey)
 	assert.NotNil(t, samlSettings.SignatureSigningMethod)
 	assert.NotNil(t, samlSettings.SignatureDigestMethod)
+	assert.NotNil(t, samlSettings.ProviderType)
 }
 
 func TestAdminSettings_SAML_Update(t *testing.T) {
@@ -129,5 +130,37 @@ func TestAdminSettings_SAML_Update(t *testing.T) {
 		samlSettings, err = client.Admin.Settings.SAML.RevokeIdpCert(ctx)
 		require.NoError(t, err)
 		assert.NotNil(t, samlSettings.IDPCert)
+	})
+
+	t.Run("with provider type defined", func(t *testing.T) {
+		testCases := []struct {
+			name         string
+			providerType SAMLProviderType
+			raiseError   bool
+		}{
+			{"valid okta", SAMLProviderTypeOkta, false},
+			{"valid entra", SAMLProviderTypeEntra, false},
+			{"valid saml", SAMLProviderTypeGeneric, false},
+			{"valid unknown - for backward compatibility", SAMLProviderTypeUnknown, false},
+			{"invalid provider type", "error", true},
+		}
+		for _, tc := range testCases {
+			t.Run(tc.name, func(t *testing.T) {
+				_, err := client.Admin.Settings.SAML.Update(ctx, AdminSAMLSettingsUpdateOptions{
+					Enabled:      Bool(true),
+					ProviderType: SAMLProvider(tc.providerType),
+				})
+
+				if tc.raiseError {
+					require.Error(t, err)
+					return
+				}
+				require.NoError(t, err)
+
+				samlSettings, err = client.Admin.Settings.SAML.Read(ctx)
+				require.NoError(t, err)
+				assert.Equal(t, tc.providerType, samlSettings.ProviderType)
+			})
+		}
 	})
 }

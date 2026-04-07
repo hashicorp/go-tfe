@@ -88,7 +88,10 @@ func TestUserTokens_Create(t *testing.T) {
 		if err != nil {
 			t.Fatal(err)
 		}
-		assert.Empty(t, token.ExpiredAt)
+		assert.NotZero(t, token.ExpiredAt)
+		expectedExpiry := token.CreatedAt.AddDate(defaultTokenExpirationYears, 0, 0)
+		// Allow a small buffer (1 minute) for timestamp precision differences.
+		assert.WithinDuration(t, expectedExpiry, token.ExpiredAt, time.Minute)
 	})
 
 	t.Run("create token with an expiration date", func(t *testing.T) {

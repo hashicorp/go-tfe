@@ -1256,6 +1256,163 @@ func TestPolicySetsRemoveProjects(t *testing.T) {
 	})
 }
 
+func TestPolicySetAddProjectExclusions(t *testing.T) {
+	t.Parallel()
+	client := testClient(t)
+	ctx := context.Background()
+
+	orgTest, orgTestCleanup := createOrganization(t, client)
+	defer orgTestCleanup()
+
+	upgradeOrganizationSubscription(t, client, orgTest)
+
+	pTest1, pTestCleanup1 := createProject(t, client, orgTest)
+	defer pTestCleanup1()
+	pTest2, pTestCleanup2 := createProject(t, client, orgTest)
+	defer pTestCleanup2()
+	pTest3, pTestCleanup3 := createProject(t, client, orgTest)
+	defer pTestCleanup3()
+
+	psTest, psTestCleanup := createPolicySetWithOptions(t, client, orgTest, nil, nil, nil, nil, PolicySetCreateOptions{
+		Global: Bool(true),
+	})
+	defer psTestCleanup()
+
+	t.Run("with project exclusions provided", func(t *testing.T) {
+		err := client.PolicySets.AddProjectExclusions(
+			ctx,
+			psTest.ID,
+			PolicySetAddProjectExclusionsOptions{
+				ProjectExclusions: []*Project{pTest1, pTest2, pTest3},
+			},
+		)
+		require.NoError(t, err)
+
+		ps, err := client.PolicySets.ReadWithOptions(ctx, psTest.ID, &PolicySetReadOptions{
+			Include: []PolicySetIncludeOpt{
+				PolicySetProjectExclusions,
+			},
+		})
+		require.NoError(t, err)
+		assert.Equal(t, 3, len(ps.ProjectExclusions))
+
+		ids := []string{}
+		for _, p := range ps.ProjectExclusions {
+			ids = append(ids, p.ID)
+		}
+
+		assert.Contains(t, ids, pTest1.ID)
+		assert.Contains(t, ids, pTest2.ID)
+		assert.Contains(t, ids, pTest3.ID)
+	})
+
+	t.Run("without project exclusions provided", func(t *testing.T) {
+		err := client.PolicySets.AddProjectExclusions(
+			ctx,
+			psTest.ID,
+			PolicySetAddProjectExclusionsOptions{},
+		)
+		assert.Equal(t, err, ErrRequiredProject)
+	})
+
+	t.Run("with empty project exclusions slice", func(t *testing.T) {
+		err := client.PolicySets.AddProjectExclusions(
+			ctx,
+			psTest.ID,
+			PolicySetAddProjectExclusionsOptions{ProjectExclusions: []*Project{}},
+		)
+		assert.Equal(t, err, ErrProjectMinLimit)
+	})
+
+	t.Run("without a valid ID", func(t *testing.T) {
+		err := client.PolicySets.AddProjectExclusions(
+			ctx,
+			badIdentifier,
+			PolicySetAddProjectExclusionsOptions{
+				ProjectExclusions: []*Project{pTest1, pTest2, pTest3},
+			},
+		)
+		assert.Equal(t, err, ErrInvalidPolicySetID)
+	})
+}
+
+func TestPolicySetRemoveProjectExclusions(t *testing.T) {
+	t.Parallel()
+	client := testClient(t)
+	ctx := context.Background()
+
+	orgTest, orgTestCleanup := createOrganization(t, client)
+	defer orgTestCleanup()
+
+	upgradeOrganizationSubscription(t, client, orgTest)
+
+	pTest1, pTestCleanup1 := createProject(t, client, orgTest)
+	defer pTestCleanup1()
+	pTest2, pTestCleanup2 := createProject(t, client, orgTest)
+	defer pTestCleanup2()
+	pTest3, pTestCleanup3 := createProject(t, client, orgTest)
+	defer pTestCleanup3()
+
+	psTest, psTestCleanup := createPolicySetWithOptions(t, client, orgTest, nil, nil, nil, nil, PolicySetCreateOptions{
+		Global: Bool(true),
+		ProjectExclusions: []*Project{
+			pTest1,
+			pTest2,
+			pTest3,
+		},
+	})
+	defer psTestCleanup()
+
+	t.Run("with project exclusions provided", func(t *testing.T) {
+		err := client.PolicySets.RemoveProjectExclusions(
+			ctx,
+			psTest.ID,
+			PolicySetRemoveProjectExclusionsOptions{
+				ProjectExclusions: []*Project{pTest1, pTest2, pTest3},
+			},
+		)
+		require.NoError(t, err)
+
+		ps, err := client.PolicySets.ReadWithOptions(ctx, psTest.ID, &PolicySetReadOptions{
+			Include: []PolicySetIncludeOpt{
+				"project_exclusions",
+			},
+		})
+		require.NoError(t, err)
+		assert.Equal(t, 0, len(ps.ProjectExclusions))
+		assert.Empty(t, ps.ProjectExclusions)
+	})
+
+	t.Run("without project exclusions provided", func(t *testing.T) {
+		err := client.PolicySets.RemoveProjectExclusions(
+			ctx,
+			psTest.ID,
+			PolicySetRemoveProjectExclusionsOptions{},
+		)
+		assert.Equal(t, err, ErrRequiredProject)
+	})
+
+	t.Run("with empty project exclusions slice", func(t *testing.T) {
+		err := client.PolicySets.RemoveProjectExclusions(
+			ctx,
+			psTest.ID,
+			PolicySetRemoveProjectExclusionsOptions{ProjectExclusions: []*Project{}},
+		)
+		assert.Equal(t, err, ErrProjectMinLimit)
+	})
+
+	t.Run("without a valid ID", func(t *testing.T) {
+		err := client.PolicySets.RemoveProjectExclusions(
+			ctx,
+			badIdentifier,
+			PolicySetRemoveProjectExclusionsOptions{
+				ProjectExclusions: []*Project{pTest1, pTest2, pTest3},
+			},
+		)
+		assert.Equal(t, err, ErrInvalidPolicySetID)
+	})
+}
+
 func TestPolicySetsDelete(t *testing.T) {
 	t.Parallel()
 	client := testClient(t)

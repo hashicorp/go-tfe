@@ -133,6 +133,11 @@ func String(v string) *string {
 	return &v
 }
 
+// SAMLProvider returns a pointer to the given SAML provider type.
+func SAMLProvider(v SAMLProviderType) *SAMLProviderType {
+	return &v
+}
+
 func NullableBool(v bool) jsonapi.NullableAttr[bool] {
 	return jsonapi.NewNullableAttrWithValue[bool](v)
 }

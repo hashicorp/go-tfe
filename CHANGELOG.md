@@ -1,5 +1,20 @@
 # Unreleased
 
+## Bug Fixes
+* Improve API error handling to decode both JSON:API error objects and regular JSON errors arrays by @uk1288 [#1304](https://github.com/hashicorp/go-tfe/pull/1304)
+
+## Enhancements
+* Adds the `ProviderType` field to `AdminSAMLSetting` and `AdminSAMLSettingsUpdateOptions` to support the `provider-type` SAML setting.
+
+# v1.103.0
+
+## Enhancements
+* Adds the `ProjectExclusions` field to the `PolicySet` struct to support project level exclusions of policy sets by @subhro-acharjee-1 [#1290](https://github.com/hashicorp/go-tfe/pull/1290)
+
+# v1.102.0
+
+## Enhancements
+* Adds the `Size` field to `StateVersion` by @shaunakone [#1280](https://github.com/hashicorp/go-tfe/pull/1280)
 * Upgrade go version from `1.24` to `1.25` by @uk1288 [#1297](https://github.com/hashicorp/go-tfe/pull/1297)
 * Unskip stacks integration tests and remove diagnostics#acknowledge in preparation for stacks tfe release by @aaabdelgany [#1298](https://github.com/hashicorp/go-tfe/pull/1298)
 
@@ -8,8 +23,6 @@
 ## Enhancements
 * Adds the `SpeculativeEnabled` field to the `StackCreateOptions` and `StackUpdateOptions` structs by @arunatibm [1279](https://github.com/hashicorp/go-tfe/pull/1279)
 * Adds `Name` and `Provider` fields to `RegistryModuleCreateWithVCSConnectionOptions` to support explicit module naming for monorepos with non-standard repository names, by @jillirami [#1277](https://github.com/hashicorp/go-tfe/pull/1277)
-* Adds the `Size` field to `StateVersion` by @Shaunakone [#1280](https://github.com/hashicorp/go-tfe/pull/1280)
-
 
 # v1.100.0
 
