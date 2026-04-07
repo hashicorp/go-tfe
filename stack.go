@@ -95,6 +95,8 @@ type Stack struct {
 	InputsCount        int           `jsonapi:"attr,inputs-count"`
 	OutputsCount       int           `jsonapi:"attr,outputs-count"`
 	CreationSource     string        `jsonapi:"attr,creation-source"`
+	WorkingDirectory   string        `jsonapi:"attr,working-directory,omitempty"`
+	TriggerPatterns    []string      `jsonapi:"attr,trigger-patterns,omitempty"`
 
 	// Relationships
 	Project                  *Project            `jsonapi:"relation,project"`
