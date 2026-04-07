@@ -13,8 +13,6 @@ import (
 type StackDiagnostics interface {
 	// Read retrieves a stack diagnostic by its ID.
 	Read(ctx context.Context, stackConfigurationID string) (*StackDiagnostic, error)
-	// Acknowledge marks a diagnostic as acknowledged.
-	Acknowledge(ctx context.Context, stackDiagnosticID string) error
 }
 
 // StackDiagnostic represents any sourcebundle.Diagnostic value. The simplest form has
@@ -22,19 +20,16 @@ type StackDiagnostics interface {
 // information about the source of the diagnostic, this is represented in the
 // range field.
 type StackDiagnostic struct {
-	ID             string                    `jsonapi:"primary,stack-diagnostics"`
-	Severity       string                    `jsonapi:"attr,severity"`
-	Summary        string                    `jsonapi:"attr,summary"`
-	Detail         string                    `jsonapi:"attr,detail"`
-	Diags          []*StackDiagnosticSummary `jsonapi:"attr,diags"`
-	Acknowledged   bool                      `jsonapi:"attr,acknowledged"`
-	AcknowledgedAt *time.Time                `jsonapi:"attr,acknowledged-at,iso8601"`
-	CreatedAt      *time.Time                `jsonapi:"attr,created-at,iso8601"`
+	ID        string                    `jsonapi:"primary,stack-diagnostics"`
+	Severity  string                    `jsonapi:"attr,severity"`
+	Summary   string                    `jsonapi:"attr,summary"`
+	Detail    string                    `jsonapi:"attr,detail"`
+	Diags     []*StackDiagnosticSummary `jsonapi:"attr,diags"`
+	CreatedAt *time.Time                `jsonapi:"attr,created-at,iso8601"`
 
 	// Relationships
 	StackDeploymentStep *StackDeploymentStep `jsonapi:"relation,stack-deployment-step"`
 	StackConfiguration  *StackConfiguration  `jsonapi:"relation,stack-configuration"`
-	AcknowledgedBy      *User                `jsonapi:"relation,acknowledged-by"`
 }
 
 type StackDiagnosticSummary struct {
@@ -109,19 +104,4 @@ func (s stackDiagnostics) Read(ctx context.Context, stackDiagnosticID string) (*
 	}
 
 	return &diagnostics, nil
-}
-
-// Acknowledge marks a diagnostic as acknowledged.
-func (s stackDiagnostics) Acknowledge(ctx context.Context, stackDiagnosticID string) error {
-	req, err := s.client.NewRequest("POST", fmt.Sprintf("stack-diagnostics/%s/acknowledge", url.PathEscape(stackDiagnosticID)), nil)
-	if err != nil {
-		return err
-	}
-
-	diagnostic := StackDiagnostic{}
-	if err := req.Do(ctx, &diagnostic); err != nil {
-		return err
-	}
-
-	return nil
 }

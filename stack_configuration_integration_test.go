@@ -171,13 +171,10 @@ func TestStackConfigurationDiagnostics(t *testing.T) {
 		assert.NotEmpty(t, diag.Summary)
 		assert.NotEmpty(t, diag.Detail)
 		assert.NotEmpty(t, diag.Diags)
-		assert.False(t, diag.Acknowledged)
-		assert.Nil(t, diag.AcknowledgedAt)
 		assert.NotZero(t, diag.CreatedAt)
 
 		assert.Nil(t, diag.StackDeploymentStep)
 		assert.NotNil(t, diag.StackConfiguration)
-		assert.Nil(t, diag.AcknowledgedBy)
 	})
 
 	t.Run("Diagnostics with invalid ID", func(t *testing.T) {
