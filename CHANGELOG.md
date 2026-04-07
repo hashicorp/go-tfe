@@ -1,6 +1,7 @@
 # Unreleased
 
 * Upgrade go version from `1.24` to `1.25` by @uk1288 [#1297](https://github.com/hashicorp/go-tfe/pull/1297)
+* Unskip stacks integration tests and remove diagnostics#acknowledge in preparation for stacks tfe release by @aaabdelgany [#1298](https://github.com/hashicorp/go-tfe/pull/1298)
 
 # v1.101.0
 

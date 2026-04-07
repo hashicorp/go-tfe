@@ -8,7 +8,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func TestStackDiagnosticsReadAcknowledge(t *testing.T) {
+func TestStackDiagnosticsRead(t *testing.T) {
 	t.Parallel()
 
 	client := testClient(t)
@@ -90,34 +90,13 @@ func TestStackDiagnosticsReadAcknowledge(t *testing.T) {
 			assert.NotZero(t, d.Snippet.HighlightEndOffset)
 		}
 
-		assert.False(t, diag.Acknowledged)
-		assert.Nil(t, diag.AcknowledgedAt)
 		assert.NotZero(t, diag.CreatedAt)
-
 		assert.Nil(t, diag.StackDeploymentStep)
 		assert.NotNil(t, diag.StackConfiguration)
-		assert.Nil(t, diag.AcknowledgedBy)
 	})
 
 	t.Run("Read with invalid ID", func(t *testing.T) {
 		_, err := client.StackDiagnostics.Read(ctx, "")
-		require.Error(t, err)
-	})
-
-	t.Run("Acknowledge with valid ID", func(t *testing.T) {
-		err := client.StackDiagnostics.Acknowledge(ctx, diag.ID)
-		require.NoError(t, err)
-
-		diag, err := client.StackDiagnostics.Read(ctx, diag.ID)
-		require.NoError(t, err)
-		assert.NotNil(t, diag)
-		assert.True(t, diag.Acknowledged)
-		assert.NotNil(t, diag.AcknowledgedAt)
-		assert.NotNil(t, diag.AcknowledgedBy)
-	})
-
-	t.Run("Acknowledge with invalid ID", func(t *testing.T) {
-		err := client.StackDiagnostics.Acknowledge(ctx, "")
 		require.Error(t, err)
 	})
 }
