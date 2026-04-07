@@ -107,7 +107,6 @@ type AdminSAMLSettingsUpdateOptions struct {
 
 // Update updates the SAML settings.
 func (a *adminSAMLSettings) Update(ctx context.Context, options AdminSAMLSettingsUpdateOptions) (*AdminSAMLSetting, error) {
-
 	if options.ProviderType != nil {
 		switch *options.ProviderType {
 		case SAMLProviderTypeOkta, SAMLProviderTypeEntra, SAMLProviderTypeGeneric, SAMLProviderTypeUnknown:
