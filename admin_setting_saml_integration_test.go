@@ -133,21 +133,34 @@ func TestAdminSettings_SAML_Update(t *testing.T) {
 	})
 
 	t.Run("with provider type defined", func(t *testing.T) {
-		providerTypesForTesting := []string{"okta", "entra", "saml", "unknown", "error"}
-		for _, providerType := range providerTypesForTesting {
-			_, err := client.Admin.Settings.SAML.Update(ctx, AdminSAMLSettingsUpdateOptions{
-				Enabled:      Bool(true),
-				ProviderType: String(providerType),
-			})
-			if providerType == "error" {
-				require.Error(t, err)
-				continue
-			}
-			require.NoError(t, err)
+		testCases := []struct {
+			name         string
+			providerType SAMLProviderType
+			raiseError   bool
+		}{
+			{"valid okta", SAMLProviderTypeOkta, false},
+			{"valid entra", SAMLProviderTypeEntra, false},
+			{"valid saml", SAMLProviderTypeGeneric, false},
+			{"valid unknown - for backward compatibility", SAMLProviderTypeUnknown, false},
+			{"invalid provider type", "error", true},
+		}
+		for _, tc := range testCases {
+			t.Run(tc.name, func(t *testing.T) {
+				_, err := client.Admin.Settings.SAML.Update(ctx, AdminSAMLSettingsUpdateOptions{
+					Enabled:      Bool(true),
+					ProviderType: SAMLProvider(tc.providerType),
+				})
 
-			samlSettings, err = client.Admin.Settings.SAML.Read(ctx)
-			require.NoError(t, err)
-			assert.Equal(t, providerType, samlSettings.ProviderType)
+				if tc.raiseError {
+					require.Error(t, err)
+					return
+				}
+				require.NoError(t, err)
+
+				samlSettings, err = client.Admin.Settings.SAML.Read(ctx)
+				require.NoError(t, err)
+				assert.Equal(t, tc.providerType, samlSettings.ProviderType)
+			})
 		}
 	})
 }
