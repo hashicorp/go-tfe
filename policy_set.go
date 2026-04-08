@@ -108,6 +108,8 @@ type PolicySet struct {
 	AgentEnabled      bool      `jsonapi:"attr,agent-enabled"`
 	PolicyToolVersion string    `jsonapi:"attr,policy-tool-version"`
 
+	PolicyUpdatePatterns []string `jsonapi:"attr,policy-update-patterns"`
+
 	// Relations
 	// The organization to which the policy set belongs to.
 	Organization *Organization `jsonapi:"relation,organization"`
@@ -197,6 +199,9 @@ type PolicySetCreateOptions struct {
 	// Optional: The policy tool version to run the evaluation against.
 	PolicyToolVersion *string `jsonapi:"attr,policy-tool-version,omitempty"`
 
+	// Optional: A list of glob patterns that trigger policy set updates.
+	PolicyUpdatePatterns []string `jsonapi:"attr,policy-update-patterns,omitempty"`
+
 	// Optional: The sub-path within the attached VCS repository to ingress. All
 	// files and directories outside of this sub-path will be ignored.
 	// This option may only be specified when a VCS repo is present.
@@ -251,6 +256,9 @@ type PolicySetUpdateOptions struct {
 
 	// Optional: The policy tool version to run the evaluation against.
 	PolicyToolVersion *string `jsonapi:"attr,policy-tool-version,omitempty"`
+
+	// Optional: A list of glob patterns that trigger policy set updates.
+	PolicyUpdatePatterns []string `jsonapi:"attr,policy-update-patterns,omitempty"`
 
 	// Optional: The sub-path within the attached VCS repository to ingress. All
 	// files and directories outside of this sub-path will be ignored.
