@@ -14,6 +14,7 @@ import (
 )
 
 func TestAdminSettings_SCIM_Read(t *testing.T) {
+	skipUnlessEnterprise(t)
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -30,6 +31,7 @@ func TestAdminSettings_SCIM_Read(t *testing.T) {
 }
 
 func TestAdminSettings_SCIM_Update(t *testing.T) {
+	skipUnlessEnterprise(t)
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -125,6 +127,7 @@ func TestAdminSettings_SCIM_Update(t *testing.T) {
 }
 
 func TestAdminSettings_SCIM_Delete(t *testing.T) {
+	skipUnlessEnterprise(t)
 	client := testClient(t)
 	ctx := context.Background()
 
