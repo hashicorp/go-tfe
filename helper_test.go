@@ -3432,18 +3432,36 @@ func runTaskCallbackMockServer(t *testing.T) *httptest.Server {
 	}))
 }
 
+func enableSAML(ctx context.Context, t *testing.T, client *Client, enable bool) {
+	t.Helper()
+	var options AdminSAMLSettingsUpdateOptions
+	if enable {
+		options = AdminSAMLSettingsUpdateOptions{
+			Enabled:        Bool(true),
+			SLOEndpointURL: String("https://example.com/slo"),
+			SSOEndpointURL: String("https://example.com/sso"),
+			Certificate:    String("testCert"),
+		}
+	} else {
+		options = AdminSAMLSettingsUpdateOptions{
+			Enabled: Bool(false),
+		}
+	}
+	_, err := client.Admin.Settings.SAML.Update(ctx, options)
+	require.NoError(t, err)
+}
+
 func setSAMLProviderType(ctx context.Context, t *testing.T, client *Client, setProvider bool) error {
+	t.Helper()
 	var provider SAMLProviderType
 	if setProvider {
 		provider = SAMLProviderTypeGeneric
 	} else {
 		provider = SAMLProviderTypeUnknown
 	}
+
 	_, err := client.Admin.Settings.SAML.Update(ctx, AdminSAMLSettingsUpdateOptions{ProviderType: &provider})
-	if err != nil {
-		return err
-	}
-	return nil
+	return err
 }
 
 func createSCIMGroup(ctx context.Context, t *testing.T, client *Client, groupName, scimToken string) string {

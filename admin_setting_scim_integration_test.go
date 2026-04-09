@@ -5,7 +5,6 @@ package tfe
 
 import (
 	"context"
-	"fmt"
 	"strings"
 	"testing"
 	"time"
@@ -33,6 +32,10 @@ func TestAdminSettings_SCIM_Read(t *testing.T) {
 func TestAdminSettings_SCIM_Update(t *testing.T) {
 	client := testClient(t)
 	ctx := context.Background()
+
+	enableSAML(ctx, t, client, true)
+	defer enableSAML(ctx, t, client, false)
+
 	scimClient := client.Admin.Settings.SCIM
 
 	t.Run("enable scim settings", func(t *testing.T) {
@@ -94,7 +97,6 @@ func TestAdminSettings_SCIM_Update(t *testing.T) {
 
 		scimToken := generateSCIMToken(ctx, t, client)
 		scimGroupID := createSCIMGroup(ctx, t, client, "foo", scimToken)
-		fmt.Println(scimGroupID)
 
 		testCases := []struct {
 			name        string
@@ -125,6 +127,10 @@ func TestAdminSettings_SCIM_Update(t *testing.T) {
 func TestAdminSettings_SCIM_Delete(t *testing.T) {
 	client := testClient(t)
 	ctx := context.Background()
+
+	enableSAML(ctx, t, client, true)
+	defer enableSAML(ctx, t, client, false)
+
 	scimClient := client.Admin.Settings.SCIM
 
 	t.Run("disable scim settings", func(t *testing.T) {
