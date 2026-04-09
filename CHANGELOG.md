@@ -4,7 +4,8 @@
 * Improve API error handling to decode both JSON:API error objects and regular JSON errors arrays by @uk1288 [#1304](https://github.com/hashicorp/go-tfe/pull/1304)
 
 ## Enhancements
-* Adds the `ProviderType` field to `AdminSAMLSetting` and `AdminSAMLSettingsUpdateOptions` to support the `provider-type` SAML setting.
+* Adds the `ProviderType` field to `AdminSAMLSetting` and `AdminSAMLSettingsUpdateOptions` to support the `provider-type` SAML setting by @skj-skj [#1303](https://github.com/hashicorp/go-tfe/pull/1303)
+* Adds `AdminScimSetting`, `AdminScimSettingUpdateOptions`, and `AdminSettings.SCIM` to support managing site-level SCIM settings by @skj-skj [#1307](https://github.com/hashicorp/go-tfe/pull/1307)
 
 # v1.103.0
 
