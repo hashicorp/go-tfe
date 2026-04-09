@@ -3441,6 +3441,7 @@ func enableSAML(ctx context.Context, t *testing.T, client *Client, enable bool) 
 			SLOEndpointURL: String("https://example.com/slo"),
 			SSOEndpointURL: String("https://example.com/sso"),
 			Certificate:    String("testCert"),
+			IDPCert:        String("testCert"),
 		}
 	} else {
 		options = AdminSAMLSettingsUpdateOptions{
