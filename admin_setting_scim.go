@@ -36,7 +36,7 @@ type AdminSCIMSetting struct {
 	ID                        string `jsonapi:"primary,scim-settings"`
 	Enabled                   bool   `jsonapi:"attr,enabled"`
 	Paused                    bool   `jsonapi:"attr,paused"`
-	SiteAdminGroupScimID      string `jsonapi:"attr,site-admin-group-scim-id"`
+	SiteAdminGroupSCIMID      string `jsonapi:"attr,site-admin-group-scim-id"`
 	SiteAdminGroupDisplayName string `jsonapi:"attr,site-admin-group-display-name"`
 }
 
@@ -44,7 +44,7 @@ type AdminSCIMSetting struct {
 type AdminSCIMSettingUpdateOptions struct {
 	Enabled              *bool   `jsonapi:"attr,enabled,omitempty"`
 	Paused               *bool   `jsonapi:"attr,paused,omitempty"`
-	SiteAdminGroupScimID *string `jsonapi:"attr,site-admin-group-scim-id,omitempty"`
+	SiteAdminGroupSCIMID *string `jsonapi:"attr,site-admin-group-scim-id,omitempty"`
 }
 
 // Read scim setting.

@@ -24,7 +24,7 @@ func TestAdminSettings_SCIM_Read(t *testing.T) {
 		assert.Equal(t, "scim", scimSettings.ID)
 		assert.False(t, scimSettings.Enabled)
 		assert.False(t, scimSettings.Paused)
-		assert.Empty(t, scimSettings.SiteAdminGroupScimID)
+		assert.Empty(t, scimSettings.SiteAdminGroupSCIMID)
 		assert.Empty(t, scimSettings.SiteAdminGroupDisplayName)
 	})
 }
@@ -101,7 +101,7 @@ func TestAdminSettings_SCIM_Update(t *testing.T) {
 
 		for _, tc := range testCases {
 			t.Run(tc.name, func(t *testing.T) {
-				_, err := scimClient.Update(ctx, AdminSCIMSettingUpdateOptions{SiteAdminGroupScimID: &tc.scimGroupID})
+				_, err := scimClient.Update(ctx, AdminSCIMSettingUpdateOptions{SiteAdminGroupSCIMID: &tc.scimGroupID})
 				if tc.raiseError {
 					require.Error(t, err)
 					return
@@ -109,7 +109,7 @@ func TestAdminSettings_SCIM_Update(t *testing.T) {
 				require.NoError(t, err)
 				scimSettings, err := scimClient.Read(ctx)
 				require.NoError(t, err)
-				assert.Equal(t, tc.scimGroupID, scimSettings.SiteAdminGroupScimID)
+				assert.Equal(t, tc.scimGroupID, scimSettings.SiteAdminGroupSCIMID)
 				assert.Equal(t, "foo", scimSettings.SiteAdminGroupDisplayName)
 			})
 		}
@@ -171,6 +171,7 @@ func cleanupSCIMSettings(ctx context.Context, t *testing.T, client *Client) {
 
 // generate a SCIM token for testing
 func generateSCIMToken(ctx context.Context, t *testing.T, client *Client) string {
+	// TFE requires a minimum of 30 days for SCIM token expiration
 	expiredAt := time.Now().Add(30 * 24 * time.Hour)
 
 	options := struct {
