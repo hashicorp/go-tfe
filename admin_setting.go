@@ -15,7 +15,7 @@ type AdminSettings struct {
 	Twilio         TwilioSettings
 	Customization  CustomizationSettings
 	OIDC           OIDCSettings
-	SCIM           ScimSettings
+	SCIM           SCIMSettings
 }
 
 func newAdminSettings(client *Client) *AdminSettings {
@@ -27,6 +27,6 @@ func newAdminSettings(client *Client) *AdminSettings {
 		Twilio:         &adminTwilioSettings{client: client},
 		Customization:  &adminCustomizationSettings{client: client},
 		OIDC:           &adminOIDCSettings{client: client},
-		SCIM:           &adminScimSettings{client: client},
+		SCIM:           &adminSCIMSettings{client: client},
 	}
 }

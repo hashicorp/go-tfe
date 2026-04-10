@@ -5,7 +5,6 @@ package tfe
 
 import (
 	"context"
-	"strings"
 	"testing"
 	"time"
 
@@ -18,15 +17,15 @@ func TestAdminSettings_SCIM_Read(t *testing.T) {
 	client := testClient(t)
 	ctx := context.Background()
 
-	t.Run("read scim settings", func(t *testing.T) {
+	t.Run("read scim settings with default values", func(t *testing.T) {
 		scimSettings, err := client.Admin.Settings.SCIM.Read(ctx)
 		require.NoError(t, err)
 
 		assert.Equal(t, "scim", scimSettings.ID)
-		assert.NotNil(t, scimSettings.Enabled)
-		assert.NotNil(t, scimSettings.Paused)
-		assert.NotNil(t, scimSettings.SiteAdminGroupScimID)
-		assert.NotNil(t, scimSettings.SiteAdminGroupDisplayName)
+		assert.False(t, scimSettings.Enabled)
+		assert.False(t, scimSettings.Paused)
+		assert.Empty(t, scimSettings.SiteAdminGroupScimID)
+		assert.Empty(t, scimSettings.SiteAdminGroupDisplayName)
 	})
 }
 
@@ -48,7 +47,7 @@ func TestAdminSettings_SCIM_Update(t *testing.T) {
 		require.NoError(t, err)
 		defer cleanupSCIMSettings(ctx, t, client)
 
-		scimSettings, err := scimClient.Update(ctx, AdminScimSettingUpdateOptions{Enabled: Bool(true)})
+		scimSettings, err := scimClient.Update(ctx, AdminSCIMSettingUpdateOptions{Enabled: Bool(true)})
 		require.NoError(t, err)
 
 		assert.True(t, scimSettings.Enabled)
@@ -62,7 +61,7 @@ func TestAdminSettings_SCIM_Update(t *testing.T) {
 		require.NoError(t, err)
 		defer cleanupSCIMSettings(ctx, t, client)
 
-		_, err = scimClient.Update(ctx, AdminScimSettingUpdateOptions{
+		_, err = scimClient.Update(ctx, AdminSCIMSettingUpdateOptions{
 			Enabled: Bool(true),
 		})
 		require.NoError(t, err)
@@ -77,7 +76,7 @@ func TestAdminSettings_SCIM_Update(t *testing.T) {
 
 		for _, tc := range testCases {
 			t.Run(tc.name, func(t *testing.T) {
-				_, err := scimClient.Update(ctx, AdminScimSettingUpdateOptions{Paused: &tc.paused})
+				_, err := scimClient.Update(ctx, AdminSCIMSettingUpdateOptions{Paused: &tc.paused})
 				require.NoError(t, err)
 				scimSettings, err := scimClient.Read(ctx)
 				require.NoError(t, err)
@@ -94,7 +93,7 @@ func TestAdminSettings_SCIM_Update(t *testing.T) {
 		require.NoError(t, err)
 		defer cleanupSCIMSettings(ctx, t, client)
 
-		_, err = scimClient.Update(ctx, AdminScimSettingUpdateOptions{Enabled: Bool(true)})
+		_, err = scimClient.Update(ctx, AdminSCIMSettingUpdateOptions{Enabled: Bool(true)})
 		require.NoError(t, err)
 
 		scimToken := generateSCIMToken(ctx, t, client)
@@ -105,13 +104,13 @@ func TestAdminSettings_SCIM_Update(t *testing.T) {
 			scimGroupID string
 			raiseError  bool
 		}{
-			{"link scim group to side admin role", scimGroupID, false},
+			{"link scim group to site admin role", scimGroupID, false},
 			{"trying to link non-existent group - should raise error", "this-group-doesn't-exist", true},
 		}
 
 		for _, tc := range testCases {
 			t.Run(tc.name, func(t *testing.T) {
-				_, err := scimClient.Update(ctx, AdminScimSettingUpdateOptions{SiteAdminGroupScimID: &tc.scimGroupID})
+				_, err := scimClient.Update(ctx, AdminSCIMSettingUpdateOptions{SiteAdminGroupScimID: &tc.scimGroupID})
 				if tc.raiseError {
 					require.Error(t, err)
 					return
@@ -155,7 +154,7 @@ func TestAdminSettings_SCIM_Delete(t *testing.T) {
 		for _, tc := range testCases {
 			t.Run(tc.name, func(t *testing.T) {
 				if tc.isScimEnabled {
-					_, err := scimClient.Update(ctx, AdminScimSettingUpdateOptions{Enabled: Bool(true)})
+					_, err := scimClient.Update(ctx, AdminSCIMSettingUpdateOptions{Enabled: Bool(true)})
 					require.NoError(t, err)
 				}
 
@@ -172,31 +171,30 @@ func TestAdminSettings_SCIM_Delete(t *testing.T) {
 
 // cleanup scim settings by disabling scim provisioning and setting saml provider type to unknown.
 func cleanupSCIMSettings(ctx context.Context, t *testing.T, client *Client) {
-	err := setSAMLProviderType(ctx, t, client, false)
-	if err != nil && strings.Contains(err.Error(), "Provider type cannot be changed while SCIM provisioning is enabled") {
-		err := client.Admin.Settings.SCIM.Delete(ctx)
+	scimSettings, err := client.Admin.Settings.SCIM.Read(ctx)
+	if err == nil && scimSettings.Enabled {
+		err = client.Admin.Settings.SCIM.Delete(ctx)
 		if err != nil {
 			t.Fatalf("failed to disable SCIM provisioning: %v", err)
 		}
-		err = setSAMLProviderType(ctx, t, client, false)
-		if err != nil {
-			t.Fatalf("failed to set SAML provider type: %v", err)
-		}
-	} else if err != nil {
+	}
+
+	err = setSAMLProviderType(ctx, t, client, false)
+	if err != nil {
 		t.Fatalf("failed to set SAML provider type: %v", err)
 	}
 }
 
 // generate a SCIM token for testing
 func generateSCIMToken(ctx context.Context, t *testing.T, client *Client) string {
-	expiresAt := time.Now().Add(30 * 24 * time.Hour)
+	expiredAt := time.Now().Add(30 * 24 * time.Hour)
 
 	options := struct {
 		Description *string    `jsonapi:"attr,description"`
-		ExpireAt    *time.Time `jsonapi:"attr,expired-at,iso8601"`
+		ExpiredAt   *time.Time `jsonapi:"attr,expired-at,iso8601"`
 	}{
 		Description: String("test-scim-token"),
-		ExpireAt:    &expiresAt,
+		ExpiredAt:   &expiredAt,
 	}
 	req, err := client.NewRequest("POST", "admin/scim-tokens", &options)
 	require.NoError(t, err)

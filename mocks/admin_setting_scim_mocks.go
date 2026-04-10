@@ -17,31 +17,31 @@ import (
 	gomock "go.uber.org/mock/gomock"
 )
 
-// MockScimSettings is a mock of ScimSettings interface.
-type MockScimSettings struct {
+// MockSCIMSettings is a mock of SCIMSettings interface.
+type MockSCIMSettings struct {
 	ctrl     *gomock.Controller
-	recorder *MockScimSettingsMockRecorder
+	recorder *MockSCIMSettingsMockRecorder
 }
 
-// MockScimSettingsMockRecorder is the mock recorder for MockScimSettings.
-type MockScimSettingsMockRecorder struct {
-	mock *MockScimSettings
+// MockSCIMSettingsMockRecorder is the mock recorder for MockSCIMSettings.
+type MockSCIMSettingsMockRecorder struct {
+	mock *MockSCIMSettings
 }
 
-// NewMockScimSettings creates a new mock instance.
-func NewMockScimSettings(ctrl *gomock.Controller) *MockScimSettings {
-	mock := &MockScimSettings{ctrl: ctrl}
-	mock.recorder = &MockScimSettingsMockRecorder{mock}
+// NewMockSCIMSettings creates a new mock instance.
+func NewMockSCIMSettings(ctrl *gomock.Controller) *MockSCIMSettings {
+	mock := &MockSCIMSettings{ctrl: ctrl}
+	mock.recorder = &MockSCIMSettingsMockRecorder{mock}
 	return mock
 }
 
 // EXPECT returns an object that allows the caller to indicate expected use.
-func (m *MockScimSettings) EXPECT() *MockScimSettingsMockRecorder {
+func (m *MockSCIMSettings) EXPECT() *MockSCIMSettingsMockRecorder {
 	return m.recorder
 }
 
 // Delete mocks base method.
-func (m *MockScimSettings) Delete(ctx context.Context) error {
+func (m *MockSCIMSettings) Delete(ctx context.Context) error {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Delete", ctx)
 	ret0, _ := ret[0].(error)
@@ -49,37 +49,37 @@ func (m *MockScimSettings) Delete(ctx context.Context) error {
 }
 
 // Delete indicates an expected call of Delete.
-func (mr *MockScimSettingsMockRecorder) Delete(ctx any) *gomock.Call {
+func (mr *MockSCIMSettingsMockRecorder) Delete(ctx any) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Delete", reflect.TypeOf((*MockScimSettings)(nil).Delete), ctx)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Delete", reflect.TypeOf((*MockSCIMSettings)(nil).Delete), ctx)
 }
 
 // Read mocks base method.
-func (m *MockScimSettings) Read(ctx context.Context) (*tfe.AdminScimSetting, error) {
+func (m *MockSCIMSettings) Read(ctx context.Context) (*tfe.AdminSCIMSetting, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Read", ctx)
-	ret0, _ := ret[0].(*tfe.AdminScimSetting)
+	ret0, _ := ret[0].(*tfe.AdminSCIMSetting)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
 
 // Read indicates an expected call of Read.
-func (mr *MockScimSettingsMockRecorder) Read(ctx any) *gomock.Call {
+func (mr *MockSCIMSettingsMockRecorder) Read(ctx any) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Read", reflect.TypeOf((*MockScimSettings)(nil).Read), ctx)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Read", reflect.TypeOf((*MockSCIMSettings)(nil).Read), ctx)
 }
 
 // Update mocks base method.
-func (m *MockScimSettings) Update(ctx context.Context, options tfe.AdminScimSettingUpdateOptions) (*tfe.AdminScimSetting, error) {
+func (m *MockSCIMSettings) Update(ctx context.Context, options tfe.AdminSCIMSettingUpdateOptions) (*tfe.AdminSCIMSetting, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Update", ctx, options)
-	ret0, _ := ret[0].(*tfe.AdminScimSetting)
+	ret0, _ := ret[0].(*tfe.AdminSCIMSetting)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
 
 // Update indicates an expected call of Update.
-func (mr *MockScimSettingsMockRecorder) Update(ctx, options any) *gomock.Call {
+func (mr *MockSCIMSettingsMockRecorder) Update(ctx, options any) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Update", reflect.TypeOf((*MockScimSettings)(nil).Update), ctx, options)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Update", reflect.TypeOf((*MockSCIMSettings)(nil).Update), ctx, options)
 }

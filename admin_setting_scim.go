@@ -8,31 +8,31 @@ import (
 )
 
 // Compile-time proof of interface implementation.
-var _ ScimSettings = (*adminScimSettings)(nil)
+var _ SCIMSettings = (*adminSCIMSettings)(nil)
 
-// ScimSettings describes all the scim settings related methods that the Terraform
+// SCIMSettings describes all the scim settings related methods that the Terraform
 // Enterprise API supports
 //
 // TFE API docs: https://developer.hashicorp.com/terraform/enterprise/api-docs/admin/settings
-type ScimSettings interface {
+type SCIMSettings interface {
 
 	// Read scim settings
-	Read(ctx context.Context) (*AdminScimSetting, error)
+	Read(ctx context.Context) (*AdminSCIMSetting, error)
 
 	// Update scim settings
-	Update(ctx context.Context, options AdminScimSettingUpdateOptions) (*AdminScimSetting, error)
+	Update(ctx context.Context, options AdminSCIMSettingUpdateOptions) (*AdminSCIMSetting, error)
 
 	// Delete scim settings
 	Delete(ctx context.Context) error
 }
 
-// adminScimSettings implements ScimSettings.
-type adminScimSettings struct {
+// adminSCIMSettings implements SCIMSettings.
+type adminSCIMSettings struct {
 	client *Client
 }
 
-// AdminScimSetting represents the SCIM setting in Terraform Enterprise
-type AdminScimSetting struct {
+// AdminSCIMSetting represents the SCIM setting in Terraform Enterprise
+type AdminSCIMSetting struct {
 	ID                        string `jsonapi:"primary,scim-settings"`
 	Enabled                   bool   `jsonapi:"attr,enabled"`
 	Paused                    bool   `jsonapi:"attr,paused"`
@@ -40,21 +40,21 @@ type AdminScimSetting struct {
 	SiteAdminGroupDisplayName string `jsonapi:"attr,site-admin-group-display-name"`
 }
 
-// AdminScimSettingUpdateOptions represents the options for updating an admin SCIM setting.
-type AdminScimSettingUpdateOptions struct {
+// AdminSCIMSettingUpdateOptions represents the options for updating an admin SCIM setting.
+type AdminSCIMSettingUpdateOptions struct {
 	Enabled              *bool   `jsonapi:"attr,enabled,omitempty"`
 	Paused               *bool   `jsonapi:"attr,paused,omitempty"`
 	SiteAdminGroupScimID *string `jsonapi:"attr,site-admin-group-scim-id,omitempty"`
 }
 
 // Read scim setting.
-func (a *adminScimSettings) Read(ctx context.Context) (*AdminScimSetting, error) {
+func (a *adminSCIMSettings) Read(ctx context.Context) (*AdminSCIMSetting, error) {
 	req, err := a.client.NewRequest("GET", "admin/scim-settings", nil)
 	if err != nil {
 		return nil, err
 	}
 
-	scim := &AdminScimSetting{}
+	scim := &AdminSCIMSetting{}
 	err = req.Do(ctx, scim)
 	if err != nil {
 		return nil, err
@@ -64,13 +64,13 @@ func (a *adminScimSettings) Read(ctx context.Context) (*AdminScimSetting, error)
 }
 
 // Update scim setting.
-func (a *adminScimSettings) Update(ctx context.Context, options AdminScimSettingUpdateOptions) (*AdminScimSetting, error) {
+func (a *adminSCIMSettings) Update(ctx context.Context, options AdminSCIMSettingUpdateOptions) (*AdminSCIMSetting, error) {
 	req, err := a.client.NewRequest("PATCH", "admin/scim-settings", &options)
 	if err != nil {
 		return nil, err
 	}
 
-	scim := &AdminScimSetting{}
+	scim := &AdminSCIMSetting{}
 	err = req.Do(ctx, scim)
 	if err != nil {
 		return nil, err
@@ -79,7 +79,7 @@ func (a *adminScimSettings) Update(ctx context.Context, options AdminScimSetting
 }
 
 // Delete scim setting.
-func (a *adminScimSettings) Delete(ctx context.Context) error {
+func (a *adminSCIMSettings) Delete(ctx context.Context) error {
 	req, err := a.client.NewRequest("DELETE", "admin/scim-settings", nil)
 	if err != nil {
 		return err
