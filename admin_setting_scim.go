@@ -15,7 +15,6 @@ var _ SCIMSettings = (*adminSCIMSettings)(nil)
 //
 // TFE API docs: https://developer.hashicorp.com/terraform/enterprise/api-docs/admin/settings
 type SCIMSettings interface {
-
 	// Read scim settings
 	Read(ctx context.Context) (*AdminSCIMSetting, error)
 
