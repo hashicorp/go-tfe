@@ -36,8 +36,8 @@ type AdminScimSetting struct {
 	ID                        string `jsonapi:"primary,scim-settings"`
 	Enabled                   bool   `jsonapi:"attr,enabled"`
 	Paused                    bool   `jsonapi:"attr,paused"`
-	SiteAdminGroupScimID      string `jsonapi:"attr,site-admin-group-scim-id,omitempty"`
-	SiteAdminGroupDisplayName string `jsonapi:"attr,site-admin-group-display-name,omitempty"`
+	SiteAdminGroupScimID      string `jsonapi:"attr,site-admin-group-scim-id"`
+	SiteAdminGroupDisplayName string `jsonapi:"attr,site-admin-group-display-name"`
 }
 
 // AdminScimSettingUpdateOptions represents the options for updating an admin SCIM setting.
