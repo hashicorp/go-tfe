@@ -159,6 +159,7 @@ func TestAdminSettings_SCIM_Delete(t *testing.T) {
 
 // cleanup scim settings by disabling scim provisioning and setting saml provider type to unknown.
 func cleanupSCIMSettings(ctx context.Context, t *testing.T, client *Client) {
+	t.Helper()
 	scimSettings, err := client.Admin.Settings.SCIM.Read(ctx)
 	if err == nil && scimSettings.Enabled {
 		err = client.Admin.Settings.SCIM.Delete(ctx)
@@ -171,6 +172,7 @@ func cleanupSCIMSettings(ctx context.Context, t *testing.T, client *Client) {
 
 // generate a SCIM token for testing
 func generateSCIMToken(ctx context.Context, t *testing.T, client *Client) string {
+	t.Helper()
 	// TFE requires a minimum of 30 days for SCIM token expiration
 	expiredAt := time.Now().Add(30 * 24 * time.Hour)
 
