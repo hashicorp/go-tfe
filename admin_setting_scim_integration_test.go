@@ -41,10 +41,7 @@ func TestAdminSettings_SCIM_Update(t *testing.T) {
 
 	t.Run("enable scim settings", func(t *testing.T) {
 		err := setSAMLProviderType(ctx, t, client, true)
-		if err != nil {
-			t.Fatalf("failed to set SAML provider type: %v", err)
-		}
-		require.NoError(t, err)
+		require.NoErrorf(t, err, "failed to set SAML provider type")
 		defer cleanupSCIMSettings(ctx, t, client)
 
 		scimSettings, err := scimClient.Update(ctx, AdminSCIMSettingUpdateOptions{Enabled: Bool(true)})
@@ -55,10 +52,7 @@ func TestAdminSettings_SCIM_Update(t *testing.T) {
 
 	t.Run("pause scim settings", func(t *testing.T) {
 		err := setSAMLProviderType(ctx, t, client, true)
-		if err != nil {
-			t.Fatalf("failed to set SAML provider type: %v", err)
-		}
-		require.NoError(t, err)
+		require.NoErrorf(t, err, "failed to set SAML provider type")
 		defer cleanupSCIMSettings(ctx, t, client)
 
 		_, err = scimClient.Update(ctx, AdminSCIMSettingUpdateOptions{
@@ -87,10 +81,7 @@ func TestAdminSettings_SCIM_Update(t *testing.T) {
 
 	t.Run("update site admin group scim id", func(t *testing.T) {
 		err := setSAMLProviderType(ctx, t, client, true)
-		if err != nil {
-			t.Fatalf("failed to set SAML provider type: %v", err)
-		}
-		require.NoError(t, err)
+		require.NoErrorf(t, err, "failed to set SAML provider type")
 		defer cleanupSCIMSettings(ctx, t, client)
 
 		_, err = scimClient.Update(ctx, AdminSCIMSettingUpdateOptions{Enabled: Bool(true)})
@@ -137,10 +128,7 @@ func TestAdminSettings_SCIM_Delete(t *testing.T) {
 
 	t.Run("disable scim settings", func(t *testing.T) {
 		err := setSAMLProviderType(ctx, t, client, true)
-		if err != nil {
-			t.Fatalf("failed to set SAML provider type: %v", err)
-		}
-		require.NoError(t, err)
+		require.NoErrorf(t, err, "failed to set SAML provider type")
 		defer cleanupSCIMSettings(ctx, t, client)
 
 		testCases := []struct {
@@ -174,15 +162,11 @@ func cleanupSCIMSettings(ctx context.Context, t *testing.T, client *Client) {
 	scimSettings, err := client.Admin.Settings.SCIM.Read(ctx)
 	if err == nil && scimSettings.Enabled {
 		err = client.Admin.Settings.SCIM.Delete(ctx)
-		if err != nil {
-			t.Fatalf("failed to disable SCIM provisioning: %v", err)
-		}
+		require.NoErrorf(t, err, "failed to disable SCIM provisioning")
 	}
 
 	err = setSAMLProviderType(ctx, t, client, false)
-	if err != nil {
-		t.Fatalf("failed to set SAML provider type: %v", err)
-	}
+	require.NoErrorf(t, err, "failed to set SAML provider type")
 }
 
 // generate a SCIM token for testing
