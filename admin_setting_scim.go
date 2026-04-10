@@ -40,7 +40,7 @@ type AdminScimSetting struct {
 	SiteAdminGroupDisplayName string `jsonapi:"attr,site-admin-group-display-name,omitempty"`
 }
 
-// AdminScimSettingUpdateOptions represents the options for updating a admin setting scim
+// AdminScimSettingUpdateOptions represents the options for updating an admin SCIM setting.
 type AdminScimSettingUpdateOptions struct {
 	Enabled              *bool   `jsonapi:"attr,enabled,omitempty"`
 	Paused               *bool   `jsonapi:"attr,paused,omitempty"`
