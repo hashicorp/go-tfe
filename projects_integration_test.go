@@ -336,7 +336,7 @@ func TestProjectsCreate(t *testing.T) {
 		})
 
 		assert.Nil(t, p)
-		assert.Contains(t, err.Error(), "invalid attribute\n\nDefault agent pool must be specified when using 'agent' execution mode")
+		assert.ErrorContains(t, err, "must be specified when using 'agent' execution mode")
 	})
 
 	t.Run("when no execution mode is specified, in an organization with local as default execution mode", func(t *testing.T) {
