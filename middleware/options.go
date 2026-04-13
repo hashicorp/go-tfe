@@ -16,3 +16,7 @@ func WithRetryServerErrorsOption(option bool) MiddlewareOption {
 func WithRetryHookOption(hook RetryHookCallback) MiddlewareOption {
 	return MiddlewareOption{key: "RetryHook", value: hook}
 }
+
+func WithErrorInterceptorOption(errorFactory APIErrorFactory) MiddlewareOption {
+	return MiddlewareOption{key: "ErrorInterceptor", value: errorFactory}
+}

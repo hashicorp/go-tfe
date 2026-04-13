@@ -8,7 +8,6 @@ import (
 	"github.com/hashicorp/go-tfe/examples/account"
 	"github.com/hashicorp/go-tfe/examples/inspectheaders"
 	"github.com/hashicorp/go-tfe/examples/organizations"
-	"github.com/hashicorp/go-tfe/examples/workspaces"
 )
 
 func main() {
@@ -19,7 +18,6 @@ func main() {
 		"account details":    account.AccountDetailsCommandFactory,
 		"account password":   account.AccountChangePasswordCommandFactory,
 		"organizations list": organizations.OrganizationListCommandFactory,
-		"workspaces create":  workspaces.WorkspacesCreateCommandFactory,
 	}
 
 	exitStatus, err := c.Run()

@@ -1,3 +1,5 @@
+// Package middleware contains the custom middleware used by the go-tfe SDK, as well as options
+// for configuring the default middlewares.
 package middleware
 
 import (
@@ -8,15 +10,25 @@ import (
 	khttp "github.com/microsoft/kiota-http-go"
 )
 
+func nilErrorFactory(_ *nethttp.Response, _ error) error {
+	return nil
+}
+
+// GetForKiota uses the provided options to configure the default middlewares used by kiota
+// as well as the custom middleware supplied by the SDK.
 func GetForKiota(tfeSDKVersion string, options ...MiddlewareOption) ([]khttp.Middleware, error) {
 	retryServerErrors := false
 	var retryHook RetryHookCallback = func(int, *nethttp.Response) {}
+	var errFactory APIErrorFactory = nilErrorFactory
+
 	for _, option := range options {
 		switch option.key {
 		case "RetryServerErrors":
 			retryServerErrors = option.value.(bool)
 		case "RetryHook":
 			retryHook = option.value.(RetryHookCallback)
+		case "ErrorInterceptor":
+			errFactory = option.value.(APIErrorFactory)
 		}
 	}
 
@@ -49,11 +61,16 @@ func GetForKiota(tfeSDKVersion string, options ...MiddlewareOption) ([]khttp.Mid
 	headersOptions.InspectRequestHeaders = false
 	headersOptions.InspectResponseHeaders = true
 
-	return khttp.GetDefaultMiddlewaresWithOptions(
+	defaultMiddleware, err := khttp.GetDefaultMiddlewaresWithOptions(
 		&retryOptions,
 		&redirectHandlerOptions,
 		compressionOptions,
 		&userAgentHandlerOptions,
 		headersOptions,
 	)
+	if err != nil {
+		return nil, err
+	}
+
+	return append(defaultMiddleware, NewErrorMiddleware(errFactory)), nil
 }
