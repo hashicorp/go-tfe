@@ -152,10 +152,9 @@ func TestTeamsCreate(t *testing.T) {
 			SSOTeamID: String("7dddb675-73e0-4858-a8ad-0e597064301b"),
 		}
 		team, err := client.Teams.Create(ctx, orgTest.Name, options)
+		require.NoError(t, err)
 
-		assert.Nil(t, err)
 		assert.Equal(t, *options.Name, team.Name)
-
 		assert.NotNil(t, team.SSOTeamID)
 		assert.Equal(t, *options.SSOTeamID, team.SSOTeamID)
 	})
