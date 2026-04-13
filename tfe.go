@@ -152,6 +152,7 @@ func NewClient(cfg *Config) (*Client, error) {
 	authProvider := auth.NewBaseBearerTokenAuthenticationProvider(tokenProvider)
 
 	adapter, err := NewRequestAdapter(baseURL.String(), []middleware.MiddlewareOption{
+		middleware.WithErrorInterceptorOption(APIErrorFactory),
 		middleware.WithRetryServerErrorsOption(config.RetryServerErrors),
 	}, authProvider)
 	if err != nil {
