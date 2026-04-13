@@ -2,10 +2,10 @@
 
 ## Bug Fixes
 * Improve API error handling to decode both JSON:API error objects and regular JSON errors arrays by @uk1288 [#1304](https://github.com/hashicorp/go-tfe/pull/1304)
-* Add support for trigger patterns and working directories to stacks by @aaabdelgany [#1305](https://github.com/hashicorp/go-tfe/pull/1305)
 
 ## Enhancements
 * Adds the `ProviderType` field to `AdminSAMLSetting` and `AdminSAMLSettingsUpdateOptions` to support the `provider-type` SAML setting.
+* Add support for trigger patterns and working directories to stacks by @aaabdelgany [#1305](https://github.com/hashicorp/go-tfe/pull/1305)
 
 # v1.103.0
 
