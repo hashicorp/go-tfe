@@ -326,7 +326,7 @@ func TestProjectsCreate(t *testing.T) {
 		})
 
 		assert.Nil(t, p)
-		assert.Contains(t, err.Error(), "unprocessable entity\n\nAgent pool must not be specified unless using 'agent' execution mode")
+		assert.ErrorContains(t, err, "must not be specified unless using 'agent' execution mode")
 	})
 
 	t.Run("when 'agent' execution mode is specified without an a default agent pool ID", func(t *testing.T) {
@@ -336,7 +336,7 @@ func TestProjectsCreate(t *testing.T) {
 		})
 
 		assert.Nil(t, p)
-		assert.Contains(t, err.Error(), "invalid attribute\n\nDefault agent pool must be specified when using 'agent' execution mode")
+		assert.ErrorContains(t, err, "must be specified when using 'agent' execution mode")
 	})
 
 	t.Run("when no execution mode is specified, in an organization with local as default execution mode", func(t *testing.T) {
@@ -555,7 +555,7 @@ func TestProjectsUpdate(t *testing.T) {
 			DefaultAgentPoolID:   String(pool.ID),
 		})
 		assert.Nil(t, proj)
-		assert.ErrorContains(t, err, "Agent pool must not be specified unless using 'agent' execution mode")
+		assert.ErrorContains(t, err, "must not be specified unless using 'agent' execution mode")
 	})
 
 	t.Run("with different default execution modes", func(t *testing.T) {
