@@ -52,7 +52,11 @@ func (organizationListCommand) Run(args []string) int {
 
 	response, err := client.API.Organizations().Get(ctx, &c)
 	if err != nil {
-		log.Fatalf("API returned an error status: %s", tfe.SummarizeAPIErrors(err))
+		if apiErr, ok := err.(*tfe.APIError); ok {
+			log.Fatalf("API returned an error status: %d - %s", apiErr.StatusCode, apiErr.Message)
+		} else {
+			log.Fatalf("Error making API request: %s", err)
+		}
 		return 1
 	}
 

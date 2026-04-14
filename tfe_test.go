@@ -9,7 +9,6 @@ import (
 	"net/http/httptest"
 	"testing"
 
-	"github.com/hashicorp/go-tfe/api/models"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -151,28 +150,27 @@ func TestClient_API(t *testing.T) {
 		}
 
 		response, err := client.API.Organizations().ByOrganization_name("hashicorp").Get(context.Background(), nil)
-		merr, ok := err.(*models.Errors)
-		if !ok {
-			t.Fatalf("expected *models.Errors, got %T", err)
+		var merr *APIError
+		if !assert.ErrorAs(t, err, &merr) {
+			t.Fatalf("expected *APIError, got %T", err)
 		}
 
-		if merr.ResponseStatusCode != 404 {
-			t.Errorf("expected status code %d, got %d", 404, merr.ResponseStatusCode)
+		if !assert.ErrorIs(t, err, ErrNotFound) {
+			t.Error("expected err Is ErrNotFound")
 		}
 
-		if len(merr.GetErrors()) != 1 {
-			t.Fatalf("expected %d errors, got %d", 1, len(merr.GetErrors()))
+		if merr.StatusCode != 404 {
+			t.Errorf("expected status code %d, got %d", 404, merr.StatusCode)
 		}
 
-		for _, msg := range merr.GetErrors() {
-			expected := "404"
-			if actual := *msg.GetStatus(); actual != expected {
+		if len(merr.Details) != 1 {
+			t.Fatalf("expected %d errors, got %d", 1, len(merr.Details))
+		}
+
+		for _, msg := range merr.Details {
+			expected := "404: resource not found"
+			if actual := msg; actual != expected {
 				t.Fatalf("expected error status %q, got %q", expected, actual)
-			}
-
-			expected = "resource not found"
-			if actual := *msg.GetTitle(); actual != expected {
-				t.Fatalf("expected error title %q, got %q", expected, actual)
 			}
 		}
 

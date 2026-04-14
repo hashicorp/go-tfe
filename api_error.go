@@ -1,6 +1,7 @@
 package tfe
 
 import (
+	"bytes"
 	"encoding/json"
 	"fmt"
 	"net/http"
@@ -34,7 +35,15 @@ var (
 
 // Error implements the error interface for APIError.
 func (e *APIError) Error() string {
-	return fmt.Sprintf("API error (status %d): %s", e.StatusCode, e.Message)
+	var buf bytes.Buffer
+	fmt.Fprintf(&buf, "API error %d %s", e.StatusCode, e.Message)
+	for _, detail := range e.Details {
+		fmt.Fprintf(&buf, "\n  - %s", detail)
+	}
+	if len(e.Details) > 0 {
+		fmt.Fprintf(&buf, "\n")
+	}
+	return buf.String()
 }
 
 // Is allows errors.Is to work with APIError, comparing based on StatusCode.

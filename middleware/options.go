@@ -1,6 +1,8 @@
 package middleware
 
-import nethttp "net/http"
+import (
+	nethttp "net/http"
+)
 
 type MiddlewareOption struct {
 	key   string
@@ -9,12 +11,20 @@ type MiddlewareOption struct {
 
 type RetryHookCallback func(retryCount int, response *nethttp.Response)
 
-func WithRetryServerErrorsOption(option bool) MiddlewareOption {
-	return MiddlewareOption{key: "RetryServerErrors", value: option}
+type RetryOptions struct {
+	Enabled           bool
+	MaxRetries        int
+	RetryServerErrors bool
+	Hook              RetryHookCallback
 }
 
-func WithRetryHookOption(hook RetryHookCallback) MiddlewareOption {
-	return MiddlewareOption{key: "RetryHook", value: hook}
+func WithRetryOptions(enabled, enabledForServerErrors bool, maxRetries int, hook RetryHookCallback) MiddlewareOption {
+	return MiddlewareOption{key: "RetryOptions", value: RetryOptions{
+		Enabled:           enabled,
+		RetryServerErrors: enabledForServerErrors,
+		Hook:              hook,
+		MaxRetries:        maxRetries,
+	}}
 }
 
 func WithErrorInterceptorOption(errorFactory APIErrorFactory) MiddlewareOption {
