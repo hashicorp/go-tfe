@@ -30,6 +30,7 @@ import (
 
 	"github.com/stretchr/testify/require"
 
+	retryablehttp "github.com/hashicorp/go-retryablehttp"
 	uuid "github.com/hashicorp/go-uuid"
 )
 
@@ -3429,6 +3430,78 @@ func runTaskCallbackMockServer(t *testing.T) *httptest.Server {
 			t.Fatalf("unexpected user agent header: %q", r.Header.Get("User-Agent"))
 		}
 	}))
+}
+
+func enableSAML(ctx context.Context, t *testing.T, client *Client, enable bool) {
+	t.Helper()
+	var options AdminSAMLSettingsUpdateOptions
+	if enable {
+		options = AdminSAMLSettingsUpdateOptions{
+			Enabled:        Bool(true),
+			SLOEndpointURL: String("https://example.com/slo"),
+			SSOEndpointURL: String("https://example.com/sso"),
+			Certificate:    String("testCert"),
+			IDPCert:        String("testCert"),
+		}
+	} else {
+		options = AdminSAMLSettingsUpdateOptions{
+			Enabled: Bool(false),
+		}
+	}
+	_, err := client.Admin.Settings.SAML.Update(ctx, options)
+	require.NoError(t, err)
+}
+
+func setSAMLProviderType(ctx context.Context, t *testing.T, client *Client, setProvider bool) error {
+	t.Helper()
+	var provider SAMLProviderType
+	if setProvider {
+		provider = SAMLProviderTypeGeneric
+	} else {
+		provider = SAMLProviderTypeUnknown
+	}
+
+	_, err := client.Admin.Settings.SAML.Update(ctx, AdminSAMLSettingsUpdateOptions{ProviderType: &provider})
+	return err
+}
+
+func createSCIMGroup(ctx context.Context, t *testing.T, client *Client, groupName, scimToken string) string {
+	t.Helper()
+
+	payload := struct {
+		DisplayName string   `json:"displayName"`
+		Schemas     []string `json:"schemas"`
+	}{
+		DisplayName: groupName,
+		Schemas:     []string{"urn:ietf:params:scim:schemas:core:2.0:Group"},
+	}
+
+	body, err := serializeRequestBody(&payload)
+	require.NoError(t, err)
+
+	u := client.BaseURL()
+	u.Path = "/scim/v2/Groups"
+
+	req, err := retryablehttp.NewRequest("POST", u.String(), body)
+	require.NoError(t, err)
+	req.Header = client.headers.Clone()
+	req.Header.Set("Authorization", "Bearer "+scimToken)
+	req.Header.Set("Accept", "application/scim+json")
+	req.Header.Set("Content-Type", "application/scim+json; charset=utf-8")
+
+	var res struct {
+		ID string `json:"id"`
+	}
+	err = (&ClientRequest{
+		retryableRequest: req,
+		http:             client.http,
+		limiter:          client.limiter,
+		Header:           req.Header,
+	}).DoJSON(ctx, &res)
+	require.NoError(t, err)
+	require.NotEmpty(t, res.ID)
+
+	return res.ID
 }
 
 // Useless key but enough to pass validation in the API
