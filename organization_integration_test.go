@@ -442,7 +442,7 @@ func TestOrganizationsUpdate(t *testing.T) {
 			DefaultAgentPool: pool,
 		})
 		assert.Nil(t, org)
-		assert.ErrorContains(t, err, "Default agent pool must not be specified unless using 'agent' execution mode")
+		assert.ErrorContains(t, err, "must not be specified unless using 'agent' execution mode")
 	})
 
 	t.Run("when only updating a subset of fields", func(t *testing.T) {

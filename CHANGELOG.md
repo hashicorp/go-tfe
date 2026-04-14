@@ -5,6 +5,7 @@
 
 ## Enhancements
 * Adds the `ProviderType` field to `AdminSAMLSetting` and `AdminSAMLSettingsUpdateOptions` to support the `provider-type` SAML setting.
+* Adds `AdminSCIMSetting` to support managing site-level SCIM settings by @skj-skj [#1307](https://github.com/hashicorp/go-tfe/pull/1307)
 * Add support for trigger patterns and working directories to stacks by @aaabdelgany [#1305](https://github.com/hashicorp/go-tfe/pull/1305)
 
 # v1.103.0

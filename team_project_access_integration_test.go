@@ -146,14 +146,14 @@ func TestTeamProjectAccessesAdd(t *testing.T) {
 		}
 
 		tpa, err := client.TeamProjectAccess.Add(ctx, options)
+		require.NoError(t, err)
+
 		defer func() {
 			err := client.TeamProjectAccess.Remove(ctx, tpa.ID)
 			if err != nil {
 				t.Logf("error removing team access (%s): %s", tpa.ID, err)
 			}
 		}()
-
-		require.NoError(t, err)
 
 		// Get a refreshed view from the API.
 		refreshed, err := client.TeamProjectAccess.Read(ctx, tpa.ID)
@@ -188,14 +188,14 @@ func TestTeamProjectAccessesAdd(t *testing.T) {
 		}
 
 		tpa, err := client.TeamProjectAccess.Add(ctx, options)
+		require.NoError(t, err)
+
 		defer func() {
 			err := client.TeamProjectAccess.Remove(ctx, tpa.ID)
 			if err != nil {
 				t.Logf("error removing team access (%s): %s", tpa.ID, err)
 			}
 		}()
-
-		require.NoError(t, err)
 
 		// Get a refreshed view from the API.
 		refreshed, err := client.TeamProjectAccess.Read(ctx, tpa.ID)
@@ -242,14 +242,14 @@ func TestTeamProjectAccessesAdd(t *testing.T) {
 		}
 
 		tpa, err := client.TeamProjectAccess.Add(ctx, options)
+		require.NoError(t, err)
+
 		defer func() {
 			err := client.TeamProjectAccess.Remove(ctx, tpa.ID)
 			if err != nil {
 				t.Logf("error removing team access (%s): %s", tpa.ID, err)
 			}
 		}()
-
-		require.NoError(t, err)
 
 		// Get a refreshed view from the API.
 		refreshed, err := client.TeamProjectAccess.Read(ctx, tpa.ID)
