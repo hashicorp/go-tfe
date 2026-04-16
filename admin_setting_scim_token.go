@@ -117,7 +117,7 @@ func (a *adminSCIMTokens) Read(ctx context.Context, scimTokenID string) (*AdminS
 	return scimToken, nil
 }
 
-// Delete a Admin SCIM token.
+// Delete an Admin SCIM token.
 func (a *adminSCIMTokens) Delete(ctx context.Context, scimTokenID string) error {
 	if !validStringID(&scimTokenID) {
 		return ErrInvalidTokenID
