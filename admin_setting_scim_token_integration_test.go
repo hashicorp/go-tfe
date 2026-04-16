@@ -139,8 +139,9 @@ func TestAdminSCIMTokens_List(t *testing.T) {
 		for i := 0; i < 3; i++ {
 			scimToken, err := scimTokenClient.Create(ctx)
 			require.NoError(t, err)
+			tokenID := scimToken.ID
 			t.Cleanup(func() {
-				_ = scimTokenClient.Delete(ctx, scimToken.ID)
+				_ = scimTokenClient.Delete(ctx, tokenID)
 			})
 			scimTokens = append(scimTokens, scimToken)
 		}
