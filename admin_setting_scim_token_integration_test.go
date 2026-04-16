@@ -94,8 +94,14 @@ func TestAdminSCIMTokens_Create(t *testing.T) {
 					return
 				}
 				require.NoError(t, err)
+				require.NotNil(t, scimToken)
 				assert.NotEmpty(t, scimToken)
 				assert.NotEmpty(t, scimToken.ID)
+
+				t.Cleanup(func() {
+					err := scimTokenClient.Delete(ctx, scimToken.ID)
+					assert.NoError(t, err)
+				})
 
 				if tc.options.Description != nil {
 					assert.Equal(t, *tc.options.Description, scimToken.Description)
