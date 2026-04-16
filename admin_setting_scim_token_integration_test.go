@@ -20,7 +20,7 @@ func TestAdminSCIMTokens_Create(t *testing.T) {
 	enableSCIM(ctx, t, client, true)
 	defer enableSCIM(ctx, t, client, false)
 
-	scimTokenClient := client.Admin.Settings.SCIM.Token
+	scimTokenClient := client.Admin.Settings.SCIM.Tokens
 
 	t.Run("create token", func(t *testing.T) {
 		testCases := []struct {
@@ -131,7 +131,7 @@ func TestAdminSCIMTokens_List(t *testing.T) {
 	enableSCIM(ctx, t, client, true)
 	defer enableSCIM(ctx, t, client, false)
 
-	scimTokenClient := client.Admin.Settings.SCIM.Token
+	scimTokenClient := client.Admin.Settings.SCIM.Tokens
 
 	t.Run("list tokens", func(t *testing.T) {
 		// create tokens to ensure there is data to list
@@ -173,7 +173,7 @@ func TestAdminSCIMTokens_Read(t *testing.T) {
 	enableSCIM(ctx, t, client, true)
 	defer enableSCIM(ctx, t, client, false)
 
-	scimTokenClient := client.Admin.Settings.SCIM.Token
+	scimTokenClient := client.Admin.Settings.SCIM.Tokens
 
 	t.Run("read token", func(t *testing.T) {
 		// create a token to ensure there is data to read
@@ -231,7 +231,7 @@ func TestAdminSCIMTokens_Delete(t *testing.T) {
 	enableSCIM(ctx, t, client, true)
 	defer enableSCIM(ctx, t, client, false)
 
-	scimTokenClient := client.Admin.Settings.SCIM.Token
+	scimTokenClient := client.Admin.Settings.SCIM.Tokens
 
 	t.Run("delete token", func(t *testing.T) {
 		// create a token to ensure there is data to delete
