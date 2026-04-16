@@ -80,12 +80,12 @@ func (a *adminSCIMTokens) List(ctx context.Context) (*AdminSCIMTokenList, error)
 	return scimTokens, nil
 }
 
-// Create a Admin SCIM token.
+// Createan Admin SCIM token.
 func (a *adminSCIMTokens) Create(ctx context.Context) (*AdminSCIMToken, error) {
 	return a.CreateWithOptions(ctx, AdminSCIMTokenCreateOptions{})
 }
 
-// Create a Admin SCIM token with options.
+// Createan Admin SCIM token with options.
 func (a *adminSCIMTokens) CreateWithOptions(ctx context.Context, options AdminSCIMTokenCreateOptions) (*AdminSCIMToken, error) {
 	req, err := a.client.NewRequest("POST", "admin/scim-tokens", &options)
 	if err != nil {
@@ -99,7 +99,7 @@ func (a *adminSCIMTokens) CreateWithOptions(ctx context.Context, options AdminSC
 	return scimToken, nil
 }
 
-// Read a Admin SCIM token by its ID.
+// Readan Admin SCIM token by its ID.
 func (a *adminSCIMTokens) Read(ctx context.Context, scimTokenID string) (*AdminSCIMToken, error) {
 	if !validStringID(&scimTokenID) {
 		return nil, ErrInvalidTokenID
