@@ -99,17 +99,17 @@ func (mr *MockAdminSCIMTokensMockRecorder) List(ctx any) *gomock.Call {
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "List", reflect.TypeOf((*MockAdminSCIMTokens)(nil).List), ctx)
 }
 
-// ReadByID mocks base method.
-func (m *MockAdminSCIMTokens) ReadByID(ctx context.Context, scimTokenID string) (*tfe.AdminSCIMToken, error) {
+// Read mocks base method.
+func (m *MockAdminSCIMTokens) Read(ctx context.Context, scimTokenID string) (*tfe.AdminSCIMToken, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "ReadByID", ctx, scimTokenID)
+	ret := m.ctrl.Call(m, "Read", ctx, scimTokenID)
 	ret0, _ := ret[0].(*tfe.AdminSCIMToken)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
 
-// ReadByID indicates an expected call of ReadByID.
-func (mr *MockAdminSCIMTokensMockRecorder) ReadByID(ctx, scimTokenID any) *gomock.Call {
+// Read indicates an expected call of Read.
+func (mr *MockAdminSCIMTokensMockRecorder) Read(ctx, scimTokenID any) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ReadByID", reflect.TypeOf((*MockAdminSCIMTokens)(nil).ReadByID), ctx, scimTokenID)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Read", reflect.TypeOf((*MockAdminSCIMTokens)(nil).Read), ctx, scimTokenID)
 }
