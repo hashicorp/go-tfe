@@ -1,3 +1,6 @@
+// Copyright IBM Corp. 2018, 2026
+// SPDX-License-Identifier: MPL-2.0
+
 package tfe
 
 import (
@@ -9,24 +12,24 @@ import (
 
 var _ AdminSCIMTokens = (*adminSCIMTokens)(nil)
 
-// AdminSCIMTokens describes all the admin scim token related methods that the Terraform
+// AdminSCIMTokens describes all the Admin SCIM token related methods that the Terraform
 // Enterprise API supports
 //
 // TFE API docs: https://developer.hashicorp.com/terraform/enterprise/api-docs/admin/scim-tokens
 type AdminSCIMTokens interface {
-	// List all admin scim tokens.
+	// List all Admin SCIM tokens.
 	List(ctx context.Context) (*AdminSCIMTokenList, error)
 
-	// Create a admin scim token.
+	// Create a Admin SCIM token.
 	Create(ctx context.Context) (*AdminSCIMToken, error)
 
-	// Create a admin scim token with options.
+	// Create a Admin SCIM token with options.
 	CreateWithOptions(ctx context.Context, options AdminSCIMTokenCreateOptions) (*AdminSCIMToken, error)
 
-	// Read a admin scim token by its ID.
-	ReadByID(ctx context.Context, scimTokenID string) (*AdminSCIMToken, error)
+	// Read a Admin SCIM token by its ID.
+	Read(ctx context.Context, scimTokenID string) (*AdminSCIMToken, error)
 
-	// Delete a admin scim token.
+	// Delete a Admin SCIM token.
 	Delete(ctx context.Context, scimTokenID string) error
 }
 
@@ -35,12 +38,12 @@ type adminSCIMTokens struct {
 	client *Client
 }
 
-// AdminSCIMTokenList represents a list of admin scim tokens
+// AdminSCIMTokenList represents a list of Admin SCIM tokens
 type AdminSCIMTokenList struct {
 	Items []*AdminSCIMToken
 }
 
-// AdminSCIMToken represents a Terraform Enterprise scim token.
+// AdminSCIMToken represents a Terraform Enterprise Admin SCIM token.
 type AdminSCIMToken struct {
 	ID          string    `jsonapi:"primary,authentication-tokens"`
 	CreatedAt   time.Time `jsonapi:"attr,created-at,iso8601"`
@@ -50,7 +53,7 @@ type AdminSCIMToken struct {
 	Token       string    `jsonapi:"attr,token,omitempty"`
 }
 
-// AdminSCIMTokenCreateOptions represents the options for creating a admin scim token
+// AdminSCIMTokenCreateOptions represents the options for creating a Admin SCIM token
 type AdminSCIMTokenCreateOptions struct {
 
 	// Optional: An optional human-readable description of the token's purpose
@@ -62,7 +65,7 @@ type AdminSCIMTokenCreateOptions struct {
 	ExpiredAt *time.Time `jsonapi:"attr,expired-at,iso8601,omitempty"`
 }
 
-// List all admin scim tokens.
+// List all Admin SCIM tokens.
 func (a *adminSCIMTokens) List(ctx context.Context) (*AdminSCIMTokenList, error) {
 	req, err := a.client.NewRequest("GET", "admin/scim-tokens", nil)
 	if err != nil {
@@ -77,12 +80,12 @@ func (a *adminSCIMTokens) List(ctx context.Context) (*AdminSCIMTokenList, error)
 	return scimTokens, nil
 }
 
-// Create a admin scim token.
+// Create a Admin SCIM token.
 func (a *adminSCIMTokens) Create(ctx context.Context) (*AdminSCIMToken, error) {
 	return a.CreateWithOptions(ctx, AdminSCIMTokenCreateOptions{})
 }
 
-// Create a admin scim token with options.
+// Create a Admin SCIM token with options.
 func (a *adminSCIMTokens) CreateWithOptions(ctx context.Context, options AdminSCIMTokenCreateOptions) (*AdminSCIMToken, error) {
 	req, err := a.client.NewRequest("POST", "admin/scim-tokens", &options)
 	if err != nil {
@@ -96,8 +99,8 @@ func (a *adminSCIMTokens) CreateWithOptions(ctx context.Context, options AdminSC
 	return scimToken, nil
 }
 
-// Read a admin scim token by its ID.
-func (a *adminSCIMTokens) ReadByID(ctx context.Context, scimTokenID string) (*AdminSCIMToken, error) {
+// Read a Admin SCIM token by its ID.
+func (a *adminSCIMTokens) Read(ctx context.Context, scimTokenID string) (*AdminSCIMToken, error) {
 	if !validStringID(&scimTokenID) {
 		return nil, ErrInvalidTokenID
 	}
@@ -114,7 +117,7 @@ func (a *adminSCIMTokens) ReadByID(ctx context.Context, scimTokenID string) (*Ad
 	return scimToken, nil
 }
 
-// Delete a admin scim token.
+// Delete a Admin SCIM token.
 func (a *adminSCIMTokens) Delete(ctx context.Context, scimTokenID string) error {
 	if !validStringID(&scimTokenID) {
 		return ErrInvalidTokenID

@@ -1,3 +1,6 @@
+// Copyright IBM Corp. 2018, 2026
+// SPDX-License-Identifier: MPL-2.0
+
 package tfe
 
 import (
@@ -112,7 +115,8 @@ func TestAdminSCIMTokens_Create(t *testing.T) {
 				if tc.options.ExpiredAt != nil {
 					assert.WithinDuration(t, *tc.options.ExpiredAt, scimToken.ExpiredAt, 10*time.Second)
 				} else {
-					assert.WithinDuration(t, time.Now().Add(365*24*time.Hour), scimToken.ExpiredAt, 10*time.Second)
+					expectedExpiredAt := scimToken.CreatedAt.Add(365 * 24 * time.Hour)
+					assert.WithinDuration(t, expectedExpiredAt, scimToken.ExpiredAt, 10*time.Second)
 				}
 			})
 		}
@@ -135,6 +139,9 @@ func TestAdminSCIMTokens_List(t *testing.T) {
 		for i := 0; i < 3; i++ {
 			scimToken, err := scimTokenClient.Create(ctx)
 			require.NoError(t, err)
+			t.Cleanup(func() {
+				_ = scimTokenClient.Delete(ctx, scimToken.ID)
+			})
 			scimTokens = append(scimTokens, scimToken)
 		}
 
@@ -158,7 +165,7 @@ func TestAdminSCIMTokens_List(t *testing.T) {
 	})
 }
 
-func TestAdminSCIMTokens_ReadByID(t *testing.T) {
+func TestAdminSCIMTokens_Read(t *testing.T) {
 	skipUnlessEnterprise(t)
 	client := testClient(t)
 	ctx := context.Background()
@@ -168,7 +175,7 @@ func TestAdminSCIMTokens_ReadByID(t *testing.T) {
 
 	scimTokenClient := client.Admin.Settings.SCIM.Token
 
-	t.Run("read token by ID", func(t *testing.T) {
+	t.Run("read token", func(t *testing.T) {
 		// create a token to ensure there is data to read
 		scimToken, err := scimTokenClient.CreateWithOptions(ctx, AdminSCIMTokenCreateOptions{
 			Description: String("Test Desc"),
@@ -176,6 +183,11 @@ func TestAdminSCIMTokens_ReadByID(t *testing.T) {
 		})
 		require.NoError(t, err)
 		require.NotNil(t, scimToken)
+
+		t.Cleanup(func() {
+			err := scimTokenClient.Delete(ctx, scimToken.ID)
+			require.NoError(t, err)
+		})
 
 		testCases := []struct {
 			name       string
@@ -190,7 +202,7 @@ func TestAdminSCIMTokens_ReadByID(t *testing.T) {
 
 		for _, tc := range testCases {
 			t.Run(tc.name, func(t *testing.T) {
-				token, err := scimTokenClient.ReadByID(ctx, tc.tokenID)
+				token, err := scimTokenClient.Read(ctx, tc.tokenID)
 				if tc.raiseError {
 					require.Error(t, err)
 					return
@@ -253,7 +265,7 @@ func TestAdminSCIMTokens_Delete(t *testing.T) {
 				require.NoError(t, err)
 
 				// verify deletion
-				_, err = scimTokenClient.ReadByID(ctx, tc.tokenID)
+				_, err = scimTokenClient.Read(ctx, tc.tokenID)
 				require.Error(t, err)
 			})
 		}
