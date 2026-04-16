@@ -88,6 +88,7 @@ func TestAdminSettings_SCIM_Update(t *testing.T) {
 
 		scimToken, err := scimClient.Token.Create(ctx)
 		require.NoError(t, err)
+		require.NotEmpty(t, scimToken.Token)
 		scimGroupID := createSCIMGroup(ctx, t, client, "foo", scimToken.Token)
 
 		testCases := []struct {
