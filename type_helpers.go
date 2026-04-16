@@ -153,3 +153,8 @@ func NullableTime(v time.Time) jsonapi.NullableAttr[time.Time] {
 func NullTime() jsonapi.NullableAttr[time.Time] {
 	return jsonapi.NewNullNullableAttr[time.Time]()
 }
+
+// Ptr returns a pointer to the given value of any type.
+func Ptr[T any](v T) *T {
+	return &v
+}

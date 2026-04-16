@@ -3,6 +3,12 @@
 
 package tfe
 
+// SCIMResource groups the SCIM related resources together.
+type SCIMResource struct {
+	SCIMSettings
+	Token AdminSCIMTokens
+}
+
 // AdminSettings describes all the admin settings related methods that the Terraform Enterprise API supports.
 // Note that admin settings are only available in Terraform Enterprise.
 //
@@ -15,7 +21,7 @@ type AdminSettings struct {
 	Twilio         TwilioSettings
 	Customization  CustomizationSettings
 	OIDC           OIDCSettings
-	SCIM           SCIMSettings
+	SCIM           *SCIMResource
 }
 
 func newAdminSettings(client *Client) *AdminSettings {
@@ -27,6 +33,9 @@ func newAdminSettings(client *Client) *AdminSettings {
 		Twilio:         &adminTwilioSettings{client: client},
 		Customization:  &adminCustomizationSettings{client: client},
 		OIDC:           &adminOIDCSettings{client: client},
-		SCIM:           &adminSCIMSettings{client: client},
+		SCIM: &SCIMResource{
+			SCIMSettings: &adminSCIMSettings{client: client},
+			Token:        &adminSCIMTokens{client: client},
+		},
 	}
 }

@@ -6,7 +6,6 @@ package tfe
 import (
 	"context"
 	"testing"
-	"time"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
@@ -87,8 +86,9 @@ func TestAdminSettings_SCIM_Update(t *testing.T) {
 		_, err = scimClient.Update(ctx, AdminSCIMSettingUpdateOptions{Enabled: Bool(true)})
 		require.NoError(t, err)
 
-		scimToken := generateSCIMToken(ctx, t, client)
-		scimGroupID := createSCIMGroup(ctx, t, client, "foo", scimToken)
+		scimToken, err := scimClient.Token.Create(ctx)
+		require.NoError(t, err)
+		scimGroupID := createSCIMGroup(ctx, t, client, "foo", scimToken.Token)
 
 		testCases := []struct {
 			name        string
@@ -168,29 +168,4 @@ func cleanupSCIMSettings(ctx context.Context, t *testing.T, client *Client) {
 
 	err = setSAMLProviderType(ctx, t, client, false)
 	require.NoErrorf(t, err, "failed to set SAML provider type")
-}
-
-// generate a SCIM token for testing
-func generateSCIMToken(ctx context.Context, t *testing.T, client *Client) string {
-	t.Helper()
-	// TFE requires a minimum of 30 days for SCIM token expiration
-	expiredAt := time.Now().Add(30 * 24 * time.Hour)
-
-	options := struct {
-		Description *string    `jsonapi:"attr,description"`
-		ExpiredAt   *time.Time `jsonapi:"attr,expired-at,iso8601"`
-	}{
-		Description: String("test-scim-token"),
-		ExpiredAt:   &expiredAt,
-	}
-	req, err := client.NewRequest("POST", "admin/scim-tokens", &options)
-	require.NoError(t, err)
-
-	var res struct {
-		Token string `jsonapi:"attr,token"`
-	}
-	err = req.Do(ctx, &res)
-	require.NoError(t, err)
-
-	return res.Token
 }
