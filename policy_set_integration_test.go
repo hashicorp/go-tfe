@@ -159,11 +159,11 @@ func TestPolicySetsCreate(t *testing.T) {
 		Beta:       Bool(false),
 	}
 	sv, err := client.Admin.SentinelVersions.Create(ctx, opts)
+	require.NoError(t, err)
 	defer func() {
 		err := client.Admin.SentinelVersions.Delete(ctx, sv.ID)
 		require.NoError(t, err)
 	}()
-	require.NoError(t, err)
 
 	var vcsPolicyID string
 
@@ -677,11 +677,11 @@ func TestPolicySetsUpdate(t *testing.T) {
 		Beta:       Bool(false),
 	}
 	sv, err := client.Admin.SentinelVersions.Create(ctx, opts)
+	require.NoError(t, err)
 	defer func() {
 		err := client.Admin.SentinelVersions.Delete(ctx, sv.ID)
 		require.NoError(t, err)
 	}()
-	require.NoError(t, err)
 
 	options := PolicySetCreateOptions{
 		Kind:              Sentinel,
