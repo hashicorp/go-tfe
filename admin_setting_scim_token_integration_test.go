@@ -139,9 +139,13 @@ func TestAdminSCIMTokens_List(t *testing.T) {
 
 		var expectedIDs []string
 		var actualIDs []string
-		for i, token := range scimTokens {
+		for _, listedToken := range tokenList.Items {
+			actualIDs = append(actualIDs, listedToken.ID)
+		}
+
+		for _, token := range scimTokens {
 			expectedIDs = append(expectedIDs, token.ID)
-			actualIDs = append(actualIDs, tokenList.Items[i].ID)
+			assert.Contains(t, actualIDs, token.ID)
 		}
 
 		assert.Subset(t, actualIDs, expectedIDs)
