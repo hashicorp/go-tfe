@@ -6,6 +6,7 @@
 ## Enhancements
 * Adds the `ProviderType` field to `AdminSAMLSetting` and `AdminSAMLSettingsUpdateOptions` to support the `provider-type` SAML setting by @skj-skj [#1303](https://github.com/hashicorp/go-tfe/pull/1303)
 * Adds `AdminSCIMSetting` to support managing site-level SCIM settings by @skj-skj [#1307](https://github.com/hashicorp/go-tfe/pull/1307)
+* Adds BETA support for delegating policy overrides on teams by @jbonhag [#1301](https://github.com/hashicorp/go-tfe/pull/1301)
 
 # v1.103.0
 

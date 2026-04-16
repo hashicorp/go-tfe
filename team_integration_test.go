@@ -116,16 +116,45 @@ func TestTeamsCreate(t *testing.T) {
 		}
 	})
 
+	t.Run("with beta delegate-policy-overrides", func(t *testing.T) {
+		skipUnlessBeta(t)
+
+		options := TeamCreateOptions{
+			Name: String("delegate-policy-overrides"),
+			OrganizationAccess: &OrganizationAccessOptions{
+				DelegatePolicyOverrides: Bool(true),
+			},
+		}
+
+		team, err := client.Teams.Create(ctx, orgTest.Name, options)
+		require.NoError(t, err)
+		defer func() {
+			err := client.Teams.Delete(ctx, team.ID)
+			require.NoError(t, err)
+		}()
+
+		refreshed, err := client.Teams.Read(ctx, team.ID)
+		require.NoError(t, err)
+
+		for _, item := range []*Team{
+			team,
+			refreshed,
+		} {
+			assert.NotEmpty(t, item.ID)
+			assert.Equal(t, *options.Name, item.Name)
+			assert.Equal(t, *options.OrganizationAccess.DelegatePolicyOverrides, item.OrganizationAccess.DelegatePolicyOverrides)
+		}
+	})
+
 	t.Run("with sso-team-id", func(t *testing.T) {
 		options := TeamCreateOptions{
 			Name:      String("rockettes"),
 			SSOTeamID: String("7dddb675-73e0-4858-a8ad-0e597064301b"),
 		}
 		team, err := client.Teams.Create(ctx, orgTest.Name, options)
+		require.NoError(t, err)
 
-		assert.Nil(t, err)
 		assert.Equal(t, *options.Name, team.Name)
-
 		assert.NotNil(t, team.SSOTeamID)
 		assert.Equal(t, *options.SSOTeamID, team.SSOTeamID)
 	})
@@ -174,7 +203,8 @@ func TestTeamsRead(t *testing.T) {
 	t.Run("when the team exists", func(t *testing.T) {
 		tm, err := client.Teams.Read(ctx, tmTest.ID)
 		require.NoError(t, err)
-		assert.Equal(t, tmTest, tm)
+		assert.Equal(t, tmTest.ID, tm.ID)
+		assert.Equal(t, tmTest.Name, tm.Name)
 
 		t.Run("visibility is returned", func(t *testing.T) {
 			assert.Equal(t, "secret", tm.Visibility)
@@ -276,6 +306,32 @@ func TestTeamsUpdate(t *testing.T) {
 				item.OrganizationAccess.ManageModules,
 			)
 		}
+	})
+
+	t.Run("with beta delegate policy overrides", func(t *testing.T) {
+		skipUnlessBeta(t)
+
+		team, err := client.Teams.Create(ctx, orgTest.Name, TeamCreateOptions{
+			Name: String(randomString(t)),
+		})
+		require.NoError(t, err)
+		defer func() {
+			err := client.Teams.Delete(ctx, team.ID)
+			require.NoError(t, err)
+		}()
+
+		updated, err := client.Teams.Update(ctx, team.ID, TeamUpdateOptions{
+			OrganizationAccess: &OrganizationAccessOptions{
+				DelegatePolicyOverrides: Bool(true),
+			},
+		})
+		require.NoError(t, err)
+
+		refreshed, err := client.Teams.Read(ctx, team.ID)
+		require.NoError(t, err)
+
+		assert.True(t, updated.OrganizationAccess.DelegatePolicyOverrides)
+		assert.True(t, refreshed.OrganizationAccess.DelegatePolicyOverrides)
 	})
 
 	t.Run("when the team does not exist", func(t *testing.T) {
