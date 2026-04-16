@@ -238,6 +238,12 @@ func TestAdminSCIMTokens_Delete(t *testing.T) {
 		scimToken, err := scimTokenClient.Create(ctx)
 		require.NoError(t, err)
 		require.NotNil(t, scimToken)
+		t.Cleanup(func() {
+			err := scimTokenClient.Delete(ctx, scimToken.ID)
+			if err != nil && err != ErrResourceNotFound {
+				t.Logf("failed to cleanup SCIM token %q: %v", scimToken.ID, err)
+			}
+		})
 
 		testCases := []struct {
 			name       string
