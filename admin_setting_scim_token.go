@@ -20,16 +20,16 @@ type AdminSCIMTokens interface {
 	// List all Admin SCIM tokens.
 	List(ctx context.Context) (*AdminSCIMTokenList, error)
 
-	// Create a Admin SCIM token.
+	// Create an Admin SCIM token.
 	Create(ctx context.Context) (*AdminSCIMToken, error)
 
-	// Create a Admin SCIM token with options.
+	// Create an Admin SCIM token with options.
 	CreateWithOptions(ctx context.Context, options AdminSCIMTokenCreateOptions) (*AdminSCIMToken, error)
 
-	// Read a Admin SCIM token by its ID.
+	// Read an Admin SCIM token by its ID.
 	Read(ctx context.Context, scimTokenID string) (*AdminSCIMToken, error)
 
-	// Delete a Admin SCIM token.
+	// Delete an Admin SCIM token.
 	Delete(ctx context.Context, scimTokenID string) error
 }
 
@@ -53,7 +53,7 @@ type AdminSCIMToken struct {
 	Token       string    `jsonapi:"attr,token,omitempty"`
 }
 
-// AdminSCIMTokenCreateOptions represents the options for creating a Admin SCIM token
+// AdminSCIMTokenCreateOptions represents the options for creating an Admin SCIM token
 type AdminSCIMTokenCreateOptions struct {
 
 	// Optional: An optional human-readable description of the token's purpose
