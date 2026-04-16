@@ -55,7 +55,6 @@ type AdminSCIMToken struct {
 
 // AdminSCIMTokenCreateOptions represents the options for creating an Admin SCIM token
 type AdminSCIMTokenCreateOptions struct {
-
 	// Optional: An optional human-readable description of the token's purpose
 	// (for example, Okta SCIM Integration).
 	Description *string `jsonapi:"attr,description,omitempty"`
