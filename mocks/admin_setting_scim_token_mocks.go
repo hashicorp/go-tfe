@@ -41,18 +41,18 @@ func (m *MockAdminSCIMTokens) EXPECT() *MockAdminSCIMTokensMockRecorder {
 }
 
 // Create mocks base method.
-func (m *MockAdminSCIMTokens) Create(ctx context.Context) (*tfe.AdminSCIMToken, error) {
+func (m *MockAdminSCIMTokens) Create(ctx context.Context, description string) (*tfe.AdminSCIMToken, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "Create", ctx)
+	ret := m.ctrl.Call(m, "Create", ctx, description)
 	ret0, _ := ret[0].(*tfe.AdminSCIMToken)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
 
 // Create indicates an expected call of Create.
-func (mr *MockAdminSCIMTokensMockRecorder) Create(ctx any) *gomock.Call {
+func (mr *MockAdminSCIMTokensMockRecorder) Create(ctx, description any) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Create", reflect.TypeOf((*MockAdminSCIMTokens)(nil).Create), ctx)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Create", reflect.TypeOf((*MockAdminSCIMTokens)(nil).Create), ctx, description)
 }
 
 // CreateWithOptions mocks base method.
