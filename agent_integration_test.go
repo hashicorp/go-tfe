@@ -33,13 +33,11 @@ func TestAgentsRead(t *testing.T) {
 		assert.Equal(t, agent, k)
 	})
 
-	// NOTE!! Commenting out test to unblock PRs pending a fix in the API.
-	// Please re-enable once the API is fixed.
-	// t.Run("when the agent does not exist", func(t *testing.T) {
-	// 	k, err := client.Agents.Read(ctx, "nonexistent")
-	// 	assert.Nil(t, k)
-	// 	assert.Equal(t, err, ErrResourceNotFound)
-	// })
+	t.Run("when the agent does not exist", func(t *testing.T) {
+		k, err := client.Agents.Read(ctx, "nonexistent")
+		assert.Nil(t, k)
+		assert.Equal(t, err, ErrResourceNotFound)
+	})
 
 	t.Run("without a valid agent ID", func(t *testing.T) {
 		k, err := client.Agents.Read(ctx, badIdentifier)
