@@ -57,7 +57,6 @@ func TestAdminSCIMTokens_Create(t *testing.T) {
 				assert.Equal(t, tc.description, scimToken.Description)
 				assert.WithinDuration(t, time.Now(), scimToken.CreatedAt, 10*time.Second)
 				assert.WithinDuration(t, time.Now().Add(365*24*time.Hour), scimToken.ExpiredAt, 10*time.Second)
-
 			})
 		}
 	})

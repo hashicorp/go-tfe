@@ -66,7 +66,7 @@ type AdminSCIMTokenCreateOptions struct {
 
 // List all Admin SCIM tokens.
 func (a *adminSCIMTokens) List(ctx context.Context) (*AdminSCIMTokenList, error) {
-	req, err := a.client.NewRequest("GET", "admin/scim-tokens", nil)
+	req, err := a.client.NewRequest("GET", AdminSCIMTokensPath, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -91,7 +91,7 @@ func (a *adminSCIMTokens) CreateWithOptions(ctx context.Context, options AdminSC
 	if !validString(options.Description) {
 		return nil, ErrSCIMTokenDescription
 	}
-	req, err := a.client.NewRequest("POST", "admin/scim-tokens", &options)
+	req, err := a.client.NewRequest("POST", AdminSCIMTokensPath, &options)
 	if err != nil {
 		return nil, err
 	}
@@ -108,7 +108,7 @@ func (a *adminSCIMTokens) Read(ctx context.Context, scimTokenID string) (*AdminS
 	if !validStringID(&scimTokenID) {
 		return nil, ErrInvalidTokenID
 	}
-	u := fmt.Sprintf("admin/scim-tokens/%s", url.PathEscape(scimTokenID))
+	u := fmt.Sprintf(AdminSCIMTokenPath, url.PathEscape(scimTokenID))
 	req, err := a.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, err
