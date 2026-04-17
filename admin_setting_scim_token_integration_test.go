@@ -5,6 +5,7 @@ package tfe
 
 import (
 	"context"
+	"fmt"
 	"testing"
 	"time"
 
@@ -24,11 +25,75 @@ func TestAdminSCIMTokens_Create(t *testing.T) {
 
 	t.Run("create token", func(t *testing.T) {
 		testCases := []struct {
+			name        string
+			description string
+			raiseError  bool
+		}{
+			{"with valid description", "Test Description", false},
+			{"with empty description", "", true},
+		}
+		for _, tc := range testCases {
+			t.Run(tc.name, func(t *testing.T) {
+				scimToken, err := scimTokenClient.Create(ctx, tc.description)
+
+				if tc.raiseError {
+					require.Error(t, err)
+					return
+				}
+
+				t.Cleanup(func() {
+					err := scimTokenClient.Delete(ctx, scimToken.ID)
+					if err != nil && err != ErrResourceNotFound {
+						t.Logf("failed to cleanup SCIM token %q: %v", scimToken.ID, err)
+					}
+				})
+				require.NoError(t, err)
+				require.NotNil(t, scimToken)
+				assert.NotEmpty(t, scimToken)
+				assert.NotEmpty(t, scimToken.ID)
+				assert.NotEmpty(t, scimToken.Token)
+				assert.NotEmpty(t, scimToken.Description)
+
+				assert.Equal(t, tc.description, scimToken.Description)
+				assert.WithinDuration(t, time.Now(), scimToken.CreatedAt, 10*time.Second)
+				assert.WithinDuration(t, time.Now().Add(365*24*time.Hour), scimToken.ExpiredAt, 10*time.Second)
+
+			})
+		}
+	})
+}
+
+func TestAdminSCIMTokens_CreateWithOptions(t *testing.T) {
+	skipUnlessEnterprise(t)
+	client := testClient(t)
+	ctx := context.Background()
+
+	enableSCIM(ctx, t, client, true)
+	defer enableSCIM(ctx, t, client, false)
+
+	scimTokenClient := client.Admin.Settings.SCIM.Tokens
+
+	t.Run("create token", func(t *testing.T) {
+		testCases := []struct {
 			name       string
 			options    AdminSCIMTokenCreateOptions
 			raiseError bool
 		}{
-			{"with no options", AdminSCIMTokenCreateOptions{}, false},
+			{"with no options - should fail", AdminSCIMTokenCreateOptions{}, true},
+			{
+				"with nil description - should fail`",
+				AdminSCIMTokenCreateOptions{
+					Description: nil,
+				},
+				true,
+			},
+			{
+				"with empty description - should fail`",
+				AdminSCIMTokenCreateOptions{
+					Description: String(""),
+				},
+				true,
+			},
 			{
 				"with description",
 				AdminSCIMTokenCreateOptions{
@@ -37,11 +102,11 @@ func TestAdminSCIMTokens_Create(t *testing.T) {
 				false,
 			},
 			{
-				"with expiration",
+				"with only expiration - should fail",
 				AdminSCIMTokenCreateOptions{
 					ExpiredAt: Ptr(time.Now().Add(30 * 24 * time.Hour)),
 				},
-				false,
+				true,
 			},
 			{
 				"with description and expiration",
@@ -68,14 +133,16 @@ func TestAdminSCIMTokens_Create(t *testing.T) {
 			{
 				"with expiration in 29 days",
 				AdminSCIMTokenCreateOptions{
-					ExpiredAt: Ptr(time.Now().Add(29*24*time.Hour + 10*time.Second)), // adding 10 sec to account for any delays in test execution
+					Description: String("Test Description"),
+					ExpiredAt:   Ptr(time.Now().Add(29*24*time.Hour + 10*time.Second)), // adding 10 sec to account for any delays in test execution
 				},
 				false,
 			},
 			{
 				"with expiration in 365 days",
 				AdminSCIMTokenCreateOptions{
-					ExpiredAt: Ptr(time.Now().Add(365 * 24 * time.Hour)),
+					Description: String("Test Description"),
+					ExpiredAt:   Ptr(time.Now().Add(365 * 24 * time.Hour)),
 				},
 				false,
 			},
@@ -86,11 +153,7 @@ func TestAdminSCIMTokens_Create(t *testing.T) {
 				var scimToken *AdminSCIMToken
 				var err error
 
-				if tc.options == (AdminSCIMTokenCreateOptions{}) {
-					scimToken, err = scimTokenClient.Create(ctx)
-				} else {
-					scimToken, err = scimTokenClient.CreateWithOptions(ctx, tc.options)
-				}
+				scimToken, err = scimTokenClient.CreateWithOptions(ctx, tc.options)
 
 				if tc.raiseError {
 					require.Error(t, err)
@@ -103,14 +166,10 @@ func TestAdminSCIMTokens_Create(t *testing.T) {
 
 				t.Cleanup(func() {
 					err := scimTokenClient.Delete(ctx, scimToken.ID)
-					assert.NoError(t, err)
+					if err != nil && err != ErrResourceNotFound {
+						t.Logf("failed to cleanup SCIM token %q: %v", scimToken.ID, err)
+					}
 				})
-
-				if tc.options.Description != nil {
-					assert.Equal(t, *tc.options.Description, scimToken.Description)
-				} else {
-					assert.Empty(t, scimToken.Description)
-				}
 
 				if tc.options.ExpiredAt != nil {
 					assert.WithinDuration(t, *tc.options.ExpiredAt, scimToken.ExpiredAt, 10*time.Second)
@@ -137,11 +196,14 @@ func TestAdminSCIMTokens_List(t *testing.T) {
 		// create tokens to ensure there is data to list
 		var scimTokens []*AdminSCIMToken
 		for i := 0; i < 3; i++ {
-			scimToken, err := scimTokenClient.Create(ctx)
+			scimToken, err := scimTokenClient.Create(ctx, fmt.Sprintf("foo token %d", i))
 			require.NoError(t, err)
 			tokenID := scimToken.ID
 			t.Cleanup(func() {
-				_ = scimTokenClient.Delete(ctx, tokenID)
+				err := scimTokenClient.Delete(ctx, tokenID)
+				if err != nil && err != ErrResourceNotFound {
+					t.Logf("failed to cleanup SCIM token %q: %v", tokenID, err)
+				}
 			})
 			scimTokens = append(scimTokens, scimToken)
 		}
@@ -187,7 +249,9 @@ func TestAdminSCIMTokens_Read(t *testing.T) {
 
 		t.Cleanup(func() {
 			err := scimTokenClient.Delete(ctx, scimToken.ID)
-			require.NoError(t, err)
+			if err != nil && err != ErrResourceNotFound {
+				t.Logf("failed to cleanup SCIM token %q: %v", scimToken.ID, err)
+			}
 		})
 
 		testCases := []struct {
@@ -236,7 +300,7 @@ func TestAdminSCIMTokens_Delete(t *testing.T) {
 
 	t.Run("delete token", func(t *testing.T) {
 		// create a token to ensure there is data to delete
-		scimToken, err := scimTokenClient.Create(ctx)
+		scimToken, err := scimTokenClient.Create(ctx, "foo token")
 		require.NoError(t, err)
 		require.NotNil(t, scimToken)
 		t.Cleanup(func() {

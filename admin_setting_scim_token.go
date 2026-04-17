@@ -21,7 +21,7 @@ type AdminSCIMTokens interface {
 	List(ctx context.Context) (*AdminSCIMTokenList, error)
 
 	// Create an Admin SCIM token.
-	Create(ctx context.Context) (*AdminSCIMToken, error)
+	Create(ctx context.Context, description string) (*AdminSCIMToken, error)
 
 	// Create an Admin SCIM token with options.
 	CreateWithOptions(ctx context.Context, options AdminSCIMTokenCreateOptions) (*AdminSCIMToken, error)
@@ -55,9 +55,9 @@ type AdminSCIMToken struct {
 
 // AdminSCIMTokenCreateOptions represents the options for creating an Admin SCIM token
 type AdminSCIMTokenCreateOptions struct {
-	// Optional: An optional human-readable description of the token's purpose
+	// Required: A human-readable description of the token's purpose
 	// (for example, Okta SCIM Integration).
-	Description *string `jsonapi:"attr,description,omitempty"`
+	Description *string `jsonapi:"attr,description"`
 
 	// Optional: Optional ISO-8601 timestamp for token expiration.
 	// Defaults to 365 days in the future. Must be between 29 and 365 days in the future.
@@ -80,12 +80,17 @@ func (a *adminSCIMTokens) List(ctx context.Context) (*AdminSCIMTokenList, error)
 }
 
 // Create an Admin SCIM token.
-func (a *adminSCIMTokens) Create(ctx context.Context) (*AdminSCIMToken, error) {
-	return a.CreateWithOptions(ctx, AdminSCIMTokenCreateOptions{})
+func (a *adminSCIMTokens) Create(ctx context.Context, description string) (*AdminSCIMToken, error) {
+	return a.CreateWithOptions(ctx, AdminSCIMTokenCreateOptions{
+		Description: &description,
+	})
 }
 
 // Create an Admin SCIM token with options.
 func (a *adminSCIMTokens) CreateWithOptions(ctx context.Context, options AdminSCIMTokenCreateOptions) (*AdminSCIMToken, error) {
+	if !validString(options.Description) {
+		return nil, ErrSCIMTokenDescription
+	}
 	req, err := a.client.NewRequest("POST", "admin/scim-tokens", &options)
 	if err != nil {
 		return nil, err

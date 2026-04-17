@@ -86,7 +86,7 @@ func TestAdminSettings_SCIM_Update(t *testing.T) {
 		_, err = scimClient.Update(ctx, AdminSCIMSettingUpdateOptions{Enabled: Bool(true)})
 		require.NoError(t, err)
 
-		scimToken, err := scimClient.Tokens.Create(ctx)
+		scimToken, err := scimClient.Tokens.Create(ctx, "scim integration test token")
 		require.NoError(t, err)
 		require.NotEmpty(t, scimToken.Token)
 		scimGroupID := createSCIMGroup(ctx, t, client, "foo", scimToken.Token)
