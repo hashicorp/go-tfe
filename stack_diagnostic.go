@@ -11,7 +11,7 @@ import (
 )
 
 type StackDiagnostics interface {
-	// Read retrieves a stack diagnostic by its ID.
+	// Read retrieves a stack diagnostic associated with a stack configuration by its ID.
 	Read(ctx context.Context, stackConfigurationID string) (*StackDiagnostic, error)
 }
 

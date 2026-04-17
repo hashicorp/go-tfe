@@ -111,6 +111,7 @@ runs:
         GITHUB_REGISTRY_MODULE_IDENTIFIER: "svc-team-tf-core-cloud/terraform-random-module"
         GITHUB_REGISTRY_NO_CODE_MODULE_IDENTIFIER: "hashicorp/terraform-random-no-code-module"
         GITHUB_STACK_IDENTIFIER: "svc-team-tf-core-cloud/tf-stacks-pet-nulls"
+        GITHUB_STACK_REPO_BRANCH: "diags"
         OAUTH_CLIENT_GITHUB_TOKEN: "${{ inputs.oauth-client-github-token }}"
         SKIP_HYOK_INTEGRATION_TESTS: "${{ inputs.skip-hyok-integration-tests }}"
         HYOK_ORGANIZATION_NAME: "${{ inputs.hyok-organization-name }}"

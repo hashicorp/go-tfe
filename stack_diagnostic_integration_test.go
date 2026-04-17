@@ -24,7 +24,7 @@ func TestStackDiagnosticsRead(t *testing.T) {
 		Name: "cc-test-stack",
 		VCSRepo: &StackVCSRepoOptions{
 			Identifier:   stackVCSRepoIdentifier(t),
-			Branch:       "diags",
+			Branch:       stackVCSRepoBranch(t),
 			OAuthTokenID: oauthClient.OAuthTokens[0].ID,
 		},
 		Project: &Project{

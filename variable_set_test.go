@@ -572,8 +572,6 @@ func TestVariableSetsApplyToAndRemoveFromProjects(t *testing.T) {
 }
 
 func TestVariableSetsApplyToAndRemoveFromStacks(t *testing.T) {
-	skipUnlessBeta(t)
-
 	client := testClient(t)
 	ctx := context.Background()
 
@@ -749,7 +747,6 @@ func TestVariableSetsUpdateWorkspaces(t *testing.T) {
 
 func TestVariableSetsUpdateStacks(t *testing.T) {
 	t.Parallel()
-	skipUnlessBeta(t)
 
 	client := testClient(t)
 	ctx := context.Background()
