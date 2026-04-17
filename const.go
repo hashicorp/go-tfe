@@ -9,7 +9,4 @@ const (
 
 	// AdminSCIMTokensPath is the API path for admin SCIM tokens.
 	AdminSCIMTokensPath = "admin/scim-tokens"
-
-	// AdminSCIMTokenPath is the API path for a specific admin SCIM token.
-	AdminSCIMTokenPath = "admin/scim-tokens/%s"
 )

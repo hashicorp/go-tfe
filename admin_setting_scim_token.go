@@ -108,7 +108,7 @@ func (a *adminSCIMTokens) Read(ctx context.Context, scimTokenID string) (*AdminS
 	if !validStringID(&scimTokenID) {
 		return nil, ErrInvalidTokenID
 	}
-	u := fmt.Sprintf(AdminSCIMTokenPath, url.PathEscape(scimTokenID))
+	u := fmt.Sprintf("%s/%s", AdminSCIMTokensPath, url.PathEscape(scimTokenID))
 	req, err := a.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, err
