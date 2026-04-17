@@ -18,3 +18,12 @@ func stackVCSRepoIdentifier(t *testing.T) string {
 
 	return githubIdentifier
 }
+
+func stackVCSRepoBranch(t *testing.T) string {
+	githubBranch := os.Getenv("GITHUB_STACK_REPO_BRANCH")
+	if githubBranch == "" {
+		return "main"
+	}
+
+	return githubBranch
+}

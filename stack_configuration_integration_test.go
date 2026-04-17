@@ -143,7 +143,7 @@ func TestStackConfigurationDiagnostics(t *testing.T) {
 		VCSRepo: &StackVCSRepoOptions{
 			Identifier:   stackVCSRepoIdentifier(t),
 			OAuthTokenID: oauthClient.OAuthTokens[0].ID,
-			Branch:       "diags",
+			Branch:       stackVCSRepoBranch(t),
 		},
 	})
 	require.NoError(t, err)
