@@ -15,7 +15,6 @@ import (
 
 func TestStackDeploymentStepsList(t *testing.T) {
 	t.Parallel()
-	skipUnlessBeta(t)
 
 	client := testClient(t)
 	ctx := context.Background()
@@ -30,7 +29,7 @@ func TestStackDeploymentStepsList(t *testing.T) {
 		Project: orgTest.DefaultProject,
 		Name:    "test-stack",
 		VCSRepo: &StackVCSRepoOptions{
-			Identifier:   "hashicorp-guides/pet-nulls-stack",
+			Identifier:   stackVCSRepoIdentifier(t),
 			OAuthTokenID: oauthClient.OAuthTokens[0].ID,
 			Branch:       "main",
 		},
@@ -106,7 +105,6 @@ func TestStackDeploymentStepsList(t *testing.T) {
 
 func TestStackDeploymentStepsRead(t *testing.T) {
 	t.Parallel()
-	skipUnlessBeta(t)
 
 	client := testClient(t)
 	ctx := context.Background()
@@ -121,7 +119,7 @@ func TestStackDeploymentStepsRead(t *testing.T) {
 		Project: orgTest.DefaultProject,
 		Name:    "test-stack",
 		VCSRepo: &StackVCSRepoOptions{
-			Identifier:   "hashicorp-guides/pet-nulls-stack",
+			Identifier:   stackVCSRepoIdentifier(t),
 			OAuthTokenID: oauthClient.OAuthTokens[0].ID,
 			Branch:       "main",
 		},
@@ -170,7 +168,6 @@ func TestStackDeploymentStepsRead(t *testing.T) {
 
 func TestStackDeploymentStepsAdvance(t *testing.T) {
 	t.Parallel()
-	skipUnlessBeta(t)
 
 	client := testClient(t)
 	ctx := context.Background()
@@ -185,7 +182,7 @@ func TestStackDeploymentStepsAdvance(t *testing.T) {
 		Project: orgTest.DefaultProject,
 		Name:    "testing-stack",
 		VCSRepo: &StackVCSRepoOptions{
-			Identifier:   "hashicorp-guides/pet-nulls-stack",
+			Identifier:   stackVCSRepoIdentifier(t),
 			OAuthTokenID: oauthClient.OAuthTokens[0].ID,
 			Branch:       "main",
 		},
@@ -227,7 +224,7 @@ func TestStackDeploymentStepsAdvance(t *testing.T) {
 		// Verify that the step status has changed to "completed"
 		sds, err := client.StackDeploymentSteps.Read(ctx, step.ID)
 		assert.NoError(t, err)
-		assert.Equal(t, "completed", sds.Status)
+		assert.Equal(t, DeploymentStepStatusCompleted, sds.Status)
 	})
 
 	t.Run("Advance with invalid ID", func(t *testing.T) {
@@ -271,7 +268,6 @@ func pollStackDeploymentStepStatus(t *testing.T, ctx context.Context, client *Cl
 
 func TestStackDeploymentStepsDiagnosticsArtifacts(t *testing.T) {
 	t.Parallel()
-	skipUnlessBeta(t)
 
 	client := testClient(t)
 	ctx := context.Background()
@@ -288,7 +284,7 @@ func TestStackDeploymentStepsDiagnosticsArtifacts(t *testing.T) {
 		Name:    "test-stack",
 
 		VCSRepo: &StackVCSRepoOptions{
-			Identifier:   "hashicorp-guides/pet-nulls-stack",
+			Identifier:   stackVCSRepoIdentifier(t),
 			OAuthTokenID: oauthClient.OAuthTokens[0].ID,
 			Branch:       "main",
 		},
