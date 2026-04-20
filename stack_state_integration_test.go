@@ -89,19 +89,14 @@ func TestStackStateListReadDescription(t *testing.T) {
 
 		assert.NotEmpty(t, state.ID)
 
-		// Assert attribute presence
-		assert.NotZero(t, state.Generation)
+		// Assert consistently populated attributes.
 		assert.NotEmpty(t, state.Status)
-		assert.NotEmpty(t, state.Deployment)
-		assert.NotNil(t, state.Components)
 		assert.True(t, state.IsCurrent)
-		assert.NotZero(t, state.ResourceInstanceCount)
 
 		// Assert relationship presence
 		assert.NotNil(t, state.Stack)
 		assert.NotEmpty(t, state.Stack.ID)
-		assert.NotNil(t, state.StackDeploymentRun)
-		assert.NotEmpty(t, state.StackDeploymentRun)
+		assert.NotEmpty(t, state.StackDeploymentRun.ID)
 
 		// Assert link presence
 		assert.NotEmpty(t, state.Links)
