@@ -4,5 +4,9 @@
 package tfe
 
 const (
+	// AuthenticationTokensPath is the API path for authentication tokens.
 	AuthenticationTokensPath = "authentication-tokens/%s"
+
+	// AdminSCIMTokensPath is the API path for admin SCIM tokens.
+	AdminSCIMTokensPath = "admin/scim-tokens"
 )
