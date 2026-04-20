@@ -3452,6 +3452,30 @@ func enableSAML(ctx context.Context, t *testing.T, client *Client, enable bool) 
 	require.NoError(t, err)
 }
 
+func enableSCIM(ctx context.Context, t *testing.T, client *Client, enable bool) {
+	t.Helper()
+
+	if enable {
+		enableSAML(ctx, t, client, true)
+
+		err := setSAMLProviderType(ctx, t, client, true)
+		require.NoError(t, err, "error setting SAML provider type")
+
+		_, err = client.Admin.Settings.SCIM.Update(ctx, AdminSCIMSettingUpdateOptions{
+			Enabled: Bool(true),
+		})
+		require.NoError(t, err, "error enabling SCIM")
+	} else {
+		err := client.Admin.Settings.SCIM.Delete(ctx)
+		require.NoError(t, err, "error disabling SCIM")
+
+		err = setSAMLProviderType(ctx, t, client, false)
+		require.NoError(t, err, "error clearing SAML provider type")
+
+		enableSAML(ctx, t, client, false)
+	}
+}
+
 func setSAMLProviderType(ctx context.Context, t *testing.T, client *Client, setProvider bool) error {
 	t.Helper()
 	var provider SAMLProviderType

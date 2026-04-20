@@ -6,6 +6,7 @@
 ## Enhancements
 * Adds the `ProviderType` field to `AdminSAMLSetting` and `AdminSAMLSettingsUpdateOptions` to support the `provider-type` SAML setting by @skj-skj [#1303](https://github.com/hashicorp/go-tfe/pull/1303)
 * Adds `AdminSCIMSetting` to support managing site-level SCIM settings by @skj-skj [#1307](https://github.com/hashicorp/go-tfe/pull/1307)
+* Adds `AdminSCIMToken` to support managing site-level SCIM tokens by @skj-skj [#1310](https://github.com/hashicorp/go-tfe/pull/1310)
 
 # v1.103.0
 
