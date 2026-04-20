@@ -427,6 +427,45 @@ func pollStackDeploymentRunStatus(t *testing.T, ctx context.Context, client *Cli
 	}
 }
 
+func pollStackDeploymentSteps(t *testing.T, ctx context.Context, client *Client, stackDeploymentRunID string) (steps *StackDeploymentStepList) {
+	t.Helper()
+
+	ctx, cancel := context.WithDeadline(ctx, time.Now().Add(5*time.Minute))
+	defer cancel()
+
+	deadline, _ := ctx.Deadline()
+	t.Logf("Polling stack deployment run %q for deployment steps with deadline of %s", stackDeploymentRunID, deadline)
+
+	ticker := time.NewTicker(2 * time.Second)
+	defer ticker.Stop()
+
+	for finished := false; !finished; {
+		t.Log("...")
+		select {
+		case <-ctx.Done():
+			t.Fatalf("Stack deployment run %q had no deployment steps at deadline", stackDeploymentRunID)
+		case <-ticker.C:
+			var err error
+			steps, err = client.StackDeploymentSteps.List(ctx, stackDeploymentRunID, nil)
+			if err != nil {
+				t.Fatalf("Failed to read stack deployment steps for run %q: %s", stackDeploymentRunID, err)
+			}
+
+			count := 0
+			if steps != nil {
+				count = len(steps.Items)
+			}
+
+			t.Logf("Stack deployment run %q had %d deployment steps", stackDeploymentRunID, count)
+			if count > 0 {
+				finished = true
+			}
+		}
+	}
+
+	return steps
+}
+
 func pollStackConfigurationStatus(t *testing.T, ctx context.Context, client *Client, stackConfigID, status string) (stackConfig *StackConfiguration) {
 	// pollStackDeployments will poll the given stack until it has deployments or the deadline is reached.
 	ctx, cancel := context.WithDeadline(ctx, time.Now().Add(5*time.Minute))

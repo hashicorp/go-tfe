@@ -67,8 +67,9 @@ func TestStackDeploymentStepsList(t *testing.T) {
 		t.Parallel()
 
 		steps, err := client.StackDeploymentSteps.List(ctx, sdr.ID, nil)
-		assert.NoError(t, err)
-		assert.NotEmpty(t, steps)
+		require.NoError(t, err)
+		require.NotNil(t, steps)
+		require.NotEmpty(t, steps.Items)
 
 		step := steps.Items[0]
 
@@ -89,8 +90,9 @@ func TestStackDeploymentStepsList(t *testing.T) {
 				PageSize:   10,
 			},
 		})
-		assert.NoError(t, err)
-		assert.NotEmpty(t, steps)
+		require.NoError(t, err)
+		require.NotNil(t, steps)
+		require.NotEmpty(t, steps.Items)
 
 		step := steps.Items[0]
 
@@ -146,9 +148,7 @@ func TestStackDeploymentStepsRead(t *testing.T) {
 
 	sdr := stackDeploymentRuns.Items[0]
 
-	steps, err := client.StackDeploymentSteps.List(ctx, sdr.ID, nil)
-	assert.NoError(t, err)
-	assert.NotEmpty(t, steps)
+	steps := pollStackDeploymentSteps(t, ctx, client, sdr.ID)
 
 	step := steps.Items[0]
 
@@ -209,9 +209,7 @@ func TestStackDeploymentStepsAdvance(t *testing.T) {
 
 	sdr := stackDeploymentRuns.Items[0]
 
-	steps, err := client.StackDeploymentSteps.List(ctx, sdr.ID, nil)
-	assert.NoError(t, err)
-	assert.NotEmpty(t, steps)
+	steps := pollStackDeploymentSteps(t, ctx, client, sdr.ID)
 
 	step := steps.Items[0]
 	step = pollStackDeploymentStepStatus(t, ctx, client, step.ID, "pending_operator")
@@ -234,6 +232,8 @@ func TestStackDeploymentStepsAdvance(t *testing.T) {
 }
 
 func pollStackDeploymentStepStatus(t *testing.T, ctx context.Context, client *Client, stackDeploymentStepID, status string) (deploymentStep *StackDeploymentStep) {
+	t.Helper()
+
 	// pollStackDeploymentStepStatus will poll the given stack deployment step until its status changes or the deadline is reached.
 	ctx, cancel := context.WithDeadline(ctx, time.Now().Add(5*time.Minute))
 	defer cancel()
@@ -310,9 +310,7 @@ func TestStackDeploymentStepsDiagnosticsArtifacts(t *testing.T) {
 	require.NotEmpty(t, stackDeploymentRuns)
 
 	sdr := stackDeploymentRuns.Items[0]
-	steps, err := client.StackDeploymentSteps.List(ctx, sdr.ID, nil)
-	assert.NoError(t, err)
-	assert.NotEmpty(t, steps)
+	steps := pollStackDeploymentSteps(t, ctx, client, sdr.ID)
 
 	step := steps.Items[0]
 	step = pollStackDeploymentStepStatus(t, ctx, client, step.ID, "pending_operator")
