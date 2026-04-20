@@ -1,7 +1,6 @@
 package tfe
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 	"net/http"
@@ -31,19 +30,12 @@ var (
 	ErrForbidden           = &APIError{StatusCode: http.StatusForbidden, Message: http.StatusText(http.StatusForbidden)}
 	ErrBadRequest          = &APIError{StatusCode: http.StatusBadRequest, Message: http.StatusText(http.StatusBadRequest)}
 	ErrUnprocessableEntity = &APIError{StatusCode: http.StatusUnprocessableEntity, Message: http.StatusText(http.StatusUnprocessableEntity)}
+	ErrTooManyRequests     = &APIError{StatusCode: http.StatusTooManyRequests, Message: http.StatusText(http.StatusTooManyRequests)}
 )
 
 // Error implements the error interface for APIError.
 func (e *APIError) Error() string {
-	var buf bytes.Buffer
-	fmt.Fprintf(&buf, "API error %d %s", e.StatusCode, e.Message)
-	for _, detail := range e.Details {
-		fmt.Fprintf(&buf, "\n  - %s", detail)
-	}
-	if len(e.Details) > 0 {
-		fmt.Fprintf(&buf, "\n")
-	}
-	return buf.String()
+	return fmt.Sprintf("%d %s", e.StatusCode, e.Message)
 }
 
 // Is allows errors.Is to work with APIError, comparing based on StatusCode.
