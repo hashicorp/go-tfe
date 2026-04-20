@@ -351,6 +351,44 @@ func TestTeamProjectAccessesAdd(t *testing.T) {
 		}
 	})
 
+	t.Run("with valid options for custom workspace policy overrides permission", func(t *testing.T) {
+		skipUnlessBeta(t)
+
+		options := TeamProjectAccessAddOptions{
+			Access:  *ProjectAccess(TeamProjectAccessCustom),
+			Team:    tmTest,
+			Project: pTest,
+			WorkspaceAccess: &TeamProjectAccessWorkspacePermissionsOptions{
+				Runs:            WorkspaceRunsPermission(WorkspaceRunsPermissionApply),
+				PolicyOverrides: Bool(true),
+			},
+		}
+
+		tpa, err := client.TeamProjectAccess.Add(ctx, options)
+		t.Cleanup(func() {
+			err := client.TeamProjectAccess.Remove(ctx, tpa.ID)
+			if err != nil {
+				t.Logf("error removing team access (%s): %s", tpa.ID, err)
+			}
+		})
+
+		require.NoError(t, err)
+
+		// Get a refreshed view from the API.
+		refreshed, err := client.TeamProjectAccess.Read(ctx, tpa.ID)
+		require.NoError(t, err)
+
+		for _, item := range []*TeamProjectAccess{
+			tpa,
+			refreshed,
+		} {
+			assert.NotEmpty(t, item.ID)
+			assert.Equal(t, options.Access, item.Access)
+			assert.Equal(t, *options.WorkspaceAccess.Runs, item.WorkspaceAccess.WorkspaceRunsPermission)
+			assert.Equal(t, true, item.WorkspaceAccess.WorkspacePolicyOverridesPermission)
+		}
+	})
+
 	t.Run("when the team already has access to the project", func(t *testing.T) {
 		_, tpaTestCleanup := createTeamProjectAccess(t, client, tmTest, pTest, nil)
 		defer tpaTestCleanup()
