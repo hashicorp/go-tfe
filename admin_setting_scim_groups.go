@@ -41,8 +41,15 @@ type AdminSCIMGroupListOptions struct {
 	Query string `url:"q,omitempty"`
 }
 
+func (o *AdminSCIMGroupListOptions) valid() error {
+	return nil
+}
+
 // List all SCIM groups.
 func (a *adminSCIMGroups) List(ctx context.Context, options *AdminSCIMGroupListOptions) (*AdminSCIMGroupList, error) {
+	if err := options.valid(); err != nil {
+		return nil, err
+	}
 	req, err := a.client.NewRequest("GET", AdminSCIMGroupsPath, options)
 	if err != nil {
 		return nil, err
