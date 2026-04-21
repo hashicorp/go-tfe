@@ -42,15 +42,14 @@ func TestAdminSCIMGroups_List(t *testing.T) {
 				}
 			})
 
-			prefix := randomStringWithoutSpecialChar(t) + "-"
-			for i := 0; i < 2; i++ {
-				groupName := prefix + randomStringWithoutSpecialChar(t)
+			for range 2 {
+				groupName := randomStringWithoutSpecialChar(t)
 				id := createSCIMGroup(ctx, t, client, groupName, scimToken.Token)
 				groupIDs = append(groupIDs, id)
 				expectedGroups = append(expectedGroups, AdminSCIMGroup{ID: id, Name: groupName})
 			}
 
-			scimGroups, err := scimClient.Groups.List(ctx, &AdminSCIMGroupListOptions{Query: prefix})
+			scimGroups, err := scimClient.Groups.List(ctx, nil)
 			require.NoError(t, err)
 			assert.Len(t, scimGroups.Items, 2)
 			assert.Equal(t, 2, scimGroups.TotalCount)
@@ -79,12 +78,14 @@ func TestAdminSCIMGroups_List(t *testing.T) {
 
 		prefix := randomStringWithoutSpecialChar(t) + "-"
 		// Create a cohesive set of 10 groups that satisfy all query scenarios
-		groupIDs = append(groupIDs, createSCIMGroup(ctx, t, client, prefix+"this-group-exists", scimToken.Token))
-		groupIDs = append(groupIDs, createSCIMGroup(ctx, t, client, prefix+"matching-group-1", scimToken.Token))
-		groupIDs = append(groupIDs, createSCIMGroup(ctx, t, client, prefix+"matching-group-2", scimToken.Token))
-		groupIDs = append(groupIDs, createSCIMGroup(ctx, t, client, prefix+"matching-group-3", scimToken.Token))
-		groupIDs = append(groupIDs, createSCIMGroup(ctx, t, client, prefix+"CaSe-InSeNsItIvE-gRoUp", scimToken.Token))
-		for i := 0; i < 5; i++ {
+		groupIDs = append(groupIDs,
+			createSCIMGroup(ctx, t, client, prefix+"this-group-exists", scimToken.Token),
+			createSCIMGroup(ctx, t, client, prefix+"matching-group-1", scimToken.Token),
+			createSCIMGroup(ctx, t, client, prefix+"matching-group-2", scimToken.Token),
+			createSCIMGroup(ctx, t, client, prefix+"matching-group-3", scimToken.Token),
+			createSCIMGroup(ctx, t, client, prefix+"CaSe-InSeNsItIvE-gRoUp", scimToken.Token),
+		)
+		for range 5 {
 			id := createSCIMGroup(ctx, t, client, prefix+"random-"+randomStringWithoutSpecialChar(t), scimToken.Token)
 			groupIDs = append(groupIDs, id)
 		}
@@ -136,7 +137,7 @@ func TestAdminSCIMGroups_List(t *testing.T) {
 
 		prefix := randomStringWithoutSpecialChar(t) + "-"
 		// Create 30 groups to test default page size of 20
-		for i := 0; i < 30; i++ {
+		for range 30 {
 			groupName := prefix + randomStringWithoutSpecialChar(t)
 			id := createSCIMGroup(ctx, t, client, groupName, scimToken.Token)
 			groupIDs = append(groupIDs, id)
@@ -244,14 +245,14 @@ func TestAdminSCIMGroups_List(t *testing.T) {
 		prefix := randomStringWithoutSpecialChar(t) + "-"
 
 		// Create 4 random groups
-		for i := 0; i < 4; i++ {
+		for range 4 {
 			groupName := prefix + randomStringWithoutSpecialChar(t)
 			id := createSCIMGroup(ctx, t, client, groupName, scimToken.Token)
 			groupIDs = append(groupIDs, id)
 		}
 
 		// Create 6 matching groups with same suffix "-idp-group"
-		for i := 0; i < 6; i++ {
+		for range 6 {
 			groupName := fmt.Sprintf("%s-idp-group-%s", prefix, randomStringWithoutSpecialChar(t))
 			id := createSCIMGroup(ctx, t, client, groupName, scimToken.Token)
 			groupIDs = append(groupIDs, id)
