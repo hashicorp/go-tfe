@@ -4,6 +4,8 @@
 package tfe
 
 // SCIMResource groups the SCIM related resources together.
+// This struct should be constructed with keyed fields only or obtained via the client
+// to prevent breakages when new fields are added.
 type SCIMResource struct {
 	SCIMSettings
 	Tokens AdminSCIMTokens

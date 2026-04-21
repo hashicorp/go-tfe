@@ -19,6 +19,7 @@ import (
 	"math/rand"
 	"net/http"
 	"net/http/httptest"
+	"net/url"
 	"os"
 	"os/exec"
 	"path/filepath"
@@ -3533,7 +3534,7 @@ func deleteSCIMGroup(ctx context.Context, t *testing.T, client *Client, groupID,
 	t.Helper()
 
 	u := client.BaseURL()
-	u.Path = "/scim/v2/Groups/" + groupID
+	u.Path = "/scim/v2/Groups/" + url.PathEscape(groupID)
 
 	req, err := retryablehttp.NewRequest("DELETE", u.String(), nil)
 	require.NoError(t, err)
