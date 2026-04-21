@@ -1,4 +1,4 @@
-// Copyright IBM Corp. 2018, 2025
+// Copyright IBM Corp. 2018, 2026
 // SPDX-License-Identifier: MPL-2.0
 
 package tfe
@@ -3526,6 +3526,26 @@ func createSCIMGroup(ctx context.Context, t *testing.T, client *Client, groupNam
 	require.NotEmpty(t, res.ID)
 
 	return res.ID
+}
+
+func deleteSCIMGroup(ctx context.Context, t *testing.T, client *Client, groupID, scimToken string) {
+	t.Helper()
+
+	u := client.BaseURL()
+	u.Path = "/scim/v2/Groups/" + groupID
+
+	req, err := retryablehttp.NewRequest("DELETE", u.String(), nil)
+	require.NoError(t, err)
+	req.Header = client.headers.Clone()
+	req.Header.Set("Authorization", "Bearer "+scimToken)
+
+	err = (&ClientRequest{
+		retryableRequest: req,
+		http:             client.http,
+		limiter:          client.limiter,
+		Header:           req.Header,
+	}).Do(ctx, nil)
+	require.NoError(t, err)
 }
 
 // Useless key but enough to pass validation in the API

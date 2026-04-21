@@ -1,0 +1,331 @@
+// Copyright IBM Corp. 2018, 2026
+// SPDX-License-Identifier: MPL-2.0
+
+package tfe
+
+import (
+	"context"
+	"fmt"
+	"testing"
+
+	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
+)
+
+func TestAdminSCIMGroups_List(t *testing.T) {
+	skipUnlessEnterprise(t)
+	client := testClient(t)
+	ctx := context.Background()
+
+	scimClient := client.Admin.Settings.SCIM
+
+	enableSCIM(ctx, t, client, true)
+	defer enableSCIM(ctx, t, client, false)
+
+	scimToken, err := scimClient.Tokens.Create(ctx, "integration-test-token")
+	require.NoError(t, err)
+
+	t.Run("simple", func(t *testing.T) {
+		t.Run("no groups", func(t *testing.T) {
+			scimGroups, err := scimClient.Groups.List(ctx, nil)
+			require.NoError(t, err)
+			assert.Len(t, scimGroups.Items, 0)
+			assert.Equal(t, 0, scimGroups.TotalCount)
+		})
+
+		t.Run("get all groups", func(t *testing.T) {
+			var groupIDs []string
+			var expectedGroups []AdminSCIMGroup
+			t.Cleanup(func() {
+				for _, id := range groupIDs {
+					deleteSCIMGroup(ctx, t, client, id, scimToken.Token)
+				}
+			})
+
+			prefix := randomStringWithoutSpecialChar(t) + "-"
+			for i := 0; i < 2; i++ {
+				groupName := prefix + randomStringWithoutSpecialChar(t)
+				id := createSCIMGroup(ctx, t, client, groupName, scimToken.Token)
+				groupIDs = append(groupIDs, id)
+				expectedGroups = append(expectedGroups, AdminSCIMGroup{ID: id, Name: groupName})
+			}
+
+			scimGroups, err := scimClient.Groups.List(ctx, &AdminSCIMGroupListOptions{Query: prefix})
+			require.NoError(t, err)
+			assert.Len(t, scimGroups.Items, 2)
+			assert.Equal(t, 2, scimGroups.TotalCount)
+
+			var found int
+			for _, eg := range expectedGroups {
+				for _, g := range scimGroups.Items {
+					if g.ID == eg.ID {
+						assert.Equal(t, eg.Name, g.Name)
+						found++
+						break
+					}
+				}
+			}
+			assert.Equal(t, 2, found, "all created groups should have matched ID and Name")
+		})
+	})
+
+	t.Run("query", func(t *testing.T) {
+		var groupIDs []string
+		t.Cleanup(func() {
+			for _, id := range groupIDs {
+				deleteSCIMGroup(ctx, t, client, id, scimToken.Token)
+			}
+		})
+
+		prefix := randomStringWithoutSpecialChar(t) + "-"
+		// Create a cohesive set of 10 groups that satisfy all query scenarios
+		groupIDs = append(groupIDs, createSCIMGroup(ctx, t, client, prefix+"this-group-exists", scimToken.Token))
+		groupIDs = append(groupIDs, createSCIMGroup(ctx, t, client, prefix+"matching-group-1", scimToken.Token))
+		groupIDs = append(groupIDs, createSCIMGroup(ctx, t, client, prefix+"matching-group-2", scimToken.Token))
+		groupIDs = append(groupIDs, createSCIMGroup(ctx, t, client, prefix+"matching-group-3", scimToken.Token))
+		groupIDs = append(groupIDs, createSCIMGroup(ctx, t, client, prefix+"CaSe-InSeNsItIvE-gRoUp", scimToken.Token))
+		for i := 0; i < 5; i++ {
+			id := createSCIMGroup(ctx, t, client, prefix+"random-"+randomStringWithoutSpecialChar(t), scimToken.Token)
+			groupIDs = append(groupIDs, id)
+		}
+
+		testCases := []struct {
+			name               string
+			options            AdminSCIMGroupListOptions
+			expectedGroupCount int
+		}{
+			{
+				name:               "no matching scim groups",
+				options:            AdminSCIMGroupListOptions{Query: prefix + "this-group-doesnot-exist"},
+				expectedGroupCount: 0,
+			},
+			{
+				name:               "1 matching scim group",
+				options:            AdminSCIMGroupListOptions{Query: prefix + "this-group-exists"},
+				expectedGroupCount: 1,
+			},
+			{
+				name:               "multiple matching scim groups",
+				options:            AdminSCIMGroupListOptions{Query: prefix + "matching-group-"},
+				expectedGroupCount: 3,
+			},
+			{
+				name:               "case insensitive match",
+				options:            AdminSCIMGroupListOptions{Query: prefix + "case-insensitive-group"},
+				expectedGroupCount: 1,
+			},
+		}
+
+		for _, tc := range testCases {
+			t.Run(tc.name, func(t *testing.T) {
+				scimGroups, err := scimClient.Groups.List(ctx, &tc.options)
+				require.NoError(t, err)
+				assert.Len(t, scimGroups.Items, tc.expectedGroupCount)
+				assert.Equal(t, tc.expectedGroupCount, scimGroups.TotalCount)
+			})
+		}
+	})
+
+	t.Run("pagination", func(t *testing.T) {
+		var groupIDs []string
+		t.Cleanup(func() {
+			for _, id := range groupIDs {
+				deleteSCIMGroup(ctx, t, client, id, scimToken.Token)
+			}
+		})
+
+		prefix := randomStringWithoutSpecialChar(t) + "-"
+		// Create 30 groups to test default page size of 20
+		for i := 0; i < 30; i++ {
+			groupName := prefix + randomStringWithoutSpecialChar(t)
+			id := createSCIMGroup(ctx, t, client, groupName, scimToken.Token)
+			groupIDs = append(groupIDs, id)
+		}
+
+		testCases := []struct {
+			name               string
+			options            AdminSCIMGroupListOptions
+			excludeOptions     *AdminSCIMGroupListOptions
+			expectedGroupCount int
+			expectedTotalCount int
+			expectedTotalPages int
+			expectedPage       int
+			expectedNextPage   int
+			expectedPrevPage   int
+		}{
+			{
+				name:               "default page size - page 1",
+				options:            AdminSCIMGroupListOptions{Query: prefix, ListOptions: ListOptions{PageNumber: 1}},
+				expectedGroupCount: 20,
+				expectedTotalCount: 30,
+				expectedTotalPages: 2,
+				expectedPage:       1,
+				expectedNextPage:   2,
+				expectedPrevPage:   0,
+			},
+			{
+				name:               "default page size - page 2",
+				options:            AdminSCIMGroupListOptions{Query: prefix, ListOptions: ListOptions{PageNumber: 2}},
+				excludeOptions:     &AdminSCIMGroupListOptions{Query: prefix, ListOptions: ListOptions{PageNumber: 1}},
+				expectedGroupCount: 10,
+				expectedTotalCount: 30,
+				expectedTotalPages: 2,
+				expectedPage:       2,
+				expectedNextPage:   0,
+				expectedPrevPage:   1,
+			},
+			{
+				name:               "custom page size - page 1",
+				options:            AdminSCIMGroupListOptions{Query: prefix, ListOptions: ListOptions{PageSize: 5, PageNumber: 1}},
+				expectedGroupCount: 5,
+				expectedTotalCount: 30,
+				expectedTotalPages: 6,
+				expectedPage:       1,
+				expectedNextPage:   2,
+				expectedPrevPage:   0,
+			},
+			{
+				name:               "custom page size - page 2",
+				options:            AdminSCIMGroupListOptions{Query: prefix, ListOptions: ListOptions{PageSize: 5, PageNumber: 2}},
+				excludeOptions:     &AdminSCIMGroupListOptions{Query: prefix, ListOptions: ListOptions{PageSize: 5, PageNumber: 1}},
+				expectedGroupCount: 5,
+				expectedTotalCount: 30,
+				expectedTotalPages: 6,
+				expectedPage:       2,
+				expectedNextPage:   3,
+				expectedPrevPage:   1,
+			},
+			{
+				name:               "out of bounds page",
+				options:            AdminSCIMGroupListOptions{Query: prefix, ListOptions: ListOptions{PageSize: 5, PageNumber: 7}},
+				expectedGroupCount: 0,
+				expectedTotalCount: 30,
+				expectedTotalPages: 6,
+				expectedPage:       7,
+				expectedNextPage:   0,
+				expectedPrevPage:   0,
+			},
+		}
+
+		for _, tc := range testCases {
+			t.Run(tc.name, func(t *testing.T) {
+				scimGroups, err := scimClient.Groups.List(ctx, &tc.options)
+				require.NoError(t, err)
+				assert.Len(t, scimGroups.Items, tc.expectedGroupCount)
+				assert.Equal(t, tc.expectedTotalCount, scimGroups.TotalCount)
+				assert.Equal(t, tc.expectedTotalPages, scimGroups.TotalPages)
+				assert.Equal(t, tc.expectedPage, scimGroups.CurrentPage)
+				assert.Equal(t, tc.expectedNextPage, scimGroups.NextPage)
+				assert.Equal(t, tc.expectedPrevPage, scimGroups.PreviousPage)
+
+				// Verify mutually exclusive items
+				if tc.excludeOptions != nil {
+					excludedGroups, err := scimClient.Groups.List(ctx, tc.excludeOptions)
+					require.NoError(t, err)
+
+					for _, g := range scimGroups.Items {
+						for _, exGroup := range excludedGroups.Items {
+							assert.NotEqual(t, g.ID, exGroup.ID)
+						}
+					}
+				}
+			})
+		}
+	})
+
+	t.Run("query with pagination", func(t *testing.T) {
+		var groupIDs []string
+		t.Cleanup(func() {
+			for _, id := range groupIDs {
+				deleteSCIMGroup(ctx, t, client, id, scimToken.Token)
+			}
+		})
+
+		prefix := randomStringWithoutSpecialChar(t) + "-"
+
+		// Create 4 random groups
+		for i := 0; i < 4; i++ {
+			groupName := prefix + randomStringWithoutSpecialChar(t)
+			id := createSCIMGroup(ctx, t, client, groupName, scimToken.Token)
+			groupIDs = append(groupIDs, id)
+		}
+
+		// Create 6 matching groups with same suffix "-idp-group"
+		for i := 0; i < 6; i++ {
+			groupName := fmt.Sprintf("%s-idp-group-%s", prefix, randomStringWithoutSpecialChar(t))
+			id := createSCIMGroup(ctx, t, client, groupName, scimToken.Token)
+			groupIDs = append(groupIDs, id)
+		}
+
+		testCases := []struct {
+			name               string
+			options            AdminSCIMGroupListOptions
+			excludeOptions     *AdminSCIMGroupListOptions
+			expectedGroupCount int
+			expectedTotalCount int
+			expectedTotalPages int
+			expectedPage       int
+		}{
+			{
+				name: "page 1",
+				options: AdminSCIMGroupListOptions{
+					Query:       prefix + "-idp-group",
+					ListOptions: ListOptions{PageSize: 3, PageNumber: 1},
+				},
+				expectedGroupCount: 3,
+				expectedTotalCount: 6,
+				expectedTotalPages: 2,
+				expectedPage:       1,
+			},
+			{
+				name: "page 2",
+				options: AdminSCIMGroupListOptions{
+					Query:       prefix + "-idp-group",
+					ListOptions: ListOptions{PageSize: 3, PageNumber: 2},
+				},
+				excludeOptions: &AdminSCIMGroupListOptions{
+					Query:       prefix + "-idp-group",
+					ListOptions: ListOptions{PageSize: 3, PageNumber: 1},
+				},
+				expectedGroupCount: 3,
+				expectedTotalCount: 6,
+				expectedTotalPages: 2,
+				expectedPage:       2,
+			},
+			{
+				name: "out of bounds page",
+				options: AdminSCIMGroupListOptions{
+					Query:       prefix + "-idp-group",
+					ListOptions: ListOptions{PageSize: 3, PageNumber: 3},
+				},
+				expectedGroupCount: 0,
+				expectedTotalCount: 6,
+				expectedTotalPages: 2,
+				expectedPage:       3,
+			},
+		}
+
+		for _, tc := range testCases {
+			t.Run(tc.name, func(t *testing.T) {
+				scimGroups, err := scimClient.Groups.List(ctx, &tc.options)
+				require.NoError(t, err)
+				assert.Len(t, scimGroups.Items, tc.expectedGroupCount)
+				assert.Equal(t, tc.expectedTotalCount, scimGroups.TotalCount)
+				assert.Equal(t, tc.expectedTotalPages, scimGroups.TotalPages)
+				assert.Equal(t, tc.expectedPage, scimGroups.CurrentPage)
+
+				// Verify mutually exclusive items
+				if tc.excludeOptions != nil {
+					excludedGroups, err := scimClient.Groups.List(ctx, tc.excludeOptions)
+					require.NoError(t, err)
+
+					for _, g := range scimGroups.Items {
+						for _, exGroup := range excludedGroups.Items {
+							assert.NotEqual(t, g.ID, exGroup.ID)
+						}
+					}
+				}
+			})
+		}
+	})
+}
