@@ -25,15 +25,15 @@ func TestAdminSCIMGroups_List(t *testing.T) {
 	scimToken, err := scimClient.Tokens.Create(ctx, "integration-test-token")
 	require.NoError(t, err)
 
-	t.Run("simple", func(t *testing.T) {
-		t.Run("no groups", func(t *testing.T) {
+	t.Run("basic list operations", func(t *testing.T) {
+		t.Run("empty list immediately after enabling SCIM", func(t *testing.T) {
 			scimGroups, err := scimClient.Groups.List(ctx, nil)
 			require.NoError(t, err)
 			assert.Len(t, scimGroups.Items, 0)
 			assert.Equal(t, 0, scimGroups.TotalCount)
 		})
 
-		t.Run("get all groups", func(t *testing.T) {
+		t.Run("list all created groups", func(t *testing.T) {
 			var groupIDs []string
 			var expectedGroups []AdminSCIMGroup
 			t.Cleanup(func() {
@@ -68,7 +68,7 @@ func TestAdminSCIMGroups_List(t *testing.T) {
 		})
 	})
 
-	t.Run("query", func(t *testing.T) {
+	t.Run("filter groups using search query", func(t *testing.T) {
 		var groupIDs []string
 		t.Cleanup(func() {
 			for _, id := range groupIDs {
@@ -96,22 +96,22 @@ func TestAdminSCIMGroups_List(t *testing.T) {
 			expectedGroupCount int
 		}{
 			{
-				name:               "no matching scim groups",
+				name:               "query returns no results for non-existent prefix",
 				options:            AdminSCIMGroupListOptions{Query: prefix + "this-group-doesnot-exist"},
 				expectedGroupCount: 0,
 			},
 			{
-				name:               "1 matching scim group",
+				name:               "query returns exact match for specific group",
 				options:            AdminSCIMGroupListOptions{Query: prefix + "this-group-exists"},
 				expectedGroupCount: 1,
 			},
 			{
-				name:               "multiple matching scim groups",
+				name:               "query returns multiple groups matching prefix",
 				options:            AdminSCIMGroupListOptions{Query: prefix + "matching-group-"},
 				expectedGroupCount: 3,
 			},
 			{
-				name:               "case insensitive match",
+				name:               "query performs case-insensitive match",
 				options:            AdminSCIMGroupListOptions{Query: prefix + "case-insensitive-group"},
 				expectedGroupCount: 1,
 			},
@@ -127,7 +127,7 @@ func TestAdminSCIMGroups_List(t *testing.T) {
 		}
 	})
 
-	t.Run("pagination", func(t *testing.T) {
+	t.Run("paginate through groups", func(t *testing.T) {
 		var groupIDs []string
 		t.Cleanup(func() {
 			for _, id := range groupIDs {
@@ -155,7 +155,7 @@ func TestAdminSCIMGroups_List(t *testing.T) {
 			expectedPrevPage   int
 		}{
 			{
-				name:               "default page size - page 1",
+				name:               "default page size (20) returns first page",
 				options:            AdminSCIMGroupListOptions{Query: prefix, ListOptions: ListOptions{PageNumber: 1}},
 				expectedGroupCount: 20,
 				expectedTotalCount: 30,
@@ -165,7 +165,7 @@ func TestAdminSCIMGroups_List(t *testing.T) {
 				expectedPrevPage:   0,
 			},
 			{
-				name:               "default page size - page 2",
+				name:               "default page size (20) returns second page",
 				options:            AdminSCIMGroupListOptions{Query: prefix, ListOptions: ListOptions{PageNumber: 2}},
 				excludeOptions:     &AdminSCIMGroupListOptions{Query: prefix, ListOptions: ListOptions{PageNumber: 1}},
 				expectedGroupCount: 10,
@@ -176,7 +176,7 @@ func TestAdminSCIMGroups_List(t *testing.T) {
 				expectedPrevPage:   1,
 			},
 			{
-				name:               "custom page size - page 1",
+				name:               "custom page size (5) returns first page",
 				options:            AdminSCIMGroupListOptions{Query: prefix, ListOptions: ListOptions{PageSize: 5, PageNumber: 1}},
 				expectedGroupCount: 5,
 				expectedTotalCount: 30,
@@ -186,7 +186,7 @@ func TestAdminSCIMGroups_List(t *testing.T) {
 				expectedPrevPage:   0,
 			},
 			{
-				name:               "custom page size - page 2",
+				name:               "custom page size (5) returns second page",
 				options:            AdminSCIMGroupListOptions{Query: prefix, ListOptions: ListOptions{PageSize: 5, PageNumber: 2}},
 				excludeOptions:     &AdminSCIMGroupListOptions{Query: prefix, ListOptions: ListOptions{PageSize: 5, PageNumber: 1}},
 				expectedGroupCount: 5,
@@ -197,7 +197,7 @@ func TestAdminSCIMGroups_List(t *testing.T) {
 				expectedPrevPage:   1,
 			},
 			{
-				name:               "out of bounds page",
+				name:               "requesting out of bounds page returns empty list",
 				options:            AdminSCIMGroupListOptions{Query: prefix, ListOptions: ListOptions{PageSize: 5, PageNumber: 7}},
 				expectedGroupCount: 0,
 				expectedTotalCount: 30,
@@ -234,7 +234,7 @@ func TestAdminSCIMGroups_List(t *testing.T) {
 		}
 	})
 
-	t.Run("query with pagination", func(t *testing.T) {
+	t.Run("combine query filtering and pagination", func(t *testing.T) {
 		var groupIDs []string
 		t.Cleanup(func() {
 			for _, id := range groupIDs {
@@ -268,7 +268,7 @@ func TestAdminSCIMGroups_List(t *testing.T) {
 			expectedPage       int
 		}{
 			{
-				name: "page 1",
+				name: "first page of filtered results",
 				options: AdminSCIMGroupListOptions{
 					Query:       prefix + "-idp-group",
 					ListOptions: ListOptions{PageSize: 3, PageNumber: 1},
@@ -279,7 +279,7 @@ func TestAdminSCIMGroups_List(t *testing.T) {
 				expectedPage:       1,
 			},
 			{
-				name: "page 2",
+				name: "second page of filtered results",
 				options: AdminSCIMGroupListOptions{
 					Query:       prefix + "-idp-group",
 					ListOptions: ListOptions{PageSize: 3, PageNumber: 2},
@@ -294,7 +294,7 @@ func TestAdminSCIMGroups_List(t *testing.T) {
 				expectedPage:       2,
 			},
 			{
-				name: "out of bounds page",
+				name: "out of bounds page of filtered results returns empty list",
 				options: AdminSCIMGroupListOptions{
 					Query:       prefix + "-idp-group",
 					ListOptions: ListOptions{PageSize: 3, PageNumber: 3},
