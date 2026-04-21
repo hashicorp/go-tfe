@@ -29,7 +29,7 @@ type AdminSCIMGroupList struct {
 	Items []*AdminSCIMGroup
 }
 
-// AdminSCIMGroup represents a Terraform Enterprise SCIM groups
+// AdminSCIMGroup represents a Terraform Enterprise SCIM group
 type AdminSCIMGroup struct {
 	ID   string `jsonapi:"primary,scim-groups"`
 	Name string `jsonapi:"attr,name"`
