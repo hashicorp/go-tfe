@@ -242,11 +242,11 @@ func TestAdminSCIMGroups_List(t *testing.T) {
 			}
 		})
 
-		prefix := randomStringWithoutSpecialChar(t) + "-"
+		prefix := randomStringWithoutSpecialChar(t)
 
 		// Create 4 random groups
 		for range 4 {
-			groupName := prefix + randomStringWithoutSpecialChar(t)
+			groupName := prefix + "-" + randomStringWithoutSpecialChar(t)
 			id := createSCIMGroup(ctx, t, client, groupName, scimToken.Token)
 			groupIDs = append(groupIDs, id)
 		}
