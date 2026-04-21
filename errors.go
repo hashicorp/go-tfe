@@ -456,4 +456,6 @@ var (
 	ErrRequiredKMSOptionsKeyLocation = errors.New("kms-options.key-location is required for HYOK configuration with GCP OIDC")
 
 	ErrRequiredKMSOptionsKeyRingID = errors.New("kms-options.key-ring-id is required for HYOK configuration with GCP OIDC")
+
+	ErrSCIMTokenDescription = errors.New("SCIM token description can't be blank")
 )

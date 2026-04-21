@@ -2425,10 +2425,11 @@ func createTeam(t *testing.T, client *Client, org *Organization) (*Team, func())
 	tm, err := client.Teams.Create(ctx, org.Name, TeamCreateOptions{
 		Name: String(randomString(t)),
 		OrganizationAccess: &OrganizationAccessOptions{
-			ManagePolicies:        Bool(true),
-			ManagePolicyOverrides: Bool(true),
-			ManageProviders:       Bool(true),
-			ManageModules:         Bool(true),
+			ManagePolicies:          Bool(true),
+			ManagePolicyOverrides:   Bool(true),
+			DelegatePolicyOverrides: Bool(true),
+			ManageProviders:         Bool(true),
+			ManageModules:           Bool(true),
 		},
 	})
 	if err != nil {
@@ -3450,6 +3451,30 @@ func enableSAML(ctx context.Context, t *testing.T, client *Client, enable bool) 
 	}
 	_, err := client.Admin.Settings.SAML.Update(ctx, options)
 	require.NoError(t, err)
+}
+
+func enableSCIM(ctx context.Context, t *testing.T, client *Client, enable bool) {
+	t.Helper()
+
+	if enable {
+		enableSAML(ctx, t, client, true)
+
+		err := setSAMLProviderType(ctx, t, client, true)
+		require.NoError(t, err, "error setting SAML provider type")
+
+		_, err = client.Admin.Settings.SCIM.Update(ctx, AdminSCIMSettingUpdateOptions{
+			Enabled: Bool(true),
+		})
+		require.NoError(t, err, "error enabling SCIM")
+	} else {
+		err := client.Admin.Settings.SCIM.Delete(ctx)
+		require.NoError(t, err, "error disabling SCIM")
+
+		err = setSAMLProviderType(ctx, t, client, false)
+		require.NoError(t, err, "error clearing SAML provider type")
+
+		enableSAML(ctx, t, client, false)
+	}
 }
 
 func setSAMLProviderType(ctx context.Context, t *testing.T, client *Client, setProvider bool) error {
