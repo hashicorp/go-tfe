@@ -4,7 +4,10 @@
 package tfe
 
 import (
+	"bytes"
 	"context"
+	"encoding/json"
+	"io"
 )
 
 // Compile-time proof of interface implementation.
@@ -45,6 +48,22 @@ type User struct {
 
 	// Relations
 	// AuthenticationTokens *AuthenticationTokens `jsonapi:"relation,authentication-tokens"`
+
+	// Links contains the links for the user, including the auth-token link
+	// when the request was authenticated via an API token.
+	Links map[string]interface{} `jsonapi:"links,omitempty"`
+}
+
+// AuthTokenLink returns the URL path of the authentication token used for
+// the current request, or an empty string if not authenticated via token.
+func (u *User) AuthTokenLink() string {
+	if u.Links == nil {
+		return ""
+	}
+	if v, ok := u.Links["auth-token"].(string); ok {
+		return v
+	}
+	return ""
 }
 
 // UserPermissions represents the user permissions.
@@ -84,11 +103,34 @@ func (s *users) ReadCurrent(ctx context.Context) (*User, error) {
 	if err != nil {
 		return nil, err
 	}
-
-	u := &User{}
-	err = req.Do(ctx, u)
+	body, err := req.DoRaw(ctx)
 	if err != nil {
 		return nil, err
+	}
+	defer body.Close() //nolint:errcheck
+
+	rawBody, err := io.ReadAll(body)
+	if err != nil {
+		return nil, err
+	}
+
+	u := &User{}
+	if err := unmarshalResponse(bytes.NewReader(rawBody), u); err != nil {
+		return nil, err
+	}
+
+	var response struct {
+		Links map[string]interface{} `json:"links"`
+	}
+	if err := json.Unmarshal(rawBody, &response); err != nil {
+		return nil, err
+	}
+
+	if response.Links != nil && response.Links["auth-token"] != nil {
+		if u.Links == nil {
+			u.Links = make(map[string]interface{}, 1)
+		}
+		u.Links["auth-token"] = response.Links["auth-token"]
 	}
 
 	return u, nil

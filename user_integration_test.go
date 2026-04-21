@@ -30,6 +30,12 @@ func TestUsersReadCurrent(t *testing.T) {
 	t.Run("permissions are decoded", func(t *testing.T) {
 		assert.NotNil(t, u.Permissions)
 	})
+
+	t.Run("auth token link is present when authenticated via token", func(t *testing.T) {
+		authTokenLink := u.AuthTokenLink()
+		assert.NotEmpty(t, authTokenLink)
+		assert.Contains(t, authTokenLink, "/api/v2/authentication-tokens/")
+	})
 }
 
 func TestUsersUpdate(t *testing.T) {
