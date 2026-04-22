@@ -45,6 +45,9 @@ func (o *AdminSCIMGroupListOptions) valid() error {
 	if o == nil {
 		return nil
 	}
+	if o.PageNumber < 0 || o.PageSize < 0 {
+		return ErrInvalidPagination
+	}
 
 	return nil
 }
