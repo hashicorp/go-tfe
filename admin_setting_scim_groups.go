@@ -42,6 +42,10 @@ type AdminSCIMGroupListOptions struct {
 }
 
 func (o *AdminSCIMGroupListOptions) valid() error {
+	if o == nil {
+		return nil
+	}
+
 	return nil
 }
 
