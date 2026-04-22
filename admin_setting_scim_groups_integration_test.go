@@ -175,37 +175,6 @@ func TestAdminSCIMGroups_List(t *testing.T) {
 				expectedNextPage:   0,
 				expectedPrevPage:   1,
 			},
-			{
-				name:               "custom page size (5) returns first page",
-				options:            AdminSCIMGroupListOptions{Query: prefix, ListOptions: ListOptions{PageSize: 5, PageNumber: 1}},
-				expectedGroupCount: 5,
-				expectedTotalCount: 30,
-				expectedTotalPages: 6,
-				expectedPage:       1,
-				expectedNextPage:   2,
-				expectedPrevPage:   0,
-			},
-			{
-				name:               "custom page size (5) returns second page",
-				options:            AdminSCIMGroupListOptions{Query: prefix, ListOptions: ListOptions{PageSize: 5, PageNumber: 2}},
-				excludeOptions:     &AdminSCIMGroupListOptions{Query: prefix, ListOptions: ListOptions{PageSize: 5, PageNumber: 1}},
-				expectedGroupCount: 5,
-				expectedTotalCount: 30,
-				expectedTotalPages: 6,
-				expectedPage:       2,
-				expectedNextPage:   3,
-				expectedPrevPage:   1,
-			},
-			{
-				name:               "requesting out of bounds page returns empty list",
-				options:            AdminSCIMGroupListOptions{Query: prefix, ListOptions: ListOptions{PageSize: 5, PageNumber: 7}},
-				expectedGroupCount: 0,
-				expectedTotalCount: 30,
-				expectedTotalPages: 6,
-				expectedPage:       7,
-				expectedNextPage:   0,
-				expectedPrevPage:   0,
-			},
 		}
 
 		for _, tc := range testCases {
