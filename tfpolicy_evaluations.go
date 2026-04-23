@@ -188,7 +188,6 @@ func (s *tfPolicyEvaluationOutcomes) List(ctx context.Context, tfPolicyEvaluatio
 	}
 
 	return tfpo, nil
-
 }
 
 func (s *TFPolicyEvaluationListOptions) valid() error {
