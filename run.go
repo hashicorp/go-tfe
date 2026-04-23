@@ -170,6 +170,7 @@ type Run struct {
 	TaskStages           []*TaskStage          `jsonapi:"relation,task-stages,omitempty"`
 	Workspace            *Workspace            `jsonapi:"relation,workspace"`
 	Comments             []*Comment            `jsonapi:"relation,comments"`
+	TFPolicyEvaluations  []*TFPolicyEvaluation `jsonapi:"relation,tf-policy-evaluations,omitempty"`
 }
 
 // RunActions represents the run actions.
@@ -223,14 +224,15 @@ type RunStatusTimestamps struct {
 type RunIncludeOpt string
 
 const (
-	RunPlan             RunIncludeOpt = "plan"
-	RunApply            RunIncludeOpt = "apply"
-	RunCreatedBy        RunIncludeOpt = "created_by"
-	RunCostEstimate     RunIncludeOpt = "cost_estimate"
-	RunConfigVer        RunIncludeOpt = "configuration_version"
-	RunConfigVerIngress RunIncludeOpt = "configuration_version.ingress_attributes"
-	RunWorkspace        RunIncludeOpt = "workspace"
-	RunTaskStages       RunIncludeOpt = "task_stages"
+	RunPlan               RunIncludeOpt = "plan"
+	RunApply              RunIncludeOpt = "apply"
+	RunCreatedBy          RunIncludeOpt = "created_by"
+	RunCostEstimate       RunIncludeOpt = "cost_estimate"
+	RunConfigVer          RunIncludeOpt = "configuration_version"
+	RunConfigVerIngress   RunIncludeOpt = "configuration_version.ingress_attributes"
+	RunWorkspace          RunIncludeOpt = "workspace"
+	RunTaskStages         RunIncludeOpt = "task_stages"
+	RunTFPolicyEvaluation RunIncludeOpt = "tf_policy_evaluations"
 )
 
 // RunListOptions represents the options for listing runs.
