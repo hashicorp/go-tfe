@@ -298,6 +298,13 @@ func (m *TaskResults_attributes) Serialize(writer i878a80d2330e89d26896388a3f487
             return err
         }
     }
+    if m.GetStatus() != nil {
+        cast := (*m.GetStatus()).String()
+        err := writer.WriteStringValue("status", &cast)
+        if err != nil {
+            return err
+        }
+    }
     {
         err := writer.WriteStringValue("url", m.GetUrl())
         if err != nil {

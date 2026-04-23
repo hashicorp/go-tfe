@@ -10,6 +10,8 @@ import (
 type Varsets_relationships_vars_data struct {
     // Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
     additionalData map[string]any
+    // The attributes property
+    attributes Varsets_relationships_vars_data_attributesable
     // The id property
     id *string
     // The type property
@@ -32,10 +34,25 @@ func CreateVarsets_relationships_vars_dataFromDiscriminatorValue(parseNode i878a
 func (m *Varsets_relationships_vars_data) GetAdditionalData()(map[string]any) {
     return m.additionalData
 }
+// GetAttributes gets the attributes property value. The attributes property
+// returns a Varsets_relationships_vars_data_attributesable when successful
+func (m *Varsets_relationships_vars_data) GetAttributes()(Varsets_relationships_vars_data_attributesable) {
+    return m.attributes
+}
 // GetFieldDeserializers the deserialization information for the current model
 // returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error) when successful
 func (m *Varsets_relationships_vars_data) GetFieldDeserializers()(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error)) {
     res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error))
+    res["attributes"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetObjectValue(CreateVarsets_relationships_vars_data_attributesFromDiscriminatorValue)
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            m.SetAttributes(val.(Varsets_relationships_vars_data_attributesable))
+        }
+        return nil
+    }
     res["id"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
         val, err := n.GetStringValue()
         if err != nil {
@@ -71,6 +88,12 @@ func (m *Varsets_relationships_vars_data) GetTypeEscaped()(*Varsets_relationship
 // Serialize serializes information the current object
 func (m *Varsets_relationships_vars_data) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter)(error) {
     {
+        err := writer.WriteObjectValue("attributes", m.GetAttributes())
+        if err != nil {
+            return err
+        }
+    }
+    {
         err := writer.WriteStringValue("id", m.GetId())
         if err != nil {
             return err
@@ -95,6 +118,10 @@ func (m *Varsets_relationships_vars_data) Serialize(writer i878a80d2330e89d26896
 func (m *Varsets_relationships_vars_data) SetAdditionalData(value map[string]any)() {
     m.additionalData = value
 }
+// SetAttributes sets the attributes property value. The attributes property
+func (m *Varsets_relationships_vars_data) SetAttributes(value Varsets_relationships_vars_data_attributesable)() {
+    m.attributes = value
+}
 // SetId sets the id property value. The id property
 func (m *Varsets_relationships_vars_data) SetId(value *string)() {
     m.id = value
@@ -106,8 +133,10 @@ func (m *Varsets_relationships_vars_data) SetTypeEscaped(value *Varsets_relation
 type Varsets_relationships_vars_dataable interface {
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
+    GetAttributes()(Varsets_relationships_vars_data_attributesable)
     GetId()(*string)
     GetTypeEscaped()(*Varsets_relationships_vars_data_type)
+    SetAttributes(value Varsets_relationships_vars_data_attributesable)()
     SetId(value *string)()
     SetTypeEscaped(value *Varsets_relationships_vars_data_type)()
 }

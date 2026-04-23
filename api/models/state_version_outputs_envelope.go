@@ -10,7 +10,7 @@ import (
 type StateVersionOutputsEnvelope struct {
     // Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
     additionalData map[string]any
-    // The data property
+    // State version outputs are the output values from a Terraform state file for a workspace. They include the name and value of the output, as well as a sensitive boolean if the value should be hidden by default in UIs. There is an additional attribute, "value" that can be any type, including null if the value is sensitive and part of a list response.
     data StateVersionOutputsable
 }
 // NewStateVersionOutputsEnvelope instantiates a new StateVersionOutputsEnvelope and sets the default values.
@@ -30,7 +30,7 @@ func CreateStateVersionOutputsEnvelopeFromDiscriminatorValue(parseNode i878a80d2
 func (m *StateVersionOutputsEnvelope) GetAdditionalData()(map[string]any) {
     return m.additionalData
 }
-// GetData gets the data property value. The data property
+// GetData gets the data property value. State version outputs are the output values from a Terraform state file for a workspace. They include the name and value of the output, as well as a sensitive boolean if the value should be hidden by default in UIs. There is an additional attribute, "value" that can be any type, including null if the value is sensitive and part of a list response.
 // returns a StateVersionOutputsable when successful
 func (m *StateVersionOutputsEnvelope) GetData()(StateVersionOutputsable) {
     return m.data
@@ -71,7 +71,7 @@ func (m *StateVersionOutputsEnvelope) Serialize(writer i878a80d2330e89d26896388a
 func (m *StateVersionOutputsEnvelope) SetAdditionalData(value map[string]any)() {
     m.additionalData = value
 }
-// SetData sets the data property value. The data property
+// SetData sets the data property value. State version outputs are the output values from a Terraform state file for a workspace. They include the name and value of the output, as well as a sensitive boolean if the value should be hidden by default in UIs. There is an additional attribute, "value" that can be any type, including null if the value is sensitive and part of a list response.
 func (m *StateVersionOutputsEnvelope) SetData(value StateVersionOutputsable)() {
     m.data = value
 }

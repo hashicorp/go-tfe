@@ -112,19 +112,6 @@ func (m *OrganizationMemberships_attributes) Serialize(writer i878a80d2330e89d26
         }
     }
     {
-        err := writer.WriteBoolValue("is-org-two-factor-required", m.GetIsOrgTwoFactorRequired())
-        if err != nil {
-            return err
-        }
-    }
-    if m.GetStatus() != nil {
-        cast := (*m.GetStatus()).String()
-        err := writer.WriteStringValue("status", &cast)
-        if err != nil {
-            return err
-        }
-    }
-    {
         err := writer.WriteAdditionalData(m.GetAdditionalData())
         if err != nil {
             return err

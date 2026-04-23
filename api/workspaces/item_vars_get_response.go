@@ -12,7 +12,7 @@ type ItemVarsGetResponse struct {
     // Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
     additionalData map[string]any
     // The data property
-    data []ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.WorkspaceVarable
+    data []ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.Varsable
 }
 // NewItemVarsGetResponse instantiates a new ItemVarsGetResponse and sets the default values.
 func NewItemVarsGetResponse()(*ItemVarsGetResponse) {
@@ -32,8 +32,8 @@ func (m *ItemVarsGetResponse) GetAdditionalData()(map[string]any) {
     return m.additionalData
 }
 // GetData gets the data property value. The data property
-// returns a []WorkspaceVarable when successful
-func (m *ItemVarsGetResponse) GetData()([]ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.WorkspaceVarable) {
+// returns a []Varsable when successful
+func (m *ItemVarsGetResponse) GetData()([]ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.Varsable) {
     return m.data
 }
 // GetFieldDeserializers the deserialization information for the current model
@@ -41,15 +41,15 @@ func (m *ItemVarsGetResponse) GetData()([]ie0c034c41cc7c7bacea8ad562c1d20027757b
 func (m *ItemVarsGetResponse) GetFieldDeserializers()(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error)) {
     res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error))
     res["data"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetCollectionOfObjectValues(ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.CreateWorkspaceVarFromDiscriminatorValue)
+        val, err := n.GetCollectionOfObjectValues(ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.CreateVarsFromDiscriminatorValue)
         if err != nil {
             return err
         }
         if val != nil {
-            res := make([]ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.WorkspaceVarable, len(val))
+            res := make([]ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.Varsable, len(val))
             for i, v := range val {
                 if v != nil {
-                    res[i] = v.(ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.WorkspaceVarable)
+                    res[i] = v.(ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.Varsable)
                 }
             }
             m.SetData(res)
@@ -85,12 +85,12 @@ func (m *ItemVarsGetResponse) SetAdditionalData(value map[string]any)() {
     m.additionalData = value
 }
 // SetData sets the data property value. The data property
-func (m *ItemVarsGetResponse) SetData(value []ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.WorkspaceVarable)() {
+func (m *ItemVarsGetResponse) SetData(value []ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.Varsable)() {
     m.data = value
 }
 type ItemVarsGetResponseable interface {
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
-    GetData()([]ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.WorkspaceVarable)
-    SetData(value []ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.WorkspaceVarable)()
+    GetData()([]ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.Varsable)
+    SetData(value []ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.Varsable)()
 }

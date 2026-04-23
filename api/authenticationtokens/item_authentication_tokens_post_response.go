@@ -11,8 +11,8 @@ import (
 type ItemAuthenticationTokensPostResponse struct {
     // Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
     additionalData map[string]any
-    // The included property
-    included []ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.AuthenticationTokensable
+    // The data property
+    data []ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.AuthenticationTokensable
 }
 // NewItemAuthenticationTokensPostResponse instantiates a new ItemAuthenticationTokensPostResponse and sets the default values.
 func NewItemAuthenticationTokensPostResponse()(*ItemAuthenticationTokensPostResponse) {
@@ -31,11 +31,16 @@ func CreateItemAuthenticationTokensPostResponseFromDiscriminatorValue(parseNode 
 func (m *ItemAuthenticationTokensPostResponse) GetAdditionalData()(map[string]any) {
     return m.additionalData
 }
+// GetData gets the data property value. The data property
+// returns a []AuthenticationTokensable when successful
+func (m *ItemAuthenticationTokensPostResponse) GetData()([]ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.AuthenticationTokensable) {
+    return m.data
+}
 // GetFieldDeserializers the deserialization information for the current model
 // returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error) when successful
 func (m *ItemAuthenticationTokensPostResponse) GetFieldDeserializers()(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error)) {
     res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error))
-    res["included"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+    res["data"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
         val, err := n.GetCollectionOfObjectValues(ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.CreateAuthenticationTokensFromDiscriminatorValue)
         if err != nil {
             return err
@@ -47,27 +52,22 @@ func (m *ItemAuthenticationTokensPostResponse) GetFieldDeserializers()(map[strin
                     res[i] = v.(ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.AuthenticationTokensable)
                 }
             }
-            m.SetIncluded(res)
+            m.SetData(res)
         }
         return nil
     }
     return res
 }
-// GetIncluded gets the included property value. The included property
-// returns a []AuthenticationTokensable when successful
-func (m *ItemAuthenticationTokensPostResponse) GetIncluded()([]ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.AuthenticationTokensable) {
-    return m.included
-}
 // Serialize serializes information the current object
 func (m *ItemAuthenticationTokensPostResponse) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter)(error) {
-    if m.GetIncluded() != nil {
-        cast := make([]i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, len(m.GetIncluded()))
-        for i, v := range m.GetIncluded() {
+    if m.GetData() != nil {
+        cast := make([]i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, len(m.GetData()))
+        for i, v := range m.GetData() {
             if v != nil {
                 cast[i] = v.(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable)
             }
         }
-        err := writer.WriteCollectionOfObjectValues("included", cast)
+        err := writer.WriteCollectionOfObjectValues("data", cast)
         if err != nil {
             return err
         }
@@ -84,13 +84,13 @@ func (m *ItemAuthenticationTokensPostResponse) Serialize(writer i878a80d2330e89d
 func (m *ItemAuthenticationTokensPostResponse) SetAdditionalData(value map[string]any)() {
     m.additionalData = value
 }
-// SetIncluded sets the included property value. The included property
-func (m *ItemAuthenticationTokensPostResponse) SetIncluded(value []ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.AuthenticationTokensable)() {
-    m.included = value
+// SetData sets the data property value. The data property
+func (m *ItemAuthenticationTokensPostResponse) SetData(value []ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.AuthenticationTokensable)() {
+    m.data = value
 }
 type ItemAuthenticationTokensPostResponseable interface {
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
-    GetIncluded()([]ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.AuthenticationTokensable)
-    SetIncluded(value []ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.AuthenticationTokensable)()
+    GetData()([]ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.AuthenticationTokensable)
+    SetData(value []ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.AuthenticationTokensable)()
 }

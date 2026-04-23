@@ -7,6 +7,7 @@ import (
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
 )
 
+// StateVersionOutputs state version outputs are the output values from a Terraform state file for a workspace. They include the name and value of the output, as well as a sensitive boolean if the value should be hidden by default in UIs. There is an additional attribute, "value" that can be any type, including null if the value is sensitive and part of a list response.
 type StateVersionOutputs struct {
     // Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
     additionalData map[string]any

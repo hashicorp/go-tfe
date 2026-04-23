@@ -11,7 +11,7 @@ type TaskResults_relationships struct {
     // Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
     additionalData map[string]any
     // The taskResultOutcomes property
-    taskResultOutcomes Links_relatedable
+    taskResultOutcomes TaskResults_relationships_taskResultOutcomesable
     // The taskStage property
     taskStage TaskStagesIdable
 }
@@ -37,12 +37,12 @@ func (m *TaskResults_relationships) GetAdditionalData()(map[string]any) {
 func (m *TaskResults_relationships) GetFieldDeserializers()(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error)) {
     res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error))
     res["task-result-outcomes"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetObjectValue(CreateLinks_relatedFromDiscriminatorValue)
+        val, err := n.GetObjectValue(CreateTaskResults_relationships_taskResultOutcomesFromDiscriminatorValue)
         if err != nil {
             return err
         }
         if val != nil {
-            m.SetTaskResultOutcomes(val.(Links_relatedable))
+            m.SetTaskResultOutcomes(val.(TaskResults_relationships_taskResultOutcomesable))
         }
         return nil
     }
@@ -59,8 +59,8 @@ func (m *TaskResults_relationships) GetFieldDeserializers()(map[string]func(i878
     return res
 }
 // GetTaskResultOutcomes gets the task-result-outcomes property value. The taskResultOutcomes property
-// returns a Links_relatedable when successful
-func (m *TaskResults_relationships) GetTaskResultOutcomes()(Links_relatedable) {
+// returns a TaskResults_relationships_taskResultOutcomesable when successful
+func (m *TaskResults_relationships) GetTaskResultOutcomes()(TaskResults_relationships_taskResultOutcomesable) {
     return m.taskResultOutcomes
 }
 // GetTaskStage gets the task-stage property value. The taskStage property
@@ -95,7 +95,7 @@ func (m *TaskResults_relationships) SetAdditionalData(value map[string]any)() {
     m.additionalData = value
 }
 // SetTaskResultOutcomes sets the task-result-outcomes property value. The taskResultOutcomes property
-func (m *TaskResults_relationships) SetTaskResultOutcomes(value Links_relatedable)() {
+func (m *TaskResults_relationships) SetTaskResultOutcomes(value TaskResults_relationships_taskResultOutcomesable)() {
     m.taskResultOutcomes = value
 }
 // SetTaskStage sets the task-stage property value. The taskStage property
@@ -105,8 +105,8 @@ func (m *TaskResults_relationships) SetTaskStage(value TaskStagesIdable)() {
 type TaskResults_relationshipsable interface {
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
-    GetTaskResultOutcomes()(Links_relatedable)
+    GetTaskResultOutcomes()(TaskResults_relationships_taskResultOutcomesable)
     GetTaskStage()(TaskStagesIdable)
-    SetTaskResultOutcomes(value Links_relatedable)()
+    SetTaskResultOutcomes(value TaskResults_relationships_taskResultOutcomesable)()
     SetTaskStage(value TaskStagesIdable)()
 }

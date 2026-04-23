@@ -32,10 +32,10 @@ func NewItemCurrentStateVersionRequestBuilder(rawUrl string, requestAdapter i2ae
     return NewItemCurrentStateVersionRequestBuilderInternal(urlParams, requestAdapter)
 }
 // Get get the current state version for a workspace.
-// returns a ItemCurrentStateVersionGetResponseable when successful
+// returns a CurrentStateVersionEnvelopeable when successful
 // returns a Errors error when the service returns a 404 status code
 // returns a Errors error when the service returns a 4XX or 5XX status code
-func (m *ItemCurrentStateVersionRequestBuilder) Get(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[ItemCurrentStateVersionRequestBuilderGetQueryParameters])(ItemCurrentStateVersionGetResponseable, error) {
+func (m *ItemCurrentStateVersionRequestBuilder) Get(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[ItemCurrentStateVersionRequestBuilderGetQueryParameters])(ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.CurrentStateVersionEnvelopeable, error) {
     requestInfo, err := m.ToGetRequestInformation(ctx, requestConfiguration);
     if err != nil {
         return nil, err
@@ -44,14 +44,14 @@ func (m *ItemCurrentStateVersionRequestBuilder) Get(ctx context.Context, request
         "404": ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.CreateErrorsFromDiscriminatorValue,
         "XXX": ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.CreateErrorsFromDiscriminatorValue,
     }
-    res, err := m.BaseRequestBuilder.RequestAdapter.Send(ctx, requestInfo, CreateItemCurrentStateVersionGetResponseFromDiscriminatorValue, errorMapping)
+    res, err := m.BaseRequestBuilder.RequestAdapter.Send(ctx, requestInfo, ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.CreateCurrentStateVersionEnvelopeFromDiscriminatorValue, errorMapping)
     if err != nil {
         return nil, err
     }
     if res == nil {
         return nil, nil
     }
-    return res.(ItemCurrentStateVersionGetResponseable), nil
+    return res.(ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.CurrentStateVersionEnvelopeable), nil
 }
 // ToGetRequestInformation get the current state version for a workspace.
 // returns a *RequestInformation when successful

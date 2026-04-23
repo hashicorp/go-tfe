@@ -6,6 +6,7 @@ package organizations
 import (
     "context"
     i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f "github.com/microsoft/kiota-abstractions-go"
+    ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f "github.com/hashicorp/go-tfe/api/models"
 )
 
 // ItemRegistryModulesValidationRequestBuilder builds and executes requests for operations under \organizations\{organization_name}\registry-modules\validation
@@ -33,20 +34,20 @@ func NewItemRegistryModulesValidationRequestBuilder(rawUrl string, requestAdapte
     return NewItemRegistryModulesValidationRequestBuilderInternal(urlParams, requestAdapter)
 }
 // Get this endpoint checks if a module name and provider combination is available for use within an organization.It returns a validation result indicating whether the name is already in use.
-// returns a ItemRegistryModulesValidationGetResponseable when successful
-func (m *ItemRegistryModulesValidationRequestBuilder) Get(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[ItemRegistryModulesValidationRequestBuilderGetQueryParameters])(ItemRegistryModulesValidationGetResponseable, error) {
+// returns a RegistryModuleAddressValidationsEnvelopeable when successful
+func (m *ItemRegistryModulesValidationRequestBuilder) Get(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[ItemRegistryModulesValidationRequestBuilderGetQueryParameters])(ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.RegistryModuleAddressValidationsEnvelopeable, error) {
     requestInfo, err := m.ToGetRequestInformation(ctx, requestConfiguration);
     if err != nil {
         return nil, err
     }
-    res, err := m.BaseRequestBuilder.RequestAdapter.Send(ctx, requestInfo, CreateItemRegistryModulesValidationGetResponseFromDiscriminatorValue, nil)
+    res, err := m.BaseRequestBuilder.RequestAdapter.Send(ctx, requestInfo, ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.CreateRegistryModuleAddressValidationsEnvelopeFromDiscriminatorValue, nil)
     if err != nil {
         return nil, err
     }
     if res == nil {
         return nil, nil
     }
-    return res.(ItemRegistryModulesValidationGetResponseable), nil
+    return res.(ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.RegistryModuleAddressValidationsEnvelopeable), nil
 }
 // ToGetRequestInformation this endpoint checks if a module name and provider combination is available for use within an organization.It returns a validation result indicating whether the name is already in use.
 // returns a *RequestInformation when successful

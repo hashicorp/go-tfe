@@ -6,16 +6,19 @@ type TaskResults_type int
 
 const (
     TASKRESULTS_TASKRESULTS_TYPE TaskResults_type = iota
+    TASK_RESULTS_TASKRESULTS_TYPE
 )
 
 func (i TaskResults_type) String() string {
-    return []string{"task-results"}[i]
+    return []string{"task-results", "task_results"}[i]
 }
 func ParseTaskResults_type(v string) (any, error) {
     result := TASKRESULTS_TASKRESULTS_TYPE
     switch v {
         case "task-results":
             result = TASKRESULTS_TASKRESULTS_TYPE
+        case "task_results":
+            result = TASK_RESULTS_TASKRESULTS_TYPE
         default:
             return nil, nil
     }

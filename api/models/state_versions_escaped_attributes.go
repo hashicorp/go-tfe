@@ -17,6 +17,8 @@ type StateVersions_attributes struct {
     createdAt *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
     // The encryptedStateDownloadUrl property
     encryptedStateDownloadUrl *string
+    // The force property
+    force *bool
     // The hostedJsonStateDownloadUrl property
     hostedJsonStateDownloadUrl *string
     // The hostedJsonStateUploadUrl property
@@ -27,6 +29,14 @@ type StateVersions_attributes struct {
     hostedStateUploadUrl *string
     // The intermediate property
     intermediate *bool
+    // The jsonState property
+    jsonState *string
+    // The jsonStateOutputs property
+    jsonStateOutputs *string
+    // The lineage property
+    lineage *string
+    // The md5 property
+    md5 *string
     // The modules property
     modules StateVersions_attributes_modulesable
     // The providers property
@@ -43,6 +53,8 @@ type StateVersions_attributes struct {
     serial *int32
     // The size property
     size *int32
+    // The state property
+    state *string
     // The stateVersion property
     stateVersion *int32
     // The status property
@@ -120,6 +132,16 @@ func (m *StateVersions_attributes) GetFieldDeserializers()(map[string]func(i878a
         }
         return nil
     }
+    res["force"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetBoolValue()
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            m.SetForce(val)
+        }
+        return nil
+    }
     res["hosted-json-state-download-url"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
         val, err := n.GetStringValue()
         if err != nil {
@@ -167,6 +189,46 @@ func (m *StateVersions_attributes) GetFieldDeserializers()(map[string]func(i878a
         }
         if val != nil {
             m.SetIntermediate(val)
+        }
+        return nil
+    }
+    res["json-state"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetStringValue()
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            m.SetJsonState(val)
+        }
+        return nil
+    }
+    res["json-state-outputs"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetStringValue()
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            m.SetJsonStateOutputs(val)
+        }
+        return nil
+    }
+    res["lineage"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetStringValue()
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            m.SetLineage(val)
+        }
+        return nil
+    }
+    res["md5"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetStringValue()
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            m.SetMd5(val)
         }
         return nil
     }
@@ -256,6 +318,16 @@ func (m *StateVersions_attributes) GetFieldDeserializers()(map[string]func(i878a
         }
         return nil
     }
+    res["state"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetStringValue()
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            m.SetState(val)
+        }
+        return nil
+    }
     res["state-version"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
         val, err := n.GetInt32Value()
         if err != nil {
@@ -308,6 +380,11 @@ func (m *StateVersions_attributes) GetFieldDeserializers()(map[string]func(i878a
     }
     return res
 }
+// GetForce gets the force property value. The force property
+// returns a *bool when successful
+func (m *StateVersions_attributes) GetForce()(*bool) {
+    return m.force
+}
 // GetHostedJsonStateDownloadUrl gets the hosted-json-state-download-url property value. The hostedJsonStateDownloadUrl property
 // returns a *string when successful
 func (m *StateVersions_attributes) GetHostedJsonStateDownloadUrl()(*string) {
@@ -332,6 +409,26 @@ func (m *StateVersions_attributes) GetHostedStateUploadUrl()(*string) {
 // returns a *bool when successful
 func (m *StateVersions_attributes) GetIntermediate()(*bool) {
     return m.intermediate
+}
+// GetJsonState gets the json-state property value. The jsonState property
+// returns a *string when successful
+func (m *StateVersions_attributes) GetJsonState()(*string) {
+    return m.jsonState
+}
+// GetJsonStateOutputs gets the json-state-outputs property value. The jsonStateOutputs property
+// returns a *string when successful
+func (m *StateVersions_attributes) GetJsonStateOutputs()(*string) {
+    return m.jsonStateOutputs
+}
+// GetLineage gets the lineage property value. The lineage property
+// returns a *string when successful
+func (m *StateVersions_attributes) GetLineage()(*string) {
+    return m.lineage
+}
+// GetMd5 gets the md5 property value. The md5 property
+// returns a *string when successful
+func (m *StateVersions_attributes) GetMd5()(*string) {
+    return m.md5
 }
 // GetModules gets the modules property value. The modules property
 // returns a StateVersions_attributes_modulesable when successful
@@ -373,6 +470,11 @@ func (m *StateVersions_attributes) GetSerial()(*int32) {
 func (m *StateVersions_attributes) GetSize()(*int32) {
     return m.size
 }
+// GetState gets the state property value. The state property
+// returns a *string when successful
+func (m *StateVersions_attributes) GetState()(*string) {
+    return m.state
+}
 // GetStateVersion gets the state-version property value. The stateVersion property
 // returns a *int32 when successful
 func (m *StateVersions_attributes) GetStateVersion()(*int32) {
@@ -401,7 +503,43 @@ func (m *StateVersions_attributes) GetVcsCommitUrl()(*string) {
 // Serialize serializes information the current object
 func (m *StateVersions_attributes) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter)(error) {
     {
+        err := writer.WriteBoolValue("force", m.GetForce())
+        if err != nil {
+            return err
+        }
+    }
+    {
+        err := writer.WriteStringValue("json-state", m.GetJsonState())
+        if err != nil {
+            return err
+        }
+    }
+    {
+        err := writer.WriteStringValue("json-state-outputs", m.GetJsonStateOutputs())
+        if err != nil {
+            return err
+        }
+    }
+    {
+        err := writer.WriteStringValue("lineage", m.GetLineage())
+        if err != nil {
+            return err
+        }
+    }
+    {
+        err := writer.WriteStringValue("md5", m.GetMd5())
+        if err != nil {
+            return err
+        }
+    }
+    {
         err := writer.WriteInt32Value("serial", m.GetSerial())
+        if err != nil {
+            return err
+        }
+    }
+    {
+        err := writer.WriteStringValue("state", m.GetState())
         if err != nil {
             return err
         }
@@ -430,6 +568,10 @@ func (m *StateVersions_attributes) SetCreatedAt(value *i336074805fc853987abe6f7f
 func (m *StateVersions_attributes) SetEncryptedStateDownloadUrl(value *string)() {
     m.encryptedStateDownloadUrl = value
 }
+// SetForce sets the force property value. The force property
+func (m *StateVersions_attributes) SetForce(value *bool)() {
+    m.force = value
+}
 // SetHostedJsonStateDownloadUrl sets the hosted-json-state-download-url property value. The hostedJsonStateDownloadUrl property
 func (m *StateVersions_attributes) SetHostedJsonStateDownloadUrl(value *string)() {
     m.hostedJsonStateDownloadUrl = value
@@ -449,6 +591,22 @@ func (m *StateVersions_attributes) SetHostedStateUploadUrl(value *string)() {
 // SetIntermediate sets the intermediate property value. The intermediate property
 func (m *StateVersions_attributes) SetIntermediate(value *bool)() {
     m.intermediate = value
+}
+// SetJsonState sets the json-state property value. The jsonState property
+func (m *StateVersions_attributes) SetJsonState(value *string)() {
+    m.jsonState = value
+}
+// SetJsonStateOutputs sets the json-state-outputs property value. The jsonStateOutputs property
+func (m *StateVersions_attributes) SetJsonStateOutputs(value *string)() {
+    m.jsonStateOutputs = value
+}
+// SetLineage sets the lineage property value. The lineage property
+func (m *StateVersions_attributes) SetLineage(value *string)() {
+    m.lineage = value
+}
+// SetMd5 sets the md5 property value. The md5 property
+func (m *StateVersions_attributes) SetMd5(value *string)() {
+    m.md5 = value
 }
 // SetModules sets the modules property value. The modules property
 func (m *StateVersions_attributes) SetModules(value StateVersions_attributes_modulesable)() {
@@ -482,6 +640,10 @@ func (m *StateVersions_attributes) SetSerial(value *int32)() {
 func (m *StateVersions_attributes) SetSize(value *int32)() {
     m.size = value
 }
+// SetState sets the state property value. The state property
+func (m *StateVersions_attributes) SetState(value *string)() {
+    m.state = value
+}
 // SetStateVersion sets the state-version property value. The stateVersion property
 func (m *StateVersions_attributes) SetStateVersion(value *int32)() {
     m.stateVersion = value
@@ -508,11 +670,16 @@ type StateVersions_attributesable interface {
     GetBillableRumCount()(*int32)
     GetCreatedAt()(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
     GetEncryptedStateDownloadUrl()(*string)
+    GetForce()(*bool)
     GetHostedJsonStateDownloadUrl()(*string)
     GetHostedJsonStateUploadUrl()(*string)
     GetHostedStateDownloadUrl()(*string)
     GetHostedStateUploadUrl()(*string)
     GetIntermediate()(*bool)
+    GetJsonState()(*string)
+    GetJsonStateOutputs()(*string)
+    GetLineage()(*string)
+    GetMd5()(*string)
     GetModules()(StateVersions_attributes_modulesable)
     GetProviders()(StateVersions_attributes_providersable)
     GetResources()([]StateVersions_attributes_resourcesable)
@@ -521,6 +688,7 @@ type StateVersions_attributesable interface {
     GetSanitizedStateUploadUrl()(*string)
     GetSerial()(*int32)
     GetSize()(*int32)
+    GetState()(*string)
     GetStateVersion()(*int32)
     GetStatus()(*StateVersions_attributes_status)
     GetTerraformVersion()(*string)
@@ -529,11 +697,16 @@ type StateVersions_attributesable interface {
     SetBillableRumCount(value *int32)()
     SetCreatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)()
     SetEncryptedStateDownloadUrl(value *string)()
+    SetForce(value *bool)()
     SetHostedJsonStateDownloadUrl(value *string)()
     SetHostedJsonStateUploadUrl(value *string)()
     SetHostedStateDownloadUrl(value *string)()
     SetHostedStateUploadUrl(value *string)()
     SetIntermediate(value *bool)()
+    SetJsonState(value *string)()
+    SetJsonStateOutputs(value *string)()
+    SetLineage(value *string)()
+    SetMd5(value *string)()
     SetModules(value StateVersions_attributes_modulesable)()
     SetProviders(value StateVersions_attributes_providersable)()
     SetResources(value []StateVersions_attributes_resourcesable)()
@@ -542,6 +715,7 @@ type StateVersions_attributesable interface {
     SetSanitizedStateUploadUrl(value *string)()
     SetSerial(value *int32)()
     SetSize(value *int32)()
+    SetState(value *string)()
     SetStateVersion(value *int32)()
     SetStatus(value *StateVersions_attributes_status)()
     SetTerraformVersion(value *string)()

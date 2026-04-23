@@ -411,12 +411,6 @@ func (m *PolicySets_attributes) Serialize(writer i878a80d2330e89d26896388a3f487e
         }
     }
     {
-        err := writer.WriteInt32Value("policy-count", m.GetPolicyCount())
-        if err != nil {
-            return err
-        }
-    }
-    {
         err := writer.WriteStringValue("policy-tool-version", m.GetPolicyToolVersion())
         if err != nil {
             return err
@@ -429,25 +423,7 @@ func (m *PolicySets_attributes) Serialize(writer i878a80d2330e89d26896388a3f487e
         }
     }
     {
-        err := writer.WriteInt32Value("project-count", m.GetProjectCount())
-        if err != nil {
-            return err
-        }
-    }
-    {
         err := writer.WriteObjectValue("vcs-repo", m.GetVcsRepo())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteBoolValue("versioned", m.GetVersioned())
-        if err != nil {
-            return err
-        }
-    }
-    {
-        err := writer.WriteInt32Value("workspace-count", m.GetWorkspaceCount())
         if err != nil {
             return err
         }

@@ -12,7 +12,7 @@ type ItemFeatureSetsGetResponse struct {
     // Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
     additionalData map[string]any
     // The data property
-    data []ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.FeatureSetable
+    data []ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.FeatureSetsable
     // The links property
     links ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.SelfWithPaginationable
     // The meta property
@@ -36,8 +36,8 @@ func (m *ItemFeatureSetsGetResponse) GetAdditionalData()(map[string]any) {
     return m.additionalData
 }
 // GetData gets the data property value. The data property
-// returns a []FeatureSetable when successful
-func (m *ItemFeatureSetsGetResponse) GetData()([]ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.FeatureSetable) {
+// returns a []FeatureSetsable when successful
+func (m *ItemFeatureSetsGetResponse) GetData()([]ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.FeatureSetsable) {
     return m.data
 }
 // GetFieldDeserializers the deserialization information for the current model
@@ -45,15 +45,15 @@ func (m *ItemFeatureSetsGetResponse) GetData()([]ie0c034c41cc7c7bacea8ad562c1d20
 func (m *ItemFeatureSetsGetResponse) GetFieldDeserializers()(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error)) {
     res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error))
     res["data"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
-        val, err := n.GetCollectionOfObjectValues(ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.CreateFeatureSetFromDiscriminatorValue)
+        val, err := n.GetCollectionOfObjectValues(ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.CreateFeatureSetsFromDiscriminatorValue)
         if err != nil {
             return err
         }
         if val != nil {
-            res := make([]ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.FeatureSetable, len(val))
+            res := make([]ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.FeatureSetsable, len(val))
             for i, v := range val {
                 if v != nil {
-                    res[i] = v.(ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.FeatureSetable)
+                    res[i] = v.(ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.FeatureSetsable)
                 }
             }
             m.SetData(res)
@@ -131,7 +131,7 @@ func (m *ItemFeatureSetsGetResponse) SetAdditionalData(value map[string]any)() {
     m.additionalData = value
 }
 // SetData sets the data property value. The data property
-func (m *ItemFeatureSetsGetResponse) SetData(value []ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.FeatureSetable)() {
+func (m *ItemFeatureSetsGetResponse) SetData(value []ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.FeatureSetsable)() {
     m.data = value
 }
 // SetLinks sets the links property value. The links property
@@ -145,10 +145,10 @@ func (m *ItemFeatureSetsGetResponse) SetMeta(value ItemFeatureSetsGetResponse_me
 type ItemFeatureSetsGetResponseable interface {
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
-    GetData()([]ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.FeatureSetable)
+    GetData()([]ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.FeatureSetsable)
     GetLinks()(ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.SelfWithPaginationable)
     GetMeta()(ItemFeatureSetsGetResponse_metaable)
-    SetData(value []ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.FeatureSetable)()
+    SetData(value []ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.FeatureSetsable)()
     SetLinks(value ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.SelfWithPaginationable)()
     SetMeta(value ItemFeatureSetsGetResponse_metaable)()
 }

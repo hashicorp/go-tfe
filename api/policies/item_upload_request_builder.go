@@ -27,9 +27,9 @@ func NewItemUploadRequestBuilder(rawUrl string, requestAdapter i2ae4187f7daee263
     return NewItemUploadRequestBuilderInternal(urlParams, requestAdapter)
 }
 // Put upload code to an existing Sentinel or OPA policy. The request body must be the policy code with a Content-Type of application/octet-stream. Policy uploads are limited to 10MB.
-// returns a ItemUploadPutResponseable when successful
+// returns a PoliciesEnvelopeable when successful
 // returns a Errors error when the service returns a 4XX or 5XX status code
-func (m *ItemUploadRequestBuilder) Put(ctx context.Context, body []byte, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(ItemUploadPutResponseable, error) {
+func (m *ItemUploadRequestBuilder) Put(ctx context.Context, body []byte, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.DefaultQueryParameters])(ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.PoliciesEnvelopeable, error) {
     requestInfo, err := m.ToPutRequestInformation(ctx, body, requestConfiguration);
     if err != nil {
         return nil, err
@@ -37,14 +37,14 @@ func (m *ItemUploadRequestBuilder) Put(ctx context.Context, body []byte, request
     errorMapping := i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.ErrorMappings {
         "XXX": ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.CreateErrorsFromDiscriminatorValue,
     }
-    res, err := m.BaseRequestBuilder.RequestAdapter.Send(ctx, requestInfo, CreateItemUploadPutResponseFromDiscriminatorValue, errorMapping)
+    res, err := m.BaseRequestBuilder.RequestAdapter.Send(ctx, requestInfo, ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.CreatePoliciesEnvelopeFromDiscriminatorValue, errorMapping)
     if err != nil {
         return nil, err
     }
     if res == nil {
         return nil, nil
     }
-    return res.(ItemUploadPutResponseable), nil
+    return res.(ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.PoliciesEnvelopeable), nil
 }
 // ToPutRequestInformation upload code to an existing Sentinel or OPA policy. The request body must be the policy code with a Content-Type of application/octet-stream. Policy uploads are limited to 10MB.
 // returns a *RequestInformation when successful

@@ -11,7 +11,7 @@ import (
 
 	"github.com/hashicorp/cli"
 	"github.com/hashicorp/go-tfe"
-	"github.com/hashicorp/go-tfe/api/models"
+	"github.com/hashicorp/go-tfe/api/account"
 	"github.com/microsoft/kiota-abstractions-go/serialization"
 )
 
@@ -31,17 +31,15 @@ func (accountPasswordCommand) Synopsis() string {
 	return "Change your account password"
 }
 
-func (accountPasswordCommand) changePasswordModelHelper(oldPassword, newPassword *string) *models.Account_password {
-	pw := models.NewAccount_password()
-	pwd := models.NewAccount_password_data()
+func (accountPasswordCommand) changePasswordModelHelper(oldPassword, newPassword *string) *account.PasswordPatchRequestBody {
+	pw := account.NewPasswordPatchRequestBody()
+	pwd := account.NewPasswordPatchRequestBody_data()
 
-	pwda := models.NewAccount_password_data_attributes()
+	pwda := account.NewPasswordPatchRequestBody_data_attributes()
 	pwda.SetCurrentPassword(oldPassword)
 	pwda.SetPassword(newPassword)
 	pwda.SetPasswordConfirmation(newPassword)
 
-	t := models.USERS_ACCOUNT_PASSWORD_DATA_TYPE
-	pwd.SetTypeEscaped(&t)
 	pwd.SetAttributes(pwda)
 	pw.SetData(pwd)
 

@@ -12,6 +12,8 @@ type SshKeys_attributes struct {
     additionalData map[string]any
     // The name of the SSH key.
     name *string
+    // The private key value. This is write-only and will not be returned in the response.
+    value *string
 }
 // NewSshKeys_attributes instantiates a new SshKeys_attributes and sets the default values.
 func NewSshKeys_attributes()(*SshKeys_attributes) {
@@ -44,6 +46,16 @@ func (m *SshKeys_attributes) GetFieldDeserializers()(map[string]func(i878a80d233
         }
         return nil
     }
+    res["value"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetStringValue()
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            m.SetValue(val)
+        }
+        return nil
+    }
     return res
 }
 // GetName gets the name property value. The name of the SSH key.
@@ -51,10 +63,21 @@ func (m *SshKeys_attributes) GetFieldDeserializers()(map[string]func(i878a80d233
 func (m *SshKeys_attributes) GetName()(*string) {
     return m.name
 }
+// GetValue gets the value property value. The private key value. This is write-only and will not be returned in the response.
+// returns a *string when successful
+func (m *SshKeys_attributes) GetValue()(*string) {
+    return m.value
+}
 // Serialize serializes information the current object
 func (m *SshKeys_attributes) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter)(error) {
     {
         err := writer.WriteStringValue("name", m.GetName())
+        if err != nil {
+            return err
+        }
+    }
+    {
+        err := writer.WriteStringValue("value", m.GetValue())
         if err != nil {
             return err
         }
@@ -75,9 +98,15 @@ func (m *SshKeys_attributes) SetAdditionalData(value map[string]any)() {
 func (m *SshKeys_attributes) SetName(value *string)() {
     m.name = value
 }
+// SetValue sets the value property value. The private key value. This is write-only and will not be returned in the response.
+func (m *SshKeys_attributes) SetValue(value *string)() {
+    m.value = value
+}
 type SshKeys_attributesable interface {
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
     GetName()(*string)
+    GetValue()(*string)
     SetName(value *string)()
+    SetValue(value *string)()
 }

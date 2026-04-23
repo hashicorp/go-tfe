@@ -6,6 +6,7 @@ package organizations
 import (
     "context"
     i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f "github.com/microsoft/kiota-abstractions-go"
+    ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f "github.com/hashicorp/go-tfe/api/models"
 )
 
 // ItemVcsRepoRequestBuilder builds and executes requests for operations under \organizations\{organization_name}\vcs\repo
@@ -33,20 +34,20 @@ func NewItemVcsRepoRequestBuilder(rawUrl string, requestAdapter i2ae4187f7daee26
     return NewItemVcsRepoRequestBuilderInternal(urlParams, requestAdapter)
 }
 // Get this endpoint checks if a repository exists and is accessible to the user.
-// returns a ItemVcsRepoGetResponseable when successful
-func (m *ItemVcsRepoRequestBuilder) Get(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[ItemVcsRepoRequestBuilderGetQueryParameters])(ItemVcsRepoGetResponseable, error) {
+// returns a VcsRepoCheckEnvelopeable when successful
+func (m *ItemVcsRepoRequestBuilder) Get(ctx context.Context, requestConfiguration *i2ae4187f7daee263371cb1c977df639813ab50ffa529013b7437480d1ec0158f.RequestConfiguration[ItemVcsRepoRequestBuilderGetQueryParameters])(ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.VcsRepoCheckEnvelopeable, error) {
     requestInfo, err := m.ToGetRequestInformation(ctx, requestConfiguration);
     if err != nil {
         return nil, err
     }
-    res, err := m.BaseRequestBuilder.RequestAdapter.Send(ctx, requestInfo, CreateItemVcsRepoGetResponseFromDiscriminatorValue, nil)
+    res, err := m.BaseRequestBuilder.RequestAdapter.Send(ctx, requestInfo, ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.CreateVcsRepoCheckEnvelopeFromDiscriminatorValue, nil)
     if err != nil {
         return nil, err
     }
     if res == nil {
         return nil, nil
     }
-    return res.(ItemVcsRepoGetResponseable), nil
+    return res.(ie0c034c41cc7c7bacea8ad562c1d20027757bf421f1a5ace132a302c2bb1878f.VcsRepoCheckEnvelopeable), nil
 }
 // ToGetRequestInformation this endpoint checks if a repository exists and is accessible to the user.
 // returns a *RequestInformation when successful
